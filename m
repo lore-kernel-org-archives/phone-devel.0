@@ -2,185 +2,97 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E030EC433FE
-	for <phone-devel@archiver.kernel.org>; Tue, 15 Nov 2022 01:17:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA09AC4332F
+	for <phone-devel@archiver.kernel.org>; Tue, 15 Nov 2022 09:52:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236567AbiKOBRj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 14 Nov 2022 20:17:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59930 "EHLO
+        id S232215AbiKOJw5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 15 Nov 2022 04:52:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236432AbiKOBRX (ORCPT
+        with ESMTP id S229716AbiKOJw4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 14 Nov 2022 20:17:23 -0500
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF1D31B9F0;
-        Mon, 14 Nov 2022 17:17:20 -0800 (PST)
-Received: by mail-pl1-x636.google.com with SMTP id j12so11740930plj.5;
-        Mon, 14 Nov 2022 17:17:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BUIpc8OohuRwXXTymHuQYeof5fwY+3ojN2l9M9GcprA=;
-        b=oUtVIOmA+hDrwfw6hXBGXEWEiUNMsAHXNCb1DogIAutUo3yWYa8OVEQlDCZYPxMRjL
-         p7A9Mt0lsHTpvaTKR7AqJWuOEfJ4MgRFMpwrSYJjR/OOimc0Yd62WEVqiF38mCq9qHFV
-         hibrRm2vl1oyYrKZSIUUcv0b2GDP8/lMq6ctyy6BcZ3D+8pytwo+MaqYRpQQtCKELnqb
-         KhasTnP8z/67muakDUzLJ6Z7Bm5YiLfBipxYGSaES1pw+pdaz+bBWdUlSpXT3U8Tc0ZI
-         b1ccr3lM9Xh527XRmGAJGyyCsKhbPp9HSlkzYwYVjhDDVEkdNq8OCCUXpTOIJD4YzWdo
-         I1GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BUIpc8OohuRwXXTymHuQYeof5fwY+3ojN2l9M9GcprA=;
-        b=lZNm25aHROzkkxlWxmn7shOVXXE8OW8Z1yYiKL8xdHQg8ZiNO3krlG0dXDfpHdaaft
-         KJrHHPpa9dlZvpSLA5Rl8uqBud9rJgcexX+Yhdl2VhXvbk1bdcv/wFhCQME9aBsQIaGm
-         wkr/zM2ZALe1vFchazsj5h7UXmnZbC4hmwlgfButXTSXBwyPUKzP/HcxRZrFmiSH6AQ2
-         +9pEmtNNNBBf5hizwW+0XMg/d5Grnn+6CZ6WL1ozx6XC1wXTCEH6BdWuLQvLZwGFUofP
-         YJVHNX67z5g+zwarHAO1A4hBS1koH0wOWU82nEvZVZpKiQ4poaA+ym+kLWaNHgSHSi7P
-         60QQ==
-X-Gm-Message-State: ANoB5pkj8FQ2eCDS7ZYFsFoKZpKgYm6XJ7F4ltMaTfGt3dIHu70SR2i4
-        ZLz5VJcE+Fr+zPj+8wXzUkM=
-X-Google-Smtp-Source: AA0mqf7AYFxLloZV1/xCKWZzDYS0lMqASczojZNKvBWAniq5L2uJ5HHmbKWbZ+2tWum2MmizzLjblA==
-X-Received: by 2002:a17:903:26c1:b0:186:9852:b9e4 with SMTP id jg1-20020a17090326c100b001869852b9e4mr1849835plb.52.1668475040137;
-        Mon, 14 Nov 2022 17:17:20 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:718:95ee:2678:497])
-        by smtp.gmail.com with ESMTPSA id f88-20020a17090a28e100b002137030f652sm7238569pjd.12.2022.11.14.17.17.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Nov 2022 17:17:19 -0800 (PST)
-Date:   Mon, 14 Nov 2022 17:17:16 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Vincent Knecht <vincent.knecht@mailoo.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, w.david0@protonmail.com,
-        stephan@gerhold.net, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v4 5/5] Input: msg2638 - Add support for msg2138 key
- events
-Message-ID: <Y3LonDibllKkTmPs@google.com>
-References: <20221110171952.34207-1-vincent.knecht@mailoo.org>
- <20221110171952.34207-6-vincent.knecht@mailoo.org>
+        Tue, 15 Nov 2022 04:52:56 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F6212AA1;
+        Tue, 15 Nov 2022 01:52:55 -0800 (PST)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 8E9916602A0B;
+        Tue, 15 Nov 2022 09:52:53 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1668505974;
+        bh=fTz1/LN3UJg7iGi864PNg/UpPBmLtN7Aac88qggrMqc=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=fnK2ETBoLYl0jFzGtqol98jYRtaoaU2ghK6T6YxMvG6AWKtz1sTk2+/raMyvhYa01
+         qDQs9wRUxrhEZ3IOoZb/pWUIAcYR71xq57IudW1u6ErKbATs6qE/Fmmp+pp52y2RNt
+         89bUWxbQo7A57BSmfvOAgEGI7J6iJR5kWjEnKmHGQLDYjvSpg/sMrmq3lIVgCt0yfm
+         8SFxaL3BT19jdF44+W9hto0JHj4b1ks2enjhbSqEZmMEWpE1Quijc1NsgLLk3lNE2C
+         nFX8MFUdDlFMWpENTXF/Drf3uTS8cV1biqXRM28JlSqXSHhL0hzw8NHMknjIgkKRSs
+         2cUbXwYp1f0Yw==
+Message-ID: <2883ef06-7293-d5fd-4b62-ba796a6a2c69@collabora.com>
+Date:   Tue, 15 Nov 2022 10:52:50 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221110171952.34207-6-vincent.knecht@mailoo.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.3
+Subject: Re: [PATCH v2 8/8] dt-bindings: iommu: qcom,iommu: Document MSM8976
+ compatible
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        agross@kernel.org
+Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, joro@8bytes.org,
+        will@kernel.org, robin.murphy@arm.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, robdclark@gmail.com,
+        linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        marijn.suijten@somainline.org, kernel@collabora.com,
+        luca@z3ntu.xyz, a39.skl@gmail.com, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <20221111145919.221159-1-angelogioacchino.delregno@collabora.com>
+ <20221111145919.221159-9-angelogioacchino.delregno@collabora.com>
+ <92a75ab2-ffb9-9acd-4a98-a91589ad7e14@linaro.org>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <92a75ab2-ffb9-9acd-4a98-a91589ad7e14@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Nov 10, 2022 at 06:19:48PM +0100, Vincent Knecht wrote:
-> Some devices with msg2138 have back/menu/home keys.
-> Add support for them.
+Il 14/11/22 09:22, Krzysztof Kozlowski ha scritto:
+> On 11/11/2022 15:59, AngeloGioacchino Del Regno wrote:
+>> Add "qcom,msm8976-iommu" to support IOMMUs on this SoC.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>> ---
+>>   Documentation/devicetree/bindings/iommu/qcom,iommu.txt | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
+>> index b762772f80e7..b7a5822ac00d 100644
+>> --- a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
+>> +++ b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
+>> @@ -9,7 +9,8 @@ to non-secure vs secure interrupt line.
+>>   
+>>   - compatible       : Should be one of:
+>>   
+>> -                        "qcom,msm8916-iommu"
+>> +                        - "qcom,msm8916-iommu"
+>> +                        - "qcom,msm8976-iommu"
 > 
-> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
-> ---
->  drivers/input/touchscreen/msg2638.c | 53 +++++++++++++++++++++++++----
->  1 file changed, 47 insertions(+), 6 deletions(-)
+> Shouldn't the new compatible be followed by IOMMU v2, not v1?
 > 
-> diff --git a/drivers/input/touchscreen/msg2638.c b/drivers/input/touchscreen/msg2638.c
-> index 73e1b4d550fb..36069b30ab9b 100644
-> --- a/drivers/input/touchscreen/msg2638.c
-> +++ b/drivers/input/touchscreen/msg2638.c
-> @@ -29,6 +29,8 @@
->  #define MSG2138_MAX_FINGERS		2
->  #define MSG2638_MAX_FINGERS		5
->  
-> +#define MAX_BUTTONS			4
-> +
->  #define CHIP_ON_DELAY_MS		15
->  #define FIRMWARE_ON_DELAY_MS		50
->  #define RESET_DELAY_MIN_US		10000
-> @@ -72,6 +74,8 @@ struct msg2638_ts_data {
->  	struct regulator_bulk_data supplies[2];
->  	struct gpio_desc *reset_gpiod;
->  	int max_fingers;
-> +	u32 keycodes[MAX_BUTTONS];
-> +	int num_keycodes;
->  };
->  
->  static u8 msg2638_checksum(u8 *data, u32 length)
-> @@ -85,6 +89,19 @@ static u8 msg2638_checksum(u8 *data, u32 length)
->  	return (u8)((-sum) & 0xFF);
->  }
->  
-> +static void msg2138_report_keys(struct msg2638_ts_data *msg2638, u8 keys)
-> +{
-> +	int i;
-> +
-> +	/* keys can be 0x00 or 0xff when all keys have been released */
-> +	if (keys == 0xff)
-> +		keys = 0;
-> +
-> +	for (i = 0; i < msg2638->num_keycodes; ++i)
-> +		input_report_key(msg2638->input_dev, msg2638->keycodes[i],
-> +				 !!(keys & BIT(i)));
 
-No need to do double-negation here, input_report_key() does it already.
+Yes, effectively, it should.
 
-> +}
-> +
->  static irqreturn_t msg2138_ts_irq_handler(int irq, void *msg2638_handler)
->  {
->  	struct msg2638_ts_data *msg2638 = msg2638_handler;
-> @@ -121,9 +138,12 @@ static irqreturn_t msg2138_ts_irq_handler(int irq, void *msg2638_handler)
->  	p0 = &touch_event.pkt[0];
->  	p1 = &touch_event.pkt[1];
->  
-> -	/* Ignore non-pressed finger data */
-> -	if (p0->xy_hi == 0xFF && p0->x_low == 0xFF && p0->y_low == 0xFF)
-> +	/* Ignore non-pressed finger data, but check for key code */
-> +	if (p0->xy_hi == 0xFF && p0->x_low == 0xFF && p0->y_low == 0xFF) {
-> +		if (p1->xy_hi == 0xFF && p1->y_low == 0xFF)
-> +			msg2138_report_keys(msg2638, p1->x_low);
->  		goto report;
-> +	}
->  
->  	x = (((p0->xy_hi & 0xF0) << 4) | p0->x_low);
->  	y = (((p0->xy_hi & 0x0F) << 8) | p0->y_low);
-> @@ -283,6 +303,7 @@ static int msg2638_init_input_dev(struct msg2638_ts_data *msg2638)
->  	struct device *dev = &msg2638->client->dev;
->  	struct input_dev *input_dev;
->  	int error;
-> +	int i;
->  
->  	input_dev = devm_input_allocate_device(dev);
->  	if (!input_dev) {
-> @@ -299,6 +320,14 @@ static int msg2638_init_input_dev(struct msg2638_ts_data *msg2638)
->  	input_dev->open = msg2638_input_open;
->  	input_dev->close = msg2638_input_close;
->  
-> +	if (msg2638->num_keycodes) {
-> +		input_dev->keycode = msg2638->keycodes;
-> +		input_dev->keycodemax = msg2638->num_keycodes;
-> +		input_dev->keycodesize = sizeof(msg2638->keycodes[0]);
-> +		for (i = 0; i < msg2638->num_keycodes; i++)
-> +			input_set_capability(input_dev, EV_KEY, msg2638->keycodes[i]);
-> +	}
-> +
->  	input_set_capability(input_dev, EV_ABS, ABS_MT_POSITION_X);
->  	input_set_capability(input_dev, EV_ABS, ABS_MT_POSITION_Y);
->  
-> @@ -367,10 +396,16 @@ static int msg2638_ts_probe(struct i2c_client *client)
->  		return error;
->  	}
->  
-> -	error = msg2638_init_input_dev(msg2638);
-> -	if (error) {
-> -		dev_err(dev, "Failed to initialize input device: %d\n", error);
-> -		return error;
-> +	msg2638->num_keycodes =
-> +		of_property_read_variable_u32_array(dev->of_node, "linux,keycodes",
-> +						    msg2638->keycodes, 0,
-> +						    ARRAY_SIZE(msg2638->keycodes));
+I'll have to partially rewrite also commit 6/8, so I'll have to drop your
+Acked-by tag on both....
+Will send a new one shortly.
 
-Please do not use OF-specific API, use generic device property API (yes,
-you will need 2 calls, one to get the count, and another to actually
-fill the array).
+Cheers,
+Angelo
 
-Thanks.
-
--- 
-Dmitry
