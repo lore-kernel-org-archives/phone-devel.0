@@ -2,160 +2,153 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2871CC4167E
-	for <phone-devel@archiver.kernel.org>; Tue, 15 Nov 2022 10:11:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1339C4332F
+	for <phone-devel@archiver.kernel.org>; Wed, 16 Nov 2022 09:34:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238328AbiKOKLr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 15 Nov 2022 05:11:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60496 "EHLO
+        id S233411AbiKPJeQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 16 Nov 2022 04:34:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238296AbiKOKLm (ORCPT
+        with ESMTP id S238371AbiKPJeK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 15 Nov 2022 05:11:42 -0500
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 983C9F3E;
-        Tue, 15 Nov 2022 02:11:41 -0800 (PST)
-Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 751E66602980;
-        Tue, 15 Nov 2022 10:11:39 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1668507100;
-        bh=nr11OW0GjXZZd+uqu9pF2DuJ8K92kyYL5cWgAQ18zqQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kKPZyci6AotvDeCWL9iM2NEBpE7Z8BD20eVo35ib98AltVwiFBcwZmfIMnMFF1XPr
-         5vlVtGEjd11fz+YRLkMmUhn97qlpsdkc4DL6NhgMm7Mkwyq1oicoTZ7ILmmgDzuhjM
-         ze0fKEDW33y8MZR0UepcThvIbFu3/lAeZE00q+cOipZQ8Lcqot9TRVnTyQN8HPCKck
-         pMryKWdgZqXUNVnkCcUcU72ywyTz5g2+BhbOUwbY61ixF1hwqgKC+NR2GZoEY2LovL
-         adOi8bpXpHWwZ9iuBZ2twoRkkWBhNpLm4nS9wufTfY8QLx9jZPPZJENuxux6eG7vRa
-         qdyNF8dFcgZWw==
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-To:     agross@kernel.org
-Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, joro@8bytes.org,
-        will@kernel.org, robin.murphy@arm.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, robdclark@gmail.com,
-        linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        marijn.suijten@somainline.org, kernel@collabora.com,
-        luca@z3ntu.xyz, a39.skl@gmail.com, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v3 6/6] iommu/qcom: Add support for QSMMUv2 and QSMMU-500 secured contexts
-Date:   Tue, 15 Nov 2022 11:11:22 +0100
-Message-Id: <20221115101122.155440-7-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221115101122.155440-1-angelogioacchino.delregno@collabora.com>
-References: <20221115101122.155440-1-angelogioacchino.delregno@collabora.com>
+        Wed, 16 Nov 2022 04:34:10 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F14B24956;
+        Wed, 16 Nov 2022 01:34:04 -0800 (PST)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AG8s3ik009658;
+        Wed, 16 Nov 2022 09:33:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=l+DQqc+1IE6NDIxZi6HxFmkfpES6h9yCkbLrtcues4M=;
+ b=T5INpm8GcuDQ32JEcq9Wu1FMXdXpbquAmrwuF637ahL39JmjnCXPmmK/p8Ov4PeZ71pv
+ 5ghhuXmWhkrzVLjkO8uU1f8FKk1yaUbCitUppRHqIt+ncJvy0lzMPtTOJzF6wKlc2UiD
+ LIEvAZTm0kOX1Fe5BNv0FSTSPB80uWdxltjbwFs3YtjCqCfhO9m+1Wjoh4obl0maLgzo
+ /AJ4Vk9q/y1jY6Ec+cExr40z54MemF9aXwPrZaFcrDdlhUsHLh+OznGAW371VSSS6zzL
+ PsOF3bbLtvGRIYDyiiZM0m2RR1QaXqzkCqnDaDMCQ73G9TPQ3c7TyFtIK9dlEtPMKCXd yg== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kvtbrrjwn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 16 Nov 2022 09:33:30 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AG9XT0r022317
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 16 Nov 2022 09:33:29 GMT
+Received: from [10.79.43.91] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 16 Nov
+ 2022 01:33:26 -0800
+Message-ID: <054a0023-13c3-047a-20a8-28a0b1a05fe9@quicinc.com>
+Date:   Wed, 16 Nov 2022 15:03:11 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH 2/2] remoteproc: qcom_q6v5_pas: detach power domains on
+ remove
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        <linux-arm-msm@vger.kernel.org>
+CC:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Sibi Sankar <sibis@codeaurora.org>,
+        <linux-remoteproc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20221111115414.153961-1-luca.weiss@fairphone.com>
+ <20221111115414.153961-2-luca.weiss@fairphone.com>
+Content-Language: en-US
+From:   Sibi Sankar <quic_sibis@quicinc.com>
+In-Reply-To: <20221111115414.153961-2-luca.weiss@fairphone.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: gqYC8oMmSNTuFrw7ENFiGQl8Wr_NbBIz
+X-Proofpoint-GUID: gqYC8oMmSNTuFrw7ENFiGQl8Wr_NbBIz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-15_08,2022-11-15_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ priorityscore=1501 phishscore=0 clxscore=1011 impostorscore=0
+ mlxlogscore=999 suspectscore=0 spamscore=0 lowpriorityscore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211160066
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On some SoCs like MSM8956, MSM8976 and others, secure contexts are
-also secured: these get programmed by the bootloader or TZ (as usual)
-but their "interesting" registers are locked out by the hypervisor,
-disallowing direct register writes from Linux and, in many cases,
-completely disallowing the reprogramming of TTBR, TCR, MAIR and other
-registers including, but not limited to, resetting contexts.
-This is referred downstream as a "v2" IOMMU but this is effectively
-a "v2 firmware configuration" instead.
+Hey Luca,
 
-Luckily, the described behavior of version 2 is effective only on
-secure contexts and not on non-secure ones: add support for that,
-finally getting a completely working IOMMU on at least MSM8956/76.
+Thanks for the fix.
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-[Marijn: Rebased over next-20221111]
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- drivers/iommu/arm/arm-smmu/qcom_iommu.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/qcom_iommu.c b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-index 94f51cafee17..db7d7cf5cc7d 100644
---- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-+++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-@@ -59,6 +59,7 @@ struct qcom_iommu_ctx {
- 	struct device		*dev;
- 	void __iomem		*base;
- 	bool			 secure_init;
-+	bool			 secured_ctx;
- 	u8			 asid;      /* asid and ctx bank # are 1:1 */
- 	struct iommu_domain	*domain;
- };
-@@ -287,6 +288,12 @@ static int qcom_iommu_init_domain(struct iommu_domain *domain,
- 			ctx->secure_init = true;
- 		}
- 
-+		/* Secured QSMMU-500/QSMMU-v2 contexts cannot be programmed */
-+		if (ctx->secured_ctx) {
-+			ctx->domain = domain;
-+			continue;
-+		}
-+
- 		qcom_iommu_reset_ctx(ctx);
- 
- 		/* TTBRs */
-@@ -418,7 +425,8 @@ static void qcom_iommu_detach_dev(struct iommu_domain *domain, struct device *de
- 		struct qcom_iommu_ctx *ctx = to_ctx(qcom_domain, fwspec->ids[i]);
- 
- 		/* Disable and reset the context bank */
--		qcom_iommu_reset_ctx(ctx);
-+		if (!ctx->secured_ctx)
-+			qcom_iommu_reset_ctx(ctx);
- 
- 		ctx->domain = NULL;
- 	}
-@@ -699,10 +707,14 @@ static int qcom_iommu_ctx_probe(struct platform_device *pdev)
- 	if (irq < 0)
- 		return -ENODEV;
- 
-+	if (of_device_is_compatible(dev->of_node, "qcom,msm-iommu-v2-sec"))
-+		ctx->secured_ctx = true;
-+
- 	/* clear IRQs before registering fault handler, just in case the
- 	 * boot-loader left us a surprise:
- 	 */
--	iommu_writel(ctx, ARM_SMMU_CB_FSR, iommu_readl(ctx, ARM_SMMU_CB_FSR));
-+	if (!ctx->secured_ctx)
-+		iommu_writel(ctx, ARM_SMMU_CB_FSR, iommu_readl(ctx, ARM_SMMU_CB_FSR));
- 
- 	ret = devm_request_irq(dev, irq,
- 			       qcom_iommu_fault,
-@@ -744,6 +756,8 @@ static int qcom_iommu_ctx_remove(struct platform_device *pdev)
- static const struct of_device_id ctx_of_match[] = {
- 	{ .compatible = "qcom,msm-iommu-v1-ns" },
- 	{ .compatible = "qcom,msm-iommu-v1-sec" },
-+	{ .compatible = "qcom,msm-iommu-v2-ns" },
-+	{ .compatible = "qcom,msm-iommu-v2-sec" },
- 	{ /* sentinel */ }
- };
- 
-@@ -761,7 +775,8 @@ static bool qcom_iommu_has_secure_context(struct qcom_iommu_dev *qcom_iommu)
- 	struct device_node *child;
- 
- 	for_each_child_of_node(qcom_iommu->dev->of_node, child) {
--		if (of_device_is_compatible(child, "qcom,msm-iommu-v1-sec")) {
-+		if (of_device_is_compatible(child, "qcom,msm-iommu-v1-sec") ||
-+		    of_device_is_compatible(child, "qcom,msm-iommu-v2-sec")) {
- 			of_node_put(child);
- 			return true;
- 		}
-@@ -909,6 +924,7 @@ static const struct dev_pm_ops qcom_iommu_pm_ops = {
- 
- static const struct of_device_id qcom_iommu_of_match[] = {
- 	{ .compatible = "qcom,msm-iommu-v1" },
-+	{ .compatible = "qcom,msm-iommu-v2" },
- 	{ /* sentinel */ }
- };
- 
--- 
-2.38.1
+On 11/11/22 17:24, Luca Weiss wrote:
+> We need to detach from the power domains also on remove, not just on
+> probe fail so a subsequent probe works as expected.
+> 
+> Otherwise the following error appears on re-probe:
+> 
+> [   29.452005] sysfs: cannot create duplicate filename '/devices/genpd:0:3000000.remoteproc'
+> [   29.477121] CPU: 1 PID: 483 Comm: sh Tainted: G        W          6.1.0-rc4-00075-g71a113770bda #78
+> [   29.510319] Hardware name: Fairphone 4 (DT)
+> [   29.538335] Call trace:
+> [   29.564470]  dump_backtrace.part.0+0xe0/0xf0
+> [   29.592602]  show_stack+0x18/0x30
+> [   29.619616]  dump_stack_lvl+0x64/0x80
+> [   29.646834]  dump_stack+0x18/0x34
+> [   29.673541]  sysfs_warn_dup+0x60/0x7c
+> [   29.700592]  sysfs_create_dir_ns+0xec/0x110
+> [   29.728057]  kobject_add_internal+0xb8/0x374
+> [   29.755530]  kobject_add+0x9c/0x104
+> [   29.782072]  device_add+0xbc/0x8a0
+> [   29.808445]  device_register+0x20/0x30
+> [   29.835175]  genpd_dev_pm_attach_by_id+0xa4/0x190
+> [   29.862851]  genpd_dev_pm_attach_by_name+0x3c/0xb0
+> [   29.890472]  dev_pm_domain_attach_by_name+0x20/0x30
+> [   29.918212]  adsp_probe+0x278/0x580
+> [   29.944384]  platform_probe+0x68/0xc0
+> [   29.970603]  really_probe+0xbc/0x2dc
+> [   29.996662]  __driver_probe_device+0x78/0xe0
+> [   30.023491]  device_driver_attach+0x48/0xac
+> [   30.050215]  bind_store+0xb8/0x114
+> [   30.075957]  drv_attr_store+0x24/0x3c
+> [   30.101874]  sysfs_kf_write+0x44/0x54
+> [   30.127751]  kernfs_fop_write_iter+0x120/0x1f0
+> [   30.154448]  vfs_write+0x1ac/0x380
+> [   30.179937]  ksys_write+0x70/0x104
+> [   30.205274]  __arm64_sys_write+0x1c/0x2c
+> [   30.231060]  invoke_syscall+0x48/0x114
+> [   30.256594]  el0_svc_common.constprop.0+0x44/0xec
+> [   30.283183]  do_el0_svc+0x2c/0xd0
+> [   30.308320]  el0_svc+0x2c/0x84
+> [   30.333059]  el0t_64_sync_handler+0xf4/0x120
+> [   30.359001]  el0t_64_sync+0x18c/0x190
+> [   30.384385] kobject_add_internal failed for genpd:0:3000000.remoteproc with -EEXIST, don't try to register things with the same name in the same directory.
+> [   30.406029] remoteproc remoteproc0: releasing 3000000.remoteproc
+> [   30.416064] qcom_q6v5_pas: probe of 3000000.remoteproc failed with error -17
+> 
+> Fixes: 17ee2fb4e856 ("remoteproc: qcom: pas: Vote for active/proxy power domains")
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
+Reviewed-by: Sibi Sankar <quic_sibis@quicinc.com>
+
+> ---
+>   drivers/remoteproc/qcom_q6v5_pas.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+> index d830bf13c32c..747155c85085 100644
+> --- a/drivers/remoteproc/qcom_q6v5_pas.c
+> +++ b/drivers/remoteproc/qcom_q6v5_pas.c
+> @@ -573,6 +573,7 @@ static int adsp_remove(struct platform_device *pdev)
+>   	qcom_remove_sysmon_subdev(adsp->sysmon);
+>   	qcom_remove_smd_subdev(adsp->rproc, &adsp->smd_subdev);
+>   	qcom_remove_ssr_subdev(adsp->rproc, &adsp->ssr_subdev);
+> +	adsp_pds_detach(adsp, adsp->proxy_pds, adsp->proxy_pd_count);
+>   	rproc_free(adsp->rproc);
+>   	device_init_wakeup(adsp->dev, false);
+>   
