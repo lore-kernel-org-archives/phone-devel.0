@@ -2,77 +2,83 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC60FC3E8A8
-	for <phone-devel@archiver.kernel.org>; Wed, 16 Nov 2022 21:17:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EEBF2C4332F
+	for <phone-devel@archiver.kernel.org>; Wed, 16 Nov 2022 23:54:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233632AbiKPVRA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 16 Nov 2022 16:17:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33274 "EHLO
+        id S233023AbiKPXyq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 16 Nov 2022 18:54:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233172AbiKPVQv (ORCPT
+        with ESMTP id S232527AbiKPXyp (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 16 Nov 2022 16:16:51 -0500
-Received: from msg-2.mailo.com (msg-2.mailo.com [213.182.54.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5CD14C24A;
-        Wed, 16 Nov 2022 13:16:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1668633401; bh=BAISyk8kGHRtTm5nLUgo7ZXUxq/PfEWnuO/RpRSxSJk=;
-        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:
-         References:MIME-Version:Content-Transfer-Encoding;
-        b=DvvdiOYaOkBIoPrFOro3BuM6k3idAPVf/xx1tCMYrGLtI0V3fZ7hNLnTzINwTaP/Z
-         9dFLaFX6fEbl+qNuIZXN5rpkEiu24kgg/UFDIt1MeV1uWIxe/xG/j2IBZ++JfawLex
-         7IlefRJojbep/guUN0IR1HTS5vEVJTaBW02I5mhw=
-Received: by b-1.in.mailobj.net [192.168.90.11] with ESMTP
-        via proxy.mailoo.org [213.182.55.207]
-        Wed, 16 Nov 2022 22:16:40 +0100 (CET)
-X-EA-Auth: W10hVbzXeUDKmUMXITLDAeavOY7uMWbzHu+3sR5kFiPFdpkGb4Us0mMslkLvzVT88MWQDF3frg5FUXgSMaZt8+g81Gk0Z//Bq5ieRU/gOwo=
-From:   Vincent Knecht <vincent.knecht@mailoo.org>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        Wed, 16 Nov 2022 18:54:45 -0500
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF3DD60372;
+        Wed, 16 Nov 2022 15:54:44 -0800 (PST)
+Received: by mail-pj1-x102d.google.com with SMTP id m14so173331pji.0;
+        Wed, 16 Nov 2022 15:54:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=h5z7ys663MeP0GSbt1WvE0axWW5OCrIne8ubKgJMs6o=;
+        b=Ue7qUM8TskaHypq2797mnWQRE4HCLvFAH5Wu357sRJH+hYxVGcnUubike2KoxTYRMR
+         HtlUrR+1tugdPtcsPOWPvRGuH2Iolae3ss4TLc7ZwOSx+wjZBj71ZsndfjImnFL4l4cJ
+         sU7IYh7mcCD73iJqRAOeFHX00jzfjNRLlvBM3+TyA/UgvJuGWquSxgX0GwrEIpQIyz2n
+         RKiI569ZRP2tw+2iNME9WkyTZbHVwFNEMexzrYgIWtH8ByeNsOiXhffTRRUHERBnuNe9
+         i5ADAKpQrsxKrCpT0oXTMdvoLMl5L6wDmzj4fkG/GZq64hoh/1xA0lx9N8Wgs971yku4
+         ZLxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h5z7ys663MeP0GSbt1WvE0axWW5OCrIne8ubKgJMs6o=;
+        b=bwj4Rtj+KJhxoaKisHkUMQ4+Eyn84fjM42MPgqRN4/yMYT7YAzbSZdg8LnAgeV8xbf
+         kjsJcVFHgzSeTabGzfRWfymItNsZ3MS3wGZB9VQDhykmjT5Eeet5ekKIZ8pvlUwYf+QN
+         soy3i4/+lmahRvvURVNMEWI5HPfGIhp+/Fcafca3P3YaImCKFRwQSr1KFPdjGRn982DQ
+         LlYoS9xFIBV7dvVnYHUuLtbAZa1sVuVotAcXtP3b9jib7LDEZxB3k4yYFoaR39BUXfIy
+         Gw1kQqt6u5IeXnth6vi78gtVTz9OjO3wEE0Qk5ibUGF0RLXWVEbQiSCo5usulcHpnc/G
+         eukg==
+X-Gm-Message-State: ANoB5plkjcEBYY8sAEAfVAyFxEYUJxOdciIum4RUPFwhVwG+OcijC/9o
+        CyiluoAJRP51YVj1q6MYN1Y=
+X-Google-Smtp-Source: AA0mqf6DskLM1fhE1mgqpdNo6T1Xr28WOtupBX0ZR9a6O8lun5tyl7wHRJL4E49dyynG00oF28elCQ==
+X-Received: by 2002:a17:90a:880f:b0:212:e996:704a with SMTP id s15-20020a17090a880f00b00212e996704amr5974544pjn.13.1668642884141;
+        Wed, 16 Nov 2022 15:54:44 -0800 (PST)
+Received: from google.com ([2620:15c:9d:2:fb51:2ecd:7287:8649])
+        by smtp.gmail.com with ESMTPSA id o38-20020a634e66000000b004639c772878sm10371832pgl.48.2022.11.16.15.54.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Nov 2022 15:54:43 -0800 (PST)
+Date:   Wed, 16 Nov 2022 15:54:40 -0800
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Vincent Knecht <vincent.knecht@mailoo.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Vincent Knecht <vincent.knecht@mailoo.org>,
         linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     w.david0@protonmail.com, stephan@gerhold.net,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        linux-kernel@vger.kernel.org, w.david0@protonmail.com,
+        stephan@gerhold.net, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
         Rob Herring <robh@kernel.org>
-Subject: [PATCH v6 1/2] dt-bindings: input: touchscreen: msg2638: Document keys support
-Date:   Wed, 16 Nov 2022 22:16:16 +0100
-Message-Id: <20221116211622.2155747-2-vincent.knecht@mailoo.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221116211622.2155747-1-vincent.knecht@mailoo.org>
+Subject: Re: [PATCH v6 1/2] dt-bindings: input: touchscreen: msg2638:
+ Document keys support
+Message-ID: <Y3V4QFVPPB/Liut1@google.com>
 References: <20221116211622.2155747-1-vincent.knecht@mailoo.org>
+ <20221116211622.2155747-2-vincent.knecht@mailoo.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221116211622.2155747-2-vincent.knecht@mailoo.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Document optional linux,keycodes support.
+On Wed, Nov 16, 2022 at 10:16:16PM +0100, Vincent Knecht wrote:
+> Document optional linux,keycodes support.
+> 
+> Acked-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
 
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
----
- .../devicetree/bindings/input/touchscreen/mstar,msg2638.yaml  | 4 ++++
- 1 file changed, 4 insertions(+)
+Applied, thank you.
 
-diff --git a/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml b/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml
-index 2fb7e01bb65a..af4f954de958 100644
---- a/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml
-+++ b/Documentation/devicetree/bindings/input/touchscreen/mstar,msg2638.yaml
-@@ -36,6 +36,10 @@ properties:
-   touchscreen-size-x: true
-   touchscreen-size-y: true
- 
-+  linux,keycodes:
-+    minItems: 1
-+    maxItems: 4
-+
- additionalProperties: false
- 
- required:
 -- 
-2.38.1
-
-
-
+Dmitry
