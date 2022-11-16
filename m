@@ -2,136 +2,98 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D3518C4332F
-	for <phone-devel@archiver.kernel.org>; Wed, 16 Nov 2022 09:56:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A04CC43219
+	for <phone-devel@archiver.kernel.org>; Wed, 16 Nov 2022 12:26:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230330AbiKPJ4L (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 16 Nov 2022 04:56:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38946 "EHLO
+        id S233755AbiKPM0R (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 16 Nov 2022 07:26:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229908AbiKPJ4J (ORCPT
+        with ESMTP id S233212AbiKPM0C (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 16 Nov 2022 04:56:09 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F96D635F;
-        Wed, 16 Nov 2022 01:56:09 -0800 (PST)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AG8DXG0011111;
-        Wed, 16 Nov 2022 09:55:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=AZYBM7yo5DAFdaVrtM8YSBmdlBbwjY0NigrJe0QAl2I=;
- b=QSRU7oeGFRv6gCjmY2WWvnQ888VSbBumaynIhZcXg4sJDdsX7do66ZvJXGx/4T/QYtSV
- /mLH8/LW9gR31CEerNTGFRLnSBpz+vFoLZPg4N5bO8IpF1G4w8AnKyTf+5BbEk0DrREX
- ZUcdpXFQJkfyyekZiMHxGsucn8goLTdbqMTNDY7a133X/Xw+RAlw0zVguYJKj5nhIkKM
- Mu0JmzPUG6/Sq3IUyQ6K+B09wNsvLbUqLfuBi+jfb879oAxRCsuV245yZPXAHQfCW5+M
- 1IcNEsAfElnXorF/ZdXtPQxECkEKKdQIuwyvKKfuvUD7GkqOwD6oV0UBRAawWKNSCorS lw== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kvt9d8n4e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 16 Nov 2022 09:55:33 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AG9tXkB031962
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 16 Nov 2022 09:55:33 GMT
-Received: from [10.79.43.91] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.29; Wed, 16 Nov
- 2022 01:55:29 -0800
-Message-ID: <da77b6f8-a511-4e3d-ba59-ca4c41415312@quicinc.com>
-Date:   Wed, 16 Nov 2022 15:25:26 +0530
+        Wed, 16 Nov 2022 07:26:02 -0500
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B29148776
+        for <phone-devel@vger.kernel.org>; Wed, 16 Nov 2022 04:22:20 -0800 (PST)
+Received: by mail-lj1-x22d.google.com with SMTP id d3so21618162ljl.1
+        for <phone-devel@vger.kernel.org>; Wed, 16 Nov 2022 04:22:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xljYnYnQPEIox8T8MM9nvvNS3niXSPZfVXSMrwlG7XY=;
+        b=XZuqrVaVAtWxSXiEujtNCvoWY32ZxJtglYxJErw6sAxsimQUTKv6R3hzdkwJS/uovh
+         yK++rudGgAYYQO+oq4GdMlO16A9iKWRhTk3U4oqNc68QWux0waCXdKhqNPl/vkY+PjTv
+         JytbW1ZY+tw6x2Lc8w95J9u+j8kjIlnZ3EHeVXsCPIoWCnUUXMANszFp/c1W27r71Dw5
+         r5N2uWXu5wRlqBl5gLkCHvPljr654HO4D/6eY77u8ldMUAwfCRm6EfSaUmOE6sFItfCV
+         gdBx7OJ6KiFkKsdpPfp4EhVcUGCEQHcnc44l7VNOjpk+hJ4k2kJzicJWIG5M1hKLD+zS
+         G8zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xljYnYnQPEIox8T8MM9nvvNS3niXSPZfVXSMrwlG7XY=;
+        b=kcjfOd8OP1zmeNR/szEp1QnHVg7G4PIwWvgNjH74pJ4fJ1Ia+3h0VBd9qkVlqcCCAe
+         V54cJMwzfpmCWOeEHNAf70G7Uovy/eH2rxntjZud8IFtmYfLlkHcMoZvD7is3X4Jbiqp
+         VE99HPHlKGbkbgiK3y+zNSD9lzXWzRkilz2ozGlSf5RqAiwdJdmYX/iRzk8OzouIq3ma
+         f4k2KMHSiTrAas8NzdfRtpab8PxBYl44JMVvFWk0eiUrJynrfR8K3TMZnlXPqpl+bDn2
+         xnbXIHX5M25FRAuIIPo7CVXxjHIxZEw9corLYKW0ObCMuqcEhkT9wXM18JWKneiW3fqp
+         Zt8Q==
+X-Gm-Message-State: ANoB5pnQY2cc5ZRi5bzfMytmqPfgkbaXVF0H68cM78KFUtokqCP3BXx3
+        zGJo4jQyUpCYHUjxocrzmg3y4Q==
+X-Google-Smtp-Source: AA0mqf4AyH2iCKvMUFEi0Bg9zUVmNfqqLJ1Oc+IlY8lQaQWt6ko7D1XFUcumAl5Uw0STphIKazmSzw==
+X-Received: by 2002:a2e:b54c:0:b0:276:ff0c:b7d1 with SMTP id a12-20020a2eb54c000000b00276ff0cb7d1mr7943969ljn.164.1668601338933;
+        Wed, 16 Nov 2022 04:22:18 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id bd18-20020a05651c169200b002790d8012cfsm1059467ljb.139.2022.11.16.04.22.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Nov 2022 04:22:18 -0800 (PST)
+Message-ID: <9dcf36f2-ad3c-842d-db72-f534aad8667b@linaro.org>
+Date:   Wed, 16 Nov 2022 13:22:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Subject: Re: [PATCH 1/2] remoteproc: qcom_q6v5_pas: disable wakeup on probe
- fail or remove
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v3 5/6] dt-bindings: iommu: qcom,iommu: Document QSMMUv2
+ and MSM8976 compatibles
 Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        <linux-arm-msm@vger.kernel.org>
-CC:     <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Siddharth Gupta <sidgup@codeaurora.org>,
-        Rishabh Bhatnagar <rishabhb@codeaurora.org>,
-        <linux-remoteproc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20221111115414.153961-1-luca.weiss@fairphone.com>
-From:   Sibi Sankar <quic_sibis@quicinc.com>
-In-Reply-To: <20221111115414.153961-1-luca.weiss@fairphone.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, agross@kernel.org
+Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, joro@8bytes.org,
+        will@kernel.org, robin.murphy@arm.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, robdclark@gmail.com,
+        linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        marijn.suijten@somainline.org, kernel@collabora.com,
+        luca@z3ntu.xyz, a39.skl@gmail.com, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <20221115101122.155440-1-angelogioacchino.delregno@collabora.com>
+ <20221115101122.155440-6-angelogioacchino.delregno@collabora.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221115101122.155440-6-angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: i7DjL4hW_YA6R5gDFurFX4kJ4vPO0ujD
-X-Proofpoint-GUID: i7DjL4hW_YA6R5gDFurFX4kJ4vPO0ujD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-15_08,2022-11-15_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- impostorscore=0 mlxscore=0 spamscore=0 suspectscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 phishscore=0 clxscore=1011 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211160070
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hey Luca,
-
-Thanks for the patch.
-
-On 11/11/22 17:24, Luca Weiss wrote:
-> Leaving wakeup enabled during probe fail (-EPROBE_DEFER) or remove makes
-> the subsequent probe fail.
+On 15/11/2022 11:11, AngeloGioacchino Del Regno wrote:
+> Add compatible strings for "qcom,msm-iommu-v2" for the inner node,
 > 
-> [    3.749454] remoteproc remoteproc0: releasing 3000000.remoteproc
-> [    3.752949] qcom_q6v5_pas: probe of 3000000.remoteproc failed with error -17
-> [    3.878935] remoteproc remoteproc0: releasing 4080000.remoteproc
-> [    3.887602] qcom_q6v5_pas: probe of 4080000.remoteproc failed with error -17
-> [    4.319552] remoteproc remoteproc0: releasing 8300000.remoteproc
-> [    4.332716] qcom_q6v5_pas: probe of 8300000.remoteproc failed with error -17
+> Add compatible string "qcom,msm-iommu-v2" for the inner node,
+> along with "qcom,msm8976-iommu" as a first user of it and
+> "qcom,msm-iommu-v2-ns" and "qcom,msm-iommu-v2-sec" for the context
+> bank nodes to support Qualcomm's secure fw "SMMU v2" implementation.
 > 
-> Fix this by disabling wakeup in both cases so the driver can properly
-> probe on the next try.
-> 
-> Fixes: a781e5aa5911 ("remoteproc: core: Prevent system suspend during remoteproc recovery")
-> Fixes: dc86c129b4fb ("remoteproc: qcom: pas: Mark devices as wakeup capable")
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 > ---
->   drivers/remoteproc/qcom_q6v5_pas.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-> index 6afd0941e552..d830bf13c32c 100644
-> --- a/drivers/remoteproc/qcom_q6v5_pas.c
-> +++ b/drivers/remoteproc/qcom_q6v5_pas.c
-> @@ -557,6 +557,7 @@ static int adsp_probe(struct platform_device *pdev)
->   	adsp_pds_detach(adsp, adsp->proxy_pds, adsp->proxy_pd_count);
->   free_rproc:
->   	rproc_free(rproc);
-> +	device_init_wakeup(adsp->dev, false);
+>  Documentation/devicetree/bindings/iommu/qcom,iommu.txt | 8 ++++++++
 
-You would want to do ^^ before rproc free since adsp is a
-private data of rproc struct.
 
->   
->   	return ret;
->   }
-> @@ -573,6 +574,7 @@ static int adsp_remove(struct platform_device *pdev)
->   	qcom_remove_smd_subdev(adsp->rproc, &adsp->smd_subdev);
->   	qcom_remove_ssr_subdev(adsp->rproc, &adsp->ssr_subdev);
->   	rproc_free(adsp->rproc);
-> +	device_init_wakeup(adsp->dev, false);
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-ditto.
+Best regards,
+Krzysztof
 
->   
->   	return 0;
->   }
-
-- Sibi
