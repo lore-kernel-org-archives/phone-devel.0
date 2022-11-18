@@ -2,138 +2,92 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CFE05C433FE
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 14:19:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B0A41C433FE
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 17:11:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242276AbiKROTb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Nov 2022 09:19:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53132 "EHLO
+        id S242446AbiKRRLN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Nov 2022 12:11:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242286AbiKROTa (ORCPT
+        with ESMTP id S242547AbiKRRKz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Nov 2022 09:19:30 -0500
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FF5ECE0B
-        for <phone-devel@vger.kernel.org>; Fri, 18 Nov 2022 06:19:28 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id ft34so13288289ejc.12
-        for <phone-devel@vger.kernel.org>; Fri, 18 Nov 2022 06:19:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=huayGJZuEj82T3VVhDBfYhkqbqsIQAROvGUjJHMy0A4=;
-        b=BSd6d199NcnnzDGi4lrYRPT//cxZq4puzQawgEGxmol7u3hAoc1R4UMctzanxVT5ZI
-         9uM/GXS/0GijzL2xZSc+KKGGaUTXHnqyWyPrONkVi1jcBKpn51yK+sX7MgpWcc+gInLG
-         TgxDdjLCyRzL3juUiZQ+V0GBo1uvK/LuMaE3n677+33i6Evh9pA0K8SLvu7MrqRiv02Y
-         5pb1wabXt3b6VHtT5djc+i38irWqod0/WQtZGt67U/kiqblPZtyMaD2uoOr6tr+z+6rt
-         aed2mErkQy1gikw+kZFROJrFhAX6Eg+gfhGeskWFkOinrGtrSfvvlDDr5LuSpGVP91A6
-         Igmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=huayGJZuEj82T3VVhDBfYhkqbqsIQAROvGUjJHMy0A4=;
-        b=ZMRBChBoUzhHTkxlWwuAuXr7BHaXQNO3OKSR3BHFFat4dnA0p8he/mJci9GDRDtaFq
-         n67e/x8odRokAYDzeXF8X+WMXJeoMEOPNO7HK5DZf6YT6cs+ju2VqIQLcuwPJY1e64fC
-         6iRxYLWr+6F7VfEPYuQIVwYj0BMPJimgbax0Mv8/l6X+8TDs0szRTwHT7bTNY4obVgri
-         3maAwnk69EUe74XXNeQfiyHiCZWnXzV7e5YX0TR9eVkM1UE8M6tw+FaHfPkQ4RR90OMU
-         2AtndancD2qulPTaOCsbkbxb9iHu/gf7rjSuNhH2HiW4J6S4KntP240wtHMR3OciBWhD
-         jYpg==
-X-Gm-Message-State: ANoB5pkpIE8zeQ/2oX7pQzTxA+Cx224+Xj+KoSEbLfa+y3RQqwrYy029
-        KvMFDArMpbAa3tBEeY0AJK1hCQ==
-X-Google-Smtp-Source: AA0mqf6uK3wLOR2f3cv8+L5adpdIIy9QHfdrqKmoyY5V4tC4oEGoKDk8aU1bKav2RGmAnpcMQdBaUQ==
-X-Received: by 2002:a17:906:c24e:b0:778:d81d:b1f0 with SMTP id bl14-20020a170906c24e00b00778d81db1f0mr6113608ejb.731.1668781167068;
-        Fri, 18 Nov 2022 06:19:27 -0800 (PST)
-Received: from [192.168.156.208] (92.40.169.209.threembb.co.uk. [92.40.169.209])
-        by smtp.gmail.com with ESMTPSA id ky13-20020a170907778d00b0077a1dd3e7b7sm1717981ejc.102.2022.11.18.06.19.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Nov 2022 06:19:26 -0800 (PST)
-Message-ID: <4e8c2d46-ef74-42ad-e70f-dfc9a796f13a@linaro.org>
-Date:   Fri, 18 Nov 2022 14:19:23 +0000
+        Fri, 18 Nov 2022 12:10:55 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A3848CF10;
+        Fri, 18 Nov 2022 09:10:50 -0800 (PST)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 28FBBCAE34;
+        Fri, 18 Nov 2022 17:10:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1668791418; bh=H8LeYLsrrHDcYvO2z/fKun56/ndn3rLQwgBtKmM3hk4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=Iv5ai0HwlG35CGMM4PW5M2jRZV1kAEqDIllnhNwaMzZaJKI/p+rwhNLl9J64DWWGS
+         TmBkUj14j7NwEHt7Dud75+EW+Yl0g8Bki08N5UjlZDa5L8WBkSVS+mr1NZfZqrE/5O
+         FgTYpnHVEAGjTZ8RltkPdnYvrnnDo9CEv1pTZvjI=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Rob Herring <robh@kernel.org>, Jonathan Cameron <jic23@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afd@ti.com, Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio/adc: qcom,spmi-iadc: use double compatibles
+Date:   Fri, 18 Nov 2022 18:10:17 +0100
+Message-ID: <2259963.ElGaqSPkdT@g550jk>
+In-Reply-To: <20221106121310.3ad643be@jic23-huawei>
+References: <20221031182456.952648-1-luca@z3ntu.xyz> <20221102163136.GA4004075-robh@kernel.org> <20221106121310.3ad643be@jic23-huawei>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.1
-Subject: Re: [PATCH v2 1/2] remoteproc: qcom_q6v5_pas: disable wakeup on probe
- fail or remove
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Mukesh Ojha <quic_mojha@quicinc.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rishabh Bhatnagar <rishabhb@codeaurora.org>,
-        Siddharth Gupta <sidgup@codeaurora.org>,
-        Sibi Sankar <quic_sibis@quicinc.com>,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <s3FHojr9Uw7APAwEfc-TCdbc4o_X6o3a0BQxTBjrfM2kWX7tqxnECIE9VtPZmGaEl7Rxl5Qltzu76_QYm_jHqg==@protonmail.internalid>
- <20221118090816.100012-1-luca.weiss@fairphone.com>
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <20221118090816.100012-1-luca.weiss@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Jonathan,
 
-
-On 18/11/2022 09:08, Luca Weiss wrote:
-> Leaving wakeup enabled during probe fail (-EPROBE_DEFER) or remove makes
-> the subsequent probe fail.
+On Sonntag, 6. November 2022 13:13:10 CET Jonathan Cameron wrote:
+> On Wed, 2 Nov 2022 11:31:36 -0500
 > 
-> [    3.749454] remoteproc remoteproc0: releasing 3000000.remoteproc
-> [    3.752949] qcom_q6v5_pas: probe of 3000000.remoteproc failed with error -17
-> [    3.878935] remoteproc remoteproc0: releasing 4080000.remoteproc
-> [    3.887602] qcom_q6v5_pas: probe of 4080000.remoteproc failed with error -17
-> [    4.319552] remoteproc remoteproc0: releasing 8300000.remoteproc
-> [    4.332716] qcom_q6v5_pas: probe of 8300000.remoteproc failed with error -17
+> Rob Herring <robh@kernel.org> wrote:
+> > On Mon, Oct 31, 2022 at 07:24:54PM +0100, Luca Weiss wrote:
+> > > As in other bindings, let's use specific compatibles together with the
+> > > fallback compatible. Adjust the bindings for it.
+> > 
+> > You should state users are already doing this.
 > 
-> Fix this by disabling wakeup in both cases so the driver can properly
-> probe on the next try.
+> I can fix that up whilst applying.  However it raises the question:
+> Should I treat this as a fix, or a tidy up (that can wait for next merge
+> window)?
 > 
-> Fixes: a781e5aa5911 ("remoteproc: core: Prevent system suspend during remoteproc recovery")
-> Fixes: dc86c129b4fb ("remoteproc: qcom: pas: Mark devices as wakeup capable")
-> Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-> ---
-> Changes in v2:
-> * move new line before rproc_free which frees 'adsp' as well
-> * pick up tags
-> 
->   drivers/remoteproc/qcom_q6v5_pas.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-> index 6afd0941e552..67f5152e2398 100644
-> --- a/drivers/remoteproc/qcom_q6v5_pas.c
-> +++ b/drivers/remoteproc/qcom_q6v5_pas.c
-> @@ -556,6 +556,7 @@ static int adsp_probe(struct platform_device *pdev)
->   detach_proxy_pds:
->   	adsp_pds_detach(adsp, adsp->proxy_pds, adsp->proxy_pd_count);
->   free_rproc:
-> +	device_init_wakeup(adsp->dev, false);
->   	rproc_free(rproc);
-> 
->   	return ret;
-> @@ -572,6 +573,7 @@ static int adsp_remove(struct platform_device *pdev)
->   	qcom_remove_sysmon_subdev(adsp->sysmon);
->   	qcom_remove_smd_subdev(adsp->rproc, &adsp->smd_subdev);
->   	qcom_remove_ssr_subdev(adsp->rproc, &adsp->ssr_subdev);
-> +	device_init_wakeup(adsp->dev, false);
->   	rproc_free(adsp->rproc);
-> 
->   	return 0;
-> --
-> 2.38.1
+> I'm also fine with this going with the other patch in the series (that lore
+> found for me as it didn't go to linux-iio) if that makes more sense.
 > 
 
--- 
-Kind Regards,
-Caleb (they/them)
+Sorry for the delay in answering.
+The dts patch (2/2) has already been picked up through qcom tree, so I think 
+you can apply this one to your tree.
+It's definitely not urgent, so next merge window would be perfect.
+
+Regards
+Luca
+
+> If that happens
+> 
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Jonathan
+> 
+> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > > ---
+> > > Changes in v2:
+> > > * New patch
+> > > 
+> > >  .../devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml        | 7 +++++--
+> > >  1 file changed, 5 insertions(+), 2 deletions(-)
+> > 
+> > Acked-by: Rob Herring <robh@kernel.org>
+
+
+
+
