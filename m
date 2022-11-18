@@ -2,90 +2,87 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C870C4332F
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 09:46:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CFE05C433FE
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 14:19:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242054AbiKRJqT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Nov 2022 04:46:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57220 "EHLO
+        id S242276AbiKROTb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Nov 2022 09:19:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241826AbiKRJpu (ORCPT
+        with ESMTP id S242286AbiKROTa (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Nov 2022 04:45:50 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E73508FB09;
-        Fri, 18 Nov 2022 01:45:17 -0800 (PST)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AI85SGH018382;
-        Fri, 18 Nov 2022 09:44:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=qJcgPrWmyUGAvxfDNNVSIhf4sBSL9JlTHQDB5bAYbXc=;
- b=DUjD6nqbUs4zs+b93QMpvfaMOpNqn4pTNWqQ0rveSDbgLecmRc280DdgT7aPdC8RtKEW
- BNqorR26FudNIVaqQj3OWvIoNFd51kV70GblZJMvRrjC8+0GV4x6E+CuZemWYXDsq1Oq
- gAhivChUenrqa3GMB9v70OYOJU76g5UoMBzcIRwlmAGc6pH37gYLSsKGV3xpkEaQ9nEg
- C87sYqjI1flaan6LnFiZyx30XY0z8egEVg7KbrCkeOHLUFzBToCWHigaytC83Bopqg/T
- uHjxeSY/tpWPvDC8wGKUvgjc5X3N0zx+/yqxM/q8k7tXBM52FeOYAk6KgT6EBr4JmWlj GQ== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kx0se97wc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 18 Nov 2022 09:44:40 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AI9ieq8021646
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 18 Nov 2022 09:44:40 GMT
-Received: from [10.79.43.91] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Fri, 18 Nov
- 2022 01:44:36 -0800
-Message-ID: <4b190ca0-5a0b-d937-0a08-0ffe34a75ff8@quicinc.com>
-Date:   Fri, 18 Nov 2022 15:14:33 +0530
+        Fri, 18 Nov 2022 09:19:30 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FF5ECE0B
+        for <phone-devel@vger.kernel.org>; Fri, 18 Nov 2022 06:19:28 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id ft34so13288289ejc.12
+        for <phone-devel@vger.kernel.org>; Fri, 18 Nov 2022 06:19:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=huayGJZuEj82T3VVhDBfYhkqbqsIQAROvGUjJHMy0A4=;
+        b=BSd6d199NcnnzDGi4lrYRPT//cxZq4puzQawgEGxmol7u3hAoc1R4UMctzanxVT5ZI
+         9uM/GXS/0GijzL2xZSc+KKGGaUTXHnqyWyPrONkVi1jcBKpn51yK+sX7MgpWcc+gInLG
+         TgxDdjLCyRzL3juUiZQ+V0GBo1uvK/LuMaE3n677+33i6Evh9pA0K8SLvu7MrqRiv02Y
+         5pb1wabXt3b6VHtT5djc+i38irWqod0/WQtZGt67U/kiqblPZtyMaD2uoOr6tr+z+6rt
+         aed2mErkQy1gikw+kZFROJrFhAX6Eg+gfhGeskWFkOinrGtrSfvvlDDr5LuSpGVP91A6
+         Igmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=huayGJZuEj82T3VVhDBfYhkqbqsIQAROvGUjJHMy0A4=;
+        b=ZMRBChBoUzhHTkxlWwuAuXr7BHaXQNO3OKSR3BHFFat4dnA0p8he/mJci9GDRDtaFq
+         n67e/x8odRokAYDzeXF8X+WMXJeoMEOPNO7HK5DZf6YT6cs+ju2VqIQLcuwPJY1e64fC
+         6iRxYLWr+6F7VfEPYuQIVwYj0BMPJimgbax0Mv8/l6X+8TDs0szRTwHT7bTNY4obVgri
+         3maAwnk69EUe74XXNeQfiyHiCZWnXzV7e5YX0TR9eVkM1UE8M6tw+FaHfPkQ4RR90OMU
+         2AtndancD2qulPTaOCsbkbxb9iHu/gf7rjSuNhH2HiW4J6S4KntP240wtHMR3OciBWhD
+         jYpg==
+X-Gm-Message-State: ANoB5pkpIE8zeQ/2oX7pQzTxA+Cx224+Xj+KoSEbLfa+y3RQqwrYy029
+        KvMFDArMpbAa3tBEeY0AJK1hCQ==
+X-Google-Smtp-Source: AA0mqf6uK3wLOR2f3cv8+L5adpdIIy9QHfdrqKmoyY5V4tC4oEGoKDk8aU1bKav2RGmAnpcMQdBaUQ==
+X-Received: by 2002:a17:906:c24e:b0:778:d81d:b1f0 with SMTP id bl14-20020a170906c24e00b00778d81db1f0mr6113608ejb.731.1668781167068;
+        Fri, 18 Nov 2022 06:19:27 -0800 (PST)
+Received: from [192.168.156.208] (92.40.169.209.threembb.co.uk. [92.40.169.209])
+        by smtp.gmail.com with ESMTPSA id ky13-20020a170907778d00b0077a1dd3e7b7sm1717981ejc.102.2022.11.18.06.19.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Nov 2022 06:19:26 -0800 (PST)
+Message-ID: <4e8c2d46-ef74-42ad-e70f-dfc9a796f13a@linaro.org>
+Date:   Fri, 18 Nov 2022 14:19:23 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
+ Thunderbird/102.4.1
 Subject: Re: [PATCH v2 1/2] remoteproc: qcom_q6v5_pas: disable wakeup on probe
  fail or remove
 Content-Language: en-US
 To:     Luca Weiss <luca.weiss@fairphone.com>,
-        <linux-arm-msm@vger.kernel.org>
-CC:     <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>,
+        linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Mukesh Ojha <quic_mojha@quicinc.com>,
         Andy Gross <agross@kernel.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Mathieu Poirier <mathieu.poirier@linaro.org>,
         Rishabh Bhatnagar <rishabhb@codeaurora.org>,
         Siddharth Gupta <sidgup@codeaurora.org>,
-        <linux-remoteproc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20221118090816.100012-1-luca.weiss@fairphone.com>
-From:   Sibi Sankar <quic_sibis@quicinc.com>
+        Sibi Sankar <quic_sibis@quicinc.com>,
+        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <s3FHojr9Uw7APAwEfc-TCdbc4o_X6o3a0BQxTBjrfM2kWX7tqxnECIE9VtPZmGaEl7Rxl5Qltzu76_QYm_jHqg==@protonmail.internalid>
+ <20221118090816.100012-1-luca.weiss@fairphone.com>
+From:   Caleb Connolly <caleb.connolly@linaro.org>
 In-Reply-To: <20221118090816.100012-1-luca.weiss@fairphone.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: rWDUaxdhaHhSnB_4Kf-2LGj_4mM-FOTz
-X-Proofpoint-ORIG-GUID: rWDUaxdhaHhSnB_4Kf-2LGj_4mM-FOTz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-17_06,2022-11-17_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- spamscore=0 mlxlogscore=999 lowpriorityscore=0 adultscore=0 bulkscore=0
- phishscore=0 priorityscore=1501 suspectscore=0 mlxscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2211180058
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
 
-On 11/18/22 14:38, Luca Weiss wrote:
+On 18/11/2022 09:08, Luca Weiss wrote:
 > Leaving wakeup enabled during probe fail (-EPROBE_DEFER) or remove makes
 > the subsequent probe fail.
 > 
@@ -104,8 +101,7 @@ On 11/18/22 14:38, Luca Weiss wrote:
 > Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-Reviewed-by: Sibi Sankar <quic_sibis@quicinc.com>
-
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
 > ---
 > Changes in v2:
 > * move new line before rproc_free which frees 'adsp' as well
@@ -124,7 +120,7 @@ Reviewed-by: Sibi Sankar <quic_sibis@quicinc.com>
 >   free_rproc:
 > +	device_init_wakeup(adsp->dev, false);
 >   	rproc_free(rproc);
->   
+> 
 >   	return ret;
 > @@ -572,6 +573,7 @@ static int adsp_remove(struct platform_device *pdev)
 >   	qcom_remove_sysmon_subdev(adsp->sysmon);
@@ -132,5 +128,12 @@ Reviewed-by: Sibi Sankar <quic_sibis@quicinc.com>
 >   	qcom_remove_ssr_subdev(adsp->rproc, &adsp->ssr_subdev);
 > +	device_init_wakeup(adsp->dev, false);
 >   	rproc_free(adsp->rproc);
->   
+> 
 >   	return 0;
+> --
+> 2.38.1
+> 
+
+-- 
+Kind Regards,
+Caleb (they/them)
