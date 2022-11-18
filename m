@@ -2,41 +2,46 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0A41C433FE
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 17:11:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43B4DC4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 17:14:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242446AbiKRRLN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Nov 2022 12:11:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46404 "EHLO
+        id S242316AbiKRROB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Nov 2022 12:14:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242547AbiKRRKz (ORCPT
+        with ESMTP id S242482AbiKRRNf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Nov 2022 12:10:55 -0500
+        Fri, 18 Nov 2022 12:13:35 -0500
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A3848CF10;
-        Fri, 18 Nov 2022 09:10:50 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA02CD2DC;
+        Fri, 18 Nov 2022 09:13:34 -0800 (PST)
 Received: from g550jk.localnet (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 28FBBCAE34;
-        Fri, 18 Nov 2022 17:10:18 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 43C19C9C23;
+        Fri, 18 Nov 2022 17:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1668791418; bh=H8LeYLsrrHDcYvO2z/fKun56/ndn3rLQwgBtKmM3hk4=;
+        t=1668791612; bh=apPOJWrI+8oml1PmcoEWwnJiflUBZ+IttCDrVn4BrbE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=Iv5ai0HwlG35CGMM4PW5M2jRZV1kAEqDIllnhNwaMzZaJKI/p+rwhNLl9J64DWWGS
-         TmBkUj14j7NwEHt7Dud75+EW+Yl0g8Bki08N5UjlZDa5L8WBkSVS+mr1NZfZqrE/5O
-         FgTYpnHVEAGjTZ8RltkPdnYvrnnDo9CEv1pTZvjI=
+        b=KKNAInBA7AbvAJuaPoOnsgdH0KNymbL8QuY4cAuca6yENAx3Envl5yAMs8cyOIB0c
+         Vk1dK1GPHhoV6+fZcRK4ZvjZwai47OnDAJGm/4zNwTrGpfj051eUqI77zbZI9QKpeh
+         X0EKkwUNB5/9n5uAnyg9kEway2OX2HZBS14efBXI=
 From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Rob Herring <robh@kernel.org>, Jonathan Cameron <jic23@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afd@ti.com, Lars-Peter Clausen <lars@metafoo.de>,
+To:     linux-bluetooth@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Rob Herring <robh@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        netdev@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio/adc: qcom,spmi-iadc: use double compatibles
-Date:   Fri, 18 Nov 2022 18:10:17 +0100
-Message-ID: <2259963.ElGaqSPkdT@g550jk>
-In-Reply-To: <20221106121310.3ad643be@jic23-huawei>
-References: <20221031182456.952648-1-luca@z3ntu.xyz> <20221102163136.GA4004075-robh@kernel.org> <20221106121310.3ad643be@jic23-huawei>
+Subject: Re: [PATCH v3] dt-bindings: bluetooth: broadcom: add BCM43430A0 & BCM43430A1
+Date:   Fri, 18 Nov 2022 18:13:31 +0100
+Message-ID: <2122234.irdbgypaU6@g550jk>
+In-Reply-To: <20220924142154.14217-1-luca@z3ntu.xyz>
+References: <20220924142154.14217-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -44,49 +49,44 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Jonathan,
+Hi all,
 
-On Sonntag, 6. November 2022 13:13:10 CET Jonathan Cameron wrote:
-> On Wed, 2 Nov 2022 11:31:36 -0500
-> 
-> Rob Herring <robh@kernel.org> wrote:
-> > On Mon, Oct 31, 2022 at 07:24:54PM +0100, Luca Weiss wrote:
-> > > As in other bindings, let's use specific compatibles together with the
-> > > fallback compatible. Adjust the bindings for it.
-> > 
-> > You should state users are already doing this.
-> 
-> I can fix that up whilst applying.  However it raises the question:
-> Should I treat this as a fix, or a tidy up (that can wait for next merge
-> window)?
-> 
-> I'm also fine with this going with the other patch in the series (that lore
-> found for me as it didn't go to linux-iio) if that makes more sense.
-> 
+On Samstag, 24. September 2022 16:21:55 CET Luca Weiss wrote:
+> Document the compatible string for BCM43430A0 bluetooth used in lg-lenok
+> and BCM43430A1 used in asus-sparrow.
 
-Sorry for the delay in answering.
-The dts patch (2/2) has already been picked up through qcom tree, so I think 
-you can apply this one to your tree.
-It's definitely not urgent, so next merge window would be perfect.
+Asking again if somebody could pick this patch up, it's been sitting around 
+for 2 months.
 
 Regards
 Luca
 
-> If that happens
 > 
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Acked-by: Rob Herring <robh@kernel.org>
+> ---
+> Changes in v3:
+> * pick up tags
+> * resend
 > 
-> Jonathan
+>  Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > ---
-> > > Changes in v2:
-> > > * New patch
-> > > 
-> > >  .../devicetree/bindings/iio/adc/qcom,spmi-iadc.yaml        | 7 +++++--
-> > >  1 file changed, 5 insertions(+), 2 deletions(-)
-> > 
-> > Acked-by: Rob Herring <robh@kernel.org>
+> diff --git a/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml
+> b/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml index
+> 445b2a553625..d8d56076d656 100644
+> --- a/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml
+> +++ b/Documentation/devicetree/bindings/net/broadcom-bluetooth.yaml
+> @@ -19,6 +19,8 @@ properties:
+>        - brcm,bcm4329-bt
+>        - brcm,bcm4330-bt
+>        - brcm,bcm4334-bt
+> +      - brcm,bcm43430a0-bt
+> +      - brcm,bcm43430a1-bt
+>        - brcm,bcm43438-bt
+>        - brcm,bcm4345c5
+>        - brcm,bcm43540-bt
 
 
 
