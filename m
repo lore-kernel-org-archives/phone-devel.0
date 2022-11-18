@@ -2,92 +2,135 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDC67C4332F
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 09:25:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C870C4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 09:46:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241910AbiKRJZG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Nov 2022 04:25:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41828 "EHLO
+        id S242054AbiKRJqT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Nov 2022 04:46:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241904AbiKRJZD (ORCPT
+        with ESMTP id S241826AbiKRJpu (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Nov 2022 04:25:03 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 243C98B134;
-        Fri, 18 Nov 2022 01:25:01 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id x102so6385664ede.0;
-        Fri, 18 Nov 2022 01:25:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gKgICWF8PhcN9znHNyScgg7exhppSMJRut09gLPxlMQ=;
-        b=FQIa3dsiFvBvdU97Fg7eGSX2sG2sNgpK4QCGmyfvMeVyUvutzKDVwhLCM81l8p4uKT
-         YXNkQaS2sulqvzxY6hckmlzZkzXVIKVoF61D6gI/J4EvxpRMq7SS4a1Dfvgejmle7H/9
-         HCWZiOh0ppH2fs0Etlxeej3sgko15E6U4j2uN1kTBRo9Z67sLUKz4YRsyXgU7ceLzQ0d
-         NBzlVLxTes6sfoUGn5i0TsKRbpLq+v77UKwh2KUTryiHxJ4SHEZDymM3ryYZRwb2GlKh
-         6nBSSPn/ks1qb+LY23ZzmT7vWz4hjNVBp+Zz1g1ZIM1pBjrtLyofFuF43MOqp91QZx1y
-         hZuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gKgICWF8PhcN9znHNyScgg7exhppSMJRut09gLPxlMQ=;
-        b=M7M9mpssCIpwr43vmPf2hkf8yhjXi/m7stttcP8fMpK79BSeQk1yb3vinUeG9tkxU1
-         xmlCTXVf8HkMPKB9Y4+TndPzPm8xfmzhKegoQNXF3rxwLt7+tvhaQK3QjlZX/RpSXSdR
-         7FEv9YbJxtYM8zxARUzatZ7JsU82Itxso5omlGw7Y3RZrg0kXVsay2rPFL2O2QpOaIYU
-         tMoToPCCmTaexAmxNe4l/ttEL3/24ZW7L3ZCyib6zJbipfi7yKMJmgssP7QI8G/7npxf
-         kWMXjcWcp1ysodqwl+07SX9WXA1/NTJoWyBHinJG45Em9t1EL9ZY2SjbIrnylhq306C7
-         awYA==
-X-Gm-Message-State: ANoB5pmIgLGp77oqXoQl+nnza7fZWpmMyXcfFZL56e/7s5PHu18kLx+L
-        mNyZ2SoSsBUSgEL4bHqRh6A=
-X-Google-Smtp-Source: AA0mqf4ssbNwY+RcCatWRtY7/gI0y9cFz37vJ1/2TV3FgHa6PeudOu4ZfQKCC3kiS0w4FQs4vtHP5Q==
-X-Received: by 2002:a05:6402:b81:b0:45c:a651:8849 with SMTP id cf1-20020a0564020b8100b0045ca6518849mr5508151edb.209.1668763499578;
-        Fri, 18 Nov 2022 01:24:59 -0800 (PST)
-Received: from tp440p.steeds.sam ([2602:fbf6:10:8::2])
-        by smtp.gmail.com with ESMTPSA id kz22-20020a17090777d600b0078d46aa3b82sm1430954ejc.21.2022.11.18.01.24.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Nov 2022 01:24:58 -0800 (PST)
-Date:   Fri, 18 Nov 2022 11:24:48 +0200
-From:   Sicelo <absicsz@gmail.com>
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        maemo-leste@lists.dyne.org, Felipe Balbi <balbi@kernel.org>,
-        phone-devel@vger.kernel.org, Bin Liu <b-liu@ti.com>,
-        Rob Herring <robh@kernel.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: USB PHY Initialization Fails on Nokia N900 Since 5.19
-Message-ID: <Y3dPYEaqVfXFmyYf@tp440p.steeds.sam>
-References: <Y0PhEOl+MwlQ8HAD@tp440p.steeds.sam>
- <Y0UBindrJa1ptyR0@atomide.com>
- <Y0VI+/XJs8nsazwE@tp440p.steeds.sam>
- <Y24JkS3tykIZRH+A@tp440p.steeds.sam>
- <Y3c+VSLcH+c2sLGr@atomide.com>
+        Fri, 18 Nov 2022 04:45:50 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E73508FB09;
+        Fri, 18 Nov 2022 01:45:17 -0800 (PST)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AI85SGH018382;
+        Fri, 18 Nov 2022 09:44:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=qJcgPrWmyUGAvxfDNNVSIhf4sBSL9JlTHQDB5bAYbXc=;
+ b=DUjD6nqbUs4zs+b93QMpvfaMOpNqn4pTNWqQ0rveSDbgLecmRc280DdgT7aPdC8RtKEW
+ BNqorR26FudNIVaqQj3OWvIoNFd51kV70GblZJMvRrjC8+0GV4x6E+CuZemWYXDsq1Oq
+ gAhivChUenrqa3GMB9v70OYOJU76g5UoMBzcIRwlmAGc6pH37gYLSsKGV3xpkEaQ9nEg
+ C87sYqjI1flaan6LnFiZyx30XY0z8egEVg7KbrCkeOHLUFzBToCWHigaytC83Bopqg/T
+ uHjxeSY/tpWPvDC8wGKUvgjc5X3N0zx+/yqxM/q8k7tXBM52FeOYAk6KgT6EBr4JmWlj GQ== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3kx0se97wc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 18 Nov 2022 09:44:40 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AI9ieq8021646
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 18 Nov 2022 09:44:40 GMT
+Received: from [10.79.43.91] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Fri, 18 Nov
+ 2022 01:44:36 -0800
+Message-ID: <4b190ca0-5a0b-d937-0a08-0ffe34a75ff8@quicinc.com>
+Date:   Fri, 18 Nov 2022 15:14:33 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y3c+VSLcH+c2sLGr@atomide.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Subject: Re: [PATCH v2 1/2] remoteproc: qcom_q6v5_pas: disable wakeup on probe
+ fail or remove
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        <linux-arm-msm@vger.kernel.org>
+CC:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>,
+        Mukesh Ojha <quic_mojha@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rishabh Bhatnagar <rishabhb@codeaurora.org>,
+        Siddharth Gupta <sidgup@codeaurora.org>,
+        <linux-remoteproc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20221118090816.100012-1-luca.weiss@fairphone.com>
+From:   Sibi Sankar <quic_sibis@quicinc.com>
+In-Reply-To: <20221118090816.100012-1-luca.weiss@fairphone.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: rWDUaxdhaHhSnB_4Kf-2LGj_4mM-FOTz
+X-Proofpoint-ORIG-GUID: rWDUaxdhaHhSnB_4Kf-2LGj_4mM-FOTz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-17_06,2022-11-17_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ spamscore=0 mlxlogscore=999 lowpriorityscore=0 adultscore=0 bulkscore=0
+ phishscore=0 priorityscore=1501 suspectscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2211180058
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-> OK thanks that helps, I think it's because the platform IRQ resources are
-> no longer being automatically populated from devicetree because of the
-> issues with deferred probe.
+
+
+On 11/18/22 14:38, Luca Weiss wrote:
+> Leaving wakeup enabled during probe fail (-EPROBE_DEFER) or remove makes
+> the subsequent probe fail.
 > 
-> Maybe give the following patch a try and see if it helps?
+> [    3.749454] remoteproc remoteproc0: releasing 3000000.remoteproc
+> [    3.752949] qcom_q6v5_pas: probe of 3000000.remoteproc failed with error -17
+> [    3.878935] remoteproc remoteproc0: releasing 4080000.remoteproc
+> [    3.887602] qcom_q6v5_pas: probe of 4080000.remoteproc failed with error -17
+> [    4.319552] remoteproc remoteproc0: releasing 8300000.remoteproc
+> [    4.332716] qcom_q6v5_pas: probe of 8300000.remoteproc failed with error -17
 > 
-> Then assuming this works as a fix I'll post further changes to make also
-> omap2430 glue layer to probe with ti-sysc interconnect target module
-> driver in call cases.
+> Fix this by disabling wakeup in both cases so the driver can properly
+> probe on the next try.
+> 
+> Fixes: a781e5aa5911 ("remoteproc: core: Prevent system suspend during remoteproc recovery")
+> Fixes: dc86c129b4fb ("remoteproc: qcom: pas: Mark devices as wakeup capable")
+> Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-Hi Tony
+Reviewed-by: Sibi Sankar <quic_sibis@quicinc.com>
 
-Thank you very much. This patch works well on the N900.
- `cat /sys/firmware/devicetree/base/ocp@68000000/usb_otg_hs@480ab000/interrupts`
-still returns null, but from your explanation, I guess this is expected.
-
-In case this gets published in its current form, you're free to add:
-
-Tested-By: Sicelo Mhlongo <absicsz@gmail.com>
+> ---
+> Changes in v2:
+> * move new line before rproc_free which frees 'adsp' as well
+> * pick up tags
+> 
+>   drivers/remoteproc/qcom_q6v5_pas.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+> index 6afd0941e552..67f5152e2398 100644
+> --- a/drivers/remoteproc/qcom_q6v5_pas.c
+> +++ b/drivers/remoteproc/qcom_q6v5_pas.c
+> @@ -556,6 +556,7 @@ static int adsp_probe(struct platform_device *pdev)
+>   detach_proxy_pds:
+>   	adsp_pds_detach(adsp, adsp->proxy_pds, adsp->proxy_pd_count);
+>   free_rproc:
+> +	device_init_wakeup(adsp->dev, false);
+>   	rproc_free(rproc);
+>   
+>   	return ret;
+> @@ -572,6 +573,7 @@ static int adsp_remove(struct platform_device *pdev)
+>   	qcom_remove_sysmon_subdev(adsp->sysmon);
+>   	qcom_remove_smd_subdev(adsp->rproc, &adsp->smd_subdev);
+>   	qcom_remove_ssr_subdev(adsp->rproc, &adsp->ssr_subdev);
+> +	device_init_wakeup(adsp->dev, false);
+>   	rproc_free(adsp->rproc);
+>   
+>   	return 0;
