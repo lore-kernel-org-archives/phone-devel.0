@@ -2,152 +2,121 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A05DC4332F
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 08:12:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85789C4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 09:12:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240997AbiKRIMK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Nov 2022 03:12:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38546 "EHLO
+        id S234867AbiKRJMD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Nov 2022 04:12:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230004AbiKRIMJ (ORCPT
+        with ESMTP id S241769AbiKRJL5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Nov 2022 03:12:09 -0500
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 50DB88C081;
-        Fri, 18 Nov 2022 00:12:08 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id D0FE4807E;
-        Fri, 18 Nov 2022 08:02:01 +0000 (UTC)
-Date:   Fri, 18 Nov 2022 10:12:05 +0200
-From:   Tony Lindgren <tony@atomide.com>
-To:     Sicelo <absicsz@gmail.com>
-Cc:     linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
-        maemo-leste@lists.dyne.org, Felipe Balbi <balbi@kernel.org>,
-        phone-devel@vger.kernel.org, Bin Liu <b-liu@ti.com>,
-        Rob Herring <robh@kernel.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>
-Subject: Re: [maemo-leste] USB PHY Initialization Fails on Nokia N900 Since
- 5.19
-Message-ID: <Y3c+VSLcH+c2sLGr@atomide.com>
-References: <Y0PhEOl+MwlQ8HAD@tp440p.steeds.sam>
- <Y0UBindrJa1ptyR0@atomide.com>
- <Y0VI+/XJs8nsazwE@tp440p.steeds.sam>
- <Y24JkS3tykIZRH+A@tp440p.steeds.sam>
+        Fri, 18 Nov 2022 04:11:57 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6576114D12
+        for <phone-devel@vger.kernel.org>; Fri, 18 Nov 2022 01:11:55 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id x2so6291695edd.2
+        for <phone-devel@vger.kernel.org>; Fri, 18 Nov 2022 01:11:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jRa/PoxgqDRwmd3eIz//88s67gtNdYgRfX+YpZPu+BM=;
+        b=pGDB+b0kZ/sQIJwkZVnS6mJ7ZHtv/wyTZg8nv9lMsZgqMRY3qSg3K4iYahUKU1UPMy
+         6oxTtEbLtTIgMekKU6EGmV8xG8HOBX/eBx+zPYrgtTyt4MexT81gGPMcpve6KrHdllvi
+         cAcT6AIjTv8pDRpLwf+HUKK/70BCiuZnkcpOm1e3f8Z+KVwdAD/dCjajmZ+YRdlPbnPQ
+         gws48p64W7rF9njDLmrxgIoy8e+puJXk/Mu0Xg9vsi/JGcFXXOJI2nfrAPA1dnNWUR0P
+         7VRGUTU3T2yg/LEmo20Tw7wpQv7cLZ6SSctEkUQXLss2NLsRH1POhLQBisnIX/fuxy7C
+         yQZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jRa/PoxgqDRwmd3eIz//88s67gtNdYgRfX+YpZPu+BM=;
+        b=nzftNAqkA3wM8WO89/3uaW7YtlHCs/wW5uy0b3L8CL9kCdwt6KRdm8fRHJkWTmyt98
+         wU9/uSEW21itVo6A1TywIf8eMpd87uWuAwoR8763bjWylwU50mQZWlF0tgQNNFLIlq0c
+         k53/FU/bpzOhTUuhIBI5Fr8k51ZuT9DExFxIEgZY0ESV2VbJ+qc8rzhcr6MdXa6Nu8hC
+         ruHhQ8DWqgED30U+6uFskjZgU7rEujZbkSZxV9mKzY/payEFVVqTObixlDXsGpsnd25P
+         wZaJrg7WAdGLP+9sJZILB2pEnLrp5k41Yek2d5saFN0PrQl7MNjWt1Wj2V5XTTJCbvcE
+         cqWA==
+X-Gm-Message-State: ANoB5pkDcswK7DbTQ0oBm+00S6tNeV1hvKX9z+zCO2VzMDZiCSSsGnpw
+        2ASojNbTl0ohMrLqcjaFmMnjTw==
+X-Google-Smtp-Source: AA0mqf60UCoSoZCOMJgwUY56vTLWRzaG7YSp6S3dpTy4oD84LYoA1zTvMRFEHxf21XoMxzZMW30VRQ==
+X-Received: by 2002:aa7:d593:0:b0:461:de5e:ba52 with SMTP id r19-20020aa7d593000000b00461de5eba52mr5304051edq.177.1668762713858;
+        Fri, 18 Nov 2022 01:11:53 -0800 (PST)
+Received: from otso.arnhem.chello.nl (k10064.upc-k.chello.nl. [62.108.10.64])
+        by smtp.gmail.com with ESMTPSA id v15-20020aa7dbcf000000b0046182b3ad46sm1535647edt.20.2022.11.18.01.11.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Nov 2022 01:11:53 -0800 (PST)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Mukesh Ojha <quic_mojha@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rishabh Bhatnagar <rishabhb@codeaurora.org>,
+        Siddharth Gupta <sidgup@codeaurora.org>,
+        Sibi Sankar <quic_sibis@quicinc.com>,
+        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] remoteproc: qcom_q6v5_pas: disable wakeup on probe fail or remove
+Date:   Fri, 18 Nov 2022 10:08:15 +0100
+Message-Id: <20221118090816.100012-1-luca.weiss@fairphone.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Y24JkS3tykIZRH+A@tp440p.steeds.sam>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-* Sicelo <absicsz@gmail.com> [221111 08:26]:
-> Just for further testing, I added the very ugly patch below. Applied on
-> vanilla 6.1-rc3 (i.e. containing 239071064732), USB works normally on
-> the N900.
-> 
-> I copied the irq numbers from omap3xxx.dtsi. Does this give us any hints
-> regarding the cause and resolution of this issue?
+Leaving wakeup enabled during probe fail (-EPROBE_DEFER) or remove makes
+the subsequent probe fail.
 
-OK thanks that helps, I think it's because the platform IRQ resources are
-no longer being automatically populated from devicetree because of the
-issues with deferred probe.
+[    3.749454] remoteproc remoteproc0: releasing 3000000.remoteproc
+[    3.752949] qcom_q6v5_pas: probe of 3000000.remoteproc failed with error -17
+[    3.878935] remoteproc remoteproc0: releasing 4080000.remoteproc
+[    3.887602] qcom_q6v5_pas: probe of 4080000.remoteproc failed with error -17
+[    4.319552] remoteproc remoteproc0: releasing 8300000.remoteproc
+[    4.332716] qcom_q6v5_pas: probe of 8300000.remoteproc failed with error -17
 
-Maybe give the following patch a try and see if it helps?
+Fix this by disabling wakeup in both cases so the driver can properly
+probe on the next try.
 
-Then assuming this works as a fix I'll post further changes to make also
-omap2430 glue layer to probe with ti-sysc interconnect target module
-driver in call cases.
+Fixes: a781e5aa5911 ("remoteproc: core: Prevent system suspend during remoteproc recovery")
+Fixes: dc86c129b4fb ("remoteproc: qcom: pas: Mark devices as wakeup capable")
+Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Changes in v2:
+* move new line before rproc_free which frees 'adsp' as well
+* pick up tags
 
-Regards,
+ drivers/remoteproc/qcom_q6v5_pas.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Tony
-
-8< -------------------
-diff --git a/drivers/usb/musb/omap2430.c b/drivers/usb/musb/omap2430.c
---- a/drivers/usb/musb/omap2430.c
-+++ b/drivers/usb/musb/omap2430.c
-@@ -15,6 +15,7 @@
- #include <linux/list.h>
- #include <linux/io.h>
- #include <linux/of.h>
-+#include <linux/of_irq.h>
- #include <linux/platform_device.h>
- #include <linux/dma-mapping.h>
- #include <linux/pm_runtime.h>
-@@ -310,6 +311,7 @@ static int omap2430_probe(struct platform_device *pdev)
- 	struct device_node		*control_node;
- 	struct platform_device		*control_pdev;
- 	int				ret = -ENOMEM, val;
-+	bool				populate_irqs = false;
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index 6afd0941e552..67f5152e2398 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -556,6 +556,7 @@ static int adsp_probe(struct platform_device *pdev)
+ detach_proxy_pds:
+ 	adsp_pds_detach(adsp, adsp->proxy_pds, adsp->proxy_pd_count);
+ free_rproc:
++	device_init_wakeup(adsp->dev, false);
+ 	rproc_free(rproc);
  
- 	if (!np)
- 		return -ENODEV;
-@@ -328,6 +330,18 @@ static int omap2430_probe(struct platform_device *pdev)
- 	musb->dev.dma_mask		= &omap2430_dmamask;
- 	musb->dev.coherent_dma_mask	= omap2430_dmamask;
+ 	return ret;
+@@ -572,6 +573,7 @@ static int adsp_remove(struct platform_device *pdev)
+ 	qcom_remove_sysmon_subdev(adsp->sysmon);
+ 	qcom_remove_smd_subdev(adsp->rproc, &adsp->smd_subdev);
+ 	qcom_remove_ssr_subdev(adsp->rproc, &adsp->ssr_subdev);
++	device_init_wakeup(adsp->dev, false);
+ 	rproc_free(adsp->rproc);
  
-+	/*
-+	 * Legacy SoCs using omap_device get confused if node is moved
-+	 * because of interconnect properties mixed into the node.
-+	 */
-+	if (of_get_property(np, "ti,hwmods", NULL)) {
-+		dev_warn(&pdev->dev, "please update to probe with ti-sysc\n");
-+		populate_irqs = true;
-+	} else {
-+		device_set_of_node_from_dev(&musb->dev, &pdev->dev);
-+	}
-+	of_node_put(np);
-+
- 	glue->dev			= &pdev->dev;
- 	glue->musb			= musb;
- 	glue->status			= MUSB_UNKNOWN;
-@@ -389,6 +403,46 @@ static int omap2430_probe(struct platform_device *pdev)
- 		goto err2;
- 	}
- 
-+	if (populate_irqs) {
-+		struct resource musb_res[3];
-+		struct resource *res;
-+		int i = 0;
-+
-+		memset(musb_res, 0, sizeof(*musb_res) * ARRAY_SIZE(musb_res));
-+
-+		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+		if (!res)
-+			goto err2;
-+
-+		musb_res[i].start = res->start;
-+		musb_res[i].end = res->end;
-+		musb_res[i].flags = res->flags;
-+		musb_res[i].name = res->name;
-+		i++;
-+
-+		ret = of_irq_get_byname(np, "mc");
-+		if (ret > 0) {
-+			musb_res[i].start = ret;
-+			musb_res[i].flags = IORESOURCE_IRQ;
-+			musb_res[i].name = "mc";
-+			i++;
-+		}
-+
-+		ret = of_irq_get_byname(np, "dma");
-+		if (ret > 0) {
-+			musb_res[i].start = ret;
-+			musb_res[i].flags = IORESOURCE_IRQ;
-+			musb_res[i].name = "dma";
-+			i++;
-+		}
-+
-+		ret = platform_device_add_resources(musb, musb_res, i);
-+		if (ret) {
-+			dev_err(&pdev->dev, "failed to add IRQ resources\n");
-+			goto err2;
-+		}
-+	}
-+
- 	ret = platform_device_add_data(musb, pdata, sizeof(*pdata));
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to add platform_data\n");
+ 	return 0;
 -- 
 2.38.1
+
