@@ -2,145 +2,92 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81B6AC4321E
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 09:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BDC67C4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 09:25:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241769AbiKRJMD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Nov 2022 04:12:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59076 "EHLO
+        id S241910AbiKRJZG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Nov 2022 04:25:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241791AbiKRJMA (ORCPT
+        with ESMTP id S241904AbiKRJZD (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Nov 2022 04:12:00 -0500
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DB4186A5C
-        for <phone-devel@vger.kernel.org>; Fri, 18 Nov 2022 01:11:56 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id f27so11573265eje.1
-        for <phone-devel@vger.kernel.org>; Fri, 18 Nov 2022 01:11:56 -0800 (PST)
+        Fri, 18 Nov 2022 04:25:03 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 243C98B134;
+        Fri, 18 Nov 2022 01:25:01 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id x102so6385664ede.0;
+        Fri, 18 Nov 2022 01:25:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kkFb1u/bvHgUN39MgLh4iioExuZRwxW/sCGAVXGpD1w=;
-        b=IMnvVf87a7Lzj0PVzl0gYKSZgaRzxdyMizeIXc3qsaD96qJl5aUWbc95xrL1pG34aB
-         Gouzh4wes8Wtn31PpcB8hJpHPGGHVPhGX4QVmk8v/SLa2vDTEFZUTBAT+DpuMLHN1ErS
-         UbETbxJc69f0JSViyXF5GHa9MElblvPOok/mhI3iommcdV53vBDBHs3CUu7AS+FFd97v
-         NVt3e8whlz++DfvmP+9Sg6jzEj9Og0ikVGxU86h+dFsrFl1pvunrdCAh+YbJi/71Ge6u
-         SHz/HHaPH+XqxyhZuV46YtayBV9wMOJMZXMNU8hJ4a02CvWv0d+MX7N5UdVW5oooJQjv
-         veLw==
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gKgICWF8PhcN9znHNyScgg7exhppSMJRut09gLPxlMQ=;
+        b=FQIa3dsiFvBvdU97Fg7eGSX2sG2sNgpK4QCGmyfvMeVyUvutzKDVwhLCM81l8p4uKT
+         YXNkQaS2sulqvzxY6hckmlzZkzXVIKVoF61D6gI/J4EvxpRMq7SS4a1Dfvgejmle7H/9
+         HCWZiOh0ppH2fs0Etlxeej3sgko15E6U4j2uN1kTBRo9Z67sLUKz4YRsyXgU7ceLzQ0d
+         NBzlVLxTes6sfoUGn5i0TsKRbpLq+v77UKwh2KUTryiHxJ4SHEZDymM3ryYZRwb2GlKh
+         6nBSSPn/ks1qb+LY23ZzmT7vWz4hjNVBp+Zz1g1ZIM1pBjrtLyofFuF43MOqp91QZx1y
+         hZuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kkFb1u/bvHgUN39MgLh4iioExuZRwxW/sCGAVXGpD1w=;
-        b=rC/70Qfwqj6GKi3iphKHWkvx9+GNIxA9jk3CpH2RJqwvzodd+Ea1rpWdmEe1WDtMPH
-         CGkMX674VxfzXjJL5L/rBSd2NTg3UDo0hrmOK3H5g3Mm1rVfYzK0hj1FjQGf2RI00Jhe
-         WlaNcdsaH1BmKA0m8mEendbYJ0Z/J3pnziTBfPbGHAYqWlmoZ/2xw5kjt63NKTYXopzV
-         ftMlY0pDGnFHA/VrPiDaqHmOHK4sJ4RxMgKUwx88zHkOlVZ4B/l6p2BgP5WfFDySpaIG
-         vientCaz0GnS9at16Zrcn7zbYUbp697b+ebcXPfG+pDE1cXYXMtK9HDS8l+ahW/JdsNS
-         fxAw==
-X-Gm-Message-State: ANoB5ploqsXbbgJCtk0Vp/Zax0brhX6dPeh1iHi280VZ/Bf4/1fudkNv
-        M67IirvLHg6K7ag1abPoEvdm4CSlOQglvw==
-X-Google-Smtp-Source: AA0mqf4aAjjbKrj3iuHMCimr/ApJDyn6Vg8BInvOBiqu2HMfXdy3GMLLe/pmt+iVHQKI85FNWKdRjg==
-X-Received: by 2002:a17:906:1614:b0:78d:4e5b:ffaa with SMTP id m20-20020a170906161400b0078d4e5bffaamr5082112ejd.455.1668762714878;
-        Fri, 18 Nov 2022 01:11:54 -0800 (PST)
-Received: from otso.arnhem.chello.nl (k10064.upc-k.chello.nl. [62.108.10.64])
-        by smtp.gmail.com with ESMTPSA id v15-20020aa7dbcf000000b0046182b3ad46sm1535647edt.20.2022.11.18.01.11.54
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gKgICWF8PhcN9znHNyScgg7exhppSMJRut09gLPxlMQ=;
+        b=M7M9mpssCIpwr43vmPf2hkf8yhjXi/m7stttcP8fMpK79BSeQk1yb3vinUeG9tkxU1
+         xmlCTXVf8HkMPKB9Y4+TndPzPm8xfmzhKegoQNXF3rxwLt7+tvhaQK3QjlZX/RpSXSdR
+         7FEv9YbJxtYM8zxARUzatZ7JsU82Itxso5omlGw7Y3RZrg0kXVsay2rPFL2O2QpOaIYU
+         tMoToPCCmTaexAmxNe4l/ttEL3/24ZW7L3ZCyib6zJbipfi7yKMJmgssP7QI8G/7npxf
+         kWMXjcWcp1ysodqwl+07SX9WXA1/NTJoWyBHinJG45Em9t1EL9ZY2SjbIrnylhq306C7
+         awYA==
+X-Gm-Message-State: ANoB5pmIgLGp77oqXoQl+nnza7fZWpmMyXcfFZL56e/7s5PHu18kLx+L
+        mNyZ2SoSsBUSgEL4bHqRh6A=
+X-Google-Smtp-Source: AA0mqf4ssbNwY+RcCatWRtY7/gI0y9cFz37vJ1/2TV3FgHa6PeudOu4ZfQKCC3kiS0w4FQs4vtHP5Q==
+X-Received: by 2002:a05:6402:b81:b0:45c:a651:8849 with SMTP id cf1-20020a0564020b8100b0045ca6518849mr5508151edb.209.1668763499578;
+        Fri, 18 Nov 2022 01:24:59 -0800 (PST)
+Received: from tp440p.steeds.sam ([2602:fbf6:10:8::2])
+        by smtp.gmail.com with ESMTPSA id kz22-20020a17090777d600b0078d46aa3b82sm1430954ejc.21.2022.11.18.01.24.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Nov 2022 01:11:54 -0800 (PST)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Sibi Sankar <quic_sibis@quicinc.com>,
-        Mukesh Ojha <quic_mojha@quicinc.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Sibi Sankar <sibis@codeaurora.org>,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] remoteproc: qcom_q6v5_pas: detach power domains on remove
-Date:   Fri, 18 Nov 2022 10:08:16 +0100
-Message-Id: <20221118090816.100012-2-luca.weiss@fairphone.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221118090816.100012-1-luca.weiss@fairphone.com>
-References: <20221118090816.100012-1-luca.weiss@fairphone.com>
+        Fri, 18 Nov 2022 01:24:58 -0800 (PST)
+Date:   Fri, 18 Nov 2022 11:24:48 +0200
+From:   Sicelo <absicsz@gmail.com>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     linux-usb@vger.kernel.org, linux-omap@vger.kernel.org,
+        maemo-leste@lists.dyne.org, Felipe Balbi <balbi@kernel.org>,
+        phone-devel@vger.kernel.org, Bin Liu <b-liu@ti.com>,
+        Rob Herring <robh@kernel.org>,
+        "H. Nikolaus Schaller" <hns@goldelico.com>
+Subject: Re: USB PHY Initialization Fails on Nokia N900 Since 5.19
+Message-ID: <Y3dPYEaqVfXFmyYf@tp440p.steeds.sam>
+References: <Y0PhEOl+MwlQ8HAD@tp440p.steeds.sam>
+ <Y0UBindrJa1ptyR0@atomide.com>
+ <Y0VI+/XJs8nsazwE@tp440p.steeds.sam>
+ <Y24JkS3tykIZRH+A@tp440p.steeds.sam>
+ <Y3c+VSLcH+c2sLGr@atomide.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y3c+VSLcH+c2sLGr@atomide.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-We need to detach from the power domains also on remove, not just on
-probe fail so a subsequent probe works as expected.
+> OK thanks that helps, I think it's because the platform IRQ resources are
+> no longer being automatically populated from devicetree because of the
+> issues with deferred probe.
+> 
+> Maybe give the following patch a try and see if it helps?
+> 
+> Then assuming this works as a fix I'll post further changes to make also
+> omap2430 glue layer to probe with ti-sysc interconnect target module
+> driver in call cases.
 
-Otherwise the following error appears on re-probe:
+Hi Tony
 
-[   29.452005] sysfs: cannot create duplicate filename '/devices/genpd:0:3000000.remoteproc'
-[   29.477121] CPU: 1 PID: 483 Comm: sh Tainted: G        W          6.1.0-rc4-00075-g71a113770bda #78
-[   29.510319] Hardware name: Fairphone 4 (DT)
-[   29.538335] Call trace:
-[   29.564470]  dump_backtrace.part.0+0xe0/0xf0
-[   29.592602]  show_stack+0x18/0x30
-[   29.619616]  dump_stack_lvl+0x64/0x80
-[   29.646834]  dump_stack+0x18/0x34
-[   29.673541]  sysfs_warn_dup+0x60/0x7c
-[   29.700592]  sysfs_create_dir_ns+0xec/0x110
-[   29.728057]  kobject_add_internal+0xb8/0x374
-[   29.755530]  kobject_add+0x9c/0x104
-[   29.782072]  device_add+0xbc/0x8a0
-[   29.808445]  device_register+0x20/0x30
-[   29.835175]  genpd_dev_pm_attach_by_id+0xa4/0x190
-[   29.862851]  genpd_dev_pm_attach_by_name+0x3c/0xb0
-[   29.890472]  dev_pm_domain_attach_by_name+0x20/0x30
-[   29.918212]  adsp_probe+0x278/0x580
-[   29.944384]  platform_probe+0x68/0xc0
-[   29.970603]  really_probe+0xbc/0x2dc
-[   29.996662]  __driver_probe_device+0x78/0xe0
-[   30.023491]  device_driver_attach+0x48/0xac
-[   30.050215]  bind_store+0xb8/0x114
-[   30.075957]  drv_attr_store+0x24/0x3c
-[   30.101874]  sysfs_kf_write+0x44/0x54
-[   30.127751]  kernfs_fop_write_iter+0x120/0x1f0
-[   30.154448]  vfs_write+0x1ac/0x380
-[   30.179937]  ksys_write+0x70/0x104
-[   30.205274]  __arm64_sys_write+0x1c/0x2c
-[   30.231060]  invoke_syscall+0x48/0x114
-[   30.256594]  el0_svc_common.constprop.0+0x44/0xec
-[   30.283183]  do_el0_svc+0x2c/0xd0
-[   30.308320]  el0_svc+0x2c/0x84
-[   30.333059]  el0t_64_sync_handler+0xf4/0x120
-[   30.359001]  el0t_64_sync+0x18c/0x190
-[   30.384385] kobject_add_internal failed for genpd:0:3000000.remoteproc with -EEXIST, don't try to register things with the same name in the same directory.
-[   30.406029] remoteproc remoteproc0: releasing 3000000.remoteproc
-[   30.416064] qcom_q6v5_pas: probe of 3000000.remoteproc failed with error -17
+Thank you very much. This patch works well on the N900.
+ `cat /sys/firmware/devicetree/base/ocp@68000000/usb_otg_hs@480ab000/interrupts`
+still returns null, but from your explanation, I guess this is expected.
 
-Fixes: 17ee2fb4e856 ("remoteproc: qcom: pas: Vote for active/proxy power domains")
-Reviewed-by: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
-Changes in v2:
-* pick up tags
+In case this gets published in its current form, you're free to add:
 
- drivers/remoteproc/qcom_q6v5_pas.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index 67f5152e2398..a14ff1142e76 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -573,6 +573,7 @@ static int adsp_remove(struct platform_device *pdev)
- 	qcom_remove_sysmon_subdev(adsp->sysmon);
- 	qcom_remove_smd_subdev(adsp->rproc, &adsp->smd_subdev);
- 	qcom_remove_ssr_subdev(adsp->rproc, &adsp->ssr_subdev);
-+	adsp_pds_detach(adsp, adsp->proxy_pds, adsp->proxy_pd_count);
- 	device_init_wakeup(adsp->dev, false);
- 	rproc_free(adsp->rproc);
- 
--- 
-2.38.1
-
+Tested-By: Sicelo Mhlongo <absicsz@gmail.com>
