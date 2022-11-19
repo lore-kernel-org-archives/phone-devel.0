@@ -2,39 +2,40 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E17F9C433FE
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Nov 2022 17:50:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC1DEC4332F
+	for <phone-devel@archiver.kernel.org>; Sat, 19 Nov 2022 20:38:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229451AbiKRRuS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Nov 2022 12:50:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43576 "EHLO
+        id S233948AbiKSUiu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 19 Nov 2022 15:38:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234447AbiKRRuR (ORCPT
+        with ESMTP id S231666AbiKSUit (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Nov 2022 12:50:17 -0500
+        Sat, 19 Nov 2022 15:38:49 -0500
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9313E0B3;
-        Fri, 18 Nov 2022 09:50:16 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC68912D03;
+        Sat, 19 Nov 2022 12:38:44 -0800 (PST)
 Received: from g550jk.arnhem.chello.nl (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id A8D66C9C23;
-        Fri, 18 Nov 2022 17:49:43 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id E197BD0408;
+        Sat, 19 Nov 2022 20:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1668793783; bh=2LIGfJs4mzm0mQHtjJr7PZU9Cns0uXPwNA7w76fWaMQ=;
+        t=1668890321; bh=tuVtU4q2uIOJEKAiMSeRAHcThbYyr1bOieP4LnPQWEg=;
         h=From:To:Cc:Subject:Date;
-        b=kUv+AGwFa6i9z13BljzqDSR0a3n4oxSmUSO7HNtWSb5i6gVKCOY1VnMPSp/6AG33c
-         qbSijEGz1vQTaClUQC6yeMnqBnJgV3X3TnaaXybEwuk08yw25smaJ8VVfD18XCCI+g
-         izosl1XQiJPSU9L8HCJFp2ETNk1Pn1kYC3dBKsMs=
+        b=g7aTFsx+jmbtYFuwicxmcW9ND8o1hIlSA/lBTCtHa/qEy9vJmvEfHQReb6JhiA4fT
+         d+Z7Aas/lDETWdFYAN6XIAL9BDJ2sCKFHBHYzTu9sdFY6GQOBGUTt3A30SQjptyRdv
+         OJxn84sBtI3qxgcYNGAU63K4wFLW9peBhtHesvLM=
 From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-input@vger.kernel.org
+To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Andrew Davis <afd@ti.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4] dt-bindings: input: Convert ti,drv260x to DT schema
-Date:   Fri, 18 Nov 2022 18:48:29 +0100
-Message-Id: <20221118174831.69793-1-luca@z3ntu.xyz>
+        Luca Weiss <luca@z3ntu.xyz>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Tony Luck <tony.luck@intel.com>, devicetree@vger.kernel.org,
+        linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/9] Add a bunch of msm8953 dts files
+Date:   Sat, 19 Nov 2022 21:37:41 +0100
+Message-Id: <20221119203758.888207-1-luca@z3ntu.xyz>
 X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -42,194 +43,65 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Convert the drv260x haptics binding to DT schema format.
+The following patches add a bunch of msm8953-based devices that have
+been created in the msm8953-mainline[0] repository, which includes
+Snapdragon 450 (SDM450), Snapdragon 625 (msm8953) and Snapdragon 632
+(SDM632) devices.
+The dts files are trimmed down to what is currently supported upstream,
+as a way to also minimizing diff for further patches.
 
-The only notable change from .txt format is that vbat-supply is not
-actually required, so don't make it a required property.
+I've tried my best in keeping all the relevant author tags based on the
+git info I could find there.
 
-Acked-by: Andrew Davis <afd@ti.com>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
-Changes in v4:
-* use non-deprecated enable-gpios for 'required' and example
+*This series depends on pmi8950.dtsi patches[1]*
 
- .../devicetree/bindings/input/ti,drv260x.txt  |  50 --------
- .../devicetree/bindings/input/ti,drv260x.yaml | 109 ++++++++++++++++++
- 2 files changed, 109 insertions(+), 50 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/input/ti,drv260x.txt
- create mode 100644 Documentation/devicetree/bindings/input/ti,drv260x.yaml
+[0] https://github.com/msm8953-mainline/linux
+[1] https://lore.kernel.org/linux-arm-msm/20221101161801.1058969-2-luca@z3ntu.xyz/
 
-diff --git a/Documentation/devicetree/bindings/input/ti,drv260x.txt b/Documentation/devicetree/bindings/input/ti,drv260x.txt
-deleted file mode 100644
-index 4c5312eaaa85..000000000000
---- a/Documentation/devicetree/bindings/input/ti,drv260x.txt
-+++ /dev/null
-@@ -1,50 +0,0 @@
--* Texas Instruments - drv260x Haptics driver family
--
--Required properties:
--	- compatible - One of:
--		"ti,drv2604" - DRV2604
--		"ti,drv2605" - DRV2605
--		"ti,drv2605l" - DRV2605L
--	- reg -  I2C slave address
--	- vbat-supply - Required supply regulator
--	- mode - Power up mode of the chip (defined in include/dt-bindings/input/ti-drv260x.h)
--		DRV260X_LRA_MODE - Linear Resonance Actuator mode (Piezoelectric)
--		DRV260X_LRA_NO_CAL_MODE - This is a LRA Mode but there is no calibration
--				sequence during init.  And the device is configured for real
--				time playback mode (RTP mode).
--		DRV260X_ERM_MODE - Eccentric Rotating Mass mode (Rotary vibrator)
--	- library-sel - These are ROM based waveforms pre-programmed into the IC.
--				This should be set to set the library to use at power up.
--				(defined in include/dt-bindings/input/ti-drv260x.h)
--		DRV260X_LIB_EMPTY - Do not use a pre-programmed library
--		DRV260X_ERM_LIB_A - Pre-programmed Library
--		DRV260X_ERM_LIB_B - Pre-programmed Library
--		DRV260X_ERM_LIB_C - Pre-programmed Library
--		DRV260X_ERM_LIB_D - Pre-programmed Library
--		DRV260X_ERM_LIB_E - Pre-programmed Library
--		DRV260X_ERM_LIB_F - Pre-programmed Library
--		DRV260X_LIB_LRA - Pre-programmed LRA Library
--
--Optional properties:
--	- enable-gpio - gpio pin to enable/disable the device.
--	- vib-rated-mv - The rated voltage of the actuator in millivolts.
--			  If this is not set then the value will be defaulted to
--			  3.2 v.
--	- vib-overdrive-mv - The overdrive voltage of the actuator in millivolts.
--			  If this is not set then the value will be defaulted to
--			  3.2 v.
--Example:
--
--haptics: haptics@5a {
--	compatible = "ti,drv2605l";
--	reg = <0x5a>;
--	vbat-supply = <&vbat>;
--	enable-gpio = <&gpio1 28 GPIO_ACTIVE_HIGH>;
--	mode = <DRV260X_LRA_MODE>;
--	library-sel = <DRV260X_LIB_LRA>;
--	vib-rated-mv = <3200>;
--	vib-overdrive-mv = <3200>;
--}
--
--For more product information please see the link below:
--http://www.ti.com/product/drv2605
-diff --git a/Documentation/devicetree/bindings/input/ti,drv260x.yaml b/Documentation/devicetree/bindings/input/ti,drv260x.yaml
-new file mode 100644
-index 000000000000..c6245c5b9e2e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/input/ti,drv260x.yaml
-@@ -0,0 +1,109 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/input/ti,drv260x.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Texas Instruments - drv260x Haptics driver family
-+
-+maintainers:
-+  - Andrew Davis <afd@ti.com>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,drv2604
-+      - ti,drv2605
-+      - ti,drv2605l
-+
-+  reg:
-+    maxItems: 1
-+
-+  vbat-supply:
-+    description: Power supply to the haptic motor
-+
-+  # TODO: Deprecate 'mode' in favor of differently named property
-+  mode:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      Power up mode of the chip
-+      (defined in include/dt-bindings/input/ti-drv260x.h)
-+
-+      DRV260X_LRA_MODE
-+        Linear Resonance Actuator mode (Piezoelectric)
-+
-+      DRV260X_LRA_NO_CAL_MODE
-+        This is a LRA Mode but there is no calibration sequence during init.
-+        And the device is configured for real time playback mode (RTP mode).
-+
-+      DRV260X_ERM_MODE
-+        Eccentric Rotating Mass mode (Rotary vibrator)
-+    enum: [ 0, 1, 2 ]
-+
-+  library-sel:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      These are ROM based waveforms pre-programmed into the IC.
-+      This should be set to set the library to use at power up.
-+      (defined in include/dt-bindings/input/ti-drv260x.h)
-+
-+      DRV260X_LIB_EMPTY - Do not use a pre-programmed library
-+      DRV260X_ERM_LIB_A - Pre-programmed Library
-+      DRV260X_ERM_LIB_B - Pre-programmed Library
-+      DRV260X_ERM_LIB_C - Pre-programmed Library
-+      DRV260X_ERM_LIB_D - Pre-programmed Library
-+      DRV260X_ERM_LIB_E - Pre-programmed Library
-+      DRV260X_ERM_LIB_F - Pre-programmed Library
-+      DRV260X_LIB_LRA - Pre-programmed LRA Library
-+    enum: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
-+
-+  enable-gpio:
-+    maxItems: 1
-+    deprecated: true
-+
-+  enable-gpios:
-+    maxItems: 1
-+
-+  vib-rated-mv:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      The rated voltage of the actuator in millivolts.
-+      If this is not set then the value will be defaulted to 3200 mV.
-+    default: 3200
-+
-+  vib-overdrive-mv:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      The overdrive voltage of the actuator in millivolts.
-+      If this is not set then the value will be defaulted to 3200 mV.
-+    default: 3200
-+
-+required:
-+  - compatible
-+  - reg
-+  - enable-gpios
-+  - mode
-+  - library-sel
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/input/ti-drv260x.h>
-+
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        haptics@5a {
-+            compatible = "ti,drv2605l";
-+            reg = <0x5a>;
-+            vbat-supply = <&vbat>;
-+            enable-gpios = <&gpio1 28 GPIO_ACTIVE_HIGH>;
-+            mode = <DRV260X_LRA_MODE>;
-+            library-sel = <DRV260X_LIB_LRA>;
-+            vib-rated-mv = <3200>;
-+            vib-overdrive-mv = <3200>;
-+        };
-+    };
+Adam Skladowski (1):
+  arm64: dts: qcom: msm8953: Add device tree for Xiaomi Redmi Note 4X
+
+Alejandro Tafalla (1):
+  arm64: dts: qcom: msm8953: Add device tree for Xiaomi Mi A2 Lite
+
+Danila Tikhonov (1):
+  arm64: dts: qcom: msm8953: Add device tree for Xiaomi Mi A1
+
+Eugene Lepshy (1):
+  arm64: dts: qcom: msm8953: Add device tree for Xiaomi Redmi 5 Plus
+
+Gabriela David (1):
+  arm64: dts: qcom: sdm632: Add device tree for Motorola G7 Power
+
+Julian Braha (1):
+  arm64: dts: qcom: sdm450: Add device tree for Motorola Moto G6
+
+Luca Weiss (2):
+  dt-bindings: arm: qcom: document new msm8953-family devices
+  arm64: dts: qcom: msm8953: Adjust reserved-memory nodes
+
+Sireesh Kodali (1):
+  arm64: dts: qcom: msm8953: Add device tree for Motorola G5 Plus
+
+ .../devicetree/bindings/arm/qcom.yaml         |  19 +
+ arch/arm64/boot/dts/qcom/Makefile             |   7 +
+ .../boot/dts/qcom/msm8953-motorola-potter.dts | 305 +++++++++++++++
+ .../boot/dts/qcom/msm8953-xiaomi-daisy.dts    | 319 ++++++++++++++++
+ .../boot/dts/qcom/msm8953-xiaomi-mido.dts     | 329 ++++++++++++++++
+ .../boot/dts/qcom/msm8953-xiaomi-tissot.dts   | 319 ++++++++++++++++
+ .../boot/dts/qcom/msm8953-xiaomi-vince.dts    | 358 ++++++++++++++++++
+ arch/arm64/boot/dts/qcom/msm8953.dtsi         |  24 +-
+ .../boot/dts/qcom/sdm450-motorola-ali.dts     | 250 ++++++++++++
+ .../boot/dts/qcom/sdm632-motorola-ocean.dts   | 291 ++++++++++++++
+ 10 files changed, 2209 insertions(+), 12 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8953-motorola-potter.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8953-xiaomi-daisy.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/sdm450-motorola-ali.dts
+ create mode 100644 arch/arm64/boot/dts/qcom/sdm632-motorola-ocean.dts
+
 -- 
 2.38.1
 
