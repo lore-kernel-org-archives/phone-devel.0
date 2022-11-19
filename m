@@ -2,380 +2,130 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DE59C4167D
-	for <phone-devel@archiver.kernel.org>; Sat, 19 Nov 2022 20:39:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F197FC4332F
+	for <phone-devel@archiver.kernel.org>; Sat, 19 Nov 2022 22:12:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234305AbiKSUjt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 19 Nov 2022 15:39:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45374 "EHLO
+        id S233386AbiKSWMm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 19 Nov 2022 17:12:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232895AbiKSUj0 (ORCPT
+        with ESMTP id S230471AbiKSWMl (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 19 Nov 2022 15:39:26 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 847D212D15;
-        Sat, 19 Nov 2022 12:39:25 -0800 (PST)
-Received: from g550jk.arnhem.chello.nl (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id C1282D0669;
-        Sat, 19 Nov 2022 20:38:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1668890332; bh=RBu5ivs0PXuV8OzB5UjAM46bviFF/7UjTHdi44V+KpA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=VLfmu1a7Vvo9Oh+Ulzbyx+n9dpouYg/ntxBI9DhLMiTMP4cYnsL4T7Pxzu6oVCXzJ
-         DRZkq8I9CXJ5Fz0JedIgrZc8KwgOBoQw4PG/2dNnNKyksqKqDSGExDD6scbNC86H+Y
-         nRDQqgzHFb+EWzPcms3LQ6uHT7oMIYXLLhCnhJDM=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Gabriela David <ultracoolguy@disroot.org>,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH v2 9/9] arm64: dts: qcom: sdm632: Add device tree for Motorola G7 Power
-Date:   Sat, 19 Nov 2022 21:37:50 +0100
-Message-Id: <20221119203758.888207-10-luca@z3ntu.xyz>
+        Sat, 19 Nov 2022 17:12:41 -0500
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB46F15805
+        for <phone-devel@vger.kernel.org>; Sat, 19 Nov 2022 14:12:39 -0800 (PST)
+Received: by mail-lf1-x12d.google.com with SMTP id l12so13588997lfp.6
+        for <phone-devel@vger.kernel.org>; Sat, 19 Nov 2022 14:12:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=D5VOb5boGkdAYN6wKDObbKOcC5cfqGCj4Tcvp7hhPw0=;
+        b=F5DfA8zjOi7beeJdVQtVgCup1BtOIitT3erlErg9wAmPCv42ZXpSQnLI84+iykBhXw
+         0MQFsyMUhsDEv+vO8W+4DxirGQcVpNaUzgk6qsb7rS8f+xBUoUdMptcQRzSxVEBYtY9v
+         chwetUJsG8oIFJ8aypQpc3Vt7cvSiy5/efvCAQzhsVTeT1iW8CeiU05lIyTHnCNqHcmr
+         Mwak19tK12UGG0bd30rKm2qhWmu13CVFFOLibvZ0j8MChzbcbU9FLKgZkQAkZtxY1qIi
+         NAakEpbDLAwXSRXeo44aD5v6IPQzOr6qScdTEbjrI40shdUglBhRYRb0FQeiGJXkKoyB
+         86vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=D5VOb5boGkdAYN6wKDObbKOcC5cfqGCj4Tcvp7hhPw0=;
+        b=XQj9HRwuyKz27bTI2kHwQIupvTYwinjJbj35hUgyIWqDMwZ2VQggmLUYy6Ov0wg3kS
+         MEk9nAMUJoYvQ8N3AnHPcR+7xnb4oaENz+6FGXKAK5HehxlXP68Kq22kdS8Gn4jsHXT0
+         qF6cVzRy5k4i3w6HVdwqoX7F2ucKxS0nVGL3+SORWHIbVGaaCgbQBoS54V14SxWOdpTd
+         xEpdSAu0nGJzHgiRdK07oTOh60S2vOGon1pE78dJ6mZ/G21znJdMqauOEsHILyeo3v/t
+         GfwPJW/mjaBkyCgrqUyL+Lx9DAP9+OJmeKLGQ8MjzpM0fkt2N3ZatvXY7Fhi6cLjGYDu
+         N6XA==
+X-Gm-Message-State: ANoB5pni11bxp7xg8FjES+mY90Rrn8PhPnrNr7YUNQ6xQE3/usY4gZwg
+        ZxIqpdkW78/+xhG4/ugsavetig==
+X-Google-Smtp-Source: AA0mqf7MgVPBg/OSTJADJi77bKgVTVEQO6743G5WYfPmcPFNiVsL3ispQYTXT6QXRgKlin6dTwjzcQ==
+X-Received: by 2002:a05:6512:b9a:b0:4ae:611c:6549 with SMTP id b26-20020a0565120b9a00b004ae611c6549mr4843424lfv.231.1668895957890;
+        Sat, 19 Nov 2022 14:12:37 -0800 (PST)
+Received: from Fecusia.lan (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
+        by smtp.gmail.com with ESMTPSA id u3-20020a05651220c300b00496d3e6b131sm1234254lfr.234.2022.11.19.14.12.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Nov 2022 14:12:36 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     linux-crypto@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>
+Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
+        Lionel Debieve <lionel.debieve@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH v1 0/4] crypto: stm32 - reuse for Ux500
+Date:   Sat, 19 Nov 2022 23:12:15 +0100
+Message-Id: <20221119221219.1232541-1-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221119203758.888207-1-luca@z3ntu.xyz>
-References: <20221119203758.888207-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Gabriela David <ultracoolguy@disroot.org>
+Experimenting by taking some small portions of the Ux500
+CRYP driver and adding to the STM32 driver, it turns out
+we can support both platforms with the more modern STM32
+driver.
 
-Add device tree for the Motorola G7 Power (ocean) smartphone. This
-device is based on Snapdragon 632 (sdm632) SoC which is a variant of
-MSM8953.
+Upsides:
 
-Signed-off-by: Gabriela David <ultracoolguy@disroot.org>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
-Changes in v2:
-* address review comments from v1
+- We delete ~2400 lines of code and 8 files with intact
+  crypto support for Ux500 and not properly maintained
+  and supported.
 
- arch/arm64/boot/dts/qcom/Makefile             |   1 +
- .../boot/dts/qcom/sdm632-motorola-ocean.dts   | 291 ++++++++++++++++++
- 2 files changed, 292 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/sdm632-motorola-ocean.dts
+- The STM32 driver is more modern and compact thanks to
+  using things like the crypto engine.
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index 817738043ebd..dda4bd773142 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -131,6 +131,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sdm630-sony-xperia-nile-discovery.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm630-sony-xperia-nile-pioneer.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm630-sony-xperia-nile-voyager.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm632-fairphone-fp3.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= sdm632-motorola-ocean.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm636-sony-xperia-ganges-mermaid.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm660-xiaomi-lavender.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sdm670-google-sargo.dtb
-diff --git a/arch/arm64/boot/dts/qcom/sdm632-motorola-ocean.dts b/arch/arm64/boot/dts/qcom/sdm632-motorola-ocean.dts
-new file mode 100644
-index 000000000000..380a0c49a141
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/sdm632-motorola-ocean.dts
-@@ -0,0 +1,291 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) 2022, Gabriela David
-+ */
-+/dts-v1/;
-+
-+#include "sdm632.dtsi"
-+#include "pm8953.dtsi"
-+#include <dt-bindings/leds/common.h>
-+
-+/delete-node/ &cont_splash_mem;
-+/delete-node/ &qseecom_mem;
-+
-+/ {
-+	model = "Motorola G7 Power";
-+	compatible = "motorola,ocean", "qcom,sdm632";
-+	chassis-type = "handset";
-+	qcom,msm-id = <349 0>;
-+	qcom,board-id = <0x141 0xc100>;
-+	qcom,pmic-id = <0x10016 0x25 0x00 0x00>;
-+
-+	backlight: backlight {
-+		compatible = "led-backlight";
-+		leds = <&led>;
-+	};
-+
-+	chosen {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		framebuffer@90001000 {
-+			compatible = "simple-framebuffer";
-+			reg = <0 0x90001000 0 (720 * 1520 * 3)>;
-+
-+			width = <720>;
-+			height = <1520>;
-+			stride = <(720 * 3)>;
-+			format = "r8g8b8";
-+
-+			power-domains = <&gcc MDSS_GDSC>;
-+
-+			clocks = <&gcc GCC_MDSS_AHB_CLK>,
-+				 <&gcc GCC_MDSS_AXI_CLK>,
-+				 <&gcc GCC_MDSS_VSYNC_CLK>,
-+				 <&gcc GCC_MDSS_MDP_CLK>,
-+				 <&gcc GCC_MDSS_BYTE0_CLK>,
-+				 <&gcc GCC_MDSS_PCLK0_CLK>,
-+				 <&gcc GCC_MDSS_ESC0_CLK>;
-+		};
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&gpio_key_default>;
-+
-+		key-volume-up {
-+			label = "Volume Up";
-+			gpios = <&tlmm 85 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEUP>;
-+		};
-+	};
-+
-+	reserved-memory {
-+		qseecom_mem: qseecom@84300000 {
-+			reg = <0x0 0x84300000 0x0 0x2000000>;
-+			no-map;
-+		};
-+
-+		cont_splash_mem: cont-splash@90001000 {
-+			reg = <0x0 0x90001000 0x0 (720 * 1520 * 3)>;
-+			no-map;
-+		};
-+
-+		reserved@eefa1800 {
-+			reg = <0x00 0xeefa1800 0x00 0x5e800>;
-+			no-map;
-+		};
-+
-+		ramoops@ef000000 {
-+			compatible = "ramoops";
-+			reg = <0x0 0xef000000 0x0 0xbf800>;
-+			console-size = <0x40000>;
-+			pmsg-size = <0x40000>;
-+			record-size = <0x3f800>;
-+		};
-+	};
-+
-+	vph_pwr: vph-pwr-regulator {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vph_pwr";
-+		regulator-always-on;
-+		regulator-boot-on;
-+	};
-+};
-+
-+&hsusb_phy {
-+	vdd-supply = <&pm8953_l3>;
-+	vdda-pll-supply = <&pm8953_l7>;
-+	vdda-phy-dpdm-supply = <&pm8953_l13>;
-+
-+	status = "okay";
-+};
-+
-+&i2c_3 {
-+	status = "okay";
-+
-+	touchscreen@41 {
-+		compatible = "ilitek,ili2117";
-+		reg = <0x41>;
-+
-+		interrupt-parent = <&tlmm>;
-+		interrupts = <65 IRQ_TYPE_EDGE_FALLING>;
-+
-+		touchscreen-inverted-x;
-+	};
-+};
-+
-+&i2c_5 {
-+	status = "okay";
-+
-+	led-controller@36 {
-+		compatible = "ti,lm3697";
-+		reg = <0x36>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led: led@1 {
-+			reg = <1>;
-+			default-trigger = "backlight";
-+			function = LED_FUNCTION_BACKLIGHT;
-+			led-sources = <0 1 2>;
-+		};
-+	};
-+};
-+
-+&pm8953_resin {
-+	linux,code = <KEY_VOLUMEDOWN>;
-+	status = "okay";
-+};
-+
-+&rpm_requests {
-+	regulators {
-+		compatible = "qcom,rpm-pm8953-regulators";
-+
-+		vdd_l1-supply = <&pm8953_s3>;
-+		vdd_l2_l3-supply = <&pm8953_s3>;
-+		vdd_l4_l5_l6_l7_l16_l19-supply = <&pm8953_s4>;
-+		vdd_l8_l11_l12_l13_l14_l15-supply = <&vph_pwr>;
-+		vdd_l9_l10_l17_l18_l22-supply = <&vph_pwr>;
-+
-+		pm8953_s3: s3 {
-+			regulator-min-microvolt = <984000>;
-+			regulator-max-microvolt = <1240000>;
-+		};
-+
-+		pm8953_s4: s4 {
-+			regulator-min-microvolt = <1036000>;
-+			regulator-max-microvolt = <2040000>;
-+		};
-+
-+		pm8953_l1: l1 {
-+			regulator-min-microvolt = <975000>;
-+			regulator-max-microvolt = <1050000>;
-+		};
-+
-+		pm8953_l2: l2 {
-+			regulator-min-microvolt = <975000>;
-+			regulator-max-microvolt = <1175000>;
-+		};
-+
-+		pm8953_l3: l3 {
-+			regulator-min-microvolt = <925000>;
-+			regulator-max-microvolt = <925000>;
-+			regulator-allow-set-load;
-+		};
-+
-+		pm8953_l5: l5 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+		};
-+
-+		pm8953_l6: l6 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+			regulator-always-on;
-+			regulator-boot-on;
-+		};
-+
-+		pm8953_l7: l7 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1900000>;
-+		};
-+
-+		pm8953_l8: l8 {
-+			regulator-min-microvolt = <2900000>;
-+			regulator-max-microvolt = <2900000>;
-+		};
-+
-+		pm8953_l9: l9 {
-+			regulator-min-microvolt = <3000000>;
-+			regulator-max-microvolt = <3300000>;
-+		};
-+
-+		pm8953_l10: l10 {
-+			regulator-min-microvolt = <2800000>;
-+			regulator-max-microvolt = <3000000>;
-+		};
-+
-+		pm8953_l11: l11 {
-+			regulator-min-microvolt = <2950000>;
-+			regulator-max-microvolt = <2950000>;
-+		};
-+
-+		pm8953_l12: l12 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <2950000>;
-+		};
-+
-+		pm8953_l13: l13 {
-+			regulator-min-microvolt = <3125000>;
-+			regulator-max-microvolt = <3125000>;
-+		};
-+
-+		pm8953_l16: l16 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+		};
-+
-+		pm8953_l17: l17 {
-+			regulator-min-microvolt = <2850000>;
-+			regulator-max-microvolt = <2850000>;
-+		};
-+
-+		pm8953_l18: l18 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <2700000>;
-+			regulator-always-on;
-+			regulator-boot-on;
-+		};
-+
-+		pm8953_l19: l19 {
-+			regulator-min-microvolt = <1200000>;
-+			regulator-max-microvolt = <1350000>;
-+		};
-+
-+		pm8953_l22: l22 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+			regulator-always-on;
-+		};
-+
-+		pm8953_l23: l23 {
-+			regulator-min-microvolt = <975000>;
-+			regulator-max-microvolt = <1225000>;
-+		};
-+	};
-+};
-+
-+&sdhc_1 {
-+	vmmc-supply = <&pm8953_l8>;
-+	vqmmc-supply = <&pm8953_l5>;
-+
-+	status = "okay";
-+};
-+
-+&sdhc_2 {
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on &sdc2_cd_on>;
-+	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off &sdc2_cd_off>;
-+
-+	vmmc-supply = <&pm8953_l11>;
-+	vqmmc-supply = <&pm8953_l12>;
-+
-+	status = "okay";
-+};
-+
-+&tlmm {
-+	gpio-reserved-ranges = <96 4>;
-+};
-+
-+&usb3 {
-+	status = "okay";
-+};
-+
-+&usb3_dwc3 {
-+	dr_mode = "peripheral";
-+};
+Caveats:
+
+- The STM32 driver does not support DMA. On the U8500
+  this only works with AES (DES support is broken with
+  DMA). If this is desired to be kept I can migrate
+  it to the STM32 driver as well.
+
+I have looked at doing the same for the Ux500 hash, which
+is related but I am reluctant about this one, because
+the Ux500 hardware has no interrupt and only supports
+polling. I have a series of modernizations for that
+driver that I have worked on and will think about how
+to move forward.
+
+Linus Walleij (4):
+  dt-bindings: crypto: Let STM32 define Ux500 CRYP
+  crypto: stm32 - enable drivers to be used on Ux500
+  crypto: stm32/cryp - enable for use with Ux500
+  crypto: ux500/cryp - delete driver
+
+ .../bindings/crypto/st,stm32-cryp.yaml        |   32 +
+ drivers/crypto/Makefile                       |    2 +-
+ drivers/crypto/stm32/Kconfig                  |    4 +-
+ drivers/crypto/stm32/stm32-cryp.c             |  334 +++-
+ drivers/crypto/ux500/Kconfig                  |   10 -
+ drivers/crypto/ux500/Makefile                 |    1 -
+ drivers/crypto/ux500/cryp/Makefile            |   10 -
+ drivers/crypto/ux500/cryp/cryp.c              |  394 ----
+ drivers/crypto/ux500/cryp/cryp.h              |  315 ----
+ drivers/crypto/ux500/cryp/cryp_core.c         | 1600 -----------------
+ drivers/crypto/ux500/cryp/cryp_irq.c          |   45 -
+ drivers/crypto/ux500/cryp/cryp_irq.h          |   31 -
+ drivers/crypto/ux500/cryp/cryp_irqp.h         |  125 --
+ drivers/crypto/ux500/cryp/cryp_p.h            |  122 --
+ 14 files changed, 315 insertions(+), 2710 deletions(-)
+ delete mode 100644 drivers/crypto/ux500/cryp/Makefile
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp.c
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp.h
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp_core.c
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp_irq.c
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp_irq.h
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp_irqp.h
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp_p.h
+
 -- 
 2.38.1
 
