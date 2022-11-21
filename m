@@ -2,180 +2,99 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 284ABC433FE
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Nov 2022 17:07:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FD97C4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Nov 2022 21:22:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230305AbiKURHR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 21 Nov 2022 12:07:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57172 "EHLO
+        id S231318AbiKUVWm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Nov 2022 16:22:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230438AbiKURHL (ORCPT
+        with ESMTP id S229695AbiKUVWl (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 21 Nov 2022 12:07:11 -0500
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9CF3CB9F7
-        for <phone-devel@vger.kernel.org>; Mon, 21 Nov 2022 09:07:07 -0800 (PST)
-Received: by mail-lj1-x232.google.com with SMTP id z24so15216244ljn.4
-        for <phone-devel@vger.kernel.org>; Mon, 21 Nov 2022 09:07:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rJQWLAZ4mdjMtlFjO7Mbh6mixzKo427eR1BTd1zJu8w=;
-        b=xm7lgVvTD8LiKUqo3lDgCROpVlzaUp5xR5oj/uRiSHOTCPkwI4ffK97ZDk4rAoIAHu
-         fVz6Lld5vc+StslDX8RTWnty/GGnaFYtvbJRFiPzzJ5l6tT7PfRlFKjNMcq4Qnuf+Oid
-         dbsUBp92BrrHS4gsjNnaBqtxcpyNJQv1bYODwQ6DqeE/cy4x/sfwOmwVeNUqZlUkACsO
-         Gr4GIZdS17SkCPci1YrZxAtXxJqTkk+gSJm99H92s4uJTlkg1OQ5o9MTpiGWoaSD6Xsf
-         6LETMkR8MSmJ72+cpP9MGYtzd8x3+5/LZKtPqxzCcKk+L2NVJJMUNb8h0xX4hzo9Jggx
-         hPwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rJQWLAZ4mdjMtlFjO7Mbh6mixzKo427eR1BTd1zJu8w=;
-        b=m8SOQ/Ltc5KQhT6wvXnjyJmmbbDVpwRw7cyOuFqbNIpcbPNbtcg0Hipo0CQCLLEIYJ
-         K8emHijA9Le+0y6F9ChOWeLQVBeHGfrhGvfXqYb1+3i3i3TL6h+zUpRDQZ+iulJvNBIs
-         aN/mai5YisNnTyPEuaoBvQUZQd4U6E6zNHmPaNEoQ/2FX8BpI0n2umy3EPI18TKQ3oA1
-         iHOzMFx/r8fZfyC2ul/dyAkZ2UigxAxQpRrK4MLd7TtP/GmA51s29HfKt68safNUp3Vw
-         HOCIc787TMmRm186D/RgKL3ZxaJdzPSV59+aXlIIVpqcMGk9Puz/Ak2LWMAiPPRuQvMj
-         RT/w==
-X-Gm-Message-State: ANoB5pktr+CU+2mm+uxDrJmkbpjW5POyRFRRBXoR6j1j3JloptbSJ8in
-        w7H27Z3miyxPHkWnNDwckhdoQg==
-X-Google-Smtp-Source: AA0mqf6h+6xPI2dxU9CA3hVBJILkn7hxLyyKv1N7KNTixcKNfyb9AQn+ztPktj067WOaqKu+Ldpt/Q==
-X-Received: by 2002:a05:651c:205:b0:26c:5e3a:44d7 with SMTP id y5-20020a05651c020500b0026c5e3a44d7mr6573052ljn.471.1669050426022;
-        Mon, 21 Nov 2022 09:07:06 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id v10-20020a2e87ca000000b0027712379ec8sm1552281ljj.28.2022.11.21.09.07.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Nov 2022 09:07:05 -0800 (PST)
-Message-ID: <1419e9da-98f7-c477-9f07-4b54e82be4c4@linaro.org>
-Date:   Mon, 21 Nov 2022 18:07:04 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH 1/8] dt-bindings: power: supply: Add DT schema for
- Qualcomm SMBCHG
-Content-Language: en-US
-To:     Yassine Oudjana <yassine.oudjana@gmail.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
+        Mon, 21 Nov 2022 16:22:41 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CDCEDF53;
+        Mon, 21 Nov 2022 13:22:38 -0800 (PST)
+Received: from g550jk.arnhem.chello.nl (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 2227ECABCB;
+        Mon, 21 Nov 2022 21:22:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1669065756; bh=icGbgsxy1HEPQOcedMSGJbJlERu4+bC9CJp6D7yq+dM=;
+        h=From:To:Cc:Subject:Date;
+        b=whpoVQvD0ToIFInww8OxeGCeBHay+QtHzZAV8iFIoH1y345uUQClZlQ50NDOp1Jvx
+         wpIMUG87QkwFplSDVe6XbVmodEksvT/rx1n7l9DDSC+NHOQMYZT1lQ7UeVfobNUsO+
+         Z65OM9TjzLGl00Ik+x3rs6h0vALJvVq2HB8MJtk4=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Alejandro Tafalla <atafalla@dnyon.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Yassine Oudjana <y.oudjana@protonmail.com>
-References: <20221120154625.57095-1-y.oudjana@protonmail.com>
- <795deac4-71fe-d40b-a3b6-855eb3875ad1@linaro.org>
- <1H1PLR.S9UFOHIJCU6S@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <1H1PLR.S9UFOHIJCU6S@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] ARM: dts: msm8974: castor: Define pm8841 regulators
+Date:   Mon, 21 Nov 2022 22:22:25 +0100
+Message-Id: <20221121212226.321514-1-luca@z3ntu.xyz>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 21/11/2022 11:36, Yassine Oudjana wrote:
-> 
-> On Mon, Nov 21 2022 at 09:26:59 +01:00:00, Krzysztof Kozlowski 
-> <krzysztof.kozlowski@linaro.org> wrote:
->> On 20/11/2022 16:46, Yassine Oudjana wrote:
->>>>>  +  interrupts:
->>>>>  +    items:
->>>>>  +      - description: Charger error
->>>>>  +      - description: Charger inhibited
->>>>>  +      - description: Charger precharge safety timer timeout
->>>>>  +      - description: Charger charge safety timer timeout
->>>>>  +      - description: Charger pre to fast charging switch 
->>>>> threshold reached
->>>>>  +      - description: Charger recharge threshold reached
->>>>>  +      - description: Charger taper threshold reached
->>>>>  +      - description: Charger charge termination threshold reached
->>>>>  +      - description: Battery hot
->>>>>  +      - description: Battery warm
->>>>>  +      - description: Battery cold
->>>>>  +      - description: Battery cool
->>>>>  +      - description: Battery overvoltage
->>>>>  +      - description: Battery low
->>>>>  +      - description: Battery missing
->>>>>  +      - description: Battery thermistor missing # unconfirmed
->>>>>  +      - description: USB input undervolt
->>>>>  +      - description: USB input overvolt
->>>>>  +      - description: USB input source detected
->>>>>  +      - description: OTG regulator failure
->>>>>  +      - description: OTG regulator overcurrent
->>>>>  +      - description: Automatic input current limiting done
->>>>>  +      - description: USB ID pin changed
->>>>>  +      - description: DC input undervolt
->>>>>  +      - description: DC input overvolt
->>>>>  +      - description: Power OK
->>>>>  +      - description: Temperature shutdown
->>>>>  +      - description: Watchdog timeout
->>>>>  +      - description: Flash failure
->>>>>  +      - description: OTST2 # unknown
->>>>>  +      - description: OTST3 # unknown
->>>>
->>>>  It seems you listed register interrupts, not physical pins. This 
->>>> should
->>>>  be interrupt lines.
->>>
->>>  I'm not sure what I'm supposed to do here. I couldn't find an 
->>> interrupt-lines
->>>  property used anywhere so that's not what you meant, right?
->>
->> Are these physical interrupt lines this device has, register offsets 
->> or
->> virtual interrupts (e.g. passed via irq_chip)? Definitely not the 
->> first
->> and rather offsets for qpnpint_irq_domain_translate. Devicetree is not
->> for describing register layout of devices. IOW, register layout does 
->> not
->> change on different boards, because the device is exactly the same, so
->> there is no point to put it into DTS.
->>
-> 
-> So how would I describe the interrupts then? Or if you are saying I 
-> shouldn't have these interrupts in DT at all, how would I get them and 
-> register handlers for them in the driver? the PMIC arbiter takes 4 
-> interrupt cells, 3 of which are these offsets specifying the peripheral 
-> and interrupt. All other PMIC peripherals currently described in DT 
-> (examples being qcom,pm8916-wcd-analog-codec, qcom,pm8941-pwrkey and 
-> qcom-wled) have their interrupts (if any) described this way, with the 
-> only exceptions perhaps being the GPIO and MPP controllers which are 
-> themselves interrupt controllers. Changing the way PMIC peripheral 
-> interrupts are described would require changing PMIC arbiter bindings 
-> and code which I believe is out of the scope of this patch series.
+From: Bjorn Andersson <bjorn.andersson@linaro.org>
 
-I don't think this would touch PMIC arbiter bindings, rather the PMIC
-itself. Usually complex devices (like PMICs) have one few physical
-interrupt lines and many registers related to some specific interrupts.
-For example:
-1. One IRQ line,
-2. Register with bits for overvoltage, undervoltage, vharger error etc.
+Define the pm8841 regulators under SMD/RPM, to allow the modem
+remoteproc to set the voltage during boot of the remote processor.
 
-Now how the MFD child device accesses them. Since this is strictly
-related to hardware programming model, it's not something you put to
-Devicetree. Instead parent device (PMIC) registers IRQ chip for its one
-interrupt line with several Linux (or virtual) interrupts. The children
-then just get a virtual IRQ from the parent (PMIC) and setup a
-handler(s) for them.
+Entries are just copied from the Honami dts.
 
-You will find some examples for this, just grep for regmap_irq_get_virq,
-for the drivers using regmap_irq_chip (or irq_create_mapping for
-non-regmaps).
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Changes in v2:
+* new patch in this series
 
-Since it is *one* device - the PMIC and its child like charger - the
-register layout is fixed thus I think these virtual (or Linux)
-interrupts are fixed as well.
+ ...-msm8974pro-sony-xperia-shinano-castor.dts | 24 +++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-I don't know why Qualcomm PMIC for SPMI is done differently.
-
-Best regards,
-Krzysztof
+diff --git a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+index 3f45f5c5d37b..2c33f84a6e4e 100644
+--- a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
++++ b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+@@ -319,6 +319,30 @@ led@7 {
+ };
+ 
+ &rpm_requests {
++	pm8841-regulators {
++		compatible = "qcom,rpm-pm8841-regulators";
++
++		pm8841_s1: s1 {
++			regulator-min-microvolt = <675000>;
++			regulator-max-microvolt = <1050000>;
++		};
++
++		pm8841_s2: s2 {
++			regulator-min-microvolt = <500000>;
++			regulator-max-microvolt = <1050000>;
++		};
++
++		pm8841_s3: s3 {
++			regulator-min-microvolt = <500000>;
++			regulator-max-microvolt = <1050000>;
++		};
++
++		pm8841_s4: s4 {
++			regulator-min-microvolt = <500000>;
++			regulator-max-microvolt = <1050000>;
++		};
++	};
++
+ 	pm8941-regulators {
+ 		compatible = "qcom,rpm-pm8941-regulators";
+ 
+-- 
+2.38.1
 
