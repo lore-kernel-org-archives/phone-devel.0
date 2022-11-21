@@ -2,171 +2,96 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E9441C4332F
-	for <phone-devel@archiver.kernel.org>; Sun, 20 Nov 2022 15:47:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EDA73C43217
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Nov 2022 07:54:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229641AbiKTPrc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 20 Nov 2022 10:47:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52728 "EHLO
+        id S229878AbiKUHyg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Nov 2022 02:54:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbiKTPra (ORCPT
+        with ESMTP id S229990AbiKUHyT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 20 Nov 2022 10:47:30 -0500
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 792C1F21;
-        Sun, 20 Nov 2022 07:47:27 -0800 (PST)
-Received: by mail-wr1-x42f.google.com with SMTP id d1so4385351wrs.12;
-        Sun, 20 Nov 2022 07:47:27 -0800 (PST)
+        Mon, 21 Nov 2022 02:54:19 -0500
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A5126B9DA
+        for <phone-devel@vger.kernel.org>; Sun, 20 Nov 2022 23:54:06 -0800 (PST)
+Received: by mail-ej1-x634.google.com with SMTP id vv4so17266214ejc.2
+        for <phone-devel@vger.kernel.org>; Sun, 20 Nov 2022 23:54:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=phxWAWN6RFOZILWUELs+CtSL4mhtXipbV6LGQCU4x9A=;
-        b=Zk/hEWohRKl7NoWnQIqZa6QSrvfeaOITUdtB2WBO/h9tt/JjVWHH+dXSsIlHPujtWJ
-         7bR60K9/aYLtgsFdsxpra004l8GRUpsqlWK+nWEWWUFsU41bkjrx2Flxr+7VnY3TQJhf
-         c4m9fynDD6V4oblVuKDivJIFBwN3SW/BoTxfdtJcTC75r1hmuuRbNAW80J5AnI4T78sV
-         LBmAodvRoEuXAtkih0nlfIWaiv5OXEspQWUzbCF+ifqla9XTKJ5SImNXJnqJrwwmTgzu
-         f19i653b/g0Ks/BNn6Mg5K+VXBVe5XK8VMruWgpf487Vs5k8OWbfZ5lBvh8QLuZNH+8g
-         zb6A==
+        d=fairphone.com; s=fair;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GT9ErDbClBtlo66hqT2klzySCTqQIgR/TIVfNl1Gg+Y=;
+        b=O8QBYlAGTTApUL6TLXRC+RdaXgjr6tjZq/PDzzK6ry8Y4u+YJOmeMB5Bn7NTt1qSBi
+         Fukr5kVtdZ4oP8jT3o5Y4ig2M23vgoSWxqsEKX17jKqWA1nakj+jDvHCYj3zVMtgXt4L
+         6w3BeLQUjC/HSQg6TnRYqaWM1WO8NI8d0YViYJ+vy0UvKzyKtMySsWpp99tt08PwS7Vh
+         0/xED8W60TuQkxU12/G2BNND3IPn28OjtYxeXPDUHtbs4zYNN81rhzun5rLMy8kSU1GK
+         QygY7zjiZdOTBVHWAttgYDOf2YlF1/SdqxTmuvWrr2LRwf4fhLC8LAIsuE8j8fh1D7Fu
+         RzQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=phxWAWN6RFOZILWUELs+CtSL4mhtXipbV6LGQCU4x9A=;
-        b=HxKbgLh5IAS51w14Xu+TIQ2uHJxgA+0VKw50PneCdj046vLxthGvv/Wxt3AvQlCpd1
-         gxCAp5Ww3dHury5SzUjHYTNYkXI8NTiE9UsDJtKZZ+9lHdaTX9tdU8QRJpRIXhp5ImaH
-         fhrtJmMyiHMKhTg2PjiR9ATbKfkN+/EtEb7cjVt+zhYR4OAHhUOqz115F5dH4ANzR1Ke
-         Lipo3VQqn9ylzlNTd1Ycd6GUIYIwiQkUwS93WWpNTofaETbtQmDq+f3EWG2vbePmVRIs
-         rn3uXCX0w1yVIj2eTtdFiQRjBMSH8PH6pjqSCnh7oROEmqlPNeanMSUiyna5t9sR4muZ
-         F0bw==
-X-Gm-Message-State: ANoB5pnKS9cmS3I0imBLSB7kvC2wfSgsW3CDjzmmk/ckgjyiibhWH9lU
-        cI42GH5kCqbqKpBzTmnBiVid5+gE07g=
-X-Google-Smtp-Source: AA0mqf6xnkqQnQfUHctZhRxImHLViJZZuZz2Od3ef/eFyMFibOUIOsiLnK2/7A3TVpH1AhbmXGnw3A==
-X-Received: by 2002:adf:ff83:0:b0:236:6824:c227 with SMTP id j3-20020adfff83000000b002366824c227mr9131970wrr.510.1668959245848;
-        Sun, 20 Nov 2022 07:47:25 -0800 (PST)
-Received: from localhost.localdomain ([95.183.227.98])
-        by smtp.gmail.com with ESMTPSA id e18-20020adfdbd2000000b0022da3977ec5sm8974094wrj.113.2022.11.20.07.47.23
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GT9ErDbClBtlo66hqT2klzySCTqQIgR/TIVfNl1Gg+Y=;
+        b=I4yWJZBCv2sETnIgKpsDDpZnN6W4riKlo0+k1ZaCZKR2zCZpGczf2e2es2Rskhvbrc
+         Tjf7ezSRy09ZsPNn+BSIMlgwcFJx9KQx43XRVMpQbiUZBhaCsEdBPRJbqHuymbBQ9Oge
+         sh9MeofFZmOzjJZz+W73P8Iv62DoEjoi/AoJFgGSESCLF68RaLO2OX8XPxeUrSy9F4xd
+         ibXwIhhNGWDmYckwq8wzOwHJSCYLiox7M/RrDuBhHaig7KUver+lvp2SWPXrifrxvu+W
+         Pfk1WVCDGae8c1zF02VVaXyaqhjgFo4pfIUHak1oE9YN9W8H+x++bMuE+NxLxzdnBRT6
+         MS/Q==
+X-Gm-Message-State: ANoB5pn2EYeyK63DXgkS5rnXm2qG/n0dLVu+wzEXWnscBzvHz/gMclkM
+        9/9L+0u2G2raOrJv+3OPmcEKvQ==
+X-Google-Smtp-Source: AA0mqf62uSlXNxPTJw3z57ahsIMBOuTXwZwsI5C/DqMRrKONDTY65VHgWF2pcKCOJRSKeBBt/r1gHA==
+X-Received: by 2002:a17:906:2804:b0:78d:e7c0:a2b with SMTP id r4-20020a170906280400b0078de7c00a2bmr14766006ejc.273.1669017244575;
+        Sun, 20 Nov 2022 23:54:04 -0800 (PST)
+Received: from otso.. (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id o11-20020a170906860b00b007ad4a555499sm4700805ejx.204.2022.11.20.23.54.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Nov 2022 07:47:25 -0800 (PST)
-From:   Yassine Oudjana <yassine.oudjana@gmail.com>
-X-Google-Original-From: Yassine Oudjana <y.oudjana@protonmail.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Sebastian Reichel <sre@kernel.org>,
+        Sun, 20 Nov 2022 23:54:04 -0800 (PST)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Alejandro Tafalla <atafalla@dnyon.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Yassine Oudjana <yassine.oudjana@gmail.com>,
-        Yassine Oudjana <y.oudjana@protonmail.com>
-Subject: Re: [PATCH 1/8] dt-bindings: power: supply: Add DT schema for Qualcomm SMBCHG
-Date:   Sun, 20 Nov 2022 18:46:26 +0300
-Message-Id: <20221120154625.57095-1-y.oudjana@protonmail.com>
+        Wesley Cheng <quic_wcheng@quicinc.com>,
+        linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 1/3] dt-bindings: phy: qcom,qmp-usb3-dp: Add sm6350 compatible
+Date:   Mon, 21 Nov 2022 08:53:55 +0100
+Message-Id: <20221121075358.76582-1-luca.weiss@fairphone.com>
 X-Mailer: git-send-email 2.38.1
-In-Reply-To: <dfaf7a35-25bb-8201-42bc-73ca280fcb69@linaro.org>
-References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 8 Aug 2022 11:42:34 +0300, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> On 08/08/2022 10:34, Yassine Oudjana wrote:
-> > From: Yassine Oudjana <y.oudjana@protonmail.com>
-> > 
-> > Add DT schema for the switch-mode battery charger found on Qualcomm
-> > PMICs such as PMI8994. Due to lack of documentation, some interrupt
-> > descriptions might be inaccurate.
-> > 
-> > Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
-> > ---
-> >  .../bindings/power/supply/qcom,smbchg.yaml    | 205 ++++++++++++++++++
-> >  MAINTAINERS                                   |   8 +
-> >  2 files changed, 213 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/power/supply/qcom,smbchg.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/power/supply/qcom,smbchg.yaml b/Documentation/devicetree/bindings/power/supply/qcom,smbchg.yaml
-> > new file mode 100644
-> > index 000000000000..d825a9c10b3e
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/power/supply/qcom,smbchg.yaml
-> > @@ -0,0 +1,205 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only or BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/power/supply/qcom,smbchg.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Qualcomm PMIC Switch-Mode Battery Charger
-> > +
-> > +maintainers:
-> > +  - Yassine Oudjana <y.oudjana@protonmail.com>
-> > +  - Alejandro Tafalla <atafalla@dnyon.com>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - qcom,pmi8994-smbchg
-> > +      - qcom,pmi8996-smbchg
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  monitored-battery:
-> > +    description: |
-> > +      phandle of battery characteristics node.
-> > +      The charger uses the following properties:
-> > +      - charge-term-current-microamp
-> > +      - constant-charge-current-max-microamp
-> > +      - voltage-max-design-microvolt
-> > +      The constant-charge-current-max-microamp and voltage-max-design-microvolt
-> > +      properties must be set.
-> > +      See Documentation/devicetree/bindings/power/supply/battery.yaml
-> > +
-> > +  interrupts:
-> > +    items:
-> > +      - description: Charger error
-> > +      - description: Charger inhibited
-> > +      - description: Charger precharge safety timer timeout
-> > +      - description: Charger charge safety timer timeout
-> > +      - description: Charger pre to fast charging switch threshold reached
-> > +      - description: Charger recharge threshold reached
-> > +      - description: Charger taper threshold reached
-> > +      - description: Charger charge termination threshold reached
-> > +      - description: Battery hot
-> > +      - description: Battery warm
-> > +      - description: Battery cold
-> > +      - description: Battery cool
-> > +      - description: Battery overvoltage
-> > +      - description: Battery low
-> > +      - description: Battery missing
-> > +      - description: Battery thermistor missing # unconfirmed
-> > +      - description: USB input undervolt
-> > +      - description: USB input overvolt
-> > +      - description: USB input source detected
-> > +      - description: OTG regulator failure
-> > +      - description: OTG regulator overcurrent
-> > +      - description: Automatic input current limiting done
-> > +      - description: USB ID pin changed
-> > +      - description: DC input undervolt
-> > +      - description: DC input overvolt
-> > +      - description: Power OK
-> > +      - description: Temperature shutdown
-> > +      - description: Watchdog timeout
-> > +      - description: Flash failure
-> > +      - description: OTST2 # unknown
-> > +      - description: OTST3 # unknown
-> 
-> It seems you listed register interrupts, not physical pins. This should
-> be interrupt lines.
+Add the compatible describing the combo phy found on SM6350.
 
-I'm not sure what I'm supposed to do here. I couldn't find an interrupt-lines
-property used anywhere so that's not what you meant, right?
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ Documentation/devicetree/bindings/phy/qcom,qmp-usb3-dp-phy.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/phy/qcom,qmp-usb3-dp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,qmp-usb3-dp-phy.yaml
+index 97a7ecafbf85..68aecb638870 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,qmp-usb3-dp-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,qmp-usb3-dp-phy.yaml
+@@ -18,6 +18,7 @@ properties:
+       - qcom,sc8180x-qmp-usb3-dp-phy
+       - qcom,sc8280xp-qmp-usb43dp-phy
+       - qcom,sdm845-qmp-usb3-dp-phy
++      - qcom,sm6350-qmp-usb3-dp-phy
+       - qcom,sm8250-qmp-usb3-dp-phy
+   reg:
+     items:
+-- 
+2.38.1
 
