@@ -2,136 +2,123 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06C87C433FE
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Nov 2022 22:32:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5088FC433FE
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Nov 2022 22:41:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231959AbiKUWcn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 21 Nov 2022 17:32:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41650 "EHLO
+        id S229676AbiKUWlf convert rfc822-to-8bit (ORCPT
+        <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Nov 2022 17:41:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231961AbiKUWce (ORCPT
+        with ESMTP id S229618AbiKUWlf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 21 Nov 2022 17:32:34 -0500
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08CFEE0687
-        for <phone-devel@vger.kernel.org>; Mon, 21 Nov 2022 14:32:25 -0800 (PST)
-Received: by mail-lj1-x22d.google.com with SMTP id z24so16053633ljn.4
-        for <phone-devel@vger.kernel.org>; Mon, 21 Nov 2022 14:32:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=72FmKroozXGXFSVLROV37Pyi3BIUygUiEj+6BEtiieE=;
-        b=VzpwF/89nL23FzIZrtNY0j/sND6WP6P4LEOFXwtY6GDuh87OXSBK1wbA+TlZW+Q62S
-         7h7EOU+lgbtfZgWhZNjE4yA3rOWmw9u+ES/TAGBWgJxqRkoh0sXCXeGJ9n2whom5Pr57
-         IOrGgMwjVCniSQy5l+R7MPQa+Zs7kgDG1jhee83rMVoIDoSHfos/DtUJgy0E3sqc99pi
-         Li+hkC7cU2XzECQhlBphW/KloGC10GgBsYOQ7fqV5xXhc9MaPZSCseXAzj/vq1DmmNzu
-         SUIBdqyyjGv3mBk2IDfaCE9AyWHqGXg4Fb8bZsFpW1FjaKPTuN8ZAp0Tsi0tYD1A6Na1
-         k26Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=72FmKroozXGXFSVLROV37Pyi3BIUygUiEj+6BEtiieE=;
-        b=A29wRicZSDlTyx18oeK5/HiRSOhnsjXwBKGW4ytQNnXU/1of5A7E2I/enr5kjRoUnh
-         GXhxTH38SnpwUf6TtBeZYBXuCf+L4tMGzNgPXa8ROXjnHtKAXlWdDX2GYFodQFAICT31
-         VQXtR0xmlGnlA+Ug/XNDjsfOKL9bVboPzpwqve1+TfYy8WxtV4aAkFDC/ve1eBzWxv0e
-         aGhAgGgmSLkfMDjeffjtPT6aXs9BxkL5D3RU4f0jmOMVzr/uP+Xunjb08bNfMCNsNpJg
-         anhmcX8rk+w/z04NTvSwBb5zKVM/HPI+scnqgAa/OhjKZ4k4fb0QyE4pqaR62wvCOxgn
-         Lruw==
-X-Gm-Message-State: ANoB5pmtqlEBs6FniNZ3azmSWXqX6Ez5GGbkqugoFWDHy6MVJItoUiZa
-        iSHutrSDKj9C3iAdVWZbs6sP9A==
-X-Google-Smtp-Source: AA0mqf4eOQvprEGtE4HcBGCWu5pBQWUfsa1hwG9jDC5PPbV7mAO6uruXGJQJNbhDE08533P3egx25w==
-X-Received: by 2002:a05:651c:c8b:b0:277:f8b:bb4f with SMTP id bz11-20020a05651c0c8b00b002770f8bbb4fmr724534ljb.161.1669069944003;
-        Mon, 21 Nov 2022 14:32:24 -0800 (PST)
-Received: from [192.168.1.101] (95.49.32.48.neoplus.adsl.tpnet.pl. [95.49.32.48])
-        by smtp.gmail.com with ESMTPSA id e15-20020ac24e0f000000b00498fc3d4d15sm2186894lfr.190.2022.11.21.14.32.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Nov 2022 14:32:23 -0800 (PST)
-Message-ID: <c6f52e13-3692-5739-eabd-550936f34bed@linaro.org>
-Date:   Mon, 21 Nov 2022 23:32:22 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v2 1/2] ARM: dts: msm8974: castor: Define pm8841
- regulators
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Andy Gross <agross@kernel.org>,
+        Mon, 21 Nov 2022 17:41:35 -0500
+X-Greylist: delayed 342 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 21 Nov 2022 14:41:34 PST
+Received: from relay02.th.seeweb.it (relay02.th.seeweb.it [5.144.164.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 501ECB9614
+        for <phone-devel@vger.kernel.org>; Mon, 21 Nov 2022 14:41:34 -0800 (PST)
+Received: from [127.0.0.1] (bband-dyn193.178-41-216.t-com.sk [178.41.216.193])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 8150C1F8A5;
+        Mon, 21 Nov 2022 23:35:48 +0100 (CET)
+Date:   Mon, 21 Nov 2022 23:35:46 +0100
+From:   Martin Botka <martin.botka@somainline.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org
+CC:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Vinod Koul <vkoul@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221121212226.321514-1-luca@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20221121212226.321514-1-luca@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_drm/msm/dpu=3A_Print_inte?= =?US-ASCII?Q?rrupt_index_in_addition_to_the_mask?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20221121222456.437815-1-marijn.suijten@somainline.org>
+References: <20221121222456.437815-1-marijn.suijten@somainline.org>
+Message-ID: <60E46E34-763F-4D03-B0CC-70B5A8AA660D@somainline.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
 
-On 21.11.2022 22:22, Luca Weiss wrote:
-> From: Bjorn Andersson <bjorn.andersson@linaro.org>
+On November 21, 2022 11:24:55 PM GMT+01:00, Marijn Suijten <marijn.suijten@somainline.org> wrote:
+>The mask only describes the `irq_idx % 32` part, making it generally
+>impossible to deduce what interrupt is being enabled/disabled.  Since
+>`debug/core_irq` in debugfs (and other prints) also include the full
+>`DPU_IRQ_IDX()` value, print the same full value here for easier
+>correlation instead of only adding the `irq_idx / 32` part.
+>
+>Furthermore, make the dbgstr messages more consistent.
+>
+>Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+>---
+> drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c | 12 ++++++------
+> 1 file changed, 6 insertions(+), 6 deletions(-)
+>
+>diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
+>index cf1b6d84c18a..64589a9c2c51 100644
+>--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
+>+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
+>@@ -252,9 +252,9 @@ static int dpu_hw_intr_enable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
 > 
-> Define the pm8841 regulators under SMD/RPM, to allow the modem
-> remoteproc to set the voltage during boot of the remote processor.
+> 	cache_irq_mask = intr->cache_irq_mask[reg_idx];
+> 	if (cache_irq_mask & DPU_IRQ_MASK(irq_idx)) {
+>-		dbgstr = "DPU IRQ already set:";
+>+		dbgstr = "already ";
+> 	} else {
+>-		dbgstr = "DPU IRQ enabled:";
+>+		dbgstr = "";
 > 
-> Entries are just copied from the Honami dts.
-I hope it was supposed to be "identical to" and not "copied and hoped it
-would be ok" :/
+> 		cache_irq_mask |= DPU_IRQ_MASK(irq_idx);
+> 		/* Cleaning any pending interrupt */
+>@@ -268,7 +268,7 @@ static int dpu_hw_intr_enable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
+> 		intr->cache_irq_mask[reg_idx] = cache_irq_mask;
+> 	}
+> 
+>-	pr_debug("%s MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", dbgstr,
+>+	pr_debug("DPU IRQ %d %senabled: MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", irq_idx, dbgstr,
+> 			DPU_IRQ_MASK(irq_idx), cache_irq_mask);
+> 
+> 	return 0;
+>@@ -301,9 +301,9 @@ static int dpu_hw_intr_disable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
+> 
+> 	cache_irq_mask = intr->cache_irq_mask[reg_idx];
+> 	if ((cache_irq_mask & DPU_IRQ_MASK(irq_idx)) == 0) {
+>-		dbgstr = "DPU IRQ is already cleared:";
+>+		dbgstr = "already ";
+> 	} else {
+>-		dbgstr = "DPU IRQ mask disable:";
+>+		dbgstr = "";
+> 
+> 		cache_irq_mask &= ~DPU_IRQ_MASK(irq_idx);
+> 		/* Disable interrupts based on the new mask */
+>@@ -317,7 +317,7 @@ static int dpu_hw_intr_disable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
+> 		intr->cache_irq_mask[reg_idx] = cache_irq_mask;
+> 	}
+> 
+>-	pr_debug("%s MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", dbgstr,
+>+	pr_debug("DPU IRQ %d %sdisabled: MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", irq_idx, dbgstr,
+> 			DPU_IRQ_MASK(irq_idx), cache_irq_mask);
+> 
+> 	return 0;
 
-Maybe I'm a bit picky, but I suppose this is said in a misleading way..
+Looks good to me.
 
-Konrad
-> 
-> Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-> Changes in v2:
-> * new patch in this series
-> 
->  ...-msm8974pro-sony-xperia-shinano-castor.dts | 24 +++++++++++++++++++
->  1 file changed, 24 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-> index 3f45f5c5d37b..2c33f84a6e4e 100644
-> --- a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-> +++ b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-> @@ -319,6 +319,30 @@ led@7 {
->  };
->  
->  &rpm_requests {
-> +	pm8841-regulators {
-> +		compatible = "qcom,rpm-pm8841-regulators";
-> +
-> +		pm8841_s1: s1 {
-> +			regulator-min-microvolt = <675000>;
-> +			regulator-max-microvolt = <1050000>;
-> +		};
-> +
-> +		pm8841_s2: s2 {
-> +			regulator-min-microvolt = <500000>;
-> +			regulator-max-microvolt = <1050000>;
-> +		};
-> +
-> +		pm8841_s3: s3 {
-> +			regulator-min-microvolt = <500000>;
-> +			regulator-max-microvolt = <1050000>;
-> +		};
-> +
-> +		pm8841_s4: s4 {
-> +			regulator-min-microvolt = <500000>;
-> +			regulator-max-microvolt = <1050000>;
-> +		};
-> +	};
-> +
->  	pm8941-regulators {
->  		compatible = "qcom,rpm-pm8941-regulators";
->  
+Reviewed-by: Martin Botka <martin.botka@somainline.org>
