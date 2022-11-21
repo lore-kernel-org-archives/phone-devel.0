@@ -2,95 +2,93 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86F93C433FE
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Nov 2022 14:00:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85166C43217
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Nov 2022 14:09:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229666AbiKUOAt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 21 Nov 2022 09:00:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38630 "EHLO
+        id S229802AbiKUOJf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Nov 2022 09:09:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231441AbiKUOAf (ORCPT
+        with ESMTP id S229814AbiKUOJQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 21 Nov 2022 09:00:35 -0500
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30D8167F9
-        for <phone-devel@vger.kernel.org>; Mon, 21 Nov 2022 06:00:33 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id k84so13678112ybk.3
-        for <phone-devel@vger.kernel.org>; Mon, 21 Nov 2022 06:00:33 -0800 (PST)
+        Mon, 21 Nov 2022 09:09:16 -0500
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96938C9A95
+        for <phone-devel@vger.kernel.org>; Mon, 21 Nov 2022 06:05:56 -0800 (PST)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-3a7081e3b95so10128407b3.1
+        for <phone-devel@vger.kernel.org>; Mon, 21 Nov 2022 06:05:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=g/D0Lm1KS+Ja4fWDh0HXcyKEC5n+mGQEJvv8NjLbp6E=;
-        b=mhsRCNIgoJwDgD7wijpmV/cC4SffsmqvWCtN5JEXBAGW4nbz9TGNqM0DPZp4Tm/MtP
-         cxjFhE4aajYdpQkWio3/w/PgSr2WqWe74bfpHjJU1+CXfm85RzosdHw6S6wALtWqBth4
-         G3CSVmekmy4tfkBP3Z4btTcb4AcAlsfHpIGPZhNtOjptjvbdcEjQq/HRUPoAPEDyoLkX
-         JxHIeHrfYoUEDZUDtnns+ujIaNSR4B8QNkZyXrM3PmfJsWnd/zWs/rObL7+fH0I0OUYQ
-         xnqtpGFWSUq1JuYXzvUmuaSirKuw6jPWBfu9TElSHBUUAwOvJr7aJwlYow3d0XFjs9wj
-         7Zgg==
+        bh=aNnRafn2Fe3woBngEtfiMVRe//+9fMOX4/niIs93zPU=;
+        b=GqFPnWzRXaVFmPPMpBibORf6Ck5eaQEZchbGXmr8J8iv1mrebP9apgA8SqlaavFZwZ
+         tfwNs6yLrp4cvwrlm3HaQAAJoUa8XsncrZMbk1MSQwfHw1YLejFjIxe8A+5mlFZ5YiwF
+         Z4R3AmH895OF82fyf+7UTeQaJ01sHxkIKqvJ0WUtDN9qc9rNKBYHqX/YUjJxoku8gnOx
+         OpiMS0t2iWoUK+HCgcntQC8mPnhZTmQy0ypacve5YM937WE7KTSvG9k7fqv5GVRLAXJH
+         uEgjkNIb7me4Zu08Xf7Tf/1yoOeUA77iawgqczNAwuL3fxFKETjsYfk0hNZ+qJZXnLcO
+         p5OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=g/D0Lm1KS+Ja4fWDh0HXcyKEC5n+mGQEJvv8NjLbp6E=;
-        b=fLP4HilU1CWvhztHaE/SqsVkVXeE3U59fgxkFQo7vVUHJs6pNqAxE5nrTMiNnGid0d
-         mq5w2Igk6eq/AtzUatQyAITyPZ5hS4rWglnujadaz6NQOUxFtgLhumNqsTGsvXEQk00X
-         ka/39XTCHG9mGczpTete/6ZrZN+hTay9MjdL0h/c5vcnTXAxXzZ3wVp2msGu8nO+0+cN
-         mUrNgDr0OfnFdSqAhmao/LdFeMUtmlVhOWTdySfZpyi7DrWPkh4lFiNBLcW6oAk16Q+c
-         /n3n56YEfG8Z13zoxJjCVquq02RhYMR1umXF7vMXNqFxX63yhJ8AGum3FKJMA4rY52Zl
-         KEoA==
-X-Gm-Message-State: ANoB5pk29LK+/+AvO8LpN2BH3cBdQlwuhswrEGxEcKSe23o1h03Mw7Je
-        fTXsgeBf0XLFn+tcWZuLlO6PJrZizJoQOiQlF3zRkw==
-X-Google-Smtp-Source: AA0mqf5BBa2PKPMYJem/LoHXdxVCb1OehGLc+5aj9oWm/51RTtd1l1fHN/q7VmI1VvvrRxwget0GZoJdRGAKK5U9UMs=
-X-Received: by 2002:a25:cb42:0:b0:6da:32d3:c2e3 with SMTP id
- b63-20020a25cb42000000b006da32d3c2e3mr16876176ybg.66.1669039228487; Mon, 21
- Nov 2022 06:00:28 -0800 (PST)
+        bh=aNnRafn2Fe3woBngEtfiMVRe//+9fMOX4/niIs93zPU=;
+        b=HRXh6yGJPjgEDWVNxDU5Fcx+yCiOPFg3ES2B/WvCWCN+ZaNyXLq+/QiffmQCabpv1Z
+         gi6/jxhWK/p0RDfLQyZc1lmwXad/vs9RVJvje+s7CbTw3TC7wEluZ8ORj+o48olNHhHy
+         UjBDTCg2ycXG/ZJHDvE2Qf6z7Wm0Gkcw4y9ioV+05aTUF+CHXVGlmiVbNoxZDxSCC6Ez
+         uBvhLLhMgjayTKdD6k2geNdLgnXrpSFfAM5p7RWBAw6MfFI7hOFrEJkP9zj0iyQPARU/
+         Ck3xsPRdm1WVwzUET5b8A3O4uEGRhyouNXsU2j/suPeG0xbQTe7uopQq7iMk9e5GhgF+
+         O2vA==
+X-Gm-Message-State: ANoB5pmhOXMVhuILC5G3mVFeRt8h0ZZHDr6iD36nAKmACaS+sTCOl++E
+        tMKE1XW/WhLO1Y3rhhyFkSQlii+XGIdeFIbAvFDAG3SMG94=
+X-Google-Smtp-Source: AA0mqf45lZgo4f1/CeR2wR/yqT5+fiTLhHmsEdpl9VSlGpdZ3QL2EjhIzQhvdZ0UdfKZRiKN1YciuGl8lO4vZEUJBFs=
+X-Received: by 2002:a0d:fdc7:0:b0:37a:e8f:3cd3 with SMTP id
+ n190-20020a0dfdc7000000b0037a0e8f3cd3mr17194099ywf.187.1669039555178; Mon, 21
+ Nov 2022 06:05:55 -0800 (PST)
 MIME-Version: 1.0
-References: <20220924142154.14217-1-luca@z3ntu.xyz> <2122234.irdbgypaU6@g550jk>
-In-Reply-To: <2122234.irdbgypaU6@g550jk>
+References: <20221119221219.1232541-1-linus.walleij@linaro.org>
+ <20221119221219.1232541-3-linus.walleij@linaro.org> <b0b346ca-7b47-758a-c9e7-e7fda2b0856b@foss.st.com>
+In-Reply-To: <b0b346ca-7b47-758a-c9e7-e7fda2b0856b@foss.st.com>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 21 Nov 2022 15:00:17 +0100
-Message-ID: <CACRpkdZLVYfrZgyO=uJX1jm9cdGrkSr_=2CmPk5Rf_eccwa-Dg@mail.gmail.com>
-Subject: Re: [PATCH v3] dt-bindings: bluetooth: broadcom: add BCM43430A0 & BCM43430A1
-To:     Luca Weiss <luca@z3ntu.xyz>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>
-Cc:     linux-bluetooth@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rob Herring <robh@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+Date:   Mon, 21 Nov 2022 15:05:43 +0100
+Message-ID: <CACRpkdYf3RbPe3FL4wyxAJK0QJ1UqFMhLD=dNJm8VkO4YtZoeA@mail.gmail.com>
+Subject: Re: [PATCH v1 2/4] crypto: stm32 - enable drivers to be used on Ux500
+To:     Lionel DEBIEVE <lionel.debieve@foss.st.com>
+Cc:     linux-crypto@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Nov 18, 2022 at 6:13 PM Luca Weiss <luca@z3ntu.xyz> wrote:
-> On Samstag, 24. September 2022 16:21:55 CET Luca Weiss wrote:
-> > Document the compatible string for BCM43430A0 bluetooth used in lg-lenok
-> > and BCM43430A1 used in asus-sparrow.
+On Mon, Nov 21, 2022 at 2:36 PM Lionel DEBIEVE
+<lionel.debieve@foss.st.com> wrote:
+
+> One short comment.
+
+>  config CRYPTO_DEV_STM32_HASH
+>   tristate "Support for STM32 hash accelerators"
+> - depends on ARCH_STM32
+> + depends on ARCH_STM32 || ARCH_U8500
 >
-> Asking again if somebody could pick this patch up, it's been sitting around
-> for 2 months.
+> I'm not seeing any compatible update in the HASH driver for Ux500.
 
-Repost it and include Marcel, Johan and Luiz on To:, maybe add all three
-of them but Marcel and Luiz has certainly applied my binding patches
-in the past.
+Correct, I'm just enabling it to be compiled in right now. I haven't
+figured out if I will reuse the hash for ux500 as well or just keep
+the old driver as it is using polling only. Need to experiment and
+figure out what gives the smallest and understandable amount
+of code to maintain.
 
-BLUETOOTH DRIVERS
-M:      Marcel Holtmann <marcel@holtmann.org>
-M:      Johan Hedberg <johan.hedberg@gmail.com>
-M:      Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-L:      linux-bluetooth@vger.kernel.org
+It doesn't hurt to enable it to be compiled in, ideally all depends
+on ARCH ... should be removed and replaced with
+ARCH_nnn || COMPILE_TEST anyway.
 
+But if you insist I can drop this oneliner.
 
 Yours,
 Linus Walleij
