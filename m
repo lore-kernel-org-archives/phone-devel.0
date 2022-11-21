@@ -2,40 +2,48 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1625DC43217
-	for <phone-devel@archiver.kernel.org>; Mon, 21 Nov 2022 21:31:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B197CC4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 21 Nov 2022 22:25:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231374AbiKUVbg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 21 Nov 2022 16:31:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52830 "EHLO
+        id S231947AbiKUWZR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 21 Nov 2022 17:25:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231148AbiKUVbf (ORCPT
+        with ESMTP id S231693AbiKUWZQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 21 Nov 2022 16:31:35 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90E296868B;
-        Mon, 21 Nov 2022 13:31:34 -0800 (PST)
-Received: from g550jk.arnhem.chello.nl (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id E313BD040D;
-        Mon, 21 Nov 2022 21:31:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1669066263; bh=2kQEDLnxydBtnrXW4wyJ8ZCEZ/tqkyS1WnCU+hJ/Fkw=;
-        h=From:To:Cc:Subject:Date;
-        b=oC0eEKeizh+Ot4fLWu6mdYf8u1+UJAk3P56bo9FHIopY8EYM/SOAdEoELzU6+s+VC
-         wWdzLnl2cdAT02ftRdpkIA8brXzDj0ArO7hkalzPRLpqjI9Cfe8bjEZuimq2RVoHmg
-         Lc/YNY5Nb/t1d+jIs4Ir32e9Yy68GtP5Jsa51tfk=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Mon, 21 Nov 2022 17:25:16 -0500
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [5.144.164.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCC52B08D5
+        for <phone-devel@vger.kernel.org>; Mon, 21 Nov 2022 14:25:09 -0800 (PST)
+Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 712A13F20C;
+        Mon, 21 Nov 2022 23:25:06 +0100 (CET)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] ARM: dts: qcom: msm8974-castor: Fix touchscreen init
-Date:   Mon, 21 Nov 2022 22:30:19 +0100
-Message-Id: <20221121213019.324558-1-luca@z3ntu.xyz>
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/msm/dpu: Print interrupt index in addition to the mask
+Date:   Mon, 21 Nov 2022 23:24:55 +0100
+Message-Id: <20221121222456.437815-1-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -43,30 +51,65 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On some devices a higher delay is needed, otherwise touchscreen probe
-fails.
+The mask only describes the `irq_idx % 32` part, making it generally
+impossible to deduce what interrupt is being enabled/disabled.  Since
+`debug/core_irq` in debugfs (and other prints) also include the full
+`DPU_IRQ_IDX()` value, print the same full value here for easier
+correlation instead of only adding the `irq_idx / 32` part.
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Furthermore, make the dbgstr messages more consistent.
+
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
-Two simple patches that have been sitting around in msm8974-mainline
-tree for a while.
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
- .../arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-index 36044130a739..2725bd343f3a 100644
---- a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-+++ b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-@@ -122,7 +122,7 @@ synaptics@2c {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&ts_int_pin>;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
+index cf1b6d84c18a..64589a9c2c51 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
+@@ -252,9 +252,9 @@ static int dpu_hw_intr_enable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
  
--		syna,startup-delay-ms = <10>;
-+		syna,startup-delay-ms = <100>;
+ 	cache_irq_mask = intr->cache_irq_mask[reg_idx];
+ 	if (cache_irq_mask & DPU_IRQ_MASK(irq_idx)) {
+-		dbgstr = "DPU IRQ already set:";
++		dbgstr = "already ";
+ 	} else {
+-		dbgstr = "DPU IRQ enabled:";
++		dbgstr = "";
  
- 		rmi-f01@1 {
- 			reg = <0x1>;
+ 		cache_irq_mask |= DPU_IRQ_MASK(irq_idx);
+ 		/* Cleaning any pending interrupt */
+@@ -268,7 +268,7 @@ static int dpu_hw_intr_enable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
+ 		intr->cache_irq_mask[reg_idx] = cache_irq_mask;
+ 	}
+ 
+-	pr_debug("%s MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", dbgstr,
++	pr_debug("DPU IRQ %d %senabled: MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", irq_idx, dbgstr,
+ 			DPU_IRQ_MASK(irq_idx), cache_irq_mask);
+ 
+ 	return 0;
+@@ -301,9 +301,9 @@ static int dpu_hw_intr_disable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
+ 
+ 	cache_irq_mask = intr->cache_irq_mask[reg_idx];
+ 	if ((cache_irq_mask & DPU_IRQ_MASK(irq_idx)) == 0) {
+-		dbgstr = "DPU IRQ is already cleared:";
++		dbgstr = "already ";
+ 	} else {
+-		dbgstr = "DPU IRQ mask disable:";
++		dbgstr = "";
+ 
+ 		cache_irq_mask &= ~DPU_IRQ_MASK(irq_idx);
+ 		/* Disable interrupts based on the new mask */
+@@ -317,7 +317,7 @@ static int dpu_hw_intr_disable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
+ 		intr->cache_irq_mask[reg_idx] = cache_irq_mask;
+ 	}
+ 
+-	pr_debug("%s MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", dbgstr,
++	pr_debug("DPU IRQ %d %sdisabled: MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", irq_idx, dbgstr,
+ 			DPU_IRQ_MASK(irq_idx), cache_irq_mask);
+ 
+ 	return 0;
 -- 
 2.38.1
 
