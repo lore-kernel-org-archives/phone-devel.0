@@ -2,105 +2,191 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02AD2C4332F
-	for <phone-devel@archiver.kernel.org>; Tue, 22 Nov 2022 12:09:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2A5FC43219
+	for <phone-devel@archiver.kernel.org>; Tue, 22 Nov 2022 13:30:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233548AbiKVMJk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 22 Nov 2022 07:09:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54588 "EHLO
+        id S233202AbiKVNal (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 22 Nov 2022 08:30:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233625AbiKVMJf (ORCPT
+        with ESMTP id S233351AbiKVNaj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 22 Nov 2022 07:09:35 -0500
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 203574908A
-        for <phone-devel@vger.kernel.org>; Tue, 22 Nov 2022 04:09:34 -0800 (PST)
-Received: by mail-lj1-x22a.google.com with SMTP id k19so17728045lji.2
-        for <phone-devel@vger.kernel.org>; Tue, 22 Nov 2022 04:09:34 -0800 (PST)
+        Tue, 22 Nov 2022 08:30:39 -0500
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45B43654F3
+        for <phone-devel@vger.kernel.org>; Tue, 22 Nov 2022 05:30:35 -0800 (PST)
+Received: by mail-yb1-xb2f.google.com with SMTP id z192so17315907yba.0
+        for <phone-devel@vger.kernel.org>; Tue, 22 Nov 2022 05:30:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5ZD3VVVFh1AU2zjGJYTB+TJZq374XTiT14bnR+oy1JI=;
-        b=BkDpER8hmrv73TFgPEFSoFkepvVOtf2iT3bLQkDy6otKfLhdsFd2n1gpNV0dh0WMrs
-         9HeG/GMquZSssZ8nVoehhaGt3nU9Et1p0SOzg8PSP7Uy2peKg4WkKSTDFTrhkGO9E7BY
-         JssNK3ZDRtAOGl3FWPodSzHywXOhGXiHhGF3LzhaJgcI5P/VsEHnIN5kgZhBY7Y0fUxy
-         KcsrtZWxe+hJkNKTdMtAtqMiBQCkIp10dx0nQ2mxtokZgPI78VwU0rSRT5ai990NO4dm
-         ruDtEQFTGeEBCHhcMhSuY+K98J8W1i8laytUo7liglT+uB+jd3X4AH5otfbgC8R1b3lZ
-         wUOQ==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=3u1XUALavBeR1kKMHVM25AVpNdjJ1fTh/8LVQ3pBSzA=;
+        b=F9q4drH+N1IMCom8ENOvIuU/6OCrrvFECfe5ScOD77fy2QwKAMMxA7EE6TKqT6530F
+         6nVxgo5aulAAf2ZrYhuBo85xMfsvLOcbefPxASO07ofisIfgC+TtyUbafZXMN6/Wng7z
+         TGbjSdoURgZWqEPBx/hqTTCOIjhT/A3Ln5BpM3NpiHauoJwVZXMhCFtmR5rWsbElSFty
+         Qf0AtzT33ML4bIhCbGPUDSL13uA80Tfv6XWhJf2wX9Kg713AQLgqm0w0LDvAn9IaNsr4
+         heAkQ0FiTsh4B1f1WF82/rvezusxEiStHkHoRmAn5P0QUTTxgwaqo6kyUShLBjkrYhwz
+         x0nA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ZD3VVVFh1AU2zjGJYTB+TJZq374XTiT14bnR+oy1JI=;
-        b=sRTCb0mJdZZ2uSNTKJ4Od72nssiSc98Ha/vv+9mAJsrO4ZufQN4XzgNp4U0Zk6r0w4
-         VdloFlHk8D1Nfx83OY2LM6P9RhcYa/NvjJJO2XNHYnkKyiElmBMIHRBZRxl1sC15hSNW
-         euXd85qf2Dn/cOA4dOgCqd0sJrEWGtH6rESNuAKNHdfnjETBU1zeOsqQ3mEjiGF8bLWD
-         vCS8aq3yOey7RWl0/nkzbgDQGGRUVAqcUhAD6XVZIkfCMjkTVsXK2IlWTbuJWBHYNUeh
-         /C9DX+xRoDQyqkrQPgooYYxDicr1P+aegZtGQPuC+LjfVlVfyd3MVM58BW4KCCnAXJcw
-         FsxQ==
-X-Gm-Message-State: ANoB5pnZSr2skUDC02gaOgCcg5fGy4g+PnsGBmsxbq5/KN/Lh01gvIs2
-        Ki70EjGh9L26A4sK5caNQDd2CQ==
-X-Google-Smtp-Source: AA0mqf59Pdk52BV2iOIAuYFJocChXfShRihfZCTI4sAzzMyEyuHu7qXMgqPLoXtliUHsiZH6Um8/Kg==
-X-Received: by 2002:a2e:3a1a:0:b0:278:f073:d3c0 with SMTP id h26-20020a2e3a1a000000b00278f073d3c0mr7940111lja.357.1669118972347;
-        Tue, 22 Nov 2022 04:09:32 -0800 (PST)
-Received: from [192.168.1.101] (95.49.32.48.neoplus.adsl.tpnet.pl. [95.49.32.48])
-        by smtp.gmail.com with ESMTPSA id y25-20020a2e7d19000000b0026dd4be2290sm1836111ljc.90.2022.11.22.04.09.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Nov 2022 04:09:31 -0800 (PST)
-Message-ID: <d8094c01-38d7-d758-16e0-13939af422c6@linaro.org>
-Date:   Tue, 22 Nov 2022 13:09:30 +0100
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3u1XUALavBeR1kKMHVM25AVpNdjJ1fTh/8LVQ3pBSzA=;
+        b=8IR41ikWptPAzhVHVdt8AW1eIA3r5jEym79rco6dXhd4bDzp9ZRcUveBQKsdaHdlYR
+         hjcfDMu7yJk7+4Cjqzp0OxejniGL2vEW7dmG34LAc6qua+zioOszRPPYsODMWFfpgG4a
+         6OL2gIbFDmnCalzLxpgzmczImukShVmlB6917ohAGj40mBOBpTxoNxyEEUhKaCXOytJN
+         +QBrYEcw1HZ5Wb4KsvnQueeHTEaI9iQIv2u+zeHAHpf5TAGQZpE+F0vQuy43lU52my+u
+         up6Ae71K3/dNuIIlLc5R5XcWFMRG2RfJlRq0/t4/dkd/uZErTCZO4ysyWclTouIimbhQ
+         /6XA==
+X-Gm-Message-State: ANoB5plW0Bdktb6OITHYwftgTaTSoKthyyUXUSfzCbT5c+jgy4enG4tZ
+        hgGNzliDGt0noNtMt7Q39CidvdFswJ5SQGArYSvbgQ==
+X-Google-Smtp-Source: AA0mqf5bV7d8p5GauuDP4eZ44mV+c9M00UQOg+30Bt/xSqVCkfos0pcbeU+IN+5jK9Mr48pUHWNEzE7YWUNQ3XsXAsE=
+X-Received: by 2002:a25:510:0:b0:6d2:e45c:71c0 with SMTP id
+ 16-20020a250510000000b006d2e45c71c0mr3906010ybf.153.1669123834422; Tue, 22
+ Nov 2022 05:30:34 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH 2/2] ARM: dts: qcom: msm8974-castor: Enable charging over
- USB
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Julian Weigt <juw@posteo.de>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+References: <20221120154625.57095-1-y.oudjana@protonmail.com>
+ <795deac4-71fe-d40b-a3b6-855eb3875ad1@linaro.org> <1H1PLR.S9UFOHIJCU6S@gmail.com>
+ <1419e9da-98f7-c477-9f07-4b54e82be4c4@linaro.org>
+In-Reply-To: <1419e9da-98f7-c477-9f07-4b54e82be4c4@linaro.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Tue, 22 Nov 2022 15:30:23 +0200
+Message-ID: <CAA8EJpor_LnxLGYy25i-D6RBBO+-G9MsVWw=Qfm1Emp88KRJzQ@mail.gmail.com>
+Subject: Re: [PATCH 1/8] dt-bindings: power: supply: Add DT schema for
+ Qualcomm SMBCHG
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Yassine Oudjana <yassine.oudjana@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221121213019.324558-1-luca@z3ntu.xyz>
- <20221121213019.324558-2-luca@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20221121213019.324558-2-luca@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Alejandro Tafalla <atafalla@dnyon.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Yassine Oudjana <y.oudjana@protonmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi,
+
+On Mon, 21 Nov 2022 at 19:07, Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> On 21/11/2022 11:36, Yassine Oudjana wrote:
+> >
+> > On Mon, Nov 21 2022 at 09:26:59 +01:00:00, Krzysztof Kozlowski
+> > <krzysztof.kozlowski@linaro.org> wrote:
+> >> On 20/11/2022 16:46, Yassine Oudjana wrote:
+> >>>>>  +  interrupts:
+> >>>>>  +    items:
+> >>>>>  +      - description: Charger error
+> >>>>>  +      - description: Charger inhibited
+> >>>>>  +      - description: Charger precharge safety timer timeout
+> >>>>>  +      - description: Charger charge safety timer timeout
+> >>>>>  +      - description: Charger pre to fast charging switch
+> >>>>> threshold reached
+> >>>>>  +      - description: Charger recharge threshold reached
+> >>>>>  +      - description: Charger taper threshold reached
+> >>>>>  +      - description: Charger charge termination threshold reached
+> >>>>>  +      - description: Battery hot
+> >>>>>  +      - description: Battery warm
+> >>>>>  +      - description: Battery cold
+> >>>>>  +      - description: Battery cool
+> >>>>>  +      - description: Battery overvoltage
+> >>>>>  +      - description: Battery low
+> >>>>>  +      - description: Battery missing
+> >>>>>  +      - description: Battery thermistor missing # unconfirmed
+> >>>>>  +      - description: USB input undervolt
+> >>>>>  +      - description: USB input overvolt
+> >>>>>  +      - description: USB input source detected
+> >>>>>  +      - description: OTG regulator failure
+> >>>>>  +      - description: OTG regulator overcurrent
+> >>>>>  +      - description: Automatic input current limiting done
+> >>>>>  +      - description: USB ID pin changed
+> >>>>>  +      - description: DC input undervolt
+> >>>>>  +      - description: DC input overvolt
+> >>>>>  +      - description: Power OK
+> >>>>>  +      - description: Temperature shutdown
+> >>>>>  +      - description: Watchdog timeout
+> >>>>>  +      - description: Flash failure
+> >>>>>  +      - description: OTST2 # unknown
+> >>>>>  +      - description: OTST3 # unknown
+> >>>>
+> >>>>  It seems you listed register interrupts, not physical pins. This
+> >>>> should
+> >>>>  be interrupt lines.
+> >>>
+> >>>  I'm not sure what I'm supposed to do here. I couldn't find an
+> >>> interrupt-lines
+> >>>  property used anywhere so that's not what you meant, right?
+> >>
+> >> Are these physical interrupt lines this device has, register offsets
+> >> or
+> >> virtual interrupts (e.g. passed via irq_chip)? Definitely not the
+> >> first
+> >> and rather offsets for qpnpint_irq_domain_translate. Devicetree is not
+> >> for describing register layout of devices. IOW, register layout does
+> >> not
+> >> change on different boards, because the device is exactly the same, so
+> >> there is no point to put it into DTS.
+> >>
+> >
+> > So how would I describe the interrupts then? Or if you are saying I
+> > shouldn't have these interrupts in DT at all, how would I get them and
+> > register handlers for them in the driver? the PMIC arbiter takes 4
+> > interrupt cells, 3 of which are these offsets specifying the peripheral
+> > and interrupt. All other PMIC peripherals currently described in DT
+> > (examples being qcom,pm8916-wcd-analog-codec, qcom,pm8941-pwrkey and
+> > qcom-wled) have their interrupts (if any) described this way, with the
+> > only exceptions perhaps being the GPIO and MPP controllers which are
+> > themselves interrupt controllers. Changing the way PMIC peripheral
+> > interrupts are described would require changing PMIC arbiter bindings
+> > and code which I believe is out of the scope of this patch series.
+>
+> I don't think this would touch PMIC arbiter bindings, rather the PMIC
+> itself. Usually complex devices (like PMICs) have one few physical
+> interrupt lines and many registers related to some specific interrupts.
+> For example:
+> 1. One IRQ line,
+> 2. Register with bits for overvoltage, undervoltage, vharger error etc.
+>
+> Now how the MFD child device accesses them. Since this is strictly
+> related to hardware programming model, it's not something you put to
+> Devicetree. Instead parent device (PMIC) registers IRQ chip for its one
+> interrupt line with several Linux (or virtual) interrupts. The children
+> then just get a virtual IRQ from the parent (PMIC) and setup a
+> handler(s) for them.
+
+Unfortunately this is not how SPMI PMICs work (at least on the
+Qualcomm platforms). Access to interrupt registers is handled via the
+SPMI bus arbiter writes, not through the GPIO pin or typical spmi's
+bus interface (in the other words, not through the PMIC's SPMI
+regmap). I guess we can add an intermediate irq chip to automatically
+handle the USID, etc. However I doubt that it will really bring a lot
+in our case.
+
+> You will find some examples for this, just grep for regmap_irq_get_virq,
+> for the drivers using regmap_irq_chip (or irq_create_mapping for
+> non-regmaps).
+>
+> Since it is *one* device - the PMIC and its child like charger - the
+> register layout is fixed thus I think these virtual (or Linux)
+> interrupts are fixed as well.
+>
+> I don't know why Qualcomm PMIC for SPMI is done differently.
+>
+> Best regards,
+> Krzysztof
+>
 
 
-On 21.11.2022 22:30, Luca Weiss wrote:
-> From: Julian Weigt <juw@posteo.de>
-> 
-> Set usb-charge-current-limit to higher value so that the device can be
-> charged over USB.
-> 
-> Signed-off-by: Julian Weigt <juw@posteo.de>
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-
-Konrad
->  arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-> index 2725bd343f3a..0f2154a57a59 100644
-> --- a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-> +++ b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-> @@ -575,6 +575,7 @@ &smbb {
->  	qcom,fast-charge-safe-current = <1500000>;
->  	qcom,fast-charge-current-limit = <1500000>;
->  	qcom,dc-current-limit = <1800000>;
-> +	usb-charge-current-limit = <1800000>;
->  	qcom,fast-charge-safe-voltage = <4400000>;
->  	qcom,fast-charge-high-threshold-voltage = <4350000>;
->  	qcom,fast-charge-low-threshold-voltage = <3400000>;
+-- 
+With best wishes
+Dmitry
