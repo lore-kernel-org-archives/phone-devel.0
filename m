@@ -2,139 +2,161 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5079DC4332F
-	for <phone-devel@archiver.kernel.org>; Tue, 22 Nov 2022 23:54:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 122EFC4332F
+	for <phone-devel@archiver.kernel.org>; Wed, 23 Nov 2022 16:13:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234941AbiKVXyM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 22 Nov 2022 18:54:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59902 "EHLO
+        id S239024AbiKWQNL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 23 Nov 2022 11:13:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234126AbiKVXyK (ORCPT
+        with ESMTP id S238875AbiKWQNJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 22 Nov 2022 18:54:10 -0500
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97728BEB54
-        for <phone-devel@vger.kernel.org>; Tue, 22 Nov 2022 15:54:09 -0800 (PST)
-Received: by mail-lj1-x232.google.com with SMTP id d20so19619260ljc.12
-        for <phone-devel@vger.kernel.org>; Tue, 22 Nov 2022 15:54:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vSQxsfoYnD2A3tH+O3pkstLuZIwU+jkrLdSB14gdhug=;
-        b=vBWoS7NGEmZ4M8NUTF4f50mMJ+CyxMmbJWmVfdhdi/wQYco0DXDHWbkO+kq5K7tbfl
-         dSpgdY1eGcCZ3wmETUxnjEVWKJsvzMefqQktCpYXzKBshcAUdKPXNSeinyxRWjyLtb37
-         elrtpxMEA88/Sp5Oh64GPVBahbh4PsS0mmS68O/krFQhSTIXOrq/pSfWjwi29l8r2fpI
-         kkngvioKMztgCcyDN1NStajFyOmsnh3r/mGcNKaPR4mUqMe+vZnqVLaeyHJtbrHQGiVK
-         7CIx6R0Grk/B7CkoxN25PHIonDDP6SYQDunqvK/4damSUlCizO2yQV5xaS+TRcPDn0r8
-         dCOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vSQxsfoYnD2A3tH+O3pkstLuZIwU+jkrLdSB14gdhug=;
-        b=K73blBJgGlXu3FMHQVZv+O9JpVQhUIVkUh0DSbPuMkucvVZ4XHEJupJJ3iDpFPBT7c
-         Me0pBujq1c7CFijCBddwI+9GXiTeawZFKl8LYzSWf7890fDO8vt+bmEQcQ2GbrU+Xfpa
-         LX1v7N6soWovIo76ebL5mbLy5pleGjkbLPcbu7nen+UOlsfgHGLnxOxRdF8u6suR3QiK
-         f82k0S63A9IkdbyNvjs/v4b4Vf0TPIWmjzOAJfn2hi64dz4Tqsvf0eMBWodIIuE7HnJq
-         7nIfSuitjXOmzLoeC+mh6XN9wDg5qZ2Ts8tczqanXHXf0ylCluIbCnUviPyQyNlY5rgd
-         OTfA==
-X-Gm-Message-State: ANoB5pndZzw/IGXbfzmH7LsjTpwROlRkoi3uGeSGAVpen+0HpaByhx4/
-        +9hKsOQrouZp8htD3hJmyqs7/Q==
-X-Google-Smtp-Source: AA0mqf6qg6QL8mtw0Y4ZgkbmPG9ZL4mch+rv29n4tkp7iw2Xw+a/UuSczczoRzzpOUoRBvOKd8bU1w==
-X-Received: by 2002:a05:651c:158c:b0:26c:90f:f8fe with SMTP id h12-20020a05651c158c00b0026c090ff8femr8807484ljq.2.1669161247954;
-        Tue, 22 Nov 2022 15:54:07 -0800 (PST)
-Received: from ?IPV6:2001:14ba:a302:8a1a::1? (dzpbkzhtyyyyyyyyyyyyt-3.rev.dnainternet.fi. [2001:14ba:a302:8a1a::1])
-        by smtp.gmail.com with ESMTPSA id o19-20020ac24e93000000b004acd6e441cesm2663361lfr.205.2022.11.22.15.54.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Nov 2022 15:54:07 -0800 (PST)
-Message-ID: <f39ae6c3-e156-7366-6802-c392f1b1246e@linaro.org>
-Date:   Wed, 23 Nov 2022 01:54:07 +0200
+        Wed, 23 Nov 2022 11:13:09 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E28C26E568;
+        Wed, 23 Nov 2022 08:13:08 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D89A61DEA;
+        Wed, 23 Nov 2022 16:13:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953BFC433D7;
+        Wed, 23 Nov 2022 16:13:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669219987;
+        bh=fkTjWBvj8eK0AxwkvvHG9qSe5D21CdW6TK2ghXH+FIA=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=Ds7jJ/VWbrQ9y8JZ/clo3yipZhTq9LfUKAKVRQNXlgmy/pt/crrASGmoEpNkxl99U
+         mCfoIX38/fNVPko1LD8lALY5IWMepHpSpx8kENeNSkXxGMU6NpShIAX1ITTYQjUVSV
+         /KTa32y6jIZwNDGuSJSTU31bTM+vE3/tFYId3JksmOUGHsW9x4z5O/rie5JYhZy7Hn
+         0+2rj2WUVKq3RDgFi5aLpKeVW8mH6+KUvm+OrNRGEpP6pobJvVffihHWvxB/5N6OGj
+         O9e1SioZYE5dnefv0Kv9HKU++WcgsbR00LXq/+CR2I/EI9ei+XkWacMh64TVTLmb/q
+         FlP1phjivjh5Q==
+Message-ID: <73df18a2-b0d6-72de-37bb-17ba84b54b82@kernel.org>
+Date:   Wed, 23 Nov 2022 17:13:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.0
-Subject: Re: [PATCH 2/2] drm/msm/disp/dpu1: add support for display on SM6115
-Content-Language: en-GB
-To:     Adam Skladowski <a39.skl@gmail.com>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Kalyan Thota <quic_kalyant@quicinc.com>,
-        Jessica Zhang <quic_jesszhan@quicinc.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Adam Skladowski <a_skl39@protonmail.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Jason Wang <wangborong@cdjrlc.com>,
-        Vinod Polimera <quic_vpolimer@quicinc.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221120133744.24808-1-a39.skl@gmail.com>
- <20221120133744.24808-3-a39.skl@gmail.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20221120133744.24808-3-a39.skl@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v1 1/4] dt-bindings: crypto: Let STM32 define Ux500 CRYP
+Content-Language: en-US
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        linux-crypto@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>
+Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
+        Lionel Debieve <lionel.debieve@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        devicetree@vger.kernel.org
+References: <20221119221219.1232541-1-linus.walleij@linaro.org>
+ <20221119221219.1232541-2-linus.walleij@linaro.org>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20221119221219.1232541-2-linus.walleij@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 20/11/2022 15:37, Adam Skladowski wrote:
-> Add required display hw catalog changes for SM6115.
+On 19/11/2022 23:12, Linus Walleij wrote:
+> This adds device tree bindings for the Ux500 CRYP block
+> as a compatible in the STM32 CRYP bindings.
+
 > 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> The Ux500 CRYP binding has been used for ages in the kernel
+> device tree for Ux500 but was never documented, so fill in
+> the gap by making it a sibling of the STM32 CRYP block,
+> which is what it is.
+> 
+> The relationship to the existing STM32 CRYP block is pretty
+> obvious when looking at the register map, and I have written
+> patches to reuse the STM32 CRYP driver on the Ux500.
+> 
+> The two properties added are DMA channels and power domain.
+> Power domains are a generic SoC feature and the STM32 variant
+> also has DMA channels.
+> 
+> Cc: devicetree@vger.kernel.org
+> Cc: Lionel Debieve <lionel.debieve@foss.st.com>
+> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+> Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 > ---
->   .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 87 +++++++++++++++++++
->   .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h    |  1 +
->   drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c       |  1 +
->   drivers/gpu/drm/msm/msm_mdss.c                |  5 ++
->   4 files changed, 94 insertions(+)
+> This was previously sent out as an open question but
+> nothing happened, now I send it as part of the STM32
+> bindings, in a series making the Linux STM32 driver
+> use the STM32 driver.
+> ---
+>  .../bindings/crypto/st,stm32-cryp.yaml        | 32 +++++++++++++++++++
+>  1 file changed, 32 insertions(+)
+
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC.  It might happen, that command when run on an older
+kernel, gives you outdated entries.  Therefore please be sure you base
+your patches on recent Linux kernel.
+
+
 > 
+> diff --git a/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml b/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml
+> index ed23bf94a8e0..69614ab51f81 100644
+> --- a/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml
+> +++ b/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml
+> @@ -6,12 +6,18 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  
+>  title: STMicroelectronics STM32 CRYP bindings
+>  
+> +description: The STM32 CRYP block is built on the CRYP block found in
+> +  the STn8820 SoC introduced in 2007, and subsequently used in the U8500
+> +  SoC in 2010.
+> +
+>  maintainers:
+>    - Lionel Debieve <lionel.debieve@foss.st.com>
+>  
+>  properties:
+>    compatible:
+>      enum:
+> +      - st,stn8820-cryp
+> +      - stericsson,ux500-cryp
+>        - st,stm32f756-cryp
+>        - st,stm32mp1-cryp
+>  
+> @@ -27,6 +33,19 @@ properties:
+>    resets:
+>      maxItems: 1
+>  
+> +  dmas:
+> +    items:
+> +      - description: mem2cryp DMA channel
+> +      - description: cryp2mem DMA channel
+> +
+> +  dma-names:
+> +    items:
+> +      - const: mem2cryp
+> +      - const: cryp2mem
+> +
+> +  power-domains:
+> +    maxItems: 1
 
-[skipped]
+Are these all valid for other variants?
 
-> diff --git a/drivers/gpu/drm/msm/msm_mdss.c b/drivers/gpu/drm/msm/msm_mdss.c
-> index 6a4549ef34d4..86b28add1fff 100644
-> --- a/drivers/gpu/drm/msm/msm_mdss.c
-> +++ b/drivers/gpu/drm/msm/msm_mdss.c
-> @@ -280,6 +280,10 @@ static int msm_mdss_enable(struct msm_mdss *msm_mdss)
->   		/* UBWC_2_0 */
->   		msm_mdss_setup_ubwc_dec_20(msm_mdss, 0x1e);
->   		break;
-> +	case DPU_HW_VER_630:
-> +		/* UBWC_2_0 */
-> +		msm_mdss_setup_ubwc_dec_20(msm_mdss, 0x11f);
-> +		break;
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -48,4 +67,17 @@ examples:
+>        resets = <&rcc CRYP1_R>;
+>      };
+>  
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/reset/stericsson,db8500-prcc-reset.h>
+> +    #include <dt-bindings/arm/ux500_pm_domains.h>
+> +    cryp@a03cb000 {
 
-According to the vendor dtsi the sm6115 is UBWC 1.0, not 2.0
+Drop the example, it's almost the same and difference in one new
+property does not warrant a new example.
 
-Could you please doublecheck?
-
-Looks good to me otherwise.
-
->   	case DPU_HW_VER_720:
->   		msm_mdss_setup_ubwc_dec_40(msm_mdss, UBWC_3_0, 6, 1, 1, 1);
->   		break;
-> @@ -509,6 +513,7 @@ static const struct of_device_id mdss_dt_match[] = {
->   	{ .compatible = "qcom,sc7180-mdss" },
->   	{ .compatible = "qcom,sc7280-mdss" },
->   	{ .compatible = "qcom,sc8180x-mdss" },
-> +	{ .compatible = "qcom,sm6115-mdss" },
->   	{ .compatible = "qcom,sm8150-mdss" },
->   	{ .compatible = "qcom,sm8250-mdss" },
->   	{}
-
--- 
-With best wishes
-Dmitry
+Best regards,
+Krzysztof
 
