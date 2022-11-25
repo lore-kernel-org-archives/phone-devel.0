@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0EF29C46467
-	for <phone-devel@archiver.kernel.org>; Fri, 25 Nov 2022 22:32:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6DB6C4167B
+	for <phone-devel@archiver.kernel.org>; Fri, 25 Nov 2022 22:33:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230121AbiKYWc6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 25 Nov 2022 17:32:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45296 "EHLO
+        id S230125AbiKYWc7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 25 Nov 2022 17:32:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230129AbiKYWcn (ORCPT
+        with ESMTP id S230134AbiKYWco (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 25 Nov 2022 17:32:43 -0500
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4DA35987F
-        for <phone-devel@vger.kernel.org>; Fri, 25 Nov 2022 14:32:25 -0800 (PST)
-Received: by mail-lj1-x233.google.com with SMTP id z4so6610351ljq.6
-        for <phone-devel@vger.kernel.org>; Fri, 25 Nov 2022 14:32:25 -0800 (PST)
+        Fri, 25 Nov 2022 17:32:44 -0500
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C97C024C
+        for <phone-devel@vger.kernel.org>; Fri, 25 Nov 2022 14:32:27 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id g7so8780963lfv.5
+        for <phone-devel@vger.kernel.org>; Fri, 25 Nov 2022 14:32:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Hbzo+NbmLokJWoaf53jWJ1PlLdMPH3z8QwlWnFJHboQ=;
-        b=qAMiBcBCA6ZC2vDgjzxeetijB5hgzgtmDp0EGZw9Y1f/3QPX+lOTup0cSIgTpzai4P
-         xBgkbnT3DdXeZI75ps9S5WhMhYC+KFcv//WX7CiE+x6uHjNuytH/BPAkDT4ppEoVFpWa
-         LHRH4BEPiorU0h6wA2lRjpOX81VwtG+0tXiJ48i5qZ6+F724HY3qx4cQyYLAUagqP6jK
-         XRgp/gDUY3iYmCKRpn0LEzVaxTQIteUJFImFZ2C5uWLHuW1y5oSdfoHqaOyZPHn9WDjT
-         4iNTz7jlBV9wLFKHnOdZguv9dga58PIaZcui/rJ+KuUbwdmiLHnZyctmGZleFAOjw/Iz
-         /ONA==
+        bh=T9YYmRZVJgzfGm6zhi8e8dQ108OodfeWK82tKofypW4=;
+        b=ZPANDLmidQxTsvRuye5/avhi9Dei/86V6fEvTHiZB9Vyj8pws5tmqhYP56TXgL9OHj
+         3mJhbydG2E7XMUMmjcf7NunQ7SEvbBUAUz2yUmQQnfPlXWv9ZvP/CxU++LCTF1v2UoJj
+         TAI6b6ZPTPxQoQ2zNydJlW6/dn3RX2JcHdaVBpjub7ZlLzEssJn1vK6HpKft8r8OLzrv
+         a8dIMOS/YJ80BXZ+FgrDwpxXBaPz+j9CabuqfFD1K+9vpUyQC3zpuUVPOSnbBPI/sgIB
+         oFzLfOfchyjpTYfQLA/0k0Ak6oyEJnzZIJ0RjlnuEKpjhFD5LhEDhcD+REPb0XlKdcrF
+         M57w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Hbzo+NbmLokJWoaf53jWJ1PlLdMPH3z8QwlWnFJHboQ=;
-        b=fwZFo9B+l69YG8QtsrhgGi+NMgbRjLqRJbNoYmBYiOzdDPI3KWljnfo3WeBJ4cov5R
-         UAkAHt7XGpuypzyYAN7CyQgjjX9qAeo5/sOb6glZSUiDr6HjdmaMWW7pGmv8caphv3/u
-         H2XSG1hcrlxuvCEwK2JzWG3K5EOV7FUcNVuq+pLKOT/8s6LmdtTwlDus6+e9GOaNJLD0
-         ZGb0mqL+9XCJC+XuIK2qNDVOxD+83cJeLP6KSVAjW9r17wxclxPVP5PnvKDue7JtkYMl
-         OnJGHpqr4wwKGqlaemJH/+e+SN61im7JfdgKtV1KDCsCB2Wmx7qNVKdR3Ka5zJhJygli
-         Qkpg==
-X-Gm-Message-State: ANoB5pnFqB1WOUW5A2Xrx1NODh/ccQalZNwGQmPEnRDswlvECsaCJPJ2
-        Kma9Sk3lPYyP68y8wYz77O4VgQ==
-X-Google-Smtp-Source: AA0mqf4nALAFRo+i9Lt2nEWIV3o/WiUXRn7SPSrmkJSeSX79ggmnK5QrKHcoydhJaIcIZ/mSOufVnQ==
-X-Received: by 2002:a05:651c:10af:b0:277:3046:3d1c with SMTP id k15-20020a05651c10af00b0027730463d1cmr12443609ljn.422.1669415543990;
-        Fri, 25 Nov 2022 14:32:23 -0800 (PST)
+        bh=T9YYmRZVJgzfGm6zhi8e8dQ108OodfeWK82tKofypW4=;
+        b=dnZpgHYB1Ku6lApZ4AcPjMusyzM0DFKPfth/uFIcmAsouh5TrUniEpd3e7lI8EoyuF
+         yyHAadrAkXw2/McpF7QSP56Yc/sHTTchN0kufYzDB8D7o6ldgtAi7BA1RMmUkAs0G/KP
+         oIQAaoC8VK7KsXnmSeuMHXPC89toMUS43VgSxvIsmn871K7D0F8XyaKGszIG3kLffQ6O
+         ypkM1gfedJ9zTLbp5jXYcf4Gb0PjjajJWK9SSX70aOB4aphIovoV39OPgwyHBwHmsUUZ
+         FGmVcggrr2zJMrifjRPdvuga0IHzVmZBT01n07DeKNaLVDnAfOrRBqagUYHiEjcGFLe5
+         MkpA==
+X-Gm-Message-State: ANoB5pmpcFzsKJte360ZbW7NVUz8djq5eLrhevPIjK0av7cRvR5TSoQy
+        7aW23A8V9ppZ++gbtBmeacHnFw==
+X-Google-Smtp-Source: AA0mqf6TZyjQQuJEGwxxiugsFTdIJ3uTfEwj+iSGqHJdRDX9ecxPL9tkbxd/Que93VRxJ6+m7jsl3w==
+X-Received: by 2002:ac2:46ca:0:b0:49e:da1e:fe with SMTP id p10-20020ac246ca000000b0049eda1e00femr13426965lfo.141.1669415546121;
+        Fri, 25 Nov 2022 14:32:26 -0800 (PST)
 Received: from Fecusia.lan (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
-        by smtp.gmail.com with ESMTPSA id f7-20020a05651201c700b004b4e9580b1asm676582lfp.66.2022.11.25.14.32.23
+        by smtp.gmail.com with ESMTPSA id f7-20020a05651201c700b004b4e9580b1asm676582lfp.66.2022.11.25.14.32.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Nov 2022 14:32:23 -0800 (PST)
+        Fri, 25 Nov 2022 14:32:25 -0800 (PST)
 From:   Linus Walleij <linus.walleij@linaro.org>
 To:     linux-crypto@vger.kernel.org,
         Herbert Xu <herbert@gondor.apana.org.au>,
@@ -58,12 +58,10 @@ Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
         Lionel Debieve <lionel.debieve@foss.st.com>,
         Maxime Coquelin <mcoquelin.stm32@gmail.com>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: [PATCH v2 1/4] dt-bindings: crypto: Let STM32 define Ux500 CRYP
-Date:   Fri, 25 Nov 2022 23:32:14 +0100
-Message-Id: <20221125223217.2409659-2-linus.walleij@linaro.org>
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH v2 2/4] crypto: stm32 - enable drivers to be used on Ux500
+Date:   Fri, 25 Nov 2022 23:32:15 +0100
+Message-Id: <20221125223217.2409659-3-linus.walleij@linaro.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221125223217.2409659-1-linus.walleij@linaro.org>
 References: <20221125223217.2409659-1-linus.walleij@linaro.org>
@@ -73,79 +71,60 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This adds device tree bindings for the Ux500 CRYP block
-as a compatible in the STM32 CRYP bindings.
+The Ux500 cryp and hash drivers are older versions of the
+hardware managed by the stm32 driver.
 
-The Ux500 CRYP binding has been used for ages in the kernel
-device tree for Ux500 but was never documented, so fill in
-the gap by making it a sibling of the STM32 CRYP block,
-which is what it is.
+Instead of trying to improve the Ux500 cryp and hash drivers,
+start to switch over to the modern and more well-maintained
+STM32 drivers.
 
-The relationship to the existing STM32 CRYP block is pretty
-obvious when looking at the register map, and I have written
-patches to reuse the STM32 CRYP driver on the Ux500.
-
-The two properties added are DMA channels and power domain.
-Power domains are a generic SoC feature and the STM32 variant
-also has DMA channels.
-
-Cc: devicetree@vger.kernel.org
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Lionel Debieve <lionel.debieve@foss.st.com>
 Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
 Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Acked-by: Lionel Debieve <lionel.debieve@foss.st.com>
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 ---
 ChangeLog v1->v2:
-- Drop the second (new) example.
+- Collect Lionel's ACK.
 ---
- .../bindings/crypto/st,stm32-cryp.yaml        | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/crypto/Makefile      | 2 +-
+ drivers/crypto/stm32/Kconfig | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml b/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml
-index ed23bf94a8e0..6759c5bf3e57 100644
---- a/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml
-+++ b/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml
-@@ -6,12 +6,18 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/crypto/Makefile b/drivers/crypto/Makefile
+index 116de173a66c..fa8bf1be1a8c 100644
+--- a/drivers/crypto/Makefile
++++ b/drivers/crypto/Makefile
+@@ -41,7 +41,7 @@ obj-$(CONFIG_CRYPTO_DEV_S5P) += s5p-sss.o
+ obj-$(CONFIG_CRYPTO_DEV_SA2UL) += sa2ul.o
+ obj-$(CONFIG_CRYPTO_DEV_SAHARA) += sahara.o
+ obj-$(CONFIG_CRYPTO_DEV_SL3516) += gemini/
+-obj-$(CONFIG_ARCH_STM32) += stm32/
++obj-y += stm32/
+ obj-$(CONFIG_CRYPTO_DEV_TALITOS) += talitos.o
+ obj-$(CONFIG_CRYPTO_DEV_UX500) += ux500/
+ obj-$(CONFIG_CRYPTO_DEV_VIRTIO) += virtio/
+diff --git a/drivers/crypto/stm32/Kconfig b/drivers/crypto/stm32/Kconfig
+index 4a4c3284ae1f..4fc581e9e595 100644
+--- a/drivers/crypto/stm32/Kconfig
++++ b/drivers/crypto/stm32/Kconfig
+@@ -10,7 +10,7 @@ config CRYPTO_DEV_STM32_CRC
  
- title: STMicroelectronics STM32 CRYP bindings
+ config CRYPTO_DEV_STM32_HASH
+ 	tristate "Support for STM32 hash accelerators"
+-	depends on ARCH_STM32
++	depends on ARCH_STM32 || ARCH_U8500
+ 	depends on HAS_DMA
+ 	select CRYPTO_HASH
+ 	select CRYPTO_MD5
+@@ -23,7 +23,7 @@ config CRYPTO_DEV_STM32_HASH
  
-+description: The STM32 CRYP block is built on the CRYP block found in
-+  the STn8820 SoC introduced in 2007, and subsequently used in the U8500
-+  SoC in 2010.
-+
- maintainers:
-   - Lionel Debieve <lionel.debieve@foss.st.com>
- 
- properties:
-   compatible:
-     enum:
-+      - st,stn8820-cryp
-+      - stericsson,ux500-cryp
-       - st,stm32f756-cryp
-       - st,stm32mp1-cryp
- 
-@@ -27,6 +33,19 @@ properties:
-   resets:
-     maxItems: 1
- 
-+  dmas:
-+    items:
-+      - description: mem2cryp DMA channel
-+      - description: cryp2mem DMA channel
-+
-+  dma-names:
-+    items:
-+      - const: mem2cryp
-+      - const: cryp2mem
-+
-+  power-domains:
-+    maxItems: 1
-+
- required:
-   - compatible
-   - reg
+ config CRYPTO_DEV_STM32_CRYP
+ 	tristate "Support for STM32 cryp accelerators"
+-	depends on ARCH_STM32
++	depends on ARCH_STM32 || ARCH_U8500
+ 	select CRYPTO_HASH
+ 	select CRYPTO_ENGINE
+ 	select CRYPTO_LIB_DES
 -- 
 2.38.1
 
