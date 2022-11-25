@@ -2,153 +2,109 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51272C433FE
-	for <phone-devel@archiver.kernel.org>; Fri, 25 Nov 2022 06:21:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C74BEC4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 25 Nov 2022 08:06:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229480AbiKYGVu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 25 Nov 2022 01:21:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57916 "EHLO
+        id S229673AbiKYIGH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 25 Nov 2022 03:06:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbiKYGVt (ORCPT
+        with ESMTP id S229504AbiKYIGG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 25 Nov 2022 01:21:49 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61BCA240B1;
-        Thu, 24 Nov 2022 22:21:48 -0800 (PST)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AP5KSJY007979;
-        Fri, 25 Nov 2022 06:21:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=7X2cAV8D+5tN4VerwY+Cmy51FaJdiqC/SHu8MMSG/CE=;
- b=RlzGebGH2snuiXO4Jy5qlbLiAqvwAhY9D8qmoTigq1w3IRCWEfgkc9+ek6ShQHTCmK30
- xHNwjbDAu7pEPLezH1xTN+qegeqmTnFOzROAfkcf9E3H9QNxxMf1SkTmHTcAQWdwGlvr
- ic515ooUrsPixia1I29NiOXDmNiPFvxPoaZYe3uofIcAlpeEnenw37EShWUnVWmhaNCh
- rHy7wtmBr1/GLx/5mkDFKnIOoz1zp/r99aITAscXIzkheQyCDbFTrQ4xGw/qD3A29FRT
- 7gq3cvz+VLmb2m7O66iCRsEqwlaLz1iwU+CRvAyh3PoOz/Zh2Tb9DsC6U+TEEcP7Rp2n rw== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3m2buv9gfm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 25 Nov 2022 06:21:34 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AP6LW9b013426
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 25 Nov 2022 06:21:32 GMT
-Received: from [10.216.38.33] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Thu, 24 Nov
- 2022 22:21:26 -0800
-Message-ID: <cb4347b0-b885-1a00-6ab1-03566191e1ec@quicinc.com>
-Date:   Thu, 24 Nov 2022 22:21:22 -0800
+        Fri, 25 Nov 2022 03:06:06 -0500
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94196218B5
+        for <phone-devel@vger.kernel.org>; Fri, 25 Nov 2022 00:06:05 -0800 (PST)
+Received: by mail-lj1-x233.google.com with SMTP id a7so4280820ljq.12
+        for <phone-devel@vger.kernel.org>; Fri, 25 Nov 2022 00:06:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D49i9+CqzhVncl5C6H/ptIMUdWGDiCQ2jV+wEFz40RA=;
+        b=n/PGbygZuJrtVuapZT8bdM1579wHkSd3l9IVakzRsfx7SFDPCr6+z1phHUMbC7MmGe
+         l/nsjSlGVD2z4Ql58NgWsJHRrVUzG7RoeQrjMaqM9UONFICqoyR0Tw+00DDFFZvIO7vg
+         U28rpMxn0j2YvgpkiiuJk42Vm4yD+JEts2R5QBOzdtuVU/Vp4lKR5MUzEZNqADHAuxOD
+         zS0pIKtB9DCjUE87vlRxcwXBWCI1crkRmWZ1MYhAUFyqP+rPp4m+y4/YLGju2vOSYkJU
+         UbhqOzmk8husMENiGNoJibHkxoCo8tl3yVs6dAgP54EOQNJgMF3o6IU2j6VLBVx2QXTu
+         aNlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D49i9+CqzhVncl5C6H/ptIMUdWGDiCQ2jV+wEFz40RA=;
+        b=ja8USbXbQnsZX0/aJ9iKjtn9vPCZfXjU4G+SorqP4JvkE8AeyQaHXGY10Oj0CqKPuh
+         ztK/bezHjFbv0MDLzmVDFQRcms8KI46jXmtfhDYLFneoBKj3LB0x8WGH5mmvgRFxySA0
+         5WsFsixWkJ5XyTR/1taH1CdSalACgIMILFvc4D1E1xE5aw2lEm5N3+hrnNJXptmDkozK
+         yIR67ebIUhs0Npbd+aXmy1Iz+M+bEEebrabfjoHRASj/yZ6yrTK8SDOLcqjbkEVwF3pt
+         uMqA8+3tSDTFrMMlI1+sdsqY5mSJa0yr2pxnPfxH+ykDAweJ+JkW/5zmb38DhLd22iVU
+         IItg==
+X-Gm-Message-State: ANoB5plwadiByC2MtiVO+a6lgtyBRRhWvXcDm+hX+UkfhnhYDgEB0BhW
+        XQndyftLVOIBcQZxg4PNeFUdpg==
+X-Google-Smtp-Source: AA0mqf6VxT1aEXu7weoSccK7/ISZvPA73NLRVTO6wuY9yZQZBdzrp0PjPI71T4AeNAn5MJj15hwsPw==
+X-Received: by 2002:a2e:aa94:0:b0:277:871:5712 with SMTP id bj20-20020a2eaa94000000b0027708715712mr11000813ljb.129.1669363563955;
+        Fri, 25 Nov 2022 00:06:03 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id b24-20020a196458000000b004949a8df775sm433304lfj.33.2022.11.25.00.06.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Nov 2022 00:06:03 -0800 (PST)
+Message-ID: <8ad024c8-1284-0f72-91a3-2a8d9b5692fe@linaro.org>
+Date:   Fri, 25 Nov 2022 09:06:01 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: [PATCH] drm/msm/dpu: Print interrupt index in addition to the
- mask
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v2 1/2] dt-bindings: display/msm: add support for SM6115
 Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        <phone-devel@vger.kernel.org>
-CC:     <~postmarketos/upstreaming@lists.sr.ht>,
+To:     Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Kalyan Thota <quic_kalyant@quicinc.com>,
+        Jessica Zhang <quic_jesszhan@quicinc.com>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        "Sean Paul" <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Stephen Boyd <swboyd@chromium.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
         Vinod Koul <vkoul@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Vinod Polimera <quic_vpolimer@quicinc.com>,
-        <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <freedreno@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-References: <20221121222456.437815-1-marijn.suijten@somainline.org>
-From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <20221121222456.437815-1-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+        Jason Wang <wangborong@cdjrlc.com>,
+        Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20221124001708.25720-1-a39.skl@gmail.com>
+ <20221124001708.25720-2-a39.skl@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221124001708.25720-2-a39.skl@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: pp-FMCIr_c_5Iu05Tb_m__SLWc8ZnweR
-X-Proofpoint-ORIG-GUID: pp-FMCIr_c_5Iu05Tb_m__SLWc8ZnweR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-25_02,2022-11-24_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
- clxscore=1011 mlxscore=0 phishscore=0 adultscore=0 spamscore=0
- mlxlogscore=999 suspectscore=0 lowpriorityscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211250051
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-
-On 11/21/2022 2:24 PM, Marijn Suijten wrote:
-> The mask only describes the `irq_idx % 32` part, making it generally
-> impossible to deduce what interrupt is being enabled/disabled.  Since
-> `debug/core_irq` in debugfs (and other prints) also include the full
-> `DPU_IRQ_IDX()` value, print the same full value here for easier
-> correlation instead of only adding the `irq_idx / 32` part.
+On 24/11/2022 01:16, Adam Skladowski wrote:
+> Add DPU and MDSS schemas to describe MDSS and DPU blocks on the Qualcomm
+> SM6115 platform.
+> Configuration for DSI/PHY is shared with QCM2290 so compatibles are reused.
+> Lack of dsi phy supply in example is intended
+> due to fact on qcm2290, sm6115 and sm6125
+> this phy is supplied via power domain, not regulator.
 > 
-> Furthermore, make the dbgstr messages more consistent.
-> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 > ---
->   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-> index cf1b6d84c18a..64589a9c2c51 100644
-> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
-> @@ -252,9 +252,9 @@ static int dpu_hw_intr_enable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
->   
->   	cache_irq_mask = intr->cache_irq_mask[reg_idx];
->   	if (cache_irq_mask & DPU_IRQ_MASK(irq_idx)) {
-> -		dbgstr = "DPU IRQ already set:";
-> +		dbgstr = "already ";
->   	} else {
-> -		dbgstr = "DPU IRQ enabled:";
-> +		dbgstr = "";
->   
->   		cache_irq_mask |= DPU_IRQ_MASK(irq_idx);
->   		/* Cleaning any pending interrupt */
-> @@ -268,7 +268,7 @@ static int dpu_hw_intr_enable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
->   		intr->cache_irq_mask[reg_idx] = cache_irq_mask;
->   	}
->   
-> -	pr_debug("%s MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", dbgstr,
-> +	pr_debug("DPU IRQ %d %senabled: MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", irq_idx, dbgstr,
->   			DPU_IRQ_MASK(irq_idx), cache_irq_mask);
->   
->   	return 0;
-> @@ -301,9 +301,9 @@ static int dpu_hw_intr_disable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
->   
->   	cache_irq_mask = intr->cache_irq_mask[reg_idx];
->   	if ((cache_irq_mask & DPU_IRQ_MASK(irq_idx)) == 0) {
-> -		dbgstr = "DPU IRQ is already cleared:";
-> +		dbgstr = "already ";
->   	} else {
-> -		dbgstr = "DPU IRQ mask disable:";
-> +		dbgstr = "";
->   
->   		cache_irq_mask &= ~DPU_IRQ_MASK(irq_idx);
->   		/* Disable interrupts based on the new mask */
-> @@ -317,7 +317,7 @@ static int dpu_hw_intr_disable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
->   		intr->cache_irq_mask[reg_idx] = cache_irq_mask;
->   	}
->   
-> -	pr_debug("%s MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", dbgstr,
-> +	pr_debug("DPU IRQ %d %sdisabled: MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", irq_idx, dbgstr,
->   			DPU_IRQ_MASK(irq_idx), cache_irq_mask);
->   
->   	return 0;
+
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
+
