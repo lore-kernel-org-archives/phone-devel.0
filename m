@@ -2,109 +2,122 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C74BEC4332F
-	for <phone-devel@archiver.kernel.org>; Fri, 25 Nov 2022 08:06:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A738C4321E
+	for <phone-devel@archiver.kernel.org>; Fri, 25 Nov 2022 09:28:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229673AbiKYIGH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 25 Nov 2022 03:06:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57274 "EHLO
+        id S229972AbiKYJ25 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 25 Nov 2022 04:28:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbiKYIGG (ORCPT
+        with ESMTP id S229920AbiKYJ2j (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 25 Nov 2022 03:06:06 -0500
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94196218B5
-        for <phone-devel@vger.kernel.org>; Fri, 25 Nov 2022 00:06:05 -0800 (PST)
-Received: by mail-lj1-x233.google.com with SMTP id a7so4280820ljq.12
-        for <phone-devel@vger.kernel.org>; Fri, 25 Nov 2022 00:06:05 -0800 (PST)
+        Fri, 25 Nov 2022 04:28:39 -0500
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9685925EBC
+        for <phone-devel@vger.kernel.org>; Fri, 25 Nov 2022 01:28:37 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id fy37so8964165ejc.11
+        for <phone-devel@vger.kernel.org>; Fri, 25 Nov 2022 01:28:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=D49i9+CqzhVncl5C6H/ptIMUdWGDiCQ2jV+wEFz40RA=;
-        b=n/PGbygZuJrtVuapZT8bdM1579wHkSd3l9IVakzRsfx7SFDPCr6+z1phHUMbC7MmGe
-         l/nsjSlGVD2z4Ql58NgWsJHRrVUzG7RoeQrjMaqM9UONFICqoyR0Tw+00DDFFZvIO7vg
-         U28rpMxn0j2YvgpkiiuJk42Vm4yD+JEts2R5QBOzdtuVU/Vp4lKR5MUzEZNqADHAuxOD
-         zS0pIKtB9DCjUE87vlRxcwXBWCI1crkRmWZ1MYhAUFyqP+rPp4m+y4/YLGju2vOSYkJU
-         UbhqOzmk8husMENiGNoJibHkxoCo8tl3yVs6dAgP54EOQNJgMF3o6IU2j6VLBVx2QXTu
-         aNlA==
+        d=fairphone.com; s=fair;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mpP1Fb3xrzGRgQcSv/nFJciJPCBP7tqCxTn34nBqums=;
+        b=M3AG39iyzVs6kp0nC+H6PpKMBHKps2QdCUkARwCOOsrhaQzvV03csXlDQrasZJfxXq
+         5++2hBLuysDfDyTuchXNvhK0/xi/Itvpo6NplBuZk7h6f+vuMyT2zIryoZu4RDAjpH9u
+         1kG8hhmksgxiGXsd1m8NOYhDz6dv/mVQbu/+mILE1rjce+4lB6agNnAWS4RYUHNpEZZ2
+         YfMq7mLnGCP1mG1Z8uAYt5dy87jP+gpppV548B0WAKVeVImMIXjTJC26xRJyrzY5jdC4
+         6vw4cdnVVsBX+MO9sczMwjyzNDYHPZFxsHGOZhipN926gnKVQc0Oy/o1+msxlp0ixOLj
+         odMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D49i9+CqzhVncl5C6H/ptIMUdWGDiCQ2jV+wEFz40RA=;
-        b=ja8USbXbQnsZX0/aJ9iKjtn9vPCZfXjU4G+SorqP4JvkE8AeyQaHXGY10Oj0CqKPuh
-         ztK/bezHjFbv0MDLzmVDFQRcms8KI46jXmtfhDYLFneoBKj3LB0x8WGH5mmvgRFxySA0
-         5WsFsixWkJ5XyTR/1taH1CdSalACgIMILFvc4D1E1xE5aw2lEm5N3+hrnNJXptmDkozK
-         yIR67ebIUhs0Npbd+aXmy1Iz+M+bEEebrabfjoHRASj/yZ6yrTK8SDOLcqjbkEVwF3pt
-         uMqA8+3tSDTFrMMlI1+sdsqY5mSJa0yr2pxnPfxH+ykDAweJ+JkW/5zmb38DhLd22iVU
-         IItg==
-X-Gm-Message-State: ANoB5plwadiByC2MtiVO+a6lgtyBRRhWvXcDm+hX+UkfhnhYDgEB0BhW
-        XQndyftLVOIBcQZxg4PNeFUdpg==
-X-Google-Smtp-Source: AA0mqf6VxT1aEXu7weoSccK7/ISZvPA73NLRVTO6wuY9yZQZBdzrp0PjPI71T4AeNAn5MJj15hwsPw==
-X-Received: by 2002:a2e:aa94:0:b0:277:871:5712 with SMTP id bj20-20020a2eaa94000000b0027708715712mr11000813ljb.129.1669363563955;
-        Fri, 25 Nov 2022 00:06:03 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id b24-20020a196458000000b004949a8df775sm433304lfj.33.2022.11.25.00.06.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Nov 2022 00:06:03 -0800 (PST)
-Message-ID: <8ad024c8-1284-0f72-91a3-2a8d9b5692fe@linaro.org>
-Date:   Fri, 25 Nov 2022 09:06:01 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v2 1/2] dt-bindings: display/msm: add support for SM6115
-Content-Language: en-US
-To:     Adam Skladowski <a39.skl@gmail.com>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mpP1Fb3xrzGRgQcSv/nFJciJPCBP7tqCxTn34nBqums=;
+        b=N9VD/eSPb66+v9KBSqJyEM/NwlphvWTRCFCI5zvJujgD2aKZzUQWZtu1YbQxt2Qxpx
+         t17qNATvxLHG2MdccNUlzE1zPmHJRgvtSDF00jf1hC5IiB0Pwz51W86LHFUzCI38wsJF
+         NZN0PFR/V20uTMeFf8WKmXllleY97tJu37BEw0a+u3HwKDd3niMYuCCt6fXG/JtoUqy7
+         CAiN7BGyziYHkjSMjzaQ4YbAjGRy91uXJHzN6oW/p4KFV/8ztRNwPvQ4d7GYx37lwyoT
+         7tJoj37VuWNr+n77/LPq9ShtSffqtN6wOdkbXfihXj//HynMoY733hKT6EeysZZoehos
+         bkHQ==
+X-Gm-Message-State: ANoB5pk+gRdxvHSO8f5Eo+Q+StKfLjOa6j5JdUbYfNaZFn0Vt7/yO3uk
+        0PWBoR8GafFXuUZe0gTtJ5wjYQ==
+X-Google-Smtp-Source: AA0mqf6hp96XZKNkOkLtlvlp1dyiIjtsY9pIgqXvv7XvMMs9JbLaxGUy326AbqovFjsY5Em9g7F0/Q==
+X-Received: by 2002:a17:906:d281:b0:782:7790:f132 with SMTP id ay1-20020a170906d28100b007827790f132mr15514892ejb.649.1669368516112;
+        Fri, 25 Nov 2022 01:28:36 -0800 (PST)
+Received: from otso.. (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id q10-20020a170906b28a00b007b47748d22fsm1329315ejz.220.2022.11.25.01.28.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Nov 2022 01:28:35 -0800 (PST)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+To:     linux-arm-msm@vger.kernel.org, Johan Hovold <johan@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Kalyan Thota <quic_kalyant@quicinc.com>,
-        Jessica Zhang <quic_jesszhan@quicinc.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Vinod Polimera <quic_vpolimer@quicinc.com>,
-        Jason Wang <wangborong@cdjrlc.com>,
-        Kuogee Hsieh <quic_khsieh@quicinc.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20221124001708.25720-1-a39.skl@gmail.com>
- <20221124001708.25720-2-a39.skl@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221124001708.25720-2-a39.skl@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: [RFC PATCH v2 1/3] dt-bindings: phy: qcom,qmp-usb3-dp: Add sm6350 compatible
+Date:   Fri, 25 Nov 2022 10:27:47 +0100
+Message-Id: <20221125092749.46073-1-luca.weiss@fairphone.com>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 24/11/2022 01:16, Adam Skladowski wrote:
-> Add DPU and MDSS schemas to describe MDSS and DPU blocks on the Qualcomm
-> SM6115 platform.
-> Configuration for DSI/PHY is shared with QCM2290 so compatibles are reused.
-> Lack of dsi phy supply in example is intended
-> due to fact on qcm2290, sm6115 and sm6125
-> this phy is supplied via power domain, not regulator.
-> 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-> ---
+Add the compatible describing the combo phy found on SM6350.
 
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+@Johan Hovold, I've sent this v2 as RFC because there are several things
+where I have questions on how it should be done.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In this patch, you can see there's cfg_ahb (&xo_board) and power-domains
+is not set. In msm-4.19 &gcc_usb30_prim_gdsc is only used in the
+ssusb@a600000 node, or should I also add it to qmpphy?
 
-Best regards,
-Krzysztof
+ .../bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml          | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
+index 6f31693d9868..3e39e3e0504d 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
+@@ -17,16 +17,18 @@ properties:
+   compatible:
+     enum:
+       - qcom,sc8280xp-qmp-usb43dp-phy
++      - qcom,sm6350-qmp-usb3-dp-phy
+ 
+   reg:
+     maxItems: 1
+ 
+   clocks:
+-    maxItems: 4
++    maxItems: 5
+ 
+   clock-names:
+     items:
+       - const: aux
++      - const: cfg_ahb
+       - const: ref
+       - const: com_aux
+       - const: usb3_pipe
+@@ -61,7 +63,6 @@ required:
+   - reg
+   - clocks
+   - clock-names
+-  - power-domains
+   - resets
+   - reset-names
+   - vdda-phy-supply
+-- 
+2.38.1
 
