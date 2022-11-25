@@ -2,184 +2,153 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 071FFC43217
-	for <phone-devel@archiver.kernel.org>; Thu, 24 Nov 2022 12:35:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 51272C433FE
+	for <phone-devel@archiver.kernel.org>; Fri, 25 Nov 2022 06:21:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229468AbiKXMf7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 24 Nov 2022 07:35:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47932 "EHLO
+        id S229480AbiKYGVu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 25 Nov 2022 01:21:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbiKXMf5 (ORCPT
+        with ESMTP id S229436AbiKYGVt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 24 Nov 2022 07:35:57 -0500
-Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C2FD898E1;
-        Thu, 24 Nov 2022 04:35:56 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 3BD8DEC9DF;
-        Thu, 24 Nov 2022 04:35:56 -0800 (PST)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id oW5luY8rDfud; Thu, 24 Nov 2022 04:35:55 -0800 (PST)
-Date:   Thu, 24 Nov 2022 13:35:33 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
-        t=1669293355; bh=RgJG5Oidxh068x+5k52+UvIseZv630peSoQN5/PYCPI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iFsi2/PVDljgfb1nr8mziG0gyeBx8cDqZjgkthRQ27i0jmfzIYDIGtzA3t9orfNZR
-         uvXk9Aaax8wuxnLts44dS9tCrj8yEHC7mqP9u5ps8U6xdoiJV5NvdbU/cfKG58y2lX
-         iKC9EE2Hmg4PJhv2r1OHdEYfi0VbXiM/gJYJ+3L4FNiUPeG9wM/UKjlXeZ5M2+SNAf
-         zJnW49PpncLiAcPvxQslziVBetIFjqaeRFXwVwuj3PDg45NkKVl1VHcZVlyfTyHJ3j
-         JWS6LDX/zLnCU/+RJDh2JtPZ2cCgQZjnPyKl0clE4ccOuB26ix/m1SYCzFN8DFjEb8
-         et6ydzTNzp9tg==
-From:   Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Steve Longerbeam <slongerbeam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel@puri.sm, phone-devel@vger.kernel.org
-Subject: Re: [PATCHv3 1/1 RESEND] media: imx: Round line size to 4 bytes
-Message-ID: <20221124133533.1041f1b1.dorota.czaplejewicz@puri.sm>
-In-Reply-To: <Y39Vx6L7MovBxOfs@pendragon.ideasonboard.com>
-References: <20221016163928.1ef0a4fe.dorota.czaplejewicz@puri.sm>
-        <Y00SSRMFuL3Drjd4@pendragon.ideasonboard.com>
-        <20221017163059.377ac677.dorota.czaplejewicz@puri.sm>
-        <20221101133834.0c1a20db.dorota.czaplejewicz@puri.sm>
-        <Y39Vx6L7MovBxOfs@pendragon.ideasonboard.com>
-Organization: Purism
+        Fri, 25 Nov 2022 01:21:49 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61BCA240B1;
+        Thu, 24 Nov 2022 22:21:48 -0800 (PST)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AP5KSJY007979;
+        Fri, 25 Nov 2022 06:21:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=7X2cAV8D+5tN4VerwY+Cmy51FaJdiqC/SHu8MMSG/CE=;
+ b=RlzGebGH2snuiXO4Jy5qlbLiAqvwAhY9D8qmoTigq1w3IRCWEfgkc9+ek6ShQHTCmK30
+ xHNwjbDAu7pEPLezH1xTN+qegeqmTnFOzROAfkcf9E3H9QNxxMf1SkTmHTcAQWdwGlvr
+ ic515ooUrsPixia1I29NiOXDmNiPFvxPoaZYe3uofIcAlpeEnenw37EShWUnVWmhaNCh
+ rHy7wtmBr1/GLx/5mkDFKnIOoz1zp/r99aITAscXIzkheQyCDbFTrQ4xGw/qD3A29FRT
+ 7gq3cvz+VLmb2m7O66iCRsEqwlaLz1iwU+CRvAyh3PoOz/Zh2Tb9DsC6U+TEEcP7Rp2n rw== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3m2buv9gfm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 25 Nov 2022 06:21:34 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2AP6LW9b013426
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 25 Nov 2022 06:21:32 GMT
+Received: from [10.216.38.33] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Thu, 24 Nov
+ 2022 22:21:26 -0800
+Message-ID: <cb4347b0-b885-1a00-6ab1-03566191e1ec@quicinc.com>
+Date:   Thu, 24 Nov 2022 22:21:22 -0800
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/0w4EGCp0VVCKoSCDIxcxR1Z";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [PATCH] drm/msm/dpu: Print interrupt index in addition to the
+ mask
+Content-Language: en-US
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        <phone-devel@vger.kernel.org>
+CC:     <~postmarketos/upstreaming@lists.sr.ht>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        "Sean Paul" <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <freedreno@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+References: <20221121222456.437815-1-marijn.suijten@somainline.org>
+From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <20221121222456.437815-1-marijn.suijten@somainline.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: pp-FMCIr_c_5Iu05Tb_m__SLWc8ZnweR
+X-Proofpoint-ORIG-GUID: pp-FMCIr_c_5Iu05Tb_m__SLWc8ZnweR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-25_02,2022-11-24_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ clxscore=1011 mlxscore=0 phishscore=0 adultscore=0 spamscore=0
+ mlxlogscore=999 suspectscore=0 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2210170000 definitions=main-2211250051
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
---Sig_/0w4EGCp0VVCKoSCDIxcxR1Z
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-Hello,
-
-On Thu, 24 Nov 2022 13:30:15 +0200
-Laurent Pinchart <laurent.pinchart@ideasonboard.com> wrote:
-
-> Hi Dorota,
->=20
-> On Tue, Nov 01, 2022 at 01:38:34PM +0100, Dorota Czaplejewicz wrote:
-> > On Mon, 17 Oct 2022 16:30:59 +0200 Dorota Czaplejewicz wrote: =20
-> > > On Mon, 17 Oct 2022 11:28:57 +0300 Laurent Pinchart wrote: =20
-> >=20
-> > [snip]
-> >  =20
-> > > > I would also very much appreciate feedback from NXP on this. There'=
-s a
-> > > > risk of ill side-effects that I would prefer ruling out very clearl=
-y.   =20
-> > >=20
-> > > I posted a question on the NXP forum: https://community.nxp.com/t5/i-=
-MX-Processors/i-MX8MQ-CSI-line-size-constraint-documentation-mistake/m-p/15=
-38629#M196448
-> > >  =20
-> >=20
-> > This question received a reply from NXP today: https://community.nxp.co=
-m/t5/i-MX-Processors/i-MX8MQ-CSI-line-size-constraint-documentation-mistake=
-/m-p/1546872/highlight/true#M197067
-> >=20
-> > Quoting NXP's answer:
-> >  =20
-> > > Do I understand correctly, that streams divisible by 4=C3=974 will wo=
-rk on other i.MX8 hardware too? - Yes
-> > > Will those kind of resolutions work on i.MX7 series CSI hardware? - Y=
-es =20
-> >=20
-> > which implies no bad side effects the way I read it. Is this
-> > sufficient for the kernel? =20
->=20
-> Ideally I'd like to test that on i.MX7 but I don't think I'll have time
-> to do so in the near future. I don't want to block the patch on this, so
-> I'm fine merging it, but I'd like a comment in the code that explains
-> why it's safe to depart from the documentation.
->=20
-> Also, the discussion on the NXP forum said that a width that is a
-> multiple of 4 bytes but not a multiple of 8 bytes works only if the
-> height is also a multiple of 4. I don't see that constraint being
-> enforced in the code, am I missing something ?
-
-Thanks for pointing it out, I'll have to double-check it.
->=20
-> You mentioned in the forum that you tried 1052x779 and that failed. How
-> did it fail ? Have you also tried 1052x778 ?
-
-I tried with many resolutions when I was checking out the sensor, and came =
-to the conclusion that the line count must be even. Otherwise the last 4 by=
-tes of the buffer would end up corrupted.
-
-My guess is that the copy engine can indeed only do bursts of 8 bytes, but =
-that the whole buffer is copied at once rather than line-by-line.
->=20
-> > > > > Signed-off-by: Dorota Czaplejewicz <dorota.czaplejewicz@puri.sm>
-> > > > > ---
-> > > > > Hello,
-> > > > >=20
-> > > > > the Librem 5 is using an out-of-tree driver for s5k3l6xx, and
-> > > > > rounding to 4 is optimal to operate it.
-> > > > >=20
-> > > > > This revision improves the commit message.
-> > > > >=20
-> > > > > Cheers,
-> > > > > Dorota Czaplejewicz
-> > > > >=20
-> > > > >  drivers/staging/media/imx/imx7-media-csi.c | 4 ++--
-> > > > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > > >=20
-> > > > > diff --git a/drivers/staging/media/imx/imx7-media-csi.c b/drivers=
-/staging/media/imx/imx7-media-csi.c
-> > > > > index a0553c24cce4..af821b410c3f 100644
-> > > > > --- a/drivers/staging/media/imx/imx7-media-csi.c
-> > > > > +++ b/drivers/staging/media/imx/imx7-media-csi.c
-> > > > > @@ -999,10 +999,10 @@ static int imx7_csi_mbus_fmt_to_pix_fmt(str=
-uct v4l2_pix_format *pix,
-> > > > >  	}
-> > > > > =20
-> > > > >  	/* Round up width for minimum burst size */
-> > > > > -	width =3D round_up(mbus->width, 8);
-> > > > > +	width =3D round_up(mbus->width, 4);
-> > > > > =20
-> > > > >  	/* Round up stride for IDMAC line start address alignment */
-> > > > > -	stride =3D round_up((width * cc->bpp) >> 3, 8);
-> > > > > +	stride =3D round_up((width * cc->bpp) >> 3, 4);
-> > > > > =20
-> > > > >  	pix->width =3D width;
-> > > > >  	pix->height =3D mbus->height;     =20
->=20
 
 
---Sig_/0w4EGCp0VVCKoSCDIxcxR1Z
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEExKRqtqfFqmh+lu1oADBpX4S8ZncFAmN/ZRUACgkQADBpX4S8
-ZncZgg/+M00zWn+qqaDOzjU/5vY0xfnGbBLJutiOhKbc6PJnYAJKk3Kxm1EDpRKK
-h/Ux3rgC8FAo8nJXcL0nrromadYRwBK62ph4cszlOM4P1Yz9FxV7qA0ePvoNk+qY
-vJEEwSeHjKwiyls8knSEcLPNeynR7zNndWTmL9lKkiWIkXHYJcfj5hEl/f8GllPj
-tMN4tPFxlDtyDwBn3+Fcn/Q1577Z/u16h+/93U0PZjMwgV3hOTnxbvsvcKyKWQz4
-3jHKx8vRgYxkKABqlR30TaBcxUXm/+Mg2ThvjBJjpdu+3agNFhsi4FC+kUrZ2LFn
-nnQzJ2QjHtiSVNLABjeVWRnn0PscnmGguMv5SAygDAxzAqFGWSWuFwHLNPExd5nN
-9rGxC0ndbQe6IV8pz3I87DBQ0Q92RgH8noI9UHoRhJDhqLCP/M0vMZf2yca5YDH6
-/k5z8Hg8H/IUGw9nYJ+u0pUUaMY2El/vTPmtwooEsaxBgUAoEbrBCiQiGXDMWCiW
-qPfdjiN+sMjpbYWxMMuOn+EaOPk5GUmssOF3WSezxVnQHpcMRx9Zz+Vudhak1n21
-3xk4fce95luLiEwnPivkvXYBsOWyFHA8ba7yKqSd4YKzy5WvackN6169EQhoEomp
-0YjTbktaA0AOxXHSar2QeaMJ7T5lu4ZdA+0wem7hfySVXbgNsvw=
-=2qyk
------END PGP SIGNATURE-----
-
---Sig_/0w4EGCp0VVCKoSCDIxcxR1Z--
+On 11/21/2022 2:24 PM, Marijn Suijten wrote:
+> The mask only describes the `irq_idx % 32` part, making it generally
+> impossible to deduce what interrupt is being enabled/disabled.  Since
+> `debug/core_irq` in debugfs (and other prints) also include the full
+> `DPU_IRQ_IDX()` value, print the same full value here for easier
+> correlation instead of only adding the `irq_idx / 32` part.
+> 
+> Furthermore, make the dbgstr messages more consistent.
+> 
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+> ---
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
+> index cf1b6d84c18a..64589a9c2c51 100644
+> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
+> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c
+> @@ -252,9 +252,9 @@ static int dpu_hw_intr_enable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
+>   
+>   	cache_irq_mask = intr->cache_irq_mask[reg_idx];
+>   	if (cache_irq_mask & DPU_IRQ_MASK(irq_idx)) {
+> -		dbgstr = "DPU IRQ already set:";
+> +		dbgstr = "already ";
+>   	} else {
+> -		dbgstr = "DPU IRQ enabled:";
+> +		dbgstr = "";
+>   
+>   		cache_irq_mask |= DPU_IRQ_MASK(irq_idx);
+>   		/* Cleaning any pending interrupt */
+> @@ -268,7 +268,7 @@ static int dpu_hw_intr_enable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
+>   		intr->cache_irq_mask[reg_idx] = cache_irq_mask;
+>   	}
+>   
+> -	pr_debug("%s MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", dbgstr,
+> +	pr_debug("DPU IRQ %d %senabled: MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", irq_idx, dbgstr,
+>   			DPU_IRQ_MASK(irq_idx), cache_irq_mask);
+>   
+>   	return 0;
+> @@ -301,9 +301,9 @@ static int dpu_hw_intr_disable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
+>   
+>   	cache_irq_mask = intr->cache_irq_mask[reg_idx];
+>   	if ((cache_irq_mask & DPU_IRQ_MASK(irq_idx)) == 0) {
+> -		dbgstr = "DPU IRQ is already cleared:";
+> +		dbgstr = "already ";
+>   	} else {
+> -		dbgstr = "DPU IRQ mask disable:";
+> +		dbgstr = "";
+>   
+>   		cache_irq_mask &= ~DPU_IRQ_MASK(irq_idx);
+>   		/* Disable interrupts based on the new mask */
+> @@ -317,7 +317,7 @@ static int dpu_hw_intr_disable_irq_locked(struct dpu_hw_intr *intr, int irq_idx)
+>   		intr->cache_irq_mask[reg_idx] = cache_irq_mask;
+>   	}
+>   
+> -	pr_debug("%s MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", dbgstr,
+> +	pr_debug("DPU IRQ %d %sdisabled: MASK:0x%.8lx, CACHE-MASK:0x%.8x\n", irq_idx, dbgstr,
+>   			DPU_IRQ_MASK(irq_idx), cache_irq_mask);
+>   
+>   	return 0;
