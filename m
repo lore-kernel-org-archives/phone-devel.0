@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DAF55C43217
-	for <phone-devel@archiver.kernel.org>; Sun, 27 Nov 2022 17:09:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C026AC43217
+	for <phone-devel@archiver.kernel.org>; Sun, 27 Nov 2022 17:09:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229540AbiK0RJV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 27 Nov 2022 12:09:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44152 "EHLO
+        id S229551AbiK0RJX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 27 Nov 2022 12:09:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbiK0RJU (ORCPT
+        with ESMTP id S229496AbiK0RJX (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 27 Nov 2022 12:09:20 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D91D8DFDA;
-        Sun, 27 Nov 2022 09:09:18 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id r66-20020a1c4445000000b003d05a3775d4so442264wma.3;
-        Sun, 27 Nov 2022 09:09:18 -0800 (PST)
+        Sun, 27 Nov 2022 12:09:23 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28E04DFC8;
+        Sun, 27 Nov 2022 09:09:21 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id b12so13493390wrn.2;
+        Sun, 27 Nov 2022 09:09:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HpkxZ5cltPLYU9mAjuP/FsJ8XLT5RTiCRGescyBtpOw=;
-        b=B5dDfdV91VED5P1pDZ665aPGBGjNhFi0Ss96gkPHCCzzkd1nhm9d6beey+Lq1eFX1N
-         4qTYqJsx681BhpW9bwOwZ82G9oRYkhhYLxvDQLx5dLfzXgklJyD0u3o1U7qzKtRMoKmH
-         BZaHoA/14R0u+wMg70LwDILeC3OwYYI6I6z1C3MJ7B77A84f0yKFWlhSu8hgVrLvq7jC
-         DD8QFUPP5rF6MScySpUoGZZVRS6fHsnba5t9gPOOWCywoFqvwGAQksQf7W/i/8OAmnZh
-         IBygzhFkLVqsnvz2XJ+lmJhqA99fGwYgswXNLuhp1XlArvelHeiWfz8jygsMHfLd90YS
-         eJvA==
+        bh=ZuxgIdp0xqTuRzzoLY4mlfDBUIEbIXvI9sh1okauOJY=;
+        b=pWIVrtE+bZyK95xZII6HnM1QCqdBwq+IIG8jf0RMxy9mIlPtKE2E26sGU86z8OWZTK
+         A27ibDJKYn3VrYLJ12uLLTyujcIaOmWRxhe/AmW60EQmPi9dDEhpT97dblIR70xmp4pn
+         L5D7+iIl2VI+BS/a1BmOAXiWPzkxlKfuvvBrI9wN9hO3NzatGcLeFAmL4z8xuNBsKhpz
+         V08pHbFLUPS7fRY/oCGRf8jlvaVusCUcGWebidmdyui3zfgBK5GoJR3V5wLtr5N+vJzY
+         8i3U0bhY6NyoZuvq8Q0RnHE611BpbcspaXR6TiZAM3NrpV6Fd2nxuEKjrMo5lsMbhdTT
+         s6Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HpkxZ5cltPLYU9mAjuP/FsJ8XLT5RTiCRGescyBtpOw=;
-        b=SkkcBf57pTg270pLxP4BSKP0QT9sH8oXUmtUEzD2DQJgCa0vMwNewC0yYIOxPxR5Od
-         FQzHn0I8KioebUVXfQ+jxvAFgqc+vSy3ggzMyDy4DBW2jWYetunYIubl1fIJIeJsGXXz
-         VhVQK26uBccZZO56NO/cEKABMS1aP2ppoWqy2I3fIyZRG7g7QY6AnMaHd14LTNBNjeBC
-         c45GU8VDixRn9nyu/2slu1i//9Mdg0GbnNR56xma4k624b23NOtOXsMOk6E79u0ZTRby
-         3wwtm8duZHZ/V8DYGApIGPa5v1wBFRVRlQrP6ix19M1j+AwAUV33u/VFwb/4x66m76QM
-         bGPg==
-X-Gm-Message-State: ANoB5pmdlWdqlX+5M7ZNpi9R0mQOaq1tU49+YdsiWChAGd+yc9M0Hc3u
-        Skev5jSE2HxHo2TzBIcECx9J0YoRnDVBmIVd9ZQ=
-X-Google-Smtp-Source: AA0mqf45n5K24cLu0CZz7VR9g1qsINXM6LaSbftjTh2q8+/gCwoeintCFdU+jOnwNhbZ88eLfTHGAQ==
-X-Received: by 2002:a05:600c:46cd:b0:3cf:88c3:d010 with SMTP id q13-20020a05600c46cd00b003cf88c3d010mr38367362wmo.180.1669568957417;
-        Sun, 27 Nov 2022 09:09:17 -0800 (PST)
+        bh=ZuxgIdp0xqTuRzzoLY4mlfDBUIEbIXvI9sh1okauOJY=;
+        b=XSRkoZqWJrIsxGgFDlic1wCt+10lS3e2Y5Dj6SSFm8SpZqVI/lryrJoBV9KkX0iIC0
+         V5ybW7MEGbdfOX1pfuRosUXKAm0eWmDaZy3z2KyrT9RYkDzYRE6BXtAKoswFw8AGDO4n
+         +atbzWyv1WuAD3nAXlUoPLbYuDU53Mxa4V2Tn6MJ/GAKjMcoLNlZkNhicwHQTxBsmvsW
+         j5Z/+WC1o6DnI9EboXhXb1DgY91nm1NT5W/hXyHORnvUahUm2nk/zW2H1OXdbDe/iJNs
+         ed5f1tc82ToRlmTYiwWFtQSzJ/5xW+AXXsuPD0CFny6UX+8DFqk+OqQD5n9lCYTPqeex
+         l+Pg==
+X-Gm-Message-State: ANoB5pmAAmRJtnwwCXIKBxoa9sdEyVmGDtxUixI0sq/CdzRSh8PW7nmf
+        y0ISesUXKdxh8qOrXvKQfa9gQnra3JTDl6WKNJg=
+X-Google-Smtp-Source: AA0mqf7+EiB7WO98d0txKip1y+2BqXjm3rTbhRGEd5/7rOcytRv8lxYyKcy8CxKK2672BJ5eyZLDIA==
+X-Received: by 2002:a5d:4d8b:0:b0:241:bf7b:db5b with SMTP id b11-20020a5d4d8b000000b00241bf7bdb5bmr26740939wru.267.1669568960696;
+        Sun, 27 Nov 2022 09:09:20 -0800 (PST)
 Received: from david-ryuzu.fritz.box (ipbcc3aba7.dynamic.kabel-deutschland.de. [188.195.171.167])
-        by smtp.googlemail.com with ESMTPSA id h17-20020a05600c315100b003cf483ee8e0sm17759967wmo.24.2022.11.27.09.09.16
+        by smtp.googlemail.com with ESMTPSA id h17-20020a05600c315100b003cf483ee8e0sm17759967wmo.24.2022.11.27.09.09.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Nov 2022 09:09:17 -0800 (PST)
+        Sun, 27 Nov 2022 09:09:20 -0800 (PST)
 From:   David Wronek <davidwronek@gmail.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Andy Gross <agross@kernel.org>,
@@ -61,9 +61,9 @@ Cc:     Andy Gross <agross@kernel.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         David Wronek <davidwronek@gmail.com>
-Subject: [PATCH 1/3] dt-bindings: arm: qcom: Document Lenovo Xiaoxin Pad Pro 2021
-Date:   Sun, 27 Nov 2022 18:08:56 +0100
-Message-Id: <20221127170858.440040-2-davidwronek@gmail.com>
+Subject: [PATCH 3/3] arm64: dts: qcom: sm8250-lenovo-j716f: Enable ADSP/CDSP/SLPI
+Date:   Sun, 27 Nov 2022 18:08:58 +0100
+Message-Id: <20221127170858.440040-4-davidwronek@gmail.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221127170858.440040-1-davidwronek@gmail.com>
 References: <20221127170858.440040-1-davidwronek@gmail.com>
@@ -73,26 +73,55 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Document the compatible for the Lenovo Xiaoxin Pad Pro 2021 Android
-tablet.
+Enabled the ADSP, CDSP and SLPI remoteprocs with a simple "okay".
+Firmware needs to be provided by the Linux distribution, as it's signed
+and needs to come from stock Android.
 
 Signed-off-by: David Wronek <davidwronek@gmail.com>
 ---
- Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm8250-lenovo-j716f.dts | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
-index 463509f0f23a..588ac7f12a81 100644
---- a/Documentation/devicetree/bindings/arm/qcom.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-@@ -796,6 +796,7 @@ properties:
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-lenovo-j716f.dts b/arch/arm64/boot/dts/qcom/sm8250-lenovo-j716f.dts
+index c493721ef664..33edeb6f3ef4 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250-lenovo-j716f.dts
++++ b/arch/arm64/boot/dts/qcom/sm8250-lenovo-j716f.dts
+@@ -76,6 +76,11 @@ vreg_s6c_0p88: smpc6-regulator {
+ 	};
+ };
  
-       - items:
-           - enum:
-+              - lenovo,j716f
-               - qcom,qrb5165-rb5
-               - qcom,sm8250-hdk
-               - qcom,sm8250-mtp
++&adsp {
++	status = "okay";
++	firmware-name = "qcom/sm8250/j716f/adsp.mbn";
++};
++
+ &apps_rsc {
+ 	pm8150-rpmh-regulators {
+ 		compatible = "qcom,pm8150-rpmh-regulators";
+@@ -434,6 +439,11 @@ vreg_l7f_1p8: ldo7 {
+ 	};
+ };
+ 
++&cdsp {
++	status = "okay";
++	firmware-name = "qcom/sm8250/j716f/cdsp.mbn";
++};
++
+ &gpi_dma0 {
+ 	status = "okay";
+ };
+@@ -515,6 +525,11 @@ &qupv3_id_2 {
+ 	status = "okay";
+ };
+ 
++&slpi {
++	status = "okay";
++	firmware-name = "qcom/sm8250/j716f/slpi.mbn";
++};
++
+ &tlmm {
+ 	gpio-reserved-ranges = <40 4>;
+ };
 -- 
 2.38.1
 
