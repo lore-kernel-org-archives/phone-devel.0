@@ -2,153 +2,114 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86A3CC4321E
-	for <phone-devel@archiver.kernel.org>; Sun, 27 Nov 2022 20:13:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5BF9C47088
+	for <phone-devel@archiver.kernel.org>; Sun, 27 Nov 2022 21:06:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229616AbiK0UNs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 27 Nov 2022 15:13:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36444 "EHLO
+        id S229600AbiK0VF7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 27 Nov 2022 16:05:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229585AbiK0UNr (ORCPT
+        with ESMTP id S229529AbiK0VF5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 27 Nov 2022 15:13:47 -0500
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D318CE31
-        for <phone-devel@vger.kernel.org>; Sun, 27 Nov 2022 12:13:46 -0800 (PST)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-3704852322fso87475397b3.8
-        for <phone-devel@vger.kernel.org>; Sun, 27 Nov 2022 12:13:46 -0800 (PST)
+        Sun, 27 Nov 2022 16:05:57 -0500
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACDEBBF5D
+        for <phone-devel@vger.kernel.org>; Sun, 27 Nov 2022 13:05:56 -0800 (PST)
+Received: by mail-lf1-x129.google.com with SMTP id g12so14617741lfh.3
+        for <phone-devel@vger.kernel.org>; Sun, 27 Nov 2022 13:05:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4BsW9fXXbads+WS5bi3bLc7tk6sMWKRmXy9gWw9jX90=;
-        b=rqIBNsWYh9TDSn+szrrH7hFK5cywiDuBssu7dqeevJYpiqdca3AFFZBhveqTB3j+Dk
-         FwfO6uBJuR8MWy7Jp0pOGlMcVtn8cg8rSrzv36OOVeMAkCr3rl75xH11dNtpjBjtmh40
-         /b16DdLr6BhqbHa7dURA7bArGwDHKv5cGlKhp49XcjLZb98Of+W2jRYEJ8i2g9RhVew8
-         0l5upPm98Bh7BIAmm4QVPfarXGNtz4tlverV9QN8Go2GZcG0SLK9oaOrrFbDubiJcv1o
-         ee8qDqqdOy5R9sQXiZlNh8WKKC+qpvdwcTiypMpTTfT2SOLY1afo39RvYaw3oRkcQ4l6
-         Kacw==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5Nt+rYmibpu5dTdXk3Hdc1ryP5rBQWqr1sW/Ulf9bq0=;
+        b=srCg+kNV7zBo4yvmtMoNhDSdq84K7EnTBQDQcycsqvubhznP6G0Kw+Ntl4XJTKoH/4
+         lQ2WQnJmzU+IRQEc67VGOdSgP6b+VZei4Pr0KYyD6Rk/C4iswsf2pkEE+9QKEOtqPvxX
+         TN2NkMjzHhs3SQHLZnGJ1RO7Tep1LhS1/Go0Ohx7P3FbYmEsk/GODhlQTBYb4KYklBSB
+         X3xRCzruwUCAzwVC07b/zQhhPsoxBDqoBl3JMpCXlGFYJyF6v/q+f2kV3PIiXLVfmFC6
+         v9qU57h2kCIkJPqUM8C+jFxMQ18JWLoA6VqCC5bOadzjdKqt5Z95HmKB7Cf95lq+rGD9
+         /FBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4BsW9fXXbads+WS5bi3bLc7tk6sMWKRmXy9gWw9jX90=;
-        b=eEjjrd0px9Rc8vS24eeJvB/G6xWp4hvXE+ArAnyrScjXaGsIOIIs/XY7LYPcj0lwuL
-         iO3CUbYmPFd9rH/G2GHir2UUB4vfiR/29y76komFreU26A9ASbg7BBLjaqb2jYi25L1q
-         n/HubIqvW9sstXXtwA0rdS9DWEnI4xs/kSYja6iBXz6NepuWQNUCsYf8SLDr2BHRkZQB
-         NBKJEOGoutSiIenzlMB7cKMhST77IW5WN5UHLkJZVL0k3/Ju97agMV1N/ijoh7foOwdv
-         YDN9ZZogz0MoxUFYNJlh1leXorDBJQ685G8RxuCURKVfibul0R7lu1RGl1j6f20F1wx+
-         ywjg==
-X-Gm-Message-State: ANoB5pmxhEGR6YIotQEmImTXxug4oXgr6ClJopAOib4JPHgWLjzsABvE
-        M3NuhSi+JTAvmujag3YcYYGaTr1MBUr/marmrjqhsA==
-X-Google-Smtp-Source: AA0mqf46J1rXJ7aX/aiH//oD2+ojh2fJ969CivbeZNxzdJWyjrl+njLK6ztw38uVdPTvZ9IG2j2EqT7yBe6Q59JeRH4=
-X-Received: by 2002:a0d:d711:0:b0:3c3:dc9f:d24f with SMTP id
- z17-20020a0dd711000000b003c3dc9fd24fmr4114185ywd.343.1669580025359; Sun, 27
- Nov 2022 12:13:45 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Nt+rYmibpu5dTdXk3Hdc1ryP5rBQWqr1sW/Ulf9bq0=;
+        b=Ki5mQtyAIdwXY3xNf/Y+EfLS/OMelgSuFIiR+lAamBZqF/BoHlZQkp/q9hWoEFLspz
+         y7gmj5Xdf+2bZ7aeXrAM5sQb6rmeGb/2lUlzzSbDBdpH8muqsiDXFSLgKCz0B2zD8Nf4
+         zIeHSWzz8CSKU3CCq3ZbfGyL9ZW6TweLf4LqWGQVcA5TMBS+AsNdR0i1t8DMzn3Ul0Io
+         5H44yQ5o5wH25Tmm8MDeBLkN3KHAKBjomSUwerc/McaTW5GC5aJNT8KAblMmibaU8pM4
+         k8EmWGSkCC0bQsY92fzSI8K+b8KiuIW9Vro7JvTDIStcgMV6PFHDEKyO1PJ48jfUxCqv
+         9kRw==
+X-Gm-Message-State: ANoB5pl0WIp6PahD6vyZuhVgdh7UmM+Gf9hHkkKuqXGQqxxXfam8GTvh
+        l6NMW+v1za6yuYVBUPJivKuDZw==
+X-Google-Smtp-Source: AA0mqf7071rUuF/DfDP8jw/HF2yThwmGczn0XX4obQ6G6ilBWM5aMqFGIdR8YtNoYiWvfw07N5e+mg==
+X-Received: by 2002:ac2:54b3:0:b0:4a2:4589:fa1e with SMTP id w19-20020ac254b3000000b004a24589fa1emr9855269lfk.444.1669583155100;
+        Sun, 27 Nov 2022 13:05:55 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id q21-20020a056512211500b00492dc29be7bsm1416100lfr.227.2022.11.27.13.05.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 27 Nov 2022 13:05:54 -0800 (PST)
+Message-ID: <1f5795ac-0391-ca61-9c44-9f648d44e5b3@linaro.org>
+Date:   Sun, 27 Nov 2022 22:05:53 +0100
 MIME-Version: 1.0
-References: <20221125223217.2409659-1-linus.walleij@linaro.org>
- <20221125223217.2409659-2-linus.walleij@linaro.org> <a4ea3bd0-b716-5bda-c6c7-cad06e964fa1@linaro.org>
-In-Reply-To: <a4ea3bd0-b716-5bda-c6c7-cad06e964fa1@linaro.org>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 27 Nov 2022 21:13:33 +0100
-Message-ID: <CACRpkdZ0rk8pCgmvB9190hmYLBUjQ+-Qe-ecS8aMNcO+=HH8wA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] dt-bindings: crypto: Let STM32 define Ux500 CRYP
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     linux-crypto@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
-        Lionel Debieve <lionel.debieve@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: Document oneplus,bacon device
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221127181835.806410-1-luca@z3ntu.xyz>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221127181835.806410-1-luca@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Nov 27, 2022 at 1:44 PM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
-> On 25/11/2022 23:32, Linus Walleij wrote:
-> > This adds device tree bindings for the Ux500 CRYP block
-> > as a compatible in the STM32 CRYP bindings.
-> >
-> > The Ux500 CRYP binding has been used for ages in the kernel
-> > device tree for Ux500 but was never documented, so fill in
-> > the gap by making it a sibling of the STM32 CRYP block,
-> > which is what it is.
-> >
-> > The relationship to the existing STM32 CRYP block is pretty
-> > obvious when looking at the register map, and I have written
-> > patches to reuse the STM32 CRYP driver on the Ux500.
-> >
-> > The two properties added are DMA channels and power domain.
-> > Power domains are a generic SoC feature and the STM32 variant
-> > also has DMA channels.
-> >
-> > Cc: devicetree@vger.kernel.org
-> > Cc: Rob Herring <robh+dt@kernel.org>
-> > Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> > Cc: Lionel Debieve <lionel.debieve@foss.st.com>
-> > Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-> > Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-> > Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> > ---
-> > ChangeLog v1->v2:
-> > - Drop the second (new) example.
-> > ---
-> >  .../bindings/crypto/st,stm32-cryp.yaml        | 19 +++++++++++++++++++
-> >  1 file changed, 19 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml b/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml
-> > index ed23bf94a8e0..6759c5bf3e57 100644
-> > --- a/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml
-> > +++ b/Documentation/devicetree/bindings/crypto/st,stm32-cryp.yaml
-> > @@ -6,12 +6,18 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
-> >
-> >  title: STMicroelectronics STM32 CRYP bindings
-> >
-> > +description: The STM32 CRYP block is built on the CRYP block found in
-> > +  the STn8820 SoC introduced in 2007, and subsequently used in the U8500
-> > +  SoC in 2010.
-> > +
-> >  maintainers:
-> >    - Lionel Debieve <lionel.debieve@foss.st.com>
-> >
-> >  properties:
-> >    compatible:
-> >      enum:
-> > +      - st,stn8820-cryp
-> > +      - stericsson,ux500-cryp
-> >        - st,stm32f756-cryp
-> >        - st,stm32mp1-cryp
-> >
-> > @@ -27,6 +33,19 @@ properties:
-> >    resets:
-> >      maxItems: 1
-> >
-> > +  dmas:
-> > +    items:
-> > +      - description: mem2cryp DMA channel
-> > +      - description: cryp2mem DMA channel
-> > +
-> > +  dma-names:
-> > +    items:
-> > +      - const: mem2cryp
-> > +      - const: cryp2mem
->
-> Usually these are called rx/tx, but I understand you are documenting
-> existing usage from DTS or driver? In such case:
+On 27/11/2022 19:18, Luca Weiss wrote:
+> Document the OnePlus One ("bacon") which is a smartphone based on the
+> Snapdragon 801 SoC.
+> 
+> Also allow msm8974 devices to use qcom,msm-id and qcom,board-id.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  Documentation/devicetree/bindings/arm/qcom.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+> index 463509f0f23a..3d2cc8ae34d8 100644
+> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
+> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+> @@ -167,6 +167,7 @@ properties:
+>            - enum:
+>                - fairphone,fp2
+>                - lge,hammerhead
+> +              - oneplus,bacon
+>                - samsung,klte
+>                - sony,xperia-amami
+>                - sony,xperia-castor
+> @@ -896,6 +897,7 @@ allOf:
+>                - qcom,apq8026
+>                - qcom,apq8094
+>                - qcom,apq8096
+> +              - qcom,msm8974
 
-It's in the driver. Dunno how to do it for the future, we could
-deprecate these and add rx/tx as preferred in a separate
-patch.
+Someone will have to rebase:
+https://lore.kernel.org/linux-devicetree/20221104172122.252761-4-angelogioacchino.delregno@collabora.com/
 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Patch is good:
 
-Thanks!
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Yours,
-Linus Walleij
+Best regards,
+Krzysztof
+
