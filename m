@@ -2,104 +2,203 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99AB0C4332F
-	for <phone-devel@archiver.kernel.org>; Mon, 28 Nov 2022 08:35:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B84DAC43217
+	for <phone-devel@archiver.kernel.org>; Mon, 28 Nov 2022 11:40:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230085AbiK1Ie7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 28 Nov 2022 03:34:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46426 "EHLO
+        id S230161AbiK1LkB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 28 Nov 2022 06:40:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229548AbiK1Ie6 (ORCPT
+        with ESMTP id S229612AbiK1LkB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 28 Nov 2022 03:34:58 -0500
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B57F64CF
-        for <phone-devel@vger.kernel.org>; Mon, 28 Nov 2022 00:34:55 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id r12so16251863lfp.1
-        for <phone-devel@vger.kernel.org>; Mon, 28 Nov 2022 00:34:55 -0800 (PST)
+        Mon, 28 Nov 2022 06:40:01 -0500
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AEC464C7
+        for <phone-devel@vger.kernel.org>; Mon, 28 Nov 2022 03:39:59 -0800 (PST)
+Received: by mail-lf1-x12c.google.com with SMTP id j16so16850974lfe.12
+        for <phone-devel@vger.kernel.org>; Mon, 28 Nov 2022 03:39:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Bkk5qJOE/VryR0ieeP2IB27nwP5PcGUzPajxP73VPy4=;
-        b=RyNUCF7DIdcBaeiOO+4l1RdqwPSkuTV/DKV2RCcU2ByM4W+Jlk+lCSxHwz3u3Yx97p
-         QE9AgoC9w9yXM/dcSpHjbD5h99jxKKOqMsCt70v20BlvrJ+OT0OuhZQspO2g/CuqmG8f
-         Gt63wSMiSKPpGn+JUnHPzqpy6qRiOKbwNvz5xwWCjhQVrK7AT4phhuiy+4xr5FzdrL4g
-         jMK0fqJH3E+DJIPeYtsU5oXFhFJDwPvcNLeGl9n0MgvK9RHpG81CUS/sa2XPEnxpcqyM
-         nzEqzZKg12KGHhHz30ZyiezkcyQezGqNMubHqOrPI6F6bPlaKqkicTLQ/Aq7M1aGkgdL
-         tBLQ==
+        bh=q5/k763LzFoFuWo55mEOX4nHny09SXn5+85xs+SSYFM=;
+        b=cndDVYR86+qxtjT4dYnGzL+SlcaUkjq5APaUECvdfxyde320Q604GGE1KZgdPjY3FN
+         f8GP9/75+NYZm0mJQp53X6Ir93lNv4n1mVxpOkzguCy6LlFyZ3JxPgQ5o4gmV3YmwrrT
+         uqzS41RWhxfLKNw0Kia7I+qO7+cAZpQvs0QC3sHU+iCI/Zc27Z3HcDjzjNQa5bDSYMEu
+         CRE2oU8sBppy+mD8Kma0qWTmxvhkDg0rnhhTgk0mBn22FMKCps2RHEwUWYZch1B4KEF8
+         zEOI4+aU0wmzVe7Ii+D93KIk2ZVy2lnMZ86wNB2sU9Wtol5lbkQM2wiiUL8CISV6iRmW
+         l1FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bkk5qJOE/VryR0ieeP2IB27nwP5PcGUzPajxP73VPy4=;
-        b=cM2IPHJXEy8tDxsySxV1OkKaME9Xlm/hmVb8l/npKbEYbd1vrD3nRrNYwGhOZWUyCz
-         osoUFwc611zU8PXxe0XUyt19F9wPK1UONUvlxfR5TNGvBHCIUbvnqCwNnQsXmjsbeHW6
-         ywnoiGDOep4NaoPQRcqjgC/p5MIYk8OnZwOJCaPhVK7MVxhmPnfTogfd8KflpNW14iB4
-         AQKgRf3LWg5cI3lysb0+8TQTKdB1G5U3FgV8UHDqqMF9oY8HgLnNlJ5KNpxbqVJmkIMU
-         7NuyMgyp9X1sQlMLopwDFjxj8UMlmvDw9I4qkJUHsL1a9gKAi9NhYsVeYbZmu3EiW0xk
-         RNVw==
-X-Gm-Message-State: ANoB5pmTNxCbrVezalj4DsDKKPOjDPV8SD1/u4qHBjaWwEKDd7kw6vV7
-        GTwoliI1zxGyVqjym+fYllmuDQ==
-X-Google-Smtp-Source: AA0mqf5aVBlZGW/MVwnVh0IXkD7kUGTSF7mWoGHUIYNw0Z6CKWdYuycbqyE//gvbfon36dwMH98lxQ==
-X-Received: by 2002:ac2:5ddb:0:b0:4a2:500d:f031 with SMTP id x27-20020ac25ddb000000b004a2500df031mr10606791lfq.266.1669624493519;
-        Mon, 28 Nov 2022 00:34:53 -0800 (PST)
+        bh=q5/k763LzFoFuWo55mEOX4nHny09SXn5+85xs+SSYFM=;
+        b=HmRH4RD/KSxl+IdQCYT6aa7RAFdXMbSMltyIs2RDVSAs68AoMmw1W3Q2d5REBJjaq3
+         bxLISp80CA9tgEyrppZzpBaEtMrXJOPZj6nhmUG+1KVp4wO1vHxr07/7nO0/e60SZ3AA
+         AgOn5YwUPQuj6qq9HiwLxJE2tbQZ+mEbJzYTLmXL/ig3y5Jleq4Dt9H7bGgtGWXG2J0v
+         J0rKT2lhnK/Wqb4/6gP3iW3PzwG9szST66PVcLa5t/vHBjlVQ4qxgv9uLju+NW6zZNqc
+         fSOTLqyAJksecnzi9EtqcYuPliQ3STkMwluhGeflLLLbbtbdCM/2REjNrg5w+AJ6NKBi
+         bmFw==
+X-Gm-Message-State: ANoB5plLTA/3dni/cAyO1PNWikryrHs+ap27HlZ+rmSBiuac5MqgVTXY
+        bVBpn0oKry+ABZTN6zpX6ev0+g==
+X-Google-Smtp-Source: AA0mqf4X5IsiG+TfK09V/fgjLPWDISphWOF+HNbXb+lAquq7bCCoNsr0BUoerJZB3bbb6+nIXwYybQ==
+X-Received: by 2002:ac2:4153:0:b0:4b0:f505:919b with SMTP id c19-20020ac24153000000b004b0f505919bmr16141581lfi.306.1669635597842;
+        Mon, 28 Nov 2022 03:39:57 -0800 (PST)
 Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id a3-20020a2eb543000000b002770f0a742bsm1159037ljn.41.2022.11.28.00.34.52
+        by smtp.gmail.com with ESMTPSA id be20-20020a056512251400b00492f0f66956sm1695895lfb.284.2022.11.28.03.39.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Nov 2022 00:34:53 -0800 (PST)
-Message-ID: <f6bb5759-453b-fa05-c6e1-f1d57abeaffa@linaro.org>
-Date:   Mon, 28 Nov 2022 09:34:52 +0100
+        Mon, 28 Nov 2022 03:39:57 -0800 (PST)
+Message-ID: <fdbdd905-c233-cf76-c16f-92fb59eb35ef@linaro.org>
+Date:   Mon, 28 Nov 2022 12:39:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.0
-Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: Document oneplus,bacon device
+Subject: Re: [PATCH 1/8] dt-bindings: power: supply: Add DT schema for
+ Qualcomm SMBCHG
 Content-Language: en-US
 To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+Cc:     Yassine Oudjana <yassine.oudjana@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221127181835.806410-1-luca@z3ntu.xyz>
- <CAA8EJpoe09FZcfVXuknmFWO5qg-iYDOBVN3=qr=DeJjvHw56Mw@mail.gmail.com>
- <f0a15b01-81b6-5c73-6c35-ce3a8c71b4ad@linaro.org>
- <CAA8EJppEXpv-wVAAXhZ6NiPzDGzP+evnKrT=an5esOx610D+dw@mail.gmail.com>
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Alejandro Tafalla <atafalla@dnyon.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Yassine Oudjana <y.oudjana@protonmail.com>
+References: <20221120154625.57095-1-y.oudjana@protonmail.com>
+ <795deac4-71fe-d40b-a3b6-855eb3875ad1@linaro.org>
+ <1H1PLR.S9UFOHIJCU6S@gmail.com>
+ <1419e9da-98f7-c477-9f07-4b54e82be4c4@linaro.org>
+ <CAA8EJpor_LnxLGYy25i-D6RBBO+-G9MsVWw=Qfm1Emp88KRJzQ@mail.gmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <CAA8EJppEXpv-wVAAXhZ6NiPzDGzP+evnKrT=an5esOx610D+dw@mail.gmail.com>
+In-Reply-To: <CAA8EJpor_LnxLGYy25i-D6RBBO+-G9MsVWw=Qfm1Emp88KRJzQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 27/11/2022 22:43, Dmitry Baryshkov wrote:
-> On Sun, 27 Nov 2022 at 23:30, Krzysztof Kozlowski
+On 22/11/2022 14:30, Dmitry Baryshkov wrote:
+> Hi,
+> 
+> On Mon, 21 Nov 2022 at 19:07, Krzysztof Kozlowski
 > <krzysztof.kozlowski@linaro.org> wrote:
 >>
->> On 27/11/2022 22:25, Dmitry Baryshkov wrote:
->>> On Sun, 27 Nov 2022 at 20:19, Luca Weiss <luca@z3ntu.xyz> wrote:
->>>>
->>>> Document the OnePlus One ("bacon") which is a smartphone based on the
->>>> Snapdragon 801 SoC.
->>>>
->>>> Also allow msm8974 devices to use qcom,msm-id and qcom,board-id.
+>> On 21/11/2022 11:36, Yassine Oudjana wrote:
 >>>
->>> The patch itself is good. However it raised a broader question for me.
->>> Up to now all msm8974pro devices use qcom,msm8974 as a top-level
->>> compatibility string. Should it be changed to use pro-specific one
->>> (e.g. qcom,msm8974pro)?
+>>> On Mon, Nov 21 2022 at 09:26:59 +01:00:00, Krzysztof Kozlowski
+>>> <krzysztof.kozlowski@linaro.org> wrote:
+>>>> On 20/11/2022 16:46, Yassine Oudjana wrote:
+>>>>>>>  +  interrupts:
+>>>>>>>  +    items:
+>>>>>>>  +      - description: Charger error
+>>>>>>>  +      - description: Charger inhibited
+>>>>>>>  +      - description: Charger precharge safety timer timeout
+>>>>>>>  +      - description: Charger charge safety timer timeout
+>>>>>>>  +      - description: Charger pre to fast charging switch
+>>>>>>> threshold reached
+>>>>>>>  +      - description: Charger recharge threshold reached
+>>>>>>>  +      - description: Charger taper threshold reached
+>>>>>>>  +      - description: Charger charge termination threshold reached
+>>>>>>>  +      - description: Battery hot
+>>>>>>>  +      - description: Battery warm
+>>>>>>>  +      - description: Battery cold
+>>>>>>>  +      - description: Battery cool
+>>>>>>>  +      - description: Battery overvoltage
+>>>>>>>  +      - description: Battery low
+>>>>>>>  +      - description: Battery missing
+>>>>>>>  +      - description: Battery thermistor missing # unconfirmed
+>>>>>>>  +      - description: USB input undervolt
+>>>>>>>  +      - description: USB input overvolt
+>>>>>>>  +      - description: USB input source detected
+>>>>>>>  +      - description: OTG regulator failure
+>>>>>>>  +      - description: OTG regulator overcurrent
+>>>>>>>  +      - description: Automatic input current limiting done
+>>>>>>>  +      - description: USB ID pin changed
+>>>>>>>  +      - description: DC input undervolt
+>>>>>>>  +      - description: DC input overvolt
+>>>>>>>  +      - description: Power OK
+>>>>>>>  +      - description: Temperature shutdown
+>>>>>>>  +      - description: Watchdog timeout
+>>>>>>>  +      - description: Flash failure
+>>>>>>>  +      - description: OTST2 # unknown
+>>>>>>>  +      - description: OTST3 # unknown
+>>>>>>
+>>>>>>  It seems you listed register interrupts, not physical pins. This
+>>>>>> should
+>>>>>>  be interrupt lines.
+>>>>>
+>>>>>  I'm not sure what I'm supposed to do here. I couldn't find an
+>>>>> interrupt-lines
+>>>>>  property used anywhere so that's not what you meant, right?
+>>>>
+>>>> Are these physical interrupt lines this device has, register offsets
+>>>> or
+>>>> virtual interrupts (e.g. passed via irq_chip)? Definitely not the
+>>>> first
+>>>> and rather offsets for qpnpint_irq_domain_translate. Devicetree is not
+>>>> for describing register layout of devices. IOW, register layout does
+>>>> not
+>>>> change on different boards, because the device is exactly the same, so
+>>>> there is no point to put it into DTS.
+>>>>
+>>>
+>>> So how would I describe the interrupts then? Or if you are saying I
+>>> shouldn't have these interrupts in DT at all, how would I get them and
+>>> register handlers for them in the driver? the PMIC arbiter takes 4
+>>> interrupt cells, 3 of which are these offsets specifying the peripheral
+>>> and interrupt. All other PMIC peripherals currently described in DT
+>>> (examples being qcom,pm8916-wcd-analog-codec, qcom,pm8941-pwrkey and
+>>> qcom-wled) have their interrupts (if any) described this way, with the
+>>> only exceptions perhaps being the GPIO and MPP controllers which are
+>>> themselves interrupt controllers. Changing the way PMIC peripheral
+>>> interrupts are described would require changing PMIC arbiter bindings
+>>> and code which I believe is out of the scope of this patch series.
 >>
->> Yes, makes sense.
+>> I don't think this would touch PMIC arbiter bindings, rather the PMIC
+>> itself. Usually complex devices (like PMICs) have one few physical
+>> interrupt lines and many registers related to some specific interrupts.
+>> For example:
+>> 1. One IRQ line,
+>> 2. Register with bits for overvoltage, undervoltage, vharger error etc.
+>>
+>> Now how the MFD child device accesses them. Since this is strictly
+>> related to hardware programming model, it's not something you put to
+>> Devicetree. Instead parent device (PMIC) registers IRQ chip for its one
+>> interrupt line with several Linux (or virtual) interrupts. The children
+>> then just get a virtual IRQ from the parent (PMIC) and setup a
+>> handler(s) for them.
 > 
-> Would you make the patch?
+> Unfortunately this is not how SPMI PMICs work (at least on the
+> Qualcomm platforms). Access to interrupt registers is handled via the
+> SPMI bus arbiter writes, not through the GPIO pin or typical spmi's
+> bus interface (in the other words, not through the PMIC's SPMI
+> regmap). 
 
-I do not plan to. I don't know which ones are Pro which aren't.
+I am not sure how this is related... Just because they do not use same
+regmap/interface does not mean that child device should have register
+bits as interrupt sources. Do you model I2C PMICs devices the same way?
+No. They get the interrupts from the parent and how the parent handles
+them (same or different regmap) is separate problem.
+
+The charger node does not make SPMI bus as interrupt parent, so these
+interrupts are going to the SPMI PMIC don't they? or is it mistake in
+DTS - lack of interrupt-parent?
+
+
+> I guess we can add an intermediate irq chip to automatically
+> handle the USID, etc. However I doubt that it will really bring a lot
+> in our case.
+
+The charger node defines all interrupts with SID=2, which is also not
+really correct. The parent device is SID=2. The child - does not matter.
+DT is a tree for some reason...
 
 Best regards,
 Krzysztof
