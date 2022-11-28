@@ -2,59 +2,62 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F77FC352A1
-	for <phone-devel@archiver.kernel.org>; Sun, 27 Nov 2022 21:44:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99AB0C4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 28 Nov 2022 08:35:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229735AbiK0VoC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 27 Nov 2022 16:44:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39116 "EHLO
+        id S230085AbiK1Ie7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 28 Nov 2022 03:34:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbiK0VoB (ORCPT
+        with ESMTP id S229548AbiK1Ie6 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 27 Nov 2022 16:44:01 -0500
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7682CA468
-        for <phone-devel@vger.kernel.org>; Sun, 27 Nov 2022 13:44:00 -0800 (PST)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-3c738f7be9eso11276287b3.11
-        for <phone-devel@vger.kernel.org>; Sun, 27 Nov 2022 13:44:00 -0800 (PST)
+        Mon, 28 Nov 2022 03:34:58 -0500
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B57F64CF
+        for <phone-devel@vger.kernel.org>; Mon, 28 Nov 2022 00:34:55 -0800 (PST)
+Received: by mail-lf1-x129.google.com with SMTP id r12so16251863lfp.1
+        for <phone-devel@vger.kernel.org>; Mon, 28 Nov 2022 00:34:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q3YJ8VN4qd/z1cevuuYf6BzrtIafu4RWyw6odYhJ3RM=;
-        b=xl2aTicD/qKFHfHq+LzfroPQbYHSrzIEfeD2Ob6oEuWgU8WzZDTYs4L/9thbGXh5nm
-         Xs6+ApXjhZJriEXHtYdizyyIiJd71ebrvCROaIpXiePzWb7fIUWM8kPUaxjgTTiEdM22
-         ncHVYNuOfFdE+ZrwOZWXR5gMWSoUNNYvXkZYhaxMjLGPrFLXYy8Dw4AoGi1IgTSev8eZ
-         Bps1SUwAPz8bpOYMI0Ej8OYYRGQtRWqVnOfHBOlW9YpemZMlT8AEE4r3D+cTczzKp87i
-         39tAofYvg3XMb1auK6XP3i8sXQFXMN3BVyw+wQZ7+OcaQOPVD/L7CaBuVOyDGJNfrePE
-         B1Jg==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Bkk5qJOE/VryR0ieeP2IB27nwP5PcGUzPajxP73VPy4=;
+        b=RyNUCF7DIdcBaeiOO+4l1RdqwPSkuTV/DKV2RCcU2ByM4W+Jlk+lCSxHwz3u3Yx97p
+         QE9AgoC9w9yXM/dcSpHjbD5h99jxKKOqMsCt70v20BlvrJ+OT0OuhZQspO2g/CuqmG8f
+         Gt63wSMiSKPpGn+JUnHPzqpy6qRiOKbwNvz5xwWCjhQVrK7AT4phhuiy+4xr5FzdrL4g
+         jMK0fqJH3E+DJIPeYtsU5oXFhFJDwPvcNLeGl9n0MgvK9RHpG81CUS/sa2XPEnxpcqyM
+         nzEqzZKg12KGHhHz30ZyiezkcyQezGqNMubHqOrPI6F6bPlaKqkicTLQ/Aq7M1aGkgdL
+         tBLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q3YJ8VN4qd/z1cevuuYf6BzrtIafu4RWyw6odYhJ3RM=;
-        b=nfo/k2uQ0jqjWVmUy9RJAdk+sWEHRUeOWi1i7VDBMtoBiQJTVLuxAu9BQ1sIx4TshC
-         nwhdOpnUHIqYIwaXsiqzw05qmTPwhS9UjdublCkO505umDmxDx/1BO22QrSJ46R8cl6A
-         FkD+3NIaUC2ymncMvNT205ipR0/mx4mikKzA09CBsAsW0vxW+BxqOVYxlg410inVh2Fh
-         63UGFTMddvt/yfJAsQGJTj9Y5KaERvrakOQnnH3LhiXeyp4T7vWrEsyNVMUuOiBO89tx
-         +/otY7RlFv9yQylHw4VvAo1Y3I9RlJNgNQ4p2VI7BNbeMj0woIHxrL2nJ9kxEs5jTFur
-         u97A==
-X-Gm-Message-State: ANoB5pkndo0sysyuek75IQMWKtDj0VY4s4j0fxR4UQN1zjEgWn0hi4qB
-        QeG4LsbG0NtHSzVOx8w+75VeYzx4NzwVb1Egg1r9zg==
-X-Google-Smtp-Source: AA0mqf66I8xq7rZ0bAaQt2cLk1BVbeeZsnMiNjpUCai1K5JbdH+J7KsZFasgMiyl2LhZUBDdGTtqrDTIudgq871HxEk=
-X-Received: by 2002:a81:520d:0:b0:3c0:c065:7608 with SMTP id
- g13-20020a81520d000000b003c0c0657608mr7161381ywb.378.1669585438656; Sun, 27
- Nov 2022 13:43:58 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bkk5qJOE/VryR0ieeP2IB27nwP5PcGUzPajxP73VPy4=;
+        b=cM2IPHJXEy8tDxsySxV1OkKaME9Xlm/hmVb8l/npKbEYbd1vrD3nRrNYwGhOZWUyCz
+         osoUFwc611zU8PXxe0XUyt19F9wPK1UONUvlxfR5TNGvBHCIUbvnqCwNnQsXmjsbeHW6
+         ywnoiGDOep4NaoPQRcqjgC/p5MIYk8OnZwOJCaPhVK7MVxhmPnfTogfd8KflpNW14iB4
+         AQKgRf3LWg5cI3lysb0+8TQTKdB1G5U3FgV8UHDqqMF9oY8HgLnNlJ5KNpxbqVJmkIMU
+         7NuyMgyp9X1sQlMLopwDFjxj8UMlmvDw9I4qkJUHsL1a9gKAi9NhYsVeYbZmu3EiW0xk
+         RNVw==
+X-Gm-Message-State: ANoB5pmTNxCbrVezalj4DsDKKPOjDPV8SD1/u4qHBjaWwEKDd7kw6vV7
+        GTwoliI1zxGyVqjym+fYllmuDQ==
+X-Google-Smtp-Source: AA0mqf5aVBlZGW/MVwnVh0IXkD7kUGTSF7mWoGHUIYNw0Z6CKWdYuycbqyE//gvbfon36dwMH98lxQ==
+X-Received: by 2002:ac2:5ddb:0:b0:4a2:500d:f031 with SMTP id x27-20020ac25ddb000000b004a2500df031mr10606791lfq.266.1669624493519;
+        Mon, 28 Nov 2022 00:34:53 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id a3-20020a2eb543000000b002770f0a742bsm1159037ljn.41.2022.11.28.00.34.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Nov 2022 00:34:53 -0800 (PST)
+Message-ID: <f6bb5759-453b-fa05-c6e1-f1d57abeaffa@linaro.org>
+Date:   Mon, 28 Nov 2022 09:34:52 +0100
 MIME-Version: 1.0
-References: <20221127181835.806410-1-luca@z3ntu.xyz> <CAA8EJpoe09FZcfVXuknmFWO5qg-iYDOBVN3=qr=DeJjvHw56Mw@mail.gmail.com>
- <f0a15b01-81b6-5c73-6c35-ce3a8c71b4ad@linaro.org>
-In-Reply-To: <f0a15b01-81b6-5c73-6c35-ce3a8c71b4ad@linaro.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Sun, 27 Nov 2022 23:43:47 +0200
-Message-ID: <CAA8EJppEXpv-wVAAXhZ6NiPzDGzP+evnKrT=an5esOx610D+dw@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
 Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: Document oneplus,bacon device
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Cc:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
@@ -63,31 +66,41 @@ Cc:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+References: <20221127181835.806410-1-luca@z3ntu.xyz>
+ <CAA8EJpoe09FZcfVXuknmFWO5qg-iYDOBVN3=qr=DeJjvHw56Mw@mail.gmail.com>
+ <f0a15b01-81b6-5c73-6c35-ce3a8c71b4ad@linaro.org>
+ <CAA8EJppEXpv-wVAAXhZ6NiPzDGzP+evnKrT=an5esOx610D+dw@mail.gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <CAA8EJppEXpv-wVAAXhZ6NiPzDGzP+evnKrT=an5esOx610D+dw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 27 Nov 2022 at 23:30, Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 27/11/2022 22:25, Dmitry Baryshkov wrote:
-> > On Sun, 27 Nov 2022 at 20:19, Luca Weiss <luca@z3ntu.xyz> wrote:
-> >>
-> >> Document the OnePlus One ("bacon") which is a smartphone based on the
-> >> Snapdragon 801 SoC.
-> >>
-> >> Also allow msm8974 devices to use qcom,msm-id and qcom,board-id.
-> >
-> > The patch itself is good. However it raised a broader question for me.
-> > Up to now all msm8974pro devices use qcom,msm8974 as a top-level
-> > compatibility string. Should it be changed to use pro-specific one
-> > (e.g. qcom,msm8974pro)?
->
-> Yes, makes sense.
+On 27/11/2022 22:43, Dmitry Baryshkov wrote:
+> On Sun, 27 Nov 2022 at 23:30, Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+>>
+>> On 27/11/2022 22:25, Dmitry Baryshkov wrote:
+>>> On Sun, 27 Nov 2022 at 20:19, Luca Weiss <luca@z3ntu.xyz> wrote:
+>>>>
+>>>> Document the OnePlus One ("bacon") which is a smartphone based on the
+>>>> Snapdragon 801 SoC.
+>>>>
+>>>> Also allow msm8974 devices to use qcom,msm-id and qcom,board-id.
+>>>
+>>> The patch itself is good. However it raised a broader question for me.
+>>> Up to now all msm8974pro devices use qcom,msm8974 as a top-level
+>>> compatibility string. Should it be changed to use pro-specific one
+>>> (e.g. qcom,msm8974pro)?
+>>
+>> Yes, makes sense.
+> 
+> Would you make the patch?
 
-Would you make the patch?
+I do not plan to. I don't know which ones are Pro which aren't.
 
--- 
-With best wishes
-Dmitry
+Best regards,
+Krzysztof
+
