@@ -2,62 +2,61 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5097C4708B
-	for <phone-devel@archiver.kernel.org>; Mon, 28 Nov 2022 14:42:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DE4DC4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 28 Nov 2022 17:01:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231651AbiK1Ol5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 28 Nov 2022 09:41:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33620 "EHLO
+        id S232225AbiK1RBS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 28 Nov 2022 12:01:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232591AbiK1Olg (ORCPT
+        with ESMTP id S232196AbiK1RBO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 28 Nov 2022 09:41:36 -0500
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 571B222B14
-        for <phone-devel@vger.kernel.org>; Mon, 28 Nov 2022 06:41:35 -0800 (PST)
-Received: by mail-lj1-x22a.google.com with SMTP id d3so13405844ljl.1
-        for <phone-devel@vger.kernel.org>; Mon, 28 Nov 2022 06:41:35 -0800 (PST)
+        Mon, 28 Nov 2022 12:01:14 -0500
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 080032DFB;
+        Mon, 28 Nov 2022 09:01:13 -0800 (PST)
+Received: by mail-lf1-x130.google.com with SMTP id be13so18392551lfb.4;
+        Mon, 28 Nov 2022 09:01:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=W4lnKP3fXJhhfhYAB5tHHhf2uf6LSYxLid5Gmw6TDds=;
-        b=ipZ6goqQRYRM039KEmlmpe+yXXPb65AXhrDqTOpiHM0io5rTidkJwGFGQNpxMZaqxM
-         5tQdAd/KgUE0Rjbz4mJLMg7D4zEE4pav2S6SZnmuYhz8GvDM4ltrKnIHcY+9MyW/P0eX
-         PVME1JKPzCCxuRHaSdPNHwQgG4jkoSFBc0sdSSfyo6xsAYAXsVTLBQirtACdbjxMQBmR
-         O5x2SJyKMETQun8rl4N6CjeVIRSXLc/chVP52zQWCIusd8tzvLUTYsfBZmZBES/nVkzS
-         JIdtqxGWblQ1MTu4FvcXZtj7Ck8rdHvsjru6tiEu1j+fOvdtCNajkATOVkZ0jJD3xdRN
-         lXGw==
+        bh=/GpRyDK/46++YKz2EFwIeDbSAjaRlIbxnLXBLKlVstM=;
+        b=b3QD0v4al1qJqnBl/vris9v0AeyQVbu1VFPxBZbgKIDBiPGb4cMW9uDvmhTiTwrfaI
+         MzKU3/U7DnUtrNfrzqLC93sda7bjb4PDp45kdGZQ7twTHb5BZndmjYl3BO1M4BafSxgW
+         RFraXOc/UuT8LhvGaxwCGzT9KLOovxKydh4RbMSOyckWTs4EuFuAwxKKFVIXnrZ8H6+e
+         OgkP45zamkKRGV/sWuGc5aitnfDLS9Uco2oLqwvIbHy85vAWxq8Uw1ZaZBtU20TTaT7R
+         I6R3p2CemGo1zAMxNL4An5P1OCPL4KvnjM24rf9u/Fvh/oFIa4ekJGDcRXDSqXNQR2Xw
+         vTMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W4lnKP3fXJhhfhYAB5tHHhf2uf6LSYxLid5Gmw6TDds=;
-        b=Y/uVjxC7y6qPWdfpN6vI4RQ9kYGSLKT69bsL4UWRkcpITtQDl5g5Z4xffA2XwyS30S
-         GqvsgeQOhhL3IKdFF7U+S1VmpVpor/H3+T19/gngiQVKTiCZdnoyPBRaRCR68txgePaC
-         TielOeSKrUIWIC/hsn1cD+G7lrfb3mJErVRwARBQuO4iwHKQvNkR0M8zVSkHWzgn7vdn
-         8aaOTYyPTF4Qb+rHnBP7uBevKtbRYSnwG8EBnmdLYGbji1GrUOUnhAWLRAH/4CAXyo2i
-         cAh+DYkQUTiboQTTDEwMq8ACPGA3nP+ruWBL9renm/riichX1ntiVcoRuCHsjvKH38h/
-         IC0g==
-X-Gm-Message-State: ANoB5pmALOYfY2fL/dDB5iwrnekNWEs94+m07tbqVYEUQNlVc0uMYBGa
-        Fjba35BYfc/p9GmT5Ew+E2ULCg==
-X-Google-Smtp-Source: AA0mqf7/b6u6RudEIT37qPuumAQbfUbUQ127rX+UuN8zLFXXD6vVyh4onO0DbgE3eXvQWFtoiMyIFg==
-X-Received: by 2002:a2e:2414:0:b0:279:9956:3e5 with SMTP id k20-20020a2e2414000000b00279995603e5mr3595815ljk.34.1669646493682;
-        Mon, 28 Nov 2022 06:41:33 -0800 (PST)
-Received: from [192.168.1.101] (95.49.125.236.neoplus.adsl.tpnet.pl. [95.49.125.236])
-        by smtp.gmail.com with ESMTPSA id bj25-20020a2eaa99000000b002770a9ed61bsm1219129ljb.66.2022.11.28.06.41.32
+        bh=/GpRyDK/46++YKz2EFwIeDbSAjaRlIbxnLXBLKlVstM=;
+        b=N8KPeTymRsuEdRCP2DJQLwp0LtKhL8M/76o0LfsdKbAC2UEirzfHW6/cuDvFrQ9tti
+         sZteGsG83FQI+MoMM7W/O4HdWiYrSOytzrnuHX5yIcarAaUpYvFYcAJxy4aJwVP2bME9
+         hgG7wPXtm5sQ9MB+v8l+sfpKzD2mVdIIC4nqUy0HiuUNlG78+TrIWpDO0vpmeYwPMO5w
+         vf7guR6gLof/5KWHwQlcLMeX26/8pYrdOppnpsQ3q/CjSS94A5+CiSwZB4G39Q++xwm2
+         Ice4ETEswaEZqkSKYWkLiDoHy28bcAwkJr4Z/eo19msusV/W+GZTOpKK6SURUleYdGr4
+         igoA==
+X-Gm-Message-State: ANoB5plEoCHWedcohyxSr0SRhbN85l32mthT1vACWubbbow9Nmo8WjUD
+        2fFvtaRDCEY+9BXVAgDSU0P82AKczpffDw==
+X-Google-Smtp-Source: AA0mqf7GjM56yI7ibfyIeX/9Yjd43Ezpc7UZ0t1luF9D869H/74eJ853fXC+TpaBY7Aij7yDCKDIAA==
+X-Received: by 2002:a05:6512:3e2a:b0:4ab:534b:1b2c with SMTP id i42-20020a0565123e2a00b004ab534b1b2cmr12791293lfv.426.1669654871020;
+        Mon, 28 Nov 2022 09:01:11 -0800 (PST)
+Received: from [192.168.0.251] (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
+        by smtp.gmail.com with ESMTPSA id j12-20020a056512028c00b004b40c1f1c70sm1801315lfp.212.2022.11.28.09.01.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Nov 2022 06:41:33 -0800 (PST)
-Message-ID: <a64d31a5-5e55-35b9-57e3-bb4214fe3e28@linaro.org>
-Date:   Mon, 28 Nov 2022 15:41:31 +0100
+        Mon, 28 Nov 2022 09:01:10 -0800 (PST)
+Message-ID: <90d231c6-1f16-74ea-ddf7-5e09a51a93ea@gmail.com>
+Date:   Mon, 28 Nov 2022 19:01:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
+ Thunderbird/102.4.2
 Subject: Re: [PATCH] ARM: dts: qcom: apq8026-samsung-matisse-wifi: Enable ADSP
-Content-Language: en-US
-To:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
         linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
@@ -66,51 +65,41 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20221125223400.94515-1-matti.lehtimaki@gmail.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20221125223400.94515-1-matti.lehtimaki@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+ <a64d31a5-5e55-35b9-57e3-bb4214fe3e28@linaro.org>
+Content-Language: en-US
+From:   =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>
+In-Reply-To: <a64d31a5-5e55-35b9-57e3-bb4214fe3e28@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-
-On 25.11.2022 23:34, Matti Lehtimäki wrote:
-> Configure the reserved memory for ADSP and enable it.
+On 28.11.2022 16.41, Konrad Dybcio wrote:
 > 
-> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-> ---
->  arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+> On 25.11.2022 23:34, Matti Lehtimäki wrote:
+>> diff --git a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
+>> index 1c52337af560..859e91c16c61 100644
+>> --- a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
+>> +++ b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
+>> @@ -133,7 +133,8 @@ wcnss@d200000 {
+>>   			no-map;
+>>   		};
+>>   
+>> -		adsp@d900000 {
+>> +		/delete-node/ adsp@dc00000;
+> Please delete nodes by referencing the label like so:
 > 
-> diff --git a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
-> index 1c52337af560..859e91c16c61 100644
-> --- a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
-> +++ b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
-> @@ -133,7 +133,8 @@ wcnss@d200000 {
->  			no-map;
->  		};
->  
-> -		adsp@d900000 {
-> +		/delete-node/ adsp@dc00000;
-Please delete nodes by referencing the label like so:
+> /delete-node/ &adsp_region;
 
-/delete-node/ &adsp_region;
+When I created the devicetree I was asked to do the opposite for the
+smem_region [1] which I had originally deleted using the label near top 
+of the
+file but then moved next to the relevant node, where I cannot use label
+when deleting it. Should the smem_region also be moved to the top of the
+file if I move this delete-node there so the file would be consistent?
 
-Konrad
-> +		adsp_region: adsp@d900000 {
->  			reg = <0x0d900000 0x1800000>;
->  			no-map;
->  		};
-> @@ -169,6 +170,10 @@ rmtfs@fd80000 {
->  	};
->  };
->  
-> +&adsp {
-> +	status = "okay";
-> +};
-> +
->  &blsp1_i2c2 {
->  	status = "okay";
->  
+[1] 
+https://lore.kernel.org/linux-arm-msm/CAA8EJpqUH_v1GXEYF62Z3DBtFu_305_h4D36aCnBr38bo5HoJw@mail.gmail.com/
+-- 
+Matti
