@@ -2,74 +2,90 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9672DC4708B
-	for <phone-devel@archiver.kernel.org>; Mon, 28 Nov 2022 17:43:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 751EDC433FE
+	for <phone-devel@archiver.kernel.org>; Mon, 28 Nov 2022 17:58:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233409AbiK1Rnk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 28 Nov 2022 12:43:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51358 "EHLO
+        id S233995AbiK1R6E (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 28 Nov 2022 12:58:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233034AbiK1RnM (ORCPT
+        with ESMTP id S234455AbiK1R5m (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 28 Nov 2022 12:43:12 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B18A72934E;
-        Mon, 28 Nov 2022 09:40:36 -0800 (PST)
-Received: from g550jk.arnhem.chello.nl (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 9705BD05C0;
-        Mon, 28 Nov 2022 17:40:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1669657204; bh=8fCUumEsdqkqA0wdfT7gwwUflnlTnVBWF8E3m/S4G+k=;
-        h=From:To:Cc:Subject:Date;
-        b=C1YfUKwJjRSvqFiT7zSYcoesmxWpiWZDRgiaMceSoXhL8CB9w7/jX6B1v5IfSVaq/
-         dhS2i0ShYcHgilXERHm1MRBysnYeusAznSUtS1rj+sn6JQ82x7Fwr+lJuE2X9TJdCB
-         GI1Gv5HDJhQEMzN0Lpjo5t1Dwro4x6uvtVrjsszQ=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org
+        Mon, 28 Nov 2022 12:57:42 -0500
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA03C2CE23
+        for <phone-devel@vger.kernel.org>; Mon, 28 Nov 2022 09:46:15 -0800 (PST)
+Received: by mail-lf1-x130.google.com with SMTP id g7so18582745lfv.5
+        for <phone-devel@vger.kernel.org>; Mon, 28 Nov 2022 09:46:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sEOQc33dh/AvjD98uU08ScRRQgB0t4Sl60gjFCfdd8U=;
+        b=yhQe2+hZGfKl6Eo7WYzGcxfG3vjSEekJKA7nkO4rCuvo1+vY9HSx7lTw++LjKu/T/q
+         oGUXqhJeeq5zkrNXRdMIXEFvx25L9KApHsNm/KXgY0St375VrGNtLItCRFyN29hplOG6
+         9gc1TkStI7/j15OBs11Mxh9rYZyPpUVHBhF5knolHECXFL5+3duh5oHFGVTX0TJZqCY2
+         0BJY2g5+4peU0+TLiFM8tpUkUUinQ3YyvZAY2e5+mZWFJ+hkAWMBIXi4Dwl0uIXDo4R2
+         C9RP3oO6WQ6L7MTO7JCOcqg4KnvKi2GPBqUPL+ljPwNKtpXPJ7tbsnyXLpyeNVrQ1Nxu
+         pXgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sEOQc33dh/AvjD98uU08ScRRQgB0t4Sl60gjFCfdd8U=;
+        b=0H5g1ZXAfSPlcIeKgD9lEommcaz89YQNJF3pwIj5d7a+VRMcCJRkcHz6POGjAG0OXB
+         EF7GhIicUadD1EUxM+q3OiOoeenBuSiVYxtyHYUI3BvfXYMRR8aOzkk0ZriSxjoxmq1G
+         hCB6sJbR4qu39O86cPP2Wiz/xZrsvO5+cqKzlsmOEtfj8zEqvK2fDMn0mH9w6MQ07XCr
+         eCVQP2Re5LEbg6KJpQrwrxSPec+I1ICzy36r7pbqSJvpBk5O4urmdLor5vzRy1F+WQ6v
+         d+n1c4mxQ1PMyWJ9staXkaYO7n4Xf8ZU4T24tUa0lkHtZcGEw7+cuOzbuuxDEyU9oMC8
+         ZTcQ==
+X-Gm-Message-State: ANoB5plUbdaBD3tDtME6QSjK81XJ50hO903xAggQT9OJCwqYPvjtU8WU
+        OGo2FS51AOFNlUveQcNJy/HgPw==
+X-Google-Smtp-Source: AA0mqf7Y8q4j5Qp8K52/Qdd96mqJajrlcpd3UQv1lIPTFAuR7uwCLpQ1Ju2x51BwH5f5CeII2zXU/A==
+X-Received: by 2002:a19:4901:0:b0:4b4:e3b8:c6af with SMTP id w1-20020a194901000000b004b4e3b8c6afmr11777772lfa.291.1669657569898;
+        Mon, 28 Nov 2022 09:46:09 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id b12-20020a05651c032c00b0027741daec09sm1252772ljp.107.2022.11.28.09.46.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Nov 2022 09:46:09 -0800 (PST)
+Message-ID: <dbf8082b-679a-b2d5-6568-3f9a93e52501@linaro.org>
+Date:   Mon, 28 Nov 2022 18:46:08 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [RESEND PATCH 1/2] dt-bindings: nfc: nxp,nci: Document NQ310
+ compatible
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
         Rob Herring <robh+dt@kernel.org>, netdev@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [RESEND PATCH 1/2] dt-bindings: nfc: nxp,nci: Document NQ310 compatible
-Date:   Mon, 28 Nov 2022 18:37:43 +0100
-Message-Id: <20221128173744.833018-1-luca@z3ntu.xyz>
-X-Mailer: git-send-email 2.38.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20221128173744.833018-1-luca@z3ntu.xyz>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221128173744.833018-1-luca@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The NQ310 is another NFC chip from NXP, document the compatible in the
-bindings.
+On 28/11/2022 18:37, Luca Weiss wrote:
+> The NQ310 is another NFC chip from NXP, document the compatible in the
+> bindings.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+> RESEND to fix Cc
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
-RESEND to fix Cc
 
- Documentation/devicetree/bindings/net/nfc/nxp,nci.yaml | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-diff --git a/Documentation/devicetree/bindings/net/nfc/nxp,nci.yaml b/Documentation/devicetree/bindings/net/nfc/nxp,nci.yaml
-index b2558421268a..6924aff0b2c5 100644
---- a/Documentation/devicetree/bindings/net/nfc/nxp,nci.yaml
-+++ b/Documentation/devicetree/bindings/net/nfc/nxp,nci.yaml
-@@ -14,7 +14,9 @@ properties:
-     oneOf:
-       - const: nxp,nxp-nci-i2c
-       - items:
--          - const: nxp,pn547
-+          - enum:
-+              - nxp,nq310
-+              - nxp,pn547
-           - const: nxp,nxp-nci-i2c
- 
-   enable-gpios:
--- 
-2.38.1
+Best regards,
+Krzysztof
 
