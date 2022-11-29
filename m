@@ -2,119 +2,109 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44800C433FE
-	for <phone-devel@archiver.kernel.org>; Tue, 29 Nov 2022 18:32:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 596A6C433FE
+	for <phone-devel@archiver.kernel.org>; Tue, 29 Nov 2022 20:46:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235990AbiK2Sc3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 29 Nov 2022 13:32:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45342 "EHLO
+        id S236072AbiK2Uq4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 29 Nov 2022 15:46:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236002AbiK2ScX (ORCPT
+        with ESMTP id S234987AbiK2Uqz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 29 Nov 2022 13:32:23 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03ABC68C6E;
-        Tue, 29 Nov 2022 10:32:20 -0800 (PST)
-Received: from g550jk.localnet (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id D6176C7D94;
-        Tue, 29 Nov 2022 18:31:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1669746709; bh=xI6kMiCf4Tsqu4BZfjhWwUhGCtpCyijEZHJ1c16Hm8w=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=rYg1wZXp2d2ADKVSmTfn7SCKk0IHjoZ/9J6vaRQR8xWiYIbZGV2GtRqsBxl7p0s1X
-         rcmOTLT1uOfN9f5yptEZFr4YifrmqQQJuf7rJ03EezmzSur3k/3yhSjavwysZ2vRnf
-         M4H8tqYMCrPVLkJ91VJfLrLCuharuwnbzEcV20DY=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Tue, 29 Nov 2022 15:46:55 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C795B264AE;
+        Tue, 29 Nov 2022 12:46:53 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id f13so23876119lfa.6;
+        Tue, 29 Nov 2022 12:46:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9nBlhEXGFP581Y5583VUeZuiA62uk4fX/W8dDpQUeXY=;
+        b=UM37Cd47j+DlXqKSgZOHsv26pCEotZ/Wrxx95lPNw8D+tAVl3/a8Zfw1MEbFyBhP7c
+         WzQWuQ0N0dSCvZOFOb18luPjCy5fJCR9uccqUhb9KcbB8PUo84+5/pM8L43Q+67Z5Htq
+         IgMFP6W/BwjPenEaxLsODAvjIEBB3j7OUJjIO49RA/zAkP6045pqMi4oOH5mL+J8hjl7
+         ZMs9wbzfL5xc11ueLLi5UF+NYOqCCS8yeM/3H1GAf8o7n6O6+MUwKs1c+LybnHa+FkWy
+         KphPYXOXOUDnycBrvlHY0woHxGslNgvljLQt4irjB/fRt0r9lHpxK4uRFNgM7OzXm1Do
+         jx9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9nBlhEXGFP581Y5583VUeZuiA62uk4fX/W8dDpQUeXY=;
+        b=QW7mrcpL2AwbwVqVrEFttxydG5qZ5EYJHD9TYlEXAZUYQcAtkqUWNJNBDEUUiHn4PR
+         usE847nmXQKfzQ0wMM0BJFgzAlNyq5RIACk51oNrPHulsT7ygOiSrNNQaenpv2yhgFBf
+         9ODm7eJaw6M3/IFprvSS+3Pk0QbNKhh463rcoZvNLHj63S0y5LKW4FN4gTlGsY2WHmn6
+         GjNKBaQEUHBtEyaMcePe0vT6tg85siPh+Vf7lBMg17tjNsXAJGi4NZ8MUi+gyBBoPWTj
+         NBXH2+NEWAnGJeR4xylrjWTjv9kU5COkFLzwtM7ITNNSbbRXFt5MI+cRBbOEdBBvAz8y
+         mqsg==
+X-Gm-Message-State: ANoB5pmeIDEBBtUzQ5c4VU5BC2KXLDTwNJAo5rmr6KFQBBLGJVRfynV2
+        T7mCO5lQ1MWeE6pyHjMSk+VtbsJgG/s=
+X-Google-Smtp-Source: AA0mqf4Mv1+eooDcZ78yPM1Tk5qnDC5+ZsfajUK8m+kcJhpput/JgZy0e4DzicKvHFPPgRSezFRQTA==
+X-Received: by 2002:a05:6512:3187:b0:4b3:ec7a:6752 with SMTP id i7-20020a056512318700b004b3ec7a6752mr17419404lfe.79.1669754812055;
+        Tue, 29 Nov 2022 12:46:52 -0800 (PST)
+Received: from localhost.localdomain (ccy110.neoplus.adsl.tpnet.pl. [83.30.148.110])
+        by smtp.gmail.com with ESMTPSA id o11-20020ac24e8b000000b004ae24368195sm2325620lfr.233.2022.11.29.12.46.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Nov 2022 12:46:51 -0800 (PST)
+From:   Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Adam Skladowski <a39.skl@gmail.com>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RESEND PATCH 2/2] arm64: dts: qcom: sdm632-fairphone-fp3: Add NFC
-Date:   Tue, 29 Nov 2022 19:31:47 +0100
-Message-ID: <3134585.5fSG56mABF@g550jk>
-In-Reply-To: <b20432e8-115c-407f-2480-6dd429ce5c25@linaro.org>
-References: <20221128173744.833018-1-luca@z3ntu.xyz> <20221128173744.833018-2-luca@z3ntu.xyz> <b20432e8-115c-407f-2480-6dd429ce5c25@linaro.org>
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: [PATCH 00/12] SM6115 DTS changes
+Date:   Tue, 29 Nov 2022 21:46:04 +0100
+Message-Id: <20221129204616.47006-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Dienstag, 29. November 2022 14:29:36 CET Konrad Dybcio wrote:
-> On 28.11.2022 18:37, Luca Weiss wrote:
-> > Configure the node for the NQ310 chip found on this device, which is
-> > compatible with generic nxp-nci-i2c driver.
-> > 
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> > RESEND to fix Cc
-> > 
-> >  arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 15 +++++++++++++++
-> >  1 file changed, 15 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> > b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts index
-> > 2920504461d3..fde93cbcd180 100644
-> > --- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> > +++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> > @@ -63,6 +63,21 @@ touchscreen@48 {
-> > 
-> >  	};
-> >  
-> >  };
-> > 
-> > +&i2c_5 {
-> > +	status = "okay";
-> > +
-> > +	nfc@28 {
-> > +		compatible = "nxp,nq310", "nxp,nxp-nci-i2c";
-> 
-> Unless there was some binding change (that was not emailed to me with
-> this email, I only got 2/2), only "nxp,nxp-nci-i2c" and
-> "nxp,pn547", "nxp,nxp-nci-i2c" are allowed.
+This patch series adds bunch of new nodes
+also it fixes some small nitpicks in yamls and adds compatible.
 
-Yes, I've added the double compatible to the yaml.
-https://lore.kernel.org/lkml/20221128173744.833018-1-luca@z3ntu.xyz/
+Adam Skladowski (12):
+  dt-bindings: display: msm: Replace mdss with display-subsystem
+  dt-bindings: thermal: tsens: Add SM6115 compatible
+  arm64: dts: qcom: sm6115: Add cpufreq-hw support
+  arm64: dts: qcom: sm6115: Add TSENS node
+  arm64: dts: qcom: sm6115: Add PRNG node
+  arm64: dts: qcom: sm6115: Add rpm-stats node
+  arm64: dts: qcom: sm6115: Add dispcc node
+  arm64: dts: qcom: sm6115: Add mdss/dpu node
+  arm64: dts: qcom: sm6115: Add GPI DMA
+  arm64: dts: qcom: sm6115: Add i2c/spi nodes
+  arm64: dts: qcom: sm6115: Add WCN node.
+  arm64: dts: qcom: sm6115: Fallback smmu to qcom generic compatible
 
-I'll try to work on my Cc-script setup, currently it adds the output of 
-get_maintainers.pl for each patch (and adds all for the cover letter), which 
-is based on some script I found a while ago online.
+ .../display/msm/qcom,qcm2290-mdss.yaml        |   2 +-
+ .../display/msm/qcom,sm6115-mdss.yaml         |   2 +-
+ .../bindings/thermal/qcom-tsens.yaml          |   1 +
+ arch/arm64/boot/dts/qcom/sm6115.dtsi          | 562 +++++++++++++++++-
+ 4 files changed, 564 insertions(+), 3 deletions(-)
 
-Is there like a recommended way to put all people in Cc for a series, I'm not 
-aware of anything at least...
-
-Perhaps I'll look into b4 for sending patches, that seems to have some goodies 
-there.
-
-Regards
-Luca
-
-> 
-> The node looks good though.
-> 
-> Konrad
-> 
-> > +		reg = <0x28>;
-> > +
-> > +		interrupt-parent = <&tlmm>;
-> > +		interrupts = <17 IRQ_TYPE_LEVEL_HIGH>;
-> > +
-> > +		enable-gpios = <&tlmm 16 GPIO_ACTIVE_HIGH>;
-> > +		firmware-gpios = <&tlmm 62 GPIO_ACTIVE_HIGH>;
-> > +	};
-> > +};
-> > +
-> > 
-> >  &pm8953_resin {
-> >  
-> >  	status = "okay";
-> >  	linux,code = <KEY_VOLUMEDOWN>;
-
-
-
+-- 
+2.25.1
 
