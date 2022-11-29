@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0090EC4708B
-	for <phone-devel@archiver.kernel.org>; Tue, 29 Nov 2022 20:47:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1EFFC46467
+	for <phone-devel@archiver.kernel.org>; Tue, 29 Nov 2022 20:47:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236315AbiK2UrC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 29 Nov 2022 15:47:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46452 "EHLO
+        id S236515AbiK2UrQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 29 Nov 2022 15:47:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235138AbiK2UrB (ORCPT
+        with ESMTP id S236365AbiK2UrH (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 29 Nov 2022 15:47:01 -0500
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E15A27B3C;
-        Tue, 29 Nov 2022 12:47:00 -0800 (PST)
-Received: by mail-lj1-x230.google.com with SMTP id b9so18648634ljr.5;
-        Tue, 29 Nov 2022 12:47:00 -0800 (PST)
+        Tue, 29 Nov 2022 15:47:07 -0500
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4D9F27B3C;
+        Tue, 29 Nov 2022 12:47:04 -0800 (PST)
+Received: by mail-lj1-x22c.google.com with SMTP id z4so18663279ljq.6;
+        Tue, 29 Nov 2022 12:47:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tSu1txevdRDvf+sjHpSwkWYMoyBAXs2clWWE081Dl98=;
-        b=k4BZ95Py3bK6fYlB1MFLHgwl9yftQvPDe7FUCSwJx9NQx9uYWGh2Nziw+P2NhPKGya
-         Z5zHfkIB9YbpADkcqcowkrxPJ+oVd6yHlvjUDbqEhDjUi8jzfVIm/jfrFBK7mNs5aTHC
-         9meg/WDqrTCZO+Ty6MprnrssnMy5RcK/VSagXAMtMMgo/df0Sr4c8K4+sWZ0lLuOTqQS
-         gm4gyRPHU7Zg7wwfZzG+7BCxrh3M2Vf+8P+MXZPOQiHNy1Gcrj689hKYVCLHs9qyeT+s
-         KaeVmMq8JTxedXK3T5f0Pw7SqhuZJeNUYfiMQw7hYzf5I35gbXmU3OXMmRcOI1qeVq0j
-         D10Q==
+        bh=4V4btdZ021QBWvTUZ+qLEZ0zz7lZW+zNWyf+w01hNLo=;
+        b=EgnIx1O2QIPIuC0LwlxMAf68zqiD0+BC32rDwGwQc7QHDUyP5aiXahCnfEN5jMqlDF
+         VIvG7rLtwo0+oXpoz2eIGYdAMQT6dAeGzyYfYTUqiIulQttebwhBtMWug/a20Mlja7Kk
+         yzFzN8TnqOvkBRMnUnn1sYDbYNCip53wPfQvGyG5aAGAzeawp439DxlYeEbSevLDBXF+
+         uOxvxshIeN/0bMv5hhLXyV3xP9iDE+TWm7hEh5eji1F9gGpitRGjdPNjbvle2bZFziGR
+         elMaY0PyZWbVc+q/wxOIRWIbZDGjh0ZfDCRdGbZ9lv3y8V7MC5PeNBRP739eiUEy6IbW
+         jHLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tSu1txevdRDvf+sjHpSwkWYMoyBAXs2clWWE081Dl98=;
-        b=wb/YoZnxnvrBPu7EFmYfFpGGzxAe2SIfowX1ktIcjiPQN+jw+MmVnXYGnoBodVioQG
-         zFkA5Qq5pwvh7RmTxiGxRsoYL9+39FxBxDeUpIka8pSkVYZv1VASeLIKUHlvJ0e6obuo
-         w+3qgovJykWnUY4tPoQ+P4NIHFlsJIVBubFvMAz/3IzGbmDMvu/ErgbCRHGrTZJes3x4
-         IJi3A1aLhWdywtQsn54mP4/5mi+qZfAsOFPiDxsKMlf67cbYGlFyS/nRm6Nlr8o7Ag4R
-         mviqG0Mb6NVCNgJ6qAeyVeASJbc1QvYD36fHb3uF50u0BLRKqbhpG1qZuwb4igXCeP5V
-         Pieg==
-X-Gm-Message-State: ANoB5plL/UyYoN/9IlVVdkoZZjE5DpXu5kRv5Xt8MlnEEZI5PqWpKE+l
-        ckw3+8MfI33PiIhv1JKMeG/03kEIPLA=
-X-Google-Smtp-Source: AA0mqf6b4m0gfYTm1LbzzS6QI5kunJ/QHByp8GuyhrqWdvKwvyEVcGMVdWoL+KA45eTUcnkhZEpDGA==
-X-Received: by 2002:a2e:8619:0:b0:279:88ce:468f with SMTP id a25-20020a2e8619000000b0027988ce468fmr9177924lji.312.1669754818712;
-        Tue, 29 Nov 2022 12:46:58 -0800 (PST)
+        bh=4V4btdZ021QBWvTUZ+qLEZ0zz7lZW+zNWyf+w01hNLo=;
+        b=GPFVkD5m3tFs9247mLtdTdoxrGkBRJQg68iJV/W9ZKWHglSiP0rdbJ3iyqQfG7CYP3
+         ohv9F0bjkSYox716/hbZzBMBKYnEGlJ6C08SOkI4RVg9PPT1czHWraT2wsHibGbYk7ed
+         qygEuZ97guH+nb0nn2sKvRSkPKFls8yQcilKWgdbLzHYAnvlgUAvYC6A/ZrHbxva2F8E
+         s43bjIh+ToLYyGmuef37ONUa4Bkq7X48RvOUo8ftjssWkOUNyztkkXbY5z13xiHxG2yU
+         1GddBnJlChoiY2VCuH1bfvQ6+fpfbkUzlDzVFdtwcch5jKK9Tep2O8C/Y/YTxBSB5Kpw
+         Jdng==
+X-Gm-Message-State: ANoB5pkFrr2MJUm1UVchVLd1EsVY2HeDyi/PZdLNtG1ExYX4Mo2BImNV
+        4u5aUA8Sx0IdHyEO3OFrT13dyGuQEvw=
+X-Google-Smtp-Source: AA0mqf7eNNhkr2pDGEbrk1tEPverJ+Gcl1qRU601XnJDNyP+wBq3uZ21nEQAFL+J2MakL9tZLwE8xQ==
+X-Received: by 2002:a05:651c:b99:b0:277:c41:d44b with SMTP id bg25-20020a05651c0b9900b002770c41d44bmr13480690ljb.326.1669754823149;
+        Tue, 29 Nov 2022 12:47:03 -0800 (PST)
 Received: from localhost.localdomain (ccy110.neoplus.adsl.tpnet.pl. [83.30.148.110])
-        by smtp.gmail.com with ESMTPSA id o11-20020ac24e8b000000b004ae24368195sm2325620lfr.233.2022.11.29.12.46.57
+        by smtp.gmail.com with ESMTPSA id o11-20020ac24e8b000000b004ae24368195sm2325620lfr.233.2022.11.29.12.47.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Nov 2022 12:46:58 -0800 (PST)
+        Tue, 29 Nov 2022 12:47:02 -0800 (PST)
 From:   Adam Skladowski <a39.skl@gmail.com>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Adam Skladowski <a39.skl@gmail.com>,
@@ -72,9 +72,9 @@ Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [PATCH 03/12] arm64: dts: qcom: sm6115: Add cpufreq-hw support
-Date:   Tue, 29 Nov 2022 21:46:07 +0100
-Message-Id: <20221129204616.47006-4-a39.skl@gmail.com>
+Subject: [PATCH 05/12] arm64: dts: qcom: sm6115: Add PRNG node
+Date:   Tue, 29 Nov 2022 21:46:09 +0100
+Message-Id: <20221129204616.47006-6-a39.skl@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221129204616.47006-1-a39.skl@gmail.com>
 References: <20221129204616.47006-1-a39.skl@gmail.com>
@@ -85,36 +85,32 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add cpufreq-hw node and assign qcom,freq-domain properties
-to CPUs to enable CPU clock scaling.
+Add a node for the PRNG to enable hw-accelerated pseudo-random number
+generation.
 
 Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 ---
- arch/arm64/boot/dts/qcom/sm6115.dtsi | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/arm64/boot/dts/qcom/sm6115.dtsi | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/sm6115.dtsi b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-index 0340ed21be05..2003a2519a54 100644
+index decbf7ca8a03..04620c272227 100644
 --- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-@@ -842,6 +842,17 @@ intc: interrupt-controller@f200000 {
- 			redistributor-stride = <0x0 0x20000>;
- 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
+@@ -497,6 +497,13 @@ qusb2_hstx_trim: hstx-trim@25b {
+ 			};
  		};
-+
-+		cpufreq_hw: cpufreq@f521000 {
-+			compatible = "qcom,cpufreq-hw";
-+			reg = <0x0f521000 0x1000>, <0x0f523000 0x1000>;
-+
-+			reg-names = "freq-domain0", "freq-domain1";
-+			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>, <&gcc GPLL0>;
-+			clock-names = "xo", "alternate";
-+
-+			#freq-domain-cells = <1>;
-+		};
- 	};
  
- 	timer {
++		rng: rng@1b53000 {
++			compatible = "qcom,prng-ee";
++			reg = <0x01b53000 0x1000>;
++			clocks = <&gcc GCC_PRNG_AHB_CLK>;
++			clock-names = "core";
++		};
++
+ 		spmi_bus: spmi@1c40000 {
+ 			compatible = "qcom,spmi-pmic-arb";
+ 			reg = <0x01c40000 0x1100>,
 -- 
 2.25.1
 
