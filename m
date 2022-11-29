@@ -2,77 +2,140 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E747FC4167B
-	for <phone-devel@archiver.kernel.org>; Tue, 29 Nov 2022 14:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E594C4167B
+	for <phone-devel@archiver.kernel.org>; Tue, 29 Nov 2022 15:29:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234899AbiK2OsD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 29 Nov 2022 09:48:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52744 "EHLO
+        id S235356AbiK2P3w (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 29 Nov 2022 10:29:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234738AbiK2OrT (ORCPT
+        with ESMTP id S235212AbiK2P3v (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 29 Nov 2022 09:47:19 -0500
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C5A15C0ED;
-        Tue, 29 Nov 2022 06:47:19 -0800 (PST)
-Received: by mail-ot1-f51.google.com with SMTP id t19-20020a9d7753000000b0066d77a3d474so9205614otl.10;
-        Tue, 29 Nov 2022 06:47:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+b+KzTjmPmnd8sTRNm0EY8X1XaPpeEAQRPlSuPUp3Dc=;
-        b=RgY76oXl77RcXE0lF15iaKFdvztaHJxmMDgK7C1fz4ZmEswctCMqMt8895nt6/gZuI
-         Fw4fMrKeoXZ+HXyt/tPw3iV7JsperB4lv1HsJ1neQ1c7DgrE1/9p0yZ7CgMz8oelQZYt
-         doA3e8Pjj46QuPUI7mLzymzuZMpUHCjD7PJrOhovWG/e5uHajksGAClSIdnTTQL0Nxfb
-         EeAl7OJ0SZyOdjmP6l8X34Smm8zcT3qNBlaZ8uud2DKaoEIxl5qgIr4ocDPwiDGVnXG7
-         DskRVTSaA+mJVwcc1nU5iqjHvjFyUg8JPjaBp4BdrFiREZauhthbm0DvWQn31+ozKfZ3
-         N2PA==
-X-Gm-Message-State: ANoB5pnlnnyqRws2fQOJ0cwyRco/bbeDTQ/2WoBj4wQYiUeaWin3egeb
-        3UmpcwcMRmftWgtkZKsBNQ==
-X-Google-Smtp-Source: AA0mqf6RUgQcfhQifqPrbQhhWTd3qlbufh6rTmHyKMRV2ErM3Ll6gbUefGzqepRMMhx/FbvCYZLPfQ==
-X-Received: by 2002:a05:6830:d87:b0:66d:8b98:683f with SMTP id bv7-20020a0568300d8700b0066d8b98683fmr29675043otb.40.1669733238376;
-        Tue, 29 Nov 2022 06:47:18 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id p83-20020acad856000000b00359af7ea8fdsm5563936oig.34.2022.11.29.06.47.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Nov 2022 06:47:17 -0800 (PST)
-Received: (nullmailer pid 3635386 invoked by uid 1000);
-        Tue, 29 Nov 2022 14:47:17 -0000
-Date:   Tue, 29 Nov 2022 08:47:17 -0600
-From:   Rob Herring <robh@kernel.org>
+        Tue, 29 Nov 2022 10:29:51 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8626013EAC;
+        Tue, 29 Nov 2022 07:29:50 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DEA66176F;
+        Tue, 29 Nov 2022 15:29:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B681C433C1;
+        Tue, 29 Nov 2022 15:29:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1669735789;
+        bh=LcLxGc0JJF4Y9hWKi36NBEOqASyjERCHhf229KIalLQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=W18al4QIssBUGlHaJSbuzmXtvkWgmxk2N5i7DIut8Nxy3ysCvHhMCMSHDvP5DMrfG
+         0wWPme5DrYNNTRWyQl6RYolbCm5jf1AIiubRS0JyuzAWzUsneuSjfbmjaIGQMPC9Hi
+         9UX/mKX8fZfsSG/BdLHP7IqJkI9eM4yKhO1guYXCtoZqdtWA+E7uFtLfE4dmlgU9TU
+         cnhd0jpYcbvNKphuNYIYmjW6Vbp6azO2Vjo6GjJHwCrkXQBN5sXEiNI4gF6KBAgC8I
+         Lsh7CTkV0GrBfYaPWS8nTPLwzPspp4HCeVGQi+4iFnsBdg0G/y+se2uPUmfPNgy08x
+         qDctGIBXbzAiw==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan@kernel.org>)
+        id 1p02YP-0004V6-2i; Tue, 29 Nov 2022 16:29:49 +0100
+Date:   Tue, 29 Nov 2022 16:29:49 +0100
+From:   Johan Hovold <johan@kernel.org>
 To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     phone-devel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Marc Zyngier <maz@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        linux-kernel@vger.kernel.org,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: Re: [PATCH] dt-bindings: qcom,pdc: Add missing compatibles
-Message-ID: <166973322157.3635007.3803910516622082997.robh@kernel.org>
-References: <20221013091208.356739-1-luca.weiss@fairphone.com>
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v2 1/3] dt-bindings: phy: qcom,qmp-usb3-dp: Add
+ sm6350 compatible
+Message-ID: <Y4YlbWL5uDXElBbi@hovoldconsulting.com>
+References: <20221125092749.46073-1-luca.weiss@fairphone.com>
+ <Y4CP9fwhDXsLu57Q@hovoldconsulting.com>
+ <COLABNHBQ1DG.1PB8SDY3FW1YY@otso>
+ <Y4CWoT52Q8jnm/dF@hovoldconsulting.com>
+ <COLE3UWQCQ8R.XY36EY07DDDK@otso>
+ <Y4DImjwHQNlWPEKh@hovoldconsulting.com>
+ <COLFSBYDJQVH.1Q9V9ISPWR6ZX@otso>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221013091208.356739-1-luca.weiss@fairphone.com>
+In-Reply-To: <COLFSBYDJQVH.1Q9V9ISPWR6ZX@otso>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 13 Oct 2022 11:12:08 +0200, Luca Weiss wrote:
-> Document the compatibles that are already in use in the upstream Linux
-> kernel to resolve dtbs_check warnings.
+On Fri, Nov 25, 2022 at 03:12:24PM +0100, Luca Weiss wrote:
+> On Fri Nov 25, 2022 at 2:52 PM CET, Johan Hovold wrote:
+> > On Fri, Nov 25, 2022 at 01:53:25PM +0100, Luca Weiss wrote:
+> > > > Parent clocks (ref_clk_src) should not be included in the binding, but
+> > > > rather be handled by the clock driver. For example, see:
+> > > >
+> > > > 	https://lore.kernel.org/all/20221121085058.31213-4-johan+linaro@kernel.org/
+> > > > 	https://lore.kernel.org/all/20221115152956.21677-1-quic_shazhuss@quicinc.com/
+> > > 
+> > > So I assume you mean that I shouldn't do this:
+> > > 
+> > > clocks = <&gcc GCC_USB3_PRIM_PHY_AUX_CLK>,
+> > >      <&rpmhcc RPMH_QLINK_CLK>,
+> > >      <&gcc GCC_USB3_PRIM_PHY_COM_AUX_CLK>,
+> > >      <&gcc GCC_USB3_PRIM_PHY_PIPE_CLK>;
+> > > clock-names = "aux", "ref", "com_aux", "usb3_pipe";
+> > > 
+> > > But for "ref" use GCC_USB3_PRIM_CLKREF_CLK? That also seems to work
+> > > fine, also if RPMH_QLINK_CLK is not used from Linux-side (checked in
+> > > debugfs).
+> >
+> > Exactly. Since the vendor dts describes RPMH_QLINK_CLK as parent of ref,
+> > I'd suggest modelling that in the clock driver. Perhaps it has just been
+> > left on by the boot firmware. Someone with access to docs may be able
+> > explain how it is supposed to be used.
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  .../devicetree/bindings/interrupt-controller/qcom,pdc.yaml    | 4 ++++
->  1 file changed, 4 insertions(+)
+> RPMH_QLINK_CLK is also in msm-4.19 ref_clk_src for
+> GCC_UFS_MEM_CLKREF_CLK (ufsphy_mem) and also ref_clk (ufshc_mem).
 > 
+> Honestly since it works fine without adding this to gcc driver and I
+> don't really know much about clk (and have no docs for this) would it be
+> okay to just ignore RPMH_QLINK_CLK?
 
-Applied, thanks!
+Preferably it should be fixed now as it may be harder to figure out
+what's missing in case this causes trouble in some setup later.
+
+But, yeah, the lack of documentation is a pain.
+
+Hopefully Bjorn or Vinod can help out with getting this sorted properly.
+
+> > > And for the driver patch, I've discovered that this phy doesn't have
+> > > separate txa/tbx region, so dts was also wrong there. Do you know if
+> > > there's a way to test DP phy initialization without having all the USB-C
+> > > plumbing in place? Might be good to validate at least phy init works if
+> > > we're already touching all of this.
+> >
+> > Do you mean that it appears to work as sc8280xp with txa/txb shared by
+> > both the USB and DP parts?
+> 
+> Yes, looks like it. Can't find any evidence pointing in any other
+> direction at least, everything I've seen shows .txa = 0x1200 & .txb =
+> 0x1600.
+
+Ok. I've also only seen indirect references to the DP registers
+for the older platforms, but at least of them do have the separate DP TX
+regions.
+
+> > I guess you need a proper setup to test it properly. Not sure what
+> > you'll be able to learn otherwise, apart from whether it passes basic
+> > smoke testing.
+> 
+> Currently it's not even smoke testing because dp phy is never getting
+> enabled because there's no consumer. That's why I guess it was never
+> noticed it's wrongly described in dts.
+
+Yeah, people shouldn't be adding (copy-pasted) nodes for peripherals
+that they are not able to test (especially given the lack of
+documentation), but I guess the USB3-DP case is a bit of a grey area as
+the USB part can have been verified. Fortunately, this should be less of
+any issue with the new binding scheme.
+
+Johan
