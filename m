@@ -2,140 +2,378 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E594C4167B
-	for <phone-devel@archiver.kernel.org>; Tue, 29 Nov 2022 15:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90332C4167B
+	for <phone-devel@archiver.kernel.org>; Tue, 29 Nov 2022 17:08:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235356AbiK2P3w (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 29 Nov 2022 10:29:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59042 "EHLO
+        id S235969AbiK2RIx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 29 Nov 2022 12:08:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235212AbiK2P3v (ORCPT
+        with ESMTP id S234997AbiK2RIw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 29 Nov 2022 10:29:51 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8626013EAC;
-        Tue, 29 Nov 2022 07:29:50 -0800 (PST)
+        Tue, 29 Nov 2022 12:08:52 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2538F5CD2C;
+        Tue, 29 Nov 2022 09:08:50 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DEA66176F;
-        Tue, 29 Nov 2022 15:29:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B681C433C1;
-        Tue, 29 Nov 2022 15:29:49 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9EA4DB81887;
+        Tue, 29 Nov 2022 17:08:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4256EC43144;
+        Tue, 29 Nov 2022 17:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1669735789;
-        bh=LcLxGc0JJF4Y9hWKi36NBEOqASyjERCHhf229KIalLQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=W18al4QIssBUGlHaJSbuzmXtvkWgmxk2N5i7DIut8Nxy3ysCvHhMCMSHDvP5DMrfG
-         0wWPme5DrYNNTRWyQl6RYolbCm5jf1AIiubRS0JyuzAWzUsneuSjfbmjaIGQMPC9Hi
-         9UX/mKX8fZfsSG/BdLHP7IqJkI9eM4yKhO1guYXCtoZqdtWA+E7uFtLfE4dmlgU9TU
-         cnhd0jpYcbvNKphuNYIYmjW6Vbp6azO2Vjo6GjJHwCrkXQBN5sXEiNI4gF6KBAgC8I
-         Lsh7CTkV0GrBfYaPWS8nTPLwzPspp4HCeVGQi+4iFnsBdg0G/y+se2uPUmfPNgy08x
-         qDctGIBXbzAiw==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1p02YP-0004V6-2i; Tue, 29 Nov 2022 16:29:49 +0100
-Date:   Tue, 29 Nov 2022 16:29:49 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 1/3] dt-bindings: phy: qcom,qmp-usb3-dp: Add
- sm6350 compatible
-Message-ID: <Y4YlbWL5uDXElBbi@hovoldconsulting.com>
-References: <20221125092749.46073-1-luca.weiss@fairphone.com>
- <Y4CP9fwhDXsLu57Q@hovoldconsulting.com>
- <COLABNHBQ1DG.1PB8SDY3FW1YY@otso>
- <Y4CWoT52Q8jnm/dF@hovoldconsulting.com>
- <COLE3UWQCQ8R.XY36EY07DDDK@otso>
- <Y4DImjwHQNlWPEKh@hovoldconsulting.com>
- <COLFSBYDJQVH.1Q9V9ISPWR6ZX@otso>
+        s=k20201202; t=1669741727;
+        bh=nwP34wMNyLh/dnrxlPgAjE1IzJ0FKjOdv1+2hcVAU6I=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=BuCBo5Xiu9EosfZ2Dg6KNymqrMDa/jo7ob17Fvu/wbLK56N20rzptZaU9Tjx0JPiC
+         KG6lF3H6/g7e9yanZI77EVNaAWDtYfBxLjZ9Lif+ouqDVAv2DIMRPkxuBNwRQHTPUP
+         hFQWC1ETAPDybzQI9qydARhcPc+A5YKo3z2ILm+YCuZbeWwZpfAcw6hbrU0fWnWNhL
+         PxBu+sSHKfAosDXdyUdqfdIDkkcOBI8Q+EylGueMGRr9Zhnhaz9prdhRL6BybP45qz
+         va7/OTNN7yiCB3tiCKI/x0R9UcA81BEPXXEYux0RwjktuBb6Ov7uzmhsnkwoIgsSPi
+         mMBC9zk77lhtA==
+Received: by mail-vs1-f52.google.com with SMTP id 124so14630823vsv.4;
+        Tue, 29 Nov 2022 09:08:47 -0800 (PST)
+X-Gm-Message-State: ANoB5pnTOQd6lf9ZmQlt/SWa50itMSMOsyzhQMud1Y5Z82YrP//eNCNl
+        ZMZVCeEBdUIdLc2lhev97Pys3KoPMalRC+IboQ==
+X-Google-Smtp-Source: AA0mqf5V7e1vsuBZ4ItGOTOOMeBB8gUy1cQEuElpB75MCBg1Cqh2Ja1KGGsHevNK00s6Li03OAangxBv/1OhP9vCwaY=
+X-Received: by 2002:a67:f74e:0:b0:3aa:3766:7a23 with SMTP id
+ w14-20020a67f74e000000b003aa37667a23mr22326407vso.53.1669741726198; Tue, 29
+ Nov 2022 09:08:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <COLFSBYDJQVH.1Q9V9ISPWR6ZX@otso>
+References: <20221124001708.25720-1-a39.skl@gmail.com> <20221124001708.25720-2-a39.skl@gmail.com>
+In-Reply-To: <20221124001708.25720-2-a39.skl@gmail.com>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Tue, 29 Nov 2022 11:08:34 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqLkhCScw6Rbp8xiMG23UmRNsApyrexvZPabfjZmVBfD_A@mail.gmail.com>
+Message-ID: <CAL_JsqLkhCScw6Rbp8xiMG23UmRNsApyrexvZPabfjZmVBfD_A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: display/msm: add support for SM6115
+To:     Adam Skladowski <a39.skl@gmail.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Kalyan Thota <quic_kalyant@quicinc.com>,
+        Jessica Zhang <quic_jesszhan@quicinc.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        Jason Wang <wangborong@cdjrlc.com>,
+        Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Nov 25, 2022 at 03:12:24PM +0100, Luca Weiss wrote:
-> On Fri Nov 25, 2022 at 2:52 PM CET, Johan Hovold wrote:
-> > On Fri, Nov 25, 2022 at 01:53:25PM +0100, Luca Weiss wrote:
-> > > > Parent clocks (ref_clk_src) should not be included in the binding, but
-> > > > rather be handled by the clock driver. For example, see:
-> > > >
-> > > > 	https://lore.kernel.org/all/20221121085058.31213-4-johan+linaro@kernel.org/
-> > > > 	https://lore.kernel.org/all/20221115152956.21677-1-quic_shazhuss@quicinc.com/
-> > > 
-> > > So I assume you mean that I shouldn't do this:
-> > > 
-> > > clocks = <&gcc GCC_USB3_PRIM_PHY_AUX_CLK>,
-> > >      <&rpmhcc RPMH_QLINK_CLK>,
-> > >      <&gcc GCC_USB3_PRIM_PHY_COM_AUX_CLK>,
-> > >      <&gcc GCC_USB3_PRIM_PHY_PIPE_CLK>;
-> > > clock-names = "aux", "ref", "com_aux", "usb3_pipe";
-> > > 
-> > > But for "ref" use GCC_USB3_PRIM_CLKREF_CLK? That also seems to work
-> > > fine, also if RPMH_QLINK_CLK is not used from Linux-side (checked in
-> > > debugfs).
-> >
-> > Exactly. Since the vendor dts describes RPMH_QLINK_CLK as parent of ref,
-> > I'd suggest modelling that in the clock driver. Perhaps it has just been
-> > left on by the boot firmware. Someone with access to docs may be able
-> > explain how it is supposed to be used.
-> 
-> RPMH_QLINK_CLK is also in msm-4.19 ref_clk_src for
-> GCC_UFS_MEM_CLKREF_CLK (ufsphy_mem) and also ref_clk (ufshc_mem).
-> 
-> Honestly since it works fine without adding this to gcc driver and I
-> don't really know much about clk (and have no docs for this) would it be
-> okay to just ignore RPMH_QLINK_CLK?
+On Wed, Nov 23, 2022 at 6:17 PM Adam Skladowski <a39.skl@gmail.com> wrote:
+>
+> Add DPU and MDSS schemas to describe MDSS and DPU blocks on the Qualcomm
+> SM6115 platform.
+> Configuration for DSI/PHY is shared with QCM2290 so compatibles are reused.
+> Lack of dsi phy supply in example is intended
+> due to fact on qcm2290, sm6115 and sm6125
+> this phy is supplied via power domain, not regulator.
+>
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> ---
+>  .../bindings/display/msm/qcom,sm6115-dpu.yaml |  94 +++++++++
+>  .../display/msm/qcom,sm6115-mdss.yaml         | 182 ++++++++++++++++++
+>  2 files changed, 276 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/display/msm/qcom,sm6115-dpu.yaml
+>  create mode 100644 Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/display/msm/qcom,sm6115-dpu.yaml b/Documentation/devicetree/bindings/display/msm/qcom,sm6115-dpu.yaml
+> new file mode 100644
+> index 000000000000..4a39a3031409
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/msm/qcom,sm6115-dpu.yaml
+> @@ -0,0 +1,94 @@
+> +# SPDX-License-Identifier: GPL-2.0-only or BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/msm/qcom,sm6115-dpu.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm Display DPU dt properties for SM6115 target
+> +
+> +maintainers:
+> +  - Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> +
+> +$ref: /schemas/display/msm/dpu-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - const: qcom,sm6115-dpu
+> +
+> +  reg:
+> +    items:
+> +      - description: MDP register set
+> +      - description: VBIF register set
+> +
+> +  reg-names:
+> +    items:
+> +      - const: mdp
+> +      - const: vbif
+> +
+> +  clocks:
+> +    items:
+> +      - description: Display AXI
+> +      - description: Display AHB
+> +      - description: Display core
+> +      - description: Display lut
+> +      - description: Display rotator
+> +      - description: Display vsync
+> +
+> +  clock-names:
+> +    items:
+> +      - const: bus
+> +      - const: iface
+> +      - const: core
+> +      - const: lut
+> +      - const: rot
+> +      - const: vsync
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - reg-names
+> +  - clocks
+> +  - clock-names
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/qcom,sm6115-dispcc.h>
+> +    #include <dt-bindings/clock/qcom,gcc-sm6115.h>
+> +    #include <dt-bindings/power/qcom-rpmpd.h>
+> +
+> +    display-controller@5e01000 {
+> +        compatible = "qcom,sm6115-dpu";
+> +        reg = <0x05e01000 0x8f000>,
+> +              <0x05eb0000 0x2008>;
+> +        reg-names = "mdp", "vbif";
+> +
+> +        clocks = <&gcc GCC_DISP_HF_AXI_CLK>,
+> +                 <&dispcc DISP_CC_MDSS_AHB_CLK>,
+> +                 <&dispcc DISP_CC_MDSS_MDP_CLK>,
+> +                 <&dispcc DISP_CC_MDSS_MDP_LUT_CLK>,
+> +                 <&dispcc DISP_CC_MDSS_ROT_CLK>,
+> +                 <&dispcc DISP_CC_MDSS_VSYNC_CLK>;
+> +        clock-names = "bus", "iface", "core", "lut", "rot", "vsync";
+> +
+> +        operating-points-v2 = <&mdp_opp_table>;
+> +        power-domains = <&rpmpd SM6115_VDDCX>;
+> +
+> +        interrupt-parent = <&mdss>;
+> +        interrupts = <0>;
+> +
+> +        ports {
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +
+> +            port@0 {
+> +                reg = <0>;
+> +                endpoint {
+> +                    remote-endpoint = <&dsi0_in>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
+> new file mode 100644
+> index 000000000000..a86d7f53fa84
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
+> @@ -0,0 +1,182 @@
+> +# SPDX-License-Identifier: GPL-2.0-only or BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/msm/qcom,sm6115-mdss.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm SM6115 Display MDSS
+> +
+> +maintainers:
+> +  - Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> +
+> +description:
+> +  Device tree bindings for MSM Mobile Display Subsystem(MDSS) that encapsulates
+> +  sub-blocks like DPU display controller and DSI. Device tree bindings of MDSS
+> +  are mentioned for SM6115 target.
+> +
+> +$ref: /schemas/display/msm/mdss-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - const: qcom,sm6115-mdss
+> +
+> +  clocks:
+> +    items:
+> +      - description: Display AHB clock from gcc
+> +      - description: Display AXI clock
+> +      - description: Display core clock
+> +
+> +  iommus:
+> +    maxItems: 2
+> +
+> +patternProperties:
+> +  "^display-controller@[0-9a-f]+$":
+> +    type: object
+> +    properties:
+> +      compatible:
+> +        const: qcom,sm6115-dpu
+> +
+> +  "^dsi@[0-9a-f]+$":
+> +    type: object
+> +    properties:
+> +      compatible:
+> +        const: qcom,dsi-ctrl-6g-qcm2290
+> +
+> +  "^phy@[0-9a-f]+$":
+> +    type: object
+> +    properties:
+> +      compatible:
+> +        const: qcom,dsi-phy-14nm-2290
+> +
+> +required:
+> +  - compatible
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/qcom,sm6115-dispcc.h>
+> +    #include <dt-bindings/clock/qcom,gcc-sm6115.h>
+> +    #include <dt-bindings/clock/qcom,rpmcc.h>
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/power/qcom-rpmpd.h>
+> +
+> +    mdss@5e00000 {
+> +        #address-cells = <1>;
+> +        #size-cells = <1>;
+> +        compatible = "qcom,sm6115-mdss";
+> +        reg = <0x05e00000 0x1000>;
+> +        reg-names = "mdss";
+> +        power-domains = <&dispcc MDSS_GDSC>;
+> +        clocks = <&gcc GCC_DISP_AHB_CLK>,
+> +                 <&gcc GCC_DISP_HF_AXI_CLK>,
+> +                 <&dispcc DISP_CC_MDSS_MDP_CLK>;
+> +
+> +        interrupts = <GIC_SPI 186 IRQ_TYPE_LEVEL_HIGH>;
+> +        interrupt-controller;
+> +        #interrupt-cells = <1>;
+> +
+> +        iommus = <&apps_smmu 0x420 0x2>,
+> +                 <&apps_smmu 0x421 0x0>;
+> +        ranges;
+> +
+> +        display-controller@5e01000 {
+> +            compatible = "qcom,sm6115-dpu";
+> +            reg = <0x05e01000 0x8f000>,
+> +                  <0x05eb0000 0x2008>;
+> +            reg-names = "mdp", "vbif";
+> +
+> +            clocks = <&gcc GCC_DISP_HF_AXI_CLK>,
+> +                     <&dispcc DISP_CC_MDSS_AHB_CLK>,
+> +                     <&dispcc DISP_CC_MDSS_MDP_CLK>,
+> +                     <&dispcc DISP_CC_MDSS_MDP_LUT_CLK>,
+> +                     <&dispcc DISP_CC_MDSS_ROT_CLK>,
+> +                     <&dispcc DISP_CC_MDSS_VSYNC_CLK>;
+> +            clock-names = "bus", "iface", "core", "lut", "rot", "vsync";
+> +
+> +            operating-points-v2 = <&mdp_opp_table>;
+> +            power-domains = <&rpmpd SM6115_VDDCX>;
+> +
+> +            interrupt-parent = <&mdss>;
+> +            interrupts = <0>;
+> +
+> +            ports {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +
+> +                port@0 {
+> +                    reg = <0>;
+> +                    dpu_intf1_out: endpoint {
+> +                        remote-endpoint = <&dsi0_in>;
+> +                    };
+> +                };
+> +            };
+> +        };
+> +
+> +        dsi@5e94000 {
+> +            compatible = "qcom,dsi-ctrl-6g-qcm2290";
+> +            reg = <0x05e94000 0x400>;
+> +            reg-names = "dsi_ctrl";
+> +
+> +            interrupt-parent = <&mdss>;
+> +            interrupts = <4>;
+> +
+> +            clocks = <&dispcc DISP_CC_MDSS_BYTE0_CLK>,
+> +                     <&dispcc DISP_CC_MDSS_BYTE0_INTF_CLK>,
+> +                     <&dispcc DISP_CC_MDSS_PCLK0_CLK>,
+> +                     <&dispcc DISP_CC_MDSS_ESC0_CLK>,
+> +                     <&dispcc DISP_CC_MDSS_AHB_CLK>,
+> +                     <&gcc GCC_DISP_HF_AXI_CLK>;
+> +            clock-names = "byte",
+> +                          "byte_intf",
+> +                          "pixel",
+> +                          "core",
+> +                          "iface",
+> +                          "bus";
+> +            assigned-clocks = <&dispcc DISP_CC_MDSS_BYTE0_CLK_SRC>, <&dispcc DISP_CC_MDSS_PCLK0_CLK_SRC>;
+> +            assigned-clock-parents = <&dsi0_phy 0>, <&dsi0_phy 1>;
+> +
+> +            operating-points-v2 = <&dsi_opp_table>;
+> +            power-domains = <&rpmpd SM6115_VDDCX>;
+> +            phys = <&dsi0_phy>;
+> +
+> +            #address-cells = <1>;
+> +            #size-cells = <0>;
+> +
+> +            ports {
+> +                #address-cells = <1>;
+> +                #size-cells = <0>;
+> +
+> +                port@0 {
+> +                    reg = <0>;
+> +                    dsi0_in: endpoint {
+> +                        remote-endpoint = <&dpu_intf1_out>;
+> +                    };
+> +                };
+> +
+> +                port@1 {
+> +                    reg = <1>;
+> +                    dsi0_out: endpoint {
+> +                    };
+> +                };
+> +            };
+> +        };
+> +
+> +        dsi0_phy: phy@5e94400 {
+> +            compatible = "qcom,dsi-phy-14nm-2290";
 
-Preferably it should be fixed now as it may be harder to figure out
-what's missing in case this causes trouble in some setup later.
+Now that this is in linux-next, there's a warning:
 
-But, yeah, the lack of documentation is a pain.
+/builds/robherring/linux-dt/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.example.dtb:
+phy@5e94400: 'vcca-supply' is a required property
+        From schema:
+/builds/robherring/linux-dt/Documentation/devicetree/bindings/display/msm/dsi-phy-14nm.yaml
 
-Hopefully Bjorn or Vinod can help out with getting this sorted properly.
+Perhaps some change in dsi-phy-14nm.yaml.
 
-> > > And for the driver patch, I've discovered that this phy doesn't have
-> > > separate txa/tbx region, so dts was also wrong there. Do you know if
-> > > there's a way to test DP phy initialization without having all the USB-C
-> > > plumbing in place? Might be good to validate at least phy init works if
-> > > we're already touching all of this.
-> >
-> > Do you mean that it appears to work as sc8280xp with txa/txb shared by
-> > both the USB and DP parts?
-> 
-> Yes, looks like it. Can't find any evidence pointing in any other
-> direction at least, everything I've seen shows .txa = 0x1200 & .txb =
-> 0x1600.
-
-Ok. I've also only seen indirect references to the DP registers
-for the older platforms, but at least of them do have the separate DP TX
-regions.
-
-> > I guess you need a proper setup to test it properly. Not sure what
-> > you'll be able to learn otherwise, apart from whether it passes basic
-> > smoke testing.
-> 
-> Currently it's not even smoke testing because dp phy is never getting
-> enabled because there's no consumer. That's why I guess it was never
-> noticed it's wrongly described in dts.
-
-Yeah, people shouldn't be adding (copy-pasted) nodes for peripherals
-that they are not able to test (especially given the lack of
-documentation), but I guess the USB3-DP case is a bit of a grey area as
-the USB part can have been verified. Fortunately, this should be less of
-any issue with the new binding scheme.
-
-Johan
+Rob
