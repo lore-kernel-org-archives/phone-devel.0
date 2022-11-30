@@ -2,87 +2,79 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ABEC4C4321E
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Nov 2022 21:02:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AB16C4321E
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Nov 2022 23:26:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbiK3VC0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Nov 2022 16:02:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37758 "EHLO
+        id S230111AbiK3X0f (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Nov 2022 18:26:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229461AbiK3VCZ (ORCPT
+        with ESMTP id S229740AbiK3X0O (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Nov 2022 16:02:25 -0500
-Received: from msg-2.mailo.com (msg-2.mailo.com [213.182.54.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC5E837ED;
-        Wed, 30 Nov 2022 13:02:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailoo.org; s=mailo;
-        t=1669842142; bh=gVzGEYVjD0h5I9/deBEqHQ2NmlqOqDxgiAHZGpIxWVs=;
-        h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
-         MIME-Version:Content-Transfer-Encoding;
-        b=es000FQP0pFBzLOxjLEKQGFCpMCpBPeA1m8bPE18E83gRC2rDVCcsTRpkNX/xykqy
-         u0R9Vc2d/fURgLSQ0jHuSA1ipydXQ0/ncba3Q/ujjaE77zXYQPOtwst4p9e5FPsK1c
-         C8p3kqoYxW+pOAxHsvr2W9YMRnYlNwofscc6Z9eQ=
-Received: by b-6.in.mailobj.net [192.168.90.16] with ESMTP
-        via proxy.mailoo.org [213.182.55.207]
-        Wed, 30 Nov 2022 22:02:22 +0100 (CET)
-X-EA-Auth: npvI2yDxuBEDTjMfik9gmG6DPGyCOW1KAjRF/d2wxd+dCF6U1o7QEM8BkGz24Rpc5tGn+OzxDalVUMg9V87xLqHwwKFl14OZrfqD0Fr253Y=
-From:   Vincent Knecht <vincent.knecht@mailoo.org>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Vincent Knecht <vincent.knecht@mailoo.org>,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     w.david0@protonmail.com, stephan@gerhold.net,
+        Wed, 30 Nov 2022 18:26:14 -0500
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEE10212;
+        Wed, 30 Nov 2022 15:17:32 -0800 (PST)
+Received: by mail-pj1-f48.google.com with SMTP id t11-20020a17090a024b00b0021932afece4so3474094pje.5;
+        Wed, 30 Nov 2022 15:17:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JHPYnqkf2NRISNr9s2sdmwDxCB7+PKLiB+fahjpgjKA=;
+        b=Gwnn1Tg36v0C9UFyL+lfSUR9DkSygRbLxrb0z2WIrXYkRzlGM3QFGEFI4uA2JlgMui
+         NMpWWekWX17ucbs9h107b3sRwm4dqz9UIKTEQR5srBdTr28vW2aJ1E5T4F991BKPovLZ
+         BniOrKueHLHlvG2UtMzzMuFdYAPZ6eh9F4N1CXVpjGzD+CgEfi/JkoBqsVurT0q5agiL
+         i3cyFj0I13BqOb6HwZHFbvzAN1u1IfLRBpmEAHPGR9CKl/M1JNZs5R+5b3Maj0wvipiR
+         c+cdy7zCrkCgdsaNtGA9jOzcvs9DHwOit1X/ax0rgrbsfHihXYFtUo6m0HovfcBb0hGa
+         E2aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JHPYnqkf2NRISNr9s2sdmwDxCB7+PKLiB+fahjpgjKA=;
+        b=3azB3gp6GFCSGRqMfyuwL6PCiG97WIcZ29b6QmJ8XgSC5qjBzGjTarMu5Ray4t1q6E
+         EpUqPQ3doTTBMfrIScllQqpdKZ11GuKeUz/VK0s3G2WVsBMWJnQ5yMVIFIAsGCYk+vlV
+         RRTNOiOKiEwXPPEiLNxpbhAfaTZBcORugsC3Rn6WOCL2EvQg+XJ71EmIkyMrmpFmC5uA
+         ga9EEE7XGr+L98XRF72FPp0Ed4rQBu9j2OtskSFn7N1Qev9VOiEHNNRRdPyrYcE6eKkY
+         Eyf10pymkqSW1pcwbncw73KOpLiBVu8knoF5u2HBB6spuBLXWmzKniIOmvzFhMPo3Ex4
+         n9OQ==
+X-Gm-Message-State: ANoB5pkhn6aFUiBIiXSbGxzpN9CFoP0Qkbc0MchmUrVkylfcxFeuWo7L
+        9Quo7vwX0NMNK6VMbGEKncOvSbADWng=
+X-Google-Smtp-Source: AA0mqf4hOUlc1LUnq7PCe3mgcQJ4Gx4HpQumuFCEp6biAMVWm1P3NUpo9JWayWHSlGl6ufDrh2SjXA==
+X-Received: by 2002:a17:902:7d93:b0:186:9cf4:e53b with SMTP id a19-20020a1709027d9300b001869cf4e53bmr48580264plm.50.1669850160375;
+        Wed, 30 Nov 2022 15:16:00 -0800 (PST)
+Received: from google.com ([2620:15c:9d:2:360e:7e9f:b234:c094])
+        by smtp.gmail.com with ESMTPSA id n12-20020a170903110c00b00186a6b63525sm2035082plh.120.2022.11.30.15.15.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Nov 2022 15:15:59 -0800 (PST)
+Date:   Wed, 30 Nov 2022 15:15:56 -0800
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Vincent Knecht <vincent.knecht@mailoo.org>
+Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        w.david0@protonmail.com, stephan@gerhold.net,
         phone-devel@vger.kernel.org
-Subject: [PATCH RESEND] Input: msg2638 - only read linux,keycodes array if necessary
-Date:   Wed, 30 Nov 2022 22:01:59 +0100
-Message-Id: <20221130210202.2069213-1-vincent.knecht@mailoo.org>
-X-Mailer: git-send-email 2.38.1
+Subject: Re: [PATCH RESEND] Input: msg2638 - only read linux,keycodes array
+ if necessary
+Message-ID: <Y4fkLL6nvq6655MW@google.com>
+References: <20221130210202.2069213-1-vincent.knecht@mailoo.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221130210202.2069213-1-vincent.knecht@mailoo.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The linux,keycodes property is optional.
-Fix the driver not probing when it's not specified.
+On Wed, Nov 30, 2022 at 10:01:59PM +0100, Vincent Knecht wrote:
+> The linux,keycodes property is optional.
+> Fix the driver not probing when it's not specified.
+> 
+> Fixes: c18ef50346f2 ("Input: msg2638 - add support for msg2138 key events")
+> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
 
-Fixes: c18ef50346f2 ("Input: msg2638 - add support for msg2138 key events")
-Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
----
-Resending because of mailing issue,
-ie. not appearing on mailing lists.
----
- drivers/input/touchscreen/msg2638.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+Applied, thank you.
 
-diff --git a/drivers/input/touchscreen/msg2638.c b/drivers/input/touchscreen/msg2638.c
-index 51b1c0e8a761..4c0816b09d33 100644
---- a/drivers/input/touchscreen/msg2638.c
-+++ b/drivers/input/touchscreen/msg2638.c
-@@ -412,13 +412,15 @@ static int msg2638_ts_probe(struct i2c_client *client)
- 		msg2638->num_keycodes = ARRAY_SIZE(msg2638->keycodes);
- 	}
- 
--	error = device_property_read_u32_array(dev, "linux,keycodes",
--					       msg2638->keycodes,
--					       msg2638->num_keycodes);
--	if (error) {
--		dev_err(dev, "Unable to read linux,keycodes values: %d\n",
--			error);
--		return error;
-+	if (msg2638->num_keycodes > 0) {
-+		error = device_property_read_u32_array(dev, "linux,keycodes",
-+						       msg2638->keycodes,
-+						       msg2638->num_keycodes);
-+		if (error) {
-+			dev_err(dev, "Unable to read linux,keycodes values: %d\n",
-+				error);
-+			return error;
-+		}
- 	}
- 
- 	error = devm_request_threaded_irq(dev, client->irq,
 -- 
-2.38.1
-
-
-
+Dmitry
