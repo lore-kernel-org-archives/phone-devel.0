@@ -2,276 +2,82 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 636ABC46467
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Nov 2022 16:24:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E31B5C433FE
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Nov 2022 17:13:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230170AbiK3QYR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Nov 2022 11:24:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45156 "EHLO
+        id S230380AbiK3RNb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Nov 2022 12:13:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230167AbiK3QYQ (ORCPT
+        with ESMTP id S230395AbiK3RNB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Nov 2022 11:24:16 -0500
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C9FF63BA3
-        for <phone-devel@vger.kernel.org>; Wed, 30 Nov 2022 08:24:14 -0800 (PST)
-Received: by mail-lj1-x235.google.com with SMTP id h10so4762456ljk.11
-        for <phone-devel@vger.kernel.org>; Wed, 30 Nov 2022 08:24:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YbCew0BFNIRSFlp+k5uoeLKizvWgiWnblmCvWuyFg8Y=;
-        b=ZxxkADj2eOo60vb97SjWhIokVfM6y1vjfalXar5jCWgqqLAOvG67JKzvYA+B0SIaLk
-         CcmFI+Azi/SIwuQrHWYyHp2B7SIXToWyurBYoeSlzRMUO9LUZnl/XD8+B55hNYwO4scI
-         H1CcRZ/a7U2u9QLi7NHc2IessDPYoc/O6I+Cg8ZN40qlo7jgsNfubf9badzn2e0YBq/L
-         0XwTF4vAGFd52R+HgxS+SCx8+3PFDfFmC2SgKJ+VI/ZT4FscHF0eRUYeIMPukHiACCnR
-         SXAOys/bSJFRdIbII2ZSQNXWZw0IaNyeV6HZtdyM1OA35HY0lImuJIUg0MtohfkLUlKC
-         knRg==
+        Wed, 30 Nov 2022 12:13:01 -0500
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBDBB8B186;
+        Wed, 30 Nov 2022 09:09:07 -0800 (PST)
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-14286d5ebc3so21767711fac.3;
+        Wed, 30 Nov 2022 09:09:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YbCew0BFNIRSFlp+k5uoeLKizvWgiWnblmCvWuyFg8Y=;
-        b=GbTVn8EXuoK0Yq2Uzug+kHQrNE9ZwEI1H6kaYNfUXVaPTvSMTTT/1F37sS+U9KUbhD
-         392erZaMJHFRHH94KPqStMohnhSuHssEIjo/znYhjg8/7VCZBWDwU877+N6OlMAzBuEa
-         aVoxHF71wdASsim7O6TFqDbWtvXx7Vyg+GOIgxWE1wxR5moedVG2dIFTE3QtvpG10BjT
-         /0K0SIRa1BKIqh0raXCMVPC5qt0PzfS5b65fEJS/ldqxAxb1NbJ4sae3qUFTD7FzM5XR
-         mnfrwGLu0P+sMyYe1bpzkt4O8xdDUtjUcbYa+4YpnbqmQYyfL3d/Y4Ao/E/TsDCLv0T7
-         mEMg==
-X-Gm-Message-State: ANoB5pltR3l83Nf+N58hM6elj1URen2fCa4KRQYhdHGXpAqptSmLUcZH
-        TvEyz4TT85379upj8TBGCn5TjA==
-X-Google-Smtp-Source: AA0mqf6C9iAEBZCoC56tNEM8JYTBJNnzYIkVMPp0xkGO/BTkobxq0of+g47UTD6XPcOGAOwbMW9PWg==
-X-Received: by 2002:a05:651c:1a10:b0:277:5059:82c9 with SMTP id by16-20020a05651c1a1000b00277505982c9mr15621509ljb.218.1669825452692;
-        Wed, 30 Nov 2022 08:24:12 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id s8-20020a056512214800b004b4823f02b0sm306594lfr.152.2022.11.30.08.24.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Nov 2022 08:24:12 -0800 (PST)
-Message-ID: <9412f6ff-1fd7-31b5-56a7-12bda174f7f6@linaro.org>
-Date:   Wed, 30 Nov 2022 17:24:11 +0100
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yZGjfXWGP2AzRUdq3pVVndzAw3sxyvCWjlEcVt3nu7E=;
+        b=QFpycQSsMTwhqc8SclnpIdPwrjO3c0n06cYYvUmhHN4jwG2z9SSS2aFrHq/fzYmtv9
+         Ju5LzESdoBxRWTOBTD0uPFt9q26RpKBMGfuFj/AGvkRWliAv8eLrOg7WDzWkOjz5RzV3
+         HqHcNH9QJiMHOJ86Dng/5ZrHwBTVk/4slAXiQnOqilLARgzXpcT5J111NDnD5jMUI0sD
+         qlhItc2ZBqfZDHkppEqxnVRH4zzMY0pxCmPrIXy1+dl96/GsVZMN+f8+E88udAyMwQpI
+         DID+saaWA/UCUZolYBujLfJwc12M3TmrZdTJJlDlBrMhg47VFg7oyFkTYV8a9QO5JuCB
+         9t6A==
+X-Gm-Message-State: ANoB5pmJAMF2bWuDEQLKhLXx7Z4ToI6VjA329+Xf8ylcKBmcrIoKC5vQ
+        29Q6F+H/jnQsrTqWfhEtKw==
+X-Google-Smtp-Source: AA0mqf5NogTdghJJR30Thmn+fVMr7pF6s8gWLgPlvLoTPPv/xeMWqjs0deU7LszWBkE+i6++tvXbsw==
+X-Received: by 2002:a05:6870:60a4:b0:132:79b1:f85 with SMTP id t36-20020a05687060a400b0013279b10f85mr26890824oae.274.1669828147028;
+        Wed, 30 Nov 2022 09:09:07 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id r129-20020acaa887000000b00359ba124b07sm826585oie.36.2022.11.30.09.09.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Nov 2022 09:09:06 -0800 (PST)
+Received: (nullmailer pid 2459261 invoked by uid 1000);
+        Wed, 30 Nov 2022 17:09:05 -0000
+Date:   Wed, 30 Nov 2022 11:09:05 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org, Andrew Davis <afd@ti.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-input@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH v4] dt-bindings: input: Convert ti,drv260x to DT schema
+Message-ID: <166982814519.2459212.9752110415413633511.robh@kernel.org>
+References: <20221118174831.69793-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH 1/8] dt-bindings: power: supply: Add DT schema for
- Qualcomm SMBCHG
-Content-Language: en-US
-To:     Yassine Oudjana <yassine.oudjana@gmail.com>,
-        Sebastian Reichel <sre@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc:     Yassine Oudjana <y.oudjana@protonmail.com>,
-        Alejandro Tafalla <atafalla@dnyon.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20220808073459.396278-1-y.oudjana@protonmail.com>
- <20220808073459.396278-2-y.oudjana@protonmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220808073459.396278-2-y.oudjana@protonmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221118174831.69793-1-luca@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 08/08/2022 09:34, Yassine Oudjana wrote:
-> From: Yassine Oudjana <y.oudjana@protonmail.com>
+
+On Fri, 18 Nov 2022 18:48:29 +0100, Luca Weiss wrote:
+> Convert the drv260x haptics binding to DT schema format.
+> 
+> The only notable change from .txt format is that vbat-supply is not
+> actually required, so don't make it a required property.
+> 
+> Acked-by: Andrew Davis <afd@ti.com>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+> Changes in v4:
+> * use non-deprecated enable-gpios for 'required' and example
+> 
+>  .../devicetree/bindings/input/ti,drv260x.txt  |  50 --------
+>  .../devicetree/bindings/input/ti,drv260x.yaml | 109 ++++++++++++++++++
+>  2 files changed, 109 insertions(+), 50 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/input/ti,drv260x.txt
+>  create mode 100644 Documentation/devicetree/bindings/input/ti,drv260x.yaml
 > 
 
-
-> +      See Documentation/devicetree/bindings/power/supply/battery.yaml
-> +
-> +  interrupts:
-> +    items:
-> +      - description: Charger error
-> +      - description: Charger inhibited
-> +      - description: Charger precharge safety timer timeout
-> +      - description: Charger charge safety timer timeout
-> +      - description: Charger pre to fast charging switch threshold reached
-> +      - description: Charger recharge threshold reached
-> +      - description: Charger taper threshold reached
-
-After discussing with Dmitry, it's current design of the PMIC (parent
-device) so it's fine. We would need to make bigger refactoring of
-drivers and bindings to change it to match other typical MFD PMICs. In
-current state it's the only way to express device interrupts.
-
-Two more comments below.
-
-> +      - description: Charger charge termination threshold reached
-> +      - description: Battery hot
-> +      - description: Battery warm
-> +      - description: Battery cold
-> +      - description: Battery cool
-> +      - description: Battery overvoltage
-> +      - description: Battery low
-> +      - description: Battery missing
-> +      - description: Battery thermistor missing # unconfirmed
-> +      - description: USB input undervolt
-> +      - description: USB input overvolt
-> +      - description: USB input source detected
-> +      - description: OTG regulator failure
-> +      - description: OTG regulator overcurrent
-> +      - description: Automatic input current limiting done
-> +      - description: USB ID pin changed
-> +      - description: DC input undervolt
-> +      - description: DC input overvolt
-> +      - description: Power OK
-> +      - description: Temperature shutdown
-> +      - description: Watchdog timeout
-> +      - description: Flash failure
-> +      - description: OTST2 # unknown
-> +      - description: OTST3 # unknown
-> +
-> +  interrupt-names:
-> +    items:
-> +      - const: chg-error
-> +      - const: chg-inhibit
-> +      - const: chg-prechg-sft
-> +      - const: chg-complete-chg-sft
-> +      - const: chg-p2f-thr
-> +      - const: chg-rechg-thr
-> +      - const: chg-taper-thr
-> +      - const: chg-tcc-thr
-> +      - const: batt-hot
-> +      - const: batt-warm
-> +      - const: batt-cold
-> +      - const: batt-cool
-> +      - const: batt-ov
-> +      - const: batt-low
-> +      - const: batt-missing
-> +      - const: batt-term-missing
-> +      - const: usbin-uv
-> +      - const: usbin-ov
-> +      - const: usbin-src-det
-> +      - const: otg-fail
-> +      - const: otg-oc
-> +      - const: aicl-done
-> +      - const: usbid-change
-> +      - const: dcin-uv
-> +      - const: dcin-ov
-> +      - const: power-ok
-> +      - const: temp-shutdown
-> +      - const: wdog-timeout
-> +      - const: flash-fail
-> +      - const: otst2
-> +      - const: otst3
-> +
-> +  otg-vbus:
-> +    type: object
-
-I think I did not comment about this one - this looks like regulator.yaml.
-
-> +
-> +    description:
-> +      OTG regulator subnode.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - monitored-battery
-> +  - interrupts
-> +  - interrupt-names
-> +  - otg-vbus
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    battery: battery {
-> +        compatible = "simple-battery";
-> +
-> +        charge-full-design-microamp-hours = <4070000>;
-> +        charge-term-current-microamp = <100000>;
-> +        voltage-min-design-microvolt = <3400000>;
-> +        voltage-max-design-microvolt = <4400000>;
-> +    };
-> +
-> +    pmic {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        charger@1000 {
-> +            compatible = "qcom,pmi8996-smbchg";
-> +            reg = <0x1000>;
-> +
-> +            interrupts = <0x2 0x10 0x0 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x10 0x1 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x10 0x2 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x10 0x3 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x10 0x4 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x10 0x5 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x10 0x6 IRQ_TYPE_EDGE_RISING>,
-> +                         <0x2 0x10 0x7 IRQ_TYPE_EDGE_RISING>,
-> +                         <0x2 0x12 0x0 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x12 0x1 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x12 0x2 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x12 0x3 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x12 0x4 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x12 0x5 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x12 0x6 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x12 0x7 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x13 0x0 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x13 0x1 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x13 0x2 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x13 0x3 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x13 0x4 IRQ_TYPE_EDGE_RISING>,
-> +                         <0x2 0x13 0x5 IRQ_TYPE_EDGE_RISING>,
-> +                         <0x2 0x13 0x6 IRQ_TYPE_EDGE_FALLING>,
-> +                         <0x2 0x14 0x0 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x14 0x1 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x16 0x0 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x16 0x1 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x16 0x2 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x16 0x3 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x16 0x4 IRQ_TYPE_EDGE_BOTH>,
-> +                         <0x2 0x16 0x5 IRQ_TYPE_EDGE_BOTH>;
-> +            interrupt-names = "chg-error",
-> +                              "chg-inhibit",
-> +                              "chg-prechg-sft",
-> +                              "chg-complete-chg-sft",
-> +                              "chg-p2f-thr",
-> +                              "chg-rechg-thr",
-> +                              "chg-taper-thr",
-> +                              "chg-tcc-thr",
-> +                              "batt-hot",
-> +                              "batt-warm",
-> +                              "batt-cold",
-> +                              "batt-cool",
-> +                              "batt-ov",
-> +                              "batt-low",
-> +                              "batt-missing",
-> +                              "batt-term-missing",
-> +                              "usbin-uv",
-> +                              "usbin-ov",
-> +                              "usbin-src-det",
-> +                              "otg-fail",
-> +                              "otg-oc",
-> +                              "aicl-done",
-> +                              "usbid-change",
-> +                              "dcin-uv",
-> +                              "dcin-ov",
-> +                              "power-ok",
-> +                              "temp-shutdown",
-> +                              "wdog-timeout",
-> +                              "flash-fail",
-> +                              "otst2",
-> +                              "otst3";
-> +
-> +            monitored-battery = <&battery>;
-> +
-> +            otg-vbus { };
-
-Why empty?
-
-Best regards,
-Krzysztof
-
+Reviewed-by: Rob Herring <robh@kernel.org>
