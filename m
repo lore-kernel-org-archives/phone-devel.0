@@ -2,82 +2,97 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E31B5C433FE
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Nov 2022 17:13:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0B58C47088
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Nov 2022 18:45:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230380AbiK3RNb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Nov 2022 12:13:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39886 "EHLO
+        id S231286AbiK3SpX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Nov 2022 13:45:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230395AbiK3RNB (ORCPT
+        with ESMTP id S231366AbiK3SpF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Nov 2022 12:13:01 -0500
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBDBB8B186;
-        Wed, 30 Nov 2022 09:09:07 -0800 (PST)
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-14286d5ebc3so21767711fac.3;
-        Wed, 30 Nov 2022 09:09:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yZGjfXWGP2AzRUdq3pVVndzAw3sxyvCWjlEcVt3nu7E=;
-        b=QFpycQSsMTwhqc8SclnpIdPwrjO3c0n06cYYvUmhHN4jwG2z9SSS2aFrHq/fzYmtv9
-         Ju5LzESdoBxRWTOBTD0uPFt9q26RpKBMGfuFj/AGvkRWliAv8eLrOg7WDzWkOjz5RzV3
-         HqHcNH9QJiMHOJ86Dng/5ZrHwBTVk/4slAXiQnOqilLARgzXpcT5J111NDnD5jMUI0sD
-         qlhItc2ZBqfZDHkppEqxnVRH4zzMY0pxCmPrIXy1+dl96/GsVZMN+f8+E88udAyMwQpI
-         DID+saaWA/UCUZolYBujLfJwc12M3TmrZdTJJlDlBrMhg47VFg7oyFkTYV8a9QO5JuCB
-         9t6A==
-X-Gm-Message-State: ANoB5pmJAMF2bWuDEQLKhLXx7Z4ToI6VjA329+Xf8ylcKBmcrIoKC5vQ
-        29Q6F+H/jnQsrTqWfhEtKw==
-X-Google-Smtp-Source: AA0mqf5NogTdghJJR30Thmn+fVMr7pF6s8gWLgPlvLoTPPv/xeMWqjs0deU7LszWBkE+i6++tvXbsw==
-X-Received: by 2002:a05:6870:60a4:b0:132:79b1:f85 with SMTP id t36-20020a05687060a400b0013279b10f85mr26890824oae.274.1669828147028;
-        Wed, 30 Nov 2022 09:09:07 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id r129-20020acaa887000000b00359ba124b07sm826585oie.36.2022.11.30.09.09.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Nov 2022 09:09:06 -0800 (PST)
-Received: (nullmailer pid 2459261 invoked by uid 1000);
-        Wed, 30 Nov 2022 17:09:05 -0000
-Date:   Wed, 30 Nov 2022 11:09:05 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        devicetree@vger.kernel.org, Andrew Davis <afd@ti.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-input@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH v4] dt-bindings: input: Convert ti,drv260x to DT schema
-Message-ID: <166982814519.2459212.9752110415413633511.robh@kernel.org>
-References: <20221118174831.69793-1-luca@z3ntu.xyz>
+        Wed, 30 Nov 2022 13:45:05 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 656B391C1A;
+        Wed, 30 Nov 2022 10:45:04 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E845361D72;
+        Wed, 30 Nov 2022 18:45:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B25C433C1;
+        Wed, 30 Nov 2022 18:45:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1669833903;
+        bh=GIJWSieNXzkCReUUZPkRm/WaoB3VR46Y23qWuAXLJC4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=ejVaeRJ9MP0Rutu4hsRycjP+lEq8fkvNq+QYivwFiCOUwWgp17JYmWzKW/1olSHNd
+         2ai0KxnPFFTrpjE8ttOBEsd7uRJ62mMHh6FY6nthlKgcGDsmzEWEXu69b25JcgiVy3
+         fpO70o4LO2a2jVXOTguSUlooC5cKV1x36N/sn8X0=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, phone-devel@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.0 049/289] power: supply: ab8500: Defer thermal zone probe
+Date:   Wed, 30 Nov 2022 19:20:34 +0100
+Message-Id: <20221130180545.241177022@linuxfoundation.org>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221130180544.105550592@linuxfoundation.org>
+References: <20221130180544.105550592@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221118174831.69793-1-luca@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+From: Linus Walleij <linus.walleij@linaro.org>
 
-On Fri, 18 Nov 2022 18:48:29 +0100, Luca Weiss wrote:
-> Convert the drv260x haptics binding to DT schema format.
-> 
-> The only notable change from .txt format is that vbat-supply is not
-> actually required, so don't make it a required property.
-> 
-> Acked-by: Andrew Davis <afd@ti.com>
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-> Changes in v4:
-> * use non-deprecated enable-gpios for 'required' and example
-> 
->  .../devicetree/bindings/input/ti,drv260x.txt  |  50 --------
->  .../devicetree/bindings/input/ti,drv260x.yaml | 109 ++++++++++++++++++
->  2 files changed, 109 insertions(+), 50 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/input/ti,drv260x.txt
->  create mode 100644 Documentation/devicetree/bindings/input/ti,drv260x.yaml
-> 
+[ Upstream commit 767e684367e4759d9855b184045b7a9d6b19acd2 ]
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+The call thermal_zone_get_zone_by_name() used to return the
+thermal zone right away, but recent refactorings in the
+thermal core has changed this so the thermal zone used by
+the battery is probed later, and the call returns -ENODEV.
+
+This was always quite fragile. If we get -ENODEV, then
+return a -EPROBE_DEFER and try again later.
+
+Cc: phone-devel@vger.kernel.org
+Fixes: 2b0e7ac0841b ("power: supply: ab8500: Integrate thermal zone")
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/power/supply/ab8500_btemp.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/power/supply/ab8500_btemp.c b/drivers/power/supply/ab8500_btemp.c
+index 863fabe05bdc..307ee6f71042 100644
+--- a/drivers/power/supply/ab8500_btemp.c
++++ b/drivers/power/supply/ab8500_btemp.c
+@@ -725,7 +725,14 @@ static int ab8500_btemp_probe(struct platform_device *pdev)
+ 	/* Get thermal zone and ADC */
+ 	di->tz = thermal_zone_get_zone_by_name("battery-thermal");
+ 	if (IS_ERR(di->tz)) {
+-		return dev_err_probe(dev, PTR_ERR(di->tz),
++		ret = PTR_ERR(di->tz);
++		/*
++		 * This usually just means we are probing before the thermal
++		 * zone, so just defer.
++		 */
++		if (ret == -ENODEV)
++			ret = -EPROBE_DEFER;
++		return dev_err_probe(dev, ret,
+ 				     "failed to get battery thermal zone\n");
+ 	}
+ 	di->bat_ctrl = devm_iio_channel_get(dev, "bat_ctrl");
+-- 
+2.35.1
+
+
+
