@@ -2,411 +2,278 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BC20C4708D
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Nov 2022 20:12:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EAF91C4321E
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Nov 2022 20:54:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229984AbiK3UMg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Nov 2022 15:12:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46546 "EHLO
+        id S229601AbiK3UyY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Nov 2022 15:54:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230103AbiK3UMB (ORCPT
+        with ESMTP id S229593AbiK3UyW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Nov 2022 15:12:01 -0500
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0AEE4E6A6;
-        Wed, 30 Nov 2022 12:10:28 -0800 (PST)
-Received: by mail-lj1-x229.google.com with SMTP id q7so22148980ljp.9;
-        Wed, 30 Nov 2022 12:10:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5lsAMEj6HaUbhZ9bHj/9+ikD6XEF6DUBZQroGChklKg=;
-        b=LXfwVLgkA7GrdcTV8UNA2Fem5L/wCKZkMyCv+nQBl9dkWQ3HrGiwiI5/s5ODiYwn7R
-         fcojBBzqduf9uqtWP4tU2bnV3JmbHRaVmAJjteg8gsRurtELhABlGJ9eEbvpFKhbOmUC
-         JY9dg4XuRFq7WTMqv4Rzj1Ryt8GV6xIEtFfG3amezj9sJCJrOiitnfYlQH8pehTBPFw2
-         tU2hlG8H9ZmnOFbUkEK6VRK/CLNZzvUOWnmaOdtuWJA2j31SFrkVHilOp7rCQJm4/8VR
-         crgGIGrsEc3DGUG5qW4bB+6gczVK2evMpE2g29sadIEVvbZVaQY8ld9RvFcBkCEOVsAP
-         gAdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5lsAMEj6HaUbhZ9bHj/9+ikD6XEF6DUBZQroGChklKg=;
-        b=QP3nw/Fqz5abb/R1QVuq/KmsT2DdATDHxXqi0sGYbBTI2zML4jW/PVNR76IHYBVfYY
-         IrrW4ekUOCDFofSTbfsuOt0CfBPUj74+TMtE645E9LdybcUQ6q2AVb3LfPlhJSWrpGOX
-         DU5NnFFljHNV9NMu2187yqlIR2CvBq8WGf7Igs57JJvN7rXpKFusYlpVmD9JrNHoxNot
-         dLJZ5rB/Ob7SxinyQWsCSpjlWV+2yqSaTv5N7G7rMQQZ955H/LrcbXbtp0Im0qnMawVs
-         FQt8kBdhMRVWtfT6fgfCNdolwHl5MOnK9CxXWREs+LeY1n9JSb1Vgth7+8pSA6ImUHmJ
-         Q6MA==
-X-Gm-Message-State: ANoB5pn34bJLa23VuzoSfUz6113Wlt8MDfn7d/1bOVC1IzoHl7CR4Uhc
-        egLWMar6Ov855sz1oYWIKyqPlQxU0H4=
-X-Google-Smtp-Source: AA0mqf7kU3fM2GF4LqoHEcstGJ72edHxe2AQx+Uy6dMhopVvX+xPkK5azXuGEa59xmmiEysaHIHZYw==
-X-Received: by 2002:a2e:be28:0:b0:278:f1a5:a361 with SMTP id z40-20020a2ebe28000000b00278f1a5a361mr14223947ljq.124.1669839019153;
-        Wed, 30 Nov 2022 12:10:19 -0800 (PST)
-Received: from localhost.localdomain (ccy110.neoplus.adsl.tpnet.pl. [83.30.148.110])
-        by smtp.gmail.com with ESMTPSA id a25-20020a056512201900b004b4e9580b1asm369754lfb.66.2022.11.30.12.10.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Nov 2022 12:10:18 -0800 (PST)
-From:   Adam Skladowski <a39.skl@gmail.com>
+        Wed, 30 Nov 2022 15:54:22 -0500
+Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [5.144.164.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09D30837CE;
+        Wed, 30 Nov 2022 12:54:19 -0800 (PST)
+Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 2A59820309;
+        Wed, 30 Nov 2022 21:54:16 +0100 (CET)
+Date:   Wed, 30 Nov 2022 21:54:14 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Jonathan Cameron <jic23@kernel.org>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Adam Skladowski <a39.skl@gmail.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: [PATCH v2 10/12] arm64: dts: qcom: sm6115: Add i2c/spi nodes
-Date:   Wed, 30 Nov 2022 21:09:48 +0100
-Message-Id: <20221130200950.144618-11-a39.skl@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221130200950.144618-1-a39.skl@gmail.com>
-References: <20221130200950.144618-1-a39.skl@gmail.com>
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [RFC PATCH] iio: adc: qcom-spmi-vadc: Propagate fw node
+ name/label to extend_name
+Message-ID: <20221130205414.6m4rfufc25hfzxmf@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Jonathan Cameron <jic23@kernel.org>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+        Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <20221106193018.270106-1-marijn.suijten@somainline.org>
+ <20221106202445.fkobsyc3mohmzqod@SoMainline.org>
+ <20221112162719.0ac87998@jic23-huawei>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221112162719.0ac87998@jic23-huawei>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add I2C/SPI nodes for SM6115.
+On 2022-11-12 16:27:19, Jonathan Cameron wrote:
+> On Sun, 6 Nov 2022 21:24:45 +0100
+> Marijn Suijten <marijn.suijten@somainline.org> wrote:
+> 
+> > Adding Krzysztof to CC for the DT bindings discussion.
+> > 
+> > On 2022-11-06 20:30:18, Marijn Suijten wrote:
+> > > Much like the ADC5 driver iio_chan_spec::extend_name has to be set for
+> > > friendly/useful names to show up in sysfs, allowing users to correlate
+> > > readout values with the corresponding probe. This name is read from
+> > > firmware, taking both the node name and - if set - node label into
+> > > account.  This is particularly useful for custom thermistors being
+> > > attached to otherwise-generically-named GPIOs.
+> > > 
+> 
+> If you are attaching thermistors to an ADC channel, then you should have
+> a driver for that thermistor.  It will be a consumer of the ADC channel
+> in question and any labels etc should apply there (along with scaling
+> / non linear transforms to get to a temperature), not at the ADC
+> level.
 
-Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
----
- arch/arm64/boot/dts/qcom/sm6115.dtsi | 290 +++++++++++++++++++++++++++
- 1 file changed, 290 insertions(+)
+This is what happens in the ADC5 driver, though.  In /sys/bus/iio names
+show up for ADC channels that aren't otherwise consumed by (thermistor)
+drivers.  There are also voltage readings.  The IIO driver seems to be
+aware of both the unit and (linear iirc) scaling.
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6115.dtsi b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-index b30a5485671d..e676b9d117e3 100644
---- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
-@@ -6,6 +6,7 @@
- #include <dt-bindings/clock/qcom,gcc-sm6115.h>
- #include <dt-bindings/clock/qcom,sm6115-dispcc.h>
- #include <dt-bindings/clock/qcom,rpmcc.h>
-+#include <dt-bindings/dma/qcom-gpi.h>
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/interrupt-controller/arm-gic.h>
- #include <dt-bindings/power/qcom-rpmpd.h>
-@@ -365,6 +366,90 @@ tlmm: pinctrl@500000 {
- 			interrupt-controller;
- 			#interrupt-cells = <2>;
- 
-+			qup_i2c0_default: qup-i2c0-default-state {
-+				pins = "gpio0", "gpio1";
-+				function = "qup0";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			qup_i2c1_default: qup-i2c1-default-state {
-+				pins = "gpio4", "gpio5";
-+				function = "qup1";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			qup_i2c2_default: qup-i2c2-default-state {
-+				pins = "gpio6", "gpio7";
-+				function = "qup2";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			qup_i2c3_default: qup-i2c3-default-state {
-+				pins = "gpio8", "gpio9";
-+				function = "qup3";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			qup_i2c4_default: qup-i2c4-default-state {
-+				pins = "gpio12", "gpio13";
-+				function = "qup4";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			qup_i2c5_default: qup-i2c5-default-state {
-+				pins = "gpio14", "gpio15";
-+				function = "qup5";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			qup_spi0_default: qup-spi0-default-state {
-+				pins = "gpio0", "gpio1","gpio2", "gpio3";
-+				function = "qup0";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			qup_spi1_default: qup-spi1-default-state {
-+				pins = "gpio4", "gpio5", "gpio69", "gpio70";
-+				function = "qup1";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			qup_spi2_default: qup-spi2-default-state {
-+				pins = "gpio6", "gpio7", "gpio71", "gpio80";
-+				function = "qup2";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			qup_spi3_default: qup-spi3-default-state {
-+				pins = "gpio8", "gpio9", "gpio10", "gpio11";
-+				function = "qup3";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			qup_spi4_default: qup-spi4-default-state {
-+				pins = "gpio12", "gpio13", "gpio96", "gpio97";
-+				function = "qup4";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			qup_spi5_default: qup-spi5-default-state {
-+				pins = "gpio14", "gpio15", "gpio16", "gpio17";
-+				function = "qup5";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
- 			sdc1_state_on: sdc1-on-state {
- 				clk-pins {
- 					pins = "sdc1_clk";
-@@ -701,6 +786,211 @@ gpi_dma0: dma-controller@4a00000 {
- 			status = "disabled";
- 		};
- 
-+		qupv3_id_0: geniqup@4ac0000 {
-+			compatible = "qcom,geni-se-qup";
-+			reg = <0x04ac0000 0x2000>;
-+			clock-names = "m-ahb", "s-ahb";
-+			clocks = <&gcc GCC_QUPV3_WRAP_0_M_AHB_CLK>,
-+				 <&gcc GCC_QUPV3_WRAP_0_S_AHB_CLK>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			iommus = <&apps_smmu 0xe3 0x0>;
-+			ranges;
-+			status = "disabled";
-+
-+			i2c0: i2c@4a80000 {
-+				compatible = "qcom,geni-i2c";
-+				reg = <0x04a80000 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S0_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_i2c0_default>;
-+				interrupts = <GIC_SPI 327 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&gpi_dma0 0 0 QCOM_GPI_I2C>,
-+				       <&gpi_dma0 1 0 QCOM_GPI_I2C>;
-+				dma-names = "tx", "rx";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			spi0: spi@4a80000 {
-+				compatible = "qcom,geni-spi";
-+				reg = <0x04a80000 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S0_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_spi0_default>;
-+				interrupts = <GIC_SPI 327 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&gpi_dma0 0 0 QCOM_GPI_SPI>,
-+				       <&gpi_dma0 1 0 QCOM_GPI_SPI>;
-+				dma-names = "tx", "rx";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			i2c1: i2c@4a84000 {
-+				compatible = "qcom,geni-i2c";
-+				reg = <0x04a84000 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S1_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_i2c1_default>;
-+				interrupts = <GIC_SPI 328 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&gpi_dma0 0 1 QCOM_GPI_I2C>,
-+				       <&gpi_dma0 1 1 QCOM_GPI_I2C>;
-+				dma-names = "tx", "rx";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			spi1: spi@4a84000 {
-+				compatible = "qcom,geni-spi";
-+				reg = <0x04a84000 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S1_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_spi1_default>;
-+				interrupts = <GIC_SPI 328 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&gpi_dma0 0 1 QCOM_GPI_SPI>,
-+				       <&gpi_dma0 1 1 QCOM_GPI_SPI>;
-+				dma-names = "tx", "rx";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			i2c2: i2c@4a88000 {
-+				compatible = "qcom,geni-i2c";
-+				reg = <0x04a88000 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S2_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_i2c2_default>;
-+				interrupts = <GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&gpi_dma0 0 2 QCOM_GPI_I2C>,
-+				       <&gpi_dma0 1 2 QCOM_GPI_I2C>;
-+				dma-names = "tx", "rx";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			spi2: spi@4a88000 {
-+				compatible = "qcom,geni-spi";
-+				reg = <0x04a88000 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S2_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_spi2_default>;
-+				interrupts = <GIC_SPI 329 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&gpi_dma0 0 2 QCOM_GPI_SPI>,
-+				       <&gpi_dma0 1 2 QCOM_GPI_SPI>;
-+				dma-names = "tx", "rx";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			i2c3: i2c@4a8c000 {
-+				compatible = "qcom,geni-i2c";
-+				reg = <0x04a8c000 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S3_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_i2c3_default>;
-+				interrupts = <GIC_SPI 330 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&gpi_dma0 0 3 QCOM_GPI_I2C>,
-+				       <&gpi_dma0 1 3 QCOM_GPI_I2C>;
-+				dma-names = "tx", "rx";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			spi3: spi@4a8c000 {
-+				compatible = "qcom,geni-spi";
-+				reg = <0x04a8c000 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S3_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_spi3_default>;
-+				interrupts = <GIC_SPI 330 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&gpi_dma0 0 3 QCOM_GPI_SPI>,
-+				       <&gpi_dma0 1 3 QCOM_GPI_SPI>;
-+				dma-names = "tx", "rx";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			i2c4: i2c@4a90000 {
-+				compatible = "qcom,geni-i2c";
-+				reg = <0x04a90000 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S4_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_i2c4_default>;
-+				interrupts = <GIC_SPI 331 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&gpi_dma0 0 4 QCOM_GPI_I2C>,
-+				       <&gpi_dma0 1 4 QCOM_GPI_I2C>;
-+				dma-names = "tx", "rx";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			spi4: spi@4a90000 {
-+				compatible = "qcom,geni-spi";
-+				reg = <0x04a90000 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S4_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_spi4_default>;
-+				interrupts = <GIC_SPI 331 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&gpi_dma0 0 4 QCOM_GPI_SPI>,
-+				       <&gpi_dma0 1 4 QCOM_GPI_SPI>;
-+				dma-names = "tx", "rx";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			i2c5: i2c@4a94000 {
-+				compatible = "qcom,geni-i2c";
-+				reg = <0x04a94000 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S5_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_i2c5_default>;
-+				interrupts = <GIC_SPI 332 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&gpi_dma0 0 5 QCOM_GPI_I2C>,
-+				       <&gpi_dma0 1 5 QCOM_GPI_I2C>;
-+				dma-names = "tx", "rx";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+
-+			spi5: spi@4a94000 {
-+				compatible = "qcom,geni-spi";
-+				reg = <0x04a94000 0x4000>;
-+				clock-names = "se";
-+				clocks = <&gcc GCC_QUPV3_WRAP0_S5_CLK>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&qup_spi5_default>;
-+				interrupts = <GIC_SPI 332 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&gpi_dma0 0 5 QCOM_GPI_SPI>,
-+				       <&gpi_dma0 1 5 QCOM_GPI_SPI>;
-+				dma-names = "tx", "rx";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				status = "disabled";
-+			};
-+		};
-+
- 		usb_1: usb@4ef8800 {
- 			compatible = "qcom,sm6115-dwc3", "qcom,dwc3";
- 			reg = <0x04ef8800 0x400>;
--- 
-2.25.1
+> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> > > 
+> > > ---
+> > > 
+> > > This RFC may seem a bit controversial as there are multiple patches
+> > > going around in DT-land changing how nodes are labeled [1] (or
+> > > introducing new ones: [2]), seemingly to appease binding conventions
+> > > without considering how the driver propagates them to IIO (and in turn
+> > > what userspace sees in sysfs).  I hope we can put together the right
+> > > conventions with this RFC.
+> 
+> > > 
+> > > Before getting started, note that ADC5 provides this DT/FW node
+> > > name/label in *both* extend_name *and* datasheet_name;
+> > > adc5_channels::datasheet_name provided by the macros remains *unread*
+> > > (except for a non-null check).
+> 
+> There was some history here if I recall correctly.  Until recently(ish) we didn't
+> have the "label" attribute for channels so the only route was to use
+> extended_name. That makes a mess for userspace developers however because
+> it is harder to write a parser that is happy with free form sections
+> of an attribute name.  So extended_name is more or less deprecated with the
+> exception of a few legacy cases that we might carry forwards into very similar
+> drivers.
 
+Making sure we're talking about the same thing: it's extend_name, not
+extendED_name.
+
+> datasheet_name was introduced to allow binding the channels to consumers
+> in a human readable form. Note that this dates back to predevice tree
+> days - so mostly you'll see it used when an mfd registers its own
+> consumers.  They weren't at the time intended to be used directly by the
+> drivers at all.
+
+It is unfortunate that I don't see these in sysfs then; vadc only
+assigns datasheet_name but not extend_name.
+
+> > > Since the names hardcoded in the driver seem to be somewhat
+> > > "datasheet"-y, and the names in DT typically take the form of a more
+> > > friendly "<device>-therm" indicating where the thermistor (or voltage
+> > > probe) is located on the board or attached to, I have opted to persist
+> > > the original use of vadc_channels::datasheet_name in
+> > > iio_chan_spec::datasheet_name, and only propagate the data from DT/FW
+> > > into extend_name.
+> 
+> To clarify datasheet_name is the name on the datasheet of the provider part
+> not the naming on the board datasheet - basically it's meant to be the pin name.
+
+Right; it may not have come across but that is what I assumed (datsheet
+name of the part, which would be the names hardcoded in the adc5/vadc
+driver), and then have the labels - assigned in /board/ dts specialize
+that where it is not a hardwired reading within the part.
+
+> If you modify extend_name at all you break userspace ABI.
+> So that's pretty much a non starter (and one reason why we added the label
+> attribute).
+
+The sysfs filenames will change, but they currently don't carry an
+in_{voltage,temp}X_label attribute.  Only when I set extend_name to
+something sensible.  But then X changes from an index to that same name
+too.
+
+Note that this is already the case for ADC5.
+
+> Also, if the ADC channel is labelled with what it is consumed by that feels
+> backwards.  The thermistor could be connected to any channel.  Any nice
+> naming should be at the thermistor driver end.  So say I put a thermistor
+> on input 8.  It should just bind to input 8. The bit of the binding for
+> the ADC just provides the consumer services for that input 8.
+
+This is how these drivers are describing their channels though, except
+for a few freely assignable GPIO channels?
+
+> > > (We should likely rename vadc_channel_prop::datasheet_name to
+> > > extend_name to this end.)
+> > > 
+> > > Back when I submitted patches for pm6125 [3] (utilizing ADC5)
+> > > 4f47a236a23d ("iio: adc: qcom-spmi-adc5: convert to device properties")
+> > > didn't yet land, and these patches use the node name to convey a
+> > > useful/friendly name (again, the string literals in ADC5 are unused).
+> > > fwnode_get_name() however includes the `@xx` reg suffix, making for an
+> > > unpleasant reading experience in sysfs.
+> > > 
+> > > With all that context in mind, I feel like we should answer the
+> > > following questions:
+> > > 
+> > > 1. Should we propagate names from DT/FW at all?
+> 
+> This question needs to make it clear - which name?  Propagating channel
+> labels to sysfs is often useful via the in_voltageX_label type attributes.
+
+Note that X here gets replaced by the value of extend_name, it seems.
+
+> Whether it is useful in this specific driver depends on whether we have
+> information to convey that isn't provided by channel numbers alone.
+
+The driver contains channel names for the purpose of clarifying what the
+channel is, which isn't easily deducible (nor very user-friendly) when
+only having access to channel indices/numbers.
+
+> > > 2. If so, how should a node be represented in DT?  Should it use generic
+> > >    node names (which we might not want to use anyway considering the
+> > >    `@xx` suffix highlighted above) or labels exclusively?
+> 
+> I would suggest only labels.
+
+Ack, the node name is a mess nowadays.  That means ADC5 shouldn't use it
+as fallback either when a DT label is not set (and instead use the
+currently-unused adc5_channels::datasheet_name field).
+
+Can I remove it (use of fwnode_get_name() as datasheet_name)?
+
+> Though in the case you give of a thermistor attached
+> this handling is wrong anyway.
+
+Not sure I follow you here.  The driver defines when a channel is a
+thermistor or a voltage, and even gives it a name/label.  The values are
+readable through /sys/bus/iio.  Not sure if they're all correct
+readings, and some (but not all) are later routed into a "thermal
+manager", but having at least a _label for these would be useful.
+
+> > > 3. If only labels are going to be used in conjunction with generic node
+> > >    names, should ADC5 be changed to ignore the node name?
+>
+> From a quick search, I'm only seeing the node name used in debug prints currently.
+> That feels fine to me as it's telling us where the binding parsing went wrong...
+> Am I missing some use outside of vadc_get_fw_channel_data()?
+
+That's the VADC driver.  Look at adc5_get_fw_channel_data, specifically
+where it calls fwnode_property_read_string() to overwrite
+prop->datasheet_name.
+
+> > > 4. If a label (or node name) is not set, do we fall back to
+> > >    datasheet_name hardcoded in the driver?
+> 
+> Hmm. Probably not.
+
+Then we might as well remove this useless data from the kernel driver
+altogether...
+
+> > > 5. What do we use for datasheet_name vs extend_name?
+> Expand that to include label.
+> datasheet_name : When you want to have human readable pin names from the ADC
+>   datasheet, used as part of provide services to consumer drivers. Doesn't
+>   work with DT though as it wasn't part of the binding for consumers.
+>   So largely irrelevant unless you have an MFD where the ADC consumers are
+>   also part of the MFD children and so the map is set up in the way we used
+>   to do it for board files.
+
+... or this could remain to feed into datasheet_name?
+
+> extended_name: Short answer is don't use it today.  It was a bad design decision
+>   a long time back.
+> label: This is the one you should info from DT through to today.  As it is freeform
+>   and comes from the bindings - we don't encode this in the const iio_chan_spec array
+>   but rather use the iio_info->read_label() callback.  It is provided to userspace
+>   as a per channel _label attribute.
+
+Thanks, I have been looking for this and scanning through
+iio_read_channel_label() now.  It'll use ->read_label() and only defer
+to extend_name if the getter isn't available.
+
+I'll insert a getter here in the vadc driver that returns the DT label
+if set, otherwise the hardcoded driver name (which'll still feed into
+iio_chan_spec::datasheet_name).
+
+Do we then remove extend_name from qcom-spmi-adc5 and give it the same
+treatment, since it would now use DT node names as filenames unless a
+label is set?  I can only imagine it having been set because the ADC5
+author(s) didn't see a name nor label in sysfs either, without knowing
+about the existence of read_label.
+
+> > > 6. Any other vadc drivers that need the same treatment, when we come to
+> > >    a resolution?
+> Any resolution can only 'add' ABI to userspace.  So adding labels is fine.
+> extend_name never is.
+
+Saying the above in a different way: would removing extend_name
+assignment from qcom-spmi-adc5 be fine?
+
+> Hope that helps.
+
+A lot, now knowing that read_label is the part of the puzzle I
+previously missed.  Thanks!
+
+- Marijn
