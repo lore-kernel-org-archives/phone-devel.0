@@ -2,180 +2,123 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69732C4708A
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Nov 2022 08:15:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CEB4C352A1
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Nov 2022 11:17:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234476AbiK3IPN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Nov 2022 03:15:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45362 "EHLO
+        id S229515AbiK3LRM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Nov 2022 06:17:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234453AbiK3IPL (ORCPT
+        with ESMTP id S234302AbiK3LRF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Nov 2022 03:15:11 -0500
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDD7651C13
-        for <phone-devel@vger.kernel.org>; Wed, 30 Nov 2022 00:15:09 -0800 (PST)
-Received: by mail-ed1-x533.google.com with SMTP id x2so23013996edd.2
-        for <phone-devel@vger.kernel.org>; Wed, 30 Nov 2022 00:15:09 -0800 (PST)
+        Wed, 30 Nov 2022 06:17:05 -0500
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24AE2BB11
+        for <phone-devel@vger.kernel.org>; Wed, 30 Nov 2022 03:17:03 -0800 (PST)
+Received: by mail-lj1-x231.google.com with SMTP id z4so20503657ljq.6
+        for <phone-devel@vger.kernel.org>; Wed, 30 Nov 2022 03:17:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fM26/BX7+YrKiOIeW+5b8oCcE7ugPPDIGDOxKigOBdQ=;
-        b=LX+1ED3kWIxIqw76sso+qroMFs0A6QxNMQguadkwKZLk517JN6fLHqu3y7lGjzJ4bA
-         UqaPfWpfnPMsBuMdilvJqN+yS/XhAr7Uzdu814NIxSbyLBUD8YHBACVPp/be+onceYde
-         ta1yARryDQxUdwiFwP5zzP4QFZ4YzTsChfg53onGCozqwfPD5XZ6IaVFvQOuJ2+HsxPK
-         6NnvNpnneSfllRSRlJhoThwqCA4F9sZIgziLXgW7Lx0ztB/je6pKZ5fGjK9EAJfrG3cd
-         1MQyUfmQjasrHF71DylYM+5VpdYsdqTezloS6P3w9sQS18GgDB3mrHitOXks1/SfFUfn
-         uK3w==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=93Fl7WiTCHJeIgakKDaYI1Qsq+II/EWb0Q1aTHCr7pA=;
+        b=uL1Ic/P3fR5OXGJkEoD9BOkPINXKzVlvBXwRHreFGxX7vqQdYxlkqKhKU46HMaQ4SS
+         9r/5h+zENHT7VKjhFy3k62I2oHurEg7Yy6DT6kKIiQpFad9GZLPzTJr3cVBVLqi5R5wv
+         0/JSe2TJaa2kuX10sIjQ3u0bbU2S4ydAZsOByR2JNemAcPUbNVCdt/IalgIKjOaaYjY1
+         HWKSZMOXfqvkSwuPCTcNMYXwVEBXljjoiR/8xSDxDYHEsH5K0cyLB2mRunlXz0JtZipQ
+         iQesDJwc6oMQGp4UT9hQgTX5wk8LkCogzzqef2SiQHY7EBXY9qxMTbmjDwee+66MgliN
+         9kcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fM26/BX7+YrKiOIeW+5b8oCcE7ugPPDIGDOxKigOBdQ=;
-        b=6NjpeAJvnO1/trGbqmde618KxJw46+noSRSJLBD0mlbEN0geiA4l1HDc1hUJx9k9JH
-         acH4ccm6xZUAWH/hWRKd6H48M713x8dbADaaxQ9YMUHabcsTVkzGb1ygm44nKRZr5xuM
-         O9vj/E13clvlGBuY+g5v5+l7bh1tOFtYWYUVo21dT+U9+U7PDCxvqYc4sBG8+IgSYeDa
-         p+Gk4cZVFzC6vdxRUXzDwDkGz2l3vBpuXSxP2vYuPPb7FYlkmMZVdkv2dquWIQdVvMmi
-         gQYf+Qmk0CnzmgygZAf1TYVOGiAffV53Tqlexjjssh3pBPtXWWSRzdQVQQl7RM5wC8o9
-         xpQw==
-X-Gm-Message-State: ANoB5pmK/faEbr86IdKY7XpDXDbPTIUe358ekZw4fOPFMUwXADry+0OU
-        zQh1VnXARyEpUmqJddfgFSyu2Q==
-X-Google-Smtp-Source: AA0mqf5w3rhlhkRUpiuUNjUaAMTdzJVhpCXqWtNJKHHVhNIBxZGHsNyQoMRtZ6RBZOxDdApp7Su9Qg==
-X-Received: by 2002:aa7:d555:0:b0:464:6485:419b with SMTP id u21-20020aa7d555000000b004646485419bmr41081784edr.382.1669796108510;
-        Wed, 30 Nov 2022 00:15:08 -0800 (PST)
-Received: from otso.. (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id jw11-20020a17090776ab00b0074134543f82sm358285ejc.90.2022.11.30.00.15.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Nov 2022 00:15:08 -0800 (PST)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-To:     linux-arm-msm@vger.kernel.org, Johan Hovold <johan@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=93Fl7WiTCHJeIgakKDaYI1Qsq+II/EWb0Q1aTHCr7pA=;
+        b=CWt7r7NZZ9HdlKSkwdglt0lqhbgVkx3OmqF99FdN9tHu+QHhox6h7YRi1W5ue5xgPt
+         TUs6yTTrUzihKSFRdpBve/O//rcboFjBAsttXzDV9ZHE9SRHy02S9COOb64iOdnpxoIN
+         nxsBePifA+veSVb+DkE4u8cPbZuSQ5kqke2O/N+hN8tmJx7nxxv4TUjWml/F+7pIooL6
+         fMb9ot9DWipzoK/9mjY8dQkk4xc4YhxGUmL/2dwWcyyWzav/OpU7tiaz2QKoJkjQIthu
+         l2BuBxN8BX+F59jZIkQ7kCz5QfmTwSID79XkPNSfq6ill52vyrk+s1onffHtwYgezQls
+         LvOA==
+X-Gm-Message-State: ANoB5pkd5msRNOh9r9RbCtPFfzE4j3cgHwJchMqXTVzauh0sNaoI63s1
+        cPLqf7Yzh543ykqxCb2OhMGjyw==
+X-Google-Smtp-Source: AA0mqf72zkzsX2t1JV2GlLC/Mt2x0wSRYPI7aozVNCnP7S0yBQycAUQytTfBHQ3TV8fKZr6qfgmiUA==
+X-Received: by 2002:a05:651c:158c:b0:26c:90f:f8fe with SMTP id h12-20020a05651c158c00b0026c090ff8femr20603495ljq.2.1669807022044;
+        Wed, 30 Nov 2022 03:17:02 -0800 (PST)
+Received: from [192.168.1.101] (95.49.125.236.neoplus.adsl.tpnet.pl. [95.49.125.236])
+        by smtp.gmail.com with ESMTPSA id q15-20020a2e914f000000b0027706d22878sm104656ljg.94.2022.11.30.03.16.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Nov 2022 03:17:01 -0800 (PST)
+Message-ID: <8a57c06c-e755-c298-a9d6-3f2a431b3f5d@linaro.org>
+Date:   Wed, 30 Nov 2022 12:16:58 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH 04/12] arm64: dts: qcom: sm6115: Add TSENS node
+Content-Language: en-US
+To:     Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] arm64: dts: qcom: sm6350: Use specific qmpphy compatible
-Date:   Wed, 30 Nov 2022 09:14:29 +0100
-Message-Id: <20221130081430.67831-3-luca.weiss@fairphone.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221130081430.67831-1-luca.weiss@fairphone.com>
-References: <20221130081430.67831-1-luca.weiss@fairphone.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+References: <20221129204616.47006-1-a39.skl@gmail.com>
+ <20221129204616.47006-5-a39.skl@gmail.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20221129204616.47006-5-a39.skl@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The sc7180 phy compatible works fine for some cases, but it turns out
-sm6350 does need proper phy configuration in the driver, so use the
-newly added sm6350 compatible.
 
-Because the sm6350 compatible is using the new binding, we need to
-change the node quite a bit to match it.
 
-This fixes qmpphy init when no USB cable is plugged in during bootloader
-stage.
+On 29.11.2022 21:46, Adam Skladowski wrote:
+> Add nodes required for TSENS block using the common qcom,tsens-v2 binding.
+> 
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
-Changes since v2:
-* Rebase on https://lore.kernel.org/all/20221111094729.11842-2-johan+linaro@kernel.org/
-  While this commit deletes the changes there it's still good to get it
-  in for completeness
-* Fix clocks, add power-domain
-
- arch/arm64/boot/dts/qcom/sm6350.dtsi | 50 ++++++++--------------------
- 1 file changed, 14 insertions(+), 36 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-index 43324bf291c3..cb48f03a6cc9 100644
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -11,6 +11,7 @@
- #include <dt-bindings/interconnect/qcom,sm6350.h>
- #include <dt-bindings/interrupt-controller/arm-gic.h>
- #include <dt-bindings/mailbox/qcom-ipcc.h>
-+#include <dt-bindings/phy/phy-qcom-qmp.h>
- #include <dt-bindings/power/qcom-rpmpd.h>
- #include <dt-bindings/soc/qcom,rpmh-rsc.h>
- 
-@@ -1119,49 +1120,26 @@ usb_1_hsphy: phy@88e3000 {
- 			resets = <&gcc GCC_QUSB2PHY_PRIM_BCR>;
- 		};
- 
--		usb_1_qmpphy: phy@88e9000 {
--			compatible = "qcom,sc7180-qmp-usb3-dp-phy";
--			reg = <0 0x088e9000 0 0x200>,
--			      <0 0x088e8000 0 0x40>,
--			      <0 0x088ea000 0 0x200>;
--			status = "disabled";
--			#address-cells = <2>;
--			#size-cells = <2>;
--			ranges;
-+		usb_1_qmpphy: phy@88e8000 {
-+			compatible = "qcom,sm6350-qmp-usb3-dp-phy";
-+			reg = <0 0x088e8000 0 0x3000>;
- 
- 			clocks = <&gcc GCC_USB3_PRIM_PHY_AUX_CLK>,
--				 <&xo_board>,
--				 <&rpmhcc RPMH_QLINK_CLK>,
--				 <&gcc GCC_USB3_PRIM_PHY_COM_AUX_CLK>;
--			clock-names = "aux", "cfg_ahb", "ref", "com_aux";
-+				 <&gcc GCC_USB3_PRIM_CLKREF_CLK>,
-+				 <&gcc GCC_USB3_PRIM_PHY_COM_AUX_CLK>,
-+				 <&gcc GCC_USB3_PRIM_PHY_PIPE_CLK>;
-+			clock-names = "aux", "ref", "com_aux", "usb3_pipe";
-+
-+			power-domains = <&gcc USB30_PRIM_GDSC>;
- 
- 			resets = <&gcc GCC_USB3_DP_PHY_PRIM_BCR>,
- 				 <&gcc GCC_USB3_PHY_PRIM_BCR>;
- 			reset-names = "phy", "common";
- 
--			usb_1_ssphy: usb3-phy@88e9200 {
--				reg = <0 0x088e9200 0 0x200>,
--				      <0 0x088e9400 0 0x200>,
--				      <0 0x088e9c00 0 0x400>,
--				      <0 0x088e9600 0 0x200>,
--				      <0 0x088e9800 0 0x200>,
--				      <0 0x088e9a00 0 0x100>;
--				#clock-cells = <0>;
--				#phy-cells = <0>;
--				clocks = <&gcc GCC_USB3_PRIM_PHY_PIPE_CLK>;
--				clock-names = "pipe0";
--				clock-output-names = "usb3_phy_pipe_clk_src";
--			};
-+			#clock-cells = <1>;
-+			#phy-cells = <1>;
- 
--			dp_phy: dp-phy@88ea200 {
--				reg = <0 0x088ea200 0 0x200>,
--				      <0 0x088ea400 0 0x200>,
--				      <0 0x088eaa00 0 0x200>,
--				      <0 0x088ea600 0 0x200>,
--				      <0 0x088ea800 0 0x200>;
--				#phy-cells = <0>;
--				#clock-cells = <1>;
--			};
-+			status = "disabled";
- 		};
- 
- 		dc_noc: interconnect@9160000 {
-@@ -1235,7 +1213,7 @@ usb_1_dwc3: usb@a600000 {
- 				snps,dis_enblslpm_quirk;
- 				snps,has-lpm-erratum;
- 				snps,hird-threshold = /bits/ 8 <0x10>;
--				phys = <&usb_1_hsphy>, <&usb_1_ssphy>;
-+				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
- 				phy-names = "usb2-phy", "usb3-phy";
- 			};
- 		};
--- 
-2.38.1
-
+Konrad
+>  arch/arm64/boot/dts/qcom/sm6115.dtsi | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sm6115.dtsi b/arch/arm64/boot/dts/qcom/sm6115.dtsi
+> index 2003a2519a54..decbf7ca8a03 100644
+> --- a/arch/arm64/boot/dts/qcom/sm6115.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sm6115.dtsi
+> @@ -515,6 +515,17 @@ spmi_bus: spmi@1c40000 {
+>  			#interrupt-cells = <4>;
+>  		};
+>  
+> +		tsens0: thermal-sensor@4410000 {
+> +			compatible = "qcom,sm6115-tsens", "qcom,tsens-v2";
+> +			reg = <0x04411000 0x1ff>, /* TM */
+> +			      <0x04410000 0x8>; /* SROT */
+> +			#qcom,sensors = <16>;
+> +			interrupts = <GIC_SPI 275 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 190 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "uplow", "critical";
+> +			#thermal-sensor-cells = <1>;
+> +		};
+> +
+>  		rpm_msg_ram: sram@45f0000 {
+>  			compatible = "qcom,rpm-msg-ram";
+>  			reg = <0x045f0000 0x7000>;
