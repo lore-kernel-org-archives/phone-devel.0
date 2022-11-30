@@ -2,97 +2,117 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0B58C47088
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Nov 2022 18:45:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C4785C4321E
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Nov 2022 20:11:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231286AbiK3SpX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Nov 2022 13:45:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57758 "EHLO
+        id S229959AbiK3ULH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Nov 2022 15:11:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231366AbiK3SpF (ORCPT
+        with ESMTP id S229910AbiK3UKo (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Nov 2022 13:45:05 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 656B391C1A;
-        Wed, 30 Nov 2022 10:45:04 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E845361D72;
-        Wed, 30 Nov 2022 18:45:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B25C433C1;
-        Wed, 30 Nov 2022 18:45:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1669833903;
-        bh=GIJWSieNXzkCReUUZPkRm/WaoB3VR46Y23qWuAXLJC4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ejVaeRJ9MP0Rutu4hsRycjP+lEq8fkvNq+QYivwFiCOUwWgp17JYmWzKW/1olSHNd
-         2ai0KxnPFFTrpjE8ttOBEsd7uRJ62mMHh6FY6nthlKgcGDsmzEWEXu69b25JcgiVy3
-         fpO70o4LO2a2jVXOTguSUlooC5cKV1x36N/sn8X0=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, phone-devel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.0 049/289] power: supply: ab8500: Defer thermal zone probe
-Date:   Wed, 30 Nov 2022 19:20:34 +0100
-Message-Id: <20221130180545.241177022@linuxfoundation.org>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221130180544.105550592@linuxfoundation.org>
-References: <20221130180544.105550592@linuxfoundation.org>
-User-Agent: quilt/0.67
+        Wed, 30 Nov 2022 15:10:44 -0500
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C1C99492B;
+        Wed, 30 Nov 2022 12:09:58 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id p8so28632833lfu.11;
+        Wed, 30 Nov 2022 12:09:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sc8kO01GqDD6/HcwuanEhTRskd8di+x6+a0ibeX+dww=;
+        b=Z0mrGYbObj/vsr0YdYm78sVKlrPMXeltJNT55AdG4euBqwQdCO3M/pUiHQjiKtaARD
+         J4m34uHhVfZAz/Zn3rN2UjuyzApZ8cHFf+OUM0SCwA2pgtNb1xniLibNUBvd6SnUPQKG
+         cGGS+0Fuva7LwMN52YkrdxU8p9BEq59tTEYxuQ7YwdDpRUPavnFgXU5e8V9R1dJARxrX
+         doAbU1IaRXm5zvBiulRtILWHuPBEy+qsyIuAvUYUmRn4kFAWLxOKhThskb7FhnYul9nG
+         mf8pTGEKVxvtrwRMw3c0cjd6Me3KLiB90xGMU9nu8aOCk0ZM7DYCtkImyQG190YJUfrD
+         8Wag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sc8kO01GqDD6/HcwuanEhTRskd8di+x6+a0ibeX+dww=;
+        b=zIkmPphconLzYQqCCMMtpnULup/UyaWFK2wHgNauOFmDWz5KQVSeUGDR5Ybr4BJPV8
+         DCRkqd2Out2taALxVOuJGfbC6IrnVaWYkRy+PT/bBVnE4O8d83arSV/AS/eIDkgmBc7b
+         wx3XPmGL6M69/p+eaLq40QZ+FErYMSLPaHze3jmahGjOlcq+z88DbMA2lD2/Kry+ESVJ
+         A7IGj4yN/zD+nwZwtvwA8d9hpI4kTp7CuqU0q8D+rH3cfzKvcpQFfHLjWl3VbYx8QnSH
+         flYYJF6fAaLzK1CpwAnRdlZoupUAxE0A1CKwFCiRBX7o+jiuoIbVcmdCYa1aWhAQpccZ
+         oLeA==
+X-Gm-Message-State: ANoB5pmIZjweuJ6MD46uivZFDzLwfkWOjbmclbxTgQ4klHwi8VFWQZ9l
+        pv+nLxDFnJBG9zMSrkxg6b2FVi0xFrc=
+X-Google-Smtp-Source: AA0mqf7Nbyfq13CmWJAE4fQKtqOHUvwnOR4hNGvsQdiey5liE4mjym5n+HRpj5svMExCq8coX+7Riw==
+X-Received: by 2002:a19:2d52:0:b0:4b1:dc42:6f85 with SMTP id t18-20020a192d52000000b004b1dc426f85mr20158596lft.568.1669838996495;
+        Wed, 30 Nov 2022 12:09:56 -0800 (PST)
+Received: from localhost.localdomain (ccy110.neoplus.adsl.tpnet.pl. [83.30.148.110])
+        by smtp.gmail.com with ESMTPSA id a25-20020a056512201900b004b4e9580b1asm369754lfb.66.2022.11.30.12.09.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Nov 2022 12:09:56 -0800 (PST)
+From:   Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Adam Skladowski <a39.skl@gmail.com>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+Subject: [PATCH v2 00/12] SM6115 DTS changes
+Date:   Wed, 30 Nov 2022 21:09:38 +0100
+Message-Id: <20221130200950.144618-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+This patch series adds bunch of new nodes
+also it fixes some small nitpicks in yamls and adds compatible.
 
-[ Upstream commit 767e684367e4759d9855b184045b7a9d6b19acd2 ]
+Changes since v1
+================
+1. Changed title for mdss yaml patch
+2. Added missing dmas to spi0
+3. Wired freq domains to CPUs
+4. Added R-b/Ack tags
+5. Reworded smmu dts patch
 
-The call thermal_zone_get_zone_by_name() used to return the
-thermal zone right away, but recent refactorings in the
-thermal core has changed this so the thermal zone used by
-the battery is probed later, and the call returns -ENODEV.
+Adam Skladowski (12):
+  dt-bindings: display: msm: Rename mdss node name in example
+  dt-bindings: thermal: tsens: Add SM6115 compatible
+  arm64: dts: qcom: sm6115: Add cpufreq-hw support
+  arm64: dts: qcom: sm6115: Add TSENS node
+  arm64: dts: qcom: sm6115: Add PRNG node
+  arm64: dts: qcom: sm6115: Add rpm-stats node
+  arm64: dts: qcom: sm6115: Add dispcc node
+  arm64: dts: qcom: sm6115: Add mdss/dpu node
+  arm64: dts: qcom: sm6115: Add GPI DMA
+  arm64: dts: qcom: sm6115: Add i2c/spi nodes
+  arm64: dts: qcom: sm6115: Add WCN node.
+  arm64: dts: qcom: sm6115: Add smmu fallback to qcom generic compatible
 
-This was always quite fragile. If we get -ENODEV, then
-return a -EPROBE_DEFER and try again later.
+ .../display/msm/qcom,qcm2290-mdss.yaml        |   2 +-
+ .../display/msm/qcom,sm6115-mdss.yaml         |   2 +-
+ .../bindings/thermal/qcom-tsens.yaml          |   1 +
+ arch/arm64/boot/dts/qcom/sm6115.dtsi          | 573 +++++++++++++++++-
+ 4 files changed, 575 insertions(+), 3 deletions(-)
 
-Cc: phone-devel@vger.kernel.org
-Fixes: 2b0e7ac0841b ("power: supply: ab8500: Integrate thermal zone")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/power/supply/ab8500_btemp.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/power/supply/ab8500_btemp.c b/drivers/power/supply/ab8500_btemp.c
-index 863fabe05bdc..307ee6f71042 100644
---- a/drivers/power/supply/ab8500_btemp.c
-+++ b/drivers/power/supply/ab8500_btemp.c
-@@ -725,7 +725,14 @@ static int ab8500_btemp_probe(struct platform_device *pdev)
- 	/* Get thermal zone and ADC */
- 	di->tz = thermal_zone_get_zone_by_name("battery-thermal");
- 	if (IS_ERR(di->tz)) {
--		return dev_err_probe(dev, PTR_ERR(di->tz),
-+		ret = PTR_ERR(di->tz);
-+		/*
-+		 * This usually just means we are probing before the thermal
-+		 * zone, so just defer.
-+		 */
-+		if (ret == -ENODEV)
-+			ret = -EPROBE_DEFER;
-+		return dev_err_probe(dev, ret,
- 				     "failed to get battery thermal zone\n");
- 	}
- 	di->bat_ctrl = devm_iio_channel_get(dev, "bat_ctrl");
 -- 
-2.35.1
-
-
+2.25.1
 
