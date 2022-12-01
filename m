@@ -2,95 +2,107 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE760C4708E
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Dec 2022 13:22:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCF49C43217
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Dec 2022 16:18:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231455AbiLANW1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Dec 2022 08:22:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34268 "EHLO
+        id S231857AbiLAQSW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 1 Dec 2022 11:18:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231417AbiLANWY (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Dec 2022 08:22:24 -0500
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9519CA2804
-        for <phone-devel@vger.kernel.org>; Thu,  1 Dec 2022 05:22:22 -0800 (PST)
-Received: by mail-lj1-x233.google.com with SMTP id bn5so1868401ljb.2
-        for <phone-devel@vger.kernel.org>; Thu, 01 Dec 2022 05:22:22 -0800 (PST)
+        with ESMTP id S232260AbiLAQSF (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Dec 2022 11:18:05 -0500
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 442E329804;
+        Thu,  1 Dec 2022 08:17:58 -0800 (PST)
+Received: by mail-pj1-x102d.google.com with SMTP id q17-20020a17090aa01100b002194cba32e9so5716562pjp.1;
+        Thu, 01 Dec 2022 08:17:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WyQawYit9lLZInOCq3g0j1Ztdmfwj5fvP6/cKOuQ4T8=;
-        b=bT5dnp2zEMGz5HB4ydLvpAnoqepKcklDia7j09ZySBqE5jTueQ+Nvvbpr4YZGh1ovI
-         hkttYWNhHIHL0EHQ1f6jRmsaxwMCKhW7CQg/wM4WQeypvy0Vepm1IbvAPcH7crN42DnG
-         h3L89oHdebH4fTo6YqMsTDROuljLO/7/vRPK8yCReo8CAsStBnX+hN42z2th1MnR4B6Q
-         zDIc+9u9hkb5BUttRci152xqpY/fWA/4TDcbnn/zgRj9cg7LqVCEZGum83O6aTX67QzX
-         YKJL6XxPp2aueCZrWhbQq3LCkDza/zQZEfT9T+PU7ivvSejPzltGsD094G9JAlX31LhA
-         FJ+w==
+        d=gmail.com; s=20210112;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BfYDYtDdWSpf1BGYU9m6venf9VFVD+ygFyov+HV7Yms=;
+        b=cw36wKEXB3mUS1v978XCAC5BErch3wt26EUPwdmLPXj1m8t29fZNTgvr7oPFxoiyD0
+         OFW3LbV2bpmtoHr2GslOsX7QLs7OxWkp10Y+HVkrM1YBvCEYeB6CpdgQmQtchqtpCZIy
+         dP7mF4meMDd+XzCOeWZHLdQvp7OjZJY+jk+on65lACTP3pO5uLycazQpPumN9z1Xg3jZ
+         mOFaqPbrPEMllLZrnVXRoadlRk4FYUMiKibVTFOZRqtjoMgygN928U0Z160q+70xd2Rt
+         1o7L6i6qIX0TIEI7K4r8wc+W31ZGHc+c/vkb1eQCbDCcLJSrDSVswi+p1zmthMqgMxYw
+         UjUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WyQawYit9lLZInOCq3g0j1Ztdmfwj5fvP6/cKOuQ4T8=;
-        b=1F5V5KCVEdzzbdHvB9kbmGoZV5EuyY1dN60ritj9ibivELXVrVHxgFVM5qmtKlghS7
-         cORqj1KJAlUMcPjWSLemDj4XbGoeJ/P00ueZwUjTSvy+xLcPx1dLldtQ6Ta7stMV3cGC
-         /Ov6m8ysRMkDW3wetWIhDuXi6739D0DirVZVn9A0As1DYugu4LElsJZnQQ6WJY6QaYSs
-         qFHa7isQ5L8H8WDDQshSVBYpjFwNqlx9njZmBR5d6MCCGclufBE99/IovWff7MWE5/mX
-         taKGtJPmuclOwPikUwWhE7M60UhYSeFdhqVL2emuQKYprd5K1crQseKJsBb2iLcuP1sz
-         sxPQ==
-X-Gm-Message-State: ANoB5plg5ELZ+Cz0QXRKt6xd14BlyeMjuNK/5gDNeiVqO15Tcc/htPC/
-        qwiNDj1T7fAhS7RvwRsfWikN0g==
-X-Google-Smtp-Source: AA0mqf7I/YMv5A1pkXzYkyN//geQ0DmC/fF+wcRMWDbsDc4h4FNrYDBO9frwL7EGnDLbj7ep1oHRug==
-X-Received: by 2002:a2e:bd06:0:b0:277:2437:e977 with SMTP id n6-20020a2ebd06000000b002772437e977mr22531568ljq.195.1669900940981;
-        Thu, 01 Dec 2022 05:22:20 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id h9-20020a05651211c900b004b52f4ea0d3sm641191lfr.192.2022.12.01.05.22.19
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=BfYDYtDdWSpf1BGYU9m6venf9VFVD+ygFyov+HV7Yms=;
+        b=cjDnqAzPst6BZg10hDufj+y7eqp7Lhy+noMiZebU/Mwdq0K+qux/p11Hy3xFMKd7Ks
+         or2vc0XDqkREyabDW97bNfiAxqS0dK1FizUVaR3rYGgrDkbjBold7KQfNF5A3YspSFAy
+         JUEynac9bQ4ac6Bt0j9WLKdY4LCn1bPtc2MN9VQsBoAYjsvtKSHbXjP0h8KJvEdEO71p
+         QJhr5Q+ILcIFiHGq4QP6Ijxd760tJcm5ba0LT+SGtq2afUWlGqS/Y25BHD/C3Kf94ZjN
+         UsPwqXBIU+N8zQy+Xiyt0XtyVI16P7+KBbnK33poX4Ia92mgf/KcAxZ8qO13WmEQND8e
+         VMCg==
+X-Gm-Message-State: ANoB5pnPuo4t48CBfs/vfO5vXkcpHNIg0CMHQbeEAL7I4poraHqh48Pf
+        jdz3adAHjL7bP6C01rES7T49y8QgiKM=
+X-Google-Smtp-Source: AA0mqf4/5D6L8Y5ZjG68qTNyUWBPsQBG1ZoClZZ/oqliodHgdPhFZcqo7Rs86REz+mv/oSRaMlsm0g==
+X-Received: by 2002:a17:902:d4c8:b0:186:9d71:228c with SMTP id o8-20020a170902d4c800b001869d71228cmr50156573plg.109.1669911477675;
+        Thu, 01 Dec 2022 08:17:57 -0800 (PST)
+Received: from localhost ([2406:7400:61:64d5:7d23:c512:7205:1e52])
+        by smtp.gmail.com with ESMTPSA id j10-20020a17090276ca00b001894881842dsm3837104plt.151.2022.12.01.08.17.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Dec 2022 05:22:20 -0800 (PST)
-Message-ID: <e8a86b3e-7a2f-3434-52d8-6a827b720f92@linaro.org>
-Date:   Thu, 1 Dec 2022 14:22:19 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH 4/9] dt-bindings: remoteproc: qcom: wcnss: Convert to YAML
-Content-Language: en-US
-To:     Sireesh Kodali <sireeshkodali1@gmail.com>,
-        linux-remoteproc@vger.kernel.org
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, bjorn.andersson@linaro.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+        Thu, 01 Dec 2022 08:17:56 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Thu, 01 Dec 2022 21:47:49 +0530
+Message-Id: <COQM7MGKFRUI.25DOQ1AAQLLY7@skynet-linux>
+Cc:     <linux-arm-msm@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <bjorn.andersson@linaro.org>, <devicetree@vger.kernel.org>,
+        <phone-devel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Andy Gross" <agross@kernel.org>,
+        "Mathieu Poirier" <mathieu.poirier@linaro.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH 4/9] dt-bindings: remoteproc: qcom: wcnss: Convert to
+ YAML
+From:   "Sireesh Kodali" <sireeshkodali1@gmail.com>
+To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
+        <linux-remoteproc@vger.kernel.org>
+X-Mailer: aerc 0.13.0
 References: <20220511161602.117772-1-sireeshkodali1@gmail.com>
  <20220511161602.117772-5-sireeshkodali1@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220511161602.117772-5-sireeshkodali1@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <e8a86b3e-7a2f-3434-52d8-6a827b720f92@linaro.org>
+In-Reply-To: <e8a86b3e-7a2f-3434-52d8-6a827b720f92@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 11/05/2022 18:15, Sireesh Kodali wrote:
-> Convert the dt-bindings from txt to YAML. This is in preparation for
-> including the relevant bindings for the MSM8953 platform's wcnss pil.
-> 
-> Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
-> ---
->  .../bindings/remoteproc/qcom,wcnss-pil.txt    | 177 --------------
->  .../bindings/remoteproc/qcom,wcnss-pil.yaml   | 228 ++++++++++++++++++
->  2 files changed, 228 insertions(+), 177 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.txt
->  create mode 100644 Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-> 
+On Thu Dec 1, 2022 at 6:52 PM IST, Krzysztof Kozlowski wrote:
+> On 11/05/2022 18:15, Sireesh Kodali wrote:
+> > Convert the dt-bindings from txt to YAML. This is in preparation for
+> > including the relevant bindings for the MSM8953 platform's wcnss pil.
+> >=20
+> > Signed-off-by: Sireesh Kodali <sireeshkodali1@gmail.com>
+> > ---
+> >  .../bindings/remoteproc/qcom,wcnss-pil.txt    | 177 --------------
+> >  .../bindings/remoteproc/qcom,wcnss-pil.yaml   | 228 ++++++++++++++++++
+> >  2 files changed, 228 insertions(+), 177 deletions(-)
+> >  delete mode 100644 Documentation/devicetree/bindings/remoteproc/qcom,w=
+cnss-pil.txt
+> >  create mode 100644 Documentation/devicetree/bindings/remoteproc/qcom,w=
+cnss-pil.yaml
+> >=20
+>
+> Half year passed, so I wonder if these series are abandoned or shall we
+> expect v2?
+>
 
-Half year passed, so I wonder if these series are abandoned or shall we
-expect v2?
+This series was split into sub-series to make upstreaming easier. Links
+to the sub-series:
+WCNSS: https://lkml.org/lkml/2022/9/30/1502
+ADSP: https://lkml.org/lkml/2022/10/13/5
 
-Best regards,
-Krzysztof
+Regards,
+Sireesh
+> Best regards,
+> Krzysztof
 
