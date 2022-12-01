@@ -2,89 +2,133 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C475BC4708E
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Dec 2022 19:40:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3FBAC4321E
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Dec 2022 19:54:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230328AbiLATkb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Dec 2022 14:40:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39248 "EHLO
+        id S230493AbiLATy6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 1 Dec 2022 14:54:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229847AbiLATk3 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Dec 2022 14:40:29 -0500
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C914A98023;
-        Thu,  1 Dec 2022 11:40:28 -0800 (PST)
-Received: by mail-oi1-f173.google.com with SMTP id h132so3154184oif.2;
-        Thu, 01 Dec 2022 11:40:28 -0800 (PST)
+        with ESMTP id S229988AbiLATyy (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Dec 2022 14:54:54 -0500
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DB36BA605
+        for <phone-devel@vger.kernel.org>; Thu,  1 Dec 2022 11:54:53 -0800 (PST)
+Received: by mail-lf1-x129.google.com with SMTP id be13so4172005lfb.4
+        for <phone-devel@vger.kernel.org>; Thu, 01 Dec 2022 11:54:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OGig0j87TfPUBjEzV2O5bgbpVQ79iR8UjUhrIXzIKPE=;
+        b=MA73zwlsy0FYvPwpcf4ysOfjDfkrADv8s2v3gyglmKUYAXMhhR2n46V6vr+elDNupc
+         EBd9cnPMxjA/mcXwJlNmc4nE760c3551+hS+/iVFbojEKhICUYejhlNYefkeFYO3l0xc
+         ZQejn0DtDLZYuvZETgdhYO7SzzBgL2c3//unuOBxqIRCHqq3CFRYUlFYLaDHHjeXnU/a
+         cBwQlUZKl/ZFO6H8in4pnPv/AEWsj2hTOpFFq8mvIid9DpmohI4OWvjguvF1cjOIn6f8
+         wRcGvTDNO/1WHqj902PHUCsmbr6u5fjQ34URQrt05ThnG6lP5bFGVFhyL+JM95JFD6Yx
+         gRgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=boNQPL0i0ILb4HhKeMVQSoaXUT08m5V8+ybujR0N0TI=;
-        b=AJUBE2ZeaJEKmqH/l3qPIVoL+bw6jQuKlALZrh/nFfQnX+OLXn2RC7WGSmQMGLqA08
-         FmEKYOPTiu8xPwa0tkTZ3xyEXBMNiVfriFIq1eKlep6dHGqSQj/C9gpEbiFmQ+1FkLCv
-         W7dToC3YhRopc2DE7qKJZV/PLDdCZRM4FcdrtG8kciFYoHrrzRImBZOAWb6YWBPobt0u
-         hqQhqHplqcgPfSvUFiPyq45UQQMfGu7hXrxZhwvmOYNge1TEYLUGwsBw4AWZ4mybU4C6
-         dZuxvmYdVNZpx4q6AS7eBnA0IHTX8n85I4hF2qDTMOcEpolLaiP5rpS6eG1thz66SpB2
-         tObg==
-X-Gm-Message-State: ANoB5pmDZUJxkv5Gq7fpbPkCG9kNHpYi6uJy8PiK+dTMmOHWe8qXlXnH
-        SVVKaI5zGsz3eJz3TpjP6B5iAasYDA==
-X-Google-Smtp-Source: AA0mqf7EHzfleKI7CO0oX8lnmi1IYx3XscnTMOaiB0J2r2agG3qDO8nklTcidrANIVj1NAux24DAbA==
-X-Received: by 2002:a05:6808:152c:b0:354:da02:c05f with SMTP id u44-20020a056808152c00b00354da02c05fmr22940884oiw.290.1669923627983;
-        Thu, 01 Dec 2022 11:40:27 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id o6-20020acad706000000b003549db40f38sm2128071oig.46.2022.12.01.11.40.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Dec 2022 11:40:27 -0800 (PST)
-Received: (nullmailer pid 1216496 invoked by uid 1000);
-        Thu, 01 Dec 2022 19:40:26 -0000
-Date:   Thu, 1 Dec 2022 13:40:26 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Adam Skladowski <a39.skl@gmail.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        David Airlie <airlied@gmail.com>, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Amit Kucheria <amitk@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-pm@vger.kernel.org, Sean Paul <sean@poorly.run>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-arm-msm@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
-Subject: Re: [PATCH v2 02/12] dt-bindings: thermal: tsens: Add SM6115
- compatible
-Message-ID: <166992359520.1215696.1988935137698769756.robh@kernel.org>
-References: <20221130200950.144618-1-a39.skl@gmail.com>
- <20221130200950.144618-3-a39.skl@gmail.com>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OGig0j87TfPUBjEzV2O5bgbpVQ79iR8UjUhrIXzIKPE=;
+        b=EqTb3o8pURvT/VdAssHc2gMQAjk2HvVkBesiq2LmX3/TehBl+Xo0j+E4u3d2EMCDh/
+         Mpvbdsd/RWpUDy0rKGdA8xRu1iY4Q4MfRmDTv044QzYVugOqc23+H84oVqA8Vokxc7nD
+         U1XSSrXhom6QrkQfPF4Okc8kDIPEGe3k/UyM2iW4EUvjZCCio8s6+TBYc6iOKS68vopB
+         jewgZL5irO13pxowLpBx4bztUCekk4bdxVaK7lbYtDQfFAptS5cVjIlUGfC/aH6UTnHm
+         O3brdzLsZI5/2PcJ07ZURD2uPHkjGqNPW0lALFpfTt0mkpr3C3rK5UmohER8ysCbhMft
+         KxDA==
+X-Gm-Message-State: ANoB5pnqtwUZk+sfay/lBsx6s02OQJ+k9ipuqjPZ0hPYGZKOTrG4J1QS
+        AqWkArnqpnsE1HBgt18eqCziNA==
+X-Google-Smtp-Source: AA0mqf5ku+EWJ6b5KPQcvTvxQ1Dz0O0+WykmdO2w66c7UgoB4xHtoQxQBKEk3ZN1g+TpW/1iBeNQsw==
+X-Received: by 2002:ac2:5e2c:0:b0:4a2:243a:ef6e with SMTP id o12-20020ac25e2c000000b004a2243aef6emr18652028lfg.454.1669924491618;
+        Thu, 01 Dec 2022 11:54:51 -0800 (PST)
+Received: from [10.10.15.130] ([192.130.178.91])
+        by smtp.gmail.com with ESMTPSA id z6-20020ac25de6000000b004b1a5086485sm757030lfq.2.2022.12.01.11.54.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Dec 2022 11:54:51 -0800 (PST)
+Message-ID: <19e78a06-2f3d-92af-1988-b22dc3ffc84e@linaro.org>
+Date:   Thu, 1 Dec 2022 21:54:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221130200950.144618-3-a39.skl@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v2 01/12] dt-bindings: display: msm: Rename mdss node name
+ in example
+Content-Language: en-GB
+To:     Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+References: <20221130200950.144618-1-a39.skl@gmail.com>
+ <20221130200950.144618-2-a39.skl@gmail.com>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20221130200950.144618-2-a39.skl@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 30 Nov 2022 21:09:40 +0100, Adam Skladowski wrote:
-> Document compatible for tsens on Qualcomm SM6115 platform
-> according to downstream dts it ship v2.4 of IP
+On 30/11/2022 22:09, Adam Skladowski wrote:
+> Follow other YAMLs and replace mdss name into display-subystem.
 > 
 > Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  Documentation/devicetree/bindings/thermal/qcom-tsens.yaml | 1 +
->  1 file changed, 1 insertion(+)
-> 
 
-Since Daniel is out, applied, thanks!
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
+We will pick this into msm-fixes during the next cycle.
+
+> ---
+>   .../devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml      | 2 +-
+>   .../devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml       | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml
+> index d6f043a4b08d..4795e13c7b59 100644
+> --- a/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml
+> +++ b/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml
+> @@ -72,7 +72,7 @@ examples:
+>       #include <dt-bindings/interconnect/qcom,qcm2290.h>
+>       #include <dt-bindings/power/qcom-rpmpd.h>
+>   
+> -    mdss@5e00000 {
+> +    display-subsystem@5e00000 {
+>           #address-cells = <1>;
+>           #size-cells = <1>;
+>           compatible = "qcom,qcm2290-mdss";
+> diff --git a/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
+> index a86d7f53fa84..886858ef6700 100644
+> --- a/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
+> +++ b/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
+> @@ -62,7 +62,7 @@ examples:
+>       #include <dt-bindings/interrupt-controller/arm-gic.h>
+>       #include <dt-bindings/power/qcom-rpmpd.h>
+>   
+> -    mdss@5e00000 {
+> +    display-subsystem@5e00000 {
+>           #address-cells = <1>;
+>           #size-cells = <1>;
+>           compatible = "qcom,sm6115-mdss";
+
+-- 
+With best wishes
+Dmitry
+
