@@ -2,133 +2,142 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D3FBAC4321E
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Dec 2022 19:54:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BDCAC4332F
+	for <phone-devel@archiver.kernel.org>; Fri,  2 Dec 2022 09:37:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230493AbiLATy6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Dec 2022 14:54:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51702 "EHLO
+        id S231831AbiLBJhJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 2 Dec 2022 04:37:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229988AbiLATyy (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Dec 2022 14:54:54 -0500
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DB36BA605
-        for <phone-devel@vger.kernel.org>; Thu,  1 Dec 2022 11:54:53 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id be13so4172005lfb.4
-        for <phone-devel@vger.kernel.org>; Thu, 01 Dec 2022 11:54:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OGig0j87TfPUBjEzV2O5bgbpVQ79iR8UjUhrIXzIKPE=;
-        b=MA73zwlsy0FYvPwpcf4ysOfjDfkrADv8s2v3gyglmKUYAXMhhR2n46V6vr+elDNupc
-         EBd9cnPMxjA/mcXwJlNmc4nE760c3551+hS+/iVFbojEKhICUYejhlNYefkeFYO3l0xc
-         ZQejn0DtDLZYuvZETgdhYO7SzzBgL2c3//unuOBxqIRCHqq3CFRYUlFYLaDHHjeXnU/a
-         cBwQlUZKl/ZFO6H8in4pnPv/AEWsj2hTOpFFq8mvIid9DpmohI4OWvjguvF1cjOIn6f8
-         wRcGvTDNO/1WHqj902PHUCsmbr6u5fjQ34URQrt05ThnG6lP5bFGVFhyL+JM95JFD6Yx
-         gRgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OGig0j87TfPUBjEzV2O5bgbpVQ79iR8UjUhrIXzIKPE=;
-        b=EqTb3o8pURvT/VdAssHc2gMQAjk2HvVkBesiq2LmX3/TehBl+Xo0j+E4u3d2EMCDh/
-         Mpvbdsd/RWpUDy0rKGdA8xRu1iY4Q4MfRmDTv044QzYVugOqc23+H84oVqA8Vokxc7nD
-         U1XSSrXhom6QrkQfPF4Okc8kDIPEGe3k/UyM2iW4EUvjZCCio8s6+TBYc6iOKS68vopB
-         jewgZL5irO13pxowLpBx4bztUCekk4bdxVaK7lbYtDQfFAptS5cVjIlUGfC/aH6UTnHm
-         O3brdzLsZI5/2PcJ07ZURD2uPHkjGqNPW0lALFpfTt0mkpr3C3rK5UmohER8ysCbhMft
-         KxDA==
-X-Gm-Message-State: ANoB5pnqtwUZk+sfay/lBsx6s02OQJ+k9ipuqjPZ0hPYGZKOTrG4J1QS
-        AqWkArnqpnsE1HBgt18eqCziNA==
-X-Google-Smtp-Source: AA0mqf5ku+EWJ6b5KPQcvTvxQ1Dz0O0+WykmdO2w66c7UgoB4xHtoQxQBKEk3ZN1g+TpW/1iBeNQsw==
-X-Received: by 2002:ac2:5e2c:0:b0:4a2:243a:ef6e with SMTP id o12-20020ac25e2c000000b004a2243aef6emr18652028lfg.454.1669924491618;
-        Thu, 01 Dec 2022 11:54:51 -0800 (PST)
-Received: from [10.10.15.130] ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id z6-20020ac25de6000000b004b1a5086485sm757030lfq.2.2022.12.01.11.54.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 01 Dec 2022 11:54:51 -0800 (PST)
-Message-ID: <19e78a06-2f3d-92af-1988-b22dc3ffc84e@linaro.org>
-Date:   Thu, 1 Dec 2022 21:54:50 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [PATCH v2 01/12] dt-bindings: display: msm: Rename mdss node name
- in example
-Content-Language: en-GB
-To:     Adam Skladowski <a39.skl@gmail.com>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        with ESMTP id S232656AbiLBJhI (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 2 Dec 2022 04:37:08 -0500
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [5.144.164.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5218810B6
+        for <phone-devel@vger.kernel.org>; Fri,  2 Dec 2022 01:37:02 -0800 (PST)
+Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 244C41F87B;
+        Fri,  2 Dec 2022 10:37:00 +0100 (CET)
+Date:   Fri, 2 Dec 2022 10:36:58 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        AngeloGioacchino Del Regno <kholk11@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-References: <20221130200950.144618-1-a39.skl@gmail.com>
- <20221130200950.144618-2-a39.skl@gmail.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20221130200950.144618-2-a39.skl@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v3 2/2] arm64: dts: qcom: Add configuration for PMI8950
+ peripheral
+Message-ID: <20221202093658.vg6t2ptar2arh7hn@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        AngeloGioacchino Del Regno <kholk11@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>
+References: <20221101161801.1058969-1-luca@z3ntu.xyz>
+ <20221101161801.1058969-2-luca@z3ntu.xyz>
+ <20221104234435.xwjpwfxs73puvfca@SoMainline.org>
+ <20221106193722.j64xrhitdencrjxy@SoMainline.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221106193722.j64xrhitdencrjxy@SoMainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 30/11/2022 22:09, Adam Skladowski wrote:
-> Follow other YAMLs and replace mdss name into display-subystem.
+On 2022-11-06 20:37:24, Marijn Suijten wrote:
+> On 2022-11-05 00:44:37, Marijn Suijten wrote:
+> > On 2022-11-01 17:18:00, Luca Weiss wrote:
+> > > From: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> > > 
+> > > The PMI8950 features integrated peripherals like ADC, GPIO controller,
+> > > MPPs and others.
+> > > 
+> > > [luca@z3ntu.xyz: remove pm8950, style changes for 2022 standards, add wled]
+> > > Signed-off-by: AngeloGioacchino Del Regno <kholk11@gmail.com>
+> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > > ---
+> > > Changes since v2:
+> > > * Pick up patch, and adjust as mentioned above sign-offs
+> > > 
+> > >  arch/arm64/boot/dts/qcom/pmi8950.dtsi | 97 +++++++++++++++++++++++++++
+> > >  1 file changed, 97 insertions(+)
+> > >  create mode 100644 arch/arm64/boot/dts/qcom/pmi8950.dtsi
+> > > 
+> > > diff --git a/arch/arm64/boot/dts/qcom/pmi8950.dtsi b/arch/arm64/boot/dts/qcom/pmi8950.dtsi
+> > > new file mode 100644
+> > > index 000000000000..32d27e2187e3
+> > > --- /dev/null
+> > > +++ b/arch/arm64/boot/dts/qcom/pmi8950.dtsi
+> > > @@ -0,0 +1,97 @@
+> > > +// SPDX-License-Identifier: GPL-2.0
+> > > +// Copyright (c) 2019, AngeloGioacchino Del Regno <kholk11@gmail.com>
+> > > +
+> > > +#include <dt-bindings/iio/qcom,spmi-vadc.h>
+> > > +#include <dt-bindings/interrupt-controller/irq.h>
+> > > +#include <dt-bindings/spmi/spmi.h>
+> > > +
+> > > +&spmi_bus {
+> > > +	pmic@2 {
+> > > +		compatible = "qcom,pmi8950", "qcom,spmi-pmic";
+> > > +		reg = <0x2 SPMI_USID>;
+> > > +		#address-cells = <1>;
+> > > +		#size-cells = <0>;
+> > > +
+> > > +		pmi8950_vadc: adc@3100 {
+> > > +			compatible = "qcom,spmi-vadc";
+> > > +			reg = <0x3100>;
+> > > +			interrupts = <0x2 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
+> > > +			#address-cells = <1>;
+> > > +			#size-cells = <0>;
+> > > +			#io-channel-cells = <1>;
+> > > +
+> > > +			adc-chan@0 {
+> > > +				reg = <VADC_USBIN>;
+> > > +				qcom,pre-scaling = <1 4>;
+> > > +				label = "usbin";
+> > 
+> > I've previously sent a patch with labels in the node name instead [1],
+> > what's the preferred way nowadays?
+> > 
+> > [1]: https://lore.kernel.org/linux-arm-msm/20220926190148.283805-4-marijn.suijten@somainline.org/
 > 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
-We will pick this into msm-fixes during the next cycle.
-
-> ---
->   .../devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml      | 2 +-
->   .../devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml       | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
+> As it turns out that patch relied on the ADC5 driver propagating the DT
+> node name (and label name if set) to IIO, which doesn't happen for the
+> legacy VADC driver used here.  I sent an RFC to that effect, with a
+> large discussion whether or not we should use node names, labels, or
+> rely on hardcoded names in the drivers entirely.  The recent migration
+> to fwnode made the node name include the `@xx` suffix which makes for
+> unpleasant reading in sysfs, so that's at least one reason to have
+> generic node names *and skip node names in these drivers altogether*.
 > 
-> diff --git a/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml
-> index d6f043a4b08d..4795e13c7b59 100644
-> --- a/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml
-> +++ b/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml
-> @@ -72,7 +72,7 @@ examples:
->       #include <dt-bindings/interconnect/qcom,qcm2290.h>
->       #include <dt-bindings/power/qcom-rpmpd.h>
->   
-> -    mdss@5e00000 {
-> +    display-subsystem@5e00000 {
->           #address-cells = <1>;
->           #size-cells = <1>;
->           compatible = "qcom,qcm2290-mdss";
-> diff --git a/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
-> index a86d7f53fa84..886858ef6700 100644
-> --- a/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
-> +++ b/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
-> @@ -62,7 +62,7 @@ examples:
->       #include <dt-bindings/interrupt-controller/arm-gic.h>
->       #include <dt-bindings/power/qcom-rpmpd.h>
->   
-> -    mdss@5e00000 {
-> +    display-subsystem@5e00000 {
->           #address-cells = <1>;
->           #size-cells = <1>;
->           compatible = "qcom,sm6115-mdss";
+>     https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
+> 
+> In short: we may want to hold off changing these patches until a
+> clear-cut decision has been made (but I think your patch here is the
+> right approach in the end: generic node name *with label*, when the
+> label is more clear than the name hardcoded in the driver).
 
--- 
-With best wishes
-Dmitry
+We came to the conclusion in [1] that using labels is the way to go so
+that the name doesn't get all mangled, then we can opt for generic node
+names here as well.  This does mean I'll have to send a followup for [2]
+and have to revise [3] again to use generic node names and labels.
 
+- Marijn
+
+[1]: https://lore.kernel.org/linux-arm-msm/20221112162719.0ac87998@jic23-huawei/
+[2]: https://lore.kernel.org/linux-arm-msm/20220926190148.283805-4-marijn.suijten@somainline.org/
+[3]: https://lore.kernel.org/linux-arm-msm/20221111120156.48040-10-angelogioacchino.delregno@collabora.com/
