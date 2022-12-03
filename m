@@ -2,81 +2,137 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50F6BC4708D
-	for <phone-devel@archiver.kernel.org>; Fri,  2 Dec 2022 23:32:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89C35C4332F
+	for <phone-devel@archiver.kernel.org>; Sat,  3 Dec 2022 09:15:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234470AbiLBXb6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 2 Dec 2022 18:31:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60992 "EHLO
+        id S231570AbiLCJP2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 3 Dec 2022 04:15:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233221AbiLBXb5 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 2 Dec 2022 18:31:57 -0500
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B7AE784B;
-        Fri,  2 Dec 2022 15:31:56 -0800 (PST)
-Received: by mail-pl1-x633.google.com with SMTP id s7so6001479plk.5;
-        Fri, 02 Dec 2022 15:31:56 -0800 (PST)
+        with ESMTP id S229872AbiLCJP1 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 3 Dec 2022 04:15:27 -0500
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 616CF5AE06
+        for <phone-devel@vger.kernel.org>; Sat,  3 Dec 2022 01:15:25 -0800 (PST)
+Received: by mail-lj1-x230.google.com with SMTP id x11so7920137ljh.7
+        for <phone-devel@vger.kernel.org>; Sat, 03 Dec 2022 01:15:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ov4BRsKxFLOmoIOFTpoh4nTwxKucanMMlraDUcWUrJQ=;
-        b=nz7HjNemCQoy3/OfTajwDSbr1PeL8lqe0N2gxqGBJgbSe3q6p5fglY9X81U5J1Ddnc
-         ywshZQfqnE/WJE68je7poQwiqlhc2iBfUVqHOCP2lMzj7cmCzfTcTRLnyGiuX2UzKKrV
-         Hpm+iCREfEjsN8kOdtdukDZSIe6mApsmb0zu1MlzpTVW8ggt9p9pxB+VSDr33cEWQT8h
-         i34jAYfGrY+esy599BRE6wPkkHVjxY1RfzAelWI9ywAem7fnTbOmHfms0A9H7IvMNAFh
-         +BkL2vwJNxC1xdyGIjj39RqevrMWopYyHT3t7ZkTc5Q5Jxq5+H9BraP7IWOTBFSfWdF7
-         sV1Q==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YuE7G0Zuy+PD6cWtPenlDgVRxm7weRAeqkpn2x6Okns=;
+        b=qcqSWJs+QhUdRNk416qswmQSd0DEVPaIZ8o89Fr0ha5DUab5ikm4bdY1aycjMvqV6+
+         57mKiHt8r7ldO840a5S0HPEuWrG961nI75ojMzKoVfgAfhMPph5zcDd501JaccVzQ5eT
+         FTZYPUXFyv9H9OktBTlY9WEhnWNLCSheDXBppVRyUzAFPBq675yxBfdhlEelDueMV+S9
+         zkU0kisE0hLlOzxnceWLj4ZyfncoZYNQgVv1GNTzqm3xAw6a2VPAW4EyO7O8uFUCq/1n
+         5TYAmQDfUwCYtjsY25ajiMjHRhXYrVmXyZkzxyhSFbYxmaH6OZl3He2DHRA05UH9PlMb
+         aGKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ov4BRsKxFLOmoIOFTpoh4nTwxKucanMMlraDUcWUrJQ=;
-        b=EsDAzflAYlepyrDjBtyusAUzwMdEn/LJ6dKVayiwzka8Jo/gAp1HEF2TO+7QBhIIn9
-         bqSjt+CwtE4iFbqqbHfR6dbqQT1OPXtn+CGCr1cBhC0zSrlgdYbD++BUnxK15bPU5hVj
-         toodUGNiwuGba2wZM8o/wp3Ht9TmKGMbPohKUWUnmNvJTPKesd3HPW14bqctAf5oz4kI
-         clPtD/4nhe9Djacs/KWh/QksBHxZbL4y9/CEX2oU/xWQryYp+JqAiGjjZ/3eFMh51m+r
-         acz2hMvKZBkam8hcDtMnMjW+ixOq66Egug/OM14nfu1eIkkCUt3hKwlW41bIhTsxnRx7
-         5NyQ==
-X-Gm-Message-State: ANoB5plBA6kUToQyE7pFB/xXxoC7o3q4s5xFCkmlvOHF4omwl+zGenxP
-        79KURHIGEEr68ETJgjiEKFg=
-X-Google-Smtp-Source: AA0mqf6rWX+1ZqoRfjqTJWX9DFdAOUvBM3IUR8Snk2Bm/b2PM/7zZVO5+5uzZ88GxfQObmDKx0d8xQ==
-X-Received: by 2002:a17:902:ef44:b0:185:40ca:68b8 with SMTP id e4-20020a170902ef4400b0018540ca68b8mr55516177plx.16.1670023915493;
-        Fri, 02 Dec 2022 15:31:55 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:cc0e:e156:5def:3b2e])
-        by smtp.gmail.com with ESMTPSA id c126-20020a621c84000000b005629b6a8b53sm5783624pfc.15.2022.12.02.15.31.54
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YuE7G0Zuy+PD6cWtPenlDgVRxm7weRAeqkpn2x6Okns=;
+        b=pEZp4rQ12g9RG3P4f7lE/C2SlGh2zYVytZ9iE5xpKp6Q2W+AcGLrDWW8oIwMq6HN0E
+         AYXqAxxOLc2HnRSp1sEGMjP0WYgTPqACSpAAILiDdHP3R/NnFSsY3X0lOsIuTHijCwf0
+         NLN0Sbmzl8D0VnCEnp+LwvWkM16ItI8zgLblETJiGQqtmla+AlT+iGLCJ8yx2Mj9Fw2L
+         VSO5p/guA4+FqJ7JCrtihKNhSFdQMyUmRbbsopYiozyBraxhpdCPVkZdJ9VtchWzsJHP
+         uqzOQ8uP28qr28Zkdf0hoaqseIpU59ILoqMhxTw89uNoVOqtt9hjHPmVFY/TpPhiZgqY
+         6n8g==
+X-Gm-Message-State: ANoB5pnIJ2/erIIb5tHeVmd4Drcd/22hahFE49jnB8u08TV59g+jZd7G
+        zdZcj5L9v0tLNJxoEYwqb2z+gA==
+X-Google-Smtp-Source: AA0mqf7zz1jLQJg5imib3q6HD0zLM8oYjK1JmfBTTUMrobcuqFN9hWrfobjmUGIN49FDVr9wR1fxlQ==
+X-Received: by 2002:a05:651c:200c:b0:278:eef5:8d18 with SMTP id s12-20020a05651c200c00b00278eef58d18mr25114878ljo.240.1670058923708;
+        Sat, 03 Dec 2022 01:15:23 -0800 (PST)
+Received: from Fecusia.lan (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
+        by smtp.gmail.com with ESMTPSA id v4-20020a2ea604000000b0026dce0a5ca9sm800132ljp.70.2022.12.03.01.15.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Dec 2022 15:31:54 -0800 (PST)
-Date:   Fri, 2 Dec 2022 15:31:51 -0800
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-input@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andrew Davis <afd@ti.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] dt-bindings: input: Convert ti,drv260x to DT schema
-Message-ID: <Y4qK537P/rM2wJ62@google.com>
-References: <20221118174831.69793-1-luca@z3ntu.xyz>
+        Sat, 03 Dec 2022 01:15:22 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     linux-crypto@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>
+Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
+        Lionel Debieve <lionel.debieve@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH v3 0/4] crypto: stm32 - reuse for Ux500
+Date:   Sat,  3 Dec 2022 10:15:14 +0100
+Message-Id: <20221203091518.3235950-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221118174831.69793-1-luca@z3ntu.xyz>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Nov 18, 2022 at 06:48:29PM +0100, Luca Weiss wrote:
-> Convert the drv260x haptics binding to DT schema format.
-> 
-> The only notable change from .txt format is that vbat-supply is not
-> actually required, so don't make it a required property.
-> 
-> Acked-by: Andrew Davis <afd@ti.com>
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Experimenting by taking some small portions of the Ux500
+CRYP driver and adding to the STM32 driver, it turns out
+we can support both platforms with the more modern STM32
+driver.
 
-Applied, thank you.
+ChanegLog v2->v3:
+- Fix a kerneldoc warning.
+- Collect ACKs.
+ChangeLog v1->v2:
+- Minor changes to the base patches, see per-patch
+  ChangeLog.
+
+Upsides:
+
+- We delete ~2400 lines of code and 8 files with intact
+  crypto support for Ux500 and not properly maintained
+  and supported.
+
+- The STM32 driver is more modern and compact thanks to
+  using things like the crypto engine.
+
+Caveats:
+
+- The STM32 driver does not support DMA. On the U8500
+  this only works with AES (DES support is broken with
+  DMA). If this is desired to be kept I can migrate
+  it to the STM32 driver as well.
+
+I have looked at doing the same for the Ux500 hash, which
+is related but I am reluctant about this one, because
+the Ux500 hardware has no interrupt and only supports
+polling. I have a series of modernizations for that
+driver that I have worked on and will think about how
+to move forward.
+
+
+Linus Walleij (4):
+  dt-bindings: crypto: Let STM32 define Ux500 CRYP
+  crypto: stm32 - enable drivers to be used on Ux500
+  crypto: stm32/cryp - enable for use with Ux500
+  crypto: ux500/cryp - delete driver
+
+ .../bindings/crypto/st,stm32-cryp.yaml        |   19 +
+ drivers/crypto/Makefile                       |    2 +-
+ drivers/crypto/stm32/Kconfig                  |    4 +-
+ drivers/crypto/stm32/stm32-cryp.c             |  413 ++++-
+ drivers/crypto/ux500/Kconfig                  |   10 -
+ drivers/crypto/ux500/Makefile                 |    1 -
+ drivers/crypto/ux500/cryp/Makefile            |   10 -
+ drivers/crypto/ux500/cryp/cryp.c              |  394 ----
+ drivers/crypto/ux500/cryp/cryp.h              |  315 ----
+ drivers/crypto/ux500/cryp/cryp_core.c         | 1600 -----------------
+ drivers/crypto/ux500/cryp/cryp_irq.c          |   45 -
+ drivers/crypto/ux500/cryp/cryp_irq.h          |   31 -
+ drivers/crypto/ux500/cryp/cryp_irqp.h         |  125 --
+ drivers/crypto/ux500/cryp/cryp_p.h            |  122 --
+ 14 files changed, 344 insertions(+), 2747 deletions(-)
+ delete mode 100644 drivers/crypto/ux500/cryp/Makefile
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp.c
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp.h
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp_core.c
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp_irq.c
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp_irq.h
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp_irqp.h
+ delete mode 100644 drivers/crypto/ux500/cryp/cryp_p.h
 
 -- 
-Dmitry
+2.38.1
+
