@@ -2,56 +2,48 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A8B3C3A5A7
-	for <phone-devel@archiver.kernel.org>; Tue,  6 Dec 2022 18:19:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DD58BC3A5A7
+	for <phone-devel@archiver.kernel.org>; Tue,  6 Dec 2022 18:22:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229781AbiLFSTn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 6 Dec 2022 13:19:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33562 "EHLO
+        id S230211AbiLFSWq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 6 Dec 2022 13:22:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229733AbiLFSTg (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Dec 2022 13:19:36 -0500
+        with ESMTP id S230172AbiLFSWB (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Dec 2022 13:22:01 -0500
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A43C4B7F9;
-        Tue,  6 Dec 2022 10:19:34 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 553C140467;
+        Tue,  6 Dec 2022 10:20:41 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 408A8616D1;
-        Tue,  6 Dec 2022 18:19:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73F2C433C1;
-        Tue,  6 Dec 2022 18:19:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CD94616C6;
+        Tue,  6 Dec 2022 18:20:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC28C43470;
+        Tue,  6 Dec 2022 18:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670350773;
-        bh=xE1VX+sqMz9bHvicspUk6EkE1y74gTVG4LROkg8zm9w=;
+        s=k20201202; t=1670350814;
+        bh=cRTVyzIiiu31+sVEsTony/frIXrdN1dj9dFGjCS3u58=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ng6OSi5zCpPqkWqfmNA13O+qXH5Rz+qxuydYj/ZlQTa4q6iVMc28bY/RMFHg4rLx/
-         c6Fqb4QRovPld4s+48dJ3jZ7JNbza/9WE5WG8n9PNmZB8pvpQeLu1kyKDxYz3gPrpk
-         dFUxpSjwM81TgYkwrfOdwvtHLw2bVif2hV+MRnNIlr0wn2HLFJKOCnYH/pL4B3ITnw
-         RLc4DQPlVfdSD9YJTXXrnxmAc/3bJ24/mDvbmVbfjE+foZBRKeecjTQVrmlheEWA+k
-         rFXRAjhB+/SRj8tg9/eDUfGVy7+bLdVzxVBAdS7kYAXDP46G1iaWuw/xiuK5GeJEea
-         SDble89faMZZw==
+        b=VlWiDian6OCVR68xvG0D7+ImuuQUyaaXN/IXsXM13OlxPpV87z2kmcxuBnR1ZouN6
+         RpUISdhyhRc5ESxrzletAUM9jhg7GBgw40t+IgPUD04Xf1GIUTQlFsOu34SgE/WXq0
+         /i5rPzHxt3JIZce/XVrk67Am0FR0tJZHem4ethbsqym+4ghHhNbC2/MAVSdmSenCui
+         kAR5AAA450Kpp/r0RBQqJBUntrGzFCSnBs4nomVrJXRxPuK+6ku71a+p8UKqO0OFSl
+         kdekfln62QRDNjFaPqteHJ8ub0Z6P2uFNLMriTmRZ6XC3z9755PjhWf8nZ4SDtcXtW
+         0MhodaukGzvvQ==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     Adam Skladowski <a39.skl@gmail.com>
-Cc:     phone-devel@vger.kernel.org, daniel@ffwll.ch,
-        quic_abhinavk@quicinc.com, dri-devel@lists.freedesktop.org,
-        thara.gopinath@gmail.com, freedreno@lists.freedesktop.org,
-        robdclark@gmail.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org,
-        loic.poulain@linaro.org, linux-pm@vger.kernel.org,
-        rui.zhang@intel.com, dmitry.baryshkov@linaro.org,
-        konrad.dybcio@linaro.org, daniel.lezcano@linaro.org,
-        sean@poorly.run, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        airlied@gmail.com, amitk@kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Andy Gross <agross@kernel.org>
-Subject: Re: (subset) [PATCH v2 00/12] SM6115 DTS changes
-Date:   Tue,  6 Dec 2022 12:18:39 -0600
-Message-Id: <167035076353.3155086.13233208234326908710.b4-ty@kernel.org>
+To:     linux-arm-msm@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+Cc:     phone-devel@vger.kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Andy Gross <agross@kernel.org>, konrad.dybcio@linaro.org
+Subject: Re: [PATCH] ARM: dts: qcom: msm8974: clean up USB nodes
+Date:   Tue,  6 Dec 2022 12:19:20 -0600
+Message-Id: <167035076346.3155086.14113764607698991214.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221130200950.144618-1-a39.skl@gmail.com>
-References: <20221130200950.144618-1-a39.skl@gmail.com>
+In-Reply-To: <20221128171623.825572-1-luca@z3ntu.xyz>
+References: <20221128171623.825572-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -59,42 +51,20 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 30 Nov 2022 21:09:38 +0100, Adam Skladowski wrote:
-> This patch series adds bunch of new nodes
-> also it fixes some small nitpicks in yamls and adds compatible.
+On Mon, 28 Nov 2022 18:16:23 +0100, Luca Weiss wrote:
+> Rename "otg" label to "usb" to group it with other usb nodes and also
+> because "usb" makes more sense for a USB controller.
 > 
-> Changes since v1
-> ================
-> 1. Changed title for mdss yaml patch
-> 2. Added missing dmas to spi0
-> 3. Wired freq domains to CPUs
-> 4. Added R-b/Ack tags
-> 5. Reworded smmu dts patch
+> And now we can also better use the usb_hsX_phy labels instead of having
+> the ulpi -> phy@X structure in every dts.
+> 
 > 
 > [...]
 
 Applied, thanks!
 
-[03/12] arm64: dts: qcom: sm6115: Add cpufreq-hw support
-        commit: aff96846c63ed3e3ed7d5212ea636a422d9694a3
-[04/12] arm64: dts: qcom: sm6115: Add TSENS node
-        commit: 7b74cba6b13f4bbe1f15e3417f386ed1907ab0ef
-[05/12] arm64: dts: qcom: sm6115: Add PRNG node
-        commit: fc676b15c065b8d4c750bbaab9914f24829a7a13
-[06/12] arm64: dts: qcom: sm6115: Add rpm-stats node
-        commit: d18c0077963ae2b6d232f6f3f25fb1ceb875ce7f
-[07/12] arm64: dts: qcom: sm6115: Add dispcc node
-        commit: 884f95411ba4030ca44436217c6d8df4a960c555
-[08/12] arm64: dts: qcom: sm6115: Add mdss/dpu node
-        commit: 705e50427d8148211ffd05922bfa6a2520781338
-[09/12] arm64: dts: qcom: sm6115: Add GPI DMA
-        commit: 1586c5793511d7fb389139ab7aa5dae9118666ad
-[10/12] arm64: dts: qcom: sm6115: Add i2c/spi nodes
-        commit: 323647d32e83fae7f1a81b40e12ca6b0b63e880c
-[11/12] arm64: dts: qcom: sm6115: Add WCN node.
-        commit: 245bb9a37c16dc324be60764aa2597aa4704a8e3
-[12/12] arm64: dts: qcom: sm6115: Add smmu fallback to qcom generic compatible
-        commit: 58a9e83605478e931139b574e43d453851de3a26
+[1/1] ARM: dts: qcom: msm8974: clean up USB nodes
+      commit: 08b37b2a9b1a9e4dcdd810e514e3f60f54338fa9
 
 Best regards,
 -- 
