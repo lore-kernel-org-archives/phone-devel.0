@@ -2,441 +2,80 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DC1BC6377C
-	for <phone-devel@archiver.kernel.org>; Wed,  7 Dec 2022 18:31:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53730C4708D
+	for <phone-devel@archiver.kernel.org>; Wed,  7 Dec 2022 20:03:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229678AbiLGSbs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 7 Dec 2022 13:31:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42956 "EHLO
+        id S229522AbiLGUDu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 7 Dec 2022 15:03:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229591AbiLGSbd (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Dec 2022 13:31:33 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B05A36E56B;
-        Wed,  7 Dec 2022 10:31:32 -0800 (PST)
-Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id E72ADCA471;
-        Wed,  7 Dec 2022 18:31:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1670437861; bh=pbfn08dGG7YdLfcGfId7UXFTZ+EKF8vVg0ELk+o0V98=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=eZGS4+q8WRBBHIIgpA8+rtEvlTgFUhScX2pwqyphA4X7C8xPkxu2jkJErasVv/C1X
-         lPJeQUs5X6pIPr2ghvlHsPzBWl7syp3j7nGIr9H8CddlqCUdQ9JxuFnZqqbzxusPia
-         kNodx3Yfb8ZgYpgZuXPl95g4zfoboLvPP6zXclio=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Wed, 07 Dec 2022 19:30:43 +0100
-Subject: [PATCH v3 6/9] arm64: dts: qcom: msm8953: Add device tree for Xiaomi Redmi
- Note 4X
+        with ESMTP id S229501AbiLGUDt (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Dec 2022 15:03:49 -0500
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8592E13D7C;
+        Wed,  7 Dec 2022 12:03:48 -0800 (PST)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 52F5D1C09FA; Wed,  7 Dec 2022 21:03:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+        t=1670443427;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=rvBWmN92kGuv4fv/6ip6ueTE56gLU2bWdfROfEqlZ5g=;
+        b=QR8nW8zLXeYKFhsit8Lj69jLySPPDtB65qjAol0T1EQooKt1nxtSXUouXJ5YXDDRb7+EHN
+        3sSuWbKGaMSv5qhhwdgjmGUYVfKZkIH456EUjQI5H0WI5G7aIXM/VsrjsEkrt04p8+XOqv
+        ua50iGNl9l0QZTvEZlwZCRoCYZsMqmE=
+Date:   Wed, 7 Dec 2022 21:03:46 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-leds@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org,
+        Vincent Knecht <vincent.knecht@mailoo.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] leds: is31fl319x: Fix setting current limit for
+ is31fl319{0,1,3}
+Message-ID: <Y5DxoqlDdcOma+jC@duo.ucw.cz>
+References: <20221129212901.1049085-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20221207-msm8953-6-1-next-dtbs-v3-v3-6-a64b3b0af0eb@z3ntu.xyz>
-References: <20221207-msm8953-6-1-next-dtbs-v3-v3-0-a64b3b0af0eb@z3ntu.xyz>
-In-Reply-To: <20221207-msm8953-6-1-next-dtbs-v3-v3-0-a64b3b0af0eb@z3ntu.xyz>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Kees Cook <keescook@chromium.org>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Tony Luck <tony.luck@intel.com>
-Cc:     Gabriela David <ultracoolguy@disroot.org>,
-        Eugene Lepshy <fekz115@gmail.com>,
-        linux-hardening@vger.kernel.org,
-        Anton Bambura <jenneron@protonmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Adam Skladowski <a39.skl@gmail.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        Danila Tikhonov <JIaxyga@protonmail.com>,
-        Gianluca Boiano <morf3089@gmail.com>,
-        Sireesh Kodali <sireeshkodali1@gmail.com>,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        Julian Braha <julianbraha@gmail.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Alejandro Tafalla <atafalla@dnyon.com>
-X-Mailer: b4 0.10.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8569; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=Q1UcI4yYtZABwNd6z7oomNy8iSPUOyOpZsvZ3v/13tM=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBjkNveeNdMbYmM6Cam7fHWqgH9+/4+o46zAKo0If7L
- Yz7k+GeJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCY5Db3gAKCRBy2EO4nU3XVrvMD/
- 9VABY4nRxCU1hUCDfEZVO+gUgCWvSGT61+rXqMG0j6NvEdpHYfDHc6OMdWDHzztVa2TJY8M7jpB0l7
- CnIRJGd67ooEJUUZdz9arJta+jBcUej6v5RYMyN11KEbE1trT6GKiNO+qnSFG+3yG8BMaHnqry28/d
- PqfJCcRXbpbKiN3LRjrK8iq/CHsUDsDw6yko52GfhpbTZRsw4H0zFptWknECeYizZBpxHYUzJIEwx6
- 5vdHL8kfEHOU1wWXxbdG22thY1dROZIwVxasOfmPVOsJLT/986Wf12YnkhZpfkrbFb4BrDTZTZOo2M
- ++SgSPmV3u1Xsg1pr2NjEylecesvzX+tKT99fwWCCbwAKVV3xAFQhSjOCLg8BBiEJbohjW9CNJ1TRE
- khp2Wki3MNhEAStH2Ttwkb9meUf5QgkbheUzaluApRxb8ziWClEUbWP6CcwtwNVSuvOabz77b0q+Qm
- CoTsnkgBAcFSD6JrH8F3dMX0Jy+7jjiN8AjNoxIJTYYKvPBCiNYa2YxiUKV4vETmHsgFNdjnS3GdHJ
- PCN9/s4SR6840b2Rjto759VFr8ghcr/mRAGeWWTj492maPh1dVuOdj5SWKw58OUCPAUOrlPmpOA2Sb
- UjFnN2Iqvh8oKpf+q/G8nMDszk3n+82RGEi5bgBXjO0ZEVa1fMcE+9bRMvAA==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="llhJ/jVmylD8gtto"
+Content-Disposition: inline
+In-Reply-To: <20221129212901.1049085-1-luca@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Adam Skladowski <a39.skl@gmail.com>
 
-Add device tree for the Xiaomi Redmi Note 4X (mido) smartphone. This
-device is based on Snapdragon 625 (msm8953) SoC.
+--llhJ/jVmylD8gtto
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
----
- arch/arm64/boot/dts/qcom/Makefile                |   1 +
- arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts | 329 +++++++++++++++++++++++
- 2 files changed, 330 insertions(+)
+On Tue 2022-11-29 22:29:01, Luca Weiss wrote:
+> The current setting lives in bits 4:2 (as also defined by the mask) but
+> the current limit defines in the driver use bits 2:0 which should be
+> shifted over so they don't get masked out completely (except for 17.5mA
+> which became 10mA).
+>=20
+> Now checking /sys/kernel/debug/regmap/1-0068/registers shows that the
+> current limit is applied correctly and doesn't take the default b000 =3D
+> 42mA.
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index f5976bfc5ff0..2ae3cf2522b8 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -23,6 +23,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-samsung-serranove.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt88047.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8953-motorola-potter.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8953-xiaomi-daisy.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8953-xiaomi-mido.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8956-sony-xperia-loire-kugo.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8956-sony-xperia-loire-suzu.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8992-lg-bullhead-rev-10.dtb
-diff --git a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts
-new file mode 100644
-index 000000000000..ed95d09cedb1
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts
-@@ -0,0 +1,329 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/dts-v1/;
-+
-+#include "msm8953.dtsi"
-+#include "pm8953.dtsi"
-+#include "pmi8950.dtsi"
-+#include <dt-bindings/leds/common.h>
-+
-+/delete-node/ &cont_splash_mem;
-+/delete-node/ &qseecom_mem;
-+
-+/ {
-+	model = "Xiaomi Redmi Note 4X";
-+	compatible = "xiaomi,mido", "qcom,msm8953";
-+	chassis-type = "handset";
-+	qcom,msm-id = <293 0>;
-+	qcom,board-id = <11 0>;
-+
-+	aliases {
-+		mmc0 = &sdhc_1;
-+		mmc1 = &sdhc_2;
-+	};
-+
-+	speaker_amp: audio-amplifier {
-+		compatible = "awinic,aw8738";
-+		mode-gpios = <&tlmm 96 GPIO_ACTIVE_HIGH>;
-+		awinic,mode = <5>;
-+		sound-name-prefix = "Speaker Amp";
-+	};
-+
-+	chosen {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		framebuffer@90001000 {
-+			compatible = "simple-framebuffer";
-+			reg = <0 0x90001000 0 (1920 * 1080 * 3)>;
-+
-+			width = <1080>;
-+			height = <1920>;
-+			stride = <(1080 * 3)>;
-+			format = "r8g8b8";
-+
-+			power-domains = <&gcc MDSS_GDSC>;
-+
-+			clocks = <&gcc GCC_MDSS_AHB_CLK>,
-+				 <&gcc GCC_MDSS_AXI_CLK>,
-+				 <&gcc GCC_MDSS_VSYNC_CLK>,
-+				 <&gcc GCC_MDSS_MDP_CLK>,
-+				 <&gcc GCC_MDSS_BYTE0_CLK>,
-+				 <&gcc GCC_MDSS_PCLK0_CLK>,
-+				 <&gcc GCC_MDSS_ESC0_CLK>;
-+		};
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&gpio_key_default>;
-+
-+		key-volume-up {
-+			label = "Volume Up";
-+			gpios = <&tlmm 85 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEUP>;
-+		};
-+	};
-+
-+	reserved-memory {
-+		qseecom_mem: qseecom@84a00000 {
-+			reg = <0x0 0x84a00000 0x0 0x1900000>;
-+			no-map;
-+		};
-+
-+		cont_splash_mem: cont-splash@90001000 {
-+			reg = <0x0 0x90001000 0x0 (1080 * 1920 * 3)>;
-+			no-map;
-+		};
-+
-+		ramoops@9ff00000 {
-+			compatible = "ramoops";
-+			reg = <0x0 0x9ff00000 0x0 0x00100000>;
-+			console-size = <0x100000>;
-+		};
-+	};
-+
-+	vph_pwr: vph-pwr-regulator {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vph_pwr";
-+		regulator-min-microvolt = <3700000>;
-+		regulator-max-microvolt = <3700000>;
-+		regulator-always-on;
-+		regulator-boot-on;
-+	};
-+};
-+
-+&hsusb_phy {
-+	vdd-supply = <&pm8953_l3>;
-+	vdda-pll-supply = <&pm8953_l7>;
-+	vdda-phy-dpdm-supply = <&pm8953_l13>;
-+
-+	status = "okay";
-+};
-+
-+&i2c_2 {
-+	status = "okay";
-+
-+	led-controller@45 {
-+		compatible = "awinic,aw2013";
-+		reg = <0x45>;
-+
-+		vcc-supply = <&pm8953_l10>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@0 {
-+			reg = <0>;
-+			color = <LED_COLOR_ID_RED>;
-+			function = LED_FUNCTION_INDICATOR;
-+			led-max-microamp = <5000>;
-+		};
-+
-+		led@1 {
-+			reg = <1>;
-+			color = <LED_COLOR_ID_GREEN>;
-+			function = LED_FUNCTION_INDICATOR;
-+			led-max-microamp = <5000>;
-+		};
-+
-+		led@2 {
-+			reg = <2>;
-+			color = <LED_COLOR_ID_BLUE>;
-+			function = LED_FUNCTION_INDICATOR;
-+			led-max-microamp = <5000>;
-+		};
-+	};
-+};
-+
-+&i2c_3 {
-+	status = "okay";
-+
-+	touchscreen@38 {
-+		compatible = "edt,edt-ft5406";
-+		reg = <0x38>;
-+
-+		interrupt-parent = <&tlmm>;
-+		interrupts = <65 IRQ_TYPE_EDGE_FALLING>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&ts_int_active>;
-+
-+		reset-gpios = <&tlmm 64 GPIO_ACTIVE_LOW>;
-+
-+		vcc-supply = <&pm8953_l10>;
-+
-+		touchscreen-size-x = <1080>;
-+		touchscreen-size-y = <1920>;
-+	};
-+};
-+
-+&pm8953_resin {
-+	linux,code = <KEY_VOLUMEDOWN>;
-+	status = "okay";
-+};
-+
-+&rpm_requests {
-+	regulators {
-+		compatible = "qcom,rpm-pm8953-regulators";
-+
-+		vdd_s1-supply = <&vph_pwr>;
-+		vdd_s2-supply = <&vph_pwr>;
-+		vdd_s3-supply = <&vph_pwr>;
-+		vdd_s4-supply = <&vph_pwr>;
-+		vdd_s5-supply = <&vph_pwr>;
-+		vdd_s6-supply = <&vph_pwr>;
-+		vdd_s7-supply = <&vph_pwr>;
-+		vdd_l1-supply = <&pm8953_s3>;
-+		vdd_l2_l3-supply = <&pm8953_s3>;
-+		vdd_l4_l5_l6_l7_l16_l19-supply = <&pm8953_s4>;
-+		vdd_l8_l11_l12_l13_l14_l15-supply = <&vph_pwr>;
-+		vdd_l9_l10_l17_l18_l22-supply = <&vph_pwr>;
-+		vdd_l23-supply = <&pm8953_s3>;
-+
-+		pm8953_s1: s1 {
-+			regulator-min-microvolt = <863000>;
-+			regulator-max-microvolt = <1152000>;
-+		};
-+
-+		pm8953_s3: s3 {
-+			regulator-min-microvolt = <1224000>;
-+			regulator-max-microvolt = <1224000>;
-+		};
-+
-+		pm8953_s4: s4 {
-+			regulator-min-microvolt = <1896000>;
-+			regulator-max-microvolt = <2048000>;
-+		};
-+
-+		pm8953_l1: l1 {
-+			regulator-min-microvolt = <1000000>;
-+			regulator-max-microvolt = <1100000>;
-+		};
-+
-+		pm8953_l2: l2 {
-+			regulator-min-microvolt = <975000>;
-+			regulator-max-microvolt = <1225000>;
-+		};
-+
-+		pm8953_l3: l3 {
-+			regulator-min-microvolt = <925000>;
-+			regulator-max-microvolt = <925000>;
-+			regulator-allow-set-load;
-+		};
-+
-+		pm8953_l5: l5 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+		};
-+
-+		pm8953_l6: l6 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+			regulator-always-on;
-+		};
-+
-+		pm8953_l7: l7 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1900000>;
-+		};
-+
-+		pm8953_l8: l8 {
-+			regulator-min-microvolt = <2900000>;
-+			regulator-max-microvolt = <2900000>;
-+		};
-+
-+		pm8953_l9: l9 {
-+			regulator-min-microvolt = <3000000>;
-+			regulator-max-microvolt = <3300000>;
-+		};
-+
-+		pm8953_l10: l10 {
-+			regulator-min-microvolt = <2850000>;
-+			regulator-max-microvolt = <2850000>;
-+			regulator-always-on;
-+		};
-+
-+		pm8953_l11: l11 {
-+			regulator-min-microvolt = <2950000>;
-+			regulator-max-microvolt = <2950000>;
-+		};
-+
-+		pm8953_l12: l12 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <2950000>;
-+		};
-+
-+		pm8953_l13: l13 {
-+			regulator-min-microvolt = <3125000>;
-+			regulator-max-microvolt = <3125000>;
-+		};
-+
-+		pm8953_l16: l16 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+		};
-+
-+		pm8953_l17: l17 {
-+			regulator-min-microvolt = <2850000>;
-+			regulator-max-microvolt = <2850000>;
-+		};
-+
-+		pm8953_l19: l19 {
-+			regulator-min-microvolt = <1200000>;
-+			regulator-max-microvolt = <1350000>;
-+		};
-+
-+		pm8953_l22: l22 {
-+			regulator-min-microvolt = <2800000>;
-+			regulator-max-microvolt = <2850000>;
-+			regulator-always-on;
-+		};
-+
-+		pm8953_l23: l23 {
-+			regulator-min-microvolt = <975000>;
-+			regulator-max-microvolt = <1225000>;
-+		};
-+	};
-+};
-+
-+&sdhc_1 {
-+	vmmc-supply = <&pm8953_l8>;
-+	vqmmc-supply = <&pm8953_l5>;
-+
-+	status = "okay";
-+};
-+
-+&sdhc_2 {
-+	vmmc-supply = <&pm8953_l11>;
-+	vqmmc-supply = <&pm8953_l12>;
-+
-+	cd-gpios = <&tlmm 133 GPIO_ACTIVE_LOW>;
-+
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&sdc2_clk_on &sdc2_cmd_on &sdc2_data_on &sdc2_cd_on>;
-+	pinctrl-1 = <&sdc2_clk_off &sdc2_cmd_off &sdc2_data_off &sdc2_cd_off>;
-+
-+	status = "okay";
-+};
-+
-+&tlmm {
-+	gpio-reserved-ranges = <0 4>, <135 4>;
-+
-+	ts_int_active: ts-int-active-state {
-+		pins = "gpio65";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-pull-up;
-+	};
-+};
-+
-+&usb3 {
-+	status = "okay";
-+};
-+
-+&usb3_dwc3 {
-+	dr_mode = "peripheral";
-+};
+Thank you, applied.
 
--- 
-b4 0.10.1
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--llhJ/jVmylD8gtto
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCY5DxogAKCRAw5/Bqldv6
+8ibUAKCum3Kn5eVHgiC3K+xRT6VRbR3QiACgvWpVcAiDbap9igfW/1HEjaDvYac=
+=g+e4
+-----END PGP SIGNATURE-----
+
+--llhJ/jVmylD8gtto--
