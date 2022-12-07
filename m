@@ -2,111 +2,101 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1F3AC352A1
-	for <phone-devel@archiver.kernel.org>; Wed,  7 Dec 2022 11:33:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3EDCCC352A1
+	for <phone-devel@archiver.kernel.org>; Wed,  7 Dec 2022 13:41:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230095AbiLGLdF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 7 Dec 2022 06:33:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43466 "EHLO
+        id S229699AbiLGNln (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 7 Dec 2022 08:41:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230087AbiLGLdC (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Dec 2022 06:33:02 -0500
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E44661AF32;
-        Wed,  7 Dec 2022 03:32:59 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.west.internal (Postfix) with ESMTP id 426913200488;
-        Wed,  7 Dec 2022 06:32:56 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Wed, 07 Dec 2022 06:32:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=undef.tools; h=
-        cc:cc:content-transfer-encoding:date:date:from:from:in-reply-to
-        :message-id:mime-version:reply-to:sender:subject:subject:to:to;
-         s=fm1; t=1670412775; x=1670499175; bh=CndWv91ai/XOQYpVh5b+BeS2Z
-        BrDaMbdKpng8qtdwuU=; b=KCWVvlna4+Kb/EdluMoXPN+WtKMPd2F0iC/h6qFzV
-        5ekt6iS6PAnrlui8yC5eUwTswNKpZGNwy+ZgqJPAMjljhCRIhLJ9AVHEErV1FgYr
-        /d11+gKvO9tfCRMarMNr6bCKSBfbIEmLNJTIqsEHaPCMVn63de5i5pemxWSNGxnH
-        23MFkYwwPgcSK+gPcnf7DzA6k/E3O98aSlwKAcDDsfyTCrE1Y6/UKdw+ZHFGuMWe
-        mMoEohagvvRKGYN9qPu8xMmx2Av8fdgqBh3PqAcW7GQvHf3hcMVNe5R4YJcjdki7
-        Zc4P8E0A2lWbiBhg/Jn85ilNUEfAWR41crlTdaazC2SDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:message-id
-        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1670412775; x=1670499175; bh=CndWv91ai/XOQYpVh5b+BeS2ZBrDaMbdKpn
-        g8qtdwuU=; b=dcNfwfUVrYO0aBWmUSrvu2CLE2bZBGW9WFnw6bwpotVvBmNplAy
-        Qd0R08POgiSxoVtRaL5KCqHbZ42LZ+0FjoVxN26gBif4NTpnLLbGLkbh4vugPlH0
-        V/wEOVP/xFGqYuZHyBwbIj50XcvW/9QqP9VMe2kQEFmoc576MApYNbahomtQYkbq
-        fuxzahzGuGQXcU8R/ZYlmRvSMEMiCb7mjNQLskxMKBvxhlSt+MPmGJxACrnzUEqw
-        3oToofMgqV6WXdE+7dRdtmCejTGhK9IuDqs5J2VcrtPdwDyjQD35lBNwV9v07pMi
-        TQCX7ODUi1KIZnRUmsINba/NhXQxBEXZ0vQ==
-X-ME-Sender: <xms:53mQY38AQkAzdS2O3vK_pXw6NLH__WbWYtiZmP1uI0p7D6F09MWJIQ>
-    <xme:53mQYztslocxRwNro-fKw0cb5LXTH4E_OUMoGmnrDaL6ocLHhs-KpBw5sU9RYnwkn
-    k-H_t_uLatQsIJdDbg>
-X-ME-Received: <xmr:53mQY1BvDcjZ0dNrqI_d0YnuX6Y77QEmq7p0YOHNBzYiRKOlDVgOvyQpejc4sRfRkothykNF_7seoC3bdRZSqkB8DXQZ376N6k1sdSkxl7Dmc8wU-fA4X7Y2Zg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudekgdeftdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeflrghrrhgrhhcu
-    ifhoshgsvghllhcuoehkvghrnhgvlhesuhhnuggvfhdrthhoohhlsheqnecuggftrfgrth
-    htvghrnhepjeeuvefgjeefgefhhfefhedvffelteehkeekvdefheeiteeutdehveeghfeg
-    kefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkh
-    gvrhhnvghlsehunhguvghfrdhtohholhhs
-X-ME-Proxy: <xmx:53mQYzexXYKWueBPc4KR5tXbNJPInfd1OVDxLFIE4PzLKZgRhZtkiw>
-    <xmx:53mQY8OiE_xs8SO3x-tTjU0M79r684Q-N1zCWSPc318qtXO5sVio3g>
-    <xmx:53mQY1kbQp9ElL_8W7O_V84_DfsC8hWXfyQatuSSkoCxfFmQNYCZFw>
-    <xmx:53mQYzd7L7crYHjTTHdrtpeozG1CEtp68ORQ3mMg2D1_1crx7VKLIg>
-Feedback-ID: id76147eb:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 7 Dec 2022 06:32:52 -0500 (EST)
-From:   Jarrah Gosbell <kernel@undef.tools>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     phone-devel@vger.kernel.org, Jarrah Gosbell <kernel@undef.tools>
-Subject: [PATCH] arm64: dts: rk3399-pinephone-pro: reduce thermal limits
-Date:   Wed,  7 Dec 2022 11:32:13 +0000
-Message-Id: <20221207113212.8216-1-kernel@undef.tools>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S229497AbiLGNlm (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Dec 2022 08:41:42 -0500
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66E5D59FC5
+        for <phone-devel@vger.kernel.org>; Wed,  7 Dec 2022 05:41:37 -0800 (PST)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-3e78d07ab4fso115958867b3.9
+        for <phone-devel@vger.kernel.org>; Wed, 07 Dec 2022 05:41:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kn1p+IVvWqlI637G9jIMKYU716vuO0V62drRjoFhCPM=;
+        b=ycRReAt60k7aPQ/oMqIosB80F+w0oxBS0ApL+Wu0BnRGOyhEzd8mq4Bii2fKsR6dUM
+         yF4tYWCV5rmYESNrR0s5qJpzoaRrClXz6ukpUyrpf4jdJGFhEdkKfV63q+L7gUWxipHx
+         ijkgj8lUl82PQf8GSNnNHNeB1wWbHbyQnbGNmGvvJl4wMot9FaPkgnB2qD+B+gIZjlK6
+         GwVR3vdHfI4e2EBDsfVY3HghluaCMfJOLfTRHCqApj/zDbDDFY2/Pfl+sCiLgZnuWH9Q
+         zRpobDRSKZGAfb7oeVCKzOJOysmffqNSoIr700LuC/mynGwAxqOZWiRq7xz/ksbUEuQJ
+         zZeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kn1p+IVvWqlI637G9jIMKYU716vuO0V62drRjoFhCPM=;
+        b=oiMbMsFFh8Km35KGvpHwAN0w8/3ESgJTi99VM9gqYCPXZUb0BoA9gUR8ctCRLrFyy+
+         IXr5FG2TRMv7DFonyCFLkc2dNDkCTFfs8HL6GAWGFaLN44v13kaSvkzyh4AtQmgdbt1/
+         5Cup3UAWv3y1AXV2yf7cJGKd92zFo6Gs8/DzYZiY4ZsvQfZDDXwlqMWVmpow5eY0zHZw
+         CCTsNgDrmS+Qfw94wG7tRoj2LLFUzrA5kNZTCpEksYdbJZDa3T6MLrmFhs+LP3R+61+z
+         6vSFQRVPDuWU1iY58NKuUjpBWm3vPAtsX9VBrfW9W5yDf31m7Oqx/tIXBWP9h8arbXF3
+         c8Qw==
+X-Gm-Message-State: ANoB5pmVm84RgLNz81h64dc1ojj1q52/XDPX7YfQ0AcdpgP8tzu/Vacr
+        +hxDAejJfjq8nJBbGOeSkyn0AwB/1XGyErPWG5l81A==
+X-Google-Smtp-Source: AA0mqf6ZRKEbCIfBOSqFVWs/YQc+F3iFX8hpADfuE4QT0Qn6r2GO1O9/5PuSjN4SgDf8hLkvhvYLP7hWkWffLta01c0=
+X-Received: by 2002:a0d:d751:0:b0:3e8:76df:4afd with SMTP id
+ z78-20020a0dd751000000b003e876df4afdmr16195175ywd.380.1670420496630; Wed, 07
+ Dec 2022 05:41:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220921001630.56765-1-konrad.dybcio@somainline.org>
+ <13b8c67c-399c-d1a6-4929-61aea27aa57d@somainline.org> <0e65a8b2-0827-af1e-602c-76d9450e3d11@marcan.st>
+ <7fd077c5-83f8-02e2-03c1-900a47f05dc1@somainline.org> <CACRpkda3uryD6TOEaTi3pPX5No40LBWoyHR4VcEuKw4iYT0dqA@mail.gmail.com>
+ <20220922133056.eo26da4npkg6bpf2@bang-olufsen.dk> <87sfke32pc.fsf@kernel.org>
+ <4592f87a-bb61-1c28-13f0-d041a6e7d3bf@linaro.org> <CACRpkdax-3VVDd29iH51mfumakqM7jyEc8Pbb=AQwAgp2WsqFQ@mail.gmail.com>
+ <d03bd4d4-e4ef-681b-b4a5-02822e1eee75@linaro.org> <87fse76yig.fsf@kernel.org>
+ <fc2812b1-db96-caa6-2ecb-c5bb2c33246a@linaro.org> <87bkov6x1q.fsf@kernel.org>
+ <CACRpkdbpJ8fw0UsuHXGX43JRyPy6j8P41_5gesXOmitHvyoRwQ@mail.gmail.com>
+ <28991d2d-d917-af47-4f5f-4e8183569bb1@linaro.org> <c83d7496-7547-2ab4-571a-60e16aa2aa3d@broadcom.com>
+ <6e4f1795-08b5-7644-d1fa-102d6d6b47fb@linaro.org> <af489711-6849-6f87-8ea3-6c8216f0007b@broadcom.com>
+ <62566987-6bd2-eed3-7c2f-ec13c5d34d1b@gmail.com> <21fc5c0e-f880-7a14-7007-2d28d5e66c7d@linaro.org>
+ <CACRpkdbNssF5c7oJnm-EbjAJnD25kv2V7wp+TCKQZnVHJsni-g@mail.gmail.com> <184eb88b1b8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <184eb88b1b8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 7 Dec 2022 14:42:53 +0100
+Message-ID: <CACRpkdYzRFYMMydtSGiPLWiLywt9jtY89vPz8cdZcvwczo5=dA@mail.gmail.com>
+Subject: Re: [PATCH v2] brcmfmac: Add support for BCM43596 PCIe Wi-Fi
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Arend Van Spriel <aspriel@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        =?UTF-8?Q?Alvin_=C5=A0ipraga?= <ALSI@bang-olufsen.dk>,
+        Hector Martin <marcan@marcan.st>, martin.botka@somainline.org,
+        angelogioacchino.delregno@somainline.org,
+        marijn.suijten@somainline.org, jamipkettunen@somainline.org,
+        Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Marek Vasut <marex@denx.de>,
+        "Zhao, Jiaqing" <jiaqing.zhao@intel.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-While this device uses the rk3399 it is also enclosed in a tight package
-and cooled through the screen and back case. The default rk3399 thermal
-limits can result in a burnt screen.
+On Wed, Dec 7, 2022 at 8:42 AM Arend Van Spriel
+<arend.vanspriel@broadcom.com> wrote:
 
-These lower limits have resulted in the existing burn not expanding and
-will hopefully result in future devices not experiencing the issue.
+> I am actually preparing series of firmware patches. As most chips are EOL
+> those are newer, but not recent.
 
-Signed-off-by: Jarrah Gosbell <kernel@undef.tools>
----
- arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts | 7 +++++++
- 1 file changed, 7 insertions(+)
+Excellent, I'll test them on my specimen and see what happens!
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-index 2e058c315025..fccc2b2f327d 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-@@ -83,6 +83,13 @@ vcc1v8_codec: vcc1v8-codec-regulator {
- 	};
- };
- 
-+&cpu_alert0 {
-+	temperature = <65000>;
-+};
-+&cpu_alert1 {
-+	temperature = <68000>;
-+};
-+
- &cpu_l0 {
- 	cpu-supply = <&vdd_cpu_l>;
- };
--- 
-2.35.1
-
+Yours,
+Linus Walleij
