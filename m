@@ -2,89 +2,111 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 627F3C3A5A7
-	for <phone-devel@archiver.kernel.org>; Thu,  8 Dec 2022 11:22:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DE7A9C4167B
+	for <phone-devel@archiver.kernel.org>; Fri,  9 Dec 2022 10:57:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229808AbiLHLWL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 8 Dec 2022 06:22:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50512 "EHLO
+        id S229735AbiLIK5B (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 9 Dec 2022 05:57:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229818AbiLHLVi (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Dec 2022 06:21:38 -0500
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A586A58BEE;
-        Thu,  8 Dec 2022 03:21:00 -0800 (PST)
-Received: from SoMainline.org (D57D4C6E.static.ziggozakelijk.nl [213.125.76.110])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id DF7083F3FA;
-        Thu,  8 Dec 2022 12:20:56 +0100 (CET)
-Date:   Thu, 8 Dec 2022 12:20:55 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        AngeloGioacchino Del Regno <kholk11@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        with ESMTP id S229521AbiLIK47 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Dec 2022 05:56:59 -0500
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14FB13A2D3;
+        Fri,  9 Dec 2022 02:56:58 -0800 (PST)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id 817355C0166;
+        Fri,  9 Dec 2022 05:56:57 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Fri, 09 Dec 2022 05:56:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=undef.tools; h=
+        cc:cc:content-transfer-encoding:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1670583417; x=1670669817; bh=w1
+        otl967u68MCBaOx0vm7u3myDK0ku2dIZUUldypgTc=; b=EDqduu2g4J9kHwUTOm
+        HUYvFTP/kNckyKbZDN17tGDkFbKUCactcbBjj0urUno+j5qtxR1DUAv9iOsdky81
+        yiJYZdWuy8LO3IYEfyEM9+bD3mat6Gyk2ugx7DnNvgM0MrKvC5YHoWlLkcCdmJ1Z
+        2Io44JVU7knnFvhXoNB9DIkAWtDlhzw2h8rfSGtRB9FTBja8y3VZuG/pDPSw1O3a
+        qi2P2ViLe1ha+WeJWtXMMviETJgTzciTF4R8IP3I4NJGF995CGRVP8NalHL6CiDS
+        fQLvK9A8GRFMEyFqxXn6a9OnbinMVUouAMwfcAT8wDLuddkqbZEJnTW2A7izscc8
+        WRcg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1670583417; x=1670669817; bh=w1otl967u68MC
+        BaOx0vm7u3myDK0ku2dIZUUldypgTc=; b=Oynndpa9pBgOJDn03WPWbz67HDr7r
+        NBH4HgtJV6X2Qna2havV8zbTtloQH2bUAXJhMSl1kMMG5wk8gLokCDIBNd7rYR/D
+        qLEem/1QuPN1IBmdhLJf3G3jiwH7zdzGSUxKM/O2huZ28KIVbU9MpKkxoodwZpwY
+        Nl3uEkYYrGKcoMIbSFMzzLbpC0hdRB+C3oJYOMoqfP7dzuoCBNTvYKNBQ5ILF+UW
+        5tiVuuF41WJciM1mpb+BFKWHLv89nWBHOO2Qo84ejtOBRdZuGapgXjUPRxH/J49L
+        X2VNcEaHz0H1YVlCQu69Du+jA7HxmJkpF2cfj/nFvoc5Pm4DX8FgPEK3A==
+X-ME-Sender: <xms:eBSTY-HzDkqUiBsliq1RjPs56jITtxNISzasTYwdFfqT365ZUgZ-fQ>
+    <xme:eBSTY_UY3DA1DI3y93hsqKq6j91_xPUNtan0QZgFnBXDYR8L1NPZsnM9sfv473ajA
+    r2_1IitUvFt24QBfDk>
+X-ME-Received: <xmr:eBSTY4IWX_t1UQiz-7vBLYBZgAGdy1RJ8ziFfIWTuOd_SxFjK7tWj3amXUwdtIizaJ7pMAQXr2MivTeDkvvLJMs6r7e9UYzbxueQrlS-ZoorlV6e9tR_Etta4w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrvddvgddvudcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeflrghrrhgr
+    hhcuifhoshgsvghllhcuoehkvghrnhgvlhesuhhnuggvfhdrthhoohhlsheqnecuggftrf
+    grthhtvghrnhepveejveefudehteegtedvveeutefgfeefleffuefhgfejvefgfefhkeef
+    jefhvdetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epkhgvrhhnvghlsehunhguvghfrdhtohholhhs
+X-ME-Proxy: <xmx:eBSTY4HNcDaih9SIKj8aLwmctCFCLT5TfoivoOeAhDnmUfuZ9JAZgw>
+    <xmx:eBSTY0Uq2RMFOwJviEhVInfyAQpWaVJGoZ44hxkk0tNXSNLt4L0Qsw>
+    <xmx:eBSTY7OZ890kWAPYVTIhaO_N0UnTpP8dBQ0edGNrtLsQ6c_J1Gp7wA>
+    <xmx:eRSTY4qj6LvWWu1HGucItYq6-Hp93WPcFQMFMRQHesln_g7WouRJ6A>
+Feedback-ID: id76147eb:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 9 Dec 2022 05:56:53 -0500 (EST)
+From:   Jarrah Gosbell <kernel@undef.tools>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>
-Subject: Re: [PATCH v3 2/2] arm64: dts: qcom: Add configuration for PMI8950
- peripheral
-Message-ID: <20221208112055.m7sqg3ysxzskqjp4@SoMainline.org>
-References: <20221101161801.1058969-1-luca@z3ntu.xyz>
- <20221106193722.j64xrhitdencrjxy@SoMainline.org>
- <20221202093658.vg6t2ptar2arh7hn@SoMainline.org>
- <2656622.mvXUDI8C0e@g550jk>
- <20221208101232.536i3cmjf4uk2z52@SoMainline.org>
- <36eb03e8-aace-f7ce-edc8-53715021c0ea@linaro.org>
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, Ondrej Jirman <megi@xff.cz>,
+        Jarrah Gosbell <kernel@undef.tools>
+Subject: [PATCH 2/2] dt-bindings: sound: rt5640: Allow to describe how LOUT is wired
+Date:   Fri,  9 Dec 2022 10:56:21 +0000
+Message-Id: <20221209105621.39237-2-kernel@undef.tools>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20221209105621.39237-1-kernel@undef.tools>
+References: <20221209105621.39237-1-kernel@undef.tools>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <36eb03e8-aace-f7ce-edc8-53715021c0ea@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-12-08 11:23:17, Krzysztof Kozlowski wrote:
-> On 08/12/2022 11:12, Marijn Suijten wrote:
-> > On 2022-12-04 17:19:05, Luca Weiss wrote:
-> >> On Freitag, 2. Dezember 2022 10:36:58 CET Marijn Suijten wrote:
-> >> [..]
-> >>
-> >> So the way this patch does it is good or does it need changes?
-> > 
-> > Except the typo(s?) pointed out in my first reply, this is good to go.
-> > 
-> > If we stick with generic adc-chan node names that should be documented
-> > in the bindings IMO, as it is currently only captured implicitly in the
-> > examples.  Krzysztof, what is your thought on this?
-> 
-> If I understand correctly, the outcome of other discussion [1] was to
-> use labels and generic node names.
+From: Ondrej Jirman <megi@xff.cz>
 
-The outcome was to use labels in the driver and disregard node names as
-the new fwnode API clobbers those names by including the @xx register
-bit.
+Depending on HW design, som boards may expect mono differential output
+on LOUT. Describe a property that enables it.
 
-(I'll follow up with Jonathan whether or not to remove the current
-fallback to node names, as [1] ended up discussing many different issues
-and nits)
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
+Signed-off-by: Jarrah Gosbell <kernel@undef.tools>
+---
+ Documentation/devicetree/bindings/sound/rt5640.txt | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> In such case the patch was correct
-> (except other comments).
+diff --git a/Documentation/devicetree/bindings/sound/rt5640.txt b/Documentation/devicetree/bindings/sound/rt5640.txt
+index ff1228713f7e..0c398581d52b 100644
+--- a/Documentation/devicetree/bindings/sound/rt5640.txt
++++ b/Documentation/devicetree/bindings/sound/rt5640.txt
+@@ -20,6 +20,9 @@ Optional properties:
+ - realtek,in3-differential
+   Boolean. Indicate MIC1/2/3 input are differential, rather than single-ended.
+ 
++- realtek,lout-differential
++  Boolean. Indicate LOUT output is differential, rather than stereo.
++
+ - realtek,ldo1-en-gpios : The GPIO that controls the CODEC's LDO1_EN pin.
+ 
+ - realtek,dmic1-data-pin
+-- 
+2.35.1
 
-As a consequence it _doesn't matter_ how nodes are named, and we _can_
-use generic node names.  My question for you is whether we should, and
-if we should lock that in via dt-bindings to guide everyone towards
-using labels (which i did _not_ do in the recently-landed PM8950 and
-PM6125, but will send followup for).
-
-> [1]
-> https://lore.kernel.org/linux-arm-msm/20221112162719.0ac87998@jic23-huawei/
-
-- Marijn
