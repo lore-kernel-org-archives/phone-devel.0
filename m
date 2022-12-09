@@ -2,151 +2,112 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4155C4332F
-	for <phone-devel@archiver.kernel.org>; Fri,  9 Dec 2022 19:35:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AD6BC4332F
+	for <phone-devel@archiver.kernel.org>; Fri,  9 Dec 2022 20:39:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229759AbiLITfj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 9 Dec 2022 14:35:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60352 "EHLO
+        id S229810AbiLIUjA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 9 Dec 2022 15:39:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbiLITfi (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Dec 2022 14:35:38 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACCF0ACB04;
-        Fri,  9 Dec 2022 11:35:36 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229626AbiLIUi7 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Dec 2022 15:38:59 -0500
+Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98D4AA4318;
+        Fri,  9 Dec 2022 12:38:57 -0800 (PST)
+Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5F581B828D5;
-        Fri,  9 Dec 2022 19:35:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B18EC433F2;
-        Fri,  9 Dec 2022 19:35:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1670614533;
-        bh=v2LTIozCIJDxxtrquMlOETLKuG0+ICdqDDcLSw5pjlg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=b0dy/WrkYoO7DEJNumDLdv+N0M0NN+t9HA8QsUhTK4lHH9GHXkCyGevjf26e6pwSi
-         A9I1ymbF0br0lhBgU9bMOiR5CEfFVB5oftI6thMjldwSykMPGG+s3P9BF3FGScFIvi
-         vEWtkiN566SQQi9Yn4IS/kuAZzy+mRAGRA3m97NN645Cghs3f0gj07xkRj1Ji4O6FF
-         QUYILJ4st9xbtIxCK0WYJjliMIjhuH85X6wWQd1OjXQEhSwOMSbWmAG2QkZ/oJpeo4
-         sz/rOjRxVWfo40P9plTvmWuSi8lFWyDs39Tq427WNAFARztpah/gxT7Eu+ZD8fQsGV
-         lMhqCy4P8ENwA==
-Date:   Fri, 9 Dec 2022 11:35:31 -0800
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Luca Weiss <luca.weiss@fairphone.com>,
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 349A63F1EB;
+        Fri,  9 Dec 2022 21:38:54 +0100 (CET)
+Date:   Fri, 9 Dec 2022 21:38:51 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        AngeloGioacchino Del Regno <kholk11@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: ufs: qcom: Add reg-names property for ICE
-Message-ID: <Y5OOA2+OuwgZ1i7B@sol.localdomain>
-References: <20221209-dt-binding-ufs-v1-0-8d502f0e18d5@fairphone.com>
- <24fa41d2-87d1-be19-af44-337784b0f0a4@linaro.org>
- <COXDTKRPPU1J.373YHYKBQIN38@otso>
- <a527720e-d4d9-6c90-f991-a5b123c4559b@linaro.org>
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>
+Subject: Re: [PATCH v3 2/2] arm64: dts: qcom: Add configuration for PMI8950
+ peripheral
+Message-ID: <20221209203851.sy37qqzczoaruuyb@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        AngeloGioacchino Del Regno <kholk11@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>
+References: <20221101161801.1058969-1-luca@z3ntu.xyz>
+ <36eb03e8-aace-f7ce-edc8-53715021c0ea@linaro.org>
+ <20221208112055.m7sqg3ysxzskqjp4@SoMainline.org>
+ <5740737.DvuYhMxLoT@g550jk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a527720e-d4d9-6c90-f991-a5b123c4559b@linaro.org>
+In-Reply-To: <5740737.DvuYhMxLoT@g550jk>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Dec 09, 2022 at 04:19:20PM +0100, Krzysztof Kozlowski wrote:
-> On 09/12/2022 16:11, Luca Weiss wrote:
-> > On Fri Dec 9, 2022 at 4:05 PM CET, Krzysztof Kozlowski wrote:
-> >> On 09/12/2022 15:29, Luca Weiss wrote:
-> >>> The code in ufs-qcom-ice.c needs the ICE reg to be named "ice". Add this
-> >>> in the bindings so the existing dts can validate successfully.
-> >>>
-> >>> Also sm8450 is using ICE since commit 276ee34a40c1 ("arm64: dts: qcom:
-> >>> sm8450: add Inline Crypto Engine registers and clock") so move the
-> >>> compatible to the correct if.
-> >>>
-> >>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> >>> ---
-> >>> (no cover subject)
-> >>>
-> >>> The only remaining validation issues I see is the following on sc8280xp-crd.dtb
-> >>> and sa8540p-ride.dtb:
-> >>>
-> >>>   Unevaluated properties are not allowed ('required-opps', 'dma-coherent' were unexpected)
-> >>>
-> >>> Maybe someone who knows something about this can handle this?
-> >>>
-> >>> And the patch adding qcom,sm6115-ufshc hasn't been applied yet.
-> >>> ---
-> >>>  Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 8 +++++++-
-> >>>  1 file changed, 7 insertions(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-> >>> index f2d6298d926c..58a2fb2c83c3 100644
-> >>> --- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-> >>> +++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-> >>> @@ -102,7 +102,6 @@ allOf:
-> >>>                - qcom,sc8280xp-ufshc
-> >>>                - qcom,sm8250-ufshc
-> >>>                - qcom,sm8350-ufshc
-> >>> -              - qcom,sm8450-ufshc
-> >>>      then:
-> >>>        properties:
-> >>>          clocks:
-> >>> @@ -130,6 +129,7 @@ allOf:
-> >>>                - qcom,sdm845-ufshc
-> >>>                - qcom,sm6350-ufshc
-> >>>                - qcom,sm8150-ufshc
-> >>> +              - qcom,sm8450-ufshc
-> >>>      then:
-> >>>        properties:
-> >>>          clocks:
-> >>> @@ -149,6 +149,12 @@ allOf:
-> >>>          reg:
-> >>>            minItems: 2
-> >>>            maxItems: 2
-> >>> +        reg-names:
-> >>
-> >> There are no reg-names in top-level, so it's surprising to see its
-> >> customized here. It seems no one ever documented that usage...
+On 2022-12-09 17:54:50, Luca Weiss wrote:
+> On Donnerstag, 8. Dezember 2022 12:20:55 CET Marijn Suijten wrote:
+> > On 2022-12-08 11:23:17, Krzysztof Kozlowski wrote:
+> > > On 08/12/2022 11:12, Marijn Suijten wrote:
+> > > > On 2022-12-04 17:19:05, Luca Weiss wrote:
+> > > >> On Freitag, 2. Dezember 2022 10:36:58 CET Marijn Suijten wrote:
+> > > >> [..]
+> > > >> 
+> > > >> So the way this patch does it is good or does it need changes?
+> > > > 
+> > > > Except the typo(s?) pointed out in my first reply, this is good to go.
+> > > > 
+> > > > If we stick with generic adc-chan node names that should be documented
+> > > > in the bindings IMO, as it is currently only captured implicitly in the
+> > > > examples.  Krzysztof, what is your thought on this?
+> > > 
+> > > If I understand correctly, the outcome of other discussion [1] was to
+> > > use labels and generic node names.
 > > 
-> > From what I can tell, from driver side all devices not using ICE don't
-> > need reg-names, only the "ice" reg is referenced by name in the driver.
+> > The outcome was to use labels in the driver and disregard node names as
+> > the new fwnode API clobbers those names by including the @xx register
+> > bit.
 > > 
-> > I didn't add it top-level because with only one reg I think we're not
-> > supposed to use reg-names, right?
+> > (I'll follow up with Jonathan whether or not to remove the current
+> > fallback to node names, as [1] ended up discussing many different issues
+> > and nits)
+> > 
+> > > In such case the patch was correct
+> > > (except other comments).
+> > 
+> > As a consequence it _doesn't matter_ how nodes are named, and we _can_
+> > use generic node names.  My question for you is whether we should, and
+> > if we should lock that in via dt-bindings to guide everyone towards
+> > using labels (which i did _not_ do in the recently-landed PM8950 and
+> > PM6125, but will send followup for).
 > 
-> And you still won't need to use. Yet property should be rather described
-> in top-level which also will unify the items here (so no different
-> 2-item reg-names in variants).
+> FYI the patch has been merged already and is now in linux-next
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/arch/arm64/boot/dts/qcom/pmi8950.dtsi?id=0d97fdf380b478c358c94f50f1b942e87f407b9b
 > 
-> Just add it to top-level with minItems: 1 and per variant customize:
-> 1. maxItems: 1
-> 2. minItems: 2 + required
-> 
-> The "required" is a bit questionable... this was never added by Eric to
-> the bindings. Driver support and DTS were added completely skipping
-> bindings...
-> 
+> If you have any changes that need to be done please send a follow-up patch.
 
-Sorry about that.  At the time
-(https://lore.kernel.org/linux-scsi/20200722051143.GU388985@builder.lan/T/#t)
-I didn't know there was a Documentation file that should have been updated.
+Unfortunately saw that today as well, well after sending this reply.  I
+would've loved to correct the pmi8950_gpio label _gpios before someone
+starts relying on it in followup patches.
 
-The UFS core assumes that the reg at index 0 is the UFS standard registers.
-It is not referenced by name.
+Fixing the v -> mv typo isn't hard though, I'll send a followup patch
+regardless.
 
-ufs-qcom already had an optional reg at index 1.  I needed to add another
-optional reg.  So I made the regs at index 1 and later be optional named regs:
-dev_ref_clk_ctrl_mem and ice.  That seemed better than hardcoding the indices.
-
-Is it causing a problem that the UFS standard reg at index 0 is being mixed with
-named regs in the same list?
-
-- Eric
+- Marijn
