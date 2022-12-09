@@ -2,149 +2,163 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 989D1C04FDE
-	for <phone-devel@archiver.kernel.org>; Fri,  9 Dec 2022 15:07:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F1E3C04FDE
+	for <phone-devel@archiver.kernel.org>; Fri,  9 Dec 2022 15:12:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbiLIPHM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 9 Dec 2022 10:07:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56770 "EHLO
+        id S230094AbiLIPMS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 9 Dec 2022 10:12:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230231AbiLIPGb (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Dec 2022 10:06:31 -0500
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5016C87412
-        for <phone-devel@vger.kernel.org>; Fri,  9 Dec 2022 07:05:53 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id h10so5182172ljk.11
-        for <phone-devel@vger.kernel.org>; Fri, 09 Dec 2022 07:05:53 -0800 (PST)
+        with ESMTP id S230284AbiLIPMD (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Dec 2022 10:12:03 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85272DF12
+        for <phone-devel@vger.kernel.org>; Fri,  9 Dec 2022 07:12:01 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id a16so3459968edb.9
+        for <phone-devel@vger.kernel.org>; Fri, 09 Dec 2022 07:12:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Eb+dzXKfFxLhKYjaGwUiIKvSA18uKRx27pJ/FmHwtEU=;
-        b=UaqEE2V7XWYGetw5n3TULGb3MoulZySHOYQ45kKm+9Eji+t1wo6MYUsW1LCCKdPiPY
-         Vu266DfbJXMo4NoR0PIPAf0q2mOUQQ0RzXKII/DP5rY/X7uagyLXuOCAZ/LIRCbMWkVD
-         KHE0DkBTFDkR9uIFeVYbEl7pJzQazF6EKMmuQyiP9Ktjxd+KxzAKbUj3M8Ha/IIGvVP/
-         UqHY/ruIR5qS9yi2gb/bpnCK86jZmpJhHENjwoSGG+GYN4OVQB8kPmFdHoLVIk5xwRNB
-         YH1m3qyByyMey0nxj7P+MukceClfttKeE3lSNC9BfGc+JFoXsYmUIrS4/89ZAatwcjmY
-         3CMw==
+        d=fairphone.com; s=fair;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JMRUIEtDFVbh5l53hZeff63KpfZmDW51Pm8OPZ9FBT8=;
+        b=byM8H3VPuoJUuOgVb2ndN5rvOI+J/fj4UVR/F9j0gPvlcE+4ieTrdLaiAjmdSJjCWq
+         jCwo3zjPh3miq7zWXsdp4brR4rl1V/KtXgIah5R4y40jKGwg+XRjFJKcqBcK+x/pBKQr
+         uTKKjCBGQy+H8le08kRza4b6Ee58MgMaDVaIoSxsidW5jUatWVREYN/QSTbvS423lUY5
+         FGNhN4vtEKivFnqhDG7tKgEzA7EMYrVyA3hn2nAOXnu/56xiN7jdWU/DfhiD6AozQE8D
+         vcmwu+yIWptcvgkdFAeowc+6Z3wXCYUPSsz+C+ZewIZhbo8vTjSpvQyNv1NRjI2VuYSL
+         bArg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Eb+dzXKfFxLhKYjaGwUiIKvSA18uKRx27pJ/FmHwtEU=;
-        b=w+SS4imMmKfYbl9W3rmyMsPZAbAqqcJWnY5erzGnG/Rkj0Y8EFQCotAeA7didfzd9F
-         usk2JTrd+DBDlfI2AC6EJ7Nkhe5x3FNYoez8yUNYuc9KIfgFlX7Uff6ofQCPeADkk8c7
-         Ud5lO/tjflqybGnietXHeakoKhz0cehjlJGaM50IOtZeoUD9f5Ys3/MHbF45Ns/ul7Td
-         bUHN2GScm0NIDN4sLjwBguP6dZ8E3y4JVh/gX7X6JeNBobsU6B4rPhtvd8BJ9o5XVHHj
-         X+u/mqkpH62xtiwBbiwDSpxOrmxycTAfKJCmDXDrrswx3f7xTcxTEmj57aDMhKrQx2mJ
-         3pfw==
-X-Gm-Message-State: ANoB5plI9a4PhjHuFgRYpvqoSr2aCRAlFi2wVPycRpnSwcBATTMrtpmf
-        9NGOM79uSCJmqqXeT0bOAKJSO700TmUIW06m+a4=
-X-Google-Smtp-Source: AA0mqf7t6HyCvjQbRm6lmUFP6R5mKqPRb4U9dlf9l9mifKdgF30nTCo9XZGo4dm2k9UFBPiA/WTurQ==
-X-Received: by 2002:a05:651c:94:b0:27a:7a8:c54b with SMTP id 20-20020a05651c009400b0027a07a8c54bmr1902929ljq.45.1670598351535;
-        Fri, 09 Dec 2022 07:05:51 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id r23-20020a2eb617000000b00279cbcfd7dbsm245033ljn.30.2022.12.09.07.05.50
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=JMRUIEtDFVbh5l53hZeff63KpfZmDW51Pm8OPZ9FBT8=;
+        b=Gv+u/sbpH/5XGTiSjmYFFh4rU+dTnYR2SbAKlhaXiQ+q6DMdfCtbHeWZLq5JCzS3VH
+         QYhijzAva4SxqYgftyhE3g0zg/FrwHp0zrCFly6wi3J1X2bnU2UnjMnbeVyCokYf+m7R
+         ITM/ri4H8kfYajM2yLJwiAJSQxaVXJc4cOYGsFopo8VhC2V5W2tUK33Kvhr0qzdQU2lW
+         1nacyR51dA+3zki20DH15iXr5KtWs+f0qXO2yD3JnC3s5bLggMo/pJGY8YK/+y+/QqnQ
+         kkSz+DVNUv4Q0wc8DoLxAtVL32yWBsKOZi2czYTEQsn48jugnNjd3HugfOA2tZAhO81S
+         UDqA==
+X-Gm-Message-State: ANoB5pnBV55O5JIxslgC5m6q5we1smlwClBIW3kYv9r8ACrtsffAxD5Y
+        Obca5v8IuKg75nsPRtHE2OMbkQ==
+X-Google-Smtp-Source: AA0mqf5uLbgwYs3wcM3IJU3+X3Hjrj+LW1wtLk6sCxpNH/7ZZ3jTzODTbIQJJZ0Lwd6I1u2tLlpJiQ==
+X-Received: by 2002:a05:6402:2484:b0:45c:835b:8fa3 with SMTP id q4-20020a056402248400b0045c835b8fa3mr6041581eda.14.1670598720098;
+        Fri, 09 Dec 2022 07:12:00 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id z4-20020aa7c644000000b0046b471596e6sm732404edr.57.2022.12.09.07.11.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Dec 2022 07:05:50 -0800 (PST)
-Message-ID: <24fa41d2-87d1-be19-af44-337784b0f0a4@linaro.org>
-Date:   Fri, 9 Dec 2022 16:05:49 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH] dt-bindings: ufs: qcom: Add reg-names property for ICE
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221209-dt-binding-ufs-v1-0-8d502f0e18d5@fairphone.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221209-dt-binding-ufs-v1-0-8d502f0e18d5@fairphone.com>
+        Fri, 09 Dec 2022 07:11:59 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date:   Fri, 09 Dec 2022 16:11:59 +0100
+Message-Id: <COXDTKRPPU1J.373YHYKBQIN38@otso>
+Cc:     <linux-arm-msm@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] dt-bindings: ufs: qcom: Add reg-names property for ICE
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+        "Alim Akhtar" <alim.akhtar@samsung.com>,
+        "Avri Altman" <avri.altman@wdc.com>,
+        "Bart Van Assche" <bvanassche@acm.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>
+X-Mailer: aerc 0.13.0
+References: <20221209-dt-binding-ufs-v1-0-8d502f0e18d5@fairphone.com>
+ <24fa41d2-87d1-be19-af44-337784b0f0a4@linaro.org>
+In-Reply-To: <24fa41d2-87d1-be19-af44-337784b0f0a4@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 09/12/2022 15:29, Luca Weiss wrote:
-> The code in ufs-qcom-ice.c needs the ICE reg to be named "ice". Add this
-> in the bindings so the existing dts can validate successfully.
-> 
-> Also sm8450 is using ICE since commit 276ee34a40c1 ("arm64: dts: qcom:
-> sm8450: add Inline Crypto Engine registers and clock") so move the
-> compatible to the correct if.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> (no cover subject)
-> 
-> The only remaining validation issues I see is the following on sc8280xp-crd.dtb
-> and sa8540p-ride.dtb:
-> 
->   Unevaluated properties are not allowed ('required-opps', 'dma-coherent' were unexpected)
-> 
-> Maybe someone who knows something about this can handle this?
-> 
-> And the patch adding qcom,sm6115-ufshc hasn't been applied yet.
-> ---
->  Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-> index f2d6298d926c..58a2fb2c83c3 100644
-> --- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-> +++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-> @@ -102,7 +102,6 @@ allOf:
->                - qcom,sc8280xp-ufshc
->                - qcom,sm8250-ufshc
->                - qcom,sm8350-ufshc
-> -              - qcom,sm8450-ufshc
->      then:
->        properties:
->          clocks:
-> @@ -130,6 +129,7 @@ allOf:
->                - qcom,sdm845-ufshc
->                - qcom,sm6350-ufshc
->                - qcom,sm8150-ufshc
-> +              - qcom,sm8450-ufshc
->      then:
->        properties:
->          clocks:
-> @@ -149,6 +149,12 @@ allOf:
->          reg:
->            minItems: 2
->            maxItems: 2
-> +        reg-names:
+On Fri Dec 9, 2022 at 4:05 PM CET, Krzysztof Kozlowski wrote:
+> On 09/12/2022 15:29, Luca Weiss wrote:
+> > The code in ufs-qcom-ice.c needs the ICE reg to be named "ice". Add thi=
+s
+> > in the bindings so the existing dts can validate successfully.
+> >=20
+> > Also sm8450 is using ICE since commit 276ee34a40c1 ("arm64: dts: qcom:
+> > sm8450: add Inline Crypto Engine registers and clock") so move the
+> > compatible to the correct if.
+> >=20
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> > (no cover subject)
+> >=20
+> > The only remaining validation issues I see is the following on sc8280xp=
+-crd.dtb
+> > and sa8540p-ride.dtb:
+> >=20
+> >   Unevaluated properties are not allowed ('required-opps', 'dma-coheren=
+t' were unexpected)
+> >=20
+> > Maybe someone who knows something about this can handle this?
+> >=20
+> > And the patch adding qcom,sm6115-ufshc hasn't been applied yet.
+> > ---
+> >  Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 8 +++++++-
+> >  1 file changed, 7 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Docu=
+mentation/devicetree/bindings/ufs/qcom,ufs.yaml
+> > index f2d6298d926c..58a2fb2c83c3 100644
+> > --- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+> > +++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+> > @@ -102,7 +102,6 @@ allOf:
+> >                - qcom,sc8280xp-ufshc
+> >                - qcom,sm8250-ufshc
+> >                - qcom,sm8350-ufshc
+> > -              - qcom,sm8450-ufshc
+> >      then:
+> >        properties:
+> >          clocks:
+> > @@ -130,6 +129,7 @@ allOf:
+> >                - qcom,sdm845-ufshc
+> >                - qcom,sm6350-ufshc
+> >                - qcom,sm8150-ufshc
+> > +              - qcom,sm8450-ufshc
+> >      then:
+> >        properties:
+> >          clocks:
+> > @@ -149,6 +149,12 @@ allOf:
+> >          reg:
+> >            minItems: 2
+> >            maxItems: 2
+> > +        reg-names:
+>
+> There are no reg-names in top-level, so it's surprising to see its
+> customized here. It seems no one ever documented that usage...
 
-There are no reg-names in top-level, so it's surprising to see its
-customized here. It seems no one ever documented that usage...
+From what I can tell, from driver side all devices not using ICE don't
+need reg-names, only the "ice" reg is referenced by name in the driver.
 
-> +          items:
-> +            - const: std
-> +            - const: ice
-> +      required:
-> +        - reg-names
->  
->    - if:
->        properties:
-> 
-> ---
-> base-commit: f925116b24c0c42dc6d5ab5111c55fd7f74e8dc7
-> change-id: 20221209-dt-binding-ufs-2d7f64797ff2
-> 
+I didn't add it top-level because with only one reg I think we're not
+supposed to use reg-names, right?
+
+Regards
+Luca
+
+>
+> > +          items:
+> > +            - const: std
+> > +            - const: ice
+> > +      required:
+> > +        - reg-names
+> > =20
+> >    - if:
+> >        properties:
+> >=20
+> > ---
+> > base-commit: f925116b24c0c42dc6d5ab5111c55fd7f74e8dc7
+> > change-id: 20221209-dt-binding-ufs-2d7f64797ff2
+> >=20
+> > Best regards,
+>
 > Best regards,
-
-Best regards,
-Krzysztof
+> Krzysztof
 
