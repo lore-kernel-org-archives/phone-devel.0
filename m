@@ -2,114 +2,94 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C67CBC04FDE
-	for <phone-devel@archiver.kernel.org>; Fri,  9 Dec 2022 11:08:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D55AAC4332F
+	for <phone-devel@archiver.kernel.org>; Fri,  9 Dec 2022 11:25:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229810AbiLILI5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 9 Dec 2022 06:08:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39284 "EHLO
+        id S229704AbiLILZY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 9 Dec 2022 06:25:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229573AbiLILI4 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Dec 2022 06:08:56 -0500
-Received: from formenos.hmeau.com (helcar.hmeau.com [216.24.177.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5469B3AC0A;
-        Fri,  9 Dec 2022 03:08:55 -0800 (PST)
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-        id 1p3bFJ-005glk-PB; Fri, 09 Dec 2022 19:08:50 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 09 Dec 2022 19:08:49 +0800
-Date:   Fri, 9 Dec 2022 19:08:49 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-crypto@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
-        Lionel Debieve <lionel.debieve@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>
-Subject: Re: [PATCH v3 0/4] crypto: stm32 - reuse for Ux500
-Message-ID: <Y5MXQSR7gd7xPUyC@gondor.apana.org.au>
-References: <20221203091518.3235950-1-linus.walleij@linaro.org>
+        with ESMTP id S229810AbiLILZW (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Dec 2022 06:25:22 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DAA06E574
+        for <phone-devel@vger.kernel.org>; Fri,  9 Dec 2022 03:25:21 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id j4so6603072lfk.0
+        for <phone-devel@vger.kernel.org>; Fri, 09 Dec 2022 03:25:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0K7eVJj4k3cMvSUFweS+f/J9GwqB4FTC28EsgFNd3e4=;
+        b=v8O3IindDPA/6bCVNb+vJbPGFFquksYTufkIL+Vc7fLkAd/9VzB6hOH2SxGv89qjVJ
+         cNK9uYg8Oy/rJtYZ/8G8LMuzRhp3Gid70zHybmHW1tZxmRozMR0cJNglctyaw17vBDgZ
+         +fzwQWVeI/oQsKm7SMm1faRESIHEDNiLz86aDkwC53wksXi4ccm+VpJJsbzCNj1fZ4iD
+         tjwfA1zH3m3vTQH0URH6ln7ISWtYQR2uIGmDXytFFNw0KOwKuHfI45v68zdyc4VpD9jB
+         2pNx580WFgQsamVQLtnQA3INsyxfKp5Es7Yezkp5xBefQc8FjwI9VJhqJWhzi5YXrMY2
+         hBKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0K7eVJj4k3cMvSUFweS+f/J9GwqB4FTC28EsgFNd3e4=;
+        b=MM/F2/nEFtJXr7WiJ8DN+eQbS0FnqmFytslWYVG/foa9ctbXJQhjTP43ZUxhXShnRG
+         K4QLOOAE333EC4laCvCOLsiimQkS2paykzfcxllkbv0Lg8uv2K0bZ5/fTNdnBEGNjJGB
+         1Ex7hsQVvf05qu0nB/59gi59qVI8cgTS2E2bm8AohcTc7dL2twjGAtuuATxMlXsdH4C/
+         /XBEpRcbWlVEe/3CPsSLg5FiL0uqan9YRpyxrZcaBsbvbP9JCcgfoLx0P87TMzpxTMnT
+         LbqXMSLAcWLnIKcKW+q7dYpWUVEJXJKnrem5zdseBlA2oLpZ5UiFrFpwI3uVY02bfia8
+         GoAw==
+X-Gm-Message-State: ANoB5pmVP8HpMQlhZ3rm5XlSQ6mAtNLQZXo1lr29LAfUrevAr9uctIvG
+        eseJgNt5gMyfzNxKRePNXvb7cA==
+X-Google-Smtp-Source: AA0mqf6LfW07j/W9B4V1vwkpcNXcjozq6HyoRYstlaUqh4lqn4eUXH8+9Cn1fFTwacZZFVk5UNKMVQ==
+X-Received: by 2002:a05:6512:150:b0:4b4:f212:617c with SMTP id m16-20020a056512015000b004b4f212617cmr1274955lfo.1.1670585119603;
+        Fri, 09 Dec 2022 03:25:19 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id e12-20020ac2546c000000b00497a0ea92desm218963lfn.135.2022.12.09.03.25.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Dec 2022 03:25:19 -0800 (PST)
+Message-ID: <79d72425-2188-0a87-4ad3-a334df081005@linaro.org>
+Date:   Fri, 9 Dec 2022 12:25:18 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221203091518.3235950-1-linus.walleij@linaro.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [PATCH 2/2] dt-bindings: sound: rt5640: Allow to describe how
+ LOUT is wired
+Content-Language: en-US
+To:     Jarrah Gosbell <kernel@undef.tools>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     phone-devel@vger.kernel.org, Ondrej Jirman <megi@xff.cz>
+References: <20221209105621.39237-1-kernel@undef.tools>
+ <20221209105621.39237-2-kernel@undef.tools>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221209105621.39237-2-kernel@undef.tools>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Dec 03, 2022 at 10:15:14AM +0100, Linus Walleij wrote:
-> Experimenting by taking some small portions of the Ux500
-> CRYP driver and adding to the STM32 driver, it turns out
-> we can support both platforms with the more modern STM32
-> driver.
+On 09/12/2022 11:56, Jarrah Gosbell wrote:
+> From: Ondrej Jirman <megi@xff.cz>
 > 
-> ChanegLog v2->v3:
-> - Fix a kerneldoc warning.
-> - Collect ACKs.
-> ChangeLog v1->v2:
-> - Minor changes to the base patches, see per-patch
->   ChangeLog.
+> Depending on HW design, som boards may expect mono differential output
+> on LOUT. Describe a property that enables it.
 > 
-> Upsides:
-> 
-> - We delete ~2400 lines of code and 8 files with intact
->   crypto support for Ux500 and not properly maintained
->   and supported.
-> 
-> - The STM32 driver is more modern and compact thanks to
->   using things like the crypto engine.
-> 
-> Caveats:
-> 
-> - The STM32 driver does not support DMA. On the U8500
->   this only works with AES (DES support is broken with
->   DMA). If this is desired to be kept I can migrate
->   it to the STM32 driver as well.
-> 
-> I have looked at doing the same for the Ux500 hash, which
-> is related but I am reluctant about this one, because
-> the Ux500 hardware has no interrupt and only supports
-> polling. I have a series of modernizations for that
-> driver that I have worked on and will think about how
-> to move forward.
-> 
-> 
-> Linus Walleij (4):
->   dt-bindings: crypto: Let STM32 define Ux500 CRYP
->   crypto: stm32 - enable drivers to be used on Ux500
->   crypto: stm32/cryp - enable for use with Ux500
->   crypto: ux500/cryp - delete driver
-> 
->  .../bindings/crypto/st,stm32-cryp.yaml        |   19 +
->  drivers/crypto/Makefile                       |    2 +-
->  drivers/crypto/stm32/Kconfig                  |    4 +-
->  drivers/crypto/stm32/stm32-cryp.c             |  413 ++++-
->  drivers/crypto/ux500/Kconfig                  |   10 -
->  drivers/crypto/ux500/Makefile                 |    1 -
->  drivers/crypto/ux500/cryp/Makefile            |   10 -
->  drivers/crypto/ux500/cryp/cryp.c              |  394 ----
->  drivers/crypto/ux500/cryp/cryp.h              |  315 ----
->  drivers/crypto/ux500/cryp/cryp_core.c         | 1600 -----------------
->  drivers/crypto/ux500/cryp/cryp_irq.c          |   45 -
->  drivers/crypto/ux500/cryp/cryp_irq.h          |   31 -
->  drivers/crypto/ux500/cryp/cryp_irqp.h         |  125 --
->  drivers/crypto/ux500/cryp/cryp_p.h            |  122 --
->  14 files changed, 344 insertions(+), 2747 deletions(-)
->  delete mode 100644 drivers/crypto/ux500/cryp/Makefile
->  delete mode 100644 drivers/crypto/ux500/cryp/cryp.c
->  delete mode 100644 drivers/crypto/ux500/cryp/cryp.h
->  delete mode 100644 drivers/crypto/ux500/cryp/cryp_core.c
->  delete mode 100644 drivers/crypto/ux500/cryp/cryp_irq.c
->  delete mode 100644 drivers/crypto/ux500/cryp/cryp_irq.h
->  delete mode 100644 drivers/crypto/ux500/cryp/cryp_irqp.h
->  delete mode 100644 drivers/crypto/ux500/cryp/cryp_p.h
-> 
-> -- 
-> 2.38.1
+> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+> Signed-off-by: Jarrah Gosbell <kernel@undef.tools>
+> ---
+>  Documentation/devicetree/bindings/sound/rt5640.txt | 3 +++
+>  1 file changed, 3 insertions(+)
 
-All applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
+
