@@ -2,111 +2,140 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B453C4708D
-	for <phone-devel@archiver.kernel.org>; Sat, 10 Dec 2022 17:05:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 615D6C001B2
+	for <phone-devel@archiver.kernel.org>; Sun, 11 Dec 2022 14:02:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229722AbiLJRFg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 10 Dec 2022 12:05:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58314 "EHLO
+        id S230057AbiLKOCh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 11 Dec 2022 09:02:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229733AbiLJRFg (ORCPT
+        with ESMTP id S229475AbiLKOCg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 10 Dec 2022 12:05:36 -0500
-Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9F7B15A1B;
-        Sat, 10 Dec 2022 09:05:34 -0800 (PST)
-Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Sun, 11 Dec 2022 09:02:36 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23A28DF6B;
+        Sun, 11 Dec 2022 06:02:35 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id DDAFD1F887;
-        Sat, 10 Dec 2022 18:05:32 +0100 (CET)
-Date:   Sat, 10 Dec 2022 18:05:31 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B8DBC60DC9;
+        Sun, 11 Dec 2022 14:02:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C67C433F0;
+        Sun, 11 Dec 2022 14:02:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1670767354;
+        bh=qbLdcwHUSakHdBthMKlWZnGRsrtDuG/VUTavNAVkCbU=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=S/AP9d93h1gVNufHPENhK8MQiLLfvo81gOZUBHnabPS/zwKMbxLoZkAG1ytQkaJXa
+         oSh/GvVIs/U94x9gd95SSS6G21HqazC+AMporVhhEaHZ8EnM4m+KjHgHKRey7E9bu6
+         rbqFWrTgny0leNUkgARaE54PTyj/UzcyG1y+1OSJakjHXbiwQkIuaZoyktu3k4iJbP
+         6CkShtbVoZj6z6tsgG8gA7UqRSEPf2YcQjnDLIvWgFBDSMSACUW5Mn9aDCmJ17vg0Z
+         08HeScdMr06j99op26cW7iQfijNXyYId/Mx+J2nQmEaZkANQGDn3+ryT7ulNb0TVOt
+         Y6du7WsIdvy9g==
+Date:   Sun, 11 Dec 2022 14:15:26 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] arm64: dts: qcom: Use plural _gpios node label for
- PMIC gpios
-Message-ID: <20221210170531.pxoux2kje4vgor5y@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221209220450.1793421-1-marijn.suijten@somainline.org>
- <714ac62a-7bab-e16e-e3b6-bdd86e422699@linaro.org>
+Subject: Re: [RFC PATCH] arm64: dts: qcom: Use labels with generic node
+ names for ADC channels
+Message-ID: <20221211141526.463f43e6@jic23-huawei>
+In-Reply-To: <20221210165434.3hhen5mgtvflghks@SoMainline.org>
+References: <20221209215308.1781047-1-marijn.suijten@somainline.org>
+        <3d5b29f3-8d8d-93a7-a485-5261e2d8891d@linaro.org>
+        <20221210165434.3hhen5mgtvflghks@SoMainline.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.35; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <714ac62a-7bab-e16e-e3b6-bdd86e422699@linaro.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-12-10 11:50:51, Krzysztof Kozlowski wrote:
-> On 09/12/2022 23:04, Marijn Suijten wrote:
-> > The gpio node in PMIC dts'es define access to multiple GPIOs.  Most Qcom
-> > PMICs were already using the plural _gpios label to point to this node,
-> > but a few PMICs were left behind including the recently-pulled
-> > pm(i)8950.
+On Sat, 10 Dec 2022 17:54:34 +0100
+Marijn Suijten <marijn.suijten@somainline.org> wrote:
+
+> On 2022-12-10 12:02:03, Krzysztof Kozlowski wrote:
+> > On 09/12/2022 22:53, Marijn Suijten wrote:  
+> > > As discussed in [1] the DT should use labels to describe ADC channels,
+> > > with generic node names, since the IIO drivers now moved to the fwnode
+> > > API where node names include the `@xx` address suffix.
+> > > 
+> > > Especially for the ADC5 driver that uses extend_name - which cannot be
+> > > removed for compatibility reasons - this results in sysfs files with the
+> > > @xx name that wasn't previously present, and leads to an unpleasant
+> > > file-browsing experience.
+> > > 
+> > > Also remove all the unused channel labels in pm660.dtsi.
+> > > 
+> > > [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
+> > > 
+> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>  
 > > 
-> > Rename it from *_gpio to *_gpios for pm6125, pm6150(l), pm8005,
-> > pm(i)8950, and pm(i)8998.
-> > 
-> > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > 
-> > ---
-> > 
-> > This was brought up for discussion in [1] but hasn't seen any relevant
-> > reply, unfortunately.
+> > The talk was in context of bindings, not about changing all existing
+> > users thus affecting DTS.  
 > 
-> This is just a label, it does not matter. Why changing all exisitng
-> files? I don't think it was a part of previous discussions...
+> And as a consequence, DTS.  The already-merged transition from OF to
+> fwnode resulted in `@xx` to be included in the ADC channel name - and in
+> the case of ADC5 even in sysfs filenames - so this seems like a
+> necessary change to make.
 
-I would've let it slide if it was corrected in the patch that was
-reviewed, but since that didn't happen it wouldn't make sense to only
-correct pmi8950 (and the other bindings submitted or co-authored by
-myself, such as pm6125 and pm8950) for "consistency" - that wouldn't be
-consistent at all.
+Gah. We missed that at the time.  Arguably we should first fix that
+particular issue as we will have lots of old DT out there.
+(add a bit of code to strip the @xxx bit from that particular usecase).
+It gets tricky because now we might have code relying on the new
+broken behavior.
 
-To me (and supposedly, to other as well) it does matter.  People keep
-copy-pasting these to to add a newer PMIC and sooner rather than later
-we'll end up with both conventions.
+> 
+> At the very least I would have changed the bindings submitted or
+> co-authored /by myself/ since I initially decided to rely on this (now
+> obviously) wrong behaviour, and should have used labels from the get go.
+> 
+> > What's more, to me "skin-temp-thermistor" is
+> > quite generic name, maybe "thermistor" would be more and reflects the
+> > purpose of the node, so it was more or less fine.  
+> 
+> Are you suggesting to not use "adc-chan", but "thermistor" as node name
+> (and still use skin_temp as label)?  Or to keep the fully-written-out
+> "thermistor" word in the label?
+> 
+> > Anyway I am against such changes without expressing it in the bindings.  
+> 
+> As expressed in [1] I suggested and am all for locking this change in
+> via bindings, and you are right to expect that to have gone paired with
+> this patch.
+> 
+> I'll submit that as the leading patch to this in v2, with the wildcard
+> pattern changed to adc-chan (or something else pending the discussion
+> above), and should I then also require the label property via `label:
+> true`?
+> 
+> [1]: https://lore.kernel.org/linux-arm-msm/20221208101232.536i3cmjf4uk2z52@SoMainline.org/
 
-Regardless, labels are already a mess all over the place, and unless we
-can steer them with bindings or written conventions we're unlikely to
-ever clean that up.
+So the 'fun' here is what to do with old DTS as we need to support that
+even if we update the binding docs and all in kernel users.
 
-> To me it is unneeded churn.
+Probably right option in driver is:
+a) Use label if present
+b) Use node name if it's not adc-chan but strip the @xxx off it.
+c) return an error.
 
-Just like -state and -pins suffix, sometimes even the unnecessary
--pins-pins suffix?  To me that is the same kind of churn, and *it is
-needed* to keep the bindings somewhat clean, consistent and digestible.
-In this specific case it's not even that many changes, IMO.
+p.s. Please add iio@vger.kernel.org to future versions of this. If nothing
+else I tend to lose direct emails about IIO stuff as they aren't in the
+relevant patchwork instance.
 
-That being said my limited hobby time is probably too valuable to be
-spent on binding cleanup rather than fixes and feature enablement
-elsewhere in the kernel.
+> 
+> - Marijn
 
-- Marijn
