@@ -2,164 +2,155 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FF44C4167B
-	for <phone-devel@archiver.kernel.org>; Sun, 11 Dec 2022 20:12:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 937D2C4167B
+	for <phone-devel@archiver.kernel.org>; Mon, 12 Dec 2022 08:48:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229764AbiLKUMA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 11 Dec 2022 15:12:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59172 "EHLO
+        id S231536AbiLLIsc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 12 Dec 2022 03:48:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229708AbiLKUL6 (ORCPT
+        with ESMTP id S231213AbiLLIsb (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 11 Dec 2022 15:11:58 -0500
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4408CD2DD
-        for <phone-devel@vger.kernel.org>; Sun, 11 Dec 2022 12:11:55 -0800 (PST)
-Received: by mail-lf1-x12d.google.com with SMTP id p36so15261739lfa.12
-        for <phone-devel@vger.kernel.org>; Sun, 11 Dec 2022 12:11:55 -0800 (PST)
+        Mon, 12 Dec 2022 03:48:31 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39BB5E0C2
+        for <phone-devel@vger.kernel.org>; Mon, 12 Dec 2022 00:48:30 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id bp15so17339177lfb.13
+        for <phone-devel@vger.kernel.org>; Mon, 12 Dec 2022 00:48:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=A0OWNKlbeOkPe9L1NS206ZBEmQO1vAikJVPG0qmLgEk=;
-        b=xNq0tno4eHxGvl6EDMTGkeWOKGQIIB86C4Sy5Gro6+3AAJAmXYRrS9DHabRwDJVfbF
-         VmVlAHx3jY4fjfkQpHCakOm0+2Z/ml46g6LOPd13KnVoaStQEMcsrXpzQ2jWoUAF+ugX
-         g+WTVx44A5WWL5btufRAzJnJcKnUgpqlpP612Fm6GZWsVjx92v8DYUmbq9vCQuU3zsq0
-         T/xIjwmuFhBYpn/sjCVx2dkzM8tjfcHhJie3obN6scgNSTRjDc6SWZbbIhBVVqKn3ytP
-         vbf/CdS+x8mITi0tNTFPzMR88zJ30pCcK9j86jisKE4rV2+eqDpYQKjTe01ueE8iLmLe
-         SVkw==
+        bh=McWLAbiWx9EGavkST5tPBJkjslGPyy5JJT1sS66lkrc=;
+        b=yw1soTR3eNoJeK6G4Nxj3tt/u1brSadf7TQ8/L1v8irqzZUcQgy5fsvbXNOA4UTh86
+         i6C17yXhCn6c3iMCXo031/raTvGe+ym8uSWcBt5a+GWWWRDukwlzy+kvYsAcwv1r1VQP
+         5Y9af8NZEOeI09smYFP0XnC1QRSssvmZTSJaOq3iPfs38KSZqtaYIlQXFtxn3YEviqKT
+         iV5PSE1ByoUwj7/CA3zIiEDCGnCRWYVSRe1aMQR/HRsin/6UePnLir1ooFuo3tga/0+r
+         Bm8oHT+9pK1e6qVCgNOmIFtiYqDTSVNLbOR3V1bECZoLRCA5WYjlZUOB7rN/eOFwXOMD
+         5z2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A0OWNKlbeOkPe9L1NS206ZBEmQO1vAikJVPG0qmLgEk=;
-        b=PGy89qeC/6nAXMmuUH51/UhwYHTLJo8hJ971KcAwXZamhdiHrmnnK4GGaXk+DqvPxJ
-         wh1A2062xdh0nSp9wsF9rU9yWG8yMx9/3AbnJAcUyFLw1gdAlRoHLgHwpo+48AMI/7ZM
-         F/Bi0UyqfC9/w8yrjpDYgYKExueO4h+syc38kHQbXpZpsTt4D4NWKeZxrG85kyOTbYBV
-         T7vov6NUQv+wk71WVwavUhU/mBnNy4Cc6YIdS824Z0FliT+cc1af+4uVlQUAHx8WmpQp
-         w0cchh6YdjRu6X0Aq9xomHDTeDVw8ksrRrXHOlfYM8vniaG+yvyWYwXeXZxJS9/H7xiO
-         IEwQ==
-X-Gm-Message-State: ANoB5pklnGhPZu/7hVU9Lhz5kBetljRsyWqy8F/LEpazVLXQu7YCX1YX
-        HxVRncNQ6SjCkC/HHiMhMJYrNA==
-X-Google-Smtp-Source: AA0mqf6ECTxubNG56VQO3fJn67Skx7uGGKuWK9StzoRZc5C/F5YoeODZ0IIbj5+badtCnmtBjQtQpQ==
-X-Received: by 2002:a05:6512:3495:b0:4b5:5616:ecd2 with SMTP id v21-20020a056512349500b004b55616ecd2mr3323177lfr.55.1670789513224;
-        Sun, 11 Dec 2022 12:11:53 -0800 (PST)
+        bh=McWLAbiWx9EGavkST5tPBJkjslGPyy5JJT1sS66lkrc=;
+        b=ixdow4yvhXacr/m96V3K4HlwMR5LcagaRcIO+gxRXAeMSrexoZqhGastim1CYEIsd8
+         Dhpa/XUbykirIBaf/W1FYFTdMXaaaH6G65liy3OByc0GjndROsQWGE2RL8ipzZ6+eKy0
+         78tBJ6ju7ZCwzWitEOxAvckEF41Ny8vUrT4FCy3o4uahp7f5tUllZd40nSgwHQVQ7ZOp
+         fIgVem2WI9paYhLQud9KZLhrGl/PqoFOCZ1YVLrunruzhP0Tj0xmPbIxYP44FtJ5vzfX
+         nM11aXH7qe6Mepmg6yVxX2U5VuqG/57KISIQLoEfNaM5p8JuUp8tiQ0yid/01ce8k7Ka
+         GppQ==
+X-Gm-Message-State: ANoB5pmt1X+nTJll2oSB8F4hqIY+k4nuE++3j7siOgYi8Me09tBCHtrf
+        UkxS1VhNv5K/8h11IEK7NbshBRGJLZmjTQcpgfM=
+X-Google-Smtp-Source: AA0mqf7er3Sp7wf4I5oY705f4HD5tE4QhtM3l0kUAYfPKwEVgmRgeFfNKU0dGLLA1d1sEXdkFl8d8Q==
+X-Received: by 2002:a05:6512:1108:b0:4b5:5ca8:93bc with SMTP id l8-20020a056512110800b004b55ca893bcmr4806140lfg.23.1670834908485;
+        Mon, 12 Dec 2022 00:48:28 -0800 (PST)
 Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id j5-20020a056512028500b004b59871f457sm1315412lfp.247.2022.12.11.12.11.51
+        by smtp.gmail.com with ESMTPSA id c16-20020a056512075000b004a47e7b91c4sm1554307lfs.195.2022.12.12.00.48.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Dec 2022 12:11:52 -0800 (PST)
-Message-ID: <cd23d45c-f0a0-d81f-5230-a7de2bb90c07@linaro.org>
-Date:   Sun, 11 Dec 2022 21:11:51 +0100
+        Mon, 12 Dec 2022 00:48:27 -0800 (PST)
+Message-ID: <0bc1eba8-bc26-0bdb-16bf-78160c27c57b@linaro.org>
+Date:   Mon, 12 Dec 2022 09:48:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.1
-Subject: Re: [PATCH v3 2/2] arm64: dts: qcom: Add configuration for PMI8950
- peripheral
+Subject: Re: [RFC PATCH] arm64: dts: qcom: Use labels with generic node names
+ for ADC channels
 Content-Language: en-US
 To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        Luca Weiss <luca@z3ntu.xyz>, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        AngeloGioacchino Del Regno <kholk11@gmail.com>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Cameron <jic23@kernel.org>
-References: <20221101161801.1058969-1-luca@z3ntu.xyz>
- <36eb03e8-aace-f7ce-edc8-53715021c0ea@linaro.org>
- <20221208112055.m7sqg3ysxzskqjp4@SoMainline.org> <5740737.DvuYhMxLoT@g550jk>
- <20221209203851.sy37qqzczoaruuyb@SoMainline.org>
- <4846bb5f-79a9-e199-6a1c-5021e975e7ee@linaro.org>
- <20221210163121.woacrjuicb3vuzcn@SoMainline.org>
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20221209215308.1781047-1-marijn.suijten@somainline.org>
+ <3d5b29f3-8d8d-93a7-a485-5261e2d8891d@linaro.org>
+ <20221210165434.3hhen5mgtvflghks@SoMainline.org>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221210163121.woacrjuicb3vuzcn@SoMainline.org>
+In-Reply-To: <20221210165434.3hhen5mgtvflghks@SoMainline.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 10/12/2022 17:31, Marijn Suijten wrote:
-> On 2022-12-10 11:58:24, Krzysztof Kozlowski wrote:
->> On 09/12/2022 21:38, Marijn Suijten wrote:
->>> On 2022-12-09 17:54:50, Luca Weiss wrote:
->>>> On Donnerstag, 8. Dezember 2022 12:20:55 CET Marijn Suijten wrote:
->>>>> On 2022-12-08 11:23:17, Krzysztof Kozlowski wrote:
->>>>>> On 08/12/2022 11:12, Marijn Suijten wrote:
->>>>>>> On 2022-12-04 17:19:05, Luca Weiss wrote:
->>>>>>>> On Freitag, 2. Dezember 2022 10:36:58 CET Marijn Suijten wrote:
->>>>>>>> [..]
->>>>>>>>
->>>>>>>> So the way this patch does it is good or does it need changes?
->>>>>>>
->>>>>>> Except the typo(s?) pointed out in my first reply, this is good to go.
->>>>>>>
->>>>>>> If we stick with generic adc-chan node names that should be documented
->>>>>>> in the bindings IMO, as it is currently only captured implicitly in the
->>>>>>> examples.  Krzysztof, what is your thought on this?
->>>>>>
->>>>>> If I understand correctly, the outcome of other discussion [1] was to
->>>>>> use labels and generic node names.
->>>>>
->>>>> The outcome was to use labels in the driver and disregard node names as
->>>>> the new fwnode API clobbers those names by including the @xx register
->>>>> bit.
->>>>>
->>>>> (I'll follow up with Jonathan whether or not to remove the current
->>>>> fallback to node names, as [1] ended up discussing many different issues
->>>>> and nits)
->>>>>
->>>>>> In such case the patch was correct
->>>>>> (except other comments).
->>>>>
->>>>> As a consequence it _doesn't matter_ how nodes are named, and we _can_
->>>>> use generic node names.  My question for you is whether we should, and
->>>>> if we should lock that in via dt-bindings to guide everyone towards
->>>>> using labels (which i did _not_ do in the recently-landed PM8950 and
->>>>> PM6125, but will send followup for).
->>>>
->>>> FYI the patch has been merged already and is now in linux-next
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/arch/arm64/boot/dts/qcom/pmi8950.dtsi?id=0d97fdf380b478c358c94f50f1b942e87f407b9b
->>>>
->>>> If you have any changes that need to be done please send a follow-up patch.
+On 10/12/2022 17:54, Marijn Suijten wrote:
+> On 2022-12-10 12:02:03, Krzysztof Kozlowski wrote:
+>> On 09/12/2022 22:53, Marijn Suijten wrote:
+>>> As discussed in [1] the DT should use labels to describe ADC
+>>> channels, with generic node names, since the IIO drivers now
+>>> moved to the fwnode API where node names include the `@xx`
+>>> address suffix.
+>>> 
+>>> Especially for the ADC5 driver that uses extend_name - which
+>>> cannot be removed for compatibility reasons - this results in
+>>> sysfs files with the @xx name that wasn't previously present, and
+>>> leads to an unpleasant file-browsing experience.
+>>> 
+>>> Also remove all the unused channel labels in pm660.dtsi.
+>>> 
+>>> [1]:
+>>> https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
 >>>
->>> Unfortunately saw that today as well, well after sending this reply.  I
->>> would've loved to correct the pmi8950_gpio label _gpios before someone
->>
->> I don't understand what is there to correct. The "pmi8950_gpio" is a
->> correct label. There is no single rule saying label should have "s" at
->> the end. The only rules are: using underscores and having similar naming
->> (e.g. mdss_ for all display labels).
+>>>
+>>> 
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+>> 
+>> The talk was in context of bindings, not about changing all
+>> existing users thus affecting DTS.
 > 
-> If we were able to have rules for labels, would I then be allowed to
-> "correct" this?
+> And as a consequence, DTS.  The already-merged transition from OF to 
+> fwnode resulted in `@xx` to be included in the ADC channel name - and
+> in the case of ADC5 even in sysfs filenames - so this seems like a 
+> necessary change to make.
+> 
+> At the very least I would have changed the bindings submitted or 
+> co-authored /by myself/ since I initially decided to rely on this
+> (now obviously) wrong behaviour, and should have used labels from the
+> get go.
+> 
+>> What's more, to me "skin-temp-thermistor" is quite generic name,
+>> maybe "thermistor" would be more and reflects the purpose of the
+>> node, so it was more or less fine.
+> 
+> Are you suggesting to not use "adc-chan", but "thermistor" as node
+> name (and still use skin_temp as label)?
 
-If we had rules, yes. But we do not have. That's like - I will rename
-all variables because of some non-existing rules... There is no rule, no
-coding style (except what I wrote)...
+No, I am just saying that some of the names were correct, so the
+reasoning in commit msg is not entirely accurate.
 
->  The inconsistency between DTs is /super/ annoying (and
-> it looks wrong to have a singular _gpio named thing contain /multiple
-> gpios/), 
+> Or to keep the fully-written-out "thermistor" word in the label?
 
-What do you mean - looks wrong? It's just a label which does not matter,
-so how it can be wrong?
+No, I don't refer to labels. Labels don't matter, they are being removed
+entirely during DTS build.
 
-> but just because we can't express this in dt-bindings (or so I
-> think) we shouldn't change it?
+> 
+>> Anyway I am against such changes without expressing it in the
+>> bindings.
+> 
+> As expressed in [1] I suggested and am all for locking this change
+> in via bindings, and you are right to expect that to have gone paired
+> with this patch.
 
-No, it just does not matter, so there is no benefit to change it, in my
-opinion, if label is readable and follows generic convention
-(underscores). Of course someone might treat its readability different
-and maybe for someone the missing "s" at the end is important. I am just
-saying that, unlike the node names, the label has little impact/effect.
+Yes, I expect such changes to have both binding and DTS change together.
 
-However just be clear - this change also does not harm, so I am
-perfectly fine with it.
+> 
+> I'll submit that as the leading patch to this in v2, with the
+> wildcard pattern changed to adc-chan (or something else pending the
+> discussion above), and should I then also require the label property
+> via `label: true`?
+
+I don't think label is required.
 
 Best regards,
 Krzysztof
