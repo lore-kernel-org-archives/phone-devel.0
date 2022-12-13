@@ -2,25 +2,25 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61859C4332F
-	for <phone-devel@archiver.kernel.org>; Tue, 13 Dec 2022 23:22:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95A5EC4708D
+	for <phone-devel@archiver.kernel.org>; Tue, 13 Dec 2022 23:22:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237002AbiLMXWj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 13 Dec 2022 18:22:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37798 "EHLO
+        id S236996AbiLMXWk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 13 Dec 2022 18:22:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236998AbiLMXW3 (ORCPT
+        with ESMTP id S237000AbiLMXWa (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 13 Dec 2022 18:22:29 -0500
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E2B186C7
-        for <phone-devel@vger.kernel.org>; Tue, 13 Dec 2022 15:22:26 -0800 (PST)
+        Tue, 13 Dec 2022 18:22:30 -0500
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [5.144.164.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C8A725E8B
+        for <phone-devel@vger.kernel.org>; Tue, 13 Dec 2022 15:22:28 -0800 (PST)
 Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 54CCF200AC;
-        Wed, 14 Dec 2022 00:22:24 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 7A476200D5;
+        Wed, 14 Dec 2022 00:22:26 +0100 (CET)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
@@ -52,9 +52,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Vladimir Lypak <vladimir.lypak@gmail.com>,
         linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 1/6] drm/msm/dpu1: Implement DSC binding to PP block for CTL V1
-Date:   Wed, 14 Dec 2022 00:22:02 +0100
-Message-Id: <20221213232207.113607-2-marijn.suijten@somainline.org>
+Subject: [RFC PATCH 2/6] drm/msm/dpu1: Add DSC config for sm8150 and sm8250
+Date:   Wed, 14 Dec 2022 00:22:03 +0100
+Message-Id: <20221213232207.113607-3-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221213232207.113607-1-marijn.suijten@somainline.org>
 References: <20221213232207.113607-1-marijn.suijten@somainline.org>
@@ -64,119 +64,68 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-All V1 CTL blocks (active CTLs) explicitly bind the pixel output from a
-DSC block to a PINGPONG block by setting the PINGPONG idx in a DSC
-hardware register.
+These blocks on CTL V1 support setting a PINGPONG idx to send pixel
+output to.
 
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c   |  3 +++
- .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h    |  9 +++++++
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c    | 27 +++++++++++++++++++
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h    |  4 +++
- 4 files changed, 43 insertions(+)
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 23 ++++++++++++++-----
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 9c6817b5a194..c17ac85eb447 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -1830,6 +1830,9 @@ static void dpu_encoder_dsc_pipe_cfg(struct dpu_hw_dsc *hw_dsc,
- 	if (hw_pp->ops.setup_dsc)
- 		hw_pp->ops.setup_dsc(hw_pp);
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+index 318f0b4dbf6e..114ad8ca4554 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+@@ -1566,18 +1566,25 @@ static const struct dpu_merge_3d_cfg sm8150_merge_3d[] = {
+ /*************************************************************
+  * DSC sub blocks config
+  *************************************************************/
+-#define DSC_BLK(_name, _id, _base) \
++#define DSC_BLK(_name, _id, _base, _features) \
+ 	{\
+ 	.name = _name, .id = _id, \
+ 	.base = _base, .len = 0x140, \
+-	.features = 0, \
++	.features = _features, \
+ 	}
  
-+	if (hw_dsc->ops.dsc_bind_pingpong_blk)
-+		hw_dsc->ops.dsc_bind_pingpong_blk(hw_dsc, true, hw_pp->idx);
-+
- 	if (hw_pp->ops.enable_dsc)
- 		hw_pp->ops.enable_dsc(hw_pp);
- }
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
-index c160dae95a69..96f849907aa2 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
-@@ -268,6 +268,15 @@ enum {
- 	DPU_VBIF_MAX
- };
- 
-+/**
-+ * DSC features
-+ * @DPU_DSC_OUTPUT_CTRL       Configure which PINGPONG block gets
-+ *                            the pixel output from this DSC.
-+ */
-+enum {
-+	DPU_DSC_OUTPUT_CTRL = 0x1,
+ static struct dpu_dsc_cfg sdm845_dsc[] = {
+-	DSC_BLK("dsc_0", DSC_0, 0x80000),
+-	DSC_BLK("dsc_1", DSC_1, 0x80400),
+-	DSC_BLK("dsc_2", DSC_2, 0x80800),
+-	DSC_BLK("dsc_3", DSC_3, 0x80c00),
++	DSC_BLK("dsc_0", DSC_0, 0x80000, 0),
++	DSC_BLK("dsc_1", DSC_1, 0x80400, 0),
++	DSC_BLK("dsc_2", DSC_2, 0x80800, 0),
++	DSC_BLK("dsc_3", DSC_3, 0x80c00, 0),
 +};
 +
- /**
-  * MACRO DPU_HW_BLK_INFO - information of HW blocks inside DPU
-  * @name:              string name for debug purposes
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
-index 3662df698dae..619926da1441 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c
-@@ -29,6 +29,8 @@
- #define DSC_RANGE_MAX_QP                0x0B0
- #define DSC_RANGE_BPG_OFFSET            0x0EC
- 
-+#define DSC_CTL(m) (0x1800 - 0x3FC * (m - DSC_0))
-+
- static void dpu_hw_dsc_disable(struct dpu_hw_dsc *dsc)
- {
- 	struct dpu_hw_blk_reg_map *c = &dsc->hw;
-@@ -150,6 +152,29 @@ static void dpu_hw_dsc_config_thresh(struct dpu_hw_dsc *hw_dsc,
- 	}
- }
- 
-+static void dpu_hw_dsc_bind_pingpong_blk(
-+		struct dpu_hw_dsc *hw_dsc,
-+		bool enable,
-+		const enum dpu_pingpong pp)
-+{
-+	struct dpu_hw_blk_reg_map *c = &hw_dsc->hw;
-+	int mux_cfg = 0xF;
-+	u32 dsc_ctl_offset;
-+
-+	dsc_ctl_offset = DSC_CTL(hw_dsc->idx);
-+
-+	if (enable)
-+		mux_cfg = (pp - PINGPONG_0) & 0x7;
-+
-+	DRM_DEBUG_KMS("%s dsc:%d %s pp:%d\n",
-+			enable ? "Binding" : "Unbinding",
-+			hw_dsc->idx - DSC_0,
-+			enable ? "to" : "from",
-+			pp - PINGPONG_0);
-+
-+	DPU_REG_WRITE(c, dsc_ctl_offset, mux_cfg);
-+}
-+
- static struct dpu_dsc_cfg *_dsc_offset(enum dpu_dsc dsc,
- 				       const struct dpu_mdss_cfg *m,
- 				       void __iomem *addr,
-@@ -174,6 +199,8 @@ static void _setup_dsc_ops(struct dpu_hw_dsc_ops *ops,
- 	ops->dsc_disable = dpu_hw_dsc_disable;
- 	ops->dsc_config = dpu_hw_dsc_config;
- 	ops->dsc_config_thresh = dpu_hw_dsc_config_thresh;
-+	if (cap & BIT(DPU_DSC_OUTPUT_CTRL))
-+		ops->dsc_bind_pingpong_blk = dpu_hw_dsc_bind_pingpong_blk;
++static struct dpu_dsc_cfg sm8150_dsc[] = {
++	DSC_BLK("dsc_0", DSC_0, 0x80000, BIT(DPU_DSC_OUTPUT_CTRL)),
++	DSC_BLK("dsc_1", DSC_1, 0x80400, BIT(DPU_DSC_OUTPUT_CTRL)),
++	DSC_BLK("dsc_2", DSC_2, 0x80800, BIT(DPU_DSC_OUTPUT_CTRL)),
++	DSC_BLK("dsc_3", DSC_3, 0x80c00, BIT(DPU_DSC_OUTPUT_CTRL)),
  };
  
- struct dpu_hw_dsc *dpu_hw_dsc_init(enum dpu_dsc idx, void __iomem *addr,
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h
-index c0b77fe1a696..ae9b5db53d7f 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h
-@@ -42,6 +42,10 @@ struct dpu_hw_dsc_ops {
- 	 */
- 	void (*dsc_config_thresh)(struct dpu_hw_dsc *hw_dsc,
- 				  struct drm_dsc_config *dsc);
-+
-+	void (*dsc_bind_pingpong_blk)(struct dpu_hw_dsc *hw_dsc,
-+				  bool enable,
-+				  enum dpu_pingpong pp);
- };
- 
- struct dpu_hw_dsc {
+ /*************************************************************
+@@ -2474,6 +2481,8 @@ static const struct dpu_mdss_cfg sm8150_dpu_cfg = {
+ 	.mixer = sm8150_lm,
+ 	.dspp_count = ARRAY_SIZE(sm8150_dspp),
+ 	.dspp = sm8150_dspp,
++	.dsc_count = ARRAY_SIZE(sm8150_dsc),
++	.dsc = sm8150_dsc,
+ 	.pingpong_count = ARRAY_SIZE(sm8150_pp),
+ 	.pingpong = sm8150_pp,
+ 	.merge_3d_count = ARRAY_SIZE(sm8150_merge_3d),
+@@ -2524,6 +2533,8 @@ static const struct dpu_mdss_cfg sm8250_dpu_cfg = {
+ 	.mixer = sm8150_lm,
+ 	.dspp_count = ARRAY_SIZE(sm8150_dspp),
+ 	.dspp = sm8150_dspp,
++	.dsc_count = ARRAY_SIZE(sm8150_dsc),
++	.dsc = sm8150_dsc,
+ 	.pingpong_count = ARRAY_SIZE(sm8150_pp),
+ 	.pingpong = sm8150_pp,
+ 	.merge_3d_count = ARRAY_SIZE(sm8150_merge_3d),
 -- 
 2.38.1
 
