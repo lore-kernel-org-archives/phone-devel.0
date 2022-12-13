@@ -2,156 +2,160 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 937D2C4167B
-	for <phone-devel@archiver.kernel.org>; Mon, 12 Dec 2022 08:48:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 57FC8C4167B
+	for <phone-devel@archiver.kernel.org>; Tue, 13 Dec 2022 21:56:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231536AbiLLIsc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 12 Dec 2022 03:48:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56742 "EHLO
+        id S237025AbiLMV4I (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 13 Dec 2022 16:56:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231213AbiLLIsb (ORCPT
+        with ESMTP id S237655AbiLMVzk (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 12 Dec 2022 03:48:31 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39BB5E0C2
-        for <phone-devel@vger.kernel.org>; Mon, 12 Dec 2022 00:48:30 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id bp15so17339177lfb.13
-        for <phone-devel@vger.kernel.org>; Mon, 12 Dec 2022 00:48:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=McWLAbiWx9EGavkST5tPBJkjslGPyy5JJT1sS66lkrc=;
-        b=yw1soTR3eNoJeK6G4Nxj3tt/u1brSadf7TQ8/L1v8irqzZUcQgy5fsvbXNOA4UTh86
-         i6C17yXhCn6c3iMCXo031/raTvGe+ym8uSWcBt5a+GWWWRDukwlzy+kvYsAcwv1r1VQP
-         5Y9af8NZEOeI09smYFP0XnC1QRSssvmZTSJaOq3iPfs38KSZqtaYIlQXFtxn3YEviqKT
-         iV5PSE1ByoUwj7/CA3zIiEDCGnCRWYVSRe1aMQR/HRsin/6UePnLir1ooFuo3tga/0+r
-         Bm8oHT+9pK1e6qVCgNOmIFtiYqDTSVNLbOR3V1bECZoLRCA5WYjlZUOB7rN/eOFwXOMD
-         5z2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=McWLAbiWx9EGavkST5tPBJkjslGPyy5JJT1sS66lkrc=;
-        b=ixdow4yvhXacr/m96V3K4HlwMR5LcagaRcIO+gxRXAeMSrexoZqhGastim1CYEIsd8
-         Dhpa/XUbykirIBaf/W1FYFTdMXaaaH6G65liy3OByc0GjndROsQWGE2RL8ipzZ6+eKy0
-         78tBJ6ju7ZCwzWitEOxAvckEF41Ny8vUrT4FCy3o4uahp7f5tUllZd40nSgwHQVQ7ZOp
-         fIgVem2WI9paYhLQud9KZLhrGl/PqoFOCZ1YVLrunruzhP0Tj0xmPbIxYP44FtJ5vzfX
-         nM11aXH7qe6Mepmg6yVxX2U5VuqG/57KISIQLoEfNaM5p8JuUp8tiQ0yid/01ce8k7Ka
-         GppQ==
-X-Gm-Message-State: ANoB5pmt1X+nTJll2oSB8F4hqIY+k4nuE++3j7siOgYi8Me09tBCHtrf
-        UkxS1VhNv5K/8h11IEK7NbshBRGJLZmjTQcpgfM=
-X-Google-Smtp-Source: AA0mqf7er3Sp7wf4I5oY705f4HD5tE4QhtM3l0kUAYfPKwEVgmRgeFfNKU0dGLLA1d1sEXdkFl8d8Q==
-X-Received: by 2002:a05:6512:1108:b0:4b5:5ca8:93bc with SMTP id l8-20020a056512110800b004b55ca893bcmr4806140lfg.23.1670834908485;
-        Mon, 12 Dec 2022 00:48:28 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id c16-20020a056512075000b004a47e7b91c4sm1554307lfs.195.2022.12.12.00.48.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Dec 2022 00:48:27 -0800 (PST)
-Message-ID: <0bc1eba8-bc26-0bdb-16bf-78160c27c57b@linaro.org>
-Date:   Mon, 12 Dec 2022 09:48:26 +0100
+        Tue, 13 Dec 2022 16:55:40 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3345C26489;
+        Tue, 13 Dec 2022 13:54:04 -0800 (PST)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BDK04DG007911;
+        Tue, 13 Dec 2022 21:53:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=U0bHcGZ5jMCQNvUVO0KJzmC5eku0GSm+9Z5Ov0Z3S8s=;
+ b=C0IxivsSmG0yPAOfnusAZm2AWkouuLJTBzK67jxG0oa96lmrbTizRXjLBqMoVtpgrDq6
+ BR2ILtN4nooFMb3AxuXk9t7W/QK8SOLpANPf2MT90Wnbv4vNtvUWnpf3AB89wKcnNE1Q
+ 4hWWeYIBdC8xKcpUWD9qQECmfaD6rjKmnD/cr/jkrOmltVhKMJpuFcmUHT5h2hTyhhM0
+ p4EZgVVygFbKTGUKDN2+tkh0ldf661jVbtFbKMIzuv16BQtM/a2m8j0nQJiK8LI5uiSS
+ WEDKab0F9oNO8W1o4n65W74PrSRJKwPvylOTR+uKeXuczrtWT7xpMYMYlwnSJffPgFvo fQ== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3meyfw0dp5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 13 Dec 2022 21:53:55 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BDLrrc7002666
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 13 Dec 2022 21:53:53 GMT
+Received: from [10.111.167.12] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Tue, 13 Dec
+ 2022 13:53:50 -0800
+Message-ID: <ad7ecffc-3fc9-7859-82b7-9d161fc28cae@quicinc.com>
+Date:   Tue, 13 Dec 2022 13:53:48 -0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [RFC PATCH] arm64: dts: qcom: Use labels with generic node names
- for ADC channels
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [PATCH v2 01/12] dt-bindings: display: msm: Rename mdss node name
+ in example
 Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Adam Skladowski <a39.skl@gmail.com>
+CC:     <phone-devel@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221209215308.1781047-1-marijn.suijten@somainline.org>
- <3d5b29f3-8d8d-93a7-a485-5261e2d8891d@linaro.org>
- <20221210165434.3hhen5mgtvflghks@SoMainline.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221210165434.3hhen5mgtvflghks@SoMainline.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <freedreno@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>
+References: <20221130200950.144618-1-a39.skl@gmail.com>
+ <20221130200950.144618-2-a39.skl@gmail.com>
+ <19e78a06-2f3d-92af-1988-b22dc3ffc84e@linaro.org>
+From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <19e78a06-2f3d-92af-1988-b22dc3ffc84e@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: qYalVvqLD40rRT2LHIiWecj1GJBgVGZT
+X-Proofpoint-GUID: qYalVvqLD40rRT2LHIiWecj1GJBgVGZT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-12-13_03,2022-12-13_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0
+ suspectscore=0 mlxlogscore=999 mlxscore=0 impostorscore=0 bulkscore=0
+ phishscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2212130190
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 10/12/2022 17:54, Marijn Suijten wrote:
-> On 2022-12-10 12:02:03, Krzysztof Kozlowski wrote:
->> On 09/12/2022 22:53, Marijn Suijten wrote:
->>> As discussed in [1] the DT should use labels to describe ADC
->>> channels, with generic node names, since the IIO drivers now
->>> moved to the fwnode API where node names include the `@xx`
->>> address suffix.
->>> 
->>> Especially for the ADC5 driver that uses extend_name - which
->>> cannot be removed for compatibility reasons - this results in
->>> sysfs files with the @xx name that wasn't previously present, and
->>> leads to an unpleasant file-browsing experience.
->>> 
->>> Also remove all the unused channel labels in pm660.dtsi.
->>> 
->>> [1]:
->>> https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
->>>
->>>
->>> 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
->> 
->> The talk was in context of bindings, not about changing all
->> existing users thus affecting DTS.
-> 
-> And as a consequence, DTS.  The already-merged transition from OF to 
-> fwnode resulted in `@xx` to be included in the ADC channel name - and
-> in the case of ADC5 even in sysfs filenames - so this seems like a 
-> necessary change to make.
-> 
-> At the very least I would have changed the bindings submitted or 
-> co-authored /by myself/ since I initially decided to rely on this
-> (now obviously) wrong behaviour, and should have used labels from the
-> get go.
-> 
->> What's more, to me "skin-temp-thermistor" is quite generic name,
->> maybe "thermistor" would be more and reflects the purpose of the
->> node, so it was more or less fine.
-> 
-> Are you suggesting to not use "adc-chan", but "thermistor" as node
-> name (and still use skin_temp as label)?
 
-No, I am just saying that some of the names were correct, so the
-reasoning in commit msg is not entirely accurate.
 
-> Or to keep the fully-written-out "thermistor" word in the label?
+On 12/1/2022 11:54 AM, Dmitry Baryshkov wrote:
+> On 30/11/2022 22:09, Adam Skladowski wrote:
+>> Follow other YAMLs and replace mdss name into display-subystem.
+>>
+>> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> 
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-No, I don't refer to labels. Labels don't matter, they are being removed
-entirely during DTS build.
+Going to add two fixes tags here as we are touching two chipsets:
+
+Fixes: b93bdff44a85 ("dt-bindings: display/msm: add support for SM6115")
+Fixes: 06097b13ef97 ("dt-bindings: display/msm: split dpu-qcm2290 into 
+DPU and MDSS parts")
+
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
 > 
->> Anyway I am against such changes without expressing it in the
->> bindings.
+> We will pick this into msm-fixes during the next cycle.
+
+Yes, we can with the above fixes tags but first, can you please send a 
+MR from msm-next-lumag to msm-next? So that I can send a MR for fixes to 
+msm-next.
+
+ATM, they are out of sync.
+
+
 > 
-> As expressed in [1] I suggested and am all for locking this change
-> in via bindings, and you are right to expect that to have gone paired
-> with this patch.
-
-Yes, I expect such changes to have both binding and DTS change together.
-
+>> ---
+>>   .../devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml      | 2 +-
+>>   .../devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml       | 2 +-
+>>   2 files changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git 
+>> a/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml 
+>> b/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml
+>> index d6f043a4b08d..4795e13c7b59 100644
+>> --- 
+>> a/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml
+>> +++ 
+>> b/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml
+>> @@ -72,7 +72,7 @@ examples:
+>>       #include <dt-bindings/interconnect/qcom,qcm2290.h>
+>>       #include <dt-bindings/power/qcom-rpmpd.h>
+>> -    mdss@5e00000 {
+>> +    display-subsystem@5e00000 {
+>>           #address-cells = <1>;
+>>           #size-cells = <1>;
+>>           compatible = "qcom,qcm2290-mdss";
+>> diff --git 
+>> a/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml 
+>> b/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
+>> index a86d7f53fa84..886858ef6700 100644
+>> --- a/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
+>> +++ b/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
+>> @@ -62,7 +62,7 @@ examples:
+>>       #include <dt-bindings/interrupt-controller/arm-gic.h>
+>>       #include <dt-bindings/power/qcom-rpmpd.h>
+>> -    mdss@5e00000 {
+>> +    display-subsystem@5e00000 {
+>>           #address-cells = <1>;
+>>           #size-cells = <1>;
+>>           compatible = "qcom,sm6115-mdss";
 > 
-> I'll submit that as the leading patch to this in v2, with the
-> wildcard pattern changed to adc-chan (or something else pending the
-> discussion above), and should I then also require the label property
-> via `label: true`?
-
-I don't think label is required.
-
-Best regards,
-Krzysztof
-
