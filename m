@@ -2,173 +2,113 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91D7AC4332F
-	for <phone-devel@archiver.kernel.org>; Tue, 13 Dec 2022 22:15:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3CCEC4167B
+	for <phone-devel@archiver.kernel.org>; Tue, 13 Dec 2022 23:22:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236735AbiLMWPW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 13 Dec 2022 17:15:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33408 "EHLO
+        id S236981AbiLMXWW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 13 Dec 2022 18:22:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234940AbiLMWPV (ORCPT
+        with ESMTP id S236628AbiLMXWV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 13 Dec 2022 17:15:21 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFB65117D;
-        Tue, 13 Dec 2022 14:15:19 -0800 (PST)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BDM9u06010292;
-        Tue, 13 Dec 2022 22:15:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=HktqH1/MaH12z5s3iTHLDwiTzoF8psLLCmkW9dpkjGg=;
- b=Oe1ZAYf+RYOD9IBbr6nMxrDadU1LxEwYD2hi9r6kR9xERhTfMw+5xM27xQ3iFKnQ9iAv
- G/qC0I8ZXCXjWCcwhZ0iGvX9zyy52x0yT/c5bbplV+QTfLX/nlD669kDi7n7mqxwPygR
- OFqSRBp+m/wdcjiFBkvTG51PWCWw/vyCIcig4NryRcr5f7bUx9BEJV3EByvOu48u2WQ1
- 9J2wsUOzNXw1aBviSUnI9xospfDLrUkuOunGj7/xeABxuYfhKqw5Zn4q8VR1F85feXp6
- NkeyeSUZQUfwXIURYTCO49shAffnbYbCLO2AaAvgHtl9IoMI5/GYSCxygEVPQH/b9NjG Cw== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3meyf08d7c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 13 Dec 2022 22:15:08 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BDMF7a3020713
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 13 Dec 2022 22:15:07 GMT
-Received: from [10.111.167.12] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Tue, 13 Dec
- 2022 14:15:03 -0800
-Message-ID: <3658fd96-12b6-b478-249f-44fc9bcdb809@quicinc.com>
-Date:   Tue, 13 Dec 2022 14:15:02 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: [PATCH v2 01/12] dt-bindings: display: msm: Rename mdss node name
- in example
-Content-Language: en-US
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Adam Skladowski <a39.skl@gmail.com>
-CC:     <phone-devel@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@gmail.com>,
+        Tue, 13 Dec 2022 18:22:21 -0500
+Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [5.144.164.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC72B25E8B
+        for <phone-devel@vger.kernel.org>; Tue, 13 Dec 2022 15:22:19 -0800 (PST)
+Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id B691E1F99C;
+        Wed, 14 Dec 2022 00:22:16 +0100 (CET)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        Jessica Zhang <quic_jesszhan@quicinc.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        sunliming <sunliming@kylinos.cn>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Haowen Bai <baihaowen@meizu.com>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
         Loic Poulain <loic.poulain@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <freedreno@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>
-References: <20221130200950.144618-1-a39.skl@gmail.com>
- <20221130200950.144618-2-a39.skl@gmail.com>
- <19e78a06-2f3d-92af-1988-b22dc3ffc84e@linaro.org>
- <ad7ecffc-3fc9-7859-82b7-9d161fc28cae@quicinc.com>
- <86FA3AF9-5B35-4E27-80DA-8B5BF9E6B3AC@linaro.org>
-From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <86FA3AF9-5B35-4E27-80DA-8B5BF9E6B3AC@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/6] drm/msm: DSC Electric Boogaloo for sm8[12]50
+Date:   Wed, 14 Dec 2022 00:22:01 +0100
+Message-Id: <20221213232207.113607-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.38.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: wZj3v5rutIHhnz7xMeHpu1Cxg55DKbAe
-X-Proofpoint-GUID: wZj3v5rutIHhnz7xMeHpu1Cxg55DKbAe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-13_03,2022-12-13_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- malwarescore=0 clxscore=1015 phishscore=0 priorityscore=1501
- suspectscore=0 mlxlogscore=999 adultscore=0 impostorscore=0 spamscore=0
- bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2212130194
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+This preliminary Display Stream Compression support package for
+(initially tested on) sm8[12]50 is based on comparing DSC behaviour
+between downstream and mainline.  Some new callbacks are added (for
+binding blocks on active CTLs), logic bugs are corrected, zeroed struct
+members are now assigned proper values, and RM allocation and hw block
+retrieval now hand out (or not) DSC blocks without causing null-pointer
+dereferences.
 
+Unfortunately it is not yet enough to get rid of completely corrupted
+display output on the boards I tested here:
+- Sony Xperia 1 (sm8150), 1644x3840 or 1096x2560 pixels;
+- Sony Xperia 5II (sm8250), 1080x2520, at 60 or 120Hz;
+- (can include more Xperia boards if desired)
 
-On 12/13/2022 2:11 PM, Dmitry Baryshkov wrote:
-> 
-> 
-> On 13 December 2022 23:53:48 EET, Abhinav Kumar <quic_abhinavk@quicinc.com> wrote:
->>
->>
->> On 12/1/2022 11:54 AM, Dmitry Baryshkov wrote:
->>> On 30/11/2022 22:09, Adam Skladowski wrote:
->>>> Follow other YAMLs and replace mdss name into display-subystem.
->>>>
->>>> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
->>>
->>> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->>
->> Going to add two fixes tags here as we are touching two chipsets:
->>
->> Fixes: b93bdff44a85 ("dt-bindings: display/msm: add support for SM6115")
->> Fixes: 06097b13ef97 ("dt-bindings: display/msm: split dpu-qcm2290 into DPU and MDSS parts")
-> 
-> Note, your tag gif wrapped, so patchwork will pick it up incorrectly.
+Both devices use the DUALPIPE_DSCMERGE topology downstream: dual LM, PP
+and DSC, but only a single INTF/encoder/DSI-link.
 
-Yes, this is a mail client issue. Am aware of it , will fix it up when i 
-apply it.
+Hopefully this spawns some community/upstream interest to help rootcause
+our corruption issues (after we open a drm/msm report on GitLab for more
+appropriate tracking).
 
-> 
->>
->> Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
->>
->>>
->>> We will pick this into msm-fixes during the next cycle.
->>
->> Yes, we can with the above fixes tags but first, can you please send a MR from msm-next-lumag to msm-next? So that I can send a MR for fixes to msm-next.
-> 
-> This would create an additional merge commit in msm-next for no particular reason. You can branch -fixes from rc1, or from the msm-next-lumag and then send MR to msm-next.
+The Sony Xperia XZ3 (sdm845) was fully tested and validated with this
+series to not cause any regressions (an one of the math fixes now allows
+us to change slice_count in the panel driver, which would corrupt
+previously).
 
-So msm-next would need to be updated then to rc1 to accept that MR. Rob?
+Marijn Suijten (6):
+  drm/msm/dpu1: Implement DSC binding to PP block for CTL V1
+  drm/msm/dpu1: Add DSC config for sm8150 and sm8250
+  drm/msm/dpu1: Wire up DSC mask for active CTL configuration
+  drm/msm/dsi: Use DSC slice(s) packet size to compute word count
+  drm/msm/dsi: Flip greater-than check for slice_count and
+    slice_per_intf
+  drm/msm/dpu: Disallow unallocated (DSC) resources to be returned
 
-> 
->>
->> ATM, they are out of sync.
->>
->>
->>>
->>>> ---
->>>>    .../devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml      | 2 +-
->>>>    .../devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml       | 2 +-
->>>>    2 files changed, 2 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml
->>>> index d6f043a4b08d..4795e13c7b59 100644
->>>> --- a/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml
->>>> +++ b/Documentation/devicetree/bindings/display/msm/qcom,qcm2290-mdss.yaml
->>>> @@ -72,7 +72,7 @@ examples:
->>>>        #include <dt-bindings/interconnect/qcom,qcm2290.h>
->>>>        #include <dt-bindings/power/qcom-rpmpd.h>
->>>> -    mdss@5e00000 {
->>>> +    display-subsystem@5e00000 {
->>>>            #address-cells = <1>;
->>>>            #size-cells = <1>;
->>>>            compatible = "qcom,qcm2290-mdss";
->>>> diff --git a/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
->>>> index a86d7f53fa84..886858ef6700 100644
->>>> --- a/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
->>>> +++ b/Documentation/devicetree/bindings/display/msm/qcom,sm6115-mdss.yaml
->>>> @@ -62,7 +62,7 @@ examples:
->>>>        #include <dt-bindings/interrupt-controller/arm-gic.h>
->>>>        #include <dt-bindings/power/qcom-rpmpd.h>
->>>> -    mdss@5e00000 {
->>>> +    display-subsystem@5e00000 {
->>>>            #address-cells = <1>;
->>>>            #size-cells = <1>;
->>>>            compatible = "qcom,sm6115-mdss";
->>>
-> 
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c   |  3 +++
+ .../drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c  |  1 +
+ .../drm/msm/disp/dpu1/dpu_encoder_phys_vid.c  |  1 +
+ .../drm/msm/disp/dpu1/dpu_encoder_phys_wb.c   |  2 ++
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 23 +++++++++++-----
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h    |  9 +++++++
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c    | 27 +++++++++++++++++++
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h    |  4 +++
+ drivers/gpu/drm/msm/disp/dpu1/dpu_rm.c        | 10 +++++++
+ drivers/gpu/drm/msm/dsi/dsi_host.c            |  6 ++---
+ 10 files changed, 77 insertions(+), 9 deletions(-)
+
+--
+2.38.1
+
