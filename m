@@ -2,118 +2,158 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51C7DC4332F
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Dec 2022 09:40:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46541C4332F
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Dec 2022 18:40:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237893AbiLNJkx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Dec 2022 04:40:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48652 "EHLO
+        id S238845AbiLNSkL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Dec 2022 13:40:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237953AbiLNJkf (ORCPT
+        with ESMTP id S238500AbiLNSkK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Dec 2022 04:40:35 -0500
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72F9B201BF
-        for <phone-devel@vger.kernel.org>; Wed, 14 Dec 2022 01:40:33 -0800 (PST)
-Received: by mail-lf1-x131.google.com with SMTP id b3so9497723lfv.2
-        for <phone-devel@vger.kernel.org>; Wed, 14 Dec 2022 01:40:33 -0800 (PST)
+        Wed, 14 Dec 2022 13:40:10 -0500
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2622DF26
+        for <phone-devel@vger.kernel.org>; Wed, 14 Dec 2022 10:40:08 -0800 (PST)
+Received: by mail-lf1-x12e.google.com with SMTP id g7so11966614lfv.5
+        for <phone-devel@vger.kernel.org>; Wed, 14 Dec 2022 10:40:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Na1nf8qjjb1uMGoebJs/VqSMr6q5uwCqvQJ2Ul04o+w=;
-        b=YBVPuBr0jQKvXOKcWIdTT4V+PF+IEh9EFO+h1JTbjhB86iMmEgTMXkROy9xjNdDqx4
-         jpGYcATEhqkzZ9RjQomgPHMwbMFBmfCT+MuIFYt4KAU/hZ/3PtVIf0k7OgAC/Oy+Gz7t
-         pu5Sde0A8HvWabj8UWSQd1hR+2bRnXI8l5G3BWDfayRUqbnVAnABL83boyiBoI4g1KjP
-         JCUJaCqOtHUfyIybEzQgcI0ItHC1kgpfx9SXRrszffu05E/dzlJ0kMahaf4hsPK+J4gv
-         bYTywPFS6eB5+Bj1CjC+ywEQIULQgC5wjCG7SLXM+Obb4EKuOfB+Jg+UCnvECyGA1/aW
-         XeDg==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=84PVzy06Jez7WrqpA7scvmaFQfIAuLwwfaDiUooPlFI=;
+        b=gR3RUbdtP2h5rhjbu9ETN1ccQZp6hk7IaSQibahbKZZXwXTSnp2ECnJDrlylJ+3Pss
+         3v4rTXnsLW1NgvfHGi1LkaSvMo65xG1F1zka65Yiszsmd2AePNGZH1GkKM1OgvbKJ/1t
+         oGmX0Fy5dluJbI+LK9yOhT2hO6h36iaiuPHxXifUHvV71nucTO83hZChn6a71Z6sgeVz
+         SW5u/8R2anqRl+qwBkF44JOBU9ewze/ElC2l5Vu8BXLv7wXLhOqpU0USfBkxVO1O67RZ
+         cKyMrT7oGQ6jCy0oUw+B2UuuoJ753yzWd/JI9P7frzi9p9xwfUY0x7zNAeyulvEFyeDu
+         Ewzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Na1nf8qjjb1uMGoebJs/VqSMr6q5uwCqvQJ2Ul04o+w=;
-        b=6zrZqXVBuX8kJAW43PfBx4RPkBkaCzw1Gf4qzGIvF43rvBsDbd16S9m8InPDu/0g7T
-         Ni5MMUMrVBMh9lxIx5dTfpzOGLFJECwCjSbkXpG1AsnlDrhF4jIJQDD6m9EJNbQKJy11
-         YbqHzaUm51mo30qAfrk5dGRsVGFz6CstqqngD1L5LaAYYwGGNgaq9apfbR0uB7yknbPt
-         /TZk/sLS8VDtuECDYEwZv2PC4DMQ0Py8LzZbHIOKUf/K3s/RKQ3jPaSe4TsYguDOPAno
-         Pngj2HV65v+IFAPk10YJIz2KF3S9ylBW8fgRPhtq4fmpxwXNQgIIgZ8dlJVQZEI0/l4Z
-         0UBg==
-X-Gm-Message-State: ANoB5pkiGN4DbrU7wfznJykDeYmkkbH5eogq+Pd7onjUzuuQlvog7doO
-        /v1MFh0n4lxXtaLxaijgaM/Zxg==
-X-Google-Smtp-Source: AA0mqf5bAzf6oxaXCjoLImk3QkwtNBbzrPPDJ1DfSP1B46ND5nVtJkfVfzcY7e3jBODV9kNLTtpEMQ==
-X-Received: by 2002:a05:6512:308b:b0:4b6:e4b3:d82d with SMTP id z11-20020a056512308b00b004b6e4b3d82dmr4229361lfd.7.1671010831840;
-        Wed, 14 Dec 2022 01:40:31 -0800 (PST)
-Received: from [127.0.0.1] (85-76-128-40-nat.elisa-mobile.fi. [85.76.128.40])
-        by smtp.gmail.com with ESMTPSA id p7-20020a2e9ac7000000b0026c2d2a9b92sm544123ljj.101.2022.12.14.01.40.31
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=84PVzy06Jez7WrqpA7scvmaFQfIAuLwwfaDiUooPlFI=;
+        b=5Qq75V9bLfPtXup42yQErnoOWetgcbczko7P/ylu/aXa9tydybvUhBgDw4J0SLlyg2
+         SOuq2O2DrFvg6hCsMS9GshHJG1/B4GwTADahZPveA+KUk8w9e5honPO4s/OTNaxx38XJ
+         yKiPnMpu4YwvsRnQ0AgJDbXhl8uM39BkLuasCDVqqm15AI46v+iHGUgSP7nfTzOtQsAc
+         rDdIN8bnV9CjCl1kNJNqEf+NM1E7O5LLxzF3ViGlZzIXUmjOgpx0/vji87HzQK1RZXaU
+         FmcBBUfk3RzDq60D/q7l8hL1ysi1AUyjhtcaz+0JsyFfw5ED+h9d3unRPljoLW7D+jaW
+         umMQ==
+X-Gm-Message-State: ANoB5pnHAukQQA1CfNDo+s+Vb0at2c0OWoAr8pvx6GgIq7Fd8wLIfdJz
+        jAMUYGCcgvSp6w75Yy/QDoijDw==
+X-Google-Smtp-Source: AA0mqf5huwxvJLpqWw8CtVjdxW1TVZkauT4Q4In5DVwTzyMs2NKw3KRNjJwviMs2hFfphsK4vzn7Pw==
+X-Received: by 2002:ac2:4f0e:0:b0:4a4:68b9:19e1 with SMTP id k14-20020ac24f0e000000b004a468b919e1mr7586088lfr.9.1671043207234;
+        Wed, 14 Dec 2022 10:40:07 -0800 (PST)
+Received: from [10.10.15.130] ([192.130.178.91])
+        by smtp.gmail.com with ESMTPSA id a23-20020a19f817000000b0049465afdd38sm901628lff.108.2022.12.14.10.40.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Dec 2022 01:40:31 -0800 (PST)
-Date:   Wed, 14 Dec 2022 11:40:29 +0200
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Adam Skladowski <a39.skl@gmail.com>
-CC:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_01/12=5D_dt-bindings=3A_displa?= =?US-ASCII?Q?y=3A_msm=3A_Rename_mdss_node_name_in_example?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <86FA3AF9-5B35-4E27-80DA-8B5BF9E6B3AC@linaro.org>
-References: <20221130200950.144618-1-a39.skl@gmail.com> <20221130200950.144618-2-a39.skl@gmail.com> <19e78a06-2f3d-92af-1988-b22dc3ffc84e@linaro.org> <ad7ecffc-3fc9-7859-82b7-9d161fc28cae@quicinc.com> <86FA3AF9-5B35-4E27-80DA-8B5BF9E6B3AC@linaro.org>
-Message-ID: <558C636F-850D-41AF-9CA1-CC3E8E5C04F9@linaro.org>
+        Wed, 14 Dec 2022 10:40:06 -0800 (PST)
+Message-ID: <154b2e08-25a0-c8b7-1dc8-2d41b8787f05@linaro.org>
+Date:   Wed, 14 Dec 2022 20:40:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [RFC PATCH 0/6] drm/msm: DSC Electric Boogaloo for sm8[12]50
+Content-Language: en-GB
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Vinod Koul <vkoul@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Jessica Zhang <quic_jesszhan@quicinc.com>,
+        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        sunliming <sunliming@kylinos.cn>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Haowen Bai <baihaowen@meizu.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20221213232207.113607-1-marijn.suijten@somainline.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20221213232207.113607-1-marijn.suijten@somainline.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-14 =D0=B4=D0=B5=D0=BA=D0=B0=D0=B1=D1=80=D1=8F 2022 =D0=B3=2E 00:11:58 GMT+0=
-2:00, Dmitry Baryshkov <dmitry=2Ebaryshkov@linaro=2Eorg> =D0=BF=D0=B8=D1=88=
-=D0=B5=D1=82:
->
->
->On 13 December 2022 23:53:48 EET, Abhinav Kumar <quic_abhinavk@quicinc=2E=
-com> wrote:
->>
->>
->>On 12/1/2022 11:54 AM, Dmitry Baryshkov wrote:
->>> On 30/11/2022 22:09, Adam Skladowski wrote:
->>
->>>=20
->>> We will pick this into msm-fixes during the next cycle=2E
->>
->>Yes, we can with the above fixes tags but first, can you please send a M=
-R from msm-next-lumag to msm-next? So that I can send a MR for fixes to msm=
--next=2E
->
->This would create an additional merge commit in msm-next for no particula=
-r reason=2E You can branch -fixes from rc1, or from the msm-next-lumag and =
-then send MR to msm-next=2E
+On 14/12/2022 01:22, Marijn Suijten wrote:
+> This preliminary Display Stream Compression support package for
+> (initially tested on) sm8[12]50 is based on comparing DSC behaviour
+> between downstream and mainline.  Some new callbacks are added (for
+> binding blocks on active CTLs), logic bugs are corrected, zeroed struct
+> members are now assigned proper values, and RM allocation and hw block
+> retrieval now hand out (or not) DSC blocks without causing null-pointer
+> dereferences.
+> 
+> Unfortunately it is not yet enough to get rid of completely corrupted
+> display output on the boards I tested here:
+> - Sony Xperia 1 (sm8150), 1644x3840 or 1096x2560 pixels;
+> - Sony Xperia 5II (sm8250), 1080x2520, at 60 or 120Hz;
+> - (can include more Xperia boards if desired)
+> 
+> Both devices use the DUALPIPE_DSCMERGE topology downstream: dual LM, PP
+> and DSC, but only a single INTF/encoder/DSI-link.
+> 
+> Hopefully this spawns some community/upstream interest to help rootcause
+> our corruption issues (after we open a drm/msm report on GitLab for more
+> appropriate tracking).
+> 
+> The Sony Xperia XZ3 (sdm845) was fully tested and validated with this
+> series to not cause any regressions (an one of the math fixes now allows
+> us to change slice_count in the panel driver, which would corrupt
+> previously).
+> 
+> Marijn Suijten (6):
+>    drm/msm/dpu1: Implement DSC binding to PP block for CTL V1
+>    drm/msm/dpu1: Add DSC config for sm8150 and sm8250
+>    drm/msm/dpu1: Wire up DSC mask for active CTL configuration
+>    drm/msm/dsi: Use DSC slice(s) packet size to compute word count
+>    drm/msm/dsi: Flip greater-than check for slice_count and
+>      slice_per_intf
+>    drm/msm/dpu: Disallow unallocated (DSC) resources to be returned
 
-Another option would be to base msm-fixes on drm-next directly=2E
+General comment: patches with Fixes ideally should come first. Usually 
+they are picked into -fixes and/or stable kernels. If the Fixes patches 
+are in the middle of the series, one can not be sure that they do not 
+have dependencies on previous patches. If there is one, it should 
+probably be stated clearly to ease work on backporting them.
 
->
->>
->>ATM, they are out of sync=2E
->>
->>
+> 
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c   |  3 +++
+>   .../drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c  |  1 +
+>   .../drm/msm/disp/dpu1/dpu_encoder_phys_vid.c  |  1 +
+>   .../drm/msm/disp/dpu1/dpu_encoder_phys_wb.c   |  2 ++
+>   .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 23 +++++++++++-----
+>   .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h    |  9 +++++++
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.c    | 27 +++++++++++++++++++
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_dsc.h    |  4 +++
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_rm.c        | 10 +++++++
+>   drivers/gpu/drm/msm/dsi/dsi_host.c            |  6 ++---
+>   10 files changed, 77 insertions(+), 9 deletions(-)
+> 
+> --
+> 2.38.1
+> 
 
+-- 
+With best wishes
+Dmitry
 
