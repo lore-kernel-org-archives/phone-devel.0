@@ -2,27 +2,27 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97E54C4332F
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Dec 2022 22:37:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39368C4332F
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Dec 2022 23:21:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbiLNWhw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Dec 2022 17:37:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34064 "EHLO
+        id S229827AbiLNXVW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Dec 2022 18:21:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbiLNWhv (ORCPT
+        with ESMTP id S229576AbiLNXVS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Dec 2022 17:37:51 -0500
+        Wed, 14 Dec 2022 18:21:18 -0500
 Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [5.144.164.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 968EA36C67
-        for <phone-devel@vger.kernel.org>; Wed, 14 Dec 2022 14:37:49 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C956D4A057
+        for <phone-devel@vger.kernel.org>; Wed, 14 Dec 2022 15:21:15 -0800 (PST)
 Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 5F54620376;
-        Wed, 14 Dec 2022 23:37:47 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id C192A20393;
+        Thu, 15 Dec 2022 00:21:13 +0100 (CET)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
+To:     phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
@@ -30,20 +30,19 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Marijn Suijten <marijn.suijten@somainline.org>,
-        Michael Srba <Michael.Srba@seznam.cz>,
         Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] Revert "phy: qualcomm: usb28nm: Add MDM9607 init sequence"
-Date:   Wed, 14 Dec 2022 23:37:32 +0100
-Message-Id: <20221214223733.648167-1-marijn.suijten@somainline.org>
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Adam Skladowski <a39.skl@gmail.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/6] arm64: dts: qcom: msm8956-loire: SDCard
+Date:   Thu, 15 Dec 2022 00:20:43 +0100
+Message-Id: <20221214232049.703484-1-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -51,87 +50,33 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This reverts commit 557a28811c7e0286d3816842032db5eb7bb5f156.
+Add pinctrl nodes to enable SD Cards to work on the Sony Loire platform,
+and define extcon nodes in PMI8950 to feed into the ci-hdrc driver as it
+cannot figure out the presence of a USB cable (nor the desired role
+based on the ID pin) on its own.  While at it, extend PMI8950 with some
+more channels with now-available VADC_ register constants.
 
-This commit introduced an init sequence from downstream DT [1] in the
-driver.  As mentioned by the comment above the HSPHY_INIT_CFG macro for
-this sequence:
+Depends on:
+- Fix pm8941-misc extcon interrupt dependency assumptions:
+  https://lore.kernel.org/linux-arm-msm/20220926113143.40768-1-bryan.odonoghue@linaro.org/
+- dt-bindings: iio: qcom-spmi-vadc: Add definitions for USB DP/DM VADCs:
+  https://lore.kernel.org/linux-arm-msm/20221111120156.48040-2-angelogioacchino.delregno@collabora.com/
 
-    /*
-     * The macro is used to define an initialization sequence.  Each tuple
-     * is meant to program 'value' into phy register at 'offset' with 'delay'
-     * in us followed.
-     */
+Marijn Suijten (6):
+  arm64: dts: qcom: pmi8950: Add USB vbus and id sensing nodes
+  arm64: dts: qcom: msm8956-loire: Add usb vbus and id extcons to
+    ci-hdrc
+  arm64: dts: qcom: pmi8950: Add missing ADC channels
+  arm64: dts: qcom: msm8976: Declare and use SDC1 pins
+  arm64: dts: qcom: msm8976: Declare and use SDC2 pins
+  arm64: dts: qcom: msm8956-loire: Add SD Card Detect to SDC2 pin states
 
-Instead of corresponding to offsets into the phy register, the sequence
-read by the downstream driver [2] is passed into ulpi_write [3] which
-crafts the address-value pair into a new value and writes it into the
-same register at USB_ULPI_VIEWPORT [4].  In other words, this init
-sequence is programmed into the hardware in a totally different way than
-downstream and is unlikely to achieve the desired result, if the hsphy
-is working at all.
+ .../qcom/msm8956-sony-xperia-loire-kugo.dts   |   6 ++
+ .../dts/qcom/msm8956-sony-xperia-loire.dtsi   |  25 +++++
+ arch/arm64/boot/dts/qcom/msm8976.dtsi         | 100 ++++++++++++++++++
+ arch/arm64/boot/dts/qcom/pmi8950.dtsi         |  38 +++++++
+ 4 files changed, 169 insertions(+)
 
-An alternative method needs to be found to write these init values at
-the desired location.  Fortunately mdm9607 did not land upstream yet [5]
-and should have its compatible revised to use the generic one, instead
-of a compatible that writes wrong data to the wrong registers.
-
-[1]: https://android.googlesource.com/kernel/msm/+/android-7.1.0_r0.2/arch/arm/boot/dts/qcom/mdm9607.dtsi#585
-[2]: https://android.googlesource.com/kernel/msm/+/android-7.1.0_r0.2/drivers/usb/phy/phy-msm-usb.c#4183
-[3]: https://android.googlesource.com/kernel/msm/+/android-7.1.0_r0.2/drivers/usb/phy/phy-msm-usb.c#468
-[4]: https://android.googlesource.com/kernel/msm/+/android-7.1.0_r0.2/drivers/usb/phy/phy-msm-usb.c#418
-[5]: https://lore.kernel.org/linux-arm-msm/20210805222812.40731-1-konrad.dybcio@somainline.org/
-
-Reported-by: Michael Srba <Michael.Srba@seznam.cz>
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- .../devicetree/bindings/phy/qcom,usb-hs-28nm.yaml   |  1 -
- drivers/phy/qualcomm/phy-qcom-usb-hs-28nm.c         | 13 -------------
- 2 files changed, 14 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/phy/qcom,usb-hs-28nm.yaml b/Documentation/devicetree/bindings/phy/qcom,usb-hs-28nm.yaml
-index abcc4373f39e..ca6a0836b53c 100644
---- a/Documentation/devicetree/bindings/phy/qcom,usb-hs-28nm.yaml
-+++ b/Documentation/devicetree/bindings/phy/qcom,usb-hs-28nm.yaml
-@@ -16,7 +16,6 @@ properties:
-   compatible:
-     enum:
-       - qcom,usb-hs-28nm-femtophy
--      - qcom,usb-hs-28nm-mdm9607
- 
-   reg:
-     maxItems: 1
-diff --git a/drivers/phy/qualcomm/phy-qcom-usb-hs-28nm.c b/drivers/phy/qualcomm/phy-qcom-usb-hs-28nm.c
-index 8807e59a1162..a52a9bf13b75 100644
---- a/drivers/phy/qualcomm/phy-qcom-usb-hs-28nm.c
-+++ b/drivers/phy/qualcomm/phy-qcom-usb-hs-28nm.c
-@@ -401,26 +401,13 @@ static const struct hsphy_init_seq init_seq_femtophy[] = {
- 	HSPHY_INIT_CFG(0x90, 0x60, 0),
- };
- 
--static const struct hsphy_init_seq init_seq_mdm9607[] = {
--	HSPHY_INIT_CFG(0x80, 0x44, 0),
--	HSPHY_INIT_CFG(0x81, 0x38, 0),
--	HSPHY_INIT_CFG(0x82, 0x24, 0),
--	HSPHY_INIT_CFG(0x83, 0x13, 0),
--};
--
- static const struct hsphy_data hsphy_data_femtophy = {
- 	.init_seq = init_seq_femtophy,
- 	.init_seq_num = ARRAY_SIZE(init_seq_femtophy),
- };
- 
--static const struct hsphy_data hsphy_data_mdm9607 = {
--	.init_seq = init_seq_mdm9607,
--	.init_seq_num = ARRAY_SIZE(init_seq_mdm9607),
--};
--
- static const struct of_device_id qcom_snps_hsphy_match[] = {
- 	{ .compatible = "qcom,usb-hs-28nm-femtophy", .data = &hsphy_data_femtophy, },
--	{ .compatible = "qcom,usb-hs-28nm-mdm9607", .data = &hsphy_data_mdm9607, },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, qcom_snps_hsphy_match);
--- 
+--
 2.39.0
 
