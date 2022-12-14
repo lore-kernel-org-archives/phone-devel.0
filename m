@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E71AC4332F
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Dec 2022 18:43:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A777DC2D0CB
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Dec 2022 18:53:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238906AbiLNSnl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Dec 2022 13:43:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56276 "EHLO
+        id S229558AbiLNSxC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Dec 2022 13:53:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238905AbiLNSnj (ORCPT
+        with ESMTP id S238046AbiLNSxA (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Dec 2022 13:43:39 -0500
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E45E62A739
-        for <phone-devel@vger.kernel.org>; Wed, 14 Dec 2022 10:43:31 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id bp15so11920268lfb.13
-        for <phone-devel@vger.kernel.org>; Wed, 14 Dec 2022 10:43:31 -0800 (PST)
+        Wed, 14 Dec 2022 13:53:00 -0500
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 696F729CAE
+        for <phone-devel@vger.kernel.org>; Wed, 14 Dec 2022 10:52:57 -0800 (PST)
+Received: by mail-lj1-x22d.google.com with SMTP id b9so7581779ljr.5
+        for <phone-devel@vger.kernel.org>; Wed, 14 Dec 2022 10:52:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=6QQ6vV3/AX81QrY5XJ0d2crbOoSDtkNQnoTsWCpJWRk=;
-        b=ISjvRW3V/ctFcULn7Fo3o+1ZBwwGaI6F8ntFt3X5L7qua7FqP/CMBbfidj4S2LY/P7
-         q2yrXRiwZ5YjFqk9U0IxRs/ue2Y4BXKXOdGaufzlfSi4lQWY4Xj2z7nU1WZ1BQAm7xKo
-         AotAQGbwTqhP4aPDym18MANe2g5EaNV1kWbOohN62HrR7oA8s94LHglzFHoODyzYS8Fj
-         y6WTM9fKUlsZb0ziCW2Sb/Zlb8AFURIHmvpu2mnFBHogAxkUIBEHdx2OBbESuSjAWH0d
-         bRJF4n0q65baB133uWQMOxCzyW9nyQWHNVf9t9BlZbAC9tK/rrR0QZTUiQCbVGi51JRT
-         mqGQ==
+        bh=ZseIU9pUHVwznNtxNlFxx+0mTPXyTHR3NZJ8jxTNHvY=;
+        b=r/gW/N2Pnn4oZW8y86l9QHLF343OH2bshWe8KXeJ0yZ3tWuEcwyRugUz0q4xtyDE1o
+         cGWrdvNidcO9AiiaboC+4oTdrw+29Bm8FDdoRZXbnfjdJe/Cto/H5RvQTS58jWylWX1K
+         SZyM5/ZHedIIs3MDjXFzCk0B7wntCny+eUl+Ui6cx07xFFqOwCK5W5X3zQtJx14x6c5i
+         YeU0DexZQtJfMT/w2tCslRmgsZAtV681kCGIU/1Jo03bVYZna9POL3J0x1noKdjgocZR
+         n4ncmQzYUp/aBrcoiU+A5tP3hxbdzICfzSi+O/oP9XMIs4Q5OU5ERsgBzeRc3xmu/JCn
+         wVoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6QQ6vV3/AX81QrY5XJ0d2crbOoSDtkNQnoTsWCpJWRk=;
-        b=wJHQPKvqxaK4FCULIwU0CJQzYbHXuyaNPVyUMdMhsaEx1NdZhu8x6Y6Z3XELJe/KEy
-         KS0xZLTfKF0SfvieU4PLPOxxwpaoQvfTIgEExjgiM1r1wRf4U5jxntsyinx34sGQVYy0
-         80hJpsEsUGzyT4r3vf6jjeJ0HbMgx+kC0kCEQ8Mluu7YUzlsqTSvM5ALQs5Sj2o4UvUJ
-         StwtL6Wso5fFqRkGy3y3B4Ia/0+P82lp8TRJn41/0/+fwC+Rcr9In08sTQQ4tdGnmrN9
-         hf6tGduF5a4etdblwLpgbFwE/5Qa/vtL3liotS8epiY0yu5n0vQOQmJpTLr8nwYX5Z+u
-         ieVQ==
-X-Gm-Message-State: ANoB5pn6uLVjsWxBcMCTKKxAv7sZNiZZVUfsIMFdHIkSuAbNRH7lOyR0
-        YXUEzaUeTVIKVS1rXOdpq3JiCQ==
-X-Google-Smtp-Source: AA0mqf64jARPZqX/nQEHDDjC2qmaXxx0n0cHQCHNBt5xUMOWTX3J6MSBdNqMt0e2oZrhwzeUy6Lj3A==
-X-Received: by 2002:a05:6512:2215:b0:4b5:4606:7ae3 with SMTP id h21-20020a056512221500b004b546067ae3mr9060707lfu.46.1671043410310;
-        Wed, 14 Dec 2022 10:43:30 -0800 (PST)
+        bh=ZseIU9pUHVwznNtxNlFxx+0mTPXyTHR3NZJ8jxTNHvY=;
+        b=mf1qrOiv4utfVTHURQaSOSuWGjChlFqtLguV6bBuyFG1Wq9etjP438qTsW3oo6yOLY
+         BhamwpHL7Uxhp71uwj+FFci7TJmNjPzemp6DFxg/zd2XzvIo0EmTbgKaeT+/LNRvzrsR
+         Y0DL3ex0ZyqefVONbR91eL5Nb6IRD9NFGRZtzaVCKp9Ge7IwlyySYPCi/1Mgq+JpVosi
+         tuInLH5yyySvSU06h9IMhMamAu92gDxWyO+xcp4Sqnvf77Az3Wnwmr4j+YxJhiM9MweY
+         vLjieCcJyvFGc+wJbiw+3z/JlQOShIeSTu28gSehyq1zuuBd43TZOQPSO4kyOR1dcT+S
+         HNgQ==
+X-Gm-Message-State: ANoB5pmgl206y0K4NwZzjD3XWEzdVPPSeUyj7Ae/agKsL+YZY6GXzoQF
+        dZU+ZJAEvV/gewcJH8alBjEDNGXffoqczSVH
+X-Google-Smtp-Source: AA0mqf7ZgNkE56lYnu/RzMo2/dyqB/FcOcbFfYQFPy+YE495hfWhIWasUAYLlY1RxV/76aJczrI/Tw==
+X-Received: by 2002:a05:651c:178d:b0:26f:e87b:d3bd with SMTP id bn13-20020a05651c178d00b0026fe87bd3bdmr8121650ljb.39.1671043975587;
+        Wed, 14 Dec 2022 10:52:55 -0800 (PST)
 Received: from [10.10.15.130] ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id b16-20020a056512071000b004a8b9c68735sm898842lfs.102.2022.12.14.10.43.29
+        by smtp.gmail.com with ESMTPSA id q20-20020a2e9694000000b002770eafaafbsm695766lji.99.2022.12.14.10.52.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Dec 2022 10:43:29 -0800 (PST)
-Message-ID: <184d22f1-7ed1-4a67-1c25-9fafeb94db83@linaro.org>
-Date:   Wed, 14 Dec 2022 20:43:29 +0200
+        Wed, 14 Dec 2022 10:52:55 -0800 (PST)
+Message-ID: <ca33cb5d-363d-dddd-4ad9-62f8a2d87bb1@linaro.org>
+Date:   Wed, 14 Dec 2022 20:52:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.5.1
-Subject: Re: [RFC PATCH 3/6] drm/msm/dpu1: Wire up DSC mask for active CTL
- configuration
+Subject: Re: [RFC PATCH 4/6] drm/msm/dsi: Use DSC slice(s) packet size to
+ compute word count
 Content-Language: en-GB
 To:     Marijn Suijten <marijn.suijten@somainline.org>,
         phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
@@ -87,9 +87,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
 References: <20221213232207.113607-1-marijn.suijten@somainline.org>
- <20221213232207.113607-4-marijn.suijten@somainline.org>
+ <20221213232207.113607-5-marijn.suijten@somainline.org>
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20221213232207.113607-4-marijn.suijten@somainline.org>
+In-Reply-To: <20221213232207.113607-5-marijn.suijten@somainline.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -97,66 +97,28 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 14/12/2022 01:22, Marijn Suijten wrote:
-> Active CTLs have to configure what DSC block(s) have to be enabled, and
-> what DSC block(s) have to be flushed; this value was initialized to zero
-> resulting in the necessary register writes to never happen (or would
-> write zero otherwise).  This seems to have gotten lost in the DSC v4->v5
-> series while refactoring how the combination with merge_3d was handled.
+> According to downstream the value to use for WORD_COUNT is
+> bytes_per_pkt, which denotes the number of bytes in a packet based on
+> how many slices have been configured by the panel driver times the
+> width of a slice times the number of bytes per pixel.
 > 
-> Fixes: 58dca9810749 ("drm/msm/disp/dpu1: Add support for DSC in encoder")
+> The DSC panels seen thus far use one byte per pixel, only one slice
+> per packet, and a slice width of half the panel width leading to the
+> desired bytes_per_pkt+1 value to be equal to hdisplay/2+1.  This however
+> isn't the case anymore for panels that configure two slices per packet,
+> where the value should now be hdisplay+1.
+> 
+> Note that the aforementioned panel (on a Sony Xperia XZ3, sdm845) with
+> slice_count=1 has also been tested to successfully accept slice_count=2,
+> which would have shown corrupted output previously.
+> 
+> Fixes: 08802f515c3c ("drm/msm/dsi: Add support for DSC configuration")
 > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 > ---
->   drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c | 1 +
->   drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c | 1 +
->   drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c  | 2 ++
->   3 files changed, 4 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> index ae28b2b93e69..35791f93c33d 100644
-> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c
-> @@ -61,6 +61,7 @@ static void _dpu_encoder_phys_cmd_update_intf_cfg(
->   	intf_cfg.intf_mode_sel = DPU_CTL_MODE_SEL_CMD;
->   	intf_cfg.stream_sel = cmd_enc->stream_sel;
->   	intf_cfg.mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
-> +	intf_cfg.dsc = dpu_encoder_helper_get_dsc(phys_enc);
->   	ctl->ops.setup_intf_cfg(ctl, &intf_cfg);
->   
->   	/* setup which pp blk will connect to this intf */
-> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-> index 0f71e8fe7be7..9ee3a7306a5f 100644
-> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-> @@ -274,6 +274,7 @@ static void dpu_encoder_phys_vid_setup_timing_engine(
->   	intf_cfg.intf_mode_sel = DPU_CTL_MODE_SEL_VID;
->   	intf_cfg.stream_sel = 0; /* Don't care value for video mode */
->   	intf_cfg.mode_3d = dpu_encoder_helper_get_3d_blend_mode(phys_enc);
-> +	intf_cfg.dsc = dpu_encoder_helper_get_dsc(phys_enc);
->   	if (phys_enc->hw_pp->merge_3d)
->   		intf_cfg.merge_3d = phys_enc->hw_pp->merge_3d->idx;
->   
-> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-> index 7cbcef6efe17..92ddf9995b37 100644
-> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
-> @@ -209,6 +209,7 @@ static void dpu_encoder_phys_wb_setup_cdp(struct dpu_encoder_phys *phys_enc)
->   
->   		intf_cfg.intf = DPU_NONE;
->   		intf_cfg.wb = hw_wb->idx;
-> +		intf_cfg.dsc = dpu_encoder_helper_get_dsc(phys_enc);
+>   drivers/gpu/drm/msm/dsi/dsi_host.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-We usually don't have DSC with the writeback, don't we?
-
->   		if (mode_3d && hw_pp && hw_pp->merge_3d)
->   			intf_cfg.merge_3d = hw_pp->merge_3d->idx;
-> @@ -230,6 +231,7 @@ static void dpu_encoder_phys_wb_setup_cdp(struct dpu_encoder_phys *phys_enc)
->   		intf_cfg.wb = hw_wb->idx;
->   		intf_cfg.mode_3d =
->   			dpu_encoder_helper_get_3d_blend_mode(phys_enc);
-> +		intf_cfg.dsc = dpu_encoder_helper_get_dsc(phys_enc);
->   		phys_enc->hw_ctl->ops.setup_intf_cfg(phys_enc->hw_ctl, &intf_cfg);
->   	}
->   }
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
 -- 
 With best wishes
