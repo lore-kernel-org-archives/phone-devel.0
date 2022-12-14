@@ -2,158 +2,136 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F15BC4332F
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Dec 2022 20:56:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 97E54C4332F
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Dec 2022 22:37:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbiLNU4C (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Dec 2022 15:56:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48966 "EHLO
+        id S229448AbiLNWhw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Dec 2022 17:37:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229511AbiLNU4B (ORCPT
+        with ESMTP id S229437AbiLNWhv (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Dec 2022 15:56:01 -0500
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9CDF1CFFE;
-        Wed, 14 Dec 2022 12:55:59 -0800 (PST)
-Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        Wed, 14 Dec 2022 17:37:51 -0500
+Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [5.144.164.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 968EA36C67
+        for <phone-devel@vger.kernel.org>; Wed, 14 Dec 2022 14:37:49 -0800 (PST)
+Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id DE4203F353;
-        Wed, 14 Dec 2022 21:55:57 +0100 (CET)
-Date:   Wed, 14 Dec 2022 21:55:56 +0100
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 5F54620376;
+        Wed, 14 Dec 2022 23:37:47 +0100 (CET)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Jonathan Cameron <jic23@kernel.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Michael Srba <Michael.Srba@seznam.cz>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] arm64: dts: qcom: Use labels with generic node names
- for ADC channels
-Message-ID: <20221214205556.jdbcv3e4fkvm7f3y@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Jonathan Cameron <jic23@kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221209215308.1781047-1-marijn.suijten@somainline.org>
- <3d5b29f3-8d8d-93a7-a485-5261e2d8891d@linaro.org>
- <20221210165434.3hhen5mgtvflghks@SoMainline.org>
- <0bc1eba8-bc26-0bdb-16bf-78160c27c57b@linaro.org>
+        "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] Revert "phy: qualcomm: usb28nm: Add MDM9607 init sequence"
+Date:   Wed, 14 Dec 2022 23:37:32 +0100
+Message-Id: <20221214223733.648167-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0bc1eba8-bc26-0bdb-16bf-78160c27c57b@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-12-12 09:48:26, Krzysztof Kozlowski wrote:
-> On 10/12/2022 17:54, Marijn Suijten wrote:
-> > On 2022-12-10 12:02:03, Krzysztof Kozlowski wrote:
-> >> On 09/12/2022 22:53, Marijn Suijten wrote:
-> >>> As discussed in [1] the DT should use labels to describe ADC
-> >>> channels, with generic node names, since the IIO drivers now
-> >>> moved to the fwnode API where node names include the `@xx`
-> >>> address suffix.
-> >>> 
-> >>> Especially for the ADC5 driver that uses extend_name - which
-> >>> cannot be removed for compatibility reasons - this results in
-> >>> sysfs files with the @xx name that wasn't previously present, and
-> >>> leads to an unpleasant file-browsing experience.
-> >>> 
-> >>> Also remove all the unused channel labels in pm660.dtsi.
-> >>> 
-> >>> [1]:
-> >>> https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
-> >>>
-> >>>
-> >>> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> >> 
-> >> The talk was in context of bindings, not about changing all
-> >> existing users thus affecting DTS.
-> > 
-> > And as a consequence, DTS.  The already-merged transition from OF to 
-> > fwnode resulted in `@xx` to be included in the ADC channel name - and
-> > in the case of ADC5 even in sysfs filenames - so this seems like a 
-> > necessary change to make.
-> > 
-> > At the very least I would have changed the bindings submitted or 
-> > co-authored /by myself/ since I initially decided to rely on this
-> > (now obviously) wrong behaviour, and should have used labels from the
-> > get go.
-> > 
-> >> What's more, to me "skin-temp-thermistor" is quite generic name,
-> >> maybe "thermistor" would be more and reflects the purpose of the
-> >> node, so it was more or less fine.
-> > 
-> > Are you suggesting to not use "adc-chan", but "thermistor" as node
-> > name (and still use skin_temp as label)?
-> 
-> No, I am just saying that some of the names were correct, so the
-> reasoning in commit msg is not entirely accurate.
+This reverts commit 557a28811c7e0286d3816842032db5eb7bb5f156.
 
-The commit msg doesn't state that any of these names was wrong, rather
-that the label property should be used to convey a name to the driver.
+This commit introduced an init sequence from downstream DT [1] in the
+driver.  As mentioned by the comment above the HSPHY_INIT_CFG macro for
+this sequence:
 
-If you think multiple /node names/ are acceptable, please discuss in
-that direction.  Do we use a predetermined set of names (adc-chan@xx,
-thermistor@xx, ...) or do you have another suggestion?
+    /*
+     * The macro is used to define an initialization sequence.  Each tuple
+     * is meant to program 'value' into phy register at 'offset' with 'delay'
+     * in us followed.
+     */
 
-> > Or to keep the fully-written-out "thermistor" word in the label?
-> 
-> No, I don't refer to labels. Labels don't matter, they are being removed
-> entirely during DTS build.
+Instead of corresponding to offsets into the phy register, the sequence
+read by the downstream driver [2] is passed into ulpi_write [3] which
+crafts the address-value pair into a new value and writes it into the
+same register at USB_ULPI_VIEWPORT [4].  In other words, this init
+sequence is programmed into the hardware in a totally different way than
+downstream and is unlikely to achieve the desired result, if the hsphy
+is working at all.
 
-Ugh, I knew this was becoming a problem, even in an earlier IIO
-discussions with Jonathan it was sometimes hard to keep apart:
+An alternative method needs to be found to write these init values at
+the desired location.  Fortunately mdm9607 did not land upstream yet [5]
+and should have its compatible revised to use the generic one, instead
+of a compatible that writes wrong data to the wrong registers.
 
-I am /not/ referring to DTS labels, but to the `label =` node
-attribute/property, which is read by the driver (which isn't removed,
-how else would the driver fish this value out at runtime...).
+[1]: https://android.googlesource.com/kernel/msm/+/android-7.1.0_r0.2/arch/arm/boot/dts/qcom/mdm9607.dtsi#585
+[2]: https://android.googlesource.com/kernel/msm/+/android-7.1.0_r0.2/drivers/usb/phy/phy-msm-usb.c#4183
+[3]: https://android.googlesource.com/kernel/msm/+/android-7.1.0_r0.2/drivers/usb/phy/phy-msm-usb.c#468
+[4]: https://android.googlesource.com/kernel/msm/+/android-7.1.0_r0.2/drivers/usb/phy/phy-msm-usb.c#418
+[5]: https://lore.kernel.org/linux-arm-msm/20210805222812.40731-1-konrad.dybcio@somainline.org/
 
-After all none of this patch has any DTS labels, in fact a bunch of
-unused ones in pm660 have been removed... but this patch /does add/ the
-`label =` property to many nodes.
+Reported-by: Michael Srba <Michael.Srba@seznam.cz>
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+---
+ .../devicetree/bindings/phy/qcom,usb-hs-28nm.yaml   |  1 -
+ drivers/phy/qualcomm/phy-qcom-usb-hs-28nm.c         | 13 -------------
+ 2 files changed, 14 deletions(-)
 
-> >> Anyway I am against such changes without expressing it in the
-> >> bindings.
-> > 
-> > As expressed in [1] I suggested and am all for locking this change
-> > in via bindings, and you are right to expect that to have gone paired
-> > with this patch.
-> 
-> Yes, I expect such changes to have both binding and DTS change together.
-> 
-> > 
-> > I'll submit that as the leading patch to this in v2, with the
-> > wildcard pattern changed to adc-chan (or something else pending the
-> > discussion above), and should I then also require the label property
-> > via `label: true`?
-> 
-> I don't think label is required.
+diff --git a/Documentation/devicetree/bindings/phy/qcom,usb-hs-28nm.yaml b/Documentation/devicetree/bindings/phy/qcom,usb-hs-28nm.yaml
+index abcc4373f39e..ca6a0836b53c 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,usb-hs-28nm.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,usb-hs-28nm.yaml
+@@ -16,7 +16,6 @@ properties:
+   compatible:
+     enum:
+       - qcom,usb-hs-28nm-femtophy
+-      - qcom,usb-hs-28nm-mdm9607
+ 
+   reg:
+     maxItems: 1
+diff --git a/drivers/phy/qualcomm/phy-qcom-usb-hs-28nm.c b/drivers/phy/qualcomm/phy-qcom-usb-hs-28nm.c
+index 8807e59a1162..a52a9bf13b75 100644
+--- a/drivers/phy/qualcomm/phy-qcom-usb-hs-28nm.c
++++ b/drivers/phy/qualcomm/phy-qcom-usb-hs-28nm.c
+@@ -401,26 +401,13 @@ static const struct hsphy_init_seq init_seq_femtophy[] = {
+ 	HSPHY_INIT_CFG(0x90, 0x60, 0),
+ };
+ 
+-static const struct hsphy_init_seq init_seq_mdm9607[] = {
+-	HSPHY_INIT_CFG(0x80, 0x44, 0),
+-	HSPHY_INIT_CFG(0x81, 0x38, 0),
+-	HSPHY_INIT_CFG(0x82, 0x24, 0),
+-	HSPHY_INIT_CFG(0x83, 0x13, 0),
+-};
+-
+ static const struct hsphy_data hsphy_data_femtophy = {
+ 	.init_seq = init_seq_femtophy,
+ 	.init_seq_num = ARRAY_SIZE(init_seq_femtophy),
+ };
+ 
+-static const struct hsphy_data hsphy_data_mdm9607 = {
+-	.init_seq = init_seq_mdm9607,
+-	.init_seq_num = ARRAY_SIZE(init_seq_mdm9607),
+-};
+-
+ static const struct of_device_id qcom_snps_hsphy_match[] = {
+ 	{ .compatible = "qcom,usb-hs-28nm-femtophy", .data = &hsphy_data_femtophy, },
+-	{ .compatible = "qcom,usb-hs-28nm-mdm9607", .data = &hsphy_data_mdm9607, },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, qcom_snps_hsphy_match);
+-- 
+2.39.0
 
-My commit message explains why the ADC5/VADC driver should really
-receive a label property instead of using the node name.
-
-- Marijn
