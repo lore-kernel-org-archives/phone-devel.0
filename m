@@ -2,157 +2,116 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 685BAC4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Dec 2022 11:58:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C09B0C46467
+	for <phone-devel@archiver.kernel.org>; Thu, 15 Dec 2022 13:17:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229675AbiLOL6j (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 15 Dec 2022 06:58:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57360 "EHLO
+        id S229460AbiLONRi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 15 Dec 2022 08:17:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230153AbiLOL6I (ORCPT
+        with ESMTP id S229844AbiLONRf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 15 Dec 2022 06:58:08 -0500
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9856B2C10E
-        for <phone-devel@vger.kernel.org>; Thu, 15 Dec 2022 03:58:07 -0800 (PST)
-Received: by mail-pf1-x432.google.com with SMTP id 21so6542462pfw.4
-        for <phone-devel@vger.kernel.org>; Thu, 15 Dec 2022 03:58:07 -0800 (PST)
+        Thu, 15 Dec 2022 08:17:35 -0500
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5A452CCBC
+        for <phone-devel@vger.kernel.org>; Thu, 15 Dec 2022 05:17:32 -0800 (PST)
+Received: by mail-lf1-x12e.google.com with SMTP id 1so15639274lfz.4
+        for <phone-devel@vger.kernel.org>; Thu, 15 Dec 2022 05:17:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=pZOfOCT1uqUyQOZ3Q6ejDEihZSzQYrZucgCadknyvEo=;
-        b=TaTybFJOhH5EPK/eBhO184gTI9rZ6NpPjNfPTGQmv+4pde+ovnS4o3OcSTPB07hU3j
-         u8Gyneh47OfOatEVMn3wPktBWSiEx17Hm2qO/9QkhlOpPHF4cESHo62ysUOcZjFY1UgW
-         46qjT3Wvo4pE17HeOcATjOBvTJdy3LzoYMors5zHe7mX7B3BLz3LEP6fnNuGiKxaXZZY
-         KsH/VLtse+zcMYOJ2Mwrbu4HzaTUx12stdo25n1fyi4kfyjqVV/KGeFtufPgS4e4ZoQu
-         94kCq1g/b7CCX8aW/1AaQk1I6DccFrnHOdxDBPOTDmYJi1rAlE3T2tMbtlW2BhxhuP21
-         4Zcg==
+        bh=Sg/7PKZ2PpLj44QUzjyo60iofeYQC0nT1+8EbxEYeYk=;
+        b=paqjLWLQjV3QM7o0g45iNNwnnTCrY5fNU98IFbOl88i8N05oz/7pwz8U4konc2LKBI
+         4im+yTolmz5RvPwIXBBUAW69FKxIc9OOOjJtXmEHrf/WorTXyD6pQItLL9R1llswJIIJ
+         3TN68XWRZQ1cYIxLWbygHK9yuR1hPGe3XyTaV59MCbZJXTPJ2HVCbLMnOee/0KYhenAV
+         sREeEt+/+7zk3hgKUtaTsTOMs291dD1X1zcivWER55m+BRaEQ+HSuEeE1A1s0kI4i/Hy
+         AGldpgU9DwGbNITetJbtATshSvEbWobZWYd4M+5KsBU2ThZ3zLb5YRcyXcyUrN0ywf5d
+         nzPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pZOfOCT1uqUyQOZ3Q6ejDEihZSzQYrZucgCadknyvEo=;
-        b=LOW7ty8w5/gySFsNkz0RRQ6bP4vrE2FXUGKdeDmUFkvWdDu2ZiEGAfWEm+dUJdD/Uc
-         zjBXJdmpDpPxQR2x2RUKg85LxcitZKerw5vi2YDtaHJrsxBUZ1Zujuewfo62H977KzqN
-         7nQENYi96RwzbTnO71e+m97jtbpQueCnal2k2pIGH9jbR10gNJqF5iiwKV0uA0zuxQ+A
-         1LX/2EhVyKMXz5zEK6MzNm3ftj9vSXTeQfraHv84OoZOBmVbcfidNjVIbq5OkUxaf5l4
-         eRe0MYpEaAqn2auO5pggDfmcTXLe4d3H+Vpei/gQG5VYlMLgyNhSXQpzcfUO+J/Akvas
-         ZKTw==
-X-Gm-Message-State: ANoB5plXiHkzFSlgI8YEb3py3br6RH9V1rWcfJ6XquBRD3xCHhgL6gTj
-        igbfOqi6+G8vrapuX9swPbV7kw==
-X-Google-Smtp-Source: AA0mqf6zAOBI8FNjjz3fd3sqz5D+xV3IlJL7UUHXxCKfMPTOyHmWW9qt9YBU98dbCUcKtQgdAWvb4g==
-X-Received: by 2002:a62:e814:0:b0:577:271e:e66f with SMTP id c20-20020a62e814000000b00577271ee66fmr28704053pfi.27.1671105487018;
-        Thu, 15 Dec 2022 03:58:07 -0800 (PST)
-Received: from ?IPV6:2401:4900:1c5f:4e45:ae49:8018:6d22:e5b4? ([2401:4900:1c5f:4e45:ae49:8018:6d22:e5b4])
-        by smtp.gmail.com with ESMTPSA id h66-20020a62de45000000b00576145a9bd0sm1554392pfg.127.2022.12.15.03.57.59
+        bh=Sg/7PKZ2PpLj44QUzjyo60iofeYQC0nT1+8EbxEYeYk=;
+        b=a/OjAb+0HhO4ZSqklxuWVLaa6HR/6+Sr00Q5Wu9BHjLRRvNuPs4nC+RUY6Sy3IWRMU
+         Tj3WRwO0/D3hRbSQL4oPSZ3sDeAhasp80knm3HsJey1IWePiLuzkeEcwlEbwqlTJqU1l
+         LDGk7RjPejp/SAOAsE515Sg8d/t1LUwDq4VFkGD1L4isHswFm0uTCDqNPYQtkl+KlmC3
+         j5VAFm5WZlxZ4wqODDhciywh2tj0KnDRSuQJlmG1I2UI3yY9oNA+UBu8XgSf6RF00meV
+         c1Rd1Ru9BazaZwf8XEAEC2OOcYaRdnaO58IKBMGhMmi9IhiedMW6Eji2t3OtY6R2sJtn
+         wj7A==
+X-Gm-Message-State: ANoB5plPdEfj+DdWokSWy8pecBTNr7USiC/9oZ3JbhxYH0+BN+TSlHjR
+        QhNK9TGeCWslXu6YlGlJwbTNBw==
+X-Google-Smtp-Source: AA0mqf6adzOmCFsfsG4Pco2bqy42zVq9ZhzDRHVcRCAsSdpPIgPtuFiVQeUoqpWpdoJCmTZoxIVM0w==
+X-Received: by 2002:a05:6512:1690:b0:4b6:eca8:f6ca with SMTP id bu16-20020a056512169000b004b6eca8f6camr6144996lfb.67.1671110251085;
+        Thu, 15 Dec 2022 05:17:31 -0800 (PST)
+Received: from [192.168.1.101] (abxh44.neoplus.adsl.tpnet.pl. [83.9.1.44])
+        by smtp.gmail.com with ESMTPSA id o9-20020a05651205c900b0049478cc4eb9sm1156938lfo.230.2022.12.15.05.17.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Dec 2022 03:58:06 -0800 (PST)
-Message-ID: <1d3d8169-1011-cdfd-f9f7-b7828acdc1ac@linaro.org>
-Date:   Thu, 15 Dec 2022 17:27:57 +0530
+        Thu, 15 Dec 2022 05:17:29 -0800 (PST)
+Message-ID: <57e7f32b-86d6-81b4-1501-d732deee6c48@linaro.org>
+Date:   Thu, 15 Dec 2022 14:17:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.1
-Subject: Re: [PATCH v5 1/8] dt-bindings: ufs: qcom: Add sm6115 binding
+ Thunderbird/102.6.0
+Subject: Re: [PATCH 2/6] arm64: dts: qcom: msm8956-loire: Add usb vbus and id
+ extcons to ci-hdrc
 Content-Language: en-US
-To:     Iskren Chernev <iskren.chernev@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221030094258.486428-1-iskren.chernev@gmail.com>
- <20221030094258.486428-2-iskren.chernev@gmail.com>
-From:   Bhupesh Sharma <bhupesh.sharma@linaro.org>
-In-Reply-To: <20221030094258.486428-2-iskren.chernev@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Adam Skladowski <a39.skl@gmail.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20221214232049.703484-1-marijn.suijten@somainline.org>
+ <20221214232049.703484-3-marijn.suijten@somainline.org>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20221214232049.703484-3-marijn.suijten@somainline.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-On 10/30/22 3:12 PM, Iskren Chernev wrote:
-> Add SM6115 UFS to DT schema.
+
+On 15.12.2022 00:20, Marijn Suijten wrote:
+> ci-hdrc does not have the ability to detect voltage presence (5V vbus)
+> on the USB connector nor the role (via an ID sensing pin), and relies on
+> the PMIC-side charger to provide such information through an extcon
+> driver.
 > 
-> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 > ---
->   .../devicetree/bindings/ufs/qcom,ufs.yaml     | 26 +++++++++++++++++++
->   1 file changed, 26 insertions(+)
+>  arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-> index f2d6298d926c..b517d76215e3 100644
-> --- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-> +++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-> @@ -28,6 +28,7 @@ properties:
->             - qcom,msm8998-ufshc
->             - qcom,sc8280xp-ufshc
->             - qcom,sdm845-ufshc
-> +          - qcom,sm6115-ufshc
->             - qcom,sm6350-ufshc
->             - qcom,sm8150-ufshc
->             - qcom,sm8250-ufshc
-> @@ -178,6 +179,31 @@ allOf:
->             minItems: 1
->             maxItems: 1
->   
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - qcom,sm6115-ufshc
-> +    then:
-> +      properties:
-> +        clocks:
-> +          minItems: 8
-> +          maxItems: 8
-> +        clock-names:
-> +          items:
-> +            - const: core_clk
-> +            - const: bus_aggr_clk
-> +            - const: iface_clk
-> +            - const: core_clk_unipro
-> +            - const: ref_clk
-> +            - const: tx_lane0_sync_clk
-> +            - const: rx_lane0_sync_clk
-> +            - const: ice_core_clk
-> +        reg:
-> +          minItems: 2
-> +          maxItems: 2
+> diff --git a/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi b/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi
+> index 67baced639c9..700583a56a0e 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi
+> @@ -77,6 +77,8 @@ &gcc {
+>  
+>  &otg {
+>  	status = "okay";
 > +
->       # TODO: define clock bindings for qcom,msm8994-ufshc
->   
->   unevaluatedProperties: false
+> +	extcon = <&pmi8950_usb_vbus>, <&pmi8950_usb_id>;
+Please add it above to keep status as the last property.
 
-Seems this hasn't made way to linux-next yet. Hence we get the following 
-error with $ make dtbs_check:
-
-arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dtb: ufs@4804000: 
-compatible:0: 'qcom,sm6115-ufshc' is not one of ['qcom,msm8994-ufshc', 
-'qcom,msm8996-ufshc', 'qcom,msm8998-ufshc', 'qcom,sc8280xp-ufshc', 
-'qcom,sdm845-ufshc', 'qcom,sm6350-ufshc', 'qcom,sm8150-ufshc', 
-'qcom,sm8250-ufshc', 'qcom,sm8350-ufshc', 'qcom,sm8450-ufshc']
-	From schema: Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-
-arch/arm64/boot/dts/qcom/sm4250-oneplus-billie2.dtb: ufs@4804000: 
-Unevaluated properties are not allowed ('compatible' was unexpected)
-	From schema: Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-
-If, it helps to get the review / merge happen:
-
-Reviewed-by: Bhupesh Sharma <bhupesh.sharma@linaro.org>
-
-@Rob, @Krzysztof: Please help merge this.
-
-Thanks.
+Konrad
+>  };
+>  
+>  &pm8004_spmi_regulators {
