@@ -2,198 +2,116 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FDC6C4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Dec 2022 13:20:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2AC3C4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 15 Dec 2022 15:10:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbiLONUh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 15 Dec 2022 08:20:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49710 "EHLO
+        id S229624AbiLOPKx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 15 Dec 2022 10:10:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbiLONUg (ORCPT
+        with ESMTP id S229517AbiLOPKw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 15 Dec 2022 08:20:36 -0500
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E61B32C130
-        for <phone-devel@vger.kernel.org>; Thu, 15 Dec 2022 05:20:34 -0800 (PST)
-Received: by mail-lf1-x136.google.com with SMTP id z26so15617794lfu.8
-        for <phone-devel@vger.kernel.org>; Thu, 15 Dec 2022 05:20:34 -0800 (PST)
+        Thu, 15 Dec 2022 10:10:52 -0500
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 359592A951
+        for <phone-devel@vger.kernel.org>; Thu, 15 Dec 2022 07:10:51 -0800 (PST)
+Received: by mail-lf1-x12d.google.com with SMTP id b3so16143136lfv.2
+        for <phone-devel@vger.kernel.org>; Thu, 15 Dec 2022 07:10:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ilerhl9aB5wldZrGi6JAgqg6pC5+HsK4xqZHdd6qSDQ=;
-        b=cwIRbjabiTAM/XKcFoAozZBIgY2TmT4pmJeGjO/WYqhQctpp4UjGeDHE1/u4Hl5q0I
-         6IFMCv6ct0755kRKSvAwmJ7i5Sih27uziVxexSL4OetAC5oDPRA8OfCv7AzA7U9S/Bca
-         d8NHqzvSXNr0jxlCYMxCZPwONJCEQ4gMEHnGKjqOPUxDfo+w12ofxUblc9+Qdg75ijgm
-         jyjf7twPWXwfwak2kC2TIAQJbWqeb1DVw1Wqgv6ys7haZw9DVcv17r4k3qUh4HMJ8/PJ
-         LehfHsTnXINxibMAtsRE9oY3sHcAPC0Fg/yh0Frhj27gQTwM5tXnrf0Qfi6/c0WI1bdt
-         Ms6Q==
+        bh=petCtMT6h9gBTrPqM4wSXPuKYj7TltVBXvRJZq1Vl4A=;
+        b=wxAxGHVqRSAWNyWfmK7P70u9SxsXJSH1r5fH7taXrSq+Rfu6lZsny9oPYIOPs8dfUI
+         Au5EXXc7iW4c4KkVhWpjHc0/brvLjJ5i2+OG2OBKvIhvzP24oce4CpugSmER6l54FebS
+         7W1RwoY/HEFeVHT0lyCyC2RZuR+XSsYgDB+sHt2UWdcBiKMWcT4IA6x6bvN72p29Hdgg
+         krpL0Fr8Y+DroU3qi9xpQHisGZfOcIBstLZ2jXAClrCKcOPF+xZ3P9Qdx8c/UN7BJ78P
+         VwJ0NyhO1g2gQjnvd6Tuc3hd/sY0p7OhuMy04LH2xjvkjAqomlNP/VnfiEL2sRdNMwMi
+         Tbdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ilerhl9aB5wldZrGi6JAgqg6pC5+HsK4xqZHdd6qSDQ=;
-        b=uArVfGMiPgqthi6mmlf9LGltmT9yM0UZPesNuBl0lxZl2U/lKr1L1/F+bRdv6/Hoy3
-         kpPtwIzqrMgzw9hZSfZka5GE/F7yzaAuIXfvde1ua4DdHhLJ5BjjvScG44zbRy0/sdPT
-         arEZbZ0sxEp0qxD2sV4fDdxYlp523K8RbLPErYaqkuRF5JovbfAq5szTRfaZ7dURD3xj
-         uGlTgt7nXusuIODxVr6DtDiDzN4whUFwatD62oM2ti2XUETxcYSmJFr4xS6Hgw8I616+
-         dqohOFBDY13/3RhEjLtg7DXvv1Ul4JX9NQ9/5ABkCMPONXql+59CMOXTFHD16rH1ef3V
-         GXAA==
-X-Gm-Message-State: ANoB5pkFs+c3617mVMrAw3M7fKSZynp/KJr7tcZw3KX0XMPDiax9KStm
-        6T3+u2LetSoc/7gv18vNW7LJkQ==
-X-Google-Smtp-Source: AA0mqf7RT8oY59cf+Be3rLYgLtjU2DX4Etj8BCthJJuaJRchwXq8CyN2TyAqyBsJDjQnRL9mUF2CCw==
-X-Received: by 2002:a05:6512:b91:b0:4b6:ed8b:4f16 with SMTP id b17-20020a0565120b9100b004b6ed8b4f16mr6433868lfv.52.1671110433312;
-        Thu, 15 Dec 2022 05:20:33 -0800 (PST)
-Received: from [192.168.1.101] (abxh44.neoplus.adsl.tpnet.pl. [83.9.1.44])
-        by smtp.gmail.com with ESMTPSA id p15-20020a056512328f00b004a46f92a15bsm1153210lfe.41.2022.12.15.05.20.31
+        bh=petCtMT6h9gBTrPqM4wSXPuKYj7TltVBXvRJZq1Vl4A=;
+        b=7GChsLk2Nf2tuyaLoLzPIhgkIEdo1ogUuJ0yRmTJzBDcw/8sXJ9y8Oie7JiHog7CVM
+         UpMnP1foR/jkZswXk+9rErKoWA6YirXTIKxCxDUCx75clamEXmIogsEroz0XkfuR9fuY
+         etYMEXjGCnJOGNo33HH+9fQKRMsosQ0mvoH7A4YVX6m15avGK4PrEuLt/zylm5wkMKSm
+         xNQAcI5oh/iaDt2DDISfwrW25954wFiZzC8j7p515M2da3HNyl6Mm7LGo0/T0KAxztFb
+         cK9IsR8Z8vFXCx+fgST+vIlqft7XjYLkt/lMzmL11lIDaqMSyBcpy8s+eCvQhy5XGAiW
+         8ECw==
+X-Gm-Message-State: ANoB5pkWs8WnnDGCIBDrtTRu/rF95r1gSzLu2Lyof6/i65Ixp+nw2dZz
+        W22AYGtZi0vDv3+bZcbHLAGtWQ==
+X-Google-Smtp-Source: AA0mqf4mYmzjbcewsbtx2GMO4Z0urxIS7tt5k3wtucHMuRDUfjlTrJFPUq3Rj8Jakr44QpceqaDxVw==
+X-Received: by 2002:ac2:4e4e:0:b0:4a4:68b9:608a with SMTP id f14-20020ac24e4e000000b004a468b9608amr6993443lfr.21.1671117049557;
+        Thu, 15 Dec 2022 07:10:49 -0800 (PST)
+Received: from ?IPV6:2001:14ba:a085:4d00::8a5? (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
+        by smtp.gmail.com with ESMTPSA id w5-20020a05651234c500b004b0b131453csm1183121lfr.49.2022.12.15.07.10.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Dec 2022 05:20:32 -0800 (PST)
-Message-ID: <33fe1249-34b4-443b-4258-586ed8c5f0e6@linaro.org>
-Date:   Thu, 15 Dec 2022 14:20:30 +0100
+        Thu, 15 Dec 2022 07:10:48 -0800 (PST)
+Message-ID: <9e94c0b9-f901-5ac9-2abb-40e958cbe5a2@linaro.org>
+Date:   Thu, 15 Dec 2022 17:10:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH 5/6] arm64: dts: qcom: msm8976: Declare and use SDC2 pins
-Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Adam Skladowski <a39.skl@gmail.com>,
+ Thunderbird/102.5.1
+Subject: Re: [PATCH v5 5/8] iommu/arm-smmu-qcom: Add SM6115 support
+Content-Language: en-GB
+To:     Iskren Chernev <iskren.chernev@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Adam Skladowski <a39.skl@gmail.com>,
+        Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Sai Prakash Ranjan <quic_saipraka@quicinc.com>,
+        Emma Anholt <emma@anholt.net>,
+        Rob Clark <robdclark@chromium.org>,
+        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
         linux-kernel@vger.kernel.org
-References: <20221214232049.703484-1-marijn.suijten@somainline.org>
- <20221214232049.703484-6-marijn.suijten@somainline.org>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20221214232049.703484-6-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset=UTF-8
+References: <20221030094258.486428-1-iskren.chernev@gmail.com>
+ <20221030094258.486428-6-iskren.chernev@gmail.com>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20221030094258.486428-6-iskren.chernev@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-
-On 15.12.2022 00:20, Marijn Suijten wrote:
-> Add the pinctrl states for SDC2 and use them on sdhc_2 to support SD
-> Cards on the currently mainlined Sony Loire platform.
+On 30/10/2022 11:42, Iskren Chernev wrote:
+> From: Adam Skladowski <a39.skl@gmail.com>
 > 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Add the Qualcomm SM6115 platform to the list of compatible,
+> this target uses MMU500 for both APSS and GPU.
+> 
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+
+This needs to rebased on linux-next (or 6.2-rc1 once it's out).
+
 > ---
->  .../qcom/msm8956-sony-xperia-loire-kugo.dts   |  6 +++
->  .../dts/qcom/msm8956-sony-xperia-loire.dtsi   |  6 +++
->  arch/arm64/boot/dts/qcom/msm8976.dtsi         | 45 +++++++++++++++++++
->  3 files changed, 57 insertions(+)
+>   drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire-kugo.dts b/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire-kugo.dts
-> index 3fb8e23e4330..9178943e2ee1 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire-kugo.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire-kugo.dts
-> @@ -33,3 +33,9 @@ &pm8950_l1 {
->  	regulator-min-microvolt = <1100000>;
->  	regulator-max-microvolt = <1300000>;
->  };
-> +
-> +&sdc2_on_state {
-> +	data-pins {
-> +		drive-strength = <8>;
-> +	};
-> +};
-You can add a label to the data-pins subnode.
+> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+> index b2708de25ea3..526fec79b4fe 100644
+> --- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+> @@ -432,6 +432,7 @@ static const struct of_device_id __maybe_unused qcom_smmu_impl_of_match[] = {
+>   	{ .compatible = "qcom,sc8280xp-smmu-500" },
+>   	{ .compatible = "qcom,sdm630-smmu-v2" },
+>   	{ .compatible = "qcom,sdm845-smmu-500" },
+> +	{ .compatible = "qcom,sm6115-smmu-500" },
+>   	{ .compatible = "qcom,sm6125-smmu-500" },
+>   	{ .compatible = "qcom,sm6350-smmu-500" },
+>   	{ .compatible = "qcom,sm6375-smmu-500" },
 
+-- 
+With best wishes
+Dmitry
 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi b/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi
-> index 700583a56a0e..2253fb05f1c9 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi
-> @@ -264,6 +264,12 @@ &sdhc_1 {
->  	status = "okay";
->  };
->  
-> +&sdc2_on_state {
-> +	clk-pins {
-> +		drive-strength = <10>;
-> +	};
-> +};
-> +
->  &sdhc_2 {
->  	bus-width = <4>;
->  	cd-gpios = <&tlmm 100 GPIO_ACTIVE_HIGH>;
-> diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-> index 7d4c7548882c..f3371eaa2940 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-> @@ -558,6 +558,46 @@ rclk-pins {
->  				};
->  			};
->  
-> +			sdc2_off_state: sdc2-off-state {
-> +				clk-pins {
-> +					pins = "sdc2_clk";
-> +					drive-strength = <2>;
-> +					bias-disable;
-> +				};
-> +
-> +				cmd-pins {
-> +					pins = "sdc2_cmd";
-> +					drive-strength = <2>;
-> +					bias-pull-up;
-> +				};
-> +
-> +				data-pins {
-> +					pins = "sdc2_data";
-> +					drive-strength = <2>;
-> +					bias-pull-up;
-> +				};
-> +			};
-> +
-> +			sdc2_on_state: sdc2-on-state {
-> +				clk-pins {
-> +					pins = "sdc2_clk";
-> +					drive-strength = <16>;
-> +					bias-disable;
-> +				};
-> +
-> +				cmd-pins {
-> +					pins = "sdc2_cmd";
-> +					drive-strength = <10>;
-> +					bias-pull-up;
-> +				};
-> +
-> +				data-pins {
-> +					pins = "sdc2_data";
-> +					drive-strength = <10>;
-> +					bias-pull-up;
-> +				};
-> +			};
-> +
->  			spi1_default: spi0-default-state {
->  				spi-pins {
->  					pins = "gpio0", "gpio1", "gpio3";
-> @@ -751,6 +791,11 @@ sdhc_2: mmc@7864000 {
->  				 <&gcc GCC_SDCC2_APPS_CLK>,
->  				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
->  			clock-names = "iface", "core", "xo";
-> +
-> +			pinctrl-0 = <&sdc2_on_state>;
-> +			pinctrl-1 = <&sdc2_off_state>;
-> +			pinctrl-names = "default", "sleep";
-Ditto (prev patch)
-
-Konrad
-> +
->  			status = "disabled";
->  		};
->  
