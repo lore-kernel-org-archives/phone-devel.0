@@ -2,116 +2,119 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1D3BC3DA71
-	for <phone-devel@archiver.kernel.org>; Fri, 16 Dec 2022 23:34:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71782C3DA6E
+	for <phone-devel@archiver.kernel.org>; Fri, 16 Dec 2022 23:42:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229930AbiLPXel (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 16 Dec 2022 18:34:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56198 "EHLO
+        id S230145AbiLPXmR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 16 Dec 2022 18:42:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230023AbiLPXe1 (ORCPT
+        with ESMTP id S229968AbiLPXmQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 16 Dec 2022 18:34:27 -0500
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C5F63E5
-        for <phone-devel@vger.kernel.org>; Fri, 16 Dec 2022 15:34:25 -0800 (PST)
-Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        Fri, 16 Dec 2022 18:42:16 -0500
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 784E44D5C9;
+        Fri, 16 Dec 2022 15:42:15 -0800 (PST)
+Received: from SoMainline.org (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 34B8A3F360;
-        Sat, 17 Dec 2022 00:34:23 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 5AB513F360;
+        Sat, 17 Dec 2022 00:42:13 +0100 (CET)
+Date:   Sat, 17 Dec 2022 00:42:12 +0100
 From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
+To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Lux Aliaga <they@mint.lgbt>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Robert Marko <robimarko@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] arm64: dts: qcom: sm6125-seine: Enable GPI DMA 0, QUP 0 and I2C SEs
-Date:   Sat, 17 Dec 2022 00:34:08 +0100
-Message-Id: <20221216233408.1283581-4-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20221216233408.1283581-1-marijn.suijten@somainline.org>
-References: <20221216233408.1283581-1-marijn.suijten@somainline.org>
+Subject: Re: [PATCH] thermal: qcom-spmi-adc5: Suppress probe-deferral error
+ message
+Message-ID: <20221216234212.5rm3uwzci2zjq67d@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Robert Marko <robimarko@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20221216190945.902754-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221216190945.902754-1-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Enable I2C Serial Engines 1, 2 and 3 which are known to have hardware
-connected to them, leaving the rest disabled to save on power.  For
-this, only GPI DMA 0 and QUP 0 need to be enabled, as nothing seems to
-be connected to Serial Engines on GPU DMA 1 / QUP 1.  Beyond this
-downstream only defines a UART console available on Serial Engine 4
-which also resides on QUP 0.
+Whoops, that tile must of course have started with:
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 29 +++++++++++++++++++
- 1 file changed, 29 insertions(+)
+    iio: adc: qcom-spmi-adc5:
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-index 1b9e40d3d269..b1de85d8f1c8 100644
---- a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-+++ b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
-@@ -141,10 +141,35 @@ active-config0 {
- 	};
- };
- 
-+&gpi_dma0 {
-+	status = "okay";
-+};
-+
- &hsusb_phy1 {
- 	status = "okay";
- };
- 
-+&i2c1 {
-+	clock-frequency = <400000>;
-+	status = "okay";
-+
-+	/* NXP PN553 NFC @ 28 */
-+};
-+
-+&i2c2 {
-+	clock-frequency = <400000>;
-+	status = "okay";
-+
-+	/* Samsung touchscreen @ 48 */
-+};
-+
-+&i2c3 {
-+	clock-frequency = <1000000>;
-+	status = "okay";
-+
-+	/* Cirrus Logic CS35L41 boosted audio amplifier @ 40 */
-+};
-+
- &pm6125_adc {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&camera_flash_therm &emmc_ufs_therm &rf_pa1_therm>;
-@@ -246,6 +271,10 @@ &pon_resin {
- 	linux,code = <KEY_VOLUMEUP>;
- };
- 
-+&qupv3_id_0 {
-+	status = "okay";
-+};
-+
- &sdc2_off_state {
- 	sd-cd-pins {
- 		pins = "gpio98";
--- 
-2.39.0
+instead of blindly copying the suffix from the thermal monitor patch
+(this driver is not a thermal monitor...).  I'll send a v2 if there are
+no other objections, unless this can be fixed up when the patch is
+applied.
 
+On 2022-12-16 20:09:45, Marijn Suijten wrote:
+> Much like 807efb7102e8 ("thermal: qcom-spmi-adc-tm5: suppress
+> probe-deferral error message") the ADC5 driver also spams a similar
+> probe-deferral error on startup when a channel is not yet available:
+> 
+>     [    0.343136] qcom-spmi-adc-tm5 1c40000.spmi:pmic@0:adc-tm@3500: get dt data failed: -517
+> 
+> Suppress it by using dev_err_probe instead, which also takes care of
+> storing the message as reason for deferring.
+> 
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+>  drivers/iio/adc/qcom-spmi-adc5.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+> index 821fee60a765..69cc36004b5a 100644
+> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+> @@ -894,10 +894,8 @@ static int adc5_probe(struct platform_device *pdev)
+>  	mutex_init(&adc->lock);
+>  
+>  	ret = adc5_get_fw_data(adc);
+> -	if (ret) {
+> -		dev_err(dev, "adc get dt data failed\n");
+> -		return ret;
+> -	}
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "adc get dt data failed\n");
+>  
+>  	irq_eoc = platform_get_irq(pdev, 0);
+>  	if (irq_eoc < 0) {
+> -- 
+> 2.39.0
+> 
+
+Apologies for the clumsiness.
+
+- Marijn
