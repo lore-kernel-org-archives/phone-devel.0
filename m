@@ -2,27 +2,29 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70FE7C3DA6E
-	for <phone-devel@archiver.kernel.org>; Fri, 16 Dec 2022 21:34:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E511C4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 16 Dec 2022 22:00:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230123AbiLPVeN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 16 Dec 2022 16:34:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57782 "EHLO
+        id S229780AbiLPWAH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 16 Dec 2022 17:00:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230033AbiLPVeK (ORCPT
+        with ESMTP id S229469AbiLPWAG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 16 Dec 2022 16:34:10 -0500
-Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [5.144.164.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F526598E;
-        Fri, 16 Dec 2022 13:34:02 -0800 (PST)
+        Fri, 16 Dec 2022 17:00:06 -0500
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7FBF13DC3;
+        Fri, 16 Dec 2022 14:00:03 -0800 (PST)
 Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 6AADD1F892;
-        Fri, 16 Dec 2022 22:33:55 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 2ACD2200B8;
+        Fri, 16 Dec 2022 23:00:01 +0100 (CET)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
+To:     phone-devel@vger.kernel.org, Will Deacon <will@kernel.org>,
+        Joerg Roedel <joro@8bytes.org>,
+        Bjorn Andersson <andersson@kernel.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
@@ -30,16 +32,24 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Marijn Suijten <marijn.suijten@somainline.org>,
-        Lux Aliaga <they@mint.lgbt>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Lux Aliaga <they@mint.lgbt>,
+        Robin Murphy <robin.murphy@arm.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: qcom: sm6125: Reorder HSUSB PHY clocks to match bindings
-Date:   Fri, 16 Dec 2022 22:33:43 +0100
-Message-Id: <20221216213343.1140143-1-marijn.suijten@somainline.org>
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Thierry Reding <treding@nvidia.com>,
+        Melody Olvera <quic_molvera@quicinc.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Subject: [PATCH v4 0/4] arm64: dts: qcom: sm6125: Enable APPS SMMU
+Date:   Fri, 16 Dec 2022 22:58:15 +0100
+Message-Id: <20221216215819.1164973-1-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -47,37 +57,33 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Reorder the clocks and corresponding names to match the QUSB2 phy
-schema, fixing the following CHECK_DTBS errors:
+Add APPS SMMU to SM6125 dtsi and use it in SDHCI/USB nodes.
 
-    arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dtb: phy@1613000: clock-names:0: 'cfg_ahb' was expected
-            From schema: /newdata/aosp-r/kernel/mainline/kernel/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
-    arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dtb: phy@1613000: clock-names:1: 'ref' was expected
-            From schema: /newdata/aosp-r/kernel/mainline/kernel/Documentation/devicetree/bindings/phy/qcom,qusb2-phy.yaml
+Changes since v3:
 
-Fixes: cff4bbaf2a2d ("arm64: dts: qcom: Add support for SM6125")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- arch/arm64/boot/dts/qcom/sm6125.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+- Drop driver patch in favour of using generic qcom,smmu-500 compatible;
+- Add patches that use apps_smmu in USB and SDHCI nodes, reconfiguring
+  their streamID which otherwise gets lost (from the bootloader) as soon
+  as SMMU probes, breaking their functionality;
+- Rebased on next-20221216 to solve dt-bindings conflict.
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-index 7e25a4f85594..bf9e8d45ee44 100644
---- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-@@ -442,9 +442,9 @@ hsusb_phy1: phy@1613000 {
- 			reg = <0x01613000 0x180>;
- 			#phy-cells = <0>;
- 
--			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>,
--				 <&gcc GCC_AHB2PHY_USB_CLK>;
--			clock-names = "ref", "cfg_ahb";
-+			clocks = <&gcc GCC_AHB2PHY_USB_CLK>,
-+				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
-+			clock-names = "cfg_ahb", "ref";
- 
- 			resets = <&gcc GCC_QUSB2PHY_PRIM_BCR>;
- 			status = "disabled";
--- 
+v3: https://lore.kernel.org/linux-iommu/20210612094606.89576-2-martin.botka@somainline.org/T/#u
+
+AngeloGioacchino Del Regno (1):
+  arm64: dts: qcom: sm6125: Add IOMMU context to DWC3
+
+Marijn Suijten (1):
+  arm64: dts: qcom: sm6125: Add apps_smmu with streamID to SDHCI 1/2
+    nodes
+
+Martin Botka (2):
+  dt-bindings: arm-smmu: Document smmu-500 binding for SM6125
+  arm64: dts: qcom: sm6125: Configure APPS SMMU
+
+ .../devicetree/bindings/iommu/arm,smmu.yaml   |  1 +
+ arch/arm64/boot/dts/qcom/sm6125.dtsi          | 76 +++++++++++++++++++
+ 2 files changed, 77 insertions(+)
+
+--
 2.39.0
 
