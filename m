@@ -2,200 +2,184 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9341AC4332F
-	for <phone-devel@archiver.kernel.org>; Fri, 16 Dec 2022 00:16:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A035C4332F
+	for <phone-devel@archiver.kernel.org>; Fri, 16 Dec 2022 10:44:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229820AbiLPAQq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 15 Dec 2022 19:16:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48778 "EHLO
+        id S229898AbiLPKol (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 16 Dec 2022 05:44:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbiLPAQq (ORCPT
+        with ESMTP id S229695AbiLPKoj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 15 Dec 2022 19:16:46 -0500
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8310A2D1C4
-        for <phone-devel@vger.kernel.org>; Thu, 15 Dec 2022 16:16:42 -0800 (PST)
-Received: by mail-lf1-x12e.google.com with SMTP id q6so983442lfm.10
-        for <phone-devel@vger.kernel.org>; Thu, 15 Dec 2022 16:16:42 -0800 (PST)
+        Fri, 16 Dec 2022 05:44:39 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D46643E090
+        for <phone-devel@vger.kernel.org>; Fri, 16 Dec 2022 02:44:37 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id m29so2637244lfo.11
+        for <phone-devel@vger.kernel.org>; Fri, 16 Dec 2022 02:44:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kRw9NosyKCoLQzJxnba7zzcyE0l9B5s5iM+v2n7vWEI=;
-        b=wpjEBWCy0R6NjVJ+C8PgFTksxRS9zH9OhoKXGLCwK18mr/7o3/tNuMyt7TWbBpADRy
-         +bQ/NzBmXUeR8ftCqJcn6ikvHoCXUw1n161TrUEVwgaRZBACpRXDIwMgrDdQ7YLIaNvp
-         cMJqPgBzMDohxB8HfHoLhLvd52lMtc396eBRmF08/ofkzD96Y6swb9OR+qXfqDe0JHsv
-         0iJoBVQ3+BCHtvdh1KSRXzR4JYxTptC7M50REBAcWT5VZ6dQUH+7iAXfXFKf1RhNJe35
-         0k7GGcdeGJgT+ZBhGFrnX4I+Zt5K1NNqWmL6//NM+2E4KyG+iZPgQCR7/OXQ5wwV1lrS
-         YEfA==
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0cascitiMZJymJK5H/7V6U/NhxDgbig8fvyO9Z0H1is=;
+        b=MDRePVEZqWdRvz3zdkdDJAqx1QAVW4+M5gudltmZ4wQZSGF8BsFdraR/sViWm394yY
+         sg1i2xIHFyJ+ePoQCC41w8IGoDPJZsKJHcbxa75L+ZHZbijNQ2J5mweb5FLhQBVxoJqy
+         sm77dLroyQtEDD4dPLdgGKTkoZTwQ2LHlOAmzWFHKPc2nf95z6ONnHFzBGXYRGccdKSL
+         ptKRrIilRbzgTaaDgJaRtw+fsQEDsUIohsJKOPRAO2fFjJWCLwe/JsoFGR3ibSrUdY5U
+         Udngaz1BuYqXQdR2Z+SZ74KKL081Y5VscxfkBjF7SN9p4ut/RMYHd1iPrRVmbWed8C95
+         xhmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kRw9NosyKCoLQzJxnba7zzcyE0l9B5s5iM+v2n7vWEI=;
-        b=G62rmPx0gj5zx0wL1qJwEJ/9fIoWYmLpgIzuNp41yLFcMOT5ZzoPCqZ1X4NprXCsHi
-         ZyBOIUW5t5wJgtjOTYuG3bpPLVbjYNr13O+772pkgWIKo+g9HTiAIzXDF3gmIB9Ltx/J
-         wULtiBYNRgfYfkVoEbJrWgZLYCnk34BHjOqF/p9hED2SX9pPUhinBGq+900NchzWeXQz
-         R+P41CSkfYbou65++k3wdKfPhgSMrVoJA51f8F7Kn++qGGHo/uxawzP1Ft6n3M8gWYTW
-         dqmAyA/nUMcqrsXB8WmLGO4wBWQuk0xuuW9w+eSD8KMZ+XKKPzXq8ah2AkW0gGGy6QLS
-         m1Nw==
-X-Gm-Message-State: ANoB5pnzDJq+dd0yaHOa31JYOOyoSsP9zTkSFaRk7RVRD6/UKaSddrG4
-        pYdYJSn8W1q5jjRDz4ShGY90wA==
-X-Google-Smtp-Source: AA0mqf6yQuvPJwr6lilxSPk5K679p5RQghfxCvY9VemYiZmO40/mgLzuvrybWqODEa0kVXYNGmmYoQ==
-X-Received: by 2002:a05:6512:3990:b0:4b6:d28a:2558 with SMTP id j16-20020a056512399000b004b6d28a2558mr13048452lfu.49.1671149800890;
-        Thu, 15 Dec 2022 16:16:40 -0800 (PST)
-Received: from [192.168.1.101] (abxh44.neoplus.adsl.tpnet.pl. [83.9.1.44])
-        by smtp.gmail.com with ESMTPSA id c2-20020a197602000000b004a764f9d653sm50821lff.242.2022.12.15.16.16.38
+        bh=0cascitiMZJymJK5H/7V6U/NhxDgbig8fvyO9Z0H1is=;
+        b=LwZIsndgQ8UviUiOcJPGCe5yGoNb1lYVJ0+u0HTUktXSjfu8yDMs6ULQR5q5gsh4Ch
+         YeKph7cDejNz7mGkVxvUH1BUnHhIc9cFB19kOyTboLJw4XMscIrIq+yLnAhaNZb6vJHt
+         T8+wN+R3hhqUlUy+sKDNU2ZdjE+Bi41KF2f12x/ICWXjd9ViLnitxcXyTWPr2pJHpPxH
+         xDHA5ge9IUnTwrm06rHPUErTTOJ1S7faMv3ekbjPGPF/dz/5nVwtvu7wQpuegzY0hYt4
+         iVL6AgiM8tcDWy1Pvtg9JVmkKr6mReji53Rbox5PvOIRHRiE7nojpKYDC/Nqeusv17a6
+         wrZw==
+X-Gm-Message-State: ANoB5pnXIEXmiB4Nb523jeAMT+8hJZAjAyrbYsMc3ogCfku8tEGYHtjI
+        mjsHnaKNl70wjPzXcfOlhrEfBQ==
+X-Google-Smtp-Source: AA0mqf4SY3Pf4YsUH69c+SCRnMVwvObDVtPW5qMlF4pMh1u0yMhiPgK51dE/+CzqyYNEJsrgTd0Arg==
+X-Received: by 2002:a05:6512:3f04:b0:4b5:87da:8b29 with SMTP id y4-20020a0565123f0400b004b587da8b29mr11159658lfa.18.1671187476104;
+        Fri, 16 Dec 2022 02:44:36 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id s5-20020a05651c200500b0027a156078fesm114982ljo.100.2022.12.16.02.44.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Dec 2022 16:16:40 -0800 (PST)
-Message-ID: <d3d28673-934b-08aa-6301-ec56e6509010@linaro.org>
-Date:   Fri, 16 Dec 2022 01:16:37 +0100
+        Fri, 16 Dec 2022 02:44:35 -0800 (PST)
+Message-ID: <01f7ef3c-910e-43fc-5cbf-c4caf223dc7c@linaro.org>
+Date:   Fri, 16 Dec 2022 11:44:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH 4/6] arm64: dts: qcom: msm8976: Declare and use SDC1 pins
+ Thunderbird/102.5.1
+Subject: Re: [RFC PATCH] arm64: dts: qcom: Use labels with generic node names
+ for ADC channels
+Content-Language: en-US
 To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org,
-        Bjorn Andersson <andersson@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
+        Jonathan Cameron <jic23@kernel.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Adam Skladowski <a39.skl@gmail.com>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20221214232049.703484-1-marijn.suijten@somainline.org>
- <20221214232049.703484-5-marijn.suijten@somainline.org>
- <60a40ace-d4e9-df74-88f9-4354d80efaac@linaro.org>
- <20221215210010.on44gmoefbnsokvt@SoMainline.org>
- <20221215210246.rcx7f6unbhj52dkb@SoMainline.org>
-Content-Language: en-US
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20221215210246.rcx7f6unbhj52dkb@SoMainline.org>
+References: <20221209215308.1781047-1-marijn.suijten@somainline.org>
+ <3d5b29f3-8d8d-93a7-a485-5261e2d8891d@linaro.org>
+ <20221210165434.3hhen5mgtvflghks@SoMainline.org>
+ <20221211141526.463f43e6@jic23-huawei>
+ <20221214204933.eo6sxodlnmcisc47@SoMainline.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221214204933.eo6sxodlnmcisc47@SoMainline.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-
-On 15.12.2022 22:02, Marijn Suijten wrote:
-> On 2022-12-15 22:00:12, Marijn Suijten wrote:
->> On 2022-12-15 14:19:41, Konrad Dybcio wrote:
->>>
->>>
->>> On 15.12.2022 00:20, Marijn Suijten wrote:
->>>> Add the pinctrl states for SDC1 and use them on sdhc_1.
+On 14/12/2022 21:49, Marijn Suijten wrote:
+> On 2022-12-11 14:15:26, Jonathan Cameron wrote:
+>> On Sat, 10 Dec 2022 17:54:34 +0100
+>> Marijn Suijten <marijn.suijten@somainline.org> wrote:
+>>
+>>> On 2022-12-10 12:02:03, Krzysztof Kozlowski wrote:
+>>>> On 09/12/2022 22:53, Marijn Suijten wrote:  
+>>>>> As discussed in [1] the DT should use labels to describe ADC channels,
+>>>>> with generic node names, since the IIO drivers now moved to the fwnode
+>>>>> API where node names include the `@xx` address suffix.
+>>>>>
+>>>>> Especially for the ADC5 driver that uses extend_name - which cannot be
+>>>>> removed for compatibility reasons - this results in sysfs files with the
+>>>>> @xx name that wasn't previously present, and leads to an unpleasant
+>>>>> file-browsing experience.
+>>>>>
+>>>>> Also remove all the unused channel labels in pm660.dtsi.
+>>>>>
+>>>>> [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
+>>>>>
+>>>>> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>  
 >>>>
->>>> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
->>>> ---
->>>>  arch/arm64/boot/dts/qcom/msm8976.dtsi | 55 +++++++++++++++++++++++++++
->>>>  1 file changed, 55 insertions(+)
->>>>
->>>> diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
->>>> index 05dcb30b0779..7d4c7548882c 100644
->>>> --- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
->>>> +++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
->>>> @@ -508,6 +508,56 @@ tlmm: pinctrl@1000000 {
->>>>  			interrupt-controller;
->>>>  			#interrupt-cells = <2>;
->>>>  
->>>> +			sdc1_off_state: sdc1-off-state {
->>>> +				clk-pins {
->>>> +					pins = "sdc1_clk";
->>>> +					drive-strength = <2>;
->>>> +					bias-disable;
->>>> +				};
->>>> +
->>>> +				cmd-pins {
->>>> +					pins = "sdc1_cmd";
->>>> +					drive-strength = <2>;
->>>> +					bias-pull-up;
->>>> +				};
->>>> +
->>>> +				data-pins {
->>>> +					pins = "sdc1_data";
->>>> +					drive-strength = <2>;
->>>> +					bias-pull-up;
->>>> +				};
->>>> +
->>>> +				rclk-pins {
->>>> +					pins = "sdc1_rclk";
->>>> +					bias-pull-down;
->>>> +				};
->>>> +			};
->>>> +
->>>> +			sdc1_on_state: sdc1-on-state {
->>>> +				clk-pins {
->>>> +					pins = "sdc1_clk";
->>>> +					drive-strength = <16>;
->>>> +					bias-disable;
->>>> +				};
->>>> +
->>>> +				cmd-pins {
->>>> +					pins = "sdc1_cmd";
->>>> +					drive-strength = <10>;
->>>> +					bias-pull-up;
->>>> +				};
->>>> +
->>>> +				data-pins {
->>>> +					pins = "sdc1_data";
->>>> +					drive-strength = <10>;
->>>> +					bias-pull-up;
->>>> +				};
->>>> +
->>>> +				rclk-pins {
->>>> +					pins = "sdc1_rclk";
->>>> +					bias-pull-down;
->>>> +				};
->>>> +			};
->>>> +
->>>>  			spi1_default: spi0-default-state {
->>>>  				spi-pins {
->>>>  					pins = "gpio0", "gpio1", "gpio3";
->>>> @@ -680,6 +730,11 @@ sdhc_1: mmc@7824000 {
->>>>  				 <&gcc GCC_SDCC1_APPS_CLK>,
->>>>  				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
->>>>  			clock-names = "iface", "core", "xo";
->>>> +
->>>> +			pinctrl-0 = <&sdc1_on_state>;
->>>> +			pinctrl-1 = <&sdc1_off_state>;
->>>> +			pinctrl-names = "default", "sleep";
->>> pinctrl-names usually goes before pinctrl-N
+>>>> The talk was in context of bindings, not about changing all existing
+>>>> users thus affecting DTS.  
+>>>
+>>> And as a consequence, DTS.  The already-merged transition from OF to
+>>> fwnode resulted in `@xx` to be included in the ADC channel name - and in
+>>> the case of ADC5 even in sysfs filenames - so this seems like a
+>>> necessary change to make.
 >>
->> I thought I had seen them _after_ nowadays, same for reg-names,
->> phy-names, interrupt-names and clock-names.  What is it?
+>> Gah. We missed that at the time.  Arguably we should first fix that
+>> particular issue as we will have lots of old DT out there.
+>> (add a bit of code to strip the @xxx bit from that particular usecase).
+>> It gets tricky because now we might have code relying on the new
+>> broken behavior.
+> 
+> Before rushing to fix that, my idea was to simply only read DT labels in
+> the driver, and otherwise fall back to the hardcoded names inside that
+> IIO driver (again: ADC5 defines friendly names in the driver, but
+> doesn't ever reference them besides a worthless non-NULL check).
+> 
+>>> At the very least I would have changed the bindings submitted or
+>>> co-authored /by myself/ since I initially decided to rely on this (now
+>>> obviously) wrong behaviour, and should have used labels from the get go.
+>>>
+>>>> What's more, to me "skin-temp-thermistor" is
+>>>> quite generic name, maybe "thermistor" would be more and reflects the
+>>>> purpose of the node, so it was more or less fine.  
+>>>
+>>> Are you suggesting to not use "adc-chan", but "thermistor" as node name
+>>> (and still use skin_temp as label)?  Or to keep the fully-written-out
+>>> "thermistor" word in the label?
+>>>
+>>>> Anyway I am against such changes without expressing it in the bindings.  
+>>>
+>>> As expressed in [1] I suggested and am all for locking this change in
+>>> via bindings, and you are right to expect that to have gone paired with
+>>> this patch.
+>>>
+>>> I'll submit that as the leading patch to this in v2, with the wildcard
+>>> pattern changed to adc-chan (or something else pending the discussion
+>>> above), and should I then also require the label property via `label:
+>>> true`?
+>>>
+>>> [1]: https://lore.kernel.org/linux-arm-msm/20221208101232.536i3cmjf4uk2z52@SoMainline.org/
 >>
->> Regardless, I'd rather keep this consistent across this file (sdc2 also
->> has it after, same for other *-names)
+>> So the 'fun' here is what to do with old DTS as we need to support that
+>> even if we update the binding docs and all in kernel users.
 > 
-> Excuse me, I was looking at sm6125 DT while writing this, sdc2 for
-> msm8976 is introduced _and used by sdhc_2 in a followup patch.
-> 
-> The other points still stand though, everything has -names last.
-Hm, that's a good point, perhaps we should apply it to pinctrl-
-too then. I like this.
+> Personally I have never cared about backwards compat as all my devices
+> rely on the DT and drivers to be brought up in tandem, but yes that is a
+> problem for others...
 
-Konrad
+Yeah, but we do not accept patches with each other person point of view
+of ABI. ABI rules are generic, otherwise it would not be ABI, right?
+
 > 
-> - Marijn
+>> Probably right option in driver is:
+>> a) Use label if present
+>> b) Use node name if it's not adc-chan but strip the @xxx off it.
 > 
->> and correct it at once in a
->> separate patch, if someone really cares.
->>
->> But really, we should have a checker/autoformatter for these "rules",
->> instead of all this manual back-and-forth (is this order already set in
->> stone under Documentation/ or something?).
->>
->> - Marijn
+> Perhaps we can skip this entirely: as shown by this patch the use of
+> node names instead of labels is limited to "newer" devices and SoCs,
+> given their "active" development leads to the assumption they must also
+
+Only SM8550, SC8280xp and maybe SM8450 qualify to such "active"
+development platforms.
+
+> flash their kernel and DTB updates in tandem? 
+
+No, DTS is used outside in other projects and out of tree kernels. Just
+because you use them together does not change the requirements of DTS
+and kernel of not breaking other users, without clear, justified reason.
+
+Best regards,
+Krzysztof
+
