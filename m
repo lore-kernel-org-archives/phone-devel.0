@@ -2,25 +2,25 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DFEF7C3DA6E
-	for <phone-devel@archiver.kernel.org>; Fri, 16 Dec 2022 23:16:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8052C3DA6E
+	for <phone-devel@archiver.kernel.org>; Fri, 16 Dec 2022 23:22:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230083AbiLPXP6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 16 Dec 2022 18:15:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44990 "EHLO
+        id S229957AbiLPXWX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 16 Dec 2022 18:22:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229928AbiLPXPz (ORCPT
+        with ESMTP id S229931AbiLPXWV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 16 Dec 2022 18:15:55 -0500
-Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [5.144.164.168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02D75FC7;
-        Fri, 16 Dec 2022 15:15:43 -0800 (PST)
+        Fri, 16 Dec 2022 18:22:21 -0500
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9622D13D71
+        for <phone-devel@vger.kernel.org>; Fri, 16 Dec 2022 15:22:20 -0800 (PST)
 Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 898DC3EFD3;
-        Sat, 17 Dec 2022 00:15:41 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 5FD0A3EEFB;
+        Sat, 17 Dec 2022 00:15:42 +0100 (CET)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -39,9 +39,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Richard Acayan <mailingradian@gmail.com>,
         linux-arm-msm@vger.kernel.org, dmaengine@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] dt-bindings: dma: gpi: Document SM6125 compatible
-Date:   Sat, 17 Dec 2022 00:15:27 +0100
-Message-Id: <20221216231528.1268447-2-marijn.suijten@somainline.org>
+Subject: [PATCH v2 2/2] arm64: dts: qcom: sm6125: Add GPI DMA nodes
+Date:   Sat, 17 Dec 2022 00:15:28 +0100
+Message-Id: <20221216231528.1268447-3-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20221216231528.1268447-1-marijn.suijten@somainline.org>
 References: <20221216231528.1268447-1-marijn.suijten@somainline.org>
@@ -53,27 +53,71 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: Martin Botka <martin.botka@somainline.org>
 
-Document compatibility for this GPI DMA controller on SM6125.
+Add nodes for GPI DMA hosts on SM6125.
 
 Signed-off-by: Martin Botka <martin.botka@somainline.org>
-[Marijn: Move compatible to the list with qcom,sdm845-gpi-dma]
+[Marijn: reorder properties, use sdm845 fallback compatible, disable by
+ default, use 3 instead of 5 dma cells]
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
- Documentation/devicetree/bindings/dma/qcom,gpi.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm6125.dtsi | 37 ++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/dma/qcom,gpi.yaml b/Documentation/devicetree/bindings/dma/qcom,gpi.yaml
-index e7ba1c47a88e..6132f4661a29 100644
---- a/Documentation/devicetree/bindings/dma/qcom,gpi.yaml
-+++ b/Documentation/devicetree/bindings/dma/qcom,gpi.yaml
-@@ -33,6 +33,7 @@ properties:
-       - items:
-           - enum:
-               - qcom,sdm670-gpi-dma
-+              - qcom,sm6125-gpi-dma
-               - qcom,sm8150-gpi-dma
-               - qcom,sm8250-gpi-dma
-           - const: qcom,sdm845-gpi-dma
+diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+index a205121ab4a7..abcd634c4f6d 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+@@ -5,6 +5,7 @@
+ 
+ #include <dt-bindings/clock/qcom,gcc-sm6125.h>
+ #include <dt-bindings/clock/qcom,rpmcc.h>
++#include <dt-bindings/dma/qcom-gpi.h>
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/interrupt-controller/arm-gic.h>
+ #include <dt-bindings/power/qcom-rpmpd.h>
+@@ -510,6 +511,42 @@ sdhc_2: mmc@4784000 {
+ 			status = "disabled";
+ 		};
+ 
++		gpi_dma0: dma-controller@4a00000 {
++			compatible = "qcom,sm6125-gpi-dma", "qcom,sdm845-gpi-dma";
++			reg = <0x04a00000 0x60000>;
++			interrupts = <GIC_SPI 335 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 336 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 337 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 338 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 339 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 340 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 341 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 342 IRQ_TYPE_LEVEL_HIGH>;
++			dma-channels = <8>;
++			dma-channel-mask = <0x1f>;
++			iommus = <&apps_smmu 0x0136 0x0>;
++			#dma-cells = <3>;
++			status = "disabled";
++		};
++
++		gpi_dma1: dma-controller@4c00000 {
++			compatible = "qcom,sm6125-gpi-dma", "qcom,sdm845-gpi-dma";
++			reg = <0x04c00000 0x60000>;
++			interrupts = <GIC_SPI 314 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 315 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 316 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 317 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 318 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 319 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 320 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 321 IRQ_TYPE_LEVEL_HIGH>;
++			dma-channels = <8>;
++			dma-channel-mask = <0x0f>;
++			iommus = <&apps_smmu 0x0156 0x0>;
++			#dma-cells = <3>;
++			status = "disabled";
++		};
++
+ 		usb3: usb@4ef8800 {
+ 			compatible = "qcom,sm6125-dwc3", "qcom,dwc3";
+ 			reg = <0x04ef8800 0x400>;
 -- 
 2.39.0
 
