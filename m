@@ -2,136 +2,108 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E58DC4332F
-	for <phone-devel@archiver.kernel.org>; Sat, 17 Dec 2022 00:32:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E6B3C3DA71
+	for <phone-devel@archiver.kernel.org>; Sat, 17 Dec 2022 10:05:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229518AbiLQAc1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 16 Dec 2022 19:32:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33650 "EHLO
+        id S230323AbiLQKFP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 17 Dec 2022 05:05:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbiLQAcZ (ORCPT
+        with ESMTP id S230322AbiLQKFN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 16 Dec 2022 19:32:25 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3768E15FDF;
-        Fri, 16 Dec 2022 16:32:24 -0800 (PST)
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BGNvgfc025586;
-        Sat, 17 Dec 2022 00:31:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=FafqiLihfvYH5H7Y7SIlIE8yTDE/hyI2tDCM/GdByH8=;
- b=hTic8mXYodZ8Xrhu5RrCiezRSrJeg6os5cFO1ymuYJApKOxRW2adj0FaqubJoKa76ffh
- JM1aPZGtc3QdMpnmMrGZY97aYr++qwYmfsf18W4iGqopYzYyhdBRuXHi+j3cf9Dtl+jv
- iDVgcI5QYCZZhjl2TmioZP/ht9tMwTVHjKVqqXd+Rmqwj4MhK78nOi3LDa3nY9L2CyGn
- G+hC4FD68Ni4jrU07CsEkPiWcva+/iLwqPaN1XU5wQDI3JRiO9tiQmKYJQIk9m3jUrJ5
- LuDd6J1j12DB4pcnnlqVFwrs+vTEeTsQLhM6kefqxMl1oqZJ98+NwRBZzP7aPYDgbz0y +g== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3mg2vwdp4s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 17 Dec 2022 00:31:59 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 2BH0VvwA007108
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 17 Dec 2022 00:31:57 GMT
-Received: from [10.110.127.101] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Fri, 16 Dec
- 2022 16:31:55 -0800
-Message-ID: <642b0063-b3b1-fb01-b761-dfd30cea1c8c@quicinc.com>
-Date:   Fri, 16 Dec 2022 16:31:55 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: [RFC PATCH 5/6] drm/msm/dsi: Flip greater-than check for
- slice_count and slice_per_intf
-Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        <phone-devel@vger.kernel.org>, Rob Clark <robdclark@gmail.com>,
-        "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>
-CC:     <~postmarketos/upstreaming@lists.sr.ht>,
+        Sat, 17 Dec 2022 05:05:13 -0500
+Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [5.144.164.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA6641789F
+        for <phone-devel@vger.kernel.org>; Sat, 17 Dec 2022 02:05:08 -0800 (PST)
+Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 6600D3F246;
+        Sat, 17 Dec 2022 11:05:06 +0100 (CET)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "Stephen Boyd" <swboyd@chromium.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        "Jessica Zhang" <quic_jesszhan@quicinc.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        Kuogee Hsieh <quic_khsieh@quicinc.com>,
-        "Jani Nikula" <jani.nikula@intel.com>,
-        sunliming <sunliming@kylinos.cn>,
-        "Sam Ravnborg" <sam@ravnborg.org>,
-        Haowen Bai <baihaowen@meizu.com>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        "Vinod Polimera" <quic_vpolimer@quicinc.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <freedreno@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-References: <20221213232207.113607-1-marijn.suijten@somainline.org>
- <20221213232207.113607-6-marijn.suijten@somainline.org>
-From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <20221213232207.113607-6-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: FK0lp_-c3vUi5LUMC6uEjQ8ZD6Xz6TkT
-X-Proofpoint-ORIG-GUID: FK0lp_-c3vUi5LUMC6uEjQ8ZD6Xz6TkT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-16_15,2022-12-15_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- clxscore=1015 phishscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0
- bulkscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2212170002
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] arm64: dts: qcom: sm6125-seine: Clean up gpio-keys (volume down)
+Date:   Sat, 17 Dec 2022 11:04:54 +0100
+Message-Id: <20221217100455.52593-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.39.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+- Remove autorepeat (leave key repetition to userspace);
+- Remove unneeded status = "okay" (this is the default);
+- Allow the interrupt line for this button to be disabled;
+- Use a full, descriptive node name;
+- Set proper bias on the GPIO via pinctrl;
+- Sort properties.
 
+Fixes: 82e1783890b7 ("arm64: dts: qcom: sm6125: Add support for Sony Xperia 10II")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+---
+ .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 20 ++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-On 12/13/2022 3:22 PM, Marijn Suijten wrote:
-> According to downstream /and the comment copied from it/ this comparison
-> should be the other way around.  In other words, when the panel driver
-> requests to use more slices per packet than what could be sent over this
-> interface, it is bumped down to only use a single slice per packet (and
-> strangely not the number of slices that could fit on the interface).
-> 
-> Fixes: 08802f515c3c ("drm/msm/dsi: Add support for DSC configuration")
+diff --git a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
+index 1b9e40d3d269..8c7c9331fd21 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
++++ b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
+@@ -41,17 +41,17 @@ extcon_usb: extcon-usb {
+ 	};
+ 
+ 	gpio-keys {
+-		status = "okay";
+ 		compatible = "gpio-keys";
+-		autorepeat;
++		pinctrl-0 = <&gpio_keys_state>;
++		pinctrl-names = "default";
+ 
+-		key-vol-dn {
++		key-volume-down {
+ 			label = "Volume Down";
+ 			gpios = <&tlmm 47 GPIO_ACTIVE_LOW>;
+-			linux,input-type = <1>;
+ 			linux,code = <KEY_VOLUMEDOWN>;
+-			gpio-key,wakeup;
+ 			debounce-interval = <15>;
++			linux,can-disable;
++			gpio-key,wakeup;
+ 		};
+ 	};
+ 
+@@ -270,6 +270,16 @@ &sdhc_1 {
+ 
+ &tlmm {
+ 	gpio-reserved-ranges = <22 2>, <28 6>;
++
++	gpio_keys_state: gpio-keys-state {
++		key-volume-down-pins {
++			pins = "gpio47";
++			function = "gpio";
++			drive-strength = <2>;
++			bias-disable;
++			input-enable;
++		};
++	};
+ };
+ 
+ &usb3 {
+-- 
+2.39.0
 
-Like others have said, with SOB,
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-> ---
->   drivers/gpu/drm/msm/dsi/dsi_host.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-> index 0686c35a6fd4..9bdfa0864cdf 100644
-> --- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-> +++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-> @@ -855,11 +855,11 @@ static void dsi_update_dsc_timing(struct msm_dsi_host *msm_host, bool is_cmd_mod
->   	 */
->   	slice_per_intf = DIV_ROUND_UP(hdisplay, dsc->slice_width);
->   
-> -	/* If slice_per_pkt is greater than slice_per_intf
-> +	/* If slice_count is greater than slice_per_intf
->   	 * then default to 1. This can happen during partial
->   	 * update.
->   	 */
-> -	if (slice_per_intf > dsc->slice_count)
-> +	if (dsc->slice_count > slice_per_intf)
->   		dsc->slice_count = 1;
->   
->   	total_bytes_per_intf = dsc->slice_chunk_size * slice_per_intf;
