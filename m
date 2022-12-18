@@ -2,99 +2,127 @@ Return-Path: <phone-devel-owner@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1199FC4332F
-	for <phone-devel@archiver.kernel.org>; Sun, 18 Dec 2022 11:13:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0957C4332F
+	for <phone-devel@archiver.kernel.org>; Sun, 18 Dec 2022 21:20:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230175AbiLRLNb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 18 Dec 2022 06:13:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46126 "EHLO
+        id S231128AbiLRVU1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 18 Dec 2022 16:20:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230419AbiLRLNX (ORCPT
+        with ESMTP id S230421AbiLRVU0 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 18 Dec 2022 06:13:23 -0500
-Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D0A763CF
-        for <phone-devel@vger.kernel.org>; Sun, 18 Dec 2022 03:13:21 -0800 (PST)
-Received: from [192.168.2.144] (adsl-d248.84-47-10.t-com.sk [84.47.10.248])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id D0C773EE52;
-        Sun, 18 Dec 2022 12:13:18 +0100 (CET)
-Date:   Sun, 18 Dec 2022 12:13:13 +0100
-From:   Martin Botka <martin.botka@somainline.org>
-Subject: Re: [PATCH] thermal: qcom-spmi-adc5: Suppress probe-deferral error
- message
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
+        Sun, 18 Dec 2022 16:20:26 -0500
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DA02658C;
+        Sun, 18 Dec 2022 13:20:24 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id bf43so11095490lfb.6;
+        Sun, 18 Dec 2022 13:20:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FiMFRphXpXu6yzsGT8LSwyasJh3aAqFkYcsSKQFk/tA=;
+        b=OHZUj7IVQC/KvuwDdKIL/1YK/0lRyKiGJumrfvliR4zkMYP0ctf4ATsHWT7TRg5Kdl
+         4yvCxs6RlqnrTobKlldc4m1Gd/hXxzV6+OT3QGkhHinQC7i33yntqRDAqni70cq0HU6O
+         3GMBzdhEeC5fnSFaT60QJyblotxY/VT+Yjp6y83nP6QrUoSek+0btbDFYLEL7LauvmpX
+         vmm420lEq2UrrWseIMsrjiMdRc9Mz2QC9JvY5TrIxXfaLobfLWYQ2WOdHknJIdEt8BQv
+         3dqKw4RF86YP6id93G8xFze9EjqW1lgF+UUFpdZUwdgW9xrR56LjeN+HAns8fsF5vIGW
+         aKYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FiMFRphXpXu6yzsGT8LSwyasJh3aAqFkYcsSKQFk/tA=;
+        b=VPYSvykgVPecMEysgnePrfMyr8x/sF5Nr9w7OMgbkw7ftPxJhiafRhvV+RXG563ryx
+         fQparNscOO1gPJj4YncbT46dYQJSZqE5rr4YthjHfjF0LOu1Of63cST45tBExAnfVkAO
+         +i7g/IzOSsMuyjQLRPkJrzhmaWN8GkEH7yYP0oLB0vryoSUAbLpZDjeYp1weRMNNdvHa
+         CqB3ipQ078wu035EE5AqdCpJ7bsWXIciThwZYDxNYBNIqkqkmCNqN6DfCJhmnrQwonwz
+         KDElgM9+BSRdcBLo5SGaT97mbeEwTZILbWHF7oPNt2ZV4Z3iWeWBis4wuyhVhAi6cSiX
+         /sIA==
+X-Gm-Message-State: ANoB5plKA7wRMZ0zDscZddkOd+//OPEnizzgaUt+GFlmWTUXsrHD0p1T
+        0CS6Xp4P0zQtf4yj+Hy1OR3BHYLQRPjZGQ==
+X-Google-Smtp-Source: AA0mqf7UyuzCYgwxPfYLGNi7bpMbMKAkbEFE4j259nJQZiwT8rTc7zQuMbe/TrQoY6SKIcaVYyd6Tg==
+X-Received: by 2002:ac2:44a4:0:b0:4b5:8504:7072 with SMTP id c4-20020ac244a4000000b004b585047072mr10003575lfm.14.1671398422371;
+        Sun, 18 Dec 2022 13:20:22 -0800 (PST)
+Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
+        by smtp.gmail.com with ESMTPSA id c21-20020a056512325500b004b56d00b2d1sm916229lfr.285.2022.12.18.13.20.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Dec 2022 13:20:21 -0800 (PST)
+From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Robert Marko <robimarko@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Nuno =?iso-8859-1?b?U+E=?= <nuno.sa@analog.com>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Message-Id: <1633NR.JIUCB2Y1JAXI3@somainline.org>
-In-Reply-To: <20221216190945.902754-1-marijn.suijten@somainline.org>
-References: <20221216190945.902754-1-marijn.suijten@somainline.org>
-X-Mailer: geary/40.0
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] ARM: dts: qcom: apq8026-samsung-matisse-wifi: Enable ADSP
+Date:   Sun, 18 Dec 2022 23:19:57 +0200
+Message-Id: <20221218211957.118473-1-matti.lehtimaki@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Configure the reserved memory for ADSP and enable it.
+Delete nodes with reference to label.
 
+Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+---
+Changes in v2:
+  - Delete nodes with reference to label
+---
+ .../arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-On Fri, Dec 16 2022 at 08:09:45 PM +01:00:00, Marijn Suijten 
-<marijn.suijten@somainline.org> wrote:
-> Much like 807efb7102e8 ("thermal: qcom-spmi-adc-tm5: suppress
-> probe-deferral error message") the ADC5 driver also spams a similar
-> probe-deferral error on startup when a channel is not yet available:
-> 
->     [    0.343136] qcom-spmi-adc-tm5 1c40000.spmi:pmic@0:adc-tm@3500: 
-> get dt data failed: -517
-> 
-> Suppress it by using dev_err_probe instead, which also takes care of
-> storing the message as reason for deferring.
-> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
->  drivers/iio/adc/qcom-spmi-adc5.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c 
-> b/drivers/iio/adc/qcom-spmi-adc5.c
-> index 821fee60a765..69cc36004b5a 100644
-> --- a/drivers/iio/adc/qcom-spmi-adc5.c
-> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
-> @@ -894,10 +894,8 @@ static int adc5_probe(struct platform_device 
-> *pdev)
->  	mutex_init(&adc->lock);
-> 
->  	ret = adc5_get_fw_data(adc);
-> -	if (ret) {
-> -		dev_err(dev, "adc get dt data failed\n");
-> -		return ret;
-> -	}
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "adc get dt data failed\n");
-> 
-Reviewed-by: Martin Botka <martin.botka@somainline.org>
-
--Martin
->  	irq_eoc = platform_get_irq(pdev, 0);
->  	if (irq_eoc < 0) {
-> --
-> 2.39.0
-> 
-
+diff --git a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
+index 1c52337af560..15b9590ba07b 100644
+--- a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
++++ b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
+@@ -9,6 +9,9 @@
+ #include "qcom-msm8226.dtsi"
+ #include "qcom-pm8226.dtsi"
+ 
++/delete-node/ &adsp_region;
++/delete-node/ &smem_region;
++
+ / {
+ 	model = "Samsung Galaxy Tab 4 10.1";
+ 	compatible = "samsung,matisse-wifi", "qcom,apq8026";
+@@ -133,7 +136,7 @@ wcnss@d200000 {
+ 			no-map;
+ 		};
+ 
+-		adsp@d900000 {
++		adsp_region: adsp@d900000 {
+ 			reg = <0x0d900000 0x1800000>;
+ 			no-map;
+ 		};
+@@ -143,7 +146,6 @@ venus@f100000 {
+ 			no-map;
+ 		};
+ 
+-		/delete-node/ smem@3000000;
+ 		smem_region: smem@fa00000 {
+ 			reg = <0x0fa00000 0x100000>;
+ 			no-map;
+@@ -169,6 +171,10 @@ rmtfs@fd80000 {
+ 	};
+ };
+ 
++&adsp {
++	status = "okay";
++};
++
+ &blsp1_i2c2 {
+ 	status = "okay";
+ 
+-- 
+2.34.1
 
