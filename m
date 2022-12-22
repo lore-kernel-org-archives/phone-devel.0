@@ -2,27 +2,63 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B16CBC53210
-	for <phone-devel@archiver.kernel.org>; Thu, 22 Dec 2022 19:46:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A835BC001B2
+	for <phone-devel@archiver.kernel.org>; Thu, 22 Dec 2022 19:47:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235837AbiLVTqO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 22 Dec 2022 14:46:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36486 "EHLO
+        id S229984AbiLVTre (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 22 Dec 2022 14:47:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235825AbiLVTqN (ORCPT
+        with ESMTP id S235438AbiLVTr2 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 22 Dec 2022 14:46:13 -0500
-Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC3618378
-        for <phone-devel@vger.kernel.org>; Thu, 22 Dec 2022 11:46:13 -0800 (PST)
-Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 025CC20230;
-        Thu, 22 Dec 2022 20:46:10 +0100 (CET)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Thu, 22 Dec 2022 14:47:28 -0500
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5C1118E18
+        for <phone-devel@vger.kernel.org>; Thu, 22 Dec 2022 11:47:25 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id bf43so4237274lfb.6
+        for <phone-devel@vger.kernel.org>; Thu, 22 Dec 2022 11:47:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u8NgwXERUKhNSJZQWMYuge/ry0x9I6WYR0sM01t06s0=;
+        b=bbzH3g1gRAHvzwo8GTQ6XClYMbkx5gU0KV/HaxOXDWk5UjjJkipKsv87WlL4LbKSRj
+         Nd6XJVTBK5LWzGpUV7C4G92pS4ZmNQ15mAHewNdvngveAcbkDC5YfiL84cRlxzjG0Mrz
+         /4h42avJAm+I9FD+bgVCRmO72kpXJ9TMKZIQlQ7xjFo+tN2OmuI2CjGkuh5G9Vay6F5f
+         FAd251i+mwrgwgNrTXXTNxWsRWUJt9JmGnNMJMb5682w8e7umTuzG4qvbV1OFZkshsx4
+         ytREtyEu7bugA+kkgHOVV8Xs4b/in1EFevSwzj1ifSvOlUFmPYHmWf1qpE+MT4e1ke/r
+         rsOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u8NgwXERUKhNSJZQWMYuge/ry0x9I6WYR0sM01t06s0=;
+        b=JwkLWKoOMNxialpIu/ZLJYjf3Z9ZUi+FXKf2gKmFJ8DMpyJeImrB4Wc2lsxU75PDce
+         nrqhhMz5M06gKPcjCLirOpJgZIh8n/F6xUaKgvW4KDeZt+RIEvWSYSu/2SU8R8tEDaKh
+         JU9pRHZlVlr7YZPle1bd27fk7ZGxizf0dJJJ64m/fjDFHDDjmMAbo0Nhf6kF2Mafhzlu
+         LSrWn4G6uyLfIlf3gb/iOCnO4XdzpUr8PlPYdvq/MX3lkW4Mt0rOmhlVj1SYNdobcnHy
+         5NV1ZyOOz7RrhVap0B0AMs77d+7zXtWgTymHBwSyVQ4SBUMs0DZLXzPIeAIsQ8I5yRWJ
+         ww8Q==
+X-Gm-Message-State: AFqh2kojy6ZR0hQbpvaOuHbhE4pKVq4VyNIJauV5XFKTZWdCdYtojI2F
+        vNxEPSdTdqhSHrh6E1NUXaF5Ag==
+X-Google-Smtp-Source: AMrXdXsX9bjV3cSBoR62uGY4csjneEp5yAry3R9DZBQ7Po6MyaDjh00JD6pgLxDz1/HR/p7299yJjg==
+X-Received: by 2002:a05:6512:691:b0:4b6:fdc3:a668 with SMTP id t17-20020a056512069100b004b6fdc3a668mr2080075lfe.31.1671738444194;
+        Thu, 22 Dec 2022 11:47:24 -0800 (PST)
+Received: from [192.168.1.101] (abyl184.neoplus.adsl.tpnet.pl. [83.9.31.184])
+        by smtp.gmail.com with ESMTPSA id r21-20020ac25f95000000b004b5a4cf69dfsm178714lfe.261.2022.12.22.11.47.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Dec 2022 11:47:23 -0800 (PST)
+Message-ID: <979c2896-cab5-1e2d-f587-b9eb3aa70dfb@linaro.org>
+Date:   Thu, 22 Dec 2022 20:47:21 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH v3 2/2] arm64: dts: qcom: sm6125: Add GPI DMA nodes
+Content-Language: en-US
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Vinod Koul <vkoul@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -33,94 +69,93 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
         Lux Aliaga <they@mint.lgbt>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Richard Acayan <mailingradian@gmail.com>,
         Luca Weiss <luca.weiss@fairphone.com>,
         Bhupesh Sharma <bhupesh.sharma@linaro.org>,
         Douglas Anderson <dianders@chromium.org>,
         linux-arm-msm@vger.kernel.org, dmaengine@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] arm64: dts: qcom: sm6125: Add GPI DMA nodes
-Date:   Thu, 22 Dec 2022 20:46:00 +0100
-Message-Id: <20221222194600.139854-3-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20221222194600.139854-1-marijn.suijten@somainline.org>
 References: <20221222194600.139854-1-marijn.suijten@somainline.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ <20221222194600.139854-3-marijn.suijten@somainline.org>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20221222194600.139854-3-marijn.suijten@somainline.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Martin Botka <martin.botka@somainline.org>
 
-Add nodes for GPI DMA hosts on SM6125.
 
-Signed-off-by: Martin Botka <martin.botka@somainline.org>
-[Marijn: reorder properties, use sdm845 fallback compatible, disable by
- default, use 3 instead of 5 dma cells]
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- arch/arm64/boot/dts/qcom/sm6125.dtsi | 37 ++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+On 22.12.2022 20:46, Marijn Suijten wrote:
+> From: Martin Botka <martin.botka@somainline.org>
+> 
+> Add nodes for GPI DMA hosts on SM6125.
+> 
+> Signed-off-by: Martin Botka <martin.botka@somainline.org>
+> [Marijn: reorder properties, use sdm845 fallback compatible, disable by
+>  default, use 3 instead of 5 dma cells]
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-index 7c326368e30d..6f9b56a937c6 100644
---- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-@@ -5,6 +5,7 @@
- 
- #include <dt-bindings/clock/qcom,gcc-sm6125.h>
- #include <dt-bindings/clock/qcom,rpmcc.h>
-+#include <dt-bindings/dma/qcom-gpi.h>
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/interrupt-controller/arm-gic.h>
- #include <dt-bindings/power/qcom-rpmpd.h>
-@@ -510,6 +511,42 @@ sdhc_2: mmc@4784000 {
- 			status = "disabled";
- 		};
- 
-+		gpi_dma0: dma-controller@4a00000 {
-+			compatible = "qcom,sm6125-gpi-dma", "qcom,sdm845-gpi-dma";
-+			reg = <0x04a00000 0x60000>;
-+			interrupts = <GIC_SPI 335 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 336 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 337 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 338 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 339 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 340 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 341 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 342 IRQ_TYPE_LEVEL_HIGH>;
-+			dma-channels = <8>;
-+			dma-channel-mask = <0x1f>;
-+			iommus = <&apps_smmu 0x136 0x0>;
-+			#dma-cells = <3>;
-+			status = "disabled";
-+		};
-+
-+		gpi_dma1: dma-controller@4c00000 {
-+			compatible = "qcom,sm6125-gpi-dma", "qcom,sdm845-gpi-dma";
-+			reg = <0x04c00000 0x60000>;
-+			interrupts = <GIC_SPI 314 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 315 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 316 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 317 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 318 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 319 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 320 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 321 IRQ_TYPE_LEVEL_HIGH>;
-+			dma-channels = <8>;
-+			dma-channel-mask = <0x0f>;
-+			iommus = <&apps_smmu 0x156 0x0>;
-+			#dma-cells = <3>;
-+			status = "disabled";
-+		};
-+
- 		usb3: usb@4ef8800 {
- 			compatible = "qcom,sm6125-dwc3", "qcom,dwc3";
- 			reg = <0x04ef8800 0x400>;
--- 
-2.39.0
-
+Konrad
+>  arch/arm64/boot/dts/qcom/sm6125.dtsi | 37 ++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+> index 7c326368e30d..6f9b56a937c6 100644
+> --- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+> @@ -5,6 +5,7 @@
+>  
+>  #include <dt-bindings/clock/qcom,gcc-sm6125.h>
+>  #include <dt-bindings/clock/qcom,rpmcc.h>
+> +#include <dt-bindings/dma/qcom-gpi.h>
+>  #include <dt-bindings/gpio/gpio.h>
+>  #include <dt-bindings/interrupt-controller/arm-gic.h>
+>  #include <dt-bindings/power/qcom-rpmpd.h>
+> @@ -510,6 +511,42 @@ sdhc_2: mmc@4784000 {
+>  			status = "disabled";
+>  		};
+>  
+> +		gpi_dma0: dma-controller@4a00000 {
+> +			compatible = "qcom,sm6125-gpi-dma", "qcom,sdm845-gpi-dma";
+> +			reg = <0x04a00000 0x60000>;
+> +			interrupts = <GIC_SPI 335 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 336 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 337 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 338 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 339 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 340 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 341 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 342 IRQ_TYPE_LEVEL_HIGH>;
+> +			dma-channels = <8>;
+> +			dma-channel-mask = <0x1f>;
+> +			iommus = <&apps_smmu 0x136 0x0>;
+> +			#dma-cells = <3>;
+> +			status = "disabled";
+> +		};
+> +
+> +		gpi_dma1: dma-controller@4c00000 {
+> +			compatible = "qcom,sm6125-gpi-dma", "qcom,sdm845-gpi-dma";
+> +			reg = <0x04c00000 0x60000>;
+> +			interrupts = <GIC_SPI 314 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 315 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 316 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 317 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 318 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 319 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 320 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 321 IRQ_TYPE_LEVEL_HIGH>;
+> +			dma-channels = <8>;
+> +			dma-channel-mask = <0x0f>;
+> +			iommus = <&apps_smmu 0x156 0x0>;
+> +			#dma-cells = <3>;
+> +			status = "disabled";
+> +		};
+> +
+>  		usb3: usb@4ef8800 {
+>  			compatible = "qcom,sm6125-dwc3", "qcom,dwc3";
+>  			reg = <0x04ef8800 0x400>;
