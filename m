@@ -2,25 +2,25 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C88F8C41535
-	for <phone-devel@archiver.kernel.org>; Thu, 22 Dec 2022 20:36:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 57345C4708D
+	for <phone-devel@archiver.kernel.org>; Thu, 22 Dec 2022 20:36:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbiLVUgv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 22 Dec 2022 15:36:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54116 "EHLO
+        id S235061AbiLVUgx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 22 Dec 2022 15:36:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229704AbiLVUgt (ORCPT
+        with ESMTP id S230384AbiLVUgu (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 22 Dec 2022 15:36:49 -0500
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF26320BC6;
-        Thu, 22 Dec 2022 12:36:47 -0800 (PST)
+        Thu, 22 Dec 2022 15:36:50 -0500
+Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [IPv6:2001:4b7a:2000:18::164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40E9E240A1;
+        Thu, 22 Dec 2022 12:36:49 -0800 (PST)
 Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 4978E1F8D5;
-        Thu, 22 Dec 2022 21:36:45 +0100 (CET)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 648A91F939;
+        Thu, 22 Dec 2022 21:36:47 +0100 (CET)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
@@ -35,42 +35,67 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 0/5] arm64: dts: qcom: sm6125-seine: Configure regulators and enable SD Card
-Date:   Thu, 22 Dec 2022 21:36:31 +0100
-Message-Id: <20221222203636.250190-1-marijn.suijten@somainline.org>
+Subject: [PATCH 3/5] arm64: dts: qcom: sm6125-seine: Provide regulators to SDHCI 1
+Date:   Thu, 22 Dec 2022 21:36:34 +0100
+Message-Id: <20221222203636.250190-4-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20221222203636.250190-1-marijn.suijten@somainline.org>
+References: <20221222203636.250190-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Configure regulators on Sony's SM6125-backed seine platform, and provide
-these regulators to existing (SDHCI 1 / HS USB2 PHY) nodes so that they
-can cast their votes despite being left enabled by the bootloader.
+While SDHCI 1 appears to work out of the box, we cannot rely on the
+bootloader-enabled regulators nor expect them to remain enabled (e.g.
+when finally dropping pd_ignore_unused).  Provide it the necessary l24
+and l11 regulators now that PM6125 regulators have been made available
+on this board.
 
-In addition this allows us to enable the SD Card slot on SDHCI 2, which
-would not function without turning on the necessary regulators (i.e.
-these were /not/ left enabled by the BL, for good reason).
+As usual regulator voltages are decreased to the maximum voted by the
+downstream driver for safety.  No other hardware feeds off of these
+regulators anyway (except UFS, which isn't used on the seine board in
+favour of a DV6DMB eMMC card connected to SDHCI 1).
 
-Depends on:
-- SM6125 APPS SMMU: https://lore.kernel.org/linux-arm-msm/20221222193254.126925-1-marijn.suijten@somainline.org/T/#u
-- SM6125 GPI DMA: https://lore.kernel.org/linux-arm-msm/20221222194600.139854-1-marijn.suijten@somainline.org/T/#u
-- SM6125 QUPs, SPI and I2C: https://lore.kernel.org/linux-arm-msm/20221216233408.1283581-1-marijn.suijten@somainline.org/T/#u
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+---
+ .../boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts     | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-(To prevent DTS conflicts with the &qupv3_id_0 node override right above
-&rpm_requests.)
-
-Marijn Suijten (5):
-  arm64: dts: qcom: sm6125-seine: Configure PM6125 regulators
-  arm64: dts: qcom: sm6125-seine: Provide regulators to HS USB2 PHY
-  arm64: dts: qcom: sm6125-seine: Provide regulators to SDHCI 1
-  arm64: dts: qcom: sm6125-seine: Configure SD Card slot on SDHCI 2
-  arm64: dts: qcom: sm6125-seine: Lock eMMC and SD Card IDs via aliases
-
- .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 162 ++++++++++++++++++
- 1 file changed, 162 insertions(+)
-
---
+diff --git a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
+index 15b43cff210b..eaddbe522695 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
++++ b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
+@@ -348,7 +348,8 @@ pm6125_l10: l10 {
+ 
+ 		pm6125_l11: l11 {
+ 			regulator-min-microvolt = <1800000>;
+-			regulator-max-microvolt = <1952000>;
++			regulator-max-microvolt = <1800000>;
++			regulator-allow-set-load;
+ 		};
+ 
+ 		pm6125_l12: l12 {
+@@ -413,7 +414,8 @@ pm6125_l23: l23 {
+ 
+ 		pm6125_l24: l24 {
+ 			regulator-min-microvolt = <2944000>;
+-			regulator-max-microvolt = <3304000>;
++			regulator-max-microvolt = <2950000>;
++			regulator-allow-set-load;
+ 		};
+ 	};
+ };
+@@ -437,6 +439,8 @@ sd-cd-pins {
+ };
+ 
+ &sdhc_1 {
++	vmmc-supply = <&pm6125_l24>;
++	vqmmc-supply = <&pm6125_l11>;
+ 	status = "okay";
+ };
+ 
+-- 
 2.39.0
 
