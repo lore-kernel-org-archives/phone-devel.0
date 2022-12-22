@@ -2,25 +2,25 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D3BAC4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 22 Dec 2022 21:01:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 18A5DC4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 22 Dec 2022 21:26:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231892AbiLVVBz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 22 Dec 2022 16:01:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39406 "EHLO
+        id S235084AbiLVV0s (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 22 Dec 2022 16:26:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229973AbiLVVBy (ORCPT
+        with ESMTP id S229674AbiLVV0r (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 22 Dec 2022 16:01:54 -0500
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [5.144.164.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8841FE00F;
-        Thu, 22 Dec 2022 13:01:52 -0800 (PST)
+        Thu, 22 Dec 2022 16:26:47 -0500
+Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [5.144.164.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C3D92315C
+        for <phone-devel@vger.kernel.org>; Thu, 22 Dec 2022 13:26:45 -0800 (PST)
 Received: from localhost.localdomain (94-209-172-39.cable.dynamic.v4.ziggo.nl [94.209.172.39])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 2F6DC3F34C;
-        Thu, 22 Dec 2022 22:01:50 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 23A473F635;
+        Thu, 22 Dec 2022 22:26:44 +0100 (CET)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
@@ -30,17 +30,15 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
         Marijn Suijten <marijn.suijten@somainline.org>,
-        Bjorn Andersson <andersson@kernel.org>,
         Andy Gross <agross@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] clk: qcom: dispcc-sm6125: Fix compatible string to match bindings
-Date:   Thu, 22 Dec 2022 22:01:40 +0100
-Message-Id: <20221222210140.278077-1-marijn.suijten@somainline.org>
+Subject: [PATCH] arm64; dts: qcom: sm6350-lena: Flatten gpio-keys pinctrl state
+Date:   Thu, 22 Dec 2022 22:26:34 +0100
+Message-Id: <20221222212634.298135-1-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -48,34 +46,59 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-According to generic rules the SoC name should be first:
+Pinctrl states typically collate multiple related pins.  In the case of
+gpio-keys there's no hardware-defined relation at all except all pins
+representing a key; and especially on Sony's lena board there's only one
+pin regardless. Flatten it similar to other boards [1].
 
-        arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dtb: clock-controller@5f00000: compatible: 'oneOf' conditional failed, one must be fixed:
-                'qcom,dispcc-sm6125' does not match '^qcom,(apq|ipq|mdm|msm|qcm|qcs|sa|sc|sdm|sdx|sm)[0-9]+-.*$'
+As a drive-by fix, clean up the label string.
 
-And this is already reflected by the bindings submitted prior to the
-addition of this driver.  Any DTS following these rules will end up with
-a non-probing driver because of this mismatch.
+[1]: https://lore.kernel.org/linux-arm-msm/11174eb6-0a9d-7df1-6f06-da4010f76453@linaro.org/
 
-Fixes: 6e87c8f07407 ("clk: qcom: Add display clock controller driver for SM6125")
+Fixes: 2b8bbe985659 ("arm64: dts: qcom: sm6350-lena: Include pm6350 and configure buttons")
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
- drivers/clk/qcom/dispcc-sm6125.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../qcom/sm6350-sony-xperia-lena-pdx213.dts    | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm6125.c b/drivers/clk/qcom/dispcc-sm6125.c
-index b921456a2e0d..87b27053ddb6 100644
---- a/drivers/clk/qcom/dispcc-sm6125.c
-+++ b/drivers/clk/qcom/dispcc-sm6125.c
-@@ -667,7 +667,7 @@ static const struct qcom_cc_desc disp_cc_sm6125_desc = {
+diff --git a/arch/arm64/boot/dts/qcom/sm6350-sony-xperia-lena-pdx213.dts b/arch/arm64/boot/dts/qcom/sm6350-sony-xperia-lena-pdx213.dts
+index 94f77d376662..4916d0db5b47 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350-sony-xperia-lena-pdx213.dts
++++ b/arch/arm64/boot/dts/qcom/sm6350-sony-xperia-lena-pdx213.dts
+@@ -35,10 +35,10 @@ framebuffer: framebuffer@a0000000 {
+ 	gpio-keys {
+ 		compatible = "gpio-keys";
+ 		pinctrl-names = "default";
+-		pinctrl-0 = <&gpio_keys_state>;
++		pinctrl-0 = <&vol_down_n>;
+ 
+ 		key-volume-down {
+-			label = "volume_down";
++			label = "Volume Down";
+ 			linux,code = <KEY_VOLUMEDOWN>;
+ 			gpios = <&pm6350_gpios 2 GPIO_ACTIVE_LOW>;
+ 		};
+@@ -305,14 +305,12 @@ touchscreen@48 {
  };
  
- static const struct of_device_id disp_cc_sm6125_match_table[] = {
--	{ .compatible = "qcom,dispcc-sm6125" },
-+	{ .compatible = "qcom,sm6125-dispcc" },
- 	{ }
+ &pm6350_gpios {
+-	gpio_keys_state: gpio-keys-state {
+-		key-volume-down-pins {
+-			pins = "gpio2";
+-			function = PMIC_GPIO_FUNC_NORMAL;
+-			power-source = <0>;
+-			bias-disable;
+-			input-enable;
+-		};
++	vol_down_n: vol-down-n-state {
++		pins = "gpio2";
++		function = PMIC_GPIO_FUNC_NORMAL;
++		power-source = <0>;
++		bias-disable;
++		input-enable;
+ 	};
  };
- MODULE_DEVICE_TABLE(of, disp_cc_sm6125_match_table);
+ 
 -- 
 2.39.0
 
