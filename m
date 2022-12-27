@@ -2,90 +2,94 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04970C4332F
-	for <phone-devel@archiver.kernel.org>; Tue, 27 Dec 2022 11:56:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C16D9C4167B
+	for <phone-devel@archiver.kernel.org>; Tue, 27 Dec 2022 19:26:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229801AbiL0L44 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 27 Dec 2022 06:56:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42122 "EHLO
+        id S232229AbiL0TZ7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 27 Dec 2022 14:25:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231305AbiL0L4x (ORCPT
+        with ESMTP id S232347AbiL0TZj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 27 Dec 2022 06:56:53 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C00CFE65;
-        Tue, 27 Dec 2022 03:56:52 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C6F061046;
-        Tue, 27 Dec 2022 11:56:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C59C433D2;
-        Tue, 27 Dec 2022 11:56:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672142211;
-        bh=MVhpv8rXzR6Te24jCkntBS3xe22aOWW6rhIHAEiEsTI=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=PSUPvLMAwFNazUcuumTkeUgtQFmpg2Vw/cgqNm7UwT4p+V6Any1e1GpEiBrUGc63I
-         jpqUEuEjJyUZM3fBL8N/QA7A/d5CwFQTWQUrqabnWeCUFaYnJ46ZDjNbTu4fcIDVOk
-         zvGW2TXYdD+BeXEtF8qzXP45KEJS3NSDcaFiEIOOAtU/oNPAZd/h9rfu2LNjp5pM2D
-         3exLfJN9KJP2Sz9vWXFJ0WfnJCZa3CqT5r7q8BFevoF87UKmAmkeRzIEPusaT7wmp6
-         VM4HsNIHDwpr4wmAWYz9Jp9V7Z7dvOTlJi+hFG4y728CFRfC/CMbWKO/Cw4Nh9KX0I
-         vQXmATWtnoltw==
-From:   Mark Brown <broonie@kernel.org>
-To:     Oder Chiou <oder_chiou@realtek.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, Jarrah Gosbell <kernel@undef.tools>
-Cc:     phone-devel@vger.kernel.org, Ondrej Jirman <megi@xff.cz>
-In-Reply-To: <20221209105621.39237-1-kernel@undef.tools>
-References: <20221209105621.39237-1-kernel@undef.tools>
-Subject: Re: [PATCH 1/2] ASoC: rt5640: Allow configuration of LOUT to mono
- differential mode
-Message-Id: <167214220970.82924.10318641625938014586.b4-ty@kernel.org>
-Date:   Tue, 27 Dec 2022 11:56:49 +0000
+        Tue, 27 Dec 2022 14:25:39 -0500
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78017DF95;
+        Tue, 27 Dec 2022 11:24:50 -0800 (PST)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 23C611C09DB; Tue, 27 Dec 2022 20:24:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+        t=1672169088;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=dRdFPAZ2x1cj1DjHYXyX9E2GgRFTovoAriXBGfubkg4=;
+        b=in1gHuA+v2uM45+1ROOvdmMWqmypiE2BXaMWhDraIlZkrgfEPm+f70T2b+4H7zfmp7ue/l
+        dX7itYr2Eb91NBCDUFx/RwZ+tuqxNmvtJ3PY6ZcaUrYDV+Onn/JkYnuWGS8+2lvATgWqVr
+        vih7/K529QrLrGV0wzzhM/PlBbHvcN8=
+Date:   Tue, 27 Dec 2022 20:24:47 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     icenowy@aosc.xyz, martijn@brixit.nl, megous@megous.com,
+        kernel list <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org, mchehab@kernel.org,
+        linux-media@vger.kernel.org, megi@xff.cz
+Subject: Re: gc2145 camera driver (front camera on PinePhone)
+Message-ID: <Y6tGfxrq/Mh1JoA9@duo.ucw.cz>
+References: <20220822180531.GA27226@duo.ucw.cz>
+ <20220908073634.GA1761437@gnbcxd0016.gnb.st.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12-dev-7ab1d
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="pRRYJmJLH5z0bIH6"
+Content-Disposition: inline
+In-Reply-To: <20220908073634.GA1761437@gnbcxd0016.gnb.st.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 09 Dec 2022 10:56:20 +0000, Jarrah Gosbell wrote:
-> LOUT output can produce either single-ended stereo signals, or mono
-> differential signal. Some applications are wired to use LOUT in mono
-> differential mode. Allow to configure it via device property.
-> 
-> 
 
-Applied to
+--pRRYJmJLH5z0bIH6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Hi!
 
-Thanks!
+> we are also using the GC2145 sensor but in a CSI based environment.
+>=20
+> We are in contact with GalaxyCore and following discussions we had with t=
+hem
+> and data they provided us with, we've made a driver for that, supporting =
+for
+> the time being 3 different resolutions via the CSI interface.
+>=20
+> The driver is available on the STMicroelectronics STM32 github [1].
+>=20
+> If you are ok with that, we could go further upstreaming it while testing=
+/adding
+> features necessary for the PinePhone.
+>=20
+> [1]
+> https://github.com/STMicroelectronics/linux/blob/v5.15-stm32mp/drivers/me=
+dia/i2c/gc2145.c
 
-[1/2] ASoC: rt5640: Allow configuration of LOUT to mono differential mode
-      commit: 44b54f54b41d36e8a2302a2c18a65268751c9067
-[2/2] dt-bindings: sound: rt5640: Allow to describe how LOUT is wired
-      commit: d8510532ccf3bc12e2b1c0c285d4b61d4b713e1a
+Ok, so it looks like I'm quite busy with other projects. If you have a
+time, anything in the upstream is likely better than nothing at all.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+But you may still want to take a look at my submission (which is
+Megi's code), it seemed it had less magic numbers..
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+--pRRYJmJLH5z0bIH6
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-----BEGIN PGP SIGNATURE-----
 
-Thanks,
-Mark
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCY6tGfwAKCRAw5/Bqldv6
+8nfzAKCGsA99cekbMlkR+fZ7e7R59/rOqQCfXgXkW7SYeVTWXfUAWd0NNuLGRac=
+=H+fL
+-----END PGP SIGNATURE-----
+
+--pRRYJmJLH5z0bIH6--
