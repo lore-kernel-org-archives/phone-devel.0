@@ -2,77 +2,76 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A543FC3DA7A
-	for <phone-devel@archiver.kernel.org>; Wed, 28 Dec 2022 04:39:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FB26C3DA7A
+	for <phone-devel@archiver.kernel.org>; Wed, 28 Dec 2022 06:20:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232814AbiL1Ejb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 27 Dec 2022 23:39:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42760 "EHLO
+        id S229764AbiL1GU5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 28 Dec 2022 01:20:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232475AbiL1EiB (ORCPT
+        with ESMTP id S229526AbiL1GU4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 27 Dec 2022 23:38:01 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D80EE30;
-        Tue, 27 Dec 2022 20:37:22 -0800 (PST)
+        Wed, 28 Dec 2022 01:20:56 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F09FAAE6B;
+        Tue, 27 Dec 2022 22:20:55 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC294612FC;
-        Wed, 28 Dec 2022 04:37:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480A9C433D2;
-        Wed, 28 Dec 2022 04:37:20 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A3E6FB81211;
+        Wed, 28 Dec 2022 06:20:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA9AC433EF;
+        Wed, 28 Dec 2022 06:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672202241;
-        bh=7rlmZW5PltjK5AJQHhRWI2zhFCaSzpd0kXIzYX9FBMM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=inEnizrBWQCQesQkNZH76Fn3BUg0aIQy5QmAEC29h3Lf3iZifeYBx3ZXm6pMpfCIn
-         VUghkd6e+uNdyBnbDdTvabsSRCZVSlttGqGMmhMk2sj1OA87s/Z0OeeSQ9xiWNy6KB
-         EruUPjAejW6hadWflNrKF8yhmodPieUjnOpVfHVNWTW1rG9run6W6nISXxHfVuLvoC
-         GkOXoWDCCWwK6EKoGWCUOyBiye1gY1bPOu4qN2Ih+qTbgjmpPhg0FBGsquKCoDdxhn
-         bpbwNMRCIB4ROIsnYS27Iebl0B24eRjdYU9mQgMDE3wOLCB884sqP8pN1JQBb1AsvH
-         UEoQPMYrxf+pA==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     konrad.dybcio@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, luca@z3ntu.xyz,
-        Martin Botka <martin.botka@somainline.org>,
-        krzysztof.kozlowski+dt@linaro.org, konrad.dybcio@linaro.org,
-        linux-kernel@vger.kernel.org, jami.kettunen@somainline.org,
+        s=k20201202; t=1672208453;
+        bh=JCjNKHa2L/LD6O1qZ2+Vv4QD9BCcPkQfGN1EKNkqtCo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LTo6kqLzqSYEaviGJawhdGSxa5wSYZpih/7wBfXFYohgAd7uQ2Qmy/D3UrH8fn/YJ
+         wtsQImjvN4cXg8dA1VyXfKbcbx9RkzQTTE94Y9xCncEhrk/QmKgPgYD1QS5u4lZl5i
+         LJjg+5YqvvUX6cM1ckyvvi4clfGy0kYj7Kbr9/f4ZrRbPwLEdGpnNfPMFRHV+DKkCd
+         SqIajj8zXlcnton5ypUqQWG0dVCAjc65gJSlczPOFia1aTfSasRtbzs/66jBHHudB8
+         2Fz5o0kj8/Qxr4ThCWlAD13R62zuns9cgDYh8hh1CXi9WhtlTdAikzfNbf3dooSpjz
+         b5vJ/6pVsv8Dw==
+Date:   Wed, 28 Dec 2022 11:50:49 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>, agross@kernel.org,
-        devicetree@vger.kernel.org, robh+dt@kernel.org,
-        linux-arm-msm@vger.kernel.org
-Subject: Re: [RFC PATCH] arm64: dts: qcom: Use plural _gpios node label for PMIC gpios
-Date:   Tue, 27 Dec 2022 22:36:55 -0600
-Message-Id: <167220221232.833009.17232659499836858198.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221209220450.1793421-1-marijn.suijten@somainline.org>
-References: <20221209220450.1793421-1-marijn.suijten@somainline.org>
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Lux Aliaga <they@mint.lgbt>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Richard Acayan <mailingradian@gmail.com>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        linux-arm-msm@vger.kernel.org, dmaengine@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v3 1/2] dt-bindings: dma: gpi: Document SM6125 compatible
+Message-ID: <Y6vgQZLyGV0wPPDs@matsya>
+References: <20221222194600.139854-1-marijn.suijten@somainline.org>
+ <20221222194600.139854-2-marijn.suijten@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221222194600.139854-2-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 9 Dec 2022 23:04:49 +0100, Marijn Suijten wrote:
-> The gpio node in PMIC dts'es define access to multiple GPIOs.  Most Qcom
-> PMICs were already using the plural _gpios label to point to this node,
-> but a few PMICs were left behind including the recently-pulled
-> pm(i)8950.
+On 22-12-22, 20:45, Marijn Suijten wrote:
+> From: Martin Botka <martin.botka@somainline.org>
 > 
-> Rename it from *_gpio to *_gpios for pm6125, pm6150(l), pm8005,
-> pm(i)8950, and pm(i)8998.
-> 
-> [...]
+> Document compatibility for this GPI DMA controller on SM6125.
 
-Applied, thanks!
+Applied, thanks
 
-[1/1] arm64: dts: qcom: Use plural _gpios node label for PMIC gpios
-      commit: ea25d61b448a51446edb1e8cab8a8d38fc719476
-
-Best regards,
 -- 
-Bjorn Andersson <andersson@kernel.org>
+~Vinod
