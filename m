@@ -2,149 +2,87 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18607C4708D
-	for <phone-devel@archiver.kernel.org>; Wed, 28 Dec 2022 15:24:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C8ECC4332F
+	for <phone-devel@archiver.kernel.org>; Wed, 28 Dec 2022 21:30:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233729AbiL1PYk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 28 Dec 2022 10:24:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43234 "EHLO
+        id S230406AbiL1Vay (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 28 Dec 2022 16:30:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233713AbiL1PYh (ORCPT
+        with ESMTP id S230050AbiL1Vaw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 28 Dec 2022 10:24:37 -0500
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BCD41402A
-        for <phone-devel@vger.kernel.org>; Wed, 28 Dec 2022 07:24:35 -0800 (PST)
-Received: by mail-wm1-x332.google.com with SMTP id m26-20020a05600c3b1a00b003d9811fcaafso4950566wms.5
-        for <phone-devel@vger.kernel.org>; Wed, 28 Dec 2022 07:24:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8nXKCVyOIX4nL784wtZ3ILMzCso/8DNyZaBxq04sqn0=;
-        b=HsmTzuhMZWa6Oxk/vOaMQqv2DO5KR6hoG7P4Waf31F+8oxMU2lCAMeICEaWOvObyIM
-         mVtuQeDpHICUTJwZRM8Rj+Se1bo5qnuUMJlauo1VtOkHNlhpnesn9L3SYGugl/EkHWMd
-         NU/WwKpsTxKFT8eTSsZeYaTJilYE+4iP5IPbGVzx8LMgKBgpJSTXdNbvfJbFr99CLuIc
-         Q2MGijvcB1SX37e5Yrc/BZKPCd7zKm/W8ulUFXoPpZwHamrUIFTRm8X/XNGtPjA1ehJB
-         hcTmOx1+ZOUoeDDmdAkgAKSnL7PAcBHzgfw0lv1yca0TMzp5UhtEmJQry9d21P/WeZey
-         w1Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8nXKCVyOIX4nL784wtZ3ILMzCso/8DNyZaBxq04sqn0=;
-        b=MBmVXfWQiXuQIJuYHbF7yzvbvwyq+S1HPUUfNy93B/+8XxkWqFLFiqCOF6fHjJaIPJ
-         h/I9c7chLEEDo7gjScRlWIWHRI01pag9FYcO8nKGGBrivT/ylYfWhkDa2X91yxMl6Kxl
-         kO4Mit/VQZb0LFvXLcWHeQwRFzk6zVlg+ECMv0wMZ316aHZbzftewts86yQtQavJLsL5
-         XnjtPq7g+98nNnVwO9+mA3IDn7bPzsOnwnw+NpY2vDVn52W5gYEiN49C5BROwzgv+2k5
-         qY6ijRHq/csfOeIsxVjkyTzDYfVMBpWByr/JaedTJCpZVI2B056DnWq+o08WemX1sQqN
-         W+5A==
-X-Gm-Message-State: AFqh2krH748HiLzBMZUNEE6o9WQ2K8fSh2L7saEuKVIWGvb/WwBDZoYm
-        0NUhLvSyxToGQ3SxRZvZbZcZeg==
-X-Google-Smtp-Source: AMrXdXtCg+Zy0Gj3Bdwd1XS/UTyFga3yDiwuZtjI5i4ejJyCw9JYw95SPFwBVkaqRN9O3lknqx5kEg==
-X-Received: by 2002:a05:600c:4191:b0:3d7:9ae7:e4f2 with SMTP id p17-20020a05600c419100b003d79ae7e4f2mr18470609wmh.35.1672241074108;
-        Wed, 28 Dec 2022 07:24:34 -0800 (PST)
-Received: from localhost (2a02-8388-6582-fe80-0000-0000-0000-0006.cable.dynamic.v6.surfer.at. [2a02:8388:6582:fe80::6])
-        by smtp.gmail.com with ESMTPSA id h15-20020adfaa8f000000b002421888a011sm15870418wrc.69.2022.12.28.07.24.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Dec 2022 07:24:33 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 28 Dec 2022 16:24:32 +0100
-Message-Id: <CPDJZJHDL1XJ.2UY1U1E19CTUH@otso>
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
-        "Alim Akhtar" <alim.akhtar@samsung.com>,
-        "Avri Altman" <avri.altman@wdc.com>,
-        "Bart Van Assche" <bvanassche@acm.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>
-Cc:     <linux-arm-msm@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] dt-bindings: ufs: qcom: Add reg-names property for ICE
-X-Mailer: aerc 0.13.0
-References: <20221209-dt-binding-ufs-v1-0-8d502f0e18d5@fairphone.com>
- <c4109766-22f1-7227-47bb-9273a027bb0c@linaro.org>
- <CPDFHXBPSP76.5CWNQK4N1KGI@otso>
- <5391e6e5-3773-a012-c396-b59b1f54ea51@linaro.org>
-In-Reply-To: <5391e6e5-3773-a012-c396-b59b1f54ea51@linaro.org>
+        Wed, 28 Dec 2022 16:30:52 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB93C140BC;
+        Wed, 28 Dec 2022 13:30:50 -0800 (PST)
+Received: from g550jk.localnet (2a02-8388-6582-fe80-0000-0000-0000-0005.cable.dynamic.v6.surfer.at [IPv6:2a02:8388:6582:fe80::5])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 8ACF1CB42D;
+        Wed, 28 Dec 2022 21:30:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1672263049; bh=R5soxCa2nbRONnnIoOyx6lQyz71J9M+o4tRpsv7zD70=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=kDJwpTiEItwDlltv01z04XOJQnmOabmI9wvG/eEMAN0HjL3svfwbEBXbgJWEhFCKx
+         wbCU0NO8S3i8xoDJX9Ysf6WQ3E0hVvHs1Jr1E4XCC5TaAGgvkDYxQML0n/avhcQ/U+
+         UADXhM+hVuGOMiBiFYZCDPJWC71khov49SiLfN4I=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afd@ti.com, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Wesley Cheng <quic_wcheng@quicinc.com>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] regulator: dt-bindings: qcom,usb-vbus-regulator: change
+ node name
+Date:   Wed, 28 Dec 2022 22:30:47 +0100
+Message-ID: <12119366.O9o76ZdvQC@g550jk>
+In-Reply-To: <20221031173933.936147-2-luca@z3ntu.xyz>
+References: <20221031173933.936147-1-luca@z3ntu.xyz>
+ <20221031173933.936147-2-luca@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed Dec 28, 2022 at 12:58 PM CET, Krzysztof Kozlowski wrote:
-> On 28/12/2022 12:53, Luca Weiss wrote:
-> > Hi Krzysztof,
-> >=20
-> > On Wed Dec 28, 2022 at 12:50 PM CET, Krzysztof Kozlowski wrote:
-> >> On 09/12/2022 15:29, Luca Weiss wrote:
-> >>> The code in ufs-qcom-ice.c needs the ICE reg to be named "ice". Add t=
-his
-> >>> in the bindings so the existing dts can validate successfully.
-> >>>
-> >>> Also sm8450 is using ICE since commit 276ee34a40c1 ("arm64: dts: qcom=
-:
-> >>> sm8450: add Inline Crypto Engine registers and clock") so move the
-> >>> compatible to the correct if.
-> >>>
-> >>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> >>> ---
-> >>> (no cover subject)
-> >>>
-> >>> The only remaining validation issues I see is the following on sc8280=
-xp-crd.dtb
-> >>> and sa8540p-ride.dtb:
-> >>>
-> >>
-> >> Any plans on fixing the patch (after testing it) and resending?
-> >=20
-> > I wasn't quite sure how to fix the comments, but re-reading them this
-> > comment from you is how you expect it to be in v2?
->
-> The patch fails testing, so I meant this.
->
-> >=20
-> >> Just add it to top-level with minItems: 1 and per variant customize:
-> >> 1. maxItems: 1
-> >> 2. minItems: 2 + required
-> >=20
+On Montag, 31. Oktober 2022 18:39:32 CET Luca Weiss wrote:
+> usb-vbus-regulator is a better generic node name than dcdc to change the
+> example to match.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
-I tried a bit now but couldn't get it to work when using 'items' so that
-we have the "std" and "ice" names in there.
+Bump? Can this patch be picked up please?
 
-Documentation/devicetree/bindings/ufs/qcom,ufs.yaml: allOf:2:then:propertie=
-s:reg-names: 'oneOf' conditional failed, one must be fixed:
-        [{'const': 'std'}, {'const': 'ice'}] is too long
-        [{'const': 'std'}, {'const': 'ice'}] is too short
-        False schema does not allow 2
-        1 was expected
-        hint: "minItems" is only needed if less than the "items" list lengt=
-h
-        from schema $id: http://devicetree.org/meta-schemas/items.yaml#
+> ---
+> Changes in v2:
+> * New patch
+> 
+>  .../devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml  | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git
+> a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
+> b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
+> index dbe78cd4adba..b1cff3adb21b 100644
+> ---
+> a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
+> +++
+> b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
+> @@ -33,7 +33,7 @@ examples:
+>       pm8150b {
+>          #address-cells = <1>;
+>          #size-cells = <0>;
+> -        pm8150b_vbus: dcdc@1100 {
+> +        pm8150b_vbus: usb-vbus-regulator@1100 {
+>              compatible = "qcom,pm8150b-vbus-reg";
+>              reg = <0x1100>;
+>          };
 
-Since I have 'minItems: 1' in top-level I seemingly cannot use 'items'
-in the 'if' neither alone nor with 'minItems' and/or 'maxItems', getting
-different errors when doing that.
 
-Can I just put 'reg-names: true' top-level and then specify either items
-for the ones that use ICE or for the others use the 'maxItems: 1'?
 
-Or am I supposed to ignore 'items' completely but driver expects 'ice'
-name so I'd rather include it.
-
-Regards
-Luca
-
->
-> Yes.
->
-> Best regards,
-> Krzysztof
 
