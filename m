@@ -2,119 +2,87 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE1AFC4332F
-	for <phone-devel@archiver.kernel.org>; Wed, 28 Dec 2022 11:58:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5766EC4167B
+	for <phone-devel@archiver.kernel.org>; Wed, 28 Dec 2022 14:11:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233041AbiL1L6j (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 28 Dec 2022 06:58:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40154 "EHLO
+        id S230012AbiL1OLM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 28 Dec 2022 09:11:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232995AbiL1L6g (ORCPT
+        with ESMTP id S229630AbiL1OLL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 28 Dec 2022 06:58:36 -0500
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BE3B11451
-        for <phone-devel@vger.kernel.org>; Wed, 28 Dec 2022 03:58:33 -0800 (PST)
-Received: by mail-lf1-x12c.google.com with SMTP id bp15so23292242lfb.13
-        for <phone-devel@vger.kernel.org>; Wed, 28 Dec 2022 03:58:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WnXYH4qLynXgTdL39MoHqXN5EMW38TQiUZiVR1DxEeQ=;
-        b=JJVU3PTcvSE3KUUGIfvJBRh97Si8pN9Fapb4MGpR2amkOIBxz5I+yTHUpNOH0RpIgR
-         6q8PQ5nwQOCVfGdeY3kZcX9NdSciVOjRc/iCixqoHqERLuNAeu2xCF4CXSiZEIXNU6AQ
-         S78hOnlQKQGlpZ4LDmtPmh05YO34NuncA1fB4OHXsFSWmYcKISoOYEQ6kRVzF+ZkZRSG
-         AswvNzlIZViD+b7bWrk+ps9a3jD6/MkeJDKR7hIeI7rkJ3yVmioOP3xlSW4rRdJdNIYn
-         JA6h2U4GrJBAvpaFbRSYAplAcPsPDcW40+Pk4PsnXiyWYs5zEHiVAZjXwa4GwwgaD0wU
-         YC8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WnXYH4qLynXgTdL39MoHqXN5EMW38TQiUZiVR1DxEeQ=;
-        b=wg2MJqrMU1RVsjy6xV25ByOycTkDT1ZOHr+3R1Q73uKw0bZELAr4JfownzQhM67NPz
-         Hnq8EpCI/tNejq8CFhLe8HeuMWXfOQJ6VXojiAMs3+SZIqPebNq/MCR3CIjlY6l6bEug
-         fCoY4gucgvDBddQdHII92idpTYGzY+2MCVLNr+q8fvsbbUklY99qc4a4Uvu0wv0+2SV2
-         qbGl04o/Fv4OitHnwvMAwifjjM4cVbVqzoiT1vNyGk6K6j/vaoPMWiQK+QZKCroF5zgT
-         +kLSscwI6/uRQ0wbNq7yFsyuZ5TEzJHJ4KqcdHJmCUTND1B/oqzOaY32yAq6lMj2+3w6
-         FFRg==
-X-Gm-Message-State: AFqh2kqT3IZ0yznd2lNFB+o5SfYURUM8AActl2e/K5QIvN9EbosRKT0g
-        6M41RmbmNRcsInbS7iQnX6edJw==
-X-Google-Smtp-Source: AMrXdXt4PV8yq8guZTESHWBuI7Pgb3yXXbymZcLJRNWE/tWew9Yf+0+pOCQKIAX0t7/max5UYbBgZQ==
-X-Received: by 2002:ac2:46f8:0:b0:4b5:9ec5:dbed with SMTP id q24-20020ac246f8000000b004b59ec5dbedmr8003412lfo.40.1672228711451;
-        Wed, 28 Dec 2022 03:58:31 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id d21-20020ac24c95000000b0049465afdd38sm2637727lfl.108.2022.12.28.03.58.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Dec 2022 03:58:30 -0800 (PST)
-Message-ID: <5391e6e5-3773-a012-c396-b59b1f54ea51@linaro.org>
-Date:   Wed, 28 Dec 2022 12:58:29 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH] dt-bindings: ufs: qcom: Add reg-names property for ICE
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Wed, 28 Dec 2022 09:11:11 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F7F5266F;
+        Wed, 28 Dec 2022 06:11:10 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 389386152E;
+        Wed, 28 Dec 2022 14:11:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4DDC433D2;
+        Wed, 28 Dec 2022 14:11:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672236669;
+        bh=S4hSHwHwmJDmSHhHc7z9HBcvuAIbgQgS0N6Ym6s8J6Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=YzU/UVWrYu6uk12cMxFwSK7e5jqqROuN16iZ8qUnXeTbAUreXmAMVDQ5gqe97xxHQ
+         qd4d8d1L9mJJd/F/+I+vXQIfoZkVlSw4Sehql4882MvKUyIy1mCx7MNoDlWaKK6dN1
+         WbJ9Pu4NKPGlXqTldr6m3Xmb84/GxcW6s8gTGWlAOQBSXou06x8ohX8FYjOaMq5nus
+         5ySooP895+rsiCq+GYOKpd9rS8dgcTkg8JAkQaYcxmetcFjgqqtZ+3YoAM5c81gwlo
+         IoUzghZVDmOzA6YDRbCczq1/cHID6MoFrz9JdPu1ZJp40lEgs8QZC40nLTMPv0aNlk
+         cexwei4Bh1q9A==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan@kernel.org>)
+        id 1pAX9D-0006MF-EZ; Wed, 28 Dec 2022 15:11:12 +0100
+Date:   Wed, 28 Dec 2022 15:11:11 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Luca Weiss <luca.weiss@fairphone.com>
+Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221209-dt-binding-ufs-v1-0-8d502f0e18d5@fairphone.com>
- <c4109766-22f1-7227-47bb-9273a027bb0c@linaro.org>
- <CPDFHXBPSP76.5CWNQK4N1KGI@otso>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <CPDFHXBPSP76.5CWNQK4N1KGI@otso>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] dt-bindings: phy: qcom,qmp-usb3-dp: Add sm6350
+ compatible
+Message-ID: <Y6xOf4xCEGihO0yB@hovoldconsulting.com>
+References: <20221130081430.67831-1-luca.weiss@fairphone.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221130081430.67831-1-luca.weiss@fairphone.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 28/12/2022 12:53, Luca Weiss wrote:
-> Hi Krzysztof,
+On Wed, Nov 30, 2022 at 09:14:27AM +0100, Luca Weiss wrote:
+> Add the compatible describing the combo phy found on SM6350.
 > 
-> On Wed Dec 28, 2022 at 12:50 PM CET, Krzysztof Kozlowski wrote:
->> On 09/12/2022 15:29, Luca Weiss wrote:
->>> The code in ufs-qcom-ice.c needs the ICE reg to be named "ice". Add this
->>> in the bindings so the existing dts can validate successfully.
->>>
->>> Also sm8450 is using ICE since commit 276ee34a40c1 ("arm64: dts: qcom:
->>> sm8450: add Inline Crypto Engine registers and clock") so move the
->>> compatible to the correct if.
->>>
->>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>> ---
->>> (no cover subject)
->>>
->>> The only remaining validation issues I see is the following on sc8280xp-crd.dtb
->>> and sa8540p-ride.dtb:
->>>
->>
->> Any plans on fixing the patch (after testing it) and resending?
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+> Changes since v2:
+> * Drop misc schema changes again since same schema applies to sm6350
 > 
-> I wasn't quite sure how to fix the comments, but re-reading them this
-> comment from you is how you expect it to be in v2?
-
-The patch fails testing, so I meant this.
-
+>  .../devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml   | 1 +
+>  1 file changed, 1 insertion(+)
 > 
->> Just add it to top-level with minItems: 1 and per variant customize:
->> 1. maxItems: 1
->> 2. minItems: 2 + required
-> 
+> diff --git a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
+> index 6f31693d9868..0764cd977e76 100644
+> --- a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
+> +++ b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
+> @@ -17,6 +17,7 @@ properties:
+>    compatible:
+>      enum:
+>        - qcom,sc8280xp-qmp-usb43dp-phy
+> +      - qcom,sm6350-qmp-usb3-dp-phy
+>  
+>    reg:
+>      maxItems: 1
 
-Yes.
-
-Best regards,
-Krzysztof
-
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
