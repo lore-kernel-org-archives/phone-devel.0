@@ -2,66 +2,111 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D58C5C4708E
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 17:25:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A5ACC4167B
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 17:29:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233847AbiL2RZB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Dec 2022 12:25:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52076 "EHLO
+        id S233830AbiL2R3Q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Dec 2022 12:29:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233942AbiL2RYg (ORCPT
+        with ESMTP id S233963AbiL2R21 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Dec 2022 12:24:36 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B0515F39;
-        Thu, 29 Dec 2022 09:24:04 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Thu, 29 Dec 2022 12:28:27 -0500
+Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [5.144.164.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A798186FE;
+        Thu, 29 Dec 2022 09:25:54 -0800 (PST)
+Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D07D61868;
-        Thu, 29 Dec 2022 17:24:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F8CC433F2;
-        Thu, 29 Dec 2022 17:24:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672334643;
-        bh=UikT6pOTq9LMNnCfthaZUWR/9lJHtRQVGaaR01pfx30=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qv6sBxeH3LdymsecIbWoC0OrB20e99abX3kfdEWMxzWZuypMN+PDoLyO37uq6anDZ
-         Ndsvy7esljEVI9UxgONNJWTBMeM0DbEdJ1karPHXllimcPTGs/hKjN0UTcrkl1ohlF
-         QcScGXZ5STB/wca5ahTOl/PhtvwsixcDYPdm8Agnw6fYBKbbo3Tvhat0SawKyFdMYw
-         gQi1cyrERWk5ivWOEXvJaWebaw2qQP1Q424QfLasXiwU9SWI1jhFfJgb6bitUj7cxF
-         QXaZGUjoS85lwd/zWvfXOWJXakthrK054fAAEj2Pf/+pBHIM2CMEYRL0fbDWXo51A5
-         UX4t6ChgGfQYA==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     matti.lehtimaki@gmail.com, linux-arm-msm@vger.kernel.org
-Cc:     agross@kernel.org, phone-devel@vger.kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, konrad.dybcio@linaro.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH v2] ARM: dts: qcom: apq8026-samsung-matisse-wifi: Enable ADSP
-Date:   Thu, 29 Dec 2022 11:23:40 -0600
-Message-Id: <167233461728.1099840.5576881190676029409.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221218211957.118473-1-matti.lehtimaki@gmail.com>
-References: <20221218211957.118473-1-matti.lehtimaki@gmail.com>
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id D79511F9A9;
+        Thu, 29 Dec 2022 18:25:49 +0100 (CET)
+Date:   Thu, 29 Dec 2022 18:25:48 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Bjorn Andersson <andersson@kernel.org>,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Lux Aliaga <they@mint.lgbt>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] arm64: dts: qcom: sm6125: QUPs, SPI and Seine I2C
+ buses
+Message-ID: <20221229172548.eddluubb7ljqwiqy@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Bjorn Andersson <andersson@kernel.org>, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Lux Aliaga <they@mint.lgbt>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20221216233408.1283581-1-marijn.suijten@somainline.org>
+ <20221229171301.7sjbyvqpn3qjwexu@builder.lan>
+ <20221229172148.2hcmi7uypwlnxmhu@SoMainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221229172148.2hcmi7uypwlnxmhu@SoMainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 18 Dec 2022 23:19:57 +0200, Matti Lehtimäki wrote:
-> Configure the reserved memory for ADSP and enable it.
-> Delete nodes with reference to label.
+On 2022-12-29 18:21:55, Marijn Suijten wrote:
+> On 2022-12-29 11:13:01, Bjorn Andersson wrote:
+> > On Sat, Dec 17, 2022 at 12:34:05AM +0100, Marijn Suijten wrote:
+> > > Introduce Qualcomm Universal Peripheral support on SM6125 and define all
+> > > known SPI and I2C Serial Engines.  On Sony Seine PDX201 all I2C buses
+> > > with known-connected hardware are enabled for future hardware mapping,
+> > > together with the respective GPI DMA 0 and QUP 0.
+> > > 
+> > > Changes since v1:
+> > > - Un-downstream pinctrl mapping:
+> > >   - Remove nested mux {} / config {};
+> > >   - Remove useless comments;
+> > >   - Remove unreferenced pinctrl states;
+> > > - Use qup14 pinctrl function name instead of unknown qup_14;
+> > > - Reword commit message;
+> > > - Add iommus to QUP nodes now that this series depends on apps_smmu to
+> > >   be available;
+> > > - Reorder all properties to match other SoCs;
+> > > - Reorder/intersperse QUP nodes with GPI DMA nodes to maintain sorting
+> > >   by address;
+> > > - Reorder SPI nodes to fit in with I2C nodes, restoring sorting by
+> > >   address too;
+> > > - Use QCOM_GPI_* constants;
+> > > - Adhere to 3 instead of 5 dma cells for gpi_dma.
+> > > 
+> > > v1: https://lore.kernel.org/all/20221001185628.494884-1-martin.botka@somainline.org/T/#u
+> > > 
+> > > Depends on:
+> > > - SM6125 APPS SMMU: https://lore.kernel.org/linux-arm-msm/20221216215819.1164973-1-marijn.suijten@somainline.org/T/#u
+> > > - SM6125 GPI DMA: https://lore.kernel.org/linux-arm-msm/20221216231528.1268447-1-marijn.suijten@somainline.org/T/#u
+> > 
+> > Please, in the future, when you have dependencies between your dts
+> > patches, send them together so I don't need to go on a treasure hunt in
+> > my mailbox to figure out which order to apply things...
 > 
-> 
+> I was quite confident separating out "unrelated" patches in separate
+> series was preferred, especially when dependencies are marked explicitly
+> like this... what changed?
 
-Applied, thanks!
+Perhaps because both dependencies have been resent, and the links for
+APPS SMMU v4 and GPI DMA v2 have become obsolete in favour of:
 
-[1/1] ARM: dts: qcom: apq8026-samsung-matisse-wifi: Enable ADSP
-      commit: bd445a04d8ca4104c6831148134cd637b135d9f1
+- SM6125 APPS SMMU v5: https://lore.kernel.org/linux-arm-msm/20221222193254.126925-1-marijn.suijten@somainline.org/T/#u
+- SM6125 GPI DMA v3: https://lore.kernel.org/linux-arm-msm/20221222194600.139854-1-marijn.suijten@somainline.org/T/#u
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+- Marijn
