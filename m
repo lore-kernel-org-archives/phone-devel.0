@@ -2,105 +2,83 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DDFEBC4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 17:22:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C644C3DA79
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 17:24:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231330AbiL2RWB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Dec 2022 12:22:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49486 "EHLO
+        id S233910AbiL2RYN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Dec 2022 12:24:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233491AbiL2RWA (ORCPT
+        with ESMTP id S233857AbiL2RX5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Dec 2022 12:22:00 -0500
-Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [5.144.164.164])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66FAE14007;
-        Thu, 29 Dec 2022 09:21:58 -0800 (PST)
-Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Thu, 29 Dec 2022 12:23:57 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 726AD1580D;
+        Thu, 29 Dec 2022 09:23:54 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 6181A1F98E;
-        Thu, 29 Dec 2022 18:21:55 +0100 (CET)
-Date:   Thu, 29 Dec 2022 18:21:48 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Bjorn Andersson <andersson@kernel.org>
-Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Lux Aliaga <they@mint.lgbt>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] arm64: dts: qcom: sm6125: QUPs, SPI and Seine I2C
- buses
-Message-ID: <20221229172148.2hcmi7uypwlnxmhu@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Bjorn Andersson <andersson@kernel.org>, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Lux Aliaga <they@mint.lgbt>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221216233408.1283581-1-marijn.suijten@somainline.org>
- <20221229171301.7sjbyvqpn3qjwexu@builder.lan>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFFF761867;
+        Thu, 29 Dec 2022 17:23:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3843EC433D2;
+        Thu, 29 Dec 2022 17:23:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672334633;
+        bh=vwZado0n/FDUBbdARVUPl7ON0BEEW0ONuWNVT/ToCxA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=CwCURtdhbh2HQdmbcq97JDUzgQ4BrlJYtc3ROTRi0MgsfTICqBhDb9XgeViLDPfhd
+         7LHbJ+CHMGFdmyqmgt68co/Ox0KBAZo3XehZY2nxzSbek5RYEBlAeoQMAN8EtGT+Rn
+         TSTm7MBhwTynMg/jX58qnSNeIoNWfWBlw2M7wnLRggaDQ8TOlTdkNZl/2+5qAGwPIc
+         i33mtPSzg+ae0LvLrb6t/yeRqZzeN2cuXjFFmrdiusa93Ry3eTBJ/AU0fVNWDfPENT
+         SCohVsK0EyCeoYUi9LJE+Tajlz5Ao9XmgvR/DF31b/IlGm3EqsG7t3Hl9HGgfMfYvT
+         jqq9Cr3lGUoaA==
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     phone-devel@vger.kernel.org,
+        Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     agross@kernel.org, linux-arm-msm@vger.kernel.org,
+        martin.botka@somainline.org, jami.kettunen@somainline.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        angelogioacchino.delregno@somainline.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, konrad.dybcio@linaro.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH 0/5] arm64: dts: qcom: sm6125-seine: Configure regulators and enable SD Card
+Date:   Thu, 29 Dec 2022 11:23:32 -0600
+Message-Id: <167233461775.1099840.9313167642077066224.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20221222203636.250190-1-marijn.suijten@somainline.org>
+References: <20221222203636.250190-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221229171301.7sjbyvqpn3qjwexu@builder.lan>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-12-29 11:13:01, Bjorn Andersson wrote:
-> On Sat, Dec 17, 2022 at 12:34:05AM +0100, Marijn Suijten wrote:
-> > Introduce Qualcomm Universal Peripheral support on SM6125 and define all
-> > known SPI and I2C Serial Engines.  On Sony Seine PDX201 all I2C buses
-> > with known-connected hardware are enabled for future hardware mapping,
-> > together with the respective GPI DMA 0 and QUP 0.
-> > 
-> > Changes since v1:
-> > - Un-downstream pinctrl mapping:
-> >   - Remove nested mux {} / config {};
-> >   - Remove useless comments;
-> >   - Remove unreferenced pinctrl states;
-> > - Use qup14 pinctrl function name instead of unknown qup_14;
-> > - Reword commit message;
-> > - Add iommus to QUP nodes now that this series depends on apps_smmu to
-> >   be available;
-> > - Reorder all properties to match other SoCs;
-> > - Reorder/intersperse QUP nodes with GPI DMA nodes to maintain sorting
-> >   by address;
-> > - Reorder SPI nodes to fit in with I2C nodes, restoring sorting by
-> >   address too;
-> > - Use QCOM_GPI_* constants;
-> > - Adhere to 3 instead of 5 dma cells for gpi_dma.
-> > 
-> > v1: https://lore.kernel.org/all/20221001185628.494884-1-martin.botka@somainline.org/T/#u
-> > 
-> > Depends on:
-> > - SM6125 APPS SMMU: https://lore.kernel.org/linux-arm-msm/20221216215819.1164973-1-marijn.suijten@somainline.org/T/#u
-> > - SM6125 GPI DMA: https://lore.kernel.org/linux-arm-msm/20221216231528.1268447-1-marijn.suijten@somainline.org/T/#u
+On Thu, 22 Dec 2022 21:36:31 +0100, Marijn Suijten wrote:
+> Configure regulators on Sony's SM6125-backed seine platform, and provide
+> these regulators to existing (SDHCI 1 / HS USB2 PHY) nodes so that they
+> can cast their votes despite being left enabled by the bootloader.
 > 
-> Please, in the future, when you have dependencies between your dts
-> patches, send them together so I don't need to go on a treasure hunt in
-> my mailbox to figure out which order to apply things...
+> In addition this allows us to enable the SD Card slot on SDHCI 2, which
+> would not function without turning on the necessary regulators (i.e.
+> these were /not/ left enabled by the BL, for good reason).
+> 
+> [...]
 
-I was quite confident separating out "unrelated" patches in separate
-series was preferred, especially when dependencies are marked explicitly
-like this... what changed?
+Applied, thanks!
 
-(Aside that, would I then call this a v4+v2+v2?)
+[1/5] arm64: dts: qcom: sm6125-seine: Configure PM6125 regulators
+      commit: 7421a8d2f1394ee9f8b5fd87121f055e56ab4e60
+[2/5] arm64: dts: qcom: sm6125-seine: Provide regulators to HS USB2 PHY
+      commit: 232bb8073b5b3ec043459b34535542ea5ca81694
+[3/5] arm64: dts: qcom: sm6125-seine: Provide regulators to SDHCI 1
+      commit: 68aadbe7805901b52b18595dcbe36442ebf26d93
+[4/5] arm64: dts: qcom: sm6125-seine: Configure SD Card slot on SDHCI 2
+      commit: d696b1618bc1a416a4ab72a1176cfdf187ca09bf
+[5/5] arm64: dts: qcom: sm6125-seine: Lock eMMC and SD Card IDs via aliases
+      commit: fa7ff6e9f14a05f304587ba566a4f445a2a74aa6
 
-- Marijn
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
