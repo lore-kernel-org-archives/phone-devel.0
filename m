@@ -2,92 +2,149 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0283C4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 03:45:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C14CFC4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 08:06:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232747AbiL2Dpr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 28 Dec 2022 22:45:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38654 "EHLO
+        id S233118AbiL2IGR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Dec 2022 03:06:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230488AbiL2Dpp (ORCPT
+        with ESMTP id S233011AbiL2IGP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 28 Dec 2022 22:45:45 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C72B3F;
-        Wed, 28 Dec 2022 19:45:44 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 68D16B816E4;
-        Thu, 29 Dec 2022 03:45:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7066CC433EF;
-        Thu, 29 Dec 2022 03:45:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672285542;
-        bh=alCJu5XAjMvKb+w02CBSziyyOEltpCAw/XCcSnAbcuk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AWVpuj5foLvPtcXPEKqfw0DoLzqyOXgKpm8loWrcWzFCx9x1HAGhq1+H2xh6FDgft
-         tiOxrDVp42TPAczZTjiaTkNCyYelRu20N7woz+978EI9U2qo6D4sM6IdbrTLjJm9b9
-         BDYjBz4hkRwGBlqFp35eyon5jyCkJscIJVhqb2A732TGBiK3d29+nVmZHyuxDyeI7a
-         AkUqXhS7acN3Gu4GTg61iI2ijgBZNZbhdo5nO7F+8XWJZZV+1gshYlBR8Z02nRLJGU
-         ZYtCzy1PNtJFO39EmgrTvIDu3rH3HRI+ouTvdVNVVBCdeY9BV/5LQdLrBmn1CWUDZW
-         u5JbdpRlv3fcA==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     keescook@chromium.org, Tony Luck <tony.luck@intel.com>,
-        luca@z3ntu.xyz, gpiccoli@igalia.com,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org,
-        agross@kernel.org, konrad.dybcio@linaro.org
-Cc:     linux-kernel@vger.kernel.org, a39.skl@gmail.com,
-        krzysztof.kozlowski@linaro.org, devicetree@vger.kernel.org,
-        ultracoolguy@disroot.org, vladimir.lypak@gmail.com,
-        morf3089@gmail.com, atafalla@dnyon.com,
-        linux-arm-msm@vger.kernel.org, jenneron@protonmail.com,
-        ~postmarketos/upstreaming@lists.sr.ht, julianbraha@gmail.com,
-        fekz115@gmail.com, JIaxyga@protonmail.com,
-        sireeshkodali1@gmail.com, linux-hardening@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: (subset) [PATCH v3 0/9] Add a bunch of msm8953 dts files
-Date:   Wed, 28 Dec 2022 21:45:38 -0600
-Message-Id: <167228553507.1017132.4894386227853517055.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20221207-msm8953-6-1-next-dtbs-v3-v3-0-a64b3b0af0eb@z3ntu.xyz>
-References: <20221207-msm8953-6-1-next-dtbs-v3-v3-0-a64b3b0af0eb@z3ntu.xyz>
+        Thu, 29 Dec 2022 03:06:15 -0500
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C993FC12
+        for <phone-devel@vger.kernel.org>; Thu, 29 Dec 2022 00:06:13 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id f34so26534966lfv.10
+        for <phone-devel@vger.kernel.org>; Thu, 29 Dec 2022 00:06:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ben8+4oiArxexQJyJIBwbQtQ9giuKq12emDFPOAB0/A=;
+        b=jufpxaDQuVBA0SebIRrM4IEex4ljQthZbGvev2zfkGOV/gkQ+/y36QDPqFDhUpOLdB
+         md5nPBiW5qSbkYYISL+qf1hh07zuo6X8/peed5sHge+qh0ZCXqT0Gsbq6H8XADK0D7bD
+         fMMDbnIj1oxGmllKQ1upIjpqwH+xb7wfGNsfNDkH0gpv9Xyu2OutUCjKr65X0K4WwdqE
+         CZXCWg6A4TgTvbhOFy0467qt3gdO1easnHGL7bsnu8lVXhu+uocBJLLppPxb9ypvspSj
+         qVSmDLyaDopfP2csfVO8wu0dPb4eafmJiSajVISsX3RCpUFcx4eFL28gH5/ErN+0xSVY
+         eCpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ben8+4oiArxexQJyJIBwbQtQ9giuKq12emDFPOAB0/A=;
+        b=rh1hP3RiQR5IlWjBb4VMyjjFFpNQvlqueLvHzzrTgiJsLiDHUu+k7Xza9gcWEcdGkX
+         abfmjOJLv0lWziX+L1ISrSmWrXsOyynzkA2rgnsTR4fIPaFCe9JikBy8e02cjh6gbhML
+         Z+kZ7wtL8K0ihfaadxZde7Yl4GXZXlBiSyFwvzaF8R9pSY2Q7qgJ44mQRLR7+So/2Ufo
+         oidlsOPdtg4iKcrxtlvHp8x6xbejVlYhLQRz1T+jlSsO/8LwrrjQ99+Ae32hDdMeCpPg
+         lAeEycjSuwbLoHCLDN1ydkIE/9imC4WugGD90ciDna2yrAhrpAqn4PjFy4P+9x7aaFNf
+         Ya0Q==
+X-Gm-Message-State: AFqh2koCEdzSEN4o57VoyhAmWphJCLEyQZFuSztmM02x0DTZYS20+Bf1
+        QMP/Bg0d7u8ACZUS7B5s3jNZGg==
+X-Google-Smtp-Source: AMrXdXtAmfVtj1IoPnGmK4xqeGUXuvnkJ8kCHhPjHiGxwb3HU1LujrXhq0Ja4bqnsKuNo/EyORORyA==
+X-Received: by 2002:ac2:528f:0:b0:4b5:6504:a556 with SMTP id q15-20020ac2528f000000b004b56504a556mr7164960lfm.61.1672301172157;
+        Thu, 29 Dec 2022 00:06:12 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id d21-20020ac24c95000000b0049465afdd38sm2979222lfl.108.2022.12.29.00.06.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Dec 2022 00:06:11 -0800 (PST)
+Message-ID: <0180241f-4f10-f914-1288-371106c4fa1c@linaro.org>
+Date:   Thu, 29 Dec 2022 09:06:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH] dt-bindings: ufs: qcom: Add reg-names property for ICE
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221209-dt-binding-ufs-v1-0-8d502f0e18d5@fairphone.com>
+ <c4109766-22f1-7227-47bb-9273a027bb0c@linaro.org>
+ <CPDFHXBPSP76.5CWNQK4N1KGI@otso>
+ <5391e6e5-3773-a012-c396-b59b1f54ea51@linaro.org>
+ <CPDJZJHDL1XJ.2UY1U1E19CTUH@otso>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <CPDJZJHDL1XJ.2UY1U1E19CTUH@otso>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 07 Dec 2022 19:30:37 +0100, Luca Weiss wrote:
-> The following patches add a bunch of msm8953-based devices that have
-> been created in the msm8953-mainline[0] repository, which includes
-> Snapdragon 450 (SDM450), Snapdragon 625 (msm8953) and Snapdragon 632
-> (SDM632) devices.
-> The dts files are trimmed down to what is currently supported upstream,
-> as a way to also minimizing diff for further patches.
+On 28/12/2022 16:24, Luca Weiss wrote:
+> On Wed Dec 28, 2022 at 12:58 PM CET, Krzysztof Kozlowski wrote:
+>> On 28/12/2022 12:53, Luca Weiss wrote:
+>>> Hi Krzysztof,
+>>>
+>>> On Wed Dec 28, 2022 at 12:50 PM CET, Krzysztof Kozlowski wrote:
+>>>> On 09/12/2022 15:29, Luca Weiss wrote:
+>>>>> The code in ufs-qcom-ice.c needs the ICE reg to be named "ice". Add this
+>>>>> in the bindings so the existing dts can validate successfully.
+>>>>>
+>>>>> Also sm8450 is using ICE since commit 276ee34a40c1 ("arm64: dts: qcom:
+>>>>> sm8450: add Inline Crypto Engine registers and clock") so move the
+>>>>> compatible to the correct if.
+>>>>>
+>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>>> ---
+>>>>> (no cover subject)
+>>>>>
+>>>>> The only remaining validation issues I see is the following on sc8280xp-crd.dtb
+>>>>> and sa8540p-ride.dtb:
+>>>>>
+>>>>
+>>>> Any plans on fixing the patch (after testing it) and resending?
+>>>
+>>> I wasn't quite sure how to fix the comments, but re-reading them this
+>>> comment from you is how you expect it to be in v2?
+>>
+>> The patch fails testing, so I meant this.
+>>
+>>>
+>>>> Just add it to top-level with minItems: 1 and per variant customize:
+>>>> 1. maxItems: 1
+>>>> 2. minItems: 2 + required
+>>>
 > 
-> [...]
+> I tried a bit now but couldn't get it to work when using 'items' so that
+> we have the "std" and "ice" names in there.
+> 
+> Documentation/devicetree/bindings/ufs/qcom,ufs.yaml: allOf:2:then:properties:reg-names: 'oneOf' conditional failed, one must be fixed:
+>         [{'const': 'std'}, {'const': 'ice'}] is too long
+>         [{'const': 'std'}, {'const': 'ice'}] is too short
+>         False schema does not allow 2
+>         1 was expected
+>         hint: "minItems" is only needed if less than the "items" list length
+>         from schema $id: http://devicetree.org/meta-schemas/items.yaml#
+> 
+> Since I have 'minItems: 1' in top-level I seemingly cannot use 'items'
+> in the 'if' neither alone nor with 'minItems' and/or 'maxItems', getting
+> different errors when doing that.
 
-Applied, thanks!
+top-level cannot have only minItems:1.
 
-[2/9] arm64: dts: qcom: msm8953: Adjust reserved-memory nodes
-      commit: eca9ee35e895686d179964dc6f94e6c473d2a171
-[3/9] arm64: dts: qcom: sdm450: Add device tree for Motorola Moto G6
-      commit: eee5a89b4fe5615ba57fd8048102504aaa052065
-[4/9] arm64: dts: qcom: msm8953: Add device tree for Motorola G5 Plus
-      commit: 4ccd0dd6a3d2a98b11664992012af04cb0ce8f6c
-[5/9] arm64: dts: qcom: msm8953: Add device tree for Xiaomi Mi A2 Lite
-      commit: 38d779c26395df5f7f66bb5da7af6241180283e1
-[6/9] arm64: dts: qcom: msm8953: Add device tree for Xiaomi Redmi Note 4X
-      commit: c144005129b09141b292820d35f0094e54b12d6d
-[7/9] arm64: dts: qcom: msm8953: Add device tree for Xiaomi Mi A1
-      commit: cf152c05eb35afc9db3c9480ce17b27a703b2893
-[8/9] arm64: dts: qcom: msm8953: Add device tree for Xiaomi Redmi 5 Plus
-      commit: aa17e707e04a0446de5e40f74aac979582185559
-[9/9] arm64: dts: qcom: sdm632: Add device tree for Motorola G7 Power
-      commit: 3176c4d6b9beba4a554bebba6b19b56942705a28
+> 
+> Can I just put 'reg-names: true' top-level and then specify either items
+> for the ones that use ICE or for the others use the 'maxItems: 1'?
+> 
+> Or am I supposed to ignore 'items' completely but driver expects 'ice'
+> name so I'd rather include it.
+
+Use the syntax like:
+https://elixir.bootlin.com/linux/v5.19-rc6/source/Documentation/devicetree/bindings/clock/samsung,exynos7-clock.yaml#L57
+
 
 Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+Krzysztof
+
