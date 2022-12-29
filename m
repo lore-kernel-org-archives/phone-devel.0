@@ -2,149 +2,112 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C14CFC4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 08:06:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F58DC4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 08:42:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233118AbiL2IGR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Dec 2022 03:06:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34832 "EHLO
+        id S232753AbiL2ImH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Dec 2022 03:42:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233011AbiL2IGP (ORCPT
+        with ESMTP id S229535AbiL2ImF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Dec 2022 03:06:15 -0500
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C993FC12
-        for <phone-devel@vger.kernel.org>; Thu, 29 Dec 2022 00:06:13 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id f34so26534966lfv.10
-        for <phone-devel@vger.kernel.org>; Thu, 29 Dec 2022 00:06:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ben8+4oiArxexQJyJIBwbQtQ9giuKq12emDFPOAB0/A=;
-        b=jufpxaDQuVBA0SebIRrM4IEex4ljQthZbGvev2zfkGOV/gkQ+/y36QDPqFDhUpOLdB
-         md5nPBiW5qSbkYYISL+qf1hh07zuo6X8/peed5sHge+qh0ZCXqT0Gsbq6H8XADK0D7bD
-         fMMDbnIj1oxGmllKQ1upIjpqwH+xb7wfGNsfNDkH0gpv9Xyu2OutUCjKr65X0K4WwdqE
-         CZXCWg6A4TgTvbhOFy0467qt3gdO1easnHGL7bsnu8lVXhu+uocBJLLppPxb9ypvspSj
-         qVSmDLyaDopfP2csfVO8wu0dPb4eafmJiSajVISsX3RCpUFcx4eFL28gH5/ErN+0xSVY
-         eCpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ben8+4oiArxexQJyJIBwbQtQ9giuKq12emDFPOAB0/A=;
-        b=rh1hP3RiQR5IlWjBb4VMyjjFFpNQvlqueLvHzzrTgiJsLiDHUu+k7Xza9gcWEcdGkX
-         abfmjOJLv0lWziX+L1ISrSmWrXsOyynzkA2rgnsTR4fIPaFCe9JikBy8e02cjh6gbhML
-         Z+kZ7wtL8K0ihfaadxZde7Yl4GXZXlBiSyFwvzaF8R9pSY2Q7qgJ44mQRLR7+So/2Ufo
-         oidlsOPdtg4iKcrxtlvHp8x6xbejVlYhLQRz1T+jlSsO/8LwrrjQ99+Ae32hDdMeCpPg
-         lAeEycjSuwbLoHCLDN1ydkIE/9imC4WugGD90ciDna2yrAhrpAqn4PjFy4P+9x7aaFNf
-         Ya0Q==
-X-Gm-Message-State: AFqh2koCEdzSEN4o57VoyhAmWphJCLEyQZFuSztmM02x0DTZYS20+Bf1
-        QMP/Bg0d7u8ACZUS7B5s3jNZGg==
-X-Google-Smtp-Source: AMrXdXtAmfVtj1IoPnGmK4xqeGUXuvnkJ8kCHhPjHiGxwb3HU1LujrXhq0Ja4bqnsKuNo/EyORORyA==
-X-Received: by 2002:ac2:528f:0:b0:4b5:6504:a556 with SMTP id q15-20020ac2528f000000b004b56504a556mr7164960lfm.61.1672301172157;
-        Thu, 29 Dec 2022 00:06:12 -0800 (PST)
-Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
-        by smtp.gmail.com with ESMTPSA id d21-20020ac24c95000000b0049465afdd38sm2979222lfl.108.2022.12.29.00.06.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Dec 2022 00:06:11 -0800 (PST)
-Message-ID: <0180241f-4f10-f914-1288-371106c4fa1c@linaro.org>
-Date:   Thu, 29 Dec 2022 09:06:10 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH] dt-bindings: ufs: qcom: Add reg-names property for ICE
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Thu, 29 Dec 2022 03:42:05 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F15911004D;
+        Thu, 29 Dec 2022 00:42:04 -0800 (PST)
+Received: from g550jk.localnet (2a02-8388-6582-fe80-0000-0000-0000-0005.cable.dynamic.v6.surfer.at [IPv6:2a02:8388:6582:fe80::5])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id B7620CC38B;
+        Thu, 29 Dec 2022 08:42:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1672303323; bh=z74Wvw2dl/J6TN1vPrye61RN3quWMD3vkV0739va1Mk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=ppugLIFkeEkZ3D4fy3r7n+6r6SIVDcfslAWLHs8RwdKwYzwjUFMkefDrC78v4nBbN
+         D6pEU6RrZTh9eUHAJeqnUp2lpF0GtcmMsc/RKjyHXuqCJSVm8U1ICR5A+Wc2dEyxk6
+         WGADAKl7S02wwi6laqsDQ8cc1Z0DwKAR+JbjkqJs=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Matti =?ISO-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20221209-dt-binding-ufs-v1-0-8d502f0e18d5@fairphone.com>
- <c4109766-22f1-7227-47bb-9273a027bb0c@linaro.org>
- <CPDFHXBPSP76.5CWNQK4N1KGI@otso>
- <5391e6e5-3773-a012-c396-b59b1f54ea51@linaro.org>
- <CPDJZJHDL1XJ.2UY1U1E19CTUH@otso>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <CPDJZJHDL1XJ.2UY1U1E19CTUH@otso>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matti =?ISO-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>
+Subject: Re: [PATCH v2] ARM: dts: qcom: apq8026-samsung-matisse-wifi: Enable ADSP
+Date:   Thu, 29 Dec 2022 09:42:02 +0100
+Message-ID: <2660205.mvXUDI8C0e@g550jk>
+In-Reply-To: <20221218211957.118473-1-matti.lehtimaki@gmail.com>
+References: <20221218211957.118473-1-matti.lehtimaki@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 28/12/2022 16:24, Luca Weiss wrote:
-> On Wed Dec 28, 2022 at 12:58 PM CET, Krzysztof Kozlowski wrote:
->> On 28/12/2022 12:53, Luca Weiss wrote:
->>> Hi Krzysztof,
->>>
->>> On Wed Dec 28, 2022 at 12:50 PM CET, Krzysztof Kozlowski wrote:
->>>> On 09/12/2022 15:29, Luca Weiss wrote:
->>>>> The code in ufs-qcom-ice.c needs the ICE reg to be named "ice". Add this
->>>>> in the bindings so the existing dts can validate successfully.
->>>>>
->>>>> Also sm8450 is using ICE since commit 276ee34a40c1 ("arm64: dts: qcom:
->>>>> sm8450: add Inline Crypto Engine registers and clock") so move the
->>>>> compatible to the correct if.
->>>>>
->>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>>> ---
->>>>> (no cover subject)
->>>>>
->>>>> The only remaining validation issues I see is the following on sc8280xp-crd.dtb
->>>>> and sa8540p-ride.dtb:
->>>>>
->>>>
->>>> Any plans on fixing the patch (after testing it) and resending?
->>>
->>> I wasn't quite sure how to fix the comments, but re-reading them this
->>> comment from you is how you expect it to be in v2?
->>
->> The patch fails testing, so I meant this.
->>
->>>
->>>> Just add it to top-level with minItems: 1 and per variant customize:
->>>> 1. maxItems: 1
->>>> 2. minItems: 2 + required
->>>
-> 
-> I tried a bit now but couldn't get it to work when using 'items' so that
-> we have the "std" and "ice" names in there.
-> 
-> Documentation/devicetree/bindings/ufs/qcom,ufs.yaml: allOf:2:then:properties:reg-names: 'oneOf' conditional failed, one must be fixed:
->         [{'const': 'std'}, {'const': 'ice'}] is too long
->         [{'const': 'std'}, {'const': 'ice'}] is too short
->         False schema does not allow 2
->         1 was expected
->         hint: "minItems" is only needed if less than the "items" list length
->         from schema $id: http://devicetree.org/meta-schemas/items.yaml#
-> 
-> Since I have 'minItems: 1' in top-level I seemingly cannot use 'items'
-> in the 'if' neither alone nor with 'minItems' and/or 'maxItems', getting
-> different errors when doing that.
+Hi Matti,
 
-top-level cannot have only minItems:1.
+On Sonntag, 18. Dezember 2022 22:19:57 CET Matti Lehtim=E4ki wrote:
+> Configure the reserved memory for ADSP and enable it.
+> Delete nodes with reference to label.
+>=20
+> Signed-off-by: Matti Lehtim=E4ki <matti.lehtimaki@gmail.com>
 
-> 
-> Can I just put 'reg-names: true' top-level and then specify either items
-> for the ones that use ICE or for the others use the 'maxItems: 1'?
-> 
-> Or am I supposed to ignore 'items' completely but driver expects 'ice'
-> name so I'd rather include it.
+Reviewed-by: Luca Weiss <luca@z3ntu.xyz>
 
-Use the syntax like:
-https://elixir.bootlin.com/linux/v5.19-rc6/source/Documentation/devicetree/bindings/clock/samsung,exynos7-clock.yaml#L57
+> ---
+> Changes in v2:
+>   - Delete nodes with reference to label
+> ---
+>  .../arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
+> b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts index
+> 1c52337af560..15b9590ba07b 100644
+> --- a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
+> +++ b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
+> @@ -9,6 +9,9 @@
+>  #include "qcom-msm8226.dtsi"
+>  #include "qcom-pm8226.dtsi"
+>=20
+> +/delete-node/ &adsp_region;
+> +/delete-node/ &smem_region;
+> +
+>  / {
+>  	model =3D "Samsung Galaxy Tab 4 10.1";
+>  	compatible =3D "samsung,matisse-wifi", "qcom,apq8026";
+> @@ -133,7 +136,7 @@ wcnss@d200000 {
+>  			no-map;
+>  		};
+>=20
+> -		adsp@d900000 {
+> +		adsp_region: adsp@d900000 {
+>  			reg =3D <0x0d900000 0x1800000>;
+>  			no-map;
+>  		};
+> @@ -143,7 +146,6 @@ venus@f100000 {
+>  			no-map;
+>  		};
+>=20
+> -		/delete-node/ smem@3000000;
+>  		smem_region: smem@fa00000 {
+>  			reg =3D <0x0fa00000 0x100000>;
+>  			no-map;
+> @@ -169,6 +171,10 @@ rmtfs@fd80000 {
+>  	};
+>  };
+>=20
+> +&adsp {
+> +	status =3D "okay";
+> +};
+> +
+>  &blsp1_i2c2 {
+>  	status =3D "okay";
 
 
-Best regards,
-Krzysztof
+
 
