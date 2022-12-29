@@ -2,111 +2,106 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A5ACC4167B
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 17:29:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BDE0DC4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 17:56:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233830AbiL2R3Q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Dec 2022 12:29:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50750 "EHLO
+        id S233873AbiL2R4n (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Dec 2022 12:56:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233963AbiL2R21 (ORCPT
+        with ESMTP id S229615AbiL2R4m (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Dec 2022 12:28:27 -0500
-Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [5.144.164.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A798186FE;
-        Thu, 29 Dec 2022 09:25:54 -0800 (PST)
-Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Thu, 29 Dec 2022 12:56:42 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E77CEB;
+        Thu, 29 Dec 2022 09:56:42 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id D79511F9A9;
-        Thu, 29 Dec 2022 18:25:49 +0100 (CET)
-Date:   Thu, 29 Dec 2022 18:25:48 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Bjorn Andersson <andersson@kernel.org>,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        by sin.source.kernel.org (Postfix) with ESMTPS id 559C1CE16D5;
+        Thu, 29 Dec 2022 17:56:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06057C433D2;
+        Thu, 29 Dec 2022 17:56:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672336598;
+        bh=cf85jt1MlWRXvIqrhsyuTU+3cFRvZgDuk1IwYnTf4yg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gEb2/VGQ95sIxP5HswTIL1iIzkA5QbXkOaGdUxKzd8Ayn0NvuWlHYioPqxl7azStm
+         RKBkLARtgwFdw7B61j+Dcy+QH2REIyrfOhik2DnYwQ61CUvoUeIUH6niv6bc1W9wOm
+         Ta79/siSK1+Ccp4C6+bbaJqotjM6YqtFuxQxjUq9JetAJd0EXa6V2bCdLg5afrIB0i
+         j2VPCuWArS1VMY2hMWkFxgT0TGlXylyQCGj050JarDvwwt6Ucd7b4qYNTt52j7n88w
+         C+xRbmJuIOxxTmtTXtCejq/nMISV4yR+xFu0l23stY0CzwN9J6VQHLvPfrN7eliCsv
+         8nCHVbfUJgmdQ==
+Date:   Thu, 29 Dec 2022 17:57:15 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afd@ti.com, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Lux Aliaga <they@mint.lgbt>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] arm64: dts: qcom: sm6125: QUPs, SPI and Seine I2C
- buses
-Message-ID: <20221229172548.eddluubb7ljqwiqy@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Bjorn Andersson <andersson@kernel.org>, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Lux Aliaga <they@mint.lgbt>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221216233408.1283581-1-marijn.suijten@somainline.org>
- <20221229171301.7sjbyvqpn3qjwexu@builder.lan>
- <20221229172148.2hcmi7uypwlnxmhu@SoMainline.org>
+        Wesley Cheng <quic_wcheng@quicinc.com>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] regulator: dt-bindings: qcom,usb-vbus-regulator:
+ change node name
+Message-ID: <Y63U+7LnWhixrW6g@sirena.org.uk>
+References: <20221031173933.936147-1-luca@z3ntu.xyz>
+ <20221031173933.936147-2-luca@z3ntu.xyz>
+ <12119366.O9o76ZdvQC@g550jk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="Q6KRw7sgVNE8Q5bt"
 Content-Disposition: inline
-In-Reply-To: <20221229172148.2hcmi7uypwlnxmhu@SoMainline.org>
+In-Reply-To: <12119366.O9o76ZdvQC@g550jk>
+X-Cookie: Ego sum ens omnipotens.
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-12-29 18:21:55, Marijn Suijten wrote:
-> On 2022-12-29 11:13:01, Bjorn Andersson wrote:
-> > On Sat, Dec 17, 2022 at 12:34:05AM +0100, Marijn Suijten wrote:
-> > > Introduce Qualcomm Universal Peripheral support on SM6125 and define all
-> > > known SPI and I2C Serial Engines.  On Sony Seine PDX201 all I2C buses
-> > > with known-connected hardware are enabled for future hardware mapping,
-> > > together with the respective GPI DMA 0 and QUP 0.
-> > > 
-> > > Changes since v1:
-> > > - Un-downstream pinctrl mapping:
-> > >   - Remove nested mux {} / config {};
-> > >   - Remove useless comments;
-> > >   - Remove unreferenced pinctrl states;
-> > > - Use qup14 pinctrl function name instead of unknown qup_14;
-> > > - Reword commit message;
-> > > - Add iommus to QUP nodes now that this series depends on apps_smmu to
-> > >   be available;
-> > > - Reorder all properties to match other SoCs;
-> > > - Reorder/intersperse QUP nodes with GPI DMA nodes to maintain sorting
-> > >   by address;
-> > > - Reorder SPI nodes to fit in with I2C nodes, restoring sorting by
-> > >   address too;
-> > > - Use QCOM_GPI_* constants;
-> > > - Adhere to 3 instead of 5 dma cells for gpi_dma.
-> > > 
-> > > v1: https://lore.kernel.org/all/20221001185628.494884-1-martin.botka@somainline.org/T/#u
-> > > 
-> > > Depends on:
-> > > - SM6125 APPS SMMU: https://lore.kernel.org/linux-arm-msm/20221216215819.1164973-1-marijn.suijten@somainline.org/T/#u
-> > > - SM6125 GPI DMA: https://lore.kernel.org/linux-arm-msm/20221216231528.1268447-1-marijn.suijten@somainline.org/T/#u
-> > 
-> > Please, in the future, when you have dependencies between your dts
-> > patches, send them together so I don't need to go on a treasure hunt in
-> > my mailbox to figure out which order to apply things...
-> 
-> I was quite confident separating out "unrelated" patches in separate
-> series was preferred, especially when dependencies are marked explicitly
-> like this... what changed?
 
-Perhaps because both dependencies have been resent, and the links for
-APPS SMMU v4 and GPI DMA v2 have become obsolete in favour of:
+--Q6KRw7sgVNE8Q5bt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-- SM6125 APPS SMMU v5: https://lore.kernel.org/linux-arm-msm/20221222193254.126925-1-marijn.suijten@somainline.org/T/#u
-- SM6125 GPI DMA v3: https://lore.kernel.org/linux-arm-msm/20221222194600.139854-1-marijn.suijten@somainline.org/T/#u
+On Wed, Dec 28, 2022 at 10:30:47PM +0100, Luca Weiss wrote:
+> On Montag, 31. Oktober 2022 18:39:32 CET Luca Weiss wrote:
+> > usb-vbus-regulator is a better generic node name than dcdc to change the
+> > example to match.
+> >=20
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+>=20
+> Bump? Can this patch be picked up please?
 
-- Marijn
+Please don't send content free pings and please allow a reasonable time
+for review.  People get busy, go on holiday, attend conferences and so=20
+on so unless there is some reason for urgency (like critical bug fixes)
+please allow at least a couple of weeks for review.  If there have been
+review comments then people may be waiting for those to be addressed.
+
+Sending content free pings adds to the mail volume (if they are seen at
+all) which is often the problem and since they can't be reviewed
+directly if something has gone wrong you'll have to resend the patches
+anyway, so sending again is generally a better approach though there are
+some other maintainers who like them - if in doubt look at how patches
+for the subsystem are normally handled.
+
+--Q6KRw7sgVNE8Q5bt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmOt1PcACgkQJNaLcl1U
+h9BtCwf9GJfJ37h2GiHuJXTeZLNauW+2DX4XjqQFrMBDtxOXwa86JVe3KUfxbk0F
+4rv4isDXmrrrCvkR0Rxi0b1WR5udDAvONSyKZFoDYM41dedmpymvPKS8aBnVZ8PH
+aV4U0HBMFYUu/VOk/r0709cgGJlrnjN8n3pwENWbrhwg2IQaU8yeVlNAk5rM9nb7
+hGPLcLc9opFGtj45cjbNqPOMXTtZp8a7PUV5Vc/IJWrTx6LQpV3p10qfXBGSArJS
+IjbGyGyouItG8HmBq/RCavk//QgIB8Qvoqoc8z05YQIP59xPrWfYtHmG6U1EpCIM
+HNARDZ98LjE8sIjshb6OBSF2cLhEIA==
+=CuZC
+-----END PGP SIGNATURE-----
+
+--Q6KRw7sgVNE8Q5bt--
