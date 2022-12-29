@@ -2,78 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01CEFC4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 19:16:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EBBEC3DA79
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 22:50:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233970AbiL2TQP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Dec 2022 14:16:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38194 "EHLO
+        id S229794AbiL2Wul (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Dec 2022 17:50:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233335AbiL2TQO (ORCPT
+        with ESMTP id S233980AbiL2Wud (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Dec 2022 14:16:14 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB3F026CD;
-        Thu, 29 Dec 2022 11:16:12 -0800 (PST)
-Received: from g550jk.. (2a02-8388-6582-fe80-0000-0000-0000-0005.cable.dynamic.v6.surfer.at [IPv6:2a02:8388:6582:fe80::5])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 9FC4FCB3E2;
-        Thu, 29 Dec 2022 19:16:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1672341371; bh=BwmNfrnC9I+GiGR/3bg5Bb/Y5dTALbbsYRPeCuZ84Kc=;
-        h=From:To:Cc:Subject:Date;
-        b=EZ5eONgQx+0jLmVftvyyO310FabLq5KR5Rjm7lzfKvUyG+nG+WuFt5kP0lVQUQqY3
-         noOLlzRSjRBHPfskW0gtiS+XYHOE/qOfomuQLK/I4LvEHostYkKZyR0cTvw7rCzINF
-         dVuzoGv0/v4dz1JD6LxseJyyCZraYBBJe4Bm3kWc=
-From:   luca@z3ntu.xyz
-To:     linux-arm-msm@vger.kernel.org
+        Thu, 29 Dec 2022 17:50:33 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D65B5F42;
+        Thu, 29 Dec 2022 14:50:32 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id F2ADBB81A87;
+        Thu, 29 Dec 2022 22:50:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC50C433EF;
+        Thu, 29 Dec 2022 22:50:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672354229;
+        bh=+mS+jxc0T3aY1DE/pg2vRdCUe9wchN2hSQ75BZQ4TEo=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=D8A/Pol2RvrmSaIB1zs3b9wd4y1O3xd8MHeln1BubcTmpOVndHaJuVFRm0ibF5/WI
+         hOwWkvj5E0cPK69rK9lHgHSdIFumC1ZIDMmngoXWaPTISX7W4capNOJKLRn0hKM7DB
+         hJwUIe1kCgv/NxGTh73AM9Uw08/xO62CBcb1uIh7sKYe3hjRXXUwMmxdKSdK2vHjmt
+         Wm3MgD3x8gb5ohY1mEI9JDNDx1Fvz4udBTOTRg1frvQZ8yWDryFxwAFyojn3g0QZWs
+         W8So/q8bLcwAW263HBKx6/ZC2GA7sLWEUKmLzNMIIPTxeKXiSdq7/COgCnbmQ4vYmx
+         RVaZ4Gs6w+QKQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     linux-arm-msm@vger.kernel.org, luca@z3ntu.xyz
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Rob Herring <robh@kernel.org>,
-        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh@kernel.org>, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Wesley Cheng <quic_wcheng@quicinc.com>,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: [PATCH v3] regulator: dt-bindings: qcom,usb-vbus-regulator: change node name
-Date:   Thu, 29 Dec 2022 20:15:43 +0100
-Message-Id: <20221229191542.123367-1-luca@z3ntu.xyz>
-X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20221229191542.123367-1-luca@z3ntu.xyz>
+References: <20221229191542.123367-1-luca@z3ntu.xyz>
+Subject: Re: [PATCH v3] regulator: dt-bindings: qcom,usb-vbus-regulator:
+ change node name
+Message-Id: <167235422463.130576.13068228295548630470.b4-ty@kernel.org>
+Date:   Thu, 29 Dec 2022 22:50:24 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12-dev-69c4d
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Luca Weiss <luca@z3ntu.xyz>
+On Thu, 29 Dec 2022 20:15:43 +0100, luca@z3ntu.xyz wrote:
+> usb-vbus-regulator is a better generic node name than dcdc to change the
+> example to match.
+> 
+> 
 
-usb-vbus-regulator is a better generic node name than dcdc to change the
-example to match.
+Applied to
 
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
-Changes in v3:
-- No change, resend since all other patches from series have been merged
+   broonie/regulator.git for-next
 
- .../devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml  | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks!
 
-diff --git a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
-index dbe78cd4adba..b1cff3adb21b 100644
---- a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
-+++ b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
-@@ -33,7 +33,7 @@ examples:
-      pm8150b {
-         #address-cells = <1>;
-         #size-cells = <0>;
--        pm8150b_vbus: dcdc@1100 {
-+        pm8150b_vbus: usb-vbus-regulator@1100 {
-             compatible = "qcom,pm8150b-vbus-reg";
-             reg = <0x1100>;
-         };
--- 
-2.39.0
+[1/1] regulator: dt-bindings: qcom,usb-vbus-regulator: change node name
+      commit: d13da2f4c81602fc22cdf2cb13b15283b260e0d5
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
