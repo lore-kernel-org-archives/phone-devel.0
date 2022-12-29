@@ -2,112 +2,113 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F58DC4332F
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 08:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BFEEC4332F
+	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 17:13:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232753AbiL2ImH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Dec 2022 03:42:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49028 "EHLO
+        id S233672AbiL2RNO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 29 Dec 2022 12:13:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229535AbiL2ImF (ORCPT
+        with ESMTP id S233704AbiL2RNG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Dec 2022 03:42:05 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F15911004D;
-        Thu, 29 Dec 2022 00:42:04 -0800 (PST)
-Received: from g550jk.localnet (2a02-8388-6582-fe80-0000-0000-0000-0005.cable.dynamic.v6.surfer.at [IPv6:2a02:8388:6582:fe80::5])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id B7620CC38B;
-        Thu, 29 Dec 2022 08:42:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1672303323; bh=z74Wvw2dl/J6TN1vPrye61RN3quWMD3vkV0739va1Mk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=ppugLIFkeEkZ3D4fy3r7n+6r6SIVDcfslAWLHs8RwdKwYzwjUFMkefDrC78v4nBbN
-         D6pEU6RrZTh9eUHAJeqnUp2lpF0GtcmMsc/RKjyHXuqCJSVm8U1ICR5A+Wc2dEyxk6
-         WGADAKl7S02wwi6laqsDQ8cc1Z0DwKAR+JbjkqJs=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Matti =?ISO-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Thu, 29 Dec 2022 12:13:06 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9270013FBB;
+        Thu, 29 Dec 2022 09:13:05 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D2ABF61337;
+        Thu, 29 Dec 2022 17:13:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3809BC433EF;
+        Thu, 29 Dec 2022 17:13:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1672333984;
+        bh=QDYaBGUiKiWlnfyJfkUdPRWV+eylE86a9UGNgjXpeOk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Zkkc6JBdtvNTzozF2B1x7GI7iJvu60LDG5RE0A0aTF0xPIelMQbETyqNwjC/kV3NS
+         LMLmPVn5lMEz8WLWzAn5tMCw/GRTYiBSD03Eh+4DYh6XOSaXajHZ2LOlJBLP3Vq07w
+         zJ1vvR3MFm6PyeEXnbrIp7Hass8NK8OHbhRA7K06BknCxlhcHeigqT2C0cbc3o7Gkg
+         /Pg7qhtAUxgb5xHfbOpPqJjTVaATfxcx6ixbIYHY7S03msgwxaWzg0vZ0KnW48S+Xl
+         JxQBT1LAzDiocPC5HP2gK2LKsBytAGUyU9dBwUeRyg0BvmiYgmZ/bZRv5NqkkhBBI8
+         EsOXSeOTcLc4A==
+Date:   Thu, 29 Dec 2022 11:13:01 -0600
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Lux Aliaga <they@mint.lgbt>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matti =?ISO-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>
-Subject: Re: [PATCH v2] ARM: dts: qcom: apq8026-samsung-matisse-wifi: Enable ADSP
-Date:   Thu, 29 Dec 2022 09:42:02 +0100
-Message-ID: <2660205.mvXUDI8C0e@g550jk>
-In-Reply-To: <20221218211957.118473-1-matti.lehtimaki@gmail.com>
-References: <20221218211957.118473-1-matti.lehtimaki@gmail.com>
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] arm64: dts: qcom: sm6125: QUPs, SPI and Seine I2C
+ buses
+Message-ID: <20221229171301.7sjbyvqpn3qjwexu@builder.lan>
+References: <20221216233408.1283581-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221216233408.1283581-1-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Matti,
+On Sat, Dec 17, 2022 at 12:34:05AM +0100, Marijn Suijten wrote:
+> Introduce Qualcomm Universal Peripheral support on SM6125 and define all
+> known SPI and I2C Serial Engines.  On Sony Seine PDX201 all I2C buses
+> with known-connected hardware are enabled for future hardware mapping,
+> together with the respective GPI DMA 0 and QUP 0.
+> 
+> Changes since v1:
+> - Un-downstream pinctrl mapping:
+>   - Remove nested mux {} / config {};
+>   - Remove useless comments;
+>   - Remove unreferenced pinctrl states;
+> - Use qup14 pinctrl function name instead of unknown qup_14;
+> - Reword commit message;
+> - Add iommus to QUP nodes now that this series depends on apps_smmu to
+>   be available;
+> - Reorder all properties to match other SoCs;
+> - Reorder/intersperse QUP nodes with GPI DMA nodes to maintain sorting
+>   by address;
+> - Reorder SPI nodes to fit in with I2C nodes, restoring sorting by
+>   address too;
+> - Use QCOM_GPI_* constants;
+> - Adhere to 3 instead of 5 dma cells for gpi_dma.
+> 
+> v1: https://lore.kernel.org/all/20221001185628.494884-1-martin.botka@somainline.org/T/#u
+> 
+> Depends on:
+> - SM6125 APPS SMMU: https://lore.kernel.org/linux-arm-msm/20221216215819.1164973-1-marijn.suijten@somainline.org/T/#u
+> - SM6125 GPI DMA: https://lore.kernel.org/linux-arm-msm/20221216231528.1268447-1-marijn.suijten@somainline.org/T/#u
 
-On Sonntag, 18. Dezember 2022 22:19:57 CET Matti Lehtim=E4ki wrote:
-> Configure the reserved memory for ADSP and enable it.
-> Delete nodes with reference to label.
->=20
-> Signed-off-by: Matti Lehtim=E4ki <matti.lehtimaki@gmail.com>
+Please, in the future, when you have dependencies between your dts
+patches, send them together so I don't need to go on a treasure hunt in
+my mailbox to figure out which order to apply things...
 
-Reviewed-by: Luca Weiss <luca@z3ntu.xyz>
+Regards,
+Bjorn
 
-> ---
-> Changes in v2:
->   - Delete nodes with reference to label
-> ---
->  .../arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
-> b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts index
-> 1c52337af560..15b9590ba07b 100644
-> --- a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
-> +++ b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
-> @@ -9,6 +9,9 @@
->  #include "qcom-msm8226.dtsi"
->  #include "qcom-pm8226.dtsi"
->=20
-> +/delete-node/ &adsp_region;
-> +/delete-node/ &smem_region;
-> +
->  / {
->  	model =3D "Samsung Galaxy Tab 4 10.1";
->  	compatible =3D "samsung,matisse-wifi", "qcom,apq8026";
-> @@ -133,7 +136,7 @@ wcnss@d200000 {
->  			no-map;
->  		};
->=20
-> -		adsp@d900000 {
-> +		adsp_region: adsp@d900000 {
->  			reg =3D <0x0d900000 0x1800000>;
->  			no-map;
->  		};
-> @@ -143,7 +146,6 @@ venus@f100000 {
->  			no-map;
->  		};
->=20
-> -		/delete-node/ smem@3000000;
->  		smem_region: smem@fa00000 {
->  			reg =3D <0x0fa00000 0x100000>;
->  			no-map;
-> @@ -169,6 +171,10 @@ rmtfs@fd80000 {
->  	};
->  };
->=20
-> +&adsp {
-> +	status =3D "okay";
-> +};
-> +
->  &blsp1_i2c2 {
->  	status =3D "okay";
-
-
-
-
+> 
+> Marijn Suijten (2):
+>   arm64: dts: qcom: sm6125: Add QUPs with SPI and I2C Serial Engines
+>   arm64: dts: qcom: sm6125-seine: Enable GPI DMA 0, QUP 0 and I2C SEs
+> 
+> Martin Botka (1):
+>   arm64: dts: qcom: sm6125: Add pin configs for QUP SPI/I2C Serial
+>     Engines
+> 
+>  .../qcom/sm6125-sony-xperia-seine-pdx201.dts  |  29 +
+>  arch/arm64/boot/dts/qcom/sm6125.dtsi          | 522 ++++++++++++++++++
+>  2 files changed, 551 insertions(+)
+> 
+> --
+> 2.39.0
+> 
