@@ -2,91 +2,149 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EBBEC3DA79
-	for <phone-devel@archiver.kernel.org>; Thu, 29 Dec 2022 22:50:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A710C46467
+	for <phone-devel@archiver.kernel.org>; Fri, 30 Dec 2022 07:44:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbiL2Wul (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 29 Dec 2022 17:50:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59786 "EHLO
+        id S234534AbiL3Hnf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 30 Dec 2022 02:43:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233980AbiL2Wud (ORCPT
+        with ESMTP id S234754AbiL3Hmu (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 29 Dec 2022 17:50:33 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D65B5F42;
-        Thu, 29 Dec 2022 14:50:32 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F2ADBB81A87;
-        Thu, 29 Dec 2022 22:50:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC50C433EF;
-        Thu, 29 Dec 2022 22:50:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672354229;
-        bh=+mS+jxc0T3aY1DE/pg2vRdCUe9wchN2hSQ75BZQ4TEo=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=D8A/Pol2RvrmSaIB1zs3b9wd4y1O3xd8MHeln1BubcTmpOVndHaJuVFRm0ibF5/WI
-         hOwWkvj5E0cPK69rK9lHgHSdIFumC1ZIDMmngoXWaPTISX7W4capNOJKLRn0hKM7DB
-         hJwUIe1kCgv/NxGTh73AM9Uw08/xO62CBcb1uIh7sKYe3hjRXXUwMmxdKSdK2vHjmt
-         Wm3MgD3x8gb5ohY1mEI9JDNDx1Fvz4udBTOTRg1frvQZ8yWDryFxwAFyojn3g0QZWs
-         W8So/q8bLcwAW263HBKx6/ZC2GA7sLWEUKmLzNMIIPTxeKXiSdq7/COgCnbmQ4vYmx
-         RVaZ4Gs6w+QKQ==
-From:   Mark Brown <broonie@kernel.org>
-To:     linux-arm-msm@vger.kernel.org, luca@z3ntu.xyz
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rob Herring <robh@kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Wesley Cheng <quic_wcheng@quicinc.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20221229191542.123367-1-luca@z3ntu.xyz>
-References: <20221229191542.123367-1-luca@z3ntu.xyz>
-Subject: Re: [PATCH v3] regulator: dt-bindings: qcom,usb-vbus-regulator:
- change node name
-Message-Id: <167235422463.130576.13068228295548630470.b4-ty@kernel.org>
-Date:   Thu, 29 Dec 2022 22:50:24 +0000
+        Fri, 30 Dec 2022 02:42:50 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2543D1A389
+        for <phone-devel@vger.kernel.org>; Thu, 29 Dec 2022 23:42:31 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id n3so18494139wrc.5
+        for <phone-devel@vger.kernel.org>; Thu, 29 Dec 2022 23:42:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Vm3xbs/GyRNJ6DBbaHm+OuOgD7iBzBULuO7wncj0ttk=;
+        b=YJ3xv/XPA73EvkaW1lBKOVggaYFcs84tPHS+DB5p6ao+VfYOKYLZycW4L+J4AXPXNo
+         hHMgM7Nyc5iQkkJro4aqTvmK1IMYyFyC1Tsqi+lKUVKxmMHBFDWRhe4mugp8+wk1rL34
+         M+ybcXraUP5kFSsAsFmenhVcK70hMCnz2882Ccf0FfUO9rQp0Uwk8bN8nICJjB6HpWp+
+         89ftsz37OPQsnOrW054W+3mfT3Vj7Jqxhrv69cPmVyEeIPWRUcWubxNIeXuBE5FE8jPM
+         kYUa2SitK92OTWyVdctlAtDPk+htFO4PdgJVD6vJE+K1rTn+CuvyX5kRnXcYdPzEQzPG
+         lRgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Vm3xbs/GyRNJ6DBbaHm+OuOgD7iBzBULuO7wncj0ttk=;
+        b=qcDPznEp54zJRSZf1Rt9i5RxDV3dX1w5vtB5Wd5RlapVHQXC7ZRzqcIAQZqrgw2HMq
+         S+5XIp/ywCpDSxGcpkMppTnP04yW7SAqyq4rZHm9TE5wwIacxFHWjecKlNxcVvEogZ+7
+         zeZL1GYNeOTwJ8xYxhShWEKdGAs0GN9s517J3h+1x1PbXKQeC+wuLyoT62GdlAzLBVGO
+         ChOnoJPmDLxCwtoz2xHTkrs/iQvHTt1EQjSPX1R0Ks0rfA0w5WmQk7ilFzfnf1wjr4Dn
+         xGjpYwZYrAAMUNiy7GYlqJiUTeuSJOvTwKnLGPYkLBgGs/6t2C8sjoOKSJpcfc/cSN7E
+         QFBQ==
+X-Gm-Message-State: AFqh2koE83JjjMDSzEuldP43+7wz8U71o9WAd4JILDZ2Mu66NuHVKtiS
+        4ewQbpez3HCVp2tH7dymTOvVCg==
+X-Google-Smtp-Source: AMrXdXt6z1uMHoe7utI/pUhm++yBQy6DLzGRR17VY7G/5v6NkL3RnZ6C3wj1ZihItZ3ZB4PCHTMS1A==
+X-Received: by 2002:a5d:6ac1:0:b0:284:2216:c23e with SMTP id u1-20020a5d6ac1000000b002842216c23emr6917966wrw.44.1672386149693;
+        Thu, 29 Dec 2022 23:42:29 -0800 (PST)
+Received: from [192.168.0.28] (2a02-8388-6582-fe80-0000-0000-0000-0007.cable.dynamic.v6.surfer.at. [2a02:8388:6582:fe80::7])
+        by smtp.gmail.com with ESMTPSA id a6-20020adfed06000000b0028e8693bb75sm1887655wro.63.2022.12.29.23.42.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Dec 2022 23:42:29 -0800 (PST)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Date:   Fri, 30 Dec 2022 08:42:07 +0100
+Subject: [PATCH v2 3/3] dt-bindings: ufs: qcom: Fix sm8450 bindings
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12-dev-69c4d
+Message-Id: <20221209-dt-binding-ufs-v2-3-dc7a04699579@fairphone.com>
+References: <20221209-dt-binding-ufs-v2-0-dc7a04699579@fairphone.com>
+In-Reply-To: <20221209-dt-binding-ufs-v2-0-dc7a04699579@fairphone.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Iskren Chernev <me@iskren.info>
+Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.11.0
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 29 Dec 2022 20:15:43 +0100, luca@z3ntu.xyz wrote:
-> usb-vbus-regulator is a better generic node name than dcdc to change the
-> example to match.
-> 
-> 
+SM8450 actually supports ICE (Inline Crypto Engine) so adjust the
+bindings and the example to match.
 
-Applied to
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-   broonie/regulator.git for-next
+diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+index a8d896e1617b..2f73a84fcf41 100644
+--- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
++++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+@@ -107,7 +107,6 @@ allOf:
+               - qcom,sc8280xp-ufshc
+               - qcom,sm8250-ufshc
+               - qcom,sm8350-ufshc
+-              - qcom,sm8450-ufshc
+     then:
+       properties:
+         clocks:
+@@ -137,6 +136,7 @@ allOf:
+               - qcom,sdm845-ufshc
+               - qcom,sm6350-ufshc
+               - qcom,sm8150-ufshc
++              - qcom,sm8450-ufshc
+     then:
+       properties:
+         clocks:
+@@ -243,7 +243,9 @@ examples:
+         ufs@1d84000 {
+             compatible = "qcom,sm8450-ufshc", "qcom,ufshc",
+                          "jedec,ufs-2.0";
+-            reg = <0 0x01d84000 0 0x3000>;
++            reg = <0 0x01d84000 0 0x3000>,
++                  <0 0x01d88000 0 0x8000>;
++            reg-names = "std", "ice";
+             interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
+             phys = <&ufs_mem_phy_lanes>;
+             phy-names = "ufsphy";
+@@ -271,7 +273,8 @@ examples:
+                           "ref_clk",
+                           "tx_lane0_sync_clk",
+                           "rx_lane0_sync_clk",
+-                          "rx_lane1_sync_clk";
++                          "rx_lane1_sync_clk",
++                          "ice_core_clk";
+             clocks = <&gcc GCC_UFS_PHY_AXI_CLK>,
+                      <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
+                      <&gcc GCC_UFS_PHY_AHB_CLK>,
+@@ -279,7 +282,8 @@ examples:
+                      <&rpmhcc RPMH_CXO_CLK>,
+                      <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
+                      <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
+-                     <&gcc GCC_UFS_PHY_RX_SYMBOL_1_CLK>;
++                     <&gcc GCC_UFS_PHY_RX_SYMBOL_1_CLK>,
++                     <&gcc GCC_UFS_PHY_ICE_CORE_CLK>;
+             freq-table-hz = <75000000 300000000>,
+                             <0 0>,
+                             <0 0>,
+@@ -287,6 +291,7 @@ examples:
+                             <75000000 300000000>,
+                             <0 0>,
+                             <0 0>,
+-                            <0 0>;
++                            <0 0>,
++                            <75000000 300000000>;
+         };
+     };
 
-Thanks!
-
-[1/1] regulator: dt-bindings: qcom,usb-vbus-regulator: change node name
-      commit: d13da2f4c81602fc22cdf2cb13b15283b260e0d5
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+-- 
+2.39.0
