@@ -2,104 +2,92 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70689C5479D
-	for <phone-devel@archiver.kernel.org>; Fri, 30 Dec 2022 16:34:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A288C4167B
+	for <phone-devel@archiver.kernel.org>; Fri, 30 Dec 2022 17:56:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235048AbiL3Qeg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 30 Dec 2022 11:34:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45808 "EHLO
+        id S229671AbiL3R43 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 30 Dec 2022 12:56:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229967AbiL3Qef (ORCPT
+        with ESMTP id S229456AbiL3R43 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 30 Dec 2022 11:34:35 -0500
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E31DBFDF;
-        Fri, 30 Dec 2022 08:34:33 -0800 (PST)
-Received: by mail-il1-f180.google.com with SMTP id o8so11531934ilq.6;
-        Fri, 30 Dec 2022 08:34:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aIAHarDIoUwGLglqR9Cq1cAuIikz32MrjOcIZVaihrc=;
-        b=V6AZ5ocKh0eNnT3Qd9nfa0lh3a3HmgoLG4WUSEd2LF4Y+9Msz6ylO9qnAx+XiHSVH1
-         Wmy/rLGuqGn8IV0abi7m+3DgrD/XXtJ/WEy1gtlgrG87MxnihZf2i5Pkw14O/46iz3cT
-         xFiKQroZlN2joqGC2tJxhzsZjewGeYH05LbJoGOb5HeZ94YxRqQ0KzAeCdKDDB0AnAv0
-         SOo+lN1gpljIfsKJXnQdb7Bvz5wq3+XN4SBL67yf6Bz/JXih2X8TQ29tPba52omHySbI
-         EWBeMd0EFMFOtR77WriprNdSg8yuaJrYE3lVF24nplYcMFKk9JNXw/FS/adf2Tlo3CXy
-         Y4WA==
-X-Gm-Message-State: AFqh2kp6PfLJ25X7Y+jKcB19kyR8eLRBNQ2Y2+4mnrSsr7o6XU7bvdhn
-        mQOOA/QCuQc5ciwJ0XRo/Q==
-X-Google-Smtp-Source: AMrXdXv29Iz5nqn62So3TGHNqf5f780laIw1LKCUEjLN91zFX93RB1b6KXQjmbZTq1l6jHQbsWKKpQ==
-X-Received: by 2002:a92:bf0c:0:b0:30c:3c0:7a56 with SMTP id z12-20020a92bf0c000000b0030c03c07a56mr10099325ilh.5.1672418073087;
-        Fri, 30 Dec 2022 08:34:33 -0800 (PST)
-Received: from robh_at_kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id u4-20020a02cb84000000b003762308fe54sm6928229jap.93.2022.12.30.08.34.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Dec 2022 08:34:32 -0800 (PST)
-Received: (nullmailer pid 1935055 invoked by uid 1000);
-        Fri, 30 Dec 2022 16:34:28 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        linux-scsi@vger.kernel.org, Alim Akhtar <alim.akhtar@samsung.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        phone-devel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        Fri, 30 Dec 2022 12:56:29 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1739BE1B;
+        Fri, 30 Dec 2022 09:56:27 -0800 (PST)
+Received: from g550jk.localnet (2a02-8388-6582-fe80-0000-0000-0000-0005.cable.dynamic.v6.surfer.at [IPv6:2a02:8388:6582:fe80::5])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id A8F7ECA59D;
+        Fri, 30 Dec 2022 17:56:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1672422986; bh=9SMJto/BbTzXNOAp7b3wav53yOz7csIc23s0OeluJrY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=boxv0jwrk7qJI2n/2Jy8o2f/Cn625a6JYc+epwjAOLmqEGhmLoEGRDm0HUiL2IrDg
+         JsHmGheKyUgGM5I5BEangD0dVHym0bjVZgtbGL0rmjGKcaJ3+kdN+7xboIStw9Ssqo
+         S7pD/dLisvEb61oCRte/ht/LowiJs3YRwwQiVAPY=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Rob Herring <robh@kernel.org>, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
-        Andy Gross <agross@kernel.org>, linux-kernel@vger.kernel.org,
-        Iskren Chernev <me@iskren.info>
-In-Reply-To: <20221209-dt-binding-ufs-v2-3-dc7a04699579@fairphone.com>
-References: <20221209-dt-binding-ufs-v2-0-dc7a04699579@fairphone.com>
- <20221209-dt-binding-ufs-v2-3-dc7a04699579@fairphone.com>
-Message-Id: <167241769341.1925758.17856681634949446114.robh@kernel.org>
-Subject: Re: [PATCH v2 3/3] dt-bindings: ufs: qcom: Fix sm8450 bindings
-Date:   Fri, 30 Dec 2022 10:34:28 -0600
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Wesley Cheng <quic_wcheng@quicinc.com>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3] regulator: dt-bindings: qcom,usb-vbus-regulator: change node
+ name
+Date:   Fri, 30 Dec 2022 18:56:24 +0100
+Message-ID: <4449469.LvFx2qVVIh@g550jk>
+In-Reply-To: <167235422463.130576.13068228295548630470.b4-ty@kernel.org>
+References: <20221229191542.123367-1-luca@z3ntu.xyz>
+ <167235422463.130576.13068228295548630470.b4-ty@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-On Fri, 30 Dec 2022 08:42:07 +0100, Luca Weiss wrote:
-> SM8450 actually supports ICE (Inline Crypto Engine) so adjust the
-> bindings and the example to match.
+On Donnerstag, 29. Dezember 2022 23:50:24 CET Mark Brown wrote:
+> On Thu, 29 Dec 2022 20:15:43 +0100, luca@z3ntu.xyz wrote:
+> > usb-vbus-regulator is a better generic node name than dcdc to change the
+> > example to match.
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 15 ++++++++++-----
->  1 file changed, 10 insertions(+), 5 deletions(-)
+> Applied to
+> 
+>    broonie/regulator.git for-next
+> 
+> Thanks!
+> 
+> [1/1] regulator: dt-bindings: qcom,usb-vbus-regulator: change node name
+>       commit: d13da2f4c81602fc22cdf2cb13b15283b260e0d5
 > 
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Thank you and sorry about the mess on the v2.
 
-yamllint warnings/errors:
+Regards
+Luca
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/ufs/qcom,ufs.example.dtb: ufs@1d84000: Unevaluated properties are not allowed ('reg-names' was unexpected)
-	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+> All being well this means that it will be integrated into the linux-next
+> tree (usually sometime in the next 24 hours) and sent to Linus during
+> the next merge window (or sooner if it is a bug fix), however if
+> problems are discovered then the patch may be dropped or reverted.
+> 
+> You may get further e-mails resulting from automated or manual testing
+> and review of the tree, please engage with people reporting problems and
+> send followup patches addressing any issues that are reported if needed.
+> 
+> If any updates are required or you are submitting further changes they
+> should be sent as incremental updates against current git, existing
+> patches will not be replaced.
+> 
+> Please add any relevant lists and maintainers to the CCs when replying
+> to this mail.
+> 
+> Thanks,
+> Mark
 
-doc reference errors (make refcheckdocs):
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20221209-dt-binding-ufs-v2-3-dc7a04699579@fairphone.com
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
 
