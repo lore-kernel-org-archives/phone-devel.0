@@ -2,61 +2,108 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DF20C46467
-	for <phone-devel@archiver.kernel.org>; Sat, 31 Dec 2022 12:01:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1568AC4167B
+	for <phone-devel@archiver.kernel.org>; Sat, 31 Dec 2022 16:43:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235391AbiLaMBv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 31 Dec 2022 07:01:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54470 "EHLO
+        id S231481AbiLaQnV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 31 Dec 2022 11:43:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231994AbiLaMBu (ORCPT
+        with ESMTP id S229450AbiLaQnU (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 31 Dec 2022 07:01:50 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D68DF0C;
-        Sat, 31 Dec 2022 04:01:49 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 279CF60AF7;
-        Sat, 31 Dec 2022 12:01:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF360C433D2;
-        Sat, 31 Dec 2022 12:01:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672488108;
-        bh=qxHjy+zKK9wtZ6F9aaLA1vU4VqtvVsM+K7aYfjSbsd0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Fl+Xqq+za4DdxLdF/ED08Y8aaYK7tnfVaWeEiqwkqRRh/nezleEiJEolg4jhIFXhY
-         49NVpLVqQlMG/JLwrPmYaDeznGneb+okUL/HVMRxhJetN+5AcvrtcrKPvc9lE6GLu4
-         QI4JsW5qrqBgLWgTG6Z9rqsaYutwMr0CbjOnKdO3UN6TMDmizwm/8tLgZXfEOfDfaj
-         mcm9uIfkAy9CEpoMHPc2B3K4P6+/COcolgKKRTjErMLSZJGr97Tkt76KuCKQYj5P4d
-         xm2jlcoA0nM4J+gkRggDB2Uv3aGDh7Z5ybx7/gl/5xUJAOTxbZ7AAAMps7yjn4d/7n
-         0uV0YjmvTdQ3g==
-Date:   Sat, 31 Dec 2022 20:01:42 +0800
-From:   Shawn Guo <shawnguo@kernel.org>
-To:     Martin Kepplinger <martin.kepplinger@puri.sm>
-Cc:     robh@kernel.org, krzysztof.kozlowski@linaro.org,
-        s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
-        linux-imx@nxp.com, kernel@puri.sm, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, phone-devel@vger.kernel.org,
+        Sat, 31 Dec 2022 11:43:20 -0500
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26C0B6584;
+        Sat, 31 Dec 2022 08:43:16 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id y25so35886168lfa.9;
+        Sat, 31 Dec 2022 08:43:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3rkaK90EkPNFGjK3eO8YBzLCRfs4j3rNDEINUCKNOHA=;
+        b=EAsYZtQsICraZr68ccUcaUK7GOx3hEfjQmLHIe3qtZfolYAgrM9zYC1U86DBdHZy9C
+         FSvl1xdSp7VZQLeEOIy03r+9T6ytinPas/scV5Xf+kKtRDY4ryUCfJxdJEudG4Rg3BXB
+         yOjlpaR3RJETf9VLwmQh+QvTSzmbSfgfiz7+8js7ZiADefpUTbS3yQh10erWtOxsSSWb
+         B6n5UKpcrpUCtDb3rztoagyeADqnxBFN3ntHoJXNoqZ5ulfAegMMPP64dYzqrSHPZM6D
+         wPBNn4D2NxpbLavYSAr8d6VpKiDR6PveV10SgD1WxDJPufI2cOEPJ4DtFrW9LQBADiaJ
+         PH8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3rkaK90EkPNFGjK3eO8YBzLCRfs4j3rNDEINUCKNOHA=;
+        b=M6eOsRanRFfwx2yi9mVDfML7qVRKDdEP6gbLVb3bR6aT89eLoR+gNq+gF7WdLYyBNC
+         pTKqgfUELqy5zxDR+RFe+MeC+CvYknYfi1yhDW8Amn8F+w3GUCqjMD2uMaudleRGLJso
+         ruIorfWUTB0gu2DVhaaijU18Fcu/w5lOu9xPa8Vs/gcCBkxsCKoZx3eRcIA3sknjh8Lp
+         MclrNAH1nvqxsyAI29ut+Fma6TXVFQZbG/eDjRa504HRYVzDEi7MBbevzkQr4XdBN+iG
+         xqw0rJn+0lQGD50BWSkm1ucgLyF8gc2eMuq7VYC7nA6+rDJZ/c83PJh80pcOD6bLmwO7
+         2XHQ==
+X-Gm-Message-State: AFqh2koPZaUDYVBXFNKeyIMG3xvTfJvcwnHiOeX4oHSzP7KF2wrSyZ0a
+        mr6+GSnvLH1fhsbawT7lIUZRNIcDZ/ZUZQ==
+X-Google-Smtp-Source: AMrXdXudcQ7FULwQ3SfMmzAwGHT7GMwamawECIbK9MWLXbgWWAjUSHMu1axh/6TE2QeQxCFuqp+niw==
+X-Received: by 2002:a05:6512:1384:b0:4cb:190:b0bb with SMTP id p4-20020a056512138400b004cb0190b0bbmr7229925lfa.37.1672504994370;
+        Sat, 31 Dec 2022 08:43:14 -0800 (PST)
+Received: from localhost.localdomain (byx211.neoplus.adsl.tpnet.pl. [83.30.43.211])
+        by smtp.gmail.com with ESMTPSA id z8-20020a056512376800b004b52aea5ff8sm3870367lft.30.2022.12.31.08.43.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Dec 2022 08:43:13 -0800 (PST)
+From:   Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Adam Skladowski <a39.skl@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        AngeloGioacchino Del Regno <kholk11@gmail.com>,
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] arm64: dts: imx8mq-librem5: use multicolor leds
- description for RGB led
-Message-ID: <20221231120141.GQ6112@T480>
-References: <20221130113124.1558335-1-martin.kepplinger@puri.sm>
+Subject: [PATCH] pinctrl: qcom: pinctrl-msm8976: Correct function names for wcss pins
+Date:   Sat, 31 Dec 2022 17:42:50 +0100
+Message-Id: <20221231164250.74550-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221130113124.1558335-1-martin.kepplinger@puri.sm>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Nov 30, 2022 at 12:31:24PM +0100, Martin Kepplinger wrote:
-> As Documentation/leds/well-known-leds.txt says, "Phones usually have
-> multi-color status LED." Fix that for the Librem 5 mobile phone board.
-> 
-> Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
+Adjust names of function for wcss pins, also fix third gpio in bt group.
 
-Applied, thanks!
+Fixes: bcd11493f0ab ("pinctrl: qcom: Add a pinctrl driver for MSM8976 and 8956")
+Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+---
+ drivers/pinctrl/qcom/pinctrl-msm8976.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/pinctrl/qcom/pinctrl-msm8976.c b/drivers/pinctrl/qcom/pinctrl-msm8976.c
+index ec43edf9b660..e11d84584719 100644
+--- a/drivers/pinctrl/qcom/pinctrl-msm8976.c
++++ b/drivers/pinctrl/qcom/pinctrl-msm8976.c
+@@ -733,7 +733,7 @@ static const char * const codec_int2_groups[] = {
+ 	"gpio74",
+ };
+ static const char * const wcss_bt_groups[] = {
+-	"gpio39", "gpio47", "gpio88",
++	"gpio39", "gpio47", "gpio48",
+ };
+ static const char * const sdc3_groups[] = {
+ 	"gpio39", "gpio40", "gpio41",
+@@ -958,9 +958,9 @@ static const struct msm_pingroup msm8976_groups[] = {
+ 	PINGROUP(37, NA, NA, NA, qdss_tracedata_b, NA, NA, NA, NA, NA),
+ 	PINGROUP(38, NA, NA, NA, NA, NA, NA, NA, qdss_tracedata_b, NA),
+ 	PINGROUP(39, wcss_bt, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
+-	PINGROUP(40, wcss_wlan, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
+-	PINGROUP(41, wcss_wlan, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
+-	PINGROUP(42, wcss_wlan, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
++	PINGROUP(40, wcss_wlan2, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
++	PINGROUP(41, wcss_wlan1, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
++	PINGROUP(42, wcss_wlan0, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
+ 	PINGROUP(43, wcss_wlan, sdc3, NA, NA, qdss_tracedata_a, NA, NA, NA, NA),
+ 	PINGROUP(44, wcss_wlan, sdc3, NA, NA, NA, NA, NA, NA, NA),
+ 	PINGROUP(45, wcss_fm, NA, qdss_tracectl_a, NA, NA, NA, NA, NA, NA),
+-- 
+2.25.1
+
