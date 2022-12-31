@@ -2,105 +2,106 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE2D6C4332F
-	for <phone-devel@archiver.kernel.org>; Sat, 31 Dec 2022 20:14:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C873DC3DA7A
+	for <phone-devel@archiver.kernel.org>; Sat, 31 Dec 2022 21:50:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232251AbiLaUOg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 31 Dec 2022 15:14:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39970 "EHLO
+        id S229597AbiLaVu3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 31 Dec 2022 16:50:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232038AbiLaUOe (ORCPT
+        with ESMTP id S229694AbiLaVu2 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 31 Dec 2022 15:14:34 -0500
-Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [IPv6:2001:4b7a:2000:18::165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1C605FD3;
-        Sat, 31 Dec 2022 12:14:33 -0800 (PST)
-Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        Sat, 31 Dec 2022 16:50:28 -0500
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [5.144.164.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5592F647F
+        for <phone-devel@vger.kernel.org>; Sat, 31 Dec 2022 13:50:26 -0800 (PST)
+Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id E35671F71E;
-        Sat, 31 Dec 2022 21:14:29 +0100 (CET)
-Date:   Sat, 31 Dec 2022 21:14:27 +0100
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 4E05D3ED63;
+        Sat, 31 Dec 2022 22:50:18 +0100 (CET)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Adam Skladowski <a39.skl@gmail.com>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
+To:     phone-devel@vger.kernel.org,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        AngeloGioacchino Del Regno <kholk11@gmail.com>,
-        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] pinctrl: qcom: pinctrl-msm8976: Correct function names
- for wcss pins
-Message-ID: <20221231201427.4zvubd4cqkaphayd@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Adam Skladowski <a39.skl@gmail.com> phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Vinod Koul <vkoul@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        AngeloGioacchino Del Regno <kholk11@gmail.com>,
-        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20221231164250.74550-1-a39.skl@gmail.com>
+        Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        Jessica Zhang <quic_jesszhan@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        Adam Skladowski <a39.skl@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/7] drm/msm/dpu: Implement tearcheck support on INTF block
+Date:   Sat, 31 Dec 2022 22:49:59 +0100
+Message-Id: <20221231215006.211860-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221231164250.74550-1-a39.skl@gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2022-12-31 17:42:50, Adam Skladowski wrote:
-> Adjust names of function for wcss pins, also fix third gpio in bt group.
+Since DPU 5.0.0 the TEARCHECK registers and interrupts moved out of the
+PINGPONG block and into the INTF.  Implement the necessary callbacks in
+the INTF block, and use these callbacks together with the INTF_TEAR
+interrupts.  Additionally, disable previous register writes and remove
+unused interrupts in the PINGPONG and MDP_TOP blocks for these newer
+platforms.
 
-Agreed, the wcss_wlan[210]_groups arrays and functions are unused prior
-to this patch nor are pins 40/41/42 part of wcss_wlan_groups (which only
-contains 43 and 44).  Same for the BT fix, the pingroup for pin 48 is
-clearly wcss_bt and there's none for pin 88.
+With these patches the devices on DPU >= 5.0.0 listed below now update
+their panels at 60fps without tearing (nor sluggishness), and without
+repeated timeouts in dmesg.
 
-You could have made that more clear in the commit message though (and
-I'm not even sure if pinctrl allows the pins to be used when the groups
-are misaligned like this, at least there's a fixes: tag), but for the
-change itself:
+Tested on the following devices with command-mode panels and TE pins:
 
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+- Sony Xperia XZ3 (sdm845, DPU 4.0.0, cmdmode panel): no regressions on
+  PINGPONG TE;
+- Sony Xperia 5 (sm8150, DPU 5.0.0);
+- Sony Xperia 10 II (sm6125, DPU 5.0.4).
 
-> Fixes: bcd11493f0ab ("pinctrl: qcom: Add a pinctrl driver for MSM8976 and 8956")
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-> ---
->  drivers/pinctrl/qcom/pinctrl-msm8976.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/pinctrl/qcom/pinctrl-msm8976.c b/drivers/pinctrl/qcom/pinctrl-msm8976.c
-> index ec43edf9b660..e11d84584719 100644
-> --- a/drivers/pinctrl/qcom/pinctrl-msm8976.c
-> +++ b/drivers/pinctrl/qcom/pinctrl-msm8976.c
-> @@ -733,7 +733,7 @@ static const char * const codec_int2_groups[] = {
->  	"gpio74",
->  };
->  static const char * const wcss_bt_groups[] = {
-> -	"gpio39", "gpio47", "gpio88",
-> +	"gpio39", "gpio47", "gpio48",
->  };
->  static const char * const sdc3_groups[] = {
->  	"gpio39", "gpio40", "gpio41",
-> @@ -958,9 +958,9 @@ static const struct msm_pingroup msm8976_groups[] = {
->  	PINGROUP(37, NA, NA, NA, qdss_tracedata_b, NA, NA, NA, NA, NA),
->  	PINGROUP(38, NA, NA, NA, NA, NA, NA, NA, qdss_tracedata_b, NA),
->  	PINGROUP(39, wcss_bt, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
-> -	PINGROUP(40, wcss_wlan, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
-> -	PINGROUP(41, wcss_wlan, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
-> -	PINGROUP(42, wcss_wlan, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
-> +	PINGROUP(40, wcss_wlan2, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
-> +	PINGROUP(41, wcss_wlan1, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
-> +	PINGROUP(42, wcss_wlan0, sdc3, NA, qdss_tracedata_a, NA, NA, NA, NA, NA),
->  	PINGROUP(43, wcss_wlan, sdc3, NA, NA, qdss_tracedata_a, NA, NA, NA, NA),
->  	PINGROUP(44, wcss_wlan, sdc3, NA, NA, NA, NA, NA, NA, NA),
->  	PINGROUP(45, wcss_fm, NA, qdss_tracectl_a, NA, NA, NA, NA, NA, NA),
-> -- 
-> 2.25.1
-> 
+Konrad Dybcio (1):
+  drm/msm/dpu: Move dpu_hw_{tear_check,pp_vsync_info} to dpu_hw_mdss.h
+
+Marijn Suijten (6):
+  drm/msm/dpu: Remove unused INTF0 interrupt mask from sm6115/qcm2290
+  drm/msm/dpu: Disable pingpong TE on DPU 5.0.0 and above
+  drm/msm/dpu: Disable MDP vsync source selection on DPU 5.0.0 and above
+  drm/msm/dpu: Document and enable TEAR interrupts on DSI interfaces
+  drm/msm/dpu: Implement tearcheck support on INTF block
+  drm/msm/dpu: Remove intr_rdptr from DPU >= 5.0.0 pingpong config
+
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c   |  11 +
+ .../gpu/drm/msm/disp/dpu1/dpu_encoder_phys.h  |  10 +-
+ .../drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c  | 108 +++++++--
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 181 +++++++++------
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h    |   7 +-
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c |  12 +
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.h |   2 +
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c   | 206 ++++++++++++++++++
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.h   |  29 +++
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_mdss.h   |  48 ++++
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.c   |  18 +-
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.h   |  22 --
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_top.c    |  52 +++--
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hwio.h      |   3 +
+ 14 files changed, 570 insertions(+), 139 deletions(-)
+
+--
+2.39.0
+
