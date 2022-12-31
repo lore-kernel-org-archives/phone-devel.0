@@ -2,56 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1BB5C4332F
-	for <phone-devel@archiver.kernel.org>; Sat, 31 Dec 2022 17:06:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6400EC4167B
+	for <phone-devel@archiver.kernel.org>; Sat, 31 Dec 2022 18:56:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232123AbiLaRGH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 31 Dec 2022 12:06:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34574 "EHLO
+        id S229882AbiLaS4Z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 31 Dec 2022 13:56:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229715AbiLaRGE (ORCPT
+        with ESMTP id S229597AbiLaS4Y (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 31 Dec 2022 12:06:04 -0500
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEF761148;
-        Sat, 31 Dec 2022 09:06:01 -0800 (PST)
-Received: by mail-lf1-x12a.google.com with SMTP id z26so35941252lfu.8;
-        Sat, 31 Dec 2022 09:06:01 -0800 (PST)
+        Sat, 31 Dec 2022 13:56:24 -0500
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87A3AE9C
+        for <phone-devel@vger.kernel.org>; Sat, 31 Dec 2022 10:56:22 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id b3so36214003lfv.2
+        for <phone-devel@vger.kernel.org>; Sat, 31 Dec 2022 10:56:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iZuN1LxRja9IoziQ4hYPuG+gUEYeFJZkai3EMlidSdQ=;
-        b=SV6Csk5E1lUiIDAMmVJfmyHpbAQHwX+TweuEANl2e7fapdY8E9goESoL3uqWiX3MUN
-         v/qD/iEphEPD3n2Tq3iB4jLssDgCKP4Eco+BvkHarEWE5+PoIEMRZm7df9cLruqY4iUR
-         PHnhSHIP54ST0ZDZI8euujFt4sNNQbCb7EO40rTH9e1CeIZTIAKHnWCXqf6YnOw00GkK
-         rP2Hd18vHcCSurM1K44qMOPz3ED/otcQs5Ra3XRpCBhEdITr2H7y4TKU2MVRyTVNBM87
-         QGo5/B5OXNu2zn3Z1ZiH8hWXA2A8oOPDincCNIQDi2AWsSiygL9BhJ1JMXW/AodpdKlu
-         Mg+g==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=492r+yHdPMIoILRLNSFxtqbe5eiM6CMIAFGWnVFQ6z4=;
+        b=DoHcuI1rMdXexe2kY5VzaXWPc4wCEoewmgZDGedv5XM1Vt7Ue8EhfdBPHyPGX+OpHG
+         8cisv7vaV9DNF3uZ4/zBhiP9MAGmJQiSDx9RZzs0E65oXOOcJFDzQ7cyHzfOh99jDhkv
+         403Ud+Xe/jeoj1X+QVBGmHnPgHYbwPeBSyxyLoglfovbGmrkofH9JVyTLeyrRZkhFeSB
+         2p3L2Wrgdg7UCa8vlvG6iyEPz7P4e4aWCiMYraoTxXcA+ngKJsCiMgntpKkrQhx1hQab
+         sHfNLHZGmIa8UQWmKDXWi+/XC4cAxMpixyJpriGHZzmFcucTSShVy3cr/gVQyaM2UhC1
+         bkQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iZuN1LxRja9IoziQ4hYPuG+gUEYeFJZkai3EMlidSdQ=;
-        b=WP/6ZDoVm7HFCSVVvJGJD9C1A++yKDkjJujapO0KeWpIsnwVcfusSm315rCDTa5Dvo
-         oGTaIDk6QWjd/m6FkzKrsX0xRgwPochvGpSGIx2nnm02iDaFws1hOSYIF24uaFGDem8H
-         28cO6iWloBfaIHfmJfpP5/kDQJ8BBXyzEwySEEtu+IUg19/VtCdsIo9zLb4qIcnGywdf
-         kZ6xTpCx8eNN9fpDjqDZm3LhKDRU+JG0RtSFNRDF5CN4nCUTr3V0ERWmGw/8cIjWgQdL
-         Lqw+0imtR7/g4/s6my4JRQBsTgl4z4NrgPKEijp+leSgThq+2LbyqOxpg4ijPgIA8DEd
-         84iQ==
-X-Gm-Message-State: AFqh2krfyoF1pYDzitmtdCLXHp3FkYfYipxT7u09Atm611jmi/z4oo0k
-        /a+88A6clieROr8Qr33zV1sDHf7GnmLRfA==
-X-Google-Smtp-Source: AMrXdXs8Ll20pQVgnasU5JAgrg+bBenDu1rLCUUTtnOKPIxt8IoLCOU8Y7pbjnv4yTDLUROw7waFmA==
-X-Received: by 2002:a05:6512:695:b0:4b5:8502:efb4 with SMTP id t21-20020a056512069500b004b58502efb4mr12391854lfe.69.1672506360068;
-        Sat, 31 Dec 2022 09:06:00 -0800 (PST)
-Received: from localhost.localdomain (byx211.neoplus.adsl.tpnet.pl. [83.30.43.211])
-        by smtp.gmail.com with ESMTPSA id i3-20020a2ea223000000b0027dd8627ad2sm2868088ljm.69.2022.12.31.09.05.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Dec 2022 09:05:59 -0800 (PST)
-From:   Adam Skladowski <a39.skl@gmail.com>
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=492r+yHdPMIoILRLNSFxtqbe5eiM6CMIAFGWnVFQ6z4=;
+        b=WEOvfZ0yABXrXZp+2+kDDs6hADjfnIppeOk8wsOMqAjV0xkhMjjLCk8kthheq6qEKa
+         yHo/l12+0FnNiSQR2EQXNDXmYALKkmpt71wylSf1mR4ms3A1q4AttJS28IUrT/XyenaX
+         encRciHX/gZk+kznWGYJ2Fvn7gsDfRzRS2rfafXfpxy/IffJ3ZRq+H2+yBt7R9by+FRV
+         V2+GWFA992skYPR4BEmvcCL8NrUWqe0wSC7CY3Ep5y3SwMuFpUIpXbE/dp9Zdb/ciUl9
+         bgd2w/wpAgFdJ6gEHvlpyeUAbb4RtPGfymyBC8+dj0GwyPfjqn5CfawS8UosmkihqHys
+         tR5w==
+X-Gm-Message-State: AFqh2kqaxLQt6V3lsV1wxmS6vI36KlrxnOgBwl6TIyKo10cHuW2Gk9SO
+        4tz06u+Z9TjI2wTIeNX8jucD5w==
+X-Google-Smtp-Source: AMrXdXu8eL8KxwSARuXzEKBEb1u2dlv6u1JJjlQ8Yg52EBl26UBeSJbZIkU3p1dtStt0qQ3KEMJOHA==
+X-Received: by 2002:a05:6512:13a1:b0:4b6:f0ea:4f49 with SMTP id p33-20020a05651213a100b004b6f0ea4f49mr11080983lfa.9.1672512980943;
+        Sat, 31 Dec 2022 10:56:20 -0800 (PST)
+Received: from [192.168.0.20] (088156142067.dynamic-2-waw-k-3-2-0.vectranet.pl. [88.156.142.67])
+        by smtp.gmail.com with ESMTPSA id c19-20020a056512075300b004b53eb60e3csm3663570lfs.256.2022.12.31.10.56.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 31 Dec 2022 10:56:20 -0800 (PST)
+Message-ID: <55a1f2c5-8ef8-4291-8c95-49abe2637007@linaro.org>
+Date:   Sat, 31 Dec 2022 19:56:18 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH] dt-bindings: msm: dsi-phy-28nm: Document fam-b compatible
+To:     Adam Skladowski <a39.skl@gmail.com>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Adam Skladowski <a39.skl@gmail.com>,
         Rob Clark <robdclark@gmail.com>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
@@ -63,36 +69,27 @@ Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: msm: dsi-phy-28nm: Document fam-b compatible
-Date:   Sat, 31 Dec 2022 18:05:32 +0100
-Message-Id: <20221231170532.77000-1-a39.skl@gmail.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+References: <20221231170532.77000-1-a39.skl@gmail.com>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20221231170532.77000-1-a39.skl@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Document omitted 28nm compatible which will be used on MSM8976 SoC.
+On 31/12/2022 18:05, Adam Skladowski wrote:
+> Document omitted 28nm compatible which will be used on MSM8976 SoC.
+> 
 
-Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
----
- Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml | 1 +
- 1 file changed, 1 insertion(+)
+Commit msg is not entirely accurate - this compatible is already used in
+the Linux DSI PHY driver.
 
-diff --git a/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml b/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
-index 3d8540a06fe2..b237abe859f0 100644
---- a/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
-+++ b/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
-@@ -16,6 +16,7 @@ properties:
-   compatible:
-     enum:
-       - qcom,dsi-phy-28nm-hpm
-+      - qcom,dsi-phy-28nm-hpm-fam-b
-       - qcom,dsi-phy-28nm-lp
-       - qcom,dsi-phy-28nm-8960
- 
--- 
-2.25.1
+
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+
+Best regards,
+Krzysztof
 
