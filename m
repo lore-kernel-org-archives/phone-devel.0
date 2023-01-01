@@ -2,60 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9326C4708E
-	for <phone-devel@archiver.kernel.org>; Sun,  1 Jan 2023 12:27:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 449E0C3DA7D
+	for <phone-devel@archiver.kernel.org>; Sun,  1 Jan 2023 12:28:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230294AbjAAM1m (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 1 Jan 2023 07:27:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41668 "EHLO
+        id S230442AbjAAM2g (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 1 Jan 2023 07:28:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229601AbjAAM1k (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 1 Jan 2023 07:27:40 -0500
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B59133897
-        for <phone-devel@vger.kernel.org>; Sun,  1 Jan 2023 04:27:38 -0800 (PST)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-47fc4e98550so217070527b3.13
-        for <phone-devel@vger.kernel.org>; Sun, 01 Jan 2023 04:27:38 -0800 (PST)
+        with ESMTP id S231759AbjAAM2Y (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 1 Jan 2023 07:28:24 -0500
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B958D5FBF
+        for <phone-devel@vger.kernel.org>; Sun,  1 Jan 2023 04:28:23 -0800 (PST)
+Received: by mail-yb1-xb31.google.com with SMTP id b16so27957321yba.0
+        for <phone-devel@vger.kernel.org>; Sun, 01 Jan 2023 04:28:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2bWIRx0OjUiiIyER71vIk1rtm1u64tQPJZk2feH605U=;
-        b=TluG41Rwc+6pjqk30yxZybimGt7+O6R3MyNiv699OFH83tN10SaLOwYpWTdQ7AWgLS
-         EATAkvwk3w+1SThVegNvSV1VPnkjnECmkS4ahcCnfTvIP8QfBYgW/Ia4ZRcA6Bqv8egE
-         PEJfcqX/UDVfBl9JyJiUN+7IiIVLZ+0hZDrgq4AdDU7rpmY94WjS4m8euscKNFlEGgwb
-         yRfJycNDBK+sRp2RfjN9aPZRGiGGDq2Ni3wozwXNsuEkagQreBC1nRdZINZhht5wa4eO
-         P+NCQXiQY5BeMy5+j/LZjh8NCzOcUL0XR8c+V4980ORW0CQYlAqusTFgTJ7lqlgKlt9f
-         XJDg==
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=k7URFysZSN6Z6LPVxT+yXBreQGfA0TGi/6KTxnv1zPQ=;
+        b=m4CkBbsI2qgy3rEjcmWIb/RyUGvlTEsS4GqyT5053SOFVnaBp+7tlDJeyB/oNvBMqT
+         rckKFnmUYYIIbyaeyeeDEVK8f4VERRlO9/iX913GnEkX/q3vw6w1em6eRrQm1rgATXTS
+         FnhEcsgdR81pkKZhrtChIwFLhKUtVlikjkiN4uNsWGXT0pmG414ZfdeksFPcutWifcJB
+         wN4NDlUQjlKWsQuNodL+X+w7j6BRAxpUMPnRzwcFOMrkkbJu7e5bVD+GUwVxn9lb33f3
+         sM8MBV+EWOAIjIDRz2lLH/XoDw+1wAVLfkVQ+dyxyYkBq0nMUREH2P1/3ZRAWB05guel
+         ID7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2bWIRx0OjUiiIyER71vIk1rtm1u64tQPJZk2feH605U=;
-        b=BQ2nlV10vCixjzsk0Z81GLHgTsHprVD1gtWDshzsbGVh8ap40ghlRqc7qxH0hoKOaU
-         Zloym9Nj1WEIeFYH8y5oPmFy5SfMsbmeW4SmD4zgQG5cdwyoQtyIBfPTWIbFC5UsPIzN
-         D58Y10SBoyDY9W8A4vAylETZbldva20Hw73zLFdAmNwTpx+GLWomyWBM80ZNK0KvPgZ5
-         WuphklPGZKNoilPoQlPE7YfRCR4K5YhESkq9lQoty/nOtP5Z8p/79CX+vgrW0l+0/892
-         M8BchT1iZ4DRkRxjHcWaai6vA5JJWJhikjpfzODlZZ3Fu6p2/DKNIRR7AUi3461AzSKp
-         zAKA==
-X-Gm-Message-State: AFqh2kqiiEpXVlWCVC08XGGefs4gjKOlGsjS+hhfu42cYvWyHaO2wTmo
-        K55CoFq/ApRtGEAP+Hi5wg7GvKUnrQQEcMtiXRru3w==
-X-Google-Smtp-Source: AMrXdXvMw65HDtWFdqX2AnBda4/ddwCGwlF1XJLicIXoOn/3Sx6jOAd2wcSVV/Qr+2ien1/O22ItMviPcZfEztg61OQ=
-X-Received: by 2002:a05:690c:fd5:b0:4a4:7135:9214 with SMTP id
- dg21-20020a05690c0fd500b004a471359214mr210838ywb.378.1672576057902; Sun, 01
- Jan 2023 04:27:37 -0800 (PST)
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k7URFysZSN6Z6LPVxT+yXBreQGfA0TGi/6KTxnv1zPQ=;
+        b=tobKE/+Iv4ixuNAnKiRXaMOcoRWxaDa8dikwETUocnCiy3O9nFuOGw2Ycx3Tmjl2EZ
+         n6jj4noqzvPdDmbgMsznPOxehwVIp0eUIkqjC27TrmrQCXu5TBKksf/KOjjj2Im8+j+8
+         ipsq1bdXGYfC+dgGm2qS0q0DjeIokj0DLMGkYUR/OOqE/7PfH1jZf+eUoYTkd8Lt1Ma8
+         AvNSiVDBOUEPZc4cpSx5v3kEbzDkP8NhsTw+SYeUU/+XTH32tUiC1D92LjfHHcelacC9
+         KDy0XHGVH5xm8Qt3sZmTSLD8nxNTctHtRXLei5Gz1YJO/cM+zoycGlJToY0Kk/OLgylB
+         YVYA==
+X-Gm-Message-State: AFqh2koeOx2I9jUE332FQhWhVvC/yhBfxshIRpis7RqGpbw8EkmBA2ar
+        Dldrd3Qfca2mcn/0fmGAwvKzPRA8lBzaG5+F438/gg==
+X-Google-Smtp-Source: AMrXdXvS4lpF3KQddvAF09DEYtTB4B8CaWxtR7z/xYy/Ud/tpPXFEsqZnY0VA0puIPo+mKWCXByVoSca3FxW3JEu9ag=
+X-Received: by 2002:a25:cc7:0:b0:6e0:c7d3:f026 with SMTP id
+ 190-20020a250cc7000000b006e0c7d3f026mr4167854ybm.275.1672576102911; Sun, 01
+ Jan 2023 04:28:22 -0800 (PST)
 MIME-Version: 1.0
-References: <20221231215006.211860-1-marijn.suijten@somainline.org> <20221231215006.211860-8-marijn.suijten@somainline.org>
-In-Reply-To: <20221231215006.211860-8-marijn.suijten@somainline.org>
+References: <20221231215006.211860-1-marijn.suijten@somainline.org>
+ <20221231215006.211860-4-marijn.suijten@somainline.org> <20221231215254.pqaegrmldufi7ugo@SoMainline.org>
+In-Reply-To: <20221231215254.pqaegrmldufi7ugo@SoMainline.org>
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Sun, 1 Jan 2023 14:27:27 +0200
-Message-ID: <CAA8EJpraCLQpWn3PZLz9BGYrESVdWmHw0LpNtcx9ntQ_9=HgRg@mail.gmail.com>
-Subject: Re: [RFC PATCH 7/7] drm/msm/dpu: Remove intr_rdptr from DPU >= 5.0.0
- pingpong config
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org,
+Date:   Sun, 1 Jan 2023 14:28:11 +0200
+Message-ID: <CAA8EJppF7VcYLn3K6tV3WS+r+4W9XMGfFpD0hXf+fdpvy9osaA@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/7] drm/msm/dpu: Disable MDP vsync source selection
+ on DPU 5.0.0 and above
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Neil Armstrong <neil.armstrong@linaro.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
@@ -76,22 +77,69 @@ Cc:     phone-devel@vger.kernel.org,
         Vinod Polimera <quic_vpolimer@quicinc.com>,
         Adam Skladowski <a39.skl@gmail.com>,
         linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        Kalyan Thota <quic_kalyant@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 31 Dec 2022 at 23:50, Marijn Suijten
+On Sat, 31 Dec 2022 at 23:52, Marijn Suijten
 <marijn.suijten@somainline.org> wrote:
 >
-> Now that newer DPU platforms use a readpointer-done interrupt on the
-> INTF block, stop providing the unused interrupt on the PINGPONG block.
+> On 2022-12-31 22:50:02, Marijn Suijten wrote:
+> > Since hardware revision 5.0.0 the TE configuration moved out of the
+> > PINGPONG block into the INTF block, including vsync source selection
+> > that was previously part of MDP top.  Writing to the MDP_VSYNC_SEL
+> > register has no effect anymore and is omitted downstream via the
+> > DPU/SDE_MDP_VSYNC_SEL feature flag.  This flag is only added to INTF
+> > blocks used by hardware prior to 5.0.0.
+> >
+> > The code that writes to these registers in the INTF block will follow in
+> > subsequent patches.
+> >
+> > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> > ---
+> >  .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 33 ++++++++++--
+> >  .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h    |  1 +
+> >  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_top.c    | 52 +++++++++++++------
+> >  3 files changed, 66 insertions(+), 20 deletions(-)
+> >
+> > diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+> > index 39d4b293710c..1cfe94494135 100644
+> > --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+> > +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+> > @@ -407,7 +407,7 @@ static const struct dpu_mdp_cfg msm8998_mdp[] = {
+> >       {
+> >       .name = "top_0", .id = MDP_TOP,
+> >       .base = 0x0, .len = 0x458,
+> > -     .features = 0,
+> > +     .features = BIT(DPU_MDP_VSYNC_SEL),
+> >       .highest_bank_bit = 0x2,
+> >       .clk_ctrls[DPU_CLK_CTRL_VIG0] = {
+> >                       .reg_off = 0x2AC, .bit_off = 0},
+> > @@ -436,7 +436,7 @@ static const struct dpu_mdp_cfg sdm845_mdp[] = {
+> >       {
+> >       .name = "top_0", .id = MDP_TOP,
+> >       .base = 0x0, .len = 0x45C,
+> > -     .features = BIT(DPU_MDP_AUDIO_SELECT),
+> > +     .features = BIT(DPU_MDP_AUDIO_SELECT) | BIT(DPU_MDP_VSYNC_SEL),
+> >       .highest_bank_bit = 0x2,
+> >       .clk_ctrls[DPU_CLK_CTRL_VIG0] = {
+> >                       .reg_off = 0x2AC, .bit_off = 0},
+> > @@ -512,6 +512,31 @@ static const struct dpu_mdp_cfg sm6115_mdp[] = {
+> >       },
+> >  };
+> >
+> > +static const struct dpu_mdp_cfg sdm8150_mdp[] = {
 >
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
->  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+> Sometimes it is only possible to spot such things _after_ sending,
+> probably the thing that makes us human :)
+>
+> sm8150_mdp*, not sdm.
+>
+
+With this name fixed:
 
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
