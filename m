@@ -2,63 +2,66 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 449E0C3DA7D
-	for <phone-devel@archiver.kernel.org>; Sun,  1 Jan 2023 12:28:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A87FC4708E
+	for <phone-devel@archiver.kernel.org>; Sun,  1 Jan 2023 12:37:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230442AbjAAM2g (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 1 Jan 2023 07:28:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42354 "EHLO
+        id S229877AbjAAMh3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 1 Jan 2023 07:37:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231759AbjAAM2Y (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 1 Jan 2023 07:28:24 -0500
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B958D5FBF
-        for <phone-devel@vger.kernel.org>; Sun,  1 Jan 2023 04:28:23 -0800 (PST)
-Received: by mail-yb1-xb31.google.com with SMTP id b16so27957321yba.0
-        for <phone-devel@vger.kernel.org>; Sun, 01 Jan 2023 04:28:23 -0800 (PST)
+        with ESMTP id S229683AbjAAMh2 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 1 Jan 2023 07:37:28 -0500
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6EE75FA4
+        for <phone-devel@vger.kernel.org>; Sun,  1 Jan 2023 04:37:27 -0800 (PST)
+Received: by mail-lf1-x130.google.com with SMTP id j17so28617952lfr.3
+        for <phone-devel@vger.kernel.org>; Sun, 01 Jan 2023 04:37:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=k7URFysZSN6Z6LPVxT+yXBreQGfA0TGi/6KTxnv1zPQ=;
-        b=m4CkBbsI2qgy3rEjcmWIb/RyUGvlTEsS4GqyT5053SOFVnaBp+7tlDJeyB/oNvBMqT
-         rckKFnmUYYIIbyaeyeeDEVK8f4VERRlO9/iX913GnEkX/q3vw6w1em6eRrQm1rgATXTS
-         FnhEcsgdR81pkKZhrtChIwFLhKUtVlikjkiN4uNsWGXT0pmG414ZfdeksFPcutWifcJB
-         wN4NDlUQjlKWsQuNodL+X+w7j6BRAxpUMPnRzwcFOMrkkbJu7e5bVD+GUwVxn9lb33f3
-         sM8MBV+EWOAIjIDRz2lLH/XoDw+1wAVLfkVQ+dyxyYkBq0nMUREH2P1/3ZRAWB05guel
-         ID7g==
+        bh=jUwhBT0HEy+w8/7x0rV0cF/18t9AsTlAgTmMKYlGiAA=;
+        b=NwRWs9TNy3ZZTSkNCG3P6pyld0/m0H/Z/q8+dt6x7LRWUC6KnUIKc5Q44yzkGoKqhs
+         XVFgW08IJ9Y494napjEdx2NoHgVvkWKOhMc8YEJlpkdvzq8Vd2vs4tyQnCGbQmxe7YFH
+         mR326j4DTaQgQvVLxeCjGYriBQkBHJFBjrBo+vw8t8SwIV7BIDwEFdL/tQkzgSJtUt8q
+         xdLCJGfF3qVVmTw6bfakiwdWQExuNLK0I9nryCgSbIGo4fyoIVZGVfdZReI7d5Bqh1Dv
+         kWkA4lN6jQ03peh/qdQZH4EA0HnO31Q9du4ONyg0QwmMkmg5jmWSd4uGBwwzsyFape+4
+         rSMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k7URFysZSN6Z6LPVxT+yXBreQGfA0TGi/6KTxnv1zPQ=;
-        b=tobKE/+Iv4ixuNAnKiRXaMOcoRWxaDa8dikwETUocnCiy3O9nFuOGw2Ycx3Tmjl2EZ
-         n6jj4noqzvPdDmbgMsznPOxehwVIp0eUIkqjC27TrmrQCXu5TBKksf/KOjjj2Im8+j+8
-         ipsq1bdXGYfC+dgGm2qS0q0DjeIokj0DLMGkYUR/OOqE/7PfH1jZf+eUoYTkd8Lt1Ma8
-         AvNSiVDBOUEPZc4cpSx5v3kEbzDkP8NhsTw+SYeUU/+XTH32tUiC1D92LjfHHcelacC9
-         KDy0XHGVH5xm8Qt3sZmTSLD8nxNTctHtRXLei5Gz1YJO/cM+zoycGlJToY0Kk/OLgylB
-         YVYA==
-X-Gm-Message-State: AFqh2koeOx2I9jUE332FQhWhVvC/yhBfxshIRpis7RqGpbw8EkmBA2ar
-        Dldrd3Qfca2mcn/0fmGAwvKzPRA8lBzaG5+F438/gg==
-X-Google-Smtp-Source: AMrXdXvS4lpF3KQddvAF09DEYtTB4B8CaWxtR7z/xYy/Ud/tpPXFEsqZnY0VA0puIPo+mKWCXByVoSca3FxW3JEu9ag=
-X-Received: by 2002:a25:cc7:0:b0:6e0:c7d3:f026 with SMTP id
- 190-20020a250cc7000000b006e0c7d3f026mr4167854ybm.275.1672576102911; Sun, 01
- Jan 2023 04:28:22 -0800 (PST)
+        bh=jUwhBT0HEy+w8/7x0rV0cF/18t9AsTlAgTmMKYlGiAA=;
+        b=D+lhvAd2/5GJ1qtrLvn3dOom2t8kH1nBPnXz43r5hVIXFJzVXpubw8NafLMKd4VOfQ
+         7h+GCINfAcBuIq8FpConR8v2fOZSpIjju/ZeXg4gJl1mTWmcS4j+LzgNVC2LrWmv1mPA
+         uM6w0Mjt97zMf07tR45BQPvmoougSakqAaCU8vNq3TgyxbKnVhL1RbgSB9vK8XBligUF
+         x7YGYl1cmcM2Lma4D1HQJnis6EPzJV8zlzMRjcYahf7/X15JbJ1BDHu7W1L5YzAkpLNX
+         4q/jFwrla6QABbfB1slO3n6VP0id1ArVFwGZx/BuLMk5dmHqRwa73pmC8bAJvj3NQDhQ
+         VhnA==
+X-Gm-Message-State: AFqh2koz/5Ml7O7cNWpHon4QbnjCxNXz0V8FII21bX0ZFleBAeZ9fUwg
+        qKAL1G5b5yyRRHKTTYEpff4xww==
+X-Google-Smtp-Source: AMrXdXurlJQff+dDmDW8g3Xq0c5Fk0JYKoF6Cfb6PWUPzdD8nLmpEu/D4fuNrfY4vVcD7AtoHVFEuA==
+X-Received: by 2002:ac2:528f:0:b0:4b5:6504:a556 with SMTP id q15-20020ac2528f000000b004b56504a556mr9877674lfm.61.1672576645937;
+        Sun, 01 Jan 2023 04:37:25 -0800 (PST)
+Received: from ?IPV6:2001:14ba:a085:4d00::8a5? (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
+        by smtp.gmail.com with ESMTPSA id f17-20020a056512361100b004caf42eb04csm4049513lfs.138.2023.01.01.04.37.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 01 Jan 2023 04:37:25 -0800 (PST)
+Message-ID: <0ac4e53b-069e-a9b1-bfd2-2e62325182c1@linaro.org>
+Date:   Sun, 1 Jan 2023 14:37:24 +0200
 MIME-Version: 1.0
-References: <20221231215006.211860-1-marijn.suijten@somainline.org>
- <20221231215006.211860-4-marijn.suijten@somainline.org> <20221231215254.pqaegrmldufi7ugo@SoMainline.org>
-In-Reply-To: <20221231215254.pqaegrmldufi7ugo@SoMainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Sun, 1 Jan 2023 14:28:11 +0200
-Message-ID: <CAA8EJppF7VcYLn3K6tV3WS+r+4W9XMGfFpD0hXf+fdpvy9osaA@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/7] drm/msm/dpu: Disable MDP vsync source selection
- on DPU 5.0.0 and above
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [RFC PATCH 4/7] drm/msm/dpu: Move
+ dpu_hw_{tear_check,pp_vsync_info} to dpu_hw_mdss.h
+Content-Language: en-GB
 To:     Marijn Suijten <marijn.suijten@somainline.org>,
         phone-devel@vger.kernel.org,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
+        Neil Armstrong <neil.armstrong@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
@@ -77,72 +80,35 @@ To:     Marijn Suijten <marijn.suijten@somainline.org>,
         Vinod Polimera <quic_vpolimer@quicinc.com>,
         Adam Skladowski <a39.skl@gmail.com>,
         linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Kalyan Thota <quic_kalyant@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20221231215006.211860-1-marijn.suijten@somainline.org>
+ <20221231215006.211860-5-marijn.suijten@somainline.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20221231215006.211860-5-marijn.suijten@somainline.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 31 Dec 2022 at 23:52, Marijn Suijten
-<marijn.suijten@somainline.org> wrote:
->
-> On 2022-12-31 22:50:02, Marijn Suijten wrote:
-> > Since hardware revision 5.0.0 the TE configuration moved out of the
-> > PINGPONG block into the INTF block, including vsync source selection
-> > that was previously part of MDP top.  Writing to the MDP_VSYNC_SEL
-> > register has no effect anymore and is omitted downstream via the
-> > DPU/SDE_MDP_VSYNC_SEL feature flag.  This flag is only added to INTF
-> > blocks used by hardware prior to 5.0.0.
-> >
-> > The code that writes to these registers in the INTF block will follow in
-> > subsequent patches.
-> >
-> > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > ---
-> >  .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 33 ++++++++++--
-> >  .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h    |  1 +
-> >  drivers/gpu/drm/msm/disp/dpu1/dpu_hw_top.c    | 52 +++++++++++++------
-> >  3 files changed, 66 insertions(+), 20 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-> > index 39d4b293710c..1cfe94494135 100644
-> > --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-> > +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-> > @@ -407,7 +407,7 @@ static const struct dpu_mdp_cfg msm8998_mdp[] = {
-> >       {
-> >       .name = "top_0", .id = MDP_TOP,
-> >       .base = 0x0, .len = 0x458,
-> > -     .features = 0,
-> > +     .features = BIT(DPU_MDP_VSYNC_SEL),
-> >       .highest_bank_bit = 0x2,
-> >       .clk_ctrls[DPU_CLK_CTRL_VIG0] = {
-> >                       .reg_off = 0x2AC, .bit_off = 0},
-> > @@ -436,7 +436,7 @@ static const struct dpu_mdp_cfg sdm845_mdp[] = {
-> >       {
-> >       .name = "top_0", .id = MDP_TOP,
-> >       .base = 0x0, .len = 0x45C,
-> > -     .features = BIT(DPU_MDP_AUDIO_SELECT),
-> > +     .features = BIT(DPU_MDP_AUDIO_SELECT) | BIT(DPU_MDP_VSYNC_SEL),
-> >       .highest_bank_bit = 0x2,
-> >       .clk_ctrls[DPU_CLK_CTRL_VIG0] = {
-> >                       .reg_off = 0x2AC, .bit_off = 0},
-> > @@ -512,6 +512,31 @@ static const struct dpu_mdp_cfg sm6115_mdp[] = {
-> >       },
-> >  };
-> >
-> > +static const struct dpu_mdp_cfg sdm8150_mdp[] = {
->
-> Sometimes it is only possible to spot such things _after_ sending,
-> probably the thing that makes us human :)
->
-> sm8150_mdp*, not sdm.
->
-
-With this name fixed:
+On 31/12/2022 23:50, Marijn Suijten wrote:
+> From: Konrad Dybcio <konrad.dybcio@somainline.org>
+> 
+> Now that newer SoCs since DPU 5.0.0 manage tearcheck in the INTF instead
+> of PINGPONG block, move the struct definition to a common file. Also,
+> bring in documentation from msm-4.19 techpack while at it.
+> 
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@somainline.org>
+> [Marijn: Also move dpu_hw_pp_vsync_info]
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> ---
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_mdss.h   | 46 +++++++++++++++++++
+>   .../gpu/drm/msm/disp/dpu1/dpu_hw_pingpong.h   | 22 ---------
+>   2 files changed, 46 insertions(+), 22 deletions(-)
 
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
 -- 
 With best wishes
 Dmitry
+
