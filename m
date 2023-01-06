@@ -2,104 +2,107 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C756C61DB3
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Jan 2023 13:01:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 230F6C5479D
+	for <phone-devel@archiver.kernel.org>; Fri,  6 Jan 2023 15:39:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbjAFNAt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 6 Jan 2023 08:00:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48890 "EHLO
+        id S230366AbjAFPj4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 6 Jan 2023 10:39:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234806AbjAFNA3 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 6 Jan 2023 08:00:29 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10009745B9
-        for <phone-devel@vger.kernel.org>; Fri,  6 Jan 2023 05:00:28 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id m26-20020a05600c3b1a00b003d9811fcaafso1003787wms.5
-        for <phone-devel@vger.kernel.org>; Fri, 06 Jan 2023 05:00:27 -0800 (PST)
+        with ESMTP id S233416AbjAFPjx (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 6 Jan 2023 10:39:53 -0500
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A192B76812
+        for <phone-devel@vger.kernel.org>; Fri,  6 Jan 2023 07:39:51 -0800 (PST)
+Received: by mail-ej1-x629.google.com with SMTP id u9so4341489ejo.0
+        for <phone-devel@vger.kernel.org>; Fri, 06 Jan 2023 07:39:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Hcacv4C/Ndszi4c1+3X/NkZcmh9g/VIcIhHnZLgTk1Q=;
-        b=H8ZkhKg4v9pqQIecZAeTk4koXrftJoxsfl5esAx5D7npdLgbGNxMOG2wdykHgUZIOj
-         5iC4XUt5ZRa+K8t2jpNFmRNL0WyFhCy9/3rNyuJ/RqfU9fopv0jDs4dXWJgIZT+HTVT4
-         k736CEhXjNQ6jQmclCvNjv7aRHAqpSBx1mBqZPtN6vL7ya3ndb61d78XUg+3Jv8hYIPU
-         QdSxa4cP1+JIn1qnSG8f2Ie5+5HeGG5fqJ2G5tW+vizRiBSybvxbAIZkx5U8qItZVV+j
-         dzPf4DlyelQ7XLqsp97tztvMZs/KxahpHHC2qN0agvJ2Nnn+wd721Bd97LE5Hh5gKrG2
-         B8MQ==
+        d=fairphone.com; s=fair;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NpkG2iR0UwWdydoahMJc9hyZ5gZYg9PaDSDM09B2by8=;
+        b=hAXkKOvRnZeyOHvhWhrsKr+W9+QkGEcmw7NHYO0rLBGVHP/4Tm+JVMd8eBRKLMaAJT
+         KJpveSZmD19bTLd8kM5JGxm5gG1WwIqD2jMEggSDyAPkJDdtIFbnQSwIzZNyNoKvg+HZ
+         ceef176g3aG4BL1TFlLNh80cpEVuY6bWtUEP8ZXjY1XSxE7Rm0pnd9PhqYEBE0KhSyqy
+         DBwlnNsId2bH5uromjldB2xxI+Mf6fjcGINxNjQWztfudoFk1fOMhVn0zErpdM6pl4ba
+         xKW1rGgppefIhvZfqp/c5oOC+CPvWFQsd8fAfGNqrwXK8T5XY1taEQlKmo64sG75aajQ
+         VmyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hcacv4C/Ndszi4c1+3X/NkZcmh9g/VIcIhHnZLgTk1Q=;
-        b=3QvAaFp9u2/fDOwcd+LdtPn9EdEjeAZrorLQdJzsuVJpI6rsOHwTmjEjaJ0r60Kb9P
-         2OudBTrR5j+MsfFf6LqbyL3J9nPIYbwthHuzi+fq8ZJwjIurLvemYeZ+yEAcw+PKbmPk
-         aQt1AYG7kK/mdUhXl/LmwC5V70GQE6mcaskCNRHatQN3Tpy2rD2J634srzTqeIeu4Uao
-         cXVLbpCFyLrCvsulLtWmn+YOjVW3QEbu+JS6BoOLJUsOr4D5ZYEbM6Dj0hBV7Z7p0JmV
-         SmUdhgl2m5XwZMTWYqPbnn4A7dk7vNWm83dPpFZCnb8LHw8B8U3j9SLlW2xbPP+zping
-         F9bg==
-X-Gm-Message-State: AFqh2kpjuby1obb45YtqU7wfOrWFQsIHrpbw9eA+0o/9gevGg9QZYUBU
-        RuiwnSU+l37JBHkmx5ua6WI2Eg==
-X-Google-Smtp-Source: AMrXdXsUlGHYvYlldam47AoNC0W35ATwpNwr+TFul48LTnk/dNvyQBHUj9gg0w+z8wWmktTDFwOirw==
-X-Received: by 2002:a05:600c:3485:b0:3d1:ee6c:f897 with SMTP id a5-20020a05600c348500b003d1ee6cf897mr39273405wmq.3.1673010026593;
-        Fri, 06 Jan 2023 05:00:26 -0800 (PST)
-Received: from [192.168.1.102] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id n7-20020a05600c4f8700b003c6bd12ac27sm1957714wmq.37.2023.01.06.05.00.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Jan 2023 05:00:26 -0800 (PST)
-Message-ID: <2dc8f878-f89a-4773-1cc9-3ca7c620f32c@linaro.org>
-Date:   Fri, 6 Jan 2023 14:00:24 +0100
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NpkG2iR0UwWdydoahMJc9hyZ5gZYg9PaDSDM09B2by8=;
+        b=pdec70R9PG+ywVNaROyHVTXK5J3N1IFM4sHawZIqd1KvshULk0/RfGM8wqaTVi4XyZ
+         K+oIl/iq2TCOKE+tphF3jGIbaZzorQjAYMJwc4cFRX9Y+7wUoOGKIiuOG9iPD+k1tb0f
+         VQn0Mye5lcd/cVKvrms+KwYyOhRphoye3Zj46GInB3lrqmxbvgGkluzlfr3Mai2rVGTc
+         EViAmAxTEj9Hq2i5GBKkGbXfEC38ppfUvYPRbeHBSZqL9M8zg0HMbpXOJL6g5qZb2c0A
+         hmR5oDwiQVaFjcw/ZZoJORZc7oYyl/Kl6vgkKWN4Y727b0T4ON6dYhTxWl187rBXLhND
+         SUvw==
+X-Gm-Message-State: AFqh2kpk8JN3B7x9dpOTDGYQy8EegW/FP8aXbh4lfxrC4tiOzxpDyKen
+        mY0UX8u7pX/IU/7ilG3WzVhLeA==
+X-Google-Smtp-Source: AMrXdXtCz2VxsduHFn7Iu/9+O5xy6oPKtf5ciiIpoxGaBNjyjW6LzJn4v6l+97kvsAcLckwVhP9ZCg==
+X-Received: by 2002:a17:907:a08d:b0:7c0:dac7:36d8 with SMTP id hu13-20020a170907a08d00b007c0dac736d8mr49899341ejc.10.1673019590109;
+        Fri, 06 Jan 2023 07:39:50 -0800 (PST)
+Received: from [10.0.0.3] (217-149-174-217.nat.highway.telekom.at. [217.149.174.217])
+        by smtp.gmail.com with ESMTPSA id gx8-20020a170906f1c800b007aed2057eacsm496235ejb.221.2023.01.06.07.39.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Jan 2023 07:39:49 -0800 (PST)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/2] Support ADC5_BAT_ID_100K_PU and use on PM7250b
+Date:   Fri, 06 Jan 2023 16:39:41 +0100
+Message-Id: <20230106-pm7250b-bat_id-v1-0-82ca8f2db741@fairphone.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH 1/3] dt-bindings: pinctrl: msm8226: Add General Purpose
- clocks
-Content-Language: en-US
-To:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
-        linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAL1AuGMC/x2NWwqDMBAAryL77cImxRR6FRHJY60LGiXRUhDv3
+ qWfMzDMBZWLcIVXc0Hhj1TZsoJpG4izz29GScpgyT7IkMN9fdqOAgZ/jJLQUEfRTi6RcaBR8JUx
+ FJ/jrFk+l0XlXniS7//SD/f9A0KVect1AAAA
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230106114403.275865-1-matti.lehtimaki@gmail.com>
- <20230106114403.275865-2-matti.lehtimaki@gmail.com>
- <b866e6e1-da10-9152-8bda-966015998877@linaro.org>
- <2a6748b5-df3b-b3a7-f17a-664aab030b48@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <2a6748b5-df3b-b3a7-f17a-664aab030b48@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.11.2
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 06/01/2023 13:41, Matti Lehtimäki wrote:
-> On 6.1.2023 14.32, Krzysztof Kozlowski wrote:
->> On 06/01/2023 12:44, Matti Lehtimäki wrote:
->>> +                blsp_uart3, blsp_uart4, blsp_uart5, cam_mclk0,
->>> cam_mclk1, +                gp0_clk, gp1_clk, sdc3, wlan ]
->>
->> Driver does not support them (and there is no driver change, unless
->> you cc-ed people selectively...).
-> 
-> The driver changes are in patch number 2 of the series, I used
-> git send-mail with a cc script, which uses get_maintainer.pl to
-> get the needed addresses for each patch, to send the patches. It
-> probably didn't send every patch to everyone and would need some
-> improvement.
+Add the bat_id channel to vadc driver and add channel to pm7250b dts.
 
-Ah, ok, such method is recommended for big patchsets. In regular cases
-please Cc everyone for all patches. I am using this one:
+To: Andy Gross <agross@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>
+To: Jonathan Cameron <jic23@kernel.org>
+To: Lars-Peter Clausen <lars@metafoo.de>
+To: Rob Herring <robh+dt@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht
+Cc: phone-devel@vger.kernel.org
+Cc: linux-arm-msm@vger.kernel.org
+Cc: linux-iio@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-https://pastebin.com/HAjuht68
+---
+Luca Weiss (2):
+      iio: adc: qcom-spmi-adc5: define ADC5_BAT_ID_100K_PU channel
+      arm64: dts: qcom: pm7250b: Add BAT_ID vadc channel
+
+ arch/arm64/boot/dts/qcom/pm7250b.dtsi | 8 ++++++++
+ drivers/iio/adc/qcom-spmi-adc5.c      | 2 ++
+ 2 files changed, 10 insertions(+)
+---
+base-commit: 88603b6dc419445847923fcb7fe5080067a30f98
+change-id: 20230106-pm7250b-bat_id-1050c2f6d016
 
 Best regards,
-Krzysztof
-
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
