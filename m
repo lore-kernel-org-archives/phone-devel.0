@@ -2,61 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9EBAC4708D
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Jan 2023 12:41:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4269AC54EBF
+	for <phone-devel@archiver.kernel.org>; Fri,  6 Jan 2023 13:01:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232803AbjAFMl3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 6 Jan 2023 07:41:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34878 "EHLO
+        id S234369AbjAFNAt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 6 Jan 2023 08:00:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233605AbjAFMlY (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 6 Jan 2023 07:41:24 -0500
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D16769B24;
-        Fri,  6 Jan 2023 04:41:23 -0800 (PST)
-Received: by mail-lj1-x230.google.com with SMTP id g14so1335776ljh.10;
-        Fri, 06 Jan 2023 04:41:23 -0800 (PST)
+        with ESMTP id S234861AbjAFNAl (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 6 Jan 2023 08:00:41 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BBBE728B7
+        for <phone-devel@vger.kernel.org>; Fri,  6 Jan 2023 05:00:39 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id bi26-20020a05600c3d9a00b003d3404a89faso3669336wmb.1
+        for <phone-devel@vger.kernel.org>; Fri, 06 Jan 2023 05:00:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=2IEXWb90A2ORKetFHJM3fQKwX37z+1Oer7Os7LHk7HE=;
-        b=TToPC1P90xgzIbNwuuuPO4EtE2wkqj9SO4p4W2r03VQ4DB+lCy1UxHBl4TlEQEF+Ii
-         REkY0Tb0Xqoar17Mi6Dfluz05qJhRQCLjbLp/iW7FWhe3WeGnU9RjqCHtPHYG8agEMd4
-         7mrPUGPArHaLyP4c2fhxyYabgnTD/rKJOuL2HapZB4e5yEAA1WqjcG2fLeU/fM45fo+M
-         9Cbl4hKp/BqbXX9h9z33NOoFaHa7wdVZY5RKODyx6jkQKYD8gai863vT7tGHsZJFz5a6
-         9oWax3naEbnKT9zbUYkVEBv/3VuaG7CFxN8sM95mR/4hIVuW7kT2tGOE1Zk/H20SUilf
-         EFPw==
+        bh=lgWKN4BC25iQsFl18LVmSiEqTMGjTidigfA1GhXpKMk=;
+        b=cm+5t3LsBGEAqZdKRk9YLkNRRlSly53rX9jK5aKMyeyncspEFhHenvFoOE/nMr5UK7
+         szFawdRCazhPAEw7BHWdmr5lFACZyJNjRnKJGpdwvWdm6coJog/e6tAPczn67J19omFe
+         A1slEvDZoiTJe1nuxkk3WAyjBcpUN69vACJNfp29KBVzy/3l1NrLerBCimGi8UjrIpLA
+         T5xozCSSiaYH9xbZmOo8kS1XVR8dx3aqlHui/BpceQTy+I4wd9KzjArgJX4ICv3wYPIW
+         eT3Nmp4GB6fWq0XKKTQ/sHjuE5u2INgTJWsZJSQAqaohXR5bCEJ6QSOmXczoz15g0pTN
+         z81A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2IEXWb90A2ORKetFHJM3fQKwX37z+1Oer7Os7LHk7HE=;
-        b=oiNA+XLOeVHNw4xYB8tQrp5ygObP4CFTb7jimECNuunmqCvghzqTatPl9MkacHTj1N
-         ix+LFhn/hDHLTZmctJymSdXiZhSPkcnTHLZAojkqwY15KlCzKqRif8SmfG9tSP20ip35
-         7vHal5Kv84TWsFgDuux1GmrmnXYRVqrJs6VoHt5Kq1bAZqT/hC+iCi5KON0wz0C5GNJZ
-         e9Qt0IvXf6LUZkdNgxl5Nf1NOPANU+4d0GDIFcH0K9SaMlByLuTZJ9wKdwO4XYT2AjGd
-         XJTONEl1HlFoRwmUfX2u2sQasnQsz98ewS17hWrTaewlLNvddTub81ExD7GzyzQ4//E0
-         IOlg==
-X-Gm-Message-State: AFqh2kqu8mRt/yaGYBdzdOPY4noOHafWSnIrCfUFgESAUT+bt/w39uJP
-        lzntefLZaXrBiLpdu1jI54Q=
-X-Google-Smtp-Source: AMrXdXuuvyBfKUIHCcRdIkLZGHWR3DULmqKZZWFxcW+qVza2hQQ693JqcAig2NKuMvKRn6zqQzjK7A==
-X-Received: by 2002:a2e:8256:0:b0:27f:ecef:bec7 with SMTP id j22-20020a2e8256000000b0027fecefbec7mr4992055ljh.20.1673008881754;
-        Fri, 06 Jan 2023 04:41:21 -0800 (PST)
-Received: from [192.168.0.108] (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
-        by smtp.googlemail.com with ESMTPSA id be40-20020a05651c172800b0027ff5abbc96sm93018ljb.130.2023.01.06.04.41.21
+        bh=lgWKN4BC25iQsFl18LVmSiEqTMGjTidigfA1GhXpKMk=;
+        b=wX5ZJmucqtLnJKK3NL79u1lyZVdTGekCBRp7et8gRItTBfSymvCPIfRmMk44zndUDl
+         QcX+U/8aQdSLbWdl99rYae/PFBd5ncO0XHhYBeENX6eC/SGZMGk/stdfyMsz12mZOGNi
+         9fKLOAzolquQZK4VBMbyyY19l3HmS4PX2/YKNI6yJImiGEd0LQfODMt5bjsWUHHAiJkL
+         mYlr4dHc+vJqkNclUdH4uI4oEbMZwcqA43MWFZlWfPH8DxZ9Po63feMmEv8frpO92iaX
+         X9BJ/ze3knT5Jmq9C1LjoXMCpbADtGGkmY7ybI+xfkz+lryfT9T9E7NzGP4QYlfDZuoU
+         /B5A==
+X-Gm-Message-State: AFqh2kr9AAPdq6E7JKEWuXORu56qh87cslohETtVDSWsSQi35bgaEXQC
+        b8bvGwz+yl0tfHbstTGtpy8fJw==
+X-Google-Smtp-Source: AMrXdXtU4rPoND/C7GvhipJUtrrgA1BqCPGW/S1ljlBzIbPVuvZcSavg+Qml/zEh5Hsk2OpdpjYvUA==
+X-Received: by 2002:a05:600c:3b2a:b0:3d9:7950:dc6d with SMTP id m42-20020a05600c3b2a00b003d97950dc6dmr28914413wms.40.1673010038168;
+        Fri, 06 Jan 2023 05:00:38 -0800 (PST)
+Received: from [192.168.1.102] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id m35-20020a05600c3b2300b003d973e939d3sm1874301wms.1.2023.01.06.05.00.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Jan 2023 04:41:21 -0800 (PST)
-Message-ID: <2a6748b5-df3b-b3a7-f17a-664aab030b48@gmail.com>
-Date:   Fri, 6 Jan 2023 14:41:20 +0200
+        Fri, 06 Jan 2023 05:00:37 -0800 (PST)
+Message-ID: <4486aeb5-ce70-3792-96e3-249d2e5223c8@linaro.org>
+Date:   Fri, 6 Jan 2023 14:00:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
+ Thunderbird/102.6.1
 Subject: Re: [PATCH 1/3] dt-bindings: pinctrl: msm8226: Add General Purpose
  clocks
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+Content-Language: en-US
+To:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
         linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
@@ -69,30 +70,25 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <20230106114403.275865-1-matti.lehtimaki@gmail.com>
  <20230106114403.275865-2-matti.lehtimaki@gmail.com>
- <b866e6e1-da10-9152-8bda-966015998877@linaro.org>
-Content-Language: en-US
-From:   =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>
-In-Reply-To: <b866e6e1-da10-9152-8bda-966015998877@linaro.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230106114403.275865-2-matti.lehtimaki@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 6.1.2023 14.32, Krzysztof Kozlowski wrote:
-> On 06/01/2023 12:44, Matti Lehtimäki wrote:
->> +                blsp_uart3, blsp_uart4, blsp_uart5, cam_mclk0,
->> cam_mclk1, +                gp0_clk, gp1_clk, sdc3, wlan ]
+On 06/01/2023 12:44, Matti Lehtimäki wrote:
+> Document the general purpose clock functions that are found on MSM8226.
 > 
-> Driver does not support them (and there is no driver change, unless
-> you cc-ed people selectively...).
+> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+> ---
+>  .../devicetree/bindings/pinctrl/qcom,msm8226-pinctrl.yaml     | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-The driver changes are in patch number 2 of the series, I used
-git send-mail with a cc script, which uses get_maintainer.pl to
-get the needed addresses for each patch, to send the patches. It
-probably didn't send every patch to everyone and would need some
-improvement.
 
--Matti
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
+Best regards,
+Krzysztof
 
