@@ -2,167 +2,106 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF668C54EF1
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Jan 2023 11:45:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35FB4C4708D
+	for <phone-devel@archiver.kernel.org>; Fri,  6 Jan 2023 12:33:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233754AbjAFLpD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 6 Jan 2023 06:45:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38164 "EHLO
+        id S231436AbjAFMd2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 6 Jan 2023 07:33:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233857AbjAFLox (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 6 Jan 2023 06:44:53 -0500
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB10D7288B;
-        Fri,  6 Jan 2023 03:44:42 -0800 (PST)
-Received: by mail-lf1-x12b.google.com with SMTP id g13so1612558lfv.7;
-        Fri, 06 Jan 2023 03:44:42 -0800 (PST)
+        with ESMTP id S232477AbjAFMcy (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 6 Jan 2023 07:32:54 -0500
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FC26676FB
+        for <phone-devel@vger.kernel.org>; Fri,  6 Jan 2023 04:32:52 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id h16so1124964wrz.12
+        for <phone-devel@vger.kernel.org>; Fri, 06 Jan 2023 04:32:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hTcl600pDzrnpdfWBl9TTlz9m8e040eSk0hBjsXBcRU=;
-        b=KNnS6I5xYipooWbgpn7CNe+94PFxkqXg/rWma/WYNFXBP8rcC05koHrfEEUePGLNGa
-         HDww6+kbZ5xI1QP21zRiZvkpWVLk44vSxUHQL6YXl2W87Hj7ZaC4CPwy9dpJ6yW5FKXt
-         mE4//IJq/Ek0Uq9O72a95oZCGGoqvqFT73LkOQTjsIvV8anAQ5keKO6H5oNa+kfc+R8G
-         GwePEqSzqMbNiXj5g54WoLi17QaUv1JL6SpnN8zW2X8/tpliEedkK7HvOo62vSYqNMjT
-         rZ0+6ifN5duIdOwp3foLGiHO6EBBCmMxZ9P7lo5SBj9W7azdHS5tyhXSL3q42rK8vFxP
-         p0hg==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=da10G3UmxKY1sOpQGZA/k2Utzz3wOV8wVJe9TJzAXVY=;
+        b=RpCTodbz9uuZKViQh3ZnI5T/0FO8utQhtXyfKfpWeHcB0eSOvCDMdwYXsFQUSAPP65
+         8FQKvzag/Eedi/4+I2gIOiO17cCdSNnSp+yU8lutEkFMzWxU6C9FUd0N2mr4ak06zcER
+         72IhBIZkP6ahebWgPVgk5I35d/BzujhU8p+RLUaQcttGT41ClH3krumgRglgBktSEAOI
+         5+nNm64l5VaoZFcLP2j1MTM3ke4lsH95T1Ej+gJtgbsUyj4uSTAmvCKR7av/SgOPo9K/
+         ubLbRMdq40TqKWNSmGFJWAWA4PIbq+I9P4tnw9Q+QZb5TuxRQJ77y8CWyXDHwFDlpf6Z
+         hqSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hTcl600pDzrnpdfWBl9TTlz9m8e040eSk0hBjsXBcRU=;
-        b=lVWV9aPOOIPKzFLe8eo2K3tVaU8tkGydAsrxgA6++MCu1uQ+3Kf0T2TJDgMlz9fb9v
-         tH0AQcS0RhvygcrobbkpMu5oci2UznIhg0RzcB1oq+NQnW/fgvC0OYQnsQZnO+tgbQDv
-         OVblIkoOkPkaoD4zj0Pdj+01wxeKeFYZPojlonUWtecfhH2nntsySVYgEqa6NgFmsLnT
-         FwQIKXAGHaJ6hi5gP2nudFUVjEP+P+BF1SfCpKhlIJZhV5GxDpy3WDTSUN0gzZBx4Orn
-         6FVisUIv6WjACWWKIRjYkUJOKOUB4ozQUDN4mcKvhI45ruSSqeRxzwo3wnfyyDaiVms3
-         e0Iw==
-X-Gm-Message-State: AFqh2krdotkHLgOtJi7UN2GyyRBv1JC0gKGPhGSVfmMeQuOxVYXJnbnt
-        iZso3/ltPn393TMmygkPNsQ+kbOHSh5xRg==
-X-Google-Smtp-Source: AMrXdXvFufon134Onw4Dr4xScWBuvH2nQ1XKTYmgj/BTXI9cXbUafI8ih9OHQwdTqtWVqfPizBb/Bg==
-X-Received: by 2002:ac2:5ec9:0:b0:4b5:b6e8:bb53 with SMTP id d9-20020ac25ec9000000b004b5b6e8bb53mr14473916lfq.24.1673005480945;
-        Fri, 06 Jan 2023 03:44:40 -0800 (PST)
-Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
-        by smtp.gmail.com with ESMTPSA id u3-20020ac258c3000000b004b5872a7003sm129747lfo.98.2023.01.06.03.44.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Jan 2023 03:44:40 -0800 (PST)
-From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-To:     linux-arm-msm@vger.kernel.org
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=da10G3UmxKY1sOpQGZA/k2Utzz3wOV8wVJe9TJzAXVY=;
+        b=OJswxcWGWkaQ+7GQcgUgn/HROY2wS9wTQXYF548VXa/JjONYPg4iPAeh9rsM++AXco
+         fH41w+0+KgwJxowEV71AQa+dlnum6BpTF+ZPhXw/Fpw31Nb2tcyjMzQuLVu19KoB6mjP
+         KVIKW+nWTzNQ4RSLFGMfDNM3GV3wsC5ignRCyGdGiJWq4hafNUfJEUTHdqaBwFddDlfx
+         D+MRnWXGhxcI0/UkCG2xxSClRnnPPMKkLYg8HtWXLzJ0JeqttodVlD8+0d3JDPDpf+RA
+         Zb5w9sHyg5bppuf/wpon8zZVL/QVp/5NnpIcwhriOMSXX3utlXHFrt+6deb7dlhderHv
+         xgJQ==
+X-Gm-Message-State: AFqh2kqS7X2XqiQQzWz48uCYtcTIpUP4B1K4uU3kW89PXOaSKHQmKY2P
+        Cs7HAhOCKrpNuOcGy2l36Nh4Mg==
+X-Google-Smtp-Source: AMrXdXu7aCpLhDm4tVtPRj9/+0rOw4/1fINTlypLBXTTrVwLtIA8dvcsUoa/l7qsob4sQ4Q8sog+Mg==
+X-Received: by 2002:a5d:6508:0:b0:2b7:88d3:d224 with SMTP id x8-20020a5d6508000000b002b788d3d224mr2424755wru.55.1673008371049;
+        Fri, 06 Jan 2023 04:32:51 -0800 (PST)
+Received: from [192.168.1.102] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id bx9-20020a5d5b09000000b0023662245d3csm1065232wrb.95.2023.01.06.04.32.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Jan 2023 04:32:50 -0800 (PST)
+Message-ID: <b866e6e1-da10-9152-8bda-966015998877@linaro.org>
+Date:   Fri, 6 Jan 2023 13:32:48 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH 1/3] dt-bindings: pinctrl: msm8226: Add General Purpose
+ clocks
+Content-Language: en-US
+To:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
+        linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] ARM: dts: qcom: apq8026-samsung-matisse-wifi: Add display backlight
-Date:   Fri,  6 Jan 2023 13:44:03 +0200
-Message-Id: <20230106114403.275865-4-matti.lehtimaki@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230106114403.275865-1-matti.lehtimaki@gmail.com>
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 References: <20230106114403.275865-1-matti.lehtimaki@gmail.com>
-MIME-Version: 1.0
+ <20230106114403.275865-2-matti.lehtimaki@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230106114403.275865-2-matti.lehtimaki@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Uses ti,lp8556 backlight with clk-pwm.
+On 06/01/2023 12:44, Matti Lehtimäki wrote:
+> Document the general purpose clock functions that are found on MSM8226.
+> 
+> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+> ---
+>  .../devicetree/bindings/pinctrl/qcom,msm8226-pinctrl.yaml     | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,msm8226-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,msm8226-pinctrl.yaml
+> index 3b79f5be860b..6e3808065845 100644
+> --- a/Documentation/devicetree/bindings/pinctrl/qcom,msm8226-pinctrl.yaml
+> +++ b/Documentation/devicetree/bindings/pinctrl/qcom,msm8226-pinctrl.yaml
+> @@ -66,8 +66,8 @@ $defs:
+>          enum: [ gpio, cci_i2c0, blsp_uim1, blsp_uim2, blsp_uim3, blsp_uim5,
+>                  blsp_i2c1, blsp_i2c2, blsp_i2c3, blsp_i2c4, blsp_i2c5, blsp_spi1,
+>                  blsp_spi2, blsp_spi3, blsp_spi5, blsp_uart1, blsp_uart2,
+> -                blsp_uart3, blsp_uart4, blsp_uart5, cam_mclk0, cam_mclk1, sdc3,
+> -                wlan ]
+> +                blsp_uart3, blsp_uart4, blsp_uart5, cam_mclk0, cam_mclk1,
+> +                gp0_clk, gp1_clk, sdc3, wlan ]
 
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
----
- .../dts/qcom-apq8026-samsung-matisse-wifi.dts | 59 +++++++++++++++++++
- 1 file changed, 59 insertions(+)
+Driver does not support them (and there is no driver change, unless you
+cc-ed people selectively...).
 
-diff --git a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
-index 15b9590ba07b..848cfda64e5a 100644
---- a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
-+++ b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
-@@ -23,6 +23,14 @@ aliases {
- 		display0 = &framebuffer0;
- 	};
- 
-+	backlight_pwm: pwm {
-+		compatible = "clk-pwm";
-+		#pwm-cells = <2>;
-+		clocks = <&mmcc CAMSS_GP0_CLK>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&backlight_pwm_default_state>;
-+	};
-+
- 	chosen {
- 		#address-cells = <1>;
- 		#size-cells = <1>;
-@@ -80,6 +88,45 @@ key-volume-up {
- 		};
- 	};
- 
-+	i2c-backlight {
-+		compatible = "i2c-gpio";
-+		sda-gpios = <&tlmm 20 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+		scl-gpios = <&tlmm 21 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&backlight_i2c_default_state>;
-+
-+		i2c-gpio,delay-us = <4>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		backlight@2c {
-+			compatible = "ti,lp8556";
-+			reg = <0x2c>;
-+
-+			dev-ctrl = /bits/ 8 <0x80>;
-+			init-brt = /bits/ 8 <0x3f>;
-+			pwm-period = <100000>;
-+
-+			pwms = <&backlight_pwm 0 100000>;
-+			pwm-names = "lp8556";
-+
-+			rom-a0h {
-+				rom-addr = /bits/ 8 <0xa0>;
-+				rom-val = /bits/ 8 <0x44>;
-+			};
-+			rom-a1h {
-+				rom-addr = /bits/ 8 <0xa1>;
-+				rom-val = /bits/ 8 <0x6c>;
-+			};
-+			rom-a5h {
-+				rom-addr = /bits/ 8 <0xa5>;
-+				rom-val = /bits/ 8 <0x24>;
-+			};
-+		};
-+	};
-+
- 	reg_tsp_1p8v: regulator-tsp-1p8v {
- 		compatible = "regulator-fixed";
- 		regulator-name = "tsp_1p8v";
-@@ -418,6 +465,18 @@ accel_int_default_state: accel-int-default-state {
- 		bias-disable;
- 	};
- 
-+	backlight_i2c_default_state: backlight-i2c-default-state {
-+		pins = "gpio20", "gpio21";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	backlight_pwm_default_state: backlight-pwm-default-state {
-+		pins = "gpio33";
-+		function = "gp0_clk";
-+	};
-+
- 	muic_int_default_state: muic-int-default-state {
- 		pins = "gpio67";
- 		function = "gpio";
--- 
-2.34.1
+Best regards,
+Krzysztof
 
