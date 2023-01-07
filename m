@@ -2,105 +2,111 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81FC5C54EF0
-	for <phone-devel@archiver.kernel.org>; Fri,  6 Jan 2023 15:40:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C1256C54EBC
+	for <phone-devel@archiver.kernel.org>; Sat,  7 Jan 2023 10:21:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235621AbjAFPkE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 6 Jan 2023 10:40:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51634 "EHLO
+        id S230509AbjAGKVU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 7 Jan 2023 05:21:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235465AbjAFPj5 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 6 Jan 2023 10:39:57 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBA127F460
-        for <phone-devel@vger.kernel.org>; Fri,  6 Jan 2023 07:39:53 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id qk9so4276330ejc.3
-        for <phone-devel@vger.kernel.org>; Fri, 06 Jan 2023 07:39:53 -0800 (PST)
+        with ESMTP id S230243AbjAGKVQ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 7 Jan 2023 05:21:16 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08B313633E
+        for <phone-devel@vger.kernel.org>; Sat,  7 Jan 2023 02:21:15 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id g13so5491230lfv.7
+        for <phone-devel@vger.kernel.org>; Sat, 07 Jan 2023 02:21:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IrFALWtjvyHrEODn7/AmsHwOIckZb4wGAaCGF9DBAVM=;
-        b=Jmun4CjNGliRP410OzyR1BUUiSsCJ5Bm43gNMHYkxiwSL9xVDWlb5av85NU3qMEPti
-         w5p3ya5HuRHHodDPbKvNMLeJOvWHcuAKDkQ5r4BnjNISCMSEX7OFnr+CZb3Kd0/iGwdI
-         5+EEGGMjZ//u2TybrowJ8g5RlcHu5IxTg+Qe0VYOUl4ZJIcTQKpAuTordn4c0ioA3GaZ
-         zy0HJkBPMO07WRa++itg1FVeDszYzXQ+6dQPOAqDjsYcUp72DcyDkmK8fiI1yvxy3DVH
-         tz4FbtcaVS5lM8n0afLrNDLR/qgfNIfGCVUUK61tb9tIE8ZfINNPc3M16jF9Mgg1KLLE
-         oTHw==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9PznVjfd3B/ZmrH40OQITBZTOBnAxAksocBkNKDAfKY=;
+        b=IzYijjztQ/k7BxPIpYTpfFtRhIcYe4oVXWjVXwgRfqcJM3Q/DOajytwc5ZK9sK9WVK
+         GS1jhCONErzWS7uvcr5bCcUihxra7OyJo7iSh+edOM3JSO2FQYRTI9h3hrqTjqeBrk+W
+         m9PNQPZ8rXEhNT5+GwHLLeuTrDeD6rC2yzGlHxxXyjdlZ4+YSqc7DeFp5vygscj5qfJN
+         ot00PWvjtxENUGlv8rHnGOT+A/9sj/UFU925pb3F3tVDf335/hAKkYsY1fgNSUcQouxX
+         AoYABrR/IUNLpm4e9SV32tW3tP/OVnjTa4x34HQa7pzj5Aav36lKDIA5NV3TpWD6VgBR
+         gLRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IrFALWtjvyHrEODn7/AmsHwOIckZb4wGAaCGF9DBAVM=;
-        b=UyKmZR0YXutCMQIAIIcFHFA0uduHiDIR+rrVSVfUXMZUdVg9pZrhNmI9hlErgJjifp
-         Rza3p4ZXXdS0dG+CistUghYAZ2cJ+LEMyvvy2SyO7J7NY6f5ukg0YRHpJlJkG7fig2BU
-         7nQHfhW/kNHSpu96J8QMlXNtcVhzdIqkS5J1ieFobssNpq/Xt+Er0wtPABDOAERp27lZ
-         mEE4AdrfoRcGoRet8weALj4b0OsECWetco2t4UH6hEkEVcg7mE4lN/IH0XN5Z3nEA6Pz
-         Xajb6cckL/ZjXbqohqVG9BTgQ1yVHTFqDJoDwYe6Cv0qbnJi7Jtfo1sRahX8UTI7TG1/
-         jJPg==
-X-Gm-Message-State: AFqh2krG+Ty8moeoJBD6cvyKzsmHK+xiUL4EhdKDqPdXjwBvcLozxmVf
-        nUVHElpuo4L7x8nDRBfNAPPzag==
-X-Google-Smtp-Source: AMrXdXu7mftrNvtn7RupRJFbxPZJo8dYVuvhmeBH27k1Q4dQpg1FR8BIZbUZvzI2v9kBDXiCohL1Bg==
-X-Received: by 2002:a17:907:c081:b0:84d:207d:c00e with SMTP id st1-20020a170907c08100b0084d207dc00emr2369537ejc.46.1673019592525;
-        Fri, 06 Jan 2023 07:39:52 -0800 (PST)
-Received: from [10.0.0.3] (217-149-174-217.nat.highway.telekom.at. [217.149.174.217])
-        by smtp.gmail.com with ESMTPSA id gx8-20020a170906f1c800b007aed2057eacsm496235ejb.221.2023.01.06.07.39.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Jan 2023 07:39:52 -0800 (PST)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Fri, 06 Jan 2023 16:39:42 +0100
-Subject: [PATCH 2/2] arm64: dts: qcom: pm7250b: Add BAT_ID vadc channel
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9PznVjfd3B/ZmrH40OQITBZTOBnAxAksocBkNKDAfKY=;
+        b=rj0KhlpkoT9HDEUvXk7TYdYdokbn5prRXBBvu/YszcX+Es2pwSaR4uQ1UDBh6NVc+O
+         qlLEqAFbU37ZllduxSZ/wjrWFMXvKWpmXpf/+5H0sPrY7PcoipVTnXMQgQsTEjCEzWk1
+         Q2tJn8oQ5ysi0gDZe636Pv6hoRTAtKKh+EusuqWbieotV3L8FKgowKe05dzoZwR2Lkl1
+         mpjWiNinJQdN7MESNQy+zPgSfMZmyu5mL9On4/VrAgNuGw4e91IwoT7xqIpmVxZiOajL
+         f/mK/RBIQtm5y3IykbJ0pcDN9YfpuGIl7mGf+qvVDKBbrD7FDFikBEUHHJq10SLM9HFK
+         PBOQ==
+X-Gm-Message-State: AFqh2kpFbh13qvBAHS1rbiucJZtMfQfYxFNgrlqE2WgWAbM5QejBRhpX
+        tt+PMpaqcQnDP0REFfIcpT0OJw==
+X-Google-Smtp-Source: AMrXdXtcpppwmWOHrHPYd5u2zJ9iw7R1EIkpliKjIk+7iCO/JsVL5HPXHmyUygkJIdAziw+gimNd3w==
+X-Received: by 2002:a05:6512:3901:b0:4a4:68b7:f892 with SMTP id a1-20020a056512390100b004a468b7f892mr19676009lfu.54.1673086873397;
+        Sat, 07 Jan 2023 02:21:13 -0800 (PST)
+Received: from [192.168.1.101] (abxi45.neoplus.adsl.tpnet.pl. [83.9.2.45])
+        by smtp.gmail.com with ESMTPSA id c18-20020a196552000000b004b567e1f8e5sm528300lfj.125.2023.01.07.02.21.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 07 Jan 2023 02:21:13 -0800 (PST)
+Message-ID: <dab1227b-2ffb-5a8e-9c7b-f2a31d100b16@linaro.org>
+Date:   Sat, 7 Jan 2023 11:21:11 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230106-pm7250b-bat_id-v1-2-82ca8f2db741@fairphone.com>
-References: <20230106-pm7250b-bat_id-v1-0-82ca8f2db741@fairphone.com>
-In-Reply-To: <20230106-pm7250b-bat_id-v1-0-82ca8f2db741@fairphone.com>
-To:     Andy Gross <agross@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: pm7250b: Add BAT_ID vadc channel
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.11.2
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20230106-pm7250b-bat_id-v1-0-82ca8f2db741@fairphone.com>
+ <20230106-pm7250b-bat_id-v1-2-82ca8f2db741@fairphone.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230106-pm7250b-bat_id-v1-2-82ca8f2db741@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add a node describing the ADC5_BAT_ID_100K_PU channel with the
-properties taken from downstream kernel.
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/pm7250b.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-index 61f7a6345150..d709d955a2f5 100644
---- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-@@ -110,6 +110,14 @@ adc-chan@1e {
- 				label = "chg_mid";
- 			};
- 
-+			adc-chan@4b {
-+				reg = <ADC5_BAT_ID_100K_PU>;
-+				qcom,hw-settle-time = <200>;
-+				qcom,pre-scaling = <1 1>;
-+				qcom,ratiometric;
-+				label = "bat_id";
-+			};
-+
- 			adc-chan@83 {
- 				reg = <ADC5_VPH_PWR>;
- 				qcom,pre-scaling = <1 3>;
+On 6.01.2023 16:39, Luca Weiss wrote:
+> Add a node describing the ADC5_BAT_ID_100K_PU channel with the
+> properties taken from downstream kernel.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
--- 
-2.39.0
+Konrad
+>  arch/arm64/boot/dts/qcom/pm7250b.dtsi | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+> index 61f7a6345150..d709d955a2f5 100644
+> --- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+> @@ -110,6 +110,14 @@ adc-chan@1e {
+>  				label = "chg_mid";
+>  			};
+>  
+> +			adc-chan@4b {
+> +				reg = <ADC5_BAT_ID_100K_PU>;
+> +				qcom,hw-settle-time = <200>;
+> +				qcom,pre-scaling = <1 1>;
+> +				qcom,ratiometric;
+> +				label = "bat_id";
+> +			};
+> +
+>  			adc-chan@83 {
+>  				reg = <ADC5_VPH_PWR>;
+>  				qcom,pre-scaling = <1 3>;
+> 
