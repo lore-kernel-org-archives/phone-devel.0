@@ -2,96 +2,98 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 640BFC53210
-	for <phone-devel@archiver.kernel.org>; Sun,  8 Jan 2023 12:51:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6A27C54EBC
+	for <phone-devel@archiver.kernel.org>; Sun,  8 Jan 2023 20:02:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232885AbjAHMvA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 8 Jan 2023 07:51:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33750 "EHLO
+        id S229734AbjAHUCy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 8 Jan 2023 15:02:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230363AbjAHMvA (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 8 Jan 2023 07:51:00 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A22B21AB;
-        Sun,  8 Jan 2023 04:50:59 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A947BB80976;
-        Sun,  8 Jan 2023 12:50:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41E7C433EF;
-        Sun,  8 Jan 2023 12:50:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673182256;
-        bh=rDIT6gOl0JO4Pi6BQxe7HUa29MorRTACERDszgVOHnE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NvemCsLHeLLV+8PVO2pbhxbb52p3xtb96zE7/xXKTz1izmy3Rw0KxsxjRIFJn/SlS
-         oFXd4nidiwMNH23ZaBiUh6nxpg9P1mI2CYC2aQKuaYnCTnJ+BZocXBRtTUum4LhmK2
-         lCftg30KLGlQzvHx82O3xsXbGp7KvX4O0CKEXJVvex175baGrwtul/lzWabC67km8f
-         JPQU9cheLe38Cen77Wj5tFSIg38d9JIJPNq7Hm8wLfpEdMTgo+y3n2jo6MhuZWXScP
-         MasUqRGgcCAx5v9Wofq/ZbAEwj/GxGoTLz5Msdtto1NCPWB4BaRqz3EAv9zXRM+E0H
-         80I/jiXRfWrGA==
-Date:   Sun, 8 Jan 2023 13:04:22 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: adc: qcom-spmi-adc5: define
- ADC5_BAT_ID_100K_PU channel
-Message-ID: <20230108130422.76493bf8@jic23-huawei>
-In-Reply-To: <20230106-pm7250b-bat_id-v1-1-82ca8f2db741@fairphone.com>
-References: <20230106-pm7250b-bat_id-v1-0-82ca8f2db741@fairphone.com>
-        <20230106-pm7250b-bat_id-v1-1-82ca8f2db741@fairphone.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
+        with ESMTP id S229487AbjAHUCw (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 8 Jan 2023 15:02:52 -0500
+X-Greylist: delayed 532 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 08 Jan 2023 12:02:51 PST
+Received: from amity.mint.lgbt (vmi888983.contaboserver.net [149.102.157.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3E2D1F7
+        for <phone-devel@vger.kernel.org>; Sun,  8 Jan 2023 12:02:51 -0800 (PST)
+Received: from amity.mint.lgbt (mx.mint.lgbt [127.0.0.1])
+        by amity.mint.lgbt (Postfix) with ESMTP id 4Nqnp33G1Rz1S5FZ
+        for <phone-devel@vger.kernel.org>; Sun,  8 Jan 2023 14:54:03 -0500 (EST)
+Authentication-Results: amity.mint.lgbt (amavisd-new);
+        dkim=pass (2048-bit key) reason="pass (just generated, assumed good)"
+        header.d=mint.lgbt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mint.lgbt; h=
+        content-transfer-encoding:mime-version:references:in-reply-to
+        :x-mailer:message-id:date:subject:to:from; s=dkim; t=1673207643;
+         x=1674071644; bh=+bQ/DTUcXr/BuXPX8xB0uQZRzOVOF3zqXUU8A33G6WU=; b=
+        hFFW7nmKUvRxVzmSchkBoycOqCXSMtKw1sFoosUArn9z6/ha8HRsZ+32BxwnE5+f
+        BNzWm/UfAobg63CRpSqqvbejb4KoIWITRnEcMbEFbL2P+iC9TMt4vP8GDKK9GlkE
+        8otBQfyARespVvazkp0K42Ey3bWEyqZzN51fEmcJLhIxP7rTHpO9iKNRTGqVLUqm
+        six6d0gRvAT2GvmhkfL/k7KJDw9bscqjNUPxPIm23+gU2phmLgQtkbVsqFYRD6SX
+        JyY3U8fWdIhjRFPr3rj8T+IxxGtdagFC9urKD5v4SoPebL9zJySmoiY8COhA//ca
+        z+9Q+znGPDoaL7EamdrJeQ==
+X-Virus-Scanned: amavisd-new at amity.mint.lgbt
+Received: from amity.mint.lgbt ([127.0.0.1])
+        by amity.mint.lgbt (amity.mint.lgbt [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 7e94H6lZPolP for <phone-devel@vger.kernel.org>;
+        Sun,  8 Jan 2023 14:54:03 -0500 (EST)
+Received: from dorothy.. (unknown [186.105.5.197])
+        by amity.mint.lgbt (Postfix) with ESMTPSA id 4Nqnnr6WSNz1S50l;
+        Sun,  8 Jan 2023 14:53:52 -0500 (EST)
+From:   Lux Aliaga <they@mint.lgbt>
+To:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        vkoul@kernel.org, kishon@kernel.org, alim.akhtar@samsung.com,
+        avri.altman@wdc.com, bvanassche@acm.org, keescook@chromium.org,
+        tony.luck@intel.com, gpiccoli@igalia.com
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
+        phone-devel@vger.kernel.org, martin.botka@somainline.org,
+        marijn.suijten@somainline.org, Lux Aliaga <they@mint.lgbt>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v6 1/6] dt-bindings: ufs: qcom: Add SM6125 compatible string
+Date:   Sun,  8 Jan 2023 16:53:31 -0300
+Message-Id: <20230108195336.388349-2-they@mint.lgbt>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20230108195336.388349-1-they@mint.lgbt>
+References: <20230108195336.388349-1-they@mint.lgbt>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 06 Jan 2023 16:39:41 +0100
-Luca Weiss <luca.weiss@fairphone.com> wrote:
+Document the compatible for UFS found on the SM6125.
 
-> Define the ADC channel used for battery identification purposes so it
-> can be used in drivers.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Applied to the togreg branch of iio.git and pushed out as testing for
-0-day to take a look at it.
+Signed-off-by: Lux Aliaga <they@mint.lgbt>
+Reviewed-by: Martin Botka <martin.botka@somainline.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-If anyone else has comments, then there is still time as I won't push
-this out as a non-rebasing branch for a few days at least
-(and I'm aware I picked it up very quickly :)
-
-
-Thanks,
-
-Jonathan
-
-> ---
->  drivers/iio/adc/qcom-spmi-adc5.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
-> index 821fee60a765..8c33da9de257 100644
-> --- a/drivers/iio/adc/qcom-spmi-adc5.c
-> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
-> @@ -543,6 +543,8 @@ static const struct adc5_channels adc5_chans_pmic[ADC5_MAX_CHANNEL] = {
->  					SCALE_HW_CALIB_DEFAULT)
->  	[ADC5_XO_THERM_100K_PU]	= ADC5_CHAN_TEMP("xo_therm", 0,
->  					SCALE_HW_CALIB_XOTHERM)
-> +	[ADC5_BAT_ID_100K_PU]	= ADC5_CHAN_TEMP("bat_id", 0,
-> +					SCALE_HW_CALIB_DEFAULT)
->  	[ADC5_AMUX_THM1_100K_PU] = ADC5_CHAN_TEMP("amux_thm1_100k_pu", 0,
->  					SCALE_HW_CALIB_THERM_100K_PULLUP)
->  	[ADC5_AMUX_THM2_100K_PU] = ADC5_CHAN_TEMP("amux_thm2_100k_pu", 0,
-> 
+diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Docume=
+ntation/devicetree/bindings/ufs/qcom,ufs.yaml
+index b517d76215e3..42422f3471b3 100644
+--- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
++++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+@@ -29,6 +29,7 @@ properties:
+           - qcom,sc8280xp-ufshc
+           - qcom,sdm845-ufshc
+           - qcom,sm6115-ufshc
++          - qcom,sm6125-ufshc
+           - qcom,sm6350-ufshc
+           - qcom,sm8150-ufshc
+           - qcom,sm8250-ufshc
+@@ -185,6 +186,7 @@ allOf:
+           contains:
+             enum:
+               - qcom,sm6115-ufshc
++              - qcom,sm6125-ufshc
+     then:
+       properties:
+         clocks:
+--=20
+2.39.0
 
