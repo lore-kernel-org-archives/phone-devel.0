@@ -2,144 +2,86 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 342B2C61DB3
-	for <phone-devel@archiver.kernel.org>; Sun,  8 Jan 2023 20:02:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CB8DC54EBD
+	for <phone-devel@archiver.kernel.org>; Sun,  8 Jan 2023 21:37:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233243AbjAHUCz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 8 Jan 2023 15:02:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58652 "EHLO
+        id S234193AbjAHVhZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 8 Jan 2023 16:37:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231378AbjAHUCx (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 8 Jan 2023 15:02:53 -0500
-Received: from amity.mint.lgbt (vmi888983.contaboserver.net [149.102.157.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10A6C10D6
-        for <phone-devel@vger.kernel.org>; Sun,  8 Jan 2023 12:02:51 -0800 (PST)
-Received: from amity.mint.lgbt (mx.mint.lgbt [127.0.0.1])
-        by amity.mint.lgbt (Postfix) with ESMTP id 4NqnpW2jXcz1S5Fc
-        for <phone-devel@vger.kernel.org>; Sun,  8 Jan 2023 14:54:27 -0500 (EST)
-Authentication-Results: amity.mint.lgbt (amavisd-new);
-        dkim=pass (2048-bit key) reason="pass (just generated, assumed good)"
-        header.d=mint.lgbt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mint.lgbt; h=
-        content-transfer-encoding:mime-version:references:in-reply-to
-        :x-mailer:message-id:date:subject:to:from; s=dkim; t=1673207666;
-         x=1674071667; bh=7SGUnv8/9GXAMnrXipF1Gnrfa8E+qEW51nU9dPwZc7E=; b=
-        JFHRwCJ9BlEk12kR3A0jr042Pq97+HuWUT6enkGI18ibTgy+1jCIbr7SEJpAKu3H
-        a2KwGUxn9u6c6phOJcR1cQJyhsqILNxMAJ9+hcYaDTsTzgl+6s0d4jCNTHVZtclk
-        kQ8tHoqGu7Hf/0RH0RYuvLfE5Ah4gbFdQqYJkYmJg1ioygEX5x9wgIgVAQsRBwYz
-        eeAUDANLSNCoxRkjOLr35lIFlW/gnyBqzRzQpCFnygwJHMwMhASlih+WrmEGKIjX
-        QuDMXcFqQ7z2j1PNkq7X9F579bDaDqlACxPzaN6H8DYKo0Bk5S1pYt4rsesucduo
-        Fww5dAmIjhUA6tCm4iJjtw==
-X-Virus-Scanned: amavisd-new at amity.mint.lgbt
-Received: from amity.mint.lgbt ([127.0.0.1])
-        by amity.mint.lgbt (amity.mint.lgbt [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id qvDclLqLvk9I for <phone-devel@vger.kernel.org>;
-        Sun,  8 Jan 2023 14:54:26 -0500 (EST)
-Received: from dorothy.. (unknown [186.105.5.197])
-        by amity.mint.lgbt (Postfix) with ESMTPSA id 4NqnpK3xc8z1S59n;
-        Sun,  8 Jan 2023 14:54:17 -0500 (EST)
-From:   Lux Aliaga <they@mint.lgbt>
-To:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        vkoul@kernel.org, kishon@kernel.org, alim.akhtar@samsung.com,
-        avri.altman@wdc.com, bvanassche@acm.org, keescook@chromium.org,
-        tony.luck@intel.com, gpiccoli@igalia.com
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
-        phone-devel@vger.kernel.org, martin.botka@somainline.org,
-        marijn.suijten@somainline.org, Lux Aliaga <they@mint.lgbt>
-Subject: [PATCH v6 4/6] arm64: dts: qcom: sm6125: Add UFS nodes
-Date:   Sun,  8 Jan 2023 16:53:34 -0300
-Message-Id: <20230108195336.388349-5-they@mint.lgbt>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230108195336.388349-1-they@mint.lgbt>
-References: <20230108195336.388349-1-they@mint.lgbt>
+        with ESMTP id S236195AbjAHVhE (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 8 Jan 2023 16:37:04 -0500
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 043D22DFF;
+        Sun,  8 Jan 2023 13:37:04 -0800 (PST)
+Received: by mail-qv1-f44.google.com with SMTP id p17so5013051qvn.1;
+        Sun, 08 Jan 2023 13:37:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2VyZFAdbVKZG6wcddJqsDrMtHKYmEkYfo1SJkK0xxm4=;
+        b=qCE5n/PKnFzKZwRpmLOHpB1FCb0vmGTwnWDdcUzLbERGYBDr0jns7rgGtnyXJeaG8o
+         4FxAog7L8ohZXt8xmULNkB6fKB8WweiEBZ3a4zC/dxJE+YZRhB8tb/20cU2EdLHSEoxJ
+         XpClrr1reL2GrRH9ZU9BUnrJy2HSILqDh31PJkR2VccEDSloeJ1WsrJ/yNUoyI+lkTrc
+         mc0OF+yevRO5ifXWh3iaMUi9cBxlyFP3STRpr+E3Uc0VEOJPmQCnj1+q67PfKknWWE5I
+         MxvavpPEAOsBVllLEdcFyp6fcaljWDUPeRpE4RYkZBFFVcZdNtnhltl56owVDeYdNzig
+         tJ0w==
+X-Gm-Message-State: AFqh2kqf0f70/R8PDeT3Psp6QHLZouTKB+W2Q5fZKFEitzmqpwoN55PQ
+        gqmK1Jf5hHRhxDMtpYyBLIcPUU3kNQ==
+X-Google-Smtp-Source: AMrXdXuPvUKuDNGKU6OcOXMWXnzDSYYt1g7mcimYedVJjIqe5idBdZnsxx/KJwN3omt6KWTgHi2img==
+X-Received: by 2002:a05:6214:3986:b0:516:4770:1a4e with SMTP id ny6-20020a056214398600b0051647701a4emr86112257qvb.14.1673213823041;
+        Sun, 08 Jan 2023 13:37:03 -0800 (PST)
+Received: from robh_at_kernel.org ([2605:ef80:80a5:9b51:39ae:24d1:33f3:811e])
+        by smtp.gmail.com with ESMTPSA id h9-20020a05620a244900b006fc2cee4486sm4303715qkn.62.2023.01.08.13.37.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Jan 2023 13:37:02 -0800 (PST)
+Received: (nullmailer pid 312452 invoked by uid 1000);
+        Sun, 08 Jan 2023 21:36:54 -0000
+Date:   Sun, 8 Jan 2023 15:36:54 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     linux-arm-msm@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        Andy Gross <agross@kernel.org>, phone-devel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH 2/4] dt-bindings: arm: qcom,ids: Add QRD board ID
+Message-ID: <167321380777.312200.81545477696057969.robh@kernel.org>
+References: <20230104115348.25046-1-stephan@gerhold.net>
+ <20230104115348.25046-3-stephan@gerhold.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230104115348.25046-3-stephan@gerhold.net>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Adds a UFS host controller node and its corresponding PHY to
-the sm6125 platform.
 
-Signed-off-by: Lux Aliaga <they@mint.lgbt>
----
- arch/arm64/boot/dts/qcom/sm6125.dtsi | 57 ++++++++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
+On Wed, 04 Jan 2023 12:53:46 +0100, Stephan Gerhold wrote:
+> QRD (Qualcomm Reference Design) = 0xb = 11 is used on many devices that
+> were originally derived from some reference design provided by Qualcomm.
+> 
+> Examples of existing devices in Linux would be:
+>   - msm8916-longcheer-l8150/l8910, msm8916-wingtech-wt88047
+>   - msm8953-xiaomi-daisy/tissot/vince
+>   - msm8998-fxtec-pro1
+>   - sm4250-oneplus-billie2
+> 
+> Add it to qcom,ids.h so the qcom,board-id properties can be rewritten
+> more clearly using the macros in a future patch set, i.e.
+> 
+>   qcom,board-id = <QCOM_BOARD_ID(QRD, 1, 0) 0> instead of
+>   qcom,board-id = <0x1000b 0x00>
+> 
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> ---
+>  include/dt-bindings/arm/qcom,ids.h | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/q=
-com/sm6125.dtsi
-index df5453fcf2b9..cec7071d5279 100644
---- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-@@ -511,6 +511,63 @@ sdhc_2: mmc@4784000 {
- 			status =3D "disabled";
- 		};
-=20
-+		ufs_mem_hc: ufs@4804000 {
-+			compatible =3D "qcom,sm6125-ufshc", "qcom,ufshc", "jedec,ufs-2.0";
-+			reg =3D <0x04804000 0x3000>, <0x04810000 0x8000>;
-+			interrupts =3D <GIC_SPI 356 IRQ_TYPE_LEVEL_HIGH>;
-+			phys =3D <&ufs_mem_phy>;
-+			phy-names =3D "ufsphy";
-+			lanes-per-direction =3D <1>;
-+			#reset-cells =3D <1>;
-+			resets =3D <&gcc GCC_UFS_PHY_BCR>;
-+			reset-names =3D "rst";
-+			iommus =3D <&apps_smmu 0x200 0x0>;
-+
-+			clock-names =3D "core_clk",
-+				      "bus_aggr_clk",
-+				      "iface_clk",
-+				      "core_clk_unipro",
-+				      "ref_clk",
-+				      "tx_lane0_sync_clk",
-+				      "rx_lane0_sync_clk",
-+				      "ice_core_clk";
-+			clocks =3D <&gcc GCC_UFS_PHY_AXI_CLK>,
-+				 <&gcc GCC_SYS_NOC_UFS_PHY_AXI_CLK>,
-+				 <&gcc GCC_UFS_PHY_AHB_CLK>,
-+				 <&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
-+				 <&rpmcc RPM_SMD_XO_CLK_SRC>,
-+				 <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
-+				 <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
-+				 <&gcc GCC_UFS_PHY_ICE_CORE_CLK>;
-+			freq-table-hz =3D <50000000 240000000>,
-+					<0 0>,
-+					<0 0>,
-+					<37500000 150000000>,
-+					<0 0>,
-+					<0 0>,
-+					<0 0>,
-+					<75000000 300000000>;
-+
-+			status =3D "disabled";
-+		};
-+
-+		ufs_mem_phy: phy@4807000 {
-+			compatible =3D "qcom,sm6125-qmp-ufs-phy";
-+			reg =3D <0x04807000 0x1c4>;
-+
-+			clock-names =3D "ref", "ref_aux";
-+			clocks =3D <&gcc GCC_UFS_MEM_CLKREF_CLK>, <&gcc GCC_UFS_PHY_PHY_AUX_C=
-LK>;
-+
-+			power-domains =3D <&gcc UFS_PHY_GDSC>;
-+
-+			resets =3D <&ufs_mem_hc 0>;
-+			reset-names =3D "ufsphy";
-+
-+			#phy-cells =3D <0>;
-+
-+			status =3D "disabled";
-+		};
-+
- 		gpi_dma0: dma-controller@4a00000 {
- 			compatible =3D "qcom,sm6125-gpi-dma", "qcom,sdm845-gpi-dma";
- 			reg =3D <0x04a00000 0x60000>;
---=20
-2.39.0
-
+Acked-by: Rob Herring <robh@kernel.org>
