@@ -2,102 +2,178 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B0DDC54EBE
-	for <phone-devel@archiver.kernel.org>; Mon,  9 Jan 2023 23:16:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64256C54EBE
+	for <phone-devel@archiver.kernel.org>; Mon,  9 Jan 2023 23:41:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235529AbjAIXQj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 9 Jan 2023 18:16:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46406 "EHLO
+        id S234690AbjAIXlt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 9 Jan 2023 18:41:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237792AbjAIXQX (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Jan 2023 18:16:23 -0500
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AC21BC84;
-        Mon,  9 Jan 2023 15:16:20 -0800 (PST)
-Received: by mail-lf1-x135.google.com with SMTP id bq39so15580310lfb.0;
-        Mon, 09 Jan 2023 15:16:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kpASIlrn94h2kw47h1c03X9cqh5FWCX9FeHma7sBwdI=;
-        b=OddwY0fZ5A3JB6m4rY6uFid0LFESPpUOayVuoldTW73tVR7xTvqwzsKsMlBAhppa2K
-         3JIAQSrlK7QcSTSSpLzEXa6XGmlpAE0sbMKqsRkEnEmQpZv4NYNdrq97WlLhg1zYr0KC
-         nXQkvyhSFtFD+HabUcSL3soa36aQ32GdOgAwZtFn/ZxQR4TOdvdSxTGGIyBXYWXQbYO2
-         vOAKxQmlxVRjoWwbBMnGfTQhS1rkdWoZDGYAo6uclgM+IoSSQZlw4m0HPXciDTgtsh/X
-         hDJhhe5MLSujIH3UFLGqmd3JrPU0F9cAqDCZd/ojQPnn4rEu4eWr9DFv900duiOUwfnx
-         oWqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kpASIlrn94h2kw47h1c03X9cqh5FWCX9FeHma7sBwdI=;
-        b=Ok/K2di+9xjRcoJhIC2myiVenHOZ6J7Lk6fBiyzpE+qTLQSUWEMB//NMl062MS2FV8
-         4L3Wwf3GDdYAfyhSMDlMHXFZuEwrevE4bTkGCHC63oitTfbwe2qjJ1fFkpVpvLB/MHVh
-         YavVmXncS/R2yZN6XT4SFsHH9MxOGAT8lR7aIEoWNykqUhTn9Hc9LYyQskWnH2cr1/Sm
-         KCisMTLO/O/f7NcXFl4QuERITSk+UJMSTuehImuXvh3zv6dix7IbLJi0LcUTLMT/b9Ki
-         Ypqxqkh9xmcCF/XuOdSDMniO66s/oWlFq46k4wDGTmo3VnHfSnZztITe9/l4kek2SYHK
-         3Grw==
-X-Gm-Message-State: AFqh2kr4Ucehlb1G78l/y8DG28mmOi+4SVszfbfULtC1zvWvWnIlNSg/
-        R2ReRxayYyMoRpG2Wv35zTVEfGuShYCj8w==
-X-Google-Smtp-Source: AMrXdXu5ikj2pAGUB/brE8c1ApXc5qFSMTIK3z7H9KCdu4bmAuUGQkMHt4a6xrXKgb5sLMG4R/alPA==
-X-Received: by 2002:a05:6512:e82:b0:4be:a3c8:dc5 with SMTP id bi2-20020a0565120e8200b004bea3c80dc5mr18607851lfb.22.1673306179533;
-        Mon, 09 Jan 2023 15:16:19 -0800 (PST)
-Received: from localhost (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
-        by smtp.gmail.com with ESMTPSA id s6-20020a056512214600b004aa255e2e66sm1823097lfr.241.2023.01.09.15.16.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Jan 2023 15:16:18 -0800 (PST)
-From:   Dmitry Baryshkov <dbaryshkov@gmail.com>
-X-Google-Original-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     phone-devel@vger.kernel.org,
-        Marijn Suijten <marijn.suijten@somainline.org>
+        with ESMTP id S237657AbjAIXlr (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Jan 2023 18:41:47 -0500
+Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59198193CA
+        for <phone-devel@vger.kernel.org>; Mon,  9 Jan 2023 15:41:44 -0800 (PST)
+Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 5C5C33EF3C;
+        Tue, 10 Jan 2023 00:41:42 +0100 (CET)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Vinod Koul <vkoul@kernel.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Vinod Polimera <quic_vpolimer@quicinc.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20221121222456.437815-1-marijn.suijten@somainline.org>
-References: <20221121222456.437815-1-marijn.suijten@somainline.org>
-Subject: Re: [PATCH] drm/msm/dpu: Print interrupt index in addition to the mask
-Message-Id: <167330408782.609993.3753799611578677856.b4-ty@linaro.org>
-Date:   Tue, 10 Jan 2023 00:41:27 +0200
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v2] arm64: dts: qcom: sdm845-tama: Add volume up and camera GPIO keys
+Date:   Tue, 10 Jan 2023 00:41:32 +0100
+Message-Id: <20230109234133.365644-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Tama has four GPIO-wired keys: two for camera focus and shutter /
+snapshot, and two more for volume up and down.  As per the comment these
+used to not work because the necessary pin bias was missing, which is
+now set via pinctrl on pm8998_gpios.
 
-On Mon, 21 Nov 2022 23:24:55 +0100, Marijn Suijten wrote:
-> The mask only describes the `irq_idx % 32` part, making it generally
-> impossible to deduce what interrupt is being enabled/disabled.  Since
-> `debug/core_irq` in debugfs (and other prints) also include the full
-> `DPU_IRQ_IDX()` value, print the same full value here for easier
-> correlation instead of only adding the `irq_idx / 32` part.
-> 
-> Furthermore, make the dbgstr messages more consistent.
-> 
-> [...]
+The missing bias has also been added to the existing volume down button,
+which receives a node name and label cleanup at the same time to be more
+consistent with other DTS and the newly added buttons.  Its deprecated
+gpio-key,wakeup property has also been replaced with wakeup-source.
 
-Applied, thanks!
+Note that volume up is also available through the usual PON RESIN node,
+but unlike other platforms only triggers when the power button is held
+down at the same time making it unsuitable to serve as KEY_VOLUMEUP.
 
-[1/1] drm/msm/dpu: Print interrupt index in addition to the mask
-      https://gitlab.freedesktop.org/lumag/msm/-/commit/d45e5744ab39
+Fixes: 30a7f99befc6 ("arm64: dts: qcom: Add support for SONY Xperia XZ2 / XZ2C / XZ3 (Tama platform)")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+---
 
-Best regards,
+Changes since v1:
+- Rebased on next-20230109 and replace pm8998_gpio with plural
+  pm8998_gpios phandle label.
+
+v1: https://lore.kernel.org/linux-arm-msm/20221222190656.31664-1-marijn.suijten@somainline.org/
+
+ .../dts/qcom/sdm845-sony-xperia-tama.dtsi     | 72 +++++++++++++++++--
+ 1 file changed, 68 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
+index df92e8d7bf30..c611eab56724 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
+@@ -4,6 +4,7 @@
+  */
+ 
+ #include <dt-bindings/input/input.h>
++#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ #include "sdm845.dtsi"
+ #include "pm8005.dtsi"
+@@ -17,14 +18,43 @@ / {
+ 	gpio-keys {
+ 		compatible = "gpio-keys";
+ 
+-		/* Neither Camera Focus, nor Camera Shutter seem to work... */
++		pinctrl-0 = <&focus_n &snapshot_n &vol_down_n &vol_up_n>;
++		pinctrl-names = "default";
+ 
+-		key-vol-down {
+-			label = "volume_down";
++		key-camera-focus {
++			label = "Camera Focus";
++			gpios = <&pm8998_gpios 2 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_CAMERA_FOCUS>;
++			debounce-interval = <15>;
++			linux,can-disable;
++			wakeup-source;
++		};
++
++		key-camera-snapshot {
++			label = "Camera Snapshot";
++			gpios = <&pm8998_gpios 7 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_CAMERA>;
++			debounce-interval = <15>;
++			linux,can-disable;
++			wakeup-source;
++		};
++
++		key-volume-down {
++			label = "Volume Down";
+ 			gpios = <&pm8998_gpios 5 GPIO_ACTIVE_LOW>;
+ 			linux,code = <KEY_VOLUMEDOWN>;
+ 			debounce-interval = <15>;
+-			gpio-key,wakeup;
++			linux,can-disable;
++			wakeup-source;
++		};
++
++		key-volume-up {
++			label = "Volume Up";
++			gpios = <&pm8998_gpios 6 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_VOLUMEUP>;
++			debounce-interval = <15>;
++			linux,can-disable;
++			wakeup-source;
+ 		};
+ 	};
+ 
+@@ -358,6 +388,40 @@ &i2c14 {
+ 	/* AMS TCS3490 RGB+IR color sensor @ 72 */
+ };
+ 
++&pm8998_gpios {
++	focus_n: focus-n-state {
++		pins = "gpio2";
++		function = PMIC_GPIO_FUNC_NORMAL;
++		power-source = <0>;
++		bias-pull-up;
++		input-enable;
++	};
++
++	vol_down_n: vol-down-n-state {
++		pins = "gpio5";
++		function = PMIC_GPIO_FUNC_NORMAL;
++		power-source = <0>;
++		bias-pull-up;
++		input-enable;
++	};
++
++	vol_up_n: vol-up-n-state {
++		pins = "gpio6";
++		function = PMIC_GPIO_FUNC_NORMAL;
++		power-source = <0>;
++		bias-pull-up;
++		input-enable;
++	};
++
++	snapshot_n: snapshot-n-state {
++		pins = "gpio7";
++		function = PMIC_GPIO_FUNC_NORMAL;
++		power-source = <0>;
++		bias-pull-up;
++		input-enable;
++	};
++};
++
+ &qupv3_id_0 {
+ 	status = "okay";
+ };
 -- 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+2.39.0
+
