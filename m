@@ -2,152 +2,104 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8489C54EBD
-	for <phone-devel@archiver.kernel.org>; Mon,  9 Jan 2023 09:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C919DC54EBD
+	for <phone-devel@archiver.kernel.org>; Mon,  9 Jan 2023 09:31:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237063AbjAIJNA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 9 Jan 2023 04:13:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45832 "EHLO
+        id S230287AbjAIJbh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 9 Jan 2023 04:31:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237018AbjAIJLz (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Jan 2023 04:11:55 -0500
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B7EE1839E
-        for <phone-devel@vger.kernel.org>; Mon,  9 Jan 2023 01:08:21 -0800 (PST)
-Received: by mail-yb1-xb34.google.com with SMTP id p188so7909088yba.5
-        for <phone-devel@vger.kernel.org>; Mon, 09 Jan 2023 01:08:21 -0800 (PST)
+        with ESMTP id S237039AbjAIJbB (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Jan 2023 04:31:01 -0500
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 663CA6464
+        for <phone-devel@vger.kernel.org>; Mon,  9 Jan 2023 01:30:08 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id k26-20020a05600c1c9a00b003d972646a7dso8504047wms.5
+        for <phone-devel@vger.kernel.org>; Mon, 09 Jan 2023 01:30:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WyzaMNbovLz5e0f2Pj2AVJV48B77i8KtmFksLIp0GoE=;
-        b=iXGaRlr7cxQs3VBPA8A5uTISSRojwoueFyMX7G6tweRggPW+GPYeqDgsqNkHStZSQJ
-         t6Cgb20KuNRVfq5lvZF/plnYMCuKLDkpaeywH75qWRo7V9ccg3wOkmrRfDDE3tvSUFMu
-         jgtXkleXxqKNPndI7DJvBLsxqWl4g2EfeSGHoZbFWP1ctsTp7T2IfaRsnfUYVGlO/hww
-         aySl2ma/XK1VvC1Z5DXbs7qRrpNqAK6ralW1vU2H5Uem+UGGXgxHVAlh28GCMPopYRyA
-         Y0Q6Qj+lIHE4kS6bCir36+Frf1wnEXF927Xcbv4XGk7vGi5VxpuOt4NJYOzTFrv30xgJ
-         zXIQ==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gGEMDHLHYnrcaFvEu4QvBpxD5CV8NRVf54KR4uCbrnM=;
+        b=TqFn7SMxQJax+AzzmJ4lJdlgRdocs+VQr+DEn84XE2DU55VzWMtF6K+UHbT/VxzBRp
+         uuhn2WXj1/QeQp9dX/9ba5IZ+eoOvQqzZbUEYHDdPE+1jQdH1wa7A9oAZIKJ9AGMeR6P
+         tabYUA+02Pu9ZNYnOa1b+4sWQ956+Tz7p/RuKKrmbkx49/7zD5zKtFPsAZy0MIGGu59w
+         ss5rCP/swOMVk2XGuJQX85+cxnh5zORJMDLNpo64JBzBXNxGDmb1tMHfY3RpUwXH8ub6
+         UafOIOXFkGCCFx87y4K/RnvVJP7bXRNjUpvztoLy0a0SLQz61Pk60whE/SivI1uRWQyO
+         E5ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WyzaMNbovLz5e0f2Pj2AVJV48B77i8KtmFksLIp0GoE=;
-        b=jdUp03fDi1ervaneiWucOPpEiW5rndlWXbDzZylOGAkowI/Fki4T4O/k/Dn5f+Sf6c
-         wsDsu+hS4DQsAYPB9YtDvSQ2PLwKYHGcg2uF56lXFPpX7vtkctbXdVB/SduKBzjzooOr
-         Xeziz9HpJlTtiVFUDOsjIGhsxgujD9jTh6IqKcMBZwm9ZR+qAsvd9Sh+r9U/7Xzdb/GU
-         4e9geVJMkFuqFVuK/yN8fHr3JSSfqbujW6P1ERqmSbMllZFv6J+NRpM5qd9GM3oGXDcv
-         McAvogtLLHBO0083zjvA91oYCOuxoglkJk1IVkiTby6I5S+DBsoFBo7TMi6qT7fKzI3g
-         yaCg==
-X-Gm-Message-State: AFqh2ko3jARCaX86MV9xRtJjoFxGm48XcYCQ+S+hcFVMdMKFmBV6IEpT
-        AR9tIzprZeYpTf2ZmUTPhvRZfk5wmq3/NEOTtiEYVw==
-X-Google-Smtp-Source: AMrXdXv7heUksktJrLuJT2/sl9qccUjvu0Os6fLmv3Ph8ZSTHk+gDOCAM7/Xr9au1wvH0fDjgfiSNEu1ReJh6u/Mtxo=
-X-Received: by 2002:a25:e90c:0:b0:73a:3b94:47fc with SMTP id
- n12-20020a25e90c000000b0073a3b9447fcmr7036713ybd.152.1673255300641; Mon, 09
- Jan 2023 01:08:20 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gGEMDHLHYnrcaFvEu4QvBpxD5CV8NRVf54KR4uCbrnM=;
+        b=nuMxfzRkCEbC2aabG/iDapPxZZRuJTMFF4+pMCbiI6fQILJykcud67PAqscwiy2a3q
+         dKSdqymcyorLr3R3TQqP3mNsyMnuJlFqiOJSwbLw0iLbVJtSfZ4hDX6lZYqj0K8kS5e8
+         mGgWREt0Itd45cPQVBYYgWAWcWd4i/hBHwBbwX6OLMVTVUBEuFkd/dxtDLDTCiVj0kdl
+         trMjXTuhy2CC4W3ucYVPz7hVMKmaKhRMxHgTL/kRVwtlRcLsvGpw7oeYdm4r/Lycpqxn
+         LA5QlN0d9zhpDlpYh5cGbELuKx7M57i2nGC+8f11UJb45j6/eSE9ws2zYJaDt/vzCiOB
+         Qokw==
+X-Gm-Message-State: AFqh2krj89ASYYZEK+BHLWJ5v634LyKZQe7d3VszkFk7ov5tBTf4i06g
+        hthWR4v+c2PSGxsAq+phX66cXw==
+X-Google-Smtp-Source: AMrXdXspbWYZM83aPs7JQqmVF2zwjegRK3gDtccETa05r62+3m/rLfGTF/MWLDmtzoOoF2a491DtRg==
+X-Received: by 2002:a05:600c:601b:b0:3d3:56ce:5693 with SMTP id az27-20020a05600c601b00b003d356ce5693mr45201138wmb.17.1673256607024;
+        Mon, 09 Jan 2023 01:30:07 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id p9-20020a05600c358900b003cffd3c3d6csm11509655wmq.12.2023.01.09.01.30.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Jan 2023 01:30:06 -0800 (PST)
+Message-ID: <189e5ced-fea2-177b-fb7b-9bfc89b18d50@linaro.org>
+Date:   Mon, 9 Jan 2023 10:30:05 +0100
 MIME-Version: 1.0
-References: <20221221231943.1961117-1-marijn.suijten@somainline.org>
- <20221221231943.1961117-7-marijn.suijten@somainline.org> <42b45762-7fb9-2694-9fab-039ee09e4709@linaro.org>
- <20230109082118.v2abyucljztsflxj@SoMainline.org>
-In-Reply-To: <20230109082118.v2abyucljztsflxj@SoMainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Mon, 9 Jan 2023 11:08:09 +0200
-Message-ID: <CAA8EJppTfJ6LnTEUWVASk1U6v3OX3MH71vuOhUk_Aa_HoraQ_w@mail.gmail.com>
-Subject: Re: [PATCH v2 6/8] drm/msm/dpu: Remove num_enc from topology struct
- in favour of num_dsc
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Jessica Zhang <quic_jesszhan@quicinc.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        Kuogee Hsieh <quic_khsieh@quicinc.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        sunliming <sunliming@kylinos.cn>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Haowen Bai <baihaowen@meizu.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH 1/4] soc: qcom: socinfo: Fix soc_id order
+Content-Language: en-US
+To:     Stephan Gerhold <stephan@gerhold.net>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Vinod Polimera <quic_vpolimer@quicinc.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230104115348.25046-1-stephan@gerhold.net>
+ <20230104115348.25046-2-stephan@gerhold.net>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230104115348.25046-2-stephan@gerhold.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 9 Jan 2023 at 10:21, Marijn Suijten
-<marijn.suijten@somainline.org> wrote:
->
-> On 2023-01-09 01:31:57, Dmitry Baryshkov wrote:
-> > On 22/12/2022 01:19, Marijn Suijten wrote:
-> > > Downstream calls this num_enc yet the DSC patches introduced a new
-> > > num_dsc struct member, leaving num_enc effectively unused.
-> > >
-> > > Fixes: 7e9cc175b159 ("drm/msm/disp/dpu1: Add support for DSC in topology")
-> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > > ---
-> > >   drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 9 ++++-----
-> > >   drivers/gpu/drm/msm/disp/dpu1/dpu_rm.c      | 4 ++--
-> > >   drivers/gpu/drm/msm/msm_drv.h               | 2 --
-> > >   3 files changed, 6 insertions(+), 9 deletions(-)
-> > >
-> > > diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-> > > index 9c6817b5a194..a158cd502d38 100644
-> > > --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-> > > +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-> > > @@ -579,19 +579,18 @@ static struct msm_display_topology dpu_encoder_get_topology(
-> > >                     topology.num_dspp = topology.num_lm;
-> > >     }
-> > >
-> > > -   topology.num_enc = 0;
-> > >     topology.num_intf = intf_count;
-> > >
-> > >     if (dpu_enc->dsc) {
-> > > -           /* In case of Display Stream Compression (DSC), we would use
-> > > -            * 2 encoders, 2 layer mixers and 1 interface
-> > > +           /*
-> > > +            * In case of Display Stream Compression (DSC), we would use
-> > > +            * 2 DSC encoders, 2 layer mixers and 1 interface
-> > >              * this is power optimal and can drive up to (including) 4k
-> > >              * screens
-> > >              */
-> > > -           topology.num_enc = 2;
-> > >             topology.num_dsc = 2;
-> > > -           topology.num_intf = 1;
-> > >             topology.num_lm = 2;
-> > > +           topology.num_intf = 1;
-> >
-> > Unless there is a reason, please move num_intf assignment back while
-> > preparing v3.
->
-> The assignment was reordered to match the order described in the comment
-> right above, such that this reads more naturally.  Not sure if it's
-> worth sending that as a separate fix, or drop it entirely.
+On 04/01/2023 12:53, Stephan Gerhold wrote:
+> The soc_id array is mostly ordered by the numeric "msm-id" defined in
+> qcom,ids.h but some recent entries were added at the wrong place.
+> 
+> While it does not make a functional difference it does make it harder
+> to regenerate the entire array after adding a bunch of new IDs.
+> 
+> Fixes: de320c07da3d ("soc: qcom: socinfo: Add MSM8956/76 SoC IDs to the soc_id table")
+> Fixes: 147f6534b8ff ("soc: qcom: socinfo: Add SM8550 ID")
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> ---
+>  drivers/soc/qcom/socinfo.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
+> index 10efdbcfdf05..7258527816b0 100644
+> --- a/drivers/soc/qcom/socinfo.c
+> +++ b/drivers/soc/qcom/socinfo.c
+> @@ -257,8 +257,6 @@ static const struct soc_id soc_id[] = {
 
-I see. Sounds logical then. Let's keep it as is.
-
->
-> > With that fixed:
-> >
-> > Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->
-> <snip>
+Can you in the same or new patch add a comment that list is ordered by
+numerical ID, not by model name?
 
 
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
--- 
-With best wishes
-Dmitry
+Best regards,
+Krzysztof
+
