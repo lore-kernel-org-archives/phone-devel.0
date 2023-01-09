@@ -2,108 +2,124 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE765C5479D
-	for <phone-devel@archiver.kernel.org>; Mon,  9 Jan 2023 23:16:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7596EC63797
+	for <phone-devel@archiver.kernel.org>; Mon,  9 Jan 2023 23:16:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237672AbjAIXQi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 9 Jan 2023 18:16:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46230 "EHLO
+        id S237724AbjAIXQl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 9 Jan 2023 18:16:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237664AbjAIXQO (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Jan 2023 18:16:14 -0500
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEAE919C
-        for <phone-devel@vger.kernel.org>; Mon,  9 Jan 2023 15:16:10 -0800 (PST)
-Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 5D8883EB5B;
-        Tue, 10 Jan 2023 00:16:07 +0100 (CET)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
+        with ESMTP id S237801AbjAIXQ0 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Jan 2023 18:16:26 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A436517595;
+        Mon,  9 Jan 2023 15:16:24 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id bt23so15494425lfb.5;
+        Mon, 09 Jan 2023 15:16:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oUSIRNZZE79nkyMU9G9AqBIuhvo2pozCegvf/Srh544=;
+        b=e5vEgs1AJgdX8KOL3CKz7nrWRVPue1VdOQbOGTsXxqs0J1Ygz1ssgdEMVmvs/YirWX
+         LiwCOS72zz28SQ80nm3FhaRsPrW9Yd5eb53o+UvnMnlmxNknc7I3IV523jLxA7OWbGxa
+         5M/T3fQP1Ms0UatoLVeCNBZW7a2C7C6BorIB+3xcb9lF/AMG4Lb5ZFWBRVm0CXtWeijb
+         b/nEic1A/Smb3ZMm5DUyYMpdMhAaY1wVGn0ZDqkyt0ibU12xoz7ESSapK8jCqfo+uaBL
+         kz+O7R4SHFgOmPjZJvU+XbEwNuSeyHQfR9kx8kx1JVYSfWFQbxYy6D90J1PIKz7lPoJJ
+         fwKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oUSIRNZZE79nkyMU9G9AqBIuhvo2pozCegvf/Srh544=;
+        b=GWAqpJ2Trf1SLW4IZ8D6rExICNs7J9P+RpijAgOlKOv16e12lJvuA9PWBFnknDq64v
+         xAVB1aWmWymQvEziLWkU5Mbc62C4IbIoPpWwbG8K75IAX9WuzcMFDqdabW56Q44VQSJA
+         hhvvG+Y/NOhlclq7WhDgvqSK3O4/4aMzdFQIhEfSo8ql9EzqV9yt9BljQUJ3edKuNFcz
+         rbBCbUgGsv5YOwM3jQLTHlFOk10llJKH3vf+H4nIn3PZEpImTwG7eGNK18k2DwZZzhYS
+         nn/HZfs1fm5NcGwmftmGVGR1zmlGG9EKrPuP96yrTW4dlzquFqMccR8JWdu1mDlx/FNg
+         QGdw==
+X-Gm-Message-State: AFqh2kos5Chi5jzHo+PbGdEqoGZlHQO26n2e/4NEmsj5HBBbl5VRShzm
+        T2+1rUyt76rtVNT71w+hJgJNClSEjoMtfg==
+X-Google-Smtp-Source: AMrXdXtYdkRxLWFDDMg2agf6WmqCxIDsX34LBmbp8EzWMeALY//PoXn597+tUcIDHgQlLj4GX221iQ==
+X-Received: by 2002:a05:6512:694:b0:4cb:436b:a70f with SMTP id t20-20020a056512069400b004cb436ba70fmr7100128lfe.64.1673306182070;
+        Mon, 09 Jan 2023 15:16:22 -0800 (PST)
+Received: from localhost (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
+        by smtp.gmail.com with ESMTPSA id g12-20020a0565123b8c00b004aa543f3748sm1822460lfv.130.2023.01.09.15.16.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jan 2023 15:16:21 -0800 (PST)
+From:   Dmitry Baryshkov <dbaryshkov@gmail.com>
+X-Google-Original-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
         Daniel Vetter <daniel@ffwll.ch>,
         Stephen Boyd <swboyd@chromium.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Drew Davenport <ddavenport@chromium.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Jessica Zhang <quic_jesszhan@quicinc.com>,
+        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        sunliming <sunliming@kylinos.cn>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Haowen Bai <baihaowen@meizu.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Vladimir Lypak <vladimir.lypak@gmail.com>,
         linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v3] drm/msm/dpu: Disallow unallocated resources to be returned
-Date:   Tue, 10 Jan 2023 00:15:55 +0100
-Message-Id: <20230109231556.344977-1-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20221221231943.1961117-1-marijn.suijten@somainline.org>
+References: <20221221231943.1961117-1-marijn.suijten@somainline.org>
+Subject: Re: [PATCH v2 0/8] drm/msm: DSC Electric Boogaloo for sm8[12]50
+Message-Id: <167330408773.609993.1753222329751720759.b4-ty@linaro.org>
+Date:   Tue, 10 Jan 2023 00:41:27 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-In the event that the topology requests resources that have not been
-created by the system (because they are typically not represented in
-dpu_mdss_cfg ^1), the resource(s) in global_state (in this case DSC
-blocks, until their allocation/assignment is being sanity-checked in
-"drm/msm/dpu: Reject topologies for which no DSC blocks are available")
-remain NULL but will still be returned out of
-dpu_rm_get_assigned_resources, where the caller expects to get an array
-containing num_blks valid pointers (but instead gets these NULLs).
 
-To prevent this from happening, where null-pointer dereferences
-typically result in a hard-to-debug platform lockup, num_blks shouldn't
-increase past NULL blocks and will print an error and break instead.
-After all, max_blks represents the static size of the maximum number of
-blocks whereas the actual amount varies per platform.
+On Thu, 22 Dec 2022 00:19:35 +0100, Marijn Suijten wrote:
+> This preliminary Display Stream Compression support package for
+> (initially tested on) sm8[12]50 is based on comparing DSC behaviour
+> between downstream and mainline.  Some new callbacks are added (for
+> binding blocks on active CTLs), logic bugs are corrected, zeroed struct
+> members are now assigned proper values, and RM allocation and hw block
+> retrieval now hand out (or not) DSC blocks without causing null-pointer
+> dereferences.
+> 
+> [...]
 
-^1: which can happen after a git rebase ended up moving additions to
-_dpu_cfg to a different struct which has the same patch context.
+Applied, thanks!
 
-Fixes: bb00a452d6f7 ("drm/msm/dpu: Refactor resource manager")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
+[1/8] drm/msm/dpu: Wire up DSC mask for active CTL configuration
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/c2d2c62da1fc
+[2/8] drm/msm/dsi: Use DSC slice(s) packet size to compute word count
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/bbd1bccdcf4e
+[3/8] drm/msm/dsi: Flip greater-than check for slice_count and slice_per_intf
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/85b5a40991dd
+[5/8] drm/msm/dpu: Reject topologies for which no DSC blocks are available
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/f52b965c9434
+[6/8] drm/msm/dpu: Remove num_enc from topology struct in favour of num_dsc
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/9ce765395f41
+[7/8] drm/msm/dpu: Implement DSC binding to PP block for CTL V1
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/086116ae1410
+[8/8] drm/msm/dpu: Add DSC configuration for SM8150 and SM8250
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/8cc4c9de15f4
 
-Changes since v2:
-- Dropped all 7 other patches that were queued for -next;
-- Reworded error message to clarify that the requested resource should
-  have already been allocated, rather than sounding like
-  dpu_rm_get_assigned_resources is (re)allocating/(re)assigning
-  resources here;
-- This patch is now (implicitly!) based after "drm/msm/dpu: Reject
-  topologies for which no DSC blocks are available", which should make
-  it impossible to reach this condition, making it more of a safeguard
-  in case of future code changes and/or hidden issues: and is more
-  clearly conveyed in the patch message as well.
-
-v2: https://lore.kernel.org/linux-arm-msm/20221221231943.1961117-5-marijn.suijten@somainline.org/
-
- drivers/gpu/drm/msm/disp/dpu1/dpu_rm.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_rm.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_rm.c
-index 73b3442e7467..7ada957adbbb 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_rm.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_rm.c
-@@ -660,6 +660,11 @@ int dpu_rm_get_assigned_resources(struct dpu_rm *rm,
- 				  blks_size, enc_id);
- 			break;
- 		}
-+		if (!hw_blks[i]) {
-+			DPU_ERROR("Allocated resource %d unavailable to assign to enc %d\n",
-+				  type, enc_id);
-+			break;
-+		}
- 		blks[num_blks++] = hw_blks[i];
- 	}
- 
+Best regards,
 -- 
-2.39.0
-
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
