@@ -2,167 +2,90 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CF6DC61DB3
-	for <phone-devel@archiver.kernel.org>; Mon,  9 Jan 2023 18:27:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5ED4C5479D
+	for <phone-devel@archiver.kernel.org>; Mon,  9 Jan 2023 23:16:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237583AbjAIS14 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 9 Jan 2023 13:27:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45588 "EHLO
+        id S235313AbjAIXQM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 9 Jan 2023 18:16:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237035AbjAIS0w (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Jan 2023 13:26:52 -0500
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA1072885
-        for <phone-devel@vger.kernel.org>; Mon,  9 Jan 2023 10:24:19 -0800 (PST)
-Received: by mail-lf1-x133.google.com with SMTP id bp15so14305413lfb.13
-        for <phone-devel@vger.kernel.org>; Mon, 09 Jan 2023 10:24:19 -0800 (PST)
+        with ESMTP id S237556AbjAIXQJ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Jan 2023 18:16:09 -0500
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528A2BC84;
+        Mon,  9 Jan 2023 15:16:07 -0800 (PST)
+Received: by mail-lf1-x12e.google.com with SMTP id d30so10615503lfv.8;
+        Mon, 09 Jan 2023 15:16:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ciC8Itd05zrc4mqdQW4FAXytrWOg65pDTPIECNA32rA=;
-        b=WycOer6N4iDXZTrEoXCOWDtIFlFKdYnysTq4lttAbZ667wDehkC2KFmWEctX/lwhZR
-         BCymIM97fYFLN6iSU88dYcKULCqgs9sug6hWhW5RPkUA2mimIdRNliXKdL2Ap268kXKQ
-         bV1eP8wFpYs/WBrFIdRR2cQzvKEaSZRuHP7x7MW7xbdFzb/+Un7glAPpUijczorjgUN0
-         Pu/EpcIv17iKuuboF1d3sK84yv6k2gO7KaZIPFh26BumPLIN2G2Pjqk/tPjqT4Y/9024
-         wpEmfuFnJHusw/QP/EhqB0Wp/QCBl4hRe9n0fARhQY2d7HOUnQTIOcy+uOoeePCBHX5T
-         AUxg==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TQwDBfqkurhgjNXU0QKC0PjFG76vM9b8TjKB0PaMvXw=;
+        b=SqMxWZDzvqcnd4VsGn02ROGADSumLx9BSN8MB31bs3DrTrebdrbk649dIlJYjdQVYI
+         Jyit7fGBQBIlayPVkbESvPA5uj2HvBlWpIXz/QLbJaBMJHyk/gqUvz8txxloW3/kg/h4
+         8fKFPj/dF5RTTeQUIg3DdaB1Lykoi623x65aXh+oxADVw1V2VLeTyO3F0EsK1OAEpRJ4
+         n//iygvdu0aDZMi6Vwz2oguE6dgJY+85pwWO278pxCRVFL97CcTJQWU9+JL5qi3wyYZN
+         0QKPRAvwdjkjlglmNCrgQBlGzC4DPggg0NdqqAF2aeYDXgPv05Ztfe7nzrLdWkjmD0Im
+         uyNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ciC8Itd05zrc4mqdQW4FAXytrWOg65pDTPIECNA32rA=;
-        b=RpTP1945SFJEi9BYCc0mn4QX7rWFYiclfy8KwO/d5m9mhEP5eg8nPtHarHy6RzlrIM
-         6F2h59DyaHT5KOv9qXzF4jwIhGkmZ2QfAyegYDAhaOlvHXeSSoBuUkVZ3XOjUehZdejm
-         vgQQe6RRjOAI3/kO15Njs7IQdATrkvEXhzp49QLp3NKTbO7JnzFniF2CxgA4hSJSbQ+f
-         Y7zBEw57KBiS5uDydoAJiu5LD6pG+VJ4oYfikB8zu9ndHHigYzAqTLsf9eI1WgKoR50T
-         MwQDJdezxa30Ar9H1tC+0gIFp2xCWvtCRbJy76227v5DyWVsedGh+l6TbOxQKXExRG8t
-         P+TA==
-X-Gm-Message-State: AFqh2kqOPUMAohZI1YKyzANPHfnC4RwSo5kTQxS1uFJdjh0RBbKAGC+n
-        +hWPXFDt8bEtPwcrdnc2P5kb5g==
-X-Google-Smtp-Source: AMrXdXvIr6JDWXylhCd83Kbg77UPE81swhmMPkPrl0hoB7kDLxXgvcpoYZqWOL8YI6s9nAZLYyMJTw==
-X-Received: by 2002:ac2:5fce:0:b0:4b5:850e:6f4a with SMTP id q14-20020ac25fce000000b004b5850e6f4amr19855731lfg.69.1673288658255;
-        Mon, 09 Jan 2023 10:24:18 -0800 (PST)
-Received: from ?IPV6:2001:14ba:a085:4d00::8a5? (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
-        by smtp.gmail.com with ESMTPSA id w4-20020a19c504000000b004b5812207dbsm1740486lfe.201.2023.01.09.10.24.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Jan 2023 10:24:17 -0800 (PST)
-Message-ID: <4514a37f-ff75-1aed-2207-426ad846411e@linaro.org>
-Date:   Mon, 9 Jan 2023 20:24:16 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v2 4/8] drm/msm/dpu: Disallow unallocated resources to be
- returned
-Content-Language: en-GB
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TQwDBfqkurhgjNXU0QKC0PjFG76vM9b8TjKB0PaMvXw=;
+        b=qsEwJIGCD3+2DsWzEK/hWGPUp2YxIL0/WDe2a3JcD7aVfbu/xSaDFGE8BI/AA2NOwy
+         Q6V78A5b5hFX0kD8WTvmdLoKBYyrzbGE7C0RQoSLb20VgMbbvJQG2K3wX5+TAXJTYoGR
+         dBOwRfnpp4F/Zphx2Ay3uPHyqKIVfspuWHJOzYxvk9QHSFA0XOyIdT+TE1a/LYSZGnf2
+         m+97WofgDjPD/xHqxgS3fqfJsTQEH6srkNPpYa0ZhlccxCIJzSYPGMfttOwQ2NIp3Z+Z
+         ZhaQ2WXW40lBv1EQqHjETpYYWEFH5dLe2qhLQYhD6V5/jpuB4wiPMZUe4d6XBcGWBMlf
+         Zjqw==
+X-Gm-Message-State: AFqh2koMxfvxAXOE6/0oa1kjKkWGIwSgddDw65CY7Zg45yosNHzEkg41
+        ++qsz157Yhsp2kpdsLnP+0I=
+X-Google-Smtp-Source: AMrXdXsxlo89Tk1v8oWLh9mQW/RBULg2GePp3d7816B4+khN0j3h8rEZ3+fD5AU+CLlRhohD3mhCXQ==
+X-Received: by 2002:a05:6512:c03:b0:4b5:a4ef:fca3 with SMTP id z3-20020a0565120c0300b004b5a4effca3mr21624685lfu.38.1673306166159;
+        Mon, 09 Jan 2023 15:16:06 -0800 (PST)
+Received: from localhost (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
+        by smtp.gmail.com with ESMTPSA id s6-20020ac25fe6000000b004b50b4f63b7sm1814075lfg.170.2023.01.09.15.16.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jan 2023 15:16:05 -0800 (PST)
+From:   Dmitry Baryshkov <dbaryshkov@gmail.com>
+X-Google-Original-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To:     Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Rob Clark <robdclark@gmail.com>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
         Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Jessica Zhang <quic_jesszhan@quicinc.com>,
-        =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        Kuogee Hsieh <quic_khsieh@quicinc.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        sunliming <sunliming@kylinos.cn>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Haowen Bai <baihaowen@meizu.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Vinod Polimera <quic_vpolimer@quicinc.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Vladimir Lypak <vladimir.lypak@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Krishna Manikandan <quic_mkrishn@quicinc.com>,
         linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Drew Davenport <ddavenport@chromium.org>
-References: <20221221231943.1961117-1-marijn.suijten@somainline.org>
- <20221221231943.1961117-5-marijn.suijten@somainline.org>
- <b415a91d-f804-1fec-52dd-4124d3f1e583@linaro.org>
- <1b872a47-6ffc-1fe9-f283-897dbc37d709@linaro.org>
- <20230109082357.meebk7udokdfvwle@SoMainline.org>
- <CAA8EJppqocjgTbZLhcJtmRGjE4X2u_jDEGDWS9Bsp7MEgD+Ldg@mail.gmail.com>
- <20230109171223.vjkigcj7xwfwow2a@SoMainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20230109171223.vjkigcj7xwfwow2a@SoMainline.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20221231170532.77000-1-a39.skl@gmail.com>
+References: <20221231170532.77000-1-a39.skl@gmail.com>
+Subject: Re: [PATCH] dt-bindings: msm: dsi-phy-28nm: Document fam-b compatible
+Message-Id: <167330408780.609993.10652879591606544377.b4-ty@linaro.org>
+Date:   Tue, 10 Jan 2023 00:41:27 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 09/01/2023 19:12, Marijn Suijten wrote:
-> On 2023-01-09 11:06:45, Dmitry Baryshkov wrote:
->> On Mon, 9 Jan 2023 at 10:24, Marijn Suijten
->> <marijn.suijten@somainline.org> wrote:
->>>
->>> On 2023-01-09 01:30:29, Dmitry Baryshkov wrote:
->>>> On 09/01/2023 01:28, Dmitry Baryshkov wrote:
->>>>> On 22/12/2022 01:19, Marijn Suijten wrote:
->>>>>> In the event that the topology requests resources that have not been
->>>>>> created by the system (because they are typically not represented in
->>>>>> dpu_mdss_cfg ^1), the resource(s) in global_state (in this case DSC
->>>>>> blocks) remain NULL but will still be returned out of
->>>>>> dpu_rm_get_assigned_resources, where the caller expects to get an array
->>>>>> containing num_blks valid pointers (but instead gets these NULLs).
->>>>>>
->>>>>> To prevent this from happening, where null-pointer dereferences
->>>>>> typically result in a hard-to-debug platform lockup, num_blks shouldn't
->>>>>> increase past NULL blocks and will print an error and break instead.
->>>>>> After all, max_blks represents the static size of the maximum number of
->>>>>> blocks whereas the actual amount varies per platform.
->>>>>>
->>>>>> ^1: which can happen after a git rebase ended up moving additions to
->>>>>> _dpu_cfg to a different struct which has the same patch context.
->>>>>>
->>>>>> Fixes: bb00a452d6f7 ("drm/msm/dpu: Refactor resource manager")
->>>>>> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
->>>>>> ---
->>>>>>    drivers/gpu/drm/msm/disp/dpu1/dpu_rm.c | 5 +++++
->>>>>>    1 file changed, 5 insertions(+)
->>>>>
->>>>> I think the patch is not fully correct. Please check resource
->>>>> availability during allocation. I wouldn't expect an error from
->>>>> get_assigned_resources because of resource exhaustion.
->>>
->>> Theoretically patch 5/8 should take care of this, and we should never
->>> reach this failure condition.  Emphasis on /should/, this may happen
->>> again if/when another block type is added with sub-par resource
->>> allocation and assignment implementation.
->>
->> Yeah. Maybe swapping 4/8 and 5/8 makes sense.
-> 
-> Ack.
-> 
->>>> Another option, since allocation functions (except DSC) already have
->>>> these safety checks: check error message to mention internal
->>>> inconstency: allocated resource doesn't exist.
->>>
->>> Is this a suggestion for the wording of the error message?
->>
->> Yes. Because the current message makes one think that it is output
->> during allocation / assignment to encoder, while this is a safety net.
-> 
-> Good.  So the patch is correct, just the wording is off, which I fully
-> agree on.  This isn't allocating anything, just handing out what was
-> previously allocated (and is a safety net).
 
-Yes. Please excuse me if my original message was not 100% clear.
-
+On Sat, 31 Dec 2022 18:05:32 +0100, Adam Skladowski wrote:
+> Document omitted 28nm compatible which will be used on MSM8976 SoC.
 > 
-> - Marijn
+> 
 
+Applied, thanks!
+
+[1/1] dt-bindings: msm: dsi-phy-28nm: Document fam-b compatible
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/852f489b36aa
+
+Best regards,
 -- 
-With best wishes
-Dmitry
-
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
