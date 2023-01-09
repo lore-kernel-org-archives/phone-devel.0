@@ -2,104 +2,125 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C919DC54EBD
-	for <phone-devel@archiver.kernel.org>; Mon,  9 Jan 2023 09:31:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 793B9C54EBD
+	for <phone-devel@archiver.kernel.org>; Mon,  9 Jan 2023 09:39:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230287AbjAIJbh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 9 Jan 2023 04:31:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59208 "EHLO
+        id S234286AbjAIJjp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 9 Jan 2023 04:39:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237039AbjAIJbB (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Jan 2023 04:31:01 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 663CA6464
-        for <phone-devel@vger.kernel.org>; Mon,  9 Jan 2023 01:30:08 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id k26-20020a05600c1c9a00b003d972646a7dso8504047wms.5
-        for <phone-devel@vger.kernel.org>; Mon, 09 Jan 2023 01:30:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gGEMDHLHYnrcaFvEu4QvBpxD5CV8NRVf54KR4uCbrnM=;
-        b=TqFn7SMxQJax+AzzmJ4lJdlgRdocs+VQr+DEn84XE2DU55VzWMtF6K+UHbT/VxzBRp
-         uuhn2WXj1/QeQp9dX/9ba5IZ+eoOvQqzZbUEYHDdPE+1jQdH1wa7A9oAZIKJ9AGMeR6P
-         tabYUA+02Pu9ZNYnOa1b+4sWQ956+Tz7p/RuKKrmbkx49/7zD5zKtFPsAZy0MIGGu59w
-         ss5rCP/swOMVk2XGuJQX85+cxnh5zORJMDLNpo64JBzBXNxGDmb1tMHfY3RpUwXH8ub6
-         UafOIOXFkGCCFx87y4K/RnvVJP7bXRNjUpvztoLy0a0SLQz61Pk60whE/SivI1uRWQyO
-         E5ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gGEMDHLHYnrcaFvEu4QvBpxD5CV8NRVf54KR4uCbrnM=;
-        b=nuMxfzRkCEbC2aabG/iDapPxZZRuJTMFF4+pMCbiI6fQILJykcud67PAqscwiy2a3q
-         dKSdqymcyorLr3R3TQqP3mNsyMnuJlFqiOJSwbLw0iLbVJtSfZ4hDX6lZYqj0K8kS5e8
-         mGgWREt0Itd45cPQVBYYgWAWcWd4i/hBHwBbwX6OLMVTVUBEuFkd/dxtDLDTCiVj0kdl
-         trMjXTuhy2CC4W3ucYVPz7hVMKmaKhRMxHgTL/kRVwtlRcLsvGpw7oeYdm4r/Lycpqxn
-         LA5QlN0d9zhpDlpYh5cGbELuKx7M57i2nGC+8f11UJb45j6/eSE9ws2zYJaDt/vzCiOB
-         Qokw==
-X-Gm-Message-State: AFqh2krj89ASYYZEK+BHLWJ5v634LyKZQe7d3VszkFk7ov5tBTf4i06g
-        hthWR4v+c2PSGxsAq+phX66cXw==
-X-Google-Smtp-Source: AMrXdXspbWYZM83aPs7JQqmVF2zwjegRK3gDtccETa05r62+3m/rLfGTF/MWLDmtzoOoF2a491DtRg==
-X-Received: by 2002:a05:600c:601b:b0:3d3:56ce:5693 with SMTP id az27-20020a05600c601b00b003d356ce5693mr45201138wmb.17.1673256607024;
-        Mon, 09 Jan 2023 01:30:07 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id p9-20020a05600c358900b003cffd3c3d6csm11509655wmq.12.2023.01.09.01.30.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Jan 2023 01:30:06 -0800 (PST)
-Message-ID: <189e5ced-fea2-177b-fb7b-9bfc89b18d50@linaro.org>
-Date:   Mon, 9 Jan 2023 10:30:05 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH 1/4] soc: qcom: socinfo: Fix soc_id order
-Content-Language: en-US
-To:     Stephan Gerhold <stephan@gerhold.net>,
-        Bjorn Andersson <andersson@kernel.org>
-Cc:     Andy Gross <agross@kernel.org>,
+        with ESMTP id S236710AbjAIJjn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Jan 2023 04:39:43 -0500
+X-Greylist: delayed 3358 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 09 Jan 2023 01:39:41 PST
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62DDE646A;
+        Mon,  9 Jan 2023 01:39:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1673257176;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=7jr8OSyffh66PmNyWf9yrX6rwjkK6l6M3zwqEcxN3z8=;
+    b=FLoOL8znO4ByNQHOGeEzqaJN+eqC5LocZry+sotHO6LOaJiXbwG52wGhiu195V6ml9
+    s3vyM8jx3eYvgSvECGn6pHTfs9D/ASeU6aWQOeZ6DppDdavjNlEeHTCIJ/pdQ3n+Gzfr
+    pblxDfzLXccxHm6HSTXmVE7PrCt0nULSrR+uIKP5/l7BkdGP3k2utOrxs+wNmrYVvhyu
+    ckkSmPqY3EWvEUibPVpQfq+kkQ0i9e0Lr0iy82xADzVAOm0+wIdhC0kDou8BjrN/QRfi
+    69C6YRi88gfdw46MspS+eS5vhczw1IfDkc/OA8c3rhDTvwS/qoBux/LSRK757huohiLX
+    IA2g==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJAhdlWwvShtQ=="
+X-RZG-CLASS-ID: mo00
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 48.2.1 DYNA|AUTH)
+    with ESMTPSA id Yce349z099dZx5y
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Mon, 9 Jan 2023 10:39:35 +0100 (CET)
+Date:   Mon, 9 Jan 2023 10:39:34 +0100
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     Rob Herring <robh@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 3/4] dt-bindings: arm: qcom,ids: Add a bunch of older SoCs
+Message-ID: <Y7vg1gwhndnbtN/M@gerhold.net>
 References: <20230104115348.25046-1-stephan@gerhold.net>
- <20230104115348.25046-2-stephan@gerhold.net>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230104115348.25046-2-stephan@gerhold.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20230104115348.25046-4-stephan@gerhold.net>
+ <20230108214052.GA313089-robh@kernel.org>
+ <a86973c7-db5e-ab2c-4b6b-d9c82f76a070@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a86973c7-db5e-ab2c-4b6b-d9c82f76a070@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 04/01/2023 12:53, Stephan Gerhold wrote:
-> The soc_id array is mostly ordered by the numeric "msm-id" defined in
-> qcom,ids.h but some recent entries were added at the wrong place.
+On Mon, Jan 09, 2023 at 12:20:55AM +0200, Dmitry Baryshkov wrote:
+> On 08/01/2023 23:40, Rob Herring wrote:
+> > On Wed, Jan 04, 2023 at 12:53:47PM +0100, Stephan Gerhold wrote:
+> > > Sync the SoC IDs in qcom,ids.h with relevant entries from Qualcomm's LK
+> > > bootloader [1] that is used for almost all older Qualcomm SoCs.
+> > > 
+> > > Several of these are already supported, e.g.:
+> > >    - MSM8960 -> APQ8060, MSM8260, ...
+> > >    - MSM8976 -> APQ8076
+> > >    - MSM8956 -> APQ8056
+> > > Others are currently being worked on, e.g.:
+> > >    - MSM8909(W) -> APQ8009(W), MSM8905, MSM8209, ...
+> > >    - MSM8939 -> MSM8239, ...
+> > > 
+> > > And even all remaining ones added are close enough to what is already
+> > > supported so that future support is realistic (if someone steps up to
+> > > do the work).
+> > > 
+> > > Add all of them at once to avoid having to add them one by one in the
+> > > future. This will also benefit other projects making use of the same
+> > > dt-bindings, e.g. bootloaders where adding support for all these SoCs
+> > > is a bit easier than on Linux.
+> > 
+> > The promise was in accepting the properties upstream is we'd only be
+> > adding these for bootloaders with dtbs that we can't otherwise update or
+> > change. Do all of those meet this criteria? Seems unlikely.
 > 
-> While it does not make a functional difference it does make it harder
-> to regenerate the entire array after adding a bunch of new IDs.
 > 
-> Fixes: de320c07da3d ("soc: qcom: socinfo: Add MSM8956/76 SoC IDs to the soc_id table")
-> Fixes: 147f6534b8ff ("soc: qcom: socinfo: Add SM8550 ID")
-> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> ---
->  drivers/soc/qcom/socinfo.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> Most of Qualcomm platforms come with the signed bootloader, so it is
+> impossible to change it without vendor keys. This might sound bad for you,
+> but I fear that this list would include most of the platforms until Qualcomm
+> agrees to rework kernel-bootloader-dtb interaction.
 > 
-> diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
-> index 10efdbcfdf05..7258527816b0 100644
-> --- a/drivers/soc/qcom/socinfo.c
-> +++ b/drivers/soc/qcom/socinfo.c
-> @@ -257,8 +257,6 @@ static const struct soc_id soc_id[] = {
 
-Can you in the same or new patch add a comment that list is ordered by
-numerical ID, not by model name?
+There is no need to replace the signed bootloader to avoid these quirks.
+The bootloader does not care if it is booting Linux directly or another
+OS, so you can just package a less broken bootloader into an Android
+boot image and "chainload" it before booting Linux.
 
+This is fairly simple to do for the older platforms that are still using
+LK as bootloader, but more complicated for the UEFI platforms since a
+fully open-source bootloader is not available there.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+For the older platforms I'm working on (mainly MSM8916 and similar) this
+approach has proven to be extremely beneficial. I have seen all sorts of
+vendor-specific bootloader quirks that go way beyond just requiring a
+non-standard property in the DT. Some of them require almost the entire
+downstream DT because they use information from it to initialize the
+display shortly before booting Linux. Others make random modifications
+to the DT that would cause trouble for mainline Linux.
 
-Best regards,
-Krzysztof
+lk2nd [1] covers all relevant LK platforms. IMO investing the time to
+get e.g. U-Boot running for newer platforms would be well worth the
+effort, especially because it can cut many discussions short.
 
+For example, lk2nd has working display panel selection (by setting the
+correct panel compatible in the Linux DT). AFAIU this is still unsolved
+for all newer platforms because Qualcomm still passes this in some weird
+cmdline format to the kernel (mdss_mdp.panel=, msm_drm.dsi_display0=, ...)
+
+Thanks,
+Stephan
+
+[1]: https://github.com/msm8916-mainline/lk2nd
