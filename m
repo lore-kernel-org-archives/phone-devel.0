@@ -2,60 +2,114 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0EDFC678D6
-	for <phone-devel@archiver.kernel.org>; Tue, 10 Jan 2023 14:04:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EE68C54EBC
+	for <phone-devel@archiver.kernel.org>; Tue, 10 Jan 2023 14:19:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233541AbjAJOEv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 10 Jan 2023 09:04:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57404 "EHLO
+        id S234151AbjAJOT0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 10 Jan 2023 09:19:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233802AbjAJOEs (ORCPT
+        with ESMTP id S234485AbjAJOTJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 10 Jan 2023 09:04:48 -0500
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABF7650F42;
-        Tue, 10 Jan 2023 06:04:47 -0800 (PST)
-Received: from ip5b412258.dynamic.kabel-deutschland.de ([91.65.34.88] helo=phil.lan)
-        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <heiko@sntech.de>)
-        id 1pFFF4-0004vx-2X; Tue, 10 Jan 2023 15:04:42 +0100
-From:   Heiko Stuebner <heiko@sntech.de>
-To:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Jarrah Gosbell <kernel@undef.tools>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-rockchip@lists.infradead.org
-Cc:     Heiko Stuebner <heiko@sntech.de>, phone-devel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: rk3399-pinephone-pro: reduce thermal limits
-Date:   Tue, 10 Jan 2023 15:04:36 +0100
-Message-Id: <167335938206.2550251.13143254102555744501.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20221207113212.8216-1-kernel@undef.tools>
-References: <20221207113212.8216-1-kernel@undef.tools>
+        Tue, 10 Jan 2023 09:19:09 -0500
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF43C3BEAB;
+        Tue, 10 Jan 2023 06:19:06 -0800 (PST)
+Received: by mail-pg1-x536.google.com with SMTP id g68so7223429pgc.11;
+        Tue, 10 Jan 2023 06:19:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=grrwPmhSqI3qJm8bnEmnj+X9on9ASlpgUcg+JwSNOD0=;
+        b=WXKS/GBU4FZYrsiXefQU46l/2qnAzwWo3+XvukT30nxFYorfquNutSORFirhzEikkR
+         sR9V+Z4z5PA/rkiBDQ7qms8R18RLXTF3ARNEuyga/IWtnpiDFbcHcqrxguziAPerPz+R
+         YWt+CJxDBZSE+dpgD2ASXajxfXH/kt/VXgAJXtXdbX3Mtqt4u6Kou67XgTT656O6dWst
+         j52iY+jWbOTyciO3LtMXeGCrtDEMQUYc87nWLaOyw1D2onMCYNLbo7SuhqfOpbQRJkPG
+         VM+Bvhce7mADHURK5Yfw9b20X851cKwenWh8PQsSUI+hjdIZivmlPJ29vsV1yAq7Kupd
+         idkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=grrwPmhSqI3qJm8bnEmnj+X9on9ASlpgUcg+JwSNOD0=;
+        b=0vcCnoXQZHKLmWCDWidSCkVU3TeuAnMIqN81u8oQZatoN2HjN5CU/D6j7H4SqZFbe4
+         BgoUx02H0XA4ZjQVfW70REp6xuXo8dbkgifrLB8I93Jl6mAgrV57F9HZ0mIALh0vgUf3
+         /4yyTxPX78XdC/8Ddr8XfhbwbuN6UZgRvjQq4lCUqbwzPjGsUMI+j0fm0EUOcxCksxf7
+         H50bbIAfPCoVtYiLrWfNq5f/kF2gim8LUc2cdLTOMxuLGveUerATnUsf/me5cVtb4yr5
+         jI4t+6XbIFhh/velKfsn/sNH0zwzj9naVJBJCvOE+cKU9uMI7rQhS+Y9ecOjfva4weeF
+         PsZQ==
+X-Gm-Message-State: AFqh2kqzXXtyaF80aoBa6r8GtC196QN22EhxfhG3hZpYTs1u3T6ClJjc
+        TgmWBz7QK8W72N5GiV/Yj7Y=
+X-Google-Smtp-Source: AMrXdXtYE34QyxBPqv0I5pIJm03YaHmh5GUiPa+Sj72o3nmUUnjAeIX9lFdxvM02JByIyjCeLHpoNQ==
+X-Received: by 2002:a05:6a00:725:b0:581:a633:d41f with SMTP id 5-20020a056a00072500b00581a633d41fmr42563960pfm.34.1673360346114;
+        Tue, 10 Jan 2023 06:19:06 -0800 (PST)
+Received: from [172.30.1.1] ([14.32.163.5])
+        by smtp.gmail.com with ESMTPSA id d3-20020aa797a3000000b005811c4245c7sm8142175pfq.126.2023.01.10.06.19.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Jan 2023 06:19:05 -0800 (PST)
+Message-ID: <46489cf4-0ff7-faf6-3f19-dbb64acfeb29@gmail.com>
+Date:   Tue, 10 Jan 2023 23:18:54 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Subject: Re: [PATCH v2] dt-bindings: pm8941-misc: rename misc node name
+Content-Language: en-US
+To:     luca@z3ntu.xyz, linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Das Srinagesh <gurus@codeaurora.org>,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20221228214636.6292-1-luca@z3ntu.xyz>
+From:   Chanwoo Choi <cwchoi00@gmail.com>
+In-Reply-To: <20221228214636.6292-1-luca@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 7 Dec 2022 11:32:13 +0000, Jarrah Gosbell wrote:
-> While this device uses the rk3399 it is also enclosed in a tight package
-> and cooled through the screen and back case. The default rk3399 thermal
-> limits can result in a burnt screen.
+On 22. 12. 29. 06:46, luca@z3ntu.xyz wrote:
+> From: Luca Weiss <luca@z3ntu.xyz>
 > 
-> These lower limits have resulted in the existing burn not expanding and
-> will hopefully result in future devices not experiencing the issue.
+> The spmi-pmic bindings is now using usb-detect@ for this node, so adjust
+> the example to match.
 > 
-> [...]
+> Acked-by: Rob Herring <robh@kernel.org>
+> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  Documentation/devicetree/bindings/extcon/qcom,pm8941-misc.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/extcon/qcom,pm8941-misc.yaml b/Documentation/devicetree/bindings/extcon/qcom,pm8941-misc.yaml
+> index 6a9c96f0352a..fbda899fd260 100644
+> --- a/Documentation/devicetree/bindings/extcon/qcom,pm8941-misc.yaml
+> +++ b/Documentation/devicetree/bindings/extcon/qcom,pm8941-misc.yaml
+> @@ -49,7 +49,7 @@ examples:
+>              interrupt-controller;
+>              #interrupt-cells = <4>;
+>  
+> -            usb_id: misc@900 {
+> +            usb_id: usb-detect@900 {
+>                      compatible = "qcom,pm8941-misc";
+>                      reg = <0x900>;
+>                      interrupts = <0x0 0x9 0 IRQ_TYPE_EDGE_BOTH>;
 
-Applied, thanks!
+Applied it. Thanks.
 
-[1/1] arm64: dts: rk3399-pinephone-pro: reduce thermal limits
-      commit: 33e24f0738b922b6f5f4118dbdc26cac8400d7b9
-
-Best regards,
 -- 
-Heiko Stuebner <heiko@sntech.de>
+Best Regards,
+Samsung Electronics
+Chanwoo Choi
+
