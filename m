@@ -2,114 +2,208 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EE68C54EBC
-	for <phone-devel@archiver.kernel.org>; Tue, 10 Jan 2023 14:19:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C75F4C46467
+	for <phone-devel@archiver.kernel.org>; Tue, 10 Jan 2023 19:43:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234151AbjAJOT0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 10 Jan 2023 09:19:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40738 "EHLO
+        id S232209AbjAJTnT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 10 Jan 2023 14:43:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234485AbjAJOTJ (ORCPT
+        with ESMTP id S232003AbjAJTnT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 10 Jan 2023 09:19:09 -0500
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF43C3BEAB;
-        Tue, 10 Jan 2023 06:19:06 -0800 (PST)
-Received: by mail-pg1-x536.google.com with SMTP id g68so7223429pgc.11;
-        Tue, 10 Jan 2023 06:19:06 -0800 (PST)
+        Tue, 10 Jan 2023 14:43:19 -0500
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF12510AE
+        for <phone-devel@vger.kernel.org>; Tue, 10 Jan 2023 11:43:17 -0800 (PST)
+Received: by mail-lf1-x129.google.com with SMTP id j17so20126646lfr.3
+        for <phone-devel@vger.kernel.org>; Tue, 10 Jan 2023 11:43:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=grrwPmhSqI3qJm8bnEmnj+X9on9ASlpgUcg+JwSNOD0=;
-        b=WXKS/GBU4FZYrsiXefQU46l/2qnAzwWo3+XvukT30nxFYorfquNutSORFirhzEikkR
-         sR9V+Z4z5PA/rkiBDQ7qms8R18RLXTF3ARNEuyga/IWtnpiDFbcHcqrxguziAPerPz+R
-         YWt+CJxDBZSE+dpgD2ASXajxfXH/kt/VXgAJXtXdbX3Mtqt4u6Kou67XgTT656O6dWst
-         j52iY+jWbOTyciO3LtMXeGCrtDEMQUYc87nWLaOyw1D2onMCYNLbo7SuhqfOpbQRJkPG
-         VM+Bvhce7mADHURK5Yfw9b20X851cKwenWh8PQsSUI+hjdIZivmlPJ29vsV1yAq7Kupd
-         idkA==
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6WK2Snknx5q6DqgfLKm58fMpMD4ck4a9f8QIfce9Lrc=;
+        b=p7oPlCmZedrWRoiSVeoy6bmdvaGMQJyEi9NfSM/+5ynkmqnG4jo0HqYIBPICn9DdzE
+         r1FhhdCDPNqDDh6Ndj50QzykxA9fkch8rRH7BYMKpAa4EPUF0STAs+fB6zhU1HNiXTDG
+         FZhbGNSylBoJX2GaRXl//tXsJKfFRwtjb2i76FLyyfXh70bhfL7sa7gKlbf5R3Mh/sk9
+         vCn1sVrUNNUGZlvsqMKD+GfmQfrpg7dqVPxBsAIfaI+r0YC0KvY3zIiQ+cOaOKYdr8Aa
+         pXgZmdaXChhGHvlG8lx3BSyqi+deyUVl8Zo5VNGZ+kQ9OCZeMa1wfj8Z/fxo5bUfhqzI
+         nE/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=grrwPmhSqI3qJm8bnEmnj+X9on9ASlpgUcg+JwSNOD0=;
-        b=0vcCnoXQZHKLmWCDWidSCkVU3TeuAnMIqN81u8oQZatoN2HjN5CU/D6j7H4SqZFbe4
-         BgoUx02H0XA4ZjQVfW70REp6xuXo8dbkgifrLB8I93Jl6mAgrV57F9HZ0mIALh0vgUf3
-         /4yyTxPX78XdC/8Ddr8XfhbwbuN6UZgRvjQq4lCUqbwzPjGsUMI+j0fm0EUOcxCksxf7
-         H50bbIAfPCoVtYiLrWfNq5f/kF2gim8LUc2cdLTOMxuLGveUerATnUsf/me5cVtb4yr5
-         jI4t+6XbIFhh/velKfsn/sNH0zwzj9naVJBJCvOE+cKU9uMI7rQhS+Y9ecOjfva4weeF
-         PsZQ==
-X-Gm-Message-State: AFqh2kqzXXtyaF80aoBa6r8GtC196QN22EhxfhG3hZpYTs1u3T6ClJjc
-        TgmWBz7QK8W72N5GiV/Yj7Y=
-X-Google-Smtp-Source: AMrXdXtYE34QyxBPqv0I5pIJm03YaHmh5GUiPa+Sj72o3nmUUnjAeIX9lFdxvM02JByIyjCeLHpoNQ==
-X-Received: by 2002:a05:6a00:725:b0:581:a633:d41f with SMTP id 5-20020a056a00072500b00581a633d41fmr42563960pfm.34.1673360346114;
-        Tue, 10 Jan 2023 06:19:06 -0800 (PST)
-Received: from [172.30.1.1] ([14.32.163.5])
-        by smtp.gmail.com with ESMTPSA id d3-20020aa797a3000000b005811c4245c7sm8142175pfq.126.2023.01.10.06.19.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Jan 2023 06:19:05 -0800 (PST)
-Message-ID: <46489cf4-0ff7-faf6-3f19-dbb64acfeb29@gmail.com>
-Date:   Tue, 10 Jan 2023 23:18:54 +0900
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6WK2Snknx5q6DqgfLKm58fMpMD4ck4a9f8QIfce9Lrc=;
+        b=RW5gLnbfKu4YOOHoPVl4uKEv/goKxjoafSAsJO+GxI9CGpy+dgnxXiL+1dP+RHRPsa
+         KOGt6zuSIUw04ddmcH/TUnk20fDmEJh0R8ONGDk4pDuw3p5FS4wemmT102KhNLj4EJdD
+         8Ytr84duppT3vl31IhppfbpJqVZ5bK1plJQDw/PpD/BNT51nKftJNBs0kkOV9we2bINp
+         YdDzgt9ATnBSxiEXZ/nZauT0BysDhR4LLASys71QGRDqLbOHN/PyzEgX7ZF1mTBULp7T
+         09xphSDsY9jZDnXo7pOaOXx4gUzODjfPuQ1i7GOpsllx8p/bMyf9L8kwU1gR+KGgx/YJ
+         UZPw==
+X-Gm-Message-State: AFqh2kp3GV97oCvqEygFVGZKzQ9r5JdsGAV7T4tEzUPM5lWe06NRV7zs
+        ywmpw8apeKb0eneQKloZ+Bc8ng==
+X-Google-Smtp-Source: AMrXdXvd9JYUEH5gx5Y5sY2UqMyyKryZpntkHym2B+KeN015qRBQPFCKaGB21wOfuDUp4tBqP4MWJA==
+X-Received: by 2002:ac2:5c4b:0:b0:4cc:7ff3:ab4d with SMTP id s11-20020ac25c4b000000b004cc7ff3ab4dmr2607900lfp.20.1673379796325;
+        Tue, 10 Jan 2023 11:43:16 -0800 (PST)
+Received: from Fecusia.lan (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
+        by smtp.gmail.com with ESMTPSA id m10-20020a056512358a00b004cb0242704asm2307754lfr.255.2023.01.10.11.43.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jan 2023 11:43:15 -0800 (PST)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     linux-crypto@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>
+Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
+        Lionel Debieve <lionel.debieve@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH] crypto: stm32/cryp: Use accelerated readsl/writesl
+Date:   Tue, 10 Jan 2023 20:43:07 +0100
+Message-Id: <20230110194307.657918-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v2] dt-bindings: pm8941-misc: rename misc node name
-Content-Language: en-US
-To:     luca@z3ntu.xyz, linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rob Herring <robh@kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Das Srinagesh <gurus@codeaurora.org>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20221228214636.6292-1-luca@z3ntu.xyz>
-From:   Chanwoo Choi <cwchoi00@gmail.com>
-In-Reply-To: <20221228214636.6292-1-luca@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 22. 12. 29. 06:46, luca@z3ntu.xyz wrote:
-> From: Luca Weiss <luca@z3ntu.xyz>
-> 
-> The spmi-pmic bindings is now using usb-detect@ for this node, so adjust
-> the example to match.
-> 
-> Acked-by: Rob Herring <robh@kernel.org>
-> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  Documentation/devicetree/bindings/extcon/qcom,pm8941-misc.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/extcon/qcom,pm8941-misc.yaml b/Documentation/devicetree/bindings/extcon/qcom,pm8941-misc.yaml
-> index 6a9c96f0352a..fbda899fd260 100644
-> --- a/Documentation/devicetree/bindings/extcon/qcom,pm8941-misc.yaml
-> +++ b/Documentation/devicetree/bindings/extcon/qcom,pm8941-misc.yaml
-> @@ -49,7 +49,7 @@ examples:
->              interrupt-controller;
->              #interrupt-cells = <4>;
->  
-> -            usb_id: misc@900 {
-> +            usb_id: usb-detect@900 {
->                      compatible = "qcom,pm8941-misc";
->                      reg = <0x900>;
->                      interrupts = <0x0 0x9 0 IRQ_TYPE_EDGE_BOTH>;
+When reading or writing crypto buffers the inner loops can
+be replaced with readsl and writesl which will on ARM result
+in a tight assembly loop, speeding up encryption/decryption
+a little bit. This optimization was in the Ux500 driver so
+let's carry it over to the STM32 driver.
 
-Applied it. Thanks.
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Lionel Debieve <lionel.debieve@foss.st.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/crypto/stm32/stm32-cryp.c | 37 +++++++++----------------------
+ 1 file changed, 11 insertions(+), 26 deletions(-)
 
+diff --git a/drivers/crypto/stm32/stm32-cryp.c b/drivers/crypto/stm32/stm32-cryp.c
+index 4208338e72b6..6b8d731092a4 100644
+--- a/drivers/crypto/stm32/stm32-cryp.c
++++ b/drivers/crypto/stm32/stm32-cryp.c
+@@ -597,7 +597,6 @@ static void stm32_crypt_gcmccm_end_header(struct stm32_cryp *cryp)
+ 
+ static void stm32_cryp_write_ccm_first_header(struct stm32_cryp *cryp)
+ {
+-	unsigned int i;
+ 	size_t written;
+ 	size_t len;
+ 	u32 alen = cryp->areq->assoclen;
+@@ -623,8 +622,8 @@ static void stm32_cryp_write_ccm_first_header(struct stm32_cryp *cryp)
+ 	written = min_t(size_t, AES_BLOCK_SIZE - len, alen);
+ 
+ 	scatterwalk_copychunks((char *)block + len, &cryp->in_walk, written, 0);
+-	for (i = 0; i < AES_BLOCK_32; i++)
+-		stm32_cryp_write(cryp, cryp->caps->din, block[i]);
++
++	writesl(cryp->regs + cryp->caps->din, block, AES_BLOCK_32);
+ 
+ 	cryp->header_in -= written;
+ 
+@@ -1363,18 +1362,14 @@ static int stm32_cryp_read_auth_tag(struct stm32_cryp *cryp)
+ 		u32 out_tag[AES_BLOCK_32];
+ 
+ 		/* Get and write tag */
+-		for (i = 0; i < AES_BLOCK_32; i++)
+-			out_tag[i] = stm32_cryp_read(cryp, cryp->caps->dout);
+-
++		readsl(cryp->regs + cryp->caps->dout, out_tag, AES_BLOCK_32);
+ 		scatterwalk_copychunks(out_tag, &cryp->out_walk, cryp->authsize, 1);
+ 	} else {
+ 		/* Get and check tag */
+ 		u32 in_tag[AES_BLOCK_32], out_tag[AES_BLOCK_32];
+ 
+ 		scatterwalk_copychunks(in_tag, &cryp->in_walk, cryp->authsize, 0);
+-
+-		for (i = 0; i < AES_BLOCK_32; i++)
+-			out_tag[i] = stm32_cryp_read(cryp, cryp->caps->dout);
++		readsl(cryp->regs + cryp->caps->dout, out_tag, AES_BLOCK_32);
+ 
+ 		if (crypto_memneq(in_tag, out_tag, cryp->authsize))
+ 			ret = -EBADMSG;
+@@ -1415,12 +1410,9 @@ static void stm32_cryp_check_ctr_counter(struct stm32_cryp *cryp)
+ 
+ static void stm32_cryp_irq_read_data(struct stm32_cryp *cryp)
+ {
+-	unsigned int i;
+ 	u32 block[AES_BLOCK_32];
+ 
+-	for (i = 0; i < cryp->hw_blocksize / sizeof(u32); i++)
+-		block[i] = stm32_cryp_read(cryp, cryp->caps->dout);
+-
++	readsl(cryp->regs + cryp->caps->dout, block, cryp->hw_blocksize / sizeof(u32));
+ 	scatterwalk_copychunks(block, &cryp->out_walk, min_t(size_t, cryp->hw_blocksize,
+ 							     cryp->payload_out), 1);
+ 	cryp->payload_out -= min_t(size_t, cryp->hw_blocksize,
+@@ -1429,14 +1421,11 @@ static void stm32_cryp_irq_read_data(struct stm32_cryp *cryp)
+ 
+ static void stm32_cryp_irq_write_block(struct stm32_cryp *cryp)
+ {
+-	unsigned int i;
+ 	u32 block[AES_BLOCK_32] = {0};
+ 
+ 	scatterwalk_copychunks(block, &cryp->in_walk, min_t(size_t, cryp->hw_blocksize,
+ 							    cryp->payload_in), 0);
+-	for (i = 0; i < cryp->hw_blocksize / sizeof(u32); i++)
+-		stm32_cryp_write(cryp, cryp->caps->din, block[i]);
+-
++	writesl(cryp->regs + cryp->caps->din, block, cryp->hw_blocksize / sizeof(u32));
+ 	cryp->payload_in -= min_t(size_t, cryp->hw_blocksize, cryp->payload_in);
+ }
+ 
+@@ -1480,8 +1469,7 @@ static void stm32_cryp_irq_write_gcm_padded_data(struct stm32_cryp *cryp)
+ 	 * Same code as stm32_cryp_irq_read_data(), but we want to store
+ 	 * block value
+ 	 */
+-	for (i = 0; i < cryp->hw_blocksize / sizeof(u32); i++)
+-		block[i] = stm32_cryp_read(cryp, cryp->caps->dout);
++	readsl(cryp->regs + cryp->caps->dout, block, cryp->hw_blocksize / sizeof(u32));
+ 
+ 	scatterwalk_copychunks(block, &cryp->out_walk, min_t(size_t, cryp->hw_blocksize,
+ 							     cryp->payload_out), 1);
+@@ -1499,8 +1487,7 @@ static void stm32_cryp_irq_write_gcm_padded_data(struct stm32_cryp *cryp)
+ 	stm32_cryp_write(cryp, cryp->caps->cr, cfg);
+ 
+ 	/* f) write padded data */
+-	for (i = 0; i < AES_BLOCK_32; i++)
+-		stm32_cryp_write(cryp, cryp->caps->din, block[i]);
++	writesl(cryp->regs + cryp->caps->din, block, AES_BLOCK_32);
+ 
+ 	/* g) Empty fifo out */
+ 	err = stm32_cryp_wait_output(cryp);
+@@ -1580,8 +1567,7 @@ static void stm32_cryp_irq_write_ccm_padded_data(struct stm32_cryp *cryp)
+ 	 * Same code as stm32_cryp_irq_read_data(), but we want to store
+ 	 * block value
+ 	 */
+-	for (i = 0; i < cryp->hw_blocksize / sizeof(u32); i++)
+-		block[i] = stm32_cryp_read(cryp, cryp->caps->dout);
++	readsl(cryp->regs + cryp->caps->dout, block, cryp->hw_blocksize / sizeof(u32));
+ 
+ 	scatterwalk_copychunks(block, &cryp->out_walk, min_t(size_t, cryp->hw_blocksize,
+ 							     cryp->payload_out), 1);
+@@ -1660,15 +1646,14 @@ static void stm32_cryp_irq_write_data(struct stm32_cryp *cryp)
+ 
+ static void stm32_cryp_irq_write_gcmccm_header(struct stm32_cryp *cryp)
+ {
+-	unsigned int i;
+ 	u32 block[AES_BLOCK_32] = {0};
+ 	size_t written;
+ 
+ 	written = min_t(size_t, AES_BLOCK_SIZE, cryp->header_in);
+ 
+ 	scatterwalk_copychunks(block, &cryp->in_walk, written, 0);
+-	for (i = 0; i < AES_BLOCK_32; i++)
+-		stm32_cryp_write(cryp, cryp->caps->din, block[i]);
++
++	writesl(cryp->regs + cryp->caps->din, block, AES_BLOCK_32);
+ 
+ 	cryp->header_in -= written;
+ 
 -- 
-Best Regards,
-Samsung Electronics
-Chanwoo Choi
+2.39.0
 
