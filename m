@@ -2,208 +2,145 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C75F4C46467
-	for <phone-devel@archiver.kernel.org>; Tue, 10 Jan 2023 19:43:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B4A8C677F1
+	for <phone-devel@archiver.kernel.org>; Wed, 11 Jan 2023 02:53:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232209AbjAJTnT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 10 Jan 2023 14:43:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47068 "EHLO
+        id S229535AbjAKCxz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 10 Jan 2023 21:53:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232003AbjAJTnT (ORCPT
+        with ESMTP id S233179AbjAKCxy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 10 Jan 2023 14:43:19 -0500
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF12510AE
-        for <phone-devel@vger.kernel.org>; Tue, 10 Jan 2023 11:43:17 -0800 (PST)
-Received: by mail-lf1-x129.google.com with SMTP id j17so20126646lfr.3
-        for <phone-devel@vger.kernel.org>; Tue, 10 Jan 2023 11:43:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6WK2Snknx5q6DqgfLKm58fMpMD4ck4a9f8QIfce9Lrc=;
-        b=p7oPlCmZedrWRoiSVeoy6bmdvaGMQJyEi9NfSM/+5ynkmqnG4jo0HqYIBPICn9DdzE
-         r1FhhdCDPNqDDh6Ndj50QzykxA9fkch8rRH7BYMKpAa4EPUF0STAs+fB6zhU1HNiXTDG
-         FZhbGNSylBoJX2GaRXl//tXsJKfFRwtjb2i76FLyyfXh70bhfL7sa7gKlbf5R3Mh/sk9
-         vCn1sVrUNNUGZlvsqMKD+GfmQfrpg7dqVPxBsAIfaI+r0YC0KvY3zIiQ+cOaOKYdr8Aa
-         pXgZmdaXChhGHvlG8lx3BSyqi+deyUVl8Zo5VNGZ+kQ9OCZeMa1wfj8Z/fxo5bUfhqzI
-         nE/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6WK2Snknx5q6DqgfLKm58fMpMD4ck4a9f8QIfce9Lrc=;
-        b=RW5gLnbfKu4YOOHoPVl4uKEv/goKxjoafSAsJO+GxI9CGpy+dgnxXiL+1dP+RHRPsa
-         KOGt6zuSIUw04ddmcH/TUnk20fDmEJh0R8ONGDk4pDuw3p5FS4wemmT102KhNLj4EJdD
-         8Ytr84duppT3vl31IhppfbpJqVZ5bK1plJQDw/PpD/BNT51nKftJNBs0kkOV9we2bINp
-         YdDzgt9ATnBSxiEXZ/nZauT0BysDhR4LLASys71QGRDqLbOHN/PyzEgX7ZF1mTBULp7T
-         09xphSDsY9jZDnXo7pOaOXx4gUzODjfPuQ1i7GOpsllx8p/bMyf9L8kwU1gR+KGgx/YJ
-         UZPw==
-X-Gm-Message-State: AFqh2kp3GV97oCvqEygFVGZKzQ9r5JdsGAV7T4tEzUPM5lWe06NRV7zs
-        ywmpw8apeKb0eneQKloZ+Bc8ng==
-X-Google-Smtp-Source: AMrXdXvd9JYUEH5gx5Y5sY2UqMyyKryZpntkHym2B+KeN015qRBQPFCKaGB21wOfuDUp4tBqP4MWJA==
-X-Received: by 2002:ac2:5c4b:0:b0:4cc:7ff3:ab4d with SMTP id s11-20020ac25c4b000000b004cc7ff3ab4dmr2607900lfp.20.1673379796325;
-        Tue, 10 Jan 2023 11:43:16 -0800 (PST)
-Received: from Fecusia.lan (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
-        by smtp.gmail.com with ESMTPSA id m10-20020a056512358a00b004cb0242704asm2307754lfr.255.2023.01.10.11.43.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jan 2023 11:43:15 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-crypto@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>
-Cc:     phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
-        Lionel Debieve <lionel.debieve@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH] crypto: stm32/cryp: Use accelerated readsl/writesl
-Date:   Tue, 10 Jan 2023 20:43:07 +0100
-Message-Id: <20230110194307.657918-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.39.0
+        Tue, 10 Jan 2023 21:53:54 -0500
+Received: from amity.mint.lgbt (vmi888983.contaboserver.net [149.102.157.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C2FC165A9
+        for <phone-devel@vger.kernel.org>; Tue, 10 Jan 2023 18:53:53 -0800 (PST)
+Received: from amity.mint.lgbt (mx.mint.lgbt [127.0.0.1])
+        by amity.mint.lgbt (Postfix) with ESMTP id 4NsC1V1Xcdz1S5Fg
+        for <phone-devel@vger.kernel.org>; Tue, 10 Jan 2023 21:53:50 -0500 (EST)
+Authentication-Results: amity.mint.lgbt (amavisd-new);
+        dkim=pass (2048-bit key) reason="pass (just generated, assumed good)"
+        header.d=mint.lgbt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mint.lgbt; h=
+        content-transfer-encoding:content-type:in-reply-to:from
+        :references:to:content-language:subject:user-agent:mime-version
+        :date:message-id; s=dkim; t=1673405629; x=1674269630; bh=8i4jmOu
+        APCAp11p4DZJjHBlsAcEc2Uu0uW9fgZ3zFUU=; b=ZvNkxwaoddO/2YiNBbUZtkV
+        MYb7hjLUNVJzqL7ZyAmg10ufZnFXC6HFcJbBE8sFjM8X2OVlGdCQ5vLP6WeIcWiy
+        yZLGloCXNclBcg/5mLl4TqjwMjCBbTt8yBal43WUmJRNAoRmmXmI6Qco6V+x/lLM
+        YU3hDgG4f4Ind7fjmZYO0NdQkR7yrQ8MpNGZjklUXXpb5fIuJszVg+i59d4oMqq/
+        TN2uPUCDnWncWg/9YDDcBE6UjqT0uK/iYCFMv01WPENaQJy1z/ue0Impve732yl+
+        LyrD/O4SJfx5vNSLVAOVwHuxaF+mFO8BQ6Cu3i2NQi3hf9blKi18QHlMsFr+HMg=
+        =
+X-Virus-Scanned: amavisd-new at amity.mint.lgbt
+Received: from amity.mint.lgbt ([127.0.0.1])
+        by amity.mint.lgbt (amity.mint.lgbt [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id kTIYdiqlFSNG for <phone-devel@vger.kernel.org>;
+        Tue, 10 Jan 2023 21:53:49 -0500 (EST)
+Received: from [192.168.4.25] (unknown [190.196.92.66])
+        by amity.mint.lgbt (Postfix) with ESMTPSA id 4NsC1B5blwz1S4tq;
+        Tue, 10 Jan 2023 21:53:34 -0500 (EST)
+Message-ID: <f1f1337a-30cc-df3c-81d5-2daac61e874c@mint.lgbt>
+Date:   Tue, 10 Jan 2023 23:53:31 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH v6 4/6] arm64: dts: qcom: sm6125: Add UFS nodes
+Content-Language: en-US
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>, agross@kernel.org,
+        andersson@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
+        kishon@kernel.org, alim.akhtar@samsung.com, avri.altman@wdc.com,
+        bvanassche@acm.org, keescook@chromium.org, tony.luck@intel.com,
+        gpiccoli@igalia.com
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
+        phone-devel@vger.kernel.org, martin.botka@somainline.org,
+        marijn.suijten@somainline.org
+References: <20230108195336.388349-1-they@mint.lgbt>
+ <20230108195336.388349-5-they@mint.lgbt>
+ <475d3f2f-114f-d6d2-89db-465ba7acd0d6@linaro.org>
+From:   Lux Aliaga <they@mint.lgbt>
+In-Reply-To: <475d3f2f-114f-d6d2-89db-465ba7acd0d6@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-When reading or writing crypto buffers the inner loops can
-be replaced with readsl and writesl which will on ARM result
-in a tight assembly loop, speeding up encryption/decryption
-a little bit. This optimization was in the Ux500 driver so
-let's carry it over to the STM32 driver.
 
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Lionel Debieve <lionel.debieve@foss.st.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- drivers/crypto/stm32/stm32-cryp.c | 37 +++++++++----------------------
- 1 file changed, 11 insertions(+), 26 deletions(-)
+On 09/01/2023 09:18, Konrad Dybcio wrote:
+>
+> On 8.01.2023 20:53, Lux Aliaga wrote:
+>> Adds a UFS host controller node and its corresponding PHY to
+>> the sm6125 platform.
+>>
+>> Signed-off-by: Lux Aliaga <they@mint.lgbt>
+>> ---
+>>   arch/arm64/boot/dts/qcom/sm6125.dtsi | 57 ++++++++++++++++++++++++++++
+>>   1 file changed, 57 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+>> index df5453fcf2b9..cec7071d5279 100644
+>> --- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
+>> +++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+>> @@ -511,6 +511,63 @@ sdhc_2: mmc@4784000 {
+>>   			status = "disabled";
+>>   		};
+>>   
+>> +		ufs_mem_hc: ufs@4804000 {
+>> +			compatible = "qcom,sm6125-ufshc", "qcom,ufshc", "jedec,ufs-2.0";
+>> +			reg = <0x04804000 0x3000>, <0x04810000 0x8000>;
+> You need reg-names for ICE to probe, otherwise the second reg sits unused.
+>
+>> +			interrupts = <GIC_SPI 356 IRQ_TYPE_LEVEL_HIGH>;
+>> +			phys = <&ufs_mem_phy>;
+>> +			phy-names = "ufsphy";
+>> +			lanes-per-direction = <1>;
+>> +			#reset-cells = <1>;
+>> +			resets = <&gcc GCC_UFS_PHY_BCR>;
+>> +			reset-names = "rst";
+>> +			iommus = <&apps_smmu 0x200 0x0>;
+>> +
+>> +			clock-names = "core_clk",
+>> +				      "bus_aggr_clk",
+>> +				      "iface_clk",
+>> +				      "core_clk_unipro",
+>> +				      "ref_clk",
+>> +				      "tx_lane0_sync_clk",
+>> +				      "rx_lane0_sync_clk",
+>> +				      "ice_core_clk";
+>> +			clocks = <&gcc GCC_UFS_PHY_AXI_CLK>,
+>> +				 <&gcc GCC_SYS_NOC_UFS_PHY_AXI_CLK>,
+>> +				 <&gcc GCC_UFS_PHY_AHB_CLK>,
+>> +				 <&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
+>> +				 <&rpmcc RPM_SMD_XO_CLK_SRC>,
+>> +				 <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
+>> +				 <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
+>> +				 <&gcc GCC_UFS_PHY_ICE_CORE_CLK>;
+>> +			freq-table-hz = <50000000 240000000>,
+>> +					<0 0>,
+>> +					<0 0>,
+>> +					<37500000 150000000>,
+>> +					<0 0>,
+>> +					<0 0>,
+>> +					<0 0>,
+>> +					<75000000 300000000>;
+>> +
+>> +			status = "disabled";
+>> +		};
+>> +
+>> +		ufs_mem_phy: phy@4807000 {
+>> +			compatible = "qcom,sm6125-qmp-ufs-phy";
+>> +			reg = <0x04807000 0x1c4>;
+> Isn't this too small? Downstream says 0xdb8, but it's probably even bigger..
+What do you think could help me find the new length of the registers? I 
+tried 0x1000 and it probed just fine, but I'm not really sure until what 
+extent I could push it.
 
-diff --git a/drivers/crypto/stm32/stm32-cryp.c b/drivers/crypto/stm32/stm32-cryp.c
-index 4208338e72b6..6b8d731092a4 100644
---- a/drivers/crypto/stm32/stm32-cryp.c
-+++ b/drivers/crypto/stm32/stm32-cryp.c
-@@ -597,7 +597,6 @@ static void stm32_crypt_gcmccm_end_header(struct stm32_cryp *cryp)
- 
- static void stm32_cryp_write_ccm_first_header(struct stm32_cryp *cryp)
- {
--	unsigned int i;
- 	size_t written;
- 	size_t len;
- 	u32 alen = cryp->areq->assoclen;
-@@ -623,8 +622,8 @@ static void stm32_cryp_write_ccm_first_header(struct stm32_cryp *cryp)
- 	written = min_t(size_t, AES_BLOCK_SIZE - len, alen);
- 
- 	scatterwalk_copychunks((char *)block + len, &cryp->in_walk, written, 0);
--	for (i = 0; i < AES_BLOCK_32; i++)
--		stm32_cryp_write(cryp, cryp->caps->din, block[i]);
-+
-+	writesl(cryp->regs + cryp->caps->din, block, AES_BLOCK_32);
- 
- 	cryp->header_in -= written;
- 
-@@ -1363,18 +1362,14 @@ static int stm32_cryp_read_auth_tag(struct stm32_cryp *cryp)
- 		u32 out_tag[AES_BLOCK_32];
- 
- 		/* Get and write tag */
--		for (i = 0; i < AES_BLOCK_32; i++)
--			out_tag[i] = stm32_cryp_read(cryp, cryp->caps->dout);
--
-+		readsl(cryp->regs + cryp->caps->dout, out_tag, AES_BLOCK_32);
- 		scatterwalk_copychunks(out_tag, &cryp->out_walk, cryp->authsize, 1);
- 	} else {
- 		/* Get and check tag */
- 		u32 in_tag[AES_BLOCK_32], out_tag[AES_BLOCK_32];
- 
- 		scatterwalk_copychunks(in_tag, &cryp->in_walk, cryp->authsize, 0);
--
--		for (i = 0; i < AES_BLOCK_32; i++)
--			out_tag[i] = stm32_cryp_read(cryp, cryp->caps->dout);
-+		readsl(cryp->regs + cryp->caps->dout, out_tag, AES_BLOCK_32);
- 
- 		if (crypto_memneq(in_tag, out_tag, cryp->authsize))
- 			ret = -EBADMSG;
-@@ -1415,12 +1410,9 @@ static void stm32_cryp_check_ctr_counter(struct stm32_cryp *cryp)
- 
- static void stm32_cryp_irq_read_data(struct stm32_cryp *cryp)
- {
--	unsigned int i;
- 	u32 block[AES_BLOCK_32];
- 
--	for (i = 0; i < cryp->hw_blocksize / sizeof(u32); i++)
--		block[i] = stm32_cryp_read(cryp, cryp->caps->dout);
--
-+	readsl(cryp->regs + cryp->caps->dout, block, cryp->hw_blocksize / sizeof(u32));
- 	scatterwalk_copychunks(block, &cryp->out_walk, min_t(size_t, cryp->hw_blocksize,
- 							     cryp->payload_out), 1);
- 	cryp->payload_out -= min_t(size_t, cryp->hw_blocksize,
-@@ -1429,14 +1421,11 @@ static void stm32_cryp_irq_read_data(struct stm32_cryp *cryp)
- 
- static void stm32_cryp_irq_write_block(struct stm32_cryp *cryp)
- {
--	unsigned int i;
- 	u32 block[AES_BLOCK_32] = {0};
- 
- 	scatterwalk_copychunks(block, &cryp->in_walk, min_t(size_t, cryp->hw_blocksize,
- 							    cryp->payload_in), 0);
--	for (i = 0; i < cryp->hw_blocksize / sizeof(u32); i++)
--		stm32_cryp_write(cryp, cryp->caps->din, block[i]);
--
-+	writesl(cryp->regs + cryp->caps->din, block, cryp->hw_blocksize / sizeof(u32));
- 	cryp->payload_in -= min_t(size_t, cryp->hw_blocksize, cryp->payload_in);
- }
- 
-@@ -1480,8 +1469,7 @@ static void stm32_cryp_irq_write_gcm_padded_data(struct stm32_cryp *cryp)
- 	 * Same code as stm32_cryp_irq_read_data(), but we want to store
- 	 * block value
- 	 */
--	for (i = 0; i < cryp->hw_blocksize / sizeof(u32); i++)
--		block[i] = stm32_cryp_read(cryp, cryp->caps->dout);
-+	readsl(cryp->regs + cryp->caps->dout, block, cryp->hw_blocksize / sizeof(u32));
- 
- 	scatterwalk_copychunks(block, &cryp->out_walk, min_t(size_t, cryp->hw_blocksize,
- 							     cryp->payload_out), 1);
-@@ -1499,8 +1487,7 @@ static void stm32_cryp_irq_write_gcm_padded_data(struct stm32_cryp *cryp)
- 	stm32_cryp_write(cryp, cryp->caps->cr, cfg);
- 
- 	/* f) write padded data */
--	for (i = 0; i < AES_BLOCK_32; i++)
--		stm32_cryp_write(cryp, cryp->caps->din, block[i]);
-+	writesl(cryp->regs + cryp->caps->din, block, AES_BLOCK_32);
- 
- 	/* g) Empty fifo out */
- 	err = stm32_cryp_wait_output(cryp);
-@@ -1580,8 +1567,7 @@ static void stm32_cryp_irq_write_ccm_padded_data(struct stm32_cryp *cryp)
- 	 * Same code as stm32_cryp_irq_read_data(), but we want to store
- 	 * block value
- 	 */
--	for (i = 0; i < cryp->hw_blocksize / sizeof(u32); i++)
--		block[i] = stm32_cryp_read(cryp, cryp->caps->dout);
-+	readsl(cryp->regs + cryp->caps->dout, block, cryp->hw_blocksize / sizeof(u32));
- 
- 	scatterwalk_copychunks(block, &cryp->out_walk, min_t(size_t, cryp->hw_blocksize,
- 							     cryp->payload_out), 1);
-@@ -1660,15 +1646,14 @@ static void stm32_cryp_irq_write_data(struct stm32_cryp *cryp)
- 
- static void stm32_cryp_irq_write_gcmccm_header(struct stm32_cryp *cryp)
- {
--	unsigned int i;
- 	u32 block[AES_BLOCK_32] = {0};
- 	size_t written;
- 
- 	written = min_t(size_t, AES_BLOCK_SIZE, cryp->header_in);
- 
- 	scatterwalk_copychunks(block, &cryp->in_walk, written, 0);
--	for (i = 0; i < AES_BLOCK_32; i++)
--		stm32_cryp_write(cryp, cryp->caps->din, block[i]);
-+
-+	writesl(cryp->regs + cryp->caps->din, block, AES_BLOCK_32);
- 
- 	cryp->header_in -= written;
- 
 -- 
-2.39.0
+Lux Aliaga
+https://nixgoat.me/
 
