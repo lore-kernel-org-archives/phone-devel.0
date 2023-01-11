@@ -2,87 +2,66 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC176C5479D
-	for <phone-devel@archiver.kernel.org>; Wed, 11 Jan 2023 19:49:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7D3FC5479D
+	for <phone-devel@archiver.kernel.org>; Wed, 11 Jan 2023 19:50:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233287AbjAKTsa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 11 Jan 2023 14:48:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50002 "EHLO
+        id S235083AbjAKTt6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 11 Jan 2023 14:49:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231191AbjAKTsO (ORCPT
+        with ESMTP id S232291AbjAKTtc (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 11 Jan 2023 14:48:14 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9443F61;
-        Wed, 11 Jan 2023 11:48:07 -0800 (PST)
-Received: from g550jk.localnet (mobiledyn-62-240-134-128.mrsn.at [62.240.134.128])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 76FD0CC3A1;
-        Wed, 11 Jan 2023 19:48:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1673466486; bh=rsOZZ2Ln+JMozd3x8JmeFsooYZX8jZpZTbWXHGDAW20=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=PGM1W1+RqDKTo5OpqZU9lc/tFiWV6NxJ/AW4tHcHn/naz5PTV4P5t7uHrZ6ICT/y6
-         M0FqkU67SEXFdimjMBJG1+WPuSKVDt4CYNcWw/KfZe1QbbSe2OlJNK7skBuNJgZKSE
-         KS6YAZra8LAp4m1eBR/RvcFyocMb0Mq+lvvldWos=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/5] dt-bindings: cpufreq: cpufreq-qcom-hw: Add missing
- compatibles
-Date:   Wed, 11 Jan 2023 20:48:01 +0100
-Message-ID: <4899603.LvFx2qVVIh@g550jk>
-In-Reply-To: <20221016090035.565350-1-luca@z3ntu.xyz>
-References: <20221016090035.565350-1-luca@z3ntu.xyz>
+        Wed, 11 Jan 2023 14:49:32 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 028CB63D6;
+        Wed, 11 Jan 2023 11:49:19 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id ABBA6B81C09;
+        Wed, 11 Jan 2023 19:49:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B11C433F2;
+        Wed, 11 Jan 2023 19:49:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673466556;
+        bh=hPzyI3CiEx91WuzyQsH8x/7KWCOERi1lTUONBW/k5gs=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=PVHMZnm7L2ovjFtXuWWe03iiEcA4jAdRMGqFqzE0UDBLfWrINisws8v5/fjVFVFVv
+         8dAMUwu/TkBjWKSpMCZ9BcpbF4ZPXFMr6PYudiXnwFaGSzDMemqmF2Q21L2FpBKgKt
+         vL1oCsyEzqpB3SuBGyER4FH++hyJ4q9KVWVu8pUtktLYQ2V1ys4rWwoV7WrCxPu49J
+         dWNiczOhoAHdMoe+LgOCpXJ+b7TIXK4vBiYtwUCDZwtEgzjzhu9AF3qFUqZ0HkzS8i
+         1jkQHPc6Vsn6LpoJ8X9myPwBTtmCc5EI5rXWTt+5zlNmSucyG6gTxDXPooJQcvXbuI
+         z9VqpUXu7/pnQ==
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     krzysztof.kozlowski+dt@linaro.org, agross@kernel.org,
+        lars@metafoo.de, jic23@kernel.org, konrad.dybcio@linaro.org,
+        luca.weiss@fairphone.com, robh+dt@kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: (subset) [PATCH 0/2] Support ADC5_BAT_ID_100K_PU and use on PM7250b
+Date:   Wed, 11 Jan 2023 13:49:05 -0600
+Message-Id: <167346654444.2315924.9361818063890512484.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20230106-pm7250b-bat_id-v1-0-82ca8f2db741@fairphone.com>
+References: <20230106-pm7250b-bat_id-v1-0-82ca8f2db741@fairphone.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Viresh,
-
-gentle bump, I hope this patch could get applied in-time for the next merge 
-window.
-
-Regards
-Luca
-
-On Sonntag, 16. Oktober 2022 11:00:30 CET Luca Weiss wrote:
-> Document the cpufreq-epss compatibles currently used in the tree, plus
-> the sc7280 which will be added in a separate commit.
+On Fri, 06 Jan 2023 16:39:41 +0100, Luca Weiss wrote:
+> Add the bat_id channel to vadc driver and add channel to pm7250b dts.
 > 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  .../devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml          | 4 ++++
->  1 file changed, 4 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
-> b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml index
-> 24fa3d87a40b..d6af29ee889a 100644
-> --- a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
-> +++ b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
-> @@ -25,8 +25,12 @@ properties:
->        - description: v2 of CPUFREQ HW (EPSS)
->          items:
->            - enum:
-> +              - qcom,sc7280-cpufreq-epss
-> +              - qcom,sc8280xp-cpufreq-epss
->                - qcom,sm6375-cpufreq-epss
->                - qcom,sm8250-cpufreq-epss
-> +              - qcom,sm8350-cpufreq-epss
-> +              - qcom,sm8450-cpufreq-epss
->            - const: qcom,cpufreq-epss
-> 
->    reg:
 
+Applied, thanks!
 
+[2/2] arm64: dts: qcom: pm7250b: Add BAT_ID vadc channel
+      commit: 7592ba4d3e9bf1cce40323f59e48f4ca03b105e9
 
-
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
