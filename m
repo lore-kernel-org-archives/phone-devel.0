@@ -2,89 +2,87 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B080C5479D
-	for <phone-devel@archiver.kernel.org>; Wed, 11 Jan 2023 19:45:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC176C5479D
+	for <phone-devel@archiver.kernel.org>; Wed, 11 Jan 2023 19:49:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235423AbjAKTpC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 11 Jan 2023 14:45:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46784 "EHLO
+        id S233287AbjAKTsa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 11 Jan 2023 14:48:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231191AbjAKToM (ORCPT
+        with ESMTP id S231191AbjAKTsO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 11 Jan 2023 14:44:12 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A9B53F450;
-        Wed, 11 Jan 2023 11:42:20 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 46576B81CC7;
-        Wed, 11 Jan 2023 19:42:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A087C433EF;
-        Wed, 11 Jan 2023 19:42:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673466138;
-        bh=CGtIp75QkZOm9daNCxrZn31MoEyt/e14zeOWzGLBgyk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MlNmGo85z+RCRIYBJGLs5A+r59DG6j12Em/e09tDKP+126V/nbQ9wfQ1JygRd85Sx
-         RNy9dzgRrK32nrriXDmSXFl2BDQlSlpgqwGTdAfnlBsDsYEkAAy4wRIALR61O6e+po
-         epytBSFbLfzVQMhhFQcoCbqKxODcsv1V3sqvwyr2B9ulH5xPn7iK0329yeJwrg6KVq
-         PLQ4RmSW09Ghbkz5e8huiPwemxfrSoiG6Wp2V9GHqELgPXevmwYrBdT8VN6tZhvban
-         1ogEUnWNmcHqnLxdt6JRW24X8RrmDq8453D6ezv3UmrLHBQBKwa4Zb5UfM8AnlHL0w
-         Kkdl+4GITdFpw==
-Date:   Wed, 11 Jan 2023 13:42:15 -0600
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Stephan Gerhold <stephan@gerhold.net>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Wed, 11 Jan 2023 14:48:14 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9443F61;
+        Wed, 11 Jan 2023 11:48:07 -0800 (PST)
+Received: from g550jk.localnet (mobiledyn-62-240-134-128.mrsn.at [62.240.134.128])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 76FD0CC3A1;
+        Wed, 11 Jan 2023 19:48:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1673466486; bh=rsOZZ2Ln+JMozd3x8JmeFsooYZX8jZpZTbWXHGDAW20=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=PGM1W1+RqDKTo5OpqZU9lc/tFiWV6NxJ/AW4tHcHn/naz5PTV4P5t7uHrZ6ICT/y6
+         M0FqkU67SEXFdimjMBJG1+WPuSKVDt4CYNcWw/KfZe1QbbSe2OlJNK7skBuNJgZKSE
+         KS6YAZra8LAp4m1eBR/RvcFyocMb0Mq+lvvldWos=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org,
+        Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 3/4] dt-bindings: arm: qcom,ids: Add a bunch of older SoCs
-Message-ID: <20230111194215.kpxjlv3pgniyoglr@builder.lan>
-References: <20230104115348.25046-1-stephan@gerhold.net>
- <20230104115348.25046-4-stephan@gerhold.net>
- <20230108214052.GA313089-robh@kernel.org>
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] dt-bindings: cpufreq: cpufreq-qcom-hw: Add missing
+ compatibles
+Date:   Wed, 11 Jan 2023 20:48:01 +0100
+Message-ID: <4899603.LvFx2qVVIh@g550jk>
+In-Reply-To: <20221016090035.565350-1-luca@z3ntu.xyz>
+References: <20221016090035.565350-1-luca@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230108214052.GA313089-robh@kernel.org>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Jan 08, 2023 at 03:40:52PM -0600, Rob Herring wrote:
-> On Wed, Jan 04, 2023 at 12:53:47PM +0100, Stephan Gerhold wrote:
-> > Sync the SoC IDs in qcom,ids.h with relevant entries from Qualcomm's LK
-> > bootloader [1] that is used for almost all older Qualcomm SoCs.
-> > 
-> > Several of these are already supported, e.g.:
-> >   - MSM8960 -> APQ8060, MSM8260, ...
-> >   - MSM8976 -> APQ8076
-> >   - MSM8956 -> APQ8056
-> > Others are currently being worked on, e.g.:
-> >   - MSM8909(W) -> APQ8009(W), MSM8905, MSM8209, ...
-> >   - MSM8939 -> MSM8239, ...
-> > 
-> > And even all remaining ones added are close enough to what is already
-> > supported so that future support is realistic (if someone steps up to
-> > do the work).
-> > 
-> > Add all of them at once to avoid having to add them one by one in the
-> > future. This will also benefit other projects making use of the same
-> > dt-bindings, e.g. bootloaders where adding support for all these SoCs
-> > is a bit easier than on Linux.
+Hi Viresh,
+
+gentle bump, I hope this patch could get applied in-time for the next merge 
+window.
+
+Regards
+Luca
+
+On Sonntag, 16. Oktober 2022 11:00:30 CET Luca Weiss wrote:
+> Document the cpufreq-epss compatibles currently used in the tree, plus
+> the sc7280 which will be added in a separate commit.
 > 
-> The promise was in accepting the properties upstream is we'd only be 
-> adding these for bootloaders with dtbs that we can't otherwise update or 
-> change. Do all of those meet this criteria? Seems unlikely.
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  .../devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml          | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
+> diff --git a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
+> b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml index
+> 24fa3d87a40b..d6af29ee889a 100644
+> --- a/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
+> +++ b/Documentation/devicetree/bindings/cpufreq/cpufreq-qcom-hw.yaml
+> @@ -25,8 +25,12 @@ properties:
+>        - description: v2 of CPUFREQ HW (EPSS)
+>          items:
+>            - enum:
+> +              - qcom,sc7280-cpufreq-epss
+> +              - qcom,sc8280xp-cpufreq-epss
+>                - qcom,sm6375-cpufreq-epss
+>                - qcom,sm8250-cpufreq-epss
+> +              - qcom,sm8350-cpufreq-epss
+> +              - qcom,sm8450-cpufreq-epss
+>            - const: qcom,cpufreq-epss
+> 
+>    reg:
 
-Independent of the question about qcom,msm-id and qcom,board-id, I would
-like these constants for the socinfo driver (as shown in patch 4).
 
-Would you prefer that we keep a separate list in Linux?
 
-Thanks,
-Bjorn
+
