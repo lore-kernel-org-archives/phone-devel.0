@@ -2,77 +2,156 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70A5DC54EBE
-	for <phone-devel@archiver.kernel.org>; Wed, 11 Jan 2023 05:19:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C4481C63797
+	for <phone-devel@archiver.kernel.org>; Wed, 11 Jan 2023 12:06:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236052AbjAKFTa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 11 Jan 2023 00:19:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56624 "EHLO
+        id S239180AbjAKMFp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 11 Jan 2023 07:05:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231705AbjAKFSV (ORCPT
+        with ESMTP id S239278AbjAKMEc (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 11 Jan 2023 00:18:21 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2E53EE16;
-        Tue, 10 Jan 2023 21:10:14 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id F1A11CE1AB1;
-        Wed, 11 Jan 2023 05:10:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BF5C433F1;
-        Wed, 11 Jan 2023 05:10:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673413811;
-        bh=BRIn83OXfYE22qZPXnA4wyZ6NN470qFG94q4fiFtAxc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K7H38nD11vPL8LU0BPi45odUwfM3CSCA5OhkkkavazChnBh/AOYnjjVnPUYIEDq8g
-         9BS0ZIzXw+j8j7I3l1kCSRg67zCgFCl5kq6468B5R00m9G/Nhc+Lxq5UrUQQSlCNdt
-         PoMeP20Zbw0/+9oMusQV7qrZgu7wSW/b0wuHJMlUlvkvdYzfKz9FpgyANje8DpY2wP
-         ZwN1rUcyV6GK/YHnCczhOANIy0VCKaVu2c9Zz2waspXlrmDFe8s9MOVsoI8quuZArL
-         S0hGdfsP3AkIrFq0CNT9Yu3Tg4EWA1b8GjV0xBPwNwDFwHJxlSWLu83oiOYoiM7/Zq
-         NPPxIGV41tubg==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     phone-devel@vger.kernel.org,
-        Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     linux-arm-msm@vger.kernel.org, martin.botka@somainline.org,
-        jami.kettunen@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        angelogioacchino.delregno@somainline.org, konrad.dybcio@linaro.org,
-        devicetree@vger.kernel.org, agross@kernel.org,
-        linux-kernel@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        robh+dt@kernel.org
-Subject: Re: [PATCH v2] arm64: dts: qcom: sdm845-tama: Add volume up and camera GPIO keys
-Date:   Tue, 10 Jan 2023 23:09:36 -0600
-Message-Id: <167341377740.2246479.8223453101016717706.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20230109234133.365644-1-marijn.suijten@somainline.org>
-References: <20230109234133.365644-1-marijn.suijten@somainline.org>
+        Wed, 11 Jan 2023 07:04:32 -0500
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9247261E
+        for <phone-devel@vger.kernel.org>; Wed, 11 Jan 2023 04:04:13 -0800 (PST)
+Received: by mail-lf1-x12e.google.com with SMTP id d30so18266098lfv.8
+        for <phone-devel@vger.kernel.org>; Wed, 11 Jan 2023 04:04:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2oib4YU24Hg68PTgy4DxuaT37C/z9vNFEJMvu+koqaY=;
+        b=Yy/wIOuY/mFgyZnqWknq7oufXkKfIJpeAPs84I4+i270V8tAVh5OYNivurb3d88WHK
+         uae4/ORSHaMCUQ3RCcyBZdM04wm6rZsmDtV/ya95RwGk1c5jgtG+x+IHRAGg1b6Wj6pb
+         K2NiOMA/FxKlMAWVqwLyiZWeGJGZS13iBR9GbWx86XYBFXbnAEcRn7Cl+d2QBZ9YWSo+
+         0Aw7qV86J1dEpWMr+gDeDfj+SiQG1irUeiDiTBi36ywjeW+2XPUX+In9OHhmmzJaHpkW
+         iDK0elnAnK5UQ/04iRbCjndgeJGzppkb/zvFmsbfELoNPvM44+gC7y53cSR0bgZi9eAv
+         ZhuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2oib4YU24Hg68PTgy4DxuaT37C/z9vNFEJMvu+koqaY=;
+        b=IUfgO/DxYZxhcNejTSU8CswSykSOHiS/Xik9DOUJ0yzMRrR090Xnqn4G1mm3Afgjaq
+         ItKFcHtWVMAI816O4mb6CAJBHL4PFopJgRVGPC83kfll0FN7hOaV6jZ9ucNmVZybWRyS
+         KFpqvgVWu+l2vJIInQ+YYpkGrPRnNsJn6/R0MF95UEZ/G+hkZYhhVK4/RLQp8n0XH1gI
+         LpUnoFe+/Pt8y1wxetahbxLYGt5qjLKfHaenNyyOCbFUDw4gRzyo2H0pZvlVt3kF5JYG
+         wSo6PqtKN8uHiq4oixyGwuCzRSw8dXT8ubSh62x8XWBXn4yhk1vezMs4M84sqwA4rvqE
+         hC1w==
+X-Gm-Message-State: AFqh2kp4JpdFa3Nk84qg4jNNONZGzIfj4ZnTfTKRgIvA2o7Lx/4TMy0R
+        IQAnc5OE1ogIl/QrvDF5URGJmw==
+X-Google-Smtp-Source: AMrXdXuQdQMK1AzkjuSB62xM9jMBO+9t20jvTxLZnjpxuujgsDdeHG1DQzho+opaRd7jkzomUYB4aQ==
+X-Received: by 2002:a05:6512:3b99:b0:4a4:68b9:608c with SMTP id g25-20020a0565123b9900b004a468b9608cmr24899693lfv.23.1673438652184;
+        Wed, 11 Jan 2023 04:04:12 -0800 (PST)
+Received: from [192.168.1.101] (abxi45.neoplus.adsl.tpnet.pl. [83.9.2.45])
+        by smtp.gmail.com with ESMTPSA id d19-20020a196b13000000b004b550c26949sm2688197lfa.290.2023.01.11.04.04.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Jan 2023 04:04:10 -0800 (PST)
+Message-ID: <51a8bb85-8fda-2d79-f753-9461316bae9e@linaro.org>
+Date:   Wed, 11 Jan 2023 13:04:08 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH v6 4/6] arm64: dts: qcom: sm6125: Add UFS nodes
+Content-Language: en-US
+To:     Lux Aliaga <they@mint.lgbt>, agross@kernel.org,
+        andersson@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
+        kishon@kernel.org, alim.akhtar@samsung.com, avri.altman@wdc.com,
+        bvanassche@acm.org, keescook@chromium.org, tony.luck@intel.com,
+        gpiccoli@igalia.com
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
+        phone-devel@vger.kernel.org, martin.botka@somainline.org,
+        marijn.suijten@somainline.org
+References: <20230108195336.388349-1-they@mint.lgbt>
+ <20230108195336.388349-5-they@mint.lgbt>
+ <475d3f2f-114f-d6d2-89db-465ba7acd0d6@linaro.org>
+ <f1f1337a-30cc-df3c-81d5-2daac61e874c@mint.lgbt>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <f1f1337a-30cc-df3c-81d5-2daac61e874c@mint.lgbt>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 10 Jan 2023 00:41:32 +0100, Marijn Suijten wrote:
-> Tama has four GPIO-wired keys: two for camera focus and shutter /
-> snapshot, and two more for volume up and down.  As per the comment these
-> used to not work because the necessary pin bias was missing, which is
-> now set via pinctrl on pm8998_gpios.
+
+
+On 11.01.2023 03:53, Lux Aliaga wrote:
 > 
-> The missing bias has also been added to the existing volume down button,
-> which receives a node name and label cleanup at the same time to be more
-> consistent with other DTS and the newly added buttons.  Its deprecated
-> gpio-key,wakeup property has also been replaced with wakeup-source.
+> On 09/01/2023 09:18, Konrad Dybcio wrote:
+>>
+>> On 8.01.2023 20:53, Lux Aliaga wrote:
+>>> Adds a UFS host controller node and its corresponding PHY to
+>>> the sm6125 platform.
+>>>
+>>> Signed-off-by: Lux Aliaga <they@mint.lgbt>
+>>> ---
+>>>   arch/arm64/boot/dts/qcom/sm6125.dtsi | 57 ++++++++++++++++++++++++++++
+>>>   1 file changed, 57 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+>>> index df5453fcf2b9..cec7071d5279 100644
+>>> --- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
+>>> +++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+>>> @@ -511,6 +511,63 @@ sdhc_2: mmc@4784000 {
+>>>               status = "disabled";
+>>>           };
+>>>   +        ufs_mem_hc: ufs@4804000 {
+>>> +            compatible = "qcom,sm6125-ufshc", "qcom,ufshc", "jedec,ufs-2.0";
+>>> +            reg = <0x04804000 0x3000>, <0x04810000 0x8000>;
+>> You need reg-names for ICE to probe, otherwise the second reg sits unused.
+>>
+>>> +            interrupts = <GIC_SPI 356 IRQ_TYPE_LEVEL_HIGH>;
+>>> +            phys = <&ufs_mem_phy>;
+>>> +            phy-names = "ufsphy";
+>>> +            lanes-per-direction = <1>;
+>>> +            #reset-cells = <1>;
+>>> +            resets = <&gcc GCC_UFS_PHY_BCR>;
+>>> +            reset-names = "rst";
+>>> +            iommus = <&apps_smmu 0x200 0x0>;
+>>> +
+>>> +            clock-names = "core_clk",
+>>> +                      "bus_aggr_clk",
+>>> +                      "iface_clk",
+>>> +                      "core_clk_unipro",
+>>> +                      "ref_clk",
+>>> +                      "tx_lane0_sync_clk",
+>>> +                      "rx_lane0_sync_clk",
+>>> +                      "ice_core_clk";
+>>> +            clocks = <&gcc GCC_UFS_PHY_AXI_CLK>,
+>>> +                 <&gcc GCC_SYS_NOC_UFS_PHY_AXI_CLK>,
+>>> +                 <&gcc GCC_UFS_PHY_AHB_CLK>,
+>>> +                 <&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
+>>> +                 <&rpmcc RPM_SMD_XO_CLK_SRC>,
+>>> +                 <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
+>>> +                 <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
+>>> +                 <&gcc GCC_UFS_PHY_ICE_CORE_CLK>;
+>>> +            freq-table-hz = <50000000 240000000>,
+>>> +                    <0 0>,
+>>> +                    <0 0>,
+>>> +                    <37500000 150000000>,
+>>> +                    <0 0>,
+>>> +                    <0 0>,
+>>> +                    <0 0>,
+>>> +                    <75000000 300000000>;
+>>> +
+>>> +            status = "disabled";
+>>> +        };
+>>> +
+>>> +        ufs_mem_phy: phy@4807000 {
+>>> +            compatible = "qcom,sm6125-qmp-ufs-phy";
+>>> +            reg = <0x04807000 0x1c4>;
+>> Isn't this too small? Downstream says 0xdb8, but it's probably even bigger..
+> What do you think could help me find the new length of the registers? I tried 0x1000 and it probed just fine, but I'm not really sure until what extent I could push it.
+The "true" values are probably only in documentation, which
+I don't have.
+
+Konrad
 > 
-> [...]
-
-Applied, thanks!
-
-[1/1] arm64: dts: qcom: sdm845-tama: Add volume up and camera GPIO keys
-      commit: 4ce03bb80faed41e04b7d6f089275d262f4cfc79
-
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
