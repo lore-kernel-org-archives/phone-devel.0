@@ -2,70 +2,66 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC6DEC61DB3
-	for <phone-devel@archiver.kernel.org>; Thu, 12 Jan 2023 20:53:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C459C678D6
+	for <phone-devel@archiver.kernel.org>; Thu, 12 Jan 2023 20:53:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240324AbjALUxW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 12 Jan 2023 15:53:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52918 "EHLO
+        id S240380AbjALUxY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 12 Jan 2023 15:53:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232801AbjALUwz (ORCPT
+        with ESMTP id S232842AbjALUwz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Thu, 12 Jan 2023 15:52:55 -0500
 Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32CB910041;
-        Thu, 12 Jan 2023 12:26:35 -0800 (PST)
-Received: by mail-lj1-x22c.google.com with SMTP id y18so17022795ljk.11;
-        Thu, 12 Jan 2023 12:26:35 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3102FACF;
+        Thu, 12 Jan 2023 12:26:31 -0800 (PST)
+Received: by mail-lj1-x22c.google.com with SMTP id y18so17022596ljk.11;
+        Thu, 12 Jan 2023 12:26:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZdJ1as/2HorMVf7SThF1+kvjBcYBpePpyfZVaXdM4A0=;
-        b=XDTIIvu2AnKqlyYZPRSEI2bdQXkR7OBDU6M4TySFVrDa74XXR4jor4RavZgRSHERR9
-         G/OCJTry/k8Ls46lPcqsH6T+RVXkTWQWbf7tWPwhcwN45A4qzrmX9rtL3ENi3jEJuY7q
-         1MfM/GPYR0LJm1Ce2mBITwapSXu8j4THFB2q0IDab96U0Y/Tm5Z1TSwvMOrimvesmc9T
-         Kaf8nfUkw1BO7mAXcEu5stvTpzLz0lC2BjjEQAnhenew+uK7aVtwWxU8PnpacsNvl53H
-         hm+H9jrWhvCBqG9E2IrS63tlNDD1sTJ/8RGiUMtqLvX8f4qUGJ5DY3xiOeoPBV8WgLUH
-         AUrg==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ToTfVSINCq1vTbWWorTxY4lvCe0zPhUxxrJQUXc5LXA=;
+        b=acPEpDRXzH90lhTZpws66xzyETCAdqnXYU4zKZ/GBkFvtb0p8VVCVBTFIERI+zOanq
+         8bZGhNjoBcN/tehvpEGcHTJWqwyi9t/oo50SfJ5K01FeVBYD8tVPPOy8zovBQkXGNNZZ
+         WmrPHKoDkez4++vTlmxQ8jpsQTJ0uJpmQGkj9/t8KKRj/q17Bx9BtOqFXvyJjZZps5Fs
+         JPS/7YKKfEKmlC4c3lp37CcrD3VK7RSyy3GbM/sNzzMnU8tir2Ded9q+tTQa+9nYEObs
+         c/xjbHIL+FU+dQc89FC6JQSxbOUs4Bb5d05bv3yPEMRnuc0QCQEFVJ31LOjQ7Vfb2i1L
+         dr7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZdJ1as/2HorMVf7SThF1+kvjBcYBpePpyfZVaXdM4A0=;
-        b=3w742yK2fIIkqgG2kU34EGUXiPYBuWvZtWOgXaRX2Za987dGCdaHHvfjniAF/v3ozW
-         zP9zoCa7h8bf8e/0EA91gbb7UPYhNpzjmxDF5Yc2XZF0VaJekYpyMttwWLkW09jUTqwL
-         3uYSBwSz9GTV3WYpWOd+kaNxowla/OJ/32xSD+ASNMsBhY/vIZB9nXbLPQCpc9LzYohv
-         02P/sq4VKNBFBHhigAHrNjFtVP16oWR0gyH2irndFiKwxFAXn6gSKliA67WxSBXoA2Bb
-         4diCgJqpMdLw0r4XSsZJlQwEn5xYmWbCPcr3caqqsobbeF9RpbelVX+hr/1pZ7FpqBtR
-         rTNw==
-X-Gm-Message-State: AFqh2kq6B/NQH5zjS2DSvqMwv+f9FPe3MVy6+1mtl2rXMS+wDlZhQPd5
-        oJxXXxNRUTUp04QCq05vmGWHsDD4GxmQMA==
-X-Google-Smtp-Source: AMrXdXtku+83OIxTf7ix3J64PH5I1QLQ69P+6F/sHtg3HG6oAiYvk0giYm3olkgj8rW4lJ4c5mtb4A==
-X-Received: by 2002:a2e:a221:0:b0:282:3796:60cc with SMTP id i1-20020a2ea221000000b00282379660ccmr6059307ljm.53.1673555194791;
-        Thu, 12 Jan 2023 12:26:34 -0800 (PST)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ToTfVSINCq1vTbWWorTxY4lvCe0zPhUxxrJQUXc5LXA=;
+        b=5RQ7b7PSqSYGAXAEfmlGF0X/ByoVlNAkIIaLr1hSJORV/4rIiv4OXuilYSpckGRuwF
+         jTYoG6QOqK4Qrmm+JAZFVNyCGlnfb9cPNYaitqLzS8REJoioHIfmEzmaYAzChOsZwTjf
+         RskczWaj4uJBy/e9urQlq0D3SzZJx0U5ICKvbwDSZh8j5gom5jG3NyGuxXr8gJgIUKLV
+         5QdDO2Q15Ukt6t/mKBSBSmQtnwJay0EQjYKHjbfzu6QusPjnXSMB9lZkWf5qLcOlxyYE
+         ckOUFfut/sQ83l+x/At0HGTureOlwDVUuvjETznS6AzwPMtEJskjPqLNNU5qnjvICjVr
+         2KFA==
+X-Gm-Message-State: AFqh2kpQjf/qeLuDk8xnRx3MXGF/JOmAs2LKBYjAJvrBaZuj5cu4LbDe
+        6cCwKaFe18xMOmbwOeP3+Ka6texX/OqBLA==
+X-Google-Smtp-Source: AMrXdXut4N+CpUE1lMni2KHSS6cVLYele0wJZLAJwuq4e6x9vskSIev04DYrFG1JwlB57moeHEEQdw==
+X-Received: by 2002:a2e:bf1e:0:b0:27b:65e3:3e93 with SMTP id c30-20020a2ebf1e000000b0027b65e33e93mr25222636ljr.45.1673555190105;
+        Thu, 12 Jan 2023 12:26:30 -0800 (PST)
 Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
-        by smtp.gmail.com with ESMTPSA id k6-20020a2eb746000000b00281350bb5fbsm2346731ljo.2.2023.01.12.12.26.33
+        by smtp.gmail.com with ESMTPSA id k6-20020a2eb746000000b00281350bb5fbsm2346731ljo.2.2023.01.12.12.26.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jan 2023 12:26:34 -0800 (PST)
+        Thu, 12 Jan 2023 12:26:29 -0800 (PST)
 From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>,
         =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        devicetree@vger.kernel.org,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/8] remoteproc: qcom_q6v5_mss: Handle platforms with only single power domain
-Date:   Thu, 12 Jan 2023 22:26:05 +0200
-Message-Id: <20230112202612.791455-3-matti.lehtimaki@gmail.com>
+        linux-kernel@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        Stephan Gerhold <stephan@gerhold.net>
+Subject: [PATCH 0/8] Modem support for MSM8226
+Date:   Thu, 12 Jan 2023 22:26:03 +0200
+Message-Id: <20230112202612.791455-1-matti.lehtimaki@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230112202612.791455-1-matti.lehtimaki@gmail.com>
-References: <20230112202612.791455-1-matti.lehtimaki@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -73,51 +69,30 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Luca Weiss <luca@z3ntu.xyz>
+This series adds support for modem remoteproc found on MSM8226.
+It also adds needed device tree nodes and enables modem used for
+location service on matisse-wifi.
 
-For example MSM8226 has only one power domain (cx) which is attached
-internally in power domain and cannot be attached in this driver.
+Luca Weiss (3):
+  remoteproc: qcom_q6v5_mss: Handle platforms with only single power
+    domain
+  remoteproc: qcom_q6v5_mss: Add modem support on MSM8226
+  ARM: dts: qcom: msm8226: Add modem remoteproc node
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
----
- drivers/remoteproc/qcom_q6v5_mss.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Matti Lehtimäki (5):
+  dt-bindings: remoteproc: qcom,msm8916-mss-pil: Add MSM8226
+  dt-bindings: mfd: qcom,tcsr: Add compatible for MSM8226
+  ARM: dts: qcom: msm8226: Add node for TCSR halt regs
+  ARM: dts: qcom: msm8226: Add smsm node
+  ARM: dts: qcom: apq8026-samsung-matisse-wifi: Enable modem
 
-diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-index 2f4027664a0e..745627a36bcf 100644
---- a/drivers/remoteproc/qcom_q6v5_mss.c
-+++ b/drivers/remoteproc/qcom_q6v5_mss.c
-@@ -1820,6 +1820,13 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
- 	if (!pd_names)
- 		return 0;
- 
-+	/* Handle single power domain */
-+	if (dev->pm_domain) {
-+		devs[0] = dev;
-+		pm_runtime_enable(dev);
-+		return 1;
-+	}
-+
- 	while (pd_names[num_pds])
- 		num_pds++;
- 
-@@ -1843,8 +1850,15 @@ static int q6v5_pds_attach(struct device *dev, struct device **devs,
- static void q6v5_pds_detach(struct q6v5 *qproc, struct device **pds,
- 			    size_t pd_count)
- {
-+	struct device *dev = qproc->dev;
- 	int i;
- 
-+	/* Handle single power domain */
-+	if (dev->pm_domain && pd_count) {
-+		pm_runtime_disable(dev);
-+		return;
-+	}
-+
- 	for (i = 0; i < pd_count; i++)
- 		dev_pm_domain_detach(pds[i], false);
- }
+ .../devicetree/bindings/mfd/qcom,tcsr.yaml    |   1 +
+ .../remoteproc/qcom,msm8916-mss-pil.yaml      |  41 +++++-
+ .../dts/qcom-apq8026-samsung-matisse-wifi.dts |  13 +-
+ arch/arm/boot/dts/qcom-msm8226.dtsi           | 127 ++++++++++++++++
+ drivers/remoteproc/qcom_q6v5_mss.c            | 137 ++++++++++++++++++
+ 5 files changed, 313 insertions(+), 6 deletions(-)
+
 -- 
 2.34.1
 
