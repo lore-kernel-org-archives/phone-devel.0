@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81FD1C678D4
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4B3CC678DA
 	for <phone-devel@archiver.kernel.org>; Thu, 12 Jan 2023 20:53:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240411AbjALUxZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 12 Jan 2023 15:53:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55562 "EHLO
+        id S232801AbjALUxm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 12 Jan 2023 15:53:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232847AbjALUwz (ORCPT
+        with ESMTP id S233363AbjALUwz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Thu, 12 Jan 2023 15:52:55 -0500
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 263BAFD12;
-        Thu, 12 Jan 2023 12:26:34 -0800 (PST)
-Received: by mail-lj1-x231.google.com with SMTP id x37so20564749ljq.1;
-        Thu, 12 Jan 2023 12:26:34 -0800 (PST)
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A0F2EB0;
+        Thu, 12 Jan 2023 12:26:41 -0800 (PST)
+Received: by mail-lj1-x22d.google.com with SMTP id g14so20524793ljh.10;
+        Thu, 12 Jan 2023 12:26:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0XAdZ0L8PF2H6GOe/B7FuNBD1OvdAzvAA3E5DCKDiB0=;
-        b=hBw9zvSHutT3/JOMAZW5GBanI2jxRfd1SRYMPqJ4O1ue7CYZV63/IIJ3G9lEItNgxk
-         7wz7Ii9cbo01WzIywtBMsiZfgdvbry5iBHKkj1CzpYL0jwquhUa9rfLjR1Wz3M9N5X1h
-         yIOCXEjj6fUwIez/GTLCiwXQ34vy2rlNd1bFj1ssh4e+WEW2AXKhEwv+nRL9CDHny+wV
-         WTrcFfYcptLVd+AYCMfnrxDFnsw938vHJ/tNp5kRlBt5P4APOvXYTGRTuNDbakN2TWtv
-         ExokZ1V/eMW61FjhYqGPXMnySpTtTYNpAHNjETYV2m3BPwatHe7L7JDWQS68bmjR1Bkg
-         nI3w==
+        bh=hse8SdC9wuKWXSULFTdDSwReuUUWy3z5aWnQyprXv2E=;
+        b=JYUMzT2iPyVhsc8BWOKwH4+dBDiUodT6g+A/W+T9RK/rghfpMX/AQHP1eHWCGc2Xsn
+         gym5/vPyoP8lAGiU2IpVHhie8eKhEyNo9RoP5Q7rrHyLiy7Ltb0nwj+E1aPClD8uxHrA
+         SgKTEzOOgMyqjNFQZxa1bfALhyNVy1Jt6EsY/iUM+m7YfNwWSlDnbMbLCKhjVJuuG+uo
+         oFI7nCRPeySlZMnrtMNhFZqx9VkcOmTlWODuJ8f8ZPZ1EslmwMCEWnWQ/W+2xgRZkjDM
+         +nRuiF5Z4wT+Kz4AQKjciW/M/ft3IlEvgRJTx/y+24POL7vX7ERWVBMJ5om3vS1A2TFU
+         QC5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0XAdZ0L8PF2H6GOe/B7FuNBD1OvdAzvAA3E5DCKDiB0=;
-        b=cmtuvI8WjJbpqcFX8nbjxjWtt1A/v/3Imocmtd56ndzh4E7wvg3jnfZNCXIfdhnAtH
-         uX1VDW1F49dqmq0Cpap9xY7bwF48+Cg2zGQf1Z0uXHTXCnuz+Zhu6EVeJacVsO/7rQ8v
-         oCSuuplMgkLvOy1wQ8qgH+LffQMNij6ilKVWxyilp99oGaCpObJEdBmQ4sBNl2tf5MnI
-         S/3Q15oZiQCiORUvGQlRgyg5O0zO3NGMyq/SGZnFRhOANqar+eWTHPzCNh4FsltqoGXZ
-         V3+b+YnTD3Q1yRNbeNZj3yyMXMnYiXX6DtQWtJ9rjmXtTmgzAagcPC2q8VbI3cheuGfM
-         +ZBw==
-X-Gm-Message-State: AFqh2kq4Zboo/LsMGW7t5ZyyDB8Ks57dGyQImCL3hDb3o5JRhvN+MrvC
-        TI2izjqTio0v9CuAlgIE1V+8ALUZFG+pLA==
-X-Google-Smtp-Source: AMrXdXtqlnGPS791Sixw5FEQ6Wr88B4aSdSUp8wrTbxrs/Duins3dsn/k/fiercEqKt8G5hfiJjpYA==
-X-Received: by 2002:a05:651c:194b:b0:280:117:745e with SMTP id bs11-20020a05651c194b00b002800117745emr12414681ljb.0.1673555192556;
-        Thu, 12 Jan 2023 12:26:32 -0800 (PST)
+        bh=hse8SdC9wuKWXSULFTdDSwReuUUWy3z5aWnQyprXv2E=;
+        b=4sU0Rm0d29kJrheVgQedbVvS2djBCcY1GlLm3QhB/GxO0o0cZ/UBaVQhwPIrA3Eu+x
+         7/xsFsNYEcY7wlW954tvlvS3or88k+9FWM8GyqSexEosG1sUhAduTtBqOLP3FkFEUhKe
+         gBsvOvGNe56gA7sncukcoAmZ1MrOj3bjS7HJ02jub5EaY8UUUNit0QuhvFdUDELIHnYT
+         FULKpfSZNhhNjwvChoozzrXFGtE9chnRlfURePm4Pwa7gX3/GdeNb+QoH3NWj7cD/oyP
+         Gaif00Qtu04nRbMjR3bH70GvaPLIbh8LVsKjJJZ1r09t/mOaDIOE3RcaTGdlapDZ+UHq
+         8A0Q==
+X-Gm-Message-State: AFqh2kqtaM7Pzx3Hzom+29Ta7dAzKOaldzsx9/8e8gClqvjp5tqkW1Ud
+        i1ftYAzJzqAgGG9Vqh1XtYo4m/zmOtZAmA==
+X-Google-Smtp-Source: AMrXdXuqjQLonk10w8PTyyaCobjwK8WUb186aRl+tT6NwwIWuPjyPp8G5diu1hkxLmPEesyFNR60NA==
+X-Received: by 2002:a2e:9206:0:b0:27f:e50b:9e35 with SMTP id k6-20020a2e9206000000b0027fe50b9e35mr11875030ljg.52.1673555199515;
+        Thu, 12 Jan 2023 12:26:39 -0800 (PST)
 Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
-        by smtp.gmail.com with ESMTPSA id k6-20020a2eb746000000b00281350bb5fbsm2346731ljo.2.2023.01.12.12.26.31
+        by smtp.gmail.com with ESMTPSA id k6-20020a2eb746000000b00281350bb5fbsm2346731ljo.2.2023.01.12.12.26.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jan 2023 12:26:32 -0800 (PST)
+        Thu, 12 Jan 2023 12:26:38 -0800 (PST)
 From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -57,15 +57,12 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 1/8] dt-bindings: remoteproc: qcom,msm8916-mss-pil: Add MSM8226
-Date:   Thu, 12 Jan 2023 22:26:04 +0200
-Message-Id: <20230112202612.791455-2-matti.lehtimaki@gmail.com>
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 4/8] dt-bindings: mfd: qcom,tcsr: Add compatible for MSM8226
+Date:   Thu, 12 Jan 2023 22:26:07 +0200
+Message-Id: <20230112202612.791455-5-matti.lehtimaki@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230112202612.791455-1-matti.lehtimaki@gmail.com>
 References: <20230112202612.791455-1-matti.lehtimaki@gmail.com>
@@ -76,100 +73,25 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Adds support for platforms with only single power domain.
-Adds support for external power block headswitch (BHS) registers
+Document the qcom,msm8226-tcsr compatible.
 
 Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 ---
- .../remoteproc/qcom,msm8916-mss-pil.yaml      | 41 +++++++++++++++++--
- 1 file changed, 37 insertions(+), 4 deletions(-)
+ Documentation/devicetree/bindings/mfd/qcom,tcsr.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,msm8916-mss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,msm8916-mss-pil.yaml
-index 6e6e69ad9cd7..6a921f2711b2 100644
---- a/Documentation/devicetree/bindings/remoteproc/qcom,msm8916-mss-pil.yaml
-+++ b/Documentation/devicetree/bindings/remoteproc/qcom,msm8916-mss-pil.yaml
-@@ -17,6 +17,7 @@ properties:
-   compatible:
-     oneOf:
-       - enum:
-+          - qcom,msm8226-mss-pil
-           - qcom,msm8909-mss-pil
-           - qcom,msm8916-mss-pil
-           - qcom,msm8953-mss-pil
-@@ -70,16 +71,17 @@ properties:
-     items:
-       - description: CX proxy power domain (control handed over after startup)
-       - description: MX proxy power domain (control handed over after startup)
-+                     (not valid for qcom,msm8226-mss-pil)
-       - description: MSS proxy power domain (control handed over after startup)
-                      (only valid for qcom,msm8953-mss-pil)
--    minItems: 2
-+    minItems: 1
- 
-   power-domain-names:
-     items:
-       - const: cx
--      - const: mx
-+      - const: mx # not valid for qcom,msm8226-mss-pil
-       - const: mss # only valid for qcom,msm8953-mss-pil
--    minItems: 2
-+    minItems: 1
- 
-   pll-supply:
-     description: PLL proxy supply (control handed over after startup)
-@@ -106,6 +108,15 @@ properties:
-     items:
-       - const: stop
- 
-+  qcom,ext-bhs-reg:
-+    $ref: /schemas/types.yaml#/definitions/phandle-array
-+    description: External power block headswitch (BHS) register
-+                 (only valid for qcom,msm8226-mss-pil)
-+    items:
-+      - items:
-+          - description: phandle to external BHS syscon region
-+          - description: offset to the external BHS register
-+
-   qcom,halt-regs:
-     $ref: /schemas/types.yaml#/definitions/phandle-array
-     description:
-@@ -205,13 +216,35 @@ allOf:
-       required:
-         - power-domains
-         - power-domain-names
--    else:
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - qcom,msm8909-mss-pil
-+              - qcom,msm8916-mss-pil
-+              - qcom,msm8974-mss-pil
-+    then:
-       properties:
-         power-domains:
-           maxItems: 2
-         power-domain-names:
-           maxItems: 2
- 
-+  - if:
-+      properties:
-+        compatible:
-+          const: qcom,msm8226-mss-pil
-+    then:
-+      properties:
-+        power-domains:
-+          maxItems: 1
-+        power-domain-names:
-+          maxItems: 1
-+      required:
-+        - qcom,ext-bhs-reg
-+
-   - if:
-       properties:
-         compatible:
+diff --git a/Documentation/devicetree/bindings/mfd/qcom,tcsr.yaml b/Documentation/devicetree/bindings/mfd/qcom,tcsr.yaml
+index adcae6c007d9..d463fb47278f 100644
+--- a/Documentation/devicetree/bindings/mfd/qcom,tcsr.yaml
++++ b/Documentation/devicetree/bindings/mfd/qcom,tcsr.yaml
+@@ -31,6 +31,7 @@ properties:
+           - qcom,tcsr-ipq6018
+           - qcom,tcsr-ipq8064
+           - qcom,tcsr-mdm9615
++          - qcom,tcsr-msm8226
+           - qcom,tcsr-msm8660
+           - qcom,tcsr-msm8916
+           - qcom,tcsr-msm8953
 -- 
 2.34.1
 
