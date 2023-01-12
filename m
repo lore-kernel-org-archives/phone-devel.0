@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4F4EC71132
-	for <phone-devel@archiver.kernel.org>; Thu, 12 Jan 2023 20:53:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C759C61DB3
+	for <phone-devel@archiver.kernel.org>; Thu, 12 Jan 2023 20:53:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240652AbjALUxp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 12 Jan 2023 15:53:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52954 "EHLO
+        id S240670AbjALUxr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 12 Jan 2023 15:53:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234248AbjALUwz (ORCPT
+        with ESMTP id S233742AbjALUwz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Thu, 12 Jan 2023 15:52:55 -0500
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F0FC1408D;
-        Thu, 12 Jan 2023 12:26:47 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id bx6so20600840ljb.3;
-        Thu, 12 Jan 2023 12:26:47 -0800 (PST)
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 447BD12767;
+        Thu, 12 Jan 2023 12:26:39 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id b3so30102957lfv.2;
+        Thu, 12 Jan 2023 12:26:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BgeT+DkgAp8TG2Y1FM1obnRPpUWpBsbiJPWZXySEs1g=;
-        b=bezJ6UITF4l5mYqMgQwtY8uNW/EOY8257ObGxT5Z9edIADULrufu6izwHgU92bL/g7
-         bmIm9fFqPDbiwoDPJFSevvpVTpLU2Klsh6MOe0ULyVi7LcRSxMrpcl7uaIZ9JcfhZVDE
-         Ko/hiqSbAtt1rdopyTZklw7CZRQoR1sJ4M/nxafiid2LCZJE9I+i3Adhe97a7iU8/gmn
-         EVomElrtju9822Ffv86nIqIqxIGoH9ACf0VBEPRwUZawTFvcSiUiBxNXNGOfFLTvIQ05
-         cjkVGv8g+6Wi/c9cyPB2w+CLbjcp7yml3bSR0gMWY5w4SqS0Rq1+EFclD9wf29gh5Mri
-         ZNKw==
+        bh=vJCpyBbrHQkjpmMb4tYSA1N8+xnQnzEWycA9Mz5viu8=;
+        b=B8Fsq7wp1ePtnRbS3DgVbJQtNEHM70J0Fod7oWEw+9JClEt1Px+YJ66uERjuHVP0nh
+         T4deO8UTUJ/zyCRJtkLPiMPW11T4YYawa48yPxzk8e6qtLs8xsiHGHP7KmGL3VgC4nGt
+         vi2CyzKvNZlIUPqrFd+bz61Z3Id4ew0mb9Gja1QLHIDlbVJtWhB4VIXXpi83DwDkxUXH
+         NbHbDNWgWu4E0XqGtmX2UZrgLW6XnjZJ3Yfmqtf16HC5RIafTLa3YXL/Xod0Uw2yp6Q0
+         kkx/2GuPF3e7uh/H0GU8oPDrMRDCM/bGPwL6Vvkm/takGTQ9RU0BLV9DFIkmcR6l4kLU
+         qaiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BgeT+DkgAp8TG2Y1FM1obnRPpUWpBsbiJPWZXySEs1g=;
-        b=FEj9st6jLk2vGWPp7W35pudrt+FuTff4CTxRV4WGtSiITPkKMAEbjg/zaPA4N3s5pJ
-         VEvsx1AuHgvz8Ifii4uEevyJxIsC7U2hTeekdUWzbGKW5QFq2YIJlLSLMvVtPXpgO6rm
-         0nh6xOLC21Gnxp2rPPJbxe52O3zb8esF4iaGw55hYewMPVGirov1ix7uL9D5eQGRqN9u
-         Fgdf3Cu+j4NznKzUT6hgl6aUxjB2oRC5yP2YJQNJuQ3feBDcMpRV1ZqJntb8IYf0dTgE
-         C+KBdN4VYqexIdGNTdVq0Yq3kltP8FBOV1WZ9evQ3dGg/T9nWeJYHBEU3gKfEf57MpRk
-         U6UA==
-X-Gm-Message-State: AFqh2kq/o/6PvzjKnf7KNyKJEGnAY87AgjbIhq57VA9SJ+QOWbygXEUn
-        biKN/v6Ka5wKelNOEfiqipPdLBIP80RGCQ==
-X-Google-Smtp-Source: AMrXdXvGVPpxVMDcLZCTCl0jgFj1EVjFyaxzpK0RenKjKw4PucOPtDhIZjx80DBErxcaWwSnSw5qKg==
-X-Received: by 2002:a2e:aa25:0:b0:27f:c535:9044 with SMTP id bf37-20020a2eaa25000000b0027fc5359044mr14723499ljb.16.1673555205918;
-        Thu, 12 Jan 2023 12:26:45 -0800 (PST)
+        bh=vJCpyBbrHQkjpmMb4tYSA1N8+xnQnzEWycA9Mz5viu8=;
+        b=gdUyEdBIQMWVrgactMkQiiuH6XGPO+G0Sr5dGw+/Gm5ZGU6A6KoXnP3aKgNh08CIiZ
+         vOXce1Cml1yMN2SeqCXE7CJMExFRqDg1tn/bZr5SxFOlvI7Te4xLpyv+Rs0tPldOLjQY
+         IyF3unnHAZjiZ601yHc0CWcoBtxGz1XSk2pNwhjG2jmXB/eZEL8SDk6Ghs52InU94be0
+         RLAWkytnga0yAJxAd0TwRzCqdzP8/hprRLm/505owl6xLFAEsXcJ/LwEMt+8e7EnqtC/
+         ctY2q5U15Ue4PrGt5k0O5A4FDlZLZo16YO/vs0RGORQZKf8YX8z0qLOIEJ+cEnn0NbIp
+         /CFA==
+X-Gm-Message-State: AFqh2kot8+YFVUSEHY6KHR0LLN6WYuApEa8A5Z8qGswbtUmxQjcaDWuU
+        ghIhcqXjWqcUD1RE1kehwWMzgpJTwCrM1Q==
+X-Google-Smtp-Source: AMrXdXuJ+YeGNHyW4gFcD7sEpMpnIgJGzNqHRdBoZidR3Jf6ePGYhrVcd6kvF/kpT5NMKYQ04eEZpg==
+X-Received: by 2002:ac2:4f13:0:b0:4b6:f3b3:fe14 with SMTP id k19-20020ac24f13000000b004b6f3b3fe14mr21224419lfr.1.1673555197512;
+        Thu, 12 Jan 2023 12:26:37 -0800 (PST)
 Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
-        by smtp.gmail.com with ESMTPSA id k6-20020a2eb746000000b00281350bb5fbsm2346731ljo.2.2023.01.12.12.26.44
+        by smtp.gmail.com with ESMTPSA id k6-20020a2eb746000000b00281350bb5fbsm2346731ljo.2.2023.01.12.12.26.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jan 2023 12:26:45 -0800 (PST)
+        Thu, 12 Jan 2023 12:26:37 -0800 (PST)
 From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
 To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -58,12 +58,11 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 7/8] ARM: dts: qcom: msm8226: Add modem remoteproc node
-Date:   Thu, 12 Jan 2023 22:26:10 +0200
-Message-Id: <20230112202612.791455-8-matti.lehtimaki@gmail.com>
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 3/8] remoteproc: qcom_q6v5_mss: Add modem support on MSM8226
+Date:   Thu, 12 Jan 2023 22:26:06 +0200
+Message-Id: <20230112202612.791455-4-matti.lehtimaki@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230112202612.791455-1-matti.lehtimaki@gmail.com>
 References: <20230112202612.791455-1-matti.lehtimaki@gmail.com>
@@ -76,126 +75,283 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: Luca Weiss <luca@z3ntu.xyz>
 
-Add a node for the modem remoteproc found on MSM8226.
+Add support for the external power block headswitch register needed by
+MSM8226 and some other qcom platforms.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 Co-developed-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 ---
- arch/arm/boot/dts/qcom-msm8226.dtsi | 86 +++++++++++++++++++++++++++++
- 1 file changed, 86 insertions(+)
+ drivers/remoteproc/qcom_q6v5_mss.c | 123 +++++++++++++++++++++++++++++
+ 1 file changed, 123 insertions(+)
 
-diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
-index 2639167c8976..34ea9cf46ae0 100644
---- a/arch/arm/boot/dts/qcom-msm8226.dtsi
-+++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
-@@ -56,6 +56,16 @@ smem_region: smem@3000000 {
- 			no-map;
- 		};
+diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
+index 745627a36bcf..0dff7e811736 100644
+--- a/drivers/remoteproc/qcom_q6v5_mss.c
++++ b/drivers/remoteproc/qcom_q6v5_mss.c
+@@ -131,6 +131,11 @@
+ #define QDSP6SS_BOOT_CMD                0x404
+ #define BOOT_FSM_TIMEOUT                10000
  
-+		mpss_region: mpss@8000000 {
-+			reg = <0x08000000 0x5100000>;
-+			no-map;
-+		};
++/* External power block headswitch */
++#define EXTERNAL_BHS_ON			BIT(0)
++#define EXTERNAL_BHS_STATUS		BIT(4)
++#define EXTERNAL_BHS_TIMEOUT_US		50
 +
-+		mba_region: mba@d100000 {
-+			reg = <0x0d100000 0x100000>;
-+			no-map;
-+		};
-+
- 		adsp_region: adsp@dc00000 {
- 			reg = <0x0dc00000 0x1900000>;
- 			no-map;
-@@ -140,6 +150,31 @@ adsp_smp2p_in: slave-kernel {
- 		};
- 	};
+ struct reg_info {
+ 	struct regulator *reg;
+ 	int uV;
+@@ -158,6 +163,7 @@ struct rproc_hexagon_res {
+ 	bool has_mba_logs;
+ 	bool has_spare_reg;
+ 	bool has_qaccept_regs;
++	bool has_ext_bhs_reg;
+ 	bool has_ext_cntl_regs;
+ 	bool has_vq6;
+ };
+@@ -177,6 +183,7 @@ struct q6v5 {
+ 	u32 halt_nc;
+ 	u32 halt_vq6;
+ 	u32 conn_box;
++	u32 ext_bhs;
  
-+	smp2p-modem {
-+		compatible = "qcom,smp2p";
-+		qcom,smem = <435>, <428>;
-+
-+		interrupt-parent = <&intc>;
-+		interrupts = <GIC_SPI 27 IRQ_TYPE_EDGE_RISING>;
-+
-+		qcom,ipc = <&apcs 8 14>;
-+
-+		qcom,local-pid = <0>;
-+		qcom,remote-pid = <1>;
-+
-+		modem_smp2p_out: master-kernel {
-+			qcom,entry-name = "master-kernel";
-+			#qcom,smem-state-cells = <1>;
-+		};
-+
-+		modem_smp2p_in: slave-kernel {
-+			qcom,entry-name = "slave-kernel";
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
-+	};
-+
- 	smsm {
- 		compatible = "qcom,smsm";
- 		#address-cells = <1>;
-@@ -620,6 +655,57 @@ rpm_msg_ram: sram@fc428000 {
- 			reg = <0xfc428000 0x4000>;
- 		};
+ 	u32 qaccept_mdm;
+ 	u32 qaccept_cx;
+@@ -230,6 +237,7 @@ struct q6v5 {
+ 	bool has_mba_logs;
+ 	bool has_spare_reg;
+ 	bool has_qaccept_regs;
++	bool has_ext_bhs_reg;
+ 	bool has_ext_cntl_regs;
+ 	bool has_vq6;
+ 	int mpss_perm;
+@@ -239,6 +247,7 @@ struct q6v5 {
+ };
  
-+		modem: remoteproc@fc880000 {
-+			compatible = "qcom,msm8226-mss-pil";
-+			reg = <0xfc880000 0x100>,
-+			      <0xfc820000 0x020>;
-+			reg-names = "qdsp6", "rmb";
+ enum {
++	MSS_MSM8226,
+ 	MSS_MSM8909,
+ 	MSS_MSM8916,
+ 	MSS_MSM8953,
+@@ -1738,6 +1747,23 @@ static int q6v5_init_mem(struct q6v5 *qproc, struct platform_device *pdev)
+ 		qproc->qaccept_axi = args.args[2];
+ 	}
+ 
++	if (qproc->has_ext_bhs_reg) {
++		ret = of_parse_phandle_with_fixed_args(pdev->dev.of_node,
++						       "qcom,ext-bhs-reg",
++						       1, 0, &args);
++		if (ret < 0) {
++			dev_err(&pdev->dev, "failed to parse ext-bhs-reg index 0\n");
++			return -EINVAL;
++		}
 +
-+			interrupts-extended = <&intc GIC_SPI 24 IRQ_TYPE_EDGE_RISING>,
-+					      <&modem_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
-+					      <&modem_smp2p_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&modem_smp2p_in 2 IRQ_TYPE_EDGE_RISING>,
-+					      <&modem_smp2p_in 3 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "wdog", "fatal", "ready", "handover", "stop-ack";
++		qproc->conn_map = syscon_node_to_regmap(args.np);
++		of_node_put(args.np);
++		if (IS_ERR(qproc->conn_map))
++			return PTR_ERR(qproc->conn_map);
 +
-+			clocks = <&gcc GCC_MSS_Q6_BIMC_AXI_CLK>,
-+				 <&gcc GCC_MSS_CFG_AHB_CLK>,
-+				 <&gcc GCC_BOOT_ROM_AHB_CLK>,
-+				 <&xo_board>;
-+			clock-names = "iface", "bus", "mem", "xo";
++		qproc->ext_bhs = args.args[0];
++	}
 +
-+			resets = <&gcc GCC_MSS_RESTART>;
-+			reset-names = "mss_restart";
+ 	if (qproc->has_ext_cntl_regs) {
+ 		ret = of_parse_phandle_with_fixed_args(pdev->dev.of_node,
+ 						       "qcom,ext-regs",
+@@ -1863,6 +1889,36 @@ static void q6v5_pds_detach(struct q6v5 *qproc, struct device **pds,
+ 		dev_pm_domain_detach(pds[i], false);
+ }
+ 
++static int q6v5_external_bhs_enable(struct q6v5 *qproc)
++{
++	u32 val;
++	int ret = 0;
 +
-+			power-domains = <&rpmpd MSM8226_VDDCX>;
-+			power-domain-names = "cx";
++	/*
++	 * Enable external power block headswitch and wait for it to
++	 * stabilize
++	 */
++	regmap_update_bits(qproc->conn_map, qproc->ext_bhs,
++			   EXTERNAL_BHS_ON, 1);
 +
-+			qcom,ext-bhs-reg = <&tcsr_regs_1 0x194>;
-+			qcom,halt-regs = <&tcsr_regs_1 0x180 0x200 0x280>;
++	ret = regmap_read_poll_timeout(qproc->conn_map, qproc->ext_bhs,
++				       val, val & EXTERNAL_BHS_STATUS,
++				       1, EXTERNAL_BHS_TIMEOUT_US);
 +
-+			qcom,smem-states = <&modem_smp2p_out 0>;
-+			qcom,smem-state-names = "stop";
++	if (ret) {
++		dev_err(qproc->dev, "External BHS timed out\n");
++		ret = -ETIMEDOUT;
++	}
 +
-+			status = "disabled";
++	return ret;
++}
 +
-+			mba {
-+				memory-region = <&mba_region>;
-+			};
++static void q6v5_external_bhs_disable(struct q6v5 *qproc)
++{
++	regmap_update_bits(qproc->conn_map, qproc->ext_bhs,
++			   EXTERNAL_BHS_ON, 0);
++}
 +
-+			mpss {
-+				memory-region = <&mpss_region>;
-+			};
+ static int q6v5_init_reset(struct q6v5 *qproc)
+ {
+ 	qproc->mss_restart = devm_reset_control_get_exclusive(qproc->dev,
+@@ -1984,6 +2040,7 @@ static int q6v5_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, qproc);
+ 
+ 	qproc->has_qaccept_regs = desc->has_qaccept_regs;
++	qproc->has_ext_bhs_reg = desc->has_ext_bhs_reg;
+ 	qproc->has_ext_cntl_regs = desc->has_ext_cntl_regs;
+ 	qproc->has_vq6 = desc->has_vq6;
+ 	qproc->has_spare_reg = desc->has_spare_reg;
+@@ -2054,6 +2111,14 @@ static int q6v5_probe(struct platform_device *pdev)
+ 		qproc->proxy_pd_count = ret;
+ 	}
+ 
++	if (qproc->has_ext_bhs_reg) {
++		ret = q6v5_external_bhs_enable(qproc);
++		if (ret < 0) {
++			dev_err(&pdev->dev, "Failed to enable external BHS.\n");
++			goto detach_proxy_pds;
++		}
++	}
 +
-+			smd-edge {
-+				interrupts = <GIC_SPI 25 IRQ_TYPE_EDGE_RISING>;
+ 	qproc->has_alt_reset = desc->has_alt_reset;
+ 	ret = q6v5_init_reset(qproc);
+ 	if (ret)
+@@ -2118,6 +2183,9 @@ static int q6v5_remove(struct platform_device *pdev)
+ 	qcom_remove_smd_subdev(rproc, &qproc->smd_subdev);
+ 	qcom_remove_glink_subdev(rproc, &qproc->glink_subdev);
+ 
++	if (qproc->has_ext_bhs_reg)
++		q6v5_external_bhs_disable(qproc);
 +
-+				qcom,ipc = <&apcs 8 12>;
-+				qcom,smd-edge = <0>;
+ 	q6v5_pds_detach(qproc, qproc->proxy_pds, qproc->proxy_pd_count);
+ 
+ 	rproc_free(rproc);
+@@ -2153,6 +2221,7 @@ static const struct rproc_hexagon_res sc7180_mss = {
+ 	.has_mba_logs = true,
+ 	.has_spare_reg = true,
+ 	.has_qaccept_regs = false,
++	.has_ext_bhs_reg = false,
+ 	.has_ext_cntl_regs = false,
+ 	.has_vq6 = false,
+ 	.version = MSS_SC7180,
+@@ -2181,6 +2250,7 @@ static const struct rproc_hexagon_res sc7280_mss = {
+ 	.has_mba_logs = true,
+ 	.has_spare_reg = false,
+ 	.has_qaccept_regs = true,
++	.has_ext_bhs_reg = false,
+ 	.has_ext_cntl_regs = true,
+ 	.has_vq6 = true,
+ 	.version = MSS_SC7280,
+@@ -2216,6 +2286,7 @@ static const struct rproc_hexagon_res sdm845_mss = {
+ 	.has_mba_logs = false,
+ 	.has_spare_reg = false,
+ 	.has_qaccept_regs = false,
++	.has_ext_bhs_reg = false,
+ 	.has_ext_cntl_regs = false,
+ 	.has_vq6 = false,
+ 	.version = MSS_SDM845,
+@@ -2247,6 +2318,7 @@ static const struct rproc_hexagon_res msm8998_mss = {
+ 	.has_mba_logs = false,
+ 	.has_spare_reg = false,
+ 	.has_qaccept_regs = false,
++	.has_ext_bhs_reg = false,
+ 	.has_ext_cntl_regs = false,
+ 	.has_vq6 = false,
+ 	.version = MSS_MSM8998,
+@@ -2286,6 +2358,7 @@ static const struct rproc_hexagon_res msm8996_mss = {
+ 	.has_mba_logs = false,
+ 	.has_spare_reg = false,
+ 	.has_qaccept_regs = false,
++	.has_ext_bhs_reg = false,
+ 	.has_ext_cntl_regs = false,
+ 	.has_vq6 = false,
+ 	.version = MSS_MSM8996,
+@@ -2320,6 +2393,7 @@ static const struct rproc_hexagon_res msm8909_mss = {
+ 	.has_mba_logs = false,
+ 	.has_spare_reg = false,
+ 	.has_qaccept_regs = false,
++	.has_ext_bhs_reg = false,
+ 	.has_ext_cntl_regs = false,
+ 	.has_vq6 = false,
+ 	.version = MSS_MSM8909,
+@@ -2365,6 +2439,7 @@ static const struct rproc_hexagon_res msm8916_mss = {
+ 	.has_mba_logs = false,
+ 	.has_spare_reg = false,
+ 	.has_qaccept_regs = false,
++	.has_ext_bhs_reg = false,
+ 	.has_ext_cntl_regs = false,
+ 	.has_vq6 = false,
+ 	.version = MSS_MSM8916,
+@@ -2400,6 +2475,7 @@ static const struct rproc_hexagon_res msm8953_mss = {
+ 	.has_mba_logs = false,
+ 	.has_spare_reg = false,
+ 	.has_qaccept_regs = false,
++	.has_ext_bhs_reg = false,
+ 	.has_ext_cntl_regs = false,
+ 	.has_vq6 = false,
+ 	.version = MSS_MSM8953,
+@@ -2453,13 +2529,60 @@ static const struct rproc_hexagon_res msm8974_mss = {
+ 	.has_mba_logs = false,
+ 	.has_spare_reg = false,
+ 	.has_qaccept_regs = false,
++	.has_ext_bhs_reg = false,
+ 	.has_ext_cntl_regs = false,
+ 	.has_vq6 = false,
+ 	.version = MSS_MSM8974,
+ };
+ 
++static const struct rproc_hexagon_res msm8226_mss = {
++	.hexagon_mba_image = "mba.b00",
++	.proxy_supply = (struct qcom_mss_reg_res[]) {
++		{
++			.supply = "pll",
++			.uA = 100000,
++		},
++		{
++			.supply = "mx",
++			.uV = 1050000,
++		},
++		{}
++	},
++	.fallback_proxy_supply = (struct qcom_mss_reg_res[]) {
++		{
++			.supply = "cx",
++			.uA = 100000,
++		},
++		{}
++	},
++	.proxy_clk_names = (char*[]){
++		"xo",
++		NULL
++	},
++	.active_clk_names = (char*[]){
++		"iface",
++		"bus",
++		"mem",
++		NULL
++	},
++	.proxy_pd_names = (char*[]){
++		"cx",
++		NULL
++	},
++	.need_mem_protection = false,
++	.has_alt_reset = false,
++	.has_mba_logs = false,
++	.has_spare_reg = false,
++	.has_qaccept_regs = false,
++	.has_ext_bhs_reg = true,
++	.has_ext_cntl_regs = false,
++	.has_vq6 = false,
++	.version = MSS_MSM8226,
++};
 +
-+				label = "modem";
-+			};
-+		};
-+
- 		tcsr_mutex: hwlock@fd484000 {
- 			compatible = "qcom,msm8226-tcsr-mutex", "qcom,tcsr-mutex";
- 			reg = <0xfd484000 0x1000>;
+ static const struct of_device_id q6v5_of_match[] = {
+ 	{ .compatible = "qcom,q6v5-pil", .data = &msm8916_mss},
++	{ .compatible = "qcom,msm8226-mss-pil", .data = &msm8226_mss},
+ 	{ .compatible = "qcom,msm8909-mss-pil", .data = &msm8909_mss},
+ 	{ .compatible = "qcom,msm8916-mss-pil", .data = &msm8916_mss},
+ 	{ .compatible = "qcom,msm8953-mss-pil", .data = &msm8953_mss},
 -- 
 2.34.1
 
