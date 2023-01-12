@@ -2,56 +2,30 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93BCDC63797
-	for <phone-devel@archiver.kernel.org>; Thu, 12 Jan 2023 03:16:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96EB2C63797
+	for <phone-devel@archiver.kernel.org>; Thu, 12 Jan 2023 17:40:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235109AbjALDQ2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 11 Jan 2023 22:16:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60344 "EHLO
+        id S232559AbjALRkP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 12 Jan 2023 12:40:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235881AbjALDQ0 (ORCPT
+        with ESMTP id S236915AbjALRjr (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 11 Jan 2023 22:16:26 -0500
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31FA8DF37
-        for <phone-devel@vger.kernel.org>; Wed, 11 Jan 2023 19:16:25 -0800 (PST)
-Received: by mail-pf1-x42a.google.com with SMTP id x4so8727107pfj.1
-        for <phone-devel@vger.kernel.org>; Wed, 11 Jan 2023 19:16:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vLgPPN/4BKYUAbBjp/lumqd5Fur98RZfMwe+XyGuCwQ=;
-        b=bjXrKiCPcZ1mnQB/Agf1ffHwErEiwRmfS6XnouNbhPpnaIuZaCD09u1ys66wou6XEw
-         aaPN9EXY0LAew2P3ohjpZskr5qgSGp3QaLiFdo16ELAMQe1VMt2aDRFOXNSQHo3pLGL8
-         uhqGa2RHwvcDX/6hf9PzbxTyGzLpCINmbGeTT91OqvzD4gSMnKgoriAVNyN5ZvivE85/
-         AGSowIYMVw6BgLRHWI0MWlNIA6Bhoot5jzNw319eFU6V/CTTG7vSIb3sV5D2EGdjEurl
-         oMsTt2sAycgXCq3NPWK5lv9Xp3FO+pLxWSEwZLtNwqG3lIi8OA9g5y3VEmmE4xN1LRUO
-         xkbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vLgPPN/4BKYUAbBjp/lumqd5Fur98RZfMwe+XyGuCwQ=;
-        b=BGYWA4tEKRjpFeSAJmcWvqUcmrtMLUUBRfiHaDpZA77JaX2yed1L1iHG0XvEJruREb
-         dcoUEYDOB0cdLAPmCX6Ix/zX+mM/CWw2UKWb/G3dl5O3wpsFV5IPAlHOYcIf+WqPjNr2
-         dNCNboMldAhzXabHbpz4AvSNG0jVzdGzAICYPcKwNIST5w0DgsHAgWlrHJfP2shv0XXt
-         yH/Juazfj1WI/zR+REP28fwjsStq7xbgOarDtP5Q2V5iCDdzY+ExfgIXQC7PzkN3p9Ye
-         DBsXK8uHhczfJJX4wqUeX+ASxU/RO3QA2nh8b/XQgneYy0Gm3FyxFUCuX+4nLtyK+9TF
-         uQag==
-X-Gm-Message-State: AFqh2kqe0BpKAH+gwStcFmtUbJJhI1JZutysU1++txkXxGxrpxofg4XH
-        LtpEupi1QUT/oFa8zxlBrHBCeQ==
-X-Google-Smtp-Source: AMrXdXu0yK+AtehwqkneInZrjlawWZChNyitggarUNAuCygfbreHfMWSkCNhz90t8Dh3rmThDleTEA==
-X-Received: by 2002:a62:38d8:0:b0:588:4739:9a23 with SMTP id f207-20020a6238d8000000b0058847399a23mr12688063pfa.15.1673493384626;
-        Wed, 11 Jan 2023 19:16:24 -0800 (PST)
-Received: from localhost ([122.172.82.107])
-        by smtp.gmail.com with ESMTPSA id 63-20020a621942000000b0056d98e359a5sm10660750pfz.165.2023.01.11.19.16.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jan 2023 19:16:23 -0800 (PST)
-Date:   Thu, 12 Jan 2023 08:46:21 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
+        Thu, 12 Jan 2023 12:39:47 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 571626C2A4;
+        Thu, 12 Jan 2023 08:58:55 -0800 (PST)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 79BB0CC598;
+        Thu, 12 Jan 2023 16:46:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1673542018; bh=YZ31VjxQ998swhidkgP8BiVfHd20jGadBRqpOMOLJDQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=SQFARVSqmS/CuDdOTzoZkQwh/4ZgdafNH+jLRa2Ts1j2Nbgd8k8dInb3Ss2slpbFx
+         n7xx0jNpvt2WWfi+TZECHmbOIiIdoKTf5NGvBLBd/j7DhuG5mFNY2bnN26sOpUrrbg
+         aXvrgOFRj/EA1QG49jP14y9mzX+E14sLDoGefoic=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Viresh Kumar <viresh.kumar@linaro.org>
 Cc:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         "Rafael J. Wysocki" <rafael@kernel.org>,
@@ -62,28 +36,32 @@ Cc:     linux-arm-msm@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 1/5] dt-bindings: cpufreq: cpufreq-qcom-hw: Add missing
  compatibles
-Message-ID: <20230112031621.rphz4zu63ibul374@vireshk-i7>
-References: <20221016090035.565350-1-luca@z3ntu.xyz>
- <4899603.LvFx2qVVIh@g550jk>
+Date:   Thu, 12 Jan 2023 17:46:57 +0100
+Message-ID: <2662546.mvXUDI8C0e@g550jk>
+In-Reply-To: <20230112031621.rphz4zu63ibul374@vireshk-i7>
+References: <20221016090035.565350-1-luca@z3ntu.xyz> <4899603.LvFx2qVVIh@g550jk>
+ <20230112031621.rphz4zu63ibul374@vireshk-i7>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4899603.LvFx2qVVIh@g550jk>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 11-01-23, 20:48, Luca Weiss wrote:
-> Hi Viresh,
-> 
-> gentle bump, I hope this patch could get applied in-time for the next merge 
-> window.
+On Donnerstag, 12. J=E4nner 2023 04:16:21 CET Viresh Kumar wrote:
+> On 11-01-23, 20:48, Luca Weiss wrote:
+> > Hi Viresh,
+> >=20
+> > gentle bump, I hope this patch could get applied in-time for the next
+> > merge
+> > window.
+>=20
+> I thought Bjorn applied this patch long back. But now that I look back
+> at his email, he applied 2/5 and replied to 1/5, probably because
+> there wasn't a cover-letter available :(
+>=20
+> Sorry for the confusion, applied now.
 
-I thought Bjorn applied this patch long back. But now that I look back
-at his email, he applied 2/5 and replied to 1/5, probably because
-there wasn't a cover-letter available :(
+No worries, thanks for applying!
 
-Sorry for the confusion, applied now.
 
--- 
-viresh
