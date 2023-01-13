@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 95258C678D6
-	for <phone-devel@archiver.kernel.org>; Fri, 13 Jan 2023 08:41:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92CACC54EBD
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Jan 2023 08:41:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232906AbjAMIlb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 Jan 2023 03:41:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48972 "EHLO
+        id S232226AbjAMIlf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 Jan 2023 03:41:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239778AbjAMIlY (ORCPT
+        with ESMTP id S240729AbjAMIlY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Fri, 13 Jan 2023 03:41:24 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB65E6E429
-        for <phone-devel@vger.kernel.org>; Fri, 13 Jan 2023 00:40:52 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id az20so31574164ejc.1
-        for <phone-devel@vger.kernel.org>; Fri, 13 Jan 2023 00:40:52 -0800 (PST)
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD89F544EE
+        for <phone-devel@vger.kernel.org>; Fri, 13 Jan 2023 00:41:07 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id ss4so43390630ejb.11
+        for <phone-devel@vger.kernel.org>; Fri, 13 Jan 2023 00:41:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=M1kAdR9rbZYNZXDKJv3ISJYLqHwPDHk2VkOZ3geBEyA=;
-        b=IyzI+KqVwuPIvysUj+B5SbnwTT63oHItMo4rUftc2DjjCbZPivdNWYWuha40eoTll9
-         yGBBcEeuY/h5i1k7YAMDNlurpHbp5Ne/kDfmmjCoTUJzVX0d8/FgREivFrGiPjiAhy+a
-         ksVf7qU5Q2+5A/JZEjT/srZuCtGCJAewJCzSkOCmHcWhK3ajvi/L2+E/tPH129oRZd3d
-         ufuZ4f8gyYVJolCN/i754L1KyR9x7bB+2+I8VsE5ZovuFyM73MscPZ85nu330rj/xGSH
-         /KtR+ZRyqkTfZGH0vMcSqkIX8wL+FIL8B0jDMdiDGzc9C9mEdn4c3VcAqOZhOK2H/sIK
-         7/rA==
+        bh=Yz1iep6wwOeN+vmRCG5+ADl2hYT6VJO9EZLLoXnFTT4=;
+        b=OlhSzGW8EgrgMP1Z9Eq9dQ0rABO1GoOJqbb/OQy8GNngicmpYf0/Eu1EYglMp7RHoS
+         3/s7+UDUhPFp7YqV+rb27RJHi5+9d2SMnA9vMI4T6KY7HEzYIAiuvULGmMCBmP5GU6ZO
+         3N02Q02Kw5oKmBSPgJX8R3xB2l3kzrJxRmOTR0IKSNgmpI20J2kJzCorq3m8ERXRbILE
+         Gw62ITtgGut79kPUKXteSVfCgjZkmepWkjuNZpFwMEeTIDeYQljKYd8BTrR2yKNRspMH
+         BByTeCfIVwsZH6GLnUqJo2bM5w39556+jV7gyS/+kzPAYfrcJLC/zDOkRI6xXFW0sTIJ
+         MpkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M1kAdR9rbZYNZXDKJv3ISJYLqHwPDHk2VkOZ3geBEyA=;
-        b=cXDW4ZzVoaMrb0ySqtVqj0PGzz2WWQ5KDpYXn9jvuEwc1fjj0n5P5xdciFCI5STBUZ
-         dQUL3cYE2GjJoT/sJiHcerpL3WlKeQ9PXybexapf9hElLj0Y7f5pS7PLg02D0ogw+EE2
-         s/sw5jQvyonGbDJazRiDPhfpd7BI2TLqMuq4geS1nuFoI/nx6LOUq4Fvv8bGsJ95m9qI
-         zPRbiF9NVCfoiWcpY1VfWtWCYE2vj2EqJGguiCdGt6K+e7uBXiZI1ndYAXSzHvR7/c8B
-         QW6qGWoxs4rQJ0Pkao3jY/AMs4UEq9yw3HYWoMcKK8XhXdW4WwbdrZmIRcnSwEvuQ96f
-         Zd4w==
-X-Gm-Message-State: AFqh2kpi7LHHpRIlwQXosJ+Wn4cDkx87dc8/bHW0IA6sXcGEDdXoefk9
-        OEfhzArilgtUpn/l9NHWHHacUA==
-X-Google-Smtp-Source: AMrXdXsxFF1ElWv2D/C3zAI3Fn+eRM5/QDh+mR3xzsWJdREWOX7Zq5GkJ/I9W5FIyGJdmZruw9SP+g==
-X-Received: by 2002:a17:907:d302:b0:84d:34b0:e955 with SMTP id vg2-20020a170907d30200b0084d34b0e955mr19252302ejc.69.1673599251440;
-        Fri, 13 Jan 2023 00:40:51 -0800 (PST)
+        bh=Yz1iep6wwOeN+vmRCG5+ADl2hYT6VJO9EZLLoXnFTT4=;
+        b=5mbZI9Us1iRgGgFAr6EdYuDce2b0ruy8YI/zeKciCf4hTWzrirmLws92KcaN3mcXr/
+         WOjHKTKgJ7LETkAnV3JNnAEXTjeoT+GP+7hOlMT7MQ82igkxcqjtpr3y8RX0d37RCsse
+         fxlrIg0WRtOWGhPdfoZwHTmgrXhEzDUIKT19vWeIXiIBolHR/g1Fs+hXY4AhZlIF2J4K
+         +NhpXahDh36iCSOEnDkczM6VvWdcANSqy3liHbWsttwOx1aF9b+VVkYI7EjsQ/egJoUG
+         6sGN0GY/ihzyd27moGJ6Y+Q9HlLupcJ+1oik60NKedNmOBi9n5KWiq4QxIlS4qXcrs7G
+         SsqA==
+X-Gm-Message-State: AFqh2ko8OzA1MAW2GKtdPkhxIVc92kn8CZr5cVXs4y/rfABgY62vCjyS
+        MMsG0suB2ZoVIRi2bZd5/avhZQ==
+X-Google-Smtp-Source: AMrXdXvb3jZmU5kReftlX2XLV/8iQFknuSeVjV7HaRg0dX2snzktfWyLZRA909hmS0Py6xIypC+Vew==
+X-Received: by 2002:a17:906:2857:b0:7c1:8f53:83a0 with SMTP id s23-20020a170906285700b007c18f5383a0mr62796871ejc.13.1673599266400;
+        Fri, 13 Jan 2023 00:41:06 -0800 (PST)
 Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id r1-20020a17090609c100b007e0e2e35205sm8363900eje.143.2023.01.13.00.40.49
+        by smtp.gmail.com with ESMTPSA id 15-20020a170906310f00b00738795e7d9bsm8198314ejx.2.2023.01.13.00.41.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Jan 2023 00:40:51 -0800 (PST)
-Message-ID: <fc2deca7-36c6-bdf6-27ec-21ec6020b170@linaro.org>
-Date:   Fri, 13 Jan 2023 09:40:49 +0100
+        Fri, 13 Jan 2023 00:41:05 -0800 (PST)
+Message-ID: <4ab67085-b589-2a90-4289-a4f5665b182e@linaro.org>
+Date:   Fri, 13 Jan 2023 09:41:04 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.6.1
-Subject: Re: [PATCH 1/8] dt-bindings: remoteproc: qcom,msm8916-mss-pil: Add
+Subject: Re: [PATCH 4/8] dt-bindings: mfd: qcom,tcsr: Add compatible for
  MSM8226
 Content-Language: en-US
 To:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
@@ -64,16 +64,13 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20230112202612.791455-1-matti.lehtimaki@gmail.com>
- <20230112202612.791455-2-matti.lehtimaki@gmail.com>
+ <20230112202612.791455-5-matti.lehtimaki@gmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230112202612.791455-2-matti.lehtimaki@gmail.com>
+In-Reply-To: <20230112202612.791455-5-matti.lehtimaki@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -81,114 +78,12 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 12/01/2023 21:26, Matti Lehtimäki wrote:
-> Adds support for platforms with only single power domain.
-
-Add
-https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
-
-> Adds support for external power block headswitch (BHS) registers
-
-Add.
-Full stop.
-
+> Document the qcom,msm8226-tcsr compatible.
 > 
 > Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 > ---
->  .../remoteproc/qcom,msm8916-mss-pil.yaml      | 41 +++++++++++++++++--
->  1 file changed, 37 insertions(+), 4 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,msm8916-mss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,msm8916-mss-pil.yaml
-> index 6e6e69ad9cd7..6a921f2711b2 100644
-> --- a/Documentation/devicetree/bindings/remoteproc/qcom,msm8916-mss-pil.yaml
-> +++ b/Documentation/devicetree/bindings/remoteproc/qcom,msm8916-mss-pil.yaml
-> @@ -17,6 +17,7 @@ properties:
->    compatible:
->      oneOf:
->        - enum:
-> +          - qcom,msm8226-mss-pil
->            - qcom,msm8909-mss-pil
->            - qcom,msm8916-mss-pil
->            - qcom,msm8953-mss-pil
-> @@ -70,16 +71,17 @@ properties:
->      items:
->        - description: CX proxy power domain (control handed over after startup)
->        - description: MX proxy power domain (control handed over after startup)
-> +                     (not valid for qcom,msm8226-mss-pil)
->        - description: MSS proxy power domain (control handed over after startup)
->                       (only valid for qcom,msm8953-mss-pil)
-> -    minItems: 2
-> +    minItems: 1
->  
->    power-domain-names:
->      items:
->        - const: cx
-> -      - const: mx
-> +      - const: mx # not valid for qcom,msm8226-mss-pil
->        - const: mss # only valid for qcom,msm8953-mss-pil
-> -    minItems: 2
-> +    minItems: 1
->  
->    pll-supply:
->      description: PLL proxy supply (control handed over after startup)
-> @@ -106,6 +108,15 @@ properties:
->      items:
->        - const: stop
->  
-> +  qcom,ext-bhs-reg:
-> +    $ref: /schemas/types.yaml#/definitions/phandle-array
-> +    description: External power block headswitch (BHS) register
-> +                 (only valid for qcom,msm8226-mss-pil)
-> +    items:
-> +      - items:
-> +          - description: phandle to external BHS syscon region
-> +          - description: offset to the external BHS register
-> +
->    qcom,halt-regs:
->      $ref: /schemas/types.yaml#/definitions/phandle-array
->      description:
-> @@ -205,13 +216,35 @@ allOf:
 
-in this block:
-qcom,ext-bhs-reg: false
-
->        required:
->          - power-domains
->          - power-domain-names
-> -    else:
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - qcom,msm8909-mss-pil
-> +              - qcom,msm8916-mss-pil
-> +              - qcom,msm8974-mss-pil
-> +    then:
->        properties:
->          power-domains:
->            maxItems: 2
->          power-domain-names:
->            maxItems: 2
-
-         qcom,ext-bhs-reg: false
->  
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          const: qcom,msm8226-mss-pil
-> +    then:
-> +      properties:
-> +        power-domains:
-> +          maxItems: 1
-> +        power-domain-names:
-> +          maxItems: 1
-> +      required:
-> +        - qcom,ext-bhs-reg
-> +
->    - if:
->        properties:
->          compatible:
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
