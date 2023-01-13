@@ -2,151 +2,194 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AFBC7C61DB3
-	for <phone-devel@archiver.kernel.org>; Thu, 12 Jan 2023 22:27:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95258C678D6
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Jan 2023 08:41:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240655AbjALW14 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 12 Jan 2023 17:27:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43426 "EHLO
+        id S232906AbjAMIlb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 Jan 2023 03:41:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240517AbjALW1X (ORCPT
+        with ESMTP id S239778AbjAMIlY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 12 Jan 2023 17:27:23 -0500
-X-Greylist: delayed 623 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 12 Jan 2023 14:24:43 PST
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5CD26256;
-        Thu, 12 Jan 2023 14:24:41 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1673562270; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=sP/ffea2VXzs5ctiBhBZtOrqKvTVucMFvkJmgkUrhJk88hDr4sSgS+qrfSqp5ULl0O
-    jX4g64LhxSww7YdAxXSR1SmUf79NS8mKrdddKgcrsOtaHcRYmzxWqXjJ9i5AZaMiAXBy
-    fuI2OQAE8xImpy6ZWK3Mmfd5GXeT+dbRSi/WoMnI2fmoYQ2Y+23zNeAYRrd0SYpqJ769
-    4MG9k1pDeAUO+dL6PcKYqLVaRkwWMz+nqGmQht70v8O27gt7rYdsSpx8VO8yhaFyezvV
-    HIU4UPHWNKts+bp1+aO3fE1qLBEwH86i31hB1xWGpkmwKXFIgJZa9rPwBDZGu8pq3BNe
-    gAzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1673562270;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=JTbqY/0foCfnZ+vBedvPjIQxwUaNY5Vwj25lmnUspGI=;
-    b=dGkRfq9BfnPmHYD76sp2At7cdX5hZHBSo/WGQfIyN2XAbLwW0GTnBmRfSewCfXWK4A
-    prp8PLJel+KBlINvm17Iq/UQZxDTr95SaxoulbFWKsnzqbYWOVfM4PDQQYNYsTAm57pZ
-    sZlJxgBaUf7N6VCpIp/GGOVlZ7LcgsiWHCkLdt5KerV2pZ0MH3a1ajRufRo2GtIVmNFm
-    f3ZPZCQdTdMfYd2ZSHqLlk9V644Z2h5BdgnDGcRKUYZJ4S1qdPPrjbnr74mnhJV05rj4
-    I7rWcgMZRT50nPfK1a8a4HuoLvbsOKU61MXvTbgOlloPZ5a+3SZWkBFCAJ6+3bOgrbFb
-    I69Q==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1673562270;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=JTbqY/0foCfnZ+vBedvPjIQxwUaNY5Vwj25lmnUspGI=;
-    b=JEaMP74h0BCDJkkracrxXH4SCFbBzdjwbNSLdOCYwvIo18Vj4tmuXDtu2N6/Eoimlt
-    K60huBA6F3lUutcOuG+RD9ypAxAQGQiPKQEdEod0RtcuEyUeq+3H72rm1iUsZOl/WRdY
-    AHZbEzwyXdTHlmVCZTKkpAIy0JgUv65l4+QQPbSV1VbYxKXCTaonc+Jx+RjWQIqg4vRw
-    IwIyteVZAXkBg4U49HeVZOArIcQSbP+nkk3i9cL7exbVFGuQC/PKLVHsJhcInz/HuFNN
-    L0GBZWUA8OJEJ7g4FPyDDheyPwr9Ttx1PWdIozQCezrGCcBYLlM1X5ElBWEKBo/fDck4
-    ZiJg==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJAhdlWwfGjtQ=="
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 48.6.2 DYNA|AUTH)
-    with ESMTPSA id yacdeez0CMOU4hN
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Thu, 12 Jan 2023 23:24:30 +0100 (CET)
-Date:   Thu, 12 Jan 2023 23:24:29 +0100
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Matti =?iso-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>,
+        Fri, 13 Jan 2023 03:41:24 -0500
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB65E6E429
+        for <phone-devel@vger.kernel.org>; Fri, 13 Jan 2023 00:40:52 -0800 (PST)
+Received: by mail-ej1-x630.google.com with SMTP id az20so31574164ejc.1
+        for <phone-devel@vger.kernel.org>; Fri, 13 Jan 2023 00:40:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M1kAdR9rbZYNZXDKJv3ISJYLqHwPDHk2VkOZ3geBEyA=;
+        b=IyzI+KqVwuPIvysUj+B5SbnwTT63oHItMo4rUftc2DjjCbZPivdNWYWuha40eoTll9
+         yGBBcEeuY/h5i1k7YAMDNlurpHbp5Ne/kDfmmjCoTUJzVX0d8/FgREivFrGiPjiAhy+a
+         ksVf7qU5Q2+5A/JZEjT/srZuCtGCJAewJCzSkOCmHcWhK3ajvi/L2+E/tPH129oRZd3d
+         ufuZ4f8gyYVJolCN/i754L1KyR9x7bB+2+I8VsE5ZovuFyM73MscPZ85nu330rj/xGSH
+         /KtR+ZRyqkTfZGH0vMcSqkIX8wL+FIL8B0jDMdiDGzc9C9mEdn4c3VcAqOZhOK2H/sIK
+         7/rA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M1kAdR9rbZYNZXDKJv3ISJYLqHwPDHk2VkOZ3geBEyA=;
+        b=cXDW4ZzVoaMrb0ySqtVqj0PGzz2WWQ5KDpYXn9jvuEwc1fjj0n5P5xdciFCI5STBUZ
+         dQUL3cYE2GjJoT/sJiHcerpL3WlKeQ9PXybexapf9hElLj0Y7f5pS7PLg02D0ogw+EE2
+         s/sw5jQvyonGbDJazRiDPhfpd7BI2TLqMuq4geS1nuFoI/nx6LOUq4Fvv8bGsJ95m9qI
+         zPRbiF9NVCfoiWcpY1VfWtWCYE2vj2EqJGguiCdGt6K+e7uBXiZI1ndYAXSzHvR7/c8B
+         QW6qGWoxs4rQJ0Pkao3jY/AMs4UEq9yw3HYWoMcKK8XhXdW4WwbdrZmIRcnSwEvuQ96f
+         Zd4w==
+X-Gm-Message-State: AFqh2kpi7LHHpRIlwQXosJ+Wn4cDkx87dc8/bHW0IA6sXcGEDdXoefk9
+        OEfhzArilgtUpn/l9NHWHHacUA==
+X-Google-Smtp-Source: AMrXdXsxFF1ElWv2D/C3zAI3Fn+eRM5/QDh+mR3xzsWJdREWOX7Zq5GkJ/I9W5FIyGJdmZruw9SP+g==
+X-Received: by 2002:a17:907:d302:b0:84d:34b0:e955 with SMTP id vg2-20020a170907d30200b0084d34b0e955mr19252302ejc.69.1673599251440;
+        Fri, 13 Jan 2023 00:40:51 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id r1-20020a17090609c100b007e0e2e35205sm8363900eje.143.2023.01.13.00.40.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Jan 2023 00:40:51 -0800 (PST)
+Message-ID: <fc2deca7-36c6-bdf6-27ec-21ec6020b170@linaro.org>
+Date:   Fri, 13 Jan 2023 09:40:49 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH 1/8] dt-bindings: remoteproc: qcom,msm8916-mss-pil: Add
+ MSM8226
+Content-Language: en-US
+To:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
+        linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7/8] ARM: dts: qcom: msm8226: Add modem remoteproc node
-Message-ID: <Y8CInQ8UJdEen33p@gerhold.net>
+        Stephan Gerhold <stephan@gerhold.net>,
+        linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 References: <20230112202612.791455-1-matti.lehtimaki@gmail.com>
- <20230112202612.791455-8-matti.lehtimaki@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ <20230112202612.791455-2-matti.lehtimaki@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230112202612.791455-2-matti.lehtimaki@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230112202612.791455-8-matti.lehtimaki@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jan 12, 2023 at 10:26:10PM +0200, Matti Lehtim‰ki wrote:
-> From: Luca Weiss <luca@z3ntu.xyz>
+On 12/01/2023 21:26, Matti Lehtim√§ki wrote:
+> Adds support for platforms with only single power domain.
+
+Add
+https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
+
+> Adds support for external power block headswitch (BHS) registers
+
+Add.
+Full stop.
+
 > 
-> Add a node for the modem remoteproc found on MSM8226.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> Co-developed-by: Matti Lehtim‰ki <matti.lehtimaki@gmail.com>
-> Signed-off-by: Matti Lehtim‰ki <matti.lehtimaki@gmail.com>
+> Signed-off-by: Matti Lehtim√§ki <matti.lehtimaki@gmail.com>
 > ---
->  arch/arm/boot/dts/qcom-msm8226.dtsi | 86 +++++++++++++++++++++++++++++
->  1 file changed, 86 insertions(+)
+>  .../remoteproc/qcom,msm8916-mss-pil.yaml      | 41 +++++++++++++++++--
+>  1 file changed, 37 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
-> index 2639167c8976..34ea9cf46ae0 100644
-> --- a/arch/arm/boot/dts/qcom-msm8226.dtsi
-> +++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
-> [...]
-> @@ -620,6 +655,57 @@ rpm_msg_ram: sram@fc428000 {
->  			reg = <0xfc428000 0x4000>;
->  		};
+> diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,msm8916-mss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,msm8916-mss-pil.yaml
+> index 6e6e69ad9cd7..6a921f2711b2 100644
+> --- a/Documentation/devicetree/bindings/remoteproc/qcom,msm8916-mss-pil.yaml
+> +++ b/Documentation/devicetree/bindings/remoteproc/qcom,msm8916-mss-pil.yaml
+> @@ -17,6 +17,7 @@ properties:
+>    compatible:
+>      oneOf:
+>        - enum:
+> +          - qcom,msm8226-mss-pil
+>            - qcom,msm8909-mss-pil
+>            - qcom,msm8916-mss-pil
+>            - qcom,msm8953-mss-pil
+> @@ -70,16 +71,17 @@ properties:
+>      items:
+>        - description: CX proxy power domain (control handed over after startup)
+>        - description: MX proxy power domain (control handed over after startup)
+> +                     (not valid for qcom,msm8226-mss-pil)
+>        - description: MSS proxy power domain (control handed over after startup)
+>                       (only valid for qcom,msm8953-mss-pil)
+> -    minItems: 2
+> +    minItems: 1
 >  
-> +		modem: remoteproc@fc880000 {
-> +			compatible = "qcom,msm8226-mss-pil";
-> +			reg = <0xfc880000 0x100>,
-> +			      <0xfc820000 0x020>;
-> +			reg-names = "qdsp6", "rmb";
+>    power-domain-names:
+>      items:
+>        - const: cx
+> -      - const: mx
+> +      - const: mx # not valid for qcom,msm8226-mss-pil
+>        - const: mss # only valid for qcom,msm8953-mss-pil
+> -    minItems: 2
+> +    minItems: 1
+>  
+>    pll-supply:
+>      description: PLL proxy supply (control handed over after startup)
+> @@ -106,6 +108,15 @@ properties:
+>      items:
+>        - const: stop
+>  
+> +  qcom,ext-bhs-reg:
+> +    $ref: /schemas/types.yaml#/definitions/phandle-array
+> +    description: External power block headswitch (BHS) register
+> +                 (only valid for qcom,msm8226-mss-pil)
+> +    items:
+> +      - items:
+> +          - description: phandle to external BHS syscon region
+> +          - description: offset to the external BHS register
 > +
-> +			interrupts-extended = <&intc GIC_SPI 24 IRQ_TYPE_EDGE_RISING>,
-> +					      <&modem_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
-> +					      <&modem_smp2p_in 1 IRQ_TYPE_EDGE_RISING>,
-> +					      <&modem_smp2p_in 2 IRQ_TYPE_EDGE_RISING>,
-> +					      <&modem_smp2p_in 3 IRQ_TYPE_EDGE_RISING>;
-> +			interrupt-names = "wdog", "fatal", "ready", "handover", "stop-ack";
-> +
-> +			clocks = <&gcc GCC_MSS_Q6_BIMC_AXI_CLK>,
-> +				 <&gcc GCC_MSS_CFG_AHB_CLK>,
-> +				 <&gcc GCC_BOOT_ROM_AHB_CLK>,
-> +				 <&xo_board>;
-> +			clock-names = "iface", "bus", "mem", "xo";
-> +
-> +			resets = <&gcc GCC_MSS_RESTART>;
-> +			reset-names = "mss_restart";
-> +
-> +			power-domains = <&rpmpd MSM8226_VDDCX>;
-> +			power-domain-names = "cx";
-> +
-> +			qcom,ext-bhs-reg = <&tcsr_regs_1 0x194>;
-> +			qcom,halt-regs = <&tcsr_regs_1 0x180 0x200 0x280>;
-> +
-> +			qcom,smem-states = <&modem_smp2p_out 0>;
-> +			qcom,smem-state-names = "stop";
-> +
-> +			status = "disabled";
-> +
-> +			mba {
-> +				memory-region = <&mba_region>;
-> +			};
-> +
-> +			mpss {
-> +				memory-region = <&mpss_region>;
-> +			};
+>    qcom,halt-regs:
+>      $ref: /schemas/types.yaml#/definitions/phandle-array
+>      description:
+> @@ -205,13 +216,35 @@ allOf:
 
-Please prefer using memory-region with two items in the node above, as
-suggested in the DT schema:
+in this block:
+qcom,ext-bhs-reg: false
 
-			memory-region = <&mba_region>, <&mpss_region>;
+>        required:
+>          - power-domains
+>          - power-domain-names
+> -    else:
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,msm8909-mss-pil
+> +              - qcom,msm8916-mss-pil
+> +              - qcom,msm8974-mss-pil
+> +    then:
+>        properties:
+>          power-domains:
+>            maxItems: 2
+>          power-domain-names:
+>            maxItems: 2
 
-Thanks,
-Stephan
+         qcom,ext-bhs-reg: false
+>  
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          const: qcom,msm8226-mss-pil
+> +    then:
+> +      properties:
+> +        power-domains:
+> +          maxItems: 1
+> +        power-domain-names:
+> +          maxItems: 1
+> +      required:
+> +        - qcom,ext-bhs-reg
+> +
+>    - if:
+>        properties:
+>          compatible:
+
+Best regards,
+Krzysztof
+
