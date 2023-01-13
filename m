@@ -2,94 +2,66 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61FA2C677F1
-	for <phone-devel@archiver.kernel.org>; Fri, 13 Jan 2023 17:55:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BAB51C678D4
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Jan 2023 18:26:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230417AbjAMRzM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 Jan 2023 12:55:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35802 "EHLO
+        id S231254AbjAMS05 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 Jan 2023 13:26:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229924AbjAMRyw (ORCPT
+        with ESMTP id S230268AbjAMS0O (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 Jan 2023 12:54:52 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53E32A25C0;
-        Fri, 13 Jan 2023 09:47:02 -0800 (PST)
+        Fri, 13 Jan 2023 13:26:14 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C57A7DE2E;
+        Fri, 13 Jan 2023 10:21:40 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 17E96B8163F;
-        Fri, 13 Jan 2023 17:46:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9445DC433F0;
-        Fri, 13 Jan 2023 17:46:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 18359622CC;
+        Fri, 13 Jan 2023 18:21:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A477DC433D2;
+        Fri, 13 Jan 2023 18:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673632012;
-        bh=pFf9JzNDw/gaL2e3i3Xnx474o61Ef0Q3FesKXT12MKI=;
+        s=k20201202; t=1673634099;
+        bh=tWt/37/DUHtIfoFRxoBH6pc5cjTsClvEGdHWSa/YyJA=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rXG37IuzqXeblx0Q4yCL2l6kUzV0wWRZNSp0Dzt+svPoJUb1FbU28nY6kt/sG8Kql
-         Z4cR+JAjJxGM/fKWAXuRn2SDQWR9ZdZGQMCxM1lpXJTXvsFAqSObzojq2dSPM3yp1G
-         +A0D/CsyjQqGpPB7V/vN+VlILDJR6dScdYSd37HZ8rlhayVWgX4/AnrWjy/io0hxFu
-         5Cb32uzgJw0555wayt4RkW76EuRS4MjxE7Yc+OqwRjP0SjHZGdjBH22OI+/rqmyHbK
-         jh5jRCaiURL1LOWAOQbMtTzvR66Lm1sL9PWprcSmLCabDs5jq1JrJbTiYURfYSMH8G
-         n6kwJ6skDpcxg==
-Date:   Fri, 13 Jan 2023 23:16:15 +0530
+        b=nN5SRtxlC7Gg1oDu7kOWHxD1mO73wz+1GrJhLh9qFV+8JrX7LVTVgdZudnADAsrFx
+         A+xfQKPuA5qiHOMUW92idfUvEuMQG48l2NAGe1aD7/JX75qr4X0hRlJUJs/W8Uf0lF
+         REuFSr+UReGbj7O4PIcctmBYnFK+jyHE6iX8qYWf4rr9fZKwiW4rX2yTVmnhpuYB5u
+         if4Ly45tUzzE3lgf+bH4oKblt7qd5UsoN6Q4etMHHhPZgbfir0rOv0ooGXWFMO6/dV
+         D36D3S7WLr41GkUlHGhu75sF15l8Te0Pdwfwj+hvXpTZx90iq+IMsrSGwgKTcp/MSy
+         5jLYRiQ9v4ePA==
+Date:   Fri, 13 Jan 2023 23:51:35 +0530
 From:   Vinod Koul <vkoul@kernel.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Michael Srba <Michael.Srba@seznam.cz>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Revert "phy: qualcomm: usb28nm: Add MDM9607 init
- sequence"
-Message-ID: <Y8GY51Cfkj7o1MJs@matsya>
-References: <20221214223733.648167-1-marijn.suijten@somainline.org>
+To:     Lux Aliaga <they@mint.lgbt>
+Cc:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        kishon@kernel.org, alim.akhtar@samsung.com, avri.altman@wdc.com,
+        bvanassche@acm.org, keescook@chromium.org, tony.luck@intel.com,
+        gpiccoli@igalia.com, ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
+        phone-devel@vger.kernel.org, martin.botka@somainline.org,
+        marijn.suijten@somainline.org, Dhruva Gole <d-gole@ti.com>
+Subject: Re: [PATCH v6 2/6] dt-bindings: phy: Add QMP UFS PHY compatible for
+ SM6125
+Message-ID: <Y8GhL0B1llPLLAhX@matsya>
+References: <20230108195336.388349-1-they@mint.lgbt>
+ <20230108195336.388349-3-they@mint.lgbt>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221214223733.648167-1-marijn.suijten@somainline.org>
+In-Reply-To: <20230108195336.388349-3-they@mint.lgbt>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 14-12-22, 23:37, Marijn Suijten wrote:
-> This reverts commit 557a28811c7e0286d3816842032db5eb7bb5f156.
-> 
-> This commit introduced an init sequence from downstream DT [1] in the
-> driver.  As mentioned by the comment above the HSPHY_INIT_CFG macro for
-> this sequence:
-> 
->     /*
->      * The macro is used to define an initialization sequence.  Each tuple
->      * is meant to program 'value' into phy register at 'offset' with 'delay'
->      * in us followed.
->      */
-> 
-> Instead of corresponding to offsets into the phy register, the sequence
-> read by the downstream driver [2] is passed into ulpi_write [3] which
-> crafts the address-value pair into a new value and writes it into the
-> same register at USB_ULPI_VIEWPORT [4].  In other words, this init
-> sequence is programmed into the hardware in a totally different way than
-> downstream and is unlikely to achieve the desired result, if the hsphy
-> is working at all.
-> 
-> An alternative method needs to be found to write these init values at
-> the desired location.  Fortunately mdm9607 did not land upstream yet [5]
-> and should have its compatible revised to use the generic one, instead
-> of a compatible that writes wrong data to the wrong registers.
+On 08-01-23, 16:53, Lux Aliaga wrote:
+> Document the QMP UFS PHY compatible for SM6125.
 
-Applied after adding missing subsystem tag, thanks
+Applied, thanks
 
 -- 
 ~Vinod
