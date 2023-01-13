@@ -2,71 +2,94 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74CEBC54EBD
-	for <phone-devel@archiver.kernel.org>; Fri, 13 Jan 2023 15:00:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 61FA2C677F1
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Jan 2023 17:55:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjAMPAZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 Jan 2023 10:00:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50164 "EHLO
+        id S230417AbjAMRzM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 Jan 2023 12:55:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbjAMO7d (ORCPT
+        with ESMTP id S229924AbjAMRyw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 Jan 2023 09:59:33 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B21E89B2B3;
-        Fri, 13 Jan 2023 06:49:45 -0800 (PST)
+        Fri, 13 Jan 2023 12:54:52 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53E32A25C0;
+        Fri, 13 Jan 2023 09:47:02 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 677D0B82169;
-        Fri, 13 Jan 2023 14:49:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A0FC433D2;
-        Fri, 13 Jan 2023 14:49:40 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 17E96B8163F;
+        Fri, 13 Jan 2023 17:46:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9445DC433F0;
+        Fri, 13 Jan 2023 17:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673621382;
-        bh=ann4UHg7nPZIZg28zXX2PyiyYio0JDACGv1Ij35hhRU=;
+        s=k20201202; t=1673632012;
+        bh=pFf9JzNDw/gaL2e3i3Xnx474o61Ef0Q3FesKXT12MKI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ktgrbjmNXFzOEVLJelmVB8YVnq0xGXs/ELNKgGhwKmsV77VoAjzU5KbMw8QtOb+ez
-         ntaw201QJvqUsxQ4UYm8eAvj7jrrGFD5L5iMzqP8+YjbaVt5HizBxe6gvRNa4vsODC
-         87G63n4NZ9pCaUD3ciceNxbpZHoQ7lHR3OOp7eks97f7Td9p7USK0K+IER9Imzb8tn
-         vQ1GOQAO28sXWOaIfN/cjKnFaRYObGh5y1hG+IvMLoxtY5gvSIsIxIv1ZX1SILXMZ5
-         rkUw+aE62kIduXr2ZyLH+hBVqB7T3G1RsGzj/xe3sNhF8yaNcCmZ3n3zMYt9r9gKaP
-         o5xkE/KEN+ytw==
-Date:   Fri, 13 Jan 2023 14:49:37 +0000
-From:   Lee Jones <lee@kernel.org>
-To:     Matti =?iso-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        b=rXG37IuzqXeblx0Q4yCL2l6kUzV0wWRZNSp0Dzt+svPoJUb1FbU28nY6kt/sG8Kql
+         Z4cR+JAjJxGM/fKWAXuRn2SDQWR9ZdZGQMCxM1lpXJTXvsFAqSObzojq2dSPM3yp1G
+         +A0D/CsyjQqGpPB7V/vN+VlILDJR6dScdYSd37HZ8rlhayVWgX4/AnrWjy/io0hxFu
+         5Cb32uzgJw0555wayt4RkW76EuRS4MjxE7Yc+OqwRjP0SjHZGdjBH22OI+/rqmyHbK
+         jh5jRCaiURL1LOWAOQbMtTzvR66Lm1sL9PWprcSmLCabDs5jq1JrJbTiYURfYSMH8G
+         n6kwJ6skDpcxg==
+Date:   Fri, 13 Jan 2023 23:16:15 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Michael Srba <Michael.Srba@seznam.cz>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/8] dt-bindings: mfd: qcom,tcsr: Add compatible for
- MSM8226
-Message-ID: <Y8FvgdgAwt6ahBES@google.com>
-References: <20230112202612.791455-1-matti.lehtimaki@gmail.com>
- <20230112202612.791455-5-matti.lehtimaki@gmail.com>
+Subject: Re: [PATCH] Revert "phy: qualcomm: usb28nm: Add MDM9607 init
+ sequence"
+Message-ID: <Y8GY51Cfkj7o1MJs@matsya>
+References: <20221214223733.648167-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230112202612.791455-5-matti.lehtimaki@gmail.com>
+In-Reply-To: <20221214223733.648167-1-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 12 Jan 2023, Matti Lehtimäki wrote:
-
-> Document the qcom,msm8226-tcsr compatible.
+On 14-12-22, 23:37, Marijn Suijten wrote:
+> This reverts commit 557a28811c7e0286d3816842032db5eb7bb5f156.
 > 
-> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-> ---
->  Documentation/devicetree/bindings/mfd/qcom,tcsr.yaml | 1 +
->  1 file changed, 1 insertion(+)
+> This commit introduced an init sequence from downstream DT [1] in the
+> driver.  As mentioned by the comment above the HSPHY_INIT_CFG macro for
+> this sequence:
+> 
+>     /*
+>      * The macro is used to define an initialization sequence.  Each tuple
+>      * is meant to program 'value' into phy register at 'offset' with 'delay'
+>      * in us followed.
+>      */
+> 
+> Instead of corresponding to offsets into the phy register, the sequence
+> read by the downstream driver [2] is passed into ulpi_write [3] which
+> crafts the address-value pair into a new value and writes it into the
+> same register at USB_ULPI_VIEWPORT [4].  In other words, this init
+> sequence is programmed into the hardware in a totally different way than
+> downstream and is unlikely to achieve the desired result, if the hsphy
+> is working at all.
+> 
+> An alternative method needs to be found to write these init values at
+> the desired location.  Fortunately mdm9607 did not land upstream yet [5]
+> and should have its compatible revised to use the generic one, instead
+> of a compatible that writes wrong data to the wrong registers.
 
-Applied, thanks
+Applied after adding missing subsystem tag, thanks
 
 -- 
-Lee Jones [李琼斯]
+~Vinod
