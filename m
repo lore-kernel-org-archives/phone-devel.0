@@ -2,111 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F11B4C3DA78
-	for <phone-devel@archiver.kernel.org>; Sat, 14 Jan 2023 00:31:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E26D8C3DA78
+	for <phone-devel@archiver.kernel.org>; Sat, 14 Jan 2023 17:25:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230389AbjANAbZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 Jan 2023 19:31:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34082 "EHLO
+        id S229932AbjANRZr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 14 Jan 2023 12:25:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230252AbjANAbY (ORCPT
+        with ESMTP id S229983AbjANRZq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 Jan 2023 19:31:24 -0500
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F5D46C06F;
-        Fri, 13 Jan 2023 16:31:22 -0800 (PST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 140455C00A7;
-        Fri, 13 Jan 2023 19:31:19 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Fri, 13 Jan 2023 19:31:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=undef.tools; h=
-        cc:cc:content-transfer-encoding:date:date:from:from:in-reply-to
-        :message-id:mime-version:reply-to:sender:subject:subject:to:to;
-         s=fm3; t=1673656279; x=1673742679; bh=06oSer/hbIX+e8ixGpELbsOVt
-        s3pi8H+tRTjkc7QSco=; b=d2NkJzL1JwBETuvfrCBMhHNw91k9PEmBfKLJc81Gn
-        qZBJ/dTpzWX1uNkywAsErH1obEYD6+W3XSqpb0SjEQ0Re87mW2jYm3HKyRARU6XR
-        DLsVNRsz6Lr8fsIGxuILrXSShPJ+3XoJ7I4pvTtY+A46Xrkzd3TibguPUoEerSAu
-        6nw80dJmRNexmL6rg3TJndYhU0eE/OK3MSLjZ+gaw8T03AjcHKLKfyUt/sXMICkc
-        9O252C5oFKxYQg1l0HH0ADUg7NaS/l7YINW6WRPUJHfpS8bG+83999h1vjMQzjaq
-        UKON3SmPXQgiqT9hwnVCcngTvQx6gxLj/e5iXm350gvvQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:message-id
-        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-        1673656279; x=1673742679; bh=06oSer/hbIX+e8ixGpELbsOVts3pi8H+tRT
-        jkc7QSco=; b=OgLKE3xTvIREhVSDtMWTJj5enSFDb9I41shZnityxl7dkfv+vao
-        9KNQr8Y7gP/O2mJwSuoE4qsfrOBtZGVjVx/9cb4iUu1G0eAQRx1AfpQI3lBLov5D
-        ynETmT3m1ZHdsCtNED6wYkfReHJ+OQ26uZc6t3Q7pVjjHtWm8uVN8WxTCyZl0rMr
-        tdDa5y3ZlqKpjYyecAZbKo5mczg6d4MJRC9LdwmL2HGNEiRdA0MAGDi7ecgGYiKu
-        E8TahxaMd4uFYBGqJ+J8yXVHU+fA+3uzibiGf4P+GZc1Kg4MRjo3xnytaxXsL5iI
-        mLYUsvgrra2J3Byfkt4pREX7lvLn4yaXUow==
-X-ME-Sender: <xms:1ffBY5GekTrmQNbnKtYZiHgyjnvNBR9vUiN8PI_3MX2PuBTycpYBHw>
-    <xme:1ffBY-XlGPiC-fOHc9PWgHhcxXmfTkakFnzQ1WZrpVS0vgWDGeaq-xCzEF5eiaWEG
-    zwis_AVunJGYSC81H0>
-X-ME-Received: <xmr:1ffBY7L4oX1LS7QU59v-Arro1fp1phsHQEuGk4opMqihtEkf0p8Fb9mrmH4j_DiXWbXCXDGFsFtN2hLn_tPJ3BXBJfoaq1VvdmSKjAMcspKP2VHk3gAlzD-Lfg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrleelgddvgecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeflrghrrhgrhhcu
-    ifhoshgsvghllhcuoehkvghrnhgvlhesuhhnuggvfhdrthhoohhlsheqnecuggftrfgrth
-    htvghrnhepjeeuvefgjeefgefhhfefhedvffelteehkeekvdefheeiteeutdehveeghfeg
-    kefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkh
-    gvrhhnvghlsehunhguvghfrdhtohholhhs
-X-ME-Proxy: <xmx:1ffBY_E7Yui-m0Qql0NNBgfk59W7rops_-ItwjoFJyKNq8ifiKKrIQ>
-    <xmx:1ffBY_XPHbC453p9rAmA4QVkK6PCh2-o40NE9Ccew8lcaiMkihYGgA>
-    <xmx:1ffBY6NFSnL3O8AIuuI6xnA2XjXRj_o4TJKC-iBrjwRlJDVXjBXx2w>
-    <xmx:1_fBY7pxaNJxadzhpnd7UrlFjHR1ccmRI8mDgv6JPFaDI7iZalfyvA>
-Feedback-ID: id76147eb:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 13 Jan 2023 19:31:14 -0500 (EST)
-From:   Jarrah Gosbell <kernel@undef.tools>
-To:     Oder Chiou <oder_chiou@realtek.com>,
+        Sat, 14 Jan 2023 12:25:46 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A03983CD;
+        Sat, 14 Jan 2023 09:25:45 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id EF91CB808D2;
+        Sat, 14 Jan 2023 17:25:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9958C433D2;
+        Sat, 14 Jan 2023 17:25:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673717142;
+        bh=51ViAOYwT+L18PsoAipKMhxe8CCSN6yffy7zR6YFLdI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Z94GKYZZWFNbKNROFJv54fKg5nMm4P0X2aQga1SmffqBJEBxJTDrM2s2BlXcuquWh
+         N5Zc40MvepK5NQ15bYUb3YIMn+TyjTj2sOg/Tg45+1ZR4NjVsWzRpHNOu27zIg22n7
+         8MKhUOjwZMxnru7P8PE3buFtMY2lQVxYx0WI+jslfjxCx342/icq5RqGuvbJw4vhe4
+         wVy6hywOAyo8gnIo6YJ61OwId/WWlMPlYCvgeVkiFmMBPZg7fdw9Nq+Dgp8fNeJWef
+         p1dKQS1Hz2obK1Alf8POl6dwk6q7N8aBLkY2RI+UWUBWQLuYytVfzN/vUMK+WQbP6s
+         ESVfigIGzqAFA==
+Date:   Sat, 14 Jan 2023 17:25:48 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Jarrah Gosbell <kernel@undef.tools>
+Cc:     Oder Chiou <oder_chiou@realtek.com>,
         Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
         Jaroslav Kysela <perex@perex.cz>,
         Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org
-Cc:     phone-devel@vger.kernel.org, Ondrej Jirman <megi@xff.cz>,
-        Jarrah Gosbell <kernel@undef.tools>
-Subject: [PATCH] ASoC: codec: rt5640: Resolve failure to set DMIC clock after playback
-Date:   Sat, 14 Jan 2023 00:30:54 +0000
-Message-Id: <20230114003053.401274-1-kernel@undef.tools>
-X-Mailer: git-send-email 2.39.0
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        Ondrej Jirman <megi@xff.cz>
+Subject: Re: [PATCH] ASoC: codec: rt5640: Resolve failure to set DMIC clock
+ after playback
+Message-ID: <Y8LlnIbvnLGERCNo@sirena.org.uk>
+References: <20230114003053.401274-1-kernel@undef.tools>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="1RYbj7oVxAjXTigi"
+Content-Disposition: inline
+In-Reply-To: <20230114003053.401274-1-kernel@undef.tools>
+X-Cookie: TANSTAAFL
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Ondrej Jirman <megi@xff.cz>
 
-rt5640_set_dai_sysclk is called with freq == 0 when playback stops. This
-causes DMIC setup code to fail. I2S interface doesn't need to be active
-for codec to work, so don't clear rt5640->sysclk after
-rt5640_set_dai_sysclk is called with freq == 0.
+--1RYbj7oVxAjXTigi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Ondrej Jirman <megi@xff.cz>
-Signed-off-by: Jarrah Gosbell <kernel@undef.tools>
----
- sound/soc/codecs/rt5640.c | 3 +++
- 1 file changed, 3 insertions(+)
+On Sat, Jan 14, 2023 at 12:30:54AM +0000, Jarrah Gosbell wrote:
 
-diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
-index 18e01949f20e..054de41ceccb 100644
---- a/sound/soc/codecs/rt5640.c
-+++ b/sound/soc/codecs/rt5640.c
-@@ -1839,6 +1839,9 @@ static int rt5640_set_dai_sysclk(struct snd_soc_dai *dai,
- 	unsigned int reg_val = 0;
- 	unsigned int pll_bit = 0;
- 
-+	if (freq == 0)
-+		return 0;
-+
- 	switch (clk_id) {
- 	case RT5640_SCLK_S_MCLK:
- 		reg_val |= RT5640_SCLK_SRC_MCLK;
--- 
-2.39.0
+> rt5640_set_dai_sysclk is called with freq == 0 when playback stops. This
+> causes DMIC setup code to fail. I2S interface doesn't need to be active
+> for codec to work, so don't clear rt5640->sysclk after
+> rt5640_set_dai_sysclk is called with freq == 0.
 
+The goal with set_sysclk() is to record the current clock
+frequency, if the clock is stopped it should be set to zero.  If
+a machine driver is setting the input clock to zero when it's
+still being provided then it should be fixed.  If the device
+doesn't need a clock for DMIC (which seems dubious) then whatever
+is checking for a clock should be fixed.
+
+--1RYbj7oVxAjXTigi
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmPC5ZsACgkQJNaLcl1U
+h9AQHgf/XaEEjF+BLM6Pnh3lYFsdSIlU+KtG76/OC9GzqxX1yVhlp5T1weE8tfSM
+nyVWqN20RA2TvVL9npXjB7xlRcsCONSUHg4h9SCDk08p5HT1bL9NtdgtqgMxwDPe
+3Q70V5aD8vrF7QtdNLQe7wX/ub/yY7E6F3Nu3mlvdyzFjxekCnp5BcdCNMxQYlP2
+cJdDWsO2vdc1tZrN4oFHWrtxoGEi5frIJLPkttaflVt4JV7g/07KpAP3qJ5KCQyY
+xItHWBAkhrbaLarnjJMfo9oKlu1U69QR3OFClWpmDYhzReAmtqby9phny8VWOpxT
+m1YFxkULKef8d8F4IZDrS72uQ57q9g==
+=tHmS
+-----END PGP SIGNATURE-----
+
+--1RYbj7oVxAjXTigi--
