@@ -2,25 +2,25 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C12AC46467
-	for <phone-devel@archiver.kernel.org>; Mon, 16 Jan 2023 22:10:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA7A2C678D4
+	for <phone-devel@archiver.kernel.org>; Mon, 16 Jan 2023 22:10:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235145AbjAPWKi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 Jan 2023 17:10:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49134 "EHLO
+        id S235109AbjAPWKk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 Jan 2023 17:10:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235045AbjAPWKI (ORCPT
+        with ESMTP id S234627AbjAPWKJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 Jan 2023 17:10:08 -0500
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DF0D2A165;
-        Mon, 16 Jan 2023 14:10:01 -0800 (PST)
+        Mon, 16 Jan 2023 17:10:09 -0500
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7E32A993
+        for <phone-devel@vger.kernel.org>; Mon, 16 Jan 2023 14:10:01 -0800 (PST)
 Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id BF8153F254;
-        Mon, 16 Jan 2023 23:09:58 +0100 (CET)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 102FC3F260;
+        Mon, 16 Jan 2023 23:10:00 +0100 (CET)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -35,9 +35,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Lars-Peter Clausen <lars@metafoo.de>,
         linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v2 1/5] iio: core: Point users of extend_name field to read_label callback
-Date:   Mon, 16 Jan 2023 23:09:05 +0100
-Message-Id: <20230116220909.196926-2-marijn.suijten@somainline.org>
+Subject: [RFC PATCH v2 3/5] iio: adc: qcom-spmi-adc5: Fall back to datasheet_name instead of fwnode name
+Date:   Mon, 16 Jan 2023 23:09:07 +0100
+Message-Id: <20230116220909.196926-4-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230116220909.196926-1-marijn.suijten@somainline.org>
 References: <20230116220909.196926-1-marijn.suijten@somainline.org>
@@ -47,41 +47,42 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-As mentioned and discussed in [1] extend_name should not be used for
-full channel labels (and most drivers seem to only use it to express a
-short type of a channel) as this affects sysfs filenames, while the
-label name is supposed to be extracted from the *_label sysfs file
-instead.  This appears to have been unclear to some drivers as
-extend_name is also used when read_label is unset, achieving an initial
-goal of providing sensible names in *_label sysfs files without noticing
-that sysfs filenames are (negatively and likely unintentionally)
-affected as well.
+Since the migration to fwnode_get_name in commit 4f47a236a23d ("iio:
+adc: qcom-spmi-adc5: convert to device properties") the resulting
+adc5_channel_prop::channel_name (renamed from datasheet_name in the
+previous patch) - which is propagated into iio_chan_spec::extend_name -
+was containing the DT node name including @xx suffix if a "label"
+property is not present, while adc5_channels::datasheet_name was thus
+far set by the macros but always remained unread.  Put it to use instead
+of using a confusing name containing @xx in sysfs filenames (again, when
+"label" is not set).
 
-Point readers of iio_chan_spec::extend_name to iio_info::read_label by
-mentioning deprecation and side-effects of this field.
-
-[1]: https://lore.kernel.org/linux-arm-msm/20221221223432.si2aasbleiicayfl@SoMainline.org/
-
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
- include/linux/iio/iio.h | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 81413cd3a3e7..36c89f238fb9 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -221,6 +221,9 @@ struct iio_event_spec {
-  * @extend_name:	Allows labeling of channel attributes with an
-  *			informative name. Note this has no effect codes etc,
-  *			unlike modifiers.
-+ *			This field is deprecated in favour of overriding read_label
-+ *			in iio_info, which unlike @extend_name does not affect sysfs
-+ *			filenames.
-  * @datasheet_name:	A name used in in-kernel mapping of channels. It should
-  *			correspond to the first name that the channel is referred
-  *			to by in the datasheet (e.g. IND), or the nearest
+Note that for this to make sense a successor to "arm64: dts: qcom: Use
+labels with generic node names for ADC channels" [1] will have to land,
+otherwise most channels that currently pull datasheet_name/extend_name
+from DT fall back to datasheet_name hardcoded in this driver.
+
+[1]: https://lore.kernel.org/linux-arm-msm/20221209215308.1781047-1-marijn.suijten@somainline.org/
+
+ drivers/iio/adc/qcom-spmi-adc5.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+index 26144a086fac..01aafd9df6c6 100644
+--- a/drivers/iio/adc/qcom-spmi-adc5.c
++++ b/drivers/iio/adc/qcom-spmi-adc5.c
+@@ -661,7 +661,7 @@ static int adc5_get_fw_channel_data(struct adc5_chip *adc,
+ 
+ 	ret = fwnode_property_read_string(fwnode, "label", &channel_name);
+ 	if (ret)
+-		channel_name = name;
++		channel_name = data->adc_chans[chan].datasheet_name;
+ 
+ 	prop->channel_name = channel_name;
+ 
 -- 
 2.39.0
 
