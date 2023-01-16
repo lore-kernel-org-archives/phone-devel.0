@@ -2,100 +2,104 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E46DCC3DA78
-	for <phone-devel@archiver.kernel.org>; Sun, 15 Jan 2023 04:14:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9295EC677F1
+	for <phone-devel@archiver.kernel.org>; Mon, 16 Jan 2023 20:35:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230358AbjAOEOx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 14 Jan 2023 23:14:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39256 "EHLO
+        id S231707AbjAPUf4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 Jan 2023 15:35:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229676AbjAOEOv (ORCPT
+        with ESMTP id S232519AbjAPUfz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 14 Jan 2023 23:14:51 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF18A4682;
-        Sat, 14 Jan 2023 20:14:50 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Mon, 16 Jan 2023 15:35:55 -0500
+Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [IPv6:2001:4b7a:2000:18::164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49AF42A983
+        for <phone-devel@vger.kernel.org>; Mon, 16 Jan 2023 12:35:54 -0800 (PST)
+Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C7A5460C60;
-        Sun, 15 Jan 2023 04:14:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B87C433D2;
-        Sun, 15 Jan 2023 04:14:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1673756089;
-        bh=jshOld5XYZnlYZ5Q1vGZgYzaUHooncGiPJkhdHvwGnE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GlKDgDw4UK6bis7dDczAhcW0tZpvRZF/4PjNy2XepuS+wgvMDr8Sdy/84GRDFo8c1
-         E56yjitEBYf0r4tCYMkG14O5x7ZciKdwmTpq4+EP1Fyp+8BtydX1kT8avdtD3gJW/B
-         jLcZSzwY2O3x00CLCQxkVt7pLvqWYgw+PDHaTZ0UuD+nOfcqAkoyAlNpd4hkKoBcm0
-         PE8RFxjlYbccyMDABZopGKIhVdpJiUxm1eWbGTidWKWeseX+rQoTh7xUfvHsjQUYLu
-         zieAyFZcoY3kMRzaDUp6fTC67Syt12jj6lX5iUXydxidd4Q4VKqaUWLrLxbjmlbHQS
-         tvktp6T1mwoIw==
-Date:   Sun, 15 Jan 2023 09:44:40 +0530
-From:   Manivannan Sadhasivam <mani@kernel.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 0C3B11F5E0;
+        Mon, 16 Jan 2023 21:35:50 +0100 (CET)
+Date:   Mon, 16 Jan 2023 21:35:49 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Vinod Koul <vkoul@kernel.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Michael Srba <Michael.Srba@seznam.cz>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 3/5] dt-bindings: mailbox: qcom-ipcc: Add sc8280xp
- compatible
-Message-ID: <20230115041440.GE6568@thinkpad>
-References: <20221016090035.565350-1-luca@z3ntu.xyz>
- <20221016090035.565350-3-luca@z3ntu.xyz>
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Revert "phy: qualcomm: usb28nm: Add MDM9607 init
+ sequence"
+Message-ID: <20230116203549.5jzd2olxua662n6w@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Vinod Koul <vkoul@kernel.org>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Michael Srba <Michael.Srba@seznam.cz>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221214223733.648167-1-marijn.suijten@somainline.org>
+ <Y8GY51Cfkj7o1MJs@matsya>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20221016090035.565350-3-luca@z3ntu.xyz>
+In-Reply-To: <Y8GY51Cfkj7o1MJs@matsya>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Oct 16, 2022 at 11:00:32AM +0200, Luca Weiss wrote:
-> Document the sc8280xp compatible, and at the same time also make sure
-> the list is sorted alphabetically.
+On 2023-01-13 23:16:15, Vinod Koul wrote:
+> On 14-12-22, 23:37, Marijn Suijten wrote:
+> > This reverts commit 557a28811c7e0286d3816842032db5eb7bb5f156.
+> > 
+> > This commit introduced an init sequence from downstream DT [1] in the
+> > driver.  As mentioned by the comment above the HSPHY_INIT_CFG macro for
+> > this sequence:
+> > 
+> >     /*
+> >      * The macro is used to define an initialization sequence.  Each tuple
+> >      * is meant to program 'value' into phy register at 'offset' with 'delay'
+> >      * in us followed.
+> >      */
+> > 
+> > Instead of corresponding to offsets into the phy register, the sequence
+> > read by the downstream driver [2] is passed into ulpi_write [3] which
+> > crafts the address-value pair into a new value and writes it into the
+> > same register at USB_ULPI_VIEWPORT [4].  In other words, this init
+> > sequence is programmed into the hardware in a totally different way than
+> > downstream and is unlikely to achieve the desired result, if the hsphy
+> > is working at all.
+> > 
+> > An alternative method needs to be found to write these init values at
+> > the desired location.  Fortunately mdm9607 did not land upstream yet [5]
+> > and should have its compatible revised to use the generic one, instead
+> > of a compatible that writes wrong data to the wrong registers.
 > 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> Applied after adding missing subsystem tag, thanks
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Thanks, it wasn't clear to me whether to suffix the title when already
+included in the Revert: "phy: qualcomm: ..." title :)
 
-Thanks,
-Mani
-
-> ---
->  Documentation/devicetree/bindings/mailbox/qcom-ipcc.yaml | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/mailbox/qcom-ipcc.yaml b/Documentation/devicetree/bindings/mailbox/qcom-ipcc.yaml
-> index baca4786ff94..bc599a864637 100644
-> --- a/Documentation/devicetree/bindings/mailbox/qcom-ipcc.yaml
-> +++ b/Documentation/devicetree/bindings/mailbox/qcom-ipcc.yaml
-> @@ -24,12 +24,13 @@ properties:
->    compatible:
->      items:
->        - enum:
-> +          - qcom,sc7280-ipcc
-> +          - qcom,sc8280xp-ipcc
->            - qcom,sm6350-ipcc
->            - qcom,sm6375-ipcc
->            - qcom,sm8250-ipcc
->            - qcom,sm8350-ipcc
->            - qcom,sm8450-ipcc
-> -          - qcom,sc7280-ipcc
->        - const: qcom,ipcc
->  
->    reg:
-> -- 
-> 2.38.0
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+- Marijn
