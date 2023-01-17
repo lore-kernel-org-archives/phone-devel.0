@@ -2,87 +2,105 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA7A2C678D4
-	for <phone-devel@archiver.kernel.org>; Mon, 16 Jan 2023 22:10:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D35BC63797
+	for <phone-devel@archiver.kernel.org>; Tue, 17 Jan 2023 05:36:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235109AbjAPWKk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 Jan 2023 17:10:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49240 "EHLO
+        id S234168AbjAQFgW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 17 Jan 2023 00:36:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234627AbjAPWKJ (ORCPT
+        with ESMTP id S235245AbjAQFgV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 Jan 2023 17:10:09 -0500
-Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7E32A993
-        for <phone-devel@vger.kernel.org>; Mon, 16 Jan 2023 14:10:01 -0800 (PST)
-Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Tue, 17 Jan 2023 00:36:21 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1473F17CD4;
+        Mon, 16 Jan 2023 21:36:19 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 102FC3F260;
-        Mon, 16 Jan 2023 23:10:00 +0100 (CET)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        by ams.source.kernel.org (Postfix) with ESMTPS id A0A97B80E76;
+        Tue, 17 Jan 2023 05:36:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A99BC433F0;
+        Tue, 17 Jan 2023 05:36:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673933777;
+        bh=asJm1FEO3RCTI9yXgHpd6dK9DTZntJ1KAbCE9ko3y+Y=;
+        h=Date:From:To:Subject:References:In-Reply-To:From;
+        b=IcYiayCbWMGTTFIh0EEe0exejTDmWE9l0RjFiqBj98UmqkCalRXE3C4omasKau9Bn
+         jByxdAKp/url4C9UtT8N3buxBDAVUl8pIhA0cyyfCncNXwsME08M3yDSzL6wbMSs2l
+         8Z+CLVvKCSlRGs2954djFxzzG43Tk16nTxCB1S/yrGKJ/Ie8X6pmznF8r+XMw9iXzO
+         Vx6yd0zWBVruK3dFlS1Q0+nXYxeK7C/8IJlgmKyM14LrsXfzEdViJwcMpolYOCKzG8
+         0Cf5w5VIXYfPR7JGSYS01vSKylK5D5BxdQpZ4s8Dy7Ja5leb0RXU17tcz1dXIjH8kp
+         i2jJpYQEnpdZQ==
+Date:   Tue, 17 Jan 2023 11:06:12 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v2 3/5] iio: adc: qcom-spmi-adc5: Fall back to datasheet_name instead of fwnode name
-Date:   Mon, 16 Jan 2023 23:09:07 +0100
-Message-Id: <20230116220909.196926-4-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230116220909.196926-1-marijn.suijten@somainline.org>
-References: <20230116220909.196926-1-marijn.suijten@somainline.org>
+        Michael Srba <Michael.Srba@seznam.cz>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Revert "phy: qualcomm: usb28nm: Add MDM9607 init
+ sequence"
+Message-ID: <Y8YzzCEqGi3m9fWM@matsya>
+References: <20221214223733.648167-1-marijn.suijten@somainline.org>
+ <Y8GY51Cfkj7o1MJs@matsya>
+ <20230116203549.5jzd2olxua662n6w@SoMainline.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230116203549.5jzd2olxua662n6w@SoMainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Since the migration to fwnode_get_name in commit 4f47a236a23d ("iio:
-adc: qcom-spmi-adc5: convert to device properties") the resulting
-adc5_channel_prop::channel_name (renamed from datasheet_name in the
-previous patch) - which is propagated into iio_chan_spec::extend_name -
-was containing the DT node name including @xx suffix if a "label"
-property is not present, while adc5_channels::datasheet_name was thus
-far set by the macros but always remained unread.  Put it to use instead
-of using a confusing name containing @xx in sysfs filenames (again, when
-"label" is not set).
+On 16-01-23, 21:35, Marijn Suijten wrote:
+> On 2023-01-13 23:16:15, Vinod Koul wrote:
+> > On 14-12-22, 23:37, Marijn Suijten wrote:
+> > > This reverts commit 557a28811c7e0286d3816842032db5eb7bb5f156.
+> > > 
+> > > This commit introduced an init sequence from downstream DT [1] in the
+> > > driver.  As mentioned by the comment above the HSPHY_INIT_CFG macro for
+> > > this sequence:
+> > > 
+> > >     /*
+> > >      * The macro is used to define an initialization sequence.  Each tuple
+> > >      * is meant to program 'value' into phy register at 'offset' with 'delay'
+> > >      * in us followed.
+> > >      */
+> > > 
+> > > Instead of corresponding to offsets into the phy register, the sequence
+> > > read by the downstream driver [2] is passed into ulpi_write [3] which
+> > > crafts the address-value pair into a new value and writes it into the
+> > > same register at USB_ULPI_VIEWPORT [4].  In other words, this init
+> > > sequence is programmed into the hardware in a totally different way than
+> > > downstream and is unlikely to achieve the desired result, if the hsphy
+> > > is working at all.
+> > > 
+> > > An alternative method needs to be found to write these init values at
+> > > the desired location.  Fortunately mdm9607 did not land upstream yet [5]
+> > > and should have its compatible revised to use the generic one, instead
+> > > of a compatible that writes wrong data to the wrong registers.
+> > 
+> > Applied after adding missing subsystem tag, thanks
+> 
+> Thanks, it wasn't clear to me whether to suffix the title when already
+> included in the Revert: "phy: qualcomm: ..." title :)
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
+A revert patch is a patch as well so the patch rules apply there as well,
+so should say "subsystem tag: other tags: Revert foo..."
 
-Note that for this to make sense a successor to "arm64: dts: qcom: Use
-labels with generic node names for ADC channels" [1] will have to land,
-otherwise most channels that currently pull datasheet_name/extend_name
-from DT fall back to datasheet_name hardcoded in this driver.
-
-[1]: https://lore.kernel.org/linux-arm-msm/20221209215308.1781047-1-marijn.suijten@somainline.org/
-
- drivers/iio/adc/qcom-spmi-adc5.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
-index 26144a086fac..01aafd9df6c6 100644
---- a/drivers/iio/adc/qcom-spmi-adc5.c
-+++ b/drivers/iio/adc/qcom-spmi-adc5.c
-@@ -661,7 +661,7 @@ static int adc5_get_fw_channel_data(struct adc5_chip *adc,
- 
- 	ret = fwnode_property_read_string(fwnode, "label", &channel_name);
- 	if (ret)
--		channel_name = name;
-+		channel_name = data->adc_chans[chan].datasheet_name;
- 
- 	prop->channel_name = channel_name;
- 
+Thanks
 -- 
-2.39.0
-
+~Vinod
