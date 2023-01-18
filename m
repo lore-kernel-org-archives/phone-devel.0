@@ -2,133 +2,84 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5409FC678D6
-	for <phone-devel@archiver.kernel.org>; Wed, 18 Jan 2023 16:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5411C38147
+	for <phone-devel@archiver.kernel.org>; Wed, 18 Jan 2023 16:55:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbjARQkO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 18 Jan 2023 11:40:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41934 "EHLO
+        id S230191AbjARQzq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 18 Jan 2023 11:55:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230520AbjARQjq (ORCPT
+        with ESMTP id S230002AbjARQzp (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 18 Jan 2023 11:39:46 -0500
-Received: from m-r1.th.seeweb.it (m-r1.th.seeweb.it [IPv6:2001:4b7a:2000:18::170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A56F92D15F;
-        Wed, 18 Jan 2023 08:39:36 -0800 (PST)
-Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Wed, 18 Jan 2023 11:55:45 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A194A16AE9;
+        Wed, 18 Jan 2023 08:55:44 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id CAFA92012A;
-        Wed, 18 Jan 2023 17:39:33 +0100 (CET)
-Date:   Wed, 18 Jan 2023 17:39:32 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BDD9618CD;
+        Wed, 18 Jan 2023 16:55:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86B7C433D2;
+        Wed, 18 Jan 2023 16:55:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674060943;
+        bh=KXVguWBBzZqFsfQ1lc00wLiy/2dhJ2rfbOtKjRQ+7Fc=;
+        h=Date:From:To:Subject:References:In-Reply-To:From;
+        b=I2i8rJpVWQewx83DF+4qKd3/0jlZUbp82IlICMCEhkUAxdW5Z/4zcU5F4tyIpNcdQ
+         WeZusJn5IK47rPyB7QjRElaoM1qd8obxUgoCpwQkXIfMrrpkITyQaRRFjOgdIKc6KD
+         8ZMBPfEeyteKjyvcFDzQgpEMn6yJ2k1UTFooe73GhPrgiUrVrJjM0VC2Kt+wt8VHJJ
+         GYJuqRO0YhlCimtYWviRn4iYqk4G4RuODGkhmcDON1FYe93ikRFWZBtd8tV1KvFRJX
+         VVVfEsdpLTETjDb8KwMuVNd+W2kx2bARCVbvoPrvkT2z+SiGGO9cB5dVsQN50w+aH4
+         jJlDu64EYJlEg==
+Date:   Wed, 18 Jan 2023 22:25:07 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
         Martin Botka <martin.botka@somainline.org>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 1/5] iio: core: Point users of extend_name field
- to read_label callback
-Message-ID: <20230118163932.srskwgx6rhzozai6@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Jami Kettunen <jami.kettunen@somainline.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, phone-devel@vger.kernel.org,
+        Michael Srba <Michael.Srba@seznam.cz>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230116220909.196926-1-marijn.suijten@somainline.org>
- <20230116220909.196926-2-marijn.suijten@somainline.org>
- <20230118161920.0000207c@Huawei.com>
- <20230118163525.hh6woxq5q74pmcmq@SoMainline.org>
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Revert "phy: qualcomm: usb28nm: Add MDM9607 init
+ sequence"
+Message-ID: <Y8gka33KTscXK3HK@matsya>
+References: <20221214223733.648167-1-marijn.suijten@somainline.org>
+ <Y8GY51Cfkj7o1MJs@matsya>
+ <20230116203549.5jzd2olxua662n6w@SoMainline.org>
+ <Y8YzzCEqGi3m9fWM@matsya>
+ <20230117091912.pzogxqvgf6kivi74@SoMainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230118163525.hh6woxq5q74pmcmq@SoMainline.org>
+In-Reply-To: <20230117091912.pzogxqvgf6kivi74@SoMainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2023-01-18 17:35:27, Marijn Suijten wrote:
-> On 2023-01-18 16:19:20, Jonathan Cameron wrote:
-> > On Mon, 16 Jan 2023 23:09:05 +0100
-> > Marijn Suijten <marijn.suijten@somainline.org> wrote:
+On 17-01-23, 10:19, Marijn Suijten wrote:
+> On 2023-01-17 11:06:12, Vinod Koul wrote:
+> <snip>
+> > > Thanks, it wasn't clear to me whether to suffix the title when already
+> > > included in the Revert: "phy: qualcomm: ..." title :)
 > > 
-> > > As mentioned and discussed in [1] extend_name should not be used for
-> > > full channel labels (and most drivers seem to only use it to express a
-> > > short type of a channel) as this affects sysfs filenames, while the
-> > > label name is supposed to be extracted from the *_label sysfs file
-> > > instead.  This appears to have been unclear to some drivers as
-> > > extend_name is also used when read_label is unset, achieving an initial
-> > > goal of providing sensible names in *_label sysfs files without noticing
-> > > that sysfs filenames are (negatively and likely unintentionally)
-> > > affected as well.
-> > > 
-> > > Point readers of iio_chan_spec::extend_name to iio_info::read_label by
-> > > mentioning deprecation and side-effects of this field.
-> > > 
-> > > [1]: https://lore.kernel.org/linux-arm-msm/20221221223432.si2aasbleiicayfl@SoMainline.org/
-> > > 
-> > > Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > > ---
-> > >  include/linux/iio/iio.h | 3 +++
-> > >  1 file changed, 3 insertions(+)
-> > > 
-> > > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> > > index 81413cd3a3e7..36c89f238fb9 100644
-> > > --- a/include/linux/iio/iio.h
-> > > +++ b/include/linux/iio/iio.h
-> > > @@ -221,6 +221,9 @@ struct iio_event_spec {
-> > >   * @extend_name:	Allows labeling of channel attributes with an
-> > >   *			informative name. Note this has no effect codes etc,
-> > >   *			unlike modifiers.
-> > > + *			This field is deprecated in favour of overriding read_label
-> > > + *			in iio_info, which unlike @extend_name does not affect sysfs
-> > > + *			filenames.
-> > Perhaps reword as
-> > 
-> > This field is deprecated in favour of overriding the default label
-> > by providing a read_label() callback in iio_info, which unlike
-> > @extend_name does not affect sysfs filenames.
-> > ?
+> > A revert patch is a patch as well so the patch rules apply there as well,
+> > so should say "subsystem tag: other tags: Revert foo..."
 > 
-> Agreed, explicitly stating "the default label by" makes this much more
-> clear.  Though, maybe swap that around into "in favour of providing
-> read_label() in iio_info to override the label"?  Otherwise this could
-> be interpreted as "overriding the default label" is preferred to setting
-> extend_name... which one would do to override the default label.
-> 
-> I can queue this up for v3 unless you'll fix it up while applying,
-> presuming no other changes have to be made (aside from dropping patch
-> 3/5).
-> 
-> Will read_label() turn into a link?  And is the @extend_name reference
+> Ack, but then /keep/ "subsystem tag: other tags:" /within/ the Revert
+> string, so "phy: qualcomm: Revert "phy: qualcomm: ...""?
 
-Yes, if read_label is a function that exists (but it's a member)... and
-@extend_name will indeed reference the member anywhere.
+Ideally yes!
 
-> proper?  Is there something to link to iio_info, perhaps a hashtag - or
-> maybe fully qualify `#iio_info::read_label()` for linking purposes?
-> /me jumps over to kerneldoc documentation :)
-
-Looks like that would be &iio_info->read_label() (not sure about the
-trailing () though):
-https://docs.kernel.org/doc-guide/kernel-doc.html#highlights-and-cross-references
-
-- Marijn
+-- 
+~Vinod
