@@ -2,133 +2,117 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 07500C38147
-	for <phone-devel@archiver.kernel.org>; Wed, 18 Jan 2023 17:20:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EDFA1C38147
+	for <phone-devel@archiver.kernel.org>; Wed, 18 Jan 2023 18:04:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbjARRUZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 18 Jan 2023 12:20:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50434 "EHLO
+        id S230455AbjARSER (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 18 Jan 2023 13:04:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbjARRUZ (ORCPT
+        with ESMTP id S230134AbjARSDt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 18 Jan 2023 12:20:25 -0500
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C71F84A1CA;
-        Wed, 18 Jan 2023 09:20:19 -0800 (PST)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4NxsvY0ZFxz67JwR;
-        Thu, 19 Jan 2023 01:19:53 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Wed, 18 Jan
- 2023 17:20:16 +0000
-Date:   Wed, 18 Jan 2023 17:20:15 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-CC:     Jami Kettunen <jami.kettunen@somainline.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        <phone-devel@vger.kernel.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        "Jonathan Cameron" <jic23@kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
+        Wed, 18 Jan 2023 13:03:49 -0500
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11F8C3B672;
+        Wed, 18 Jan 2023 10:01:49 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 206F4CE1E40;
+        Wed, 18 Jan 2023 18:01:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48D8C433F0;
+        Wed, 18 Jan 2023 18:01:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674064896;
+        bh=gvRzqX5c+28PmnZhvOtWcJ7GQGOihNbrABlCgVGDkD4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fiiZICdzsthqKSjk5ftb3bEMraUciIgjR59ZXXX89tGKCO8JXSIhzUWq6ZpdYcqOY
+         7sD0irlFK0ZFpoNZwpzsInWQCRJuYuxgUuXgZULubUHW7OtECM4Kpmfj5NC3DNTsCn
+         bnN5VnPsO4JEQSxiNgels1/gdkwgpDQQINuG09Wxomf8j/vQMFQ7GXE2qpNiQs29BW
+         tKFO8D+HJqXty4NtpLT4yCdjo/I9PLAdiVJq2QlDgom7wogRbt4fzIcqN38GL+6BRC
+         LuRPMzsuLb8PoExB+TG/POspTgewZXxp9w8pDmwMd4ZTe8QBwams4Jtju/LARlM9XZ
+         KfZ2Q8rpC+rwA==
+Date:   Wed, 18 Jan 2023 12:01:33 -0600
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     Caleb Connolly <caleb.connolly@linaro.org>,
+        Chris Lew <quic_clew@quicinc.com>
+Cc:     Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH v2 1/5] iio: core: Point users of extend_name field
- to read_label callback
-Message-ID: <20230118172015.00003aa6@Huawei.com>
-In-Reply-To: <20230118163525.hh6woxq5q74pmcmq@SoMainline.org>
-References: <20230116220909.196926-1-marijn.suijten@somainline.org>
-        <20230116220909.196926-2-marijn.suijten@somainline.org>
-        <20230118161920.0000207c@Huawei.com>
-        <20230118163525.hh6woxq5q74pmcmq@SoMainline.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org
+Subject: Re: [PATCH] rpmsg: qcom: glink: support waking up on channel rx
+Message-ID: <20230118180133.vdfjkoxjb3hhdkjk@builder.lan>
+References: <20230117142414.983946-1-caleb.connolly@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230117142414.983946-1-caleb.connolly@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 18 Jan 2023 17:35:25 +0100
-Marijn Suijten <marijn.suijten@somainline.org> wrote:
-
-> On 2023-01-18 16:19:20, Jonathan Cameron wrote:
-> > On Mon, 16 Jan 2023 23:09:05 +0100
-> > Marijn Suijten <marijn.suijten@somainline.org> wrote:
-> >   
-> > > As mentioned and discussed in [1] extend_name should not be used for
-> > > full channel labels (and most drivers seem to only use it to express a
-> > > short type of a channel) as this affects sysfs filenames, while the
-> > > label name is supposed to be extracted from the *_label sysfs file
-> > > instead.  This appears to have been unclear to some drivers as
-> > > extend_name is also used when read_label is unset, achieving an initial
-> > > goal of providing sensible names in *_label sysfs files without noticing
-> > > that sysfs filenames are (negatively and likely unintentionally)
-> > > affected as well.
-> > > 
-> > > Point readers of iio_chan_spec::extend_name to iio_info::read_label by
-> > > mentioning deprecation and side-effects of this field.
-> > > 
-> > > [1]: https://lore.kernel.org/linux-arm-msm/20221221223432.si2aasbleiicayfl@SoMainline.org/
-> > > 
-> > > Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > > ---
-> > >  include/linux/iio/iio.h | 3 +++
-> > >  1 file changed, 3 insertions(+)
-> > > 
-> > > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> > > index 81413cd3a3e7..36c89f238fb9 100644
-> > > --- a/include/linux/iio/iio.h
-> > > +++ b/include/linux/iio/iio.h
-> > > @@ -221,6 +221,9 @@ struct iio_event_spec {
-> > >   * @extend_name:	Allows labeling of channel attributes with an
-> > >   *			informative name. Note this has no effect codes etc,
-> > >   *			unlike modifiers.
-> > > + *			This field is deprecated in favour of overriding read_label
-> > > + *			in iio_info, which unlike @extend_name does not affect sysfs
-> > > + *			filenames.  
-> > Perhaps reword as
-> > 
-> > This field is deprecated in favour of overriding the default label
-> > by providing a read_label() callback in iio_info, which unlike
-> > @extend_name does not affect sysfs filenames.
-> > ?  
+On Tue, Jan 17, 2023 at 02:24:13PM +0000, Caleb Connolly wrote:
+> Configure all channels as wakeup capable and report a wakeup event
+> when data is received.
 > 
-> Agreed, explicitly stating "the default label by" makes this much more
-> clear.  Though, maybe swap that around into "in favour of providing
-> read_label() in iio_info to override the label"?  Otherwise this could
-> be interpreted as "overriding the default label" is preferred to setting
-> extend_name... which one would do to override the default label.
-
-Sure that works.
+> This allows userspace to "subscribe" to a particular channel where
+> it is useful to wake up to process new data. The expected usecase
+> is to allow for handling incoming SMS or phone calls where the only
+> notification mechanism is via QRTR on the IPCRTR glink channel.
 > 
-> I can queue this up for v3 unless you'll fix it up while applying,
-> presuming no other changes have to be made (aside from dropping patch
-> 3/5).
-I haven't looked closely enough at the rest, but if this is all that
-needs updating I'll change it whilst applying.
-
-> 
-> Will read_label() turn into a link?  And is the @extend_name reference
-> proper?  Is there something to link to iio_info, perhaps a hashtag - or
-> maybe fully qualify `#iio_info::read_label()` for linking purposes?
-> /me jumps over to kerneldoc documentation :)
-> 
-> - Marijn
-> 
-> > >   * @datasheet_name:	A name used in in-kernel mapping of channels. It should
-> > >   *			correspond to the first name that the channel is referred
-> > >   *			to by in the datasheet (e.g. IND), or the nearest  
-> >   
+> As this behaviour is likely undesirable for most users, this patch
+> doesn't enable a wakeup_source for any channels by default.
 > 
 
+This looks reasonable to me.
+
+One suggestion that came up as we discussed this problem (elsewhere) a
+while ago was the idea of using EPOLLWAKEUP to control the wakeup source
+on a per-socket basis.
+
+Would that suite your userspace?
+
+Regards,
+Bjorn
+
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> ---
+>  drivers/rpmsg/qcom_glink_native.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
+> index 115c0a1eddb1..1a96a7ae23bb 100644
+> --- a/drivers/rpmsg/qcom_glink_native.c
+> +++ b/drivers/rpmsg/qcom_glink_native.c
+> @@ -914,6 +914,9 @@ static int qcom_glink_rx_data(struct qcom_glink *glink, size_t avail)
+>  		channel->buf = NULL;
+>  
+>  		qcom_glink_rx_done(glink, channel, intent);
+> +
+> +		pm_wakeup_ws_event(channel->ept.rpdev->dev.power.wakeup, 0,
+> +				   true);
+>  	}
+>  
+>  advance_rx:
+> @@ -1510,6 +1513,17 @@ static int qcom_glink_rx_open(struct qcom_glink *glink, unsigned int rcid,
+>  		if (ret)
+>  			goto rcid_remove;
+>  
+> +		/*
+> +		 * Declare all channels as wakeup capable, but don't enable
+> +		 * waking up by default.
+> +		 *
+> +		 * Userspace may wish to be woken up for incoming messages on a
+> +		 * specific channel, for example to handle incoming calls or SMS
+> +		 * messages on the IPCRTR channel. This can be done be enabling
+> +		 * the wakeup source via sysfs.
+> +		 */
+> +		device_set_wakeup_capable(&rpdev->dev, true);
+> +
+>  		channel->rpdev = rpdev;
+>  	}
+>  
+> -- 
+> 2.39.0
+> 
