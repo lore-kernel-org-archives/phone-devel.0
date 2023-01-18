@@ -2,64 +2,57 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2745C38142
-	for <phone-devel@archiver.kernel.org>; Wed, 18 Jan 2023 01:30:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35C40C6379F
+	for <phone-devel@archiver.kernel.org>; Wed, 18 Jan 2023 02:06:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229647AbjARBa1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 Jan 2023 20:30:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50232 "EHLO
+        id S229834AbjARCGr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 17 Jan 2023 21:06:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229547AbjARBaZ (ORCPT
+        with ESMTP id S229738AbjARCGl (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 Jan 2023 20:30:25 -0500
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD7F33E091
-        for <phone-devel@vger.kernel.org>; Tue, 17 Jan 2023 17:30:23 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id vm8so79670196ejc.2
-        for <phone-devel@vger.kernel.org>; Tue, 17 Jan 2023 17:30:23 -0800 (PST)
+        Tue, 17 Jan 2023 21:06:41 -0500
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD89F45880
+        for <phone-devel@vger.kernel.org>; Tue, 17 Jan 2023 18:06:39 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id bk15so22323422ejb.9
+        for <phone-devel@vger.kernel.org>; Tue, 17 Jan 2023 18:06:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZsCFqOrG564I8qOCCNQEkJcGVuvtlZxy5WMlNbN2xTQ=;
-        b=J/iw0UUSt0Hxy+ZF7az331KZS8tNT51v8K0+HIEnf/j3/rgclEK3DeD5k631Ylnnh6
-         IImUR2u+k689o7Vk1hKFLO6XUSmkaUJN917cvkwHXG+2h37tPUY9rZImOwfW6KFELLse
-         pWQzIYSB5rCpLuwKIib3hGv6AtMXQfF8I97TlpgiHuZF9VNrCX5PVFH38j3LR5lHnSqT
-         zVSEBikljdLZE0m7JTpJKuUkqohd4TzbaRPPBrRbFsXb2SFrfI9LzBNLG5Qyi14YnElU
-         6iSkaVLDlviYqgys3zpTruqYl+snh9F3Ak/aBCCvS9qaFMyJHAb3dSq+NJx+kZAeR6G5
-         hxow==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9IfmhJrvRWfUC5D3CUUdjzAYNIM2kHYmHQdiJOf/ROU=;
+        b=w+hu4Qm0z16ldHxczDe00Y41K5vtZ5PXlGgBghOUz39DYC3gQXuhYTQMJtrhxq4Ymh
+         v5Iu6CtQOcG3rwF+TgXUS0WlRQYlVUIt74WRrxFJa9823+suIoEXfCtsRAfW2+SMYQuu
+         9FX+G5SdU+w/i2o9m64FKiirxOs1wH+bBRrp1JBsGaez3cfNdcLDB3pWIm+EKpFKUpBa
+         4vV7ODiSSU/nl1AykN8/j9cSHczY25RjC5WOlnqjJ879l9vn94uWxpnjOVLdjiTft2Op
+         iw3j+L9MLlVpGfRUHUPEdtkwk6wY5ho84aAK2smpCp5psKsftaESNXY8DBeooNovG96t
+         Kx0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZsCFqOrG564I8qOCCNQEkJcGVuvtlZxy5WMlNbN2xTQ=;
-        b=jDnL1EXeGKVz+kcyTh41WRAKa3MBs297AFcs4QH6hQUSUEzbZot6zPN9rIl4546bf9
-         lrSYoohucJ2pmp6Gb2jdgRD3+0XKQMBoc1cA/jm11feFtt7lI9JGZf6A4oCwu8yTHCE3
-         hHItujUGaLGtQ0P1UGTwTwQv/qfPKcG3+xkTDzq45qJOS5iFKRDrhhoenbsBw5Xu6DQ1
-         eW+asnVtY3A83f+0PtxY2vTqws81EXjxHYOiKlljIMNov0YJnjWxuqXebSwafwFxoaLW
-         xHHglx8GRPnZXVZuzSdNeFe6m+Nps37HDul8F4AGFbC5ZfVAH4DCWj/H0QMy20G0GIcA
-         OZlw==
-X-Gm-Message-State: AFqh2koKRC68kMmvV6EPXM81GLQWxcnIh1txVWVwDxe4123ady1vwALA
-        q0Qse0EFWQoFmlx9NZWMyV7p8Q==
-X-Google-Smtp-Source: AMrXdXuNF0GjFG6ixd7G1diTN5Er9+WUrN8dZPYP7bvFYKP5CRCYSqQLOMmPTPLMSoGQT2lpuFXusg==
-X-Received: by 2002:a17:906:fb16:b0:7c1:6d65:4718 with SMTP id lz22-20020a170906fb1600b007c16d654718mr5177733ejb.33.1674005422383;
-        Tue, 17 Jan 2023 17:30:22 -0800 (PST)
-Received: from ?IPV6:2001:14ba:a085:4d00::8a5? (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
-        by smtp.gmail.com with ESMTPSA id ky25-20020a170907779900b00877596d4eadsm110552ejc.101.2023.01.17.17.30.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Jan 2023 17:30:22 -0800 (PST)
-Message-ID: <82ef3c2a-ef54-8c39-2266-7e3b203f92d1@linaro.org>
-Date:   Wed, 18 Jan 2023 03:30:20 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v3] drm/msm/dpu: Disallow unallocated resources to be
- returned
-Content-Language: en-GB
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9IfmhJrvRWfUC5D3CUUdjzAYNIM2kHYmHQdiJOf/ROU=;
+        b=VSt95Wif9ZIv/KiTIhxnY4MnLzmz/UHyWMHI98iEqVaUQkFC2ISz8SNxJA91LACejI
+         D8P8vZznlC7jnrvePG3tYuJHtqDiOm+GCIdo/LB4JwPTgJOVGgefeQ0Df8uxf3BVe162
+         +gVUXCf/rfXVFHOt9gMvmZbSHBqS32chVF6dmmuDe5TxEG5ntsobMLImSXzWsIS/TdOJ
+         hm8wZ0UrhQi5f23WMD/scyKE5vECWXnObe1UTEAJhppdlgsCC6m5fkx8Zdjhoh4zq1mB
+         7GZiAfyCxFZ6WhjkAEWyiWiZaKJF7+SPHUT5DmSjZVIsOa3CGFEyGDrL8Q9/Sbw0yX5n
+         DlXQ==
+X-Gm-Message-State: AFqh2kqRHpstlydqbSWa7b41l/souhTUtAbgdEDnia3LNxD4i39D+qYR
+        Z91ykkC3VV2pGNTShzDlfbai/Hb9xlTD77vk
+X-Google-Smtp-Source: AMrXdXt2C1AYGJI145oWUugmSjbdf9sJ5mLy1O8PkJlJX/SIy9mMUJKSJDO7UiobV+oiMqKQ2wLIcA==
+X-Received: by 2002:a17:906:eb0e:b0:871:be7:c984 with SMTP id mb14-20020a170906eb0e00b008710be7c984mr5085808ejb.34.1674007599352;
+        Tue, 17 Jan 2023 18:06:39 -0800 (PST)
+Received: from eriador.lan (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
+        by smtp.gmail.com with ESMTPSA id kx1-20020a170907774100b0084d368b1628sm12702694ejc.40.2023.01.17.18.06.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Jan 2023 18:06:38 -0800 (PST)
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To:     phone-devel@vger.kernel.org,
+        Marijn Suijten <marijn.suijten@somainline.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@somainline.org>,
@@ -75,16 +68,21 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Drew Davenport <ddavenport@chromium.org>,
         linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20230109231556.344977-1-marijn.suijten@somainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH v3] drm/msm/dpu: Disallow unallocated resources to be returned
+Date:   Wed, 18 Jan 2023 04:06:19 +0200
+Message-Id: <167400670542.1683873.15043456378376951686.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230109231556.344977-1-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20230109231556.344977-1-marijn.suijten@somainline.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 10/01/2023 01:15, Marijn Suijten wrote:
+
+On Tue, 10 Jan 2023 00:15:55 +0100, Marijn Suijten wrote:
 > In the event that the topology requests resources that have not been
 > created by the system (because they are typically not represented in
 > dpu_mdss_cfg ^1), the resource(s) in global_state (in this case DSC
@@ -94,39 +92,13 @@ On 10/01/2023 01:15, Marijn Suijten wrote:
 > dpu_rm_get_assigned_resources, where the caller expects to get an array
 > containing num_blks valid pointers (but instead gets these NULLs).
 > 
-> To prevent this from happening, where null-pointer dereferences
-> typically result in a hard-to-debug platform lockup, num_blks shouldn't
-> increase past NULL blocks and will print an error and break instead.
-> After all, max_blks represents the static size of the maximum number of
-> blocks whereas the actual amount varies per platform.
-> 
-> ^1: which can happen after a git rebase ended up moving additions to
-> _dpu_cfg to a different struct which has the same patch context.
-> 
-> Fixes: bb00a452d6f7 ("drm/msm/dpu: Refactor resource manager")
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
-> 
-> Changes since v2:
-> - Dropped all 7 other patches that were queued for -next;
-> - Reworded error message to clarify that the requested resource should
->    have already been allocated, rather than sounding like
->    dpu_rm_get_assigned_resources is (re)allocating/(re)assigning
->    resources here;
-> - This patch is now (implicitly!) based after "drm/msm/dpu: Reject
->    topologies for which no DSC blocks are available", which should make
->    it impossible to reach this condition, making it more of a safeguard
->    in case of future code changes and/or hidden issues: and is more
->    clearly conveyed in the patch message as well.
-> 
-> v2: https://lore.kernel.org/linux-arm-msm/20221221231943.1961117-5-marijn.suijten@somainline.org/
-> 
->   drivers/gpu/drm/msm/disp/dpu1/dpu_rm.c | 5 +++++
->   1 file changed, 5 insertions(+)
+> [...]
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Applied, thanks!
 
+[1/1] drm/msm/dpu: Disallow unallocated resources to be returned
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/abc40122d9a6
+
+Best regards,
 -- 
-With best wishes
-Dmitry
-
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
