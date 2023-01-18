@@ -2,117 +2,77 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EDFA1C38147
-	for <phone-devel@archiver.kernel.org>; Wed, 18 Jan 2023 18:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63E13C38159
+	for <phone-devel@archiver.kernel.org>; Wed, 18 Jan 2023 23:56:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230455AbjARSER (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 18 Jan 2023 13:04:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57298 "EHLO
+        id S230311AbjARX4d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 18 Jan 2023 18:56:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230134AbjARSDt (ORCPT
+        with ESMTP id S230317AbjARX4Y (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 18 Jan 2023 13:03:49 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11F8C3B672;
-        Wed, 18 Jan 2023 10:01:49 -0800 (PST)
+        Wed, 18 Jan 2023 18:56:24 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EF0A474E3;
+        Wed, 18 Jan 2023 15:56:02 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 206F4CE1E40;
-        Wed, 18 Jan 2023 18:01:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48D8C433F0;
-        Wed, 18 Jan 2023 18:01:35 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9DE4FB81E12;
+        Wed, 18 Jan 2023 23:56:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37DEC43392;
+        Wed, 18 Jan 2023 23:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674064896;
-        bh=gvRzqX5c+28PmnZhvOtWcJ7GQGOihNbrABlCgVGDkD4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fiiZICdzsthqKSjk5ftb3bEMraUciIgjR59ZXXX89tGKCO8JXSIhzUWq6ZpdYcqOY
-         7sD0irlFK0ZFpoNZwpzsInWQCRJuYuxgUuXgZULubUHW7OtECM4Kpmfj5NC3DNTsCn
-         bnN5VnPsO4JEQSxiNgels1/gdkwgpDQQINuG09Wxomf8j/vQMFQ7GXE2qpNiQs29BW
-         tKFO8D+HJqXty4NtpLT4yCdjo/I9PLAdiVJq2QlDgom7wogRbt4fzIcqN38GL+6BRC
-         LuRPMzsuLb8PoExB+TG/POspTgewZXxp9w8pDmwMd4ZTe8QBwams4Jtju/LARlM9XZ
-         KfZ2Q8rpC+rwA==
-Date:   Wed, 18 Jan 2023 12:01:33 -0600
+        s=k20201202; t=1674086160;
+        bh=av5a60cd35yCZdEI7pA/z4YSR1zn18F8Hdbx0/dxol8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=WZsZ4iHxkr4jraFHFcOEp/qwfCWwThSIzUQkKVPs21ClhTovwLN+XQVRKaDDLG/FI
+         JZLO1bZU1ylF9gRoQzOI82r0or5rub+I0mtM1rCLh0VPMh2FFVHcprGAKIig5bz92a
+         /zIsfKrHfdtc0Wt6qlYt9L1jFTI3rI1CotJCmC+MWCXRzd1uyY5+htsXZnYd/8eCJL
+         RFQiib1Mqb9LVv7ht+BJduczG29sOqtuWWHLg1LG8Yh1vK91/MGmgwZ7AuB47vUke1
+         gF8a5Hxb7Z+rv4GoV4UgjgXq0S1TcgWWSVl0SS0xM6b37KVW228eD/Aooqqees0/LQ
+         l02/P1NaF/xmg==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     Caleb Connolly <caleb.connolly@linaro.org>,
-        Chris Lew <quic_clew@quicinc.com>
-Cc:     Andy Gross <agross@kernel.org>,
+To:     stephan@gerhold.net
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-remoteproc@vger.kernel.org
-Subject: Re: [PATCH] rpmsg: qcom: glink: support waking up on channel rx
-Message-ID: <20230118180133.vdfjkoxjb3hhdkjk@builder.lan>
-References: <20230117142414.983946-1-caleb.connolly@linaro.org>
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: Re: [PATCH 0/4] soc: qcom: socinfo: Add a bunch of older SoCs
+Date:   Wed, 18 Jan 2023 17:55:44 -0600
+Message-Id: <167408614061.2989059.3900500212019182555.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20230104115348.25046-1-stephan@gerhold.net>
+References: <20230104115348.25046-1-stephan@gerhold.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230117142414.983946-1-caleb.connolly@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Jan 17, 2023 at 02:24:13PM +0000, Caleb Connolly wrote:
-> Configure all channels as wakeup capable and report a wakeup event
-> when data is received.
+On Wed, 4 Jan 2023 12:53:44 +0100, Stephan Gerhold wrote:
+> Sync the SoC IDs in qcom,ids.h with relevant entries from Qualcomm's LK
+> bootloader that is used for almost all older Qualcomm SoCs. This is
+> meant to reduce the effort for future SoC bring-up (to avoid having to
+> send a separate patch series for each new SoC) and will also benefit
+> other projects using the same dt-bindings, e.g. bootloaders where
+> adding support for all these SoCs is a bit easier than on Linux.
 > 
-> This allows userspace to "subscribe" to a particular channel where
-> it is useful to wake up to process new data. The expected usecase
-> is to allow for handling incoming SMS or phone calls where the only
-> notification mechanism is via QRTR on the IPCRTR glink channel.
-> 
-> As this behaviour is likely undesirable for most users, this patch
-> doesn't enable a wakeup_source for any channels by default.
-> 
+> [...]
 
-This looks reasonable to me.
+Applied, thanks!
 
-One suggestion that came up as we discussed this problem (elsewhere) a
-while ago was the idea of using EPOLLWAKEUP to control the wakeup source
-on a per-socket basis.
+[1/4] soc: qcom: socinfo: Fix soc_id order
+      commit: 017a7c11a8a29e266aa40c6d1bf2ba83f880f719
+[2/4] dt-bindings: arm: qcom,ids: Add QRD board ID
+      commit: 8b949c0e2ce59c376818bc3f80db4b94b06981b7
+[3/4] dt-bindings: arm: qcom,ids: Add a bunch of older SoCs
+      commit: 56abffc793befb19f30ec9d4bec24343529377f1
+[4/4] soc: qcom: socinfo: Add a bunch of older SoCs
+      commit: 40017cebb111eed65bddfa993df7b0636be98de8
 
-Would that suite your userspace?
-
-Regards,
-Bjorn
-
-> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-> ---
->  drivers/rpmsg/qcom_glink_native.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
-> index 115c0a1eddb1..1a96a7ae23bb 100644
-> --- a/drivers/rpmsg/qcom_glink_native.c
-> +++ b/drivers/rpmsg/qcom_glink_native.c
-> @@ -914,6 +914,9 @@ static int qcom_glink_rx_data(struct qcom_glink *glink, size_t avail)
->  		channel->buf = NULL;
->  
->  		qcom_glink_rx_done(glink, channel, intent);
-> +
-> +		pm_wakeup_ws_event(channel->ept.rpdev->dev.power.wakeup, 0,
-> +				   true);
->  	}
->  
->  advance_rx:
-> @@ -1510,6 +1513,17 @@ static int qcom_glink_rx_open(struct qcom_glink *glink, unsigned int rcid,
->  		if (ret)
->  			goto rcid_remove;
->  
-> +		/*
-> +		 * Declare all channels as wakeup capable, but don't enable
-> +		 * waking up by default.
-> +		 *
-> +		 * Userspace may wish to be woken up for incoming messages on a
-> +		 * specific channel, for example to handle incoming calls or SMS
-> +		 * messages on the IPCRTR channel. This can be done be enabling
-> +		 * the wakeup source via sysfs.
-> +		 */
-> +		device_set_wakeup_capable(&rpdev->dev, true);
-> +
->  		channel->rpdev = rpdev;
->  	}
->  
-> -- 
-> 2.39.0
-> 
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
