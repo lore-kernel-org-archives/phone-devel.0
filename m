@@ -2,103 +2,438 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35C40C6379F
-	for <phone-devel@archiver.kernel.org>; Wed, 18 Jan 2023 02:06:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EADAC38159
+	for <phone-devel@archiver.kernel.org>; Wed, 18 Jan 2023 10:13:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229834AbjARCGr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 Jan 2023 21:06:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42968 "EHLO
+        id S229882AbjARKN3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 18 Jan 2023 05:13:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229738AbjARCGl (ORCPT
+        with ESMTP id S230163AbjARKLh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 Jan 2023 21:06:41 -0500
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD89F45880
-        for <phone-devel@vger.kernel.org>; Tue, 17 Jan 2023 18:06:39 -0800 (PST)
-Received: by mail-ej1-x62a.google.com with SMTP id bk15so22323422ejb.9
-        for <phone-devel@vger.kernel.org>; Tue, 17 Jan 2023 18:06:39 -0800 (PST)
+        Wed, 18 Jan 2023 05:11:37 -0500
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC2A9241F4
+        for <phone-devel@vger.kernel.org>; Wed, 18 Jan 2023 01:20:47 -0800 (PST)
+Received: by mail-wm1-x336.google.com with SMTP id q8so12357699wmo.5
+        for <phone-devel@vger.kernel.org>; Wed, 18 Jan 2023 01:20:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9IfmhJrvRWfUC5D3CUUdjzAYNIM2kHYmHQdiJOf/ROU=;
-        b=w+hu4Qm0z16ldHxczDe00Y41K5vtZ5PXlGgBghOUz39DYC3gQXuhYTQMJtrhxq4Ymh
-         v5Iu6CtQOcG3rwF+TgXUS0WlRQYlVUIt74WRrxFJa9823+suIoEXfCtsRAfW2+SMYQuu
-         9FX+G5SdU+w/i2o9m64FKiirxOs1wH+bBRrp1JBsGaez3cfNdcLDB3pWIm+EKpFKUpBa
-         4vV7ODiSSU/nl1AykN8/j9cSHczY25RjC5WOlnqjJ879l9vn94uWxpnjOVLdjiTft2Op
-         iw3j+L9MLlVpGfRUHUPEdtkwk6wY5ho84aAK2smpCp5psKsftaESNXY8DBeooNovG96t
-         Kx0Q==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2mdQy1xYPaaHGuA0a9LA6xfvLmFd2rIZsFn7hsp/hZU=;
+        b=kjk11as6enKtJ8ibAc1ZCIpjdiT8YtLHKSbthYja287PZy8e8NGkx4pJVxC6UFIpi+
+         ALnpv8EtNqxduasTX6l+KKPUdIzb/ewF2XYtjamuTAqMcKoHlD1sIcr3shnMRQgAmk3Q
+         28NJBPjzoZm/PCjePyTaPwYU7eL+rSmiO3xPVZZeAa875v0DnIIGU19jgBVHYwKqRI82
+         vL0iH63fp04hIN85U75FpCDDPtzAKPkr5+yH+rRmKj64CZ90D98jJslmp6rUc6hFnWNx
+         KhPNOJ0NAch2X/EaDZFVGDztyA8yYdZuFicStNO0UH+eHobn0ST1XvpbLnznTBplJPhP
+         2Ymw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9IfmhJrvRWfUC5D3CUUdjzAYNIM2kHYmHQdiJOf/ROU=;
-        b=VSt95Wif9ZIv/KiTIhxnY4MnLzmz/UHyWMHI98iEqVaUQkFC2ISz8SNxJA91LACejI
-         D8P8vZznlC7jnrvePG3tYuJHtqDiOm+GCIdo/LB4JwPTgJOVGgefeQ0Df8uxf3BVe162
-         +gVUXCf/rfXVFHOt9gMvmZbSHBqS32chVF6dmmuDe5TxEG5ntsobMLImSXzWsIS/TdOJ
-         hm8wZ0UrhQi5f23WMD/scyKE5vECWXnObe1UTEAJhppdlgsCC6m5fkx8Zdjhoh4zq1mB
-         7GZiAfyCxFZ6WhjkAEWyiWiZaKJF7+SPHUT5DmSjZVIsOa3CGFEyGDrL8Q9/Sbw0yX5n
-         DlXQ==
-X-Gm-Message-State: AFqh2kqRHpstlydqbSWa7b41l/souhTUtAbgdEDnia3LNxD4i39D+qYR
-        Z91ykkC3VV2pGNTShzDlfbai/Hb9xlTD77vk
-X-Google-Smtp-Source: AMrXdXt2C1AYGJI145oWUugmSjbdf9sJ5mLy1O8PkJlJX/SIy9mMUJKSJDO7UiobV+oiMqKQ2wLIcA==
-X-Received: by 2002:a17:906:eb0e:b0:871:be7:c984 with SMTP id mb14-20020a170906eb0e00b008710be7c984mr5085808ejb.34.1674007599352;
-        Tue, 17 Jan 2023 18:06:39 -0800 (PST)
-Received: from eriador.lan (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
-        by smtp.gmail.com with ESMTPSA id kx1-20020a170907774100b0084d368b1628sm12702694ejc.40.2023.01.17.18.06.38
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2mdQy1xYPaaHGuA0a9LA6xfvLmFd2rIZsFn7hsp/hZU=;
+        b=0ZMEkQKO4Y/FMRv6tyzFH7HnhpFbciF+OGgD3Nz9igkCznYaAqOJxw7Nj4wcKynuJi
+         hF96tEN6kH3RN6gKVIfi/S6N7sOJwzoi2KdpS58BMeIxaqyjgu9/HbC0d19qoUEnBXTJ
+         XzgzlBm9FpAmeMtPLqtiZHsqfTaAJWGHelDC4+19ggziANWK41P1W/Uc0eDa9DXdXk9w
+         o85M/9WeFaiXpxVcTmTvqMSL2+P+5ojE/zmzgiGxCwUr3FTE0xKWxXLU578e3KodwHjp
+         FbAIVESO26L7jKpdkLGFy+C8d9D0UEq1UXq0La3BBfzKY6Vp05NnqqCjUxn6v8Lqz5Rc
+         cWRQ==
+X-Gm-Message-State: AFqh2koaxkQ6obDVVm5wVqlc1bMU9fgxa/gbKkjnfSoMdeqK3A1J6wpD
+        RSdpUqk7zw0M5m0v03XtUPDcXJylePzE0/EVXs4=
+X-Google-Smtp-Source: AMrXdXtUunol89v+cbM3zPxVn5P5UERSja+yH7+yL7lS4slrV3hDbwKOrmLGF1hHEaU7dOAKgra5OA==
+X-Received: by 2002:a05:600c:35d0:b0:3db:c4c:9224 with SMTP id r16-20020a05600c35d000b003db0c4c9224mr4264433wmq.3.1674033646422;
+        Wed, 18 Jan 2023 01:20:46 -0800 (PST)
+Received: from lion.. (cpc76484-cwma10-2-0-cust274.7-3.cable.virginm.net. [82.31.201.19])
+        by smtp.gmail.com with ESMTPSA id f17-20020a1c6a11000000b003d9fba3c7a4sm1315372wmc.16.2023.01.18.01.20.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jan 2023 18:06:38 -0800 (PST)
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     phone-devel@vger.kernel.org,
-        Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
+        Wed, 18 Jan 2023 01:20:45 -0800 (PST)
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Drew Davenport <ddavenport@chromium.org>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] drm/msm/dpu: Disallow unallocated resources to be returned
-Date:   Wed, 18 Jan 2023 04:06:19 +0200
-Message-Id: <167400670542.1683873.15043456378376951686.b4-ty@linaro.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     phone-devel@vger.kernel.org,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Dylan Van Assche <me@dylanvanassche.be>,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: [PATCH] arm64: dts: qcom: sdm845-oneplus-*: add audio devices
+Date:   Wed, 18 Jan 2023 09:20:39 +0000
+Message-Id: <20230118092040.1444129-1-caleb.connolly@linaro.org>
 X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230109231556.344977-1-marijn.suijten@somainline.org>
-References: <20230109231556.344977-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Populate the audio devices found on the OnePlus 6 and 6T using the
+sdm845-sndcard driver.
 
-On Tue, 10 Jan 2023 00:15:55 +0100, Marijn Suijten wrote:
-> In the event that the topology requests resources that have not been
-> created by the system (because they are typically not represented in
-> dpu_mdss_cfg ^1), the resource(s) in global_state (in this case DSC
-> blocks, until their allocation/assignment is being sanity-checked in
-> "drm/msm/dpu: Reject topologies for which no DSC blocks are available")
-> remain NULL but will still be returned out of
-> dpu_rm_get_assigned_resources, where the caller expects to get an array
-> containing num_blks valid pointers (but instead gets these NULLs).
-> 
-> [...]
+Both devices have the earpiece and headphone jack connected to the
+WCD9341 codec. The OnePlus 6 uses the MAX98927 speaker codec which is
+already supported upstream. The OnePlus 6T uses a currently unsupported
+TFA9894 codec.
 
-Applied, thanks!
+Two internal microphones are supported, as well as an external headset
+mic. Each DAI link is expected to be used for a single device.
 
-[1/1] drm/msm/dpu: Disallow unallocated resources to be returned
-      https://gitlab.freedesktop.org/lumag/msm/-/commit/abc40122d9a6
+Alsa UCM2 configs for this setup can be found here, they are not yet
+upstream and include support for call audio which is missing in this
+patch
 
-Best regards,
+https://gitlab.com/sdm845-mainline/alsa-ucm-conf/-/tree/9ed12836b269764c4a853411d38ccb6abb70b383/ucm2/OnePlus
+
+Co-developed-by: Dylan Van Assche <me@dylanvanassche.be>
+Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+---
+ .../boot/dts/qcom/sdm845-oneplus-common.dtsi  | 208 ++++++++++++++++++
+ .../dts/qcom/sdm845-oneplus-enchilada.dts     |  40 ++++
+ .../boot/dts/qcom/sdm845-oneplus-fajita.dts   |  29 +++
+ 3 files changed, 277 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index 42cf4dd5ea28..76017fad4443 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -9,6 +9,8 @@
+ 
+ #include <dt-bindings/input/linux-event-codes.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
++#include <dt-bindings/sound/qcom,q6afe.h>
++#include <dt-bindings/sound/qcom,q6asm.h>
+ 
+ #include "sdm845.dtsi"
+ #include "pm8998.dtsi"
+@@ -466,6 +468,44 @@ &pmi8998_rradc {
+ 	status = "okay";
+ };
+ 
++&q6afedai {
++	qi2s@22 {
++		reg = <22>;
++		qcom,sd-lines = <1>;
++	};
++
++	qi2s@23 {
++		reg = <23>;
++		qcom,sd-lines = <0>;
++	};
++};
++
++&q6asmdai {
++	dai@0 {
++		reg = <0>;
++	};
++
++	dai@1 {
++		reg = <1>;
++	};
++
++	dai@2 {
++		reg = <2>;
++	};
++
++	dai@3 {
++		reg = <3>;
++	};
++
++	dai@4 {
++		reg = <4>;
++	};
++
++	dai@5 {
++		reg = <5>;
++	};
++};
++
+ &qupv3_id_1 {
+ 	status = "okay";
+ };
+@@ -505,6 +545,140 @@ pinconf-rx {
+ 	};
+ };
+ 
++&sound {
++	compatible = "qcom,sdm845-sndcard";
++	pinctrl-0 = <&quat_mi2s_active &quat_mi2s_sd0_active &quat_mi2s_sd1_active>;
++	pinctrl-names = "default";
++
++	mm1-dai-link {
++		link-name = "MultiMedia1";
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA1>;
++		};
++	};
++
++	mm2-dai-link {
++		link-name = "MultiMedia2";
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA2>;
++		};
++	};
++
++	mm3-dai-link {
++		link-name = "MultiMedia3";
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA3>;
++		};
++	};
++
++	mm4-dai-link {
++		link-name = "MultiMedia4";
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA4>;
++		};
++	};
++
++	mm5-dai-link {
++		link-name = "MultiMedia5";
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA5>;
++		};
++	};
++
++	mm6-dai-link {
++		link-name = "MultiMedia6";
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA6>;
++		};
++	};
++
++	speaker_playback: speaker-dai-link {
++		link-name = "Speaker Playback";
++		cpu {
++			sound-dai = <&q6afedai QUATERNARY_MI2S_RX>;
++		};
++
++		platform {
++			sound-dai = <&q6routing>;
++		};
++	};
++
++	slim1-dai-link {
++		link-name = "SLIM Playback 1";
++		cpu {
++			sound-dai = <&q6afedai SLIMBUS_0_RX>;
++		};
++
++		platform {
++			sound-dai = <&q6routing>;
++		};
++
++		codec {
++			sound-dai = <&wcd9340 0>; /* AIF1_PB */
++		};
++	};
++
++	slimcap1-dai-link {
++		link-name = "SLIM Capture 1";
++		cpu {
++			sound-dai = <&q6afedai SLIMBUS_0_TX>;
++		};
++
++		platform {
++			sound-dai = <&q6routing>;
++		};
++
++		codec {
++			sound-dai = <&wcd9340 1>; /* AIF1_CAP */
++		};
++	};
++
++	slim2-dai-link {
++		link-name = "SLIM Playback 2";
++		cpu {
++			sound-dai = <&q6afedai SLIMBUS_1_RX>;
++		};
++
++		platform {
++			sound-dai = <&q6routing>;
++		};
++
++		codec {
++			sound-dai = <&wcd9340 2>; /* AIF2_PB */
++		};
++	};
++
++	slimcap2-dai-link {
++		link-name = "SLIM Capture 2";
++		cpu {
++			sound-dai = <&q6afedai SLIMBUS_1_TX>;
++		};
++
++		platform {
++			sound-dai = <&q6routing>;
++		};
++
++		codec {
++			sound-dai = <&wcd9340 3>; /* AIF2_CAP */
++		};
++	};
++
++	slimcap3-dai-link {
++		link-name = "SLIM Capture 3";
++		cpu {
++			sound-dai = <&q6afedai SLIMBUS_2_TX>;
++		};
++
++		platform {
++			sound-dai = <&q6routing>;
++		};
++
++		codec {
++			sound-dai = <&wcd9340 5>; /* AIF3_CAP */
++		};
++	};
++};
++
+ &uart6 {
+ 	status = "okay";
+ 
+@@ -634,6 +808,27 @@ mux {
+ 			input-enable;
+ 		};
+ 	};
++
++	speaker_default: speaker-default-state {
++		mux {
++			pins = "gpio69";
++			function = "gpio";
++			drive-strength = <16>;
++			bias-pull-up;
++			output-high;
++		};
++	};
++
++	wcd_default: wcd-default-state {
++		mux {
++			pins = "gpio54";
++			function = "gpio";
++
++			input-enable;
++			bias-pull-down;
++			drive-strength = <2>;
++		};
++	};
+ };
+ 
+ &venus {
+@@ -641,6 +836,19 @@ &venus {
+ 	firmware-name = "qcom/sdm845/oneplus6/venus.mbn";
+ };
+ 
++&wcd9340 {
++	pinctrl-0 = <&wcd_default>;
++	pinctrl-names = "default";
++	clock-names = "extclk";
++	clocks = <&rpmhcc RPMH_LN_BB_CLK2>;
++	reset-gpios = <&tlmm 64 GPIO_ACTIVE_HIGH>;
++	vdd-buck-supply = <&vreg_s4a_1p8>;
++	vdd-buck-sido-supply = <&vreg_s4a_1p8>;
++	vdd-tx-supply = <&vreg_s4a_1p8>;
++	vdd-rx-supply = <&vreg_s4a_1p8>;
++	vdd-io-supply = <&vreg_s4a_1p8>;
++};
++
+ &wifi {
+ 	status = "okay";
+ 	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts b/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
+index bf2cf92e8976..aae1a3a27144 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-enchilada.dts
+@@ -32,3 +32,43 @@ &display_panel {
+ &bq27441_fg {
+ 	monitored-battery = <&battery>;
+ };
++
++&i2c4 {
++	status = "okay";
++
++	max98927_codec: max98927@3a {
++		compatible = "maxim,max98927";
++		reg = <0x3a>;
++		#sound-dai-cells = <1>;
++
++		pinctrl-0 = <&speaker_default>;
++		pinctrl-names = "default";
++
++		reset-gpios = <&tlmm 69 GPIO_ACTIVE_LOW>;
++
++		vmon-slot-no = <1>;
++		imon-slot-no = <0>;
++	};
++};
++
++&sound {
++	model = "OnePlus 6";
++	audio-routing =	"RX_BIAS", "MCLK",
++			"AMIC2", "MIC BIAS2",
++			"AMIC3", "MIC BIAS4",
++			"AMIC4", "MIC BIAS1",
++			"AMIC5", "MIC BIAS4";
++
++	speaker-dai-link {
++		codec {
++			sound-dai = <&max98927_codec 0>;
++		};
++	};
++};
++
++&wcd9340 {
++	qcom,micbias1-microvolt = <1800000>;
++	qcom,micbias2-microvolt = <2700000>;
++	qcom,micbias3-microvolt = <1800000>;
++	qcom,micbias4-microvolt = <1800000>;
++};
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
+index 1b6b5bf368df..4b1a5d3c3713 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-fajita.dts
+@@ -29,10 +29,39 @@ &display_panel {
+ 	compatible = "samsung,s6e3fc2x01";
+ };
+ 
++&i2c4 {
++	/* nxp,tfa9894 @ 0x34 */
++};
++
+ &bq27441_fg {
+ 	monitored-battery = <&battery>;
+ };
+ 
++&sound {
++	model = "OnePlus 6T";
++	audio-routing = "RX_BIAS", "MCLK",
++			"AMIC1", "MIC BIAS3",
++			"AMIC2", "MIC BIAS2",
++			"AMIC3", "MIC BIAS4",
++			"AMIC4", "MIC BIAS1",
++			"AMIC5", "MIC BIAS3";
++
++};
++
++/*
++ * The TFA9894 codec is currently unsupported.
++ * We need to delete the node to allow the soundcard
++ * to probe for headphones/earpiece.
++ */
++/delete-node/ &speaker_playback;
++
+ &rmi4_f12 {
+ 	touchscreen-y-mm = <148>;
+ };
++
++&wcd9340 {
++	qcom,micbias1-microvolt = <2700000>;
++	qcom,micbias2-microvolt = <2700000>;
++	qcom,micbias3-microvolt = <2700000>;
++	qcom,micbias4-microvolt = <2700000>;
++};
 -- 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+2.39.0
+
