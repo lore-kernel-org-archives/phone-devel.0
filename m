@@ -2,49 +2,69 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63E13C38159
-	for <phone-devel@archiver.kernel.org>; Wed, 18 Jan 2023 23:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3282DC004D4
+	for <phone-devel@archiver.kernel.org>; Thu, 19 Jan 2023 19:12:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230311AbjARX4d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 18 Jan 2023 18:56:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60196 "EHLO
+        id S231341AbjASTL7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 19 Jan 2023 14:11:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230317AbjARX4Y (ORCPT
+        with ESMTP id S231314AbjASTLf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 18 Jan 2023 18:56:24 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EF0A474E3;
-        Wed, 18 Jan 2023 15:56:02 -0800 (PST)
+        Thu, 19 Jan 2023 14:11:35 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ED9495762;
+        Thu, 19 Jan 2023 11:10:56 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9DE4FB81E12;
-        Wed, 18 Jan 2023 23:56:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37DEC43392;
-        Wed, 18 Jan 2023 23:55:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B4BAA61D57;
+        Thu, 19 Jan 2023 19:09:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61705C433EF;
+        Thu, 19 Jan 2023 19:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674086160;
-        bh=av5a60cd35yCZdEI7pA/z4YSR1zn18F8Hdbx0/dxol8=;
+        s=k20201202; t=1674155361;
+        bh=L96CiyxDqJQ1R3tSGxtY8MIZKLSX74xqYGN6oYu3uJw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WZsZ4iHxkr4jraFHFcOEp/qwfCWwThSIzUQkKVPs21ClhTovwLN+XQVRKaDDLG/FI
-         JZLO1bZU1ylF9gRoQzOI82r0or5rub+I0mtM1rCLh0VPMh2FFVHcprGAKIig5bz92a
-         /zIsfKrHfdtc0Wt6qlYt9L1jFTI3rI1CotJCmC+MWCXRzd1uyY5+htsXZnYd/8eCJL
-         RFQiib1Mqb9LVv7ht+BJduczG29sOqtuWWHLg1LG8Yh1vK91/MGmgwZ7AuB47vUke1
-         gF8a5Hxb7Z+rv4GoV4UgjgXq0S1TcgWWSVl0SS0xM6b37KVW228eD/Aooqqees0/LQ
-         l02/P1NaF/xmg==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     stephan@gerhold.net
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Subject: Re: [PATCH 0/4] soc: qcom: socinfo: Add a bunch of older SoCs
-Date:   Wed, 18 Jan 2023 17:55:44 -0600
-Message-Id: <167408614061.2989059.3900500212019182555.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20230104115348.25046-1-stephan@gerhold.net>
-References: <20230104115348.25046-1-stephan@gerhold.net>
+        b=pvwiCEhA4FKeukST+Pm8eh/01rTbHQ19Mcd3hpODmzZ2H76O6lZZ0qzsXVMkTK8Pd
+         WffM7EFzIMPUtEQkB8IiS2MyzPDU0r/y9Qcb393Bix5vyGEhd0jAZW4x+MqVSaiJuu
+         WmN0Zakt4hsyNtLCebhnns02keHskm3gYg9H+vodk+aEn8tckO713zN7j24IB+Aujy
+         c2RPAQCfTLBO/+Yhjk5ixriW5u8XKzfgpymWu1p84qQcM5oVS565p5rMZSzNTP+CTK
+         zaXCoTtjKlm1Vtq9ETIPeg6A9vrWiXHVpaunCNEhj06Ul5NrmCZ7ipg3eOzmG/2xSc
+         MGWT3q9pDLc9A==
+From:   Will Deacon <will@kernel.org>
+To:     Bjorn Andersson <andersson@kernel.org>,
+        Joerg Roedel <joro@8bytes.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        phone-devel@vger.kernel.org
+Cc:     catalin.marinas@arm.com, kernel-team@android.com,
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Thierry Reding <treding@nvidia.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, Lux Aliaga <they@mint.lgbt>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        devicetree@vger.kernel.org,
+        Douglas Anderson <dianders@chromium.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Melody Olvera <quic_molvera@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        iommu@lists.linux.dev, ~postmarketos/upstreaming@lists.sr.ht,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Subject: Re: [PATCH v5 0/4] arm64: dts: qcom: sm6125: Enable APPS SMMU
+Date:   Thu, 19 Jan 2023 19:08:40 +0000
+Message-Id: <167415032929.2381501.12211116927490999924.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20221222193254.126925-1-marijn.suijten@somainline.org>
+References: <20221222193254.126925-1-marijn.suijten@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,27 +72,26 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 4 Jan 2023 12:53:44 +0100, Stephan Gerhold wrote:
-> Sync the SoC IDs in qcom,ids.h with relevant entries from Qualcomm's LK
-> bootloader that is used for almost all older Qualcomm SoCs. This is
-> meant to reduce the effort for future SoC bring-up (to avoid having to
-> send a separate patch series for each new SoC) and will also benefit
-> other projects using the same dt-bindings, e.g. bootloaders where
-> adding support for all these SoCs is a bit easier than on Linux.
+On Thu, 22 Dec 2022 20:32:50 +0100, Marijn Suijten wrote:
+> Add APPS SMMU to SM6125 dtsi and use it in SDHCI/USB nodes.
+> 
+> Changes since v4:
+> 
+> - Use hexadecimal 0x0 for iommu mask;
+> - Add sm6125 to the dt-bindings list without clocks, now depending on:
+>   https://lore.kernel.org/linux-arm-kernel/20221222092355.74586-1-krzysztof.kozlowski@linaro.org/
 > 
 > [...]
 
-Applied, thanks!
+Applied first patch to will (for-joerg/arm-smmu/bindings), thanks!
 
-[1/4] soc: qcom: socinfo: Fix soc_id order
-      commit: 017a7c11a8a29e266aa40c6d1bf2ba83f880f719
-[2/4] dt-bindings: arm: qcom,ids: Add QRD board ID
-      commit: 8b949c0e2ce59c376818bc3f80db4b94b06981b7
-[3/4] dt-bindings: arm: qcom,ids: Add a bunch of older SoCs
-      commit: 56abffc793befb19f30ec9d4bec24343529377f1
-[4/4] soc: qcom: socinfo: Add a bunch of older SoCs
-      commit: 40017cebb111eed65bddfa993df7b0636be98de8
+[1/4] dt-bindings: arm-smmu: Document smmu-500 binding for SM6125
+      https://git.kernel.org/will/c/c940c8787929
 
-Best regards,
+Cheers,
 -- 
-Bjorn Andersson <andersson@kernel.org>
+Will
+
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
