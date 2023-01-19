@@ -2,123 +2,76 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A887C678DC
-	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 01:42:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB582C7112B
+	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 04:50:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229637AbjATBmx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 19 Jan 2023 20:42:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51938 "EHLO
+        id S230070AbjATEuQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 19 Jan 2023 23:50:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjATBmw (ORCPT
+        with ESMTP id S230431AbjATEtv (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 19 Jan 2023 20:42:52 -0500
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98A9D241D9;
-        Thu, 19 Jan 2023 17:42:50 -0800 (PST)
-Received: by mail-ot1-f50.google.com with SMTP id f88-20020a9d03e1000000b00684c4041ff1so2298013otf.8;
-        Thu, 19 Jan 2023 17:42:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3fa6PPtmv8bHW5qqhtcHqFt8wmFZ+0TFiAlmx2L9q84=;
-        b=3T+ShNdcXLXfnfLcOCcxzpVgmEbKRtpaFgq1LliOGE5QVgfXer4OREA7OVtrk4/ynl
-         5U22Ax5MCxQWHXGhw7NBY72y9uux31S2rOJyaemU2peQTqrSQpQMG/SNaQKYEFU10vPv
-         sfTA7cnaeIL1edRqx5nAXeX5oanxa7CNCB9ddDonL1aQh3MAfchs3bFXgc8A7c8XQnK3
-         Nv3KjHQVs0shWyGvWHFv9uuqDSscEB2AARClJoYR0TlhgW9Uh2S9Wod1qvYvCzsWW7hi
-         fP6ZrffxkN2ut17mwmd3Oso6nZ2WDDEe9eIblr+IHJJMsk+jZh4BQvwji9oc5HyXfT+Y
-         N03Q==
-X-Gm-Message-State: AFqh2koMVgVR5AS0RVnnVrnTP6xrcQJ109Ub2tghTd5kgxAvV7beDdhL
-        wrgqClo91JT40izVHMLNOg==
-X-Google-Smtp-Source: AMrXdXtKmLpq1iI7gLQf60pfLWgE2BZLF1lHU3djaO8Nn2uBr4hptQOjfXMFJ5Pl89bsjX5HNud48w==
-X-Received: by 2002:a9d:7d19:0:b0:670:69ad:3636 with SMTP id v25-20020a9d7d19000000b0067069ad3636mr6282024otn.23.1674178969701;
-        Thu, 19 Jan 2023 17:42:49 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id a20-20020a9d6e94000000b006718a823321sm6329944otr.41.2023.01.19.17.42.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jan 2023 17:42:48 -0800 (PST)
-Received: (nullmailer pid 3131600 invoked by uid 1000);
-        Fri, 20 Jan 2023 01:42:43 -0000
+        Thu, 19 Jan 2023 23:49:51 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B5B3D0DB7;
+        Thu, 19 Jan 2023 20:43:38 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1F18DB82708;
+        Thu, 19 Jan 2023 19:09:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA5AC433F1;
+        Thu, 19 Jan 2023 19:09:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674155355;
+        bh=B6WQVoKviGDo5Lmu/PR7ZIGyspBOx43F6uoNLJC8g2c=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=LLfeub4rKI7vD91AaKS0pn8I21qqkeaKjwX0QRVRS1tbAkHNcFaTtb2xPyU9WAm7X
+         BV83IzRxLTsVKX4W9u2UI99FeicOcUFaqzzgjKPTU6Wdlx0BSjgpcY7ZkmdCqFoJml
+         OvowNVKJZkep78xI0532l/B4TGGe7NvKVPlet3S0L+hmd1QCu0rqBJP3zGiXhn6cnf
+         GEGofDcQyp1iWMdDegAmCxRd8rM96v121ESi4X5REp660nMaqm6DHfP8c7/eF/BNmS
+         UgdZcoTICI4sLLsFr7OhenHw/34XXPTQ6mCzavcliEE5hMkgpcQOMrcaAqIx5wFXvf
+         d8UzL0oJJgW+A==
+From:   Will Deacon <will@kernel.org>
+To:     iommu@lists.linux.dev, Luca Weiss <luca@z3ntu.xyz>
+Cc:     catalin.marinas@arm.com, kernel-team@android.com,
+        Will Deacon <will@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
+        Joerg Roedel <joro@8bytes.org>, phone-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        linux-arm-msm@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>
+Subject: Re: [PATCH v5] dt-bindings: iommu: qcom: Add Qualcomm MSM8953 compatible
+Date:   Thu, 19 Jan 2023 19:08:39 +0000
+Message-Id: <167414938328.2378422.11457059166338062006.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20221105142016.93406-1-luca@z3ntu.xyz>
+References: <20221105142016.93406-1-luca@z3ntu.xyz>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     Manivannan Sadhasivam <mani@kernel.org>,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org, iio@vger.kernel.org,
-        Martin Botka <martin.botka@somainline.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-iio@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        linux-arm-msm@vger.kernel.org
-In-Reply-To: <20230119212632.185881-2-marijn.suijten@somainline.org>
-References: <20230119212632.185881-1-marijn.suijten@somainline.org>
- <20230119212632.185881-2-marijn.suijten@somainline.org>
-Message-Id: <167417887912.3129483.8810312426567009756.robh@kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Require generic adc-chan
- name for channel nodes
-Date:   Thu, 19 Jan 2023 19:42:43 -0600
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-On Thu, 19 Jan 2023 22:26:31 +0100, Marijn Suijten wrote:
-> As discussed in [1] it is more convenient to use a generic adc-chan node
-> name for ADC channels while storing a friendly - board-specific instead
-> of PMIC-specific - name in the label, if/when desired to overwrite the
-> channel description already contained (but previously unused) in the
-> driver [2].
+On Sat, 5 Nov 2022 15:20:17 +0100, Luca Weiss wrote:
+> Document the compatible used for IOMMU on the msm8953 SoC.
 > 
-> Replace the .* name pattern with the adc-chan literal, but leave the
-> label property optional for bindings to choose to fall back a channel
-> label hardcoded in the driver [2] instead.
-> 
-> [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
-> [2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
-> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
->  .../bindings/iio/adc/qcom,spmi-vadc.yaml         | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
 > 
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Applied to will (for-joerg/arm-smmu/bindings), thanks!
 
-yamllint warnings/errors:
+[1/1] dt-bindings: iommu: qcom: Add Qualcomm MSM8953 compatible
+      https://git.kernel.org/will/c/e3fed6861d86
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dtb: adc@3100: 'conn-therm@4f' does not match any of the regexes: '^adc-chan@[0-9a-f]+$', 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.example.dtb: adc@3100: 'conn-therm@147', 'xo-therm@44' do not match any of the regexes: '^adc-chan@[0-9a-f]+$', 'pinctrl-[0-9]+'
-	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
+Cheers,
+-- 
+Will
 
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230119212632.185881-2-marijn.suijten@somainline.org
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
