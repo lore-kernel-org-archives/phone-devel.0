@@ -2,116 +2,99 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 851BBC05027
-	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 15:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0AA7C38141
+	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 16:49:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbjATP4n (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 Jan 2023 10:56:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58220 "EHLO
+        id S230456AbjATQto (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 Jan 2023 11:49:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231653AbjATPyf (ORCPT
+        with ESMTP id S230466AbjATQtn (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 20 Jan 2023 10:54:35 -0500
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F23CDB7BC
-        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 07:54:26 -0800 (PST)
-Received: by mail-wm1-x32e.google.com with SMTP id f12-20020a7bc8cc000000b003daf6b2f9b9so6130130wml.3
-        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 07:54:26 -0800 (PST)
+        Fri, 20 Jan 2023 11:49:43 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B61587029E
+        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 08:49:41 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id n7so5381051wrx.5
+        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 08:49:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V4HSb4CmABtKmlomwbvp4nX1h5Hso98yPVlLAhjAEjQ=;
-        b=NFvonsrCpa1/HDYc67FplCVs6GSE9m0yUsGlTT88OuygVrij6GAb7JkZalqb2CUZth
-         zcBObdTPggI2cTsl46IWHkGph4dkh7J76Cr9F5oLZKZ5VPrGQutJBsZUO9nJdMenSctE
-         HEcCBhWjZrzAmFFjw58cdjftR2s3voFanNJXn7RwTBIe/QzBvbzErChA0L7/O9JvgB1w
-         6Pv3Lm9IcnLCYhhCNlZkWDCqtyneWTsmBoj29hDqqZSt3KUbhRr86PPZVWetnSuAmoH2
-         bDAbyk+B3cVbxtH5lx2hWS8NnivDWH1Cl3BX9n/6AD33Ns5Ut8hxHU2K31p6AjzxjUHI
-         IIew==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ReqL3/KdTtoMI5gOn47wEfy8Brch/hDuTRzHxmxqXLI=;
+        b=HrWAbzIu1bfu5+Ce6Jw2FEMPVasYO23fFdoUKI+s2D5dbd/iFNqYGuO1NWjYcusFKy
+         fP9liXt78VZOHABtZOIYTAWWAAwkkrz7GVp/N10X76oFvPrJmDlHk+4Fgwv8rjCKwuus
+         tFouDnkYAVUa4IIcvCYAQxzY/2uIqD/2hPonHIq4+yuN/6kQgGsnpArb/o55+WXIgbEB
+         tRn0xd4tH8ozAowgLV/G7pe9Hr7HEcWabeLEvmDCDJNMCpwGvWH2rIokvMONX8B9UE5M
+         pQuSJnDvLsfG3xLeUvaKGtLV2rDhWCWwojOJBeUj/zyGuO6T4FPiweqaOlj1sZm9tP9y
+         mvEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V4HSb4CmABtKmlomwbvp4nX1h5Hso98yPVlLAhjAEjQ=;
-        b=ywQkMHX3oVtKf06wGziAtbbY0kySgDXwb7ytEHVi6JB12+JO6Bz+rmyShmd6vwyIW0
-         AGGMDfDhL1xgXhkf81W3bkidRik1qDyEDFlZGRoEbzVRAf89gJN8wuRF6p5+3lZE22sI
-         cLCN4jERIwF1Vl5/Ng6zF77rGxPkllayDVAi2O2TXfzXcVtJRfSUxzB0TgtarCzxt9K8
-         9pw2m604CbP+5lLAaEtXrCMvjfpJuU/nP5z6/dga82Ogb8jUve+6ZVblu9VJ0UMRNh5m
-         Ypq86kcIXZij+stmKVBs7MpjQSHlxhq2VjiH5kh/2fe0Kvkt6t2//O1c2qWISqc50XS8
-         LlZA==
-X-Gm-Message-State: AFqh2kr2S6VvHrDuAyIlnVo06ZsU9O1ymBpZfdDR16INVfUD+0/bJsqm
-        mt3zuPnawSpF/YNq3Yjr5bkPjA==
-X-Google-Smtp-Source: AMrXdXvbOH3SFcKsMG0jy+5e9JWTMOrmU/YgM9lPiYHVnFVEOFm+Rp2aWQJ27LYidTZef1sbXow4Ew==
-X-Received: by 2002:a05:600c:2116:b0:3d6:10e:68a8 with SMTP id u22-20020a05600c211600b003d6010e68a8mr11050450wml.0.1674230064782;
-        Fri, 20 Jan 2023 07:54:24 -0800 (PST)
-Received: from krzk-bin.. ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id n42-20020a05600c3baa00b003d96efd09b7sm3349596wms.19.2023.01.20.07.54.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jan 2023 07:54:24 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Inki Dae <inki.dae@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Kukjin Kim <kgene@kernel.org>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
-        Henrik Grimler <henrik@grimler.se>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 08/11] ARM: dts: exynos: align HSOTG/USB node names
-Date:   Fri, 20 Jan 2023 16:54:01 +0100
-Message-Id: <20230120155404.323386-9-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230120155404.323386-1-krzysztof.kozlowski@linaro.org>
-References: <20230120155404.323386-1-krzysztof.kozlowski@linaro.org>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ReqL3/KdTtoMI5gOn47wEfy8Brch/hDuTRzHxmxqXLI=;
+        b=07Os96BX3GzGXbDyhqoDI6Gvy1R1aGSQOE78yvY1//c+Q1yfSOrdboq+Pn3iMFuX5x
+         vfVnduy2Qy86dz5UctKuqzkuZ9hYZAdHKhn4qfz3ZeuFLYTuixWCP7V8aTdS5U+1/nFy
+         wzqcEFVGSzr+Q3W0aY8iIEYsIvY3eBf9ybFlH+25mbDDrmHteYEEpE+n3htsbQvR8QcI
+         oMBNT9aqrHCGy0eyzGpUzBYTvi0QyIRrxGPaJSl74eVudaM9rjtaTF2q7k1Nvfk6H3B9
+         drgx014BI18eE42vVqXxDLGnxlcfefZOypwERSmVncF2AZ28/S9yYHW7mdPWnOgMA4q0
+         FKwA==
+X-Gm-Message-State: AFqh2ko85l2PLrng+iJZRpL5mvIg2b50qxM3oKCgu/Hb4NnZZm5l3zj7
+        tJKgK9VLs5WPJmi4ubTctFIO3w==
+X-Google-Smtp-Source: AMrXdXtEWQc0BoNfAHarjgxoITnBqOmzi3Fm+XNUr6JyoaeecEc3V7G+XJtcFtNOp9ktTOsRs0d5CQ==
+X-Received: by 2002:a5d:4e84:0:b0:2be:c94c:ebff with SMTP id e4-20020a5d4e84000000b002bec94cebffmr1852291wru.56.1674233380271;
+        Fri, 20 Jan 2023 08:49:40 -0800 (PST)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id y18-20020a5d6152000000b002425be3c9e2sm35581781wrt.60.2023.01.20.08.49.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Jan 2023 08:49:39 -0800 (PST)
+Message-ID: <e5ff49d4-45c7-8c4a-d624-d8f7cc9ce2cb@linaro.org>
+Date:   Fri, 20 Jan 2023 16:49:38 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH v2 2/4] arm64: dts: qcom: sm6350: Add camera clock
+ controller
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20221213-sm6350-cci-v2-0-15c2c14c34bb@fairphone.com>
+ <20221213-sm6350-cci-v2-2-15c2c14c34bb@fairphone.com>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <20221213-sm6350-cci-v2-2-15c2c14c34bb@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The DT schema expect HSOTG node names to be named "usb":
+On 20/01/2023 13:13, Luca Weiss wrote:
+> +		camcc: clock-controller@ad00000 {
+> +			compatible = "qcom,sm6350-camcc";
+> +			reg = <0 0x0ad00000 0 0x16000>;
+> +			clocks = <&rpmhcc RPMH_CXO_CLK>;
+> +			#clock-cells = <1>;
+> +			#reset-cells = <1>;
+> +			#power-domain-cells = <1>;
+> +		};
 
-  exynos4210-smdkv310.dtb: hsotg@12480000: $nodename:0: 'hsotg@12480000' does not match '^usb(@.*)?'
+Should you include
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+required-opps = <&rpmhpd_opp_low_svs>;
+
+?
+
 ---
- arch/arm/boot/dts/exynos3250.dtsi | 2 +-
- arch/arm/boot/dts/exynos4.dtsi    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/boot/dts/exynos3250.dtsi b/arch/arm/boot/dts/exynos3250.dtsi
-index 9b25449d5311..36b47c2c1663 100644
---- a/arch/arm/boot/dts/exynos3250.dtsi
-+++ b/arch/arm/boot/dts/exynos3250.dtsi
-@@ -365,7 +365,7 @@ sysmmu_fimd0: sysmmu@11e20000 {
- 			#iommu-cells = <0>;
- 		};
- 
--		hsotg: hsotg@12480000 {
-+		hsotg: usb@12480000 {
- 			compatible = "samsung,s3c6400-hsotg";
- 			reg = <0x12480000 0x20000>;
- 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>;
-diff --git a/arch/arm/boot/dts/exynos4.dtsi b/arch/arm/boot/dts/exynos4.dtsi
-index 5c4ecda27a47..55afe9972460 100644
---- a/arch/arm/boot/dts/exynos4.dtsi
-+++ b/arch/arm/boot/dts/exynos4.dtsi
-@@ -362,7 +362,7 @@ exynos_usbphy: exynos-usbphy@125b0000 {
- 			status = "disabled";
- 		};
- 
--		hsotg: hsotg@12480000 {
-+		hsotg: usb@12480000 {
- 			compatible = "samsung,s3c6400-hsotg";
- 			reg = <0x12480000 0x20000>;
- 			interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
--- 
-2.34.1
+bod
 
