@@ -2,100 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4A8AC678DC
-	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 05:26:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92CD8C25B50
+	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 10:33:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230265AbjATF0L (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 Jan 2023 00:26:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56176 "EHLO
+        id S229983AbjATKdZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 Jan 2023 05:33:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230178AbjATF0A (ORCPT
+        with ESMTP id S229991AbjATKdZ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 20 Jan 2023 00:26:00 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF0F7D679;
-        Thu, 19 Jan 2023 21:18:19 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id AAD98B826A2;
-        Thu, 19 Jan 2023 17:29:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD721C433EF;
-        Thu, 19 Jan 2023 17:29:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674149368;
-        bh=XjA6FNxjMQiOnXZJOx1apsS33nTEFUkoVAm3T3M6M8M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vI7EuC1HYKUg35FJz+wmpXIUQjvqRm71FrejBhtsRO4XtT9ItQR86PhdAESkgM2rl
-         7s6IlQzP0XSW7IlxDFPBCZ3z3IsEUxb1WdmYcsnLETy9SdoiX2/nmQhgWGjCOOyabB
-         zqGZhMNFrw6TlZ6001HKwUFH4L//OAwWGr8fjwVabhzlAHxlu/eajf3mElNal1fM6M
-         SaMmXAd6HflnYdMEot9iGdLyuPeT5RXI6rL0QVXgZdWADTtiEk1BMgHzLEC2/FzJ0h
-         R9wXeygOsbBT3A+vniK0UL9rpejY4/y6juSijYU//RhqSTZ2On16QdOoQGkn03Qmu6
-         R9u9NciOXNBZg==
-Date:   Thu, 19 Jan 2023 17:29:22 +0000
-From:   Will Deacon <will@kernel.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     iommu@lists.linux.dev, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Joerg Roedel <joro@8bytes.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5] dt-bindings: iommu: qcom: Add Qualcomm MSM8953
- compatible
-Message-ID: <20230119172921.GA20092@willie-the-truck>
-References: <20221105142016.93406-1-luca@z3ntu.xyz>
- <20221114134458.GD30263@willie-the-truck>
- <4793103.31r3eYUQgx@g550jk>
+        Fri, 20 Jan 2023 05:33:25 -0500
+Received: from formenos.hmeau.com (helcar.hmeau.com [216.24.177.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECD75B2D28;
+        Fri, 20 Jan 2023 02:33:19 -0800 (PST)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1pIohu-002BXi-0Q; Fri, 20 Jan 2023 18:33:15 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 20 Jan 2023 18:33:14 +0800
+Date:   Fri, 20 Jan 2023 18:33:14 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-crypto@vger.kernel.org,
+        "David S . Miller" <davem@davemloft.net>,
+        phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
+        Lionel Debieve <lionel.debieve@foss.st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>
+Subject: Re: [PATCH] crypto: stm32/cryp: Use accelerated readsl/writesl
+Message-ID: <Y8pt6rjuW0yXO0V6@gondor.apana.org.au>
+References: <20230110194307.657918-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4793103.31r3eYUQgx@g550jk>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20230110194307.657918-1-linus.walleij@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Dec 28, 2022 at 10:34:35PM +0100, Luca Weiss wrote:
-> On Montag, 14. November 2022 14:44:59 CET Will Deacon wrote:
-> > On Sat, Nov 05, 2022 at 03:20:17PM +0100, Luca Weiss wrote:
-> > > Document the compatible used for IOMMU on the msm8953 SoC.
-> > > 
-> > > Acked-by: Rob Herring <robh@kernel.org>
-> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > ---
-> > > Changes in v5:
-> > > * Change subject so it hopefully gets noticed by iommu maintainers
-> > > 
-> > >   (thanks Krzysztof, maybe this helps..)
-> > >  
-> > >  Documentation/devicetree/bindings/iommu/qcom,iommu.txt | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-> > > b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt index
-> > > 059139abce35..e6cecfd360eb 100644
-> > > --- a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-> > > +++ b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-> > > @@ -10,6 +10,7 @@ to non-secure vs secure interrupt line.
-> > > 
-> > >  - compatible       : Should be one of:
-> > >                          "qcom,msm8916-iommu"
-> > > 
-> > > +                        "qcom,msm8953-iommu"
-> > > 
-> > >                       Followed by "qcom,msm-iommu-v1".
-> > 
-> > I'd expect the MSM maintainers (i.e Andy and Bjorn) to pick this up.
+On Tue, Jan 10, 2023 at 08:43:07PM +0100, Linus Walleij wrote:
+> When reading or writing crypto buffers the inner loops can
+> be replaced with readsl and writesl which will on ARM result
+> in a tight assembly loop, speeding up encryption/decryption
+> a little bit. This optimization was in the Ux500 driver so
+> let's carry it over to the STM32 driver.
 > 
-> Bjorn, could you pick this up for v6.3 please?
+> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
+> Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
+> Cc: Lionel Debieve <lionel.debieve@foss.st.com>
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  drivers/crypto/stm32/stm32-cryp.c | 37 +++++++++----------------------
+>  1 file changed, 11 insertions(+), 26 deletions(-)
 
-Since this seems to be stagnating here, I'll pick it up into the smmu
-queue along with the other pending bindings patches I have.
-
-Will
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
