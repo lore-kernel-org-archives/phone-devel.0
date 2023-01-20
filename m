@@ -2,62 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E350DC54EB4
-	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 13:18:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43CF5C54ED2
+	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 13:18:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231143AbjATNSm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 Jan 2023 08:18:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36134 "EHLO
+        id S231189AbjATNSn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 Jan 2023 08:18:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230516AbjATNSg (ORCPT
+        with ESMTP id S230518AbjATNSg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Fri, 20 Jan 2023 08:18:36 -0500
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89B34C41EC
-        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 05:14:55 -0800 (PST)
-Received: by mail-ej1-x633.google.com with SMTP id ud5so13886737ejc.4
-        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 05:14:55 -0800 (PST)
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A82BC41F5
+        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 05:15:04 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id tz11so13975083ejc.0
+        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 05:15:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=fairphone.com; s=fair;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=p2axkO0jltwzlj2edHmm0m8ykLK/H8pKwFqLtIcLUF4=;
-        b=FtbwFXXoIuMD8AKvtNShjyzUjVMbKQT4bzUsLP5ez7QfmNmOiFV2LlqDXbzY0oAUNq
-         qlJg0Bz10QrKUypF06uLEj5+KXUv9itHcV5pAgdEPVtEAINswQaDwZJzoIAeCKVgPHEm
-         iIbepClLsO0YwexllhSmJ5BBD/Jqtf4gG4l9hbkz+LyqKy6DenpC0pKsmfnNh8lVt2NZ
-         JR2q8krQvhivMXRkiFEVOglZ0deWLgnYQN+7ZfSM5m6KlCj6eCUZxNQtx16FY6Mm5yF2
-         cscGIiKNK/zol1hikoqh2MsZqsjKiNbFa0aNb2txI43FpWiZmqCu/a8FuzudbgHQ92rW
-         lBQw==
+        bh=BwOqzf9R7uT7rGnQwy0vwJjfAeAuPeUDIWBIETds350=;
+        b=OjovKzTl0s7/JFX7HiitnHEZbspdX38IUG1ceXIElPZKDkRS+eA34Vabe3tRlINfKY
+         K5sxHSkmWsIVY5e0OUjACmtZi1xLfUrc+4mE4D4XNc+PEkhb3m8FoX4F1djXtXSp7xz7
+         NIBu2PLX7zirMHAbm180RpXt+N/zM1CzQ+bj1tBMOaYJsCVYNJCmujv1D8wTpkK1+LyK
+         fIKLvF3sBdwuSzikosEuHDtmnIcAFvmH1jaXKggHzmpjDORUf3DQ/XgXUYn4ljO/Rvfz
+         FBaHmsxeET5pNU4/NI7ECdceoeeh1muHBhbc+5tUz1mSaHBbp28ZtBjV+MA3kr7oFtS0
+         WjQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=p2axkO0jltwzlj2edHmm0m8ykLK/H8pKwFqLtIcLUF4=;
-        b=Kbc2rMLB3XOBsh3z30iQY2LwnjnIE9RvrZ3o2bJz8+uEVzkqji0+Z34o2LUHW/lRFq
-         bwGxX1pEjCRBYz6zflLKBpKGCe8xj33cAmEs2AHs0Rivn76YyqRkb4k6WG1Cb0SFk8kB
-         XS8ECvpzf/CEq4R2he2BI3MphK7fRAvK0qScpkoIgAMLOrBQhB4xKz0DNIttRYNJIEmy
-         O8t1NEr0lsqjFqgBrnk/ZjhKEmwZ1ocDiX/4Q5ZWBeor6BjSuTxQYH7q9GIMxT4QsJ6n
-         NKEoJWO0v2YcZ+uOOHF7LQSLSbpo+Cv0WGVmPp47CkKvrLRllJNPZo4e/sOm+Zaxpn+X
-         jgMg==
-X-Gm-Message-State: AFqh2kqR1kQrwxqfrjLJ50xW4Wicpxm9hdK33o2jGt3hWlke75v7Txu6
-        hU2u3RVuYjbleKcmnaYVP3gFYA==
-X-Google-Smtp-Source: AMrXdXuNj7H7WV/FgoO6xkTJ3TK+NZyaRSNePNvZZway2ahmyVQdBgmsY5nhwdolCyRMGfSuAuWG8g==
-X-Received: by 2002:a17:906:1c81:b0:86f:d1c4:ed08 with SMTP id g1-20020a1709061c8100b0086fd1c4ed08mr13855278ejh.69.1674220494108;
-        Fri, 20 Jan 2023 05:14:54 -0800 (PST)
+        bh=BwOqzf9R7uT7rGnQwy0vwJjfAeAuPeUDIWBIETds350=;
+        b=iycG+2zA8S5jGDgK6ySihpbtPMHFu4wtaMsXWT5M0+9iVQShsyEGarbUlIhp7qZuBd
+         smOCcS/PbvKGnyQxX7SAChIhDDhhHa71L20OctwzTN6O7QVlPjOVStzio3runsr/yZ/t
+         6XV8j7I9FGPtbzA/fUBJ890HvH40dfezHBMFvDRH/7/jhyCRreXfgFluAHQirMGmA2k7
+         8NofELnAsW/7PESgRTXdFIY4nAE7iW7ZONyxcqFzwlcef5e/oz9i2hEubT2vsbB5LytJ
+         NKoAqATAfbMIGh+OrmrL9zR2U0uvlMrZBVL9fZyypYXAo32rvsavjuN5bNWod7Y26gXf
+         SDEg==
+X-Gm-Message-State: AFqh2kq3WJ6qkHNgx/yaun3DQ/pxV1VhdELHGIuy8dJBANqU97sarBTE
+        XpQzAePKa2F+jfcWhkyHN5R8OEG/VrTj+0c6sseZrw==
+X-Google-Smtp-Source: AMrXdXvL7IOr4H2KuxOoBPBNi6gt8ip/qp3X831ZZU8m1YHLRc4xw18f1Jf0RLbF06drPMGSU3EO0A==
+X-Received: by 2002:a17:906:60d0:b0:877:612e:516e with SMTP id f16-20020a17090660d000b00877612e516emr29754553ejk.61.1674220493307;
+        Fri, 20 Jan 2023 05:14:53 -0800 (PST)
 Received: from [172.16.220.87] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id t1-20020a1709061be100b0086f40238403sm8063276ejg.223.2023.01.20.05.14.53
+        by smtp.gmail.com with ESMTPSA id t1-20020a1709061be100b0086f40238403sm8063276ejg.223.2023.01.20.05.14.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 20 Jan 2023 05:14:53 -0800 (PST)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Fri, 20 Jan 2023 14:13:47 +0100
-Subject: [PATCH v2 4/4] arm64: dts: qcom: sm7225-fairphone-fp4: Enable CCI
- busses
+Date:   Fri, 20 Jan 2023 14:13:46 +0100
+Subject: [PATCH v2 3/4] arm64: dts: qcom: sm6350: Add CCI nodes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20221213-sm6350-cci-v2-4-15c2c14c34bb@fairphone.com>
+Message-Id: <20221213-sm6350-cci-v2-3-15c2c14c34bb@fairphone.com>
 References: <20221213-sm6350-cci-v2-0-15c2c14c34bb@fairphone.com>
 In-Reply-To: <20221213-sm6350-cci-v2-0-15c2c14c34bb@fairphone.com>
 To:     Andy Gross <agross@kernel.org>,
@@ -76,45 +75,175 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Enable the CCI busses that have cameras connected to them.
+Add nodes for the two CCI blocks found on SM6350.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+The first contains two i2c busses and while the second one might also
+contains two busses, the downstream kernel only has one configured, and
+some boards use the GPIOs for the potential cci1_i2c1 one other
+purposes, so leave that one unconfigured.
+
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 132 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 132 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-index f0e7ae630e0c..ed0cb70849d3 100644
---- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-+++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-@@ -363,6 +363,26 @@ vreg_bob: bob {
- 	};
- };
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index 300ced5cda57..802d7f494162 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -6,6 +6,7 @@
  
-+&cci0 {
-+	status = "okay";
-+};
+ #include <dt-bindings/clock/qcom,gcc-sm6350.h>
+ #include <dt-bindings/clock/qcom,rpmh.h>
++#include <dt-bindings/clock/qcom,sm6350-camcc.h>
+ #include <dt-bindings/dma/qcom-gpi.h>
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/interconnect/qcom,icc.h>
+@@ -1435,6 +1436,95 @@ usb_1_dwc3: usb@a600000 {
+ 			};
+ 		};
+ 
++		cci0: cci@ac4a000 {
++			compatible = "qcom,sm6350-cci", "qcom,msm8996-cci";
++			reg = <0 0x0ac4a000 0 0x1000>;
++			interrupts = <GIC_SPI 468 IRQ_TYPE_EDGE_RISING>;
++			power-domains = <&camcc TITAN_TOP_GDSC>;
 +
-+&cci0_i2c0 {
-+	/* IMX582 @ 0x1a */
-+};
++			clocks = <&camcc CAMCC_CAMNOC_AXI_CLK>,
++				 <&camcc CAMCC_SOC_AHB_CLK>,
++				 <&camcc CAMCC_SLOW_AHB_CLK_SRC>,
++				 <&camcc CAMCC_CPAS_AHB_CLK>,
++				 <&camcc CAMCC_CCI_0_CLK>,
++				 <&camcc CAMCC_CCI_0_CLK_SRC>;
++			clock-names = "camnoc_axi",
++				      "soc_ahb",
++				      "slow_ahb_src",
++				      "cpas_ahb",
++				      "cci",
++				      "cci_src";
 +
-+&cci0_i2c1 {
-+	/* IMX582 @ 0x1a */
-+};
++			assigned-clocks = <&camcc CAMCC_CAMNOC_AXI_CLK>,
++					  <&camcc CAMCC_CCI_0_CLK>;
++			assigned-clock-rates = <80000000>, <37500000>;
 +
-+&cci1 {
-+	status = "okay";
-+};
++			pinctrl-0 = <&cci0_default &cci1_default>;
++			pinctrl-1 = <&cci0_sleep &cci1_sleep>;
++			pinctrl-names = "default", "sleep";
 +
-+&cci1_i2c0 {
-+	/* IMX576 @ 0x10 */
-+};
++			#address-cells = <1>;
++			#size-cells = <0>;
 +
- &cdsp {
- 	status = "okay";
- 	firmware-name = "qcom/sm7225/fairphone4/cdsp.mdt";
++			status = "disabled";
++
++			cci0_i2c0: i2c-bus@0 {
++				reg = <0>;
++				clock-frequency = <1000000>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++			};
++
++			cci0_i2c1: i2c-bus@1 {
++				reg = <1>;
++				clock-frequency = <1000000>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++			};
++		};
++
++		cci1: cci@ac4b000 {
++			compatible = "qcom,sm6350-cci", "qcom,msm8996-cci";
++			reg = <0 0x0ac4b000 0 0x1000>;
++			interrupts = <GIC_SPI 462 IRQ_TYPE_EDGE_RISING>;
++			power-domains = <&camcc TITAN_TOP_GDSC>;
++
++			clocks = <&camcc CAMCC_CAMNOC_AXI_CLK>,
++				 <&camcc CAMCC_SOC_AHB_CLK>,
++				 <&camcc CAMCC_SLOW_AHB_CLK_SRC>,
++				 <&camcc CAMCC_CPAS_AHB_CLK>,
++				 <&camcc CAMCC_CCI_1_CLK>,
++				 <&camcc CAMCC_CCI_1_CLK_SRC>;
++			clock-names = "camnoc_axi",
++				      "soc_ahb",
++				      "slow_ahb_src",
++				      "cpas_ahb",
++				      "cci",
++				      "cci_src";
++
++			assigned-clocks = <&camcc CAMCC_CAMNOC_AXI_CLK>,
++					  <&camcc CAMCC_CCI_1_CLK>;
++			assigned-clock-rates = <80000000>, <37500000>;
++
++			pinctrl-0 = <&cci2_default>;
++			pinctrl-1 = <&cci2_sleep>;
++			pinctrl-names = "default", "sleep";
++
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			status = "disabled";
++
++			cci1_i2c0: i2c-bus@0 {
++				reg = <0>;
++				clock-frequency = <1000000>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++			};
++
++			/* SM6350 seems to have cci1_i2c1 on gpio2 & gpio3 but unused downstream */
++		};
++
+ 		camcc: clock-controller@ad00000 {
+ 			compatible = "qcom,sm6350-camcc";
+ 			reg = <0 0x0ad00000 0 0x16000>;
+@@ -1522,6 +1612,48 @@ tlmm: pinctrl@f100000 {
+ 			#interrupt-cells = <2>;
+ 			gpio-ranges = <&tlmm 0 0 157>;
+ 
++			cci0_default: cci0-default-state {
++				pins = "gpio39", "gpio40";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-up;
++			};
++
++			cci0_sleep: cci0-sleep-state {
++				pins = "gpio39", "gpio40";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-down;
++			};
++
++			cci1_default: cci1-default-state {
++				pins = "gpio41", "gpio42";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-up;
++			};
++
++			cci1_sleep: cci1-sleep-state {
++				pins = "gpio41", "gpio42";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-down;
++			};
++
++			cci2_default: cci2-default-state {
++				pins = "gpio43", "gpio44";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-up;
++			};
++
++			cci2_sleep: cci2-sleep-state {
++				pins = "gpio43", "gpio44";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-down;
++			};
++
+ 			sdc2_off_state: sdc2-off-state {
+ 				clk-pins {
+ 					pins = "sdc2_clk";
 
 -- 
 2.39.1
