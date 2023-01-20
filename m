@@ -2,60 +2,115 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 92CD8C25B50
-	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 10:33:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82F92C25B4E
+	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 11:12:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229983AbjATKdZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 Jan 2023 05:33:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45222 "EHLO
+        id S229726AbjATLM2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 Jan 2023 06:12:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229991AbjATKdZ (ORCPT
+        with ESMTP id S229544AbjATLM1 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 20 Jan 2023 05:33:25 -0500
-Received: from formenos.hmeau.com (helcar.hmeau.com [216.24.177.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECD75B2D28;
-        Fri, 20 Jan 2023 02:33:19 -0800 (PST)
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-        id 1pIohu-002BXi-0Q; Fri, 20 Jan 2023 18:33:15 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 20 Jan 2023 18:33:14 +0800
-Date:   Fri, 20 Jan 2023 18:33:14 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-crypto@vger.kernel.org,
-        "David S . Miller" <davem@davemloft.net>,
-        phone-devel@vger.kernel.org, Stefan Hansson <newbyte@disroot.org>,
-        Lionel Debieve <lionel.debieve@foss.st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>
-Subject: Re: [PATCH] crypto: stm32/cryp: Use accelerated readsl/writesl
-Message-ID: <Y8pt6rjuW0yXO0V6@gondor.apana.org.au>
-References: <20230110194307.657918-1-linus.walleij@linaro.org>
+        Fri, 20 Jan 2023 06:12:27 -0500
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7316D4ED06
+        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 03:12:25 -0800 (PST)
+Received: by mail-ej1-x62c.google.com with SMTP id ss4so12987312ejb.11
+        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 03:12:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OfzggvR5GAJWNY3SBEL5sV3sSdqBdNkvzmkoduGkVE8=;
+        b=i+30OnT1UGVubEaZYDCXe923zdH6oxIyNZy6VplKDTQhND+CFPoChZchGf2gUlhfis
+         f6ml4pnH6Nm+S6ZFV2YubEpD5fPEpWIxb+8kG/1yuYvLHGToWOIBJWZfShZgczjzWqzl
+         7U/sbj4IGJs7M8+rPfMoJiJoxRCg/Zd2GXeEj/id8EtLFtJGzaRMSVa0W1plXRSaRLBS
+         s0+W11t8QcNtLPvc+5yOx3AhUasHdrh0dfrn8prbcXCpBW5vqSp09xCRxnBmh1hT66dN
+         JN4fnGgZwr/wVnHL/92+DNO2CQecaqyAPmHOSXytIyx5uQJxYE9WEf30G10/GVM8R2wk
+         vCBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OfzggvR5GAJWNY3SBEL5sV3sSdqBdNkvzmkoduGkVE8=;
+        b=YOoOmVb2mtZQJKQQf5Aju2k99dteOTHOuNiS/ia1ZVqkP678AQCoxui8HhkxP3262u
+         yw+z1LM1oR6NRNfjtu+XF5CEkIrB+9coXy86Uj45+Z2Nv2XJ3lxXzR5qNlgcZqLdlDw8
+         cPJq5BMm89ITec3X/sEHFSQXq28Nch7nm5JXCZ1ucIuC536O2Nrtd4ZFu5eQbKPxpwcF
+         fGUOkKRYZV4xK1U9vHgU5YT+ahdvcraUm6xZvpIA+TIQyMCQZ+T+2xjkgx3id+fnJpTS
+         aoT8Y9hAah7fNt6zBTegnux6FvaCd5hesFozrPO48+bXjjn9RmGu3z+9KtbRUB6yKnMo
+         SkZA==
+X-Gm-Message-State: AFqh2kq+lmqa2TK+yPiIJynInO5r1POAZupvhUZFUFc7wN8mKKM56qcx
+        b930DoZCwxANVbvXISnmKTqsyQ==
+X-Google-Smtp-Source: AMrXdXvwwjl6H+vQuYjU15Y/5EYFYujeX2U4qQUVU9C8x0lGStLvU4bjDnP4JSaZ0hmlMFyB7O/Q2w==
+X-Received: by 2002:a17:906:c0c1:b0:7c4:fa17:7203 with SMTP id bn1-20020a170906c0c100b007c4fa177203mr13130663ejb.63.1674213144017;
+        Fri, 20 Jan 2023 03:12:24 -0800 (PST)
+Received: from [172.16.220.87] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id du1-20020a17090772c100b0084bfd56fb3bsm17667492ejc.162.2023.01.20.03.12.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Jan 2023 03:12:23 -0800 (PST)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/4] Add CCI bus support for SM6350
+Date:   Fri, 20 Jan 2023 12:11:53 +0100
+Message-Id: <20221213-sm6350-cci-v1-0-e5d0c36e0c4f@fairphone.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230110194307.657918-1-linus.walleij@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPl2ymMC/w3LOwqAMAwA0KtIZgP9oKi3SWPUgFZo0EV6dzu+4
+ X1gUlQMlu6DIq+a3rnB9x3wQXkX1LUZggvBBx/RrjEODpkV45Ro8zOxxAQtJDLBVCjz0Up+zrPW
+ H6nd2HBhAAAA
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.11.2
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Jan 10, 2023 at 08:43:07PM +0100, Linus Walleij wrote:
-> When reading or writing crypto buffers the inner loops can
-> be replaced with readsl and writesl which will on ARM result
-> in a tight assembly loop, speeding up encryption/decryption
-> a little bit. This optimization was in the Ux500 driver so
-> let's carry it over to the STM32 driver.
-> 
-> Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>
-> Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>
-> Cc: Lionel Debieve <lionel.debieve@foss.st.com>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> ---
->  drivers/crypto/stm32/stm32-cryp.c | 37 +++++++++----------------------
->  1 file changed, 11 insertions(+), 26 deletions(-)
+Add the camera clock controller node and CCI nodes to sm6350 dtsi and enable
+the i2c busses on Fairphone 4 dts.
 
-Patch applied.  Thanks.
+This is tested using PM8008 regulator patches from the lists which power the
+cameras, and using i2cdetect/i2cget/i2cset reading the sensor ID registers.
+
+To: Andy Gross <agross@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>
+To: Loic Poulain <loic.poulain@linaro.org>
+To: Robert Foss <rfoss@kernel.org>
+To: Rob Herring <robh+dt@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht
+Cc: phone-devel@vger.kernel.org
+Cc: linux-i2c@vger.kernel.org
+Cc: linux-arm-msm@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+
+---
+Luca Weiss (4):
+      dt-bindings: i2c: qcom-cci: Document SM6350 compatible
+      arm64: dts: qcom: sm6350: Add camera clock controller
+      arm64: dts: qcom: sm6350: Add CCI nodes
+      arm64: dts: qcom: sm7225-fairphone-fp4: Enable CCI busses
+
+ .../devicetree/bindings/i2c/qcom,i2c-cci.yaml      |   2 +
+ arch/arm64/boot/dts/qcom/sm6350.dtsi               | 141 +++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts  |  20 +++
+ 3 files changed, 163 insertions(+)
+---
+base-commit: 1578f85d549045aac441821064e7953732460e51
+change-id: 20221213-sm6350-cci-38baf19ace3b
+
+Best regards,
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Luca Weiss <luca.weiss@fairphone.com>
