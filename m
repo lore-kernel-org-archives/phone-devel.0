@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BFB2C05027
-	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 15:54:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79071C52D11
+	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 15:54:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231222AbjATPyt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 Jan 2023 10:54:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58266 "EHLO
+        id S231610AbjATPyv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 Jan 2023 10:54:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231599AbjATPyg (ORCPT
+        with ESMTP id S231224AbjATPyi (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 20 Jan 2023 10:54:36 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C167EE051B
-        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 07:54:26 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id c4-20020a1c3504000000b003d9e2f72093so6148640wma.1
-        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 07:54:26 -0800 (PST)
+        Fri, 20 Jan 2023 10:54:38 -0500
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7915E5E50D
+        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 07:54:28 -0800 (PST)
+Received: by mail-wm1-x32e.google.com with SMTP id iv8-20020a05600c548800b003db04a0a46bso1384228wmb.0
+        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 07:54:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pD7HTNzkQ6LlDfhApbijvX7r0JmIULj//GNFGkuZGWE=;
-        b=ese5zR5fn7AOMz6ufd5qVaHQEC9BEH085H7uL6rLR9joav3dXlHHkJvMLVmpBGZuxB
-         1wxfvVjIYtI1aYSePOUUMfmXJsPGOEzDuOrd2aqXfSsaP5ulFkv6Cxqel7Mi+L4YKE/R
-         Mnni8m+XKkqu9PUwgacltmGLqFunq6wuDCkOyl7A5MikfnDd6bNlmI1ZxT1XKJElvms6
-         hB0TE2mLIGSkvAqcNkCZyPuWddnk02vqKpQcx8pXjOzr5S05HeakSsxRUcgU97gtWM7d
-         6sICQ8n/YB5OqhRmayqMedII11UwNX88RXp2gZqy3L2nuiPX/vm50aaEQstOtuH2o1br
-         Q2pw==
+        bh=EQJmlP0ahwhCy64nPp0f4kxP53tZ/X2Yzc+wIK+4yII=;
+        b=xJEAZC6zlx+KwoAgbRUrd6wC8Z+xMWPQ/cjEV/s7q0OZa18GQC8b4uqmQwk6+x1k28
+         yLpDOVrsxt4FBP0g3XhheOlOSsCzEixck84v6F/5WTzCfrdoPUrfQWxqgM7iC6opeF6N
+         j1oqf2Hzow9Kw0saP59ws39+NCbVPlCxfucQDoyVAG7yVoAchmK/7Hskd0YfQCEGyk8x
+         +542TcO2ivk+zNbab1z6p8hglEl98/3Rwp/35s/I3nyxp/9JOT/71z9SIlRfbSDnqBXY
+         lNuQJKwYsx0Skh1Q6XRE5H07m84V19mTA3cjLo1Qrv/odT21lJq4ZtTaVO2sSce1TV0c
+         h3FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pD7HTNzkQ6LlDfhApbijvX7r0JmIULj//GNFGkuZGWE=;
-        b=L10RcY5N2BKJuMuzlr8dIR41b43aXQhLqP/o/lzEwGqlUXtS2GrYk8y9e3HSJN5xQD
-         F6FgDriS5KhTzfA47PRe6bseZiAcifqKfSO4qk5i3xMA0QwKdIeDDMRmDt0mpMxLpmFF
-         SqP+9BCOEhkoCvhCrkMPBdHWA6cFdBBPEYoQ9s9EWI1uAEyT8LxwVlVB8f14BSVM9C4p
-         MRjnoRryHFiUlDXwtuPq0wcihP7r4PVj0uzzx+6XUXq6nMvzJM4BMHetOr4u6CzOuzCH
-         mbtRX7Alcx14bMc58ewycBfXGc4or2vlBBKHLw0/7tYHZUW+zfNsDit4KQhm2iqk1cTD
-         aM7g==
-X-Gm-Message-State: AFqh2kpR760AV7Db6h50i9/tw7nRR3QXQhAIL8vvXjTh9Z7CK5dgG9wG
-        aI5BPvkj83xuVWfkMrXrp198KQ==
-X-Google-Smtp-Source: AMrXdXsewSK5rA0mx6EFgbMMl6cktjjOGBqLLR4cp2j9UAgBOPtTfW0CjuOuMQsECq281U4OFV8U4w==
-X-Received: by 2002:a05:600c:4248:b0:3d9:7667:c0e4 with SMTP id r8-20020a05600c424800b003d97667c0e4mr14571878wmm.31.1674230066341;
-        Fri, 20 Jan 2023 07:54:26 -0800 (PST)
+        bh=EQJmlP0ahwhCy64nPp0f4kxP53tZ/X2Yzc+wIK+4yII=;
+        b=R8cT8QzhQmlJzy38WO6p0inpa2lAvCRJP6eXSbCRMumrY0gBwXjJ9LK/gNuKrozC3U
+         6x4U3F6YHrHNi1W94tvUXg0v71AmX8aurF+uh0JLhAjTRUfhJrVExptqhzXVjDa9u/0K
+         nwTv01QJKd+V6oNnnqWMPtGCVR74hi+Hfil32JudR2PUb34ftsvUiHvUJ/HSMEuRwyJK
+         D1fnNp95lak3/HU7t0HJPl63pOe6KOwSrUcmJ/HlISgkNFvUCUpBTgIu2vqWyCtIKBgq
+         l/EeFASBnK8AutlUsNmBkuCHlBfxxFMVNXffQpE0aq+isxIeajZxx6daQHtnCH77yvbu
+         X7DQ==
+X-Gm-Message-State: AFqh2kqJ2hSDCDB1AcY1Og17wa06qORHyneBaKxMRna9n6lXhlbY4ktu
+        Ub2I4SoK5tPPFvl3cKRro2zDhg==
+X-Google-Smtp-Source: AMrXdXv+1xCnGZdqR61XFQ54dLuSwc59oBvmfaV7eF7lDZj6FpAid213KGUX2amnLnSCslLlf5t4Pg==
+X-Received: by 2002:a05:600c:4b0f:b0:3d6:2952:679b with SMTP id i15-20020a05600c4b0f00b003d62952679bmr14509508wmp.34.1674230068008;
+        Fri, 20 Jan 2023 07:54:28 -0800 (PST)
 Received: from krzk-bin.. ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id n42-20020a05600c3baa00b003d96efd09b7sm3349596wms.19.2023.01.20.07.54.24
+        by smtp.gmail.com with ESMTPSA id n42-20020a05600c3baa00b003d96efd09b7sm3349596wms.19.2023.01.20.07.54.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jan 2023 07:54:26 -0800 (PST)
+        Fri, 20 Jan 2023 07:54:27 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -64,9 +64,9 @@ Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
         =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
         Henrik Grimler <henrik@grimler.se>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 09/11] ARM: dts: exynos: correct SATA clocks in Exynos5250
-Date:   Fri, 20 Jan 2023 16:54:02 +0100
-Message-Id: <20230120155404.323386-10-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 10/11] ARM: dts: exynos: correct HS200 property in Exynos5260
+Date:   Fri, 20 Jan 2023 16:54:03 +0100
+Message-Id: <20230120155404.323386-11-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230120155404.323386-1-krzysztof.kozlowski@linaro.org>
 References: <20230120155404.323386-1-krzysztof.kozlowski@linaro.org>
@@ -76,32 +76,29 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The DT schema expects clock name matching certain patterns:
+There is no supports-hs200-mode property for MMC nodes, so assume
+intention was mmc-hs200-1_8v:
 
-  exynos5250-smdk5250.dtb: sata@122f0000: clock-names:1: 'oneOf' conditional failed, one must be fixed:
-    'sclk_sata' is not one of ['pclk', 'aclk', 'hclk', 'sata']
-    'pmalive' was expected
-    'rxoob' was expected
-    'ref' was expected
+  exynos5260-xyref5260.dtb: mmc@12140000: Unevaluated properties are not allowed ('supports-hs200-mode' was unexpected)
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- arch/arm/boot/dts/exynos5250.dtsi | 2 +-
+ arch/arm/boot/dts/exynos5260-xyref5260.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/exynos5250.dtsi b/arch/arm/boot/dts/exynos5250.dtsi
-index f82f82fc803f..9225f3552837 100644
---- a/arch/arm/boot/dts/exynos5250.dtsi
-+++ b/arch/arm/boot/dts/exynos5250.dtsi
-@@ -390,7 +390,7 @@ sata: sata@122f0000 {
- 			reg = <0x122F0000 0x1ff>;
- 			interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;
- 			clocks = <&clock CLK_SATA>, <&clock CLK_SCLK_SATA>;
--			clock-names = "sata", "sclk_sata";
-+			clock-names = "sata", "pclk";
- 			phys = <&sata_phy>;
- 			phy-names = "sata-phy";
- 			ports-implemented = <0x1>;
+diff --git a/arch/arm/boot/dts/exynos5260-xyref5260.dts b/arch/arm/boot/dts/exynos5260-xyref5260.dts
+index 3c3b751d4360..387b8494f18f 100644
+--- a/arch/arm/boot/dts/exynos5260-xyref5260.dts
++++ b/arch/arm/boot/dts/exynos5260-xyref5260.dts
+@@ -87,7 +87,7 @@ &mmc_0 {
+ 	status = "okay";
+ 	broken-cd;
+ 	cap-mmc-highspeed;
+-	supports-hs200-mode; /* 200 MHz */
++	mmc-hs200-1_8v;
+ 	card-detect-delay = <200>;
+ 	samsung,dw-mshc-ciu-div = <3>;
+ 	samsung,dw-mshc-sdr-timing = <0 4>;
 -- 
 2.34.1
 
