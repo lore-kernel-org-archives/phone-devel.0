@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43F0DC05027
-	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 15:54:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 851BBC05027
+	for <phone-devel@archiver.kernel.org>; Fri, 20 Jan 2023 15:56:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231352AbjATPyy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 Jan 2023 10:54:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
+        id S229556AbjATP4n (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 Jan 2023 10:56:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231678AbjATPym (ORCPT
+        with ESMTP id S231653AbjATPyf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 20 Jan 2023 10:54:42 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 034D85E533
-        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 07:54:29 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id fl11-20020a05600c0b8b00b003daf72fc844so6166391wmb.0
-        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 07:54:29 -0800 (PST)
+        Fri, 20 Jan 2023 10:54:35 -0500
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F23CDB7BC
+        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 07:54:26 -0800 (PST)
+Received: by mail-wm1-x32e.google.com with SMTP id f12-20020a7bc8cc000000b003daf6b2f9b9so6130130wml.3
+        for <phone-devel@vger.kernel.org>; Fri, 20 Jan 2023 07:54:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xSgM6n49EcyShr7fktwdqot3K5AnX5J3htXp++CJjcc=;
-        b=CqA6PkaGMtx+7DxIVeb9sNrO2cMLSAP4jLzXDmtYGVMDnO4n8FKU1XsKN/ScyoB+mP
-         CY8gJO9tKusLityrvFcnX5NQ5qAhbdj/2ixMEGQfCZ4UhVz3yECHfq63a8w+33n8YtkE
-         U3k8drugwg1A7LA21QHPQqRAiB4oeiGJiaRV7z0BH3iN3tMrJp1Nf5wot/i+INxG8V6z
-         RcT1hvLvRc2jRv+ls1Ho2ZWBd68Lx4iJgGGR9qHAI/p9vfL+trU5Zd6/kq2y/ZxTiUxA
-         9mSkRLMIK4hh+rVAZX9MNc5hfmm7xSpXqnH1nv8kcl0bfHn86ORS2QWIGOYCN87s5gii
-         uWgQ==
+        bh=V4HSb4CmABtKmlomwbvp4nX1h5Hso98yPVlLAhjAEjQ=;
+        b=NFvonsrCpa1/HDYc67FplCVs6GSE9m0yUsGlTT88OuygVrij6GAb7JkZalqb2CUZth
+         zcBObdTPggI2cTsl46IWHkGph4dkh7J76Cr9F5oLZKZ5VPrGQutJBsZUO9nJdMenSctE
+         HEcCBhWjZrzAmFFjw58cdjftR2s3voFanNJXn7RwTBIe/QzBvbzErChA0L7/O9JvgB1w
+         6Pv3Lm9IcnLCYhhCNlZkWDCqtyneWTsmBoj29hDqqZSt3KUbhRr86PPZVWetnSuAmoH2
+         bDAbyk+B3cVbxtH5lx2hWS8NnivDWH1Cl3BX9n/6AD33Ns5Ut8hxHU2K31p6AjzxjUHI
+         IIew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xSgM6n49EcyShr7fktwdqot3K5AnX5J3htXp++CJjcc=;
-        b=TMmOScBdHYAIRO2xwnwNof8CQmeZ8sJRMq5mbceXBDzfGqwawufkmxcycXclLrJ0S+
-         wK7xbO1JhBOFh+1PR7jkKJiPNArZXp+lT5ZupRVMPGxc+bLRjD/BsHIilm16PVGhdHOw
-         V4ALitBT+k2NR193bbBMImO5BHuEgMeHLVZ2aeaNSLTqCUCzpIUbV3Zo6pt5eierZai2
-         6nSLCSBlH2HavqsPNbyseBnn/aJDWjNCY4ZcX4GXBxGr3lWSy/vTnqmy0iQzJIuEAzJx
-         jA8Bfmvtuzrm+vK2RelEQCvucvGiPw7K37G00SvyRofrdSrUzppkMoo4aoZLJXd0Fv2u
-         nuVQ==
-X-Gm-Message-State: AFqh2koRp0trcsP1tjBTynTho6yHnkZ8icFVbYdygqdjw62ybjtqG7X8
-        bxBNF6k0QjoH/g+xVx9IvmFbAPTNPYu9xunM
-X-Google-Smtp-Source: AMrXdXtfWuN/VpvBtso8zJRkonoucoMHvJlt8jabUZsECy6yV9zjjBJaMqPyhxI1boBEX6X3fA8krA==
-X-Received: by 2002:a05:600c:600e:b0:3da:fb0b:849f with SMTP id az14-20020a05600c600e00b003dafb0b849fmr14952401wmb.25.1674230069613;
-        Fri, 20 Jan 2023 07:54:29 -0800 (PST)
+        bh=V4HSb4CmABtKmlomwbvp4nX1h5Hso98yPVlLAhjAEjQ=;
+        b=ywQkMHX3oVtKf06wGziAtbbY0kySgDXwb7ytEHVi6JB12+JO6Bz+rmyShmd6vwyIW0
+         AGGMDfDhL1xgXhkf81W3bkidRik1qDyEDFlZGRoEbzVRAf89gJN8wuRF6p5+3lZE22sI
+         cLCN4jERIwF1Vl5/Ng6zF77rGxPkllayDVAi2O2TXfzXcVtJRfSUxzB0TgtarCzxt9K8
+         9pw2m604CbP+5lLAaEtXrCMvjfpJuU/nP5z6/dga82Ogb8jUve+6ZVblu9VJ0UMRNh5m
+         Ypq86kcIXZij+stmKVBs7MpjQSHlxhq2VjiH5kh/2fe0Kvkt6t2//O1c2qWISqc50XS8
+         LlZA==
+X-Gm-Message-State: AFqh2kr2S6VvHrDuAyIlnVo06ZsU9O1ymBpZfdDR16INVfUD+0/bJsqm
+        mt3zuPnawSpF/YNq3Yjr5bkPjA==
+X-Google-Smtp-Source: AMrXdXvbOH3SFcKsMG0jy+5e9JWTMOrmU/YgM9lPiYHVnFVEOFm+Rp2aWQJ27LYidTZef1sbXow4Ew==
+X-Received: by 2002:a05:600c:2116:b0:3d6:10e:68a8 with SMTP id u22-20020a05600c211600b003d6010e68a8mr11050450wml.0.1674230064782;
+        Fri, 20 Jan 2023 07:54:24 -0800 (PST)
 Received: from krzk-bin.. ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id n42-20020a05600c3baa00b003d96efd09b7sm3349596wms.19.2023.01.20.07.54.28
+        by smtp.gmail.com with ESMTPSA id n42-20020a05600c3baa00b003d96efd09b7sm3349596wms.19.2023.01.20.07.54.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jan 2023 07:54:29 -0800 (PST)
+        Fri, 20 Jan 2023 07:54:24 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -64,9 +64,9 @@ Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
         =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
         Henrik Grimler <henrik@grimler.se>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 11/11] ARM: dts: exynos: correct HSI2C properties in Exynos5410 Odroid XU
-Date:   Fri, 20 Jan 2023 16:54:04 +0100
-Message-Id: <20230120155404.323386-12-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 08/11] ARM: dts: exynos: align HSOTG/USB node names
+Date:   Fri, 20 Jan 2023 16:54:01 +0100
+Message-Id: <20230120155404.323386-9-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230120155404.323386-1-krzysztof.kozlowski@linaro.org>
 References: <20230120155404.323386-1-krzysztof.kozlowski@linaro.org>
@@ -76,31 +76,42 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The HSI2C controller uses clock-frequency and does not have
-i2c-sda-delay.  The properties were copy-pasted from the slower
-S3C-family I2C controller:
+The DT schema expect HSOTG node names to be named "usb":
 
-  exynos5410-odroidxu.dtb: i2c@12ca0000: Unevaluated properties are not allowed ('samsung,i2c-max-bus-freq', 'samsung,i2c-sda-delay' were unexpected)
+  exynos4210-smdkv310.dtb: hsotg@12480000: $nodename:0: 'hsotg@12480000' does not match '^usb(@.*)?'
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- arch/arm/boot/dts/exynos5410-odroidxu.dts | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm/boot/dts/exynos3250.dtsi | 2 +-
+ arch/arm/boot/dts/exynos4.dtsi    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/exynos5410-odroidxu.dts b/arch/arm/boot/dts/exynos5410-odroidxu.dts
-index d1cbc6b8a570..232561620da2 100644
---- a/arch/arm/boot/dts/exynos5410-odroidxu.dts
-+++ b/arch/arm/boot/dts/exynos5410-odroidxu.dts
-@@ -164,8 +164,7 @@ map2 {
- };
+diff --git a/arch/arm/boot/dts/exynos3250.dtsi b/arch/arm/boot/dts/exynos3250.dtsi
+index 9b25449d5311..36b47c2c1663 100644
+--- a/arch/arm/boot/dts/exynos3250.dtsi
++++ b/arch/arm/boot/dts/exynos3250.dtsi
+@@ -365,7 +365,7 @@ sysmmu_fimd0: sysmmu@11e20000 {
+ 			#iommu-cells = <0>;
+ 		};
  
- &hsi2c_4 {
--	samsung,i2c-sda-delay = <100>;
--	samsung,i2c-max-bus-freq = <400000>;
-+	clock-frequency = <400000>;
- 	status = "okay";
+-		hsotg: hsotg@12480000 {
++		hsotg: usb@12480000 {
+ 			compatible = "samsung,s3c6400-hsotg";
+ 			reg = <0x12480000 0x20000>;
+ 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>;
+diff --git a/arch/arm/boot/dts/exynos4.dtsi b/arch/arm/boot/dts/exynos4.dtsi
+index 5c4ecda27a47..55afe9972460 100644
+--- a/arch/arm/boot/dts/exynos4.dtsi
++++ b/arch/arm/boot/dts/exynos4.dtsi
+@@ -362,7 +362,7 @@ exynos_usbphy: exynos-usbphy@125b0000 {
+ 			status = "disabled";
+ 		};
  
- 	usb3503: usb-hub@8 {
+-		hsotg: hsotg@12480000 {
++		hsotg: usb@12480000 {
+ 			compatible = "samsung,s3c6400-hsotg";
+ 			reg = <0x12480000 0x20000>;
+ 			interrupts = <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
 -- 
 2.34.1
 
