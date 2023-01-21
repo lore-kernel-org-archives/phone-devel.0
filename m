@@ -2,97 +2,139 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D405C004D4
-	for <phone-devel@archiver.kernel.org>; Sat, 21 Jan 2023 09:34:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84961C004D4
+	for <phone-devel@archiver.kernel.org>; Sat, 21 Jan 2023 16:46:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229707AbjAUJek (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 21 Jan 2023 04:34:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47018 "EHLO
+        id S229787AbjAUQqP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 21 Jan 2023 11:46:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229575AbjAUJej (ORCPT
+        with ESMTP id S229637AbjAUQqP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 21 Jan 2023 04:34:39 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B030142DDD;
-        Sat, 21 Jan 2023 01:34:38 -0800 (PST)
-Received: from g550jk.localnet (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 51054CC376;
-        Sat, 21 Jan 2023 09:34:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1674293646; bh=MqUZTlkDGQQvCi7SGR3c1VPMOPlAAw14WOQqx63RvVw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=T86pmCXSpo2/Jhgrr7szEYc0oopV5xI5fsJlSQydDtIvrHT+VcUKYGwUG1J/0cd+2
-         oOtk2p83/aRr0gU4TRiGD+aUPCxZm4L16g2auzJVCBBvD0OBKSxW563Agd+Q7Wh/gJ
-         QdKuUwCUgHv/HQLtGC3ldGIiIETlHaxjcN8MGaPM=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Will Deacon <will@kernel.org>
-Cc:     iommu@lists.linux.dev, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Rob Herring <robh@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Joerg Roedel <joro@8bytes.org>,
-        Robin Murphy <robin.murphy@arm.com>,
+        Sat, 21 Jan 2023 11:46:15 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6375E113F1;
+        Sat, 21 Jan 2023 08:46:13 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 13B16B8075D;
+        Sat, 21 Jan 2023 16:46:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2BAC433EF;
+        Sat, 21 Jan 2023 16:46:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674319570;
+        bh=WIOYULKqUjmgQ9s7U3j9QvtriWuRBMzlktmPMzB7lUw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Ww4HRwRlML8vsq0/FWhII3m27jKcx9T7mkSjBRV2crwF+WcCfsVk1lpfHr630h+hG
+         v52Dbzmtj5Z16p+5kYEwu+7/LAZ4BHxpq6zO1hebnDe6g0Skg32F4nQKO9lcGnrFnV
+         n67L/g3bcYUHoaGtuSWs8qO73Vme4Cwdb1OaxYk0/k+ADKDcCbhwfwxzJBfXN9dijS
+         T3VSBkQj9FaCglR3418zKcT47PUQg6lAaLZM7QBfkOAEtndhRt7rG/xkxXpvRzImkl
+         /t1X9MT4RyI0mqNQNM0zyeqj+C1r+95Toy7z5OkCXGPuMrVugsYQRyfQmgacJk4x5i
+         9koBEpfGiJwmw==
+Date:   Sat, 21 Jan 2023 16:59:54 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5] dt-bindings: iommu: qcom: Add Qualcomm MSM8953 compatible
-Date:   Sat, 21 Jan 2023 10:34:05 +0100
-Message-ID: <2663745.mvXUDI8C0e@g550jk>
-In-Reply-To: <20230119172921.GA20092@willie-the-truck>
-References: <20221105142016.93406-1-luca@z3ntu.xyz> <4793103.31r3eYUQgx@g550jk>
- <20230119172921.GA20092@willie-the-truck>
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] arm64: dts: qcom: Use labels with generic node
+ names for ADC channels
+Message-ID: <20230121165954.5806ee29@jic23-huawei>
+In-Reply-To: <20230119221757.wltdog4owclidejl@SoMainline.org>
+References: <20230119212632.185881-1-marijn.suijten@somainline.org>
+        <20230119221757.wltdog4owclidejl@SoMainline.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Donnerstag, 19. J=E4nner 2023 18:29:22 CET Will Deacon wrote:
-> On Wed, Dec 28, 2022 at 10:34:35PM +0100, Luca Weiss wrote:
-> > On Montag, 14. November 2022 14:44:59 CET Will Deacon wrote:
-> > > On Sat, Nov 05, 2022 at 03:20:17PM +0100, Luca Weiss wrote:
-> > > > Document the compatible used for IOMMU on the msm8953 SoC.
-> > > >=20
-> > > > Acked-by: Rob Herring <robh@kernel.org>
-> > > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > > ---
-> > > > Changes in v5:
-> > > > * Change subject so it hopefully gets noticed by iommu maintainers
-> > > >=20
-> > > >   (thanks Krzysztof, maybe this helps..)
-> > > > =20
-> > > >  Documentation/devicetree/bindings/iommu/qcom,iommu.txt | 1 +
-> > > >  1 file changed, 1 insertion(+)
-> > > >=20
-> > > > diff --git a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-> > > > b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt index
-> > > > 059139abce35..e6cecfd360eb 100644
-> > > > --- a/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-> > > > +++ b/Documentation/devicetree/bindings/iommu/qcom,iommu.txt
-> > > > @@ -10,6 +10,7 @@ to non-secure vs secure interrupt line.
-> > > >=20
-> > > >  - compatible       : Should be one of:
-> > > >                          "qcom,msm8916-iommu"
-> > > >=20
-> > > > +                        "qcom,msm8953-iommu"
-> > > >=20
-> > > >                       Followed by "qcom,msm-iommu-v1".
-> > >=20
-> > > I'd expect the MSM maintainers (i.e Andy and Bjorn) to pick this up.
-> >=20
-> > Bjorn, could you pick this up for v6.3 please?
->=20
-> Since this seems to be stagnating here, I'll pick it up into the smmu
-> queue along with the other pending bindings patches I have.
+On Thu, 19 Jan 2023 23:17:57 +0100
+Marijn Suijten <marijn.suijten@somainline.org> wrote:
 
-Thanks a lot!
+> +cc linux-iio@vger.kernel.org
+> 
+> Apologies, I blindly copied Jonathans request [1] to send this to
+> iio@vger.kernel.org, without checking for the common linux- prefix.
+Oops from me!
+:)
 
->=20
-> Will
+Jonathan
 
-
-
+> 
+> [1]: https://lore.kernel.org/linux-arm-msm/20221211141526.463f43e6@jic23-huawei/
+> 
+> On 2023-01-19 22:26:30, Marijn Suijten wrote:
+> > As discussed in [1] it is more convenient to use a generic adc-chan node
+> > name for ADC channels while storing a friendly - board-specific instead
+> > of PMIC-specific - name in the label, if/when desired to overwrite the
+> > channel description already contained (but previously unused) in the
+> > driver [2].
+> > 
+> > Replace the .* name pattern with the adc-chan literal, but leave the
+> > label property optional for bindings to choose to fall back a channel
+> > label hardcoded in the driver [2] instead.
+> > 
+> > [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
+> > [2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
+> > 
+> > Changes since v1:
+> > - Require adc-chan name in dt-bindings;
+> > - Replace more node names with adc-chan and a descriptive label, that
+> >   were found by running dtbs_check on adjusted bindings;
+> > - sm8250-mtp.dts: Fix accidental adc-chan2 node name with pa_therm
+> >   label, which should have been adc-chan with pa_therm2 label.
+> > 
+> > v1: https://lore.kernel.org/linux-arm-msm/20221209215308.1781047-1-marijn.suijten@somainline.org/
+> > 
+> > Marijn Suijten (2):
+> >   dt-bindings: iio: adc: Require generic adc-chan name for channel nodes
+> >   arm64: dts: qcom: Use labels with generic node names for ADC channels
+> > 
+> >  .../bindings/iio/adc/qcom,spmi-vadc.yaml      | 16 ++++----
+> >  arch/arm64/boot/dts/qcom/pm6125.dtsi          | 18 ++++++---
+> >  arch/arm64/boot/dts/qcom/pm660.dtsi           | 33 ++++++++++------
+> >  arch/arm64/boot/dts/qcom/pm8150.dtsi          |  6 +--
+> >  arch/arm64/boot/dts/qcom/pm8150b.dtsi         |  8 ++--
+> >  arch/arm64/boot/dts/qcom/pm8150l.dtsi         |  6 +--
+> >  arch/arm64/boot/dts/qcom/pm8950.dtsi          | 39 ++++++++++++-------
+> >  arch/arm64/boot/dts/qcom/pmm8155au_1.dtsi     |  6 +--
+> >  arch/arm64/boot/dts/qcom/pmm8155au_2.dtsi     |  6 +--
+> >  arch/arm64/boot/dts/qcom/pmp8074.dtsi         | 27 ++++++++-----
+> >  arch/arm64/boot/dts/qcom/pms405.dtsi          | 21 ++++++----
+> >  arch/arm64/boot/dts/qcom/qrb5165-rb5.dts      | 15 ++++---
+> >  .../dts/qcom/sc7180-trogdor-coachz-r1.dts     |  4 +-
+> >  .../boot/dts/qcom/sc7180-trogdor-coachz.dtsi  |  3 +-
+> >  .../dts/qcom/sc7180-trogdor-homestar.dtsi     |  3 +-
+> >  .../boot/dts/qcom/sc7180-trogdor-lazor.dtsi   |  2 +-
+> >  .../dts/qcom/sc7180-trogdor-pompom-r1.dts     |  2 +-
+> >  .../dts/qcom/sc7180-trogdor-pompom-r2.dts     |  2 +-
+> >  .../boot/dts/qcom/sc7180-trogdor-pompom.dtsi  |  3 +-
+> >  .../dts/qcom/sc7180-trogdor-wormdingler.dtsi  |  3 +-
+> >  arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi  |  3 +-
+> >  arch/arm64/boot/dts/qcom/sc7280-idp.dts       |  2 +-
+> >  arch/arm64/boot/dts/qcom/sc7280-idp.dtsi      |  2 +-
+> >  arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi    |  4 +-
+> >  .../qcom/sc8280xp-lenovo-thinkpad-x13s.dts    | 39 ++++++++++++-------
+> >  .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 15 ++++---
+> >  arch/arm64/boot/dts/qcom/sm8250-mtp.dts       | 21 ++++++----
+> >  27 files changed, 196 insertions(+), 113 deletions(-)
+> > 
+> > --
+> > 2.39.1
+> >   
 
