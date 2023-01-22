@@ -2,35 +2,36 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3543AC38142
-	for <phone-devel@archiver.kernel.org>; Sun, 22 Jan 2023 16:49:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D291AC54EED
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Jan 2023 16:49:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230122AbjAVQtj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 Jan 2023 11:49:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54410 "EHLO
+        id S230168AbjAVQtk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 Jan 2023 11:49:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229895AbjAVQtj (ORCPT
+        with ESMTP id S229999AbjAVQtj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Sun, 22 Jan 2023 11:49:39 -0500
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F94D7D93;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB460977F;
         Sun, 22 Jan 2023 08:49:27 -0800 (PST)
 Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id A0B0FCD17F;
-        Sun, 22 Jan 2023 16:48:55 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 2D032CD52A;
+        Sun, 22 Jan 2023 16:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1674406135; bh=hkk3joZ0mTC0UcwxuuHdlSXDDx0OPBvCwaw8zRjJjaU=;
+        t=1674406136; bh=MCYD/uKQXcuXE8zoypcmrFGZUxOYwaOpgwRq/s5nvUg=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=CSP84unqgU3MNiA4kMM1RnRhf7wVjOYOC/6RcN9qrJfRdGVeeiKP/o+JrQP3Tm5B6
-         xtUOm7HBJ9UsHzGUFvdl72+Z1WVMf+jZ2k9/B4+JSIRX9wPZgSQy4KFDKVlFgGNMc/
-         aSxuxnOVHVog0yovNyl/y1ZnlhQ1WxcAGDY5FUMQ=
+        b=YVLytJs541OFZq9By4XMD03QPGYxaFK82j7xt4j+3kTUHeN/6rClGXLMDtWtpBcmV
+         94SqW2L3fYCOU35IZPf3Payo2gBQv1dLBA0hoNrl4BPgT0GcBuKVIbHD074RVX8C4u
+         kGM1l0fNLe0WjuI0yU/gBbg3487sAi72++GwcRCk=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Sun, 22 Jan 2023 17:48:32 +0100
-Subject: [PATCH 1/5] ARM: dts: qcom: pm8941: Add vibrator node
+Date:   Sun, 22 Jan 2023 17:48:34 +0100
+Subject: [PATCH 3/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add volume keys
+ and hall sensor
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230122-msm8974-bacon-features-v1-1-4049f565c24c@z3ntu.xyz>
+Message-Id: <20230122-msm8974-bacon-features-v1-3-4049f565c24c@z3ntu.xyz>
 References: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
 In-Reply-To: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -42,49 +43,108 @@ To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.11.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=713; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=hkk3joZ0mTC0UcwxuuHdlSXDDx0OPBvCwaw8zRjJjaU=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBjzWjyA2uq3IAKgtXVZ+hXAHDmyTJuKDODtcN1ynjz
- IxxQqyCJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCY81o8gAKCRBy2EO4nU3XVpVjD/
- 9PQLiq2tz2CpOqjGEKldludYM3tJ/avYS7mRo5d0XOPn8cZYuASTdJCxRbN2e/rQrb5rBWNROLaTxB
- e5CRmB2BH7kDLHjefoYUeGA21/+GyyC2+DsHc/UuWF6vC6JmjRnRRTM9IYq15ud8yihbmeu+6C8Zsm
- FGizuTNE1wdxNFeosN5iOlke3pdDGKj6p+deinSQ2HRXaS+LBV7V4Yxb1XJ7h5XdJSiX0kUdVCMR3u
- WPNfYl69sJhyANLn401J8Y/b0qRMuz3LUMM4k0UXs/tUr3hGzrWNZQP/Ru/tnKdC/3SGgZnL/EZXdH
- T1fU32jTjyOmr9z9Ge39Fy6gT65eVTdgcozdk83nl7xQewgbvdIlLAVeukkjOCaGj/WNNWdE/29egS
- NzNPjfTE7IHGylI1gnPVAnVfokMFmn8luO0A2eFrHbkSKCNp/tv0+kAJAx6KsHPXv7AuoA/uVqsz3I
- B6hXFUeIL9/9mxl7RcwskoQH+9jxL2qHjwf5ETxpGxNKitFPzLs7yy7cKgL3nyhXssWvvDgJGcdhRr
- ut3JvL5VeaqEp/woRyxYcb7z0l7nRrT9ZxKNQasDeL92GS/tch7OmzSpkgOH6Osk3DbeK0OQkGu07o
- svQehs3qqEnnE3U2MIMKk0mNhlmgZOSB14EqtT3IemyhzD2e/fZiqSXg6yPQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2018; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=MCYD/uKQXcuXE8zoypcmrFGZUxOYwaOpgwRq/s5nvUg=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBjzWj0K+Sjdz33+q+ZiyEneatD28/kXhatCcKKTvc7
+ O0Kdjz2JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCY81o9AAKCRBy2EO4nU3XVrGpD/
+ 4+7bo644DmLWzueuSheIyicxki8irbf8K/fI9kXquRj1+dfJuHK+n+piVA7IpCUSvRSRwK3xe7K4dY
+ M+B0x7GAxA+A2YjWsyANk1yh8Ytcl/EVH3eXoa4ZyKYHFsaJudqZgflm7zrWCC9kp9xn4v7rePo9HN
+ FXUIuYTCFSqR3UgS7ANYErPY3EoYhzSrLVfgnwSTYMV+esUowhz5TB3u1GRAZuY/n9al2hodE5DzFs
+ z6dIPx0NDMim++3P8VgxMrQftXB1FejQW/9OcydUY4hUyf/nVwG8oqTRp860Uffzz6kjAnN5dVoeJu
+ MZOFVxe64mOA152KC4nilZUhdHq1+lU1Cy1gsAlE89Uz2o/nFCaLwZt/C9W1H/9uWdHlXn3TjD6w54
+ /JP79LY9NVkNSM0jOYS+Su1gf/DYoJWI9I5v93Ct656w/iDW4NcykGipSwkTFPr8/O4TniFF6Zsxxd
+ LnPo/6t/KRGQokDoVDvtVdyUtMeZ3mrtnJ/+zlKvjy+o0Xg/uWhFrinxe1vW6LB3OR77g77H0UiEvi
+ wWC/dFIf/Vyp2IwhFgo/lSJYZfSVLxhOnAzpT+7vUx2L5BlRlHwN6ACU+MIMJlR8NxIbdZr4uLTi3N
+ jlF6QkRnjIS857G8c68QbTuw4iKnCAYaXQQXF1D0m4bTwZwKJDdtC146BjTw==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the node describing the vibrator that's found on pm8941.
+Add nodes for the volume buttons and the hall sensor that are found on
+the device.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- arch/arm/boot/dts/qcom-pm8941.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 50 ++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/arch/arm/boot/dts/qcom-pm8941.dtsi b/arch/arm/boot/dts/qcom-pm8941.dtsi
-index cd957a1e7cdf..a821f0368a28 100644
---- a/arch/arm/boot/dts/qcom-pm8941.dtsi
-+++ b/arch/arm/boot/dts/qcom-pm8941.dtsi
-@@ -161,6 +161,12 @@ pm8941_lpg: pwm {
- 			status = "disabled";
- 		};
- 
-+		pm8941_vib: vibrator@c000 {
-+			compatible = "qcom,pm8916-vib";
-+			reg = <0xc000>;
-+			status = "disabled";
+diff --git a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+index 63180fe1d292..10ba3c94e26d 100644
+--- a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
++++ b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+@@ -19,6 +19,38 @@ aliases {
+ 	chosen {
+ 		stdout-path = "serial0:115200n8";
+ 	};
++
++	gpio-keys {
++		compatible = "gpio-keys";
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&gpio_keys_default>, <&gpio_hall_sensor_default>;
++
++		key-volume-down {
++			label = "Volume Down";
++			gpios = <&pm8941_gpios 2 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_VOLUMEDOWN>;
++			wakeup-source;
++			debounce-interval = <15>;
 +		};
 +
- 		pm8941_wled: wled@d800 {
- 			compatible = "qcom,pm8941-wled";
- 			reg = <0xd800>;
++		key-volume-up {
++			label = "Volume Up";
++			gpios = <&pm8941_gpios 5 GPIO_ACTIVE_LOW>;
++			linux,code = <KEY_VOLUMEUP>;
++			wakeup-source;
++			debounce-interval = <15>;
++		};
++
++		event-hall-sensor {
++			label = "Hall Effect Sensor";
++			gpios = <&tlmm 68 GPIO_ACTIVE_LOW>;
++			linux,input-type = <EV_SW>;
++			linux,code = <SW_LID>;
++			linux,can-disable;
++			debounce-interval = <150>;
++		};
++	};
+ };
+ 
+ &blsp1_i2c1 {
+@@ -95,6 +127,17 @@ &pm8941_coincell {
+ 	status = "okay";
+ };
+ 
++&pm8941_gpios {
++	gpio_keys_default: gpio-keys-active-state {
++		pins = "gpio2", "gpio5";
++		function = "normal";
++
++		input-enable;
++		bias-disable;
++		power-source = <PM8941_GPIO_S3>;
++	};
++};
++
+ &pm8941_vib {
+ 	status = "okay";
+ };
+@@ -349,6 +392,13 @@ &sdhc_1 {
+ };
+ 
+ &tlmm {
++	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
++		pins = "gpio68";
++		function = "gpio";
++		drive-strength = <8>;
++		bias-pull-up;
++	};
++
+ 	sdc1_on: sdc1-on-state {
+ 		clk-pins {
+ 			pins = "sdc1_clk";
 
 -- 
 2.39.1
