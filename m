@@ -2,171 +2,79 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EEA11C004D4
-	for <phone-devel@archiver.kernel.org>; Sat, 21 Jan 2023 16:54:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C90CC27C76
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Jan 2023 14:57:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229714AbjAUQys (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 21 Jan 2023 11:54:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40380 "EHLO
+        id S229972AbjAVO5k (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 Jan 2023 09:57:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229463AbjAUQyq (ORCPT
+        with ESMTP id S229936AbjAVO5j (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 21 Jan 2023 11:54:46 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 313A120067;
-        Sat, 21 Jan 2023 08:54:45 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        Sun, 22 Jan 2023 09:57:39 -0500
+X-Greylist: delayed 450 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 22 Jan 2023 06:57:37 PST
+Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [IPv6:2a01:4f8:a0:821d::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 14FC31BAF6;
+        Sun, 22 Jan 2023 06:57:36 -0800 (PST)
+Received: from shock.lan (2-248-191-197-no36.tbcn.telia.com [2.248.191.197])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D7067B80816;
-        Sat, 21 Jan 2023 16:54:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6615EC433EF;
-        Sat, 21 Jan 2023 16:54:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674320082;
-        bh=6ozn67CKzOc1y3DxxRz93tgT2WqnbMotA91WAsPajuY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=lYbFzMT9ytogqyj1iWCKlG/uRMZpyaqTwCvSLm43T7YBALV16GjveBWqWWwpeCzF8
-         KQIevFEvqzC2YPgSrAVE4RCd6GR5gtZ1kf9NvlW1qr9izDv5UOQ4F5PmXmaeZ6W7xl
-         eQkMtJz3zdv7dDFTZPlQDUtfrGwjchnf/BU0L3rv6wNU+RjP8QcUBDAhv8aryeZ/qc
-         lIduCFwc3UDCPVDVvvztTSuhMJTL10Niq4+jhOanvCfiChT2QV2wyllZ9yIcC+Neep
-         urFE6wCVIOLngB5wvNhqhxkZAV8Yp+tW9r++SMnWOVcgd8n/4K48XuvGPAerIfA4MP
-         +q6mCiSikLvhg==
-Date:   Sat, 21 Jan 2023 17:08:25 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
+        by proxmox1.postmarketos.org (Postfix) with ESMTPSA id 961631403EE;
+        Sun, 22 Jan 2023 14:50:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+        s=donut; t=1674399005;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=XZ48KyrdXx/omQ0ya+/qEXDSGlTqVrVn5v4sm9m+VDE=;
+        b=YMUDAjSq9lNKIHKRCp38o4iW7ZD9oaW8d/ywbmwy0Zmb9YwZioO1yKzizsvDSqoZa97p5W
+        CkVIwPVFQTp1mzIa0w37bG1no75yGPgwWNweQbK2T3J0XwmHqAOdSP8gE+o++KViCbmFkZ
+        G3tIfCHz07HjR8aM1LBaPWIA5QBUNb4=
+From:   Stefan Hansson <newbyte@postmarketos.org>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Require generic adc-chan
- name for channel nodes
-Message-ID: <20230121170825.0d284151@jic23-huawei>
-In-Reply-To: <20230119212632.185881-2-marijn.suijten@somainline.org>
-References: <20230119212632.185881-1-marijn.suijten@somainline.org>
-        <20230119212632.185881-2-marijn.suijten@somainline.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.36; x86_64-pc-linux-gnu)
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        soc@kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        matti.lehtimaki@gmail.com,
+        Stefan Hansson <newbyte@postmarketos.org>
+Subject: [PATCH 0/3] Add samsung-matisselte and common matisse dtsi
+Date:   Sun, 22 Jan 2023 15:47:47 +0100
+Message-Id: <20230122144749.87597-1-newbyte@postmarketos.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 19 Jan 2023 22:26:31 +0100
-Marijn Suijten <marijn.suijten@somainline.org> wrote:
+This series adds a common samsung-matisse dtsi and reworks
+samsung-matisse-wifi to use it, and introduces samsung-matisselte. I
+choose matisselte over matisse-lte as this is how most other devices
+(klte, s3ve3g) do it and it is the codename that Samsung gave the
+device. See individual commits for more information.
 
-> As discussed in [1] it is more convenient to use a generic adc-chan node
-> name for ADC channels while storing a friendly - board-specific instead
-> of PMIC-specific - name in the label, if/when desired to overwrite the
-> channel description already contained (but previously unused) in the
-> driver [2].
-> 
-> Replace the .* name pattern with the adc-chan literal, but leave the
-> label property optional for bindings to choose to fall back a channel
-> label hardcoded in the driver [2] instead.
-> 
-> [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
-> [2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
-> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Other than the use in the tm5 thermal example that Rob's bot found, this looks
-good to me.  I think ideal would be to fix that in a precursor patch then
-do this one.
+Stefan Hansson (3):
+  ARM: dts: qcom: samsung-matisse-common: Add initial common device tree
+  dt-bindings: arm: qcom: Add MSM8926 and Samsung Galaxy Tab 4 10.1 LTE
+  ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 10.1 LTE
+    (SM-T535)
 
-Note that the existing two patches should be in the other order
-1. Update the dtsi
-2. Tighten the bounds to check they are right.
+ .../devicetree/bindings/arm/qcom.yaml         |   6 +
+ arch/arm/boot/dts/Makefile                    |   1 +
+ .../dts/qcom-apq8026-samsung-matisse-wifi.dts | 511 +-----------------
+ .../qcom-msm8226-samsung-matisse-common.dtsi  | 510 +++++++++++++++++
+ .../dts/qcom-msm8926-samsung-matisselte.dts   |  39 ++
+ 5 files changed, 568 insertions(+), 499 deletions(-)
+ create mode 100644 arch/arm/boot/dts/qcom-msm8226-samsung-matisse-common.dtsi
+ create mode 100644 arch/arm/boot/dts/qcom-msm8926-samsung-matisselte.dts
 
-Doesn't matter much though as the two patches will probably go through
-different trees.
-
-Thanks,
-
-Jonathan
-
-> ---
->  .../bindings/iio/adc/qcom,spmi-vadc.yaml         | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-> index bd6e0d6f6e0c..9b1a60fe7599 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-> @@ -54,7 +54,7 @@ required:
->    - '#io-channel-cells'
->  
->  patternProperties:
-> -  "^.*@[0-9a-f]+$":
-> +  "^adc-chan@[0-9a-f]+$":
->      type: object
->      additionalProperties: false
->      description: |
-> @@ -148,7 +148,7 @@ allOf:
->  
->      then:
->        patternProperties:
-> -        "^.*@[0-9a-f]+$":
-> +        "^adc-chan@[0-9a-f]+$":
->            properties:
->              qcom,decimation:
->                enum: [ 512, 1024, 2048, 4096 ]
-> @@ -171,7 +171,7 @@ allOf:
->  
->      then:
->        patternProperties:
-> -        "^.*@[0-9a-f]+$":
-> +        "^adc-chan@[0-9a-f]+$":
->            properties:
->              qcom,decimation:
->                enum: [ 256, 512, 1024 ]
-> @@ -194,7 +194,7 @@ allOf:
->  
->      then:
->        patternProperties:
-> -        "^.*@[0-9a-f]+$":
-> +        "^adc-chan@[0-9a-f]+$":
->            properties:
->              qcom,decimation:
->                enum: [ 250, 420, 840 ]
-> @@ -217,7 +217,7 @@ allOf:
->  
->      then:
->        patternProperties:
-> -        "^.*@[0-9a-f]+$":
-> +        "^adc-chan@[0-9a-f]+$":
->            properties:
->              qcom,decimation:
->                enum: [ 85, 340, 1360 ]
-> @@ -292,16 +292,18 @@ examples:
->              #io-channel-cells = <1>;
->  
->              /* Other properties are omitted */
-> -            xo-therm@44 {
-> +            adc-chan@44 {
->                  reg = <PMK8350_ADC7_AMUX_THM1_100K_PU>;
->                  qcom,ratiometric;
->                  qcom,hw-settle-time = <200>;
-> +                label = "xo_therm";
->              };
->  
-> -            conn-therm@47 {
-> +            adc-chan@47 {
->                  reg = <PM8350_ADC7_AMUX_THM4_100K_PU(1)>;
->                  qcom,ratiometric;
->                  qcom,hw-settle-time = <200>;
-> +                label = "conn_therm";
->              };
->          };
->      };
+-- 
+2.39.0
 
