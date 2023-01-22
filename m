@@ -2,36 +2,35 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D291AC54EED
-	for <phone-devel@archiver.kernel.org>; Sun, 22 Jan 2023 16:49:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E233DC25B4E
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Jan 2023 16:49:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230168AbjAVQtk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 Jan 2023 11:49:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54418 "EHLO
+        id S230121AbjAVQtm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 Jan 2023 11:49:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229999AbjAVQtj (ORCPT
+        with ESMTP id S230037AbjAVQtm (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 22 Jan 2023 11:49:39 -0500
+        Sun, 22 Jan 2023 11:49:42 -0500
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB460977F;
-        Sun, 22 Jan 2023 08:49:27 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78F281C320;
+        Sun, 22 Jan 2023 08:49:32 -0800 (PST)
 Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 2D032CD52A;
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id AE834CD52F;
         Sun, 22 Jan 2023 16:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1674406136; bh=MCYD/uKQXcuXE8zoypcmrFGZUxOYwaOpgwRq/s5nvUg=;
+        t=1674406136; bh=UC4MZp7joZ5KIGVSNAjIE3z+woZwa8RY5kG95For80s=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=YVLytJs541OFZq9By4XMD03QPGYxaFK82j7xt4j+3kTUHeN/6rClGXLMDtWtpBcmV
-         94SqW2L3fYCOU35IZPf3Payo2gBQv1dLBA0hoNrl4BPgT0GcBuKVIbHD074RVX8C4u
-         kGM1l0fNLe0WjuI0yU/gBbg3487sAi72++GwcRCk=
+        b=fVblwWHYIq+sZjwawB8O/+pjliEqr1MXSpYnZ4VYptxGu/htsKJQYy3mvkJNPL/Re
+         qnJC9+OEUQ+h0mMU+Rq6PhvP2xrNcbMwYxxWmVbPlrBHPdCOl+2+xU110ZhDqMtN4B
+         hBNLu3aL9/t/mrFmF2DMtf+a7qyhEHH1BaP1wFsc=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Sun, 22 Jan 2023 17:48:34 +0100
-Subject: [PATCH 3/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add volume keys
- and hall sensor
+Date:   Sun, 22 Jan 2023 17:48:36 +0100
+Subject: [PATCH 5/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add notification LED
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230122-msm8974-bacon-features-v1-3-4049f565c24c@z3ntu.xyz>
+Message-Id: <20230122-msm8974-bacon-features-v1-5-4049f565c24c@z3ntu.xyz>
 References: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
 In-Reply-To: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -43,108 +42,75 @@ To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.11.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2018; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=MCYD/uKQXcuXE8zoypcmrFGZUxOYwaOpgwRq/s5nvUg=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBjzWj0K+Sjdz33+q+ZiyEneatD28/kXhatCcKKTvc7
- O0Kdjz2JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCY81o9AAKCRBy2EO4nU3XVrGpD/
- 4+7bo644DmLWzueuSheIyicxki8irbf8K/fI9kXquRj1+dfJuHK+n+piVA7IpCUSvRSRwK3xe7K4dY
- M+B0x7GAxA+A2YjWsyANk1yh8Ytcl/EVH3eXoa4ZyKYHFsaJudqZgflm7zrWCC9kp9xn4v7rePo9HN
- FXUIuYTCFSqR3UgS7ANYErPY3EoYhzSrLVfgnwSTYMV+esUowhz5TB3u1GRAZuY/n9al2hodE5DzFs
- z6dIPx0NDMim++3P8VgxMrQftXB1FejQW/9OcydUY4hUyf/nVwG8oqTRp860Uffzz6kjAnN5dVoeJu
- MZOFVxe64mOA152KC4nilZUhdHq1+lU1Cy1gsAlE89Uz2o/nFCaLwZt/C9W1H/9uWdHlXn3TjD6w54
- /JP79LY9NVkNSM0jOYS+Su1gf/DYoJWI9I5v93Ct656w/iDW4NcykGipSwkTFPr8/O4TniFF6Zsxxd
- LnPo/6t/KRGQokDoVDvtVdyUtMeZ3mrtnJ/+zlKvjy+o0Xg/uWhFrinxe1vW6LB3OR77g77H0UiEvi
- wWC/dFIf/Vyp2IwhFgo/lSJYZfSVLxhOnAzpT+7vUx2L5BlRlHwN6ACU+MIMJlR8NxIbdZr4uLTi3N
- jlF6QkRnjIS857G8c68QbTuw4iKnCAYaXQQXF1D0m4bTwZwKJDdtC146BjTw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1264; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=UC4MZp7joZ5KIGVSNAjIE3z+woZwa8RY5kG95For80s=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBjzWj2Melh4WgPgof4i5KIb9eQCvJo0gQAcgbgA6Ml
+ Zfm8VqOJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCY81o9gAKCRBy2EO4nU3XVrm3EA
+ C/KppKnzqSEjeDp67YBOnF3nRIdl7sMxjYsRfYN0kkt3dOtwmFkhbXoqplheSGGdjdIpOqWWYyu5p5
+ vbabckzcp6SPm/XhlGBPFtq+diyApCW8CUx6JzsS0LhLEVrJpHH5+0gJeRaPQc/rVq8r+wld8x4y+h
+ pT0kpn/f3SDYycRw0QwvY6poLHZxu6/BUx54rrKS5klUOuwUatphUBLHO2F9ms0EO5VHsHcoKj4e1S
+ rwygzJH1uQnRN4Na6SK6VO9uO9aXcwd4tFqw1Fhrq2KVvpJvN/TmIaxfZBp5OcLEOiUWsYZzDzr8ud
+ ie2j811S73Bs3yZdmGfkJUilDHOjJoQyqAcDQBQORrQ5EdldgFuEVHgxfRev8FMCgoMQTFIWunbq0u
+ VM7ENcBQ7tBDlX95Ne7tMEUdMXsM/2obbPKYDKJRQ/4cJWbAlfSAVGIZP/TVPq6q+Yj6Bfnz8jcPyH
+ 3Hva2cUGoMKhrGv93G5Tolj7NLnNnF3JB2Aq9L2HZlZZhuvdBK/uETx96gAmpA/TBpp8HrM9iJZ5WU
+ La9QVrfGOcypa7xbAFB/Ut49xBt3dfuQxRBwh7ppTrR8xRYf8OslVNoJNBnf/+TBQ01AmMF34JImMO
+ 8yDLkg4icyACHND+hdUkb2f6K6q0Q9mdcYQYnSnD44tTAsc0z81scOnc8ytw==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add nodes for the volume buttons and the hall sensor that are found on
-the device.
+Add the node describing the sn3193 that's used to provide notification
+LED.
+
+Unfortunately the driver currently supports neither multicolor API nor
+using the properties function & color, so we use label instead.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- .../arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 50 ++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ .../arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 28 ++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
 diff --git a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-index 63180fe1d292..10ba3c94e26d 100644
+index ffb486ceb6a6..a672c45d7070 100644
 --- a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
 +++ b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-@@ -19,6 +19,38 @@ aliases {
- 	chosen {
- 		stdout-path = "serial0:115200n8";
+@@ -114,6 +114,34 @@ led@0 {
+ 			default-brightness = <80>;
+ 		};
  	};
 +
-+	gpio-keys {
-+		compatible = "gpio-keys";
++	led-controller@68 {
++		compatible = "si-en,sn3193";
++		reg = <0x68>;
 +
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&gpio_keys_default>, <&gpio_hall_sensor_default>;
++		shutdown-gpios = <&tlmm 45 GPIO_ACTIVE_HIGH>;
 +
-+		key-volume-down {
-+			label = "Volume Down";
-+			gpios = <&pm8941_gpios 2 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEDOWN>;
-+			wakeup-source;
-+			debounce-interval = <15>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		led@1 {
++			reg = <1>;
++			label = "red:status";
++			led-max-microamp = <17500>;
 +		};
 +
-+		key-volume-up {
-+			label = "Volume Up";
-+			gpios = <&pm8941_gpios 5 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEUP>;
-+			wakeup-source;
-+			debounce-interval = <15>;
++		led@2 {
++			reg = <2>;
++			label = "green:status";
++			led-max-microamp = <17500>;
 +		};
 +
-+		event-hall-sensor {
-+			label = "Hall Effect Sensor";
-+			gpios = <&tlmm 68 GPIO_ACTIVE_LOW>;
-+			linux,input-type = <EV_SW>;
-+			linux,code = <SW_LID>;
-+			linux,can-disable;
-+			debounce-interval = <150>;
++		led@3 {
++			reg = <3>;
++			label = "blue:status";
++			led-max-microamp = <17500>;
 +		};
 +	};
  };
  
- &blsp1_i2c1 {
-@@ -95,6 +127,17 @@ &pm8941_coincell {
- 	status = "okay";
- };
- 
-+&pm8941_gpios {
-+	gpio_keys_default: gpio-keys-active-state {
-+		pins = "gpio2", "gpio5";
-+		function = "normal";
-+
-+		input-enable;
-+		bias-disable;
-+		power-source = <PM8941_GPIO_S3>;
-+	};
-+};
-+
- &pm8941_vib {
- 	status = "okay";
- };
-@@ -349,6 +392,13 @@ &sdhc_1 {
- };
- 
- &tlmm {
-+	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
-+		pins = "gpio68";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-pull-up;
-+	};
-+
- 	sdc1_on: sdc1-on-state {
- 		clk-pins {
- 			pins = "sdc1_clk";
+ &blsp1_i2c6 {
 
 -- 
 2.39.1
