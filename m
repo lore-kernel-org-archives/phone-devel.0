@@ -2,35 +2,35 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03D04C38142
-	for <phone-devel@archiver.kernel.org>; Sun, 22 Jan 2023 16:49:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6FA4C61DA4
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Jan 2023 16:49:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230056AbjAVQtD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 Jan 2023 11:49:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53344 "EHLO
+        id S230091AbjAVQtE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 Jan 2023 11:49:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229799AbjAVQtB (ORCPT
+        with ESMTP id S229895AbjAVQtB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Sun, 22 Jan 2023 11:49:01 -0500
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D7B7D9F;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E91A69760;
         Sun, 22 Jan 2023 08:48:57 -0800 (PST)
 Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id E3647CD525;
-        Sun, 22 Jan 2023 16:48:55 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 6DC1FCD52C;
+        Sun, 22 Jan 2023 16:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1674406136; bh=FeNVtUdytvubaP0uimVMcr9Plbnb7l5JICVHXAO6K/4=;
+        t=1674406136; bh=DqwruzUCCJYrcCYrda9C8IRCq0DuKHje6Db9P9sSPWA=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=olOeDCUL+2FF8X/aJOzERYlr+skdR12Jp7iUZ3eq/H+maHJIbqbvIU9X7zbUi8FBO
-         /Kz5TPgmoywFCMsTBRtorT17YiY9Ogguua6bs3v2QB8AcVZ25RHgcO4RGxBA2msiee
-         yNJbKgXJ2iLE/A3l5HZGgasS7InTEDcvIa4BqeRs=
+        b=apDm9kJczk72vAZhzkclWOjco7iqsaQFsWWCWFewAiCQL+Lf2FLO041tB23e/+YOE
+         vWoc+BJrsa2RA7Dv+NIKLyjfwtVaNMJXe2LrnoLAdHKOnesXW8FUntYNGrlmE/hGJu
+         YE0MUzL/EeznRRh9HpFI98DzdreMveK+N974DfuU=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Sun, 22 Jan 2023 17:48:33 +0100
-Subject: [PATCH 2/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add vibrator
+Date:   Sun, 22 Jan 2023 17:48:35 +0100
+Subject: [PATCH 4/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add backlight
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230122-msm8974-bacon-features-v1-2-4049f565c24c@z3ntu.xyz>
+Message-Id: <20230122-msm8974-bacon-features-v1-4-4049f565c24c@z3ntu.xyz>
 References: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
 In-Reply-To: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -42,47 +42,58 @@ To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.11.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=691; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=FeNVtUdytvubaP0uimVMcr9Plbnb7l5JICVHXAO6K/4=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBjzWjzzh4/8zbBHv3mCEHVv66Nv1+91v2ctZk1G4vK
- VXhtH8uJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCY81o8wAKCRBy2EO4nU3XVrRjD/
- 4sLwt6105gqxpVAMn7x+2rNXXjMTkRN9Vz64Yj7WW2wnEZ2ziS1OMwJTME5y9c+G5nAiGfW1tI+QTp
- XCWbrwat/llyg4dIaR4kqrq7/G52mZp/mcpWl93jwJ7ybeifmyTMTF/wsugOwkQg4qCFXUcolayVOZ
- BxmbeM+DSgsKYKEztg5JQzX+INEGodreTiWUct/KSNGf0cSfC8m3VOKaVG5g0m2iK+ISzvhGBbREpc
- POClyqF4Ebd8x0BTIYLb29w4dH7Apo/ReUHp/ANyyWuUZvBUbmSwYB/4EMBvofm75CVrI4BOQw+4+h
- kUDYv6MDeNFXDPb/V0Dwitdgr9N2+64Q6uztD/4MxrjrLGZV6dtRP7HE7d6BWVnYUQYAWu3Ij42iUu
- 3HAC0MGzoLJNXD4XxIQpz5RXZw4jbQ+yVhlbMqHdbjNN0cfqZViF5GCcNuzLR3XA/38hQKrAtcuGh8
- LSHkjOM9DJi4Db+wKro8yhFgNSWveGqZHmxsjtLiCKZ53g722oeTg568R05lHrx0VoxtuOUgy+WgLr
- PpuHetkp856nmxuillfFpTT+qI44kIU4wbNU23rFoSXkp7sTz06nEWBaSCVxAOUosL3eIcPV5/gYSt
- 33EwMwEOdFibXdx9Zx6BpAvZKI6sILUm3CvEIcUKqWmhrkaVgBhur+Gi2TRg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=883; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=DqwruzUCCJYrcCYrda9C8IRCq0DuKHje6Db9P9sSPWA=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBjzWj1i8z82nJDQrfm2hIadOFkbhNiX190iIzC7etK
+ eyh72iWJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCY81o9QAKCRBy2EO4nU3XVmDyEA
+ C7xFrBO3XCd0ZelVBBxSBpWUCRsEHsLTrXeEyQyq5A+AMJq3YRdz1VWxdcFkTj+rbx77mrylJUgkan
+ CXgC5camIKX8oOZhq0IxpGzsfYjm6L6hLyedXwP7zCCrPulwapgtbbHJJTX2MwmNcZbcw6dc88zaNw
+ +iQ5MAI3DAYz0asSSrY0iaQgtV/LqcvsXPMY8iWJ4uFap+sONDBnDtu957Z5zL1dhyYuSHKOgOPqan
+ c7jJOYccrAQMb4jT3snVUvuHEE9+FQPqVvTo1+nLcjl9hSOqt1NTMwfAM8da1y80SlGxeTmDnJuxP5
+ m84ipe/SqSGbREePu1wqEAiM8DpbCB1HzY+emCMiyfNq5aRik4ATAwSYMDYTBc4zyA1a4uX/9zlzRT
+ g4i8DFfj1ipXLz43fenCC2vaaClKlo8+9l8XZCHdx0Kxu2afbiY6SuccwNomsIX2mFDDjiZZ90lMVu
+ UqZQIosb2Qwz7WgUy/IUZwffkRku3vC0iLTM9oQHW30eTCp/1yDWdpZETsWTyStzUjJThz7cnqDnAg
+ RelIVrOdwzFrxbvrqnAWCXjUVmIhwGUvMZopxvJxJ8VS2jyS9m2KE6R9YOIyn5ZP1Xfjhv+5Eqn11K
+ /kBvrXwpMcOlLHJlo/XEnkqRFrOkXdWprzvuYI9HsM+UTezVFH3mU1Zw6guA==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Enable the pm8941 vibrator that's wired up on this device.
+Add the node for the lm3630 that is used to control backlight.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-index b5606623f968..63180fe1d292 100644
+index 10ba3c94e26d..ffb486ceb6a6 100644
 --- a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
 +++ b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-@@ -95,6 +95,10 @@ &pm8941_coincell {
- 	status = "okay";
+@@ -99,6 +99,21 @@ rmi4-f12@12 {
+ 			syna,clip-y-high = <1920>;
+ 		};
+ 	};
++
++	led-controller@36 {
++		compatible = "ti,lm3630a";
++		reg = <0x36>;
++
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		led@0 {
++			reg = <0>;
++			led-sources = <0 1>;
++			label = "lcd-backlight";
++			default-brightness = <80>;
++		};
++	};
  };
  
-+&pm8941_vib {
-+	status = "okay";
-+};
-+
- &pronto {
- 	vddmx-supply = <&pm8841_s1>;
- 	vddcx-supply = <&pm8841_s2>;
+ &blsp1_i2c6 {
 
 -- 
 2.39.1
