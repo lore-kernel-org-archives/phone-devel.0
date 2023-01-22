@@ -2,115 +2,87 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E233DC25B4E
-	for <phone-devel@archiver.kernel.org>; Sun, 22 Jan 2023 16:49:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E200C54EB4
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Jan 2023 23:31:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230121AbjAVQtm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 Jan 2023 11:49:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54514 "EHLO
+        id S230172AbjAVXbj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 Jan 2023 18:31:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230037AbjAVQtm (ORCPT
+        with ESMTP id S230137AbjAVXbh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 22 Jan 2023 11:49:42 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78F281C320;
-        Sun, 22 Jan 2023 08:49:32 -0800 (PST)
-Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id AE834CD52F;
-        Sun, 22 Jan 2023 16:48:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1674406136; bh=UC4MZp7joZ5KIGVSNAjIE3z+woZwa8RY5kG95For80s=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=fVblwWHYIq+sZjwawB8O/+pjliEqr1MXSpYnZ4VYptxGu/htsKJQYy3mvkJNPL/Re
-         qnJC9+OEUQ+h0mMU+Rq6PhvP2xrNcbMwYxxWmVbPlrBHPdCOl+2+xU110ZhDqMtN4B
-         hBNLu3aL9/t/mrFmF2DMtf+a7qyhEHH1BaP1wFsc=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Sun, 22 Jan 2023 17:48:36 +0100
-Subject: [PATCH 5/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add notification LED
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230122-msm8974-bacon-features-v1-5-4049f565c24c@z3ntu.xyz>
-References: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
-In-Reply-To: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Sun, 22 Jan 2023 18:31:37 -0500
+Received: from relay04.th.seeweb.it (relay04.th.seeweb.it [5.144.164.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A87C12592
+        for <phone-devel@vger.kernel.org>; Sun, 22 Jan 2023 15:31:32 -0800 (PST)
+Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 188351F675;
+        Mon, 23 Jan 2023 00:31:29 +0100 (CET)
+Date:   Mon, 23 Jan 2023 00:31:27 +0100
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] arm64: dts: qcom: Use labels with generic node
+ names for ADC channels
+Message-ID: <20230122233127.n4ned4cuiyiay42u@SoMainline.org>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
+        Jonathan Cameron <jic23@kernel.org>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>, iio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.11.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1264; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=UC4MZp7joZ5KIGVSNAjIE3z+woZwa8RY5kG95For80s=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBjzWj2Melh4WgPgof4i5KIb9eQCvJo0gQAcgbgA6Ml
- Zfm8VqOJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCY81o9gAKCRBy2EO4nU3XVrm3EA
- C/KppKnzqSEjeDp67YBOnF3nRIdl7sMxjYsRfYN0kkt3dOtwmFkhbXoqplheSGGdjdIpOqWWYyu5p5
- vbabckzcp6SPm/XhlGBPFtq+diyApCW8CUx6JzsS0LhLEVrJpHH5+0gJeRaPQc/rVq8r+wld8x4y+h
- pT0kpn/f3SDYycRw0QwvY6poLHZxu6/BUx54rrKS5klUOuwUatphUBLHO2F9ms0EO5VHsHcoKj4e1S
- rwygzJH1uQnRN4Na6SK6VO9uO9aXcwd4tFqw1Fhrq2KVvpJvN/TmIaxfZBp5OcLEOiUWsYZzDzr8ud
- ie2j811S73Bs3yZdmGfkJUilDHOjJoQyqAcDQBQORrQ5EdldgFuEVHgxfRev8FMCgoMQTFIWunbq0u
- VM7ENcBQ7tBDlX95Ne7tMEUdMXsM/2obbPKYDKJRQ/4cJWbAlfSAVGIZP/TVPq6q+Yj6Bfnz8jcPyH
- 3Hva2cUGoMKhrGv93G5Tolj7NLnNnF3JB2Aq9L2HZlZZhuvdBK/uETx96gAmpA/TBpp8HrM9iJZ5WU
- La9QVrfGOcypa7xbAFB/Ut49xBt3dfuQxRBwh7ppTrR8xRYf8OslVNoJNBnf/+TBQ01AmMF34JImMO
- 8yDLkg4icyACHND+hdUkb2f6K6q0Q9mdcYQYnSnD44tTAsc0z81scOnc8ytw==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+References: <20230119212632.185881-1-marijn.suijten@somainline.org>
+ <20230119221757.wltdog4owclidejl@SoMainline.org>
+ <20230121165954.5806ee29@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230121165954.5806ee29@jic23-huawei>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the node describing the sn3193 that's used to provide notification
-LED.
+On 2023-01-21 16:59:54, Jonathan Cameron wrote:
+> On Thu, 19 Jan 2023 23:17:57 +0100
+> Marijn Suijten <marijn.suijten@somainline.org> wrote:
+> 
+> > +cc linux-iio@vger.kernel.org
+> > 
+> > Apologies, I blindly copied Jonathans request [1] to send this to
+> > iio@vger.kernel.org, without checking for the common linux- prefix.
+> Oops from me!
+> :)
 
-Unfortunately the driver currently supports neither multicolor API nor
-using the properties function & color, so we use label instead.
+Double oops from me, linux-iio was already CC'd because of the
+dt-bindings patch (and I collate all CC'ers in the cover letter and
+distribute all patches with --cc-cover) and I acted on the iio@ bounce
+too quickly :)
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- .../arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 28 ++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+- Marijn
 
-diff --git a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-index ffb486ceb6a6..a672c45d7070 100644
---- a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-+++ b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-@@ -114,6 +114,34 @@ led@0 {
- 			default-brightness = <80>;
- 		};
- 	};
-+
-+	led-controller@68 {
-+		compatible = "si-en,sn3193";
-+		reg = <0x68>;
-+
-+		shutdown-gpios = <&tlmm 45 GPIO_ACTIVE_HIGH>;
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		led@1 {
-+			reg = <1>;
-+			label = "red:status";
-+			led-max-microamp = <17500>;
-+		};
-+
-+		led@2 {
-+			reg = <2>;
-+			label = "green:status";
-+			led-max-microamp = <17500>;
-+		};
-+
-+		led@3 {
-+			reg = <3>;
-+			label = "blue:status";
-+			led-max-microamp = <17500>;
-+		};
-+	};
- };
- 
- &blsp1_i2c6 {
-
--- 
-2.39.1
+<snip>
