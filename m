@@ -2,85 +2,172 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1599C25B4E
-	for <phone-devel@archiver.kernel.org>; Sun, 22 Jan 2023 23:41:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03A6FC25B50
+	for <phone-devel@archiver.kernel.org>; Mon, 23 Jan 2023 09:43:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230245AbjAVXlm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 Jan 2023 18:41:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53848 "EHLO
+        id S231699AbjAWJnN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 23 Jan 2023 04:43:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbjAVXll (ORCPT
+        with ESMTP id S231693AbjAWJnM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 22 Jan 2023 18:41:41 -0500
-Received: from relay01.th.seeweb.it (relay01.th.seeweb.it [IPv6:2001:4b7a:2000:18::162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 177F9EB71
-        for <phone-devel@vger.kernel.org>; Sun, 22 Jan 2023 15:41:41 -0800 (PST)
-Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        Mon, 23 Jan 2023 04:43:12 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E201A1F935;
+        Mon, 23 Jan 2023 01:43:10 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 98F6F1F569;
-        Mon, 23 Jan 2023 00:41:38 +0100 (CET)
-Date:   Mon, 23 Jan 2023 00:41:37 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/5] iio: adc: qcom-spmi-vadc: Propagate fw node
- label to userspace
-Message-ID: <20230122234137.fyziba55n3b6tx3j@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Jonathan Cameron <jic23@kernel.org>, phone-devel@vger.kernel.org,
+        by ams.source.kernel.org (Postfix) with ESMTPS id 37813B80CA6;
+        Mon, 23 Jan 2023 09:43:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD88C433D2;
+        Mon, 23 Jan 2023 09:43:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1674466987;
+        bh=zqDlD4UopnwoyaNHYVa7uoZaLDHyVvELIS4k830a3tE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cQck51QSo8S3o8L0jiTiWU/KpeSoiVyZcK+f7dn56i9J8+qhqem70UnLO8vXJSPPS
+         MOdxE5M0Wd/Ptvrkhv7VfpzcMxs9Lm6UJ7bGVyI1jII0C9XM2eTgZ9Qs6IoJ0khLcn
+         c2/+3OctjRN9iQWnGfLZyQuUgoNMXcfLZOr5m5ts86o8deD5axtsAD8mqCgrqWXdD7
+         xQCVXHedeCqIqYv089jZIu6gFkfITQ7YI0v/h6OczP74sRn2v+YaU1UnBhlHncT7M0
+         N6BKpWRzW/5y3pcD4QfnmVSuR/jFHHmtZEKF2zZvIbHBxppNrd+R8HLPByyzH/8BMY
+         3qrAU6OFlJF+Q==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan@kernel.org>)
+        id 1pJtM0-0000GF-SP; Mon, 23 Jan 2023 10:43:04 +0100
+Date:   Mon, 23 Jan 2023 10:43:04 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Luca Weiss <luca.weiss@fairphone.com>
+Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, linux-arm-msm@vger.kernel.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230116220909.196926-1-marijn.suijten@somainline.org>
- <20230122165947.62e8652d@jic23-huawei>
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] phy: qcom-qmp-combo: Add config for SM6350
+Message-ID: <Y85WqDrGXAXp7gS/@hovoldconsulting.com>
+References: <20221130081430.67831-1-luca.weiss@fairphone.com>
+ <20221130081430.67831-2-luca.weiss@fairphone.com>
+ <Y6xP4YRAp68TfxFi@hovoldconsulting.com>
+ <Y8BIX+js1ircJyb9@matsya>
+ <cf968a25-02f7-d402-530b-eb379b707e54@linaro.org>
+ <CPR2LS3SJQ3I.Z7UY505COG3@otso>
+ <CAA8EJpoOMMALHz7ysft6KvQaYhGWPD+xZiUjOTrC8CA_y81n-w@mail.gmail.com>
+ <CPX2VVT5EUDV.2LH6VI2586F02@otso>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230122165947.62e8652d@jic23-huawei>
+In-Reply-To: <CPX2VVT5EUDV.2LH6VI2586F02@otso>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2023-01-22 16:59:47, Jonathan Cameron wrote:
-> On Mon, 16 Jan 2023 23:09:04 +0100
-> Marijn Suijten <marijn.suijten@somainline.org> wrote:
+On Fri, Jan 20, 2023 at 03:13:46PM +0100, Luca Weiss wrote:
+> On Fri Jan 13, 2023 at 2:01 PM CET, Dmitry Baryshkov wrote:
+> > On Fri, 13 Jan 2023 at 14:44, Luca Weiss <luca.weiss@fairphone.com> wrote:
+> > >
+> > > Hi Dmitry,
+> > >
+> > > On Thu Jan 12, 2023 at 8:33 PM CET, Dmitry Baryshkov wrote:
+> > > > On 12/01/2023 19:50, Vinod Koul wrote:
+> > > > > On 28-12-22, 15:17, Johan Hovold wrote:
+> > > > >> Luca, Vinod,
+> > > > >>
+> > > > >> On Wed, Nov 30, 2022 at 09:14:28AM +0100, Luca Weiss wrote:
+> > > > >>> Add the tables and config for the combo phy found on SM6350.
+> > > > >>>
+> > > > >>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > > > >>> ---
+> > > > >>> Changes since v2:
+> > > > >>> * Drop dp_txa/dp_txb changes, not required
+> > > > >>> * Fix dp_dp_phy offset
+> > > > >>>
+> > > > >>>   drivers/phy/qualcomm/phy-qcom-qmp-combo.c | 126 ++++++++++++++++++++++
+> > > > >>>   1 file changed, 126 insertions(+)
+> > > > >>>
+> > > > >>> diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+> > > > >>> index 77052c66cf70..6ac0c68269dc 100644
+> > > > >>> --- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+> > > > >>> +++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
+> > > > >>
+> > > > >>> @@ -975,6 +1039,19 @@ static const char * const sc7180_usb3phy_reset_l[] = {
+> > > > >>>           "phy",
+> > > > >>>   };
+> > > > >>>
+> > > > >>> +static const struct qmp_combo_offsets qmp_combo_offsets_v3 = {
+> > > > >>> + .com            = 0x0000,
+> > > > >>> + .txa            = 0x1200,
+> > > > >>> + .rxa            = 0x1400,
+> > > > >>> + .txb            = 0x1600,
+> > > > >>> + .rxb            = 0x1800,
+> > > > >>> + .usb3_serdes    = 0x1000,
+> > > > >>> + .usb3_pcs_misc  = 0x1a00,
+> > > > >>> + .usb3_pcs       = 0x1c00,
+> > > > >>> + .dp_serdes      = 0x1000,
+> > > > >>
+> > > > >> I would have expected this to be 0x2000 as that's what the older
+> > > > >> platforms have been using for the dp serdes table so far. Without access
+> > > > >> to any documentation it's hard to tell whether everyone's just been
+> > > > >> cargo-culting all along or if there's actually something there at offset
+> > > > >> 0x2000.
+> > > >
+> > > > usb3_serdes is 0x1000, so dp_serdes equal to 0x1000 is definitely an typo.
+> > > >
+> > > > Judging from the downstream dtsi, the DP PHY starts at offset 0x2000. So
+> > > > dp_serdes is equal to 0x2000, dp_phy = 0x2a00, ln_tx1 = 0x2200, ln_tx2 =
+> > > > 0x2600.
+> > >
+> > > Can you share how you got to the 0x2000 offset? You can see my
+> > > (potentially wrong) reasoning for 0x1000 a few messages ago[0].
+> > >
+> > > The only 0x2000-something I could find now while looking at it again is
+> > > "#define USB3_DP_PHY_DP_DP_PHY_PD_CTL 0x2a18" which becomes
+> > > USB3_DP_DP_PHY_PD_CTL in the driver but this is seemingly not used at
+> > > all in my msm-4.19 tree.
+> >
+> > Quite simple: see [1]. DP_PLL is at +0x2000
+> >
+> > [1] https://android.googlesource.com/kernel/msm-extra/devicetree/+/refs/heads/android-msm-bramble-4.19-android11-qpr1/qcom/lagoon-sde-pll.dtsi#27
 > 
-> > Implement read_label in qcom-spmi-vadc to see DT-specified label names
-> > in userspace.  At the same time clear up some documentation around
-> > extend_name to promote read_label, and normalize similar code in
-> > qcom-spmi-adc5.
-> > 
+> I still disagree from what I see.
 > 
-> I think this is a good route forwards, but it is making changes
-> to ABI so I definitely want input on this from at least one of
-> the qualcomm maintainers before I pick it up - particularly
-> the changes in patch 3.
+> E.g. this part of the dp_serdes init table in mainline:
 > 
-> Don't want to cause anyone nasty surprises.
+> static const struct qmp_phy_init_tbl qmp_v3_dp_serdes_tbl_rbr[] = {
+> 	QMP_PHY_INIT_CFG(QSERDES_V3_COM_HSCLK_SEL, 0x0c),
+> 
+> With this one:
+> #define QSERDES_V3_COM_HSCLK_SEL                     0x13c
+> 
+> To write this config qmp->dp_serdes gets used which is set at:
+> 	qmp->dp_serdes = base + offs->dp_serdes;
+> 
+> So if offs->dp_serdes is 0x2000, this write will go to 0x213c.
+> 
+> If we go back to msm-4.19 downstream the equivalent define is
+> #define USB3_DP_QSERDES_COM_HSCLK_SEL				0x113c
+> 
+> So there we are at offset 0x1000. And this define is used in
+> qcom,qmp-phy-init-seq which I already went to in detail in a previous
+> email in this thread.
 
-Ack, patch 3 is the odd one of the bunch (as discussed many times
-prior).  It is an ABI break and would effectively obsolete "iio: adc:
-qcom-spmi-adc5: Fix the channel name" [1] as it then only affects a few
-dev_err/dev_dbg.  Let's wait and hear from Qcom maintainers.
+From what I've heard, the PHY driver in the vendor kernel only deals
+with the USB part of the PHY, while some display driver accesses the DP
+part directly. So the fact that the Qualcomm USB PHY driver init
+sequences don't seem to use the DP regions (apart from that
+USB3_DP_PHY_DP_DP_PHY_PD_CTL register) is to be expected.
 
-[1]: https://lore.kernel.org/linux-arm-msm/20230118100623.42255-1-andriy.shevchenko@linux.intel.com/
+IIRC the v3 layout was also used by the SoC for which DP support was
+first implemented. Presumably, the separate USB and DP regions do exist
+and you should include them also for SM6350 even if you can't test it
+currently.
 
-- Marijn
+We'll convert the older platforms over to use the new binding scheme
+soon and then we'd need this anyway. And if it turns out later that this
+was all bogus, at least we only need to fix the driver (and not worry
+about dts backward compatibility as we had to with the old style
+bindings).
+
+Johan
