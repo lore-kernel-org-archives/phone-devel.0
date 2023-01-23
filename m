@@ -2,77 +2,72 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FAB7C38142
-	for <phone-devel@archiver.kernel.org>; Mon, 23 Jan 2023 16:26:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CABCC54E94
+	for <phone-devel@archiver.kernel.org>; Mon, 23 Jan 2023 16:40:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231764AbjAWQ0a (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 23 Jan 2023 11:26:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57374 "EHLO
+        id S233361AbjAWQkn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 23 Jan 2023 11:40:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231698AbjAWQ03 (ORCPT
+        with ESMTP id S233315AbjAWQk3 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 23 Jan 2023 11:26:29 -0500
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A933B2412B
-        for <phone-devel@vger.kernel.org>; Mon, 23 Jan 2023 08:26:27 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id ss4so31866195ejb.11
-        for <phone-devel@vger.kernel.org>; Mon, 23 Jan 2023 08:26:27 -0800 (PST)
+        Mon, 23 Jan 2023 11:40:29 -0500
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B6072BF1F
+        for <phone-devel@vger.kernel.org>; Mon, 23 Jan 2023 08:39:08 -0800 (PST)
+Received: by mail-ej1-x62f.google.com with SMTP id ss4so31973912ejb.11
+        for <phone-devel@vger.kernel.org>; Mon, 23 Jan 2023 08:39:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Lab8GS0BsXttrEIIOF5NuoFe5yEpMq3XNGpFEieVFus=;
-        b=oF4rD6jd7XwszpEixf28vjQe5BHyTMqbDMbb0myXN7sNdrC+JWF7pbvptfZlr7EEZu
-         HCOfmKYSseWmcGQZrMEirBmnWHakJk4wj4YR3gUJPzu6+oTCwtccIThIC1wRNBsyWMXu
-         UA1QfgF5DJysHFZOaK/HO8gZU+urYcCCf9sVVohIfO94u8tzqW8/b5tggtzRQWLaG37+
-         7XiMVCZk+HTLtDhrNOTeALvlSHaIBTmfV9EKcQWB56KGNvKJU6JAWK9srHD5ActxyIWq
-         Wrh53EiA1YID0pZF750/wIkqkgG7oi6bMdLd8VzYTe5cs8JuMpY5jjkdg3M6pTcU/vrY
-         3j0w==
+        bh=sOMakOD7xIn+dFf8F4hTOC/FgKd0/tr1iN5ftxQWKRI=;
+        b=DV5RZNXMs2lLP0/NBV7jzvirEcgC37TFewowKpRNQSpVIBwIHxEr1k8iJ1Fstb17+s
+         flcENq8cPzEh9uAV+WjkwWhuKdfLJsm513mDJ3+j5W+ytUaa7MCLNCJAQIH/yLHBdkKk
+         UT4et/QOxoDUEnIRlZCyZTGXhAg/eWyBx7kEHLq2PR97RFDGcTedXynD+lJKeQwreN1l
+         4+bCHPZc2ZFAPk2+yZxSXufaFRNhBuAa4XGvBw0XmpGbffhLtH2dhkpF0ZF7HLpoeRww
+         NKH5vREvBdoqOqLWHRThSv7uFmEWCL7XM6VmrfzcLy+a/Rcu1Eb/+dWJxX7YRspSxDTu
+         O35Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lab8GS0BsXttrEIIOF5NuoFe5yEpMq3XNGpFEieVFus=;
-        b=uX69YbTVjpxiC/6bovUUPkzCmw8Top2FKNzdquqn6B43Pi6B6LrodOpild0c6xwwK/
-         XmrSpoeEZcZPn9WYIQCauBEih5fNYr5aOH27Dp9M4+8luIUcU749we7eh0ZP9riJbkr1
-         LhdyMN6m+i8EG5EI+j3tg6S5Jfc8wXOwtutGvX3IkqAGHt8jZDPNffYZYSqxbeFhzYtE
-         zDNlclmus8jE61fGjcYLLxBa9S4eBQfNlIu5Lj/Jm0BxMrhBkAFvADeY6FKbfwluSl82
-         fAEa8AtS0o57ygT/+KKgNGkYiNuRoCOy2fYfl6OYXZm7N6Z1unpGeJO/CNOulUb0Cy67
-         8b+A==
-X-Gm-Message-State: AFqh2kqLZBY25O4AU9L6FCb8FuEAxIxd1exUTC+Y0DNt0y3amFOg/JAb
-        VA8yVFKYmaFfujGO9e9MkNssQw==
-X-Google-Smtp-Source: AMrXdXsLNSc/qQBnWGQwUSUQ/FzBERvIWV6+ygvsH14hClyHcGWFZRhHiJquSdlWNG5cIgsdJW1j7g==
-X-Received: by 2002:a17:906:78b:b0:7c1:9b07:32cd with SMTP id l11-20020a170906078b00b007c19b0732cdmr26403478ejc.39.1674491186264;
-        Mon, 23 Jan 2023 08:26:26 -0800 (PST)
+        bh=sOMakOD7xIn+dFf8F4hTOC/FgKd0/tr1iN5ftxQWKRI=;
+        b=Hd9kdN8ps9akBy6VSTbXLg6JCEDWj6VQA8T4OlgmdDJBP9f+FplhPMzzt1Ez9qBdim
+         4IPtb5c5pzRhVmHSssOdASU5RsxBH9Wv2Eprr6CLh1OExdNNINRMYPN+mT5NXebkD4tg
+         gXdZ7FT5TMjjcUVJ9p5wygf8byUntzHSrPr9k/lBqNY9w1fpIahlMbrH4RYPTe76QHr1
+         CGXbfYW9Pc23xuua3kU15jxehKUbGjm7QD1cVC7SK0GUmJvA5A1MiDMBW4WrLDlpBrdQ
+         W8FD6ewjT++S8+KufGKK8d1GRzlXfU78/PfKjKXOVc/bnHs/AMw+I4OgWc79TbBnTl2i
+         9Rcg==
+X-Gm-Message-State: AFqh2kp/ZdI9JnmXwa+QsCpXDnQnGaIaNbQ2phv4a/SM2xud5i++Q7+M
+        pmFOdI+Jf3PJRJnmZMA8JxaKnA==
+X-Google-Smtp-Source: AMrXdXt28hHW6x7xG51Ffn8C7CrwvdlM0Q2tQIawdl33so9CBuSBJN4v3WEyigB0jGsR2/hnwzAOpA==
+X-Received: by 2002:a17:907:6021:b0:843:a9fe:f115 with SMTP id fs33-20020a170907602100b00843a9fef115mr24119996ejc.32.1674491945669;
+        Mon, 23 Jan 2023 08:39:05 -0800 (PST)
 Received: from [192.168.1.101] (abxi24.neoplus.adsl.tpnet.pl. [83.9.2.24])
-        by smtp.gmail.com with ESMTPSA id f6-20020a17090631c600b008779b5c7db6sm5411656ejf.107.2023.01.23.08.26.24
+        by smtp.gmail.com with ESMTPSA id s17-20020a1709060c1100b0084d21db0691sm22503260ejf.179.2023.01.23.08.39.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jan 2023 08:26:25 -0800 (PST)
-Message-ID: <2f0881e3-9f6c-1c77-c6ca-3e291b37bd12@linaro.org>
-Date:   Mon, 23 Jan 2023 17:26:23 +0100
+        Mon, 23 Jan 2023 08:39:05 -0800 (PST)
+Message-ID: <49427fdd-e0fe-0a96-597f-b56b373cf63e@linaro.org>
+Date:   Mon, 23 Jan 2023 17:39:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.0
-Subject: Re: [PATCH v4 3/3] arm64: dts: qcom: sm6350: Use specific qmpphy
- compatible
+Subject: Re: [PATCH 1/5] ARM: dts: qcom: pm8941: Add vibrator node
 Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>
-References: <20230120-sm6350-usbphy-v4-0-4d700a90ba16@fairphone.com>
- <20230120-sm6350-usbphy-v4-3-4d700a90ba16@fairphone.com>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
+ <20230122-msm8974-bacon-features-v1-1-4049f565c24c@z3ntu.xyz>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230120-sm6350-usbphy-v4-3-4d700a90ba16@fairphone.com>
+In-Reply-To: <20230122-msm8974-bacon-features-v1-1-4049f565c24c@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -81,109 +76,32 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 
 
-On 23.01.2023 14:29, Luca Weiss wrote:
-> The sc7180 phy compatible works fine for some cases, but it turns out
-> sm6350 does need proper phy configuration in the driver, so use the
-> newly added sm6350 compatible.
+On 22.01.2023 17:48, Luca Weiss wrote:
+> Add the node describing the vibrator that's found on pm8941.
 > 
-> Because the sm6350 compatible is using the new binding, we need to
-> change the node quite a bit to match it.
-> 
-> This fixes qmpphy init when no USB cable is plugged in during bootloader
-> stage.
-> 
-> Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
 Konrad
->  arch/arm64/boot/dts/qcom/sm6350.dtsi | 54 +++++++++++-------------------------
->  1 file changed, 16 insertions(+), 38 deletions(-)
+>  arch/arm/boot/dts/qcom-pm8941.dtsi | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-> index 8224adb99948..128dbbe23ef5 100644
-> --- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-> @@ -13,6 +13,7 @@
->  #include <dt-bindings/interconnect/qcom,sm6350.h>
->  #include <dt-bindings/interrupt-controller/arm-gic.h>
->  #include <dt-bindings/mailbox/qcom-ipcc.h>
-> +#include <dt-bindings/phy/phy-qcom-qmp.h>
->  #include <dt-bindings/power/qcom-rpmpd.h>
->  #include <dt-bindings/soc/qcom,rpmh-rsc.h>
->  
-> @@ -1314,49 +1315,26 @@ usb_1_hsphy: phy@88e3000 {
->  			resets = <&gcc GCC_QUSB2PHY_PRIM_BCR>;
+> diff --git a/arch/arm/boot/dts/qcom-pm8941.dtsi b/arch/arm/boot/dts/qcom-pm8941.dtsi
+> index cd957a1e7cdf..a821f0368a28 100644
+> --- a/arch/arm/boot/dts/qcom-pm8941.dtsi
+> +++ b/arch/arm/boot/dts/qcom-pm8941.dtsi
+> @@ -161,6 +161,12 @@ pm8941_lpg: pwm {
+>  			status = "disabled";
 >  		};
 >  
-> -		usb_1_qmpphy: phy@88e9000 {
-> -			compatible = "qcom,sc7180-qmp-usb3-dp-phy";
-> -			reg = <0 0x088e9000 0 0x200>,
-> -			      <0 0x088e8000 0 0x40>,
-> -			      <0 0x088ea000 0 0x200>;
-> -			status = "disabled";
-> -			#address-cells = <2>;
-> -			#size-cells = <2>;
-> -			ranges;
-> +		usb_1_qmpphy: phy@88e8000 {
-> +			compatible = "qcom,sm6350-qmp-usb3-dp-phy";
-> +			reg = <0 0x088e8000 0 0x3000>;
->  
->  			clocks = <&gcc GCC_USB3_PRIM_PHY_AUX_CLK>,
-> -				 <&xo_board>,
-> -				 <&rpmhcc RPMH_QLINK_CLK>,
-> -				 <&gcc GCC_USB3_PRIM_PHY_COM_AUX_CLK>;
-> -			clock-names = "aux", "cfg_ahb", "ref", "com_aux";
-> +				 <&gcc GCC_USB3_PRIM_CLKREF_CLK>,
-> +				 <&gcc GCC_USB3_PRIM_PHY_COM_AUX_CLK>,
-> +				 <&gcc GCC_USB3_PRIM_PHY_PIPE_CLK>;
-> +			clock-names = "aux", "ref", "com_aux", "usb3_pipe";
-> +
-> +			power-domains = <&gcc USB30_PRIM_GDSC>;
->  
-> -			resets = <&gcc GCC_USB3_DP_PHY_PRIM_BCR>,
-> -				 <&gcc GCC_USB3_PHY_PRIM_BCR>;
-> +			resets = <&gcc GCC_USB3_PHY_PRIM_BCR>,
-> +				 <&gcc GCC_USB3_DP_PHY_PRIM_BCR>;
->  			reset-names = "phy", "common";
->  
-> -			usb_1_ssphy: usb3-phy@88e9200 {
-> -				reg = <0 0x088e9200 0 0x200>,
-> -				      <0 0x088e9400 0 0x200>,
-> -				      <0 0x088e9c00 0 0x400>,
-> -				      <0 0x088e9600 0 0x200>,
-> -				      <0 0x088e9800 0 0x200>,
-> -				      <0 0x088e9a00 0 0x100>;
-> -				#clock-cells = <0>;
-> -				#phy-cells = <0>;
-> -				clocks = <&gcc GCC_USB3_PRIM_PHY_PIPE_CLK>;
-> -				clock-names = "pipe0";
-> -				clock-output-names = "usb3_phy_pipe_clk_src";
-> -			};
-> +			#clock-cells = <1>;
-> +			#phy-cells = <1>;
->  
-> -			dp_phy: dp-phy@88ea200 {
-> -				reg = <0 0x088ea200 0 0x200>,
-> -				      <0 0x088ea400 0 0x200>,
-> -				      <0 0x088eaa00 0 0x200>,
-> -				      <0 0x088ea600 0 0x200>,
-> -				      <0 0x088ea800 0 0x200>;
-> -				#phy-cells = <0>;
-> -				#clock-cells = <1>;
-> -			};
+> +		pm8941_vib: vibrator@c000 {
+> +			compatible = "qcom,pm8916-vib";
+> +			reg = <0xc000>;
 > +			status = "disabled";
->  		};
->  
->  		dc_noc: interconnect@9160000 {
-> @@ -1430,7 +1408,7 @@ usb_1_dwc3: usb@a600000 {
->  				snps,dis_enblslpm_quirk;
->  				snps,has-lpm-erratum;
->  				snps,hird-threshold = /bits/ 8 <0x10>;
-> -				phys = <&usb_1_hsphy>, <&usb_1_ssphy>;
-> +				phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
->  				phy-names = "usb2-phy", "usb3-phy";
->  			};
->  		};
+> +		};
+> +
+>  		pm8941_wled: wled@d800 {
+>  			compatible = "qcom,pm8941-wled";
+>  			reg = <0xd800>;
 > 
