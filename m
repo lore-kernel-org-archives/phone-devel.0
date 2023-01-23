@@ -2,172 +2,115 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 03A6FC25B50
-	for <phone-devel@archiver.kernel.org>; Mon, 23 Jan 2023 09:43:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A626C38142
+	for <phone-devel@archiver.kernel.org>; Mon, 23 Jan 2023 10:01:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231699AbjAWJnN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 23 Jan 2023 04:43:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41190 "EHLO
+        id S231495AbjAWKBs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 23 Jan 2023 05:01:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231693AbjAWJnM (ORCPT
+        with ESMTP id S229588AbjAWKBs (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 23 Jan 2023 04:43:12 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E201A1F935;
-        Mon, 23 Jan 2023 01:43:10 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 37813B80CA6;
-        Mon, 23 Jan 2023 09:43:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD88C433D2;
-        Mon, 23 Jan 2023 09:43:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674466987;
-        bh=zqDlD4UopnwoyaNHYVa7uoZaLDHyVvELIS4k830a3tE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cQck51QSo8S3o8L0jiTiWU/KpeSoiVyZcK+f7dn56i9J8+qhqem70UnLO8vXJSPPS
-         MOdxE5M0Wd/Ptvrkhv7VfpzcMxs9Lm6UJ7bGVyI1jII0C9XM2eTgZ9Qs6IoJ0khLcn
-         c2/+3OctjRN9iQWnGfLZyQuUgoNMXcfLZOr5m5ts86o8deD5axtsAD8mqCgrqWXdD7
-         xQCVXHedeCqIqYv089jZIu6gFkfITQ7YI0v/h6OczP74sRn2v+YaU1UnBhlHncT7M0
-         N6BKpWRzW/5y3pcD4QfnmVSuR/jFHHmtZEKF2zZvIbHBxppNrd+R8HLPByyzH/8BMY
-         3qrAU6OFlJF+Q==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1pJtM0-0000GF-SP; Mon, 23 Jan 2023 10:43:04 +0100
-Date:   Mon, 23 Jan 2023 10:43:04 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] phy: qcom-qmp-combo: Add config for SM6350
-Message-ID: <Y85WqDrGXAXp7gS/@hovoldconsulting.com>
-References: <20221130081430.67831-1-luca.weiss@fairphone.com>
- <20221130081430.67831-2-luca.weiss@fairphone.com>
- <Y6xP4YRAp68TfxFi@hovoldconsulting.com>
- <Y8BIX+js1ircJyb9@matsya>
- <cf968a25-02f7-d402-530b-eb379b707e54@linaro.org>
- <CPR2LS3SJQ3I.Z7UY505COG3@otso>
- <CAA8EJpoOMMALHz7ysft6KvQaYhGWPD+xZiUjOTrC8CA_y81n-w@mail.gmail.com>
- <CPX2VVT5EUDV.2LH6VI2586F02@otso>
+        Mon, 23 Jan 2023 05:01:48 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8C37618E
+        for <phone-devel@vger.kernel.org>; Mon, 23 Jan 2023 02:01:46 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id j17so8568466wms.0
+        for <phone-devel@vger.kernel.org>; Mon, 23 Jan 2023 02:01:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HBW99nl/bxZsTE1SNWWJvTeEp3Nq/6dlA/kis96/OGU=;
+        b=utTGrb/3fg+7tKVMVMXYVYrKAKW0FRoIeNF1MdJG1DSB4hTuxJ8tO7TdOM/KYj+eOq
+         bt/gt2WC4QzDAwlOF8pO67FEmmCVTM0E11nD0utz17Q7jayfIAFYJidKi7PvN5vLOFP3
+         +T2o9zBcZxSXF/rfoFcLfATPe5gOxlm75dbV+OuFQ5juOAjCfsTqubQaFs3n4G/qEWsU
+         r4+obCpbDN+8CqWZ6VTOpxONRmVYLi7+xeBjKwM0KA8MnI+K7gmebwDLmERjOUUoHQ/E
+         OBgepXJLV48Gmwrtw/nvsWWzlqFoRkbs9woizoq3yAj1lCDmXhFr3ByqDdEFauk5V8LV
+         xn8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HBW99nl/bxZsTE1SNWWJvTeEp3Nq/6dlA/kis96/OGU=;
+        b=Wuy5cLaqcDCaY8QqM5D71cfyLO6Q5oJqhqO4KU1a4IQAlmC6L+muDMVCNo/lRjbKaB
+         +o4iyeKoSfPabgekITgchi7YpxOpJkqy2fv5HYuWCvJXB+c0vHII+tv64J3NZeiW8eyt
+         ZnBZeAxrFX9n/9xgLGvkSUiZGnHJxZKrsjQCEo09nnEXQwGUFbQXPGeSqNRiP6P44Enu
+         LqxIAh23i8e0vyzdTowjd9MB5Bi5eD9+p78mgHwUlmTLh7FUzVJKnPV+t3dcFG/XycHd
+         Aa1ybeqYkTN68s5i7pJgM8GgSokRoUHhyJauQJekhNd1gscGN0qMMHWCAKtKojBPoVJG
+         6iUQ==
+X-Gm-Message-State: AFqh2kozUQIgjb/PkE2yFqzkk+78Pr2fy4nMNs877m0Z4Vyl4btQbOIG
+        jtJJDYwjhdXyjQ8ijLQGx+1itQ==
+X-Google-Smtp-Source: AMrXdXtTrVcaPCCBSgFX/j5Ycf6bevTbzhzytfwtX7u/nET/Yox0ixtMdIVw19MyyI5EXWgbe2l5GQ==
+X-Received: by 2002:a05:600c:3545:b0:3c6:e60f:3f4a with SMTP id i5-20020a05600c354500b003c6e60f3f4amr23476158wmq.1.1674468105235;
+        Mon, 23 Jan 2023 02:01:45 -0800 (PST)
+Received: from krzk-bin.. ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id m2-20020a05600c4f4200b003db0ad636d1sm11050831wmq.28.2023.01.23.02.01.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Jan 2023 02:01:44 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     linux-arm-kernel@lists.infradead.org,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org, Alim Akhtar <alim.akhtar@samsung.com>,
+        linux-samsung-soc@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Kukjin Kim <kgene@kernel.org>, Inki Dae <inki.dae@samsung.com>
+Cc:     phone-devel@vger.kernel.org, Henrik Grimler <henrik@grimler.se>,
+        =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
+        ~postmarketos/upstreaming@lists.sr.ht, replicant@osuosl.org
+Subject: Re: [PATCH 00/11] ARM: dts: exynos: DT schema fixes
+Date:   Mon, 23 Jan 2023 11:01:37 +0100
+Message-Id: <167446806832.57213.6257020240038382720.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230120155404.323386-1-krzysztof.kozlowski@linaro.org>
+References: <20230120155404.323386-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CPX2VVT5EUDV.2LH6VI2586F02@otso>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Jan 20, 2023 at 03:13:46PM +0100, Luca Weiss wrote:
-> On Fri Jan 13, 2023 at 2:01 PM CET, Dmitry Baryshkov wrote:
-> > On Fri, 13 Jan 2023 at 14:44, Luca Weiss <luca.weiss@fairphone.com> wrote:
-> > >
-> > > Hi Dmitry,
-> > >
-> > > On Thu Jan 12, 2023 at 8:33 PM CET, Dmitry Baryshkov wrote:
-> > > > On 12/01/2023 19:50, Vinod Koul wrote:
-> > > > > On 28-12-22, 15:17, Johan Hovold wrote:
-> > > > >> Luca, Vinod,
-> > > > >>
-> > > > >> On Wed, Nov 30, 2022 at 09:14:28AM +0100, Luca Weiss wrote:
-> > > > >>> Add the tables and config for the combo phy found on SM6350.
-> > > > >>>
-> > > > >>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > > > >>> ---
-> > > > >>> Changes since v2:
-> > > > >>> * Drop dp_txa/dp_txb changes, not required
-> > > > >>> * Fix dp_dp_phy offset
-> > > > >>>
-> > > > >>>   drivers/phy/qualcomm/phy-qcom-qmp-combo.c | 126 ++++++++++++++++++++++
-> > > > >>>   1 file changed, 126 insertions(+)
-> > > > >>>
-> > > > >>> diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-> > > > >>> index 77052c66cf70..6ac0c68269dc 100644
-> > > > >>> --- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-> > > > >>> +++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-> > > > >>
-> > > > >>> @@ -975,6 +1039,19 @@ static const char * const sc7180_usb3phy_reset_l[] = {
-> > > > >>>           "phy",
-> > > > >>>   };
-> > > > >>>
-> > > > >>> +static const struct qmp_combo_offsets qmp_combo_offsets_v3 = {
-> > > > >>> + .com            = 0x0000,
-> > > > >>> + .txa            = 0x1200,
-> > > > >>> + .rxa            = 0x1400,
-> > > > >>> + .txb            = 0x1600,
-> > > > >>> + .rxb            = 0x1800,
-> > > > >>> + .usb3_serdes    = 0x1000,
-> > > > >>> + .usb3_pcs_misc  = 0x1a00,
-> > > > >>> + .usb3_pcs       = 0x1c00,
-> > > > >>> + .dp_serdes      = 0x1000,
-> > > > >>
-> > > > >> I would have expected this to be 0x2000 as that's what the older
-> > > > >> platforms have been using for the dp serdes table so far. Without access
-> > > > >> to any documentation it's hard to tell whether everyone's just been
-> > > > >> cargo-culting all along or if there's actually something there at offset
-> > > > >> 0x2000.
-> > > >
-> > > > usb3_serdes is 0x1000, so dp_serdes equal to 0x1000 is definitely an typo.
-> > > >
-> > > > Judging from the downstream dtsi, the DP PHY starts at offset 0x2000. So
-> > > > dp_serdes is equal to 0x2000, dp_phy = 0x2a00, ln_tx1 = 0x2200, ln_tx2 =
-> > > > 0x2600.
-> > >
-> > > Can you share how you got to the 0x2000 offset? You can see my
-> > > (potentially wrong) reasoning for 0x1000 a few messages ago[0].
-> > >
-> > > The only 0x2000-something I could find now while looking at it again is
-> > > "#define USB3_DP_PHY_DP_DP_PHY_PD_CTL 0x2a18" which becomes
-> > > USB3_DP_DP_PHY_PD_CTL in the driver but this is seemingly not used at
-> > > all in my msm-4.19 tree.
-> >
-> > Quite simple: see [1]. DP_PLL is at +0x2000
-> >
-> > [1] https://android.googlesource.com/kernel/msm-extra/devicetree/+/refs/heads/android-msm-bramble-4.19-android11-qpr1/qcom/lagoon-sde-pll.dtsi#27
+On Fri, 20 Jan 2023 16:53:53 +0100, Krzysztof Kozlowski wrote:
+> With this set of fixes (and few other earlier), all Exynos ARMv7 boards
+> successfully pass DT Schema checks! All! Hurray!
 > 
-> I still disagree from what I see.
+> Please kindly test if I did not break any boards...
 > 
-> E.g. this part of the dp_serdes init table in mainline:
+> Best regards,
+> Krzysztof
 > 
-> static const struct qmp_phy_init_tbl qmp_v3_dp_serdes_tbl_rbr[] = {
-> 	QMP_PHY_INIT_CFG(QSERDES_V3_COM_HSCLK_SEL, 0x0c),
-> 
-> With this one:
-> #define QSERDES_V3_COM_HSCLK_SEL                     0x13c
-> 
-> To write this config qmp->dp_serdes gets used which is set at:
-> 	qmp->dp_serdes = base + offs->dp_serdes;
-> 
-> So if offs->dp_serdes is 0x2000, this write will go to 0x213c.
-> 
-> If we go back to msm-4.19 downstream the equivalent define is
-> #define USB3_DP_QSERDES_COM_HSCLK_SEL				0x113c
-> 
-> So there we are at offset 0x1000. And this define is used in
-> qcom,qmp-phy-init-seq which I already went to in detail in a previous
-> email in this thread.
+> [...]
 
-From what I've heard, the PHY driver in the vendor kernel only deals
-with the USB part of the PHY, while some display driver accesses the DP
-part directly. So the fact that the Qualcomm USB PHY driver init
-sequences don't seem to use the DP regions (apart from that
-USB3_DP_PHY_DP_DP_PHY_PD_CTL register) is to be expected.
+Applied, thanks!
 
-IIRC the v3 layout was also used by the SoC for which DP support was
-first implemented. Presumably, the separate USB and DP regions do exist
-and you should include them also for SM6350 even if you can't test it
-currently.
+[01/11] ARM: dts: exynos: correct wr-active property in Exynos3250 Rinato
+        https://git.kernel.org/krzk/linux/c/d15d2a617499882971ddb773a583015bf36fa492
+[02/11] ARM: dts: exynos: drop unsupported desc-num in Exynos3250
+        https://git.kernel.org/krzk/linux/c/49434cd203ed3af220145f2e5e5791339dac347a
+[03/11] ARM: dts: exynos: correct cd-gpios property in Exynos4412 Itop Elite
+        https://git.kernel.org/krzk/linux/c/78b93ffef4ad1800f884e4892c1bd79ca5512cba
+[04/11] ARM: dts: exynos: align pin node names in Exynos4412
+        https://git.kernel.org/krzk/linux/c/f370a3d0fd16cd260248c387cc085dcb8a6d32b2
+[05/11] ARM: dts: exynos: add ports in HDMI bridge in Exynos4412 Midas
+        https://git.kernel.org/krzk/linux/c/74ac07e485bb01e232c7f3d67632ffc9b64604aa
+[06/11] ARM: dts: exynos: add panel supply in Tiny4412
+        https://git.kernel.org/krzk/linux/c/c2387ee9a318dfb7cb5a7a210e2825c62d4932cc
+[07/11] ARM: dts: exynos: add backlight supply in P4 Note
+        https://git.kernel.org/krzk/linux/c/f845ae570231bcaa677df65af620896fdf3c5705
+[08/11] ARM: dts: exynos: align HSOTG/USB node names
+        https://git.kernel.org/krzk/linux/c/eeb0fd23bc0fc823032dd2a2df22651ce8369aed
+[09/11] ARM: dts: exynos: correct SATA clocks in Exynos5250
+        https://git.kernel.org/krzk/linux/c/712c852a7b0dc0ac66fa6b89997f4f952483a5e4
+[10/11] ARM: dts: exynos: correct HS200 property in Exynos5260
+        https://git.kernel.org/krzk/linux/c/865b7ea364f892a3de7838eec04628efb945939e
+[11/11] ARM: dts: exynos: correct HSI2C properties in Exynos5410 Odroid XU
+        https://git.kernel.org/krzk/linux/c/5dd60c69047ee3fd92a9f64b28377f4819536d2f
 
-We'll convert the older platforms over to use the new binding scheme
-soon and then we'd need this anyway. And if it turns out later that this
-was all bogus, at least we only need to fix the driver (and not worry
-about dts backward compatibility as we had to with the old style
-bindings).
-
-Johan
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
