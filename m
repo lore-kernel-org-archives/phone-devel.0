@@ -2,103 +2,116 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1A6BC05027
-	for <phone-devel@archiver.kernel.org>; Mon, 23 Jan 2023 17:16:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0450C54E94
+	for <phone-devel@archiver.kernel.org>; Mon, 23 Jan 2023 17:19:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233593AbjAWRQW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 23 Jan 2023 12:16:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51534 "EHLO
+        id S233564AbjAWRTB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 23 Jan 2023 12:19:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233556AbjAWRQJ (ORCPT
+        with ESMTP id S233576AbjAWRSv (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 23 Jan 2023 12:16:09 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7AB92E0FE
-        for <phone-devel@vger.kernel.org>; Mon, 23 Jan 2023 09:15:29 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id d2so11477349wrp.8
-        for <phone-devel@vger.kernel.org>; Mon, 23 Jan 2023 09:15:29 -0800 (PST)
+        Mon, 23 Jan 2023 12:18:51 -0500
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18DBA76AE
+        for <phone-devel@vger.kernel.org>; Mon, 23 Jan 2023 09:18:26 -0800 (PST)
+Received: by mail-wm1-x32e.google.com with SMTP id c10-20020a05600c0a4a00b003db0636ff84so9146940wmq.0
+        for <phone-devel@vger.kernel.org>; Mon, 23 Jan 2023 09:18:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=wGAaeFHRUbbcLchitvOo8c3uIrY8nrhrwfD9OzyUHHE=;
-        b=j/3e0s3ZNLlg6zARvUYvUo+MRXgYBVxsoHwtK4slffkM3LJS57gKTVI/MsNRDuaipu
-         uZ3T5Egu0VZ7a3N0mn/EebgB+NlsDgWVcPJzLWprU1ItMPE4eruY/smltPCXeIj1vfoY
-         Xk73Lu3LA8MBMvhYG5p39J5hZj2Zcwl9CO8V9pQMzv5dxD2DvZcxB5jMQ4PzyEhdSTz5
-         yqJ5rnH5u9ksn4uChRow+ntFfa4QttTJaKyr3wcLAZPiizl+s3Rr+RIw0nWSW0P5zGA6
-         kVHcQj4EdFcVuT/jf9pBRX/zDWRRUR95n3B2wXjqNqmR3ZQucuYeVTcpO35KekFutNUQ
-         lnRw==
+        bh=dm4tVx7Ktm1TROcUxQcJbyZ0GFOr9/zY4sDt0r6QtHM=;
+        b=WsNpkk8cs9nNO1TSpU3nzblsbtRV9K0XkCHEnsMmIB4HJuRntlr2p2yh/LZFm/RLpI
+         CsXg/DPYPtCPzQNVWVtcZ8tSgz9qETplZ2gH8GgWwISYuJsM3RVAqcqTfq5s+y7EXZbx
+         hHOLmss/kA7NMzstBitC+8/H795q8u2rQXK9CHEQlDd2x6RZePt583/PEsR1lbAK3MLo
+         jQn3b6AqN5VI7HzhITBZZlxdWPSn1xAgDyddb8+2QY0Xzr21iksAhUeNlk/0LerSUyMm
+         xK4ytVWiPT4Kx0PIy/1PU7wy+3IarrWYPuxWL1+LPckRHRe7hVF/HrxeFeYFN14SRo/x
+         rjQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wGAaeFHRUbbcLchitvOo8c3uIrY8nrhrwfD9OzyUHHE=;
-        b=BaoZZ4V3Q+XeoRcTZ25cxPjyzCAUWF596ImfTpd3DUk24eUCA90+efm2emWtduNh5R
-         +NMPQdLyyttpYbsbovCOHqadQqk0Y32zh9J5/dVkhhjJtOK9X/XzVZYRZ73+zB+6Kuwe
-         TxU0RYRr6jOYHA7+kJpvnk8J4BTGleyQphJ8xN0oAzNtECI7xBPSTCmsTKTe9Ubr1ENH
-         HWHv3nJpBgDyvoNIxLrk1H9lJmhOxVSeYTj0bcIppKMgvTbWIQWJ5Ms7WbOzLnDAGpYQ
-         hBQEcGlMVNqUFUlTk43faYo+FaNXwBfCKU+4BsuI3Z1av0tKzW+Zg3YttQO4xM7i1n/G
-         r1Lw==
-X-Gm-Message-State: AFqh2kpNlZIwj2mpPOwwMEoqfbB8nRG3Yg8h0h1E+SFhDA8On5ukD+zs
-        jKLD/xjpAAKe4S01FuyplDnzWQ==
-X-Google-Smtp-Source: AMrXdXuwX8R2g5rTyHK8O1HpVuy3t+r8vVzoPIZ0LTPfIDjn20xptFDKQ2VmDXw4q4jvVdhXPKBRbg==
-X-Received: by 2002:adf:fd83:0:b0:2bd:dbd8:d41e with SMTP id d3-20020adffd83000000b002bddbd8d41emr21927689wrr.57.1674494128460;
-        Mon, 23 Jan 2023 09:15:28 -0800 (PST)
+        bh=dm4tVx7Ktm1TROcUxQcJbyZ0GFOr9/zY4sDt0r6QtHM=;
+        b=OqA+Nawsfy36cKZl4wPrixttd/+dcmG7gk6ytUlYasofJdsOLg0faJLRrds+TFJIh1
+         d5yDigCwinjqVbb8U5M8171xA+tacw736kdkTud1xFTSuk6rM+u0I8oz78akBuvKcsVf
+         CjxvaPHH1kY7SPVug16jY2lMU2BFoTbxizzap3IV0XXojhIKc0kAShnJEyo/b4Rq7uy9
+         xw7wrEPVKKl3mPdIWsP9YEgCNcXlHcWBjKYmFajhjf/yI8weIDbHm4z4fJXv6eRxHxLs
+         Alo2QIT8QvMXpOaFO4wty68JK5PspFG2IMcIUpMs9U2VQdej3QxhyVKWX6Mm69+FLpKw
+         hfYA==
+X-Gm-Message-State: AFqh2kpaz+1S37YN6xyP0X3F8zeSAkXHTV/2QeJ4VAMbyGMkepzGouiN
+        U4V5VXfKLrHNyAjAnjz6veN/0A==
+X-Google-Smtp-Source: AMrXdXtnErYrv8lVfvrt00x7Dk7jqp7bU4diG4fsuDxceJzOyCSq3biItIT/dbPu7Kfhe/+Edv6bQg==
+X-Received: by 2002:a05:600c:2056:b0:3db:ce8:6662 with SMTP id p22-20020a05600c205600b003db0ce86662mr22663193wmg.31.1674494298647;
+        Mon, 23 Jan 2023 09:18:18 -0800 (PST)
 Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id j14-20020adfb30e000000b002bbedd60a9asm827309wrd.77.2023.01.23.09.15.27
+        by smtp.gmail.com with ESMTPSA id r11-20020a5d694b000000b002bb28209744sm4332992wrw.31.2023.01.23.09.18.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jan 2023 09:15:27 -0800 (PST)
-Message-ID: <9464494f-765a-95fc-ebc0-f225b1c8f9a3@linaro.org>
-Date:   Mon, 23 Jan 2023 18:15:26 +0100
+        Mon, 23 Jan 2023 09:18:17 -0800 (PST)
+Message-ID: <02e5bf79-3e2d-02c8-67e7-61bbff32ba29@linaro.org>
+Date:   Mon, 23 Jan 2023 18:18:16 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.0
-Subject: Re: [PATCH 1/3] ARM: dts: qcom: samsung-matisse-common: Add initial
- common device tree
+Subject: Re: [PATCH 5/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add
+ notification LED
 Content-Language: en-US
-To:     Stefan Hansson <newbyte@postmarketos.org>,
-        Andy Gross <agross@kernel.org>,
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        soc@kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        matti.lehtimaki@gmail.com
-References: <20230122144749.87597-1-newbyte@postmarketos.org>
- <20230122144749.87597-2-newbyte@postmarketos.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
+ <20230122-msm8974-bacon-features-v1-5-4049f565c24c@z3ntu.xyz>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230122144749.87597-2-newbyte@postmarketos.org>
+In-Reply-To: <20230122-msm8974-bacon-features-v1-5-4049f565c24c@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 22/01/2023 15:47, Stefan Hansson wrote:
-> According to the dts from the kernel source code released by Samsung,
-> matissewifi and matisselte only have minor differences in hardware, so
-> use a shared dtsi to reduce duplicated code. Additionally, this should
-> make adding support for matisse3g easier should someone want to do that
-> at a later point.
+On 22/01/2023 17:48, Luca Weiss wrote:
+> Add the node describing the sn3193 that's used to provide notification
+> LED.
 > 
-> As such, add a common device tree for all matisse devices by Samsung
-> based on the matissewifi dts. Support for matisselte will be introduced
-> in a later patch in this series and will use the common dtsi as well.
+> Unfortunately the driver currently supports neither multicolor API nor
+> using the properties function & color, so we use label instead.
 > 
-> Signed-off-by: Stefan Hansson <newbyte@postmarketos.org>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
+>  .../arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 28 ++++++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+> index ffb486ceb6a6..a672c45d7070 100644
+> --- a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+> +++ b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+> @@ -114,6 +114,34 @@ led@0 {
+>  			default-brightness = <80>;
+>  		};
+>  	};
+> +
+> +	led-controller@68 {
+> +		compatible = "si-en,sn3193";
+> +		reg = <0x68>;
+> +
+> +		shutdown-gpios = <&tlmm 45 GPIO_ACTIVE_HIGH>;
+> +
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		led@1 {
+> +			reg = <1>;
+> +			label = "red:status";
 
-Decompiled DTB is the same, so:
+These should be colors and functions.
 
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-(although not on a device...)
 
 Best regards,
 Krzysztof
