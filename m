@@ -2,291 +2,104 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD9D2C38142
-	for <phone-devel@archiver.kernel.org>; Tue, 24 Jan 2023 14:31:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A45F1C54E94
+	for <phone-devel@archiver.kernel.org>; Tue, 24 Jan 2023 14:48:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234284AbjAXObY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 24 Jan 2023 09:31:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42496 "EHLO
+        id S235013AbjAXOso (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 24 Jan 2023 09:48:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234247AbjAXObW (ORCPT
+        with ESMTP id S234994AbjAXOsh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 24 Jan 2023 09:31:22 -0500
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 363B748609
-        for <phone-devel@vger.kernel.org>; Tue, 24 Jan 2023 06:31:19 -0800 (PST)
-Received: by mail-wm1-x32e.google.com with SMTP id l8so11579618wms.3
-        for <phone-devel@vger.kernel.org>; Tue, 24 Jan 2023 06:31:19 -0800 (PST)
+        Tue, 24 Jan 2023 09:48:37 -0500
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00ECB303E7
+        for <phone-devel@vger.kernel.org>; Tue, 24 Jan 2023 06:48:34 -0800 (PST)
+Received: by mail-ej1-x630.google.com with SMTP id u19so39601634ejm.8
+        for <phone-devel@vger.kernel.org>; Tue, 24 Jan 2023 06:48:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CMq1uJ2lNTdPSILsTHElT5IlORpvfWTYcdVcMj0zgu8=;
-        b=malAGbcoyNxEJd68K6Aa9n8FNiC+NRVAzMQgcuER6m2jdibf1hJg654Eox8QKuOmak
-         Drh0onx0zZWockn2Jg0PFKkqQ8gZgjxr5ZAPQullsVO3MImTDwv3MT/AGIHqwdbYAuGv
-         YZ9G23KWlq6FLfnKA2oSf1y2d3GRNhrlaMN3yCYbhf52cQL7nwqdhZ5mnhnzFKcPHzUe
-         vtaQMjS/tGTtIB3yGsHjyhmvl+n+ZVw0MqcntDp5xX5uXUWlXOYrM9c/1WRU7mav/+So
-         tYzIkuMoE7AFElXZFKB/S2bnVjrtbddmJoaLZWmxNDQn7IIKfuGsxIqH1z6B6+RJdI9V
-         ypYg==
+        d=fairphone.com; s=fair;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zLmM/FCAEjLU2FdJ9A80pZJUuYCaWow19JPmu2luiqc=;
+        b=A1Q9UxdZZRYEsGB1//OQ5e21lf6Jd3C7Xgykqn+gE4C9RdaeoSzkZZhsE459oSrhZz
+         qe/DdeXCjiCUASPkO9FM7DnXQJTEvFg6bJP9sacrYBSol2CuxQ3zHTG/ufUR2iIQGHRu
+         kdk+eBPCfP0qvY7J9DDNabUaimGEFGZ0EQ4iO2gDHawsp/8bEtglFtSB4hi+mne4oCT/
+         wXr7BnpDogZ4GkECKHeukLdKFMVDiBd7kpDq5BkTAR6sd4q5R9P1oKtEPqsneGXpla2G
+         wy3XeQpl9XGmQ/SOGXZ/46qZ61tMTBwDz9LJW3rGA85pMCx8H4iK0q31XSxIJuiUwX4h
+         27wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CMq1uJ2lNTdPSILsTHElT5IlORpvfWTYcdVcMj0zgu8=;
-        b=G0jRNSTre7RdmE2eq7QJ/6TzSbNutAUnCYRg7omNbRO+/8Eac4WSAlCJQWxdn8e/aN
-         /y4lBKJ0oWbJnHsb1Zbit/+vR0OmVo9N5RKuE5dk6a26coK0nEcaVd5uL2eoD97TO78C
-         fuC2Lkbtf/5WJ+s6An0g5ZFOEkIvSBSTg0+obiqcuulcBZh1EXjzJtfKTcWU04PvBTEk
-         eL6tWv+Px6tqoIFSsCtPAsnYK0JuO51jeqj7zH+pWi+mo4VM6LfD59cg2vna/FgobmXZ
-         MwQi0kCvH89OS4cFHjfP6B1xgJ4acMz1k0/d+irlLlu6MY5j0jgZ7sf+IuCOjrt0Izmf
-         BtZw==
-X-Gm-Message-State: AFqh2koVm99i9pzSmRCMcH2khhBaZ5wZbN/KVd+fb6RGLCW7rnRzu9Mt
-        tB2d0iEc8QeQFHTW/fchKlfoVnutsmjX9g8P
-X-Google-Smtp-Source: AMrXdXuMpNu7HcwaJai9rG9rkqaYBEF5pYI3elhCyjuuZ3CwgggFA/cexidji92fOVxiXZ3v4KJFiQ==
-X-Received: by 2002:a05:600c:1c83:b0:3db:27b3:a654 with SMTP id k3-20020a05600c1c8300b003db27b3a654mr19779700wms.26.1674570677662;
-        Tue, 24 Jan 2023 06:31:17 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id o21-20020a05600c4fd500b003c6f8d30e40sm15177651wmq.31.2023.01.24.06.31.15
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zLmM/FCAEjLU2FdJ9A80pZJUuYCaWow19JPmu2luiqc=;
+        b=oY36AEnOAuwLuUOYh6RnuHAZhPssuW1e0+baY4vi43ViOXN2cdD+Vp2vj3Nc6e/lVH
+         aq/N2S6pESbuXTGRUkii13CXKI8ak5gcyF4mdf6iN5sXBUmhCLTZTt5IXMg5SPRaAhVw
+         CxAcDnFoSwXkuh7ZKynJHLLK0R/NkXTwGOMRj0jHgBRZCt4wzhuU5prFNjfEqWbUB6Zd
+         fN+kb6WgxfgZCQWlAZwdxC0162TKEJpYT7zFomw/VDOnnYhXLTtSHWlVkXOhJBpR4PIw
+         BP8Yl7Jz0ki7yAm125a83uZc3A63QDbA9smRMXMXf+MonnuwSZMcpfNalddr+h0FIW9a
+         2IYQ==
+X-Gm-Message-State: AFqh2kpDhiGnptejHGkKwEjW0dAkpRaO6lbQvaoo1h2fj+ScEWoeV+wB
+        322TfKr2H0IBRVAWyXQr8X7UJg==
+X-Google-Smtp-Source: AMrXdXsVvOMxuAPW5wRe6WtIgVighYVElOSLGxSpWFMYJgSUBYhgStGKmiPWAaWfnFO+qMDlKvfAaA==
+X-Received: by 2002:a17:907:2982:b0:7c1:23f2:c052 with SMTP id eu2-20020a170907298200b007c123f2c052mr20541935ejc.45.1674571713476;
+        Tue, 24 Jan 2023 06:48:33 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id l12-20020a170906078c00b0079800b8173asm983498ejc.158.2023.01.24.06.48.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Jan 2023 06:31:17 -0800 (PST)
-Message-ID: <8b2b3457-37db-3a32-dfca-3b1bc74f3dd9@linaro.org>
-Date:   Tue, 24 Jan 2023 15:31:14 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: sm8250: Add device tree for Xiaomi
- Mi Pad 5 Pro
-Content-Language: en-US
-To:     Jianhua Lu <lujianhua000@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G . Piccoli" <gpiccoli@igalia.com>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230124135318.10023-1-lujianhua000@gmail.com>
- <20230124135318.10023-2-lujianhua000@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230124135318.10023-2-lujianhua000@gmail.com>
+        Tue, 24 Jan 2023 06:48:33 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date:   Tue, 24 Jan 2023 15:48:32 +0100
+Message-Id: <CQ0I4ONEI6J4.3KWS1KBE7RTKD@otso>
+Subject: Re: [PATCH v2 2/4] arm64: dts: qcom: sm6350: Add camera clock
+ controller
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
+        "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+        "Loic Poulain" <loic.poulain@linaro.org>,
+        "Robert Foss" <rfoss@kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.14.0
+References: <20221213-sm6350-cci-v2-0-15c2c14c34bb@fairphone.com>
+ <20221213-sm6350-cci-v2-2-15c2c14c34bb@fairphone.com>
+ <e5ff49d4-45c7-8c4a-d624-d8f7cc9ce2cb@linaro.org>
+In-Reply-To: <e5ff49d4-45c7-8c4a-d624-d8f7cc9ce2cb@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 24/01/2023 14:53, Jianhua Lu wrote:
-> Add support for Xiaomi Mi Pad 5 Pro, codename is xiaomi-elish.
-> 
-> This commit brings support for:
->   * ADSP/CDSP/SLPI/VENUS
->   * Backlight
->   * Battery fuel gauge
->   * Framebuffer
->   * PCIe0
->   * USB2.0
-> 
-> Note backlight driver (ktz8866) is waitting for upstreaming[1].
-> [1] https://lore.kernel.org/linux-leds/20230120155018.15376-1-lujianhua000@gmail.com
-> 
-> Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+On Fri Jan 20, 2023 at 5:49 PM CET, Bryan O'Donoghue wrote:
+> On 20/01/2023 13:13, Luca Weiss wrote:
+> > +		camcc: clock-controller@ad00000 {
+> > +			compatible =3D "qcom,sm6350-camcc";
+> > +			reg =3D <0 0x0ad00000 0 0x16000>;
+> > +			clocks =3D <&rpmhcc RPMH_CXO_CLK>;
+> > +			#clock-cells =3D <1>;
+> > +			#reset-cells =3D <1>;
+> > +			#power-domain-cells =3D <1>;
+> > +		};
+>
+> Should you include
+>
+> required-opps =3D <&rpmhpd_opp_low_svs>;
+>
+> ?
+
+I don't know, it works without. But doesn't this property not just
+affect power-domains? I haven't passed any here.
+
+>
 > ---
->  arch/arm64/boot/dts/qcom/Makefile             |   1 +
->  .../boot/dts/qcom/sm8250-xiaomi-elish.dts     | 594 ++++++++++++++++++
->  2 files changed, 595 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish.dts
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-> index b0423ca3e79f..769cee2b450f 100644
-> --- a/arch/arm64/boot/dts/qcom/Makefile
-> +++ b/arch/arm64/boot/dts/qcom/Makefile
-> @@ -184,6 +184,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-hdk.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-mtp.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-sony-xperia-edo-pdx203.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-sony-xperia-edo-pdx206.dtb
-> +dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-xiaomi-elish.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-hdk.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-microsoft-surface-duo2.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-mtp.dtb
-> diff --git a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish.dts b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish.dts
-> new file mode 100644
-> index 000000000000..99ae6668e516
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish.dts
-> @@ -0,0 +1,594 @@
-> +// SPDX-License-Identifier: BSD-3-Clause
-> +/*
-> + * Copyright (c) 2022, 2023 Jianhua Lu <lujianhua000@gmail.com>
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-> +#include "sm8250.dtsi"
-> +#include "pm8150.dtsi"
-> +#include "pm8150b.dtsi"
-> +#include "pm8150l.dtsi"
-> +#include "pm8009.dtsi"
-> +
-> +/*
-> + * Delete following upstream (sm8250.dtsi) reserved
-> + * memory mappings which are different in this device.
-> + */
-> +/delete-node/ &xbl_aop_mem;
-> +/delete-node/ &slpi_mem;
-> +/delete-node/ &adsp_mem;
-> +/delete-node/ &spss_mem;
-> +/delete-node/ &cdsp_secure_heap;
-> +
-> +/ {
-> +	model = "Xiaomi Mi Pad 5 Pro";
-> +	compatible = "xiaomi,elish", "qcom,sm8250";
-> +	classis-type = "tablet";
-> +
-> +	/* required for bootloader to select correct board */
-> +	qcom,msm-id = <356 0x20001>; /* SM8250 v2.1 */
-> +	qcom,board-id = <0x10008 0>;
-> +
-> +	chosen {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		framebuffer: framebuffer@9c000000 {
-> +			compatible = "simple-framebuffer";
-> +			reg = <0 0x9c000000 0 0x2300000>;
-> +			width = <1600>;
-> +			height = <2560>;
-> +			stride = <(1600 * 4)>;
-> +			format = "a8r8g8b8";
-> +		};
-> +	};
-> +
-> +	gpio_keys: gpio-keys {
-> +		compatible = "gpio-keys";
-> +
-> +		vol-up {
-
-Missing generic prefix.
-
-Does not look like you tested the DTS against bindings. Please run `make
-dtbs_check` (see Documentation/devicetree/bindings/writing-schema.rst
-for instructions).
-
-> +			label = "Volume Up";
-> +			gpios = <&pm8150_gpios 6 GPIO_ACTIVE_LOW>;
-> +			linux,code = <KEY_VOLUMEUP>;
-> +			debounce-interval = <15>;
-> +			linux,can-disable;
-> +			gpio-key,wakeup;
-> +		};
-> +	};
-> +
-> +	bl_vddpos_5p5: bl-vddpos-regulator {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "bl_vddpos_5p5";
-> +		regulator-min-microvolt = <5500000>;
-> +		regulator-max-microvolt = <5500000>;
-> +		regulator-enable-ramp-delay = <233>;
-> +		gpio = <&tlmm 130 0>;
-
-Use defines for flags.
-
-> +		enable-active-high;
-> +		regulator-boot-on;
-> +	};
-> +
-> +	bl_vddneg_5p5: bl-vddneg-regulator {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "bl_vddneg_5p5";
-> +		regulator-min-microvolt = <5500000>;
-> +		regulator-max-microvolt = <5500000>;
-> +		regulator-enable-ramp-delay = <233>;
-> +		gpio = <&tlmm 131 0>;
-
-Use defines for flags.
-
-> +		enable-active-high;
-> +		regulator-boot-on;
-> +	};
-> +
-> +	vph_pwr: vph-pwr-regulator {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "vph_pwr";
-> +		regulator-min-microvolt = <3700000>;
-> +		regulator-max-microvolt = <3700000>;
-> +	};
-> +
-
-(...)
-
-> +
-> +&cdsp {
-> +	firmware-name = "qcom/sm8250/xiaomi/elish/cdsp.mbn";
-> +	status = "okay";
-> +};
-> +
-> +&gpi_dma0 {
-> +	status = "okay";
-> +};
-> +
-> +&gpi_dma1 {
-> +	status = "okay";
-> +};
-> +
-> +&gpi_dma2 {
-> +	status = "okay";
-> +};
-> +
-> +&i2c0 {
-> +	clock-frequency = <400000>;
-> +	status = "okay";
-> +
-> +	battery_fg@55 {
-
-No underscores in node names. Generic node names, so just fuel-gauge
-
-> +		compatible = "ti,bq27z561";
-> +		reg = <0x55>;
-> +		monitored-battery = <&battery_r>;
-> +	};
-> +};
-> +
-> +&i2c11 {
-> +	clock-frequency = <400000>;
-> +	status = "okay";
-> +
-> +	backlight: backlight@11 {
-> +		compatible = "kinetic,ktz8866";
-> +		reg = <0x11>;
-> +		vddpos-supply = <&bl_vddpos_5p5>;
-> +		vddneg-supply = <&bl_vddneg_5p5>;
-> +		enable-gpios = <&tlmm 139 GPIO_ACTIVE_HIGH>;
-> +		current-num-sinks = <5>;
-> +		kinetic,current-ramp-delay-ms = <128>;
-> +		kinetic,led-enable-ramp-delay-ms = <1>;
-> +		kinetic,enable-lcd-bias;
-> +	};
-> +};
-> +
-> +&i2c13 {
-> +	clock-frequency = <400000>;
-> +	status = "okay";
-> +
-> +	battery_fg@55 {
-
-Same problem
-
-> +		compatible = "ti,bq27z561";
-> +		reg = <0x55>;
-> +		monitored-battery = <&battery_l>;
-> +	};
-> +};
-Best regards,
-Krzysztof
+> bod
 
