@@ -2,109 +2,95 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0F95C25B50
-	for <phone-devel@archiver.kernel.org>; Mon, 23 Jan 2023 22:13:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0589EC54EAA
+	for <phone-devel@archiver.kernel.org>; Tue, 24 Jan 2023 13:55:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233208AbjAWWNb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 23 Jan 2023 17:13:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58694 "EHLO
+        id S234827AbjAXNzZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 24 Jan 2023 08:55:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233151AbjAWWM5 (ORCPT
+        with ESMTP id S234667AbjAXNzO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 23 Jan 2023 17:12:57 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 316B4392A0;
-        Mon, 23 Jan 2023 14:12:26 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 48F85B80DE1;
-        Mon, 23 Jan 2023 22:12:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DDAEC4339B;
-        Mon, 23 Jan 2023 22:12:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1674511925;
-        bh=T4OUyD+gMfLi4t8TV225tN/XhFfB3kBwKhfR2EqDfhs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Yoi5yYwgUE0ymFOJ1VSucmfsRg0usKoyceuEV9GVihlqvhT4KlLQpeJxjvfHBUfuV
-         lUYtSOA+6yT2GzMcuxA70lIyvs9FpfgCascM2kx6pPGdtaZxoSTV842ZbsQCXsvcTz
-         uAhwYAlNJaC6mW8bvw4NRibMBoJzrdi74v3URwlH37xT0lWKEiNgrsR8G7mGUe/Vuz
-         SPNC1EMaCc351AkUQurhLr3keaQrqWTdrXgNcbf6NFHOcGzL+V1An5Wo8XCBms9vJa
-         DRp42l22VsvfUH4jBtrDR1yn5OPzFD9p75c4l8lAqKRNe8IenOE1A7tpMEMrofmmpk
-         piS8ZcYSw9Lpw==
-Date:   Mon, 23 Jan 2023 23:12:00 +0100
-From:   Wolfram Sang <wsa@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Andy Gross <agross@kernel.org>,
+        Tue, 24 Jan 2023 08:55:14 -0500
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F735474EF;
+        Tue, 24 Jan 2023 05:53:54 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id 207so11224458pfv.5;
+        Tue, 24 Jan 2023 05:53:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gHeBHZ50aQkfqgUvQ7p7me+CLGT8bHN0BKeFRvf3X84=;
+        b=eb88FkCt5apejh9PRzjRKde6RcCSR2ELTPTTJsmyxVC8ay6sycImlrxn26zaOvXPm2
+         31opciIxOVcGQlgbghzqJMxXWbBamKQaZqO/k9bJbvZjUpTTTCjUi4nWroJ8KsQEK2fv
+         x/DNoB18yRT3UldFZPD0bNtyHeerdXJEWmSR3Ea2NqfbxQrixYzfc9alph+p3BzrfK74
+         olfh9w/f4IhaZHeeCLc8h9bTq1z0DY5ewmIxlBpMRvOcMNhAWAXUNbj7yaUvL/w1eKuF
+         rHfFtETrkAD8aVtMD7aenYEsD3w0enmJxMiewva+MvJZhgD1Yd0N2gu+2WugBe9pAUfW
+         UtKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gHeBHZ50aQkfqgUvQ7p7me+CLGT8bHN0BKeFRvf3X84=;
+        b=qb/FkNk7Ioo5tYG1sPF4ugX+diuTB/7x49dpJfZmQFld5A9j2k2Zn8OEjgiVpXJ0Ks
+         /iqeYNQw0o3w/y20yXZTD2BCSwC1zNaMdHWLPtSmHyQ/VJQw9JSm0KBB4F8LoG5xkwV9
+         06x9nfSXNs/v8BeqZHHu7+dOQnyi3QI2DHCZQ/faKENtF8zCvAHsVyAOClJNzqN0AfQ9
+         n2p9Jv6TVyQz+rXa+ukcWN52QF58GkT9IAzxMVdZZ4no3ba0MtuwmAwzR0HQYo+xa7Qj
+         VYS+Fvoa8kY6LDJeVqkGhQYj6WyfuXK5AKDs6lKk3rcVr7Lig0NPPLSKKA7TSx7zEkqA
+         2Pvw==
+X-Gm-Message-State: AFqh2kpSazvEjF9H4+wgLv7gUWMbHkJjmtCJNKCLwJ8iKH0f4LBQTykR
+        sveYL2XH1yLfItfW9BsGAVvgKcb0EqM=
+X-Google-Smtp-Source: AMrXdXvVxedDObY8XFDjccTKR8eBjd2TqtODl6Tfz9ilcNtZ/lXtUL4AI8aY/w8AvnqFdtrVD1cPJw==
+X-Received: by 2002:aa7:9116:0:b0:577:272f:fdb with SMTP id 22-20020aa79116000000b00577272f0fdbmr26607497pfh.29.1674568410046;
+        Tue, 24 Jan 2023 05:53:30 -0800 (PST)
+Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id d1-20020a056a0010c100b00589605fb0a1sm1653225pfu.96.2023.01.24.05.53.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Jan 2023 05:53:29 -0800 (PST)
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Robert Foss <rfoss@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G . Piccoli" <gpiccoli@igalia.com>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v2 1/4] dt-bindings: i2c: qcom-cci: Document SM6350
- compatible
-Message-ID: <Y88GMAjn6scr1DFv@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Robert Foss <rfoss@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <20221213-sm6350-cci-v2-0-15c2c14c34bb@fairphone.com>
- <20221213-sm6350-cci-v2-1-15c2c14c34bb@fairphone.com>
+        Jianhua Lu <lujianhua000@gmail.com>
+Subject: [PATCH 1/2] dt-bindings: arm: qcom: Add Xiaomi Mi Pad 5 Pro (xiaomi-elish)
+Date:   Tue, 24 Jan 2023 21:53:17 +0800
+Message-Id: <20230124135318.10023-1-lujianhua000@gmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="M5DjASHqtfqGSqrR"
-Content-Disposition: inline
-In-Reply-To: <20221213-sm6350-cci-v2-1-15c2c14c34bb@fairphone.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Add a compatible for Xiaomi Mi Pad 5 Pro.
 
---M5DjASHqtfqGSqrR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+---
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Fri, Jan 20, 2023 at 02:13:44PM +0100, Luca Weiss wrote:
-> Document the compatible for the CCI block found on SM6350 SoC.
->=20
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index 22553637c519..c5fe81fba5b1 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -873,6 +873,7 @@ properties:
+               - qcom,qrb5165-rb5
+               - qcom,sm8250-hdk
+               - qcom,sm8250-mtp
++              - xiaomi,elish
+               - sony,pdx203-generic
+               - sony,pdx206-generic
+           - const: qcom,sm8250
+-- 
+2.39.1
 
-Applied to for-next, thanks!
-
-
---M5DjASHqtfqGSqrR
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmPPBi0ACgkQFA3kzBSg
-KbbLwg//S0qCFdJcJKzs8y0lQOit1uSGRCIm5yWVdF+aF/DEDoeg+rAildQMvdRu
-feERgXqbEJUHtNLH1K7K9BwnhTAcvUIGYC79UFz3OWmZiMaX1Gl8HPTJXSc4Y9wy
-GWBGhl3QXUGDeyApIV33sLSauZe220PXg0Zw/X/5WTZo9R+KnkoL8JqvNJIQsQ5v
-PwQ3c6UJUjIuL/wmbqM7AYe45UOGmsPi87nTgbdJFbgMvXp2xD37e2Y2LcYMICh5
-M1iknYmk0FMC2E1rBAwsGjmgwyYtbIEGMJqK0qkR+cuTu1KD0Fv2Z2nGQJh4TcK1
-ftkGfPEKQAzvm1GqH5ExzpijZU9/c8lQIOaIiHul5CxPJEqBZgn2KBj+1OyErfbH
-nL0ymeXrDzp01/gqrVwv1RYpg+wAzuie/uxXjnAJ2vInvEVx2osOy2sykP1Bg8FZ
-3Q74VMCQJ+3kM+BXMh9sEinr8aGs8qGEUIXL32YQp2dG57T3V8teqDJamYOMXXpT
-U0d7ff1Cz1FPYKkNzX2b9HXgsEbjrBh1XGZaDjJZTwbJuXtnN12lER4u+PzKaGZa
-aUSZ8ugLTSbRxCAJTPARXUGBTsOKiuxGTvYS/tYe1Hm/zHVGORUeqlIcTHuxswdV
-4PYbYwEE1eFwVxhJBsxsxG7XA+3OYWR/4HKnkqcgGWksO7qf4b8=
-=3gYL
------END PGP SIGNATURE-----
-
---M5DjASHqtfqGSqrR--
