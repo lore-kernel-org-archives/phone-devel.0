@@ -2,50 +2,69 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C5C0C27C76
-	for <phone-devel@archiver.kernel.org>; Wed, 25 Jan 2023 10:14:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 276C1C54EED
+	for <phone-devel@archiver.kernel.org>; Wed, 25 Jan 2023 11:29:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235233AbjAYKOx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 25 Jan 2023 05:14:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54624 "EHLO
+        id S235425AbjAYL31 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 25 Jan 2023 06:29:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235010AbjAYKOw (ORCPT
+        with ESMTP id S235319AbjAYL3O (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 25 Jan 2023 05:14:52 -0500
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [5.144.164.167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46B832E0D7
-        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 02:14:34 -0800 (PST)
-Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id AFC2541CAA;
-        Wed, 25 Jan 2023 11:14:21 +0100 (CET)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kuogee Hsieh <quic_khsieh@quicinc.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Stephen Boyd <swboyd@chromium.org>,
+        Wed, 25 Jan 2023 06:29:14 -0500
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5452372A1;
+        Wed, 25 Jan 2023 03:29:13 -0800 (PST)
+Received: by mail-pf1-x432.google.com with SMTP id i65so13224872pfc.0;
+        Wed, 25 Jan 2023 03:29:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Brsbq1Lv+VKoJkUJMRBwphPkNmZ937GSrjGfpdCV4ds=;
+        b=N234N6tHXN6869JbOVsuHAc7ZBQzqqlWp5zayAmIVqkUEi1SQCy5KKJAXgAOuBSy5H
+         LwJV8DCPrJod2qessT8ts88gq+ZazAWhdAjpwk9h1i2ewBz0Q3Fpv8D6Uho4ToC6avTE
+         UKY/LEfhEKr5fta3ITAAPGHun2K+KJNQggqqmViANKQkY4W9gbLxJnwz56ZXIMJC6wOJ
+         3FTTXhOhTwMR0AlHJ5UmDq+5zAvPbko4dpvfZxgbMg9woMX3U7xYNSR9f7LxlE5X+DMm
+         sG5Vpe6Ur7gOxQYwjjx1NW+TXHU4Th/QKj9CUPmPQUb5Q5jtYfFt5G+k9u4DZRRCGub2
+         FUCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Brsbq1Lv+VKoJkUJMRBwphPkNmZ937GSrjGfpdCV4ds=;
+        b=iaJLMW2izEwlWA6C0oFrq/iRvCZnJGMuYHjo2BtFatmeYo5vniHR0/edozWNjWKql6
+         kFP6Gn3QPjgOe5J6G/EzqNnsXestwkCoLx1IU8D6DZj76YS3Q5YMfAxI5xdVHS0b/b4/
+         S/Jv7BbIedL52ucbJMAlOfDYIAd+6xctsbCi8aOn6NNXozeOWRH1Atcz9Wxt8F8wczH8
+         jyHx2olE6YHge9c3wfuxiaJ2UVVefF9Oxb6lZEfra2HERGvrADFTGM3Mqftz3SnP8u5I
+         CWhBiQ47FUnyb0NycZTcTDiyXcncKqxKinoKrcFPVMoNRQZWRx/YKzbAIr2jvLBIMUYH
+         KRHQ==
+X-Gm-Message-State: AFqh2kqMAZE0akV//gKEXGXT8PwKMWCrhnAbbQbxplEDrpnQHlbBm72K
+        OpoCBE2Fa2jVqbDy8vhI2MY=
+X-Google-Smtp-Source: AMrXdXtheOC1DaQUBGB7WFc/s0dAMAH2fV2z784by3ddKYCHxzP9HVIKDHQncwbz4GPsb1/PpwZrpw==
+X-Received: by 2002:a05:6a00:328b:b0:577:1c59:a96c with SMTP id ck11-20020a056a00328b00b005771c59a96cmr34326811pfb.2.1674646152891;
+        Wed, 25 Jan 2023 03:29:12 -0800 (PST)
+Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id l19-20020a056a0016d300b0058d92ff8a31sm3333390pfc.187.2023.01.25.03.29.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Jan 2023 03:29:12 -0800 (PST)
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Vinod Polimera <quic_vpolimer@quicinc.com>,
-        Liu Shixin <liushixin2@huawei.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] drm/msm/dpu: Add DSC hardware blocks to register snapshot
-Date:   Wed, 25 Jan 2023 11:14:11 +0100
-Message-Id: <20230125101412.216924-1-marijn.suijten@somainline.org>
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G . Piccoli" <gpiccoli@igalia.com>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jianhua Lu <lujianhua000@gmail.com>
+Subject: [PATCH v2 1/2] dt-bindings: arm: qcom: Add Xiaomi Mi Pad 5 Pro (xiaomi-elish)
+Date:   Wed, 25 Jan 2023 19:29:02 +0800
+Message-Id: <20230125112903.10710-1-lujianhua000@gmail.com>
 X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -53,38 +72,28 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add missing DSC hardware block register ranges to the snapshot utility
-to include them in dmesg (on MSM_DISP_SNAPSHOT_DUMP_IN_CONSOLE) and the
-kms debugfs file.
+Add a compatible for Xiaomi Mi Pad 5 Pro.
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
 ---
-Changes since v1:
-- Rebase on next-20230125 to solve conflicts with 43e3293fc614
-  ("drm/msm/dpu: add support for MDP_TOP blackhole").
+Changes in v2:
+  - Move compatible "xiaomi-elish" down.
 
-v1: https://lore.kernel.org/linux-arm-msm/20230125091315.133283-1-marijn.suijten@somainline.org/T/#u
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
-index d612419118a2..a683bd9b5a04 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
-@@ -937,6 +937,11 @@ static void dpu_kms_mdp_snapshot(struct msm_disp_state *disp_state, struct msm_k
- 				dpu_kms->mmio + cat->mdp[0].base, "top");
- 	}
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index 22553637c519..398ff26e6e0e 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -875,6 +875,7 @@ properties:
+               - qcom,sm8250-mtp
+               - sony,pdx203-generic
+               - sony,pdx206-generic
++              - xiaomi,elish
+           - const: qcom,sm8250
  
-+	/* dump DSC sub-blocks HW regs info */
-+	for (i = 0; i < cat->dsc_count; i++)
-+		msm_disp_snapshot_add_block(disp_state, cat->dsc[i].len,
-+				dpu_kms->mmio + cat->dsc[i].base, "dsc_%d", i);
-+
- 	pm_runtime_put_sync(&dpu_kms->pdev->dev);
- }
- 
+       - items:
 -- 
 2.39.1
 
