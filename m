@@ -2,53 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A0A26C61D9D
-	for <phone-devel@archiver.kernel.org>; Wed, 25 Jan 2023 09:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20B51C61DA2
+	for <phone-devel@archiver.kernel.org>; Wed, 25 Jan 2023 09:45:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235264AbjAYJpw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 25 Jan 2023 04:45:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59414 "EHLO
+        id S234138AbjAYJpy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 25 Jan 2023 04:45:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234999AbjAYJpv (ORCPT
+        with ESMTP id S235322AbjAYJpx (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 25 Jan 2023 04:45:51 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A01056196
-        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 01:45:25 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id m15so13279208wms.4
-        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 01:45:25 -0800 (PST)
+        Wed, 25 Jan 2023 04:45:53 -0500
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 168A41707
+        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 01:45:27 -0800 (PST)
+Received: by mail-wm1-x336.google.com with SMTP id c4-20020a1c3504000000b003d9e2f72093so820327wma.1
+        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 01:45:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ztfbDoxGkDtDmGmBYfiBuBdnAIcB0uPVrA/v1nCpTCQ=;
-        b=FsdNwkstyvELDGvtDJLlGrYXxXaw+Yd/rnWhJQdaClPX/6nI30z3KrEYdR1blg0yas
-         HnJqJNdicB2Y8z/DDK7cVk2GiT1P7gjMOafnUgCU0NdWgPooizBy+2uA1TaqDKFCkYQ4
-         irODL2cF7vLmfyvfA9kfkYlL5hsV7FQVZXfrMZZXT6qtD+IiBn/Rpi/dmW/ITImzx5FV
-         7X34wUvBf1FSmcmnHVYSOCK+yAE4jsrYCXGyXWeyVCaWpPs3BMk/qPl05Y12+5WnXY0h
-         khowzHbFZk9pHgh4AwlV3zTopNMsDH6el5kMsATONevRApwi4JSZVR7MKxQ4GRf1+AXf
-         zN2g==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rehPnk2K/g3HXkr8UJKDPsOY+ol6GSyRA/iFMHVWuqk=;
+        b=AkRRpJfCwwPxqcpsA+LKNlZ7Jny8XdYdKTc93VU8NK8sazeJwiFsFrKyfoOMdi6LOK
+         zDaiWw7w7zN4+KNR8la89f1du9bVRIOhqpD8uo+rDGCDSS9CzzRGqnoQEnNxbexKQeUC
+         TLrrCERr80jYN+ibCWYAegmeslI2nCUQQ0K8ac8PcThBMdLGSitXEMEqzyyykQ6O4qqh
+         bxuDsLCa2PQYWtQ3dbiQil1FxuHrAa6gsmIiSIJq3sPO+7KGT/NbKVZwur2AYfAC3PGg
+         eeqPEfESdJ3RkGI/o3wc+DC4qv6Zl8r7VDzxqHrehxbxngoHcijUX/LBg2Zk3V5jKWr8
+         eppA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ztfbDoxGkDtDmGmBYfiBuBdnAIcB0uPVrA/v1nCpTCQ=;
-        b=R6qmCp5sltlVW6MGVOvBipVrSTFfrMZ9F3xFSkyL/Di3jSHRAl5i9Z58sHZAUK/tWP
-         7Mmt+MfSdjjns1C6Z/O1PyOth2v1zlRqgDyZSwxO86v8QCFJEPQrY92F5IvHGMeDyjFF
-         5jS9sWL3BN7lnrVdcR4HHkuTWiQmvVf0Jkd/0zaDiVpmU/zDyuV1qjYxDcMto5+OUq8y
-         KuMryNWqPJ3qEAwAP84Khrffw70nGfQJqoEv25Te/fPTvXonh3M8+yOOYykHTFOR4gLD
-         8689HPsJsnaF7ms2RN7lj9chA5Pbwm+LOa2fiL4LY8Wu/SPCA39hhfjiiGRonHIrTMTm
-         2V7w==
-X-Gm-Message-State: AFqh2koxmleH1oVhWH9p6DwgjA4y+hGp3XQ/BwjGwmUOBZ7l4fbT5dWx
-        Cgski62JXMzKEuVhRkNj7ybGlQ==
-X-Google-Smtp-Source: AMrXdXsh2igFfleXr30Bewy8M0jQBLxP7I9V02wCXUXTYQcHNQM6+J0AOl+0hWI7jdNJPkdu81Wrsg==
-X-Received: by 2002:a05:600c:4e05:b0:3c6:e61e:ae71 with SMTP id b5-20020a05600c4e0500b003c6e61eae71mr32485060wmq.1.1674639922588;
-        Wed, 25 Jan 2023 01:45:22 -0800 (PST)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rehPnk2K/g3HXkr8UJKDPsOY+ol6GSyRA/iFMHVWuqk=;
+        b=hIQvEGINivNIk4sKQtbYHd4RAfIBMXS8unZSmgAnkfMxLBofGoHj/MGwbJvRVYC5d/
+         JtHqDLG6pSjjgRJ8NigwFhkJ1ERRl33X4yBscEE8XPQLUEgc71TFguTECNZHvwBsl6UC
+         d2Gwc5LqEkqzWig36MDaaRZ7ucNJYDjB3USmZqkFRBz4aGLUZlLi9Qrle1FKywLm2Ubv
+         rT6r9Xqjb0A4YIBFSB5Pw5PCJyFCK8HCDxPwrkSnEkuXh6jclUDG4ULI2XMBOUjclCvb
+         26TMXd3QkuWvWbpyY07FNN0bvlygi9S7Q3OWF2ADkB/c7EFSBqq41bouNsCWokq7t4pv
+         10ew==
+X-Gm-Message-State: AFqh2kodQxBmKxuqdnvK8k2mGrVvQMMtYrzO83PLDC2JTUNrZ+Z/9tAY
+        IgaVNBV9aNVu8dtmamBo+6qFlQ==
+X-Google-Smtp-Source: AMrXdXu1QouqMqcUhoSHEnoEjM/FaCPnmBG3wQhdmo3c/e2wtU3NkiUnWjv9OG2LwHe7gXmrIVn7mw==
+X-Received: by 2002:a05:600c:5386:b0:3cf:9844:7b11 with SMTP id hg6-20020a05600c538600b003cf98447b11mr32371950wmb.23.1674639924113;
+        Wed, 25 Jan 2023 01:45:24 -0800 (PST)
 Received: from krzk-bin.. ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id fl22-20020a05600c0b9600b003d1e3b1624dsm1419238wmb.2.2023.01.25.01.45.21
+        by smtp.gmail.com with ESMTPSA id fl22-20020a05600c0b9600b003d1e3b1624dsm1419238wmb.2.2023.01.25.01.45.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jan 2023 01:45:22 -0800 (PST)
+        Wed, 25 Jan 2023 01:45:23 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -62,40 +63,280 @@ Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
         =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
         Henrik Grimler <henrik@grimler.se>,
         Chanwoo Choi <cw00.choi@samsung.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH 1/9] ARM: dts: exynos: correct HDMI phy compatible in Exynos4
-Date:   Wed, 25 Jan 2023 10:45:05 +0100
-Message-Id: <20230125094513.155063-1-krzysztof.kozlowski@linaro.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 2/9] ARM: dts: exynos: move exynos-bus nodes out of soc in Exynos5420
+Date:   Wed, 25 Jan 2023 10:45:06 +0100
+Message-Id: <20230125094513.155063-2-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230125094513.155063-1-krzysztof.kozlowski@linaro.org>
+References: <20230125094513.155063-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The HDMI phy compatible was missing vendor prefix.
+The soc node is supposed to have only device nodes with MMIO addresses,
+as reported by dtc W=1:
 
-Fixes: ed80d4cab772 ("ARM: dts: add hdmi related nodes for exynos4 SoCs")
-Cc: <stable@vger.kernel.org>
+  arch/arm/boot/dts/exynos5420.dtsi:1070.24-1075.5:
+    Warning (simple_bus_reg): /soc/bus-wcore: missing or empty reg/ranges property
+
+and dtbs_check:
+
+  exynos5420-arndale-octa.dtb: soc: bus-wcore:
+    {'compatible': ['samsung,exynos-bus'], 'clocks': [[2, 769]], 'clock-names': ['bus'], 'status': ['disabled']} should not be valid under {'type': 'object'}
+
+Move the bus nodes and their OPP tables out of SoC to fix this.
+Re-order them alphabetically while moving and put some of the OPP tables
+in device nodes (if they are not shared).
+
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- arch/arm/boot/dts/exynos4.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/exynos5420.dtsi | 223 +++++++++++++++---------------
+ 1 file changed, 111 insertions(+), 112 deletions(-)
 
-diff --git a/arch/arm/boot/dts/exynos4.dtsi b/arch/arm/boot/dts/exynos4.dtsi
-index 55afe9972460..d1adaee2af58 100644
---- a/arch/arm/boot/dts/exynos4.dtsi
-+++ b/arch/arm/boot/dts/exynos4.dtsi
-@@ -605,7 +605,7 @@ i2c_8: i2c@138e0000 {
- 			status = "disabled";
+diff --git a/arch/arm/boot/dts/exynos5420.dtsi b/arch/arm/boot/dts/exynos5420.dtsi
+index 7efe72879dc4..cea92f175d46 100644
+--- a/arch/arm/boot/dts/exynos5420.dtsi
++++ b/arch/arm/boot/dts/exynos5420.dtsi
+@@ -37,6 +37,117 @@ aliases {
+ 		spi2 = &spi_2;
+ 	};
  
- 			hdmi_i2c_phy: hdmiphy@38 {
--				compatible = "exynos4210-hdmiphy";
-+				compatible = "samsung,exynos4210-hdmiphy";
- 				reg = <0x38>;
- 			};
++	bus_disp1: bus-disp1 {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK400_DISP1>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_disp1_fimd: bus-disp1-fimd {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK300_DISP1>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_fsys: bus-fsys {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK200_FSYS>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_fsys2: bus-fsys2 {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK200_FSYS2>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_fsys_apb: bus-fsys-apb {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_PCLK200_FSYS>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_g2d: bus-g2d {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK333_G2D>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_g2d_acp: bus-g2d-acp {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK266_G2D>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++	bus_gen: bus-gen {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK266>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_gscl_scaler: bus-gscl-scaler {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK300_GSCL>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_jpeg: bus-jpeg {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK300_JPEG>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_jpeg_apb: bus-jpeg-apb {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK166>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_mfc: bus-mfc {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK333>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_mscl: bus-mscl {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK400_MSCL>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_noc: bus-noc {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK100_NOC>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_peri: bus-peri {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK66>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
++	bus_wcore: bus-wcore {
++		compatible = "samsung,exynos-bus";
++		clocks = <&clock CLK_DOUT_ACLK400_WCORE>;
++		clock-names = "bus";
++		status = "disabled";
++	};
++
+ 	/*
+ 	 * The 'cpus' node is not present here but instead it is provided
+ 	 * by exynos5420-cpus.dtsi or exynos5422-cpus.dtsi.
+@@ -1066,118 +1177,6 @@ sysmmu_fimd1_1: sysmmu@14680000 {
+ 			power-domains = <&disp_pd>;
+ 			#iommu-cells = <0>;
  		};
+-
+-		bus_wcore: bus-wcore {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK400_WCORE>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_noc: bus-noc {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK100_NOC>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_fsys_apb: bus-fsys-apb {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_PCLK200_FSYS>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_fsys: bus-fsys {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK200_FSYS>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_fsys2: bus-fsys2 {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK200_FSYS2>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_mfc: bus-mfc {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK333>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_gen: bus-gen {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK266>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_peri: bus-peri {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK66>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_g2d: bus-g2d {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK333_G2D>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_g2d_acp: bus-g2d-acp {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK266_G2D>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_jpeg: bus-jpeg {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK300_JPEG>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_jpeg_apb: bus-jpeg-apb {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK166>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_disp1_fimd: bus-disp1-fimd {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK300_DISP1>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_disp1: bus-disp1 {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK400_DISP1>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_gscl_scaler: bus-gscl-scaler {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK300_GSCL>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+-
+-		bus_mscl: bus-mscl {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&clock CLK_DOUT_ACLK400_MSCL>;
+-			clock-names = "bus";
+-			status = "disabled";
+-		};
+ 	};
+ 
+ 	thermal-zones {
 -- 
 2.34.1
 
