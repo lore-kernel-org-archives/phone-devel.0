@@ -2,91 +2,123 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF7D8C27C76
-	for <phone-devel@archiver.kernel.org>; Wed, 25 Jan 2023 11:37:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BADB5C54E94
+	for <phone-devel@archiver.kernel.org>; Wed, 25 Jan 2023 19:05:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235721AbjAYLhT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 25 Jan 2023 06:37:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56426 "EHLO
+        id S229496AbjAYTFN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 25 Jan 2023 14:05:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235554AbjAYLhA (ORCPT
+        with ESMTP id S235772AbjAYTFL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 25 Jan 2023 06:37:00 -0500
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D89817CC0
-        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 03:36:30 -0800 (PST)
-Received: by mail-wm1-x330.google.com with SMTP id c4-20020a1c3504000000b003d9e2f72093so1018653wma.1
-        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 03:36:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5dVhlUNjqsBL30qFj7Fwhndj9IVP6//dpSPYEVekBIY=;
-        b=Kfhm/onlZx2XNp3mdcPwUJXKM/RQ9cXvyvfCBFaza36IV80QSJlRXc6u8VFbj0YDCU
-         5CaxDqL7o8JrgR9Qe7ocBOkJ1eLv8Rfx0irZCdhwepiMbfh1btuRiajQ36SlDAArAOqz
-         3x4Lc1aLNYGJt9UalXa7G6rtWEBbCqkFmkSXOaizotUJndK5Ce9a/bhRZufzro8qCkhv
-         y7ZU3RdNDDxWg56tKp5MQq+03MBS6vjUL6eHmqjnbo+AfYS24K/7Q19Xce31qkKfZJMw
-         bo6TPMS/Q3BoZqAC4Td+Nm0J79kLe5u/5a4ziZDNgJCAP6u8ho6T4cgYO4GCZ9I8STeD
-         F50g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5dVhlUNjqsBL30qFj7Fwhndj9IVP6//dpSPYEVekBIY=;
-        b=hSc7mDBKIrMIVP5kPddUuG9sEBaRoD7RTKmFIpRlnfsDG3W8y5aQTMghhomLsq9f4o
-         lzeUI2p+PHgxJNjoK5JJWBrbz4PqngcGKcJENt2xECGgzmrqoZShy2r9oW3nRJ8muYEK
-         YQmaiaCxGxlQJIuFl75Md2XXQfXIf9N/90bL1irXUpo9aOx8qUXhZ92AWXRpQfhrOTwc
-         fp5eWX+1E3EEeeFu2kWj4LsbFRrH6hs7eAPRO4d/1UX82urFDuBwQdZFNfiJpxeH8Ik8
-         7vo0/x3PH5mO8Cl0DcC5S/z2K39jfupkneJYm4yR40nTUybnHR+FywO5qLagVYImSi9y
-         jk/g==
-X-Gm-Message-State: AFqh2krCP0RNjRPRPpzf9IY2R/LAAQkIfxrBXz+O1AyMfpGhSYFn7OeD
-        kSovCat85QMND2SzcVED9E/MMw==
-X-Google-Smtp-Source: AMrXdXsIWEY9FTI1OV1UwP/0HQPv4v1+dM8bovEcXISKZKpdILaC0A7PO/9NZBTVAPpZTTdVsdtfqw==
-X-Received: by 2002:a05:600c:3556:b0:3db:331b:bd2d with SMTP id i22-20020a05600c355600b003db331bbd2dmr20147637wmq.18.1674646577387;
-        Wed, 25 Jan 2023 03:36:17 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id n13-20020a05600c500d00b003db2b81660esm1642996wmr.21.2023.01.25.03.36.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Jan 2023 03:36:17 -0800 (PST)
-Message-ID: <a768138f-a960-16b4-7097-9212638141a5@linaro.org>
-Date:   Wed, 25 Jan 2023 12:36:14 +0100
+        Wed, 25 Jan 2023 14:05:11 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBB3B9EF1;
+        Wed, 25 Jan 2023 11:05:10 -0800 (PST)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30PGpDTp011299;
+        Wed, 25 Jan 2023 19:04:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=kzMdcKmjNLrz56j89BndJFFhT3EyGY2qMYeM/0J+fpg=;
+ b=H8uYCPk3Fp8QOZn0vrgVtTFvUPf9ETeLjYZ6j4TOSfSOVp+SrXBboK/r/mhG+7WJGF53
+ EvJFLzoNnmqi9Z8um3z/O8kLNMdnxHUBeQO/zkTLKuhkCgziyt+QdcSd5Cw/n5hlBTc3
+ 80e7QOWZ19fVKEoHMPegmlgvmujJQwWytbemLBOf3YvpmdEUl3IO/Xla0iub3usanQ+t
+ ItK4ANSlyOfnVgDserNRUN0Zd6M+cRmGhAKjSnSKoL0G+WsC0yhJGYWtpUoBkHwGKOhL
+ uupVQYM3R6r2cO//Ra2jjU09f69U0vgVpEQc0vPpeqbeyHLDnV9Aw7nYL6VMzh9NgQW1 0A== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3nb0qrs7y7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 25 Jan 2023 19:04:57 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 30PJ4ujB026229
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 25 Jan 2023 19:04:56 GMT
+Received: from [10.110.33.211] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Wed, 25 Jan
+ 2023 11:04:54 -0800
+Message-ID: <dbe19739-6275-9e1d-86a3-20ecb559a9d1@quicinc.com>
+Date:   Wed, 25 Jan 2023 11:04:54 -0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-Subject: Re: [PATCH v2 1/2] dt-bindings: arm: qcom: Add Xiaomi Mi Pad 5 Pro
- (xiaomi-elish)
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [PATCH] drm/msm/dpu: Add DSC hardware blocks to register snapshot
 Content-Language: en-US
-To:     Jianhua Lu <lujianhua000@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+To:     Marijn Suijten <marijn.suijten@somainline.org>,
+        <phone-devel@vger.kernel.org>
+CC:     <~postmarketos/upstreaming@lists.sr.ht>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G . Piccoli" <gpiccoli@igalia.com>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230125112903.10710-1-lujianhua000@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230125112903.10710-1-lujianhua000@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+        Martin Botka <martin.botka@somainline.org>,
+        "Jami Kettunen" <jami.kettunen@somainline.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        "Rob Clark" <robdclark@gmail.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        Liu Shixin <liushixin2@huawei.com>,
+        <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <freedreno@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+References: <20230125091315.133283-1-marijn.suijten@somainline.org>
+From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <20230125091315.133283-1-marijn.suijten@somainline.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: IszkHaAz9o7x6MtxCNLV1PVP66aA_IET
+X-Proofpoint-ORIG-GUID: IszkHaAz9o7x6MtxCNLV1PVP66aA_IET
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-01-25_12,2023-01-25_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ lowpriorityscore=0 phishscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0
+ priorityscore=1501 spamscore=0 suspectscore=0 clxscore=1011 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2301250169
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 25/01/2023 12:29, Jianhua Lu wrote:
-> Add a compatible for Xiaomi Mi Pad 5 Pro.
+
+
+On 1/25/2023 1:13 AM, Marijn Suijten wrote:
+> Add missing DSC hardware block register ranges to the snapshot utility
+> to include them in dmesg (on MSM_DISP_SNAPSHOT_DUMP_IN_CONSOLE) and the
+> kms debugfs file.
 > 
-> Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 
+Huge ack from me,
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-Best regards,
-Krzysztof
-
+> ---
+>   drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
+> index ad08fb7e7105..44648da310f2 100644
+> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
+> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
+> @@ -930,6 +930,11 @@ static void dpu_kms_mdp_snapshot(struct msm_disp_state *disp_state, struct msm_k
+>   		msm_disp_snapshot_add_block(disp_state, cat->wb[i].len,
+>   				dpu_kms->mmio + cat->wb[i].base, "wb_%d", i);
+>   
+> +	/* dump DSC sub-blocks HW regs info */
+> +	for (i = 0; i < cat->dsc_count; i++)
+> +		msm_disp_snapshot_add_block(disp_state, cat->dsc[i].len,
+> +				dpu_kms->mmio + cat->dsc[i].base, "dsc_%d", i);
+> +
+>   	msm_disp_snapshot_add_block(disp_state, cat->mdp[0].len,
+>   			dpu_kms->mmio + cat->mdp[0].base, "top");
+>   
