@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20B51C61DA2
-	for <phone-devel@archiver.kernel.org>; Wed, 25 Jan 2023 09:45:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2099C27C76
+	for <phone-devel@archiver.kernel.org>; Wed, 25 Jan 2023 09:45:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234138AbjAYJpy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 25 Jan 2023 04:45:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59428 "EHLO
+        id S235355AbjAYJp4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 25 Jan 2023 04:45:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235322AbjAYJpx (ORCPT
+        with ESMTP id S235338AbjAYJpy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 25 Jan 2023 04:45:53 -0500
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 168A41707
-        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 01:45:27 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id c4-20020a1c3504000000b003d9e2f72093so820327wma.1
-        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 01:45:27 -0800 (PST)
+        Wed, 25 Jan 2023 04:45:54 -0500
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8D0E56198
+        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 01:45:28 -0800 (PST)
+Received: by mail-wm1-x331.google.com with SMTP id d4-20020a05600c3ac400b003db1de2aef0so833090wms.2
+        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 01:45:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rehPnk2K/g3HXkr8UJKDPsOY+ol6GSyRA/iFMHVWuqk=;
-        b=AkRRpJfCwwPxqcpsA+LKNlZ7Jny8XdYdKTc93VU8NK8sazeJwiFsFrKyfoOMdi6LOK
-         zDaiWw7w7zN4+KNR8la89f1du9bVRIOhqpD8uo+rDGCDSS9CzzRGqnoQEnNxbexKQeUC
-         TLrrCERr80jYN+ibCWYAegmeslI2nCUQQ0K8ac8PcThBMdLGSitXEMEqzyyykQ6O4qqh
-         bxuDsLCa2PQYWtQ3dbiQil1FxuHrAa6gsmIiSIJq3sPO+7KGT/NbKVZwur2AYfAC3PGg
-         eeqPEfESdJ3RkGI/o3wc+DC4qv6Zl8r7VDzxqHrehxbxngoHcijUX/LBg2Zk3V5jKWr8
-         eppA==
+        bh=h9fFPW0G+RJzOZ4eS7AbpNJHxxkkGAHbd5kJhIA6+NA=;
+        b=dVhRfjVecKWFsPRP4zMcaQ2Pu7dpVYvpUmEJlyDYOJ/UqDi90rtrh1d595bW7GQz0I
+         W9oEUg+sZbz7A11m7ckhEfqxPgL5gscR83aMlF9uK6yl1udMLF7a7aAO9dNEqpH8u6ic
+         L6WAy4RhLZ7+DR4fheU0Jy68cqkXDFBXRW8mVsUxC8tLKGVknsMlBHQwktXa3FyyPRnd
+         ksgO22vSyx+djokVJD6kcIuOcozjXFqx220iARiR5F+CNtDUDfrmavb1zC6orucrCWSx
+         jFn/WaH+0RvbNp+6sIwG+74fHVigq8nBiCWwdMbIqeaaMJBVkUzplN5Hzg5e5IxxuxW9
+         qE4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rehPnk2K/g3HXkr8UJKDPsOY+ol6GSyRA/iFMHVWuqk=;
-        b=hIQvEGINivNIk4sKQtbYHd4RAfIBMXS8unZSmgAnkfMxLBofGoHj/MGwbJvRVYC5d/
-         JtHqDLG6pSjjgRJ8NigwFhkJ1ERRl33X4yBscEE8XPQLUEgc71TFguTECNZHvwBsl6UC
-         d2Gwc5LqEkqzWig36MDaaRZ7ucNJYDjB3USmZqkFRBz4aGLUZlLi9Qrle1FKywLm2Ubv
-         rT6r9Xqjb0A4YIBFSB5Pw5PCJyFCK8HCDxPwrkSnEkuXh6jclUDG4ULI2XMBOUjclCvb
-         26TMXd3QkuWvWbpyY07FNN0bvlygi9S7Q3OWF2ADkB/c7EFSBqq41bouNsCWokq7t4pv
-         10ew==
-X-Gm-Message-State: AFqh2kodQxBmKxuqdnvK8k2mGrVvQMMtYrzO83PLDC2JTUNrZ+Z/9tAY
-        IgaVNBV9aNVu8dtmamBo+6qFlQ==
-X-Google-Smtp-Source: AMrXdXu1QouqMqcUhoSHEnoEjM/FaCPnmBG3wQhdmo3c/e2wtU3NkiUnWjv9OG2LwHe7gXmrIVn7mw==
-X-Received: by 2002:a05:600c:5386:b0:3cf:9844:7b11 with SMTP id hg6-20020a05600c538600b003cf98447b11mr32371950wmb.23.1674639924113;
-        Wed, 25 Jan 2023 01:45:24 -0800 (PST)
+        bh=h9fFPW0G+RJzOZ4eS7AbpNJHxxkkGAHbd5kJhIA6+NA=;
+        b=vZAq5tzau2ZcdKBkZEM4GhcDy+1am1X3pyhBOeyPqaBnWuGOg6AVad7ZcEkUftiUNu
+         KcrOQMayG5d4nHjutCudGHNDtTJ4llGYj4L/SeeQBuayfnpkm7DsmYUBq+h4joBfsewa
+         wzhE7YMMdB3Wmg3eUTVegpGlT46fU85TrMypGIjgNsuykd9nnMBezdH01rl0vBHsh7i9
+         Lfa0kGQlZy5ZGoOVKDpMfWeVD+/kc3Q2Z644pDuzdL48kTRetCCz8b6XorhLqKiMSB4M
+         jA92BmwYvZsl/92CJlBBNGzggLw2bGXDd2Hy1DKHD1crYeNO4HcT51ff/9c2Xu9oqZVn
+         j5pA==
+X-Gm-Message-State: AFqh2kqxFwJz9D4kuPCxF0nakFGcqsQRegE5jjIqOWxoWC/KlbrzJdJp
+        J/RB9gMtyhpgYTdhaGqz7ZyKmw==
+X-Google-Smtp-Source: AMrXdXuF0kR05yRTW+K8kKeK79mcqHC1VFIZ0ZDl6OwJ7lnYSQuPyCh7uWhF+6geFRrHCA0CKpOvig==
+X-Received: by 2002:a7b:c45a:0:b0:3d1:ed41:57c0 with SMTP id l26-20020a7bc45a000000b003d1ed4157c0mr38846399wmi.30.1674639925510;
+        Wed, 25 Jan 2023 01:45:25 -0800 (PST)
 Received: from krzk-bin.. ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id fl22-20020a05600c0b9600b003d1e3b1624dsm1419238wmb.2.2023.01.25.01.45.22
+        by smtp.gmail.com with ESMTPSA id fl22-20020a05600c0b9600b003d1e3b1624dsm1419238wmb.2.2023.01.25.01.45.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jan 2023 01:45:23 -0800 (PST)
+        Wed, 25 Jan 2023 01:45:25 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -64,9 +64,9 @@ Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
         Henrik Grimler <henrik@grimler.se>,
         Chanwoo Choi <cw00.choi@samsung.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 2/9] ARM: dts: exynos: move exynos-bus nodes out of soc in Exynos5420
-Date:   Wed, 25 Jan 2023 10:45:06 +0100
-Message-Id: <20230125094513.155063-2-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 3/9] ARM: dts: exynos: move exynos-bus nodes out of soc in Exynos3250
+Date:   Wed, 25 Jan 2023 10:45:07 +0100
+Message-Id: <20230125094513.155063-3-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230125094513.155063-1-krzysztof.kozlowski@linaro.org>
 References: <20230125094513.155063-1-krzysztof.kozlowski@linaro.org>
@@ -79,13 +79,13 @@ X-Mailing-List: phone-devel@vger.kernel.org
 The soc node is supposed to have only device nodes with MMIO addresses,
 as reported by dtc W=1:
 
-  arch/arm/boot/dts/exynos5420.dtsi:1070.24-1075.5:
-    Warning (simple_bus_reg): /soc/bus-wcore: missing or empty reg/ranges property
+  exynos3250.dtsi:775.20-781.5:
+    Warning (simple_bus_reg): /soc/bus-dmc: missing or empty reg/ranges property
 
 and dtbs_check:
 
-  exynos5420-arndale-octa.dtb: soc: bus-wcore:
-    {'compatible': ['samsung,exynos-bus'], 'clocks': [[2, 769]], 'clock-names': ['bus'], 'status': ['disabled']} should not be valid under {'type': 'object'}
+  exynos3250-artik5-eval.dtb: soc: bus-dmc:
+    {'compatible': ['samsung,exynos-bus'], 'clocks': [[67, 16]], 'clock-names': ['bus'], 'operating-points-v2': [[68]], 'status': ['disabled']} should not be valid under {'type': 'object'}
 
 Move the bus nodes and their OPP tables out of SoC to fix this.
 Re-order them alphabetically while moving and put some of the OPP tables
@@ -93,250 +93,386 @@ in device nodes (if they are not shared).
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- arch/arm/boot/dts/exynos5420.dtsi | 223 +++++++++++++++---------------
- 1 file changed, 111 insertions(+), 112 deletions(-)
+ arch/arm/boot/dts/exynos3250.dtsi | 352 +++++++++++++++---------------
+ 1 file changed, 176 insertions(+), 176 deletions(-)
 
-diff --git a/arch/arm/boot/dts/exynos5420.dtsi b/arch/arm/boot/dts/exynos5420.dtsi
-index 7efe72879dc4..cea92f175d46 100644
---- a/arch/arm/boot/dts/exynos5420.dtsi
-+++ b/arch/arm/boot/dts/exynos5420.dtsi
-@@ -37,6 +37,117 @@ aliases {
- 		spi2 = &spi_2;
+diff --git a/arch/arm/boot/dts/exynos3250.dtsi b/arch/arm/boot/dts/exynos3250.dtsi
+index 36b47c2c1663..2e81371e04c2 100644
+--- a/arch/arm/boot/dts/exynos3250.dtsi
++++ b/arch/arm/boot/dts/exynos3250.dtsi
+@@ -46,6 +46,157 @@ aliases {
+ 		serial2 = &serial_2;
  	};
  
-+	bus_disp1: bus-disp1 {
++	bus_dmc: bus-dmc {
 +		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK400_DISP1>;
++		clocks = <&cmu_dmc CLK_DIV_DMC>;
 +		clock-names = "bus";
++		operating-points-v2 = <&bus_dmc_opp_table>;
 +		status = "disabled";
-+	};
 +
-+	bus_disp1_fimd: bus-disp1-fimd {
-+		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK300_DISP1>;
-+		clock-names = "bus";
-+		status = "disabled";
++		bus_dmc_opp_table: opp-table {
++			compatible = "operating-points-v2";
++
++			opp-50000000 {
++				opp-hz = /bits/ 64 <50000000>;
++				opp-microvolt = <800000>;
++			};
++			opp-100000000 {
++				opp-hz = /bits/ 64 <100000000>;
++				opp-microvolt = <800000>;
++			};
++			opp-134000000 {
++				opp-hz = /bits/ 64 <134000000>;
++				opp-microvolt = <800000>;
++			};
++			opp-200000000 {
++				opp-hz = /bits/ 64 <200000000>;
++				opp-microvolt = <825000>;
++			};
++			opp-400000000 {
++				opp-hz = /bits/ 64 <400000000>;
++				opp-microvolt = <875000>;
++			};
++		};
 +	};
 +
 +	bus_fsys: bus-fsys {
 +		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK200_FSYS>;
++		clocks = <&cmu CLK_DIV_ACLK_200>;
 +		clock-names = "bus";
++		operating-points-v2 = <&bus_leftbus_opp_table>;
 +		status = "disabled";
 +	};
 +
-+	bus_fsys2: bus-fsys2 {
++	bus_isp: bus-isp {
 +		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK200_FSYS2>;
++		clocks = <&cmu CLK_DIV_ACLK_266>;
 +		clock-names = "bus";
++		operating-points-v2 = <&bus_isp_opp_table>;
++		status = "disabled";
++
++		bus_isp_opp_table: opp-table {
++			compatible = "operating-points-v2";
++
++			opp-50000000 {
++				opp-hz = /bits/ 64 <50000000>;
++			};
++			opp-80000000 {
++				opp-hz = /bits/ 64 <80000000>;
++			};
++			opp-100000000 {
++				opp-hz = /bits/ 64 <100000000>;
++			};
++			opp-200000000 {
++				opp-hz = /bits/ 64 <200000000>;
++			};
++			opp-300000000 {
++				opp-hz = /bits/ 64 <300000000>;
++			};
++		};
++	};
++
++	bus_lcd0: bus-lcd0 {
++		compatible = "samsung,exynos-bus";
++		clocks = <&cmu CLK_DIV_ACLK_160>;
++		clock-names = "bus";
++		operating-points-v2 = <&bus_leftbus_opp_table>;
 +		status = "disabled";
 +	};
 +
-+	bus_fsys_apb: bus-fsys-apb {
++	bus_leftbus: bus-leftbus {
 +		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_PCLK200_FSYS>;
++		clocks = <&cmu CLK_DIV_GDL>;
 +		clock-names = "bus";
++		operating-points-v2 = <&bus_leftbus_opp_table>;
 +		status = "disabled";
 +	};
 +
-+	bus_g2d: bus-g2d {
++	bus_mcuisp: bus-mcuisp {
 +		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK333_G2D>;
++		clocks = <&cmu CLK_DIV_ACLK_400_MCUISP>;
 +		clock-names = "bus";
++		operating-points-v2 = <&bus_mcuisp_opp_table>;
 +		status = "disabled";
-+	};
 +
-+	bus_g2d_acp: bus-g2d-acp {
-+		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK266_G2D>;
-+		clock-names = "bus";
-+		status = "disabled";
-+	};
-+	bus_gen: bus-gen {
-+		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK266>;
-+		clock-names = "bus";
-+		status = "disabled";
-+	};
++		bus_mcuisp_opp_table: opp-table {
++			compatible = "operating-points-v2";
 +
-+	bus_gscl_scaler: bus-gscl-scaler {
-+		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK300_GSCL>;
-+		clock-names = "bus";
-+		status = "disabled";
-+	};
-+
-+	bus_jpeg: bus-jpeg {
-+		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK300_JPEG>;
-+		clock-names = "bus";
-+		status = "disabled";
-+	};
-+
-+	bus_jpeg_apb: bus-jpeg-apb {
-+		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK166>;
-+		clock-names = "bus";
-+		status = "disabled";
++			opp-50000000 {
++				opp-hz = /bits/ 64 <50000000>;
++			};
++			opp-80000000 {
++				opp-hz = /bits/ 64 <80000000>;
++			};
++			opp-100000000 {
++				opp-hz = /bits/ 64 <100000000>;
++			};
++			opp-200000000 {
++				opp-hz = /bits/ 64 <200000000>;
++			};
++			opp-400000000 {
++				opp-hz = /bits/ 64 <400000000>;
++			};
++		};
 +	};
 +
 +	bus_mfc: bus-mfc {
 +		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK333>;
++		clocks = <&cmu CLK_SCLK_MFC>;
 +		clock-names = "bus";
++		operating-points-v2 = <&bus_leftbus_opp_table>;
 +		status = "disabled";
 +	};
 +
-+	bus_mscl: bus-mscl {
++	bus_peril: bus-peril {
 +		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK400_MSCL>;
++		clocks = <&cmu CLK_DIV_ACLK_100>;
 +		clock-names = "bus";
++		operating-points-v2 = <&bus_peril_opp_table>;
 +		status = "disabled";
++
++		bus_peril_opp_table: opp-table {
++			compatible = "operating-points-v2";
++
++			opp-50000000 {
++				opp-hz = /bits/ 64 <50000000>;
++			};
++			opp-80000000 {
++				opp-hz = /bits/ 64 <80000000>;
++			};
++			opp-100000000 {
++				opp-hz = /bits/ 64 <100000000>;
++			};
++		};
 +	};
 +
-+	bus_noc: bus-noc {
++	bus_rightbus: bus-rightbus {
 +		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK100_NOC>;
++		clocks = <&cmu CLK_DIV_GDR>;
 +		clock-names = "bus";
++		operating-points-v2 = <&bus_leftbus_opp_table>;
 +		status = "disabled";
 +	};
 +
-+	bus_peri: bus-peri {
-+		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK66>;
-+		clock-names = "bus";
-+		status = "disabled";
+ 	cpus {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+@@ -129,6 +280,31 @@ xtcxo: clock-2 {
+ 		clock-output-names = "xtcxo";
+ 	};
+ 
++	bus_leftbus_opp_table: opp-table-0 {
++		compatible = "operating-points-v2";
++
++		opp-50000000 {
++			opp-hz = /bits/ 64 <50000000>;
++			opp-microvolt = <900000>;
++		};
++		opp-80000000 {
++			opp-hz = /bits/ 64 <80000000>;
++			opp-microvolt = <900000>;
++		};
++		opp-100000000 {
++			opp-hz = /bits/ 64 <100000000>;
++			opp-microvolt = <1000000>;
++		};
++		opp-134000000 {
++			opp-hz = /bits/ 64 <134000000>;
++			opp-microvolt = <1000000>;
++		};
++		opp-200000000 {
++			opp-hz = /bits/ 64 <200000000>;
++			opp-microvolt = <1000000>;
++		};
 +	};
 +
-+	bus_wcore: bus-wcore {
-+		compatible = "samsung,exynos-bus";
-+		clocks = <&clock CLK_DOUT_ACLK400_WCORE>;
-+		clock-names = "bus";
-+		status = "disabled";
-+	};
-+
- 	/*
- 	 * The 'cpus' node is not present here but instead it is provided
- 	 * by exynos5420-cpus.dtsi or exynos5422-cpus.dtsi.
-@@ -1066,118 +1177,6 @@ sysmmu_fimd1_1: sysmmu@14680000 {
- 			power-domains = <&disp_pd>;
- 			#iommu-cells = <0>;
+ 	pmu {
+ 		compatible = "arm,cortex-a7-pmu";
+ 		interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>,
+@@ -771,182 +947,6 @@ ppmu_mfc: ppmu@13660000 {
+ 			clock-names = "ppmu";
+ 			status = "disabled";
  		};
 -
--		bus_wcore: bus-wcore {
+-		bus_dmc: bus-dmc {
 -			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK400_WCORE>;
+-			clocks = <&cmu_dmc CLK_DIV_DMC>;
 -			clock-names = "bus";
+-			operating-points-v2 = <&bus_dmc_opp_table>;
 -			status = "disabled";
 -		};
 -
--		bus_noc: bus-noc {
+-		bus_dmc_opp_table: opp-table-1 {
+-			compatible = "operating-points-v2";
+-
+-			opp-50000000 {
+-				opp-hz = /bits/ 64 <50000000>;
+-				opp-microvolt = <800000>;
+-			};
+-			opp-100000000 {
+-				opp-hz = /bits/ 64 <100000000>;
+-				opp-microvolt = <800000>;
+-			};
+-			opp-134000000 {
+-				opp-hz = /bits/ 64 <134000000>;
+-				opp-microvolt = <800000>;
+-			};
+-			opp-200000000 {
+-				opp-hz = /bits/ 64 <200000000>;
+-				opp-microvolt = <825000>;
+-			};
+-			opp-400000000 {
+-				opp-hz = /bits/ 64 <400000000>;
+-				opp-microvolt = <875000>;
+-			};
+-		};
+-
+-		bus_leftbus: bus-leftbus {
 -			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK100_NOC>;
+-			clocks = <&cmu CLK_DIV_GDL>;
 -			clock-names = "bus";
+-			operating-points-v2 = <&bus_leftbus_opp_table>;
 -			status = "disabled";
 -		};
 -
--		bus_fsys_apb: bus-fsys-apb {
+-		bus_rightbus: bus-rightbus {
 -			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_PCLK200_FSYS>;
+-			clocks = <&cmu CLK_DIV_GDR>;
 -			clock-names = "bus";
+-			operating-points-v2 = <&bus_leftbus_opp_table>;
+-			status = "disabled";
+-		};
+-
+-		bus_lcd0: bus-lcd0 {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&cmu CLK_DIV_ACLK_160>;
+-			clock-names = "bus";
+-			operating-points-v2 = <&bus_leftbus_opp_table>;
 -			status = "disabled";
 -		};
 -
 -		bus_fsys: bus-fsys {
 -			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK200_FSYS>;
+-			clocks = <&cmu CLK_DIV_ACLK_200>;
 -			clock-names = "bus";
+-			operating-points-v2 = <&bus_leftbus_opp_table>;
 -			status = "disabled";
 -		};
 -
--		bus_fsys2: bus-fsys2 {
+-		bus_mcuisp: bus-mcuisp {
 -			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK200_FSYS2>;
+-			clocks = <&cmu CLK_DIV_ACLK_400_MCUISP>;
 -			clock-names = "bus";
+-			operating-points-v2 = <&bus_mcuisp_opp_table>;
+-			status = "disabled";
+-		};
+-
+-		bus_isp: bus-isp {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&cmu CLK_DIV_ACLK_266>;
+-			clock-names = "bus";
+-			operating-points-v2 = <&bus_isp_opp_table>;
+-			status = "disabled";
+-		};
+-
+-		bus_peril: bus-peril {
+-			compatible = "samsung,exynos-bus";
+-			clocks = <&cmu CLK_DIV_ACLK_100>;
+-			clock-names = "bus";
+-			operating-points-v2 = <&bus_peril_opp_table>;
 -			status = "disabled";
 -		};
 -
 -		bus_mfc: bus-mfc {
 -			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK333>;
+-			clocks = <&cmu CLK_SCLK_MFC>;
 -			clock-names = "bus";
+-			operating-points-v2 = <&bus_leftbus_opp_table>;
 -			status = "disabled";
 -		};
 -
--		bus_gen: bus-gen {
--			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK266>;
--			clock-names = "bus";
--			status = "disabled";
+-		bus_leftbus_opp_table: opp-table-2 {
+-			compatible = "operating-points-v2";
+-
+-			opp-50000000 {
+-				opp-hz = /bits/ 64 <50000000>;
+-				opp-microvolt = <900000>;
+-			};
+-			opp-80000000 {
+-				opp-hz = /bits/ 64 <80000000>;
+-				opp-microvolt = <900000>;
+-			};
+-			opp-100000000 {
+-				opp-hz = /bits/ 64 <100000000>;
+-				opp-microvolt = <1000000>;
+-			};
+-			opp-134000000 {
+-				opp-hz = /bits/ 64 <134000000>;
+-				opp-microvolt = <1000000>;
+-			};
+-			opp-200000000 {
+-				opp-hz = /bits/ 64 <200000000>;
+-				opp-microvolt = <1000000>;
+-			};
 -		};
 -
--		bus_peri: bus-peri {
--			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK66>;
--			clock-names = "bus";
--			status = "disabled";
+-		bus_mcuisp_opp_table: opp-table-3 {
+-			compatible = "operating-points-v2";
+-
+-			opp-50000000 {
+-				opp-hz = /bits/ 64 <50000000>;
+-			};
+-			opp-80000000 {
+-				opp-hz = /bits/ 64 <80000000>;
+-			};
+-			opp-100000000 {
+-				opp-hz = /bits/ 64 <100000000>;
+-			};
+-			opp-200000000 {
+-				opp-hz = /bits/ 64 <200000000>;
+-			};
+-			opp-400000000 {
+-				opp-hz = /bits/ 64 <400000000>;
+-			};
 -		};
 -
--		bus_g2d: bus-g2d {
--			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK333_G2D>;
--			clock-names = "bus";
--			status = "disabled";
+-		bus_isp_opp_table: opp-table-4 {
+-			compatible = "operating-points-v2";
+-
+-			opp-50000000 {
+-				opp-hz = /bits/ 64 <50000000>;
+-			};
+-			opp-80000000 {
+-				opp-hz = /bits/ 64 <80000000>;
+-			};
+-			opp-100000000 {
+-				opp-hz = /bits/ 64 <100000000>;
+-			};
+-			opp-200000000 {
+-				opp-hz = /bits/ 64 <200000000>;
+-			};
+-			opp-300000000 {
+-				opp-hz = /bits/ 64 <300000000>;
+-			};
 -		};
 -
--		bus_g2d_acp: bus-g2d-acp {
--			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK266_G2D>;
--			clock-names = "bus";
--			status = "disabled";
--		};
+-		bus_peril_opp_table: opp-table-5 {
+-			compatible = "operating-points-v2";
 -
--		bus_jpeg: bus-jpeg {
--			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK300_JPEG>;
--			clock-names = "bus";
--			status = "disabled";
--		};
--
--		bus_jpeg_apb: bus-jpeg-apb {
--			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK166>;
--			clock-names = "bus";
--			status = "disabled";
--		};
--
--		bus_disp1_fimd: bus-disp1-fimd {
--			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK300_DISP1>;
--			clock-names = "bus";
--			status = "disabled";
--		};
--
--		bus_disp1: bus-disp1 {
--			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK400_DISP1>;
--			clock-names = "bus";
--			status = "disabled";
--		};
--
--		bus_gscl_scaler: bus-gscl-scaler {
--			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK300_GSCL>;
--			clock-names = "bus";
--			status = "disabled";
--		};
--
--		bus_mscl: bus-mscl {
--			compatible = "samsung,exynos-bus";
--			clocks = <&clock CLK_DOUT_ACLK400_MSCL>;
--			clock-names = "bus";
--			status = "disabled";
+-			opp-50000000 {
+-				opp-hz = /bits/ 64 <50000000>;
+-			};
+-			opp-80000000 {
+-				opp-hz = /bits/ 64 <80000000>;
+-			};
+-			opp-100000000 {
+-				opp-hz = /bits/ 64 <100000000>;
+-			};
 -		};
  	};
+ };
  
- 	thermal-zones {
 -- 
 2.34.1
 
