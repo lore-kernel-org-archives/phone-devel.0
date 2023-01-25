@@ -2,114 +2,104 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39A04C27C76
-	for <phone-devel@archiver.kernel.org>; Wed, 25 Jan 2023 20:51:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EB43C27C76
+	for <phone-devel@archiver.kernel.org>; Wed, 25 Jan 2023 21:43:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236190AbjAYUv4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 25 Jan 2023 15:51:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54088 "EHLO
+        id S229454AbjAYVng (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 25 Jan 2023 16:43:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236107AbjAYUvz (ORCPT
+        with ESMTP id S236184AbjAYVnV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 25 Jan 2023 15:51:55 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADD8F4C16;
-        Wed, 25 Jan 2023 12:51:54 -0800 (PST)
-Received: from g550jk.localnet (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 735C1CD52B;
-        Wed, 25 Jan 2023 20:51:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1674679882; bh=zyYeu0H+dDft3MxWwUV/3yLkJL0OcVfUcMzYpR4kdUY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=H7Kaox9TbDxekWdwpukOzR4VRM9hZfaEiZu+n6SKIYJge5kTQYu0WNd1L+CeMeqxe
-         ukwvsMs7+U8l/xMrx12gXchU58bdKho2Jk6wsUiNaFiavXDiHy3XR9G6u3w5qieNKT
-         MhywND3/TApyl6t4411x+cdR+IdgMWy3tvY6W9wQ=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add notification LED
-Date:   Wed, 25 Jan 2023 21:51:21 +0100
-Message-ID: <4455893.LvFx2qVVIh@g550jk>
-In-Reply-To: <02e5bf79-3e2d-02c8-67e7-61bbff32ba29@linaro.org>
-References: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
- <20230122-msm8974-bacon-features-v1-5-4049f565c24c@z3ntu.xyz>
- <02e5bf79-3e2d-02c8-67e7-61bbff32ba29@linaro.org>
+        Wed, 25 Jan 2023 16:43:21 -0500
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B8863B3C1
+        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 13:43:19 -0800 (PST)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-4fd37a1551cso258155937b3.13
+        for <phone-devel@vger.kernel.org>; Wed, 25 Jan 2023 13:43:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RkEzgOp5cexhcFMF9iOQ+m4oI4xFucW6voNny2ZuExw=;
+        b=uqfhWwPTUwdBWcLCvM0JKSUdwHooH6KUj+hAbqKeGLCXg1zsBXqOB2gjr116uwNArz
+         4guQAitor68aJTt2eRxXrz2uzwlydhdZIq+gK13gfW2rTO4GUMqgkRx4a7xknSuVb/ri
+         VvL0a9MA1wZu/sjct4I/KGfE4ninypumZ4dPNC10svSkGwwz1aBKQxVDIfN0xSeAr2E4
+         CW/vrEcfRz2xUSyBU+Nf18IEBOUtDEGz/NA7uly/oFB9lPInUb/zyEi2QUxNVZQcXE/x
+         qX0J5YLh0l+iGDYbTr1MV3eVHPZ/TC0m//E+/BtXaKgRI2eKwa91SzoyrCnnFc5WJLGi
+         yFJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RkEzgOp5cexhcFMF9iOQ+m4oI4xFucW6voNny2ZuExw=;
+        b=SjbUcKRplSX9nd/wFdWp2D/9R7ANPZ4qM0TQ7Yf0Qbin6QxQCBocECGQ8La8c5X3Yr
+         /454ZBrQonTSEcUFxJJqBZAtlJIzpVsr59zC9+CFKGCX1Ywvoa8Mg+DQoisBSEgvLCpA
+         Hzi9+E1FetzSKkqQlq/xENKmppjq0oP+7SCgKxuzBD/lnA9zwbYiU7aVcPMQCJNOXuB3
+         POCeYZKuMkTLIkmmMtM54Haos7+afUfMyU27EHA3c9QsIDpj9WAkXfkVWLBd3Dhn09QI
+         TuOVnyygXdhmjd4VbpoXV6v9UL97WQU3jdcfm6iV6yc3YoWbk88UuoAYiK6PiPdrB8mt
+         xbnw==
+X-Gm-Message-State: AFqh2kqNxpGmWyYfzvd8q5MZnq+RPa+SE8EQLr0vN+asxrXKuCi3b9Gc
+        Cfh0okIXYAUbVQBuoQXlREnjLOJ+SSLTa4YjiRPkvoEyzKunXb0f
+X-Google-Smtp-Source: AMrXdXvyf/tIhI2i73QEgBZSsbBFNRG1pR7Jg8mEeTOiwbaPPRQZqRhxyjFom+8TOnKus+ZSAn5pibRpjkpA3c1TVOs=
+X-Received: by 2002:a05:690c:39b:b0:4f3:8d0e:edce with SMTP id
+ bh27-20020a05690c039b00b004f38d0eedcemr2910280ywb.185.1674682998780; Wed, 25
+ Jan 2023 13:43:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 25 Jan 2023 22:43:07 +0100
+Message-ID: <CACRpkdY24Lv0F3ct2R6ALPpAdxWz_vEjrPAGNSF3pcoOj-Xqcg@mail.gmail.com>
+Subject: [GIT PULL] Ux500 DTS updates
+To:     SoC Team <soc@kernel.org>, arm-soc <arm@kernel.org>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Montag, 23. J=E4nner 2023 18:18:16 CET Krzysztof Kozlowski wrote:
-> On 22/01/2023 17:48, Luca Weiss wrote:
-> > Add the node describing the sn3193 that's used to provide notification
-> > LED.
-> >=20
-> > Unfortunately the driver currently supports neither multicolor API nor
-> > using the properties function & color, so we use label instead.
-> >=20
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> >=20
-> >  .../arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 28
-> >  ++++++++++++++++++++++ 1 file changed, 28 insertions(+)
-> >=20
-> > diff --git a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-> > b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts index
-> > ffb486ceb6a6..a672c45d7070 100644
-> > --- a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-> > +++ b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-> > @@ -114,6 +114,34 @@ led@0 {
-> >=20
-> >  			default-brightness =3D <80>;
-> >  	=09
-> >  		};
-> >  =09
-> >  	};
-> >=20
-> > +
-> > +	led-controller@68 {
-> > +		compatible =3D "si-en,sn3193";
-> > +		reg =3D <0x68>;
-> > +
-> > +		shutdown-gpios =3D <&tlmm 45 GPIO_ACTIVE_HIGH>;
-> > +
-> > +		#address-cells =3D <1>;
-> > +		#size-cells =3D <0>;
-> > +
-> > +		led@1 {
-> > +			reg =3D <1>;
-> > +			label =3D "red:status";
->=20
-> These should be colors and functions.
+Hi SoC folks,
 
-Hi Krzysztof,
+here are some minor Ux500 DTS updates for the v6.3 kernel,
+details in the signed tag.
 
-please check the commit message for this. I tried using it but it didn't wo=
-rk,=20
-the driver in general might need an overhaul at some point...
+Please pull it in!
 
-> Unfortunately the driver currently supports neither multicolor API nor
-> using the properties function & color, so we use label instead.
+Yours,
+Linus Walleij
 
-Or maybe I messed up but pretty sure this was the case when I wrote the dts.
+The following changes since commit 1b929c02afd37871d5afb9d498426f83432e71c2:
 
-Regards
-Luca
+  Linux 6.2-rc1 (2022-12-25 13:41:39 -0800)
 
->=20
->=20
-> Best regards,
-> Krzysztof
+are available in the Git repository at:
 
+  git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-nomadik.git
+tags/ux500-dts-v6.3
 
+for you to fetch changes up to ddd932e45ec761996219b9efceb9fd5445bb3ab3:
 
+  ARM: dts: ux500: Add clkout-clock node (2023-01-06 00:28:21 +0100)
 
+----------------------------------------------------------------
+Some Ux500 DTS updates for the v6.3 kernel:
+
+- Add the embedded eSRAMs to the device tree
+
+- Fix up LED node names
+
+- Add a clkout-node for the external clock
+
+----------------------------------------------------------------
+Krzysztof Kozlowski (1):
+      ARM: dts: ste: align LED node names with dtschema
+
+Linus Walleij (2):
+      ARM: dts: ux500: Add eSRAM to the device tree
+      ARM: dts: ux500: Add clkout-clock node
+
+ arch/arm/boot/dts/ste-db8500.dtsi |  4 ----
+ arch/arm/boot/dts/ste-db9500.dtsi |  4 ----
+ arch/arm/boot/dts/ste-dbx5x0.dtsi | 21 +++++++++++++++++++++
+ arch/arm/boot/dts/ste-href.dtsi   | 12 ++++++------
+ 4 files changed, 27 insertions(+), 14 deletions(-)
