@@ -2,106 +2,103 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DBB20C61D97
-	for <phone-devel@archiver.kernel.org>; Thu, 26 Jan 2023 13:29:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1484BC61D97
+	for <phone-devel@archiver.kernel.org>; Thu, 26 Jan 2023 14:25:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236936AbjAZN3d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 26 Jan 2023 08:29:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38882 "EHLO
+        id S229632AbjAZOZJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 26 Jan 2023 09:25:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236567AbjAZN3W (ORCPT
+        with ESMTP id S232070AbjAZOYb (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 26 Jan 2023 08:29:22 -0500
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 014963253F
-        for <phone-devel@vger.kernel.org>; Thu, 26 Jan 2023 05:28:47 -0800 (PST)
-Received: by mail-wr1-x433.google.com with SMTP id b7so1786785wrt.3
-        for <phone-devel@vger.kernel.org>; Thu, 26 Jan 2023 05:28:47 -0800 (PST)
+        Thu, 26 Jan 2023 09:24:31 -0500
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BAE770D62;
+        Thu, 26 Jan 2023 06:23:47 -0800 (PST)
+Received: by mail-pj1-x1030.google.com with SMTP id m7-20020a17090a71c700b0022c0c070f2eso4703655pjs.4;
+        Thu, 26 Jan 2023 06:23:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lx1DAkubOAlYe3YKXCmyxQpUHCB1kRDO2QcQY7OYxMs=;
-        b=pq+99UzAUffw0B5EaOLSqCukAfbBg5cy0Zyv114NM3mReAyn09ZzdwfeQtd1yi80Xv
-         BFR4xxBW10H88OGoSlSv8cBVtq4t6lTAekNnAk9SuBFoNSejm8JJpDeJm8SXnDlj3ocU
-         wa5EBXSq427FtLItR/UekrIbinAmne9P5T4n10jn8p0gKwT2Sm/PnWX5tkP2Bl2tohnq
-         kEgcm6/ZipxQNzmdfQv8s8X3BX+LjHPuNhHaQdk+zE2AdCvHbx60el1HWaghGN8oGtC4
-         7UXq9fmkV+8Yl5Xh7wJi07E7TGR34joBh6mqZujW6cGNp67VoS9JrBhjSsXUEQZ/HNnA
-         1UuQ==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NwoVoQA2ou9ZRpL3U7Nv6BoSj96XgNeTjb66AejG9oo=;
+        b=C7mY4qLZs14JoAswZVkEF5r2W0VbCtBoT8WDTR4NsktGZ2KsL0JQTyyYDzhqGqeMXl
+         CTJFwX6+QXFzQnQNrGrfhEIuvurhS+zkieW2urHA0lEJA5OltK2SCBzcafKxohIhd20Z
+         pRbf5WJuq9Of03ouclf7XM/YdZyarwNVSD1Sy/xyXGD450I/WVDpPCyH9b4vE7vscLUV
+         aIHDbv1/qiyp0frl7XOgmG+2bSKPLlyJZDCdS3IXgkerJNziKNHd1E5+pUDLZDM+EV96
+         XLLBqGKxLd8kAJqcWOce2yCMmJF7Iqn9bmiNMFMtvlUNX1tC/401WHgPlgA+FOS81V8E
+         ujqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lx1DAkubOAlYe3YKXCmyxQpUHCB1kRDO2QcQY7OYxMs=;
-        b=4BHP1y9C1jP9d81Hqrb2L+Z4jQgz1J4sjwI7+++WBVmJcUMEInLOxwShDCoB6vDbCu
-         xZGRmHL1xkAnq94MfLD9mOecq4PENXCxceSObkOCvvZxU/7qVk0GNmDO2bUKEkEY75HT
-         zM7ywfA8l8sNpbrRiHNXUogaYrImoWyVuhy2Hv+i4p5QcnNIxtVezxzCfwpN1+LMPFD7
-         3SHMXw51foR3Ecq3oiEiuhmVSG9LcA104+Wt19iI7aP86KV90RRnk1Id0vtpkQNzeUXB
-         jUICmwnEqBQgffjfzL0zp5bJKkrqv3AntXv6WalNYxZh5+W9JVqe9EtOu2JcWmi88a3l
-         kckQ==
-X-Gm-Message-State: AFqh2koV6eYHh0Rk0RaX2xD0fprsf1r1pLMpp9BTNp5EhhFLUQcmST3B
-        78N/7G5QfSnGqkUYLnNtXL0F6c8QK61W3MvG
-X-Google-Smtp-Source: AMrXdXs/beqvYpPiPnonpjIItu1cPLPKj6Samh65jUCGRVhdi9JtDNGb0Sg72VPia4bfs/daV7+9wQ==
-X-Received: by 2002:a5d:4bce:0:b0:2be:4ae1:215a with SMTP id l14-20020a5d4bce000000b002be4ae1215amr20630645wrt.16.1674739726577;
-        Thu, 26 Jan 2023 05:28:46 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id a5-20020adfeec5000000b002bfae6b17d2sm1324488wrp.55.2023.01.26.05.28.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Jan 2023 05:28:46 -0800 (PST)
-Message-ID: <22067557-5753-9bff-a060-7be587b92478@linaro.org>
-Date:   Thu, 26 Jan 2023 14:28:43 +0100
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NwoVoQA2ou9ZRpL3U7Nv6BoSj96XgNeTjb66AejG9oo=;
+        b=oRsz5tENoCfnQtDkJVjQPuHenVFPBwwOGmJNKV7RWwI7UVzlVuWYTtlIx8DJib/JGI
+         tfhiDnOKnTUhoCGfOcN051obygfBsPaJLIDXnjW43vNLPfzM4ghjXa2jOAZz0pLm57N0
+         N4Mq9ouLWszn3O/bl6NRfdeL2SV8uPX6nV5/hDMiNJJAuBQyi50pupJlLwaXPXfADCDm
+         tljvJRAvIfAh+GtP33JnivusNtkQHNslEsm/HcCeFVygCiRVFf0rsKaYxk8YddeKJtxO
+         JBJ8cDab4YJnMLy2IeHEHm+b8hofN1vAeqGguyly0NyaM06nRLQ3B8j/Jv9jmzDfW9gR
+         fKWQ==
+X-Gm-Message-State: AFqh2kr6bGbzGNp/4PJa27LTtpv7lYjbeHrnYju7r7ajHPoF2krIoLYr
+        gxXegvpXSzWId842NnRW1/g=
+X-Google-Smtp-Source: AMrXdXu1eJSJ4Kajr/piBp62I0tu+/NNq031brXbWC2VMZMEa2QlZId8ebXZgHyk3kNX83hMsvciyg==
+X-Received: by 2002:a17:902:eb44:b0:189:377c:9ab with SMTP id i4-20020a170902eb4400b00189377c09abmr36285630pli.51.1674743024748;
+        Thu, 26 Jan 2023 06:23:44 -0800 (PST)
+Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id c8-20020a170902d48800b001960706141fsm1047268plg.149.2023.01.26.06.23.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Jan 2023 06:23:44 -0800 (PST)
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G . Piccoli" <gpiccoli@igalia.com>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jianhua Lu <lujianhua000@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3 1/2] dt-bindings: arm: qcom: Add Xiaomi Mi Pad 5 Pro (xiaomi-elish)
+Date:   Thu, 26 Jan 2023 22:23:33 +0800
+Message-Id: <20230126142334.8080-1-lujianhua000@gmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-Subject: Re: [PATCH 0/6] ARM: dts: add mmc aliases for Exynos devices
-Content-Language: en-US
-To:     Henrik Grimler <henrik@grimler.se>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        alim.akhtar@samsung.com, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20230126103828.481441-1-henrik@grimler.se>
- <0807a4ab-c544-2695-67d4-df9a3b1de4cf@linaro.org>
- <Y9J97CU7f5qoiO/F@grimlerstat>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <Y9J97CU7f5qoiO/F@grimlerstat>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 26/01/2023 14:19, Henrik Grimler wrote:
-> Hi Krzysztof,
-> 
-> On Thu, Jan 26, 2023 at 01:22:54PM +0100, Krzysztof Kozlowski wrote:
->> On 26/01/2023 11:38, Henrik Grimler wrote:
->>> It is convenient to have fixed mmcblk numbering of the eMMC and
->>> sdcard, and with these aliases all Exynos 4 and 5 devices (and
->>> probably Exynos 3, but I do not have one of those boards so cannot
->>> verify) will have the eMMC as mmc0 and sdcard as mmc2.
->>>
->>> I also removed sdhc aliases, as they should not be needed after [1] as
->>> I understand it.
->>>
->>> [1] https://lkml.kernel.org/lkml/20211124184603.3897245-1-john@metanate.com/
->>
->> Marek sent the same in the past:
->> https://lore.kernel.org/all/?q=%22exynos%3A+Use+fixed+index+for+the+MMC+devices%22
->>
->> The patches are fine for me except, that these actually do not belong to
->> DTSI. Aliases for board or user-exposable interfaces are actually board
->> specific and each board should customize the ones it uses.
-> 
-> Thanks for reviewing!  I will change the series to only add aliases to
-> the boards I am familiar with.
+Add a compatible for Xiaomi Mi Pad 5 Pro.
 
-I think you can move all of them to all of the boards. Add aliases for
-interfaces which are enabled in the board.
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+Changes in v3:
+  - Pick up Krzysztof's A-b
 
-Best regards,
-Krzysztof
+Changes in v2:
+  - Move compatible "xiaomi-elish" down.
+
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index 22553637c519..398ff26e6e0e 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -875,6 +875,7 @@ properties:
+               - qcom,sm8250-mtp
+               - sony,pdx203-generic
+               - sony,pdx206-generic
++              - xiaomi,elish
+           - const: qcom,sm8250
+ 
+       - items:
+-- 
+2.39.1
 
