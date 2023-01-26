@@ -2,110 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF8BBC05027
-	for <phone-devel@archiver.kernel.org>; Thu, 26 Jan 2023 10:00:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C8B9C05027
+	for <phone-devel@archiver.kernel.org>; Thu, 26 Jan 2023 10:18:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236600AbjAZKAP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 26 Jan 2023 05:00:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56520 "EHLO
+        id S235097AbjAZKSX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 26 Jan 2023 05:18:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229677AbjAZKAO (ORCPT
+        with ESMTP id S236964AbjAZKSU (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 26 Jan 2023 05:00:14 -0500
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54B5D1E5E3
-        for <phone-devel@vger.kernel.org>; Thu, 26 Jan 2023 02:00:13 -0800 (PST)
-Received: by mail-wm1-x32e.google.com with SMTP id fl24so763917wmb.1
-        for <phone-devel@vger.kernel.org>; Thu, 26 Jan 2023 02:00:13 -0800 (PST)
+        Thu, 26 Jan 2023 05:18:20 -0500
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE04AFF3D
+        for <phone-devel@vger.kernel.org>; Thu, 26 Jan 2023 02:17:52 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id n7so1241729wrx.5
+        for <phone-devel@vger.kernel.org>; Thu, 26 Jan 2023 02:17:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rRgVXPw5t6QVo2geW3WNhb1rgDC2iA39PRv/GAVQDio=;
-        b=vTcMGyXsf39j1Pv1ktHj9xKL5iJq2HfVCB7ZDr/oA7PxzZWC46OtUb07mNAD5yZMBO
-         p9nPr3PZWB5lLNVS8lpvd2ZQVWNh+1zlHNlyByHZmrUIawF9kgeiP+xG7IzbRNDfUT/U
-         U5Amgws9CsWnwBI7AoThUbiVUETnMsJ8ohSjOHmT0yqvv06GEYytAk00/wIMElspB0UT
-         t0MzSBWCHGNE9Hpgx1H6tJyNRGPTNOSHHf1ObB2SZUx9QcQYbFbVoK0LfbSJHwpzviUf
-         d0SjDF8XGuaKcgz66eQrykR9AALBDeCquTKiYuvUoDMKJeGJliInGycAIpQzTMVaLt9R
-         s/1A==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gX+LKNBBd0TCFQEbM+9w1gF9bM8Fn+Ho3vWnyUzdN9U=;
+        b=UNeJC4oLGxGV6K0b1cREoESOX490a9RyUKFU2tYqhdRSeiZbK+6WvYIXYoP7mPcdzy
+         c7L3C7Df4h9rhDdgmceAxXXAbnTCbveCYosqBzw9H55cTQE42NGs2l/hPjeBUydSy3MJ
+         8i5Uzur0+Vqy5OhXwBoH4ZOLkxKn5AsFozMiCVhhKFduASVE9gBFvdLNWoOlJVc7jR1B
+         bi2izNAotFTgGY0hEj+/5slLXcS3ABW3VaAWOUZmfCB6Gx4MpLSzA50ii1zX2HbvyKtw
+         xuZuXzCq46+P0AYKZijs0qmDaiKiWsLTgEGT1KlaaivUBIGNpuaFBGqqoi+OYA2M/b2P
+         TA9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rRgVXPw5t6QVo2geW3WNhb1rgDC2iA39PRv/GAVQDio=;
-        b=XN+g9IryYF9RzhyOH/edzWXhSOodcivu20LSFwX4mdIEQeVPqtEawtT3Shu8PNKIuG
-         sKbh+glDdCP5P5JywoQqfgMCNsd/zesZcWp5nHHK5C91rXsCC1QDX+Nf+cnApdgs5/Ch
-         KrtG1F8DjGGBnsDNJpJcX4r8Pla5W+63MhHyvoLk/MAo7ai0RsP0TJU1794Dixj35A7I
-         YiCcBkdI+y5Y99voVIFjpvXTChH4oACVLn2LnMVi9s9dmzw3AybSPOsL1SFUsgwHjSfC
-         qAJ4TndvRK2OP4Wx3uWxDuSR9SpyNSfZxh/Xu0f+okFVKtSUl8yhiZtbt09NSLVSIME9
-         LS4A==
-X-Gm-Message-State: AO0yUKWfyK0qz2v+VAwAECPvSBzQ+DYerUS9x9GM1/qC52VWrzZjbkiz
-        lDGDyGTj+/RZsu1l+GdjkPqhmQ==
-X-Google-Smtp-Source: AK7set/aZLK6a4J5BP5py17o2vPlMYEYYqGkUd/mG6BXhAEOu/N3E4T9mGZDkPE1RSRpaEXhZnwoVQ==
-X-Received: by 2002:a05:600c:3512:b0:3dc:2c7c:6616 with SMTP id h18-20020a05600c351200b003dc2c7c6616mr210993wmq.21.1674727211804;
-        Thu, 26 Jan 2023 02:00:11 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:982:cbb0:aa89:e801:e296:9b7c? ([2a01:e0a:982:cbb0:aa89:e801:e296:9b7c])
-        by smtp.gmail.com with ESMTPSA id k20-20020a05600c479400b003da119d7251sm985242wmo.21.2023.01.26.02.00.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Jan 2023 02:00:09 -0800 (PST)
-Message-ID: <6d304884-9e54-6eba-1e2e-882fa6c5b983@linaro.org>
-Date:   Thu, 26 Jan 2023 11:00:06 +0100
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gX+LKNBBd0TCFQEbM+9w1gF9bM8Fn+Ho3vWnyUzdN9U=;
+        b=GOTlCp8WnG6pyF2mQrxTCkR+NREWCcrnM9dbccb17qG9u978sMrzaqecbQ2PUvhIQh
+         0tSGfxoHif73I5hF8lLoaVdxwrQ5Z3qCzLjk8UE7EJ3JruTw5sOXMP5VknPkFhch5PiJ
+         9eqtJ2z1H1hjhfX+vPaUBWBahlRWXj6MsImaH3bzv7LyH8LGpWH8DJ6/MwqT7nlcdb3k
+         +rg+weo2I+mIUQ18ElSXjl/vYzaZhZ5chbH9+CSaWaxJLt+XPloYG6UATptauGmRSIB7
+         mfLG5rEAaIU/jGSquq+XrVWuyIBoqag1pGG+77FKDxnOldQd8gcZpIU//Ctc23NbYGVS
+         1yNg==
+X-Gm-Message-State: AFqh2kotLGu/jRwngmBNtEQHeoKmwG+hfdYYLcUkMUvB5VF5MF+uief6
+        3yzL4HifMVti0yo0wIdB7sd9mg==
+X-Google-Smtp-Source: AMrXdXvEFI5TvxzETFU4jNAsX9qS5b6ju5otetH3GyAo3/sRdU+V4D2C4D9H4GVT8bZhaue5/z1xDQ==
+X-Received: by 2002:a05:6000:549:b0:2be:184a:5d5c with SMTP id b9-20020a056000054900b002be184a5d5cmr26978558wrf.59.1674728269636;
+        Thu, 26 Jan 2023 02:17:49 -0800 (PST)
+Received: from krzk-bin.. ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id a17-20020adffb91000000b002bddac15b3dsm868315wrr.33.2023.01.26.02.17.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Jan 2023 02:17:49 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     linux-samsung-soc@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org, Alim Akhtar <alim.akhtar@samsung.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Kukjin Kim <kgene@kernel.org>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
+        Henrik Grimler <henrik@grimler.se>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        phone-devel@vger.kernel.org, stable@vger.kernel.org,
+        replicant@osuosl.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: (subset) [PATCH 1/9] ARM: dts: exynos: correct HDMI phy compatible in Exynos4
+Date:   Thu, 26 Jan 2023 11:17:43 +0100
+Message-Id: <167472826059.11433.4862099125133476526.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230125094513.155063-1-krzysztof.kozlowski@linaro.org>
+References: <20230125094513.155063-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH v2 2/3] arm64: dts: make dts use gpio-fan matrix instead
- of array
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        David Heidelberg <david@ixit.cz>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        ~okias/devicetree@lists.sr.ht, phone-devel@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-rockchip@lists.infradead.org
-References: <20211029114948.41841-1-david@ixit.cz>
- <20211029114948.41841-2-david@ixit.cz>
- <CAFBinCBVXNYG62jKABhJJt0m61+vQKqEyC4Mk5Ljg7htN-brTA@mail.gmail.com>
-Content-Language: en-US
-From:   Neil Armstrong <neil.armstrong@linaro.org>
-Organization: Linaro Developer Services
-In-Reply-To: <CAFBinCBVXNYG62jKABhJJt0m61+vQKqEyC4Mk5Ljg7htN-brTA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi David,
+On Wed, 25 Jan 2023 10:45:05 +0100, Krzysztof Kozlowski wrote:
+> The HDMI phy compatible was missing vendor prefix.
+> 
+> 
 
-On 31/10/2021 20:39, Martin Blumenstingl wrote:
-> On Sun, Oct 31, 2021 at 5:51 PM David Heidelberg <david@ixit.cz> wrote:
->>
->> No functional changes.
->>
->> Adjust to comply with dt-schema requirements
->> and make possible to validate values.
->>
->> Signed-off-by: David Heidelberg <david@ixit.cz>
->> ---
->>   arch/arm64/boot/dts/amlogic/meson-gxm-khadas-vim2.dts | 9 +++++----
-> for meson-gxm-khadas-vim2.dts:
-> Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Applied, thanks!
 
-Would be great if you could re-spin this change but only for the meson-gxm-khadas-vim2.dts file.
+[1/9] ARM: dts: exynos: correct HDMI phy compatible in Exynos4
+      https://git.kernel.org/krzk/linux/c/af1c89ddb74f170eccd5a57001d7317560b638ea
 
-Thanks
-Neil
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
