@@ -2,101 +2,130 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56C33C61DA3
-	for <phone-devel@archiver.kernel.org>; Thu, 26 Jan 2023 19:01:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CE2DC54EAA
+	for <phone-devel@archiver.kernel.org>; Thu, 26 Jan 2023 20:42:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232362AbjAZTBz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 26 Jan 2023 14:01:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45536 "EHLO
+        id S232084AbjAZUmF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 26 Jan 2023 15:42:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232425AbjAZTBr (ORCPT
+        with ESMTP id S231488AbjAZUmE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 26 Jan 2023 14:01:47 -0500
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4E7E65355
-        for <phone-devel@vger.kernel.org>; Thu, 26 Jan 2023 11:01:35 -0800 (PST)
-Received: by mail-wr1-x42f.google.com with SMTP id y1so2778922wru.2
-        for <phone-devel@vger.kernel.org>; Thu, 26 Jan 2023 11:01:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8vGWHx37zinCDKu9NC9wgR73rrVcUbMz6uogy6JTfQQ=;
-        b=g3cA3KzWngJBTIKkh8Tchnm74ND1daBcbl93/SnsDa4+ZO9RBTjUIL8auE/xvQhSfV
-         1ZtGisCGGvsWchTLKEc5QWYq7a4ge3bWvhoP89nqSiYuXh8saouCG5hZXMyMfJ5QGzvA
-         0sArQcwKMzUefdCFBqnxv4xUXB/hcD75TQsPkm3r+TnGzbDQFAsRF+BZzUtKKZZsRTKN
-         q7lDMoEDBLyB3q5U9X+cIarzHE2iJ1YiWi/4mgY3Ubc0hLe0AYbXYacMZ027VBi9aKV3
-         iRxstRlH/2Hw06DrFGax8WD6GOieakSAk+yzHlzq14FxuoP34bxBskU+MenAh/6ZvEjk
-         GREA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8vGWHx37zinCDKu9NC9wgR73rrVcUbMz6uogy6JTfQQ=;
-        b=SYB43+TX9+cbnLU6C4yrQ1PHWM1u9RWb9U225eCe38jeS3opAZOr65f+G9DVHVNG44
-         PDo47bToosP/bDJfuFsW5DzAMy10+FtJHeA8+UIpbGK/wcrB8bp1+7olSsPvrTOI6Ct8
-         Eodz9SEDOxDvEJLApjYq8p7+bIeIDpgfSki4iIaAwbyuFI+X3pXjq18g6HnMn1bwGZDH
-         xbUrLbK2Lusgq4Hh9PdZtoFFDsvlGUphYYhmOi3xPGzFnpYKw6cWtj5Rskhho0Kk6Kv6
-         5+1n+FerNJZwu4/h3p9kuJE1kgVf71XsCamm9QNWWM5WwQyLQBqG3voA6qMmzlXS2589
-         9LnA==
-X-Gm-Message-State: AFqh2kr61g+KHz55IQLuLaml639ouWZFZWsysLx0lfFcbBp3hvF/bt1d
-        o20CrNXRiAsuF2T2ixRBe0KIwRq8iaZOZS5E
-X-Google-Smtp-Source: AMrXdXsub2bhIciA9sIaWr1SDq7Xp+VsKNNpw01yUOHvFW+tAfdJi89lnPxipV/wux8vqehGY34kjw==
-X-Received: by 2002:a17:907:6e2a:b0:871:e9a0:eba7 with SMTP id sd42-20020a1709076e2a00b00871e9a0eba7mr114189013ejc.57.1674759683172;
-        Thu, 26 Jan 2023 11:01:23 -0800 (PST)
-Received: from eriador.unikie.fi ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id o25-20020a1709061b1900b0084d4e9a13cbsm974982ejg.221.2023.01.26.11.01.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jan 2023 11:01:22 -0800 (PST)
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     phone-devel@vger.kernel.org,
-        Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kuogee Hsieh <quic_khsieh@quicinc.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Stephen Boyd <swboyd@chromium.org>,
+        Thu, 26 Jan 2023 15:42:04 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B997AB0;
+        Thu, 26 Jan 2023 12:42:01 -0800 (PST)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 2321CCB452;
+        Thu, 26 Jan 2023 20:41:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1674765719; bh=m+AyRkpU35PI1/KK7hJz1VYCQdwvbwm4TM5BZi0YkKY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=fkgTKbVsA5M4qFr25+D09azhzbUKoiPxHsuTvfCIoyc2q1D7DW5QpVXyswaM5f0q0
+         Xtc3y0opFRlUxed8Jr4pHo5OM6caQavk5ROBAx0ofGPJMK+9bhZ1IF3AckUDuJBTV0
+         Ww2/MqtwCS62j1NSJ8oYLhhy3YLhRs0/i7yzSaCc=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Vinod Polimera <quic_vpolimer@quicinc.com>,
-        Liu Shixin <liushixin2@huawei.com>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] drm/msm/dpu: Add DSC hardware blocks to register snapshot
-Date:   Thu, 26 Jan 2023 21:01:05 +0200
-Message-Id: <167475959089.3954305.3603655147941540549.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230125101412.216924-1-marijn.suijten@somainline.org>
-References: <20230125101412.216924-1-marijn.suijten@somainline.org>
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add notification LED
+Date:   Thu, 26 Jan 2023 21:41:58 +0100
+Message-ID: <1840339.tdWV9SEqCh@g550jk>
+In-Reply-To: <dbfa802a-968f-0504-a131-59e2a8f52c9f@linaro.org>
+References: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
+ <4455893.LvFx2qVVIh@g550jk> <dbfa802a-968f-0504-a131-59e2a8f52c9f@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Donnerstag, 26. J=E4nner 2023 10:41:24 CET Krzysztof Kozlowski wrote:
+> On 25/01/2023 21:51, Luca Weiss wrote:
+> > On Montag, 23. J=E4nner 2023 18:18:16 CET Krzysztof Kozlowski wrote:
+> >> On 22/01/2023 17:48, Luca Weiss wrote:
+> >>> Add the node describing the sn3193 that's used to provide notification
+> >>> LED.
+> >>>=20
+> >>> Unfortunately the driver currently supports neither multicolor API nor
+> >>> using the properties function & color, so we use label instead.
+> >>>=20
+> >>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> >>> ---
+> >>>=20
+> >>>  .../arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 28
+> >>>  ++++++++++++++++++++++ 1 file changed, 28 insertions(+)
+> >>>=20
+> >>> diff --git a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+> >>> b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts index
+> >>> ffb486ceb6a6..a672c45d7070 100644
+> >>> --- a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+> >>> +++ b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+> >>> @@ -114,6 +114,34 @@ led@0 {
+> >>>=20
+> >>>  			default-brightness =3D <80>;
+> >>>  	=09
+> >>>  		};
+> >>>  =09
+> >>>  	};
+> >>>=20
+> >>> +
+> >>> +	led-controller@68 {
+> >>> +		compatible =3D "si-en,sn3193";
+> >>> +		reg =3D <0x68>;
+> >>> +
+> >>> +		shutdown-gpios =3D <&tlmm 45 GPIO_ACTIVE_HIGH>;
+> >>> +
+> >>> +		#address-cells =3D <1>;
+> >>> +		#size-cells =3D <0>;
+> >>> +
+> >>> +		led@1 {
+> >>> +			reg =3D <1>;
+> >>> +			label =3D "red:status";
+> >>=20
+> >> These should be colors and functions.
+> >=20
+> > Hi Krzysztof,
+> >=20
+> > please check the commit message for this. I tried using it but it didn't
+> > work, the driver in general might need an overhaul at some point...
+> >=20
+> >> Unfortunately the driver currently supports neither multicolor API nor
+> >> using the properties function & color, so we use label instead.
+> >=20
+> > Or maybe I messed up but pretty sure this was the case when I wrote the
+> > dts.
+> I don't understand how driver is related here - it's not the driver's
+> property, but LED core. If the driver "supports" label, then it supports
+> color and status.
 
-On Wed, 25 Jan 2023 11:14:11 +0100, Marijn Suijten wrote:
-> Add missing DSC hardware block register ranges to the snapshot utility
-> to include them in dmesg (on MSM_DISP_SNAPSHOT_DUMP_IN_CONSOLE) and the
-> kms debugfs file.
-> 
-> 
+The leds-is31fl319x.c driver uses devm_led_classdev_register but the functi=
+on=20
+where 'function' and 'color' is parsed is led_parse_fwnode_props which is=20
+called from led_compose_name which is called from led_classdev_register_ext=
+=20
+(or with the devm_ prefix), and not called from the register method without=
+=20
+_ext suffix.
 
-Applied, thanks!
+So in other words, the led driver would need changes to use the new=20
+registration API to be able to use 'function' and 'color' instead of 'label=
+'.
 
-[1/1] drm/msm/dpu: Add DSC hardware blocks to register snapshot
-      https://gitlab.freedesktop.org/lumag/msm/-/commit/a7efe60e36b9
+Regards
+Luca
 
-Best regards,
--- 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+>=20
+> Best regards,
+> Krzysztof
+
+
+
+
