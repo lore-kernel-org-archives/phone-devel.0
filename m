@@ -2,134 +2,106 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34787C05027
-	for <phone-devel@archiver.kernel.org>; Thu, 26 Jan 2023 06:15:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 63BF8C05027
+	for <phone-devel@archiver.kernel.org>; Thu, 26 Jan 2023 09:09:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230282AbjAZGP4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 26 Jan 2023 01:15:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32778 "EHLO
+        id S236684AbjAZJJQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 26 Jan 2023 04:09:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjAZGP4 (ORCPT
+        with ESMTP id S230282AbjAZJJP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 26 Jan 2023 01:15:56 -0500
-Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87CD22DF1;
-        Wed, 25 Jan 2023 22:15:54 -0800 (PST)
-Received: by mail-il1-x129.google.com with SMTP id i17so284166ils.11;
-        Wed, 25 Jan 2023 22:15:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/OqilOyvr7lrBfOGjon2uUQjq6EGIVQX2EF3eR1kL4o=;
-        b=gHUF4N2221SYUz0ke31LjgoQAjsFdiOk6J0VgXsWdprGliqlxbpksN8Eke4ere3I5B
-         89NShOESyxBDh/EH0q+LtT43g+WqulqvnTj7QuI+x0dM+FT1iiYh8SXtg+wu4MqWkSJV
-         9LqAt9AKaebqwrYN83u5o6IsrSo1rxRjCvWjSRse6wzPzmbQw6B7W6a0IpmfjjTkbFRd
-         lPhR6YDa/PlBpyZxkDA7OvArCCiY8zYjtukBEIYSOOKoxJyUndVOo7xzFC4wxfJnoIXc
-         a7R+O2rMSwDmxm6D9f80FNd1A/oLzej9WAlqDoFsYC4+KuwSo9ILGQK3pCHjTqk+6LqR
-         rctg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/OqilOyvr7lrBfOGjon2uUQjq6EGIVQX2EF3eR1kL4o=;
-        b=MwPSMkNXTJrMexLsriECOZq4Iju9Hd5aS7PYBMzJtaRZQWRhFgxmrbZ5BeX9Zkt3dl
-         h5mhWsdVPafJPQvYf3VtxnwhzdOkm63Mg7JtdbcoHaGjwSYQp0E8EAyE/N8eB4crNhcj
-         aRoYzRm89sDgjt7A/Lajt199XznFTxS4gi1qoHt3i3g5VhWCmf/yUVchBCIzHjk6rl8v
-         SipcLmY+qkAd50/3ijxLPBvkonqOBfAferSmAOpejeu+BDA2NPEItqnpTLHoNh2PzHl9
-         tmFrBK4Pyq7TA2gJXzXFUidts9CmrcWrGSUZlJERrO8eya4rZPL44tWMz8Qo81RhkCLm
-         pcEg==
-X-Gm-Message-State: AFqh2kqEdbs4uWojuNMr72zcTj55MuxjyVMiUL1JuyH7E/e6Qfq4spxI
-        WdfpXnk2OTu17QZuBg9VJqM=
-X-Google-Smtp-Source: AMrXdXsr0FhK2Qjh7EWxKJ243S4NK1pfZa6RJr4LmjL3HMGpaVjfZLHPAqACXh5nZ0hcp8NusFfFGA==
-X-Received: by 2002:a92:9501:0:b0:30e:f03e:a76e with SMTP id y1-20020a929501000000b0030ef03ea76emr4185951ilh.2.1674713754120;
-        Wed, 25 Jan 2023 22:15:54 -0800 (PST)
-Received: from ?IPV6:2604:2d80:4d87:cd00:9f51:32d7:1177:67d? ([2604:2d80:4d87:cd00:9f51:32d7:1177:67d])
-        by smtp.gmail.com with ESMTPSA id r5-20020a92c505000000b0030dc75aaf48sm129645ilg.47.2023.01.25.22.15.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Jan 2023 22:15:53 -0800 (PST)
-Message-ID: <b47b5a49-6e68-c827-a88e-f61fb85521c8@gmail.com>
-Date:   Thu, 26 Jan 2023 00:15:51 -0600
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH] arm64: dts: qcom: sdm845-xiaomi-beryllium-tianma: Add
- reserved memory region
-Content-Language: en-US
-To:     Amit Pundir <amit.pundir@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>
-Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        dt <devicetree@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        phone-devel <phone-devel@vger.kernel.org>
-References: <20230124183257.1525376-1-amit.pundir@linaro.org>
-From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
-In-Reply-To: <20230124183257.1525376-1-amit.pundir@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Thu, 26 Jan 2023 04:09:15 -0500
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2E663E60B
+        for <phone-devel@vger.kernel.org>; Thu, 26 Jan 2023 01:09:14 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id 3C8F15C00F1;
+        Thu, 26 Jan 2023 04:09:14 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Thu, 26 Jan 2023 04:09:14 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm2; t=1674724154; x=1674810554; bh=g6ATgqr0TN
+        +x4Obdaq5z13CiMjUNSuLQ/IWMI5UhjQw=; b=GsjeYcq8LhhPBwn1zJE68Lx0Ah
+        vONU242J3FZA6SfCo3pVxCHZh9D6hhYEVu3KUC6cxRvSYKdnzB/1U5GllXZQVcsm
+        d94j7XFzTuF0MlgfY0Riv35BmRRSeRA/520iX2W9FjIVatty3MjZqtb2s2mwJKyz
+        QMqTEMaiSklrxnZHg/kotbu76REFXy1sWE0ARG7jKEfLRmvMU8pXEGLQA8zHvWkQ
+        Vckwyfee0DC9gRSiOgrZX+2FylokB5Bwk0l3W5rLIeHLDn/z/vDUNipetke2pbUw
+        B5rcMMjGPl/Kf1SEvNHi2Nx35j7ZY+oyd4pbgk73Qo8KhMWeVkTCf7WI20vQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm3; t=1674724154; x=1674810554; bh=g6ATgqr0TN+x4Obdaq5z13CiMjUN
+        SuLQ/IWMI5UhjQw=; b=JiuDVXUWgsgA0IS5FKc5OISDgB9m7ZoQfxA/SAc/GXDl
+        C0Ukfs7uZraUw7EInSttXWek6ewPlTtnb3eTlR2m8eRGNeuOtdUfeHIFiOza9jxo
+        lnh4Jcs9jIA8PubftjPla9/RgV5wIiam6HwIAqRZu2aHTiAHnoOx68/vkZ3PMMp1
+        KyCn8civtN/GvBaI8j0ZbVmeioIS4RAe6id5QOVl1Hn1OX1q/GVnoZwVWMXz/ITe
+        1U5PhSZJO7Dy5Zb19MwmLFjAbeYMRubx1AYkaxbPZbT1AN/oSNCe2DH6DWqzcbto
+        ATmXnZejCm8aytNfmvDidImHF2odXUizumQxVUk8fQ==
+X-ME-Sender: <xms:OkPSY3ePdNuA1AbvbhhjpWm5Tg52zKlng_rMN_oQlfGXdDedXDyJNQ>
+    <xme:OkPSY9MbMOWvhn0RGn-c6tEo7KiUFYCwgHwfZ4X2qlnDt4ZNJVaGPR6LO2ChHtCYL
+    86q1JdRwNJckVDW1JY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedruddvgedgtdduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:OkPSYwjDX2YCJdfobSunG2WOt79nuOIjzFhQ8kFGdudQQQP2CSlvcA>
+    <xmx:OkPSY4-mQqAJBhlKVYYBE7cYdEWuPBWUJSA4tM-X6Abh1WTb_w2TvQ>
+    <xmx:OkPSYzspHeiLBBmBm7lIGufP7kbYEQ1HoNQbUW1u02lHwHcnxMxMWQ>
+    <xmx:OkPSY84CsF9bn825QwHHjmcJcPCyV-u5UZx0Hm-FrzC8S-_Lenct5w>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 0644EB60086; Thu, 26 Jan 2023 04:09:13 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-85-gd6d859e0cf-fm-20230116.001-gd6d859e0
+Mime-Version: 1.0
+Message-Id: <6b53a127-4529-4283-be4e-1724de98fd37@app.fastmail.com>
+In-Reply-To: <CACRpkdZVH8nu=4a4MuQZ=uUpqg1MBXShCU_Bm3CUxPg1adO8BA@mail.gmail.com>
+References: <CACRpkdY24Lv0F3ct2R6ALPpAdxWz_vEjrPAGNSF3pcoOj-Xqcg@mail.gmail.com>
+ <CACRpkdZVH8nu=4a4MuQZ=uUpqg1MBXShCU_Bm3CUxPg1adO8BA@mail.gmail.com>
+Date:   Thu, 26 Jan 2023 10:08:51 +0100
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Linus Walleij" <linus.walleij@linaro.org>,
+        "SoC Team" <soc@kernel.org>, arm <arm@kernel.org>
+Cc:     "Linux ARM" <linux-arm-kernel@lists.infradead.org>,
+        phone-devel@vger.kernel.org
+Subject: Re: [GIT PULL] Ux500 DTS updates
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Amit Pundir,
+On Wed, Jan 25, 2023, at 23:18, Linus Walleij wrote:
+> Wait!
+>
+> On Wed, Jan 25, 2023 at 10:43 PM Linus Walleij <linus.walleij@linaro.org> wrote:
+>
+>> Linus Walleij (2):
+>>       ARM: dts: ux500: Add eSRAM to the device tree
+>
+> Now I see there is an appropriate "mmi-sram" binding in
+> Documentation/devicetree/bindings/sram/sram.yaml
+>
+> That's obviously what I should be using for this.
 
-I have a Poco F1 (EBBG) variant and I can confirm that the framebuffer
-address is same for the EBBG variant too.
+Ok
 
-I did a quick check by running the following command based on this link[1]:
+> I took it out and pushed the same tag without this patch.
 
-xiber:~$ strings /dev/disk/by-partlabel/xbl_a | grep "Display Reserved"
+This results in a warning from my tools that notice the commit
+ID in the branch is different from the one in the email.
 
-0x9D400000, 0x02400000, "Display Reserved",  AddMem, MEM_RES,
-SYS_MEM_CAP, Reserv, WRITE_BACK_XN
+I pulled it manually, but if you notice something like
+this again, it's better if you follow up with a v2 pull
+request. Patchwork should notice this and mark the first
+version as superseded in this case.
 
-So I think it's safe to move this to sdm845-xiaomi-beryllium-common.dtsi
-
-Regards,
-Joel Selvaraj
-
-[1]
-https://wiki.postmarketos.org/wiki/SDM845_Mainlining#Find_the_framebuffer_address
-
-
-
-
-On 24/01/23 12:32, Amit Pundir wrote:
-> Put cont splash memory region under the reserved-memory as
-> confirmed by the downstream code for Tianma variant as well.
-> 
-> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-> ---
-> This change should probably go in sdm845-xiaomi-beryllium-common but
-> I don't have EBBG variant's downstream code nor the device to test.
-> 
->  .../boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts      | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
-> index 8e176111e599..47cbf725b0e3 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-tianma.dts
-> @@ -7,6 +7,14 @@
->  / {
->  	model = "Xiaomi Pocophone F1 (Tianma)";
->  	compatible = "xiaomi,beryllium", "qcom,sdm845";
-> +
-> +	reserved-memory {
-> +		/* Cont splash region set up by the bootloader */
-> +		cont_splash_mem: framebuffer@9d400000 {
-> +			reg = <0x0 0x9d400000 0x0 0x2400000>;
-> +			no-map;
-> +		};
-> +	};
->  };
->  
->  &display_panel {
+     Arnd
