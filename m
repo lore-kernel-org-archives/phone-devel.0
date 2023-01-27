@@ -2,118 +2,125 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D97D3C61DA4
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 20:28:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6A83C54EAA
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 21:16:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229737AbjA0U2H (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Jan 2023 15:28:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40306 "EHLO
+        id S231179AbjA0VQE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Jan 2023 16:16:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbjA0U2G (ORCPT
+        with ESMTP id S229611AbjA0VQD (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Jan 2023 15:28:06 -0500
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8152012F1C
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 12:28:02 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id c10-20020a05600c0a4a00b003db0636ff84so4307738wmq.0
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 12:28:02 -0800 (PST)
+        Fri, 27 Jan 2023 16:16:03 -0500
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCD1E8A54C
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 13:15:36 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id c4-20020a1c3504000000b003d9e2f72093so6235010wma.1
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 13:15:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E36sg80cHuyRt0XGtoLq9DTjdMzSXiI8iQQN7CENzSA=;
-        b=r9y9DJaKCGGii9qXCniQ7ae7UoZsPcGFTXpyZ4XcO7FToGCeApaKLsS+z2rIMJ/IVy
-         CRGHdjFf2P4YPlNhIFErtdSd9ryNfQlV/QIO3yJdDscd3tF6umznqgddgokHPJIP3B0R
-         ftI3FtJcCDhZ1xRP54MYAY9jhFm2xYBk+MKBvh0PfiCy3HZ4ddfVRoqUk1136ZGoQKdg
-         xHQXKDzT4p1q54glFMlJ5JqGpWsqPGi/u2cowQCmeNqc7xzRnelvjXpqWi8mp6DPIWGj
-         IPuvlDZxHYX58EAvB6Os1RidiQ/CclZFt8A/RZftEPNZxsYhE9e2NDR8Q5XA/ymJh/UM
-         LujA==
+        bh=smuQo4geAWNJOxGHerqBUE4luc859AqeHaJfREjKn6k=;
+        b=TKYaTnlPCJXzUlUuoiMXOsYJ9mzHNkAuMvU0eC8uoS4KLrDVikMnh14coxBjOtinzg
+         sPXwL0xNcCC0soLP7ahjYO45rySby6got1EIXVy17ddsAU6kV1xzPQ5PoM1WgrbiOE/S
+         tCCW2QnIW+4FItE9bSwdCHM86hG2HBGcFertfs9iDmCMmaDchdaqvLVKvxaYaOsGIgb1
+         JqEKcDPRAxlaWzgTSU4uvkzjdhr0q4w+zek26zX9BfyEO5wfnVPztHFiUglcNS3AY/bV
+         K8YK7aD0l0vidUoD2gMToc3hm+Q+3xV3AkaJE5M0REOWoaMcsHirZuRo/1iIa1ebB5yM
+         pGPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=E36sg80cHuyRt0XGtoLq9DTjdMzSXiI8iQQN7CENzSA=;
-        b=tS0W9hkXjpjOBoYflrWSLUr36DlSZeloOD4txC1tG0d4fHU9T32IGpFjmzobw1gNvT
-         q5+mEFV/Wrb7tGQWz6wNNMB2J4zYaK/5HImCjU1GUT3Abjm3aw1efpl9WxmyMOV+0WgP
-         IJ7QBAK54bABNPmn01ru/DYL3i5liL+YaDa6/jpNPA+EDZ+79n3XGmFq6J7HCA2gF7/R
-         JX9Fi9hHRkst1qF5PjFCVC/GEvmi2/eqZhw/MhQumVRFXsafhthsN7H40WQQhVbnGpsY
-         6BH4mvjRdhIxMC794Fa7uVseUwsdd2pKWbTQxeUDIeNG7Xdj7fBDJi3J0nggbDSMtknw
-         HHGQ==
-X-Gm-Message-State: AFqh2kqfIa1Ios5j6W1X+MgUDaZKL3EHJ7jI6gQhIedWpj0OWec1kTeN
-        EK5a7TOKmADg4XKlxHjXyU4gzw==
-X-Google-Smtp-Source: AMrXdXu/50ah/BTrwPVEMgEt0G96C4r5Q5YlMv/QfqVvKscWkfCDovsrSso0O5kPHDfOQKym/6OyFg==
-X-Received: by 2002:a05:600c:225a:b0:3d3:5c21:dd99 with SMTP id a26-20020a05600c225a00b003d35c21dd99mr40514413wmm.18.1674851281070;
-        Fri, 27 Jan 2023 12:28:01 -0800 (PST)
-Received: from lion.. (cpc76484-cwma10-2-0-cust274.7-3.cable.virginm.net. [82.31.201.19])
-        by smtp.gmail.com with ESMTPSA id f21-20020a5d58f5000000b00236883f2f5csm4836124wrd.94.2023.01.27.12.27.59
+        bh=smuQo4geAWNJOxGHerqBUE4luc859AqeHaJfREjKn6k=;
+        b=IKcIY1ZKvC7q99sS1Lr6zSumdC6P/trSwqrW6yuFmg8VhVfsOH6vEAh+v7Vcp35Bfs
+         d5Fbc73lX4VGezTxAb8ddJm4SnSC6vNOD8UQRxxVsPQi9EWuL8ykkyQ4YqHDkcLxC7CC
+         zj2uMuy1ehL6nflKBbjvLOFvPTpjoCdJC3qa67Tty/t/vWy/9y9twrhhde4DDhPjv44G
+         cTm2N5geWhWIyNS/NVvcG4ZHu0L2i01+ehkbI3qVlLdrjT69o/KCi10LiBoQpr9cMC/t
+         ZQdnvAuLyAGElMEJFw+MGa3DDQCnzlmFITa6MyyOs9i2cq91cvOv54kZs3mKC1Sz8sRM
+         VJYg==
+X-Gm-Message-State: AO0yUKV67pjzUpCjkSgvhXpsOVPrRgqOSDNxydGZzgWy/IlXkVx+FOUF
+        uZA+uONZxn311KuLK8KSKbbxtA==
+X-Google-Smtp-Source: AK7set++T0+otINhEwRRF0+uWq9i5p8hoTzW1FAWYK+36ztUqu67rhVSd6l7suDxXAlNZ5vjAxn/7Q==
+X-Received: by 2002:a1c:7c0d:0:b0:3dc:445f:642 with SMTP id x13-20020a1c7c0d000000b003dc445f0642mr748298wmc.37.1674854135371;
+        Fri, 27 Jan 2023 13:15:35 -0800 (PST)
+Received: from krzk-bin.. ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id l16-20020a7bc350000000b003d9aa76dc6asm10513504wmj.0.2023.01.27.13.15.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jan 2023 12:28:00 -0800 (PST)
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-To:     Alex Elder <elder@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     elder@kernel.org, netdev@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: [PATCH net-next] net: ipa: use dev PM wakeirq handling
-Date:   Fri, 27 Jan 2023 20:27:58 +0000
-Message-Id: <20230127202758.2913612-1-caleb.connolly@linaro.org>
-X-Mailer: git-send-email 2.39.0
+        Fri, 27 Jan 2023 13:15:34 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
+        Henrik Grimler <henrik@grimler.se>,
+        Sam Protsenko <semen.protsenko@linaro.org>,
+        Chanho Park <chanho61.park@samsung.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [RFT PATCH v2 1/4] ARM: dts: exynos: add unit address to DWC3 node wrapper in Exynos5250
+Date:   Fri, 27 Jan 2023 22:15:24 +0100
+Message-Id: <20230127211527.260060-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Replace the enable_irq_wake() call with one to dev_pm_set_wake_irq()
-instead. This will let the dev PM framework automatically manage the
-the wakeup capability of the ipa IRQ and ensure that userspace requests
-to enable/disable wakeup for the IPA via sysfs are respected.
+Neither simple-bus bindings nor dtc W=1 accept device nodes in soc@ node
+which do not have unit address.  Therefore usethe address space
+of child device (actual DWC3 Controller) as the wrapper's address to
+fix:
 
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+  exynos5250-smdk5250.dtb: soc: usb3: {'compatible': ['samsung,exynos5250-dwusb3'],
+    ... } should not be valid under {'type': 'object'}
+
+  exynos5250.dtsi:638.16-653.5: Warning (simple_bus_reg): /soc/usb3: missing or empty reg/ranges property
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 ---
- drivers/net/ipa/ipa_interrupt.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ipa/ipa_interrupt.c b/drivers/net/ipa/ipa_interrupt.c
-index c19cd27ac852..9a1153e80a3a 100644
---- a/drivers/net/ipa/ipa_interrupt.c
-+++ b/drivers/net/ipa/ipa_interrupt.c
-@@ -22,6 +22,7 @@
- #include <linux/types.h>
- #include <linux/interrupt.h>
- #include <linux/pm_runtime.h>
-+#include <linux/pm_wakeirq.h>
+Changes since v1:
+1. Use ranges with values and drop reg from usb-wrapper node.
+2. Keep "usb" as wrapper's node name.
+---
+ arch/arm/boot/dts/exynos5250.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/boot/dts/exynos5250.dtsi b/arch/arm/boot/dts/exynos5250.dtsi
+index 97e89859ba3d..a5db4ac213d5 100644
+--- a/arch/arm/boot/dts/exynos5250.dtsi
++++ b/arch/arm/boot/dts/exynos5250.dtsi
+@@ -635,17 +635,17 @@ i2s2: i2s@12d70000 {
+ 			#sound-dai-cells = <1>;
+ 		};
  
- #include "ipa.h"
- #include "ipa_reg.h"
-@@ -269,9 +270,9 @@ struct ipa_interrupt *ipa_interrupt_config(struct ipa *ipa)
- 		goto err_kfree;
- 	}
+-		usbdrd: usb3 {
++		usbdrd: usb@12000000 {
+ 			compatible = "samsung,exynos5250-dwusb3";
+ 			clocks = <&clock CLK_USB3>;
+ 			clock-names = "usbdrd30";
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+-			ranges;
++			ranges = <0x0 0x12000000 0x10000>;
  
--	ret = enable_irq_wake(irq);
-+	ret = dev_pm_set_wake_irq(dev, irq);
- 	if (ret) {
--		dev_err(dev, "error %d enabling wakeup for \"ipa\" IRQ\n", ret);
-+		dev_err(dev, "error %d registering \"ipa\" IRQ as wakeirq\n", ret);
- 		goto err_free_irq;
- 	}
- 
-@@ -289,11 +290,8 @@ struct ipa_interrupt *ipa_interrupt_config(struct ipa *ipa)
- void ipa_interrupt_deconfig(struct ipa_interrupt *interrupt)
- {
- 	struct device *dev = &interrupt->ipa->pdev->dev;
--	int ret;
- 
--	ret = disable_irq_wake(interrupt->irq);
--	if (ret)
--		dev_err(dev, "error %d disabling \"ipa\" IRQ wakeup\n", ret);
-+	dev_pm_clear_wake_irq(dev);
- 	free_irq(interrupt->irq, interrupt);
- 	kfree(interrupt);
- }
+-			usbdrd_dwc3: usb@12000000 {
++			usbdrd_dwc3: usb@0 {
+ 				compatible = "snps,dwc3";
+-				reg = <0x12000000 0x10000>;
++				reg = <0x0 0x10000>;
+ 				interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+ 				phys = <&usbdrd_phy 0>, <&usbdrd_phy 1>;
+ 				phy-names = "usb2-phy", "usb3-phy";
 -- 
-2.39.0
+2.34.1
 
