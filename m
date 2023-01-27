@@ -2,62 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78BE1C54EAA
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 21:24:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5001EC54EAA
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 21:27:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230172AbjA0VYK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Jan 2023 16:24:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44344 "EHLO
+        id S229469AbjA0V10 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Jan 2023 16:27:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjA0VYJ (ORCPT
+        with ESMTP id S229721AbjA0V10 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Jan 2023 16:24:09 -0500
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3523514220
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 13:24:08 -0800 (PST)
-Received: by mail-wm1-x32d.google.com with SMTP id d4-20020a05600c3ac400b003db1de2aef0so4384081wms.2
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 13:24:08 -0800 (PST)
+        Fri, 27 Jan 2023 16:27:26 -0500
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D62FFE05E
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 13:27:24 -0800 (PST)
+Received: by mail-wm1-x332.google.com with SMTP id l35-20020a05600c1d2300b003dc4634a466so226757wms.4
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 13:27:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qTUfdhlTEOfdl/ldpk9Lhv3WxL8z/CXYcPInfVrR2L0=;
-        b=IHiHTzDa+xmRWBUTN2BMRv0XZWZWJtfmRS4o26q9bqJqnSjhzy9i4JvPn4kE4BXlW7
-         ZVABm8HHiM4cNmbqlSor7NAfaV5T+wKS4Nyfig6E4OxAqqTf6I2JC3hlpvqU1PZchW8x
-         OFYWSdzly27cRGfoAqeCfYWOAgUOOi17U/7FQSbDhVrMe+1BX6c/HoiRSIDSPX0Odnfd
-         h1vJ3G7EbpfWoG/07b0CZWNVxrSApfyGcoSrOt9EG8IQ1rk62q6lqiW+3HO8RiSB/ppI
-         vi+yqsvKG0lGtXB0Z6u0h7ClZoCiaZBX69OSnCkdeVTztSWf6xj6iPapGTXlq+0jw9m4
-         Dm+w==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=smuQo4geAWNJOxGHerqBUE4luc859AqeHaJfREjKn6k=;
+        b=YgKFG9jY7x3+04njsrvCicDj6oHs+G5HsblgQCn+sHNibQ60jhn6aQ4BQ0mO9+MIHQ
+         j7ybROVnewB5v0CP99a1dioAZYnIxBpu5IfrtOpZzWbg5TIJnepROS5br8Uc2JwleCvV
+         1E54MPBd74WQMPkvCfVXqjCBN8CZJgPZMf88oEQ5ytfbETfybFXFw+kFHKoSMNyCUokd
+         BRRJIn3CurAaVkbi6KKWIaQjVCCE8zP3Z5Gu8j0L6RiujPjsUh5wvGhY5duO9Ms6vQsS
+         IbP3MLp4rV0Ju27EDX+Ia+8JJ1C1EoGZydgPHYy1zvcs5GcW7q+2UA6O/tXmj0J2wBqf
+         zIxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qTUfdhlTEOfdl/ldpk9Lhv3WxL8z/CXYcPInfVrR2L0=;
-        b=FJ7W90xfbl94sbPv1BDufAR6qebx5ymRvpmZLOpAQq6LALRJAWrbZLSIp0bee9omx0
-         aaybVcVSxuBPb+NuxgU7saJlQVuOWlPeH+o3mbcTC+tYf6DEGEK6Tehc3WP3rprxoKe/
-         mWIoSoKYEsaPMmDoh+jtkmFvk6YXFkxF5tbgY1I4lgBQp0qGIBHwm8a6bqQFBL0uTyf8
-         ynegMbHBECDVyol4CRZNtVtdNP2t25TNKSYobaoLfKNYYMAF7pvqM+f+MRGLOrUfoHkw
-         zwvFnYpQm3u25alvH3mL3L0TfqHxzuCAdkxs0/IIPZ7hRDzS3q6UvkvkGOOTIEZwIC85
-         EEbA==
-X-Gm-Message-State: AFqh2krL82BXmzW6ybE2beSyhPM8V5hZbQmRYa6YsXjMr70HVRRm7kaL
-        2/CxglmI8xGf8KaTY+jaETIZTA==
-X-Google-Smtp-Source: AMrXdXtDQFhR45y0gs25bLmrKHWNmHZcMv+Yywf3fqjOffbVdnEGyyV1AKrBw66mrfv9Tb+W/qcBBA==
-X-Received: by 2002:a05:600c:1609:b0:3db:12a:5e65 with SMTP id m9-20020a05600c160900b003db012a5e65mr40296129wmn.4.1674854646796;
-        Fri, 27 Jan 2023 13:24:06 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id o18-20020a05600c339200b003dc42d48defsm1369678wmp.6.2023.01.27.13.24.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jan 2023 13:24:06 -0800 (PST)
-Message-ID: <3fc8863b-a378-1ccd-982d-6e44013d97c8@linaro.org>
-Date:   Fri, 27 Jan 2023 22:24:04 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [RFT PATCH v2 3/4] arm64: dts: exynos: add unit address to DWC3
- node wrapper in Exynos5433
-Content-Language: en-US
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=smuQo4geAWNJOxGHerqBUE4luc859AqeHaJfREjKn6k=;
+        b=ZlWE2MMUwmvDPYU9KDJM0X8u77uePjyB+ELe2WBeidmO4wf0Y+e257HFRLj29/wvB+
+         4mLiln/OAzbi20i7FUQbC7ORhCX6/42L6bkYfPMjmqpt0uhuStAQqksX5720mYckX/sX
+         Q6QOjQtwIGIhhCLercuQKpYUkJ5YC+vPyJvAm1lv+B6grlrNf9wY7iCzf8m8YIESzmGv
+         BelCzcrYSAIQCBt2JaARwyHn2OMrSVU2np40EF7hxu9SBKPEzgwFUbDfdrBU30Bq+a+j
+         6tFKerO2LH55fBv8Gv/o4LI4HkX7fm2PlNm5f9k8184Hw5jsXn8g/dIOf7fdpdmwurSy
+         096Q==
+X-Gm-Message-State: AFqh2koEadvVXQWlekLnHMkYR5YcY0zwKlkBpUfQRo8DnkVcfGHqzjJa
+        eLIiWS9VI1DKWrQXi+3dEbKjQw==
+X-Google-Smtp-Source: AMrXdXuZGqnKBOjCXQNdvu2ZNVf0qkZubL90gPODwjPBra1PBu8DRipuQtBPKoQvMhCaJixwtZa7EQ==
+X-Received: by 2002:a7b:c5c4:0:b0:3d7:889:7496 with SMTP id n4-20020a7bc5c4000000b003d708897496mr39599663wmk.17.1674854843408;
+        Fri, 27 Jan 2023 13:27:23 -0800 (PST)
+Received: from krzk-bin.. ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id d11-20020a05600c3acb00b003db30be4a54sm8645303wms.38.2023.01.27.13.27.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Jan 2023 13:27:22 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Alim Akhtar <alim.akhtar@samsung.com>,
@@ -65,92 +57,70 @@ To:     Rob Herring <robh+dt@kernel.org>,
         linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
-        =?UTF-8?Q?Martin_J=c3=bccker?= <martin.juecker@gmail.com>,
+        =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
         Henrik Grimler <henrik@grimler.se>,
         Sam Protsenko <semen.protsenko@linaro.org>,
         Chanho Park <chanho61.park@samsung.com>,
         Marek Szyprowski <m.szyprowski@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>
-References: <20230127211527.260060-1-krzysztof.kozlowski@linaro.org>
- <20230127211527.260060-3-krzysztof.kozlowski@linaro.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230127211527.260060-3-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [RFT PATCH v3 1/4] ARM: dts: exynos: add unit address to DWC3 node wrapper in Exynos5250
+Date:   Fri, 27 Jan 2023 22:27:10 +0100
+Message-Id: <20230127212713.267014-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 27/01/2023 22:15, Krzysztof Kozlowski wrote:
-> Neither simple-bus bindings nor dtc W=1 accept device nodes in soc@ node
-> which do not have unit address.  Therefore usethe address space
-> of child device (actual DWC3 Controller) as the wrapper's address to
-> fix:
-> 
->   exynos5433-tm2e.dtb: soc@0: usbdrd: {'compatible': ['samsung,exynos5433-dwusb3'], ...
->     should not be valid under {'type': 'object'}
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> ---
-> 
-> Changes since v1:
-> 1. New patch
-> ---
->  arch/arm64/boot/dts/exynos/exynos5433.dtsi | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/exynos/exynos5433.dtsi b/arch/arm64/boot/dts/exynos/exynos5433.dtsi
-> index 9da24fe958a3..0fca783979f6 100644
-> --- a/arch/arm64/boot/dts/exynos/exynos5433.dtsi
-> +++ b/arch/arm64/boot/dts/exynos/exynos5433.dtsi
-> @@ -1742,7 +1742,7 @@ hsi2c_11: i2c@14df0000 {
->  			status = "disabled";
->  		};
->  
-> -		usbdrd30: usbdrd {
-> +		usbdrd30: usb@15400000 {
->  			compatible = "samsung,exynos5433-dwusb3";
->  			clocks = <&cmu_fsys CLK_ACLK_USBDRD30>,
->  				<&cmu_fsys CLK_SCLK_USBDRD30>,
-> @@ -1751,16 +1751,16 @@ usbdrd30: usbdrd {
->  			clock-names = "aclk", "susp_clk", "phyclk", "pipe_pclk";
->  			#address-cells = <1>;
->  			#size-cells = <1>;
-> -			ranges;
-> +			ranges = <0x0 0x15400000 0x10000>;
->  			status = "disabled";
->  
-> -			usbdrd_dwc3: usb@15400000 {
-> +			usbdrd_dwc3: usb@0 {
->  				compatible = "snps,dwc3";
->  				clocks = <&cmu_fsys CLK_SCLK_USBDRD30>,
->  					<&cmu_fsys CLK_ACLK_USBDRD30>,
->  					<&cmu_fsys CLK_SCLK_USBDRD30>;
->  				clock-names = "ref", "bus_early", "suspend";
-> -				reg = <0x15400000 0x10000>;
-> +				reg = <0x0 0x10000>;
->  				interrupts = <GIC_SPI 231 IRQ_TYPE_LEVEL_HIGH>;
->  				phys = <&usbdrd30_phy 0>, <&usbdrd30_phy 1>;
->  				phy-names = "usb2-phy", "usb3-phy";
-> @@ -1795,7 +1795,7 @@ usbhost30_phy: phy@15580000 {
->  			status = "disabled";
->  		};
->  
-> -		usbhost30: usbhost {
-> +		usbhost30: usb@15a00000 {
->  			compatible = "samsung,exynos5433-dwusb3";
->  			clocks = <&cmu_fsys CLK_ACLK_USBHOST30>,
->  				<&cmu_fsys CLK_SCLK_USBHOST30>,
-> @@ -1804,16 +1804,16 @@ usbhost30: usbhost {
->  			clock-names = "aclk", "susp_clk", "phyclk", "pipe_pclk";
->  			#address-cells = <1>;
->  			#size-cells = <1>;
-> -			ranges;
-> +			ranges <0x0 0x15a00000 0x10000>;
+Neither simple-bus bindings nor dtc W=1 accept device nodes in soc@ node
+which do not have unit address.  Therefore usethe address space
+of child device (actual DWC3 Controller) as the wrapper's address to
+fix:
 
-This does not even build...
+  exynos5250-smdk5250.dtb: soc: usb3: {'compatible': ['samsung,exynos5250-dwusb3'],
+    ... } should not be valid under {'type': 'object'}
 
-Best regards,
-Krzysztof
+  exynos5250.dtsi:638.16-653.5: Warning (simple_bus_reg): /soc/usb3: missing or empty reg/ranges property
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+---
+
+Changes since v1:
+1. Use ranges with values and drop reg from usb-wrapper node.
+2. Keep "usb" as wrapper's node name.
+---
+ arch/arm/boot/dts/exynos5250.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/boot/dts/exynos5250.dtsi b/arch/arm/boot/dts/exynos5250.dtsi
+index 97e89859ba3d..a5db4ac213d5 100644
+--- a/arch/arm/boot/dts/exynos5250.dtsi
++++ b/arch/arm/boot/dts/exynos5250.dtsi
+@@ -635,17 +635,17 @@ i2s2: i2s@12d70000 {
+ 			#sound-dai-cells = <1>;
+ 		};
+ 
+-		usbdrd: usb3 {
++		usbdrd: usb@12000000 {
+ 			compatible = "samsung,exynos5250-dwusb3";
+ 			clocks = <&clock CLK_USB3>;
+ 			clock-names = "usbdrd30";
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+-			ranges;
++			ranges = <0x0 0x12000000 0x10000>;
+ 
+-			usbdrd_dwc3: usb@12000000 {
++			usbdrd_dwc3: usb@0 {
+ 				compatible = "snps,dwc3";
+-				reg = <0x12000000 0x10000>;
++				reg = <0x0 0x10000>;
+ 				interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+ 				phys = <&usbdrd_phy 0>, <&usbdrd_phy 1>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+-- 
+2.34.1
 
