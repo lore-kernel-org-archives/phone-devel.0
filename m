@@ -2,53 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22276C61DA4
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 19:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 378D0C54EAA
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 19:42:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231287AbjA0Tmm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Jan 2023 14:42:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50066 "EHLO
+        id S231879AbjA0Tm6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Jan 2023 14:42:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231681AbjA0Tmi (ORCPT
+        with ESMTP id S231783AbjA0Tmx (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Jan 2023 14:42:38 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA9B41BAD0
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 11:41:59 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id b7so5921534wrt.3
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 11:41:59 -0800 (PST)
+        Fri, 27 Jan 2023 14:42:53 -0500
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 127C48015A
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 11:42:22 -0800 (PST)
+Received: by mail-wr1-x42c.google.com with SMTP id d14so5893686wrr.9
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 11:42:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=laJbzm3hNFvKVQdtgilxX5HQETMASKmZLxjfb/658O4=;
-        b=nI6Ug6W8ctMCQtI1vVqDWj8MpjBhnWeeT31JylQQfqpiYHv2PIYko9EILdTGUMfHun
-         BV7C4e6AAanGxKd7QxFGz+11XVELz2+slWa28dZ+PhwvPC/xB38end1xN7C1jAPghC+4
-         Ti3PlMCgNRCz8JK07atg7xAtsDuCaG5gGwiS8rR8UrN7WYRAYQOTSAkwiHWviWYP0iKa
-         5ClGwzCxxtcm3FdBL4Mh03InXChGiUDmVL0UzT0vnUkKiZQEFCibj37cuwbirsQhDbX9
-         WNxhw85wenI0Fhc3ler070sioGpH0o+6Yamb5V/OORturTxwSie1BBaAInjRQ6lAASUJ
-         gF7g==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FIb/cqDE0QEdwTfTF/AFA5NuBZabL9Ys/KRcfgHJZQc=;
+        b=oWy4sZ6gIKCFHxueqjpfjKe7DWfnAojOvONIwiYwpzZjX3rAx+9uwf5lJcI5Wc4qVs
+         S0N0v1tHTL2B5q4M/5cO/f0ScgXOYMCdakGInGdLbInpOhUhgWfA0FkK0xyAKLbE1DQ2
+         yfQ8gf8/ZiJAwBTvXAoIbI0e3rtuiD8qYAmp500vi4R0C+hoRDdgiyKgNM64HAbuNseE
+         tNXLhH4lveMQhsXkqUVlqEL8JnMCl+WgR44T0ptAAZ0cgaCZb8WJFo6J2A6olqMiawcR
+         DQ/W0CoHs9+Akt1Lmv8RocRaZZOXMjA/qsF0SJTWFo2PZS/+/NM9JxKVen+S2s3Y8x0C
+         Zgng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=laJbzm3hNFvKVQdtgilxX5HQETMASKmZLxjfb/658O4=;
-        b=XwoADGyDWp8hqOdvXfWN6+/0+6D1PL52eQyR8CotqOX6CdIWlp3KYirQGL2I9ubVCq
-         PmOsxyhRpULRCYXt5a3CSAeUwCMHRKhWoMs2Y918VZYIdgQIPN6/My2OZEgUQC/saKdw
-         2/ptSKS9H9odddTcQujHh/qHabX6alxxDbSNDto9wUDnPoK/BtXdXaKnvd6QWy16z8B7
-         xVd1yE2J9U+lWLzA76PB+Ng5K5Qtfi3deO2xwZtAu5PHIddOren7Fg25g5NF2pyGOfOm
-         gh5kvrhcqsrA8sOO075QQfSF0GObmEWrxNOwRV6yPvLWcJsrTUQtcdrvzcEcXjZgLpCg
-         uxSw==
-X-Gm-Message-State: AO0yUKU9pLRtkLIG4ebI9iE1fxiC4dHi+QGFb9TUP/0Uwsq0PtQql8Qi
-        00VaM6bN9IdffKHU+KjHR2vW1A==
-X-Google-Smtp-Source: AK7set8N28+EX6KUi96o3PeCOm9vKAuOFZYK3aIRSmt7I8LzRlQeQ5HFryKL/vW3McfrcWRpm4j0NA==
-X-Received: by 2002:a5d:658d:0:b0:2bf:ae43:108d with SMTP id q13-20020a5d658d000000b002bfae43108dmr14352920wru.28.1674848466678;
-        Fri, 27 Jan 2023 11:41:06 -0800 (PST)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FIb/cqDE0QEdwTfTF/AFA5NuBZabL9Ys/KRcfgHJZQc=;
+        b=aUSXb1aU9n6ew6gNz0yM6RlSo7OEM7RqF9JG5PS+3igzcdOTP76GvhfwaR3JvKYmDK
+         dfNUyl8+HTk3SWKvQw9f3PgJBEu02JOSjwGQM0csV6E/o0XOl07DK/z2IWap5jVK1s0P
+         HVqy/d8JqeZJyI2lVXDRUdYb5ypWmTYvFJ5LktjYMeWG5EzAcYlGgvGxUHcn4+nVuRmn
+         zVxrspmI46pOicb8OIQIGv1kJtcCOxPgegMmnS3UpUDqfc8EPrybDd3VjXV3jzAYiVCL
+         lKQ6zfYNEfFn0WGxhE+Fws13urqZy5tA+Yx5xFw50Tbq//I1Tt2AHgHULvnXChQrKaqv
+         Sk0Q==
+X-Gm-Message-State: AO0yUKWiYsb/yU61dUbgwBZJByDh0Ust1mfJJKd1/LNoNma2YgaDk2ZV
+        BZFj5n/DzWT10eAVDElQdA9HKA==
+X-Google-Smtp-Source: AK7set+5hEuWwLlJU+DMSAa4vo4DuOo9ZWE2X/CfhREFzZJPOEdmPS5UEkTnICoYP5XRtrhkaCWtag==
+X-Received: by 2002:adf:e785:0:b0:2bf:c09e:e7bc with SMTP id n5-20020adfe785000000b002bfc09ee7bcmr7659575wrm.7.1674848476372;
+        Fri, 27 Jan 2023 11:41:16 -0800 (PST)
 Received: from krzk-bin.. ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id y17-20020adffa51000000b002238ea5750csm5822417wrr.72.2023.01.27.11.41.05
+        by smtp.gmail.com with ESMTPSA id y17-20020adffa51000000b002238ea5750csm5822417wrr.72.2023.01.27.11.41.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jan 2023 11:41:06 -0800 (PST)
+        Fri, 27 Jan 2023 11:41:16 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Vinod Koul <vkoul@kernel.org>,
         Kishon Vijay Abraham I <kishon@kernel.org>,
@@ -66,51 +67,52 @@ Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
         Henrik Grimler <henrik@grimler.se>,
         Chanwoo Choi <cw00.choi@samsung.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 0/8] dt-bindings: phy/samsung: move MIPI and DP phys under PMU
-Date:   Fri, 27 Jan 2023 20:40:49 +0100
-Message-Id: <20230127194057.186458-1-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 5/8] phy: samsung,mipi-video-phy: deprecate syscon phandle
+Date:   Fri, 27 Jan 2023 20:40:54 +0100
+Message-Id: <20230127194057.186458-6-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230127194057.186458-1-krzysztof.kozlowski@linaro.org>
+References: <20230127194057.186458-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The MIPI and DisplayPort phys are actually part of the Power Management
-Unit system controller, thus allow them as its children, instead of
-specifying as separate device nodes with syscon phandle.
+The MIPI phy is actually part of the Power Management Unit system
+controller, thus it should be its child, instead of sibling node with
+syscon phandle.
 
-Dependencies
-============
-If entire patchset is okay, then it can go via separate trees:
-A. I will take first soc patch.
-B. phy patches #2-#5 are independent and can go via phy tree.
-C. DTS patches depend on (B above), thus they will wait one cycle and get
-   applied later.
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ drivers/phy/samsung/phy-exynos-mipi-video.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Best regards,
-Krzysztof
-
-Krzysztof Kozlowski (8):
-  dt-bindings: soc: samsung: exynos-pmu: allow phys as child
-  dt-bindings: phy: samsung,dp-video-phy: deprecate syscon phandle
-  dt-bindings: phy: samsung,mipi-video-phy: deprecate syscon phandle
-  phy: samsung,dp-video-phy: deprecate syscon phandle
-  phy: samsung,mipi-video-phy: deprecate syscon phandle
-  ARM: dts: exynos: move DP and MIPI phys to PMU node in Exynos5420
-  ARM: dts: exynos: move DP and MIPI phys to PMU node in Exynos5250
-  arm64: dts: exynos: move MIPI phy to PMU node in Exynos5433
-
- .../bindings/phy/samsung,dp-video-phy.yaml    |  5 +-
- .../bindings/phy/samsung,mipi-video-phy.yaml  | 11 ++-
- .../bindings/soc/samsung/exynos-pmu.yaml      | 71 +++++++++++++++----
- arch/arm/boot/dts/exynos5250.dtsi             | 24 +++----
- arch/arm/boot/dts/exynos5420.dtsi             | 24 +++----
- arch/arm64/boot/dts/exynos/exynos5433.dtsi    | 19 +++--
- drivers/phy/samsung/phy-exynos-dp-video.c     |  7 +-
- drivers/phy/samsung/phy-exynos-mipi-video.c   |  7 +-
- 8 files changed, 105 insertions(+), 63 deletions(-)
-
+diff --git a/drivers/phy/samsung/phy-exynos-mipi-video.c b/drivers/phy/samsung/phy-exynos-mipi-video.c
+index c1df1ef3ee3c..a7f67857e5b2 100644
+--- a/drivers/phy/samsung/phy-exynos-mipi-video.c
++++ b/drivers/phy/samsung/phy-exynos-mipi-video.c
+@@ -298,7 +298,7 @@ static int exynos_mipi_video_phy_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct device_node *np = dev->of_node;
+ 	struct phy_provider *phy_provider;
+-	unsigned int i;
++	unsigned int i = 0;
+ 
+ 	phy_dev = of_device_get_match_data(dev);
+ 	if (!phy_dev)
+@@ -308,7 +308,10 @@ static int exynos_mipi_video_phy_probe(struct platform_device *pdev)
+ 	if (!state)
+ 		return -ENOMEM;
+ 
+-	for (i = 0; i < phy_dev->num_regmaps; i++) {
++	state->regmaps[i] = syscon_node_to_regmap(dev->parent->of_node);
++	if (!IS_ERR(state->regmaps[i]))
++		i++;
++	for (; i < phy_dev->num_regmaps; i++) {
+ 		state->regmaps[i] = syscon_regmap_lookup_by_phandle(np,
+ 						phy_dev->regmap_names[i]);
+ 		if (IS_ERR(state->regmaps[i]))
 -- 
 2.34.1
 
