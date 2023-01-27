@@ -2,105 +2,167 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DC62CC38142
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 06:34:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 343FBC61D97
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 08:27:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230110AbjA0GeE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Jan 2023 01:34:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36850 "EHLO
+        id S232250AbjA0I1P (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Jan 2023 03:27:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229956AbjA0GeD (ORCPT
+        with ESMTP id S232130AbjA0I1M (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Jan 2023 01:34:03 -0500
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871F039BA2
-        for <phone-devel@vger.kernel.org>; Thu, 26 Jan 2023 22:34:02 -0800 (PST)
-Received: by mail-pl1-x630.google.com with SMTP id d3so4034032plr.10
-        for <phone-devel@vger.kernel.org>; Thu, 26 Jan 2023 22:34:02 -0800 (PST)
+        Fri, 27 Jan 2023 03:27:12 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB8DD761F8
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 00:27:09 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id l8so2876016wms.3
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 00:27:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:author:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6N+UBn2rnpBa97iC9jvCaWmiVqPMRKzilYeorfm1ieE=;
-        b=DgQyxZJo9eaUdZ2iRw8PaWRrWt/hoB2wXhf1CWWiGABXiB3WBnJ3PJooko/P988Bzt
-         g+jPFHDF/3V2SGGOif53DoF2X+D4b4lS/DJU2L5t5u8hnX4xGG2c3Fitky6onwNgFrBU
-         4X+7K6feOW7x20scVBBSYrMS9CxCHwjVsjOL8dXbhBzxecosB9ciXxLvRpi19Y5umpTg
-         Sj5SOhQRU1YT19rJ4ahRz98U3g/qUcoel6NZPT937VLKoQHJLyRks9Iztw8EfJbkv/Ky
-         e4hqBJn2T+d5/PzmKMbUmcWedwoOX1b9HWdaleei1TuO0RATVwQPBOa7JZX15k0GZant
-         4CvQ==
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DdfiCXvxE3+wXETvP9iNhM7stAIscaaJ/d3hkQdjD+0=;
+        b=B/RuS1NL29Yrb76eGHNw/76TdWb4k2B7kme4TaLgHYSrSLwmjABNDw2Dhagn/rnWpn
+         pNotOIkOVgeg+wRR2soNop4lqhB6w3PzoKYGRgSB6LKbHYIETB8ygoZwnD54jkXnGwc3
+         lZ19lCIY6dL9kvzLqDr14qQ3aBQhGPheWX/Wy4HdcIent4fBN2vr9jkLOd8uZP1L7phE
+         CqeQGY9cSrlU71PS4W1+tGTceGG4bUjehcDcoytFpxsWjd4IsPL7eYQQ4hqch9misqPn
+         in4Qw2yFFkiPegKQ/JSUfuSVOga0A/MdISZPWXiDYA1E8WSX+PgFQ0cJZRwwtfrw+gEK
+         A/YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:author:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6N+UBn2rnpBa97iC9jvCaWmiVqPMRKzilYeorfm1ieE=;
-        b=jUryAhA+Ab0lfqZLjZJEWjsLlcwMbx7UFl5B73r9HDpOROsM8cac1zuJ30AZhM9jb/
-         DhX66OOJ8WgSh9Emm/SFXHn8/i+DnuEsFPA2DgZVAcuymX5ZTLMc7di4K5W9jRjHUzXH
-         xpZ/kZvOvHd4R74Drty2GxBpwJziW1PMTdooW4moon3Q/yfLhra+8dGMjshVN9UCPWt4
-         /mre2XTJ/TxJ1wwbSGT9zeM57jfLkUVzEGRmLbwwdIB4/CLecd97OyJeF8mAQSmpZQP2
-         eUp7OVvGzdoPXczwIbOWsQGrqu6BXbnqFrxs5jNW6njtb8CNBH2T6HUkkceuanX5iZ1k
-         Yfeg==
-X-Gm-Message-State: AFqh2ko9gAN6NBbFmXyPJINPySe/Yx19Qbzw3GDHg6KNz/SF8U9BriBd
-        e9jeiElRbWzNhnhrTGjI7KtYPA==
-X-Google-Smtp-Source: AMrXdXvLo+rgivVpPZYlIb+v2QmhY8jJauPV00jAmDz2jJwGWr9u4/ArU0Re+wFiw/eHfac5bRGy7g==
-X-Received: by 2002:a17:902:ea0e:b0:195:f0f9:a9fb with SMTP id s14-20020a170902ea0e00b00195f0f9a9fbmr30711803plg.11.1674801242004;
-        Thu, 26 Jan 2023 22:34:02 -0800 (PST)
-Received: from localhost.localdomain ([122.171.17.192])
-        by smtp.gmail.com with ESMTPSA id m129-20020a625887000000b005921c46cbadsm1910358pfb.99.2023.01.26.22.33.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jan 2023 22:34:01 -0800 (PST)
-From:   Amit Pundir <amit.pundir@linaro.org>
-To:     Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Joel Selvaraj <joelselvaraj.oss@gmail.com>
-Cc:     linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        dt <devicetree@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        phone-devel <phone-devel@vger.kernel.org>
-Subject: [PATCH v2] arm64: dts: qcom: sdm845-xiaomi-beryllium: Add reserved memory region
-Date:   Fri, 27 Jan 2023 12:03:55 +0530
-Message-Id: <20230127063355.1775246-1-amit.pundir@linaro.org>
-X-Mailer: git-send-email 2.25.1
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DdfiCXvxE3+wXETvP9iNhM7stAIscaaJ/d3hkQdjD+0=;
+        b=xw7AX+fkTRoGH4m6RHjWpo2sOCO1hJkvVQwudeh4fub2Ms3tpiElAfL0fhYxzOAg1d
+         8CqktXNIb04La20ADJHRrsk3hx/yX6h8uhwDRnFLyitS3uaZSUX3eaut2Bb8a8UCOpEG
+         RJiuulo9dSfWJgmPTmKZJUIh9BFgGGZy2lGdfHbhUFJ5zzFZzaD8eIhsr9upLM7W8F/6
+         St3F9YEg42VwabMv6CcOdsBxsHPd+vftdTdwSLKHhnYN1LoiZCV5TNntC/y6JP8ZpHgr
+         hvWbPV/rR5WnnbjR1PWJt9IY/zNXm+vfuUOvF4cN8n6lL8yQRQx75ncVKbjutdXSaDuQ
+         /IdA==
+X-Gm-Message-State: AO0yUKXQok1EI82OCGFgis2g7wcdY0QOnHsDK8N9R7XALmodKrWXersb
+        V/4sW/2i/z7Uo7I71pUbln0s8A==
+X-Google-Smtp-Source: AK7set83wpkelfN7j+E1uxuUMRJdC66UYA7JuiqRtNdQUL0FEULzXsRPzprLT/NQQZrpkURjk+U6WQ==
+X-Received: by 2002:a05:600c:354a:b0:3dc:357a:f4ab with SMTP id i10-20020a05600c354a00b003dc357af4abmr1641253wmq.15.1674808028475;
+        Fri, 27 Jan 2023 00:27:08 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id u12-20020a05600c19cc00b003db0ee277b2sm7719863wmq.5.2023.01.27.00.27.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Jan 2023 00:27:07 -0800 (PST)
+Message-ID: <291ad4d3-6c8b-507d-08ff-997e0c4bd482@linaro.org>
+Date:   Fri, 27 Jan 2023 09:27:06 +0100
 MIME-Version: 1.0
-Author: Amit Pundir <amit.pundir@linaro.org>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH 5/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add
+ notification LED
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
+ <4455893.LvFx2qVVIh@g550jk> <dbfa802a-968f-0504-a131-59e2a8f52c9f@linaro.org>
+ <1840339.tdWV9SEqCh@g550jk>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <1840339.tdWV9SEqCh@g550jk>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Put cont splash memory region under the reserved-memory as
-confirmed by the downstream code for both Tianma and EBBG variants.
+On 26/01/2023 21:41, Luca Weiss wrote:
+> On Donnerstag, 26. Jänner 2023 10:41:24 CET Krzysztof Kozlowski wrote:
+>> On 25/01/2023 21:51, Luca Weiss wrote:
+>>> On Montag, 23. Jänner 2023 18:18:16 CET Krzysztof Kozlowski wrote:
+>>>> On 22/01/2023 17:48, Luca Weiss wrote:
+>>>>> Add the node describing the sn3193 that's used to provide notification
+>>>>> LED.
+>>>>>
+>>>>> Unfortunately the driver currently supports neither multicolor API nor
+>>>>> using the properties function & color, so we use label instead.
+>>>>>
+>>>>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+>>>>> ---
+>>>>>
+>>>>>  .../arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 28
+>>>>>  ++++++++++++++++++++++ 1 file changed, 28 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+>>>>> b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts index
+>>>>> ffb486ceb6a6..a672c45d7070 100644
+>>>>> --- a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+>>>>> +++ b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+>>>>> @@ -114,6 +114,34 @@ led@0 {
+>>>>>
+>>>>>  			default-brightness = <80>;
+>>>>>  		
+>>>>>  		};
+>>>>>  	
+>>>>>  	};
+>>>>>
+>>>>> +
+>>>>> +	led-controller@68 {
+>>>>> +		compatible = "si-en,sn3193";
+>>>>> +		reg = <0x68>;
+>>>>> +
+>>>>> +		shutdown-gpios = <&tlmm 45 GPIO_ACTIVE_HIGH>;
+>>>>> +
+>>>>> +		#address-cells = <1>;
+>>>>> +		#size-cells = <0>;
+>>>>> +
+>>>>> +		led@1 {
+>>>>> +			reg = <1>;
+>>>>> +			label = "red:status";
+>>>>
+>>>> These should be colors and functions.
+>>>
+>>> Hi Krzysztof,
+>>>
+>>> please check the commit message for this. I tried using it but it didn't
+>>> work, the driver in general might need an overhaul at some point...
+>>>
+>>>> Unfortunately the driver currently supports neither multicolor API nor
+>>>> using the properties function & color, so we use label instead.
+>>>
+>>> Or maybe I messed up but pretty sure this was the case when I wrote the
+>>> dts.
+>> I don't understand how driver is related here - it's not the driver's
+>> property, but LED core. If the driver "supports" label, then it supports
+>> color and status.
+> 
+> The leds-is31fl319x.c driver uses devm_led_classdev_register but the function 
+> where 'function' and 'color' is parsed is led_parse_fwnode_props which is 
+> called from led_compose_name which is called from led_classdev_register_ext 
+> (or with the devm_ prefix), and not called from the register method without 
+> _ext suffix.
 
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
----
-v2: The framebuffer address is same for the EBBG variant too,
-    so moved this change from -tianma.dts to -common.dtsi.
+No, devm_led_classdev_register calls devm_led_classdev_register_ext
+which calls led_classdev_register_ext which calls led_compose_name (if
+initdata is set). The point is that we lack initdata, so indeed color
+and function cannot be used.
 
- .../arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+> 
+> So in other words, the led driver would need changes to use the new 
+> registration API to be able to use 'function' and 'color' instead of 'label'.
+> 
+> Regards
+> Luca
+> 
+>>
+>> Best regards,
+>> Krzysztof
+> 
+> 
+> 
+> 
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-index eb6b2b676eca..37591daace73 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-@@ -97,6 +97,12 @@ spss_mem: memory@97f00000 {
- 			no-map;
- 		};
- 
-+		/* Cont splash region set up by the bootloader */
-+		cont_splash_mem: framebuffer@9d400000 {
-+			reg = <0 0x9d400000 0 0x2400000>;
-+			no-map;
-+		};
-+
- 		rmtfs_mem: memory@f6301000 {
- 			compatible = "qcom,rmtfs-mem";
- 			reg = <0 0xf6301000 0 0x200000>;
--- 
-2.25.1
+Best regards,
+Krzysztof
 
