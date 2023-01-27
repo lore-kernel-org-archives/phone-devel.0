@@ -2,194 +2,173 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04D04C54EAA
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 22:54:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 019C7C636CB
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 23:05:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231616AbjA0Wyj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Jan 2023 17:54:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47114 "EHLO
+        id S231922AbjA0XFQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Jan 2023 18:05:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231849AbjA0Wyi (ORCPT
+        with ESMTP id S232456AbjA0XFP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Jan 2023 17:54:38 -0500
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0303C79633
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 14:54:14 -0800 (PST)
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20230127225410euoutp0199002f0a4cee611fc9b2b074527c5fac~_TFeMUADZ1798117981euoutp01F
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 22:54:10 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20230127225410euoutp0199002f0a4cee611fc9b2b074527c5fac~_TFeMUADZ1798117981euoutp01F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1674860050;
-        bh=RcZRPw8Plnj7wdfMl/nmohlZX1lhH2EoBGUja9QNHmc=;
-        h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-        b=he9cFyIceuh9lu+yqoBGy2IBXxKObX9iK7NkARaoyT5Xd/7fONTfFPLEZIY2vOL8b
-         qsgX2puIAd63GeUMLHGf+3r6f/UypWmBY1QZFoWfQ9A7O8AQXDyAytf/i1VupIDOkt
-         N5MuWrVjWKy/ATyuBxQtVsZy8CzIHT1LPDAvQCYY=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20230127225409eucas1p15ced1a7c6787daa75313bbaa99b79a3f~_TFd09akD2015820158eucas1p1m;
-        Fri, 27 Jan 2023 22:54:09 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id 31.0C.61197.11654D36; Fri, 27
-        Jan 2023 22:54:09 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20230127225409eucas1p1eb01de4567daf6830bfadf1d6c5ead1e~_TFdR_oxw2285022850eucas1p1k;
-        Fri, 27 Jan 2023 22:54:09 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20230127225409eusmtrp18dfe73480062b1e07f44ddeffcfe80c3~_TFdQPCVM0787007870eusmtrp18;
-        Fri, 27 Jan 2023 22:54:09 +0000 (GMT)
-X-AuditID: cbfec7f5-7dbff7000000ef0d-8d-63d45611352e
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id BB.B1.00518.11654D36; Fri, 27
-        Jan 2023 22:54:09 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20230127225408eusmtip24a5ca7d29fefbaef246bdf66e8d92080~_TFcZ328I0135501355eusmtip21;
-        Fri, 27 Jan 2023 22:54:08 +0000 (GMT)
-Message-ID: <bc5d8c21-dad4-a24e-f8bf-e24611600b01@samsung.com>
-Date:   Fri, 27 Jan 2023 23:54:09 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0)
-        Gecko/20100101 Thunderbird/102.6.1
-Subject: Re: [PATCH 6/8] ARM: dts: exynos: move DP and MIPI phys to PMU node
- in Exynos5420
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Fri, 27 Jan 2023 18:05:15 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1F0D1C33A
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 15:05:10 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id l8so4505041wms.3
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 15:05:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xqwMmYjC0dFtZeRAWk2Olug2QMDHtx6nG0vcXJrQXG4=;
+        b=vhnyz36GmjI3i9iki/+P8lFMMsRiiCB4iYuTca1NWzlWseng5ZjkP6yKVj+qcHUivP
+         Ty4xlkVEKB+lh6VdT1bTZ3ak5zpj/LnilQlWAm2Sun42htU2Ws8cDl04ol/LYjGQY64E
+         nb5zBUcbD03SgkdtNS1phBxIN39W92HEL7px/In7PYs077RzwcdPUWsltp1Z4bKc8AFq
+         /wv1w7OhczHdebgaABqI4+iHWbaGTDHgJ/3KpKk4PTzClbTtnQAbOVnMH/tgJOrtijgB
+         BwSyBWA1C+E+WCwilJOLcYmJXkVEgB3i9NCVuqO3tTyjFhdJkkS2/pDNhaTt/woTTSUa
+         T8zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xqwMmYjC0dFtZeRAWk2Olug2QMDHtx6nG0vcXJrQXG4=;
+        b=tMCQ2C358yVOvoy4kuoU80zHZXZKBZF0Go3aEhCr7f3dPQLQIRETqMoEDJAzXXPdfD
+         e5yfL3fjfX9OuLF6lC/FuVTXANCG81DP1/mt6JTbbMwEP95rZUn4b07mS0XVhRpEhh+Z
+         McrghZGFzHRzpCLYEI0PwWD2/Ja/O8QFGqgpadn93JyeZPuDp0d1tfScZe/0EhwhYhQu
+         wSr2PiWOMljIU12xb63+NpPxb9/yaS2EimuoFdYah5RWra18Inwj8HqnqbKVaDMSDmbw
+         QRbPuDdUC/ezc2YNYEpH57D93x570UEeXsMvyvDQImU3z3Q+XwDHPAk3BdOsbynDTxwB
+         0bcg==
+X-Gm-Message-State: AO0yUKUZIqH84rHMOuqrRm7Gs+Zig7Co7oFYZUKzieiiK7AohfzBnJEM
+        0eJxfLm16OSFdS68AobrG4opYQ==
+X-Google-Smtp-Source: AK7set8JnqreRtXSQJRQJz4sCnWMynTv6v7RwqUxSxuFo7iTkUriG60xhMgzRwKI8iHoTvQRJ5A/kQ==
+X-Received: by 2002:a7b:c7ce:0:b0:3dc:42d2:aeee with SMTP id z14-20020a7bc7ce000000b003dc42d2aeeemr2324613wmk.25.1674860709362;
+        Fri, 27 Jan 2023 15:05:09 -0800 (PST)
+Received: from lion.. (cpc76484-cwma10-2-0-cust274.7-3.cable.virginm.net. [82.31.201.19])
+        by smtp.gmail.com with ESMTPSA id bg6-20020a05600c3c8600b003db06493ee7sm10447206wmb.47.2023.01.27.15.05.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Jan 2023 15:05:08 -0800 (PST)
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+To:     Sebastian Reichel <sre@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org
-Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        =?UTF-8?Q?Martin_J=c3=bccker?= <martin.juecker@gmail.com>,
-        Henrik Grimler <henrik@grimler.se>,
-        Chanwoo Choi <cw00.choi@samsung.com>
-From:   Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20230127194057.186458-7-krzysztof.kozlowski@linaro.org>
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrEKsWRmVeSWpSXmKPExsWy7djPc7qCYVeSDZ6sMbR4MG8bm8X1L89Z
-        LeYfOcdq8XbJLkaLo63/mS36Xjxkttj7eiu7xabH11gtLu+aw2YxYdU3FosZ5/cxWZz5N5XF
-        YsEfO4t1awQtWvceYbc4/Kad1WLnnRPMFpu//2V0EPLYOesuu8fRK/dYPTat6mTzuHNtD5vH
-        5iX1Hv/vrGX3+NLczerRt2UVo8fnTXIBnFFcNimpOZllqUX6dglcGQf2mBS8FKo4dqWBuYHx
-        K18XIyeHhICJxNwNLaxdjFwcQgIrGCX+/N8N5XxhlLhx5DsLhPOZUWLnlD1MXYwcYC2b5uVB
-        xJczSkxb388E4XxklLh/+z47SBGvgJ3Eze8WICaLgKrEuvNRINt4BQQlTs58wgISFhVIkdj0
-        pwwkLCwQI3Hs7WRmEJtZQFzi1pP5YBNFBB4wS9zb9oYdIvGcUeL2XzYQm03AUKLrbReYzSng
-        KnHzxzRGiBp5ie1v5zBDfHaOU2JrZw2E7SJx+9trNghbWOLV8S3sELaMxOnJPWA/Sgi0M0os
-        +H2fCcKZwCjR8PwWI0SVtcSdc7/YQK5mFtCUWL9LHyLsKDF93zs2SJjwSdx4KwhxA5/EpG3T
-        mSHCvBIdbUIQ1WoSs46vg1t78MIl5gmMSrOQQmUWkvdnIflmFsLeBYwsqxjFU0uLc9NTi43z
-        Usv1ihNzi0vz0vWS83M3MQKT4el/x7/uYFzx6qPeIUYmDsZDjBIczEoivFsdLyUL8aYkVlal
-        FuXHF5XmpBYfYpTmYFES59W2PZksJJCeWJKanZpakFoEk2Xi4JRqYFIXidxWv+ascvjqzUs7
-        vF4dYUwTiPmXbaVZwGtbn/4r1tNJ3PrFwi+RYsJxK0VzVn4LEVyxQXl3s8J+zn/GcpW//28I
-        jnDfz2H2prbwU1nrCYYpt6//bs7h+vPouL9g2kHNCvP6K09DLe4IV+gc9QrZ4Rh3yHjCNOdL
-        /Ooq0hvnH3+1b6+GdPmtrQdT+zkT84V+HsvL3vgx9kLMld23+eoPuUwx3n2zVFFOMsrBKX8Z
-        d0igev3eNoupS/RCL/2yrXn3P+jGf96dXZHLHx6pkC88826D/cZJWRMq7T6IZx7hq+1fG9fQ
-        OsGpXOwrf/rjj88SPc7FWB1Z/Mts2rnuCzJP3+1SPcp2994C7qavv5RYijMSDbWYi4oTAcBl
-        8hX1AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrGIsWRmVeSWpSXmKPExsVy+t/xe7qCYVeSDTb081s8mLeNzeL6l+es
-        FvOPnGO1eLtkF6PF0db/zBZ9Lx4yW+x9vZXdYtPja6wWl3fNYbOYsOobi8WM8/uYLM78m8pi
-        seCPncW6NYIWrXuPsFscftPOarHzzglmi83f/zI6CHnsnHWX3ePolXusHptWdbJ53Lm2h81j
-        85J6j/931rJ7fGnuZvXo27KK0ePzJrkAzig9m6L80pJUhYz84hJbpWhDCyM9Q0sLPSMTSz1D
-        Y/NYKyNTJX07m5TUnMyy1CJ9uwS9jAN7TApeClUcu9LA3MD4la+LkYNDQsBEYtO8vC5GLg4h
-        gaWMEjNvPGDtYuQEistInJzWAGULS/y51sUGYgsJvGeUmP6NE6SXV8BO4uZ3CxCTRUBVYt35
-        KJAKXgFBiZMzn7CA2KICKRLNz0+CTREWiJE49nYyM4jNLCAucevJfCaQtSICj5glNs/5wgLi
-        MAs8Z5S4v7WJFeKgy4wSu69dARvFJmAo0fUW4ghOAVeJmz+mMUKMMpPo2toFZctLbH87h3kC
-        o9AsJJfMQrJxFpKWWUhaFjCyrGIUSS0tzk3PLTbSK07MLS7NS9dLzs/dxAhMANuO/dyyg3Hl
-        q496hxiZOBgPMUpwMCuJ8G51vJQsxJuSWFmVWpQfX1Sak1p8iNEUGBoTmaVEk/OBKSivJN7Q
-        zMDU0MTM0sDU0sxYSZzXs6AjUUggPbEkNTs1tSC1CKaPiYNTqoGpskjK9+HiBwWqqVPV/7n+
-        eWfsVVKS//anpcNFWY/jCu4mR0PVL5pcE3516MjW1G0/hevbMlwev1pnJb/otYJ66vrOe486
-        N7/5Ht5ya/8SR4/9hQefq6/05vg7+4gxv9wP4/4nGkc/HjqU83D384lrUwOyn7O37RYWOhjJ
-        c97J3Jd/+/KNtlKFEz4/XhsmtO/Vyy18/p5a9+ubcis8HySw5L+p+hmUHTFr2SZzA7vP97+X
-        Pw5t0pOfcfhCTgCn6haD/eW8zHM+hki7xxxk6mtuFxFIVN+QPTnW7FlEm8ecJxXRjKsjOR96
-        dBUx/yxe//bj/yS5j+t+vtWRtmnfzWT7VO7WyaqZ52Wya1UiU54rsRRnJBpqMRcVJwIA6Eer
-        84kDAAA=
-X-CMS-MailID: 20230127225409eucas1p1eb01de4567daf6830bfadf1d6c5ead1e
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20230127194123eucas1p20a54329d03b2e5c0c2b1089ab2db2673
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20230127194123eucas1p20a54329d03b2e5c0c2b1089ab2db2673
-References: <20230127194057.186458-1-krzysztof.kozlowski@linaro.org>
-        <CGME20230127194123eucas1p20a54329d03b2e5c0c2b1089ab2db2673@eucas1p2.samsung.com>
-        <20230127194057.186458-7-krzysztof.kozlowski@linaro.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: [PATCH v7 2/2] dt-bindings: power: supply: qcom,pmi8998-charger: add bindings for smb2 driver
+Date:   Fri, 27 Jan 2023 23:05:06 +0000
+Message-Id: <20230127230506.3140297-2-caleb.connolly@linaro.org>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20230127230506.3140297-1-caleb.connolly@linaro.org>
+References: <20230127230506.3140297-1-caleb.connolly@linaro.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 27.01.2023 20:40, Krzysztof Kozlowski wrote:
-> The DisplayPort and MIPI phys are actually part of the Power Management
-> Unit system controller.  They do not have their own address space, thus
-> keeping the nodes under soc causes warnings:
->
->    exynos5420-smdk5420.dtb: soc: dp-video-phy: {'compatible': ['samsung,exynos5420-dp-video-phy'],
->      'samsung,pmu-syscon': [[11]], '#phy-cells': [[0]], 'phandle': [[16]]} should not be valid under {'type': 'object'}
->
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> ---
->   arch/arm/boot/dts/exynos5420.dtsi | 24 +++++++++++-------------
->   1 file changed, 11 insertions(+), 13 deletions(-)
->
-> diff --git a/arch/arm/boot/dts/exynos5420.dtsi b/arch/arm/boot/dts/exynos5420.dtsi
-> index b1051a7d07af..6cdb1a832fb9 100644
-> --- a/arch/arm/boot/dts/exynos5420.dtsi
-> +++ b/arch/arm/boot/dts/exynos5420.dtsi
-> @@ -585,18 +585,6 @@ spi_2: spi@12d40000 {
->   			status = "disabled";
->   		};
->   
-> -		dp_phy: dp-video-phy {
-> -			compatible = "samsung,exynos5420-dp-video-phy";
-> -			samsung,pmu-syscon = <&pmu_system_controller>;
-> -			#phy-cells = <0>;
-> -		};
-> -
-> -		mipi_phy: mipi-video-phy {
-> -			compatible = "samsung,exynos5420-mipi-video-phy";
-> -			syscon = <&pmu_system_controller>;
-> -			#phy-cells = <1>;
-> -		};
-> -
->   		dsi: dsi@14500000 {
->   			compatible = "samsung,exynos5410-mipi-dsi";
->   			reg = <0x14500000 0x10000>;
-> @@ -822,7 +810,7 @@ jpeg_1: jpeg@11f60000 {
->   		};
->   
->   		pmu_system_controller: system-controller@10040000 {
-> -			compatible = "samsung,exynos5420-pmu", "syscon";
-> +			compatible = "samsung,exynos5420-pmu", "simple-mfd", "syscon";
->   			reg = <0x10040000 0x5000>;
->   			clock-names = "clkout16";
->   			clocks = <&clock CLK_FIN_PLL>;
-> @@ -830,6 +818,16 @@ pmu_system_controller: system-controller@10040000 {
->   			interrupt-controller;
->   			#interrupt-cells = <3>;
->   			interrupt-parent = <&gic>;
-> +
-> +			dp_phy: dp-phy {
-> +				compatible = "samsung,exynos5420-dp-video-phy";
-> +				#phy-cells = <0>;
-> +			};
-> +
-> +			mipi_phy: mipi-phy {
-> +				compatible = "samsung,exynos5420-mipi-video-phy";
-> +				#phy-cells = <1>;
-> +			};
->   		};
->   
->   		tmu_cpu0: tmu@10060000 {
+Add devicetree bindings for the Qualcomm PMI8998/PM660 SMB2 charger
+driver.
 
-Best regards
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ .../power/supply/qcom,pmi8998-charger.yaml    | 82 +++++++++++++++++++
+ 1 file changed, 82 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/power/supply/qcom,pmi8998-charger.yaml
+
+diff --git a/Documentation/devicetree/bindings/power/supply/qcom,pmi8998-charger.yaml b/Documentation/devicetree/bindings/power/supply/qcom,pmi8998-charger.yaml
+new file mode 100644
+index 000000000000..277c47e048b6
+--- /dev/null
++++ b/Documentation/devicetree/bindings/power/supply/qcom,pmi8998-charger.yaml
+@@ -0,0 +1,82 @@
++# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/power/supply/qcom,pmi8998-charger.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm PMI8998/PM660 Switch-Mode Battery Charger "2"
++
++maintainers:
++  - Caleb Connolly <caleb.connolly@linaro.org>
++
++properties:
++  compatible:
++    enum:
++      - qcom,pmi8998-charger
++      - qcom,pm660-charger
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 4
++
++  interrupt-names:
++    items:
++      - const: usb-plugin
++      - const: bat-ov
++      - const: wdog-bark
++      - const: usbin-icl-change
++
++  io-channels:
++    items:
++      - description: USB in current in uA
++      - description: USB in voltage in uV
++
++  io-channel-names:
++    items:
++      - const: usbin_i
++      - const: usbin_v
++
++  monitored-battery:
++    description: phandle to the simple-battery node
++    $ref: /schemas/types.yaml#/definitions/phandle
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - interrupt-names
++  - io-channels
++  - io-channel-names
++  - monitored-battery
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    pmic {
++      #address-cells = <1>;
++      #size-cells = <0>;
++      #interrupt-cells = <4>;
++
++      charger@1000 {
++        compatible = "qcom,pmi8998-charger";
++        reg = <0x1000>;
++
++        interrupts = <0x2 0x12 0x2 IRQ_TYPE_EDGE_BOTH>,
++                     <0x2 0x13 0x4 IRQ_TYPE_EDGE_BOTH>,
++                     <0x2 0x13 0x6 IRQ_TYPE_EDGE_RISING>,
++                     <0x2 0x16 0x1 IRQ_TYPE_EDGE_RISING>;
++        interrupt-names = "usb-plugin", "bat-ov", "wdog-bark", "usbin-icl-change";
++
++        io-channels = <&pmi8998_rradc 3>,
++                      <&pmi8998_rradc 4>;
++        io-channel-names = "usbin_i",
++                           "usbin_v";
++
++        monitored-battery = <&battery>;
++      };
++    };
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+2.39.0
 
