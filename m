@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EFF0AC38142
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 19:55:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC7EBC38142
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 19:57:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232557AbjA0Tyq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Jan 2023 14:54:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37446 "EHLO
+        id S232723AbjA0T5R (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Jan 2023 14:57:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232548AbjA0TyW (ORCPT
+        with ESMTP id S232740AbjA0T47 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Jan 2023 14:54:22 -0500
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E54916C0
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 11:51:37 -0800 (PST)
-Received: by mail-lj1-x235.google.com with SMTP id y9so6696678lji.2
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 11:51:37 -0800 (PST)
+        Fri, 27 Jan 2023 14:56:59 -0500
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222108B7BF
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 11:54:48 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id u21so5697317edv.3
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 11:54:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OTbIA/qsw+iEJ2j+G0MzDhcSxbI2hiwezMO1CX++Hek=;
-        b=UiNtolU4E4LMirZ4Bc6hCbF2Jcz5w1QeiV10veN90X6hOIKK6DxgcHncK03SxrGbJm
-         /sKRRXKFATHToB6UbvzOI6DakGvCBirwe1kIXq/2TgIYNH6wmNJijrbE9FDSYzHQN6/l
-         7OSjUm4C8UrSXDLHi2D2oWYMcrIk8xYxY0Kjfr/y1HOuMlCbtilFiPYiQf9e2y55r7yX
-         ghfx0IWmgbsvSZcPtiuvRPp6De5wdvuVrGDXfVqn92uOUfyWQrnB7Q4OcK4TGqN29mUC
-         X0URPMHiV9YBbge0/mJIrfUgH6wuXfK3YEUKnmCoyZz0RiHwmlvgPSzbFqCspJwiJQbf
-         lj0A==
+        bh=vhTZHhvTWH45tyGI0x4uU2VUFxdCNkd8qxpKaMX6L7Y=;
+        b=e2dWa8i6qb8eJW7sdxfl584eKltFPVaJgKseQk3WtgyJ2cNt2DYBn4SO9SH9qgJ2Qo
+         CuzoNnqcjvgl61vDlxJtdCpGstjCbazcEZRpImRp4VnaoVkjfCuMcZ8TPq4++jKBaC/0
+         KZIA+CrKB1cgKIwsSE1jviGl4AJ+5sSq6pC5hpH3Q+0JmpqV8HUyY29YAUKSa+oyzJzt
+         Cygsv1TnrWb9rsyGZIgMh1B2aaiWNuOMsLIFQUXdDDby4m2iKqeUs1Fjv6ZFAtfwKgTV
+         6H2u7SyKE2n7W8C9Obf+NdVoZgPWNsK7QxuYi1B0LaeynW+OypgQPfNhM8DcTTiNdwOu
+         //8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OTbIA/qsw+iEJ2j+G0MzDhcSxbI2hiwezMO1CX++Hek=;
-        b=3Deq4+XiksRxLli0gXl9xTP15irlxskg6Sj7IaxBA0BMLUGKTDUF2KuvnpEAfbw392
-         yEfky9GgdhcMyAQBal2WuaVLk7ESLTruQWYOxw/1Tbi3DeiqHZoQ0A365zu5nh27Uj0W
-         5zkJLMNRZcvPSOa1j+pO5CikKTppf+S5GBhruxwIiROUBnkvpuBcQCXrH3Dce5cLQu4S
-         ecfAxWh/pZvRkRKUemMOjT5sJ448D4cxSOIanYf7Va62OkpUkHXLOLv25mslkZgmx/9G
-         YX8arJHZc3BCwQpoj5MvgOI42Pmq+IGhS+2TckhsF3iA6vFhdKkzoUKtKocOhfp95RGN
-         vA2w==
-X-Gm-Message-State: AO0yUKVohxEqYWLSSnCvTMISlYLZ8orsNL1qUyc6Pb4OLXDRsVkAuZqR
-        HwMOogXA1nFcLrkkfyfDLo8uC3fC9Ql2hUIE
-X-Google-Smtp-Source: AK7set8phgbSxSEwh8u2STG/34e8GAiaEpnPycQ0+6PFVjzYXOkOdLXAox+v4Bj7Ov9boXJSQBqgbw==
-X-Received: by 2002:a05:6000:1001:b0:2bf:dafe:43d7 with SMTP id a1-20020a056000100100b002bfdafe43d7mr129204wrx.16.1674848468608;
-        Fri, 27 Jan 2023 11:41:08 -0800 (PST)
+        bh=vhTZHhvTWH45tyGI0x4uU2VUFxdCNkd8qxpKaMX6L7Y=;
+        b=ud/MefOKoXjRfUVjc4JWslF1a1xEW0wJ7fmLJO6WkhHEVJ/HhBTtrtL7HPLgHPS4Cs
+         UcfzlK8v8dR5MV+mJ/eKzdfxVWu9qF/SjVh/djmGoEDehTupM7lQYlGX88gly7pMifVG
+         /Ey/aDgbcGqxDsWticUwZRX7uBwM9hT8iuHgSBj+2htmDEEe4f4R98pK3nHvjeIRniAr
+         2N1+3ACNVm+w5wsDWWUfD65iBDny8aVFudt9xkyZBvVG0siWra0JZSkglO0FjOZ7wEtq
+         zD9o2IGmPniAFFMBjlXR1pe9JEiTWcpm3g4n8iPsrjgralof9nbHxrLRtGzp+Al+Y02Y
+         BrMw==
+X-Gm-Message-State: AO0yUKUmcjv93gjJNlxfeF1myPrm1CxW5Kz9W+LPLbGXrOrsdmLEMExI
+        9sdMOBRKzbXgUlS+pdAdNsk9YBCj//v4Jv1v
+X-Google-Smtp-Source: AMrXdXs/PEB2tM0xo4K7W3J5nfYXPFlm8AtlFcItNJ0CV+x2XgfOEpsh96Tz7hnOXLSKgop7CBJGFA==
+X-Received: by 2002:a5d:4ec7:0:b0:236:6c33:2130 with SMTP id s7-20020a5d4ec7000000b002366c332130mr30059728wrv.68.1674848474651;
+        Fri, 27 Jan 2023 11:41:14 -0800 (PST)
 Received: from krzk-bin.. ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id y17-20020adffa51000000b002238ea5750csm5822417wrr.72.2023.01.27.11.41.07
+        by smtp.gmail.com with ESMTPSA id y17-20020adffa51000000b002238ea5750csm5822417wrr.72.2023.01.27.11.41.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jan 2023 11:41:08 -0800 (PST)
+        Fri, 27 Jan 2023 11:41:14 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Vinod Koul <vkoul@kernel.org>,
         Kishon Vijay Abraham I <kishon@kernel.org>,
@@ -67,9 +67,9 @@ Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
         Henrik Grimler <henrik@grimler.se>,
         Chanwoo Choi <cw00.choi@samsung.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 1/8] dt-bindings: soc: samsung: exynos-pmu: allow phys as child
-Date:   Fri, 27 Jan 2023 20:40:50 +0100
-Message-Id: <20230127194057.186458-2-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 4/8] phy: samsung,dp-video-phy: deprecate syscon phandle
+Date:   Fri, 27 Jan 2023 20:40:53 +0100
+Message-Id: <20230127194057.186458-5-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230127194057.186458-1-krzysztof.kozlowski@linaro.org>
 References: <20230127194057.186458-1-krzysztof.kozlowski@linaro.org>
@@ -79,123 +79,35 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The MIPI and DisplayPort phys are actually part of the Power Management
-Unit system controller, thus allow them as its children, instead of
-specifying as separate device nodes with syscon phandle.
+The DisplayPort phy is actually part of the Power Management Unit system
+controller, thus it should be its child, instead of sibling node with
+syscon phandle.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- .../bindings/soc/samsung/exynos-pmu.yaml      | 71 +++++++++++++++----
- 1 file changed, 57 insertions(+), 14 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/soc/samsung/exynos-pmu.yaml b/Documentation/devicetree/bindings/soc/samsung/exynos-pmu.yaml
-index 13bb8dfcefe6..f7c141dd11ec 100644
---- a/Documentation/devicetree/bindings/soc/samsung/exynos-pmu.yaml
-+++ b/Documentation/devicetree/bindings/soc/samsung/exynos-pmu.yaml
-@@ -31,20 +31,28 @@ select:
+---
+---
+ drivers/phy/samsung/phy-exynos-dp-video.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/phy/samsung/phy-exynos-dp-video.c b/drivers/phy/samsung/phy-exynos-dp-video.c
+index 2b670ef91deb..6069fedbd8f3 100644
+--- a/drivers/phy/samsung/phy-exynos-dp-video.c
++++ b/drivers/phy/samsung/phy-exynos-dp-video.c
+@@ -83,8 +83,11 @@ static int exynos_dp_video_phy_probe(struct platform_device *pdev)
+ 	if (!state)
+ 		return -ENOMEM;
  
- properties:
-   compatible:
--    items:
--      - enum:
--          - samsung,exynos3250-pmu
--          - samsung,exynos4210-pmu
--          - samsung,exynos4412-pmu
--          - samsung,exynos5250-pmu
--          - samsung,exynos5260-pmu
--          - samsung,exynos5410-pmu
--          - samsung,exynos5420-pmu
--          - samsung,exynos5433-pmu
--          - samsung,exynos7-pmu
--          - samsung,exynos850-pmu
--          - samsung-s5pv210-pmu
--      - const: syscon
-+    oneOf:
-+      - items:
-+          - enum:
-+              - samsung,exynos3250-pmu
-+              - samsung,exynos4210-pmu
-+              - samsung,exynos4412-pmu
-+              - samsung,exynos5250-pmu
-+              - samsung,exynos5260-pmu
-+              - samsung,exynos5410-pmu
-+              - samsung,exynos5420-pmu
-+              - samsung,exynos5433-pmu
-+              - samsung,exynos7-pmu
-+              - samsung,exynos850-pmu
-+              - samsung-s5pv210-pmu
-+          - const: syscon
-+      - items:
-+          - enum:
-+              - samsung,exynos5250-pmu
-+              - samsung,exynos5420-pmu
-+              - samsung,exynos5433-pmu
-+          - const: simple-mfd
-+          - const: syscon
- 
-   reg:
-     maxItems: 1
-@@ -64,6 +72,10 @@ properties:
-     minItems: 1
-     maxItems: 32
- 
-+  dp-phy:
-+    $ref: /schemas/phy/samsung,dp-video-phy.yaml
-+    unevaluatedProperties: false
-+
-   interrupt-controller:
-     description:
-       Some PMUs are capable of behaving as an interrupt controller (mostly
-@@ -74,6 +86,10 @@ properties:
-       Must be identical to the that of the parent interrupt controller.
-     const: 3
- 
-+  mipi-phy:
-+    $ref: /schemas/phy/samsung,mipi-video-phy.yaml
-+    unevaluatedProperties: false
-+
-   reboot-mode:
-     $ref: /schemas/power/reset/syscon-reboot-mode.yaml
-     type: object
-@@ -117,6 +133,23 @@ allOf:
-         - clock-names
-         - clocks
- 
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - samsung,exynos5250-pmu
-+              - samsung,exynos5420-pmu
-+              - samsung,exynos5433-pmu
-+    then:
-+      properties:
-+        dp-phy: true
-+        mipi-phy: true
-+    else:
-+      properties:
-+        dp-phy: false
-+        mipi-phy: false
-+
- examples:
-   - |
-     #include <dt-bindings/clock/exynos5250.h>
-@@ -130,4 +163,14 @@ examples:
-         #clock-cells = <1>;
-         clock-names = "clkout16";
-         clocks = <&clock CLK_FIN_PLL>;
-+
-+        dp-phy {
-+            compatible = "samsung,exynos5250-dp-video-phy";
-+            #phy-cells = <0>;
-+        };
-+
-+        mipi-phy {
-+            compatible = "samsung,s5pv210-mipi-video-phy";
-+            #phy-cells = <1>;
-+        };
-     };
+-	state->regs = syscon_regmap_lookup_by_phandle(dev->of_node,
+-						      "samsung,pmu-syscon");
++	state->regs = syscon_node_to_regmap(dev->parent->of_node);
++	if (IS_ERR(state->regs))
++		/* Backwards compatible way */
++		state->regs = syscon_regmap_lookup_by_phandle(dev->of_node,
++							      "samsung,pmu-syscon");
+ 	if (IS_ERR(state->regs)) {
+ 		dev_err(dev, "Failed to lookup PMU regmap\n");
+ 		return PTR_ERR(state->regs);
 -- 
 2.34.1
 
