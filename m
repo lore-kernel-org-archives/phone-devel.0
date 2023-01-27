@@ -2,167 +2,122 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 343FBC61D97
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 08:27:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10C46C636BD
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 12:45:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232250AbjA0I1P (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Jan 2023 03:27:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36608 "EHLO
+        id S234309AbjA0MpH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Jan 2023 07:45:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232130AbjA0I1M (ORCPT
+        with ESMTP id S234305AbjA0MpF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Jan 2023 03:27:12 -0500
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB8DD761F8
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 00:27:09 -0800 (PST)
-Received: by mail-wm1-x32a.google.com with SMTP id l8so2876016wms.3
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 00:27:09 -0800 (PST)
+        Fri, 27 Jan 2023 07:45:05 -0500
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 113FBA25C
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 04:45:03 -0800 (PST)
+Received: by mail-ej1-x62c.google.com with SMTP id ss4so13336572ejb.11
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 04:45:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DdfiCXvxE3+wXETvP9iNhM7stAIscaaJ/d3hkQdjD+0=;
-        b=B/RuS1NL29Yrb76eGHNw/76TdWb4k2B7kme4TaLgHYSrSLwmjABNDw2Dhagn/rnWpn
-         pNotOIkOVgeg+wRR2soNop4lqhB6w3PzoKYGRgSB6LKbHYIETB8ygoZwnD54jkXnGwc3
-         lZ19lCIY6dL9kvzLqDr14qQ3aBQhGPheWX/Wy4HdcIent4fBN2vr9jkLOd8uZP1L7phE
-         CqeQGY9cSrlU71PS4W1+tGTceGG4bUjehcDcoytFpxsWjd4IsPL7eYQQ4hqch9misqPn
-         in4Qw2yFFkiPegKQ/JSUfuSVOga0A/MdISZPWXiDYA1E8WSX+PgFQ0cJZRwwtfrw+gEK
-         A/YQ==
+        d=fairphone.com; s=fair;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MX9M/CiZsZu3eRTMUNRiNUGMe4+cADFwlytwC/x09Xc=;
+        b=os9EfhoUhlN0cwLkhc4UfN/DkmnANUL3h3F2KvJkZi3Q+w+c4pMtoSOwGpEUJ/54j4
+         wNJB1EnnEa0YjAb0JxyfGLx6MpWhuNwUUAD1c56DamRDhTEFyJyp2Krk9fXNC/AeQlLx
+         JCCoKFpHlvnoKyrbDY0NZbh7BN3g/fMLLdm0jx20utBEHhxMwxEgjCgVfgvDeanOwZYO
+         gsNmpKoP4FmbPIPPvAH/h3yfglhCMNyBQlwCYOA0uObCNyw/lnEz7+tyYy3ejcTlb3nz
+         FkNofJA3BqB+nYriT7fYRgV0Cm4VnOGnxiDB5IyqxX5PTPfOPh6xmYlnyJfLTFbquUhW
+         v/Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DdfiCXvxE3+wXETvP9iNhM7stAIscaaJ/d3hkQdjD+0=;
-        b=xw7AX+fkTRoGH4m6RHjWpo2sOCO1hJkvVQwudeh4fub2Ms3tpiElAfL0fhYxzOAg1d
-         8CqktXNIb04La20ADJHRrsk3hx/yX6h8uhwDRnFLyitS3uaZSUX3eaut2Bb8a8UCOpEG
-         RJiuulo9dSfWJgmPTmKZJUIh9BFgGGZy2lGdfHbhUFJ5zzFZzaD8eIhsr9upLM7W8F/6
-         St3F9YEg42VwabMv6CcOdsBxsHPd+vftdTdwSLKHhnYN1LoiZCV5TNntC/y6JP8ZpHgr
-         hvWbPV/rR5WnnbjR1PWJt9IY/zNXm+vfuUOvF4cN8n6lL8yQRQx75ncVKbjutdXSaDuQ
-         /IdA==
-X-Gm-Message-State: AO0yUKXQok1EI82OCGFgis2g7wcdY0QOnHsDK8N9R7XALmodKrWXersb
-        V/4sW/2i/z7Uo7I71pUbln0s8A==
-X-Google-Smtp-Source: AK7set83wpkelfN7j+E1uxuUMRJdC66UYA7JuiqRtNdQUL0FEULzXsRPzprLT/NQQZrpkURjk+U6WQ==
-X-Received: by 2002:a05:600c:354a:b0:3dc:357a:f4ab with SMTP id i10-20020a05600c354a00b003dc357af4abmr1641253wmq.15.1674808028475;
-        Fri, 27 Jan 2023 00:27:08 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id u12-20020a05600c19cc00b003db0ee277b2sm7719863wmq.5.2023.01.27.00.27.06
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=MX9M/CiZsZu3eRTMUNRiNUGMe4+cADFwlytwC/x09Xc=;
+        b=p2pi8bGwQ1fyXbXDeODl908FMtl7vB+Tg3uVH9rbhw93SOXBSbzyPcbpDLBaDG//H8
+         vu1LHzSSVV/F7kjF/SX9nGOiyVVmdix3jSpufnnCnW7PwBCGo7Xfd4Tv5ZkjRSdmqC5i
+         UX1dO9GPROq6n+bfHWG1dUvplnIvQJXkzNmxDVY0TijGG57HM4sNh7H3FB/Vz2Q270b2
+         T73EwznleTGhQx3O5iqh9t9vxK0ncAPBtFyozZIG4EDy3SKYT8OTz4wUgzQoUJGAcmAU
+         R3t/2N5zIdHMa+V2iUbL2Yy0QyOH1vqhhiXDROhqBe+GHjS/tqxe5aRvleP2QnMgRXI3
+         8ngA==
+X-Gm-Message-State: AFqh2kr0mbMkYnyVwYa7KfBOPqKcV8OeRp0qf4PSB2Tqdpgb7Fs5TmiC
+        f0HsC6nfTVDuwGjYle9yoldErg==
+X-Google-Smtp-Source: AMrXdXvW7nFA3CS90qGLU3JsWJZakuYpNGeQO07VRLQjUODbUx6HmFg+u6V4G1MpvDApgx8+3FmrKA==
+X-Received: by 2002:a17:906:c02:b0:83f:cbc0:1b30 with SMTP id s2-20020a1709060c0200b0083fcbc01b30mr40931496ejf.10.1674823501603;
+        Fri, 27 Jan 2023 04:45:01 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id my20-20020a1709065a5400b00878465f059dsm2180031ejc.59.2023.01.27.04.45.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jan 2023 00:27:07 -0800 (PST)
-Message-ID: <291ad4d3-6c8b-507d-08ff-997e0c4bd482@linaro.org>
-Date:   Fri, 27 Jan 2023 09:27:06 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH 5/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add
- notification LED
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
- <4455893.LvFx2qVVIh@g550jk> <dbfa802a-968f-0504-a131-59e2a8f52c9f@linaro.org>
- <1840339.tdWV9SEqCh@g550jk>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <1840339.tdWV9SEqCh@g550jk>
+        Fri, 27 Jan 2023 04:45:01 -0800 (PST)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date:   Fri, 27 Jan 2023 13:45:00 +0100
+Message-Id: <CQ2ZDQKO11XZ.HA5CXLK5MTFB@otso>
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
+        "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+        "Loic Poulain" <loic.poulain@linaro.org>,
+        "Robert Foss" <rfoss@kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/4] arm64: dts: qcom: sm6350: Add camera clock
+ controller
+X-Mailer: aerc 0.14.0
+References: <20221213-sm6350-cci-v2-0-15c2c14c34bb@fairphone.com>
+ <20221213-sm6350-cci-v2-2-15c2c14c34bb@fairphone.com>
+ <e5ff49d4-45c7-8c4a-d624-d8f7cc9ce2cb@linaro.org>
+ <CQ0I4ONEI6J4.3KWS1KBE7RTKD@otso>
+ <3ae863df-3260-4863-d88f-da4d3f442174@linaro.org>
+In-Reply-To: <3ae863df-3260-4863-d88f-da4d3f442174@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 26/01/2023 21:41, Luca Weiss wrote:
-> On Donnerstag, 26. Jänner 2023 10:41:24 CET Krzysztof Kozlowski wrote:
->> On 25/01/2023 21:51, Luca Weiss wrote:
->>> On Montag, 23. Jänner 2023 18:18:16 CET Krzysztof Kozlowski wrote:
->>>> On 22/01/2023 17:48, Luca Weiss wrote:
->>>>> Add the node describing the sn3193 that's used to provide notification
->>>>> LED.
->>>>>
->>>>> Unfortunately the driver currently supports neither multicolor API nor
->>>>> using the properties function & color, so we use label instead.
->>>>>
->>>>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
->>>>> ---
->>>>>
->>>>>  .../arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 28
->>>>>  ++++++++++++++++++++++ 1 file changed, 28 insertions(+)
->>>>>
->>>>> diff --git a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
->>>>> b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts index
->>>>> ffb486ceb6a6..a672c45d7070 100644
->>>>> --- a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
->>>>> +++ b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
->>>>> @@ -114,6 +114,34 @@ led@0 {
->>>>>
->>>>>  			default-brightness = <80>;
->>>>>  		
->>>>>  		};
->>>>>  	
->>>>>  	};
->>>>>
->>>>> +
->>>>> +	led-controller@68 {
->>>>> +		compatible = "si-en,sn3193";
->>>>> +		reg = <0x68>;
->>>>> +
->>>>> +		shutdown-gpios = <&tlmm 45 GPIO_ACTIVE_HIGH>;
->>>>> +
->>>>> +		#address-cells = <1>;
->>>>> +		#size-cells = <0>;
->>>>> +
->>>>> +		led@1 {
->>>>> +			reg = <1>;
->>>>> +			label = "red:status";
->>>>
->>>> These should be colors and functions.
->>>
->>> Hi Krzysztof,
->>>
->>> please check the commit message for this. I tried using it but it didn't
->>> work, the driver in general might need an overhaul at some point...
->>>
->>>> Unfortunately the driver currently supports neither multicolor API nor
->>>> using the properties function & color, so we use label instead.
->>>
->>> Or maybe I messed up but pretty sure this was the case when I wrote the
->>> dts.
->> I don't understand how driver is related here - it's not the driver's
->> property, but LED core. If the driver "supports" label, then it supports
->> color and status.
-> 
-> The leds-is31fl319x.c driver uses devm_led_classdev_register but the function 
-> where 'function' and 'color' is parsed is led_parse_fwnode_props which is 
-> called from led_compose_name which is called from led_classdev_register_ext 
-> (or with the devm_ prefix), and not called from the register method without 
-> _ext suffix.
+On Tue Jan 24, 2023 at 4:25 PM CET, Bryan O'Donoghue wrote:
+> On 24/01/2023 14:48, Luca Weiss wrote:
+> > On Fri Jan 20, 2023 at 5:49 PM CET, Bryan O'Donoghue wrote:
+> >> On 20/01/2023 13:13, Luca Weiss wrote:
+> >>> +		camcc: clock-controller@ad00000 {
+> >>> +			compatible =3D "qcom,sm6350-camcc";
+> >>> +			reg =3D <0 0x0ad00000 0 0x16000>;
+> >>> +			clocks =3D <&rpmhcc RPMH_CXO_CLK>;
+> >>> +			#clock-cells =3D <1>;
+> >>> +			#reset-cells =3D <1>;
+> >>> +			#power-domain-cells =3D <1>;
+> >>> +		};
+> >>
+> >> Should you include
+> >>
+> >> required-opps =3D <&rpmhpd_opp_low_svs>;
+> >>
+> >> ?
+> >=20
+> > I don't know, it works without. But doesn't this property not just
+> > affect power-domains? I haven't passed any here.
+> >=20
+>
+> Should you have a TITAN_TOP pd though ?
 
-No, devm_led_classdev_register calls devm_led_classdev_register_ext
-which calls led_classdev_register_ext which calls led_compose_name (if
-initdata is set). The point is that we lack initdata, so indeed color
-and function cannot be used.
+Can I reference <&camcc TITAN_TOP_GDSC> from itself? I know that having
+it on is required to turn on at least some clocks (maybe all clocks).
+But from what I understand how power domains are normally handled, the
+driver core enables them before the driver is probed, so self
+referencing wouldn't work.
 
-> 
-> So in other words, the led driver would need changes to use the new 
-> registration API to be able to use 'function' and 'color' instead of 'label'.
-> 
-> Regards
-> Luca
-> 
->>
->> Best regards,
->> Krzysztof
-> 
-> 
-> 
-> 
+And at least no other SoC upstream references TITAN_TOP_GDSC in camcc.
 
-Best regards,
-Krzysztof
+Regards
+Luca
+
+>
+> ---
+> bod
 
