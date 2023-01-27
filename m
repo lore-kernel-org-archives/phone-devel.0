@@ -2,59 +2,59 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E509CC636BD
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 13:16:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03CADC54EAA
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 13:55:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234735AbjA0NQL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Jan 2023 08:16:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60322 "EHLO
+        id S233288AbjA0NzB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Jan 2023 08:55:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234681AbjA0NPu (ORCPT
+        with ESMTP id S233214AbjA0NzA (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Jan 2023 08:15:50 -0500
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33ED77B43F
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 05:15:24 -0800 (PST)
-Received: by mail-ej1-x62d.google.com with SMTP id m2so13142037ejb.8
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 05:15:24 -0800 (PST)
+        Fri, 27 Jan 2023 08:55:00 -0500
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C109F2311E
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 05:54:57 -0800 (PST)
+Received: by mail-wr1-x42d.google.com with SMTP id h16so5006461wrz.12
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 05:54:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=nexus-software-ie.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=iHkUhEVRPMP3NveU+Wy0L7G6Q4+mtQgaqKDo2k8993M=;
-        b=yLDFHcNqI5yLZb1QoRHjrTt6MuHLALVachw3IoxqeeuZWsaSh63leWZE2HNSO4AaDR
-         aIozyK8o906ffIyqf17f9Bl93k/ARLoMcc2WV85yy4mejc5Dg+otNSN1SqbmpWsooDpL
-         KkdKJaaSFSRi/aIml5oSzP8XeZVZROWS4iH9yC4HoOI5rwiq0bR/IHeTtmlVmhCx7YkS
-         LP/jOR/VnOpIy+H2+FtMDjNfi91Xh6yrVZHIiby0vyEAok8SG1JzrX+JjLdUesqs9K5e
-         AuZrWON6VodqpKSUXIHiWqz8pa/R3Zm8No6OA2D26aDShjLwTctPbzjEUXG607zDVD4l
-         Ying==
+        bh=AvWGdXV/thMosfYPTWfHg4iggB9oYYlKgsQ4IGe6GwM=;
+        b=zJTsB5rxzOcR/IQYI9B8TxrquxjCdAbnkHrTFD8HEyhKVAeUU0jRRpKo5Onkmgw+8f
+         LecJidjIYiWCZ5uOeBhO+LrbIofHOyJjGmRONA5EbKaB3OvpeGJsni6GpV9RPj2X2zJK
+         zmf41T0tUELAUdLRqRexXHiVBwbFmp+pp9i1m3klI4+GhOLbQFnpqtIGLeXAOwZnEFWg
+         V4hxqgs5YYzT5o1wU+W2H01NRiD0I76vFvd87pbAjZV/+Qp5eda/WReQe3ykkQc92Hx1
+         2y9mI+x+37TnvknkQiiRR5+x4FpS22rkz7euvU4biICD3IIgIVLmqAMv700+7+8k7qx3
+         vO8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iHkUhEVRPMP3NveU+Wy0L7G6Q4+mtQgaqKDo2k8993M=;
-        b=3ZjjpmENE9ULF3nRTR16zP0GPiaIFCvmWt+25lH0nzdzbrJonAHIcMEE26hCuOGvro
-         D+5shr+tO5d409YlWCKSkjrvI1Yqrp3ocHLo0n18WyW9UlRbHs1lmbDQWgevPGTcYy/6
-         6nssxi4svomacmZ+cVMssE7+i1gQImTWEhTvPCaABjo8QuzhexAazMA7hCfb8tWt5aZF
-         NUhrvkpKQ1Pp0xCD3uUMpKrkTCquVziOhcUCI370cDN3isR7dcJpsd4RR3BgFpeRPiq3
-         IwGPp1NtBY/iQ1Z52mahbDpk3n4h+v4Eg+D/blYKkFjaCpgiuMO9ijo5BtfKyRJGfC6m
-         Zdaw==
-X-Gm-Message-State: AFqh2koxWpk+E/JfDNuCmkB/bEnC5NxQMtTrxQudOKXJP9KBkF14qTW0
-        Ajv2uKXiomLfR+tM7jrMaiuEhQ==
-X-Google-Smtp-Source: AMrXdXvWc8OAEpLOHe9XuMSWvT5rx+JxUq/A7uaYRzNur3jexY/O8PIr0uipN0gLgNDzL/+xQFUdWg==
-X-Received: by 2002:a17:907:a68a:b0:7c1:4d35:a143 with SMTP id vv10-20020a170907a68a00b007c14d35a143mr59338645ejc.3.1674825298693;
-        Fri, 27 Jan 2023 05:14:58 -0800 (PST)
-Received: from [192.168.1.101] (abyl20.neoplus.adsl.tpnet.pl. [83.9.31.20])
-        by smtp.gmail.com with ESMTPSA id u25-20020a170906069900b0086dee4e5555sm2223289ejb.87.2023.01.27.05.14.57
+        bh=AvWGdXV/thMosfYPTWfHg4iggB9oYYlKgsQ4IGe6GwM=;
+        b=gzuOF0QxVtUcDh5253V6xvbZJbVXmsDrqx88I2fENW8JQwe6jaLEAqxX74Mb04Gec8
+         H47eg6TcNFfB9fDhPxFulzY9RIa4OpdWzkk5iode0qZdx3U4hVF/gFApbrhaV1CysrXQ
+         dIjvV/FTZZ4hK9iHA5bW15CGOXHwSBe8y54zm4TZrUQyWuLCGiUeIjq8eKqhMNPaTTW8
+         StBbGlM/uBr3rYI7WAlNZTodh3Z+7dd3M/0pTrpjQSDIN2RZrqmHOm420Zj5l6HNw2BY
+         3Z8oFxsMa37ryexn/aS0w5gLorqKzgYJmlkHi5uLepcW9XM30TUssLCW2n9ue40s5sbR
+         b4Sw==
+X-Gm-Message-State: AO0yUKU6QHF5al0GCUvvK42WMUCSa0Jo6NvWesyVawwflFCBEeKjIZiN
+        iS1pBL2HZW+XIilxuPIp4HlanA==
+X-Google-Smtp-Source: AK7set/VMRyDDltG22cGu8ihRDW1/IpQliCrs2cHrRkWoMH5gk2TrOoECuH9qH4INUYj9vpys2Hgew==
+X-Received: by 2002:a5d:4988:0:b0:2bf:b3e9:d338 with SMTP id r8-20020a5d4988000000b002bfb3e9d338mr11210015wrq.31.1674827696348;
+        Fri, 27 Jan 2023 05:54:56 -0800 (PST)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id s5-20020a5d5105000000b002bdfcd8c77csm4073373wrt.101.2023.01.27.05.54.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Jan 2023 05:14:58 -0800 (PST)
-Message-ID: <10a23abc-837b-4f7c-0332-e0b318f49b9d@linaro.org>
-Date:   Fri, 27 Jan 2023 14:14:56 +0100
+        Fri, 27 Jan 2023 05:54:55 -0800 (PST)
+Message-ID: <951e4459-6d98-f083-1dd9-fc0b12e53c96@nexus-software.ie>
+Date:   Fri, 27 Jan 2023 13:54:54 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
+ Thunderbird/102.5.0
 Subject: Re: [PATCH v2 2/4] arm64: dts: qcom: sm6350: Add camera clock
  controller
 Content-Language: en-US
@@ -62,6 +62,7 @@ To:     Luca Weiss <luca.weiss@fairphone.com>,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Loic Poulain <loic.poulain@linaro.org>,
         Robert Foss <rfoss@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -77,66 +78,38 @@ References: <20221213-sm6350-cci-v2-0-15c2c14c34bb@fairphone.com>
  <CQ2ZDQKO11XZ.HA5CXLK5MTFB@otso>
  <2989138a-8f4b-50a0-3e90-98b6785f2690@linaro.org>
  <CQ2ZY0W1M4F5.32SLTSYMILGOS@otso>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+From:   Bryan O'Donoghue <pure.logic@nexus-software.ie>
 In-Reply-To: <CQ2ZY0W1M4F5.32SLTSYMILGOS@otso>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-
-On 27.01.2023 14:11, Luca Weiss wrote:
-> On Fri Jan 27, 2023 at 1:49 PM CET, Bryan O'Donoghue wrote:
->> On 27/01/2023 12:45, Luca Weiss wrote:
->>> Can I reference <&camcc TITAN_TOP_GDSC> from itself? I know that having
->>> it on is required to turn on at least some clocks (maybe all clocks).
->>> But from what I understand how power domains are normally handled, the
->>> driver core enables them before the driver is probed, so self
->>> referencing wouldn't work.
->>>
->>> And at least no other SoC upstream references TITAN_TOP_GDSC in camcc.
->>>
->>> Regards
->>> Luca
->>
+On 27/01/2023 13:11, Luca Weiss wrote:
 >> Doh I meant to say a power-domain to an mmcx a la
 >>
 >> power-domains = <&rpmhpd SM8250_MMCX>;
 >> required-opps = <&rpmhpd_opp_low_svs>;
 >>
 >> TITAN_TOP should be in your cci and camss dt nodes.
-> 
 > Okay, that makes more sense.
 > 
 > What I don't quite understand is why sm8250 only has MMCX listed there
 > since downstream has both vdd_mx-supply = <&VDD_MX_LEVEL> and
 > vdd_mm-supply = <&VDD_MMCX_LEVEL> and both "supplies" are used for
 > different clocks using .vdd_class
-> 
-> But back to sm6350, downstream has vdd_mx-supply = <&VDD_MX_LEVEL> and
-> vdd_cx-supply = <&VDD_CX_LEVEL> and like sm8250 uses cx and mx for
-> different clocks.
-> Not sure if I should add both, and I guess mainline also currently
-> doesn't use higher ops for the power domain when higher clock rate is
-> needed, from what I understand?
-Basically if you don't need to power any of these power rails to
-have access to the clock controller, you don't need any of them.
 
-What you will need to do however, is make sure that they are scaled with
-child devices then.. but that's no bueno since they all need TITAN_GDSC.
-That's why Bryan suggests leaving a vote on a power rail in the clock
-controller, so that if no other votes are present (as improbable as
-that may be), you will still be able to get the clocks going.
+power-domains = <&rpmhpd SM8250_MMCX>; == MMCX_LEVEL required for camcc
+power-domains = <&camcc TITAN_TOP_GDSC>; required for cci/camss
 
-That OTOH will require you to add power management support (PM ops)
-to the clock controller, as otherwise you can say goodbye to battery
-life..
+now that you ask the question about MX_LEVEL you're making me doubt we 
+have a 100% complete representation upstream TB perfectly honest, 
+warrants a deep dive..
 
-Konrad
-> 
->>
->> ---
->> bod
-> 
+I just remember that on 8250 we tripped over MMCX not being switched on 
+when - display I think was switched off.
+
+---
+bod
+
