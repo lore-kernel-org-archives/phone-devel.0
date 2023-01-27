@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 31815C54EAA
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 19:43:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8800C38142
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Jan 2023 19:43:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231722AbjA0TnG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Jan 2023 14:43:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50658 "EHLO
+        id S232180AbjA0TnZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Jan 2023 14:43:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231856AbjA0Tm5 (ORCPT
+        with ESMTP id S232004AbjA0TnQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Jan 2023 14:42:57 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63B6382415
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 11:42:32 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id m7so5902348wru.8
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 11:42:32 -0800 (PST)
+        Fri, 27 Jan 2023 14:43:16 -0500
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC6841B540
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 11:42:44 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id b7so5921683wrt.3
+        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 11:42:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ndc/iaR7jbpFClfbGd4ofgtC3FYEzqRlKdVRxlgp+PA=;
-        b=gMwA6nngkfIZpPGhH4Lg/vrN9j2ELujkTuJqBUSU0s9NpnlZLPoQnnLWHJ+VMshPmf
-         0ArZIdo133rszRVf0iJ2GO63/wyxGgraKhAkhxVfZ/Jt4p4yM8rodnooVDmEZLgrWw2m
-         23R2CkmGjix/NtD0tDEvjzBwq/EDjm87xVWKfZElSSAhJjP/t/rsszjrU9B/+21CKGU4
-         DOhc7gnw0m778fPEPCma2jSv0z4yRfhpBRchmtpriTsKcmpd90a5xrTIIRcBCmEH9fnQ
-         fZEsDS/bvvYNstFae5exsHqllPmbfDrjUJnZUZpYarguFuMJ05V4vEeIk8xO7wyD4xjB
-         hhuw==
+        bh=pXcEOV+ikhaaev3YUpdV3LTjyGNwDAC89LChkvoW52Y=;
+        b=ECGkYC22kGhYCVIAgJfs1kwNkbHusNO0OIv7monN00IxJ/o2bSlbuNHUJze5Ozrt/M
+         ujaHYFsD/x9rlkGuD+eWGdVwmMPJM4zpZD/SkU7AtFYhB2aQHfkN35l5Zw9ykEasQDBX
+         7zihqPGLiYXL432GMeBiWsG5IKcqyRrynqy3bSa7f3VShNqilVQ4CMz6eV1ALCYNpLrP
+         wepGiVaixK8VgQAjQUC6eWm7qUnwtBj4RaodXkl3Q0YEhL7QuRNtbs1T57/gXikIz/n0
+         BI7ydf2oiSjn0OoOnPtaMh+wtpBVpw9s2XgkClagH/8gU6K1DrlKCcdlliWnqWq/Nkbs
+         rTJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Ndc/iaR7jbpFClfbGd4ofgtC3FYEzqRlKdVRxlgp+PA=;
-        b=xn8A5DwrjZ3ecXhZ10xxFBAmFlB8LK6S/PavAVJGgU0Mt3AdaqhfFiZZIv1pmPEch9
-         jkpqKRziCWIMvaNz2RKA2IFdzcok95eZmkckWSH1DL3UWWKymCgtPs+uN3Kn39WZYh71
-         3O6gYvHhkdgB1+m/l7Xtc15fAWuC4oLI8oujeemnF5U9qcyDBh2I8w+x0H59TkUiySMX
-         iqGUo/UBrYfqNmJrLypXgjnk+aI4W7FtxdejRbpn+n86XPbrdCK5ed2n0ZmJRLL3rZVf
-         Lv5xZrGpIl+DeCZ3hu56YejYXT06k24/Vs1ogOvrFWy0WJv7rhMC840fwXS6rREGmQto
-         jrHg==
-X-Gm-Message-State: AO0yUKU6HFJpUDdi1jkufM8Iis1F+uaIDKLsidK3ik6pWlRhZZlqWotc
-        JASE7pmQFFbtBnnQPwWMVMdz+g==
-X-Google-Smtp-Source: AK7set+pMclzg8jxiXChlpxrY5YQXujzRSx2mjUjSxo2KkccFdEEzPo3yaBlRtyHd8d+lw/pLZGQCg==
-X-Received: by 2002:adf:a153:0:b0:2bf:b710:c0b with SMTP id r19-20020adfa153000000b002bfb7100c0bmr10540460wrr.1.1674848472491;
-        Fri, 27 Jan 2023 11:41:12 -0800 (PST)
+        bh=pXcEOV+ikhaaev3YUpdV3LTjyGNwDAC89LChkvoW52Y=;
+        b=zT+hw22MiBUCNZq3SGTyefGQfSK7VdOBmvPVVZiTrg50DXh3nz77ka+hPiRFnLbeNy
+         0/SYus9rS9CLi6eoMnqsnGtT+Go4qq/dDY1i/uu6cg1QaoFuakZWCUBoR1ph+GovKfV0
+         15cdFc4kU6BNcUstmED2ID5mz/FT5GSNvkyUp/ULakoAiYAYpN8eBQZBdM5BVIhWFQh0
+         2bYVe6uczQ5rB3EUXMVLOa9UUSGH6x1SwM4mmteOr7aub1pjVPllgpBouOsC75BYz/KW
+         pBTN1GG9HTO0SrEyVbi8lcRLcATW1qp/7ba7EUUV2RR9GgTf+eojdGeHcizT//9OfkUr
+         1MkQ==
+X-Gm-Message-State: AFqh2kroTRek4iyC4ebqMzaHlo1BOdP639RAxC8Y5thLQOjVwKTRaXNd
+        2cV5hDVJseoqR2Hbcu3vTp21dQ==
+X-Google-Smtp-Source: AMrXdXtnxP2pNNbbdNfNhQSvTB/2VE/w9WDZOg/rAZpkuBD5arji3hv5ReYPbhPestFCp0q1weUkqw==
+X-Received: by 2002:a05:6000:8d:b0:2be:3a6a:f565 with SMTP id m13-20020a056000008d00b002be3a6af565mr27343065wrx.38.1674848470759;
+        Fri, 27 Jan 2023 11:41:10 -0800 (PST)
 Received: from krzk-bin.. ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id y17-20020adffa51000000b002238ea5750csm5822417wrr.72.2023.01.27.11.41.10
+        by smtp.gmail.com with ESMTPSA id y17-20020adffa51000000b002238ea5750csm5822417wrr.72.2023.01.27.11.41.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jan 2023 11:41:12 -0800 (PST)
+        Fri, 27 Jan 2023 11:41:10 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Vinod Koul <vkoul@kernel.org>,
         Kishon Vijay Abraham I <kishon@kernel.org>,
@@ -67,9 +67,9 @@ Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
         Henrik Grimler <henrik@grimler.se>,
         Chanwoo Choi <cw00.choi@samsung.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 3/8] dt-bindings: phy: samsung,mipi-video-phy: deprecate syscon phandle
-Date:   Fri, 27 Jan 2023 20:40:52 +0100
-Message-Id: <20230127194057.186458-4-krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 2/8] dt-bindings: phy: samsung,dp-video-phy: deprecate syscon phandle
+Date:   Fri, 27 Jan 2023 20:40:51 +0100
+Message-Id: <20230127194057.186458-3-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230127194057.186458-1-krzysztof.kozlowski@linaro.org>
 References: <20230127194057.186458-1-krzysztof.kozlowski@linaro.org>
@@ -79,62 +79,42 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The MIPI phy is actually part of the Power Management Unit system
+The DisplayPort phy is actually part of the Power Management Unit system
 controller, thus it should be its child, instead of sibling node with
 syscon phandle.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- .../bindings/phy/samsung,mipi-video-phy.yaml          | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ .../devicetree/bindings/phy/samsung,dp-video-phy.yaml        | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/phy/samsung,mipi-video-phy.yaml b/Documentation/devicetree/bindings/phy/samsung,mipi-video-phy.yaml
-index 415440aaad89..b2250e4a6b1b 100644
---- a/Documentation/devicetree/bindings/phy/samsung,mipi-video-phy.yaml
-+++ b/Documentation/devicetree/bindings/phy/samsung,mipi-video-phy.yaml
-@@ -35,15 +35,18 @@ properties:
- 
-   syscon:
-     $ref: /schemas/types.yaml#/definitions/phandle
-+    deprecated: true
-     description:
-       Phandle to PMU system controller interface, valid only for
--      samsung,s5pv210-mipi-video-phy and samsung,exynos5420-mipi-video-phy.
-+      samsung,s5pv210-mipi-video-phy and samsung,exynos5420-mipi-video-phy (if
-+      not a child of PMU).
+diff --git a/Documentation/devicetree/bindings/phy/samsung,dp-video-phy.yaml b/Documentation/devicetree/bindings/phy/samsung,dp-video-phy.yaml
+index b03b2f00cc5b..3bee3f8733f7 100644
+--- a/Documentation/devicetree/bindings/phy/samsung,dp-video-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/samsung,dp-video-phy.yaml
+@@ -22,13 +22,13 @@ properties:
  
    samsung,pmu-syscon:
      $ref: /schemas/types.yaml#/definitions/phandle
 +    deprecated: true
      description:
-       Phandle to PMU system controller interface, valid for
--      samsung,exynos5433-mipi-video-phy.
-+      samsung,exynos5433-mipi-video-phy (if not a child of PMU).
+-      Phandle to PMU system controller interface.
++      Phandle to PMU system controller interface (if not a child of PMU).
  
-   samsung,disp-sysreg:
-     $ref: /schemas/types.yaml#/definitions/phandle
-@@ -81,13 +84,10 @@ allOf:
-         samsung,disp-sysreg: false
-         samsung,cam0-sysreg: false
-         samsung,cam1-sysreg: false
--      required:
--        - syscon
-     else:
-       properties:
-         syscon: false
-       required:
--        - samsung,pmu-syscon
-         - samsung,disp-sysreg
-         - samsung,cam0-sysreg
-         - samsung,cam1-sysreg
-@@ -99,7 +99,6 @@ examples:
+ required:
+   - compatible
+   - "#phy-cells"
+-  - samsung,pmu-syscon
+ 
+ additionalProperties: false
+ 
+@@ -36,6 +36,5 @@ examples:
+   - |
      phy {
-         compatible = "samsung,exynos5433-mipi-video-phy";
-         #phy-cells = <1>;
+         compatible = "samsung,exynos5420-dp-video-phy";
 -        samsung,pmu-syscon = <&pmu_system_controller>;
-         samsung,cam0-sysreg = <&syscon_cam0>;
-         samsung,cam1-sysreg = <&syscon_cam1>;
-         samsung,disp-sysreg = <&syscon_disp>;
+         #phy-cells = <0>;
+     };
 -- 
 2.34.1
 
