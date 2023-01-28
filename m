@@ -2,120 +2,132 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D17D0C27C76
-	for <phone-devel@archiver.kernel.org>; Sat, 28 Jan 2023 14:30:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FBA2C636CC
+	for <phone-devel@archiver.kernel.org>; Sat, 28 Jan 2023 21:43:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234407AbjA1Oaz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 28 Jan 2023 09:30:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59948 "EHLO
+        id S234618AbjA1Vnu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 28 Jan 2023 16:43:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234306AbjA1Oax (ORCPT
+        with ESMTP id S232125AbjA1Vnt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 28 Jan 2023 09:30:53 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E865C45F74
-        for <phone-devel@vger.kernel.org>; Sat, 28 Jan 2023 06:30:51 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id v10so7115582edi.8
-        for <phone-devel@vger.kernel.org>; Sat, 28 Jan 2023 06:30:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9YmUIiWvEj/OlD5nGw0BxToo9ydjOw0J75PDbpyJ/x0=;
-        b=gXVap0kjUnx4txDs6Nuabhj2btiX70cjn4iws+yCEWWNuC9AK4gCOGXRLUqO31vB5s
-         2ZiyJzZFMxDjHxznxTzdRshnxsDru5wM39skVG7H21egc87yz2RXZeDCNT1HZAT1BmZ6
-         zo5kE5BMdKTixR13HfAQaZWacoAj+hm64hO979fB5cf3DpQkx/lMkjZfoBxWQ68IoW28
-         pDnzMUBD/p7LG339pMbSpCQFtsGBT5czm2ZtTfANuqQPpefZwlQ6Gsk4xEISQYo7zPU4
-         XW0LQnjoM3RlDkIWNqK0GaEDBqGauUxx9DZmdYNUNLVOYgP7aUwMi9s9ACP7YFJlKpPG
-         O8CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9YmUIiWvEj/OlD5nGw0BxToo9ydjOw0J75PDbpyJ/x0=;
-        b=jsmL1d8BPXhvPeGvYn85r+u2pYJ2eq+uNUm3ObXSsO3Ts+HPIERto1xwyjrso2k8Ia
-         x9Ci/q1WmgrE33r5H933Npr8EUqroyog7csKYsorkEEQKG3Tg7j1t1TNq9vjILsOtgLm
-         jcpNZfwzyFm3I+bH1+3JEr2CCeI5TGqnOx8dByjLmcFQh4+6Rsn5e6kVEyBfkm+Lzwcq
-         f8adh6zyhM0If3ZWsjl0qE0ggUrTcvD7aLbPWm0zKbG4It7KDJaVLP08H4NREBHSxZVx
-         nG7mcdfVxW7+Kqu/tBq7g/qM8QOmPdv5kyd/gAsceK0S0XtmMCQSSr6TvrtEVYgi8+BB
-         XS2A==
-X-Gm-Message-State: AFqh2kp7lgZxbK9lpIa7HE8bYo/+3CRcS0OO7ubOMSqd70BMsxsg2Ldr
-        HTvMjBPWBJofIdPWk61anlwiDQ==
-X-Google-Smtp-Source: AMrXdXtP3VFcy8JI4mmQAd3j6xdOB4Uo/R/8C7tIhmT07fUfZam2J/X+W3hgeqR3fe8Ww75pSscS0w==
-X-Received: by 2002:a05:6402:10c9:b0:49d:a87f:ba78 with SMTP id p9-20020a05640210c900b0049da87fba78mr44641434edu.35.1674916250518;
-        Sat, 28 Jan 2023 06:30:50 -0800 (PST)
-Received: from [192.168.1.101] (abyl20.neoplus.adsl.tpnet.pl. [83.9.31.20])
-        by smtp.gmail.com with ESMTPSA id t13-20020a50d70d000000b00458b41d9460sm3997228edi.92.2023.01.28.06.30.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Jan 2023 06:30:48 -0800 (PST)
-Message-ID: <f8590655-3869-d905-ebad-347b8c9ae8dd@linaro.org>
-Date:   Sat, 28 Jan 2023 15:30:46 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.0
-Subject: Re: [PATCH] arm64: dts: qcom: msm8992-lg-bullhead: Correct memory
- overlap with SMEM region
-To:     Jamie Douglass <jamiemdouglass@gmail.com>,
+        Sat, 28 Jan 2023 16:43:49 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 109A824C92;
+        Sat, 28 Jan 2023 13:43:44 -0800 (PST)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 20CD0CC3A1;
+        Sat, 28 Jan 2023 21:43:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1674942192; bh=9iikV1aWGTt9Mh+BoQkZ8MLRghcUR/xHdzBYyKknK3Q=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=r96VFzjFyxTrWOeQl4TIxsKCSjynicL2byqQrIH88j+TgGhVbK816BGns0NFYSEQO
+         qeRuRa0gMl/ajJTLjOcQN3KJThbStbuo+iXglXwfYdScWPjEKvxOJllGCPoy45XOe+
+         hScL9sejbf1340Sj3lTGhffxi7RAn3+7N2zBlDoM=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Stefan Hansson <newbyte@postmarketos.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
+        soc@kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        ~postmarketos/upstreaming@lists.sr.ht
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Petr Vorel <petr.vorel@gmail.com>,
-        Dominik Kobinski <dominikkobinski314@gmail.com>,
-        Konrad Dybico <konrad.dybico@linaro.org>
-References: <20230128055214.33648-1-jamiemdouglass@gmail.com>
-Content-Language: en-US
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230128055214.33648-1-jamiemdouglass@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        matti.lehtimaki@gmail.com,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH 2/3] dt-bindings: arm: qcom: Add MSM8926 and Samsung Galaxy Tab 4
+ 10.1 LTE
+Date:   Sat, 28 Jan 2023 22:43:11 +0100
+Message-ID: <1938307.usQuhbGJ8B@g550jk>
+In-Reply-To: <05a6f073-7002-0156-1225-cd838e482307@linaro.org>
+References: <20230122144749.87597-1-newbyte@postmarketos.org>
+ <7c69e654-fe57-ad5c-9b41-15aaeaa73102@postmarketos.org>
+ <05a6f073-7002-0156-1225-cd838e482307@linaro.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Montag, 23. J=E4nner 2023 19:08:03 CET Krzysztof Kozlowski wrote:
+> On 23/01/2023 18:41, Stefan Hansson wrote:
+> >>> 2. You base on other SoC but you do not include its compatibles. Why?=
+ Is
+> >>> it intended? None of the properties applicable to other SoC will match
+> >>> here, thus I actually wonder if you run dtbs_check...
+> >=20
+> > Sorry, I forgot about running dtbs_check. However, I'm not sure I
+> > understand the question. What do you mean by that I don't include its
+> > compatibles?
+>=20
+> I understood you include the msm8226.dtsi which is a different SoC. If
+> you include it, you get all of its content. We do it only for compatible
+> devices, but your device does not indicate compatibility with msm8226.
+
+Hi Krzysztof,
+
+the way the earlier Qualcomm SoCs work, especially regarding naming scheme =
+is=20
+the following.
+
+There's for example the msm8x74 family which includes msm8974, msm8674,=20
+msm8274, and the a bit differently named apq8074 where the significant=20
+different are the RF capabilities, I think with those only 8974 had LTE, 86=
+74=20
+and 8274 only 3G but different band support, and the apq8074 has no mobile=
+=20
+radio.
+
+The same exists for sure also for 8x16 and 8x26, probably a bunch of other=
+=20
+SoCs as well.
+
+So from software side (apart from modem firmware of course) it can be treat=
+ed=20
+in practise as the same SoC so that's why we included the dtsi in this case=
+ in=20
+msm8226 but also msm8926 and apq8026.
+
+But the compatible on board-level is in practise (to my knowledge) not real=
+ly=20
+used for anything important other than having a nice string in the dts file=
+=2E I=20
+know some software uses compatible from user space but there for=20
+differentiating between different devices and ignoring the SoC compatibles.
+
+But while they are software-compatible for the most part, they *are* distin=
+ct=20
+SoCs with different capabilities and I just don't see the point in trying t=
+o=20
+establish some kinds of relationships between different SoCs that are somew=
+hat=20
+or very similar (msm8226 and msm8974 also share many components but are=20
+obviously different SoCs).
+
+And also e.g. (nearly) all apq* dts files we already have in mainline only=
+=20
+have apq compatible and not the corresponding msm* compatible. And I think=
+=20
+that's totally legitimate.
+
+Regards
+Luca
+
+>=20
+> > I ran `$ make dtbs_check DT_SCHEMA_FILES=3Dqcom.yaml` locally just now,
+> > and it only gave me errors from the qcom-msm8974pro-oneplus-bacon dtb.
+> > Maybe I'm running it wrong?
+>=20
+> No clue, I cannot test because your patches do not apply cleanly.
+>=20
+> Best regards,
+> Krzysztof
 
 
-On 28.01.2023 06:52, Jamie Douglass wrote:
-> A previously committed reserved memory region was overlapping with the
-> SMEM memory region, causing an error message in dmesg:
-> 	OF: reserved mem: OVERLAP DETECTED!
-> 	reserved@5000000 (0x0000000005000000--0x0000000007200000)
-> 	overlaps with smem_region@6a00000
-> 	(0x0000000006a00000--0x0000000006c00000)
-> This patch splits the previous reserved memory region into two
-> reserved sections either side of the SMEM memory region.
-> 
-> Signed-off-by: Jamie Douglass <jamiemdouglass@gmail.com>
-> ---
->  arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi b/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
-> index 79de9cc395c4..5e375ea73c79 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
-> @@ -53,8 +53,13 @@ cont_splash_mem: memory@3400000 {
->  			no-map;
->  		};
->  
-> -		removed_region: reserved@5000000 {
-> -			reg = <0 0x05000000 0 0x2200000>;
-> +		reserved@5000000 {
-> +			reg = <0x0 0x05000000 0x0 0x1a00000>;
-> +			no-map;
-> +		};
-> +
-> +		reserved@6c00000 {
-> +			reg = <0x0 0x06c00000 0x0 0x400000>;
-I think you made this 0x200000 too small, unless there
-is supposed to be functional change.
 
-Konrad
->  			no-map;
->  		};
->  	};
+
