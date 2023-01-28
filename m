@@ -2,162 +2,110 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8FC9C38142
-	for <phone-devel@archiver.kernel.org>; Sat, 28 Jan 2023 04:46:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7205AC38142
+	for <phone-devel@archiver.kernel.org>; Sat, 28 Jan 2023 05:53:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232579AbjA1Eqt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Jan 2023 23:46:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48262 "EHLO
+        id S230473AbjA1FxG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 28 Jan 2023 00:53:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232463AbjA1Eqs (ORCPT
+        with ESMTP id S229619AbjA1FxG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Jan 2023 23:46:48 -0500
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5A638003D
-        for <phone-devel@vger.kernel.org>; Fri, 27 Jan 2023 20:46:46 -0800 (PST)
-Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20230128044644epoutp043c980d14d38831b9eb8d54f785843600~_X5T_xio_2098120981epoutp04g
-        for <phone-devel@vger.kernel.org>; Sat, 28 Jan 2023 04:46:44 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20230128044644epoutp043c980d14d38831b9eb8d54f785843600~_X5T_xio_2098120981epoutp04g
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1674881205;
-        bh=BTc2ZKB9hN5vZuWZXdo3J43sS11Ulza5yyL1B5oNtvk=;
-        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-        b=pGAsoEeAZZGG6V0Vgv/fkgUY1LuLF8qSjalqaHS4JwZILS250bpyoDl7lfH42wbbi
-         IfnVSXL9BmN2hskIQ3hCQ2AT1guhHzl8dImoxvxwvCMuJMMiXxB/aS6DZksECOBAoF
-         0jlOAKzODkdr43l15mRyP7Zw6m7TiPXIFtUMXLeo=
-Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
-        epcas5p2.samsung.com (KnoxPortal) with ESMTP id
-        20230128044643epcas5p281ead3b782241095a3ae231593b0937e~_X5SmuVKj3093030930epcas5p2p;
-        Sat, 28 Jan 2023 04:46:43 +0000 (GMT)
-Received: from epsmges5p1new.samsung.com (unknown [182.195.38.174]) by
-        epsnrtp3.localdomain (Postfix) with ESMTP id 4P3hjs6Sqlz4x9Pr; Sat, 28 Jan
-        2023 04:46:41 +0000 (GMT)
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
-        epsmges5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        A6.7A.10528.1B8A4D36; Sat, 28 Jan 2023 13:46:41 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-        20230128044641epcas5p171f3bb0d5e4afc571515752cb42f8b2e~_X5QWOyM52400924009epcas5p1V;
-        Sat, 28 Jan 2023 04:46:41 +0000 (GMT)
-Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20230128044641epsmtrp11a04da2a76f5b8fe1d3ceed1c5890459~_X5QVa-Ae2898828988epsmtrp1s;
-        Sat, 28 Jan 2023 04:46:41 +0000 (GMT)
-X-AuditID: b6c32a49-c17ff70000012920-d0-63d4a8b12649
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
-        58.5C.17995.0B8A4D36; Sat, 28 Jan 2023 13:46:40 +0900 (KST)
-Received: from alimakhtar04 (unknown [107.122.12.5]) by epsmtip1.samsung.com
-        (KnoxPortal) with ESMTPA id
-        20230128044638epsmtip18c501670b5a4c59d2e15bed090ad5b73~_X5OFnv_u1374213742epsmtip1R;
-        Sat, 28 Jan 2023 04:46:38 +0000 (GMT)
-From:   "Alim Akhtar" <alim.akhtar@samsung.com>
-To:     "'Krzysztof Kozlowski'" <krzysztof.kozlowski@linaro.org>,
-        "'Rob Herring'" <robh+dt@kernel.org>,
-        "'Krzysztof Kozlowski'" <krzysztof.kozlowski+dt@linaro.org>,
-        "'Inki Dae'" <inki.dae@samsung.com>,
-        "'Kyungmin Park'" <kyungmin.park@samsung.com>,
-        "'Kukjin Kim'" <kgene@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-samsung-soc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Cc:     <replicant@osuosl.org>, <phone-devel@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        =?utf-8?Q?'Martin_J=C3=BCcker'?= <martin.juecker@gmail.com>,
-        "'Henrik Grimler'" <henrik@grimler.se>
-In-Reply-To: <20230120155404.323386-12-krzysztof.kozlowski@linaro.org>
-Subject: RE: [PATCH 11/11] ARM: dts: exynos: correct HSI2C properties in
- Exynos5410 Odroid XU
-Date:   Sat, 28 Jan 2023 10:16:37 +0530
-Message-ID: <000701d932d3$834cb170$89e61450$@samsung.com>
+        Sat, 28 Jan 2023 00:53:06 -0500
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 468FD7375D;
+        Fri, 27 Jan 2023 21:53:05 -0800 (PST)
+Received: by mail-pj1-x102a.google.com with SMTP id e8-20020a17090a9a8800b0022c387f0f93so5607953pjp.3;
+        Fri, 27 Jan 2023 21:53:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=H67bSVzm5ER4zFp/9HSmqMmtSQHhSFTb50GKenobAiM=;
+        b=C8BtML5mpPVvSDKrdTL/bBV+e3l2LBOWBUfxoYZcKdWkNxYrZpBghofid7CTN9ptDF
+         1AzbhGlYnqJBl6ttJ1gM/oTxuEQSCVzePDceaoVGU96smsAxYQP7Awm9nOg+b8b58Srd
+         GfPBS9PoxjdYXJ/wsZoObJHJn+ThFlaKi51ii81JkUmHeWFoX2F229r7QeWIj9HCQ8Ll
+         MMqUjEfZhz+tokmifHzr3g9BA8AyJS7wRNE3nhi3nsc2vE9uMDC/L9AIa/mSgnc/wuk6
+         0nYp6t10shYup/DsR07cMhA0RWJEEzgo6YgLMs/Us6MWDXaNxI/vjqIRiOhL5un1sTUB
+         u2XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H67bSVzm5ER4zFp/9HSmqMmtSQHhSFTb50GKenobAiM=;
+        b=u/m7+O9IYMkxvZm+KMSm/tYiKvM96VCQXe50WRBnKXYodnyYPIITCCwASOef43KGzE
+         Fthrfx2GfkzhvleQfFRbtr70YSrEhiCqJb5sLvPag5z/DEEDVfdwd2oU1I5gFyC2x/cd
+         BoUWt55xL2TsbEoXcPVqysNpOaVcsHMmCdY2Y5MupYzOEXOVGIXnfk1kRD3CqU7lHAEm
+         rOSbs9Gwxx1zbbNNOc7lrg6PysEgEe5PdnIKEldNrqc867dtADk7L60Jga27EAGbdh6x
+         7jRNLpjgoOiniP3FRxckJsPCjSBJcQd09ybzaCgJiZuHQX4/L7hehMpoJVwlPmvj1dTG
+         RuUQ==
+X-Gm-Message-State: AFqh2kooTU69ZflpBY/wKes/jKEiJuQcG76ECzHKgLRdmjrokCbiWgoI
+        IHOcsGnG1ICE/05kuZDNKwPmBMVwyOozaW2e
+X-Google-Smtp-Source: AMrXdXv06alTKQJMKsIgXSjlh4MInkc3xTzZSb3cvEAYyJcamvJQBY5GngfYVsDr2mb2LY8jSZoi1g==
+X-Received: by 2002:a17:902:ce0b:b0:194:586a:77ba with SMTP id k11-20020a170902ce0b00b00194586a77bamr45317844plg.52.1674885184512;
+        Fri, 27 Jan 2023 21:53:04 -0800 (PST)
+Received: from jamie-desktop.modem ([2001:8003:cce7:dc00:ca73:20fb:36e7:4dcd])
+        by smtp.gmail.com with ESMTPSA id y10-20020a17090322ca00b001947c22185bsm3736962plg.184.2023.01.27.21.52.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Jan 2023 21:53:03 -0800 (PST)
+From:   Jamie Douglass <jamiemdouglass@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Petr Vorel <petr.vorel@gmail.com>,
+        Dominik Kobinski <dominikkobinski314@gmail.com>,
+        Konrad Dybico <konrad.dybico@linaro.org>,
+        Jamie Douglass <jamiemdouglass@gmail.com>
+Subject: [PATCH] arm64: dts: qcom: msm8992-lg-bullhead: Correct memory overlap with SMEM region
+Date:   Sat, 28 Jan 2023 16:52:14 +1100
+Message-Id: <20230128055214.33648-1-jamiemdouglass@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQHNuRkKafHieBmUHCY1mc35yYPTTQKvTNNCAsqGfBCunmYTcA==
-Content-Language: en-us
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrEJsWRmVeSWpSXmKPExsWy7bCmhu7GFVeSDa4sM7aYf+Qcq8XbJbsY
-        LSbdn8Bi0f/4NbNF34uHzBZ7X29ltzjb9IbdYtPja6wWl3fNYbOYcX4fk8WZf1NZLBb8sbNY
-        t0bQonXvEXaLzd//Mjrwe+ycdZfd4+iVe6wem1Z1snncubaHzWPzknqP/3fWsnt8ae5m9ejb
-        sorR4/MmuQDOqGybjNTElNQihdS85PyUzLx0WyXv4HjneFMzA0NdQ0sLcyWFvMTcVFslF58A
-        XbfMHKD7lRTKEnNKgUIBicXFSvp2NkX5pSWpChn5xSW2SqkFKTkFJgV6xYm5xaV56Xp5qSVW
-        hgYGRqZAhQnZGVu3fmIr2CFccez7dbYGxqNCXYycHBICJhJL11xj7GLk4hAS2M0osWpTMwtI
-        QkjgE6PE/WXcEInPjBIfPj1j6mLkAOvY/TsPIr6LUeL7/GZ2COclo8SezY9YQbrZBHQldixu
-        YwNJiAisZZY4sGUbmMMscJpR4srKbYwgVZwCbhJd8zaBdQgLxEt8OP0cbDeLgKrE9vcdbCA2
-        r4ClxJmNy5ggbEGJkzOfgNUwC2hLLFv4mhniCQWJn0+Xgc0REXCS+LyqlRWiRlzi5dEjYOdJ
-        CHzgkFjRsQjqBxeJD3+zIHqFJV4d38IOYUtJvOxvY4co8ZBY9EcKIpwh8Xb5ekYI217iwJU5
-        LCAlzAKaEut36UNs4pPo/f0EajivREcbNHRVJZrfXWWBsKUlJnZ3s0LYHhKNsyaxTGBUnIXk
-        r1lI/pqF5P5ZCMsWMLKsYpRMLSjOTU8tNi0wzEsth0d3cn7uJkZw4tby3MF498EHvUOMTByM
-        hxglOJiVRHi3Ol5KFuJNSaysSi3Kjy8qzUktPsRoCgzsicxSosn5wNyRVxJvaGJpYGJmZmZi
-        aWxmqCTOq257MllIID2xJDU7NbUgtQimj4mDU6qBaVZZalVL9DmGXzfT/q+eIGu4WvjH57Ne
-        sekbG22EPDduf+689uPTnFzdH3cvemnqBrqyWP53sT+ScPpsxu9r19qrjXivy9lammprsax2
-        f5f0LF6++F/LcdnJ3+PE/7xmDhGeeG/1NnWml6s3Tz/ju+db4r9vaq/FXCTfFrxbz/VW8k7g
-        YgU/nwl+on+bHsxf6VX34s/SVyZzZ9y79Dh4fkKerlDx4RSLiVvTYmZf9nCd/K708c4G294v
-        cl29zgGHZ7V+yOTTbwi228q17f2Pnd2nlEPVfSsl7IpbF+3yM7t69cT8mMv+hQeYNTQ3139T
-        kJvzK1ZxfWJ2ccSrlQ4pt99+drF+tOlfXRz3yeP8h5RYijMSDbWYi4oTAS42OQdlBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrLIsWRmVeSWpSXmKPExsWy7bCSnO6GFVeSDS6+t7aYf+Qcq8XbJbsY
-        LSbdn8Bi0f/4NbNF34uHzBZ7X29ltzjb9IbdYtPja6wWl3fNYbOYcX4fk8WZf1NZLBb8sbNY
-        t0bQonXvEXaLzd//Mjrwe+ycdZfd4+iVe6wem1Z1snncubaHzWPzknqP/3fWsnt8ae5m9ejb
-        sorR4/MmuQDOKC6blNSczLLUIn27BK6MqSszCxbyV/z6eIGxgXESbxcjB4eEgInE7t95XYxc
-        HEICOxgl7vZOZe5i5ASKS0tc3ziBHcIWllj57zk7RNFzRom1iyeDJdgEdCV2LG5jA0mICGxm
-        ljg+6SAziMMscJ5R4saMA6wQLRcYJX5/3MYI0sIp4CbRNW8TK4gtLBArsWJ9ExOIzSKgKrH9
-        fQcbiM0rYClxZuMyJghbUOLkzCcsIDazgLbE05tP4exlC19D3aog8fPpMrCZIgJOEp9XtbJC
-        1IhLvDx6hH0Co/AsJKNmIRk1C8moWUhaFjCyrGKUTC0ozk3PLTYsMMpLLdcrTswtLs1L10vO
-        z93ECI5hLa0djHtWfdA7xMjEwXiIUYKDWUmEd6vjpWQh3pTEyqrUovz4otKc1OJDjNIcLEri
-        vBe6TsYLCaQnlqRmp6YWpBbBZJk4OKUamFR2Pnv/uCdUPffYtfaHr5c3Hf919sCaR+0/V5tE
-        f9tq7a/3oV9R8MDLfeG5qSGPFsy4XTunesY2hX9Li98Enp3/SunB0yvvHVLKmHZpu+3ZP1lK
-        eW3JzCVVFa/Zv58U2nF2/5KK7Ce862JO2L+04nv34qxwZDnfh7OTpFIX/zyXOiXxXpi40NUX
-        TctSdy+L4RGYocRaX/Tird3HxvbJJlvKOWdJKJ6/UFM3Mzftz8t1eucKvweFpvuc1Ags3ay9
-        YZH0pIviur4T89fPuJamoGRjN1v2rtmR8qf5OhoK3Wpiy3cnfw7nn7Ddtdj9g+bB4/skGh/H
-        m3g9NvxvLK94Q1I94ZGYuXPi0ob1qdHcV9YpsRRnJBpqMRcVJwIAb08hoFADAAA=
-X-CMS-MailID: 20230128044641epcas5p171f3bb0d5e4afc571515752cb42f8b2e
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20230120155431epcas5p37731d63d93c501522c4b08515f174ce4
-References: <20230120155404.323386-1-krzysztof.kozlowski@linaro.org>
-        <CGME20230120155431epcas5p37731d63d93c501522c4b08515f174ce4@epcas5p3.samsung.com>
-        <20230120155404.323386-12-krzysztof.kozlowski@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+A previously committed reserved memory region was overlapping with the
+SMEM memory region, causing an error message in dmesg:
+	OF: reserved mem: OVERLAP DETECTED!
+	reserved@5000000 (0x0000000005000000--0x0000000007200000)
+	overlaps with smem_region@6a00000
+	(0x0000000006a00000--0x0000000006c00000)
+This patch splits the previous reserved memory region into two
+reserved sections either side of the SMEM memory region.
 
+Signed-off-by: Jamie Douglass <jamiemdouglass@gmail.com>
+---
+ arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-> -----Original Message-----
-> From: Krzysztof Kozlowski <krzysztof.kozlowski=40linaro.org>
-> Sent: Friday, January 20, 2023 9:24 PM
-> To: Rob Herring <robh+dt=40kernel.org>; Krzysztof Kozlowski
-> <krzysztof.kozlowski+dt=40linaro.org>; Alim Akhtar
-> <alim.akhtar=40samsung.com>; Inki Dae <inki.dae=40samsung.com>; Kyungmin
-> Park <kyungmin.park=40samsung.com>; Kukjin Kim <kgene=40kernel.org>;
-> devicetree=40vger.kernel.org; linux-arm-kernel=40lists.infradead.org; lin=
-ux-
-> samsung-soc=40vger.kernel.org; linux-kernel=40vger.kernel.org
-> Cc: replicant=40osuosl.org; phone-devel=40vger.kernel.org;
-> =7Epostmarketos/upstreaming=40lists.sr.ht; Martin J=C3=BCcker=0D=0A>=20<m=
-artin.juecker=40gmail.com>;=20Henrik=20Grimler=20<henrik=40grimler.se>;=0D=
-=0A>=20Krzysztof=20Kozlowski=20<krzysztof.kozlowski=40linaro.org>=0D=0A>=20=
-Subject:=20=5BPATCH=2011/11=5D=20ARM:=20dts:=20exynos:=20correct=20HSI2C=20=
-properties=20in=0D=0A>=20Exynos5410=20Odroid=20XU=0D=0A>=20=0D=0A>=20The=20=
-HSI2C=20controller=20uses=20clock-frequency=20and=20does=20not=20have=20i2c=
--sda-delay.=0D=0A>=20The=20properties=20were=20copy-pasted=20from=20the=20s=
-lower=20S3C-family=20I2C=20controller:=0D=0A>=20=0D=0A>=20=20=20exynos5410-=
-odroidxu.dtb:=20i2c=4012ca0000:=20Unevaluated=20properties=20are=20not=0D=
-=0A>=20allowed=20('samsung,i2c-max-bus-freq',=20'samsung,i2c-sda-delay'=20w=
-ere=0D=0A>=20unexpected)=0D=0A>=20=0D=0A>=20Signed-off-by:=20Krzysztof=20Ko=
-zlowski=20<krzysztof.kozlowski=40linaro.org>=0D=0A>=20---=0D=0A=0D=0AReview=
-ed-by:=20Alim=20Akhtar=20<alim.akhtar=40samsung.com>=0D=0A=0D=0A>=20=20arch=
-/arm/boot/dts/exynos5410-odroidxu.dts=20=7C=203=20+--=0D=0A>=20=201=20file=
-=20changed,=201=20insertion(+),=202=20deletions(-)=0D=0A>=20=0D=0A>=20diff=
-=20--git=20a/arch/arm/boot/dts/exynos5410-odroidxu.dts=0D=0A>=20b/arch/arm/=
-boot/dts/exynos5410-odroidxu.dts=0D=0A>=20index=20d1cbc6b8a570..232561620da=
-2=20100644=0D=0A>=20---=20a/arch/arm/boot/dts/exynos5410-odroidxu.dts=0D=0A=
->=20+++=20b/arch/arm/boot/dts/exynos5410-odroidxu.dts=0D=0A>=20=40=40=20-16=
-4,8=20+164,7=20=40=40=20map2=20=7B=0D=0A>=20=20=7D;=0D=0A>=20=0D=0A>=20=20&=
-hsi2c_4=20=7B=0D=0A>=20-=09samsung,i2c-sda-delay=20=3D=20<100>;=0D=0A>=20-=
-=09samsung,i2c-max-bus-freq=20=3D=20<400000>;=0D=0A>=20+=09clock-frequency=
-=20=3D=20<400000>;=0D=0A>=20=20=09status=20=3D=20=22okay=22;=0D=0A>=20=0D=
-=0A>=20=20=09usb3503:=20usb-hub=408=20=7B=0D=0A>=20--=0D=0A>=202.34.1=0D=0A=
-=0D=0A=0D=0A
+diff --git a/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi b/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
+index 79de9cc395c4..5e375ea73c79 100644
+--- a/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
+@@ -53,8 +53,13 @@ cont_splash_mem: memory@3400000 {
+ 			no-map;
+ 		};
+ 
+-		removed_region: reserved@5000000 {
+-			reg = <0 0x05000000 0 0x2200000>;
++		reserved@5000000 {
++			reg = <0x0 0x05000000 0x0 0x1a00000>;
++			no-map;
++		};
++
++		reserved@6c00000 {
++			reg = <0x0 0x06c00000 0x0 0x400000>;
+ 			no-map;
+ 		};
+ 	};
+-- 
+2.25.1
+
