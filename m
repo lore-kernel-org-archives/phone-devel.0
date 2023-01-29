@@ -2,157 +2,84 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7D4AC636CB
-	for <phone-devel@archiver.kernel.org>; Sun, 29 Jan 2023 10:55:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2CDD8C61D97
+	for <phone-devel@archiver.kernel.org>; Sun, 29 Jan 2023 11:23:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229980AbjA2KzQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 29 Jan 2023 05:55:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41786 "EHLO
+        id S230223AbjA2LXA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 29 Jan 2023 06:23:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229617AbjA2KzP (ORCPT
+        with ESMTP id S230204AbjA2LW6 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 29 Jan 2023 05:55:15 -0500
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3F602197F
-        for <phone-devel@vger.kernel.org>; Sun, 29 Jan 2023 02:55:13 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id k8-20020a05600c1c8800b003dc57ea0dfeso208924wms.0
-        for <phone-devel@vger.kernel.org>; Sun, 29 Jan 2023 02:55:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Oaz79ZDVJS2xEIGpS2k1SEdhnwOm02zjQ4lWcUyp8UU=;
-        b=xldb5xqWjPFCCjZGiG8c3P2Ih66FBZxhANd7eM9nLWsJ58dgfulz8HCvh+2jcr7mxd
-         1dibfhz72qfr6cXFG0rznplDOEuK9iwschVIOlQYRLHsCYWCNZjL/xJT+Ia1Timbk3DR
-         9jsPO3BNKv76L6515odfRiCg/PdbbPZeb1z3qS5bWtlCwY/ObNZZLFZako+ZRC7UngTO
-         6IS6AgK8QqGq7vdv1rOx0B+IlhG3UCUsS80I+jr5ZY8mtiieIQ9UjC4RKl5UC3eTVmde
-         Oe1KUBDIhTL6u/HqMcr44xtP6XgWvWe5uLYdJlAEuc7VTjZlK6x8r4v3XjrjgzR88wRh
-         S64Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Oaz79ZDVJS2xEIGpS2k1SEdhnwOm02zjQ4lWcUyp8UU=;
-        b=6NG+A4+iBTZzbPp7tJc7J04+FTCVJm55yOjOe4vvJSviE66ys4QUeSuPZeSsU77BQg
-         KYxJWkA3lVr5IwVs5IESemSaYhrS+J0HXvwe1vz/FLp4SKNex+GZu+3qOeeFDsm3r42R
-         W+li49cpRrzWxrCB66og2jeSQXtUIe91iadABr9QymqN8iIgjpm5durKDwS7iRumM6Cu
-         yLyi2cfX5QmRk19M3Qdzgk55pJ6W/CWlyuQpX64X7UcZqHZBFsiTmattarNR/RnahVEa
-         UcbclySkr1PpBQWmxvlZU4lmPDimn6/J++5L1ywe3RxzlljwfHxl0HPa7+6hwhtuqRcy
-         UjBQ==
-X-Gm-Message-State: AFqh2krFa5zYW8zS4wBYspNfPU8LXwSBs+/iN4vpnlnIS+YPcwkOTBei
-        YrU0Aqm1Ew4kuOAwGbBELcGF1w==
-X-Google-Smtp-Source: AMrXdXuzfKrAY6Cb0Myev83sk/T6yVXFL6vmIRVqNDkqsGBT7N9BS3wdhZId4eNF16fKoV6pr5SpUw==
-X-Received: by 2002:a05:600c:4e0f:b0:3db:3695:11b4 with SMTP id b15-20020a05600c4e0f00b003db369511b4mr34387048wmq.33.1674989712357;
-        Sun, 29 Jan 2023 02:55:12 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id i20-20020a1c5414000000b003dc3f3d77e3sm6538299wmb.7.2023.01.29.02.55.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 29 Jan 2023 02:55:11 -0800 (PST)
-Message-ID: <4b2de180-046b-cf9b-7b8c-f36241beb226@linaro.org>
-Date:   Sun, 29 Jan 2023 11:55:09 +0100
+        Sun, 29 Jan 2023 06:22:58 -0500
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B9C286B4;
+        Sun, 29 Jan 2023 03:22:56 -0800 (PST)
+Received: from ideasonboard.com (host-212-171-97-20.pool212171.interbusiness.it [212.171.97.20])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 8F9F2327;
+        Sun, 29 Jan 2023 12:22:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1674991373;
+        bh=18lyyDdMH3ASfX0bsVz4X4eeAG0fyPMWsl95UcdFtt8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GIruMnyHmhxawvfqEv5j1SYgcVDuenq19Y0MpjkL9GIfqSnyYVcBa1lGFR+8X4NFD
+         azg7HrZoNWC8+1Sn9VVW3MNn8/xOxsshDSLWLPEvR+YipKYIwuSGMTxzgewK1+8nl/
+         GUGbxBfIdwKTrNeY3joSIJmaNwggtB/HQDMm1Iwc=
+Date:   Sun, 29 Jan 2023 12:22:49 +0100
+From:   Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Shunqian Zheng <zhengsq@rock-chips.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] media: i2c: ov2685: Make reset gpio optional
+Message-ID: <20230129112249.lf2vb7pthrv4nien@uno.localdomain>
+References: <20230129-ov2685-improvements-v1-0-f281bd49399c@z3ntu.xyz>
+ <20230129-ov2685-improvements-v1-1-f281bd49399c@z3ntu.xyz>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH 2/3] dt-bindings: arm: qcom: Add MSM8926 and Samsung
- Galaxy Tab 4 10.1 LTE
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>,
-        Stefan Hansson <newbyte@postmarketos.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        soc@kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Cc:     phone-devel@vger.kernel.org, matti.lehtimaki@gmail.com
-References: <20230122144749.87597-1-newbyte@postmarketos.org>
- <7c69e654-fe57-ad5c-9b41-15aaeaa73102@postmarketos.org>
- <05a6f073-7002-0156-1225-cd838e482307@linaro.org> <1938307.usQuhbGJ8B@g550jk>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <1938307.usQuhbGJ8B@g550jk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230129-ov2685-improvements-v1-1-f281bd49399c@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 28/01/2023 22:43, Luca Weiss wrote:
-> On Montag, 23. Jänner 2023 19:08:03 CET Krzysztof Kozlowski wrote:
->> On 23/01/2023 18:41, Stefan Hansson wrote:
->>>>> 2. You base on other SoC but you do not include its compatibles. Why? Is
->>>>> it intended? None of the properties applicable to other SoC will match
->>>>> here, thus I actually wonder if you run dtbs_check...
->>>
->>> Sorry, I forgot about running dtbs_check. However, I'm not sure I
->>> understand the question. What do you mean by that I don't include its
->>> compatibles?
->>
->> I understood you include the msm8226.dtsi which is a different SoC. If
->> you include it, you get all of its content. We do it only for compatible
->> devices, but your device does not indicate compatibility with msm8226.
-> 
-> Hi Krzysztof,
-> 
-> the way the earlier Qualcomm SoCs work, especially regarding naming scheme is 
-> the following.
-> 
-> There's for example the msm8x74 family which includes msm8974, msm8674, 
-> msm8274, and the a bit differently named apq8074 where the significant 
-> different are the RF capabilities, I think with those only 8974 had LTE, 8674 
-> and 8274 only 3G but different band support, and the apq8074 has no mobile 
-> radio.
-> 
-> The same exists for sure also for 8x16 and 8x26, probably a bunch of other 
-> SoCs as well.
-> 
-> So from software side (apart from modem firmware of course) it can be treated 
-> in practise as the same SoC so that's why we included the dtsi in this case in 
-> msm8226 but also msm8926 and apq8026.
+Hi Luca
 
-First, there is distinction between SoC having and not having modem. I
-guess small enough that we just include the DTSI.
+On Sun, Jan 29, 2023 at 10:42:35AM +0100, Luca Weiss wrote:
+> In some setups XSHUTDOWN is connected to DOVDD when it's unused,
+> therefore treat the reset gpio as optional.
 
-Second, there is distinction between different families, even if they
-share a lot. All of the SoCs here share something, because Qualcomm has
-versionable IP blocks which they re-use.
+I don't have a datasheet for this sensor, but OV sensors usually have
+to gpio lines to control powerdown and reset. Datasheets usually
+suggest to hook one of the 2 to DOVDD and control the other from the
+SoC. How is the sensor hooked up in your design ? No gpio lines is
+controlled by the SoC ?
 
-> 
-> But the compatible on board-level is in practise (to my knowledge) not really 
-> used for anything important other than having a nice string in the dts file. I 
-> know some software uses compatible from user space but there for 
-> differentiating between different devices and ignoring the SoC compatibles.
+Another question is if we need to software-reset the sensor if no gpio
+line is hooked up to XSHUTDOWN.
 
-It's not only about board, but about all devices in the SoC.
-
-> 
-> But while they are software-compatible for the most part, they *are* distinct 
-> SoCs with different capabilities and I just don't see the point in trying to 
-> establish some kinds of relationships between different SoCs that are somewhat 
-> or very similar (msm8226 and msm8974 also share many components but are 
-> obviously different SoCs).
-
-You don't have to create such relationships. You don't have to include
-other DTSI, either. What yo have to is - quoting Linux docs:
-"DO make 'compatible' properties specific. DON'T use wildcards in
-compatible strings. DO use fallback compatibles when devices are the
-same as or a subset of prior implementations. DO add new compatibles in
-case there are new features or bugs."
-
-> 
-> And also e.g. (nearly) all apq* dts files we already have in mainline only 
-> have apq compatible and not the corresponding msm* compatible. And I think 
-> that's totally legitimate.
-
-We do not talk here about apq, actually, at all. We talk about one
-msm8xxx including other msm8xxx...
-
-
-Best regards,
-Krzysztof
-
+>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  drivers/media/i2c/ov2685.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/media/i2c/ov2685.c b/drivers/media/i2c/ov2685.c
+> index a3b524f15d89..a422f4c8a2eb 100644
+> --- a/drivers/media/i2c/ov2685.c
+> +++ b/drivers/media/i2c/ov2685.c
+> @@ -734,7 +734,7 @@ static int ov2685_probe(struct i2c_client *client,
+>  	if (clk_get_rate(ov2685->xvclk) != OV2685_XVCLK_FREQ)
+>  		dev_warn(dev, "xvclk mismatched, modes are based on 24MHz\n");
+>
+> -	ov2685->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
+> +	ov2685->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+>  	if (IS_ERR(ov2685->reset_gpio)) {
+>  		dev_err(dev, "Failed to get reset-gpios\n");
+>  		return -EINVAL;
+>
+> --
+> 2.39.1
+>
