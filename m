@@ -2,179 +2,109 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EC11CC61D97
-	for <phone-devel@archiver.kernel.org>; Sun, 29 Jan 2023 11:29:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DD9E6C05027
+	for <phone-devel@archiver.kernel.org>; Sun, 29 Jan 2023 11:49:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229800AbjA2L3e (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 29 Jan 2023 06:29:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50792 "EHLO
+        id S234618AbjA2Lti (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 29 Jan 2023 06:49:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbjA2L3d (ORCPT
+        with ESMTP id S229637AbjA2Lth (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 29 Jan 2023 06:29:33 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90A551E2B7;
-        Sun, 29 Jan 2023 03:29:32 -0800 (PST)
-Received: from ideasonboard.com (host-212-171-97-20.pool212171.interbusiness.it [212.171.97.20])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id C528E327;
-        Sun, 29 Jan 2023 12:29:30 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1674991771;
-        bh=fI5Fo1OzTqItExBmXaJCOk7Wu73AfLqMybxnBI02GOA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=AaS/+I9kw4VX/OhrpS7Wgxm2xZRNxs0muLeFpeWYn/idb6ZWBqjt9QcUvjeeErmYW
-         A11swFtHd+flY/j6zESMMeTtBN5w+99qdnjMtn51jV5InJcoeWh22t8CvVL0ckxwJV
-         vNzmTsU4Ezg5QPHrwGrJ89613mKKdP8BcBMhzdK0=
-Date:   Sun, 29 Jan 2023 12:29:27 +0100
-From:   Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-To:     Luca Weiss <luca@z3ntu.xyz>
+        Sun, 29 Jan 2023 06:49:37 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A38D520D10;
+        Sun, 29 Jan 2023 03:49:36 -0800 (PST)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 605B5CD59C;
+        Sun, 29 Jan 2023 11:49:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1674992944; bh=+DytX3gjjZuPPIiQNsyksb2H8Iuk01FVUyWItEe4f34=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=AWFV76mIjxf9A7AfgNSZhN+k8xt5l2DNlywaRNbOGykObF/hxkcf/9evUNRSvaQYS
+         Ov8vw4p8W0KFn2TnPxPE5e2ymENJgHSFxDzOjrY+zccxkc9njbnRIBDwsjDSRWgMQb
+         QPtIOT3cnqJkPufWaCCKoyTCIFyJbPf9bCxEfFBs=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Shunqian Zheng <zhengsq@rock-chips.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
         linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] media: i2c: ov2685: Add .get_selection() support
-Message-ID: <20230129112927.jyx3c2hxkhwvqmyq@uno.localdomain>
+Subject: Re: [PATCH 1/4] media: i2c: ov2685: Make reset gpio optional
+Date:   Sun, 29 Jan 2023 12:49:03 +0100
+Message-ID: <2543677.Lt9SDvczpP@g550jk>
+In-Reply-To: <20230129112249.lf2vb7pthrv4nien@uno.localdomain>
 References: <20230129-ov2685-improvements-v1-0-f281bd49399c@z3ntu.xyz>
- <20230129-ov2685-improvements-v1-4-f281bd49399c@z3ntu.xyz>
+ <20230129-ov2685-improvements-v1-1-f281bd49399c@z3ntu.xyz>
+ <20230129112249.lf2vb7pthrv4nien@uno.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230129-ov2685-improvements-v1-4-f281bd49399c@z3ntu.xyz>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Luca
+On Sonntag, 29. J=E4nner 2023 12:22:49 CET Jacopo Mondi wrote:
+> Hi Luca
+>=20
+> On Sun, Jan 29, 2023 at 10:42:35AM +0100, Luca Weiss wrote:
+> > In some setups XSHUTDOWN is connected to DOVDD when it's unused,
+> > therefore treat the reset gpio as optional.
+>=20
+> I don't have a datasheet for this sensor, but OV sensors usually have
+> to gpio lines to control powerdown and reset. Datasheets usually
+> suggest to hook one of the 2 to DOVDD and control the other from the
+> SoC. How is the sensor hooked up in your design ? No gpio lines is
+> controlled by the SoC ?
 
-On Sun, Jan 29, 2023 at 10:42:38AM +0100, Luca Weiss wrote:
-> Add support for the .get_selection() pad operation to the ov2685 sensor
-> driver.
->
-> Report the native sensor size (pixel array), the crop bounds (readable
-> pixel array area) and the current and default analog crop rectangles.
->
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+It looks like this sensor only has XSHUTDOWN pin and no extra reset pin.
 
-As the driver supports a single mode you could have hard-coded
-the rectangle sizes in get_selection(), but this way is much better as
-it prepares for adding more modes to the driver eventually.
+In my setup there's the normal I2C & CSI & mclk hookups, but the supply lin=
+es=20
+and shutdown line are all just connected to regulator-fixed, so gpio-
+controlled on/off regulators.
 
-Thanks
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+>=20
+> Another question is if we need to software-reset the sensor if no gpio
+> line is hooked up to XSHUTDOWN.
 
-> ---
->  drivers/media/i2c/ov2685.c | 61 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 61 insertions(+)
->
-> diff --git a/drivers/media/i2c/ov2685.c b/drivers/media/i2c/ov2685.c
-> index bfced11b178b..7ebf36d1a8cc 100644
-> --- a/drivers/media/i2c/ov2685.c
-> +++ b/drivers/media/i2c/ov2685.c
-> @@ -56,6 +56,9 @@
->  #define OV2685_REG_VALUE_16BIT		2
->  #define OV2685_REG_VALUE_24BIT		3
->
-> +#define OV2685_NATIVE_WIDTH		1616
-> +#define OV2685_NATIVE_HEIGHT		1216
-> +
->  #define OV2685_LANES			1
->  #define OV2685_BITS_PER_SAMPLE		10
->
-> @@ -78,6 +81,7 @@ struct ov2685_mode {
->  	u32 exp_def;
->  	u32 hts_def;
->  	u32 vts_def;
-> +	const struct v4l2_rect *analog_crop;
->  	const struct regval *reg_list;
->  };
->
-> @@ -231,6 +235,13 @@ static const int ov2685_test_pattern_val[] = {
->  	OV2685_TEST_PATTERN_COLOR_SQUARE,
->  };
->
-> +static const struct v4l2_rect ov2685_analog_crop = {
-> +	.left	= 8,
-> +	.top	= 8,
-> +	.width	= 1600,
-> +	.height	= 1200,
-> +};
-> +
->  static const struct ov2685_mode supported_modes[] = {
->  	{
->  		.width = 1600,
-> @@ -238,6 +249,7 @@ static const struct ov2685_mode supported_modes[] = {
->  		.exp_def = 0x04ee,
->  		.hts_def = 0x06a4,
->  		.vts_def = 0x050e,
-> +		.analog_crop = &ov2685_analog_crop,
->  		.reg_list = ov2685_1600x1200_regs,
->  	},
->  };
-> @@ -384,6 +396,53 @@ static int ov2685_enum_frame_sizes(struct v4l2_subdev *sd,
->  	return 0;
->  }
->
-> +static const struct v4l2_rect *
-> +__ov2685_get_pad_crop(struct ov2685 *ov2685,
-> +		      struct v4l2_subdev_state *state, unsigned int pad,
-> +		      enum v4l2_subdev_format_whence which)
-> +{
-> +	const struct ov2685_mode *mode = ov2685->cur_mode;
-> +
-> +	switch (which) {
-> +	case V4L2_SUBDEV_FORMAT_TRY:
-> +		return v4l2_subdev_get_try_crop(&ov2685->subdev, state, pad);
-> +	case V4L2_SUBDEV_FORMAT_ACTIVE:
-> +		return mode->analog_crop;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static int ov2685_get_selection(struct v4l2_subdev *sd,
-> +				struct v4l2_subdev_state *sd_state,
-> +				struct v4l2_subdev_selection *sel)
-> +{
-> +	struct ov2685 *ov2685 = to_ov2685(sd);
-> +
-> +	switch (sel->target) {
-> +	case V4L2_SEL_TGT_CROP:
-> +		mutex_lock(&ov2685->mutex);
-> +		sel->r = *__ov2685_get_pad_crop(ov2685, sd_state, sel->pad,
-> +				sel->which);
-> +		mutex_unlock(&ov2685->mutex);
-> +		break;
-> +	case V4L2_SEL_TGT_NATIVE_SIZE:
-> +	case V4L2_SEL_TGT_CROP_BOUNDS:
-> +		sel->r.top = 0;
-> +		sel->r.left = 0;
-> +		sel->r.width = OV2685_NATIVE_WIDTH;
-> +		sel->r.height = OV2685_NATIVE_HEIGHT;
-> +		break;
-> +	case V4L2_SEL_TGT_CROP_DEFAULT:
-> +		sel->r = ov2685_analog_crop;
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
->  /* Calculate the delay in us by clock rate and clock cycles */
->  static inline u32 ov2685_cal_delay(u32 cycles)
->  {
-> @@ -592,6 +651,8 @@ static const struct v4l2_subdev_pad_ops ov2685_pad_ops = {
->  	.enum_frame_size = ov2685_enum_frame_sizes,
->  	.get_fmt = ov2685_get_fmt,
->  	.set_fmt = ov2685_set_fmt,
-> +	.get_selection = ov2685_get_selection,
-> +	.set_selection = ov2685_get_selection,
->  };
->
->  static const struct v4l2_subdev_ops ov2685_subdev_ops = {
->
-> --
-> 2.39.1
->
+The datasheet mentions it resets itself during power up (so when the suppli=
+es=20
+are turned on), so I don't think we need to add anything.
+
+Regards
+Luca
+
+>=20
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> >=20
+> >  drivers/media/i2c/ov2685.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/media/i2c/ov2685.c b/drivers/media/i2c/ov2685.c
+> > index a3b524f15d89..a422f4c8a2eb 100644
+> > --- a/drivers/media/i2c/ov2685.c
+> > +++ b/drivers/media/i2c/ov2685.c
+> > @@ -734,7 +734,7 @@ static int ov2685_probe(struct i2c_client *client,
+> >=20
+> >  	if (clk_get_rate(ov2685->xvclk) !=3D OV2685_XVCLK_FREQ)
+> >  =09
+> >  		dev_warn(dev, "xvclk mismatched, modes are based on=20
+24MHz\n");
+> >=20
+> > -	ov2685->reset_gpio =3D devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
+> > +	ov2685->reset_gpio =3D devm_gpiod_get_optional(dev, "reset",
+> > GPIOD_OUT_LOW);>=20
+> >  	if (IS_ERR(ov2685->reset_gpio)) {
+> >  =09
+> >  		dev_err(dev, "Failed to get reset-gpios\n");
+> >  		return -EINVAL;
+> >=20
+> > --
+> > 2.39.1
+
+
+
+
