@@ -2,125 +2,220 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2B7DC61D97
-	for <phone-devel@archiver.kernel.org>; Sun, 29 Jan 2023 13:06:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C3F64C61D97
+	for <phone-devel@archiver.kernel.org>; Sun, 29 Jan 2023 19:00:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231297AbjA2NGI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 29 Jan 2023 08:06:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49272 "EHLO
+        id S234955AbjA2TA2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 29 Jan 2023 14:00:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229825AbjA2NGH (ORCPT
+        with ESMTP id S234897AbjA2TAZ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 29 Jan 2023 08:06:07 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9237B1E5EA;
-        Sun, 29 Jan 2023 05:06:02 -0800 (PST)
-Received: from ideasonboard.com (host-212-171-97-20.pool212171.interbusiness.it [212.171.97.20])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 9BBFC327;
-        Sun, 29 Jan 2023 14:05:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1674997560;
-        bh=IW7Jzg4uvMKHkGW9e8JbWz5TgBn3wz6lgFae71RROV8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=o9utlLVFX8KmyH0dE7hH4jz7AOV7L2AN/ZNWuK4ytns3cE86dwRcBXZUgMWmrJa8h
-         sRyMxf81xzeRIMV4ZAR2WpQFlXYG1dBvro4zhhvqLWidPrW9qUCRlp2IowX4dNXD55
-         Q8qAi1rId/JBGVScu8wH2DCOGvk4YoONeK7QqeCk=
-Date:   Sun, 29 Jan 2023 14:05:48 +0100
-From:   Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Shunqian Zheng <zhengsq@rock-chips.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] media: i2c: ov2685: Make reset gpio optional
-Message-ID: <20230129130548.bsqcnjh2lfu4bn2y@uno.localdomain>
-References: <20230129-ov2685-improvements-v1-0-f281bd49399c@z3ntu.xyz>
- <20230129-ov2685-improvements-v1-1-f281bd49399c@z3ntu.xyz>
- <20230129112249.lf2vb7pthrv4nien@uno.localdomain>
- <2543677.Lt9SDvczpP@g550jk>
+        Sun, 29 Jan 2023 14:00:25 -0500
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 441311969A;
+        Sun, 29 Jan 2023 11:00:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1675018824; x=1706554824;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qcLePQTbrzoLvq+ElRVOT/zcQr0y/IMDSu9rw90ydJ4=;
+  b=EmpB0/dZ3ieBAkwgEtfdOZVUYlB42m59sHmfhn3cKtmzK4HCorvKeRK3
+   D8quRut1uBE2haOyDEhqyTyv2bqDtNjB1QxIwG34ZAux2ZYMKlDXb44wF
+   FNyJhIEXrSEnb9IRbnUB+B626c4zuL0T6lyo8T14mFKWsx50x9ZVwnlax
+   7104DKtwhNIN7L5Lgi03cSmxNTThp8OZ4O50jIa5SSz4eI1nHHATPpoeS
+   uMfSyrfmUkQ4ZejDf245v24DZktVkzM2803dnalVocppsm9rBZu9iiTpA
+   JQ6ZuepQ6j5IsjhYtYpmLqCBmLg0jzO+ZtK3klAK65WRPc4PviNKO691Q
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10605"; a="307071745"
+X-IronPort-AV: E=Sophos;i="5.97,256,1669104000"; 
+   d="scan'208";a="307071745"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2023 11:00:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10605"; a="806429240"
+X-IronPort-AV: E=Sophos;i="5.97,256,1669104000"; 
+   d="scan'208";a="806429240"
+Received: from lkp-server01.sh.intel.com (HELO ffa7f14d1d0f) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 29 Jan 2023 11:00:21 -0800
+Received: from kbuild by ffa7f14d1d0f with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1pMCua-00032E-1L;
+        Sun, 29 Jan 2023 19:00:20 +0000
+Date:   Mon, 30 Jan 2023 03:00:06 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Caleb Connolly <caleb.connolly@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     oe-kbuild-all@lists.linux.dev,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v7 1/2] power: supply: add Qualcomm PMI8998 SMB2 Charger
+ driver
+Message-ID: <202301300204.VMpH8OI5-lkp@intel.com>
+References: <20230127230506.3140297-1-caleb.connolly@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2543677.Lt9SDvczpP@g550jk>
+In-Reply-To: <20230127230506.3140297-1-caleb.connolly@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Luca
+Hi Caleb,
 
-On Sun, Jan 29, 2023 at 12:49:03PM +0100, Luca Weiss wrote:
-> On Sonntag, 29. Jänner 2023 12:22:49 CET Jacopo Mondi wrote:
-> > Hi Luca
-> >
-> > On Sun, Jan 29, 2023 at 10:42:35AM +0100, Luca Weiss wrote:
-> > > In some setups XSHUTDOWN is connected to DOVDD when it's unused,
-> > > therefore treat the reset gpio as optional.
-> >
-> > I don't have a datasheet for this sensor, but OV sensors usually have
-> > to gpio lines to control powerdown and reset. Datasheets usually
-> > suggest to hook one of the 2 to DOVDD and control the other from the
-> > SoC. How is the sensor hooked up in your design ? No gpio lines is
-> > controlled by the SoC ?
->
-> It looks like this sensor only has XSHUTDOWN pin and no extra reset pin.
->
+Thank you for the patch! Perhaps something to improve:
 
-Ack, I see the same for OV2680 (for which I have a datasheet)
+[auto build test WARNING on sre-power-supply/for-next]
+[also build test WARNING on robh/for-next linus/master v6.2-rc5 next-20230127]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> In my setup there's the normal I2C & CSI & mclk hookups, but the supply lines
-> and shutdown line are all just connected to regulator-fixed, so gpio-
-> controlled on/off regulators.
->
-> >
-> > Another question is if we need to software-reset the sensor if no gpio
-> > line is hooked up to XSHUTDOWN.
->
-> The datasheet mentions it resets itself during power up (so when the supplies
-> are turned on), so I don't think we need to add anything.
->
+url:    https://github.com/intel-lab-lkp/linux/commits/Caleb-Connolly/dt-bindings-power-supply-qcom-pmi8998-charger-add-bindings-for-smb2-driver/20230128-172503
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-power-supply.git for-next
+patch link:    https://lore.kernel.org/r/20230127230506.3140297-1-caleb.connolly%40linaro.org
+patch subject: [PATCH v7 1/2] power: supply: add Qualcomm PMI8998 SMB2 Charger driver
+config: alpha-allmodconfig (https://download.01.org/0day-ci/archive/20230130/202301300204.VMpH8OI5-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 12.1.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/703a352943e95de330efc87cd3feab1c6534603a
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Caleb-Connolly/dt-bindings-power-supply-qcom-pmi8998-charger-add-bindings-for-smb2-driver/20230128-172503
+        git checkout 703a352943e95de330efc87cd3feab1c6534603a
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=alpha olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=alpha SHELL=/bin/bash drivers/bluetooth/ drivers/net/ethernet/mediatek/ drivers/power/supply/
 
-Thanks for the clarification!
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
 
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+All warnings (new ones prefixed by >>):
 
-Thanks
-   j
+   drivers/power/supply/qcom_pmi8998_charger.c: In function 'smb2_probe':
+>> drivers/power/supply/qcom_pmi8998_charger.c:979:62: warning: format '%s' expects argument of type 'char *', but argument 4 has type 'const void *' [-Wformat=]
+     979 |         desc->name = devm_kasprintf(chip->dev, GFP_KERNEL, "%s-charger",
+         |                                                             ~^
+         |                                                              |
+         |                                                              char *
+         |                                                             %p
+     980 |                                     device_get_match_data(chip->dev));
+         |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+         |                                     |
+         |                                     const void *
 
 
-> Regards
-> Luca
->
-> >
-> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > ---
-> > >
-> > >  drivers/media/i2c/ov2685.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/media/i2c/ov2685.c b/drivers/media/i2c/ov2685.c
-> > > index a3b524f15d89..a422f4c8a2eb 100644
-> > > --- a/drivers/media/i2c/ov2685.c
-> > > +++ b/drivers/media/i2c/ov2685.c
-> > > @@ -734,7 +734,7 @@ static int ov2685_probe(struct i2c_client *client,
-> > >
-> > >  	if (clk_get_rate(ov2685->xvclk) != OV2685_XVCLK_FREQ)
-> > >
-> > >  		dev_warn(dev, "xvclk mismatched, modes are based on
-> 24MHz\n");
-> > >
-> > > -	ov2685->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
-> > > +	ov2685->reset_gpio = devm_gpiod_get_optional(dev, "reset",
-> > > GPIOD_OUT_LOW);>
-> > >  	if (IS_ERR(ov2685->reset_gpio)) {
-> > >
-> > >  		dev_err(dev, "Failed to get reset-gpios\n");
-> > >  		return -EINVAL;
-> > >
-> > > --
-> > > 2.39.1
->
->
->
->
+vim +979 drivers/power/supply/qcom_pmi8998_charger.c
+
+   934	
+   935	static int smb2_probe(struct platform_device *pdev)
+   936	{
+   937		struct power_supply_config supply_config = {};
+   938		struct power_supply_desc *desc;
+   939		struct smb2_chip *chip;
+   940		int rc, irq;
+   941	
+   942		chip = devm_kzalloc(&pdev->dev, sizeof(*chip), GFP_KERNEL);
+   943		if (!chip)
+   944			return -ENOMEM;
+   945	
+   946		chip->dev = &pdev->dev;
+   947		chip->name = pdev->name;
+   948	
+   949		chip->regmap = dev_get_regmap(pdev->dev.parent, NULL);
+   950		if (!chip->regmap)
+   951			return dev_err_probe(chip->dev, -ENODEV,
+   952					     "failed to locate the regmap\n");
+   953	
+   954		rc = device_property_read_u32(chip->dev, "reg", &chip->base);
+   955		if (rc < 0)
+   956			return dev_err_probe(chip->dev, rc,
+   957					     "Couldn't read base address\n");
+   958	
+   959		chip->usb_in_v_chan = devm_iio_channel_get(chip->dev, "usbin_v");
+   960		if (IS_ERR(chip->usb_in_v_chan))
+   961			return dev_err_probe(chip->dev, PTR_ERR(chip->usb_in_v_chan),
+   962					     "Couldn't get usbin_v IIO channel\n");
+   963	
+   964		chip->usb_in_i_chan = devm_iio_channel_get(chip->dev, "usbin_i");
+   965		if (IS_ERR(chip->usb_in_i_chan)) {
+   966			return dev_err_probe(chip->dev, PTR_ERR(chip->usb_in_i_chan),
+   967					     "Couldn't get usbin_i IIO channel\n");
+   968		}
+   969	
+   970		rc = smb2_init_hw(chip);
+   971		if (rc < 0)
+   972			return rc;
+   973	
+   974		supply_config.drv_data = chip;
+   975		supply_config.of_node = pdev->dev.of_node;
+   976	
+   977		desc = devm_kzalloc(chip->dev, sizeof(smb2_psy_desc), GFP_KERNEL);
+   978		memcpy(desc, &smb2_psy_desc, sizeof(smb2_psy_desc));
+ > 979		desc->name = devm_kasprintf(chip->dev, GFP_KERNEL, "%s-charger",
+   980					    device_get_match_data(chip->dev));
+   981	
+   982		chip->chg_psy =
+   983			devm_power_supply_register(chip->dev, desc, &supply_config);
+   984		if (IS_ERR(chip->chg_psy))
+   985			return dev_err_probe(chip->dev, PTR_ERR(chip->chg_psy),
+   986					     "failed to register power supply\n");
+   987	
+   988		rc = power_supply_get_battery_info(chip->chg_psy, &chip->batt_info);
+   989		if (rc)
+   990			return dev_err_probe(chip->dev, rc,
+   991					     "Failed to get battery info\n");
+   992	
+   993		rc = devm_delayed_work_autocancel(chip->dev, &chip->status_change_work,
+   994						  smb2_status_change_work);
+   995		if (rc)
+   996			return dev_err_probe(chip->dev, rc,
+   997					     "Failed to init status change work\n");
+   998	
+   999		rc = (chip->batt_info->voltage_max_design_uv - 3487500) / 7500 + 1;
+  1000		rc = regmap_update_bits(chip->regmap, chip->base + FLOAT_VOLTAGE_CFG,
+  1001					FLOAT_VOLTAGE_SETTING_MASK, rc);
+  1002		if (rc < 0)
+  1003			return dev_err_probe(chip->dev, rc, "Couldn't set vbat max\n");
+  1004	
+  1005		rc = smb2_init_irq(chip, &irq, "bat-ov", smb2_handle_batt_overvoltage);
+  1006		if (rc < 0)
+  1007			return rc;
+  1008	
+  1009		rc = smb2_init_irq(chip, &chip->cable_irq, "usb-plugin",
+  1010				   smb2_handle_usb_plugin);
+  1011		if (rc < 0)
+  1012			return rc;
+  1013	
+  1014		rc = smb2_init_irq(chip, &irq, "usbin-icl-change",
+  1015				   smb2_handle_usb_icl_change);
+  1016		if (rc < 0)
+  1017			return rc;
+  1018		rc = smb2_init_irq(chip, &irq, "wdog-bark", smb2_handle_wdog_bark);
+  1019		if (rc < 0)
+  1020			return rc;
+  1021	
+  1022		rc = dev_pm_set_wake_irq(chip->dev, chip->cable_irq);
+  1023		if (rc < 0)
+  1024			return dev_err_probe(chip->dev, rc, "Couldn't set wake irq\n");
+  1025	
+  1026		platform_set_drvdata(pdev, chip);
+  1027	
+  1028		/* Initialise charger state */
+  1029		schedule_delayed_work(&chip->status_change_work, 0);
+  1030	
+  1031		return 0;
+  1032	}
+  1033	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests
