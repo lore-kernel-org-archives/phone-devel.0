@@ -2,117 +2,132 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 053DAC54EED
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Jan 2023 18:31:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20D42C636D3
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Jan 2023 18:37:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238263AbjA3Sbu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 30 Jan 2023 13:31:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37160 "EHLO
+        id S238271AbjA3Sh3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 30 Jan 2023 13:37:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237956AbjA3SbY (ORCPT
+        with ESMTP id S238291AbjA3Sgg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 30 Jan 2023 13:31:24 -0500
+        Mon, 30 Jan 2023 13:36:36 -0500
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0AD746D45;
-        Mon, 30 Jan 2023 10:30:26 -0800 (PST)
-Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id AA6D8CD174;
-        Mon, 30 Jan 2023 18:21:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1675102888; bh=0Dr8kzc+XRr5dNSVrvnHxckyOzuvWhj6XIseX8RubjA=;
-        h=From:Date:Subject:To:Cc;
-        b=D16azt9T9bLignTgJ07fiBAdLPEaULiLYbb6+IuLW2/P2qErB6JI0Y5BbMXfTO+HO
-         F7Y5/osagMJuNkmzjYwDyTVMcX902ioocpmf7lRDjpbP3/c7azwjLkAal+SLGGkVVO
-         4XCRrwZo8zoDACifGj67PCLcaQsChRiwAwiic9CA=
-From:   luca@z3ntu.xyz
-Date:   Mon, 30 Jan 2023 19:20:56 +0100
-Subject: [PATCH] ARM: dts: qcom: msm8974: correct qfprom node reg
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230130-msm8974-qfprom-v1-1-975aa0e5e083@z3ntu.xyz>
-X-B4-Tracking: v=1; b=H4sIAIcK2GMC/zWNQQ7CIBAAv9Ls2W2AGmz9SuMBcLEcoLBEo2n6d
- 6mJx0lmMhtU4kAVrt0GTK9Qw5oayFMHbjHpQRjujUEJNQg5CIw1jtPljMVnXiNqOTlBo1eaLLT
- Imkpo2SS3HFlxzfknupf9B11+eqZyyJnJh/fvPt/2/QvdljUxjQAAAA==
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A5F513D6C;
+        Mon, 30 Jan 2023 10:36:22 -0800 (PST)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 705A3CD5B1;
+        Mon, 30 Jan 2023 18:36:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1675103780; bh=w7+XQVClETXGlfL757dC4kjjZ78YoUiBNlAl+eRVAD0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=bzTQoAHp/z69+jSIf9SrDybNnMQQWbWkbdUIQk/Q+iUUwgpKs3bO96N/sILAGW3EB
+         tPEaZoJCwp3fVxaWwUnRJ6koXJh639cxKs5UNP34wyUYcoHVrHu8hoZgxBHI5vXoaH
+         RCpblWn8pYkhC4cQVsa+A4oLF3fiOjzM1QQG1sDg=
+From:   Luca Weiss <luca@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Eduardo Valentin <edubezval@gmail.com>,
-        Rajendra Nayak <rnayak@codeaurora.org>
-Cc:     Rob Herring <robh@kernel.org>, Andy Gross <andy.gross@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Craig Tatlor <ctatlor97@gmail.com>,
-        Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1418; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=xTrlk6QIwUDPatxqOUyG7LEgj/mkoRl+FjSk+cr9SJQ=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBj2AqjW0MExW5rjkpzFW2ONlWKbjwUW2lGAD0Q/zk/
- gnuUBFqJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCY9gKowAKCRBy2EO4nU3XVg5XD/
- 4oonBTUFx+3ZyGh7WBhSUZ7X/FDrA1fL1E6sTEkh2ZWoH4f/Qzq1RrPGP06pD8ouFB68Fwjclnmp93
- otp8tWOlx/Q1WSWlpIOtNRRvtvbTfSruouPg84KE8wSHx63tNYJmAdX+4FVjgNhv8QJ1PjDywKoxAI
- rkfeCUkWLFyZCBr3YST1c6SdH9N4C8Aw8l419DrVjZWA+McDFmEPg/3zd5r5Szrw0hJgf/qLmv91Rs
- DOdCgFIhn35Py1GrLddrwYepTvnHdZ5+7XLGrX4ICQlTooO+ZB18wCvA1xY6zmasHg73XNJQg0Mtx0
- j407N9RixlM7c+aTSZup2t1xrPkluU1o+ylNUgMCPHeHkf+POHNdMkgoxyVFatv+kId+bhPdvn/hnP
- 5xpBxhOUpadz84Q0afT5zAQmU1CTtd4U3U3xcwI9UpGqZcBrXo93KeUUw+eebEYlUUzRhsHbBtT5DD
- 5x0x8I9KY6ABFjIAfAH7j1o8mEIk3u+cfOMDqfOPcqx6p+wQzCIUSSHvl9/Pp4NDm2MSkN6BLuuH91
- BlJnIDgT2K4L7879EbGGilxvuRrWVAxufu+71HvJJ9loapVgBmV31C2KcqvqegwnojvywXdlyZrFq9
- BfRJhdSYmU2fKEotq07Rse/luA7FpH9IVdlCV3Yoia8ziTLOwW22nVabLOpw==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org
+Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Craig Tatlor <ctatlor97@gmail.com>
+Subject: Re: [PATCH] ARM: dts: qcom: msm8974: correct qfprom node reg
+Date:   Mon, 30 Jan 2023 19:36:19 +0100
+Message-ID: <1886214.taCxCBeP46@g550jk>
+In-Reply-To: <3112b531-45df-672c-c0a7-aefbdcceb727@linaro.org>
+References: <20230130-msm8974-qfprom-v1-1-975aa0e5e083@z3ntu.xyz>
+ <3112b531-45df-672c-c0a7-aefbdcceb727@linaro.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Craig Tatlor <ctatlor97@gmail.com>
+On Montag, 30. J=E4nner 2023 19:30:04 CET Konrad Dybcio wrote:
+> On 30.01.2023 19:20, luca@z3ntu.xyz wrote:
+> > From: Craig Tatlor <ctatlor97@gmail.com>
+> >=20
+> > The qfprom actually starts at 0xfc4b8000 instead of 0xfc4bc000 as
+> > defined previously. Adjust the tsens offsets accordingly.
+> >=20
+> > [luca@z3ntu.xyz: extract to standalone patch]
+> >=20
+> > Fixes: c59ffb519357 ("arm: dts: msm8974: Add thermal zones, tsens and
+> > qfprom nodes") Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+>=20
+> Isn't this a raw vs ecc-corrected values problem?
 
-The qfprom actually starts at 0xfc4b8000 instead of 0xfc4bc000 as
-defined previously. Adjust the tsens offsets accordingly.
+Not quite sure what you mean.
 
-[luca@z3ntu.xyz: extract to standalone patch]
+The original intention behind this patch is to allow to use the pvs fuse at=
+=20
+(now) 0xb0 which was inaccessible with the former definition.
 
-Fixes: c59ffb519357 ("arm: dts: msm8974: Add thermal zones, tsens and qfprom nodes")
-Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- arch/arm/boot/dts/qcom-msm8974.dtsi | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+    pvs: pvs@b0 {
+        reg =3D <0xb0 0x8>;
+    };
 
-diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
-index 8d216a3c0851..922d235c6065 100644
---- a/arch/arm/boot/dts/qcom-msm8974.dtsi
-+++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
-@@ -1132,16 +1132,16 @@ restart@fc4ab000 {
- 			reg = <0xfc4ab000 0x4>;
- 		};
- 
--		qfprom: qfprom@fc4bc000 {
-+		qfprom: qfprom@fc4b8000 {
- 			compatible = "qcom,msm8974-qfprom", "qcom,qfprom";
--			reg = <0xfc4bc000 0x1000>;
-+			reg = <0xfc4b8000 0x7000>;
- 			#address-cells = <1>;
- 			#size-cells = <1>;
--			tsens_calib: calib@d0 {
--				reg = <0xd0 0x18>;
-+			tsens_calib: calib@40d0 {
-+				reg = <0x40d0 0x18>;
- 			};
--			tsens_backup: backup@440 {
--				reg = <0x440 0x10>;
-+			tsens_backup: backup@4440 {
-+				reg = <0x4440 0x10>;
- 			};
- 		};
- 
+Regards
+Luca
 
----
-base-commit: 6d796c50f84ca79f1722bb131799e5a5710c4700
-change-id: 20230130-msm8974-qfprom-619c0e8f26eb
+>=20
+> Konrad
+>=20
+> >  arch/arm/boot/dts/qcom-msm8974.dtsi | 12 ++++++------
+> >  1 file changed, 6 insertions(+), 6 deletions(-)
+> >=20
+> > diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi
+> > b/arch/arm/boot/dts/qcom-msm8974.dtsi index 8d216a3c0851..922d235c6065
+> > 100644
+> > --- a/arch/arm/boot/dts/qcom-msm8974.dtsi
+> > +++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
+> > @@ -1132,16 +1132,16 @@ restart@fc4ab000 {
+> >=20
+> >  			reg =3D <0xfc4ab000 0x4>;
+> >  	=09
+> >  		};
+> >=20
+> > -		qfprom: qfprom@fc4bc000 {
+> > +		qfprom: qfprom@fc4b8000 {
+> >=20
+> >  			compatible =3D "qcom,msm8974-qfprom",=20
+"qcom,qfprom";
+> >=20
+> > -			reg =3D <0xfc4bc000 0x1000>;
+> > +			reg =3D <0xfc4b8000 0x7000>;
+> >=20
+> >  			#address-cells =3D <1>;
+> >  			#size-cells =3D <1>;
+> >=20
+> > -			tsens_calib: calib@d0 {
+> > -				reg =3D <0xd0 0x18>;
+> > +			tsens_calib: calib@40d0 {
+> > +				reg =3D <0x40d0 0x18>;
+> >=20
+> >  			};
+> >=20
+> > -			tsens_backup: backup@440 {
+> > -				reg =3D <0x440 0x10>;
+> > +			tsens_backup: backup@4440 {
+> > +				reg =3D <0x4440 0x10>;
+> >=20
+> >  			};
+> >  	=09
+> >  		};
+> >=20
+> > ---
+> > base-commit: 6d796c50f84ca79f1722bb131799e5a5710c4700
+> > change-id: 20230130-msm8974-qfprom-619c0e8f26eb
+> >=20
+> > Best regards,
 
-Best regards,
--- 
-Luca Weiss <luca@z3ntu.xyz>
+
+
 
