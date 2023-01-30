@@ -2,147 +2,174 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C2F38C636D7
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Jan 2023 20:00:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96E1AC636D6
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Jan 2023 20:38:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237998AbjA3T77 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 30 Jan 2023 14:59:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48838 "EHLO
+        id S229757AbjA3UiE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 30 Jan 2023 15:38:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238104AbjA3T7q (ORCPT
+        with ESMTP id S229587AbjA3UiD (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 30 Jan 2023 14:59:46 -0500
-Received: from out-82.mta0.migadu.com (out-82.mta0.migadu.com [IPv6:2001:41d0:1004:224b::52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36D184673E
-        for <phone-devel@vger.kernel.org>; Mon, 30 Jan 2023 11:59:44 -0800 (PST)
-Date:   Mon, 30 Jan 2023 20:59:35 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grimler.se; s=key1;
-        t=1675108779;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=oDXEr4tevG+VL9CgJZUG91in/A0kV3NohS4+eilPyY0=;
-        b=Dk9hrcKLg6J15nt1uvUwiH2WNSHjrXjxdfBe9kav2HVwNfuGuB46meRfLu0ATP714SBYmM
-        5mBixVUdN+gnXm6mmBATYA/VwWWbAEmbE6WbEpiM4B990lSV3N0zbh4iQvVDa7TcAl/DR6
-        H3y/OSaK96QSmwwFPqc3M8TBzdbTXNg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Henrik Grimler <henrik@grimler.se>
-To:     Marek Szyprowski <m.szyprowski@samsung.com>
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        alim.akhtar@samsung.com, jenneron@protonmail.com,
-        markuss.broks@gmail.com, martin.juecker@gmail.com,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v2 0/2] ARM: dts: add mmc aliases for Exynos devices
-Message-ID: <Y9ghpylhwvB54E0w@localhost>
-References: <CGME20230128133213eucas1p274ea3393199fe711fba8f542197e1dea@eucas1p2.samsung.com>
- <20230128133151.29471-1-henrik@grimler.se>
- <e41a0a4c-b9c6-e396-313e-ea2990b2dd6f@samsung.com>
+        Mon, 30 Jan 2023 15:38:03 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2549611E94;
+        Mon, 30 Jan 2023 12:38:01 -0800 (PST)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id B0BCBCD4B3;
+        Mon, 30 Jan 2023 20:37:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1675111049; bh=2qV9dfXM46OwroENm+8sv9Dhvr1XeFyMNu+TGHJGkaU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=VoN//kqdI6qlbf71JIccQ2JXLTU8w051w13B1OD5VakomkZXq7LTVZZGnDOUqEBcA
+         rYMlHpJ5ITqOHhBcLNZb3jqy9yirDvYKlVlS0JhwJcy0ZU/5FCrfKeBxvf7R5dMJz7
+         1DUFKzzKa3s+b9YP2p2vQwJHNj1O7abh4ysx+VrE=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        linux-arm-msm@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Craig Tatlor <ctatlor97@gmail.com>
+Subject: Re: [PATCH] ARM: dts: qcom: msm8974: correct qfprom node reg
+Date:   Mon, 30 Jan 2023 21:37:29 +0100
+Message-ID: <2401830.jE0xQCEvom@z3ntu.xyz>
+In-Reply-To: <568ebb75-5cb2-af97-bfae-c1e1e6174a45@linaro.org>
+References: <20230130-msm8974-qfprom-v1-1-975aa0e5e083@z3ntu.xyz>
+ <1886214.taCxCBeP46@g550jk> <568ebb75-5cb2-af97-bfae-c1e1e6174a45@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e41a0a4c-b9c6-e396-313e-ea2990b2dd6f@samsung.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Marek,
+On Montag, 30. J=E4nner 2023 19:42:51 CET Konrad Dybcio wrote:
+> On 30.01.2023 19:36, Luca Weiss wrote:
+> > On Montag, 30. J=E4nner 2023 19:30:04 CET Konrad Dybcio wrote:
+> >> On 30.01.2023 19:20, luca@z3ntu.xyz wrote:
+> >>> From: Craig Tatlor <ctatlor97@gmail.com>
+> >>>=20
+> >>> The qfprom actually starts at 0xfc4b8000 instead of 0xfc4bc000 as
+> >>> defined previously. Adjust the tsens offsets accordingly.
+> >>>=20
+> >>> [luca@z3ntu.xyz: extract to standalone patch]
+> >>>=20
+> >>> Fixes: c59ffb519357 ("arm: dts: msm8974: Add thermal zones, tsens and
+> >>> qfprom nodes") Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
+> >>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> >>> ---
+> >>=20
+> >> Isn't this a raw vs ecc-corrected values problem?
+> >=20
+> > Not quite sure what you mean.
+>=20
+> The QFPROM is split into two parts: one where raw values
+> are stored, and the other one where ECC-corrected copies
+> of them reside. Usually it's at offset of 0x4000. We should
+> generally be using the ECC-corrected ones, because.. well..
+> they are ECC-corrected.. You may want to check if the
+> fuse you're adding reads the same value at +0x4000.
 
-On Mon, Jan 30, 2023 at 02:28:27PM +0100, Marek Szyprowski wrote:
-> On 28.01.2023 14:31, Henrik Grimler wrote:
-> > It is convenient to have fixed mmcblk numbering of the eMMC and sdcard
-> > so that assigned numbers will not change from boot-to-boot or
-> > depending on if storage devices are actually attached or not.
-> >
-> > Anton Bambura has done the work for the chromebooks while I have
-> > looked at the other devices.  On the chromebooks, mmc0 is used for
-> > eMMC and mmc1 for sdcard, while mmc0 is used for eMMC and mmc2 for
-> > sdcard on the other boards, simply because Anton and I had different
-> > preferences.
-> >
-> > Also remove mshc aliases, as they should not be needed after [1] as
-> > I understand it.
-> 
-> Thanks for this patchset. Long time ago I've tried to submit something 
-> similar, but that time it has been rejected:
-> 
-> https://lore.kernel.org/all/20201105114804.18326-1-m.szyprowski@samsung.com/
+Yeah that actually seems to work...
 
-Thanks for testing!  I missed that you had sent it before, Krzysztof
-pointed it out in v1 as well.
+But downstream's using this +0x4000 only for tsens it seems
 
-> I hope that the mshc alias removal will help here.
-> 
-> BTW, similar patchset is needed for arch/arm64/boot/dts/exynos
+   <0xfc4bc000 0x1000> as "tsens_eeprom_physical"
 
-Sure, I do not have any of the currently supported arm64 boards to
-test with, but can send the same type of patch for arm64 as well.
+qcom,clock-krait-8974 is using this:
 
-[1] 
+    <0xfc4b80b0 0x08> as "efuse"
 
-Best regards,
-Henrik Grimler
+Also seems HDMI driver is using a mix for HDCP stuff
 
-> > [1] https://lkml.kernel.org/lkml/20211124184603.3897245-1-john@metanate.com
-> >
-> > ---
-> >
-> > Changes since v1:
-> > * Move mshc alias cleanup to a separate commit
-> > * Use mmc0 and mmc1 (instead of mmc0 and mmc2) for eMMC and sdcard on
-> >    chromebooks
-> > * Address Krzysztof's review comments:
-> >   - Make changes per device rather than in soc dtsi
-> >
-> >
-> > Henrik Grimler (2):
-> >    ARM: dts: exynos: drop mshc aliases
-> >    ARM: dts: exynos: add mmc aliases
-> >
-> >   arch/arm/boot/dts/exynos3250-artik5-eval.dts        | 5 +++++
-> >   arch/arm/boot/dts/exynos3250-artik5.dtsi            | 5 +++++
-> >   arch/arm/boot/dts/exynos3250-monk.dts               | 1 +
-> >   arch/arm/boot/dts/exynos3250-rinato.dts             | 2 ++
-> >   arch/arm/boot/dts/exynos3250.dtsi                   | 3 ---
-> >   arch/arm/boot/dts/exynos4210-i9100.dts              | 6 ++++++
-> >   arch/arm/boot/dts/exynos4210-origen.dts             | 5 +++++
-> >   arch/arm/boot/dts/exynos4210-smdkv310.dts           | 4 ++++
-> >   arch/arm/boot/dts/exynos4210-trats.dts              | 6 ++++++
-> >   arch/arm/boot/dts/exynos4210-universal_c210.dts     | 6 ++++++
-> >   arch/arm/boot/dts/exynos4412-itop-elite.dts         | 5 +++++
-> >   arch/arm/boot/dts/exynos4412-midas.dtsi             | 3 +++
-> >   arch/arm/boot/dts/exynos4412-odroid-common.dtsi     | 5 +++++
-> >   arch/arm/boot/dts/exynos4412-origen.dts             | 5 +++++
-> >   arch/arm/boot/dts/exynos4412-p4note.dtsi            | 6 ++++++
-> >   arch/arm/boot/dts/exynos4412-smdk4412.dts           | 4 ++++
-> >   arch/arm/boot/dts/exynos4412-tiny4412.dts           | 4 ++++
-> >   arch/arm/boot/dts/exynos4412.dtsi                   | 1 -
-> >   arch/arm/boot/dts/exynos5250-arndale.dts            | 5 +++++
-> >   arch/arm/boot/dts/exynos5250-smdk5250.dts           | 2 ++
-> >   arch/arm/boot/dts/exynos5250-snow-common.dtsi       | 3 +++
-> >   arch/arm/boot/dts/exynos5250-spring.dts             | 5 +++++
-> >   arch/arm/boot/dts/exynos5250.dtsi                   | 4 ----
-> >   arch/arm/boot/dts/exynos5260-xyref5260.dts          | 5 +++++
-> >   arch/arm/boot/dts/exynos5410-odroidxu.dts           | 2 ++
-> >   arch/arm/boot/dts/exynos5410-smdk5410.dts           | 5 +++++
-> >   arch/arm/boot/dts/exynos5420-arndale-octa.dts       | 5 +++++
-> >   arch/arm/boot/dts/exynos5420-galaxy-tab-common.dtsi | 5 +++++
-> >   arch/arm/boot/dts/exynos5420-peach-pit.dts          | 3 +++
-> >   arch/arm/boot/dts/exynos5420-smdk5420.dts           | 5 +++++
-> >   arch/arm/boot/dts/exynos5420.dtsi                   | 3 ---
-> >   arch/arm/boot/dts/exynos5422-odroid-core.dtsi       | 5 +++++
-> >   arch/arm/boot/dts/exynos5422-odroidxu3-common.dtsi  | 4 ++++
-> >   arch/arm/boot/dts/exynos5422-samsung-k3g.dts        | 4 ++++
-> >   arch/arm/boot/dts/exynos5800-peach-pi.dts           | 3 +++
-> >   35 files changed, 133 insertions(+), 11 deletions(-)
-> >
-> >
-> > base-commit: 9ca5a7ce492d182c25ea2e785eeb72cee1d5056b
-> 
-> Best regards
-> -- 
-> Marek Szyprowski, PhD
-> Samsung R&D Institute Poland
-> 
+  drivers/video/msm/mdss/mdss_hdmi_util.h:
+
+    /* QFPROM Registers for HDMI/HDCP */
+    #define QFPROM_RAW_FEAT_CONFIG_ROW0_LSB  (0x000000F8)
+    #define QFPROM_RAW_FEAT_CONFIG_ROW0_MSB  (0x000000FC)
+    #define HDCP_KSV_LSB                     (0x000060D8)
+    #define HDCP_KSV_MSB                     (0x000060DC)
+
+Any clue why Qualcomm used it this way in downstream? I'd rather not deviat=
+e=20
+too much if not for a good reason...
+
+Regards
+Luca
+
+
+>=20
+> Konrad
+>=20
+> > The original intention behind this patch is to allow to use the pvs fuse
+> > at
+> > (now) 0xb0 which was inaccessible with the former definition.
+> >=20
+> >     pvs: pvs@b0 {
+> >    =20
+> >         reg =3D <0xb0 0x8>;
+> >    =20
+> >     };
+> >=20
+> > Regards
+> > Luca
+> >=20
+> >> Konrad
+> >>=20
+> >>>  arch/arm/boot/dts/qcom-msm8974.dtsi | 12 ++++++------
+> >>>  1 file changed, 6 insertions(+), 6 deletions(-)
+> >>>=20
+> >>> diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi
+> >>> b/arch/arm/boot/dts/qcom-msm8974.dtsi index 8d216a3c0851..922d235c6065
+> >>> 100644
+> >>> --- a/arch/arm/boot/dts/qcom-msm8974.dtsi
+> >>> +++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
+> >>> @@ -1132,16 +1132,16 @@ restart@fc4ab000 {
+> >>>=20
+> >>>  			reg =3D <0xfc4ab000 0x4>;
+> >>>  	=09
+> >>>  		};
+> >>>=20
+> >>> -		qfprom: qfprom@fc4bc000 {
+> >>> +		qfprom: qfprom@fc4b8000 {
+> >>>=20
+> >>>  			compatible =3D "qcom,msm8974-qfprom",
+> >=20
+> > "qcom,qfprom";
+> >=20
+> >>> -			reg =3D <0xfc4bc000 0x1000>;
+> >>> +			reg =3D <0xfc4b8000 0x7000>;
+> >>>=20
+> >>>  			#address-cells =3D <1>;
+> >>>  			#size-cells =3D <1>;
+> >>>=20
+> >>> -			tsens_calib: calib@d0 {
+> >>> -				reg =3D <0xd0 0x18>;
+> >>> +			tsens_calib: calib@40d0 {
+> >>> +				reg =3D <0x40d0 0x18>;
+> >>>=20
+> >>>  			};
+> >>>=20
+> >>> -			tsens_backup: backup@440 {
+> >>> -				reg =3D <0x440 0x10>;
+> >>> +			tsens_backup: backup@4440 {
+> >>> +				reg =3D <0x4440 0x10>;
+> >>>=20
+> >>>  			};
+> >>>  	=09
+> >>>  		};
+> >>>=20
+> >>> ---
+> >>> base-commit: 6d796c50f84ca79f1722bb131799e5a5710c4700
+> >>> change-id: 20230130-msm8974-qfprom-619c0e8f26eb
+> >>>=20
+> >>> Best regards,
+
+
+
+
