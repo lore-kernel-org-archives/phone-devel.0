@@ -2,160 +2,79 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BC3DC636CC
-	for <phone-devel@archiver.kernel.org>; Tue, 31 Jan 2023 13:05:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE7ECC636CC
+	for <phone-devel@archiver.kernel.org>; Tue, 31 Jan 2023 14:30:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229934AbjAaNFg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 31 Jan 2023 08:05:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40896 "EHLO
+        id S230033AbjAaOaW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 31 Jan 2023 09:30:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231901AbjAaNFc (ORCPT
+        with ESMTP id S229608AbjAaOaV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 31 Jan 2023 08:05:32 -0500
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21DAE4ED16
-        for <phone-devel@vger.kernel.org>; Tue, 31 Jan 2023 05:05:00 -0800 (PST)
-Received: by mail-qt1-x82a.google.com with SMTP id w3so4515907qts.7
-        for <phone-devel@vger.kernel.org>; Tue, 31 Jan 2023 05:05:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=upUJ2TncehU87L41tsPtlPueesxjmVktEg4rw1YCSSo=;
-        b=NI5AGL3V8hG523ljGEOljP3vZ30GikQg9ymSVEFzCSDY/MI4cBkwgYby64z7O0OlCd
-         oVDzM83dlOcz6OemcQi/bsY8RLbOPlrY1aX849FruSM3CCSJd67By+wjkvLAQXj7ma0J
-         9+P2NUiGZ+hMSa+WojA0C5+5xRjDF3dF0uuZGmnNtdQHHpeaeUjQHHHG2+l1bE6YhC2R
-         C3UhEslTzmWt2+V7r5UM/A5dEAzRUAyaqxcdyCTf1rJs1w0jdZGbNkyNv6jCwWphOo3j
-         MtIIUY4l+vz4cokNasEXOQoULlJoBguymstNOl0MpdjpVS7hOW5gyuwMR0vRJQpiorGJ
-         VtQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=upUJ2TncehU87L41tsPtlPueesxjmVktEg4rw1YCSSo=;
-        b=WGP+lphmJCrEpgunnlT8O19SqAXykKDmpSR3e1ijEltjDtzfycGrHfC5ISUH1vUprM
-         wadqBKtV3voG04aljYf0rh/YktFvJpTuq9hIQ6YyaEF89OnEImpdEE4dOuonl4/DKSF7
-         9+dGf2iv4UN0Wvmp0ZyvHkBLTiaTL0Vj/NwcKO2X5EUsgRTskrA+DpXaAngHWwiapcMM
-         LGZizBeKJuE2e82C6s4QH9tHrQoKSZH1KT7XbxYSZUc6SPp1lQFXBwUbAAzSsn6EY0iZ
-         guAXaBawNg9BbyOPUyzKNc0ZKnPiguY8wTRdkCCR+tD3Q4w3KEPqxkcx1n0ajGjejEKj
-         ztrA==
-X-Gm-Message-State: AFqh2kpATN7K7wm3qZEchdpXbKcJZTF4NI19dFAayAKcY6UfQrFiCY/7
-        VfaRlS9pC0VVGWuD0Jn7sbPvbQ==
-X-Google-Smtp-Source: AMrXdXu0eIn8QTBeXZ5tBgL5FbWrJ7vV8Ix4v7hcStH02gwfN7CTdZf9t9myJTmM3AdhHw9cFzh4cA==
-X-Received: by 2002:ac8:7107:0:b0:3b6:2f22:75bd with SMTP id z7-20020ac87107000000b003b62f2275bdmr68744159qto.28.1675170299158;
-        Tue, 31 Jan 2023 05:04:59 -0800 (PST)
-Received: from [172.22.22.4] ([98.61.227.136])
-        by smtp.googlemail.com with ESMTPSA id hf19-20020a05622a609300b003b643951117sm6968680qtb.38.2023.01.31.05.04.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Jan 2023 05:04:58 -0800 (PST)
-Message-ID: <42080e79-e7c6-0e2b-5e8c-95aedb5823a0@linaro.org>
-Date:   Tue, 31 Jan 2023 07:04:57 -0600
+        Tue, 31 Jan 2023 09:30:21 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D1242D56;
+        Tue, 31 Jan 2023 06:30:20 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1523C61536;
+        Tue, 31 Jan 2023 14:30:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6686CC4339B;
+        Tue, 31 Jan 2023 14:30:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675175419;
+        bh=5DaGG6lT1lqPnAqPS4uf2XtQ8opsJH69tCDjxSQBmPo=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=aVThuKkFz5ls1VqepBYiAYjklUZUlZIsoSYxY17wTcOztBYvF7riwsEEcFsxrWRiH
+         bvlpnZfhDcIor+Q7ZeI2eI25NXsOwIJYcfP7Z46+6spm3OKLDhaSNPjTzRt+0gkN98
+         oL6YINj9aMkWbCaqG6usrW+vWdSOhmdjzaVHtVohbiOFdOvCDOmvRnN+GEJhzRHv7R
+         puepP998pKqTn8OdHKi3s/61iNz6H/tuSz+2wQmeVmMgDQhH7ysfFSDcEQjJTV0oc3
+         LfQS4LK+0GE06l1yOgXlUQh8EemNNf4s/iJ/pysMS3nRZ2q/4K5sDT+D8lfGBmsXno
+         JuGgiWtEbr6gw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 3A206C072E7;
+        Tue, 31 Jan 2023 14:30:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH net-next] net: ipa: use dev PM wakeirq handling
-Content-Language: en-US
-To:     Caleb Connolly <caleb.connolly@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     elder@kernel.org, netdev@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20230127202758.2913612-1-caleb.connolly@linaro.org>
- <8deaed16-385b-6108-e971-0168df2b3c2f@linaro.org>
- <bc54d9ea-aaa5-eea6-a954-807b3451d070@linaro.org>
-From:   Alex Elder <elder@linaro.org>
-In-Reply-To: <bc54d9ea-aaa5-eea6-a954-807b3451d070@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: ipa: use dev PM wakeirq handling
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <167517541923.29397.15760908384343459509.git-patchwork-notify@kernel.org>
+Date:   Tue, 31 Jan 2023 14:30:19 +0000
+References: <20230127202758.2913612-1-caleb.connolly@linaro.org>
+In-Reply-To: <20230127202758.2913612-1-caleb.connolly@linaro.org>
+To:     Caleb Connolly <caleb.connolly@linaro.org>
+Cc:     elder@linaro.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, elder@kernel.org,
+        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 1/31/23 6:40 AM, Caleb Connolly wrote:
-> 
-> 
-> On 1/28/23 13:47, Alex Elder wrote:
->> On 1/27/23 2:27 PM, Caleb Connolly wrote:
->>> Replace the enable_irq_wake() call with one to dev_pm_set_wake_irq()
->>> instead. This will let the dev PM framework automatically manage the
->>> the wakeup capability of the ipa IRQ and ensure that userspace requests
->>> to enable/disable wakeup for the IPA via sysfs are respected.
->>>
->>> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
->>
->> Looks OK to me.  Can you say something about how you
->> tested this, and what the result was?  Thanks.
-> 
-> Ah yeah. This was tested on the SDM845 (IPA 3.5.1) based SHIFT6mq in the 
-> UK with an EE SIM card.
-> 
-> All network connections were disabled except for mobile data which was 
-> configured using ModemManager. Then I set up a basic TCP server using 
-> netcat on a public IP address and connected to it from the device.
-> 
-> It is then possible to validate that the wakeirq fires and the interrupt 
-> is handled correctly by putting the device into s2idle sleep (echo mem > 
-> /sys/power/state) and typing some data into the server terminal.
-> 
-> Then I disabled the wakeup as follows and repeated the test to ensure 
-> that the device would no longer wake up on incoming data, and that the 
-> data was received when the device resumes.
-> 
-> echo disabled > /sys/devices/platform/soc\@0/1e40000.ipa/power/wakeup
+Hello:
 
-Great explanation, thank you.  This looks good.
+This patch was applied to netdev/net-next.git (master)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Reviewed-by: Alex Elder <elder@linaro.org>
-
->>
->>                      -Alex
->>
->>> ---
->>>   drivers/net/ipa/ipa_interrupt.c | 10 ++++------
->>>   1 file changed, 4 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/drivers/net/ipa/ipa_interrupt.c 
->>> b/drivers/net/ipa/ipa_interrupt.c
->>> index c19cd27ac852..9a1153e80a3a 100644
->>> --- a/drivers/net/ipa/ipa_interrupt.c
->>> +++ b/drivers/net/ipa/ipa_interrupt.c
->>> @@ -22,6 +22,7 @@
->>>   #include <linux/types.h>
->>>   #include <linux/interrupt.h>
->>>   #include <linux/pm_runtime.h>
->>> +#include <linux/pm_wakeirq.h>
->>>   #include "ipa.h"
->>>   #include "ipa_reg.h"
->>> @@ -269,9 +270,9 @@ struct ipa_interrupt *ipa_interrupt_config(struct 
->>> ipa *ipa)
->>>           goto err_kfree;
->>>       }
->>> -    ret = enable_irq_wake(irq);
->>> +    ret = dev_pm_set_wake_irq(dev, irq);
->>>       if (ret) {
->>> -        dev_err(dev, "error %d enabling wakeup for \"ipa\" IRQ\n", 
->>> ret);
->>> +        dev_err(dev, "error %d registering \"ipa\" IRQ as 
->>> wakeirq\n", ret);
->>>           goto err_free_irq;
->>>       }
->>> @@ -289,11 +290,8 @@ struct ipa_interrupt 
->>> *ipa_interrupt_config(struct ipa *ipa)
->>>   void ipa_interrupt_deconfig(struct ipa_interrupt *interrupt)
->>>   {
->>>       struct device *dev = &interrupt->ipa->pdev->dev;
->>> -    int ret;
->>> -    ret = disable_irq_wake(interrupt->irq);
->>> -    if (ret)
->>> -        dev_err(dev, "error %d disabling \"ipa\" IRQ wakeup\n", ret);
->>> +    dev_pm_clear_wake_irq(dev);
->>>       free_irq(interrupt->irq, interrupt);
->>>       kfree(interrupt);
->>>   }
->>
+On Fri, 27 Jan 2023 20:27:58 +0000 you wrote:
+> Replace the enable_irq_wake() call with one to dev_pm_set_wake_irq()
+> instead. This will let the dev PM framework automatically manage the
+> the wakeup capability of the ipa IRQ and ensure that userspace requests
+> to enable/disable wakeup for the IPA via sysfs are respected.
 > 
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] net: ipa: use dev PM wakeirq handling
+    https://git.kernel.org/netdev/net-next/c/df54fde451db
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
