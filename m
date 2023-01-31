@@ -2,95 +2,103 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD876C54EAA
-	for <phone-devel@archiver.kernel.org>; Mon, 30 Jan 2023 21:22:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6DA2AC38142
+	for <phone-devel@archiver.kernel.org>; Tue, 31 Jan 2023 12:35:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230422AbjA3VWR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 30 Jan 2023 16:22:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44808 "EHLO
+        id S231708AbjAaMfe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 31 Jan 2023 07:35:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230261AbjA3VWQ (ORCPT
+        with ESMTP id S231303AbjAaMfd (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 30 Jan 2023 16:22:16 -0500
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B228544BD6;
-        Mon, 30 Jan 2023 13:22:14 -0800 (PST)
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-163bd802238so4722997fac.1;
-        Mon, 30 Jan 2023 13:22:14 -0800 (PST)
+        Tue, 31 Jan 2023 07:35:33 -0500
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C49237F19;
+        Tue, 31 Jan 2023 04:35:26 -0800 (PST)
+Received: by mail-pl1-x629.google.com with SMTP id z1so7366781plg.6;
+        Tue, 31 Jan 2023 04:35:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=p3Bprh6qzi6N7O5JqZWzaWLkqDk7+Hs/nJb9oKk2rCs=;
+        b=Qxp+RbCuOAmMF9JjQ+UQypcN6aXfqx66Bou0GHmm2nWOGeeVzhoKKs7NpSVLLgVo/2
+         L45/OgdoBBBkwVbOVqlA9s8JMAFfy6FviT++JVIUSyZ8D+KuI/iMheytzplsjedXFQOr
+         qxlqx7DW6ZbISA1TCJyXt0YXAokehOGs53J3C6hMwEx+0TpNnk3oEXMhvoKLg9hwVZuV
+         ImHe0wYjUIVo3Zvq4X9X+TizGGi2BPi2IDrnAr82SvfwSbTRThjHhiZp6bruw8kodHMN
+         igDB8EwyTk1Gso7QIK49ltx8y3eFaJgjLcrXaiCDs2WNNgB/TL7n1b+8jeCU7t1XyRW+
+         kcgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rJ+eBx2LRsO5FUwHyxKkgCUPaWB9Ix+NfxqKDqjGEZM=;
-        b=ibXibB9pE8JxQ6F48tJXS18A68mqtXfrNVPo20xZoepabyE5GkI4P+NG/0os2eswX+
-         N5GZWslrR0GnPJLaINztKSwdS5ndbqYqARm5nccUJ+nFr4yo6LD8cWcliKi+e2PmASMU
-         4aR6w5HWlvCt8fvbxlg1hCEmkon9alQlTCOkl3hKUEfuHHXbJlxh6oNrnH5KgK/gcpdY
-         N0cHpxDYP+/K7sJmHq+jxQU5I4XVWnamDQqDn7us2YVcu9rC9lstGN4kmwu78pNqStCh
-         s1Slm0XKZdlXgIuZ4ekE26KNfxJ1wvUVPaiZyeQFeAlZ7fQqJS3T7ZnrXEnvwfDr/TJG
-         WABw==
-X-Gm-Message-State: AO0yUKWicP0X20q2TXlQ4jNTHw4ioLoyy2g79w9XlGpJTKNxBRNqlDcj
-        hSQ/m5tCo/oiwafs4GSSLA==
-X-Google-Smtp-Source: AK7set/KeFL8Z5Buy3G3kH3IByoTxOzC/qb7dQzVJ/ttEJb5jzKY4nOhRTb7M61cPH8Rz6GF2oM16A==
-X-Received: by 2002:a05:6870:c18f:b0:163:97bd:814d with SMTP id h15-20020a056870c18f00b0016397bd814dmr4734826oad.27.1675113733933;
-        Mon, 30 Jan 2023 13:22:13 -0800 (PST)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id n18-20020a056870971200b0014fe4867dc7sm5695918oaq.56.2023.01.30.13.22.13
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p3Bprh6qzi6N7O5JqZWzaWLkqDk7+Hs/nJb9oKk2rCs=;
+        b=4pQzXbWi0iUvfD/UUJ/zySgvXyBw63QrPfh0A3BXVSyCjLd0/wC5/g32ZrMfN4pQZj
+         Scewrw5xrY1d0KQeo4RBkoPtOXBAWf4tJXdY1GHDTmM5sY5n4lisH4ViCq8fkth8yJX4
+         ASrDuqQRcUJ/nbJ35sm/cVie495rhN6RoQtrU3J1s/+ATcMHuqJuHolWOuXfzYUojk4M
+         7/P2uGJiQxAR6vTyd8tQ8uDyPggkV5l1blNsncSo4MDALvzqqchP5//K/dK1IPf5GRe4
+         KDTO5ujC3XQRvtINBvMzteW/1t/wBpHqn3znKBL3i51K61xLTRi71szY4xiWnUKRnwXX
+         o8sQ==
+X-Gm-Message-State: AO0yUKWI2bNcyDRstPwUWCq10m4XkL4osEDOLMSNIY3ueea1KWRNJIMG
+        338/shc3QNIJdXawyzuLvLQ=
+X-Google-Smtp-Source: AK7set9meLUleoPPOYf2CHYo3cG+8acjn9MkDPxNVatdfbc06w9tOYQyqkqlBg1GBLUllXq6+pmRXw==
+X-Received: by 2002:a05:6a20:1596:b0:b8:54a2:b8d1 with SMTP id h22-20020a056a20159600b000b854a2b8d1mr22995794pzj.57.1675168525734;
+        Tue, 31 Jan 2023 04:35:25 -0800 (PST)
+Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id r19-20020a170902c61300b0018544ad1e8esm9692527plr.238.2023.01.31.04.35.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jan 2023 13:22:13 -0800 (PST)
-Received: (nullmailer pid 3516638 invoked by uid 1000);
-        Mon, 30 Jan 2023 21:22:12 -0000
-Date:   Mon, 30 Jan 2023 15:22:12 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Tue, 31 Jan 2023 04:35:25 -0800 (PST)
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Martin =?iso-8859-1?Q?J=FCcker?= <martin.juecker@gmail.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Sam Protsenko <semen.protsenko@linaro.org>,
-        linux-arm-kernel@lists.infradead.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        phone-devel@vger.kernel.org, Henrik Grimler <henrik@grimler.se>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        linux-usb@vger.kernel.org, Alim Akhtar <alim.akhtar@samsung.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Chanho Park <chanho61.park@samsung.com>
-Subject: Re: [PATCH v2] dt-bindings: usb: samsung,exynos-dwc3: allow unit
- address in DTS
-Message-ID: <167511373111.3516190.9618063650854117643.robh@kernel.org>
-References: <20230127211748.260718-1-krzysztof.kozlowski@linaro.org>
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G . Piccoli" <gpiccoli@igalia.com>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jianhua Lu <lujianhua000@gmail.com>
+Subject: [PATCH v4 1/2] dt-bindings: arm: qcom: Add Xiaomi Mi Pad 5 Pro (xiaomi-elish)
+Date:   Tue, 31 Jan 2023 20:35:14 +0800
+Message-Id: <20230131123515.833-1-lujianhua000@gmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230127211748.260718-1-krzysztof.kozlowski@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Add a compatible for Xiaomi Mi Pad 5 Pro.
 
-On Fri, 27 Jan 2023 22:17:48 +0100, Krzysztof Kozlowski wrote:
-> The Samsung Exynos SoC USB 3.0 DWC3 Controller is a simple wrapper of
-> actual DWC3 Controller device node.  It handles necessary Samsung
-> Exynos-specific resources (regulators, clocks), but does not have its
-> own MMIO address space.
-> 
-> However neither simple-bus bindings nor dtc W=1 accept device nodes in
-> soc@ node which do not have unit address.
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> ---
-> 
-> Changes since v1:
-> 1. Use ranges with values and drop reg from usb-wrapper node.
-> 2. Keep "usb" as wrapper's node name.
-> 
-> DTS fixes are here:
-> https://lore.kernel.org/linux-samsung-soc/20230127211527.260060-1-krzysztof.kozlowski@linaro.org/T/#t
-> ---
->  .../devicetree/bindings/usb/samsung,exynos-dwc3.yaml      | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+---
+No changes in v4
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Changes in v3:
+  - Pick up Krzysztof's A-b
+
+Changes in v2:
+  - Move compatible "xiaomi-elish" down.
+
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index 22553637c519..398ff26e6e0e 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -875,6 +875,7 @@ properties:
+               - qcom,sm8250-mtp
+               - sony,pdx203-generic
+               - sony,pdx206-generic
++              - xiaomi,elish
+           - const: qcom,sm8250
+ 
+       - items:
+-- 
+2.39.1
+
