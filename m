@@ -2,110 +2,116 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BC99C636CD
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Feb 2023 17:28:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 97FBBC636D7
+	for <phone-devel@archiver.kernel.org>; Wed,  1 Feb 2023 20:45:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230094AbjBAR2v (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 1 Feb 2023 12:28:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51920 "EHLO
+        id S230390AbjBAUp1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 1 Feb 2023 15:45:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230043AbjBAR2v (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Feb 2023 12:28:51 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C38B26E404;
-        Wed,  1 Feb 2023 09:28:49 -0800 (PST)
-Received: from g550jk.localnet (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 244A7CD0C5;
-        Wed,  1 Feb 2023 17:28:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1675272528; bh=ShnukInl/T2zAyoGUTvSOdRcvHdOIiJCrWNwIwsvJdg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=tX6CQoEps9L2w7uKKHMhbqU0l8RIU9T1J0qLM8vadp2tN+EwU5zK27TlCp9MOsWr1
-         AfV2714aHlXMjxDBuJLooXm3ZCBx1/sAqJ2Okttzlo3WsEf1STy6o/D2QGqesap/vq
-         hG+EhQauV8335lZWDmjiRmPAFtecr3cYsUxALbHc=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Shunqian Zheng <zhengsq@rock-chips.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-        linux-media@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] media: i2c: ov2685: Make reset gpio optional
-Date:   Wed, 01 Feb 2023 18:28:47 +0100
-Message-ID: <4481296.cEBGB3zze1@z3ntu.xyz>
-In-Reply-To: <CAPY8ntDvviyCox5_WpmOcgMgHuok9LcF1NSgRkfcHFcSgGVuSw@mail.gmail.com>
-References: <20230129-ov2685-improvements-v2-0-210400f2b63e@z3ntu.xyz>
- <20230129-ov2685-improvements-v2-1-210400f2b63e@z3ntu.xyz>
- <CAPY8ntDvviyCox5_WpmOcgMgHuok9LcF1NSgRkfcHFcSgGVuSw@mail.gmail.com>
+        with ESMTP id S230174AbjBAUpT (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Feb 2023 15:45:19 -0500
+Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [5.144.164.164])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 411E579635;
+        Wed,  1 Feb 2023 12:44:58 -0800 (PST)
+Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id F3DC62038A;
+        Wed,  1 Feb 2023 21:44:55 +0100 (CET)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Jonathan Cameron <jic23@kernel.org>, iio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: [PATCH v3 0/3] arm64: dts: qcom: Use labels with generic node names for ADC channels
+Date:   Wed,  1 Feb 2023 21:44:44 +0100
+Message-Id: <20230201204447.542385-1-marijn.suijten@somainline.org>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mittwoch, 1. Februar 2023 18:24:10 CET Dave Stevenson wrote:
-> Hi Luca
-> 
-> On Wed, 1 Feb 2023 at 17:07, Luca Weiss <luca@z3ntu.xyz> wrote:
-> > In some setups XSHUTDOWN is connected to DOVDD when it's unused,
-> > therefore treat the reset gpio as optional.
-> 
-> The binding doc [1] says that reset-gpios is a required property.
-> Making it optional should therefore have a patch for the binding
-> first, and then a patch updating the driver.
-> Unfortunately my understanding is that means converting it to YAML as
-> well due to the txt docs being frozen.
+As discussed in [1] it is more convenient to use a generic adc-chan node
+name for ADC channels while storing a friendly - board-specific instead
+of PMIC-specific - name in the label, if/when desired to overwrite the
+channel description already contained (but previously unused) in the
+driver [2].
 
-I already have the docs converted somewhere, I will send that separately. Hope 
-that's okay.
+Replace the .* name pattern with the adc-chan literal, but leave the
+label property optional for bindings to choose to fall back a channel
+label hardcoded in the driver [2] instead.
 
-Regards
-Luca
+[1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
+[2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
 
-> 
-> I know the pain - I was doing exactly the same thing for ov7251 earlier
-> today. I haven't run the dt schema checks or had them reviewed yet, but
-> "media: dt-bindings: Convert ov7251.txt to YAML" and "media:
-> dt-bindings: ov7251: Make enable-gpio optional" on [2] may be of help
-> to you.
-> 
->   Dave
-> 
-> [1]
-> https://github.com/torvalds/linux/blob/master/Documentation/devicetree/bind
-> ings/media/i2c/ov2685.txt#L10 [2]
-> https://github.com/6by9/linux/commits/rpi-6.2.y-ov7251
-> 
-> > Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> > 
-> >  drivers/media/i2c/ov2685.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/media/i2c/ov2685.c b/drivers/media/i2c/ov2685.c
-> > index a3b524f15d89..a422f4c8a2eb 100644
-> > --- a/drivers/media/i2c/ov2685.c
-> > +++ b/drivers/media/i2c/ov2685.c
-> > @@ -734,7 +734,7 @@ static int ov2685_probe(struct i2c_client *client,
-> > 
-> >         if (clk_get_rate(ov2685->xvclk) != OV2685_XVCLK_FREQ)
-> >         
-> >                 dev_warn(dev, "xvclk mismatched, modes are based on
-> >                 24MHz\n");
-> > 
-> > -       ov2685->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
-> > +       ov2685->reset_gpio = devm_gpiod_get_optional(dev, "reset",
-> > GPIOD_OUT_LOW);> 
-> >         if (IS_ERR(ov2685->reset_gpio)) {
-> >         
-> >                 dev_err(dev, "Failed to get reset-gpios\n");
-> >                 return -EINVAL;
-> > 
-> > --
-> > 2.39.1
+Changes since v2:
 
+- Reorder DT changes before dt-bindings changes;
+- Update adc-chan generic node name in tm5 example bindings.
 
+v2: https://lore.kernel.org/linux-arm-msm/20230119212632.185881-1-marijn.suijten@somainline.org/T/#u
 
+Changes since v1:
+- Require adc-chan name in dt-bindings;
+- Replace more node names with adc-chan and a descriptive label, that
+  were found by running dtbs_check on adjusted bindings;
+- sm8250-mtp.dts: Fix accidental adc-chan2 node name with pa_therm
+  label, which should have been adc-chan with pa_therm2 label.
+
+v1: https://lore.kernel.org/linux-arm-msm/20221209215308.1781047-1-marijn.suijten@somainline.org/
+
+Marijn Suijten (3):
+  arm64: dts: qcom: Use labels with generic node names for ADC channels
+  dt-bindings: thermal: qcom-spmi-adc-tm5: Use generic ADC node name
+  dt-bindings: iio: adc: Require generic adc-chan name for channel nodes
+
+ .../bindings/iio/adc/qcom,spmi-vadc.yaml      | 16 ++++----
+ .../bindings/thermal/qcom-spmi-adc-tm5.yaml   |  9 +++--
+ arch/arm64/boot/dts/qcom/pm6125.dtsi          | 18 ++++++---
+ arch/arm64/boot/dts/qcom/pm660.dtsi           | 33 ++++++++++------
+ arch/arm64/boot/dts/qcom/pm8150.dtsi          |  6 +--
+ arch/arm64/boot/dts/qcom/pm8150b.dtsi         |  8 ++--
+ arch/arm64/boot/dts/qcom/pm8150l.dtsi         |  6 +--
+ arch/arm64/boot/dts/qcom/pm8950.dtsi          | 39 ++++++++++++-------
+ arch/arm64/boot/dts/qcom/pmm8155au_1.dtsi     |  6 +--
+ arch/arm64/boot/dts/qcom/pmm8155au_2.dtsi     |  6 +--
+ arch/arm64/boot/dts/qcom/pmp8074.dtsi         | 27 ++++++++-----
+ arch/arm64/boot/dts/qcom/pms405.dtsi          | 21 ++++++----
+ arch/arm64/boot/dts/qcom/qrb5165-rb5.dts      | 15 ++++---
+ .../dts/qcom/sc7180-trogdor-coachz-r1.dts     |  4 +-
+ .../boot/dts/qcom/sc7180-trogdor-coachz.dtsi  |  3 +-
+ .../dts/qcom/sc7180-trogdor-homestar.dtsi     |  3 +-
+ .../boot/dts/qcom/sc7180-trogdor-lazor.dtsi   |  2 +-
+ .../dts/qcom/sc7180-trogdor-pompom-r1.dts     |  2 +-
+ .../dts/qcom/sc7180-trogdor-pompom-r2.dts     |  2 +-
+ .../boot/dts/qcom/sc7180-trogdor-pompom.dtsi  |  3 +-
+ .../dts/qcom/sc7180-trogdor-wormdingler.dtsi  |  3 +-
+ arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi  |  3 +-
+ arch/arm64/boot/dts/qcom/sc7280-idp.dts       |  2 +-
+ arch/arm64/boot/dts/qcom/sc7280-idp.dtsi      |  2 +-
+ arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi    |  4 +-
+ .../qcom/sc8280xp-lenovo-thinkpad-x13s.dts    | 39 ++++++++++++-------
+ .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 15 ++++---
+ arch/arm64/boot/dts/qcom/sm8250-mtp.dts       | 21 ++++++----
+ 28 files changed, 202 insertions(+), 116 deletions(-)
+
+--
+2.39.1
 
