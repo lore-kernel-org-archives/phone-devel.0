@@ -2,107 +2,124 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F04F5C677F1
-	for <phone-devel@archiver.kernel.org>; Wed,  1 Feb 2023 20:45:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68526C05027
+	for <phone-devel@archiver.kernel.org>; Thu,  2 Feb 2023 05:51:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230046AbjBAUpd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 1 Feb 2023 15:45:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53864 "EHLO
+        id S231971AbjBBFvO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 2 Feb 2023 00:51:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230295AbjBAUp0 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 1 Feb 2023 15:45:26 -0500
-Received: from relay02.th.seeweb.it (relay02.th.seeweb.it [IPv6:2001:4b7a:2000:18::163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56E527B41B
-        for <phone-devel@vger.kernel.org>; Wed,  1 Feb 2023 12:45:01 -0800 (PST)
-Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 0C6DC20392;
-        Wed,  1 Feb 2023 21:44:59 +0100 (CET)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
+        with ESMTP id S231733AbjBBFu5 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Feb 2023 00:50:57 -0500
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8A8D84B41;
+        Wed,  1 Feb 2023 21:49:18 -0800 (PST)
+Received: by mail-pj1-x1036.google.com with SMTP id cq16-20020a17090af99000b0022c9791ac39so4534992pjb.4;
+        Wed, 01 Feb 2023 21:49:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WJHXGcMPbsm+TmmE5w1mIelrfxQREvYv7aDDpU6QASI=;
+        b=qrdSJen2Lhi8KMNi67rpuVfFDR2u1/7ixhoCQBMKUvNNf6F9XwVmZlkklNVvfBuK1d
+         SXS45Mo6t87Cg+7uAKrTVcv/+Imq81X0NWXZb6ljcZtN2wauRc7C1za2p75XRwx9nqFL
+         glgc/ftarg/ODmKm57NdK71oeBOU0UggyfcB8y1YaGjDgECdz+NIaO/V9/NdIaxbtb8A
+         9QAIrUTCOIb5TFAWizCzB+1EKnDMtANWQ9AnJ5VIJn4jGC02A7AUipDBa6RB8BG7DahO
+         cqnIOC620Ss/zar7/cJ0h2V4qNo4zQFd1HCJmWMg+KFBu026cSjUjudJhUQ1qfiIJjp3
+         Mbjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WJHXGcMPbsm+TmmE5w1mIelrfxQREvYv7aDDpU6QASI=;
+        b=ytfW6OopMnBg2dpD1nrVGeQpuFzr6SB9oD11qGiM4vlHsd6trXhU8W8dpNbWizV+ku
+         sSWdj4/FzKzPcJ9rqDi7/x+A1yWTR80x2Ot3qjijQUPnHGtDYi4sw+rlCaarJQg8LSkQ
+         uDyG5uI8+XWj6i57yEOf1PAc1bDNwBV4MayDrUxGaKioXwT7KW7blW8GlprQoGXDfXcx
+         5ZDlx8wbU7l1EVKcsv9h/J2ZT4M6cp/lmhgiYQ6NFcn101inm6vZ4BentwV7d/nC9df8
+         x/A3vNhxsazXkraJ1iOJVDZ2nAJlMMoDEtMCIIGqgGQVr9+dWEpB8hRkHqJSgXxxzqXh
+         lovQ==
+X-Gm-Message-State: AO0yUKWCarx4vKMqAf2IgkyFS6Nd8I00qEzqV6BNqAu7YZ4zY9m6xUiH
+        axRX427JuKAEsLCgmDJY7a3nregFTO9mc/VE
+X-Google-Smtp-Source: AK7set/HgJa7X3WaoyT0tTT3yKffJPnO8l0WP5fQK9tcre9o2nIaxnhSWDbxn8wrNkqldQ5FVFKObw==
+X-Received: by 2002:a17:902:e748:b0:196:6308:c9d3 with SMTP id p8-20020a170902e74800b001966308c9d3mr6482887plf.0.1675316957436;
+        Wed, 01 Feb 2023 21:49:17 -0800 (PST)
+Received: from jamie-desktop.lan ([2001:8003:cce7:dc00:39b1:aea0:8c97:186])
+        by smtp.gmail.com with ESMTPSA id ik26-20020a170902ab1a00b001895f7c8a71sm12686145plb.97.2023.02.01.21.49.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Feb 2023 21:49:16 -0800 (PST)
+From:   Jamie Douglass <jamiemdouglass@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Jonathan Cameron <jic23@kernel.org>, iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-pm@vger.kernel.org
-Subject: [PATCH v3 2/3] dt-bindings: thermal: qcom-spmi-adc-tm5: Use generic ADC node name
-Date:   Wed,  1 Feb 2023 21:44:46 +0100
-Message-Id: <20230201204447.542385-3-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230201204447.542385-1-marijn.suijten@somainline.org>
-References: <20230201204447.542385-1-marijn.suijten@somainline.org>
+        Petr Vorel <petr.vorel@gmail.com>,
+        Dominik Kobinski <dominikkobinski314@gmail.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jamie Douglass <jamiemdouglass@gmail.com>,
+        Petr Vorel <pvorel@suse.cz>
+Subject: [PATCH v2] arm64: dts: qcom: msm8992-lg-bullhead: Correct memory overlaps with the SMEM and MPSS memory regions
+Date:   Thu,  2 Feb 2023 16:48:19 +1100
+Message-Id: <20230202054819.16079-1-jamiemdouglass@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Update the example to reflect a future requirement for the generic
-adc-chan node name on ADC channel nodes, while conveying the board name
-of the channel in a label instead.
+The memory region reserved by a previous commit (see fixes tag below)
+overlaps with the SMEM and MPSS memory regions, causing error messages in
+dmesg:
+	OF: reserved mem: OVERLAP DETECTED!
+	reserved@5000000 (0x0000000005000000--0x0000000007200000)
+	overlaps with smem_region@6a00000
+	(0x0000000006a00000--0x0000000006c00000)
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+	OF: reserved mem: OVERLAP DETECTED!
+	reserved@6c00000 (0x0000000006c00000--0x0000000007200000)
+	overlaps with memory@7000000
+	(0x0000000007000000--0x000000000ca00000)
+
+This patch resolves both of these by splitting the previously reserved
+memory region into two sections either side of the SMEM region and by
+cutting off the second memory region to 0x7000000.
+
+Fixes: 22c7e1a0fa45 ("arm64: dts: msm8992-bullhead: add memory hole region")
+Signed-off-by: Jamie Douglass <jamiemdouglass@gmail.com>
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Tested-by: Petr Vorel <pvorel@suse.cz>
+
 ---
- .../devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml   | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+v1 -> v2: Added detail about second memory overlap and fixed commit to commit
+message
+---
+ arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml b/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
-index 52ec18cf1eda..885c9e139848 100644
---- a/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
-+++ b/Documentation/devicetree/bindings/thermal/qcom-spmi-adc-tm5.yaml
-@@ -178,10 +178,11 @@ examples:
-             #io-channel-cells = <1>;
+diff --git a/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi b/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
+index 79de9cc395c4..5e375ea73c79 100644
+--- a/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
+@@ -53,8 +53,13 @@ cont_splash_mem: memory@3400000 {
+ 			no-map;
+ 		};
  
-             /* Other properties are omitted */
--            conn-therm@4f {
-+            adc-chan@4f {
-                 reg = <ADC5_AMUX_THM3_100K_PU>;
-                 qcom,ratiometric;
-                 qcom,hw-settle-time = <200>;
-+                label = "conn_therm";
-             };
-         };
- 
-@@ -217,16 +218,18 @@ examples:
-             #io-channel-cells = <1>;
- 
-             /* Other properties are omitted */
--            xo-therm@44 {
-+            adc-chan@44 {
-                 reg = <PMK8350_ADC7_AMUX_THM1_100K_PU>;
-                 qcom,ratiometric;
-                 qcom,hw-settle-time = <200>;
-+                label = "xo_therm";
-             };
- 
--            conn-therm@147 {
-+            adc-chan@147 {
-                 reg = <PM8350_ADC7_AMUX_THM4_100K_PU(1)>;
-                 qcom,ratiometric;
-                 qcom,hw-settle-time = <200>;
-+                label = "conn_therm";
-             };
-         };
- 
+-		removed_region: reserved@5000000 {
+-			reg = <0 0x05000000 0 0x2200000>;
++		reserved@5000000 {
++			reg = <0x0 0x05000000 0x0 0x1a00000>;
++			no-map;
++		};
++
++		reserved@6c00000 {
++			reg = <0x0 0x06c00000 0x0 0x400000>;
+ 			no-map;
+ 		};
+ 	};
 -- 
-2.39.1
+2.25.1
 
