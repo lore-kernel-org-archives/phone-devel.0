@@ -2,111 +2,133 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 25C45C61DA4
-	for <phone-devel@archiver.kernel.org>; Thu,  2 Feb 2023 08:50:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4D20C05027
+	for <phone-devel@archiver.kernel.org>; Thu,  2 Feb 2023 11:19:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231773AbjBBIut (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 2 Feb 2023 03:50:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34544 "EHLO
+        id S229671AbjBBLT3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 2 Feb 2023 06:19:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231921AbjBBIur (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Feb 2023 03:50:47 -0500
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DF8787146
-        for <phone-devel@vger.kernel.org>; Thu,  2 Feb 2023 00:50:37 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id t7so995542wrp.5
-        for <phone-devel@vger.kernel.org>; Thu, 02 Feb 2023 00:50:37 -0800 (PST)
+        with ESMTP id S229666AbjBBLT2 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Feb 2023 06:19:28 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03B144859C
+        for <phone-devel@vger.kernel.org>; Thu,  2 Feb 2023 03:19:27 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id x7so1683129edr.0
+        for <phone-devel@vger.kernel.org>; Thu, 02 Feb 2023 03:19:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=lWsS/bWtmzpN07I8KCqWUmAN50eHOe+8qZxUIv9ebfk=;
-        b=DhE+qH2Jh0jcOidrifO6y3KFacKb/NTJtxQwmSfveojslNuY0ynUu/hmWt0zwGCl5j
-         RwIdGLze1WSWVVjV7f1TgHiVfI11qs2KRaP5FwfCwCTPzoOg8nFexWn7AxSetvk6ILNM
-         hzaxsAjh6Nxu+lBRdwDLnCkD9tNq5rrxZHfCUjoC4F+mbgGQ09sxZDNQUnrDBvrhJZW7
-         qMfBGpToy9EUsu025mNOZWYh1QoZRXzGG6k2YIjkIRYrWITr+/YqCAB15BBnHG8+8k3b
-         8wrFk6y+gzBQbtylAYs/jBG5R+zK01THylvRZocRcZgY6f6rQ6uQ8O7N56tWq6peDI4Q
-         9erQ==
+        bh=5lqBGy3xyiLZ+uDQPzZ1hsLEdYkc91Ze4wrm9P+Lw80=;
+        b=RJwRtlKXAU2yQGFCUlKvMZBg3wHojpszX+YYkT1OAyb1nukVCBTsHmoHRtSP8GAYNg
+         Poc83j6BNYiJ8ewxRNBaitufk3cTBuYTonbJi48av2yUiLsubOF2ajHIn+8CkdV6AHLm
+         z81WuJwWJUdNj8gEu97EUuud/+UeT/Yy9wboCffYYCrS+Ydgos9eUuhwabRiZZUPPEFD
+         +0YX7bG/soas5GZ92Vo0Zp8Ta4T77lfzIjYBdclPaE4SdremAStzXBP+MY2ujhj16EjY
+         2m/nnLBThX4V9DVnkkYKo32s2WLYu9Sx2JOOrHX89cnzr++Yk+2NdR7Vzf8o43WupCq5
+         71ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lWsS/bWtmzpN07I8KCqWUmAN50eHOe+8qZxUIv9ebfk=;
-        b=5OCEpSapCE9QS2av0UIJeB/yFOqd4ZYZECvUAr/nluE6ojvJqNWC1cumSd4KFc0gwU
-         kzR9FiXE1OFgAH3jj/Z/XS6AugKmp/591tHWxkP6CQnxca+lAAfRVPOYZyzx8BDQ6QBV
-         sCPzeXzulmF/VYXmmViJdjW/nZCyrirFpKLuOklFw+3H8k8YBARaVZyS60EDFhzV+RBR
-         Xepf5RdC7Dm6EI84JtarwNlpDE1ZoepTkgPEwIro12fhry/g/I8RES1ciy953v9FqIZ3
-         fX78G/qdx/hoQDDdccE1UgbxCTq7A5XcS+RNQ4D5eYXUQ5Uc2sVpdSiQtoPiTBmTbhg4
-         pWiA==
-X-Gm-Message-State: AO0yUKU0kPfdAXJaDKhy2dyybKnlYntMVWxBGYstVfpVi6rABkR59fmA
-        euKoRc01HJzyvueS978GKg22Vw==
-X-Google-Smtp-Source: AK7set9myootvaumTc3dok0xH8h+eb7NWBe3lMq35UW9l8J+0ooRSfnkXePoQFIOiooeOPeghyIV/Q==
-X-Received: by 2002:adf:c713:0:b0:2bf:e9dc:5536 with SMTP id k19-20020adfc713000000b002bfe9dc5536mr5744516wrg.45.1675327835629;
-        Thu, 02 Feb 2023 00:50:35 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id e10-20020a5d500a000000b002be0b1e556esm18993213wrt.59.2023.02.02.00.50.34
+        bh=5lqBGy3xyiLZ+uDQPzZ1hsLEdYkc91Ze4wrm9P+Lw80=;
+        b=2fgBxrsZx6U01MhNNTAGZj/lAOjm06qU5mt3rjEnqDUvEqEFrWYByaPB1ooVqExktu
+         WbjyAMw55SJh2hcZc4aZzvwECt/C0FKs8d9pFObvkBi152gcBWRxmGZ6TPJA61f2uh+o
+         z3VPaCY5gU6iKgPTxlQFGBin/NhwPBPPJ2pltLkjzp9I+WWwt2cxfSJuW5QPiEiv/dL/
+         0l7+oy/1+FExk4yE5Er4gFZxEv4g3Ud8xthBdPuVfKK3ZEx/8k+0xMa7X1zZa+87DMro
+         fhTmP8G7lDgne30AlavhcZcgRSh+zSeoh+pYOhOfjFHZaNAy2L/k4YLcsFdHpWoOpfVl
+         p3vQ==
+X-Gm-Message-State: AO0yUKVFxlPGFrmx9xYn8hrJ3H4xZAc3EiLvDFOWhaS79zGTPwQDZsnc
+        Y1wovwClAwz+KHdET6Q8j5NLzg==
+X-Google-Smtp-Source: AK7set/vEiR/9/5KwI31m2BtJbT7NVoCdcuzNNO/1JzUew9cQH1z9NQ6sS/gMsYr4isYZn/LvUPTVg==
+X-Received: by 2002:a05:6402:4cb:b0:492:8c77:7da9 with SMTP id n11-20020a05640204cb00b004928c777da9mr5414198edw.9.1675336765547;
+        Thu, 02 Feb 2023 03:19:25 -0800 (PST)
+Received: from [192.168.1.101] (abyl20.neoplus.adsl.tpnet.pl. [83.9.31.20])
+        by smtp.gmail.com with ESMTPSA id a20-20020a50ff14000000b004a211283100sm9249762edu.44.2023.02.02.03.19.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 02 Feb 2023 00:50:35 -0800 (PST)
-Message-ID: <d046c9b3-3cd0-0e2c-4db4-50e8e772bfb0@linaro.org>
-Date:   Thu, 2 Feb 2023 09:50:33 +0100
+        Thu, 02 Feb 2023 03:19:25 -0800 (PST)
+Message-ID: <d90e1d20-37f7-19c8-1375-dc6cf8856097@linaro.org>
+Date:   Thu, 2 Feb 2023 12:19:22 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v3 3/3] dt-bindings: iio: adc: Require generic adc-chan
- name for channel nodes
-Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Jonathan Cameron <jic23@kernel.org>, iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Thunderbird/102.7.0
+Subject: Re: [PATCH v2] arm64: dts: qcom: msm8992-lg-bullhead: Correct memory
+ overlaps with the SMEM and MPSS memory regions
+To:     Jamie Douglass <jamiemdouglass@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20230201204447.542385-1-marijn.suijten@somainline.org>
- <20230201204447.542385-4-marijn.suijten@somainline.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230201204447.542385-4-marijn.suijten@somainline.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Petr Vorel <petr.vorel@gmail.com>,
+        Dominik Kobinski <dominikkobinski314@gmail.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Petr Vorel <pvorel@suse.cz>
+References: <20230202054819.16079-1-jamiemdouglass@gmail.com>
+Content-Language: en-US
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230202054819.16079-1-jamiemdouglass@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 01/02/2023 21:44, Marijn Suijten wrote:
-> As discussed in [1] it is more convenient to use a generic adc-chan node
-> name for ADC channels while storing a friendly - board-specific instead
-> of PMIC-specific - name in the label, if/when desired to overwrite the
-> channel description already contained (but previously unused) in the
-> driver [2].
+
+
+On 2.02.2023 06:48, Jamie Douglass wrote:
+> The memory region reserved by a previous commit (see fixes tag below)
+> overlaps with the SMEM and MPSS memory regions, causing error messages in
+> dmesg:
+> 	OF: reserved mem: OVERLAP DETECTED!
+> 	reserved@5000000 (0x0000000005000000--0x0000000007200000)
+> 	overlaps with smem_region@6a00000
+> 	(0x0000000006a00000--0x0000000006c00000)
 > 
-> Replace the .* name pattern with the adc-chan literal, but leave the
-> label property optional for bindings to choose to fall back a channel
-> label hardcoded in the driver [2] instead.
+> 	OF: reserved mem: OVERLAP DETECTED!
+> 	reserved@6c00000 (0x0000000006c00000--0x0000000007200000)
+> 	overlaps with memory@7000000
+> 	(0x0000000007000000--0x000000000ca00000)
 > 
-> [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
-> [2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
+> This patch resolves both of these by splitting the previously reserved
+> memory region into two sections either side of the SMEM region and by
+> cutting off the second memory region to 0x7000000.
 > 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> Fixes: 22c7e1a0fa45 ("arm64: dts: msm8992-bullhead: add memory hole region")
+> Signed-off-by: Jamie Douglass <jamiemdouglass@gmail.com>
+> Reviewed-by: Petr Vorel <pvorel@suse.cz>
+> Tested-by: Petr Vorel <pvorel@suse.cz>
+> 
 > ---
->  .../bindings/iio/adc/qcom,spmi-vadc.yaml         | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
+> v1 -> v2: Added detail about second memory overlap and fixed commit to commit
+> message
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+
+Konrad
+>  arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
 > 
-
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
-
+> diff --git a/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi b/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
+> index 79de9cc395c4..5e375ea73c79 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8992-lg-bullhead.dtsi
+> @@ -53,8 +53,13 @@ cont_splash_mem: memory@3400000 {
+>  			no-map;
+>  		};
+>  
+> -		removed_region: reserved@5000000 {
+> -			reg = <0 0x05000000 0 0x2200000>;
+> +		reserved@5000000 {
+> +			reg = <0x0 0x05000000 0x0 0x1a00000>;
+> +			no-map;
+> +		};
+> +
+> +		reserved@6c00000 {
+> +			reg = <0x0 0x06c00000 0x0 0x400000>;
+>  			no-map;
+>  		};
+>  	};
