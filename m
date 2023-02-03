@@ -2,186 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F560C61DA4
-	for <phone-devel@archiver.kernel.org>; Fri,  3 Feb 2023 21:12:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90F16C64EC3
+	for <phone-devel@archiver.kernel.org>; Fri,  3 Feb 2023 21:25:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232409AbjBCVMw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 3 Feb 2023 16:12:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57118 "EHLO
+        id S233723AbjBCVZG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 3 Feb 2023 16:25:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232237AbjBCVMv (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Feb 2023 16:12:51 -0500
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BCB026AD
-        for <phone-devel@vger.kernel.org>; Fri,  3 Feb 2023 13:12:50 -0800 (PST)
-Received: by mail-wm1-x334.google.com with SMTP id m16-20020a05600c3b1000b003dc4050c94aso4815796wms.4
-        for <phone-devel@vger.kernel.org>; Fri, 03 Feb 2023 13:12:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=G37x/Hi3mUa++UD5bFJfX5WwZsig/fMJR1p/pLXMk50=;
-        b=uVwWM/AMdXoS+B9uE3cp49dAROtUCwaTQv4BE1JSK7oyJEjfp4VJ3BdxKwTB+7bby8
-         yeZ+RuVigcMHj79cMPzZGEjf/p1MOjUXTIAD/hnllc9prnMhU6uab7ePqGCJZh1xil41
-         21CUl3iujSJpFr4vVs0OPOBfHfNu7DKd3Zm/b7oRn+wbk8OCnSA7cfr5F6FaE0mA8OsE
-         9VSeoPLANg5lQzAazXMbXVLcKIEnAn0cha1G6R6pO7CH2N/XChZgOSpA5fh6C/AkzLBD
-         v5IxhEhRrOb0FutnBrkgma91wEQ4X62bBzzOoEk8LlaSXrjrNwIB9VCIAVLkA4k838os
-         kYWg==
+        with ESMTP id S231216AbjBCVZF (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Feb 2023 16:25:05 -0500
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67D22A4291;
+        Fri,  3 Feb 2023 13:25:04 -0800 (PST)
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-1636eae256cso8273451fac.0;
+        Fri, 03 Feb 2023 13:25:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=G37x/Hi3mUa++UD5bFJfX5WwZsig/fMJR1p/pLXMk50=;
-        b=oiTT0DFU8KhuynHXZav/JngFieul6/0632Jys9o4HXXJrTmBhP/0tTCEBcyb/odDxg
-         2Byrw0GSFg/sBaihuNaBRmFcIQjnB+uDm9GvVguGb9nUQssQbL55fYfQL0YsS1S+57GN
-         DEiblsgjJ7nGy7qykjelZB56/NStmVRa82GNdMxnHQiBaFCfEIBk5fpODiB+utV9Afqu
-         pPF60n8IicrrTWoHWxbCP5D0SCNPpQO/o7XE9W9Rne1J/bLHv01H50olajP+E25svwjy
-         TFJV2S3ZPP+NvSjUd4sucQ5fM24Xowt+8iA/aa63LWgKurf0EBA3wtvn49JV/6jiWuTY
-         N5Ow==
-X-Gm-Message-State: AO0yUKX+DDIW26kR3ARa5DNgroMs1X3qRNcrZHv4pQMlAq/KCIGvA3P4
-        qd4AN8Jl18nWyLbw7Y70hqvHCg==
-X-Google-Smtp-Source: AK7set9MYytH/zcC6sWFQBbf4kFuYn49tyUOuaemIo6IIQ3yfZ+C8wmYq0QbsUBap2YBOZf+IZbCpQ==
-X-Received: by 2002:a05:600c:3556:b0:3db:331b:bd57 with SMTP id i22-20020a05600c355600b003db331bbd57mr11301033wmq.23.1675458769063;
-        Fri, 03 Feb 2023 13:12:49 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id f1-20020a1cc901000000b003df14531724sm8142346wmb.21.2023.02.03.13.12.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Feb 2023 13:12:48 -0800 (PST)
-Message-ID: <697aa7b5-9c9b-eb4f-8111-c9a396d9d191@linaro.org>
-Date:   Fri, 3 Feb 2023 22:12:46 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH 5/9] ARM: dts: exynos: move exynos-bus nodes out of soc in
- Exynos4412
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l9q582Q7J+RZ7ICFLaBCZmRsM989hpbhHtNukDPvdVY=;
+        b=ITIH2aIzJ0dWi5eS0MOnkBHsx6InnrG5i12Nuq0IQFHYopmn8Y1YNv6XNO8T5TYMAL
+         VWgwRDfxqbqAruX0P93rGx6YxyjqUSvjjoiE6X/m6QYnq90LOL1fmMNAXeOmGzm/BIX0
+         AICyoVmdqzvNCgcKX5XXA3AsutPncQwJvkNs/yod8Bp57pA1V987DG3N6YbhvkS0hJRp
+         2o2H3sKm2rNF5yaVaUIlHuvIrgcGFaVk181Ko1DH7nn1U1kSWIbK6dyjQGq/mUYBzK/q
+         S8orFVjIH8KF5X1cp/1zDhIY93hh/WHxWEVmzQPDtdsGrsGLRyi1DoN9RPYBnx5N5FPN
+         eqHw==
+X-Gm-Message-State: AO0yUKWrYmHDy1HHKvsPj5QwtJHw8rJhoXRBAbeWk99palYcfepZuPI8
+        47f8OlxWfKdw5szKv9ZsRQ==
+X-Google-Smtp-Source: AK7set9UydUr1VjD194OD/VDGNhlPvCkm1waL94AGZJZ3LXVm9gUIP/u+yFUzUSnMSg33M2jhdKaRw==
+X-Received: by 2002:a05:6870:472a:b0:163:595e:3653 with SMTP id b42-20020a056870472a00b00163595e3653mr7354739oaq.16.1675459503665;
+        Fri, 03 Feb 2023 13:25:03 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id a4-20020a056870618400b0014fc049fc0asm1210298oah.57.2023.02.03.13.25.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Feb 2023 13:25:03 -0800 (PST)
+Received: (nullmailer pid 912424 invoked by uid 1000);
+        Fri, 03 Feb 2023 21:25:01 -0000
+Date:   Fri, 3 Feb 2023 15:25:01 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Jonathan Cameron <jic23@kernel.org>, iio@vger.kernel.org,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Kukjin Kim <kgene@kernel.org>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        =?UTF-8?Q?Martin_J=c3=bccker?= <martin.juecker@gmail.com>,
-        Henrik Grimler <henrik@grimler.se>,
-        Chanwoo Choi <cw00.choi@samsung.com>
-References: <20230125094513.155063-1-krzysztof.kozlowski@linaro.org>
- <20230125094513.155063-5-krzysztof.kozlowski@linaro.org>
- <CGME20230129104220eucas1p15b70f73be86fa5600cfe170d22869836@eucas1p1.samsung.com>
- <29841f64-360b-1426-e1fd-dd4c64ee5455@linaro.org>
- <b3f31e71-fa1a-e0c0-fdfa-f65674ccc5cd@samsung.com>
- <d54792c5-2842-e5b9-26b8-1f52471211a9@linaro.org>
- <111f7364-0d7b-b4c5-721f-69c00d4619e2@samsung.com>
- <dc0c3fa9-a6d4-e1c1-7cc8-13b206e3b31f@linaro.org>
-In-Reply-To: <dc0c3fa9-a6d4-e1c1-7cc8-13b206e3b31f@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] dt-bindings: thermal: qcom-spmi-adc-tm5: Use
+ generic ADC node name
+Message-ID: <20230203212501.GA908601-robh@kernel.org>
+References: <20230201204447.542385-1-marijn.suijten@somainline.org>
+ <20230201204447.542385-3-marijn.suijten@somainline.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230201204447.542385-3-marijn.suijten@somainline.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 03/02/2023 21:34, Krzysztof Kozlowski wrote:
-> On 03/02/2023 12:51, Marek Szyprowski wrote:
->> On 03.02.2023 12:46, Krzysztof Kozlowski wrote:
->>> On 03/02/2023 12:45, Marek Szyprowski wrote:
->>>> On 29.01.2023 11:42, Krzysztof Kozlowski wrote:
->>>>> On 25/01/2023 10:45, Krzysztof Kozlowski wrote:
->>>>>> The soc node is supposed to have only device nodes with MMIO addresses,
->>>>>> as reported by dtc W=1:
->>>>>>
->>>>>>     exynos4412.dtsi:407.20-413.5:
->>>>>>       Warning (simple_bus_reg): /soc/bus-acp: missing or empty reg/ranges property
->>>>>>
->>>>>> and dtbs_check:
->>>>>>
->>>>>>     exynos4412-i9300.dtb: soc: bus-acp:
->>>>>>       {'compatible': ['samsung,exynos-bus'], 'clocks': [[7, 456]], 'clock-names': ['bus'], 'operating-points-v2': [[132]], 'status': ['okay'], 'devfreq': [[117]]} should not be valid under {'type': 'object'}
->>>>>>
->>>>>> Move the bus nodes and their OPP tables out of SoC to fix this.
->>>>>> Re-order them alphabetically while moving and put some of the OPP tables
->>>>>> in device nodes (if they are not shared).
->>>>>>
->>>>> Applied.
->>>> I don't have a good news. It looks that this change is responsible for
->>>> breaking boards that were rock-stable so far, like Odroid U3. I didn't
->>>> manage to analyze what exactly causes the issue, but it looks that the
->>>> exynos-bus devfreq driver somehow depends on the order of the nodes:
->>>>
->>>> (before)
->>>>
->>>> # dmesg | grep exynos-bus
->>>> [    6.415266] exynos-bus: new bus device registered: soc:bus-dmc
->>>> (100000 KHz ~ 400000 KHz)
->>>> [    6.422717] exynos-bus: new bus device registered: soc:bus-acp
->>>> (100000 KHz ~ 267000 KHz)
->>>> [    6.454323] exynos-bus: new bus device registered: soc:bus-c2c
->>>> (100000 KHz ~ 400000 KHz)
->>>> [    6.489944] exynos-bus: new bus device registered: soc:bus-leftbus
->>>> (100000 KHz ~ 200000 KHz)
->>>> [    6.493990] exynos-bus: new bus device registered: soc:bus-rightbus
->>>> (100000 KHz ~ 200000 KHz)
->>>> [    6.494612] exynos-bus: new bus device registered: soc:bus-display
->>>> (160000 KHz ~ 200000 KHz)
->>>> [    6.494932] exynos-bus: new bus device registered: soc:bus-fsys
->>>> (100000 KHz ~ 134000 KHz)
->>>> [    6.495246] exynos-bus: new bus device registered: soc:bus-peri (
->>>> 50000 KHz ~ 100000 KHz)
->>>> [    6.495577] exynos-bus: new bus device registered: soc:bus-mfc
->>>> (100000 KHz ~ 200000 KHz)
->>>>
->>>> (after)
->>>>
->>>> # dmesg | grep exynos-bus
->>>>
->>>> [    6.082032] exynos-bus: new bus device registered: bus-dmc (100000
->>>> KHz ~ 400000 KHz)
->>>> [    6.122726] exynos-bus: new bus device registered: bus-leftbus
->>>> (100000 KHz ~ 200000 KHz)
->>>> [    6.146705] exynos-bus: new bus device registered: bus-mfc (100000
->>>> KHz ~ 200000 KHz)
->>>> [    6.181632] exynos-bus: new bus device registered: bus-peri ( 50000
->>>> KHz ~ 100000 KHz)
->>>> [    6.204770] exynos-bus: new bus device registered: bus-rightbus
->>>> (100000 KHz ~ 200000 KHz)
->>>> [    6.211087] exynos-bus: new bus device registered: bus-acp (100000
->>>> KHz ~ 267000 KHz)
->>>> [    6.216936] exynos-bus: new bus device registered: bus-c2c (100000
->>>> KHz ~ 400000 KHz)
->>>> [    6.225748] exynos-bus: new bus device registered: bus-display
->>>> (160000 KHz ~ 200000 KHz)
->>>> [    6.242978] exynos-bus: new bus device registered: bus-fsys (100000
->>>> KHz ~ 134000 KHz)
->>>>
->>>> This is definitely a driver bug, but so far it worked fine, so this is a
->>>> regression that need to be addressed somehow...
->>>
->>> Thanks for checking, but what is exactly the bug? The devices registered
->>> - just with different name.
->>
->> The bug is that the board fails to boot from time to time, freezing 
->> after registering PPMU counters...
-> 
-> My U3 with and without this patch, reports several warnings:
-> iommu_group_do_set_platform_dma()
-> exynos_iommu_domain_free()
-> clk_core_enable()
-> 
-> and finally:
-> rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-> 
-> and keeps stalling.
-> 
-> At least on next-20230203. Except all these (which anyway make board
-> unbootable) look fine around PMU and exynos-bus.
+On Wed, Feb 01, 2023 at 09:44:46PM +0100, Marijn Suijten wrote:
+> Update the example to reflect a future requirement for the generic
+> adc-chan node name on ADC channel nodes, while conveying the board name
+> of the channel in a label instead.
 
-I also booted few times my next/dt branch (with this patch) and no
-problems. How reproducible is the issue you experience?
+I don't think we've defined 'adc-chan' as THE generic name. Looks like 
+we have:
 
-Best regards,
-Krzysztof
+adc-chan
+adc-channel
+channel
 
+'channel' is the most common (except for QCom).
+
+Rob
