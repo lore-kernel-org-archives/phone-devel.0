@@ -2,181 +2,98 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B8B5C05027
-	for <phone-devel@archiver.kernel.org>; Fri,  3 Feb 2023 20:34:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC036C05027
+	for <phone-devel@archiver.kernel.org>; Fri,  3 Feb 2023 20:46:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231229AbjBCUeQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 3 Feb 2023 15:34:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36010 "EHLO
+        id S232149AbjBCUqw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 3 Feb 2023 15:46:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231598AbjBCUeP (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Feb 2023 15:34:15 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 031DA8F507
-        for <phone-devel@vger.kernel.org>; Fri,  3 Feb 2023 12:34:14 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id l21-20020a05600c1d1500b003dfe462b7e4so2100491wms.0
-        for <phone-devel@vger.kernel.org>; Fri, 03 Feb 2023 12:34:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BVXxUwhcHF2tonhrlazZYSJHdPH8Rmy7YehT5ics9zY=;
-        b=wi0mMR6NDBX5fD2fDRhfs5BVdC+wkwQtMvHe5rTAcBT6ljgw36vUfZSHSeBzkowkLQ
-         Q1x+2x6O70LzqPwWMtOfXMdsA2QXp27maoV/x2NnXvqD90KEDswk3kM2SHQsP8ZZuWk2
-         6cXo4mJY9SBr0skJByuhhFAEhHMZE3iqT5rxZDPABxorNm/OG6pIvWLZk7PS2PEx2ygi
-         GYyQlIg6F1Taj6rCntpWt3DG7ZRWWbOeSw/qij/MML3rqa99MhUkTOp8VRFEXF0qPT6N
-         eUIirAf3XYgeD4Bzq5g9NGs3ZdYlwPBaeF4ISg3qdkg8fjR5Qv7lt8gwGHf9lNPqWnzn
-         jWjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BVXxUwhcHF2tonhrlazZYSJHdPH8Rmy7YehT5ics9zY=;
-        b=ReVD85vx0LNAq1KkUjDRwY8w6r3xuabdgVGVH4vywqhvsRVL2wIuBeFFn3mu1Xq+9P
-         4hs+rKs6qo8Bloz5T0UjGKmuawz5kMnNYrNN+5q+vk1C0zRBWMUMu815vjNhThiHedOG
-         lMUlnZ8LRPzAaY3OPPFwkPk4e3wYy9f4WfspQXIlC98vhjPcRA/caEvLq/UL6doIS9VN
-         n1ExYc9Qoqq7Yll1GYmJROjIg6lemoEm8ENdd9znh+eqk05aD/7l5JWw99TMcSK9uu46
-         DQqfUCKQcQD3Rmd4Ft4FyKZ5R9lwP21ZHY+mgJBnyGi/WV05unSgcnbfkXFnmD32Kd9T
-         PzYg==
-X-Gm-Message-State: AO0yUKVFae38k5TzNWUlYKvpi2UtbcClLXvy36+DpLrhf2ty0aI5Bait
-        h+vTA4lfjHdi+LJO+4sjOQDJBw==
-X-Google-Smtp-Source: AK7set8EU1dHwiTiqWQ8QaG4TBnIAM1EfbgbcUUxi5KPtJSrEOQ/1SxBHYKq8jpAte0EBDbzZ5ijiA==
-X-Received: by 2002:a05:600c:3845:b0:3da:1bb0:4d78 with SMTP id s5-20020a05600c384500b003da1bb04d78mr10791488wmr.14.1675456452477;
-        Fri, 03 Feb 2023 12:34:12 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id hg15-20020a05600c538f00b003df7b40f99fsm6632746wmb.11.2023.02.03.12.34.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Feb 2023 12:34:11 -0800 (PST)
-Message-ID: <dc0c3fa9-a6d4-e1c1-7cc8-13b206e3b31f@linaro.org>
-Date:   Fri, 3 Feb 2023 21:34:09 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH 5/9] ARM: dts: exynos: move exynos-bus nodes out of soc in
- Exynos4412
-Content-Language: en-US
-To:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Kukjin Kim <kgene@kernel.org>, devicetree@vger.kernel.org,
+        with ESMTP id S230042AbjBCUqv (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 3 Feb 2023 15:46:51 -0500
+X-Greylist: delayed 379 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 03 Feb 2023 12:46:50 PST
+Received: from out-146.mta1.migadu.com (out-146.mta1.migadu.com [IPv6:2001:41d0:203:375::92])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7037788F0F
+        for <phone-devel@vger.kernel.org>; Fri,  3 Feb 2023 12:46:50 -0800 (PST)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grimler.se; s=key1;
+        t=1675456833;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=YSlUJW3lwKZ24XDgb3CDfUSp6GyVVQxOKuvbgvvqGyM=;
+        b=Fwu+1cVAxCF/49yKUyszFpuL0Tew+wkBhIDbw/5SeSm/wptJFBxXfwxyIGrYFVEURTgKFi
+        luF7iGzOwrZPwdNL+/jQf+lv8w2DdjFrk6BYmBAy5qmYLDEvtbrfhQJDgo+AnJqIKgWkRR
+        OxamB971I1gZpNgL0BZqYUdsv0LpPAA=
+From:   Henrik Grimler <henrik@grimler.se>
+To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        alim.akhtar@samsung.com, m.szyprowski@samsung.com,
+        virag.david003@gmail.com, devicetree@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        =?UTF-8?Q?Martin_J=c3=bccker?= <martin.juecker@gmail.com>,
-        Henrik Grimler <henrik@grimler.se>,
-        Chanwoo Choi <cw00.choi@samsung.com>
-References: <20230125094513.155063-1-krzysztof.kozlowski@linaro.org>
- <20230125094513.155063-5-krzysztof.kozlowski@linaro.org>
- <CGME20230129104220eucas1p15b70f73be86fa5600cfe170d22869836@eucas1p1.samsung.com>
- <29841f64-360b-1426-e1fd-dd4c64ee5455@linaro.org>
- <b3f31e71-fa1a-e0c0-fdfa-f65674ccc5cd@samsung.com>
- <d54792c5-2842-e5b9-26b8-1f52471211a9@linaro.org>
- <111f7364-0d7b-b4c5-721f-69c00d4619e2@samsung.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <111f7364-0d7b-b4c5-721f-69c00d4619e2@samsung.com>
-Content-Type: text/plain; charset=UTF-8
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Cc:     Henrik Grimler <henrik@grimler.se>
+Subject: [PATCH 2/2] arm64: dts: exynos: add mmc aliases
+Date:   Fri,  3 Feb 2023 21:40:00 +0100
+Message-Id: <20230203204000.14410-3-henrik@grimler.se>
+In-Reply-To: <20230203204000.14410-1-henrik@grimler.se>
+References: <20230203204000.14410-1-henrik@grimler.se>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 03/02/2023 12:51, Marek Szyprowski wrote:
-> On 03.02.2023 12:46, Krzysztof Kozlowski wrote:
->> On 03/02/2023 12:45, Marek Szyprowski wrote:
->>> On 29.01.2023 11:42, Krzysztof Kozlowski wrote:
->>>> On 25/01/2023 10:45, Krzysztof Kozlowski wrote:
->>>>> The soc node is supposed to have only device nodes with MMIO addresses,
->>>>> as reported by dtc W=1:
->>>>>
->>>>>     exynos4412.dtsi:407.20-413.5:
->>>>>       Warning (simple_bus_reg): /soc/bus-acp: missing or empty reg/ranges property
->>>>>
->>>>> and dtbs_check:
->>>>>
->>>>>     exynos4412-i9300.dtb: soc: bus-acp:
->>>>>       {'compatible': ['samsung,exynos-bus'], 'clocks': [[7, 456]], 'clock-names': ['bus'], 'operating-points-v2': [[132]], 'status': ['okay'], 'devfreq': [[117]]} should not be valid under {'type': 'object'}
->>>>>
->>>>> Move the bus nodes and their OPP tables out of SoC to fix this.
->>>>> Re-order them alphabetically while moving and put some of the OPP tables
->>>>> in device nodes (if they are not shared).
->>>>>
->>>> Applied.
->>> I don't have a good news. It looks that this change is responsible for
->>> breaking boards that were rock-stable so far, like Odroid U3. I didn't
->>> manage to analyze what exactly causes the issue, but it looks that the
->>> exynos-bus devfreq driver somehow depends on the order of the nodes:
->>>
->>> (before)
->>>
->>> # dmesg | grep exynos-bus
->>> [    6.415266] exynos-bus: new bus device registered: soc:bus-dmc
->>> (100000 KHz ~ 400000 KHz)
->>> [    6.422717] exynos-bus: new bus device registered: soc:bus-acp
->>> (100000 KHz ~ 267000 KHz)
->>> [    6.454323] exynos-bus: new bus device registered: soc:bus-c2c
->>> (100000 KHz ~ 400000 KHz)
->>> [    6.489944] exynos-bus: new bus device registered: soc:bus-leftbus
->>> (100000 KHz ~ 200000 KHz)
->>> [    6.493990] exynos-bus: new bus device registered: soc:bus-rightbus
->>> (100000 KHz ~ 200000 KHz)
->>> [    6.494612] exynos-bus: new bus device registered: soc:bus-display
->>> (160000 KHz ~ 200000 KHz)
->>> [    6.494932] exynos-bus: new bus device registered: soc:bus-fsys
->>> (100000 KHz ~ 134000 KHz)
->>> [    6.495246] exynos-bus: new bus device registered: soc:bus-peri (
->>> 50000 KHz ~ 100000 KHz)
->>> [    6.495577] exynos-bus: new bus device registered: soc:bus-mfc
->>> (100000 KHz ~ 200000 KHz)
->>>
->>> (after)
->>>
->>> # dmesg | grep exynos-bus
->>>
->>> [    6.082032] exynos-bus: new bus device registered: bus-dmc (100000
->>> KHz ~ 400000 KHz)
->>> [    6.122726] exynos-bus: new bus device registered: bus-leftbus
->>> (100000 KHz ~ 200000 KHz)
->>> [    6.146705] exynos-bus: new bus device registered: bus-mfc (100000
->>> KHz ~ 200000 KHz)
->>> [    6.181632] exynos-bus: new bus device registered: bus-peri ( 50000
->>> KHz ~ 100000 KHz)
->>> [    6.204770] exynos-bus: new bus device registered: bus-rightbus
->>> (100000 KHz ~ 200000 KHz)
->>> [    6.211087] exynos-bus: new bus device registered: bus-acp (100000
->>> KHz ~ 267000 KHz)
->>> [    6.216936] exynos-bus: new bus device registered: bus-c2c (100000
->>> KHz ~ 400000 KHz)
->>> [    6.225748] exynos-bus: new bus device registered: bus-display
->>> (160000 KHz ~ 200000 KHz)
->>> [    6.242978] exynos-bus: new bus device registered: bus-fsys (100000
->>> KHz ~ 134000 KHz)
->>>
->>> This is definitely a driver bug, but so far it worked fine, so this is a
->>> regression that need to be addressed somehow...
->>
->> Thanks for checking, but what is exactly the bug? The devices registered
->> - just with different name.
-> 
-> The bug is that the board fails to boot from time to time, freezing 
-> after registering PPMU counters...
+Add aliases for eMMC, SD card and WiFi where applicable, so that
+assigned mmcblk numbers are always the same.
 
-My U3 with and without this patch, reports several warnings:
-iommu_group_do_set_platform_dma()
-exynos_iommu_domain_free()
-clk_core_enable()
+Signed-off-by: Henrik Grimler <henrik@grimler.se>
+---
+ arch/arm64/boot/dts/exynos/exynos5433-tm2-common.dtsi | 2 ++
+ arch/arm64/boot/dts/exynos/exynos7-espresso.dts       | 2 ++
+ arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts  | 1 +
+ 3 files changed, 5 insertions(+)
 
-and finally:
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-
-and keeps stalling.
-
-At least on next-20230203. Except all these (which anyway make board
-unbootable) look fine around PMU and exynos-bus.
-
-Best regards,
-Krzysztof
+diff --git a/arch/arm64/boot/dts/exynos/exynos5433-tm2-common.dtsi b/arch/arm64/boot/dts/exynos/exynos5433-tm2-common.dtsi
+index c895b70b3cec..b7113ad4b3a9 100644
+--- a/arch/arm64/boot/dts/exynos/exynos5433-tm2-common.dtsi
++++ b/arch/arm64/boot/dts/exynos/exynos5433-tm2-common.dtsi
+@@ -21,6 +21,8 @@ aliases {
+ 		gsc0 = &gsc_0;
+ 		gsc1 = &gsc_1;
+ 		gsc2 = &gsc_2;
++		mmc0 = &mshc_0;
++		mmc2 = &mshc_2;
+ 		pinctrl0 = &pinctrl_alive;
+ 		pinctrl1 = &pinctrl_aud;
+ 		pinctrl2 = &pinctrl_cpif;
+diff --git a/arch/arm64/boot/dts/exynos/exynos7-espresso.dts b/arch/arm64/boot/dts/exynos/exynos7-espresso.dts
+index 686f0923a4a7..d433131cc902 100644
+--- a/arch/arm64/boot/dts/exynos/exynos7-espresso.dts
++++ b/arch/arm64/boot/dts/exynos/exynos7-espresso.dts
+@@ -17,6 +17,8 @@ / {
+ 	compatible = "samsung,exynos7-espresso", "samsung,exynos7";
+ 
+ 	aliases {
++		mmc0 = &mmc_0;
++		mmc2 = &mmc_2;
+ 		serial0 = &serial_2;
+ 	};
+ 
+diff --git a/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts b/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
+index 5db9a81ac7bb..47a389d9ff7d 100644
+--- a/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
++++ b/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
+@@ -18,6 +18,7 @@ / {
+ 	chassis-type = "handset";
+ 
+ 	aliases {
++		mmc0 = &mmc_0;
+ 		serial0 = &serial_0;
+ 		serial1 = &serial_1;
+ 		serial2 = &serial_2;
+-- 
+2.39.1
 
