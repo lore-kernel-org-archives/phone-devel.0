@@ -2,149 +2,115 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 441ACC64EC4
-	for <phone-devel@archiver.kernel.org>; Mon,  6 Feb 2023 20:41:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6910BC05027
+	for <phone-devel@archiver.kernel.org>; Mon,  6 Feb 2023 21:50:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230388AbjBFUlZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 6 Feb 2023 15:41:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43318 "EHLO
+        id S229806AbjBFVux (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 6 Feb 2023 16:50:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229961AbjBFUlX (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Feb 2023 15:41:23 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 351213AA3;
-        Mon,  6 Feb 2023 12:41:04 -0800 (PST)
-Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 9AA66D1D67;
-        Mon,  6 Feb 2023 20:40:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1675716032; bh=wwgeMDcIHU2HaiqoMeHN+n1sdl7b4K0Q6WOKBKwPojE=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=vy5pREk/fikTQRfiOwkkjMnAyalXialldNCDVHDEh5pvCdaXN5RAT1FcoNbVmmTU8
-         tTxGIjABPBiqroBUiDTLAYlfBFrDxoSVBfjtAPBRzBWXKbHw5izwOlk6zs/lTf3zsK
-         NjMkq32XSCtbzwas9NUkT7Fl9Oa8+AUXW0e/QugE=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Mon, 06 Feb 2023 21:40:16 +0100
-Subject: [PATCH v2 3/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add volume
- keys and hall sensor
-MIME-Version: 1.0
+        with ESMTP id S230048AbjBFVuw (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Feb 2023 16:50:52 -0500
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 173B42DE55;
+        Mon,  6 Feb 2023 13:50:28 -0800 (PST)
+Received: by mail-oi1-f173.google.com with SMTP id 20so10210448oix.5;
+        Mon, 06 Feb 2023 13:50:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=date:subject:message-id:references:in-reply-to:cc:to:from
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TComHy6fZylroVxyyvSSlsSThHII6Mu4hEBfm8EqSnQ=;
+        b=wzcgRGz00UQEDrm6wOLuvKXuTvB5rwVlO0eaTY1L4+SX8QIGvV0SFhKJ79vw8RCOfU
+         3aIQkj2vffP9okUNAg429LO+yyrNI/1qDS1pUJG1yP4uUgy1lNHDkzj4CHu0rms9JJlC
+         TfggjfNFmiLPl4yXbclfpNiS11jgvnqB1277QspPjBIewp6OsxTrpJhw/tCGElx3eMRv
+         iMSyNoy2GarWtgsWjC14iWpvjfd6tUBLI878zXFOIUWGk+DW42IweKEBQYLNqaENl4OS
+         GBpFeQP+oEWQbeh2r1pbxyZsf6l+jCGY6lqluCfzkiZqhZZ1GFiebkiRfk61m0L5ndsG
+         kcBA==
+X-Gm-Message-State: AO0yUKVf1pIZv4nlOlZJU/OrkeBigg3FVsRyPZ5k+CKyBlH1JjAuOtpW
+        s/YVzYIcM9Nu7o8t055eCA==
+X-Google-Smtp-Source: AK7set/hYpEoCmUec9o7ktPTMXf736j7C/JoYG/gvXF5wTwFwEmDcTGWh8hMqjewMfZtm/XdF/MBdg==
+X-Received: by 2002:aca:1c03:0:b0:378:4a78:2bba with SMTP id c3-20020aca1c03000000b003784a782bbamr134479oic.18.1675720209074;
+        Mon, 06 Feb 2023 13:50:09 -0800 (PST)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id x4-20020a9d6284000000b006865f605ce3sm5495840otk.54.2023.02.06.13.50.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Feb 2023 13:50:08 -0800 (PST)
+Received: (nullmailer pid 1564985 invoked by uid 1000);
+        Mon, 06 Feb 2023 21:50:08 -0000
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230122-msm8974-bacon-features-v2-3-06bb83c20a58@z3ntu.xyz>
-References: <20230122-msm8974-bacon-features-v2-0-06bb83c20a58@z3ntu.xyz>
-In-Reply-To: <20230122-msm8974-bacon-features-v2-0-06bb83c20a58@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2015; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=wwgeMDcIHU2HaiqoMeHN+n1sdl7b4K0Q6WOKBKwPojE=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBj4WW9cMsJDffoL5F/nnYd4uHuAG/ALeOzU4xD8
- MEDUHAnmdqJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCY+FlvQAKCRBy2EO4nU3X
- VsbcD/4lg88Tzlp7dKAurpPvfTwj7bTVWR+VAY9nmRiezofihSk72uyv2hTSRnjFDFEf2M7t2lk
- OyNXW2NgF6wwdRZAHygfNIwnhcpemJ/q8hVcWpAP4NaopRbBMDjzSuGldyC1oGPo8iq7EK4geCb
- oF7RFpKYbGjtti4oE0X58ZsfmiyC6+vEJ4tr75aj2BoSQ2jernw2AaW5P4G45UJHFpp/Zz3m4Of
- B6CLnqcmiNoJQdLrsAHiU7lchGgVnWFcF6TN7JdVok4AuJoy2kM8CavPhUnHSbo2RMmMaebMIg7
- j4LTQXAQ8YBErySNNYpaMZ7vjLsklKIxVi1c8/go51bI5PS9gXlOu7+w6z6TKwc7lbBDusXPI4a
- gloZVsKewIek5R4gmzqJfpuyvAUbvprJmaV+4LN4FwgUR+9Yt5eTXgLeNuSJr1ouAatXKgAI3MT
- kI8Sf1S2kw6U/B2zWIqFXZtWztH7LjRJnEahTHGI4KkF7vKrQ5SncIdKAEzG/jShcDDefM7FI86
- VZggYKnxBVZbrLsIbZUPbJ6ZebDo4VrLexdKnM9XQQCpCDxN/OY/59S0d+0gX4gF10u5kVVKmvb
- Au2XIWg2iXhqNcr426egnQipwMlJK78YsERchCNOB+j+hnNeedVW79MPUa3XGwMZbX2Q5DI9RWy
- yedjJQp14C2C77w==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+From:   Rob Herring <robh@kernel.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-kernel@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-media@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org,
+        Shunqian Zheng <zhengsq@rock-chips.com>,
+        phone-devel@vger.kernel.org
+In-Reply-To: <20230206-ov2685-dtschema-v1-1-9e4da3474c10@z3ntu.xyz>
+References: <20230206-ov2685-dtschema-v1-1-9e4da3474c10@z3ntu.xyz>
+Message-Id: <167572017056.1564123.13342855865502188090.robh@kernel.org>
+Subject: Re: [PATCH] media: dt-bindings: ov2685: convert to dtschema
+Date:   Mon, 06 Feb 2023 15:50:08 -0600
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add nodes for the volume buttons and the hall sensor that are found on
-the device.
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- .../arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 49 ++++++++++++++++++++++
- 1 file changed, 49 insertions(+)
+On Mon, 06 Feb 2023 21:23:16 +0100, Luca Weiss wrote:
+> Convert the text-based dt-bindings to yaml.
+> 
+> Changes from original txt:
+> * Take wording for various properties from other yaml bindings, this
+>   removes e.g. volt amount from schema since it isn't really relevant
+>   and the datasheet is a better source.
+> * Don't make reset-gpios a required property since it can be tied to
+>   DOVDD instead.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  .../devicetree/bindings/media/i2c/ov2685.txt       |  41 ---------
+>  .../devicetree/bindings/media/i2c/ovti,ov2685.yaml | 101 +++++++++++++++++++++
+>  MAINTAINERS                                        |   1 +
+>  3 files changed, 102 insertions(+), 41 deletions(-)
+> 
 
-diff --git a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-index 63180fe1d292..c4c355533149 100644
---- a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-+++ b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
-@@ -19,6 +19,38 @@ aliases {
- 	chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+
-+		pinctrl-0 = <&gpio_keys_default>, <&gpio_hall_sensor_default>;
-+		pinctrl-names = "default";
-+
-+		key-volume-down {
-+			label = "Volume Down";
-+			gpios = <&pm8941_gpios 2 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEDOWN>;
-+			wakeup-source;
-+			debounce-interval = <15>;
-+		};
-+
-+		key-volume-up {
-+			label = "Volume Up";
-+			gpios = <&pm8941_gpios 5 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEUP>;
-+			wakeup-source;
-+			debounce-interval = <15>;
-+		};
-+
-+		event-hall-sensor {
-+			label = "Hall Effect Sensor";
-+			gpios = <&tlmm 68 GPIO_ACTIVE_LOW>;
-+			linux,input-type = <EV_SW>;
-+			linux,code = <SW_LID>;
-+			linux,can-disable;
-+			debounce-interval = <150>;
-+		};
-+	};
- };
- 
- &blsp1_i2c1 {
-@@ -95,6 +127,16 @@ &pm8941_coincell {
- 	status = "okay";
- };
- 
-+&pm8941_gpios {
-+	gpio_keys_default: gpio-keys-active-state {
-+		pins = "gpio2", "gpio5";
-+		function = "normal";
-+		input-enable;
-+		bias-disable;
-+		power-source = <PM8941_GPIO_S3>;
-+	};
-+};
-+
- &pm8941_vib {
- 	status = "okay";
- };
-@@ -349,6 +391,13 @@ &sdhc_1 {
- };
- 
- &tlmm {
-+	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
-+		pins = "gpio68";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-pull-up;
-+	};
-+
- 	sdc1_on: sdc1-on-state {
- 		clk-pins {
- 			pins = "sdc1_clk";
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
--- 
-2.39.1
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/rockchip-isp1.example.dtb: camera@3c: 'clocks' is a required property
+	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/rockchip-isp1.example.dtb: camera@3c: 'clock-names' is a required property
+	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/rockchip-isp1.example.dtb: camera@3c: 'dvdd-supply' is a required property
+	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/rockchip-isp1.example.dtb: camera@3c: 'avdd-supply' is a required property
+	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/rockchip-isp1.example.dtb: camera@3c: 'dovdd-supply' is a required property
+	From schema: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230206-ov2685-dtschema-v1-1-9e4da3474c10@z3ntu.xyz
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
