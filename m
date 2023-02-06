@@ -2,204 +2,96 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 302EAC05027
-	for <phone-devel@archiver.kernel.org>; Mon,  6 Feb 2023 16:13:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F50EC636D4
+	for <phone-devel@archiver.kernel.org>; Mon,  6 Feb 2023 20:00:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231740AbjBFQNK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 6 Feb 2023 11:13:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50752 "EHLO
+        id S230291AbjBFT74 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 6 Feb 2023 14:59:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231759AbjBFQNA (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Feb 2023 11:13:00 -0500
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF3D92FCC3
-        for <phone-devel@vger.kernel.org>; Mon,  6 Feb 2023 08:12:39 -0800 (PST)
-Received: by mail-wm1-x333.google.com with SMTP id az4-20020a05600c600400b003dff767a1f1so3965937wmb.2
-        for <phone-devel@vger.kernel.org>; Mon, 06 Feb 2023 08:12:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DKHwytajiOAR9nY12DKXuVDIqgp8eXSf4A1PQJbS+U0=;
-        b=rGKG7RBS7I/8vrLgjCKgyFWhKsvajQVtYanXK9FRzTibVuMOS309fl217TtWae3tb6
-         AoxnCXFwMBuYcPgjPuvyJfFC+wKjSem4B0dbuOV6Jx5bcQHqPNtGp1VBFymOsE6TO5fi
-         rOuc5C46K9s3/cV6uJMoDadxBtr+oFNiZ53tj5iugLThEHu2G6HbWqqeiNPa388f4Ryl
-         qBK5G9E836H9juaOfI6ytmpTWZ/Eq0luyX5QMouZ/zp7Nq6LuVSb83Bx4HSShKS5ffRj
-         IW8MrHVapHrq9hx2b0GUmnxhS3VritTqY6EWyHrqP0rISdau3bJoNdpFPIwFN16SiPn9
-         M9Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DKHwytajiOAR9nY12DKXuVDIqgp8eXSf4A1PQJbS+U0=;
-        b=lwIfZzyFbZuQg+z8k051ADd5+lu7SmRh995egGwinacKiQpepDC07Bt4dnywWk3XzV
-         cSWw9A/rHoGtWHZpU+o3XoF2ToYhePzWoXzbVB9MJzvZM3EdAdadJgc0APlU+MrZh5Lk
-         NCrhQObGO3BDOwZI8EK6UgV9qjAEycLdEeTjPSdCaCSX8JRDfVIZJmDBwCbDd7d0WBhD
-         0UxJacqq39fKprU2VvOQqCrZBGcWgkOB/uPDZjGpeniGiEZPAhXGiv2+U/iwoKUx0lxA
-         hLj+BMKbp7KWs9u2qHsHM/MldAQiV+9IopBbsGwXH51k/KmWccQTBNgJA2qfuK/kp4da
-         FPgw==
-X-Gm-Message-State: AO0yUKXTkQMH3tEtWnyCeeIaQ9Q76ymeaO8S3xuwKdPIXk8dXdVii2CC
-        d6bRhkcK2lDS27w3YiJe3c8mRw==
-X-Google-Smtp-Source: AK7set+in52AJriVcyBtTG4oXRb8OjlLdfXu3armhgkzE7x8wQzvOcf9Mdeu31PPbyMscL730X3tYA==
-X-Received: by 2002:a05:600c:13c8:b0:3da:28a9:a900 with SMTP id e8-20020a05600c13c800b003da28a9a900mr177983wmg.41.1675699958378;
-        Mon, 06 Feb 2023 08:12:38 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id r12-20020a05600c35cc00b003d9fba3c7a4sm17816889wmq.16.2023.02.06.08.12.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Feb 2023 08:12:37 -0800 (PST)
-Message-ID: <a72f8b1a-1fcc-a090-69e7-f56072185e81@linaro.org>
-Date:   Mon, 6 Feb 2023 17:12:35 +0100
+        with ESMTP id S230167AbjBFT7z (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Feb 2023 14:59:55 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84D9825962;
+        Mon,  6 Feb 2023 11:59:49 -0800 (PST)
+Received: from [192.168.178.23] (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 040F5CD0C5;
+        Mon,  6 Feb 2023 19:59:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1675713557; bh=YAA9rHwEkOLJaOcAUYlj6+0wa5Hydp2D/H7mATvbTrs=;
+        h=From:Date:Subject:To:Cc;
+        b=tKqFR6U77OTqstAkqc4vo1XEPa6BWNizx4FrScJppofjOeX8oDMl1P6bDfm7AZo5P
+         5OeVH+6UfkHEj2+J6eFlls6yLabYd3AQTpmixZ0Mx3zouKbOVpQ4xghqYmzKpS2xcK
+         +HZryf651keyUQZrCSeaVEzqZ/y50dikqV8Mi4GQ=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Date:   Mon, 06 Feb 2023 20:58:30 +0100
+Subject: [PATCH] backlight: qcom-wled: Add PMI8950 compatible
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH 5/9] ARM: dts: exynos: move exynos-bus nodes out of soc in
- Exynos4412
-Content-Language: en-US
-To:     Marek Szyprowski <m.szyprowski@samsung.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Kukjin Kim <kgene@kernel.org>, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        =?UTF-8?Q?Martin_J=c3=bccker?= <martin.juecker@gmail.com>,
-        Henrik Grimler <henrik@grimler.se>,
-        Chanwoo Choi <cw00.choi@samsung.com>
-References: <20230125094513.155063-1-krzysztof.kozlowski@linaro.org>
- <20230125094513.155063-5-krzysztof.kozlowski@linaro.org>
- <CGME20230129104220eucas1p15b70f73be86fa5600cfe170d22869836@eucas1p1.samsung.com>
- <29841f64-360b-1426-e1fd-dd4c64ee5455@linaro.org>
- <b3f31e71-fa1a-e0c0-fdfa-f65674ccc5cd@samsung.com>
- <d54792c5-2842-e5b9-26b8-1f52471211a9@linaro.org>
- <111f7364-0d7b-b4c5-721f-69c00d4619e2@samsung.com>
- <dc0c3fa9-a6d4-e1c1-7cc8-13b206e3b31f@linaro.org>
- <697aa7b5-9c9b-eb4f-8111-c9a396d9d191@linaro.org>
- <6a9fcdc9-3fe7-e8fc-3a51-385d516c6323@samsung.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <6a9fcdc9-3fe7-e8fc-3a51-385d516c6323@samsung.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20221226-msm8953-6-2-wled-v1-1-e318d4c71d05@z3ntu.xyz>
+X-B4-Tracking: v=1; b=H4sIAOVb4WMC/z2NQQrCMBAAv1L27JZka4P1K+IhaTZ2wUbJghZK/
+ 97Ug8eBGWYF5SKscG1WKPwRlVeuYE8NjJPPD0aJlYEMkSVyOOt8GfoOHRJ+nxyxT4NzIflzDB3
+ ULHhlDMXncTrCv9+a1ppDeBdOsvyet/u27XBJWt2DAAAA
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>
+Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1141; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=YAA9rHwEkOLJaOcAUYlj6+0wa5Hydp2D/H7mATvbTrs=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBj4VwQ1sqTedK0Bt8ocPrVnmBVs5dhpkKuSGowg
+ OkxPIbDK4eJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCY+FcEAAKCRBy2EO4nU3X
+ VlXgD/9WAJwsC+gXcyebNw/UlnmkmjENHKMLER3oY+/btVXL6wnQI3snEaY1rFqi74RDsqZ3rj5
+ 2K8E+H4dxIoQaCK048FjXSXb8V0+9AEH1bBkFQ8bSNGXBGPEVnC1uzkY5JpBGvGQeXJgxF9FThI
+ f8cjkr0traDKBZWFSFJc6Kzj/h9dsrOSCt0pDoIxzFoyG9yeWet2H1UHYtsW0IeOPeEpGtQaWA/
+ 7a6WVB0TeE4FzShG0REzZI1vuEsaogFlf34T+C+GlccDtdv8BTFo78H7PO7rq6B6oBwXgIxqcQ7
+ EECX0f/e/unpMd4hsjK4ZNS54ZCLWUWdf39Env2wn7WP2ON4RvUz8t8TQWjhGOB6IM2jJ19K5qM
+ eQ4r553HXq77V0DAIDZkHxmutZe9AGxtaY6DSb7zfUJuhAgRofPbXq9uNx0nklPx/VXIRm8haAW
+ OogoMTgaZgUh5IP/AU0ZXgI0Z8e59s30P77ylKbwG8mXjL49Jr18Qe/hU6gw2QlXHQ/rwxlFORN
+ /88PN8GAes8kd1tUBRA1C51xpnlH2Ixd6D3wxKWVpoWP2n4dlpCz1hltVwA+coAVRtF7MAojRB3
+ VRVziIw9Q1SJ2pauruo6xToI/rkqKhsfuVKZHN6rgkmNxkZt2JV0gQb34/iit9CHyE27HPV5clF
+ 18SQD/mIOf2ZQoA==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 03/02/2023 23:50, Marek Szyprowski wrote:
-> On 03.02.2023 22:12, Krzysztof Kozlowski wrote:
->> On 03/02/2023 21:34, Krzysztof Kozlowski wrote:
->>> On 03/02/2023 12:51, Marek Szyprowski wrote:
->>>> On 03.02.2023 12:46, Krzysztof Kozlowski wrote:
->>>>> On 03/02/2023 12:45, Marek Szyprowski wrote:
->>>>>> On 29.01.2023 11:42, Krzysztof Kozlowski wrote:
->>>>>>> On 25/01/2023 10:45, Krzysztof Kozlowski wrote:
->>>>>>>> The soc node is supposed to have only device nodes with MMIO addresses,
->>>>>>>> as reported by dtc W=1:
->>>>>>>>
->>>>>>>>      exynos4412.dtsi:407.20-413.5:
->>>>>>>>        Warning (simple_bus_reg): /soc/bus-acp: missing or empty reg/ranges property
->>>>>>>>
->>>>>>>> and dtbs_check:
->>>>>>>>
->>>>>>>>      exynos4412-i9300.dtb: soc: bus-acp:
->>>>>>>>        {'compatible': ['samsung,exynos-bus'], 'clocks': [[7, 456]], 'clock-names': ['bus'], 'operating-points-v2': [[132]], 'status': ['okay'], 'devfreq': [[117]]} should not be valid under {'type': 'object'}
->>>>>>>>
->>>>>>>> Move the bus nodes and their OPP tables out of SoC to fix this.
->>>>>>>> Re-order them alphabetically while moving and put some of the OPP tables
->>>>>>>> in device nodes (if they are not shared).
->>>>>>>>
->>>>>>> Applied.
->>>>>> I don't have a good news. It looks that this change is responsible for
->>>>>> breaking boards that were rock-stable so far, like Odroid U3. I didn't
->>>>>> manage to analyze what exactly causes the issue, but it looks that the
->>>>>> exynos-bus devfreq driver somehow depends on the order of the nodes:
->>>>>>
->>>>>> (before)
->>>>>>
->>>>>> # dmesg | grep exynos-bus
->>>>>> [    6.415266] exynos-bus: new bus device registered: soc:bus-dmc
->>>>>> (100000 KHz ~ 400000 KHz)
->>>>>> [    6.422717] exynos-bus: new bus device registered: soc:bus-acp
->>>>>> (100000 KHz ~ 267000 KHz)
->>>>>> [    6.454323] exynos-bus: new bus device registered: soc:bus-c2c
->>>>>> (100000 KHz ~ 400000 KHz)
->>>>>> [    6.489944] exynos-bus: new bus device registered: soc:bus-leftbus
->>>>>> (100000 KHz ~ 200000 KHz)
->>>>>> [    6.493990] exynos-bus: new bus device registered: soc:bus-rightbus
->>>>>> (100000 KHz ~ 200000 KHz)
->>>>>> [    6.494612] exynos-bus: new bus device registered: soc:bus-display
->>>>>> (160000 KHz ~ 200000 KHz)
->>>>>> [    6.494932] exynos-bus: new bus device registered: soc:bus-fsys
->>>>>> (100000 KHz ~ 134000 KHz)
->>>>>> [    6.495246] exynos-bus: new bus device registered: soc:bus-peri (
->>>>>> 50000 KHz ~ 100000 KHz)
->>>>>> [    6.495577] exynos-bus: new bus device registered: soc:bus-mfc
->>>>>> (100000 KHz ~ 200000 KHz)
->>>>>>
->>>>>> (after)
->>>>>>
->>>>>> # dmesg | grep exynos-bus
->>>>>>
->>>>>> [    6.082032] exynos-bus: new bus device registered: bus-dmc (100000
->>>>>> KHz ~ 400000 KHz)
->>>>>> [    6.122726] exynos-bus: new bus device registered: bus-leftbus
->>>>>> (100000 KHz ~ 200000 KHz)
->>>>>> [    6.146705] exynos-bus: new bus device registered: bus-mfc (100000
->>>>>> KHz ~ 200000 KHz)
->>>>>> [    6.181632] exynos-bus: new bus device registered: bus-peri ( 50000
->>>>>> KHz ~ 100000 KHz)
->>>>>> [    6.204770] exynos-bus: new bus device registered: bus-rightbus
->>>>>> (100000 KHz ~ 200000 KHz)
->>>>>> [    6.211087] exynos-bus: new bus device registered: bus-acp (100000
->>>>>> KHz ~ 267000 KHz)
->>>>>> [    6.216936] exynos-bus: new bus device registered: bus-c2c (100000
->>>>>> KHz ~ 400000 KHz)
->>>>>> [    6.225748] exynos-bus: new bus device registered: bus-display
->>>>>> (160000 KHz ~ 200000 KHz)
->>>>>> [    6.242978] exynos-bus: new bus device registered: bus-fsys (100000
->>>>>> KHz ~ 134000 KHz)
->>>>>>
->>>>>> This is definitely a driver bug, but so far it worked fine, so this is a
->>>>>> regression that need to be addressed somehow...
->>>>> Thanks for checking, but what is exactly the bug? The devices registered
->>>>> - just with different name.
->>>> The bug is that the board fails to boot from time to time, freezing
->>>> after registering PPMU counters...
->>> My U3 with and without this patch, reports several warnings:
->>> iommu_group_do_set_platform_dma()
->>> exynos_iommu_domain_free()
->>> clk_core_enable()
->>>
->>> and finally:
->>> rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
->>>
->>> and keeps stalling.
->>>
->>> At least on next-20230203. Except all these (which anyway make board
->>> unbootable) look fine around PMU and exynos-bus.
->> I also booted few times my next/dt branch (with this patch) and no
->> problems. How reproducible is the issue you experience?
-> 
-> IOMMU needs a fixup, that has been merged today:
-> 
-> https://lore.kernel.org/all/20230123093102.12392-1-m.szyprowski@samsung.com/
-> 
-> I was initially convinced that this freeze is somehow related to this 
-> IOMMU fixup, but it turned out that the devfreq is a source of the problems.
-> 
-> The freeze happens here about 1 of 10 boots, usually with kernel 
-> compiled from multi_v7_defconfig, while loading the PPMU modules. It 
-> happens on your next/dt branch too.
+PMI8950 contains WLED of version 4. Add support for it to the driver.
 
-I was able to reproduce it easily with multi_v7. Then I commented out
-dmc bus which fixed the issue. Then I commented out acp and c2c buses
-(children/passive) which also fixed the issue. Then I uncommented
-everything and went back to next/dt - exactly the same as it was failing
-- and since then I cannot reproduce it. I triple checked, but now my
-multi_v7 on U3 on next/dt boots perfectly fine. Every time.
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+While adding dt-bindings and dts in a previous series I forgot to add the
+compatible to the driver. Fix that now.
+---
+ drivers/video/backlight/qcom-wled.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index 527210e85795..5f504883aca5 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -1731,6 +1731,7 @@ static int wled_remove(struct platform_device *pdev)
+ 
+ static const struct of_device_id wled_match_table[] = {
+ 	{ .compatible = "qcom,pm8941-wled", .data = (void *)3 },
++	{ .compatible = "qcom,pmi8950-wled", .data = (void *)4 },
+ 	{ .compatible = "qcom,pmi8994-wled", .data = (void *)4 },
+ 	{ .compatible = "qcom,pmi8998-wled", .data = (void *)4 },
+ 	{ .compatible = "qcom,pm660l-wled", .data = (void *)4 },
+
+---
+base-commit: 1b929c02afd37871d5afb9d498426f83432e71c2
+change-id: 20221226-msm8953-6-2-wled-5f966bfa4db3
 
 Best regards,
-Krzysztof
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
