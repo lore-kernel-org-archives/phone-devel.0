@@ -2,53 +2,53 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D26E7C636D3
-	for <phone-devel@archiver.kernel.org>; Wed,  8 Feb 2023 17:27:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0914EC64EC5
+	for <phone-devel@archiver.kernel.org>; Wed,  8 Feb 2023 17:27:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230421AbjBHR1Q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 8 Feb 2023 12:27:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60000 "EHLO
+        id S231179AbjBHR1T (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 8 Feb 2023 12:27:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230482AbjBHR1O (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Feb 2023 12:27:14 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72EBEA25D
-        for <phone-devel@vger.kernel.org>; Wed,  8 Feb 2023 09:26:49 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id j23so2330972wra.0
-        for <phone-devel@vger.kernel.org>; Wed, 08 Feb 2023 09:26:49 -0800 (PST)
+        with ESMTP id S231307AbjBHR1P (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Feb 2023 12:27:15 -0500
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 506172C665
+        for <phone-devel@vger.kernel.org>; Wed,  8 Feb 2023 09:26:51 -0800 (PST)
+Received: by mail-wm1-x330.google.com with SMTP id n13so13839054wmr.4
+        for <phone-devel@vger.kernel.org>; Wed, 08 Feb 2023 09:26:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bepz1Z/udBgbBXD5pI7+Z6at3sTDiRBON0IEQlG7D4M=;
-        b=cSkUzqywHkQwtAFMOHt60QrzMP673nuDfK7sUlOPosNsYyRfwMcspD5/OwfjD49wBn
-         SP9FP9JKN8Pfme9DsDrIcr9ysAUEjb4rxG5CfYF+mdiWr05afyYZVIYcJ0YKmPP7g1CN
-         kaHp8XETnecVsWRxbk07G/shclciwhxndIJvF5rPnpsuoojFu2Ijr/EdH7pYsId2nGJT
-         LeMkPehFWCL+aOStzT/iQIYCS8y3J16M+po29pnjfRRoReTMEfmQNS83w3cxyOX3/ZAj
-         rv3JUQFhWoAnXvO7e56Hmen0K5MIRT5nEqrEh8J7M3ayRWb8VhI25s+HB4wURRRQhh8X
-         0DYQ==
+        bh=IthlQVOkiWnqAVOrcwnjK/hncHhlqSzAla08vNnpBBs=;
+        b=ncjbK/IjIRjZSVVCm5UW/GTZ1pFctUORIJobSApOZCmKKSaTi8doyaI2SmDiYIXOuG
+         rZCkrlI+NHcVmxry6ifJ4MAkKZL1YE0JPWja0PStq6Aw7JZGWO9Z6S3HdgR/lG5EEbM2
+         v/FajlbuQxgf5O1u1+aX3dWS768NFcmn0JB40cDNaGVZaqSOoGIJwwtEMY57DU3SIGAd
+         gelL1ma1E7EG3akq1gsdZ1/fgbQgknvnrkX2M+voDswgWdUm7YELvKoejTQ/foUtBQha
+         NbORHWu5QUl+RAwboA40YAC7FtpjrbBTL78i+KBfCYD+PsVlz4P/Z7azRNuZfKwG+yqi
+         c3Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bepz1Z/udBgbBXD5pI7+Z6at3sTDiRBON0IEQlG7D4M=;
-        b=kiQ6WrkOtlmi6G83pSlMwZCO89Co4vNPZ8F4pre2CE/bAbIJF+gpcQ/89ZmM/260eI
-         Mk+Vaaotsa2EWPVAdcbJWD+QT7zxX9NKfsJcpBLerhF1yF9VDEoo7fv67o8HExNGPyRb
-         HammIokXSdgEgpimuXtyf6glF+hwmhIoc5VxpR9n5jgM4ekcd6cKVmLxcTV5zSBrKfC8
-         ThDHDftL4QqRv3SDcsaBo3KBCJzpyryPUeeJFO8eUCcMzUbwA0k7WOTZCFWULZKKmZcH
-         UAbUjFBwSZs/iL3+EbC4SeHU+9B4cNUOFPksg5aSgSd72HwOylHhrv+xIcrfa1RxCqyV
-         gm4A==
-X-Gm-Message-State: AO0yUKUftpmEjHmfWhrqlRhLnSjeiVKhZIhZcqLOv+MtTj6MLDTWS+T0
-        c2u2y7w36o1g5HaTDRakgt1c+w==
-X-Google-Smtp-Source: AK7set9sIVeegYMYb+vFVH6Qx/wCEg9tvUvr35XorEpbq2zmYuYPix/sJedoX50P3YgGazJE81nOSQ==
-X-Received: by 2002:adf:ea45:0:b0:2bd:c1de:a33f with SMTP id j5-20020adfea45000000b002bdc1dea33fmr7574384wrn.19.1675877206114;
-        Wed, 08 Feb 2023 09:26:46 -0800 (PST)
+        bh=IthlQVOkiWnqAVOrcwnjK/hncHhlqSzAla08vNnpBBs=;
+        b=7bNJvN4ioHD7mVwB3q+/py1PlTp70CaPaYwrtvX1lDTLEpYpzJmUn9IyVfcEI6wUtb
+         oLYoILfvg3soljzXfyRtRdrOBF1fhlRgv62toTRNrP/MCnS6xX6Qsr0kH13KmY22Wkg6
+         QePxGntWQIgC/3zXFt84T29/yKXsghZX0d5IeakJDh0HQMudkZFPCt+feaUne0i0UCaQ
+         q77CiG0/1cRC+ka9NGyWKIINrJLNWBW1ejdpccteY4+9mH52lb3xCtWQ52CItX/ndkSt
+         L+QNm8m/GR4EdoptGJE9rjN4/arpBXzaUU1IhBdxlSH05/J0vI7Gs+U4gNLibI2qqRnD
+         TAgA==
+X-Gm-Message-State: AO0yUKUN3o85oxnIwuo/3ElmFoixSx55fzTs7m3ThgogepsGPqT5/F5K
+        ptDtDDvizAzOTyJppJ9qH6avJQ==
+X-Google-Smtp-Source: AK7set9hYTQx01kSCRhx6wENRzX+3TI0Zpz69KEaHspoUsv96TSaQhWtq5bJLXPkeBD+xH475unMCQ==
+X-Received: by 2002:a05:600c:16c5:b0:3d6:ecc4:6279 with SMTP id l5-20020a05600c16c500b003d6ecc46279mr7464750wmn.27.1675877207384;
+        Wed, 08 Feb 2023 09:26:47 -0800 (PST)
 Received: from krzk-bin.. ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id h1-20020a05600c2ca100b003dc3f3d77e3sm2624502wmc.7.2023.02.08.09.26.45
+        by smtp.gmail.com with ESMTPSA id h1-20020a05600c2ca100b003dc3f3d77e3sm2624502wmc.7.2023.02.08.09.26.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Feb 2023 09:26:45 -0800 (PST)
+        Wed, 08 Feb 2023 09:26:47 -0800 (PST)
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -60,9 +60,9 @@ Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
         =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
         Henrik Grimler <henrik@grimler.se>
-Subject: [RFT PATCH 2/3] ARM: dts: exynos: add "gpios" suffix to wlf,ldo1ena on Arndale
-Date:   Wed,  8 Feb 2023 18:26:33 +0100
-Message-Id: <20230208172634.404452-2-krzysztof.kozlowski@linaro.org>
+Subject: [RFT PATCH 3/3] ARM: dts: s5pv210: add "gpios" suffix to wlf,ldo1ena on Aries
+Date:   Wed,  8 Feb 2023 18:26:34 +0100
+Message-Id: <20230208172634.404452-3-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230208172634.404452-1-krzysztof.kozlowski@linaro.org>
 References: <20230208172634.404452-1-krzysztof.kozlowski@linaro.org>
@@ -77,24 +77,24 @@ already handles both names, so switch to preferred one.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- arch/arm/boot/dts/exynos5250-arndale.dts | 4 ++--
+ arch/arm/boot/dts/s5pv210-aries.dtsi | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/exynos5250-arndale.dts b/arch/arm/boot/dts/exynos5250-arndale.dts
-index 6134bc9c8212..2e3da5670bc2 100644
---- a/arch/arm/boot/dts/exynos5250-arndale.dts
-+++ b/arch/arm/boot/dts/exynos5250-arndale.dts
-@@ -537,8 +537,8 @@ wm1811: audio-codec@1a {
- 		SPKVDD1-supply = <&main_dc_reg>;
- 		SPKVDD2-supply = <&main_dc_reg>;
+diff --git a/arch/arm/boot/dts/s5pv210-aries.dtsi b/arch/arm/boot/dts/s5pv210-aries.dtsi
+index 964c5fe51755..f628d3660493 100644
+--- a/arch/arm/boot/dts/s5pv210-aries.dtsi
++++ b/arch/arm/boot/dts/s5pv210-aries.dtsi
+@@ -135,8 +135,8 @@ wm8994: audio-codec@1a {
+ 					0xa101 0x0100 0x8100 0x0100 0x0100
+ 					0x0100>;
  
--		wlf,ldo1ena = <&gpb0 0 GPIO_ACTIVE_HIGH>;
--		wlf,ldo2ena = <&gpb0 1 GPIO_ACTIVE_HIGH>;
-+		wlf,ldo1ena-gpios = <&gpb0 0 GPIO_ACTIVE_HIGH>;
-+		wlf,ldo2ena-gpios = <&gpb0 1 GPIO_ACTIVE_HIGH>;
- 	};
- };
+-			wlf,ldo1ena = <&gpf3 4 GPIO_ACTIVE_HIGH>;
+-			wlf,ldo2ena = <&gpf3 4 GPIO_ACTIVE_HIGH>;
++			wlf,ldo1ena-gpios = <&gpf3 4 GPIO_ACTIVE_HIGH>;
++			wlf,ldo2ena-gpios = <&gpf3 4 GPIO_ACTIVE_HIGH>;
  
+ 			wlf,lineout1-se;
+ 			wlf,lineout2-se;
 -- 
 2.34.1
 
