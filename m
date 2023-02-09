@@ -2,123 +2,88 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1000C6379F
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Feb 2023 14:35:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 97AF2C61DA4
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Feb 2023 14:39:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231133AbjBIOfB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Feb 2023 09:35:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57516 "EHLO
+        id S230480AbjBIOj5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Feb 2023 09:39:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231142AbjBIOey (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Feb 2023 09:34:54 -0500
-Received: from amity.mint.lgbt (vmi888983.contaboserver.net [149.102.157.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17D821284E
-        for <phone-devel@vger.kernel.org>; Thu,  9 Feb 2023 06:34:53 -0800 (PST)
-Received: from amity.mint.lgbt (mx.mint.lgbt [127.0.0.1])
-        by amity.mint.lgbt (Postfix) with ESMTP id 4PCKBy3NXkz1S5HT
-        for <phone-devel@vger.kernel.org>; Thu,  9 Feb 2023 09:34:50 -0500 (EST)
-Authentication-Results: amity.mint.lgbt (amavisd-new);
-        dkim=pass (2048-bit key) reason="pass (just generated, assumed good)"
-        header.d=mint.lgbt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mint.lgbt; h=
-        content-transfer-encoding:content-type:in-reply-to:from
-        :references:to:content-language:subject:user-agent:mime-version
-        :date:message-id; s=dkim; t=1675953289; x=1676817290; bh=OtwHaQd
-        43ev0CTnwqIm/FUCsnnqbo5VRlxBW82fmyng=; b=aeJTwZSzh4NsiLUNz02pkWg
-        Gntg7ipRRbmzczLUOhYpitoTfuKRpYjlvLM8uVxckGxuYB+B3zYccHS+tmRuGeeY
-        bF+/vSzLgmoyBNQolLxZdnVHuBV3D9852x3Ry0DT841JpORDDVAFagJlVt9pIp+v
-        cdqY6F0Eot9TRJeVMt+Q5v/uGfZqA4ORKord3XGBNHVgrSxkdz2vvHG/fdRdXI8e
-        njVHaSKqM/NelaNLv2zYL8J/fPh3Se9ehLAGDY2jy+MlH9cocLMtZms8Kx3R8FCY
-        VwENzWqBhqV6MGnoaykGVmvx6Qxu3glhSnbCdI6kTJf8Pof1lcY6qsdsIpDRUxQ=
-        =
-X-Virus-Scanned: amavisd-new at amity.mint.lgbt
-Received: from amity.mint.lgbt ([127.0.0.1])
-        by amity.mint.lgbt (amity.mint.lgbt [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id CU5GeyMmkq9d for <phone-devel@vger.kernel.org>;
-        Thu,  9 Feb 2023 09:34:49 -0500 (EST)
-Received: from [192.168.4.25] (unknown [190.196.95.28])
-        by amity.mint.lgbt (Postfix) with ESMTPSA id 4PCKBY4Xnbz1S5Gh;
-        Thu,  9 Feb 2023 09:34:21 -0500 (EST)
-Message-ID: <bb6f8a51-cec8-02cc-8ac1-3cd714a2e59a@mint.lgbt>
-Date:   Thu, 9 Feb 2023 11:34:17 -0300
+        with ESMTP id S230289AbjBIOjz (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Feb 2023 09:39:55 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99D115D3DC
+        for <phone-devel@vger.kernel.org>; Thu,  9 Feb 2023 06:39:40 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id z13so1586858wmp.2
+        for <phone-devel@vger.kernel.org>; Thu, 09 Feb 2023 06:39:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bCojH4hNqxc1P2ct87iuhUs4QYbjLoq0YF+//3KxCts=;
+        b=Zc6SoVNDffEDBEH8g+eKBBQaC6iJkjSoCxjFv5P6VIKvERM2a5HlK5a+scUCc4Ok1h
+         p7PqRP3wLqmcu93YCiUNFoF6v353pYPe1x+hl4nolaPMzmBnO8apccVo5LlfLWlqDQiH
+         hlmBoD6DJbYtylFTC0UC6uR3LbxWjKlFqtgEtKF0V+VWHVPB06pr+BydXCfhA5W/URbA
+         Gwpw3YUzCDfvJHhaed7HpZq1g6XnEmf29hzcFBxlvgPntfHCs07kvgP+usDrZgvFC7HR
+         H+yXxUTuAqowoX6OYlN/obmEhFo2qDt6bRm0odua8p0KDrbxTFUn4xmXJuodBLSU+CVZ
+         3XKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bCojH4hNqxc1P2ct87iuhUs4QYbjLoq0YF+//3KxCts=;
+        b=LWQJj1nZNbHDW6lV7gQPr3dJ9O7Xk4rEZGfp0jo74rI1abVsrDNRKYIEKk1kt3Reys
+         2DPZM3SMcOoZbm6m7+VhqMw1uLU7zHtwzXxzYavWUoQyHHwb0Eraz9eh83apbBeY5LZ+
+         O1ckZzQHx1nlDL2cGMXIY4Jyx9km0Ab0iURK8Ac1leEFws3tWdcK8du3SHtAqp+gaoN8
+         cM5cJwRdThmLfykIkVXBmJHTyntiy4deOsB9i5wWvNQaXNSga71602oqztApInpopWjp
+         ZOO68bOJr78QtfWToDRTE4QQNg9iAMwkSEhwJRwyIo0vlykV0QIWuW2kyw/lpSpu6xX+
+         YdEA==
+X-Gm-Message-State: AO0yUKV8fRHt+IiDFTTiVWFetieqXnFwu0iQt5w5mEGiuWN0D/u8/FaO
+        +jK56pj4njSEfP4VGp1ThO1LNQ==
+X-Google-Smtp-Source: AK7set9LtmpClrPQfcFeByaC8Sa73pVHrg8KxE8i/xi22r9j55C/m7esYo9HnNNONnwlcbZK7ADqCA==
+X-Received: by 2002:a05:600c:44c9:b0:3df:f9e9:7600 with SMTP id f9-20020a05600c44c900b003dff9e97600mr10389317wmo.25.1675953579270;
+        Thu, 09 Feb 2023 06:39:39 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id g10-20020a05600c4eca00b003dec22de1b1sm2391175wmq.10.2023.02.09.06.39.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Feb 2023 06:39:38 -0800 (PST)
+Message-ID: <29d63a50-bdfe-ef50-c173-cb9e37923758@linaro.org>
+Date:   Thu, 9 Feb 2023 15:39:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.7.1
-Subject: Re: [PATCH v6 3/6] phy: qcom-qmp: Add SM6125 UFS PHY support
+Subject: Re: [PATCH v2 1/2] ARM: dts: exynos: drop mshc aliases
 Content-Language: en-US
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        vkoul@kernel.org, kishon@kernel.org, alim.akhtar@samsung.com,
-        avri.altman@wdc.com, bvanassche@acm.org, keescook@chromium.org,
-        tony.luck@intel.com, gpiccoli@igalia.com,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
-        phone-devel@vger.kernel.org, martin.botka@somainline.org,
-        marijn.suijten@somainline.org
-References: <20230108195336.388349-1-they@mint.lgbt>
- <20230108195336.388349-4-they@mint.lgbt>
- <CAA8EJpp-RwPOv61MtoXYb3Tuy5LDWWBCvYSrGUOvg8vWhid_tw@mail.gmail.com>
-From:   Lux Aliaga <they@mint.lgbt>
-In-Reply-To: <CAA8EJpp-RwPOv61MtoXYb3Tuy5LDWWBCvYSrGUOvg8vWhid_tw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Henrik Grimler <henrik@grimler.se>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, alim.akhtar@samsung.com,
+        m.szyprowski@samsung.com, jenneron@protonmail.com,
+        markuss.broks@gmail.com, martin.juecker@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <20230128133151.29471-1-henrik@grimler.se>
+ <20230128133151.29471-2-henrik@grimler.se>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230128133151.29471-2-henrik@grimler.se>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 13/01/2023 16:31, Dmitry Baryshkov wrote:
+On 28/01/2023 14:31, Henrik Grimler wrote:
+> They are no longer needed after commit a13e8ef6008d ("mmc: dw_mmc:
+> exynos: use common_caps").
+> 
 
-> On Sun, 8 Jan 2023 at 21:54, Lux Aliaga <they@mint.lgbt> wrote:
->> The SM6125 UFS PHY is compatible with the one from SM6115. Add a
->> compatible for it and modify the config from SM6115 to make them
->> compatible with the SC8280XP binding
->>
->> Signed-off-by: Lux Aliaga <they@mint.lgbt>
->> Reviewed-by: Martin Botka <martin.botka@somainline.org>
->> ---
->>   drivers/phy/qualcomm/phy-qcom-qmp-ufs.c | 5 +++++
->>   1 file changed, 5 insertions(+)
->>
->> diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
->> index 318eea35b972..f33c84578940 100644
->> --- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
->> +++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
->> @@ -693,6 +693,8 @@ static const struct qmp_phy_cfg sdm845_ufsphy_cfg = {
->>   static const struct qmp_phy_cfg sm6115_ufsphy_cfg = {
->>          .lanes                  = 1,
->>
->> +       .offsets                = &qmp_ufs_offsets_v5,
-> Please don't randomly reuse generation-specific structures. This
-> structure is clearly related to v5, while the PHY is from the v2
-> generation.
+Are you sure? That commit explicitly says that the caps should be set
+from DT and Exynos DT does not set it everywhere...
 
-I'm a bit confused here. When referencing back to downstream the driver 
-used has the suffix "v3-660". Should I use that suffix to name these 
-offsets? Because I'm not too sure if this is from the v2 generation due 
-to how it's named there.
+plus if alias is missing, then the ctrl_id in dw_mmc.c is 0 and such
+caps are applied everywhere - to every DWMMC device.
 
->> +
->>          .serdes_tbl             = sm6115_ufsphy_serdes_tbl,
->>          .serdes_tbl_num         = ARRAY_SIZE(sm6115_ufsphy_serdes_tbl),
->>          .tx_tbl                 = sm6115_ufsphy_tx_tbl,
->> @@ -1172,6 +1174,9 @@ static const struct of_device_id qmp_ufs_of_match_table[] = {
->>          }, {
->>                  .compatible = "qcom,sm6115-qmp-ufs-phy",
->>                  .data = &sm6115_ufsphy_cfg,
->> +       }, {
->> +               .compatible = "qcom,sm6125-qmp-ufs-phy",
->> +               .data = &sm6115_ufsphy_cfg,
->>          }, {
->>                  .compatible = "qcom,sm6350-qmp-ufs-phy",
->>                  .data = &sdm845_ufsphy_cfg,
->> --
->> 2.39.0
->>
->
--- 
-Lux Aliaga
-https://nixgoat.me/
+Best regards,
+Krzysztof
 
