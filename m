@@ -2,53 +2,55 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 47DF0C6379F
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Feb 2023 04:32:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D91CFC05027
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Feb 2023 04:32:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230089AbjBIEb7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 8 Feb 2023 23:31:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46300 "EHLO
+        id S230022AbjBIEcE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 8 Feb 2023 23:32:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229964AbjBIEbb (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Feb 2023 23:31:31 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F09993BDB2;
-        Wed,  8 Feb 2023 20:31:06 -0800 (PST)
+        with ESMTP id S229834AbjBIEbd (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Feb 2023 23:31:33 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC2DF3F2B1;
+        Wed,  8 Feb 2023 20:31:08 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E0484B82010;
-        Thu,  9 Feb 2023 04:22:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88446C4339B;
+        by ams.source.kernel.org (Postfix) with ESMTPS id B0E52B8200E;
         Thu,  9 Feb 2023 04:22:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 497D8C433D2;
+        Thu,  9 Feb 2023 04:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1675916522;
-        bh=p5VVj10S5orhNpUZIUZG0+Gb/fuq/M0x8vaoEkwoOT4=;
+        s=k20201202; t=1675916520;
+        bh=yxNnMNwO/bUWsvA6c9eHATZsKZptWxbUJkDnkmisqTM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gnZxjr8jRJJn2tO7y2d2HfSi2SuLIO5DCyIiQeaWSRoIXvClXgvIZGIeO0YEVyauJ
-         VBzF2yepyOn7AXEI0ghrV0hVnjtsw1U6Lzhd/6yUH+AbNl1F0ubcOqHS0bWHVry/bS
-         rCMczBX7lq02x1vui0xtWaMcktBVltAeFUdAMESAjG9S1pEWmL6d8LzgWOk+PVx2lw
-         D8kvkACOj+VWuchbEbS0z8f8sNS3HpVwI+lCz5R2sXEJKf2ZOVNKYMTVTxaBgdCe8F
-         wG5oFl2057Epz0MzJEXpJhcgSblitkUaxhcb7hLVcSSaDzb3c62ED2M8kDrAOYH9yp
-         mRtU0PA4aIfog==
+        b=CgEyBUNU3OqUDrBSgYhru7oKhJwbl0QfdKuyJ/wfTEQXV0gRiS2Jt8adF4hXAEw3g
+         940SbcPt4mmPU48WckB2T/n+F0/KfJRFRaw6ZaGYNU9Lx8XIMSYAzWo+yjTt2KhDgo
+         LV4ZP0S1ngwfQ0Kdxn31H85q289qkR1SV+30MtRqOmJTibF/ArImM6Jl0pCug72gD3
+         C/VM4Gn5OqWOhVZeLiQg5KLsBUYOaPj8I/IRXB+5FSPTPmbV6/Q4pm10AkOvHiO41k
+         1almP0uAYzIItRAe9AibZodsvH2USjdFD06Fgv/Q08vIjFDBBUFu1hWZkyKfFtdzH0
+         n245E/hhcMjKg==
 From:   Bjorn Andersson <andersson@kernel.org>
 To:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Kees Cook <keescook@chromium.org>,
-        "Guilherme G . Piccoli" <gpiccoli@igalia.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Jianhua Lu <lujianhua000@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+        Vinod Koul <vkoul@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Kishon Vijay Abraham I <kishon@kernel.org>
 Cc:     linux-kernel@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>,
+        linux-phy@lists.infradead.org,
         ~postmarketos/upstreaming@lists.sr.ht,
-        linux-hardening@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: (subset) [PATCH v4 1/2] dt-bindings: arm: qcom: Add Xiaomi Mi Pad 5 Pro (xiaomi-elish)
-Date:   Wed,  8 Feb 2023 20:23:18 -0800
-Message-Id: <167591660369.1230100.756923498094436262.b4-ty@kernel.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+Subject: Re: (subset) [PATCH v4 0/3] Add USB/DP combo PHY config for SM6350
+Date:   Wed,  8 Feb 2023 20:23:16 -0800
+Message-Id: <167591660369.1230100.11949215646296439039.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230131123515.833-1-lujianhua000@gmail.com>
-References: <20230131123515.833-1-lujianhua000@gmail.com>
+In-Reply-To: <20230120-sm6350-usbphy-v4-0-4d700a90ba16@fairphone.com>
+References: <20230120-sm6350-usbphy-v4-0-4d700a90ba16@fairphone.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -56,15 +58,21 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 31 Jan 2023 20:35:14 +0800, Jianhua Lu wrote:
-> Add a compatible for Xiaomi Mi Pad 5 Pro.
+On Mon, 23 Jan 2023 14:29:48 +0100, Luca Weiss wrote:
+> While this patchset started out as just adding a dedicated init sequence
+> for SM6350 since USB PHY init didn't work in some cases, now it's also
+> migrating the phy config and dts over to a new format.
 > 
+> Also note, that the DP portions are pratically untested since TCPM
+> (type-C port manager) and possibly other components aren't brought up
+> yet.
 > 
+> [...]
 
 Applied, thanks!
 
-[2/2] arm64: dts: qcom: sm8250: Add device tree for Xiaomi Mi Pad 5 Pro
-      commit: a41b617530bf07e584b18b4ec390d0e39d95c796
+[3/3] arm64: dts: qcom: sm6350: Use specific qmpphy compatible
+      commit: 5ed2b6388b310521fdaa81cf5e075c20e9d0006c
 
 Best regards,
 -- 
