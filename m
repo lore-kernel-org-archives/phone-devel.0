@@ -2,86 +2,140 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 336A2C61DA4
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Feb 2023 15:22:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 548D6C61DA4
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Feb 2023 16:46:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbjBIPWx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Feb 2023 10:22:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34168 "EHLO
+        id S229674AbjBIQq5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Feb 2023 11:46:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230174AbjBIPWx (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Feb 2023 10:22:53 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03EB3170E;
-        Thu,  9 Feb 2023 07:22:52 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id bk16so2107147wrb.11;
-        Thu, 09 Feb 2023 07:22:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=GxFq7fZlqbGjwXiI/Fc+o/rdi2Z7DhXh24vJqm8qfmA=;
-        b=nJ+n1AC5uVNxc0cXP8KNa/VvP56pb7WfWEWS/VYSLPFHWYIyaQb/UFpYmbxF13aY1Q
-         OWFjFanjY9RbX8QkEE4x2/Uh0QT8ZTwGe7XHx/6B/RB5Q0YUP9Eq/88a9/ndUu+lrWmr
-         furuJSHUyCRCYs8wlGEN/5tO3DaE7bPDq1aZkQDJL0CjJ6LqLzJVVMzFvOrMkL8yja12
-         D6qZLkmL8+vxl1/guzbu/mBgsUm/tmhRHGmZNhZYkIX5Wztewy4gFwz6BtOGtcHyqL9h
-         c2Uu1k0BuZBMpzYag2Owd8yV+5JnTRfZGdYu7smjgpAEkoRzjLSSNW/wXWtUM2Kz6tOJ
-         RwYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GxFq7fZlqbGjwXiI/Fc+o/rdi2Z7DhXh24vJqm8qfmA=;
-        b=wvivJmFi+vg6AO44DE0TyatCIS3t/tgV5M7kioxE4RHaEv5X197TcTgLjLjdZUO5C+
-         WMemjtCO4B7FIzs+7js821HS1Xo7o/ZxsgcKcCZbC2NbRWQeo8ArbREq9rTxSfHu2BSA
-         gOVOzppaVvAxNjzMFYRlz+DI9c4XaBCv/IQY42TfFNk6wlpOJPzWbI/ETz46McxzaOOl
-         k24dopxYgcu/+Vq45mmuhIaYaUZ7ckOmqb4CAZOuw5Bt55tqhCXV7IoVT1yi2rNBZcOV
-         v2CPYuyQp/qAmJSe38wRXy1xeK73bZB7zbp3TkY4H1riUfQTm4BEufdflPYqH6x91xQB
-         /urg==
-X-Gm-Message-State: AO0yUKWo5cbuyy1oHQxt6jGEtv66Q1f19cSJZkvar0ZarVLiblWgJu6z
-        FFI0KevXhHbFDCLDIEYbjr8=
-X-Google-Smtp-Source: AK7set8R7kHBC6zkISR04QehfHSNISlKwiGpLqx83p5E5vQRTm7hFnY0RGGgNm+RKbNrxKMW8+AH3A==
-X-Received: by 2002:a05:6000:110e:b0:2bf:95fb:e5b3 with SMTP id z14-20020a056000110e00b002bf95fbe5b3mr11258205wrw.33.1675956170534;
-        Thu, 09 Feb 2023 07:22:50 -0800 (PST)
-Received: from ?IPv6:2a02:ab88:368f:2080:d12e:7ef:c89a:f600? ([2a02:ab88:368f:2080:d12e:7ef:c89a:f600])
-        by smtp.gmail.com with ESMTPSA id x15-20020adfec0f000000b002be5401ef5fsm1499739wrn.39.2023.02.09.07.22.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Feb 2023 07:22:50 -0800 (PST)
-Message-ID: <9e42dec3978c535d6bee6a8bd0c4137a23b70998.camel@gmail.com>
-Subject: Re: [PATCH v2 2/2] ARM: dts: exynos: add mmc aliases
-From:   David Virag <virag.david003@gmail.com>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Henrik Grimler <henrik@grimler.se>
-Cc:     krzysztof.kozlowski+dt@linaro.org, alim.akhtar@samsung.com,
-        m.szyprowski@samsung.com, jenneron@protonmail.com,
-        markuss.broks@gmail.com, martin.juecker@gmail.com,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Valentine Iourine <iourine@iourine.msk.su>
-Date:   Thu, 09 Feb 2023 16:22:48 +0100
-In-Reply-To: <CAL_Jsq+y2_aHXsxj4sx0KPATDi9-7mujruowpbq2kxro4e13zg@mail.gmail.com>
-References: <20230128133151.29471-1-henrik@grimler.se>
-         <20230128133151.29471-3-henrik@grimler.se>
-         <CAL_Jsq+y2_aHXsxj4sx0KPATDi9-7mujruowpbq2kxro4e13zg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 
+        with ESMTP id S229723AbjBIQq4 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Feb 2023 11:46:56 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45754E078;
+        Thu,  9 Feb 2023 08:46:51 -0800 (PST)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 1045ACE004;
+        Thu,  9 Feb 2023 16:46:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1675961210; bh=WzP22PkUOOEnYEsiechqbOaqD/J6AkmB473A99UfdqE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=noIvF3ES5jB7bjscHwRtjP6qOggwXUwlBBhYkn/6v85fSxTU5X2lstNdwG1Tn/5S7
+         EB2AnNp2c5TqTf7JfiSzg/Gj1iEFCXkgSQJ3dykyQTEbtmT/Qyh36thygHSVWof75g
+         dNNOmPF1jBlHFfyo6ouNIiPwQBCoiKzDUXLnRIME=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Rob Herring <robh@kernel.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-media@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org,
+        Shunqian Zheng <zhengsq@rock-chips.com>,
+        phone-devel@vger.kernel.org,
+        Helen Koike <helen.koike@collabora.com>
+Subject: Re: [PATCH] media: dt-bindings: ov2685: convert to dtschema
+Date:   Thu, 09 Feb 2023 17:46:48 +0100
+Message-ID: <2665862.mvXUDI8C0e@z3ntu.xyz>
+In-Reply-To: <167572017056.1564123.13342855865502188090.robh@kernel.org>
+References: <20230206-ov2685-dtschema-v1-1-9e4da3474c10@z3ntu.xyz>
+ <167572017056.1564123.13342855865502188090.robh@kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 2023-02-09 at 09:06 -0600, Rob Herring wrote:
-> On Sat, Jan 28, 2023 at 7:32 AM Henrik Grimler <henrik@grimler.se>
-> wrote:
-> >=20
-> > Add aliases for eMMC, SD card and WiFi where applicable, so that
-> > assigned mmcblk numbers are always the same.
->=20
-> What does WiFi have to do with mmcblk?
++CC Helen Koike
 
-Some devices use SDIO WiFi, which is usually on mmc_1.
-An example of this that I could find is in exynos5250-spring.dts.
+On Montag, 6. Februar 2023 22:50:08 CET Rob Herring wrote:
+> On Mon, 06 Feb 2023 21:23:16 +0100, Luca Weiss wrote:
+> > Convert the text-based dt-bindings to yaml.
+> > 
+> > Changes from original txt:
+> > * Take wording for various properties from other yaml bindings, this
+> > 
+> >   removes e.g. volt amount from schema since it isn't really relevant
+> >   and the datasheet is a better source.
+> > 
+> > * Don't make reset-gpios a required property since it can be tied to
+> > 
+> >   DOVDD instead.
+> > 
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> > 
+> >  .../devicetree/bindings/media/i2c/ov2685.txt       |  41 ---------
+> >  .../devicetree/bindings/media/i2c/ovti,ov2685.yaml | 101
+> >  +++++++++++++++++++++ MAINTAINERS                                       
+> >  |   1 +
+> >  3 files changed, 102 insertions(+), 41 deletions(-)
+> 
+> My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+> on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> 
+> yamllint warnings/errors:
+> 
+> dtschema/dtc warnings/errors:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/medi
+> a/rockchip-isp1.example.dtb: camera@3c: 'clocks' is a required property From
+> schema:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> ia/i2c/ovti,ov2685.yaml
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> ia/rockchip-isp1.example.dtb: camera@3c: 'clock-names' is a required
+> property From schema:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> ia/i2c/ovti,ov2685.yaml
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> ia/rockchip-isp1.example.dtb: camera@3c: 'dvdd-supply' is a required
+> property From schema:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> ia/i2c/ovti,ov2685.yaml
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> ia/rockchip-isp1.example.dtb: camera@3c: 'avdd-supply' is a required
+> property From schema:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> ia/i2c/ovti,ov2685.yaml
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> ia/rockchip-isp1.example.dtb: camera@3c: 'dovdd-supply' is a required
+> property From schema:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> ia/i2c/ovti,ov2685.yaml
+
+Looks like rockchip-isp1.yaml uses very incomplete sensor examples in their 
+binding example, which sort of makes sense since those bindings are showing 
+the rockchip isp bindings and contain the bare minimum to show how a sensor is 
+connected in dt.
+
+Not sure how to solve this - ov2685 is also one of three sensors that are used 
+very abbreviated there.
+
+Regards
+Luca
+
+> 
+> doc reference errors (make refcheckdocs):
+> 
+> See
+> https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230206-ov2
+> 685-dtschema-v1-1-9e4da3474c10@z3ntu.xyz
+> 
+> The base for the series is generally the latest rc1. A different dependency
+> should be noted in *this* patch.
+> 
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+> 
+> pip3 install dtschema --upgrade
+> 
+> Please check and re-submit after running the above command yourself. Note
+> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+> your schema. However, it must be unset to test all examples with your
+> schema.
+
+
+
+
