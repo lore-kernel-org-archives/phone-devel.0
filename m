@@ -2,95 +2,208 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8BBB4C61DA4
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Feb 2023 11:11:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E714CC61DA4
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Feb 2023 14:23:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbjBILLI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Feb 2023 06:11:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37332 "EHLO
+        id S230426AbjBIOXa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Feb 2023 09:23:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbjBILK4 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Feb 2023 06:10:56 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DE0935268
-        for <phone-devel@vger.kernel.org>; Thu,  9 Feb 2023 03:10:52 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id by3so70390wrb.10
-        for <phone-devel@vger.kernel.org>; Thu, 09 Feb 2023 03:10:52 -0800 (PST)
+        with ESMTP id S230381AbjBIOX3 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Feb 2023 09:23:29 -0500
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20C5913523
+        for <phone-devel@vger.kernel.org>; Thu,  9 Feb 2023 06:23:27 -0800 (PST)
+Received: by mail-wr1-x42d.google.com with SMTP id o18so1945135wrj.3
+        for <phone-devel@vger.kernel.org>; Thu, 09 Feb 2023 06:23:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V89hB8P9aljMFaI4JVhG1UB7ptSBWBngnxQJmHuqEqU=;
-        b=eL7Pu7g5g0LHCZLE/2uwHQbquviWqM+ui1NcQVYBmzALmBW2z+8w+HHfzi7ezO8PjH
-         vG+xlrc8jAcgoLbxRLMLmXL4PKp/N64nj2u+BMllyaqSoxj3iSO+BZUnTkJEliT+yPgq
-         9YIX0IaEIP+Bf8xcMetAcnJs10ka/AaDWf5Ku56uFmDjeltfdQ5EDeoPkAS3ujQmFpKC
-         3RPwT3CAwR0GpQwxLe2OE9D0dXzIsM76RP4cahnqjS5+Q2fOXK2tjZqiTNAF825Grn4R
-         gxwuTS0lAvs9Sk8V3pyIGPQNPPh1KAWKUCPJ2T/KomCWqS7haIOwwZGLrpiZDHcjFTQU
-         WvUg==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/AaeFwDtGgsiJbC0QTZeuI5q7NDTwTp278cldLgwfac=;
+        b=vSt7aNDoWSfjIgrViM6B4VY/+XFxgyEMsaZleT91wpKO7/dqn5YcVbOk1IGp9tY4zT
+         xlxw1jYHXf92U5xl0BnRer2u8AcNT0DWfMJoH5KjxZbp9YG9aG1KWwW1cyyIhkSCffGC
+         1AUMs53Ej7JklXcXWMaIcgUIe67hR7NOd2powaGjka9DZ23UjRAS2JXHdh1vGCOW/xKw
+         mhAxvxmnHNH8pWHAFewTpFnSEe/sr95llNpzXSNoWHmVMNE4sS+SqNnyNnfADAuupG5g
+         PaJRommS/p+5ndzqULeuSOWTKq0Sjhyv1+Sem5RwA8a1dZS9VRl4tTwbRZbKAZI5+9J1
+         pkBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V89hB8P9aljMFaI4JVhG1UB7ptSBWBngnxQJmHuqEqU=;
-        b=VHyI2gsev3xhcY8nUQnyR0RItvSrkbrxQMYMoHV2BOOXyi32Dp89qV1TcPW6VFQ9nU
-         m0GbFUmXAanGRyPk6AREPgw8DJbm6Ag190Ymlj0KqAoQBkGC7qjpzbmhU4QNTb3yyL5T
-         /1PyZxjLHrJbOEuNPAoSrlFAC0ba9Dmh/y6jqnlQ+oMANoJl4cItEjJciFy8M6QxzHwp
-         Gvvx1E+LlhfxhUfT1AY4vPPH1ANjPxJJdqUffQZQZiVw4FRTMBwmquIhe75tA6OuFDR8
-         DMD+J84F2JGGzl9xT/D8/m6IQi+LRvcs6H24OBs6kc4cCjTWr5fzNhWjhf5P+Fd3YFZ7
-         Bs1w==
-X-Gm-Message-State: AO0yUKX/F+VycJMrY8JYFNDWdcrp2brAmZNgCDTnS2UBv7qfyEGUrXcR
-        TveItPqt6LW2a1awITnis+RO7A==
-X-Google-Smtp-Source: AK7set9DRa8qVIxG0cZVTMfZRttELsRCFtgifHQea5sUv2Utsl7IJv8U5sa+TDnFwWB0SvKYeWZCbA==
-X-Received: by 2002:adf:f34d:0:b0:2c5:3fcb:6823 with SMTP id e13-20020adff34d000000b002c53fcb6823mr226977wrp.25.1675941051537;
-        Thu, 09 Feb 2023 03:10:51 -0800 (PST)
-Received: from krzk-bin.. ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id q13-20020adff94d000000b002be099f78c0sm963207wrr.69.2023.02.09.03.10.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Feb 2023 03:10:51 -0800 (PST)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        linux-samsung-soc@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Henrik Grimler <henrik@grimler.se>,
-        ~postmarketos/upstreaming@lists.sr.ht, replicant@osuosl.org,
-        phone-devel@vger.kernel.org,
-        =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>
-Subject: Re: [RFT PATCH 1/3] ARM: dts: exynos: add "gpios" suffix to wlf,ldo1ena on Midas
-Date:   Thu,  9 Feb 2023 12:10:42 +0100
-Message-Id: <167594102111.781687.5239598797684494010.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230208172634.404452-1-krzysztof.kozlowski@linaro.org>
-References: <20230208172634.404452-1-krzysztof.kozlowski@linaro.org>
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/AaeFwDtGgsiJbC0QTZeuI5q7NDTwTp278cldLgwfac=;
+        b=bF/oFYIeQuvgpAv+HW7V7mBkZZNEPrLsoaTmWONZlPep94XHp7nn6njpLmdjv0i+p8
+         EZd8wYZrmaaerLdIaszLI2UUMtXc3H/X3qBw9fOaLY8hdh8akmImPjRQ88McvrmlaSqm
+         9v0MKjoKNKhyGstQxi8Izr9311QK0bPdMOgFo9WogBZ/AEGMRxQ263IzPAYnbUSbMt19
+         OS9v4kVUjHOincFl7UyHgULrFKw6srYzASSLR2KiTB3Q1mW+hLAw8M6/3/E42+DAKw76
+         Di/fOwzlDeU+4Gy2UynNX2/bMmCU8+UoTtn8OcXMiY/Ga9lnlvabGtMZLKwpM1so1u6R
+         pMnQ==
+X-Gm-Message-State: AO0yUKW75yIAo3svBZV6NSsn6HyODJ+ykYLvo3sPahxn8bf6IMhWi39Q
+        FaWWG54uqtRokBGQIugxmNIrag==
+X-Google-Smtp-Source: AK7set/zIQgNCvI0NgV6LI0l0/eN2Kv8XajaYfnqYSl6iIgopnqcYNooxoPE3JWlBjVwcWq/6NAHJg==
+X-Received: by 2002:a05:6000:18ca:b0:2c3:db9e:4b06 with SMTP id w10-20020a05600018ca00b002c3db9e4b06mr10707805wrq.45.1675952605632;
+        Thu, 09 Feb 2023 06:23:25 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id y1-20020a5d4ac1000000b002c3be6ae0b1sm1353515wrs.65.2023.02.09.06.23.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Feb 2023 06:23:25 -0800 (PST)
+Message-ID: <99a17d21-2cf9-a573-29cb-827568c9709b@linaro.org>
+Date:   Thu, 9 Feb 2023 15:23:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH v2 2/2] ARM: dts: exynos: add mmc aliases
+Content-Language: en-US
+To:     Henrik Grimler <henrik@grimler.se>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, alim.akhtar@samsung.com,
+        m.szyprowski@samsung.com, jenneron@protonmail.com,
+        markuss.broks@gmail.com, martin.juecker@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Cc:     Valentine Iourine <iourine@iourine.msk.su>
+References: <20230128133151.29471-1-henrik@grimler.se>
+ <20230128133151.29471-3-henrik@grimler.se>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230128133151.29471-3-henrik@grimler.se>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 8 Feb 2023 18:26:32 +0100, Krzysztof Kozlowski wrote:
-> The GPIOs properties should end with "gpios" suffix and Linux gpiolib
-> already handles both names, so switch to preferred one.
+On 28/01/2023 14:31, Henrik Grimler wrote:
+> Add aliases for eMMC, SD card and WiFi where applicable, so that
+> assigned mmcblk numbers are always the same.
 > 
-> While touching the lines, replace open-coded GPIO_ACTIVE_HIGH flag.
+> Co-developed-by: Anton Bambura <jenneron@protonmail.com>
+> Signed-off-by: Anton Bambura <jenneron@protonmail.com>
+> [ Tested on exynos5800-peach-pi ]
+> Tested-by: Valentine Iourine <iourine@iourine.msk.su>
+> Signed-off-by: Henrik Grimler <henrik@grimler.se>
+> ---
+>  arch/arm/boot/dts/exynos3250-artik5-eval.dts        | 5 +++++
+>  arch/arm/boot/dts/exynos3250-artik5.dtsi            | 5 +++++
+>  arch/arm/boot/dts/exynos3250-monk.dts               | 1 +
+>  arch/arm/boot/dts/exynos3250-rinato.dts             | 2 ++
+>  arch/arm/boot/dts/exynos4210-i9100.dts              | 6 ++++++
+>  arch/arm/boot/dts/exynos4210-origen.dts             | 5 +++++
+>  arch/arm/boot/dts/exynos4210-smdkv310.dts           | 4 ++++
+>  arch/arm/boot/dts/exynos4210-trats.dts              | 6 ++++++
+>  arch/arm/boot/dts/exynos4210-universal_c210.dts     | 6 ++++++
+>  arch/arm/boot/dts/exynos4412-itop-elite.dts         | 5 +++++
+>  arch/arm/boot/dts/exynos4412-midas.dtsi             | 3 +++
+>  arch/arm/boot/dts/exynos4412-odroid-common.dtsi     | 5 +++++
+>  arch/arm/boot/dts/exynos4412-origen.dts             | 5 +++++
+>  arch/arm/boot/dts/exynos4412-p4note.dtsi            | 6 ++++++
+>  arch/arm/boot/dts/exynos4412-smdk4412.dts           | 4 ++++
+>  arch/arm/boot/dts/exynos4412-tiny4412.dts           | 4 ++++
+>  arch/arm/boot/dts/exynos5250-arndale.dts            | 5 +++++
+>  arch/arm/boot/dts/exynos5250-smdk5250.dts           | 2 ++
+>  arch/arm/boot/dts/exynos5250-snow-common.dtsi       | 3 +++
+>  arch/arm/boot/dts/exynos5250-spring.dts             | 5 +++++
+>  arch/arm/boot/dts/exynos5260-xyref5260.dts          | 5 +++++
+>  arch/arm/boot/dts/exynos5410-odroidxu.dts           | 2 ++
+>  arch/arm/boot/dts/exynos5410-smdk5410.dts           | 5 +++++
+>  arch/arm/boot/dts/exynos5420-arndale-octa.dts       | 5 +++++
+>  arch/arm/boot/dts/exynos5420-galaxy-tab-common.dtsi | 5 +++++
+>  arch/arm/boot/dts/exynos5420-peach-pit.dts          | 3 +++
+>  arch/arm/boot/dts/exynos5420-smdk5420.dts           | 5 +++++
+>  arch/arm/boot/dts/exynos5422-odroid-core.dtsi       | 5 +++++
+>  arch/arm/boot/dts/exynos5422-odroidxu3-common.dtsi  | 4 ++++
+>  arch/arm/boot/dts/exynos5422-samsung-k3g.dts        | 4 ++++
+>  arch/arm/boot/dts/exynos5800-peach-pi.dts           | 3 +++
+>  31 files changed, 133 insertions(+)
 > 
-> 
+> diff --git a/arch/arm/boot/dts/exynos3250-artik5-eval.dts b/arch/arm/boot/dts/exynos3250-artik5-eval.dts
+> index a1e22f630638..83266a66124b 100644
+> --- a/arch/arm/boot/dts/exynos3250-artik5-eval.dts
+> +++ b/arch/arm/boot/dts/exynos3250-artik5-eval.dts
+> @@ -16,6 +16,11 @@ / {
+>  	model = "Samsung ARTIK5 evaluation board";
+>  	compatible = "samsung,artik5-eval", "samsung,artik5",
+>  			"samsung,exynos3250", "samsung,exynos3";
+> +
+> +	aliases {
+> +		mmc2 = &mshc_2;
+> +	};
+> +
+>  };
+>  
+>  &mshc_2 {
+> diff --git a/arch/arm/boot/dts/exynos3250-artik5.dtsi b/arch/arm/boot/dts/exynos3250-artik5.dtsi
+> index 0ac3f284fbb8..a6e2f46917a8 100644
+> --- a/arch/arm/boot/dts/exynos3250-artik5.dtsi
+> +++ b/arch/arm/boot/dts/exynos3250-artik5.dtsi
+> @@ -17,6 +17,11 @@
+>  / {
+>  	compatible = "samsung,artik5", "samsung,exynos3250", "samsung,exynos3";
+>  
+> +	aliases {
+> +		mmc0 = &mshc_0;
+> +		mmc1 = &mshc_1;
+> +	};
+> +
+>  	chosen {
+>  		stdout-path = &serial_2;
+>  	};
+> diff --git a/arch/arm/boot/dts/exynos3250-monk.dts b/arch/arm/boot/dts/exynos3250-monk.dts
+> index 80d90fe7fad1..a68e5f81404c 100644
+> --- a/arch/arm/boot/dts/exynos3250-monk.dts
+> +++ b/arch/arm/boot/dts/exynos3250-monk.dts
+> @@ -22,6 +22,7 @@ / {
+>  
+>  	aliases {
+>  		i2c7 = &i2c_max77836;
+> +		mmc0 = &mshc_0;
+>  	};
+>  
+>  	memory@40000000 {
+> diff --git a/arch/arm/boot/dts/exynos3250-rinato.dts b/arch/arm/boot/dts/exynos3250-rinato.dts
+> index 1f9cba0607e1..f0fb6890e4a8 100644
+> --- a/arch/arm/boot/dts/exynos3250-rinato.dts
+> +++ b/arch/arm/boot/dts/exynos3250-rinato.dts
+> @@ -23,6 +23,8 @@ / {
+>  
+>  	aliases {
+>  		i2c7 = &i2c_max77836;
+> +		mmc0 = &mshc_0;
+> +		mmc1 = &mshc_1;
+>  	};
+>  
+>  	chosen {
+> diff --git a/arch/arm/boot/dts/exynos4210-i9100.dts b/arch/arm/boot/dts/exynos4210-i9100.dts
+> index bba85011ecc9..7051e2c4b391 100644
+> --- a/arch/arm/boot/dts/exynos4210-i9100.dts
+> +++ b/arch/arm/boot/dts/exynos4210-i9100.dts
+> @@ -25,6 +25,12 @@ memory@40000000 {
+>  		reg = <0x40000000 0x40000000>;
+>  	};
+>  
+> +	aliases {
+> +		mmc0 = &sdhci_0;
+> +		mmc2 = &sdhci_2;
+> +		mmc3 = &sdhci_3;
 
-Applied, thanks!
+1. Is this actually correct? Since mmc1 was disabled, sdhci_2 had mmc1
+index but now will have mmc2.
 
-[1/3] ARM: dts: exynos: add "gpios" suffix to wlf,ldo1ena on Midas
-      https://git.kernel.org/krzk/linux/c/0e06b987d1b7469ff1b4f7a68466859f94e7221a
-[2/3] ARM: dts: exynos: add "gpios" suffix to wlf,ldo1ena on Arndale
-      https://git.kernel.org/krzk/linux/c/149a903eceb73b8b8af25e12b552c68aa9991802
-[3/3] ARM: dts: s5pv210: add "gpios" suffix to wlf,ldo1ena on Aries
-      https://git.kernel.org/krzk/linux/c/a81cc43abd23f2769b044b79f4cf58a9ff6e2201
+2. I tested Odroid U3 and the ID changed. emmc went from 1 to 0. Any
+idea why? Both patches should be transparent.
+
+3. Patchset does not look bisectable, so both patches should be squashed.
+
+4. Your patch has several whitespace issues:
+patch:264: trailing whitespace.
+
+patch:279: trailing whitespace.
+
+patch:461: trailing whitespace.
+
+
 
 Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Krzysztof
+
