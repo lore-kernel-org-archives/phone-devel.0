@@ -2,115 +2,118 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ABF70C636D7
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Feb 2023 09:20:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0F2EC636CC
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Feb 2023 16:22:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229447AbjBKJUK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 11 Feb 2023 04:20:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57040 "EHLO
+        id S229713AbjBKQWm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 11 Feb 2023 11:22:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbjBKJUJ (ORCPT
+        with ESMTP id S229637AbjBKQWl (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 11 Feb 2023 04:20:09 -0500
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1F6530192;
-        Sat, 11 Feb 2023 01:20:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1676107207; x=1707643207;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=sthyvzdqWUebeh9Ku/k4oVBc3bHU/xq8WbNuQ5sinR0=;
-  b=ip+CFwqWSaWasIu52JczKfSI4o0QBcbsBIHXscNm20gVcO4BeBQxB0Fi
-   dMfgz4JTWD9c4VgD7SwB0cnKxRAS6K9Z5sbcaJIvlHqyL+iSules/vmSw
-   2Ieawnhr68qjRe1iY74byXDqr1PHV3ybWQ8piwNX7K4PndiNEMg8Mi6bC
-   0EGzVYGxJ40+eC2n6JGE4AeKkEYAyUGQjRWDRFWHiuxIj6bGJlQGRNNEn
-   MpWzKpySmr1Opdhfm8Mx9JefzldcWVu+NY761D2JV5XFWIS6a1sPynGdc
-   WhgZn26KO+sF97O1xX6mwl/1Rajfv1PFDSM6bRx/dIMJGjh2U/BzVoaVq
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="393000129"
-X-IronPort-AV: E=Sophos;i="5.97,289,1669104000"; 
-   d="scan'208";a="393000129"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2023 01:20:06 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10617"; a="668305744"
-X-IronPort-AV: E=Sophos;i="5.97,289,1669104000"; 
-   d="scan'208";a="668305744"
-Received: from lkp-server01.sh.intel.com (HELO 4455601a8d94) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 11 Feb 2023 01:20:03 -0800
-Received: from kbuild by 4455601a8d94 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pQm39-0006Ns-03;
-        Sat, 11 Feb 2023 09:20:03 +0000
-Date:   Sat, 11 Feb 2023 17:19:31 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org,
-        Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc:     oe-kbuild-all@lists.linux.dev, linux-media@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-Subject: Re: [PATCH 2/2] media: i2c: ov5670: Support single-lane operation
-Message-ID: <202302111713.VF9P2Gae-lkp@intel.com>
-References: <20230210-ov5670-single-lane-v1-2-71835d39c1ce@z3ntu.xyz>
+        Sat, 11 Feb 2023 11:22:41 -0500
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71346C156;
+        Sat, 11 Feb 2023 08:22:40 -0800 (PST)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 18F731C0AB3; Sat, 11 Feb 2023 17:22:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+        t=1676132558;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=9MA2R+ukwKIZdrFyWQ9sTnRT2vNwccSFG0gi0U7XPxI=;
+        b=AOsavdwZV2EmOlJUcSrj4r+eIstCnlFpC/VQ6vuEtrcjXeWcHhv+3BAZGTqb1yi2lknd+W
+        EiN6hrFdWdgx3VCNBDJygHi7iLeN9jnjp/xEBc/EXs0LyPrNAn6PHUhpMfSX3nmBhiC35i
+        x1O9coyTodbBDDPZEi4pMrfpfTv/CHs=
+Date:   Sat, 11 Feb 2023 17:22:36 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/5] ARM: dts: qcom: msm8974-oneplus-bacon: Add
+ notification LED
+Message-ID: <Y+fAzHJ8IYc7J0Vv@duo.ucw.cz>
+References: <20230122-msm8974-bacon-features-v1-0-4049f565c24c@z3ntu.xyz>
+ <20230122-msm8974-bacon-features-v1-5-4049f565c24c@z3ntu.xyz>
+ <02e5bf79-3e2d-02c8-67e7-61bbff32ba29@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="bW9GpFOL43NjRAIR"
 Content-Disposition: inline
-In-Reply-To: <20230210-ov5670-single-lane-v1-2-71835d39c1ce@z3ntu.xyz>
+In-Reply-To: <02e5bf79-3e2d-02c8-67e7-61bbff32ba29@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Luca,
 
-Thank you for the patch! Yet something to improve:
+--bW9GpFOL43NjRAIR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[auto build test ERROR on 6ba8a227fd19d19779005fb66ad7562608e1df83]
+Hi!
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Luca-Weiss/media-i2c-ov5670-Use-dev_err_probe-in-probe-function/20230211-043546
-base:   6ba8a227fd19d19779005fb66ad7562608e1df83
-patch link:    https://lore.kernel.org/r/20230210-ov5670-single-lane-v1-2-71835d39c1ce%40z3ntu.xyz
-patch subject: [PATCH 2/2] media: i2c: ov5670: Support single-lane operation
-config: openrisc-randconfig-r003-20230210 (https://download.01.org/0day-ci/archive/20230211/202302111713.VF9P2Gae-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/6cd856e5e8f62b0926959199d5a998de321c78e2
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Luca-Weiss/media-i2c-ov5670-Use-dev_err_probe-in-probe-function/20230211-043546
-        git checkout 6cd856e5e8f62b0926959199d5a998de321c78e2
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=openrisc olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=openrisc SHELL=/bin/bash
+> > Unfortunately the driver currently supports neither multicolor API nor
+> > using the properties function & color, so we use label instead.
+> >=20
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> >  .../arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts | 28 ++++++++++++++=
+++++++++
+> >  1 file changed, 28 insertions(+)
+> >=20
+> > diff --git a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts b/arch=
+/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+> > index ffb486ceb6a6..a672c45d7070 100644
+> > --- a/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+> > +++ b/arch/arm/boot/dts/qcom-msm8974pro-oneplus-bacon.dts
+> > @@ -114,6 +114,34 @@ led@0 {
+> >  			default-brightness =3D <80>;
+> >  		};
+> >  	};
+> > +
+> > +	led-controller@68 {
+> > +		compatible =3D "si-en,sn3193";
+> > +		reg =3D <0x68>;
+> > +
+> > +		shutdown-gpios =3D <&tlmm 45 GPIO_ACTIVE_HIGH>;
+> > +
+> > +		#address-cells =3D <1>;
+> > +		#size-cells =3D <0>;
+> > +
+> > +		led@1 {
+> > +			reg =3D <1>;
+> > +			label =3D "red:status";
+>=20
+> These should be colors and functions.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202302111713.VF9P2Gae-lkp@intel.com/
+Yep. Plus this is one LED, not three, so it should use the multicolor
+class.
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+And then we should have an entry in
+Documentation/leds/well-known-leds.txt so that we have same ABI on all
+the phones.
 
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_ext_maps (section: .data) -> qed_mfw_ext_1g (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_ext_maps (section: .data) -> qed_mfw_ext_10g (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_ext_maps (section: .data) -> qed_mfw_ext_25g (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_ext_maps (section: .data) -> qed_mfw_ext_40g (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_ext_maps (section: .data) -> qed_mfw_ext_50g_base_r (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_ext_maps (section: .data) -> qed_mfw_ext_50g_base_r2 (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_ext_maps (section: .data) -> qed_mfw_ext_100g_base_r2 (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_ext_maps (section: .data) -> qed_mfw_ext_100g_base_r4 (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_legacy_maps (section: .data) -> qed_mfw_legacy_1g (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_legacy_maps (section: .data) -> qed_mfw_legacy_10g (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_legacy_maps (section: .data) -> qed_mfw_legacy_20g (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_legacy_maps (section: .data) -> qed_mfw_legacy_25g (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_legacy_maps (section: .data) -> qed_mfw_legacy_40g (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_legacy_maps (section: .data) -> qed_mfw_legacy_50g (section: .init.rodata)
-WARNING: modpost: drivers/net/ethernet/qlogic/qed/qed.o: section mismatch in reference: qed_mfw_legacy_maps (section: .data) -> qed_mfw_legacy_bb_100g (section: .init.rodata)
->> ERROR: modpost: "__udivdi3" [drivers/media/i2c/ov5670.ko] undefined!
->> ERROR: modpost: "__divdi3" [drivers/media/i2c/ov5670.ko] undefined!
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+--bW9GpFOL43NjRAIR
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCY+fAzAAKCRAw5/Bqldv6
+8kP9AJ9bQSFFlPkmtgHnZ4ko2yKeOT7z0QCfY/T9jkp9mOxkiIa2zbuslhnk1Ag=
+=/jxy
+-----END PGP SIGNATURE-----
+
+--bW9GpFOL43NjRAIR--
