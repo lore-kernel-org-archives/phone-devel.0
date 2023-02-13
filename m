@@ -2,71 +2,128 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41E6BC64EC7
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Feb 2023 22:21:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E271C6379F
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Feb 2023 22:31:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230176AbjBMWVU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Feb 2023 17:21:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60964 "EHLO
+        id S230079AbjBMWbJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Feb 2023 17:31:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230004AbjBMWVS (ORCPT
+        with ESMTP id S229978AbjBMWbI (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Feb 2023 17:21:18 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 812261F93E;
-        Mon, 13 Feb 2023 14:21:09 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EAD361328;
-        Mon, 13 Feb 2023 22:21:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF75FC433A1;
-        Mon, 13 Feb 2023 22:21:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676326868;
-        bh=lct3SIBk29WDEkZbWpKXBfQCGiXSky/TtI18x5QLFRA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G9TfZ7d/ebrKESjD1jYR3Kmuf6AVVFnO3w2DOxzETAS3Px6CT54i8LxtHysZJ2IIl
-         X23adJuGDOGk8KeobkNwZJvhTBn+O/B33Gy8OOxtUVp1ISTKXpXP9wW2XFIOBjofJd
-         8oG7jvY9ZeGBoJOu9cu8TGRz5j+UZgKSWL4fHwTRwz7lck/uMjpldrAY57z3rILKHU
-         B8+DiAGkZtaKb8fZOK4UR1a3Kc3inMa+J8p35jGVMrEoDlVitICi6i8yyjHpOEOPlQ
-         ExjgHsiBZ+3r/SqjZZzFnWM/nHu9cH3r1L4SzWoL2ZwnBeSHi39RpRyD7Ho/lTwFM5
-         KcuIc6p7314Fw==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Mon, 13 Feb 2023 17:31:08 -0500
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBD1C1CF7C;
+        Mon, 13 Feb 2023 14:31:00 -0800 (PST)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id B93E1CDFDF;
+        Mon, 13 Feb 2023 22:30:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1676327428; bh=W5e6SYUWX17zrMB98W//q9HU+zE0DKgEBiyUmTDCQWo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=KU+C4uBtvCf7rgcT20qCwmxXtxu8zgGNHy3EKJ1DQiSulaQIKrqnk82aM79i9n/7C
+         uKY3XYez7l8aY/5Rfj1ZFKgLZK41EA0ahbCPgxZdCR9N11/M4hBjhj5Tph6hi2Rc1F
+         o85Xk6aza9AHxMVOT+L0589qUlC51FciJ0xoKG1I=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] Enable remaining I2C busses on sm7225-fairphone-fp4
-Date:   Mon, 13 Feb 2023 14:23:04 -0800
-Message-Id: <167632698310.557014.13955392492218965629.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230213-fp4-more-i2c-v2-0-1c459c572f80@fairphone.com>
-References: <20230213-fp4-more-i2c-v2-0-1c459c572f80@fairphone.com>
+        Luca Weiss <luca.weiss@fairphone.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] clk: qcom: camcc-sm6350: add pm_runtime support
+Date:   Mon, 13 Feb 2023 23:30:27 +0100
+Message-ID: <4777254.GXAFRqVoOG@z3ntu.xyz>
+In-Reply-To: <20230213-sm6350-camcc-runtime_pm-v2-1-60a507bf3e68@z3ntu.xyz>
+References: <20230213-sm6350-camcc-runtime_pm-v2-0-60a507bf3e68@z3ntu.xyz>
+ <20230213-sm6350-camcc-runtime_pm-v2-1-60a507bf3e68@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 13 Feb 2023 15:46:29 +0100, Luca Weiss wrote:
-> The first patch consolidate the two different styles where the status
-> property is placed in the dts, and the second patch enables all the I2C
-> busses used on the phone even if no subnode is added yet.
+On Montag, 13. Februar 2023 14:08:06 CET Luca Weiss wrote:
+> Make sure that we can enable and disable the power domains used for
+> camcc when the clocks are and aren't used.
 > 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+
+Apparently I messed up v2 too and had the wrong email in my git config. Will 
+send a v3 to fix that as well...
+
+> ---
+>  drivers/clk/qcom/camcc-sm6350.c | 29 ++++++++++++++++++++++++++++-
+>  1 file changed, 28 insertions(+), 1 deletion(-)
 > 
+> diff --git a/drivers/clk/qcom/camcc-sm6350.c
+> b/drivers/clk/qcom/camcc-sm6350.c index acba9f99d960..dd65f3ef0857 100644
+> --- a/drivers/clk/qcom/camcc-sm6350.c
+> +++ b/drivers/clk/qcom/camcc-sm6350.c
+> @@ -7,6 +7,8 @@
+>  #include <linux/clk-provider.h>
+>  #include <linux/module.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/pm_clock.h>
+> +#include <linux/pm_runtime.h>
+>  #include <linux/regmap.h>
+> 
+>  #include <dt-bindings/clock/qcom,sm6350-camcc.h>
+> @@ -1869,6 +1871,19 @@ MODULE_DEVICE_TABLE(of, camcc_sm6350_match_table);
+>  static int camcc_sm6350_probe(struct platform_device *pdev)
+>  {
+>  	struct regmap *regmap;
+> +	int ret;
+> +
+> +	ret = devm_pm_runtime_enable(&pdev->dev);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = devm_pm_clk_create(&pdev->dev);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = pm_runtime_get(&pdev->dev);
+> +	if (ret)
+> +		return ret;
+> 
+>  	regmap = qcom_cc_map(pdev, &camcc_sm6350_desc);
+>  	if (IS_ERR(regmap))
+> @@ -1879,14 +1894,26 @@ static int camcc_sm6350_probe(struct platform_device
+> *pdev) clk_agera_pll_configure(&camcc_pll2, regmap, &camcc_pll2_config);
+> clk_fabia_pll_configure(&camcc_pll3, regmap, &camcc_pll3_config);
+> 
+> -	return qcom_cc_really_probe(pdev, &camcc_sm6350_desc, regmap);
+> +	ret = qcom_cc_really_probe(pdev, &camcc_sm6350_desc, regmap);
+> +	pm_runtime_put(&pdev->dev);
+> +	if (ret < 0) {
+> +		dev_err(&pdev->dev, "Failed to register CAM CC 
+clocks\n");
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+>  }
+> 
+> +static const struct dev_pm_ops camcc_pm_ops = {
+> +	SET_RUNTIME_PM_OPS(pm_clk_suspend, pm_clk_resume, NULL)
+> +};
+> +
+>  static struct platform_driver camcc_sm6350_driver = {
+>  	.probe = camcc_sm6350_probe,
+>  	.driver = {
+>  		.name = "sm6350-camcc",
+>  		.of_match_table = camcc_sm6350_match_table,
+> +		.pm = &camcc_pm_ops,
+>  	},
+>  };
 
-Applied, thanks!
 
-[1/2] arm64: dts: qcom: sm7225-fairphone-fp4: move status property down
-      commit: 65aedb0b48c09595065c81722d9cca53760f7220
-[2/2] arm64: dts: qcom: sm7225-fairphone-fp4: enable remaining i2c busses
-      commit: 574f2ffd45dc786dc443c5e11ea477420ffa5f52
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+
