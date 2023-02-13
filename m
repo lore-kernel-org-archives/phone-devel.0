@@ -2,103 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 657AAC636D4
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Feb 2023 11:48:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AFAABC636CC
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Feb 2023 12:35:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229768AbjBMLs3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Feb 2023 06:48:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58236 "EHLO
+        id S231193AbjBMMfG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Feb 2023 07:35:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229716AbjBMLs3 (ORCPT
+        with ESMTP id S231138AbjBMMfF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Feb 2023 06:48:29 -0500
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 018CCEB5C
-        for <phone-devel@vger.kernel.org>; Mon, 13 Feb 2023 03:48:28 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id bg5-20020a05600c3c8500b003e00c739ce4so8784690wmb.5
-        for <phone-devel@vger.kernel.org>; Mon, 13 Feb 2023 03:48:27 -0800 (PST)
+        Mon, 13 Feb 2023 07:35:05 -0500
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 030D9126C3
+        for <phone-devel@vger.kernel.org>; Mon, 13 Feb 2023 04:35:01 -0800 (PST)
+Received: by mail-ej1-x62f.google.com with SMTP id hx15so31409046ejc.11
+        for <phone-devel@vger.kernel.org>; Mon, 13 Feb 2023 04:35:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pu3bp3zhZ06tjaJugEPKcBoKeuOKXsePEE4SOmhYvEg=;
-        b=vpyujYDwtV7b1wUjjoSB89QIgtocHK0d7R2iISp/NW+xQJKywWq2SyNs0ACgPfq8/o
-         YZKihy7kF70Fzonplh+saC8upLb/tqcowT60MVU+f9Dfs5fKMtezr/TMyEikE7KIm/F3
-         5H+wR/jbmFEUU7/g9q1VIkGmtC/pOEphI0+QSb5L/RqO03gXhNIx6+SjUwqzV3fue12j
-         7upIZi8U+sD3ktyz7mSWa0AZVDtHvrQA7Sv9RPpPpqA2X6ELBlt6lbzU99Gx8IIV2GUO
-         mUs0NBTALAS2rp5o0uQsePXL0Rc7c+Cbbh0TRfZkiGv1eJj7jbfvbKwNxA7ya2ZaYK+u
-         fTiQ==
+        d=fairphone.com; s=fair;
+        h=to:content-transfer-encoding:mime-version:message-id:date:subject
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0UH8/n6MCUSNvLKi8T4NPo4FxX5WkAFif6g7w09FLiU=;
+        b=YkOzHQQwJ/8tAUdf0I1klUr+8rYbHDjqFnzKCHRKdCHzMeAufo6DCGP0h66D0ogSyO
+         TNuFa7f1zgcDIQT609pD6VlnWps38DLHYdnsDavEGYUjyxYl+OGOlvAItd/aUuFjbWEq
+         eXYP4Qud++/NUkwgXHm+bJw6gaBJjWApg70Lu1qS1S7hb7xs2RQyu5wVGDuO5DyJGNG5
+         libI01K+rUNuoaCyePCDTfTawh/qdcLXf6rsmWBiADpMIxHb3Gw8CFRhVGR+ddtdre0B
+         Cm+bYTvPf44nYDqjaPiEXU3U14APF7vrM7Q1QdbpVGUCk6pmHJURYbZud3DJ0J81tRic
+         TgKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pu3bp3zhZ06tjaJugEPKcBoKeuOKXsePEE4SOmhYvEg=;
-        b=JvoaUeL+csKJGuWpzk191ylUoVb+1O8/2AyC3MyQYTNH3/xKzUP16Bm5qzr9RPbwcB
-         qZSdUMbImdKFis/SuneJbeBGwFnU6/J7iFEl/+0imD7JEqFGc0J9jqAyyOR+RRNd1I4S
-         ftxxq/lkTwd3t8jZzDYmsqWiCYyTUxIer2Wx71TfCKMGvKRBlci0QDuleOWvuSPM4flT
-         sO1Hm1D7QmOnUUriZaUUvI9+Q/LoCuhrG0oDeySssBA4gqkCZBSiWn4RO3kQo3tgRw61
-         NT2GPK1mw9f8E6bz4nqVdtDYdg2PCb2bE/GczYW4qlscK9hKY4lBwv27NVFIeWSeZ7c1
-         xDTg==
-X-Gm-Message-State: AO0yUKVh/kJKn3EbKFbrJ6vTgBn1wAPcpPDg98hMkZZLI0f2UKvPNyw+
-        PfZ8sWqljEVkHehpm46dO+PDaQ==
-X-Google-Smtp-Source: AK7set/MN+9GgY4MfAr54dx3nzP6F0WirBm6MWw/C0HUyZap+4rfR6S8tBbwmDw/B73pn2WThgQLTQ==
-X-Received: by 2002:a05:600c:3403:b0:3dc:572f:edb7 with SMTP id y3-20020a05600c340300b003dc572fedb7mr4256036wmp.1.1676288906641;
-        Mon, 13 Feb 2023 03:48:26 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id h33-20020a05600c49a100b003dc54eef495sm12887289wmp.24.2023.02.13.03.48.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Feb 2023 03:48:26 -0800 (PST)
-Message-ID: <daf1686f-9e6f-a2d7-f2f6-0a8467a2c858@linaro.org>
-Date:   Mon, 13 Feb 2023 12:48:24 +0100
+        h=to:content-transfer-encoding:mime-version:message-id:date:subject
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0UH8/n6MCUSNvLKi8T4NPo4FxX5WkAFif6g7w09FLiU=;
+        b=JjA79EqXdf2czrl40TFjkXTJdpbfIJts3aa0JG/S3HSxIM+YDjio9THK0SReQWZeaA
+         HlF7jr6ixFkFUmJigGdnDyfHEGClZytj7eBoz7ZyPylqd2pggG1OhfQgQJHn5gWPeBgz
+         Gm6ZMYMTBG+TGUNZz0tu0dRrWk0dMmrULbkFUq0dZk5HUWSb6Pp8+NlfFkiLTdD8UyIj
+         GW3BesgnwiBls5qOThNKVAvRiu0Y+B1Ltz7O7LoFEiO/TtiklY+wgmfLNdf+K1KoiNno
+         jhxwdCJASHX5udnM+KBeDKpiAl6Nfx+ApMpELtZy3I2bIjDkWyz+YgC5jRCXDKw1uLVM
+         X4Hg==
+X-Gm-Message-State: AO0yUKXkdjV7oNT6jEfAkV2iJsWPBQsCwASyQuxpKd9o4JmNSNkLFnkD
+        1ABnPHQjagCbUGLF2IBKRffJdDWBfzBEOw6BFDk=
+X-Google-Smtp-Source: AK7set/M1QkDlPSQ4JACFlyHJWxZJ8AsNURWGyaMq84Ghm8XvgCs0ZCIKT63SHku9tcUYvguHWJ3KA==
+X-Received: by 2002:a17:906:db0b:b0:87b:dc07:380f with SMTP id xj11-20020a170906db0b00b0087bdc07380fmr32159814ejb.0.1676291699593;
+        Mon, 13 Feb 2023 04:34:59 -0800 (PST)
+Received: from [172.16.220.87] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id e20-20020a170906c01400b008ae3324c8adsm6721858ejz.214.2023.02.13.04.34.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Feb 2023 04:34:59 -0800 (PST)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+X-Google-Original-From: Luca Weiss <luca@z3ntu.xyz>
+Subject: [PATCH 0/2] Add pm_runtime support to SM6350 camcc
+Date:   Mon, 13 Feb 2023 13:34:55 +0100
+Message-Id: <20230213-sm6350-camcc-runtime_pm-v1-0-761fc69f7a80@z3ntu.xyz>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH 1/2] dt-bindings: display: panel: Add Novatek NT36523
- bindings
-Content-Language: en-US
-To:     Jianhua Lu <lujianhua000@gmail.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230210161925.32343-1-lujianhua000@gmail.com>
- <6cffa875-d8cc-a4fe-e18d-2e24c28a49d8@linaro.org> <Y+oZOXyE8/a+vreS@Gentoo>
- <ad5dd369-842f-7301-e57d-d0445f0a5268@linaro.org> <Y+oc+kEDoiMsebWF@Gentoo>
- <4055b041-c012-3be6-0aef-085ec389aabd@linaro.org> <Y+ofLDV1nsQ/WUJs@Gentoo>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <Y+ofLDV1nsQ/WUJs@Gentoo>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAG8u6mMC/x2NywrCMBAAf6Xs2ZU82oj+ShFJtlu7h8SQ+ILSf
+ zf1OAzDrFC5CFe4dCsUfkuVR2qgDx3Q4tOdUabGYJSxymiLNTo7KCQfibC80lMi33JEZ8/hNJC
+ d+qCh1cFXxlB8omXv59yjOxr8SN5tLjzL9/8dr9v2A3RJgUuHAAAA
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org
+X-Mailer: b4 0.12.1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 13/02/2023 12:29, Jianhua Lu wrote:
->>>>>>
->>>>>>> +  resolution of 1600x2560. It is a video mode DSI panel.
->>>>>>
->>>>>> The binding or hardware supports only 1600x2560? The how it can be
->>>>>> "right now"? It's defined, isn't it?
->>>>> Yes
->>>>
->>>> What yes? How it can be "right now"? It implies it will change, so how
->>>> hardware can change?
->>> sorry, my wrong. This binding only support 1600x2560.
->>
->> How binding can support only 1600x2560? How does it exactly work for
->> binding?
-> the driver of this binding support 1600x2560 and panels are 1600x2560.
+As pointed out during patch review, we should make sure that we turn on
+the CX power domain when camcc is in use, and also disable it (or remove
+our vote on it) when camcc is not in use.
 
-OK, so the driver has limited support. It's not relevant to the binding,
-so drop that sentence.
+For this add pm_runtime support to the driver and stick the power-domain
+in the devicetree.
+
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Luca Weiss (2):
+      clk: qcom: camcc-sm6350: add pm_runtime support
+      arm64: dts: qcom: sm6350: add power domain to camcc
+
+ arch/arm64/boot/dts/qcom/sm6350.dtsi |  2 ++
+ drivers/clk/qcom/camcc-sm6350.c      | 29 ++++++++++++++++++++++++++++-
+ 2 files changed, 30 insertions(+), 1 deletion(-)
+---
+base-commit: 09e41676e35ab06e4bce8870ea3bf1f191c3cb90
+change-id: 20230213-sm6350-camcc-runtime_pm-639b75c3d4b1
 
 Best regards,
-Krzysztof
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
