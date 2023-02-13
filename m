@@ -2,119 +2,207 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 968CAC636D4
-	for <phone-devel@archiver.kernel.org>; Sun, 12 Feb 2023 14:12:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 893ADC64EC4
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Feb 2023 10:47:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbjBLOME (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 12 Feb 2023 09:12:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41386 "EHLO
+        id S230045AbjBMKrD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Feb 2023 05:47:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229496AbjBLOMC (ORCPT
+        with ESMTP id S229785AbjBMKqi (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 12 Feb 2023 09:12:02 -0500
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 056B6F77D;
-        Sun, 12 Feb 2023 06:12:02 -0800 (PST)
-Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 3BA1DD38CF;
-        Sun, 12 Feb 2023 14:11:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1676211090; bh=qFK6KiGkL2Ya37v4r7g08gVdvQ3WQ3Zqy1iFF42jPdE=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=HC5VzDU/7oVhktaUl5K/8a0J1ijbpNVD36QUZjlqGNHwGD5jKpZujIwxf1Bm3V+Xu
-         GsF/PYnLzj0JrFvC4NC6wGuSi60h48B5/brIGiOhitoBxifK911M4jgenPxFp/jabf
-         t+mcd1cC4pC0WiAL9t5FyqGwG3YzGAFprjPoCMe4=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Sun, 12 Feb 2023 15:11:09 +0100
-Subject: [PATCH 2/2] clk: qcom: clk-hfpll: switch to .determine_rate
+        Mon, 13 Feb 2023 05:46:38 -0500
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F49C17145
+        for <phone-devel@vger.kernel.org>; Mon, 13 Feb 2023 02:46:16 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id m10so2759406wrn.4
+        for <phone-devel@vger.kernel.org>; Mon, 13 Feb 2023 02:46:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=S8UFJP/UsuYqUTLKQBl4SQ4Mr97Ly8Qtr9hCCluFle0=;
+        b=w1TE7+oGW0mDhzCJKIBQ089FkiikyWVzp7J9tboeLGaYgdxyePRgEKjsEnHyfg1FEb
+         plvUG/2QT9T0VcRW9NcJmsKkSkMjuRBJ99IDP1NqC3fdB/2FMk3Qyrp9oH6xU2gC3Rhc
+         V4pV0u3MxSHx5MsUMGC91h/ZnKNtSMxVHHpOliqfrRahwlUPOK2he8Z7kTyQIFwqB56I
+         Dy3CoKwusYYkubdvR+rDQ9XPzfucmNWOVnU4nuK0gbYcPVqX/rkZRM43J+pC+s6JBEMJ
+         NbqcUFQeY/yZSakd78R7UqzVJQBpYDHAoui9QQ/kSY8DBOTf/eEWXsdGjqCoCK8xSZSA
+         em8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=S8UFJP/UsuYqUTLKQBl4SQ4Mr97Ly8Qtr9hCCluFle0=;
+        b=3fdfZToZ+dg2KlqbjvDBFvt5KqpiHztjZDeUdJJpNkdpmwimV/LvpNs2v4OeeYf0ZK
+         J8li88C1YKqMCPZWa1Nr4L+z5m9SUyTdVRv4lzXYKDyr/WRlda7lHpKDadtrZXgnMO0N
+         VLSEoNghCIkEMWHR5+0FN/DaPSaF3yLmb6k6rtfk+GQD2EDhfvz9UkZ8zmvt9JRub9PT
+         K1bd98EZIvxYd9H/nXQp+PUZWXW5o33jYcSSpWoRPdYcbmM+XeneBEFt03ZkV4jWNyAC
+         bdKI77FgrokgvByOGOvRZzg/IovHFoMfM4g8kZcl+D+60pNJsFdm03cR2dRPAH6abblN
+         nYig==
+X-Gm-Message-State: AO0yUKXCQjTKXzlHtQlPYuA7wVR3srilYbqoXB1SKxQpdM/TzhL66KqP
+        /cXCmKaxigKNhYv1z2rRYth8EA==
+X-Google-Smtp-Source: AK7set+bcQ0uYZj3HdW+5cFNLawHTRc6K780n1e0pMVm/oqSPl7N0qrcpd6wOKFuR+f8L5wtBku57w==
+X-Received: by 2002:adf:f111:0:b0:2c3:f06f:850c with SMTP id r17-20020adff111000000b002c3f06f850cmr20889689wro.31.1676285126140;
+        Mon, 13 Feb 2023 02:45:26 -0800 (PST)
+Received: from [192.168.1.109] ([178.197.216.144])
+        by smtp.gmail.com with ESMTPSA id k6-20020adfe8c6000000b002c55551e6e9sm3416169wrn.108.2023.02.13.02.45.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Feb 2023 02:45:25 -0800 (PST)
+Message-ID: <6cffa875-d8cc-a4fe-e18d-2e24c28a49d8@linaro.org>
+Date:   Mon, 13 Feb 2023 11:45:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [PATCH 1/2] dt-bindings: display: panel: Add Novatek NT36523
+ bindings
+Content-Language: en-US
+To:     Jianhua Lu <lujianhua000@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230210161925.32343-1-lujianhua000@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230210161925.32343-1-lujianhua000@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230212-clk-qcom-determine_rate-v1-2-b4e447d4926e@z3ntu.xyz>
-References: <20230212-clk-qcom-determine_rate-v1-0-b4e447d4926e@z3ntu.xyz>
-In-Reply-To: <20230212-clk-qcom-determine_rate-v1-0-b4e447d4926e@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Christian Marangi <ansuelsmth@gmail.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1899; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=qFK6KiGkL2Ya37v4r7g08gVdvQ3WQ3Zqy1iFF42jPdE=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBj6POQHw2eHpO2tucbsPLIsE0wWtIoMbeD9jIxo
- SytZgYbKcOJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCY+jzkAAKCRBy2EO4nU3X
- Vi4rD/9aHBRishQyFuZrmzfeCFOYgln9UKcBbsJrygK4Vbwnqb4xslopUl9KlyBR58kEWbD0Xc/
- RKvsoc9Szll8iLmYrEvsiJsLTiDHwqQFXjvyq54Sawq7W40gTPKeI4ziM0SPr5TBrDpEVT+1aDj
- FMbOXk0KpnkFdCcnxvmz6kYx/Q47Afqnd73nwJsIqd64CEZhPtSzKbIXOuOgkRZiY8BzCsYSHA4
- hmguo8kbjK86zg3qia6SEPKX0QnwuV+fL1LCLhk2RORfA0zA0BU2h8xkJt0JVRYTvw5xOscoOES
- Xniy6uLAWFETt9e5kr5npADuAJYGjYWHcc22nc9a0To5vR+EnqwR9ipLW8TCC3ol0V5H1ueyWyX
- 7itGwlOR9WKAJgwAKvlUUHZN4hu1+XMkDu53gFPXl0zJLUcr4mt9Zz7iEouhqykV+lK347Y0gFZ
- +Zm83dRyrn6PmHg2pMgJP/eusBBOwWeREVPz3qurX2QRXcMKS1Fpr7KDWACeTa8xX1H/CVD9AVq
- c9ALLqnTW5SyUfPNuuc8bKFYWQPGxfteAAgEmfFmFyapK4Av+UNO8r7IJiT3YCOCsgrK2LUA1Hw
- s2WIT5czzWQqvIzHbtWyqNuA3g5YBEnxoUW8vOdQkkshCVUfPyfaS8szTNerLFtAzt6Xbv9+A2I
- c05/x4oM7rXP0Nw==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-.determine_rate is meant to replace .round_rate. The former comes with a
-benefit which is especially relevant on 32-bit systems: since
-.determine_rate uses an "unsigned long" (compared to a "signed long"
-which is used by .round_rate) the maximum value on 32-bit systems
-increases from 2^31 (or approx. 2.14GHz) to 2^32 (or approx. 4.29GHz).
+On 10/02/2023 17:19, Jianhua Lu wrote:
+> Novatek NT36523 is a display driver IC that can drive DSI panel. It
+> is also present in the csot and boe video mode panels. It is found
+> in Xiaomi Mi Pad 5 series.
+> 
+> Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+> ---
+>  .../display/panel/novatek,nt36523.yaml        | 101 ++++++++++++++++++
+>  1 file changed, 101 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml
+> new file mode 100644
+> index 000000000000..a7098d0ce7e1
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml
+> @@ -0,0 +1,101 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/panel/novatek,nt36523.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Novatek NT36523 based DSI display Panels
+> +
+> +maintainers:
+> +  - Jianhua Lu <lujianhua000@gmail.com>
+> +
+> +description: |
+> +  The nt36523 IC from Novatek is a generic DSI Panel IC used to drive dsi
+> +  panels.
+> +  Right now, only support cost and boe LCD display panels with the
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- drivers/clk/qcom/clk-hfpll.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+boe? both?
 
-diff --git a/drivers/clk/qcom/clk-hfpll.c b/drivers/clk/qcom/clk-hfpll.c
-index 7dd17c184b69..86f728dc69e5 100644
---- a/drivers/clk/qcom/clk-hfpll.c
-+++ b/drivers/clk/qcom/clk-hfpll.c
-@@ -128,20 +128,20 @@ static void clk_hfpll_disable(struct clk_hw *hw)
- 	spin_unlock_irqrestore(&h->lock, flags);
- }
- 
--static long clk_hfpll_round_rate(struct clk_hw *hw, unsigned long rate,
--				 unsigned long *parent_rate)
-+static int clk_hfpll_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
- {
- 	struct clk_hfpll *h = to_clk_hfpll(hw);
- 	struct hfpll_data const *hd = h->d;
- 	unsigned long rrate;
- 
--	rate = clamp(rate, hd->min_rate, hd->max_rate);
-+	req->rate = clamp(req->rate, hd->min_rate, hd->max_rate);
- 
--	rrate = DIV_ROUND_UP(rate, *parent_rate) * *parent_rate;
-+	rrate = DIV_ROUND_UP(req->rate, req->best_parent_rate) * req->best_parent_rate;
- 	if (rrate > hd->max_rate)
--		rrate -= *parent_rate;
-+		rrate -= req->best_parent_rate;
- 
--	return rrate;
-+	req->rate = rrate;
-+	return 0;
- }
- 
- /*
-@@ -241,7 +241,7 @@ const struct clk_ops clk_ops_hfpll = {
- 	.enable = clk_hfpll_enable,
- 	.disable = clk_hfpll_disable,
- 	.is_enabled = hfpll_is_enabled,
--	.round_rate = clk_hfpll_round_rate,
-+	.determine_rate = clk_hfpll_determine_rate,
- 	.set_rate = clk_hfpll_set_rate,
- 	.recalc_rate = clk_hfpll_recalc_rate,
- 	.init = clk_hfpll_init,
+> +  resolution of 1600x2560. It is a video mode DSI panel.
 
--- 
-2.39.1
+The binding or hardware supports only 1600x2560? The how it can be
+"right now"? It's defined, isn't it?
+
+> +
+> +allOf:
+> +  - $ref: panel-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - enum:
+> +          - xiaomi,elish-csot-nt36523
+> +          - xiaomi,elish-boe-nt36523
+> +      - const: novatek,nt36523
+> +    description: This indicates the panel manufacturer of the panel that is
+> +      in turn using the NT36523 panel driver. This compatible string
+> +      determines how the NT36523 panel driver is configured for the indicated
+> +      panel. The novatek,nt36523 compatible shall always be provided as a fallback.
+
+Drop description. First it is free form text of binding, so unnecessary.
+Second, does not really bring any new information.
+
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +    description: phandle of gpio for reset line - This should be 8mA, gpio
+> +      can be configured using mux, pinctrl, pinctrl-names (active high)
+
+Simplify description - 90% of it is redundant and only drive strength of
+8 mA is important.
+
+> +
+> +  vddio-supply:
+> +    description: regulator that supplies the I/O voltage
+> +
+> +  vddpos-supply:
+> +    description: positive boost supply regulator
+> +
+> +  vddneg-supply:
+> +    description: negative boost supply regulator
+> +
+> +  reg: true
+> +  ports: true
+> +  backlight: true
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - vddio-supply
+> +  - vddpos-supply
+> +  - vddneg-supply
+> +  - reset-gpios
+> +  - ports
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |+
+
+Drop +
+
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    dsi0 {
+
+dsi {
+
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        panel@0 {
+> +            compatible = "xiaomi,elish-csot-nt36523", "novatek,nt36523";
+> +            reg = <0>;
+> +            vddio-supply = <&vreg_l14a_1p88>;
+> +            vddpos-supply = <&lcd_vddpos_5p5>;
+> +            vddneg-supply = <&lcd_vddneg_5p5>;
+> +
+> +            backlight = <&backlight>;
+> +            reset-gpios = <&tlmm 75 GPIO_ACTIVE_LOW>;
+> +
+> +            ports {
+> +              #address-cells = <1>;
+> +              #size-cells = <0>;
+> +
+> +              port@0 {
+> +                reg = <0>;
+
+Mixed up indentation.
+
+Best regards,
+Krzysztof
 
