@@ -2,135 +2,257 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB669C636D4
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Feb 2023 22:44:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8F56C636D4
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Feb 2023 03:09:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229947AbjBMWoY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Feb 2023 17:44:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47658 "EHLO
+        id S229560AbjBNDJw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Feb 2023 22:09:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230016AbjBMWoW (ORCPT
+        with ESMTP id S229539AbjBNDJv (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Feb 2023 17:44:22 -0500
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170A32057F;
-        Mon, 13 Feb 2023 14:44:17 -0800 (PST)
-Received: by mail-wr1-x42e.google.com with SMTP id co8so10038064wrb.1;
-        Mon, 13 Feb 2023 14:44:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=b5Nie9z/6uzDA7Xv3vo+T2ySPWYh0uKc2BDIxZYHNtY=;
-        b=QBJ4Cf3lK8jkkhwi4icD9MExmeSqtKyiYqSwBk6+Ai431i75JhfRSEj0NGVQCse6jA
-         D4N73wqy2vdFy8YG9l98ZBWyxaDNFGmRwy0mh40poyKT16tcRAQMVGkNvMASv+khWHKU
-         wjge2U6bhKlu1ObVR+mMnDxRIBAII8tPbwwDrQj8A58HR/dJSSHU+wkprmfNCOHhUCzy
-         BKGW6+wjqJ9ixpbFs+tgq+Q4sCFmjoC4Zr6ZatblyGjkC2gxjINJXseFIrnGWjyLDiLO
-         nIQqCg2fHQvCLKB0dj1eYTfyO/efpn5z0SbTiXlWzTL4Gc6kmNzMx1KJMGIOVukqloXy
-         MD6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b5Nie9z/6uzDA7Xv3vo+T2ySPWYh0uKc2BDIxZYHNtY=;
-        b=4kJRDZoVlmPmreFDuYVTDVqBoi6Ozay1xyBKeD/IqAsjXEnookjoFKs0R6KhwrBehX
-         TnU2ZZsSXLuGuggfte5lCU6Kf+GGrT4SRNrOV9ZO0V9JNd54aIwrsDge3qodar7GW1nF
-         SnKIOqCrVWBd398r3uZEoeB67Fq1G96XfRE6RufRnW35bDpnb3I+4K72WFie0Xyut3l0
-         kCdxo/FaIBlCSvkHPxet8+1k7Cy8blzMaA9K8PffAD/fWVl9vQ3V4BjTnLdQSZ1hMXsL
-         bL1ePJmLhZynLYuDls8XueX2/56B+wahl1p5ZLMItljC2y61kPPxmdvkxHh322Y1gLda
-         +YNw==
-X-Gm-Message-State: AO0yUKWaL3FCdDSM909i234YMNs8H39qIxbJtEsFIrmfW3GB7mhGfj9K
-        WmGo7JOpx65NfR3yDOhN3aLeS/A0oHQ=
-X-Google-Smtp-Source: AK7set+pv3rKKfFH25IFKSJ9TbE7DVZ2pwi0iGEWNOoTi19utgiGe+bj151JjjUAS0z2FTvLxN1uoQ==
-X-Received: by 2002:a5d:678a:0:b0:2c4:71e:5565 with SMTP id v10-20020a5d678a000000b002c4071e5565mr237454wru.54.1676328255302;
-        Mon, 13 Feb 2023 14:44:15 -0800 (PST)
-Received: from Ansuel-xps. (93-34-91-73.ip49.fastwebnet.it. [93.34.91.73])
-        by smtp.gmail.com with ESMTPSA id v14-20020adfe28e000000b0027cb20605e3sm11421347wri.105.2023.02.13.14.44.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Feb 2023 14:44:14 -0800 (PST)
-Message-ID: <63eabd3e.df0a0220.f8fb1.b4f3@mx.google.com>
-X-Google-Original-Message-ID: <Y+is2WLR7yZetbxV@Ansuel-xps.>
-Date:   Sun, 12 Feb 2023 10:09:45 +0100
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] clk: qcom: clk-hfpll: switch to .determine_rate
-References: <20230212-clk-qcom-determine_rate-v1-0-b4e447d4926e@z3ntu.xyz>
- <20230212-clk-qcom-determine_rate-v1-2-b4e447d4926e@z3ntu.xyz>
+        Mon, 13 Feb 2023 22:09:51 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 876A983;
+        Mon, 13 Feb 2023 19:09:49 -0800 (PST)
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31E39aDE026434;
+        Tue, 14 Feb 2023 03:09:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=KsYecN1rsYL0dVA2x6yNTZhSQBborHeLN4RmARTaE0s=;
+ b=G5ShA7RksAIBRrLQKkqbEGG5NxmVz9MjUDwACQ7KBpEShMSiCvMgOa5Eidj6k7ds/vvg
+ hZFn43XvUawMzsMR26DpWmCeJ5AVbD1TKhyWZs9ABgxluD96SdHc06nMXZ6+hL7TzQEj
+ 9zyivLZ3fv26YfiyvdyTwDWQLNLsTTPRPifDEeQxIRO/QlWiwYyaBkTs6NntUBh17hQI
+ jyq95779CNM/DSVBydXS9ykpN8Zj8Vz6EaeoC+Vpracckx9jGGgxB6J7ASaR0Zr03NSx
+ GDs1D9/+HtsK/8c+ZQxHkQEB7/dXUSShq4duhwEjMlD8RJ41PlEL6h6yxI42E9NVkMgW iQ== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3np389wmuk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 14 Feb 2023 03:09:36 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31E39Z4J020348
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 14 Feb 2023 03:09:35 GMT
+Received: from [10.110.55.187] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 13 Feb
+ 2023 19:09:33 -0800
+Message-ID: <df059f88-6ff6-5906-58f1-4f6c752c4214@quicinc.com>
+Date:   Mon, 13 Feb 2023 19:09:32 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230212-clk-qcom-determine_rate-v1-2-b4e447d4926e@z3ntu.xyz>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [RFC PATCH 5/7] drm/msm/dpu: Document and enable TEAR interrupts
+ on DSI interfaces
+Content-Language: en-US
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Jessica Zhang <quic_jesszhan@quicinc.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        <phone-devel@vger.kernel.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>
+CC:     <~postmarketos/upstreaming@lists.sr.ht>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        "Jami Kettunen" <jami.kettunen@somainline.org>,
+        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@somainline.org>,
+        "Loic Poulain" <loic.poulain@linaro.org>,
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        Adam Skladowski <a39.skl@gmail.com>,
+        <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <freedreno@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+References: <20221231215006.211860-1-marijn.suijten@somainline.org>
+ <20221231215006.211860-6-marijn.suijten@somainline.org>
+ <773cd72b-a766-1764-e25f-0af1174f0e51@quicinc.com>
+ <1051d6bd-eb3c-6293-0bd2-3f4ea28fa3f8@linaro.org>
+From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <1051d6bd-eb3c-6293-0bd2-3f4ea28fa3f8@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: HK1u26ls4glfAknYbKlwlv7S_jxg8PuD
+X-Proofpoint-GUID: HK1u26ls4glfAknYbKlwlv7S_jxg8PuD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
+ definitions=2023-02-14_01,2023-02-13_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1011
+ bulkscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ adultscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2302140024
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Feb 12, 2023 at 03:11:09PM +0100, Luca Weiss wrote:
-> .determine_rate is meant to replace .round_rate. The former comes with a
-> benefit which is especially relevant on 32-bit systems: since
-> .determine_rate uses an "unsigned long" (compared to a "signed long"
-> which is used by .round_rate) the maximum value on 32-bit systems
-> increases from 2^31 (or approx. 2.14GHz) to 2^32 (or approx. 4.29GHz).
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
-Tested-by: Christian Marangi <ansuelsmth@gmail.com>
 
-> ---
->  drivers/clk/qcom/clk-hfpll.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+On 2/13/2023 1:46 PM, Dmitry Baryshkov wrote:
+> On 13/02/2023 21:37, Jessica Zhang wrote:
+>>
+>>
+>> On 12/31/2022 1:50 PM, Marijn Suijten wrote:
+>>> All SoCs since DPU 5.0.0 (and seemingly up until and including 6.0.0,
+>>> but excluding 7.x.x) have the tear interrupt and control registers moved
+>>> out of the PINGPONG block and into the INTF block.  Wire up the
+>>> necessary interrupts and IRQ masks on all supported hardware.
+>>
+>> Hi Marijn,
+>>
+>> Thanks for the patch.
+>>
+>> I saw that in your commit msg, you mentioned that 7.x doesn't have 
+>> tearcheck in the INTF block -- can you double check that this is correct?
+>>
+>> I'm working on SM8350 (DPU v7) and I'm seeing that it does have 
+>> tearcheck in INTF block.
 > 
-> diff --git a/drivers/clk/qcom/clk-hfpll.c b/drivers/clk/qcom/clk-hfpll.c
-> index 7dd17c184b69..86f728dc69e5 100644
-> --- a/drivers/clk/qcom/clk-hfpll.c
-> +++ b/drivers/clk/qcom/clk-hfpll.c
-> @@ -128,20 +128,20 @@ static void clk_hfpll_disable(struct clk_hw *hw)
->  	spin_unlock_irqrestore(&h->lock, flags);
->  }
->  
-> -static long clk_hfpll_round_rate(struct clk_hw *hw, unsigned long rate,
-> -				 unsigned long *parent_rate)
-> +static int clk_hfpll_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
->  {
->  	struct clk_hfpll *h = to_clk_hfpll(hw);
->  	struct hfpll_data const *hd = h->d;
->  	unsigned long rrate;
->  
-> -	rate = clamp(rate, hd->min_rate, hd->max_rate);
-> +	req->rate = clamp(req->rate, hd->min_rate, hd->max_rate);
->  
-> -	rrate = DIV_ROUND_UP(rate, *parent_rate) * *parent_rate;
-> +	rrate = DIV_ROUND_UP(req->rate, req->best_parent_rate) * req->best_parent_rate;
->  	if (rrate > hd->max_rate)
-> -		rrate -= *parent_rate;
-> +		rrate -= req->best_parent_rate;
->  
-> -	return rrate;
-> +	req->rate = rrate;
-> +	return 0;
->  }
->  
->  /*
-> @@ -241,7 +241,7 @@ const struct clk_ops clk_ops_hfpll = {
->  	.enable = clk_hfpll_enable,
->  	.disable = clk_hfpll_disable,
->  	.is_enabled = hfpll_is_enabled,
-> -	.round_rate = clk_hfpll_round_rate,
-> +	.determine_rate = clk_hfpll_determine_rate,
->  	.set_rate = clk_hfpll_set_rate,
->  	.recalc_rate = clk_hfpll_recalc_rate,
->  	.init = clk_hfpll_init,
+> I confirm, according to the vendor drivers INTF TE should be used for 
+> all DPU >= 5.0, including 7.x and 8.x
 > 
-> -- 
-> 2.39.1
+> However I think I know what Marijn meant here. For 5.x and 6.x these 
+> IRQs are handled at the address MDSS + 0x6e800 / + 0x6e900 (which means 
+> offset here should 0x6d800 and 0x6d900) for INTF_1 and INTF_2. Since DPU 
+> 7.x these IRQ registers were moved close to the main INTF block (0x36800 
+> and 0x37800 = INTF + 0x800).
 > 
 
--- 
-	Ansuel
+Got it, then the commit text should remove "control" and just say tear 
+interrupt registers. It got a bit confusing.
+
+We will add the 7xxx intf tear check support on top of this series.
+
+>>
+>>>
+>>> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+>>> ---
+>>>   .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 78 +++++++++++--------
+>>>   .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h    |  6 +-
+>>>   .../gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c | 12 +++
+>>>   .../gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.h |  2 +
+>>>   drivers/gpu/drm/msm/disp/dpu1/dpu_hwio.h      |  3 +
+>>>   5 files changed, 68 insertions(+), 33 deletions(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c 
+>>> b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+>>> index 1cfe94494135..b9b9b5b0b615 100644
+>>> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+>>> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+>>> @@ -86,6 +86,15 @@
+>>>   #define INTF_SC7280_MASK INTF_SC7180_MASK | BIT(DPU_DATA_HCTL_EN)
+>>> +#define IRQ_MSM8998_MASK (BIT(MDP_SSPP_TOP0_INTR) | \
+>>> +             BIT(MDP_SSPP_TOP0_INTR2) | \
+>>> +             BIT(MDP_SSPP_TOP0_HIST_INTR) | \
+>>> +             BIT(MDP_INTF0_INTR) | \
+>>> +             BIT(MDP_INTF1_INTR) | \
+>>> +             BIT(MDP_INTF2_INTR) | \
+>>> +             BIT(MDP_INTF3_INTR) | \
+>>> +             BIT(MDP_INTF4_INTR))
+>>> +
+>>>   #define IRQ_SDM845_MASK (BIT(MDP_SSPP_TOP0_INTR) | \
+>>>                BIT(MDP_SSPP_TOP0_INTR2) | \
+>>>                BIT(MDP_SSPP_TOP0_HIST_INTR) | \
+>>> @@ -100,13 +109,15 @@
+>>>   #define IRQ_QCM2290_MASK (BIT(MDP_SSPP_TOP0_INTR) | \
+>>>                BIT(MDP_SSPP_TOP0_INTR2) | \
+>>>                BIT(MDP_SSPP_TOP0_HIST_INTR) | \
+>>> -             BIT(MDP_INTF1_INTR))
+>>> +             BIT(MDP_INTF1_INTR) | \
+>>> +             BIT(MDP_INTF1_TEAR_INTR))
+>>>   #define IRQ_SC7180_MASK (BIT(MDP_SSPP_TOP0_INTR) | \
+>>>                BIT(MDP_SSPP_TOP0_INTR2) | \
+>>>                BIT(MDP_SSPP_TOP0_HIST_INTR) | \
+>>>                BIT(MDP_INTF0_INTR) | \
+>>> -             BIT(MDP_INTF1_INTR))
+>>> +             BIT(MDP_INTF1_INTR) | \
+>>> +             BIT(MDP_INTF1_TEAR_INTR))
+>>>   #define IRQ_SC7280_MASK (BIT(MDP_SSPP_TOP0_INTR) | \
+>>>                BIT(MDP_SSPP_TOP0_INTR2) | \
+>>> @@ -120,7 +131,9 @@
+>>>                BIT(MDP_SSPP_TOP0_HIST_INTR) | \
+>>>                BIT(MDP_INTF0_INTR) | \
+>>>                BIT(MDP_INTF1_INTR) | \
+>>> +             BIT(MDP_INTF1_TEAR_INTR) | \
+>>>                BIT(MDP_INTF2_INTR) | \
+>>> +             BIT(MDP_INTF2_TEAR_INTR) | \
+>>>                BIT(MDP_INTF3_INTR) | \
+>>>                BIT(MDP_INTF4_INTR))
+>>> @@ -129,7 +142,9 @@
+>>>                 BIT(MDP_SSPP_TOP0_HIST_INTR) | \
+>>>                 BIT(MDP_INTF0_INTR) | \
+>>>                 BIT(MDP_INTF1_INTR) | \
+>>> +              BIT(MDP_INTF1_TEAR_INTR) | \
+>>>                 BIT(MDP_INTF2_INTR) | \
+>>> +              BIT(MDP_INTF2_TEAR_INTR) | \
+>>>                 BIT(MDP_INTF3_INTR) | \
+>>>                 BIT(MDP_INTF4_INTR) | \
+>>>                 BIT(MDP_INTF5_INTR) | \
+>>> @@ -1300,63 +1315,64 @@ static struct dpu_dsc_cfg sdm845_dsc[] = {
+>>>   /*************************************************************
+>>>    * INTF sub blocks config
+>>>    *************************************************************/
+>>> -#define INTF_BLK(_name, _id, _base, _type, _ctrl_id, _progfetch, 
+>>> _features, _reg, _underrun_bit, _vsync_bit) \
+>>> +#define INTF_BLK(_name, _id, _base, _len, _type, _ctrl_id, 
+>>> _progfetch, _features, _reg, _underrun_bit, _vsync_bit, _tear_reg, 
+>>> _tear_rd_ptr_bit) \
+>>>       {\
+>>>       .name = _name, .id = _id, \
+>>> -    .base = _base, .len = 0x280, \
+>>> +    .base = _base, .len = _len, \
+>>>       .features = _features, \
+>>>       .type = _type, \
+>>>       .controller_id = _ctrl_id, \
+>>>       .prog_fetch_lines_worst_case = _progfetch, \
+>>>       .intr_underrun = DPU_IRQ_IDX(_reg, _underrun_bit), \
+>>>       .intr_vsync = DPU_IRQ_IDX(_reg, _vsync_bit), \
+>>> +    .intr_tear_rd_ptr = DPU_IRQ_IDX(_tear_reg, _tear_rd_ptr_bit), \
+>>>       }
+>>>   static const struct dpu_intf_cfg msm8998_intf[] = {
+>>> -    INTF_BLK("intf_0", INTF_0, 0x6A000, INTF_DP, 0, 25, 
+>>> INTF_SDM845_MASK, MDP_SSPP_TOP0_INTR, 24, 25),
+>>> -    INTF_BLK("intf_1", INTF_1, 0x6A800, INTF_DSI, 0, 25, 
+>>> INTF_SDM845_MASK, MDP_SSPP_TOP0_INTR, 26, 27),
+>>> -    INTF_BLK("intf_2", INTF_2, 0x6B000, INTF_DSI, 1, 25, 
+>>> INTF_SDM845_MASK, MDP_SSPP_TOP0_INTR, 28, 29),
+>>> -    INTF_BLK("intf_3", INTF_3, 0x6B800, INTF_HDMI, 0, 25, 
+>>> INTF_SDM845_MASK, MDP_SSPP_TOP0_INTR, 30, 31),
+>>> +    INTF_BLK("intf_0", INTF_0, 0x6A000, 0x268, INTF_DP, 0, 25, 
+>>> INTF_SDM845_MASK, MDP_SSPP_TOP0_INTR, 24, 25, -1, -1),
+>>
+>> Just wondering, how were the lengths calculated for the INTF blocks? 
+>> The values in general seem a little off to me.
+>>
+>> For example, I'm looking downstream and it seems to me that the length 
+>> for the INTF_0 on MSM8998 should be 0x280. Similarly for SC7280, I'm 
+>> seeing that length for INTF + tearcheck should be 0x2c4.
+> 
+> We have discussed INTF lengths in [1]. The current understanding of the 
+> block lengths can be found at [2]. Please comment there if any of the 
+> fixed lengths sounds incorrect to you.
+> 
+> [1] https://patchwork.freedesktop.org/patch/522187/
+> [2] https://patchwork.freedesktop.org/patch/522227/
+> 
+> [skipped the rest]
+> 
+
+Please correct my understanding here, it was agreed to fix intf blocks 
+to 0x2c4 here https://patchwork.freedesktop.org/patch/522227/ but I dont 
+see this was merged?
+
+It was agreed to first land INTF_TE and then add the higher addresses 
+but I dont see such a change, am i missing something?
