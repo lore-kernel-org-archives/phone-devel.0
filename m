@@ -2,257 +2,112 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8F56C636D4
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Feb 2023 03:09:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B87F5C61DA4
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Feb 2023 11:01:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229560AbjBNDJw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Feb 2023 22:09:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43226 "EHLO
+        id S232601AbjBNLBm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Feb 2023 06:01:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbjBNDJv (ORCPT
+        with ESMTP id S232343AbjBNLBj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Feb 2023 22:09:51 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 876A983;
-        Mon, 13 Feb 2023 19:09:49 -0800 (PST)
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 31E39aDE026434;
-        Tue, 14 Feb 2023 03:09:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=KsYecN1rsYL0dVA2x6yNTZhSQBborHeLN4RmARTaE0s=;
- b=G5ShA7RksAIBRrLQKkqbEGG5NxmVz9MjUDwACQ7KBpEShMSiCvMgOa5Eidj6k7ds/vvg
- hZFn43XvUawMzsMR26DpWmCeJ5AVbD1TKhyWZs9ABgxluD96SdHc06nMXZ6+hL7TzQEj
- 9zyivLZ3fv26YfiyvdyTwDWQLNLsTTPRPifDEeQxIRO/QlWiwYyaBkTs6NntUBh17hQI
- jyq95779CNM/DSVBydXS9ykpN8Zj8Vz6EaeoC+Vpracckx9jGGgxB6J7ASaR0Zr03NSx
- GDs1D9/+HtsK/8c+ZQxHkQEB7/dXUSShq4duhwEjMlD8RJ41PlEL6h6yxI42E9NVkMgW iQ== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3np389wmuk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Feb 2023 03:09:36 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 31E39Z4J020348
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Feb 2023 03:09:35 GMT
-Received: from [10.110.55.187] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.36; Mon, 13 Feb
- 2023 19:09:33 -0800
-Message-ID: <df059f88-6ff6-5906-58f1-4f6c752c4214@quicinc.com>
-Date:   Mon, 13 Feb 2023 19:09:32 -0800
+        Tue, 14 Feb 2023 06:01:39 -0500
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7447B22789
+        for <phone-devel@vger.kernel.org>; Tue, 14 Feb 2023 03:01:36 -0800 (PST)
+Received: by mail-ej1-x62d.google.com with SMTP id k16so7519267ejv.10
+        for <phone-devel@vger.kernel.org>; Tue, 14 Feb 2023 03:01:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=e62fN1MhbeUOHVVjTCBAKKz2knPWJHqUGgFc+Eioq+E=;
+        b=OU4sNRRszHNGyV2q8ipjYsmsp71SJ7C3TNg1i4DJ3xKvrhHs86jteng5yCu0khNskx
+         UrKPLflutrNJcy0O9CeaIHNjTq+OKdxaaGQ2ElsAVeAeC6UXw+L/BL6WIIpdNOcVHrPK
+         aJ1FVxP+8wS9a9XpjEqis+T4fhagovggT0VQb7nd9U/myfPNDnOHWwIGcLPJKiqy1LO1
+         ThTTMin58QLto6+WgAUcd8pxGZJ+FHQNIZiJxHN411GzHlnT23YFXbwpvd7RfPNJb7pN
+         Rj9P6H7bXnqbIIe1FnpPl9ars2RKbu43JucgypL2CemeDjvstj43NmuRvIo8QkqTKVs3
+         J37A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e62fN1MhbeUOHVVjTCBAKKz2knPWJHqUGgFc+Eioq+E=;
+        b=OnKYHoQtnQwz7V5sKs2mb7L2UezxwB63Xfg+hoFejvyji6sjjBbHgh4xuaRiwmgxUU
+         sJ1TRYWGu8jTH8i1cd2wx1ZerAixnhPXeg6waQPNgV8b+w7JD5GDsOfJktEbQrzl671d
+         PgKbfYksFMX4gkL+jkIOHq+xiC91QhxRx2QZ2pOxay/OL2KIvH8e7meW+Yw9GAP6T58j
+         nwwC4SPsSfocVvxXGXaVnuD8KyjFdeUiWTsSVfjRbbUxBQNBgkbcAqb/+kntr3mjBXjx
+         Tzd9QI50ohUpu30OVQnetCObOzgqGT/FzgIxd8LRzOoJh+M6UTbrY6RviDUmzDnS7qQ2
+         Wa2Q==
+X-Gm-Message-State: AO0yUKV3g9i+RNRN9JMdURb7Nry1FtwhB3UqWPVJT5M/X6K7ib0byAui
+        NlWlTgIC3MFMjxm5MEk/S048gw==
+X-Google-Smtp-Source: AK7set8UN3gUOYP807cpBkrxkjxHgNA/mxAjfjdMGbkgNnpuMPKd/w19fzBVALxbauqhlG3dRexbwg==
+X-Received: by 2002:a17:906:1747:b0:88e:e6ee:feab with SMTP id d7-20020a170906174700b0088ee6eefeabmr2249288eje.62.1676372494443;
+        Tue, 14 Feb 2023 03:01:34 -0800 (PST)
+Received: from [172.16.220.87] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id i21-20020a170906115500b008711cab8875sm7959596eja.216.2023.02.14.03.01.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Feb 2023 03:01:34 -0800 (PST)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH v3 0/2] Add pm_runtime support to SM6350 camcc
+Date:   Tue, 14 Feb 2023 12:01:31 +0100
+Message-Id: <20230213-sm6350-camcc-runtime_pm-v3-0-d35e0d833cc4@fairphone.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: [RFC PATCH 5/7] drm/msm/dpu: Document and enable TEAR interrupts
- on DSI interfaces
-Content-Language: en-US
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Jessica Zhang <quic_jesszhan@quicinc.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        <phone-devel@vger.kernel.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>
-CC:     <~postmarketos/upstreaming@lists.sr.ht>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        "Jami Kettunen" <jami.kettunen@somainline.org>,
-        Rob Clark <robdclark@gmail.com>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Vinod Koul <vkoul@kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAtq62MC/42Oyw6DIBBFf8Ww7hgeitpV/6NpGkCoLEQDan3Ef
+ y+66q5dnju5586GgvZWB3RNNuT1ZIPtXAR2SZBqhHtpsHVkRDFlmBIGoeUsx6BEqxT40Q221c+
+ +Bc4qWeSK1ZkkKLalCBqkF041R9/0GfCUwtv2x7X32tj53L0/Ijc2DJ1fzjcmcqS/FycCGApOj
+ OKVKUSJbytzw5jOy4oO50T/9NDo4VjkuJCGaV5+e/Z9/wDjyeJRJAEAAA==
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Kuogee Hsieh <quic_khsieh@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        "Loic Poulain" <loic.poulain@linaro.org>,
-        Vinod Polimera <quic_vpolimer@quicinc.com>,
-        Adam Skladowski <a39.skl@gmail.com>,
-        <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <freedreno@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-References: <20221231215006.211860-1-marijn.suijten@somainline.org>
- <20221231215006.211860-6-marijn.suijten@somainline.org>
- <773cd72b-a766-1764-e25f-0af1174f0e51@quicinc.com>
- <1051d6bd-eb3c-6293-0bd2-3f4ea28fa3f8@linaro.org>
-From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <1051d6bd-eb3c-6293-0bd2-3f4ea28fa3f8@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: HK1u26ls4glfAknYbKlwlv7S_jxg8PuD
-X-Proofpoint-GUID: HK1u26ls4glfAknYbKlwlv7S_jxg8PuD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.170.22
- definitions=2023-02-14_01,2023-02-13_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1011
- bulkscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0 impostorscore=0
- adultscore=0 priorityscore=1501 mlxscore=0 mlxlogscore=999 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
- definitions=main-2302140024
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.12.1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+As pointed out during patch review, we should make sure that we turn on
+the CX power domain when camcc is in use, and also disable it (or remove
+our vote on it) when camcc is not in use.
 
+For this add pm_runtime support to the driver and stick the power-domain
+in the devicetree.
 
-On 2/13/2023 1:46 PM, Dmitry Baryshkov wrote:
-> On 13/02/2023 21:37, Jessica Zhang wrote:
->>
->>
->> On 12/31/2022 1:50 PM, Marijn Suijten wrote:
->>> All SoCs since DPU 5.0.0 (and seemingly up until and including 6.0.0,
->>> but excluding 7.x.x) have the tear interrupt and control registers moved
->>> out of the PINGPONG block and into the INTF block.  Wire up the
->>> necessary interrupts and IRQ masks on all supported hardware.
->>
->> Hi Marijn,
->>
->> Thanks for the patch.
->>
->> I saw that in your commit msg, you mentioned that 7.x doesn't have 
->> tearcheck in the INTF block -- can you double check that this is correct?
->>
->> I'm working on SM8350 (DPU v7) and I'm seeing that it does have 
->> tearcheck in INTF block.
-> 
-> I confirm, according to the vendor drivers INTF TE should be used for 
-> all DPU >= 5.0, including 7.x and 8.x
-> 
-> However I think I know what Marijn meant here. For 5.x and 6.x these 
-> IRQs are handled at the address MDSS + 0x6e800 / + 0x6e900 (which means 
-> offset here should 0x6d800 and 0x6d900) for INTF_1 and INTF_2. Since DPU 
-> 7.x these IRQ registers were moved close to the main INTF block (0x36800 
-> and 0x37800 = INTF + 0x800).
-> 
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Changes in v3:
+- Remove extra error print for qcom_cc_really_probe since driver core
+  already prints the error anyways
+- Fix From: and Sign-offs email address confusion, sorry about that...
+- Link to v2: https://lore.kernel.org/r/20230213-sm6350-camcc-runtime_pm-v2-0-60a507bf3e68@z3ntu.xyz
 
-Got it, then the commit text should remove "control" and just say tear 
-interrupt registers. It got a bit confusing.
+Changes in v2:
+- no change resend since I messed up To/CC in the initial submission
+- Link to v1: https://lore.kernel.org/r/20230213-sm6350-camcc-runtime_pm-v1-0-761fc69f7a80@z3ntu.xyz
 
-We will add the 7xxx intf tear check support on top of this series.
+---
+Luca Weiss (2):
+      clk: qcom: camcc-sm6350: add pm_runtime support
+      arm64: dts: qcom: sm6350: add power domain to camcc
 
->>
->>>
->>> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
->>> ---
->>>   .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 78 +++++++++++--------
->>>   .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h    |  6 +-
->>>   .../gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.c | 12 +++
->>>   .../gpu/drm/msm/disp/dpu1/dpu_hw_interrupts.h |  2 +
->>>   drivers/gpu/drm/msm/disp/dpu1/dpu_hwio.h      |  3 +
->>>   5 files changed, 68 insertions(+), 33 deletions(-)
->>>
->>> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c 
->>> b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
->>> index 1cfe94494135..b9b9b5b0b615 100644
->>> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
->>> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
->>> @@ -86,6 +86,15 @@
->>>   #define INTF_SC7280_MASK INTF_SC7180_MASK | BIT(DPU_DATA_HCTL_EN)
->>> +#define IRQ_MSM8998_MASK (BIT(MDP_SSPP_TOP0_INTR) | \
->>> +             BIT(MDP_SSPP_TOP0_INTR2) | \
->>> +             BIT(MDP_SSPP_TOP0_HIST_INTR) | \
->>> +             BIT(MDP_INTF0_INTR) | \
->>> +             BIT(MDP_INTF1_INTR) | \
->>> +             BIT(MDP_INTF2_INTR) | \
->>> +             BIT(MDP_INTF3_INTR) | \
->>> +             BIT(MDP_INTF4_INTR))
->>> +
->>>   #define IRQ_SDM845_MASK (BIT(MDP_SSPP_TOP0_INTR) | \
->>>                BIT(MDP_SSPP_TOP0_INTR2) | \
->>>                BIT(MDP_SSPP_TOP0_HIST_INTR) | \
->>> @@ -100,13 +109,15 @@
->>>   #define IRQ_QCM2290_MASK (BIT(MDP_SSPP_TOP0_INTR) | \
->>>                BIT(MDP_SSPP_TOP0_INTR2) | \
->>>                BIT(MDP_SSPP_TOP0_HIST_INTR) | \
->>> -             BIT(MDP_INTF1_INTR))
->>> +             BIT(MDP_INTF1_INTR) | \
->>> +             BIT(MDP_INTF1_TEAR_INTR))
->>>   #define IRQ_SC7180_MASK (BIT(MDP_SSPP_TOP0_INTR) | \
->>>                BIT(MDP_SSPP_TOP0_INTR2) | \
->>>                BIT(MDP_SSPP_TOP0_HIST_INTR) | \
->>>                BIT(MDP_INTF0_INTR) | \
->>> -             BIT(MDP_INTF1_INTR))
->>> +             BIT(MDP_INTF1_INTR) | \
->>> +             BIT(MDP_INTF1_TEAR_INTR))
->>>   #define IRQ_SC7280_MASK (BIT(MDP_SSPP_TOP0_INTR) | \
->>>                BIT(MDP_SSPP_TOP0_INTR2) | \
->>> @@ -120,7 +131,9 @@
->>>                BIT(MDP_SSPP_TOP0_HIST_INTR) | \
->>>                BIT(MDP_INTF0_INTR) | \
->>>                BIT(MDP_INTF1_INTR) | \
->>> +             BIT(MDP_INTF1_TEAR_INTR) | \
->>>                BIT(MDP_INTF2_INTR) | \
->>> +             BIT(MDP_INTF2_TEAR_INTR) | \
->>>                BIT(MDP_INTF3_INTR) | \
->>>                BIT(MDP_INTF4_INTR))
->>> @@ -129,7 +142,9 @@
->>>                 BIT(MDP_SSPP_TOP0_HIST_INTR) | \
->>>                 BIT(MDP_INTF0_INTR) | \
->>>                 BIT(MDP_INTF1_INTR) | \
->>> +              BIT(MDP_INTF1_TEAR_INTR) | \
->>>                 BIT(MDP_INTF2_INTR) | \
->>> +              BIT(MDP_INTF2_TEAR_INTR) | \
->>>                 BIT(MDP_INTF3_INTR) | \
->>>                 BIT(MDP_INTF4_INTR) | \
->>>                 BIT(MDP_INTF5_INTR) | \
->>> @@ -1300,63 +1315,64 @@ static struct dpu_dsc_cfg sdm845_dsc[] = {
->>>   /*************************************************************
->>>    * INTF sub blocks config
->>>    *************************************************************/
->>> -#define INTF_BLK(_name, _id, _base, _type, _ctrl_id, _progfetch, 
->>> _features, _reg, _underrun_bit, _vsync_bit) \
->>> +#define INTF_BLK(_name, _id, _base, _len, _type, _ctrl_id, 
->>> _progfetch, _features, _reg, _underrun_bit, _vsync_bit, _tear_reg, 
->>> _tear_rd_ptr_bit) \
->>>       {\
->>>       .name = _name, .id = _id, \
->>> -    .base = _base, .len = 0x280, \
->>> +    .base = _base, .len = _len, \
->>>       .features = _features, \
->>>       .type = _type, \
->>>       .controller_id = _ctrl_id, \
->>>       .prog_fetch_lines_worst_case = _progfetch, \
->>>       .intr_underrun = DPU_IRQ_IDX(_reg, _underrun_bit), \
->>>       .intr_vsync = DPU_IRQ_IDX(_reg, _vsync_bit), \
->>> +    .intr_tear_rd_ptr = DPU_IRQ_IDX(_tear_reg, _tear_rd_ptr_bit), \
->>>       }
->>>   static const struct dpu_intf_cfg msm8998_intf[] = {
->>> -    INTF_BLK("intf_0", INTF_0, 0x6A000, INTF_DP, 0, 25, 
->>> INTF_SDM845_MASK, MDP_SSPP_TOP0_INTR, 24, 25),
->>> -    INTF_BLK("intf_1", INTF_1, 0x6A800, INTF_DSI, 0, 25, 
->>> INTF_SDM845_MASK, MDP_SSPP_TOP0_INTR, 26, 27),
->>> -    INTF_BLK("intf_2", INTF_2, 0x6B000, INTF_DSI, 1, 25, 
->>> INTF_SDM845_MASK, MDP_SSPP_TOP0_INTR, 28, 29),
->>> -    INTF_BLK("intf_3", INTF_3, 0x6B800, INTF_HDMI, 0, 25, 
->>> INTF_SDM845_MASK, MDP_SSPP_TOP0_INTR, 30, 31),
->>> +    INTF_BLK("intf_0", INTF_0, 0x6A000, 0x268, INTF_DP, 0, 25, 
->>> INTF_SDM845_MASK, MDP_SSPP_TOP0_INTR, 24, 25, -1, -1),
->>
->> Just wondering, how were the lengths calculated for the INTF blocks? 
->> The values in general seem a little off to me.
->>
->> For example, I'm looking downstream and it seems to me that the length 
->> for the INTF_0 on MSM8998 should be 0x280. Similarly for SC7280, I'm 
->> seeing that length for INTF + tearcheck should be 0x2c4.
-> 
-> We have discussed INTF lengths in [1]. The current understanding of the 
-> block lengths can be found at [2]. Please comment there if any of the 
-> fixed lengths sounds incorrect to you.
-> 
-> [1] https://patchwork.freedesktop.org/patch/522187/
-> [2] https://patchwork.freedesktop.org/patch/522227/
-> 
-> [skipped the rest]
-> 
+ arch/arm64/boot/dts/qcom/sm6350.dtsi |  2 ++
+ drivers/clk/qcom/camcc-sm6350.c      | 25 ++++++++++++++++++++++++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
+---
+base-commit: 09e41676e35ab06e4bce8870ea3bf1f191c3cb90
+change-id: 20230213-sm6350-camcc-runtime_pm-639b75c3d4b1
 
-Please correct my understanding here, it was agreed to fix intf blocks 
-to 0x2c4 here https://patchwork.freedesktop.org/patch/522227/ but I dont 
-see this was merged?
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
-It was agreed to first land INTF_TE and then add the higher addresses 
-but I dont see such a change, am i missing something?
