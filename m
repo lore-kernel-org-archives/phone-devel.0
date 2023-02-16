@@ -2,28 +2,63 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D66A1C64ED6
-	for <phone-devel@archiver.kernel.org>; Thu, 16 Feb 2023 09:04:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 835DDC636CC
+	for <phone-devel@archiver.kernel.org>; Thu, 16 Feb 2023 16:34:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229706AbjBPJEP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 16 Feb 2023 04:04:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48580 "EHLO
+        id S229906AbjBPQet (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 16 Feb 2023 11:34:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229588AbjBPJEO (ORCPT
+        with ESMTP id S229895AbjBPQes (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 16 Feb 2023 04:04:14 -0500
-Received: from relay02.th.seeweb.it (relay02.th.seeweb.it [IPv6:2001:4b7a:2000:18::163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D8C2311C
-        for <phone-devel@vger.kernel.org>; Thu, 16 Feb 2023 01:04:13 -0800 (PST)
-Received: from SoMainline.org (D57D4C6E.static.ziggozakelijk.nl [213.125.76.110])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 7E2D220417;
-        Thu, 16 Feb 2023 10:04:09 +0100 (CET)
-Date:   Thu, 16 Feb 2023 10:04:08 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+        Thu, 16 Feb 2023 11:34:48 -0500
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 269644ECC9
+        for <phone-devel@vger.kernel.org>; Thu, 16 Feb 2023 08:34:47 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id o20so3490839lfk.5
+        for <phone-devel@vger.kernel.org>; Thu, 16 Feb 2023 08:34:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=diFcMl7EiQ4Yy7efeiZ3OzsfYg9S1P0IDLpWVAia4gc=;
+        b=TZEVj6blLSM3TvR/3RKddHskVplgR1BxvUtfcaqwQ+cUEi9L73dcjisb3kSQhT2E4w
+         q8gzVqPpmSear/S7FH/82Hlwv7O4iR5YlWjnzgKjYdyj8D/mpKVk8de1LM/oXWOrSFZt
+         nvfgzDImQlNp4goDuK9SjqhgKBrLNMe4Lt/ryl3G4bZUg9RGGoOmMNW+g1hBBToHsP6F
+         UHeMJZ8LBJoyzneUgw3BlAMVVOEyHmo8Zma/AHMkMlra+MPdHpZ05rEhVJUDMOJRZZvh
+         +LwhshDbXSwrPGXoy3m49vtEz3BKAYxciLeBA0xb87DV88r8JeWoKfFgPVNnVpWeqmwq
+         SE6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=diFcMl7EiQ4Yy7efeiZ3OzsfYg9S1P0IDLpWVAia4gc=;
+        b=Wr+oogYag80ycPjXn3FjtPGTrL7Mtp1prTtzTWvEYsZhiMUipG6xoXmoCteJhFwz7W
+         SCA36KNfavq75jHpGo955Fop5k28tW2yo5yTRjYyomxLocIOYFlDR678C0oJ/uU01bHO
+         b4PNbHf9wzjOu201emZtKzUDuwRu6u0j+iFl6Kn5W3EeNwqoOj22dYPJNjQ4XOYsz9vd
+         7oQ9+1qPcy4Aoubmw87+aWbDHfkk7j9LsQK4jnt3yTuKt+tet4GPjw0opxxaOXM9Wp7F
+         DzVMknORGkE7FypK5/0yWuePtdMFMlpdPPN7ho+C2stOD5OhAsfyMVUe6PRlrWp49qB6
+         f3/Q==
+X-Gm-Message-State: AO0yUKWnRcBJoI1Xxl9M+vi74oimAg6RIIwEqlcAtbkFZEbZFG1xESNv
+        hXx2kdVTN1oFJRnnv2BOTJQz3w==
+X-Google-Smtp-Source: AK7set8eJtMU0IWLEpLenMSU7LwwahI5pZHwaXed+WbOo941g1MrDoQAi7b/6xrXZ/qdwYkzpzYXGA==
+X-Received: by 2002:a19:ae19:0:b0:4a4:68b8:f4e7 with SMTP id f25-20020a19ae19000000b004a468b8f4e7mr1756423lfc.45.1676565285190;
+        Thu, 16 Feb 2023 08:34:45 -0800 (PST)
+Received: from ?IPV6:2001:14ba:a085:4d00::8a5? (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
+        by smtp.gmail.com with ESMTPSA id h23-20020ac250d7000000b004db50b52c08sm346711lfm.102.2023.02.16.08.34.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Feb 2023 08:34:44 -0800 (PST)
+Message-ID: <305a468a-d792-4f51-5a7a-bf38b9c685eb@linaro.org>
+Date:   Thu, 16 Feb 2023 18:34:43 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+Subject: Re: [PATCH 1/3] drm/msm/dpu: Read previously-uninitialized SSPP
+ scaler version from hw
+Content-Language: en-GB
+To:     Marijn Suijten <marijn.suijten@somainline.org>
 Cc:     Rob Clark <robdclark@gmail.com>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
         Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
@@ -40,61 +75,112 @@ Cc:     Rob Clark <robdclark@gmail.com>,
         Martin Botka <martin.botka@somainline.org>,
         Jami Kettunen <jami.kettunen@somainline.org>,
         phone-devel@vger.kernel.org
-Subject: Re: [PATCH 0/3] drm/msm/dpu: Initialize SSPP scaler version (from
- register read)
-Message-ID: <20230216090408.caekj2t2x6asb2jk@SoMainline.org>
 References: <20230215-sspp-scaler-version-v1-0-416b1500b85b@somainline.org>
- <CAA8EJpqL-Vsq7dbK7tfJAGgg2_nV463QYv5zgvRLx_8T2bsXxA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAA8EJpqL-Vsq7dbK7tfJAGgg2_nV463QYv5zgvRLx_8T2bsXxA@mail.gmail.com>
+ <20230215-sspp-scaler-version-v1-1-416b1500b85b@somainline.org>
+ <CAA8EJpq1L32VQ1eQEk2YQWqCwHgdFQfuWPhQx=PmhzXvazLgPA@mail.gmail.com>
+ <20230216083119.6ispk2xhahhzn5sx@SoMainline.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20230216083119.6ispk2xhahhzn5sx@SoMainline.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2023-02-16 05:02:32, Dmitry Baryshkov wrote:
-> On Thu, 16 Feb 2023 at 01:02, Marijn Suijten
-> <marijn.suijten@somainline.org> wrote:
-> >
-> > Random inspection of the SSPP code surfaced that the version field of
-> > dpu_scaler_blk was never assigned in the catalog, resulting in wrong
-> > codepaths to be taken within dpu_hw_setup_scaler3 based on a 0 version.
-> > Rectify this by reading an accurate value from a register (that is not
-> > equal to the values represented by DPU_SSPP_SCALER_QSEEDx enum
-> > variants) and deleting dead code around QSEED versioning.
-> >
-> > Future changes should likely get rid of the distinction between QSEED3
-> > and up, as these are now purely determined from the register value.
-> > Furthermore implementations could look at the scaler subblk .id field
-> > rather than the SSPP feature bits, which currently hold redundant
-> > information.
-> >
-> > ---
-> > Marijn Suijten (3):
-> >       drm/msm/dpu: Read previously-uninitialized SSPP scaler version from hw
-> >       drm/msm/dpu: Drop unused get_scaler_ver callback from SSPP
-> >       drm/msm/dpu: Drop unused qseed_type from catalog dpu_caps
+On 16/02/2023 10:31, Marijn Suijten wrote:
+> On 2023-02-16 04:22:13, Dmitry Baryshkov wrote:
+>> On Thu, 16 Feb 2023 at 01:02, Marijn Suijten
+>> <marijn.suijten@somainline.org> wrote:
+>>>
+>>> DPU's catalog never assigned dpu_scaler_blk::version leading to
+>>> initialization code in dpu_hw_setup_scaler3 to wander the wrong
+>>> codepaths.  Instead of hardcoding the correct QSEED algorithm version,
+>>> read it back from a hardware register.
+>>>
+>>> Note that this register is only available starting with QSEED3, where
+>>> 0x1002 corresponds to QSEED3, 0x2004 to QSEED3LITE and 0x3000 to QSEED4.
+>>
+>> This is not purely accurate. 0x1003 (sdm845) also corresponds to QSEED3.
+>> I'd say instead that there are several variations of QSEED3 scalers,
+>> where starting from 0x2004 it is called QSEED3LITE and starting from
+>> 0x3000 it is called QSEED4.
 > 
-> The cleanup looks good. However as you are on it, maybe you can also
-> add patch 4, dropping DPU_SSPP_SCALER_QSEED3LITE and
-> DPU_SSPP_SCALER_QSEED4 in favour of using QSEED3 for all these
-> scalers?
+> Good catch, I'll update that.
+> 
+>>> Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+>>> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+>>> ---
+>>>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h | 2 --
+>>>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.c    | 8 +++++++-
+>>>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.h    | 3 +++
+>>>   3 files changed, 10 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
+>>> index ddab9caebb18..96ce1766f4a1 100644
+>>> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
+>>> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
+>>> @@ -324,11 +324,9 @@ struct dpu_src_blk {
+>>>   /**
+>>>    * struct dpu_scaler_blk: Scaler information
+>>>    * @info:   HW register and features supported by this sub-blk
+>>> - * @version: qseed block revision
+>>>    */
+>>>   struct dpu_scaler_blk {
+>>>          DPU_HW_SUBBLK_INFO;
+>>> -       u32 version;
+>>
+>> No. Please keep the version in the scaler subblk.  It is a version of
+>> the QSEED (scaler block), not the SSPP's version.
+> 
+> You are right that the new variable in the parent (SSPP) block is
+> nondescriptive and should have been named scaler_version.
+> 
+> However.
+> 
+> dpu_scaler_blk is only used as a const static struct in the catalog,
+> meaning we cannot (should not!) store a runtime-read register value
+> here.  Instead I followed your IRC suggestion to read the register in
+> dpu_hw_sspp_init, but my original implementation called
+> dpu_hw_get_scaler3_ver in _dpu_hw_sspp_setup_scaler3 where we already
+> have access to the subblk_offset, allowing us to delete
+> _dpu_hw_sspp_get_scaler3_ver.  Would you rather have that?  We don't
+> need the register value anywhere else.
 
-I surely can!  Do you mind if I rename it to QSEED3_AND_UP for clarity?
-How about the second question, dropping this redundant information from
-the SSPP feature flags and only looking at the scaler_blk.id?
+After giving it another thought, let's follow the vendor's approach and 
+store the predefined scaler_version in hw catalog (in dpu_scaler_blk, as 
+it currently is). This way we can still drop all QSEED3/3LITE/4 
+crazyness, while keeping the data sane.
 
-> As we are going to use scaler_version to distinguish between
-> them, it would be logical not to duplicate that bit of information
-> (not to mention all the possible troubles if scaler_version disagrees
-> with the sblk->scaler_blk.id).
+Then _dpu_hw_sspp_get_scaler3_ver() can also be dropped (or you can use 
+it as a safety guard while doing dpu_hw_sspp init).
 
-Note that we had a similar discussion for UBWC HW decoder version and it
-was decided to go the opposite route [1].  That may have been for
-technical reasons (unclocked register access), but it's an inconsistent
-approach to say the least.
+> 
+>> There is a block called DS (destination scaler), which can be used to
+>> scale the resulting image after the LM. This block also uses the
+>> QSEED3(,LITE,4) scaler block.
+> 
+> Is this already supported in mainline, and is it the reason for
+> previously having qseed_type globally available?  Is my understanding
+> correct that this scaler subblk in the SSPP is merely an interface to
+> it, allowing the same hardware to be used from the SSPP for intputs and
+> after the LM for outputs?
 
-[1]: https://lore.kernel.org/linux-arm-msm/71f96910-e7b1-92f9-ae15-79bd1da40a0d@quicinc.com/
+No, I think qseed_type is a leftover from having the same thing 
+implemented in three different ways. Maybe because of NIH syndrome?
 
-- Marijn
+DS is not supported, it was removed in the commit 
+b033def8741aab3fb58e4bf6c1d5cd73b3beb357. I do not have a clear usecase 
+for this block and of course we don't have uABI for it.
+
+It would still be nice to keep it in the picture though. It was the main 
+reason for moving scaler code from dpu_hw_sspp to dpu_hw_util.
+
+> 
+> <snip>
+> 
+> - Marijn
+
+-- 
+With best wishes
+Dmitry
+
