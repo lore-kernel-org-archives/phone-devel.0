@@ -2,252 +2,188 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FB4DC05027
-	for <phone-devel@archiver.kernel.org>; Fri, 17 Feb 2023 15:02:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE685C64EC7
+	for <phone-devel@archiver.kernel.org>; Mon, 20 Feb 2023 12:13:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229523AbjBQPCI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 17 Feb 2023 10:02:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59788 "EHLO
+        id S231499AbjBTMNJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 20 Feb 2023 07:13:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229941AbjBQPCG (ORCPT
+        with ESMTP id S230383AbjBTMNI (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 17 Feb 2023 10:02:06 -0500
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 472106F7D2
-        for <phone-devel@vger.kernel.org>; Fri, 17 Feb 2023 07:01:32 -0800 (PST)
-Received: by mail-yb1-xb33.google.com with SMTP id y4so2099255ybi.10
-        for <phone-devel@vger.kernel.org>; Fri, 17 Feb 2023 07:01:32 -0800 (PST)
+        Mon, 20 Feb 2023 07:13:08 -0500
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8232F7EC6;
+        Mon, 20 Feb 2023 04:13:07 -0800 (PST)
+Received: by mail-pl1-x62a.google.com with SMTP id bh1so1140867plb.11;
+        Mon, 20 Feb 2023 04:13:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aAJZVe/vV3cZhcoC/T6LPsbBim3Szyhp2HbhCsQ0IWg=;
-        b=BRIqLQEbheRuNrQkvbOWnTpYkviefY1N7WqRc2n5d1xhWSnQDAvZSdfzixOnlsbozf
-         rL/DtFS+rCH5AEYp2AOqyaEtrx5DHuYhdiyThr9s8UinrUaP4Nz1rt+C8JM1FZB8ibqA
-         g1KX21+r7aMkjLS6cZObmFBGyW22lc+4FDcbu9TxUefwmbIzgVva6xJ6d1IP743M0JRf
-         3D+SUitLCuNKju7BgcM+j22wxbOVqK14MTsjaUO50co8BLGPp/rsfd2kHXy6pzpKbUDM
-         BwUqw2W3aAJo3zTplXP+ij69l/iDZKro+/aFjZ1gTnHGWHEsD39GdX2qw/lbOdoYitoI
-         +Mdg==
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vxAFz2rVLxj2kv0iP8aQ04yRu+OY9bVx6kbZibMveqI=;
+        b=UZBGmoL/hq/IHXODoVnESRITuITuEb3YU7ByNcwDfgcWNHM4CtHLDo6qx/rDuX8tPV
+         FZfIQS5vNFojlVjKFQ9aes2UlgnNkoTHu5qLm6jxujlaTsrX4UGRsltriHTg7sTP7uSQ
+         64dvYgfbU/8c3yml6lVGzvtPQD27jqV4DSgSxS3Q7aTKt2NhAaXFhmB6e0dXZmDnMlXb
+         oDzN1O0BQSFjrOZ+8rYOu/oXCRWuZhn70/Q6HNx+CV3TgiXoSeJKbO9t/tjQWNXgjMO7
+         mhzfQcfDgvwz9lfPG3H2CkInD5/t+JgyZtC5HVyizN8IJDqkWJtLH7rmU+W1Jg9CH8Gh
+         vmIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aAJZVe/vV3cZhcoC/T6LPsbBim3Szyhp2HbhCsQ0IWg=;
-        b=dS3qDUB0GLtkZuVQNq1VRb6QrX9hW1Hgs+ynPk4ol4YV+CAmz8PYe6PlFDvHK2mPYN
-         IscuB/O+9AM6FkzpWvmNJ2LkLIeBcdBK0Bak0fYDeO+gZbdLHawFvP5aVVX3UFBtFsfv
-         ICbic0e5GiTn8HgmF3m9ArA9tJdKPkioohwkcNF6/iJP0qX3XPJgky/wDe4xBJ9iioiz
-         rWEF/vr0xfc/v9eSo/PDzc46Ycda6h/42n5ZVMmXTOG+yDQNoG4Jn7aZBkfs8YoTcEg2
-         jSPCu8FjHjy/Jpe3HXfEdHnvJASQujfSPV62sA+7il+Djz1TOEge7SaMGkYEG0DwyDA+
-         dSPQ==
-X-Gm-Message-State: AO0yUKV5rjsFElgtjm2PtIfRMPPsqW3hJabn3G5NeP9jyTUBSUKPG4ND
-        bJ4ngRoMOPQRMQ7Rj2sLaDGw62aAvTq+ckxZ4ZK2hg==
-X-Google-Smtp-Source: AK7set/396tCXCL3hs7mfmUDKG5gkI6SJ/hiscL7WZo4zg8jYG8Tfo1g8h2dqp6+4echxmfk/EzFden3uzWm4n+qMfo=
-X-Received: by 2002:a5b:4c8:0:b0:8d5:5d9d:d088 with SMTP id
- u8-20020a5b04c8000000b008d55d9dd088mr1204549ybp.229.1676646034321; Fri, 17
- Feb 2023 07:00:34 -0800 (PST)
-MIME-Version: 1.0
-References: <20230215-sspp-scaler-version-v1-0-416b1500b85b@somainline.org>
- <20230215-sspp-scaler-version-v1-1-416b1500b85b@somainline.org>
- <CAA8EJpq1L32VQ1eQEk2YQWqCwHgdFQfuWPhQx=PmhzXvazLgPA@mail.gmail.com>
- <20230216083119.6ispk2xhahhzn5sx@SoMainline.org> <305a468a-d792-4f51-5a7a-bf38b9c685eb@linaro.org>
- <20230216214655.a3ajtegqwattn2rt@SoMainline.org>
-In-Reply-To: <20230216214655.a3ajtegqwattn2rt@SoMainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Fri, 17 Feb 2023 17:00:22 +0200
-Message-ID: <CAA8EJpobXPSyEqZQ3zgwSqg6fC7pzQumWR9dDPdmGOemtS-epw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] drm/msm/dpu: Read previously-uninitialized SSPP
- scaler version from hw
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vxAFz2rVLxj2kv0iP8aQ04yRu+OY9bVx6kbZibMveqI=;
+        b=aj42yWSMX81njOkQ9VdHspYqSFfKdBndbBcDZLZ+7EjgjWzI81MhnBRDLKfIVd1DM5
+         ND/EOKLdUAOG0x2cmQkJKeEMDVj13I0tcU+BjPfLN06VevilwCgNwBrwP81PI2YC7lVH
+         p7eb8jvmWnpq+UNvTXIbEyujxzZjIUMS8U8aOJOBnM37t59RUmsx6BIq43DF0/wmPMKQ
+         Uf8x7RWlBAjO1ls6iiPtebIliviOpC2vX3IY5uSgJjZGr5CZIy9GE5MJgmHP9eFVLjX0
+         kK9KLpIuyz1f3nYoIpAdDVJmm6xtFdbhZk/gSOoZvZYQc2wbleRx2pHYbA6ERSTZo30w
+         LMaw==
+X-Gm-Message-State: AO0yUKW/gl1t5oKkBlHkfQBaOVS67L9n9JZRSyD6npu8lMAw166DxwQA
+        KmeHfGeIbbHguXM362wsLkg=
+X-Google-Smtp-Source: AK7set8JlZ9xeDW8rXHdBvDt22y0ZTlD8dNdfbAv9PKB6i/MR6N9zGfnENMmtZ343qaZOWXOirUeQw==
+X-Received: by 2002:a17:90a:1da:b0:233:fa78:7c9e with SMTP id 26-20020a17090a01da00b00233fa787c9emr2790288pjd.12.1676895186906;
+        Mon, 20 Feb 2023 04:13:06 -0800 (PST)
+Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id d14-20020a17090a498e00b00233790759cesm207799pjh.47.2023.02.20.04.13.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Feb 2023 04:13:06 -0800 (PST)
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@gmail.com>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Archit Taneja <architt@codeaurora.org>,
-        Chandan Uddaraju <chandanu@codeaurora.org>,
-        Sravanthi Kollukuduru <skolluku@codeaurora.org>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jianhua Lu <lujianhua000@gmail.com>
+Subject: [PATCH v2 1/2] dt-bindings: display: panel: Add Novatek NT36523 bindings
+Date:   Mon, 20 Feb 2023 20:12:57 +0800
+Message-Id: <20230220121258.10727-1-lujianhua000@gmail.com>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 16 Feb 2023 at 23:46, Marijn Suijten
-<marijn.suijten@somainline.org> wrote:
->
-> On 2023-02-16 18:34:43, Dmitry Baryshkov wrote:
-> > On 16/02/2023 10:31, Marijn Suijten wrote:
-> > > On 2023-02-16 04:22:13, Dmitry Baryshkov wrote:
-> > >> On Thu, 16 Feb 2023 at 01:02, Marijn Suijten
-> > >> <marijn.suijten@somainline.org> wrote:
-> > >>>
-> > >>> DPU's catalog never assigned dpu_scaler_blk::version leading to
-> > >>> initialization code in dpu_hw_setup_scaler3 to wander the wrong
-> > >>> codepaths.  Instead of hardcoding the correct QSEED algorithm version,
-> > >>> read it back from a hardware register.
-> > >>>
-> > >>> Note that this register is only available starting with QSEED3, where
-> > >>> 0x1002 corresponds to QSEED3, 0x2004 to QSEED3LITE and 0x3000 to QSEED4.
-> > >>
-> > >> This is not purely accurate. 0x1003 (sdm845) also corresponds to QSEED3.
-> > >> I'd say instead that there are several variations of QSEED3 scalers,
-> > >> where starting from 0x2004 it is called QSEED3LITE and starting from
-> > >> 0x3000 it is called QSEED4.
-> > >
-> > > Good catch, I'll update that.
-> > >
-> > >>> Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-> > >>> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > >>> ---
-> > >>>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h | 2 --
-> > >>>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.c    | 8 +++++++-
-> > >>>   drivers/gpu/drm/msm/disp/dpu1/dpu_hw_sspp.h    | 3 +++
-> > >>>   3 files changed, 10 insertions(+), 3 deletions(-)
-> > >>>
-> > >>> diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
-> > >>> index ddab9caebb18..96ce1766f4a1 100644
-> > >>> --- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
-> > >>> +++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.h
-> > >>> @@ -324,11 +324,9 @@ struct dpu_src_blk {
-> > >>>   /**
-> > >>>    * struct dpu_scaler_blk: Scaler information
-> > >>>    * @info:   HW register and features supported by this sub-blk
-> > >>> - * @version: qseed block revision
-> > >>>    */
-> > >>>   struct dpu_scaler_blk {
-> > >>>          DPU_HW_SUBBLK_INFO;
-> > >>> -       u32 version;
-> > >>
-> > >> No. Please keep the version in the scaler subblk.  It is a version of
-> > >> the QSEED (scaler block), not the SSPP's version.
-> > >
-> > > You are right that the new variable in the parent (SSPP) block is
-> > > nondescriptive and should have been named scaler_version.
-> > >
-> > > However.
-> > >
-> > > dpu_scaler_blk is only used as a const static struct in the catalog,
-> > > meaning we cannot (should not!) store a runtime-read register value
-> > > here.  Instead I followed your IRC suggestion to read the register in
-> > > dpu_hw_sspp_init, but my original implementation called
-> > > dpu_hw_get_scaler3_ver in _dpu_hw_sspp_setup_scaler3 where we already
-> > > have access to the subblk_offset, allowing us to delete
-> > > _dpu_hw_sspp_get_scaler3_ver.  Would you rather have that?  We don't
-> > > need the register value anywhere else.
-> >
-> > After giving it another thought, let's follow the vendor's approach and
-> > store the predefined scaler_version in hw catalog (in dpu_scaler_blk, as
-> > it currently is). This way we can still drop all QSEED3/3LITE/4
-> > crazyness, while keeping the data sane.
->
-> You want to drop the descriptive #define's, and replace them with magic
-> 0x1002/0x2004/0x3000 and whatever other values we know?
+Novatek NT36523 is a display driver IC used to drive DSI panels.
 
-And nothing stops us from adding defines for 0x2004
-(SCALER_VERSION_QSEED3LITE) and 0x3000 (SCALER_VERSION_QSEED4). I'm
-not sure regarding 0x1002: whether it is used on msm8998 and/or sdm630
-too or not.
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+---
+Changes in v2:
+  - Drop unnecessary description
+  - dsi0 -> dsi
+  - Correct indentation
 
-What I want to remove is the duplication of the information. It was
-too easy to miss that vig_mask has version1, while the dpu_caps has
-version 2. We are going to replace dpu_caps with scaler_version, but
-the problem of having the duplicate still exists. I might have
-suggested settling on the dpu_caps.qseed_type or on the bit in
-dpu_sspp_cfg.features, but it seems that 0x1002 is not represented
-this way. Unless we define something like
-DPU_SSPP_SCALER_QSEED3_SDM660.
+ .../display/panel/novatek,nt36523.yaml        | 95 +++++++++++++++++++
+ 1 file changed, 95 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml
 
-> That seems
-> impossible to port without reading back the register value, which we've
-> only done for a handful of SoCs.  I hope I'm misunderstanding you?
-
-Newer vendor dts files provide this value, see the
-"qcom,sde-qseed-scalar-version" property.
-For older platforms we'd have to read the register. See below
-
-> After all the vendor approach (in a random 4.14 kernel I have open now)
-> is to read the register value at runtime but their catalog is also
-> dynamic and built at runtime based on version ranges and register reads,
-> which sometimes is more sensible.  Ours is const.
-
-In later techpacks (since 5.4) they have switched to the property in the DTS.
-
->
-> > Then _dpu_hw_sspp_get_scaler3_ver() can also be dropped (or you can use
-> > it as a safety guard while doing dpu_hw_sspp init).
->
-> That (safety guard) is exactly what Abhinav requested against, since the
-> kernel (and our catalog) should be trustworthy.  I'll let you two fight
-> this out and come to a consensus before sending v2.
-
-I'm fine without a fight. Whoever adds a platform is responsible for
-setting a register.
-
-For the reference, as far as I know:
-msm8998 - ??
-(sdm660 - 0x1002)
-sdm845 - 0x1003
-sm8150 - ?
-sc8180x - ?
-sm8250 - 0x3000
-sc7180 - 0x3000
-sm6115 - 0x3000
-qcm2290 - no scaler
-sm8350 - 0x3000
-sc7280 - 0x3000
-sc8280xp - ?, supposedly 0x3001
-sm8450 - 0x3001
-sm8550 - ?, supposedly 0x3002
-
->
-> > >> There is a block called DS (destination scaler), which can be used to
-> > >> scale the resulting image after the LM. This block also uses the
-> > >> QSEED3(,LITE,4) scaler block.
-> > >
-> > > Is this already supported in mainline, and is it the reason for
-> > > previously having qseed_type globally available?  Is my understanding
-> > > correct that this scaler subblk in the SSPP is merely an interface to
-> > > it, allowing the same hardware to be used from the SSPP for intputs and
-> > > after the LM for outputs?
-> >
-> > No, I think qseed_type is a leftover from having the same thing
-> > implemented in three different ways. Maybe because of NIH syndrome?
->
-> Could be, downstream uses it to steer its catalog logic for example
-> (which happens before later reading the version register).
->
-> > DS is not supported, it was removed in the commit
-> > b033def8741aab3fb58e4bf6c1d5cd73b3beb357. I do not have a clear usecase
-> > for this block and of course we don't have uABI for it.
->
-> Is there no common DRM property to composite at a lower resolution and
-> upscale the final displayed image to match a CRTC/encoder?  I wish I
-> understood the commit message better :)
-
-Yes, I don't think there is one.
-
->
-> > It would still be nice to keep it in the picture though. It was the main
-> > reason for moving scaler code from dpu_hw_sspp to dpu_hw_util.
->
-> Downstream SDE already has this code moved to sde_hw_util as far as I
-> can see (and SSPP and DS call into it).  But I fully agree as a
-> mostly-oblivious-outsider: it seems like there are a lot of features,
-> hardware blocks and optimizations not implemented, things which I still
-> have no knowledge/experience/understanding of/about.  Let's first focus
-> on making it work _on all relevant SoCs and boards_ though :)
-
-For sure. I pointed to the DS as a reason to have the scaler version
-in the sblk rather than in the sspp instance.
-
+diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml
+new file mode 100644
+index 000000000000..544c3c6e568b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml
+@@ -0,0 +1,95 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/novatek,nt36523.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Novatek NT36523 based DSI display Panels
++
++maintainers:
++  - Jianhua Lu <lujianhua000@gmail.com>
++
++description: |
++  The Novatek NT36523 is a generic DSI Panel IC used to drive dsi
++  panels. Support video mode panels from China Star Optoelectronics
++  Technology (CSOT) and BOE Technology.
++
++allOf:
++  - $ref: panel-common.yaml#
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - xiaomi,elish-boe-nt36523
++          - xiaomi,elish-csot-nt36523
++      - const: novatek,nt36523
++
++  reset-gpios:
++    maxItems: 1
++    description: phandle of gpio for reset line - This should be 8mA
++
++  vddio-supply:
++    description: regulator that supplies the I/O voltage
++
++  vddpos-supply:
++    description: positive boost supply regulator
++
++  vddneg-supply:
++    description: negative boost supply regulator
++
++  reg: true
++  ports: true
++  backlight: true
++
++required:
++  - compatible
++  - reg
++  - vddio-supply
++  - vddpos-supply
++  - vddneg-supply
++  - reset-gpios
++  - ports
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "xiaomi,elish-csot-nt36523", "novatek,nt36523";
++            reg = <0>;
++            vddio-supply = <&vreg_l14a_1p88>;
++            vddpos-supply = <&lcd_vddpos_5p5>;
++            vddneg-supply = <&lcd_vddneg_5p5>;
++
++            backlight = <&backlight>;
++            reset-gpios = <&tlmm 75 GPIO_ACTIVE_LOW>;
++
++            ports {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                port@0 {
++                    reg = <0>;
++                    panel_in_0: endpoint {
++                        remote-endpoint = <&dsi0_out>;
++                    };
++                };
++
++                port@1{
++                    reg = <1>;
++                    panel_in_1: endpoint {
++                        remote-endpoint = <&dsi1_out>;
++                    };
++                };
++            };
++        };
++    };
++
++...
 -- 
-With best wishes
-Dmitry
+2.39.2
+
