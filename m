@@ -2,93 +2,120 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D396FC64EC4
-	for <phone-devel@archiver.kernel.org>; Wed, 22 Feb 2023 09:39:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 18CE4C6379F
+	for <phone-devel@archiver.kernel.org>; Wed, 22 Feb 2023 09:58:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231960AbjBVJjG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Feb 2023 04:39:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33896 "EHLO
+        id S231800AbjBVJ6F (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 22 Feb 2023 04:58:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231972AbjBVJif (ORCPT
+        with ESMTP id S232318AbjBVJ5x (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Feb 2023 04:38:35 -0500
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01EF138E82
-        for <phone-devel@vger.kernel.org>; Wed, 22 Feb 2023 01:35:36 -0800 (PST)
-Received: by mail-wr1-x430.google.com with SMTP id l1so6776918wry.10
-        for <phone-devel@vger.kernel.org>; Wed, 22 Feb 2023 01:35:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NRk5F+0/KBJtXy1UGgffMDC3lUYcUK9POoNTTNzoa24=;
-        b=u+urDYkiChNW/YI0+mNXcxcwazZf2oOYqiBgCEV2QRhM9Bj6bxgttGAPIfrpBsmZxB
-         F/vzmmCmy0CmXzapu9KDPiLA9pY7S1B1GBW680gB1ZUGoMoUy99YDtiK57CeqAaY2HDG
-         0K6bgiYCumaL/dEN8e2MSENFFfv0PQ9lP8dbpE6nD1ZEyuCRN6nDMhxiua2p5l7kkJgh
-         7fxk/bcZzDt3idskr7rGCw0S6Js/HSnwDHdjcNFVO3Tdji5NuQ4PprVdhfl0lRLFdIbN
-         nBWs7kKgv2X0JbhP42VvRIC5GiSY67juoj1zkN5gTEpZF3ZSitEAYHdksPGLvld9I7Aj
-         k8mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NRk5F+0/KBJtXy1UGgffMDC3lUYcUK9POoNTTNzoa24=;
-        b=VYgZm6JOWaXtrh+n7Ur4QM54sw5Z+/6PljKSXPoHyv+0KnlNEqlRwIWq+venI3o2le
-         kIRonIWLlsfM5pILgc44QN0F+6d+gMexGY1mqqR7Fp9phJr9MIwuqdkYRQm0TQ2stJ1D
-         IsGoTVKj4q/PcWC/tfo3Zex0aJo0tjRJMMTxI8vLJL3rkSTWaOg1YjK1PHum/bYhXepK
-         EWvFEfLwmT3By+mHKzBIcFc2XNnk9BmKREbrvtKyqZihQlVCw4aMguQIhiKv3B4MnHZe
-         H4+MD7aUZwEeTpfULqxyN1KhitDWkRhJ/F3xVb1zshi+Efj0Zh2So9wVSCz8xKe7klz7
-         9U8w==
-X-Gm-Message-State: AO0yUKWWvgal8WdqMfDbT1SCwX6QrifkV3wm/uuB7e3Sa0E9sv/c4Pu8
-        0ebXBAKFaxxLQbS9HZH3eSn2VA==
-X-Google-Smtp-Source: AK7set8hSrDxe9qvKyM2TLqTXl2UDNEIhR+MHKT7cLtR99WMCh22GQotZ3MUmWOEuM4/zk8YKoN/yQ==
-X-Received: by 2002:a5d:4d01:0:b0:2c5:4ca0:1abb with SMTP id z1-20020a5d4d01000000b002c54ca01abbmr7295022wrt.60.1677058490952;
-        Wed, 22 Feb 2023 01:34:50 -0800 (PST)
-Received: from [192.168.1.109] ([178.197.216.144])
-        by smtp.gmail.com with ESMTPSA id e16-20020adfe390000000b002c54c8e70b1sm7061642wrm.9.2023.02.22.01.34.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Feb 2023 01:34:50 -0800 (PST)
-Message-ID: <f6f91c5f-5013-3c1a-9eac-e87fb7071031@linaro.org>
-Date:   Wed, 22 Feb 2023 10:34:48 +0100
+        Wed, 22 Feb 2023 04:57:53 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38384EC8;
+        Wed, 22 Feb 2023 01:57:51 -0800 (PST)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id A0B9B660215E;
+        Wed, 22 Feb 2023 09:57:49 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1677059870;
+        bh=iupWZw710RJlsDfuH6ZphQSX1uucYuxWxs1WrmnL4w8=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=kYas5w6Jegs2D/xpl1OhhLiy3FMEDgo+bWugL3ObzJ6yUfY8RVjdpWT0v3PMM8ROa
+         FbQt7XjJu6chr4H7X5bPZ3pBh1oKjYp0XDSyCIGhG/dx8hniNm4UAXzi6+iq+OFVQ9
+         ehdh4DPCjknbUjVL0u5Yn13Yhp+dLjY9TOw/P0lYAg16ZiWStTX1dPy9HWD7QPVx5D
+         WCwh3HvdC8/AzDe3fPs1Lzh7mTUqtH7No8/JHuysZpSHJvNEKcB4eZGh56xXNIBvWB
+         6lzBLMfag4WOstlYU8BPcGljCfPOPI8VM1Vuk+axO/gYCVpo3ss4n/AtA5AzGjFIsI
+         f+O0O8yI0VFrw==
+Message-ID: <254cfbb5-c8b8-0abc-e6bc-5007fe757004@collabora.com>
+Date:   Wed, 22 Feb 2023 10:57:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
-Subject: Re: [PATCH v2 1/2] dt-bindings: display: panel: Add Novatek NT36523
- bindings
+Subject: Re: [PATCH v3 0/6] Add support for Qualcomm's legacy IOMMU v2
 Content-Language: en-US
-To:     Jianhua Lu <lujianhua000@gmail.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230220121258.10727-1-lujianhua000@gmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230220121258.10727-1-lujianhua000@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To:     agross@kernel.org
+Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, joro@8bytes.org,
+        will@kernel.org, robin.murphy@arm.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, robdclark@gmail.com,
+        linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        marijn.suijten@somainline.org, kernel@collabora.com,
+        luca@z3ntu.xyz, a39.skl@gmail.com, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <20221115101122.155440-1-angelogioacchino.delregno@collabora.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20221115101122.155440-1-angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 20/02/2023 13:12, Jianhua Lu wrote:
-> Novatek NT36523 is a display driver IC used to drive DSI panels.
+Il 15/11/22 11:11, AngeloGioacchino Del Regno ha scritto:
+> This series adds support for handling "v2" firmware's IOMMU, found
+> on at least MSM8956 and MSM8976 (some other SoCs also need the same
+> but I honestly don't remember which ones precisely).
 > 
-> Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
-> ---
-> Changes in v2:
->   - Drop unnecessary description
->   - dsi0 -> dsi
+> This is strictly required to get functional IOMMUs on these SoCs.
+> 
+> I'm sorry for not performing a much needed schema conversion on
+> qcom,iommu.txt, but I really didn't have time to do that :-(
+> 
+> This series was tested on Sony Xperia X and X Compact (MSM8956):
+> ADSP, LPASS, Venus, MSS, MDP and GPU are happy :-)
+> 
+> 
 
+Hello,
+this series is really old and got sent and resent many times.
+The first time I've sent this one was .. I think in 2019, then, at the
+end of 2022, I had some time to actually respin it and send another
+three versions. It's been 3 long years :-)
+The third version got the last comments addressed.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Since this didn't get any more feedback for 3 months, I'm worried that it
+will be forgotten again, hence:
+
+Is there any more feedback? Anything else to fix?
+If not, can this be picked, please?
+
+Thank you.
 
 Best regards,
-Krzysztof
+Angelo
+
+
+> Changes in v3:
+>   - Removed useless FSRRESTORE reset and definition as pointed
+>     out in Robin Murphy's review
+>   - Fixed qcom,iommu.txt changes: squashed MSM8976 compatible
+>     string addition with msm-iommu-v2 generics addition
+> 
+> Changes in v2:
+>   - Added back Marijn's notes (sorry man!)
+>   - Added ARM_SMMU_CB_FSRRESTORE definition
+>   - Changed context bank reset to properly set FSR and FSRRESTORE
+> 
+> AngeloGioacchino Del Regno (6):
+>    dt-bindings: iommu: qcom,iommu: Document qcom,ctx-num property
+>    iommu/qcom: Use the asid read from device-tree if specified
+>    iommu/qcom: Properly reset the IOMMU context
+>    iommu/qcom: Index contexts by asid number to allow asid 0
+>    dt-bindings: iommu: qcom,iommu: Document QSMMUv2 and MSM8976
+>      compatibles
+>    iommu/qcom: Add support for QSMMUv2 and QSMMU-500 secured contexts
+> 
+>   .../devicetree/bindings/iommu/qcom,iommu.txt  |  9 +++
+>   drivers/iommu/arm/arm-smmu/qcom_iommu.c       | 78 +++++++++++++++----
+>   2 files changed, 70 insertions(+), 17 deletions(-)
+> 
+
 
