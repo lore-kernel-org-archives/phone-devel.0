@@ -2,120 +2,126 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18CE4C6379F
-	for <phone-devel@archiver.kernel.org>; Wed, 22 Feb 2023 09:58:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4121AC64ED8
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Feb 2023 19:43:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231800AbjBVJ6F (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Feb 2023 04:58:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36096 "EHLO
+        id S230201AbjB0Tny (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 27 Feb 2023 14:43:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232318AbjBVJ5x (ORCPT
+        with ESMTP id S230216AbjB0Tnw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Feb 2023 04:57:53 -0500
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38384EC8;
-        Wed, 22 Feb 2023 01:57:51 -0800 (PST)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id A0B9B660215E;
-        Wed, 22 Feb 2023 09:57:49 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1677059870;
-        bh=iupWZw710RJlsDfuH6ZphQSX1uucYuxWxs1WrmnL4w8=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=kYas5w6Jegs2D/xpl1OhhLiy3FMEDgo+bWugL3ObzJ6yUfY8RVjdpWT0v3PMM8ROa
-         FbQt7XjJu6chr4H7X5bPZ3pBh1oKjYp0XDSyCIGhG/dx8hniNm4UAXzi6+iq+OFVQ9
-         ehdh4DPCjknbUjVL0u5Yn13Yhp+dLjY9TOw/P0lYAg16ZiWStTX1dPy9HWD7QPVx5D
-         WCwh3HvdC8/AzDe3fPs1Lzh7mTUqtH7No8/JHuysZpSHJvNEKcB4eZGh56xXNIBvWB
-         6lzBLMfag4WOstlYU8BPcGljCfPOPI8VM1Vuk+axO/gYCVpo3ss4n/AtA5AzGjFIsI
-         f+O0O8yI0VFrw==
-Message-ID: <254cfbb5-c8b8-0abc-e6bc-5007fe757004@collabora.com>
-Date:   Wed, 22 Feb 2023 10:57:47 +0100
+        Mon, 27 Feb 2023 14:43:52 -0500
+Received: from out-49.mta1.migadu.com (out-49.mta1.migadu.com [95.215.58.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE39C26591;
+        Mon, 27 Feb 2023 11:43:47 -0800 (PST)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grimler.se; s=key1;
+        t=1677527025;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=7f3/V6rulwdsJB4cadc//1WfYWmlU+C6b8gbWiFieEM=;
+        b=YqDlno+Sfly3+AuQitBsaI71vvdeAZJTr8nHtIdHr7xrywYPJg+uEKnae5pPFajR5Qx6Qo
+        mRrbDZWNHg0tOEl7vUhFB361CmHhzQ8kWOFtXwyKLTSEZMgMRwyt2OC6d+JHMEHSCroG13
+        DGqq8ukw3bSb4LKsyV2I/fQLgH+2DGk=
+From:   Henrik Grimler <henrik@grimler.se>
+To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        alim.akhtar@samsung.com, m.szyprowski@samsung.com,
+        jenneron@protonmail.com, markuss.broks@gmail.com,
+        martin.juecker@gmail.com, virag.david003@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Cc:     Henrik Grimler <henrik@grimler.se>
+Subject: [PATCH v3 0/2] ARM: dts: add mmc aliases for Exynos devices
+Date:   Mon, 27 Feb 2023 20:38:17 +0100
+Message-Id: <20230227193819.30133-1-henrik@grimler.se>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v3 0/6] Add support for Qualcomm's legacy IOMMU v2
-Content-Language: en-US
-To:     agross@kernel.org
-Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, joro@8bytes.org,
-        will@kernel.org, robin.murphy@arm.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, robdclark@gmail.com,
-        linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        marijn.suijten@somainline.org, kernel@collabora.com,
-        luca@z3ntu.xyz, a39.skl@gmail.com, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-References: <20221115101122.155440-1-angelogioacchino.delregno@collabora.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20221115101122.155440-1-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 15/11/22 11:11, AngeloGioacchino Del Regno ha scritto:
-> This series adds support for handling "v2" firmware's IOMMU, found
-> on at least MSM8956 and MSM8976 (some other SoCs also need the same
-> but I honestly don't remember which ones precisely).
-> 
-> This is strictly required to get functional IOMMUs on these SoCs.
-> 
-> I'm sorry for not performing a much needed schema conversion on
-> qcom,iommu.txt, but I really didn't have time to do that :-(
-> 
-> This series was tested on Sony Xperia X and X Compact (MSM8956):
-> ADSP, LPASS, Venus, MSS, MDP and GPU are happy :-)
-> 
-> 
+It is convenient to have fixed mmcblk numbering of the eMMC and sdcard
+so that assigned numbers will not change from boot-to-boot or
+depending on if storage devices are actually attached or not.
 
-Hello,
-this series is really old and got sent and resent many times.
-The first time I've sent this one was .. I think in 2019, then, at the
-end of 2022, I had some time to actually respin it and send another
-three versions. It's been 3 long years :-)
-The third version got the last comments addressed.
+Anton Bambura has done the work for the chromebooks while I have
+looked at the other devices.  On the chromebooks, mmc0 is used for
+eMMC and mmc1 for sdcard, while mmc0 is used for eMMC and mmc2 for
+sdcard on the other boards, simply because Anton and I had different
+preferences.
 
-Since this didn't get any more feedback for 3 months, I'm worried that it
-will be forgotten again, hence:
+Also drop mshc aliases while we are at it and instead add mmc
+capabilities to the individual device trees (right now they are added
+depending on alias index).  I have tested the changes on
+exynos4412-odroid-u2 and exynos5422-odroid-xu4: the MMC_CAP_1_8V_DDR
+and MMC_CAP_8_BIT_DATA caps are set correctly (meaning they are set
+for mshc_0/mmc_0 but not mshc_2/mmc_2) both before and after this
+patchset.
 
-Is there any more feedback? Anything else to fix?
-If not, can this be picked, please?
+---
 
-Thank you.
+Changes since v2:
+* Set mmc-ddr-1_8v in device trees so that MMC_CAP_1_8V_DDR is set
+  also after removal of mshc0 alias.  Issue was pointed out by Krzysztof
+  and David.
+* Fix whitespace issue in patch 2 which was pointed out by Krzysztof
+* Reword commit message of patch 2 after Rob's comment
 
-Best regards,
-Angelo
+Changes since v1:
+* Move mshc alias cleanup to a separate commit
+* Use mmc0 and mmc1 (instead of mmc0 and mmc2) for eMMC and sdcard on
+  chromebooks
+* Address Krzysztof's review comments:
+ - Make changes per device rather than in soc dtsi
+
+Henrik Grimler (2):
+  ARM: dts: exynos: replace mshc0 alias with mmc-ddr-1_8v property
+  ARM: dts: exynos: add mmc aliases
+
+ arch/arm/boot/dts/exynos3250-artik5-eval.dts  |  5 ++++
+ arch/arm/boot/dts/exynos3250-artik5.dtsi      | 20 ++++++++++------
+ arch/arm/boot/dts/exynos3250-monk.dts         | 20 ++++++++--------
+ arch/arm/boot/dts/exynos3250-rinato.dts       | 23 +++++++++----------
+ arch/arm/boot/dts/exynos3250.dtsi             |  3 ---
+ arch/arm/boot/dts/exynos4210-i9100.dts        | 11 ++++++---
+ arch/arm/boot/dts/exynos4210-origen.dts       |  8 ++++++-
+ arch/arm/boot/dts/exynos4210-smdkv310.dts     |  4 ++++
+ arch/arm/boot/dts/exynos4210-trats.dts        |  9 +++++++-
+ .../boot/dts/exynos4210-universal_c210.dts    |  9 +++++++-
+ arch/arm/boot/dts/exynos4412-itop-elite.dts   |  4 ++++
+ .../boot/dts/exynos4412-itop-scp-core.dtsi    | 17 +++++++++-----
+ arch/arm/boot/dts/exynos4412-midas.dtsi       | 20 +++++++++-------
+ .../boot/dts/exynos4412-odroid-common.dtsi    | 21 ++++++++++-------
+ arch/arm/boot/dts/exynos4412-origen.dts       | 17 +++++++++-----
+ arch/arm/boot/dts/exynos4412-p4note.dtsi      | 23 ++++++++++++-------
+ arch/arm/boot/dts/exynos4412-smdk4412.dts     |  4 ++++
+ arch/arm/boot/dts/exynos4412-tiny4412.dts     |  4 ++++
+ arch/arm/boot/dts/exynos4412.dtsi             |  1 -
+ arch/arm/boot/dts/exynos5250-arndale.dts      |  6 +++++
+ arch/arm/boot/dts/exynos5250-smdk5250.dts     |  3 +++
+ arch/arm/boot/dts/exynos5250-snow-common.dtsi |  4 ++++
+ arch/arm/boot/dts/exynos5250-spring.dts       |  6 +++++
+ arch/arm/boot/dts/exynos5250.dtsi             |  4 ----
+ arch/arm/boot/dts/exynos5260-xyref5260.dts    | 16 +++++++++----
+ arch/arm/boot/dts/exynos5410-odroidxu.dts     |  3 +++
+ arch/arm/boot/dts/exynos5410-smdk5410.dts     |  6 +++++
+ arch/arm/boot/dts/exynos5420-arndale-octa.dts |  6 +++++
+ .../dts/exynos5420-galaxy-tab-common.dtsi     |  6 +++++
+ arch/arm/boot/dts/exynos5420-peach-pit.dts    |  4 ++++
+ arch/arm/boot/dts/exynos5420-smdk5420.dts     |  6 +++++
+ arch/arm/boot/dts/exynos5420.dtsi             |  3 ---
+ arch/arm/boot/dts/exynos5422-odroid-core.dtsi |  4 ++++
+ .../boot/dts/exynos5422-odroidxu3-common.dtsi |  5 ++++
+ arch/arm/boot/dts/exynos5422-samsung-k3g.dts  |  1 +
+ arch/arm/boot/dts/exynos5800-peach-pi.dts     |  4 ++++
+ 36 files changed, 223 insertions(+), 87 deletions(-)
 
 
-> Changes in v3:
->   - Removed useless FSRRESTORE reset and definition as pointed
->     out in Robin Murphy's review
->   - Fixed qcom,iommu.txt changes: squashed MSM8976 compatible
->     string addition with msm-iommu-v2 generics addition
-> 
-> Changes in v2:
->   - Added back Marijn's notes (sorry man!)
->   - Added ARM_SMMU_CB_FSRRESTORE definition
->   - Changed context bank reset to properly set FSR and FSRRESTORE
-> 
-> AngeloGioacchino Del Regno (6):
->    dt-bindings: iommu: qcom,iommu: Document qcom,ctx-num property
->    iommu/qcom: Use the asid read from device-tree if specified
->    iommu/qcom: Properly reset the IOMMU context
->    iommu/qcom: Index contexts by asid number to allow asid 0
->    dt-bindings: iommu: qcom,iommu: Document QSMMUv2 and MSM8976
->      compatibles
->    iommu/qcom: Add support for QSMMUv2 and QSMMU-500 secured contexts
-> 
->   .../devicetree/bindings/iommu/qcom,iommu.txt  |  9 +++
->   drivers/iommu/arm/arm-smmu/qcom_iommu.c       | 78 +++++++++++++++----
->   2 files changed, 70 insertions(+), 17 deletions(-)
-> 
-
+base-commit: 301d3dd05525e3a046f6cfa6ee4dea6a3b7111ee
+-- 
+2.30.2
 
