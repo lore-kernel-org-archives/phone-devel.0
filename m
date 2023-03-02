@@ -2,57 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 115DDC678D4
-	for <phone-devel@archiver.kernel.org>; Thu,  2 Mar 2023 16:39:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67EB3C678D4
+	for <phone-devel@archiver.kernel.org>; Thu,  2 Mar 2023 16:40:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbjCBQjb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 2 Mar 2023 11:39:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44374 "EHLO
+        id S229728AbjCBQky (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 2 Mar 2023 11:40:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229803AbjCBQjW (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Mar 2023 11:39:22 -0500
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4843555BA
-        for <phone-devel@vger.kernel.org>; Thu,  2 Mar 2023 08:39:01 -0800 (PST)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-536bbef1c5eso436777487b3.9
-        for <phone-devel@vger.kernel.org>; Thu, 02 Mar 2023 08:39:01 -0800 (PST)
+        with ESMTP id S229854AbjCBQkl (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 2 Mar 2023 11:40:41 -0500
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4CB055B6
+        for <phone-devel@vger.kernel.org>; Thu,  2 Mar 2023 08:40:38 -0800 (PST)
+Received: by mail-lf1-x131.google.com with SMTP id r27so6357lfe.10
+        for <phone-devel@vger.kernel.org>; Thu, 02 Mar 2023 08:40:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PGC7FexSUDuE13biGFJ/Du9EMRxwYtWt7jLQYTTJIb0=;
-        b=JcpthHHzlczfHnEAWweKijtEL5eu+oR2yGMUKX4OU1/+JQS3ANQD3h7dAOp5V7TWV7
-         6Fw2vL5hy0DkeNBZ2DE0BrPiCTVwTrLZ/qCLVemHL/RZwHTnjPSXppBQ1NzFDZhbaFjg
-         ORDfPLvR3Bjnj0qPbMtCcHX1rZlM8P+rxekiSLKQa4XrGzp1e0k/Z9joOGIWuVdjNCln
-         4uy0JRmrdJCslGA/9taRcxMrX+2ox2CQi5pqTf0n++buftwlhEa71sGkaaxEhs2PYW1s
-         DqB/a658rixzYbTLSNW14o2keAYrAamjHFnR9/rkYXBGP8YWrjNZYSpulyOZ/92xkHep
-         5W1Q==
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Nte8mciSWK9PGJnSmONLh/qsDi2gUtT8Fsq0Nw7PJt0=;
+        b=n8mCYfOolzeQIcsKRAPvTQGuSxe+pWJwOuG5SoO3idRp8K3AG3GIWZPd4vLFLFDepI
+         JKI18SCrowvdB0O2lp+ZlMPMaDKDGMLrS1LeE7Fm/eBG+U+5V6mtjy9XnWyZ0Xt+UG01
+         HvcB/37u6Icp4rEQ/ygVtyGx3dhCCsUL+3ohyLRkKbj+clxCcHnge6CXTx5rBr2u94C4
+         nvF3LUvdjYgPgMsZkyFU/GKcKJ0FnjERqJ9T3pgbmKFeQZCqehGYhXrcA+st+UfehZIG
+         QJQ2y6cUlL7QKUM78ExssiRgs86LusK+tKj4rlIhhBMtDK+bBIWQXAX4zaWwsRHtZ3K7
+         I1Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PGC7FexSUDuE13biGFJ/Du9EMRxwYtWt7jLQYTTJIb0=;
-        b=SYi4maco5jH8V7/tMi+9qeHSMrp5OFQ6wURWKE1uljnSLgyIP4YLDH3jntn/yfCQwS
-         KEsvFXOHTiDReutDCmEsbbbKluQsBKim21/Kb7jKXhtuVK+c2hZ0kEUVJh67YdKPyWAQ
-         9c0JIIUyhUNKm1UJGXhRRzYp/y5VJLxCUOds2l73VgNBoeFWbTiceAXLDpRcbmeDo8Xp
-         R/G/qnAAkJ0e+agJkTthgbLKHhvamyZlB4ygAnR1pwFjOKTcTG11uhQaNBVqH8XnLmEJ
-         Bt3cW5Y8oWuXvEVvKTJbOaHHNtZF0Eu74mSr/2gjAIVAvgLw0S3lrbppINkoTIFwkOvo
-         cOnA==
-X-Gm-Message-State: AO0yUKXlRV02kojVGXOpHMJhcWyM9Jv2MrYIxOohH8Sj4y7wUZcYZIOE
-        7UW+Xac6swbfNpXk9SzXNCnoMGqe8O7hhBykAIL9PXuk1RxjiQ==
-X-Google-Smtp-Source: AK7set9K8jJPZUlDxy83PEHgBkdtZZCQuBT0j69TZkB7pMGcFEQExvBE0Z6nzo20Xj2S+Muoxl0GE46SntlTIf4bzFM=
-X-Received: by 2002:a81:b71b:0:b0:536:7529:55b4 with SMTP id
- v27-20020a81b71b000000b00536752955b4mr6642631ywh.3.1677775140455; Thu, 02 Mar
- 2023 08:39:00 -0800 (PST)
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Nte8mciSWK9PGJnSmONLh/qsDi2gUtT8Fsq0Nw7PJt0=;
+        b=qgV0HGRqIIlEebOmdAARjUPBM9dbCs7+9tJaIDyL+62zlSh0mgRIYE1+62adRohh43
+         6Uk6R08Ox/AXyjoi5Y8eYTOiODpD7EwhxprSMHOmXmp8pqqGg3ilmc/8x3h62JCdoV6A
+         /+d05Q8gRC4zSVOTjVS8QPJMaGeqtVuo6aDevHor3AepsFPSysG01Oj5GtA72kJrO4/+
+         MURkigOhf25ka0BwUpgAoIdrVo+/eoJSaPR6MmEqCiQVXDxsUJN4aVmQIfMVGKU1yfH2
+         2wCJsoMQAOmw+QgXnQmodmyBrbyessbmAxMp7+FoIkGIhsqeaPxgDDvPxfhBqo5pb88j
+         7d5w==
+X-Gm-Message-State: AO0yUKVM/scLEYCkcgw+pdFlkqAgXhrgP3JSy2RpPogL1W1y2ith5VE2
+        LT8xI+uCb4BIQzkpg7yb7xQHhQ==
+X-Google-Smtp-Source: AK7set+drVKOINN+znKqCAyISLLIQMoCmPUECbi3LjEUtLHHXRst41ojwkfBko9m0zPNOxITvFGqDQ==
+X-Received: by 2002:a05:6512:21d2:b0:4dd:a9d7:52fa with SMTP id d18-20020a05651221d200b004dda9d752famr3136501lft.37.1677775237072;
+        Thu, 02 Mar 2023 08:40:37 -0800 (PST)
+Received: from ?IPV6:2001:14ba:a085:4d00::8a5? (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
+        by smtp.gmail.com with ESMTPSA id q20-20020ac24a74000000b004d5a6dcb94fsm2202758lfp.33.2023.03.02.08.40.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Mar 2023 08:40:36 -0800 (PST)
+Message-ID: <b15e16c2-1389-cd26-19bb-8023e5bd96f5@linaro.org>
+Date:   Thu, 2 Mar 2023 18:40:36 +0200
 MIME-Version: 1.0
-References: <20230302123051.12440-1-a39.skl@gmail.com> <20230302123051.12440-2-a39.skl@gmail.com>
-In-Reply-To: <20230302123051.12440-2-a39.skl@gmail.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Thu, 2 Mar 2023 18:38:49 +0200
-Message-ID: <CAA8EJpoxtKQfmdbX+CGmri6RUf3YauxNUc1z62Xn1TczcsWhDw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: msm8956-loire: Provide rate for
- xo_board clock
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH 1/2] arm64: dts: qcom: msm8976: Add and provide xo clk to
+ rpmcc
+Content-Language: en-GB
 To:     Adam Skladowski <a39.skl@gmail.com>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Andy Gross <agross@kernel.org>,
@@ -65,42 +69,61 @@ Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Marijn Suijten <marijn.suijten@somainline.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+References: <20230302123051.12440-1-a39.skl@gmail.com>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20230302123051.12440-1-a39.skl@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 2 Mar 2023 at 14:31, Adam Skladowski <a39.skl@gmail.com> wrote:
->
-> As xo_board is part of board not soc we define rates per device tree,
-> assign common 19.2Mhz rate to make consumers happy.
->
-> Fixes: ff7f6d34ca07 ("arm64: dts: qcom: Add support for SONY Xperia X/X Compact")
+On 02/03/2023 14:30, Adam Skladowski wrote:
+> In order for consumers of RPMCC XO clock to probe successfully
+> their parent needs to be feed with reference clock to obtain proper rate,
+> add fixed xo-board clock and supply it to rpmcc to make consumers happy.
+> Frequency setting is left per board basis just like on other recent trees.
+> 
+> Fixes: 0484d3ce0902 ("arm64: dts: qcom: Add DTS for MSM8976 and MSM8956 SoCs")
 > Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 > ---
->  arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi b/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi
-> index 67baced639c9..085d79542e1b 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8956-sony-xperia-loire.dtsi
-> @@ -280,3 +280,7 @@ &usb_hs_phy {
->         vdda3p3-supply = <&pm8950_l13>;
->         status = "okay";
->  };
+>   arch/arm64/boot/dts/qcom/msm8976.dtsi | 9 +++++++++
+>   1 file changed, 9 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+> index 2d360d05aa5e..e55baafd9efd 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+> @@ -20,6 +20,13 @@ / {
+>   
+>   	chosen { };
+>   
+> +	clocks {
+> +		xo_board: xo-board {
+> +			compatible = "fixed-clock";
+> +			#clock-cells = <0>;
+
+With the clock-frequency moved here:
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
+> +		};
+> +	};
 > +
-> +&xo_board {
-> +       clock-frequency = <19200000>;
-
-This doesn't seem to be board-specific. Please move it to msm8976.dtsi.
-
-> +};
-> --
-> 2.25.1
->
-
+>   	cpus {
+>   		#address-cells = <1>;
+>   		#size-cells = <0>;
+> @@ -351,6 +358,8 @@ rpm_requests: rpm-requests {
+>   
+>   				rpmcc: clock-controller {
+>   					compatible = "qcom,rpmcc-msm8976", "qcom,rpmcc";
+> +					clocks = <&xo_board>;
+> +					clock-names = "xo";
+>   					#clock-cells = <1>;
+>   				};
+>   
 
 -- 
 With best wishes
 Dmitry
+
