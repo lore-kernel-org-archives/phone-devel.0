@@ -2,114 +2,97 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70A1EC61DA4
-	for <phone-devel@archiver.kernel.org>; Mon,  6 Mar 2023 10:20:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3698EC678D4
+	for <phone-devel@archiver.kernel.org>; Mon,  6 Mar 2023 11:39:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230483AbjCFKUq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 6 Mar 2023 05:20:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47276 "EHLO
+        id S230341AbjCFLjb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 6 Mar 2023 06:39:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230443AbjCFKTd (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Mar 2023 05:19:33 -0500
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FE4F25978
-        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 02:19:08 -0800 (PST)
-Received: by mail-lj1-x22f.google.com with SMTP id by8so9037142ljb.7
-        for <phone-devel@vger.kernel.org>; Mon, 06 Mar 2023 02:19:07 -0800 (PST)
+        with ESMTP id S230340AbjCFLj1 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Mar 2023 06:39:27 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 859AA29424
+        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 03:39:23 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id k10so13307493edk.13
+        for <phone-devel@vger.kernel.org>; Mon, 06 Mar 2023 03:39:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678097946;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sBPw0rQ1KHnBVHCMwgN148s0j1A+T76NoGZG/pqJxXg=;
-        b=mgUeRaZXfqos8jF+M8PG7iqQCB/QSoc4/PdekT8nfIRY3eB96bM+IVp5jFKYylP0KW
-         oyBgYeCJ0rVuZfLOWSmSw78p5NHyICI25/njxNo8Jwm4+MgrXJz+tdtWSdJ/hmCKsdQK
-         aq2YnSScpMbSankxblgDsLZZ9ojAQ5qEP21krONy1Ej0F4bSEvri47nxSrQHWq9U5xty
-         Cg0dewqfRKpvKBnjUikbiaznfby4ejo7B8FZF827ivPGHV1puwqRDeg+n0Jgny3y73w8
-         +be3FNFp83RUl8vGRLxoTCmcoUc8UoQLjk/qg3kUh5EJpadOc35dix5GdPeKiZDfJRh6
-         YBpQ==
+        d=linaro.org; s=google; t=1678102763;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HzWGqAjLpHlD5u9jCAHG+a2PbEWqmZpag0JMmVH0IbQ=;
+        b=i8hXqbKI/U0F9gdOtmUtiK/N5On7BfXK0q3TX/+n0ooQTDCLoftkzAu+ZYJIlGWAXZ
+         LA3DhgOeIkx/4Ne0fDXzrCk3MsXepbwqhyB0Y3ZIqkZa6BBKZUvY5fqTna0G99v8YYYL
+         Xr/Tb22i5suo7j8jSYlfSRzxZoqDQtO1Y2I9JlG696MYLI2H0fWjthTNAcoKMlJRZn85
+         y0chlJ2hRuT+ytvlxtIPb5xH8R29AzUW+xYYtlkjELG4RarfpzqxH0pLlRN9IFGHcW5h
+         iK/6bEv/oKK3se0hGd7eJQivdgZSuqwrE6ndvg+/y4Cw6t+dPgEPRbNpmwSJmvi6+YQC
+         dGgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678097946;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sBPw0rQ1KHnBVHCMwgN148s0j1A+T76NoGZG/pqJxXg=;
-        b=bwTm9G88Bn6Fs8Crmh8itE07ErxtDJ3d872RAPzmfauyuW8lKU+sD7aqCeSyGzfto9
-         qdStqVfLXLMtHh9uyeQUe1SBqlk6AZp+IlfQkDLaTDQ9GtdSB+AyfRCfdeZSSeM9PTfG
-         U4WR2UBG7mNSSryYaRmq/TEoeTbMUJkGbyP91Xytq0VdZaS4kkmr/bDi/U8ceZ6KFaT/
-         7/wXVhIrNLN4c1WLq5TXtLUrlJm3xn6TCz2pLsOKp8YdvCKpb7tA7YQxLcAgsmVqbauF
-         4pVgqj6/hZemu5t+eU35yTNvGoBp7Z3YfaBbnfw7ZYmiD5Pd41mURXH1XuWJxefZn83H
-         bTdw==
-X-Gm-Message-State: AO0yUKVegg2vXd1k+bgf7XNTgvzonUsrgjMc4xtTgLQkOrCBrX04e5Dc
-        xq0TTCb/GzjxslgyZLko4r5kMw==
-X-Google-Smtp-Source: AK7set8eQ42jEM8H4wun5gv6a2vRMqhWZNbcyF4RkJ4/shjL2KDi75U+oW+ealICR4rfD2HlXuRWAA==
-X-Received: by 2002:a2e:91cf:0:b0:295:8c04:8205 with SMTP id u15-20020a2e91cf000000b002958c048205mr3229095ljg.41.1678097946259;
-        Mon, 06 Mar 2023 02:19:06 -0800 (PST)
-Received: from [192.168.1.101] (abym99.neoplus.adsl.tpnet.pl. [83.9.32.99])
-        by smtp.gmail.com with ESMTPSA id u10-20020ac251ca000000b004b4b600c093sm1592568lfm.92.2023.03.06.02.19.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Mar 2023 02:19:05 -0800 (PST)
-Message-ID: <069ef490-6d50-2e1a-ea01-3c40f829b7fe@linaro.org>
-Date:   Mon, 6 Mar 2023 11:19:04 +0100
+        d=1e100.net; s=20210112; t=1678102763;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HzWGqAjLpHlD5u9jCAHG+a2PbEWqmZpag0JMmVH0IbQ=;
+        b=O9uLO6j6gEU4I7YVFGbL4zp0b5HIzZc17jLmRUA0y2ZrJ04hBFTBfReYS44+yGCz/I
+         d6MSevQWIK/jX1SBZlO0kWUyCEXhfDYZFjCyAYM85uSgKj618V39iM7O1c+os+8t4ooJ
+         x/wRCSnv4T/dtwu/ZPmSIPKaGzuRF2sKbYSOrLlnMt/TOoQE3PY56eE31WLt+LeySrAv
+         +IYDuSI2KovrinmrDjEq3cTBA/GvKN0h9Z2ciBdXfnouS61Ji+1/u/gyt1cZqdrmkaQE
+         t0Fou4lOezSfSdjR/SXtPBO64V5Y6HU80QMMIoEhGMBtp9wb/OS7+x3nlzk7rTiIzJfF
+         47kg==
+X-Gm-Message-State: AO0yUKVfv+X1jl6WXZzcLsZh86nxbIgs+NYfnbvVG7VH8RO2UCRxnzFs
+        v/XCfcT95PeMM4POtIPBvlkFqQ==
+X-Google-Smtp-Source: AK7set/fIAy5r7sbONvLExQKUO7U8NmLEBitXQ6a20ZCy6KaPV7F32QpdGzQxjxOW3bBkjExKFtH6Q==
+X-Received: by 2002:a17:906:dac9:b0:8aa:c090:a9ef with SMTP id xi9-20020a170906dac900b008aac090a9efmr13185992ejb.55.1678102762984;
+        Mon, 06 Mar 2023 03:39:22 -0800 (PST)
+Received: from krzk-bin.. ([2a02:810d:15c0:828:d85d:5a4b:9830:fcfe])
+        by smtp.gmail.com with ESMTPSA id ch10-20020a170906c2ca00b008cf8c6f5c43sm4411936ejb.83.2023.03.06.03.39.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Mar 2023 03:39:22 -0800 (PST)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     linux-samsung-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-phy@lists.infradead.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>
+Cc:     Henrik Grimler <henrik@grimler.se>, phone-devel@vger.kernel.org,
+        replicant@osuosl.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>
+Subject: Re: (subset) [PATCH 6/8] ARM: dts: exynos: move DP and MIPI phys to PMU node in Exynos5420
+Date:   Mon,  6 Mar 2023 12:39:10 +0100
+Message-Id: <167810274096.82312.8759303246779473962.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230127194057.186458-7-krzysztof.kozlowski@linaro.org>
+References: <20230127194057.186458-1-krzysztof.kozlowski@linaro.org> <20230127194057.186458-7-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH 2/2] soc: qcom: rmtfs: handle optional qcom,vmid correctly
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230305-rmtfs-vmid-fix-v1-0-6a7206081602@z3ntu.xyz>
- <20230305-rmtfs-vmid-fix-v1-2-6a7206081602@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230305-rmtfs-vmid-fix-v1-2-6a7206081602@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-
-On 5.03.2023 11:32, Luca Weiss wrote:
-> Older platforms don't have qcom,vmid set
-Ugh, "evolution" :P
-
-, handle -EINVAL return value
-> correctly. And since num_vmids is passed to of_property_read_u32_array
-> later we should make sure it has a sane value before continuing.
+On Fri, 27 Jan 2023 20:40:55 +0100, Krzysztof Kozlowski wrote:
+> The DisplayPort and MIPI phys are actually part of the Power Management
+> Unit system controller.  They do not have their own address space, thus
+> keeping the nodes under soc causes warnings:
 > 
-> Fixes: e656cd0bcf3d ("soc: qcom: rmtfs: Optionally map RMTFS to more VMs")
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-This needs to be sanctioned by bindings, (i.e. if !oldplatform
-require qcom,vmid), as without this property new ones will simply
-lock up..
-
-But this change is correct on its own
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-
-Konrad
->  drivers/soc/qcom/rmtfs_mem.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>   exynos5420-smdk5420.dtb: soc: dp-video-phy: {'compatible': ['samsung,exynos5420-dp-video-phy'],
+>     'samsung,pmu-syscon': [[11]], '#phy-cells': [[0]], 'phandle': [[16]]} should not be valid under {'type': 'object'}
 > 
-> diff --git a/drivers/soc/qcom/rmtfs_mem.c b/drivers/soc/qcom/rmtfs_mem.c
-> index 218397ab0c36f..fb6e4def8c78b 100644
-> --- a/drivers/soc/qcom/rmtfs_mem.c
-> +++ b/drivers/soc/qcom/rmtfs_mem.c
-> @@ -229,7 +229,10 @@ static int qcom_rmtfs_mem_probe(struct platform_device *pdev)
->  	}
->  
->  	num_vmids = of_property_count_u32_elems(node, "qcom,vmid");
-> -	if (num_vmids < 0) {
-> +	if (num_vmids == -EINVAL) {
-> +		/* qcom,vmid is optional */
-> +		num_vmids = 0;
-> +	} else if (num_vmids < 0) {
->  		dev_err(&pdev->dev, "failed to count qcom,vmid elements: %d\n", num_vmids);
->  		goto remove_cdev;
->  	} else if (num_vmids > NUM_MAX_VMIDS) {
-> 
+> [...]
+
+Applied, thanks!
+
+[6/8] ARM: dts: exynos: move DP and MIPI phys to PMU node in Exynos5420
+      https://git.kernel.org/krzk/linux/c/972b567075845a55d525f1ed5d7cd7b6d524afdc
+
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
