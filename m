@@ -2,42 +2,42 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55819C6FA99
-	for <phone-devel@archiver.kernel.org>; Mon,  6 Mar 2023 17:01:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A981EC6FA99
+	for <phone-devel@archiver.kernel.org>; Mon,  6 Mar 2023 17:01:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230325AbjCFRB1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 6 Mar 2023 12:01:27 -0500
+        id S230321AbjCFRBk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 6 Mar 2023 12:01:40 -0500
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230268AbjCFRBS (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Mar 2023 12:01:18 -0500
+        with ESMTP id S230253AbjCFRB1 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Mar 2023 12:01:27 -0500
 Received: from amity.mint.lgbt (vmi888983.contaboserver.net [149.102.157.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 543564DBF0
-        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 09:00:57 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAECF5D76A
+        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 09:01:08 -0800 (PST)
 Received: from amity.mint.lgbt (mx.mint.lgbt [127.0.0.1])
-        by amity.mint.lgbt (Postfix) with ESMTP id 4PVl5j0JhVz1S5KK
-        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 11:53:45 -0500 (EST)
+        by amity.mint.lgbt (Postfix) with ESMTP id 4PVl5W5w8Vz1S5K7
+        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 11:53:35 -0500 (EST)
 Authentication-Results: amity.mint.lgbt (amavisd-new);
         dkim=pass (2048-bit key) reason="pass (just generated, assumed good)"
         header.d=mint.lgbt
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mint.lgbt; h=
         content-transfer-encoding:mime-version:references:in-reply-to
-        :x-mailer:message-id:date:subject:to:from; s=dkim; t=1678121624;
-         x=1678985625; bh=XBMOf7rDZmk1/gq6Hnv29VSjIdHlkH5Ie/sn9RbtUDE=; b=
-        C2/xlBcWOQElgNYyo40s/W/3lhZlNuKkKnbemB+8eN3qVhgx5JFIzUc1rnCW8hqK
-        F6w/JTWtsuGRCxNcE0sYnWu3FoXOAuiHUJ5RQB+UvyEfJLbUss+FgL4momh4/kdS
-        +2Rc218APlXsIu305BYAsSJMUW4vtXm4kC0u9VVKvymaYFqnNzPt9Kij7cuXEx9a
-        ZT4QQGe1NXHaJKUkhzFmhZhmvlkn/Zl3FtS/4cxhBu77mAIycBZj4kCIToE3WN4f
-        UMcNa9z8zAD9Ret2D+Iz7Xi/bkQvx0uQYL1h6Ef9xyMGN4yPybxUzXdnyxCTVXm9
-        H4lPrBwxgo1qt6WDtdfR+A==
+        :x-mailer:message-id:date:subject:to:from; s=dkim; t=1678121615;
+         x=1678985616; bh=aZvyOxr+cceertzklNMJveGEzeMKKnPjb24BJXnn514=; b=
+        lRPCitY87+yEDNrSWpQKZA4rXbRLdo3lMFglYKHRBi2c/khGBk4uU5Sti4la9waK
+        KQKQ36lh15dtbyMAq6iR/rkVMI09w9nxWR6FfoVGPz+uT5J69FMx7kegUpiojmSU
+        hkDQPlCRe0hnXmV/cZDQzJcoN2m+59a5NAEaDXf1FRPEghqcFCfTymkcinBZhqT2
+        /DBgO2gaNq5+8DKQEz+F+YipUfUJO5nsM8XsoM4aY8032apLbNfmn/S4Zh8teFyw
+        5gmkINRyyUcswR7SIyyMnmrIjSv2XDUNk0ZoibIvckHpHRgHAfBYd8qP7G4Nla/g
+        PVeQjUNoFJOvYTmxsGZ2+Q==
 X-Virus-Scanned: amavisd-new at amity.mint.lgbt
 Received: from amity.mint.lgbt ([127.0.0.1])
         by amity.mint.lgbt (amity.mint.lgbt [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 1Ecb5xR4X6Iv for <phone-devel@vger.kernel.org>;
-        Mon,  6 Mar 2023 11:53:44 -0500 (EST)
+        with ESMTP id Jrns0KwRLo8G for <phone-devel@vger.kernel.org>;
+        Mon,  6 Mar 2023 11:53:35 -0500 (EST)
 Received: from dorothy.. (unknown [186.105.8.42])
-        by amity.mint.lgbt (Postfix) with ESMTPSA id 4PVl5R43X3z1S4vb;
-        Mon,  6 Mar 2023 11:53:31 -0500 (EST)
+        by amity.mint.lgbt (Postfix) with ESMTPSA id 4PVl5D2jH2z1S5Jp;
+        Mon,  6 Mar 2023 11:53:19 -0500 (EST)
 From:   Lux Aliaga <they@mint.lgbt>
 To:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
         robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
@@ -49,10 +49,13 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
         linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
         phone-devel@vger.kernel.org, martin.botka@somainline.org,
-        marijn.suijten@somainline.org, Lux Aliaga <they@mint.lgbt>
-Subject: [PATCH v7 3/6] phy: qcom-qmp: Add SM6125 UFS PHY support
-Date:   Mon,  6 Mar 2023 13:52:42 -0300
-Message-Id: <20230306165246.14782-4-they@mint.lgbt>
+        marijn.suijten@somainline.org, Lux Aliaga <they@mint.lgbt>,
+        Dhruva Gole <d-gole@ti.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v7 2/6] dt-bindings: phy: Add QMP UFS PHY compatible for SM6125
+Date:   Mon,  6 Mar 2023 13:52:41 -0300
+Message-Id: <20230306165246.14782-3-they@mint.lgbt>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230306165246.14782-1-they@mint.lgbt>
 References: <20230306165246.14782-1-they@mint.lgbt>
@@ -62,56 +65,33 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The SM6125 UFS PHY is compatible with the one from SM6115. Add a
-compatible for it and modify the config from SM6115 to make them
-compatible with the SC8280XP binding
+Document the QMP UFS PHY compatible for SM6125.
 
 Signed-off-by: Lux Aliaga <they@mint.lgbt>
 Reviewed-by: Martin Botka <martin.botka@somainline.org>
+Acked-by: Dhruva Gole <d-gole@ti.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Rob Herring <robh@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-ufs.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ .../devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml       | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c b/drivers/phy/qualco=
-mm/phy-qcom-qmp-ufs.c
-index 318eea35b972..44c29fdfc551 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-@@ -620,6 +620,13 @@ static const char * const qmp_phy_vreg_l[] =3D {
- 	"vdda-phy", "vdda-pll",
- };
+diff --git a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-=
+phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-ph=
+y.yaml
+index dde86a19f792..a7af57931f32 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yam=
+l
++++ b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yam=
+l
+@@ -17,6 +17,7 @@ properties:
+   compatible:
+     enum:
+       - qcom,sc8280xp-qmp-ufs-phy
++      - qcom,sm6125-qmp-ufs-phy
 =20
-+static const struct qmp_ufs_offsets qmp_ufs_offsets_v3_660 =3D {
-+	.serdes		=3D 0,
-+	.pcs		=3D 0xc00,
-+	.tx		=3D 0x400,
-+	.rx		=3D 0x600,
-+};
-+
- static const struct qmp_ufs_offsets qmp_ufs_offsets_v5 =3D {
- 	.serdes		=3D 0,
- 	.pcs		=3D 0xc00,
-@@ -693,6 +700,8 @@ static const struct qmp_phy_cfg sdm845_ufsphy_cfg =3D=
- {
- static const struct qmp_phy_cfg sm6115_ufsphy_cfg =3D {
- 	.lanes			=3D 1,
-=20
-+	.offsets		=3D &qmp_ufs_offsets_v3_660,
-+
- 	.serdes_tbl		=3D sm6115_ufsphy_serdes_tbl,
- 	.serdes_tbl_num		=3D ARRAY_SIZE(sm6115_ufsphy_serdes_tbl),
- 	.tx_tbl			=3D sm6115_ufsphy_tx_tbl,
-@@ -1172,6 +1181,9 @@ static const struct of_device_id qmp_ufs_of_match_t=
-able[] =3D {
- 	}, {
- 		.compatible =3D "qcom,sm6115-qmp-ufs-phy",
- 		.data =3D &sm6115_ufsphy_cfg,
-+	}, {
-+		.compatible =3D "qcom,sm6125-qmp-ufs-phy",
-+		.data =3D &sm6115_ufsphy_cfg,
- 	}, {
- 		.compatible =3D "qcom,sm6350-qmp-ufs-phy",
- 		.data =3D &sdm845_ufsphy_cfg,
+   reg:
+     maxItems: 1
 --=20
 2.39.2
 
