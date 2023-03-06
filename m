@@ -2,121 +2,89 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97245C61DA4
-	for <phone-devel@archiver.kernel.org>; Mon,  6 Mar 2023 17:11:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9533CC6FD19
+	for <phone-devel@archiver.kernel.org>; Mon,  6 Mar 2023 17:20:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230000AbjCFRLb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 6 Mar 2023 12:11:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57392 "EHLO
+        id S229867AbjCFRUw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 6 Mar 2023 12:20:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbjCFRL3 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Mar 2023 12:11:29 -0500
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F8EF35A8
-        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 09:10:46 -0800 (PST)
-Received: by mail-lf1-x12f.google.com with SMTP id j11so13640987lfg.13
-        for <phone-devel@vger.kernel.org>; Mon, 06 Mar 2023 09:10:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678122576;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9qYKcnlpWdMlBpcagLtIlBclO/koVb4A2hugmwuDjQQ=;
-        b=K/ALNyiVmwk2B7FaiVr9+CnGKCB/lcBSgTRyxUeKfghmfQ3LfkadXwYITQfgwcIYec
-         yjLbnMfJ3Y5IcIHbvOSl0YxygbcPkImfyfF3A+daz2LzVPW5u/4J5vPm/5tQEFILCaUh
-         WIg/nIbiQWKn450exLKg18eyoDQDd+A+VKIimnJd80kN1/NU6uuVcML52mI8fWP08JAw
-         xlycx5pHeYzmF5FEiOmVmHyUN40f0U2Dw1GfbIStj1/0Pzf0DsZ0V0osDVJMRw53sgEf
-         uafbaitDMcI/Gj7p0Emovr44UvrTN4G03BCks7HKCrIOLCewObrOT6IiwpTYtCTE00XI
-         F53Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678122576;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9qYKcnlpWdMlBpcagLtIlBclO/koVb4A2hugmwuDjQQ=;
-        b=KMQZEj6ZCeIY1XiCwYGHIu+y6C0Yc3tHnluvGqjbFqvZZkYc4Uld9D5xFuICmXyc4U
-         +AEScCHfQNjJfqzCUR/e58V8SZHfO8lrI0F1B+iupkeYOKObQArIf19Ro0kd0xZeLPHw
-         eYoRlevHiHP+J3/HeYjzlu9WXZ+m15RuVki1p5nr67p3MjCL4hy9ZeSrKK2HW354pdy9
-         QSrNSBUlB5CIHkbhFzTeu2meQl6ub0+cu4jR4yB5dvtjxg1spSjNuKo8IwYzqZwGo8HY
-         T5q2Zk3OD2FAn7uYFFnZmR88mE5jubSmLYOxHHElnQsLcONkxj2x6ciHVq2ct4yZ2X/m
-         F5HA==
-X-Gm-Message-State: AO0yUKW8giB3WFx0AnuqIM+3V+TtFvx7i3Yy0+Gmy/A9xe5qfExK1b1Y
-        Y7uRKI6e5sQg4QjSGX79nxbfWw==
-X-Google-Smtp-Source: AK7set/Go5uO6Ko/jxC1RRWHo5FHKFy68YfXEpfah8KL+MgdxvhaMrkjjPKYCkUBXnHCDbX3tV62AA==
-X-Received: by 2002:ac2:558d:0:b0:4db:3882:8f42 with SMTP id v13-20020ac2558d000000b004db38828f42mr3558231lfg.45.1678122576059;
-        Mon, 06 Mar 2023 09:09:36 -0800 (PST)
-Received: from [192.168.1.101] (abym99.neoplus.adsl.tpnet.pl. [83.9.32.99])
-        by smtp.gmail.com with ESMTPSA id x19-20020a19f613000000b004db1cd5efcesm1692927lfe.241.2023.03.06.09.09.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Mar 2023 09:09:35 -0800 (PST)
-Message-ID: <dfd1d81e-76a0-f8eb-e529-9f8ea1e927b6@linaro.org>
-Date:   Mon, 6 Mar 2023 18:09:33 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v7 1/6] dt-bindings: ufs: qcom: Add SM6125 compatible
- string
-Content-Language: en-US
-To:     Lux Aliaga <they@mint.lgbt>, agross@kernel.org,
-        andersson@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
-        kishon@kernel.org, alim.akhtar@samsung.com, avri.altman@wdc.com,
-        bvanassche@acm.org, keescook@chromium.org, tony.luck@intel.com,
-        gpiccoli@igalia.com
+        with ESMTP id S229716AbjCFRUv (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Mar 2023 12:20:51 -0500
+Received: from amity.mint.lgbt (vmi888983.contaboserver.net [149.102.157.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96ECD10E7
+        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 09:20:17 -0800 (PST)
+Received: from amity.mint.lgbt (mx.mint.lgbt [127.0.0.1])
+        by amity.mint.lgbt (Postfix) with ESMTP id 4PVlRc3TcRz1S5Kb
+        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 12:09:16 -0500 (EST)
+Authentication-Results: amity.mint.lgbt (amavisd-new);
+        dkim=pass (2048-bit key) reason="pass (just generated, assumed good)"
+        header.d=mint.lgbt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mint.lgbt; h=
+        content-transfer-encoding:mime-version:references:in-reply-to
+        :x-mailer:message-id:date:subject:to:from; s=dkim; t=1678122555;
+         x=1678986556; bh=VbzUDwgw8Wby0J9gvqa6EvdBS02V72CvMVhm/k21OKA=; b=
+        x6F/uU+uvwTIM01PZkdVn6vBUfBjcMBctRu09dcaXIrGtSYjifsvM19STk4ewYPO
+        rtxbUW2QOxebStOeR5FP2lDSTSLfGZgwkF3e6FD8nQPKpcK2i0KhbhcHMzZUItTl
+        10+UEp5rLTJHGC1yogHdXNAmwk+wd42DUCC+Oqv7hlmgsv5ASleC9otIhY7mZX+G
+        oKcJuZCAfU/kKwsjX8ROlFZTH23J9wheDjhycOvBkp8c7PJA9XQvkOA7RqtRZFX6
+        6IBCNAgqBSI/I34Y+DOzZ3WMYfaTU0ARervgtH0hBSVUo7fJT5NH+Yo1pGlHwEHD
+        3rRjZ4QlKUoKMkSMOFeiKA==
+X-Virus-Scanned: amavisd-new at amity.mint.lgbt
+Received: from amity.mint.lgbt ([127.0.0.1])
+        by amity.mint.lgbt (amity.mint.lgbt [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id SJFXN7U4VSxy for <phone-devel@vger.kernel.org>;
+        Mon,  6 Mar 2023 12:09:15 -0500 (EST)
+Received: from dorothy.. (unknown [186.105.8.42])
+        by amity.mint.lgbt (Postfix) with ESMTPSA id 4PVlRQ0bFjz1S5Jl;
+        Mon,  6 Mar 2023 12:09:05 -0500 (EST)
+From:   Lux Aliaga <they@mint.lgbt>
+To:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        vkoul@kernel.org, kishon@kernel.org, alim.akhtar@samsung.com,
+        avri.altman@wdc.com, bvanassche@acm.org, keescook@chromium.org,
+        tony.luck@intel.com, gpiccoli@igalia.com
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
         linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
         phone-devel@vger.kernel.org, martin.botka@somainline.org,
-        marijn.suijten@somainline.org,
+        marijn.suijten@somainline.org, Lux Aliaga <they@mint.lgbt>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <20230306165246.14782-1-they@mint.lgbt>
- <20230306165246.14782-2-they@mint.lgbt>
- <4670ddae-6b01-1e5c-b0ed-1f2f498a4f66@mint.lgbt>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <4670ddae-6b01-1e5c-b0ed-1f2f498a4f66@mint.lgbt>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH v7 5/6] dt-bindings: arm: qcom: Document xiaomi,laurel-sprout board
+Date:   Mon,  6 Mar 2023 14:08:15 -0300
+Message-Id: <20230306170817.3806-6-they@mint.lgbt>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230306170817.3806-1-they@mint.lgbt>
+References: <20230306170817.3806-1-they@mint.lgbt>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Document the Xiaomi Mi A3 (xiaomi-laurel-sprout) smartphone which is
+based on the Snapdragon 665 SoC.
 
+Signed-off-by: Lux Aliaga <they@mint.lgbt>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-On 6.03.2023 18:01, Lux Aliaga wrote:
-> 
-> On 06/03/2023 13:52, Lux Aliaga wrote:
->> Document the compatible for UFS found on the SM6125.
->>
->> Signed-off-by: Lux Aliaga <they@mint.lgbt>
->> Reviewed-by: Martin Botka <martin.botka@somainline.org>
->> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->> ---
->>   Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
->> index b517d76215e3..42422f3471b3 100644
->> --- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
->> +++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
->> @@ -29,6 +29,7 @@ properties:
->>             - qcom,sc8280xp-ufshc
->>             - qcom,sdm845-ufshc
->>             - qcom,sm6115-ufshc
->> +          - qcom,sm6125-ufshc
->>             - qcom,sm6350-ufshc
->>             - qcom,sm8150-ufshc
->>             - qcom,sm8250-ufshc
->> @@ -185,6 +186,7 @@ allOf:
->>             contains:
->>               enum:
->>                 - qcom,sm6115-ufshc
->> +              - qcom,sm6125-ufshc
->>       then:
->>         properties:
->>           clocks:
-> I have to apologize. I worked on a changelog for this patchset but I skipped the subject header, therefore it didn't send, and as I realized this I interrupted the process, leaving the patchset incomplete. I'll retry sending it, this time correctly.
-Happens, next time resend it with a RESEND prefix, e.g. [RESEND PATCH 1/2]
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentat=
+ion/devicetree/bindings/arm/qcom.yaml
+index 27063a045bd0..4923dafb5d7a 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -793,6 +793,7 @@ properties:
+       - items:
+           - enum:
+               - sony,pdx201
++              - xiaomi,laurel-sprout
+           - const: qcom,sm6125
+=20
+       - items:
+--=20
+2.39.2
 
-Konrad
-> 
