@@ -2,42 +2,42 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9533CC6FD19
-	for <phone-devel@archiver.kernel.org>; Mon,  6 Mar 2023 17:20:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C257C6FD1D
+	for <phone-devel@archiver.kernel.org>; Mon,  6 Mar 2023 17:20:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229867AbjCFRUw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 6 Mar 2023 12:20:52 -0500
+        id S229879AbjCFRUy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 6 Mar 2023 12:20:54 -0500
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229716AbjCFRUv (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Mar 2023 12:20:51 -0500
+        with ESMTP id S229869AbjCFRUw (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Mar 2023 12:20:52 -0500
 Received: from amity.mint.lgbt (vmi888983.contaboserver.net [149.102.157.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96ECD10E7
-        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 09:20:17 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 882353B3C1
+        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 09:20:18 -0800 (PST)
 Received: from amity.mint.lgbt (mx.mint.lgbt [127.0.0.1])
-        by amity.mint.lgbt (Postfix) with ESMTP id 4PVlRc3TcRz1S5Kb
-        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 12:09:16 -0500 (EST)
+        by amity.mint.lgbt (Postfix) with ESMTP id 4PVlR6391Yz1S5K6
+        for <phone-devel@vger.kernel.org>; Mon,  6 Mar 2023 12:08:50 -0500 (EST)
 Authentication-Results: amity.mint.lgbt (amavisd-new);
         dkim=pass (2048-bit key) reason="pass (just generated, assumed good)"
         header.d=mint.lgbt
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mint.lgbt; h=
         content-transfer-encoding:mime-version:references:in-reply-to
-        :x-mailer:message-id:date:subject:to:from; s=dkim; t=1678122555;
-         x=1678986556; bh=VbzUDwgw8Wby0J9gvqa6EvdBS02V72CvMVhm/k21OKA=; b=
-        x6F/uU+uvwTIM01PZkdVn6vBUfBjcMBctRu09dcaXIrGtSYjifsvM19STk4ewYPO
-        rtxbUW2QOxebStOeR5FP2lDSTSLfGZgwkF3e6FD8nQPKpcK2i0KhbhcHMzZUItTl
-        10+UEp5rLTJHGC1yogHdXNAmwk+wd42DUCC+Oqv7hlmgsv5ASleC9otIhY7mZX+G
-        oKcJuZCAfU/kKwsjX8ROlFZTH23J9wheDjhycOvBkp8c7PJA9XQvkOA7RqtRZFX6
-        6IBCNAgqBSI/I34Y+DOzZ3WMYfaTU0ARervgtH0hBSVUo7fJT5NH+Yo1pGlHwEHD
-        3rRjZ4QlKUoKMkSMOFeiKA==
+        :x-mailer:message-id:date:subject:to:from; s=dkim; t=1678122529;
+         x=1678986530; bh=aZvyOxr+cceertzklNMJveGEzeMKKnPjb24BJXnn514=; b=
+        dCXD0MtLblCUjswv2PGB7Dp+BhXNXXaDeee0YrduLkiyDZNCV51QCUA3CjmXWTm5
+        dOIJPtXqfTr/Wkde3wyoLDTWJgN/XVSQJCUvxMzHI4xkTVWTpW9yoI4eMFupD/pC
+        TjVCZW+8z6ZwYoAATxfdEvVl8+aNmZTalRcy1Pt2zFbs2+ks7378lnNvig8jw0Uk
+        Rdo57ABgtguXxuZhh/+3LaR5QJgc1HBrg1TQS7vWYcFZ+RTFnKtaQClIgCTKuN76
+        Mq6f/uPRM2SYDsuhaDr+Wf9ebcPg6nsrfPlUkX6NJhCmozWb58mLD33rOp34ds1m
+        pvg7LSXEWDV2YhdE6L44Kw==
 X-Virus-Scanned: amavisd-new at amity.mint.lgbt
 Received: from amity.mint.lgbt ([127.0.0.1])
         by amity.mint.lgbt (amity.mint.lgbt [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id SJFXN7U4VSxy for <phone-devel@vger.kernel.org>;
-        Mon,  6 Mar 2023 12:09:15 -0500 (EST)
+        with ESMTP id EVC6_Fs347M1 for <phone-devel@vger.kernel.org>;
+        Mon,  6 Mar 2023 12:08:49 -0500 (EST)
 Received: from dorothy.. (unknown [186.105.8.42])
-        by amity.mint.lgbt (Postfix) with ESMTPSA id 4PVlRQ0bFjz1S5Jl;
-        Mon,  6 Mar 2023 12:09:05 -0500 (EST)
+        by amity.mint.lgbt (Postfix) with ESMTPSA id 4PVlQv3bcNz1S5Jn;
+        Mon,  6 Mar 2023 12:08:39 -0500 (EST)
 From:   Lux Aliaga <they@mint.lgbt>
 To:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
         robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
@@ -50,10 +50,12 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
         phone-devel@vger.kernel.org, martin.botka@somainline.org,
         marijn.suijten@somainline.org, Lux Aliaga <they@mint.lgbt>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v7 5/6] dt-bindings: arm: qcom: Document xiaomi,laurel-sprout board
-Date:   Mon,  6 Mar 2023 14:08:15 -0300
-Message-Id: <20230306170817.3806-6-they@mint.lgbt>
+        Dhruva Gole <d-gole@ti.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH v7 2/6] dt-bindings: phy: Add QMP UFS PHY compatible for SM6125
+Date:   Mon,  6 Mar 2023 14:08:12 -0300
+Message-Id: <20230306170817.3806-3-they@mint.lgbt>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230306170817.3806-1-they@mint.lgbt>
 References: <20230306170817.3806-1-they@mint.lgbt>
@@ -63,28 +65,33 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Document the Xiaomi Mi A3 (xiaomi-laurel-sprout) smartphone which is
-based on the Snapdragon 665 SoC.
+Document the QMP UFS PHY compatible for SM6125.
 
 Signed-off-by: Lux Aliaga <they@mint.lgbt>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Martin Botka <martin.botka@somainline.org>
+Acked-by: Dhruva Gole <d-gole@ti.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Rob Herring <robh@kernel.org>
 ---
- Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ .../devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml       | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentat=
-ion/devicetree/bindings/arm/qcom.yaml
-index 27063a045bd0..4923dafb5d7a 100644
---- a/Documentation/devicetree/bindings/arm/qcom.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-@@ -793,6 +793,7 @@ properties:
-       - items:
-           - enum:
-               - sony,pdx201
-+              - xiaomi,laurel-sprout
-           - const: qcom,sm6125
+diff --git a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-=
+phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-ph=
+y.yaml
+index dde86a19f792..a7af57931f32 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yam=
+l
++++ b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yam=
+l
+@@ -17,6 +17,7 @@ properties:
+   compatible:
+     enum:
+       - qcom,sc8280xp-qmp-ufs-phy
++      - qcom,sm6125-qmp-ufs-phy
 =20
-       - items:
+   reg:
+     maxItems: 1
 --=20
 2.39.2
 
