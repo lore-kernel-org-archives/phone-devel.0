@@ -2,138 +2,165 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EE3F0C678D4
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Mar 2023 15:12:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71A4DC678D5
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Mar 2023 16:48:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230522AbjCGPMt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 7 Mar 2023 10:12:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54972 "EHLO
+        id S229750AbjCGQsO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 7 Mar 2023 11:48:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229929AbjCGPMa (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Mar 2023 10:12:30 -0500
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B868656175
-        for <phone-devel@vger.kernel.org>; Tue,  7 Mar 2023 07:07:10 -0800 (PST)
-Received: by mail-yb1-xb2e.google.com with SMTP id t4so11654248ybg.11
-        for <phone-devel@vger.kernel.org>; Tue, 07 Mar 2023 07:07:10 -0800 (PST)
+        with ESMTP id S231195AbjCGQrp (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Mar 2023 11:47:45 -0500
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8461C521FD
+        for <phone-devel@vger.kernel.org>; Tue,  7 Mar 2023 08:44:24 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id g17so17912088lfv.4
+        for <phone-devel@vger.kernel.org>; Tue, 07 Mar 2023 08:44:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678201627;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mZSPJH+f9oWHaxho+XViilCifY5cfExrCLjds8RGXCE=;
-        b=Zl1iwFTQ4MzHuEy5euVqmvX3rJVpoJHoWQ0T7JbQffO7j89sJ7HXBpmPIbJec7KGy+
-         dtliU7DYJmdu2PNcLBAugFyVpfwZbWFvVvvrz0WrJNeoZrRGAQApRxmyP7zgGLazGqqu
-         zZIDGWdH6d3ORb0YQx3OWMpGzwxpV0zZUNQXRo8Z//lGlF1XYhqfrMaNNvrC2CEqzEjO
-         Y77E8IQdxUNiYlFZIViCJANRIhM+7hohOtTPrOoRy8PPU/8Vs3oI70Xi1XyKylH8fJ3J
-         WGtfZMdTZyXtZWtzOeArMagz7fqB3MqplTkOgkeHlS9sHtypg4NbM76DLzciWbQoTiUr
-         liXA==
+        d=linaro.org; s=google; t=1678207463;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Jec/YJBntXF7NHKZEpXUh8NFkpnLW/c2Gz9ThFGLfeI=;
+        b=yALxQvO1kpWHGTqDi79BR+MNsahqht3wIulp4TkS1Y3cePv4ifagWmVPPrr91B0DJo
+         r7VUrNxduesgZRYY3coaKwPcDTrUolG4MOrq0CUtkvZZepc7ESZa/cWjaXWiltlFLIQW
+         NZagCRNp/Fffr0RTKKfhrYH7AT4I656IozHBYE2q+M7+3QUgmlhANKtK+irhJAGyzl88
+         QZW/2xh1Bhf7/DacvRbKqzFJXpnkdSxr33OMmmX8JpSXdRxAplM6fpkSt1XGl87QcZor
+         WHl9US1cy0BPiZ1cqaH/+D9gKVkuM5n1DAI8AhAybxYjuewlUshjtZ5wqkcxQmdxApJP
+         ZGnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678201627;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mZSPJH+f9oWHaxho+XViilCifY5cfExrCLjds8RGXCE=;
-        b=XynbFBKS/IIRYsUZ/FeFJM0UsC5929Z3dn5GYKjIsPWh1J3D4bbyEp8FAe3M808U8P
-         i+Zu6cWRKMGvbhFPD/y7UpqZuO0RbikqF5ht/ZR9dJ6qCw4CQxjpys8g/MQaMqisE/j6
-         bZ6Hh4tk3anwGpLPfzxc4hfV6iYmVJ/DzuPQXLplbfXjpF0RfGPvRIcsgTLkwryldWuY
-         E7+9JbyV0CKJ/dHZLrGV9iCLdmIJ/oUkXRBcMMvwrvwdxM3ea2IMkA7h7JnN65lf+NuU
-         k///1A7hgtWTMcjooSIn4aHAlAHpPuHjbdLB/RErxrPQwzjxKWUZhDMgKCoAlQIrjEXh
-         RcKw==
-X-Gm-Message-State: AO0yUKXOBD8coF4NamfPZt99ThW9nbgOcXKo5nDy93zmxEJI+dmQs6Nr
-        BIy1r5DBdvLlGj6MUfDwTS0KxtoRey/MuGsURc0ynA==
-X-Google-Smtp-Source: AK7set/szA9fTwEGq01jVWq5968zVv7nn5uZGXTMr6CPkT1icZCpZ6kYz52R9ayoCJb2TM4NvSgYXxgeNLdlOn66Dbw=
-X-Received: by 2002:a25:7808:0:b0:a4a:a708:2411 with SMTP id
- t8-20020a257808000000b00a4aa7082411mr8646562ybc.10.1678201627140; Tue, 07 Mar
- 2023 07:07:07 -0800 (PST)
+        d=1e100.net; s=20210112; t=1678207463;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jec/YJBntXF7NHKZEpXUh8NFkpnLW/c2Gz9ThFGLfeI=;
+        b=B5ZkoUCpj6ijeJwHQJPQfoQkmSTknOlVkDRnCY3sWM4Oy9WgJCkQQynd4XQFPzAV9L
+         eMexo8W3CTt2+HUBXmpSJEH1UxUVgbaQCpJ0CwpLXf7BmF3bFr3WNVdm+ywLzxvvOoyp
+         8mbLLGcTUnYfHUqs905d5GKyaGhpqCZJLKqxJ7IUwgcwPDtCxw4uLeHoP4OaXyV1yKEQ
+         stZH8GaQFXytyQZWb8ooS7zrV4CqbofXJAToa3nfjlkPtMITxHCQHKSUdsLtlD8AWqAr
+         BZ3Rgv4RVuq6pBNzPtRMvfmP6OTM1cWPfXNEhS0/a/6KB5gBz1c5e3RaaIZC+dIwclcR
+         45uA==
+X-Gm-Message-State: AO0yUKVBvc0oVa2lkDQ+WxI5DDdsn5HsfRm5/UUkZPOCfRahmJayChPj
+        Y2do+xxoEsjtQ+ggvH6wqaNkrg==
+X-Google-Smtp-Source: AK7set9xq1ale7lPzAks3xELtyMniUfJLF87VVRCjXOCHjIAV+En8YZiKbkUEk3nXwfKUnI7dFfAjg==
+X-Received: by 2002:ac2:54ad:0:b0:4de:f972:6b1 with SMTP id w13-20020ac254ad000000b004def97206b1mr5620200lfk.32.1678207462753;
+        Tue, 07 Mar 2023 08:44:22 -0800 (PST)
+Received: from [10.10.15.130] ([192.130.178.91])
+        by smtp.gmail.com with ESMTPSA id w17-20020ac25991000000b004db3e08c8a4sm2072851lfn.70.2023.03.07.08.44.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Mar 2023 08:44:22 -0800 (PST)
+Message-ID: <12f0800c-beb3-6fdc-b743-8624f0d5d6ac@linaro.org>
+Date:   Tue, 7 Mar 2023 18:44:21 +0200
 MIME-Version: 1.0
-References: <20230213-sm6350-camcc-runtime_pm-v3-0-d35e0d833cc4@fairphone.com>
- <20230213-sm6350-camcc-runtime_pm-v3-1-d35e0d833cc4@fairphone.com>
- <CAA8EJprzOLuLU8_tvRtQ9bX8M9xOqMFFnjuj-DwGz+24XPAQFg@mail.gmail.com> <CR08JR9XAIUO.3KF8TBTQ9UQP1@otso>
-In-Reply-To: <CR08JR9XAIUO.3KF8TBTQ9UQP1@otso>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v3 2/6] iommu/qcom: Use the asid read from device-tree if
+ specified
+Content-Language: en-GB
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, agross@kernel.org
+Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, joro@8bytes.org,
+        will@kernel.org, robin.murphy@arm.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, robdclark@gmail.com,
+        linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        marijn.suijten@somainline.org, kernel@collabora.com,
+        luca@z3ntu.xyz, a39.skl@gmail.com, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <20221115101122.155440-1-angelogioacchino.delregno@collabora.com>
+ <20221115101122.155440-3-angelogioacchino.delregno@collabora.com>
 From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Tue, 7 Mar 2023 17:06:56 +0200
-Message-ID: <CAA8EJpotZjNqo72xhNVS+Fq7gbdADVF+tq8Ph4+tnPyO3HyQoA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] clk: qcom: camcc-sm6350: add pm_runtime support
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20221115101122.155440-3-angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 7 Mar 2023 at 16:54, Luca Weiss <luca.weiss@fairphone.com> wrote:
->
-> On Tue Feb 14, 2023 at 1:32 PM CET, Dmitry Baryshkov wrote:
-> > On Tue, 14 Feb 2023 at 13:01, Luca Weiss <luca.weiss@fairphone.com> wrote:
-> > >
-> > > Make sure that we can enable and disable the power domains used for
-> > > camcc when the clocks are and aren't used.
-> > >
-> > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > > ---
-> > >  drivers/clk/qcom/camcc-sm6350.c | 25 ++++++++++++++++++++++++-
-> > >  1 file changed, 24 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/clk/qcom/camcc-sm6350.c b/drivers/clk/qcom/camcc-sm6350.c
-> > > index acba9f99d960..fc5532e2ee5b 100644
-> > > --- a/drivers/clk/qcom/camcc-sm6350.c
-> > > +++ b/drivers/clk/qcom/camcc-sm6350.c
-> > > @@ -7,6 +7,8 @@
-> > >  #include <linux/clk-provider.h>
-> > >  #include <linux/module.h>
-> > >  #include <linux/platform_device.h>
-> > > +#include <linux/pm_clock.h>
-> > > +#include <linux/pm_runtime.h>
-> > >  #include <linux/regmap.h>
-> > >
-> > >  #include <dt-bindings/clock/qcom,sm6350-camcc.h>
-> > > @@ -1869,6 +1871,19 @@ MODULE_DEVICE_TABLE(of, camcc_sm6350_match_table);
-> > >  static int camcc_sm6350_probe(struct platform_device *pdev)
-> > >  {
-> > >         struct regmap *regmap;
-> > > +       int ret;
-> > > +
-> > > +       ret = devm_pm_runtime_enable(&pdev->dev);
-> > > +       if (ret < 0)
-> > > +               return ret;
-> > > +
-> > > +       ret = devm_pm_clk_create(&pdev->dev);
-> > > +       if (ret < 0)
-> > > +               return ret;
-> >
-> > This makes me wonder, what is the use for the pm_clk in your case? The
-> > driver doesn't seem to use of_pm_clk_add_clk(), of_pm_clk_add_clks()
-> > or pm_clk_add_clk(). So pm_clk_suspend() and pm_clk_resume() do
-> > nothing.
->
-> You're right that we're not using any of these functions in the driver.
-> However still when camcc is not used, the associated power domain turns
-> off correctly so that part works as expected.
->
-> Honestly these lines have been copied from a different driver and I'm
-> not familiar enough with the pm_runtime APIs to know what to use here
-> without using the pm_clk* and pm_clk_suspend.
+On 15/11/2022 12:11, AngeloGioacchino Del Regno wrote:
+> As specified in this driver, the context banks are 0x1000 apart but
+> on some SoCs the context number does not necessarily match this
+> logic, hence we end up using the wrong ASID: keeping in mind that
+> this IOMMU implementation relies heavily on SCM (TZ) calls, it is
+> mandatory that we communicate the right context number.
+> 
+> Since this is all about how context banks are mapped in firmware,
+> which may be board dependent (as a different firmware version may
+> eventually change the expected context bank numbers), introduce a
+> new property "qcom,ctx-num": when found, the ASID will be forced
+> as read from the devicetree.
+> 
+> When "qcom,ctx-num" is not found, this driver retains the previous
+> behavior as to avoid breaking older devicetrees or systems that do
+> not require forcing ASID numbers.
+> 
+> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> [Marijn: Rebased over next-20221111]
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> ---
+>   drivers/iommu/arm/arm-smmu/qcom_iommu.c | 18 +++++++++++++++---
+>   1 file changed, 15 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iommu/arm/arm-smmu/qcom_iommu.c b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+> index bfd7b51eb5db..491a8093f3d6 100644
+> --- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+> +++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+> @@ -551,7 +551,8 @@ static int qcom_iommu_of_xlate(struct device *dev, struct of_phandle_args *args)
+>   	 * index into qcom_iommu->ctxs:
+>   	 */
+>   	if (WARN_ON(asid < 1) ||
+> -	    WARN_ON(asid > qcom_iommu->num_ctxs)) {
+> +	    WARN_ON(asid > qcom_iommu->num_ctxs) ||
+> +	    WARN_ON(qcom_iommu->ctxs[asid - 1] == NULL)) {
 
-Please don't blindly C&P code.
+Separate change in my opinion. Please split it to a separate patch with 
+proper Fixes: tag.
 
->
-> Basically we need, if any clock is being used in the driver, the
-> power-domain needs to be enabled as well, and if nothing is used the
-> power-domain can be disabled again.
+>   		put_device(&iommu_pdev->dev);
+>   		return -EINVAL;
+>   	}
+> @@ -638,7 +639,8 @@ static int qcom_iommu_sec_ptbl_init(struct device *dev)
+>   
+>   static int get_asid(const struct device_node *np)
+>   {
+> -	u32 reg;
+> +	u32 reg, val;
+> +	int asid;
+>   
+>   	/* read the "reg" property directly to get the relative address
+>   	 * of the context bank, and calculate the asid from that:
+> @@ -646,7 +648,17 @@ static int get_asid(const struct device_node *np)
+>   	if (of_property_read_u32_index(np, "reg", 0, &reg))
+>   		return -ENODEV;
+>   
+> -	return reg / 0x1000;      /* context banks are 0x1000 apart */
+> +	/*
+> +	 * Context banks are 0x1000 apart but, in some cases, the ASID
+> +	 * number doesn't match to this logic and needs to be passed
+> +	 * from the DT configuration explicitly.
+> +	 */
+> +	if (of_property_read_u32(np, "qcom,ctx-num", &val))
+> +		asid = reg / 0x1000;
+> +	else
+> +		asid = val;
 
-Adding power-domains to the camcc node and calling
-devm_pm_runtime_enable() should be enough. Please see how this is
-managed for dispcc on sm8250.
+As a matter of preference (and logic) I'd have written that as:
+
+if (!of_property_read(np, "qcom,ctx-num", &val))
+     asid = val;
+else
+     asid = reg / 0x1000;
+
+LGTM otherwise
+
+> +
+> +	return asid;
+>   }
+>   
+>   static int qcom_iommu_ctx_probe(struct platform_device *pdev)
 
 -- 
 With best wishes
 Dmitry
+
