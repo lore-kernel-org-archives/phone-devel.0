@@ -2,122 +2,136 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF9FDC6FD1A
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Mar 2023 19:20:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F775C742A7
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Mar 2023 21:49:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234004AbjCGTUn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 7 Mar 2023 14:20:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43806 "EHLO
+        id S231589AbjCGVtS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 7 Mar 2023 16:49:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231431AbjCGTUO (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Mar 2023 14:20:14 -0500
-Received: from irl.hu (irl.hu [95.85.9.111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E09BD6EAA;
-        Tue,  7 Mar 2023 11:04:08 -0800 (PST)
-Received: from [192.168.2.4] (51b69c8d.dsl.pool.telekom.hu [::ffff:81.182.156.141])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 000000000006FEDC.0000000064078AA6.00098FCF; Tue, 07 Mar 2023 20:04:06 +0100
-Message-ID: <78de9402-d14a-4897-a602-9fd214c31c20@irl.hu>
-Date:   Tue, 7 Mar 2023 20:04:04 +0100
+        with ESMTP id S231615AbjCGVtI (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Mar 2023 16:49:08 -0500
+Received: from amity.mint.lgbt (vmi888983.contaboserver.net [149.102.157.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A8D493E0D
+        for <phone-devel@vger.kernel.org>; Tue,  7 Mar 2023 13:49:00 -0800 (PST)
+Received: from amity.mint.lgbt (mx.mint.lgbt [127.0.0.1])
+        by amity.mint.lgbt (Postfix) with ESMTP id 4PWTbt4DfSz1S5Jt
+        for <phone-devel@vger.kernel.org>; Tue,  7 Mar 2023 16:48:58 -0500 (EST)
+Authentication-Results: amity.mint.lgbt (amavisd-new);
+        dkim=pass (2048-bit key) reason="pass (just generated, assumed good)"
+        header.d=mint.lgbt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mint.lgbt; h=
+        content-transfer-encoding:content-type:in-reply-to:from
+        :references:to:content-language:subject:user-agent:mime-version
+        :date:message-id; s=dkim; t=1678225737; x=1679089738; bh=LBDNRan
+        2Cd8nNBtnj8IHxtHFO6mc9pcFTMtM8qGwz6s=; b=0cO+/njPVgYpyC29fKJKvX9
+        7KDC65yTns6sQG7cTR9FBx0z2V0+IbCRk5/9qSsKp+der/jIp2YdqFm+W6E3XF5f
+        DTy2AqoC8mmWy626B94TKkzCxzkyiVICvQhTbSHau33Q2uYWeP4W5KwEgko+K5ay
+        O0gWG4uMOeCJnPQL5a95WirFeYD/fJOdN3BixVcYX5va+B7bsRKszu/aOeeupkjR
+        GKYb2C+gK/e9aqCgNNYSP9kpa6JaAE/Prm81WfFuTr//Z2hvsyPGuaVNCtUSOgsc
+        svQngMiOfOLwTdNgpYixLyyUW2HZ437S/upm1w+zVhZNb4FGXIjcH5uQ6/GNvNw=
+        =
+X-Virus-Scanned: amavisd-new at amity.mint.lgbt
+Received: from amity.mint.lgbt ([127.0.0.1])
+        by amity.mint.lgbt (amity.mint.lgbt [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id RbyquuayZ_Ps for <phone-devel@vger.kernel.org>;
+        Tue,  7 Mar 2023 16:48:57 -0500 (EST)
+Received: from [192.168.1.90] (unknown [186.105.8.42])
+        by amity.mint.lgbt (Postfix) with ESMTPSA id 4PWTbS4Kjkz1S4yx;
+        Tue,  7 Mar 2023 16:48:35 -0500 (EST)
+Message-ID: <18156dee-4fd2-80e5-b04d-c96c267fb615@mint.lgbt>
+Date:   Tue, 7 Mar 2023 18:48:30 -0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v2] arm64: dts: qcom: sdm845-oneplus-common: add PN553 NFC
-Content-Language: en-US, hu
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20230307185942.1737867-1-soyer@irl.hu>
- <22b91a6c-7a27-039c-21b8-0d3913e73dbc@linaro.org>
-From:   Gergo Koteles <soyer@irl.hu>
-In-Reply-To: <22b91a6c-7a27-039c-21b8-0d3913e73dbc@linaro.org>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Subject: Re: [PATCH v7 1/6] dt-bindings: ufs: qcom: Add SM6125 compatible
+ string
+Content-Language: en-US, es-CL
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>, agross@kernel.org,
+        andersson@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
+        kishon@kernel.org, alim.akhtar@samsung.com, avri.altman@wdc.com,
+        bvanassche@acm.org, keescook@chromium.org, tony.luck@intel.com,
+        gpiccoli@igalia.com
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
+        phone-devel@vger.kernel.org, martin.botka@somainline.org,
+        marijn.suijten@somainline.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <20230306165246.14782-1-they@mint.lgbt>
+ <20230306165246.14782-2-they@mint.lgbt>
+ <4670ddae-6b01-1e5c-b0ed-1f2f498a4f66@mint.lgbt>
+ <dfd1d81e-76a0-f8eb-e529-9f8ea1e927b6@linaro.org>
+From:   Lux Aliaga <they@mint.lgbt>
+In-Reply-To: <dfd1d81e-76a0-f8eb-e529-9f8ea1e927b6@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2023. 03. 07. 20:02, Konrad Dybcio wrote:
-> 
-> 
-> On 7.03.2023 19:59, Gergo Koteles wrote:
->> The OnePlus 6/6T both have a NQ330 (PN553 + P73N2M0).
->> The PN533 supported by the nxp-nci-i2c driver in mainline.
->> It detects/reads NFC tags using "nfctool".
->>
->> Signed-off-by: Gergo Koteles <soyer@irl.hu>
->> ---
-> Next time include a changelog below this --- line detailing
-> what changed between revisions.
-> 
-Okey. Thanks for the suggestion and the review.
+On 3/6/2023 14:09, Konrad Dybcio wrote:
 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> 
+>
+> On 6.03.2023 18:01, Lux Aliaga wrote:
+>> On 06/03/2023 13:52, Lux Aliaga wrote:
+>>> Document the compatible for UFS found on the SM6125.
+>>>
+>>> Signed-off-by: Lux Aliaga <they@mint.lgbt>
+>>> Reviewed-by: Martin Botka <martin.botka@somainline.org>
+>>> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>> ---
+>>>  =C2=A0 Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 2 ++
+>>>  =C2=A0 1 file changed, 2 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Do=
+cumentation/devicetree/bindings/ufs/qcom,ufs.yaml
+>>> index b517d76215e3..42422f3471b3 100644
+>>> --- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+>>> +++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+>>> @@ -29,6 +29,7 @@ properties:
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=
+ qcom,sc8280xp-ufshc
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=
+ qcom,sdm845-ufshc
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=
+ qcom,sm6115-ufshc
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - qcom,sm6125=
+-ufshc
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=
+ qcom,sm6350-ufshc
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=
+ qcom,sm8150-ufshc
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=
+ qcom,sm8250-ufshc
+>>> @@ -185,6 +186,7 @@ allOf:
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 c=
+ontains:
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 enum:
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 - qcom,sm6115-ufshc
+>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 - qcom,sm6125-ufshc
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 then:
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 properties:
+>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 clocks:
+>> I have to apologize. I worked on a changelog for this patchset but I s=
+kipped the subject header, therefore it didn't send, and as I realized th=
+is I interrupted the process, leaving the patchset incomplete. I'll retry=
+ sending it, this time correctly.
+> Happens, next time resend it with a RESEND prefix, e.g. [RESEND PATCH 1=
+/2]
+>
 > Konrad
->>   .../boot/dts/qcom/sdm845-oneplus-common.dtsi  | 39 +++++++++++++++++++
->>   1 file changed, 39 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> index 64638ea94db7..5e45801031d8 100644
->> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
->> @@ -380,6 +380,24 @@ zap-shader {
->>   	};
->>   };
->>   
->> +&i2c3 {
->> +	clock-frequency = <400000>;
->> +	status = "okay";
->> +
->> +	nfc@28 {
->> +		compatible = "nxp,nxp-nci-i2c";
->> +		reg = <0x28>;
->> +
->> +		interrupts-extended = <&tlmm 63 IRQ_TYPE_EDGE_RISING>;
->> +
->> +		enable-gpios = <&tlmm 12 GPIO_ACTIVE_HIGH>;
->> +		firmware-gpios = <&tlmm 62 GPIO_ACTIVE_HIGH>;
->> +
->> +		pinctrl-0 = <&nfc_int_active &nfc_enable_active &nfc_firmware_active>;
->> +		pinctrl-names = "default";
->> +	};
->> +};
->> +
->>   &i2c10 {
->>   	status = "okay";
->>   	clock-frequency = <100000>;
->> @@ -753,6 +771,27 @@ &usb_1_hsphy {
->>   &tlmm {
->>   	gpio-reserved-ranges = <0 4>, <81 4>;
->>   
->> +	nfc_int_active: nfc-int-active-state {
->> +		pins = "gpio63";
->> +		function = "gpio";
->> +		drive-strength = <2>;
->> +		bias-pull-up;
->> +	};
->> +
->> +	nfc_enable_active: nfc-enable-active-state {
->> +		pins = "gpio12";
->> +		function = "gpio";
->> +		drive-strength = <2>;
->> +		bias-pull-up;
->> +	};
->> +
->> +	nfc_firmware_active: nfc-firmware-active-state {
->> +		pins = "gpio62";
->> +		function = "gpio";
->> +		drive-strength = <2>;
->> +		bias-pull-up;
->> +	};
->> +
->>   	tri_state_key_default: tri-state-key-default-state {
->>   		pins = "gpio40", "gpio42", "gpio26";
->>   		function = "gpio";
+
+Thank you! Will take this into consideration for the future. I received=20
+this email after I resent the patchset, so that's why I didn't add the=20
+prefix.
+
+--=20
+Lux Aliaga
+https://nixgoat.me/
 
