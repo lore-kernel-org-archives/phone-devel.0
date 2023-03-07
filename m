@@ -2,136 +2,132 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F775C742A7
-	for <phone-devel@archiver.kernel.org>; Tue,  7 Mar 2023 21:49:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3E06C6FD1E
+	for <phone-devel@archiver.kernel.org>; Tue,  7 Mar 2023 22:08:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231589AbjCGVtS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 7 Mar 2023 16:49:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59878 "EHLO
+        id S230027AbjCGWIj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 7 Mar 2023 17:08:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231615AbjCGVtI (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Mar 2023 16:49:08 -0500
-Received: from amity.mint.lgbt (vmi888983.contaboserver.net [149.102.157.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A8D493E0D
-        for <phone-devel@vger.kernel.org>; Tue,  7 Mar 2023 13:49:00 -0800 (PST)
-Received: from amity.mint.lgbt (mx.mint.lgbt [127.0.0.1])
-        by amity.mint.lgbt (Postfix) with ESMTP id 4PWTbt4DfSz1S5Jt
-        for <phone-devel@vger.kernel.org>; Tue,  7 Mar 2023 16:48:58 -0500 (EST)
-Authentication-Results: amity.mint.lgbt (amavisd-new);
-        dkim=pass (2048-bit key) reason="pass (just generated, assumed good)"
-        header.d=mint.lgbt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mint.lgbt; h=
-        content-transfer-encoding:content-type:in-reply-to:from
-        :references:to:content-language:subject:user-agent:mime-version
-        :date:message-id; s=dkim; t=1678225737; x=1679089738; bh=LBDNRan
-        2Cd8nNBtnj8IHxtHFO6mc9pcFTMtM8qGwz6s=; b=0cO+/njPVgYpyC29fKJKvX9
-        7KDC65yTns6sQG7cTR9FBx0z2V0+IbCRk5/9qSsKp+der/jIp2YdqFm+W6E3XF5f
-        DTy2AqoC8mmWy626B94TKkzCxzkyiVICvQhTbSHau33Q2uYWeP4W5KwEgko+K5ay
-        O0gWG4uMOeCJnPQL5a95WirFeYD/fJOdN3BixVcYX5va+B7bsRKszu/aOeeupkjR
-        GKYb2C+gK/e9aqCgNNYSP9kpa6JaAE/Prm81WfFuTr//Z2hvsyPGuaVNCtUSOgsc
-        svQngMiOfOLwTdNgpYixLyyUW2HZ437S/upm1w+zVhZNb4FGXIjcH5uQ6/GNvNw=
-        =
-X-Virus-Scanned: amavisd-new at amity.mint.lgbt
-Received: from amity.mint.lgbt ([127.0.0.1])
-        by amity.mint.lgbt (amity.mint.lgbt [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id RbyquuayZ_Ps for <phone-devel@vger.kernel.org>;
-        Tue,  7 Mar 2023 16:48:57 -0500 (EST)
-Received: from [192.168.1.90] (unknown [186.105.8.42])
-        by amity.mint.lgbt (Postfix) with ESMTPSA id 4PWTbS4Kjkz1S4yx;
-        Tue,  7 Mar 2023 16:48:35 -0500 (EST)
-Message-ID: <18156dee-4fd2-80e5-b04d-c96c267fb615@mint.lgbt>
-Date:   Tue, 7 Mar 2023 18:48:30 -0300
+        with ESMTP id S229831AbjCGWIh (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Mar 2023 17:08:37 -0500
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFCCD8DCFB
+        for <phone-devel@vger.kernel.org>; Tue,  7 Mar 2023 14:08:35 -0800 (PST)
+Received: by mail-yb1-xb2b.google.com with SMTP id e82so12904295ybh.9
+        for <phone-devel@vger.kernel.org>; Tue, 07 Mar 2023 14:08:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678226915;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K5B0MmPME28SdP1PdSjzrjlZM3Hm3np7uTNu3SS6fZI=;
+        b=YIQZikOs96Wd+1xgLw8hFORV8tgf2wAGM7MW+UM+MQFiF7HRCNbSmDeZ/7saBZu2Zf
+         hzm0+fL26o0ene4Qm+0QNOSCHAwMZML33t96CvykWIlYYNinDO20yM+9tfX6Pw8T9NPW
+         LL6kW+LpZWftlZLXX3AT/zH7sAn5AiBPGOjY148PtYom1qu8T4CCmNZM2phbidJEeoFL
+         cpiZ/vb/kb34+j58omNq87Hr/nsUsqQfrPa530SiV+KBphCggwIF636dMbVxW/dr4LPb
+         QjR5Qj8ZF20Rhn0vGWfdGeo5RnNhhJrmeCCzFpEsP8VaIBRVIjVg5YS+i9x5wzXvky6/
+         4iwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678226915;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=K5B0MmPME28SdP1PdSjzrjlZM3Hm3np7uTNu3SS6fZI=;
+        b=mZPgS/tLSHe8szKONh/4XiypOMlKlcyICxnwYBj6goiWuOk7D0H7Sl50MwRx1rBABF
+         PimS+YoTq5qpHXicw3AwoKhoQx0z/xDo46HMM2GzVbZ/1J2T/VYqmINTz5X8eGBng0Pk
+         Fp1aSyxXcqDYwWf7oq6FV2AMG9PzKVvlJose6PXNL6k1R1NMcLU1bMz4Pmdr0FXrfAoq
+         FPhD66hg0MHbx37RQQje8iLxQYZGFrH2BWTrGu3Inig1wjaQVH/OEcKgr6aZRevIUHY2
+         Umz2HJ9D2IDrWdzML7s2NCZoR5f/3b9wSOFBMa+6K7rKTISXQJxWWhPT/N2RDHc1jyJb
+         wivQ==
+X-Gm-Message-State: AO0yUKV++eodfQyKRsouXB3aWqfR0mpsqg8yeZ9d8W61OAVCO82LXomR
+        AV9KE7aVF4vD+fO5pQnrEqi5xe33hF6ZSlQDWEgpdg==
+X-Google-Smtp-Source: AK7set/hdo6UK9mqvdv+ZB8TkXJyJW5Wn2J2KXdw2ntKBxmHkPpUGjET39Z+tHZ7rBU8S2+bIu/pdJyQoqb6WygVF6Q=
+X-Received: by 2002:a5b:38a:0:b0:ac9:cb97:bd0e with SMTP id
+ k10-20020a5b038a000000b00ac9cb97bd0emr7568099ybp.5.1678226914852; Tue, 07 Mar
+ 2023 14:08:34 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH v7 1/6] dt-bindings: ufs: qcom: Add SM6125 compatible
- string
-Content-Language: en-US, es-CL
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>, agross@kernel.org,
-        andersson@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
-        kishon@kernel.org, alim.akhtar@samsung.com, avri.altman@wdc.com,
-        bvanassche@acm.org, keescook@chromium.org, tony.luck@intel.com,
-        gpiccoli@igalia.com
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
-        phone-devel@vger.kernel.org, martin.botka@somainline.org,
-        marijn.suijten@somainline.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-References: <20230306165246.14782-1-they@mint.lgbt>
- <20230306165246.14782-2-they@mint.lgbt>
- <4670ddae-6b01-1e5c-b0ed-1f2f498a4f66@mint.lgbt>
- <dfd1d81e-76a0-f8eb-e529-9f8ea1e927b6@linaro.org>
-From:   Lux Aliaga <they@mint.lgbt>
-In-Reply-To: <dfd1d81e-76a0-f8eb-e529-9f8ea1e927b6@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20230217-topic-lenovo-panel-v2-0-2e2c64729330@linaro.org> <20230217-topic-lenovo-panel-v2-1-2e2c64729330@linaro.org>
+In-Reply-To: <20230217-topic-lenovo-panel-v2-1-2e2c64729330@linaro.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 7 Mar 2023 23:08:23 +0100
+Message-ID: <CACRpkda7=Y4ZRBDOhxE974qV-yXuFyZZs7m_aBwtF9qivV5WQg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: display/panel: Add Lenovo NT36523W
+ BOE panel
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jianhua Lu <lujianhua000@gmail.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 3/6/2023 14:09, Konrad Dybcio wrote:
+On Tue, Mar 7, 2023 at 2:26=E2=80=AFPM Konrad Dybcio <konrad.dybcio@linaro.=
+org> wrote:
 
+> Add bindings for the 2000x1200px IPS panel found on Lenovo Tab P11/
+> XiaoXin Pad devices.
 >
-> On 6.03.2023 18:01, Lux Aliaga wrote:
->> On 06/03/2023 13:52, Lux Aliaga wrote:
->>> Document the compatible for UFS found on the SM6125.
->>>
->>> Signed-off-by: Lux Aliaga <they@mint.lgbt>
->>> Reviewed-by: Martin Botka <martin.botka@somainline.org>
->>> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>> ---
->>>  =C2=A0 Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 2 ++
->>>  =C2=A0 1 file changed, 2 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Do=
-cumentation/devicetree/bindings/ufs/qcom,ufs.yaml
->>> index b517d76215e3..42422f3471b3 100644
->>> --- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
->>> +++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
->>> @@ -29,6 +29,7 @@ properties:
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=
- qcom,sc8280xp-ufshc
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=
- qcom,sdm845-ufshc
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=
- qcom,sm6115-ufshc
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - qcom,sm6125=
--ufshc
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=
- qcom,sm6350-ufshc
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=
- qcom,sm8150-ufshc
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=
- qcom,sm8250-ufshc
->>> @@ -185,6 +186,7 @@ allOf:
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 c=
-ontains:
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 enum:
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 - qcom,sm6115-ufshc
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 - qcom,sm6125-ufshc
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 then:
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 properties:
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 clocks:
->> I have to apologize. I worked on a changelog for this patchset but I s=
-kipped the subject header, therefore it didn't send, and as I realized th=
-is I interrupted the process, leaving the patchset incomplete. I'll retry=
- sending it, this time correctly.
-> Happens, next time resend it with a RESEND prefix, e.g. [RESEND PATCH 1=
-/2]
->
-> Konrad
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Thank you! Will take this into consideration for the future. I received=20
-this email after I resent the patchset, so that's why I didn't add the=20
-prefix.
+(...)
+> +$id: http://devicetree.org/schemas/display/panel/lenovo,nt36523w-boe-j60=
+6.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NT36523W BOE panel found on Lenovo J606 devices
 
---=20
-Lux Aliaga
-https://nixgoat.me/
+It's a Novatek NT36523 display controller-based device isn't it?
 
+I would reflect that in the title or at least the description.
+
+> +
+> +maintainers:
+> +  - Konrad Dybcio <konrad.dybcio@linaro.org>
+> +
+> +allOf:
+> +  - $ref: panel-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    const: lenovo,nt36523w-boe-j606
+> +
+> +  reg:
+> +    maxItems: 1
+> +    description: DSI virtual channel
+> +
+> +  vddio-supply: true
+> +  reset-gpios: true
+> +  rotation: true
+> +  port: true
+
+This is clearly (as can be seen from the magic in the driver) a
+Novatek NT36523 display controller, just configured differently.
+https://lore.kernel.org/lkml/20230220121258.10727-1-lujianhua000@gmail.com/=
+T/
+
+Why can't you just modify the existing nt36523 binding from
+Jianhua Lu by e.g. making these two non-required:
+
+ - vddpos-supply
+ - vddneg-supply
+
+It would not be helpful for driver writers to have two different bindings
+for similar hardware hand having to write code to handle different
+properties depending on which binding is used, so please unify into
+one binding by cooperating with Jianhua.
+
+Would it help if we merged Jianhua's binding so you can build on top?
+
+Yours,
+Linus Walleij
