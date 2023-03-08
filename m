@@ -2,150 +2,207 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62D97C64EC4
-	for <phone-devel@archiver.kernel.org>; Wed,  8 Mar 2023 11:39:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 069ECC678D5
+	for <phone-devel@archiver.kernel.org>; Wed,  8 Mar 2023 11:54:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230369AbjCHLip (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 8 Mar 2023 06:38:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33360 "EHLO
+        id S230482AbjCHLyL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 8 Mar 2023 06:54:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230250AbjCHLiL (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Mar 2023 06:38:11 -0500
-Received: from amity.mint.lgbt (vmi888983.contaboserver.net [149.102.157.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A008C32E58
-        for <phone-devel@vger.kernel.org>; Wed,  8 Mar 2023 03:38:07 -0800 (PST)
-Received: from amity.mint.lgbt (mx.mint.lgbt [127.0.0.1])
-        by amity.mint.lgbt (Postfix) with ESMTP id 4PWr0Y2D69z1S5Jy
-        for <phone-devel@vger.kernel.org>; Wed,  8 Mar 2023 06:38:05 -0500 (EST)
-Authentication-Results: amity.mint.lgbt (amavisd-new);
-        dkim=pass (2048-bit key) reason="pass (just generated, assumed good)"
-        header.d=mint.lgbt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mint.lgbt; h=
-        content-transfer-encoding:content-type:mime-version:message-id
-        :references:in-reply-to:user-agent:subject:to:from:date; s=dkim;
-         t=1678275484; x=1679139485; bh=fUz9L+nr5UDOp/B833d5gx+2B4OI8cyq
-        Eq9E6OrbgcI=; b=K9CpFa03TlkC/lInakKbUT28RpaeCPw/0mcn9JcetbtJMeRB
-        SHDtX8zoeoeETETt/YYNHizo3fn9s5HQkVVd0Fn4zkX+c/oKLAWDtQOuEIDhgMGZ
-        w/Ql4XDIlNF32i0h3ZALznotcGsJUI+NbAzQuRTWMacp8yBNMME8BPgZ0TMsRdyA
-        OEo2XFpUxLA1x5v/ONr+qCr0ktDE+spYfe4rxfbLtHCEeXKolPwug+e4Y4cVMd/d
-        VuWoK0GE3z8LP8ld/g9dIYvm1uhlDno0PAdAUHVZoYnO/EkVl6sNWYHC+6XPttR0
-        R1waAX1ODkFABkv+cHzyJk5ilTfjiQFBVQvlOg==
-X-Virus-Scanned: amavisd-new at amity.mint.lgbt
-Received: from amity.mint.lgbt ([127.0.0.1])
-        by amity.mint.lgbt (amity.mint.lgbt [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id ZXMdwek_rJck for <phone-devel@vger.kernel.org>;
-        Wed,  8 Mar 2023 06:38:04 -0500 (EST)
-Received: from [127.0.0.1] (unknown [186.105.8.42])
-        by amity.mint.lgbt (Postfix) with ESMTPSA id 4PWr0L6QcFz1S4yx;
-        Wed,  8 Mar 2023 06:37:54 -0500 (EST)
-Date:   Wed, 08 Mar 2023 08:37:48 -0300
-From:   Lux Aliaga <they@mint.lgbt>
-To:     Johan Hovold <johan@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-CC:     agross@kernel.org, andersson@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
-        kishon@kernel.org, alim.akhtar@samsung.com, avri.altman@wdc.com,
-        bvanassche@acm.org, keescook@chromium.org, tony.luck@intel.com,
-        gpiccoli@igalia.com, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
-        phone-devel@vger.kernel.org, martin.botka@somainline.org,
-        marijn.suijten@somainline.org
-Subject: Re: [PATCH v7 3/6] phy: qcom-qmp: Add SM6125 UFS PHY support
-User-Agent: K-9 Mail for Android
-In-Reply-To: <ZAhwTcMZoCQVULQe@hovoldconsulting.com>
-References: <20230306170817.3806-1-they@mint.lgbt> <20230306170817.3806-4-they@mint.lgbt> <25c17af5-8f6b-a2c3-dab3-f9bc69711db7@linaro.org> <ZAhrT1ICTQjfdeGq@hovoldconsulting.com> <64ab4061-6a8b-662e-1c7a-99b0da26751c@linaro.org> <ZAhwTcMZoCQVULQe@hovoldconsulting.com>
-Message-ID: <DE127158-6956-42E9-B7AE-9687B4ABD6DA@mint.lgbt>
+        with ESMTP id S231213AbjCHLxt (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Mar 2023 06:53:49 -0500
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 633601517A;
+        Wed,  8 Mar 2023 03:53:30 -0800 (PST)
+Received: by mail-pl1-x629.google.com with SMTP id y11so17435513plg.1;
+        Wed, 08 Mar 2023 03:53:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678276409;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Vj24eZaGsqAjYr4sP0gslIio7aH6ugMTgwkDBRsU18=;
+        b=VXH3SA8b1U9e3CJ37OWVuPaHy4IdZVCpO7caEmSCMriN3yPHWEtYJxrxv31ce82qh5
+         epd19iy1fddh/mZZZsm5qkA+F5Druqh5ZkKDN2QmDBOVlQ/TB9FVoDrRMBXIJvdhrm/r
+         dgJPzzVHOWzYe5CR1JTLK4ThkEbRG6OROW4j4qpOt7GW9buFuRiA5SMDEJ033/FjWz/b
+         WZ1MPDQ8NQQdnw+tHP6wy2B10vnLL21fCi4MulyEoFOWKsBVJkXE+jg9pvbkjutb+pv8
+         Il84J5edsysbV32qkSXRVZf7B7/VyX37phbVBJzdURBoIkosotGAetagsP+HhvxRKL1D
+         cRrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678276409;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2Vj24eZaGsqAjYr4sP0gslIio7aH6ugMTgwkDBRsU18=;
+        b=RhEgav2xpZ+DORVOuRTCAL9+EOXC205G9KxJv7Fjyh+mWRgvHGSwfvASwDjawOO9R2
+         vANB6UKqyiwFudLJ2eb0iBJA/sp9LCY/eJDFGnU2o2+yNBxLuVDKJoN1c2skWJSsFpM2
+         0AfX5M2pc4prdwf6zPcah2XY4rYsjf8GLPYzi6viaxQBHm4AS5ZB9v2wpc0Yh7WXYFAR
+         qyrTKk5O71oi0EGIDSss39Q06mSh3gbq/YybZ/5EQp86cmuIaZ3fHoxdq9agnq4hQKqH
+         utF40fXZBa0uqISCEFqtTtZIsWueUu2OCnPujBHaR2kdwB2+aBgXa9u0M/6uxzxQbtmq
+         GH1g==
+X-Gm-Message-State: AO0yUKWv2IXYZPRahmUO6mvVn/9jVA6NXdCTrfDYJFd2wrdski/IA1hw
+        hoM43zgDFhd+RTH650E2TpM=
+X-Google-Smtp-Source: AK7set/dfmC6kYdQhlgkAkhfYlYdPwpyBeTjunHGXTNwJ9uFFNX1eyDEQc2zNVtDi/vXIg7yaraeXw==
+X-Received: by 2002:a17:90a:de94:b0:234:881b:2e8b with SMTP id n20-20020a17090ade9400b00234881b2e8bmr18843695pjv.49.1678276409123;
+        Wed, 08 Mar 2023 03:53:29 -0800 (PST)
+Received: from Gentoo (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id t14-20020a17090a2f8e00b00230da56ddecsm8911479pjd.27.2023.03.08.03.53.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Mar 2023 03:53:28 -0800 (PST)
+Date:   Wed, 8 Mar 2023 19:53:21 +0800
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] drm/panel: Add driver for Novatek NT36523
+Message-ID: <ZAh3MSpQ30YyPAVe@Gentoo>
+References: <20230308043706.16318-1-lujianhua000@gmail.com>
+ <20230308043706.16318-2-lujianhua000@gmail.com>
+ <66d293a8-f850-cb80-0c83-2ebf7e29d0c2@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Autocrypt: addr=they@mint.lgbt; keydata=
- mDMEYyUigxYJKwYBBAHaRw8BAQdA4Emr08ZPSL9p/JLdojT2GPRmh6URPjLQf9l/Kf7x5eC0G0x1
- eCBBbGlhZ2EgPHRoZXlAbWludC5sZ2J0PoiTBBMWCgA7FiEEYa2kUv8kbagAwdmwtWyAWWhjdDcF
- AmMlIoMCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQtWyAWWhjdDf/YQD/VfoHtwZa
- OyBStI87Sv3Wdydps+MALWt7RfPA/AVd/i0A/21kQ+Wr6Hrb7Lz43H3+JLTaQk1XGKn7HMvpARdw
- tVYBuDgEYyUigxIKKwYBBAGXVQEFAQEHQJE2MuI8EY9+pcwq9ynsMxCh1J0AGGo7hO2n9EQtOClI
- AwEIB4h4BBgWCgAgFiEEYa2kUv8kbagAwdmwtWyAWWhjdDcFAmMlIoMCGwwACgkQtWyAWWhjdDe+
- xwD/ZtWx58K/+zLhrdO/kjGftMVM+J3mPA5fJxRYC2Ut42ABAKb0aGOEwFS5XvkOwCLUAMqLGjRg
- SDwi1EbSA+iQnkkB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <66d293a8-f850-cb80-0c83-2ebf7e29d0c2@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Wed, Mar 08, 2023 at 12:13:53PM +0100, Konrad Dybcio wrote:
+> 
+> 
+> On 8.03.2023 05:37, Jianhua Lu wrote:
+> > Add a driver for panels using the Novatek NT36523 display driver IC.
+> > 
+> > Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+> > ---
+> > Changes in v3:
+> >   - Refactor source code
+> > 
+> > Changes in v2:
+> >   - Refactor and clean up source code
+> This is a veeery vague changelog, akin to "change patch", please
+> be more specific the next time around.
+> 
+Acked, thanks
+> 
+> [...]
+> 
+> > +#define DSI_NUM_MIN 1
+> > +
+> > +/* Macro modified from mipi_dual_dsi_dcs_write_seq */
+> > +#define mipi_dual_dsi_dcs_write_seq(dsi, cmd, seq...)           	   \
+> > +	do {                                                               \
+> > +		static const u8 d[] = { cmd, seq };                        \
+> > +		int i, ret;                                                \
+> > +		for (i = 0; i < ARRAY_SIZE(dsi); i++) {                    \
+> > +			ret = mipi_dsi_dcs_write_buffer(dsi[i], d, ARRAY_SIZE(d));    \
+> > +			if (ret < 0) {                                             \
+> > +				dev_err_ratelimited(                               \
+> > +					&dsi[i]->dev, "sending command %#02x failed: %d\n", \
+> > +					cmd, ret);                                 \
+> > +				return ret;                                        \
+> > +			}                                                          \
+> > +		}                                                                  \
+> > +	} while (0)
+> > +
+> This should definitely be put in a common file..
+Acked.
+> 
+> 
+> > +static const struct drm_display_mode elish_boe_mode = {
+> > +	/* Current max freqency is 104HZ, TODO 120HZ */
+> Is it a DPU issue, or does the panel not work correctly when you
+> jack up the clocks? Did you use the correct init sequence and porches
+> for the 120Hz mode, including the mode switch command set?
+> 
+panel will turn into bluescreen when freqency overs 104HZ, downstream
+seems use a dsi-cphy enhance feature to make it working. Init sequence
+and porches are right
 
-
-On 8 March 2023 08:23:57 GMT-03:00, Johan Hovold <johan@kernel=2Eorg> wrot=
-e:
->On Wed, Mar 08, 2023 at 12:15:39PM +0100, Konrad Dybcio wrote:
->>=20
->>=20
->> On 8=2E03=2E2023 12:02, Johan Hovold wrote:
->> > On Wed, Mar 08, 2023 at 11:09:48AM +0100, Konrad Dybcio wrote:
->> >>
->> >>
->> >> On 6=2E03=2E2023 18:08, Lux Aliaga wrote:
->> >>> The SM6125 UFS PHY is compatible with the one from SM6115=2E Add a
->> >>> compatible for it and modify the config from SM6115 to make them
->> >>> compatible with the SC8280XP binding
->> >>>
->> >>> Signed-off-by: Lux Aliaga <they@mint=2Elgbt>
->> >>> Reviewed-by: Martin Botka <martin=2Ebotka@somainline=2Eorg>
->> >>> ---
->> >>>  drivers/phy/qualcomm/phy-qcom-qmp-ufs=2Ec | 12 ++++++++++++
->> >>>  1 file changed, 12 insertions(+)
->> >>>
->> >>> diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-ufs=2Ec b/drivers/ph=
-y/qualcomm/phy-qcom-qmp-ufs=2Ec
->> >>> index 318eea35b972=2E=2E44c29fdfc551 100644
->> >>> --- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs=2Ec
->> >>> +++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs=2Ec
->> >>> @@ -620,6 +620,13 @@ static const char * const qmp_phy_vreg_l[] =3D=
- {
->> >>>  	"vdda-phy", "vdda-pll",
->> >>>  };
->> >>> =20
->> >>> +static const struct qmp_ufs_offsets qmp_ufs_offsets_v3_660 =3D {
->> >>> +	=2Eserdes		=3D 0,
->> >>> +	=2Epcs		=3D 0xc00,
->> >>> +	=2Etx		=3D 0x400,
->> >>> +	=2Erx		=3D 0x600,
->> >>> +};
->> >>> +
->> >>>  static const struct qmp_ufs_offsets qmp_ufs_offsets_v5 =3D {
->> >>>  	=2Eserdes		=3D 0,
->> >>>  	=2Epcs		=3D 0xc00,
->> >>> @@ -693,6 +700,8 @@ static const struct qmp_phy_cfg sdm845_ufsphy_c=
-fg =3D {
->> >>>  static const struct qmp_phy_cfg sm6115_ufsphy_cfg =3D {
->> >>>  	=2Elanes			=3D 1,
->> >>> =20
->> >>> +	=2Eoffsets		=3D &qmp_ufs_offsets_v3_660,
->> >> Will this not trigger OOB r/w for the users of qcom,sm6115-smp-ufs-p=
-hy
->> >> which specify the regions separately (old binding style)?
->> >=20
->> > No, that should work fine=2E
->> So do you think the SM6115 binding could be updated too? Or should
->> we keep it as-is for ABI purposes?=2E=2E
->
->They could be and the possibility has been raised=2E I think it may be
->more important to convert the old combo-phy binding (it's on my list,
->but I keep getting preempted), but at some point we can get rid of the
->legacy UFS binding as well=2E
->
->> > But looks like this series needs to be rebased on 6=2E3-rc1 as these
->> > offsets are now already set in mainline=2E
->> =2E=2EOr did you do that already and I can't find it?
->
->It seems a previous version of this patch was merged almost two months
->ago=2E
->
->	9b9e29af984c ("phy: qcom-qmp: Add SM6125 UFS PHY support")
->
->Not sure what failed here=2E
->
->Johan
-Yes, but it received some comments regarding using v5 offsets instead of v=
-3-660=2E I could spin off this change into a new patch if necessary=2E
+> Could you also implement a 60 (or whatever other value is also
+> implemented downstream) Hz mode?
+I will try to implement it.
+> 
+> > +	.clock = (1600 + 60 + 8 + 60) * (2560 + 26 + 4 + 168) * 104 / 1000,
+> > +	.hdisplay = 1600,
+> > +	.hsync_start = 1600 + 60,
+> > +	.hsync_end = 1600 + 60 + 8,
+> > +	.htotal = 1600 + 60 + 8 + 60,
+> > +	.vdisplay = 2560,
+> > +	.vsync_start = 2560 + 26,
+> > +	.vsync_end = 2560 + 26 + 4,
+> > +	.vtotal = 2560 + 26 + 4 + 168,
+> > +};
+> > +
+> > +static const struct drm_display_mode elish_csot_mode = {
+> > +	/* Current max freqency is 104HZ, TODO 120HZ */
+> > +	.clock = (1600 + 200 + 40 + 52) * (2560 + 26 + 4 + 168) * 104 / 1000,
+> > +	.hdisplay = 1600,
+> > +	.hsync_start = 1600 + 200,
+> > +	.hsync_end = 1600 + 200 + 40,
+> > +	.htotal = 1600 + 200 + 40 + 52,
+> > +	.vdisplay = 2560,
+> > +	.vsync_start = 2560 + 26,
+> > +	.vsync_end = 2560 + 26 + 4,
+> > +	.vtotal = 2560 + 26 + 4 + 168,
+> > +};
+> > +
+> > +static const struct panel_desc elish_boe_desc = {
+> > +	.modes = &elish_boe_mode,
+> > +	.dsi_info = {
+> > +		.type = "NT36523",
+> That's a bit vague, the driver IC is not very telling about the
+> panel itself. Since we're not able to determine much more information,
+> this could contain the panel manufacturer and the device name.
+Acked.
+> 
+> > +		.channel = 0,
+> > +		.node = NULL,
+> > +	},
+> > +	.width_mm = 127,
+> > +	.height_mm = 203,
+> > +	.bpc = 8,
+> > +	.lanes = 3,
+> > +	.format = MIPI_DSI_FMT_RGB888,
+> > +	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_CLOCK_NON_CONTINUOUS | MIPI_DSI_MODE_LPM,
+> > +	.init_sequence = elish_boe_init_sequence,
+> > +	.is_dual_dsi = true,
+> > +};
+> > +
+> [...]
+> 
+> > +static int nt36523_probe(struct mipi_dsi_device *dsi)
+> > +{
+> [...]
+> 
+> > +	/* If the panel is dual dsi, register DSI1 */
+> > +	if (pinfo->desc->is_dual_dsi) {
+> > +		info = &pinfo->desc->dsi_info;
+> > +
+> > +		dsi1 = of_graph_get_remote_node(dsi->dev.of_node, 1, -1);
+> > +		if (!dsi1) {
+> > +			dev_err(dev, "cannot get secondary DSI node.\n");
+> > +			return -ENODEV;
+> > +		}
+> > +
+> > +		dsi1_host = of_find_mipi_dsi_host_by_node(dsi1);
+> > +		of_node_put(dsi1);
+> Shouldn't you put the reference only if it's found?
+thanks for spot it.
+> 
+> > +		if (!dsi1_host) {
+> > +			dev_err(dev, "cannot get secondary DSI host\n");
+> > +			return -EPROBE_DEFER;
+> dev_err_probe, here and in neighbouring exit return paths?
+Acked.
+> 
+> 
+> Konrad
