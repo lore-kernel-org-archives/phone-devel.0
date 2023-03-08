@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA5EBC678D5
-	for <phone-devel@archiver.kernel.org>; Wed,  8 Mar 2023 00:38:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80BDFC6FA99
+	for <phone-devel@archiver.kernel.org>; Wed,  8 Mar 2023 00:45:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230052AbjCHAii (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 7 Mar 2023 19:38:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34606 "EHLO
+        id S229529AbjCHAps (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 7 Mar 2023 19:45:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230107AbjCHAiU (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Mar 2023 19:38:20 -0500
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B024AFDD;
-        Tue,  7 Mar 2023 16:38:02 -0800 (PST)
-Received: by mail-pl1-x629.google.com with SMTP id p20so16057962plw.13;
-        Tue, 07 Mar 2023 16:38:02 -0800 (PST)
+        with ESMTP id S229477AbjCHApq (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 7 Mar 2023 19:45:46 -0500
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EBDDA8EB7;
+        Tue,  7 Mar 2023 16:45:45 -0800 (PST)
+Received: by mail-pg1-x52c.google.com with SMTP id d10so8700443pgt.12;
+        Tue, 07 Mar 2023 16:45:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678235855;
+        d=gmail.com; s=20210112; t=1678236345;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=SR/547FI3dqnvDn6OGe6fd1eQrMxuzZlhfxHSEijotM=;
-        b=jSHi7HiOYmICS2einqkRKlS3BB6yDS8GWRRqvlKgJ83cDSAEFpchQlYT65HgZatLld
-         xo5dCXUzEAaOlz8q+Z99Ky/55G4zU8SwJ6y2a1z+AusQZz2c23pDbbTsEuxo7dyonXQw
-         6Y8Zk/7/WCynhK9sC+VZSDKTd8Nz+ruO6cred+KXkgv1VnoPvOLySw/kuSASgnos9UeZ
-         jkJiGxUO8KDwyPEb3RiTFEBWDKnAWlAF1BbJqWcnc9T+iRIMTHRhOChF5oW9g2qV6ydD
-         iKCLgt7VbgdmV1OwOOdr6lCYOUqLb5yO0Gj7NtOjm90Q5pLXDjnDyArhXihmY2AF4QFM
-         DOlw==
+        bh=D0ax2sgEUzQvZjIaGlw0Pyd5UALWxKyMm5VBST2yrms=;
+        b=S6zpXba3J9uT8dvc2HWZijtfHcp2L7rJl2Ast5TkGZ8YVO/H6ll3ykNJjFHJsXnqux
+         ei6hh093Jk8HfmQwlRBUr7zzRDjo7T56wfbTsVrbwEpu55KtMBquJw7KWq8ZyLnNk2IN
+         /Hz0Uh9ce7j7kIf9FpHj4n2rpx7xJ9fYs75zCggSHD9pORo5XLVatbqSYvLThpz9i33j
+         +C2p5tIT3PGUOu7YHiNjtX6R0x8BCYDjSWowJvKqk8BP6Fd82fTSP69ESk2W8p3UNCpK
+         5wJCySoPBNXgQpKgvLVxMGxPKBfNTgBgrNVJjC40b7MS43p/nbppitfdNEdFglU6i6K+
+         +4SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678235855;
+        d=1e100.net; s=20210112; t=1678236345;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SR/547FI3dqnvDn6OGe6fd1eQrMxuzZlhfxHSEijotM=;
-        b=vTxsRwVoAJ13AVIKf2rKSV9DVelO9qGZq7V/nGppZixvBnjjddgiXuL8YLnjdia397
-         T8KvL3V96fbGG1R8hurp/GoZVRZ/YInsdn/cDY19r1eUe5WiW6dICDrIwTMS2PFeJtf8
-         qDANKhP8fFhmBWQdUgo920haqv85wgLKxE9LzxPfRhELRsLyhkBRCz+A6D7hJoL3Wt8i
-         D74OINixA2nA95rBijUv5E38/33RgBzhMML/MZMXpvA93C+f9tdYWJy4dLpdlMIBRRz8
-         so+veP1Xi9i/fd6cF7CusW4LoO1DtRFyafbvMXu/6/WMwtixpBU/teWWPmdKRp5UvCOr
-         H4cg==
-X-Gm-Message-State: AO0yUKVzZdBmas0fggkHumBidYMZh/2u+BlLrir2l3d+WslHK05P0sKq
-        F4fBYMs5qPzn1D52wbd2jmA=
-X-Google-Smtp-Source: AK7set/se6v/Sndm89S1Z/vrVsycl4pwMfQjcUCTQghs6L4+WuIXgEpNbcCUDIjHdCHeCV/t/+JKLQ==
-X-Received: by 2002:a17:90a:1946:b0:233:c9e7:c885 with SMTP id 6-20020a17090a194600b00233c9e7c885mr16960269pjh.36.1678235855549;
-        Tue, 07 Mar 2023 16:37:35 -0800 (PST)
+        bh=D0ax2sgEUzQvZjIaGlw0Pyd5UALWxKyMm5VBST2yrms=;
+        b=dh34AVw+fsZNPd2gXyi/i5spO3F9/9N8GxWk2Dy+mDUVhW1/U9PgAP24oxz9XOZH7m
+         16rGNb/baphHqlesVXGWD+tyQ7ncyEdNTCL0fidyRu/fVgPZ9Vt816BshHCpX53uJNXD
+         OkFS+xgXeiEXqD6wetJB4Z92+pb8qX3v5zEV8Vs3GcXTjY2BU2pI18mIFGxrdcvxhxvy
+         eUlwdLxIUr2iQXxVn6kIP+SmKQ28BrbcB2gM67SouS83/rK7/hy0CM2JEOlHRiwARWl2
+         P4rkCCt8VTqJANf2L/j8msPyu/mauPGMAnDwYKkR6+r9Cz4501jCp7hDYV+yjiQwqT4v
+         t/gw==
+X-Gm-Message-State: AO0yUKV5bbpdMja4Z/qcA5r5d9Bvp496XjOXQqAp84ZxVTu9qVc7vQ/I
+        RX5lW1m8Dlf6uf4PEWvhec4D178pb2yceg==
+X-Google-Smtp-Source: AK7set/rVZxSWwprvQ/WvKDRZWKKzRf3KDO7wMLtXsnaYD8WLoki0emzW55feMtlyajY9GwzZAtmPQ==
+X-Received: by 2002:a62:1741:0:b0:5b9:49a5:5ddc with SMTP id 62-20020a621741000000b005b949a55ddcmr14301856pfx.3.1678236345021;
+        Tue, 07 Mar 2023 16:45:45 -0800 (PST)
 Received: from Gentoo (n220246252084.netvigator.com. [220.246.252.84])
-        by smtp.gmail.com with ESMTPSA id y20-20020a17090aca9400b0023317104415sm9767834pjt.17.2023.03.07.16.37.31
+        by smtp.gmail.com with ESMTPSA id 25-20020aa79259000000b005d866d184b5sm8345765pfp.46.2023.03.07.16.45.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Mar 2023 16:37:35 -0800 (PST)
-Date:   Wed, 8 Mar 2023 08:37:27 +0800
+        Tue, 07 Mar 2023 16:45:44 -0800 (PST)
+Date:   Wed, 8 Mar 2023 08:45:37 +0800
 From:   Jianhua Lu <lujianhua000@gmail.com>
 To:     Linus Walleij <linus.walleij@linaro.org>
 Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
@@ -63,7 +63,7 @@ Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
         dri-devel@lists.freedesktop.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
 Subject: Re: [PATCH v2 2/2] drm/panel: Add driver for Novatek NT36523
-Message-ID: <ZAfYx9Im0j5LMuMn@Gentoo>
+Message-ID: <ZAfasb9aKTgyjbFc@Gentoo>
 References: <20230220121258.10727-1-lujianhua000@gmail.com>
  <20230220121258.10727-2-lujianhua000@gmail.com>
  <CACRpkdbZCZiMM_qeqMd9=txVvPVHEzM4szOnPR-gCYdiXW_9eA@mail.gmail.com>
@@ -136,9 +136,7 @@ On Tue, Mar 07, 2023 at 11:34:55PM +0100, Linus Walleij wrote:
 > 
 > - Maybe use callbacks to send sequences instead of tables, like in
 >   the himax driver?
-I use init cmd tables in order to send init sequences to dsi0 and dsi1 at the
-same time (sync dual dsi mode). I don't found a convenient way to use
-mipi_dsi_dcs_write_seq() for sync dual dsi mode.
+Maybe I should create a wrapper of mipi_dsi_dcs_write_seq() for sync dual dsi mode.
 > 
 > Other than that it seems like something that could also handle the Lenovo
 > display, or the other way around, I don't know which driver is the best
