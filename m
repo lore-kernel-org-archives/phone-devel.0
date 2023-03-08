@@ -2,86 +2,170 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EF8BC76186
-	for <phone-devel@archiver.kernel.org>; Wed,  8 Mar 2023 13:28:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 07322C64EC4
+	for <phone-devel@archiver.kernel.org>; Wed,  8 Mar 2023 13:40:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231736AbjCHN2v (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 8 Mar 2023 08:28:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60562 "EHLO
+        id S231645AbjCHNkY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 8 Mar 2023 08:40:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231414AbjCHN2b (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Mar 2023 08:28:31 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EBB720561;
-        Wed,  8 Mar 2023 05:27:16 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id DC973CE1FB1;
-        Wed,  8 Mar 2023 13:27:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F74C433D2;
-        Wed,  8 Mar 2023 13:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1678282032;
-        bh=zPgPnfEx7TTfrpkIeqTBW0I7Azvx8nMPmWHtRyKCwJE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PFA7LXhTxi7fZ0XL539AtLSO14qzEVc3qRSHZy8NzpDARtmQqjMxzVgOIO/i9razz
-         9SqttdgquWwv3rVzJ83PZ9Ply3rP+zSq5Wo9Od0WkyYzSRgsIJTya8mmsfggl/ITnb
-         HrIc39qcOOnH3pFuQAn7ju2jrrVGxwqNUWj8gKyaFrb9QmYvb51CIyEhvCbHAT7X23
-         byaEILnWonIBblDNm5t4/oVA5/NoRc68LykNHJvOIrIPkO6KHM5jh2RT+1MJH+570D
-         6u5b7X1/sKTIRApWNN534etwOZWnFezOiNFNfnHgjivzezXlnwHHd3ZRbsyAZwE8ad
-         K+Ey++rv4dnyA==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1pZtpm-0006Xi-Px; Wed, 08 Mar 2023 14:27:58 +0100
-Date:   Wed, 8 Mar 2023 14:27:58 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Lux Aliaga <they@mint.lgbt>
-Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>, agross@kernel.org,
-        andersson@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, vkoul@kernel.org,
-        kishon@kernel.org, alim.akhtar@samsung.com, avri.altman@wdc.com,
-        bvanassche@acm.org, keescook@chromium.org, tony.luck@intel.com,
-        gpiccoli@igalia.com, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-scsi@vger.kernel.org, linux-hardening@vger.kernel.org,
-        phone-devel@vger.kernel.org, martin.botka@somainline.org,
-        marijn.suijten@somainline.org
-Subject: Re: [PATCH v7 3/6] phy: qcom-qmp: Add SM6125 UFS PHY support
-Message-ID: <ZAiNXmbep8nR6nkj@hovoldconsulting.com>
-References: <20230306170817.3806-1-they@mint.lgbt>
- <20230306170817.3806-4-they@mint.lgbt>
- <25c17af5-8f6b-a2c3-dab3-f9bc69711db7@linaro.org>
- <ZAhrT1ICTQjfdeGq@hovoldconsulting.com>
- <64ab4061-6a8b-662e-1c7a-99b0da26751c@linaro.org>
- <ZAhwTcMZoCQVULQe@hovoldconsulting.com>
- <DE127158-6956-42E9-B7AE-9687B4ABD6DA@mint.lgbt>
+        with ESMTP id S231868AbjCHNkF (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Mar 2023 08:40:05 -0500
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7314824C94;
+        Wed,  8 Mar 2023 05:38:08 -0800 (PST)
+Received: by mail-pj1-x1032.google.com with SMTP id ce8-20020a17090aff0800b0023a61cff2c6so3820745pjb.0;
+        Wed, 08 Mar 2023 05:38:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678282687;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GEoW7Edk44DGWc4GB3PWBqttLOpuxjyKXvitXj1SBNA=;
+        b=WPZmR06RJjaBgYuthIiHCOGVm22ZUKax0GCCS1OoDD2LO7Fr+b4Dpmsm71txU4PjFu
+         vByAePacf8e2mGFRSXX4EvVo/iQcO57+8R+s3m9Cz+iaNSxWgy6YoRfpquPChgobmlUS
+         uiuT/CyD/8W8VUFLNBSZ6hFhuLBUs5+7OINgeMzAPW4vsF4Oaz7ZzDvyxsM3DWP2Dn6P
+         f6AfMQ3c02pZkLXQ6hi429wOf0UQtAoqGztMVeD8zMjSqOujbM4cCk4oXlHOiDnjQhD2
+         aAi83zB60CKa9AiKLWkY6Tl7Lq8QTARs2ft5Fwv/EL10Mv9eqMECfAAAyoJVFctZq9z6
+         WapQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678282687;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GEoW7Edk44DGWc4GB3PWBqttLOpuxjyKXvitXj1SBNA=;
+        b=v0ZrEyI+f/xVaGZXoJYfaROWw69VdRGfUufL7K/y+FNzJVLClxw1qK0eu11S4xVplQ
+         99OoSFxjN/cWQzgB6WKym7Jhrp/5bv3Y9kWAyXou+hXt6/ZprdnCFJrBZPLLYxq/3mmo
+         A941cWlJHsyXG9hQMyEWwcIW+j4ccSk84uEM5U+2DoOw1PhbIy+uN/1t6/Prb6rk6xVp
+         vvz1x2UcC4Eqd5PVypQlkmvoOkCVwyrPJg7did4kUCSp/tsNE3frddgu0Uay+gIl1OgT
+         5puLJdCPDfzpvn2TrjllcNKiG3neDIg+ET/p9gSuV3Zz+rXZZI6V+URzAn+XSdJzj7ke
+         QZ9w==
+X-Gm-Message-State: AO0yUKU7saONjPnHGCrjQuuvVuILPoeI7T/WZz9dA4tRe4jdimCYxDRq
+        h3HYJk43tlV7vfOZ1olN2Uo=
+X-Google-Smtp-Source: AK7set/0r12xxZn37DfmlBs5S3EQxFWTEtKllSI2HMgFh3/2TjUn5CNF8v1MNVCn8BMZo2S3AXSw2Q==
+X-Received: by 2002:a17:90b:1a8b:b0:234:2007:1ff6 with SMTP id ng11-20020a17090b1a8b00b0023420071ff6mr22771976pjb.14.1678282687514;
+        Wed, 08 Mar 2023 05:38:07 -0800 (PST)
+Received: from Gentoo (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id j24-20020a17090a589800b002369e16b276sm10709273pji.32.2023.03.08.05.38.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Mar 2023 05:38:07 -0800 (PST)
+Date:   Wed, 8 Mar 2023 21:37:59 +0800
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] drm/panel: Add driver for Novatek NT36523
+Message-ID: <ZAiPTat/kmLyaJmA@Gentoo>
+References: <20230308043706.16318-1-lujianhua000@gmail.com>
+ <20230308043706.16318-2-lujianhua000@gmail.com>
+ <66d293a8-f850-cb80-0c83-2ebf7e29d0c2@linaro.org>
+ <ZAh3MSpQ30YyPAVe@Gentoo>
+ <1cbe9e29-13a4-574e-6d8c-b2506e7a36b3@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DE127158-6956-42E9-B7AE-9687B4ABD6DA@mint.lgbt>
+In-Reply-To: <1cbe9e29-13a4-574e-6d8c-b2506e7a36b3@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Mar 08, 2023 at 08:37:48AM -0300, Lux Aliaga wrote:
-> On 8 March 2023 08:23:57 GMT-03:00, Johan Hovold <johan@kernel.org> wrote:
-
-> >It seems a previous version of this patch was merged almost two months
-> >ago.
-> >
-> >	9b9e29af984c ("phy: qcom-qmp: Add SM6125 UFS PHY support")
-> >
-> >Not sure what failed here.
-
-> Yes, but it received some comments regarding using v5 offsets instead
-> of v3-660. I could spin off this change into a new patch if necessary.
-
-Once a patch has been applied, you generally need to do any further
-changes incrementally on top.
-
-It seems Dmitry renamed the struct himself after the patch was applied
-in this case.
-
-Johan
+On Wed, Mar 08, 2023 at 01:33:39PM +0100, Konrad Dybcio wrote:
+> 
+> phy-type:
+>     description: D-PHY (default) or C-PHY mode
+>     enum: [ 10, 11 ]
+>     default: 10
+> 
+> try setting that to 11 under your DSI PHYs (or one? not sure).
+I already used phy-type = <PHY_TYPE_CPHY> before, this equate to qcom,panel-cphy-mode in
+downstream panel device tree, but there is qcom,mdss-dsi-cphy-strength isn't
+implemented.
+> Konrad
+> > 
+> >> Could you also implement a 60 (or whatever other value is also
+> >> implemented downstream) Hz mode?
+> > I will try to implement it.
+> >>
+> >>> +	.clock = (1600 + 60 + 8 + 60) * (2560 + 26 + 4 + 168) * 104 / 1000,
+> >>> +	.hdisplay = 1600,
+> >>> +	.hsync_start = 1600 + 60,
+> >>> +	.hsync_end = 1600 + 60 + 8,
+> >>> +	.htotal = 1600 + 60 + 8 + 60,
+> >>> +	.vdisplay = 2560,
+> >>> +	.vsync_start = 2560 + 26,
+> >>> +	.vsync_end = 2560 + 26 + 4,
+> >>> +	.vtotal = 2560 + 26 + 4 + 168,
+> >>> +};
+> >>> +
+> >>> +static const struct drm_display_mode elish_csot_mode = {
+> >>> +	/* Current max freqency is 104HZ, TODO 120HZ */
+> >>> +	.clock = (1600 + 200 + 40 + 52) * (2560 + 26 + 4 + 168) * 104 / 1000,
+> >>> +	.hdisplay = 1600,
+> >>> +	.hsync_start = 1600 + 200,
+> >>> +	.hsync_end = 1600 + 200 + 40,
+> >>> +	.htotal = 1600 + 200 + 40 + 52,
+> >>> +	.vdisplay = 2560,
+> >>> +	.vsync_start = 2560 + 26,
+> >>> +	.vsync_end = 2560 + 26 + 4,
+> >>> +	.vtotal = 2560 + 26 + 4 + 168,
+> >>> +};
+> >>> +
+> >>> +static const struct panel_desc elish_boe_desc = {
+> >>> +	.modes = &elish_boe_mode,
+> >>> +	.dsi_info = {
+> >>> +		.type = "NT36523",
+> >> That's a bit vague, the driver IC is not very telling about the
+> >> panel itself. Since we're not able to determine much more information,
+> >> this could contain the panel manufacturer and the device name.
+> > Acked.
+> >>
+> >>> +		.channel = 0,
+> >>> +		.node = NULL,
+> >>> +	},
+> >>> +	.width_mm = 127,
+> >>> +	.height_mm = 203,
+> >>> +	.bpc = 8,
+> >>> +	.lanes = 3,
+> >>> +	.format = MIPI_DSI_FMT_RGB888,
+> >>> +	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_CLOCK_NON_CONTINUOUS | MIPI_DSI_MODE_LPM,
+> >>> +	.init_sequence = elish_boe_init_sequence,
+> >>> +	.is_dual_dsi = true,
+> >>> +};
+> >>> +
+> >> [...]
+> >>
+> >>> +static int nt36523_probe(struct mipi_dsi_device *dsi)
+> >>> +{
+> >> [...]
+> >>
+> >>> +	/* If the panel is dual dsi, register DSI1 */
+> >>> +	if (pinfo->desc->is_dual_dsi) {
+> >>> +		info = &pinfo->desc->dsi_info;
+> >>> +
+> >>> +		dsi1 = of_graph_get_remote_node(dsi->dev.of_node, 1, -1);
+> >>> +		if (!dsi1) {
+> >>> +			dev_err(dev, "cannot get secondary DSI node.\n");
+> >>> +			return -ENODEV;
+> >>> +		}
+> >>> +
+> >>> +		dsi1_host = of_find_mipi_dsi_host_by_node(dsi1);
+> >>> +		of_node_put(dsi1);
+> >> Shouldn't you put the reference only if it's found?
+> > thanks for spot it.
+> >>
+> >>> +		if (!dsi1_host) {
+> >>> +			dev_err(dev, "cannot get secondary DSI host\n");
+> >>> +			return -EPROBE_DEFER;
+> >> dev_err_probe, here and in neighbouring exit return paths?
+> > Acked.
+> >>
+> >>
+> >> Konrad
