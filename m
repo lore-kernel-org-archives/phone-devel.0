@@ -2,102 +2,105 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 240F5C76195
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Mar 2023 20:49:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98763C74A4B
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Mar 2023 22:37:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231243AbjCIUsh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Mar 2023 15:48:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59886 "EHLO
+        id S229716AbjCIWhY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Mar 2023 17:37:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231311AbjCIUsE (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Mar 2023 15:48:04 -0500
-Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE83CEC4B;
-        Thu,  9 Mar 2023 12:48:01 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 7EE07E9BDA;
-        Thu,  9 Mar 2023 12:47:02 -0800 (PST)
-Received: from comms.puri.sm ([127.0.0.1])
-        by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id OXiuXTj4O0Qt; Thu,  9 Mar 2023 12:47:01 -0800 (PST)
-From:   Martin Kepplinger <martin.kepplinger@puri.sm>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
-        t=1678394821; bh=vHmsWeyl0kk2Tm1nDNXHTPcJ1b7xdBe80joYV/Ib/Zs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UJ4eOZ2V9C2WmLGKozPHozgoQscGsXK7q0usQIEmlEkW+vfEegnSOaVDY+trBLeKK
-         113dUaudetAtjq2ofYkvSMpZQ5eVd1Cfhuyb/XKqza9JBCNnAQxN7IKqr3fSDmbGK0
-         UjyB0X7X9jKMvFPiQ8fOpak3g6Ae+JkryT5NVZnHZXJipkGxTzbJmP/wJqGkp4z7za
-         tXgpBn1+3q04u2xCgflnN3GLu64BUDpVfFRrT5eO30G0ZLMiYwWO4RhoGfOgJPiLZP
-         oQFp4TK/y+4xhKWRqu3empK/kfTao77xv5DSrNn3YuBTKvSaj2FBBwm45nh2Lfgsmu
-         7+2JnZ+Hy71aQ==
-To:     robh@kernel.org, krzysztof.kozlowski@linaro.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-        festevam@gmail.com
-Cc:     kernel@puri.sm, linux-imx@nxp.com, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-        Martin Kepplinger <martin.kepplinger@puri.sm>
-Subject: [PATCH v1 10/14] arm64: dts: imx8mq-librem5: Adjust proximity sensor's near levels
-Date:   Thu,  9 Mar 2023 21:46:04 +0100
-Message-Id: <20230309204608.237605-11-martin.kepplinger@puri.sm>
-In-Reply-To: <20230309204608.237605-1-martin.kepplinger@puri.sm>
-References: <20230309204608.237605-1-martin.kepplinger@puri.sm>
+        with ESMTP id S229917AbjCIWhY (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Mar 2023 17:37:24 -0500
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398B5103BD7
+        for <phone-devel@vger.kernel.org>; Thu,  9 Mar 2023 14:37:22 -0800 (PST)
+Received: by mail-lf1-x12d.google.com with SMTP id n2so4236417lfb.12
+        for <phone-devel@vger.kernel.org>; Thu, 09 Mar 2023 14:37:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678401440;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vFWvVfxVAn0JYy2RvVNotdBgoXVzu6+UA0ROvn+lkig=;
+        b=gPKCt6kGrGzWI6Z5cmQ5vHx43shhCsJljJrTbLgeXdksKonaADCLSAKdrC4gArTmQx
+         IA6JqX5Y9IIJOtFcV9Th5ilQfOR6I7QPGxvbO43xgKVVrte/3fvf5gP4QaXLz9QJlt0g
+         9Yk0q6DzxvPFAjlIWnujD4SLdF4FGEKThIdvn9/zaQVv4Ceb0PTXwZt73TVCIxfPjFwg
+         2cVz99dHc93rjymJr9jCtdOGLeZKIeMqGqLa4pTZK73SyuztsFW9Uua3KCihyF2/70Sg
+         qE6ALe6EPjavtaUOYPzbYgy9aqXw1+Ec1Mwb+xf+MhmxrxNCxch7HW6WnAyw+G8s7j3d
+         hkHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678401440;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vFWvVfxVAn0JYy2RvVNotdBgoXVzu6+UA0ROvn+lkig=;
+        b=QGlLhUcrUnKRE5Edy+eH1XwSjUjjtHKPbaMHythbIOraE0oxA+Wel90NS69vjlkaek
+         kGQZ6u5uSu0T0DfncTK1UMTDPDL+Au/dxmjHYkNPXTD78oo7plWXdddvbXxVnxwPVu40
+         a8ZkF2t04mthGfnZfBaMMvq+VuHAXNtx+mop/8yg2nZ7Qrm26IXW3VV7MaktbRtuC0Ag
+         FIfDleL/VJ0PRqlPaVAP6hlegyZPHzrGmmerZ2SZrxJW/5+/AvBpkGJKTQq+b+KWnpXv
+         ac0Dar9MqIuO9jdtt8ldpS2OMnWGMWl2HA3kLmzc5H40DJlkH7wYxsO3ZpgXRbQqPhoK
+         UiIA==
+X-Gm-Message-State: AO0yUKURvUK4yCH87+SBYJSANGurTtRhriuHHjgB+uJiTBh7elxNTFDJ
+        DnCu2dLQVdrR6bTGofggsuS/Gg==
+X-Google-Smtp-Source: AK7set9NFAA7v78zu5aKYNTQcuPQtA5qn6A3AwSO27Qt8087MIkK12e2UayAT0g7EVrmj6Jhuti/2w==
+X-Received: by 2002:ac2:4c09:0:b0:4b4:6490:cbf1 with SMTP id t9-20020ac24c09000000b004b46490cbf1mr7060611lfq.15.1678401440025;
+        Thu, 09 Mar 2023 14:37:20 -0800 (PST)
+Received: from [192.168.1.101] (abyj16.neoplus.adsl.tpnet.pl. [83.9.29.16])
+        by smtp.gmail.com with ESMTPSA id a8-20020a2e9808000000b002934a7c04efsm42146ljj.98.2023.03.09.14.37.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Mar 2023 14:37:19 -0800 (PST)
+Message-ID: <aac6ba9c-4230-aff7-c93d-23eaf6895464@linaro.org>
+Date:   Thu, 9 Mar 2023 23:37:17 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v3 2/2] drm/panel: Add driver for Novatek NT36523
+Content-Language: en-US
+To:     Jianhua Lu <lujianhua000@gmail.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230308043706.16318-1-lujianhua000@gmail.com>
+ <20230308043706.16318-2-lujianhua000@gmail.com>
+ <66d293a8-f850-cb80-0c83-2ebf7e29d0c2@linaro.org> <ZAh3MSpQ30YyPAVe@Gentoo>
+ <1cbe9e29-13a4-574e-6d8c-b2506e7a36b3@linaro.org> <ZAiPTat/kmLyaJmA@Gentoo>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <ZAiPTat/kmLyaJmA@Gentoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-Based on tests with my left ear (which appears to require lower levels
-than the right one), one Birch, one Dogwood and three Evergreens.
+[...]
+= of_graph_get_remote_node(dsi->dev.of_node, 1, -1);
+>>>>> +		if (!dsi1) {
+>>>>> +			dev_err(dev, "cannot get secondary DSI node.\n");
+>>>>> +			return -ENODEV;
+>>>>> +		}
+>>>>> +
+>>>>> +		dsi1_host = of_find_mipi_dsi_host_by_node(dsi1);
+>>>>> +		of_node_put(dsi1);
+>>>> Shouldn't you put the reference only if it's found?
+>>> thanks for spot it.
+Apparently not.. please don't change this
 
-It seems that the sensor reacts very weakly to hair, so let's make
-the thresholds rather generous to compensate.
-
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
----
- arch/arm64/boot/dts/freescale/imx8mq-librem5-r2.dts  | 2 +-
- arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi | 2 +-
- arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts  | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r2.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r2.dts
-index 4f69eb32b1c90..2b3d437a642a9 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r2.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r2.dts
-@@ -23,5 +23,5 @@ &bq25895 {
- };
- 
- &proximity {
--	proximity-near-level = <120>;
-+	proximity-near-level = <50>;
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
-index db81ed699de75..7fd0176e4bd30 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
-@@ -45,5 +45,5 @@ &magnetometer {
- };
- 
- &proximity {
--	proximity-near-level = <25>;
-+	proximity-near-level = <10>;
- };
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts
-index 1056b7981bdbd..97577c0a77158 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts
-@@ -23,5 +23,5 @@ &lcd_panel {
- };
- 
- &proximity {
--	proximity-near-level = <10>;
-+	proximity-near-level = <5>;
- };
--- 
-2.30.2
-
+Konrad
+>>>>
+>>>>> +		if (!dsi1_host) {
+>>>>> +			dev_err(dev, "cannot get secondary DSI host\n");
+>>>>> +			return -EPROBE_DEFER;
+>>>> dev_err_probe, here and in neighbouring exit return paths?
+>>> Acked.
+>>>>
+>>>>
+>>>> Konrad
