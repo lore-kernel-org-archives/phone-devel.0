@@ -2,44 +2,44 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4ABDEC74A5B
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Mar 2023 20:49:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9D27C64EC4
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Mar 2023 20:48:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230088AbjCIUsY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Mar 2023 15:48:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59506 "EHLO
+        id S231423AbjCIUsW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Mar 2023 15:48:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231368AbjCIUrr (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Mar 2023 15:47:47 -0500
+        with ESMTP id S231373AbjCIUrs (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Mar 2023 15:47:48 -0500
 Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B12F4FFBE9;
-        Thu,  9 Mar 2023 12:47:27 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DE4FFBFF;
+        Thu,  9 Mar 2023 12:47:31 -0800 (PST)
 Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 9D76AE9A1F;
-        Thu,  9 Mar 2023 12:46:46 -0800 (PST)
+        by comms.puri.sm (Postfix) with ESMTP id 80729E9B6B;
+        Thu,  9 Mar 2023 12:46:56 -0800 (PST)
 Received: from comms.puri.sm ([127.0.0.1])
         by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id rWUwUyYcajOu; Thu,  9 Mar 2023 12:46:46 -0800 (PST)
+        with ESMTP id Xbgwhex5rcyU; Thu,  9 Mar 2023 12:46:55 -0800 (PST)
 From:   Martin Kepplinger <martin.kepplinger@puri.sm>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
-        t=1678394805; bh=dJJ+nn2vsU1mmA2UOr8UyD470EUzf8JlUI5IdZnaFSk=;
+        t=1678394815; bh=NXsv4ig7pDrayBOyT1swTYNEvnq1e/X07EvKNWu6JMg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FyvuT+wUh1J3jNZqsaBKH0/aAMb077EpTmox6yrTLcNSgKvwh9xJ5BnclSIsrX1qE
-         l6CBjywUqWaItmPIUJjdWhJXoIlAOG4+0x0UhiFLa9iSmEzEjVIdMWK+JKYjRtEkDb
-         sxfydkADr5Xx8VqDnw3jSo7vL9CxpkR5ZXzpb7AO9hHQkOkUoj0S4hjQpzbuZnfyug
-         wt97FgA/S7OqAJNTzHZ5Qotclz6jvt7bUUz3ZKs2n5nBumKywM9IHRDr7aeQonkYR0
-         n1a44Yy4njiHluegxFgyJ5unZc0rw/26wMTGb7/l+ue8BR5yURqcgCNBpPE/Zn4lCv
-         dtomMjPyf7IJg==
+        b=IdHzzUznf4Y+UMUd7Z4JmuSX5U04Xr25UBzktwlw3bRvj94HrcJrDuHZ8ZF5q3e/W
+         /lB4N72Wjok1qupn3TZu1pNvZGEgobbeQ4w7+nna/UVUAl75R8PuiMaAWhV3TXTOyI
+         LK1n2bKpEQgCtblIYUiWgrHT+tPkTrRhe5Bi22u994KZd8iRpe9aGqfHWOpSzxlnQU
+         6AU7BDv7GeF6xWs0/e4KmRUJ3LbFXgxqskFCKaB5eda0WuJ+e4DM8H5oozRqkh6XyI
+         xDJGziyTn3vJbgp6KbpbudMst1DWBVsc67aSsVganM8v+gPXyYqzSn/+3kPOl73qWv
+         xGl+wMhZfx4cw==
 To:     robh@kernel.org, krzysztof.kozlowski@linaro.org,
         shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
         festevam@gmail.com
 Cc:     kernel@puri.sm, linux-imx@nxp.com, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Angus Ainslie <angus@akkea.ca>,
         Martin Kepplinger <martin.kepplinger@puri.sm>
-Subject: [PATCH v1 05/14] arm64: dts: imx8mq-librem5: add brightness levels to led-backlight
-Date:   Thu,  9 Mar 2023 21:45:59 +0100
-Message-Id: <20230309204608.237605-6-martin.kepplinger@puri.sm>
+Subject: [PATCH v1 08/14] arm64: dts: imx8mq-librem5: add the magnetometer mount matrix
+Date:   Thu,  9 Mar 2023 21:46:02 +0100
+Message-Id: <20230309204608.237605-9-martin.kepplinger@puri.sm>
 In-Reply-To: <20230309204608.237605-1-martin.kepplinger@puri.sm>
 References: <20230309204608.237605-1-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
@@ -48,27 +48,48 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add brightness-levels and default-brightness-level properties to
-the librem5 board description that have been used for a long time.
+From: Angus Ainslie <angus@akkea.ca>
 
+Userland needs the mount matrix to know the correct orientation of
+the part.
+
+Signed-off-by: Angus Ainslie <angus@akkea.ca>
 Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi | 6 ++++++
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi    | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
+index c1279e96effd7..db81ed699de75 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
+@@ -38,6 +38,12 @@ MX8MQ_IOMUXC_SPDIF_RX_GPIO5_IO4		0x83
+ 	};
+ };
+ 
++&magnetometer {
++	mount-matrix =  "1",  "0",  "0",
++			"0", "-1",  "0",
++			"0",  "0", "-1";
++};
++
+ &proximity {
+ 	proximity-near-level = <25>;
+ };
 diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index 9f374da5c18aa..f8698b6995343 100644
+index eaf35cff2f8a6..7e470135b86a4 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -20,6 +20,8 @@ / {
- 	backlight_dsi: backlight-dsi {
- 		compatible = "led-backlight";
- 		leds = <&led_backlight>;
-+		brightness-levels = <255>;
-+		default-brightness-level = <190>;
- 	};
+@@ -981,7 +981,7 @@ &i2c2 {
+ 	pinctrl-0 = <&pinctrl_i2c2>;
+ 	status = "okay";
  
- 	pmic_osc: clock-pmic {
+-	magnetometer@1e	{
++	magnetometer: magnetometer@1e	{
+ 		compatible = "st,lsm9ds1-magn";
+ 		reg = <0x1e>;
+ 		pinctrl-names = "default";
 -- 
 2.30.2
 
