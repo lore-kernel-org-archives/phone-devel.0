@@ -2,118 +2,59 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2F90C64EC4
-	for <phone-devel@archiver.kernel.org>; Wed,  8 Mar 2023 23:47:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83456C61DA4
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Mar 2023 07:15:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229695AbjCHXrn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 8 Mar 2023 18:47:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49778 "EHLO
+        id S230100AbjCIHPK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Mar 2023 02:15:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229668AbjCHXrm (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Mar 2023 18:47:42 -0500
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C6D1C0835
-        for <phone-devel@vger.kernel.org>; Wed,  8 Mar 2023 15:47:41 -0800 (PST)
-Received: by mail-lf1-x12c.google.com with SMTP id t11so154261lfr.1
-        for <phone-devel@vger.kernel.org>; Wed, 08 Mar 2023 15:47:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678319259;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=M4O4DInYmnmPW3qkpEVN6D/y/D8gTnxRIuiXa1zYY4g=;
-        b=Uhrm33GLaIYiCIZB9lN3Hf7FHypuIe+bmVAXfcWDczO4QEFK511YiTw3Wn2dK2+AlN
-         Cs4kgHdnR5pQ49LrwqL8pH05iHknmkA8/m83rs9J6DwUsCLzAfnHu4ta4v+Bq2aRSPG3
-         7kjWLxDyQsT7HCmdOT4S7gqmfwySu9DtOJyC9DtVqT5u0ThgRC12FLV2UfBaaThQ1uMf
-         xFhne9O0JFfmtXLfapiCI7TYZujGmz370f6LmOkCfYt03cE+4g3JrAt6WB1qR3izmox9
-         OglFM75ZCRukJI+MXt2t8xAyLALliEri1FClEocF8P2IN3xPcs1D/V1oOwbuiGyP7fwQ
-         iTOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678319259;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M4O4DInYmnmPW3qkpEVN6D/y/D8gTnxRIuiXa1zYY4g=;
-        b=JVXrTopwFUN0iY5OzgDR464Z06g3qmxYRXEGCJQXy4uTUXei5w5+Ri8pcFU4TJOAQr
-         GpMLj4nTzV/RqkjSB2hM21IOIK28bxSRkJhXn0PS4NoNARhEHdvM+w0lwRDHbJw+uz5y
-         +RMr/0s4jLu/t7fgbU6ngDxLcAkgK7BGCHzoiCSyYeG821Zn9+tF5RexlHct7Zju6hX8
-         YBtRJgDxqDHyqXUXqXFZn77KnGRJc9ucAzUsYfeq2qTnaacpvtvR69WuhNBARZmK6/0R
-         ROiCsNXPES8k/f2Tghp0j9ZCh7RMeC5Q/QuMjbghc38PtpTba7aeG5Pt6ovAkmFZbLrG
-         m1ew==
-X-Gm-Message-State: AO0yUKXLDjgGVfyr7I7aXUteCt7HmsxxErH2jWGpBIShO6CvoNRyvzjy
-        vfaw9KsyD2Xe80iGNXzjjRa1FA==
-X-Google-Smtp-Source: AK7set8SlhE25hMC6moDgRT3PPDqoQqG0ViLSQNOii7VJ8vKJE/dbOEejcP2OGn2P3LQoGPCFNYwpQ==
-X-Received: by 2002:ac2:4462:0:b0:4b5:8f03:a2bc with SMTP id y2-20020ac24462000000b004b58f03a2bcmr5360447lfl.9.1678319259415;
-        Wed, 08 Mar 2023 15:47:39 -0800 (PST)
-Received: from [192.168.1.101] (abyj16.neoplus.adsl.tpnet.pl. [83.9.29.16])
-        by smtp.gmail.com with ESMTPSA id d3-20020ac25ec3000000b004db9dbe09c6sm2474998lfq.89.2023.03.08.15.47.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Mar 2023 15:47:38 -0800 (PST)
-Message-ID: <17ac3a17-7e54-991d-3f6e-e6cee7348ba6@linaro.org>
-Date:   Thu, 9 Mar 2023 00:47:37 +0100
+        with ESMTP id S230290AbjCIHPC (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Mar 2023 02:15:02 -0500
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C84064ECD0;
+        Wed,  8 Mar 2023 23:14:45 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 3C2BE80DE;
+        Thu,  9 Mar 2023 07:14:45 +0000 (UTC)
+Date:   Thu, 9 Mar 2023 09:14:43 +0200
+From:   Tony Lindgren <tony@atomide.com>
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc:     Pavel Machek <pavel@ucw.cz>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
+Subject: Re: Motorola Droid 4 -- Stopping charger when battery is full
+Message-ID: <20230309071443.GF7501@atomide.com>
+References: <ZAcvuP8kmWveLoE/@duo.ucw.cz>
+ <ef4409b2-abd8-0eac-f66e-6858c3358cc1@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] ARM: dts: qcom: apq8026-lg-lenok: add missing reserved
- memory
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230308-lenok-reserved-memory-v1-1-b8bf6ff01207@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230308-lenok-reserved-memory-v1-1-b8bf6ff01207@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ef4409b2-abd8-0eac-f66e-6858c3358cc1@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+* Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com> [230307 14:10]:
+> Also, some guys have concerns about charging (and keeping it charged) @4.35,
+> because of the possibly reduced battery life.
 
+Yes for devices connected to a charger for long periods the battery will
+bloat up within some weeks or months. This happens easily when using a
+lapdock for example.
 
-On 8.03.2023 22:06, Luca Weiss wrote:
-> Turns out these two memory regions also need to be avoided, otherwise
-> weird things will happen when Linux tries to use this memory.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts b/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
-> index de2fb1c01b6e3..b82381229adf6 100644
-> --- a/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
-> +++ b/arch/arm/boot/dts/qcom-apq8026-lg-lenok.dts
-> @@ -27,6 +27,16 @@ chosen {
->  	};
->  
->  	reserved-memory {
-> +		sbl_region: sbl@2f00000 {
-oh that must have been fun
+A simple and safe solution here might be that we allow charging up to
+4.35V only once when the charger is connected. Then we let the voltage
+decrease to 4.2V (or whatever known good maintenance voltage) if the
+charger stays connected.
 
+For folks wanting to force the charge voltage higher we have the sysfs
+interface.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Regards,
 
-Konrad
-> +			reg = <0x02f00000 0x100000>;
-> +			no-map;
-> +		};
-> +
-> +		external_image_region: external-image@3100000 {
-> +			reg = <0x03100000 0x200000>;
-> +			no-map;
-> +		};
-> +
->  		adsp_region: adsp@3300000 {
->  			reg = <0x03300000 0x1400000>;
->  			no-map;
-> 
-> ---
-> base-commit: fe15c26ee26efa11741a7b632e9f23b01aca4cc6
-> change-id: 20230308-lenok-reserved-memory-b9373f9c8993
-> 
-> Best regards,
+Tony
+
