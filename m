@@ -2,34 +2,34 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B7CFC76186
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BE5BDC7618A
 	for <phone-devel@archiver.kernel.org>; Thu,  9 Mar 2023 20:49:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230281AbjCIUsa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Mar 2023 15:48:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59642 "EHLO
+        id S230417AbjCIUsd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Mar 2023 15:48:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231410AbjCIUrt (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Mar 2023 15:47:49 -0500
+        with ESMTP id S231296AbjCIUsE (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Mar 2023 15:48:04 -0500
 Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF6C9FCF3C;
-        Thu,  9 Mar 2023 12:47:37 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86A811517C;
+        Thu,  9 Mar 2023 12:48:02 -0800 (PST)
 Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 32E0FE9C7A;
-        Thu,  9 Mar 2023 12:47:12 -0800 (PST)
+        by comms.puri.sm (Postfix) with ESMTP id 9325DE9BF0;
+        Thu,  9 Mar 2023 12:47:05 -0800 (PST)
 Received: from comms.puri.sm ([127.0.0.1])
         by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id DOtsMJA8AAFH; Thu,  9 Mar 2023 12:47:11 -0800 (PST)
+        with ESMTP id 6770ymWoZ0eR; Thu,  9 Mar 2023 12:47:05 -0800 (PST)
 From:   Martin Kepplinger <martin.kepplinger@puri.sm>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
-        t=1678394831; bh=pCDAsfR2lOaVwFkXT961/Eh2p4yd/S/PGbqe0bqp1GU=;
+        t=1678394824; bh=Ktp9bUrxSX7wd0bBSswKFZcvkfXHkuw7rvjQsizXMPo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mzsvwsz9LjjAKTjdAHjea0ymln2b0zSpNVG0Rf0444tZ93ZfSERfnh8RahYEY2B/b
-         tEfSPSDynNm75aHogoCoBdMvgJzT2sCD7E9fXM+FKLcjQ5aNSCyXz0+b6qgWiAxR9K
-         8Ou05VWtG8WhB/1xA83tUZVZ8Q7Y2gkcwa7frEpfZddcPLSOFwZCft3B1bQKm2ld1v
-         Ul4xop5IrnCDMOXa+j5htagsasE43Lw+Z5Zvr44iOb8nFjSwLT4sgf8mWCM7tUlPpt
-         egi7aCq1O3I44zhRXB+KQSzj4TPaScmWz/kJB/5FSQk24VDm6nO25vHPo0yGRbvhan
-         +GlJVjeiuzPNQ==
+        b=OYYUTZ+Rs8/QbNaM6HlRfccL931QSSy28/1juCnqS4Q8DHFtRzMJ2YET/PqQI77NZ
+         XF2t+WaecSHra4hPZGp8i9qqLZXM+f2ZNBcG8MqLKB9/udKj8NGG0QSJ4c+ndC5Ju4
+         UlZUlEVlvVQx4EpuhRfU3Od/+1Tb0YDwSUKBqE2/LVgilKBLTthYdCq8ktQ9ac9njc
+         MhOQ+vKtIGKtv/nhDRksSdpOnW1wtc9JCl3m53OOBcvJQNqqfRixgjYE1mJw8jQBu5
+         Fiu+wsTBPCQG0EPZvZ5tk37C/+oIs4xCcCZy3k4tg1qcMUHphng92fn4oEKSbHwfoR
+         mKqX5jeGCq29Q==
 To:     robh@kernel.org, krzysztof.kozlowski@linaro.org,
         shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
         festevam@gmail.com
@@ -38,9 +38,9 @@ Cc:     kernel@puri.sm, linux-imx@nxp.com, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
         Martin Kepplinger <martin.kepplinger@puri.sm>
-Subject: [PATCH v1 13/14] arm64: dts: imx8mq-librem5: Reduce I2C frequency to 384kHz
-Date:   Thu,  9 Mar 2023 21:46:07 +0100
-Message-Id: <20230309204608.237605-14-martin.kepplinger@puri.sm>
+Subject: [PATCH v1 11/14] arm64: dts: imx8mq-librem5: Remove dis_u3_susphy_quirk from usb_dwc3_0
+Date:   Thu,  9 Mar 2023 21:46:05 +0100
+Message-Id: <20230309204608.237605-12-martin.kepplinger@puri.sm>
 In-Reply-To: <20230309204608.237605-1-martin.kepplinger@puri.sm>
 References: <20230309204608.237605-1-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
@@ -51,60 +51,26 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-According to imx8mq errata (ERR007805):
-
-> To meet the clock low period requirement in fast speed mode,
-> SCL must be configured to 384KHz or less.
-
-Note that the imx i2c driver already implements this erratum and works
-around it. This is only for the description to reflect reality.
+This reduces power consumption in system suspend by about 10%.
 
 Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index 7e70663cffa30..35bde8d41e8e7 100644
+index 0b4b49fa1392a..f557632f574fa 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -778,7 +778,7 @@ MX8MQ_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B	0x1f
- };
- 
- &i2c1 {
--	clock-frequency = <387000>;
-+	clock-frequency = <384000>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_i2c1>;
+@@ -1322,7 +1322,6 @@ &usb_dwc3_0 {
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
+ 	dr_mode = "otg";
+-	snps,dis_u3_susphy_quirk;
+ 	usb-role-switch;
  	status = "okay";
-@@ -976,7 +976,7 @@ rtc@68 {
- };
  
- &i2c2 {
--	clock-frequency = <387000>;
-+	clock-frequency = <384000>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_i2c2>;
- 	status = "okay";
-@@ -1025,7 +1025,7 @@ accel_gyro: accel-gyro@6a	{
- };
- 
- &i2c3 {
--	clock-frequency = <387000>;
-+	clock-frequency = <384000>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_i2c3>;
- 	status = "okay";
-@@ -1115,7 +1115,7 @@ touchscreen@38 {
- };
- 
- &i2c4 {
--	clock-frequency = <387000>;
-+	clock-frequency = <384000>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_i2c4>;
- 	status = "okay";
 -- 
 2.30.2
 
