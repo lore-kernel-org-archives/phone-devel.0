@@ -2,44 +2,45 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9D27C64EC4
-	for <phone-devel@archiver.kernel.org>; Thu,  9 Mar 2023 20:48:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B7CFC76186
+	for <phone-devel@archiver.kernel.org>; Thu,  9 Mar 2023 20:49:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231423AbjCIUsW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 9 Mar 2023 15:48:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59602 "EHLO
+        id S230281AbjCIUsa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 9 Mar 2023 15:48:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231373AbjCIUrs (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Mar 2023 15:47:48 -0500
+        with ESMTP id S231410AbjCIUrt (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 9 Mar 2023 15:47:49 -0500
 Received: from comms.puri.sm (comms.puri.sm [159.203.221.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DE4FFBFF;
-        Thu,  9 Mar 2023 12:47:31 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF6C9FCF3C;
+        Thu,  9 Mar 2023 12:47:37 -0800 (PST)
 Received: from localhost (localhost [127.0.0.1])
-        by comms.puri.sm (Postfix) with ESMTP id 80729E9B6B;
-        Thu,  9 Mar 2023 12:46:56 -0800 (PST)
+        by comms.puri.sm (Postfix) with ESMTP id 32E0FE9C7A;
+        Thu,  9 Mar 2023 12:47:12 -0800 (PST)
 Received: from comms.puri.sm ([127.0.0.1])
         by localhost (comms.puri.sm [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id Xbgwhex5rcyU; Thu,  9 Mar 2023 12:46:55 -0800 (PST)
+        with ESMTP id DOtsMJA8AAFH; Thu,  9 Mar 2023 12:47:11 -0800 (PST)
 From:   Martin Kepplinger <martin.kepplinger@puri.sm>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=puri.sm; s=comms;
-        t=1678394815; bh=NXsv4ig7pDrayBOyT1swTYNEvnq1e/X07EvKNWu6JMg=;
+        t=1678394831; bh=pCDAsfR2lOaVwFkXT961/Eh2p4yd/S/PGbqe0bqp1GU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IdHzzUznf4Y+UMUd7Z4JmuSX5U04Xr25UBzktwlw3bRvj94HrcJrDuHZ8ZF5q3e/W
-         /lB4N72Wjok1qupn3TZu1pNvZGEgobbeQ4w7+nna/UVUAl75R8PuiMaAWhV3TXTOyI
-         LK1n2bKpEQgCtblIYUiWgrHT+tPkTrRhe5Bi22u994KZd8iRpe9aGqfHWOpSzxlnQU
-         6AU7BDv7GeF6xWs0/e4KmRUJ3LbFXgxqskFCKaB5eda0WuJ+e4DM8H5oozRqkh6XyI
-         xDJGziyTn3vJbgp6KbpbudMst1DWBVsc67aSsVganM8v+gPXyYqzSn/+3kPOl73qWv
-         xGl+wMhZfx4cw==
+        b=Mzsvwsz9LjjAKTjdAHjea0ymln2b0zSpNVG0Rf0444tZ93ZfSERfnh8RahYEY2B/b
+         tEfSPSDynNm75aHogoCoBdMvgJzT2sCD7E9fXM+FKLcjQ5aNSCyXz0+b6qgWiAxR9K
+         8Ou05VWtG8WhB/1xA83tUZVZ8Q7Y2gkcwa7frEpfZddcPLSOFwZCft3B1bQKm2ld1v
+         Ul4xop5IrnCDMOXa+j5htagsasE43Lw+Z5Zvr44iOb8nFjSwLT4sgf8mWCM7tUlPpt
+         egi7aCq1O3I44zhRXB+KQSzj4TPaScmWz/kJB/5FSQk24VDm6nO25vHPo0yGRbvhan
+         +GlJVjeiuzPNQ==
 To:     robh@kernel.org, krzysztof.kozlowski@linaro.org,
         shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
         festevam@gmail.com
 Cc:     kernel@puri.sm, linux-imx@nxp.com, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Angus Ainslie <angus@akkea.ca>,
+        linux-kernel@vger.kernel.org,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
         Martin Kepplinger <martin.kepplinger@puri.sm>
-Subject: [PATCH v1 08/14] arm64: dts: imx8mq-librem5: add the magnetometer mount matrix
-Date:   Thu,  9 Mar 2023 21:46:02 +0100
-Message-Id: <20230309204608.237605-9-martin.kepplinger@puri.sm>
+Subject: [PATCH v1 13/14] arm64: dts: imx8mq-librem5: Reduce I2C frequency to 384kHz
+Date:   Thu,  9 Mar 2023 21:46:07 +0100
+Message-Id: <20230309204608.237605-14-martin.kepplinger@puri.sm>
 In-Reply-To: <20230309204608.237605-1-martin.kepplinger@puri.sm>
 References: <20230309204608.237605-1-martin.kepplinger@puri.sm>
 MIME-Version: 1.0
@@ -48,48 +49,62 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Angus Ainslie <angus@akkea.ca>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-Userland needs the mount matrix to know the correct orientation of
-the part.
+According to imx8mq errata (ERR007805):
 
-Signed-off-by: Angus Ainslie <angus@akkea.ca>
+> To meet the clock low period requirement in fast speed mode,
+> SCL must be configured to 384KHz or less.
+
+Note that the imx i2c driver already implements this erratum and works
+around it. This is only for the description to reflect reality.
+
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 Signed-off-by: Martin Kepplinger <martin.kepplinger@puri.sm>
 ---
- arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi | 6 ++++++
- arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi    | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
-index c1279e96effd7..db81ed699de75 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5-r3.dtsi
-@@ -38,6 +38,12 @@ MX8MQ_IOMUXC_SPDIF_RX_GPIO5_IO4		0x83
- 	};
- };
- 
-+&magnetometer {
-+	mount-matrix =  "1",  "0",  "0",
-+			"0", "-1",  "0",
-+			"0",  "0", "-1";
-+};
-+
- &proximity {
- 	proximity-near-level = <25>;
- };
 diff --git a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-index eaf35cff2f8a6..7e470135b86a4 100644
+index 7e70663cffa30..35bde8d41e8e7 100644
 --- a/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
 +++ b/arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi
-@@ -981,7 +981,7 @@ &i2c2 {
+@@ -778,7 +778,7 @@ MX8MQ_IOMUXC_GPIO1_IO02_WDOG1_WDOG_B	0x1f
+ };
+ 
+ &i2c1 {
+-	clock-frequency = <387000>;
++	clock-frequency = <384000>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_i2c1>;
+ 	status = "okay";
+@@ -976,7 +976,7 @@ rtc@68 {
+ };
+ 
+ &i2c2 {
+-	clock-frequency = <387000>;
++	clock-frequency = <384000>;
+ 	pinctrl-names = "default";
  	pinctrl-0 = <&pinctrl_i2c2>;
  	status = "okay";
+@@ -1025,7 +1025,7 @@ accel_gyro: accel-gyro@6a	{
+ };
  
--	magnetometer@1e	{
-+	magnetometer: magnetometer@1e	{
- 		compatible = "st,lsm9ds1-magn";
- 		reg = <0x1e>;
- 		pinctrl-names = "default";
+ &i2c3 {
+-	clock-frequency = <387000>;
++	clock-frequency = <384000>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_i2c3>;
+ 	status = "okay";
+@@ -1115,7 +1115,7 @@ touchscreen@38 {
+ };
+ 
+ &i2c4 {
+-	clock-frequency = <387000>;
++	clock-frequency = <384000>;
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_i2c4>;
+ 	status = "okay";
 -- 
 2.30.2
 
