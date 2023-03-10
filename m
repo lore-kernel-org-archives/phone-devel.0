@@ -2,171 +2,115 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE378C6FD1F
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Mar 2023 13:53:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A9F4C6FA99
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Mar 2023 16:59:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231208AbjCJNxQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 10 Mar 2023 08:53:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58634 "EHLO
+        id S231263AbjCJQ7O (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 10 Mar 2023 11:59:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231219AbjCJNxK (ORCPT
+        with ESMTP id S231347AbjCJQ6r (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 10 Mar 2023 08:53:10 -0500
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B857E17170;
-        Fri, 10 Mar 2023 05:53:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1678456381; x=1709992381;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=LKwfq6RnektJkoOmro9Y/2N5E1HI+eqc/JBfvfgrniQ=;
-  b=QmfUMncj1uaTUNeAfH+tBgaZ86zFJJq/vs6nYRZT6v1r36l5CQLBJd6N
-   4hnjfMiVb12rXIpd+dM+LwHDYyr8DX76OIX1IF4DAxuVoAObsQi1xIVHE
-   x6Fwrj9mTMz45A++gNkTJzyNIpz+vBPl/YiTV9WJoLcNVa6s6vqQ97kpK
-   M8WgJD5PoRLotdDLcgGvwD0bZXiMiB2p/EKUeZl2we1Els5ZM/SRA3E0d
-   7qFj+nc6cCHv0GR4BVvuI4ExaJrGQYWsSVDmiWlt8AlZX0y78JStgona5
-   TqGQdamChBKMJ1k3i+kXcFSjFn3RkvG+pzOXMPFwmGAKksRzR0lTunRMM
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="325080581"
-X-IronPort-AV: E=Sophos;i="5.98,249,1673942400"; 
-   d="scan'208";a="325080581"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2023 05:52:51 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="677818074"
-X-IronPort-AV: E=Sophos;i="5.98,249,1673942400"; 
-   d="scan'208";a="677818074"
-Received: from klausuhl-mobl.ger.corp.intel.com (HELO localhost) ([10.252.33.190])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2023 05:52:48 -0800
-From:   Jani Nikula <jani.nikula@linux.intel.com>
-To:     Jianhua Lu <lujianhua000@gmail.com>
-Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH] drm/mipi-dsi: Add a mipi_dual_dsi_dcs_write_seq() macro
-In-Reply-To: <ZAsgd4zsgbvWT0U0@Gentoo>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20230310110542.6649-1-lujianhua000@gmail.com>
- <87mt4k95zp.fsf@intel.com> <ZAsgd4zsgbvWT0U0@Gentoo>
-Date:   Fri, 10 Mar 2023 15:52:45 +0200
-Message-ID: <87bkl090ia.fsf@intel.com>
+        Fri, 10 Mar 2023 11:58:47 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0202412BAC8
+        for <phone-devel@vger.kernel.org>; Fri, 10 Mar 2023 08:57:26 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id g3so5663511wri.6
+        for <phone-devel@vger.kernel.org>; Fri, 10 Mar 2023 08:57:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678467445;
+        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+         :content-language:subject:reply-to:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=gFpyIz5IDkAlMCD4jLAXbROu3buVoZLKweW3KUNtWJ0=;
+        b=DMwdjpYHDqyh3WZntB5Q+unbDUcqJsH4jeMh7Wwz66hLFXLimqrFd3j6+sP/aanXU2
+         SjPgGzGGZTocbPEnS6G5BXoObcYFBsBglbmYokkdTuI66i4czHd3KwY8fl7bC8U9bsxs
+         rebf9FU4ptW+u+CK8UWJJgHwI3xW9WHYZXxBMqYqA/NzlMxVqeBIJEej6U6Jyc6PqjWi
+         P0jbNBEo0EEzAJfRQtjQefuJSs4pqHSToCG+vvOCOsoAEb+KeX6Bq/jgOnoZY8OnDKEa
+         H1a93t7fMJJyhjEKoRa3gjKWyRN5OrsLOJPpsUNtH1hL2jkRUHDsyff/v0i6tlMfLTWl
+         n27Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678467445;
+        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+         :content-language:subject:reply-to:from:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gFpyIz5IDkAlMCD4jLAXbROu3buVoZLKweW3KUNtWJ0=;
+        b=CyAAN3Vqk4O1DqHoHzCXwa3VgXXPoBrHLVwKH8imwmiK42OPSlUJzQ9XrMW0sEsQkj
+         HAzG7sKHU8Vo+B20XUtoi/yF0Lq8Cj/T/mfe1J3DbislIn+fFUD0yhWNZjxvSLdKfY/F
+         R2kqej4zKLg4A4xQrxgoD8CBhfbZ9I0Rfzxz3mqZqVKX3QNtGN0xAODnmgwkunuZQs5d
+         Y31eG9sljUI6IdQDC+R3D0K6mpxHX6JGaSkX7aubJ2OpQHl3QEZYFSZ15U1SeqCw/Vxo
+         lHRcl90cw2yZB7Sg7k3lgo995uDmNSnAdfjK2b5yW3O3xtjssWdfyURPwwSYtUIZYA3D
+         CiGQ==
+X-Gm-Message-State: AO0yUKVKWq2by3c47rClYA7XvboUwcnWRhGr+xdeu3qCNCkNdiWxCVsR
+        j/yd/ywAB4+MVgEF32l7YlROiQ==
+X-Google-Smtp-Source: AK7set/k2jvzdpZ+x1/a+riehOzhZniJXHH01TqXAOPGR1MT6PQL+VWojbn/xqNddc5P1TIkEsH+Zw==
+X-Received: by 2002:adf:efc3:0:b0:2c7:ffd:f483 with SMTP id i3-20020adfefc3000000b002c70ffdf483mr17423986wrp.41.1678467445393;
+        Fri, 10 Mar 2023 08:57:25 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:982:cbb0:566:5b64:c228:1137? ([2a01:e0a:982:cbb0:566:5b64:c228:1137])
+        by smtp.gmail.com with ESMTPSA id c14-20020adffb0e000000b002c8ed82c56csm224763wrr.116.2023.03.10.08.57.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Mar 2023 08:57:25 -0800 (PST)
+Message-ID: <26e7dd52-215b-ce55-394d-b0730d5015b4@linaro.org>
+Date:   Fri, 10 Mar 2023 17:57:24 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+From:   Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH v4 2/2] drm/panel: Add driver for Novatek NT36523
+Content-Language: en-US
+To:     Jianhua Lu <lujianhua000@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230310132144.2241-1-lujianhua000@gmail.com>
+ <20230310132144.2241-2-lujianhua000@gmail.com>
+Organization: Linaro Developer Services
+In-Reply-To: <20230310132144.2241-2-lujianhua000@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 10 Mar 2023, Jianhua Lu <lujianhua000@gmail.com> wrote:
-> On Fri, Mar 10, 2023 at 01:54:18PM +0200, Jani Nikula wrote:
->> On Fri, 10 Mar 2023, Jianhua Lu <lujianhua000@gmail.com> wrote:
->> > The panels with two dsi connected (sync dual dsi mode) need to transmit
->> > dcs command to the two dsi host simultaneously, let's add
->> > mipi_dual_dsi_dcs_write_seq() macro for this kind of panels.
->> 
->> If we were to add a helper for this case, it should be a proper function
->> and not a macro like this.
->> 
->> We'd also need to see a user for this upstream.
->> 
->> >
->> > Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
->> > ---
->> >  include/drm/drm_mipi_dsi.h | 15 +++++++++++++++
->> >  1 file changed, 15 insertions(+)
->> >
->> > diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
->> > index c9df0407980c..d0f0f75d4d83 100644
->> > --- a/include/drm/drm_mipi_dsi.h
->> > +++ b/include/drm/drm_mipi_dsi.h
->> > @@ -336,6 +336,21 @@ int mipi_dsi_dcs_get_display_brightness_large(struct mipi_dsi_device *dsi,
->> >  		}                                                          \
->> >  	} while (0)
->> >  
->> > +/**
->> > + * mipi_dsi_dcs_write_seq - transmit a DCS command with payload
->> > + * @dsi: array of 2 DSI peripheral devices
->> 
->> This makes the assumption the devices are stored in an array. What if
->> drivers want to store them differently, for whatever reason? Maybe they
->> have an array of some container structs that have the devices? Maybe
->> they just have two struct mipi_dsi_device pointers?
-> This array just store two struct mipi_dsi_device pointers
->> 
->> > + * @cmd: Command
->> > + * @seq: buffer containing data to be transmitted
->> > + */
->> > +#define mipi_dual_dsi_dcs_write_seq(dsi, cmd, seq...)                   \
->> > +	do {                                                             \
->> > +		if (ARRAY_SIZE(dsi) > 2)                                 \
->> > +			return -EINVAL;                                  \
->> > +		int i;                                                   \
->> 
->> I believe this should lead to a warning for mixing code and
->> declarations.
->> 
->> > +		for (i = 0; i < ARRAY_SIZE(dsi); i++)                    \
->> > +			mipi_dsi_dcs_write_seq(dsi[i], cmd, seq);        \
->> 
->> This ignores errors.
-> mipi_dsi_dcs_write_seq is also a macro, contains error checks in the body block.
+Hi,
 
-Ugh, I think it's pretty scary to hide control flow like return
-statements in macros like this.
+On 10/03/2023 14:21, Jianhua Lu wrote:
+> Add a driver for panels using the Novatek NT36523 display driver IC.
+> 
+> Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+> ---
+> Changes in v4:
+>    - add multiple modes support
+>    - use dev_err_probe helper
+>    - fix dsi_info type string
+>    - reimplement mipi_dsi_dual_dcs_write_seq() macro
+> 
+> Changes in v3:
+>    - Refactor source code
+> 
+> Changes in v2:
+>    - Refactor and clean up source code
+> 
+>   MAINTAINERS                                   |   7 +
+>   drivers/gpu/drm/panel/Kconfig                 |  10 +
+>   drivers/gpu/drm/panel/Makefile                |   1 +
+>   drivers/gpu/drm/panel/panel-novatek-nt36523.c | 771 ++++++++++++++++++
+>   4 files changed, 789 insertions(+)
+>   create mode 100644 drivers/gpu/drm/panel/panel-novatek-nt36523.c
+> 
 
-IMO the the main user of mipi_dsi_dcs_write_seq()
-i.e. panel_nv3051d_init_sequence() in
-drivers/gpu/drm/panel/panel-newvision-nv3051d.c should be written to do
-the writes from an array in a loop instead.
+<snip>
 
-BR,
-Jani.
+It looks great now, Konrad do you have some comments on this revision ?
 
-
->> 
->> > +	} while (0)
->> > +
->> 
->> Without an example user, I'm not yet convinced about the usefulness of
->> the helper, but I'd imagine something like this would be a more generic
->> approach, not enforcing the array, and handling errors properly:
->> 
->> ssize_t mipi_dsi_dual_dcs_write(struct mipi_dsi_device *dsi0,
->>                                 struct mipi_dsi_device *dsi1,
->>                                 u8 cmd, const void *data, size_t len)
->> {
->> 	ssize_t err = 0;
->> 
->> 	if (dsi0)
->>         	err = mipi_dsi_dcs_write(dsi0, cmd, data, len);
->> 
->> 	if (dsi1 && !err)
->>         	err = mipi_dsi_dcs_write(dsi1, cmd, data, len);
->> 
->> 	return err;
->> }
-> Thanks for your explanation and this looks more reasonable.
->> 
->> But even that begs the question where does it end? There are a lot of
->> mipi_dsi_dcs_*() functions as well as mipi_dsi_generic_write(). Dual
->> wrappers for all of them? :o
-> It's definitly useless to wrap all of them. Please ignore this patch.
->> 
->> 
->> BR,
->> Jani.
->> 
->> 
->> >  /**
->> >   * struct mipi_dsi_driver - DSI driver
->> >   * @driver: device driver model driver
->> 
->> -- 
->> Jani Nikula, Intel Open Source Graphics Center
-
--- 
-Jani Nikula, Intel Open Source Graphics Center
+Neil
