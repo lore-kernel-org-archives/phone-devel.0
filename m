@@ -2,164 +2,189 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A753C64EC4
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Mar 2023 12:20:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BCE87C6FD1F
+	for <phone-devel@archiver.kernel.org>; Fri, 10 Mar 2023 13:22:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229814AbjCJMUT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 10 Mar 2023 07:20:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53164 "EHLO
+        id S230130AbjCJNWD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 10 Mar 2023 08:22:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230052AbjCJMUS (ORCPT
+        with ESMTP id S230124AbjCJNWB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 10 Mar 2023 07:20:18 -0500
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0384110522;
-        Fri, 10 Mar 2023 04:20:15 -0800 (PST)
-Received: by mail-pl1-x62f.google.com with SMTP id i10so5317596plr.9;
-        Fri, 10 Mar 2023 04:20:15 -0800 (PST)
+        Fri, 10 Mar 2023 08:22:01 -0500
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 224CEF92FF;
+        Fri, 10 Mar 2023 05:21:55 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id p3-20020a17090ad30300b0023a1cd5065fso5182781pju.0;
+        Fri, 10 Mar 2023 05:21:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678450815;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=asTNFVHYBUFSk4GRlqWZV4x4IVPoPxPEyap0sAN5uo0=;
-        b=TTjFr9R1KsSh9rAJfVF8DAclSK8JnmgWe6xfLOscVmUDIgjal25Y4E8PqQ1psDZHzN
-         Q/D4dqpggx1RSnZPn+1ZV59/MKNC0NH20Qcd3tZ8NrFy2QbQQh+3eYOdezwKgmnS4VaW
-         mIp3ZY+icrOd3gYT26edt20K31VKeN6jOH2tDnO8hC19e6RgZYburtH6OewoOK/nONTO
-         aFEhfgX1XU29/PAWAFHNWor54qOtesM3CQVKSez1vY2YUr43ALL4DKHMyRkC3x/dVjhe
-         LoZwK3Q9wTZCDZCJqeG7nGThLPXXiNk+DtEahK3QdUPbHqBiiNUmghN0qHbHB/usTCn1
-         OHSQ==
+        d=gmail.com; s=20210112; t=1678454514;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OfHCteNV7q+dsb4Bbdwo2yP63fJ16IUesnNAhcskNRU=;
+        b=KzoY5clJwBNute/PoW2MQ6oouocVxaydnQP7158oMa776/X3aRPhiTNkSB8lMxnzj4
+         DtVmyK9GibAPj9fImIEinHv4LbGohSYZgkq/WnghAlkhZfpMv/Vv/1bVQStzwiKFNgIC
+         MdkJyaT8KcQ8P1UtvNaXwxulnHN5afDecv3Zi0r7xFYlVfI/Eo9sRGlTWSK7x9zGOXuy
+         SCT7TwjU+oXvUjPwytDrRJjvB5rRsmiOQAZirKb6jAEHhwEYuXQditq6LB2emrxMw/D3
+         S1dkW1nt2jUC4+/Lc1/1qT4NCdnZ1fmO3nYQaWF6/4dlN3xYneRBZG+y6ixARyyMEVim
+         a2lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678450815;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=asTNFVHYBUFSk4GRlqWZV4x4IVPoPxPEyap0sAN5uo0=;
-        b=ly8dhMcYmlq3laLFJEnvpEa/wopQJs9HhqKwCSTr047VNpIbeQz2aRWC1HjzOKMXP9
-         XNw22Kg0jhzAp/zsN2glLdHH2u9JQ009hDworRFLFa0DWiIVPDz7bnZDD4v0jVw0e8oj
-         UDzMtuQGOdVaV1BGVTLGsJ/6y+W8DuQ6N4gtymYu3xOx/UF/kDzH2uGcZr6bjkPCHCMT
-         +66S11Li7IoPc+aG6Y3WJN7VGXEEUEhPk/PljTkS9pVi5i9fCPmd4T8cnwnQoVvRt46z
-         3SlsVLf5VZl1mECS48WECoh9gjOZduu1KUbotfSnoUNi9qBsHv87s7q79QPzEl05W58E
-         aiuA==
-X-Gm-Message-State: AO0yUKWH2svfRQC6vOKt2b/EIiCvlkS+1W49y8Hxtz4L4ZW5hhp0tl5N
-        V5kzHjeVRq40ZA8qvfIKlczjLOvhu9U=
-X-Google-Smtp-Source: AK7set/6w9Q7LNt7cBPWqygAgpU6M+EF0xKmpp5LjpvMUnv8kXk2kOyu9IBEi3J5RXqYJVNoQ+mUSA==
-X-Received: by 2002:a17:903:2603:b0:19d:16ed:3e34 with SMTP id jd3-20020a170903260300b0019d16ed3e34mr22466860plb.26.1678450815375;
-        Fri, 10 Mar 2023 04:20:15 -0800 (PST)
-Received: from Gentoo (n220246252084.netvigator.com. [220.246.252.84])
-        by smtp.gmail.com with ESMTPSA id w2-20020a1709026f0200b0019aa6bf4450sm1307414plk.188.2023.03.10.04.20.11
+        d=1e100.net; s=20210112; t=1678454514;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OfHCteNV7q+dsb4Bbdwo2yP63fJ16IUesnNAhcskNRU=;
+        b=P0UEYNeJ2zCW85ZPwmmjBNdsfoadolxEXm/Q9Wngqe7A2RShua/3l2YrCGhH97OnbM
+         NgqgsFr4kb8h2DBYq239f8hQDzRod5npBmCfF2jZkM9SpdBywkMnMrZ+ORPOnyaJeEzA
+         fi6IzV22CNeDmgEojPAWYzjYZxyeV9Avc8fiNvnlKLQoTnqULIM2syzbev8/cJoEiXWf
+         FKDvgW38/0yCpueYUcN1xyTiBKFO8vBd0XK0Xh5AWHCfOa43MbRo06ZRbNc7Bok20AW7
+         X3fF7kEW7KS0SGSKEgpB/APZ1lDDaCTFNQgvPFXkuxV762NAzikZa5JZiArPcbbhGDB0
+         KoZw==
+X-Gm-Message-State: AO0yUKUe/MrrGaVI8w+WIfm68ZSV0droITBqcgSp0yVqh2IScJP+1aeM
+        /LDNXXGpmJ5oCMbDqjaYv1M=
+X-Google-Smtp-Source: AK7set98iPwBwFkq5myreeZkbP0DGiyTHoZ2q34nC3mEd9GMRiAi+I6LYrXirgJ0+rMnqa8ClZTqWg==
+X-Received: by 2002:a17:902:c40d:b0:19e:6760:3a5d with SMTP id k13-20020a170902c40d00b0019e67603a5dmr30054230plk.18.1678454514624;
+        Fri, 10 Mar 2023 05:21:54 -0800 (PST)
+Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id e6-20020a170902b78600b0019a95baaaa6sm1421711pls.222.2023.03.10.05.21.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Mar 2023 04:20:14 -0800 (PST)
-Date:   Fri, 10 Mar 2023 20:20:07 +0800
+        Fri, 10 Mar 2023 05:21:54 -0800 (PST)
 From:   Jianhua Lu <lujianhua000@gmail.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>
-Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
         David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH] drm/mipi-dsi: Add a mipi_dual_dsi_dcs_write_seq() macro
-Message-ID: <ZAsgd4zsgbvWT0U0@Gentoo>
-References: <20230310110542.6649-1-lujianhua000@gmail.com>
- <87mt4k95zp.fsf@intel.com>
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>
+Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jianhua Lu <lujianhua000@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v4 1/2] dt-bindings: display: panel: Add Novatek NT36523 bindings
+Date:   Fri, 10 Mar 2023 21:21:43 +0800
+Message-Id: <20230310132144.2241-1-lujianhua000@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87mt4k95zp.fsf@intel.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Mar 10, 2023 at 01:54:18PM +0200, Jani Nikula wrote:
-> On Fri, 10 Mar 2023, Jianhua Lu <lujianhua000@gmail.com> wrote:
-> > The panels with two dsi connected (sync dual dsi mode) need to transmit
-> > dcs command to the two dsi host simultaneously, let's add
-> > mipi_dual_dsi_dcs_write_seq() macro for this kind of panels.
-> 
-> If we were to add a helper for this case, it should be a proper function
-> and not a macro like this.
-> 
-> We'd also need to see a user for this upstream.
-> 
-> >
-> > Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
-> > ---
-> >  include/drm/drm_mipi_dsi.h | 15 +++++++++++++++
-> >  1 file changed, 15 insertions(+)
-> >
-> > diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
-> > index c9df0407980c..d0f0f75d4d83 100644
-> > --- a/include/drm/drm_mipi_dsi.h
-> > +++ b/include/drm/drm_mipi_dsi.h
-> > @@ -336,6 +336,21 @@ int mipi_dsi_dcs_get_display_brightness_large(struct mipi_dsi_device *dsi,
-> >  		}                                                          \
-> >  	} while (0)
-> >  
-> > +/**
-> > + * mipi_dsi_dcs_write_seq - transmit a DCS command with payload
-> > + * @dsi: array of 2 DSI peripheral devices
-> 
-> This makes the assumption the devices are stored in an array. What if
-> drivers want to store them differently, for whatever reason? Maybe they
-> have an array of some container structs that have the devices? Maybe
-> they just have two struct mipi_dsi_device pointers?
-This array just store two struct mipi_dsi_device pointers
-> 
-> > + * @cmd: Command
-> > + * @seq: buffer containing data to be transmitted
-> > + */
-> > +#define mipi_dual_dsi_dcs_write_seq(dsi, cmd, seq...)                   \
-> > +	do {                                                             \
-> > +		if (ARRAY_SIZE(dsi) > 2)                                 \
-> > +			return -EINVAL;                                  \
-> > +		int i;                                                   \
-> 
-> I believe this should lead to a warning for mixing code and
-> declarations.
-> 
-> > +		for (i = 0; i < ARRAY_SIZE(dsi); i++)                    \
-> > +			mipi_dsi_dcs_write_seq(dsi[i], cmd, seq);        \
-> 
-> This ignores errors.
-mipi_dsi_dcs_write_seq is also a macro, contains error checks in the body block.
-> 
-> > +	} while (0)
-> > +
-> 
-> Without an example user, I'm not yet convinced about the usefulness of
-> the helper, but I'd imagine something like this would be a more generic
-> approach, not enforcing the array, and handling errors properly:
-> 
-> ssize_t mipi_dsi_dual_dcs_write(struct mipi_dsi_device *dsi0,
->                                 struct mipi_dsi_device *dsi1,
->                                 u8 cmd, const void *data, size_t len)
-> {
-> 	ssize_t err = 0;
-> 
-> 	if (dsi0)
->         	err = mipi_dsi_dcs_write(dsi0, cmd, data, len);
-> 
-> 	if (dsi1 && !err)
->         	err = mipi_dsi_dcs_write(dsi1, cmd, data, len);
-> 
-> 	return err;
-> }
-Thanks for your explanation and this looks more reasonable.
-> 
-> But even that begs the question where does it end? There are a lot of
-> mipi_dsi_dcs_*() functions as well as mipi_dsi_generic_write(). Dual
-> wrappers for all of them? :o
-It's definitly useless to wrap all of them. Please ignore this patch.
-> 
-> 
-> BR,
-> Jani.
-> 
-> 
-> >  /**
-> >   * struct mipi_dsi_driver - DSI driver
-> >   * @driver: device driver model driver
-> 
-> -- 
-> Jani Nikula, Intel Open Source Graphics Center
+Novatek NT36523 is a display driver IC used to drive DSI panels.
+
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+No changes in v4
+
+Changes in v3:
+  - pick up Krzysztof's R-b
+  - remove vddpos and vddneg supply
+
+Changes in v2:
+  - Drop unnecessary description
+  - dsi0 -> dsi
+  - Correct indentation
+
+ .../display/panel/novatek,nt36523.yaml        | 85 +++++++++++++++++++
+ 1 file changed, 85 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml
+
+diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml
+new file mode 100644
+index 000000000000..0039561ef04c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml
+@@ -0,0 +1,85 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/novatek,nt36523.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Novatek NT36523 based DSI display Panels
++
++maintainers:
++  - Jianhua Lu <lujianhua000@gmail.com>
++
++description: |
++  The Novatek NT36523 is a generic DSI Panel IC used to drive dsi
++  panels. Support video mode panels from China Star Optoelectronics
++  Technology (CSOT) and BOE Technology.
++
++allOf:
++  - $ref: panel-common.yaml#
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - xiaomi,elish-boe-nt36523
++          - xiaomi,elish-csot-nt36523
++      - const: novatek,nt36523
++
++  reset-gpios:
++    maxItems: 1
++    description: phandle of gpio for reset line - This should be 8mA
++
++  vddio-supply:
++    description: regulator that supplies the I/O voltage
++
++  reg: true
++  ports: true
++  backlight: true
++
++required:
++  - compatible
++  - reg
++  - vddio-supply
++  - reset-gpios
++  - ports
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "xiaomi,elish-csot-nt36523", "novatek,nt36523";
++            reg = <0>;
++
++            vddio-supply = <&vreg_l14a_1p88>;
++            reset-gpios = <&tlmm 75 GPIO_ACTIVE_LOW>;
++            backlight = <&backlight>;
++
++            ports {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                port@0 {
++                    reg = <0>;
++                    panel_in_0: endpoint {
++                        remote-endpoint = <&dsi0_out>;
++                    };
++                };
++
++                port@1{
++                    reg = <1>;
++                    panel_in_1: endpoint {
++                        remote-endpoint = <&dsi1_out>;
++                    };
++                };
++            };
++        };
++    };
++
++...
+-- 
+2.39.2
+
