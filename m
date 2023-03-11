@@ -2,118 +2,109 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75984C6FD19
-	for <phone-devel@archiver.kernel.org>; Fri, 10 Mar 2023 23:06:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 603AAC61DA4
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Mar 2023 10:05:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231789AbjCJXGI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 10 Mar 2023 18:06:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56438 "EHLO
+        id S229680AbjCKKFv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 11 Mar 2023 05:05:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231787AbjCJXGG (ORCPT
+        with ESMTP id S229666AbjCKKFt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 10 Mar 2023 18:06:06 -0500
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A14B5135B11
-        for <phone-devel@vger.kernel.org>; Fri, 10 Mar 2023 15:05:57 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id o1so6827163ybu.13
-        for <phone-devel@vger.kernel.org>; Fri, 10 Mar 2023 15:05:57 -0800 (PST)
+        Sat, 11 Mar 2023 05:05:49 -0500
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71A88DFB64
+        for <phone-devel@vger.kernel.org>; Sat, 11 Mar 2023 02:05:47 -0800 (PST)
+Received: by mail-wm1-x335.google.com with SMTP id l7-20020a05600c4f0700b003e79fa98ce1so4948997wmq.2
+        for <phone-devel@vger.kernel.org>; Sat, 11 Mar 2023 02:05:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678489557;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t1C5EaEX7RUXtbYsmEPMYf2+exssIXAhNPil5rJCHJc=;
-        b=OzwRskF5Ih0lo0aILi+OoqYAwUlYwBG7zxkn3rbE69pckwIlvzquTfLYEFlP/lFB/q
-         l0UepLZ2GlDrPh9DVI0tpvnKrTnSjtpOhOHGLcwFYeL7bxKMpMvb+nyF/Q3JHk2fjxys
-         TbjJzP9lA5zBq21Jm7TguAabdqZpMqQTM9JTUlAkTtcIkxDcH9AdSL+V05EQO/RjmqDD
-         YeUloj6KhxaVi7w9EWDEAGsvsjP9V60yRM9YThmwFbh2c+V7xVCgUte+7fEfiu3dq7/u
-         yai9qCn/Cv+Sd0SDtFv2nB/yc5RQrJfTGqDH0VOAMcxtxin/75P1ktR+vz8Z2r4cGf2K
-         WqkA==
+        d=linaro.org; s=google; t=1678529146;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ciFroiEJcPCf1IcNM4Oy4MInn1VtQ6qbpV3yMFcCzXc=;
+        b=bXoj40nIICUGmqpLuoYZkYyZ3eI1jvBtOnrUizE4q5FSvmvB5V6XKjaQIjIn/K4RAD
+         YG/Yy9xDyLtzuREY+xUphpPJTOWG1eFoji9vDNCAniLttDeONIj9tIRDgWLZ1Cf40zpR
+         b/RKl1dVBshh/xoXbru8cKano9n5bnp3QKU0PV53SFT1gsQ2twK2XvBLdIKj6LE6xvJM
+         6A9h4v7nU2K+0MxrCf+MFDwjq5i8q1WjzlmsLzG4G8bXR4aMyl0mUagsw5m+hvfN1mIH
+         /gSuilOgJ6Gifhmro4r8vIoSoQF0DiQKjO9e+GaFN8lgreefLqfQkjhwpYdbTamSAqK3
+         cEhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678489557;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t1C5EaEX7RUXtbYsmEPMYf2+exssIXAhNPil5rJCHJc=;
-        b=SmwRZVczAEMZTeXNnTGYs5J0YJQnneAD9s/oxsYjzAXoI+E4CiMG0HufvsfV9QO9bA
-         fjEYlKCmJunK9iUxuxvQwTR6meG+ze0C79DYZspxENQVCLkvnvl3bOVdrFocQTsV0knn
-         bK1FIJr6LoeF0SwZBfRWl6sK9SAlvvHee+Fkmzjy5P5ksFGNUWN3mFvraNruWZYeZrhX
-         C3KpdYX0ohhUvvS1NBxb1V5lN1rDhJqnVuVzHbVC3dz3PWmUnUTT5qGk3qLuL6Z6BqIv
-         XEt/aUW0bOuBMfXMsI7NN7irSsPSyAdu9UbJZT0C6c54RMBHLHG4pumWLQBkJX/tmRot
-         l3Ow==
-X-Gm-Message-State: AO0yUKUdtnq2esjKW4s6vQLDsCk6Mx9EUQlXwLAO1z3o6NPEJN6w7AGF
-        pW8st289467CBDheqZ9Ss7nWeTnu2ub2o8CMrEadDg==
-X-Google-Smtp-Source: AK7set/AXp8Coh32VeUVTutEizxPtbjJjz8lfxc31hn8uCQNy5KsUkfh9dktBb0fy9LNuoIzjVmbhAj73BsC0vyUcO8=
-X-Received: by 2002:a5b:386:0:b0:b0a:7108:71e9 with SMTP id
- k6-20020a5b0386000000b00b0a710871e9mr2427934ybp.4.1678489556799; Fri, 10 Mar
- 2023 15:05:56 -0800 (PST)
+        d=1e100.net; s=20210112; t=1678529146;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ciFroiEJcPCf1IcNM4Oy4MInn1VtQ6qbpV3yMFcCzXc=;
+        b=vDhHo5UvnWYRTMauUlW5/pg5s05ba48KH3lIRea4TLms3M2LHhSUIecUoPi1on60bz
+         WIMNDP9EdUZ+KGLU/WKN5rhhD2UW1AL5bWPOTPexddy9QN4nalA17Xg0WQ8FJw7Bcqjs
+         i/ewHUTn/j7A5b1HXb/MmzWa1DfjA37Xqj3B9NRwvf9Pns0C6ajYUeM3cG3IUsRMLUJk
+         zOJvXk8Bg4vyrN7XOdrClqxG5YjPG6cVPilWxbIgm23X5ElAAptpdY7q+fiAGd4nu06b
+         YKvc+oiMASavKHzt9VZZOlvMx2lhzeIeZI2UOovGwnCe/80S4nftX5kZxUHUQZSsTpNr
+         yWbw==
+X-Gm-Message-State: AO0yUKXRo4H+5upRDK/9Seh/998S5VqyAcn3tAQL67SjtBiJZdCUQn23
+        Jy+L9mdYA5ejFLBAPj7XvbcMug==
+X-Google-Smtp-Source: AK7set8zoDvWWEIFn13DW0itfJK1PANtvoXCqkiW5qigJfdhRgGaFsfi9mqjxqBQBIxpQJm1HRWahQ==
+X-Received: by 2002:a05:600c:3491:b0:3eb:2e19:ff3a with SMTP id a17-20020a05600c349100b003eb2e19ff3amr5293547wmq.7.1678529145902;
+        Sat, 11 Mar 2023 02:05:45 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:982:cbb0:fc3e:aa04:e32d:cc69? ([2a01:e0a:982:cbb0:fc3e:aa04:e32d:cc69])
+        by smtp.gmail.com with ESMTPSA id p23-20020a1c7417000000b003e11f280b8bsm2334725wmc.44.2023.03.11.02.05.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 11 Mar 2023 02:05:45 -0800 (PST)
+Message-ID: <7765365e-2bde-4ccc-3251-d4bb38c34ecb@linaro.org>
+Date:   Sat, 11 Mar 2023 11:05:43 +0100
 MIME-Version: 1.0
-References: <20230310110542.6649-1-lujianhua000@gmail.com> <87mt4k95zp.fsf@intel.com>
- <ZAsgd4zsgbvWT0U0@Gentoo> <87bkl090ia.fsf@intel.com>
-In-Reply-To: <87bkl090ia.fsf@intel.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 11 Mar 2023 00:05:44 +0100
-Message-ID: <CACRpkdYwu5XKDcowggDMM0pSjuKdAJnZ8F92OdDyEWP7HJUC-A@mail.gmail.com>
-Subject: Re: [PATCH] drm/mipi-dsi: Add a mipi_dual_dsi_dcs_write_seq() macro
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Javier Martinez Canillas <javierm@redhat.com>
-Cc:     Jianhua Lu <lujianhua000@gmail.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.7.2
+Subject: Re: [PATCH v4 2/2] drm/panel: Add driver for Novatek NT36523
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Jianhua Lu <lujianhua000@gmail.com>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230310132144.2241-1-lujianhua000@gmail.com>
+ <20230310132144.2241-2-lujianhua000@gmail.com>
+ <6539f132-c740-b9b6-8810-0affd6ab91ba@linaro.org> <ZAt4fTNEnyLteaas@Gentoo>
+ <CACRpkdavjBPaNq1sRfi-FYiT7T3W19fU-mjha0pAtooUyf-8XQ@mail.gmail.com>
+Content-Language: en-GB
+From:   Neil Armstrong <neil.armstrong@linaro.org>
+In-Reply-To: <CACRpkdavjBPaNq1sRfi-FYiT7T3W19fU-mjha0pAtooUyf-8XQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-(CC Javier)
+Le 10/03/2023 à 23:50, Linus Walleij a écrit :
+> On Fri, Mar 10, 2023 at 7:35 PM Jianhua Lu <lujianhua000@gmail.com> wrote:
+>> On Fri, Mar 10, 2023 at 07:10:21PM +0100, Konrad Dybcio wrote:
+>>>
+>>>> +#define mipi_dsi_dual_dcs_write_seq(dsi0, dsi1, cmd, seq...)        \
+>>>> +           do {                                                 \
+>>>> +                   mipi_dsi_dcs_write_seq(dsi0, cmd, seq);      \
+>>>> +                   mipi_dsi_dcs_write_seq(dsi1, cmd, seq);      \
+>>>> +           } while (0)
+>>> This should be in the same file as mipi_dsi_dcs_write_seq, imo
+>> I have sent a patch to do it, upstream don't think this wrapper is a proper
+>> approach to deal with dual dsi and wrap all of mipi_dsi_* function is
+>> useless.
+>> https://lore.kernel.org/lkml/20230310110542.6649-1-lujianhua000@gmail.com/
+> 
+> We can keep it locally if the fight isn't worthwhile, but I will try to enter
+> the discussion.
 
-On Fri, Mar 10, 2023 at 2:52=E2=80=AFPM Jani Nikula <jani.nikula@linux.inte=
-l.com> wrote:
+It's ok to keep it in the driver until we find a way to move it in the generic includes.
 
-> >> > +          for (i =3D 0; i < ARRAY_SIZE(dsi); i++)                  =
-  \
-> >> > +                  mipi_dsi_dcs_write_seq(dsi[i], cmd, seq);        =
-\
-> >>
-> >> This ignores errors.
-> > mipi_dsi_dcs_write_seq is also a macro, contains error checks in the bo=
-dy block.
->
-> Ugh, I think it's pretty scary to hide control flow like return
-> statements in macros like this.
+Neil
 
-The macros are written like this because:
 
-#define mipi_dsi_generic_write_seq(dsi, seq...)
-(...)
-                static const u8 d[] =3D { seq };
+> 
+> Yours,
+> Linus Walleij
 
-Array of bytes
-
-                ret =3D mipi_dsi_generic_write(dsi, d, ARRAY_SIZE(d));
-
-So we can use use ARRAY_SIZE() in the macro and pass in any
-arbitrary sequence, e.g.
-
-mipi_dsi_generic_write_seq(dsi, 0xfb, 0x01);
-
-Any function-esque definitions will (as in your example) require a
-length to be passed in so it would become:
-
-mipi_dsi_generic_write_seq(dsi, 0xfb, 0x01, 2);
-
-And if you grep mipi_dsi_generic_write_seq | wc -l you find all the
-245 opportunities to get that last len wrong and cause an out-of-bounds
-bug.
-
-I think this macro is the lesser evil for this reason, also it saves code
-that you otherwise have to do manually, and one should never put
-a person to do a machine's job.
-
-Any suggestions to rewrite the macro using varargs welcome.
-I think it is not very easy to do without the preprocessor.
-
-Yours,
-Linus Walleij
