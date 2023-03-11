@@ -2,109 +2,191 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 603AAC61DA4
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Mar 2023 10:05:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2162BC61DA4
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Mar 2023 12:33:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229680AbjCKKFv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 11 Mar 2023 05:05:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36658 "EHLO
+        id S230382AbjCKMc7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 11 Mar 2023 07:32:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229666AbjCKKFt (ORCPT
+        with ESMTP id S230373AbjCKMc5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 11 Mar 2023 05:05:49 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71A88DFB64
-        for <phone-devel@vger.kernel.org>; Sat, 11 Mar 2023 02:05:47 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id l7-20020a05600c4f0700b003e79fa98ce1so4948997wmq.2
-        for <phone-devel@vger.kernel.org>; Sat, 11 Mar 2023 02:05:47 -0800 (PST)
+        Sat, 11 Mar 2023 07:32:57 -0500
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B765212FD05;
+        Sat, 11 Mar 2023 04:32:44 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id ix20so1788550plb.3;
+        Sat, 11 Mar 2023 04:32:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678529146;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ciFroiEJcPCf1IcNM4Oy4MInn1VtQ6qbpV3yMFcCzXc=;
-        b=bXoj40nIICUGmqpLuoYZkYyZ3eI1jvBtOnrUizE4q5FSvmvB5V6XKjaQIjIn/K4RAD
-         YG/Yy9xDyLtzuREY+xUphpPJTOWG1eFoji9vDNCAniLttDeONIj9tIRDgWLZ1Cf40zpR
-         b/RKl1dVBshh/xoXbru8cKano9n5bnp3QKU0PV53SFT1gsQ2twK2XvBLdIKj6LE6xvJM
-         6A9h4v7nU2K+0MxrCf+MFDwjq5i8q1WjzlmsLzG4G8bXR4aMyl0mUagsw5m+hvfN1mIH
-         /gSuilOgJ6Gifhmro4r8vIoSoQF0DiQKjO9e+GaFN8lgreefLqfQkjhwpYdbTamSAqK3
-         cEhA==
+        d=gmail.com; s=20210112; t=1678537964;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zeBGEGBy3GzypDRtMJAMW7+H/dC0tKTZg1B8rKisPPg=;
+        b=ozYBtX+oLCLwTDq0vgGPi/UV5U3VCNOx0hgd8raVBdxqET0UET+vr6lFr+Sj5DulQv
+         yy6p1/GTWJD+/1j5mD9CPQHQs0dTjysHRI5EGelYq+hUSr39ExzUZ2iBdtdCjvPqGGM/
+         I0lB7mJzQCzIVpGLR6jbcxIAxpDavqedDI3ITFMQQXstOo/1fmcCQVwxTUPidbkTyyBw
+         i2RTCskqTCZO6LccgnhQ66HUzUgKyxZUbuBBUo5hsPEMAwSfxvlHsp3g6KtkCKfYUQc8
+         mom00/wjigb4i1JOD0fo3Y1j1TUZ8W+wtnvnmXXAimdhsINpzeeHPndz7Jed8pAu+163
+         PdtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678529146;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ciFroiEJcPCf1IcNM4Oy4MInn1VtQ6qbpV3yMFcCzXc=;
-        b=vDhHo5UvnWYRTMauUlW5/pg5s05ba48KH3lIRea4TLms3M2LHhSUIecUoPi1on60bz
-         WIMNDP9EdUZ+KGLU/WKN5rhhD2UW1AL5bWPOTPexddy9QN4nalA17Xg0WQ8FJw7Bcqjs
-         i/ewHUTn/j7A5b1HXb/MmzWa1DfjA37Xqj3B9NRwvf9Pns0C6ajYUeM3cG3IUsRMLUJk
-         zOJvXk8Bg4vyrN7XOdrClqxG5YjPG6cVPilWxbIgm23X5ElAAptpdY7q+fiAGd4nu06b
-         YKvc+oiMASavKHzt9VZZOlvMx2lhzeIeZI2UOovGwnCe/80S4nftX5kZxUHUQZSsTpNr
-         yWbw==
-X-Gm-Message-State: AO0yUKXRo4H+5upRDK/9Seh/998S5VqyAcn3tAQL67SjtBiJZdCUQn23
-        Jy+L9mdYA5ejFLBAPj7XvbcMug==
-X-Google-Smtp-Source: AK7set8zoDvWWEIFn13DW0itfJK1PANtvoXCqkiW5qigJfdhRgGaFsfi9mqjxqBQBIxpQJm1HRWahQ==
-X-Received: by 2002:a05:600c:3491:b0:3eb:2e19:ff3a with SMTP id a17-20020a05600c349100b003eb2e19ff3amr5293547wmq.7.1678529145902;
-        Sat, 11 Mar 2023 02:05:45 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:982:cbb0:fc3e:aa04:e32d:cc69? ([2a01:e0a:982:cbb0:fc3e:aa04:e32d:cc69])
-        by smtp.gmail.com with ESMTPSA id p23-20020a1c7417000000b003e11f280b8bsm2334725wmc.44.2023.03.11.02.05.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 11 Mar 2023 02:05:45 -0800 (PST)
-Message-ID: <7765365e-2bde-4ccc-3251-d4bb38c34ecb@linaro.org>
-Date:   Sat, 11 Mar 2023 11:05:43 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.7.2
-Subject: Re: [PATCH v4 2/2] drm/panel: Add driver for Novatek NT36523
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Jianhua Lu <lujianhua000@gmail.com>
-Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        d=1e100.net; s=20210112; t=1678537964;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zeBGEGBy3GzypDRtMJAMW7+H/dC0tKTZg1B8rKisPPg=;
+        b=xd7J27TnBdpFWvWe+KVrL+Ky29jY88eLLVBVXOSZJjvZVdPhCasAarEj1UgnnGQdpz
+         5ZrQ9WEeZC+HVJenN+eKujpRX2oztNtcNNzx5ag60T6wesmLRoUvmZYOQD2oCs7ST/IJ
+         3pM8loQyR6GmbuhohRk2xwUa6Tgb/CbGb3lDoIGYqPH5n6T6wl/qMe5N0/4SFqGWpsUN
+         JJXA55PGjWbxDHmZpaLMtuuXEkd0r3uzQtMllozyOpe9Hj910WbJxA33g+6a7YoKatSt
+         Y+uXegjOQboCd6zXjcmcKJl3HrY6+IhKwHi9umP9hHgMokD61zZ62rCQmIOfltRFrrnC
+         t+Vw==
+X-Gm-Message-State: AO0yUKXtHzAGrV0FCN0fye18S4CqsRNezqScUe+Mg6luUUYzxO9uQ/w8
+        XGs9X7PZe0afWl+BsCrc8H0=
+X-Google-Smtp-Source: AK7set9M6K7Ck2qJ+kyt/yPQ4Vwm1QYaDduE/QAC7LceldmLdWyR9N7INxoglPg3eg/bykJOjTe6Pw==
+X-Received: by 2002:a05:6a20:440c:b0:ce:5c14:2838 with SMTP id ce12-20020a056a20440c00b000ce5c142838mr39315872pzb.54.1678537964189;
+        Sat, 11 Mar 2023 04:32:44 -0800 (PST)
+Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id g4-20020a62e304000000b005a8173829d5sm1406754pfh.66.2023.03.11.04.32.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Mar 2023 04:32:43 -0800 (PST)
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
         Sam Ravnborg <sam@ravnborg.org>,
         David Airlie <airlied@gmail.com>,
         Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>
+Cc:     dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230310132144.2241-1-lujianhua000@gmail.com>
- <20230310132144.2241-2-lujianhua000@gmail.com>
- <6539f132-c740-b9b6-8810-0affd6ab91ba@linaro.org> <ZAt4fTNEnyLteaas@Gentoo>
- <CACRpkdavjBPaNq1sRfi-FYiT7T3W19fU-mjha0pAtooUyf-8XQ@mail.gmail.com>
-Content-Language: en-GB
-From:   Neil Armstrong <neil.armstrong@linaro.org>
-In-Reply-To: <CACRpkdavjBPaNq1sRfi-FYiT7T3W19fU-mjha0pAtooUyf-8XQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jianhua Lu <lujianhua000@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v5 1/2] dt-bindings: display: panel: Add Novatek NT36523 bindings
+Date:   Sat, 11 Mar 2023 20:32:30 +0800
+Message-Id: <20230311123231.20771-1-lujianhua000@gmail.com>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Le 10/03/2023 à 23:50, Linus Walleij a écrit :
-> On Fri, Mar 10, 2023 at 7:35 PM Jianhua Lu <lujianhua000@gmail.com> wrote:
->> On Fri, Mar 10, 2023 at 07:10:21PM +0100, Konrad Dybcio wrote:
->>>
->>>> +#define mipi_dsi_dual_dcs_write_seq(dsi0, dsi1, cmd, seq...)        \
->>>> +           do {                                                 \
->>>> +                   mipi_dsi_dcs_write_seq(dsi0, cmd, seq);      \
->>>> +                   mipi_dsi_dcs_write_seq(dsi1, cmd, seq);      \
->>>> +           } while (0)
->>> This should be in the same file as mipi_dsi_dcs_write_seq, imo
->> I have sent a patch to do it, upstream don't think this wrapper is a proper
->> approach to deal with dual dsi and wrap all of mipi_dsi_* function is
->> useless.
->> https://lore.kernel.org/lkml/20230310110542.6649-1-lujianhua000@gmail.com/
-> 
-> We can keep it locally if the fight isn't worthwhile, but I will try to enter
-> the discussion.
+Novatek NT36523 is a display driver IC used to drive DSI panels.
 
-It's ok to keep it in the driver until we find a way to move it in the generic includes.
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+No changes in v5
 
-Neil
+No changes in v4
 
+Changes in v3:
+  - pick up Krzysztof's R-b
+  - remove vddpos and vddneg supply
 
-> 
-> Yours,
-> Linus Walleij
+Changes in v2:
+  - Drop unnecessary description
+  - dsi0 -> dsi
+  - Correct indentation
+
+ .../display/panel/novatek,nt36523.yaml        | 85 +++++++++++++++++++
+ 1 file changed, 85 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml
+
+diff --git a/Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml b/Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml
+new file mode 100644
+index 000000000000..0039561ef04c
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/novatek,nt36523.yaml
+@@ -0,0 +1,85 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/novatek,nt36523.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Novatek NT36523 based DSI display Panels
++
++maintainers:
++  - Jianhua Lu <lujianhua000@gmail.com>
++
++description: |
++  The Novatek NT36523 is a generic DSI Panel IC used to drive dsi
++  panels. Support video mode panels from China Star Optoelectronics
++  Technology (CSOT) and BOE Technology.
++
++allOf:
++  - $ref: panel-common.yaml#
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - xiaomi,elish-boe-nt36523
++          - xiaomi,elish-csot-nt36523
++      - const: novatek,nt36523
++
++  reset-gpios:
++    maxItems: 1
++    description: phandle of gpio for reset line - This should be 8mA
++
++  vddio-supply:
++    description: regulator that supplies the I/O voltage
++
++  reg: true
++  ports: true
++  backlight: true
++
++required:
++  - compatible
++  - reg
++  - vddio-supply
++  - reset-gpios
++  - ports
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "xiaomi,elish-csot-nt36523", "novatek,nt36523";
++            reg = <0>;
++
++            vddio-supply = <&vreg_l14a_1p88>;
++            reset-gpios = <&tlmm 75 GPIO_ACTIVE_LOW>;
++            backlight = <&backlight>;
++
++            ports {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                port@0 {
++                    reg = <0>;
++                    panel_in_0: endpoint {
++                        remote-endpoint = <&dsi0_out>;
++                    };
++                };
++
++                port@1{
++                    reg = <1>;
++                    panel_in_1: endpoint {
++                        remote-endpoint = <&dsi1_out>;
++                    };
++                };
++            };
++        };
++    };
++
++...
+-- 
+2.39.2
 
