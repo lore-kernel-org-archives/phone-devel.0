@@ -2,118 +2,119 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78B42C61DA4
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Mar 2023 12:46:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8726CC6FD1F
+	for <phone-devel@archiver.kernel.org>; Sun, 12 Mar 2023 09:33:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230443AbjCKMqq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 11 Mar 2023 07:46:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37182 "EHLO
+        id S229638AbjCLJdK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 12 Mar 2023 05:33:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229757AbjCKMqq (ORCPT
+        with ESMTP id S229473AbjCLJdJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 11 Mar 2023 07:46:46 -0500
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A69F711C8EA;
-        Sat, 11 Mar 2023 04:46:44 -0800 (PST)
-Received: by mail-pl1-x634.google.com with SMTP id h8so8301951plf.10;
-        Sat, 11 Mar 2023 04:46:44 -0800 (PST)
+        Sun, 12 Mar 2023 05:33:09 -0400
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4836A1ADF9;
+        Sun, 12 Mar 2023 01:33:07 -0800 (PST)
+Received: by mail-io1-xd2d.google.com with SMTP id v10so3872956iox.8;
+        Sun, 12 Mar 2023 01:33:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678538804;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PiDlhCUlmtsAUlNB/6Hdf1VqUL1kVXdoYe/ZcJRmo8g=;
-        b=L29b30GM+PAIArnzy8MiBHUAhLLMIwJ6FaLT2B40jsyiZd6YQpgMIk6RbKIRodiLS0
-         DI74H/tldWjA1VL1LebhtTSL+VSPM1n20fzdtCXmZTuB/rg9PkxZuF3rjolw/Nwe1X+4
-         QoXLLkmbG6gFXkr7kOQf5h4vMo4KXhmLv/0aK/2igbhHmUPshaV0v7dm7ntmaHV6RwMf
-         fyUx0TcFBKUWZH7Pw8KzmZX27qdaFgxswsNGfWuJv6QOb9tnXtLpKIxgB2nCs+JLbCF3
-         mIJFXAOrhXzg4FVaGysAsyRmmFxPv7f1E6RzWh4o5Dol/cIebPPa0bSyunUGu9j5+o34
-         gVwg==
+        d=gmail.com; s=20210112; t=1678613586;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EdsqofhLttt0MpRBJLtGTF5SUT9ITI8Www9f0JAEXBk=;
+        b=MfndUlLJPvJCoyPJ8fOJJRJaFxMWDl2BNPL0RcZjv7BMciDD0LpIMfo0h+Y1s46LR3
+         VSJbYM3EVOEGX36/6w9gubw4jNAA8YVaVsq1CsV3FnuyQhWTQSQI5HiZKKtbBauMmPVw
+         IwgVVkDQPmNvHrCco3JMmCe6WSuBlEBxRDTV587BIrI5tqlYt9XAMfwy/d8WFh6WTBRk
+         fOsBCW7MauEhHntY1K89WcKG92Z7O66ULMusJlpYJl5O49Gi2npqZZcn6HohhpZuohML
+         Iv1ILP7gm4dS/b8YfMy4UQEbgUgbbaEkS5AmKlJVD+tTkkhfpDntsWFoA1n6npT5QF2D
+         +zaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678538804;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PiDlhCUlmtsAUlNB/6Hdf1VqUL1kVXdoYe/ZcJRmo8g=;
-        b=LX5UgIq/o1mnbmmy/VOPJ/VM9F7apR6Mz6KugrM+9JHe5Con8mpaBNsAmQzejrImMu
-         A/ZJYwR1zewNpBTMf9PGSaf23RCU5X/89WQNOGuKy1PrUK6f5Vt1bupDj6CRUZ9s2tx8
-         cXsyJakVdXoBOmpj833dCZYJ5rPsHAfbygXJAumaCPRtpY/WQfjm2r6nsY43erF97/QN
-         4HXivL3gVmSCQWEX0ZVfMBgLtOilZYmXnVaJ/Yb/nL6dRuITi0E1AFOxS4+aktlVlIdS
-         Yb0hNfgK9VAyPw3JHGB17SkJ1f7ph+M231oIyam05GRoB7ytrXTefWVXXU6pynjeXT6d
-         CMnQ==
-X-Gm-Message-State: AO0yUKU12ABqSYBNqWrCN8h1tGr8fj1bOb8ZXpsKL6uR+3HR05QkdjFC
-        7Uc3w2TBM1iwE7NhnTSlQuY=
-X-Google-Smtp-Source: AK7set+ji+ZQM1Aev0DE5omV9PnlNe+xd7MwKZKFp/q3X5YjO6ktRlb56PKrc6iC5jTqwI4bioWJTw==
-X-Received: by 2002:a17:903:2290:b0:19e:25b4:7740 with SMTP id b16-20020a170903229000b0019e25b47740mr35095390plh.28.1678538804128;
-        Sat, 11 Mar 2023 04:46:44 -0800 (PST)
-Received: from Gentoo (n220246252084.netvigator.com. [220.246.252.84])
-        by smtp.gmail.com with ESMTPSA id kr13-20020a170903080d00b0019e9eb439d6sm1510200plb.164.2023.03.11.04.46.38
+        d=1e100.net; s=20210112; t=1678613586;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EdsqofhLttt0MpRBJLtGTF5SUT9ITI8Www9f0JAEXBk=;
+        b=T1JwML4mMJlryRFZnQFHopyk3iYaEWsTm0Ju5C0XN/jXqQOsy9h1KQlasidJIQ3Zv8
+         cFDfZdbwKsXw7h34jOy+ck9VKOkUhnR7Tga+E77dH9Ae4VF/SdgFBCUMyE1xJ0Fvvrco
+         SIwcYeP6KTug7u2BhyDO6IdVWq30BZTpLyKQe361tzixXk1oSvPlI+nG8FR9ZT+WUQTj
+         2sIOJnzGux5sbBrT8uVyAeRGs2ldTL0Tzw/tEr5NTUjLH4MQq4tetFHfmbn9AM7ZQ2co
+         AKWPFFqbAWdKTS5nUybKwn4kzHgwAmxWcI6AlqJugZctbHhVmSq8TGUy/cnBbKJ5FRUs
+         hrzQ==
+X-Gm-Message-State: AO0yUKX0yrU6aIQth6nw3Za1si+mTackJWDw+rwhsekJwR0qDaE+MKPh
+        5dFgSnK1GGLXOmwLlLuCAlU=
+X-Google-Smtp-Source: AK7set8jiwoKhPgExjaAR4cuHgYmoGP0q866KT8cGjRVW8GVRILI/jQrHePl43lr25hqCKML3le2AQ==
+X-Received: by 2002:a6b:b40c:0:b0:74c:83ab:280c with SMTP id d12-20020a6bb40c000000b0074c83ab280cmr4490128iof.1.1678613586463;
+        Sun, 12 Mar 2023 01:33:06 -0800 (PST)
+Received: from JOEL-DESKTOP.. ([2604:2d80:4d87:cd00:9f51:32d7:1177:67d])
+        by smtp.gmail.com with ESMTPSA id r7-20020a6bfc07000000b00716eb44b97esm1585031ioh.27.2023.03.12.01.33.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Mar 2023 04:46:43 -0800 (PST)
-Date:   Sat, 11 Mar 2023 20:46:34 +0800
-From:   Jianhua Lu <lujianhua000@gmail.com>
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        Sun, 12 Mar 2023 01:33:06 -0800 (PST)
+From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
+To:     Caleb Connolly <caleb@connolly.tech>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Jeff LaBundy <jeff@labundy.com>,
         Neil Armstrong <neil.armstrong@linaro.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] drm/panel: Add driver for Novatek NT36523
-Message-ID: <ZAx4KqXw+an555d4@Gentoo>
-References: <20230311123231.20771-1-lujianhua000@gmail.com>
- <20230311123231.20771-2-lujianhua000@gmail.com>
- <904bc493-7160-32fd-9709-1dcb978ddbab@linaro.org>
+        Markuss Broks <markuss.broks@gmail.com>,
+        Jean Delvare <jdelvare@suse.de>,
+        Max Krummenacher <max.krummenacher@toradex.com>,
+        Job Noorman <job@noorman.info>,
+        Alistair Francis <alistair@alistair23.me>,
+        Chris Morgan <macromorgan@hotmail.com>
+Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Joel Selvaraj <joelselvaraj.oss@gmail.com>
+Subject: [PATCH 0/5] Add support for Focaltech FTS Touchscreen
+Date:   Sun, 12 Mar 2023 04:32:44 -0500
+Message-Id: <20230312093249.1846993-1-joelselvaraj.oss@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <904bc493-7160-32fd-9709-1dcb978ddbab@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Mar 11, 2023 at 01:38:52PM +0100, Konrad Dybcio wrote:
-> 
-> 
-> On 11.03.2023 13:32, Jianhua Lu wrote:
-> > Add a driver for panels using the Novatek NT36523 display driver IC.
-> > 
-> > Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
-> > ---
-> [...]
-> 
-> > +
-> > +static int nt36523_get_modes(struct drm_panel *panel,
-> > +			       struct drm_connector *connector)
-> > +{
-> > +	struct panel_info *pinfo = to_panel_info(panel);
-> > +	int i;
-> > +
-> > +	for (i = 0; i < pinfo->desc->num_modes; i++) {
-> > +		const struct drm_display_mode *m = &pinfo->desc->modes[i];
-> > +		struct drm_display_mode *mode;
-> > +
-> > +		mode = drm_mode_duplicate(connector->dev, m);
-> > +		if (!mode) {
-> > +			dev_err(panel->dev, "failed to add mode %ux%u@%u\n",
-> > +				m->hdisplay, m->vdisplay, drm_mode_vrefresh(m));
-> > +			return -ENOMEM;
-> > +		}
-> > +
-> > +		mode->type = DRM_MODE_TYPE_DRIVER;
-> > +		if (pinfo->desc->num_modes == 1)
-> > +			mode->type |= DRM_MODE_TYPE_PREFERRED;
-> That's not quite correct, as that means "if you have more than one
-> defined panel mode (say 60Hz and 120 Hz), there will be no preferred one".
-This piece of code I see in the other panels, so I'm not sure if it is
-correct. Should
-if (pinfo->desc->num_modes > 1)
-			mode->type |= DRM_MODE_TYPE_PREFERRED;
-is correct?
-> 
-> Konrad
-> > 
+The Focaltech FTS driver supports several variants of focaltech
+touchscreens found in ~2018 era smartphones including variants found on
+the PocoPhone F1 and the SHIFT6mq which are already present in mainline.
+This driver is loosely based on the original driver from Focaltech and
+the patches submitted by Caleb Connolly previously[1] but has been
+simplified and largely reworked.
+
+Kindly let me know if any improvements are needed. Thanks.
+
+[1] https://patchwork.kernel.org/project/linux-input/patch/20220123173650.290349-3-caleb@connolly.tech/
+
+Joel Selvaraj (5):
+  dt-bindings: input: touchscreen: add bindings for focaltech,fts
+  Input: add driver for Focaltech FTS touchscreen
+  arm64: dts: qcom: sdm845-xiaomi-beryllium-common: add touchscreen
+    related nodes
+  arm64: dts: qcom: sdm845-xiaomi-beryllium-ebbg: introduce support for
+    fts touchscreen
+  arm64: dts: qcom: sdm845-shift-axolotl: update focaltech touchscreen
+    properties
+
+ .../input/touchscreen/focaltech,fts.yaml      |  81 ++++
+ MAINTAINERS                                   |   8 +
+ .../boot/dts/qcom/sdm845-shift-axolotl.dts    |  17 +-
+ .../qcom/sdm845-xiaomi-beryllium-common.dtsi  |  39 ++
+ .../dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts |  27 ++
+ drivers/input/touchscreen/Kconfig             |  12 +
+ drivers/input/touchscreen/Makefile            |   1 +
+ drivers/input/touchscreen/focaltech_fts.c     | 448 ++++++++++++++++++
+ 8 files changed, 625 insertions(+), 8 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/input/touchscreen/focaltech,fts.yaml
+ create mode 100644 drivers/input/touchscreen/focaltech_fts.c
+
+-- 
+2.39.2
+
