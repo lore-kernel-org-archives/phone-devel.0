@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FB29C7618A
-	for <phone-devel@archiver.kernel.org>; Sun, 12 Mar 2023 20:47:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52D2EC74A5B
+	for <phone-devel@archiver.kernel.org>; Sun, 12 Mar 2023 20:48:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230184AbjCLUrz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 12 Mar 2023 16:47:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60708 "EHLO
+        id S231423AbjCLUsj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 12 Mar 2023 16:48:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231400AbjCLUrx (ORCPT
+        with ESMTP id S231424AbjCLUsh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 12 Mar 2023 16:47:53 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 975F13B230
-        for <phone-devel@vger.kernel.org>; Sun, 12 Mar 2023 13:47:50 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id er25so12865110edb.5
-        for <phone-devel@vger.kernel.org>; Sun, 12 Mar 2023 13:47:50 -0700 (PDT)
+        Sun, 12 Mar 2023 16:48:37 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD83E24134
+        for <phone-devel@vger.kernel.org>; Sun, 12 Mar 2023 13:48:23 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id cy23so40896267edb.12
+        for <phone-devel@vger.kernel.org>; Sun, 12 Mar 2023 13:48:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1678654069;
+        d=linaro.org; s=google; t=1678654102;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=u22alB8uF/MS8UPXdbSnd7ZPrfnLaMOLZCtjFbg2V6Y=;
-        b=HssqLwEOKEbMThaJsnLwmZ38Xjw3cPvbBlEXDnao9b3AHt2O9/5VhkKSX694LtP4NQ
-         fccQek58uhkR5UEc+Wr60VUOKhiFH+kRwm0lN1aOC6BzfGTLi86KAaUbdza97j68fdMu
-         MRderlNFhI8KHoWnEiknCoIbuk4DBKW5/cKEcTU0U9wbOCRQfuHOpoFPTGnO6MPgakcJ
-         bkdglZqZ+crTRuq81O+XgufzkJ8SXLB4D1lGSpyo0j2Wc7Mdw3ptcDiTIidM0E3vJJgP
-         vFrvtVAIB5JT0WD5YX9DHYPKtiqD2uaUayOgVRwDQcy/IjmZjr7XlU18SshqkOaazdyW
-         2mCQ==
+        bh=sSuu62ZtrCDKkOlmQUYQACQgoTEHCbw8LO0DFEfyOYI=;
+        b=B43oLgAITueP6GEec2rIrhCf8+qS+0h2b6xYUnGJF254Av1FgGuGTXsitKkqpSAjfs
+         fvqGRPWmKVD0qPUNUw/9DLdakSggBGrOZ9FDe/WUpmeJLoIqCETd13fK1PxXkp2uBxMd
+         F6k8jZM5E0vRz+xu1wuayOO0sCekV28IUjEf2xvynwW3I73ib2dO8yXc3UswB1e+l92J
+         eHtEHMc1eq5/wp5w2qoXdWOCAXvIG1eVTCBooMkNHymxyFn14rtUwcdTuUHFwxKA0Qqp
+         oo+tH98j/LGk1V8UHtcMNaFm8f/ValnFD673qDbkzyZ5mFXBHvOU79joCmRhRIC2oTkR
+         C47w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678654069;
+        d=1e100.net; s=20210112; t=1678654102;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=u22alB8uF/MS8UPXdbSnd7ZPrfnLaMOLZCtjFbg2V6Y=;
-        b=sGWDpiUiok+3cEXqKrRhUBEX65vK+BtL3EAJS5/bN8XnwYxmAo/cLNv6Q39iLanMO3
-         R5VtnlfyZAfyuQSYi1l7vVF9n2Cfz6cf1tdGkJ4UjO6l9IAYllPrRe1/AU4pV5pwrzgn
-         uniifaD1EOTjmYRjjMDcv0/A4Sz49wci1KGO2N1H8GpaoprrEf3hVVBcMvtURV98lE9o
-         2ubd3zuXD7d0L84Y+gm77KWoD5cyHF8T7Dni9AF1U9xq69okcvS4TVra6If5rESGmdZr
-         AeA3ktQnJBQUF7wHGgkHt1i5CPcFUIz6Yq8/DaRSdtZO5ZLwVjr8j6aTW0vd/giR3nSB
-         2Bxg==
-X-Gm-Message-State: AO0yUKUlviQSFPlyufG2Xk/aPNz/ixCkrLjNKHih4SeHK0kpAtiTIpIS
-        EDvAasiiu7a5t4Rw822htEI7yQ==
-X-Google-Smtp-Source: AK7set8j1GEtvMUfsPHK5nbXb7L5QDMpQx68DJ00oQ5FfD5O29my4p27eLzJWkD4zete2mFObe6uSg==
-X-Received: by 2002:a17:906:5284:b0:915:fbba:2e0b with SMTP id c4-20020a170906528400b00915fbba2e0bmr19770139ejm.58.1678654068729;
-        Sun, 12 Mar 2023 13:47:48 -0700 (PDT)
+        bh=sSuu62ZtrCDKkOlmQUYQACQgoTEHCbw8LO0DFEfyOYI=;
+        b=7P70IrXovXGH/c4xrS7OIHAcBJFE0tf5z2msoVpJ9mjr4x/HQCDGt123Govz2Uape6
+         FgZuepBiuy65BA/vNs8EZsmBe7EOAMkMrmvMJpDqJM3+Mqrl5j1QoJIL4COL9hIyZ2k2
+         MsIEb3F+vKQDUgflEbEezAuDgFcmXbfdsIUtcXd8c7A1BiaPSClI+KsU35Q6uKMYHYBi
+         Hpd3WHkIzUTll+YhdCtR29Eoc68JXMIEWd9MGGS4vwTp6tCEBF8yDN3K1ZzeB+P6S/vG
+         CgLxVNNGUBpvWNvjA7omfOE6c1IJs4A2+1tAN6QTJBP8TMnYK7LINjDQR9IFTnModFZ1
+         azlw==
+X-Gm-Message-State: AO0yUKXbuHvajV33OfGN+yr5XSLRCcrte0a4kUIW+DkszcKl3GabpYSf
+        j9MmZhAJs78Sn2UELdlqDRjz1g==
+X-Google-Smtp-Source: AK7set86YBGLHhii08oOoSKY0zWmcztYRGX+cZDo0CWEBHvRVtn8lz1i+Y8Bbobgt4g9uQHZt35EnQ==
+X-Received: by 2002:a17:906:b882:b0:8b2:3e72:1022 with SMTP id hb2-20020a170906b88200b008b23e721022mr31771384ejb.29.1678654102186;
+        Sun, 12 Mar 2023 13:48:22 -0700 (PDT)
 Received: from ?IPV6:2a02:810d:15c0:828:d9f6:3e61:beeb:295a? ([2a02:810d:15c0:828:d9f6:3e61:beeb:295a])
-        by smtp.gmail.com with ESMTPSA id g8-20020a1709065d0800b008def483cf79sm2548293ejt.168.2023.03.12.13.47.47
+        by smtp.gmail.com with ESMTPSA id a18-20020a170906685200b00926b944676esm932476ejs.131.2023.03.12.13.48.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Mar 2023 13:47:48 -0700 (PDT)
-Message-ID: <c9db83e8-f87d-b94d-0c23-8114adb312e1@linaro.org>
-Date:   Sun, 12 Mar 2023 21:47:47 +0100
+        Sun, 12 Mar 2023 13:48:21 -0700 (PDT)
+Message-ID: <ad9ce095-deff-a191-baa3-d3778efe9846@linaro.org>
+Date:   Sun, 12 Mar 2023 21:48:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
-Subject: Re: [PATCH 1/5] dt-bindings: input: touchscreen: add bindings for
- focaltech,fts
+Subject: Re: [PATCH 4/5] arm64: dts: qcom: sdm845-xiaomi-beryllium-ebbg:
+ introduce support for fts touchscreen
 Content-Language: en-US
 To:     Joel Selvaraj <joelselvaraj.oss@gmail.com>,
         Caleb Connolly <caleb@connolly.tech>,
@@ -81,9 +81,9 @@ Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
 References: <20230312093249.1846993-1-joelselvaraj.oss@gmail.com>
- <20230312093249.1846993-2-joelselvaraj.oss@gmail.com>
+ <20230312093249.1846993-5-joelselvaraj.oss@gmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230312093249.1846993-2-joelselvaraj.oss@gmail.com>
+In-Reply-To: <20230312093249.1846993-5-joelselvaraj.oss@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -91,131 +91,35 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 12/03/2023 10:32, Joel Selvaraj wrote:
-> Add devicetree bindings for the Focaltech FTS touchscreen drivers.
+> The Poco F1 EBBG variant uses Focaltech FTS touchscreen. Introduce
+> support for it.
 > 
 > Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
-> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
 > ---
->  .../input/touchscreen/focaltech,fts.yaml      | 81 +++++++++++++++++++
->  1 file changed, 81 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/focaltech,fts.yaml
+>  .../dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts | 27 +++++++++++++++++++
+>  1 file changed, 27 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/focaltech,fts.yaml b/Documentation/devicetree/bindings/input/touchscreen/focaltech,fts.yaml
-> new file mode 100644
-> index 000000000000..07fe595cc9ed
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/input/touchscreen/focaltech,fts.yaml
-
-I have doubts you will cover here all possible FTS controllers, so
-filename should be more specific, e.g. choose the oldest device compatible.
-
-> @@ -0,0 +1,81 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/input/touchscreen/focaltech,fts.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
+> index 76931ebad065..a23be4c8e1bb 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
+> @@ -13,3 +13,30 @@ &display_panel {
+>  	compatible = "ebbg,ft8719";
+>  	status = "okay";
+>  };
 > +
-> +title: Focaltech FTS I2C Touchscreen Controller
+> +&i2c14 {
+> +	status = "okay";
 > +
-> +maintainers:
-> +  - Joel Selvaraj <joelselvaraj.oss@gmail.com>
-> +  - Caleb Connolly <caleb@connolly.tech>
+> +	dmas =  <&gpi_dma1 0 6 QCOM_GPI_I2C>,
+> +		<&gpi_dma1 1 6 QCOM_GPI_I2C>;
+> +	dma-names = "tx", "rx";
 > +
-> +allOf:
-> +  - $ref: touchscreen.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - focaltech,fts5452
-> +      - focaltech,fts8719
-
-Missing blank line
-
-> +  reg:
-> +    const: 0x38
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +
-> +  avdd-supply:
-> +    description: a phandle for the regulator supplying analog power (2.6V to 3.3V).
-
-Drop "a phandle for the"
-
-> +
-> +  vddio-supply:
-> +    description: a phandle for the regulator supplying IO power (1.8V).
-
-Ditto
-
-> +
-> +  focaltech,max-touch-number:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: max number of fingers supported
-
-Why this is not implied from compatible? IOW, why this differs between
-boards?
-
-If this property stays, then anyway "focaltech,max-touch", not number.
-There is no such unit suffix as number.
-
-> +    minimum: 2
-> +    maximum: 10
-> +
-> +  touchscreen-size-x: true
-> +  touchscreen-size-y: true
-
-Drop these two
-
-> +
-> +additionalProperties: false
-
-and then use unevaluatedProperties: false
-so all properties from common schema apply. Unless these are not really
-valid for the *device*?
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - reset-gpios
-> +  - focaltech,max-touch-number
-> +  - touchscreen-size-x
-> +  - touchscreen-size-y
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    &i2c5 {
-
-i2c
-
-> +      status="okay";
-
-Drop status
-
-Anyway this should pop warnings... Please run `make dt_binding_check`
-(see Documentation/devicetree/bindings/writing-schema.rst for instructions).
-
-> +
-> +      touchscreen: focaltech@38 {
+> +	touchscreen: focaltech@38 {
 
 Node names should be generic.
 https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
 
-Also, drop label touchscreen.
-
-> +        compatible = "focaltech,fts8719";
-> +        reg = <0x38>;
-> +        interrupt-parent = <&tlmm>;
-> +        interrupts = <31 IRQ_TYPE_EDGE_RISING>;
-> +
 
 
 Best regards,
