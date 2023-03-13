@@ -2,62 +2,66 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B592EC6FD19
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Mar 2023 04:14:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BDACC61DA4
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Mar 2023 04:55:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229742AbjCMEOJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Mar 2023 00:14:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44612 "EHLO
+        id S229980AbjCMEzq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Mar 2023 00:55:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229656AbjCMEOI (ORCPT
+        with ESMTP id S229609AbjCMEzp (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Mar 2023 00:14:08 -0400
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 029C02203B;
-        Sun, 12 Mar 2023 21:14:06 -0700 (PDT)
-Received: by mail-io1-xd30.google.com with SMTP id e11so4528582ioe.3;
-        Sun, 12 Mar 2023 21:14:06 -0700 (PDT)
+        Mon, 13 Mar 2023 00:55:45 -0400
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C9F835265;
+        Sun, 12 Mar 2023 21:55:44 -0700 (PDT)
+Received: by mail-io1-xd33.google.com with SMTP id q6so4546427iot.2;
+        Sun, 12 Mar 2023 21:55:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678680846;
+        d=gmail.com; s=20210112; t=1678683343;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0XUhL8FFcNhP1iWeAiFBGkWuirlsQdIqQYoFoEIJuKs=;
-        b=SUwtv8PubyTyqt86xU2y0a3JjevLFIWqH0BM9Zo2+N0D5TeCC/5Dl+89ooEFgx8ZlV
-         ROwuuot4uXc8ZawFh89qWVw5l920E2Umz+F4oy8kaOL2FzXEmJpLPhC9JgdCgLMhijuQ
-         IwdQFX68IMa6n/YhWYbi2OS+K1b61Bemj9t7XF9h0ifuHuyfyQKdX9wiSEU0WxWqEDqG
-         EUUfCdCI3c1NOvXTA0UW3xnyJdMg0IcxUAHILw5HLEHbI3mElJF84nLm0okA+bpX/VNi
-         Lrd1LHjZb2cdwfKojLlEcAH9jmpbC4p1ExN7uK46K6UIQKZEvjZivz6IUc42XmmUAcDp
-         9Rmg==
+        bh=Gpq6X/4WS7nrx/ihZzLk1eGxqJisJrm0b1Z3C7/sHiY=;
+        b=VVJP0l+6wl3D4HQv8BZkNIroI5pwpa4btEYlyh1dWdwJrRgSzBwymmZ0eYHTIsT0uC
+         1wXM9lAu6tdWZg95ImZJYtWcZXqIOpvrARhycSSc0qHfBVHo85z3Vags9SU+B84+UvjI
+         VIVtZhqdUtgWUVsCvR9JxXMdrDN19b6LWqFqYNPhwSPQNguFeTZk8gSDdpzypnvsY4j2
+         g5BH3sCifCfWtulQ1X3O/a/2Rnh1BluOpnXcIOy9EQllsGS/HEpp0xKM8V79MFTST5+v
+         wMuc6hr47oyGpPqhYZ2z8XFAU/zYkarF71TgwhkXbR41G3ipAmERaqnaScWDFnvFNUDE
+         HVdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678680846;
+        d=1e100.net; s=20210112; t=1678683343;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0XUhL8FFcNhP1iWeAiFBGkWuirlsQdIqQYoFoEIJuKs=;
-        b=D+Cso6KheQRdIFzEAYkdlfhGZoMoBA+7A28HfuY7Tu/5icknmcn8FWeANjVVlgkuKX
-         rNcuCGeKc/fJEpnksB8LdH2tKr95DcizKeMpy2R2ijDpPqslZrVjPF15IR9iDaIvllDl
-         prNt7NJ5xrrhoeG4JmW8mwc/V6t8vdXWsQeGY3btnyAMJBnjwo/6yVwIg7bu71oPsr0T
-         aZGif/NAYPOCY7iXEQdr4nSWltfnQE25m5ogAI3KpqmhLt5AL8dor+xrZ1l4ORtOcrdg
-         5piVHX3CdQp6bHCSN/sWx9AAMzkfCkhmhVEvZGI4ehtwGHOMdjEAqOyso5FGfsH4Yxzr
-         4CIg==
-X-Gm-Message-State: AO0yUKXb4jZwwR+I54AoIwRVNFtpKvoFNoMrJfBnRurA7Tdgj6OE9TA6
-        +MWkaK6Lcs0fFvICrv7q2wghByo7W4nIhA==
-X-Google-Smtp-Source: AK7set8nuC3o2iqcZmK+SspoElhwJxaJ0cnSuWnz7DvEEZSLt3+M+jCQEdT+uiqu0U3a8rq+GCbpsA==
-X-Received: by 2002:a5d:9297:0:b0:74c:99e8:7f44 with SMTP id s23-20020a5d9297000000b0074c99e87f44mr5152476iom.2.1678680846323;
-        Sun, 12 Mar 2023 21:14:06 -0700 (PDT)
+        bh=Gpq6X/4WS7nrx/ihZzLk1eGxqJisJrm0b1Z3C7/sHiY=;
+        b=oJFEKQgDB1CmWkkf2NFXa19+YS5+bzsWx4hylM/TPK3b5UN3vpGHc9EAAxVgDnziM/
+         4dJwsPWklSmer+3hK7VDrbNvE11lkitoUq2NkGT4WP87L3QlLNnh4mtsS/BfsA4zNuVZ
+         +/H8Zfc2A6krPNATFX9tw+0VfWMVqJ5EcX794mS0lg9YdvxmV4Rp1Mh2Cn6Apg2hvFzG
+         0tnj3rVZDfp98W0blUBoOItvuBps5jznBUmIxlaFwoT2kH4xL67you4vq0QdNFLtYx/8
+         YaXJxLB2ReNcNSh3MDrjWHwLB1PVVLEt6njEiOcM61735wyO3gLArjkuDcV6uBG+u+f7
+         EULA==
+X-Gm-Message-State: AO0yUKUANOwLQwRisidOxUky2Nlk+MrMlwmblLdjW01hWaTSZJp8mz5l
+        J7iDRAQa74bPI+lDRmgRX6g=
+X-Google-Smtp-Source: AK7set/vaKhV5BybX29gbzgA7KfHXdksLjbCadOAxjzAmtTlZgN6liZnpTLpc/44YL0k3TVPX3dPVg==
+X-Received: by 2002:a6b:b7c3:0:b0:746:190a:138f with SMTP id h186-20020a6bb7c3000000b00746190a138fmr6388871iof.2.1678683343597;
+        Sun, 12 Mar 2023 21:55:43 -0700 (PDT)
 Received: from JOEL-DESKTOP.. ([2604:2d80:4d87:cd00:9f51:32d7:1177:67d])
-        by smtp.gmail.com with ESMTPSA id w12-20020a6b4a0c000000b0074e6f2c584dsm2186258iob.12.2023.03.12.21.14.05
+        by smtp.gmail.com with ESMTPSA id p19-20020a0566380e9300b003eac69029e5sm2175085jas.79.2023.03.12.21.55.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Mar 2023 21:14:05 -0700 (PDT)
+        Sun, 12 Mar 2023 21:55:43 -0700 (PDT)
 From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
-To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Joel Selvaraj <joelselvaraj.oss@gmail.com>
-Subject: [PATCH] scsi: core: Add BLIST_SKIP_VPD_PAGES for SKhynix H28U74301AMR
-Date:   Sun, 12 Mar 2023 23:14:02 -0500
-Message-Id: <20230313041402.39330-1-joelselvaraj.oss@gmail.com>
+Subject: [PATCH] arch: arm64: qcom: sdm845-xiaomi-beryllium: add notification LED
+Date:   Sun, 12 Mar 2023 23:55:39 -0500
+Message-Id: <20230313045539.47538-1-joelselvaraj.oss@gmail.com>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -65,32 +69,43 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Xiaomi Poco F1(qcom/sdm845-xiaomi-beryllium*.dts) comes with a SKhynix
-H28U74301AMR UFS. The sd_read_cpr operation leads to a 120 seconds timeout
-making the device bootup very slow. Like the following:
-
-[  121.457736] sd 0:0:0:1: [sdb] tag#23 timing out command, waited 120s
-
-Setting the BLIST_SKIP_VPD_PAGES allows the device to skip the failing
-sd_read_cpr operation and boot normally.
+Enable the Qualcomm Light Pulse Generator (LPG) driver based
+notification LED.
 
 Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
 ---
- drivers/scsi/scsi_devinfo.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/scsi/scsi_devinfo.c b/drivers/scsi/scsi_devinfo.c
-index c7080454aea9..bd110a93d047 100644
---- a/drivers/scsi/scsi_devinfo.c
-+++ b/drivers/scsi/scsi_devinfo.c
-@@ -233,6 +233,7 @@ static struct {
- 	{"SGI", "RAID5", "*", BLIST_SPARSELUN},
- 	{"SGI", "TP9100", "*", BLIST_REPORTLUN2},
- 	{"SGI", "Universal Xport", "*", BLIST_NO_ULD_ATTACH},
-+	{"SKhynix", "H28U74301AMR", NULL, BLIST_SKIP_VPD_PAGES},
- 	{"IBM", "Universal Xport", "*", BLIST_NO_ULD_ATTACH},
- 	{"SUN", "Universal Xport", "*", BLIST_NO_ULD_ATTACH},
- 	{"DELL", "Universal Xport", "*", BLIST_NO_ULD_ATTACH},
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+index e0fda4d754fe..9d11502e5e0e 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+@@ -2,6 +2,7 @@
+ 
+ /dts-v1/;
+ 
++#include <dt-bindings/leds/common.h>
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ #include <dt-bindings/sound/qcom,q6afe.h>
+@@ -322,6 +323,16 @@ vol_up_pin_a: vol-up-active-state {
+ 	};
+ };
+ 
++&pmi8998_lpg {
++	status = "okay";
++
++	led@5 {
++		reg = <5>;
++		color = <LED_COLOR_ID_WHITE>;
++		function = LED_FUNCTION_STATUS;
++	};
++};
++
+ &pmi8998_wled {
+ 	status = "okay";
+ 	qcom,current-boost-limit = <970>;
 -- 
 2.39.2
 
