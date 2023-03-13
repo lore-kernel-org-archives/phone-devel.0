@@ -2,112 +2,110 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 203CFC6FD19
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Mar 2023 19:09:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B86C7C74A4B
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Mar 2023 20:29:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229723AbjCMTJr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Mar 2023 15:09:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59484 "EHLO
+        id S230045AbjCMU3T (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Mar 2023 16:29:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229494AbjCMTJq (ORCPT
+        with ESMTP id S230051AbjCMU3R (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Mar 2023 15:09:46 -0400
-X-Greylist: delayed 964 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 13 Mar 2023 12:09:45 PDT
-Received: from mailrelay2-1.pub.mailoutpod2-cph3.one.com (mailrelay2-1.pub.mailoutpod2-cph3.one.com [IPv6:2a02:2350:5:401::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6377C468F
-        for <phone-devel@vger.kernel.org>; Mon, 13 Mar 2023 12:09:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=rsa2;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=MgrV3LilewuhqmbVjO8RxzUTtaR1+vbnicMyPFFpwAM=;
-        b=vYP0maXsWtgajTiEfra2Tg51b+hBuX1vK9N4+SgVi7WGqRs5pR0lsFVXhISV6Tmw3E9cWr5BHiw75
-         WyNa3VPCN7/o1iW+N8xjpnBAa/Nl3sChif8zRqdddijLc2TkJfVxfrhoDuKD5PM8GsMlGxFTgzanpu
-         vi/yEDuFbHolP+J0hY5szMfqnc+MZeFGtbwDGFx62V62HtJ6o0+YB4GU0wG57m9QjN900vdStfJUWM
-         pH8R8g1INiS5k70ZqmsaN5vZnQnwU5dgZEQh/1UtOV3/kOsshToposSzQYOijsvGH8uBsA4wmiwILk
-         NRjqZI+LlS1kRtF7n+5HoLSV8JqrMWg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-        d=ravnborg.org; s=ed2;
-        h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-         from:date:from;
-        bh=MgrV3LilewuhqmbVjO8RxzUTtaR1+vbnicMyPFFpwAM=;
-        b=MlV8G0UHvhx3766kkcTJrCusIOBh66LFtAdDHT8vshgOmK1DVRVyF5Pm9tsdUZ4F/D4Xqyfin3YmI
-         VelkWMiAQ==
-X-HalOne-ID: 5882c668-c1d0-11ed-90a3-3df7d73157c4
-Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-        by mailrelay2 (Halon) with ESMTPSA
-        id 5882c668-c1d0-11ed-90a3-3df7d73157c4;
-        Mon, 13 Mar 2023 18:53:31 +0000 (UTC)
-Date:   Mon, 13 Mar 2023 19:53:30 +0100
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Neil Armstrong <neil.armstrong@linaro.org>
-Cc:     Jianhua Lu <lujianhua000@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] drm/panel: Add driver for Novatek NT36523
-Message-ID: <ZA9xKlScy9/LS753@ravnborg.org>
-References: <20230311123231.20771-1-lujianhua000@gmail.com>
- <20230311123231.20771-2-lujianhua000@gmail.com>
- <904bc493-7160-32fd-9709-1dcb978ddbab@linaro.org>
- <ZAx4KqXw+an555d4@Gentoo>
- <6c02557d-372d-05b1-2998-7c2cde99fac7@linaro.org>
+        Mon, 13 Mar 2023 16:29:17 -0400
+Received: from out-16.mta1.migadu.com (out-16.mta1.migadu.com [95.215.58.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A75B3898F0
+        for <phone-devel@vger.kernel.org>; Mon, 13 Mar 2023 13:28:45 -0700 (PDT)
+Date:   Mon, 13 Mar 2023 21:28:08 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grimler.se; s=key1;
+        t=1678739291;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=0wf+Vp/ygCIY+3+XGg+nQBvGdHXJe5C3XUMAiqj5pNU=;
+        b=egflwHISZeEFwj30KD5DUbmDtT4EZkkNQCAco/2OjzHZtMzO2xpVT//OT8qQrk5Ao6Do/b
+        7Lpsv2ytSIDiBXGerrzxZjfDlDtUbSuzCmYygNQ/XP/QoR1l+zjMWgHiVdtmAZZ4LPwn+M
+        lXlqWkzqDa15wH63Fc/+lFk/0WAqy1I=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Henrik Grimler <henrik@grimler.se>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        alim.akhtar@samsung.com, m.szyprowski@samsung.com,
+        jenneron@protonmail.com, markuss.broks@gmail.com,
+        martin.juecker@gmail.com, virag.david003@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v3 1/2] ARM: dts: exynos: replace mshc0 alias with
+ mmc-ddr-1_8v property
+Message-ID: <ZA+HWF9Lwu9q4yKA@L14.lan>
+References: <20230227193819.30133-1-henrik@grimler.se>
+ <20230227193819.30133-2-henrik@grimler.se>
+ <08baf8d8-d93d-780e-6b17-9485ccb5350a@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6c02557d-372d-05b1-2998-7c2cde99fac7@linaro.org>
+In-Reply-To: <08baf8d8-d93d-780e-6b17-9485ccb5350a@linaro.org>
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Mar 13, 2023 at 09:06:50AM +0100, Neil Armstrong wrote:
-> On 11/03/2023 13:46, Jianhua Lu wrote:
-> > On Sat, Mar 11, 2023 at 01:38:52PM +0100, Konrad Dybcio wrote:
-> > > 
-> > > 
-> > > On 11.03.2023 13:32, Jianhua Lu wrote:
-> > > > Add a driver for panels using the Novatek NT36523 display driver IC.
-> > > > 
-> > > > Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
-> > > > ---
-> > > [...]
-> > > 
-> > > > +
-> > > > +static int nt36523_get_modes(struct drm_panel *panel,
-> > > > +			       struct drm_connector *connector)
-> > > > +{
-> > > > +	struct panel_info *pinfo = to_panel_info(panel);
-> > > > +	int i;
-> > > > +
-> > > > +	for (i = 0; i < pinfo->desc->num_modes; i++) {
-> > > > +		const struct drm_display_mode *m = &pinfo->desc->modes[i];
-> > > > +		struct drm_display_mode *mode;
-> > > > +
-> > > > +		mode = drm_mode_duplicate(connector->dev, m);
-> > > > +		if (!mode) {
-> > > > +			dev_err(panel->dev, "failed to add mode %ux%u@%u\n",
-> > > > +				m->hdisplay, m->vdisplay, drm_mode_vrefresh(m));
-> > > > +			return -ENOMEM;
-> > > > +		}
-> > > > +
-> > > > +		mode->type = DRM_MODE_TYPE_DRIVER;
-> > > > +		if (pinfo->desc->num_modes == 1)
-> > > > +			mode->type |= DRM_MODE_TYPE_PREFERRED;
-> > > That's not quite correct, as that means "if you have more than one
-> > > defined panel mode (say 60Hz and 120 Hz), there will be no preferred one".
-> > This piece of code I see in the other panels, so I'm not sure if it is
-> > correct.
-Jianhua is correct that the same code exists in several places,
-and from a quick browse I consider all the cases bogus.
+Hi Krzysztof,
 
-It would be fine if someone volunteered to fix all the panels so we
-avoid this bug to creep into more panel drivers.
+On Sun, Mar 12, 2023 at 05:31:48PM +0100, Krzysztof Kozlowski wrote:
+> On 27/02/2023 20:38, Henrik Grimler wrote:
+> > Previously, the mshc0 alias has been necessary so that
+> > MMC_CAP_1_8V_DDR | MMC_CAP_8_BIT_DATA are set for mshc_0/mmc_0.
+> > However, these capabilities should be described in the device tree so
+> > that we do not have to rely on the alias.
+> > 
+> > The property mmc-ddr-1_8v replaces MMC_CAP_1_8V_DDR, while bus_width =
+> > <8>, which is already set for all the mshc0/mmc0 nodes, replaces
+> > MMC_CAP_8_BIT_DATA.
+> > 
+> > Also cleanup and sort (but keep status property at top) some of the
+> 
+> status is rather the last property
 
-	Sam
+Thanks for the info! Is this documented somewhere? There seem to be
+more nodes with status property first than nodes with status property
+last for Exynos devices, so I mistakenly assumed that was the
+preferred style.
+
+> > nodes while we are modifying them.
+> 
+> Don't mix cleanups with any other changes.
+
+[ ... ]
+
+> >  &mshc_0 {
+> > -	non-removable;
+> > +	status = "okay";> +	bus-width = <8>;
+> >  	cap-mmc-highspeed;
+> >  	card-detect-delay = <200>;
+> > -	vmmc-supply = <&ldo12_reg>;
+> >  	clock-frequency = <100000000>;
+> >  	max-frequency = <100000000>;
+> > +	mmc-ddr-1_8v;
+> > +	non-removable;
+> > +	pinctrl-0 = <&sd0_cmd &sd0_bus1 &sd0_bus4 &sd0_bus8>;
+> > +	pinctrl-names = "default";
+> >  	samsung,dw-mshc-ciu-div = <1>;
+> > -	samsung,dw-mshc-sdr-timing = <0 1>;
+> >  	samsung,dw-mshc-ddr-timing = <1 2>;
+> > -	pinctrl-names = "default";
+> > -	pinctrl-0 = <&sd0_cmd &sd0_bus1 &sd0_bus4 &sd0_bus8>;
+> > -	bus-width = <8>;
+> > -	status = "okay";
+> > +	samsung,dw-mshc-sdr-timing = <0 1>;
+> > +	vmmc-supply = <&ldo12_reg>;
+> 
+> It is impossible to review what happenned here.
+
+Will leave cleanup out of next version, thanks for the feedback!
+
+> Best regards,
+> Krzysztof
+
+Best regards,
+Henrik Grimler
