@@ -2,83 +2,137 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A140C61DA4
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Mar 2023 06:57:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BF24C6FD1F
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Mar 2023 08:08:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229749AbjCMG5C (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Mar 2023 02:57:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58990 "EHLO
+        id S230359AbjCMIIw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Mar 2023 04:08:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbjCMG5A (ORCPT
+        with ESMTP id S229672AbjCMIIi (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Mar 2023 02:57:00 -0400
-Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3BE24D62C;
-        Sun, 12 Mar 2023 23:56:50 -0700 (PDT)
-Received: by mail-il1-x12f.google.com with SMTP id h7so6491532ila.5;
-        Sun, 12 Mar 2023 23:56:50 -0700 (PDT)
+        Mon, 13 Mar 2023 04:08:38 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A5125597
+        for <phone-devel@vger.kernel.org>; Mon, 13 Mar 2023 01:06:54 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id q16so10388163wrw.2
+        for <phone-devel@vger.kernel.org>; Mon, 13 Mar 2023 01:06:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678690610;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=o++4el5QvXQ4SLwy0XsqLCTBNTxf4vLRzZ5SJb+4Stk=;
-        b=MSgB5EJNVhX1iaowYZUFH2a007vIPQxoHTjCVgwkHJcvcBVcT7Nx7/eLCGxoDMHS6v
-         RTUmZcH45ycfTUjRrc25PXUKCKsNW1be4XUlkfWL0cBIDJpIpPuT21NYW4vkmM1ZbuYt
-         ORfHSoKFwFl5/3e+RD/X90wZ1AKHBZlpTtMsZsXKbQdVCOaKJN+j7Tto75cxHVl5Gseb
-         PHSSLIJ++PiSiMzHgbJGQ5uY9lO9rhuExC51VQdWzoi++9WqEWLxiUtLBVSEwj6sT08X
-         m5LRLfNbrTn6iUWud3IUMUudh7bg6tzPstwo9SdJ9ORmxJUiYyNt7CGRyrww0GA0uO+Y
-         096Q==
+        d=linaro.org; s=google; t=1678694812;
+        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+         :content-language:subject:reply-to:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=9T+gkmJSh/A2WDenopQxXDLhV/ur6paK/JrT18X4nWg=;
+        b=Iv2G+78gmnXK8UQXnG5coj7nchQy0urUJWA33kXXuQCkEHq0M8FyQVkN9fuD3d/Lxz
+         oz7w8I4FDjvTlXPGpV0pu6GAyV/JtBXyAUEHwpZgC7TPrI5W7CpKUwPifVBWfzulZMvt
+         UseUIx6NL6dsyRGuyYmqz7d5kuC0by3WjL4QimOraxJXHBUh/Lct2FtU1RjVjMs/HVhx
+         Jx6QteCrEAMRnK0UfN63xCVZCW55Xgq97f1A1sLzcTqvyJZrL/95+ChN8oZPJbVkiEpp
+         bKA5wN1wvxvLWFKFT7TYp6wyxS5wSZ+dW0R+ZkUAQFO7B2ftfkgxFoP5Gtc8Pffkt0Iq
+         wjYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678690610;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o++4el5QvXQ4SLwy0XsqLCTBNTxf4vLRzZ5SJb+4Stk=;
-        b=gEZbAaIuWzYbMy650w1rV3g/IEbBA61Xk1We7N8smQqlayUx6w6xC9VkGZ0TLzWxss
-         d4kQ513Ysj/oNS6MVaDkspaD3IMhpNrspiNKELwhFecYa72T6RvwzGjeeirjByvCKYqU
-         6x/LU0oCzSDwXEInPFW8ORHHkEIGaBDsXS+zmbN2OBmBbghJBOn9OcAwn3sMMGJwYqHd
-         SAu3ed789RTNqbt/VyhWte8KCsC81jkJc2EU40ssE7pJAH0aHrFMngnjBb+a35MwocWf
-         6qLMr4z8RaRptziWRkRt8VEixvPac11ze3dl/+0sQpBeereJEkwI4Tu5NThZWNWh4IJu
-         UBIw==
-X-Gm-Message-State: AO0yUKVGC7fIyTR/xJWcwbDtGLBQf6wI0eHgkbX/X1XgphBHi7XUVm/8
-        g631+0kv/OQTzilbYfZqFng=
-X-Google-Smtp-Source: AK7set9Tuv1mZdwM2KMX+goIskUvG/0EAd92d2cG5R7wTTcOxSoT7jvbIeRniOsFX7VtqufBaPaJjQ==
-X-Received: by 2002:a92:cccb:0:b0:316:67be:1b99 with SMTP id u11-20020a92cccb000000b0031667be1b99mr7366395ilq.0.1678690610030;
-        Sun, 12 Mar 2023 23:56:50 -0700 (PDT)
-Received: from ?IPV6:2604:2d80:4d87:cd00:9f51:32d7:1177:67d? ([2604:2d80:4d87:cd00:9f51:32d7:1177:67d])
-        by smtp.gmail.com with ESMTPSA id r7-20020a02c6c7000000b00375783003fcsm2206467jan.136.2023.03.12.23.56.48
+        d=1e100.net; s=20210112; t=1678694812;
+        h=content-transfer-encoding:in-reply-to:organization:references:cc:to
+         :content-language:subject:reply-to:from:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9T+gkmJSh/A2WDenopQxXDLhV/ur6paK/JrT18X4nWg=;
+        b=D8XEGB6EqfGgv56IWxn4+BERBNZMJoIlqgjQq8NqRAGRFwBDgb6Hmfbu04UyzHwJeT
+         E4qGaf5vsIoeOHcaRPNuG0MUSXZkMl0XR71r+mT8AzqV2/Dg3hpnycR1Rw2lnkolytDL
+         6H6vkHoWgqI/YJqDBa5sDJ4rUVVBPM2HAui3RF/xxpoQqqdZfSR611jJafJvV7xw1ori
+         a1FF6qDJKeCrMYwj8h2Kd7oJthiF4d2VYkK2M9k6ahKn9MmDfizd0lX4XNwVbmAFfoRn
+         DVos/GNeFRCcz93SdhgwkWYT/YyZxqSa00NgYJb/vbHPvKolVk/8JKBQ46wtDRsqkozv
+         IMFQ==
+X-Gm-Message-State: AO0yUKV3eUfFJK20AEc34bh69oN14JDVZdRgh2lh9fESSYxj9TPorsFw
+        mj2jHEFbf0zC26D/rQ7LzE3g/g==
+X-Google-Smtp-Source: AK7set+szlV9cCWtDnSfEmND682iNy8nj0kpvAQc7fC4DpuzG1k9PBJAPBfXxESaTRweKTfRFyKB6Q==
+X-Received: by 2002:adf:ee90:0:b0:2c8:9cfe:9e29 with SMTP id b16-20020adfee90000000b002c89cfe9e29mr20978010wro.38.1678694812121;
+        Mon, 13 Mar 2023 01:06:52 -0700 (PDT)
+Received: from [192.168.7.111] (679773502.box.freepro.com. [212.114.21.58])
+        by smtp.gmail.com with ESMTPSA id x1-20020adff641000000b002c70c99db74sm7124861wrp.86.2023.03.13.01.06.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 12 Mar 2023 23:56:49 -0700 (PDT)
-Message-ID: <b5020395-f6c5-680c-c169-aa46c903613c@gmail.com>
-Date:   Mon, 13 Mar 2023 01:56:48 -0500
+        Mon, 13 Mar 2023 01:06:51 -0700 (PDT)
+Message-ID: <6c02557d-372d-05b1-2998-7c2cde99fac7@linaro.org>
+Date:   Mon, 13 Mar 2023 09:06:50 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH] arch: arm64: qcom: sdm845-xiaomi-beryllium: add
- notification LED
+ Thunderbird/102.7.2
+From:   Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH v5 2/2] drm/panel: Add driver for Novatek NT36523
 Content-Language: en-US
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+To:     Jianhua Lu <lujianhua000@gmail.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230313045539.47538-1-joelselvaraj.oss@gmail.com>
-From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
-In-Reply-To: <20230313045539.47538-1-joelselvaraj.oss@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+References: <20230311123231.20771-1-lujianhua000@gmail.com>
+ <20230311123231.20771-2-lujianhua000@gmail.com>
+ <904bc493-7160-32fd-9709-1dcb978ddbab@linaro.org> <ZAx4KqXw+an555d4@Gentoo>
+Organization: Linaro Developer Services
+In-Reply-To: <ZAx4KqXw+an555d4@Gentoo>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
+On 11/03/2023 13:46, Jianhua Lu wrote:
+> On Sat, Mar 11, 2023 at 01:38:52PM +0100, Konrad Dybcio wrote:
+>>
+>>
+>> On 11.03.2023 13:32, Jianhua Lu wrote:
+>>> Add a driver for panels using the Novatek NT36523 display driver IC.
+>>>
+>>> Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+>>> ---
+>> [...]
+>>
+>>> +
+>>> +static int nt36523_get_modes(struct drm_panel *panel,
+>>> +			       struct drm_connector *connector)
+>>> +{
+>>> +	struct panel_info *pinfo = to_panel_info(panel);
+>>> +	int i;
+>>> +
+>>> +	for (i = 0; i < pinfo->desc->num_modes; i++) {
+>>> +		const struct drm_display_mode *m = &pinfo->desc->modes[i];
+>>> +		struct drm_display_mode *mode;
+>>> +
+>>> +		mode = drm_mode_duplicate(connector->dev, m);
+>>> +		if (!mode) {
+>>> +			dev_err(panel->dev, "failed to add mode %ux%u@%u\n",
+>>> +				m->hdisplay, m->vdisplay, drm_mode_vrefresh(m));
+>>> +			return -ENOMEM;
+>>> +		}
+>>> +
+>>> +		mode->type = DRM_MODE_TYPE_DRIVER;
+>>> +		if (pinfo->desc->num_modes == 1)
+>>> +			mode->type |= DRM_MODE_TYPE_PREFERRED;
+>> That's not quite correct, as that means "if you have more than one
+>> defined panel mode (say 60Hz and 120 Hz), there will be no preferred one".
+> This piece of code I see in the other panels, so I'm not sure if it is
+> correct. Should
+> if (pinfo->desc->num_modes > 1)
+> 			mode->type |= DRM_MODE_TYPE_PREFERRED;
+> is correct?
 
-The commit title should have had the prefix "arm64: dts: qcom:" instead.
-Sorry for the inconsistency. Shall I send a v2 with the commit title fixed?
+I think only a single mode with DRM_MODE_TYPE_PREFERRED is preferred,
+so:
+if (i == 0)
+	mode->type |= DRM_MODE_TYPE_PREFERRED;		
 
-Regards,
-Joel
+would be the right thing to do.
+
+
+Neil
+>>
+>> Konrad
+>>>
+
