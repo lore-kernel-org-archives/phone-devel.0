@@ -2,161 +2,94 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 682D1C05027
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Mar 2023 18:45:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17778C05027
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Mar 2023 18:46:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229838AbjCNSpr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 14 Mar 2023 14:45:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46230 "EHLO
+        id S229446AbjCNSqY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Mar 2023 14:46:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230100AbjCNSpq (ORCPT
+        with ESMTP id S230521AbjCNSqT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 14 Mar 2023 14:45:46 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899B3A401E;
-        Tue, 14 Mar 2023 11:45:12 -0700 (PDT)
-Received: from g550jk.localnet (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id D374BD2500;
-        Tue, 14 Mar 2023 18:33:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1678818788; bh=fHJza5nGl0uG6ilnr4LPPY4PLgKrXqdkOF8SQ67N1kY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=ZsiIufmMaKi3c7O3QK6sepAvzFn03uUdr3CKUT3VoXSwt4PKJlOVdFJSG6mYnRtKl
-         z6YxTjTZmVCR6xEsuDpr+/pK5lVUqEkqLk0ZCDzaXNeV3mC74pia+ELIIICuR5k8vM
-         IVjGYv/sDCA2ppaCyYavz41aREDHVP4LdFyBJuMc=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Sakari Ailus <sakari.ailus@iki.fi>
-Cc:     Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-media@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org,
-        Shunqian Zheng <zhengsq@rock-chips.com>,
-        phone-devel@vger.kernel.org,
-        Helen Koike <helen.koike@collabora.com>
-Subject: Re: [PATCH] media: dt-bindings: ov2685: convert to dtschema
-Date:   Tue, 14 Mar 2023 19:33:06 +0100
-Message-ID: <5654018.DvuYhMxLoT@z3ntu.xyz>
-In-Reply-To: <ZBBh9Euor7R24euV@valkosipuli.retiisi.eu>
-References: <20230206-ov2685-dtschema-v1-1-9e4da3474c10@z3ntu.xyz>
- <2665862.mvXUDI8C0e@z3ntu.xyz> <ZBBh9Euor7R24euV@valkosipuli.retiisi.eu>
+        Tue, 14 Mar 2023 14:46:19 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8735FA54D9
+        for <phone-devel@vger.kernel.org>; Tue, 14 Mar 2023 11:45:46 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id v196so9347170ybe.9
+        for <phone-devel@vger.kernel.org>; Tue, 14 Mar 2023 11:45:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1678819529;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y8OE7w+4I+vParG7ILLLYFEi6tsPBU1Dfdg7jrl2/A0=;
+        b=vaay+BVhvth7wEHfAouviS+jgCuQdGu+dNaLoZXJGJqT28dwC1VvV6+/HCSE+rSX3i
+         u/Pjj/qHzlMS0HjQacAkG8N0zmlorNIIwcyUBen5LxigO1ezN2GJOkPeMW3LPXGnG6tl
+         GfmbAXAoVxSAt5llnFxPz6alyU0Xct24ZsAwKU/RVEYyproTDiWlON+7Ew831dTUe6Ky
+         XmYYIZ/DN3icrvxaxWwiympHPo7Dy+3BUO/Eu0cvTkf/s7xwB2nqEtFeUvKhHsdZp+me
+         aQoPIufA9aITuIiZ855sWpqYqFz+XvsBmKI4okWJ+Rjw556fEjeanUawunJt7zwrHOlU
+         TNKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678819529;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y8OE7w+4I+vParG7ILLLYFEi6tsPBU1Dfdg7jrl2/A0=;
+        b=wNBCTnaEBQMsRztESZ/gsp1GtskT5dqxrbre1ZBxUH+xo9tQb9JkKFJMBP19H3uAyN
+         q4y4KCW2BQH8BF9h9j96SX43JDR5HmBXrbGfMCLYTI5PhUUqncM+L6qFHXLeEuVN3IRq
+         fFOg4680wWg13nIZYx8sJ/LuozAf4V4QBQuvusDaHgszKkC5D7xV+hI6S1jbC44e4sz4
+         jPMfmexatWJIV5aKbh73LDIMiMgoSp/VTip7yfuJnVqj8k41QPjqOwP4L0fxP3pXhsZA
+         3M+MGyn46kFxluvNe9639SReYkZm0uDcTZM+jXAc/72HIFINpzy8cU8DRkPvMsqk2xmR
+         ocfg==
+X-Gm-Message-State: AO0yUKV96kxJPm+nWf4hEy1u3BWcn6/VV6q9V+zginB+pAcgOyHmRk4i
+        xOYm5UzxtjI2aWvIOCayPYuloz03R5+/RXNh1upyNQ==
+X-Google-Smtp-Source: AK7set+UhF+wVRcTtm+dgNrnZSOkyWuMoQIxlxPqjjlJxOyU4N+ppq/c4ZzWCkjIkwj/xBqFI90UC2De42EYSu+KXbU=
+X-Received: by 2002:a5b:209:0:b0:aa9:bd2e:3746 with SMTP id
+ z9-20020a5b0209000000b00aa9bd2e3746mr16977021ybl.4.1678819529283; Tue, 14 Mar
+ 2023 11:45:29 -0700 (PDT)
 MIME-Version: 1.0
+References: <20230217-topic-lenovo-panel-v2-0-2e2c64729330@linaro.org>
+ <20230217-topic-lenovo-panel-v2-1-2e2c64729330@linaro.org>
+ <CACRpkda7=Y4ZRBDOhxE974qV-yXuFyZZs7m_aBwtF9qivV5WQg@mail.gmail.com> <aa963fa9-e2d6-a7e1-8396-745de5f996d4@linaro.org>
+In-Reply-To: <aa963fa9-e2d6-a7e1-8396-745de5f996d4@linaro.org>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 14 Mar 2023 19:45:17 +0100
+Message-ID: <CACRpkdZdeJNDPNvQhUMzwid67jcVNKv7TuNzvm3hQxsnfFst9w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: display/panel: Add Lenovo NT36523W
+ BOE panel
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Jianhua Lu <lujianhua000@gmail.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Dienstag, 14. M=E4rz 2023 13:00:52 CET Sakari Ailus wrote:
-> Hi Luca,
->=20
-> On Thu, Feb 09, 2023 at 05:46:48PM +0100, Luca Weiss wrote:
-> > +CC Helen Koike
-> >=20
-> > On Montag, 6. Februar 2023 22:50:08 CET Rob Herring wrote:
-> > > On Mon, 06 Feb 2023 21:23:16 +0100, Luca Weiss wrote:
-> > > > Convert the text-based dt-bindings to yaml.
-> > > >=20
-> > > > Changes from original txt:
-> > > > * Take wording for various properties from other yaml bindings, this
-> > > >=20
-> > > >   removes e.g. volt amount from schema since it isn't really releva=
-nt
-> > > >   and the datasheet is a better source.
-> > > >=20
-> > > > * Don't make reset-gpios a required property since it can be tied to
-> > > >=20
-> > > >   DOVDD instead.
-> > > >=20
-> > > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > > ---
-> > > >=20
-> > > >  .../devicetree/bindings/media/i2c/ov2685.txt       |  41 ---------
-> > > >  .../devicetree/bindings/media/i2c/ovti,ov2685.yaml | 101
-> > > >  +++++++++++++++++++++ MAINTAINERS
-> > > > =20
-> > > >  |   1 +
-> > > > =20
-> > > >  3 files changed, 102 insertions(+), 41 deletions(-)
-> > >=20
-> > > My bot found errors running 'make DT_CHECKER_FLAGS=3D-m dt_binding_ch=
-eck'
-> > > on your patch (DT_CHECKER_FLAGS is new in v5.13):
-> > >=20
-> > > yamllint warnings/errors:
-> > >=20
-> > > dtschema/dtc warnings/errors:
-> > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindin=
-gs/
-> > > medi a/rockchip-isp1.example.dtb: camera@3c: 'clocks' is a required
-> > > property From schema:
-> > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindin=
-gs/
-> > > med
-> > > ia/i2c/ovti,ov2685.yaml
-> > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindin=
-gs/
-> > > med
-> > > ia/rockchip-isp1.example.dtb: camera@3c: 'clock-names' is a required
-> > > property From schema:
-> > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindin=
-gs/
-> > > med
-> > > ia/i2c/ovti,ov2685.yaml
-> > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindin=
-gs/
-> > > med
-> > > ia/rockchip-isp1.example.dtb: camera@3c: 'dvdd-supply' is a required
-> > > property From schema:
-> > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindin=
-gs/
-> > > med
-> > > ia/i2c/ovti,ov2685.yaml
-> > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindin=
-gs/
-> > > med
-> > > ia/rockchip-isp1.example.dtb: camera@3c: 'avdd-supply' is a required
-> > > property From schema:
-> > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindin=
-gs/
-> > > med
-> > > ia/i2c/ovti,ov2685.yaml
-> > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindin=
-gs/
-> > > med
-> > > ia/rockchip-isp1.example.dtb: camera@3c: 'dovdd-supply' is a required
-> > > property From schema:
-> > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindin=
-gs/
-> > > med
-> > > ia/i2c/ovti,ov2685.yaml
-> >=20
-> > Looks like rockchip-isp1.yaml uses very incomplete sensor examples in
-> > their
-> > binding example, which sort of makes sense since those bindings are
-> > showing
-> > the rockchip isp bindings and contain the bare minimum to show how a
-> > sensor is connected in dt.
-> >=20
-> > Not sure how to solve this - ov2685 is also one of three sensors that a=
-re
-> > used very abbreviated there.
->=20
-> Could these regulators be simply made optional?
+On Wed, Mar 8, 2023 at 12:02=E2=80=AFPM Konrad Dybcio <konrad.dybcio@linaro=
+.org> wrote:
 
-Sure, from driver side it would just get dummy regulators instead.
+> > It would not be helpful for driver writers to have two different bindin=
+gs
+> > for similar hardware hand having to write code to handle different
+> > properties depending on which binding is used, so please unify into
+> > one binding by cooperating with Jianhua.
+> I'll look into Jianhua's patchset and try to work atop that!
 
-Still the clocks are also missing in this rockchip example. Any suggestion=
-=20
-what to do about those?
+Jianhua's driver is merged to drm-misc-next so you can make
+your addendum now!
+https://cgit.freedesktop.org/drm/drm-misc/commit/?id=3Dc61093b56a2ff15e449e=
+8af56e96dc5a312baf25
+https://cgit.freedesktop.org/drm/drm-misc/commit/?id=3D0993234a00451e0a5c3e=
+47d8b0f2e01dac6cedbf
 
-Honestly I don't want to spend too much time on some ISP docs that I don't=
-=20
-really care about, would be nice if the maintainers of that could do that...
-
-Regards
-Luca
-
-
-
+Yours,
+Linus Walleij
