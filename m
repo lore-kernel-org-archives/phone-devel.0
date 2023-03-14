@@ -2,168 +2,103 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48075C6FD1C
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Mar 2023 12:05:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA6D5C6FD1C
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Mar 2023 12:10:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231629AbjCNMFj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 14 Mar 2023 08:05:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37614 "EHLO
+        id S230488AbjCNMK3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Mar 2023 08:10:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231768AbjCNMFe (ORCPT
+        with ESMTP id S231409AbjCNMKS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 14 Mar 2023 08:05:34 -0400
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [IPv6:2a0b:5c81:1c1::37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D95D71C58D;
-        Tue, 14 Mar 2023 05:05:02 -0700 (PDT)
-Received: from meesny.iki.fi (meesny.iki.fi [IPv6:2001:67c:2b0:1c1::201])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by lahtoruutu.iki.fi (Postfix) with ESMTPS id 4PbXHw1rpRz4BKJt;
-        Tue, 14 Mar 2023 14:04:11 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-        t=1678795452;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=qZdVO+o6NVisvLLp0fz85lQ/En55DCtDZZ8CJdoWRLw=;
-        b=Zc1R1I3rg1hRsMfrhRw1YtTL0+SD+swa8meOGKm7k1dEwbQSj16Ii5opPRmeu904Hqk8Wl
-        LHE5P8FZGrVpfCCOf8vh/65UHb1tQzt2L/gy8TBTwYlP5O+G/gvc5DtEhr1YotI5gQfdQs
-        HxmUh1SM/P4O6TkOBGK9Wt5IGrDE7+88Sq8sxmipCtZWAgNALAD3UpUTWEbjDxpUpFIdZk
-        LfTg7MulJNWvhIkOsjVaBmZyqrYALnN8Qy1tToIgzwbwvTspeAR6hOjXTDGz2AyKiqizNH
-        DaXigB1cDHSFeWBI1qap+baUm9Z6arBmJ4mcAEv68pgrRqZ+v6MqUjsA6XnN6g==
-Received: from hillosipuli.retiisi.eu (dkzbhx1tyyyyyyyyyyyyt-3.rev.dnainternet.fi [IPv6:2001:14ba:4502:69d6::1])
+        Tue, 14 Mar 2023 08:10:18 -0400
+X-Greylist: delayed 382 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Mar 2023 05:09:44 PDT
+Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF0FD5617E;
+        Tue, 14 Mar 2023 05:09:43 -0700 (PDT)
+Received: from hillosipuli.retiisi.eu (82-181-192-243.bb.dnainternet.fi [82.181.192.243])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: sailus)
-        by meesny.iki.fi (Postfix) with ESMTPSA id 4PbXFG658tzyQx;
-        Tue, 14 Mar 2023 14:01:54 +0200 (EET)
+        by meesny.iki.fi (Postfix) with ESMTPSA id 4PbXP45k5BzyVg;
+        Tue, 14 Mar 2023 14:08:40 +0200 (EET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-        t=1678795317;
+        t=1678795720;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=qZdVO+o6NVisvLLp0fz85lQ/En55DCtDZZ8CJdoWRLw=;
-        b=g4p6lmMNIEZi5Hxya3lo2eH88giekGBrGSaNMkJJA1vCIRxaWYSrvMP1xmiMOlptEyoQUs
-        3bCxMoWjbG6wbZmBPCELDT27lHPIUx1OH6sIWi6Pa8cLqNSF9oR/lH3VP+U0h0ta577kRs
-        iWilPkVEVHG8/AmclaxCkJTWVCM0/Ik=
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1678795317; a=rsa-sha256; cv=none;
-        b=BvgKPCSD9q6pUJSAxUy+VizHYYIbjg9ezjQHh5QXGQbEZT+GCzXbVU1eLEO4U391sDQS4u
-        +HPMyX5cMepisp8vRwjTRTpBuj/bxnPgc8ugDSKe5otTQLiIwOBTjlVt0BbwX3YLPs555f
-        Ud59qiYSrCYs3qTAkg6uXrJLnMsW1z8=
+        bh=X3YvPxHbI3RAoUHK+3p6RsY7oYN+m0VVSvVONDpbYyg=;
+        b=XF94RFmXl8bcQ4c4q6wKMNdxF3ATibu9hSYiUgbmOmZlgDIFvc9uDGAYS4j2iZkS2oRMeC
+        8VPEo9a5Gk78dHK2ZDmDPvpjdFtygDTUOH3221zb9mPfKwzAWy9KRKtl7yRazdCFzk+k5x
+        K5uoo0KQgVJzqsadsSkeEan4/AYIKA8=
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1678795720; a=rsa-sha256; cv=none;
+        b=LY6KNv0QxONCPXHacs6j3mlbcO5QFxltEdfwKAp5eBVXviE/YkXmRTFgL3KiMy6G8xFJf8
+        h/MXP0VGinvmlDuSFSKKf1V19sU0IpYpSLjREGcvYn3xdvnVg+X5D+fjiRu4PIhET6Jl8Y
+        HrdnhDqwMmqdzhF5pRLR2wP5bGvmX5w=
 ARC-Authentication-Results: i=1;
         ORIGINATING;
         auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-        s=meesny; t=1678795317;
+        s=meesny; t=1678795720;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=qZdVO+o6NVisvLLp0fz85lQ/En55DCtDZZ8CJdoWRLw=;
-        b=OkKVUPXuzmIvASe6puyQy2dN6TuBvyb+QKZfD0GrMbuycT0e4eQY84BRKIVAr1eXt3p/oW
-        sDfHnF0SOKX0niSvK1QzzepUQvH7HRfkRj4s8yJz10vSBg+ZpFQlzXt5rApHPruLKpbyez
-        SKaN1DNDcC5J3QvHiy/Ig3JeNK3EtcM=
+        bh=X3YvPxHbI3RAoUHK+3p6RsY7oYN+m0VVSvVONDpbYyg=;
+        b=h1h6GW0XbiczgnOR5/N3cPEhNCXBgQvTKF/UEgIgKI7u5ECD8cD4V1ID+G083NEjdO2Lzv
+        yzcc4T22vh0RDj+KWHyFnL0nyalZDbtF2pivoKA6hKlRp2JysQe7q1CnSpJEmojuNSjd9e
+        qpX0xPBkjDN5y8/sfsEtucZ28PkrStE=
 Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by hillosipuli.retiisi.eu (Postfix) with ESMTPS id CFAAB634C91;
-        Tue, 14 Mar 2023 14:00:52 +0200 (EET)
-Date:   Tue, 14 Mar 2023 14:00:52 +0200
+        by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 26BEA634C91;
+        Tue, 14 Mar 2023 14:07:38 +0200 (EET)
+Date:   Tue, 14 Mar 2023 14:07:37 +0200
 From:   Sakari Ailus <sakari.ailus@iki.fi>
 To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-media@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org,
+Cc:     Dave Stevenson <dave.stevenson@raspberrypi.com>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Shunqian Zheng <zhengsq@rock-chips.com>,
-        phone-devel@vger.kernel.org,
-        Helen Koike <helen.koike@collabora.com>
-Subject: Re: [PATCH] media: dt-bindings: ov2685: convert to dtschema
-Message-ID: <ZBBh9Euor7R24euV@valkosipuli.retiisi.eu>
-References: <20230206-ov2685-dtschema-v1-1-9e4da3474c10@z3ntu.xyz>
- <167572017056.1564123.13342855865502188090.robh@kernel.org>
- <2665862.mvXUDI8C0e@z3ntu.xyz>
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        linux-media@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] media: i2c: ov2685: Make reset gpio optional
+Message-ID: <ZBBjiQNJhzPu4h1Y@valkosipuli.retiisi.eu>
+References: <20230129-ov2685-improvements-v2-0-210400f2b63e@z3ntu.xyz>
+ <20230129-ov2685-improvements-v2-1-210400f2b63e@z3ntu.xyz>
+ <CAPY8ntDvviyCox5_WpmOcgMgHuok9LcF1NSgRkfcHFcSgGVuSw@mail.gmail.com>
+ <4481296.cEBGB3zze1@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2665862.mvXUDI8C0e@z3ntu.xyz>
+In-Reply-To: <4481296.cEBGB3zze1@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 Hi Luca,
 
-On Thu, Feb 09, 2023 at 05:46:48PM +0100, Luca Weiss wrote:
-> +CC Helen Koike
-> 
-> On Montag, 6. Februar 2023 22:50:08 CET Rob Herring wrote:
-> > On Mon, 06 Feb 2023 21:23:16 +0100, Luca Weiss wrote:
-> > > Convert the text-based dt-bindings to yaml.
-> > > 
-> > > Changes from original txt:
-> > > * Take wording for various properties from other yaml bindings, this
-> > > 
-> > >   removes e.g. volt amount from schema since it isn't really relevant
-> > >   and the datasheet is a better source.
-> > > 
-> > > * Don't make reset-gpios a required property since it can be tied to
-> > > 
-> > >   DOVDD instead.
-> > > 
-> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > ---
-> > > 
-> > >  .../devicetree/bindings/media/i2c/ov2685.txt       |  41 ---------
-> > >  .../devicetree/bindings/media/i2c/ovti,ov2685.yaml | 101
-> > >  +++++++++++++++++++++ MAINTAINERS                                       
-> > >  |   1 +
-> > >  3 files changed, 102 insertions(+), 41 deletions(-)
+On Wed, Feb 01, 2023 at 06:28:47PM +0100, Luca Weiss wrote:
+> On Mittwoch, 1. Februar 2023 18:24:10 CET Dave Stevenson wrote:
+> > Hi Luca
 > > 
-> > My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-> > on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> > On Wed, 1 Feb 2023 at 17:07, Luca Weiss <luca@z3ntu.xyz> wrote:
+> > > In some setups XSHUTDOWN is connected to DOVDD when it's unused,
+> > > therefore treat the reset gpio as optional.
 > > 
-> > yamllint warnings/errors:
-> > 
-> > dtschema/dtc warnings/errors:
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/medi
-> > a/rockchip-isp1.example.dtb: camera@3c: 'clocks' is a required property From
-> > schema:
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
-> > ia/i2c/ovti,ov2685.yaml
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
-> > ia/rockchip-isp1.example.dtb: camera@3c: 'clock-names' is a required
-> > property From schema:
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
-> > ia/i2c/ovti,ov2685.yaml
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
-> > ia/rockchip-isp1.example.dtb: camera@3c: 'dvdd-supply' is a required
-> > property From schema:
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
-> > ia/i2c/ovti,ov2685.yaml
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
-> > ia/rockchip-isp1.example.dtb: camera@3c: 'avdd-supply' is a required
-> > property From schema:
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
-> > ia/i2c/ovti,ov2685.yaml
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
-> > ia/rockchip-isp1.example.dtb: camera@3c: 'dovdd-supply' is a required
-> > property From schema:
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
-> > ia/i2c/ovti,ov2685.yaml
+> > The binding doc [1] says that reset-gpios is a required property.
+> > Making it optional should therefore have a patch for the binding
+> > first, and then a patch updating the driver.
+> > Unfortunately my understanding is that means converting it to YAML as
+> > well due to the txt docs being frozen.
 > 
-> Looks like rockchip-isp1.yaml uses very incomplete sensor examples in their 
-> binding example, which sort of makes sense since those bindings are showing 
-> the rockchip isp bindings and contain the bare minimum to show how a sensor is 
-> connected in dt.
-> 
-> Not sure how to solve this - ov2685 is also one of three sensors that are used 
-> very abbreviated there.
+> I already have the docs converted somewhere, I will send that separately. Hope 
+> that's okay.
 
-Could these regulators be simply made optional?
+I took the rest of the three patches, there doesn't seem to be a dependency
+between these. I'd suggest to merge new versions of this and the other
+patch into a single set.
 
 -- 
 Kind regards,
