@@ -2,189 +2,116 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2121C05027
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Mar 2023 19:55:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9152C76195
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Mar 2023 22:20:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229797AbjCNTzM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 14 Mar 2023 15:55:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54150 "EHLO
+        id S231288AbjCNWUP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Mar 2023 18:20:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229717AbjCNTzL (ORCPT
+        with ESMTP id S231545AbjCNWTs (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 14 Mar 2023 15:55:11 -0400
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F19438031;
-        Tue, 14 Mar 2023 12:54:59 -0700 (PDT)
-Received: from hillosipuli.retiisi.eu (82-181-192-243.bb.dnainternet.fi [82.181.192.243])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: sailus)
-        by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4Pbkl465RTz49Q7F;
-        Tue, 14 Mar 2023 21:54:56 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-        t=1678823697;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=K9JI+qty9Vz485GIKEV112iQoQGKC29JbO4+C01JJTY=;
-        b=BMzKelRDsJwNeY5+RMJzEz5sxG6rWJ6WUYGQjwi5qbh+pHpzzpMCibujV3q7fayTsChbFA
-        4Rdd9NiYFJ2nKd8xTnpQK/ZgddccphdFhXDpXzYFeSJfnc80JB6M/SsXgwlBcR/TMV0ALw
-        j02zPUQ+XOjJIkDrrMWe7bEM29lhIR4/w7slJDeA2gXG7UuJyDYdwxbF2WoB76iCTUr8Q0
-        EbSwWqaTJLvRNe7m8bfhIok2qccJ5CQ0I3WVp/XzBxGYbYt9ivibfzciF3O9F5BLmrL9+R
-        zCHqXGU3GALjJqB07yNqoJmwWOGg7Nk13H/WcgCEtUOieBcY5ml+o2+aVl4UZw==
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1678823697; a=rsa-sha256;
-        cv=none;
-        b=qjdEI+qPsgxQ/elLA4g/7kxzyvfwU2cnpLl8kEE5GdRniQ2oRLhq4eWvzqsEepgZXEBfGV
-        KwAW7lVEJ6y3f8FFO87OxLimvJ4tOvKfLrhQr66+zKmo/hb7WjKHDSrvwMRktOi+rcfRfP
-        oTnP689VzlgD/pMMbzGxm6JAYzVBINyk3/5Ssy7Cw377dCp7MV0+3Ii0SJCiAtMrOjX/q0
-        KqThELJZw2eAgxXnE4D9hk3PM6++qcG8f1We5feLhdd9ziyc9uPf0/rbfpUkFJp+BSGMqP
-        pz+p/UkYB9crhbMsIBcjVxU0BWA6KyOLhhI7pbG+k3YoghkTUk5d6AlMv3p/Tg==
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-        s=lahtoruutu; t=1678823697;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=K9JI+qty9Vz485GIKEV112iQoQGKC29JbO4+C01JJTY=;
-        b=NWkUu8EbMK3joggOPH/zH13goyQhTZWBHy7q+EFw+mDVPg7c8KLeK5tv2N5RdQcHEzTI8z
-        Mlr3ePAcbe828eAxFVnhfQHgERUWxEYcSIZ/CH4+T0iX2xUQ4V+uvN+c0c6hoAtjCFejYD
-        dq9Y+6AaUslFxZaa0c+7Imq6df4kxV7YP5PncitCWlKD8gi+9jtUKNJ+Is8pqbnJ8q4bOT
-        JT8yMZauhXY7HbrculBAzf/o7a15+GQnEb444h2DqKFAsv+PHPXaCYO02O/FN3CcPAJubK
-        jZwXaBvH7p8n4Adlk6I2D9033D4ChK2vHQJDIJU/zTJmXgDDqRADnjJzb95PHQ==
-Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 950AF634C91;
-        Tue, 14 Mar 2023 21:53:53 +0200 (EET)
-Date:   Tue, 14 Mar 2023 21:53:53 +0200
-From:   Sakari Ailus <sakari.ailus@iki.fi>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-media@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        devicetree@vger.kernel.org,
-        Shunqian Zheng <zhengsq@rock-chips.com>,
-        phone-devel@vger.kernel.org,
-        Helen Koike <helen.koike@collabora.com>
-Subject: Re: [PATCH] media: dt-bindings: ov2685: convert to dtschema
-Message-ID: <ZBDQ0YcBkYW3M/v0@valkosipuli.retiisi.eu>
-References: <20230206-ov2685-dtschema-v1-1-9e4da3474c10@z3ntu.xyz>
- <2665862.mvXUDI8C0e@z3ntu.xyz>
- <ZBBh9Euor7R24euV@valkosipuli.retiisi.eu>
- <5654018.DvuYhMxLoT@z3ntu.xyz>
+        Tue, 14 Mar 2023 18:19:48 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 466EFB760;
+        Tue, 14 Mar 2023 15:18:52 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id br6so3774207lfb.11;
+        Tue, 14 Mar 2023 15:18:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1678832307;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=unv7jkKhSyV7JGv+yIPCmnr6mTwYXd0VFoIWTdDr37E=;
+        b=l29oKArfJSGBXwVSUsqNOVE5S1Zb1OAFW9yIYHA6BfStr7PKGfLDsfMMLA6d/Rim+i
+         vlQa2cyZf2i3GTkS1Bp9hpIL422z8Cbe6bBP/aKeeCCWWfMZB3FtKzg/4naXwkfV5t2G
+         6CWm50VuCCibVX/Zd7cAPubC9x/HXSs3JrBi7O4NphxayguyB5cHAM3Sua5ZF6AqSNCA
+         4skJIVz7qV+q6n6msywUkLZ7lyfIw+ad4oF2wrkdiNWScpJlIaNtF8Pf42XMmZY8I70s
+         cy5m91CfWMyhGWDUHWXuVSX+udh7nNrKtjpNoO4j/M1oaLIRbKKqY7QOVrNDjwpNxKqM
+         4Zaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1678832307;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=unv7jkKhSyV7JGv+yIPCmnr6mTwYXd0VFoIWTdDr37E=;
+        b=ssOvbJhvA8LTG1Erui13ytY4PNCUZqjiaLi0tI2LT8iMapiQNcEavNHeN6tUMOiT+X
+         lZOv7Otw4tQ5Mb7C8/15u/ETZqS4+Alzb0TEI5UmC+XYbWwW9kSvpqy2xfTeaIBNCRur
+         +ZIeWfhAKFx1Kt4AP8uFiXnVEM0iJW4PSseoIyNzS+GNNCQWVDx+WBv/s5HJvP2nRtFE
+         Ko0GdrxsxFy/oT+UEpQ57p7YNmUrqQMAqv+Zlm0YO6dTedfjpLgHVZSZcD4rQbemaN23
+         ZpYteluTn1iJndqgvxmqWchMKgIXWBsxWVNQY80iJSjqclRbYBSQr9OdP/wGJP61vUpF
+         H4rA==
+X-Gm-Message-State: AO0yUKXnOxpHPcXeqpk1XoxxDGEIQ8DefkYfXPSUGHxkhRI4q3r2LLYt
+        0LXYsZewtfN7Rx4A83bhdFF1xZ0BUw3NLw==
+X-Google-Smtp-Source: AK7set/rJc+gSrVKA7Qa6wO50JW4WEimCebjK+oKixALe42HEQYmov1TyILND58iArHQtSRdwvObLQ==
+X-Received: by 2002:ac2:4822:0:b0:4db:3e7e:51dc with SMTP id 2-20020ac24822000000b004db3e7e51dcmr1199459lft.55.1678832307446;
+        Tue, 14 Mar 2023 15:18:27 -0700 (PDT)
+Received: from localhost.localdomain (byw237.neoplus.adsl.tpnet.pl. [83.30.42.237])
+        by smtp.gmail.com with ESMTPSA id l7-20020ac24a87000000b004d23763fe96sm554893lfp.72.2023.03.14.15.18.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Mar 2023 15:18:27 -0700 (PDT)
+From:   Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Adam Skladowski <a39.skl@gmail.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Elliot Berman <quic_eberman@quicinc.com>,
+        Akhil P Oommen <quic_akhilpo@quicinc.com>,
+        Chia-I Wu <olvaffe@gmail.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        AngeloGioacchino Del Regno <kholk11@gmail.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm: msm: adreno: Disable preemption on Adreno 510
+Date:   Tue, 14 Mar 2023 23:17:17 +0100
+Message-Id: <20230314221757.13096-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5654018.DvuYhMxLoT@z3ntu.xyz>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Mar 14, 2023 at 07:33:06PM +0100, Luca Weiss wrote:
-> On Dienstag, 14. März 2023 13:00:52 CET Sakari Ailus wrote:
-> > Hi Luca,
-> > 
-> > On Thu, Feb 09, 2023 at 05:46:48PM +0100, Luca Weiss wrote:
-> > > +CC Helen Koike
-> > > 
-> > > On Montag, 6. Februar 2023 22:50:08 CET Rob Herring wrote:
-> > > > On Mon, 06 Feb 2023 21:23:16 +0100, Luca Weiss wrote:
-> > > > > Convert the text-based dt-bindings to yaml.
-> > > > > 
-> > > > > Changes from original txt:
-> > > > > * Take wording for various properties from other yaml bindings, this
-> > > > > 
-> > > > >   removes e.g. volt amount from schema since it isn't really relevant
-> > > > >   and the datasheet is a better source.
-> > > > > 
-> > > > > * Don't make reset-gpios a required property since it can be tied to
-> > > > > 
-> > > > >   DOVDD instead.
-> > > > > 
-> > > > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > > > ---
-> > > > > 
-> > > > >  .../devicetree/bindings/media/i2c/ov2685.txt       |  41 ---------
-> > > > >  .../devicetree/bindings/media/i2c/ovti,ov2685.yaml | 101
-> > > > >  +++++++++++++++++++++ MAINTAINERS
-> > > > >  
-> > > > >  |   1 +
-> > > > >  
-> > > > >  3 files changed, 102 insertions(+), 41 deletions(-)
-> > > > 
-> > > > My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-> > > > on your patch (DT_CHECKER_FLAGS is new in v5.13):
-> > > > 
-> > > > yamllint warnings/errors:
-> > > > 
-> > > > dtschema/dtc warnings/errors:
-> > > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/
-> > > > medi a/rockchip-isp1.example.dtb: camera@3c: 'clocks' is a required
-> > > > property From schema:
-> > > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/
-> > > > med
-> > > > ia/i2c/ovti,ov2685.yaml
-> > > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/
-> > > > med
-> > > > ia/rockchip-isp1.example.dtb: camera@3c: 'clock-names' is a required
-> > > > property From schema:
-> > > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/
-> > > > med
-> > > > ia/i2c/ovti,ov2685.yaml
-> > > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/
-> > > > med
-> > > > ia/rockchip-isp1.example.dtb: camera@3c: 'dvdd-supply' is a required
-> > > > property From schema:
-> > > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/
-> > > > med
-> > > > ia/i2c/ovti,ov2685.yaml
-> > > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/
-> > > > med
-> > > > ia/rockchip-isp1.example.dtb: camera@3c: 'avdd-supply' is a required
-> > > > property From schema:
-> > > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/
-> > > > med
-> > > > ia/i2c/ovti,ov2685.yaml
-> > > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/
-> > > > med
-> > > > ia/rockchip-isp1.example.dtb: camera@3c: 'dovdd-supply' is a required
-> > > > property From schema:
-> > > > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/
-> > > > med
-> > > > ia/i2c/ovti,ov2685.yaml
-> > > 
-> > > Looks like rockchip-isp1.yaml uses very incomplete sensor examples in
-> > > their
-> > > binding example, which sort of makes sense since those bindings are
-> > > showing
-> > > the rockchip isp bindings and contain the bare minimum to show how a
-> > > sensor is connected in dt.
-> > > 
-> > > Not sure how to solve this - ov2685 is also one of three sensors that are
-> > > used very abbreviated there.
-> > 
-> > Could these regulators be simply made optional?
-> 
-> Sure, from driver side it would just get dummy regulators instead.
-> 
-> Still the clocks are also missing in this rockchip example. Any suggestion 
-> what to do about those?
-> 
-> Honestly I don't want to spend too much time on some ISP docs that I don't 
-> really care about, would be nice if the maintainers of that could do that...
+Downstream driver appears to not support preemption on A510 target,
+trying to use one make device slow and fill log with rings related errors.
+Set num_rings to 1 to disable preemption.
 
-Ah, I think I missed this was about examples only, not actual DT source.
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: e20c9284c8f2 ("drm/msm/adreno: Add support for Adreno 510 GPU")
+Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+---
+ drivers/gpu/drm/msm/adreno/a5xx_gpu.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-I guess you could just make up some clocks in that case? :-)
-
+diff --git a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+index d09221f97f71..074b4e9a8500 100644
+--- a/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a5xx_gpu.c
+@@ -1743,6 +1743,7 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
+ 	struct a5xx_gpu *a5xx_gpu = NULL;
+ 	struct adreno_gpu *adreno_gpu;
+ 	struct msm_gpu *gpu;
++	unsigned int nr_rings;
+ 	int ret;
+ 
+ 	if (!pdev) {
+@@ -1763,7 +1764,12 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
+ 
+ 	check_speed_bin(&pdev->dev);
+ 
+-	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, 4);
++	nr_rings = 4;
++
++	if (adreno_is_a510(adreno_gpu))
++		nr_rings = 1;
++
++	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, nr_rings);
+ 	if (ret) {
+ 		a5xx_destroy(&(a5xx_gpu->base.base));
+ 		return ERR_PTR(ret);
 -- 
-Sakari Ailus
+2.25.1
+
