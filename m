@@ -2,126 +2,170 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EA0AC6FD1C
-	for <phone-devel@archiver.kernel.org>; Tue, 14 Mar 2023 11:40:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48075C6FD1C
+	for <phone-devel@archiver.kernel.org>; Tue, 14 Mar 2023 12:05:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229605AbjCNLkf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 14 Mar 2023 07:40:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44892 "EHLO
+        id S231629AbjCNMFj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 14 Mar 2023 08:05:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231414AbjCNLkd (ORCPT
+        with ESMTP id S231768AbjCNMFe (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 14 Mar 2023 07:40:33 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF9DF9C980;
-        Tue, 14 Mar 2023 04:40:32 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id e15-20020a17090ac20f00b0023d1b009f52so4769852pjt.2;
-        Tue, 14 Mar 2023 04:40:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1678794032;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eH82WTYd39GPKAXdpbYy5VSkOFc2jW21usmU+S6UzaM=;
-        b=WkXPZHabqVtCtmPiPhbTpbqbUbZAf7UDuh35/WLuHqxQ0p18Psv889vDS/yPUe1yI2
-         ggWGepP5WBzmK50RVsxuLn/LTsnoSHRXI7VSThcnCfGf6CrdN6VXb0FYTdfyz9sg2fiv
-         XDGhycxUNZa14Wmubkp+cdO+FLTGMlBF57CjDDyicxY6bry1eNQH364qoOasqilO3s2z
-         4VFgfquWKyo05UDWSslDjvS/xrX5SD6SoSS5WKD86sJadAQd2YiGmnKTzgI9FLFhFPVA
-         tbOYgkpNMEo5D5+ORWlpOT1V32oqmlKsQ88Mz6TxO3cxhWYOvxjRN9Nv3q6qM7s9Ly6v
-         vqDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678794032;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eH82WTYd39GPKAXdpbYy5VSkOFc2jW21usmU+S6UzaM=;
-        b=VAgtv61ObpIUQNbHozUwrNeQQ9BGKBsgOT8wNnk9NTHiSUMZsQePCE5Hjb1apSwgnN
-         YN0gFCm8vqNr20pPlK/Ta0aFZ6bk0hfJKfkM72YkPV3m3CjaxAyFGneEzCj7625ZggUL
-         F2Fu7HUtpG3sDE0zYBMuQzbugPIWzF0uW/s5isN8TJFy7QhNuYxF7urMr49wX03CTU5/
-         +0DI3Pu6EfKrGLu5Lc1Lkpow1798qQC8n7MHu5ibgVv/TyygKJNZdXjCCm2+Hm0MwADc
-         lx4iUyolpw+pa4wo1NrihJW8T5OJhIdJgrFkUEqfs9Wv2yH4OsOowB+UzJ9YpmfWFTjr
-         iOHA==
-X-Gm-Message-State: AO0yUKVXMROPbqwSu3FKLAhCC9sC1L/aBYoyVDCB7LIeg5UGXSoB+xFC
-        zt4J8lOrdFaCbGTjyKeqcCQ=
-X-Google-Smtp-Source: AK7set9ftIWNNWDAHaADJAqiYdsj9tGVmw6svnfxG3uh7QWFxSecTPu9P+X9UtwpFti87PjPTHXSNg==
-X-Received: by 2002:a17:902:f685:b0:19c:d49f:4296 with SMTP id l5-20020a170902f68500b0019cd49f4296mr45244363plg.67.1678794032284;
-        Tue, 14 Mar 2023 04:40:32 -0700 (PDT)
-Received: from Gentoo (n220246252084.netvigator.com. [220.246.252.84])
-        by smtp.gmail.com with ESMTPSA id ju17-20020a170903429100b0019cbd37a335sm1580589plb.93.2023.03.14.04.40.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Mar 2023 04:40:31 -0700 (PDT)
-Date:   Tue, 14 Mar 2023 19:40:21 +0800
-From:   Jianhua Lu <lujianhua000@gmail.com>
-To:     Sam Ravnborg <sam@ravnborg.org>
-Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
+        Tue, 14 Mar 2023 08:05:34 -0400
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [IPv6:2a0b:5c81:1c1::37])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D95D71C58D;
+        Tue, 14 Mar 2023 05:05:02 -0700 (PDT)
+Received: from meesny.iki.fi (meesny.iki.fi [IPv6:2001:67c:2b0:1c1::201])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by lahtoruutu.iki.fi (Postfix) with ESMTPS id 4PbXHw1rpRz4BKJt;
+        Tue, 14 Mar 2023 14:04:11 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+        t=1678795452;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=qZdVO+o6NVisvLLp0fz85lQ/En55DCtDZZ8CJdoWRLw=;
+        b=Zc1R1I3rg1hRsMfrhRw1YtTL0+SD+swa8meOGKm7k1dEwbQSj16Ii5opPRmeu904Hqk8Wl
+        LHE5P8FZGrVpfCCOf8vh/65UHb1tQzt2L/gy8TBTwYlP5O+G/gvc5DtEhr1YotI5gQfdQs
+        HxmUh1SM/P4O6TkOBGK9Wt5IGrDE7+88Sq8sxmipCtZWAgNALAD3UpUTWEbjDxpUpFIdZk
+        LfTg7MulJNWvhIkOsjVaBmZyqrYALnN8Qy1tToIgzwbwvTspeAR6hOjXTDGz2AyKiqizNH
+        DaXigB1cDHSFeWBI1qap+baUm9Z6arBmJ4mcAEv68pgrRqZ+v6MqUjsA6XnN6g==
+Received: from hillosipuli.retiisi.eu (dkzbhx1tyyyyyyyyyyyyt-3.rev.dnainternet.fi [IPv6:2001:14ba:4502:69d6::1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sailus)
+        by meesny.iki.fi (Postfix) with ESMTPSA id 4PbXFG658tzyQx;
+        Tue, 14 Mar 2023 14:01:54 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+        t=1678795317;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=qZdVO+o6NVisvLLp0fz85lQ/En55DCtDZZ8CJdoWRLw=;
+        b=g4p6lmMNIEZi5Hxya3lo2eH88giekGBrGSaNMkJJA1vCIRxaWYSrvMP1xmiMOlptEyoQUs
+        3bCxMoWjbG6wbZmBPCELDT27lHPIUx1OH6sIWi6Pa8cLqNSF9oR/lH3VP+U0h0ta577kRs
+        iWilPkVEVHG8/AmclaxCkJTWVCM0/Ik=
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1678795317; a=rsa-sha256; cv=none;
+        b=BvgKPCSD9q6pUJSAxUy+VizHYYIbjg9ezjQHh5QXGQbEZT+GCzXbVU1eLEO4U391sDQS4u
+        +HPMyX5cMepisp8vRwjTRTpBuj/bxnPgc8ugDSKe5otTQLiIwOBTjlVt0BbwX3YLPs555f
+        Ud59qiYSrCYs3qTAkg6uXrJLnMsW1z8=
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+        s=meesny; t=1678795317;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=qZdVO+o6NVisvLLp0fz85lQ/En55DCtDZZ8CJdoWRLw=;
+        b=OkKVUPXuzmIvASe6puyQy2dN6TuBvyb+QKZfD0GrMbuycT0e4eQY84BRKIVAr1eXt3p/oW
+        sDfHnF0SOKX0niSvK1QzzepUQvH7HRfkRj4s8yJz10vSBg+ZpFQlzXt5rApHPruLKpbyez
+        SKaN1DNDcC5J3QvHiy/Ig3JeNK3EtcM=
+Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by hillosipuli.retiisi.eu (Postfix) with ESMTPS id CFAAB634C91;
+        Tue, 14 Mar 2023 14:00:52 +0200 (EET)
+Date:   Tue, 14 Mar 2023 14:00:52 +0200
+From:   Sakari Ailus <sakari.ailus@iki.fi>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] drm/panel: Add driver for Novatek NT36523
-Message-ID: <ZBBdJcvR6I6HZ4MS@Gentoo>
-References: <20230311123231.20771-1-lujianhua000@gmail.com>
- <20230311123231.20771-2-lujianhua000@gmail.com>
- <904bc493-7160-32fd-9709-1dcb978ddbab@linaro.org>
- <ZAx4KqXw+an555d4@Gentoo>
- <6c02557d-372d-05b1-2998-7c2cde99fac7@linaro.org>
- <ZA9xKlScy9/LS753@ravnborg.org>
+        linux-media@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        devicetree@vger.kernel.org,
+        Shunqian Zheng <zhengsq@rock-chips.com>,
+        phone-devel@vger.kernel.org,
+        Helen Koike <helen.koike@collabora.com>
+Subject: Re: [PATCH] media: dt-bindings: ov2685: convert to dtschema
+Message-ID: <ZBBh9Euor7R24euV@valkosipuli.retiisi.eu>
+References: <20230206-ov2685-dtschema-v1-1-9e4da3474c10@z3ntu.xyz>
+ <167572017056.1564123.13342855865502188090.robh@kernel.org>
+ <2665862.mvXUDI8C0e@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZA9xKlScy9/LS753@ravnborg.org>
+In-Reply-To: <2665862.mvXUDI8C0e@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Mar 13, 2023 at 07:53:30PM +0100, Sam Ravnborg wrote:
-> On Mon, Mar 13, 2023 at 09:06:50AM +0100, Neil Armstrong wrote:
-> > On 11/03/2023 13:46, Jianhua Lu wrote:
-> > > On Sat, Mar 11, 2023 at 01:38:52PM +0100, Konrad Dybcio wrote:
-> > > > 
-> > > > 
-> > > > On 11.03.2023 13:32, Jianhua Lu wrote:
-> > > > > Add a driver for panels using the Novatek NT36523 display driver IC.
-> > > > > 
-> > > > > Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
-> > > > > ---
-> > > > [...]
-> > > > 
-> > > > > +
-> > > > > +static int nt36523_get_modes(struct drm_panel *panel,
-> > > > > +			       struct drm_connector *connector)
-> > > > > +{
-> > > > > +	struct panel_info *pinfo = to_panel_info(panel);
-> > > > > +	int i;
-> > > > > +
-> > > > > +	for (i = 0; i < pinfo->desc->num_modes; i++) {
-> > > > > +		const struct drm_display_mode *m = &pinfo->desc->modes[i];
-> > > > > +		struct drm_display_mode *mode;
-> > > > > +
-> > > > > +		mode = drm_mode_duplicate(connector->dev, m);
-> > > > > +		if (!mode) {
-> > > > > +			dev_err(panel->dev, "failed to add mode %ux%u@%u\n",
-> > > > > +				m->hdisplay, m->vdisplay, drm_mode_vrefresh(m));
-> > > > > +			return -ENOMEM;
-> > > > > +		}
-> > > > > +
-> > > > > +		mode->type = DRM_MODE_TYPE_DRIVER;
-> > > > > +		if (pinfo->desc->num_modes == 1)
-> > > > > +			mode->type |= DRM_MODE_TYPE_PREFERRED;
-> > > > That's not quite correct, as that means "if you have more than one
-> > > > defined panel mode (say 60Hz and 120 Hz), there will be no preferred one".
-> > > This piece of code I see in the other panels, so I'm not sure if it is
-> > > correct.
-> Jianhua is correct that the same code exists in several places,
-> and from a quick browse I consider all the cases bogus.
+Hi Luca,
+
+On Thu, Feb 09, 2023 at 05:46:48PM +0100, Luca Weiss wrote:
+> +CC Helen Koike
 > 
-> It would be fine if someone volunteered to fix all the panels so we
-> avoid this bug to creep into more panel drivers.
-I'm glad to send a patch to fix it soon.
+> On Montag, 6. Februar 2023 22:50:08 CET Rob Herring wrote:
+> > On Mon, 06 Feb 2023 21:23:16 +0100, Luca Weiss wrote:
+> > > Convert the text-based dt-bindings to yaml.
+> > > 
+> > > Changes from original txt:
+> > > * Take wording for various properties from other yaml bindings, this
+> > > 
+> > >   removes e.g. volt amount from schema since it isn't really relevant
+> > >   and the datasheet is a better source.
+> > > 
+> > > * Don't make reset-gpios a required property since it can be tied to
+> > > 
+> > >   DOVDD instead.
+> > > 
+> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > > ---
+> > > 
+> > >  .../devicetree/bindings/media/i2c/ov2685.txt       |  41 ---------
+> > >  .../devicetree/bindings/media/i2c/ovti,ov2685.yaml | 101
+> > >  +++++++++++++++++++++ MAINTAINERS                                       
+> > >  |   1 +
+> > >  3 files changed, 102 insertions(+), 41 deletions(-)
+> > 
+> > My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+> > on your patch (DT_CHECKER_FLAGS is new in v5.13):
+> > 
+> > yamllint warnings/errors:
+> > 
+> > dtschema/dtc warnings/errors:
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/medi
+> > a/rockchip-isp1.example.dtb: camera@3c: 'clocks' is a required property From
+> > schema:
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> > ia/i2c/ovti,ov2685.yaml
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> > ia/rockchip-isp1.example.dtb: camera@3c: 'clock-names' is a required
+> > property From schema:
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> > ia/i2c/ovti,ov2685.yaml
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> > ia/rockchip-isp1.example.dtb: camera@3c: 'dvdd-supply' is a required
+> > property From schema:
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> > ia/i2c/ovti,ov2685.yaml
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> > ia/rockchip-isp1.example.dtb: camera@3c: 'avdd-supply' is a required
+> > property From schema:
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> > ia/i2c/ovti,ov2685.yaml
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> > ia/rockchip-isp1.example.dtb: camera@3c: 'dovdd-supply' is a required
+> > property From schema:
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/med
+> > ia/i2c/ovti,ov2685.yaml
 > 
-> 	Sam
+> Looks like rockchip-isp1.yaml uses very incomplete sensor examples in their 
+> binding example, which sort of makes sense since those bindings are showing 
+> the rockchip isp bindings and contain the bare minimum to show how a sensor is 
+> connected in dt.
+> 
+> Not sure how to solve this - ov2685 is also one of three sensors that are used 
+> very abbreviated there.
+
+Could these regulators be simply made optional?
+
+-- 
+Kind regards,
+
+Sakari Ailus
