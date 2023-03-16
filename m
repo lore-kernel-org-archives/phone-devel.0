@@ -2,116 +2,135 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69D90C76196
-	for <phone-devel@archiver.kernel.org>; Thu, 16 Mar 2023 17:45:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8ECAC7618E
+	for <phone-devel@archiver.kernel.org>; Thu, 16 Mar 2023 21:16:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230116AbjCPRpH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 16 Mar 2023 13:45:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44198 "EHLO
+        id S229464AbjCPVQT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 16 Mar 2023 17:16:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230160AbjCPRom (ORCPT
+        with ESMTP id S229747AbjCPVQR (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 16 Mar 2023 13:44:42 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDFFFDF720;
-        Thu, 16 Mar 2023 10:44:32 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PcvkX1V3Rz6J7h1;
-        Fri, 17 Mar 2023 01:43:32 +0800 (CST)
-Received: from localhost (10.48.145.133) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Thu, 16 Mar
- 2023 17:44:29 +0000
-Date:   Thu, 16 Mar 2023 17:44:28 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-CC:     Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-        <phone-devel@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        <iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH v3 2/3] dt-bindings: thermal: qcom-spmi-adc-tm5: Use
- generic ADC node name
-Message-ID: <20230316174428.00003c4c@Huawei.com>
-In-Reply-To: <20230316124307.pzuvbacsmjdootfx@SoMainline.org>
-References: <20230201204447.542385-1-marijn.suijten@somainline.org>
-        <20230201204447.542385-3-marijn.suijten@somainline.org>
-        <20230203212501.GA908601-robh@kernel.org>
-        <20230205150645.549ff062@jic23-huawei>
-        <20230316124307.pzuvbacsmjdootfx@SoMainline.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        Thu, 16 Mar 2023 17:16:17 -0400
+Received: from out-10.mta0.migadu.com (out-10.mta0.migadu.com [IPv6:2001:41d0:1004:224b::a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB25DCB067
+        for <phone-devel@vger.kernel.org>; Thu, 16 Mar 2023 14:16:15 -0700 (PDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grimler.se; s=key1;
+        t=1679001371;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=v+zHbSGmRfs2ThNPQvpaczg/D7f0u+ssXZGE4jrt+LQ=;
+        b=kcwb2UHIK0yMluFgLREHfuWvlpPNkwMl3KTjNs1WIDOkVtMHHy6x66ZN399UI8ty8COx7v
+        VgxQsWQ7fXxaHEqkmqzER9gYEu9wqaYR1WnJRwWcnilN7VF4LgbQh07qGjdyYVBcKWNW2K
+        5+L+KdFlu5lgxT4UTbtoazOD2gCUliw=
+From:   Henrik Grimler <henrik@grimler.se>
+To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        alim.akhtar@samsung.com, m.szyprowski@samsung.com,
+        jenneron@protonmail.com, markuss.broks@gmail.com,
+        martin.juecker@gmail.com, virag.david003@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Cc:     Henrik Grimler <henrik@grimler.se>
+Subject: [PATCH v5 0/2]  ARM: dts: add mmc aliases for Exynos devices
+Date:   Thu, 16 Mar 2023 22:15:56 +0100
+Message-Id: <20230316211558.8526-1-henrik@grimler.se>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.48.145.133]
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 16 Mar 2023 13:43:07 +0100
-Marijn Suijten <marijn.suijten@somainline.org> wrote:
+It is convenient to have fixed mmcblk numbering of the eMMC and sdcard
+so that assigned numbers will not change from boot-to-boot or
+depending on if storage devices are actually attached or not.
 
-> On 2023-02-05 15:06:45, Jonathan Cameron wrote:
-> > On Fri, 3 Feb 2023 15:25:01 -0600
-> > Rob Herring <robh@kernel.org> wrote:
-> >   
-> > > On Wed, Feb 01, 2023 at 09:44:46PM +0100, Marijn Suijten wrote:  
-> > > > Update the example to reflect a future requirement for the generic
-> > > > adc-chan node name on ADC channel nodes, while conveying the board name
-> > > > of the channel in a label instead.    
-> > > 
-> > > I don't think we've defined 'adc-chan' as THE generic name. Looks like 
-> > > we have:
-> > > 
-> > > adc-chan
-> > > adc-channel
-> > > channel
-> > > 
-> > > 'channel' is the most common (except for QCom).  
-> > Good spot.
-> > 
-> > We also have that defined as the channel name in 
-> > bindings/iio/adc.yaml  
-> 
-> Good point, let's match adc.yaml and use 'channel' instead.  I'll
-> respin this series with thas, as well as rebasing on -next to solve
-> conflicts with 8013295662f5 ("arm64: dts: qcom: sc8280xp: Add label
-> property to vadc channel nodes"): supposedly that DT originally relied
-> on the `@XX` suffix bug :)
-> 
-> > Now this particular binding doesn't use anything from that
-> > generic binding (other than trivial use of reg) but better to be
-> > consistent with it than not!  
-> 
-> Should it inherit the common binding, or was it omitted for a reason?
+Anton Bambura has done the work for the chromebooks while I have
+looked at the other devices.  On the chromebooks, mmc0 is used for
+eMMC and mmc1 for sdcard, while mmc0 is used for eMMC and mmc2 for
+sdcard on the other boards, simply because Anton and I had different
+preferences.
 
-Harmless but little point as far as I can see given we don't happen
-to have any of the generic elements defined in the generic channel
-binding.
+Also drop mshc aliases while we are at it and instead add mmc
+capabilities to the individual device trees (right now they are added
+depending on alias index).  I have tested the changes on
+exynos4412-odroid-u2 and exynos5422-odroid-xu4: the MMC_CAP_1_8V_DDR
+and MMC_CAP_8_BIT_DATA caps are set correctly (meaning they are set
+for mshc_0/mmc_0 but not mshc_2/mmc_2) both before and after this
+patchset.
 
-Jonathan
+---
 
-> 
-> - Marijn
-> 
+Changes since v4:
+* Do not set mmc-ddr-1_8v for sdhci_0 on Exynos 4210,
+  following Marek's tests
+* Collect tags
+
+Changes since v3:
+* Skip sorting of nodes, to not make reviewing impossible (and I need
+  to read up on preferred style)
+* Move two mmc alias additions from patch 1 to patch 2
+
+Changes since v2:
+* Set mmc-ddr-1_8v in device trees so that MMC_CAP_1_8V_DDR is set
+  also after removal of mshc0 alias.  Issue was pointed out by Krzysztof
+  and David.
+* Fix whitespace issue in patch 2 which was pointed out by Krzysztof
+* Reword commit message of patch 2 after Rob's comment
+
+Changes since v1:
+* Move mshc alias cleanup to a separate commit
+* Use mmc0 and mmc1 (instead of mmc0 and mmc2) for eMMC and sdcard on
+  chromebooks
+* Address Krzysztof's review comments:
+ - Make changes per device rather than in soc dtsi
+
+Henrik Grimler (2):
+  ARM: dts: exynos: replace mshc0 alias with mmc-ddr-1_8v property
+  ARM: dts: exynos: add mmc aliases
+
+ arch/arm/boot/dts/exynos3250-artik5-eval.dts        | 5 +++++
+ arch/arm/boot/dts/exynos3250-artik5.dtsi            | 6 ++++++
+ arch/arm/boot/dts/exynos3250-monk.dts               | 2 ++
+ arch/arm/boot/dts/exynos3250-rinato.dts             | 3 +++
+ arch/arm/boot/dts/exynos4210-i9100.dts              | 6 ++++++
+ arch/arm/boot/dts/exynos4210-origen.dts             | 5 +++++
+ arch/arm/boot/dts/exynos4210-smdkv310.dts           | 4 ++++
+ arch/arm/boot/dts/exynos4210-trats.dts              | 6 ++++++
+ arch/arm/boot/dts/exynos4210-universal_c210.dts     | 6 ++++++
+ arch/arm/boot/dts/exynos4412-itop-elite.dts         | 4 ++++
+ arch/arm/boot/dts/exynos4412-itop-scp-core.dtsi     | 5 +++++
+ arch/arm/boot/dts/exynos4412-midas.dtsi             | 4 ++++
+ arch/arm/boot/dts/exynos4412-odroid-common.dtsi     | 6 ++++++
+ arch/arm/boot/dts/exynos4412-origen.dts             | 6 ++++++
+ arch/arm/boot/dts/exynos4412-p4note.dtsi            | 7 +++++++
+ arch/arm/boot/dts/exynos4412-smdk4412.dts           | 4 ++++
+ arch/arm/boot/dts/exynos4412-tiny4412.dts           | 4 ++++
+ arch/arm/boot/dts/exynos4412.dtsi                   | 1 -
+ arch/arm/boot/dts/exynos5250-arndale.dts            | 6 ++++++
+ arch/arm/boot/dts/exynos5250-smdk5250.dts           | 3 +++
+ arch/arm/boot/dts/exynos5250-snow-common.dtsi       | 4 ++++
+ arch/arm/boot/dts/exynos5250-spring.dts             | 6 ++++++
+ arch/arm/boot/dts/exynos5250.dtsi                   | 4 ----
+ arch/arm/boot/dts/exynos5260-xyref5260.dts          | 6 ++++++
+ arch/arm/boot/dts/exynos5410-odroidxu.dts           | 3 +++
+ arch/arm/boot/dts/exynos5410-smdk5410.dts           | 6 ++++++
+ arch/arm/boot/dts/exynos5420-arndale-octa.dts       | 6 ++++++
+ arch/arm/boot/dts/exynos5420-galaxy-tab-common.dtsi | 6 ++++++
+ arch/arm/boot/dts/exynos5420-peach-pit.dts          | 4 ++++
+ arch/arm/boot/dts/exynos5420-smdk5420.dts           | 6 ++++++
+ arch/arm/boot/dts/exynos5420.dtsi                   | 3 ---
+ arch/arm/boot/dts/exynos5422-odroid-core.dtsi       | 4 ++++
+ arch/arm/boot/dts/exynos5422-odroidxu3-common.dtsi  | 5 +++++
+ arch/arm/boot/dts/exynos5422-samsung-k3g.dts        | 1 +
+ arch/arm/boot/dts/exynos5800-peach-pi.dts           | 4 ++++
+ 35 files changed, 153 insertions(+), 8 deletions(-)
+
+
+base-commit: 0e84f3493a37d50f2f629dbea670135b8a8ee391
+-- 
+2.30.2
 
