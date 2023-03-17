@@ -2,93 +2,116 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CBCB2C74A5B
-	for <phone-devel@archiver.kernel.org>; Fri, 17 Mar 2023 04:05:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AC88C7618B
+	for <phone-devel@archiver.kernel.org>; Fri, 17 Mar 2023 11:55:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230041AbjCQEFS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 17 Mar 2023 00:05:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46976 "EHLO
+        id S229943AbjCQLzz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 17 Mar 2023 07:55:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230011AbjCQEFN (ORCPT
+        with ESMTP id S229647AbjCQLzy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 17 Mar 2023 00:05:13 -0400
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A5C65441;
-        Thu, 16 Mar 2023 21:05:09 -0700 (PDT)
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32GKnTYj015118;
-        Fri, 17 Mar 2023 04:05:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2022-7-12;
- bh=S1DYi0fXg9cauOh2B8nkoXvAvQb0BOn7AOmWiiGl0hc=;
- b=Z6bxcFM0gs2Qs5Er5MVBiNj6RWpwjtaL9bG3Yweek+6rEkawc710h/hvV26YhA9HWggS
- fLmRStDXz85ckez5mz5bSOPeprGy3kL8p4W6lGoTkKVzbBsOO/tS66aNYMKUoNDyY7I+
- GJO/2AXzNUcZbCJud3GYHif0z+7QPKWyg7ka4+bTZnEtOMFy5SHMOfBvnPPT6np5wBmN
- Xh7MjLVk5HRqCNTouZkTx30od2RFTgFI/SRJwY82DoyJTA1lqhvCllns9im0Uj/A40aG
- bhKJSjvYVIUKMS/0w2CY4diVRKBUoI18M8dRCfmU8olGgkHfnsFq0/r2QZjCjp5d/3gI pA== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3pbs29aywa-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 17 Mar 2023 04:05:05 +0000
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 32H2hwWU036776;
-        Fri, 17 Mar 2023 04:05:04 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3pbq9jfkp7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 17 Mar 2023 04:05:04 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32H454xr027487;
-        Fri, 17 Mar 2023 04:05:04 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3pbq9jfkkv-1;
-        Fri, 17 Mar 2023 04:05:04 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        Joel Selvaraj <joelselvaraj.oss@gmail.com>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH] scsi: core: Add BLIST_SKIP_VPD_PAGES for SKhynix H28U74301AMR
-Date:   Fri, 17 Mar 2023 00:04:52 -0400
-Message-Id: <167902587498.2716429.6166299583657702408.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230313041402.39330-1-joelselvaraj.oss@gmail.com>
-References: <20230313041402.39330-1-joelselvaraj.oss@gmail.com>
+        Fri, 17 Mar 2023 07:55:54 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FBB852F52
+        for <phone-devel@vger.kernel.org>; Fri, 17 Mar 2023 04:55:45 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id w9so19390028edc.3
+        for <phone-devel@vger.kernel.org>; Fri, 17 Mar 2023 04:55:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679054144;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QCfN6F0y+kXWsG65TzOeSOHJ6drfqPHeFbLKw0Y/4s8=;
+        b=VIUUaZkpbCR3AYJSEO8c6EiLnQNmeAC8tRTMe2yPr30khWpYlUywqm6yH7DGRJCHZY
+         vka+VfTLn5D64BZl0Vpt+myHQf6eFZDfsqFyrkc5zbr14RN5w8APrAjLKndrv+LFFnuX
+         fcxzFVVrUPsGYLYsNRi+GBwR7BCZYTKJzpoKK8ZA2blmbLBQ9lX38Ttj410by/rnFvBn
+         DMfu/IXaho0ZAsFaQ/nzWog0lhO6I+Q7y+3i9xKSFg6oxaFw4tXa9cBqYKjKQl4rVPG+
+         VZcmVr9eohRDQXOPLmAhdxhktnB+PyNHiL0cDRAt3Nclx75CSn3LA1uktPS4MnKTAnKv
+         2lEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679054144;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QCfN6F0y+kXWsG65TzOeSOHJ6drfqPHeFbLKw0Y/4s8=;
+        b=XBBNAVHpTQsKjJ8y9j/Ql/5Ra0OQwJySOvhKGvp3+2CsZh6fIkmXqcCjXKDKA8gY1/
+         +YMW7N4WuIA93T04nvvvU54yzcMthBgw4LNu4F35LLV9V4hscqawrw87ks3jhqlXwl3H
+         d0Grv6shRf5rgpeBmYcMtBuuFsIbjW8zRFs2mpjJCm1XTOPbU68QlUvvCPhBdBULH8W7
+         XaTItwBWnqEMTWUbbSIMTGKZuZ5fEjok2MXEOxXCVFweHJZnK7FCJ8kXyk/d7FWPcA2b
+         x8BylemOy9E2VzipcYXVwkhFhhIP1mMsBSA2AIQQWkA0RFijioUcH1vdbALRt0qvWPSM
+         MGtg==
+X-Gm-Message-State: AO0yUKWEMnZe0oMNb1Nk7Oavy/CFI1c5grjrdC8RemkcBGbohJabd0oz
+        Cv7woOb6j01X6sMJ6Hxbyee0YA==
+X-Google-Smtp-Source: AK7set+Ko5FIjm3ObaskmXZ0dZBIDnZsLVXTEbaqMpCzXJHlY/hAwcXTRKxymUkWCqYoFZOlhjr2Gw==
+X-Received: by 2002:aa7:d056:0:b0:4fb:6d55:7e7 with SMTP id n22-20020aa7d056000000b004fb6d5507e7mr3074656edo.21.1679054143738;
+        Fri, 17 Mar 2023 04:55:43 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:d013:3eeb:7658:cec? ([2a02:810d:15c0:828:d013:3eeb:7658:cec])
+        by smtp.gmail.com with ESMTPSA id m23-20020a509317000000b004fb95f51f54sm981748eda.12.2023.03.17.04.55.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Mar 2023 04:55:43 -0700 (PDT)
+Message-ID: <20db729f-e8fb-3d16-54a2-b9a54b9a1b55@linaro.org>
+Date:   Fri, 17 Mar 2023 12:55:40 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-17_01,2023-03-16_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0
- mlxlogscore=999 malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303150002 definitions=main-2303170023
-X-Proofpoint-GUID: Dy0WCO5TNiDY3Zv_XkiLC1WKVaf6oMaS
-X-Proofpoint-ORIG-GUID: Dy0WCO5TNiDY3Zv_XkiLC1WKVaf6oMaS
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v5 1/2] ARM: dts: exynos: replace mshc0 alias with
+ mmc-ddr-1_8v property
+Content-Language: en-US
+To:     Henrik Grimler <henrik@grimler.se>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, alim.akhtar@samsung.com,
+        m.szyprowski@samsung.com, jenneron@protonmail.com,
+        markuss.broks@gmail.com, martin.juecker@gmail.com,
+        virag.david003@gmail.com, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <20230316211558.8526-1-henrik@grimler.se>
+ <20230316211558.8526-2-henrik@grimler.se>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230316211558.8526-2-henrik@grimler.se>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 12 Mar 2023 23:14:02 -0500, Joel Selvaraj wrote:
-
-> Xiaomi Poco F1(qcom/sdm845-xiaomi-beryllium*.dts) comes with a SKhynix
-> H28U74301AMR UFS. The sd_read_cpr operation leads to a 120 seconds timeout
-> making the device bootup very slow. Like the following:
+On 16/03/2023 22:15, Henrik Grimler wrote:
+> Previously, the mshc0 alias has been necessary so that
+> MMC_CAP_1_8V_DDR | MMC_CAP_8_BIT_DATA are set for mshc_0/mmc_0.
+> However, these capabilities should be described in the device tree so
+> that we do not have to rely on the alias.
 > 
-> [  121.457736] sd 0:0:0:1: [sdb] tag#23 timing out command, waited 120s
+> The property mmc-ddr-1_8v replaces MMC_CAP_1_8V_DDR, while bus_width =
+> <8>, which is already set for all the mshc0/mmc0 nodes, replaces
+> MMC_CAP_8_BIT_DATA.
 > 
-> Setting the BLIST_SKIP_VPD_PAGES allows the device to skip the failing
-> sd_read_cpr operation and boot normally.
+> Also drop other mshc aliases as they are not needed.
 > 
-> [...]
+> Signed-off-by: Henrik Grimler <henrik@grimler.se>
+> Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> 
+> ---
+> 
+> Changes since v4:
+> * Do not set mmc-ddr-1_8v for sdhci_0 on Exynos 4210,
+>   following Marek's tests
+> 
+> Changes since v3:
+> * Drop attempt at node sorting/cleaning
+> * Move two mmc alias additions to the other patch
+> * Update commit message
+> 
+> Changes since v2:
+> * Set mmc-ddr-1_8v in device trees for mshc_0/mmc_0
+> 
+> 
+>  arch/arm/boot/dts/exynos3250-artik5.dtsi            | 1 +
+>  arch/arm/boot/dts/exynos3250-monk.dts               | 1 +
+>  arch/arm/boot/dts/exynos3250-rinato.dts             | 1 +
 
-Applied to 6.3/scsi-fixes, thanks!
+Why you do not remove Exynos3250 aliases?
 
-[1/1] scsi: core: Add BLIST_SKIP_VPD_PAGES for SKhynix H28U74301AMR
-      https://git.kernel.org/mkp/scsi/c/a204b490595d
+Best regards,
+Krzysztof
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
