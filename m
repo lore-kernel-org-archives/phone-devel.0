@@ -2,95 +2,93 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BD8EC6FD1F
-	for <phone-devel@archiver.kernel.org>; Thu, 16 Mar 2023 22:44:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CBCB2C74A5B
+	for <phone-devel@archiver.kernel.org>; Fri, 17 Mar 2023 04:05:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229815AbjCPWo7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 16 Mar 2023 18:44:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44918 "EHLO
+        id S230041AbjCQEFS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 17 Mar 2023 00:05:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229455AbjCPWo6 (ORCPT
+        with ESMTP id S230011AbjCQEFN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 16 Mar 2023 18:44:58 -0400
-Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1ECF52901
-        for <phone-devel@vger.kernel.org>; Thu, 16 Mar 2023 15:44:55 -0700 (PDT)
-Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id D2DD2402E6;
-        Thu, 16 Mar 2023 23:44:52 +0100 (CET)
-Date:   Thu, 16 Mar 2023 23:44:50 +0100
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] dt-bindings: thermal: qcom-spmi-adc-tm5: Use
- generic ADC node name
-Message-ID: <20230316224450.onx2bldlisfwwp23@SoMainline.org>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>, iio@vger.kernel.org,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-pm@vger.kernel.org
-References: <20230201204447.542385-1-marijn.suijten@somainline.org>
- <20230201204447.542385-3-marijn.suijten@somainline.org>
- <20230203212501.GA908601-robh@kernel.org>
- <20230205150645.549ff062@jic23-huawei>
- <20230316124307.pzuvbacsmjdootfx@SoMainline.org>
- <20230316174428.00003c4c@Huawei.com>
+        Fri, 17 Mar 2023 00:05:13 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A5C65441;
+        Thu, 16 Mar 2023 21:05:09 -0700 (PDT)
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32GKnTYj015118;
+        Fri, 17 Mar 2023 04:05:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2022-7-12;
+ bh=S1DYi0fXg9cauOh2B8nkoXvAvQb0BOn7AOmWiiGl0hc=;
+ b=Z6bxcFM0gs2Qs5Er5MVBiNj6RWpwjtaL9bG3Yweek+6rEkawc710h/hvV26YhA9HWggS
+ fLmRStDXz85ckez5mz5bSOPeprGy3kL8p4W6lGoTkKVzbBsOO/tS66aNYMKUoNDyY7I+
+ GJO/2AXzNUcZbCJud3GYHif0z+7QPKWyg7ka4+bTZnEtOMFy5SHMOfBvnPPT6np5wBmN
+ Xh7MjLVk5HRqCNTouZkTx30od2RFTgFI/SRJwY82DoyJTA1lqhvCllns9im0Uj/A40aG
+ bhKJSjvYVIUKMS/0w2CY4diVRKBUoI18M8dRCfmU8olGgkHfnsFq0/r2QZjCjp5d/3gI pA== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3pbs29aywa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 17 Mar 2023 04:05:05 +0000
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 32H2hwWU036776;
+        Fri, 17 Mar 2023 04:05:04 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3pbq9jfkp7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 17 Mar 2023 04:05:04 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32H454xr027487;
+        Fri, 17 Mar 2023 04:05:04 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+        by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3pbq9jfkkv-1;
+        Fri, 17 Mar 2023 04:05:04 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        Joel Selvaraj <joelselvaraj.oss@gmail.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH] scsi: core: Add BLIST_SKIP_VPD_PAGES for SKhynix H28U74301AMR
+Date:   Fri, 17 Mar 2023 00:04:52 -0400
+Message-Id: <167902587498.2716429.6166299583657702408.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230313041402.39330-1-joelselvaraj.oss@gmail.com>
+References: <20230313041402.39330-1-joelselvaraj.oss@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230316174428.00003c4c@Huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-17_01,2023-03-16_02,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0
+ mlxlogscore=999 malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303150002 definitions=main-2303170023
+X-Proofpoint-GUID: Dy0WCO5TNiDY3Zv_XkiLC1WKVaf6oMaS
+X-Proofpoint-ORIG-GUID: Dy0WCO5TNiDY3Zv_XkiLC1WKVaf6oMaS
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2023-03-16 17:44:28, Jonathan Cameron wrote:
-<snip>
-> > Should it inherit the common binding, or was it omitted for a reason?
+On Sun, 12 Mar 2023 23:14:02 -0500, Joel Selvaraj wrote:
+
+> Xiaomi Poco F1(qcom/sdm845-xiaomi-beryllium*.dts) comes with a SKhynix
+> H28U74301AMR UFS. The sd_read_cpr operation leads to a 120 seconds timeout
+> making the device bootup very slow. Like the following:
 > 
-> Harmless but little point as far as I can see given we don't happen
-> to have any of the generic elements defined in the generic channel
-> binding.
+> [  121.457736] sd 0:0:0:1: [sdb] tag#23 timing out command, waited 120s
+> 
+> Setting the BLIST_SKIP_VPD_PAGES allows the device to skip the failing
+> sd_read_cpr operation and boot normally.
+> 
+> [...]
 
-Supposedly the reg property, and now also the node name.  Up to you to
-say whether I should inherit this (and strip out the common bits) or
-just focus on renaming the node name in the existing binding to channel.
+Applied to 6.3/scsi-fixes, thanks!
 
-- Marijn
+[1/1] scsi: core: Add BLIST_SKIP_VPD_PAGES for SKhynix H28U74301AMR
+      https://git.kernel.org/mkp/scsi/c/a204b490595d
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
