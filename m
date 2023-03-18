@@ -2,98 +2,96 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13C7BC74A5B
-	for <phone-devel@archiver.kernel.org>; Sat, 18 Mar 2023 14:15:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C250C76195
+	for <phone-devel@archiver.kernel.org>; Sat, 18 Mar 2023 16:30:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229679AbjCROO7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 18 Mar 2023 10:14:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48574 "EHLO
+        id S229787AbjCRQaD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 18 Mar 2023 12:30:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229867AbjCROO5 (ORCPT
+        with ESMTP id S229550AbjCRQaC (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 18 Mar 2023 10:14:57 -0400
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D52B846AE;
-        Sat, 18 Mar 2023 07:14:55 -0700 (PDT)
-Received: by mail-pj1-x102f.google.com with SMTP id gp15-20020a17090adf0f00b0023d1bbd9f9eso12018575pjb.0;
-        Sat, 18 Mar 2023 07:14:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679148895;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ie63cbXEy8BAbd5KVjjijgBU9GTxqxjV4iB878fCIoI=;
-        b=TfrtD2Sabn81lmn99KSIbRlFfr7VGeREmmqCcR+Z/a08xn1SbXAoRoN02J5uT+Ypmm
-         BsflJgryeaHIPgVbZbHwjebUUMVpRy34EmyTLIWfS3lGi6DGjKL2Kiyvr3vC2FZ9b6jc
-         5KQxSKDgGtSRsdimRDN11A1Z6TXEiFBocRIh6NqzOoiwd0nLXaeXAOdNPpgISyMMSWb8
-         Cr7opaM0p/FSMX0HXN3rxaOoNqpk//20hOEzvCVbOIddkSO2vZbylVceq1MyVQlE0GLq
-         HMBf0d0IRCY3Fv5GfaHuEX2N/Uf3En6BMgj5gDSoUovqr9wVddB6p8M88K9tNXWjQ4fc
-         D4ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679148895;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ie63cbXEy8BAbd5KVjjijgBU9GTxqxjV4iB878fCIoI=;
-        b=Q5+hCwTqNDscLVYy1mrzjAZvGfkr/zgyVzdE4e78XzxQSxp6sWXSuQ4OP8P/DLTykH
-         4F1F8IJhmIiSDq4mU1qiy6WBzED+5AJcI2+ZlO7GDB8kyyxuYcB5I/oxMP0iyWu+qYxE
-         WKUjin6RKf4EJUCRUCOBTUhHwPCUydrhkDf3McXkKtpxeV1n3C8XNjlSFGZYK+5/oS+2
-         pLIcVa/XCjNX2q6CnIK+VJwtFJjEwwykUi9epV39K61iyXa67rKpY43j7PNaOOZFbaJK
-         T3TNSFXnpQs1Og19F5x+n+gxciq1iWTdYhsRrri010hnVZZOxT1frXoDCxDXQ0THeF8x
-         lMkw==
-X-Gm-Message-State: AO0yUKUo1CAXQ5DnijtHXnUwpFq08O3cML//09UuTg9zUs9qp0+f+0cW
-        5GVgmIT3gYRDpEX4oCVBDoU=
-X-Google-Smtp-Source: AK7set9pDaIiV5oyE+oL92o3+T7xCiiXmh4zYO6MPB75EV4hMWBAHzzfCK4y75iVUth2tqOTfklfYg==
-X-Received: by 2002:a17:902:f28d:b0:19a:ad2f:2df9 with SMTP id k13-20020a170902f28d00b0019aad2f2df9mr8286493plc.55.1679148895214;
-        Sat, 18 Mar 2023 07:14:55 -0700 (PDT)
-Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
-        by smtp.gmail.com with ESMTPSA id jh17-20020a170903329100b0019a96a6543esm3345867plb.184.2023.03.18.07.14.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Mar 2023 07:14:54 -0700 (PDT)
-From:   Jianhua Lu <lujianhua000@gmail.com>
-To:     James Schulman <james.schulman@cirrus.com>,
-        David Rhodes <david.rhodes@cirrus.com>,
-        Lucas Tanure <tanureal@opensource.cirrus.com>,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc:     alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jianhua Lu <lujianhua000@gmail.com>
-Subject: [PATCH] ASoC: cs35l41: Add 12288000 clk freq to cs35l41_fs_mon clk config
-Date:   Sat, 18 Mar 2023 22:14:39 +0800
-Message-Id: <20230318141440.29023-1-lujianhua000@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        Sat, 18 Mar 2023 12:30:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C552799D;
+        Sat, 18 Mar 2023 09:29:59 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A8D560ECD;
+        Sat, 18 Mar 2023 16:29:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD7AC433D2;
+        Sat, 18 Mar 2023 16:29:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679156998;
+        bh=AtbWDM1b1XIpGRo7m2NM4jhZhIEsMXFc9F32RHnTV28=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=iMB8iIJTtSXQ+NdBrNljqloJ2P9Y/xMgrznOuh2ymmwV7/7wKl19c8ypEt35+Oe2l
+         NiqChXqnHyTjfYmvYJzZ6WdL2Rl1hUOFWve2BALpBW6jkHBuC2oFHC5yEjOrpn1wS3
+         y86QbOiIuktLoGuhofx4MgOf6PpK69yNQLyUVUtGSYPv/ERgC7kmK3jQKWegjK54r1
+         3Ap9rx3UbUlY9q25igt5BgxiMVjgTPiEJfyv0S7Wa8/KRrvZUddv6EPm4KYrMSdq2h
+         aejq/a5Hkf2ioi8iRu0ZaclhlU1WWmKkffgFUUjxxyOqGIvcB3fVMzbT6yABfS0n0N
+         E/AnHJLEciYCQ==
+Date:   Sat, 18 Mar 2023 16:44:49 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Rob Herring <robh@kernel.org>, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] dt-bindings: thermal: qcom-spmi-adc-tm5: Use
+ generic ADC node name
+Message-ID: <20230318164449.1df8d0be@jic23-huawei>
+In-Reply-To: <20230316224450.onx2bldlisfwwp23@SoMainline.org>
+References: <20230201204447.542385-1-marijn.suijten@somainline.org>
+        <20230201204447.542385-3-marijn.suijten@somainline.org>
+        <20230203212501.GA908601-robh@kernel.org>
+        <20230205150645.549ff062@jic23-huawei>
+        <20230316124307.pzuvbacsmjdootfx@SoMainline.org>
+        <20230316174428.00003c4c@Huawei.com>
+        <20230316224450.onx2bldlisfwwp23@SoMainline.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-There are 8 cs35l41 speaker amplifier connected to TDM
-in my Xiaomi Mi Pad 5 Pro tablet. In this case, it's necessary
-to set 12288000 (48000 * 32 * 8) clk freq for it.
+On Thu, 16 Mar 2023 23:44:50 +0100
+Marijn Suijten <marijn.suijten@somainline.org> wrote:
 
-rate=48000, slot_width=32, slots=8.
+> On 2023-03-16 17:44:28, Jonathan Cameron wrote:
+> <snip>
+> > > Should it inherit the common binding, or was it omitted for a reason?  
+> > 
+> > Harmless but little point as far as I can see given we don't happen
+> > to have any of the generic elements defined in the generic channel
+> > binding.  
+> 
+> Supposedly the reg property, and now also the node name.  Up to you to
+> say whether I should inherit this (and strip out the common bits) or
+> just focus on renaming the node name in the existing binding to channel.
+> 
+> - Marijn
 
-Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
----
- sound/soc/codecs/cs35l41.c | 1 +
- 1 file changed, 1 insertion(+)
+Just rename the node name.
 
-diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
-index 9ec01a5f09ca..6ac501f008ec 100644
---- a/sound/soc/codecs/cs35l41.c
-+++ b/sound/soc/codecs/cs35l41.c
-@@ -150,6 +150,7 @@ static const struct cs35l41_fs_mon_config cs35l41_fs_mon[] = {
- 	{ 5644800,	16,	24 },
- 	{ 6000000,	16,	24 },
- 	{ 6144000,	16,	24 },
-+	{ 12288000,	0,	0 },
- };
- 
- static int cs35l41_get_fs_mon_config_index(int freq)
--- 
-2.39.2
-
+Jonathan
