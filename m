@@ -2,94 +2,98 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6AA4C7618B
-	for <phone-devel@archiver.kernel.org>; Fri, 17 Mar 2023 12:45:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 13C7BC74A5B
+	for <phone-devel@archiver.kernel.org>; Sat, 18 Mar 2023 14:15:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230268AbjCQMpn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 17 Mar 2023 08:45:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49864 "EHLO
+        id S229679AbjCROO7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 18 Mar 2023 10:14:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230307AbjCQMpm (ORCPT
+        with ESMTP id S229867AbjCROO5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 17 Mar 2023 08:45:42 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79C1CA8838
-        for <phone-devel@vger.kernel.org>; Fri, 17 Mar 2023 05:45:40 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id w9so19938843edc.3
-        for <phone-devel@vger.kernel.org>; Fri, 17 Mar 2023 05:45:40 -0700 (PDT)
+        Sat, 18 Mar 2023 10:14:57 -0400
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D52B846AE;
+        Sat, 18 Mar 2023 07:14:55 -0700 (PDT)
+Received: by mail-pj1-x102f.google.com with SMTP id gp15-20020a17090adf0f00b0023d1bbd9f9eso12018575pjb.0;
+        Sat, 18 Mar 2023 07:14:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679057139;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YNUx6NmU9vZIk5t3kL2stMiQn94hJ9T4laNaCYrljdo=;
-        b=kyyRtRuugrOqI7ZhjjbW6di3tEIIXiBeqgJp/mWjLdjjJ8UVVwX648TTtEUGaV79F1
-         Zg5sntrHeWjoKkmHt1TjLRgtoTp2CPQgx6q9xwlEQOCPujX19EvjwxGPlRjDNeMTZESS
-         95bmTuhrS1/Sk9sPwmm0QMycsPXP2pL6by6Vm4Pf61NLdGIFRIDxy4txivsNxHYzr7yq
-         ttxldATMRmZxZQJ3Q9fMEoz57auvcnYy5x+344SpYcdow8Yv3LzjCWhZ8nwyA5rf2ToF
-         mw6zDIjCa+hB06qzbt3+VXLsrortorbrR3qSzqoAyVoATTaCwZJ/Dx/AiYNBpQJeSMwv
-         zH1g==
+        d=gmail.com; s=20210112; t=1679148895;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ie63cbXEy8BAbd5KVjjijgBU9GTxqxjV4iB878fCIoI=;
+        b=TfrtD2Sabn81lmn99KSIbRlFfr7VGeREmmqCcR+Z/a08xn1SbXAoRoN02J5uT+Ypmm
+         BsflJgryeaHIPgVbZbHwjebUUMVpRy34EmyTLIWfS3lGi6DGjKL2Kiyvr3vC2FZ9b6jc
+         5KQxSKDgGtSRsdimRDN11A1Z6TXEiFBocRIh6NqzOoiwd0nLXaeXAOdNPpgISyMMSWb8
+         Cr7opaM0p/FSMX0HXN3rxaOoNqpk//20hOEzvCVbOIddkSO2vZbylVceq1MyVQlE0GLq
+         HMBf0d0IRCY3Fv5GfaHuEX2N/Uf3En6BMgj5gDSoUovqr9wVddB6p8M88K9tNXWjQ4fc
+         D4ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679057139;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YNUx6NmU9vZIk5t3kL2stMiQn94hJ9T4laNaCYrljdo=;
-        b=LzIvExbtmH0PhAyuD0RtINjeZ7YsLFLYbyjM9Hnev3jJvFghdaOh7CnYXw+/8wQtMh
-         q/XaoFOD+L4wtfri54tslP07pQF9Y/+cH0gIbfnXxnMXgj8h0FFjKpEPSKDMRS98J4un
-         Mjh8S2HUzRXA1xYqsorhLPuOyx8q8Vyyvipu0COhNcg0Sq3YWSJiDJAmSWbitb1Wa6A6
-         G7AP3PWLGWmVxc0A0r4ekYlQAO6n6LLr9XKRCLPTp1jhoNnmsVv03oBj17mIJW/P/W3D
-         4X4nyRktFxOyPsgTKrgK4Ten3I60QWqP25xYtySLT0bkAN0o9dLzzg9DjpJiJH+RwJcE
-         +MOg==
-X-Gm-Message-State: AO0yUKV/Kwp8dx5gcwlyrh8ds/NMHZZGD6tbyY0ZzpGJUm/XuuY1+Dp9
-        hDJbUbWnLUU19epyDXDPfIAa8Q==
-X-Google-Smtp-Source: AK7set+8e4GUEhfFVhELM/7UtvIZCcHDuzN/lx9ayum4pr2NWqS4HYwQbH6HZE+jdKxUdvpzJ1pY2g==
-X-Received: by 2002:a17:906:71d8:b0:878:7a0e:5730 with SMTP id i24-20020a17090671d800b008787a0e5730mr13994270ejk.56.1679057138958;
-        Fri, 17 Mar 2023 05:45:38 -0700 (PDT)
-Received: from krzk-bin.. ([2a02:810d:15c0:828:d013:3eeb:7658:cec])
-        by smtp.gmail.com with ESMTPSA id lt11-20020a170906fa8b00b008e54ac90de1sm938522ejb.74.2023.03.17.05.45.38
+        d=1e100.net; s=20210112; t=1679148895;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ie63cbXEy8BAbd5KVjjijgBU9GTxqxjV4iB878fCIoI=;
+        b=Q5+hCwTqNDscLVYy1mrzjAZvGfkr/zgyVzdE4e78XzxQSxp6sWXSuQ4OP8P/DLTykH
+         4F1F8IJhmIiSDq4mU1qiy6WBzED+5AJcI2+ZlO7GDB8kyyxuYcB5I/oxMP0iyWu+qYxE
+         WKUjin6RKf4EJUCRUCOBTUhHwPCUydrhkDf3McXkKtpxeV1n3C8XNjlSFGZYK+5/oS+2
+         pLIcVa/XCjNX2q6CnIK+VJwtFJjEwwykUi9epV39K61iyXa67rKpY43j7PNaOOZFbaJK
+         T3TNSFXnpQs1Og19F5x+n+gxciq1iWTdYhsRrri010hnVZZOxT1frXoDCxDXQ0THeF8x
+         lMkw==
+X-Gm-Message-State: AO0yUKUo1CAXQ5DnijtHXnUwpFq08O3cML//09UuTg9zUs9qp0+f+0cW
+        5GVgmIT3gYRDpEX4oCVBDoU=
+X-Google-Smtp-Source: AK7set9pDaIiV5oyE+oL92o3+T7xCiiXmh4zYO6MPB75EV4hMWBAHzzfCK4y75iVUth2tqOTfklfYg==
+X-Received: by 2002:a17:902:f28d:b0:19a:ad2f:2df9 with SMTP id k13-20020a170902f28d00b0019aad2f2df9mr8286493plc.55.1679148895214;
+        Sat, 18 Mar 2023 07:14:55 -0700 (PDT)
+Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id jh17-20020a170903329100b0019a96a6543esm3345867plb.184.2023.03.18.07.14.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Mar 2023 05:45:38 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     virag.david003@gmail.com, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        phone-devel@vger.kernel.org, robh+dt@kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, m.szyprowski@samsung.com,
-        Henrik Grimler <henrik@grimler.se>, alim.akhtar@samsung.com,
-        krzysztof.kozlowski+dt@linaro.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v2 0/2] arm64: dts: add mmc aliases for Exynos devices
-Date:   Fri, 17 Mar 2023 13:45:36 +0100
-Message-Id: <167905713176.29125.2783264582338805395.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230315212814.15908-1-henrik@grimler.se>
-References: <20230315212814.15908-1-henrik@grimler.se>
+        Sat, 18 Mar 2023 07:14:54 -0700 (PDT)
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     James Schulman <james.schulman@cirrus.com>,
+        David Rhodes <david.rhodes@cirrus.com>,
+        Lucas Tanure <tanureal@opensource.cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jianhua Lu <lujianhua000@gmail.com>
+Subject: [PATCH] ASoC: cs35l41: Add 12288000 clk freq to cs35l41_fs_mon clk config
+Date:   Sat, 18 Mar 2023 22:14:39 +0800
+Message-Id: <20230318141440.29023-1-lujianhua000@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 15 Mar 2023 22:28:12 +0100, Henrik Grimler wrote:
-> It is convenient to have fixed mmcblk numbering of the eMMC and sdcard
-> so that assigned numbers will not change from boot-to-boot or
-> depending on if storage devices are actually attached or not.
-> 
-> Also drop mshc aliases while we are at it and instead add mmc
-> capabilities to the individual device trees (right now they are added
-> depending on alias index).
-> 
-> [...]
+There are 8 cs35l41 speaker amplifier connected to TDM
+in my Xiaomi Mi Pad 5 Pro tablet. In this case, it's necessary
+to set 12288000 (48000 * 32 * 8) clk freq for it.
 
-Applied, thanks!
+rate=48000, slot_width=32, slots=8.
 
-[1/2] arm64: dts: exynos: drop mshc aliases
-      https://git.kernel.org/krzk/linux/c/c04d7b263d3ff036ca124494c57011c1c274dbe6
-[2/2] arm64: dts: exynos: add mmc aliases
-      https://git.kernel.org/krzk/linux/c/5f67124757464d632f0e5288e0ba48e3ff5531a9
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+---
+ sound/soc/codecs/cs35l41.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Best regards,
+diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
+index 9ec01a5f09ca..6ac501f008ec 100644
+--- a/sound/soc/codecs/cs35l41.c
++++ b/sound/soc/codecs/cs35l41.c
+@@ -150,6 +150,7 @@ static const struct cs35l41_fs_mon_config cs35l41_fs_mon[] = {
+ 	{ 5644800,	16,	24 },
+ 	{ 6000000,	16,	24 },
+ 	{ 6144000,	16,	24 },
++	{ 12288000,	0,	0 },
+ };
+ 
+ static int cs35l41_get_fs_mon_config_index(int freq)
 -- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+2.39.2
+
