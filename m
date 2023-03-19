@@ -2,96 +2,100 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C250C76195
-	for <phone-devel@archiver.kernel.org>; Sat, 18 Mar 2023 16:30:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35E96C76195
+	for <phone-devel@archiver.kernel.org>; Sun, 19 Mar 2023 20:13:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229787AbjCRQaD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 18 Mar 2023 12:30:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56048 "EHLO
+        id S229734AbjCSUNU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 19 Mar 2023 16:13:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbjCRQaC (ORCPT
+        with ESMTP id S229622AbjCSUNT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 18 Mar 2023 12:30:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C552799D;
-        Sat, 18 Mar 2023 09:29:59 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A8D560ECD;
-        Sat, 18 Mar 2023 16:29:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD7AC433D2;
-        Sat, 18 Mar 2023 16:29:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679156998;
-        bh=AtbWDM1b1XIpGRo7m2NM4jhZhIEsMXFc9F32RHnTV28=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=iMB8iIJTtSXQ+NdBrNljqloJ2P9Y/xMgrznOuh2ymmwV7/7wKl19c8ypEt35+Oe2l
-         NiqChXqnHyTjfYmvYJzZ6WdL2Rl1hUOFWve2BALpBW6jkHBuC2oFHC5yEjOrpn1wS3
-         y86QbOiIuktLoGuhofx4MgOf6PpK69yNQLyUVUtGSYPv/ERgC7kmK3jQKWegjK54r1
-         3Ap9rx3UbUlY9q25igt5BgxiMVjgTPiEJfyv0S7Wa8/KRrvZUddv6EPm4KYrMSdq2h
-         aejq/a5Hkf2ioi8iRu0ZaclhlU1WWmKkffgFUUjxxyOqGIvcB3fVMzbT6yABfS0n0N
-         E/AnHJLEciYCQ==
-Date:   Sat, 18 Mar 2023 16:44:49 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Rob Herring <robh@kernel.org>, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] dt-bindings: thermal: qcom-spmi-adc-tm5: Use
- generic ADC node name
-Message-ID: <20230318164449.1df8d0be@jic23-huawei>
-In-Reply-To: <20230316224450.onx2bldlisfwwp23@SoMainline.org>
-References: <20230201204447.542385-1-marijn.suijten@somainline.org>
-        <20230201204447.542385-3-marijn.suijten@somainline.org>
-        <20230203212501.GA908601-robh@kernel.org>
-        <20230205150645.549ff062@jic23-huawei>
-        <20230316124307.pzuvbacsmjdootfx@SoMainline.org>
-        <20230316174428.00003c4c@Huawei.com>
-        <20230316224450.onx2bldlisfwwp23@SoMainline.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+        Sun, 19 Mar 2023 16:13:19 -0400
+Received: from out-63.mta1.migadu.com (out-63.mta1.migadu.com [95.215.58.63])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5212A193E6
+        for <phone-devel@vger.kernel.org>; Sun, 19 Mar 2023 13:13:15 -0700 (PDT)
+Date:   Sun, 19 Mar 2023 21:13:07 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grimler.se; s=key1;
+        t=1679256793;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=mTE64vwbAiJ3iSCPE0mCVdkuhQq+1D7PyTGu9lckQYI=;
+        b=T+0WP5CjO/Pt/Uz6LnIvqttZwtmN3Nynvp8c8jZvNzh+Xj6P3++1Ot67P1nfPNLLbd36CW
+        cj4O3//b0tgoWk3iOqR1k2S65SyIk3mQHAvZz95FF2Q92Xu/zvgzDEPj8Ap3da2BeH+RSf
+        3AcabFDFWZE9g+bBUqVP30rysNuS6g4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Henrik Grimler <henrik@grimler.se>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        alim.akhtar@samsung.com, m.szyprowski@samsung.com,
+        jenneron@protonmail.com, markuss.broks@gmail.com,
+        martin.juecker@gmail.com, virag.david003@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v5 1/2] ARM: dts: exynos: replace mshc0 alias with
+ mmc-ddr-1_8v property
+Message-ID: <ZBds0zxxRYHEJKP+@L14.lan>
+References: <20230316211558.8526-1-henrik@grimler.se>
+ <20230316211558.8526-2-henrik@grimler.se>
+ <20db729f-e8fb-3d16-54a2-b9a54b9a1b55@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20db729f-e8fb-3d16-54a2-b9a54b9a1b55@linaro.org>
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 16 Mar 2023 23:44:50 +0100
-Marijn Suijten <marijn.suijten@somainline.org> wrote:
+Hi Krzysztof,
 
-> On 2023-03-16 17:44:28, Jonathan Cameron wrote:
-> <snip>
-> > > Should it inherit the common binding, or was it omitted for a reason?  
+On Fri, Mar 17, 2023 at 12:55:40PM +0100, Krzysztof Kozlowski wrote:
+> On 16/03/2023 22:15, Henrik Grimler wrote:
+> > Previously, the mshc0 alias has been necessary so that
+> > MMC_CAP_1_8V_DDR | MMC_CAP_8_BIT_DATA are set for mshc_0/mmc_0.
+> > However, these capabilities should be described in the device tree so
+> > that we do not have to rely on the alias.
 > > 
-> > Harmless but little point as far as I can see given we don't happen
-> > to have any of the generic elements defined in the generic channel
-> > binding.  
+> > The property mmc-ddr-1_8v replaces MMC_CAP_1_8V_DDR, while bus_width =
+> > <8>, which is already set for all the mshc0/mmc0 nodes, replaces
+> > MMC_CAP_8_BIT_DATA.
+> > 
+> > Also drop other mshc aliases as they are not needed.
+> > 
+> > Signed-off-by: Henrik Grimler <henrik@grimler.se>
+> > Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> > 
+> > ---
+> > 
+> > Changes since v4:
+> > * Do not set mmc-ddr-1_8v for sdhci_0 on Exynos 4210,
+> >   following Marek's tests
+> > 
+> > Changes since v3:
+> > * Drop attempt at node sorting/cleaning
+> > * Move two mmc alias additions to the other patch
+> > * Update commit message
+> > 
+> > Changes since v2:
+> > * Set mmc-ddr-1_8v in device trees for mshc_0/mmc_0
+> > 
+> > 
+> >  arch/arm/boot/dts/exynos3250-artik5.dtsi            | 1 +
+> >  arch/arm/boot/dts/exynos3250-monk.dts               | 1 +
+> >  arch/arm/boot/dts/exynos3250-rinato.dts             | 1 +
 > 
-> Supposedly the reg property, and now also the node name.  Up to you to
-> say whether I should inherit this (and strip out the common bits) or
-> just focus on renaming the node name in the existing binding to channel.
-> 
-> - Marijn
+> Why you do not remove Exynos3250 aliases?
 
-Just rename the node name.
+Thanks for spotting that, seems I accidentally dropped removal when
+going from v3 to v4.  Will remove them again in next version, and drop
+Marek's test tag since rinato is one of the devices he tests (or used
+to test).
 
-Jonathan
+> Best regards,
+> Krzysztof
+
+Best regards,
+Henrik Grimler
