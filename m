@@ -2,158 +2,107 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CEEDAC6FD1C
-	for <phone-devel@archiver.kernel.org>; Wed, 22 Mar 2023 07:36:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17A28C6FD1F
+	for <phone-devel@archiver.kernel.org>; Wed, 22 Mar 2023 15:03:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229524AbjCVHgb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Mar 2023 03:36:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41526 "EHLO
+        id S230377AbjCVPDk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 22 Mar 2023 11:03:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229968AbjCVHgT (ORCPT
+        with ESMTP id S230171AbjCVPDj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Mar 2023 03:36:19 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3857F5CC39
-        for <phone-devel@vger.kernel.org>; Wed, 22 Mar 2023 00:36:13 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id i5so22179846eda.0
-        for <phone-devel@vger.kernel.org>; Wed, 22 Mar 2023 00:36:13 -0700 (PDT)
+        Wed, 22 Mar 2023 11:03:39 -0400
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5124D21A35;
+        Wed, 22 Mar 2023 08:03:36 -0700 (PDT)
+Received: by mail-pj1-x1034.google.com with SMTP id lr16-20020a17090b4b9000b0023f187954acso19435148pjb.2;
+        Wed, 22 Mar 2023 08:03:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679470572;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uV97OTONSxnGEyV7uO8OnMJG0g0QG+ETuEfWA/XgJlc=;
-        b=PGSo4SIkDysijZW+Nb0UtNdfJBM6YH+rR5SG3c21IjzKSh4MGWnrr9YkU/SDC5POk3
-         jQltAPsr2pcOlhSACMu5bVLiitpiqT8JSv2ciEWwUttYxEg5I5m4EmLMmAnctcIlRSPX
-         72qFxluE6ZdM1FBgos9TBMDKEvc4MgyEcS5B4Wlres9EC7nO+4XOM7VtZRSBwlu+fang
-         JqwTwKeRY9hTWzc0vcc67VQUYCih31Q/BNXzsm7Ekene6GpgSIBlJ1mT8tO7+gIZ8MkH
-         PR2aH1kOB5SJuMk2NYb2S0GG7IL1XAi5/tCLpECL2iq2YVyFyHoAJxKvtu2kn1zRJEMk
-         yIkg==
+        d=gmail.com; s=20210112; t=1679497416;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vlDYEVeWXdvuDC7Z36pSTJuAsUJDvI1ubkbi2mOoDLM=;
+        b=F6Wn/NvBdQrl5XFsJGT250xMrB1RP45wxwAU77e16tYFLnCA4vM6jzPDvt65zJ0Phe
+         OLB75CccwBaLXOw4EQMvErfr91/wHM976Fet7kBrwfRUlNXqJhxnJOu94yIeZPb0TchO
+         YmeSko0HsWl37Z0EpECz5+HbTOQG5kotRunJLlNLvmO9ljXAfPtW3AT2c/rM4j2xxvE0
+         uQL+Cut9g8fjJMEv7Z/ETA03NZDeAKz/4HTRpl0pZAbEfb5CB8xW37pDezxEELMklaoE
+         9crhirwDWaeH3Z3DabmtBuSdSUJ1IC+5tcRSO3ko3T6sIUeOxbplYD+Ky3JJXtNpMc94
+         yUyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679470572;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uV97OTONSxnGEyV7uO8OnMJG0g0QG+ETuEfWA/XgJlc=;
-        b=uFNIIxqgNtyqHXruzBDsNH4ek1e255A6lufiGR/J0y/Y8dZHtNqlJMy20VzVZxwP0f
-         G98kKnc3zp8fakNOS/FnEHCU3W7GPUaPfZZfx2TTafGZhbK8jYODuMHMh13LgOI6nT02
-         gQhEWILKZkxH/yOxmbLihE9xE8/m002a7eokj8AHnNLcOZHzfUKWIKeiFuh7OgMtw301
-         eWz8MV3WtufoJvbB8DgI4scjwFB8cAFEmpl7E+e5zdHbT+Q2R4ApHkAHlQc67rJMZTTP
-         u/EERMqax4LGDy0VYiFn3ERsGz1P4bumVqRxrAwnHtuWZ9/WIZwUhpZivPxDHhLnVTlp
-         ahRA==
-X-Gm-Message-State: AO0yUKX5NMEB2aV6EQr25Iu2/RdA7CFOcp0Z0LtGSDSA73sZ5I9bK3V2
-        Zs/Tzi5wbb99rLxdf/yMYNqnig==
-X-Google-Smtp-Source: AK7set9zlFgHEYh7EBKB/Bq2zpzCToe8YappDSA+j6UYFnxOE7JXrPRmTTfy3WKchUJ4BYgi5XUEQA==
-X-Received: by 2002:a17:906:ece4:b0:930:9385:ce51 with SMTP id qt4-20020a170906ece400b009309385ce51mr5666192ejb.68.1679470571686;
-        Wed, 22 Mar 2023 00:36:11 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:5050:151b:e755:1c6? ([2a02:810d:15c0:828:5050:151b:e755:1c6])
-        by smtp.gmail.com with ESMTPSA id qh7-20020a170906eca700b0092bea699124sm6768128ejb.106.2023.03.22.00.36.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Mar 2023 00:36:11 -0700 (PDT)
-Message-ID: <a4e0a256-4db3-543a-f133-852beb4cf726@linaro.org>
-Date:   Wed, 22 Mar 2023 08:36:10 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 2/3] media: dt-bindings: ov2685: convert to dtschema
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        d=1e100.net; s=20210112; t=1679497416;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vlDYEVeWXdvuDC7Z36pSTJuAsUJDvI1ubkbi2mOoDLM=;
+        b=s39dJmYh8LBKr5n6x+teeH/cziULUE2yTZ1DtsKZD4PDk6YiBBonpYkXA8oAmTYo0i
+         XgDam4SZMrV1nPPzCVnNC0x+0GxvA5t9jMwbsLiGroQuHdljRFbWKUJht7wzw8dJv66G
+         AHEVlUPxys+EwesKVq2xgxfWvCPdfs6gbP/1VgU94WiFlB55AtP5KlRSh2WE6QyHU4bx
+         udqH7MBpSIB/bEvgVmJbNodT+teIjjtyyFgvhNLHF32PWtI3D9TrFlZqg0PWbAEBLQwc
+         6afsZe0lJuP46MRiUukUOToh75DYiXLn3vvJjbJ+QB3TAOEJPbadNdlw4upP61cHFH3v
+         VJwQ==
+X-Gm-Message-State: AO0yUKUkvKgwOhByqpB01Kpqs0AOZW0+IKmHQuTKDQ5ATAqepJNNJVrL
+        r5L1B98gy25nZCH0aBNc0c8=
+X-Google-Smtp-Source: AK7set/ol1/Ysh6iIZcjzavsEW0i0qlM2XSsNN8OYuiqN9bGCLaZLP0W5jGaakKQGAgMYGatTlUJXg==
+X-Received: by 2002:a17:903:1391:b0:19c:e05a:ea6 with SMTP id jx17-20020a170903139100b0019ce05a0ea6mr2530816plb.56.1679497416393;
+        Wed, 22 Mar 2023 08:03:36 -0700 (PDT)
+Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id o7-20020a635d47000000b0050fb4181e8bsm2761238pgm.40.2023.03.22.08.03.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Mar 2023 08:03:35 -0700 (PDT)
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Shunqian Zheng <zhengsq@rock-chips.com>,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc:     linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230129-ov2685-improvements-v3-0-d9737d0707f6@z3ntu.xyz>
- <20230129-ov2685-improvements-v3-2-d9737d0707f6@z3ntu.xyz>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230129-ov2685-improvements-v3-2-d9737d0707f6@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jianhua Lu <lujianhua000@gmail.com>
+Subject: [PATCH 1/4] arm64: dts: qcom: move elish dts to common dtsi
+Date:   Wed, 22 Mar 2023 23:03:17 +0800
+Message-Id: <20230322150320.31787-1-lujianhua000@gmail.com>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 21/03/2023 19:03, Luca Weiss wrote:
-> Convert the text-based dt-bindings to yaml.
-> 
+There are two panel variants of xiaomi-elish, BOE and CSOT panel.
+In order to support both panels, so move elish dts to common dtsi.
 
-Thank you for your patch. There is something to discuss/improve.
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+---
+ ...m8250-xiaomi-elish.dts => sm8250-xiaomi-elish-common.dtsi} | 4 ----
+ 1 file changed, 4 deletions(-)
+ rename arch/arm64/boot/dts/qcom/{sm8250-xiaomi-elish.dts => sm8250-xiaomi-elish-common.dtsi} (99%)
 
-> +  - Shunqian Zheng <zhengsq@rock-chips.com>
-> +
-> +properties:
-> +  compatible:
-> +    const: ovti,ov2685
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    items:
-> +      - description: XVCLK clock
-> +
-> +  clock-names:
-> +    items:
-> +      - const: xvclk
-> +
-> +  dvdd-supply:
-> +    description: Digital Domain Power Supply
-> +
-> +  avdd-supply:
-> +    description: Analog Domain Power Supply
-> +
-> +  dovdd-supply:
-> +    description: I/O Domain Power Supply
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +    description: Reset Pin GPIO Control (active low)
-> +
-> +  port:
-> +    description: MIPI CSI-2 transmitter port
-> +    $ref: /schemas/graph.yaml#/$defs/port-base
-> +    additionalProperties: false
-> +
-> +    properties:
-> +      endpoint:
-> +        $ref: /schemas/media/video-interfaces.yaml#
-> +        unevaluatedProperties: false
-> +
-> +        properties:
-> +          data-lanes:
-> +            maxItems: 1
-> +
-> +        required:
-> +          - data-lanes
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-> +  - dvdd-supply
-> +  - avdd-supply
-> +  - dovdd-supply
-> +  - port
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/rk3399-cru.h>
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    i2c7 {
-
-i2c
-
-With above:
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish.dts b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
+similarity index 99%
+rename from arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish.dts
+rename to arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
+index dd79671f5614..a43d4b73ffca 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish.dts
++++ b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
+@@ -3,8 +3,6 @@
+  * Copyright (c) 2022, 2023 Jianhua Lu <lujianhua000@gmail.com>
+  */
+ 
+-/dts-v1/;
+-
+ #include <dt-bindings/arm/qcom,ids.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ #include "sm8250.dtsi"
+@@ -24,8 +22,6 @@
+ /delete-node/ &xbl_aop_mem;
+ 
+ / {
+-	model = "Xiaomi Mi Pad 5 Pro";
+-	compatible = "xiaomi,elish", "qcom,sm8250";
+ 	classis-type = "tablet";
+ 
+ 	/* required for bootloader to select correct board */
+-- 
+2.39.2
 
