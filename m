@@ -2,89 +2,93 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D540BC6FD20
-	for <phone-devel@archiver.kernel.org>; Tue, 21 Mar 2023 19:25:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82DA8C6FD1F
+	for <phone-devel@archiver.kernel.org>; Wed, 22 Mar 2023 07:35:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229496AbjCUTZb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 21 Mar 2023 15:25:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36982 "EHLO
+        id S229620AbjCVHfB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 22 Mar 2023 03:35:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbjCUTZa (ORCPT
+        with ESMTP id S229800AbjCVHe6 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 21 Mar 2023 15:25:30 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B82BCDCA;
-        Tue, 21 Mar 2023 12:25:27 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id D13241C0E0F; Tue, 21 Mar 2023 20:25:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1679426725;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=FHp6qocT5JOMM3snOUIRNwEjiVup1saxJEKPXH3LIBE=;
-        b=gID0n8m6SA8ipfHjTNofqRiy7vmUspmy8RXVQ51Bvm2cAeUWSI8/6VTrv4WqYlh617PKFE
-        LtO0OLZJ3cZhzc7GIbPg9I4uF/h/lPdTSG4xGCOV1NT2R66UVZcO3KS3aOPU/IumwS/1Wl
-        2KrEILSyRMa0shcWlugJQDrXPFVlVKU=
-Date:   Tue, 21 Mar 2023 20:25:25 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
-        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        martin_rysavy@centrum.cz, phone-devel@vger.kernel.org,
-        maemo-leste@lists.dyne.org
-Subject: d4: Usable with some caveats
-Message-ID: <ZBoEpYPKRFfr/cpR@duo.ucw.cz>
-References: <ZAcvuP8kmWveLoE/@duo.ucw.cz>
+        Wed, 22 Mar 2023 03:34:58 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD4015372F
+        for <phone-devel@vger.kernel.org>; Wed, 22 Mar 2023 00:34:56 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id cn12so23425393edb.4
+        for <phone-devel@vger.kernel.org>; Wed, 22 Mar 2023 00:34:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679470495;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mX/OJUI6k++mjzdJLOuYIAeSKz4fTUVIG0L7LSrrWd0=;
+        b=yiR9tBZHrQpX65hzCmxigJuf332W/pFOtWGCfnfzecoANt+GwdXqk6yCgn1Fhju+H2
+         8kr6DbwMcg1yep4GVhecq/Ea22nPoSKdc3JGqpkJ4iBKOB6vVeeseIRyi2rk1tfcDPI1
+         zh2v4wrj/zdQveqq6DC9VBkUjFX7AVB9Xm56TxHbeKqQRqagbB9oagb10jNTq4KADhMq
+         tWlsJQfM7OAqFY2R/nuCU2Usdmz8wBuah999UCfXVvxfmGsCMwP1kPJjznySGTbnJ6yb
+         rbUz6cJr50xA0t5slGhWq/arEbQf3acCdQkBFAoXfZ8qzc3qvDslE16bX9vWGcvrxRt/
+         Zp1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679470495;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mX/OJUI6k++mjzdJLOuYIAeSKz4fTUVIG0L7LSrrWd0=;
+        b=Km469Bz4pvRVIY1Fdafc192Qvj3w0ugPrG8h6GxJGaXmjOe1lutvFDpXSx7ytt3k99
+         5lS22S8+dple8KN94UbyFEnlQnBzYP08S5n/gCQsO5cmcfoZIkDcCUXkQzzwG+qpnhCr
+         Mw7onPv1u1kGuvZBkMRCO8pEEV/V+yt0evv2r32h2rHrZ3Muu6oLAEbGI+3QkFB/4dWL
+         ZHHCGdcGtZsWog+ryLmBrCLlPmzXLSC1kPc0F+MUDWXZoGUyROiai6aJkBQPVcOUYwTt
+         WFIL42WEldjG0u76AxhDo8wkQl7dInonAjfa1lIg2oK9LLDtbgikIDmKukgCjlYwaTvl
+         rzzQ==
+X-Gm-Message-State: AO0yUKUl0ddY5AacpL9jhbIJRoCkZsKwP5KpVdHfyrcWMGopzDtRo/e6
+        kPSR5eNBv50G74lV4wQvNKrWgg==
+X-Google-Smtp-Source: AK7set9a4NlbiVbRtUcqFNmy+foRhrBn/Jy4Pnq9f3CTRQ2lw47y54alAs0DSvCz6szoLqicgJV8Cg==
+X-Received: by 2002:a17:906:3b19:b0:8b0:f58d:2da9 with SMTP id g25-20020a1709063b1900b008b0f58d2da9mr6548648ejf.64.1679470495066;
+        Wed, 22 Mar 2023 00:34:55 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:5050:151b:e755:1c6? ([2a02:810d:15c0:828:5050:151b:e755:1c6])
+        by smtp.gmail.com with ESMTPSA id ha8-20020a170906a88800b0093a6c591743sm1377582ejb.69.2023.03.22.00.34.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Mar 2023 00:34:54 -0700 (PDT)
+Message-ID: <a55b88f5-3ddb-fc27-cb59-282861084e85@linaro.org>
+Date:   Wed, 22 Mar 2023 08:34:53 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="qmFDAhRrfFm1Hqfm"
-Content-Disposition: inline
-In-Reply-To: <ZAcvuP8kmWveLoE/@duo.ucw.cz>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 1/3] media: dt-bindings: media: rkisp1: complete ov2685
+ example
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Shunqian Zheng <zhengsq@rock-chips.com>,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Cc:     linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230129-ov2685-improvements-v3-0-d9737d0707f6@z3ntu.xyz>
+ <20230129-ov2685-improvements-v3-1-d9737d0707f6@z3ntu.xyz>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230129-ov2685-improvements-v3-1-d9737d0707f6@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 21/03/2023 19:03, Luca Weiss wrote:
+> With the upcoming conversion of ov2685 to dt-schema let's complete the
+> example so validation succeeds. At the same time fix the indentation of
+> the port node in this example.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  .../devicetree/bindings/media/rockchip-isp1.yaml      | 19 +++++++++++++------
 
---qmFDAhRrfFm1Hqfm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hi!
-
-So I believe I found out reason to high power consumption -- web
-browser. It is really easy to leave it running, and power consumption
-goes from 0.05A to 0.15A to roof depending on website.
-
-With the fix to stop charging on battery full, it is nice enough to
-use on daily basis. But there are still few problems:
-
-1) Booting with empty battery will result in Maemo booting then
-immediately shutting down, discharging battery all the time.
-
-2) Enabling bluetooth and leaving it enabled overnight will result in
-so many oopses it fills root filesystem with syslog.
-
-3) When root filesystem is full on boot, it results in hang with black
-screen.
-
-(And yes, today I hit 2) which let to empty battery and 3).)
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
-								Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
+Krzysztof
 
---qmFDAhRrfFm1Hqfm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZBoEpQAKCRAw5/Bqldv6
-8mngAKCHkoASjYTwnGhYPwRuRYbftdnbBgCeMidJcnSkuzIYxHfmYmEGT/yXT0c=
-=6y8d
------END PGP SIGNATURE-----
-
---qmFDAhRrfFm1Hqfm--
