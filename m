@@ -2,124 +2,106 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82B89C6FD1C
-	for <phone-devel@archiver.kernel.org>; Wed, 22 Mar 2023 17:17:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B1ABDC76195
+	for <phone-devel@archiver.kernel.org>; Wed, 22 Mar 2023 18:09:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230171AbjCVRR1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Mar 2023 13:17:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60216 "EHLO
+        id S230337AbjCVSI7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 22 Mar 2023 14:08:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230460AbjCVRRO (ORCPT
+        with ESMTP id S230333AbjCVSI5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Mar 2023 13:17:14 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2774366D39;
-        Wed, 22 Mar 2023 10:16:47 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id o11so19924385ple.1;
-        Wed, 22 Mar 2023 10:16:47 -0700 (PDT)
+        Wed, 22 Mar 2023 14:08:57 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB49064848
+        for <phone-devel@vger.kernel.org>; Wed, 22 Mar 2023 11:08:55 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id cy23so76356421edb.12
+        for <phone-devel@vger.kernel.org>; Wed, 22 Mar 2023 11:08:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679505390;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p1yrkQdQ3+rHj7HsA6aFbOnS34klVtYP6UuejOzccco=;
-        b=FdEEsUfa3PpP/5KX+nodVmJ/QDYTpkGk6vjFgTQcEWYlttjVuXrZOrtxUzVmwNt2GF
-         Ir2FdFN+BcYh1XaSxJP0z2qvD0SuNiQHTcTmQdm5PnaYUAmsO0YCYfDqpGNRQwksQuR1
-         77Tu/+Oj5kUzS5Ox0smxHgVpK1Jds3TgxcY2oPI0smqdKopAF+ndU2XQ96pahTeSd8TU
-         1EftFOKJLk5Y830v0F5IUTeZHVFj3tr5omNCs2bnWkgXYnnjM7OTAqz9N2t8iyjksvvw
-         TTw9Gv+7XPvLAFJThflRTqaKZuJgc53tH9GG6u96L3bfIzbu1pVf+o3jlJc243juRYIR
-         qetw==
+        d=linaro.org; s=google; t=1679508534;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=efy9PKfpLxHwXoRkKT9c57jf502aS45DWUwaYChmv3M=;
+        b=nMjZUipw4m+UfTlCL+89LSz3JAzS5Irv8WcL80yEquTb9hhz46TjiSg3fLytI5ZUNG
+         BxMdeDuOH0DUt0QnqpEA+vkbqfKDqfcJsdFsCwWhlfv3o0Z93kniOzoZT1M6Ci55ERYY
+         K3f3ToaHpBL4dFxe02pc/8vBg1tXHFMBEjD0AEH1kHMAGWRYznNmTFhWqkeaRSUaYQv5
+         +Jqr7fIvyhtLXdgWg05ncPsr9oXxUE1ZSdUHiDUJJg58Bc+/qgRm+B6V9lEczCOI36oc
+         vzyw54/mZQmkfRH6tj2y2dDXh5hQytiSYCDditzT+G7FF6jLLckI3SQFxkCd2H3Ix1lL
+         efWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679505390;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p1yrkQdQ3+rHj7HsA6aFbOnS34klVtYP6UuejOzccco=;
-        b=ZdlxJHzuYSuwSSAwelyhCLUmbam9KcqGpDJe6MeG2T/aQpOQq8WWbe1xulfqE5T5Rs
-         o3DOslrwPnolUxqo7Fr3lmaFTNgcYEg+fdV1XpjXm2dTSxUfYG8kFDx1PEBo4j3vsn2P
-         GPD1gTkDcFQQZguOmmTp+NMcAksQmxkaCCmM+nyfteS6lr8KtMp8+E2EAyI1BtgXOpgK
-         j1xJLB+zmaBwxgiBN329k+/f5VSbHxBhDA7zG0TnHZsCCfttzniixjc9Xv9hcx4oGdp5
-         nKWg1f1mkDf9m0WddzgUbU72gNZG3EN+gH5r0Wp7eVomW4fG+TO6p9wEwduCy+csF8vR
-         fviQ==
-X-Gm-Message-State: AO0yUKX/4axMI0TVcAlrNBlLp1Dd88RDlkVCP68osTHckjwGigsvtNzQ
-        KNItsF4n6jbxrwg0k0jV9Rk=
-X-Google-Smtp-Source: AK7set+lu45jd1DtvFuWe2CYnFxa9HE3DUcqRoqsFsNOGGngMHbaXLMxO5r/GOaBx9wUKbAkbO2gMw==
-X-Received: by 2002:a05:6a20:bb1a:b0:d4:b24b:4459 with SMTP id fc26-20020a056a20bb1a00b000d4b24b4459mr344759pzb.13.1679505390190;
-        Wed, 22 Mar 2023 10:16:30 -0700 (PDT)
-Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
-        by smtp.gmail.com with ESMTPSA id b1-20020a6567c1000000b005023496e339sm10097353pgs.63.2023.03.22.10.16.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Mar 2023 10:16:29 -0700 (PDT)
-From:   Jianhua Lu <lujianhua000@gmail.com>
-To:     Andy Gross <agross@kernel.org>,
+        d=1e100.net; s=20210112; t=1679508534;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=efy9PKfpLxHwXoRkKT9c57jf502aS45DWUwaYChmv3M=;
+        b=pFd6v1dDEBOtSje4SDTtevy+/RzIVN9wdscpN91kh03LRqWR4AgPgvf/3+IMT+4QVv
+         9c5BmNxXh0Ar/vSwFAcjCXvcX76GWBBn0FMUk+QgitMIFIvLhmBawaGn8wCoWJdvyJ/W
+         FqeW8af1Hne7ON2TkQkFad4ltOjTDRifXvoZTrcJq6FHWpY/pqblCp1dTvqurWBO02J+
+         TU3DJxQdUt1/23r/Awi64qK8/oG7qI/xt5+ehUSVGdteB+k7zfIoCKtcVE+23zO+Vp9y
+         OqvbrDJuCn3yhot8BReCYbypR45zZAzXQj0dbLWfkmoBJzmR87Hu1gMtthpzD1JelnXq
+         RFmQ==
+X-Gm-Message-State: AO0yUKWcrPogYf8pvFLGZn6IOQO0ShEeUWmy0mxxLuWWUjb1x+8sSK8K
+        CG01C9rv12sBEbbyXlxoB4VdVg==
+X-Google-Smtp-Source: AK7set806QR7cYKaw2c+3n3tISo/rS4EKSg4WQqQEe/dhW2HTKlRrJw8XEoyvVzndwghnytWpcr9Sg==
+X-Received: by 2002:a17:907:6ea9:b0:93b:2d0b:b60e with SMTP id sh41-20020a1709076ea900b0093b2d0bb60emr4396480ejc.74.1679508534368;
+        Wed, 22 Mar 2023 11:08:54 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:5050:151b:e755:1c6? ([2a02:810d:15c0:828:5050:151b:e755:1c6])
+        by smtp.gmail.com with ESMTPSA id v19-20020a17090651d300b0092b86d41dbasm7561738ejk.114.2023.03.22.11.08.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Mar 2023 11:08:53 -0700 (PDT)
+Message-ID: <ad39709b-5e1a-8659-8bbd-cb28e2e6366a@linaro.org>
+Date:   Wed, 22 Mar 2023 19:08:52 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v2 1/4] arm64: dts: qcom: Move elish dts to common dtsi
+Content-Language: en-US
+To:     Jianhua Lu <lujianhua000@gmail.com>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
 Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jianhua Lu <lujianhua000@gmail.com>
-Subject: [PATCH v2 4/4] arm64: dts: qcom: sm8250-xiaomi-elish-csot: Add Xiaomi Mi Pad 5 Pro CSOT variant
-Date:   Thu, 23 Mar 2023 01:15:55 +0800
-Message-Id: <20230322171555.2154-4-lujianhua000@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230322171555.2154-1-lujianhua000@gmail.com>
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
 References: <20230322171555.2154-1-lujianhua000@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230322171555.2154-1-lujianhua000@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add support for the Xiaomi Mi Pad 5 Pro CSOT variant. The CSOT variant
-uses China Star Optoelectronics Technology (CSOT) panel.
+On 22/03/2023 18:15, Jianhua Lu wrote:
+> There are two panel variants of xiaomi-elish, BOE and CSOT panels.
+> In order to support both panels, so move elish dts to common dtsi.
+> 
+> Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+> ---
+> Changes in v2:
+>   - Remove sm8250-xiaomi-elish.dtb to avoid build failure.
+> 
+>  arch/arm64/boot/dts/qcom/Makefile                             | 1 -
+>  ...m8250-xiaomi-elish.dts => sm8250-xiaomi-elish-common.dtsi} | 4 ----
+>  2 files changed, 5 deletions(-)
+>  rename arch/arm64/boot/dts/qcom/{sm8250-xiaomi-elish.dts => sm8250-xiaomi-elish-common.dtsi} (99%)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+> index 1a29403400b7..8d2b3c57a4a8 100644
+> --- a/arch/arm64/boot/dts/qcom/Makefile
+> +++ b/arch/arm64/boot/dts/qcom/Makefile
+> @@ -183,7 +183,6 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-hdk.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-mtp.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-sony-xperia-edo-pdx203.dtb
+>  dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-sony-xperia-edo-pdx206.dtb
+> -dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-xiaomi-elish.dtb
 
-Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
----
-No changes in v2
+This builds, but it is a loss of functionality. Instead the board should
+be renamed here to one of your final namings, e.g. boe.
 
- arch/arm64/boot/dts/qcom/Makefile              |  1 +
- .../boot/dts/qcom/sm8250-xiaomi-elish-csot.dts | 18 ++++++++++++++++++
- 2 files changed, 19 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-csot.dts
-
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index 808f46947661..b755b198cfb7 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -184,6 +184,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-mtp.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-sony-xperia-edo-pdx203.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-sony-xperia-edo-pdx206.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-xiaomi-elish-boe.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-xiaomi-elish-csot.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-hdk.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-microsoft-surface-duo2.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-mtp.dtb
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-csot.dts b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-csot.dts
-new file mode 100644
-index 000000000000..a4d5341495cf
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-csot.dts
-@@ -0,0 +1,18 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) 2023 Jianhua Lu <lujianhua000@gmail.com>
-+ */
-+
-+/dts-v1/;
-+
-+#include "sm8250-xiaomi-elish-common.dtsi"
-+
-+/ {
-+	model = "Xiaomi Mi Pad 5 Pro (CSOT)";
-+	compatible = "xiaomi,elish", "qcom,sm8250";
-+};
-+
-+&display_panel {
-+	compatible = "xiaomi,elish-csot-nt36523";
-+	status = "okay";
-+};
--- 
-2.39.2
+Best regards,
+Krzysztof
 
