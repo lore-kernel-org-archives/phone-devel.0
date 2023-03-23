@@ -2,108 +2,149 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E931C6FD1F
-	for <phone-devel@archiver.kernel.org>; Thu, 23 Mar 2023 00:35:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E97CC6FD1C
+	for <phone-devel@archiver.kernel.org>; Thu, 23 Mar 2023 00:59:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229802AbjCWAfI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Mar 2023 20:35:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56024 "EHLO
+        id S229786AbjCWA7f (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 22 Mar 2023 20:59:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229585AbjCWAfH (ORCPT
+        with ESMTP id S229543AbjCWA7e (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Mar 2023 20:35:07 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B7E84ED5;
-        Wed, 22 Mar 2023 17:35:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679531705; x=1711067705;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Wp4vyR2Y2dOx4yjIT2WaC+9FkZoxRrFcxxrBaYARJOI=;
-  b=RjHDcvOyuYC60laji9YoVk4gML/oUoaArp5iEEM/IiNvvK9kav+4WbHF
-   b3EE7ps51t6U356XwwAjZx0fnlJ0BSMWKShpBdP48RVOv0QVRXOSpOmtE
-   YLSQRKaYHMFz5zxJ/ZvNsXgXUG9qJRkqC+dDTZ9UbbpirBoxSuuIjr/JF
-   JeQk73kQV8CBJ2McRXBBN4iPFWDL9EmyFcvUKk3/dlX+BU2vPUiVuYwqq
-   1eNQKeiqO2Q8ZHx5o+jdHoXRPcsuRjyzyhhYhKO33KMenu0lq737HUyBO
-   dtbhqd3Etf518A0I6vLpBN3iszSzJy96CP0OcCc6D/JKsw5Jwkaj24LCg
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="319756228"
-X-IronPort-AV: E=Sophos;i="5.98,283,1673942400"; 
-   d="scan'208";a="319756228"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2023 17:35:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10657"; a="928031581"
-X-IronPort-AV: E=Sophos;i="5.98,283,1673942400"; 
-   d="scan'208";a="928031581"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 22 Mar 2023 17:35:02 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pf8uz-000Dma-2A;
-        Thu, 23 Mar 2023 00:35:01 +0000
-Date:   Thu, 23 Mar 2023 08:34:22 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jianhua Lu <lujianhua000@gmail.com>,
-        Andy Gross <agross@kernel.org>,
+        Wed, 22 Mar 2023 20:59:34 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 015C01BEC;
+        Wed, 22 Mar 2023 17:59:33 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id fb38so7303585pfb.7;
+        Wed, 22 Mar 2023 17:59:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1679533173;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NRTtWZFrjGQyyLUPV9FPoANYfARHF+AlCJvVnplhgaI=;
+        b=UIrTpiMXpPPaeGHanlAu5dDEuOb8Ll5M1YOka8oncWDzTr00HjtWBNK7UKwbzf0dJY
+         f1DqAO6Iu/Sp2YlfHLZ3KKIFEuxfnXbzOgIgnZ7Ydr5HaaOo8fB8Cyv/8gDb8azemRgo
+         wAf3c2c1A8QX98n4KrhQQ3G+7fxwQZ8DhvZldCqzrK+8j/iR859+sGxRlxwFhTmGPI1j
+         LvlAogLnX6G6pLhcTcftg+MFYO9/wUcgedWB453+VtE07yNqyGshuaSMJAcs6LPgfIAP
+         N1MYvp/lre7zmUx00S2UCJTOiDhxO//xy0NcCYNC/kO5Psj0i3VPAHE5z9rpuRD9Krn9
+         EelA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679533173;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NRTtWZFrjGQyyLUPV9FPoANYfARHF+AlCJvVnplhgaI=;
+        b=YM/d9cFy3nMbvKMSyFj26Vq6ZgPD5AJL6yivG85MTjLOfH4SdD9mRYmNNLV3DTRhTC
+         eJ8C1B5f8G21DlQjz8onMG4xmKYBjp0K8HcILYmwjIvRORCXG6PP/sQ2tJxqmWmacBW0
+         gROHuboQT87dvZCr5sSDFaBujsA0peoq8Z96fr8fTTxBiAgT1VNQclNkvZGLDhFGyyRA
+         51dmbjp2dn0rclgvgNMgU89LyrqlS5IcXcN4O+W1Qk57gW+waE1IrCLVYgTn28xFfO7K
+         bFuLdmNSrupFx61bzw6TIwlipBc4xBcCs6oabGKUaqvE5IFLUcy9jE9Upkb0nUGYlRQo
+         Hlfg==
+X-Gm-Message-State: AO0yUKUnxnanRq3s031x5UzN3Eh0JYfyVBJWg3LFouU4fDoPDm2ARmTA
+        Ibn9zEUqJGiIuJaYrnLUvLI=
+X-Google-Smtp-Source: AK7set8CwGKE/m/+SMKPy1UTcYb+CEvnPMoB7bcV6D51Q4XPBhpPKQ6B3Keebx1q72qYDu50N2cqMw==
+X-Received: by 2002:aa7:9dc1:0:b0:627:e69c:847c with SMTP id g1-20020aa79dc1000000b00627e69c847cmr5115259pfq.16.1679533173445;
+        Wed, 22 Mar 2023 17:59:33 -0700 (PDT)
+Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id s10-20020aa7828a000000b006288ca3cadfsm2114579pfm.35.2023.03.22.17.59.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Mar 2023 17:59:32 -0700 (PDT)
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     oe-kbuild-all@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Jianhua Lu <lujianhua000@gmail.com>
-Subject: Re: [PATCH 3/4] arm64: dts: qcom: sm8250-xiaomi-elish-boe: Add
- Xiaomi Mi Pad 5 Pro BOE variant
-Message-ID: <202303230827.w5y3UTfE-lkp@intel.com>
-References: <20230322150320.31787-3-lujianhua000@gmail.com>
+Subject: [PATCH v3 1/3] arm64: dts: qcom: Split elish dts into common dtsi and elish-boe dts
+Date:   Thu, 23 Mar 2023 08:59:23 +0800
+Message-Id: <20230323005925.23179-1-lujianhua000@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230322150320.31787-3-lujianhua000@gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Jianhua,
+There are two panel variants of xiaomi-elish, BOE and CSOT panels.
+In order to support both panels, so split elish dts into common dtsi
+and elish-boe dts.
 
-I love your patch! Yet something to improve:
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+---
+Changes in v2:
+  - Remove sm8250-xiaomi-elish.dtb to avoid build failure.
 
-[auto build test ERROR on robh/for-next]
-[also build test ERROR on linus/master v6.3-rc3 next-20230322]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Changes in v3:
+  - squash patch[3/4]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jianhua-Lu/arm64-dts-qcom-sm8250-xiaomi-elish-add-mdss-and-dsi-node/20230322-230551
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20230322150320.31787-3-lujianhua000%40gmail.com
-patch subject: [PATCH 3/4] arm64: dts: qcom: sm8250-xiaomi-elish-boe: Add Xiaomi Mi Pad 5 Pro BOE variant
-config: arm64-randconfig-r011-20230322 (https://download.01.org/0day-ci/archive/20230323/202303230827.w5y3UTfE-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/14b429402cdaeb77734646a64f00653841d703a7
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Jianhua-Lu/arm64-dts-qcom-sm8250-xiaomi-elish-add-mdss-and-dsi-node/20230322-230551
-        git checkout 14b429402cdaeb77734646a64f00653841d703a7
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm64 olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash
+ arch/arm64/boot/dts/qcom/Makefile                   |  2 +-
+ .../arm64/boot/dts/qcom/sm8250-xiaomi-elish-boe.dts | 13 +++++++++++++
+ ...mi-elish.dts => sm8250-xiaomi-elish-common.dtsi} |  4 ----
+ 3 files changed, 14 insertions(+), 5 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-boe.dts
+ rename arch/arm64/boot/dts/qcom/{sm8250-xiaomi-elish.dts => sm8250-xiaomi-elish-common.dtsi} (99%)
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303230827.w5y3UTfE-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> Error: arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi:516.14-15 syntax error
-   FATAL ERROR: Unable to parse input tree
-
+diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
+index 1a29403400b7..808f46947661 100644
+--- a/arch/arm64/boot/dts/qcom/Makefile
++++ b/arch/arm64/boot/dts/qcom/Makefile
+@@ -183,7 +183,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-hdk.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-mtp.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-sony-xperia-edo-pdx203.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-sony-xperia-edo-pdx206.dtb
+-dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-xiaomi-elish.dtb
++dtb-$(CONFIG_ARCH_QCOM)	+= sm8250-xiaomi-elish-boe.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-hdk.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-microsoft-surface-duo2.dtb
+ dtb-$(CONFIG_ARCH_QCOM)	+= sm8350-mtp.dtb
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-boe.dts b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-boe.dts
+new file mode 100644
+index 000000000000..bd9ad109daf9
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-boe.dts
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2023 Jianhua Lu <lujianhua000@gmail.com>
++ */
++
++/dts-v1/;
++
++#include "sm8250-xiaomi-elish-common.dtsi"
++
++/ {
++	model = "Xiaomi Mi Pad 5 Pro (BOE)";
++	compatible = "xiaomi,elish", "qcom,sm8250";
++};
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish.dts b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
+similarity index 99%
+rename from arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish.dts
+rename to arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
+index dd79671f5614..a43d4b73ffca 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish.dts
++++ b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
+@@ -3,8 +3,6 @@
+  * Copyright (c) 2022, 2023 Jianhua Lu <lujianhua000@gmail.com>
+  */
+ 
+-/dts-v1/;
+-
+ #include <dt-bindings/arm/qcom,ids.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ #include "sm8250.dtsi"
+@@ -24,8 +22,6 @@
+ /delete-node/ &xbl_aop_mem;
+ 
+ / {
+-	model = "Xiaomi Mi Pad 5 Pro";
+-	compatible = "xiaomi,elish", "qcom,sm8250";
+ 	classis-type = "tablet";
+ 
+ 	/* required for bootloader to select correct board */
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.39.2
+
