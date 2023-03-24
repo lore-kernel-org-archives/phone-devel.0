@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2F03C77B62
-	for <phone-devel@archiver.kernel.org>; Fri, 24 Mar 2023 07:41:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C140DC6FD1C
+	for <phone-devel@archiver.kernel.org>; Fri, 24 Mar 2023 07:42:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231786AbjCXHll (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 24 Mar 2023 03:41:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46628 "EHLO
+        id S231866AbjCXHmC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 24 Mar 2023 03:42:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231362AbjCXHlj (ORCPT
+        with ESMTP id S231764AbjCXHll (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 24 Mar 2023 03:41:39 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA90D19F09
-        for <phone-devel@vger.kernel.org>; Fri, 24 Mar 2023 00:41:36 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id b20so4465690edd.1
-        for <phone-devel@vger.kernel.org>; Fri, 24 Mar 2023 00:41:36 -0700 (PDT)
+        Fri, 24 Mar 2023 03:41:41 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F49825BBF
+        for <phone-devel@vger.kernel.org>; Fri, 24 Mar 2023 00:41:38 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id o12so4325680edb.9
+        for <phone-devel@vger.kernel.org>; Fri, 24 Mar 2023 00:41:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1679643695;
+        d=fairphone.com; s=fair; t=1679643697;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nPqFaK3PfCV9f0plVHjaFnI0EQVHjWHhUIO49LkNrrg=;
-        b=1AANZ2/bS3AMQkcUUHO0ZZCL8X6ou4PlmramzhRfkFPTwV38Z8DusOr510nm698Ftl
-         VjA/CQCFhtvTL+pdi3bjgqkq+JHDtEkJ2gXUW+hlfDOolcf0Y6L1kUR32bFZPREnNSCd
-         3Vq/DZZblF0vbLRvP4D8+UgiCSGuj/iLZo+zYzoHHAhE3Jkjt5p3pIoU/SYiU4saj+Km
-         M2gZaPLJJgX6+kBpGqAIqrniptKyXtahslLtZKezjgpbDfTNirJkKXNa4/E5RHHch6l1
-         Si7WQO7sLLaYFnK1s9e1mAVMuj+9Kn4bsTnF+aLtGPibaSd2dQkWv4pNVul7haQ5AFBT
-         q7ow==
+        bh=HcxZofqIK3HRTdfpbgfEH068msVjQMhnD45KuQ5H/ms=;
+        b=UpxLxwfQ3V5dOLpYAxUHsBqOU/qL0dFRrAKzHeFjnL9i1MORE7bFusJ8QZhtRpJZBX
+         jdUFiNSk0OYHx2U8sI7pOR81D3o10pW9LMOIGqlecqAfJtI6N+kf0T59P7jS4AP7WLZp
+         I79gJy9W6BAKRgY1Q34popVJyDtTK/HQMF1cIOGufNPViWrIwy/bAq69zeg/wdh3v3qq
+         JAuMoRraWIQAkmPZCCOlvx7XeUq0/Z8ubjAiNE5CiE3Q3I5WIjPJMpqlwc57X2ts2V3m
+         JP5gfj7eQVHOj9FhFZ2FalYis5PCt5r0HMFnSf7TLUQVdqO5mT/xPqF4ykmEpPz/AtCu
+         Ef8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679643695;
+        d=1e100.net; s=20210112; t=1679643697;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nPqFaK3PfCV9f0plVHjaFnI0EQVHjWHhUIO49LkNrrg=;
-        b=DNUVd1P+Rv3LnqHGolgkV7kHUeNtOvN7a1QY1SInILxw9D6TzBCn6KGSyBL611CnHi
-         vOeeeuTk0kX2t6sfdz1cd4w2AhmjBhFzD9Uh8KnUkPcAkhnqENp+6YKoUuiOJuAk5aTZ
-         9ZMDVcavn/09AJoqYJS8HIIIa9eXUN7ZFPUX11iJn4Mepy9bNzDGexXn/Jw5e57SxzIb
-         yDsiOse7RJiU2ft86HTxomHHar/+eM++Ktg+Kx4hyKitrtoXFfbeNrrkWZnNt5htmIsH
-         tPVxQikBDFy3BFypQu2SxBoGz8pWKoj+6kWjOBTuGw4nbkNEDU7dhsriedFN9KA5S1kR
-         uocQ==
-X-Gm-Message-State: AAQBX9f8ejyGh7dSApuOVo5/Nkx6SOPsNgRP2DJznSZnWO1ftBnBCC2K
-        Q6VI6BSacRCJT3IWfw1uoLOxgRDdue7OBZ1Am+nG8A==
-X-Google-Smtp-Source: AKy350aAXImvzI8NjEszfNA39ejVSja1xKQWepyXhUlX9yXoeMEm+YLwAc3Pz8I1zp5f2RtdzuJxKw==
-X-Received: by 2002:a50:ed11:0:b0:4fc:b51f:ff50 with SMTP id j17-20020a50ed11000000b004fcb51fff50mr2052797eds.30.1679643695136;
-        Fri, 24 Mar 2023 00:41:35 -0700 (PDT)
+        bh=HcxZofqIK3HRTdfpbgfEH068msVjQMhnD45KuQ5H/ms=;
+        b=RoMereParINLKec57CruiHA1YdAilhDD2/TySQm1RgG0pBRr5Rx1manw7W79EcmjN2
+         eM+RxuJhRvLmK55TRFkHyUqM91nsvuU+gFXjBDyqXFuoSKCsPuIPi6WoTAIWn+m5cfmd
+         ejNefgrS0iuW/gnIHg5/t2k3yGurc0O0OOr/Y3IJjQ0ylB5FotkJHs+KJv3wWLNIgzW9
+         nNKTo35zQ+/t1rmenNmwyAtyc4a6Ft9NmJNuF3TOzS1yUDMIvTXSRLBAHGEZi5U6Eh3g
+         zeVYTT3hmiYu8IRGAb+QscBzr7TUIjtN0gNKa8cEyxDVoLxODkZ3SSH08QvujLdAsJ8c
+         3UrA==
+X-Gm-Message-State: AAQBX9cndb0GaACi968czAp3jFYApweFzO5cdFyVTXgUOS2/tbDXfJ3n
+        8Y/ijfgDx753YbVNZ3DLXiLJfQ==
+X-Google-Smtp-Source: AKy350bjHXtnBgON3ZW3HnBdpfI4Z4agAe97ZtevC+h3lL7GTKudFDLdnSm5AHY7pX49rQ77F85nJQ==
+X-Received: by 2002:a17:906:c11:b0:91f:17a5:b359 with SMTP id s17-20020a1709060c1100b0091f17a5b359mr1648648ejf.66.1679643696996;
+        Fri, 24 Mar 2023 00:41:36 -0700 (PDT)
 Received: from [192.168.0.29] (84-115-214-73.cable.dynamic.surfer.at. [84.115.214.73])
-        by smtp.gmail.com with ESMTPSA id d23-20020a50f697000000b004fd2a7aa1ecsm10271227edn.32.2023.03.24.00.41.34
+        by smtp.gmail.com with ESMTPSA id d23-20020a50f697000000b004fd2a7aa1ecsm10271227edn.32.2023.03.24.00.41.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Mar 2023 00:41:34 -0700 (PDT)
+        Fri, 24 Mar 2023 00:41:36 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Fri, 24 Mar 2023 08:41:28 +0100
-Subject: [PATCH v3 1/3] dt-bindings: ufs: qcom: Add sm6115 binding
+Date:   Fri, 24 Mar 2023 08:41:30 +0100
+Subject: [PATCH v3 3/3] dt-bindings: ufs: qcom: Fix sm8450 bindings
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20221209-dt-binding-ufs-v3-1-499dff23a03c@fairphone.com>
+Message-Id: <20221209-dt-binding-ufs-v3-3-499dff23a03c@fairphone.com>
 References: <20221209-dt-binding-ufs-v3-0-499dff23a03c@fairphone.com>
 In-Reply-To: <20221209-dt-binding-ufs-v3-0-499dff23a03c@fairphone.com>
 To:     Andy Gross <agross@kernel.org>,
@@ -73,70 +73,81 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Luca Weiss <luca.weiss@fairphone.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
-        Iskren Chernev <me@iskren.info>
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.12.1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Iskren Chernev <me@iskren.info>
+SM8450 actually supports ICE (Inline Crypto Engine) so adjust the
+bindings and the example to match.
 
-Add SM6115 UFS to DT schema.
-
-Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Bhupesh Sharma <bhupesh.sharma@linaro.org>
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- .../devicetree/bindings/ufs/qcom,ufs.yaml          | 26 ++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-index c5a06c048389..23447281deec 100644
+index ebc8e1adbc6f..3af786120fa5 100644
 --- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
 +++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-@@ -28,6 +28,7 @@ properties:
-           - qcom,msm8998-ufshc
-           - qcom,sc8280xp-ufshc
-           - qcom,sdm845-ufshc
-+          - qcom,sm6115-ufshc
-           - qcom,sm6350-ufshc
-           - qcom,sm8150-ufshc
-           - qcom,sm8250-ufshc
-@@ -185,6 +186,31 @@ allOf:
-           minItems: 1
-           maxItems: 1
- 
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - qcom,sm6115-ufshc
-+    then:
-+      properties:
-+        clocks:
-+          minItems: 8
-+          maxItems: 8
-+        clock-names:
-+          items:
-+            - const: core_clk
-+            - const: bus_aggr_clk
-+            - const: iface_clk
-+            - const: core_clk_unipro
-+            - const: ref_clk
-+            - const: tx_lane0_sync_clk
-+            - const: rx_lane0_sync_clk
-+            - const: ice_core_clk
-+        reg:
-+          minItems: 2
-+          maxItems: 2
-+
-     # TODO: define clock bindings for qcom,msm8994-ufshc
- 
- unevaluatedProperties: false
+@@ -113,7 +113,6 @@ allOf:
+               - qcom,sc8280xp-ufshc
+               - qcom,sm8250-ufshc
+               - qcom,sm8350-ufshc
+-              - qcom,sm8450-ufshc
+               - qcom,sm8550-ufshc
+     then:
+       properties:
+@@ -144,6 +143,7 @@ allOf:
+               - qcom,sdm845-ufshc
+               - qcom,sm6350-ufshc
+               - qcom,sm8150-ufshc
++              - qcom,sm8450-ufshc
+     then:
+       properties:
+         clocks:
+@@ -250,7 +250,9 @@ examples:
+         ufs@1d84000 {
+             compatible = "qcom,sm8450-ufshc", "qcom,ufshc",
+                          "jedec,ufs-2.0";
+-            reg = <0 0x01d84000 0 0x3000>;
++            reg = <0 0x01d84000 0 0x3000>,
++                  <0 0x01d88000 0 0x8000>;
++            reg-names = "std", "ice";
+             interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
+             phys = <&ufs_mem_phy_lanes>;
+             phy-names = "ufsphy";
+@@ -278,7 +280,8 @@ examples:
+                           "ref_clk",
+                           "tx_lane0_sync_clk",
+                           "rx_lane0_sync_clk",
+-                          "rx_lane1_sync_clk";
++                          "rx_lane1_sync_clk",
++                          "ice_core_clk";
+             clocks = <&gcc GCC_UFS_PHY_AXI_CLK>,
+                      <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
+                      <&gcc GCC_UFS_PHY_AHB_CLK>,
+@@ -286,7 +289,8 @@ examples:
+                      <&rpmhcc RPMH_CXO_CLK>,
+                      <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
+                      <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
+-                     <&gcc GCC_UFS_PHY_RX_SYMBOL_1_CLK>;
++                     <&gcc GCC_UFS_PHY_RX_SYMBOL_1_CLK>,
++                     <&gcc GCC_UFS_PHY_ICE_CORE_CLK>;
+             freq-table-hz = <75000000 300000000>,
+                             <0 0>,
+                             <0 0>,
+@@ -294,6 +298,7 @@ examples:
+                             <75000000 300000000>,
+                             <0 0>,
+                             <0 0>,
+-                            <0 0>;
++                            <0 0>,
++                            <75000000 300000000>;
+         };
+     };
 
 -- 
 2.40.0
