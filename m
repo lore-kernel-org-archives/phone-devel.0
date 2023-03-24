@@ -2,36 +2,36 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35338C6FD20
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DCD2C77B60
 	for <phone-devel@archiver.kernel.org>; Fri, 24 Mar 2023 09:43:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231231AbjCXJmg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 24 Mar 2023 05:42:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58072 "EHLO
+        id S231503AbjCXJmi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 24 Mar 2023 05:42:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231857AbjCXJmU (ORCPT
+        with ESMTP id S231821AbjCXJmU (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Fri, 24 Mar 2023 05:42:20 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B6BB25955;
-        Fri, 24 Mar 2023 02:42:14 -0700 (PDT)
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1947D2528A;
+        Fri, 24 Mar 2023 02:42:12 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 613086603113;
-        Fri, 24 Mar 2023 09:42:12 +0000 (GMT)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id C1D706603103;
+        Fri, 24 Mar 2023 09:42:10 +0000 (GMT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1679650933;
-        bh=AB9OIdGkG7L+x9jKjTVnJOyjqXiyjeKHV7UwTBXh5Cc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JHgECBcLpYhbwwEFGM9QDII8gC3Sp6/OdblXdDbTzRj+x0XI+PgbWzSgOWnOMwTOM
-         7LZCnoeIbVCOx3aQuoohwiwbkM+VfNnvUoll/ZubFhUoYnv2s7+6pMM+7Gg9wm4LYk
-         EX+xjJnJXZwPsgLXOQph6xOUVNSZgwoZzdAvJ4dgSejJTIg7mPg/qp+OAypOXDoST9
-         tbZ1q0FJkAf2zkBNens1y2JJ9c339Ahl0/qt16KBh3KuXXTvvfI/lCKSyVA5OSeoz+
-         tS64RkyRE0+B4lNlAoXZQq4E7rKhbuJ+cL3te5DSDjb2wlGQaMsHeaZkgRlfKSyNiN
-         sCPf4h73Iuezw==
+        s=mail; t=1679650931;
+        bh=ebcxMmChYQz6A/ejLgJx2hRoaZswuqFXLT5RuazLrD8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=GJcm7kUXnum8O5QYg3Yhy/u1GZviyHYRPMKxFk1EjRIGNpvWgD4YRu9LA/3w6euFT
+         OrpW9D9PZI4CgE+PESNVuTKFQ1UohddPqMa3eBebTiHaH+tswkBollMdptCIbngR1H
+         N0oFlfg9eE2hpbRPmYa8uIoWfj74j+0ozpDtQcKRCG0zzhdRshsGg87zMQfaS1cksH
+         enIBbt0XMqIZ1S2ywYz9qZ7zqPEtYWUI5oWheKWZZBw/Hrffb00Y1pmUKO4JWMBKKf
+         UuNOm+EWAGCROXPLDNAtEZj7+o8J40JDzZyQ7uqusUUj6EAxP/YT/O/sFBoE5vxCGt
+         upLwXdO6ujM+g==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
 To:     matthias.bgg@gmail.com
@@ -43,100 +43,52 @@ Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v2 2/6] soc: mediatek: pwrap: Move PMIC read test sequence in function
-Date:   Fri, 24 Mar 2023 10:42:01 +0100
-Message-Id: <20230324094205.33266-3-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v2 0/6] MediaTek Helio X10 MT6795 - MT6331/6332 PMIC Wrapper
+Date:   Fri, 24 Mar 2023 10:41:59 +0100
+Message-Id: <20230324094205.33266-1-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230324094205.33266-1-angelogioacchino.delregno@collabora.com>
-References: <20230324094205.33266-1-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The PMIC read test is performed in two places: pwrap_init_dual_io()
-and pwrap_init_sidly().
-In preparation for adding support for PMICs requiring a companion
-part, move this sequence to a new function pwrap_pmic_read_test().
+Changes in v2:
+ - Rebased on next-20230323
+ - Changed pwrap.txt addition to new yaml file addition
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- drivers/soc/mediatek/mtk-pmic-wrap.c | 32 +++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+In an effort to give some love to the apparently forgotten MT6795 SoC,
+I am upstreaming more components that are necessary to support platforms
+powered by this one apart from a simple boot to serial console.
 
-diff --git a/drivers/soc/mediatek/mtk-pmic-wrap.c b/drivers/soc/mediatek/mtk-pmic-wrap.c
-index 15789a03e6c6..5c500be48f7c 100644
---- a/drivers/soc/mediatek/mtk-pmic-wrap.c
-+++ b/drivers/soc/mediatek/mtk-pmic-wrap.c
-@@ -1455,6 +1455,18 @@ static int pwrap_regmap_write(void *context, u32 adr, u32 wdata)
- 	return pwrap_write(context, adr, wdata);
- }
- 
-+static bool pwrap_pmic_read_test(struct pmic_wrapper *wrp, const u32 *dew_regs,
-+				 u16 read_test_val)
-+{
-+	bool is_success;
-+	u32 rdata;
-+
-+	pwrap_read(wrp, dew_regs[PWRAP_DEW_READ_TEST], &rdata);
-+	is_success = ((rdata & U16_MAX) == read_test_val);
-+
-+	return is_success;
-+}
-+
- static int pwrap_reset_spislave(struct pmic_wrapper *wrp)
- {
- 	bool tmp;
-@@ -1498,18 +1510,18 @@ static int pwrap_reset_spislave(struct pmic_wrapper *wrp)
-  */
- static int pwrap_init_sidly(struct pmic_wrapper *wrp)
- {
--	u32 rdata;
- 	u32 i;
- 	u32 pass = 0;
-+	bool read_ok;
- 	signed char dly[16] = {
- 		-1, 0, 1, 0, 2, -1, 1, 1, 3, -1, -1, -1, 3, -1, 2, 1
- 	};
- 
- 	for (i = 0; i < 4; i++) {
- 		pwrap_writel(wrp, i, PWRAP_SIDLY);
--		pwrap_read(wrp, wrp->slave->dew_regs[PWRAP_DEW_READ_TEST],
--			   &rdata);
--		if (rdata == PWRAP_DEW_READ_TEST_VAL) {
-+		read_ok = pwrap_pmic_read_test(wrp, wrp->slave->dew_regs,
-+					       PWRAP_DEW_READ_TEST_VAL);
-+		if (read_ok) {
- 			dev_dbg(wrp->dev, "[Read Test] pass, SIDLY=%x\n", i);
- 			pass |= 1 << i;
- 		}
-@@ -1529,8 +1541,7 @@ static int pwrap_init_sidly(struct pmic_wrapper *wrp)
- static int pwrap_init_dual_io(struct pmic_wrapper *wrp)
- {
- 	int ret;
--	bool tmp;
--	u32 rdata;
-+	bool read_ok, tmp;
- 
- 	/* Enable dual IO mode */
- 	pwrap_write(wrp, wrp->slave->dew_regs[PWRAP_DEW_DIO_EN], 1);
-@@ -1546,12 +1557,9 @@ static int pwrap_init_dual_io(struct pmic_wrapper *wrp)
- 	pwrap_writel(wrp, 1, PWRAP_DIO_EN);
- 
- 	/* Read Test */
--	pwrap_read(wrp,
--		   wrp->slave->dew_regs[PWRAP_DEW_READ_TEST], &rdata);
--	if (rdata != PWRAP_DEW_READ_TEST_VAL) {
--		dev_err(wrp->dev,
--			"Read failed on DIO mode: 0x%04x!=0x%04x\n",
--			PWRAP_DEW_READ_TEST_VAL, rdata);
-+	read_ok = pwrap_pmic_read_test(wrp, wrp->slave->dew_regs, PWRAP_DEW_READ_TEST_VAL);
-+	if (!read_ok) {
-+		dev_err(wrp->dev, "Read failed on DIO mode.\n");
- 		return -EFAULT;
- 	}
- 
+This series introduces support in the PMIC Wrapper for a different PMIC
+topology, which is commonly found on smartphone boards, using one main
+PMIC and one Companion/Sub PMIC, both accessible *only* through the pwrap;
+be aware that this kind of topology is not *specific to* the Helio X10
+SoC, but common across many kinds of MediaTek smartphone oriented SoCs
+and board designs.
+
+That said, support for the PMIC combo MT6331+MT6332 is provided in this
+series in a form that will be able to initialize the PMICs with crypto
+and DualIO but nothing else: these PMICs are very featureful, so I have
+decided to add this support in more than just one step, as there will
+be multiple patches for multiple different subsystems (..it's a mfd!..).
+
+Tested on a MT6795 Sony Xperia M5 (codename "Holly") smartphone.
+
+AngeloGioacchino Del Regno (6):
+  dt-bindings: soc: mediatek: pwrap: Add compatible for MT6795 Helio X10
+  soc: mediatek: pwrap: Move PMIC read test sequence in function
+  soc: mediatek: pwrap: Add kerneldoc for struct pwrap_slv_type
+  soc: mediatek: mtk-pmic-wrap: Add support for companion PMICs
+  soc: mediatek: mtk-pmic-wrap: Add support for MT6331 w/ MT6332
+    companion
+  soc: mediatek: pwrap: Add support for MT6795 Helio X10
+
+ .../bindings/soc/mediatek/mediatek,pwrap.yaml |   1 +
+ drivers/soc/mediatek/mtk-pmic-wrap.c          | 287 ++++++++++++++++--
+ 2 files changed, 262 insertions(+), 26 deletions(-)
+
 -- 
 2.40.0
 
