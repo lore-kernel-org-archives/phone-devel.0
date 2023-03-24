@@ -2,36 +2,36 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C91CBC77B71
-	for <phone-devel@archiver.kernel.org>; Fri, 24 Mar 2023 17:57:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27FAFC77B7A
+	for <phone-devel@archiver.kernel.org>; Fri, 24 Mar 2023 17:57:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232137AbjCXR4y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 24 Mar 2023 13:56:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59352 "EHLO
+        id S231473AbjCXR5N (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 24 Mar 2023 13:57:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232142AbjCXR4l (ORCPT
+        with ESMTP id S232255AbjCXR4n (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 24 Mar 2023 13:56:41 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 433A21A4BA;
-        Fri, 24 Mar 2023 10:56:22 -0700 (PDT)
+        Fri, 24 Mar 2023 13:56:43 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F88A9034;
+        Fri, 24 Mar 2023 10:56:24 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 845D96603131;
-        Fri, 24 Mar 2023 17:55:05 +0000 (GMT)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 997DF660313A;
+        Fri, 24 Mar 2023 17:55:11 +0000 (GMT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1679680506;
-        bh=JgYNzYY/JT/ZxbQnRLMlhIx1cKKvJaqNQPrMZEWb9yg=;
+        s=mail; t=1679680512;
+        bh=cWKkAzJmflHlylToMK1QImQEca35moH/Qy5BEXPVfYQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GOSa+0CU0oFtU7GYaAHdanaai5ki08N7IqjNt2o708HST2kpjGeyod96NZ1q9JgWU
-         KThCNzCr6LBjhW5gt3eNMreI1cZiR4WbCASz4Bmrt/UsNRDl7U/qCo1g4r4yKtdrn9
-         EqsLirIpqBPH7easvc0Cljh1pUyW89I/BKgHTvHvCNsw6RSuWkSsFQrXgsm+FQSU7J
-         FQAFwI18TjBxasdzEaO9T5KBaT6TkNNfbLJshIcuKGzweposrxrO0QbgLH80HDahZ0
-         34i4ICHZGPKUej7QqNkFDTrejyStZIga91g9VGWtSlePv8Fy+sTMO90gTtUAK1UG3C
-         bDKlZRfjmFveA==
+        b=i9xkCyeWIsLtYEjjp94iVfDR4aC8F0rHjKCupNZfUdossrimrGdGe5MNC+DlYv3+L
+         nH//JL767JRXZyx8FxlyNjKbvy2LVwMNagkbC0aazJBVfiOFEAf32Aakwr9t+DOG6Z
+         bj6JfIpqtP0tR9sD1pn1midXV72TC7uMGP95TihQV5QwyZUGVA6KxaC3vqpZbLtszd
+         onXiuu8YE/gr0yD43danNu4JdPmim/GOdwiWgY0pn5voVxq4iqNw1aA64tZT4L9lgs
+         O/MNYGxiemM57/1oYT2PGfjukB+KhRzgk02nbF8sTt93DFblr5Qxxo0J0lIcE+K7Is
+         uQoZEgvOr1P/Q==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
 To:     matthias.bgg@gmail.com
@@ -44,9 +44,9 @@ Cc:     qii.wang@mediatek.com, robh+dt@kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v1 06/18] arm64: dts: mediatek: mt6795: Add SoC power domains
-Date:   Fri, 24 Mar 2023 18:54:44 +0100
-Message-Id: <20230324175456.219954-7-angelogioacchino.delregno@collabora.com>
+Subject: [PATCH v1 13/18] arm64: dts: mediatek: mt6795-xperia-m5: Enable I2C 0-3 busses
+Date:   Fri, 24 Mar 2023 18:54:51 +0100
+Message-Id: <20230324175456.219954-14-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230324175456.219954-1-angelogioacchino.delregno@collabora.com>
 References: <20230324175456.219954-1-angelogioacchino.delregno@collabora.com>
@@ -56,110 +56,90 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add power domain tree for various hardware blocks on MT6795.
+Properly configure and enable the three i2c controllers that have
+devices attached on the Sony Xperia M5 smartphone.
 
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 ---
- arch/arm64/boot/dts/mediatek/mt6795.dtsi | 79 ++++++++++++++++++++++++
- 1 file changed, 79 insertions(+)
+ .../dts/mediatek/mt6795-sony-xperia-m5.dts    | 64 +++++++++++++++++++
+ 1 file changed, 64 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt6795.dtsi b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-index ceb6fc948d8a..d63efb32e6bb 100644
---- a/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-@@ -8,6 +8,7 @@
- #include <dt-bindings/interrupt-controller/arm-gic.h>
- #include <dt-bindings/clock/mediatek,mt6795-clk.h>
- #include <dt-bindings/pinctrl/mt6795-pinfunc.h>
-+#include <dt-bindings/power/mt6795-power.h>
- #include <dt-bindings/reset/mediatek,mt6795-resets.h>
+diff --git a/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts b/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
+index 52ce3284a46f..6df1c848e2d5 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
++++ b/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
+@@ -55,7 +55,71 @@ &fhctl {
+ 	status = "okay";
+ };
  
- / {
-@@ -264,6 +265,84 @@ pericfg: syscon@10003000 {
- 			#reset-cells = <1>;
- 		};
- 
-+		scpsys: syscon@10006000 {
-+			compatible = "syscon", "simple-mfd";
-+			reg = <0 0x10006000 0 0x1000>;
-+			#power-domain-cells = <1>;
++&i2c0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c0_pins>;
++	status = "okay";
++};
 +
-+			/* System Power Manager */
-+			spm: power-controller {
-+				compatible = "mediatek,mt6795-power-controller";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				#power-domain-cells = <1>;
++&i2c1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c1_pins>;
++	status = "okay";
++};
 +
-+				/* power domains of the SoC */
-+				power-domain@MT6795_POWER_DOMAIN_VDEC {
-+					reg = <MT6795_POWER_DOMAIN_VDEC>;
-+					clocks = <&topckgen CLK_TOP_MM_SEL>;
-+					clock-names = "mm";
-+					#power-domain-cells = <0>;
-+				};
-+				power-domain@MT6795_POWER_DOMAIN_VENC {
-+					reg = <MT6795_POWER_DOMAIN_VENC>;
-+					clocks = <&topckgen CLK_TOP_MM_SEL>,
-+						 <&topckgen CLK_TOP_VENC_SEL>;
-+					clock-names = "mm", "venc";
-+					#power-domain-cells = <0>;
-+				};
-+				power-domain@MT6795_POWER_DOMAIN_ISP {
-+					reg = <MT6795_POWER_DOMAIN_ISP>;
-+					clocks = <&topckgen CLK_TOP_MM_SEL>;
-+					clock-names = "mm";
-+					#power-domain-cells = <0>;
-+				};
++&i2c2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c2_pins>;
++	status = "okay";
++};
 +
-+				power-domain@MT6795_POWER_DOMAIN_MM {
-+					reg = <MT6795_POWER_DOMAIN_MM>;
-+					clocks = <&topckgen CLK_TOP_MM_SEL>;
-+					clock-names = "mm";
-+					#power-domain-cells = <0>;
-+					mediatek,infracfg = <&infracfg>;
-+				};
++&i2c3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c3_pins>;
++	status = "okay";
++};
 +
-+				power-domain@MT6795_POWER_DOMAIN_MJC {
-+					reg = <MT6795_POWER_DOMAIN_MJC>;
-+					clocks = <&topckgen CLK_TOP_MM_SEL>,
-+						 <&topckgen CLK_TOP_MJC_SEL>;
-+					clock-names = "mm", "mjc";
-+					#power-domain-cells = <0>;
-+				};
-+
-+				power-domain@MT6795_POWER_DOMAIN_AUDIO {
-+					reg = <MT6795_POWER_DOMAIN_AUDIO>;
-+					#power-domain-cells = <0>;
-+				};
-+
-+				mfg_async: power-domain@MT6795_POWER_DOMAIN_MFG_ASYNC {
-+					reg = <MT6795_POWER_DOMAIN_MFG_ASYNC>;
-+					clocks = <&clk26m>;
-+					clock-names = "mfg";
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+					#power-domain-cells = <1>;
-+
-+					power-domain@MT6795_POWER_DOMAIN_MFG_2D {
-+						reg = <MT6795_POWER_DOMAIN_MFG_2D>;
-+						#address-cells = <1>;
-+						#size-cells = <0>;
-+						#power-domain-cells = <1>;
-+
-+						power-domain@MT6795_POWER_DOMAIN_MFG {
-+							reg = <MT6795_POWER_DOMAIN_MFG>;
-+							#power-domain-cells = <0>;
-+							mediatek,infracfg = <&infracfg>;
-+						};
-+					};
-+				};
-+			};
+ &pio {
++	i2c0_pins: i2c0-pins {
++		pins-bus {
++			pinmux = <PINMUX_GPIO45__FUNC_SDA0>,
++				 <PINMUX_GPIO46__FUNC_SCL0>;
++			input-enable;
 +		};
++	};
 +
- 		pio: pinctrl@10005000 {
- 			compatible = "mediatek,mt6795-pinctrl";
- 			reg = <0 0x10005000 0 0x1000>, <0 0x1000b000 0 0x1000>;
++	i2c1_pins: i2c1-pins {
++		pins-bus {
++			pinmux = <PINMUX_GPIO125__FUNC_SDA1>,
++				 <PINMUX_GPIO126__FUNC_SCL1>;
++			bias-disable;
++		};
++	};
++
++	i2c2_pins: i2c2-pins {
++		pins-bus {
++			pinmux = <PINMUX_GPIO43__FUNC_SDA2>,
++				 <PINMUX_GPIO44__FUNC_SCL2>;
++			bias-disable;
++		};
++	};
++
++	i2c3_pins: i2c3-pins {
++		pins-bus {
++			pinmux = <PINMUX_GPIO136__FUNC_SDA3>,
++				 <PINMUX_GPIO137__FUNC_SCL3>;
++			bias-disable;
++		};
++	};
++
++	i2c4_pins: i2c4-pins {
++		pins-bus {
++			pinmux = <PINMUX_GPIO100__FUNC_SDA4>,
++				 <PINMUX_GPIO101__FUNC_SCL4>;
++			bias-disable;
++		};
++	};
++
+ 	uart0_pins: uart0-pins {
+ 		pins-rx {
+ 			pinmux = <PINMUX_GPIO113__FUNC_URXD0>;
 -- 
 2.40.0
 
