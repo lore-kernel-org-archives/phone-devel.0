@@ -2,109 +2,117 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F3848C74A5B
-	for <phone-devel@archiver.kernel.org>; Thu, 23 Mar 2023 17:58:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B03E2C6FD20
+	for <phone-devel@archiver.kernel.org>; Fri, 24 Mar 2023 07:41:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231153AbjCWR6t (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 23 Mar 2023 13:58:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42488 "EHLO
+        id S231127AbjCXHli (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 24 Mar 2023 03:41:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231152AbjCWR6r (ORCPT
+        with ESMTP id S229870AbjCXHlh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 23 Mar 2023 13:58:47 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E65944B8;
-        Thu, 23 Mar 2023 10:58:30 -0700 (PDT)
-Received: from [192.168.0.26] (2a02-8388-6582-fe80-0000-0000-0000-000c.cable.dynamic.v6.surfer.at [IPv6:2a02:8388:6582:fe80::c])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 93155D2584;
-        Thu, 23 Mar 2023 17:57:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1679594279; bh=/s3YATkQEynaY97oNVGkN2PAZTRMQ7bXwfDtDYia87A=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=yM9VfVmMzCxKjXTHUR4QnZsf7Wpyqk5zUCMBfRn9LmBOy4MvCB+c+1kmRf+GDiIls
-         qvBK4AVdqlBCoFuNUIbJ7kU/qCG6YxdcDCMg7IkspWzH4Twr66X2mMGoAeSMW/YCav
-         lWlW4PSHpGexxQLBDpPgrEamB7obzeGmes4AC87Q=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Thu, 23 Mar 2023 18:57:49 +0100
-Subject: [PATCH v4 1/3] media: dt-bindings: media: rkisp1: complete ov2685
- example
+        Fri, 24 Mar 2023 03:41:37 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B817722790
+        for <phone-devel@vger.kernel.org>; Fri, 24 Mar 2023 00:41:35 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id w9so4437917edc.3
+        for <phone-devel@vger.kernel.org>; Fri, 24 Mar 2023 00:41:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1679643694;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X/XWx7YkBxGnboDoZgQ7k0nvdNbLK5mLNGMl2mAQck8=;
+        b=y8zuVgRuzHzC24+lgI2LUBOgkWYy3kb7SGkW+YrO4cBzYgZZcpDwDM+s4XIh5PbkGC
+         UFR+WYPQXxtOmIjjsQdikK2Q1c3n0Zh2q5c2LzvELoe0lKl0g+SIhcdSs0GLtgUT6b7M
+         vaebepD5WuWjd/kpStDB13QO9WVcXUjUTz2PyhDLjdyTt3Bz5HSvJHrW/kFetYgFbGtr
+         7WtyzQ+1UOwDlU72oZey1Obkk+4I+ZnbPjMLe0zxWnv58irb/eaj4hulf5roo08bxm+6
+         JV0YB9tPSP4Gpoan5jENIw40KuFAKrQRTB9xQgY0k2O6zAqhxzGPVJxRBGeafn/iFebG
+         QzLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679643694;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X/XWx7YkBxGnboDoZgQ7k0nvdNbLK5mLNGMl2mAQck8=;
+        b=mh1SLXnzUDF6ECj/QEUsTcN62OF4iWzn6bSeolyRyynUmBCOinYF6c6Fkgcd0FOtcq
+         Am49YM3IpvhxPvmrFOsPK8X/HTe2OdunLPmpe4EaN9skx7E+D2d/s2LIBQqJqY+1IPrz
+         7lwQObeHc1qM96LhJM9yhWiqa5+DnAja+frfydM0KtjX+XRR9YFvpkonfcp6qz5TvoRX
+         wLkgp4ihEkjjd7nrRMoXXVUQVRfumXO6uTXRP+Z1Uyr5IIFN4UU2qZw4EC/HDXdSL9KT
+         2gte4BiUM2wXgOxhYHTT4txXR7oqBRrxugdILft1zaERb2BwhwzSaY/eqOQE9QyO+I+/
+         2Gmg==
+X-Gm-Message-State: AAQBX9eRTnr7IkVAloQVu40szdk1HmPY6uCCT0ShBWk4OFMULpdYmcQi
+        yKpUywym30bHQVMyC4eN2k3Gzg==
+X-Google-Smtp-Source: AKy350Zow5T6QA/twFWOhVbkw0YON81CH4a5u2mrMAh8v5pAtniRwZgs0rK8eL9aW9GFlHa6vcrG2Q==
+X-Received: by 2002:aa7:c397:0:b0:4fe:e851:af4a with SMTP id k23-20020aa7c397000000b004fee851af4amr1753723edq.39.1679643694211;
+        Fri, 24 Mar 2023 00:41:34 -0700 (PDT)
+Received: from [192.168.0.29] (84-115-214-73.cable.dynamic.surfer.at. [84.115.214.73])
+        by smtp.gmail.com with ESMTPSA id d23-20020a50f697000000b004fd2a7aa1ecsm10271227edn.32.2023.03.24.00.41.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Mar 2023 00:41:33 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH v3 0/3] Fix some issues in QCOM UFS bindings
+Date:   Fri, 24 Mar 2023 08:41:27 +0100
+Message-Id: <20221209-dt-binding-ufs-v3-0-499dff23a03c@fairphone.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230129-ov2685-improvements-v4-1-e71985c5c848@z3ntu.xyz>
-References: <20230129-ov2685-improvements-v4-0-e71985c5c848@z3ntu.xyz>
-In-Reply-To: <20230129-ov2685-improvements-v4-0-e71985c5c848@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+X-B4-Tracking: v=1; b=H4sIACdUHWQC/33NTQrCMBAF4KuUrB1Jx7YxrryHuEjz0wRqIkkbk
+ NK7O7gUdDXzBt43Gys2B1vYpdlYtjWUkCKF06Fh2qs4WQiGMkOO2CKXYBYYQzQhTrC6AmiEGzo
+ hhXPIqDSqYmHMKmpPtbjOMx19KEvKr8+T2tK4/fRqCxzOpufouG1puToV8tOnaI86PdiduIr/C
+ STCaKF4N0jZC/lN7Pv+BteJehP4AAAA
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Shunqian Zheng <zhengsq@rock-chips.com>,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Cc:     linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+        Iskren Chernev <me@iskren.info>,
+        Manivannan Sadhasivam <mani@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        Iskren Chernev <me@iskren.info>
 X-Mailer: b4 0.12.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1586; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=/s3YATkQEynaY97oNVGkN2PAZTRMQ7bXwfDtDYia87A=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkHJMjVW/e2Q2s/jXJLNba4KenAFd/cI/tE9sLS
- bxV8NVpRvaJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZByTIwAKCRBy2EO4nU3X
- Vm/tD/4h30/j1jv5gjaQlVt6aI85HqI/Uml4zfwAuaEDDinWDDBtOQ4RlYrBM5M8pfPj4zSGNRH
- d+UKndm3lNFif/ZP/Gg8+2DlPf1+U9j0slcm3QfDbyTuAMLA+5ipJPzBLQ/22vpy5+vWAnFZOc4
- VL4rpbi0aMZmq6J/vNSkmER4nxLFb4BMtLSkofbNBfLCTR4Ud5FmWXHKyLnrpux8Tsd5txN5GEt
- rU5s4UHz/z6EgXAsWOPlkMnUX32UoJRhrkSfzjplbLT0u34XGn8acvLGPQgCEqbN3zbfFNvUZFi
- dAeMsttdlfYIWEvThbtWmvuL+vM9cU5iubYRKKwzijBCJp82zMKs+MDp6vRMllw/30Zgc0aif1i
- 1+s8FzcE5ul+KmL6JHZEujJxF+5vFB6el0XLe+UW8e4ErW7KvN8vsakZ9bLI5a5JlMBSC632KRn
- +HHFSwu/XvLA6MkQ+Imp+VqYc2i+C6MwhPSxN/cWAIP6qoRz490Cw1ApPdDNqnE07lFH/J039t6
- uzBHcmWZknXO5GkPkSZc4JFpJoQ8ZdbenflVOYyW/eGxrRAlFEZNFaauTQKzcPHvpADWYnu4IKC
- AeaSh8QdNxlMR2ZgQog0nCFoYHCa5WCaJQqClDi9eHmM6UOKcyFbtm245rQ8yeXOhH4OTExF6tG
- Um3eYXgvn7FvKLA==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-With the upcoming conversion of ov2685 to dt-schema let's complete the
-example so validation succeeds. At the same time fix the indentation of
-the port node in this example.
-
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- .../devicetree/bindings/media/rockchip-isp1.yaml      | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+Changes in v3:
+- Drop applied patch
+- Pick up sm6115 patch from v5 https://lore.kernel.org/all/20221030094258.486428-2-iskren.chernev@gmail.com/
+- Rebase on linux-next
+- Link to v2: https://lore.kernel.org/r/20221209-dt-binding-ufs-v2-0-dc7a04699579@fairphone.com
 
-diff --git a/Documentation/devicetree/bindings/media/rockchip-isp1.yaml b/Documentation/devicetree/bindings/media/rockchip-isp1.yaml
-index b3661d7d43572..0bad7e6401486 100644
---- a/Documentation/devicetree/bindings/media/rockchip-isp1.yaml
-+++ b/Documentation/devicetree/bindings/media/rockchip-isp1.yaml
-@@ -212,12 +212,19 @@ examples:
-                 compatible = "ovti,ov2685";
-                 reg = <0x3c>;
- 
--                  port {
--                      ucam_out: endpoint {
--                          remote-endpoint = <&mipi_in_ucam>;
--                          data-lanes = <1>;
--                      };
--                  };
-+                clocks = <&cru SCLK_TESTCLKOUT1>;
-+                clock-names = "xvclk";
-+
-+                avdd-supply = <&pp2800_cam>;
-+                dovdd-supply = <&pp1800>;
-+                dvdd-supply = <&pp1800>;
-+
-+                port {
-+                    ucam_out: endpoint {
-+                        remote-endpoint = <&mipi_in_ucam>;
-+                        data-lanes = <1>;
-+                    };
-+                };
-             };
-         };
-     };
+Changes in v2:
+- Add new patch adding reg-names to sm6115 & rebase series on top of sm6115
+  addition
+- Fix binding example after sm8450 move, split this patch from original patch
+  since it became too big
+- Move reg-names definition to top-level
+- Link to v1: https://lore.kernel.org/r/20221209-dt-binding-ufs-v1-0-8d502f0e18d5@fairphone.com
 
+---
+Iskren Chernev (1):
+      dt-bindings: ufs: qcom: Add sm6115 binding
+
+Luca Weiss (2):
+      dt-bindings: ufs: qcom: Add reg-names property for ICE
+      dt-bindings: ufs: qcom: Fix sm8450 bindings
+
+ .../devicetree/bindings/ufs/qcom,ufs.yaml          | 61 ++++++++++++++++++++--
+ 1 file changed, 56 insertions(+), 5 deletions(-)
+---
+base-commit: e5dbf24e8b9e6aa0a185d86ce46a7a9c79ebb40f
+change-id: 20221209-dt-binding-ufs-2d7f64797ff2
+
+Best regards,
 -- 
-2.40.0
+Luca Weiss <luca.weiss@fairphone.com>
 
