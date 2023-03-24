@@ -2,225 +2,188 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0A2CC77B75
-	for <phone-devel@archiver.kernel.org>; Fri, 24 Mar 2023 09:43:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AFAC6C6FD20
+	for <phone-devel@archiver.kernel.org>; Fri, 24 Mar 2023 11:29:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231626AbjCXJmk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 24 Mar 2023 05:42:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58166 "EHLO
+        id S231719AbjCXL3e (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 24 Mar 2023 07:29:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231890AbjCXJmY (ORCPT
+        with ESMTP id S231211AbjCXL3c (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 24 Mar 2023 05:42:24 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 387BB25B82;
-        Fri, 24 Mar 2023 02:42:16 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id EF1C76603115;
-        Fri, 24 Mar 2023 09:42:13 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1679650934;
-        bh=lcnxQkssa6vfbflDqpko9gmnNtlbXvFaHJdmHQhrvPA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BRbwx4GSRWQAoi8RRg0b6vxfCC/Fg48nYgRpUPfXFNltG5kBmYv9xfUPLFM+VDPzA
-         oGwOrMJ9edB96wBX8p1uXpzHUG3j6XhhIDiae/ok0RP7KyZA3iY7MDCqRYNyWqasAi
-         DUaLs5yLWtI55jNHY8Ok+tHkSBwZGn8gzyjSJB1zEdF5UIotzod0jKx2OJ2HLN6kMU
-         jmScVjUbJCeV/E+LgAJsEG/mCeWA0b3n4G6LCC1mfh/1d66elhnRakZi0SJP/EUIw9
-         6iI+SLnCuSn2xp14PAi4ELAodGsjxKw9Z7exTHxUiBoQm6l/XZnIAQxJGQxujmfmtA
-         3mrBiGSunYAEw==
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-To:     matthias.bgg@gmail.com
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        amergnat@baylibre.com, flora.fu@mediatek.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, kernel@collabora.com,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v2 4/6] soc: mediatek: mtk-pmic-wrap: Add support for companion PMICs
-Date:   Fri, 24 Mar 2023 10:42:03 +0100
-Message-Id: <20230324094205.33266-5-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230324094205.33266-1-angelogioacchino.delregno@collabora.com>
-References: <20230324094205.33266-1-angelogioacchino.delregno@collabora.com>
+        Fri, 24 Mar 2023 07:29:32 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99B7B1ABCD
+        for <phone-devel@vger.kernel.org>; Fri, 24 Mar 2023 04:29:30 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id eg48so6537159edb.13
+        for <phone-devel@vger.kernel.org>; Fri, 24 Mar 2023 04:29:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679657369;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UBYZAHJ4oF06kqEyxwlGgNiRWjRifAoB3O7aBMX2ZGQ=;
+        b=lfpCU7UXubnZ6VCwtJq39UmJ/DpJcQAIzhTHuxxWf+LeDLHMq6sDOUOKW2kyZ2B2Qy
+         QyWbPBs86cM0ZIraepVH+TRXpMh6p9DKhjM3qej/Cjoh8kaNOYC8kPdZl2NCSYyTebAV
+         djGswrREiaH/F2uUbRa0T0YpeFJhVMeXij0BbQpAkHoUbzfGfXLvIi2akG9yCD3PGuaD
+         NynZeaomh7rzdSsEWYqvPQ7sMwrqKW1OKsXITdOJzrF2f2cltDRWmOkwPFAluLYF2xtI
+         rlnCmWqC76XzKZadNwoPOB11v1lmK9/X1N5FH9x8lkWnEgeW15EQbYyY0bcLD4sDv46a
+         Oscw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679657369;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UBYZAHJ4oF06kqEyxwlGgNiRWjRifAoB3O7aBMX2ZGQ=;
+        b=qXakWq1j3r2TzALCNiVv1awuDYwuBEulFVOpCFZENaNL1j8AStZggRgsatbEO6WUuA
+         1tRYvBrbS0lQaLFaFIprhAeWb/GvHPLlOLiV28ZMgurwi6RdMP+1rp+lJKJF0MQOl7QY
+         28azHtWA0Jqqn+qu92nx9+qKis1T1fAc4h6jkEBNKkZakOdvjhC4Ve1gQPjXcCwcOnB0
+         tIBFT/50Oyiu64zTfNnWzaxrRBZyY+j7XODXKi/HAZEBQwBFmhEgVlLBnJhkgyg7ELUZ
+         HGnFC5iprY9muxuRohxKsWIP6w6xxTASLnt1k8NPGqj2WsVJGvGBDbDp3Cb5p1VqW7IC
+         +0kg==
+X-Gm-Message-State: AAQBX9co5YD33t8ePIouml9XKOmdOnQQ4RfKJnBy2b6LDiIbDJZ02VO9
+        38A7uueF4QwZT2PM4D3fdED/+w==
+X-Google-Smtp-Source: AKy350ap/qXI7A1sMp8C4oUtWf50SlQntYwZedDuCHwbGnlHGF5tBBAtbSvocbO5enonMQHKR7kEDA==
+X-Received: by 2002:a17:906:40c7:b0:930:7324:2766 with SMTP id a7-20020a17090640c700b0093073242766mr2059087ejk.35.1679657369098;
+        Fri, 24 Mar 2023 04:29:29 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:3027:fb0b:ae08:588? ([2a02:810d:15c0:828:3027:fb0b:ae08:588])
+        by smtp.gmail.com with ESMTPSA id u7-20020a170906b10700b0092f38a6d082sm10094107ejy.209.2023.03.24.04.29.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Mar 2023 04:29:28 -0700 (PDT)
+Message-ID: <4e3e6d50-c6ba-985d-82e6-df52ef17d174@linaro.org>
+Date:   Fri, 24 Mar 2023 12:29:27 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v5 2/2] ARM: dts: exynos: add mmc aliases
+To:     Henrik Grimler <henrik@grimler.se>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        alim.akhtar@samsung.com, m.szyprowski@samsung.com,
+        jenneron@protonmail.com, markuss.broks@gmail.com,
+        martin.juecker@gmail.com, virag.david003@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Valentine Iourine <iourine@iourine.msk.su>
+References: <20230316211558.8526-1-henrik@grimler.se>
+ <20230316211558.8526-3-henrik@grimler.se>
+ <216262b8-fe48-6696-17a4-eaa82e776db7@linaro.org> <ZBds5NFv1Lr8k0jk@L14.lan>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <ZBds5NFv1Lr8k0jk@L14.lan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Some PMICs are designed to work with a companion part, which provides
-more regulators and/or companion devices such as LED controllers,
-display backlight controllers, battery charging, fuel gauge, etc:
-this kind of PMICs are usually present in smartphone platforms, where
-tight integration is required.
+On 19/03/2023 21:13, Henrik Grimler wrote:
+>>>  
+>>> +	aliases {
+>>> +		mmc0 = &sdhci_0;
+>>> +		mmc2 = &sdhci_2;
+>>
+>>
+>> Why this is 2? Aliases are continues and match the board. For example
+>> Universal calls this mmc1 and the next mmc2, not 3.
+> 
+> Not sure I follow, Universal calls sdhci_2 mmc1 in schematics? (I have tried searching for
+> schematics but cannot really find anything about this board)
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
----
- drivers/soc/mediatek/mtk-pmic-wrap.c | 73 ++++++++++++++++++++++------
- 1 file changed, 59 insertions(+), 14 deletions(-)
+Yes. The alias numbers are the numbering exposed on the board. This
+might or might not match original numbering. If you have a development
+board with a SoM, pretty often not all interfaces, let's say UARTs, are
+exposed. SoM might have 10 UARTs, but board has only 4 and numbers them
+UART0-3. Aliases should be 0-3, not 0, 5, 7, 9.
 
-diff --git a/drivers/soc/mediatek/mtk-pmic-wrap.c b/drivers/soc/mediatek/mtk-pmic-wrap.c
-index a33a1b1820cb..366e40b802e4 100644
---- a/drivers/soc/mediatek/mtk-pmic-wrap.c
-+++ b/drivers/soc/mediatek/mtk-pmic-wrap.c
-@@ -47,6 +47,7 @@
- 
- /* macro for device wrapper default value */
- #define PWRAP_DEW_READ_TEST_VAL		0x5aa5
-+#define PWRAP_DEW_COMP_READ_TEST_VAL	0xa55a
- #define PWRAP_DEW_WRITE_TEST_VAL	0xa55a
- 
- /* macro for manual command */
-@@ -1222,12 +1223,16 @@ struct pwrap_slv_regops {
-  * struct pwrap_slv_type - PMIC device wrapper definitions
-  * @dew_regs:      Device Wrapper (DeW) register offsets
-  * @type:          PMIC Type (model)
-+ * @comp_dew_regs: Device Wrapper (DeW) register offsets for companion device
-+ * @comp_type:     Companion PMIC Type (model)
-  * @regops:        Register R/W ops
-  * @caps:          Capability flags for the target device
-  */
- struct pwrap_slv_type {
- 	const u32 *dew_regs;
- 	enum pmic_type type;
-+	const u32 *comp_dew_regs;
-+	enum pmic_type comp_type;
- 	const struct pwrap_slv_regops *regops;
- 	u32 caps;
- };
-@@ -1548,9 +1553,12 @@ static int pwrap_init_dual_io(struct pmic_wrapper *wrp)
- {
- 	int ret;
- 	bool read_ok, tmp;
-+	bool comp_read_ok = true;
- 
- 	/* Enable dual IO mode */
- 	pwrap_write(wrp, wrp->slave->dew_regs[PWRAP_DEW_DIO_EN], 1);
-+	if (wrp->slave->comp_dew_regs)
-+		pwrap_write(wrp, wrp->slave->comp_dew_regs[PWRAP_DEW_DIO_EN], 1);
- 
- 	/* Check IDLE & INIT_DONE in advance */
- 	ret = readx_poll_timeout(pwrap_is_fsm_idle_and_sync_idle, wrp, tmp, tmp,
-@@ -1564,8 +1572,14 @@ static int pwrap_init_dual_io(struct pmic_wrapper *wrp)
- 
- 	/* Read Test */
- 	read_ok = pwrap_pmic_read_test(wrp, wrp->slave->dew_regs, PWRAP_DEW_READ_TEST_VAL);
--	if (!read_ok) {
--		dev_err(wrp->dev, "Read failed on DIO mode.\n");
-+	if (wrp->slave->comp_dew_regs)
-+		comp_read_ok = pwrap_pmic_read_test(wrp, wrp->slave->comp_dew_regs,
-+						    PWRAP_DEW_COMP_READ_TEST_VAL);
-+	if (!read_ok || !comp_read_ok) {
-+		dev_err(wrp->dev, "Read failed on DIO mode. Main PMIC %s%s\n",
-+			!read_ok ? "fail" : "success",
-+			wrp->slave->comp_dew_regs && !comp_read_ok ?
-+			", Companion PMIC fail" : "");
- 		return -EFAULT;
- 	}
- 
-@@ -1640,19 +1654,41 @@ static bool pwrap_is_cipher_ready(struct pmic_wrapper *wrp)
- 	return pwrap_readl(wrp, PWRAP_CIPHER_RDY) & 1;
- }
- 
--static bool pwrap_is_pmic_cipher_ready(struct pmic_wrapper *wrp)
-+static bool __pwrap_is_pmic_cipher_ready(struct pmic_wrapper *wrp, const u32 *dew_regs)
- {
- 	u32 rdata;
- 	int ret;
- 
--	ret = pwrap_read(wrp, wrp->slave->dew_regs[PWRAP_DEW_CIPHER_RDY],
--			 &rdata);
-+	ret = pwrap_read(wrp, dew_regs[PWRAP_DEW_CIPHER_RDY], &rdata);
- 	if (ret)
- 		return false;
- 
- 	return rdata == 1;
- }
- 
-+
-+static bool pwrap_is_pmic_cipher_ready(struct pmic_wrapper *wrp)
-+{
-+	bool ret = __pwrap_is_pmic_cipher_ready(wrp, wrp->slave->dew_regs);
-+
-+	if (!ret)
-+		return ret;
-+
-+	/* If there's any companion, wait for it to be ready too */
-+	if (wrp->slave->comp_dew_regs)
-+		ret = __pwrap_is_pmic_cipher_ready(wrp, wrp->slave->comp_dew_regs);
-+
-+	return ret;
-+}
-+
-+static void pwrap_config_cipher(struct pmic_wrapper *wrp, const u32 *dew_regs)
-+{
-+	pwrap_write(wrp, dew_regs[PWRAP_DEW_CIPHER_SWRST], 0x1);
-+	pwrap_write(wrp, dew_regs[PWRAP_DEW_CIPHER_SWRST], 0x0);
-+	pwrap_write(wrp, dew_regs[PWRAP_DEW_CIPHER_KEY_SEL], 0x1);
-+	pwrap_write(wrp, dew_regs[PWRAP_DEW_CIPHER_IV_SEL], 0x2);
-+}
-+
- static int pwrap_init_cipher(struct pmic_wrapper *wrp)
- {
- 	int ret;
-@@ -1689,10 +1725,11 @@ static int pwrap_init_cipher(struct pmic_wrapper *wrp)
- 	}
- 
- 	/* Config cipher mode @PMIC */
--	pwrap_write(wrp, wrp->slave->dew_regs[PWRAP_DEW_CIPHER_SWRST], 0x1);
--	pwrap_write(wrp, wrp->slave->dew_regs[PWRAP_DEW_CIPHER_SWRST], 0x0);
--	pwrap_write(wrp, wrp->slave->dew_regs[PWRAP_DEW_CIPHER_KEY_SEL], 0x1);
--	pwrap_write(wrp, wrp->slave->dew_regs[PWRAP_DEW_CIPHER_IV_SEL], 0x2);
-+	pwrap_config_cipher(wrp, wrp->slave->dew_regs);
-+
-+	/* If there is any companion PMIC, configure cipher mode there too */
-+	if (wrp->slave->comp_type > 0)
-+		pwrap_config_cipher(wrp, wrp->slave->comp_dew_regs);
- 
- 	switch (wrp->slave->type) {
- 	case PMIC_MT6397:
-@@ -1754,6 +1791,7 @@ static int pwrap_init_cipher(struct pmic_wrapper *wrp)
- 
- static int pwrap_init_security(struct pmic_wrapper *wrp)
- {
-+	u32 crc_val;
- 	int ret;
- 
- 	/* Enable encryption */
-@@ -1762,14 +1800,21 @@ static int pwrap_init_security(struct pmic_wrapper *wrp)
- 		return ret;
- 
- 	/* Signature checking - using CRC */
--	if (pwrap_write(wrp,
--			wrp->slave->dew_regs[PWRAP_DEW_CRC_EN], 0x1))
--		return -EFAULT;
-+	ret = pwrap_write(wrp, wrp->slave->dew_regs[PWRAP_DEW_CRC_EN], 0x1);
-+	if (ret == 0 && wrp->slave->comp_dew_regs)
-+		ret = pwrap_write(wrp, wrp->slave->comp_dew_regs[PWRAP_DEW_CRC_EN], 0x1);
- 
- 	pwrap_writel(wrp, 0x1, PWRAP_CRC_EN);
- 	pwrap_writel(wrp, 0x0, PWRAP_SIG_MODE);
--	pwrap_writel(wrp, wrp->slave->dew_regs[PWRAP_DEW_CRC_VAL],
--		     PWRAP_SIG_ADR);
-+
-+	/* CRC value */
-+	crc_val = wrp->slave->dew_regs[PWRAP_DEW_CRC_VAL];
-+	if (wrp->slave->comp_dew_regs)
-+		crc_val |= wrp->slave->comp_dew_regs[PWRAP_DEW_CRC_VAL] << 16;
-+
-+	pwrap_writel(wrp, crc_val, PWRAP_SIG_ADR);
-+
-+	/* PMIC Wrapper Arbiter priority */
- 	pwrap_writel(wrp,
- 		     wrp->master->arb_en_all, PWRAP_HIPRIO_ARB_EN);
- 
--- 
-2.40.0
+> 
+>> I bet it is the same on Trats and all other boards.
+> 
+> Sure, I can change to mmc0, mmc1 for all 4210 devices.
+
+Yes, please.
+
+> 
+>>> +		mmc3 = &sdhci_3;
+>>> +	};
+>>> +
+>>>  	chosen {
+>>>  		bootargs = "root=/dev/mmcblk0p5 rw rootwait earlyprintk panic=5 maxcpus=1";
+>>>  		stdout-path = "serial2:115200n8";
+>>> diff --git a/arch/arm/boot/dts/exynos4412-itop-elite.dts b/arch/arm/boot/dts/exynos4412-itop-elite.dts
+>>> index 6260da187e92..0e5419c0eaff 100644
+>>> --- a/arch/arm/boot/dts/exynos4412-itop-elite.dts
+>>> +++ b/arch/arm/boot/dts/exynos4412-itop-elite.dts
+>>> @@ -20,6 +20,10 @@ / {
+>>>  	model = "TOPEET iTop 4412 Elite board based on Exynos4412";
+>>>  	compatible = "topeet,itop4412-elite", "samsung,exynos4412", "samsung,exynos4";
+>>>  
+>>> +	aliases {
+>>> +		mmc2 = &sdhci_2;
+>>
+>> mmc1
+> 
+> Ok, will change.
+> 
+>>> +	};
+>>> +
+>>>  	chosen {
+>>>  		bootargs = "root=/dev/mmcblk0p2 rw rootfstype=ext4 rootdelay=1 rootwait";
+>>>  		stdout-path = "serial2:115200n8";
+>>> diff --git a/arch/arm/boot/dts/exynos4412-itop-scp-core.dtsi b/arch/arm/boot/dts/exynos4412-itop-scp-core.dtsi
+>>> index ca8d42b2ce3b..7bc6968af9c3 100644
+>>> --- a/arch/arm/boot/dts/exynos4412-itop-scp-core.dtsi
+>>> +++ b/arch/arm/boot/dts/exynos4412-itop-scp-core.dtsi
+>>> @@ -23,6 +23,10 @@ memory@40000000 {
+>>>  		reg = <0x40000000 0x40000000>;
+>>>  	};
+>>>  
+>>> +	aliases {
+>>> +		mmc0 = &mshc_0;
+>>> +	};
+>>> +
+>>>  	firmware@203f000 {
+>>>  		compatible = "samsung,secure-firmware";
+>>>  		reg = <0x0203f000 0x1000>;
+>>> diff --git a/arch/arm/boot/dts/exynos4412-midas.dtsi b/arch/arm/boot/dts/exynos4412-midas.dtsi
+>>> index 82aed59cba7c..e6b949c1a00f 100644
+>>> --- a/arch/arm/boot/dts/exynos4412-midas.dtsi
+>>> +++ b/arch/arm/boot/dts/exynos4412-midas.dtsi
+>>> @@ -25,6 +25,9 @@ / {
+>>>  	aliases {
+>>>  		i2c11 = &i2c_max77693;
+>>>  		i2c12 = &i2c_max77693_fuel;
+>>> +		mmc0 = &mshc_0;
+>>> +		mmc2 = &sdhci_2;
+>>> +		mmc3 = &sdhci_3;
+>>
+>> This is actually correct.
+>>
+>>>  	};
+>>>  
+>>>  	chosen {
+>>> diff --git a/arch/arm/boot/dts/exynos4412-odroid-common.dtsi b/arch/arm/boot/dts/exynos4412-odroid-common.dtsi
+>>> index 25e082fda955..45ef7b7ba7e0 100644
+>>> --- a/arch/arm/boot/dts/exynos4412-odroid-common.dtsi
+>>> +++ b/arch/arm/boot/dts/exynos4412-odroid-common.dtsi
+>>> @@ -13,6 +13,11 @@
+>>>  #include "exynos-mfc-reserved-memory.dtsi"
+>>>  
+>>>  / {
+>>> +	aliases {
+>>> +		mmc0 = &mshc_0;
+>>> +		mmc2 = &sdhci_2;
+>>
+>> This is also correct.
+>>
+>>> +	};
+>>
+>> For all other cases, where schematics are missing, just make them linear.
+> 
+> Alright, will do in next version, thanks for the feedback!
+> 
+
+
+Best regards,
+Krzysztof
 
