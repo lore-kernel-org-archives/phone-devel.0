@@ -2,37 +2,37 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77C68C6FD1F
-	for <phone-devel@archiver.kernel.org>; Sat, 25 Mar 2023 18:03:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49AF2C6FD1F
+	for <phone-devel@archiver.kernel.org>; Sat, 25 Mar 2023 18:12:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230223AbjCYSDE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 25 Mar 2023 14:03:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40538 "EHLO
+        id S229564AbjCYSM2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 25 Mar 2023 14:12:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230133AbjCYSDE (ORCPT
+        with ESMTP id S229446AbjCYSM2 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 25 Mar 2023 14:03:04 -0400
+        Sat, 25 Mar 2023 14:12:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE014C0C;
-        Sat, 25 Mar 2023 11:02:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B316B211C;
+        Sat, 25 Mar 2023 11:12:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 20DF960C88;
-        Sat, 25 Mar 2023 18:02:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38F5C433EF;
-        Sat, 25 Mar 2023 18:02:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D02D60C88;
+        Sat, 25 Mar 2023 18:12:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE99C433D2;
+        Sat, 25 Mar 2023 18:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679767372;
-        bh=qGnFSMgK4wtGx+uHwd6Vg5FVaygMBut9NMr2BRuntgw=;
+        s=k20201202; t=1679767946;
+        bh=CajaQHBsxDOFeWJ2Z4uhMq5fkuJ8Vq6DMecim34eK/g=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=X3LYU8YE2flgUNxbEWJMvFRvYn4ZIv7eAMsrH0PmGi6au+2KdF+FXHxRBAHqV+HV1
-         9pfKVP+cYP/Sk9+7joZC+krh2qfGGBa90d63oicDcKW5NX362q7HazY4fiNfK+IuFD
-         fdp+pEZjnJx32g65Ql1qb690aYJN9t9I0KZ9FlA7wrcZ73JrRg6vJwd1FF1+UqTS8C
-         be84N/puyueHt11l0a1U4egyAaTwTUwm2WBOvv2iAKzyR5wjNXsO8vckhqox773x3a
-         gujJ3y9/rLqihwKB0OUwYmGO4aXvTJC8AglbbTumRjaTfr/oZhMMaFdrMzatV+ti4v
-         acNj0LOlIONrg==
-Date:   Sat, 25 Mar 2023 18:02:49 +0000
+        b=mUCM6GRAikDeM9qfa7PiMJ/0Dw+GRabGMDc4q3NX0t/nsMJnQzpoROwQ0SkKcPyUq
+         VR65LV/hVTQkSw+4J8V0XeKmu6ncB0RkxNW1oCexmX0XIoe7foBNVYvz/RrrQL3YUH
+         CAhHltUbyW8gpA1WcvHnkmMuRKEfzS3FoUjftPyce/BEoRwmn9FUf6S/M5yvV6tpBu
+         DZwww6l2sDKaS3QTi/VhYAv4LKMfgE54KL5TZA0G8zt4yRQ/Ys0fRT4aLuj8OM88ng
+         IcI9mrgVU40MqYCT4JqVDRVbNchp98sZKx89mfJELQRBjNaE1tr9DjIRlTuFkW6y7g
+         Ksp/Fwvdy5BqA==
+Date:   Sat, 25 Mar 2023 18:12:23 +0000
 From:   Mark Brown <broonie@kernel.org>
 To:     Dylan Van Assche <me@dylanvanassche.be>
 Cc:     Banajit Goswami <bgoswami@quicinc.com>,
@@ -41,55 +41,61 @@ Cc:     Banajit Goswami <bgoswami@quicinc.com>,
         Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 0/1] Expose ALSA control for jack
-Message-ID: <ZB83SZo44kiloMrX@sirena.org.uk>
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Joel Selvaraj <joelselvaraj.oss@gmail.com>,
+        Caleb Connolly <caleb@connolly.tech>
+Subject: Re: [PATCH v3 1/1] sound: soc: codecs: wcd-mbhc-v2: expose ALSA
+ control for jack
+Message-ID: <ZB85h55to1MsQnnh@sirena.org.uk>
 References: <20230325142142.24337-1-me@dylanvanassche.be>
+ <20230325142142.24337-2-me@dylanvanassche.be>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="/mdumUZgSzjwqsJd"
+        protocol="application/pgp-signature"; boundary="BY1KhK6s61gDAstw"
 Content-Disposition: inline
-In-Reply-To: <20230325142142.24337-1-me@dylanvanassche.be>
+In-Reply-To: <20230325142142.24337-2-me@dylanvanassche.be>
 X-Cookie: Single tasking: Just Say No.
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
---/mdumUZgSzjwqsJd
+--BY1KhK6s61gDAstw
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 25, 2023 at 03:21:41PM +0100, Dylan Van Assche wrote:
-> Qualcomm SDM845 features a headphone jack via a Qualcomm WCD9340
-> codec which has jack detection through the wcd-mbhc-v2 driver.
+On Sat, Mar 25, 2023 at 03:21:42PM +0100, Dylan Van Assche wrote:
 
-Please submit patches using subject lines reflecting the style for the
-subsystem, this makes it easier for people to identify relevant patches.
-Look at what existing commits in the area you're changing are doing and
-make sure your subject lines visually resemble what they're doing.
-There's no need to resubmit to fix this alone.
+> =20
+>  	mutex_lock(&mbhc->lock);
+> =20
+> +	ret =3D snd_jack_add_new_kctl(mbhc->jack->jack, "Headset Jack", WCD_MBH=
+C_JACK_MASK);
+> +	if (ret)
+> +		dev_warn(component->dev, "failed creating Headset Jack kctl with err: =
+%d\n", ret);
+> +
 
-Please don't send cover letters for single patches, if there is anything
-that needs saying put it in the changelog of the patch or after the ---
-if it's administrative stuff.  This reduces mail volume and ensures that=20
-any important information is recorded in the changelog rather than being
-lost.=20
+No, drivers should not be open coding userspace reporting - there
+is no reason for this device to be special, or for this device to
+duplicate what machine drivers and the core are doing.  Any
+configuration should be done by the machine driver, the ASoC core
+jack handling already creates userspace controls when asked.
 
---/mdumUZgSzjwqsJd
+--BY1KhK6s61gDAstw
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQfN0QACgkQJNaLcl1U
-h9D4pAf9HqtRrn0E7n6E622qQv0sfrnUOVp9U3FT7tvjC1ivuQ7Tu0gE5vKtBpxg
-oWs2eMXBZeP+KjQVxiYRfghcPWcc71cQ7cd+cmgfwsexLmSCUswlD9JPibpOeRN6
-+NMn0qLfAlhijGX/hOV6Tqaid7KGMyPBFq9GR9+TEmxWZCvrrwv1sywqCOOTLWE7
-SevV4Di+OHTEHtLPWzRCWqIqL1kHDAVROsJ5Jwk5rn9ZwyiCtlTuCn/K676CisU1
-YBmJXRu9XYiuPP1eG8H7Exa7aW0iyYPOVvV7Rv1oCieKUZsJFPMSGo7wy3TDweFV
-PMCc7KxGZGGwnkveEouHnyzvozirNQ==
-=Df2L
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQfOYYACgkQJNaLcl1U
+h9D8yAf/fy9sMmjyaQSaCVRAtU6vPerFG2ZHD4sxzKPFhQb/dYDzG1AIAN+Dcp6p
+TNKiM3DeqpzAV9GsThFTdllqXMAu79UOYhkPiPhjqUIH7gCli6TD0nhE7FerQWs0
+MNYJFlZb9ZanjrSLm9QX0nraG9B/2mFgfK5ug7nH2WpNnuTm+5jwztOISRpAhOmm
+/dWq7YTfT9CZdJkruUFsq0OgvDHnR294QQbzziUeRVX69msTC9h7BQVFk09Unvf7
+wIP0p7qOLGuMjanJ/SyKU51V1Z078t7TrQhrPDzIW95oXgJeDAdmsqkeIfZDoAMm
+mRLRKpwn0bVRbSCjisW24bgr/1tajQ==
+=yrsm
 -----END PGP SIGNATURE-----
 
---/mdumUZgSzjwqsJd--
+--BY1KhK6s61gDAstw--
