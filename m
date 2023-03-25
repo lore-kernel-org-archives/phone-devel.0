@@ -2,108 +2,94 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86FC1C6FD1F
-	for <phone-devel@archiver.kernel.org>; Sat, 25 Mar 2023 16:17:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77C68C6FD1F
+	for <phone-devel@archiver.kernel.org>; Sat, 25 Mar 2023 18:03:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230405AbjCYQRM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 25 Mar 2023 12:17:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37420 "EHLO
+        id S230223AbjCYSDE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 25 Mar 2023 14:03:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229600AbjCYQRM (ORCPT
+        with ESMTP id S230133AbjCYSDE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 25 Mar 2023 12:17:12 -0400
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BDF74C01;
-        Sat, 25 Mar 2023 09:17:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1679761031; x=1711297031;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Vrcn0rGVgrXIQf6tSvf4FE1wbGH838j2OtTvkbDyXDw=;
-  b=NRZ1i7NCCvQF5HJfvkUWLcqYMkEyL96Dl3LrcPbeNA/DwguAx/Canfxa
-   1Yi/aggSNNQVVUwdgVrt4C0OkQhv4lmYwP9FVufpBUrz9YHqZRlQpLySD
-   6pqS2kp1YR8azNFhMP6g37jUfwQ/bfnTcq0wCfSoZUQIL3O09C4Nxs6E3
-   0robPUd/xcZ6uLkl7OtnFXMcuNcvkaxfkuMF0voXlessMTi+nU/LBZP5O
-   8EbrdyzUyJdzZoBdRLdHp9FIEiQHIXClwlGiKvQrsYwVrIpMvqq+ihdNW
-   7oU7Pka2A+8kgJhb+w3QfoZkTF7gFRIYeGUFvmNt0VpJmer2Kr+vdUYNs
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10660"; a="404914160"
-X-IronPort-AV: E=Sophos;i="5.98,290,1673942400"; 
-   d="scan'208";a="404914160"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2023 09:17:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10660"; a="685520387"
-X-IronPort-AV: E=Sophos;i="5.98,290,1673942400"; 
-   d="scan'208";a="685520387"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 25 Mar 2023 09:17:07 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1pg6Zn-000GNO-0v;
-        Sat, 25 Mar 2023 16:17:07 +0000
-Date:   Sun, 26 Mar 2023 00:16:28 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Dylan Van Assche <me@dylanvanassche.be>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Dylan Van Assche <me@dylanvanassche.be>
-Subject: Re: [PATCH 2/4] dts: arm64: qcom: sdm845: add SLPI FastRPC support
-Message-ID: <202303260005.DW8hkIxU-lkp@intel.com>
-References: <20230325135114.21688-3-me@dylanvanassche.be>
+        Sat, 25 Mar 2023 14:03:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE014C0C;
+        Sat, 25 Mar 2023 11:02:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 20DF960C88;
+        Sat, 25 Mar 2023 18:02:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38F5C433EF;
+        Sat, 25 Mar 2023 18:02:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1679767372;
+        bh=qGnFSMgK4wtGx+uHwd6Vg5FVaygMBut9NMr2BRuntgw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=X3LYU8YE2flgUNxbEWJMvFRvYn4ZIv7eAMsrH0PmGi6au+2KdF+FXHxRBAHqV+HV1
+         9pfKVP+cYP/Sk9+7joZC+krh2qfGGBa90d63oicDcKW5NX362q7HazY4fiNfK+IuFD
+         fdp+pEZjnJx32g65Ql1qb690aYJN9t9I0KZ9FlA7wrcZ73JrRg6vJwd1FF1+UqTS8C
+         be84N/puyueHt11l0a1U4egyAaTwTUwm2WBOvv2iAKzyR5wjNXsO8vckhqox773x3a
+         gujJ3y9/rLqihwKB0OUwYmGO4aXvTJC8AglbbTumRjaTfr/oZhMMaFdrMzatV+ti4v
+         acNj0LOlIONrg==
+Date:   Sat, 25 Mar 2023 18:02:49 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Dylan Van Assche <me@dylanvanassche.be>
+Cc:     Banajit Goswami <bgoswami@quicinc.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 0/1] Expose ALSA control for jack
+Message-ID: <ZB83SZo44kiloMrX@sirena.org.uk>
+References: <20230325142142.24337-1-me@dylanvanassche.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="/mdumUZgSzjwqsJd"
 Content-Disposition: inline
-In-Reply-To: <20230325135114.21688-3-me@dylanvanassche.be>
+In-Reply-To: <20230325142142.24337-1-me@dylanvanassche.be>
+X-Cookie: Single tasking: Just Say No.
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Dylan,
 
-Thank you for the patch! Yet something to improve:
+--/mdumUZgSzjwqsJd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[auto build test ERROR on robh/for-next]
-[also build test ERROR on linus/master v6.3-rc3 next-20230324]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On Sat, Mar 25, 2023 at 03:21:41PM +0100, Dylan Van Assche wrote:
+> Qualcomm SDM845 features a headphone jack via a Qualcomm WCD9340
+> codec which has jack detection through the wcd-mbhc-v2 driver.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Dylan-Van-Assche/dts-arm64-qcom-sdm845-add-SLPI-remoteproc/20230325-215354
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20230325135114.21688-3-me%40dylanvanassche.be
-patch subject: [PATCH 2/4] dts: arm64: qcom: sdm845: add SLPI FastRPC support
-config: arm64-defconfig (https://download.01.org/0day-ci/archive/20230326/202303260005.DW8hkIxU-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/df03f51210d03566bf0d35a56633d55e3c57b5ad
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Dylan-Van-Assche/dts-arm64-qcom-sdm845-add-SLPI-remoteproc/20230325-215354
-        git checkout df03f51210d03566bf0d35a56633d55e3c57b5ad
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm64 olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm64 SHELL=/bin/bash
+Please submit patches using subject lines reflecting the style for the
+subsystem, this makes it easier for people to identify relevant patches.
+Look at what existing commits in the area you're changing are doing and
+make sure your subject lines visually resemble what they're doing.
+There's no need to resubmit to fix this alone.
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202303260005.DW8hkIxU-lkp@intel.com/
+Please don't send cover letters for single patches, if there is anything
+that needs saying put it in the changelog of the patch or after the ---
+if it's administrative stuff.  This reduces mail volume and ensures that=20
+any important information is recorded in the changelog rather than being
+lost.=20
 
-All errors (new ones prefixed by >>):
+--/mdumUZgSzjwqsJd
+Content-Type: application/pgp-signature; name="signature.asc"
 
->> Error: arch/arm64/boot/dts/qcom/sdm845.dtsi:3360.4-5 syntax error
-   FATAL ERROR: Unable to parse input tree
+-----BEGIN PGP SIGNATURE-----
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmQfN0QACgkQJNaLcl1U
+h9D4pAf9HqtRrn0E7n6E622qQv0sfrnUOVp9U3FT7tvjC1ivuQ7Tu0gE5vKtBpxg
+oWs2eMXBZeP+KjQVxiYRfghcPWcc71cQ7cd+cmgfwsexLmSCUswlD9JPibpOeRN6
++NMn0qLfAlhijGX/hOV6Tqaid7KGMyPBFq9GR9+TEmxWZCvrrwv1sywqCOOTLWE7
+SevV4Di+OHTEHtLPWzRCWqIqL1kHDAVROsJ5Jwk5rn9ZwyiCtlTuCn/K676CisU1
+YBmJXRu9XYiuPP1eG8H7Exa7aW0iyYPOVvV7Rv1oCieKUZsJFPMSGo7wy3TDweFV
+PMCc7KxGZGGwnkveEouHnyzvozirNQ==
+=Df2L
+-----END PGP SIGNATURE-----
+
+--/mdumUZgSzjwqsJd--
