@@ -2,83 +2,107 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 455F3C6FD1F
-	for <phone-devel@archiver.kernel.org>; Sat, 25 Mar 2023 21:11:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA7CCC7619A
+	for <phone-devel@archiver.kernel.org>; Sun, 26 Mar 2023 08:52:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229711AbjCYVLx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 25 Mar 2023 17:11:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45576 "EHLO
+        id S231822AbjCZIwT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 26 Mar 2023 04:52:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjCYVLw (ORCPT
+        with ESMTP id S231856AbjCZIwS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 25 Mar 2023 17:11:52 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E048BBAE;
-        Sat, 25 Mar 2023 14:11:51 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 30DA61C0AB2; Sat, 25 Mar 2023 22:11:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1679778710;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=xnTqiki8T3iai+PWCcp6RqylatZWC2EbVMPN+OweMAc=;
-        b=H4pQaUj23/NDj4KCPyTfxa7KgjIVR2k7rPLzT2q+kVkdYjEjOkhkdFdJ7iYoFDgDRfthk6
-        LqBcrN8gRsyvc6uj1Kmvuj9shfv9voK3VAKXfuJC0xQAHKdeF6g7prE0J5FlBRusZEnKRH
-        RrVuBd/CeLdWgQLpIjRetioPo9yHezo=
-Date:   Sat, 25 Mar 2023 22:11:49 +0100
-From:   Pavel Machek <pavel@ucw.cz>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     matthias.bgg@gmail.com, qii.wang@mediatek.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jassisinghbrar@gmail.com,
-        houlong.wei@mediatek.com, linux-i2c@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, kernel@collabora.com,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v1 03/18] arm64: dts: mediatek: mt6795: xperia-m5: Enable
- Frequency Hopping
-Message-ID: <ZB9jlTsEb0Clf1zu@duo.ucw.cz>
-References: <20230324175456.219954-1-angelogioacchino.delregno@collabora.com>
- <20230324175456.219954-4-angelogioacchino.delregno@collabora.com>
+        Sun, 26 Mar 2023 04:52:18 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D732D83C3
+        for <phone-devel@vger.kernel.org>; Sun, 26 Mar 2023 01:52:16 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id ek18so24154838edb.6
+        for <phone-devel@vger.kernel.org>; Sun, 26 Mar 2023 01:52:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679820735;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p1G5XuG2O44rhuRS+cdtjXkMOG1YaLkvmFPo9d6ePeQ=;
+        b=kt9fmK2m0EiBdcWA/bhdn34lSYAf9VIEFlhYgE1guZ9rrBz7zO8tOE0YsSuDxaXLsd
+         AystX85dhnq9pPaS7QQuGJMwhiuROindN2L2dpc4nO42bq5kRAxoxRDK/3N0i+vG4tm1
+         zbrr4ToalhuObWk3ViDoIXBekoMpMcXhohlEStpxktqu9111oPyW3tv7ASk2ZUZz0M1j
+         TeHqYdi2W7gCNoa6xMu6oxFYzVgv2yU2xY0Di7UT3SLKdYq8+MTnqZe0524j/vJN/PSJ
+         GL3Av5csVCx8cCCK40uWMI5k002k6P4y+ZQb0sM4CHKWKghWwW+jIG7dVpwrV5ELIv/0
+         k+pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679820735;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p1G5XuG2O44rhuRS+cdtjXkMOG1YaLkvmFPo9d6ePeQ=;
+        b=s5qMEZMYG31yGoX+6BERQO2eQHZUeCIDIerevzpmq8IQIm/ihkuvZoR+JCW+RkQF9g
+         CRV0Plzbgsx95uPKohADRCGyETeF0dLxSI5cnm+BN+dHkbRKEFTyXYN3MKpb80X7i6b8
+         TKFrzeIo201ms3z4gBLw0dQpaGZicj/rnN0qz/qM7KJCl6Fvqp/RlLaRe1rcDG/ZT5EJ
+         elyxRjP1bg+38IXc47snxPPqmWlxnzWZbc3lCQ1j9HEbfJc06QiY3QKCZ3pmI6ubcH89
+         M9hWcuGEPZ/R9PSgjcYVMDflS2H96pG+9g2J/PkYmwWlikgQESD7N/OG7R/6wVH0ZpKS
+         3JbQ==
+X-Gm-Message-State: AAQBX9ez/EWedrTZgaCqiERZfQHM3Y9DtWNsaC7rLjiukFuVdTKVs+vr
+        oqx/CsODPqQs/27p/RCH973zfg==
+X-Google-Smtp-Source: AKy350a4Hf2pni90dnhLjgH1jLAjpW5maFCPJFgbsuds0EDN8CGprK37+v/57FDrATumfl8wg8VLiw==
+X-Received: by 2002:a05:6402:1390:b0:502:2382:5c24 with SMTP id b16-20020a056402139000b0050223825c24mr7067869edv.39.1679820735349;
+        Sun, 26 Mar 2023 01:52:15 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:6cac:926d:a4f2:aa09? ([2a02:810d:15c0:828:6cac:926d:a4f2:aa09])
+        by smtp.gmail.com with ESMTPSA id z17-20020a5096d1000000b004aee4e2a56esm13223831eda.0.2023.03.26.01.52.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 26 Mar 2023 01:52:14 -0700 (PDT)
+Message-ID: <d827dafb-5b97-7ba3-542c-e3f60d4fb468@linaro.org>
+Date:   Sun, 26 Mar 2023 10:51:56 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="MWSEsw2ULXAy+rk4"
-Content-Disposition: inline
-In-Reply-To: <20230324175456.219954-4-angelogioacchino.delregno@collabora.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 0/2] Qualcomm SDM845 SLPI DSP driver support
+To:     Dylan Van Assche <me@dylanvanassche.be>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230325132117.19733-1-me@dylanvanassche.be>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230325132117.19733-1-me@dylanvanassche.be>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 25/03/2023 14:21, Dylan Van Assche wrote:
+> The Qualcomm SDM845 SoC has a separate SLPI (Sensor Low Power Island)
+> DSP for sensors connected to the SoC which is responsible for exposing
+> sensors to userspace, power saving, and other features. 
+> While sensors are connected to GPIOs of the SoC, they cannot be used
+> because the hypervisor blocks direct access to the sensors, thus the 
+> DSP must be used to access any sensor on this SoC. The SLPI DSP uses a
+> GLink edge (dsps) to communicate with the host and has a FastRPC interface
+> to load files from the host filesystem such as sensor configuration files.
+> The FastRPC interface does not use regular FastRPC Compute Banks
+> but instead uses an allocated CMA region through which communication happens.
+> 
+> This set of patches adds support to drivers for the SLPI DSP:
+> 1. Configure the permissions of assigned DSP memory through the hypervisor.
+> 2. Allocate a remote heap when the FastRPC session ID is 0 instead of using 
+> a Compute Bank directly.
+> 3. Add the SLPI remoteproc resource to the q6v5_pas driver to enable support
+> for it in the driver.
+> over QRTR.
+> 
+> DTS changes to enable the SLPI DSP in the SDM845 DTS and hardware
+> e.g. Oneplus 6 and SHIFTPHONES SHIFT6mq will be send once the driver changes
+> are applied.
 
---MWSEsw2ULXAy+rk4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri 2023-03-24 18:54:41, AngeloGioacchino Del Regno wrote:
-> Enable FHCTL with Spread Spectrum for MAINPLL, MPLL and MSDCPLL
-> as found on the downstream kernel for this smartphone.
-> Which one to enable, and at what SSC percentage, was found by
-> dumping the debugging data from a running downstream kernel and
-> checking the downstream code.
-
-What advantages does this have? Lower EMI emissions?
+No, as we explained on IRC, we expect DTS to be sent the same time.
 
 Best regards,
-							Pavel
-							--=20
-People of Russia, stop Putin before his war on Ukraine escalates.
+Krzysztof
 
---MWSEsw2ULXAy+rk4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZB9jlQAKCRAw5/Bqldv6
-8rUCAJ9aZSUig704fVpSKPDFjNbbTy1qsQCdGQuoDXEUMy/Us5cQaR2yWRfm+/s=
-=X9R2
------END PGP SIGNATURE-----
-
---MWSEsw2ULXAy+rk4--
