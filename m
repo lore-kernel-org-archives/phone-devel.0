@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA8D0C6FD1C
-	for <phone-devel@archiver.kernel.org>; Sun, 26 Mar 2023 08:56:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53B6CC77B60
+	for <phone-devel@archiver.kernel.org>; Sun, 26 Mar 2023 08:56:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229655AbjCZI4L (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 26 Mar 2023 04:56:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
+        id S231737AbjCZI4h (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 26 Mar 2023 04:56:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231716AbjCZI4K (ORCPT
+        with ESMTP id S231913AbjCZI4g (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 26 Mar 2023 04:56:10 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 878B459FA
-        for <phone-devel@vger.kernel.org>; Sun, 26 Mar 2023 01:56:07 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id ew6so24108165edb.7
-        for <phone-devel@vger.kernel.org>; Sun, 26 Mar 2023 01:56:07 -0700 (PDT)
+        Sun, 26 Mar 2023 04:56:36 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 482D35B84
+        for <phone-devel@vger.kernel.org>; Sun, 26 Mar 2023 01:56:34 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id ek18so24171141edb.6
+        for <phone-devel@vger.kernel.org>; Sun, 26 Mar 2023 01:56:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679820966;
+        d=linaro.org; s=google; t=1679820993;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=qd0F9PxYYxTCFQnk4TxK5as5OvW8GeFP90xOUu8RRGk=;
-        b=ZfjIYCae3Q9sfcIVnSf3QdvIo1mE8i84rjsoOleieZB/PtHHv0lbP/uIZpa0rWQLli
-         qXM0Hz8ZLNarBFoX6E0oKbdfbFL5hFo2zt/9pW9vSRZv5X/WFccxLyPeMyYlXLUmj7YS
-         lvGbsepure0AbF6ISSWaJ8w0ixn1m8E1ZxXKJ43hP+7U5at7/oPKBE+pKX17uZI0S/12
-         woRFKBvNLizzX9gr1lYe8csx3XBREmvl1X2lVMWYguKs560Fqb/yUh4d25LexsZq7R/z
-         Wu3k5WIWMbI2uCkhj+hb6KQYIadSg0nqVk1olAcQHDqgkvJoNw4aWUolD49oyyLvbGMb
-         WWJg==
+        bh=ZSRJuPJNbdoJyj84IHhrxYPlKl+uIt4tNBO6X3LD2DI=;
+        b=xQ6x8t6UN0lTvfBbnStPW15+jZwIKm8rVcOWs7jvMIE9A94J3+n70etIA0cgKZDJTy
+         dT1Ea2HkG7tw3zLbLDdyAHSY+qvYwzNRMPy2qUQqjlNuWfcGjsZ2t1fpdtQt+aJZqTAx
+         P7pbSWZ8Izg3D8O2IC5P6gqrbOO8m4I30QeQg1J8q6J8bPWZ69NQZff/Q6gwzRsoNfMa
+         kyiWBlEnfwvJladFS8YRLUDfu97ld2NdWzNTN2nUoZ/RJQUfv8slvpq1dKlBGkcmMpcQ
+         PyeGe53k7MJXRGEc+gidiPkYbhsZ2tK9MpUsmh73ET7BVV6rh/qhEELnqNKQxJBPr4CQ
+         0Ufw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679820966;
+        d=1e100.net; s=20210112; t=1679820993;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qd0F9PxYYxTCFQnk4TxK5as5OvW8GeFP90xOUu8RRGk=;
-        b=el9SU94d4dI7TPAaHJIsSynXwVBeZEWWg2vkaketyh/wRCiGTv4D85w7SdCElAI6qQ
-         cftGKeFtKfgeJ6+8po+2zzbBsm+kAbPdns4RZ/rXL6gwUWregnKi9aHBJigXaJ+5DiQO
-         QUyQ1DrsSUUe0bzH14uaynJdzKXtJZgUB4hU7UNBQjcWKcUJlWv2LXUJHrkMsqFY2qJN
-         7NSO2KskutYUx9UyXfyDNY7BrAgpT0msUjgaf71Br8bsaE0Y0mhj+3bnA8BU02Wg6iDy
-         JwryMs3zCATSUZOTIrjk2NvI/kRm/Oolk5NYAzt8JWO6XpsrzorLYAlBm42xn3ebqIay
-         QpdQ==
-X-Gm-Message-State: AAQBX9eKPrfJNRaj5CHFM5Gb6vhZg3yQ2AbCzRsb6hj2+m5lVUBWIuKv
-        +5I0pZzfTCOdsBDEBrQ+45Bw2wV5ARn5ClvHobs=
-X-Google-Smtp-Source: AKy350b+qeYiT7Ih1u4tB2eokW8Ma8O21951mdgEfX+TyL22KuL/H3hg/Bmho8Pnz0MsFSw0/NDuLw==
-X-Received: by 2002:a05:6402:12cc:b0:4f9:f07d:a978 with SMTP id k12-20020a05640212cc00b004f9f07da978mr8662696edx.5.1679820966129;
-        Sun, 26 Mar 2023 01:56:06 -0700 (PDT)
+        bh=ZSRJuPJNbdoJyj84IHhrxYPlKl+uIt4tNBO6X3LD2DI=;
+        b=7glqiFwmpYsgHx6qK1XzG8OmF9SCpaVPW0xgyhGIAYMqKurB4qBmXP8QKAwMybNSTv
+         ltDxxz9fofb1xTeU5lMrP6wOWbyVRSxGHEBrX+AX29FVgz4vpSAq3K0GWqQS0GDUcV4g
+         0AuhCXs9/2w8AiwflR4Ls9yvG3VmqE8KWM1rRBhhehhMv0ABGuey3xBURawbNj01zVTK
+         8tHOa9SkKVCguPXW2OOF17XwPlIBtXhXdMLD9sTQB8IXBNjppHDA9EOk9plsXH2GXCV9
+         bkvbzEYjlXqET1vNlcXPEIOAqaSAtTFjthBQmMGbKQ/4qQB1qpHWdceyV9vlVhGzko/4
+         vROw==
+X-Gm-Message-State: AAQBX9e/cYHqhzSubw7PaNsu3Mlss/tzAr1KcrxAgdOydWkDowHb6XBm
+        Surlowh8e7CqTprr7pcUR6cHSA==
+X-Google-Smtp-Source: AKy350bInaaXgnMIes/Y4RoXKc3ohgRSh/e0IdcU2rk18ZRcrLYvSKRpTJJBOuQQN4EdoOhGrSDZkQ==
+X-Received: by 2002:aa7:c50b:0:b0:4fd:29e4:ccfe with SMTP id o11-20020aa7c50b000000b004fd29e4ccfemr7941750edq.18.1679820992803;
+        Sun, 26 Mar 2023 01:56:32 -0700 (PDT)
 Received: from ?IPV6:2a02:810d:15c0:828:6cac:926d:a4f2:aa09? ([2a02:810d:15c0:828:6cac:926d:a4f2:aa09])
-        by smtp.gmail.com with ESMTPSA id r12-20020a50c00c000000b00501d2f10d19sm8780009edb.20.2023.03.26.01.56.05
+        by smtp.gmail.com with ESMTPSA id q27-20020a50aa9b000000b004af73333d6esm13160375edc.53.2023.03.26.01.56.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Mar 2023 01:56:05 -0700 (PDT)
-Message-ID: <35879793-b677-a901-3f4c-6dc7d3c017ee@linaro.org>
-Date:   Sun, 26 Mar 2023 10:56:04 +0200
+        Sun, 26 Mar 2023 01:56:32 -0700 (PDT)
+Message-ID: <61881229-cd91-cfb3-be2b-51d516f8473c@linaro.org>
+Date:   Sun, 26 Mar 2023 10:56:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCH 1/4] dts: arm64: qcom: sdm845: add SLPI remoteproc
+Subject: Re: [PATCH 2/4] dts: arm64: qcom: sdm845: add SLPI FastRPC support
 Content-Language: en-US
 To:     Dylan Van Assche <me@dylanvanassche.be>,
         Andy Gross <agross@kernel.org>,
@@ -67,9 +67,9 @@ Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
         linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
 References: <20230325135114.21688-1-me@dylanvanassche.be>
- <20230325135114.21688-2-me@dylanvanassche.be>
+ <20230325135114.21688-3-me@dylanvanassche.be>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230325135114.21688-2-me@dylanvanassche.be>
+In-Reply-To: <20230325135114.21688-3-me@dylanvanassche.be>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -77,64 +77,59 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 25/03/2023 14:51, Dylan Van Assche wrote:
-> Add the SLPI remoteproc to the SDM845 Qualcomm SoC which is responsible
-> for exposing the sensors connected to the SoC. The SLPI communicates
-> over GLink edge 'dsps' and is similar to other DSPs e.g. ADSP or CDSP.
-> This patch allows the SLPI to boot and expose itself over QRTR as
-> service 400.
+> Qualcomm SDM845 SoC features a SLPI DSP which uses FastRPC through
+> an allocated memory region to load files from the host filesystem
+> such as sensor configuration files.
+> 
+> Add a FastRPC node at /dev/fastrpc-sdsp and a DMA region, similar to
+> downstream, to allow userspace to communicate with the SLPI via the
+> FastRPC interface for initializing the sensors on the SLPI.
 > 
 > Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
 > ---
->  arch/arm64/boot/dts/qcom/sdm845.dtsi | 37 ++++++++++++++++++++++++++++
->  1 file changed, 37 insertions(+)
+>  arch/arm64/boot/dts/qcom/sdm845.dtsi | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
 > 
 > diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> index 2f32179c7d1b..8dcfe6293762 100644
+> index 8dcfe6293762..5a6c7d00719b 100644
 > --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
 > +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> @@ -3311,6 +3311,43 @@ glink-edge {
->  			};
+> @@ -878,6 +878,14 @@ mdata_mem: mpss-metadata {
+>  			size = <0 0x4000>;
+>  			no-map;
 >  		};
->  
-> +		slpi_pas: remoteproc@5c00000 {
-> +			compatible = "qcom,sdm845-slpi-pas";
-> +			reg = <0 0x5c00000 0 0x4000>;
 > +
-> +			interrupts-extended = <&intc GIC_SPI 494 IRQ_TYPE_EDGE_RISING>,
-> +						<&slpi_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
-> +						<&slpi_smp2p_in 1 IRQ_TYPE_EDGE_RISING>,
-> +						<&slpi_smp2p_in 2 IRQ_TYPE_EDGE_RISING>,
-> +						<&slpi_smp2p_in 3 IRQ_TYPE_EDGE_RISING>;
-> +			interrupt-names = "wdog", "fatal", "ready",
-> +						"handover", "stop-ack";
-> +
-> +			clocks = <&rpmhcc RPMH_CXO_CLK>;
-> +			clock-names = "xo";
-> +
-> +			qcom,qmp = <&aoss_qmp>;
-> +
-> +			power-domains = <&rpmhpd SDM845_CX>,
-> +					<&rpmhpd SDM845_MX>;
-> +			power-domain-names = "lcx", "lmx";
-> +
-> +			memory-region = <&slpi_mem>;
-> +
-> +			qcom,smem-states = <&slpi_smp2p_out 0>;
-> +			qcom,smem-state-names = "stop";
-> +
-> +			status = "disabled";
-> +
-> +			glink-edge {
-> +				interrupts = <GIC_SPI 170 IRQ_TYPE_EDGE_RISING>;
-> +				label = "dsps";
-> +				qcom,remote-pid = <3>;
-> +				mboxes = <&apss_shared 24>;
-> +			};
+> +		fastrpc_mem: fastrpc {
+> +			compatible = "shared-dma-pool";
+> +			reusable;
+> +			alloc-ranges = <0 0x00000000 0 0xffffffff>;
+> +			alignment = <0 0x400000>;
+> +			size = <0 0x1000000>;
 > +		};
+>  	};
+>  
+>  	adsp_pas: remoteproc-adsp {
+> @@ -3344,6 +3352,22 @@ glink-edge {
+>  				label = "dsps";
+>  				qcom,remote-pid = <3>;
+>  				mboxes = <&apss_shared 24>;
 > +
+> +				fastrpc {
+> +					compatible = "qcom,fastrpc";
+> +					qcom,glink-channels = "fastrpcglink-apps-dsp";
+> +					label = "sdsp";
+> +					qcom,non-secure-domain;
+> +					qcom,vmids = <0x3 0xF 0x5 0x6>;
+> +					memory-region = <&fastrpc_mem>;
+> +					qcom,assign-all-mem;
+> +					#address-cells = <1>;
+> +					#size-cells = <0>;
 > +
+> +					compute-cb {
 
-Do not add double blank lines. Same in other patchsets.
+Does not look like you tested the DTS against bindings. Please run `make
+dtbs_check` (see Documentation/devicetree/bindings/writing-schema.rst
+for instructions).
 
 Best regards,
 Krzysztof
