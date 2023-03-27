@@ -2,76 +2,100 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F013CC76195
-	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 18:49:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6608CC761A6
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 19:35:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232536AbjC0St5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 27 Mar 2023 14:49:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40816 "EHLO
+        id S232241AbjC0TfM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 27 Mar 2023 15:35:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232676AbjC0Stv (ORCPT
+        with ESMTP id S230328AbjC0TfJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 27 Mar 2023 14:49:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 388DC3AA2;
-        Mon, 27 Mar 2023 11:49:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C79DA61474;
-        Mon, 27 Mar 2023 18:49:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D9DC433EF;
-        Mon, 27 Mar 2023 18:49:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1679942976;
-        bh=jLpV4aLEaWhnj2ZeSXlyZ4XrVCotJyZACRst+Ac2PsY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Rd5hRxyfDJ/6AksAtofExgq4NRAeL1yIwf+eXcgpeStZ0wYSYQNeSv6Lz1SdNx04f
-         71t7VD8RAxgbPs6ATLN4wAQWolJcZ2UwWc2RNt2OnX2NdB8BCD/YZyhzKyetRwFL9I
-         2vN/eCphpT1Nx2q956+8o/nZkpu8cVO12JuIjRd9is4Rpg33jrmTn4xo4qJTvqDNRA
-         eaXBmZJdkWyVXTSun5xEyvRFPNVa9d4pTe0lOoj12RlY/3OblQV0rsWke7kiqb+Z3S
-         negqyzWgL9hlvX7CR8QJhcDX9IHk3F+KUtpVsPmm00OmRq75PxAjBKPCSuE+TbGCQv
-         ACN2NpvYai5kQ==
-Date:   Mon, 27 Mar 2023 11:49:33 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Iskren Chernev <me@iskren.info>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bhupesh Sharma <bhupesh.sharma@linaro.org>
-Subject: Re: [PATCH v3 1/3] dt-bindings: ufs: qcom: Add sm6115 binding
-Message-ID: <20230327184933.GD73752@sol.localdomain>
-References: <20221209-dt-binding-ufs-v3-0-499dff23a03c@fairphone.com>
- <20221209-dt-binding-ufs-v3-1-499dff23a03c@fairphone.com>
+        Mon, 27 Mar 2023 15:35:09 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B58091995
+        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 12:35:07 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id ek18so40699566edb.6
+        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 12:35:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1679945706;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CipNcg6XGhT+x225ozA3jqRgRsy3IVzOurOagbBJ054=;
+        b=IeTokkfm6UWkOYDDbUa5a8dEtSK25HIxP3MKONEl8LYvz7+y2mO31PP6B7MD2M+80P
+         8eA9viEpDVpyZaONFCKJ3VYa4LfYhMTGVn4FPKls46k0RDMS6LRFE5CIVO+33+SXAT1r
+         dB0xjiPUwKXHTz3EEpThy6HPIcIWOFckY0F7wDIa2xg2pJvLKc3UFKN/R6WN7YbkpI1F
+         HYg18/4cHbLLEnRI+GesvpGlQsPhUAnCMgcQl7HXCbQ6UGffvQbkyGfl/4BEzK6SmwPL
+         12TtBD/LhsTFH5y88WWNlJjn3v085uU3fXQ7obGEj4vrwth+e9aOayJbNzzZ+iP6hBB/
+         zJWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679945706;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CipNcg6XGhT+x225ozA3jqRgRsy3IVzOurOagbBJ054=;
+        b=fuFrRWjyIbnCpBoERqoFY1m2r1Z4zjm+O1BBsyrWTbRtW+fvDtM9qpnIJbabrCQSoA
+         f8dcU8NmsOwheGn/vClHgrtyRx23FxMWVgXGFG249lmXPGm38bMRT06htaQSeknAPMSy
+         8a/OYNIDsn2NfU80qNFBfClgKs3lnhV6tVaVwFqGZ/u/THIlzwGsViZLXxEi/71hL78k
+         tfV/z46h1139qX/QxJmqBzzNFcvqP97G69fWGCcKcL5BOb6TMXgru9Es1lM1oeMh9v19
+         SY5pLWUIEKvKRYhS6pWZUvhsIkzvRiv9MtTM1L9fe5xO6cypGndBW9pcXmq2+clw+fzU
+         SjMg==
+X-Gm-Message-State: AAQBX9dA2dmJms3iB7FbA+PQ5Spk5xqIMXbd0ZjkCHseW3sliotUPOWM
+        6BX+d27Q7m/eFcEECAVOjnwoig==
+X-Google-Smtp-Source: AKy350YtrtGg8yqJ/C9YGnzqneUXRLN2+3R7BFncNFhFLbFR1CFy/RSVxt7xVrbMhYi973wLuPSvjg==
+X-Received: by 2002:a17:906:3607:b0:92d:44ca:1137 with SMTP id q7-20020a170906360700b0092d44ca1137mr13605161ejb.43.1679945706240;
+        Mon, 27 Mar 2023 12:35:06 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:9314:a4b3:ce49:2c6b? ([2a02:810d:15c0:828:9314:a4b3:ce49:2c6b])
+        by smtp.gmail.com with ESMTPSA id q2-20020a1709066b0200b0092be0d267besm14577954ejr.142.2023.03.27.12.35.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Mar 2023 12:35:05 -0700 (PDT)
+Message-ID: <8050df0c-753b-1733-962f-b4065500a090@linaro.org>
+Date:   Mon, 27 Mar 2023 21:35:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20221209-dt-binding-ufs-v3-1-499dff23a03c@fairphone.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v2 2/5] dt-bindings: misc: qcom,fastrpc: allow FastRPC
+ node without reg entry
+Content-Language: en-US
+To:     Dylan Van Assche <me@dylanvanassche.be>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Amol Maheshwari <amahesh@qti.qualcomm.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230327184811.499553-1-me@dylanvanassche.be>
+ <20230327184811.499553-3-me@dylanvanassche.be>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230327184811.499553-3-me@dylanvanassche.be>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Mar 24, 2023 at 08:41:28AM +0100, Luca Weiss wrote:
-> From: Iskren Chernev <me@iskren.info>
-> 
-> Add SM6115 UFS to DT schema.
-> 
-> Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Reviewed-by: Bhupesh Sharma <bhupesh.sharma@linaro.org>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+On 27/03/2023 20:48, Dylan Van Assche wrote:
+> FastRPC nodes may exist without a registry property and actual
 
-Reviewed-by: Eric Biggers <ebiggers@google.com>
+Why would they exist without unit address?
 
-- Eric
+> Compute Banks  in some cases such as the SLPI on the Qualcomm SDM845 SoC.
+
+I do not see there anything disallowing unit address yet...
+
+
+> Relax the regex to allow such FastRPC nodes and remove 'reg' as a
+> required property.
+
+No, at least not without proper explanation why unit address is not
+allowed for these.
+
+
+Best regards,
+Krzysztof
+
