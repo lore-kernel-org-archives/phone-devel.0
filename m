@@ -2,142 +2,125 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56B73C6FD1D
-	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 16:05:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B629C6FD1D
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 17:36:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232509AbjC0QFu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 27 Mar 2023 12:05:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40796 "EHLO
+        id S232433AbjC0Rg5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 27 Mar 2023 13:36:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230289AbjC0QFt (ORCPT
+        with ESMTP id S232439AbjC0Rg4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 27 Mar 2023 12:05:49 -0400
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74A53FD;
-        Mon, 27 Mar 2023 09:05:45 -0700 (PDT)
+        Mon, 27 Mar 2023 13:36:56 -0400
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 885701FD0;
+        Mon, 27 Mar 2023 10:36:50 -0700 (PDT)
 Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4Pld2P5b4fz9sm8;
-        Mon, 27 Mar 2023 18:05:33 +0200 (CEST)
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4Plg3d2hKyz9sQY;
+        Mon, 27 Mar 2023 19:36:45 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
-        s=MBO0001; t=1679933141;
+        s=MBO0001; t=1679938606;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=FZXOuRUfihj3J9liLR8d+gKth5ezGtydGcMxJlFjyCM=;
-        b=cfDNI7VWXRQ6vU0D3q4ei08NGh4lldtz5DdIpgqImxxGRRxVkiQInPQWyl7EiHW+T+tdAA
-        k5Z3Qx0QU6AwtxyJ1U+3majbVMynW6k1+hMyNMF/zhgKCay3lUDEZXqJY/BpVM+gxDVsNd
-        f38ffcKjUnQvhhhye7RNjk5mNGZszdF7jLw+T6d9dO5cBeSSBP6QRAGhVu4bxmdxgCkSVZ
-        Yp00HHhjjB3nACHYoh/OM2Dz03xosOa9Gf7QfLOYMn+iNs0iPDYGpKnleJa4rtHZXcmLlH
-        TAEGYKkF0owzA5aukQ9GwoYvQz6RxnCh9CbCm3QxTeHWikoiwQQkCubRx3SWXg==
-Message-ID: <add6870af3eb9fa91512c67091b985e5d0ef8848.camel@dylanvanassche.be>
-Subject: Re: [PATCH 1/2] dt-bindings: misc: qcom,fastrpc: add
- qcom,assign-all-memory property
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=erhiX1kWslYrQnsmeLq0Eijl2/NyUjXUqiUh7SiAOL4=;
+        b=Z+NCmJiRBmaI4XZu26q+haVWgnaLtjwJk5782Ya5brwKjCkoB42NhqmmjRNoWgqglT7GEa
+        C64Y5mBG9k8MZtgJXz6TjyuawegBFtwFbCGqCBHbHN4HWQXtwI98Ve7sXhymdqkjWV/B42
+        2CklB4ntdahmFFaQvzroxdbnEsaXCyu1GxbHylA2p5ModoeqNaTEdsPsgL1mUDbOUJqtGx
+        KtxriXyIPhxp9BUlMqhS1s2w4W/l7rfAdf0JiVPzycLmOqgvyQHeYqdTxuS+wUkhB67h3S
+        9xGomaoDamqgfj6I8zTY/xDW11XitrRU2IwZae/KKyuX3Ik6rfm5LK+e93ZiJQ==
 From:   Dylan Van Assche <me@dylanvanassche.be>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Amol Maheshwari <amahesh@qti.qualcomm.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Banajit Goswami <bgoswami@quicinc.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, alsa-devel@alsa-project.org,
         linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Date:   Mon, 27 Mar 2023 18:05:24 +0200
-In-Reply-To: <c540f72b-3fc9-f5c0-0cf4-20903e5f4625@linaro.org>
-References: <20230325134410.21092-1-me@dylanvanassche.be>
-         <20230325134410.21092-2-me@dylanvanassche.be>
-         <883c3c48-c6e5-556d-431f-e92592b9106a@linaro.org>
-         <b75b92bf64b55ba0ace0fbff65955c838a294dec.camel@dylanvanassche.be>
-         <44904ffc-83d4-1137-3479-737a81b31d16@linaro.org>
-         <1f3fb4bd5387c8d69a6eb068fb773b9273081c13.camel@dylanvanassche.be>
-         <c540f72b-3fc9-f5c0-0cf4-20903e5f4625@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Dylan Van Assche <me@dylanvanassche.be>
+Subject: [PATCH v4] sound: soc: qcom: sdm845: expose ALSA control for jack
+Date:   Mon, 27 Mar 2023 19:36:27 +0200
+Message-Id: <20230327173627.361533-1-me@dylanvanassche.be>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 4Pld2P5b4fz9sm8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4Plg3d2hKyz9sQY
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Dmitry & Krzysztof,
+Qualcomm SDM845 features a headphone jack via a Qualcomm WCD9340
+codec which has jack detection through the wcd-mbhc-v2 driver.
+Jack detection is currently fully functional via the input
+interface together with multimedia buttons, but is not exposed
+as an ALSA control. Therefore, ALSA clients such as PulseAudio [1]
+do not pick up the jack detection events as they only support
+one of the possible interface (ALSA control or input interface,
+but not both). Initialize the audio jack with snd_soc_card_jack_new_pins
+instead of snd_soc_card_jack_new to make the jack also available as
+an ALSA control.
 
-On Mon, 2023-03-27 at 16:36 +0200, Krzysztof Kozlowski wrote:
-> On 27/03/2023 16:26, Dylan Van Assche wrote:
-> > > Bindings are not for driver behavior.
-> > >=20
-> > > > Downstream does guard
-> > > > this with a property 'restrict-access' as well, see [1] for a
-> > > > random
-> > > > SDM845 downstream kernel. On SDM845, this property is not
-> > > > present,
-> > > > thus
-> > > > the IF block runs. On SDM670, this property is present, then
-> > > > the IF
-> > > > block is skipped. That's why I opt for this property to have
-> > > > this
-> > > > behaviour conditionally. I'm not sure how to explain it better
-> > > > though.
-> > >=20
-> > > Still you described driver... Please come with something more
-> > > hardware
-> > > related.
-> >=20
-> > So just updating the description is enough then?
-> >=20
-> > As this is all reverse engineered, I have no access to the
-> > documentation of FastRPC, so best effort:
-> >=20
-> > """
-> > Mark allocated memory region accessible to remote processor.
-> > This memory region is used by remote processor to communicate
-> > when no dedicated Fastrpc context bank hardware is available=C2=A0
-> > for remote processor.
->=20
-> This description does not explain here anything. The memory region is
-> already accessible without this property.
->=20
-> You described the desired Linux feature or behavior, not the actual
-> hardware. The bindings are about the latter, so instead you need to
-> rephrase the property and its description to match actual hardware
-> capabilities/features/configuration etc.
->=20
-> Remember that any arguments to downstream are not really good
-> arguments.
-> Their design choices and bindings are usually totally not acceptable.
-> They simply embed whatever driver needs in DT - policies, system
-> configuration, driver behavior...
->=20
-> Also, Dmitry made here good point.
->=20
->=20
+[1] https://gitlab.freedesktop.org/pulseaudio/pulseaudio/-/issues/1377
 
-I agree, downstream is not doing great on being upstreamable.
-Thanks Dmitry, your explanation makes it pretty clear what I should
-figure out. This helps a lot! As far as I know, this assignment is only
-skipped when the sensors are not on the SLPI but on the ADSP e.g.
-SDM670, thus mid range SoCs. So reading these comments, this looks more
-like 'driver behavior' which should not end up in bindings as mentioned
-above. As I now understand the problem with this property, I will
-rework it for v2 and drop it. This is only done for the SLPI so by
-guarding it with a domain ID check we should be able to avoid the
-property in the bindings.
+Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+---
 
-Thanks for the feedback & patience! I really learned a lot!
+Changes in v4:
+
+- Dropped cover letter because of a single patch.
+- Reworked as a patch to the SDM845 Machine driver as suggested
+  by Mark Brown.
+
+Changes in v3:
+
+- Improved cover letter
+- Added Tested-by from
+https://lore.kernel.org/alsa-devel/20221007155716.10594-1-me@dylanvanassche.be/
+- Properly added maintainers for sending this patch
 
 Kind regards,
 Dylan Van Assche
 
->=20
-> Best regards,
-> Krzysztof
->=20
+ sound/soc/qcom/sdm845.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/qcom/sdm845.c b/sound/soc/qcom/sdm845.c
+index 02612af714a8..95888c5079a0 100644
+--- a/sound/soc/qcom/sdm845.c
++++ b/sound/soc/qcom/sdm845.c
+@@ -44,6 +44,14 @@ struct sdm845_snd_data {
+ 
+ static unsigned int tdm_slot_offset[8] = {0, 4, 8, 12, 16, 20, 24, 28};
+ 
++static struct snd_soc_jack_pin sdm845_jack_pins[] = {
++	{
++		.pin = "Headphone Jack",
++		.mask = (SND_JACK_HEADPHONE | SND_JACK_MICROPHONE | SND_JACK_HEADSET |
++			 SND_JACK_MECHANICAL)
++	},
++};
++
+ static int sdm845_slim_snd_hw_params(struct snd_pcm_substream *substream,
+ 				     struct snd_pcm_hw_params *params)
+ {
+@@ -242,12 +250,13 @@ static int sdm845_dai_init(struct snd_soc_pcm_runtime *rtd)
+ 
+ 
+ 	if (!pdata->jack_setup) {
+-		rval = snd_soc_card_jack_new(card, "Headset Jack",
++		rval = snd_soc_card_jack_new_pins(card, "Headset Jack",
+ 				SND_JACK_HEADSET |
+ 				SND_JACK_HEADPHONE |
+ 				SND_JACK_BTN_0 | SND_JACK_BTN_1 |
+ 				SND_JACK_BTN_2 | SND_JACK_BTN_3,
+-				&pdata->jack);
++				&pdata->jack, sdm845_jack_pins,
++				ARRAY_SIZE(sdm845_jack_pins));
+ 
+ 		if (rval < 0) {
+ 			dev_err(card->dev, "Unable to add Headphone Jack\n");
+-- 
+2.39.2
 
