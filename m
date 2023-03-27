@@ -2,120 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0EE23C76195
-	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 11:39:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DEF0DC761AF
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 11:44:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232056AbjC0Lj4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 27 Mar 2023 07:39:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56686 "EHLO
+        id S232514AbjC0LoL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 27 Mar 2023 07:44:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230041AbjC0Ljz (ORCPT
+        with ESMTP id S232509AbjC0LoK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 27 Mar 2023 07:39:55 -0400
-X-Greylist: delayed 163 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Mar 2023 04:39:53 PDT
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90AE119B6;
-        Mon, 27 Mar 2023 04:39:53 -0700 (PDT)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4PlW7p05Hrz9sSs;
-        Mon, 27 Mar 2023 13:39:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
-        s=MBO0001; t=1679917190;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7i/Qow4cXnooN4Gkoul4put24Qoc7GrPoB5sg4AHbF0=;
-        b=c6q4yhU48RRNVJqmQKpxN5HK3aVpV38dfBiYy5LMgNrTE8g1zhPQMl5aPtqBQeBidBuI4w
-        plu2OzwKnFXBGVBeDd2Uvaf31Us5dJtFbTYCxudjDAvoO0mmHAa6aP6RfBwbduooRRFWvR
-        7sR0+/E9CC6sZJ3KiSumZU/bflxRt2athisj9CICj9SgyOzajlfH62ET2SbOusJk4fDdAq
-        OMzvvOA3rStZZOkoOJ93p1yI2HPXQ19cKpjeIVPwPpObVwUIeCseAOWwZz1IdJUZZlVxHB
-        1H50o87ZYxYurN5niMWP5mHEh8Xd1Yq8Da4kynoRTsY0eL8oteNjalM2xLFmiQ==
-Message-ID: <fe83e6f62d802109024f6203cf0d50c1ef348da1.camel@dylanvanassche.be>
-Subject: Re: [PATCH 1/2] dt-bindings: remoteproc: qcom: adsp: add
- qcom,sdm845-slpi-pas compatible
-From:   Dylan Van Assche <me@dylanvanassche.be>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Mon, 27 Mar 2023 07:44:10 -0400
+X-Greylist: delayed 1116 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Mar 2023 04:44:09 PDT
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D991269F
+        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 04:44:09 -0700 (PDT)
+DKIM-Signature: a=rsa-sha256; b=YG00kI5R7ljzmjLZhxIbq1sI32aj8EKJ0r+P1J4vQE4QDP4FPQdrF/sQz4ZeYQbt3LiTpmzBA7S5GduF5D1S//XP34o/Z85Eti2faEK66lSPhAcNoRluunTOHT7INFrdb9pFgAdXtdBQuN7PfyFR0gf/Kd3oYKDCk+KIMYqajf+EpItGNaJgIZuGTU7qFaH3atekTnt5EpHBYIU8cx/V2BNB/QXRkgrSgBWDLeI2v7Rs0m4ZZIydl9UmqD/Oobqdh3gSFLNjlVGUYeE5lPZTx0BzM4ANmJnj2CMh18S7ZCSr4pF+cez7wioQazyY/V9XKOeUg2xesmWEeTr4QvfvFg==; s=purelymail1; d=iskren.info; v=1; bh=q1q6QlROVAEEz2iajcRh0+Y4NPypwdDdDX9tz1qlxrQ=; h=Received:Subject:To:From;
+DKIM-Signature: a=rsa-sha256; b=BHREr0xixlDoBzbB0XwPbYSLJSqj31FKvWCCSa32GrMZrtrvSZHOxPR7XItW5NJZ7d1v/Y3Pp30hyoAkN5sVbTA+0r3v6i7Z/f13ueS1P3Gy0NMCTqu99A0DN/+T8gDLFA9sD0n5FtohTfKn59kocYftIgaUb86W2Rc4XYs4ulwPmiDFHdvsVW8kMOr1mPW/nr3W2uaYZcUZui9deIt+tIjPGXyYu6KV70veRvHeoNnCAUQUyBW4W2AXd5sCCcUpy9qwaxToEQw0HRTzr8AEo5esfXA9uenCJYSnIVWtmhHVmYmH9Xm1+FVkM9H339osDAzoeAwYPtmto8qPLT17fg==; s=purelymail1; d=purelymail.com; v=1; bh=q1q6QlROVAEEz2iajcRh0+Y4NPypwdDdDX9tz1qlxrQ=; h=Feedback-ID:Received:Subject:To:From;
+Feedback-ID: 10275:2339:null:purelymail
+X-Pm-Original-To: phone-devel@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1765702763;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Mon, 27 Mar 2023 11:24:40 +0000 (UTC)
+Message-ID: <edfa2aac-b341-f827-5e7d-88248fa22309@iskren.info>
+Date:   Mon, 27 Mar 2023 14:24:35 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 0/3] Fix some issues in QCOM UFS bindings
+To:     Luca Weiss <luca.weiss@fairphone.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Manivannan Sadhasivam <mani@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Date:   Mon, 27 Mar 2023 13:39:47 +0200
-In-Reply-To: <8ab9d0c3-89f7-90f3-58d6-d2994d372518@linaro.org>
-References: <20230325132117.19733-1-me@dylanvanassche.be>
-         <20230325132117.19733-2-me@dylanvanassche.be>
-         <8ab9d0c3-89f7-90f3-58d6-d2994d372518@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>
+References: <20221209-dt-binding-ufs-v3-0-499dff23a03c@fairphone.com>
+Content-Language: en-US
+From:   Iskren Chernev <me@iskren.info>
+In-Reply-To: <20221209-dt-binding-ufs-v3-0-499dff23a03c@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Krzysztof,
+On 3/24/23 09:41, Luca Weiss wrote:
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Iskren Chernev <me@iskren.info>
 
-On Sun, 2023-03-26 at 10:53 +0200, Krzysztof Kozlowski wrote:
-> On 25/03/2023 14:21, Dylan Van Assche wrote:
-> > SLPI DSP remoteproc on DSP is defined by the 'qcom,sdm845-slpi-pas'
-> > compatible in the qcom_q6v5_pas driver. Add this compatible to the
-> > devicetree bindings.
-> >=20
-> > Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
-> > ---
-> > =C2=A0Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml | 3
-> > +++
-> > =C2=A01 file changed, 3 insertions(+)
-> >=20
-> > diff --git
-> > a/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
-> > b/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
-> > index 643ee787a81f..175be01ecd1c 100644
-> > --- a/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
-> > +++ b/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
-> > @@ -26,6 +26,7 @@ properties:
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - qcom,sdm660-adsp-pas
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - qcom,sdm845-adsp-pas
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - qcom,sdm845-cdsp-pas
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - qcom,sdm845-slpi-pas
-> > =C2=A0
-> > =C2=A0=C2=A0 reg:
-> > =C2=A0=C2=A0=C2=A0=C2=A0 maxItems: 1
-> > @@ -63,6 +64,7 @@ allOf:
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 - qcom,msm8998-adsp-pas
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 - qcom,sdm845-adsp-pas
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 - qcom,sdm845-cdsp-pas
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 - qcom,sdm845-slpi-pas
-> > =C2=A0=C2=A0=C2=A0=C2=A0 then:
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 properties:
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 clocks:
-> > @@ -104,6 +106,7 @@ allOf:
->=20
->=20
-> You miss also if:then: for power-domains.
+(for the series)
 
-I am not sure what to put for the power-domains, newer remoteprocs from
-SM8150/SM8250/SM8350 etc. are not in this binding either.
-
-Could you elaborate a bit here? Thanks!
-
-Kind regards,
-Dylan Van Assche
-
->=20
+> ---
+> Changes in v3:
+> - Drop applied patch
+> - Pick up sm6115 patch from v5 https://lore.kernel.org/all/20221030094258.486428-2-iskren.chernev@gmail.com/
+> - Rebase on linux-next
+> - Link to v2: https://lore.kernel.org/r/20221209-dt-binding-ufs-v2-0-dc7a04699579@fairphone.com
+> 
+> Changes in v2:
+> - Add new patch adding reg-names to sm6115 & rebase series on top of sm6115
+>   addition
+> - Fix binding example after sm8450 move, split this patch from original patch
+>   since it became too big
+> - Move reg-names definition to top-level
+> - Link to v1: https://lore.kernel.org/r/20221209-dt-binding-ufs-v1-0-8d502f0e18d5@fairphone.com
+> 
+> ---
+> Iskren Chernev (1):
+>       dt-bindings: ufs: qcom: Add sm6115 binding
+> 
+> Luca Weiss (2):
+>       dt-bindings: ufs: qcom: Add reg-names property for ICE
+>       dt-bindings: ufs: qcom: Fix sm8450 bindings
+> 
+>  .../devicetree/bindings/ufs/qcom,ufs.yaml          | 61 ++++++++++++++++++++--
+>  1 file changed, 56 insertions(+), 5 deletions(-)
+> ---
+> base-commit: e5dbf24e8b9e6aa0a185d86ce46a7a9c79ebb40f
+> change-id: 20221209-dt-binding-ufs-2d7f64797ff2
+> 
 > Best regards,
-> Krzysztof
->=20
-
