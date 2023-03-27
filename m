@@ -2,134 +2,142 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37DFFC76195
-	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 14:36:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 56B73C6FD1D
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 16:05:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229733AbjC0Ogf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 27 Mar 2023 10:36:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37858 "EHLO
+        id S232509AbjC0QFu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 27 Mar 2023 12:05:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232187AbjC0Oge (ORCPT
+        with ESMTP id S230289AbjC0QFt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 27 Mar 2023 10:36:34 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D54712D6A
-        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 07:36:30 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id i5so37311960eda.0
-        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 07:36:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679927789;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uu6fkWav3ppxq5pM9npOEzd2xjd4ddBcnc58P+RleNg=;
-        b=dixFlR7vwj58oeZiyskfKaq+idVN/lfcDfveh6RzsNqwaBbW6aRWgM1qAhigliKZit
-         EamWShZ4+Qs5K9f9nvr0FGBc9gOxmHg00yR2Fb3vIaKfSAXErLTaPBUNar3jYWWD4XIE
-         n2pRG51YIU9V+7RDMdd2iWtK1WqOrok8x6nWcpCfqSn/896hZZ1G5Eo6Jb14+td1NZwk
-         JAntbz4MVUPW7PGJ46HYJdxjeW2HO5XHAicamRTXDR9gBHpUXl2+DiggkMNwYTrSh2KI
-         RGqLcUOL713nAcRWmMulyjVO/8K6dDKUr5gD/U3ayQ2BROL1BN9t1+9YrzUBdLgp8PQD
-         +J0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679927789;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uu6fkWav3ppxq5pM9npOEzd2xjd4ddBcnc58P+RleNg=;
-        b=PcmC4AnNYgElRdEnsNVCKyfZ9eT0MCFyHBhqdqsyiAKztDzhJ7A3+wP/1wEEnfi6xu
-         Z7f/kgrSccj7sQJh0Xlmuq9YqPXuv1VldCgvnV84EoHA1aCC8ISn7Tlg7ahhNWWm8FrM
-         Gep3NjcA+uQWtndnQIYQGeTFaOvPMp21E6Lxdzg8763KG1w/bTEp1c0Ds9RQELIjklRc
-         BuXUWIKfM0pMUrwdFrVWneP3gFLjHAAHKG8fztFXFRGAUQmMMWe/BUJl8UCMBQRdgKDT
-         VpG+3zmIKwbwO9tw9NHR/EAaZT1bsmcLtY5/IQeJTBBljjLFgtglRsXGdRmoKPb/QfZ9
-         HBhA==
-X-Gm-Message-State: AAQBX9dSxR4nZOVrnGB7NVLrqky7T0KU5ULHK7g+wlmXObtqOcXRPhPB
-        xOqqPcSW4BujWqqwRKOJYXFl/Q==
-X-Google-Smtp-Source: AKy350bg6TxFCCNmhZLnsqu23dSEIWha0A+ezGd8KtPB0/kJ0xc8L9JLyb1v5Kl3kmpV18AiNMr34Q==
-X-Received: by 2002:a17:907:3f88:b0:909:4a93:d9d2 with SMTP id hr8-20020a1709073f8800b009094a93d9d2mr15929529ejc.2.1679927789302;
-        Mon, 27 Mar 2023 07:36:29 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:581e:789c:7616:5ee? ([2a02:810d:15c0:828:581e:789c:7616:5ee])
-        by smtp.gmail.com with ESMTPSA id ha8-20020a170906a88800b0093a6c591743sm8733914ejb.69.2023.03.27.07.36.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Mar 2023 07:36:28 -0700 (PDT)
-Message-ID: <c540f72b-3fc9-f5c0-0cf4-20903e5f4625@linaro.org>
-Date:   Mon, 27 Mar 2023 16:36:27 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
+        Mon, 27 Mar 2023 12:05:49 -0400
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74A53FD;
+        Mon, 27 Mar 2023 09:05:45 -0700 (PDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4Pld2P5b4fz9sm8;
+        Mon, 27 Mar 2023 18:05:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
+        s=MBO0001; t=1679933141;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FZXOuRUfihj3J9liLR8d+gKth5ezGtydGcMxJlFjyCM=;
+        b=cfDNI7VWXRQ6vU0D3q4ei08NGh4lldtz5DdIpgqImxxGRRxVkiQInPQWyl7EiHW+T+tdAA
+        k5Z3Qx0QU6AwtxyJ1U+3majbVMynW6k1+hMyNMF/zhgKCay3lUDEZXqJY/BpVM+gxDVsNd
+        f38ffcKjUnQvhhhye7RNjk5mNGZszdF7jLw+T6d9dO5cBeSSBP6QRAGhVu4bxmdxgCkSVZ
+        Yp00HHhjjB3nACHYoh/OM2Dz03xosOa9Gf7QfLOYMn+iNs0iPDYGpKnleJa4rtHZXcmLlH
+        TAEGYKkF0owzA5aukQ9GwoYvQz6RxnCh9CbCm3QxTeHWikoiwQQkCubRx3SWXg==
+Message-ID: <add6870af3eb9fa91512c67091b985e5d0ef8848.camel@dylanvanassche.be>
 Subject: Re: [PATCH 1/2] dt-bindings: misc: qcom,fastrpc: add
  qcom,assign-all-memory property
-Content-Language: en-US
-To:     Dylan Van Assche <me@dylanvanassche.be>,
+From:   Dylan Van Assche <me@dylanvanassche.be>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Amol Maheshwari <amahesh@qti.qualcomm.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+Cc:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Date:   Mon, 27 Mar 2023 18:05:24 +0200
+In-Reply-To: <c540f72b-3fc9-f5c0-0cf4-20903e5f4625@linaro.org>
 References: <20230325134410.21092-1-me@dylanvanassche.be>
- <20230325134410.21092-2-me@dylanvanassche.be>
- <883c3c48-c6e5-556d-431f-e92592b9106a@linaro.org>
- <b75b92bf64b55ba0ace0fbff65955c838a294dec.camel@dylanvanassche.be>
- <44904ffc-83d4-1137-3479-737a81b31d16@linaro.org>
- <1f3fb4bd5387c8d69a6eb068fb773b9273081c13.camel@dylanvanassche.be>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <1f3fb4bd5387c8d69a6eb068fb773b9273081c13.camel@dylanvanassche.be>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+         <20230325134410.21092-2-me@dylanvanassche.be>
+         <883c3c48-c6e5-556d-431f-e92592b9106a@linaro.org>
+         <b75b92bf64b55ba0ace0fbff65955c838a294dec.camel@dylanvanassche.be>
+         <44904ffc-83d4-1137-3479-737a81b31d16@linaro.org>
+         <1f3fb4bd5387c8d69a6eb068fb773b9273081c13.camel@dylanvanassche.be>
+         <c540f72b-3fc9-f5c0-0cf4-20903e5f4625@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 4Pld2P5b4fz9sm8
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 27/03/2023 16:26, Dylan Van Assche wrote:
->> Bindings are not for driver behavior.
->>
->>> Downstream does guard
->>> this with a property 'restrict-access' as well, see [1] for a
->>> random
->>> SDM845 downstream kernel. On SDM845, this property is not present,
->>> thus
->>> the IF block runs. On SDM670, this property is present, then the IF
->>> block is skipped. That's why I opt for this property to have this
->>> behaviour conditionally. I'm not sure how to explain it better
->>> though.
->>
->> Still you described driver... Please come with something more
->> hardware
->> related.
-> 
-> So just updating the description is enough then?
-> 
-> As this is all reverse engineered, I have no access to the
-> documentation of FastRPC, so best effort:
-> 
-> """
-> Mark allocated memory region accessible to remote processor.
-> This memory region is used by remote processor to communicate
-> when no dedicated Fastrpc context bank hardware is available 
-> for remote processor.
+Hi Dmitry & Krzysztof,
 
-This description does not explain here anything. The memory region is
-already accessible without this property.
+On Mon, 2023-03-27 at 16:36 +0200, Krzysztof Kozlowski wrote:
+> On 27/03/2023 16:26, Dylan Van Assche wrote:
+> > > Bindings are not for driver behavior.
+> > >=20
+> > > > Downstream does guard
+> > > > this with a property 'restrict-access' as well, see [1] for a
+> > > > random
+> > > > SDM845 downstream kernel. On SDM845, this property is not
+> > > > present,
+> > > > thus
+> > > > the IF block runs. On SDM670, this property is present, then
+> > > > the IF
+> > > > block is skipped. That's why I opt for this property to have
+> > > > this
+> > > > behaviour conditionally. I'm not sure how to explain it better
+> > > > though.
+> > >=20
+> > > Still you described driver... Please come with something more
+> > > hardware
+> > > related.
+> >=20
+> > So just updating the description is enough then?
+> >=20
+> > As this is all reverse engineered, I have no access to the
+> > documentation of FastRPC, so best effort:
+> >=20
+> > """
+> > Mark allocated memory region accessible to remote processor.
+> > This memory region is used by remote processor to communicate
+> > when no dedicated Fastrpc context bank hardware is available=C2=A0
+> > for remote processor.
+>=20
+> This description does not explain here anything. The memory region is
+> already accessible without this property.
+>=20
+> You described the desired Linux feature or behavior, not the actual
+> hardware. The bindings are about the latter, so instead you need to
+> rephrase the property and its description to match actual hardware
+> capabilities/features/configuration etc.
+>=20
+> Remember that any arguments to downstream are not really good
+> arguments.
+> Their design choices and bindings are usually totally not acceptable.
+> They simply embed whatever driver needs in DT - policies, system
+> configuration, driver behavior...
+>=20
+> Also, Dmitry made here good point.
+>=20
+>=20
 
-You described the desired Linux feature or behavior, not the actual
-hardware. The bindings are about the latter, so instead you need to
-rephrase the property and its description to match actual hardware
-capabilities/features/configuration etc.
+I agree, downstream is not doing great on being upstreamable.
+Thanks Dmitry, your explanation makes it pretty clear what I should
+figure out. This helps a lot! As far as I know, this assignment is only
+skipped when the sensors are not on the SLPI but on the ADSP e.g.
+SDM670, thus mid range SoCs. So reading these comments, this looks more
+like 'driver behavior' which should not end up in bindings as mentioned
+above. As I now understand the problem with this property, I will
+rework it for v2 and drop it. This is only done for the SLPI so by
+guarding it with a domain ID check we should be able to avoid the
+property in the bindings.
 
-Remember that any arguments to downstream are not really good arguments.
-Their design choices and bindings are usually totally not acceptable.
-They simply embed whatever driver needs in DT - policies, system
-configuration, driver behavior...
+Thanks for the feedback & patience! I really learned a lot!
 
-Also, Dmitry made here good point.
+Kind regards,
+Dylan Van Assche
 
-
-
-Best regards,
-Krzysztof
+>=20
+> Best regards,
+> Krzysztof
+>=20
 
