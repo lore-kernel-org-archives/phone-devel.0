@@ -2,94 +2,86 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C24CC761A6
-	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 08:28:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E7DDC76195
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 08:40:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233394AbjC0I2G (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 27 Mar 2023 04:28:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33868 "EHLO
+        id S233128AbjC0Ikr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 27 Mar 2023 04:40:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233382AbjC0I1j (ORCPT
+        with ESMTP id S233080AbjC0Ikd (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 27 Mar 2023 04:27:39 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFE626EA8;
-        Mon, 27 Mar 2023 01:25:29 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        Mon, 27 Mar 2023 04:40:33 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C75B51BFE;
+        Mon, 27 Mar 2023 01:36:55 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id E40CB6602087;
-        Mon, 27 Mar 2023 09:25:00 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id C635C6602087;
+        Mon, 27 Mar 2023 09:36:53 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1679905502;
-        bh=/9QZ2Jz7ZuJXIYiAQSp0kMC91j8S/hZsSZYz2NRG6JI=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=OwoJesY8b989WtHjNl9UQ75G3lC4dZjgAMMO/0R9Y8KpWgV1gqq9J6DV1hvJw7TEh
-         0QCIbJ1XhSgM+SC1DHAF3RxYTKhYOs8z1W6PFgo5VPEfXJr4s6uIpGeRigQLhADsPV
-         ZoKrMJz1TuAfa1Y2LQeMOAU6hXnY4hey7+c/MAdDKHyaGEdEvkVifC4rbkPHS4OH9M
-         OL5UJU/7UfWZrluC5uC2kjwoXkZ3DNjTjmY777MyiX8JA38B68kqYxFU1ndKJYO0uV
-         nVHU1zDApj7cFlvd+OcA3Xhs6Og1/FNHDn/oAKFShM968ClqSE2098/svUN+yZiElR
-         ss02NvPMr+bNg==
-Message-ID: <85b215e9-e8e9-054d-455b-699a92c8553b@collabora.com>
-Date:   Mon, 27 Mar 2023 10:24:59 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v1 08/18] dt-bindings: gce: Add header for MT6795's GCE
- mailbox
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        matthias.bgg@gmail.com
+        s=mail; t=1679906214;
+        bh=DtLoKecTBQhhvopNsM7M95mpXjvK5USiGMoYC7Oej4w=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=AMQLNfpdiOHJBlTfeyPx2aMe1IDW9rlMZzONNCG9rvabvwE11ZiBibQDljIzz/M7/
+         ECOT/PqeHbC8yLfrD1QmcU3bu5nGG8gtMKKPonEPnsQ0OW9AqSEXder+q2PGv+nBp3
+         di4YRaq6FdxJHAlQn9MKhzTjri+SvUxTXMUE5d3e9aeZKRMgt81uqSUaD12Exsp5Br
+         FkL0OtV7FZV+zXP8xeVVj2P0qbe9dlu9LM//1vroUY1CRReZsFnF/rCwq/kWtJVcUq
+         JshW+0eQ9eTKnTJrNGhwFKGxUrU0azqXWyyFyp3pYwx0gensR7wKdxWyc0Q9SiFo83
+         l7UZYfM7dnLCw==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     matthias.bgg@gmail.com
 Cc:     qii.wang@mediatek.com, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, jassisinghbrar@gmail.com,
         houlong.wei@mediatek.com, linux-i2c@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, kernel@collabora.com,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20230324175456.219954-1-angelogioacchino.delregno@collabora.com>
- <20230324175456.219954-9-angelogioacchino.delregno@collabora.com>
- <488a6684-50aa-e78d-d704-7f59ed3f2c13@linaro.org>
-From:   AngeloGioacchino Del Regno 
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <488a6684-50aa-e78d-d704-7f59ed3f2c13@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: [PATCH v2 01/17] arm64: dts: mediatek: mt6795: Add Frequency Hopping Controller node
+Date:   Mon, 27 Mar 2023 10:36:31 +0200
+Message-Id: <20230327083647.22017-2-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.40.0
+In-Reply-To: <20230327083647.22017-1-angelogioacchino.delregno@collabora.com>
+References: <20230327083647.22017-1-angelogioacchino.delregno@collabora.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 25/03/23 12:12, Krzysztof Kozlowski ha scritto:
-> On 24/03/2023 18:54, AngeloGioacchino Del Regno wrote:
->> Add the GCE header file to define the GCE subsystem IDs, hardware
->> event IDs and thread priority IDs for the MT6795 Helio X10 SoC.
->>
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->> ---
->>   include/dt-bindings/gce/mediatek,mt6795-gce.h | 123 ++++++++++++++++++
->>   1 file changed, 123 insertions(+)
->>   create mode 100644 include/dt-bindings/gce/mediatek,mt6795-gce.h
->>
->> diff --git a/include/dt-bindings/gce/mediatek,mt6795-gce.h b/include/dt-bindings/gce/mediatek,mt6795-gce.h
->> new file mode 100644
->> index 000000000000..97d5ba2d2b44
->> --- /dev/null
->> +++ b/include/dt-bindings/gce/mediatek,mt6795-gce.h
->> @@ -0,0 +1,123 @@
->> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-> 
-> This should be squashed with previous commit adding this compatible. It
-> is one logical change - bindings for mt6795 mailbox. There is no point
-> in splitting one change into two.
-> 
-> Best regards,
-> Krzysztof
-> 
-> 
+Add FHCTL node but keep it disabled as the PLL clocks that should be
+handled through FHCTL and the Spread Spectrum Clocking parameters are
+board specific.
 
-Sure, will do!
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+---
+ arch/arm64/boot/dts/mediatek/mt6795.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Thanks,
-Angelo
+diff --git a/arch/arm64/boot/dts/mediatek/mt6795.dtsi b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
+index b3fc76d837a9..4d2119751572 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6795.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
+@@ -310,6 +310,12 @@ systimer: timer@10200670 {
+ 			clock-names = "clk13m";
+ 		};
+ 
++		fhctl: clock-controller@10209f00 {
++			compatible = "mediatek,mt6795-fhctl";
++			reg = <0 0x10209f00 0 0x100>;
++			status = "disabled";
++		};
++
+ 		gic: interrupt-controller@10221000 {
+ 			compatible = "arm,gic-400";
+ 			#interrupt-cells = <3>;
+-- 
+2.40.0
+
