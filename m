@@ -2,143 +2,145 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB474C7619A
-	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 12:25:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B281EC6FD1D
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 14:27:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232349AbjC0MZr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 27 Mar 2023 08:25:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54724 "EHLO
+        id S233106AbjC0O14 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 27 Mar 2023 10:27:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbjC0MZq (ORCPT
+        with ESMTP id S233117AbjC0O1l (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 27 Mar 2023 08:25:46 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CB622688
-        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 05:25:44 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id eh3so35325815edb.11
-        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 05:25:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679919943;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=joz+G6GhOPLGNBgYdWhUUWc1HzQelk6ITcZ+QD28jgk=;
-        b=PUi0LeSnL35LCF40u+FnoMXcDyIOPwaEQ/se2minV7DA3YrB7wY/VZTnpMHz0Ry9tf
-         dLCHdEMWsPtv0vVyFyGxf+eCDx1WMHfiSkgb6Vw5neIRpMXm4D1oPUxaH4bUOuNLLwm3
-         Se0tIU0XjGiiKN8+9IRPPyj8DDVRNAWodmMosL7UUrxsY2x89dIT4eIkPVD7cW81qe3G
-         RYRLi2rI5rJwgAkMuXBUXBRYTSYSOlIr8tlI4ayFjUU7OO3k9K4UTBNH1/WgyPrZzKMZ
-         v1ABqVJTaDtWCUBEXPQ8GJ3d62h/0z7co1k873E6DzB18I2pqOb1HqvKoB0UKeC16oKm
-         sn+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679919943;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=joz+G6GhOPLGNBgYdWhUUWc1HzQelk6ITcZ+QD28jgk=;
-        b=zVSwA7h8gZR4JVW80z5pKpgsa3M4+AeK1AX3FUAY5GBcpWzp+6m2rSmXaUDLv6wWmt
-         Iz9lAtEDyH/zeKCo5kcWOkeOgBIdTgRdVvsiwcKrPnBTJDGFuRUDdJ8k1xUoZ0dvLdsJ
-         5hadC0igfkL/5LRuwGpx9yy4FfuK9kuYIxV/ZrP4sNM+CuTpvoo+5dl+gH5SX7hnAYxI
-         rPObZVIu946DjmDsXR9AMGs1Zpw8J9t5KffHHaH/tOfUZ3cDuv7XgBkBIVSOIshEDhlo
-         6evc44LRsKVqN6HEul1m3rAvrvFRQMnfyHWNnNaWvzk2sVV6Sb7KGfc7AdJ7Wi2b9wHX
-         hMjA==
-X-Gm-Message-State: AAQBX9c9wrX2gCTTV2ZColkTTjVLyKU1dHCILGSBjM6CItOZFRS0xAMz
-        x5Co1NM0YGJJMmSnhXbHI8pFbg==
-X-Google-Smtp-Source: AKy350ZNyr6TRFP8CITB+F5cFxCV/EJslb7jdFVW+g9u1hhfHi7ZWRh5k14gIa9lPQ3jru7laaK7hw==
-X-Received: by 2002:a17:906:e0c5:b0:931:4f2c:4e83 with SMTP id gl5-20020a170906e0c500b009314f2c4e83mr11694068ejb.63.1679919942873;
-        Mon, 27 Mar 2023 05:25:42 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:581e:789c:7616:5ee? ([2a02:810d:15c0:828:581e:789c:7616:5ee])
-        by smtp.gmail.com with ESMTPSA id c19-20020a170906155300b0093ebc654f78sm3931897ejd.25.2023.03.27.05.25.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Mar 2023 05:25:42 -0700 (PDT)
-Message-ID: <757afef7-5be2-9487-8a1a-4917528ca135@linaro.org>
-Date:   Mon, 27 Mar 2023 14:25:41 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 1/2] dt-bindings: remoteproc: qcom: adsp: add
- qcom,sdm845-slpi-pas compatible
-Content-Language: en-US
-To:     Dylan Van Assche <me@dylanvanassche.be>,
+        Mon, 27 Mar 2023 10:27:41 -0400
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5727955A3;
+        Mon, 27 Mar 2023 07:26:50 -0700 (PDT)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4PlZr51Rwfz9t6d;
+        Mon, 27 Mar 2023 16:26:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
+        s=MBO0001; t=1679927189;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=9rOAJ6mYjJCPRKt+lu0rKWy0FC1qYxXDWw3444VdaWE=;
+        b=y8eULv06lBVmn/GXaB7wAZ9IFTinKqgYb15FTQZccKVKcLhDkG6AxkYJaLPLCjYLDlACKv
+        UCbohsS1oFS0e9/OdkC9owIEycxFqJeP2DV6ZunxEyZTlDL+bPb87smd+qWTeCm+6e1gps
+        R/lio4sh1rcYq8OTC82qVq5//wc7qNTu5yr/m5qhSxhESrNl0MIDHAWL6c/7WiuX8D3x2J
+        yNdRK0b/ABEnblPJfFtZybpEutoYT3Hn0jhNuvNrAySvn9SBgEzjq87FNzPCwR8Ye4z1vc
+        e10P+LN6LFcYsW4RyPlB3q/CXpzCamf4z0Oh4SkFcBwDNUrlYLhjFH6XAxyHRQ==
+Message-ID: <1f3fb4bd5387c8d69a6eb068fb773b9273081c13.camel@dylanvanassche.be>
+Subject: Re: [PATCH 1/2] dt-bindings: misc: qcom,fastrpc: add
+ qcom,assign-all-memory property
+From:   Dylan Van Assche <me@dylanvanassche.be>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Amol Maheshwari <amahesh@qti.qualcomm.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
 Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230325132117.19733-1-me@dylanvanassche.be>
- <20230325132117.19733-2-me@dylanvanassche.be>
- <8ab9d0c3-89f7-90f3-58d6-d2994d372518@linaro.org>
- <fe83e6f62d802109024f6203cf0d50c1ef348da1.camel@dylanvanassche.be>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <fe83e6f62d802109024f6203cf0d50c1ef348da1.camel@dylanvanassche.be>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date:   Mon, 27 Mar 2023 16:26:25 +0200
+In-Reply-To: <44904ffc-83d4-1137-3479-737a81b31d16@linaro.org>
+References: <20230325134410.21092-1-me@dylanvanassche.be>
+         <20230325134410.21092-2-me@dylanvanassche.be>
+         <883c3c48-c6e5-556d-431f-e92592b9106a@linaro.org>
+         <b75b92bf64b55ba0ace0fbff65955c838a294dec.camel@dylanvanassche.be>
+         <44904ffc-83d4-1137-3479-737a81b31d16@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 27/03/2023 13:39, Dylan Van Assche wrote:
-> Hi Krzysztof,
-> 
-> On Sun, 2023-03-26 at 10:53 +0200, Krzysztof Kozlowski wrote:
->> On 25/03/2023 14:21, Dylan Van Assche wrote:
->>> SLPI DSP remoteproc on DSP is defined by the 'qcom,sdm845-slpi-pas'
->>> compatible in the qcom_q6v5_pas driver. Add this compatible to the
->>> devicetree bindings.
->>>
->>> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
->>> ---
->>>  Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml | 3
->>> +++
->>>  1 file changed, 3 insertions(+)
->>>
->>> diff --git
->>> a/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
->>> b/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
->>> index 643ee787a81f..175be01ecd1c 100644
->>> --- a/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
->>> +++ b/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
->>> @@ -26,6 +26,7 @@ properties:
->>>        - qcom,sdm660-adsp-pas
->>>        - qcom,sdm845-adsp-pas
->>>        - qcom,sdm845-cdsp-pas
->>> +      - qcom,sdm845-slpi-pas
->>>  
->>>    reg:
->>>      maxItems: 1
->>> @@ -63,6 +64,7 @@ allOf:
->>>                - qcom,msm8998-adsp-pas
->>>                - qcom,sdm845-adsp-pas
->>>                - qcom,sdm845-cdsp-pas
->>> +              - qcom,sdm845-slpi-pas
->>>      then:
->>>        properties:
->>>          clocks:
->>> @@ -104,6 +106,7 @@ allOf:
->>
->>
->> You miss also if:then: for power-domains.
-> 
-> I am not sure what to put for the power-domains, 
+Hi Krzysztof,
 
-Doesn't your driver patch clearly state it?
+On Mon, 2023-03-27 at 14:22 +0200, Krzysztof Kozlowski wrote:
+> On 27/03/2023 13:37, Dylan Van Assche wrote:
+> > Hi Krzysztof,
+> >=20
+> > On Sun, 2023-03-26 at 10:55 +0200, Krzysztof Kozlowski wrote:
+> > > On 25/03/2023 14:44, Dylan Van Assche wrote:
+> > > > Document the added qcom,assign-all-memory in devicetree
+> > > > bindings.
+> > > >=20
+> > > > Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+> > > > ---
+> > > > =C2=A0Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml | 6
+> > > > ++++++
+> > > > =C2=A01 file changed, 6 insertions(+)
+> > > >=20
+> > > > diff --git
+> > > > a/Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml
+> > > > b/Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml
+> > > > index 1ab9588cdd89..fa5b00534b30 100644
+> > > > --- a/Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml
+> > > > +++ b/Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml
+> > > > @@ -57,6 +57,12 @@ properties:
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Virtual machine IDs for remote=
+ processor.
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0 $ref: "/schemas/types.yaml#/definitions/ui=
+nt32-array"
+> > > > =C2=A0
+> > > > +=C2=A0 qcom,assign-all-mem:
+> > > > +=C2=A0=C2=A0=C2=A0 description:
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Assign memory to all Virtual machin=
+es defined by
+> > > > qcom,vmids.
+> > >=20
+> > > This (neither commit msg) does not explain why this is needed and
+> > > actually does not sound like hardware-related property.
+> >=20
+> > This is made a separate property to toggle different behavior in
+> > the
+> > driver if it is needed for some FastRPC nodes.=20
+>=20
+> Bindings are not for driver behavior.
+>=20
+> > Downstream does guard
+> > this with a property 'restrict-access' as well, see [1] for a
+> > random
+> > SDM845 downstream kernel. On SDM845, this property is not present,
+> > thus
+> > the IF block runs. On SDM670, this property is present, then the IF
+> > block is skipped. That's why I opt for this property to have this
+> > behaviour conditionally. I'm not sure how to explain it better
+> > though.
+>=20
+> Still you described driver... Please come with something more
+> hardware
+> related.
 
-> newer remoteprocs from
-> SM8150/SM8250/SM8350 etc. are not in this binding either.
+So just updating the description is enough then?
 
-They have their own binding, but why is it an argument to add
-sdm845-slpi a bit incomplete?
+As this is all reverse engineered, I have no access to the
+documentation of FastRPC, so best effort:
 
-> 
-> Could you elaborate a bit here? Thanks!
+"""
+Mark allocated memory region accessible to remote processor.
+This memory region is used by remote processor to communicate
+when no dedicated Fastrpc context bank hardware is available=C2=A0
+for remote processor.
+"""
 
-There are already examples of other remoteprocs which do it, so I do not
-understand why this one is different. What to elaborate more?
+Is this the description that is 'more hardware related'?
 
-Best regards,
-Krzysztof
+Kind regards,
+Dylan Van Assche
+
+>=20
+> Best regards,
+> Krzysztof
+>=20
 
