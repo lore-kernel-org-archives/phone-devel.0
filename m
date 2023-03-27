@@ -2,36 +2,37 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BDC3C77B60
-	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 18:43:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6528DC77B61
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 18:43:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232461AbjC0SnR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 27 Mar 2023 14:43:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57066 "EHLO
+        id S232689AbjC0SnS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 27 Mar 2023 14:43:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232631AbjC0SnM (ORCPT
+        with ESMTP id S232664AbjC0SnP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 27 Mar 2023 14:43:12 -0400
+        Mon, 27 Mar 2023 14:43:15 -0400
 Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36F363C31;
-        Mon, 27 Mar 2023 11:42:38 -0700 (PDT)
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34CFE3595;
+        Mon, 27 Mar 2023 11:42:41 -0700 (PDT)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4PlhWF1Wnfz9sZg;
-        Mon, 27 Mar 2023 20:42:17 +0200 (CEST)
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4PlhWL51N0z9sct;
+        Mon, 27 Mar 2023 20:42:22 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
-        s=MBO0001; t=1679942537;
+        s=MBO0001; t=1679942542;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=UPeTkvVxhkyl7K0E/zp4aqMcr8drNcpWwqSgEpn+bfk=;
-        b=iSoRZEYqu+i9PpKIV/3nTTBHt/NNwPyAyaqBulyRkAa9Bw2pBuvlm+mDUIgjEdIjWeQ/Jn
-        1ChAFTC5HZIY6Ti5RU93CYxlQ2DaFnyfbhGl8bG+TeFsXpMZrrjAxxvqCBALdIWE0UZjFb
-        x8bqMEzjrsOLxaZCcFu/wmn9LeIauknnI6wvg8bI1TXxg94pz3vt9NfCIZzNSYmHCCPkjK
-        CxqtQeFTy4Bdz2hZukGca8h03bbEio4Eqkh/6uzqeiwzQDRZkDCuzBrY/HVzQZlc2iMgx4
-        ubY++yMjQ4T+cvMuSlWIx1Z1i1B/YOo61EG68TQaTf13YeNNDIoH04QR6fDuwg==
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=GidGOfq73nj2BYK3me6cLaWQ10bmNeyEcvaFpNUnfVY=;
+        b=UJkb1NvsK1/tEpxZ9+dPL2znb0s+gW8BicFnNQ/QzomG+im63DInjH3IBd74moSfQetcHU
+        uo5nsn0WrObzlKCvLyB+EZbG2Lvo0eVqwsxsg0824biV0Cdr+rHzXfsU3/w3frvlu13v/1
+        Fq6lnGg1U2iCbSk7tjWh11EWJGzz9ttrS1UoBSj97wXjKhdJO19lEHp15jughQG0YND/Zm
+        hfPtUFXy1M5lVAjyhuY/LZRc4v8kFYuc74mbNMo+u8mFagDDDzW/xSbZdqB+/MojomEkM0
+        gKWHAfXzObxAMMNh9FviVkOS3Mm7Dc2yasY0x+6bBZiDr62CUZHFJcA9ywoI+w==
 From:   Dylan Van Assche <me@dylanvanassche.be>
 To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         Amol Maheshwari <amahesh@qti.qualcomm.com>
@@ -40,65 +41,46 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Dylan Van Assche <me@dylanvanassche.be>
-Subject: [PATCH v2 0/2] misc: fastrpc: FastRPC reserved memory assignment for SDM845 SLPI
-Date:   Mon, 27 Mar 2023 20:42:02 +0200
-Message-Id: <20230327184204.498032-1-me@dylanvanassche.be>
+Subject: [PATCH v2 2/2] misc: fastrpc: use coherent pool for untranslated Compute Banks
+Date:   Mon, 27 Mar 2023 20:42:04 +0200
+Message-Id: <20230327184204.498032-3-me@dylanvanassche.be>
+In-Reply-To: <20230327184204.498032-1-me@dylanvanassche.be>
+References: <20230327184204.498032-1-me@dylanvanassche.be>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4PlhWL51N0z9sct
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-* About *
+Use fastrpc_remote_heap_alloc to allocate from the FastRPC device
+instead of the Compute Bank when the session ID is 0. This ensures
+that the allocation is inside the coherent DMA pool which is already
+accessible to the DSP. This is necessary to support FastRPC devices
+which do not have dedicated Compute Banks such as the SLPI on the SDM845.
+The latter uses an allocated CMA region instead of FastRPC Compute Banks.
 
-The Qualcomm SDM845 SoC has a separate SLPI (Sensor Low Power Island)
-DSP for sensors connected to the SoC which is responsible for exposing
-sensors to userspace, power saving, and other features. 
-While sensors are connected to GPIOs of the SoC, they cannot be used
-because the hypervisor blocks direct access to the sensors, thus the 
-DSP must be used to access any sensor on this SoC. The SLPI DSP uses a
-GLink edge (dsps) to communicate with the host and has a FastRPC interface
-to load files from the host filesystem such as sensor configuration files.
-The FastRPC interface does not use regular FastRPC Compute Banks
-but instead uses an allocated CMA region through which communication happens.
+Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+---
+ drivers/misc/fastrpc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-* Changes *
-
-This patchseries add support to the FastRPC for assigning a coherent memory
-region to a DSP via the hypervisor with the correct permissions.
-This is necessary to support the SLPI found in the Qualcomm SDM845 SoC which
-does not have dedicated FastRPC Compute Banks, in contrast to newer SoCs,
-but uses a memory region instead when allocating buffers.
-
-* Related patches *
-
-1. Remoteproc changes to support the SLPI DSP in SDM845:
-https://lore.kernel.org/linux-remoteproc/20230325132117.19733-1-me@dylanvanassche.be/
-2. DTS changes (v1):
-https://lore.kernel.org/linux-devicetree/20230325135114.21688-1-me@dylanvanassche.be/
-
-This serie does not depend on any serie, but all of them are necessary
-to enable the feature in the end.
-
-* Changelog *
-
-Changes in v2:
-
-- Removed double blank lines
-- Dropped dt-bindings property as it is not needed for driver behavior
-- Add additional patch to allocate buffers via CMA memory for DSPs
-  without dedicated FastRPC Compute Banks.
-
-Kind regards,
-Dylan Van Assche
-
-Dylan Van Assche (2):
-  misc: fastrpc: support complete DMA pool access to the DSP
-  misc: fastrpc: use coherent pool for untranslated Compute Banks
-
- drivers/misc/fastrpc.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
-
+diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+index caf2ae556956..b7ddf6b90022 100644
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -939,7 +939,10 @@ static int fastrpc_get_args(u32 kernel, struct fastrpc_invoke_ctx *ctx)
+ 
+ 	ctx->msg_sz = pkt_size;
+ 
+-	err = fastrpc_buf_alloc(ctx->fl, dev, pkt_size, &ctx->buf);
++	if (ctx->fl->sctx->sid)
++		err = fastrpc_buf_alloc(ctx->fl, dev, pkt_size, &ctx->buf);
++	else
++		err = fastrpc_remote_heap_alloc(ctx->fl, dev, pkt_size, &ctx->buf);
+ 	if (err)
+ 		return err;
+ 
 -- 
 2.39.2
 
