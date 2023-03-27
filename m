@@ -2,158 +2,128 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46F89C761A6
-	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 10:53:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22C86C76195
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 11:37:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229462AbjC0Kxe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 27 Mar 2023 06:53:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36380 "EHLO
+        id S232056AbjC0LhQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 27 Mar 2023 07:37:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230024AbjC0Kxd (ORCPT
+        with ESMTP id S231671AbjC0LhP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 27 Mar 2023 06:53:33 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4504C359F
-        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 03:53:31 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id br6so10782283lfb.11
-        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 03:53:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679914409;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3WnzOjHdVfvoCMG3pjVqA605yGhXEuWWs9v71lH5Wbo=;
-        b=Xm77A2gZGJkkJRtH7/hFJbceaoRhHoVaOSxcCKITYDDDP4yT2vupGTRCWt74OJ+uen
-         KpfmZs5f/A++PJKPsZoJ6OjGV1chdMTpQIT9W34thZ+h4J+1HBG5uQf/ULfnLqhSEhAR
-         0z2ytp0tax/KYyx3JEkAfBBO2lIHsftrPRqBA0YLEYkSMMT15/0t3CAd6SrcqN+1g47q
-         jtkLfIFkq1wFK11UujS6j+bkWaqUZk227f5/1D2vBf3KRUDoEd5LbNqToHxKTLKtfdwf
-         J+kVvbDFHlA86Mza2ojvGiC3UT4ARSxK1gD8jkyOI8I6qp3idVgIagCeWYrDvpCAtJqL
-         J5ww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679914409;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3WnzOjHdVfvoCMG3pjVqA605yGhXEuWWs9v71lH5Wbo=;
-        b=DyvCHl0kXGz80WsA9VXP7f/pBHV/EE9VqUw0M8dvofbGW9K+MMipR2ZdHk0o122X7L
-         jw9bFcp26kDBN+PK2Gl21pEzyqrLMf3qu6M1WDW5qUphLnd8y6MY8WAALTbKnwrgFx5j
-         pGSY2wzK79SdeUDFBd9Q+ZbdDhs7qTgUpGSstPlwY7u7+fK02mohaWcG0tJXkoTxprQu
-         QnipkV3UE7XLmC2dATx3IAA4m+b1TWE8qLspBoXPoAo+1pQQXLOSx64guTIgNQncdUqI
-         /HxrwOvH0vsHHmDOtftRHDO8Yq8IGw5tdXV6QtfQ554ZZyEpNNgnfZ7XXWf4T4glvPhR
-         lKQg==
-X-Gm-Message-State: AAQBX9c1LeUoBYZ7fXbmp2h1qfyh+4HnhwdAeQ4Eykz3bYiOWLssYmrS
-        wQi/0vyILAm/9dS3J4GR6tK43B2tzEVn3zdvykc=
-X-Google-Smtp-Source: AKy350aYInrCK0ZXczOvivBLQCQFlcg1lhhCSj4cNtly1U8Jiy5o34ej8P5uE+5wVjEIyQgO5SUasw==
-X-Received: by 2002:ac2:5541:0:b0:4e0:2455:3ade with SMTP id l1-20020ac25541000000b004e024553ademr2952253lfk.60.1679914409515;
-        Mon, 27 Mar 2023 03:53:29 -0700 (PDT)
-Received: from [192.168.1.101] (abxj225.neoplus.adsl.tpnet.pl. [83.9.3.225])
-        by smtp.gmail.com with ESMTPSA id y28-20020ac2447c000000b004eafa141a12sm2075784lfl.9.2023.03.27.03.53.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Mar 2023 03:53:29 -0700 (PDT)
-Message-ID: <d8ff650c-fd6a-bec4-354b-eb7b27b6394e@linaro.org>
-Date:   Mon, 27 Mar 2023 12:53:27 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 2/2] remoteproc: qcom: pas: add SDM845 SLPI resource
-Content-Language: en-US
-To:     Dylan Van Assche <me@dylanvanassche.be>,
+        Mon, 27 Mar 2023 07:37:15 -0400
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050:0:465::201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE3744487;
+        Mon, 27 Mar 2023 04:37:12 -0700 (PDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4PlW4f3Kz8z9sWL;
+        Mon, 27 Mar 2023 13:37:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
+        s=MBO0001; t=1679917026;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=sZriSGIooLktT9ELrcWQe/LSK859gMi66zy5pb+cbcQ=;
+        b=KmjME9p2gnITYFFFtVviHLZ6DcG6LE9+yCHJNmMCaaRW9pLiRvyLAIuTJC3duxDNURXTdl
+        8RBVHHs2Q/ObTYcYtjoUOs4SyaPX6PGk4P/9j3XCXPVRnOjyIRfud6l8neSLDapKXSRptq
+        JGUVi3b/B1kyTpy5Y1WhyhkRzTZ+pQEa2DDlPlkawVUs71fa76EJq+u/KcviC2icG+AJng
+        ShU3dlMruLlpmqtc9xac+Y6mRvZT3bWFnH3bvE2uxgvHvr5Y/WF8GBrO669ynEtqhxCcxf
+        5hF3NzuREb+EPV6jwN5QuBa14tVc1PzGEAVjCJsy52T9sVHbKCJa9KwyhjeW/g==
+Message-ID: <b75b92bf64b55ba0ace0fbff65955c838a294dec.camel@dylanvanassche.be>
+Subject: Re: [PATCH 1/2] dt-bindings: misc: qcom,fastrpc: add
+ qcom,assign-all-memory property
+From:   Dylan Van Assche <me@dylanvanassche.be>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Amol Maheshwari <amahesh@qti.qualcomm.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Manivannan Sadhasivam <mani@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230325132117.19733-1-me@dylanvanassche.be>
- <20230325132117.19733-3-me@dylanvanassche.be>
- <a27e7e67-a3e8-01ec-1f0d-717d705af117@linaro.org>
- <91875b7f6f77d6bc846e2da6d009b44c89cbafab.camel@dylanvanassche.be>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <91875b7f6f77d6bc846e2da6d009b44c89cbafab.camel@dylanvanassche.be>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date:   Mon, 27 Mar 2023 13:37:03 +0200
+In-Reply-To: <883c3c48-c6e5-556d-431f-e92592b9106a@linaro.org>
+References: <20230325134410.21092-1-me@dylanvanassche.be>
+         <20230325134410.21092-2-me@dylanvanassche.be>
+         <883c3c48-c6e5-556d-431f-e92592b9106a@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 4PlW4f3Kz8z9sWL
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Krzysztof,
 
+On Sun, 2023-03-26 at 10:55 +0200, Krzysztof Kozlowski wrote:
+> On 25/03/2023 14:44, Dylan Van Assche wrote:
+> > Document the added qcom,assign-all-memory in devicetree bindings.
+> >=20
+> > Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+> > ---
+> > =C2=A0Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml | 6
+> > ++++++
+> > =C2=A01 file changed, 6 insertions(+)
+> >=20
+> > diff --git
+> > a/Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml
+> > b/Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml
+> > index 1ab9588cdd89..fa5b00534b30 100644
+> > --- a/Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml
+> > +++ b/Documentation/devicetree/bindings/misc/qcom,fastrpc.yaml
+> > @@ -57,6 +57,12 @@ properties:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Virtual machine IDs for remote pro=
+cessor.
+> > =C2=A0=C2=A0=C2=A0=C2=A0 $ref: "/schemas/types.yaml#/definitions/uint32=
+-array"
+> > =C2=A0
+> > +=C2=A0 qcom,assign-all-mem:
+> > +=C2=A0=C2=A0=C2=A0 description:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Assign memory to all Virtual machines d=
+efined by qcom,vmids.
+>=20
+> This (neither commit msg) does not explain why this is needed and
+> actually does not sound like hardware-related property.
 
-On 27.03.2023 11:34, Dylan Van Assche wrote:
-> Hi Konrad,
-> 
-> On Mon, 2023-03-27 at 10:44 +0200, Konrad Dybcio wrote:
->>
->>
->> On 25.03.2023 14:21, Dylan Van Assche wrote:
->>> Add SLPI resources for the SDM845 Qualcomm SoC to the Qualcomm
->>> remoteproc q6v5_pas driver to define the default firmware name
->>> and GLink edge name.
->>>
->>> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
->>> ---
->>>  drivers/remoteproc/qcom_q6v5_pas.c | 17 +++++++++++++++++
->>>  1 file changed, 17 insertions(+)
->>>
->>> diff --git a/drivers/remoteproc/qcom_q6v5_pas.c
->>> b/drivers/remoteproc/qcom_q6v5_pas.c
->>> index c99a20542685..d82b6f4bced4 100644
->>> --- a/drivers/remoteproc/qcom_q6v5_pas.c
->>> +++ b/drivers/remoteproc/qcom_q6v5_pas.c
->>> @@ -1028,6 +1028,22 @@ static const struct adsp_data
->>> slpi_resource_init = {
->>>                 .ssctl_id = 0x16,
->>>  };
->>>  
->>> +static const struct adsp_data sdm845_slpi_resource = {
->>> +               .crash_reason_smem = 424,
->>> +               .firmware_name = "slpi.mdt",
->>> +               .pas_id = 12,
->>> +               .auto_boot = true,
->>> +               .proxy_pd_names = (char*[]){
->>> +                       "lcx",
->>> +                       "lmx",
->>> +                       NULL
->>> +               },
->>> +               .load_state = "slpi",
->>> +               .ssr_name = "dsps",
->>> +               .sysmon_name = "slpi",
->>> +               .ssctl_id = 0x16,
->> Isn't this identical to sm8150_slpi_resource?
->>
->> Konrad
-> 
-> Yes it is. I added a new entry because for SM8150, SM8250, and SM8350
-> they are duplicated as well. The SDM845's struct is indentical to
-> SM8150/SM8250/SM8350's structs.
-Well, you just found a quick improvement to make then! :D
+This is made a separate property to toggle different behavior in the
+driver if it is needed for some FastRPC nodes. Downstream does guard
+this with a property 'restrict-access' as well, see [1] for a random
+SDM845 downstream kernel. On SDM845, this property is not present, thus
+the IF block runs. On SDM670, this property is present, then the IF
+block is skipped. That's why I opt for this property to have this
+behaviour conditionally. I'm not sure how to explain it better though.
 
-Konrad
-> 
-> Kind regards,
-> Dylan Van Assche
-> 
->>> +};
->>> +
->>>  static const struct adsp_data sm8150_slpi_resource = {
->>>                 .crash_reason_smem = 424,
->>>                 .firmware_name = "slpi.mdt",
->>> @@ -1201,6 +1217,7 @@ static const struct of_device_id
->>> adsp_of_match[] = {
->>>         { .compatible = "qcom,sdm660-adsp-pas", .data =
->>> &adsp_resource_init},
->>>         { .compatible = "qcom,sdm845-adsp-pas", .data =
->>> &sdm845_adsp_resource_init},
->>>         { .compatible = "qcom,sdm845-cdsp-pas", .data =
->>> &sdm845_cdsp_resource_init},
->>> +       { .compatible = "qcom,sdm845-slpi-pas", .data =
->>> &sdm845_slpi_resource},
->>>         { .compatible = "qcom,sdx55-mpss-pas", .data =
->>> &sdx55_mpss_resource},
->>>         { .compatible = "qcom,sm6115-adsp-pas", .data =
->>> &adsp_resource_init},
->>>         { .compatible = "qcom,sm6115-cdsp-pas", .data =
->>> &cdsp_resource_init},
-> 
+Any feedback is appreciated, thanks!
+
+Kind regards,
+Dylan Van Assche
+
+[1]
+https://github.com/SHIFTPHONES/android_kernel_shift_sdm845/blob/sos-3.x/dri=
+vers/char/adsprpc.c#L4615-L4631
+
+>=20
+> > +=C2=A0=C2=A0=C2=A0 type: boolean
+> > +
+> > +
+>=20
+> Do not add double blank lines.
+>=20
+> > =C2=A0=C2=A0 "#address-cells":
+> > =C2=A0=C2=A0=C2=A0=C2=A0 const: 1
+> > =C2=A0
+>=20
+> Best regards,
+> Krzysztof
+>=20
+
