@@ -2,89 +2,89 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 166A9C7619A
-	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 07:24:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85839C7619A
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 08:09:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231778AbjC0HYC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 27 Mar 2023 03:24:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55108 "EHLO
+        id S232779AbjC0IJl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 27 Mar 2023 04:09:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232496AbjC0HYA (ORCPT
+        with ESMTP id S231946AbjC0IJk (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 27 Mar 2023 03:24:00 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84A7FE3
-        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 00:23:55 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id t10so31671561edd.12
-        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 00:23:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679901834;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OjdPO/oq4IIE0hFyHigrECYsxChLPPYgESz7B/pDYOI=;
-        b=kEhpgaB0+FpNDi/WR7iPM+81mqXbh4tx5ISPPA1oSU6dY97FK8aUp9yDlZvoyl8xjD
-         tbdmmIazwmIue7n7Z8EYtw58KkMRx0qDa81z+PvmsVGpNRhcouOmJqWi4qYkFwjKe1L1
-         R22JIaoaRhQJkEPtmehBpE/5AwLPEKjjn8ujez8CuBIIZIzl1ZmStzbFDGkjnTDz4DEj
-         vaZFbfYZDgrhO5gntDqIGjcXjYHKW9JAjiIGLDxQTsFvCtgo3y8KGSGp5R86QE8Z8Qef
-         /5/Bn+BLqvmjVTwhEn6yMIRRu7AqxkXU764qg25bs7Ndn+IcHxJ75/McKUoPxReqhmUa
-         qZrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679901834;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OjdPO/oq4IIE0hFyHigrECYsxChLPPYgESz7B/pDYOI=;
-        b=QigJCBX10MreEeSGHuZ87URxGU2iqlyAwe+I/VpsyCdgx2cWRaqFjs2R5KBGfGvh3f
-         RbilxKCmYJeYwoIwZuW+cbg/sxQh0f/qrYABxrE3ihpSeRXuwOID0uFTDuouCGpeCc0I
-         nDymZHEYpLxMUkIdcrFxJ23cpTUDUZk7z0Bdno0EroVSmgUTLJglXZHNPhw8Azm2QLki
-         PCEhX1Z5QMkEDr0gfWWV8eq2urGoCxHHMeIXSClUyOyFDaHHkXd+al0rDQidrQny+VRk
-         Z/kH7CKRiZe0gZAHvSQ3iaHYSRhhRZYiQq6TduMoyTEeC4NvWoBXQa+qYqRjDNPFxVWQ
-         m9SQ==
-X-Gm-Message-State: AAQBX9e3u4Ufm5wjLTRWj3sMbsFRe+dgRPAfWvBBsCPbdYjnPq5Lq+b2
-        U+2kDviliXVxXkMgviaZGr8kEA==
-X-Google-Smtp-Source: AKy350azTNMcDvP3N7zgcsBq8oWHYm5j1ZDrSetdKr7bGj0XWY8nqN78nx3uN23pI6zOfMxTy1BUQw==
-X-Received: by 2002:a17:906:6dd7:b0:931:c99c:480 with SMTP id j23-20020a1709066dd700b00931c99c0480mr11619450ejt.69.1679901834032;
-        Mon, 27 Mar 2023 00:23:54 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:198e:c1a5:309b:d678? ([2a02:810d:15c0:828:198e:c1a5:309b:d678])
-        by smtp.gmail.com with ESMTPSA id hy14-20020a1709068a6e00b009351546fb54sm10151855ejc.28.2023.03.27.00.23.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Mar 2023 00:23:53 -0700 (PDT)
-Message-ID: <8d5cefae-e10e-52c1-b070-4a1d15a5ef93@linaro.org>
-Date:   Mon, 27 Mar 2023 09:23:52 +0200
+        Mon, 27 Mar 2023 04:09:40 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93893191;
+        Mon, 27 Mar 2023 01:09:39 -0700 (PDT)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 97DDF6602087;
+        Mon, 27 Mar 2023 09:09:37 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1679904578;
+        bh=WsJrZpm843H/Mqkak9eNmuxfS+fyJ9GgkzGPM1UBOFY=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=MRMri0dpMSRlcR433ByuMgdZmR0JajiPP6xsngGy/nxPO5KOcUB0byRvbzhLRc99D
+         hL41kgsF36sAAaLuskGkuY/mWTqL+4k1loJa50QP3npbNq0jz5511R7YZ9Rb7aFbXZ
+         YDHQU1or1V1O1Q1DMy2kTyLxcMsZl7vxTO9pgU9M5bf7rNTqjmCIqtg+EhpWE2foSl
+         3J+Ujz2CKp4vZBT8LOlLcj943u7W2t10QfP52tDmNx46C69Pq6WcfpdXTqaXFosJu5
+         svMP6/z9mrvJ+E+izWpN5pIt92RpnRTEd1+Oat5V0P42zHO8Z5OpDw/gbTi+R8bM5p
+         F3su3t1xiwMSg==
+Message-ID: <8937b354-a808-5e4b-94c4-f2c8a63945e2@collabora.com>
+Date:   Mon, 27 Mar 2023 10:09:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCH v2 1/6] dt-bindings: soc: mediatek: pwrap: Add compatible
- for MT6795 Helio X10
+Subject: Re: [PATCH v1 03/18] arm64: dts: mediatek: mt6795: xperia-m5: Enable
+ Frequency Hopping
 Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, matthias.bgg@gmail.com
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        amergnat@baylibre.com, flora.fu@mediatek.com,
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     matthias.bgg@gmail.com, qii.wang@mediatek.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, jassisinghbrar@gmail.com,
+        houlong.wei@mediatek.com, linux-i2c@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, kernel@collabora.com,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20230324094205.33266-1-angelogioacchino.delregno@collabora.com>
- <20230324094205.33266-2-angelogioacchino.delregno@collabora.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230324094205.33266-2-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8
+References: <20230324175456.219954-1-angelogioacchino.delregno@collabora.com>
+ <20230324175456.219954-4-angelogioacchino.delregno@collabora.com>
+ <ZB9jlTsEb0Clf1zu@duo.ucw.cz>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <ZB9jlTsEb0Clf1zu@duo.ucw.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 24/03/2023 10:42, AngeloGioacchino Del Regno wrote:
-> Add a compatible for the PMIC Wrapper found on the MT6795 Helio X10 SoC.
+Il 25/03/23 22:11, Pavel Machek ha scritto:
+> On Fri 2023-03-24 18:54:41, AngeloGioacchino Del Regno wrote:
+>> Enable FHCTL with Spread Spectrum for MAINPLL, MPLL and MSDCPLL
+>> as found on the downstream kernel for this smartphone.
+>> Which one to enable, and at what SSC percentage, was found by
+>> dumping the debugging data from a running downstream kernel and
+>> checking the downstream code.
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->  .../devicetree/bindings/soc/mediatek/mediatek,pwrap.yaml         | 1 +
+> What advantages does this have? Lower EMI emissions?
+> 
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Hello Pavel,
 
-Best regards,
-Krzysztof
+this is done for multiple reasons, main one being lower EMI, but the effects
+on functionality, depending on the actual board, may be quite dramatic and
+ranging from lower WiFi and/or modem signal "sensitivity" (as in, for example,
+having to automatically lower signal gain because of signal disturbance from
+the conducted EMI ripple), to even a complete platform crash due to clocking
+issues.
 
+This is not about accounting for hardware quirks because having this situation
+is totally normal and expected, especially on "particular" usecases such as
+smartphones, where the actual board is typically much constrained in terms of
+space, and where on the same board you have multiple components generating noise,
+either wanted (a nfc/wifi/bt/2g/3g/4g/5g/something-else signal), or unwanted.
+
+Cheers!
+Angelo
