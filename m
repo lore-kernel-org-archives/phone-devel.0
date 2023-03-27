@@ -2,61 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6608CC761A6
-	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 19:35:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11AA0C76195
+	for <phone-devel@archiver.kernel.org>; Mon, 27 Mar 2023 19:36:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232241AbjC0TfM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 27 Mar 2023 15:35:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57364 "EHLO
+        id S231913AbjC0TgK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 27 Mar 2023 15:36:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230328AbjC0TfJ (ORCPT
+        with ESMTP id S229677AbjC0TgJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 27 Mar 2023 15:35:09 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B58091995
-        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 12:35:07 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id ek18so40699566edb.6
-        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 12:35:07 -0700 (PDT)
+        Mon, 27 Mar 2023 15:36:09 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1FA41736
+        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 12:36:07 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id er18so29462911edb.9
+        for <phone-devel@vger.kernel.org>; Mon, 27 Mar 2023 12:36:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1679945706;
+        d=linaro.org; s=google; t=1679945766;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=CipNcg6XGhT+x225ozA3jqRgRsy3IVzOurOagbBJ054=;
-        b=IeTokkfm6UWkOYDDbUa5a8dEtSK25HIxP3MKONEl8LYvz7+y2mO31PP6B7MD2M+80P
-         8eA9viEpDVpyZaONFCKJ3VYa4LfYhMTGVn4FPKls46k0RDMS6LRFE5CIVO+33+SXAT1r
-         dB0xjiPUwKXHTz3EEpThy6HPIcIWOFckY0F7wDIa2xg2pJvLKc3UFKN/R6WN7YbkpI1F
-         HYg18/4cHbLLEnRI+GesvpGlQsPhUAnCMgcQl7HXCbQ6UGffvQbkyGfl/4BEzK6SmwPL
-         12TtBD/LhsTFH5y88WWNlJjn3v085uU3fXQ7obGEj4vrwth+e9aOayJbNzzZ+iP6hBB/
-         zJWA==
+        bh=8X5ofhsYdVp58Cspu3Ij1YBt/DWO/9jcCPenLMMbpMI=;
+        b=o6yPinicNfk3/ddau6ZtWUbN3JNlA4h1rMztlw34oc2weFqyRj7do/W1K0EqR0YE18
+         yDj4tOs0ElatDGQ5QBUhwfWEmBIw81Iy6KavMbTvaQ/41AWnMjVbv2E2o6OIZvW4m/go
+         UyP+A28REoa7nVCkgaPS/0GdQ/rWjkGTCZi+oJxaa5KzUjaNPssQ6KXnhnGlnitDR94N
+         67A5681tvpHsFIVlABUsMNEzZj7Y591M9xk2h2bM5r/9idGY+pNbASkijgHFKo8Exe7g
+         CZBh/nDg0D0yhHnab6zvGdYsq6wwqOawjIYBuew5Z3el0xk7Gh/L9tHxaiwAYacGgjxC
+         0jlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679945706;
+        d=1e100.net; s=20210112; t=1679945766;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CipNcg6XGhT+x225ozA3jqRgRsy3IVzOurOagbBJ054=;
-        b=fuFrRWjyIbnCpBoERqoFY1m2r1Z4zjm+O1BBsyrWTbRtW+fvDtM9qpnIJbabrCQSoA
-         f8dcU8NmsOwheGn/vClHgrtyRx23FxMWVgXGFG249lmXPGm38bMRT06htaQSeknAPMSy
-         8a/OYNIDsn2NfU80qNFBfClgKs3lnhV6tVaVwFqGZ/u/THIlzwGsViZLXxEi/71hL78k
-         tfV/z46h1139qX/QxJmqBzzNFcvqP97G69fWGCcKcL5BOb6TMXgru9Es1lM1oeMh9v19
-         SY5pLWUIEKvKRYhS6pWZUvhsIkzvRiv9MtTM1L9fe5xO6cypGndBW9pcXmq2+clw+fzU
-         SjMg==
-X-Gm-Message-State: AAQBX9dA2dmJms3iB7FbA+PQ5Spk5xqIMXbd0ZjkCHseW3sliotUPOWM
-        6BX+d27Q7m/eFcEECAVOjnwoig==
-X-Google-Smtp-Source: AKy350YtrtGg8yqJ/C9YGnzqneUXRLN2+3R7BFncNFhFLbFR1CFy/RSVxt7xVrbMhYi973wLuPSvjg==
-X-Received: by 2002:a17:906:3607:b0:92d:44ca:1137 with SMTP id q7-20020a170906360700b0092d44ca1137mr13605161ejb.43.1679945706240;
-        Mon, 27 Mar 2023 12:35:06 -0700 (PDT)
+        bh=8X5ofhsYdVp58Cspu3Ij1YBt/DWO/9jcCPenLMMbpMI=;
+        b=0fAUdewRiQR3StKoF+CsOiXgXRH0i/8yVLVlZ2Tx74bNmD5r2revgac7xln80Vyh5z
+         NrW2Cq9bxH3gCwt+pxrSpZiYx7fK0kNV0Xoa916YhpQP4AD8N9fFkhVcN2RJJNBEbz0i
+         v//2EImGafnOg/cnXW15phewwWbom8yHe/yCNbQentroiQuVkKoLhHsHX5T7LsasJCyH
+         JhS7XfprYqTAQxC+1FrK8isdZCMTsk7JwnGYHK5Pc3/JlsIqPOFJM93Nw4MmPs7x2KLm
+         9Dj0lmGtS1+0qXJi8h5bRrSSitgcBWewrs1gkwg9NdizeXL7pVku5QmWdnVRmmjq5Rny
+         nWFA==
+X-Gm-Message-State: AAQBX9dLdfxLdXnmneRlhCCN5XcRCNaLQbeCPXmpqUsShiA0yFj3jDpT
+        B9qEcCfAeVXFPAODFZQMimSgXg==
+X-Google-Smtp-Source: AKy350b+JJW09vvPTha4B0+PoAK/Vno/nLibnHvUUyGbcNa9PKMVTyPclTVsq2ssnMiZPiam2E+tlw==
+X-Received: by 2002:a17:907:cf92:b0:93f:21fa:eabf with SMTP id ux18-20020a170907cf9200b0093f21faeabfmr9458483ejc.22.1679945766383;
+        Mon, 27 Mar 2023 12:36:06 -0700 (PDT)
 Received: from ?IPV6:2a02:810d:15c0:828:9314:a4b3:ce49:2c6b? ([2a02:810d:15c0:828:9314:a4b3:ce49:2c6b])
-        by smtp.gmail.com with ESMTPSA id q2-20020a1709066b0200b0092be0d267besm14577954ejr.142.2023.03.27.12.35.05
+        by smtp.gmail.com with ESMTPSA id lc5-20020a170906dfe500b0092973e209f2sm14324287ejc.109.2023.03.27.12.36.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Mar 2023 12:35:05 -0700 (PDT)
-Message-ID: <8050df0c-753b-1733-962f-b4065500a090@linaro.org>
-Date:   Mon, 27 Mar 2023 21:35:04 +0200
+        Mon, 27 Mar 2023 12:36:06 -0700 (PDT)
+Message-ID: <1d389343-9a7e-67e3-6948-8604e33da754@linaro.org>
+Date:   Mon, 27 Mar 2023 21:36:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.0
-Subject: Re: [PATCH v2 2/5] dt-bindings: misc: qcom,fastrpc: allow FastRPC
- node without reg entry
+Subject: Re: [PATCH v2 3/5] dts: arm64: qcom: sdm845: add SLPI FastRPC support
 Content-Language: en-US
 To:     Dylan Van Assche <me@dylanvanassche.be>,
         Andy Gross <agross@kernel.org>,
@@ -70,9 +69,9 @@ Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
         linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
 References: <20230327184811.499553-1-me@dylanvanassche.be>
- <20230327184811.499553-3-me@dylanvanassche.be>
+ <20230327184811.499553-4-me@dylanvanassche.be>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230327184811.499553-3-me@dylanvanassche.be>
+In-Reply-To: <20230327184811.499553-4-me@dylanvanassche.be>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -80,20 +79,57 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 27/03/2023 20:48, Dylan Van Assche wrote:
-> FastRPC nodes may exist without a registry property and actual
+> Qualcomm SDM845 SoC features a SLPI DSP which uses FastRPC through
+> an allocated memory region to load files from the host filesystem
+> such as sensor configuration files.
+> 
+> Add a FastRPC node at /dev/fastrpc-sdsp and a DMA region, similar to
+> downstream, to allow userspace to communicate with the SLPI via the
+> FastRPC interface for initializing the sensors on the SLPI.
+> 
+> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+> ---
+>  arch/arm64/boot/dts/qcom/sdm845.dtsi | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+> index 3b547cb7aeb8..7412ea938765 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+> @@ -878,6 +878,14 @@ mdata_mem: mpss-metadata {
+>  			size = <0 0x4000>;
+>  			no-map;
+>  		};
+> +
+> +		fastrpc_mem: fastrpc {
+> +			compatible = "shared-dma-pool";
+> +			reusable;
+> +			alloc-ranges = <0 0x00000000 0 0xffffffff>;
+> +			alignment = <0 0x400000>;
+> +			size = <0 0x1000000>;
+> +		};
+>  	};
+>  
+>  	adsp_pas: remoteproc-adsp {
+> @@ -3344,6 +3352,21 @@ glink-edge {
+>  				label = "dsps";
+>  				qcom,remote-pid = <3>;
+>  				mboxes = <&apss_shared 24>;
+> +
+> +				fastrpc {
+> +					compatible = "qcom,fastrpc";
+> +					qcom,glink-channels = "fastrpcglink-apps-dsp";
+> +					label = "sdsp";
+> +					qcom,non-secure-domain;
+> +					qcom,vmids = <0x3 0xF 0x5 0x6>;
+> +					memory-region = <&fastrpc_mem>;
+> +					#address-cells = <1>;
+> +					#size-cells = <0>;
 
-Why would they exist without unit address?
+This does not make sense now with children nodes not having unit
+addresses... but anyway, I do not understand why this one compute node
+cannot have unit address.
 
-> Compute Banks  in some cases such as the SLPI on the Qualcomm SDM845 SoC.
-
-I do not see there anything disallowing unit address yet...
-
-
-> Relax the regex to allow such FastRPC nodes and remove 'reg' as a
-> required property.
-
-No, at least not without proper explanation why unit address is not
-allowed for these.
 
 
 Best regards,
