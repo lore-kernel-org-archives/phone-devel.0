@@ -2,58 +2,59 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 75EE9C6FD18
-	for <phone-devel@archiver.kernel.org>; Wed, 29 Mar 2023 23:08:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F1B5C74A5B
+	for <phone-devel@archiver.kernel.org>; Wed, 29 Mar 2023 23:17:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230062AbjC2XIA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 29 Mar 2023 19:08:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47490 "EHLO
+        id S229650AbjC2XRS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 29 Mar 2023 19:17:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229553AbjC2XIA (ORCPT
+        with ESMTP id S229596AbjC2XRQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 29 Mar 2023 19:08:00 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D79E33C10
-        for <phone-devel@vger.kernel.org>; Wed, 29 Mar 2023 16:07:57 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id r187so21430379ybr.6
-        for <phone-devel@vger.kernel.org>; Wed, 29 Mar 2023 16:07:57 -0700 (PDT)
+        Wed, 29 Mar 2023 19:17:16 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30D0C4EEF
+        for <phone-devel@vger.kernel.org>; Wed, 29 Mar 2023 16:17:14 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-5416698e889so323089207b3.2
+        for <phone-devel@vger.kernel.org>; Wed, 29 Mar 2023 16:17:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112; t=1680131277;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112; t=1680131833;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=17W1Vyy8xywZeBqJlfSIAYU63G4aFCmdnFdPrSLNAkg=;
-        b=jQgPlWdUIryVzMWz5eYCVlqf1Jx9xGi5sRKJqPKAN8hOHtO7Qknopt659dtHlGEmtl
-         qzxvaxV6bJCAaPLVg2CyYOtNFHOdP5+cYM065FUE1aZuAfMYnYP2/OLaip4P55Khk2uS
-         0GAb+mee2/y0d1vdm8svbShyI3AIXYcPC26QfxwbhAbt8xOsYmBtscC2QZpbk7QRSo7Z
-         5wUwof8bZEXyZBP48Y0ZI8q7Mf8SBnRl844jIbwqOUaFR7zHRfHn7LS7bcxf8JlLf0dZ
-         wapKtcuRbKsbfRH3rYQmh1t3AwIqxWFzqArFx9F0IAKNr80DBfu4O+LFnClphXgE6FhC
-         XISQ==
+        bh=HgH9mKJ5gBSV+mA+S1sr7AZY0jeZJ+IakqUNjPTRKSY=;
+        b=dG8P5fvQu8Q8ZahpDMhQVTZKNXjVO9yiiFMiASUQHI3WOQCfIZDhvLin20Sx5Oyz8R
+         SZK+9JQvd44EYxtNySj+djYvDLOC4t18NU4NoAbLqSZNkBowarYr4KkIsLk+VfnkrjLc
+         hzZX/l0HbyuONypzzeOPNbOnw6ta8bOwQ3sTlRrXSaU/u/BbFDjxq69I+LM7wvk+GG71
+         rLoUUY4MAVM7LI+8f+URd5OOWrWZDrNmyBbdQ4XL1As6mr6DYkIExKtBAVIGCacGLPE+
+         zwYo0s17PaQAAFjg5nhba7muzJfipkqND0xbK8J7ajXxPESryNGgV4BgcS23MQ8XCB49
+         HQjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680131277;
+        d=1e100.net; s=20210112; t=1680131833;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=17W1Vyy8xywZeBqJlfSIAYU63G4aFCmdnFdPrSLNAkg=;
-        b=39LUJn8EJwj5vpXq3oh2nvUdLdb+SDEMt9hjSv8Ux25A9JSLyP7/hDTZ44mkXucf5J
-         vvaASsiXthO0+h5afI4vVpzGuHl9IQ81/HrH73FUDeqtPKq0qLQe5ILdWigFKBv9EQR4
-         Cl4lvXpFvMlUVdHSp901HDxvw57nkeBcQt1h0dmMXa9qLdSWPD9E76QT+jG2Mb69MGxW
-         C9p9iSYnhJwAfTxPk7SQq8dK9CPjlYKRPo+LLZQbzo+NmfxmNOEbubby/sehJ/QDniuH
-         JC1ZVf8Gk9c1m80wya9Ie/gsMdBo6QgofTtQ/YBCt03CyhDCUvJ/XyeKYqx+FU9bZGB2
-         AKGQ==
-X-Gm-Message-State: AAQBX9cQ23F4lB3iZqQciZLgL6AnyC1VXt4QAehYQI9dF1goY4+JLz3d
-        7NTPIvDl60B5WVjhB4Z1E9v5HVSrfKNLonCKj65PPA==
-X-Google-Smtp-Source: AKy350a5GZphBEgM8UisHAQrdtCXXOGmCc4O5BP2CwRX+zobEpWFYGZuSLf5PGCtIbsbkgteYBCmjBU4RiB4peKzOqs=
-X-Received: by 2002:a05:6902:1501:b0:b6d:80ab:8bb6 with SMTP id
- q1-20020a056902150100b00b6d80ab8bb6mr14095187ybu.1.1680131276952; Wed, 29 Mar
- 2023 16:07:56 -0700 (PDT)
+        bh=HgH9mKJ5gBSV+mA+S1sr7AZY0jeZJ+IakqUNjPTRKSY=;
+        b=ZaZ90dWdQxqWgkTcuOWxcTNHy/3TjDlmkT3VLfCLvavqLusZ5Gi9PL4QC3CkqgJlVI
+         2pUL6FwkLA8WEe0ssb1ZGrymsCMnSvqDb4GglWSJ/c0f8NdoEW3+PBTQ90K48aLIhfzz
+         55DF3NrvPfUK9FuxSG0P8G2Pr8oJ9blebnh3Y8D7Xfyudu5jJ7PmdGPCFcr3P2aCJhIk
+         ltRASl8JuPxcgZWA7OlFcxkLd7lnDQJS/BU+x4Z1ZuOdenyxzd+Zi47JkNBCcI56LEZg
+         2Q0H8ykjMHBj2x+ve2fI49b7PbpZ50c6NqxsXRl7qRc+SLSha2Tei1+9uy1GU3W+52H3
+         uvrw==
+X-Gm-Message-State: AAQBX9fRn1gqvBSrhzMJg3zaD3MdOJhIIh9C4tOPOAuvn4PCG9xWlLMg
+        XGbzzjWx/0JQm4sAYVxXkWG5XF8NQ2f2lFNEKYB2Iw==
+X-Google-Smtp-Source: AKy350bOR/1/0fZReY1Io91NkJMPTUVQBD8PHVB4inFOb6+jmCb74yhpXKRWMSFEXSqgFEC2ehXh4iqO1uo6CjTFmu0=
+X-Received: by 2002:a81:b617:0:b0:544:b864:5532 with SMTP id
+ u23-20020a81b617000000b00544b8645532mr9840430ywh.3.1680131833327; Wed, 29 Mar
+ 2023 16:17:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230324094205.33266-1-angelogioacchino.delregno@collabora.com> <20230324094205.33266-7-angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230324094205.33266-7-angelogioacchino.delregno@collabora.com>
+References: <20230324094205.33266-1-angelogioacchino.delregno@collabora.com> <20230324094205.33266-6-angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20230324094205.33266-6-angelogioacchino.delregno@collabora.com>
 From:   Alexandre Mergnat <amergnat@baylibre.com>
-Date:   Thu, 30 Mar 2023 01:07:45 +0200
-Message-ID: <CAFGrd9pR+8MVNcXyb2JPoL3wzksNdY08kUGPtH+NmawTW8uU1w@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] soc: mediatek: pwrap: Add support for MT6795 Helio X10
+Date:   Thu, 30 Mar 2023 01:17:01 +0200
+Message-ID: <CAFGrd9qS4mzXWRftbR7dFqtvs9Uc4qzBQMAjRo3rAwN70jDoyA@mail.gmail.com>
+Subject: Re: [PATCH v2 5/6] soc: mediatek: mtk-pmic-wrap: Add support for
+ MT6331 w/ MT6332 companion
 To:     AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
 Cc:     matthias.bgg@gmail.com, robh+dt@kernel.org,
@@ -68,243 +69,104 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-" or
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+
+Regards,
+Alexandre
 
 Le ven. 24 mars 2023 =C3=A0 10:42, AngeloGioacchino Del Regno
 <angelogioacchino.delregno@collabora.com> a =C3=A9crit :
 >
-> Add the necessary bits to support the MT6795 Helio X10 smartphone SoC:
-> this is always paired with a MT6331 PMIC, with MT6332 companion.
+> Add support for the MT6331 PMIC and for its companion MT6332 PMIC.
 >
 > Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@coll=
 abora.com>
 > ---
->  drivers/soc/mediatek/mtk-pmic-wrap.c | 131 ++++++++++++++++++++++++++-
->  1 file changed, 130 insertions(+), 1 deletion(-)
+>  drivers/soc/mediatek/mtk-pmic-wrap.c | 47 ++++++++++++++++++++++++++++
+>  1 file changed, 47 insertions(+)
 >
 > diff --git a/drivers/soc/mediatek/mtk-pmic-wrap.c b/drivers/soc/mediatek/=
 mtk-pmic-wrap.c
-> index ceeac43f7bd1..20d32328382a 100644
+> index 366e40b802e4..ceeac43f7bd1 100644
 > --- a/drivers/soc/mediatek/mtk-pmic-wrap.c
 > +++ b/drivers/soc/mediatek/mtk-pmic-wrap.c
-> @@ -639,6 +639,91 @@ static int mt6779_regs[] =3D {
->         [PWRAP_WACS2_VLDCLR] =3D          0xC28,
+> @@ -170,6 +170,40 @@ static const u32 mt6323_regs[] =3D {
+>         [PWRAP_DEW_RDDMY_NO] =3D          0x01a4,
 >  };
 >
-> +static int mt6795_regs[] =3D {
-> +       [PWRAP_MUX_SEL] =3D               0x0,
-> +       [PWRAP_WRAP_EN] =3D               0x4,
-> +       [PWRAP_DIO_EN] =3D                0x8,
-> +       [PWRAP_SIDLY] =3D                 0xc,
-> +       [PWRAP_RDDMY] =3D                 0x10,
-> +       [PWRAP_SI_CK_CON] =3D             0x14,
-> +       [PWRAP_CSHEXT_WRITE] =3D          0x18,
-> +       [PWRAP_CSHEXT_READ] =3D           0x1c,
-> +       [PWRAP_CSLEXT_START] =3D          0x20,
-> +       [PWRAP_CSLEXT_END] =3D            0x24,
-> +       [PWRAP_STAUPD_PRD] =3D            0x28,
-> +       [PWRAP_STAUPD_GRPEN] =3D          0x2c,
-> +       [PWRAP_EINT_STA0_ADR] =3D         0x30,
-> +       [PWRAP_EINT_STA1_ADR] =3D         0x34,
-> +       [PWRAP_STAUPD_MAN_TRIG] =3D       0x40,
-> +       [PWRAP_STAUPD_STA] =3D            0x44,
-> +       [PWRAP_WRAP_STA] =3D              0x48,
-> +       [PWRAP_HARB_INIT] =3D             0x4c,
-> +       [PWRAP_HARB_HPRIO] =3D            0x50,
-> +       [PWRAP_HIPRIO_ARB_EN] =3D         0x54,
-> +       [PWRAP_HARB_STA0] =3D             0x58,
-> +       [PWRAP_HARB_STA1] =3D             0x5c,
-> +       [PWRAP_MAN_EN] =3D                0x60,
-> +       [PWRAP_MAN_CMD] =3D               0x64,
-> +       [PWRAP_MAN_RDATA] =3D             0x68,
-> +       [PWRAP_MAN_VLDCLR] =3D            0x6c,
-> +       [PWRAP_WACS0_EN] =3D              0x70,
-> +       [PWRAP_INIT_DONE0] =3D            0x74,
-> +       [PWRAP_WACS0_CMD] =3D             0x78,
-> +       [PWRAP_WACS0_RDATA] =3D           0x7c,
-> +       [PWRAP_WACS0_VLDCLR] =3D          0x80,
-> +       [PWRAP_WACS1_EN] =3D              0x84,
-> +       [PWRAP_INIT_DONE1] =3D            0x88,
-> +       [PWRAP_WACS1_CMD] =3D             0x8c,
-> +       [PWRAP_WACS1_RDATA] =3D           0x90,
-> +       [PWRAP_WACS1_VLDCLR] =3D          0x94,
-> +       [PWRAP_WACS2_EN] =3D              0x98,
-> +       [PWRAP_INIT_DONE2] =3D            0x9c,
-> +       [PWRAP_WACS2_CMD] =3D             0xa0,
-> +       [PWRAP_WACS2_RDATA] =3D           0xa4,
-> +       [PWRAP_WACS2_VLDCLR] =3D          0xa8,
-> +       [PWRAP_INT_EN] =3D                0xac,
-> +       [PWRAP_INT_FLG_RAW] =3D           0xb0,
-> +       [PWRAP_INT_FLG] =3D               0xb4,
-> +       [PWRAP_INT_CLR] =3D               0xb8,
-> +       [PWRAP_SIG_ADR] =3D               0xbc,
-> +       [PWRAP_SIG_MODE] =3D              0xc0,
-> +       [PWRAP_SIG_VALUE] =3D             0xc4,
-> +       [PWRAP_SIG_ERRVAL] =3D            0xc8,
-> +       [PWRAP_CRC_EN] =3D                0xcc,
-> +       [PWRAP_TIMER_EN] =3D              0xd0,
-> +       [PWRAP_TIMER_STA] =3D             0xd4,
-> +       [PWRAP_WDT_UNIT] =3D              0xd8,
-> +       [PWRAP_WDT_SRC_EN] =3D            0xdc,
-> +       [PWRAP_WDT_FLG] =3D               0xe0,
-> +       [PWRAP_DEBUG_INT_SEL] =3D         0xe4,
-> +       [PWRAP_DVFS_ADR0] =3D             0xe8,
-> +       [PWRAP_DVFS_WDATA0] =3D           0xec,
-> +       [PWRAP_DVFS_ADR1] =3D             0xf0,
-> +       [PWRAP_DVFS_WDATA1] =3D           0xf4,
-> +       [PWRAP_DVFS_ADR2] =3D             0xf8,
-> +       [PWRAP_DVFS_WDATA2] =3D           0xfc,
-> +       [PWRAP_DVFS_ADR3] =3D             0x100,
-> +       [PWRAP_DVFS_WDATA3] =3D           0x104,
-> +       [PWRAP_DVFS_ADR4] =3D             0x108,
-> +       [PWRAP_DVFS_WDATA4] =3D           0x10c,
-> +       [PWRAP_DVFS_ADR5] =3D             0x110,
-> +       [PWRAP_DVFS_WDATA5] =3D           0x114,
-> +       [PWRAP_DVFS_ADR6] =3D             0x118,
-> +       [PWRAP_DVFS_WDATA6] =3D           0x11c,
-> +       [PWRAP_DVFS_ADR7] =3D             0x120,
-> +       [PWRAP_DVFS_WDATA7] =3D           0x124,
-> +       [PWRAP_SPMINF_STA] =3D            0x128,
-> +       [PWRAP_CIPHER_KEY_SEL] =3D        0x12c,
-> +       [PWRAP_CIPHER_IV_SEL] =3D         0x130,
-> +       [PWRAP_CIPHER_EN] =3D             0x134,
-> +       [PWRAP_CIPHER_RDY] =3D            0x138,
-> +       [PWRAP_CIPHER_MODE] =3D           0x13c,
-> +       [PWRAP_CIPHER_SWRST] =3D          0x140,
-> +       [PWRAP_DCM_EN] =3D                0x144,
-> +       [PWRAP_DCM_DBC_PRD] =3D           0x148,
-> +       [PWRAP_EXT_CK] =3D                0x14c,
+> +static const u32 mt6331_regs[] =3D {
+> +       [PWRAP_DEW_DIO_EN] =3D            0x018c,
+> +       [PWRAP_DEW_READ_TEST] =3D         0x018e,
+> +       [PWRAP_DEW_WRITE_TEST] =3D        0x0190,
+> +       [PWRAP_DEW_CRC_SWRST] =3D         0x0192,
+> +       [PWRAP_DEW_CRC_EN] =3D            0x0194,
+> +       [PWRAP_DEW_CRC_VAL] =3D           0x0196,
+> +       [PWRAP_DEW_MON_GRP_SEL] =3D       0x0198,
+> +       [PWRAP_DEW_CIPHER_KEY_SEL] =3D    0x019a,
+> +       [PWRAP_DEW_CIPHER_IV_SEL] =3D     0x019c,
+> +       [PWRAP_DEW_CIPHER_EN] =3D         0x019e,
+> +       [PWRAP_DEW_CIPHER_RDY] =3D        0x01a0,
+> +       [PWRAP_DEW_CIPHER_MODE] =3D       0x01a2,
+> +       [PWRAP_DEW_CIPHER_SWRST] =3D      0x01a4,
+> +       [PWRAP_DEW_RDDMY_NO] =3D          0x01a6,
 > +};
 > +
->  static int mt6797_regs[] =3D {
->         [PWRAP_MUX_SEL] =3D               0x0,
->         [PWRAP_WRAP_EN] =3D               0x4,
-> @@ -1230,6 +1315,7 @@ enum pwrap_type {
->         PWRAP_MT2701,
->         PWRAP_MT6765,
->         PWRAP_MT6779,
-> +       PWRAP_MT6795,
->         PWRAP_MT6797,
->         PWRAP_MT6873,
->         PWRAP_MT7622,
-> @@ -1650,6 +1736,20 @@ static void pwrap_init_chip_select_ext(struct pmic=
-_wrapper *wrp, u8 hext_write,
->  static int pwrap_common_init_reg_clock(struct pmic_wrapper *wrp)
->  {
->         switch (wrp->master->type) {
-> +       case PWRAP_MT6795:
-> +               if (wrp->slave->type =3D=3D PMIC_MT6331) {
-> +                       const u32 *dew_regs =3D wrp->slave->dew_regs;
+> +static const u32 mt6332_regs[] =3D {
+> +       [PWRAP_DEW_DIO_EN] =3D            0x80f6,
+> +       [PWRAP_DEW_READ_TEST] =3D         0x80f8,
+> +       [PWRAP_DEW_WRITE_TEST] =3D        0x80fa,
+> +       [PWRAP_DEW_CRC_SWRST] =3D         0x80fc,
+> +       [PWRAP_DEW_CRC_EN] =3D            0x80fe,
+> +       [PWRAP_DEW_CRC_VAL] =3D           0x8100,
+> +       [PWRAP_DEW_MON_GRP_SEL] =3D       0x8102,
+> +       [PWRAP_DEW_CIPHER_KEY_SEL] =3D    0x8104,
+> +       [PWRAP_DEW_CIPHER_IV_SEL] =3D     0x8106,
+> +       [PWRAP_DEW_CIPHER_EN] =3D         0x8108,
+> +       [PWRAP_DEW_CIPHER_RDY] =3D        0x810a,
+> +       [PWRAP_DEW_CIPHER_MODE] =3D       0x810c,
+> +       [PWRAP_DEW_CIPHER_SWRST] =3D      0x810e,
+> +       [PWRAP_DEW_RDDMY_NO] =3D          0x8110,
+> +};
 > +
-> +                       pwrap_write(wrp, dew_regs[PWRAP_DEW_RDDMY_NO], 0x=
-8);
-> +
-> +                       if (wrp->slave->comp_type =3D=3D PMIC_MT6332) {
-> +                               dew_regs =3D wrp->slave->comp_dew_regs;
-> +                               pwrap_write(wrp, dew_regs[PWRAP_DEW_RDDMY=
-_NO], 0x8);
-> +                       }
-> +               }
-> +               pwrap_writel(wrp, 0x88, PWRAP_RDDMY);
-> +               pwrap_init_chip_select_ext(wrp, 15, 15, 15, 15);
-> +               break;
->         case PWRAP_MT8173:
->                 pwrap_init_chip_select_ext(wrp, 0, 4, 2, 2);
->                 break;
-> @@ -1744,6 +1844,7 @@ static int pwrap_init_cipher(struct pmic_wrapper *w=
-rp)
->         case PWRAP_MT2701:
->         case PWRAP_MT6765:
->         case PWRAP_MT6779:
-> +       case PWRAP_MT6795:
->         case PWRAP_MT6797:
->         case PWRAP_MT8173:
->         case PWRAP_MT8186:
-> @@ -1914,6 +2015,19 @@ static int pwrap_mt2701_init_soc_specific(struct p=
-mic_wrapper *wrp)
->         return 0;
->  }
+>  static const u32 mt6351_regs[] =3D {
+>         [PWRAP_DEW_DIO_EN] =3D            0x02F2,
+>         [PWRAP_DEW_READ_TEST] =3D         0x02F4,
+> @@ -1182,6 +1216,8 @@ static int mt8186_regs[] =3D {
 >
-> +static int pwrap_mt6795_init_soc_specific(struct pmic_wrapper *wrp)
-> +{
-> +       pwrap_writel(wrp, 0xf, PWRAP_STAUPD_GRPEN);
-> +
-> +       if (wrp->slave->type =3D=3D PMIC_MT6331)
-> +               pwrap_writel(wrp, 0x1b4, PWRAP_EINT_STA0_ADR);
-> +
-> +       if (wrp->slave->comp_type =3D=3D PMIC_MT6332)
-> +               pwrap_writel(wrp, 0x8112, PWRAP_EINT_STA1_ADR);
-> +
-> +       return 0;
-> +}
-> +
->  static int pwrap_mt7622_init_soc_specific(struct pmic_wrapper *wrp)
->  {
->         pwrap_writel(wrp, 0, PWRAP_STAUPD_PRD);
-> @@ -1949,7 +2063,8 @@ static int pwrap_init(struct pmic_wrapper *wrp)
->         if (wrp->rstc_bridge)
->                 reset_control_reset(wrp->rstc_bridge);
->
-> -       if (wrp->master->type =3D=3D PWRAP_MT8173) {
-> +       if (wrp->master->type =3D=3D PWRAP_MT8173 ||
-> +           wrp->master->type =3D=3D PWRAP_MT6795) {
-
-I would prefer to put a switch case like it's done in
-"pwrap_common_init_reg_clock" or
-"pwrap_init_cipher".
-
-My second choice (which isn't aligned with the current
-implementation), is to add boolean
-capabilities in the "struct pmic_wrapper_type".
-
->                 /* Enable DCM */
->                 pwrap_writel(wrp, 3, PWRAP_DCM_EN);
->                 pwrap_writel(wrp, 0, PWRAP_DCM_DBC_PRD);
-> @@ -2185,6 +2300,19 @@ static const struct pmic_wrapper_type pwrap_mt6779=
- =3D {
->         .init_soc_specific =3D NULL,
+>  enum pmic_type {
+>         PMIC_MT6323,
+> +       PMIC_MT6331,
+> +       PMIC_MT6332,
+>         PMIC_MT6351,
+>         PMIC_MT6357,
+>         PMIC_MT6358,
+> @@ -2041,6 +2077,16 @@ static const struct pwrap_slv_type pmic_mt6323 =3D=
+ {
+>                 PWRAP_SLV_CAP_SECURITY,
 >  };
 >
-> +static const struct pmic_wrapper_type pwrap_mt6795 =3D {
-> +       .regs =3D mt6795_regs,
-> +       .type =3D PWRAP_MT6795,
-> +       .arb_en_all =3D 0x3f,
-> +       .int_en_all =3D ~(u32)(BIT(31) | BIT(2) | BIT(1)),
-> +       .int1_en_all =3D 0,
-> +       .spi_w =3D PWRAP_MAN_CMD_SPI_WRITE,
-> +       .wdt_src =3D PWRAP_WDT_SRC_MASK_NO_STAUPD,
-> +       .caps =3D PWRAP_CAP_RESET | PWRAP_CAP_DCM,
-> +       .init_reg_clock =3D pwrap_common_init_reg_clock,
-> +       .init_soc_specific =3D pwrap_mt6795_init_soc_specific,
-
-TBH, I don't know if variables should be reordered in alphabetic order
-or keep the order of other structures.
-it's just to notify.
-
+> +static const struct pwrap_slv_type pmic_mt6331 =3D {
+> +       .dew_regs =3D mt6331_regs,
+> +       .type =3D PMIC_MT6331,
+> +       .comp_dew_regs =3D mt6332_regs,
+> +       .comp_type =3D PMIC_MT6332,
+> +       .regops =3D &pwrap_regops16,
+> +       .caps =3D PWRAP_SLV_CAP_SPI | PWRAP_SLV_CAP_DUALIO |
+> +               PWRAP_SLV_CAP_SECURITY,
 > +};
 > +
->  static const struct pmic_wrapper_type pwrap_mt6797 =3D {
->         .regs =3D mt6797_regs,
->         .type =3D PWRAP_MT6797,
-> @@ -2318,6 +2446,7 @@ static const struct of_device_id of_pwrap_match_tbl=
-[] =3D {
->         { .compatible =3D "mediatek,mt2701-pwrap", .data =3D &pwrap_mt270=
-1 },
->         { .compatible =3D "mediatek,mt6765-pwrap", .data =3D &pwrap_mt676=
-5 },
->         { .compatible =3D "mediatek,mt6779-pwrap", .data =3D &pwrap_mt677=
-9 },
-> +       { .compatible =3D "mediatek,mt6795-pwrap", .data =3D &pwrap_mt679=
-5 },
->         { .compatible =3D "mediatek,mt6797-pwrap", .data =3D &pwrap_mt679=
-7 },
->         { .compatible =3D "mediatek,mt6873-pwrap", .data =3D &pwrap_mt687=
-3 },
->         { .compatible =3D "mediatek,mt7622-pwrap", .data =3D &pwrap_mt762=
-2 },
+>  static const struct pwrap_slv_type pmic_mt6351 =3D {
+>         .dew_regs =3D mt6351_regs,
+>         .type =3D PMIC_MT6351,
+> @@ -2086,6 +2132,7 @@ static const struct pwrap_slv_type pmic_mt6397 =3D =
+{
+>
+>  static const struct of_device_id of_slave_match_tbl[] =3D {
+>         { .compatible =3D "mediatek,mt6323", .data =3D &pmic_mt6323 },
+> +       { .compatible =3D "mediatek,mt6331", .data =3D &pmic_mt6331 },
+>         { .compatible =3D "mediatek,mt6351", .data =3D &pmic_mt6351 },
+>         { .compatible =3D "mediatek,mt6357", .data =3D &pmic_mt6357 },
+>         { .compatible =3D "mediatek,mt6358", .data =3D &pmic_mt6358 },
 > --
 > 2.40.0
 >
-
-Regards,
-Alex
