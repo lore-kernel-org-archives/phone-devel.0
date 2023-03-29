@@ -2,89 +2,103 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8627FC761AF
-	for <phone-devel@archiver.kernel.org>; Wed, 29 Mar 2023 15:43:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D01CBC6FD18
+	for <phone-devel@archiver.kernel.org>; Wed, 29 Mar 2023 15:49:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229788AbjC2PnU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 29 Mar 2023 11:43:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59620 "EHLO
+        id S229722AbjC2Pt2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 29 Mar 2023 11:49:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229811AbjC2PnT (ORCPT
+        with ESMTP id S229810AbjC2Pt1 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 29 Mar 2023 11:43:19 -0400
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F8BA2720;
-        Wed, 29 Mar 2023 08:43:18 -0700 (PDT)
-Received: by mail-pj1-x1033.google.com with SMTP id l7so14413814pjg.5;
-        Wed, 29 Mar 2023 08:43:18 -0700 (PDT)
+        Wed, 29 Mar 2023 11:49:27 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C70664EE6;
+        Wed, 29 Mar 2023 08:49:25 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id jy12so338453plb.8;
+        Wed, 29 Mar 2023 08:49:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680104598;
+        d=gmail.com; s=20210112; t=1680104965;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Es16+5r67lDTkeZGkNgX2L6ri/WdoWiVAuB5GMI9+FU=;
-        b=WpVQV2vBGC83MtKhnNev0kg80aWJ+jx48URZIlEqdDz2+oA7SNOuueBtYuSR/jjHSe
-         5Uk4941khc9MHuFmcxe2eHpRiD3TFRuAqjP8jpnYXUQAld5Ei+zLQaO89wkOn1/7GiKU
-         Dsf/HZykv9WD/JmggFTpVjI+h4Nl+r9AoHfn4lpCBiZ7ZTBMLg2YnbUl0I3n0BVeWBqD
-         O3tkytSP5BU7R/l+itbMtNDePZpjgHl7Ym3qGIHyTkDU+/0t9ebor29yS6WY3lczWYao
-         5Plee9CanuY5Uzg4dXNZWFnpqUBLAC5rG/X9/MFlQb2j1bPohONJPYSH+fW4BtOr5vKT
-         ukEA==
+        bh=+vL/Z2hUHOoRNlZ8vK1peaG8u3Hz3sYl8UlPc5uVwYo=;
+        b=b3Vl4oK8IImeQKY80tYxKC8IbJrOpjTAU8OSMK8zTlThaX1Tmx2ZT6ZdO/wWRHrZZV
+         0GgbMPHw9ztqIrW5OimlCMppP/IB2rlEJP9ZNNUC392AfLAuGp7rbzpimRVsr0qPxMHd
+         7R9SnUt0zQiR1sX9EbIurdPC7d7xcHj/P7F8XW8G0n8IpO+qDzzN10eMqaaxEbIdQbRG
+         vNKowQmJZ+w5mbMMxib8k57gfmR9hn2+Y0xIXlMeTY/QHfflUt2q8MbHPzoXTd3fweNQ
+         +dXS89GUFJnTiM0ubBM83msg/CyYiNy3nyw/Q8fSJJwEX3yB5HgeKKb8SaqW3LSYPr+5
+         Yn6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680104598;
+        d=1e100.net; s=20210112; t=1680104965;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Es16+5r67lDTkeZGkNgX2L6ri/WdoWiVAuB5GMI9+FU=;
-        b=qZU8GzCcKgwlNTTxFpXYmHTogeyeXtshV/d8hANyJZRcAthhPS07RkjUWVWTdrEmMK
-         XjYzBIrqkJf68G4BzqMCJzTIG27r7VRdtxIQoJp0J8nRcYCmILBQ2wg9aDvDkZtKyKPO
-         SIP1DqfsCwqagJeo3Z0zzMmYs81HlJEIL4542vmLe4qkTtrNQvhxxUvTIk3llttMcc4C
-         EM87iYjMbElW7mPQQnedLCtcV8p+/0+5cZfYd787OXdgYgbhL4s9eT1u/4EFt9PY3J7+
-         260tv/GVqXhfL19Og3MXW/Cb8f7MM38suJDZdlCXzHpPY+Rh+2ROTr6+hEydE0ZDoOe/
-         ER9g==
-X-Gm-Message-State: AAQBX9ciX29PdAHODSNnDrzVCKuWu7s0VT7RCJFf2oZV5DS5UZROWvFA
-        mCjem0W5v1DcEhgZqJbpLvc=
-X-Google-Smtp-Source: AKy350ZXDVdlAQT1MlVwLZOXdf2CwL8TWro1D/n5/ekFA4WdAGgoXvpltfTLuXro/ft7/M7dcNfC7Q==
-X-Received: by 2002:a17:902:da8e:b0:19c:c9d0:5bf8 with SMTP id j14-20020a170902da8e00b0019cc9d05bf8mr25108787plx.35.1680104598021;
-        Wed, 29 Mar 2023 08:43:18 -0700 (PDT)
+        bh=+vL/Z2hUHOoRNlZ8vK1peaG8u3Hz3sYl8UlPc5uVwYo=;
+        b=L4D+tW2S700bGotfvB/TJAa5ZZR45hxJNsem1ZWYyY2Z6Qfhxneb9VZcEunXTxQrTv
+         Rn8dLjEVUdvEETSg2bWXG14W0HuHdwSwadV20FxLp9oh4q3ER9wRYg8xLJfg+b+QVE91
+         dpik8UNu6e2TduuQVTxf90YqDrC/XQXoukMBOyp5X9hUfgq4Hy1mIPTDA8CGB1Ca9gA/
+         maV7tbWZP4yt+7uPAPq+L7TMj0cG0cG/k4+kVrIzNLqr3EXx43uvmxBFBZpUKW9qfjxj
+         mFjUaBYjmH6Xcf3A9UP22G9tDBYxFpdgkw22CPKfDKIO6fdMmUmxVgJ8IeYXv4MaJvkb
+         j3Jg==
+X-Gm-Message-State: AO0yUKX7XiYzZiH9mJf7rE2VVl/w7XPhuVO1bUGsu4zJnnTCVgR1tvP2
+        B5Ca3XWfP/CIvCSG+0WG8mc=
+X-Google-Smtp-Source: AK7set++hCqmKovdelYiJ5+jJFzodnQekyeY7x/9RhGU2tIB+qRGmT1PcNtVFnyvuqMh+sEPgj3cAw==
+X-Received: by 2002:a05:6a20:1e4d:b0:da:f525:e629 with SMTP id cy13-20020a056a201e4d00b000daf525e629mr17412798pzb.53.1680104964912;
+        Wed, 29 Mar 2023 08:49:24 -0700 (PDT)
 Received: from Gentoo (n220246252084.netvigator.com. [220.246.252.84])
-        by smtp.gmail.com with ESMTPSA id ay6-20020a1709028b8600b0019a997bca5csm23106033plb.121.2023.03.29.08.43.13
+        by smtp.gmail.com with ESMTPSA id u15-20020a62ed0f000000b0062a474cd46asm12813979pfh.137.2023.03.29.08.49.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Mar 2023 08:43:17 -0700 (PDT)
-Date:   Wed, 29 Mar 2023 23:43:10 +0800
+        Wed, 29 Mar 2023 08:49:24 -0700 (PDT)
+Date:   Wed, 29 Mar 2023 23:49:17 +0800
 From:   Jianhua Lu <lujianhua000@gmail.com>
 To:     Richard Fitzgerald <rf@opensource.cirrus.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+Cc:     Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Jaroslav Kysela <perex@perex.cz>,
         Takashi Iwai <tiwai@suse.com>,
         Simon Trimmer <simont@opensource.cirrus.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
         Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
         patches@opensource.cirrus.com, alsa-devel@alsa-project.org,
         linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
 Subject: Re: [PATCH] Asoc: wm_adsp: Add support for loading firmware with
  prefix name
-Message-ID: <ZCRcjgMWhV0dp8p0@Gentoo>
+Message-ID: <ZCRd/Uph/BY6tkc/@Gentoo>
 References: <20230329130525.15830-1-lujianhua000@gmail.com>
- <57c5a3b3-00cd-5b44-02f4-dedabacc7662@opensource.cirrus.com>
+ <20230329140524.GU68926@ediswmail.ad.cirrus.com>
+ <ZCRNRhI3+6jUbqvy@Gentoo>
+ <51cdc8df-9472-a604-3cca-ebaa7ae5d899@opensource.cirrus.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <57c5a3b3-00cd-5b44-02f4-dedabacc7662@opensource.cirrus.com>
+In-Reply-To: <51cdc8df-9472-a604-3cca-ebaa7ae5d899@opensource.cirrus.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Mar 29, 2023 at 04:33:08PM +0100, Richard Fitzgerald wrote:
-> On 29/3/23 14:05, Jianhua Lu wrote:
-> > For platform using fdt, system_name is NULL, it doesn't provide
-> > a way to load firmware with prefix name, so add it.
+On Wed, Mar 29, 2023 at 04:38:07PM +0100, Richard Fitzgerald wrote:
+> On 29/3/23 15:37, Jianhua Lu wrote:
+> > On Wed, Mar 29, 2023 at 02:05:24PM +0000, Charles Keepax wrote:
+> >>
+> >> This direction seems slightly problematic, especially in the
+> >> context of amps (which I presume this relates to, please let know
+> >> if that is wrong). It would probably be better to be fixing
+> >> things up such that the amp in question sets system_name when
+> >> registered through DT. Generally speaking the idea is the amp
+> > I also consider setting system_name when registered by DT, but I don't
+> > known setting what name to it. Card name or something else?
 > 
-> This is intended behavior.
+> It just has to be a unique string.
+> The normal process is that Cirrus would release the firmware with the
+> correct name for the platform, so the system-name matches the string in
+> those release firmware files.
 > 
-> To load per-amp tuning you must know the function of each amp.
-> You only know that if you know what hardware platform you are running
-> on.
+> Do you have an official firmware for your platform?
+My device is Xiaomi Pad 5 Pro, vendor releases wmfw firmware with
+default name, coeff firmware with prefix name(TL, TR and BL, BR....),
+don't contain a unique string in firmware name.
 > 
-> So if system_name is NULL it should fall back to generic firmware.
-Make sense
+> >>
+> >> Thanks,
+> >> Charles
