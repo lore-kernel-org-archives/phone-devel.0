@@ -2,109 +2,116 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BD8FC76195
-	for <phone-devel@archiver.kernel.org>; Tue, 28 Mar 2023 09:22:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75D38C77B60
+	for <phone-devel@archiver.kernel.org>; Wed, 29 Mar 2023 13:05:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230187AbjC1JWS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 28 Mar 2023 05:22:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49364 "EHLO
+        id S230124AbjC2NFy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 29 Mar 2023 09:05:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230518AbjC1JWP (ORCPT
+        with ESMTP id S230131AbjC2NFj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 28 Mar 2023 05:22:15 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBBAD59F1
-        for <phone-devel@vger.kernel.org>; Tue, 28 Mar 2023 02:22:13 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id r187so14175236ybr.6
-        for <phone-devel@vger.kernel.org>; Tue, 28 Mar 2023 02:22:13 -0700 (PDT)
+        Wed, 29 Mar 2023 09:05:39 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE7874C3E;
+        Wed, 29 Mar 2023 06:05:34 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id z18so9193043pgj.13;
+        Wed, 29 Mar 2023 06:05:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20210112.gappssmtp.com; s=20210112; t=1679995333;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WfEbC+QvlmYRFEpM334dDDmHLZzT53TFZ7pAp7zhwe4=;
-        b=O+6rpHUxMrocg+PNRSUNrl09ruDw8nFucVYoEuKiSkUoYU+rAaaZhtmXvt6TdGkwNP
-         M1b8yBJvevc5Zt7Jyzawt3sUx2+8btHWzfMFZYbqpV5ujpvuCnm6uUn66khGbaDrI4/b
-         BnOZaXOaZ1QBeFNUU7FRBwi2CjsBQzbK8g1XLS5nhmorHOweLMGd0v+/YX2qMdHObYeV
-         flOhgDotNum9SI+7uxyc4MfExqnGRtrmIxceFdg59KEnFajy5Cv80DUd+NdLRx8k3RA4
-         7LEesg4hoH8OgLFhlxClH+aKYg8loDZNrIsxSLEo9AIGjCJ+YOTdQbIxwY0yUZUkHLT6
-         Rexg==
+        d=gmail.com; s=20210112; t=1680095134;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jsSpCWEsDfnGoaRyyeTFl4Yy+RKBES/VujFMn4D6v78=;
+        b=kKA3vi+Sbovo5u5+fyCFosu5eQC2C3KVSABeLsujBVqtX/x+zMpbybujpO2IuBQOIT
+         DwJezqf2BIOT+pceWSbiFODF3jKmQxDorL/UKHXwkWd6522a+jrQzsPUwJJqFmnR22Uq
+         X+F7pPYDbnQcZXz30N3YxO2pYYf+YyoLBYU2RCKW+/f/WFkJ0+dLbFryTcGOkakK6aJ3
+         mYwSN4LjEzbHIJhEe6LBCj8jltVwVrHjEoaaktandxKKUk6gWoPnBSP0W0yMU5nzeFHb
+         hJdUEgAiVWG8V0nKMEgQ7to2Y7eEZRGxd04WpQn034AmPcee4Rpy7G3Fu+XuzmP+QP6m
+         S2IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679995333;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WfEbC+QvlmYRFEpM334dDDmHLZzT53TFZ7pAp7zhwe4=;
-        b=ZL5xhIkU6Kr8ROuzjv8CeW/cdx10Cg1a/Y2ejyjTMwkyI+TMGhmxpl/OHbYJOB3hEa
-         EGt309u/lZteg3h/TwnkSSl6KsDadA8celxHFx+whAt0xOUNP9aR2p3pswAWMXgwIdGf
-         3py3CyQRx9tDcMDBJxCQ3PbFL2OtG1vRqh1IyhBC+jwUGz1xPR+b2uUR7CzkVjbG5wYX
-         5PVgps39c3SxDX3/3HsVGcC5YHsRpl13PdIdQRQA9WCurAYJMATznrLQB/Qp9gptct/z
-         rqNwN+RlYZ/gBJAgfHlORFlqNrMoI0JnZlh0lGZ0nGwk6fQd3DVAnJrnkY+no9ST1NtL
-         PBNw==
-X-Gm-Message-State: AAQBX9djxWwpqRXCBr8cwHQeri9GmQ1Ot8foOPDQGaUW+JA7elbKqn60
-        Xmv3vtMKhQi7dD2AWO6dCo/qY5Gv5s9CGHxuQaUElw==
-X-Google-Smtp-Source: AKy350auimLGCr8ILoBzGItiYAiR4pgO8LPEdWrnD1Vk5Z4GVtmW4pyg+5kEg5lZTH5zOTSGFwsCl8xX2CPkdVQT06U=
-X-Received: by 2002:a25:a2c3:0:b0:b78:1b26:a642 with SMTP id
- c3-20020a25a2c3000000b00b781b26a642mr6658558ybn.1.1679995333140; Tue, 28 Mar
- 2023 02:22:13 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1680095134;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jsSpCWEsDfnGoaRyyeTFl4Yy+RKBES/VujFMn4D6v78=;
+        b=nRCsyBWvW3/HDgc1RwckBM+ZapP8dWGUwflggmgFdH/DfOC9YcYbhpY2YkgaE9PlvL
+         ABSGP159AuKEEdOX93d2COmwpMoNoH8cGjHAyU2S3cn+/SHGNANHqouELLEuUuXPWnYG
+         M/mm/vv1Cbscg3ylrozXlg40iss2TxUphgGrpLRgFWsNpzfmw83akpk7Suot9DhJu2e2
+         X1/DCgSC3mYfLhTFgHfjTQAAyzl6rxadM/2IH8okRJ60RM2Se21Id6HUgTL66P3gitIy
+         huyIHj3U7GlDJVKXYYVRNziKyrkn+p+Vl7VwMt5YHsWbF7aIGOZQ//OEnpor8zpgXk0e
+         s/Ow==
+X-Gm-Message-State: AAQBX9fbc5kPv+riS1f8lP96WZ8Jdez38W1dEh778eJHedW8GW0vNEap
+        0zv97zkz82r0wYzIhoHEzdY=
+X-Google-Smtp-Source: AKy350YHQ81/8HFFe4IFQNlTZHAgL9aVJ2OJjYSUJfpDcFXzmy0V7n5+Ir+YF95SPcnj0RdBdqvElg==
+X-Received: by 2002:a62:84c4:0:b0:628:134b:6b1c with SMTP id k187-20020a6284c4000000b00628134b6b1cmr21327044pfd.2.1680095134256;
+        Wed, 29 Mar 2023 06:05:34 -0700 (PDT)
+Received: from localhost.localdomain (n220246252084.netvigator.com. [220.246.252.84])
+        by smtp.gmail.com with ESMTPSA id n6-20020aa79046000000b005ae02dc5b94sm22790452pfo.219.2023.03.29.06.05.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Mar 2023 06:05:33 -0700 (PDT)
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Simon Trimmer <simont@opensource.cirrus.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Cc:     patches@opensource.cirrus.com, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jianhua Lu <lujianhua000@gmail.com>
+Subject: [PATCH] Asoc: wm_adsp: Add support for loading firmware with prefix name
+Date:   Wed, 29 Mar 2023 21:05:25 +0800
+Message-Id: <20230329130525.15830-1-lujianhua000@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230324094205.33266-1-angelogioacchino.delregno@collabora.com> <20230324094205.33266-4-angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230324094205.33266-4-angelogioacchino.delregno@collabora.com>
-From:   Alexandre Mergnat <amergnat@baylibre.com>
-Date:   Tue, 28 Mar 2023 11:22:02 +0200
-Message-ID: <CAFGrd9pjm97+Et-auw2rh4nWUJAcqXzy2cix42QJRx4UHNzq2g@mail.gmail.com>
-Subject: Re: [PATCH v2 3/6] soc: mediatek: pwrap: Add kerneldoc for struct pwrap_slv_type
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     matthias.bgg@gmail.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, flora.fu@mediatek.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, kernel@collabora.com,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Le ven. 24 mars 2023 =C3=A0 10:42, AngeloGioacchino Del Regno
-<angelogioacchino.delregno@collabora.com> a =C3=A9crit :
->
-> In preparation for adding new members with name abbreviations describe
-> the struct pwrap_slv_type with kerneldoc to enhance human readability.
->
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@coll=
-abora.com>
-> ---
->  drivers/soc/mediatek/mtk-pmic-wrap.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/soc/mediatek/mtk-pmic-wrap.c b/drivers/soc/mediatek/=
-mtk-pmic-wrap.c
-> index 5c500be48f7c..a33a1b1820cb 100644
-> --- a/drivers/soc/mediatek/mtk-pmic-wrap.c
-> +++ b/drivers/soc/mediatek/mtk-pmic-wrap.c
-> @@ -1218,11 +1218,17 @@ struct pwrap_slv_regops {
->         int (*pwrap_write)(struct pmic_wrapper *wrp, u32 adr, u32 wdata);
->  };
->
-> +/**
-> + * struct pwrap_slv_type - PMIC device wrapper definitions
-> + * @dew_regs:      Device Wrapper (DeW) register offsets
-> + * @type:          PMIC Type (model)
-> + * @regops:        Register R/W ops
-> + * @caps:          Capability flags for the target device
-> + */
->  struct pwrap_slv_type {
->         const u32 *dew_regs;
->         enum pmic_type type;
->         const struct pwrap_slv_regops *regops;
-> -       /* Flags indicating the capability for the target slave */
->         u32 caps;
->  };
+For platform using fdt, system_name is NULL, it doesn't provide
+a way to load firmware with prefix name, so add it.
 
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+---
+ sound/soc/codecs/wm_adsp.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-Regards,
-Alexandre
+diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
+index 216120b68b64..17481e42d440 100644
+--- a/sound/soc/codecs/wm_adsp.c
++++ b/sound/soc/codecs/wm_adsp.c
+@@ -760,6 +760,10 @@ static int wm_adsp_request_firmware_file(struct wm_adsp *dsp,
+ 		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s.%s", dir, dsp->part,
+ 				      dsp->fwf_name, wm_adsp_fw[dsp->fw].file, system_name,
+ 				      filetype);
++	else if (asoc_component_prefix)
++		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s.%s", dir, dsp->part,
++				      dsp->fwf_name, wm_adsp_fw[dsp->fw].file, asoc_component_prefix,
++				      filetype);
+ 	else
+ 		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s.%s", dir, dsp->part, dsp->fwf_name,
+ 				      wm_adsp_fw[dsp->fw].file, filetype);
+@@ -831,6 +835,16 @@ static int wm_adsp_request_firmware_files(struct wm_adsp *dsp,
+ 							      NULL, "bin");
+ 			return 0;
+ 		}
++	} else if (asoc_component_prefix) {
++		if (!wm_adsp_request_firmware_file(dsp, wmfw_firmware, wmfw_filename,
++						   cirrus_dir, NULL,
++						   asoc_component_prefix, "wmfw")) {
++			adsp_dbg(dsp, "Found '%s'\n", *wmfw_filename);
++			wm_adsp_request_firmware_file(dsp, coeff_firmware, coeff_filename,
++							      cirrus_dir, NULL,
++							      asoc_component_prefix, "bin");
++			return 0;
++		}
+ 	}
+ 
+ 	if (!wm_adsp_request_firmware_file(dsp, wmfw_firmware, wmfw_filename,
+-- 
+2.39.2
+
