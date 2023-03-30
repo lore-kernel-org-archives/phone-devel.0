@@ -2,37 +2,37 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77ED6C6FD1D
-	for <phone-devel@archiver.kernel.org>; Thu, 30 Mar 2023 16:54:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87E4BC77B60
+	for <phone-devel@archiver.kernel.org>; Thu, 30 Mar 2023 16:54:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231873AbjC3QyK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 30 Mar 2023 12:54:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38002 "EHLO
+        id S231932AbjC3QyL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 30 Mar 2023 12:54:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231969AbjC3Qxx (ORCPT
+        with ESMTP id S230101AbjC3Qx4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 30 Mar 2023 12:53:53 -0400
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C2F4EB6C;
-        Thu, 30 Mar 2023 09:53:42 -0700 (PDT)
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+        Thu, 30 Mar 2023 12:53:56 -0400
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [IPv6:2001:67c:2050:0:465::101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBBB7171B;
+        Thu, 30 Mar 2023 09:53:46 -0700 (PDT)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4PnTyW117gz9sxt;
-        Thu, 30 Mar 2023 18:53:39 +0200 (CEST)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4PnTyb3T7Cz9sbY;
+        Thu, 30 Mar 2023 18:53:43 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
-        s=MBO0001; t=1680195219;
+        s=MBO0001; t=1680195223;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=DJMlDYTEyZMoHy7ddCUlUChH74G+JU2iSWGTmKQqo+M=;
-        b=N70FlUmkzpGdLtb4sCzInMwZ+3Pn2B146YXQhW7SEuX7b8D4ht6UU0q84/RcRalDAy4zkf
-        +i30rIDZX5FgXlc5X0fU5z3wOdov5BYY2hAGxnOw1Xhh8LMZlE3Qd2kdG6nPddR9/VG0UZ
-        qnN40geJACXNrzSdQmmfDfAfO3dIEiXUd9BIBseZnz41SPZM3fnwygxkXRrfTije7lPDWU
-        87a9kqyXGIOXWnXVUAjAEXROXZcO5FkO55uxUdOxQpPa6t764K970WDIAvOqnJUCgGlXlJ
-        dSKdqGvXnVLjrwPP+tvWYNwrVz4ELw/51+DjqU04X/Kum4eimMN9OTJcGHZmRg==
+        bh=dKSbFG5DGVwvXJCZEdfm9iFVOlxnj2KKA0SRmRRz/mM=;
+        b=Xm03N916cgtDouzhEd8joAt0pt+gaeuj/NgdpBsez7EMQ9sj0HPDPOvxoaBOQcNGZOyDW+
+        ie164UorDGWtFMz3PsdbD/iROaatkYHsytzsLlU2KxeXFCkdipuFo7+RT/PEBt1MUf6B/X
+        kHYFfDV+vW182mDdv1bwba68sfzOUN6fB2g8Su9UoNsFyxLIDx9NnNlDPIz1dZvUjOKK2G
+        u+xzeV2yJwUqN6MvLle1GuoUv+UGyJYJ/rqdc2x2ThOGq2F4m8VvoiOlUR4KhrC0ksIv29
+        2VhCRHuw4YCL4T/jE8aBFhSvoEF/7jGl8YVGyKNnVVvr3my5GSa4InE7fFZ6tQ==
 From:   Dylan Van Assche <me@dylanvanassche.be>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -43,72 +43,40 @@ Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
         linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Dylan Van Assche <me@dylanvanassche.be>
-Subject: [PATCH v3 2/4] dts: arm64: qcom: sdm845: add SLPI FastRPC support
-Date:   Thu, 30 Mar 2023 18:53:20 +0200
-Message-Id: <20230330165322.118279-3-me@dylanvanassche.be>
+Subject: [PATCH v3 4/4] dts: arm64: qcom: sdm845-shift-axolotl: enable SLPI
+Date:   Thu, 30 Mar 2023 18:53:22 +0200
+Message-Id: <20230330165322.118279-5-me@dylanvanassche.be>
 In-Reply-To: <20230330165322.118279-1-me@dylanvanassche.be>
 References: <20230330165322.118279-1-me@dylanvanassche.be>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4PnTyW117gz9sxt
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Qualcomm SDM845 SoC features a SLPI DSP which uses FastRPC through
-an allocated memory region to load files from the host filesystem
-such as sensor configuration files.
-
-Add a FastRPC node at /dev/fastrpc-sdsp and a DMA region, similar to
-downstream, to allow userspace to communicate with the SLPI via the
-FastRPC interface for initializing the sensors on the SLPI.
+Enable the SLPI DSP on the SHIFTPHONES SHIFT6mq phone with a
+Qualcomm SDM845 SoC.
 
 Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index 3b547cb7aeb8..8ea4944f3ad6 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -878,6 +878,14 @@ mdata_mem: mpss-metadata {
- 			size = <0 0x4000>;
- 			no-map;
- 		};
-+
-+		fastrpc_mem: fastrpc {
-+			compatible = "shared-dma-pool";
-+			reusable;
-+			alloc-ranges = <0 0x00000000 0 0xffffffff>;
-+			alignment = <0 0x400000>;
-+			size = <0 0x1000000>;
-+		};
- 	};
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+index b54e304abf71..bd9571a258cf 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
+@@ -572,6 +572,11 @@ &qupv3_id_1 {
+ 	status = "okay";
+ };
  
- 	adsp_pas: remoteproc-adsp {
-@@ -3344,6 +3352,22 @@ glink-edge {
- 				label = "dsps";
- 				qcom,remote-pid = <3>;
- 				mboxes = <&apss_shared 24>;
++&slpi_pas {
++	firmware-name = "qcom/sdm845/axolotl/slpi.mbn";
++	status = "okay";
++};
 +
-+				fastrpc {
-+					compatible = "qcom,fastrpc";
-+					qcom,glink-channels = "fastrpcglink-apps-dsp";
-+					label = "sdsp";
-+					qcom,non-secure-domain;
-+					qcom,vmids = <0x3 0xF 0x5 0x6>;
-+					memory-region = <&fastrpc_mem>;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					compute-cb@0 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <0>;
-+					};
-+				};
- 			};
- 		};
+ &tlmm {
+ 	gpio-reserved-ranges = <0 4>, <81 4>;
  
 -- 
 2.39.2
