@@ -2,94 +2,122 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A8F1C74A5B
-	for <phone-devel@archiver.kernel.org>; Thu, 30 Mar 2023 03:51:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A3B2C77B77
+	for <phone-devel@archiver.kernel.org>; Thu, 30 Mar 2023 16:47:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbjC3Dvw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 29 Mar 2023 23:51:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33280 "EHLO
+        id S232370AbjC3QrV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 30 Mar 2023 12:47:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229532AbjC3Dvw (ORCPT
+        with ESMTP id S232278AbjC3Qqx (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 29 Mar 2023 23:51:52 -0400
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 583FB4ED4
-        for <phone-devel@vger.kernel.org>; Wed, 29 Mar 2023 20:51:51 -0700 (PDT)
-Received: by mail-pj1-x1033.google.com with SMTP id c4so50849pjs.4
-        for <phone-devel@vger.kernel.org>; Wed, 29 Mar 2023 20:51:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680148311;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e4e9QyhcBsAQeSGpoYgMIf5LsrO1sB7K1qNfkG2NcBE=;
-        b=IGlK+xAx2+0Yo/GwhQoVnpdG7PEmhwII1RKRSM+GOod/c9lLkaPb6XcM5TKoWxk0z7
-         mSWqiPkChriRIgax0x6qEs5jQ70FlVyEitlkwg9XRKImNomzVXU6+ULPtfkyH5WNT3m5
-         Iq1Tm1idufhE/EMzdd1yUnBmm7PRZ42kdRxAqsYsqPvlpW314mWYnkjru2ld3TAYIQlq
-         nGGaJo6GoyuqyeESgf4SNVmIgoQpCSUJCPlntSL99grtrcaqKM/Xxukzy2b4qQugf1P4
-         44q43Le8uo+fwG9/Cwk8FcNvbQvrDaK895vkWL7y6XzyGVjJoImyzy4w4pjkb8bQJcDa
-         FXtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680148311;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e4e9QyhcBsAQeSGpoYgMIf5LsrO1sB7K1qNfkG2NcBE=;
-        b=zPYt6tOy3FZvGJYBr/ke9tocS6XgGMhnnmSKoFwvp2RDLS4wUhmR6+aA1N7Jcads/O
-         vNKYguQiHv9DEGlsTaSYtNPJWtbsZckiqp6KILw6SyAssA8Q5T082CyzdlrRZ4TaNpl0
-         3F6wxRleWzUHDVJYFN2iE5mtHLg2Q1bU5m6BPtNzoll7EjeYH9k+/9Iy/d1ouEb+JqbX
-         fVZGnJnYacujeiB3bik9/tYgRGpoqYzgeVZNAiATEp5JBsZxH+87Ug1LsIAA+dLHBCwG
-         8WC0OPHdQN0kJIEhOM89Q4eB2WSQ6Zer2Pq6WaalrIuwmlyemTq6UBjBNLFVF12NeXur
-         8p2w==
-X-Gm-Message-State: AAQBX9d6A7s7iceL4OHD5nwCIkKBI0gSgPPnvzzICsV21roiUtIm2hOn
-        hifuGYulL+Cz4MIwuHRw+Qe4xg==
-X-Google-Smtp-Source: AKy350Y2dh1VU9r3ACKQ4ZdXYifXV0CkfmucICJZvfWMZ7ipucNyg7ut3lHP/KU0xY8PtNRF+CaEiA==
-X-Received: by 2002:a17:90b:4b4e:b0:23f:7e2e:fe13 with SMTP id mi14-20020a17090b4b4e00b0023f7e2efe13mr24105018pjb.0.1680148310985;
-        Wed, 29 Mar 2023 20:51:50 -0700 (PDT)
-Received: from localhost ([122.172.85.168])
-        by smtp.gmail.com with ESMTPSA id iz4-20020a170902ef8400b0019f9fd5c24asm23670525plb.207.2023.03.29.20.51.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Mar 2023 20:51:50 -0700 (PDT)
-Date:   Thu, 30 Mar 2023 09:21:48 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Thu, 30 Mar 2023 12:46:53 -0400
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F0FCDDF;
+        Thu, 30 Mar 2023 09:46:53 -0700 (PDT)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4PnTpc1HGdz9sTC;
+        Thu, 30 Mar 2023 18:46:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
+        s=MBO0001; t=1680194808;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Dve8PXl844i71M18PxPNBWl3dR+prUxJL+7txYXI2rQ=;
+        b=SmdZ2IBvZYPY/4ZZao2qcoIF4XaCpLvUkymXfTb1dtDGSLzi5TO9NFm3LPwvji1329w9P+
+        dX1eHMbxtvcVd1r8vmDFA+R1vVOu8tknzkT68wsPwo0yzB/q4XukRyKXcjSlsgwHyUSFcG
+        wgYt9DoZY9Bx8NolUYpNAeqFRCHDuzFZRp+z4M+O7TA3X1hsjW2yv/xRz05BbnPpx0hprm
+        LsWe/lLx33cu40DGjWPUSJzdXOIm05vF+DehpcwoIfAmGg4Xqpfj/cogj3km7PVRqyZCKs
+        GD/tS4dfE0POGBf2nC/Dp5n7k27DKHB6sJxD6pXsx2Qn4mlGcPgCuyoF5ftXmQ==
+From:   Dylan Van Assche <me@dylanvanassche.be>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: Add SM7225 to cpufreq-dt-platdev blocklist
-Message-ID: <20230330035148.7twrszrlmog2rdzt@vireshk-i7>
-References: <20230324-sm7225-cpufreq-v1-1-7c2e9a4ab7e3@fairphone.com>
+        Dylan Van Assche <me@dylanvanassche.be>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3 1/3] dt-bindings: remoteproc: qcom: adsp: add qcom,sdm845-slpi-pas compatible
+Date:   Thu, 30 Mar 2023 18:46:31 +0200
+Message-Id: <20230330164633.117335-2-me@dylanvanassche.be>
+In-Reply-To: <20230330164633.117335-1-me@dylanvanassche.be>
+References: <20230330164633.117335-1-me@dylanvanassche.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230324-sm7225-cpufreq-v1-1-7c2e9a4ab7e3@fairphone.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 24-03-23, 15:06, Luca Weiss wrote:
-> The Qualcomm SM7225 platform uses the qcom-cpufreq-hw driver, so add
-> it to the cpufreq-dt-platdev driver's blocklist.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  drivers/cpufreq/cpufreq-dt-platdev.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
-> index 5ac6b9e5270e..452181434735 100644
-> --- a/drivers/cpufreq/cpufreq-dt-platdev.c
-> +++ b/drivers/cpufreq/cpufreq-dt-platdev.c
-> @@ -152,6 +152,7 @@ static const struct of_device_id blocklist[] __initconst = {
->  	{ .compatible = "qcom,sm6115", },
->  	{ .compatible = "qcom,sm6350", },
->  	{ .compatible = "qcom,sm6375", },
-> +	{ .compatible = "qcom,sm7225", },
->  	{ .compatible = "qcom,sm8150", },
->  	{ .compatible = "qcom,sm8250", },
->  	{ .compatible = "qcom,sm8350", },
-> 
+SLPI DSP remoteproc on DSP is defined by the 'qcom,sdm845-slpi-pas'
+compatible in the qcom_q6v5_pas driver. Add this compatible to the
+devicetree bindings.
 
-Applied. Thanks.
+Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ .../bindings/remoteproc/qcom,adsp.yaml        | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
+diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
+index 643ee787a81f..eb4a440a661a 100644
+--- a/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
++++ b/Documentation/devicetree/bindings/remoteproc/qcom,adsp.yaml
+@@ -26,6 +26,7 @@ properties:
+       - qcom,sdm660-adsp-pas
+       - qcom,sdm845-adsp-pas
+       - qcom,sdm845-cdsp-pas
++      - qcom,sdm845-slpi-pas
+ 
+   reg:
+     maxItems: 1
+@@ -63,6 +64,7 @@ allOf:
+               - qcom,msm8998-adsp-pas
+               - qcom,sdm845-adsp-pas
+               - qcom,sdm845-cdsp-pas
++              - qcom,sdm845-slpi-pas
+     then:
+       properties:
+         clocks:
+@@ -104,6 +106,7 @@ allOf:
+               - qcom,msm8998-slpi-pas
+               - qcom,sdm845-adsp-pas
+               - qcom,sdm845-cdsp-pas
++              - qcom,sdm845-slpi-pas
+     then:
+       properties:
+         interrupts:
+@@ -157,6 +160,22 @@ allOf:
+       required:
+         - px-supply
+ 
++  - if:
++      properties:
++        compatible:
++          enum:
++            - qcom,sdm845-slpi-pas
++    then:
++      properties:
++        power-domains:
++          items:
++            - description: LCX power domain
++            - description: LMX power domain
++        power-domain-names:
++          items:
++            - const: lcx
++            - const: lmx
++
+   - if:
+       properties:
+         compatible:
 -- 
-viresh
+2.39.2
+
