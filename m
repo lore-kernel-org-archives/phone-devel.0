@@ -2,42 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E305CC6FD18
-	for <phone-devel@archiver.kernel.org>; Fri, 31 Mar 2023 13:14:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B0D8C77B6C
+	for <phone-devel@archiver.kernel.org>; Fri, 31 Mar 2023 16:58:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232799AbjCaNOn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 31 Mar 2023 09:14:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49514 "EHLO
+        id S231722AbjCaQ6j (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 31 Mar 2023 12:58:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232816AbjCaNOd (ORCPT
+        with ESMTP id S231136AbjCaQ6h (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 31 Mar 2023 09:14:33 -0400
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [IPv6:2001:67c:2050:0:465::101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 301A12061F;
-        Fri, 31 Mar 2023 06:14:17 -0700 (PDT)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4Pp12s2S9Zz9syH;
-        Fri, 31 Mar 2023 15:14:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
-        s=MBO0001; t=1680268453;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rNlamqJZPI1pREt0hFxVw7uj3j9kqBoV5fjNpXoUpCA=;
-        b=cAZuQsjcze0ruha73ofKnMyw5hwY1C13MelArknvE5IA68EkNtvxQCdfAM1eBZpyFyThVM
-        sr3qvvbqM5jtu4bZXGbnrjAcOm16XkeDDdnbb0RJXcVb84eeGxIOceauYG3l0DXFnrtL7O
-        TJl6hNVHARy8f4eahrO9eoTt1f5Nf+gS0oMaHsK5Wgpi3rx98jmT189UrEQUsfa3YIbqfW
-        WwE9G260L7B0Vixp8aiKRe0/Kb8UIL85IL/hpqdJ0pXZOtJXov9DoskGxqPbSqxemNzarl
-        StdhD2wd3S4unM9MHNrayi5PsZYHxuxoxMq8VbmiYsw9kjzmF2AZx5S3WdyGtA==
-Message-ID: <603ef0bf04b9c4f7f8e94e2ccece97ffa1b0582b.camel@dylanvanassche.be>
-Subject: Re: [PATCH v3 2/4] dts: arm64: qcom: sdm845: add SLPI FastRPC
- support
-From:   Dylan Van Assche <me@dylanvanassche.be>
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Fri, 31 Mar 2023 12:58:37 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06BD7CC36
+        for <phone-devel@vger.kernel.org>; Fri, 31 Mar 2023 09:58:35 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id k37so29794872lfv.0
+        for <phone-devel@vger.kernel.org>; Fri, 31 Mar 2023 09:58:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1680281913;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Hg1hXo3YKH/4ZXl0Bdlyb1YGCLWHlTSlPb8rJUV/Kbo=;
+        b=vjtUojPefRyqY+EWHbk0JjeTGM/N6xkAxTRRmYSI9XFQN/RSvrW/Ikqn3Eo/iFr5nd
+         oXDcgkPdtUorydkQgDPDs486K6MfxJXIMVOh+er2U3LOl1Vwy1CY2V9Vwr2K8fYKvFup
+         kA6p2zjiEAUhQkyFH74s3051Ryh3cCIET1sY486KCEcs9sXXjyoLgrtlClsSS9miNvSv
+         hCoHzL0DK5hankH/kLs0DJaiETHAc9IsOOR6OMuDR8mYlV6kDtCVCyzHUFBNMJgeCLtb
+         zPjMEu64v8haYCu2BJE1zkIfevKcQfnkykDu30Td7t3gU5j3GTL4XO2Sjjke9W9Wp44s
+         YleA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680281913;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hg1hXo3YKH/4ZXl0Bdlyb1YGCLWHlTSlPb8rJUV/Kbo=;
+        b=XXQTpUKBB8G4Bb+6oFf2xVTjnk9+6aC/YKU9ROVDBIl0hKaqjBLD0x7SNkCV/P6R+t
+         0rK5rOadZzvsw23WhAU5TvGqEjw9QNY6tqq+GvUiSPFR7dG5uFe0MPyNANLsA2GMgwrG
+         Jr+TgCvHOJVX8tyHF8AiLj7AB10pDK5OXwH63yPKMjHj2x4+/wKxSsUjlBtZD81UtDfm
+         RS4o/O34A4ZWcm/3PeXMJKah3rG3rSzs15pMCu+muWcNXGAjvOob2vTlO02ImPUN6KsT
+         JrLL4BJ9rH6Hn1WQEgleatcaC2M+yn/UvLyR51hYHh6WnHgXhbAE5s6QqGrp36bLmFcH
+         0kFQ==
+X-Gm-Message-State: AAQBX9db9p79r3sX7FqVuCPLz6ClUoOYp1wKR6OQic1xZsNRKfSaHsNJ
+        scwtwVVCxFT5dsirKQ7alYjgMQ==
+X-Google-Smtp-Source: AKy350ZrZLcTT2PuvoFqTFyfP0UYsKgVGSDG9xR3i4dZoLnDzfY2hfB9nbLERhwWRrcK9lXv+TMYrQ==
+X-Received: by 2002:a19:ad07:0:b0:4e8:c81b:1a11 with SMTP id t7-20020a19ad07000000b004e8c81b1a11mr7746310lfc.49.1680281913169;
+        Fri, 31 Mar 2023 09:58:33 -0700 (PDT)
+Received: from [192.168.1.101] (abxj225.neoplus.adsl.tpnet.pl. [83.9.3.225])
+        by smtp.gmail.com with ESMTPSA id w15-20020ac25d4f000000b004e81c9bb65csm440732lfd.282.2023.03.31.09.58.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Mar 2023 09:58:32 -0700 (PDT)
+Message-ID: <8f0d4b5b-211c-ac53-798e-70d2f2b3ab37@linaro.org>
+Date:   Fri, 31 Mar 2023 18:58:30 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 2/4] dts: arm64: qcom: sdm845: add SLPI FastRPC support
+Content-Language: en-US
+To:     Dylan Van Assche <me@dylanvanassche.be>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -45,114 +65,160 @@ To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
 Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Date:   Fri, 31 Mar 2023 15:14:10 +0200
-In-Reply-To: <e43e944c-9f65-cde5-5d8c-a76f33f99b44@linaro.org>
 References: <20230330165322.118279-1-me@dylanvanassche.be>
-         <20230330165322.118279-3-me@dylanvanassche.be>
-         <f9a4a2de-42f8-676a-ae6d-d20391206f83@linaro.org>
-         <e7b73a24b8ba76cb6dc9921f73c47632a749b93f.camel@dylanvanassche.be>
-         <e43e944c-9f65-cde5-5d8c-a76f33f99b44@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+ <20230330165322.118279-3-me@dylanvanassche.be>
+ <f9a4a2de-42f8-676a-ae6d-d20391206f83@linaro.org>
+ <e7b73a24b8ba76cb6dc9921f73c47632a749b93f.camel@dylanvanassche.be>
+ <e43e944c-9f65-cde5-5d8c-a76f33f99b44@linaro.org>
+ <603ef0bf04b9c4f7f8e94e2ccece97ffa1b0582b.camel@dylanvanassche.be>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <603ef0bf04b9c4f7f8e94e2ccece97ffa1b0582b.camel@dylanvanassche.be>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-T24gRnJpLCAyMDIzLTAzLTMxIGF0IDE0OjIwICswMjAwLCBLb25yYWQgRHliY2lvIHdyb3RlOgo+
-IAo+IAo+IE9uIDMxLjAzLjIwMjMgMTE6MzYsIER5bGFuIFZhbiBBc3NjaGUgd3JvdGU6Cj4gPiBI
-aSBLb25yYWQsCj4gPiAKPiA+IE9uIEZyaSwgMjAyMy0wMy0zMSBhdCAwNDowMyArMDIwMCwgS29u
-cmFkIER5YmNpbyB3cm90ZToKPiA+ID4gCj4gPiA+IAo+ID4gPiBPbiAzMC4wMy4yMDIzIDE4OjUz
-LCBEeWxhbiBWYW4gQXNzY2hlIHdyb3RlOgo+ID4gPiA+IFF1YWxjb21tIFNETTg0NSBTb0MgZmVh
-dHVyZXMgYSBTTFBJIERTUCB3aGljaCB1c2VzIEZhc3RSUEMKPiA+ID4gPiB0aHJvdWdoCj4gPiA+
-ID4gYW4gYWxsb2NhdGVkIG1lbW9yeSByZWdpb24gdG8gbG9hZCBmaWxlcyBmcm9tIHRoZSBob3N0
-Cj4gPiA+ID4gZmlsZXN5c3RlbQo+ID4gPiA+IHN1Y2ggYXMgc2Vuc29yIGNvbmZpZ3VyYXRpb24g
-ZmlsZXMuCj4gPiA+ID4gCj4gPiA+ID4gQWRkIGEgRmFzdFJQQyBub2RlIGF0IC9kZXYvZmFzdHJw
-Yy1zZHNwIGFuZCBhIERNQSByZWdpb24sCj4gPiA+ID4gc2ltaWxhcgo+ID4gPiA+IHRvCj4gPiA+
-ID4gZG93bnN0cmVhbSwgdG8gYWxsb3cgdXNlcnNwYWNlIHRvIGNvbW11bmljYXRlIHdpdGggdGhl
-IFNMUEkgdmlhCj4gPiA+ID4gdGhlCj4gPiA+ID4gRmFzdFJQQyBpbnRlcmZhY2UgZm9yIGluaXRp
-YWxpemluZyB0aGUgc2Vuc29ycyBvbiB0aGUgU0xQSS4KPiA+ID4gPiAKPiA+ID4gPiBTaWduZWQt
-b2ZmLWJ5OiBEeWxhbiBWYW4gQXNzY2hlIDxtZUBkeWxhbnZhbmFzc2NoZS5iZT4KPiA+ID4gPiAt
-LS0KPiA+ID4gPiDCoGFyY2gvYXJtNjQvYm9vdC9kdHMvcWNvbS9zZG04NDUuZHRzaSB8IDI0Cj4g
-PiA+ID4gKysrKysrKysrKysrKysrKysrKysrKysrCj4gPiA+ID4gwqAxIGZpbGUgY2hhbmdlZCwg
-MjQgaW5zZXJ0aW9ucygrKQo+ID4gPiA+IAo+ID4gPiA+IGRpZmYgLS1naXQgYS9hcmNoL2FybTY0
-L2Jvb3QvZHRzL3Fjb20vc2RtODQ1LmR0c2kKPiA+ID4gPiBiL2FyY2gvYXJtNjQvYm9vdC9kdHMv
-cWNvbS9zZG04NDUuZHRzaQo+ID4gPiA+IGluZGV4IDNiNTQ3Y2I3YWViOC4uOGVhNDk0NGYzYWQ2
-IDEwMDY0NAo+ID4gPiA+IC0tLSBhL2FyY2gvYXJtNjQvYm9vdC9kdHMvcWNvbS9zZG04NDUuZHRz
-aQo+ID4gPiA+ICsrKyBiL2FyY2gvYXJtNjQvYm9vdC9kdHMvcWNvbS9zZG04NDUuZHRzaQo+ID4g
-PiA+IEBAIC04NzgsNiArODc4LDE0IEBAIG1kYXRhX21lbTogbXBzcy1tZXRhZGF0YSB7Cj4gPiA+
-ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc2l6ZSA9
-IDwwIDB4NDAwMD47Cj4gPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgbm8tbWFwOwo+ID4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgfTsKPiA+ID4gPiArCj4gPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZh
-c3RycGNfbWVtOiBmYXN0cnBjIHsKPiA+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoGNvbXBhdGlibGUgPSAic2hhcmVkLWRtYS1wb29sIjsKPiA+ID4g
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldXNhYmxl
-Owo+ID4gPiBQbGVhc2UgbW92ZSBpdCBsYXN0IHRvIGdldCBhIG5pY2UgcmV2ZXJzZS1DaHJpc3Rt
-YXMtdHJlZSBsYXlvdXQuCj4gPiA+IAo+ID4gCj4gPiBXaWxsIGZpeCBpbiB2NC4KPiA+IAo+ID4g
-PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYWxsb2Mt
-cmFuZ2VzID0gPDAgMHgwMDAwMDAwMCAwCj4gPiA+ID4gMHhmZmZmZmZmZj47Cj4gPiA+IFdvdWxk
-IHRoZXJlIGJlIGFueSBpc3N1ZXMgd2l0aCBpdCBzdGFydGluZyBvdmVyICgxPDwzMSAtIDEpPwo+
-ID4gPiAKPiA+IAo+ID4gWW91IG1lYW4gYSBiaWdnZXIgcmVnaW9uIHRoZW4sIGxpa2UgdGhlIHdo
-b2xlIENNQSByZWdpb24gdGhlbj8KPiA+IEFGQUlLLAo+ID4gdGhlIFNMUEkgYWx3YXlzIHVzZSB0
-aGUgc2FtZSByZWdpb24gZXhwZWN0aW5nIGl0IHRvIGJlIGluIHRoaXMKPiA+IHJhbmdlLgo+ID4g
-SG93ZXZlciwgSSBjYW5ub3QgY29uZmlybSBtb3JlLCBhcyBJIGhhdmUgbm8gaW5zaWdodHMgaW4g
-dGhlCj4gPiBmaXJtd2FyZQo+ID4gcnVubmluZyBvbiB0aGVyZSwgdGhpcyBhbGwgY29tZXMgZnJv
-bSBmaW5kaW5nIG91dCB3aGF0IGl0IGV4YWN0bHkKPiA+IGRvZXMKPiA+IG9uIGRvd25zdHJlYW0u
-Cj4gSSB3YXMgYXNraW5nIGFib3V0IHRoZSA8Li4gMCAweGZmZi5mPiBwYXJ0IHNwZWNpZmljYWxs
-eSwgYXMgdGhhdAo+IG1lYW5zCj4gaXQgY2FuJ3QgYmUgYWxsb2NhdGVkIGFib3ZlIDQgZ2lncy4g
-QnV0IEkgZ3Vlc3MgaXQncyBqdXN0IGhvdyBxY29tCj4gZW52aXNpb25lZCBpdC4KPiAKCkkgdGhp
-bmsgaXQgaXMgbGltaXRlZCBieSBxY29tLCBidXQgSSBjYW5ub3QgYmUgZW50aXJlbHkgc3VyZSA6
-KQpJbiBhbnkgY2FzZSwgZm9yIHY0LCBkbyBJIGtlZXAgMHhmZmZmZmZmZj8KCj4gQWxzbywgcGxl
-YXNlIHVzZSAweDAgaW4gYWxsb2MtcmFuZ2VzIGFzIHdlbGwsIHRoaXMgaXMgYWxsIGFkZHJlc3Nl
-cy8KPiByZWcgc2l6ZXMuCj4gCj4gS29ucmFkCgpZZXMsIHdpbGwgdXNlIDB4MCBpbnN0ZWFkIG9m
-IDAuCgpEeWxhbgoKPiA+IAo+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgYWxpZ25tZW50ID0gPDAgMHg0MDAwMDA+Owo+ID4gPiBQbGVhc2UgdXNl
-IDB4MCBmb3IgdGhlIDAgaGVyZSwgYXMgaXQncyBlc3NlbnRpYWxseSByZWcuc2l6ZSB3aXRoCj4g
-PiA+IHNpemUtY2VsbHMgPSAyCj4gPiAKPiA+IFdpbGwgZml4IGluIHY0Lgo+ID4gCj4gPiA+IAo+
-ID4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc2l6
-ZSA9IDwwIDB4MTAwMDAwMD47Cj4gPiA+IERpdHRvCj4gPiAKPiA+IFdpbGwgZml4IGluIHY0Lgo+
-ID4gCj4gPiA+IAo+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Owo+ID4g
-PiA+IMKgwqDCoMKgwqDCoMKgwqB9Owo+ID4gPiA+IMKgCj4gPiA+ID4gwqDCoMKgwqDCoMKgwqDC
-oGFkc3BfcGFzOiByZW1vdGVwcm9jLWFkc3Agewo+ID4gPiA+IEBAIC0zMzQ0LDYgKzMzNTIsMjIg
-QEAgZ2xpbmstZWRnZSB7Cj4gPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGxhYmVsID0gImRzcHMiOwo+ID4gPiA+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqBxY29tLHJlbW90ZS1waWQgPSA8Mz47Cj4gPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoG1ib3hlcyA9IDwmYXBz
-c19zaGFyZWQgMjQ+Owo+ID4gPiA+ICsKPiA+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmYXN0cnBjIHsKPiA+ID4gPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgY29tcGF0aWJsZSA9Cj4gPiA+ID4gInFjb20sZmFzdHJwYyI7
-Cj4gPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHFjb20sZ2xpbmstY2hhbm5lbHMgPQo+ID4g
-PiA+ICJmYXN0cnBjZ2xpbmstYXBwcy1kc3AiOwo+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqBsYWJlbCA9ICJzZHNwIjsKPiA+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcWNvbSxub24t
-c2VjdXJlLWRvbWFpbjsKPiA+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcWNvbSx2bWlkcyA9
-IDwweDMgMHhGCj4gPiA+ID4gMHg1Cj4gPiA+ID4gMHg2PjsKPiA+ID4gUGxlYXNlIHVzZSB0aGUg
-cmVjZW50bHktaW50cm9kdWNlZCBoZWFkZXIgYW5kIGRlcGVuZCBvbiAoYW5kCj4gPiA+IG1ha2Ug
-YSBwYXRjaCBhdG9wKQo+ID4gPiAKPiA+ID4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgt
-YXJtLW1zbS84Njg1YjcxMC1iNzRkLTU1NmEtODE1ZC0wZmZlZjJiMGVlZmZAbGluYXJvLm9yZy9U
-LyN0Cj4gPiA+IAo+ID4gPiBLb25yYWQKPiA+ID4gCj4gPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoG1lbW9yeS1yZWdpb24gPQo+ID4gPiA+IDwmZmFzdHJwY19tZW0+Owo+ID4gPiA+ICvCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAjYWRkcmVzcy1jZWxscyA9IDwxPjsKPiA+ID4gPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgI3NpemUtY2VsbHMgPSA8MD47Cj4gPiA+ID4gKwo+ID4gPiA+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqBjb21wdXRlLWNiQDAgewo+ID4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgY29tcGF0aWJsZSA9Cj4gPiA+ID4gInFjb20sZmFzdHJwYy1jb21w
-dXRlLWNiIjsKPiA+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJl
-ZyA9IDwwPjsKPiA+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfTsKPiA+ID4gPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9
-Owo+ID4gPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oH07Cj4gPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Owo+ID4gPiA+IMKg
-Cj4gPiAKPiA+IEtpbmQgcmVnYXJkcywKPiA+IER5bGFuCgo=
 
+
+On 31.03.2023 15:14, Dylan Van Assche wrote:
+> On Fri, 2023-03-31 at 14:20 +0200, Konrad Dybcio wrote:
+>>
+>>
+>> On 31.03.2023 11:36, Dylan Van Assche wrote:
+>>> Hi Konrad,
+>>>
+>>> On Fri, 2023-03-31 at 04:03 +0200, Konrad Dybcio wrote:
+>>>>
+>>>>
+>>>> On 30.03.2023 18:53, Dylan Van Assche wrote:
+>>>>> Qualcomm SDM845 SoC features a SLPI DSP which uses FastRPC
+>>>>> through
+>>>>> an allocated memory region to load files from the host
+>>>>> filesystem
+>>>>> such as sensor configuration files.
+>>>>>
+>>>>> Add a FastRPC node at /dev/fastrpc-sdsp and a DMA region,
+>>>>> similar
+>>>>> to
+>>>>> downstream, to allow userspace to communicate with the SLPI via
+>>>>> the
+>>>>> FastRPC interface for initializing the sensors on the SLPI.
+>>>>>
+>>>>> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+>>>>> ---
+>>>>>  arch/arm64/boot/dts/qcom/sdm845.dtsi | 24
+>>>>> ++++++++++++++++++++++++
+>>>>>  1 file changed, 24 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi
+>>>>> b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+>>>>> index 3b547cb7aeb8..8ea4944f3ad6 100644
+>>>>> --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
+>>>>> +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+>>>>> @@ -878,6 +878,14 @@ mdata_mem: mpss-metadata {
+>>>>>                         size = <0 0x4000>;
+>>>>>                         no-map;
+>>>>>                 };
+>>>>> +
+>>>>> +               fastrpc_mem: fastrpc {
+>>>>> +                       compatible = "shared-dma-pool";
+>>>>> +                       reusable;
+>>>> Please move it last to get a nice reverse-Christmas-tree layout.
+>>>>
+>>>
+>>> Will fix in v4.
+>>>
+>>>>> +                       alloc-ranges = <0 0x00000000 0
+>>>>> 0xffffffff>;
+>>>> Would there be any issues with it starting over (1<<31 - 1)?
+>>>>
+>>>
+>>> You mean a bigger region then, like the whole CMA region then?
+>>> AFAIK,
+>>> the SLPI always use the same region expecting it to be in this
+>>> range.
+>>> However, I cannot confirm more, as I have no insights in the
+>>> firmware
+>>> running on there, this all comes from finding out what it exactly
+>>> does
+>>> on downstream.
+>> I was asking about the <.. 0 0xfff.f> part specifically, as that
+>> means
+>> it can't be allocated above 4 gigs. But I guess it's just how qcom
+>> envisioned it.
+>>
+> 
+> I think it is limited by qcom, but I cannot be entirely sure :)
+> In any case, for v4, do I keep 0xffffffff?
+Yep, let's not stray into the unknown..
+
+Konrad
+> 
+>> Also, please use 0x0 in alloc-ranges as well, this is all addresses/
+>> reg sizes.
+>>
+>> Konrad
+> 
+> Yes, will use 0x0 instead of 0.
+> 
+> Dylan
+> 
+>>>
+>>>>> +                       alignment = <0 0x400000>;
+>>>> Please use 0x0 for the 0 here, as it's essentially reg.size with
+>>>> size-cells = 2
+>>>
+>>> Will fix in v4.
+>>>
+>>>>
+>>>>> +                       size = <0 0x1000000>;
+>>>> Ditto
+>>>
+>>> Will fix in v4.
+>>>
+>>>>
+>>>>> +               };
+>>>>>         };
+>>>>>  
+>>>>>         adsp_pas: remoteproc-adsp {
+>>>>> @@ -3344,6 +3352,22 @@ glink-edge {
+>>>>>                                 label = "dsps";
+>>>>>                                 qcom,remote-pid = <3>;
+>>>>>                                 mboxes = <&apss_shared 24>;
+>>>>> +
+>>>>> +                               fastrpc {
+>>>>> +                                       compatible =
+>>>>> "qcom,fastrpc";
+>>>>> +                                       qcom,glink-channels =
+>>>>> "fastrpcglink-apps-dsp";
+>>>>> +                                       label = "sdsp";
+>>>>> +                                       qcom,non-secure-domain;
+>>>>> +                                       qcom,vmids = <0x3 0xF
+>>>>> 0x5
+>>>>> 0x6>;
+>>>> Please use the recently-introduced header and depend on (and
+>>>> make a patch atop)
+>>>>
+>>>> https://lore.kernel.org/linux-arm-msm/8685b710-b74d-556a-815d-0ffef2b0eeff@linaro.org/T/#t
+>>>>
+>>>> Konrad
+>>>>
+>>>>> +                                       memory-region =
+>>>>> <&fastrpc_mem>;
+>>>>> +                                       #address-cells = <1>;
+>>>>> +                                       #size-cells = <0>;
+>>>>> +
+>>>>> +                                       compute-cb@0 {
+>>>>> +                                               compatible =
+>>>>> "qcom,fastrpc-compute-cb";
+>>>>> +                                               reg = <0>;
+>>>>> +                                       };
+>>>>> +                               };
+>>>>>                         };
+>>>>>                 };
+>>>>>  
+>>>
+>>> Kind regards,
+>>> Dylan
+> 
