@@ -2,109 +2,192 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58E48C6FD18
-	for <phone-devel@archiver.kernel.org>; Fri, 31 Mar 2023 09:43:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2444C76196
+	for <phone-devel@archiver.kernel.org>; Fri, 31 Mar 2023 12:21:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231882AbjCaJnZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 31 Mar 2023 05:43:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34316 "EHLO
+        id S232390AbjCaMVc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 31 Mar 2023 08:21:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232054AbjCaJnP (ORCPT
+        with ESMTP id S232146AbjCaMVI (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 31 Mar 2023 05:43:15 -0400
-Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC6F51F783;
-        Fri, 31 Mar 2023 02:42:49 -0700 (PDT)
-Received: from hillosipuli.retiisi.eu (dkzcv-3yyyyyyyyyyyyyt-3.rev.dnainternet.fi [IPv6:2001:14ba:4505:1fdc::1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: sailus)
-        by meesny.iki.fi (Postfix) with ESMTPSA id 4PnwLD2CtzzyRB;
-        Fri, 31 Mar 2023 12:42:12 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-        t=1680255734;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=puXl1O5LTLm6mQC1hY7tBUYCwI/kPsGafEK/CuEAVhM=;
-        b=J8sJddVL9ds5RZrJJVE6QICLnEV+Q9LHZ3tVXQLhln9EOv4JZIIC3LBuXaj1ZsSrkZa9w1
-        og3HojgJki8ayz+ESSOdoY8S6QuOWuFEsaIiOLBNRQjxQnx3O7ZlOg6uhTaSkMava9NMhL
-        U3tRe1L9TtmAIV8EHwlxC9E5XE1pcsk=
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1680255734; a=rsa-sha256; cv=none;
-        b=tAa0IExFH7cbCQ2EDGsYFAeoVVC77NOWpDz8LScrE6s6R0r7Y3vaxujy9NXEdFmoA0Yxg4
-        bFb0iQFY0ajiHBi9ZZJYyXEOQTEddl9VlwRuMN4fS8NLzD9khLqmPy9rFHhHoC+a0WwvTV
-        eOe8iUQii5P/kjSunKAurL6TyVoyOo8=
-ARC-Authentication-Results: i=1;
-        ORIGINATING;
-        auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-        s=meesny; t=1680255734;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=puXl1O5LTLm6mQC1hY7tBUYCwI/kPsGafEK/CuEAVhM=;
-        b=d6sCkbwuvAkqzIyKF1nM1fVHhznKjvI5Jza4Ahb0FDDIdZrz/VMR5XqnNLd6/kPnSn+x8L
-        cEw5mhMGG3Vc17amBKOhb483aKjp6NW6K5CUWFo+TVwpby55wuV70/2wcBKiji7DchldNY
-        s5xt9+D4z5TiVc32lFsLpFzLNJe9usg=
-Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by hillosipuli.retiisi.eu (Postfix) with ESMTPS id 03A26634C99;
-        Fri, 31 Mar 2023 12:39:56 +0300 (EEST)
-Date:   Fri, 31 Mar 2023 12:39:56 +0300
-From:   Sakari Ailus <sakari.ailus@iki.fi>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Shunqian Zheng <zhengsq@rock-chips.com>,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-        linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v4 2/3] media: dt-bindings: ov2685: convert to dtschema
-Message-ID: <ZCaqbL4plknXYPCT@valkosipuli.retiisi.eu>
-References: <20230129-ov2685-improvements-v4-0-e71985c5c848@z3ntu.xyz>
- <20230129-ov2685-improvements-v4-2-e71985c5c848@z3ntu.xyz>
- <ZCacNEbg8cJo0VAm@valkosipuli.retiisi.eu>
- <9AF47749-12CB-40D5-A300-170A35390CFD@z3ntu.xyz>
+        Fri, 31 Mar 2023 08:21:08 -0400
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9DC320C0F
+        for <phone-devel@vger.kernel.org>; Fri, 31 Mar 2023 05:20:32 -0700 (PDT)
+Received: by mail-lj1-x22e.google.com with SMTP id z42so22773886ljq.13
+        for <phone-devel@vger.kernel.org>; Fri, 31 Mar 2023 05:20:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1680265229;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=H16BPzJztbd3HhazhXcI1P8r1+/2++5vbOFamiLRHNU=;
+        b=BlVahfuPWT0j8HZz1RZflHoZMFUESz2hAMgu4LPi2xdY6ayIz7DfuR0yABB8ZvZrkW
+         sYr2e7zHM6nx0it+FEg4yPH8bAmP/s8b8tewooNgjV5WKeU4VRRu4JzH9iileUN/d50X
+         /LHlb0FwzEAYMfQncZV7vDxmjchcsXW32fNK+jaaN/wYfH91kFHW6B4PgbMP5yawUuEe
+         XzEQco64VoJ5916HPH+lBfAxC7JbqHKgEevMl+1Y3XqNSgaxrUhs9ZIo8DMr9f1nnRBE
+         tYTSpkqFmDtkhUGBIndFEOP3qMrWrxkFVG2YDRGb36HRQ/hgVagRhO64OgfM6QLBBGZm
+         xBxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680265229;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=H16BPzJztbd3HhazhXcI1P8r1+/2++5vbOFamiLRHNU=;
+        b=VvJYNsfAP4wTl8NJqRR1yCAQaCSKKLWfpzD/zxC6kuVAuxR+6qa7pMi0MrFp4WCTnP
+         ny08z2GLNoTrW5OY86ztxU9YCybGfx5jMkEyFMxbBhZE5P6o4NQVkG6goiTuWUHtdEea
+         MQeIs6KrAJHMP0G60I0BmQXKxOPD0SFl0GW/Uy52mMQfnhWlQi7GS1yIgvzIY7I/6xyW
+         pcqWCEpLbyX36oC9PY7uRnfkzozjhbs8wCeTSAPAq8vAfYSXXDbfyfi7z8YSSNpDF5nw
+         G5xHd14q2ih9xvIKYMiP2LVbvQTa0vPGzFmdlsahJkWMerdpwbjK+zubI9ZuBLrszuqa
+         Aj8Q==
+X-Gm-Message-State: AAQBX9dZmEQPHjkttPD6+GEVD95yXZaqi8qxU5rP97WoExl89IBo+IUP
+        DLZV6bQX6Lx/QFZkyjUvPsqfnw==
+X-Google-Smtp-Source: AKy350Z/1M/vqT1JYEJ7bqIsbB1UnFAUGbHJ5SekA9BN0UeXAuixfK9k4n5Z3qziMPSbTFX/QOLrHg==
+X-Received: by 2002:a2e:7c10:0:b0:29c:956f:536f with SMTP id x16-20020a2e7c10000000b0029c956f536fmr7373518ljc.52.1680265228952;
+        Fri, 31 Mar 2023 05:20:28 -0700 (PDT)
+Received: from [192.168.1.101] (abxj225.neoplus.adsl.tpnet.pl. [83.9.3.225])
+        by smtp.gmail.com with ESMTPSA id o24-20020a2e7318000000b002934b9ce521sm343867ljc.10.2023.03.31.05.20.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 Mar 2023 05:20:28 -0700 (PDT)
+Message-ID: <e43e944c-9f65-cde5-5d8c-a76f33f99b44@linaro.org>
+Date:   Fri, 31 Mar 2023 14:20:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9AF47749-12CB-40D5-A300-170A35390CFD@z3ntu.xyz>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 2/4] dts: arm64: qcom: sdm845: add SLPI FastRPC support
+To:     Dylan Van Assche <me@dylanvanassche.be>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230330165322.118279-1-me@dylanvanassche.be>
+ <20230330165322.118279-3-me@dylanvanassche.be>
+ <f9a4a2de-42f8-676a-ae6d-d20391206f83@linaro.org>
+ <e7b73a24b8ba76cb6dc9921f73c47632a749b93f.camel@dylanvanassche.be>
+Content-Language: en-US
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <e7b73a24b8ba76cb6dc9921f73c47632a749b93f.camel@dylanvanassche.be>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Luca,
 
-On Fri, Mar 31, 2023 at 11:18:29AM +0200, Luca Weiss wrote:
-> >> +        properties:
-> >> +          data-lanes:
-> >> +            maxItems: 1
-> >
-> >This should be 2 --- the sensor supports two lanes (even if the driver
-> >doesn't).
+
+On 31.03.2023 11:36, Dylan Van Assche wrote:
+> Hi Konrad,
 > 
-> Right, for some reason the product brief mentions that it features "a
-> single-lane MIPI interface" but the datasheet I have writes that it has a
-> 2-lane MIPI serial output, so I guess it does support two lanes?
-
-I suppose the datasheet is right. Well, if someone proves otherwise, we can
-always change this.
-
+> On Fri, 2023-03-31 at 04:03 +0200, Konrad Dybcio wrote:
+>>
+>>
+>> On 30.03.2023 18:53, Dylan Van Assche wrote:
+>>> Qualcomm SDM845 SoC features a SLPI DSP which uses FastRPC through
+>>> an allocated memory region to load files from the host filesystem
+>>> such as sensor configuration files.
+>>>
+>>> Add a FastRPC node at /dev/fastrpc-sdsp and a DMA region, similar
+>>> to
+>>> downstream, to allow userspace to communicate with the SLPI via the
+>>> FastRPC interface for initializing the sensors on the SLPI.
+>>>
+>>> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+>>> ---
+>>>  arch/arm64/boot/dts/qcom/sdm845.dtsi | 24 ++++++++++++++++++++++++
+>>>  1 file changed, 24 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi
+>>> b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+>>> index 3b547cb7aeb8..8ea4944f3ad6 100644
+>>> --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
+>>> +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+>>> @@ -878,6 +878,14 @@ mdata_mem: mpss-metadata {
+>>>                         size = <0 0x4000>;
+>>>                         no-map;
+>>>                 };
+>>> +
+>>> +               fastrpc_mem: fastrpc {
+>>> +                       compatible = "shared-dma-pool";
+>>> +                       reusable;
+>> Please move it last to get a nice reverse-Christmas-tree layout.
+>>
 > 
-> >
-> >I can address this when applying if that's ok.
+> Will fix in v4.
 > 
-> That would be nice, thanks!
+>>> +                       alloc-ranges = <0 0x00000000 0 0xffffffff>;
+>> Would there be any issues with it starting over (1<<31 - 1)?
+>>
+> 
+> You mean a bigger region then, like the whole CMA region then? AFAIK,
+> the SLPI always use the same region expecting it to be in this range.
+> However, I cannot confirm more, as I have no insights in the firmware
+> running on there, this all comes from finding out what it exactly does
+> on downstream.
+I was asking about the <.. 0 0xfff.f> part specifically, as that means
+it can't be allocated above 4 gigs. But I guess it's just how qcom
+envisioned it.
 
-Done, thanks!
+Also, please use 0x0 in alloc-ranges as well, this is all addresses/
+reg sizes.
 
--- 
-Kind regards,
-
-Sakari Ailus
+Konrad
+> 
+>>> +                       alignment = <0 0x400000>;
+>> Please use 0x0 for the 0 here, as it's essentially reg.size with
+>> size-cells = 2
+> 
+> Will fix in v4.
+> 
+>>
+>>> +                       size = <0 0x1000000>;
+>> Ditto
+> 
+> Will fix in v4.
+> 
+>>
+>>> +               };
+>>>         };
+>>>  
+>>>         adsp_pas: remoteproc-adsp {
+>>> @@ -3344,6 +3352,22 @@ glink-edge {
+>>>                                 label = "dsps";
+>>>                                 qcom,remote-pid = <3>;
+>>>                                 mboxes = <&apss_shared 24>;
+>>> +
+>>> +                               fastrpc {
+>>> +                                       compatible =
+>>> "qcom,fastrpc";
+>>> +                                       qcom,glink-channels =
+>>> "fastrpcglink-apps-dsp";
+>>> +                                       label = "sdsp";
+>>> +                                       qcom,non-secure-domain;
+>>> +                                       qcom,vmids = <0x3 0xF 0x5
+>>> 0x6>;
+>> Please use the recently-introduced header and depend on (and
+>> make a patch atop)
+>>
+>> https://lore.kernel.org/linux-arm-msm/8685b710-b74d-556a-815d-0ffef2b0eeff@linaro.org/T/#t
+>>
+>> Konrad
+>>
+>>> +                                       memory-region =
+>>> <&fastrpc_mem>;
+>>> +                                       #address-cells = <1>;
+>>> +                                       #size-cells = <0>;
+>>> +
+>>> +                                       compute-cb@0 {
+>>> +                                               compatible =
+>>> "qcom,fastrpc-compute-cb";
+>>> +                                               reg = <0>;
+>>> +                                       };
+>>> +                               };
+>>>                         };
+>>>                 };
+>>>  
+> 
+> Kind regards,
+> Dylan
