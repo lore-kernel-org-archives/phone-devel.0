@@ -2,108 +2,138 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A8D6C6FD18
-	for <phone-devel@archiver.kernel.org>; Fri, 31 Mar 2023 09:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA02BC76196
+	for <phone-devel@archiver.kernel.org>; Fri, 31 Mar 2023 09:37:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230193AbjCaJ2q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 31 Mar 2023 05:28:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56536 "EHLO
+        id S232304AbjCaJhe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 31 Mar 2023 05:37:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232172AbjCaJ2X (ORCPT
+        with ESMTP id S232305AbjCaJhM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 31 Mar 2023 05:28:23 -0400
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C64721BE9;
-        Fri, 31 Mar 2023 02:27:55 -0700 (PDT)
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+        Fri, 31 Mar 2023 05:37:12 -0400
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C19C172C;
+        Fri, 31 Mar 2023 02:37:02 -0700 (PDT)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4Pnw0t57d7z9sSK;
-        Fri, 31 Mar 2023 11:27:10 +0200 (CEST)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4PnwCq5qnZz9sSL;
+        Fri, 31 Mar 2023 11:36:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
-        s=MBO0001; t=1680254830;
+        s=MBO0001; t=1680255399;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=E0JPDI2TzKDsYAYsqmb12Xw6KXyZvLsYgDnAR16C/v4=;
-        b=oBZFOSuLpaOvcia79JysCIPWebpTEUeuo5X4xg3M4mZ3xaHyrJ6CJu0xBIkTp+g3resmVx
-        AOgjZOPFbIk376BMGGdiTXLRLFPM4fY4ICHADKswURgoDNAr5BkQGw4atTkt6WRvjKjMla
-        0u803kTmrK6+KvtXcDHiZh8p9+MErTzjMy1ujeS52Fda+zMO6li/AtmrB1qLmQXUMWoetS
-        evHZUJuTz+lIRPg6z+rZAehf4CKaD1bd2P+IcNtK5vcLWsDXa+WO9xglsrk5OcX2P0TSqw
-        /Q7oB0R/SSDAGf6896bKoRM0DoMat2+TzZnfONR29Hvi+F9MAksUiXfKVg2EOA==
-Message-ID: <e95d969eefc57afcc1a1b3c64540f37fc561c5f2.camel@dylanvanassche.be>
-Subject: Re: [PATCH v3 1/4] dts: arm64: qcom: sdm845: add SLPI remoteproc
+        bh=bYLxII/AzHSuhLaXujV1FeTSBkeqV/qJ8zqJUY5DdQU=;
+        b=YkxkO5Wu4rQH7Jkf7KZTwSe2qEmE4rS/2rBdzEJzWwqVaBSEiHYuaOxgQ06UtiWhL+GJ1J
+        a5al0uAqOav2KTb9Bl2dGYprFLXDIC2HjjIHVdgnP9RqifKqu0Re1K8l4YncvrwaacXERc
+        KsKkqll9XxiKwzwYRrRGFcO4mC5KIkmkHVgSc2Y8+/DVaxHu0NkQjIWOC7eV5wyfek6aWj
+        mDLYu38RdvKaG4RJwWfSqU3uURfVBMaXSNZBYFZXaojGttw8YApvOqobvOyCQkFULbqjiv
+        HIUE2uBRluWF/WP+V1ZmZ8rBpFk0nvWRv8KPa638WADac/elPxNh1Tre49r13Q==
+Message-ID: <e7b73a24b8ba76cb6dc9921f73c47632a749b93f.camel@dylanvanassche.be>
+Subject: Re: [PATCH v3 2/4] dts: arm64: qcom: sdm845: add SLPI FastRPC
+ support
 From:   Dylan Van Assche <me@dylanvanassche.be>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Date:   Fri, 31 Mar 2023 11:27:08 +0200
-In-Reply-To: <6cab9930-1222-e715-be1d-ffdc44713aa8@linaro.org>
+Date:   Fri, 31 Mar 2023 11:36:37 +0200
+In-Reply-To: <f9a4a2de-42f8-676a-ae6d-d20391206f83@linaro.org>
 References: <20230330165322.118279-1-me@dylanvanassche.be>
-         <20230330165322.118279-2-me@dylanvanassche.be>
-         <6cab9930-1222-e715-be1d-ffdc44713aa8@linaro.org>
+         <20230330165322.118279-3-me@dylanvanassche.be>
+         <f9a4a2de-42f8-676a-ae6d-d20391206f83@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Krzysztof,
+SGkgS29ucmFkLAoKT24gRnJpLCAyMDIzLTAzLTMxIGF0IDA0OjAzICswMjAwLCBLb25yYWQgRHli
+Y2lvIHdyb3RlOgo+IAo+IAo+IE9uIDMwLjAzLjIwMjMgMTg6NTMsIER5bGFuIFZhbiBBc3NjaGUg
+d3JvdGU6Cj4gPiBRdWFsY29tbSBTRE04NDUgU29DIGZlYXR1cmVzIGEgU0xQSSBEU1Agd2hpY2gg
+dXNlcyBGYXN0UlBDIHRocm91Z2gKPiA+IGFuIGFsbG9jYXRlZCBtZW1vcnkgcmVnaW9uIHRvIGxv
+YWQgZmlsZXMgZnJvbSB0aGUgaG9zdCBmaWxlc3lzdGVtCj4gPiBzdWNoIGFzIHNlbnNvciBjb25m
+aWd1cmF0aW9uIGZpbGVzLgo+ID4gCj4gPiBBZGQgYSBGYXN0UlBDIG5vZGUgYXQgL2Rldi9mYXN0
+cnBjLXNkc3AgYW5kIGEgRE1BIHJlZ2lvbiwgc2ltaWxhcgo+ID4gdG8KPiA+IGRvd25zdHJlYW0s
+IHRvIGFsbG93IHVzZXJzcGFjZSB0byBjb21tdW5pY2F0ZSB3aXRoIHRoZSBTTFBJIHZpYSB0aGUK
+PiA+IEZhc3RSUEMgaW50ZXJmYWNlIGZvciBpbml0aWFsaXppbmcgdGhlIHNlbnNvcnMgb24gdGhl
+IFNMUEkuCj4gPiAKPiA+IFNpZ25lZC1vZmYtYnk6IER5bGFuIFZhbiBBc3NjaGUgPG1lQGR5bGFu
+dmFuYXNzY2hlLmJlPgo+ID4gLS0tCj4gPiDCoGFyY2gvYXJtNjQvYm9vdC9kdHMvcWNvbS9zZG04
+NDUuZHRzaSB8IDI0ICsrKysrKysrKysrKysrKysrKysrKysrKwo+ID4gwqAxIGZpbGUgY2hhbmdl
+ZCwgMjQgaW5zZXJ0aW9ucygrKQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm02NC9ib290
+L2R0cy9xY29tL3NkbTg0NS5kdHNpCj4gPiBiL2FyY2gvYXJtNjQvYm9vdC9kdHMvcWNvbS9zZG04
+NDUuZHRzaQo+ID4gaW5kZXggM2I1NDdjYjdhZWI4Li44ZWE0OTQ0ZjNhZDYgMTAwNjQ0Cj4gPiAt
+LS0gYS9hcmNoL2FybTY0L2Jvb3QvZHRzL3Fjb20vc2RtODQ1LmR0c2kKPiA+ICsrKyBiL2FyY2gv
+YXJtNjQvYm9vdC9kdHMvcWNvbS9zZG04NDUuZHRzaQo+ID4gQEAgLTg3OCw2ICs4NzgsMTQgQEAg
+bWRhdGFfbWVtOiBtcHNzLW1ldGFkYXRhIHsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoHNpemUgPSA8MCAweDQwMDA+Owo+ID4gwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbm8tbWFwOwo+ID4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Owo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoGZhc3RycGNfbWVtOiBmYXN0cnBjIHsKPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29tcGF0aWJsZSA9ICJzaGFyZWQtZG1hLXBvb2wi
+Owo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXVz
+YWJsZTsKPiBQbGVhc2UgbW92ZSBpdCBsYXN0IHRvIGdldCBhIG5pY2UgcmV2ZXJzZS1DaHJpc3Rt
+YXMtdHJlZSBsYXlvdXQuCj4gCgpXaWxsIGZpeCBpbiB2NC4KCj4gPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGFsbG9jLXJhbmdlcyA9IDwwIDB4MDAwMDAw
+MDAgMCAweGZmZmZmZmZmPjsKPiBXb3VsZCB0aGVyZSBiZSBhbnkgaXNzdWVzIHdpdGggaXQgc3Rh
+cnRpbmcgb3ZlciAoMTw8MzEgLSAxKT8KPiAKCllvdSBtZWFuIGEgYmlnZ2VyIHJlZ2lvbiB0aGVu
+LCBsaWtlIHRoZSB3aG9sZSBDTUEgcmVnaW9uIHRoZW4/IEFGQUlLLAp0aGUgU0xQSSBhbHdheXMg
+dXNlIHRoZSBzYW1lIHJlZ2lvbiBleHBlY3RpbmcgaXQgdG8gYmUgaW4gdGhpcyByYW5nZS4KSG93
+ZXZlciwgSSBjYW5ub3QgY29uZmlybSBtb3JlLCBhcyBJIGhhdmUgbm8gaW5zaWdodHMgaW4gdGhl
+IGZpcm13YXJlCnJ1bm5pbmcgb24gdGhlcmUsIHRoaXMgYWxsIGNvbWVzIGZyb20gZmluZGluZyBv
+dXQgd2hhdCBpdCBleGFjdGx5IGRvZXMKb24gZG93bnN0cmVhbS4KCj4gPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGFsaWdubWVudCA9IDwwIDB4NDAwMDAw
+PjsKPiBQbGVhc2UgdXNlIDB4MCBmb3IgdGhlIDAgaGVyZSwgYXMgaXQncyBlc3NlbnRpYWxseSBy
+ZWcuc2l6ZSB3aXRoCj4gc2l6ZS1jZWxscyA9IDIKCldpbGwgZml4IGluIHY0LgoKPiAKPiA+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc2l6ZSA9IDwwIDB4
+MTAwMDAwMD47Cj4gRGl0dG8KCldpbGwgZml4IGluIHY0LgoKPiAKPiA+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqB9Owo+ID4gwqDCoMKgwqDCoMKgwqDCoH07Cj4gPiDCoAo+ID4gwqDC
+oMKgwqDCoMKgwqDCoGFkc3BfcGFzOiByZW1vdGVwcm9jLWFkc3Agewo+ID4gQEAgLTMzNDQsNiAr
+MzM1MiwyMiBAQCBnbGluay1lZGdlIHsKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBsYWJlbCA9ICJkc3BzIjsKPiA+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBxY29tLHJlbW90ZS1waWQgPSA8Mz47Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbWJveGVzID0gPCZhcHNzX3No
+YXJlZCAyND47Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBmYXN0cnBjIHsKPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBjb21wYXRpYmxlID0KPiA+ICJxY29tLGZhc3RycGMiOwo+ID4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoHFjb20sZ2xpbmstY2hhbm5lbHMgPQo+ID4gImZhc3RycGNnbGluay1hcHBzLWRzcCI7
+Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgbGFiZWwgPSAic2RzcCI7Cj4gPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgcWNvbSxub24tc2VjdXJlLWRvbWFpbjsKPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqBxY29tLHZtaWRzID0gPDB4MyAweEYgMHg1Cj4gPiAweDY+Owo+IFBsZWFzZSB1c2UgdGhl
+IHJlY2VudGx5LWludHJvZHVjZWQgaGVhZGVyIGFuZCBkZXBlbmQgb24gKGFuZAo+IG1ha2UgYSBw
+YXRjaCBhdG9wKQo+IAo+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LWFybS1tc20vODY4
+NWI3MTAtYjc0ZC01NTZhLTgxNWQtMGZmZWYyYjBlZWZmQGxpbmFyby5vcmcvVC8jdAo+IAo+IEtv
+bnJhZAo+IAo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoG1lbW9yeS1yZWdpb24gPQo+ID4gPCZm
+YXN0cnBjX21lbT47Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgI2FkZHJlc3MtY2VsbHMgPSA8
+MT47Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgI3NpemUtY2VsbHMgPSA8MD47Cj4gPiArCj4g
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29tcHV0ZS1jYkAwIHsKPiA+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY29tcGF0aWJsZSA9Cj4gPiAicWNvbSxmYXN0cnBjLWNv
+bXB1dGUtY2IiOwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZWcg
+PSA8MD47Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgfTsKPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH07Cj4gPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Owo+ID4gwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB9Owo+ID4gwqAKCktpbmQgcmVnYXJkcywKRHlsYW4K
 
-On Fri, 2023-03-31 at 11:05 +0200, Krzysztof Kozlowski wrote:
-> On 30/03/2023 18:53, Dylan Van Assche wrote:
-> > Add the SLPI remoteproc to the SDM845 Qualcomm SoC which is
-> > responsible
-> > for exposing the sensors connected to the SoC. The SLPI
-> > communicates
-> > over GLink edge 'dsps' and is similar to other DSPs e.g. ADSP or
-> > CDSP.
-> > This patch allows the SLPI to boot and expose itself over QRTR as
-> > service 400.
-> >=20
-> > Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
-> > ---
-> > =C2=A0arch/arm64/boot/dts/qcom/sdm845.dtsi | 36
-> > ++++++++++++++++++++++++++++
-> > =C2=A01 file changed, 36 insertions(+)
-> >=20
-> > diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> > b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> > index 2f32179c7d1b..3b547cb7aeb8 100644
-> > --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> > +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> > @@ -3311,6 +3311,42 @@ glink-edge {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-};
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0};
-> > =C2=A0
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0slpi_pas: remoteproc@5c00000 {
->=20
-> This does not look like correct place. Are you sure you followed the
-> order by unit address?
->=20
->=20
 
-I think I misunderstood...=20
-I sorted them alphabetically by name, but it has to be unit address.
-Will fix in v4.
-
->=20
-> Best regards,
-> Krzysztof
->=20
-
-Kind regards,
-Dylan
