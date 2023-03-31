@@ -2,150 +2,285 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39EF7C7619A
-	for <phone-devel@archiver.kernel.org>; Fri, 31 Mar 2023 02:03:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B6D9C76196
+	for <phone-devel@archiver.kernel.org>; Fri, 31 Mar 2023 08:43:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbjCaCDd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 30 Mar 2023 22:03:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36372 "EHLO
+        id S231921AbjCaInW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 31 Mar 2023 04:43:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229740AbjCaCDb (ORCPT
+        with ESMTP id S231949AbjCaImz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 30 Mar 2023 22:03:31 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9655D18F80
-        for <phone-devel@vger.kernel.org>; Thu, 30 Mar 2023 19:03:28 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id e9so6295189ljq.4
-        for <phone-devel@vger.kernel.org>; Thu, 30 Mar 2023 19:03:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680228207;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Teb3RkoKLbXHatcrqXDgj+FPUExuCZUr8HBNb56xUco=;
-        b=d7aZ8dhKOVXSWTpf3jbqTcXtKRjPfvNgTKsatDsCDUAqG2bOHdgxVGq83s7Ue7kz2l
-         BN9yw8/paWv+Kui59POlRRQTytJYALFVixHxJjN62xfC/I98wDOYsa6vXGir8vROuMnJ
-         2GCoDfeUWG7LxxzrUpXLqx5B/nkbbgSKnc5E9f0mFf2NK0b6YIeimOrfWGtMxrL+61E5
-         CKODdwSLggSAbCu6aOI/wrlnbVb6oM+f/Q/om+dVatVYYu45MDWvxspmGuLmEN1BC3RE
-         7svcXvd780yvf+kJmrOY2mo+EdgSHqgTiuCh03jPoq8yaqtTUywKV3pffmVveDKLJIlr
-         fzAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680228207;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Teb3RkoKLbXHatcrqXDgj+FPUExuCZUr8HBNb56xUco=;
-        b=r7CLdCEygj71aYlADVve9U9qAxfnVF0EN3QJv6WLBwjnDgZOq8GT5aSy+yPZ4DdXzj
-         IowRfb1IeocLI0J8W72yFU40IxFGDWDs8WjTp66vJLfYXRDD//25fO0apJsg9wMItyOZ
-         yuPiBQ4m5McHvK92QcwXRcOgT7fRIiRuAE2uSFCQ5WvlGH1FJKFu/5h+7q+eihjedV9s
-         jpBXKA/GwMd5zPkGv/5bEmD/keQrH+DcAfad8mxXv81fGQ4TxEXlwGHa3l1yNyys/xXy
-         scP6y2JPapabN3IVCgObCk3FDys4gQ+7ZCrPwX4hxfYWC09kI5HyC2kcYjsgMON+sGdp
-         uKbg==
-X-Gm-Message-State: AAQBX9f53odbR0tMkb3zsmjADcOojID7NQmmSr9b6CQ6shROrBYb6gAw
-        sLU0ZF6jaxYctZc0RsEPiWz630nwuZC3cRdEOuk=
-X-Google-Smtp-Source: AKy350ZJd0VKknxcJhfO+myFGnaqZHPGraALBp0worrJzEDUq+0qlSBXcrrlLKK3R6RGPIa6Xq9MSg==
-X-Received: by 2002:a2e:7a0d:0:b0:2a6:199a:bd49 with SMTP id v13-20020a2e7a0d000000b002a6199abd49mr1223209ljc.46.1680228206779;
-        Thu, 30 Mar 2023 19:03:26 -0700 (PDT)
-Received: from [192.168.1.101] (abxj225.neoplus.adsl.tpnet.pl. [83.9.3.225])
-        by smtp.gmail.com with ESMTPSA id u24-20020a2ea178000000b002a61bd34f63sm145777ljl.84.2023.03.30.19.03.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Mar 2023 19:03:26 -0700 (PDT)
-Message-ID: <f9a4a2de-42f8-676a-ae6d-d20391206f83@linaro.org>
-Date:   Fri, 31 Mar 2023 04:03:25 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 2/4] dts: arm64: qcom: sdm845: add SLPI FastRPC support
-Content-Language: en-US
-To:     Dylan Van Assche <me@dylanvanassche.be>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Fri, 31 Mar 2023 04:42:55 -0400
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C90571BF42;
+        Fri, 31 Mar 2023 01:42:26 -0700 (PDT)
+Received: from hillosipuli.retiisi.eu (82-181-192-243.bb.dnainternet.fi [82.181.192.243])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sailus)
+        by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4Pnv0D674xz49Q6m;
+        Fri, 31 Mar 2023 11:41:31 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+        t=1680252094;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ofzs1/zRJhx7iXfR1mz6Mp398ZtxCc5wKnjcib04Kpo=;
+        b=mjSwuzzgkGYF1aBG+PS8dajSgq9AKxZuC4aqKYO1DR8Cr7MUowtU69KwKauUMetn+ccgbR
+        5raVyjNcjEnzhcrAH21ReWk7TuiKE7UQARgBpYsxa2yeoCF6Jsz5oI64Nw3QCpErp/G6AU
+        x6boAy+Dr5TcXVTqRVsoXCXu+2y45GlUuyNXbDLjvpQ2ojyEoNST8RgV3BHKTAPX40mdT+
+        Yo7OId+nd12zY8b/Modkeoxy8gZ5UzMSKbXWb5BSXMxFy4uXaF3+vWGmGBVTI2L+fRdmQ+
+        V997wJm8YdXBn+wGvcS34gh8lSO7R8kuh5c48nq0NeFO/sZd8VeBcDdHkebhFQ==
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1680252094; a=rsa-sha256;
+        cv=none;
+        b=LbQMuPda+h/MK+hwI6qy3vKMvEbSI9MlYhd189ZBlL45LvnMcsq3MRtE0Ee49+HSuimH6/
+        A7JC86v8tjaKncaISZhbqAfemQjnbpQfHhNYqKUd+W8rhRbQMG12cH7kPbI2AxovZJmRSI
+        Eub6gTFRmoNQl95iwVTKvUl1QeBjW7nS3P2+a34SYkMT4EA0jD9GPtjCqPON+tHo/jhGnx
+        htsb7iG+wJ0tMUPgaXhwHA8w3WJibqHYGJtD6/yLGX30aYwL9zGOHHE4+ksUpt+byDrh9+
+        9BPyvEnHXbnqArN7ZOSKS//cAM+D/sIOT/Tv/feO4EWj9LY1+Z03YmI/HCG7cQ==
+ARC-Authentication-Results: i=1;
+        ORIGINATING;
+        auth=pass smtp.auth=sailus smtp.mailfrom=sakari.ailus@iki.fi
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+        s=lahtoruutu; t=1680252094;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ofzs1/zRJhx7iXfR1mz6Mp398ZtxCc5wKnjcib04Kpo=;
+        b=las15LzuG4Ixc1zej0ohgzrCfhwANMfPTgofZJEwqUJS+eonu58UIrIjUJbqWC8ONBSdqU
+        i7mlTu/TSJHkAbLkqeFu2TYGxKsW2PUBU098cTQlaoMyiRfPbU3XZEXd3tYdFpFR5fiQ5o
+        amg0sWkT2UfS2eZv3jLDUjaWFodJaNZlIph3T/kmKj9Qr7Xs6Q90sYaSWTOmhFOdzk2Gja
+        DMERJ10jqBlXxbj9TH2Ydo0fTgjlw1ZkInsZTjhfukV+F/qVMLNiV1NQOkilKFmtOUU7fh
+        Yd0n9EBCNzzEsa60lfAWoJ3lPLLVXaUibit0olS4juhG6/daRhrPoVAlOuQLtg==
+Received: from valkosipuli.retiisi.eu (valkosipuli.localdomain [192.168.4.2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by hillosipuli.retiisi.eu (Postfix) with ESMTPS id DF993634CA1;
+        Fri, 31 Mar 2023 11:39:16 +0300 (EEST)
+Date:   Fri, 31 Mar 2023 11:39:16 +0300
+From:   Sakari Ailus <sakari.ailus@iki.fi>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Shunqian Zheng <zhengsq@rock-chips.com>,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        linux-media@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230330165322.118279-1-me@dylanvanassche.be>
- <20230330165322.118279-3-me@dylanvanassche.be>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230330165322.118279-3-me@dylanvanassche.be>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v4 2/3] media: dt-bindings: ov2685: convert to dtschema
+Message-ID: <ZCacNEbg8cJo0VAm@valkosipuli.retiisi.eu>
+References: <20230129-ov2685-improvements-v4-0-e71985c5c848@z3ntu.xyz>
+ <20230129-ov2685-improvements-v4-2-e71985c5c848@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230129-ov2685-improvements-v4-2-e71985c5c848@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Luca,
 
+Thanks for the patch.
 
-On 30.03.2023 18:53, Dylan Van Assche wrote:
-> Qualcomm SDM845 SoC features a SLPI DSP which uses FastRPC through
-> an allocated memory region to load files from the host filesystem
-> such as sensor configuration files.
+On Thu, Mar 23, 2023 at 06:57:50PM +0100, Luca Weiss wrote:
+> Convert the text-based dt-bindings to yaml.
 > 
-> Add a FastRPC node at /dev/fastrpc-sdsp and a DMA region, similar to
-> downstream, to allow userspace to communicate with the SLPI via the
-> FastRPC interface for initializing the sensors on the SLPI.
+> Changes from original txt:
+> * Take wording for various properties from other yaml bindings, this
+>   removes e.g. volt amount from schema since it isn't really relevant
+>   and the datasheet is a better source.
+> * Don't make reset-gpios a required property since it can be tied to
+>   DOVDD instead.
 > 
-> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
->  arch/arm64/boot/dts/qcom/sdm845.dtsi | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
+>  .../devicetree/bindings/media/i2c/ov2685.txt       |  41 ---------
+>  .../devicetree/bindings/media/i2c/ovti,ov2685.yaml | 101 +++++++++++++++++++++
+>  MAINTAINERS                                        |   1 +
+>  3 files changed, 102 insertions(+), 41 deletions(-)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> index 3b547cb7aeb8..8ea4944f3ad6 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> @@ -878,6 +878,14 @@ mdata_mem: mpss-metadata {
->  			size = <0 0x4000>;
->  			no-map;
->  		};
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ov2685.txt b/Documentation/devicetree/bindings/media/i2c/ov2685.txt
+> deleted file mode 100644
+> index 625c4a8c0d53d..0000000000000
+> --- a/Documentation/devicetree/bindings/media/i2c/ov2685.txt
+> +++ /dev/null
+> @@ -1,41 +0,0 @@
+> -* Omnivision OV2685 MIPI CSI-2 sensor
+> -
+> -Required Properties:
+> -- compatible: shall be "ovti,ov2685"
+> -- clocks: reference to the xvclk input clock
+> -- clock-names: shall be "xvclk"
+> -- avdd-supply: Analog voltage supply, 2.8 volts
+> -- dovdd-supply: Digital I/O voltage supply, 1.8 volts
+> -- dvdd-supply: Digital core voltage supply, 1.8 volts
+> -- reset-gpios: Low active reset gpio
+> -
+> -The device node shall contain one 'port' child node with an
+> -'endpoint' subnode for its digital output video port,
+> -in accordance with the video interface bindings defined in
+> -Documentation/devicetree/bindings/media/video-interfaces.txt.
+> -The endpoint optional property 'data-lanes' shall be "<1>".
+> -
+> -Example:
+> -&i2c7 {
+> -	ov2685: camera-sensor@3c {
+> -		compatible = "ovti,ov2685";
+> -		reg = <0x3c>;
+> -		pinctrl-names = "default";
+> -		pinctrl-0 = <&clk_24m_cam>;
+> -
+> -		clocks = <&cru SCLK_TESTCLKOUT1>;
+> -		clock-names = "xvclk";
+> -
+> -		avdd-supply = <&pp2800_cam>;
+> -		dovdd-supply = <&pp1800>;
+> -		dvdd-supply = <&pp1800>;
+> -		reset-gpios = <&gpio2 3 GPIO_ACTIVE_LOW>;
+> -
+> -		port {
+> -			ucam_out: endpoint {
+> -				remote-endpoint = <&mipi_in_ucam>;
+> -				data-lanes = <1>;
+> -			};
+> -		};
+> -	};
+> -};
+> diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
+> new file mode 100644
+> index 0000000000000..2ac0ca8a0413b
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
+> @@ -0,0 +1,101 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/media/i2c/ovti,ov2685.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +		fastrpc_mem: fastrpc {
-> +			compatible = "shared-dma-pool";
-> +			reusable;
-Please move it last to get a nice reverse-Christmas-tree layout.
+> +title: OmniVision OV2685 Image Sensor
+> +
+> +maintainers:
+> +  - Shunqian Zheng <zhengsq@rock-chips.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: ovti,ov2685
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    items:
+> +      - description: XVCLK clock
+> +
+> +  clock-names:
+> +    items:
+> +      - const: xvclk
+> +
+> +  dvdd-supply:
+> +    description: Digital Domain Power Supply
+> +
+> +  avdd-supply:
+> +    description: Analog Domain Power Supply
+> +
+> +  dovdd-supply:
+> +    description: I/O Domain Power Supply
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +    description: Reset Pin GPIO Control (active low)
+> +
+> +  port:
+> +    description: MIPI CSI-2 transmitter port
+> +    $ref: /schemas/graph.yaml#/$defs/port-base
+> +    additionalProperties: false
+> +
+> +    properties:
+> +      endpoint:
+> +        $ref: /schemas/media/video-interfaces.yaml#
+> +        unevaluatedProperties: false
+> +
+> +        properties:
+> +          data-lanes:
+> +            maxItems: 1
 
-> +			alloc-ranges = <0 0x00000000 0 0xffffffff>;
-Would there be any issues with it starting over (1<<31 - 1)?
+This should be 2 --- the sensor supports two lanes (even if the driver
+doesn't).
 
-> +			alignment = <0 0x400000>;
-Please use 0x0 for the 0 here, as it's essentially reg.size with
-size-cells = 2
+I can address this when applying if that's ok.
 
-> +			size = <0 0x1000000>;
-Ditto
-
-> +		};
->  	};
+> +
+> +        required:
+> +          - data-lanes
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - dvdd-supply
+> +  - avdd-supply
+> +  - dovdd-supply
+> +  - port
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/rk3399-cru.h>
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        ov2685: camera-sensor@3c {
+> +            compatible = "ovti,ov2685";
+> +            reg = <0x3c>;
+> +            pinctrl-names = "default";
+> +            pinctrl-0 = <&clk_24m_cam>;
+> +
+> +            clocks = <&cru SCLK_TESTCLKOUT1>;
+> +            clock-names = "xvclk";
+> +
+> +            avdd-supply = <&pp2800_cam>;
+> +            dovdd-supply = <&pp1800>;
+> +            dvdd-supply = <&pp1800>;
+> +            reset-gpios = <&gpio2 3 GPIO_ACTIVE_LOW>;
+> +
+> +            port {
+> +                ucam_out: endpoint {
+> +                    remote-endpoint = <&mipi_in_ucam>;
+> +                    data-lanes = <1>;
+> +                };
+> +            };
+> +        };
+> +    };
+> +
+> +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8ea325040f355..5904f47756fe1 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -15410,6 +15410,7 @@ M:	Shunqian Zheng <zhengsq@rock-chips.com>
+>  L:	linux-media@vger.kernel.org
+>  S:	Maintained
+>  T:	git git://linuxtv.org/media_tree.git
+> +F:	Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
+>  F:	drivers/media/i2c/ov2685.c
 >  
->  	adsp_pas: remoteproc-adsp {
-> @@ -3344,6 +3352,22 @@ glink-edge {
->  				label = "dsps";
->  				qcom,remote-pid = <3>;
->  				mboxes = <&apss_shared 24>;
-> +
-> +				fastrpc {
-> +					compatible = "qcom,fastrpc";
-> +					qcom,glink-channels = "fastrpcglink-apps-dsp";
-> +					label = "sdsp";
-> +					qcom,non-secure-domain;
-> +					qcom,vmids = <0x3 0xF 0x5 0x6>;
-Please use the recently-introduced header and depend on (and
-make a patch atop)
+>  OMNIVISION OV2740 SENSOR DRIVER
+> 
 
-https://lore.kernel.org/linux-arm-msm/8685b710-b74d-556a-815d-0ffef2b0eeff@linaro.org/T/#t
+-- 
+Kind regards,
 
-Konrad
-
-> +					memory-region = <&fastrpc_mem>;
-> +					#address-cells = <1>;
-> +					#size-cells = <0>;
-> +
-> +					compute-cb@0 {
-> +						compatible = "qcom,fastrpc-compute-cb";
-> +						reg = <0>;
-> +					};
-> +				};
->  			};
->  		};
->  
+Sakari Ailus
