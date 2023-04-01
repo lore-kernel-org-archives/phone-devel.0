@@ -2,103 +2,127 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8253C6FD1D
-	for <phone-devel@archiver.kernel.org>; Sat,  1 Apr 2023 15:13:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EFDEC6FD1D
+	for <phone-devel@archiver.kernel.org>; Sat,  1 Apr 2023 17:35:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230104AbjDAPNf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 1 Apr 2023 11:13:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45208 "EHLO
+        id S229802AbjDARfm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 1 Apr 2023 13:35:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229570AbjDAPNO (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 1 Apr 2023 11:13:14 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4323A2544F;
-        Sat,  1 Apr 2023 08:12:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1680361957; x=1711897957;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OLApVVMOJ2Css0D7py5ZiNmtjsFz6UxJsp+PhEah9l4=;
-  b=OUxBy8TY6cVrFJQHIhDJ+ATICQu5TtkXJSP/aMEGsISW/wO2P6HWnZ4s
-   2Yk9R7y25zDBkHZOuuBaHQWaB7K/vBicZ4bBW7nQyZz6MyB3pVoMbKLWg
-   2ZH4COJQ+Qg+7Uc82uM/1GiWJyISt5rCrsbFmNEn/C37WaDi/yA1tJQLW
-   +KLxNwgk3ecbmbLOzCjI4jqB/zp5OyJWr9uv85vbnEc1P3YOrE6ivyZDb
-   ke4CHr2oq3pnGxIWyu0Zo2dwY+4zT6mafnYlpVUyg6T9FTOoadvCwvDMQ
-   SKXwe4S8nF8lJRSrq9xQFYIteVi9xM1T3RGAAiidIzAFQvlod7Rc2dJDf
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10667"; a="369459092"
-X-IronPort-AV: E=Sophos;i="5.98,310,1673942400"; 
-   d="scan'208";a="369459092"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2023 08:12:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10667"; a="796475551"
-X-IronPort-AV: E=Sophos;i="5.98,310,1673942400"; 
-   d="scan'208";a="796475551"
-Received: from lkp-server01.sh.intel.com (HELO b613635ddfff) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 01 Apr 2023 08:12:32 -0700
-Received: from kbuild by b613635ddfff with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1picu7-000MsF-2s;
-        Sat, 01 Apr 2023 15:12:31 +0000
-Date:   Sat, 1 Apr 2023 23:11:44 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Henrik Grimler <henrik@grimler.se>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, alim.akhtar@samsung.com,
-        m.szyprowski@samsung.com, jenneron@protonmail.com,
-        markuss.broks@gmail.com, martin.juecker@gmail.com,
-        virag.david003@gmail.com, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        replicant@osuosl.org
-Cc:     oe-kbuild-all@lists.linux.dev, Henrik Grimler <henrik@grimler.se>,
-        Valentine Iourine <iourine@iourine.msk.su>
-Subject: Re: [PATCH v6 2/2] ARM: dts: exynos: add mmc aliases
-Message-ID: <202304012305.NdtndVxO-lkp@intel.com>
-References: <20230401132134.12887-3-henrik@grimler.se>
+        with ESMTP id S229575AbjDARfl (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 1 Apr 2023 13:35:41 -0400
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [IPv6:2001:67c:2050:0:465::202])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0583B443;
+        Sat,  1 Apr 2023 10:35:38 -0700 (PDT)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4Ppknx5RwKz9sTM;
+        Sat,  1 Apr 2023 19:35:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
+        s=MBO0001; t=1680370533;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=QlwqryxjwFEcRsCwNYC3KAfNY5tSCiH5bPCN24vQW8k=;
+        b=Y8Ggx7+z0JfhkBKAMSKQwsd3Efzv/edr2wsa1hx7Dk9YaqXtDJE66DNTLbh5UTcGn0UZvH
+        fncXnnA847hrNt1TSPE5xNOo1uWVEIexnbtX7s+lT1McTSM6kqG6BPgIyZTyu8vnED5HyJ
+        XaPG76fYyL6BfuL9MuomWOnJyhU+2Y4/Bkic+A0zbFC84uTW4INTlnAnErAoC77+boCive
+        N5CQfIUFUFd965Zcyx9Rrg1m6rAovuzbPGXGHLAng0J//Z8Cckr/FgGZzGX+6jdZ3x8R6A
+        66fsQI+cRLmTAAnfxIAvj53mePFJV81/e07xYV3od9qQSky22o47JlkjwtQTWA==
+From:   Dylan Van Assche <me@dylanvanassche.be>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Dylan Van Assche <me@dylanvanassche.be>
+Subject: [PATCH v4 0/6] dts: qcom: arm64: sdm845: SLPI DSP enablement
+Date:   Sat,  1 Apr 2023 19:35:17 +0200
+Message-Id: <20230401173523.15244-1-me@dylanvanassche.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230401132134.12887-3-henrik@grimler.se>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Henrik,
+* About *
 
-Thank you for the patch! Yet something to improve:
+The Qualcomm SDM845 SoC has a separate SLPI (Sensor Low Power Island)
+DSP for sensors connected to the SoC which is responsible for exposing
+sensors to userspace, power saving, and other features. 
+While sensors are connected to GPIOs of the SoC, they cannot be used
+because the hypervisor blocks direct access to the sensors, thus the 
+DSP must be used to access any sensor on this SoC. The SLPI DSP uses a
+GLink edge (dsps) to communicate with the host and has a FastRPC interface
+to load files from the host filesystem such as sensor configuration files.
+The FastRPC interface does not use regular FastRPC Compute Banks
+but instead uses an allocated CMA region through which communication happens.
 
-[auto build test ERROR on 0e84f3493a37d50f2f629dbea670135b8a8ee391]
+* Changes *
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Henrik-Grimler/ARM-dts-exynos-replace-mshc0-alias-with-mmc-ddr-1_8v-property/20230401-212318
-base:   0e84f3493a37d50f2f629dbea670135b8a8ee391
-patch link:    https://lore.kernel.org/r/20230401132134.12887-3-henrik%40grimler.se
-patch subject: [PATCH v6 2/2] ARM: dts: exynos: add mmc aliases
-config: arm-defconfig (https://download.01.org/0day-ci/archive/20230401/202304012305.NdtndVxO-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 12.1.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/f28175ed67208fd6411a3ce477762d7b032fe52e
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Henrik-Grimler/ARM-dts-exynos-replace-mshc0-alias-with-mmc-ddr-1_8v-property/20230401-212318
-        git checkout f28175ed67208fd6411a3ce477762d7b032fe52e
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash
+This patchseries completes support for the SLPI in the Qualcomm SDM845 SoC
+by adding the SLPI to the SDM845 DTS and enable it for 2 hardware devices:
+- Oneplus 6
+- SHIFTPHONES SHIFT6mq
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Link: https://lore.kernel.org/oe-kbuild-all/202304012305.NdtndVxO-lkp@intel.com/
+* Related patches *
 
-All errors (new ones prefixed by >>):
+1. Remoteproc changes (v3) to support the SLPI DSP in SDM845:
+https://lore.kernel.org/linux-remoteproc/20230330164633.117335-1-me@dylanvanassche.be
+2. FastRPC changes (v2) to support the SLPI DSP in SDM845:
+https://lore.kernel.org/linux-arm-msm/20230327184204.498032-1-me@dylanvanassche.be/
 
->> Error: arch/arm/boot/dts/exynos5422-samsung-k3g.dts:26.2-17 syntax error
-   FATAL ERROR: Unable to parse input tree
+This serie does not depend on any serie, but all of them are necessary
+to enable the feature in the end.
+
+* Changelog *
+
+Changes in v2:
+
+- Removed double blank lines
+- Enforce alphabetically order for 'slpi_pas'
+- Reordered 'slpi_pas' properties
+- Fixed FastRPC syntax
+- Dropped qcom,assign-all-mem property as this is not necessary anymore
+
+Changes in v3:
+
+- Dropped FastRPC dt-bindings change, unnecessary to relax the bindings
+- Add reg property to compute-cb for the SLPI on SDM845
+
+Changes in v4:
+- Moved SLPI node in sdm845.dtsi to honor sorting by unit address
+- Reordered FastRPC memory nodes to have a reverse-Christmas-tree layout
+- Use 0x0 instead of 0 for memory addresses
+- Add SSC_Q6 (0x5) and ADSP_Q6 (0x6) VMIDs to qcom,scm.h
+- Replace magic VMID values by the qcom,scm.h in sdm845.dtsi
+- Added Reviewed-by tags for patches:
+  - 'dts: arm64: qcom: sdm845-oneplus: enable SLPI'
+  - 'dts: arm64: qcom: sdm845-shift-axolotl: enable SLPI'
+  as these are unchanged in v4.
+
+Kind regards,
+Dylan Van Assche
+
+Dylan Van Assche (6):
+  dts: arm64: qcom: sdm845: add SLPI remoteproc
+  dts: arm64: qcom: sdm845: add SLPI FastRPC support
+  dt-bindings: firmware: qcom: scm: add SSC_Q6 and ADSP_Q6 VMIDs
+  dts: qcom: arm64: qcom: sdm845: use defines for VMIDs
+  dts: arm64: qcom: sdm845-oneplus: enable SLPI
+  dts: arm64: qcom: sdm845-shift-axolotl: enable SLPI
+
+ .../boot/dts/qcom/sdm845-oneplus-common.dtsi  |  5 ++
+ .../boot/dts/qcom/sdm845-shift-axolotl.dts    |  5 ++
+ arch/arm64/boot/dts/qcom/sdm845.dtsi          | 62 +++++++++++++++++++
+ include/dt-bindings/firmware/qcom,scm.h       |  2 +
+ 4 files changed, 74 insertions(+)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests
+2.39.2
+
