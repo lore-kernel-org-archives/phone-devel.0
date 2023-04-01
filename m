@@ -2,223 +2,144 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B0D8C77B6C
-	for <phone-devel@archiver.kernel.org>; Fri, 31 Mar 2023 16:58:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71548C761AF
+	for <phone-devel@archiver.kernel.org>; Sat,  1 Apr 2023 13:22:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231722AbjCaQ6j (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 31 Mar 2023 12:58:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35542 "EHLO
+        id S229831AbjDANWG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 1 Apr 2023 09:22:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231136AbjCaQ6h (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 31 Mar 2023 12:58:37 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06BD7CC36
-        for <phone-devel@vger.kernel.org>; Fri, 31 Mar 2023 09:58:35 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id k37so29794872lfv.0
-        for <phone-devel@vger.kernel.org>; Fri, 31 Mar 2023 09:58:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680281913;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Hg1hXo3YKH/4ZXl0Bdlyb1YGCLWHlTSlPb8rJUV/Kbo=;
-        b=vjtUojPefRyqY+EWHbk0JjeTGM/N6xkAxTRRmYSI9XFQN/RSvrW/Ikqn3Eo/iFr5nd
-         oXDcgkPdtUorydkQgDPDs486K6MfxJXIMVOh+er2U3LOl1Vwy1CY2V9Vwr2K8fYKvFup
-         kA6p2zjiEAUhQkyFH74s3051Ryh3cCIET1sY486KCEcs9sXXjyoLgrtlClsSS9miNvSv
-         hCoHzL0DK5hankH/kLs0DJaiETHAc9IsOOR6OMuDR8mYlV6kDtCVCyzHUFBNMJgeCLtb
-         zPjMEu64v8haYCu2BJE1zkIfevKcQfnkykDu30Td7t3gU5j3GTL4XO2Sjjke9W9Wp44s
-         YleA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680281913;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hg1hXo3YKH/4ZXl0Bdlyb1YGCLWHlTSlPb8rJUV/Kbo=;
-        b=XXQTpUKBB8G4Bb+6oFf2xVTjnk9+6aC/YKU9ROVDBIl0hKaqjBLD0x7SNkCV/P6R+t
-         0rK5rOadZzvsw23WhAU5TvGqEjw9QNY6tqq+GvUiSPFR7dG5uFe0MPyNANLsA2GMgwrG
-         Jr+TgCvHOJVX8tyHF8AiLj7AB10pDK5OXwH63yPKMjHj2x4+/wKxSsUjlBtZD81UtDfm
-         RS4o/O34A4ZWcm/3PeXMJKah3rG3rSzs15pMCu+muWcNXGAjvOob2vTlO02ImPUN6KsT
-         JrLL4BJ9rH6Hn1WQEgleatcaC2M+yn/UvLyR51hYHh6WnHgXhbAE5s6QqGrp36bLmFcH
-         0kFQ==
-X-Gm-Message-State: AAQBX9db9p79r3sX7FqVuCPLz6ClUoOYp1wKR6OQic1xZsNRKfSaHsNJ
-        scwtwVVCxFT5dsirKQ7alYjgMQ==
-X-Google-Smtp-Source: AKy350ZrZLcTT2PuvoFqTFyfP0UYsKgVGSDG9xR3i4dZoLnDzfY2hfB9nbLERhwWRrcK9lXv+TMYrQ==
-X-Received: by 2002:a19:ad07:0:b0:4e8:c81b:1a11 with SMTP id t7-20020a19ad07000000b004e8c81b1a11mr7746310lfc.49.1680281913169;
-        Fri, 31 Mar 2023 09:58:33 -0700 (PDT)
-Received: from [192.168.1.101] (abxj225.neoplus.adsl.tpnet.pl. [83.9.3.225])
-        by smtp.gmail.com with ESMTPSA id w15-20020ac25d4f000000b004e81c9bb65csm440732lfd.282.2023.03.31.09.58.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 Mar 2023 09:58:32 -0700 (PDT)
-Message-ID: <8f0d4b5b-211c-ac53-798e-70d2f2b3ab37@linaro.org>
-Date:   Fri, 31 Mar 2023 18:58:30 +0200
+        with ESMTP id S229804AbjDANWF (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 1 Apr 2023 09:22:05 -0400
+Received: from out-40.mta0.migadu.com (out-40.mta0.migadu.com [IPv6:2001:41d0:1004:224b::28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CE6621A86
+        for <phone-devel@vger.kernel.org>; Sat,  1 Apr 2023 06:22:01 -0700 (PDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grimler.se; s=key1;
+        t=1680355318;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=UNKDCLqy6oJGz1iDvXsYwdDZGden5gwWWMqBVtiiy88=;
+        b=BQNkSlc0WUPsFDR1EYAGUDqRrFB8Z0JO8ghqZaaY4ysmALK6EYfFaeTx+ZHqdCc1NbqTps
+        01vvjb0KFJH9OcfdeBLnKIsWahUvgH/dcHEihA0LCkk5yxwZB0Z387y4I+Bdltpug1A8ck
+        Jn0gj6LQw2cxlEaaEgdSov7DK218tD4=
+From:   Henrik Grimler <henrik@grimler.se>
+To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        alim.akhtar@samsung.com, m.szyprowski@samsung.com,
+        jenneron@protonmail.com, markuss.broks@gmail.com,
+        martin.juecker@gmail.com, virag.david003@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        replicant@osuosl.org
+Cc:     Henrik Grimler <henrik@grimler.se>
+Subject: [PATCH 0/2] ARM: dts: add mmc aliases for Exynos devices
+Date:   Sat,  1 Apr 2023 15:21:32 +0200
+Message-Id: <20230401132134.12887-1-henrik@grimler.se>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v3 2/4] dts: arm64: qcom: sdm845: add SLPI FastRPC support
-Content-Language: en-US
-To:     Dylan Van Assche <me@dylanvanassche.be>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230330165322.118279-1-me@dylanvanassche.be>
- <20230330165322.118279-3-me@dylanvanassche.be>
- <f9a4a2de-42f8-676a-ae6d-d20391206f83@linaro.org>
- <e7b73a24b8ba76cb6dc9921f73c47632a749b93f.camel@dylanvanassche.be>
- <e43e944c-9f65-cde5-5d8c-a76f33f99b44@linaro.org>
- <603ef0bf04b9c4f7f8e94e2ccece97ffa1b0582b.camel@dylanvanassche.be>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <603ef0bf04b9c4f7f8e94e2ccece97ffa1b0582b.camel@dylanvanassche.be>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+It is convenient to have fixed mmcblk numbering of the eMMC and sdcard
+so that assigned numbers will not change from boot-to-boot or
+depending on if storage devices are actually attached or not.
+
+Anton Bambura has done the work for the chromebooks while I have
+looked at the other devices.  On the chromebooks, mmc0 is used for
+eMMC and mmc1 for sdcard, while mmc0 is used for eMMC and mmc2 for
+sdcard on the other boards, simply because Anton and I had different
+preferences.
+
+Also drop mshc aliases while we are at it and instead add mmc
+capabilities to the individual device trees (right now they are added
+depending on alias index).  I have tested the changes on
+exynos4412-odroid-u2 and exynos5422-odroid-xu4: the MMC_CAP_1_8V_DDR
+and MMC_CAP_8_BIT_DATA caps are set correctly (meaning they are set
+for mshc_0/mmc_0 but not mshc_2/mmc_2) both before and after this
+patchset.
+
+---
+
+Changes since v5:
+* Make mmc index numbering linear per default (that is, always use 0,
+  1, 2 instead of for example 0, 2, 3) for devices where no documentation
+  or schematics are available that use other numbering.
+* Drop Marek's test tag for patch 2 since mmc numbering has been updated
+* Add mmc0 alias to exynos5422-samsung-k3g, was accidentally dropped in v5
+
+Changes since v4:
+* Do not set mmc-ddr-1_8v for sdhci_0 on Exynos 4210,
+  following Marek's tests
+* Collect tags
+
+Changes since v3:
+* Skip sorting of nodes, to not make reviewing impossible (and I need
+  to read up on preferred style)
+* Move two mmc alias additions from patch 1 to patch 2
+
+Changes since v2:
+* Set mmc-ddr-1_8v in device trees so that MMC_CAP_1_8V_DDR is set
+  also after removal of mshc0 alias.  Issue was pointed out by Krzysztof
+  and David.
+* Fix whitespace issue in patch 2 which was pointed out by Krzysztof
+* Reword commit message of patch 2 after Rob's comment
+
+Changes since v1:
+* Move mshc alias cleanup to a separate commit
+* Use mmc0 and mmc1 (instead of mmc0 and mmc2) for eMMC and sdcard on
+  chromebooks
+* Address Krzysztof's review comments:
+ - Make changes per device rather than in soc dtsi
 
 
-On 31.03.2023 15:14, Dylan Van Assche wrote:
-> On Fri, 2023-03-31 at 14:20 +0200, Konrad Dybcio wrote:
->>
->>
->> On 31.03.2023 11:36, Dylan Van Assche wrote:
->>> Hi Konrad,
->>>
->>> On Fri, 2023-03-31 at 04:03 +0200, Konrad Dybcio wrote:
->>>>
->>>>
->>>> On 30.03.2023 18:53, Dylan Van Assche wrote:
->>>>> Qualcomm SDM845 SoC features a SLPI DSP which uses FastRPC
->>>>> through
->>>>> an allocated memory region to load files from the host
->>>>> filesystem
->>>>> such as sensor configuration files.
->>>>>
->>>>> Add a FastRPC node at /dev/fastrpc-sdsp and a DMA region,
->>>>> similar
->>>>> to
->>>>> downstream, to allow userspace to communicate with the SLPI via
->>>>> the
->>>>> FastRPC interface for initializing the sensors on the SLPI.
->>>>>
->>>>> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
->>>>> ---
->>>>>  arch/arm64/boot/dts/qcom/sdm845.dtsi | 24
->>>>> ++++++++++++++++++++++++
->>>>>  1 file changed, 24 insertions(+)
->>>>>
->>>>> diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi
->>>>> b/arch/arm64/boot/dts/qcom/sdm845.dtsi
->>>>> index 3b547cb7aeb8..8ea4944f3ad6 100644
->>>>> --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
->>>>> +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
->>>>> @@ -878,6 +878,14 @@ mdata_mem: mpss-metadata {
->>>>>                         size = <0 0x4000>;
->>>>>                         no-map;
->>>>>                 };
->>>>> +
->>>>> +               fastrpc_mem: fastrpc {
->>>>> +                       compatible = "shared-dma-pool";
->>>>> +                       reusable;
->>>> Please move it last to get a nice reverse-Christmas-tree layout.
->>>>
->>>
->>> Will fix in v4.
->>>
->>>>> +                       alloc-ranges = <0 0x00000000 0
->>>>> 0xffffffff>;
->>>> Would there be any issues with it starting over (1<<31 - 1)?
->>>>
->>>
->>> You mean a bigger region then, like the whole CMA region then?
->>> AFAIK,
->>> the SLPI always use the same region expecting it to be in this
->>> range.
->>> However, I cannot confirm more, as I have no insights in the
->>> firmware
->>> running on there, this all comes from finding out what it exactly
->>> does
->>> on downstream.
->> I was asking about the <.. 0 0xfff.f> part specifically, as that
->> means
->> it can't be allocated above 4 gigs. But I guess it's just how qcom
->> envisioned it.
->>
-> 
-> I think it is limited by qcom, but I cannot be entirely sure :)
-> In any case, for v4, do I keep 0xffffffff?
-Yep, let's not stray into the unknown..
+Henrik Grimler (2):
+  ARM: dts: exynos: replace mshc0 alias with mmc-ddr-1_8v property
+  ARM: dts: exynos: add mmc aliases
 
-Konrad
-> 
->> Also, please use 0x0 in alloc-ranges as well, this is all addresses/
->> reg sizes.
->>
->> Konrad
-> 
-> Yes, will use 0x0 instead of 0.
-> 
-> Dylan
-> 
->>>
->>>>> +                       alignment = <0 0x400000>;
->>>> Please use 0x0 for the 0 here, as it's essentially reg.size with
->>>> size-cells = 2
->>>
->>> Will fix in v4.
->>>
->>>>
->>>>> +                       size = <0 0x1000000>;
->>>> Ditto
->>>
->>> Will fix in v4.
->>>
->>>>
->>>>> +               };
->>>>>         };
->>>>>  
->>>>>         adsp_pas: remoteproc-adsp {
->>>>> @@ -3344,6 +3352,22 @@ glink-edge {
->>>>>                                 label = "dsps";
->>>>>                                 qcom,remote-pid = <3>;
->>>>>                                 mboxes = <&apss_shared 24>;
->>>>> +
->>>>> +                               fastrpc {
->>>>> +                                       compatible =
->>>>> "qcom,fastrpc";
->>>>> +                                       qcom,glink-channels =
->>>>> "fastrpcglink-apps-dsp";
->>>>> +                                       label = "sdsp";
->>>>> +                                       qcom,non-secure-domain;
->>>>> +                                       qcom,vmids = <0x3 0xF
->>>>> 0x5
->>>>> 0x6>;
->>>> Please use the recently-introduced header and depend on (and
->>>> make a patch atop)
->>>>
->>>> https://lore.kernel.org/linux-arm-msm/8685b710-b74d-556a-815d-0ffef2b0eeff@linaro.org/T/#t
->>>>
->>>> Konrad
->>>>
->>>>> +                                       memory-region =
->>>>> <&fastrpc_mem>;
->>>>> +                                       #address-cells = <1>;
->>>>> +                                       #size-cells = <0>;
->>>>> +
->>>>> +                                       compute-cb@0 {
->>>>> +                                               compatible =
->>>>> "qcom,fastrpc-compute-cb";
->>>>> +                                               reg = <0>;
->>>>> +                                       };
->>>>> +                               };
->>>>>                         };
->>>>>                 };
->>>>>  
->>>
->>> Kind regards,
->>> Dylan
-> 
+ arch/arm/boot/dts/exynos3250-artik5-eval.dts        | 5 +++++
+ arch/arm/boot/dts/exynos3250-artik5.dtsi            | 6 ++++++
+ arch/arm/boot/dts/exynos3250-monk.dts               | 2 ++
+ arch/arm/boot/dts/exynos3250-rinato.dts             | 3 +++
+ arch/arm/boot/dts/exynos3250.dtsi                   | 3 ---
+ arch/arm/boot/dts/exynos4210-i9100.dts              | 6 ++++++
+ arch/arm/boot/dts/exynos4210-origen.dts             | 5 +++++
+ arch/arm/boot/dts/exynos4210-smdkv310.dts           | 4 ++++
+ arch/arm/boot/dts/exynos4210-trats.dts              | 6 ++++++
+ arch/arm/boot/dts/exynos4210-universal_c210.dts     | 6 ++++++
+ arch/arm/boot/dts/exynos4412-itop-elite.dts         | 4 ++++
+ arch/arm/boot/dts/exynos4412-itop-scp-core.dtsi     | 5 +++++
+ arch/arm/boot/dts/exynos4412-midas.dtsi             | 4 ++++
+ arch/arm/boot/dts/exynos4412-odroid-common.dtsi     | 6 ++++++
+ arch/arm/boot/dts/exynos4412-origen.dts             | 6 ++++++
+ arch/arm/boot/dts/exynos4412-p4note.dtsi            | 7 +++++++
+ arch/arm/boot/dts/exynos4412-smdk4412.dts           | 4 ++++
+ arch/arm/boot/dts/exynos4412-tiny4412.dts           | 4 ++++
+ arch/arm/boot/dts/exynos4412.dtsi                   | 1 -
+ arch/arm/boot/dts/exynos5250-arndale.dts            | 6 ++++++
+ arch/arm/boot/dts/exynos5250-smdk5250.dts           | 3 +++
+ arch/arm/boot/dts/exynos5250-snow-common.dtsi       | 4 ++++
+ arch/arm/boot/dts/exynos5250-spring.dts             | 6 ++++++
+ arch/arm/boot/dts/exynos5250.dtsi                   | 4 ----
+ arch/arm/boot/dts/exynos5260-xyref5260.dts          | 6 ++++++
+ arch/arm/boot/dts/exynos5410-odroidxu.dts           | 3 +++
+ arch/arm/boot/dts/exynos5410-smdk5410.dts           | 6 ++++++
+ arch/arm/boot/dts/exynos5420-arndale-octa.dts       | 6 ++++++
+ arch/arm/boot/dts/exynos5420-galaxy-tab-common.dtsi | 6 ++++++
+ arch/arm/boot/dts/exynos5420-peach-pit.dts          | 4 ++++
+ arch/arm/boot/dts/exynos5420-smdk5420.dts           | 6 ++++++
+ arch/arm/boot/dts/exynos5420.dtsi                   | 3 ---
+ arch/arm/boot/dts/exynos5422-odroid-core.dtsi       | 4 ++++
+ arch/arm/boot/dts/exynos5422-odroidxu3-common.dtsi  | 5 +++++
+ arch/arm/boot/dts/exynos5422-samsung-k3g.dts        | 5 +++++
+ arch/arm/boot/dts/exynos5800-peach-pi.dts           | 4 ++++
+ 36 files changed, 157 insertions(+), 11 deletions(-)
+
+
+base-commit: 0e84f3493a37d50f2f629dbea670135b8a8ee391
+-- 
+2.30.2
+
