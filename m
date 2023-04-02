@@ -2,84 +2,146 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D730C77B70
-	for <phone-devel@archiver.kernel.org>; Sat,  1 Apr 2023 17:36:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89C04C7619A
+	for <phone-devel@archiver.kernel.org>; Sun,  2 Apr 2023 14:47:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230208AbjDARf7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 1 Apr 2023 13:35:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60992 "EHLO
+        id S230517AbjDBOre (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 2 Apr 2023 10:47:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230035AbjDARfx (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 1 Apr 2023 13:35:53 -0400
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1410B1BF5D;
-        Sat,  1 Apr 2023 10:35:50 -0700 (PDT)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4PpkpC6pZvz9skf;
-        Sat,  1 Apr 2023 19:35:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
-        s=MBO0001; t=1680370547;
+        with ESMTP id S229448AbjDBOrd (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 2 Apr 2023 10:47:33 -0400
+Received: from out-48.mta1.migadu.com (out-48.mta1.migadu.com [IPv6:2001:41d0:203:375::30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 449026A45
+        for <phone-devel@vger.kernel.org>; Sun,  2 Apr 2023 07:47:31 -0700 (PDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grimler.se; s=key1;
+        t=1680446849;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ECZ8dJrYNeEUE2kyi4AeyJJ/4vy98zA9JMEzzgeWDeg=;
-        b=KbcNQX5fuOHPIDsNrNssN8Ee6y1k6KTe4HQwH0iGokbnCL1ukneoHLryIlXOBj3eawanzz
-        PJZ1xcu7/7vS4wjM5Opf1evma9OhYEnxjHS/jXHyoEggBC7Pht8OSbvWYIX81wocopKSMf
-        9EP8BCKzWsjDUsWpeDJtIDtp2/fz/1e5b8ge0MEu+qzo/lFEyBhLmbYYWO+Eo9Y2luqRfl
-        V8hcr+rpRjbxJghcs+k4c/Enet5DQ2Qx2Yt6Y2taSJhZFmmP1hxzhxZu76nCYD4bQcXcVp
-        xg1YztmJOaEDY0yfht2T3b/NIMjyZAgarY9Pz28saxw4e56N8hOsAYugvhzyqw==
-From:   Dylan Van Assche <me@dylanvanassche.be>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Dylan Van Assche <me@dylanvanassche.be>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v4 6/6] dts: arm64: qcom: sdm845-shift-axolotl: enable SLPI
-Date:   Sat,  1 Apr 2023 19:35:23 +0200
-Message-Id: <20230401173523.15244-7-me@dylanvanassche.be>
-In-Reply-To: <20230401173523.15244-1-me@dylanvanassche.be>
-References: <20230401173523.15244-1-me@dylanvanassche.be>
+         content-transfer-encoding:content-transfer-encoding;
+        bh=qPfc+eCKh1pSOYkXvXBQlJIfH+6a3ZfZffRcrpKqr+g=;
+        b=glTzsPBQQ1wYWXTkdnagOD0wXM6S3zhULf6kyX6Tckw5gAMDK3kTrFl4r+o6XBlQ4Lry7F
+        UnG0YvFGfFbFtlnJGRJdxR/5I6xeWD4I8S0U4vvyKO5h0TbwA101cbutWW1E5WabyybA7C
+        6wbLk9W8z5xx00Zdckwdm20l9nME17g=
+From:   Henrik Grimler <henrik@grimler.se>
+To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        alim.akhtar@samsung.com, m.szyprowski@samsung.com,
+        jenneron@protonmail.com, markuss.broks@gmail.com,
+        martin.juecker@gmail.com, virag.david003@gmail.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        replicant@osuosl.org
+Cc:     Henrik Grimler <henrik@grimler.se>
+Subject: [PATCH v7 0/2] ARM: dts: add mmc aliases for Exynos devices
+Date:   Sun,  2 Apr 2023 16:47:22 +0200
+Message-Id: <20230402144724.17839-1-henrik@grimler.se>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Enable the SLPI DSP on the SHIFTPHONES SHIFT6mq phone with a
-Qualcomm SDM845 SoC.
+It is convenient to have fixed mmcblk numbering of the eMMC and sdcard
+so that assigned numbers will not change from boot-to-boot or
+depending on if storage devices are actually attached or not.
 
-Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Anton Bambura has done the work for the chromebooks while I have
+looked at the other devices.  On the chromebooks, mmc0 is used for
+eMMC and mmc1 for sdcard, while mmc0 is used for eMMC and mmc2 for
+sdcard on the other boards, simply because Anton and I had different
+preferences.
+
+Also drop mshc aliases while we are at it and instead add mmc
+capabilities to the individual device trees (right now they are added
+depending on alias index).  I have tested the changes on
+exynos4412-odroid-u2 and exynos5422-odroid-xu4: the MMC_CAP_1_8V_DDR
+and MMC_CAP_8_BIT_DATA caps are set correctly (meaning they are set
+for mshc_0/mmc_0 but not mshc_2/mmc_2) both before and after this
+patchset.
+
 ---
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-index b54e304abf71..bd9571a258cf 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-@@ -572,6 +572,11 @@ &qupv3_id_1 {
- 	status = "okay";
- };
- 
-+&slpi_pas {
-+	firmware-name = "qcom/sdm845/axolotl/slpi.mbn";
-+	status = "okay";
-+};
-+
- &tlmm {
- 	gpio-reserved-ranges = <0 4>, <81 4>;
- 
+Changes since v6:
+* Fix syntax error in patch 2
+
+Changes since v5:
+* Make mmc index numbering linear per default (that is, always use 0,
+  1, 2 instead of for example 0, 2, 3) for devices where no documentation
+  or schematics are available that use other numbering.
+* Drop Marek's test tag for patch 2 since mmc numbering has been updated
+* Add mmc0 alias to exynos5422-samsung-k3g, was accidentally dropped in v5
+
+Changes since v4:
+* Do not set mmc-ddr-1_8v for sdhci_0 on Exynos 4210,
+  following Marek's tests
+* Collect tags
+
+Changes since v3:
+* Skip sorting of nodes, to not make reviewing impossible (and I need
+  to read up on preferred style)
+* Move two mmc alias additions from patch 1 to patch 2
+
+Changes since v2:
+* Set mmc-ddr-1_8v in device trees so that MMC_CAP_1_8V_DDR is set
+  also after removal of mshc0 alias.  Issue was pointed out by Krzysztof
+  and David.
+* Fix whitespace issue in patch 2 which was pointed out by Krzysztof
+* Reword commit message of patch 2 after Rob's comment
+
+Changes since v1:
+* Move mshc alias cleanup to a separate commit
+* Use mmc0 and mmc1 (instead of mmc0 and mmc2) for eMMC and sdcard on
+  chromebooks
+* Address Krzysztof's review comments:
+ - Make changes per device rather than in soc dtsi
+
+Henrik Grimler (2):
+  ARM: dts: exynos: replace mshc0 alias with mmc-ddr-1_8v property
+  ARM: dts: exynos: add mmc aliases
+
+ arch/arm/boot/dts/exynos3250-artik5-eval.dts        | 4 ++++
+ arch/arm/boot/dts/exynos3250-artik5.dtsi            | 6 ++++++
+ arch/arm/boot/dts/exynos3250-monk.dts               | 2 ++
+ arch/arm/boot/dts/exynos3250-rinato.dts             | 3 +++
+ arch/arm/boot/dts/exynos3250.dtsi                   | 3 ---
+ arch/arm/boot/dts/exynos4210-i9100.dts              | 6 ++++++
+ arch/arm/boot/dts/exynos4210-origen.dts             | 5 +++++
+ arch/arm/boot/dts/exynos4210-smdkv310.dts           | 4 ++++
+ arch/arm/boot/dts/exynos4210-trats.dts              | 6 ++++++
+ arch/arm/boot/dts/exynos4210-universal_c210.dts     | 6 ++++++
+ arch/arm/boot/dts/exynos4412-itop-elite.dts         | 4 ++++
+ arch/arm/boot/dts/exynos4412-itop-scp-core.dtsi     | 5 +++++
+ arch/arm/boot/dts/exynos4412-midas.dtsi             | 4 ++++
+ arch/arm/boot/dts/exynos4412-odroid-common.dtsi     | 6 ++++++
+ arch/arm/boot/dts/exynos4412-origen.dts             | 6 ++++++
+ arch/arm/boot/dts/exynos4412-p4note.dtsi            | 7 +++++++
+ arch/arm/boot/dts/exynos4412-smdk4412.dts           | 4 ++++
+ arch/arm/boot/dts/exynos4412-tiny4412.dts           | 4 ++++
+ arch/arm/boot/dts/exynos4412.dtsi                   | 1 -
+ arch/arm/boot/dts/exynos5250-arndale.dts            | 6 ++++++
+ arch/arm/boot/dts/exynos5250-smdk5250.dts           | 3 +++
+ arch/arm/boot/dts/exynos5250-snow-common.dtsi       | 4 ++++
+ arch/arm/boot/dts/exynos5250-spring.dts             | 6 ++++++
+ arch/arm/boot/dts/exynos5250.dtsi                   | 4 ----
+ arch/arm/boot/dts/exynos5260-xyref5260.dts          | 6 ++++++
+ arch/arm/boot/dts/exynos5410-odroidxu.dts           | 3 +++
+ arch/arm/boot/dts/exynos5410-smdk5410.dts           | 6 ++++++
+ arch/arm/boot/dts/exynos5420-arndale-octa.dts       | 6 ++++++
+ arch/arm/boot/dts/exynos5420-galaxy-tab-common.dtsi | 6 ++++++
+ arch/arm/boot/dts/exynos5420-peach-pit.dts          | 4 ++++
+ arch/arm/boot/dts/exynos5420-smdk5420.dts           | 6 ++++++
+ arch/arm/boot/dts/exynos5420.dtsi                   | 3 ---
+ arch/arm/boot/dts/exynos5422-odroid-core.dtsi       | 4 ++++
+ arch/arm/boot/dts/exynos5422-odroidxu3-common.dtsi  | 5 +++++
+ arch/arm/boot/dts/exynos5422-samsung-k3g.dts        | 5 +++++
+ arch/arm/boot/dts/exynos5800-peach-pi.dts           | 4 ++++
+ 36 files changed, 156 insertions(+), 11 deletions(-)
+
+
+base-commit: 0e84f3493a37d50f2f629dbea670135b8a8ee391
 -- 
-2.39.2
+2.30.2
 
