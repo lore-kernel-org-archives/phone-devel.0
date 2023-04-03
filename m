@@ -2,97 +2,142 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4029EC76196
-	for <phone-devel@archiver.kernel.org>; Mon,  3 Apr 2023 16:18:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66228C76188
+	for <phone-devel@archiver.kernel.org>; Mon,  3 Apr 2023 16:22:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232671AbjDCQS3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 3 Apr 2023 12:18:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48072 "EHLO
+        id S232066AbjDCQWa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 3 Apr 2023 12:22:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232663AbjDCQS2 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 3 Apr 2023 12:18:28 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 505911731
-        for <phone-devel@vger.kernel.org>; Mon,  3 Apr 2023 09:18:23 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id eg48so119433918edb.13
-        for <phone-devel@vger.kernel.org>; Mon, 03 Apr 2023 09:18:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1680538702;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e+/t8CyLe9nfcDqKwIQawjACJQBN8x/E4vP+2k7N+Eg=;
-        b=YhpzdJTVjt1sqFg0V3bxZbRxGF/mmUwNEsRrp56tbIqpxVJmaaxtDJgJTaRjTZ6QDO
-         fj7o0FD9aq/7FuaSuZjQFfpwYMY+GkTqythW6MM5faKdMRaBCvBQn6VAohwZ5DqqnCKL
-         5Uhq7uIkdT3QSPPZgIvV579qBocUpf5sTTDpiluYJ6b1AmhYPP0xgL6njEIyLI96wVqm
-         8I94x8gNn9wfUPcVVALldInOPjpn/f+m9+coV4A7gCe9WXRdjqtaEv/6o/DR+EQtJKi+
-         AzD9VJitTCkbcghskyMmHpqtGHZ126ZQCGlJJp9qKGfsWpJx2kdBmwdhzt59NtZiwipQ
-         cnpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680538702;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e+/t8CyLe9nfcDqKwIQawjACJQBN8x/E4vP+2k7N+Eg=;
-        b=idWJZGNWig1MXcKV+Qtix63Ob/UA4LVNn0xwcWdrnsHTAG4K8Ony+LUtmzBNVSzQqE
-         pmhu/pUdeLPMfZeuH32HYbuoS/rFlvS+dXKU4bq5eE1kALQLaywDR216FCbgaY6Kd5Km
-         ysBcVNE0G9uPJduLnXQLBIqVcVVtI13AAXTHfA/rOGOPjUioa5gL+YBxn17doVGmS9bN
-         7i+3JQBW1d0VJUpkLdIUyKc5xCi2nD7G1YsPN6DgmQc5kUDSeSGBf6am5tf39xd8l9nf
-         4Qg4hI5+D8fP9RUOuNWkaEEjFF+THkufTaMlETI3GZ+cmDIJ1UKxqBNdAy27I3RD0CuH
-         UkDA==
-X-Gm-Message-State: AAQBX9cxk791+Fq5YvJ6UNDxbt5j4vBVjfjdH0x5WJN7Ao2XbMFT5oCS
-        j3c6Oin/eteVEvEjU7rLoBzT5w==
-X-Google-Smtp-Source: AKy350aIeQbOIRRVUTKAxAF1kiU8gVIcRz/m8Z6zg5sP40aDrQXUxoB55vCsyEAaR8HjUQSPyTwgyw==
-X-Received: by 2002:a17:906:612:b0:933:4d47:55b7 with SMTP id s18-20020a170906061200b009334d4755b7mr15075594ejb.2.1680538701840;
-        Mon, 03 Apr 2023 09:18:21 -0700 (PDT)
-Received: from krzk-bin.. ([2a02:810d:15c0:828:ae90:d80:1069:4805])
-        by smtp.gmail.com with ESMTPSA id hz19-20020a1709072cf300b008f767c69421sm4758065ejc.44.2023.04.03.09.18.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Apr 2023 09:18:21 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     virag.david003@gmail.com, krzysztof.kozlowski+dt@linaro.org,
-        jenneron@protonmail.com, devicetree@vger.kernel.org,
-        replicant@osuosl.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Henrik Grimler <henrik@grimler.se>,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, markuss.broks@gmail.com,
-        alim.akhtar@samsung.com, robh+dt@kernel.org,
-        martin.juecker@gmail.com, m.szyprowski@samsung.com,
-        linux-samsung-soc@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v7 0/2] ARM: dts: add mmc aliases for Exynos devices
-Date:   Mon,  3 Apr 2023 18:18:19 +0200
-Message-Id: <168053869552.329664.8971511513108688025.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230402144724.17839-1-henrik@grimler.se>
-References: <20230402144724.17839-1-henrik@grimler.se>
+        with ESMTP id S231626AbjDCQW3 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 3 Apr 2023 12:22:29 -0400
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [IPv6:2001:67c:2050:0:465::101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 031041FFE;
+        Mon,  3 Apr 2023 09:22:28 -0700 (PDT)
+Received: from smtp2.mailbox.org (unknown [10.196.197.2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4Pqx4c1Qtvz9sVx;
+        Mon,  3 Apr 2023 18:22:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
+        s=MBO0001; t=1680538944;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=IqsGAlOKDgMXPJVdU76RuqgAlnJFlh/BsAIGdRjS90w=;
+        b=ed3eIAsMaw7HSDsIraOG/6swtIGagh0B7aDeFpe0V+pjj2REcr18/V4lnKXa7TK3kmCUIw
+        lZnFECbfEN9ZMbC1TrV00ameGHAjiJJ5FSM5rxCKJ659mWsFHenvwExwsIVLBnzBnOsKZL
+        oxQ6x8SD/m47IWQiMOcZpEQOMP1NAlvWZGP8I20A/JaCJ7zgPFlOASVo57uZZ2za1yWz5+
+        4yazb8Ixs52uSotRPZba17we9dHvgNLRBT3bKuVNgr7rhuFldZ/8N4jMhH4je3GNmKxtns
+        LcwANuEyTX7BOJUjrpHNg5UINsqMR/5WNZSKgjF21/M8fBvt2f5+O0l57xWNmw==
+Message-ID: <744f2ddc80ba9d9216ecd90b97e08aa5bd5452cd.camel@dylanvanassche.be>
+Subject: Re: [PATCH v4 4/6] dts: qcom: arm64: qcom: sdm845: use defines for
+ VMIDs
+From:   Dylan Van Assche <me@dylanvanassche.be>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Date:   Mon, 03 Apr 2023 18:22:21 +0200
+In-Reply-To: <bf7b5218-56ba-5525-fcb8-7be71b114a79@linaro.org>
+References: <20230401173523.15244-1-me@dylanvanassche.be>
+         <20230401173523.15244-5-me@dylanvanassche.be>
+         <ea03bfb6-34c4-45e2-c179-74ecafad559f@linaro.org>
+         <2d9d001f14036caf4f6d47448d4d2fdb0b188101.camel@dylanvanassche.be>
+         <bf7b5218-56ba-5525-fcb8-7be71b114a79@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, 2 Apr 2023 16:47:22 +0200, Henrik Grimler wrote:
-> It is convenient to have fixed mmcblk numbering of the eMMC and sdcard
-> so that assigned numbers will not change from boot-to-boot or
-> depending on if storage devices are actually attached or not.
-> 
-> Anton Bambura has done the work for the chromebooks while I have
-> looked at the other devices.  On the chromebooks, mmc0 is used for
-> eMMC and mmc1 for sdcard, while mmc0 is used for eMMC and mmc2 for
-> sdcard on the other boards, simply because Anton and I had different
-> preferences.
-> 
-> [...]
+Hi,
 
-Applied, thanks!
+On Mon, 2023-04-03 at 17:47 +0200, Krzysztof Kozlowski wrote:
+> On 03/04/2023 17:32, Dylan Van Assche wrote:
+> > Hi Krzysztof,
+> >=20
+> > On Mon, 2023-04-03 at 11:20 +0200, Krzysztof Kozlowski wrote:
+> > > On 01/04/2023 19:35, Dylan Van Assche wrote:
+> > > > Use VMID defines for SLPI's FastRPC node in the Qualcomm SDM845
+> > > > DTS
+> > > > instead of hardcoded magic values.
+> > > >=20
+> > > > Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+> > > > ---
+> > > > =C2=A0arch/arm64/boot/dts/qcom/sdm845.dtsi | 4 +++-
+> > > > =C2=A01 file changed, 3 insertions(+), 1 deletion(-)
+> > > >=20
+> > > > diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi
+> > > > b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+> > > > index 1f25a7f4e02b..dc4b553cbe2e 100644
+> > > > --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
+> > > > +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+> > > > @@ -13,6 +13,7 @@
+> > > > =C2=A0#include <dt-bindings/clock/qcom,rpmh.h>
+> > > > =C2=A0#include <dt-bindings/clock/qcom,videocc-sdm845.h>
+> > > > =C2=A0#include <dt-bindings/dma/qcom-gpi.h>
+> > > > +#include <dt-bindings/firmware/qcom,scm.h>
+> > > > =C2=A0#include <dt-bindings/gpio/gpio.h>
+> > > > =C2=A0#include <dt-bindings/interconnect/qcom,osm-l3.h>
+> > > > =C2=A0#include <dt-bindings/interconnect/qcom,sdm845.h>
+> > > > @@ -3372,7 +3373,8 @@ fastrpc {
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0qcom,glink-channels =3D
+> > > > "fastrpcglink-apps-dsp";
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0label =3D "sdsp";
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0qcom,non-secure-domain;
+> > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0qcom,vmids =3D <0x3 0xF
+> > > > 0x5
+> > > > 0x6>;
+> > >=20
+> > > Didn't you just add it in previous patch? Don't add incorrect
+> > > code
+> > > which
+> > > you immediately change.
+> > >=20
+> >=20
+> > Both are similar, the code is in fact the same. I followed what
+> > Konrad
+> > suggested in v3 to make a patch on top:
+>=20
+> I don't understand. Device nodes are similar, but they are different?
+> If
+> you add a line in patch X and change it in patch X+1, then something
+> is
+> wrong. Isn't this the case here or these are different device nodes?
+>=20
 
-[1/2] ARM: dts: exynos: replace mshc0 alias with mmc-ddr-1_8v property
-      https://git.kernel.org/krzk/linux/c/37f9514e618f3b95125d7eda8991a7ae3b17da96
-[2/2] ARM: dts: exynos: add mmc aliases
-      https://git.kernel.org/krzk/linux/c/3ddba33dc270209868de79f695e5b27afa49e230
+They are the same node.
+In the original patch the values are hex values, but Konrad asked to
+make a patch on top depending on the qcom scm header which has these
+magic hex values with defines.
+I can make the defines as default, no problem. Will do in v5.
 
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Kind regards,
+Dylan
+
+>=20
+> Best regards,
+> Krzysztof
+>=20
+
