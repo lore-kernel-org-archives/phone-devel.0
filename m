@@ -2,150 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CF11C76196
-	for <phone-devel@archiver.kernel.org>; Sun,  2 Apr 2023 17:26:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 030D2C77B60
+	for <phone-devel@archiver.kernel.org>; Mon,  3 Apr 2023 09:19:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230484AbjDBR0Z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 2 Apr 2023 13:26:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47346 "EHLO
+        id S230090AbjDCJTz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 3 Apr 2023 05:19:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230433AbjDBR0Y (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 2 Apr 2023 13:26:24 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA77E7DB2;
-        Sun,  2 Apr 2023 10:26:22 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id j18-20020a05600c1c1200b003ee5157346cso18395889wms.1;
-        Sun, 02 Apr 2023 10:26:22 -0700 (PDT)
+        with ESMTP id S231761AbjDCJTj (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 3 Apr 2023 05:19:39 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3EF3CDEC
+        for <phone-devel@vger.kernel.org>; Mon,  3 Apr 2023 02:19:18 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id r11so114553669edd.5
+        for <phone-devel@vger.kernel.org>; Mon, 03 Apr 2023 02:19:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680456381;
+        d=linaro.org; s=google; t=1680513556;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=/vbuti5krowtrunNTliRTFxJEP25/MzDnPfiiGQsdeo=;
-        b=J8pksCugxMr7bNtJ0/qlJ10Lptx3EC19lN5z0s2GXmprRrIdmcWo1XMFCfUn7NJ14z
-         q++BYaehv+imhuaKg5o+SmZ5oX5gOtxhjWoX0ed0jSwWohiQIBtn2v6+eo1CQclstfNK
-         I1KthpbxHxvg222LwDWep11UAaY8FQ3g9ytU/50M5oO51DrrVlYc3K5yQ+jQ9goyYIGc
-         y6yC8D68mPCkirbDK87ugI7LDhxCk9bD4CW38wdiP17sEedkMdp8rfqhdgV2k4dpLzTt
-         Jp9EheRPAm3LT80wLYfZ47azt2yNF2VvGNJVZVeRQz/wO4twCX7ro3bbEOQ3gR/vcsw+
-         E7qg==
+        bh=xtjX09frN0K29pRxgf6hACPfNtdl31/D5yVk7FHaNzM=;
+        b=AcngGAsNnhlAdsWvDJbbweHBhYpK2WLDIX0lIsSNoQoqTBpzO7gU2tby5FG89yglvj
+         jwalHAdHKzk3Ul7phzxP6THvFKSCRBHj+8ezkKuP+9x485GCH5QHXR9+Uv2PckqJfgng
+         We12sfM1IafZfmT01Wgma9fvtA/b4QMfkIbvTy/gCHvVKULaSteg7elA3+8Ahgssjs1A
+         xlEJTQm2cIT2g3chnw7CfTpwNQYlUjT4A+u7LuPLp7jCSg+MzcTHp3QTsEb6N++lOxin
+         rPlNhJofl8P4kO3gcCNTEayjjofywoi1fmiE1FZfKbMjaMI9nQJZrITou8k6BNUcsygm
+         RpeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680456381;
+        d=1e100.net; s=20210112; t=1680513556;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/vbuti5krowtrunNTliRTFxJEP25/MzDnPfiiGQsdeo=;
-        b=ahXAs1H+gXq406VTQ563Wgw3YyytDpeV3gdeTWtMKNBw0aa9/M18M596WJsmEEj1vi
-         mZeRrZZziARrn0iInFWIFo/D1SXejV10Dej44OLboUg8rFU52yO9NxuZxXIxtau7bRC2
-         1KRPHxrpXkQ0auEsK1Psy6k/kEgwcZA5Ylyesm9ws6KW0IZwtZrDzLkSsDA3oVEY0sCh
-         nesw7ATWsyFg2ObixXcNUyxu/JbYhlfUoIA6GjHfrmd+k2FY5/ix5jc232j75fwvH+i6
-         bY3S6gdV0i5dqMAwdUqC07BUs7d70T23bY8gH9bZkpHBmFvYtzc0v9PCLNruFBlXxFOb
-         BJAQ==
-X-Gm-Message-State: AAQBX9chjJPh1HEXJlMTz5OIC9sTVFZNpQqT7TFGsXzUIAkrRHqxtgY9
-        B86dXhFYKIuZSuzbhiZg1wk=
-X-Google-Smtp-Source: AKy350YkZU0wUME6kjYWBKsiN+B6Bd5JavScpbV6FA4h3HrYDvcxwr2Qsm/WheupkAVb02tDYveAgg==
-X-Received: by 2002:a05:600c:2144:b0:3ef:6396:d9b3 with SMTP id v4-20020a05600c214400b003ef6396d9b3mr21145158wml.18.1680456381192;
-        Sun, 02 Apr 2023 10:26:21 -0700 (PDT)
-Received: from [192.168.2.177] ([207.188.167.132])
-        by smtp.gmail.com with ESMTPSA id h14-20020adffd4e000000b002c71a32394dsm7659691wrs.64.2023.04.02.10.26.19
+        bh=xtjX09frN0K29pRxgf6hACPfNtdl31/D5yVk7FHaNzM=;
+        b=wKIvrP5BV/caeXAVHfOmn8Kn9m1TphU6yeojdWrkGUgD9p1ZO120HvR6dGff9sbC9j
+         oWOo8mUlXOB+qnmgacDAsFcwmv3Jf/WtnEPxtEjUCCM9wfJ8cc8u3f7dmIRlActeMHVM
+         w4/5+vJUnEvjhPxZb1ceVvCkz1th8RmeEzwFmkZTEj2ZFPzDAv+NkxlszzNONMFJPabf
+         vs6N6FZigDVLHkrCC/Lhqr2SbJY/MpInY8V8C1NS8RCbudAf9v0x9y0vgc3fC7U7A+XA
+         bjxeFaC2lxPK87bknY9T46SkxmoGc85D9oDSgpuioWK+ORPo6dni7GIh0tCT12ADRMjU
+         +J7w==
+X-Gm-Message-State: AAQBX9dR8SYsbCBEK+boC2hzazcRxNSC13HZq09fP+LGmPN12JUR9TeE
+        r1Du//DNpSWAfjcjzMO8U8kLMQ==
+X-Google-Smtp-Source: AKy350b9Mnm1wx7mnQYX/WsjT5FVGKxITPprQ1LuJWlIRLGronH4vRCLv2HbU4jDnRWyRbvCXKTQmQ==
+X-Received: by 2002:aa7:cacd:0:b0:4fc:7201:6e4 with SMTP id l13-20020aa7cacd000000b004fc720106e4mr32928442edt.20.1680513556539;
+        Mon, 03 Apr 2023 02:19:16 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:ae90:d80:1069:4805? ([2a02:810d:15c0:828:ae90:d80:1069:4805])
+        by smtp.gmail.com with ESMTPSA id x3-20020a50d603000000b004c06f786602sm4270132edi.85.2023.04.03.02.19.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Apr 2023 10:26:20 -0700 (PDT)
-Message-ID: <77528d8d-29f3-9bae-33f3-3296c9c8b0b1@gmail.com>
-Date:   Sun, 2 Apr 2023 19:26:18 +0200
+        Mon, 03 Apr 2023 02:19:16 -0700 (PDT)
+Message-ID: <a585fb29-e960-46e3-f768-01e7d104b204@linaro.org>
+Date:   Mon, 3 Apr 2023 11:19:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH v2 00/17] MT6795 Helio X10 and Sony Xperia M5: DT step 2!
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v4 3/6] dt-bindings: firmware: qcom: scm: add SSC_Q6 and
+ ADSP_Q6 VMIDs
 Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     qii.wang@mediatek.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jassisinghbrar@gmail.com,
-        houlong.wei@mediatek.com, linux-i2c@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, kernel@collabora.com,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20230327083647.22017-1-angelogioacchino.delregno@collabora.com>
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-In-Reply-To: <20230327083647.22017-1-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     Dylan Van Assche <me@dylanvanassche.be>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230401173523.15244-1-me@dylanvanassche.be>
+ <20230401173523.15244-4-me@dylanvanassche.be>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230401173523.15244-4-me@dylanvanassche.be>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 01/04/2023 19:35, Dylan Van Assche wrote:
+> SSC_Q6 and ADSP_Q6 are used in the FastRPC driver for accessing
+> the secure world.
+> 
+> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+> ---
+>  include/dt-bindings/firmware/qcom,scm.h | 2 ++
 
 
-On 27/03/2023 10:36, AngeloGioacchino Del Regno wrote:
-> Changes in v2:
->   - Squashed the addition of mediatek,mt6795-gce.h header with the
->     commit adding the MT6795 GCE compatible.
-> 
-> This series further enhances the support for the MT6795 Helio X10 SoC
-> and the Sony Xperia M5 smartphone.
-> 
-> In particular, for the SoC support, this adds:
->   - Frequency Hopping support
->   - I2C controllers
->   - Power domains
->   - IOMMU support and LARBs
->   - GCE/CMDQ Mailbox
->   - VDECSYS and VENCSYS clocks
->   - MMSYS support
-> 
-> ...and, on the Xperia M5 smartphone, this adds:
->   - Frequency Hopping with Spread Spectrum for MAINPLL, MPLL, MSDCPLL
->   - Touchscreen support (Synaptics S2726, fw id: 1898977, RMI4 protocol)
->   - Accelerometer
->   - Magnetometer
->   - Proximity sensor
->   - NFC support
-> 
-> ...all of which was successfully tested on the Xperia M5 smartphone.
-> 
-> This series depends on [1] for the MMSYS support.
-> 
-> Plan for step 3 is to push upstream full display support, which does
-> already work on my custom tree ;-)
-> 
-> [1]: https://lore.kernel.org/all/20230309102618.114157-1-angelogioacchino.delregno@collabora.com/
-> 
-> Cheers!
-> 
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Applied all but:
-4/17 dt-binding already applied
-7/17 dt-binding not applied
-8/17 we are missing the dt binding
+Best regards,
+Krzysztof
 
-Thanks a lot for the great work
-Matthias
-
-> AngeloGioacchino Del Regno (17):
->    arm64: dts: mediatek: mt6795: Add Frequency Hopping Controller node
->    arm64: dts: mediatek: mt6795: Add apmixedsys syscon node
->    arm64: dts: mediatek: mt6795: xperia-m5: Enable Frequency Hopping
->    dt-bindings: i2c: i2c-mt65xx: Add compatible for MT6795 Helio X10
->    arm64: dts: mediatek: mt6795: Add nodes for I2C controllers
->    arm64: dts: mediatek: mt6795: Add SoC power domains
->    dt-bindings: mailbox: mediatek,gce-mailbox: Add support for MT6795
->    arm64: dts: mediatek: mt6795: Add support for the CMDQ/GCE mailbox
->    arm64: dts: mediatek: mt6795: Add MMSYS node for multimedia clocks
->    arm64: dts: mediatek: mt6795: Add VDECSYS and VENCSYS clocks
->    arm64: dts: mediatek: mt6795: Add support for IOMMU and LARBs
->    arm64: dts: mediatek: mt6795-xperia-m5: Enable I2C 0-3 busses
->    arm64: dts: mediatek: mt6795-xperia-m5: Add Synaptics RMI4 Touchscreen
->    arm64: dts: mediatek: mt6795-xperia-m5: Add Bosch BMA255 Accelerometer
->    arm64: dts: mediatek: mt6795-xperia-m5: Add Bosch BMM050 Magnetometer
->    arm64: dts: mediatek: mt6795-xperia-m5: Add Sensortek STK3310
->      Proximity
->    arm64: dts: mediatek: mt6795-xperia-m5: Add NXP PN547 NFC on I2C3
-> 
->   .../devicetree/bindings/i2c/i2c-mt65xx.yaml   |   4 +
->   .../mailbox/mediatek,gce-mailbox.yaml         |  20 +-
->   .../dts/mediatek/mt6795-sony-xperia-m5.dts    | 166 ++++++++++++
->   arch/arm64/boot/dts/mediatek/mt6795.dtsi      | 245 ++++++++++++++++++
->   include/dt-bindings/gce/mediatek,mt6795-gce.h | 123 +++++++++
->   5 files changed, 550 insertions(+), 8 deletions(-)
->   create mode 100644 include/dt-bindings/gce/mediatek,mt6795-gce.h
-> 
