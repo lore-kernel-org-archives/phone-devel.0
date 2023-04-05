@@ -2,51 +2,50 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F02DC7619A
-	for <phone-devel@archiver.kernel.org>; Wed,  5 Apr 2023 04:06:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 329D4C77B73
+	for <phone-devel@archiver.kernel.org>; Wed,  5 Apr 2023 04:06:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjDEEGV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 5 Apr 2023 00:06:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47812 "EHLO
+        id S229559AbjDEEGY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 5 Apr 2023 00:06:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229559AbjDEEGU (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 Apr 2023 00:06:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C921C30ED;
-        Tue,  4 Apr 2023 21:06:18 -0700 (PDT)
+        with ESMTP id S236782AbjDEEGW (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 Apr 2023 00:06:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2E830ED;
+        Tue,  4 Apr 2023 21:06:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 64F5963965;
-        Wed,  5 Apr 2023 04:06:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07F99C433EF;
-        Wed,  5 Apr 2023 04:06:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 440CB63AF5;
+        Wed,  5 Apr 2023 04:06:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF530C4339B;
+        Wed,  5 Apr 2023 04:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680667577;
-        bh=qjrgDVDa5fPmLzogqlbGWIXUX3IHvG/mEgP6jyFc9U4=;
+        s=k20201202; t=1680667580;
+        bh=hEaErDu5fSOt+0cd2ChJ0Anyal99mcV0yfCmSzyt6dA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VB2ma9b65mcKZzx6vfJffxl2Y4m6rs34Uvvwhr+1uCqV0tvAxrihAzmGzpxFi6gWY
-         LAcAZGmxJ314S/bPCspKDCb6MgKhvCOyGP4r0Cu+7OD33NhnOV1OKtLP4tedneBD/u
-         Kjm2Urynnngii28CKxMtvi8nQtEawo3QQ9ecZ+FyLiR09WI0DH5t14S/DVn02pEUUQ
-         lSdsqchxIS+Fx1a8SBpsxrqv/xW9FUXcm1qBAI7QuZae3g43/mcUcEeePTsFusZuKB
-         AnOqTCOjqcWSE+UKF7X9wkN7AXE6MAtqhXl5YVjBpxCqhkSEREWsiHL3fUscLHMnRe
-         V5+BEjHGG6UxA==
+        b=gQS74kUaK5ZegEUoLCw1SyX12BV8j/sBduKk8KRLGSJCTkOE1p9tfFSjG4tMV1oIX
+         cPdHjpUYH7N6tFBjHbByMh9UUxTnOLSCAzlLN0s6+StJ5wBBtx9ouM7b1rIK3t9XNd
+         WX2vcjbVK4i0WuuFJlXgEC3RyfXJl7JJjS9/+r+obuY06sBf6rmz7/0cblC+TJwk+h
+         zf5R98WpEJIU5/AUkxpemV3Uc9+62Q7G6MD8YFdrvfGIB2hjDojRWW+T5axQcVYmI8
+         UyrHJwXKHO0Z/Sl0mUcSmoXGt+eOQEW4MDjGeoaW4HKOKsjwtpLessvuwCgXF7MecD
+         93UfSUUapObFw==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     Adam Skladowski <a39.skl@gmail.com>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+To:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Andy Gross <agross@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Subject: Re: (subset) [PATCH 1/4] arm64: dts: msm8953: Replace xo_board with rpmcc sourced xo
-Date:   Tue,  4 Apr 2023 21:08:49 -0700
-Message-Id: <168066774416.443656.12283295998891742657.b4-ty@kernel.org>
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Joel Selvaraj <joelselvaraj.oss@gmail.com>
+Cc:     linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: dts: qcom: sdm845-xiaomi-beryllium: add notification LED
+Date:   Tue,  4 Apr 2023 21:08:52 -0700
+Message-Id: <168066774413.443656.10543782498804265465.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230325112852.18841-1-a39.skl@gmail.com>
-References: <20230325112852.18841-1-a39.skl@gmail.com>
+In-Reply-To: <20230313154226.136726-1-joelselvaraj.oss@gmail.com>
+References: <20230313154226.136726-1-joelselvaraj.oss@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,22 +53,16 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 25 Mar 2023 12:28:49 +0100, Adam Skladowski wrote:
-> Assign RPM_SMD_XO_CLK_SRC from rpmcc in place
-> of fixed-clock where possible.
+On Mon, 13 Mar 2023 10:42:26 -0500, Joel Selvaraj wrote:
+> The Poco F1 has a single color white notification LED. Enable the
+> Qualcomm Light Pulse Generator (LPG) driver based notification LED.
 > 
 > 
 
 Applied, thanks!
 
-[1/4] arm64: dts: msm8953: Replace xo_board with rpmcc sourced xo
-      commit: 3042fb4b61c8a6ce692a4914b1970daa56e6f04e
-[2/4] arm64: dts: msm8953: Provide dsi_phy clocks to gcc
-      commit: 635abd877516f6d5e35343d3c3eb233ab195ebc5
-[3/4] arm64: dts: msm8953: Drop unsupported dwc3 flag
-      commit: c0494df2cdac723f4c7df834c05d548ea3a804e9
-[4/4] arm64: dts: msm8953: Pad regs to 8 digits
-      commit: 26aae2310fd7375a5ca0dd772cd3bc57cf5e02bb
+[1/1] arm64: dts: qcom: sdm845-xiaomi-beryllium: add notification LED
+      commit: d20ad168b7d024d8cbe6b54e9c029537aa412576
 
 Best regards,
 -- 
