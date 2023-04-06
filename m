@@ -2,251 +2,135 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FEE6C7619A
-	for <phone-devel@archiver.kernel.org>; Wed,  5 Apr 2023 09:42:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 68682C76196
+	for <phone-devel@archiver.kernel.org>; Thu,  6 Apr 2023 17:33:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237147AbjDEJmj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 5 Apr 2023 05:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50912 "EHLO
+        id S239868AbjDFRdm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 6 Apr 2023 13:33:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237158AbjDEJmi (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 Apr 2023 05:42:38 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5CFC5FDA;
-        Wed,  5 Apr 2023 02:42:16 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        with ESMTP id S239980AbjDFRdk (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 6 Apr 2023 13:33:40 -0400
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [IPv6:2001:67c:2050:0:465::102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EB428A7A;
+        Thu,  6 Apr 2023 10:33:19 -0700 (PDT)
+Received: from smtp2.mailbox.org (unknown [10.196.197.2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 5D7176603157;
-        Wed,  5 Apr 2023 10:42:13 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1680687735;
-        bh=IlI/HD/mEqG9sNtKAEmcI6+THmyc2fGYI3RrBYbXqiI=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=NDelzaduVsclA5TmODpf+aOKxitm/7UT5IYFmkNHFQ/NP9c8LMKsTZ+0xvBe/TSg4
-         Y0w17rCrDXxQmQmNCq3MhT0hvmIivCeiDIaSTPZIn1iVaWf5SfqTOZalMGyRGWpIUn
-         FZxI2wa/3e3pUhAqfE4B+7vzdZpnAPOH76d7RE8p0pAPF41ZXtuxKTpuPO5e0ih1Bl
-         dGoDsy6V1+YdEgGmIv53HkTc3QskKyYe3nbtX/pvlVtmTb1BrlTXmEp+Tx1agRkGgU
-         qHg1CVB1/IqBD/1+bU67pE3vqgLwVFpOpw2qhCIbKXfyo1KL5SGmx6i4Kay2gZc8al
-         T7rZG0NkeZwoQ==
-Message-ID: <6a0c9152-8bca-0a19-f924-8149f55f1edd@collabora.com>
-Date:   Wed, 5 Apr 2023 11:42:11 +0200
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4PspVz3fYyz9sW5;
+        Thu,  6 Apr 2023 19:33:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
+        s=MBO0001; t=1680802395;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=n+QKer/py7TYF0+btZiVdHF6Qql5Af4f0rRDFyBjvgQ=;
+        b=0px1b44FXUtpEGPBbZvIv/ua7v0eB3wWbTazLPw5Vvfkc6rYUy6p8UhAf0k55Mi8GEx3Lh
+        8XStSOj9DFdsk3/sfc3krFf5h2QlRw1SNXuggRlySY2m+ElAIN89EIPyAyB8tlueBrcjze
+        FvUhUg/ETbgM24lM3/pyYgliv3PElfrTXZXNQF94/3EQeCF0f6tJHEIx4zdO/axmu+jr3j
+        6EEkKVqdksa+hREgMSwI572PLY5+4bZOVGGhI7nJ/9seRa9lpe7yac45ViQJf0jqhsPV3Y
+        kiBkxIRoCO8giYsAX4gVlgHSmC3UhxP7Y+KBXm5FA83911SY6lvqEFc7vdPzOQ==
+From:   Dylan Van Assche <me@dylanvanassche.be>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Dylan Van Assche <me@dylanvanassche.be>
+Subject: [PATCH v5 0/5] arm64: dts: qcom: sdm845: add SLPI remoteproc
+Date:   Thu,  6 Apr 2023 19:31:43 +0200
+Message-Id: <20230406173148.28309-1-me@dylanvanassche.be>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v2 07/17] dt-bindings: mailbox: mediatek,gce-mailbox: Add
- support for MT6795
-Content-Language: en-US
-To:     matthias.bgg@gmail.com, Jassi Brar <jassisinghbrar@gmail.com>
-Cc:     qii.wang@mediatek.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, houlong.wei@mediatek.com,
-        linux-i2c@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, kernel@collabora.com,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Krzysztof Kozlowski <krzk@kernel.org>
-References: <20230327083647.22017-1-angelogioacchino.delregno@collabora.com>
- <20230327083647.22017-8-angelogioacchino.delregno@collabora.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230327083647.22017-8-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 27/03/23 10:36, AngeloGioacchino Del Regno ha scritto:
-> Add a compatible string for the MT6795 Helio X10 SoC using MT8173
-> binding and add a header for the MT6795's GCE mailbox.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-> ---
+* About *
 
-Hello Jassi,
+The Qualcomm SDM845 SoC has a separate SLPI (Sensor Low Power Island)
+DSP for sensors connected to the SoC which is responsible for exposing
+sensors to userspace, power saving, and other features. 
+While sensors are connected to GPIOs of the SoC, they cannot be used
+because the hypervisor blocks direct access to the sensors, thus the 
+DSP must be used to access any sensor on this SoC. The SLPI DSP uses a
+GLink edge (dsps) to communicate with the host and has a FastRPC interface
+to load files from the host filesystem such as sensor configuration files.
+The FastRPC interface does not use regular FastRPC Compute Banks
+but instead uses an allocated CMA region through which communication happens.
 
-This commit is blocking the entire series and Matthias already picked everything
-but this one for obvious reasons.
+* Changes *
 
-Can you please pick this one, or give an ack for Matthias to pick it?
+This patchseries completes support for the SLPI in the Qualcomm SDM845 SoC
+by adding the SLPI to the SDM845 DTS and enable it for 2 hardware devices:
+- Oneplus 6
+- SHIFTPHONES SHIFT6mq
 
-Thanks,
-Angelo
+* Related patches *
 
->   .../mailbox/mediatek,gce-mailbox.yaml         |  20 +--
->   include/dt-bindings/gce/mediatek,mt6795-gce.h | 123 ++++++++++++++++++
->   2 files changed, 135 insertions(+), 8 deletions(-)
->   create mode 100644 include/dt-bindings/gce/mediatek,mt6795-gce.h
-> 
-> diff --git a/Documentation/devicetree/bindings/mailbox/mediatek,gce-mailbox.yaml b/Documentation/devicetree/bindings/mailbox/mediatek,gce-mailbox.yaml
-> index d383b2ab3ce8..cef9d7601398 100644
-> --- a/Documentation/devicetree/bindings/mailbox/mediatek,gce-mailbox.yaml
-> +++ b/Documentation/devicetree/bindings/mailbox/mediatek,gce-mailbox.yaml
-> @@ -16,14 +16,18 @@ description:
->   
->   properties:
->     compatible:
-> -    enum:
-> -      - mediatek,mt6779-gce
-> -      - mediatek,mt8173-gce
-> -      - mediatek,mt8183-gce
-> -      - mediatek,mt8186-gce
-> -      - mediatek,mt8188-gce
-> -      - mediatek,mt8192-gce
-> -      - mediatek,mt8195-gce
-> +    oneOf:
-> +      - enum:
-> +          - mediatek,mt6779-gce
-> +          - mediatek,mt8173-gce
-> +          - mediatek,mt8183-gce
-> +          - mediatek,mt8186-gce
-> +          - mediatek,mt8188-gce
-> +          - mediatek,mt8192-gce
-> +          - mediatek,mt8195-gce
-> +      - items:
-> +          - const: mediatek,mt6795-gce
-> +          - const: mediatek,mt8173-gce
->   
->     "#mbox-cells":
->       const: 2
-> diff --git a/include/dt-bindings/gce/mediatek,mt6795-gce.h b/include/dt-bindings/gce/mediatek,mt6795-gce.h
-> new file mode 100644
-> index 000000000000..97d5ba2d2b44
-> --- /dev/null
-> +++ b/include/dt-bindings/gce/mediatek,mt6795-gce.h
-> @@ -0,0 +1,123 @@
-> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-> +/*
-> + * Copyright (c) 2023 Collabora Ltd.
-> + * Author: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> + */
-> +#ifndef _DT_BINDINGS_GCE_MT6795_H
-> +#define _DT_BINDINGS_GCE_MT6795_H
-> +
-> +/* GCE HW thread priority */
-> +#define CMDQ_THR_PRIO_LOWEST			0
-> +#define CMDQ_THR_PRIO_NORMAL			1
-> +#define CMDQ_THR_PRIO_NORMAL_2			2
-> +#define CMDQ_THR_PRIO_MEDIUM			3
-> +#define CMDQ_THR_PRIO_MEDIUM_2			4
-> +#define CMDQ_THR_PRIO_HIGH			5
-> +#define CMDQ_THR_PRIO_HIGHER			6
-> +#define CMDQ_THR_PRIO_HIGHEST			7
-> +
-> +/* GCE SUBSYS */
-> +#define SUBSYS_1300XXXX				0
-> +#define SUBSYS_1400XXXX				1
-> +#define SUBSYS_1401XXXX				2
-> +#define SUBSYS_1402XXXX				3
-> +#define SUBSYS_1500XXXX				4
-> +#define SUBSYS_1600XXXX				5
-> +#define SUBSYS_1700XXXX				6
-> +#define SUBSYS_1800XXXX				7
-> +#define SUBSYS_1000XXXX				8
-> +#define SUBSYS_1001XXXX				9
-> +#define SUBSYS_1002XXXX				10
-> +#define SUBSYS_1003XXXX				11
-> +#define SUBSYS_1004XXXX				12
-> +#define SUBSYS_1005XXXX				13
-> +#define SUBSYS_1020XXXX				14
-> +#define SUBSYS_1021XXXX				15
-> +#define SUBSYS_1120XXXX				16
-> +#define SUBSYS_1121XXXX				17
-> +#define SUBSYS_1122XXXX				18
-> +#define SUBSYS_1123XXXX				19
-> +#define SUBSYS_1124XXXX				20
-> +#define SUBSYS_1125XXXX				21
-> +#define SUBSYS_1126XXXX				22
-> +
-> +/* GCE HW EVENT */
-> +#define CMDQ_EVENT_MDP_RDMA0_SOF		0
-> +#define CMDQ_EVENT_MDP_RDMA1_SOF		1
-> +#define CMDQ_EVENT_MDP_DSI0_TE_SOF		2
-> +#define CMDQ_EVENT_MDP_DSI1_TE_SOF		3
-> +#define CMDQ_EVENT_MDP_MVW_SOF			4
-> +#define CMDQ_EVENT_MDP_TDSHP0_SOF		5
-> +#define CMDQ_EVENT_MDP_TDSHP1_SOF		6
-> +#define CMDQ_EVENT_MDP_WDMA_SOF			7
-> +#define CMDQ_EVENT_MDP_WROT0_SOF		8
-> +#define CMDQ_EVENT_MDP_WROT1_SOF		9
-> +#define CMDQ_EVENT_MDP_CROP_SOF			10
-> +#define CMDQ_EVENT_DISP_OVL0_SOF		11
-> +#define CMDQ_EVENT_DISP_OVL1_SOF		12
-> +#define CMDQ_EVENT_DISP_RDMA0_SOF		13
-> +#define CMDQ_EVENT_DISP_RDMA1_SOF		14
-> +#define CMDQ_EVENT_DISP_RDMA2_SOF		15
-> +#define CMDQ_EVENT_DISP_WDMA0_SOF		16
-> +#define CMDQ_EVENT_DISP_WDMA1_SOF		17
-> +#define CMDQ_EVENT_DISP_COLOR0_SOF		18
-> +#define CMDQ_EVENT_DISP_COLOR1_SOF		19
-> +#define CMDQ_EVENT_DISP_AAL_SOF			20
-> +#define CMDQ_EVENT_DISP_GAMMA_SOF		21
-> +#define CMDQ_EVENT_DISP_UFOE_SOF		22
-> +#define CMDQ_EVENT_DISP_PWM0_SOF		23
-> +#define CMDQ_EVENT_DISP_PWM1_SOF		24
-> +#define CMDQ_EVENT_DISP_OD_SOF			25
-> +#define CMDQ_EVENT_MDP_RDMA0_EOF		26
-> +#define CMDQ_EVENT_MDP_RDMA1_EOF		27
-> +#define CMDQ_EVENT_MDP_RSZ0_EOF			28
-> +#define CMDQ_EVENT_MDP_RSZ1_EOF			29
-> +#define CMDQ_EVENT_MDP_RSZ2_EOF			30
-> +#define CMDQ_EVENT_MDP_TDSHP0_EOF		31
-> +#define CMDQ_EVENT_MDP_TDSHP1_EOF		32
-> +#define CMDQ_EVENT_MDP_WDMA_EOF			33
-> +#define CMDQ_EVENT_MDP_WROT0_WRITE_EOF		34
-> +#define CMDQ_EVENT_MDP_WROT0_READ_EOF		35
-> +#define CMDQ_EVENT_MDP_WROT1_WRITE_EOF		36
-> +#define CMDQ_EVENT_MDP_WROT1_READ_EOF		37
-> +#define CMDQ_EVENT_MDP_CROP_EOF			38
-> +#define CMDQ_EVENT_DISP_OVL0_EOF		39
-> +#define CMDQ_EVENT_DISP_OVL1_EOF		40
-> +#define CMDQ_EVENT_DISP_RDMA0_EOF		41
-> +#define CMDQ_EVENT_DISP_RDMA1_EOF		42
-> +#define CMDQ_EVENT_DISP_RDMA2_EOF		43
-> +#define CMDQ_EVENT_DISP_WDMA0_EOF		44
-> +#define CMDQ_EVENT_DISP_WDMA1_EOF		45
-> +#define CMDQ_EVENT_DISP_COLOR0_EOF		46
-> +#define CMDQ_EVENT_DISP_COLOR1_EOF		47
-> +#define CMDQ_EVENT_DISP_AAL_EOF			48
-> +#define CMDQ_EVENT_DISP_GAMMA_EOF		49
-> +#define CMDQ_EVENT_DISP_UFOE_EOF		50
-> +#define CMDQ_EVENT_DISP_DPI0_EOF		51
-> +#define CMDQ_EVENT_MUTEX0_STREAM_EOF		52
-> +#define CMDQ_EVENT_MUTEX1_STREAM_EOF		53
-> +#define CMDQ_EVENT_MUTEX2_STREAM_EOF		54
-> +#define CMDQ_EVENT_MUTEX3_STREAM_EOF		55
-> +#define CMDQ_EVENT_MUTEX4_STREAM_EOF		56
-> +#define CMDQ_EVENT_MUTEX5_STREAM_EOF		57
-> +#define CMDQ_EVENT_MUTEX6_STREAM_EOF		58
-> +#define CMDQ_EVENT_MUTEX7_STREAM_EOF		59
-> +#define CMDQ_EVENT_MUTEX8_STREAM_EOF		60
-> +#define CMDQ_EVENT_MUTEX9_STREAM_EOF		61
-> +#define CMDQ_EVENT_DISP_RDMA0_UNDERRUN		62
-> +#define CMDQ_EVENT_DISP_RDMA1_UNDERRUN		63
-> +#define CMDQ_EVENT_DISP_RDMA2_UNDERRUN		64
-> +#define CMDQ_EVENT_ISP_PASS2_2_EOF		129
-> +#define CMDQ_EVENT_ISP_PASS2_1_EOF		130
-> +#define CMDQ_EVENT_ISP_PASS2_0_EOF		131
-> +#define CMDQ_EVENT_ISP_PASS1_1_EOF		132
-> +#define CMDQ_EVENT_ISP_PASS1_0_EOF		133
-> +#define CMDQ_EVENT_CAMSV_2_PASS1_EOF		134
-> +#define CMDQ_EVENT_CAMSV_1_PASS1_EOF		135
-> +#define CMDQ_EVENT_SENINF_CAM1_2_3_FIFO_FULL	136
-> +#define CMDQ_EVENT_SENINF_CAM0_FIFO_FULL	137
-> +#define CMDQ_EVENT_JPGENC_PASS2_EOF		257
-> +#define CMDQ_EVENT_JPGENC_PASS1_EOF		258
-> +#define CMDQ_EVENT_JPGDEC_EOF			259
-> +
-> +#endif
+1. Remoteproc changes (v3) to support the SLPI DSP in SDM845:
+https://lore.kernel.org/linux-remoteproc/20230330164633.117335-1-me@dylanvanassche.be
+2. FastRPC changes (v2) to support the SLPI DSP in SDM845:
+https://lore.kernel.org/linux-arm-msm/20230327184204.498032-1-me@dylanvanassche.be/
+
+This serie does not depend on any serie, but all of them are necessary
+to enable the feature in the end.
+
+* Changelog *
+
+Changes in v2:
+
+- Removed double blank lines
+- Enforce alphabetically order for 'slpi_pas'
+- Reordered 'slpi_pas' properties
+- Fixed FastRPC syntax
+- Dropped qcom,assign-all-mem property as this is not necessary anymore
+
+Changes in v3:
+
+- Dropped FastRPC dt-bindings change, unnecessary to relax the bindings
+- Add reg property to compute-cb for the SLPI on SDM845
+
+Changes in v4:
+- Moved SLPI node in sdm845.dtsi to honor sorting by unit address
+- Reordered FastRPC memory nodes to have a reverse-Christmas-tree layout
+- Use 0x0 instead of 0 for memory addresses
+- Add SSC_Q6 (0x5) and ADSP_Q6 (0x6) VMIDs to qcom,scm.h
+- Replace magic VMID values by the qcom,scm.h in sdm845.dtsi
+- Added Reviewed-by tags for patches:
+  - 'dts: arm64: qcom: sdm845-oneplus: enable SLPI'
+  - 'dts: arm64: qcom: sdm845-shift-axolotl: enable SLPI'
+  as these are unchanged in v4.
+
+Changes in v5:
+- Squashed patch 'dts: qcom: arm64: qcom: sdm845: use defines for VMIDs'
+  into 'dts: arm64: qcom: sdm845: add SLPI FastRPC support'.
+- Reordered patches do make sure we first define the additional VMIDs
+  in dt-bindings before using them.
+- Added Acked-by for
+  'dt-bindings: firmware: qcom: scm: add SSC_Q6 and ADSP_Q6 VMIDs'.
+- Fix order of 'arm64' and 'dts' in patch subjects to match tree.
+
+Kind regards,
+Dylan Van Assche
+
+Dylan Van Assche (5):
+  arm64: dts: qcom: sdm845: add SLPI remoteproc
+  dt-bindings: firmware: qcom: scm: add SSC_Q6 and ADSP_Q6 VMIDs
+  arm64: dts: qcom: sdm845: add SLPI FastRPC support
+  arm64: dts: qcom: sdm845-oneplus: enable SLPI
+  arm64: dts: qcom: sdm845-shift-axolotl: enable SLPI
+
+ .../boot/dts/qcom/sdm845-oneplus-common.dtsi  |  5 ++
+ .../boot/dts/qcom/sdm845-shift-axolotl.dts    |  5 ++
+ arch/arm64/boot/dts/qcom/sdm845.dtsi          | 62 +++++++++++++++++++
+ include/dt-bindings/firmware/qcom,scm.h       |  2 +
+ 4 files changed, 74 insertions(+)
 
 -- 
-AngeloGioacchino Del Regno
-Software Engineer
-
-Collabora Ltd.
-Platinum Building, St John's Innovation Park, Cambridge CB4 0DS, UK
-Registered in England & Wales, no. 5513718
+2.39.2
 
