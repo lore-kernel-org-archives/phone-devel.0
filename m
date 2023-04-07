@@ -2,50 +2,50 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB329C77B74
-	for <phone-devel@archiver.kernel.org>; Fri,  7 Apr 2023 18:34:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DB53C76196
+	for <phone-devel@archiver.kernel.org>; Fri,  7 Apr 2023 18:52:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231970AbjDGSeG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 7 Apr 2023 14:34:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46674 "EHLO
+        id S234698AbjDGSwE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 7 Apr 2023 14:52:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231882AbjDGSeE (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 7 Apr 2023 14:34:04 -0400
+        with ESMTP id S233720AbjDGSvn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 7 Apr 2023 14:51:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 722B5A24F;
-        Fri,  7 Apr 2023 11:34:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C386FF04;
+        Fri,  7 Apr 2023 11:50:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C2876539D;
-        Fri,  7 Apr 2023 18:34:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA763C433EF;
-        Fri,  7 Apr 2023 18:34:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C8D46129D;
+        Fri,  7 Apr 2023 18:49:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6465C433D2;
+        Fri,  7 Apr 2023 18:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680892442;
-        bh=pvHoQW6qFKwSvwB09W08Tl4isMD94xr8UsBc/YpK/cw=;
+        s=k20201202; t=1680893346;
+        bh=IOQYXzc1Q0IZQ0HMwVrbGboM3njryjbjWR2+LHfLNis=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uMqXyxrX3qFzPQH48oR8t7HBIVt6xtP/HIzMi0xPEN3sSy/09FiTjma+f188pTz5D
-         /pyUZb0Y8I7QbxYD3wM8eoSmuV9huPnswtYntbcf0SRYBqklqJCxun0fF0hCmcuv+3
-         EPzZcgw4ZUUloKNp7rV9R/F1g7H9uAEPshNK2PKUybeU+2Y4htnN4t9canoSBXOaWW
-         lcksX0DUcmBATPE0HBzhiPSG2kNHi5ZB4sP/uhwnagSmeehVosbu+qgdzBhLoVC3cq
-         ENc/u9NbuWp9WpH015yO/vp51R3ZbENi/LuJO26eKCr+SXZTKHnI0WHXfOXbnimpTs
-         /ldbNX3V7xusA==
+        b=VO5kLW3mLApfkExtOa1Z69NFmfuUsUkQ79RrAmAPfDLw3dJCg8TMOu2YDQLD26HGc
+         KTpT7cXNxdFxuf4D7UF9BU2oId21azj/SVVvfaVTf9kE+09h2vmEj/qucHJyl3Ckqy
+         wpjQBjrg344l1MBMzJJE2664Z8ETI3LxIuT+02T2t4O1nKaTD0beUE75MtN3+6fO91
+         b5bF7/ALtAh+G7ZZJ+B2gDZq/VUqHHWp3V+Wehe9ByDitbJJt5oDI8CkerE8cdJdpM
+         OL/1/GIqg8S+X9u3DARWanax/rAwQc3TNI4zxAbRx5VCVgCCjwXbw2Ttx7UZRZPzRc
+         2LxX8WPRq2STA==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     Rob Herring <robh+dt@kernel.org>, Andy Gross <agross@kernel.org>,
-        Dylan Van Assche <me@dylanvanassche.be>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Subject: Re: [PATCH v5 0/5] arm64: dts: qcom: sdm845: add SLPI remoteproc
-Date:   Fri,  7 Apr 2023 11:36:47 -0700
-Message-Id: <168089260339.2666024.1254098248483072330.b4-ty@kernel.org>
+To:     Jianhua Lu <lujianhua000@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH v3 1/3] arm64: dts: qcom: Split elish dts into common dtsi and elish-boe dts
+Date:   Fri,  7 Apr 2023 11:51:54 -0700
+Message-Id: <168089350725.2675207.9177780643341397781.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230406173148.28309-1-me@dylanvanassche.be>
-References: <20230406173148.28309-1-me@dylanvanassche.be>
+In-Reply-To: <20230323005925.23179-1-lujianhua000@gmail.com>
+References: <20230323005925.23179-1-lujianhua000@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -53,34 +53,21 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 6 Apr 2023 19:31:43 +0200, Dylan Van Assche wrote:
-> * About *
+On Thu, 23 Mar 2023 08:59:23 +0800, Jianhua Lu wrote:
+> There are two panel variants of xiaomi-elish, BOE and CSOT panels.
+> In order to support both panels, so split elish dts into common dtsi
+> and elish-boe dts.
 > 
-> The Qualcomm SDM845 SoC has a separate SLPI (Sensor Low Power Island)
-> DSP for sensors connected to the SoC which is responsible for exposing
-> sensors to userspace, power saving, and other features.
-> While sensors are connected to GPIOs of the SoC, they cannot be used
-> because the hypervisor blocks direct access to the sensors, thus the
-> DSP must be used to access any sensor on this SoC. The SLPI DSP uses a
-> GLink edge (dsps) to communicate with the host and has a FastRPC interface
-> to load files from the host filesystem such as sensor configuration files.
-> The FastRPC interface does not use regular FastRPC Compute Banks
-> but instead uses an allocated CMA region through which communication happens.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/5] arm64: dts: qcom: sdm845: add SLPI remoteproc
-      commit: 74588aada59a9870139ef4c39d640939dcc08381
-[2/5] dt-bindings: firmware: qcom: scm: add SSC_Q6 and ADSP_Q6 VMIDs
-      commit: 77c7a41e052502f0d8827c63eddae6dd5d717b20
-[3/5] arm64: dts: qcom: sdm845: add SLPI FastRPC support
-      commit: 755b5e094feb974f65cc51371c3482042d5fbadc
-[4/5] arm64: dts: qcom: sdm845-oneplus: enable SLPI
-      commit: c3998dc09f0e70c1e359b819b1b5d0c482f30500
-[5/5] arm64: dts: qcom: sdm845-shift-axolotl: enable SLPI
-      commit: 48bd05786ec72b991430d5493743293df5da56a8
+[1/3] arm64: dts: qcom: Split elish dts into common dtsi and elish-boe dts
+      commit: 68434024dae509455bdd2a9e321a2cf58a6d0a75
+[2/3] arm64: dts: qcom: sm8250-xiaomi-elish-boe: Add mdss and dsi panel
+      commit: 51c4c2bd6f314de8b1bb7b5c949d2432be19d419
+[3/3] arm64: dts: qcom: sm8250-xiaomi-elish-csot: Add Xiaomi Mi Pad 5 Pro CSOT variant
+      commit: 8a786036c7b682c4d77abf7f396b87bc7eec98f9
 
 Best regards,
 -- 
