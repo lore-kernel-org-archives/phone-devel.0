@@ -2,52 +2,49 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7ED4C77B6F
-	for <phone-devel@archiver.kernel.org>; Fri,  7 Apr 2023 18:57:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15D57C76196
+	for <phone-devel@archiver.kernel.org>; Fri,  7 Apr 2023 19:21:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234216AbjDGS5R (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 7 Apr 2023 14:57:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43824 "EHLO
+        id S229764AbjDGTU7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 7 Apr 2023 15:20:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234122AbjDGS46 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 7 Apr 2023 14:56:58 -0400
+        with ESMTP id S229459AbjDGTU6 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 7 Apr 2023 15:20:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42B9CD510;
-        Fri,  7 Apr 2023 11:54:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54BC69ECB;
+        Fri,  7 Apr 2023 12:20:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FD1D61219;
-        Fri,  7 Apr 2023 18:49:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83AEC4339E;
-        Fri,  7 Apr 2023 18:49:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA2FB64FE4;
+        Fri,  7 Apr 2023 19:20:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77085C433EF;
+        Fri,  7 Apr 2023 19:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680893348;
-        bh=6yx3kBkzOOFOIXrZ5IlOXinROnMpeUBN2SLNMieLd0o=;
+        s=k20201202; t=1680895256;
+        bh=o/BYc7lsGEIfg8PVEDczTvoQ59vb+pJbPRjRVH8AMlU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G7UiPTGKJVLey1Y31us6wLu6kINwZhvkpdpBmbqsngHbe2RUmy5IyYmcw4w9n4mGz
-         JTIujWy4c9nO48ZPu1oB0DjRcj1WIs7a3PTSCRMdqzkOsR23424wOL8IJYxo1qe5LM
-         xKQCmZuuyAmHAps61p9IXqSpWMBd7nnjjnIiqTu3m1MHZmf0uJgw5ky2G3JNkeppYP
-         7jTOYLiPsg24b/EFWV98/bu42dwHYiRz9xRcFMMnp/ddNtNpP2BV7TTTESXM6UzF0z
-         mOKsgAgbPH+id1BL+3Cr72niYRjcO9GQqvMQxvov03i5DyQCpatBmRhlYY0hRiplWZ
-         L8ir50CiwOSuA==
+        b=e1fBKh/V8HoCzNNrFjTaNmOLCmOJ5OOctb10UVujSCsxroPTlZDYoNZNNVCgaWGIR
+         7KjMCU0Dw7rzH3U5E/lkBWPoHoxqM60omBJSDpCyRTFKoOGCpWxySB9r2xgzvMBNwt
+         cdRrppzG9CRLHJI9URF4gGDkjSmeJZ/T7a/dTWiFUNqdLHKD8JWj7XJfUGwbJAMo9I
+         EWQfbFBlfhvW0+iwVhz6dakoSsUq30DvyBLINpkCpW8P8ogwT4V/naDodHGinEieO2
+         p21lC32vd0y5hNlbO/STIhEwhgA2gi592RPI7tvI7rTNhqxlztFR4zwu28oQ5rbPZS
+         gbAba3Dlddn4w==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     tony.luck@intel.com, kishon@kernel.org, keescook@chromium.org,
-        Lux Aliaga <they@mint.lgbt>, konrad.dybcio@linaro.org,
-        alim.akhtar@samsung.com, avri.altman@wdc.com, vkoul@kernel.org,
-        agross@kernel.org, gpiccoli@igalia.com, bvanassche@acm.org,
-        krzysztof.kozlowski+dt@linaro.org, robh+dt@kernel.org
-Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
-        phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
-        martin.botka@somainline.org, linux-phy@lists.infradead.org,
-        linux-hardening@vger.kernel.org, marijn.suijten@somainline.org,
-        ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH v7 0/6] arm64: dts: qcom: sm6125: UFS and xiaomi-laurel-sprout support
-Date:   Fri,  7 Apr 2023 11:51:55 -0700
-Message-Id: <168089350725.2675207.12664655613060591288.b4-ty@kernel.org>
+To:     Adam Skladowski <a39.skl@gmail.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 0/3] MSM8953 remoteprocs dt bringup
+Date:   Fri,  7 Apr 2023 12:23:45 -0700
+Message-Id: <168089531815.2739604.843373781255054535.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230306170817.3806-1-they@mint.lgbt>
-References: <20230306170817.3806-1-they@mint.lgbt>
+In-Reply-To: <20230407165345.42800-1-a39.skl@gmail.com>
+References: <20230407165345.42800-1-a39.skl@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -55,24 +52,24 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 6 Mar 2023 14:08:10 -0300, Lux Aliaga wrote:
-> Introduce Universal Flash Storage support on SM6125 and add support for the Xiaomi Mi A3 based on the former platform.
+On Fri, 7 Apr 2023 18:53:41 +0200, Adam Skladowski wrote:
+> This patch series introduce nodes required for bringing remoteproc cores.
 > 
-> Changes since v6:
-> - Add struct for v3-660 UFS PHY offsets and replace the v5 offsets in sm6115 UFS PHY config to these
-> - Set ufs_mem_phy reg size to 0xdb8 in sm6125.dtsi
-> - Drop "#address-cells" and "#size-cells" properties on reserved-memory node in xiaomi-laurel-sprout dts
-> - Move "status" last on &pon_resin node in xiaomi-laurel-sprout dts
-> - Modify "&pm6125_gpio" pointer to "&pm6125_gpios" in xiaomi-laurel-sprout dts
+> Adam Skladowski (3):
+>   arm64: dts: MSM8953: Add wcnss nodes
+>   arm64: dts: MSM8953: Add mpss nodes
+>   arm64: dts: MSM8953: Add lpass nodes
 > 
 > [...]
 
 Applied, thanks!
 
-[4/6] arm64: dts: qcom: sm6125: Add UFS nodes
-      commit: f8399e8a2f80adfac2e7f5dbe223eb428fdb6fe9
-[6/6] arm64: dts: qcom: sm6125: Initial support for xiaomi-laurel-sprout
-      commit: b76c8ceabe871470cee17990289e8dd39b96054e
+[1/3] arm64: dts: MSM8953: Add wcnss nodes
+      commit: b12428640ebeea3ee7e7ae817e1bd345612537df
+[2/3] arm64: dts: MSM8953: Add mpss nodes
+      commit: 2bbada24e8a6c9eaf5caf015688dba0dcc3925d7
+[3/3] arm64: dts: MSM8953: Add lpass nodes
+      commit: e58d100fa24309291ec500f9d161ff1ade20cabd
 
 Best regards,
 -- 
