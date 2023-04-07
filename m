@@ -2,250 +2,86 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F37DC77B61
-	for <phone-devel@archiver.kernel.org>; Fri,  7 Apr 2023 16:54:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BB329C77B74
+	for <phone-devel@archiver.kernel.org>; Fri,  7 Apr 2023 18:34:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230114AbjDGQym (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 7 Apr 2023 12:54:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34748 "EHLO
+        id S231970AbjDGSeG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 7 Apr 2023 14:34:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229927AbjDGQye (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 7 Apr 2023 12:54:34 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BB2DC144;
-        Fri,  7 Apr 2023 09:54:31 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id q16so55132785lfe.10;
-        Fri, 07 Apr 2023 09:54:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680886470; x=1683478470;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ktJMg05n6GOaL8XM13kdY9cBe1CBvoQ4/ZC5LzH85fg=;
-        b=f0TrzevfBLxSt7EtNx1NswbcVI+uXpO+wx857eRHxEghtlgrIPS0QIcDfCls53NBmt
-         kgPgq3IH3wbq2LNoBNAD6xPhVeAl6lk8npvjMvsJhJ76JOlpENcTAf9zbGDNSUgC3VZu
-         2rztPrkoopcmgT8dVLwUbVJJC5gaFIoYNfG+6Uy7nNU2yZ1gm1S8q9d7SsPa3S3B3m4v
-         Q0LKT4t+e/IYYW+EvWus0VCcLLwxz/wNuJGLGUZOCdmDV/EybBlVRqEMF86QeCErJ7/0
-         LuX1fh5gQHqtfz2EmF2UcriJhaxj7mP2C6lkR/4doXw3jJ6ZQbuTKb2rXNPe7Mx9pIfY
-         jkEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680886470; x=1683478470;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ktJMg05n6GOaL8XM13kdY9cBe1CBvoQ4/ZC5LzH85fg=;
-        b=JxcH421rZJIvLaf/KEKwYA+pgwGTC3lDNJNGlHQSA0iV3q/EjxZdfvSEF7KU3U4iX4
-         OzpuTPZE/ySxxObvZgEEnVtbF7AUQQwxP/U0V3S6HD40I1//DZOM4VWAPSTibWpVs0Xg
-         18EK/ygOBezOzkEqCnVQAy3z1nN4hx5QnYY2nw8nvl0Y7RqH+VxtxyqQC5jQJ7BUxW2x
-         O1SGcFtUxG4nShjFr/5dHytyLgvO3XJmgj2wX15jkEA7RggVfky+tTxzBCBY3iLjCaTQ
-         xmRN/0W+pICRru/1ux/L5r0x/jZSg6PZfzTAtwqVYxZTo2vYflRiFOE/kdnYB89vIkO7
-         /5SA==
-X-Gm-Message-State: AAQBX9eKYu1mXNexKOapbGQ8SrFaiG4p6pLtpV+GVCpAzgMtazQG9Nn+
-        SzHqqoQ/kqXSLOwTjob3NCBep/G3BUJAdQ==
-X-Google-Smtp-Source: AKy350ZGRmKJUxe3n4Dx2SocA+O69ZU6/K6EwbwWEmZlz2dKGLV0EMlhlxtX2TtHoiyEuF0H+uvk8w==
-X-Received: by 2002:ac2:50c3:0:b0:4eb:1048:1285 with SMTP id h3-20020ac250c3000000b004eb10481285mr910839lfm.47.1680886469664;
-        Fri, 07 Apr 2023 09:54:29 -0700 (PDT)
-Received: from localhost.localdomain (byy157.neoplus.adsl.tpnet.pl. [83.30.44.157])
-        by smtp.gmail.com with ESMTPSA id c3-20020ac25303000000b004db297957e8sm781712lfh.305.2023.04.07.09.54.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Apr 2023 09:54:29 -0700 (PDT)
-From:   Adam Skladowski <a39.skl@gmail.com>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Adam Skladowski <a39.skl@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] arm64: dts: MSM8953: Add lpass nodes
-Date:   Fri,  7 Apr 2023 18:53:44 +0200
-Message-Id: <20230407165345.42800-4-a39.skl@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230407165345.42800-1-a39.skl@gmail.com>
-References: <20230407165345.42800-1-a39.skl@gmail.com>
+        with ESMTP id S231882AbjDGSeE (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 7 Apr 2023 14:34:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 722B5A24F;
+        Fri,  7 Apr 2023 11:34:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C2876539D;
+        Fri,  7 Apr 2023 18:34:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA763C433EF;
+        Fri,  7 Apr 2023 18:34:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680892442;
+        bh=pvHoQW6qFKwSvwB09W08Tl4isMD94xr8UsBc/YpK/cw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=uMqXyxrX3qFzPQH48oR8t7HBIVt6xtP/HIzMi0xPEN3sSy/09FiTjma+f188pTz5D
+         /pyUZb0Y8I7QbxYD3wM8eoSmuV9huPnswtYntbcf0SRYBqklqJCxun0fF0hCmcuv+3
+         EPzZcgw4ZUUloKNp7rV9R/F1g7H9uAEPshNK2PKUybeU+2Y4htnN4t9canoSBXOaWW
+         lcksX0DUcmBATPE0HBzhiPSG2kNHi5ZB4sP/uhwnagSmeehVosbu+qgdzBhLoVC3cq
+         ENc/u9NbuWp9WpH015yO/vp51R3ZbENi/LuJO26eKCr+SXZTKHnI0WHXfOXbnimpTs
+         /ldbNX3V7xusA==
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     Rob Herring <robh+dt@kernel.org>, Andy Gross <agross@kernel.org>,
+        Dylan Van Assche <me@dylanvanassche.be>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Subject: Re: [PATCH v5 0/5] arm64: dts: qcom: sdm845: add SLPI remoteproc
+Date:   Fri,  7 Apr 2023 11:36:47 -0700
+Message-Id: <168089260339.2666024.1254098248483072330.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230406173148.28309-1-me@dylanvanassche.be>
+References: <20230406173148.28309-1-me@dylanvanassche.be>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add nodes for remoteproc, smp2p and smsm in preparation
-for audio support on this platform.
+On Thu, 6 Apr 2023 19:31:43 +0200, Dylan Van Assche wrote:
+> * About *
+> 
+> The Qualcomm SDM845 SoC has a separate SLPI (Sensor Low Power Island)
+> DSP for sensors connected to the SoC which is responsible for exposing
+> sensors to userspace, power saving, and other features.
+> While sensors are connected to GPIOs of the SoC, they cannot be used
+> because the hypervisor blocks direct access to the sensors, thus the
+> DSP must be used to access any sensor on this SoC. The SLPI DSP uses a
+> GLink edge (dsps) to communicate with the host and has a FastRPC interface
+> to load files from the host filesystem such as sensor configuration files.
+> The FastRPC interface does not use regular FastRPC Compute Banks
+> but instead uses an allocated CMA region through which communication happens.
+> 
+> [...]
 
-Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
----
- arch/arm64/boot/dts/qcom/msm8953.dtsi | 141 ++++++++++++++++++++++++++
- 1 file changed, 141 insertions(+)
+Applied, thanks!
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-index 257b1946372c..855595cbb09b 100644
---- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-@@ -6,6 +6,9 @@
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/interrupt-controller/arm-gic.h>
- #include <dt-bindings/power/qcom-rpmpd.h>
-+#include <dt-bindings/soc/qcom,apr.h>
-+#include <dt-bindings/sound/qcom,q6afe.h>
-+#include <dt-bindings/sound/qcom,q6asm.h>
- #include <dt-bindings/thermal/thermal.h>
- 
- / {
-@@ -326,6 +329,30 @@ rpmpd_opp_turbo: opp9 {
- 		};
- 	};
- 
-+	smp2p-adsp {
-+		compatible = "qcom,smp2p";
-+		qcom,smem = <443>, <429>;
-+
-+		interrupts = <GIC_SPI 291 IRQ_TYPE_EDGE_RISING>;
-+
-+		mboxes = <&apcs 10>;
-+
-+		qcom,local-pid = <0>;
-+		qcom,remote-pid = <2>;
-+
-+		smp2p_adsp_out: master-kernel {
-+			qcom,entry-name = "master-kernel";
-+			#qcom,smem-state-cells = <1>;
-+		};
-+
-+		smp2p_adsp_in: slave-kernel {
-+			qcom,entry-name = "slave-kernel";
-+
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
-+	};
-+
- 	smp2p-modem {
- 		compatible = "qcom,smp2p";
- 		qcom,smem = <435>, <428>;
-@@ -1532,6 +1559,120 @@ frame@b128000 {
- 				status = "disabled";
- 			};
- 		};
-+
-+		lpass: remoteproc@c200000 {
-+			compatible = "qcom,msm8953-adsp-pil";
-+			reg = <0x0c200000 0x100>;
-+
-+			interrupts-extended = <&intc 0 293 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
-+					      <&smp2p_adsp_in 3 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "wdog", "fatal", "ready",
-+					  "handover", "stop-ack";
-+			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>;
-+			clock-names = "xo";
-+
-+			power-domains = <&rpmpd MSM8953_VDDCX>;
-+			power-domain-names = "cx";
-+
-+			memory-region = <&adsp_fw_mem>;
-+
-+			qcom,smem-states = <&smp2p_adsp_out 0>;
-+			qcom,smem-state-names = "stop";
-+
-+			status = "disabled";
-+
-+			smd-edge {
-+				interrupts = <GIC_SPI 289 IRQ_TYPE_EDGE_RISING>;
-+
-+				label = "lpass";
-+				mboxes = <&apcs 8>;
-+				qcom,smd-edge = <1>;
-+				qcom,remote-pid = <2>;
-+
-+				apr {
-+					compatible = "qcom,apr-v2";
-+					qcom,smd-channels = "apr_audio_svc";
-+					qcom,apr-domain = <APR_DOMAIN_ADSP>;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					q6core: service@3 {
-+						reg = <APR_SVC_ADSP_CORE>;
-+						compatible = "qcom,q6core";
-+					};
-+
-+					q6afe: service@4 {
-+						compatible = "qcom,q6afe";
-+						reg = <APR_SVC_AFE>;
-+						q6afedai: dais {
-+							compatible = "qcom,q6afe-dais";
-+							#address-cells = <1>;
-+							#size-cells = <0>;
-+							#sound-dai-cells = <1>;
-+
-+							dai@16 {
-+								reg = <PRIMARY_MI2S_RX>;
-+								qcom,sd-lines = <0 1>;
-+							};
-+							dai@20 {
-+								reg = <TERTIARY_MI2S_TX>;
-+								qcom,sd-lines = <0 1>;
-+							};
-+							dai@127 {
-+								reg = <QUINARY_MI2S_RX>;
-+								qcom,sd-lines = <0>;
-+							};
-+						};
-+
-+						q6afecc: clock-controller {
-+							compatible = "qcom,q6afe-clocks";
-+							#clock-cells = <2>;
-+						};
-+					};
-+
-+					q6asm: service@7 {
-+						compatible = "qcom,q6asm";
-+						reg = <APR_SVC_ASM>;
-+						q6asmdai: dais {
-+							compatible = "qcom,q6asm-dais";
-+							#address-cells = <1>;
-+							#size-cells = <0>;
-+							#sound-dai-cells = <1>;
-+
-+							dai@0 {
-+								reg = <0>;
-+								direction = <Q6ASM_DAI_RX>;
-+							};
-+							dai@1 {
-+								reg = <1>;
-+								direction = <Q6ASM_DAI_TX>;
-+							};
-+							dai@2 {
-+								reg = <2>;
-+								direction = <Q6ASM_DAI_RX>;
-+							};
-+							dai@3 {
-+								reg = <3>;
-+								direction = <Q6ASM_DAI_RX>;
-+								is-compress-dai;
-+							};
-+						};
-+					};
-+
-+					q6adm: service@8 {
-+						compatible = "qcom,q6adm";
-+						reg = <APR_SVC_ADM>;
-+						q6routing: routing {
-+							compatible = "qcom,q6adm-routing";
-+							#sound-dai-cells = <0>;
-+						};
-+					};
-+				};
-+			};
-+		};
- 	};
- 
- 	thermal-zones {
+[1/5] arm64: dts: qcom: sdm845: add SLPI remoteproc
+      commit: 74588aada59a9870139ef4c39d640939dcc08381
+[2/5] dt-bindings: firmware: qcom: scm: add SSC_Q6 and ADSP_Q6 VMIDs
+      commit: 77c7a41e052502f0d8827c63eddae6dd5d717b20
+[3/5] arm64: dts: qcom: sdm845: add SLPI FastRPC support
+      commit: 755b5e094feb974f65cc51371c3482042d5fbadc
+[4/5] arm64: dts: qcom: sdm845-oneplus: enable SLPI
+      commit: c3998dc09f0e70c1e359b819b1b5d0c482f30500
+[5/5] arm64: dts: qcom: sdm845-shift-axolotl: enable SLPI
+      commit: 48bd05786ec72b991430d5493743293df5da56a8
+
+Best regards,
 -- 
-2.25.1
-
+Bjorn Andersson <andersson@kernel.org>
