@@ -2,133 +2,151 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9111DC77B70
-	for <phone-devel@archiver.kernel.org>; Mon, 10 Apr 2023 16:02:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D053C77B6F
+	for <phone-devel@archiver.kernel.org>; Mon, 10 Apr 2023 20:29:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbjDJQCg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 10 Apr 2023 12:02:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44888 "EHLO
+        id S229695AbjDJU3e (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 10 Apr 2023 16:29:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230249AbjDJQC1 (ORCPT
+        with ESMTP id S229733AbjDJU3d (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 10 Apr 2023 12:02:27 -0400
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9500959E9;
-        Mon, 10 Apr 2023 09:02:19 -0700 (PDT)
-Received: by mail-io1-xd32.google.com with SMTP id ca18e2360f4ac-7606d7ca422so2227239f.1;
-        Mon, 10 Apr 2023 09:02:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1681142538; x=1683734538;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OimWLmHWLNmjUtWvHz0GKrLoEkNOAR/VpuvZ24QH1vk=;
-        b=Z67vskReD6+pMfBslUhc+RH+EootiAkqi9MxvLJFKmNMJFGr3TNfo6qQs2vtQ/ENzm
-         dVZ9MhetJTicu5Tr6AEnSCygtCKRVBHWe4Q6T+nzLcHRELlrWmJJxuhhcx0aUft/EhLF
-         EIiWIDYbLOM0+jlZYFihdiUNcLWIpIHwYyzMXaCfrqeihWolofv9YPLZ9LeWQKYmvvyi
-         aDb1ZFHn2kshzxK3o1RNbEFRMHXmgf5Ju9Ugq+knuePUZoZ0xKDMOmjxDQZTa+SSvkAz
-         CDqZnDio0EXEuVYhqAKie023NDJnMT+SsLUSo+MDO3Y6IX/7VMwxlwFmi0sBPcXXqMQM
-         cSqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681142538; x=1683734538;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OimWLmHWLNmjUtWvHz0GKrLoEkNOAR/VpuvZ24QH1vk=;
-        b=V3VvzMrRo7XhOys/sASrIohpkem90dv3mVwbJ34p4JQdwSGM42BkURnLigc3hQ1LpF
-         ZatmtSPzBTn5kBzh4saXMHXKJmPk/IgPwjAL/oL/zPOkByf4WulSnoXtYmxVyrAiu5ZS
-         l64u5EdNtceYvK2tJgh98OOILr/UHf+8ciHQq57Jo9J48Epw7FXFutmyrcNMrc40ZFAM
-         85p2+spGFoi9XrJ6DXQ/3xIVauEhyvq0T9jGPbom01cZFmzRQse6GUP9FOXgL4CexBJ6
-         79yDNbf4JLJzWPrxjYiqlGIDUQiHcNcUhCW/0jZUFKY1xXhqjFj7jlNicMpvdEaK8HE6
-         J7Vw==
-X-Gm-Message-State: AAQBX9frToxysSY4+o4P2Fu1f0YDSWXCGnnPmcKMVTxLIcm58Qrk3tQd
-        u5UQg+BzVka7FImCsoD8emY=
-X-Google-Smtp-Source: AKy350Z59s0GrsR0yuSD6xvISmlAK+CYc8yGMYknebPn6Ckygm3n7TfHVhI2mENciDQhDY2sfavmEA==
-X-Received: by 2002:a05:6e02:1b86:b0:326:3cfc:f702 with SMTP id h6-20020a056e021b8600b003263cfcf702mr3927375ili.2.1681142531732;
-        Mon, 10 Apr 2023 09:02:11 -0700 (PDT)
-Received: from JOEL-DESKTOP.. ([2604:2d80:4d87:cd00:9f51:32d7:1177:67d])
-        by smtp.gmail.com with ESMTPSA id c7-20020a5d9a87000000b00746041ecbf9sm3184435iom.39.2023.04.10.09.02.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Apr 2023 09:02:11 -0700 (PDT)
-From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
-To:     Caleb Connolly <caleb@connolly.tech>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Mon, 10 Apr 2023 16:29:33 -0400
+Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFBD61722
+        for <phone-devel@vger.kernel.org>; Mon, 10 Apr 2023 13:29:31 -0700 (PDT)
+Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id EBB9A3FA35;
+        Mon, 10 Apr 2023 22:29:26 +0200 (CEST)
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     phone-devel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Henrik Rydberg <rydberg@bitmath.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Jeff LaBundy <jeff@labundy.com>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Jean Delvare <jdelvare@suse.de>,
-        Job Noorman <job@noorman.info>,
-        Alistair Francis <alistair@alistair23.me>,
-        Chris Morgan <macromorgan@hotmail.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Joel Selvaraj <joelselvaraj.oss@gmail.com>
-Subject: [PATCH v2 5/5] arm64: dts: qcom: sdm845-shift-axolotl: update focaltech touchscreen properties
-Date:   Mon, 10 Apr 2023 11:02:00 -0500
-Message-Id: <20230410160200.57261-6-joelselvaraj.oss@gmail.com>
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: [PATCH v4 0/5] dts: qcom: Use labels with generic node names for ADC channels
+Date:   Mon, 10 Apr 2023 22:29:12 +0200
+Message-Id: <20230410202917.247666-1-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230410160200.57261-1-joelselvaraj.oss@gmail.com>
-References: <20230410160200.57261-1-joelselvaraj.oss@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The touchscreen nodes were added before the driver patches were merged.
-Update the focaltech touchscreen properties to match with the upstreamed
-focaltech driver. Also, the touchscreen used is in axolotl is fts5452
-and not fts8719.
+As discussed in [1] it is more convenient to use a generic `channel`
+node name for ADC channels while storing a friendly - board-specific
+instead of PMIC-specific - name in the label, if/when desired to
+overwrite the channel description already contained (but previously
+unused) in the driver [2].
 
-Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
----
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+The same `channel` node name pattern has also been set in
+iio/adc/adc.yaml, but this generic binding is not inherited as base for
+qcom,spmi-vadc bindings due to not having any other generic elements in
+common, besides the node name rule and reg property.
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-index b54e304abf71..96dd4628d9a7 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-@@ -474,23 +474,22 @@ &i2c5 {
- 	status = "okay";
- 
- 	touchscreen@38 {
--		compatible = "focaltech,fts8719";
-+		compatible = "focaltech,fts5452";
- 		reg = <0x38>;
--		wakeup-source;
-+
- 		interrupt-parent = <&tlmm>;
--		interrupts = <125 0x2>;
--		vdd-supply = <&vreg_l28a_3p0>;
--		vcc-i2c-supply = <&vreg_l14a_1p88>;
-+		interrupts = <125 IRQ_TYPE_EDGE_FALLING>;
-+		reset-gpios = <&tlmm 99 GPIO_ACTIVE_LOW>;
-+
-+		avdd-supply = <&vreg_l28a_3p0>;
-+		vddio-supply = <&vreg_l14a_1p88>;
- 
- 		pinctrl-names = "default", "suspend";
- 		pinctrl-0 = <&ts_int_active &ts_reset_active>;
- 		pinctrl-1 = <&ts_int_suspend &ts_reset_suspend>;
- 
--		reset-gpio = <&tlmm 99 GPIO_ACTIVE_HIGH>;
--		irq-gpio = <&tlmm 125 GPIO_TRANSITORY>;
- 		touchscreen-size-x = <1080>;
- 		touchscreen-size-y = <2160>;
--		focaltech,max-touch-number = <5>;
- 	};
- };
- 
--- 
+Replace the .* name pattern with the `channel` literal, but leave the
+label property optional for bindings to choose to fall back a channel
+label hardcoded in the driver [2] instead.
+
+[1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
+[2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
+
+Changes since v3:
+- Switch generic node name to `channel`, matching iio/adc/adc.yaml;
+- Besides switching arbitrary names to `channel`, now also rename all
+  existing `adc-chan` names to `channel`, including ARM tree;
+- Rebase on next-20230406 and apply rename to newer PMIC files.
+
+v3: https://lore.kernel.org/linux-arm-msm/20230201204447.542385-1-marijn.suijten@somainline.org/T/#u
+
+Changes since v2:
+- Reorder DT changes before dt-bindings changes;
+- Update adc-chan generic node name in tm5 example bindings.
+
+v2: https://lore.kernel.org/linux-arm-msm/20230119212632.185881-1-marijn.suijten@somainline.org/T/#u
+
+Changes since v1:
+- Require adc-chan name in dt-bindings;
+- Replace more node names with adc-chan and a descriptive label, that
+  were found by running dtbs_check on adjusted bindings;
+- sm8250-mtp.dts: Fix accidental adc-chan2 node name with pa_therm
+  label, which should have been adc-chan with pa_therm2 label.
+
+v1: https://lore.kernel.org/linux-arm-msm/20221209215308.1781047-1-marijn.suijten@somainline.org/
+
+
+Marijn Suijten (5):
+  ARM: dts: qcom: Use labels with generic node names for ADC channels
+  arm64: dts: qcom: Use labels with generic node names for ADC channels
+  dt-bindings: thermal: Use generic ADC node name in examples
+  dt-bindings: mfd: qcom,spmi-pmic: Use generic ADC node name in
+    examples
+  dt-bindings: iio: adc: Require generic `channel` name for channel
+    nodes
+
+ .../bindings/iio/adc/qcom,spmi-vadc.yaml      | 26 +++++++------
+ .../bindings/mfd/qcom,spmi-pmic.yaml          |  4 +-
+ .../bindings/thermal/qcom-spmi-adc-tm-hc.yaml |  4 +-
+ .../bindings/thermal/qcom-spmi-adc-tm5.yaml   |  9 +++--
+ arch/arm/boot/dts/qcom-pm8226.dtsi            | 12 +++---
+ arch/arm/boot/dts/qcom-pm8941.dtsi            | 14 +++----
+ arch/arm/boot/dts/qcom-pma8084.dtsi           | 12 +++---
+ arch/arm/boot/dts/qcom-pmx55.dtsi             |  8 ++--
+ arch/arm64/boot/dts/qcom/pm6125.dtsi          | 18 ++++++---
+ arch/arm64/boot/dts/qcom/pm6150.dtsi          |  2 +-
+ arch/arm64/boot/dts/qcom/pm6150l.dtsi         |  8 ++--
+ arch/arm64/boot/dts/qcom/pm660.dtsi           | 33 ++++++++++------
+ arch/arm64/boot/dts/qcom/pm7250b.dtsi         | 24 ++++++------
+ arch/arm64/boot/dts/qcom/pm8150.dtsi          |  6 +--
+ arch/arm64/boot/dts/qcom/pm8150b.dtsi         |  8 ++--
+ arch/arm64/boot/dts/qcom/pm8150l.dtsi         |  6 +--
+ arch/arm64/boot/dts/qcom/pm8916.dtsi          | 14 +++----
+ arch/arm64/boot/dts/qcom/pm8950.dtsi          | 39 ++++++++++++-------
+ arch/arm64/boot/dts/qcom/pm8953.dtsi          | 12 +++---
+ arch/arm64/boot/dts/qcom/pm8994.dtsi          | 12 +++---
+ arch/arm64/boot/dts/qcom/pm8998.dtsi          |  2 +-
+ arch/arm64/boot/dts/qcom/pmi8950.dtsi         | 12 +++---
+ arch/arm64/boot/dts/qcom/pmm8155au_1.dtsi     |  6 +--
+ arch/arm64/boot/dts/qcom/pmm8155au_2.dtsi     |  6 +--
+ arch/arm64/boot/dts/qcom/pmp8074.dtsi         | 27 ++++++++-----
+ arch/arm64/boot/dts/qcom/pms405.dtsi          | 21 ++++++----
+ arch/arm64/boot/dts/qcom/qrb5165-rb5.dts      | 15 ++++---
+ .../dts/qcom/sc7180-trogdor-coachz-r1.dts     |  4 +-
+ .../boot/dts/qcom/sc7180-trogdor-coachz.dtsi  |  3 +-
+ .../dts/qcom/sc7180-trogdor-homestar.dtsi     |  3 +-
+ .../boot/dts/qcom/sc7180-trogdor-lazor.dtsi   |  2 +-
+ .../dts/qcom/sc7180-trogdor-pompom-r1.dts     |  2 +-
+ .../dts/qcom/sc7180-trogdor-pompom-r2.dts     |  2 +-
+ .../boot/dts/qcom/sc7180-trogdor-pompom.dtsi  |  3 +-
+ .../dts/qcom/sc7180-trogdor-wormdingler.dtsi  |  3 +-
+ arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi  |  3 +-
+ arch/arm64/boot/dts/qcom/sc7280-idp.dts       |  2 +-
+ arch/arm64/boot/dts/qcom/sc7280-idp.dtsi      |  2 +-
+ arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi    |  4 +-
+ .../qcom/sc8280xp-lenovo-thinkpad-x13s.dts    | 26 ++++++-------
+ arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi    | 10 ++---
+ arch/arm64/boot/dts/qcom/sdm845-mtp.dts       | 12 +++---
+ .../qcom/sm6125-sony-xperia-seine-pdx201.dts  | 15 ++++---
+ .../boot/dts/qcom/sm7225-fairphone-fp4.dts    |  6 +--
+ arch/arm64/boot/dts/qcom/sm8250-mtp.dts       | 21 ++++++----
+ 45 files changed, 278 insertions(+), 205 deletions(-)
+
+--
 2.40.0
 
