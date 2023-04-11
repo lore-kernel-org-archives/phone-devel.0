@@ -2,100 +2,108 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EBF08C76196
-	for <phone-devel@archiver.kernel.org>; Tue, 11 Apr 2023 06:09:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 656E7C77B6F
+	for <phone-devel@archiver.kernel.org>; Tue, 11 Apr 2023 14:32:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230106AbjDKGJV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 11 Apr 2023 02:09:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51842 "EHLO
+        id S229499AbjDKOcO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 11 Apr 2023 10:32:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230120AbjDKGJT (ORCPT
+        with ESMTP id S229450AbjDKOcH (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 11 Apr 2023 02:09:19 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 295142D75
-        for <phone-devel@vger.kernel.org>; Mon, 10 Apr 2023 23:09:12 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id q23so8078899ejz.3
-        for <phone-devel@vger.kernel.org>; Mon, 10 Apr 2023 23:09:12 -0700 (PDT)
+        Tue, 11 Apr 2023 10:32:07 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A15BE56;
+        Tue, 11 Apr 2023 07:32:05 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id c10-20020a17090abf0a00b0023d1bbd9f9eso11166981pjs.0;
+        Tue, 11 Apr 2023 07:32:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681193350;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4G456PqVy7ApF9uqE+9HGHw+r1xq4A9l5JsDj40n+HI=;
-        b=JoGT88M7kKKIV3qFCmx+GIOLJfJfUI6TowrnAnVID3KL75oguBDLLmVjdQnYNgya9w
-         1ralcyQV3Dh/kvGoY61VHofqubLu1o+zNcraIg7hjXBn+beFkY/HWze8oIA/kM02LRyT
-         ++7Nu1dgvKSDab9NgTG7BR00lj37Lr7CjuCignUMqzZhlqUQEag8iCdFowqhpF8THDdI
-         j1hnTr6Yd+oX5YmvxezLyNXwan7TpC5p/yk6tG7odgVEG47siAUT6DkNlisIbd3UdMRH
-         Vt3n6BFPxXsYKYFezU4MXYWi3ephzmlgGYT8X6v5zjcvOifR9RirOIIJxzYWL7fuOHB6
-         YidA==
+        d=gmail.com; s=20210112; t=1681223525; x=1683815525;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PXgLo5OVfNAMT7/smDiYjz0MFkV0iyCkx0eeELk7SYQ=;
+        b=nWRgNU6YMWDga7MwAbjU/V74AQGnljhjJKMzMvS5+zZe+eZkOWLvU0j0Kj2gkVbslF
+         JbJNdl6F3f4bhb7ulZcZ7RWGJMGc8jaBuEiPKZvhTbERDDQAp3gygl20Xuy9NntBgtab
+         CTzVb4XHhPYunKKJ6RDg+blRZY8agaSnfX9ZNLnVpbCyzzdGxi2aL3k3yrAoqxlxiWQF
+         +jm5uA5h3wLbKPyN0iM7oh0R/yPlC+O5PptXtwm5fvPK65cpjo0c8NMoTu7+CJWQtW0I
+         HDa4eqjUl6+tHKrogQqOms+cjKPdTF3c6dVBeFc/8iyo1ZJpDUegBw8XdYm3Aw+S3Lb+
+         hV8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681193350;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4G456PqVy7ApF9uqE+9HGHw+r1xq4A9l5JsDj40n+HI=;
-        b=Qtf2EjxnO0B7v9R3DYwrcWfsVdZeGlIXFPr+OTgeSjR2BZpCQ51Bc92O2XUwzn286W
-         Wu+hTSB4odA1vTLhUrAPKI2639APm5axiWcdTZw+01bDqy8ne+LBaMkYPFsAX02vQ/Ah
-         LrMhZtFM1GwcxnTvKj3OpYJfNQqtezFimkikj/WIJe8GSncJfvpo4BkWChN+XbHtkjxP
-         b3ppPSKebu/uoaLvnkEEgsW689yRSX5EpNziGeJz6xXihdmcuc9fA+bGI6qBTs6qtN3P
-         juUCYWD3+8gyWja4x6I/X+oKrgfAZNv0D6sfxv4nQXHYLAQSXPuf7ArqiANofKnxc64w
-         yoFg==
-X-Gm-Message-State: AAQBX9dIRHEZNWLtwpQFIdwdix5OESATeGvGZ4+v+KvGibUq1uBX2LrX
-        d1XoV89nsy05KSmgQD4DanCmOw==
-X-Google-Smtp-Source: AKy350burpaTkLQPeSniZmK7LQQOd5P4IygJemYYWoCbMDmyh3AbZ5+C/dTP+Po5vUkyxBiJ21+6nA==
-X-Received: by 2002:a17:907:1dcb:b0:94d:6913:d007 with SMTP id og11-20020a1709071dcb00b0094d6913d007mr2671729ejc.18.1681193350628;
-        Mon, 10 Apr 2023 23:09:10 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:dad2:72b7:3626:af61? ([2a02:810d:15c0:828:dad2:72b7:3626:af61])
-        by smtp.gmail.com with ESMTPSA id j18-20020a50d012000000b004c4eed3fe20sm5523103edf.5.2023.04.10.23.09.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Apr 2023 23:09:10 -0700 (PDT)
-Message-ID: <df0ec7ac-f472-c307-6f84-950f17d5ddba@linaro.org>
-Date:   Tue, 11 Apr 2023 08:09:09 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v4 5/5] dt-bindings: iio: adc: Require generic `channel`
- name for channel nodes
-Content-Language: en-US
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        d=1e100.net; s=20210112; t=1681223525; x=1683815525;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PXgLo5OVfNAMT7/smDiYjz0MFkV0iyCkx0eeELk7SYQ=;
+        b=J48I/Vy3KO1ZINlpjh77nTE8F3jeSPs1MT0UPAZdF53kv6nndpWgeQEGH1v8nOtgEI
+         xNAv0Hya88NNWy3KT8LB6dutVOA4k5kh6Bi0W6JBJQVNPLs9WCmAa2aprs80bPzNFhwP
+         DXM0O+HOtfyMJGoGJ92jh798iyaI0qAnZ1irCkHU6cZ7az13dOQ3KKKUg7BOgwtSyhd4
+         Z36K/+BsQxnUidTPwjz3bCW60MFpuivOKBfXZp9UUy+tHvybdq6NZKXe0XyoXia0xUk4
+         3kIG+ktNbPcKA1bhXGuCmAkYAtX5n4Bbi86GGFkfh/wAoNAnw8dbSSkFLW5SNo3RyrX2
+         ajgQ==
+X-Gm-Message-State: AAQBX9cOL29fLFcE8wNN1MJWojXc1Z9hVm0A/NCPtUNi94hxQ86Vrzgm
+        018jMz91yvptXPwFkMLxU8aPv/Jk9tM=
+X-Google-Smtp-Source: AKy350ZvBkJkHrK+EOEBnmvu2iSV8npZ2azOJz2Iz/9s7a8goU5uQtXMWfijuKHhwAIu8hkJ7Kn6KA==
+X-Received: by 2002:a17:902:ecca:b0:1a1:ab85:1e1e with SMTP id a10-20020a170902ecca00b001a1ab851e1emr15137887plh.22.1681223524440;
+        Tue, 11 Apr 2023 07:32:04 -0700 (PDT)
+Received: from localhost.localdomain (n220246252240.netvigator.com. [220.246.252.240])
+        by smtp.gmail.com with ESMTPSA id jk1-20020a170903330100b0019ea9e5815bsm9829721plb.45.2023.04.11.07.31.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Apr 2023 07:32:04 -0700 (PDT)
+From:   Jianhua Lu <lujianhua000@gmail.com>
+To:     Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20230410202917.247666-1-marijn.suijten@somainline.org>
- <20230410202917.247666-6-marijn.suijten@somainline.org>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230410202917.247666-6-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Krishna Manikandan <quic_mkrishn@quicinc.com>
+Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Jianhua Lu <lujianhua000@gmail.com>
+Subject: [PATCH] dt-bindings: display/msm: dsi-controller-main: Document qcom,master-dsi and qcom,sync-dual-dsi
+Date:   Tue, 11 Apr 2023 22:31:49 +0800
+Message-Id: <20230411143149.16742-1-lujianhua000@gmail.com>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 10/04/2023 22:29, Marijn Suijten wrote:
-> As discussed in [1] it is more convenient to use a generic `channel`
-> node name for ADC channels while storing a friendly - board-specific
-> instead of PMIC-specific - name in the label, if/when desired to
-> overwrite the channel description already contained (but previously
-> unused) in the driver [2].
-> 
+This fixes warning:
+  sm8250-xiaomi-elish-csot.dtb: dsi@ae94000: Unevaluated properties are not allowed ('qcom,master-dsi', 'qcom,sync-dual-dsi' were unexpected)
 
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+---
+ .../bindings/display/msm/dsi-controller-main.yaml    | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+diff --git a/Documentation/devicetree/bindings/display/msm/dsi-controller-main.yaml b/Documentation/devicetree/bindings/display/msm/dsi-controller-main.yaml
+index e6c1ebfe8a32..940a506a289d 100644
+--- a/Documentation/devicetree/bindings/display/msm/dsi-controller-main.yaml
++++ b/Documentation/devicetree/bindings/display/msm/dsi-controller-main.yaml
+@@ -82,6 +82,18 @@ properties:
+       Indicates if the DSI controller is driving a panel which needs
+       2 DSI links.
+ 
++  qcom,master-dsi:
++    type: boolean
++    description: |
++      Indicates if the DSI controller is the master DSI controller when
++      qcom,dual-dsi-mode enabled.
++
++  qcom,sync-dual-dsi:
++    type: boolean
++    description: |
++      Indicates if the DSI controller need to sync the other DSI controller
++      with MIPI DCS commands when qcom,dual-dsi-mode enabled.
++
+   assigned-clocks:
+     minItems: 2
+     maxItems: 4
+-- 
+2.39.2
 
