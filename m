@@ -2,181 +2,163 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 05EEEC76196
-	for <phone-devel@archiver.kernel.org>; Mon, 10 Apr 2023 20:29:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F23A4C76196
+	for <phone-devel@archiver.kernel.org>; Tue, 11 Apr 2023 05:55:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229833AbjDJU3m (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 10 Apr 2023 16:29:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50182 "EHLO
+        id S230131AbjDKFzt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 11 Apr 2023 01:55:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229828AbjDJU3i (ORCPT
+        with ESMTP id S230093AbjDKFzo (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 10 Apr 2023 16:29:38 -0400
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A29E1712;
-        Mon, 10 Apr 2023 13:29:35 -0700 (PDT)
-Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id CC58A3FA84;
-        Mon, 10 Apr 2023 22:29:33 +0200 (CEST)
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        Tue, 11 Apr 2023 01:55:44 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B5801709
+        for <phone-devel@vger.kernel.org>; Mon, 10 Apr 2023 22:55:42 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-94a34a0b531so170289466b.1
+        for <phone-devel@vger.kernel.org>; Mon, 10 Apr 2023 22:55:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681192541;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fIcu/5Vwec/5pmDwua6bnzxrZjxm6tYfo6xjgw1aQHk=;
+        b=E5jbpYtMChv4wnKHQBV1sgtQMtfvAnAqYOFbf9v9NvIbVBCisFzEDLeNgxGzA8mzxG
+         F4twwOCb2CowY08cCpc2qlbLWk5IKswvsGSNgpqIlLX4aigXpY/ts/WdeJMIWAvDGyF6
+         NjXYCE0mxT7hYj/JxNOws/gVsFEIJbaBLSAHwT26Wh2kqDBZjQraT+yUbe1vEy8wL3mE
+         QTxL962tJTvy7qb1N9rA1bcSIbHCj9QqxQM4PceCi5MnPoLvXV1laXnXCXCz236FG9ce
+         cshMNCHLqsUuFgtID4orwDUdbec0V/DMvaHxZj1oZfA5UuBdaqzXcoL/BG2UumQ8s/8G
+         5Jug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681192541;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fIcu/5Vwec/5pmDwua6bnzxrZjxm6tYfo6xjgw1aQHk=;
+        b=sUfBLjfsh4elWNIfn9zh5LJw00nAzMSPQL2BAs1kWzw9rYLkEduXML9pNHj2vAqtpH
+         NJwwf7idm/Aq/wqtxIa5KirWXDlQ/Te2HVdbh18I4PQdrVMz8XEKdnZ/QRkeEkYQacMG
+         9rW87035cFCVehymeZ6xtpmaOMlGAZ5GRwSwLDmXQwjp1QJZo8IoTnG2zN9CAYH9jXw6
+         k6627Guajt8tvt6SZnRpKVm0LIMj3OhnB4pqwlSUp2G5wT6jg9EhbS7F3Aob+AFq9uYa
+         lfzol9ulix5kv9UB+RWb+6cJMDKUPB60rx/UAkKaTP+puK9LNjuEtlSmBBmd3oxC8KJu
+         NQ2A==
+X-Gm-Message-State: AAQBX9eyOG9y09+S9DQBazcX6hLhXGRHsoCDo6g3YqBuYcvWMIsUSLY/
+        yg7Pzg4blvvm5IwiPjayvSkHDQ==
+X-Google-Smtp-Source: AKy350bGvkN4SiYmY0SbOi6V11nu//NdPAdQmWpaiIwCulyUglnQHN+JIG8OT1crzFfyzP8mLu8xHA==
+X-Received: by 2002:aa7:cd69:0:b0:504:a317:b9de with SMTP id ca9-20020aa7cd69000000b00504a317b9demr1369584edb.28.1681192540770;
+        Mon, 10 Apr 2023 22:55:40 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:dad2:72b7:3626:af61? ([2a02:810d:15c0:828:dad2:72b7:3626:af61])
+        by smtp.gmail.com with ESMTPSA id i13-20020a50c3cd000000b004fa012332ecsm4122296edf.1.2023.04.10.22.55.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Apr 2023 22:55:40 -0700 (PDT)
+Message-ID: <f9552bb6-ea73-93b4-f15d-d5d7c326c708@linaro.org>
+Date:   Tue, 11 Apr 2023 07:55:38 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH v2 1/5] dt-bindings: input: touchscreen: add bindings for
+ focaltech,fts5452
+Content-Language: en-US
+To:     Joel Selvaraj <joelselvaraj.oss@gmail.com>,
+        Caleb Connolly <caleb@connolly.tech>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: [PATCH v4 5/5] dt-bindings: iio: adc: Require generic `channel` name for channel nodes
-Date:   Mon, 10 Apr 2023 22:29:17 +0200
-Message-Id: <20230410202917.247666-6-marijn.suijten@somainline.org>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230410202917.247666-1-marijn.suijten@somainline.org>
-References: <20230410202917.247666-1-marijn.suijten@somainline.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Jeff LaBundy <jeff@labundy.com>,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Jean Delvare <jdelvare@suse.de>,
+        Job Noorman <job@noorman.info>,
+        Alistair Francis <alistair@alistair23.me>,
+        Chris Morgan <macromorgan@hotmail.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230410160200.57261-1-joelselvaraj.oss@gmail.com>
+ <20230410160200.57261-2-joelselvaraj.oss@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230410160200.57261-2-joelselvaraj.oss@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-As discussed in [1] it is more convenient to use a generic `channel`
-node name for ADC channels while storing a friendly - board-specific
-instead of PMIC-specific - name in the label, if/when desired to
-overwrite the channel description already contained (but previously
-unused) in the driver [2].
+On 10/04/2023 18:01, Joel Selvaraj wrote:
+> Add devicetree bindings for the Focaltech FTS touchscreen drivers.
+> 
 
-The same `channel` node name pattern has also been set in
-iio/adc/adc.yaml, but this generic binding is not inherited as base for
-qcom,spmi-vadc bindings due to not having any other generic elements in
-common, besides the node name rule and reg property.
+Subject: drop second/last, redundant "bindings for". The "dt-bindings"
+prefix is already stating that these are bindings.
 
-Replace the .* name pattern with the `channel` literal, but leave the
-label property optional for bindings to choose to fall back a channel
-label hardcoded in the driver [2] instead.
+> Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
+> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
+> ---
+>  .../input/touchscreen/focaltech,fts5452.yaml  | 71 +++++++++++++++++++
+>  1 file changed, 71 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/input/touchscreen/focaltech,fts5452.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/focaltech,fts5452.yaml b/Documentation/devicetree/bindings/input/touchscreen/focaltech,fts5452.yaml
+> new file mode 100644
+> index 000000000000..f42868293439
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/input/touchscreen/focaltech,fts5452.yaml
+> @@ -0,0 +1,71 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/input/touchscreen/focaltech,fts5452.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Focaltech FTS I2C Touchscreen Controller
+> +
+> +maintainers:
+> +  - Joel Selvaraj <joelselvaraj.oss@gmail.com>
+> +  - Caleb Connolly <caleb@connolly.tech>
+> +
+> +allOf:
+> +  - $ref: touchscreen.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - focaltech,fts5452
+> +      - focaltech,fts8719
+> +
+> +  reg:
+> +    const: 0x38
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +
+> +  avdd-supply:
+> +    description: regulator supplying analog power (2.6V to 3.3V).
+> +
+> +  vddio-supply:
+> +    description: regulator supplying IO power (1.8V).
+> +
+> +unevaluatedProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - touchscreen-size-x
+> +  - touchscreen-size-y
 
-[1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
-[2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
+We always put required: before unevaluatedProperties. Base your schema
+on example-schema.yaml.
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
----
- .../bindings/iio/adc/qcom,spmi-vadc.yaml      | 26 ++++++++++---------
- 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-index bd6e0d6f6e0c..f30114424b92 100644
---- a/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml
-@@ -54,7 +54,7 @@ required:
-   - '#io-channel-cells'
- 
- patternProperties:
--  "^.*@[0-9a-f]+$":
-+  "^channel@[0-9a-f]+$":
-     type: object
-     additionalProperties: false
-     description: |
-@@ -148,7 +148,7 @@ allOf:
- 
-     then:
-       patternProperties:
--        "^.*@[0-9a-f]+$":
-+        "^channel@[0-9a-f]+$":
-           properties:
-             qcom,decimation:
-               enum: [ 512, 1024, 2048, 4096 ]
-@@ -171,7 +171,7 @@ allOf:
- 
-     then:
-       patternProperties:
--        "^.*@[0-9a-f]+$":
-+        "^channel@[0-9a-f]+$":
-           properties:
-             qcom,decimation:
-               enum: [ 256, 512, 1024 ]
-@@ -194,7 +194,7 @@ allOf:
- 
-     then:
-       patternProperties:
--        "^.*@[0-9a-f]+$":
-+        "^channel@[0-9a-f]+$":
-           properties:
-             qcom,decimation:
-               enum: [ 250, 420, 840 ]
-@@ -217,7 +217,7 @@ allOf:
- 
-     then:
-       patternProperties:
--        "^.*@[0-9a-f]+$":
-+        "^channel@[0-9a-f]+$":
-           properties:
-             qcom,decimation:
-               enum: [ 85, 340, 1360 ]
-@@ -249,7 +249,7 @@ examples:
-             #io-channel-cells = <1>;
- 
-             /* Channel node */
--            adc-chan@39 {
-+            channel@39 {
-                 reg = <0x39>;
-                 qcom,decimation = <512>;
-                 qcom,ratiometric;
-@@ -258,19 +258,19 @@ examples:
-                 qcom,pre-scaling = <1 3>;
-             };
- 
--            adc-chan@9 {
-+            channel@9 {
-                 reg = <0x9>;
-             };
- 
--            adc-chan@a {
-+            channel@a {
-                 reg = <0xa>;
-             };
- 
--            adc-chan@e {
-+            channel@e {
-                 reg = <0xe>;
-             };
- 
--            adc-chan@f {
-+            channel@f {
-                 reg = <0xf>;
-             };
-         };
-@@ -292,16 +292,18 @@ examples:
-             #io-channel-cells = <1>;
- 
-             /* Other properties are omitted */
--            xo-therm@44 {
-+            channel@44 {
-                 reg = <PMK8350_ADC7_AMUX_THM1_100K_PU>;
-                 qcom,ratiometric;
-                 qcom,hw-settle-time = <200>;
-+                label = "xo_therm";
-             };
- 
--            conn-therm@47 {
-+            channel@47 {
-                 reg = <PM8350_ADC7_AMUX_THM4_100K_PU(1)>;
-                 qcom,ratiometric;
-                 qcom,hw-settle-time = <200>;
-+                label = "conn_therm";
-             };
-         };
-     };
--- 
-2.40.0
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 
