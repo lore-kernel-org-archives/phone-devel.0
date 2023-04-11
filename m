@@ -2,177 +2,142 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 40BC5C77B6F
-	for <phone-devel@archiver.kernel.org>; Tue, 11 Apr 2023 16:48:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C21EC76196
+	for <phone-devel@archiver.kernel.org>; Tue, 11 Apr 2023 19:59:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230143AbjDKQsg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 11 Apr 2023 12:48:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56408 "EHLO
+        id S229631AbjDKT7P (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 11 Apr 2023 15:59:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230196AbjDKQs2 (ORCPT
+        with ESMTP id S229498AbjDKT7O (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 11 Apr 2023 12:48:28 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BFAF4495;
-        Tue, 11 Apr 2023 09:48:23 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id s8so4986236wmo.0;
-        Tue, 11 Apr 2023 09:48:23 -0700 (PDT)
+        Tue, 11 Apr 2023 15:59:14 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5147E44A9
+        for <phone-devel@vger.kernel.org>; Tue, 11 Apr 2023 12:59:13 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id i6so162284lfp.1
+        for <phone-devel@vger.kernel.org>; Tue, 11 Apr 2023 12:59:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1681231701;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+        d=linaro.org; s=google; t=1681243151;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=r3T3CK8z1gSm+4HGK1PzRxR+6buBvDUtDkUZmQKnyFM=;
-        b=mktPsWYrrZvIU4fdI63FAzf6dQcaDrfAr+P7aFKFjNSV2TDLbVt0A8mwT+tpHXlRrD
-         OOVn9Hh0MbxuC1LMGK5r4+Ris5mA1i09alBb2Jx22jJbH5L0hXHPEppSlTitlvqq8U+d
-         5lCaE9fjWKWwL4ctcgdfMHEWw55LtBG+d9kS6NVmPqkGdv0dwKyAK+VEj0LbmwAzx1x5
-         h9VwhbyMahsraUSu9ca/wdFGG6Aklb0W0qUUgj41Begsv2TVWr4QEU2D741H9qPawAGW
-         yk9+yxq6lKKvimQk9vpgoGB3CF8kqIRWlkOKkiDkyDJ7evtj28FePQ8jgr7HEEr/se6b
-         f+rg==
+        bh=YGquEeXVbkvJ/pjYgSu5IRfkUFUUSGPMLUNyd+676Zw=;
+        b=lHvUhPPca9Bie5uxi0VZJlh6YqEu88ELyrACrrKD8hqS7uqeeF/PAf9KCjj90yXweO
+         lzb7zI3gvRLWNwnjpoNBfysJMQARe54SLqDsAMQQGLEAZrIF100LkHm94Logm5Usrxiu
+         UKBYoT6LZb0D4EASajb0jJiddE30NhGXtNMLJmR9IHlVwNpiHy9gVDZ9XBfY8vv8ThtO
+         nqySdmk2SUnYp2K0Cjyv2EWVdlw1R8I+tR6qlcwdf78fGDC9CWF0VTmKBatlkh778Pdb
+         9pDXOUNsxE5Aff1hFjUQ4vu1mbPIbB/QZTcRRY+9U01CpfCSMX8c36zaIkrfXo08sH8J
+         hp7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681231701;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+        d=1e100.net; s=20210112; t=1681243151;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r3T3CK8z1gSm+4HGK1PzRxR+6buBvDUtDkUZmQKnyFM=;
-        b=Vbey0JTBUxakxyEZ+cMmSTZN1uHwGsEAHIQvPdzG97mOS/zLrndTOWGx8zzdaoq2J2
-         P8HxDkaXX81xy0HyCCEkuAh5UpwULOETIx2xkrM+SBkZ7HYNxZ05LaSmHb6nVyRASMcK
-         Hfnto0AvGQvJqwQtjmQ6LuWj2ATNQxP108EDCgf909LQRCUtdK0BX2dPsi03l7sF9rTe
-         3atVWBB0NrAZX+RnjpLgvB5BVcI6SZqwbZpQpsOvmpEQuxstfH6bDAwQ+MTCMO9NjfHx
-         Bzjdk+1Q6Xp0PUf3xxUB//MfpCi9SeKGvogr2Pxzru2IefSdrdw0/Dcw0F3hXQnGHdbi
-         1TKw==
-X-Gm-Message-State: AAQBX9czE5vBuWD0mcZXXSRanFHQlPnQBCW77sqf94EurvL2Szuwobog
-        709RxIdOoQjpHfyfM7S+cws=
-X-Google-Smtp-Source: AKy350Y2yZpAd514faF3XI3M3XvQ4Yl5IXK41ZAw+7JnjYoxs1bbgfbAxZW92JA+pZAICcdFRpzeKQ==
-X-Received: by 2002:a1c:7c03:0:b0:3ef:5940:5f45 with SMTP id x3-20020a1c7c03000000b003ef59405f45mr9592921wmc.23.1681231701369;
-        Tue, 11 Apr 2023 09:48:21 -0700 (PDT)
-Received: from [192.168.0.32] ([37.222.243.26])
-        by smtp.gmail.com with ESMTPSA id m19-20020a05600c4f5300b003f07eca7af2sm13738678wmq.40.2023.04.11.09.48.19
+        bh=YGquEeXVbkvJ/pjYgSu5IRfkUFUUSGPMLUNyd+676Zw=;
+        b=Db0tVmnJUJW9vhTqQYnXGh673wgo/UNaBKU/UNvW02GgOc/L50wfXCy0qAEJmWJGwp
+         hZ6ZaHzyRaWbpWq2+Ak2X3DAsBgemLjecvxrYCDIxBKd5kLwiFZq6PnP+tL7lyMIiCMR
+         qrPBmlnYpy6c+Lx+SMmQgyRoUn1kGhmeI5QAJMfyPkFGfhF2IoDiOdzas9VqJPfOryBj
+         XZ5/oW1HmxllWaeRphn0zJWoA97usdMfXZjcnPoUspMSeF/CkCjyo+rTl2nb4BdB8VQh
+         /Ll1wVsF07liq6l763V5o5LymzGg7aP0ZVw1W7doBvnyi78gV1R4pBmnToIlNn6sjwEr
+         xqyQ==
+X-Gm-Message-State: AAQBX9d71/3XgIUnS34bLRIn4BvgH8623ZxT52+Wj1ymootN1ZCrIOJl
+        FqIVDevcXUsqru6VXwaJ09GSWQ==
+X-Google-Smtp-Source: AKy350anl32bVFzS4/dw+9FZFzkBkofKoVS9aL368apBUkQ9gDiOIWo73QVHAbH3X2cGyL9rq5Yv9g==
+X-Received: by 2002:ac2:550b:0:b0:4eb:cbb:790f with SMTP id j11-20020ac2550b000000b004eb0cbb790fmr5018318lfk.66.1681243151583;
+        Tue, 11 Apr 2023 12:59:11 -0700 (PDT)
+Received: from [192.168.1.101] (abxj23.neoplus.adsl.tpnet.pl. [83.9.3.23])
+        by smtp.gmail.com with ESMTPSA id g1-20020a19ee01000000b004db3900da02sm2652951lfb.73.2023.04.11.12.59.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Apr 2023 09:48:20 -0700 (PDT)
-Message-ID: <6cd3294d-787f-0fba-9e75-157aa610356b@gmail.com>
-Date:   Tue, 11 Apr 2023 18:48:19 +0200
+        Tue, 11 Apr 2023 12:59:11 -0700 (PDT)
+Message-ID: <cd531beb-69f4-a2e8-299f-c85d8593673c@linaro.org>
+Date:   Tue, 11 Apr 2023 21:58:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH v2 00/17] MT6795 Helio X10 and Sony Xperia M5: DT step 2!
+ Thunderbird/102.9.1
+Subject: Re: [PATCH v2 4/5] arm64: dts: qcom: sdm845-xiaomi-beryllium-ebbg:
+ introduce support for fts touchscreen
 Content-Language: en-US
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     qii.wang@mediatek.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jassisinghbrar@gmail.com,
-        houlong.wei@mediatek.com, linux-i2c@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, kernel@collabora.com,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20230327083647.22017-1-angelogioacchino.delregno@collabora.com>
- <77528d8d-29f3-9bae-33f3-3296c9c8b0b1@gmail.com>
-In-Reply-To: <77528d8d-29f3-9bae-33f3-3296c9c8b0b1@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To:     Joel Selvaraj <joelselvaraj.oss@gmail.com>,
+        Caleb Connolly <caleb@connolly.tech>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Jeff LaBundy <jeff@labundy.com>,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Jean Delvare <jdelvare@suse.de>,
+        Job Noorman <job@noorman.info>,
+        Alistair Francis <alistair@alistair23.me>,
+        Chris Morgan <macromorgan@hotmail.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230410160200.57261-1-joelselvaraj.oss@gmail.com>
+ <20230410160200.57261-5-joelselvaraj.oss@gmail.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230410160200.57261-5-joelselvaraj.oss@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
 
-On 02/04/2023 19:26, Matthias Brugger wrote:
+On 10.04.2023 18:01, Joel Selvaraj wrote:
+> The Poco F1 EBBG variant uses Focaltech FTS8719 touchscreen. Introduce
+> support for it.
 > 
+> Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
+> ---
+>  .../dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts | 26 +++++++++++++++++++
+>  1 file changed, 26 insertions(+)
 > 
-> On 27/03/2023 10:36, AngeloGioacchino Del Regno wrote:
->> Changes in v2:
->>   - Squashed the addition of mediatek,mt6795-gce.h header with the
->>     commit adding the MT6795 GCE compatible.
->>
->> This series further enhances the support for the MT6795 Helio X10 SoC
->> and the Sony Xperia M5 smartphone.
->>
->> In particular, for the SoC support, this adds:
->>   - Frequency Hopping support
->>   - I2C controllers
->>   - Power domains
->>   - IOMMU support and LARBs
->>   - GCE/CMDQ Mailbox
->>   - VDECSYS and VENCSYS clocks
->>   - MMSYS support
->>
->> ...and, on the Xperia M5 smartphone, this adds:
->>   - Frequency Hopping with Spread Spectrum for MAINPLL, MPLL, MSDCPLL
->>   - Touchscreen support (Synaptics S2726, fw id: 1898977, RMI4 protocol)
->>   - Accelerometer
->>   - Magnetometer
->>   - Proximity sensor
->>   - NFC support
->>
->> ...all of which was successfully tested on the Xperia M5 smartphone.
->>
->> This series depends on [1] for the MMSYS support.
->>
->> Plan for step 3 is to push upstream full display support, which does
->> already work on my custom tree ;-)
->>
->> [1]: 
->> https://lore.kernel.org/all/20230309102618.114157-1-angelogioacchino.delregno@collabora.com/
->>
->> Cheers!
->>
-> 
-> Applied all but:
-> 4/17 dt-binding already applied
-> 7/17 dt-binding not applied
-> 8/17 we are missing the dt binding
-> 
+> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
+> index 76931ebad065..f857ed3e2df4 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
+> @@ -13,3 +13,29 @@ &display_panel {
+>  	compatible = "ebbg,ft8719";
+>  	status = "okay";
+>  };
+> +
+> +&i2c14 {
+> +	status = "okay";
+> +
+> +	dmas =  <&gpi_dma1 0 6 QCOM_GPI_I2C>,
+> +		<&gpi_dma1 1 6 QCOM_GPI_I2C>;
+> +	dma-names = "tx", "rx";
+That's totally in sdm845.dtsi already!
 
-I dropped the following patches for now:
-09/17 and 11/17 due to missing 07/17 this break creation of DTBs.
+> +
+> +	touchscreen@38 {
+> +		compatible = "focaltech,fts8719";
+> +		reg = <0x38>;
+> +
+> +		interrupt-parent = <&tlmm>;
+> +		interrupts = <31 IRQ_TYPE_EDGE_FALLING>;
+interrupts-extended
 
-I also dopped 14/17 and 15/17 as buidling the DTBs gave the following warning:
-arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts:104.21-109.4: Warning 
-(unit_address_format): /soc/i2c@11010000/accelerometer@0x10: unit name should 
-not have leading "0x"
-arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts:111.20-114.4: Warning 
-(unit_address_format): /soc/i2c@11010000/magnetometer@0x12: unit name should not 
-have leading "0x"
-arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts:104.21-109.4: Warning 
-(i2c_bus_reg): /soc/i2c@11010000/accelerometer@0x10: I2C bus unit address format 
-error, expected "10"
-arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts:111.20-114.4: Warning 
-(i2c_bus_reg): /soc/i2c@11010000/magnetometer@0x12: I2C bus unit address format 
-error, expected "12"
+> +		reset-gpios = <&tlmm 32 GPIO_ACTIVE_LOW>;
+> +
+> +		vddio-supply = <&vreg_l14a_1p8>;
+> +
+> +		pinctrl-names = "default", "sleep";
+> +		pinctrl-0 = <&ts_int_default &ts_reset_default>;
+> +		pinctrl-1 = <&ts_int_sleep &ts_reset_sleep>;
+property
+property-names
 
-Regards,
-Matthias
-
-> Thanks a lot for the great work
-> Matthias
-> 
->> AngeloGioacchino Del Regno (17):
->>    arm64: dts: mediatek: mt6795: Add Frequency Hopping Controller node
->>    arm64: dts: mediatek: mt6795: Add apmixedsys syscon node
->>    arm64: dts: mediatek: mt6795: xperia-m5: Enable Frequency Hopping
->>    dt-bindings: i2c: i2c-mt65xx: Add compatible for MT6795 Helio X10
->>    arm64: dts: mediatek: mt6795: Add nodes for I2C controllers
->>    arm64: dts: mediatek: mt6795: Add SoC power domains
->>    dt-bindings: mailbox: mediatek,gce-mailbox: Add support for MT6795
->>    arm64: dts: mediatek: mt6795: Add support for the CMDQ/GCE mailbox
->>    arm64: dts: mediatek: mt6795: Add MMSYS node for multimedia clocks
->>    arm64: dts: mediatek: mt6795: Add VDECSYS and VENCSYS clocks
->>    arm64: dts: mediatek: mt6795: Add support for IOMMU and LARBs
->>    arm64: dts: mediatek: mt6795-xperia-m5: Enable I2C 0-3 busses
->>    arm64: dts: mediatek: mt6795-xperia-m5: Add Synaptics RMI4 Touchscreen
->>    arm64: dts: mediatek: mt6795-xperia-m5: Add Bosch BMA255 Accelerometer
->>    arm64: dts: mediatek: mt6795-xperia-m5: Add Bosch BMM050 Magnetometer
->>    arm64: dts: mediatek: mt6795-xperia-m5: Add Sensortek STK3310
->>      Proximity
->>    arm64: dts: mediatek: mt6795-xperia-m5: Add NXP PN547 NFC on I2C3
->>
->>   .../devicetree/bindings/i2c/i2c-mt65xx.yaml   |   4 +
->>   .../mailbox/mediatek,gce-mailbox.yaml         |  20 +-
->>   .../dts/mediatek/mt6795-sony-xperia-m5.dts    | 166 ++++++++++++
->>   arch/arm64/boot/dts/mediatek/mt6795.dtsi      | 245 ++++++++++++++++++
->>   include/dt-bindings/gce/mediatek,mt6795-gce.h | 123 +++++++++
->>   5 files changed, 550 insertions(+), 8 deletions(-)
->>   create mode 100644 include/dt-bindings/gce/mediatek,mt6795-gce.h
->>
+Konrad
+> +
+> +		touchscreen-size-x = <1080>;
+> +		touchscreen-size-y = <2246>;
+> +	};
+> +};
