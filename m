@@ -2,146 +2,141 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6E21C77B72
-	for <phone-devel@archiver.kernel.org>; Wed, 12 Apr 2023 13:13:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DFE2C7619A
+	for <phone-devel@archiver.kernel.org>; Wed, 12 Apr 2023 13:13:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231527AbjDLNNZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 12 Apr 2023 09:13:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35154 "EHLO
+        id S230187AbjDLNNm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 12 Apr 2023 09:13:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230272AbjDLNNK (ORCPT
+        with ESMTP id S230071AbjDLNNR (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 12 Apr 2023 09:13:10 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D19D076B8;
-        Wed, 12 Apr 2023 06:12:42 -0700 (PDT)
-Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 4B83D660326E;
-        Wed, 12 Apr 2023 14:12:25 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1681305146;
-        bh=nJdVU7VlnC0bQc4i84vLOllab4PclCES7DJKViJt7vE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XnzTv6u0bpKYXhvdAO5TSi0QbpIKV66dtN0ZVEIK+7pHbzA14NTV8lpAIsQnKxg+D
-         idU2mxsP+ZLATp7v2RYBRuDQZcNTKMg6RIt3SMQ58txjvS6jznKO0YzgBGjuAtCqHy
-         sSBzjNlq89W5Si07Bz3GsYo4aXXxzl8DDs2wbKN5aIloNwBJHMbUxxX33rZ2Vi9Ron
-         1YwUALMH9AUmeKoedys+2yS2f60mPF/oTRwx/nwxaXTDBIj/kVGcL7kaeHxGbDOd84
-         tYl1ZyGUPHhXkEFfV40VQMH1DodYMfvV2AmxcriVg6eSDDmY3j78p3RXSEykDDAZ9A
-         yIG0VHz/KeIiA==
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-To:     matthias.bgg@gmail.com
-Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        amergnat@baylibre.com, flora.fu@mediatek.com,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, kernel@collabora.com,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v3 5/6] soc: mediatek: mtk-pmic-wrap: Add support for MT6331 w/ MT6332 companion
-Date:   Wed, 12 Apr 2023 15:12:15 +0200
-Message-Id: <20230412131216.198313-6-angelogioacchino.delregno@collabora.com>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <20230412131216.198313-1-angelogioacchino.delregno@collabora.com>
-References: <20230412131216.198313-1-angelogioacchino.delregno@collabora.com>
+        Wed, 12 Apr 2023 09:13:17 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65A2293D6
+        for <phone-devel@vger.kernel.org>; Wed, 12 Apr 2023 06:12:52 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id q5so6490483wmo.4
+        for <phone-devel@vger.kernel.org>; Wed, 12 Apr 2023 06:12:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20210112.gappssmtp.com; s=20210112; t=1681305170; x=1683897170;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IsrkVPeKsaynFnbWlBbnoqSaEozGzCnZBk6Qj0AOkSA=;
+        b=ssqrDy/2cLPJMN/UfNNxohNjADmsWrmIPazYKu4Ca3VT51kMGJqUU1fvWcWP4RjuZo
+         4dF+jf6yXYovywxAeb9lSaPiNCt6S4eT3K+uf9VRCmYJmFdY8L41VcIutelklqmDsd6V
+         qEQiJk6+v2YoizYOHRkf0dteFBK+5GWCvEXstGpl1jIPIMOXUsz7nnNubKdh5OvNHnOL
+         aDF6VeDl9OZ8cI5sC0EVKynLDlBXTOguFMXJZ/LRchX+pbtIPKdlFgmkzwneaoW2z/GQ
+         VQFB2AhqMthknYvrUs8GSB/XmaDK1dHZobdQvl+1Y43TnONYn2GITk4eWX+S3A94HX6O
+         2rYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1681305170; x=1683897170;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IsrkVPeKsaynFnbWlBbnoqSaEozGzCnZBk6Qj0AOkSA=;
+        b=0m3kb9NOQa7+SN3F82TP3EXvOZbtQQfQM1gQtUnOI0dBmar7D0bE516Zk0vNcvWbmt
+         eyKkPt5d6Hje9DrGNbmGPa9g48ZfNqrLO3NYhhYTrv096O0HoUoyUalOwsAFoT15u0Uz
+         +LRRkkkbQuNTZVoEGkVnDdtxLH20z0MS6j2Xx3KlVDLzFQ0Nx6BHLqZgpd6iFnxoJJUH
+         i1n0y4YoPK5XcdFXxqdvKfFRDw+HayFvbnoPnjp0+Ia5XjFGhE9U1oSHdMru6rzDyPIE
+         11DmVl0WlOEzA1pfycLegsc54CQRZJu1DB9iWnTrzCEVsUqJrJkZ7uzrwMg0w/5hZwnZ
+         c+GQ==
+X-Gm-Message-State: AAQBX9fWbF5k3PRBAUh/YR+1yQre2b025JL8V1wELTM2b7n+iqEgy3e3
+        8xZfcyY4n3mLIn/g7pQj3uMpTQ==
+X-Google-Smtp-Source: AKy350ZBjsJyLl7Rt2Og/2cr2DuEAVD7N0GXPO8YRPue1Xvb87vVf08FN6CXsl6Q/928lyD+Npa9JA==
+X-Received: by 2002:a05:600c:2142:b0:3ef:62cd:1ef with SMTP id v2-20020a05600c214200b003ef62cd01efmr4545069wml.25.1681305170583;
+        Wed, 12 Apr 2023 06:12:50 -0700 (PDT)
+Received: from [192.168.1.172] (158.22.5.93.rev.sfr.net. [93.5.22.158])
+        by smtp.gmail.com with ESMTPSA id z12-20020a7bc7cc000000b003ee63fe5203sm2311867wmk.36.2023.04.12.06.12.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Apr 2023 06:12:50 -0700 (PDT)
+Message-ID: <7e53c0b1-3aed-da08-5c57-800ac2277bc6@baylibre.com>
+Date:   Wed, 12 Apr 2023 15:12:48 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH 02/27] dt-bindings: phy: mediatek,dsi-phy: Add compatible
+ for MT6795 Helio X10
+Content-Language: en-US
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, matthias.bgg@gmail.com
+Cc:     p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        jassisinghbrar@gmail.com, chunfeng.yun@mediatek.com,
+        vkoul@kernel.org, kishon@kernel.org, thierry.reding@gmail.com,
+        u.kleine-koenig@pengutronix.de, chunkuang.hu@kernel.org,
+        ck.hu@mediatek.com, jitao.shi@mediatek.com,
+        xinlei.lee@mediatek.com, houlong.wei@mediatek.com,
+        dri-devel@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org,
+        kernel@collabora.com, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <20230412112739.160376-1-angelogioacchino.delregno@collabora.com>
+ <20230412112739.160376-3-angelogioacchino.delregno@collabora.com>
+ <20684378-cf3e-0299-d390-287b7bafbda5@baylibre.com>
+ <eb770f19-ada5-81bb-5ea3-798edabca70f@collabora.com>
+From:   Alexandre Mergnat <amergnat@baylibre.com>
+In-Reply-To: <eb770f19-ada5-81bb-5ea3-798edabca70f@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add support for the MT6331 PMIC and for its companion MT6332 PMIC.
+On 12/04/2023 15:03, AngeloGioacchino Del Regno wrote:
+> Il 12/04/23 14:59, Alexandre Mergnat ha scritto:
+>> On 12/04/2023 13:27, AngeloGioacchino Del Regno wrote:
+>>> Add a compatible string for MediaTek Helio X10 MT6795: this SoC uses
+>>> the same DSI PHY as MT8173.
+>>>
+>>> Signed-off-by: AngeloGioacchino Del Regno 
+>>> <angelogioacchino.delregno@collabora.com>
+>>> ---
+>>>   Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml | 4 ++++
+>>>   1 file changed, 4 insertions(+)
+>>>
+>>> diff --git 
+>>> a/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml 
+>>> b/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml
+>>> index 26f2b887cfc1..a9f78344efdb 100644
+>>> --- a/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml
+>>> +++ b/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml
+>>> @@ -24,6 +24,10 @@ properties:
+>>>             - enum:
+>>>                 - mediatek,mt7623-mipi-tx
+>>>             - const: mediatek,mt2701-mipi-tx
+>>> +      - items:
+>>> +          - enum:
+>>> +              - mediatek,mt6795-mipi-tx
+>>> +          - const: mediatek,mt8173-mipi-tx
+>>
+>> AFAIK, it should be:
+>>        - items:
+>>            - const: mediatek,mt6795-mipi-tx
+>>            - const: mediatek,mt8173-mipi-tx
+>>
+>> Since it isn't respected above for mt7623, it may be tolerated.
+>> Please, take this comment as a suggestion, isn't a NAK from me.
+>>
+> 
+> First of all, Thanks!
+> I want to explain, though, the reason for that.
+> 
+> If you check all the commits, on some I did it as you just proposed, while
+> on some others I did it with an enum before const: that's simply because I
+> *totally expect* some to grow, while others (const - const) I was either
+> unsure, or totally *not* expecting them to grow soon!
 
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
----
- drivers/soc/mediatek/mtk-pmic-wrap.c | 47 ++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
 
-diff --git a/drivers/soc/mediatek/mtk-pmic-wrap.c b/drivers/soc/mediatek/mtk-pmic-wrap.c
-index 366e40b802e4..ceeac43f7bd1 100644
---- a/drivers/soc/mediatek/mtk-pmic-wrap.c
-+++ b/drivers/soc/mediatek/mtk-pmic-wrap.c
-@@ -170,6 +170,40 @@ static const u32 mt6323_regs[] = {
- 	[PWRAP_DEW_RDDMY_NO] =		0x01a4,
- };
- 
-+static const u32 mt6331_regs[] = {
-+	[PWRAP_DEW_DIO_EN] =		0x018c,
-+	[PWRAP_DEW_READ_TEST] =		0x018e,
-+	[PWRAP_DEW_WRITE_TEST] =	0x0190,
-+	[PWRAP_DEW_CRC_SWRST] =		0x0192,
-+	[PWRAP_DEW_CRC_EN] =		0x0194,
-+	[PWRAP_DEW_CRC_VAL] =		0x0196,
-+	[PWRAP_DEW_MON_GRP_SEL] =	0x0198,
-+	[PWRAP_DEW_CIPHER_KEY_SEL] =	0x019a,
-+	[PWRAP_DEW_CIPHER_IV_SEL] =	0x019c,
-+	[PWRAP_DEW_CIPHER_EN] =		0x019e,
-+	[PWRAP_DEW_CIPHER_RDY] =	0x01a0,
-+	[PWRAP_DEW_CIPHER_MODE] =	0x01a2,
-+	[PWRAP_DEW_CIPHER_SWRST] =	0x01a4,
-+	[PWRAP_DEW_RDDMY_NO] =		0x01a6,
-+};
-+
-+static const u32 mt6332_regs[] = {
-+	[PWRAP_DEW_DIO_EN] =		0x80f6,
-+	[PWRAP_DEW_READ_TEST] =		0x80f8,
-+	[PWRAP_DEW_WRITE_TEST] =	0x80fa,
-+	[PWRAP_DEW_CRC_SWRST] =		0x80fc,
-+	[PWRAP_DEW_CRC_EN] =		0x80fe,
-+	[PWRAP_DEW_CRC_VAL] =		0x8100,
-+	[PWRAP_DEW_MON_GRP_SEL] =	0x8102,
-+	[PWRAP_DEW_CIPHER_KEY_SEL] =	0x8104,
-+	[PWRAP_DEW_CIPHER_IV_SEL] =	0x8106,
-+	[PWRAP_DEW_CIPHER_EN] =		0x8108,
-+	[PWRAP_DEW_CIPHER_RDY] =	0x810a,
-+	[PWRAP_DEW_CIPHER_MODE] =	0x810c,
-+	[PWRAP_DEW_CIPHER_SWRST] =	0x810e,
-+	[PWRAP_DEW_RDDMY_NO] =		0x8110,
-+};
-+
- static const u32 mt6351_regs[] = {
- 	[PWRAP_DEW_DIO_EN] =		0x02F2,
- 	[PWRAP_DEW_READ_TEST] =		0x02F4,
-@@ -1182,6 +1216,8 @@ static int mt8186_regs[] = {
- 
- enum pmic_type {
- 	PMIC_MT6323,
-+	PMIC_MT6331,
-+	PMIC_MT6332,
- 	PMIC_MT6351,
- 	PMIC_MT6357,
- 	PMIC_MT6358,
-@@ -2041,6 +2077,16 @@ static const struct pwrap_slv_type pmic_mt6323 = {
- 		PWRAP_SLV_CAP_SECURITY,
- };
- 
-+static const struct pwrap_slv_type pmic_mt6331 = {
-+	.dew_regs = mt6331_regs,
-+	.type = PMIC_MT6331,
-+	.comp_dew_regs = mt6332_regs,
-+	.comp_type = PMIC_MT6332,
-+	.regops = &pwrap_regops16,
-+	.caps = PWRAP_SLV_CAP_SPI | PWRAP_SLV_CAP_DUALIO |
-+		PWRAP_SLV_CAP_SECURITY,
-+};
-+
- static const struct pwrap_slv_type pmic_mt6351 = {
- 	.dew_regs = mt6351_regs,
- 	.type = PMIC_MT6351,
-@@ -2086,6 +2132,7 @@ static const struct pwrap_slv_type pmic_mt6397 = {
- 
- static const struct of_device_id of_slave_match_tbl[] = {
- 	{ .compatible = "mediatek,mt6323", .data = &pmic_mt6323 },
-+	{ .compatible = "mediatek,mt6331", .data = &pmic_mt6331 },
- 	{ .compatible = "mediatek,mt6351", .data = &pmic_mt6351 },
- 	{ .compatible = "mediatek,mt6357", .data = &pmic_mt6357 },
- 	{ .compatible = "mediatek,mt6358", .data = &pmic_mt6358 },
+That's what I thought. IMHO, if someone add another compat later, he 
+will be on charge to change the const by enum front of your 
+"mediatek,mt6795-mipi-tx". But my opinion is probably not the most popular.
+
+I will not make the same feedback for the other patches in this series.
+
 -- 
-2.40.0
+Regards,
+Alexandre
 
