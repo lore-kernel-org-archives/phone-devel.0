@@ -2,112 +2,160 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4232AC76196
-	for <phone-devel@archiver.kernel.org>; Tue, 11 Apr 2023 22:46:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CE009C77B72
+	for <phone-devel@archiver.kernel.org>; Wed, 12 Apr 2023 11:28:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjDKWqf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 11 Apr 2023 18:46:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44642 "EHLO
+        id S230285AbjDLL2D (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 12 Apr 2023 07:28:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjDKWqe (ORCPT
+        with ESMTP id S230104AbjDLL2C (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 11 Apr 2023 18:46:34 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46938172D
-        for <phone-devel@vger.kernel.org>; Tue, 11 Apr 2023 15:46:33 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id d7so23432418lfj.3
-        for <phone-devel@vger.kernel.org>; Tue, 11 Apr 2023 15:46:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681253191; x=1683845191;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vPQslJNp3mv+NTxxi/+JnTD498FdxuUbK0Kjk/H6R1I=;
-        b=ggwD1spgRfSGAzjqndMC7HbihkTAUzlWxIjDzG6NkKFqkHQkYkyO0TpXjZeFfW2O6+
-         /gcLGechUXVtX1LUVbb/frBKi02YybN4Df7ZFUB3bm8CBNaLEVj0iW9IxMLHHQo/2nZe
-         HjNYu4Rtyc3cqVSm8uqfpHQQJjmw/V+rRvbyEdZk+QL6ZsXIfvu6gENpF5qJ4TVO9gV6
-         PYz8/wSz8+mo/869D3krUBOE6YTGwTV//V5vP//UxVEi4hoIEeTpXJAfmZRmaR33Ck4V
-         EalwevHbrmXjn77SJsC1nryjBZu7pEVsxvJmedBqS7HuWnl1F7Oy4lIVLEKRtdsBE8sl
-         ontA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1681253191; x=1683845191;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vPQslJNp3mv+NTxxi/+JnTD498FdxuUbK0Kjk/H6R1I=;
-        b=AnPdtmbzpfvKQwyCJngKzyCIGQLjGzQMIxjLwvBNY0aSMnAA7IkTt/EqKTAXtrVVrP
-         gZKw8k1yY9X2mtEDdamvS5gXMrH9c00Qp8+j8l06IGF7lOzbILby6hiyWdt4d9xiJzQP
-         dokiUR1M56fq7xtyaIAeTfDR/vmkJE5tO/tQ6HxQAXUQPPmWWHORVQFvOHy8RZM5uPWF
-         iz4qRBV+2pGdjHYPgZyoxgTbvsJQNcKZSBol04EOFi4u4RQAvSatMWp+M+SoiBKxSi+k
-         Yke2qz/H30pokSzqZfTVoM9LirVKK43LxCJnCKPm0lqIEjlAbW3bqnF0/9dw8ED6Fuq8
-         KV3g==
-X-Gm-Message-State: AAQBX9cWZFp17e0YQLMeffjgEi+fvcmaNVLSKUQMYZKL8OoWv1t3073P
-        8Z6MIF6trYysVdZooRKPEUlJnA==
-X-Google-Smtp-Source: AKy350YRm3WG6Bx8TrGJD8ffdBV7TmvIVsnuGuHf9TJIpAE1QlV3/3ejTxel4C6YgctZz7bRgXjjXw==
-X-Received: by 2002:a19:7014:0:b0:4dd:9b6b:6b5b with SMTP id h20-20020a197014000000b004dd9b6b6b5bmr3326272lfc.16.1681253191554;
-        Tue, 11 Apr 2023 15:46:31 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:a085:4d00::8a5? (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
-        by smtp.gmail.com with ESMTPSA id b7-20020ac24107000000b004e9b307d2c8sm2707629lfi.238.2023.04.11.15.46.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Apr 2023 15:46:31 -0700 (PDT)
-Message-ID: <e6407312-c2fb-e77e-0c9e-abc2a014464a@linaro.org>
-Date:   Wed, 12 Apr 2023 01:46:30 +0300
+        Wed, 12 Apr 2023 07:28:02 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB4451730;
+        Wed, 12 Apr 2023 04:27:46 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id E9F0166031FD;
+        Wed, 12 Apr 2023 12:27:43 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1681298865;
+        bh=32UdFXijYBib4vR9joUGUAiEkWAou0hF5vRoluMMzmk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=BiBaGeFnyTrcIxvJX6jmx3uPgTyhmYXutJUmtZYAcc439FhGgMtJWa0u9UEl5UIda
+         GDZIZCJF1kGnqsFs21NB3AwPeD216mgM8jcj28XYHnggRV2M/t4GEnZLSzczsMnoZx
+         QnxEalzaxf1jPZsAnbf+4WuTj5hpQBYgWqqR261FIlruszRUWgOgcT2oe80m/INuM6
+         7p9hjVjRvZiEGXq/4Odxo0hA0mWvxreaoKJe4Hz8HJ/MUOPntGD1+87uq/l/IbcO7c
+         RItxu5syCydks3mijaUHvoh2SHNIoAyIvigQqLKZyejdfy2vwokLhMXHeyOyJkqHqp
+         ui0QOYiDsGRZg==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     matthias.bgg@gmail.com
+Cc:     p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        jassisinghbrar@gmail.com, chunfeng.yun@mediatek.com,
+        vkoul@kernel.org, kishon@kernel.org, thierry.reding@gmail.com,
+        u.kleine-koenig@pengutronix.de, chunkuang.hu@kernel.org,
+        angelogioacchino.delregno@collabora.com, ck.hu@mediatek.com,
+        jitao.shi@mediatek.com, xinlei.lee@mediatek.com,
+        houlong.wei@mediatek.com, dri-devel@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org,
+        kernel@collabora.com, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: [PATCH 00/27] MediaTek Helio X10 - Mailbox, Display, MMC/SD/SDIO
+Date:   Wed, 12 Apr 2023 13:27:12 +0200
+Message-Id: <20230412112739.160376-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH] MAINTAINERS: Add Marijn Suijten as drm/msm reviewer
-Content-Language: en-GB
-To:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>
-Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Sean Paul <sean@poorly.run>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
-References: <20230411224308.440550-1-marijn.suijten@somainline.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20230411224308.440550-1-marijn.suijten@somainline.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 12/04/2023 01:43, Marijn Suijten wrote:
-> As I get more and more active in the drm/msm space, yet sometimes miss
-> out on patches (where I was involved in previous discussions), add
-> myself as reviewer to make this involvement clear.
-> 
-> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> ---
-> 
-> Note that this is only a slight commitment from my part to look at
-> patches arriving in this area, most notably on the DPU1 driver and only
-> if day-to-day workload allows for it.
+In this series I'm adding support for the DDC (display) block found
+in the MediaTek Helio X10, the MT6331 PMIC and its peripherals, and
+eMMC, MicroSD slot and SDIO.
+Support for the PMIC (...regulators!) is essential to get all of the
+mtk-sd hardware to work, especially the eMMC where vol switching is
+happening (3.3 -> 1.8V for DDR -> UHS timing switch!).
 
-I think Marijn does a good job of reviewing incoming patches in the 
-mentioned area.
+As for the GCE mailbox, MMSYS and IOMMU... these were included in
+the previous series but couldn't make it due to the bindings not
+being reviewed in time (btw, thanks Matthias for reducing my backlog
+by partially picking the applicable commits in the previous one, that
+was highly appreciated!), so they're making yet another appearance in
+this series.
 
-Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Regarding the display blocks, they're tested on the Sony Xperia M5
+with its internal panel (on DSI0) but the panel node is not included
+in this series because I have to cleanup the timings a bit before
+upstreaming it.
 
-> 
->   MAINTAINERS | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 04d7c816d46a..fd1b717c57d8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6536,6 +6536,7 @@ M:	Rob Clark <robdclark@gmail.com>
->   M:	Abhinav Kumar <quic_abhinavk@quicinc.com>
->   M:	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->   R:	Sean Paul <sean@poorly.run>
-> +R:	Marijn Suijten <marijn.suijten@somainline.org>
->   L:	linux-arm-msm@vger.kernel.org
->   L:	dri-devel@lists.freedesktop.org
->   L:	freedreno@lists.freedesktop.org
+...and regarding everything else, it's all, again, tested on that
+same Xperia M5 smartphone :-)
+
+
+* Important note: *
+
+Devicetree commits of this series all depend on the dt-bindings
+commits of this same series.
+This series also depends on [1] for PMIC functionality, as all of the
+(older only?) MediaTek smartphone platforms have two PMICs, a main
+one and a companion one - in this specific case, it's MT6331+MT6332.
+
+[1]: https://lore.kernel.org/all/20230324094205.33266-1-angelogioacchino.delregno@collabora.com/
+
+AngeloGioacchino Del Regno (27):
+  dt-bindings: pwm: Add compatible for MediaTek MT6795
+  dt-bindings: phy: mediatek,dsi-phy: Add compatible for MT6795 Helio
+    X10
+  dt-bindings: display: mediatek: dpi: Add compatible for MediaTek
+    MT6795
+  dt-bindings: display: mediatek: aal: Add compatible for MediaTek
+    MT6795
+  dt-bindings: display: mediatek: dsi: Add compatible for MediaTek
+    MT6795
+  dt-bindings: display: mediatek: ovl: Add compatible for MediaTek
+    MT6795
+  dt-bindings: display: mediatek: rdma: Add compatible for MediaTek
+    MT6795
+  dt-bindings: display: mediatek: wdma: Add compatible for MediaTek
+    MT6795
+  dt-bindings: display: mediatek: color: Add compatible for MediaTek
+    MT6795
+  dt-bindings: display: mediatek: gamma: Add compatible for MediaTek
+    MT6795
+  dt-bindings: display: mediatek: merge: Add compatible for MediaTek
+    MT6795
+  dt-bindings: display: mediatek: split: Add compatible for MediaTek
+    MT6795
+  dt-bindings: display: mediatek: ufoe: Add compatible for MediaTek
+    MT6795
+  dt-bindings: display: mediatek: od: Add compatible for MediaTek MT6795
+  dt-bindings: mailbox: mediatek,gce-mailbox: Add support for MT6795
+  arm64: dts: mediatek: mt6795: Add support for the CMDQ/GCE mailbox
+  arm64: dts: mediatek: mt6795: Add MMSYS node for multimedia clocks
+  arm64: dts: mediatek: mt6795: Add support for IOMMU and LARBs
+  arm64: dts: mediatek: mt6795: Add support for display blocks and
+    DPI/DSI
+  arm64: dts: mediatek: mt6795: Add tertiary PWM node
+  arm64: dts: mediatek: mt6795: Add PMIC Wrapper node
+  arm64: dts: mediatek: mt6795: Copyright header additions
+  arm64: dts: mediatek: Add MT6331 PMIC devicetree
+  arm64: dts: mediatek: mt6795-xperia-m5: Add MT6331 Combo PMIC
+  arm64: dts: mediatek: mt6795-xperia-m5: Add eMMC, MicroSD slot, SDIO
+  arm64: dts: mediatek: mt6795-xperia-m5: Add Bosch BMA255 Accelerometer
+  arm64: dts: mediatek: mt6795-xperia-m5: Add Bosch BMM050 Magnetometer
+
+ .../display/mediatek/mediatek,aal.yaml        |   1 +
+ .../display/mediatek/mediatek,color.yaml      |   1 +
+ .../display/mediatek/mediatek,dpi.yaml        |  23 +-
+ .../display/mediatek/mediatek,dsi.yaml        |  19 +-
+ .../display/mediatek/mediatek,gamma.yaml      |   4 +
+ .../display/mediatek/mediatek,merge.yaml      |   3 +
+ .../display/mediatek/mediatek,od.yaml         |   3 +
+ .../display/mediatek/mediatek,ovl.yaml        |   4 +
+ .../display/mediatek/mediatek,rdma.yaml       |   4 +
+ .../display/mediatek/mediatek,split.yaml      |   3 +
+ .../display/mediatek/mediatek,ufoe.yaml       |   3 +
+ .../display/mediatek/mediatek,wdma.yaml       |   3 +
+ .../mailbox/mediatek,gce-mailbox.yaml         |  20 +-
+ .../bindings/phy/mediatek,dsi-phy.yaml        |   4 +
+ .../bindings/pwm/mediatek,pwm-disp.yaml       |   4 +-
+ arch/arm64/boot/dts/mediatek/mt6331.dtsi      | 284 ++++++++++++++
+ .../dts/mediatek/mt6795-sony-xperia-m5.dts    | 121 ++++++
+ arch/arm64/boot/dts/mediatek/mt6795.dtsi      | 365 ++++++++++++++++++
+ include/dt-bindings/gce/mediatek,mt6795-gce.h | 123 ++++++
+ 19 files changed, 968 insertions(+), 25 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/mediatek/mt6331.dtsi
+ create mode 100644 include/dt-bindings/gce/mediatek,mt6795-gce.h
 
 -- 
-With best wishes
-Dmitry
+2.40.0
 
