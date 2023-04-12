@@ -2,119 +2,80 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73672C77B6E
-	for <phone-devel@archiver.kernel.org>; Wed, 12 Apr 2023 13:03:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99060C77B77
+	for <phone-devel@archiver.kernel.org>; Wed, 12 Apr 2023 13:12:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230092AbjDLND4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 12 Apr 2023 09:03:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56694 "EHLO
+        id S230211AbjDLNMp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 12 Apr 2023 09:12:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbjDLNDz (ORCPT
+        with ESMTP id S230034AbjDLNMl (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 12 Apr 2023 09:03:55 -0400
+        Wed, 12 Apr 2023 09:12:41 -0400
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 832C340F2;
-        Wed, 12 Apr 2023 06:03:53 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A8025BB0;
+        Wed, 12 Apr 2023 06:12:23 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id AE81F6603102;
-        Wed, 12 Apr 2023 14:03:50 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 8EAAF6603206;
+        Wed, 12 Apr 2023 14:12:21 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1681304632;
-        bh=n6UmEOVTw+KXN9/725bQQxVPB20qNDRrZSlz09sXOMo=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=AQGqtRCpfP1ZuiophrOrBi4nZp+IoEZLBUmkBU7M1yFW3J4w/j+9WFvTAaK4aAfy0
-         5mYHWH2h9wjO2WBZ32CNT1xRWPLebR3bOjhc4EYA2r8GAUkpXyuAw45LR3pxru37GU
-         TJBMilPa+oR0ba/Sl+XjUj2izfyuitVr5N5O7t6jLvyKSSm9hcJWe2N8F2ludKsfQs
-         BPXQNPKykaAn/QFWyaCAVLBVUDCUiSYmVAgcgUuhU29wxTbleKy57mWETsDJ/lmNi4
-         eoW0EreMLhn9a2r7hNzEA0Rgm3J1Ixu9cUE3XdTH20jdV2vDUVROKrAgOAx3yO8xAA
-         GmQOR2WRqCCBw==
-Message-ID: <eb770f19-ada5-81bb-5ea3-798edabca70f@collabora.com>
-Date:   Wed, 12 Apr 2023 15:03:48 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH 02/27] dt-bindings: phy: mediatek,dsi-phy: Add compatible
- for MT6795 Helio X10
-Content-Language: en-US
-To:     Alexandre Mergnat <amergnat@baylibre.com>, matthias.bgg@gmail.com
-Cc:     p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        jassisinghbrar@gmail.com, chunfeng.yun@mediatek.com,
-        vkoul@kernel.org, kishon@kernel.org, thierry.reding@gmail.com,
-        u.kleine-koenig@pengutronix.de, chunkuang.hu@kernel.org,
-        ck.hu@mediatek.com, jitao.shi@mediatek.com,
-        xinlei.lee@mediatek.com, houlong.wei@mediatek.com,
-        dri-devel@lists.freedesktop.org,
-        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org,
-        kernel@collabora.com, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-References: <20230412112739.160376-1-angelogioacchino.delregno@collabora.com>
- <20230412112739.160376-3-angelogioacchino.delregno@collabora.com>
- <20684378-cf3e-0299-d390-287b7bafbda5@baylibre.com>
+        s=mail; t=1681305142;
+        bh=smAn5Frg1iVCEDY9hhWLZkFQHXI/vQRHeCWQGlGI1Kg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=YbEHpT4xzXs1x0UWIY0Q0iGu7cVfZUM6Zj1z4BKDuOIUfYBo7RertQNhFceKkm4UQ
+         UFI3560uPc4i65fcQlEW/lebU+wg7irObZGnk1F1/veKD9c8+jKBOgZlpQRJ9cFTfb
+         tzKBvOI5iX+tMZjdLoPkrD4S7R+02lNpbMNbHWJ7AJ4Uu5YQiHuXKwx+a6UOnTmeOz
+         VQxZIUWTuLoLyzZF4D346FwXnreCnr+v6JYFU+9ZhVqOskfgJF07XnfrXOky7j4z+v
+         AHAQhGNc6vAefcZj/jCsvdNwc7Maj3EqyWrBQBdykbn2xBIm7JGI+xb1/In9fTWiyv
+         hHqYYVowdkOrQ==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20684378-cf3e-0299-d390-287b7bafbda5@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:     matthias.bgg@gmail.com
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        amergnat@baylibre.com, flora.fu@mediatek.com,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, kernel@collabora.com,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3 1/6] dt-bindings: soc: mediatek: pwrap: Add compatible for MT6795 Helio X10
+Date:   Wed, 12 Apr 2023 15:12:11 +0200
+Message-Id: <20230412131216.198313-2-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.40.0
+In-Reply-To: <20230412131216.198313-1-angelogioacchino.delregno@collabora.com>
+References: <20230412131216.198313-1-angelogioacchino.delregno@collabora.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 12/04/23 14:59, Alexandre Mergnat ha scritto:
-> On 12/04/2023 13:27, AngeloGioacchino Del Regno wrote:
->> Add a compatible string for MediaTek Helio X10 MT6795: this SoC uses
->> the same DSI PHY as MT8173.
->>
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->> ---
->>   Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml | 4 ++++
->>   1 file changed, 4 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml 
->> b/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml
->> index 26f2b887cfc1..a9f78344efdb 100644
->> --- a/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml
->> +++ b/Documentation/devicetree/bindings/phy/mediatek,dsi-phy.yaml
->> @@ -24,6 +24,10 @@ properties:
->>             - enum:
->>                 - mediatek,mt7623-mipi-tx
->>             - const: mediatek,mt2701-mipi-tx
->> +      - items:
->> +          - enum:
->> +              - mediatek,mt6795-mipi-tx
->> +          - const: mediatek,mt8173-mipi-tx
-> 
-> AFAIK, it should be:
->        - items:
->            - const: mediatek,mt6795-mipi-tx
->            - const: mediatek,mt8173-mipi-tx
-> 
-> Since it isn't respected above for mt7623, it may be tolerated.
-> Please, take this comment as a suggestion, isn't a NAK from me.
-> 
+Add a compatible for the PMIC Wrapper found on the MT6795 Helio X10 SoC.
 
-First of all, Thanks!
-I want to explain, though, the reason for that.
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ .../devicetree/bindings/soc/mediatek/mediatek,pwrap.yaml         | 1 +
+ 1 file changed, 1 insertion(+)
 
-If you check all the commits, on some I did it as you just proposed, while
-on some others I did it with an enum before const: that's simply because I
-*totally expect* some to grow, while others (const - const) I was either
-unsure, or totally *not* expecting them to grow soon!
+diff --git a/Documentation/devicetree/bindings/soc/mediatek/mediatek,pwrap.yaml b/Documentation/devicetree/bindings/soc/mediatek/mediatek,pwrap.yaml
+index 3fefd634bc69..a06ac2177444 100644
+--- a/Documentation/devicetree/bindings/soc/mediatek/mediatek,pwrap.yaml
++++ b/Documentation/devicetree/bindings/soc/mediatek/mediatek,pwrap.yaml
+@@ -33,6 +33,7 @@ properties:
+               - mediatek,mt2701-pwrap
+               - mediatek,mt6765-pwrap
+               - mediatek,mt6779-pwrap
++              - mediatek,mt6795-pwrap
+               - mediatek,mt6797-pwrap
+               - mediatek,mt6873-pwrap
+               - mediatek,mt7622-pwrap
+-- 
+2.40.0
 
->>         - items:
->>             - enum:
->>                 - mediatek,mt8365-mipi-tx
-> 
-> Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-> 
-
-Thanks again!
-
-Cheers,
-Angelo
