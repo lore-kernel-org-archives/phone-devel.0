@@ -2,74 +2,126 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AA942C77B6C
-	for <phone-devel@archiver.kernel.org>; Thu, 13 Apr 2023 09:46:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2E68C77B6E
+	for <phone-devel@archiver.kernel.org>; Thu, 13 Apr 2023 14:41:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230070AbjDMJqC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 13 Apr 2023 05:46:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37402 "EHLO
+        id S229930AbjDMOlg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 13 Apr 2023 10:41:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229965AbjDMJpz (ORCPT
+        with ESMTP id S229838AbjDMOlf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 13 Apr 2023 05:45:55 -0400
-Received: from muru.com (muru.com [72.249.23.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B26DA9EE2;
-        Thu, 13 Apr 2023 02:45:46 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id BFD6C80F0;
-        Thu, 13 Apr 2023 09:45:45 +0000 (UTC)
-Date:   Thu, 13 Apr 2023 12:45:44 +0300
-From:   Tony Lindgren <tony@atomide.com>
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
-        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
+        Thu, 13 Apr 2023 10:41:35 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DDF74C3C;
+        Thu, 13 Apr 2023 07:41:34 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id l16so8243372wms.1;
+        Thu, 13 Apr 2023 07:41:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681396893; x=1683988893;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GGGoYKbxWkMy+yAyRRbPOAvuFmowVBSZKJ7Gz931Puk=;
+        b=F/huq0ooJSEHqJT9WfOHndjq9zpC11qu90u1BPAWqrELhBG8tdwRyEJLvkqcJtiGaO
+         d0q+pU9yznj6xZSsXQU/81jwFOrjbDE01DQx1q1OiAkf8VYvzvnTeKiIPp4Rti908oL3
+         fWmg0qXf1FFWdzqg8mFSx/vaS7K9o1eHc7ZXzi2BYx+LDvrt8hD3aqrenDh6/KcKCBXJ
+         5uC9zavRCu/RZ0tI+NUlCLfU/uVZG+aBl6D4/D6vdS9Vt4bqNHSJr+tW2gEvr2/XZ3Q4
+         djI69Zrz067gWj4Y3/PBb0H2MJWVM8OWhIZ+CxfkdCUATw1xxt+eyc9RtlikNCM2+w8O
+         aXhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681396893; x=1683988893;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GGGoYKbxWkMy+yAyRRbPOAvuFmowVBSZKJ7Gz931Puk=;
+        b=IHv+iQqzqLQtEAAINDlk0fG85+HYCYDKDWgpjbBLtrC41/e7DyJzzK5xaJ87x4WX9F
+         +jmgN7GHml8iX/fUQ85r2/lvrVEef12+dr6BhooUYR5cXNuD1dwbU7hyCH7KFYntT0M7
+         jMkCUFWWdKq9PZnyq2xr3leWxd3v6pNU0d0zBFUVs2CAzo9+QOwe7OBFvSXoLAMishj+
+         YvvKX74lnU0cYg0e/rBMc9f6X94knlPkzC+nbdaXVYhvOlJb6QnHNnKJfl1YuCDz0n3q
+         TorXluhLo+htNGId/LDdL10K/fNwE+Eqh0t0w5opbUSYNxrTUOnbU1iUlC+DkltsTThi
+         deBQ==
+X-Gm-Message-State: AAQBX9fXSLCeHozh3bloKM+gQkw79KrJ7uP5YHUVQzIVQcbH7pgdrYDg
+        v9IWO/1qZXK5ZyB8v9UQPbk=
+X-Google-Smtp-Source: AKy350ZbqJ5bWa5cYv9CC7e5p+ddl8jNr2E7cZsF9uwQaXkZpYUWcK/uhYIyXxjjItA4CApD+jtVZg==
+X-Received: by 2002:a7b:c44a:0:b0:3eb:42fc:fb30 with SMTP id l10-20020a7bc44a000000b003eb42fcfb30mr1976459wmi.32.1681396892661;
+        Thu, 13 Apr 2023 07:41:32 -0700 (PDT)
+Received: from [192.168.1.10] ([95.43.220.235])
+        by smtp.googlemail.com with ESMTPSA id n21-20020a7bc5d5000000b003e91b9a92c9sm1995217wmk.24.2023.04.13.07.41.31
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 13 Apr 2023 07:41:32 -0700 (PDT)
 Subject: Re: Motorola Droid 4 -- Stopping charger when battery is full
-Message-ID: <20230413094544.GD36234@atomide.com>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
+        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
+        martin_rysavy@centrum.cz, phone-devel@vger.kernel.org,
+        maemo-leste@lists.dyne.org
 References: <ZAcvuP8kmWveLoE/@duo.ucw.cz>
  <ef4409b2-abd8-0eac-f66e-6858c3358cc1@gmail.com>
- <20230309071443.GF7501@atomide.com>
- <ZDfNRogC4ruBE4Xy@duo.ucw.cz>
+ <ZDfMlfVDdSm8mXs0@duo.ucw.cz>
+From:   Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Message-ID: <6f3eb1b9-f6b8-f980-8fac-27b32bc1b7e6@gmail.com>
+Date:   Thu, 13 Apr 2023 17:41:23 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Firefox/60.0 Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZDfNRogC4ruBE4Xy@duo.ucw.cz>
+In-Reply-To: <ZDfMlfVDdSm8mXs0@duo.ucw.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-* Pavel Machek <pavel@ucw.cz> [230413 09:37]:
+
+
+On 13.04.23 г. 12:34 ч., Pavel Machek wrote:
+> Hi!
 > 
-> > * Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com> [230307 14:10]:
-> > > Also, some guys have concerns about charging (and keeping it charged) @4.35,
-> > > because of the possibly reduced battery life.
-> > 
-> > Yes for devices connected to a charger for long periods the battery will
-> > bloat up within some weeks or months. This happens easily when using a
-> > lapdock for example.
-> > 
-> > A simple and safe solution here might be that we allow charging up to
-> > 4.35V only once when the charger is connected. Then we let the voltage
-> > decrease to 4.2V (or whatever known good maintenance voltage) if the
-> > charger stays connected.
+>>> I complained that "battery life is very poor" with leste. It seems to
+>>> be combination of several factors.
+>>>
+>>> 1) I was using very old battery
+>>>
+>>> 2) My charger is detected as "USB", not as "AC"
+>>>
+>>
+>> And this is because there is no working charger detection in the driver, so
+>> initial current limit is hard-coded to 500mA.
 > 
-> Optimum solution would be user specifying "I want battery full
-> tommorow at 8am" and doing the right thing.
-
-I think you can already do that via sysfs with cron or at :)
-
-> > For folks wanting to force the charge voltage higher we have the sysfs
-> > interface.
+> Aha, thanks, makes sense.
 > 
-> Yep, we just need to make sure it is usable for this.
+>>> According to my measurements "CPCAP_REG_CRM_FET_OVRD |
+>>> CPCAP_REG_CRM_FET_CTRL" results in battery discharding and 0A drawn
+>>> frmo the USB.  "CPCAP_REG_CRM_FET_OVRD" is phone powered from USB,
+>>> with battery more or less disconnected (<12mA), which is what we want
+>>> in battery full situation.
+>>>
+>>
+>> What will happen if phone needs to draw more than N mA (N is the set charger
+>> current limit)?
+> 
+> We may run over the limit, AFAICT. I guess one solution would be to
+> only do this when limit is high enough...
+> 
+> With current setup, phone will not boot if battery is empty, so this
+> needs quite urgent solution.
+> 
+> I updated my leste, and now have:
+> 
+> user@devuan-droid4:~/g/droid4-linux$ uname -a
+> Linux devuan-droid4 6.1.9 #1 SMP PREEMPT Mon Mar 20 15:16:53 UTC 2023 armv7l GNU/Linux
+> user@devuan-droid4:~/g$ apt show linux-image-omap
+> Package: linux-image-omap
+> Version: 6.1.8.0-1+m7
+> 
+> Where can I find corresponding sources?
+> 
 
-It should be but I have not tried for years. You need to first configure
-the allowed voltage for battery via sysfs, then set the charge voltage
-for the charger.
+https://github.com/maemo-leste/droid4-linux/tree/maemo-6.1.y
 
-Regards,
-
-Tony
+> Best regards,
+> 							Pavel
+> 
