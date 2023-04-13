@@ -2,100 +2,115 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 562ECC77B6C
-	for <phone-devel@archiver.kernel.org>; Thu, 13 Apr 2023 09:28:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E8E19C77B6C
+	for <phone-devel@archiver.kernel.org>; Thu, 13 Apr 2023 09:34:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229775AbjDMJ25 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 13 Apr 2023 05:28:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54000 "EHLO
+        id S229879AbjDMJeS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 13 Apr 2023 05:34:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229615AbjDMJ24 (ORCPT
+        with ESMTP id S229575AbjDMJeR (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 13 Apr 2023 05:28:56 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12F106199;
-        Thu, 13 Apr 2023 02:28:54 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 461686603207;
-        Thu, 13 Apr 2023 10:28:52 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1681378133;
-        bh=XjK0zXGcRUwWwMF6tZnTtwrjb64IJRzNjt7p/8KBhjs=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=d6UgCefhED/N6R8YjSiNAxuQU77pHTuH671k0sortzz+h8HWsWRqZ+jYQSW7fvRuT
-         eyERdIo/mVGeDewj1B8XzdivfyeIBoj4BbuwUO+g6g4nueknODvGQJMPlI4yxePiu7
-         NuOwzs1nxxvQLZoT6Gz6QqlumXZ/LPPtoRalL/PNZBRzWi21FDr1ERMSzf5/YdQ0ao
-         SuCRTmMDLW4w6pVFA5oYs7uzGfTMJDl8OlQ+a74HPRNcFs/xWKKxq7XUUUEEK9E3RM
-         B6DPGx+OyIBsldxVd+4s/2jbWuEmIGhyaXfSXOHhbMSK51XO+1b02CwJ3aQWBP1d/D
-         z/bAWlEu4eshg==
-Message-ID: <4a016428-be44-27e3-5bc2-dc517922fa15@collabora.com>
-Date:   Thu, 13 Apr 2023 11:28:49 +0200
+        Thu, 13 Apr 2023 05:34:17 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FDC310FC;
+        Thu, 13 Apr 2023 02:34:16 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id F35171C0AB2; Thu, 13 Apr 2023 11:34:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+        t=1681378454;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=umUMqWsiOaRqu7luUossCkhjp9MAzOhN4r0zCNlruGw=;
+        b=j09S/WMQ7UC43E0YBYzSwzyrXdYzPTJUKQXOEBz6TGeZ3XbSTXKHbLJq7i/gNhIuWbjcem
+        auCRYnaZskEmpqSHGXmWUxh7TXnK1Oe8jqKM+L/QuFbtnfLJK9k6mtzQD1+Iupx4JJAmvk
+        t9QCYp1ARrQDvbQ9sFQlv5tm2PhlT2U=
+Date:   Thu, 13 Apr 2023 11:34:13 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
+        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
+        martin_rysavy@centrum.cz, phone-devel@vger.kernel.org,
+        maemo-leste@lists.dyne.org
+Subject: Re: Motorola Droid 4 -- Stopping charger when battery is full
+Message-ID: <ZDfMlfVDdSm8mXs0@duo.ucw.cz>
+References: <ZAcvuP8kmWveLoE/@duo.ucw.cz>
+ <ef4409b2-abd8-0eac-f66e-6858c3358cc1@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH 01/27] dt-bindings: pwm: Add compatible for MediaTek
- MT6795
-Content-Language: en-US
-To:     Matthias Brugger <matthias.bgg@gmail.com>,
-        Rob Herring <robh@kernel.org>
-Cc:     p.zabel@pengutronix.de, linux-pwm@vger.kernel.org,
-        kernel@collabora.com, chunkuang.hu@kernel.org,
-        linux-phy@lists.infradead.org, ck.hu@mediatek.com,
-        jitao.shi@mediatek.com, houlong.wei@mediatek.com,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        vkoul@kernel.org, chunfeng.yun@mediatek.com, daniel@ffwll.ch,
-        robh+dt@kernel.org, linux-mediatek@lists.infradead.org,
-        xinlei.lee@mediatek.com, airlied@gmail.com,
-        u.kleine-koenig@pengutronix.de,
-        linux-arm-kernel@lists.infradead.org,
-        krzysztof.kozlowski+dt@linaro.org, kishon@kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, thierry.reding@gmail.com,
-        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        jassisinghbrar@gmail.com
-References: <20230412112739.160376-1-angelogioacchino.delregno@collabora.com>
- <20230412112739.160376-2-angelogioacchino.delregno@collabora.com>
- <168133318912.3190428.16120880490622098945.robh@kernel.org>
- <5c0bc1f2-5917-ab84-8b0b-f2adc48f8be7@gmail.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <5c0bc1f2-5917-ab84-8b0b-f2adc48f8be7@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="v2tQ4p4f1q0mM6CF"
+Content-Disposition: inline
+In-Reply-To: <ef4409b2-abd8-0eac-f66e-6858c3358cc1@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 13/04/23 10:52, Matthias Brugger ha scritto:
-> 
-> 
-> On 12/04/2023 23:03, Rob Herring wrote:
->>
->> On Wed, 12 Apr 2023 13:27:13 +0200, AngeloGioacchino Del Regno wrote:
->>> Add a compatible string for MediaTek Helio X10 MT6795's display PWM
->>> block: this is the same as MT8173.
->>>
->>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->>> ---
->>>   Documentation/devicetree/bindings/pwm/mediatek,pwm-disp.yaml | 4 +++-
->>>   1 file changed, 3 insertions(+), 1 deletion(-)
->>>
->>
->> Running 'make dtbs_check' with the schema in this patch gives the
->> following warnings. Consider if they are expected or the schema is
->> incorrect. These may not be new warnings.
->>
-> 
-> These are not new warnings. I think we should address them in a different patch. In 
-> my opinion it shouldn't block this patch. In the end it only add as compatible here.
-> 
 
-I agree. These warnings should not block this patch, as they're totally unrelated
-to it.
+--v2tQ4p4f1q0mM6CF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Regards,
-Angelo
+Hi!
 
+> > I complained that "battery life is very poor" with leste. It seems to
+> > be combination of several factors.
+> >=20
+> > 1) I was using very old battery
+> >=20
+> > 2) My charger is detected as "USB", not as "AC"
+> >=20
+>=20
+> And this is because there is no working charger detection in the driver, =
+so
+> initial current limit is hard-coded to 500mA.
+
+Aha, thanks, makes sense.
+
+> > According to my measurements "CPCAP_REG_CRM_FET_OVRD |
+> > CPCAP_REG_CRM_FET_CTRL" results in battery discharding and 0A drawn
+> > frmo the USB.  "CPCAP_REG_CRM_FET_OVRD" is phone powered from USB,
+> > with battery more or less disconnected (<12mA), which is what we want
+> > in battery full situation.
+> >=20
+>=20
+> What will happen if phone needs to draw more than N mA (N is the set char=
+ger
+> current limit)?
+
+We may run over the limit, AFAICT. I guess one solution would be to
+only do this when limit is high enough...
+
+With current setup, phone will not boot if battery is empty, so this
+needs quite urgent solution.
+
+I updated my leste, and now have:
+
+user@devuan-droid4:~/g/droid4-linux$ uname -a
+Linux devuan-droid4 6.1.9 #1 SMP PREEMPT Mon Mar 20 15:16:53 UTC 2023 armv7=
+l GNU/Linux
+user@devuan-droid4:~/g$ apt show linux-image-omap
+Package: linux-image-omap
+Version: 6.1.8.0-1+m7
+
+Where can I find corresponding sources?
+
+Best regards,
+							Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--v2tQ4p4f1q0mM6CF
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZDfMlQAKCRAw5/Bqldv6
+8sUaAJoDZHikjOWqxw/NosRn0342+r66mQCePUJTIGUw+651WfEGCjHdueGm+Ms=
+=LkJe
+-----END PGP SIGNATURE-----
+
+--v2tQ4p4f1q0mM6CF--
