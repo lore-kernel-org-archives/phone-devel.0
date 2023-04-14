@@ -2,33 +2,30 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A32F3C77B78
-	for <phone-devel@archiver.kernel.org>; Fri, 14 Apr 2023 12:26:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EBA3CC77B71
+	for <phone-devel@archiver.kernel.org>; Fri, 14 Apr 2023 15:49:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230452AbjDNM0O (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 14 Apr 2023 08:26:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45576 "EHLO
+        id S230122AbjDNPtt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 14 Apr 2023 11:49:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230383AbjDNM0N (ORCPT
+        with ESMTP id S230231AbjDNPtq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 14 Apr 2023 08:26:13 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4882AD3C;
-        Fri, 14 Apr 2023 05:26:05 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 9CEA31C0AB3; Fri, 14 Apr 2023 14:26:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1681475164;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=aF98xW+kJS6bveFCeBEFMleKEqa9knAc8f6AjcowGFA=;
-        b=FS/vK6kcxUHcMiLA/LsGDSDa1EHwKsCJjhnPqg3E2ByJJeuPtL7hdgNmJWU5w3w4ekxRCC
-        Ozwgmu7TebGjQVNsKq+CS5O1KgIJNVNKvhIDJODVfkrX5Q1i/4tPXdI4/FE1FtvJprVaci
-        7aCHj9ZgXO4mKKfwC62zWBd8qv/AKvs=
-Date:   Fri, 14 Apr 2023 14:26:04 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Luca Weiss <luca@z3ntu.xyz>
+        Fri, 14 Apr 2023 11:49:46 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16361C647;
+        Fri, 14 Apr 2023 08:49:26 -0700 (PDT)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 79924D0C6C;
+        Fri, 14 Apr 2023 15:48:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1681487313; bh=gQLrJ2GzF9BgXS74O5aTTZWutfpFFW5QLaGMKa3LvgE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=codrCFgkS0x3sCmSAS9eviU+MbyGLf1fSUsWFRoHm+QBoySpnDl4IioL+hwZykxDA
+         n8/jkieiDtOPxk5cGJf4wDtMrc157ytPcWYAK2DKuMtkshMpgG8pDVz8YM3LDKfllv
+         tVqU+uSkhU1PIdX+00LCRQLiCJcXyYkwha0378eg=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Pavel Machek <pavel@ucw.cz>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -43,44 +40,49 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
         linux-iio@vger.kernel.org
-Subject: Re: [PATCH 6/8] dt-bindings: mfd: qcom-spmi-pmic: Add PMI632
- compatible
-Message-ID: <ZDlGXIhl7zSIO9Oe@duo.ucw.cz>
+Subject: Re: [PATCH 8/8] arm64: dts: qcom: sdm632-fairphone-fp3: Add notification LED
+Date:   Fri, 14 Apr 2023 17:48:32 +0200
+Message-ID: <6048598.DvuYhMxLoT@z3ntu.xyz>
+In-Reply-To: <ZDlF5ixavPw+J2fR@duo.ucw.cz>
 References: <20230414-pmi632-v1-0-fe94dc414832@z3ntu.xyz>
- <20230414-pmi632-v1-6-fe94dc414832@z3ntu.xyz>
+ <20230414-pmi632-v1-8-fe94dc414832@z3ntu.xyz> <ZDlF5ixavPw+J2fR@duo.ucw.cz>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="Fd9zt1IvwpGLc8UW"
-Content-Disposition: inline
-In-Reply-To: <20230414-pmi632-v1-6-fe94dc414832@z3ntu.xyz>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Freitag, 14. April 2023 14:24:06 CEST Pavel Machek wrote:
+> On Fri 2023-04-14 01:17:52, Luca Weiss wrote:
+> > The phone features a notification LED connected to the pmi632. Configure
+> > the RGB led found on it.
+> 
+> Could you document the usage in Documentation/leds/well-known-leds.txt
+> so that all phones share the same name for the RGB notification LED?
 
---Fd9zt1IvwpGLc8UW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This dts results in /sys/class/leds/rgb:status like (presumably) all of these 
+existing in-tree users:
+* qcom-msm8974-lge-nexus5-hammerhead.dts
+* qcom-msm8974-sony-xperia-rhine.dtsi
+* qcom-msm8974pro-fairphone-fp2.dts
+* qcom-msm8974pro-sony-xperia-shinano-castor.dts
+* freescale/imx8mq-librem5.dtsi
+* qcom/msm8996-xiaomi-common.dtsi
+* qcom/sdm630-sony-xperia-nile.dtsi
+* qcom/sdm845-shift-axolotl.dts
 
-On Fri 2023-04-14 01:17:50, Luca Weiss wrote:
-> Document support for the pmi632, often found with the sdm632 SoC.
->=20
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+However I can send a patch adding it to this txt doc since it doesn't seem to 
+be there yet.
 
-5,6: Acked-by: Pavel Machek <pavel@ucw.cz>
+Regards
+Luca
 
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
+> 
+> Thanks,
+> 								
+Pavel
 
---Fd9zt1IvwpGLc8UW
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZDlGXAAKCRAw5/Bqldv6
-8r2hAJ933+3CPUVwCNSR1xgSt6BXZOQpngCeOgWRJl0V6pKMyWpTofwbZhPKZSw=
-=Qb6k
------END PGP SIGNATURE-----
 
---Fd9zt1IvwpGLc8UW--
