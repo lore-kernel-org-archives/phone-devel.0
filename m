@@ -2,69 +2,51 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23B26C77B6E
-	for <phone-devel@archiver.kernel.org>; Fri, 14 Apr 2023 08:47:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA51FC77B6F
+	for <phone-devel@archiver.kernel.org>; Fri, 14 Apr 2023 10:26:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230143AbjDNIrD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 14 Apr 2023 04:47:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57196 "EHLO
+        id S229790AbjDNK0E (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 14 Apr 2023 06:26:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229841AbjDNIrC (ORCPT
+        with ESMTP id S229471AbjDNK0D (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 14 Apr 2023 04:47:02 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3716977A
-        for <phone-devel@vger.kernel.org>; Fri, 14 Apr 2023 01:46:29 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id kt6so5667880ejb.0
-        for <phone-devel@vger.kernel.org>; Fri, 14 Apr 2023 01:46:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681461984; x=1684053984;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wl3Btv+PwNxWwtewM+dP8afRzoBywyqwx59JWQAoqUA=;
-        b=xp9uWY+38EX8iXKhDxwuf/8P6/uzkYqJiZSNi9vbejNbCSdunJ1Q9htZtm13dmHSwZ
-         eB2ixQjldDhVwyuix6HrldPkLC68my3bBZD1+VnwEJYIEqao34hsl9FKzJhaqbncEL3k
-         /KmdhyM5haVIHZSXu9JatbD4YRave9CEPpq90sLNHZvf9sW6wBpDPzjaSX+WnuQwT6Us
-         silZOQPudvwxoBZsEswx2cagU4lJtHv+hGWoQ6PsUugjiC08giCkVUTO/lm19lCPilgW
-         E1f808oQegKlCwXB4Qm2/bYW5g5Cs/6JKEFvAraCZ2Qt5rX7g9UAPhvFrP8zZfj27pql
-         c0MA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681461984; x=1684053984;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wl3Btv+PwNxWwtewM+dP8afRzoBywyqwx59JWQAoqUA=;
-        b=kxCKJuH37pNGN4u5X9/3J8ZG1B4QirmMwGlSsA/SahtKTqPDErOLyKUiE7aU8nbFRx
-         ADkD8os2uDLfQ+TwVjrDunRDIeaDU1uM57Ej+ukn1xu5syTnb8t6/+waB0aCKeVoSdkU
-         cdACt+7vDhSX6gMakM8APfWDKVBNeSXEvD8BZG3eAO+P+TJSinmDjxJ697tXGDhCJBfe
-         ndqeOpzczEBl+3YBPKG6SzNQGKLQKY2bcyOtUa/jRSxbPzYwRCWEgVuW5xfnfBQSAPgu
-         msSleGvmQftC9CVvqdkJv6M8P60wV5IJUSFGmvVugdA210JSqtbA7/giNBeiUdMm0yLn
-         28MA==
-X-Gm-Message-State: AAQBX9fLCOSOtzH0+hZqQHtrKm0u/ZGBW6b4N5lYkU0l1p7S3rbmmeh3
-        KFE0E/TGiC6uo8979PAc1Nhmtw==
-X-Google-Smtp-Source: AKy350Zv7NbHUiKpmnlHoLbQyKG9G9zKPHkXSd3wH7bVQzjdvDDsKYYR9UPKlRsG7vTDe9V2aEOkog==
-X-Received: by 2002:a17:907:25c9:b0:94e:ef09:544c with SMTP id ae9-20020a17090725c900b0094eef09544cmr659459ejc.10.1681461984189;
-        Fri, 14 Apr 2023 01:46:24 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:8a60:6b0f:105a:eefb? ([2a02:810d:15c0:828:8a60:6b0f:105a:eefb])
-        by smtp.gmail.com with ESMTPSA id h7-20020a170906584700b0094e597f0e4dsm2087436ejs.121.2023.04.14.01.46.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Apr 2023 01:46:23 -0700 (PDT)
-Message-ID: <6fc26e38-ac45-b4a3-32f0-2bae686371db@linaro.org>
-Date:   Fri, 14 Apr 2023 10:46:22 +0200
+        Fri, 14 Apr 2023 06:26:03 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEF754C0A;
+        Fri, 14 Apr 2023 03:26:02 -0700 (PDT)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 227E5660321F;
+        Fri, 14 Apr 2023 11:26:00 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1681467961;
+        bh=mNoM/ta8cg4ngqxg7oipt2WWk68MhPf2irdlQ2bTH6c=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=HWaowAFI7MZZLy46RcM67hcrKHR7EFPgMqFHgvDEIAiWxpvjNQicUt31wS4wYDL1S
+         1KaDj/aqxFkJEeq8RwQxDv4iWZzhP5+BuJxaGDFTauwzHvJBay7+0AlEpI4hi2S2WT
+         8rB98KbBmtvP6fj7GoWG/FROcIKx2n+XiN5KBI7sj2xzE5hpGwMgpWbRB83wQ9s6Zu
+         RNpJkWLksBfef+SsnXarFVl1bPEzxQJWSpshnHOEDjJ1/tkYDqZe9CGGGXBfwgHl8k
+         cUvig8zyWy3zW5Dg58B8CVzegX5HKHhQRhIgzyDe+cANCSJ4z+VhzYfo/Vc0yR6bUB
+         +8AotLP+x+XDA==
+Message-ID: <13fe3e54-caa5-098c-0a86-3d2f8475c23f@collabora.com>
+Date:   Fri, 14 Apr 2023 12:25:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
-Subject: Re: [PATCH 22/27] arm64: dts: mediatek: mt6795: Copyright header
- additions
+Subject: Re: [PATCH 01/27] dt-bindings: pwm: Add compatible for MediaTek
+ MT6795
 Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, matthias.bgg@gmail.com
-Cc:     p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        jassisinghbrar@gmail.com, chunfeng.yun@mediatek.com,
-        vkoul@kernel.org, kishon@kernel.org, thierry.reding@gmail.com,
-        u.kleine-koenig@pengutronix.de, chunkuang.hu@kernel.org,
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     matthias.bgg@gmail.com, p.zabel@pengutronix.de, airlied@gmail.com,
+        daniel@ffwll.ch, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, jassisinghbrar@gmail.com,
+        chunfeng.yun@mediatek.com, vkoul@kernel.org, kishon@kernel.org,
+        thierry.reding@gmail.com, chunkuang.hu@kernel.org,
         ck.hu@mediatek.com, jitao.shi@mediatek.com,
         xinlei.lee@mediatek.com, houlong.wei@mediatek.com,
         dri-devel@lists.freedesktop.org,
@@ -74,40 +56,86 @@ Cc:     p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
         kernel@collabora.com, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
 References: <20230412112739.160376-1-angelogioacchino.delregno@collabora.com>
- <20230412112739.160376-23-angelogioacchino.delregno@collabora.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230412112739.160376-23-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20230412112739.160376-2-angelogioacchino.delregno@collabora.com>
+ <aaeeb18d-f8e8-d6c1-1272-e5b797554b9e@linaro.org>
+ <20230414083019.cpomx37tax4ibe5u@pengutronix.de>
+ <f8a4fd52-52b6-dded-c8b7-864be549e2ad@linaro.org>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <f8a4fd52-52b6-dded-c8b7-864be549e2ad@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 12/04/2023 13:27, AngeloGioacchino Del Regno wrote:
-> I have added more than 800 lines to this devicetree: adding myself to
-> the copyright header.
+Il 14/04/23 10:34, Krzysztof Kozlowski ha scritto:
+> On 14/04/2023 10:30, Uwe Kleine-König wrote:
+>> On Fri, Apr 14, 2023 at 10:21:05AM +0200, Krzysztof Kozlowski wrote:
+>>> On 12/04/2023 13:27, AngeloGioacchino Del Regno wrote:
+>>>> Add a compatible string for MediaTek Helio X10 MT6795's display PWM
+>>>> block: this is the same as MT8173.
+>>>>
+>>>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>>>> ---
+>>>>   Documentation/devicetree/bindings/pwm/mediatek,pwm-disp.yaml | 4 +++-
+>>>>   1 file changed, 3 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/Documentation/devicetree/bindings/pwm/mediatek,pwm-disp.yaml b/Documentation/devicetree/bindings/pwm/mediatek,pwm-disp.yaml
+>>>> index 0088bc8e7c54..153e146df7d4 100644
+>>>> --- a/Documentation/devicetree/bindings/pwm/mediatek,pwm-disp.yaml
+>>>> +++ b/Documentation/devicetree/bindings/pwm/mediatek,pwm-disp.yaml
+>>>> @@ -22,7 +22,9 @@ properties:
+>>>>             - mediatek,mt8173-disp-pwm
+>>>>             - mediatek,mt8183-disp-pwm
+>>>>         - items:
+>>>> -          - const: mediatek,mt8167-disp-pwm
+>>>> +          - enum:
+>>>> +              - mediatek,mt6795-disp-pwm
+>>>> +              - mediatek,mt8167-disp-pwm
+>>>
+>>> This does not look correct. You do not add compatible, you replace
+>>> breaking all mt8167-disp-pwm. At least it looks like this from context.
+>>
+>> I thought the old semantic to be:
+>>
+>> 	"mediatek,mt8167-disp-pwm"
+>>
+>> and the new
+>>
+>> 	"mediatek,mt6795-disp-pwm" or "mediatek,mt8167-disp-pwm"
+>>
+>> . What am I missing?
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->  arch/arm64/boot/dts/mediatek/mt6795.dtsi | 3 +++
->  1 file changed, 3 insertions(+)
+> The new is ok for mt6795 but it is not valid for mt8167.
 > 
-> diff --git a/arch/arm64/boot/dts/mediatek/mt6795.dtsi b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-> index 29ca9a7bf0b3..a4c950b65006 100644
-> --- a/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-> +++ b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
-> @@ -2,6 +2,9 @@
->  /*
->   * Copyright (c) 2015 MediaTek Inc.
->   * Author: Mars.C <mars.cheng@mediatek.com>
-> + *
-> + * Copyright (C) 2023 Collabora Ltd.
-> + *                    AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-Copyright is a result of significant changes, thus it is a part of
-commit(s) making these changes. Adding copyrights in separate commits
-looks like you are spreading them unjustified. Squash it.
+Sorry, why is it not valid for MT8167?
 
-Best regards,
-Krzysztof
+This is changing the doc from:
 
+OLD:
+       - items:
+           - const: mediatek,mt8167-disp-pwm
+           - const: mediatek,mt8173-disp-pwm
+NEW:
+
+       - items:
+           - enum:
+               - mediatek,mt6795-disp-pwm
+               - mediatek,mt8167-disp-pwm
+           - const: mediatek,mt8173-disp-pwm
+
+For me, that's totally valid, as the old semantic was:
+
+compatible = "mediatek,mt8167-disp-pwm", "mediatek,mt8173-disp-pwm";
+
+...and the new semantic is .. the same; this commit only *adds* the
+possibility to get a
+
+compatible = "mediatek,mt6795-disp-pwm", "mediatek,mt8173-disp-pwm";
+
+without breaking anything.
+
+Regards,
+Angelo
