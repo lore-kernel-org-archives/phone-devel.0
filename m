@@ -2,106 +2,126 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E024CC77B71
-	for <phone-devel@archiver.kernel.org>; Fri, 14 Apr 2023 05:44:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 940AEC77B6E
+	for <phone-devel@archiver.kernel.org>; Fri, 14 Apr 2023 07:44:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbjDNFoY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 14 Apr 2023 01:44:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60364 "EHLO
+        id S229722AbjDNHoT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 14 Apr 2023 03:44:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229878AbjDNFoW (ORCPT
+        with ESMTP id S229528AbjDNHoQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 14 Apr 2023 01:44:22 -0400
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C0742722
-        for <phone-devel@vger.kernel.org>; Thu, 13 Apr 2023 22:44:22 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pnCDv-0006uh-5z; Fri, 14 Apr 2023 07:43:51 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pnCDr-00B80h-A8; Fri, 14 Apr 2023 07:43:47 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1pnCDq-00D4Dy-F5; Fri, 14 Apr 2023 07:43:46 +0200
-Date:   Fri, 14 Apr 2023 07:43:45 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Cc:     matthias.bgg@gmail.com, p.zabel@pengutronix.de, airlied@gmail.com,
-        daniel@ffwll.ch, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, jassisinghbrar@gmail.com,
-        chunfeng.yun@mediatek.com, vkoul@kernel.org, kishon@kernel.org,
-        thierry.reding@gmail.com, chunkuang.hu@kernel.org,
-        ck.hu@mediatek.com, jitao.shi@mediatek.com,
-        xinlei.lee@mediatek.com, houlong.wei@mediatek.com,
-        dri-devel@lists.freedesktop.org,
-        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org,
-        kernel@collabora.com, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH 01/27] dt-bindings: pwm: Add compatible for MediaTek
- MT6795
-Message-ID: <20230414054345.ip3ug53ivr3elbpy@pengutronix.de>
-References: <20230412112739.160376-1-angelogioacchino.delregno@collabora.com>
- <20230412112739.160376-2-angelogioacchino.delregno@collabora.com>
+        Fri, 14 Apr 2023 03:44:16 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11FD81724
+        for <phone-devel@vger.kernel.org>; Fri, 14 Apr 2023 00:44:14 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id ud9so43287473ejc.7
+        for <phone-devel@vger.kernel.org>; Fri, 14 Apr 2023 00:44:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681458252; x=1684050252;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xggPyA5Loe1PP8kK256jqhC93KUTQ15DwlgDEOkunfA=;
+        b=lfChVG0kCG4fpYP4QhuqIz/B3aGDMndQAyK5F34Aw9DcYHwWZj2sxxsAdDoUMyECtw
+         Waao+Y7Of9MwB+er1zwTwdFcMR81qJMZsNo5eJUy1aOPd7lunlBS4k1Jjxexk55HxqTh
+         cxicVe6SJ+Aui9RRgVdj1g2YOrgboXSiIJ3zQL0baMb9mCrRbXs3QIWihfEfcondhNS/
+         qdPMG4B+/0gy7av2wtoBx5ubpbcsDWGCUFKAWvcvD6DlAEDYSqM4ahmtk4j0sjeUgKnm
+         bl0NS9l8VgnoMPzgpJBQc0om3NPsuZlkIJdOEm3u90Dw77vUiTJjdlmt54iQBIVSVG7U
+         ltKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681458252; x=1684050252;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xggPyA5Loe1PP8kK256jqhC93KUTQ15DwlgDEOkunfA=;
+        b=FCQeSAiJjyo9/FRlNN3p4J4G+6VmlTz+a6uzeqeE+VKars8MX/BickrxJigcVu5YDn
+         rYZw0SVvKUiqxiwppaQIj4K0BxqzWRtkXLZXSKzHp86o1tgpa32z4QC3jasWy97liVRa
+         9Y4+b+Ic6/7SDgDQzZZbncdZQquMoxvunVD5Ep5l5OWDYzMiScM7CHiRKrLoHWVph7Ih
+         SBr3tZ63PTlmw3UB26Rv/bL7TjgLIzkVIAj3lgYKgTad7wXQyzm2cWBZvQw2lsC+xRWj
+         GiVwHvlSyEnvAm9qqBOWRapwbi+FRPbHLx+aVbxxOG1Qy+NG8DIKXQXl5nb1rSJb2B2l
+         F1Sw==
+X-Gm-Message-State: AAQBX9fbOkCQrmKR+o+rcTFCTed0SCRFRYVoRZRcBs78/uuvZuThgYQQ
+        XT+iiQ5/JDqNljHojndSKH7C7A==
+X-Google-Smtp-Source: AKy350YPcZ3BLKpDrlII+wqnI5EW6oBxcl0fHOpJPCrNIqmVgoO5mmHwNDo4YKuiP7xHtB3sEAX9hQ==
+X-Received: by 2002:a17:907:7810:b0:8b1:7ae9:647 with SMTP id la16-20020a170907781000b008b17ae90647mr5407027ejc.76.1681458252561;
+        Fri, 14 Apr 2023 00:44:12 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:8a60:6b0f:105a:eefb? ([2a02:810d:15c0:828:8a60:6b0f:105a:eefb])
+        by smtp.gmail.com with ESMTPSA id gv16-20020a1709072bd000b0094a785e362dsm2118002ejc.141.2023.04.14.00.44.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Apr 2023 00:44:12 -0700 (PDT)
+Message-ID: <046eac79-b97e-9f95-8a2f-05cf00a00f81@linaro.org>
+Date:   Fri, 14 Apr 2023 09:44:10 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="djepqqx6bag6dot5"
-Content-Disposition: inline
-In-Reply-To: <20230412112739.160376-2-angelogioacchino.delregno@collabora.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: phone-devel@vger.kernel.org
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH v2 1/5] dt-bindings: input: touchscreen: add bindings for
+ focaltech,fts5452
+Content-Language: en-US
+To:     Joel Selvaraj <joelselvaraj.oss@gmail.com>,
+        Caleb Connolly <caleb@connolly.tech>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Jeff LaBundy <jeff@labundy.com>,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Jean Delvare <jdelvare@suse.de>,
+        Job Noorman <job@noorman.info>,
+        Alistair Francis <alistair@alistair23.me>,
+        Chris Morgan <macromorgan@hotmail.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230410160200.57261-1-joelselvaraj.oss@gmail.com>
+ <20230410160200.57261-2-joelselvaraj.oss@gmail.com>
+ <f9552bb6-ea73-93b4-f15d-d5d7c326c708@linaro.org>
+ <b89c39af-da87-8138-9899-fb631ebe76e1@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <b89c39af-da87-8138-9899-fb631ebe76e1@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 14/04/2023 02:32, Joel Selvaraj wrote:
+> Hi Krzysztof Kozlowski,
+> 
+> Konrad Dybcio suggested to use interrupts-extended instead interrupts.
 
---djepqqx6bag6dot5
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Sorry,
 
-Hello,
+I have no idea what this email is about.
 
-On Wed, Apr 12, 2023 at 01:27:13PM +0200, AngeloGioacchino Del Regno wrote:
-> Add a compatible string for MediaTek Helio X10 MT6795's display PWM
-> block: this is the same as MT8173.
->=20
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@coll=
-abora.com>
+There is no context here, no reply, it just appeared alone in my inbox
+without any reference. Please respond inline to existing messages,
+keeping necessary context you are replying to.
 
-Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> So in my WIP v3, I have updated it in the dts and bindings example.
+> However, I am confused if I should replace the "interrupts" with
+> "interrupts-extended" property in the schema too? I see a lot of schemas
 
-I assume this patch will go in together with the other patches in this
-series via an ARM tree? (I.e. not via pwm.)
+No.
 
-Best regards
-Uwe
+> specifying "interrupts", with examples using "interrupts" or
+> "interrupts-extended". At the same time, I see some specifying both
+> "interrupts" and "interrupts-extended" (like one of these two) and very
+> few others specify only "interrupts-extended" in the schema. Which is
+> the currently recommended way to do this?
+> 
+> In between, the interrupt property should be a required property as the
+> driver will not function without an interrupt. I will fix that in v3.
+> 
+> Thanks,
+> Joel Selvaraj
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+Best regards,
+Krzysztof
 
---djepqqx6bag6dot5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmQ46BAACgkQj4D7WH0S
-/k4/QQf+J7sRk5oREfd1w/lHSb4KN9o1xa9cQH4vB6vzHNViu1aEltOjUr7KA5SA
-tTJlHyGa+J+Kkdu2A4m4XXQyFN0cp7GcEVUwXzaCzyMbdc4Vs5J7XGkMbhqiqN7/
-hECv2dFZr/HfpjI2j32TB1y80TYxrqPzkosZiOWnw0AKa8wVeTgI8M7Rsnc7lFG7
-DgW6W75MH1kB6EzYjKUIP9PIXgy7AbM/tnzYf5PItKPiyr+xh6cjeTjcrOHJ+GyF
-MRckk8KLWlqIHTfwE5U4lctY5vXAUUrew6K33WHC9eu+3CMs2Tod4G3SrJE7jUCe
-EPSYz+vtL3CWQv8IlUJAYPzaNgBcBQ==
-=k4oe
------END PGP SIGNATURE-----
-
---djepqqx6bag6dot5--
