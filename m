@@ -2,146 +2,109 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AED84C77B61
-	for <phone-devel@archiver.kernel.org>; Thu, 13 Apr 2023 23:36:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D5A8C77B61
+	for <phone-devel@archiver.kernel.org>; Fri, 14 Apr 2023 00:32:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229733AbjDMXgp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 13 Apr 2023 19:36:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60112 "EHLO
+        id S229591AbjDNAcw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 13 Apr 2023 20:32:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbjDMXgo (ORCPT
+        with ESMTP id S229579AbjDNAcv (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 13 Apr 2023 19:36:44 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DC7310C1
-        for <phone-devel@vger.kernel.org>; Thu, 13 Apr 2023 16:36:42 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id x4so1367922lfr.8
-        for <phone-devel@vger.kernel.org>; Thu, 13 Apr 2023 16:36:42 -0700 (PDT)
+        Thu, 13 Apr 2023 20:32:51 -0400
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E95040DF;
+        Thu, 13 Apr 2023 17:32:44 -0700 (PDT)
+Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-b8f2747f720so46738276.1;
+        Thu, 13 Apr 2023 17:32:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681429001; x=1684021001;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20221208; t=1681432363; x=1684024363;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=r9ajKjdjmVKYZR0o2RYS00gCwWXzx+OByS0IkZ5vWrg=;
-        b=SVEjyBOGaxj1mckia8+8F4tBz1UaxMbdTgcRhw3El6pgcSSVVULIgBzGaISjFEobmy
-         7Op5etGGtc7DIeL/p/C9F6/9iiyv5+0EMT9PawHnseed2spJ62pcQR3F6SxwPZVGMPBG
-         JL9uX9mVXLQYa3bK+ZfNJv4rJNlH+EUBJZrT3/ck3yaJWv6py781rpgZrk4w49itUKck
-         GH37nQ5NHr5WAn1z3tlVFiar3bOZrTX55x3zEm1ujXpjmrN46OFDXwhbk/yW0lNg8MST
-         IrLLXnQTT8LFYMmjBLa7Bjuc5fr4PJXga0qXvOHLLFwHTtLglYDWmLGCVrTobGV9oHqW
-         ixxw==
+        bh=/CGdlVq46sVxerRrJyPR6Hw6xFoW0TBSTctv7JapQRg=;
+        b=qR4a5nkMAkVFebJolVQiremQTD2+SPK4CC0w0t6azUj87XqnzhjoLJtmmhsk1230Aw
+         dHraUQEStovib43iN3YZmyvMPWj463YwMD4jjWFFMGFAS8LQkvG24368nDZzk5jFRCHb
+         R5mw84cGECBbooLprcMYBSVtu2S2dZ+1S5z+zOlCeXLAMszYNSX6ep9DpQMf+/5MwSey
+         0wVxK7KxWMlzD4B2qH0dmFlJosP886zsK/QVNTaubh1a7nO6K5c2z5FuhytHWs/920i+
+         NDwtgaTNmUoYvog2sC6GG9Qhtrgjj/rjeuh9n8CTkf1ISEt51D0kNK1yOA74XYJYCi0w
+         uo4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681429001; x=1684021001;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1681432363; x=1684024363;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r9ajKjdjmVKYZR0o2RYS00gCwWXzx+OByS0IkZ5vWrg=;
-        b=KavMki6ncGJ+dVhsouUH/u/Mof0eNzTnaGP/yuRdqVv8v7gbFlPgB/pd7K09grlWQj
-         MFjFdVOrn0UU0kouxm+NDUCj81UAAUv85B0GopasV3q+sHE63JhIeQNSMLi5OnHkcmIu
-         9y2HldWEfnC0YLedKblpmHqdbGoDx7DAwFizA31v5Dqy/e+RSqm2KBbBZ0z7DsP6j7Px
-         v1hBCEWfviYY+ezoFQ/VSfncC5VJusszCTUMutYQpwnn1f/WDICkKDbP6C8IXEgZVV4T
-         PA2JESP6MzNdgw8Rjm+ra/09xsRNPBDqZcqobk/UPp5FR1ga8Hv+ReM6WjDKAfpDip2L
-         IqFQ==
-X-Gm-Message-State: AAQBX9dQchX+TdbnB0pzZGUeO5ntrqwTMWEYTgsFtLSfjahOsXmroTgh
-        B5wQgb19hXIzDmXLaMqc6X+feQ==
-X-Google-Smtp-Source: AKy350Zo99hWzMgWvX+LgY/9CK+7rZVz2nOI2ypxTsltEFwJGq7j79xeqJ8GdXR+H5DJke5A5SynGg==
-X-Received: by 2002:ac2:51a2:0:b0:4de:ca63:b2d2 with SMTP id f2-20020ac251a2000000b004deca63b2d2mr1316274lfk.26.1681429000930;
-        Thu, 13 Apr 2023 16:36:40 -0700 (PDT)
-Received: from [192.168.1.101] (abyl123.neoplus.adsl.tpnet.pl. [83.9.31.123])
-        by smtp.gmail.com with ESMTPSA id i15-20020ac25d2f000000b004e26bd0a533sm510735lfb.288.2023.04.13.16.36.39
+        bh=/CGdlVq46sVxerRrJyPR6Hw6xFoW0TBSTctv7JapQRg=;
+        b=AnttiXLlytIlCZqoVvpPQV+mThP7Qgy/hFp4DW89eOmV8p6r2nkL3KV3dxW/v68O7J
+         AbYyEALcPUm48hgKURn475Zhl8Glnkv0XR7M2qQe4hGUu/LBCsA9f5xcBarY+AKa08UJ
+         v78Spvp4VuCkRIWkvgLAt9wsW12YMDFvRuHaY2W+tIfcyoAA4OuBcy9sjesfrW587LSo
+         7pXdVmhICNwQEbP6T9ryBqlJUXd0mhFF8B5Ggpbon+BVYjy0uSOkNreIwMyQxODwhsrz
+         FCNpns+fkZeH/Rrl5jdXvB+UvMQAWL0BgGyKl5oD74ALAdCBR/bXCoc8T8Z+SWKNxGJu
+         1LUg==
+X-Gm-Message-State: AAQBX9djC1ESOhw8eRIuM3+4h7X78Mhn1PEB5X1LEDuYvrz1Q+JsaBs/
+        tgkjTfXbI43UDnzKtfy6GdY=
+X-Google-Smtp-Source: AKy350aNylrfgRaTqO3yEpdezoBLRWATQW1ddy4Mnp/FNa+VamT6TL7xF7Iw5fXCtGYhO5gPMOmd6w==
+X-Received: by 2002:a25:ce53:0:b0:b8f:347c:7bb9 with SMTP id x80-20020a25ce53000000b00b8f347c7bb9mr568982ybe.2.1681432363509;
+        Thu, 13 Apr 2023 17:32:43 -0700 (PDT)
+Received: from ?IPV6:2604:2d80:4d87:cd00:9f51:32d7:1177:67d? ([2604:2d80:4d87:cd00:9f51:32d7:1177:67d])
+        by smtp.gmail.com with ESMTPSA id r17-20020a25d511000000b00b8c09fd88ffsm788612ybe.30.2023.04.13.17.32.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 13 Apr 2023 16:36:40 -0700 (PDT)
-Message-ID: <96180862-6dbf-77e1-4aca-9a3b9ee39294@linaro.org>
-Date:   Fri, 14 Apr 2023 01:36:38 +0200
+        Thu, 13 Apr 2023 17:32:43 -0700 (PDT)
+Message-ID: <b89c39af-da87-8138-9899-fb631ebe76e1@gmail.com>
+Date:   Thu, 13 Apr 2023 19:32:40 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH 8/8] arm64: dts: qcom: sdm632-fairphone-fp3: Add
- notification LED
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
+ Thunderbird/102.1.2
+Subject: Re: [PATCH v2 1/5] dt-bindings: input: touchscreen: add bindings for
+ focaltech,fts5452
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Caleb Connolly <caleb@connolly.tech>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20230414-pmi632-v1-0-fe94dc414832@z3ntu.xyz>
- <20230414-pmi632-v1-8-fe94dc414832@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230414-pmi632-v1-8-fe94dc414832@z3ntu.xyz>
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Jeff LaBundy <jeff@labundy.com>,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Jean Delvare <jdelvare@suse.de>,
+        Job Noorman <job@noorman.info>,
+        Alistair Francis <alistair@alistair23.me>,
+        Chris Morgan <macromorgan@hotmail.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+References: <20230410160200.57261-1-joelselvaraj.oss@gmail.com>
+ <20230410160200.57261-2-joelselvaraj.oss@gmail.com>
+ <f9552bb6-ea73-93b4-f15d-d5d7c326c708@linaro.org>
+Content-Language: en-US
+From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
+In-Reply-To: <f9552bb6-ea73-93b4-f15d-d5d7c326c708@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Krzysztof Kozlowski,
 
+Konrad Dybcio suggested to use interrupts-extended instead interrupts.
+So in my WIP v3, I have updated it in the dts and bindings example.
+However, I am confused if I should replace the "interrupts" with
+"interrupts-extended" property in the schema too? I see a lot of schemas
+specifying "interrupts", with examples using "interrupts" or
+"interrupts-extended". At the same time, I see some specifying both
+"interrupts" and "interrupts-extended" (like one of these two) and very
+few others specify only "interrupts-extended" in the schema. Which is
+the currently recommended way to do this?
 
-On 14.04.2023 01:17, Luca Weiss wrote:
-> The phone features a notification LED connected to the pmi632. Configure
-> the RGB led found on it.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 29 +++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> index 70e683b7e4fc..301eca9a4f31 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-> @@ -4,8 +4,10 @@
->   */
->  /dts-v1/;
->  
-> +#include <dt-bindings/leds/common.h>
->  #include "sdm632.dtsi"
->  #include "pm8953.dtsi"
-> +#include "pmi632.dtsi"
->  
->  / {
->  	model = "Fairphone 3";
-> @@ -83,6 +85,33 @@ &pm8953_resin {
->  	linux,code = <KEY_VOLUMEDOWN>;
->  };
->  
-> +&pmi632_lpg {
-qcom,power-source?
+In between, the interrupt property should be a required property as the
+driver will not function without an interrupt. I will fix that in v3.
 
-Konrad
-> +	status = "okay";
-> +
-> +	multi-led {
-> +		color = <LED_COLOR_ID_RGB>;
-> +		function = LED_FUNCTION_STATUS;
-> +
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +
-> +		led@1 {
-> +			reg = <1>;
-> +			color = <LED_COLOR_ID_RED>;
-> +		};
-> +
-> +		led@2 {
-> +			reg = <2>;
-> +			color = <LED_COLOR_ID_GREEN>;
-> +		};
-> +
-> +		led@3 {
-> +			reg = <3>;
-> +			color = <LED_COLOR_ID_BLUE>;
-> +		};
-> +	};
-> +};
-> +
->  &sdhc_1 {
->  	status = "okay";
->  	vmmc-supply = <&pm8953_l8>;
-> 
+Thanks,
+Joel Selvaraj
