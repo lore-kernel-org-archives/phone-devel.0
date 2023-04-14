@@ -2,98 +2,127 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C1F9C77B71
-	for <phone-devel@archiver.kernel.org>; Fri, 14 Apr 2023 08:34:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 964D7C77B70
+	for <phone-devel@archiver.kernel.org>; Fri, 14 Apr 2023 08:36:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229530AbjDNIeL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 14 Apr 2023 04:34:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46190 "EHLO
+        id S229989AbjDNIgu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 14 Apr 2023 04:36:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229712AbjDNIeK (ORCPT
+        with ESMTP id S230149AbjDNIex (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 14 Apr 2023 04:34:10 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DAC66A6F
-        for <phone-devel@vger.kernel.org>; Fri, 14 Apr 2023 01:34:08 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id q23so34280672ejz.3
-        for <phone-devel@vger.kernel.org>; Fri, 14 Apr 2023 01:34:07 -0700 (PDT)
+        Fri, 14 Apr 2023 04:34:53 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36EB572BE
+        for <phone-devel@vger.kernel.org>; Fri, 14 Apr 2023 01:34:51 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-94a34a0baf9so407593766b.1
+        for <phone-devel@vger.kernel.org>; Fri, 14 Apr 2023 01:34:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681461246; x=1684053246;
+        d=linaro.org; s=google; t=1681461289; x=1684053289;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=YETSwyP9KyJmIykjMyk1TM49CieBNMVHrTzyPxKcTSk=;
-        b=FkQzqgIFOAMsY5C49r1vVB/ZlzTMvC6eoeJBVcpcCRatuAaj6EIDAzi3hygq5+Ij1g
-         JBGhZBFMX7pINFHlQiMdv7hC22MjElW2vDWKKVX/MSzTmcHGS5Gow/BGmXAiYyXVt3Rc
-         TwHLdDfG5VUJBs7kKpL0yZtdBIOgMc27tvQabifkeXgBXMFPRAaCDM7iXEOBED/IWt/y
-         NmIFWcjRsMtBhqMZwvLbe3ORStBZA417ZS8RGIc3ZE0/2GEdnH753mli+ov6NbQ1UAV0
-         2miw7dNFMmbmugoxca3FDGb1jnUPzAQcjAd4BRyShkqiZf8yTad3RCKAOBWa8ejhn2ha
-         LbVA==
+        bh=MBhd+vki+l/y35U/QxrHM0V6qWO53SJzOsxvHiS3VI4=;
+        b=IkuwrlTZ7zhdSP0BuUPKvyREuOd14Kbfh+OkUBnZYPh19M/pPTs1AehNACOKrDUdOG
+         mS4MITBjLL7awLODadt0N7TgsMQrt20z+ehY4MsckGyU/ZLfEpRUMjJ6zZJFFo1pUHm+
+         DaOoGRLicugjTWnlVrxNhWHsxHKyfybWO7o1a5FbdhVsF2XFWdtON7SqlBPMawhF3wMn
+         FgcSDitIhYEKTfb/ee7KSmy9bA+543T+wqlwInRxiSu8cwOxfZjhq57bAYdmU3dSXrxH
+         nEIwLbiwZWKYu1v4zqBLmdoTxBkfuWIR5SYBNxNo67kvqzNok8hvxQXzZI/WpPM9sHD9
+         aXuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681461246; x=1684053246;
+        d=1e100.net; s=20221208; t=1681461289; x=1684053289;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YETSwyP9KyJmIykjMyk1TM49CieBNMVHrTzyPxKcTSk=;
-        b=CHDzPPPzZVulr31m5Mitt0d3A6peNQ4p962fMM1wk7l51kVBemfB1BMTXEI78t1c4P
-         oCII5LF1oriNT2SStkZEx+P+T6imvADk+CWVjyrYTOdTuLDhlKrjAtlAaQVm+rf0sjxR
-         +6A5XYJjvKnb7wCJ7JvmDI2riRypLVnHSxDw2Drl9iIdyEhHxRUqxmujqK58/Nt1vLba
-         CfIs16bmbYU4xznF/emSrOZqQSsvflZ+xwvuurQGQ9CRqGbWjdzydcfeD7WWFCBFTV3R
-         db2P9vJ+tiq31yOggqXQOw1zghUTvIXH1YCqLAy3TpD/ua5j5ng94vWZ0KVfdMRV7XJW
-         Bagw==
-X-Gm-Message-State: AAQBX9fzC80IDMeYM48oM5bX+PVISCxBQaotX35oYH0FxMxpk81YNeEN
-        qiS3ndfz9XTe5TyIBimx5zxuow==
-X-Google-Smtp-Source: AKy350Z7uaDB4GQxOP+F7tcD8R2KCxU2CUl3f5Uqi9jTZYCUHl43i3I1xzx6+MrjdoI2Do1jwFgUmg==
-X-Received: by 2002:a17:907:1b1b:b0:94a:68a9:b399 with SMTP id mp27-20020a1709071b1b00b0094a68a9b399mr6056042ejc.53.1681461246577;
-        Fri, 14 Apr 2023 01:34:06 -0700 (PDT)
+        bh=MBhd+vki+l/y35U/QxrHM0V6qWO53SJzOsxvHiS3VI4=;
+        b=Hxt2PPV/x2BFkBuxriFOpOcGEYFdrcFSDYiuhaqtrkuLRky4LPvcqgcMlJU7uk1t0K
+         wlvS59CjGy+EeH1YYQ4dvn3vpRCTWvjMov9Qrctg6JfwHMIzhzX28uejiLgojcy1MU8U
+         VuTSnNUyaqOOL138GkLFz1d8tuWOqJEHBQxJqslXnVB0qi1EFc/Zc4Tmg7CVpBRh/DHC
+         bKSXdqvIXxd4XGnySeZsLCcjmCID+/wkg9f/zpOQGGhtTR5xrP9VkqLPCVsF/y1lCblH
+         2f1W/KKYyCjOGX/+CV1Zn2h4s3ny+CkwKBPrEwIhBXbepWSXGalT4ZpCNzY/pokyOREu
+         gpnw==
+X-Gm-Message-State: AAQBX9f0fLNzNhZVjoX3ftis9TMF8fUIgX5tswjBvLF0A7lDb27cTUxo
+        xE0ndIWSO0SqZlrN+p568Gcfkw==
+X-Google-Smtp-Source: AKy350b+AJCpD5JSQDbMuD6wVN5frKxcfCROijIG1NiaMj6S2xAmFKa5BnZL7BAyt/fgf8Mo/weUUQ==
+X-Received: by 2002:aa7:d50f:0:b0:504:80f8:f6b2 with SMTP id y15-20020aa7d50f000000b0050480f8f6b2mr4795583edq.25.1681461289674;
+        Fri, 14 Apr 2023 01:34:49 -0700 (PDT)
 Received: from ?IPV6:2a02:810d:15c0:828:8a60:6b0f:105a:eefb? ([2a02:810d:15c0:828:8a60:6b0f:105a:eefb])
-        by smtp.gmail.com with ESMTPSA id jt6-20020a170906dfc600b0094e6c45b117sm2106215ejc.168.2023.04.14.01.34.05
+        by smtp.gmail.com with ESMTPSA id j23-20020aa7de97000000b0050432d2b443sm1883036edv.48.2023.04.14.01.34.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Apr 2023 01:34:06 -0700 (PDT)
-Message-ID: <8349f5c1-36fe-802b-2a36-acb9c6eb6d8e@linaro.org>
-Date:   Fri, 14 Apr 2023 10:34:04 +0200
+        Fri, 14 Apr 2023 01:34:49 -0700 (PDT)
+Message-ID: <f8a4fd52-52b6-dded-c8b7-864be549e2ad@linaro.org>
+Date:   Fri, 14 Apr 2023 10:34:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
-Subject: Re: [PATCH 12/27] dt-bindings: display: mediatek: split: Add
- compatible for MediaTek MT6795
+Subject: Re: [PATCH 01/27] dt-bindings: pwm: Add compatible for MediaTek
+ MT6795
 Content-Language: en-US
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, matthias.bgg@gmail.com
-Cc:     p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
+Cc:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, matthias.bgg@gmail.com,
+        p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
         robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         jassisinghbrar@gmail.com, chunfeng.yun@mediatek.com,
         vkoul@kernel.org, kishon@kernel.org, thierry.reding@gmail.com,
-        u.kleine-koenig@pengutronix.de, chunkuang.hu@kernel.org,
-        ck.hu@mediatek.com, jitao.shi@mediatek.com,
-        xinlei.lee@mediatek.com, houlong.wei@mediatek.com,
-        dri-devel@lists.freedesktop.org,
+        chunkuang.hu@kernel.org, ck.hu@mediatek.com,
+        jitao.shi@mediatek.com, xinlei.lee@mediatek.com,
+        houlong.wei@mediatek.com, dri-devel@lists.freedesktop.org,
         linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org,
         kernel@collabora.com, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
 References: <20230412112739.160376-1-angelogioacchino.delregno@collabora.com>
- <20230412112739.160376-13-angelogioacchino.delregno@collabora.com>
+ <20230412112739.160376-2-angelogioacchino.delregno@collabora.com>
+ <aaeeb18d-f8e8-d6c1-1272-e5b797554b9e@linaro.org>
+ <20230414083019.cpomx37tax4ibe5u@pengutronix.de>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230412112739.160376-13-angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20230414083019.cpomx37tax4ibe5u@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 12/04/2023 13:27, AngeloGioacchino Del Regno wrote:
-> Add a compatible string for MediaTek Helio X10 MT6795's SPLIT block: this
-> is the same as MT8173.
+On 14/04/2023 10:30, Uwe Kleine-König wrote:
+> On Fri, Apr 14, 2023 at 10:21:05AM +0200, Krzysztof Kozlowski wrote:
+>> On 12/04/2023 13:27, AngeloGioacchino Del Regno wrote:
+>>> Add a compatible string for MediaTek Helio X10 MT6795's display PWM
+>>> block: this is the same as MT8173.
+>>>
+>>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>>> ---
+>>>  Documentation/devicetree/bindings/pwm/mediatek,pwm-disp.yaml | 4 +++-
+>>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/pwm/mediatek,pwm-disp.yaml b/Documentation/devicetree/bindings/pwm/mediatek,pwm-disp.yaml
+>>> index 0088bc8e7c54..153e146df7d4 100644
+>>> --- a/Documentation/devicetree/bindings/pwm/mediatek,pwm-disp.yaml
+>>> +++ b/Documentation/devicetree/bindings/pwm/mediatek,pwm-disp.yaml
+>>> @@ -22,7 +22,9 @@ properties:
+>>>            - mediatek,mt8173-disp-pwm
+>>>            - mediatek,mt8183-disp-pwm
+>>>        - items:
+>>> -          - const: mediatek,mt8167-disp-pwm
+>>> +          - enum:
+>>> +              - mediatek,mt6795-disp-pwm
+>>> +              - mediatek,mt8167-disp-pwm
+>>
+>> This does not look correct. You do not add compatible, you replace
+>> breaking all mt8167-disp-pwm. At least it looks like this from context.
 > 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->  .../devicetree/bindings/display/mediatek/mediatek,split.yaml   | 3 +++
->  1 file changed, 3 insertions(+)
+> I thought the old semantic to be:
 > 
+> 	"mediatek,mt8167-disp-pwm"
+> 
+> and the new
+> 
+> 	"mediatek,mt6795-disp-pwm" or "mediatek,mt8167-disp-pwm"
+> 
+> . What am I missing?
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+The new is ok for mt6795 but it is not valid for mt8167.
 
 Best regards,
 Krzysztof
