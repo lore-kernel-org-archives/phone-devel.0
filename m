@@ -2,59 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 911E8C77B76
-	for <phone-devel@archiver.kernel.org>; Sat, 15 Apr 2023 16:20:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E0E5C77B79
+	for <phone-devel@archiver.kernel.org>; Sat, 15 Apr 2023 16:49:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229545AbjDOQUU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 15 Apr 2023 12:20:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48032 "EHLO
+        id S229579AbjDOQtq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 15 Apr 2023 12:49:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229869AbjDOQUQ (ORCPT
+        with ESMTP id S229468AbjDOQtq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 15 Apr 2023 12:20:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC3204230;
-        Sat, 15 Apr 2023 09:20:11 -0700 (PDT)
+        Sat, 15 Apr 2023 12:49:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52245E1;
+        Sat, 15 Apr 2023 09:49:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 57CF3612ED;
-        Sat, 15 Apr 2023 16:20:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8FCC433EF;
-        Sat, 15 Apr 2023 16:20:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E14D86118B;
+        Sat, 15 Apr 2023 16:49:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A85C433EF;
+        Sat, 15 Apr 2023 16:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681575610;
-        bh=DTWP6xThhLREOoWWAUdntoavtxBw4x/BgKGr7En2G+I=;
+        s=k20201202; t=1681577384;
+        bh=HzfT7C9pxZUKfBOzD0bn0wIBd5ovSSU49etyxQMRn4s=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GmUNzIsw/k9u6mHIPjmMJSdolY4BlTCHrz6o7gYdxbGZ4PeqtrXozfp7Q0xrDnbiC
-         N6ekHJxPfDEloG4V6MmfkCTixSIWH1HgBN+y1e31mC07b0+LhDW0C7uMoCN/A/BhTi
-         jUvvq4lR3/PsJM4LKq8P622ks4HUD+ow7FgYUcGyuPPF338khCSriVkmAo8+iMuIcL
-         HpcSRkBGLZcccS36Cc+ZDyy8vRsL7XDfWkoY+X6I3k3wFeExu1KK/hteM8F+nK+guS
-         ib5saxEInFemsZ9wUM71gB7w4pIgdeqdZvHr5xOpxOy1pq+gMq4Er0BxK1bjFZYFSl
-         njkcndZEX5djw==
-Date:   Sat, 15 Apr 2023 17:20:09 +0100
+        b=aBYgLqucsTTarCKTBL3wdnwg6i8sqBa804UW2EET+CKcXHntwF3129XIKFpOEhB74
+         5bj5xri8We8v9A+D08305ckbNN91Rtfm/Gr4W4awR6XD0C8iqS7/HvhON+nfc80uYB
+         Y9ykEn/YDDdsiwALjAy4XMLfafRnUV6reZ8hliEb1BeCr7M+sHsS4C2R6Yf+jpOGVX
+         1AcI3IbBksAxbLurcRqzVEeLm0z9G7JHmwE5q536S1/xasJpntZaTWZKzEnDRR4EVC
+         YjIrBDvqauhSg5VPr2ahuQM9ByvNSG34ccFZMG+Ts6vgDM34WH4eXx29T5ZTT9jOVk
+         XRmheW/YpuW5A==
+Date:   Sat, 15 Apr 2023 17:49:43 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+To:     Marijn Suijten <marijn.suijten@somainline.org>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
-        linux-iio@vger.kernel.org
-Subject: Re: [PATCH 5/8] dt-bindings: iio: adc: qcom,spmi-vadc: Allow 1/16
- for pre-scaling
-Message-ID: <20230415172009.529d91c5@jic23-huawei>
-In-Reply-To: <577ecd98-94eb-3795-4859-ffad03192f89@linaro.org>
-References: <20230414-pmi632-v1-0-fe94dc414832@z3ntu.xyz>
-        <20230414-pmi632-v1-5-fe94dc414832@z3ntu.xyz>
-        <577ecd98-94eb-3795-4859-ffad03192f89@linaro.org>
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v4 5/5] dt-bindings: iio: adc: Require generic `channel`
+ name for channel nodes
+Message-ID: <20230415174943.2b731203@jic23-huawei>
+In-Reply-To: <c653un4emxud34gpo5np7jtnhsym5thpivjwcgpm2vsft2q2qj@s66thxonibjc>
+References: <20230410202917.247666-1-marijn.suijten@somainline.org>
+        <20230410202917.247666-6-marijn.suijten@somainline.org>
+        <20230412212756.0b4b69f3@jic23-huawei>
+        <c653un4emxud34gpo5np7jtnhsym5thpivjwcgpm2vsft2q2qj@s66thxonibjc>
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -63,30 +65,58 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 14 Apr 2023 09:56:07 +0200
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Wed, 12 Apr 2023 22:31:46 +0200
+Marijn Suijten <marijn.suijten@somainline.org> wrote:
 
-> On 14/04/2023 01:17, Luca Weiss wrote:
-> > The channel ADC5_USB_IN_V_16 is using 1/16 pre-scaling on at least
-> > pm7250b and pmi632. Allow that in the schema.
-> > 
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> >  Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> On 2023-04-12 21:27:56, Jonathan Cameron wrote:
+> > On Mon, 10 Apr 2023 22:29:17 +0200
+> > Marijn Suijten <marijn.suijten@somainline.org> wrote:
 > >   
+> > > As discussed in [1] it is more convenient to use a generic `channel`
+> > > node name for ADC channels while storing a friendly - board-specific
+> > > instead of PMIC-specific - name in the label, if/when desired to
+> > > overwrite the channel description already contained (but previously
+> > > unused) in the driver [2].
+> > > 
+> > > The same `channel` node name pattern has also been set in
+> > > iio/adc/adc.yaml, but this generic binding is not inherited as base for
+> > > qcom,spmi-vadc bindings due to not having any other generic elements in
+> > > common, besides the node name rule and reg property.
+> > > 
+> > > Replace the .* name pattern with the `channel` literal, but leave the
+> > > label property optional for bindings to choose to fall back a channel
+> > > label hardcoded in the driver [2] instead.
+> > > 
+> > > [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
+> > > [2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
+> > > 
+> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>  
+> > 
+> > There are various ways we could pick up this patch set...
+> > a) Binding changes via individual subsystem trees,
+> > b) All in on go.
+> > 
+> > I think it's late to guarantee to land the changes from (a) in the coming merge window
+> > so if someone else is willing to do (b) then
+> > 
+> > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Otherwise we can do (a) early in next cycle.  Feel free to poke me if we are doing (b)
+> > and I seem to have forgotten to pick up this patch!  
 > 
-> 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> Best regards,
-> Krzysztof
-> 
+> Thanks!  I hope we don't get many conflicts (+ new bindings adhering to
+> the old(er) formats) otherwise I'll resend if we do (a).  Around what
+> time would be good, rc2?
 
-Applied this patch to the IIO togreg branch initially pushed out as testing
-for 0-day to poke at it.
+Sure. If rebase is needed send a v5 with that done.  If not, a simple
+reminder reply to this thread will probably work.
 
-I'm doubtful this one will make the upcoming merge window but seems unlikely
-the rest will all make it either so that shouldn't be a problem.
+Thanks,
 
 Jonathan
+
+> 
+> [..]
+> 
+> - Marijn
+
