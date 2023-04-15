@@ -2,134 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85B05C77B76
-	for <phone-devel@archiver.kernel.org>; Sat, 15 Apr 2023 10:42:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 911E8C77B76
+	for <phone-devel@archiver.kernel.org>; Sat, 15 Apr 2023 16:20:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229735AbjDOKmf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 15 Apr 2023 06:42:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41434 "EHLO
+        id S229545AbjDOQUU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 15 Apr 2023 12:20:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229546AbjDOKmd (ORCPT
+        with ESMTP id S229869AbjDOQUQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 15 Apr 2023 06:42:33 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCA5FAD09
-        for <phone-devel@vger.kernel.org>; Sat, 15 Apr 2023 03:41:57 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id n22so19815669ljq.8
-        for <phone-devel@vger.kernel.org>; Sat, 15 Apr 2023 03:41:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681555314; x=1684147314;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mmIpyi6/VTzVwR3NUnypEdQ8q3iaaas7kIub4aO6IHw=;
-        b=OsFYyZ3jgJxQdw2pwn6WlUYEcNltC2vYfjFDR9nB7nX85UcJZB887HpisNMDFkha3m
-         ihWNz2OElgrMGAO7z1VtmGJVX/mGh1vAL9UrjimCa2SZcib6AdgAxCRVeO8tHL2uDLXi
-         B0ibtNDpp0oLIHRsvSpq0RoOHL+9pw8ILiyTpZlC4iwvRFHPmvNd/OgjZ9v6YzxUG2kR
-         ugBTOTI8kL92jPcqcugtIRE35CKLNj3qeYzZTFWno7hjwMvkehB0FVPDDc0mczQKmC/Z
-         LqR9jcj9NmpARzzME7ACZ/z3JC8Sr2WPFrPhNTlW7w9MznjxCCD6TXJHUDmP7LOmbW69
-         nDEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681555314; x=1684147314;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mmIpyi6/VTzVwR3NUnypEdQ8q3iaaas7kIub4aO6IHw=;
-        b=j5SB5NVPZgIyh8+OP0kxo067LadfG3BRpq1jVEVn6BlrD3GambPwraWhl6QV57E+Oj
-         qFrLkITDIHysRutF6ph27sxiOU9LLZjf7i6y+Cd5s811YHnjDdbkfR1tS0rY/o+cTNoL
-         20q7yBA9P6gayakeInZIYvVUR5E7mzbMqhIhrnqzEHydCicgqL/sWYo4JhUCBJ+Su4Ea
-         9SuJyPO5zPFZCuoHOTMBY2+BylrDiV9XiwE0zT5m+RRck8VGV3kXjzoU+WuQbpISHSH6
-         dRS94UyPcfhplJYdcIw6rzP8Mmz646mkBKSsiuAIalSKCyguMKly5/kdYTtFdQjFlbNT
-         aVVA==
-X-Gm-Message-State: AAQBX9dnw3TIHi5ddjL8m1mBbWjRNQAZ5VnioSPMa99iRGkTv1EFQ693
-        S4Yo07LhZ0PPnxwlXaTrOjyE+A==
-X-Google-Smtp-Source: AKy350ZMoScIlZDLdVRk0mI6XK2W/BpNCPrjar+eP/56X+p/oI81gvPUNLcgVsAoH1ejne6AYBKpFg==
-X-Received: by 2002:a05:651c:10cc:b0:2a7:a3b4:7747 with SMTP id l12-20020a05651c10cc00b002a7a3b47747mr2417038ljn.29.1681555314001;
-        Sat, 15 Apr 2023 03:41:54 -0700 (PDT)
-Received: from [192.168.1.101] (abyk99.neoplus.adsl.tpnet.pl. [83.9.30.99])
-        by smtp.gmail.com with ESMTPSA id u7-20020a2ea167000000b002a784085edbsm1272666ljl.99.2023.04.15.03.41.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Apr 2023 03:41:53 -0700 (PDT)
-Message-ID: <d34f008b-080c-7639-6839-918aaa8da8a1@linaro.org>
-Date:   Sat, 15 Apr 2023 12:41:51 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH v3 4/5] arm64: dts: qcom: sdm845-xiaomi-beryllium-ebbg:
- introduce support for fts touchscreen
-Content-Language: en-US
-To:     Joel Selvaraj <joelselvaraj.oss@gmail.com>,
-        Caleb Connolly <caleb@connolly.tech>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Sat, 15 Apr 2023 12:20:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC3204230;
+        Sat, 15 Apr 2023 09:20:11 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 57CF3612ED;
+        Sat, 15 Apr 2023 16:20:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8FCC433EF;
+        Sat, 15 Apr 2023 16:20:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1681575610;
+        bh=DTWP6xThhLREOoWWAUdntoavtxBw4x/BgKGr7En2G+I=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=GmUNzIsw/k9u6mHIPjmMJSdolY4BlTCHrz6o7gYdxbGZ4PeqtrXozfp7Q0xrDnbiC
+         N6ekHJxPfDEloG4V6MmfkCTixSIWH1HgBN+y1e31mC07b0+LhDW0C7uMoCN/A/BhTi
+         jUvvq4lR3/PsJM4LKq8P622ks4HUD+ow7FgYUcGyuPPF338khCSriVkmAo8+iMuIcL
+         HpcSRkBGLZcccS36Cc+ZDyy8vRsL7XDfWkoY+X6I3k3wFeExu1KK/hteM8F+nK+guS
+         ib5saxEInFemsZ9wUM71gB7w4pIgdeqdZvHr5xOpxOy1pq+gMq4Er0BxK1bjFZYFSl
+         njkcndZEX5djw==
+Date:   Sat, 15 Apr 2023 17:20:09 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Henrik Rydberg <rydberg@bitmath.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Jeff LaBundy <jeff@labundy.com>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Jean Delvare <jdelvare@suse.de>,
-        Max Krummenacher <max.krummenacher@toradex.com>,
-        Chris Morgan <macromorgan@hotmail.com>,
-        Job Noorman <job@noorman.info>,
-        Alistair Francis <alistair@alistair23.me>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Maxime Ripard <mripard@kernel.org>
-Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230415020222.216232-1-joelselvaraj.oss@gmail.com>
- <20230415020222.216232-5-joelselvaraj.oss@gmail.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230415020222.216232-5-joelselvaraj.oss@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Stephen Boyd <sboyd@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-iio@vger.kernel.org
+Subject: Re: [PATCH 5/8] dt-bindings: iio: adc: qcom,spmi-vadc: Allow 1/16
+ for pre-scaling
+Message-ID: <20230415172009.529d91c5@jic23-huawei>
+In-Reply-To: <577ecd98-94eb-3795-4859-ffad03192f89@linaro.org>
+References: <20230414-pmi632-v1-0-fe94dc414832@z3ntu.xyz>
+        <20230414-pmi632-v1-5-fe94dc414832@z3ntu.xyz>
+        <577ecd98-94eb-3795-4859-ffad03192f89@linaro.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Fri, 14 Apr 2023 09:56:07 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-
-On 15.04.2023 04:02, Joel Selvaraj wrote:
-> The Poco F1 EBBG variant uses Focaltech FTS touchscreen. Introduce
-> support for it.
+> On 14/04/2023 01:17, Luca Weiss wrote:
+> > The channel ADC5_USB_IN_V_16 is using 1/16 pre-scaling on at least
+> > pm7250b and pmi632. Allow that in the schema.
+> > 
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> >  Documentation/devicetree/bindings/iio/adc/qcom,spmi-vadc.yaml | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >   
 > 
-> Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
-> ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-
-Konrad
->  .../dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts | 21 +++++++++++++++++++
->  1 file changed, 21 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
-> index 76931ebad065..26e77979cdab 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-ebbg.dts
-> @@ -13,3 +13,24 @@ &display_panel {
->  	compatible = "ebbg,ft8719";
->  	status = "okay";
->  };
-> +
-> +&i2c14 {
-> +	status = "okay";
-> +
-> +	touchscreen@38 {
-> +		compatible = "focaltech,fts8719";
-> +		reg = <0x38>;
-> +
-> +		interrupts-extended = <&tlmm 31 IRQ_TYPE_EDGE_FALLING>;
-> +		reset-gpios = <&tlmm 32 GPIO_ACTIVE_LOW>;
-> +
-> +		vddio-supply = <&vreg_l14a_1p8>;
-> +
-> +		pinctrl-0 = <&ts_int_default &ts_reset_default>;
-> +		pinctrl-1 = <&ts_int_sleep &ts_reset_sleep>;
-> +		pinctrl-names = "default", "sleep";
-> +
-> +		touchscreen-size-x = <1080>;
-> +		touchscreen-size-y = <2246>;
-> +	};
-> +};
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+> Best regards,
+> Krzysztof
+> 
+
+Applied this patch to the IIO togreg branch initially pushed out as testing
+for 0-day to poke at it.
+
+I'm doubtful this one will make the upcoming merge window but seems unlikely
+the rest will all make it either so that shouldn't be a problem.
+
+Jonathan
