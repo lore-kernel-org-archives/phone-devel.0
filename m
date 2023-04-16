@@ -2,121 +2,111 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E0E5C77B79
-	for <phone-devel@archiver.kernel.org>; Sat, 15 Apr 2023 16:49:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DF962C77B72
+	for <phone-devel@archiver.kernel.org>; Sun, 16 Apr 2023 08:41:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229579AbjDOQtq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 15 Apr 2023 12:49:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56350 "EHLO
+        id S230181AbjDPIls (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 16 Apr 2023 04:41:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229468AbjDOQtq (ORCPT
+        with ESMTP id S229976AbjDPIlq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 15 Apr 2023 12:49:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52245E1;
-        Sat, 15 Apr 2023 09:49:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E14D86118B;
-        Sat, 15 Apr 2023 16:49:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A85C433EF;
-        Sat, 15 Apr 2023 16:49:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1681577384;
-        bh=HzfT7C9pxZUKfBOzD0bn0wIBd5ovSSU49etyxQMRn4s=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=aBYgLqucsTTarCKTBL3wdnwg6i8sqBa804UW2EET+CKcXHntwF3129XIKFpOEhB74
-         5bj5xri8We8v9A+D08305ckbNN91Rtfm/Gr4W4awR6XD0C8iqS7/HvhON+nfc80uYB
-         Y9ykEn/YDDdsiwALjAy4XMLfafRnUV6reZ8hliEb1BeCr7M+sHsS4C2R6Yf+jpOGVX
-         1AcI3IbBksAxbLurcRqzVEeLm0z9G7JHmwE5q536S1/xasJpntZaTWZKzEnDRR4EVC
-         YjIrBDvqauhSg5VPr2ahuQM9ByvNSG34ccFZMG+Ts6vgDM34WH4eXx29T5ZTT9jOVk
-         XRmheW/YpuW5A==
-Date:   Sat, 15 Apr 2023 17:49:43 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Marijn Suijten <marijn.suijten@somainline.org>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        Sun, 16 Apr 2023 04:41:46 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCD1E52
+        for <phone-devel@vger.kernel.org>; Sun, 16 Apr 2023 01:41:45 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id q23so47048744ejz.3
+        for <phone-devel@vger.kernel.org>; Sun, 16 Apr 2023 01:41:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681634503; x=1684226503;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=z38YOwonjh+CuGoHVNF1HUAwyUw8JsKrwMe04nmWqWU=;
+        b=XtL7I8EJa4TnDjPqg/bkL7het+eZwnY7c+vq/oR2ufKb0V0wVxGLOZPHOCrhLp/MLY
+         nQac8gaM2+kSZzQMExRz5WmhDKRKEwtQDMuzGoYCzPz/ABG/m/RmWD00gis9vZyn+8fI
+         QqfIJA1OfwTSEDH8Bq/9e8CvppGUejeR5PnKTUicmjUqpEph6LPByXk8FWl5s8v4s1TQ
+         B7kUj9Y+8d3E5VtFUDtzmuZodOqOXYGrSPGTsqj32s0E9JYBgn77+s5Hw0bLi8Dkbr4m
+         QUHb0zcNiDhtcKAHF/IUpNbEohIY694N/DlEvVye1C4+PFpvEFln0yhFvsL2wu4AoNIC
+         1J5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681634503; x=1684226503;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=z38YOwonjh+CuGoHVNF1HUAwyUw8JsKrwMe04nmWqWU=;
+        b=enmcuHoiCv8IWWGHYfhKIKGQcoE2v0HNmEw+uDwAcVx3k9HuENDc4exlFtOTG741aa
+         Db8gWWFoLtNUb0L25unGMM1YIW0F2/uIG/5+Ec3m8N3eM12aI9cppxWMCaeDRLj32Xv+
+         b1kwJzTlztirbFslJKuTB7gJ7vsYNpJ29x3L283shklo+IGL79fVYRKq9NEJ8jynGNuq
+         uoYfFEbomrFwD5WqpToBpiKUPRS9Aj5BgFRFXYS1vgC6ryrRNIo72h245Ulcv/DdBCe/
+         ostO54IltMSHxfaRV+irZSUibpk06DsNsoWWUOf/fWA1SAMH7p0Pz3oGw5/AKwynLbxM
+         Q8oQ==
+X-Gm-Message-State: AAQBX9fjKw5r5quumjjbxdOTxsDqC2HOlVB0fVlHzhL6S35cqyhmR4EZ
+        2xfAxd1lx3OdjUM+UU6ALhEo3Q==
+X-Google-Smtp-Source: AKy350Zi0A5LLp8sg5agw1LU2VkgNVdoV04TQ1cymNV6El5KTnF+4ocfEanZIQeGs02EIhPW/yxFvw==
+X-Received: by 2002:a17:907:9010:b0:94e:bc04:1e19 with SMTP id ay16-20020a170907901000b0094ebc041e19mr2881822ejc.71.1681634503524;
+        Sun, 16 Apr 2023 01:41:43 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:29dd:ded4:3ccc:83db? ([2a02:810d:15c0:828:29dd:ded4:3ccc:83db])
+        by smtp.gmail.com with ESMTPSA id hu14-20020a170907a08e00b0094f2d38896esm1498033ejc.65.2023.04.16.01.41.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 16 Apr 2023 01:41:43 -0700 (PDT)
+Message-ID: <b6f47412-591d-6b89-2096-c5e5b72d8e17@linaro.org>
+Date:   Sun, 16 Apr 2023 10:41:41 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 0/5] Add support for Focaltech FTS Touchscreen
+Content-Language: en-US
+To:     Joel Selvaraj <joelselvaraj.oss@gmail.com>,
+        Caleb Connolly <caleb@connolly.tech>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] dt-bindings: iio: adc: Require generic `channel`
- name for channel nodes
-Message-ID: <20230415174943.2b731203@jic23-huawei>
-In-Reply-To: <c653un4emxud34gpo5np7jtnhsym5thpivjwcgpm2vsft2q2qj@s66thxonibjc>
-References: <20230410202917.247666-1-marijn.suijten@somainline.org>
-        <20230410202917.247666-6-marijn.suijten@somainline.org>
-        <20230412212756.0b4b69f3@jic23-huawei>
-        <c653un4emxud34gpo5np7jtnhsym5thpivjwcgpm2vsft2q2qj@s66thxonibjc>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Jeff LaBundy <jeff@labundy.com>,
+        Markuss Broks <markuss.broks@gmail.com>,
+        Jean Delvare <jdelvare@suse.de>,
+        Max Krummenacher <max.krummenacher@toradex.com>,
+        Chris Morgan <macromorgan@hotmail.com>,
+        Job Noorman <job@noorman.info>,
+        Alistair Francis <alistair@alistair23.me>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Maxime Ripard <mripard@kernel.org>
+Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230415020222.216232-1-joelselvaraj.oss@gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230415020222.216232-1-joelselvaraj.oss@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 12 Apr 2023 22:31:46 +0200
-Marijn Suijten <marijn.suijten@somainline.org> wrote:
-
-> On 2023-04-12 21:27:56, Jonathan Cameron wrote:
-> > On Mon, 10 Apr 2023 22:29:17 +0200
-> > Marijn Suijten <marijn.suijten@somainline.org> wrote:
-> >   
-> > > As discussed in [1] it is more convenient to use a generic `channel`
-> > > node name for ADC channels while storing a friendly - board-specific
-> > > instead of PMIC-specific - name in the label, if/when desired to
-> > > overwrite the channel description already contained (but previously
-> > > unused) in the driver [2].
-> > > 
-> > > The same `channel` node name pattern has also been set in
-> > > iio/adc/adc.yaml, but this generic binding is not inherited as base for
-> > > qcom,spmi-vadc bindings due to not having any other generic elements in
-> > > common, besides the node name rule and reg property.
-> > > 
-> > > Replace the .* name pattern with the `channel` literal, but leave the
-> > > label property optional for bindings to choose to fall back a channel
-> > > label hardcoded in the driver [2] instead.
-> > > 
-> > > [1]: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/T/#u
-> > > [2]: https://lore.kernel.org/linux-arm-msm/20230116220909.196926-4-marijn.suijten@somainline.org/
-> > > 
-> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>  
-> > 
-> > There are various ways we could pick up this patch set...
-> > a) Binding changes via individual subsystem trees,
-> > b) All in on go.
-> > 
-> > I think it's late to guarantee to land the changes from (a) in the coming merge window
-> > so if someone else is willing to do (b) then
-> > 
-> > Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Otherwise we can do (a) early in next cycle.  Feel free to poke me if we are doing (b)
-> > and I seem to have forgotten to pick up this patch!  
+On 15/04/2023 04:02, Joel Selvaraj wrote:
+> Changes in v3:(Suggested by Krzysztof Kozlowski and Konrad Dybcio)
+> --------------
+> - dts: removed the invalid "input-enable" property
+> - dts: replace interrupts with interrupts-extended
+> - dts: removed redundant dma configuration
+> - dts: reorder pinctrl and pinctrl-names
+> - bindings: moved unevaluatedProperties after required
+> - bindings: make interrupts a required property (new change from my end)
+> - bindings: update example based on dts changes
 > 
-> Thanks!  I hope we don't get many conflicts (+ new bindings adhering to
-> the old(er) formats) otherwise I'll resend if we do (a).  Around what
-> time would be good, rc2?
+> I have made the interrupts a required property in the bindings as the driver
+> will not function without an interrupt. Because of this new change, I have not
 
-Sure. If rebase is needed send a v5 with that done.  If not, a simple
-reminder reply to this thread will probably work.
+Driver does not really matter for the bindings. The BSD driver for
+example might function without an interrupt, so why requiring it? The
+reason for requiring or not is in the hardware and how it works.
 
-Thanks,
-
-Jonathan
-
-> 
-> [..]
-> 
-> - Marijn
+Best regards,
+Krzysztof
 
