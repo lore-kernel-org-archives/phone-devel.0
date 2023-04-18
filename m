@@ -2,159 +2,106 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 695D6C77B78
-	for <phone-devel@archiver.kernel.org>; Tue, 18 Apr 2023 00:58:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9E61C6FD18
+	for <phone-devel@archiver.kernel.org>; Tue, 18 Apr 2023 12:02:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229882AbjDRA6f (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 17 Apr 2023 20:58:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33020 "EHLO
+        id S231663AbjDRMCG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 18 Apr 2023 08:02:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbjDRA6e (ORCPT
+        with ESMTP id S230384AbjDRL7t (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 17 Apr 2023 20:58:34 -0400
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 469732D77;
-        Mon, 17 Apr 2023 17:58:33 -0700 (PDT)
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-187ec6a5504so76669fac.2;
-        Mon, 17 Apr 2023 17:58:33 -0700 (PDT)
+        Tue, 18 Apr 2023 07:59:49 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98E3D83D4;
+        Tue, 18 Apr 2023 04:56:41 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id o9-20020a05600c510900b003f17012276fso3970803wms.4;
+        Tue, 18 Apr 2023 04:56:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681819000; x=1684411000;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=T9oSeZGJaO3G9BEkK1S2Mgd4sINffRf+WgKyKKehfmI=;
+        b=EXHJXEGXy79uUSSwalxffycq7KWxOyLGcigWWbEvbe4A/tHuCrJx3bi9fyVr30xbvt
+         2ohr0yYvurqh89V5/02Q1Lxqa1lcYhqwJT9gY2OkB9rEfs9TqLQHFDOXD5xueuIZKLIi
+         0enhdobg6t6Pn+69lbxkw5PDTNIKBWJC2ntey0mtiKfSW2kKhayCaxskZc6WC/vPvrhO
+         bC1syUexCP1omtV1npNjjcM6CzulU+hIVBIJEb6WXUrn9tqFidigErpnMAl0gPt0EZ8e
+         vjD7hAefkxeTGZK7t8fEssZ0/C8eTQFa8cG8kZc3cSanJT3q9kEr34rQ5C6FT2zXaJ4j
+         khRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681779512; x=1684371512;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jXYI9t+uhIrIqHGofk7KodCSd0KD+a+f9muMXWOvwoI=;
-        b=U/kiNfVEphqUDGth3tPXB07gieCggyJdBJJrHUerrjACirvjhZ0JPcRQjI/CCFKv2Z
-         2HhP40y1PMB45TbbpZ6eb9HWYPKQyYgcMqAZAFD5bcXEUSmbmAnkxtFAdJt5UOfKWeQc
-         /kJMAb4hhCxth66VNPguFRQ/FkdOe5FjtFLyhEBoQ8q0K6y3I/tG342xqlFnk+zYqs8t
-         yi41sRCnqoqn4injBBmEHZmbg9Ef3+tZV69xMuIjd2yEtiUPBCpbFRb3TI5MwZ8Z1O5M
-         K1g7ugBf5XXi2Vo7xsS6APfS4e0T9pUAMmnkdBv9Bt29sJWDvp2IbRWO/Ty4wq3dsUUk
-         TbFg==
-X-Gm-Message-State: AAQBX9flonhSX8oclhpE7CpzCkD3nZpk7sB8oUnHBeOrs/PC6Gu9QCnd
-        gEhwV4LDlce67i71606lyLNpcH3ukg==
-X-Google-Smtp-Source: AKy350bPqPxucQ0TtF2gVHTpq49ndfYCjdXmxQpqh32tloC6VCltN0j5EIggvm/aGOCZJnEkxuXLNQ==
-X-Received: by 2002:a05:6870:65a0:b0:183:fab4:efb9 with SMTP id fp32-20020a05687065a000b00183fab4efb9mr254235oab.43.1681779512502;
-        Mon, 17 Apr 2023 17:58:32 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id 125-20020a4a0d83000000b005251e3f92ecsm5306962oob.47.2023.04.17.17.58.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Apr 2023 17:58:32 -0700 (PDT)
-Received: (nullmailer pid 3814440 invoked by uid 1000);
-        Tue, 18 Apr 2023 00:58:30 -0000
-Date:   Mon, 17 Apr 2023 19:58:30 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Matthias Brugger <matthias.bgg@gmail.com>
-Cc:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>, p.zabel@pengutronix.de,
-        linux-pwm@vger.kernel.org, kernel@collabora.com,
-        chunkuang.hu@kernel.org, linux-phy@lists.infradead.org,
-        ck.hu@mediatek.com, jitao.shi@mediatek.com,
-        houlong.wei@mediatek.com, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, vkoul@kernel.org,
-        chunfeng.yun@mediatek.com, daniel@ffwll.ch,
-        linux-mediatek@lists.infradead.org, xinlei.lee@mediatek.com,
-        airlied@gmail.com, u.kleine-koenig@pengutronix.de,
-        linux-arm-kernel@lists.infradead.org,
-        krzysztof.kozlowski+dt@linaro.org, kishon@kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, thierry.reding@gmail.com,
-        devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        jassisinghbrar@gmail.com
+        d=1e100.net; s=20221208; t=1681819000; x=1684411000;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T9oSeZGJaO3G9BEkK1S2Mgd4sINffRf+WgKyKKehfmI=;
+        b=BqlCc2Jnr8JrwVfLfs3xUtFGDcGJZP90sViwaHXghBABSAPG3w9yxgJjeN6Zws1jJs
+         9tDTAuxWeRH4x9cJU8EtaNL26EIVGqYqpX1AVq0oLUWYJGFtfmylAy7L9ZlQhTS6gYLU
+         ctIAB2YOFGjSoU9sRml9i/3doC3ccP+B1SUgNrFh9J7TtszrIR0u8ApTztCbzm5urDsP
+         NeRFHXSa0n7Lbq3TFMXpZ/qV83g7Yf4zpDERVg6Mg28fh6I+M8MqLR4jQ05ObfmtiTsr
+         r3Osc7tOk/9OO7ihIHF0Fvgz1KB94L3jZ2ewAoHL/patqzXE5/Qola8ZkHclaaWE/144
+         ZYwQ==
+X-Gm-Message-State: AAQBX9duWhOPzwOfzGC3Q76dqUMQQwu7gC9Bez3bMeIZDgs5JtkMd1ik
+        s5KGjCVk8uDfJKXVsOUtVCk=
+X-Google-Smtp-Source: AKy350bbx0bJ/4L8a44U/aCtvaM2RV9kN1tMXWOPsHUuu0HTywAsjz+gzSejmnkzvEnhtHbDS3+jEw==
+X-Received: by 2002:a05:600c:b47:b0:3f1:6cdf:93ac with SMTP id k7-20020a05600c0b4700b003f16cdf93acmr7012569wmr.17.1681819000111;
+        Tue, 18 Apr 2023 04:56:40 -0700 (PDT)
+Received: from [192.168.2.177] ([207.188.167.132])
+        by smtp.gmail.com with ESMTPSA id v3-20020a1cf703000000b003f04646838esm14855802wmh.39.2023.04.18.04.56.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Apr 2023 04:56:39 -0700 (PDT)
+Message-ID: <1e55328e-aaa2-78e3-ddc8-c2717f6283f5@gmail.com>
+Date:   Tue, 18 Apr 2023 13:56:36 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
 Subject: Re: [PATCH 01/27] dt-bindings: pwm: Add compatible for MediaTek
  MT6795
-Message-ID: <20230418005830.GA3802030-robh@kernel.org>
+Content-Language: en-US
+To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Cc:     p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        jassisinghbrar@gmail.com, chunfeng.yun@mediatek.com,
+        vkoul@kernel.org, kishon@kernel.org, thierry.reding@gmail.com,
+        chunkuang.hu@kernel.org, ck.hu@mediatek.com,
+        jitao.shi@mediatek.com, xinlei.lee@mediatek.com,
+        houlong.wei@mediatek.com, dri-devel@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org,
+        kernel@collabora.com, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
 References: <20230412112739.160376-1-angelogioacchino.delregno@collabora.com>
  <20230412112739.160376-2-angelogioacchino.delregno@collabora.com>
- <168133318912.3190428.16120880490622098945.robh@kernel.org>
- <5c0bc1f2-5917-ab84-8b0b-f2adc48f8be7@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5c0bc1f2-5917-ab84-8b0b-f2adc48f8be7@gmail.com>
+ <20230414054345.ip3ug53ivr3elbpy@pengutronix.de>
+From:   Matthias Brugger <matthias.bgg@gmail.com>
+In-Reply-To: <20230414054345.ip3ug53ivr3elbpy@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Apr 13, 2023 at 10:52:28AM +0200, Matthias Brugger wrote:
+
+
+On 14/04/2023 07:43, Uwe Kleine-König wrote:
+> Hello,
 > 
+> On Wed, Apr 12, 2023 at 01:27:13PM +0200, AngeloGioacchino Del Regno wrote:
+>> Add a compatible string for MediaTek Helio X10 MT6795's display PWM
+>> block: this is the same as MT8173.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 > 
-> On 12/04/2023 23:03, Rob Herring wrote:
-> > 
-> > On Wed, 12 Apr 2023 13:27:13 +0200, AngeloGioacchino Del Regno wrote:
-> > > Add a compatible string for MediaTek Helio X10 MT6795's display PWM
-> > > block: this is the same as MT8173.
-> > > 
-> > > Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> > > ---
-> > >   Documentation/devicetree/bindings/pwm/mediatek,pwm-disp.yaml | 4 +++-
-> > >   1 file changed, 3 insertions(+), 1 deletion(-)
-> > > 
-> > 
-> > Running 'make dtbs_check' with the schema in this patch gives the
-> > following warnings. Consider if they are expected or the schema is
-> > incorrect. These may not be new warnings.
-> > 
+> Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 > 
-> These are not new warnings. I think we should address them in a different
-> patch. In my opinion it shouldn't block this patch. In the end it only add
-> as compatible here.
-
-I disagree if it's the schema that needs fixing. From the looks of 
-it, I'd say it's probably at least some schema fixes needed.
-
+> I assume this patch will go in together with the other patches in this
+> series via an ARM tree? (I.e. not via pwm.)
 > 
-> Regards,
-> Matthias
-> 
-> > Note that it is not yet a requirement to have 0 warnings for dtbs_check.
-> > This will change in the future.
-> > 
-> > Full log is available here: https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230412112739.160376-2-angelogioacchino.delregno@collabora.com
-> > 
-> > 
-> > pwm@1100e000: 'power-domains' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-Are you saying the MT6795 has no power-domains?
+That's totally fine, I'll take this patch through my tree once everything is ready.
 
-> > 	arch/arm64/boot/dts/mediatek/mt8183-evb.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-burnet.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-cozmo.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-damu.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel14.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel14-sku2.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel-sku1.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel-sku6.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-fennel-sku7.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-juniper-sku16.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kappa.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-kenzo.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-willow-sku0.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi-willow-sku1.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-kakadu-sku22.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama-sku16.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama-sku272.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama-sku288.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-kodama-sku32.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-krane-sku0.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-kukui-krane-sku176.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8183-pumpkin.dtb
-> > 
-> > pwm@1400a000: compatible: 'oneOf' conditional failed, one must be fixed:
-> > 	arch/arm/boot/dts/mt7623n-bananapi-bpi-r2.dtb
-> > 	arch/arm/boot/dts/mt7623n-rfb-emmc.dtb
-> > 
-> > pwm@1401e000: compatible: 'oneOf' conditional failed, one must be fixed:
-> > 	arch/arm64/boot/dts/mediatek/mt8173-elm.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8173-elm-hana-rev7.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8173-evb.dtb
-> > 
-> > pwm@1401f000: compatible: 'oneOf' conditional failed, one must be fixed:
-> > 	arch/arm64/boot/dts/mediatek/mt8173-elm.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8173-elm-hana-rev7.dtb
-> > 	arch/arm64/boot/dts/mediatek/mt8173-evb.dtb
-
-The commit message says the MT6795 is the same as the MT8173. Which is 
-wrong here, the dtb or the schema? 
-
-Rob
+Regards,
+Matthias
