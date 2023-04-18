@@ -2,35 +2,35 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C978FC7EE29
-	for <phone-devel@archiver.kernel.org>; Tue, 18 Apr 2023 16:44:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EEC1C6FD18
+	for <phone-devel@archiver.kernel.org>; Tue, 18 Apr 2023 16:44:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232628AbjDRQoT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 18 Apr 2023 12:44:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56030 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232611AbjDRQoR (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
+        id S229813AbjDRQoR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Tue, 18 Apr 2023 12:44:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55986 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230445AbjDRQoP (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 18 Apr 2023 12:44:15 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 885FB46B9;
-        Tue, 18 Apr 2023 09:44:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38D2710F2;
+        Tue, 18 Apr 2023 09:44:14 -0700 (PDT)
 Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id C2B92CA700;
-        Tue, 18 Apr 2023 16:43:43 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 4ADABCA65D;
+        Tue, 18 Apr 2023 16:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1681836224; bh=EZNvsJaGqI15hVmiKHgA/+7Bi1oXLhHkx00K1B0Jbu0=;
+        t=1681836222; bh=cf8LvtTKNrXgOVqnfPBTTBrobXcm7GixsxPTc9CbZI8=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=x7CkWvNLVXqQP/qw7aGXRR6b5DyDgEIMGnw3chQf9kh2PBNObaGg6WwPfdTbuNNDQ
-         DqwfyjR3JawYPHmu2WfV3qxRKF+QzvA8IHWzA6Xa11vNCkJdJA3uyKxJ4gYlJOvZRC
-         8vVXMBgKmOCU6hBrdkDFEU61Jk9VSiICDJzZ+a7o=
+        b=YDpqgryyebKOo21fnxTWC+nCRdpBuErzrEBraHI1qLBIYwfGauslOiJs4u8WoaSZC
+         FvqEDtkNCOfC4+AiWDID9IIK/8XjnkDoZTIqUbd6krN/FY97nkr5lKVPA09pyIqQea
+         2SKm++LAM+o6YXk7GnM94YOxc9k7CmEE9i7PcmE0=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Tue, 18 Apr 2023 18:43:20 +0200
-Subject: [PATCH v2 4/8] leds: qcom-lpg: Add support for PMI632 LPG
+Date:   Tue, 18 Apr 2023 18:43:17 +0200
+Subject: [PATCH v2 1/8] dt-bindings: pinctrl: qcom,pmic-gpio: add PMI632
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230414-pmi632-v2-4-98bafa909c36@z3ntu.xyz>
+Message-Id: <20230414-pmi632-v2-1-98bafa909c36@z3ntu.xyz>
 References: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
 In-Reply-To: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -50,73 +50,61 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
         linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
         linux-doc@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1865; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=EZNvsJaGqI15hVmiKHgA/+7Bi1oXLhHkx00K1B0Jbu0=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkPsi5PovavgvOe36uGVHJ9jKT8cH/ZKTKo1/kQ
- pVLfgx/5H2JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZD7IuQAKCRBy2EO4nU3X
- Vvn4EADV1UQr1t6ADhJU+xkF790x06twg+ISisFYA5kPrZRT+cArRKWl80LMlxLpYJurJ6ZqmN0
- bZ82Ej7RgNGhdQPCxzHrnQkMo1GCAnUuxfjPJOnf+AkHeQyRR/yThzvOLkW2btT3KEGPkihhvVA
- yvl6VmSGpkNiwLKAnws5Niqnq1I1wL7jGo+QRuOhSk7FlCgUAckdP4aeFqX3u3qx3zNj7BAkqp/
- DcjgJx0cu/m3emNy+JKrZbZNuVwOZ5EIsYpy0niCtcjho5kyoiYIqCQfWR11K1Wm+urPbGSm9G2
- tq/TrNJSgUUK3fawqte11AQWUqBpKWocITGCofrOS15kxwVnniMWYPZ45cNTd5M8o1SBaR+KqV/
- wJ7WdfgABIRpqco6zTMr5yLzQW4Ka7S/ywNKoOjIv962gZv6YZC4JohqO0b06LjyEuCeHkYiLWd
- s0fMmvXY7CyafClWWmKltPnrJlpbBwMLd/HBpmgdag2+OYN8iDtu3cOjQ27ubMeeHCIUgbqr4ia
- HqdVbb6ANHlIysbGik39Qr2kP0aVUlYbEcG9/ChLV4SHe2bbq5l/RMQnjZnTKHS7+nYVXesqDQc
- L1r7pVT0CdmgVL7YEheQdm9L9c8AecXHL+YMvkjFCGfWe2+hvmfShf3ZiYdqQVPWb+FqXbUTHX7
- ZaFEBx5Wg/UIetg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1358; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=cf8LvtTKNrXgOVqnfPBTTBrobXcm7GixsxPTc9CbZI8=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkPsi3SNkpS8d/Eulaj4wZnh0Vn8qnQgZ954mj5
+ +KwnBfY12KJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZD7ItwAKCRBy2EO4nU3X
+ VoovD/wLzln3jpbza/IVaQxcgbOH2+0Y3AFysC0yUZYVdkEePlQ1Qt236/z8G4cgwqB/qNBovtD
+ /t6JNhmW+b8Oe7z1xG7ylpBwtXv7orb6l6D44xfmckJx1ifbQf57ybSaDUM7QLTBT752ceGPg+O
+ GW1AP3skMPHSBpum9O5fhHtOS/u9B5g9N7dObLV6boE35XvExofQdFNvz5LX5MplZVGGWLQX9z9
+ fpsMJLaWg9XqBEUZAq+uJydwKfHb+ds1M9jGVK26S9w59BUizCNi4gA1+hCopJJhSELJeiwgbnM
+ nwth7Z0/4GTdq90HvQIcipsh7nA2yEZgUjl5DQnbbplbxNMLIJzQCSWARcHPYO231YFOOCflc+A
+ kig4tjUPSACivzVLBLVGICxe6rOkJHLZsaNcln6nwusl+N+0e4nMVtfTmerwOB1VW7uJxb03b4g
+ 2iB21ANIG/xCjY+JdTQvrRbJXO3fqzmAlGYEwJMDg42Ag2M8NJc+C51KwcA6YZjoc3HMzAiLEaY
+ K4BMQOFg4USWURIWyDjNnYrC7jNtFFEZsHJBTggwPHRqKIUQSe4EWKAt08BS3/B3yFDFmoF1uOZ
+ nuBCfu+H5fX7eKwpQBZLt35HMHJSK+3VLzn5UqRH6jM8B0HHdaLhe4PNcue83shNiLTa7ACZPip
+ bm97szTkULXMUqg==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The PMI632 PMIC contains 5 PWM channels, 3 of which can be used for
-LEDs.
+Document the 8 GPIOs found on PMI632.
 
-For the LED pattern it doesn't have LUT like other PMICs but uses SDAM
-instead. This is not currently implemented in the driver but since LPG
-works fine without it, add support for the PMIC now.
-
-Acked-by: Pavel Machek <pavel@ucw.cz>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- drivers/leds/rgb/leds-qcom-lpg.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
-index 67f48f222109..51763ecb8c1e 100644
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -1353,6 +1353,20 @@ static const struct lpg_data pm8994_lpg_data = {
- 	},
- };
- 
-+/* PMI632 uses SDAM instead of LUT for pattern */
-+static const struct lpg_data pmi632_lpg_data = {
-+	.triled_base = 0xd000,
-+
-+	.num_channels = 5,
-+	.channels = (const struct lpg_channel_data[]) {
-+		{ .base = 0xb300, .triled_mask = BIT(7) },
-+		{ .base = 0xb400, .triled_mask = BIT(6) },
-+		{ .base = 0xb500, .triled_mask = BIT(5) },
-+		{ .base = 0xb600 },
-+		{ .base = 0xb700 },
-+	},
-+};
-+
- static const struct lpg_data pmi8994_lpg_data = {
- 	.lut_base = 0xb000,
- 	.lut_size = 24,
-@@ -1436,6 +1450,7 @@ static const struct of_device_id lpg_of_table[] = {
- 	{ .compatible = "qcom,pm8916-pwm", .data = &pm8916_pwm_data },
- 	{ .compatible = "qcom,pm8941-lpg", .data = &pm8941_lpg_data },
- 	{ .compatible = "qcom,pm8994-lpg", .data = &pm8994_lpg_data },
-+	{ .compatible = "qcom,pmi632-lpg", .data = &pmi632_lpg_data },
- 	{ .compatible = "qcom,pmi8994-lpg", .data = &pmi8994_lpg_data },
- 	{ .compatible = "qcom,pmi8998-lpg", .data = &pmi8998_lpg_data },
- 	{ .compatible = "qcom,pmc8180c-lpg", .data = &pm8150l_lpg_data },
+diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
+index 36c6435cfd0a..eaadd5a9a445 100644
+--- a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
+@@ -52,6 +52,7 @@ properties:
+           - qcom,pm8994-gpio
+           - qcom,pm8998-gpio
+           - qcom,pma8084-gpio
++          - qcom,pmi632-gpio
+           - qcom,pmi8950-gpio
+           - qcom,pmi8994-gpio
+           - qcom,pmi8998-gpio
+@@ -174,6 +175,7 @@ allOf:
+               - qcom,pm8350b-gpio
+               - qcom,pm8550ve-gpio
+               - qcom,pm8950-gpio
++              - qcom,pmi632-gpio
+     then:
+       properties:
+         gpio-line-names:
+@@ -435,6 +437,7 @@ $defs:
+                  - gpio1-gpio22 for pm8994
+                  - gpio1-gpio26 for pm8998
+                  - gpio1-gpio22 for pma8084
++                 - gpio1-gpio8 for pmi632
+                  - gpio1-gpio2 for pmi8950
+                  - gpio1-gpio10 for pmi8994
+                  - gpio1-gpio4 for pmk8350
 
 -- 
 2.40.0
