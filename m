@@ -2,98 +2,109 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89E05C7EE33
-	for <phone-devel@archiver.kernel.org>; Tue, 18 Apr 2023 16:44:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF86AC77B75
+	for <phone-devel@archiver.kernel.org>; Tue, 18 Apr 2023 21:25:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232636AbjDRQoU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 18 Apr 2023 12:44:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56042 "EHLO
+        id S232854AbjDRVZD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 18 Apr 2023 17:25:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232616AbjDRQoS (ORCPT
+        with ESMTP id S231551AbjDRVZB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 18 Apr 2023 12:44:18 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9210061BA;
-        Tue, 18 Apr 2023 09:44:16 -0700 (PDT)
-Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 1796FCAB0E;
-        Tue, 18 Apr 2023 16:43:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1681836224; bh=XV03liIFdzm84RLgEGuEQsAaPXKV3OiKBtrrr/U4Fxs=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=PJqMvZiw2T15SsZgBT6ZQuOAb0jXCbhM8lZwipXMjHnUT992YnCreGU852wTZK1Zx
-         oKMf1hxmV8SCr+D/1V9436PeCP2GtXQg7AQgurMYvs0FBP2bZ7Js23T7Z+SlhnClNG
-         /z5jtxjoUP8Ys+iS+4dkcVXcrEMeo/MjS0j0WG8c=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Tue, 18 Apr 2023 18:43:21 +0200
-Subject: [PATCH v2 5/8] dt-bindings: mfd: qcom-spmi-pmic: Add PMI632
- compatible
+        Tue, 18 Apr 2023 17:25:01 -0400
+Received: from sonic307-54.consmr.mail.ir2.yahoo.com (sonic307-54.consmr.mail.ir2.yahoo.com [87.248.110.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE772B745
+        for <phone-devel@vger.kernel.org>; Tue, 18 Apr 2023 14:24:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1681853093; bh=gdU7qqet/Ydr3tXK9bfNbFkuWA+0NWpwqLXc4xK5Tow=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=VndfbIWGjeTGZv/9fny8Qspxcnl89QCJ1tVeVzp+5pZGGNqZ7B8fGyrpsT0XarhkHFHCez8L55sbf9uLoQHtn+WgeyqzypoSpGNMOdcLEJh57gI7IEFc5JSvolnPtbZI45xbz9/3IoJtn6L7gvLrPe/U29H7B5IpDd+xbl1pz6oFnhgVd+8lgYpUXjvln0ryTV6TEjJQMPUo/Op1RK7a4DQpcjtKINm5c9I2lHzm6L8ufiod2lLg7mc5LTv6hfgTo/JPcfLJgpsReiLnDn2FxmlsILuqihD9bnoKpBur6edwDcWpfD96tuuQIqix/kJdNTybV4hviia6NTlmtudUfQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1681853093; bh=gYQxMuH/eHVu0WTkSRf2eXxd22ZMm6D+vJVurJ6Oobs=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=WsQyUsh9qviSwoEP73Bw7L3rpE1oPDqqchnRU7CYexWeFbZrGcHeFJlr3Hv9DfJRMcohL4gCrNuWzrvKedAiQShRQOvznT989E8Zx3PPR6U/C53z2OwuW2nW8ro8/87boIv4AYjEJwzfbel3xSQlS3DUabydYAVvRYLIOkMqMNOmAbDFNc/GTTimPhbwiScjpqpwgdWThY8hHFSxS18aLrUudlTzUdKk+zWXokeeG3nH3F1YZ7/y5tLJtzNTgvfBcJAiXvGvKI0vHx8RrjpnzKb9iXt9on/abHeweD0bihkb8JJPUZ37gz/cH23+LUROhqkWC2G0YFeQIvvEO3HC1w==
+X-YMail-OSG: AAOw1xUVM1kBgtadGQ1pt5_ztt8tI9OXA96HYvxTh5lYgGD6oOgv6rknNpLFZek
+ bIwbiy442xM10Hsb4ZxuTtz7N0mycF1u9WMN0t9lR0vNO9ZxXJly8htydY2NH5bOrjfDkEEz_Ci2
+ hH6e2i.mT7xyAlpibz4ome6crIM_6cqKp1yr6mchi3PEDHwT8YDwLBRWU91Kz645As0vY7LevkpN
+ YWEuTcTJUiNhakjVlfnmEQNDb8Pj7poguWC632jKMxzz6P5ecJoRqc7Ujc10WBwVhUGWohwEkJ4V
+ umsVa9qKsH9h5CNSgjTm.cc4sQn2yW6VyNgfH4amwfuqcJrakQkrmCQ8lqKj2MpGFX99u8ndvRan
+ V.pbAHnEgQxo__RPGP9bSzWw2s5renDAnLtNSlRQ4a5I4JdAlBwtKOMPXESz8leydO5z8yOlS2Nf
+ MzKhgg0pWP6EHE4u_Jl9pyKdoIbZMYr94TK5t8NGwgy.SmmaJyVm8pC4jLrvz5StG7uf29WgF2mP
+ odK44TAB8YhxsxNfGyEsPn76Ck4ZF6j0JEmb46gkj3m.y8t0zRy1Phxq6mBF.PuvKk9vGRyhCYuG
+ BTdsOz7l_vpbVQWLe5s9XXXf.qCvHKAIQrlZFEFzCawYY994neNYy95e7ly3bPoDq4JYaymDqfZd
+ arfW458Q48X5KnpnnZiuCZ8XxIUVQ0q.OXY1lMNtzTwPfQnp88LgQGc8a.UOFEvEoZ6xZ6UW9USE
+ FC46bv4qhu9eLvYKQdQQzICogbyxPS1tdBWyWwln2PpgomOyuqdV6NHZd1ImBVGUwsDvDwBweEzd
+ BuQw2iBz0nKB8DTS6NO8.AFpbOz_xoFmXbtFdkWX.GCbd8sxtp.nJM76SsYLC.1uklJuEJHpDThe
+ wLWRstSrmrdlUVLsjj5wh6Sybbf0ulaS1fI86npAqF8CFltUUFt0TdRkEjFMX65HrBgWDdhzYZq.
+ trzPrJB3hBqsKeP.97_0nuHvmb1woPYOA_sp12OGYulndTFUo4lNt7klDn_2UUcJC2YPzXfIbqCt
+ FCVa5LowS0eCYALlQuQafU1AzT0dMITwgtjfAOdVpyvQeDRdqD1WEz2mD4TVhy9nL6H5K5WdLz8A
+ M9_urPpHzV9enNkajSLZ1ueBszgFxHEKLoqQSv5Ziasv6hAWFseP3g.xkTndoNnBaxMXCp.MeJCz
+ nZvnFz4_hywbQZSbmgaf8vIZkhbFxeip42xPIr.GfZYVCy5EVny40efjnRdJoQXCh.tyzJCmKxVe
+ 5.1KxXSr0bWkcTj0eZ88PHcLA2Hu6CIT3D5y.7epkz0vE3vA.5.UasuK_htf7tOQJQgANXC5S1YY
+ miVBikkU7M7tpwjDI.WwQK5ucmPPiDVjzTfWD_bejH5zmInh_bWZw_EP9WRh6PkqkHKlirrhibVH
+ IEUWHAOUtLtKpV7uq1FGuLHfztiJHmDFWO5rVf28.t1ixAsczMyRf0tgCZ5ZKdmJE4LvKjmxLw1I
+ tIufarPiSHGPmaFnkbUaXJ2yBPY6LIchBZ0aO6YsX4BMCeatT8HZP8enMn9rMEsDcTDVF0atsnvp
+ 9unC4D0ZeFWP31gsBDAIneQBt6LVMsEGjWmH4vFS1ZX5xWxa9xMrLG7tAcc3r1mScTUyeDc41FGH
+ 5IGU7o8T.xFkOqQB13zgUAsL6BeNfvMHP4ApAuGWfwHRcB4RdpGw0ZLpPNyguETbfVYxGIGnEz21
+ .QAT4PIMNH6Dx7H8oPRgW8n3PUOVYpOl4Mwo01E.fmp.e07EtkwYjRXpvn3J67bsn_XYT_hRyBx9
+ xNdxqL3yiIYaz7eAD4vyXY352FBnDlIFtoMaqfyms0lwl3ZEsmIyd8WvMYT14u.cWC5jVrXVztHa
+ RlScZqMzTE7.X_8RExy7vleVLRNLziJgqzuJpAEJekW16K403QxVi70SvnP2dJ_zlY2DIVmiolot
+ JgfENXf5Cmio6pLsZu8..GZIXvbTMmLx8tZicYuclDOcreLbjW4gC.lNsQYwgdL.5w637XSp3hdN
+ MIKRVt9ik06_oqR6ShSnfkVx931xD1N7RySdYVLDXKU5a.gmi3D_SceKS3SOeungnNEcW6mYcJIK
+ RbmlW9rzeUxbdyElRFqD8F.lldxS9uuv6HakIGFvV9U2GoMlKb6CScmkGLT5Mj4K62Kf2VkUoTUZ
+ IZwZSG0tGdGLUWpFnSGaG_.thSpZU7Z2WCxVlYVONEcnQlgKRFAKrI3EodGO.Gq3dBH7bsZFpHHi
+ xnITIbFeCsxjPMBrKHXlK0JpYKJwgiKQcjyD3xnjbvhwcrDY1mj.ZU50qKBxu1kRp6YOHuuji7aU
+ A6PQ5KcuOpFf0gSGnKj45CC9OZngCZFPq
+X-Sonic-MF: <jahau@rocketmail.com>
+X-Sonic-ID: 96fd7f1b-8654-4342-bdf4-fbff36d6f360
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ir2.yahoo.com with HTTP; Tue, 18 Apr 2023 21:24:53 +0000
+Received: by hermes--production-ir2-74cd8fc864-j696l (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 00cb710563690d82660d89732d517195;
+          Tue, 18 Apr 2023 21:24:52 +0000 (UTC)
+Message-ID: <e6cc8658-fe93-c2c0-603e-093cdafb3cca@rocketmail.com>
+Date:   Tue, 18 Apr 2023 23:24:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230414-pmi632-v2-5-98bafa909c36@z3ntu.xyz>
-References: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
-In-Reply-To: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v2 5/9] regulator: rt5033: Change regulator names to
+ lowercase
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>
-Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Beomho Seo <beomho.seo@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
+        ChiYuan Huang <cy_huang@richtek.com>, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-doc@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=858; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=XV03liIFdzm84RLgEGuEQsAaPXKV3OiKBtrrr/U4Fxs=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkPsi61IDWXg7B/k3RdNQJUEt9k5IZsJ6QSILTI
- HIUJ9eAAeCJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZD7IugAKCRBy2EO4nU3X
- VkjKEACJ7n6LVGtIzMkS5SM6uS2zZgTVbhzsNcQdiIbgWQh2EJjXeg+ZMbTghPxC4ekW+hLjDkO
- MiUrjqt1AdmxE/YAhllWZVYUm20a40dsfDjbGXPICo7wRC0O7fIhbWvfPaFkFtE3Frv5KoeJ+Ln
- D+4Du88rQSjhBvpVt7BN7hN5Q7+/DN9BZyhmYyVVXs9uqCSL99e4po/WLePo/L9bThK1pgUUnLk
- t5KFUxGGuhkcVF580gdAOdmiMCPPfJP9ghKFueQXq6rVqyk7lkCRmnZ+46TVEWIPGDy30I/GFHG
- jcV00tIb3Jvw73yZL/PpKCXHN0FQHkorMEKKiIkK3xYKuj+/EZ6Em3IziebFzTW6CxgK0uaGClO
- OWRM6tWVNa6l8MNQUWrww9iWZQSNVtgbGGGkQO9cGrD1pQwhg51UrHgqPliq0/nEhQ5PasSH8Bg
- M3NchvBVxdEM+8RatP20pibgw97Jr81pgNJ/fi4yyrQQlQu0gO0qlw8RxFMtzLyDxGVFdKTSBI/
- DiKiPpeBOhAWWKgNJuLBisSXGWJbqt5ht7mMkQSPtbwPIpGpriLRf5VWdEBecz7bmJab6zkOIQ1
- py61suEzWDmJeoywLL2Wxe/yPRZA7+N+DR8VNb8v7JzD3iO/g8XD3jfYdUPD+vemJzkQGMW2ihp
- h9iaMsCugLeyVCw==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1681646904.git.jahau@rocketmail.com>
+ <d4218947e354aee45589acb1060ce41727a26750.1681646904.git.jahau@rocketmail.com>
+ <19ceb0f6-1225-c8cb-1469-3d657e66d171@linaro.org>
+Content-Language: en-US
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <19ceb0f6-1225-c8cb-1469-3d657e66d171@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.21365 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Document support for the pmi632, often found with the sdm632 SoC.
+Hi Krzysztof,
 
-Acked-by: Pavel Machek <pavel@ucw.cz>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 1 +
- 1 file changed, 1 insertion(+)
+On 16.04.23 20:32, Krzysztof Kozlowski wrote:
+> On 16/04/2023 14:44, Jakob Hauser wrote:
+>> Lowercase is preferred for node names.
+> 
+> This will break all existing users. In-tree and out-of-tree. Where is
+> the binding update?
 
-diff --git a/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml b/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
-index 84620ebc1efe..09e7195c622b 100644
---- a/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
-+++ b/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
-@@ -71,6 +71,7 @@ properties:
-           - qcom,pm8998
-           - qcom,pma8084
-           - qcom,pmd9635
-+          - qcom,pmi632
-           - qcom,pmi8950
-           - qcom,pmi8962
-           - qcom,pmi8994
+In my reply to Rob's comments in v1 I was pointing out that this will 
+affect an existing driver. There was no reaction.
 
--- 
-2.40.0
+As far as I can see, there is no in-tree usage yet. Though I can't tell 
+about out-of-tree usage. Although if there is, adding the rt5033-charger 
+driver might already causes the need for changes.
 
+Well, to stay on the safe side, I'll drop this patch in v3 and will 
+change the bindings (patch 9) back to uppercase.
+
+Kind regards,
+Jakob
