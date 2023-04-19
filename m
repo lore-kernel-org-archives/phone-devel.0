@@ -2,128 +2,271 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C6EFC77B73
-	for <phone-devel@archiver.kernel.org>; Wed, 19 Apr 2023 08:43:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E92A7C77B73
+	for <phone-devel@archiver.kernel.org>; Wed, 19 Apr 2023 10:27:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232629AbjDSInB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 19 Apr 2023 04:43:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52540 "EHLO
+        id S231978AbjDSK1z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 19 Apr 2023 06:27:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232163AbjDSInA (ORCPT
+        with ESMTP id S230465AbjDSK1y (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 19 Apr 2023 04:43:00 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C626035B8
-        for <phone-devel@vger.kernel.org>; Wed, 19 Apr 2023 01:42:58 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id u3so27629738ejj.12
-        for <phone-devel@vger.kernel.org>; Wed, 19 Apr 2023 01:42:58 -0700 (PDT)
+        Wed, 19 Apr 2023 06:27:54 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EFF45BBA
+        for <phone-devel@vger.kernel.org>; Wed, 19 Apr 2023 03:27:52 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2a8c51ba511so18526631fa.1
+        for <phone-devel@vger.kernel.org>; Wed, 19 Apr 2023 03:27:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681893777; x=1684485777;
+        d=linaro.org; s=google; t=1681900070; x=1684492070;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=lutJ4X10eErUILwsgkdH5WmRxdvwhCW95FNaPAQ5mOk=;
-        b=XbNu4/AzTzgi+SMPQbP1NKUwDL7qbs11pGCy3FlTuVDrB/tkONF99YDMYrFTgCJZay
-         nm5867HkR9801Y9X4hWeCqe5CmHroUf2Kod7fd6qsN23Y3EvR3dPJTyVNo5HqhYYBcVR
-         ow/fFAOkxWUXfF5523e1xd0js0doDLYk5AsAAauarp+XpDTLOL7ddupMCOJDOLcKyyJW
-         VKN/GmVEio11aMHMf6KZHD+hTmMh/J/l9EklGPyax9AsgN+DieOlu7SErLZf7z91Abtp
-         i6BtWpdkeIzo2AI05bfzBuwZM621bN+jpV6+sdeQv6nfbvQDKk25ymPadmRcAShLFdJt
-         pi5g==
+        bh=tDd5mN3VS3Vj6X7xMYUn4KLaHr63M/aDSb54e2lT7f8=;
+        b=v4CgfFB1KweWmKC8lOdb58VUuOwsPnAbxhAOIoQnz9aNlCnwMnwema+HRDhueWBkIg
+         x9s1xhDkZwAla+lt3d1IawWzOlz4g2ivzYXsdzaDZA8mCmeuNp7LSk4McmBatz6eJewn
+         g6A8IryRDR24HAQAnbt84ypyaDHwcNMyhq2lkwvVOhWdbG1gFACv1aa/IJCEEdict8xE
+         iuvCwghsBhiNh8JOqjqElgSv33QRB0GGKQVRqZN4oHb0QNgiYamLW65OgXAt171LGOCy
+         Og9CPQR7DLrFNt2xXPmmT8+IZTKxtK6fzd/lq7f0eecDy3zsiTtQpqMRgWOiVDkrDDyS
+         jcvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681893777; x=1684485777;
+        d=1e100.net; s=20221208; t=1681900070; x=1684492070;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lutJ4X10eErUILwsgkdH5WmRxdvwhCW95FNaPAQ5mOk=;
-        b=NgkMFcBRdFjYtk5uHDf/Wb78LNcVbLVtH6rARlRZe0b/AOqwUUSMCcdaHqYDvmcYmn
-         Qj37kbnk5LmjKHLVekYkIdCFbGVPDZCxgNNr/dJU2UuUR/pF/sBdBWU6sevjAPJlhSLA
-         eXuUVEQ12qYT0SiqQ1t8ZECG4jgSrNXpZyAj0wXM97fx/5QEZxqi1m5RMSCPLs9IUQMX
-         K63BMblpzvZGmUzoXJEKSWT1RwL3FKJZX0cSh/Qm9Ezd/HYNdObCMxGpMjk+LfohwZrG
-         3TjQZC9OyFPyub3u5sLWq9JWQ2OsdllxhmrDHx9jjfoXF2byJ/vRBH+8XxLUwDvz3TNR
-         LFmQ==
-X-Gm-Message-State: AAQBX9ezNlwsQMzgeJK9zkMYemDFX8ttvgnbirEvvsKZveABWA8ENRnU
-        Kw30L+3zim0Zm0V61fxP2qjq4w==
-X-Google-Smtp-Source: AKy350YJCPwQqKeOuuIlGNWHxL0ygBdn8cM/uUi2NRApm7KlPPSaGoSd3IH6gCkL818yCt8UV4dZCw==
-X-Received: by 2002:a17:906:70d1:b0:94e:e859:8721 with SMTP id g17-20020a17090670d100b0094ee8598721mr17212622ejk.22.1681893777250;
-        Wed, 19 Apr 2023 01:42:57 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:15c0:828:62f5:eb43:f726:5fee? ([2a02:810d:15c0:828:62f5:eb43:f726:5fee])
-        by smtp.gmail.com with ESMTPSA id ww1-20020a170907084100b0094f2a03486esm5871556ejb.224.2023.04.19.01.42.56
+        bh=tDd5mN3VS3Vj6X7xMYUn4KLaHr63M/aDSb54e2lT7f8=;
+        b=kAY6ioK73r8yRG4/Q88Gl+mBBJ96P8J04kTcgYUS2pADGGfxj3v6SPn88Qw+B4sI8r
+         /hUQ9yRIglriqhQwONjg9BTcdkZ0fuAuVkVqfc2a86LcMqo2ml/uguzShBmHpRy0mlYY
+         hST9ejSFDiu+3jOqB1pX0mr2EKHOZgQSpOj5xFZYaXlVZj2bLGHHfcfTbRRt6vfUEj12
+         criyYMur3gXyvE5dXqcOt02ZFYgOPJzhcNOOoy8QR0ZvgvoZWL78UYbGE0GcDaYIfLtP
+         r353y3krQc1JC6y84NQBLTBxF46kGof7WS2Jhiaax+4yJ1nWg+J3fIHOzrXTdLIzC+s2
+         zSaw==
+X-Gm-Message-State: AAQBX9eDFc/uMKkauwJS7/SSCHRiqKIWeI5NkpM/gpsG5UcVjTn4MBi8
+        dw5GqbtJpoyMLjToaeGA/9cIng==
+X-Google-Smtp-Source: AKy350ZXceJp19cd10eLZOEKjNw4HzTu4LLGCryZVainNTw/H44zmT24et4GhMQFSDQOHtTm7nclAA==
+X-Received: by 2002:ac2:488f:0:b0:4e8:5e39:6238 with SMTP id x15-20020ac2488f000000b004e85e396238mr3105494lfc.42.1681900070268;
+        Wed, 19 Apr 2023 03:27:50 -0700 (PDT)
+Received: from [192.168.1.101] (abyj144.neoplus.adsl.tpnet.pl. [83.9.29.144])
+        by smtp.gmail.com with ESMTPSA id q12-20020ac25fcc000000b004eafa77e435sm2636220lfg.146.2023.04.19.03.27.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Apr 2023 01:42:56 -0700 (PDT)
-Message-ID: <a638055a-97c2-49ce-f301-45d0ce897df4@linaro.org>
-Date:   Wed, 19 Apr 2023 10:42:55 +0200
+        Wed, 19 Apr 2023 03:27:49 -0700 (PDT)
+Message-ID: <deabba9d-5f6c-06c0-22d0-9bebeef3ad15@linaro.org>
+Date:   Wed, 19 Apr 2023 12:27:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v2 9/9] dt-bindings: Add documentation for rt5033 mfd,
- regulator and charger
+ Thunderbird/102.9.1
+Subject: Re: [PATCH v2 6/8] arm64: dts: qcom: Add PMI632 PMIC
 Content-Language: en-US
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Beomho Seo <beomho.seo@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Raymond Hackley <raymondhackley@protonmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
-        ChiYuan Huang <cy_huang@richtek.com>, linux-pm@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
+Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <cover.1681646904.git.jahau@rocketmail.com>
- <9275af790e6e21b5cf661a2444effe4caf2be02e.1681646904.git.jahau@rocketmail.com>
- <5b41b54c-88d0-3666-9db2-9cbb90ba8183@linaro.org>
- <acb209ce-7cb6-9a07-c913-9931b980c8c7@rocketmail.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <acb209ce-7cb6-9a07-c913-9931b980c8c7@rocketmail.com>
+        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-doc@vger.kernel.org
+References: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
+ <20230414-pmi632-v2-6-98bafa909c36@z3ntu.xyz>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230414-pmi632-v2-6-98bafa909c36@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 18/04/2023 23:37, Jakob Hauser wrote:
 
->>> +properties:
->>> +  compatible:
->>> +    const: richtek,rt5033-charger
->>> +
->>> +  richtek,pre-microamp:
->>> +    description:
->>> +      Current of pre-charge mode. The pre-charge current levels are 350 mA to
->>> +      650 mA programmed by I2C per 100 mA.
->>
->> minimum:
->> maximum:
->> multipleOf: 100
->>
->> Same for other cases.
+
+On 18.04.2023 18:43, Luca Weiss wrote:
+> The PMI632, commonly found on SoCs with SDM632 has various standard
+> functions like ADC, GPIOs, LPG and more.
 > 
-> The "multipleOf: 100" doesn't seen appropriate to me when the choice is 
-> 350, 450, 550, 650. Those are not multiples of 100. It's more of a step 
-> size. I didn't find a general property for step size. Listing them as 
-> "enum" would be another possibility, I guess, but not an elegant one. 
-> Especially for property "richtek,const-microvolt" there are 30 
-> possibilities.
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+Looks good!
 
-Ahh, right. You can use enum here and min/max for other cases, where
-multipleOf cannot be used.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
->>> +  richtek,eoc-microamp:
->>> +    description:
->>> +      This property is end of charge current. Its level ranges from 150 mA to
->>> +      600 mA. Between 150 mA and 300 mA in 50 mA steps, between 300 mA and 600 mA
->>> +      in 100 mA steps.
->>> +    maxItems: 1
+Konrad
+>  arch/arm64/boot/dts/qcom/pmi632.dtsi | 165 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 165 insertions(+)
 > 
-> Here are two different step sizes. The first few are 50 mA steps (150, 
-> 200, 250, 300 mA) and then it changes to 100 mA steps (300, 400, 500, 
-> 600 mA). How to deal with that? Again I guess "enum" would be a 
-> possibility, but again not a nice one.
-
-enum
-
-Best regards,
-Krzysztof
-
+> diff --git a/arch/arm64/boot/dts/qcom/pmi632.dtsi b/arch/arm64/boot/dts/qcom/pmi632.dtsi
+> new file mode 100644
+> index 000000000000..4eb79e0ce40a
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/pmi632.dtsi
+> @@ -0,0 +1,165 @@
+> +// SPDX-License-Identifier: BSD-3-Clause
+> +/*
+> + * Copyright (C) 2023 Luca Weiss <luca@z3ntu.xyz>
+> + */
+> +
+> +#include <dt-bindings/iio/qcom,spmi-vadc.h>
+> +#include <dt-bindings/interrupt-controller/irq.h>
+> +#include <dt-bindings/spmi/spmi.h>
+> +
+> +/ {
+> +	thermal-zones {
+> +		pmi632-thermal {
+> +			polling-delay-passive = <100>;
+> +			polling-delay = <0>;
+> +
+> +			thermal-sensors = <&pmi632_temp>;
+> +
+> +			trips {
+> +				trip0 {
+> +					temperature = <95000>;
+> +					hysteresis = <0>;
+> +					type = "passive";
+> +				};
+> +
+> +				trip1 {
+> +					temperature = <115000>;
+> +					hysteresis = <0>;
+> +					type = "hot";
+> +				};
+> +
+> +				trip2 {
+> +					temperature = <125000>;
+> +					hysteresis = <0>;
+> +					type = "critical";
+> +				};
+> +			};
+> +		};
+> +	};
+> +};
+> +
+> +&spmi_bus {
+> +	pmic@2 {
+> +		compatible = "qcom,pmi632", "qcom,spmi-pmic";
+> +		reg = <0x2 SPMI_USID>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		pmi632_temp: temp-alarm@2400 {
+> +			compatible = "qcom,spmi-temp-alarm";
+> +			reg = <0x2400>;
+> +			interrupts = <0x2 0x24 0x0 IRQ_TYPE_EDGE_BOTH>;
+> +			#thermal-sensor-cells = <0>;
+> +		};
+> +
+> +		pmi632_adc: adc@3100 {
+> +			compatible = "qcom,spmi-adc5";
+> +			reg = <0x3100>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			#io-channel-cells = <1>;
+> +			interrupts = <0x2 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
+> +
+> +			channel@0 {
+> +				reg = <ADC5_REF_GND>;
+> +				qcom,pre-scaling = <1 1>;
+> +				label = "ref_gnd";
+> +			};
+> +
+> +			channel@1 {
+> +				reg = <ADC5_1P25VREF>;
+> +				qcom,pre-scaling = <1 1>;
+> +				label = "vref_1p25";
+> +			};
+> +
+> +			channel@6 {
+> +				reg = <ADC5_DIE_TEMP>;
+> +				qcom,pre-scaling = <1 1>;
+> +				label = "die_temp";
+> +			};
+> +
+> +			channel@7 {
+> +				reg = <ADC5_USB_IN_I>;
+> +				qcom,pre-scaling = <1 1>;
+> +				label = "usb_in_i_uv";
+> +			};
+> +
+> +			channel@8 {
+> +				reg = <ADC5_USB_IN_V_16>;
+> +				qcom,pre-scaling = <1 16>;
+> +				label = "usb_in_v_div_16";
+> +			};
+> +
+> +			channel@9 {
+> +				reg = <ADC5_CHG_TEMP>;
+> +				qcom,pre-scaling = <1 1>;
+> +				label = "chg_temp";
+> +			};
+> +
+> +			channel@4b {
+> +				reg = <ADC5_BAT_ID_100K_PU>;
+> +				qcom,hw-settle-time = <200>;
+> +				qcom,pre-scaling = <1 1>;
+> +				qcom,ratiometric;
+> +				label = "bat_id";
+> +			};
+> +
+> +			channel@83 {
+> +				reg = <ADC5_VPH_PWR>;
+> +				qcom,pre-scaling = <1 3>;
+> +				label = "vph_pwr";
+> +			};
+> +
+> +			channel@84 {
+> +				reg = <ADC5_VBAT_SNS>;
+> +				qcom,pre-scaling = <1 3>;
+> +				label = "vbat_sns";
+> +			};
+> +		};
+> +
+> +		pmi632_adc_tm: adc-tm@3500 {
+> +			compatible = "qcom,spmi-adc-tm5";
+> +			reg = <0x3500>;
+> +			interrupts = <0x2 0x35 0x0 IRQ_TYPE_EDGE_RISING>;
+> +			#thermal-sensor-cells = <1>;
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			status = "disabled";
+> +		};
+> +
+> +		pmi632_sdam_7: nvram@b600 {
+> +			compatible = "qcom,spmi-sdam";
+> +			reg = <0xb600>;
+> +			#address-cells = <1>;
+> +			#size-cells = <1>;
+> +			ranges = <0 0xb600 0x100>;
+> +		};
+> +
+> +		pmi632_gpios: gpio@c000 {
+> +			compatible = "qcom,pmi632-gpio", "qcom,spmi-gpio";
+> +			reg = <0xc000>;
+> +			gpio-controller;
+> +			gpio-ranges = <&pmi632_gpios 0 0 8>;
+> +			#gpio-cells = <2>;
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +		};
+> +	};
+> +
+> +	pmic@3 {
+> +		compatible = "qcom,pmi632", "qcom,spmi-pmic";
+> +		reg = <0x3 SPMI_USID>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		pmi632_lpg: pwm {
+> +			compatible = "qcom,pmi632-lpg";
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			#pwm-cells = <2>;
+> +
+> +			status = "disabled";
+> +		};
+> +	};
+> +};
+> 
