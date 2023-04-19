@@ -2,161 +2,97 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 531D3C6FD18
-	for <phone-devel@archiver.kernel.org>; Wed, 19 Apr 2023 16:20:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 28391C77B73
+	for <phone-devel@archiver.kernel.org>; Wed, 19 Apr 2023 18:06:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233428AbjDSQUi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 19 Apr 2023 12:20:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35528 "EHLO
+        id S231357AbjDSSGK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 19 Apr 2023 14:06:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230507AbjDSQUh (ORCPT
+        with ESMTP id S230256AbjDSSGJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 19 Apr 2023 12:20:37 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FAA9273B
-        for <phone-devel@vger.kernel.org>; Wed, 19 Apr 2023 09:20:35 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2a8ba5f1d6bso27563491fa.2
-        for <phone-devel@vger.kernel.org>; Wed, 19 Apr 2023 09:20:35 -0700 (PDT)
+        Wed, 19 Apr 2023 14:06:09 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A9525B92
+        for <phone-devel@vger.kernel.org>; Wed, 19 Apr 2023 11:06:08 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id xi5so291207ejb.13
+        for <phone-devel@vger.kernel.org>; Wed, 19 Apr 2023 11:06:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681921234; x=1684513234;
+        d=linaro.org; s=google; t=1681927567; x=1684519567;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ajS5AwxNAy2StLCvTIgtNL2E/BG5ps9eI73QSwxiK0o=;
-        b=WgCraIJeytpaVNDyRFYnEcSSd0AK31/l2q4zlRFQPqpG/SfRk6BHFpgSX8NfNdhahQ
-         GHJXZoVyf932ZGFKkVGxqpRbmxNgEfQpB5f/9JTEfB96StJgPapjvSrJI51fOUR3+l9c
-         FEb6Uzt44RB+SLfbTk6dhjnP7Gyl5khb1G+1Qs5rV0K84vq/aUFEjw6+UNNOrCOiB4k+
-         b6qxmoqZP0RfaoM0nWzzdsScx25XX60puYEaANlHfrkp6GlM2/jPEi3W55WdtvfSuVCo
-         6IdOvjlzIUGdrWWKzCFCsKZJd90mlEGSYVvIcjWW0jGiMfM5Q3eVjoK4pyU9jb5M6YSC
-         dsSw==
+        bh=jvCt3MywFrcX9GHqlm3zcnse8V+3gXrJugEUN4idsnw=;
+        b=EzfCCYkVCLb2BQNhpT8c00YwjvF+DJAXdwFOhgWEZeVlGAjdR0EdCTh9LDIDAHWAPb
+         5SNr2emCsOF3HrZE2h4vQ5EW6q3DMbeMI284TeAHop5vi/FlFflmM4zKyKuCIM8hwd1E
+         8CiRD+p8GcyMdeDamDHOyx9TI3xAffzC3vxGU5ftq9QbCASHW5tsUn7bjpF9XXgCSkTD
+         NKFOzJBlSHRpkt+WUDLowdyEU6SifzFGlUMtIBrrcSjYZM3tZtupKR5oJx19C4nR4l3/
+         ueI2fncC2jXh22K6CJplLYpF5QsPSJV/TYU3Tm6j+8R/HdBu7JnTkiAyVA5lu0RJdVk3
+         Vz7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681921234; x=1684513234;
+        d=1e100.net; s=20221208; t=1681927567; x=1684519567;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ajS5AwxNAy2StLCvTIgtNL2E/BG5ps9eI73QSwxiK0o=;
-        b=lB3yqIfuL/dJREGkIeWf90wtX2cmtx/S4er/fPAgogVuAVcCJHF6ZbY5nVgLv53cGt
-         GC7BU2QNXEWdJ10B6pu4SQXhY/ly+aGGD4IuiNhr1RU7hk4x3kKG9CISbCjY5noPi1N1
-         Zg5OSUckp6lhX4v+8QFiEAHf+oIHk08A5ZuizFIrUNc0aZZKNBbcQT2OXThXGYDuIttf
-         hFReuURySfOr6Mh7eknVTkgmvttXxz4MBaUm8rccBZMTXc6D0+0Uj0gSRosDmPMRC2tJ
-         /82z9sYqIkMwyXX1sWRduv/VEBIk3How8Q7ZhxbRm1KbaD3oIp6oRjrGRf2C0j1lXE5G
-         miWg==
-X-Gm-Message-State: AAQBX9c/2zjwfQu2hJqKctHukE7T3FSYP9TnEO0xYA1/+r2oy9wIyT7X
-        2IzvPp8Oz5WXIH2ZZLWdzCeJsw==
-X-Google-Smtp-Source: AKy350bqi18ppcGPBlkMku8yd3Jx5EyZwDkYGPgR2kbJpG00DnGcpfdYtIrhfwi4ng3KClUhyYSqnw==
-X-Received: by 2002:ac2:4942:0:b0:4ec:9df9:f11a with SMTP id o2-20020ac24942000000b004ec9df9f11amr3992000lfi.9.1681921233811;
-        Wed, 19 Apr 2023 09:20:33 -0700 (PDT)
-Received: from [192.168.1.101] (abyj144.neoplus.adsl.tpnet.pl. [83.9.29.144])
-        by smtp.gmail.com with ESMTPSA id f19-20020ac251b3000000b004db4936c866sm2718538lfk.38.2023.04.19.09.20.32
+        bh=jvCt3MywFrcX9GHqlm3zcnse8V+3gXrJugEUN4idsnw=;
+        b=Y1dXBSB8cQMwF8cKoQXriLdR/PHnPsjgWvb6zYC9rY8/sDJfjwGeaUYe4P7O1G2o0E
+         hpB0IyAwhDncfMZ+VdFr9O8o1mMxDpitfWzFsLEgdt4UbHRDgKMcoAOjfWw7gMHct2s0
+         leDUDaGn049qP0Af4Kp1ir1xPQ0cZRfA3caEhg9TkH0+ePuZ2Gf2JQOPedfytlGHi9+F
+         eliV7/D3y0pVWGBJbNBxnQLvKNlRA57Hxa6RbwYNkp9+WSz/8ueZGBQIZiz9vEnO7k7N
+         hyzLAP47qjOa3aNOmvhxS5lQRnXjR6tv+5eyC/ABsSIjq7PHVEblmb/QQG0KGF2FP1np
+         PoGw==
+X-Gm-Message-State: AAQBX9cTdCfj7BIO85ui8ibibu3K/SXTmDgFLquLN1V5ixqdH+EKp4ah
+        JAiXyBgvShlsYozTuD7ic2gnCg==
+X-Google-Smtp-Source: AKy350Z1kQaGqxZpRrHlcGb8/o5E+CPyrAvlnkfJSBEVz7jTcsZ1Val0XBAReq1zz/NEb7k3I5jCIQ==
+X-Received: by 2002:a17:907:a70e:b0:953:429e:fff6 with SMTP id vw14-20020a170907a70e00b00953429efff6mr4586906ejc.51.1681927566817;
+        Wed, 19 Apr 2023 11:06:06 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:b7d8:d88b:1fac:c802? ([2a02:810d:15c0:828:b7d8:d88b:1fac:c802])
+        by smtp.gmail.com with ESMTPSA id f4-20020a170906ef0400b0094f969e877bsm3839652ejs.43.2023.04.19.11.06.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Apr 2023 09:20:33 -0700 (PDT)
-Message-ID: <6862340f-64fa-c0cb-8d20-f8f4d14038e9@linaro.org>
-Date:   Wed, 19 Apr 2023 18:20:32 +0200
+        Wed, 19 Apr 2023 11:06:06 -0700 (PDT)
+Message-ID: <206724fd-dc64-9724-8541-34325a1b96c7@linaro.org>
+Date:   Wed, 19 Apr 2023 20:06:05 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [PATCH] ARM: dts: qcom: msm8974: correct qfprom node reg
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v2 1/8] dt-bindings: pinctrl: qcom,pmic-gpio: add PMI632
 Content-Language: en-US
 To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        linux-arm-msm@vger.kernel.org
-Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Craig Tatlor <ctatlor97@gmail.com>
-References: <20230130-msm8974-qfprom-v1-1-975aa0e5e083@z3ntu.xyz>
- <5664419.DvuYhMxLoT@z3ntu.xyz>
- <383f6aa0-6150-22b5-425a-f9cf13bdbc50@linaro.org>
- <4820647.31r3eYUQgx@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <4820647.31r3eYUQgx@z3ntu.xyz>
+        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
+Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-doc@vger.kernel.org
+References: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
+ <20230414-pmi632-v2-1-98bafa909c36@z3ntu.xyz>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230414-pmi632-v2-1-98bafa909c36@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 18/04/2023 18:43, Luca Weiss wrote:
+> Document the 8 GPIOs found on PMI632.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml | 3 +++
+>  1 file changed, 3 insertions(+)
 
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-On 19.04.2023 18:18, Luca Weiss wrote:
-> On Mittwoch, 19. April 2023 18:12:04 CEST Konrad Dybcio wrote:
->> On 19.04.2023 18:00, Luca Weiss wrote:
->>> Hi Konrad,
->>>
->>> On Montag, 30. Jänner 2023 21:37:29 CEST Luca Weiss wrote:
->>>> On Montag, 30. Jänner 2023 19:42:51 CET Konrad Dybcio wrote:
->>>>> On 30.01.2023 19:36, Luca Weiss wrote:
->>>>>> On Montag, 30. Jänner 2023 19:30:04 CET Konrad Dybcio wrote:
->>>>>>> On 30.01.2023 19:20, luca@z3ntu.xyz wrote:
->>>>>>>> From: Craig Tatlor <ctatlor97@gmail.com>
->>>>>>>>
->>>>>>>> The qfprom actually starts at 0xfc4b8000 instead of 0xfc4bc000 as
->>>>>>>> defined previously. Adjust the tsens offsets accordingly.
->>>>>>>>
->>>>>>>> [luca@z3ntu.xyz: extract to standalone patch]
->>>>>>>>
->>>>>>>> Fixes: c59ffb519357 ("arm: dts: msm8974: Add thermal zones, tsens and
->>>>>>>> qfprom nodes") Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
->>>>>>>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
->>>>>>>> ---
->>>>>>>
->>>>>>> Isn't this a raw vs ecc-corrected values problem?
->>>>>>
->>>>>> Not quite sure what you mean.
->>>>>
->>>>> The QFPROM is split into two parts: one where raw values
->>>>> are stored, and the other one where ECC-corrected copies
->>>>> of them reside. Usually it's at offset of 0x4000. We should
->>>>> generally be using the ECC-corrected ones, because.. well..
->>>>> they are ECC-corrected.. You may want to check if the
->>>>> fuse you're adding reads the same value at +0x4000.
->>>>
->>>> Yeah that actually seems to work...
->>>>
->>>> But downstream's using this +0x4000 only for tsens it seems
->>>>
->>>>    <0xfc4bc000 0x1000> as "tsens_eeprom_physical"
->>>>
->>>> qcom,clock-krait-8974 is using this:
->>>>     <0xfc4b80b0 0x08> as "efuse"
->>>>
->>>> Also seems HDMI driver is using a mix for HDCP stuff
->>>>
->>>>   drivers/video/msm/mdss/mdss_hdmi_util.h:
->>>>     /* QFPROM Registers for HDMI/HDCP */
->>>>     #define QFPROM_RAW_FEAT_CONFIG_ROW0_LSB  (0x000000F8)
->>>>     #define QFPROM_RAW_FEAT_CONFIG_ROW0_MSB  (0x000000FC)
->>>>     #define HDCP_KSV_LSB                     (0x000060D8)
->>>>     #define HDCP_KSV_MSB                     (0x000060DC)
->>>>
->>>> Any clue why Qualcomm used it this way in downstream? I'd rather not
->>>> deviate too much if not for a good reason...
->>>
->>> Any comments on the above?
->>
->> This thread got burried to deep in the mailbox!
->>
->> I see two reasons why they could be using the uncorrected region:
->> - their generators are messed up in general
->>
->> - they may have had an early chip revision once where there were
->>   problems with this and their generators were messed up to
->>   accommodate for it and everybody forgot to fix that
->>
->> No other good explanations as far as I'm aware!
-> 
-> So, resolution is to use the offsets as declared in downstream, so take this 
-> patch to have the full range available?
-No, the correct resolution to "fix QFPROM reg" would be to
-increase the size to 0x7000-0x4000 = 0x3000, as we should be
-using the ECC-corrected entries.
+Best regards,
+Krzysztof
 
-Konrad
-> 
-> Regards
-> Luca
-> 
-> 
-> 
