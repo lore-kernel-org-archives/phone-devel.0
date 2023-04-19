@@ -2,97 +2,185 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56AEAC6FD18
-	for <phone-devel@archiver.kernel.org>; Wed, 19 Apr 2023 15:59:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F71BC77B73
+	for <phone-devel@archiver.kernel.org>; Wed, 19 Apr 2023 16:00:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233755AbjDSP7u (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 19 Apr 2023 11:59:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49432 "EHLO
+        id S232740AbjDSQAi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 19 Apr 2023 12:00:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233750AbjDSP7n (ORCPT
+        with ESMTP id S232297AbjDSQAi (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 19 Apr 2023 11:59:43 -0400
+        Wed, 19 Apr 2023 12:00:38 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D7FA976C;
-        Wed, 19 Apr 2023 08:59:33 -0700 (PDT)
-Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id B2BC1CCC24;
-        Wed, 19 Apr 2023 15:59:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F45B11A;
+        Wed, 19 Apr 2023 09:00:37 -0700 (PDT)
+Received: from g550jk.localnet (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id B6E72CCC24;
+        Wed, 19 Apr 2023 16:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1681919941; bh=29YVH+wvkFvIAvk+OfYcMsg5UAxmZflvPbyzwpWUGyQ=;
-        h=From:Date:Subject:To:Cc;
-        b=duRjoaqxMd7KrFKsjgT67DBKCWOxdg/jdBNp7W8PhjFQdLnJ2R1R/lFMXgi8iUVF8
-         aXOREQ1KusvTKm//ik6F5YjJ/Ar6EiuctAWb4XI/R2GXfIq87G/OBJBohMaYn81XVb
-         ZwZtGYTsvGHj1mh3V1OhDCcDlNSmHPGb8kpwfO6Q=
+        t=1681920035; bh=Kvp+y1PlgCtZ/H7c3YDNPiFv1aZtJPEuqKzBkTmEB2E=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=Btyge/ZRpJOT+0+JVsBPYpXC8khmH2HpUfJI+qgJYFweAnWSPf5yzl7TdoKfcK5FT
+         WHNl7VnV8diSwjBGwmX58RN1RsgxsBs6y4qpZ+XiCBMH6TqRCpiG4y0k5K1/OXyNWF
+         dWjEWr9+GDBuDLeE9LEx349hO0RrkahdzXSq0zQk=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Wed, 19 Apr 2023 17:58:27 +0200
-Subject: [PATCH] media: dt-bindings: ov2685: Correct data-lanes attribute
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230419-ov2685-dtschema-fixup-v1-1-c850a34b3a26@z3ntu.xyz>
-X-B4-Tracking: v=1; b=H4sIAKIPQGQC/x2NQQqDMBBFryKz7kCMiTW9inSRxKkJ2CiZKgXx7
- h26fI//+Ccw1UwMj+aESkfmvBaB9tZATL7MhHkSBq10p0zrcD10P1icPhwTvT2+8nffMChjjTO
- 2c/cBpA2eCUP1JSapy74sIrdKsv6fjc/r+gEiwFSQfAAAAA==
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Shunqian Zheng <zhengsq@rock-chips.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1066; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=29YVH+wvkFvIAvk+OfYcMsg5UAxmZflvPbyzwpWUGyQ=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkQA/AGCGc9DMo94kVXJSlJG96EBN28m/8t+QV6
- UejZ8C/SLuJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZEAPwAAKCRBy2EO4nU3X
- VjHFD/49kidiQBIqLlqC+lb1EDiZ2QcJjSo5jVbuq06TLSkUJxLM2ualY8+mmAW3rbb94+Lcjkp
- RQI1df1oFgCjro+rKx2PaodK6J5OedHu20hdzYFnJX9iuYKpzTR4gkBmHEooL6tdTOTXWw7IvQB
- 8ShoWNrVLXXyaEk1BaPimWKBHhuHmEOo2v71LOiYYRoOoAoMeDNPP0boDf6asKuwIBPGtkakqw9
- 1FNpi1C5CP/UViBXYIXTUjgh52Rd4VII7X/HCsP1MnSawft6QrasAK7+VFY5Y8C+aIaGJrJPvII
- l+pv0cIhRKCpGPL2N41umQWDXL4HCZIIwuLkL5ELhbsX8lN3XSHwlCej3XESoE9S1mTO36YA5v9
- q4XSbP4xZuh300KwtNQKtY7niXiaS0ZXvcVuFJew9QCr2efnb5n3EwCe5egPiVTz/CrB/E3oJL1
- gRzWehmdQ8Z6mbCsFQzV2rSs3IwQBPn2Kkdps2kUTuIxO1FP7aYTo0Gncem/6ylOUrMl/OLBFNH
- ASh4RWAMtMJT6TA4xSQiydGWKzAABsuR5uYq0tRen131ntw4EaJCZyvXHZUsR9T+e1hlClZ1NMi
- OTEgJuM5DWTQl26Jb2jD1aiS1hYpKDO9zjZA2C/0ZoEdVjBitygDZVOXiB0tZj8KI5GcS80l864
- 6ok4pzXgIsLs+Lg==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+        Eduardo Valentin <edubezval@gmail.com>,
+        linux-arm-msm@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Craig Tatlor <ctatlor97@gmail.com>
+Subject: Re: [PATCH] ARM: dts: qcom: msm8974: correct qfprom node reg
+Date:   Wed, 19 Apr 2023 18:00:35 +0200
+Message-ID: <5664419.DvuYhMxLoT@z3ntu.xyz>
+In-Reply-To: <2401830.jE0xQCEvom@z3ntu.xyz>
+References: <20230130-msm8974-qfprom-v1-1-975aa0e5e083@z3ntu.xyz>
+ <568ebb75-5cb2-af97-bfae-c1e1e6174a45@linaro.org>
+ <2401830.jE0xQCEvom@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-When adapting the original doc conversion to support 2 lanes, minItems
-should've been added as well since the sensor supports either 1 or 2
-lanes. Add minItems to make the validation happy again.
+Hi Konrad,
 
-Fixes: 8d561d78aeab ("media: dt-bindings: ov2685: convert to dtschema")
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml | 1 +
- 1 file changed, 1 insertion(+)
+On Montag, 30. J=E4nner 2023 21:37:29 CEST Luca Weiss wrote:
+> On Montag, 30. J=E4nner 2023 19:42:51 CET Konrad Dybcio wrote:
+> > On 30.01.2023 19:36, Luca Weiss wrote:
+> > > On Montag, 30. J=E4nner 2023 19:30:04 CET Konrad Dybcio wrote:
+> > >> On 30.01.2023 19:20, luca@z3ntu.xyz wrote:
+> > >>> From: Craig Tatlor <ctatlor97@gmail.com>
+> > >>>=20
+> > >>> The qfprom actually starts at 0xfc4b8000 instead of 0xfc4bc000 as
+> > >>> defined previously. Adjust the tsens offsets accordingly.
+> > >>>=20
+> > >>> [luca@z3ntu.xyz: extract to standalone patch]
+> > >>>=20
+> > >>> Fixes: c59ffb519357 ("arm: dts: msm8974: Add thermal zones, tsens a=
+nd
+> > >>> qfprom nodes") Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
+> > >>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > >>> ---
+> > >>=20
+> > >> Isn't this a raw vs ecc-corrected values problem?
+> > >=20
+> > > Not quite sure what you mean.
+> >=20
+> > The QFPROM is split into two parts: one where raw values
+> > are stored, and the other one where ECC-corrected copies
+> > of them reside. Usually it's at offset of 0x4000. We should
+> > generally be using the ECC-corrected ones, because.. well..
+> > they are ECC-corrected.. You may want to check if the
+> > fuse you're adding reads the same value at +0x4000.
+>=20
+> Yeah that actually seems to work...
+>=20
+> But downstream's using this +0x4000 only for tsens it seems
+>=20
+>    <0xfc4bc000 0x1000> as "tsens_eeprom_physical"
+>=20
+> qcom,clock-krait-8974 is using this:
+>=20
+>     <0xfc4b80b0 0x08> as "efuse"
+>=20
+> Also seems HDMI driver is using a mix for HDCP stuff
+>=20
+>   drivers/video/msm/mdss/mdss_hdmi_util.h:
+>=20
+>     /* QFPROM Registers for HDMI/HDCP */
+>     #define QFPROM_RAW_FEAT_CONFIG_ROW0_LSB  (0x000000F8)
+>     #define QFPROM_RAW_FEAT_CONFIG_ROW0_MSB  (0x000000FC)
+>     #define HDCP_KSV_LSB                     (0x000060D8)
+>     #define HDCP_KSV_MSB                     (0x000060DC)
+>=20
+> Any clue why Qualcomm used it this way in downstream? I'd rather not devi=
+ate
+> too much if not for a good reason...
 
-diff --git a/Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml b/Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
-index 8b389314c352..e2ffe0a9c26b 100644
---- a/Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
-+++ b/Documentation/devicetree/bindings/media/i2c/ovti,ov2685.yaml
-@@ -49,6 +49,7 @@ properties:
- 
-         properties:
-           data-lanes:
-+            minItems: 1
-             maxItems: 2
- 
-         required:
+Any comments on the above?
 
----
-base-commit: 4aa1da8d99724f6c0b762b58a71cee7c5e2e109b
-change-id: 20230419-ov2685-dtschema-fixup-b04549453978
+Regards
+Luca
 
-Best regards,
--- 
-Luca Weiss <luca@z3ntu.xyz>
+>=20
+> Regards
+> Luca
+>=20
+> > Konrad
+> >=20
+> > > The original intention behind this patch is to allow to use the pvs f=
+use
+> > > at
+> > > (now) 0xb0 which was inaccessible with the former definition.
+> > >=20
+> > >     pvs: pvs@b0 {
+> > >    =20
+> > >         reg =3D <0xb0 0x8>;
+> > >    =20
+> > >     };
+> > >=20
+> > > Regards
+> > > Luca
+> > >=20
+> > >> Konrad
+> > >>=20
+> > >>>  arch/arm/boot/dts/qcom-msm8974.dtsi | 12 ++++++------
+> > >>>  1 file changed, 6 insertions(+), 6 deletions(-)
+> > >>>=20
+> > >>> diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi
+> > >>> b/arch/arm/boot/dts/qcom-msm8974.dtsi index 8d216a3c0851..922d235c6=
+065
+> > >>> 100644
+> > >>> --- a/arch/arm/boot/dts/qcom-msm8974.dtsi
+> > >>> +++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
+> > >>> @@ -1132,16 +1132,16 @@ restart@fc4ab000 {
+> > >>>=20
+> > >>>  			reg =3D <0xfc4ab000 0x4>;
+> > >>>  	=09
+> > >>>  		};
+> > >>>=20
+> > >>> -		qfprom: qfprom@fc4bc000 {
+> > >>> +		qfprom: qfprom@fc4b8000 {
+> > >>>=20
+> > >>>  			compatible =3D "qcom,msm8974-qfprom",
+> > >=20
+> > > "qcom,qfprom";
+> > >=20
+> > >>> -			reg =3D <0xfc4bc000 0x1000>;
+> > >>> +			reg =3D <0xfc4b8000 0x7000>;
+> > >>>=20
+> > >>>  			#address-cells =3D <1>;
+> > >>>  			#size-cells =3D <1>;
+> > >>>=20
+> > >>> -			tsens_calib: calib@d0 {
+> > >>> -				reg =3D <0xd0 0x18>;
+> > >>> +			tsens_calib: calib@40d0 {
+> > >>> +				reg =3D <0x40d0 0x18>;
+> > >>>=20
+> > >>>  			};
+> > >>>=20
+> > >>> -			tsens_backup: backup@440 {
+> > >>> -				reg =3D <0x440 0x10>;
+> > >>> +			tsens_backup: backup@4440 {
+> > >>> +				reg =3D <0x4440 0x10>;
+> > >>>=20
+> > >>>  			};
+> > >>>  	=09
+> > >>>  		};
+> > >>>=20
+> > >>> ---
+> > >>> base-commit: 6d796c50f84ca79f1722bb131799e5a5710c4700
+> > >>> change-id: 20230130-msm8974-qfprom-619c0e8f26eb
+> > >>>=20
+> > >>> Best regards,
+
+
+
 
