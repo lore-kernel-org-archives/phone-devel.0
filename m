@@ -2,97 +2,98 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6281C77B78
-	for <phone-devel@archiver.kernel.org>; Thu, 20 Apr 2023 08:06:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26BA0C77B73
+	for <phone-devel@archiver.kernel.org>; Thu, 20 Apr 2023 10:15:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234293AbjDTIGG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 20 Apr 2023 04:06:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40560 "EHLO
+        id S234733AbjDTKOn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 20 Apr 2023 06:14:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234321AbjDTIGE (ORCPT
+        with ESMTP id S232606AbjDTKOJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 20 Apr 2023 04:06:04 -0400
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 031E430F4
-        for <phone-devel@vger.kernel.org>; Thu, 20 Apr 2023 01:06:02 -0700 (PDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-54f6a796bd0so29355707b3.12
-        for <phone-devel@vger.kernel.org>; Thu, 20 Apr 2023 01:06:01 -0700 (PDT)
+        Thu, 20 Apr 2023 06:14:09 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 578501BE7
+        for <phone-devel@vger.kernel.org>; Thu, 20 Apr 2023 03:12:11 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2a8a6602171so4072581fa.0
+        for <phone-devel@vger.kernel.org>; Thu, 20 Apr 2023 03:12:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1681977961; x=1684569961;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nF73EW7KaLWEV4V1D9aiONML0yXojDyO7zMClWna/aU=;
-        b=bPDfI9eRhpTNkbg+3/X/aaxLsgYj6teALIjvGi9ObRhXZPvFCl6lyTe1DZ3qQC0L45
-         ECFekxHa3S97BYyAuS7L3y0xSf2vRarM1ctf7LcyrTNSUFsKPwcunKO/2tWZzE1Qw8p7
-         OnViZZbQayG8mhN8tObaFmv8pDkTKXxVuBTUO2kdNiyv4AYrER1uiCKX34QWVDdSh2Tp
-         d8mZ2ciqd6KiT3mTPmTmY7cCSbcjm4RrAJAPCNB7Uazw8x0v2ihiYzU/xDXzePcXwqhF
-         gOHWU9T7E4AxPRf9J3cguv996TKbrJBzjCYmPFygn0fdY/2ERO/0ocCxw2A7MQhV90Wp
-         Usvw==
+        d=linaro.org; s=google; t=1681985529; x=1684577529;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=B1gg5qH9FVKEIvZx9IgwaMQ/p/pcxPmbM2nNSvflA+Y=;
+        b=oGF+NGmUcuKNfYKptKRvcA/mqBwJP3vVKuFesYiVXRdyTFgOoercusxcIZm6AB4RE8
+         /wRmO/0CDcuj9QTn+vHkn6mrx/DuytmBsRSzskfwvb0UDt3Gf6H0c3kE9rOL763teqFl
+         IeHCZIap55eiRWQFwdNU9nDGVj5cWc/nVmvjIM7tqxBkrRWdCoSm3HSMHPCo3tLuyUB+
+         zNZLX5K8573+XXXjDBREn7WlXbSCjv2O153I2thYxjoJ1PFi5xTmzksQv0SF2vk28b0+
+         u0gJwnTPdUCAKmZgt637xMuWdIqW6AgN2R4HzYxUXecvTMz9WyYgRVksLixG7kmkYWnJ
+         RiJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681977961; x=1684569961;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nF73EW7KaLWEV4V1D9aiONML0yXojDyO7zMClWna/aU=;
-        b=iCbzXnhxXEHybjDw5taM6zQf/ivZn9reRarNUisTJRf4DblzShxtrDiyh9N6LusQjm
-         jnSswGPh2bG2woyvAAghVhLaI4Q/1d/L0w+uyqOFrXcGoJkPjt4DPQ6Gg+iS93g0wh7/
-         xLVOnZ02d59BtzY2dxV0NNfTmAYV5KBL5Mq2akzGzirlt71peQZiYY/51ziUrIMFG7GC
-         yhz7/AT4xquPCtUCwzB7Mk/MlguuHD1ERKWhun5pSUANjRd3vbLDnUaB301J//7zCF4x
-         wHuKyvx6+3VzRNLXh/wdMCkdfpYsTRZ4ptNxYK8VbSivBrQxVwDvS1SK4CmOBZ6kupdm
-         tM8w==
-X-Gm-Message-State: AAQBX9fxMuroED2fMp9Anh6OvC5QAdIHZGHI+elKvUm49t5lrdaoKaQk
-        0CEnYjQWiutSSg+6A2jhHFjM8Al77SnZu/oD/ZMpWw==
-X-Google-Smtp-Source: AKy350Z6rGVhE3LnUUSr7NOdP5BTmzad2DawgJPMUQQYlYN51tsbOtHoOOvrQqh26AmqagNeb++cEGWuoshHZqyLJOk=
-X-Received: by 2002:a81:7489:0:b0:552:b9db:f4b7 with SMTP id
- p131-20020a817489000000b00552b9dbf4b7mr247442ywc.3.1681977961239; Thu, 20 Apr
- 2023 01:06:01 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1681985529; x=1684577529;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=B1gg5qH9FVKEIvZx9IgwaMQ/p/pcxPmbM2nNSvflA+Y=;
+        b=E5XcCEMD0Lr3nXMpdD52GKXAJiNQ9RUQm56N0eKNzWCbMWXj1HHpUbrL8dUMW2LvMe
+         cDQ+C+l+MeGLVrC2LFIKgOo6Gjtqu1EaBIbksJQii/WeZnD1bPEofgQlluS5UHJBB+41
+         h382yCMXbRG+WoRXXq5TeTdJa7WJtaIJG5mZtwBtKepPf6x7UD86AN6szSIIEze1Qckg
+         pkvi3AHV9SglN6gWsUM5Rt2UpRb9Z1Shhe+TRBXrMhSNA5UOgtsYQoidWNsyXtQGGG4X
+         RxXFRXvZ5Wx60u1/lbvj7GJ1yXjMSAqoe+3Jg6fSayqwdmXhpmWDfS0iDTOZWikzO+lp
+         mDtw==
+X-Gm-Message-State: AAQBX9et0Vepv6UFHNt14knJ7QFfaYirksFAOPKyIUIAHutqorkJ97w3
+        iqqgo+e8lqjhF2HvUyU1Z57/hg==
+X-Google-Smtp-Source: AKy350ZLeDAg/Z65XdnFNNxyJxECDLyd0G1w1LAFz9U3aeC7C/mcAJ4Bbx0in4YxGwlg5oYVk58TSQ==
+X-Received: by 2002:a05:6512:204:b0:4ed:befc:9b4e with SMTP id a4-20020a056512020400b004edbefc9b4emr363243lfo.3.1681985529604;
+        Thu, 20 Apr 2023 03:12:09 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:a085:4d00::8a5? (dzccz6yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a085:4d00::8a5])
+        by smtp.gmail.com with ESMTPSA id f21-20020ac251b5000000b004cb45148027sm166060lfk.203.2023.04.20.03.12.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Apr 2023 03:12:09 -0700 (PDT)
+Message-ID: <d757326e-9dd1-36ea-9340-2a95c3cce70c@linaro.org>
+Date:   Thu, 20 Apr 2023 13:12:08 +0300
 MIME-Version: 1.0
-References: <cover.1681646904.git.jahau@rocketmail.com> <a03e3939d733098a40c2ea0522da4e0bae9b2cb8.1681646904.git.jahau@rocketmail.com>
-In-Reply-To: <a03e3939d733098a40c2ea0522da4e0bae9b2cb8.1681646904.git.jahau@rocketmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Thu, 20 Apr 2023 10:05:50 +0200
-Message-ID: <CACRpkda4JPe-XE-_m4w_HbBBXrv4nkUtY_HJbexs+LCzcDu1-g@mail.gmail.com>
-Subject: Re: [PATCH v2 1/9] mfd: rt5033: Drop rt5033-battery sub-device
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v2 2/8] pinctrl: qcom: spmi-gpio: Add PMI632 support
+Content-Language: en-GB
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Beomho Seo <beomho.seo@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Raymond Hackley <raymondhackley@protonmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
-        ChiYuan Huang <cy_huang@richtek.com>, linux-pm@vger.kernel.org,
+        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>
+Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Lee Jones <lee.jones@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-doc@vger.kernel.org
+References: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
+ <20230414-pmi632-v2-2-98bafa909c36@z3ntu.xyz>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20230414-pmi632-v2-2-98bafa909c36@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Apr 16, 2023 at 2:45=E2=80=AFPM Jakob Hauser <jahau@rocketmail.com>=
- wrote:
+On 18/04/2023 19:43, Luca Weiss wrote:
+> Add support for the 8 GPIOs found on PMI632.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>   drivers/pinctrl/qcom/pinctrl-spmi-gpio.c | 1 +
+>   1 file changed, 1 insertion(+)
 
-> From: Stephan Gerhold <stephan@gerhold.net>
->
-> The fuel gauge in the RT5033 PMIC (rt5033-battery) has its own I2C bus
-> and interrupt lines. Therefore, it is not part of the MFD device
-> and needs to be specified separately in the device tree.
->
-> Cc: Beomho Seo <beomho.seo@samsung.com>
-> Cc: Chanwoo Choi <cw00.choi@samsung.com>
-> Fixes: 0b271258544b ("mfd: rt5033: Add Richtek RT5033 driver core.")
-> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> Acked-by: Lee Jones <lee.jones@linaro.org>
-> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-Looks correct,
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+-- 
+With best wishes
+Dmitry
 
-Yours,
-Linus Walleij
