@@ -2,70 +2,65 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CBC24C6FD18
-	for <phone-devel@archiver.kernel.org>; Wed, 19 Apr 2023 22:47:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F19D5C77B72
+	for <phone-devel@archiver.kernel.org>; Thu, 20 Apr 2023 07:59:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230007AbjDSWrO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 19 Apr 2023 18:47:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48050 "EHLO
+        id S234268AbjDTH74 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 20 Apr 2023 03:59:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231391AbjDSWrL (ORCPT
+        with ESMTP id S234220AbjDTH7t (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 19 Apr 2023 18:47:11 -0400
-Received: from sonic313-21.consmr.mail.ir2.yahoo.com (sonic313-21.consmr.mail.ir2.yahoo.com [77.238.179.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 434BFBC
-        for <phone-devel@vger.kernel.org>; Wed, 19 Apr 2023 15:47:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1681944428; bh=QgwEvaxznVhbwwwaHbod/jvh/kKZgXY3lH4q0rCY3ds=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=bemtwF/e+x7RfcUR224jTwiLUgn34j9m+SUzvJAInUy2FOCVCkZ0WhnBwJvtsHLp6jKPXvzeX6FVgR1p3kGNfv90WRwCeIOINpeHk0P9/kpVQmI+fY5vNSnDG145TIggYXdTb2OOXOFAZxp/Oal0rDkCVgqpMLxWTDKLeXcngBvNXXw5qSd2+d+Ca3PLnIcpzikMFOx5d3s/VZI2ugqaNAoSODG/KxHHsWFuWTbrIulrTMITTqO9fBCDul96DGBDE0RlwTh5eJKa6c9wYrmHNS1EE0uS/OoFWX6gljGhpWglzB4ZnARB83/jqUIzBzYDr67SkQGMsAcerw1n3Z2r9w==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1681944428; bh=+ItqGgM/h0Vl8zbL8dIsmE87qlUkIdCUdWr2M9Ibz+o=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=SxBr7eJli6pEqmdYjfEE5vq695X6Xqj0WtXuZlgiLUoEa9lcfjxXwK1jSntB2h5vZ8KSW0Fs+Zgfs+G+5sgjHH/hdcQUogVzI8YFKS3tULnU4mqt+Qz9uGSvgEumr+SFVFK9eQKjh31SR8Q9Yw8Zjm+4NUcHh4I6NdzySOz/NEeECdlSnJmkf0t/BwtSENc0z7GI1YFDEhvu96YBA/2hYpamNxJ4WSn2lUVQcrksmCPIvb5Sr13SpCfwYo0QcXVFN8WtXrxecC8PRaSWs8UHNpsswZ78Q4H4olemdR8EO7xagxmsavizq2KhyAqCIsdUjuViy2eUN6If2cYofxASGw==
-X-YMail-OSG: VxESa2YVM1l1UBi7CnVMMdeUyMabjI2yhujSfxTI15FY8xVT9nXwAEQ2N41OhRg
- EL.LdobvcowL3ITCt2mH_WldyMsB9B9ctIbnYUEauVKmyCb9c3HOEXOJjnqJMKE1V3H2Ulqg5bVy
- .XMcr6d3kKLi5Fn142rDiJHSLI0qzwMuT8Y6T.m7GRn4kGQwQ_l3B7TH47MAA8hH26TVRYrYbxa4
- HFcef6KaKUwoaVvn_9zv3d0pb7yZ0N_4qoL9bPY0RrFet4mt8Uquv3xP6JdCmbImHrec0_08_XVW
- 80jXdeLetLq0nO4EuVvw1TZQIQ8MoZWL8YEMPuOhbkqbMPBKvB5lvfZxbTKn9TtyTajRiL4JXyL.
- nVmG1d6uHdCCv06xEOQ5AWL5H9UrV_XZ.Qm10ixKTnbtl9b1z1HaAWPlm9tUJocjwyTmbXiZqf.0
- lZf1vfySnAYtXFvUi.FyzGPSlfsO770.7mK4bH1fb18CbXBkidflUFKsykRgliwr12lCIia9ZlB6
- AGYF1iqWgy_k7neFDhr6FocV2fB5M_2u7r3NqVTW7q8.wI3o7WrPjm4c3_ZDLvXmLDOrVNgnnLKf
- FyXVsHr.OJyASBSGGRA1gatXmS7zSwLDh4egK3ZRRIX1ucS_6ZIJDlQ1fdj1AaQsnNnx..t7XXhf
- 1KZ7o7bz9Q6m6lMJfPkS5AN1CZ9gDd0AXZZ8F3lmVQjjRjzUwnkpOtU1I70tCMPl8EITXNdUtZCf
- TdBAqf5eQTHgWHcKnqzbP_Z18PBISYMyQWU4oOZ2ADWAmCtHRFHFADy3jm0F2cyjpxO9gQ1lAi1b
- umhGfuoJHHNoY9BdMRzT2dI_3D4fW3QMbQuy5clMDwvuq1ZThxKR.5eu0fOVimKfTRhRbCFqAlva
- YLwIVSVnNVSUTbtS2VepiX_Fu8FF77LCUn508HgtpDm1Fy7Yc4yvatkYV6Zalyq3ZRxRcXvJcO0X
- X0RaKDOAVTM4LHsuWpA_KpopSVxxCVWLOaKK419w7LeILxdMtS62zK6VKdmsVf516gnnhOSIZZy1
- lslymiUCony4TKa47sragF8rMP1mVvfw6zoe9e._E.Bgnc7CYloW8aHABWbJKJiTwz5y2M4ll11E
- aDehcX6D7jG.QUw2RUbO_9_.SdaddRhcbovYrXr4KakXZSGjhbGSnLybZPwSs3xEQq_VKBbQzv0j
- NK1_ECBxWqytqk3cEcCVcmJkOwAsDCn1R645K.9xGaqpjbm6y4n7Znq6jhKLWOptxRg40gsgQsMP
- ZqPT51QRCLzU1rJOywZIQ7RZruXVv.BXAqeym4rtINfIG6pLQb3OB1lD4mjaOypLouITexynJTzc
- 4H26ZJnQT7_Ch2ZB5UwyxMag3mOy.KOJhybeqRWa0.GEu5uKjR45Pcg1gVAYoRA8gBei6iTg8b9b
- fwGOS2sOFo2opWnx2NaN7SCZczx5xv7Dfct3Sr1k52rrIrCSbT2WKTxXXsNF6G1wocx47EMMvCL5
- PUmoa8_1tmQ4H3VyPdhMbg2MedMNQrqww1.vl6tPKLBpbIvMsgCcEW3R.AhM03Z6koVDXv2FXc7U
- GlopzlDyUb_bNhybuavz1bCF7kXqgrKkIEthT1x38P5Z9hg.FaV6hjhfWsNMBpet9vSAdEKqWvL5
- QeOmMJPiXz1OUYVo0aa3DUj3.3rXk1t8mh4t8EH69QavAbgswPIfCSjldRESfxjAHDVmAIYqcBE7
- f6cfKBazKUZt_RJuHDa82FMsxcpT5XLWaf49XqQxnylVWb6eXkZX98Kmurh0fwbTRzUyEEy_4eHj
- cnLQ_gtHm82izJqlffIGWhxE5p7XYnaD9gI.hV2h3J6lOs5aKXBRc.EWJfQsxbF6rt1..GfjqFYY
- DOjF1DUJPjQKVz7uWKtxwgIJhk8SVwGOr0Gfcf4jJqfJucOcUEbUh0_6CPWPQrkrIJMt2vbmFbjk
- gF9Wbskeyk_3qDO_VPGyTXkk8RJ10eC3GInssPsXFbXzJyAfrWucI6orJa2qC1OJpqPlXGKjdV9J
- wpX9qt0lVyzty0jT4HcVKnpIGBCD.bUI7uSNPjVvOl1SZbF_u6eL.8Q23HDy_neMrI7xM1KiaaMY
- A7DEPos7sr2XvgALthc2N9f24YYN96m_ticET7IduPGToB01Z5p5e.8YWz9M1RNXNpHjSqopU9YR
- 4RRw2PPzJUo21iRzIbmVgsazpNfOCWCbdr44W3DClOfdG.wm3KIyzb6MIQmKxgE8GtRaBMqjj04h
- zm4BwTbpuCtG9BHsESXkht6rJlEtpC77dRD2xLKl3ERbqbcAWlllfNoguaVI8plqEi2uwOsdYChC
- _0sWpVxBE_lESUb5R68_MZ7Gilf0DsUsw
-X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: dc59d37e-63ac-409d-9792-67e4d82a1f8b
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ir2.yahoo.com with HTTP; Wed, 19 Apr 2023 22:47:08 +0000
-Received: by hermes--production-ir2-74cd8fc864-jl5bm (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 318f31df962c705776d30bee69907fb4;
-          Wed, 19 Apr 2023 22:21:27 +0000 (UTC)
-Message-ID: <b044de68-e9d7-ae23-a2da-96df78f95821@rocketmail.com>
-Date:   Thu, 20 Apr 2023 00:21:26 +0200
+        Thu, 20 Apr 2023 03:59:49 -0400
+Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F72E26A1
+        for <phone-devel@vger.kernel.org>; Thu, 20 Apr 2023 00:59:47 -0700 (PDT)
+Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-555bc7f6746so30201577b3.6
+        for <phone-devel@vger.kernel.org>; Thu, 20 Apr 2023 00:59:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1681977587; x=1684569587;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BI1AiAelLJ4HxelpOqQEAAWAkBpG6hkIUKnSQUWohZk=;
+        b=wwQp1VQvTD/FDhRTbzZ1RrVypby8Y5AGsbDYqpJ+LuDak82YVXfbcVccxsIBMApyKn
+         7BUqc1l513A9tDM5JVFjExEXFfvaXVuOUlURA+zBNKAuXGihcPGZhM+hhUxa6fpH0N0w
+         gX3t2Of9WyaPs19d+L774nPOmBo5O1Ccj6OpzOuFd6i1bMddsYJcxR3ChHrJrP4ziPPa
+         Dpl2qgLW1OfRaUOXB+mTI3HZQN+koHmaFxGppaH1BGwbpwp2KSQJ4TLuF+LJA+7By2Sv
+         HFEgKKPAUiCsp2hbvYNy085rQrPBUxmJY09ttws4p38lyLmGd+lmwsew8i2xHe/E5ljd
+         Eemw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681977587; x=1684569587;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BI1AiAelLJ4HxelpOqQEAAWAkBpG6hkIUKnSQUWohZk=;
+        b=YGcR4yXOBXbcebZkb75xdp9gHUkT93jPeY67fStndvyf4531H7fP9UMaol/p9uTpUV
+         xQfZCqL9Zap8ZSD9DQeIoNMYGG00Oe36i7mdZuczmH5Y3g8XtdqEjqYqF+TTkKhxFaNM
+         76SMvWoin6hEeZcFHary+oG8rK0DhfnORAPRKJNbHsKx4KygjY8V6bEy8uOjEAHD5lM4
+         s6BkYAn9sGVoAuBTyzgA5483SoSuV8rECnmQqv9upNZ0tNquCgHgrgCqUsQZ1zw0tSdh
+         0zPteEnolmGLVxHGMDSqxV5G5HxXcE1l6T44MPzjKTI7af9NvPBbJNLRavX3yhMFacdt
+         Aj7g==
+X-Gm-Message-State: AAQBX9dblPeEVLov71+Q7USaa5dHSYvllarAAFJtuoMOzyp/vUULVbrB
+        FKVgq0qeDavaYc/dzse/CgabWpWZlBW2bFpIMXKamg==
+X-Google-Smtp-Source: AKy350b/JXxWETBVLrEIcsjgS/yhHIo2IhkhWY/nknLfE8eSOzWrdPKzZATMHuHvpcsIcGNCF6cxbTFugew+ByBGoJ0=
+X-Received: by 2002:a0d:e5c4:0:b0:54f:8af6:bb13 with SMTP id
+ o187-20020a0de5c4000000b0054f8af6bb13mr228370ywe.3.1681977586772; Thu, 20 Apr
+ 2023 00:59:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH v2 5/9] regulator: rt5033: Change regulator names to
- lowercase
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <cover.1681646904.git.jahau@rocketmail.com> <9275af790e6e21b5cf661a2444effe4caf2be02e.1681646904.git.jahau@rocketmail.com>
+In-Reply-To: <9275af790e6e21b5cf661a2444effe4caf2be02e.1681646904.git.jahau@rocketmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 20 Apr 2023 09:59:35 +0200
+Message-ID: <CACRpkdZEtG=OjTECDO=SvFk89MqL10sKKMOABPEs-xxYv1hmqw@mail.gmail.com>
+Subject: Re: [PATCH v2 9/9] dt-bindings: Add documentation for rt5033 mfd,
+ regulator and charger
+To:     Jakob Hauser <jahau@rocketmail.com>
 Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Beomho Seo <beomho.seo@samsung.com>,
         Chanwoo Choi <cw00.choi@samsung.com>,
         Stephan Gerhold <stephan@gerhold.net>,
@@ -74,84 +69,91 @@ Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
         ChiYuan Huang <cy_huang@richtek.com>, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <cover.1681646904.git.jahau@rocketmail.com>
- <d4218947e354aee45589acb1060ce41727a26750.1681646904.git.jahau@rocketmail.com>
- <19ceb0f6-1225-c8cb-1469-3d657e66d171@linaro.org>
- <e6cc8658-fe93-c2c0-603e-093cdafb3cca@rocketmail.com>
- <f80fcbeb-f916-63da-a5c3-f80f6315f3e0@linaro.org>
-Content-Language: en-US
-From:   Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <f80fcbeb-f916-63da-a5c3-f80f6315f3e0@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.21365 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Krzysztof,
+Hi Jakob,
 
-On 19.04.23 10:40, Krzysztof Kozlowski wrote:
-> On 18/04/2023 23:24, Jakob Hauser wrote:
->> On 16.04.23 20:32, Krzysztof Kozlowski wrote:
->>> On 16/04/2023 14:44, Jakob Hauser wrote:
->>>> Lowercase is preferred for node names.
->>>
->>> This will break all existing users. In-tree and out-of-tree. Where is
->>> the binding update?
->>
->> In my reply to Rob's comments in v1 I was pointing out that this will
->> affect an existing driver. There was no reaction.
->>
->> As far as I can see, there is no in-tree usage yet. Though I can't tell
->> about out-of-tree usage. Although if there is, adding the rt5033-charger
->> driver might already causes the need for changes.
->>
->> Well, to stay on the safe side, I'll drop this patch in v3 and will
->> change the bindings (patch 9) back to uppercase.
-> 
-> Your v1 binding patch did not explain that you document existing ABI, so
-> you got comments like for a new binding. This is not really new binding,
-> is it?
+thanks for your patch!
 
-The bindings for the mfd and regulator are new, even though the drivers 
-are already existing. Sorry for not being clear on this in v1. This is 
-due to historic reasons of the old patchset, more information on that 
-further down.
+The following caught my eye:
 
-The current situation in the mainline kernel is as follows.
+On Sun, Apr 16, 2023 at 2:50=E2=80=AFPM Jakob Hauser <jahau@rocketmail.com>=
+ wrote:
 
-drivers
--------
-rt5033:            drivers/mfd/rt5033.c
-rt5033-regulator:  drivers/regulator/rt5033-regulator.c
-rt5033-charger:    not existent
-rt5033-battery:    drivers/power/supply/rt5033_battery.c
-rt5033-leds:       not existent
+> Add device tree binding documentation for rt5033 multifunction device, vo=
+ltage
+> regulator and battery charger.
+>
+> Cc: Beomho Seo <beomho.seo@samsung.com>
+> Cc: Chanwoo Choi <cw00.choi@samsung.com>
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+> ---
+> The patch is based on linux-next (tag "next-20230413").
+(...)
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charg=
+er.yaml
+(...)
+> +  richtek,pre-microamp:
+> +    description:
+> +      Current of pre-charge mode. The pre-charge current levels are 350 =
+mA to
+> +      650 mA programmed by I2C per 100 mA.
+> +    maxItems: 1
+> +
+> +  richtek,fast-microamp:
+> +    description:
+> +      Current of fast-charge mode. The fast-charge current levels are 70=
+0 mA
+> +      to 2000 mA programmed by I2C per 100 mA.
+> +    maxItems: 1
+> +
+> +  richtek,eoc-microamp:
+> +    description:
+> +      This property is end of charge current. Its level ranges from 150 =
+mA to
+> +      600 mA. Between 150 mA and 300 mA in 50 mA steps, between 300 mA a=
+nd 600 mA
+> +      in 100 mA steps.
+> +    maxItems: 1
+> +
+> +  richtek,pre-threshold-microvolt:
+> +    description:
+> +      Voltage of pre-charge mode. If the battery voltage is below the pr=
+e-charge
+> +      threshold voltage, the charger is in pre-charge mode with pre-char=
+ge current.
+> +      Its levels are 2.3 V to 3.8 V programmed by I2C per 0.1 V.
+> +    maxItems: 1
+> +
+> +  richtek,const-microvolt:
+> +    description:
+> +      Battery regulation voltage of constant voltage mode. This voltage =
+levels from
+> +      3.65 V to 4.4 V by I2C per 0.025 V.
+> +    maxItems: 1
 
-bindings
---------
-rt5033:            not existent
-rt5033-regulator:  not existent
-rt5033-charger:    not existent
-rt5033-battery:    .../bindings/power/supply/richtek,rt5033-battery.yaml
-rt5033-leds:       not existent
+These are very generic currents and voltages, and their usage is well known
+and generic. So they should not be prefixed "richtek,".
 
-The reason for that discrepancy:
-RT5033 mfd, regulator and fuelgauge drivers were applied but charger & 
-documentation didn't make [1]. They were submitted again but it phased 
-out at that point, last known state is [2]. The LEDs are also a phased 
-out patchset [3]. The fuelgauge binding was added not so long ago by 
-Stephan [4].
+Use the properties already defined in
+Documentation/devicetree/bindings/power/supply/battery.yaml
+for these:
 
-[1] 
-https://lore.kernel.org/all/1421899601-19327-1-git-send-email-beomho.seo@samsung.com/T/#t
-[2] 
-https://lore.kernel.org/lkml/1425864191-4121-1-git-send-email-beomho.seo@samsung.com/T/#t
-[3] 
-https://lore.kernel.org/linux-leds/1448446948-13729-1-git-send-email-ingi2.kim@samsung.com/T/#u
-[4] 
-https://lore.kernel.org/linux-devicetree/20210517105113.240379-1-stephan@gerhold.net/T/#m197b5719a5d37b17ba4ff9f3b3ff4bd4efcda71e
+precharge-current-microamp
+constant-charge-current-max-microamp
+charge-term-current-microamp
+precharge-upper-limit-microvolt
+constant-charge-voltage-max-microvolt
 
-Kind regards,
-Jakob
+Please double-check, I think those are the ones you need.
+
+Perhaps it is possible to just $ref these properties directly and add
+the additional restrictions on top.
+
+Yours,
+Linus Walleij
