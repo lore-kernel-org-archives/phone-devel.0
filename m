@@ -2,201 +2,98 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DEDBC7618E
-	for <phone-devel@archiver.kernel.org>; Fri, 21 Apr 2023 09:20:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7539BC77B78
+	for <phone-devel@archiver.kernel.org>; Fri, 21 Apr 2023 09:57:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229879AbjDUJUZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 21 Apr 2023 05:20:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34410 "EHLO
+        id S231476AbjDUJ5l (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 21 Apr 2023 05:57:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231226AbjDUJUX (ORCPT
+        with ESMTP id S230401AbjDUJ5k (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 21 Apr 2023 05:20:23 -0400
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78D035FE9
-        for <phone-devel@vger.kernel.org>; Fri, 21 Apr 2023 02:20:21 -0700 (PDT)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-54f6f0dae19so5095657b3.0
-        for <phone-devel@vger.kernel.org>; Fri, 21 Apr 2023 02:20:21 -0700 (PDT)
+        Fri, 21 Apr 2023 05:57:40 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB7DA5F4
+        for <phone-devel@vger.kernel.org>; Fri, 21 Apr 2023 02:57:38 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-504ecbfddd5so2097123a12.0
+        for <phone-devel@vger.kernel.org>; Fri, 21 Apr 2023 02:57:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1682068820; x=1684660820;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NhFBbTnrvqR6mDfvWnCP3LyOJMAtBUaFpuunhT+4e7o=;
-        b=r4wR+IdH7jTYl36uiLsjBKZrp9iQ9mcyzeIWA44aVLaBmlLsWoIZ7cP5hlZ8NO+ORj
-         WwePE2341vBNNZfHqIIYHIt4CnJ1AReRi+ypauq6Ze6bIMn1FBRrqj0HKlN7+8utv+us
-         65eqT3H25qcKogf2NRKY226L/5xLzPtveVD0yR3NPgucuGdo67xvDMxbWy/JPqVh4TQY
-         BKt+MKQZ4yxIzYH92REUq3Bp8LWpIkty+/4kMy5sjswYVAU7inR0jYbcGgbeHmJpEz15
-         UxxVsLDklf5Un6UshQfEqSW3wL0SH6Ox3Jbt+T7xAFMexIrEsKsVu6hlR+tqCiDe5RnE
-         ZjrA==
+        d=linaro.org; s=google; t=1682071056; x=1684663056;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oHpDG2NFTHiJKeL0NreEJ/zw2aOnV+F8kaX5Ii5zVog=;
+        b=GtLFK4AGXdMtOXz+kfxIxStURuoCfjWNX7T9PLSxaOE4vaTEDD9Q24ifc+yUVkDhqa
+         pXq28re0GGbI+LE2VCM4tR0fXanS1Wlr5bn5y1WgL53DXrC7egbPhVg8hvckoLjnQbQi
+         mwl1V0cwQzD0Y5Qr+3rHfqeUL8yQKEhtjgnw71HaF+LkTEPNNcYztY50MtrxNaDxi6RX
+         YQoDWchpBxi7RiD2NmyXJMzUYD8Ztyl/S6t7B6eTeRGS++LjHXB7DGQYNJhFRo2cZWUw
+         ASfvhMoHFQ6rs7YM+3A7xy9Os57lG6+kDiTPzocMy46w80/YQpQOKxbgRhFmt5RkDn1m
+         2Fdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682068820; x=1684660820;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NhFBbTnrvqR6mDfvWnCP3LyOJMAtBUaFpuunhT+4e7o=;
-        b=ZMfQ2PoakAvYPf8fGTIN+ZcW69rVy3VcZKNkFHlze6Zik7m1YGxi7P/6eVZVJObWrg
-         vS6a8PhjAz07+VFupS1/FgvkEcBE0haGLdZrOcvJCIhuKW4Dnwqcu+9c1+Rjt3Tw20ml
-         4PL6eHS86BTC5OQtaWKAbp48cX25R4N1w7iKHPjZHdJMWGxdFz9ko721rSCwkeVgtUoC
-         zQhcptc0rbQiUj86V+Gzmm/jUPQaKV8cNhC+1irlxZT1yW1cP++KJsBuz9HTWaEpW1Vg
-         CSWEAnN22IBY/8f9cAb5c/kqg7l2IKPDSK2bWrVcUzkgRZZLnoi45YxwBAwovMoRru4u
-         pd6g==
-X-Gm-Message-State: AAQBX9e0THPn6vGFE0b9Il6viho8vJ+PlFSAxcX2CMcOrFekbu/YKWld
-        7HHZ86gtaywkyRpaHnuWwUAlrTcr5bu2Vj0+4DSv2g==
-X-Google-Smtp-Source: AKy350Y4W5hG73IZ75W6wgz54If12e+2sonMIXOyKihzzRuCVU/aZi/kzOyU8POiZSBlgrP8DzO4b6g85DAQW7VxLG8=
-X-Received: by 2002:a81:910b:0:b0:54f:b994:e258 with SMTP id
- i11-20020a81910b000000b0054fb994e258mr1362753ywg.4.1682068820563; Fri, 21 Apr
- 2023 02:20:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1681646904.git.jahau@rocketmail.com> <9275af790e6e21b5cf661a2444effe4caf2be02e.1681646904.git.jahau@rocketmail.com>
- <CACRpkdZEtG=OjTECDO=SvFk89MqL10sKKMOABPEs-xxYv1hmqw@mail.gmail.com>
- <CACRpkdaRkJ-JVNqAOQLuOgDztDfUP7DBQU9QP7AMbnK=eN2HWQ@mail.gmail.com> <662eeda8-8605-4124-75d3-9df6bd81bcb7@rocketmail.com>
-In-Reply-To: <662eeda8-8605-4124-75d3-9df6bd81bcb7@rocketmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 21 Apr 2023 11:20:09 +0200
-Message-ID: <CACRpkdaYaE+1GKNv5SczC+Xn8UuBonZcW4RSdbsU53HWTR_tTg@mail.gmail.com>
-Subject: Re: [PATCH v2 9/9] dt-bindings: Add documentation for rt5033 mfd,
- regulator and charger
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        d=1e100.net; s=20221208; t=1682071056; x=1684663056;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oHpDG2NFTHiJKeL0NreEJ/zw2aOnV+F8kaX5Ii5zVog=;
+        b=QOpeEVFKd/NncXjZ02+t4t2nxjMrGbh/uReutahlp8PdqrISe4Jem2Igvpw4I1zc1O
+         eUq4gN2MocVDWZb+9StXNrX0ukB2MLfwTyh1HpC2mg6v4UTXwmcHAuHikiedoY95QZyf
+         2tJuO37us++i1qee+WVi+gL+7Htn0ew1lHOIR1Lyv5Pajold6FiYHRnVp+c1TTDxIDzD
+         BrxmoJdRvACaz+02L+NtTRidNhLyBuxNhHR4cnKd6inMEWi5lDVWf06dhL1rJbA79wbN
+         1epLtz6RvNPwDcMHI+9LMfaa/fkoTvFAcoVJggOhgMNejQKofPGnNnMHNIRq2xmA9Pbx
+         YYsg==
+X-Gm-Message-State: AAQBX9fcH7RdUyAk86uAXeC+9VknnHivBU0Dw9rR5M5qX21jxDSMLmVq
+        kNE1n3rs9/b5j+CSImaMXBoR0Q==
+X-Google-Smtp-Source: AKy350brurKh6ztiJQMzGbml9x3XPmS0CuNx0oUEUciJh5hj3eeB4wyqKXl+umFreGX4NJiRww2PnQ==
+X-Received: by 2002:aa7:da41:0:b0:505:4391:398 with SMTP id w1-20020aa7da41000000b0050543910398mr4726331eds.33.1682071056475;
+        Fri, 21 Apr 2023 02:57:36 -0700 (PDT)
+Received: from krzk-bin.. ([2a02:810d:15c0:828:668b:1e57:3caa:4d06])
+        by smtp.gmail.com with ESMTPSA id f7-20020a05640214c700b004fa380a14e7sm1686062edx.77.2023.04.21.02.57.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Apr 2023 02:57:35 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Beomho Seo <beomho.seo@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Raymond Hackley <raymondhackley@protonmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
-        ChiYuan Huang <cy_huang@richtek.com>, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        Pawel Chmiel <pawel.mikolaj.chmiel@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 1/4] ARM: dts: s5pv210: align pin configuration nodes with bindings
+Date:   Fri, 21 Apr 2023 11:57:18 +0200
+Message-Id: <20230421095721.31857-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Jakob,
+Bindings expect that pins in initial and sleep states nodes end with
+'-pin':
 
-On Thu, Apr 20, 2023 at 11:16=E2=80=AFPM Jakob Hauser <jahau@rocketmail.com=
-> wrote:
-> > On Thu, Apr 20, 2023 at 9:59=E2=80=AFAM Linus Walleij <linus.walleij@li=
-naro.org> wrote:
+  s5pv210-fascinate4g.dtb: pinctrl@e0200000: sleep-state: 'gpa0-0', ...
+    'mp07-7' do not match any of the regexes: '^(pin-[a-z0-9-]+|[a-z0-9-]+-pin)$', 'pinctrl-[0-9]+'
 
-> > On second thought, these are really weird properties to have on the
-> > *charger* isn't it?
-> >
-> > It is really *battery* restrictions.
-> >
-> > A charger can charge many different batteries with different CC/CV
-> > settings.
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm/boot/dts/s5pv210-pinctrl.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-(...)
-> I was first a bit confused by the term "battery". I associated that term
-> with the driver "rt5033-battery". But I think that thought was wrong.
-> The driver "rt5033-battery" is just the fuel gauge.
+diff --git a/arch/arm/boot/dts/s5pv210-pinctrl.dtsi b/arch/arm/boot/dts/s5pv210-pinctrl.dtsi
+index 6d6daef9fb7a..ae0b4a423746 100644
+--- a/arch/arm/boot/dts/s5pv210-pinctrl.dtsi
++++ b/arch/arm/boot/dts/s5pv210-pinctrl.dtsi
+@@ -19,7 +19,7 @@
+ #include "s5pv210-pinctrl.h"
+ 
+ #define PIN_SLP(_pin, _mode, _pull)					\
+-	_pin {								\
++	pin- ## _pin {							\
+ 		samsung,pins = #_pin;					\
+ 		samsung,pin-con-pdn = <S5PV210_PIN_PDN_ ##_mode>;	\
+ 		samsung,pin-pud-pdn = <S5PV210_PIN_PULL_ ##_pull>;	\
+-- 
+2.34.1
 
-Yeah that is a different thing altogether, it should be named
-rt5033-fuel-gauge if I could turn back time, I would review it
-and say this, perhaps the confusion can be fixed. Mistakes
-were made.
-
-> The properties we talk about here are the settings for the charger. They
-> tell the charger how it should behave. It makes sense to process those
-> settings within the charger driver.
-
-It may make sense to *parse* this in the charger driver, by
-following the monitored-battery phandle to inspect the battery
-properties and get the information you need.
-
-The architecture of any Linux driver does not really concern
-the DT bindings, the bindings should reflect the hardware.
-The hardware has a charger, and the charger is monitoring
-a battery, so it needs to be its own DT node.
-
-> The fuel gauge, on the other hand,
-> returns information like actual voltage and percentage.
-
-The fuel gauge should probably have a phandle to the same
-battery for compleness sake, but may not need it. If it ever needs
-any battery properties, it should definately have that.
-
-> According to your remarks, the properties could be "outsourced" into a
-> battery node. (Btw. I have double-checked the property names.)
->
->      battery: battery {
->          compatible =3D "simple-battery";
->          precharge-current-microamp =3D <450000>;
->          constant-charge-current-max-microamp =3D <1000000>;
->          charge-term-current-microamp =3D <150000>;
->          precharge-upper-limit-microvolt =3D <3500000>;
->          constant-charge-voltage-max-microvolt =3D <4350000>;
->      };
->
->      pmic@34 {
->          compatible =3D "richtek,rt5033";
->          ....
->          charger {
->              compatible =3D "richtek,rt5033-charger";
->              monitored-battery =3D <&battery>;
->              extcon =3D <&muic>;
->          };
->      };
-
-Yups this is how it should look :)
-
-> Personally I would choose the current implementation for two reasons
-> (possibly weak ones):
-
-The device tree binding isn't any "implementation", and make sure
-to not go into the trap that DT bindings should be done to be
-convenient for any specific Linux driver to use.
-
-> 2) At least in my mind it's still the setup for the charger. It sets up
-> a the charging behavior of a certain consumer device. And the choice of
-> their values is limited to the hardware of the charger. Accordingly the
-> dt-bindings would say what the charger hardware is capable to do.
-> Therefore I'd say it's reasonable to have those values in the charger
-> node and use vendor properties.
->
-> I agree to you that actually the physical battery is determining how
-> these values should be set. In the end, as far as I can see, it is a
-> representation thing in the devicetree. At least in our case here.
-
-The DT bindings should reflect the hardware, and not what some
-or any driver "would like to see" (to make its life easier...)
-
-As these things are programmed into registers, clearly the
-hardware is adoptable for different batteries, and the purpose
-of these registers is to support different batteries. Ergo: they
-belong in a battery node.
-
-> Not sure how to proceed here. I would stick to the current
-> implementation. If someone strongly prefers the "battery" representation
-> style, I'm open to switch to this.
-
-Again this is not an implementation but a hardware description.
-
-It should use a phandle to a montored-battery and follow that to
-read the battery properties.
-
-> However, I'm not sure how the dt-bindings would look like in that case.
-
-Just like you sketched above, just reuse simple-battery if the battery
-is hardcoded into the platform, such as soldered in or has a form
-factor such that no different battery can be fitted.
-
-> Those battery properties would not be part of the RT5033 node, thus they
-> basically would not be part of the RT5033 documentation. Again I think
-> it makes sense to handle those properties within the charger node as
-> "charger settings" properties.
-
-Why?
-
-This is like saying that the number of pixels on your monitor should
-be part of the graphics card DT node as "configuration". And we
-clearly do not do that.
-
-Yours,
-Linus Walleij
