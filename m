@@ -2,119 +2,82 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99BF7C77B61
-	for <phone-devel@archiver.kernel.org>; Thu, 27 Apr 2023 13:15:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 414D1C7EE24
+	for <phone-devel@archiver.kernel.org>; Thu, 27 Apr 2023 15:27:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243511AbjD0NPk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 27 Apr 2023 09:15:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37670 "EHLO
+        id S244053AbjD0P1Y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 27 Apr 2023 11:27:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243466AbjD0NPf (ORCPT
+        with ESMTP id S243459AbjD0P1X (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 27 Apr 2023 09:15:35 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CEF84495;
-        Thu, 27 Apr 2023 06:15:22 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 7172C1C0D22; Thu, 27 Apr 2023 15:15:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1682601320;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Q2nKoZvt8N7LqYBmdBABrzailml1kvoxUqiS++FYAV8=;
-        b=c37fUE6a0M9uFWN2LlcazPiUTJM3Hp8dmgmsfw2+FasKoOGIYrgBW+E2R6rUHWfhfcUa7j
-        2SXrN0bd5BV6eLYhp36Ye/u2gdrP42DF9n2uQr114LiY+GyHyeq7y0wfwyBH6cJ+YojcG8
-        Y0mba4PstW7od0yu81hagZQbHLTSpCE=
-Date:   Thu, 27 Apr 2023 15:15:19 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Michael Riesch <michael.riesch@wolfvision.net>
-Cc:     Javier Carrasco <javier.carrasco@wolfvision.net>,
-        phone-devel@vger.kernel.org, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Thu, 27 Apr 2023 11:27:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97DDCE77;
+        Thu, 27 Apr 2023 08:27:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3264063E03;
+        Thu, 27 Apr 2023 15:27:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF75C433EF;
+        Thu, 27 Apr 2023 15:27:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682609234;
+        bh=ZMfG9rQkUBCVBemVFSxX50F+m1nW1cv86EFsQgIAWEI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=pnXc0ylkh9q/jM2PnA39QsHQXqVzpV7Gad/zrX6dX0xnfcEFVBT3uDfXCFPFldcNl
+         f7AT1XLUa/QPO+hYHjWozOgupVJUjgZx2CozAl12i6tLUdh9Ep+d+u7w7P4H+R5704
+         s6Ll1GMAIIuMsTo9cI2hpODtibFcmfDiRg5BzjqN66U8K4qn4i+GFQlxJPaW5VcnoC
+         TtXwosLkItXsMUx47S+oNvw+359h0bZl8c4C+RP8FfKcyqoDkIK59FX4Am4ZwiBMZj
+         G32EyI+ermUTBGaRJ+chZhndLx1jtvA4WU/xV5AZHfd1tsSryWLULrEeTsWDpUSvLs
+         mXUjtTiAzuZ8w==
+Date:   Thu, 27 Apr 2023 16:27:07 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Henrik Rydberg <rydberg@bitmath.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Pavel Machek <pavel@ucw.cz>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Stephen Boyd <sboyd@kernel.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Uwe Kleine-g <u.kleine-koenig@pengutronix.de>,
-        Bastian Hecht <hechtb@gmail.com>
-Subject: Re: [RFC v1 0/4] Input: support virtual objects on touchscreens
-Message-ID: <ZEp1Z08/CQ+waw8+@duo.ucw.cz>
-References: <20230425115049.870003-1-javier.carrasco@wolfvision.net>
- <ZEpWrWpzkI9kNTkr@duo.ucw.cz>
- <de87d6ae-3449-5581-3e17-4aae72e8197a@wolfvision.net>
+        Jonathan Corbet <corbet@lwn.net>,
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-doc@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v2 3/8] dt-bindings: leds: qcom-lpg: Add compatible for
+ PMI632 LPG block
+Message-ID: <20230427152707.GZ50521@google.com>
+References: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
+ <20230414-pmi632-v2-3-98bafa909c36@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="CwltbjgpA33UBO1n"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <de87d6ae-3449-5581-3e17-4aae72e8197a@wolfvision.net>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230414-pmi632-v2-3-98bafa909c36@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Tue, 18 Apr 2023, Luca Weiss wrote:
 
---CwltbjgpA33UBO1n
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Document the availability of an LPG configuration for the PMI632 PMIC in
+> the Qualcomm Light Pulse Generator driver.
+> 
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  Documentation/devicetree/bindings/leds/leds-qcom-lpg.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 
-Hi!
+Applied, thanks
 
-> >=20
-> >> Some touchscreens are shipped with a physical layer on top of them whe=
-re
-> >> a number of buttons and a resized touchscreen surface might be
-> >> available.
-> >=20
-> > Yes, it is quite comon, for example Motorola Droid 4 has 4 virtual
-> > buttons below touchscreen.
->=20
-> Are those buttons configurable in some way? Or do they have a fixed purpo=
-se?
-
-Fixed.
-
-> How does Android handle those buttons, BTW?
-
-No idea.
-
-> > One question is if this should be handled inside the kernel. It will
-> > make it compatible with existing software, but it will also reduce
-> > flexibility.
->=20
-> I would say that it should be described in device tree if the purpose is
-> fixed. For example, if there is no display behind the touch screen at a
-> certain point but a printed sheet (e.g., with a home or return symbol)
-> then it is clear that this button is not going to change. In such a case
-> I doubt that flexibility is required.
-
-I agree it should be in the device tree.
-
-AFAICT hardware can do drags between the buttons, and drag between the
-buttons and touchscreen. Turning it into buttons prevents that.
-
-Plus, real buttons can do simultaneous presses on all of them,
-touchscreens will have problems with that.
-
-Best regards,
-								Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---CwltbjgpA33UBO1n
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZEp1ZwAKCRAw5/Bqldv6
-8oX2AKCHvc05pxAHX0VL5xbfmkbx9sLhkACfesnbnxpyU4K1Q08cSevtLEkKtlg=
-=80om
------END PGP SIGNATURE-----
-
---CwltbjgpA33UBO1n--
+-- 
+Lee Jones [李琼斯]
