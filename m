@@ -2,96 +2,296 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59641C77B73
-	for <phone-devel@archiver.kernel.org>; Thu, 27 Apr 2023 23:35:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 380CCC77B73
+	for <phone-devel@archiver.kernel.org>; Thu, 27 Apr 2023 23:36:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229837AbjD0Xf3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 27 Apr 2023 19:35:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41814 "EHLO
+        id S1344315AbjD0XgM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 27 Apr 2023 19:36:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344316AbjD0XfY (ORCPT
+        with ESMTP id S1344295AbjD0XgL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 27 Apr 2023 19:35:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B24E2703
-        for <phone-devel@vger.kernel.org>; Thu, 27 Apr 2023 16:34:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1682638477;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=WAbmGag01n5DmSI3CzgProTjcse9Z3IcWuvX59Ri6Jg=;
-        b=MOrWLxFdXApybiuFt3Vg9kLxQUjpXHw8cw0js24W0dO5kftNfGpvhnrX9zVGCxbD4H1CW+
-        c3e2+a/eEGAXdNnO8rLVPywXWve2ozjyONJkjHBwMMnlpcu9LTRijqGkMqhzmzOA2bZFSL
-        OScKLdzZs/w438dL5EG9FqniadtRZlE=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-toIv2D2bN9yuxjkUfUz9Ig-1; Thu, 27 Apr 2023 19:34:36 -0400
-X-MC-Unique: toIv2D2bN9yuxjkUfUz9Ig-1
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-54f88a34bd6so129322287b3.2
-        for <phone-devel@vger.kernel.org>; Thu, 27 Apr 2023 16:34:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682638475; x=1685230475;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WAbmGag01n5DmSI3CzgProTjcse9Z3IcWuvX59Ri6Jg=;
-        b=lmX/2239qb1kgjRdl+2YvsPKqlAuADmJFzkpyf2Z2Lf1Zs4VgqVsySv6ROB6+SuYox
-         if/J2eiPoOOEcmWrpFErSlB+sqmIvVRhr3G/hWB2MCm/nlohjETHNU5xd2bIf7R4C9kM
-         5B7d9dC2pGpCOjs5kgWotBqrT1MS5dCJygpMZtVVCDRwtvq0DHrwUh7kPsx5rHyQ0EPv
-         xxl365GwMc9UD1vv5u1L1ZWibTOimV+YoAXze3vmcMsyIh/CvzvzLhGdFeu+PX+DSwod
-         sOIj1ialgJ5r4WUBfesa5XinzyhOexFpkfD4Z0UaHsZ9/5xJDbxokfV2fMFe7JqFpxC4
-         Bnew==
-X-Gm-Message-State: AC+VfDxTCKU9CrhghA9joe0wLhb6YMJl74Dx/Wkx+wrGwhQCnNv4gQP6
-        rzyToMPPez5bYfTehXnOvmmlp+ph/3KEAceOHA3nTgne49pe/5RPCYIA/XCi99ayovJXRpLZNMU
-        ZoG+WvwnqN5s0301f1s3hTbM=
-X-Received: by 2002:a0d:c946:0:b0:556:c672:3455 with SMTP id l67-20020a0dc946000000b00556c6723455mr2381991ywd.40.1682638475579;
-        Thu, 27 Apr 2023 16:34:35 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ73hjwG6+Ltq+wLdLn36T+dLP3PI+N06414PCgAVqJLApv/bdsLxACX1f3tsLzSETOMQ8YF9A==
-X-Received: by 2002:a0d:c946:0:b0:556:c672:3455 with SMTP id l67-20020a0dc946000000b00556c6723455mr2381963ywd.40.1682638474836;
-        Thu, 27 Apr 2023 16:34:34 -0700 (PDT)
-Received: from x1 (c-73-214-169-22.hsd1.pa.comcast.net. [73.214.169.22])
-        by smtp.gmail.com with ESMTPSA id h190-20020a0dc5c7000000b00545a08184f8sm5137345ywd.136.2023.04.27.16.34.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Apr 2023 16:34:34 -0700 (PDT)
-Date:   Thu, 27 Apr 2023 19:34:32 -0400
-From:   Brian Masney <bmasney@redhat.com>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Thu, 27 Apr 2023 19:36:11 -0400
+Received: from sonic312-26.consmr.mail.ir2.yahoo.com (sonic312-26.consmr.mail.ir2.yahoo.com [77.238.178.97])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0E2A2D55
+        for <phone-devel@vger.kernel.org>; Thu, 27 Apr 2023 16:36:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1682638566; bh=Eyax2bKePMQ2l+ilv5VKF3wXpgbhV5+aqNkVo61NHn0=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=R3C8m8nezvdXpCtLNyDtVpCy+btvFGmO9kA4FtkrMyhbGJWtlnSvjTfmK/5P7DnxzLgaTuH7aDtWTWnSG/80bYowH0PS1/m5b5QO4ximUSxdtR8vmp136B6LJXNlUrfLKK1eIIX+5SIdv9DpTivgiASvtcIauZy13VLPKLTtbX2/4WlQ1k9+KoVTTJElW7gNEVlA3sx2cUQgqmlBnVFnSGPSaoDNZli8KQTwPy9qcFC0DG1SPWCprxgUcy+elfYO2sR2sYRadRNjTiLoOPUWW2V96hgkqqMZfIG3EpmpV/CFdKIkKHagqcnv04xdiVV1KIQoxSxDMsamD18SF7P90A==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1682638566; bh=+WQH72n4J6AInZ2KIrKpj3gM3CbWQ64ag+uXlbnsm5H=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=mEwmmvKx45rZ/C8VSice7L+lJkOtEFTIZkeurzruV5Rwc0dgUzBi67mVgo8x54In1PGH6b9d1xj5EN+D+HMnFFPJEWg+It/KKgbVE5+TzsfHaKUcJ8xtmJHzIzLwnF7ND6SSdc+pnq1Mlp5ylZgZUqqKtWrH4uwwT7MZ7l/IkGOItbCORtFgFbFTTHDYu1wP5de4R2RDJ9JeVoPiRvbObLxpYEXMW4B7iMCUot77Xv5lViKye7hzUyZytQ0Vi+JHvkOJfX5nhugiXLDrTuBPcR73vsMiOmlcr05Bcomoe6ivc66etpfygwZg9iGcP678Lxz/PbWxnhTyax22RMirkQ==
+X-YMail-OSG: Prn9KpQVM1kIkUCe_1gXUjPEfUgBQylRwXI8Gm5YkyC2K2D_oWsyOUY3NmIX8_6
+ EtezlFjzi0H0iBU4XrApA2a.k4_RujwI8Z4qL4nLBnN.Dw2WpzXhzOaJuOLikAFmCGQxh_KyByxo
+ mmGc1utHaXkK3UbQXs.Jowb55YSchw3qmPszQG5kY2mrfBwKhtGyO0VLOEhnvQ3ZHkGRVSHFksNs
+ l0Memw9B8aGDMHGhpEOxzh2IdKoMtylrP.XlVOu66zLfL87Gd96u7iH2OliRHQpqHsQPBWa4g_.r
+ INXph9c9clGMWNJJbs_PMPoTh9Va6doLEOUCHBecgxL_QXH4ZssqaN51U4LF569dz7pMZgmqwYmg
+ TewTHXD9xHAuaIBQRPQgxaXEqqB1M_Q1gdBVohKl7vhL.AdezWs.pCElnRaMShqZe7_qE.Je_ATM
+ jWzOeBeEc0jU93oFblEmlo2SJpWUas_mgecp64GTIcTFKxaKT5dwHru2GlAkIinN4YlDVlDXw41K
+ uFwcls1hVIZtMdef8kiCKtTycWwS256u5fUxDuwt6mAPDTbUQLCdeMay9xjDOF8lPAFVZlgXaWPh
+ uqr.vkNN7Oi6FGIL0YbEONwP153kyBfvOcdSwYOgmt2ClnfSnzCAJ7GcaHb6HtnO7EjKWsBUGM.H
+ a9o6vmVsAZVmfP9q6gIWwrZbfQHWotX6T5IxWVnFVpn_KQchFa9urPsDP80jDAHAkpvKvM2oGmSx
+ Z9dd443Lz2cbEHbrhs4Fogy5Olcvq.jRdjMf8BJogCHLU4BGCN9qDkIQawLrn3MoeK2Ie4GYnReZ
+ 4PkNQx3CfFsmMymDM2R56rkdNf6ebWCoPbkXRpskCosenuUVH7_I7L6eLwAyLnZowsoK0Eb7UJPJ
+ kP39KlUF6qtXu69iZj21wZQQ9CMLGVEkRvrLKn5cTOSBAs_SEzkmfutwZNXh.JEOR78q7U3.E.M.
+ KWEqQzgftHzqft5igAX_bWAdA5WfjSZzvbgUR9uxwM60Gcr034nQte1td1bCWKyiFv9mrlHNoI4I
+ mBHKB_.QyhFDCDlOtef5aY9_ydOggPLq50ChY.lTbH6skLoACiVW7MzZmCqhS3MCpGCBuayDkI9J
+ j_16zVd0f8KiRuiL7wjipAJ0WG6RIxFjML1yoOzf5zhqg7mEwiKIJ8kfd5ExteiToo5JplOjdhvk
+ j8cnS4UxJDJJrJG0kEn4H2FPXXKJPywTppEzx0j19Cl9OpBaPdlZt0ArEGhYtl1dyPtPh14OpA6K
+ 13gG5UlXkBmzvQ5Kme190ftdr3ZUg5uzvAs61vciK8yzgMNvO2BLanazdUcLftBMdEcZOeAYcD1.
+ LK0rwkMrSkpPvilpMInkZJFAKUfkfLPfGH2Ac4kPaQH3P_3Eda64.EIUNJvue23AIEogPcOOJfFQ
+ zQfgYckkfd.pRezOdBkiynablrElQVFZI30ACzDQ518a37Ong3a.Kf4HFBwKRRB96KGgB0SzN3WN
+ p9moUWva2MJ8QIIvhi5C8XDkn5sL7GJRS9M_d_uy4VrD3vb2POOJKj1Hhq44qoIJjh4f7.HGJTBh
+ BgzRXX6zlWjTDnnoenGs.O2McUPC6AukI24.v0W09dmOxTcfGYMnhP.YsSN1zo2NGVa3mzdi23LJ
+ 2Iu8QcCHNfeb0sk5UZT3AUGrw3udnEJKT6rlW6tLQQj.IK7jW.Oy7e7CzjohuXTTDZVBvceKRVFS
+ vYfdxNFwlZS.kSUVSFe0nx2OYpFCuCAx5sbB_VquMMYYHblAFDPR_mk_YMBl209Ddp8D7xMPGl4h
+ AdnmWNZq0nY120hhTgm5hl_2sHcWylkaVRM4f6WY_upb_TPVvK6t7rwkiEAEtyn3hkaA4.bvfaR0
+ 9d7Mzq5fKDnC5bQBwQ4dhL470El2w2WxjgXylbu03L6pIpH5PPPBrWUPEUZE0bsZ8wJBXDBsTtnU
+ 6S5AxWo03TfZGGe.p_N44NkYlfsuMCwbUd.n0M8RT_Zfnw5JsXkcsZJLGzsBGiAYWzHdxvWy8azl
+ 4o7zkZsVm1aWu4PjGY8oiqwVjg2qw_mmgUXryIoYc6m5lJPvNaSak_dISwDUXV_wzXBwCZuMHbog
+ OtZFyEQT2FEM8O5mwzdt646R4.AKqH2I9.Ii2TD6IZfDyeqNWX3AIUyKsnGwLEcfkpcIxBH.espS
+ DPpbZ.9RC3hjwmCjVR_ri43BnELBcPxBIrjdLQJYW1pCI6VVNeL1qi8sWbNNCGdJx46RDBBnLf7n
+ DRSVM33Ay9mAbaqMJBeXBTtAv_yPYZDIbFZ4n_hGqhls3UPgPysUBzvjALWyAJbbyGgAWQd9fG0O
+ 4k.gr0sDQIGea0tDGEtzPjuDuH3O8dw--
+X-Sonic-MF: <jahau@rocketmail.com>
+X-Sonic-ID: 6d200f06-61ac-4d49-9de7-a5f911c864e1
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.ir2.yahoo.com with HTTP; Thu, 27 Apr 2023 23:36:06 +0000
+Received: by hermes--production-ir2-74cd8fc864-d5c78 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID b559be960ee93a958c6ba15207aea559;
+          Thu, 27 Apr 2023 23:36:04 +0000 (UTC)
+From:   Jakob Hauser <jahau@rocketmail.com>
+To:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Brian Masney <masneyb@onstation.org>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 4/4] ARM: dts: qcom: msm8974-hammerhead: Add vibrator
-Message-ID: <ZEsGiERTqoMJVh/h@x1>
-References: <20230427-hammerhead-vibra-v1-0-e87eeb94da51@z3ntu.xyz>
- <20230427-hammerhead-vibra-v1-4-e87eeb94da51@z3ntu.xyz>
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Beomho Seo <beomho.seo@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Jakob Hauser <jahau@rocketmail.com>
+Subject: [PATCH v3 8/8] dt-bindings: Add rt5033 mfd, regulator and charger
+Date:   Fri, 28 Apr 2023 01:30:11 +0200
+Message-Id: <5bd8b90713a61129acf292a941eb7fb5ccaa3db4.1682636929.git.jahau@rocketmail.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <cover.1682636929.git.jahau@rocketmail.com>
+References: <cover.1682636929.git.jahau@rocketmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20230427-hammerhead-vibra-v1-4-e87eeb94da51@z3ntu.xyz>
-User-Agent: Mutt/2.2.7 (2022-08-07)
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Apr 27, 2023 at 10:34:29PM +0200, Luca Weiss wrote:
-> The Nexus 5 has a vibrator connected to the clock output of GP1_CLK
-> which we can use with the clk-pwm driver, then we can use that pwm with
-> pwm-vibrator to get haptics functionality.
-> 
-> This patch is based on Brian Masney's previous patch with clk-vibrator.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Add device tree binding documentation for rt5033 multifunction device, voltage
+regulator and battery charger.
 
-Reviewed-by: Brian Masney <bmasney@redhat.com>
+Cc: Beomho Seo <beomho.seo@samsung.com>
+Cc: Chanwoo Choi <cw00.choi@samsung.com>
+Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+---
+The patch is based on next-20230413.
+
+The drivers for rt5033 (mfd) and rt5033-regulator are existing. Whereas the
+the driver rt5033-charger is new in this patchset.
+
+The extcon phandle is still there, as I didn't know what Rob meant by
+"standard connector bindings".
+
+Changes in v3:
+ - Removed redundant "documentation" in the commit title.
+ - Squashed regulator into the mfd binding.
+ - Restored the regulator node names to uppercase because it is an existing
+   driver.
+ - In the charger binding replaced the vendor properties by "battery" node
+   style. Accodringly updated the example in the mfd.
+
+ .../bindings/mfd/richtek,rt5033.yaml          | 105 ++++++++++++++++++
+ .../power/supply/richtek,rt5033-charger.yaml  |  63 +++++++++++
+ 2 files changed, 168 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
+ create mode 100644 Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
+
+diff --git a/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml b/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
+new file mode 100644
+index 000000000000..ee704914201f
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
+@@ -0,0 +1,105 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/mfd/richtek,rt5033.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Richtek RT5033 Power Management Integrated Circuit
++
++maintainers:
++  - Jakob Hauser <jahau@rocketmail.com>
++
++description:
++  RT5033 is a multifunction device which includes battery charger, fuel gauge,
++  flash LED current source, LDO and synchronous Buck converter for portable
++  applications. It is interfaced to host controller using I2C interface. The
++  battery fuel gauge uses a separate I2C bus.
++
++properties:
++  compatible:
++    const: richtek,rt5033
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  regulators:
++    description:
++      The regulators of RT5033 have to be instantiated under a sub-node named
++      "regulators". For SAFE_LDO voltage there is only one value of 4.9 V. LDO
++      voltage ranges from 1.2 V to 3.0 V in 0.1 V steps. BUCK voltage ranges
++      from 1.0 V to 3.0 V in 0.1 V steps.
++    type: object
++    patternProperties:
++      "^(SAFE_LDO|LDO|BUCK)$":
++        type: object
++        $ref: /schemas/regulator/regulator.yaml#
++        unevaluatedProperties: false
++    additionalProperties: false
++
++  charger:
++    type: object
++    $ref: /schemas/power/supply/richtek,rt5033-charger.yaml#
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    battery: battery {
++        compatible = "simple-battery";
++        precharge-current-microamp = <450000>;
++        constant-charge-current-max-microamp = <1000000>;
++        charge-term-current-microamp = <150000>;
++        precharge-upper-limit-microvolt = <3500000>;
++        constant-charge-voltage-max-microvolt = <4350000>;
++    };
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        pmic@34 {
++            compatible = "richtek,rt5033";
++            reg = <0x34>;
++
++            interrupt-parent = <&msmgpio>;
++            interrupts = <62 IRQ_TYPE_EDGE_FALLING>;
++
++            pinctrl-names = "default";
++            pinctrl-0 = <&pmic_int_default>;
++
++            regulators {
++                safe_ldo_reg: SAFE_LDO {
++                    regulator-name = "SAFE_LDO";
++                    regulator-min-microvolt = <4900000>;
++                    regulator-max-microvolt = <4900000>;
++                    regulator-always-on;
++                };
++                ldo_reg: LDO {
++                    regulator-name = "LDO";
++                    regulator-min-microvolt = <2800000>;
++                    regulator-max-microvolt = <2800000>;
++                };
++                buck_reg: BUCK {
++                    regulator-name = "BUCK";
++                    regulator-min-microvolt = <1200000>;
++                    regulator-max-microvolt = <1200000>;
++                };
++            };
++
++            charger {
++                compatible = "richtek,rt5033-charger";
++                monitored-battery = <&battery>;
++                extcon = <&muic>;
++            };
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml b/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
+new file mode 100644
+index 000000000000..bf08e8db365e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
+@@ -0,0 +1,63 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/power/supply/richtek,rt5033-charger.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Richtek RT5033 PIMC Battery Charger
++
++maintainers:
++  - Jakob Hauser <jahau@rocketmail.com>
++
++description:
++  The battery charger of the multifunction device RT5033 has to be instantiated
++  under sub-node named "charger" using the following format.
++
++properties:
++  compatible:
++    const: richtek,rt5033-charger
++
++  monitored-battery:
++    description: |
++      Phandle to the monitored battery according to battery.yaml. The battery
++      node needs to contain five parameters.
++
++      precharge-current-microamp:
++      Current of pre-charge mode. The pre-charge current levels are 350 mA
++      to 650 mA programmed by I2C per 100 mA.
++
++      constant-charge-current-max-microamp:
++      Current of fast-charge mode. The fast-charge current levels are 700 mA
++      to 2000 mA programmed by I2C per 100 mA.
++
++      charge-term-current-microamp:
++      This property is end of charge current. Its level ranges from 150 mA
++      to 600 mA. Between 150 mA and 300 mA in 50 mA steps, between 300 mA and
++      600 mA in 100 mA steps.
++
++      precharge-upper-limit-microvolt:
++      Voltage of pre-charge mode. If the battery voltage is below the pre-charge
++      threshold voltage, the charger is in pre-charge mode with pre-charge
++      current. Its levels are 2.3 V to 3.8 V programmed by I2C per 0.1 V.
++
++      constant-charge-voltage-max-microvolt:
++      Battery regulation voltage of constant voltage mode. This voltage levels
++      from 3.65 V to 4.4 V by I2C per 0.025 V.
++
++  extcon:
++    description:
++      Phandle to the extcon device.
++    maxItems: 1
++
++required:
++  - monitored-battery
++
++additionalProperties: false
++
++examples:
++  - |
++    charger {
++        compatible = "richtek,rt5033-charger";
++        monitored-battery = <&battery>;
++        extcon = <&muic>;
++    };
+-- 
+2.39.2
 
