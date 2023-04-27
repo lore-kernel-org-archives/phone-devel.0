@@ -2,35 +2,35 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72651C7EE26
-	for <phone-devel@archiver.kernel.org>; Thu, 27 Apr 2023 20:35:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E3F4AC77B61
+	for <phone-devel@archiver.kernel.org>; Thu, 27 Apr 2023 20:35:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344275AbjD0UfA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 27 Apr 2023 16:35:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34284 "EHLO
+        id S233221AbjD0Ufo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 27 Apr 2023 16:35:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344257AbjD0Uez (ORCPT
+        with ESMTP id S231563AbjD0Ufn (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 27 Apr 2023 16:34:55 -0400
+        Thu, 27 Apr 2023 16:35:43 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78FA43C16;
-        Thu, 27 Apr 2023 13:34:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F70F4496;
+        Thu, 27 Apr 2023 13:35:24 -0700 (PDT)
 Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id C09CDCEC29;
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 57E8CCE0C1;
         Thu, 27 Apr 2023 20:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1682627692; bh=u0OfrZ8JQA1K+eu8S043JANNKuvEBNwR1oXhG9a518k=;
+        t=1682627692; bh=p922sNIfNiwflTrQNfKaHaOev78sv9e3hzmwAJNBX9E=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=mV7fmCgl5zkebzcbzU1H4v++iAKjmTa2v7aq56EgSEyyzJ97V5M2XdGoXxdc5bB3l
-         WMkVXNQnlJKGtIew/BwWWRUR8pTxhnKNg8LfpmZ/X8jHlRbB7N4umQsvhsOousVKzV
-         ZpzI6N/ZteBxGLVMjzo5h/e2jfFHDgBAl4EoaV8s=
+        b=T46tznhR2VZ1ohf0TbWvOVBzT1A52JxbtQcOoLN6aZCVG+Pcd+4EgVUm2cHhvqTC5
+         IMk+81b1trddhCKEXSOxwns58AWZ4libR+9Skm+RZLXundFA7P4kScNSd28dRa34rv
+         XkVB2Uck83bitmeeaSb7tLGOw40VUDVFwr2F14D0=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Thu, 27 Apr 2023 22:34:29 +0200
-Subject: [PATCH 4/4] ARM: dts: qcom: msm8974-hammerhead: Add vibrator
+Date:   Thu, 27 Apr 2023 22:34:27 +0200
+Subject: [PATCH 2/4] Input: pwm-vibra - add newline to dev_err prints
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230427-hammerhead-vibra-v1-4-e87eeb94da51@z3ntu.xyz>
+Message-Id: <20230427-hammerhead-vibra-v1-2-e87eeb94da51@z3ntu.xyz>
 References: <20230427-hammerhead-vibra-v1-0-e87eeb94da51@z3ntu.xyz>
 In-Reply-To: <20230427-hammerhead-vibra-v1-0-e87eeb94da51@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -46,90 +46,125 @@ Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1621; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=u0OfrZ8JQA1K+eu8S043JANNKuvEBNwR1oXhG9a518k=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkStxqdiW+kWCefNLPPzqQpnvWWzkWAPLg7kJEW
- kuWJkM6I++JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZErcagAKCRBy2EO4nU3X
- VhquEACXKd8YsE0/iZG3aV/sz4f2rfDYg2ZFsLJSkAmDG8FYnsH7qHaUf0AdidkoLUMrWGntbcJ
- zzTCUvbyr7fNXKKZhFMW/Y5RQot/4L7zGviNsyVyw7L8apKqyAnskyWbkWxg32feNKHkp924Z3f
- y0c2saXLto1l7SHskHaTPEohkM//l0gwcou+OcN3il4Iej3HvP5dQW7FOwcrGY4D82INL59x1Hz
- WYXomaitIzGgwcl1Qgs3rYAopoHwUk/PZzE/DI142JFU0d+3Swb00I9XovXIml/yMWOIfbKB8tq
- H8hl5Ja+z/v8FosPET5fAa6nZ7xtccXQXD/V1JC/C2puZhHGx3zfGjISuueILHpwyOMqZHo9QOl
- sA2o+u4Fzb+/mcDEDruM4A/bvDIpryN2HVHLQbjAnt+TIg1/CdM1ApmKQxJ6rdQ/+GLeD/Y+jXZ
- 2CFthrIKmZ9rxHtuj9Px40dXCRJelef5Hyw21V1XKbEET/lvrkwtTlM8StP5VlRhHpCKHLuAyvS
- sCm/+3BXQnBoSd7mC+2m+B50OD4NdDErZe2eFW8max6E7GhN2bhtOmwg2EFPHjzPitVWgsX5t7z
- 2MkVYKxlN20laGSY+Hqa+crLf968IMZr2cKH0I/IJfXOn/IIkungRbwBPIpRuaEUgkhTYaPBfP2
- KTIbBaABkLs6UqQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3551; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=p922sNIfNiwflTrQNfKaHaOev78sv9e3hzmwAJNBX9E=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkStxlDv0aKCkhM1092jPP3TzJwgfzVji8WY9yL
+ cwsMY+umYiJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZErcZQAKCRBy2EO4nU3X
+ Vv0TEAC7PUqVbheNI7KK7uopE7LtMV0YovMzqYw4q3RPBjn4trxFOvkOM+7q4o6N6V9HW6I9S1O
+ 4TuoB9EWFWd8pcR40AXYLSrDKrrU421qZOkDafehQP64Z4Rteeri9/3GbFL8tUCsTHrJrztL7Wx
+ LtJyfhDZCNjOQ3uStKj3glbfQqo5eauPKaLJEOzsJEr5yOC3oj+DPdt3aeSSuHjEDvuG7vVPxA1
+ DGWMf5dz+hJGnTs+hiNlRdIhC9Y6FLwBcQ0MBlmtOxLz/aBUUa2EZyKbF3H1Dg1PgNwYqkotbQP
+ AMSx9jkh5ECL6WXSt3wRTopyrK8ZObXp+GwYyx9cD4bZBbWNZRC3AbF0KIHbfnVk68qX2aHEve6
+ S2LbJpwtG93jYhTcOqWeNVhB9JG+HrxUMt9yGPo9WzZlsZJbFk4C8L7O3K+ZC/Dam90H8JEkokG
+ MT8U+rHYBMjbgUcx2hP3+a+quTGv4H9zjzcoSM7X6ZughIEdsnhQ8fg+RQczNGQFrStyk81icUn
+ ARRQm3gQKrtKEopNSTrSJhGJ8gBxY46p3lLNq2YW0R0nSgpHgRwoCNwd3anQTHnwy14x86PH/Im
+ X4K7r/7Tc/EBX/FUDJkW3UxCAfKNUvqLKZ6srxcHefQncVT2Pu50kcrSueSEg7eZGas/XCYOv8i
+ zEEWLyFbekmvb4w==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The Nexus 5 has a vibrator connected to the clock output of GP1_CLK
-which we can use with the clk-pwm driver, then we can use that pwm with
-pwm-vibrator to get haptics functionality.
-
-This patch is based on Brian Masney's previous patch with clk-vibrator.
+Make sure all printed messages end with a newline.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- .../dts/qcom-msm8974-lge-nexus5-hammerhead.dts     | 35 ++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ drivers/input/misc/pwm-vibra.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts b/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-index ab35f2d644c0..fea8a6be9021 100644
---- a/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-+++ b/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-@@ -41,6 +41,25 @@ key-volume-down {
- 		};
- 	};
+diff --git a/drivers/input/misc/pwm-vibra.c b/drivers/input/misc/pwm-vibra.c
+index d0e58a7cdfa3..c08971c97ad6 100644
+--- a/drivers/input/misc/pwm-vibra.c
++++ b/drivers/input/misc/pwm-vibra.c
+@@ -42,7 +42,7 @@ static int pwm_vibrator_start(struct pwm_vibrator *vibrator)
+ 	if (!vibrator->vcc_on) {
+ 		err = regulator_enable(vibrator->vcc);
+ 		if (err) {
+-			dev_err(pdev, "failed to enable regulator: %d", err);
++			dev_err(pdev, "failed to enable regulator: %d\n", err);
+ 			return err;
+ 		}
+ 		vibrator->vcc_on = true;
+@@ -54,7 +54,7 @@ static int pwm_vibrator_start(struct pwm_vibrator *vibrator)
  
-+	clk_pwm: pwm {
-+		compatible = "clk-pwm";
-+		clocks = <&mmcc CAMSS_GP1_CLK>;
-+
-+		pinctrl-0 = <&vibrator_pin>;
-+		pinctrl-names = "default";
-+
-+		#pwm-cells = <2>;
-+	};
-+
-+	vibrator {
-+		compatible = "pwm-vibrator";
-+		pwms = <&clk_pwm 0 100000>;
-+		pwm-names = "enable";
-+
-+		vcc-supply = <&pm8941_l19>;
-+		enable-gpios = <&tlmm 60 GPIO_ACTIVE_HIGH>;
-+	};
-+
- 	vreg_wlan: wlan-regulator {
- 		compatible = "regulator-fixed";
+ 	err = pwm_apply_state(vibrator->pwm, &state);
+ 	if (err) {
+-		dev_err(pdev, "failed to apply pwm state: %d", err);
++		dev_err(pdev, "failed to apply pwm state: %d\n", err);
+ 		return err;
+ 	}
  
-@@ -637,6 +656,22 @@ shutdown-pins {
- 			function = "gpio";
- 		};
- 	};
-+
-+	vibrator_pin: vibrator-state {
-+		core-pins {
-+			pins = "gpio27";
-+			function = "gp1_clk";
-+			drive-strength = <6>;
-+			bias-disable;
-+		};
-+
-+		enable-pins {
-+			pins = "gpio60";
-+			function = "gpio";
-+			drive-strength = <2>;
-+			bias-disable;
-+		};
-+	};
- };
+@@ -65,7 +65,7 @@ static int pwm_vibrator_start(struct pwm_vibrator *vibrator)
  
- &usb {
+ 		err = pwm_apply_state(vibrator->pwm_dir, &state);
+ 		if (err) {
+-			dev_err(pdev, "failed to apply dir-pwm state: %d", err);
++			dev_err(pdev, "failed to apply dir-pwm state: %d\n", err);
+ 			pwm_disable(vibrator->pwm);
+ 			return err;
+ 		}
+@@ -137,7 +137,7 @@ static int pwm_vibrator_probe(struct platform_device *pdev)
+ 	err = PTR_ERR_OR_ZERO(vibrator->vcc);
+ 	if (err) {
+ 		if (err != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Failed to request regulator: %d",
++			dev_err(&pdev->dev, "Failed to request regulator: %d\n",
+ 				err);
+ 		return err;
+ 	}
+@@ -146,7 +146,7 @@ static int pwm_vibrator_probe(struct platform_device *pdev)
+ 	err = PTR_ERR_OR_ZERO(vibrator->pwm);
+ 	if (err) {
+ 		if (err != -EPROBE_DEFER)
+-			dev_err(&pdev->dev, "Failed to request main pwm: %d",
++			dev_err(&pdev->dev, "Failed to request main pwm: %d\n",
+ 				err);
+ 		return err;
+ 	}
+@@ -158,7 +158,7 @@ static int pwm_vibrator_probe(struct platform_device *pdev)
+ 	state.enabled = false;
+ 	err = pwm_apply_state(vibrator->pwm, &state);
+ 	if (err) {
+-		dev_err(&pdev->dev, "failed to apply initial PWM state: %d",
++		dev_err(&pdev->dev, "failed to apply initial PWM state: %d\n",
+ 			err);
+ 		return err;
+ 	}
+@@ -172,7 +172,7 @@ static int pwm_vibrator_probe(struct platform_device *pdev)
+ 		state.enabled = false;
+ 		err = pwm_apply_state(vibrator->pwm_dir, &state);
+ 		if (err) {
+-			dev_err(&pdev->dev, "failed to apply initial PWM state: %d",
++			dev_err(&pdev->dev, "failed to apply initial PWM state: %d\n",
+ 				err);
+ 			return err;
+ 		}
+@@ -189,7 +189,7 @@ static int pwm_vibrator_probe(struct platform_device *pdev)
+ 		break;
+ 
+ 	default:
+-		dev_err(&pdev->dev, "Failed to request direction pwm: %d", err);
++		dev_err(&pdev->dev, "Failed to request direction pwm: %d\n", err);
+ 		fallthrough;
+ 
+ 	case -EPROBE_DEFER:
+@@ -207,13 +207,13 @@ static int pwm_vibrator_probe(struct platform_device *pdev)
+ 	err = input_ff_create_memless(vibrator->input, NULL,
+ 				      pwm_vibrator_play_effect);
+ 	if (err) {
+-		dev_err(&pdev->dev, "Couldn't create FF dev: %d", err);
++		dev_err(&pdev->dev, "Couldn't create FF dev: %d\n", err);
+ 		return err;
+ 	}
+ 
+ 	err = input_register_device(vibrator->input);
+ 	if (err) {
+-		dev_err(&pdev->dev, "Couldn't register input dev: %d", err);
++		dev_err(&pdev->dev, "Couldn't register input dev: %d\n", err);
+ 		return err;
+ 	}
+ 
 
 -- 
 2.40.0
