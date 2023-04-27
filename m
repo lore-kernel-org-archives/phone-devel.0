@@ -2,155 +2,93 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD1F1C77B61
-	for <phone-devel@archiver.kernel.org>; Tue, 25 Apr 2023 06:48:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B191C77B61
+	for <phone-devel@archiver.kernel.org>; Thu, 27 Apr 2023 11:04:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233532AbjDYGse (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 25 Apr 2023 02:48:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53224 "EHLO
+        id S243290AbjD0LEV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 27 Apr 2023 07:04:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233523AbjDYGsd (ORCPT
+        with ESMTP id S243269AbjD0LEU (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 25 Apr 2023 02:48:33 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E87AABBAD
-        for <phone-devel@vger.kernel.org>; Mon, 24 Apr 2023 23:48:12 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-95316faa3a8so994882366b.2
-        for <phone-devel@vger.kernel.org>; Mon, 24 Apr 2023 23:48:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1682405291; x=1684997291;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M1ZE7zkQJkA5e8pU4DAT31Q8ZdOD3Fw5YHswnvzUZmg=;
-        b=olsY2tC3Gx43o+1zlMobkyWpvjqynYcSpBNJpha9GJ236pWS48I5T6fRMsjnEXvXW6
-         nPi0bqOs+1TlaWLvYdtK05Phwd64bnf8h8lpwCoavOQKecIrT39b+c9OXon5xQQ/G8v5
-         C9ljuQugTDRKMyiQ5qglbXWyDGR5BHf2xgBOnY4Ic4pvsZ2wdQd/paK4gDRXz5hVaFo1
-         4sGV2PZjTYKCVn15Pw/Akl3g3hkRNCNsRHG7vFd0Yq0YJiWgig0JZOf8yfF87vpttcMF
-         HG7HPRei4vraUYDcnXZreqsqGm02uputbga0Nei8umyDLFxVgq8OAfyloV/3rrSUMB2q
-         yv+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682405291; x=1684997291;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=M1ZE7zkQJkA5e8pU4DAT31Q8ZdOD3Fw5YHswnvzUZmg=;
-        b=P9B4RcQR26oU9dnx16xPYoWip4/LOo/U+CsLympgo5jNnVFek998lTBcAJJcNy2fuD
-         NoufLxyKR7ZZY69hGwKF129gAzgDUB2p5nbKdKKSdnzVq2UJiNEuZUcy4n2/0ppuIocN
-         mV2FPAw0KjgSKe6ED+KrmnCGEOzjVZPpRsE1qLGw4Euw/zU6lmP1l1cSllDxp9Pvboly
-         n8YJNXbJJ3AdpCbymOrHAkBPm8clDeB/36z1CY0wQ0FeJPJEGpqjlETH+aG3oSFozAiR
-         23KZNF3PNM+WUDht+59XwwQS4tSoFEVVJmX3cYqKWyfN/xv/ycfNaGmxobD7zHkCH0rj
-         FEhw==
-X-Gm-Message-State: AAQBX9daahxVO0r83FAVlpmMkmUbIijchAAHjEfSPICU42Qu2dj37Ons
-        vaZoolCeX5JkdOprvCCTnynLbw==
-X-Google-Smtp-Source: AKy350Z1GFt6IUApk1g0YPdKIdF8wPBWzQ1iG4DdhA44udPMwwV1bqNKEmVs8J1NANW0v9bSPKkIgg==
-X-Received: by 2002:a17:907:38c:b0:94e:fdec:67e2 with SMTP id ss12-20020a170907038c00b0094efdec67e2mr12906256ejb.77.1682405291266;
-        Mon, 24 Apr 2023 23:48:11 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id sd14-20020a170906ce2e00b0094f5d1bbb21sm6340135ejb.102.2023.04.24.23.48.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Apr 2023 23:48:10 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 25 Apr 2023 08:48:10 +0200
-Message-Id: <CS5MWGNURMH4.2VD8BIIJ3V3Q4@otso>
-Subject: Re: [PATCH RFC 0/4] Add WCN3988 Bluetooth support for Fairphone 4
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Konrad Dybcio" <konrad.dybcio@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Eric Dumazet" <edumazet@google.com>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Balakrishna Godavarthi" <bgodavar@codeaurora.org>,
-        "Rocky Liao" <rjliao@codeaurora.org>,
-        "Marcel Holtmann" <marcel@holtmann.org>,
-        "Johan Hedberg" <johan.hedberg@gmail.com>,
-        "Luiz Augusto von Dentz" <luiz.dentz@gmail.com>,
-        "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <andersson@kernel.org>
-Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-bluetooth@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
-X-Mailer: aerc 0.14.0
-References: <20230421-fp4-bluetooth-v1-0-0430e3a7e0a2@fairphone.com>
- <0f2af683-07f9-7fc7-a043-ee55e41d65c3@linaro.org>
-In-Reply-To: <0f2af683-07f9-7fc7-a043-ee55e41d65c3@linaro.org>
+        Thu, 27 Apr 2023 07:04:20 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE44410E;
+        Thu, 27 Apr 2023 04:04:16 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id E89D11C0E6E; Thu, 27 Apr 2023 13:04:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+        t=1682593453;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=gCx6799fPD1mvbmBrIDrAMnxIBHFIp4o9m2BUKCs55s=;
+        b=iGQ3rxURs2j7UDZIKpZa2LfnryQV7Vyw7frtEnKUiCP1USATzOSHsjw9FGggesZRDsmYVA
+        gKLEgNRd5Vaua6p6LgrvDf4V3QIkJW5MCItd/Fev+qDF9H6dOd4jCtNl2ug4VqwqcggW/+
+        32mJaq+rPII/OVLH694uK55/LASSSQY=
+Date:   Thu, 27 Apr 2023 13:04:13 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Javier Carrasco <javier.carrasco@wolfvision.net>,
+        phone-devel@vger.kernel.org
+Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Uwe Kleine-g <u.kleine-koenig@pengutronix.de>,
+        Bastian Hecht <hechtb@gmail.com>,
+        Michael Riesch <michael.riesch@wolfvision.net>
+Subject: Re: [RFC v1 0/4] Input: support virtual objects on touchscreens
+Message-ID: <ZEpWrWpzkI9kNTkr@duo.ucw.cz>
+References: <20230425115049.870003-1-javier.carrasco@wolfvision.net>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="C8RZd6IZ7KbnjRDA"
+Content-Disposition: inline
+In-Reply-To: <20230425115049.870003-1-javier.carrasco@wolfvision.net>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat Apr 22, 2023 at 2:03 PM CEST, Konrad Dybcio wrote:
->
->
-> On 21.04.2023 16:11, Luca Weiss wrote:
-> > Just to start with the important part why this is an RFC:
-> >=20
-> > While Bluetooth chip init works totally fine and bluez seems to be
-> > fairly happy with it, there's a (major) problem with scanning, as shown
-> > with this bluetoothctl snippet and dmesg snippet:
-> >=20
-> >   [bluetooth]# scan on
-> >   Failed to start discovery: org.bluez.Error.InProgress
-> >=20
-> >   [  202.371374] Bluetooth: hci0: Opcode 0x200b failed: -16
-> >=20
-> > This opcode should be the following:
-> >=20
-> >   include/net/bluetooth/hci.h:#define HCI_OP_LE_SET_SCAN_PARAM    0x200=
-b
-> Not a bluetooth expert or anything, but does that thing support
-> bluetooth LE?
 
-I don't know too much about Bluetooth details either, but hasn't
-Bluetooth LE been a consistently supported thing since like 10 years?
+--C8RZd6IZ7KbnjRDA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-All the info I can easily find just states SM7225 SoC supports
-"Bluetooth 5.1".
+Hi!
 
-Regards
-Luca
+> Some touchscreens are shipped with a physical layer on top of them where
+> a number of buttons and a resized touchscreen surface might be
+> available.
 
->
-> Konrad
-> >=20
-> > Unfortunately trying various existing code branches in the Bluetooth
-> > driver doesn't show any sign of making this work and I don't really kno=
-w
-> > where to look to debug this further.
-> >=20
-> > On the other hand "discoverable on" makes the device show up on other
-> > devices during scanning , so the RF parts of the Bluetooth chip are
-> > generally functional for sure.
-> >=20
-> > Any ideas are welcome.
-> >=20
-> > @Bjorn: Patch "arm64: dts: qcom: sm6350: add uart1 node" should be fine
-> > to take regardless the RFC status, I don't think the problem is caused
-> > there.
-> >=20
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> > Luca Weiss (4):
-> >       dt-bindings: net: qualcomm: Add WCN3988
-> >       Bluetooth: btqca: Add WCN3988 support
-> >       arm64: dts: qcom: sm6350: add uart1 node
-> >       arm64: dts: qcom: sm7225-fairphone-fp4: Add Bluetooth
-> >=20
-> >  .../bindings/net/bluetooth/qualcomm-bluetooth.yaml |  2 +
-> >  arch/arm64/boot/dts/qcom/sm6350.dtsi               | 63 ++++++++++++++=
-++++++++
-> >  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts  | 17 ++++++
-> >  drivers/bluetooth/btqca.c                          | 13 ++++-
-> >  drivers/bluetooth/btqca.h                          | 12 ++++-
-> >  drivers/bluetooth/hci_qca.c                        | 12 +++++
-> >  6 files changed, 115 insertions(+), 4 deletions(-)
-> > ---
-> > base-commit: cf4c0112a0350cfe8a63b5eb3377e2366f57545b
-> > change-id: 20230421-fp4-bluetooth-b36a0e87b9c8
-> >=20
-> > Best regards,
+Yes, it is quite comon, for example Motorola Droid 4 has 4 virtual
+buttons below touchscreen.
 
+One question is if this should be handled inside the kernel. It will
+make it compatible with existing software, but it will also reduce
+flexibility.
+
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--C8RZd6IZ7KbnjRDA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZEpWrQAKCRAw5/Bqldv6
+8sedAKCiULYxV9Tl2uWqI7oesubhsrSGugCbBS0adKSsnML10omfQxfe3amV/KU=
+=Jsf+
+-----END PGP SIGNATURE-----
+
+--C8RZd6IZ7KbnjRDA--
