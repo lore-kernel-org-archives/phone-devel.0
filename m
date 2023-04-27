@@ -2,115 +2,119 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91C1BC77B61
-	for <phone-devel@archiver.kernel.org>; Thu, 27 Apr 2023 12:22:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99BF7C77B61
+	for <phone-devel@archiver.kernel.org>; Thu, 27 Apr 2023 13:15:40 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243799AbjD0MWb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 27 Apr 2023 08:22:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41136 "EHLO
+        id S243511AbjD0NPk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 27 Apr 2023 09:15:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243614AbjD0MWa (ORCPT
+        with ESMTP id S243466AbjD0NPf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 27 Apr 2023 08:22:30 -0400
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 814472130;
-        Thu, 27 Apr 2023 05:22:29 -0700 (PDT)
-Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-51452556acdso6211855a12.2;
-        Thu, 27 Apr 2023 05:22:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682598149; x=1685190149;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Je9dOfRheV0xbkP5D8rz4YMFOXvOjexxPPlhbTAEfPg=;
-        b=GQkHqLCx9QOiCVqkmdxf0PEzuwjMhhQn140pliLqoJPgOQ5nb4HFSUeFmKRAUUFL65
-         ygD+kZbwE/NQVPdP2oeBIAXKvHhkanPAeWnkIkz9JlAxYph7Rh+fF2hJqEUFSCO4jOO+
-         mie45R/RwxKV4XqV301GJksXsUh+PpMsyvjT0T/yMpZnEIFbHNI+2ADNuPmvtxQRjbL7
-         qfeqLmsNO6dxA/XznhGoOIvDCAtl/J/xBFWbEIidS5y/piZ8gfH5Z9VHGjUJbqhhVvBi
-         v4zdblaFMnGtRS50BUFUUv4E95KhJbOxxNclkMMex9+fV9mdbVYdz8xAFlZyNEYqgqnt
-         DRrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682598149; x=1685190149;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Je9dOfRheV0xbkP5D8rz4YMFOXvOjexxPPlhbTAEfPg=;
-        b=fv36iiC6hfnLFNE9gSKrbl6UWdp0sdR2ENLYlg6o3j9ta+hYkki+UOPVnwfdwpSysP
-         gI2jHErHwrenHlzBDjAFQImB+KSAe6baw1LTHMFGmvwfWpMqmhrSQgHhXezTVds0N+K0
-         RaxP0noipJ9b3xhdOZaO4FYo4UwG6y7GuXUmYc3zvGGgS0qjNGVU26coFpzs1Qx/ltyG
-         n2jyRYirBBi8J7bc+q2LDZVnjx0RvOIbeh3jDrxfMQy9uef0PozkmWT+U1WObk3fSElL
-         aik9JL9hw/oadLW7emjjc4MzuD7KcN0SJkJMC3waE58fUOTPRZbmx6EcutzEEpG0oBTr
-         TOQA==
-X-Gm-Message-State: AC+VfDyZMVTQmsq0FUYeE1i747F3NpPePyO9QOF1s9KFnDzho7Afsg+c
-        WVN5TvPK6j1b/+i7OKV3OFg=
-X-Google-Smtp-Source: ACHHUZ60LSwIT0w8lkNEvMzM0Y0TrOpiNVgl24TggeN+M+JPyg2fFsrpOK3fdBeW4lKJvNEje1Dz8w==
-X-Received: by 2002:a17:90a:f312:b0:24c:1cc:e15 with SMTP id ca18-20020a17090af31200b0024c01cc0e15mr1813547pjb.12.1682598148867;
-        Thu, 27 Apr 2023 05:22:28 -0700 (PDT)
-Received: from localhost.localdomain (n220246252240.netvigator.com. [220.246.252.240])
-        by smtp.gmail.com with ESMTPSA id ot2-20020a17090b3b4200b0023cfdbb6496sm13443011pjb.1.2023.04.27.05.22.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Apr 2023 05:22:28 -0700 (PDT)
-From:   Jianhua Lu <lujianhua000@gmail.com>
-To:     Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        Thu, 27 Apr 2023 09:15:35 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CEF84495;
+        Thu, 27 Apr 2023 06:15:22 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 7172C1C0D22; Thu, 27 Apr 2023 15:15:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+        t=1682601320;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Q2nKoZvt8N7LqYBmdBABrzailml1kvoxUqiS++FYAV8=;
+        b=c37fUE6a0M9uFWN2LlcazPiUTJM3Hp8dmgmsfw2+FasKoOGIYrgBW+E2R6rUHWfhfcUa7j
+        2SXrN0bd5BV6eLYhp36Ye/u2gdrP42DF9n2uQr114LiY+GyHyeq7y0wfwyBH6cJ+YojcG8
+        Y0mba4PstW7od0yu81hagZQbHLTSpCE=
+Date:   Thu, 27 Apr 2023 15:15:19 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Michael Riesch <michael.riesch@wolfvision.net>
+Cc:     Javier Carrasco <javier.carrasco@wolfvision.net>,
+        phone-devel@vger.kernel.org, linux-input@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Krishna Manikandan <quic_mkrishn@quicinc.com>
-Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jianhua Lu <lujianhua000@gmail.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH v2] dt-bindings: display/msm: dsi-controller-main: Document qcom,master-dsi and qcom,sync-dual-dsi
-Date:   Thu, 27 Apr 2023 20:21:32 +0800
-Message-Id: <20230427122132.24840-1-lujianhua000@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        Henrik Rydberg <rydberg@bitmath.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Uwe Kleine-g <u.kleine-koenig@pengutronix.de>,
+        Bastian Hecht <hechtb@gmail.com>
+Subject: Re: [RFC v1 0/4] Input: support virtual objects on touchscreens
+Message-ID: <ZEp1Z08/CQ+waw8+@duo.ucw.cz>
+References: <20230425115049.870003-1-javier.carrasco@wolfvision.net>
+ <ZEpWrWpzkI9kNTkr@duo.ucw.cz>
+ <de87d6ae-3449-5581-3e17-4aae72e8197a@wolfvision.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="CwltbjgpA33UBO1n"
+Content-Disposition: inline
+In-Reply-To: <de87d6ae-3449-5581-3e17-4aae72e8197a@wolfvision.net>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This fixes warning:
-  sm8250-xiaomi-elish-csot.dtb: dsi@ae94000: Unevaluated properties are not allowed ('qcom,master-dsi', 'qcom,sync-dual-dsi' were unexpected)
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
----
-Changes in v2:
-  - pick up tags
-  - fix typo (need -> needs)
+--CwltbjgpA33UBO1n
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- .../bindings/display/msm/dsi-controller-main.yaml    | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Hi!
 
-diff --git a/Documentation/devicetree/bindings/display/msm/dsi-controller-main.yaml b/Documentation/devicetree/bindings/display/msm/dsi-controller-main.yaml
-index e6c1ebfe8a32..130e16d025bc 100644
---- a/Documentation/devicetree/bindings/display/msm/dsi-controller-main.yaml
-+++ b/Documentation/devicetree/bindings/display/msm/dsi-controller-main.yaml
-@@ -82,6 +82,18 @@ properties:
-       Indicates if the DSI controller is driving a panel which needs
-       2 DSI links.
- 
-+  qcom,master-dsi:
-+    type: boolean
-+    description: |
-+      Indicates if the DSI controller is the master DSI controller when
-+      qcom,dual-dsi-mode enabled.
-+
-+  qcom,sync-dual-dsi:
-+    type: boolean
-+    description: |
-+      Indicates if the DSI controller needs to sync the other DSI controller
-+      with MIPI DCS commands when qcom,dual-dsi-mode enabled.
-+
-   assigned-clocks:
-     minItems: 2
-     maxItems: 4
--- 
-2.39.2
+> >=20
+> >> Some touchscreens are shipped with a physical layer on top of them whe=
+re
+> >> a number of buttons and a resized touchscreen surface might be
+> >> available.
+> >=20
+> > Yes, it is quite comon, for example Motorola Droid 4 has 4 virtual
+> > buttons below touchscreen.
+>=20
+> Are those buttons configurable in some way? Or do they have a fixed purpo=
+se?
 
+Fixed.
+
+> How does Android handle those buttons, BTW?
+
+No idea.
+
+> > One question is if this should be handled inside the kernel. It will
+> > make it compatible with existing software, but it will also reduce
+> > flexibility.
+>=20
+> I would say that it should be described in device tree if the purpose is
+> fixed. For example, if there is no display behind the touch screen at a
+> certain point but a printed sheet (e.g., with a home or return symbol)
+> then it is clear that this button is not going to change. In such a case
+> I doubt that flexibility is required.
+
+I agree it should be in the device tree.
+
+AFAICT hardware can do drags between the buttons, and drag between the
+buttons and touchscreen. Turning it into buttons prevents that.
+
+Plus, real buttons can do simultaneous presses on all of them,
+touchscreens will have problems with that.
+
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--CwltbjgpA33UBO1n
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZEp1ZwAKCRAw5/Bqldv6
+8oX2AKCHvc05pxAHX0VL5xbfmkbx9sLhkACfesnbnxpyU4K1Q08cSevtLEkKtlg=
+=80om
+-----END PGP SIGNATURE-----
+
+--CwltbjgpA33UBO1n--
