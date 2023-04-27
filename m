@@ -2,104 +2,98 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 084EBC7EE25
-	for <phone-devel@archiver.kernel.org>; Thu, 27 Apr 2023 17:51:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BD52C7EE21
+	for <phone-devel@archiver.kernel.org>; Thu, 27 Apr 2023 20:35:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243639AbjD0RvX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 27 Apr 2023 13:51:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60154 "EHLO
+        id S1344203AbjD0Ue6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 27 Apr 2023 16:34:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243982AbjD0RvW (ORCPT
+        with ESMTP id S1344251AbjD0Uez (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 27 Apr 2023 13:51:22 -0400
+        Thu, 27 Apr 2023 16:34:55 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CFC210D;
-        Thu, 27 Apr 2023 10:51:21 -0700 (PDT)
-Received: from g550jk.localnet (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id DD897CCBE1;
-        Thu, 27 Apr 2023 17:50:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 726873C15;
+        Thu, 27 Apr 2023 13:34:54 -0700 (PDT)
+Received: from [192.168.178.23] (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id D6709C769B;
+        Thu, 27 Apr 2023 20:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1682617849; bh=NIY1N6khezq9+ZTcdf4CI2PZJx2zYchLwM1fp6lZo0A=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=aXEMnvun3ENv8iPHd1MiLBtsE5FXHEqngQMklwv+OslGFTyAdx9vqOnq8xShhCEg8
-         +0cqiUeamn2INSEdAz7NDlFZU70J9NNbqnAuwo/H2kbdGg2ph3hEco01xg0Qs4Wtnr
-         2WXv4VZNp1i33nchNq6wUl9EyUd3WxUh4R8YyEEk=
+        t=1682627692; bh=T3OvB1tzubQbC9YOdAcpkzeqQ7Zla1a71M5m+zynx9g=;
+        h=From:Subject:Date:To:Cc;
+        b=SmCEhIddbU8qo9r30nyrvNuNCY9jpW+4x0ANHuM2HAsUOWW/5DaAqC7L7E7KWpjQ8
+         0K+h/6kd/MWNl3icbIN+enHvkA4z1Ecb0Waw8WzmiudgEpfqE4xPV2Ma5b4NwGoxwq
+         BdjLNxrbEPyF4GDfdcJ+ComH5h2nB2GVZUxT+oFI=
 From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Lee Jones <lee@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+Subject: [PATCH 0/4] Add haptics support to Nexus 5 using pwm-vibra driver
+Date:   Thu, 27 Apr 2023 22:34:25 +0200
+Message-Id: <20230427-hammerhead-vibra-v1-0-e87eeb94da51@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFHcSmQC/x2Nyw6CMBBFf4XM2iF9EKr+CnExLYOdRYu2CdEQ/
+ t3i8uTck7tD5SJc4d7tUHiTKmtuoC8dhEj5yShzYzDKWDUYh5FS4hKZZtzEF0I1+ln7xTlNFlr
+ mqTI2kUM8w3dYE6aarjc34Njb/nuOXoUX+fx/p8dx/ADWae+YhwAAAA==
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 8/8] Documentation: leds: Add "rgb:status" path
-Date:   Thu, 27 Apr 2023 19:50:47 +0200
-Message-ID: <5823752.MhkbZ0Pkbq@z3ntu.xyz>
-In-Reply-To: <20230427160559.GC50521@google.com>
-References: <20230414-pmi632-v2-0-98bafa909c36@z3ntu.xyz>
- <20230414-pmi632-v2-8-98bafa909c36@z3ntu.xyz>
- <20230427160559.GC50521@google.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+        Brian Masney <masneyb@onstation.org>
+Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1161; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=T3OvB1tzubQbC9YOdAcpkzeqQ7Zla1a71M5m+zynx9g=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkStxaNlx3juoDp2zKO6rUIrCvUpVVXgTtRJKKC
+ MT2tO8vuXKJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZErcWgAKCRBy2EO4nU3X
+ VtLeEACleWKN3OlEkHXu9CpxXdHpZ9Nl3D5rf0yZw2OLXqyCmxF3LxlSRkDr4W1BXJmlUGD8RH8
+ JrTRzBdJe6cIBoU46dCLzleteX5cxy5d1g8mHugPL1jjTWQw3hnJeTNS3rtBvrx3hKx2sHxP9JH
+ r2R7z+asg6AfnjaP0yL5PFYCHwWxupdgARNkU5LTVYDw7NkRd/lZP1SyYeBB2PWI8zR5eOXWiX2
+ bp3uitpcQHjdR5yiGMf2P909ro+yIFSdiTDKw/7uaPVlXWjYwRFxHW917ad31gx9+yBIqyoOX2d
+ FngPSgA4MKSgf7BKwdrvAhZn4wN39+Np9d4MJdj4U1g3YDWecnRDWmHQ/s4/WU2Uhmehe0tg+L0
+ 5v/nlfTbCCAFMbSk5KGFZbQ0wz8hd8rAZP5IuXRy/hY+O0Iu+PpXSrZdwxUSKmXokkG1J1c7Alw
+ 3Lvm2AcT3Uv39J+CGVOSbzdKHSeQHvDoKOPHnZva9KomyiO+Js9ucBmJ2vMnWVTKTMsD3zgV/7w
+ xL3Tns2AHHgBVhKV0Ykkxt2YRhk+0U61mjJa0O+TFWVLRpicTleTX7hhFzBaTmRxnjsRCSVNI2v
+ ZfySYdlHVfvLeJFGVkXEGFQB1WtUYvKvTlqFI4paosddiHqqYF+m5iRnRyJOuPk9UGgpJDepT/J
+ 6wIlaqqTD+4NT5A==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Donnerstag, 27. April 2023 18:05:59 CEST Lee Jones wrote:
-> On Tue, 18 Apr 2023, Luca Weiss wrote:
-> > The path /sys/class/leds/rgb:status is already widely used with the
-> > qcom-lpg driver and others. Document it.
-> 
-> Where is this used?
-> 
-> $ grep status drivers/leds/rgb/leds-qcom-lpg.c
-> <no results>
+A while ago Brian Masney sent some patches for a clk-vibrator which was
+then succeeded by the idea of a clk-pwm driver that "converts" a clock
+into a PWM and to use the existing pwm-vibra driver.
 
-This is set in devicetree, e.g. from qcom-msm8974pro-fairphone-fp2.dts[0]:
+Since clk-pwm has landed last year we can finally add haptics support
+upstream.
 
-    color = <LED_COLOR_ID_RGB>;
-    function = LED_FUNCTION_STATUS;
+We just need to add support for an enable GPIO to the pwm-vibra driver
+since that also needs to be high for the haptics to work on this device.
 
-And then something in the LED core sets the name based on that, I'd have
-to dig to find where exactly.
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Luca Weiss (4):
+      dt-bindings: input: pwm-vibrator: Add enable-gpio
+      Input: pwm-vibra - add newline to dev_err prints
+      Input: pwm-vibra - add support for enable GPIO
+      ARM: dts: qcom: msm8974-hammerhead: Add vibrator
 
-Regards
-Luca
+ .../devicetree/bindings/input/pwm-vibrator.yaml    |  2 ++
+ .../dts/qcom-msm8974-lge-nexus5-hammerhead.dts     | 35 +++++++++++++++++++++
+ drivers/input/misc/pwm-vibra.c                     | 36 ++++++++++++++++------
+ 3 files changed, 63 insertions(+), 10 deletions(-)
+---
+base-commit: dec7f67a13c3270f9a38eba227a4fc15993f01b3
+change-id: 20230427-hammerhead-vibra-06bd1bf771a3
 
-[0] https://github.com/torvalds/linux/blob/master/arch/arm/boot/dts/qcom-msm8974pro-fairphone-fp2.dts#L105-L106
-
-> 
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> > 
-> >  Documentation/leds/well-known-leds.txt | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/Documentation/leds/well-known-leds.txt
-> > b/Documentation/leds/well-known-leds.txt index 2160382c86be..439d4dac4472
-> > 100644
-> > --- a/Documentation/leds/well-known-leds.txt
-> > +++ b/Documentation/leds/well-known-leds.txt
-> > @@ -58,6 +58,7 @@ LEDs on notebook body, indicating that sound input /
-> > output is muted.> 
-> >  * System notification
-> > 
-> > +Good: "rgb:status"
-> > 
-> >  Legacy: "status-led:{red,green,blue}" (Motorola Droid 4)
-> >  Legacy: "lp5523:{r,g,b}" (Nokia N900)
-
-
-
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
