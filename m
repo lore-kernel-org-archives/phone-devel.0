@@ -2,32 +2,65 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29353C77B61
-	for <phone-devel@archiver.kernel.org>; Fri, 28 Apr 2023 14:39:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41976C77B60
+	for <phone-devel@archiver.kernel.org>; Fri, 28 Apr 2023 15:43:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229982AbjD1OjS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 28 Apr 2023 10:39:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41442 "EHLO
+        id S1346010AbjD1PnD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 28 Apr 2023 11:43:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229843AbjD1OjR (ORCPT
+        with ESMTP id S1345994AbjD1PnC (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 28 Apr 2023 10:39:17 -0400
-Received: from out-34.mta1.migadu.com (out-34.mta1.migadu.com [IPv6:2001:41d0:203:375::22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31CA049E0
-        for <phone-devel@vger.kernel.org>; Fri, 28 Apr 2023 07:39:14 -0700 (PDT)
-Date:   Fri, 28 Apr 2023 16:39:07 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=grimler.se; s=key1;
-        t=1682692751;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=bMx6OTRIJwaSYCgtTQhYpKMdrEpNqX+maRQV25Yjn0g=;
-        b=AmxHRRunYY0A/ohh8FCgGb2ps0vCoSGpStqPEPESelyx9uq6sjy0EkiJVSAC1P+YWsKwmF
-        wuRwETVk6yL6MwZMdWkEfW1wawGFnRcL4rv/9w88VBB1Z6BTHt9zuqd8I2NE0S4YVeS4N0
-        kVDZ9X01BzPTKZbUChoF+5bZ+DGzvRE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Henrik Grimler <henrik@grimler.se>
-To:     Jakob Hauser <jahau@rocketmail.com>
+        Fri, 28 Apr 2023 11:43:02 -0400
+Received: from sonic310-11.consmr.mail.ir2.yahoo.com (sonic310-11.consmr.mail.ir2.yahoo.com [77.238.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4986270C
+        for <phone-devel@vger.kernel.org>; Fri, 28 Apr 2023 08:42:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1682696575; bh=EoLfXSDv/zyZS47vEzGnZaK948dl5CyaJIq5euI8was=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=Lrt5RKDcj5eAPMNeQPSHusCxFQH+GKJJOI65obZ16kLjgkwrX5ostZundiHB6ShaJTH9CHhyTdJLCEYWAUtpwKWkQqlvBP0V+x6UV3GaICfUtUZ+mRop57heBr65XSBY5b4onlEemGQnDhTwLjwcdKWj6J9zhFzFzO8LqNcPik+R1hVwBjxxPa7KOGfqMs9BWYP+PRgyEaDcFy2YNS8wfJm/6xuVf9yVm6Q3APf0FWNZRunzv0tgga8iuaqHdobMFmOC8zvlFKq7SLOTYdnY31UD2U8QNELMeaBqActqju846Ggf+Gg3o/b/7//+Y24eH+3X8NjHy1eMxBsap40VcQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1682696575; bh=U8xh1lxtP9cyvCWWcA2tOijUUssLs69gLbCAewuqCi2=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=qQZqX6Y4NQMxFbi0qtFYIexg7PBbXbr6WgdJJiggvJ+kzWHamW9UH2ZTxbj2egTKXvl4nmJiwfWpcKFDCIm5Hq2e+hKcd/nBpQ9W+qWxtlRei3IvX+SORn9yYmlpnt41oJVHp01Npqkz+mz5Wv6w6CUmbxkUn91cWrIFvxjGU91EY7mnam92Bir/y+4XcjvY5VUswKMoAkH1/J93lGLU51sT7fMJzk+VPuyIZN44OBaifwnjI+3JF3fWbC5/thz+P9xWwHqpzOJLfJC8Cqp04v8ryl6+dI2/fZsHMUR/BonDTEWSHA51kbFY59y8opH4xPlKe3sy8pgxg0I4JvY4sA==
+X-YMail-OSG: SmtURBAVM1kD89kqoYNyFN3qux7qyu9Q004abrxiXxC5.1q_hHeNu9_PK.KbYnU
+ HpT4aBsF1rx7I3lWgMzCltSqJaxQeAgSZ8JGR55tPco6Wz.NHpkT97NKTP4e8ENON9jf8Py5tX.k
+ Y9UJiG5UCRZi79KnCZKYh9QCEa2yp1tZ8723T_6yQvFWYGPi6G3vPqv86Fz4Ko3Wx7XKwgr_Vy4B
+ hwjbvaIrSWgYT5fn3pMryZlHzbgYtJ6NVJ8ArhZxqifsN_wQRLDtXMss4MwnDCffuXZhgpKSchte
+ lGJU2sJmIsH_0rW1D2VIl09aoxlGWng5VUDePC5DLnYtdTKlKjM5xBWGjS.M7BZhLIopsqnFqUsG
+ JlF81hMkL1PmiMhhCWTj.iZnp9HMXoK.7NdY8tdm6QmfHPwjYAxcTTk_Sr7kOMAYCakXvvuuEZZR
+ Ykix8OcAlfNa6UqJ3Fto4SnopZY1bFldZNV6v56V9P41rwtfVPqOGi44UpssSonzyr4XCzczQgpX
+ 0bJLNJqFCZGwq1uosxYX0WYXLFqh1DqNrbODycZLpDMrlq.syq7QH4Zow5P73CydtWEQMNo7bRvQ
+ tggBtmlUP_a5uILCPSInkeOsujqFCsn8ohoxna98FHYnF_ApMdUeFw1hMD_dyG98diTU2Tq1hUWh
+ 6Cig9cy5ArbLb50uQAIKqkQ2AlFz4jMl1Ge_v4f4RwRXhZ.jdO90vQxXpp4F.EuxTl9RO.x.IBqk
+ JUjkzWkm_47zInpfEbljhLerBIxiInEhIxvFZYZGZlNaIPwPUYGwNStZ.ISGu33KtnQoCwE9NJY0
+ 5th7IMh8Qx9c5rKderde1gtFF0d0M6G8kPP.3GYGV8jxfvJyx._93rdRzgUa73nyeq1rhe40KhiM
+ rNkezIjK60kUVZpo2KYeZsXBaSdQmv2ryGmWT2gXQ5PyjFrlIexKQcQjLY6lMapyMLkw8VLGcHRV
+ E94GkQSUrTgoGUgpA9TgVPfuvb6nC4QpY8JJxjETCmRMUmYQ9cjE_FJ2G5ANx0LgRJ2UyGibUHks
+ 16PwCkwus1kNvt81GB7J8BQvbSXJJHizUUSQD9bJJT2NdefwW8E8mBcd1oKdToxCkGcZh0jPAwHl
+ VZJjQqYaCntZzmz2LlW3Y_lr3hq_6jEoDY3nN.LEs.b4sot9MKIzfn4ZXW47iLIWkrUBoREj3Ziz
+ Dud.wmva2oYA0uM_LCGyaxqW0PPHNfYARTyn.omqQkwiNRyW7IUjOUfLKKgWKZm1wCa6nPzokfWY
+ JnmqZRYCG1ke7v92KoIEgAuTJChrgKXsCE1inwJFCGk3x7ndi9HUDvg4oBt62nT1oDUbiCXPpgEM
+ tCJxGsm8Q7NuDvuZOUb4CyJe265CEAWUzWhDSg4vq9rqn2fnKkZX_aT0_ErlVYG9Kzqr8x9odggi
+ UWljWQ.v5L9uNwhrNjwgBnadAwQyfhHCFk87Q105F7r_hEsN25eouiGbdtTxy7JEOJvK0QEHE_jf
+ Ip_vAHJo6YjqG7HZK6IJoLrTU1l4RgyWW9BwnOuOPfqmsH_S.enRUQbKOZ7fE0eJVUBeHqJL4nwK
+ G.iUC2si1JG.X1fb.QrmmK7XWkenV1zAL6SBhv6cRe2hdob9HVugm.yIHJ.B0o_tPlwnmo7kPdW4
+ pb5j9.0HBiNO1ids2vgJuINe.qPz4wiAiT1fJqX77lGMxTuAhQzfRx0FSdVFjudSbofZl6tlVgWb
+ jPyAl52TdHdFgx._DpzE0BhhQOZi9YJM5SYksjmcr.mjq0FIx.kkOsw7lgRQXYGw6TO41DtDIyRq
+ 5cHeoAz3.yxnNSjfT559aT6jmWvjxyOfFWXoWrInJGUWZ1welUZiXYNMe8bzd2Rv2hhKeIOrhOyg
+ gDowPJ6CRz_7LhNK0vK0.fEo.Su.s4NEfA27ZXDTckTFSdpxqZXlzz50_YFOJpihH5b8OPCy9Npw
+ HBnikNB5lLOINpinb5.hSIaDic4R48SRPN0k6jb4V.fn_uU6mZfP0CNi1gUY8al1fx4ARwDv3Adf
+ wMIzX5jSxTn0ZozfSFEXg7zXLsmxGSbqm8p6P8ydtaV.HBlbXBZBxLJexSg97eXKIc0akjX8V7_m
+ s6frptHMBfxDDjlRkAOvZCvZhh8z2ZB8bhupeF40XABteeVzVwsB4INQ5BDHwdzkXs_Ttlu9S_Iw
+ PJM1I6FCGOhRH0aEXC1lEi49gWgsKfbsjYCnajiM_7VWxOovRbGZ_QpfkgVJ.NqtBTB6Rafo79oF
+ 9HOpr4EWqVLpgU4volbS9EoUoCXX2.TIZCgPpVm30gXjzT7VYPRXSRsK4AYzOeIMnxIpKfWiCzOj
+ UxEQ2lLk8SA--
+X-Sonic-MF: <jahau@rocketmail.com>
+X-Sonic-ID: 537d4aa0-383d-4b90-8a4c-45fc6f728880
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ir2.yahoo.com with HTTP; Fri, 28 Apr 2023 15:42:55 +0000
+Received: by hermes--production-ir2-74cd8fc864-29g5c (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c7f38f8d48bc9388ec23d0c252031f80;
+          Fri, 28 Apr 2023 15:42:52 +0000 (UTC)
+Message-ID: <0d20da8a-3d25-7164-65c0-a6f5763473e8@rocketmail.com>
+Date:   Fri, 28 Apr 2023 17:42:50 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Subject: Re: [PATCH v3 8/8] dt-bindings: Add rt5033 mfd, regulator and charger
+To:     Henrik Grimler <henrik@grimler.se>
 Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
@@ -43,245 +76,47 @@ Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
         linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v3 8/8] dt-bindings: Add rt5033 mfd, regulator and charger
-Message-ID: <ZEvaixFJGk/Nr1m2@L14.lan>
 References: <cover.1682636929.git.jahau@rocketmail.com>
  <5bd8b90713a61129acf292a941eb7fb5ccaa3db4.1682636929.git.jahau@rocketmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5bd8b90713a61129acf292a941eb7fb5ccaa3db4.1682636929.git.jahau@rocketmail.com>
-X-Migadu-Flow: FLOW_OUT
+ <ZEvaixFJGk/Nr1m2@L14.lan>
+Content-Language: en-US
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <ZEvaixFJGk/Nr1m2@L14.lan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.21417 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Jakob,
+Hi Henrik,
 
-One question inline.
+On 28.04.23 16:39, Henrik Grimler wrote:
+> On Fri, Apr 28, 2023 at 01:30:11AM +0200, Jakob Hauser wrote:
+...
+>> +  regulators:
+>> +    description:
+>> +      The regulators of RT5033 have to be instantiated under a sub-node named
+>> +      "regulators". For SAFE_LDO voltage there is only one value of 4.9 V. LDO
+> 
+> Is only 4.9 V valid for SAFE_LDO? If I am reading driver found in
+> vendor kernel for SM-A500F it seems to to allow values between 3.3 and
+> 4.95 V [1]. Same range is also written in the devicetree for the
+> device [2].
+> 
+> [1] https://github.com/msm8916-mainline/linux-downstream/blob/SM-A500F/drivers/regulator/rt5033_regulator.c#L109-L114
+> [2] https://github.com/msm8916-mainline/linux-downstream/blob/SM-A500F/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-a5u-eur-r01.dtsi#L148-L149
+> 
 
-On Fri, Apr 28, 2023 at 01:30:11AM +0200, Jakob Hauser wrote:
-> Add device tree binding documentation for rt5033 multifunction device, voltage
-> regulator and battery charger.
-> 
-> Cc: Beomho Seo <beomho.seo@samsung.com>
-> Cc: Chanwoo Choi <cw00.choi@samsung.com>
-> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
-> ---
-> The patch is based on next-20230413.
-> 
-> The drivers for rt5033 (mfd) and rt5033-regulator are existing. Whereas the
-> the driver rt5033-charger is new in this patchset.
-> 
-> The extcon phandle is still there, as I didn't know what Rob meant by
-> "standard connector bindings".
-> 
-> Changes in v3:
->  - Removed redundant "documentation" in the commit title.
->  - Squashed regulator into the mfd binding.
->  - Restored the regulator node names to uppercase because it is an existing
->    driver.
->  - In the charger binding replaced the vendor properties by "battery" node
->    style. Accodringly updated the example in the mfd.
-> 
->  .../bindings/mfd/richtek,rt5033.yaml          | 105 ++++++++++++++++++
->  .../power/supply/richtek,rt5033-charger.yaml  |  63 +++++++++++
->  2 files changed, 168 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
->  create mode 100644 Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml b/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
-> new file mode 100644
-> index 000000000000..ee704914201f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
-> @@ -0,0 +1,105 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mfd/richtek,rt5033.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Richtek RT5033 Power Management Integrated Circuit
-> +
-> +maintainers:
-> +  - Jakob Hauser <jahau@rocketmail.com>
-> +
-> +description:
-> +  RT5033 is a multifunction device which includes battery charger, fuel gauge,
-> +  flash LED current source, LDO and synchronous Buck converter for portable
-> +  applications. It is interfaced to host controller using I2C interface. The
-> +  battery fuel gauge uses a separate I2C bus.
-> +
-> +properties:
-> +  compatible:
-> +    const: richtek,rt5033
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  regulators:
-> +    description:
-> +      The regulators of RT5033 have to be instantiated under a sub-node named
-> +      "regulators". For SAFE_LDO voltage there is only one value of 4.9 V. LDO
+You're right, the RT5033 regulator SAFE_LDO is capable of more than one 
+voltage.
 
-Is only 4.9 V valid for SAFE_LDO? If I am reading driver found in
-vendor kernel for SM-A500F it seems to to allow values between 3.3 and
-4.95 V [1]. Same range is also written in the devicetree for the
-device [2].
+In the mainline rt5033-regulator driver, however, for SAFE_LDO only the 
+one voltage at 4.9 V is implemented so far.
+https://github.com/torvalds/linux/blob/v6.3/include/linux/mfd/rt5033-private.h#L211-L212
+https://github.com/torvalds/linux/blob/v6.3/drivers/regulator/rt5033-regulator.c#L83
 
-[1] https://github.com/msm8916-mainline/linux-downstream/blob/SM-A500F/drivers/regulator/rt5033_regulator.c#L109-L114
-[2] https://github.com/msm8916-mainline/linux-downstream/blob/SM-A500F/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-a5u-eur-r01.dtsi#L148-L149
+For the charger driver this seems sufficient.
 
-Best regards,
-Henrik Grimler
-
-> +      voltage ranges from 1.2 V to 3.0 V in 0.1 V steps. BUCK voltage ranges
-> +      from 1.0 V to 3.0 V in 0.1 V steps.
-> +    type: object
-> +    patternProperties:
-> +      "^(SAFE_LDO|LDO|BUCK)$":
-> +        type: object
-> +        $ref: /schemas/regulator/regulator.yaml#
-> +        unevaluatedProperties: false
-> +    additionalProperties: false
-> +
-> +  charger:
-> +    type: object
-> +    $ref: /schemas/power/supply/richtek,rt5033-charger.yaml#
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    battery: battery {
-> +        compatible = "simple-battery";
-> +        precharge-current-microamp = <450000>;
-> +        constant-charge-current-max-microamp = <1000000>;
-> +        charge-term-current-microamp = <150000>;
-> +        precharge-upper-limit-microvolt = <3500000>;
-> +        constant-charge-voltage-max-microvolt = <4350000>;
-> +    };
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        pmic@34 {
-> +            compatible = "richtek,rt5033";
-> +            reg = <0x34>;
-> +
-> +            interrupt-parent = <&msmgpio>;
-> +            interrupts = <62 IRQ_TYPE_EDGE_FALLING>;
-> +
-> +            pinctrl-names = "default";
-> +            pinctrl-0 = <&pmic_int_default>;
-> +
-> +            regulators {
-> +                safe_ldo_reg: SAFE_LDO {
-> +                    regulator-name = "SAFE_LDO";
-> +                    regulator-min-microvolt = <4900000>;
-> +                    regulator-max-microvolt = <4900000>;
-> +                    regulator-always-on;
-> +                };
-> +                ldo_reg: LDO {
-> +                    regulator-name = "LDO";
-> +                    regulator-min-microvolt = <2800000>;
-> +                    regulator-max-microvolt = <2800000>;
-> +                };
-> +                buck_reg: BUCK {
-> +                    regulator-name = "BUCK";
-> +                    regulator-min-microvolt = <1200000>;
-> +                    regulator-max-microvolt = <1200000>;
-> +                };
-> +            };
-> +
-> +            charger {
-> +                compatible = "richtek,rt5033-charger";
-> +                monitored-battery = <&battery>;
-> +                extcon = <&muic>;
-> +            };
-> +        };
-> +    };
-> diff --git a/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml b/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
-> new file mode 100644
-> index 000000000000..bf08e8db365e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
-> @@ -0,0 +1,63 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/power/supply/richtek,rt5033-charger.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Richtek RT5033 PIMC Battery Charger
-> +
-> +maintainers:
-> +  - Jakob Hauser <jahau@rocketmail.com>
-> +
-> +description:
-> +  The battery charger of the multifunction device RT5033 has to be instantiated
-> +  under sub-node named "charger" using the following format.
-> +
-> +properties:
-> +  compatible:
-> +    const: richtek,rt5033-charger
-> +
-> +  monitored-battery:
-> +    description: |
-> +      Phandle to the monitored battery according to battery.yaml. The battery
-> +      node needs to contain five parameters.
-> +
-> +      precharge-current-microamp:
-> +      Current of pre-charge mode. The pre-charge current levels are 350 mA
-> +      to 650 mA programmed by I2C per 100 mA.
-> +
-> +      constant-charge-current-max-microamp:
-> +      Current of fast-charge mode. The fast-charge current levels are 700 mA
-> +      to 2000 mA programmed by I2C per 100 mA.
-> +
-> +      charge-term-current-microamp:
-> +      This property is end of charge current. Its level ranges from 150 mA
-> +      to 600 mA. Between 150 mA and 300 mA in 50 mA steps, between 300 mA and
-> +      600 mA in 100 mA steps.
-> +
-> +      precharge-upper-limit-microvolt:
-> +      Voltage of pre-charge mode. If the battery voltage is below the pre-charge
-> +      threshold voltage, the charger is in pre-charge mode with pre-charge
-> +      current. Its levels are 2.3 V to 3.8 V programmed by I2C per 0.1 V.
-> +
-> +      constant-charge-voltage-max-microvolt:
-> +      Battery regulation voltage of constant voltage mode. This voltage levels
-> +      from 3.65 V to 4.4 V by I2C per 0.025 V.
-> +
-> +  extcon:
-> +    description:
-> +      Phandle to the extcon device.
-> +    maxItems: 1
-> +
-> +required:
-> +  - monitored-battery
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    charger {
-> +        compatible = "richtek,rt5033-charger";
-> +        monitored-battery = <&battery>;
-> +        extcon = <&muic>;
-> +    };
-> -- 
-> 2.39.2
-> 
+Kind regards,
+Jakob
