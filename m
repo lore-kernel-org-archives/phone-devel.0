@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BDBCC77B7F
-	for <phone-devel@archiver.kernel.org>; Fri, 28 Apr 2023 10:10:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89802C77B61
+	for <phone-devel@archiver.kernel.org>; Fri, 28 Apr 2023 10:10:43 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345510AbjD1KKI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 28 Apr 2023 06:10:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51918 "EHLO
+        id S1346038AbjD1KKm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 28 Apr 2023 06:10:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345700AbjD1KKH (ORCPT
+        with ESMTP id S1346002AbjD1KKj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 28 Apr 2023 06:10:07 -0400
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AB104C10
-        for <phone-devel@vger.kernel.org>; Fri, 28 Apr 2023 03:10:05 -0700 (PDT)
-Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-2fde2879eabso8819747f8f.1
-        for <phone-devel@vger.kernel.org>; Fri, 28 Apr 2023 03:10:04 -0700 (PDT)
+        Fri, 28 Apr 2023 06:10:39 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A873C59C7
+        for <phone-devel@vger.kernel.org>; Fri, 28 Apr 2023 03:10:37 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3f19a80a330so47853805e9.2
+        for <phone-devel@vger.kernel.org>; Fri, 28 Apr 2023 03:10:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1682676603; x=1685268603;
+        d=linaro.org; s=google; t=1682676636; x=1685268636;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=1NdndAiTXiWNg2u0YXHfQ8keyIiYpuxm3CvU9zlYpN0=;
-        b=AtNydsNZz7DITiVM0EZYBpno41WmsQE+AmiWQcnaOQhCE0hBAXPcFuAD/xUnR8Bv2Y
-         JUGou4a5WAJP+YnIfDk7nUPhjip4z58IedvOeVJM3iW4vW0MeTl3bNTUcN6i/2gCiX3M
-         I6Tw0jyZEA88VAJNp9XA7qw15zUlJ5Ih1eQ94xsPNX58vGtqfTQQzuJXemq2+uECAZ2k
-         /yv+NOwoMUzA8uGf77XAV/HveBwsaJ+peSc/gyXPz5lgsxkVuEHoJ/htRMVY03iPDAra
-         KGDy78En7flIUd1dZYcpyhaF2CizBoYJZKdgJW4crpr3aTtQi0TFfZrukcZiUhYuGHsn
-         0+Lg==
+        bh=TnjMQg8kpOI/tLXCV+U2uVaZATuk63w/0SRizrpFRbA=;
+        b=dOlbcx8UlFUbKUELvsZTdvOh393HzzYFNakWn0JA+EV9vBVHqtbFl4/eXgLQSnIfL4
+         3lGJycpz9q8Wdeic/18I4HIklja19U4ivWahULRzgyHML/OV6ss4G8zNhwJfZkjErJUe
+         cdWo24YS+Scf0ThIjkrhVCuvd13l8643sLv7PW/rqZDYKC0mt10Mns1JHc1FAKMyOtRd
+         IwpenhAzrjNuc/QFLI32e0RJvJArBw9oMlNsz5zqD29wF5o8KxDSIuXuL8U4u6E4kWFC
+         8VNqnTWv4ISN+ex0+sW2ZjADctDtYQgVgIlL/cegGJVNthHCdaqhMuHIz5TiYbKXOuuB
+         5Xow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682676603; x=1685268603;
+        d=1e100.net; s=20221208; t=1682676636; x=1685268636;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1NdndAiTXiWNg2u0YXHfQ8keyIiYpuxm3CvU9zlYpN0=;
-        b=Eyr+zpjURA9EZBDVgR/IkCitnUNtjmmyjaNFVz0Mu9ySx2J6tIFVynqpLcNgpBGd99
-         XWjeh4+6LvCv2PKAT7qYhZlIrwNMtrawF8BscK1CNRv2riUemTkTp3/2xil+HWCF4nNr
-         OewVLwxaMqReZnAeyjhoLuyjRMZPkv+TJof+1NrqqUhzpJc1SCT3xlo3n2LXN5UNcf21
-         vBaDnQR4Dt2kpqWEq5bWrXZ2QJy2vN2FAkjVK658VuS9GXHGPU7Q2CRyJAsEjwWR2gwM
-         0HouM7tUxw1WiAAg2v4lfeBk5cyPh47xDo7Sn0vlnCmJt8GtkHbDXTO8pwg4jlZlvqqf
-         vxZg==
-X-Gm-Message-State: AC+VfDx63fqMJ50FpDKwZ/GNG0OdB7MMNu6xIgH681nr8Nd51AiAzuh2
-        N7+fm7bsGlkp1oUOVET4NWLlvw==
-X-Google-Smtp-Source: ACHHUZ5GI8YBzZGl5b2BCGJn7Z5rpx8+kgTSSrDTPJ/Bhju7qpO0y+i7u38R0tXwpEKW2llLnrtYNg==
-X-Received: by 2002:adf:ef4b:0:b0:2f8:67ee:5ca9 with SMTP id c11-20020adfef4b000000b002f867ee5ca9mr3227987wrp.65.1682676603455;
-        Fri, 28 Apr 2023 03:10:03 -0700 (PDT)
+        bh=TnjMQg8kpOI/tLXCV+U2uVaZATuk63w/0SRizrpFRbA=;
+        b=cZv/bEmkO9X7LNYpJbiAuRZvHePQQYwV1LJeBqStoTRAisgERinKpzTkayCD1NzLhz
+         +E4NEJQPHHzYfc8ZnLESK0ppe9GcnM0on4mOW88njx2vqOJlQbkHc9tJRcvlVSuMTMxD
+         8a86bLMMbbQ+kq+NXc+iJF3p8OBYCwyv5i5N+cKfmD+MiLOA3Z1QN22/yF/LMyVX649n
+         pKacL6euzwTg5qULBoZHdmqfCkEB7NkuNWvbgzQOKI8zXblgy0kd+hBv3YjCk7Mh/pq8
+         FNYKYr7jOShavjoS7794CaB9/cvZ6n14ZsbwS/TuaZV58y8kZprEAh3uhMqH3aFKLWpv
+         emsQ==
+X-Gm-Message-State: AC+VfDza61fkHoV9KaKZ8BEEh6uIAvO9WEPR0TOSm9cbuYJ/BzDpbIIG
+        3wLpXAMhSCvNxQk1NYlSgYpEoA==
+X-Google-Smtp-Source: ACHHUZ7wN8sd9iprabidS2L7DNwbiYTkTDWfA2PyggQESoC1B3R5+aUhLvpYexBB8DPH2MDxdefT3A==
+X-Received: by 2002:a7b:c5c6:0:b0:3f1:9acf:8682 with SMTP id n6-20020a7bc5c6000000b003f19acf8682mr3241158wmk.17.1682676635935;
+        Fri, 28 Apr 2023 03:10:35 -0700 (PDT)
 Received: from [172.23.3.169] ([195.167.132.10])
-        by smtp.gmail.com with ESMTPSA id i1-20020a05600011c100b002cff06039d7sm20616598wrx.39.2023.04.28.03.10.02
+        by smtp.gmail.com with ESMTPSA id p14-20020a05600c358e00b003f188f608b9sm24689357wmq.8.2023.04.28.03.10.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Apr 2023 03:10:02 -0700 (PDT)
-Message-ID: <3a0bf8d2-957d-63cc-e60d-7225a2c52a7c@linaro.org>
-Date:   Fri, 28 Apr 2023 11:10:01 +0100
+        Fri, 28 Apr 2023 03:10:35 -0700 (PDT)
+Message-ID: <90081c40-1740-d812-ac5f-0186eb255ee8@linaro.org>
+Date:   Fri, 28 Apr 2023 11:10:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
-Subject: Re: [PATCH 1/4] dt-bindings: input: pwm-vibrator: Add enable-gpio
+Subject: Re: [PATCH 2/4] Input: pwm-vibra - add newline to dev_err prints
 Content-Language: en-US
 To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org,
@@ -70,9 +70,9 @@ To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
 Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
 References: <20230427-hammerhead-vibra-v1-0-e87eeb94da51@z3ntu.xyz>
- <20230427-hammerhead-vibra-v1-1-e87eeb94da51@z3ntu.xyz>
+ <20230427-hammerhead-vibra-v1-2-e87eeb94da51@z3ntu.xyz>
 From:   Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <20230427-hammerhead-vibra-v1-1-e87eeb94da51@z3ntu.xyz>
+In-Reply-To: <20230427-hammerhead-vibra-v1-2-e87eeb94da51@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -82,27 +82,105 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 
 On 27/04/2023 21:34, Luca Weiss wrote:
-> Some pwm vibrators have a dedicated enable GPIO that needs to be set
-> high so that the vibrator works. Document that.
+> Make sure all printed messages end with a newline.
 > 
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
 Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
 > ---
->   Documentation/devicetree/bindings/input/pwm-vibrator.yaml | 2 ++
->   1 file changed, 2 insertions(+)
+>   drivers/input/misc/pwm-vibra.c | 20 ++++++++++----------
+>   1 file changed, 10 insertions(+), 10 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/input/pwm-vibrator.yaml b/Documentation/devicetree/bindings/input/pwm-vibrator.yaml
-> index d32716c604fe..6398534b43c3 100644
-> --- a/Documentation/devicetree/bindings/input/pwm-vibrator.yaml
-> +++ b/Documentation/devicetree/bindings/input/pwm-vibrator.yaml
-> @@ -32,6 +32,8 @@ properties:
->       minItems: 1
->       maxItems: 2
+> diff --git a/drivers/input/misc/pwm-vibra.c b/drivers/input/misc/pwm-vibra.c
+> index d0e58a7cdfa3..c08971c97ad6 100644
+> --- a/drivers/input/misc/pwm-vibra.c
+> +++ b/drivers/input/misc/pwm-vibra.c
+> @@ -42,7 +42,7 @@ static int pwm_vibrator_start(struct pwm_vibrator *vibrator)
+>   	if (!vibrator->vcc_on) {
+>   		err = regulator_enable(vibrator->vcc);
+>   		if (err) {
+> -			dev_err(pdev, "failed to enable regulator: %d", err);
+> +			dev_err(pdev, "failed to enable regulator: %d\n", err);
+>   			return err;
+>   		}
+>   		vibrator->vcc_on = true;
+> @@ -54,7 +54,7 @@ static int pwm_vibrator_start(struct pwm_vibrator *vibrator)
 >   
-> +  enable-gpios: true
-> +
->     vcc-supply: true
+>   	err = pwm_apply_state(vibrator->pwm, &state);
+>   	if (err) {
+> -		dev_err(pdev, "failed to apply pwm state: %d", err);
+> +		dev_err(pdev, "failed to apply pwm state: %d\n", err);
+>   		return err;
+>   	}
 >   
->     direction-duty-cycle-ns:
+> @@ -65,7 +65,7 @@ static int pwm_vibrator_start(struct pwm_vibrator *vibrator)
+>   
+>   		err = pwm_apply_state(vibrator->pwm_dir, &state);
+>   		if (err) {
+> -			dev_err(pdev, "failed to apply dir-pwm state: %d", err);
+> +			dev_err(pdev, "failed to apply dir-pwm state: %d\n", err);
+>   			pwm_disable(vibrator->pwm);
+>   			return err;
+>   		}
+> @@ -137,7 +137,7 @@ static int pwm_vibrator_probe(struct platform_device *pdev)
+>   	err = PTR_ERR_OR_ZERO(vibrator->vcc);
+>   	if (err) {
+>   		if (err != -EPROBE_DEFER)
+> -			dev_err(&pdev->dev, "Failed to request regulator: %d",
+> +			dev_err(&pdev->dev, "Failed to request regulator: %d\n",
+>   				err);
+>   		return err;
+>   	}
+> @@ -146,7 +146,7 @@ static int pwm_vibrator_probe(struct platform_device *pdev)
+>   	err = PTR_ERR_OR_ZERO(vibrator->pwm);
+>   	if (err) {
+>   		if (err != -EPROBE_DEFER)
+> -			dev_err(&pdev->dev, "Failed to request main pwm: %d",
+> +			dev_err(&pdev->dev, "Failed to request main pwm: %d\n",
+>   				err);
+>   		return err;
+>   	}
+> @@ -158,7 +158,7 @@ static int pwm_vibrator_probe(struct platform_device *pdev)
+>   	state.enabled = false;
+>   	err = pwm_apply_state(vibrator->pwm, &state);
+>   	if (err) {
+> -		dev_err(&pdev->dev, "failed to apply initial PWM state: %d",
+> +		dev_err(&pdev->dev, "failed to apply initial PWM state: %d\n",
+>   			err);
+>   		return err;
+>   	}
+> @@ -172,7 +172,7 @@ static int pwm_vibrator_probe(struct platform_device *pdev)
+>   		state.enabled = false;
+>   		err = pwm_apply_state(vibrator->pwm_dir, &state);
+>   		if (err) {
+> -			dev_err(&pdev->dev, "failed to apply initial PWM state: %d",
+> +			dev_err(&pdev->dev, "failed to apply initial PWM state: %d\n",
+>   				err);
+>   			return err;
+>   		}
+> @@ -189,7 +189,7 @@ static int pwm_vibrator_probe(struct platform_device *pdev)
+>   		break;
+>   
+>   	default:
+> -		dev_err(&pdev->dev, "Failed to request direction pwm: %d", err);
+> +		dev_err(&pdev->dev, "Failed to request direction pwm: %d\n", err);
+>   		fallthrough;
+>   
+>   	case -EPROBE_DEFER:
+> @@ -207,13 +207,13 @@ static int pwm_vibrator_probe(struct platform_device *pdev)
+>   	err = input_ff_create_memless(vibrator->input, NULL,
+>   				      pwm_vibrator_play_effect);
+>   	if (err) {
+> -		dev_err(&pdev->dev, "Couldn't create FF dev: %d", err);
+> +		dev_err(&pdev->dev, "Couldn't create FF dev: %d\n", err);
+>   		return err;
+>   	}
+>   
+>   	err = input_register_device(vibrator->input);
+>   	if (err) {
+> -		dev_err(&pdev->dev, "Couldn't register input dev: %d", err);
+> +		dev_err(&pdev->dev, "Couldn't register input dev: %d\n", err);
+>   		return err;
+>   	}
+>   
 > 
