@@ -2,98 +2,120 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4278FC77B61
-	for <phone-devel@archiver.kernel.org>; Fri, 28 Apr 2023 20:21:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85F32C77B7C
+	for <phone-devel@archiver.kernel.org>; Sat, 29 Apr 2023 19:44:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229479AbjD1UV5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 28 Apr 2023 16:21:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44082 "EHLO
+        id S230454AbjD2Tok (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 29 Apr 2023 15:44:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345946AbjD1UV4 (ORCPT
+        with ESMTP id S229975AbjD2Tok (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 28 Apr 2023 16:21:56 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 764BF2720;
-        Fri, 28 Apr 2023 13:21:44 -0700 (PDT)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33SJ17PI010240;
-        Fri, 28 Apr 2023 20:21:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=jLyPbtzvBUyAfoKSLhDpM3wpUyv5i2Vpizt0weLRsa4=;
- b=bXRDvUkIeRKig/SwyTPjKTnYLcprzEzecs1Aw3F9pv7c4tTDYFzxjJmbsPDk74Q//jk7
- yw8P/5aFSdOlgSqE7jXx/r1sc1n8Z/BJwfSvaznTS8S3Jbdc99zI6dL9dacnyLFQmqlN
- lsf6soBFrUwTW4VilhGhHT0F1KvYAYWDYmiv7Kowd1dIilM1ONqayoZW9UpeN1MoFF+C
- 9nm5NTIlsDOk8QxrLHfB1zkbhwTsVbRVrSg7qXOkei8CoGLtsMFzJDbwym4tDYgb9qQv
- lObcCIHFfng4NHasq4qzIu8I0OVcRj1j2eIF3h38K9k2HZEdT6VO4ddmuV8xCJyAzh37 iQ== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3q850ctr4n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 28 Apr 2023 20:21:38 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 33SKLb6C016478
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 28 Apr 2023 20:21:37 GMT
-Received: from abhinavk-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.42; Fri, 28 Apr 2023 13:21:36 -0700
-From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
-To:     Rob Clark <robdclark@gmail.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        Sat, 29 Apr 2023 15:44:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7FA1997;
+        Sat, 29 Apr 2023 12:44:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B921C600BE;
+        Sat, 29 Apr 2023 19:44:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB656C433EF;
+        Sat, 29 Apr 2023 19:44:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1682797478;
+        bh=1vAfFF7pQl4va7eJ2p/ginKbfhAgJVw9IcZoARLUmIU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Y7GZAFVTh1EMpJnECYZBWFvvbcRzVa7ybfWlUPHPl3qreRnfA32+bwaMqp5UyrgsT
+         8Q1CiJaOHehQPI2nk/ygcfT5Jgloo3VRRp/H+awqfkwlOg2ISUBeQcrYH1ntLyjlL0
+         0rM7cn+InaEenrifPOTIRQ30OffTZNOC7an0FD0nPvJyNpoqRYTU1ze5aVwjX+peZK
+         6Sm8ajPV8s9MjCmx7inFpl6+I+drmIrrLVUTAh9OyiiqLnRgITyVWE1FXCtpqDhIf/
+         GqoJTLVjGhtqZy5ZiD2tt8Ku+IAt6OegGasvBSy1R4+ZX33bRxNeGubWhwCEkAWYL5
+         NLl1prAPy/DTQ==
+Received: by mercury (Postfix, from userid 1000)
+        id E655A1066F52; Sat, 29 Apr 2023 21:44:34 +0200 (CEST)
+Date:   Sat, 29 Apr 2023 21:44:34 +0200
+From:   Sebastian Reichel <sre@kernel.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Krishna Manikandan <quic_mkrishn@quicinc.com>,
-        Jianhua Lu <lujianhua000@gmail.com>
-CC:     Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <freedreno@lists.freedesktop.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2] dt-bindings: display/msm: dsi-controller-main: Document qcom,master-dsi and qcom,sync-dual-dsi
-Date:   Fri, 28 Apr 2023 13:21:21 -0700
-Message-ID: <168271324255.1535.12569960424133230551.b4-ty@quicinc.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230427122132.24840-1-lujianhua000@gmail.com>
-References: <20230427122132.24840-1-lujianhua000@gmail.com>
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Brian Masney <masneyb@onstation.org>,
+        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 1/4] dt-bindings: input: pwm-vibrator: Add enable-gpio
+Message-ID: <20230429194434.ah5tkawy6wjptpld@mercury.elektranox.org>
+References: <20230427-hammerhead-vibra-v1-0-e87eeb94da51@z3ntu.xyz>
+ <20230427-hammerhead-vibra-v1-1-e87eeb94da51@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: D2rw4HD4qY9sb1xwqJLU7kIY_Mgf15A3
-X-Proofpoint-GUID: D2rw4HD4qY9sb1xwqJLU7kIY_Mgf15A3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-28_06,2023-04-27_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
- suspectscore=0 mlxlogscore=893 mlxscore=0 phishscore=0 bulkscore=0
- adultscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304280167
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="42gflmsjqmxzkixs"
+Content-Disposition: inline
+In-Reply-To: <20230427-hammerhead-vibra-v1-1-e87eeb94da51@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-On Thu, 27 Apr 2023 20:21:32 +0800, Jianhua Lu wrote:
-> This fixes warning:
->   sm8250-xiaomi-elish-csot.dtb: dsi@ae94000: Unevaluated properties are not allowed ('qcom,master-dsi', 'qcom,sync-dual-dsi' were unexpected)
-> 
-> 
+--42gflmsjqmxzkixs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied, thanks!
+Hi,
 
-[1/1] dt-bindings: display/msm: dsi-controller-main: Document qcom,master-dsi and qcom,sync-dual-dsi
-      https://gitlab.freedesktop.org/abhinavk/msm/-/commit/ca29699a57ec
+On Thu, Apr 27, 2023 at 10:34:26PM +0200, Luca Weiss wrote:
+> Some pwm vibrators have a dedicated enable GPIO that needs to be set
+> high so that the vibrator works. Document that.
 
-Best regards,
--- 
-Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Sebastian Reichel <sre@kernel.org>
+
+-- Sebastian
+
+>  Documentation/devicetree/bindings/input/pwm-vibrator.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/input/pwm-vibrator.yaml b/=
+Documentation/devicetree/bindings/input/pwm-vibrator.yaml
+> index d32716c604fe..6398534b43c3 100644
+> --- a/Documentation/devicetree/bindings/input/pwm-vibrator.yaml
+> +++ b/Documentation/devicetree/bindings/input/pwm-vibrator.yaml
+> @@ -32,6 +32,8 @@ properties:
+>      minItems: 1
+>      maxItems: 2
+> =20
+> +  enable-gpios: true
+> +
+>    vcc-supply: true
+> =20
+>    direction-duty-cycle-ns:
+>=20
+> --=20
+> 2.40.0
+>=20
+
+--42gflmsjqmxzkixs
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmRNc5cACgkQ2O7X88g7
++poS5A//ctoKIcarHo1EVAh8U0gtFGeQ5bJPP/bz0Abdlx/L91XCikbInUuTYLN9
+/vrPOj/Tpr/KRYTzxJUenHxLigrUfhRRSGFcJZk8stCtOAdAzpPdPMTdVWWruu3/
+XOpu4gu79vJrYtqmLybs99d+uI1SiR228ZeRireO92Dw64hSUWLDL5yoAj2bp3Ot
+80dXpla3hDmbXbeaDrC3+RuTinPAVWrWJh8gV72GLr8llSDePUm5iGhVe/03aaLd
+5i73lL5WuhVW+OElEALDuOcHjPcoW1Qc6JjH9cvXMEU0ghOEfqn3KSHfd19yvYEM
+YdyVqUZIZOLu3Dt/X1o+KJ0g0JzUHXmpSSCMejoZVG4nTcaO3ed/fker+JZ4my6B
+rut65hrpS83GO/m2iNj1wV8krZqQ6+J7Fr0H2xLgIuwIcIqSPMEFS3SChQHXKY6N
+FA+qllsKdKuq/zsIKiLBbfRflHbBy49MYFTked9kwLNIIwa+tS4IS2ALp4WFvJXN
+M4z+4QpvMIZjbvBuMkvaq6sgO4RnlLT6eiVTgblSVpS/Rnhb6/CWm+e1glgObEwW
+wcPObDZ17kaQdNQQYLx2K1FblPbpoqIPpovoB0Vx/NhLevWX+4jQnObnCjgtrW+C
+PI51cakTNX8oHbO/u/1jJlJjrILN//fGA1ZFfyV5zao0YuT5ezU=
+=4cvQ
+-----END PGP SIGNATURE-----
+
+--42gflmsjqmxzkixs--
