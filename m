@@ -2,168 +2,95 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA694C77B7C
-	for <phone-devel@archiver.kernel.org>; Sat, 29 Apr 2023 19:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2855AC77B73
+	for <phone-devel@archiver.kernel.org>; Sun, 30 Apr 2023 18:21:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbjD2Trf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 29 Apr 2023 15:47:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37966 "EHLO
+        id S230347AbjD3SVg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 30 Apr 2023 14:21:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbjD2Tre (ORCPT
+        with ESMTP id S229513AbjD3SVf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 29 Apr 2023 15:47:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB1B019A5;
-        Sat, 29 Apr 2023 12:47:33 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5651F60A49;
-        Sat, 29 Apr 2023 19:47:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760CCC433EF;
-        Sat, 29 Apr 2023 19:47:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682797652;
-        bh=e8JjaXVFrQ8bjiPlV9g5r1/UXbifNg5RQDzsZ5uNbuQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CLVySDqr+R1Fu/cU/fQEkQZfL2AAor/c6SvU3u0MIuqRAZjZVUvJYoIfHNscHMGbv
-         YvFcLoZUEgMh4fpZQ//sedCcPj9wGxSWLl4kwsE3HqmMlkUcF/S7VfXo5RX97E93w8
-         0lcCbrz7ewl1JZHmz/tVzCBCP02h/zMoFVfOEn3lZYaJJOKoFWiDI25qydcQSzz+lu
-         tWSkbiQR7vdkts+HIozP8vvT5Nq/XM4OkhJPwG7iNYOiFPzkRGrdDPv132ryNdRgCy
-         PwXXGa/OcA0L6KIbO+ZEdqPtADkgiS06YlgjNk0PZ9/j4pHKunCI2QgK+XO7PHtXEr
-         jz+yqTXeg4YmQ==
-Received: by mercury (Postfix, from userid 1000)
-        id 7905D1066F52; Sat, 29 Apr 2023 21:47:29 +0200 (CEST)
-Date:   Sat, 29 Apr 2023 21:47:29 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Sun, 30 Apr 2023 14:21:35 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AB6F1728;
+        Sun, 30 Apr 2023 11:21:34 -0700 (PDT)
+Received: from [192.168.178.23] (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 09A17CEB83;
+        Sun, 30 Apr 2023 18:21:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1682878892; bh=2KDm+MfmQDPFzRhM3HuRPWRDE4x8ieq6b/WlHIl9jK0=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=YfpFwhRy8QJv97qougAH4t8sLJG+/Am0Bumbrt96VeHjGjj/Q/aOmWplSHNW46q+k
+         RmaBlZlNEjjOai+CABQNobYyORT/0tZmBKcizGdcODdARBXmZk1agFmc+CjnLRWQXa
+         JUXlnkHaWY24939X13CqV3E0yCFqbNeb75hq4njI=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Date:   Sun, 30 Apr 2023 20:20:54 +0200
+Subject: [PATCH 2/5] Input: drv260x - sleep between polling GO bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230430-drv260x-improvements-v1-2-1fb28b4cc698@z3ntu.xyz>
+References: <20230430-drv260x-improvements-v1-0-1fb28b4cc698@z3ntu.xyz>
+In-Reply-To: <20230430-drv260x-improvements-v1-0-1fb28b4cc698@z3ntu.xyz>
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
+        Dan Murphy <dmurphy@ti.com>, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Brian Masney <masneyb@onstation.org>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 3/4] Input: pwm-vibra - add support for enable GPIO
-Message-ID: <20230429194729.xuw7ircyuyabv32w@mercury.elektranox.org>
-References: <20230427-hammerhead-vibra-v1-0-e87eeb94da51@z3ntu.xyz>
- <20230427-hammerhead-vibra-v1-3-e87eeb94da51@z3ntu.xyz>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="6dvciwmnygpyquuh"
-Content-Disposition: inline
-In-Reply-To: <20230427-hammerhead-vibra-v1-3-e87eeb94da51@z3ntu.xyz>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Raffaele Tranquillini <raffaele.tranquillini@gmail.com>,
+        Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=830; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=2KDm+MfmQDPFzRhM3HuRPWRDE4x8ieq6b/WlHIl9jK0=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkTrGnuoEsRTAkX895HNLQSK31eIpbRae/YptSw
+ 7CkOkDUZH6JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZE6xpwAKCRBy2EO4nU3X
+ Vp5qEACtdUzv1B33TViLXCnVQagZdBhCzFgGnvNikuW5vMJOjg7aSJA8Aa1S0a5t5B5YOToCbCM
+ QK2Sj28kuCYDnxaiFpfUL9Ip75zq4oM9dUudZ6VCmk0lEHs/ZXQQQYBiR/YcMzJ7yJsOXrMHPBk
+ BmNPiU+SvcJrS69TPRDRmCUalgaiT/vpeynwcoSy4LDKLccTNYplmGrciXXERhQ7BF1inK/fz/w
+ E8a4L4OWYuHpNqxSDAHsvw3jnE+Pk8GpGSJgO8Oivsr3yEUF7Qyt88EH5G8DiFKAScLaqabMDC1
+ HZIHs8pOgzz1mXKBB33DxYvS6j05WSYfKge0kFl0JVNasl4pK+DsnH1E5Q7+mFR6MqR9/+Xyyaf
+ c7YeJwQlHXVAkPLm5A++c1wa5fmrMQEQgRMXY2ulEFvPZtfAaxcEZNOsIoPTjphPSLxJRdCzKrW
+ KKUiem/rSn7IA6JdicfnMaySANKDSw0DL1zx0s8zW9CHt2v7+eQpnU2ErBALMzvvqqEtU0IdusZ
+ FJwBvZAcVxNHWXLiLTsh7mS7i4zgynKjLbeae4u2+bzS2uxulMh9Xbn/Tm6Lx98eTS52wjo6wA+
+ V+7gKdPES8S8Y8zPfUwba7+YUNi1D9d41Ve8On8O9i/8iakZlqzfOh9esI3L0G1ambMAIhr+R4P
+ bPfXMMt7GYldNMg==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+When doing the initial startup there's no need to poll without any
+delay and spam the I2C bus.
 
---6dvciwmnygpyquuh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Let's sleep 15ms between each attempt, which is the same time as used
+in the vendor driver.
 
-Hi,
+Fixes: 7132fe4f5687 ("Input: drv260x - add TI drv260x haptics driver")
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ drivers/input/misc/drv260x.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Thu, Apr 27, 2023 at 10:34:28PM +0200, Luca Weiss wrote:
-> Some pwm vibrators have a dedicated enable GPIO that needs to be set
-> high so that the vibrator works. Add support for that optionally.
->=20
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
+diff --git a/drivers/input/misc/drv260x.c b/drivers/input/misc/drv260x.c
+index e95c4e775b5d..884d43eb4b61 100644
+--- a/drivers/input/misc/drv260x.c
++++ b/drivers/input/misc/drv260x.c
+@@ -435,6 +435,7 @@ static int drv260x_init(struct drv260x_data *haptics)
+ 	}
+ 
+ 	do {
++		usleep_range(15000, 15500);
+ 		error = regmap_read(haptics->regmap, DRV260X_GO, &cal_buf);
+ 		if (error) {
+ 			dev_err(&haptics->client->dev,
 
-Reviewed-by: Sebastian Reichel <sre@kernel.org>
+-- 
+2.40.1
 
--- Sebastian
-
->  drivers/input/misc/pwm-vibra.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
->=20
-> diff --git a/drivers/input/misc/pwm-vibra.c b/drivers/input/misc/pwm-vibr=
-a.c
-> index c08971c97ad6..2ba035299db8 100644
-> --- a/drivers/input/misc/pwm-vibra.c
-> +++ b/drivers/input/misc/pwm-vibra.c
-> @@ -11,6 +11,7 @@
->   *  Copyright (C) 2010, Lars-Peter Clausen <lars@metafoo.de>
->   */
-> =20
-> +#include <linux/gpio/consumer.h>
->  #include <linux/input.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> @@ -23,6 +24,7 @@
-> =20
->  struct pwm_vibrator {
->  	struct input_dev *input;
-> +	struct gpio_desc *enable_gpio;
->  	struct pwm_device *pwm;
->  	struct pwm_device *pwm_dir;
->  	struct regulator *vcc;
-> @@ -48,6 +50,8 @@ static int pwm_vibrator_start(struct pwm_vibrator *vibr=
-ator)
->  		vibrator->vcc_on =3D true;
->  	}
-> =20
-> +	gpiod_set_value_cansleep(vibrator->enable_gpio, 1);
-> +
->  	pwm_get_state(vibrator->pwm, &state);
->  	pwm_set_relative_duty_cycle(&state, vibrator->level, 0xffff);
->  	state.enabled =3D true;
-> @@ -80,6 +84,8 @@ static void pwm_vibrator_stop(struct pwm_vibrator *vibr=
-ator)
->  		pwm_disable(vibrator->pwm_dir);
->  	pwm_disable(vibrator->pwm);
-> =20
-> +	gpiod_set_value_cansleep(vibrator->enable_gpio, 0);
-> +
->  	if (vibrator->vcc_on) {
->  		regulator_disable(vibrator->vcc);
->  		vibrator->vcc_on =3D false;
-> @@ -142,6 +148,16 @@ static int pwm_vibrator_probe(struct platform_device=
- *pdev)
->  		return err;
->  	}
-> =20
-> +	vibrator->enable_gpio =3D devm_gpiod_get_optional(&pdev->dev, "enable",
-> +							GPIOD_OUT_LOW);
-> +	err =3D PTR_ERR_OR_ZERO(vibrator->enable_gpio);
-> +	if (err) {
-> +		if (err !=3D -EPROBE_DEFER)
-> +			dev_err(&pdev->dev, "Failed to request enable gpio: %d\n",
-> +				err);
-> +		return err;
-> +	}
-> +
->  	vibrator->pwm =3D devm_pwm_get(&pdev->dev, "enable");
->  	err =3D PTR_ERR_OR_ZERO(vibrator->pwm);
->  	if (err) {
->=20
-> --=20
-> 2.40.0
->=20
-
---6dvciwmnygpyquuh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmRNdFEACgkQ2O7X88g7
-+potRRAAg2GUd1xAFi2qWo6q8U06jcAOjWs69jFy3NS8lJ4c0cTmtkhjrC2uW+Fw
-Hl5Y6bFm4eV8XEVvAXqVn5NzvNqx3fLDkdVP2AVmKL4G8AzOG6Xrlf978PxUnvV9
-9aMkrLBlZHarbv0VnoQC7UIMPXeBOzj/Ayb8moUQaiEotC78SUK0vzxm3xXFnU2z
-leE4gLa8BHZIS6YqItpRcDXaHXLlL9qDznnPyKIR5Hc849lJrAKxpctpNZBtk98O
-E6JWdkvAW155Wq2sARC5UkZQj8N1Nuy3z3rGZuYXX+HhDJq2LxDx7s/H0lDwckrD
-EyByTorXCMGkfP+I9aTe8DHmy8OmFrlLJ0BfzMZdmTpbviVhz0bn0wf8H8wt2UQ8
-gSVImZQUi8LoMLKvqyMh92CoVP3jmGhxrFu0aZ2Po8kg8mY/ECGj/tJZeaZE7Tyf
-F6wSBjo0yHAGF5Mwg/We+Rvw4+EC7zCDU73rC3TkEzt7U5zbZbVGGGJTs1SAK8x2
-cHdO6AxPlXait8lWVLfjOxDIOeIPu4OBBKcNfF9Zggp2Zj2v0TiCLS/EbRlpDWLZ
-VKirYUfxf7dgtSgHoBWSGnemWuKtW6iZoFb3umNr6axhM6a0wnAclM/vNu++u0re
-DW1hLtVvmiDeiL/+YHbLUOuWmcwKgGFh6gH6AUlajaTxU0OH4x0=
-=hJCO
------END PGP SIGNATURE-----
-
---6dvciwmnygpyquuh--
