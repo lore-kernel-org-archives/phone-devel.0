@@ -2,63 +2,64 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 964C4C77B7F
-	for <phone-devel@archiver.kernel.org>; Mon,  1 May 2023 17:35:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A3D8C77B73
+	for <phone-devel@archiver.kernel.org>; Mon,  1 May 2023 21:16:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbjEARf2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 1 May 2023 13:35:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34214 "EHLO
+        id S232535AbjEAVQo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 1 May 2023 17:16:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232235AbjEARf1 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 May 2023 13:35:27 -0400
-Received: from sonic312-26.consmr.mail.ir2.yahoo.com (sonic312-26.consmr.mail.ir2.yahoo.com [77.238.178.97])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABABD1A8
-        for <phone-devel@vger.kernel.org>; Mon,  1 May 2023 10:35:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1682962521; bh=04OPKsj/QXXjTdmsQM9AQpCh3NGap/ezTNnwVf4o7A0=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=BOTy4ygXDLp0GINCVl1Tv3QImHmX/M3+9YqcoVEoZwL0z9/s20ETHAdEfw9flJXQJdJ2ebTV87qxvy8cacOVdDoTYQhc5SEUyHteuJ0QaSf+oI5V4MW0ktg9k2Vl7L8Wx4JL4yGiqfvN8Hf+cz7DUsCJZB3ib+njTysLc4WEGuI9S2guryuBieVz4VpX8XXUx+ppXITKTeIDXbWwEn/fSE9NDGNa1LSC/u98sQ5/MI/tnTaxHk6cv2fRT0pR3TYIxtmOPOpaEMaypwFWWVhLjlQfEc6r5Nt+9TextlJ3QGDSAh3946HUpW24dIHNowQ9yBeacuLjehrWlU+/BmJ6Mg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1682962521; bh=yqxcxKhFdH+GYt/iBDDt7ZHDKTJivpCj4DGIO7xiYez=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=abqH5tWIhKr3fHy6EaLh371VNF3xOpTW/i10a6A3IR7Ap1T5B5VI2N662cNyazwjSAJbMeB+jkQVRwyUlbxiE/S66eGIk2hPc5mJlK+aNJwbNmY1J1rb1Gh0jHxR36CmWaKgeaX55ApVcZlk5GmWkqLb2rffGSLetxTC73yn0nML6lNTzk5LdSApy1fu6M7ii9lF1UjqKdVfVOsKyAqwJEDZMwR0G+AxILGx2MdNu3y71C01R5WAUAiqnGzAv4CKKxN2e2MpjQLVCt0a8Xgk572e5QryCkbMGT+7zbl27v7IbBz0usmQ5ysn7GrBOYNpSB0aLtcp4qeUP7MKnzq27g==
-X-YMail-OSG: PBmjzDIVM1mkBY8P665SrsROmABT91m8vWhuKRVhFQiwzNNw85_qX5Fxp2IZ2us
- pRwvAazripnyowzY9UpTfgWK1eFqrGb7yUW.YDU6.3i5OFo2KC04Oqj0to2MELkf2QcBmL4bhl57
- qJ7Ik7wdb0mcmvs5zY_X3pYpr7mT7Tvkk4aT2XyGHycJgHQ2qPxaqL8dhrCTkfJzazZDvx3_lFS2
- bV74h2F75a6HmQI5PRJdxKb.C46jePfyswNvfDiv0TJ6a8OOJqPk8oZTE_bUhimyUaGkWRNPYSJ2
- 5o2kCQfh1tlWy4kuw99Lbrp7dd08xN8Twf8wsmTOpPK9k0cuFCO2D61ukprCybLFBnNiTyxnRisF
- TrQOZ8Eou2aEWSxnkVGrTT0Rw9N.f13KQQKMidMnMqKhg.DRlCp7Wzl_LRwnPkXuM.s6gGedR5Nd
- Z8O7ncxFpBLxWfy7rUYHSabzqIr2UXxGttkW6hQM6XIWF2ZkV_sp2cSY_3BVph.hGXReFSyS_cXD
- wd6XVj5MYv0En2NaAHonX5hP2nazAPA5WXqnirkZdrgl7i2g_fLdYWLD6MbN6iKwJycLVzAwKwj9
- WSO6GU9B7A33WiqHKB1sntHYAWAprKlv1WyLrZ2Ap9HtFAMqLX9uE0FOX0zDO8mJxchPvOXJ.gyE
- h8SJOPMkOweFqmiJ9jBRnyrAKNH_axbaP8CCk4GXGg9enn.hpMkiY0EodnHScepyitj8WIZLwLQx
- REbTevq_yVfp6fRaSqma6s702Ap1BrsbJuJCPJ94Pq3vi57XrYetQUr0lPxSyAUTsOkWocrVlHI_
- LpoXvkNfT_WZdmPhw3xsLxefITvcQiecX23KxN9E985gPEy4.AYkv37QHe805W.fTAy3.1DBA6Jj
- 5KJ04mypFIesnpuJELkMJikVp5IKkfwvGmE.uOetgjvGnhMGojAW2tjAkPOgWw.2hancxXAqd4cQ
- t6.MaCFuDg9_fzrM7xlSpb4.YMY38x.dFFLznK92kmns4xyO7Sq5qLem3lUyzW1naIL0_oE_2Lyd
- YZpzDWN2Hr3bxOeGZmAuwsnpuOSCgs9K15WjlTugFWnKmOBw0IPhSLpetuqurFQ8uNfG0RikPRTF
- rhBQjpc.bZdb5bKd7QkLw3D7oeX0nPU6psvNmOAOh4DHM.YpjoQdqAHdp19mapG.8Fy3kigaDhR2
- j.Hb_l0NFad22Oj36GCbH78yak84bLYCs.ZXoZIo0dYxchkXkY8Z0vcGmdbj5ivgcYLnKOr3Ft_s
- yY4YuA1WRQo10LeJ0ds5x8Xx5WLdeySnKijEnaGow7KIld7LCVwE5OKQrxPRT5Jd9zUFp7mbRrCx
- 8XysNajw7A2An9qJLososL8VXA9N1eh0LccH6q_XknKfv.C0D0kT8sl0MUwXfpEdiSH8tKMyCQ1x
- D5l9zRGmpA4VvWHCzDNLnADt.fe.GYkG9_VjFx20ifYXu5DKDrAmJuRZwhSXwqY3A46fiCxtsbLr
- we8dK30lcsXpAw4qq6oEkAiX5HW1s.n7JtK5AmZx0Dy6oOuW8EEVUBBoQ3bZC1Z1ZMeBP3tg4SmB
- OZDCbGXRL4sMLdEUYeNJeXtspF.QwdqsKgHlWncbGan2yHYj95ngy6pudnEq7kCE49PumLXGvnwx
- 98nKzSMp5l17wIIxuJ1K3mm5jCFFAt1NtV5QBzMeuH42AR23zUgor2s15wZzk62YEWDSIkffNEa3
- RuNYFO97cawtscRR7NWGtU0ErWEWfxOg.yw23Zyo91X_qc7rO5u8nhgt7mxXMu786sgRi1gsFRAQ
- UgqQTya1fY3SubUXJGITSSzuYN_7apYeTYye.2osppSnEZuFU9sVINx4Ws0Q4V.410XrzyNwAv4x
- Ig1tscc4N191l01TRSnhUf5jxllYWxC2fXWSBzkVrkHESbmxjBwFu.4sPGVgKcNdZxmXJW7zJWmo
- 8fCBMwYJwHonvsT9dC49t1zabFVIU89uypGV0uDHU1CjuD_DdE8wQHh0UjZvX93GYy8OH5x67aoj
- zc3A7Tt.oIUCY_ys8YTlQYIthDV8701Bia_gJjgfSO5Zu1IRrCTX5UvHdQsoZ1g5EImYSqfqDbec
- Etj9GjA5e3FhZJDNbAHZxEauFrIIidJyTxu1sSqGV_lnlSDWbcAKBnypbNdkTREzujYrHLAm52ox
- S9A9xifCpbwhOJGOxeeL5IK_X.E8DxkmKRGGSmkHEnZVJ9ABwJEY2yNjLC8a7fgkAxkJwzU7X461
- Mou00q7JGcvGHgeVK_KXWZkYKlfMuu5Wu3ey9tDfqPIXT_wI5BqpVlX0LoEvmW6KmUo7x2cBina4
- 5_DnYowHqf1R2Gptax_Us0giKqyLxQmhZMjcc
+        with ESMTP id S230391AbjEAVQn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 May 2023 17:16:43 -0400
+Received: from sonic310-11.consmr.mail.ir2.yahoo.com (sonic310-11.consmr.mail.ir2.yahoo.com [77.238.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F386E5
+        for <phone-devel@vger.kernel.org>; Mon,  1 May 2023 14:16:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1682975800; bh=nsSG1aaLpP1HwDmABEE5WbgGngpmEzR5CI8PTr0aSFg=; h=Date:Subject:From:To:Cc:References:In-Reply-To:From:Subject:Reply-To; b=nz+QiuRVXIiJbMBoYTJsul2ICXmRnIlY/uyOpUxydBSgWOXsw8HksIiwKu1EeZrGFWzwesTNNOjEQiK6ClnhepKuZP/xIkjPRYnWMwI6mEjlF/5l/Gd+jgZao6Ve1qlP/IJBCMXiZT+r1xDrI0bfwWAW6SWs4nuEd5fViqKAAan8+obQRp5Macw8Y2WyqH+pTivrKWXHez/KNhgB6DkfBCS/eeSKIudj3JD6j+2xcIAQAqNijGdfmVKzv2/q3mof8uZ0IZh9rEUwRitwoEW6yJ5c22D1r37GONWF3e1Y//9RF8/Lpp5KA4UjLIXb7JawGh3eqxHyx4wiYylaVJ8MXA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1682975800; bh=jTHe1BIEb13LeE1WCdOiZav/8rOoYFdJQZLVXxY4yYc=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=a6WxrUfPduBFVeLM2tj09K7N+RskgfgAhBxpiRCo5JaX2TySSK+HhsDQj21PFh0a15pYZQ4lYiT8RfFuIJnOXRSNktmFNMIWbV9Lsss2FuStgThVUc2SDvkn/RGXSBZm/uhiKMgVAh7NdN5ArKuCj3iuna1K6WzbhHvW4PSTlrZmbf7m54g6rV1D/txjEuEIcvQq4bJTxBXrzes4xsi+zXvSSPajMbpmFN5Bu+TarTU3WXjsAJKS5iScGWguYUc678FKdTSocwYGndG5wH2AQhAyWM9O5/ztzq+4wJoB4Rzil0KENb3NqK+tFMgUK+iFyehcvHHWeXK2tsMjBwXSGA==
+X-YMail-OSG: 7BrGv1YVM1lhDcYdrZcSqvZHbFM5QPe5uUVJ4n3uFROi9S_7VtJqFcWWEH5pppC
+ vX_t1_wzZro8xQOUHdt3iHEW5O9Z60uaRL9NaSZMkKPEY9ELLMFCCN_2SyoFs5vw3Vk4WXqtpH2C
+ 0XBGns_XO7fYqeyFhsyyFw3mNbQ2ejT82jsU0oe6q60Cm8WEDX_ImN9cI1DBtsa5HNXuCxOzpihB
+ dQZH3R6Dt4PrLUpcrBEciKrkDNFsgWh2Tz33WKWDJH18Rlfca5c24QiuiSzabNkNJLJbt9pdZpD9
+ YK6G63fFiSBbG1aSy1IDL2M.pKyEqgBgT65OX4uhJauCDE35Q4xjoTExVNEWouD3k3mcqFwnC4PK
+ JJnUvNDH_n7sj73ZR1gTyKzUlf4_2Hg0orC.mgLouczkxMUgbJEI8XNb_kPIo21vtj5T1vxsnpbv
+ MhO_yU9rUKHjvpaX.QIH3B.pkSvnO2_ExVYewFsrhKz7ycGGH23JxuN.Rs_u6vuzKW7Y0fEeGuJZ
+ q9YiHOIV.juWicVfojkai.Kt374ADJnLPB.P66GRXgICYLyBZDeSX3AOPFyBd_9oUyKoegeB1CJb
+ lyLoMPKCyWyMzNdlqsVgtNSk6vIkEFeIrIK32ZdgKwUgSDr4eIy.A8y0E2lI1qeye5kzKBD31uxK
+ 6.eKrAbMYz8oJxsj_lLCBVyXC7LTUdwKyGcL1RjOh3fwzDnIeG44TM0XhrQyTyGbOKSx2gPU1BAD
+ IqCoDvOjEMliiZ5VebChhzue8..fKSpfTHG8DBH_yCcWwu4DxT_R9TNNChmEkPWT1M_cDjqHYQVa
+ QYmSHLPZtGfG706HBC8jW54OXN.NwR2GfRp9NZZZ3oE5YPEi3ymoKSmnKam7Z5h44EHrhYbMK2d2
+ vsTZLvpLvVBaWc3B6S1tmSkl7HEY8Xt65wnJt8e3UAiIbqNMDymioA15brsj5EFKjQZRR4qa8map
+ Et3ESmtuB_ZqlI8Y8Ys8cdyS4wELwg3MoK04Fzq4RUq6PqOSs2TyZ2XtA20qo1vyeseYC1UdnHCl
+ 1_p80IQ51I99hQH91nVnWIwvW6YPd2uPjOX_ZurTn2QwUu20GANll6C777TyAuGp3L0VpuNGlJiB
+ x1azyZ.F334VCUpeX5sk93Qxtj44AhZ4kBuEtStI8fu.BDA8CQafBQh2aqyUpSc6pd3DnRKsVE8q
+ qQ1xgBMP.gErn5Vcz7oOERMJEzfj8LJFTi_siJjAHSMm1x1eJCLtiuijz6IY5VcNCeVrKsSj6Zhm
+ dW4ilOupmsXag7YR0mH.NVGvEPMzltSoKbqmwTwwu45FIETpKWS1eLrIYCqNRaDbYOOU5DhkklWY
+ DBrZ5CoulMG35bvXuqv_d7zFsONiEBl48wKObk42ec7uwhe22u.6SynqgA5UfTh7GVE8dFPx148h
+ bs7aXmbrAc354BByRMoIoH3usvqLxv.o1scRFhmrzNxo2fWdHcRRHEJiSMSqUPeIXxL4sbGs6jMB
+ gn8fjE7VtfU_wbMzl5XsV4INQd1Guv7bQI5RlBuJxwSJ7Ta070ifXoKxJ9jvwbdTogg8NCGnaAGa
+ 33NZ_ZQe95sPXFGlLWcKe3nD8pkfmMsAIJOCqDmpo5Eo2dCHQKm4FPKw8iLfuQKKQ6tvzcM1kOAA
+ 4Njyt1pTF8RjmS.gnxZTkXjF__kL_SA58SDmRi_hqo52UnHUGatd.kAVKkTtHlylFXPQALrI2a9.
+ qv8yNo9pIJC4.rLkxRrMSFpPiztfD101C7lJRDq1Sv2efFWYBX5gRp3ASCrfLS01AzNUEXYtWmCp
+ NtzDgCa2usnz3iUYK7BljD2rQjpw7b5CkXSICZgJEs0Fc7vlnvJxUa98vyjm0v0YoXoGM1dm_Hol
+ 8sCglp297AQdfLf9a7BUwlgIKJLdO1LsiII29kOkJgyKNZI6buijgfzYQErqXtZHdlK1TLdDzO4y
+ YgQw7XR.nVGrRVxUwqRemgL47rCNymRQJtAAe.l09AiFIkJVBPjBtwhh.FhsRcgUWLGz3bGj2TU.
+ LHc2lmPvxjduWOJDKUWHCTUFLUQPD1SMpZzYi5RbbTTQF6kW5O8EHahaQXCdLOp2wuotzTnAcNY3
+ EO3p37P3ZDSQz5DZr77urmjkI0b5OTc234DnvPKCMiqCMIX_LNco4dPjtwqZ7htsQjKeoObFrNB9
+ Mb6_QxZqhZdvSWcdFX.4QXe4OUgOOFeYgAlav0zoCyNeDpkzCkB7tI2z8_K2_YclQpHk1f4RBaA9
+ exgC3.El_1nEJ7awxNXql2QVlSftUlT4j6bh7nW63kwGIYVH0lcqL8CRkXTztjileqmNuEUwTeBS
+ Xt6T90l2kYEW91CmgS.15WJLLhI4cYCOB
 X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: d71d16b2-9418-40a1-bd45-1abcb6944291
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.ir2.yahoo.com with HTTP; Mon, 1 May 2023 17:35:21 +0000
-Received: by hermes--production-ir2-74cd8fc864-9w846 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 8f3be1312e7b717e7c5ba74fc348ffb4;
-          Mon, 01 May 2023 17:35:16 +0000 (UTC)
-Message-ID: <e9d75e57-bdea-593d-7b05-136c9ad2e2fe@rocketmail.com>
-Date:   Mon, 1 May 2023 19:35:14 +0200
+X-Sonic-ID: 89f262b5-b679-4ab4-b9c8-c39ce71caf69
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ir2.yahoo.com with HTTP; Mon, 1 May 2023 21:16:40 +0000
+Received: by hermes--production-ir2-74cd8fc864-qfvhg (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID a93e2a8469151c72af88d9db244b6b03;
+          Mon, 01 May 2023 21:16:35 +0000 (UTC)
+Message-ID: <14daa006-5260-81a8-8ba0-4122e0c0509a@rocketmail.com>
+Date:   Mon, 1 May 2023 23:16:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
 Subject: Re: [PATCH v3 8/8] dt-bindings: Add rt5033 mfd, regulator and charger
+From:   Jakob Hauser <jahau@rocketmail.com>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
 Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
@@ -77,126 +78,50 @@ Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
 References: <cover.1682636929.git.jahau@rocketmail.com>
  <5bd8b90713a61129acf292a941eb7fb5ccaa3db4.1682636929.git.jahau@rocketmail.com>
  <1d187f41-ad9a-4e82-8557-20694a8294d0@linaro.org>
+ <e9d75e57-bdea-593d-7b05-136c9ad2e2fe@rocketmail.com>
 Content-Language: en-US
-From:   Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <1d187f41-ad9a-4e82-8557-20694a8294d0@linaro.org>
+In-Reply-To: <e9d75e57-bdea-593d-7b05-136c9ad2e2fe@rocketmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
 X-Mailer: WebService/1.1.21417 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Krzysztof,
-
-On 01.05.23 09:21, Krzysztof Kozlowski wrote:
-> On 28/04/2023 01:30, Jakob Hauser wrote:
->> Add device tree binding documentation for rt5033 multifunction device, voltage
->> regulator and battery charger.
->>
->> Cc: Beomho Seo <beomho.seo@samsung.com>
->> Cc: Chanwoo Choi <cw00.choi@samsung.com>
->> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
-> 
-> 
-> (...)
-> 
->> +
->> +required:
->> +  - monitored-battery
->> +
->> +additionalProperties: false
->> +
->> +examples:
->> +  - |
->> +    charger {
->> +        compatible = "richtek,rt5033-charger";
->> +        monitored-battery = <&battery>;
->> +        extcon = <&muic>;
-> 
-> 
-> Everything up to here looked ok, but extcon is not a hardware property.
-> Please do not mix adding missing bindings for existing device with
-> adding new properties. You should use connector for the USB port.
-> 
-
-Rob already raised this in v1. In patch 8 v3 comments below '---' I 
-mentioned that the extcon phandle is still there because I don't 
-understand what to do.
-
-The devices using rt5033 I'm aware of:
-
-- arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
-     used by:
-     - msm8916-samsung-a3u-eur.dts
-     - msm8916-samsung-a5u-eur.dts
-- arch/arm64/boot/dts/qcom/msm8916-samsung-e2015-common.dtsi
-     used by:
-     - msm8916-samsung-e5.dts
-     - msm8916-samsung-e7.dts
-     - msm8916-samsung-grandmax.dts
-- arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-
-not yet mainlined:
-- arch/arm64/boot/dts/qcom/msm8916-samsung-gprime-common.dtsi
-     used by:
-     - msm8916-samsung-fortuna3g.dts
-     - msm8916-samsung-fortunaltezt.dts
-     - msm8916-samsung-gprimeltecan.dts
-
-They all have either an SM5502 or SM5504 MUIC (Micro-USB Interface 
-Controller) chip installed. It reports the information what type of 
-connector got plugged into the USB plug. An example for the devicetree 
-entry can be found at the bottom of 
-Documentation/devicetree/bindings/extcon/siliconmitus,sm5502-muic.yaml [1].
-
-Documentation on the connector binding you are referring to would be the 
-following, I guess: 
-Documentation/devicetree/bindings/connector/usb-connector.yaml [2].
-
-It's not clear to me what to do. To my understanding, in the devicetree 
-of the device a "connector" node should be placed within the extcon/muic 
-node. Like this? (Connector node at the very bottom.)
-
-i2c-muic {
-	compatible = "i2c-gpio";
-	sda-gpios = <&msmgpio 105 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-	scl-gpios = <&msmgpio 106 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-
-	pinctrl-names = "default";
-	pinctrl-0 = <&muic_i2c_default>;
-
-	#address-cells = <1>;
-	#size-cells = <0>;
-
-	muic: extcon@14 {
-		compatible = "siliconmitus,sm5504-muic";
-		reg = <0x14>;
-
-		interrupt-parent = <&msmgpio>;
-		interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&muic_irq_default>;
-
-		usb_con: connector {
-			compatible = "usb-b-connector";
-			label = "micro-USB";
-			type = "micro";
-		};
-	};
-};
-
-And how to set up the rt5033-charger to retrieve the information of the 
-extcon/muic driver in that case?
-
-I was looking for examples but didn't find anything that helped me to 
-answer that question.
-
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/extcon/siliconmitus,sm5502-muic.yaml?h=v6.3
-[2] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/connector/usb-connector.yaml?h=v6.3
-
-Kind regards,
-Jakob
+SGkgS3J6eXN6dG9mLA0KDQpPbiAwMS4wNS4yMyAxOTozNSwgSmFrb2IgSGF1c2VyIHdyb3Rl
+Og0KPiBPbiAwMS4wNS4yMyAwOToyMSwgS3J6eXN6dG9mIEtvemxvd3NraSB3cm90ZToNCj4+
+IE9uIDI4LzA0LzIwMjMgMDE6MzAsIEpha29iIEhhdXNlciB3cm90ZToNCj4+PiBBZGQgZGV2
+aWNlIHRyZWUgYmluZGluZyBkb2N1bWVudGF0aW9uIGZvciBydDUwMzMgbXVsdGlmdW5jdGlv
+biANCj4+PiBkZXZpY2UsIHZvbHRhZ2UNCj4+PiByZWd1bGF0b3IgYW5kIGJhdHRlcnkgY2hh
+cmdlci4NCj4+Pg0KPj4+IENjOiBCZW9taG8gU2VvIDxiZW9taG8uc2VvQHNhbXN1bmcuY29t
+Pg0KPj4+IENjOiBDaGFud29vIENob2kgPGN3MDAuY2hvaUBzYW1zdW5nLmNvbT4NCj4+PiBT
+aWduZWQtb2ZmLWJ5OiBKYWtvYiBIYXVzZXIgPGphaGF1QHJvY2tldG1haWwuY29tPg0KPj4N
+Cj4+DQo+PiAoLi4uKQ0KPj4NCj4+PiArDQo+Pj4gK3JlcXVpcmVkOg0KPj4+ICvCoCAtIG1v
+bml0b3JlZC1iYXR0ZXJ5DQo+Pj4gKw0KPj4+ICthZGRpdGlvbmFsUHJvcGVydGllczogZmFs
+c2UNCj4+PiArDQo+Pj4gK2V4YW1wbGVzOg0KPj4+ICvCoCAtIHwNCj4+PiArwqDCoMKgIGNo
+YXJnZXIgew0KPj4+ICvCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gInJpY2h0ZWsscnQ1
+MDMzLWNoYXJnZXIiOw0KPj4+ICvCoMKgwqDCoMKgwqDCoCBtb25pdG9yZWQtYmF0dGVyeSA9
+IDwmYmF0dGVyeT47DQo+Pj4gK8KgwqDCoMKgwqDCoMKgIGV4dGNvbiA9IDwmbXVpYz47DQo+
+Pg0KPj4NCj4+IEV2ZXJ5dGhpbmcgdXAgdG8gaGVyZSBsb29rZWQgb2ssIGJ1dCBleHRjb24g
+aXMgbm90IGEgaGFyZHdhcmUgcHJvcGVydHkuDQo+PiBQbGVhc2UgZG8gbm90IG1peCBhZGRp
+bmcgbWlzc2luZyBiaW5kaW5ncyBmb3IgZXhpc3RpbmcgZGV2aWNlIHdpdGgNCj4+IGFkZGlu
+ZyBuZXcgcHJvcGVydGllcy4gWW91IHNob3VsZCB1c2UgY29ubmVjdG9yIGZvciB0aGUgVVNC
+IHBvcnQuDQo+Pg0KDQouLi4NCg0KPiBBbmQgaG93IHRvIHNldCB1cCB0aGUgcnQ1MDMzLWNo
+YXJnZXIgdG8gcmV0cmlldmUgdGhlIGluZm9ybWF0aW9uIG9mIHRoZSANCj4gZXh0Y29uL211
+aWMgZHJpdmVyIGluIHRoYXQgY2FzZT8NCj4gDQoNCi4uLg0KDQpUbyBhZGQgbW9yZSBjb250
+ZXh0Og0KQWNjb3JkaW5nIHRvIG15IHVuZGVyc3RhbmRpbmcsIHRoZSBleHRjb24gc3Vic3lz
+dGVtIHByb3ZpZGVzIHRocmVlIHdheXMgDQp0byBnZXQgYW4gZXh0Y29uIGRldmljZSBbM106
+DQotIGJ5IG5hbWUNCi0gYnkgZGV2aWNldHJlZSBub2RlDQotIGJ5IHBoYW5kbGUNCg0KRm9y
+IHJ0NTAzMy1jaGFyZ2VyLCB0aGUgZXh0Y29uIGRldmljZSBuYW1lIGNhbiBiZSBkaWZmZXJl
+bnQgZGVwZW5kaW5nIG9uIA0KdGhlIGNvbnN1bWVyIGRldmljZS4gRm9yIHRoZSBub2RlIEkg
+d291bGRuJ3Qga25vdyBob3cgdG8gZ2V0IGZyb20gdGhlIA0KY2hhcmdlci9tZmQgbm9kZSB0
+byB0aGUgZXh0Y29uIG5vZGUsIEkgZG9uJ3Qgc2VlIGEgZGlyZWN0IHJlbGF0aW9uIGluIA0K
+Y2FzZSBvZiBydDUwMzMtY2hhcmdlciAoaXQncyBubyBwYXJlbnQgbm9kZSBvciBzb21ldGhp
+bmcgbGlrZSB0aGF0KS4gDQpUaGVyZWZvcmUgSSBjaG9zZSB0aGUgdGhpcmQgb3B0aW9uOiBw
+aGFuZGxlLg0KDQpJbiB0aGUgcnQ1MDMzLWNoYXJnZXIgZHJpdmVyLCB0aGUgbG9jYXRpb24g
+b2YgdGhlIA0KZXh0Y29uX2dldF9lZGV2X2J5X3BoYW5kbGUoKSBjYWxsIGlzIHNob3duIGlu
+IGxpbmsgWzRdLCBpdCBnZXRzIGFkZGVkIGluIA0KcGF0Y2ggNi4NCg0KWzNdIA0KaHR0cHM6
+Ly9naXRodWIuY29tL3RvcnZhbGRzL2xpbnV4L2Jsb2IvdjYuMy9pbmNsdWRlL2xpbnV4L2V4
+dGNvbi5oI0wyMjMtTDIyOQ0KWzRdIA0KaHR0cHM6Ly9naXRodWIuY29tL0pha2tvMy9saW51
+eC9ibG9iL3J0NTAzMy1jaGFyZ2VyX3YzL2RyaXZlcnMvcG93ZXIvc3VwcGx5L3J0NTAzM19j
+aGFyZ2VyLmMjTDY3Nw0KDQpLaW5kIHJlZ2FyZHMsDQpKYWtvYg0K
