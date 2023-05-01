@@ -2,24 +2,24 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F35F2C7EE2D
-	for <phone-devel@archiver.kernel.org>; Mon,  1 May 2023 23:18:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46D2DC7EE21
+	for <phone-devel@archiver.kernel.org>; Mon,  1 May 2023 23:18:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232467AbjEAXSX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 1 May 2023 19:18:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49830 "EHLO
+        id S233271AbjEAXSZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 1 May 2023 19:18:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233268AbjEAXSW (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 May 2023 19:18:22 -0400
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D06E630F2
-        for <phone-devel@vger.kernel.org>; Mon,  1 May 2023 16:18:18 -0700 (PDT)
+        with ESMTP id S229653AbjEAXSX (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 May 2023 19:18:23 -0400
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD1E235B8;
+        Mon,  1 May 2023 16:18:19 -0700 (PDT)
 Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 2D91740E42;
-        Tue,  2 May 2023 01:18:14 +0200 (CEST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id B7E5540E65;
+        Tue,  2 May 2023 01:18:15 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
@@ -34,9 +34,9 @@ To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
 Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org
-Subject: [PATCH RESEND v3 1/5] iio: core: Point users of extend_name field to read_label callback
-Date:   Tue,  2 May 2023 01:17:33 +0200
-Message-Id: <20230502-iio-adc-propagate-fw-node-label-v3-1-6be5db6e6b5a@somainline.org>
+Subject: [PATCH RESEND v3 4/5] iio: adc: qcom-spmi-adc5: Remove unnecessary datasheet_name NULL check
+Date:   Tue,  2 May 2023 01:17:36 +0200
+Message-Id: <20230502-iio-adc-propagate-fw-node-label-v3-4-6be5db6e6b5a@somainline.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230502-iio-adc-propagate-fw-node-label-v3-0-6be5db6e6b5a@somainline.org>
 References: <20230502-iio-adc-propagate-fw-node-label-v3-0-6be5db6e6b5a@somainline.org>
@@ -48,41 +48,28 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-As mentioned and discussed in [1] extend_name should not be used for
-full channel labels (and most drivers seem to only use it to express a
-short type of a channel) as this affects sysfs filenames, while the
-label name is supposed to be extracted from the *_label sysfs file
-instead.  This appears to have been unclear to some drivers as
-extend_name is also used when read_label is unset, achieving an initial
-goal of providing sensible names in *_label sysfs files without noticing
-that sysfs filenames are (negatively and likely unintentionally)
-affected as well.
+datasheet_name is statically filled by a macro for every channel, and is
+nor should ever be set to NULL.
 
-Point readers of iio_chan_spec::extend_name to iio_info::read_label by
-mentioning deprecation and side-effects of this field.
-
-[1]: https://lore.kernel.org/linux-arm-msm/20221221223432.si2aasbleiicayfl@SoMainline.org/
-
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
- include/linux/iio/iio.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/adc/qcom-spmi-adc5.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 81413cd3a3e7a..6fc06063505a7 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -221,6 +221,9 @@ struct iio_event_spec {
-  * @extend_name:	Allows labeling of channel attributes with an
-  *			informative name. Note this has no effect codes etc,
-  *			unlike modifiers.
-+ *			This field is deprecated in favour of providing
-+ *			iio_info->read_label() to override the label, which
-+ *			unlike @extend_name does not affect sysfs filenames.
-  * @datasheet_name:	A name used in in-kernel mapping of channels. It should
-  *			correspond to the first name that the channel is referred
-  *			to by in the datasheet (e.g. IND), or the nearest
+diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+index fe2000209d97d..0a4fd3a461138 100644
+--- a/drivers/iio/adc/qcom-spmi-adc5.c
++++ b/drivers/iio/adc/qcom-spmi-adc5.c
+@@ -657,8 +657,7 @@ static int adc5_get_fw_channel_data(struct adc5_chip *adc,
+ 		chan = chan & ADC_CHANNEL_MASK;
+ 	}
+ 
+-	if (chan > ADC5_PARALLEL_ISENSE_VBAT_IDATA ||
+-	    !data->adc_chans[chan].datasheet_name) {
++	if (chan > ADC5_PARALLEL_ISENSE_VBAT_IDATA) {
+ 		dev_err(dev, "%s invalid channel number %d\n", name, chan);
+ 		return -EINVAL;
+ 	}
 
 -- 
 2.40.1
