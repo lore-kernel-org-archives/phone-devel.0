@@ -2,25 +2,24 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24392C77B73
-	for <phone-devel@archiver.kernel.org>; Mon,  1 May 2023 23:18:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87266C7EE24
+	for <phone-devel@archiver.kernel.org>; Mon,  1 May 2023 23:18:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230391AbjEAXR6 convert rfc822-to-8bit (ORCPT
-        <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 1 May 2023 19:17:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49452 "EHLO
+        id S232654AbjEAXSU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 1 May 2023 19:18:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231337AbjEAXR5 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 May 2023 19:17:57 -0400
-Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [IPv6:2001:4b7a:2000:18::166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5047230D6;
-        Mon,  1 May 2023 16:17:56 -0700 (PDT)
+        with ESMTP id S231610AbjEAXST (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 May 2023 19:18:19 -0400
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [IPv6:2001:4b7a:2000:18::169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D54635BE
+        for <phone-devel@vger.kernel.org>; Mon,  1 May 2023 16:18:16 -0700 (PDT)
 Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 5211040E42;
-        Tue,  2 May 2023 01:17:54 +0200 (CEST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id AA4D440E51;
+        Tue,  2 May 2023 01:18:14 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         AngeloGioacchino Del Regno 
@@ -35,57 +34,77 @@ To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
 Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
         linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org
-Subject: [PATCH RESEND v3 0/5] iio: adc: qcom-spmi-vadc: Propagate fw node label to userspace
-Date:   Tue,  2 May 2023 01:17:32 +0200
-Message-Id: <20230502-iio-adc-propagate-fw-node-label-v3-0-6be5db6e6b5a@somainline.org>
+Subject: [PATCH RESEND v3 2/5] iio: adc: qcom-spmi-adc5: Use driver datasheet_name instead of DT label
+Date:   Tue,  2 May 2023 01:17:34 +0200
+Message-Id: <20230502-iio-adc-propagate-fw-node-label-v3-2-6be5db6e6b5a@somainline.org>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230502-iio-adc-propagate-fw-node-label-v3-0-6be5db6e6b5a@somainline.org>
+References: <20230502-iio-adc-propagate-fw-node-label-v3-0-6be5db6e6b5a@somainline.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.2
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+iio_chan_spec::datasheet_name expects a channel/pin name on the hardware
+part, i.e. from its datasheet, instead of a friendly name from DT which
+typically describes the use of said channel.  GPIO channels are commonly
+specialized in QCOM board DTS based on what a - typically thermistor -
+is connected to.
 
-Implement read_label in qcom-spmi-vadc to see DT-specified label names
-in userspace.  At the same time clear up some documentation around
-extend_name to promote read_label, and normalize similar code in
-qcom-spmi-adc5.
+Also rename adc5_channel_prop::datasheet_name to channel_name to that
+effect.
 
-v3 resend: added missing to/cc addresses via b4 prep --auto-to-cc.
-
-Changes since v2:
-- Dropped RFC tag;
-- Reworded @extend_name deprecation comment.
-
-v2: https://lore.kernel.org/r/20230116220909.196926-1-marijn.suijten@somainline.org
-
-Changes since v1:
-- qcom-spmi-vadc: Use read_label instead of extend_name.
-
-New since v1:
-- core: Point users of extend_name field to read_label callback
-- qcom-spmi-adc5: Use datasheet_name string literal for
-  iio_chan_spec::datasheet_name;
-- qcom-spmi-adc5: Fall back to datasheet_name instead of
-  fwnode_get_name() for iio_chan_spec::extend_name (gets rid of @xx in
-  sysfs filenames and labels);
-- qcom-spmi-adc5: Remove unnecessary datasheet_name NULL check.
-
-v1: https://lore.kernel.org/linux-arm-msm/20221106193018.270106-1-marijn.suijten@somainline.org/
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
-Marijn Suijten (5):
-      iio: core: Point users of extend_name field to read_label callback
-      iio: adc: qcom-spmi-adc5: Use driver datasheet_name instead of DT label
-      iio: adc: qcom-spmi-adc5: Fall back to datasheet_name instead of fwnode name
-      iio: adc: qcom-spmi-adc5: Remove unnecessary datasheet_name NULL check
-      iio: adc: qcom-spmi-vadc: Propagate fw node label to userspace
+ drivers/iio/adc/qcom-spmi-adc5.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
- drivers/iio/adc/qcom-spmi-adc5.c | 15 +++++++--------
- drivers/iio/adc/qcom-spmi-vadc.c | 19 ++++++++++++++++++-
- include/linux/iio/iio.h          |  3 +++
- 3 files changed, 28 insertions(+), 9 deletions(-)
----
-base-commit: 92e815cf07ed24ee1c51b122f24ffcf2964b4b13
-change-id: 20230502-iio-adc-propagate-fw-node-label-b1fff2e63ae8
+diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+index c2d5e06f137a7..6e4e5cb5cbbb7 100644
+--- a/drivers/iio/adc/qcom-spmi-adc5.c
++++ b/drivers/iio/adc/qcom-spmi-adc5.c
+@@ -114,7 +114,7 @@ enum adc5_cal_val {
+  *	that is an average of multiple measurements.
+  * @scale_fn_type: Represents the scaling function to convert voltage
+  *	physical units desired by the client for the channel.
+- * @datasheet_name: Channel name used in device tree.
++ * @channel_name: Channel name used in device tree.
+  */
+ struct adc5_channel_prop {
+ 	unsigned int		channel;
+@@ -126,7 +126,7 @@ struct adc5_channel_prop {
+ 	unsigned int		hw_settle_time;
+ 	unsigned int		avg_samples;
+ 	enum vadc_scale_fn_type	scale_fn_type;
+-	const char		*datasheet_name;
++	const char		*channel_name;
+ };
+ 
+ /**
+@@ -671,7 +671,7 @@ static int adc5_get_fw_channel_data(struct adc5_chip *adc,
+ 	if (ret)
+ 		channel_name = name;
+ 
+-	prop->datasheet_name = channel_name;
++	prop->channel_name = channel_name;
+ 
+ 	ret = fwnode_property_read_u32(fwnode, "qcom,decimation", &value);
+ 	if (!ret) {
+@@ -861,8 +861,8 @@ static int adc5_get_fw_data(struct adc5_chip *adc)
+ 		adc_chan = &adc->data->adc_chans[prop.channel];
+ 
+ 		iio_chan->channel = prop.channel;
+-		iio_chan->datasheet_name = prop.datasheet_name;
+-		iio_chan->extend_name = prop.datasheet_name;
++		iio_chan->datasheet_name = adc_chan->datasheet_name;
++		iio_chan->extend_name = prop.channel_name;
+ 		iio_chan->info_mask_separate = adc_chan->info_mask;
+ 		iio_chan->type = adc_chan->type;
+ 		iio_chan->address = index;
+
+-- 
+2.40.1
+
