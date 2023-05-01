@@ -2,87 +2,114 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63109C77B61
-	for <phone-devel@archiver.kernel.org>; Mon,  1 May 2023 07:18:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C194FC77B61
+	for <phone-devel@archiver.kernel.org>; Mon,  1 May 2023 07:21:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232179AbjEAHSY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 1 May 2023 03:18:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34296 "EHLO
+        id S231736AbjEAHV1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 1 May 2023 03:21:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231755AbjEAHSX (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 May 2023 03:18:23 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79364191
-        for <phone-devel@vger.kernel.org>; Mon,  1 May 2023 00:18:22 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-94a342f7c4cso449751066b.0
-        for <phone-devel@vger.kernel.org>; Mon, 01 May 2023 00:18:22 -0700 (PDT)
+        with ESMTP id S229816AbjEAHV1 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 May 2023 03:21:27 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAEE6E53
+        for <phone-devel@vger.kernel.org>; Mon,  1 May 2023 00:21:25 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-959a3e2dc72so454416666b.2
+        for <phone-devel@vger.kernel.org>; Mon, 01 May 2023 00:21:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1682925501; x=1685517501;
+        d=linaro.org; s=google; t=1682925684; x=1685517684;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=PF63v+2Tp0raGO3D/Pdo+3NZYK4zubU/qMJRCsXcpRw=;
-        b=bT2nxhGBwWg62eErztF4jrVqm07T4DHRMvxHFu+V53gbHMvPzmSEAEyDbW/KPz1bKC
-         2qGJ+ZhEK5Jj5j35SM53QPWbXsJFxylE8oGZpmydsAzy0/Y7tJj/ReQzcM4seMn1Shku
-         X+Jg33Fbmq+HZiumtZGDYxLK4aTHKOAjPYThwpSCmjZ+OvMYbai80aWNssTrfNZNk8nl
-         akLvqagNYaIx1o4idhLwW1pBUreiIqY1CoKpWgdYLdDqMcHILsYx9yV9JDCUtp5qEsLt
-         ka/P6RGPNaSJuctFkJa5waJ7Zgrn6kHKIHYn6k18VLl3CO1R4rjjgjMBGeenqhtNuiF/
-         /yig==
+        bh=dVepgCs67QhYF+S64LwI1sds6PcYZ4iqkhDG4bO/TQk=;
+        b=Lt4G/nF6/vWSm70/OJY9L8lReXHWAXuoU2nTlVM5M0iX7otJ/oUOLEbFE3NHeQEu9k
+         5McUSTNOiR4Q/p7p9Yjagk7HpBL1xpEINFyHozBz8ZwVlMuRPH9v1s1oWpQGVdb2vEV6
+         +IdDb2u1+WQco+ELwRCF/8eO9+4NJ3Kwc5uhxtsobLYJPTPcl71eeMsaD6BoTkyu1AEf
+         GLtNdHfQgWX3xS7rB8KQMkyqoYdNtQp96Ea49guBF8fmtvXxGC6ps5qdknpybWRRVHD6
+         oLuO0UQ1tFI9uTKHXU6lftF0gLaXY4rapOx/VrNY5LjvPTJffHRR1meq+lKzFW9a/dP5
+         4oSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682925501; x=1685517501;
+        d=1e100.net; s=20221208; t=1682925684; x=1685517684;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PF63v+2Tp0raGO3D/Pdo+3NZYK4zubU/qMJRCsXcpRw=;
-        b=Exkc1TH4alG4ajJAXszgtgzHoYpTOPejf2H8Po20WyDk2HmQ9a0wroJ2vvHQkBdfiT
-         Um1kMAANxdPZz7FVT7C8ddw4xONXwvghLCQxfAXT8nDEKBsJfeEDvsb6YdiPRALaYmja
-         6qAKGsUj2N0vMwgvnX9k8z0/e1TbjYjrtM7moant881dZb0/dCOs1eRotzfdZG5VTlek
-         giBfg4RhYgZVDredu7Y5pcroqhFrIdgYt9jAEaVXceedsnNlTKkNFIWTgCJqmTyMbPtK
-         lrO5bUW/nl1xsQ9cNpjC+trh/rnud5hsPtPzID3FkMhp9a8CS4RYuyngw30VNb7SS1qW
-         OwRA==
-X-Gm-Message-State: AC+VfDzxJjnPDxMDIcabBNgYOQDxBL46ZPkqi0TDnO9ldQZ6PcnKZD8R
-        6j0+vHCbRinNzE/5uz7N6YXoRA==
-X-Google-Smtp-Source: ACHHUZ77aR8qnFMP9Wlo++yTpYLJKfzCmm+3/O8K2BffTv0b9/d2ok/0HaO+1ntu2hR4APdaoIoTNQ==
-X-Received: by 2002:a17:906:fe47:b0:94f:396d:dd32 with SMTP id wz7-20020a170906fe4700b0094f396ddd32mr10587304ejb.21.1682925500965;
-        Mon, 01 May 2023 00:18:20 -0700 (PDT)
+        bh=dVepgCs67QhYF+S64LwI1sds6PcYZ4iqkhDG4bO/TQk=;
+        b=FpJiL45ZM5qqvX/KO3V6wLk6jgQ2lwQB7+Gv1+55HW1GTXGfrcE46VL1GKaUKPWP4U
+         T07irqYbuIg1p8NzKw9yZLhN6NhYXBQ9AC3RtptYV9/xNFUHABV/PweRwD4vkA/WUAjm
+         Pl/7k/j4pKjATeb63zlCFQlodPbd3jvpuHuSxN+RYvsFzbAoWlcaxI7pdiX9dIHS+ws8
+         L+AxrKq35uKqjYudm6k2gO2qcAds+HUWkq6v1f1KeztRyNg+yOghvDhGVOQxn+FRYK4+
+         qevk5Kd0nJpmoKCBvGLKQrtKZao5cXH5il+B2xeSoPWFQlRFE7B+TI2k38j++t4HEy4f
+         GyMQ==
+X-Gm-Message-State: AC+VfDxK0reAQGsYuXxWEdes0t67ukO/CZTeT+OmNsOkKzADAo/yHQF9
+        +W/crP3R0RlOog2jj8sjQ2OysA==
+X-Google-Smtp-Source: ACHHUZ4+mJdUdaGf/klmpEAOu8cRfGyWI064D3ANXCd+js1/C+fb9SATKA4qJcXoaajnxZfbb2zbug==
+X-Received: by 2002:a17:907:970d:b0:90b:53f6:fd8b with SMTP id jg13-20020a170907970d00b0090b53f6fd8bmr13404942ejc.31.1682925684312;
+        Mon, 01 May 2023 00:21:24 -0700 (PDT)
 Received: from ?IPV6:2a02:810d:15c0:828:637a:fd0c:58fd:9f00? ([2a02:810d:15c0:828:637a:fd0c:58fd:9f00])
-        by smtp.gmail.com with ESMTPSA id va2-20020a17090711c200b0093a0e5977e2sm14702213ejb.225.2023.05.01.00.18.19
+        by smtp.gmail.com with ESMTPSA id gn2-20020a1709070d0200b009545230e682sm14276029ejc.91.2023.05.01.00.21.23
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 May 2023 00:18:20 -0700 (PDT)
-Message-ID: <e8a20f96-4a4c-e696-6a27-d7c4b48792e6@linaro.org>
-Date:   Mon, 1 May 2023 09:18:19 +0200
+        Mon, 01 May 2023 00:21:23 -0700 (PDT)
+Message-ID: <1d187f41-ad9a-4e82-8557-20694a8294d0@linaro.org>
+Date:   Mon, 1 May 2023 09:21:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.1
-Subject: Re: [PATCH] dt-bindings: leds: backlight: ktz8866: Add reg property
- and update example
+Subject: Re: [PATCH v3 8/8] dt-bindings: Add rt5033 mfd, regulator and charger
 Content-Language: en-US
-To:     Jianhua Lu <lujianhua000@gmail.com>, Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+To:     Jakob Hauser <jahau@rocketmail.com>,
+        Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc:     dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230428160246.16982-1-lujianhua000@gmail.com>
+Cc:     Beomho Seo <beomho.seo@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1682636929.git.jahau@rocketmail.com>
+ <5bd8b90713a61129acf292a941eb7fb5ccaa3db4.1682636929.git.jahau@rocketmail.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230428160246.16982-1-lujianhua000@gmail.com>
+In-Reply-To: <5bd8b90713a61129acf292a941eb7fb5ccaa3db4.1682636929.git.jahau@rocketmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 28/04/2023 18:02, Jianhua Lu wrote:
-> The kinetic,ktz8866 is a I2C driver, so add the missing reg property.
-> And update example to make it clear.
+On 28/04/2023 01:30, Jakob Hauser wrote:
+> Add device tree binding documentation for rt5033 multifunction device, voltage
+> regulator and battery charger.
 > 
-> Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
-> ---
+> Cc: Beomho Seo <beomho.seo@samsung.com>
+> Cc: Chanwoo Choi <cw00.choi@samsung.com>
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+(...)
+
+> +
+> +required:
+> +  - monitored-battery
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    charger {
+> +        compatible = "richtek,rt5033-charger";
+> +        monitored-battery = <&battery>;
+> +        extcon = <&muic>;
+
+
+Everything up to here looked ok, but extcon is not a hardware property.
+Please do not mix adding missing bindings for existing device with
+adding new properties. You should use connector for the USB port.
 
 Best regards,
 Krzysztof
