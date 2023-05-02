@@ -2,85 +2,146 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8F8DC77B73
-	for <phone-devel@archiver.kernel.org>; Tue,  2 May 2023 00:47:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9599C7EE24
+	for <phone-devel@archiver.kernel.org>; Tue,  2 May 2023 10:23:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230008AbjEBArf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 1 May 2023 20:47:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46734 "EHLO
+        id S233983AbjEBKXz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 2 May 2023 06:23:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229653AbjEBArf (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 May 2023 20:47:35 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6183E1FCC;
-        Mon,  1 May 2023 17:47:34 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-63b70ca0a84so3716690b3a.2;
-        Mon, 01 May 2023 17:47:34 -0700 (PDT)
+        with ESMTP id S233813AbjEBKWa (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 May 2023 06:22:30 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B8745BBE
+        for <phone-devel@vger.kernel.org>; Tue,  2 May 2023 03:21:48 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-4ec8149907aso4435349e87.1
+        for <phone-devel@vger.kernel.org>; Tue, 02 May 2023 03:21:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682988454; x=1685580454;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7upDMlCiFyS9IqWKLFQuuQHQDW2CbteKNbLQt2kIjHg=;
-        b=kXmO8ctKGoDAHkIsPM3FvfZ3vXjOcJmhIZZH4ENpiHZqdCpC/FQi3SHUGaSpe1vGqf
-         3RSZZkR7TFUIUJ/0k6hvfjGlBsri/B8lGlkmVIaUI6OY5BVgr7gfAhcGTJitmMvuRuVt
-         ynhRnEF8/tR9sjzrNVvrl7I2Pbzp4o7UMFkxzBbXAZQS+M74I+6jpSHFkSc5FW4bJtWz
-         cd98fD5hkVFG4p08TT0ZHuURAenGAr46Cxijxl0e493YaWVP67jIyx6+WOhhfNkmQTw4
-         h5PqShzKIoR8FlKzUV80x9WhftxmAUXYCzhD0fAgLskYv0xBgaNAjN7U5WFHOv0L8OLg
-         q9Kw==
+        d=linaro.org; s=google; t=1683022906; x=1685614906;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=A6iWdYn1dcUhTIsj5RYFdeRghsw/Iy67Uv3eHtIWqsQ=;
+        b=GBXf7uJqRLVgCEQuhaqRbNLu2HX5JOFlcjoxgxBs8ihGDi6buL35TwEMuyyQlgboep
+         PFQ3LwtZk0hMF2twx754tB/mO6hmHp2FFn+Mcs5/oQ4MSfgIDSgLfy0Y/2pcTqMG7YC1
+         3pz0Dp3D5sI/twmNGV5dX2DYb/F79clUhPePJo+8KkfGSimTeuZKQzd27fESVmt/nHPV
+         F4y8wZdIUbHU3ZH1kk572Gl1Tz34RIqHUdhTZbqaUzuThIs/ZiowKDNzMWKzBru7Ryny
+         ezME+pwUjVJ6w+x4XttVwEoSsEs1VrNHS0J4zcDqxPQ3kQQCNvSJ95EryWKSbjvl+vMT
+         cgCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682988454; x=1685580454;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7upDMlCiFyS9IqWKLFQuuQHQDW2CbteKNbLQt2kIjHg=;
-        b=JUmL6OocVsKckyIRAV/sK0mKsy3RsDJHpHN0iPsE41NkwyW8Y+ZXUsZ+GoKTgXqisn
-         UwkC8pzcXnd/y3fQcpM/U6SLDlbPnaaTXByAIawa76xuuJhvKcLYdDOfKeRMtyybml5I
-         Klr6dXJvz3oute9xbTWShLCQ5aO3gxM0SlSJifIPs7I4o0wgKx0cgc0V7XrQmyh7K77A
-         R9XBB0q2TbsQzc4A3QohlZ97ONgBqds9/woyC+uEsj0F9N8h3gI0zaVsSpoE87Ydykxi
-         Txb0ElfRARle8qDtd3weqbfQr5QSW79zeTqBszJfRGxaQvHHPgLLsgaGcEy8Cj0Dxz+V
-         Je6A==
-X-Gm-Message-State: AC+VfDzMWpdg+1ENLAxSNM0d3f3cJ4e6Ug6bYEBcYcoeB8xOWO7xstxf
-        wLeuRYk8wS8xNMdZxVhxN0kIdHFq86o=
-X-Google-Smtp-Source: ACHHUZ5Fw/kJT3CfItCahveMnIypup9kYq/96EjO9dmQNdmqIpax72ICZXOLeSamYMHoydHUCu6SHQ==
-X-Received: by 2002:a05:6a00:1591:b0:639:a518:3842 with SMTP id u17-20020a056a00159100b00639a5183842mr23411910pfk.7.1682988453686;
-        Mon, 01 May 2023 17:47:33 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:b6ce:736b:e4f7:adb])
-        by smtp.gmail.com with ESMTPSA id t12-20020a63dd0c000000b00513973a7014sm17359099pgg.12.2023.05.01.17.47.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 May 2023 17:47:32 -0700 (PDT)
-Date:   Mon, 1 May 2023 17:47:29 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        d=1e100.net; s=20221208; t=1683022906; x=1685614906;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=A6iWdYn1dcUhTIsj5RYFdeRghsw/Iy67Uv3eHtIWqsQ=;
+        b=gPasIrp7fvgIzfJglPbEYcGXJlu+XXboqBEOXdOW4+xDj3Q8mAH+kWatQzzwnVnAyY
+         7cmH8/vPHbJN6/tnf7NZuUkpKxmTBNNoepF3DKogmg2P4lL8aNT7JHEyc0iwVsv8ZeTD
+         OFq7nhGHJd+RWOrGeRYd4JHVcYmbIdxJrHoIB/kvAtl/KArEyVdms/LVVDOo8REJKpPh
+         5gNB9vboxnOdMNffzUnqH14v0p5EULmOz0gMFZ3i/EW+XdtTDT+mcnXtSQswjX9vMoA8
+         JKJeyMHcC1LiHnrHLh82+mGPaduDkXQNuf6n7Bk/Q8qVdUpsF/GxcBUinxR4AL47d268
+         BCtA==
+X-Gm-Message-State: AC+VfDyRfe2MUWCCSBMfjEOsABjwd13Oaw11/G9EJM1AirnYeTDMELyD
+        sBW1M2uHgjS/DbDcCWiadTxYHA==
+X-Google-Smtp-Source: ACHHUZ7Dr3yuZVF+v4zq2mUOzL+pDisjYi+394uEAnNsl3ACAjNZM3ankYHN3yOfvhJyTSu2lSuWZQ==
+X-Received: by 2002:ac2:53b5:0:b0:4e8:485c:6a13 with SMTP id j21-20020ac253b5000000b004e8485c6a13mr4372301lfh.21.1683022906512;
+        Tue, 02 May 2023 03:21:46 -0700 (PDT)
+Received: from [192.168.1.101] (abyl248.neoplus.adsl.tpnet.pl. [83.9.31.248])
+        by smtp.gmail.com with ESMTPSA id u5-20020ac243c5000000b004f012977b65sm2374584lfl.249.2023.05.02.03.21.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 May 2023 03:21:46 -0700 (PDT)
+Message-ID: <efacbaab-3d47-8b6f-9804-6009373396e1@linaro.org>
+Date:   Tue, 2 May 2023 12:21:44 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH 5/5] ARM: dts: qcom: apq8026-huawei-sturgeon: Add vibrator
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Dan Murphy <dmurphy@ti.com>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Brian Masney <masneyb@onstation.org>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 3/4] Input: pwm-vibra - add support for enable GPIO
-Message-ID: <ZFBdobY1yxMXYfFt@google.com>
-References: <20230427-hammerhead-vibra-v1-0-e87eeb94da51@z3ntu.xyz>
- <20230427-hammerhead-vibra-v1-3-e87eeb94da51@z3ntu.xyz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230427-hammerhead-vibra-v1-3-e87eeb94da51@z3ntu.xyz>
+        Raffaele Tranquillini <raffaele.tranquillini@gmail.com>,
+        Yassine Oudjana <y.oudjana@protonmail.com>
+Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
+References: <20230430-drv260x-improvements-v1-0-1fb28b4cc698@z3ntu.xyz>
+ <20230430-drv260x-improvements-v1-5-1fb28b4cc698@z3ntu.xyz>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230430-drv260x-improvements-v1-5-1fb28b4cc698@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Apr 27, 2023 at 10:34:28PM +0200, Luca Weiss wrote:
-> Some pwm vibrators have a dedicated enable GPIO that needs to be set
-> high so that the vibrator works. Add support for that optionally.
 
-So this is not simply a power supply in your case controlled by a GPIO?
-We truly can have both GPIO and a separate regulator?
 
-Thanks.
+On 30.04.2023 20:20, Luca Weiss wrote:
+> The watch has a DRV2605 for haptics. Add a node for it based on the
+> values found in the downstream board file.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
--- 
-Dmitry
+Konrad
+>  arch/arm/boot/dts/qcom-apq8026-huawei-sturgeon.dts | 28 ++++++++++++++++++++++
+>  1 file changed, 28 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/qcom-apq8026-huawei-sturgeon.dts b/arch/arm/boot/dts/qcom-apq8026-huawei-sturgeon.dts
+> index d64096028ab1..eb73b992a696 100644
+> --- a/arch/arm/boot/dts/qcom-apq8026-huawei-sturgeon.dts
+> +++ b/arch/arm/boot/dts/qcom-apq8026-huawei-sturgeon.dts
+> @@ -7,6 +7,7 @@
+>  
+>  #include "qcom-msm8226.dtsi"
+>  #include "qcom-pm8226.dtsi"
+> +#include <dt-bindings/input/ti-drv260x.h>
+>  
+>  /delete-node/ &adsp_region;
+>  
+> @@ -68,6 +69,26 @@ &adsp {
+>  	status = "okay";
+>  };
+>  
+> +&blsp1_i2c2 {
+> +	clock-frequency = <384000>;
+> +
+> +	status = "okay";
+> +
+> +	vibrator@5a {
+> +		compatible = "ti,drv2605";
+> +		reg = <0x5a>;
+> +		enable-gpios = <&tlmm 60 GPIO_ACTIVE_HIGH>;
+> +
+> +		mode = <DRV260X_ERM_MODE>;
+> +		library-sel = <DRV260X_ERM_LIB_D>;
+> +		vib-rated-mv = <2765>;
+> +		vib-overdrive-mv = <3525>;
+> +
+> +		pinctrl-0 = <&vibrator_default_state>;
+> +		pinctrl-names = "default";
+> +	};
+> +};
+> +
+>  &blsp1_i2c5 {
+>  	clock-frequency = <384000>;
+>  
+> @@ -347,6 +368,13 @@ reset-pins {
+>  		};
+>  	};
+>  
+> +	vibrator_default_state: vibrator-default-state {
+> +		pins = "gpio59", "gpio60";
+> +		function = "gpio";
+> +		drive-strength = <2>;
+> +		bias-pull-down;
+> +	};
+> +
+>  	wlan_hostwake_default_state: wlan-hostwake-default-state {
+>  		pins = "gpio66";
+>  		function = "gpio";
+> 
