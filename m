@@ -2,100 +2,108 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 95477C7EE21
-	for <phone-devel@archiver.kernel.org>; Mon,  1 May 2023 23:20:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ABE3BC77B7C
+	for <phone-devel@archiver.kernel.org>; Tue,  2 May 2023 00:29:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231255AbjEAXUv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 1 May 2023 19:20:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52044 "EHLO
+        id S231995AbjEBA3J (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 1 May 2023 20:29:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229664AbjEAXUv (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 May 2023 19:20:51 -0400
-Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DC4630D6;
-        Mon,  1 May 2023 16:20:48 -0700 (PDT)
-Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 3542240E49;
-        Tue,  2 May 2023 01:20:47 +0200 (CEST)
-Date:   Tue, 2 May 2023 01:20:45 +0200
-From:   Marijn Suijten <marijn.suijten@somainline.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        with ESMTP id S229582AbjEBA3H (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 1 May 2023 20:29:07 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9FAA173D;
+        Mon,  1 May 2023 17:29:06 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-52c30fa5271so626589a12.0;
+        Mon, 01 May 2023 17:29:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682987346; x=1685579346;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bBqHu+lnWk8vAz/lUfBmOPXhwTwQLj17nppKH0nr3PM=;
+        b=rot8jGhY3EhOgIBxrI/7AcdOnBaOI1+96B+MlDzh8XetEEUzLhpaknn/X3MKOWIJUZ
+         xNHJe5HzKEImoPjZPBQzW4QuMqTXRDzcHH412xekixvgYAmMjbw9Qdk90COQpEWDH9uu
+         EX14alMCxLKrkt4qk5tvy0p80dltvTRe1zeW85zqwsKMRfuPCSQ+CfUbbiu8DVC86Z0C
+         8s+o/myAHQhxh1ztXwp6pjIjf7KujXDcwZeuY1yDlwqqqrXGCxw+vB/gxq3DVdwPgoQq
+         85Hq40T2OdvQ7Vl5R7csq2hkqdvy+5ypOkooUsJnqdiSH2n9GZyHdOX/0m63tlkdCHbN
+         mjmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682987346; x=1685579346;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bBqHu+lnWk8vAz/lUfBmOPXhwTwQLj17nppKH0nr3PM=;
+        b=SbaOKbxeeBqDxKDOm58uHXdyz0EvtLIPSGlFRUGtxR19aX+cRGUPUtA4meesOvMu2P
+         gjwjZsGTTPEUd88oTEHEQKnhzJSv3F+sh4UDZn+4wOQBxIjr5UHidd71oglpTvwuHm+f
+         93YFCWi5UD0tWI/U3Hzjm/WHFXRS+p+eZiG8hEXGpZZIuBuG9A0fW8sp7OmoOn8yfr5V
+         O7qA6kPXZ/US1QkUKoPrPJATM4YeN/Ym97YuC/1kt5/cyUSyLfA4PYe/48gFrn5DZC/v
+         NnqHP4FdTjSYqwGhHMFZ0IupAfrB69tyfsPiENxHTDiQ5s3NMByUcszSYv2FzC9w/LUy
+         Supg==
+X-Gm-Message-State: AC+VfDxuDpRY1BUsWzcc+gc5nJGx78GQDxOPsoiVjSedOGAHKOIIcNGU
+        e3tdzQKqv7Z2fLRcWMTkOUI=
+X-Google-Smtp-Source: ACHHUZ5z5n/6hVzP5V2gfv0/gZNUKxFXz5RO0U4Esu3C7HcvvI7tKf3S4iPeZgZPRbYxTXcxt1LZ1g==
+X-Received: by 2002:a05:6a00:1487:b0:625:e051:e462 with SMTP id v7-20020a056a00148700b00625e051e462mr24297867pfu.15.1682987346067;
+        Mon, 01 May 2023 17:29:06 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:b6ce:736b:e4f7:adb])
+        by smtp.gmail.com with ESMTPSA id fa23-20020a056a002d1700b006259e883ee9sm18762101pfb.189.2023.05.01.17.29.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 May 2023 17:29:05 -0700 (PDT)
+Date:   Mon, 1 May 2023 17:29:02 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Dan Murphy <dmurphy@ti.com>, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 0/5] iio: adc: qcom-spmi-vadc: Propagate fw node
- label to userspace
-Message-ID: <jj7taer4qk5whekl5tugkgdlmmxsokihxd2ay33ikvhhkig5uc@zgd4phhyb4zr>
-Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>, 
-        Jonathan Cameron <jic23@kernel.org>, phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>, 
-        Bjorn Andersson <andersson@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-        Martin Botka <martin.botka@somainline.org>, Jami Kettunen <jami.kettunen@somainline.org>, 
-        Lars-Peter Clausen <lars@metafoo.de>, linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org, 
-        linux-kernel@vger.kernel.org
-References: <20230116220909.196926-1-marijn.suijten@somainline.org>
- <20230122165947.62e8652d@jic23-huawei>
- <20230122234137.fyziba55n3b6tx3j@SoMainline.org>
- <20230501172151.4a4b6dce@jic23-huawei>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Raffaele Tranquillini <raffaele.tranquillini@gmail.com>,
+        Yassine Oudjana <y.oudjana@protonmail.com>,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 0/5] Improvements for drv260x driver and add to Huawei
+ Watch
+Message-ID: <ZFBZTsIUXzuU5/IL@google.com>
+References: <20230430-drv260x-improvements-v1-0-1fb28b4cc698@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230501172151.4a4b6dce@jic23-huawei>
+In-Reply-To: <20230430-drv260x-improvements-v1-0-1fb28b4cc698@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2023-05-01 17:21:51, Jonathan Cameron wrote:
-> On Mon, 23 Jan 2023 00:41:37 +0100
-> Marijn Suijten <marijn.suijten@somainline.org> wrote:
+On Sun, Apr 30, 2023 at 08:20:52PM +0200, Luca Weiss wrote:
+> Clean up some issues with the driver I've noticed while working on it,
+> then fix the magnitude handling which previously resulted the driver
+> discarding the upper 8 bits of the magnitude value, and finally we can
+> add the drv260x to the APQ8026 Huawei Watch.
 > 
-> > On 2023-01-22 16:59:47, Jonathan Cameron wrote:
-> > > On Mon, 16 Jan 2023 23:09:04 +0100
-> > > Marijn Suijten <marijn.suijten@somainline.org> wrote:
-> > >   
-> > > > Implement read_label in qcom-spmi-vadc to see DT-specified label names
-> > > > in userspace.  At the same time clear up some documentation around
-> > > > extend_name to promote read_label, and normalize similar code in
-> > > > qcom-spmi-adc5.
-> > > >   
-> > > 
-> > > I think this is a good route forwards, but it is making changes
-> > > to ABI so I definitely want input on this from at least one of
-> > > the qualcomm maintainers before I pick it up - particularly
-> > > the changes in patch 3.
-> > > 
-> > > Don't want to cause anyone nasty surprises.  
-> > 
-> > Ack, patch 3 is the odd one of the bunch (as discussed many times
-> > prior).  It is an ABI break and would effectively obsolete "iio: adc:
-> > qcom-spmi-adc5: Fix the channel name" [1] as it then only affects a few
-> > dev_err/dev_dbg.  Let's wait and hear from Qcom maintainers.
-> > 
-> > [1]: https://lore.kernel.org/linux-arm-msm/20230118100623.42255-1-andriy.shevchenko@linux.intel.com/
+> While the "fix magnitude handling" commit technically changes behavior
+> and could change behavior of existing user space applications that deal
+> with this quirky behavior, it's definitely not correct and results in
+> very unexpected behavior if the user space doesn't look out for it
+> (meaning only use 0x00-0xFF magnitude, and also know that the magnitude
+> was interpreted as signed value, see more details in the commit message
+> there).
 > 
-> Perhaps time for a resend of this series (drop the RFC marking as that
-> tends to mean people don't read things if they are low on time).
+> There's currently only one other upstream user of the driver,
+> qcom/msm8996-xiaomi-gemini where I've added the dts authors to this
+> patch series (Raffaele & Yassine) and some tests on that device would be
+> nice since it's operating in LRA mode, mine does in ERM mode.
 > 
-> I'm going to mark this in patchwork as changes requested on basis a
-> v3 will show up shortly.
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+> Luca Weiss (5):
+>       Input: drv260x - fix typo in register value define
+>       Input: drv260x - sleep between polling GO bit
+>       Input: drv260x - remove unused .reg_defaults
+>       Input: drv260x - fix magnitude handling
+>       ARM: dts: qcom: apq8026-huawei-sturgeon: Add vibrator
 
-v3 is out now after once again messing with b4 to import an older
-series, with a RESEND to include all the email addresses which b4 only
-addes after using prep --auto-to-cc, and there not being any obvious way
-to retroactively add the bunch of To:/Cc: commands to a previously sent
-version before running b4 send --resend v3.
+Applied patches 1-4.
 
-Fingers crossed it all went right and reaches the right people.
+Thanks.
 
-- Marijn
+-- 
+Dmitry
