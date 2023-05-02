@@ -2,149 +2,166 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FC01C77B73
-	for <phone-devel@archiver.kernel.org>; Tue,  2 May 2023 10:41:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7874C77B73
+	for <phone-devel@archiver.kernel.org>; Tue,  2 May 2023 10:59:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229457AbjEBKlP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 2 May 2023 06:41:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44784 "EHLO
+        id S229586AbjEBK75 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 2 May 2023 06:59:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231915AbjEBKlN (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 May 2023 06:41:13 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4061E526E
-        for <phone-devel@vger.kernel.org>; Tue,  2 May 2023 03:40:44 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f001a2f3aeso4446620e87.2
-        for <phone-devel@vger.kernel.org>; Tue, 02 May 2023 03:40:44 -0700 (PDT)
+        with ESMTP id S233786AbjEBK7q (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 2 May 2023 06:59:46 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DE6549C9
+        for <phone-devel@vger.kernel.org>; Tue,  2 May 2023 03:59:44 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-50bcc565280so1969283a12.2
+        for <phone-devel@vger.kernel.org>; Tue, 02 May 2023 03:59:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683024042; x=1685616042;
+        d=linaro.org; s=google; t=1683025182; x=1685617182;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=yxitG6sUcYo57hAIgIo6PDkuzwNrSAcbt8Y9v1/szAI=;
-        b=OvoP0+4XqEDlUiCjcOXKLIDCxRaPbECJTI1vnE6rQ1gUr+KbewTdfuds4cct9UNWme
-         g3CdR9gxAg0vaNgPO4A4kspbU/G+iw9hJuYqEU1xoxOSWtKdUJQYFNmLOGpZ5ufzStck
-         I1HVd8m1mQZ3zsaxhYII29/zmDiLh819GQalML+Mn9kVMWhr3sQUcc/U04jHkOIQ0xrB
-         GJyQikSm5Hu3+YNTSeX9QJ6pXsAQZudN++Pi57cOqehvzToksKiVRsigM5ReU91zSfmP
-         xJuCsiTEsDHbwEjlruxj1NmHIo5PLP3Ie953tUmSetlO2DefzEC9lX0AHcg9HKOqWSzl
-         yGqQ==
+        bh=VdDZqOttphOYv9U+1zrZaT0zA9hRSu+yE6K9FwESJIc=;
+        b=ERNh5lp7qwxuvqIuM07/VEe2lkVVyPlwoh0NrOMBXEPTjUwo0lzFR8WGDgvOEXSj+Q
+         W/Fqy3pxlfIWyKLfeUQKXJ3X7Vyc3GEXtIPcpWI2VQwHRcCNpTyWVOkKTwbHL8blCZ+Y
+         OiYw3a6J7eEEJ+5sbu5vj/JTa84yUCBOssMHtevwVVMrGNv+ZZxk7iKB2lJASfWC2Ywv
+         LFYqfzGBbJ8B6ncMiRhP4znXf9IW0sZv7vNjhWIEcdhwxS/64MxfOoprk1rye2PojNEc
+         s1h5xDFupsopUgmrnUuP5B2mo2sGKJmgXuinSqqdPzJKrud8J0ArBonk8GBlVoInTQD/
+         8p0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683024042; x=1685616042;
+        d=1e100.net; s=20221208; t=1683025182; x=1685617182;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yxitG6sUcYo57hAIgIo6PDkuzwNrSAcbt8Y9v1/szAI=;
-        b=GsDbpoSPu+IJqxmDaP5hp66+BUDr9bWLN7kzQCB2sIYOvxfQcdKYkdTgOHR7O3E2a/
-         a260heTOWi4SZ4eHUniHwb8nN7nNFxxgexyeFoNbCoK2pWPZcONc7yySH3HZxha9f9yL
-         ymX461BfEE7/kY1kBVwtJWbDyGDEbbSp/yF2i4KTNzqbWDTRAfvBoQzyl2wShXg+xHmG
-         DlDG8zXm5GUTC7A3P/2MUgxpIMGKjGr3Lb6bejbpx/UHphHUL+97ZYt6fW1/wOjE9Iru
-         cD4vKwRTKPU7yHRLQDLzongxYSZA261O2IvuXwFDER2Kzlk47Fah3ylaWQDWarRpX53w
-         G/yA==
-X-Gm-Message-State: AC+VfDztSqhRKxS/PgTXlvVF3LfOF62Kc2FawvUd1xstIGAz0BpBcqLl
-        tX+mDb9/aZCBr7oBNUuIW/de0A==
-X-Google-Smtp-Source: ACHHUZ5gttAN6CiSzZ3fLU8pRdscs7YpH0bVP1jwDdHpAkH6e0Gn0OqD7XIezoGnS2rlS/ZNDp0cBQ==
-X-Received: by 2002:ac2:515e:0:b0:4ef:f6c9:b977 with SMTP id q30-20020ac2515e000000b004eff6c9b977mr4218718lfd.49.1683024042122;
-        Tue, 02 May 2023 03:40:42 -0700 (PDT)
-Received: from [192.168.1.101] (abyl248.neoplus.adsl.tpnet.pl. [83.9.31.248])
-        by smtp.gmail.com with ESMTPSA id q28-20020ac2529c000000b004eff70e321bsm3640070lfm.237.2023.05.02.03.40.40
+        bh=VdDZqOttphOYv9U+1zrZaT0zA9hRSu+yE6K9FwESJIc=;
+        b=dwDJMX3QZwKEAlsedKgyaiDWrMW/WA5wvAPE+9y8qVv4xzKhhordQ9szle1CJua0Cr
+         bM6Sv93S40q59l117uHsuikDnMqD1z7DHh9buivblfB2Qin/Zx7QvZ2LuVQGYvIyWKxD
+         RzN5Ejpyu5A5fwAK1ObC0+MKSddLeo8PLTTSypOxtFvy5LueSkoVlTRuNHuV7ahiHxU8
+         nQSYJpgiQnW+fUU1VwpXm9W04FqdRleprb9CWcJO0nKiTW+GucJXf5sygxl5Q6oAXQ7R
+         p3zAGS0bi3p5HaOjnjtgOkPK1E5ODFykSzdtnCO2Tp0nZE8PJYtJKKBJmWut9hyGpmS1
+         FREw==
+X-Gm-Message-State: AC+VfDydBfbUwGvgahubM2dYJsMmreectfd8umpwHpJdEzCPD1zqL0is
+        AqhxXR6mZ7ipN2SqvEEz9OXYsg==
+X-Google-Smtp-Source: ACHHUZ72mUrm5HA31mQawpD3/IrgOPhq7juHhvyRzwMQfL7RY+YIilMqz9yIbzWwF3xOMPT6aAsYUQ==
+X-Received: by 2002:a05:6402:18d:b0:506:741e:5c14 with SMTP id r13-20020a056402018d00b00506741e5c14mr7398805edv.30.1683025182695;
+        Tue, 02 May 2023 03:59:42 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:bafd:1283:b136:5f6a? ([2a02:810d:15c0:828:bafd:1283:b136:5f6a])
+        by smtp.gmail.com with ESMTPSA id s4-20020a170906a18400b0094f1d0bad81sm15853265ejy.139.2023.05.02.03.59.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 May 2023 03:40:41 -0700 (PDT)
-Message-ID: <fc22fd34-6cce-c175-d845-cf4435b4b0be@linaro.org>
-Date:   Tue, 2 May 2023 12:40:40 +0200
+        Tue, 02 May 2023 03:59:42 -0700 (PDT)
+Message-ID: <a0f4252d-7f27-6dd9-dea0-f8d242011f70@linaro.org>
+Date:   Tue, 2 May 2023 12:59:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.1
-Subject: Re: [PATCH 4/4] ARM: dts: qcom: msm8974-hammerhead: Add vibrator
+Subject: Re: [PATCH v3 8/8] dt-bindings: Add rt5033 mfd, regulator and charger
 Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+To:     Jakob Hauser <jahau@rocketmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Brian Masney <masneyb@onstation.org>
-Cc:     linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20230427-hammerhead-vibra-v1-0-e87eeb94da51@z3ntu.xyz>
- <20230427-hammerhead-vibra-v1-4-e87eeb94da51@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230427-hammerhead-vibra-v1-4-e87eeb94da51@z3ntu.xyz>
+        Beomho Seo <beomho.seo@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1682636929.git.jahau@rocketmail.com>
+ <5bd8b90713a61129acf292a941eb7fb5ccaa3db4.1682636929.git.jahau@rocketmail.com>
+ <1d187f41-ad9a-4e82-8557-20694a8294d0@linaro.org>
+ <e9d75e57-bdea-593d-7b05-136c9ad2e2fe@rocketmail.com>
+ <14daa006-5260-81a8-8ba0-4122e0c0509a@rocketmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <14daa006-5260-81a8-8ba0-4122e0c0509a@rocketmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 01/05/2023 23:16, Jakob Hauser wrote:
+> Hi Krzysztof,
+> 
+> On 01.05.23 19:35, Jakob Hauser wrote:
+>> On 01.05.23 09:21, Krzysztof Kozlowski wrote:
+>>> On 28/04/2023 01:30, Jakob Hauser wrote:
+>>>> Add device tree binding documentation for rt5033 multifunction 
+>>>> device, voltage
+>>>> regulator and battery charger.
+>>>>
+>>>> Cc: Beomho Seo <beomho.seo@samsung.com>
+>>>> Cc: Chanwoo Choi <cw00.choi@samsung.com>
+>>>> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+>>>
+>>>
+>>> (...)
+>>>
+>>>> +
+>>>> +required:
+>>>> +  - monitored-battery
+>>>> +
+>>>> +additionalProperties: false
+>>>> +
+>>>> +examples:
+>>>> +  - |
+>>>> +    charger {
+>>>> +        compatible = "richtek,rt5033-charger";
+>>>> +        monitored-battery = <&battery>;
+>>>> +        extcon = <&muic>;
+>>>
+>>>
+>>> Everything up to here looked ok, but extcon is not a hardware property.
+>>> Please do not mix adding missing bindings for existing device with
+>>> adding new properties. You should use connector for the USB port.
+>>>
+> 
+> ...
+> 
+>> And how to set up the rt5033-charger to retrieve the information of the 
+>> extcon/muic driver in that case?
+>>
+> 
+> ...
+> 
+> To add more context:
+> According to my understanding, the extcon subsystem provides three ways 
+> to get an extcon device [3]:
+> - by name
+> - by devicetree node
+> - by phandle
+> 
+> For rt5033-charger, the extcon device name can be different depending on 
+> the consumer device. For the node I wouldn't know how to get from the 
+> charger/mfd node to the extcon node, I don't see a direct relation in 
+> case of rt5033-charger (it's no parent node or something like that). 
+> Therefore I chose the third option: phandle.
+> 
+> In the rt5033-charger driver, the location of the 
+> extcon_get_edev_by_phandle() call is shown in link [4], it gets added in 
+> patch 6.
+> 
 
+Hi Jakob,
 
-On 27.04.2023 22:34, Luca Weiss wrote:
-> The Nexus 5 has a vibrator connected to the clock output of GP1_CLK
-> which we can use with the clk-pwm driver, then we can use that pwm with
-> pwm-vibrator to get haptics functionality.
-> 
-> This patch is based on Brian Masney's previous patch with clk-vibrator.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  .../dts/qcom-msm8974-lge-nexus5-hammerhead.dts     | 35 ++++++++++++++++++++++
->  1 file changed, 35 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts b/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-> index ab35f2d644c0..fea8a6be9021 100644
-> --- a/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-> +++ b/arch/arm/boot/dts/qcom-msm8974-lge-nexus5-hammerhead.dts
-> @@ -41,6 +41,25 @@ key-volume-down {
->  		};
->  	};
->  
-> +	clk_pwm: pwm {
-> +		compatible = "clk-pwm";
-> +		clocks = <&mmcc CAMSS_GP1_CLK>;
-Are you sure it's <&mmcc CAMSS_GP1_CLK> and not <&gcc GCC_GP1_CLK>?
+I am currently busy, so I won't be able to help you and dig in your
+reply. I will get to you a bit later (or maybe Rob will help here).
 
-Konrad
-> +
-> +		pinctrl-0 = <&vibrator_pin>;
-> +		pinctrl-names = "default";
-> +
-> +		#pwm-cells = <2>;
-> +	};
-> +
-> +	vibrator {
-> +		compatible = "pwm-vibrator";
-> +		pwms = <&clk_pwm 0 100000>;
-> +		pwm-names = "enable";
-> +
-> +		vcc-supply = <&pm8941_l19>;
-> +		enable-gpios = <&tlmm 60 GPIO_ACTIVE_HIGH>;
-> +	};
-> +
->  	vreg_wlan: wlan-regulator {
->  		compatible = "regulator-fixed";
->  
-> @@ -637,6 +656,22 @@ shutdown-pins {
->  			function = "gpio";
->  		};
->  	};
-> +
-> +	vibrator_pin: vibrator-state {
-> +		core-pins {
-> +			pins = "gpio27";
-> +			function = "gp1_clk";
-> +			drive-strength = <6>;
-> +			bias-disable;
-> +		};
-> +
-> +		enable-pins {
-> +			pins = "gpio60";
-> +			function = "gpio";
-> +			drive-strength = <2>;
-> +			bias-disable;
-> +		};
-> +	};
->  };
->  
->  &usb {
-> 
+However please check if ports graph does not solve your case:
+https://lore.kernel.org/all/20230501121111.1058190-6-bryan.odonoghue@linaro.org/
+
+It is already used for orientation and usb-role-switch (which should
+solve the need for extcon, AFAIR).
+
+If it does not help, ping me again, and I'll try to get to you a bit later.
+
+Apologies for this, just very busy times. :)
+
+Best regards,
+Krzysztof
+
