@@ -2,46 +2,64 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3029C77B7C
-	for <phone-devel@archiver.kernel.org>; Fri,  5 May 2023 20:13:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B0CAC7EE22
+	for <phone-devel@archiver.kernel.org>; Sat,  6 May 2023 10:48:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232050AbjEEUNj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 5 May 2023 16:13:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51408 "EHLO
+        id S231857AbjEFKsi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 6 May 2023 06:48:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231321AbjEEUNi (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 5 May 2023 16:13:38 -0400
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 357302125;
-        Fri,  5 May 2023 13:13:37 -0700 (PDT)
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-192cd5579faso1893946fac.1;
-        Fri, 05 May 2023 13:13:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683317616; x=1685909616;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zChV03MNSLk+RhkKNi4v4/pkoAVSaYc302EiptBzpnA=;
-        b=ZmsIIcJO0/V2LWrmdOgGztFG08LXBix9axEM+dpvji8qsG8Bvum0S1nZq7XR7axEGE
-         eZbX4M6VS9Z+WEMSlHX7M9rmYPGrQpOBR7bu/6Y2Kn2twRpG9I0bz6WyMChwFVsxlvOb
-         nv72XZN2BX07lpa+ahNpoZbMt/rBr3bhQS0/6fpUQWnDfFzfOGvlNu9iGqabNx/a5Wsv
-         T6KEyXxIrAiPN/zKHRIcffcUR/agCJbcI4228lYGN2f6XuDRlRiN5KsK24Nu1eZvDPH8
-         abVkGi0OH0xenAJknnE1Ns+SwLKdnp+npyhig1JT6S09IO+oyMF1ytVnh7vfmD9laQh8
-         7Ysw==
-X-Gm-Message-State: AC+VfDzUsdqVtWE0ssYnne1hyk2RapvMvaho/HTy+vCpdcL+2tpZuv+T
-        maFh3iO1K2jZo51aRZGjvA==
-X-Google-Smtp-Source: ACHHUZ7FHdb4xmSJ49+Ps7Ok9SKUjtmJ9rgSQNnXgthb1aSzSkjNDQnTk4ST208PhuNdviNurDwg8Q==
-X-Received: by 2002:a05:6870:9571:b0:18b:2238:5abe with SMTP id v49-20020a056870957100b0018b22385abemr1680146oal.9.1683317616431;
-        Fri, 05 May 2023 13:13:36 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id r1-20020a056870734100b00177ba198612sm2198657oal.53.2023.05.05.13.13.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 May 2023 13:13:35 -0700 (PDT)
-Received: (nullmailer pid 3492366 invoked by uid 1000);
-        Fri, 05 May 2023 20:13:34 -0000
-Date:   Fri, 5 May 2023 15:13:34 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Jakob Hauser <jahau@rocketmail.com>
+        with ESMTP id S231565AbjEFKsg (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 6 May 2023 06:48:36 -0400
+Received: from sonic313-20.consmr.mail.ir2.yahoo.com (sonic313-20.consmr.mail.ir2.yahoo.com [77.238.179.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 309D45FC6
+        for <phone-devel@vger.kernel.org>; Sat,  6 May 2023 03:48:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1683370112; bh=34POWJfYWl8FSDgSOXM7AEN6MSN18FWEKbOGON9u4j8=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=Zutrm/IV9A1MpuFwX9SN0Jr7OogIyb54kRnrHDqSZMb7HXbooZfbtOLR7kCQbwVTxWXBpZMDiYecISoYGoZrTiJCnF20oCK/RcS4qwfPAU5x6Z4WDrwuBIrUUADU0JsdmR9s0llG7byw9RSBhioiAeEd3SAn/wC7NfLbspdYTFhWUlZG7FxA9C6eckMR0JSXEhbYUJurt5aivQJkfhL0OjTX7Lw/CnTe/qbhqHYYBY/ZGHf8g/TdLvKZb72I6Q5mNRXooecCvaytD33biX6QQmbwdmHmTjTcmOsLd/r6yzyTpHn0yebgoSbF7vNzXpJ8Otq2r4saoSTJjir27ixvNg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1683370112; bh=TIWkndNT70CXVpf6Mu0SgJ7Uwic1X4aMTtTtqzRqMNH=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=RVmAEPRFn6Gi6U5t8V3KOsUhIiRADO+mdwPi/pawvcK/3DRTymnK1JOOQrrxnG12dh2cRR7P1HaRfLFfutC3yAQWTKssZQM+IUjgi0M5Twbv7su7CLuSMKMvNKFYfb+AOmY9S8msD93TQD7WkFnf46JEIjQbSof5axYkDyY6V0D6fowPgGDZVXKqn7wPM3doBtiFXc3/53v7PdQjTCdKUTQcfKXf4p7tQS5zbSgdnps5pUoiHYTo0ekrMNTMD4fSgZ9FZp2q/pAXfmMc96DrRycVA03mj3EXwYNBke9wZgGHRl/H6iRbgSwTnBRwkSnoWDxnUwC+7V8GRN3MSoU+3w==
+X-YMail-OSG: CIBSjdkVM1kniNdyxwVcFNGw.KZ13EWraHHyR7IJgWxBLDDRck5.HssO5C5kwXu
+ q_XSn6djpihEoRrLVipaiPbgXJqtW3p0xPYMklY.MwqnTLT3cCXh3UvRnePp2IVVXCXVfBkP95FP
+ J5fTV6RWybkqR0_LAzkaMay9ZmOeq.cUDKUHfaWssl4Wmcd7LcJSxujXy9HSbxVVfrjiUTtmylmw
+ 867RAX9y6KFsqQSBg93xheo9cddjkoD3U1_3y.jLKvjFtoD0ohlonV5HiDt1t8kk8Mc.UJeuKX07
+ o4KXWBgENp7cYfn1.cKwBl8VEYG0wPIeRT4oHxuSLp.TOizu9OeGzr2c1_gHqlMzHATavbxhRPi5
+ RRzgGumlM7RKVkj7VHjj4NcgDKl1ZRFbQAI3gUc316.BDS9y4_b7TIfkhDnf7bvXA4CvQzId0Hc0
+ soAZdXpxkMG4WginqbqhWfakRmxcl6uO2dBG4DFxvZ4314Hqo145k0G0RukwOWeY5tQWnlHwsy0I
+ 4iauBktQOZJpU24zvcCvVi3N7UwW00Wmxera3WntaeqlwCtZJJ15DQ4CpVbilFlGcB2HT4U.jW4K
+ cI0GiWoqB70TvUrWFZroErTRHAJXKS9_kjTiovW0WQoPHgcFxFU.5hiK.4sN4LV0xg5L_GGvzPbN
+ SJWHsyDzB5VMpnfLspM8sYn1VEui.ZGWd76.vvqdyIJBttGaWW3v4aEQ0v6CaEMQHRNn_xpx6OY6
+ AjaZIafEgqIyEbXIVAu28bOk9SpqEacn8uONqMKL0el18BjXHRAoC2E1.wI5yRh0J7rD.e.swaXv
+ riBtVxyrXD3FMqJ9iGORGt4kZ9J5G32THeRxegzbwIdEvv0ZfOoK0owQNfwdBbDP8_nvzCBZab3N
+ 3OhnFKDao0Dwkq7WsS8FvacD6fENjGE0hO4rQawE5W8hlqjzEurHVKMi0L0JSwW1bjby0O6rR65a
+ z0B2saLBOnvLlfLyQGJ6907mEUqigLIHJKvBf6W9liLuM7mtzWUvKPFTVP87QjYZT65LLNx0x6MP
+ 8HTgHwkTHcIKLU1yGlklibv9x2Vc6jbbNq6B0JbHjyfvPiCTc.uut4xCwCYx.2.7lWPPovya7opn
+ tXqJPr8gEL49xZq0CuY1DIsTSa6FGHCTBzVNG0whneb6ZpPrASli95qBNKOrg0._.38A3iU3x_xX
+ 2GP2gw8VMSGLn1ZymKYlfteN7cnFQJazumALNjtZ3GrQBDCFvUBLHm_9MdBDTVBTU8KsBSFkwc_.
+ V3DVkQqArVaaJTOIALfNuuCoG2cR.lxZFk0eWqPBiCjliv1IODE49c71z.zF8DOrEdbGJaxw9DVp
+ Q7aQZG.oOLE2zdosFdPWLydj9JyZEsUWyCl4bSvGkJjz2opj6yS3ykvB2woBpkjK0BpdSzGbkTkB
+ Zs5.pmwQFXBO9UNJsxyP7nLd7f2NYtvR6PstAqCSVhtYzgtd_RS_9f0BngVe9D_TFc9GWwcj9IAH
+ gcmLYzrzvpt4.ZdNpEV4lQiMY_.ZrncA79Dp9ADr0MQHkQfJw67miVWmEyoR7MGkQ3wpPurYYXsK
+ Pg_Sxu50mN6arYB7_jQY8oBMe6CwJHCwe9RowVqLATXP03w7KdQrgyWpYr.kmLdwPPqAadgBbHp6
+ IC_B0m_FGT6x.yJNY2RpBmF7QdblTr8yveyX92LU2D_T5umjSCKcmaXXVK_gp3GvA80fSCQlmyWB
+ AqH.AGC51mXqm4f4fWyMYUjXxpUjDOgY.mpdjHps0.n5q1PfGQmYIp7g28zjwr0rr9Gqpj.2ZLvj
+ oU.9V0b0RyiBvRuW4anmRk1LK.YgBKkTGq30RVIIPs.UnYl6Yzl1notaIM8RrtSoddufmFqdJO7i
+ OxyORgRPue1DUT5wvJ69H9Mkel7K86_LrJ46X.XUaFquSKOuSdjF5T5QNjN2rzZxhTOrPtH9NnAd
+ cJE2SI.K0_dji1YuHIz._rKurnVjRtbhGBZrA9Xx3lhtI_KjlYmzG4.A_CskzjXFORH3TUuPX_Vm
+ U7ORxVFgLibsj9GV4CbywEDyKpjsh1PK4FCDRz96hkQT6ENeTpwN9ZIdB51yXKllPxal4tcQoypB
+ Ft6R_FpNYYn_InDkEnx4Lbn9dw.Pg3iv.6Q5fIBBWYD4drTUeXW_xkJmHuD8F3lJHUQcN7qAvj67
+ 4e.ObN3tBUSwYDdcBL5FYXfxJ3TQC0C8pe9GpuD1zRNYZVJNKiPQxdfOY1uG1.Jp86iA4qPNdxy8
+ nSsb_uBQKQtLTViKgCDxv4hraWHK7Ge5oFbsv5g1kMdOZeUJZtI8tEQ07UaT.5xMWqsPi6ijhO7M
+ Hbd32BsJUAZUz_ctqsyMgfs6K
+X-Sonic-MF: <jahau@rocketmail.com>
+X-Sonic-ID: 5c1a8a68-86df-492d-aee9-94ebdef5cd72
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ir2.yahoo.com with HTTP; Sat, 6 May 2023 10:48:32 +0000
+Received: by hermes--production-ir2-74cd8fc864-db5p9 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 9a7e9e2dbdf1abecded434fe1bb5c8d4;
+          Sat, 06 May 2023 10:48:28 +0000 (UTC)
+Message-ID: <295bb56a-bd40-abe2-4469-c38827ea3069@rocketmail.com>
+Date:   Sat, 6 May 2023 12:48:26 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3 8/8] dt-bindings: Add rt5033 mfd, regulator and charger
+To:     Rob Herring <robh@kernel.org>
 Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
@@ -56,8 +74,6 @@ Cc:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v3 8/8] dt-bindings: Add rt5033 mfd, regulator and charger
-Message-ID: <20230505201334.GA3459327-robh@kernel.org>
 References: <cover.1682636929.git.jahau@rocketmail.com>
  <5bd8b90713a61129acf292a941eb7fb5ccaa3db4.1682636929.git.jahau@rocketmail.com>
  <1d187f41-ad9a-4e82-8557-20694a8294d0@linaro.org>
@@ -65,59 +81,77 @@ References: <cover.1682636929.git.jahau@rocketmail.com>
  <14daa006-5260-81a8-8ba0-4122e0c0509a@rocketmail.com>
  <a0f4252d-7f27-6dd9-dea0-f8d242011f70@linaro.org>
  <73c02d98-c306-5e9d-2737-ff2d4a7393d1@rocketmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <73c02d98-c306-5e9d-2737-ff2d4a7393d1@rocketmail.com>
+ <20230505201334.GA3459327-robh@kernel.org>
+Content-Language: en-US
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <20230505201334.GA3459327-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.21417 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, May 03, 2023 at 09:33:49PM +0200, Jakob Hauser wrote:
-> Hi Krzysztof, Hi all,
-> 
-> On 02.05.23 12:59, Krzysztof Kozlowski wrote:
-> ...
-> > Apologies for this, just very busy times. :)
-> > 
-> 
-> Thanks for letting me know. Take the time you need.
-> 
-> Writing towards the list:
-> 
-> I think there is a misunderstanding here.
-> 
-> The connector node provides information about the installed USB hardware.
-> E.g. property "usb-role-switch" means "Indicates that the device is capable
-> of assigning the USB data role (USB host or USB device) for a given USB
-> connector [...]" [5]. To my understanding, in relation with a port node this
-> actually says that this port has this capability. This is not relevant to
-> the rt5033-charger driver.
-> 
-> The rt5033-charger driver needs to pair with the extcon chip because it
-> needs the information about *external* connectors being attached [6].
-> 
-> Extcon devices like SM5502 or SM5504 are real hardware. I'm not adding new
-> properties. The way of getting an excton device from the devicetree by
-> phandle is part of the extcon subsystem:
->  - function to get the excton device by phandle: [7]
->  - line that's looking for the property "extcon": [8]
+Hi Rob,
 
-extcon as a binding is inadequate for handling the increasing 
-complexities of connectors. Whether we need another property to link 
-things to connector nodes, perhaps.
+On 05.05.23 22:13, Rob Herring wrote:
+> On Wed, May 03, 2023 at 09:33:49PM +0200, Jakob Hauser wrote:
+>> Hi Krzysztof, Hi all,
+>>
+>> On 02.05.23 12:59, Krzysztof Kozlowski wrote:
+>> ...
+>>> Apologies for this, just very busy times. :)
+>>>
+>>
+>> Thanks for letting me know. Take the time you need.
+>>
+>> Writing towards the list:
+>>
+>> I think there is a misunderstanding here.
+>>
+>> The connector node provides information about the installed USB hardware.
+>> E.g. property "usb-role-switch" means "Indicates that the device is capable
+>> of assigning the USB data role (USB host or USB device) for a given USB
+>> connector [...]" [5]. To my understanding, in relation with a port node this
+>> actually says that this port has this capability. This is not relevant to
+>> the rt5033-charger driver.
+>>
+>> The rt5033-charger driver needs to pair with the extcon chip because it
+>> needs the information about *external* connectors being attached [6].
+>>
+>> Extcon devices like SM5502 or SM5504 are real hardware. I'm not adding new
+>> properties. The way of getting an excton device from the devicetree by
+>> phandle is part of the extcon subsystem:
+>>   - function to get the excton device by phandle: [7]
+>>   - line that's looking for the property "extcon": [8]
+> 
+> extcon as a binding is inadequate for handling the increasing
+> complexities of connectors. Whether we need another property to link
+> things to connector nodes, perhaps.
 
+Thanks for clarifying.
 
-> The connector node is the wrong approach, as far as I can tell on my current
-> state of knowledge. It doesn't provide the information needed by the
-> rt5033-charger driver.
+>> The connector node is the wrong approach, as far as I can tell on my current
+>> state of knowledge. It doesn't provide the information needed by the
+>> rt5033-charger driver.
+> 
+> What information is that?
+> 
+> You need information from the DT or run-time information from the
+> 'extcon chip driver'? In the latter case, I'd expect the charger driver
+> to get its connector node (either TBD phandle or search the DT if
+> there's only 1 possible connector), and from that get the driver
+> controlling the connector.
 
-What information is that?
+Yes, the latter case: run-time information from the 'extcon chip driver'.
 
-You need information from the DT or run-time information from the 
-'extcon chip driver'? In the latter case, I'd expect the charger driver 
-to get its connector node (either TBD phandle or search the DT if 
-there's only 1 possible connector), and from that get the driver 
-controlling the connector.
+Hm, so I need to add a connector node below the extcon node, search for 
+that connector and go one level up to get the extcon. In the specific 
+case that's an unnecessary detour, I'm not too happy about it :/ Though 
+I understand that in a broader perspective the connector thing can be 
+more stringent.
 
-Rob
+I'll prepare something like this for v4 then...
+
+Kind regard,
+Jakob
