@@ -2,38 +2,36 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4764C77B75
-	for <phone-devel@archiver.kernel.org>; Sun,  7 May 2023 09:13:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E50DC7EE22
+	for <phone-devel@archiver.kernel.org>; Sun,  7 May 2023 09:13:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231166AbjEGJNG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S231290AbjEGJNG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Sun, 7 May 2023 05:13:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42008 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbjEGJNF (ORCPT
+        with ESMTP id S230489AbjEGJNF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>); Sun, 7 May 2023 05:13:05 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0274F3AB6;
-        Sun,  7 May 2023 02:13:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E9D293E2;
+        Sun,  7 May 2023 02:13:04 -0700 (PDT)
 Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 44226C70AF;
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id DEF16CECD0;
         Sun,  7 May 2023 09:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1683450781; bh=jvJNwlKthS3/mkOJOwGgF7mnK8b7h/R3pEVKlDmWcPA=;
-        h=From:Subject:Date:To:Cc;
-        b=GTjPS31zvw/UUzBFfUcjZ9AShGiCivevEjcTWd8p+02P2+vBDOomB4G6Rmviw3hN7
-         xSQ4YmDF+J/JWOLWFG23REBeNQ6tSy6CSydVDkqXQz73U/bkaqQrUUtwJgBqLGPwa0
-         8UgyX85Pylzp6F5Pnkxg/PyZoO25vqSMj0TmaYaI=
+        t=1683450782; bh=E9biyDI0DLfbEBqzwl+YBfznH2gNa4Wog6B7dyC2CpE=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=rochLcLlq/GwnKaGjqG6zMTk2CtFbnQ7KW2dDmmbooN/YmigA3DVS5t/dFGhhaDqG
+         N9/rLuJCGyUE2NEfaaby4oXzmQp5FE7ATaBjZmzz0rC6apDNV6HhiAIEX14BwGTCTu
+         NTTa7U2oRejkiBoRW47UEaQcdXfNHf9+I59cBGg4=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Subject: [PATCH 0/6] Add MSM8226 OCMEM support plus some extra OCMEM driver
- fixes
-Date:   Sun, 07 May 2023 11:12:17 +0200
-Message-Id: <20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz>
+Date:   Sun, 07 May 2023 11:12:19 +0200
+Subject: [PATCH 2/6] soc: qcom: ocmem: Use dev_err_probe where appropriate
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHFrV2QC/x2NzQrCMBAGX6Xs2YUk0h98FfGQxE+70KSSRRFK3
- 71LjzMwzEaKJlC6dRs1/ERlrQb+0lGeY32D5WlMwYWr693ARcsUwsBrLiicAD/2o8eERNakqOD
- UYs2zVfW7LCY/DS/5n5P7Y98P/JYXA3QAAAA=
+Message-Id: <20230506-msm8226-ocmem-v1-2-3e24e2724f01@z3ntu.xyz>
+References: <20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz>
+In-Reply-To: <20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -46,52 +44,84 @@ To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1099; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=jvJNwlKthS3/mkOJOwGgF7mnK8b7h/R3pEVKlDmWcPA=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkV2t6Rf/j2PCgD+0bT7X74gHOu71WOltn5mXNo
- 5cDD40Zbk2JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZFdregAKCRBy2EO4nU3X
- VmEKD/9crh4orNCRzsbIgSEvhq44x9UsW4USeE7tbH5lsaZLd46lI2VZ7B6zXPg0CCMLTSHrCy+
- OuLzAUyOLR/JoYfb99lBG9PK4cwPlbW3iu85SG3qGZwOXnlvEFy9gpEskrB+PPo4NUS74HNU7PD
- LOff5zYo8OYnJbe0HtTn3C+v62okCerz2sTsq7tQRl/Uv7zmtRt0k25PPYqrCBCepwLUyvQlj86
- izk3WyG/uAoFpGTKlW7nPKMXWYyD1z7UD1HNUqUk4DPvTEWvMSuI2K7AenFAwqw1RUWpXi0PY1i
- BNqYTgI15GkfBw9GzeYlWFIjk6AkKqETEKtROltmII4nl0I76V4g9bWDoRMQkpZZ+lpZMpDqzDz
- R551/h9E/oqTJL8OAnekYaBekFKw3ZBmf9m+zAaQdp2BIxQTW6W3rxRcpSkmEn+78CxYxYEgeFE
- fd9aTaTHjGZ5zEf+HsLUtcMIM36IXTg1f451CfHVWUwsh+Aim/Kvtp7za8n2Jn0L8u3TErKaIG/
- TQPROP5odqiJ9JibFRvCincZKMcshYUkcsCiQWEzgtkaZ95loD0qfEnFx5Ztir1zhFl5cKb/Ill
- 3NBxVvNOIMx/8FsqS302yMiuwPWUdM1pRmtdeSW2eiPmxxCPrKwWNTydzKjhhgRG17nXoygWpCp
- r/ZRNWnk8WwtBWA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2078; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=E9biyDI0DLfbEBqzwl+YBfznH2gNa4Wog6B7dyC2CpE=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkV2uYkTqSmoNdinvDWXQg0A55V40l2a/IxNNBx
+ WB7YuikTkmJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZFdrmAAKCRBy2EO4nU3X
+ Vi/JD/9ZcJj/mqviz3iy/mdm570hSsWfyw80mEYheJnimMGcsgckJK7Or5uJzTGgPCetG9dxHOM
+ McYB33PT5yiHMvAG2XHBmVvOSdlrZEniHGVNMhVBMS2ogcd/i7MUEkJhuNxPk0Y3tX3RDBYgWQ3
+ W9lje/OcxPtfjCYm5Yg75qaJ1Mx+LIOGw78rKIjtwMTi5iFQKLVRU3SUw9OS0Bnm1ANjXa0VjPu
+ uy+HxU8heH5GEMJ/aENf2VJ1DZJWwOoh3RSfJL3M6w4jD5vMqxu9F1b1g/CJCGpZ/FgA4OAyg0V
+ EPXmtzXitaklNNCVUA/O/cYdkpaCYMSDGvx77xWZk0xwHeWNcG6NajA7J4qDGhej4XZmKT8Owih
+ THxQJLa/NumrMYPZ+rlb5W16KMdpBGUtaTazI36YdKNEg2yectgukCnjbPQyyWYnAtpyrADFil0
+ SH5uYu5wmZY6LRwUfEdHgpEsNf6Oo13Aw9ZgmWNwR3ohjnol7KOLg41shkkic0wwaGkyztFzefl
+ 8AqNauuF6oH16tQiWBgEMnxTLUiwzrsUTp54bPHOA7JTdcWgi/LF60QIM6WMhyBair97HMDiaxo
+ OynDMpiFtto7xy8ZFfGszYG8tIoSBy2mIQmq3duK9CeCSv90eSMXJsAh04OJBUBgtTOBYrrlM2f
+ LwSuQTNOOk0HMfw==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Like MSM8974 the MSM8226 SoC also contains some OCMEM but it has just
-one region for graphics compared to 8974.
-
-While adding support I found a bug in the existing driver that is being
-fixed in this series also and the rest of the matches are mostly
-preparations for MSM8226 support.
+Use dev_err_probe in the driver probe function where useful, to simplify
+getting PTR_ERR and to ensure the underlying errors are included in the
+error message.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
-Luca Weiss (6):
-      soc: qcom: ocmem: Fix NUM_PORTS & NUM_MACROS macros
-      soc: qcom: ocmem: Use dev_err_probe where appropriate
-      soc: qcom: ocmem: make iface clock optional
-      dt-bindings: sram: qcom,ocmem: Add msm8226 support
-      soc: qcom: ocmem: Add support for msm8226
-      ARM: dts: qcom: msm8226: Add ocmem
+ drivers/soc/qcom/ocmem.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
- .../devicetree/bindings/sram/qcom,ocmem.yaml       |  6 +-
- arch/arm/boot/dts/qcom-msm8226.dtsi                | 17 ++++++
- drivers/soc/qcom/ocmem.c                           | 67 ++++++++++++----------
- 3 files changed, 58 insertions(+), 32 deletions(-)
----
-base-commit: 2e210278b67c67e76aeefc1a16d18a692d15c847
-change-id: 20230506-msm8226-ocmem-bee17571e8eb
+diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+index c3e78411c637..a11a955a1327 100644
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -317,18 +317,13 @@ static int ocmem_dev_probe(struct platform_device *pdev)
+ 	ocmem->config = device_get_match_data(dev);
+ 
+ 	ret = devm_clk_bulk_get(dev, ARRAY_SIZE(ocmem_clks), ocmem_clks);
+-	if (ret) {
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(dev, "Unable to get clocks\n");
+-
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Unable to get clocks\n");
+ 
+ 	ocmem->mmio = devm_platform_ioremap_resource_byname(pdev, "ctrl");
+-	if (IS_ERR(ocmem->mmio)) {
+-		dev_err(&pdev->dev, "Failed to ioremap ocmem_ctrl resource\n");
+-		return PTR_ERR(ocmem->mmio);
+-	}
++	if (IS_ERR(ocmem->mmio))
++		return dev_err_probe(&pdev->dev, PTR_ERR(ocmem->mmio),
++				     "Failed to ioremap ocmem_ctrl resource\n");
+ 
+ 	ocmem->memory = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+ 						     "mem");
+@@ -341,16 +336,14 @@ static int ocmem_dev_probe(struct platform_device *pdev)
+ 	WARN_ON(clk_set_rate(ocmem_clks[OCMEM_CLK_CORE_IDX].clk, 1000) < 0);
+ 
+ 	ret = clk_bulk_prepare_enable(ARRAY_SIZE(ocmem_clks), ocmem_clks);
+-	if (ret) {
+-		dev_info(ocmem->dev, "Failed to enable clocks\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(ocmem->dev, ret, "Failed to enable clocks\n");
+ 
+ 	if (qcom_scm_restore_sec_cfg_available()) {
+ 		dev_dbg(dev, "configuring scm\n");
+ 		ret = qcom_scm_restore_sec_cfg(QCOM_SCM_OCMEM_DEV_ID, 0);
+ 		if (ret) {
+-			dev_err(dev, "Could not enable secure configuration\n");
++			dev_err_probe(dev, ret, "Could not enable secure configuration\n");
+ 			goto err_clk_disable;
+ 		}
+ 	}
 
-Best regards,
 -- 
-Luca Weiss <luca@z3ntu.xyz>
+2.40.1
 
