@@ -2,83 +2,96 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB524C7EE26
-	for <phone-devel@archiver.kernel.org>; Sun,  7 May 2023 08:11:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C4764C77B75
+	for <phone-devel@archiver.kernel.org>; Sun,  7 May 2023 09:13:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231222AbjEGILd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 7 May 2023 04:11:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52136 "EHLO
+        id S231166AbjEGJNG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 7 May 2023 05:13:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231219AbjEGILb (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 May 2023 04:11:31 -0400
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050:0:465::201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3437E13869;
-        Sun,  7 May 2023 01:11:28 -0700 (PDT)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4QDcZN6LGCz9scZ;
-        Sun,  7 May 2023 10:11:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
-        s=MBO0001; t=1683447084;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XDem5KbBYqf0yzHTVvfDGPYYkUomJeVEa1QHHvpSfOA=;
-        b=uZ/V9DJw4Ek/cxgu5uVrzOpCL7FzQ1EpkjAaiLEXvfo2VxEQAUI7+EPPEtlAmSsGBN0HRG
-        2W5LiVB18L9byZhrfU0/PBQLdiHbH+DnQgh3Q/RhGn+eHSgI1ySmv5HGXNN1ytDPVBy9fl
-        UYgWhe2cTe96wc69Qhgn8tYU7aLjhQ1Q00wE0nqgW9IPuau/1xTmzNnNY9RVvn2MP2retJ
-        jFjadOCfR0LUBo6LlPcQd4k3xJMzfd1x0iCyhNX8HxVizW1QKxNoPxur4jN6D7WN14bNw4
-        YSAsL7pBNdrtX8gDUXnvO+9KGXt3korypU1aaD+e34SUTyMgDWLTYnd1p7pwjw==
-From:   Dylan Van Assche <me@dylanvanassche.be>
-To:     srinivas.kandagatla@linaro.org, amahesh@qti.qualcomm.com,
-        arnd@arndb.de, gregkh@linuxfoundation.org
-Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Dylan Van Assche <me@dylanvanassche.be>,
-        Caleb Connolly <caleb.connolly@linaro.org>
-Subject: [PATCH v3 2/2] misc: fastrpc: use coherent pool for untranslated Compute Banks
-Date:   Sun,  7 May 2023 10:08:39 +0200
-Message-Id: <20230507080839.37578-3-me@dylanvanassche.be>
-In-Reply-To: <20230507080839.37578-1-me@dylanvanassche.be>
-References: <20230507080839.37578-1-me@dylanvanassche.be>
+        with ESMTP id S229980AbjEGJNF (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 May 2023 05:13:05 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0274F3AB6;
+        Sun,  7 May 2023 02:13:03 -0700 (PDT)
+Received: from [192.168.178.23] (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 44226C70AF;
+        Sun,  7 May 2023 09:13:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1683450781; bh=jvJNwlKthS3/mkOJOwGgF7mnK8b7h/R3pEVKlDmWcPA=;
+        h=From:Subject:Date:To:Cc;
+        b=GTjPS31zvw/UUzBFfUcjZ9AShGiCivevEjcTWd8p+02P2+vBDOomB4G6Rmviw3hN7
+         xSQ4YmDF+J/JWOLWFG23REBeNQ6tSy6CSydVDkqXQz73U/bkaqQrUUtwJgBqLGPwa0
+         8UgyX85Pylzp6F5Pnkxg/PyZoO25vqSMj0TmaYaI=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Subject: [PATCH 0/6] Add MSM8226 OCMEM support plus some extra OCMEM driver
+ fixes
+Date:   Sun, 07 May 2023 11:12:17 +0200
+Message-Id: <20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHFrV2QC/x2NzQrCMBAGX6Xs2YUk0h98FfGQxE+70KSSRRFK3
+ 71LjzMwzEaKJlC6dRs1/ERlrQb+0lGeY32D5WlMwYWr693ARcsUwsBrLiicAD/2o8eERNakqOD
+ UYs2zVfW7LCY/DS/5n5P7Y98P/JYXA3QAAAA=
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Brian Masney <masneyb@onstation.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1099; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=jvJNwlKthS3/mkOJOwGgF7mnK8b7h/R3pEVKlDmWcPA=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkV2t6Rf/j2PCgD+0bT7X74gHOu71WOltn5mXNo
+ 5cDD40Zbk2JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZFdregAKCRBy2EO4nU3X
+ VmEKD/9crh4orNCRzsbIgSEvhq44x9UsW4USeE7tbH5lsaZLd46lI2VZ7B6zXPg0CCMLTSHrCy+
+ OuLzAUyOLR/JoYfb99lBG9PK4cwPlbW3iu85SG3qGZwOXnlvEFy9gpEskrB+PPo4NUS74HNU7PD
+ LOff5zYo8OYnJbe0HtTn3C+v62okCerz2sTsq7tQRl/Uv7zmtRt0k25PPYqrCBCepwLUyvQlj86
+ izk3WyG/uAoFpGTKlW7nPKMXWYyD1z7UD1HNUqUk4DPvTEWvMSuI2K7AenFAwqw1RUWpXi0PY1i
+ BNqYTgI15GkfBw9GzeYlWFIjk6AkKqETEKtROltmII4nl0I76V4g9bWDoRMQkpZZ+lpZMpDqzDz
+ R551/h9E/oqTJL8OAnekYaBekFKw3ZBmf9m+zAaQdp2BIxQTW6W3rxRcpSkmEn+78CxYxYEgeFE
+ fd9aTaTHjGZ5zEf+HsLUtcMIM36IXTg1f451CfHVWUwsh+Aim/Kvtp7za8n2Jn0L8u3TErKaIG/
+ TQPROP5odqiJ9JibFRvCincZKMcshYUkcsCiQWEzgtkaZ95loD0qfEnFx5Ztir1zhFl5cKb/Ill
+ 3NBxVvNOIMx/8FsqS302yMiuwPWUdM1pRmtdeSW2eiPmxxCPrKwWNTydzKjhhgRG17nXoygWpCp
+ r/ZRNWnk8WwtBWA==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Use fastrpc_remote_heap_alloc to allocate from the FastRPC device
-instead of the Compute Bank when the session ID is 0. This ensures
-that the allocation is inside the coherent DMA pool which is already
-accessible to the DSP. This is necessary to support FastRPC devices
-which do not have dedicated Compute Banks such as the SLPI on the SDM845.
-The latter uses an allocated CMA region instead of FastRPC Compute Banks.
+Like MSM8974 the MSM8226 SoC also contains some OCMEM but it has just
+one region for graphics compared to 8974.
 
-Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+While adding support I found a bug in the existing driver that is being
+fixed in this series also and the rest of the matches are mostly
+preparations for MSM8226 support.
+
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- drivers/misc/fastrpc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Luca Weiss (6):
+      soc: qcom: ocmem: Fix NUM_PORTS & NUM_MACROS macros
+      soc: qcom: ocmem: Use dev_err_probe where appropriate
+      soc: qcom: ocmem: make iface clock optional
+      dt-bindings: sram: qcom,ocmem: Add msm8226 support
+      soc: qcom: ocmem: Add support for msm8226
+      ARM: dts: qcom: msm8226: Add ocmem
 
-diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-index 423272bcbbf5..44763a95869b 100644
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -939,7 +939,10 @@ static int fastrpc_get_args(u32 kernel, struct fastrpc_invoke_ctx *ctx)
- 
- 	ctx->msg_sz = pkt_size;
- 
--	err = fastrpc_buf_alloc(ctx->fl, dev, pkt_size, &ctx->buf);
-+	if (ctx->fl->sctx->sid)
-+		err = fastrpc_buf_alloc(ctx->fl, dev, pkt_size, &ctx->buf);
-+	else
-+		err = fastrpc_remote_heap_alloc(ctx->fl, dev, pkt_size, &ctx->buf);
- 	if (err)
- 		return err;
- 
+ .../devicetree/bindings/sram/qcom,ocmem.yaml       |  6 +-
+ arch/arm/boot/dts/qcom-msm8226.dtsi                | 17 ++++++
+ drivers/soc/qcom/ocmem.c                           | 67 ++++++++++++----------
+ 3 files changed, 58 insertions(+), 32 deletions(-)
+---
+base-commit: 2e210278b67c67e76aeefc1a16d18a692d15c847
+change-id: 20230506-msm8226-ocmem-bee17571e8eb
+
+Best regards,
 -- 
-2.40.1
+Luca Weiss <luca@z3ntu.xyz>
 
