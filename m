@@ -2,110 +2,104 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BEF0C7EE22
-	for <phone-devel@archiver.kernel.org>; Sat,  6 May 2023 21:22:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FFC3C77B75
+	for <phone-devel@archiver.kernel.org>; Sun,  7 May 2023 08:11:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229942AbjEFVWi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 6 May 2023 17:22:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45868 "EHLO
+        id S229472AbjEGILa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 7 May 2023 04:11:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjEFVWh (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 6 May 2023 17:22:37 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4531491A;
-        Sat,  6 May 2023 14:22:35 -0700 (PDT)
-Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 3DE85CECA7;
-        Sat,  6 May 2023 21:22:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1683408123; bh=Mgla0FqG6s0rTpF9FbXF74aYR+zs9h7SWW7n4ppNO+c=;
-        h=From:Date:Subject:To:Cc;
-        b=vu5rWWRHgQolokSXPm5u5BG9PWOMJ2H/w8f6f4HnEH/M1GxK2YdFW1zveaYeHU0t0
-         mH1bhpJY2qpaTDVo6jQ91RSU4igUFbwEVeNhyXlCjqnQJ03SEU9ERsS/QtVH+rVsap
-         2nNGJue4nE3IDMRIn683Wejv9px/gdF3dzKoHpso=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Sat, 06 May 2023 23:20:05 +0200
-Subject: [PATCH] clk: qcom: mmcc-msm8974: Add OXILICX_GDSC for msm8226
+        with ESMTP id S229986AbjEGIL3 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 May 2023 04:11:29 -0400
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACB4E14345;
+        Sun,  7 May 2023 01:11:20 -0700 (PDT)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4QDcZD4grkz9sck;
+        Sun,  7 May 2023 10:11:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
+        s=MBO0001; t=1683447076;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=LROmirExRCF+QadD8DHkqyTlH8jb5FTHqGp+6hp6CEs=;
+        b=HVVKcyI2C5IkQSC2nv9TCDI0jpu3fpowQyh2QaIdnwJiQLvcXY2Y8NOebT+lq4ivAwZFbK
+        Hwv/6MS2dSWsL2+xYuyCubxT7NdA1MAL0LQ5AaUhGAs6nVybkTuy4EvRtmhepHY6g7DJAH
+        d3tqBtpdEMcIfi0kUvvbwfp/MBFTMuiQNRzD6Uqzj+3jDClraFHTngyDT8/RC2uYl0uWhI
+        issudTEbo8p4bJWep8aMX9AUEuD2BfvgCGCOs32xKWLMNkatCmuvYRd9z0QaExYSSXVwKD
+        MTYOuqlOUH5vg4gZMWXIsRZDGHSWI47BwCRuSJz16S85olgDAMvW+Wryo52oWw==
+From:   Dylan Van Assche <me@dylanvanassche.be>
+To:     srinivas.kandagatla@linaro.org, amahesh@qti.qualcomm.com,
+        arnd@arndb.de, gregkh@linuxfoundation.org
+Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Dylan Van Assche <me@dylanvanassche.be>
+Subject: [PATCH v3 0/2] misc: fastrpc: FastRPC reserved memory assignment for SDM845 SLPI
+Date:   Sun,  7 May 2023 10:08:37 +0200
+Message-Id: <20230507080839.37578-1-me@dylanvanassche.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230506-msm8226-oxilicx-v1-1-52e34b94ff22@z3ntu.xyz>
-X-B4-Tracking: v=1; b=H4sIAITEVmQC/x2NywqDMBAAf0X23IUYrY/+Sukhxo0uxChZWgLiv
- 7v0OAPDnCCUmQRe1QmZfiy8J4X6UYFfXVoIeVYGa2xjnqbDTbbB2g73wpF9wT40wYSB2rGeQav
- JCeGUXfKrdukbo8ojU+Dy37w/13UDLVTSVXYAAAA=
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Bartosz Dudziak <bartosz.dudziak@snejp.pl>
-Cc:     linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1373; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=Mgla0FqG6s0rTpF9FbXF74aYR+zs9h7SWW7n4ppNO+c=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkVsT6XiIg7hNY3hv51IzCTbp3r+ZwiSqhd8idr
- 45PSjANRtiJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZFbE+gAKCRBy2EO4nU3X
- VsjID/9SIt93I9xubBMFtSW5Bq3kj2RM/bh2bBsUrE9Z63S0oK2mvT0B6wUo02A9Xij0S5PNu/J
- 5gc6T78kuuM0EtkVz1HiBDfHRvB6TnNAuPu+u7orS/BZeTJdyS+1H8cxXJIdSTRLfxXL0w5gSzw
- 2e9y8glSGaeUTmWjZ2wnpBYDT+mdu2CQ+WbMJbx9eSWnYU/ZRiYHN64zs9QgZyjz+D2S8pOQT3E
- PH2mFgoZGmUmgNgDW8wMNl9r8t3DwpiBqIKQ/5BoJJZa2gHloW/pBOyXipGh52HmyY1jCnVGDFg
- R4u0xhzIP/yEZET0xDT1OCaV+NzZRyEho9Qkqx7INZBRrsv5clkuVD08lYtF/FBfZRZKQnnceYZ
- ynlLd+aYFYcD9z5/5kLyM507UPlBbs4oF5TLoTRT0uIdFoBgX651ViTqaQCijKmR2dK797gVxdv
- 3a1EZKzjuSbsOLQy83g/8DPvbIyLGk8GquSi1MiQZOt/WXWIlPLUQ5nMGHXOwwevYxs0noXZga5
- cc3nDFKM7U3LTuNCvRz49BCe/mGszfEDOL+OZZpn3ur6wKZImr5x4GiladYO/WZ6QOAiOUH+Fwc
- 9uNLWuLH1VUDcl1Bra1c+nw8eBqTJY6WWEUJy7WZ7gGnvX5CLVcn7GI7sgC7vz/Ett40ygbBiYF
- 1M4tyWkA+w8C1gQ==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On msm8226 we also have OXILICX_GDSC but we need a slighly different
-config, with a .cxcs defined for clock but with no parent.
+* About *
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- drivers/clk/qcom/mmcc-msm8974.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+The Qualcomm SDM845 SoC has a separate SLPI (Sensor Low Power Island)
+DSP for sensors connected to the SoC which is responsible for exposing
+sensors to userspace, power saving, and other features. 
+While sensors are connected to GPIOs of the SoC, they cannot be used
+because the hypervisor blocks direct access to the sensors, thus the 
+DSP must be used to access any sensor on this SoC. The SLPI DSP uses a
+GLink edge (dsps) to communicate with the host and has a FastRPC interface
+to load files from the host filesystem such as sensor configuration files.
+The FastRPC interface does not use regular FastRPC Compute Banks
+but instead uses an allocated CMA region through which communication happens.
 
-diff --git a/drivers/clk/qcom/mmcc-msm8974.c b/drivers/clk/qcom/mmcc-msm8974.c
-index 4273fce9a4a4..39ee3953567c 100644
---- a/drivers/clk/qcom/mmcc-msm8974.c
-+++ b/drivers/clk/qcom/mmcc-msm8974.c
-@@ -2443,6 +2443,16 @@ static struct gdsc oxilicx_gdsc = {
- 	.pwrsts = PWRSTS_OFF_ON,
- };
- 
-+static struct gdsc oxilicx_gdsc_msm8226 = {
-+	.gdscr = 0x4034,
-+	.cxcs = (unsigned int []){ 0x4028 },
-+	.cxc_count = 1,
-+	.pd = {
-+		.name = "oxilicx",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+};
-+
- static struct clk_regmap *mmcc_msm8226_clocks[] = {
- 	[MMSS_AHB_CLK_SRC] = &mmss_ahb_clk_src.clkr,
- 	[MMSS_AXI_CLK_SRC] = &mmss_axi_clk_src.clkr,
-@@ -2533,6 +2543,7 @@ static struct gdsc *mmcc_msm8226_gdscs[] = {
- 	[MDSS_GDSC] = &mdss_gdsc,
- 	[CAMSS_JPEG_GDSC] = &camss_jpeg_gdsc,
- 	[CAMSS_VFE_GDSC] = &camss_vfe_gdsc,
-+	[OXILICX_GDSC] = &oxilicx_gdsc_msm8226,
- };
- 
- static const struct regmap_config mmcc_msm8226_regmap_config = {
+* Changes *
 
----
-base-commit: dd9e11d6477a52ede9ebe575c83285e79e823889
-change-id: 20230506-msm8226-oxilicx-7f3f0f8e491d
+This patchseries add support to the FastRPC for assigning a coherent memory
+region to a DSP via the hypervisor with the correct permissions.
+This is necessary to support the SLPI found in the Qualcomm SDM845 SoC which
+does not have dedicated FastRPC Compute Banks, in contrast to newer SoCs,
+but uses a memory region instead when allocating buffers.
 
-Best regards,
+* Related patches *
+
+1. Remoteproc changes to support the SLPI DSP in SDM845 (v3), needs to be applied:
+https://lore.kernel.org/linux-remoteproc/20230330164633.117335-1-me@dylanvanassche.be
+2. DTS changes (v5), already applied:
+https://lore.kernel.org/linux-devicetree/20230406173148.28309-1-me@dylanvanassche.be
+
+This serie does not depend on any serie, but all of them are necessary
+to enable the feature in the end.
+
+* Changelog *
+
+Changes in v3:
+- Dropped debug prints.
+- Added Reviewed-By tags from v2.
+
+Changes in v2:
+
+- Removed double blank lines
+- Dropped dt-bindings property as it is not needed for driver behavior
+- Add additional patch to allocate buffers via CMA memory for DSPs
+  without dedicated FastRPC Compute Banks.
+
+Kind regards,
+Dylan Van Assche
+
+Dylan Van Assche (2):
+  misc: fastrpc: support complete DMA pool access to the DSP
+  misc: fastrpc: use coherent pool for untranslated Compute Banks
+
+ drivers/misc/fastrpc.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
 -- 
-Luca Weiss <luca@z3ntu.xyz>
+2.40.1
 
