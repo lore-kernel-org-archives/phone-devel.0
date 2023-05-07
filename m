@@ -2,90 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FA54C77B7D
-	for <phone-devel@archiver.kernel.org>; Sun,  7 May 2023 20:50:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CCA7C77B7C
+	for <phone-devel@archiver.kernel.org>; Sun,  7 May 2023 21:11:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232141AbjEGUu4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 7 May 2023 16:50:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42652 "EHLO
+        id S230113AbjEGVLf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 7 May 2023 17:11:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230348AbjEGUuy (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 May 2023 16:50:54 -0400
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3569C61AB
-        for <phone-devel@vger.kernel.org>; Sun,  7 May 2023 13:50:53 -0700 (PDT)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2ac82912a59so39748761fa.3
-        for <phone-devel@vger.kernel.org>; Sun, 07 May 2023 13:50:53 -0700 (PDT)
+        with ESMTP id S229716AbjEGVLe (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 May 2023 17:11:34 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DBE5100F2;
+        Sun,  7 May 2023 14:11:33 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2ac7707e34fso44529741fa.1;
+        Sun, 07 May 2023 14:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683492651; x=1686084651;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20221208; t=1683493891; x=1686085891;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=HjBrxK8qc3xLnnr2R60HyqhiwwpGTFeasR6j9aUXl18=;
-        b=wIqNDsfN0z6yBX/VVpdrkPMvJGlRY10siClhXAPgQGqvQ5AfmZZ640ida1ZiyToIr+
-         NQbDzhWRuOLUOI+XZAC8fCj30+5jVzF3KNzHFUFYkk5XBmiec/f9tau5yajJZ1A9qjX7
-         jn+8tN6YJBfy3nE5spTLIKh0fcNma5ArIevbfx+fSTzcV4fGC54WB1hN3yXcLLjJn3+d
-         1kwENGSIJa3Ti7/xyjv5Ctv4e4/L1lTaoqvB/d6rYjSy/Nn6Xr2hfIk365QcKd0KEq/i
-         ECLmuaI9AQGfROn4zE04bDvKNMp1dPnm64ZajXReLmQfSZ3b0IAPucNwu1v2RM635/ms
-         6h/g==
+        bh=NQ4wLJjYk0xbWAICQf5Qqk2+0cmn7o5zLqWACRjv/RE=;
+        b=XuQRMcRHAXVeRo/tjDPQEDrxwmyqSS8ATManSb8DXaEINhjOuaQ+3a8BrPAXc/ZiKE
+         2vFKPoFrwa7vaQ/oBTM6G7CH3BSucIiGohszbMCCwPO8LM6p7vB6P15rwwHP0Y9ezaK3
+         m6JORm22/vbsK3+0I+rllafMb3Z6y0q+W7MttMqADkRiMvAUaus91WN13wjocVkbSc87
+         QPA4XpUs49uUFhoVRtZcyaKleyLJ7JJVAc9jxlowJifbnR1rymolFqwLRZwcpB69riHN
+         HE4MMKrFt03Sc6Sg0tFlKAch22enSc6taV+6HzM5p/IYqNDnmtpID6/2CJz/+GAkyAbL
+         mWSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683492651; x=1686084651;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1683493891; x=1686085891;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HjBrxK8qc3xLnnr2R60HyqhiwwpGTFeasR6j9aUXl18=;
-        b=bcJikN7YHN7WQ1XwcqJDa+jT/JQ+Pcgo8MQEheQal6FvVtKTtZJnaSdxy5exBohVyy
-         EOWSkCiWW5rlFhuJMpZi0Fxg0/cpqy3WRJddOVdGaMgXgQlM2E8kVahfcU4x2e6bWv//
-         xBQISITaElLSrbO4u8E8WCv3gWR4xPoeJWo2zKFGN3+PkUGi5Z49m8xNcClhpvvcUTGk
-         6Wl1qGvqTdF0DjvpE+VRyguBCIynHL0Max4N2opj/9/NTUdZnUaTxpzmoeuXq8DxI1Z7
-         NTJn0tXtNy2OPV9fqWSxnfIcFlR6kYDgeljUPyeG+Ro7WSAb0wT5f8CCS/GTnj3sRZ0D
-         6Zsg==
-X-Gm-Message-State: AC+VfDwtw7cyIRsdLfr+hAULOm06MjAyYYhWix8gcUk7DMpCzwAm/mfO
-        f09j3OAQK/NzSOnn3jZROO/UJQ==
-X-Google-Smtp-Source: ACHHUZ6CJi6Oe3pMcbkYpstoXB9PUlE7AlvcRdkEhZs6+g0ljHXjs5PiFlQTNvpZ1wHUwDn4oeg12w==
-X-Received: by 2002:a2e:9c99:0:b0:2ac:8db5:a717 with SMTP id x25-20020a2e9c99000000b002ac8db5a717mr1877948lji.1.1683492651260;
-        Sun, 07 May 2023 13:50:51 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:a0db:1f00::8a5? (dzdqv0yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a0db:1f00::8a5])
-        by smtp.gmail.com with ESMTPSA id f4-20020a2e3804000000b002a634bfa224sm929889lja.40.2023.05.07.13.50.50
+        bh=NQ4wLJjYk0xbWAICQf5Qqk2+0cmn7o5zLqWACRjv/RE=;
+        b=kB7Chd4hprmLEyYKLhd1rqwGXEqIjjqnA9T3PXSI+pJP33VMr/Eyx7GoU8CqCf5HzE
+         5nNbOnTQhKM4bcSwvK3IVTO06b6FFKQ/marI99KAQyEqhiaxXNFoHlWWkYe1sXqEElFf
+         4d+u6mFP1xwBKLj9OF5CF0L/0DBZH/zPVT7yUclLguCEhHC6bUAWVtyYQDg7ZajbNZRO
+         QQXTl17jU9sxpDHXQNexofk80aZwhMpbYZp2FPFGg4E4KAzjFG1T3XTdMZh2OOjeI3BM
+         NgvqUsfT48UcaJt//GOMqEvQ6Tv4yRdD8zM0hc7+TfPdb1Sb9KXFwiprHMnobay0rF4l
+         nbng==
+X-Gm-Message-State: AC+VfDzE9WtaCQ3zp1vNEEANL4XUIjN5M2IP5JxDwp1B3Zq1UbPTNAEX
+        eYgGx9m52+xgtamOZZyO4ms=
+X-Google-Smtp-Source: ACHHUZ7s0YF8/MfPt0sSPY/bfKSLDUpfncfX3Bo34sClYSBDbaaOiG70+Juh3LYnmMgEhFQIF68p9Q==
+X-Received: by 2002:a2e:b051:0:b0:2ac:8bc1:9cb1 with SMTP id d17-20020a2eb051000000b002ac8bc19cb1mr2349188ljl.42.1683493891055;
+        Sun, 07 May 2023 14:11:31 -0700 (PDT)
+Received: from [192.168.0.108] (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
+        by smtp.googlemail.com with ESMTPSA id q6-20020a2e9686000000b002a9f966f4b3sm930876lji.26.2023.05.07.14.11.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 May 2023 13:50:50 -0700 (PDT)
-Message-ID: <45492699-9e1c-2a45-372f-5ce467de8f7a@linaro.org>
-Date:   Sun, 7 May 2023 23:50:50 +0300
+        Sun, 07 May 2023 14:11:30 -0700 (PDT)
+Message-ID: <1e02c292-f3c6-f67d-0e25-d22a00bcf6ad@gmail.com>
+Date:   Mon, 8 May 2023 00:11:29 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Subject: Re: [PATCH 4/6] ARM: dts: msm8226: Add qfprom node
-Content-Language: en-GB
-To:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
+Subject: Re: [PATCH 3/6] thermal/drivers/qcom/tsens-v0_1: Add support for
+ MSM8226
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 References: <20230507201225.89694-1-matti.lehtimaki@gmail.com>
- <20230507201225.89694-5-matti.lehtimaki@gmail.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20230507201225.89694-5-matti.lehtimaki@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <20230507201225.89694-4-matti.lehtimaki@gmail.com>
+ <33d373fa-91cc-2ab6-b59b-34967dff1109@linaro.org>
+Content-Language: en-US
+From:   =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>
+In-Reply-To: <33d373fa-91cc-2ab6-b59b-34967dff1109@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 07/05/2023 23:12, Matti Lehtimäki wrote:
-> Add missing QFPROM definition for MSM8226 SoC.
+On 7.5.2023 23.40, Dmitry Baryshkov wrote:
+> On 07/05/2023 23:12, Matti Lehtimäki wrote:
+>> The MSM8226 TSENS IP has 6 thermal sensors in a TSENS v0.1 block.
+>> The thermal sensors use non-standard slope values.
 > 
-> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-> ---
->   arch/arm/boot/dts/qcom-msm8226.dtsi | 7 +++++++
->   1 file changed, 7 insertions(+)
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> 
+> Note, the driver from 3.10 also provides custom data for non-calibrated mode. We can either ignore that (in the hope that all devices leaving the factory are calibrated), or fix it in the manner close to 8x74.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
--- 
-With best wishes
-Dmitry
-
+That is true, 3.10 kernel does support non-calibrated mode. I can add support for that in a new version if that is wanted.
