@@ -2,81 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87091C77B75
-	for <phone-devel@archiver.kernel.org>; Sun,  7 May 2023 17:32:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4533C7EE22
+	for <phone-devel@archiver.kernel.org>; Sun,  7 May 2023 20:12:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231732AbjEGRcG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 7 May 2023 13:32:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58306 "EHLO
+        id S231685AbjEGUMn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 7 May 2023 16:12:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231686AbjEGRcF (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 May 2023 13:32:05 -0400
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FF1A1BD1;
-        Sun,  7 May 2023 10:32:01 -0700 (PDT)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4QDs1B61f7z9skr;
-        Sun,  7 May 2023 19:31:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
-        s=MBO0001; t=1683480718;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=SQHQgsnbPJTgsXPCqG4AqQGuAPuZsFrH5o3VxE1rTc4=;
-        b=L8DHt6oqMQ8+MSjhjgvR8ROjEp/xzp//i4ahR1oot9wJb9ksy9p4mq7TVNSDmY2bjQffzU
-        6PyzNP/QvBRbBiXG2THMOqGShi6WG5B7bTACe2E3Ew4b+GTYPzawtWWKe41tQBA1qZn33/
-        P2kW/icoEIwE3GyDua1Hmep0/3lRWUZ9c8qNlgMbDP/CdAMNjUEzo2IfBR3VWmAs3lZXZV
-        5pg6FsY0mGznF5gKGBvmXpDavzgcnwGuadaCdgRwvn5Dw6EBo51DyiibPGjxq6WgAe9Z3T
-        LpWi0Sh1FM7IdQBqjL6FwrOI2wMAAOnzxSiKNGPl3qjEwyibISoTU/mobYdAqQ==
-From:   Dylan Van Assche <me@dylanvanassche.be>
-To:     pavel@ucw.cz, quic_fenglinw@quicinc.com, lee@kernel.org
-Cc:     trix@redhat.com, linux-leds@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Dylan Van Assche <me@dylanvanassche.be>
-Subject: [PATCH 2/2] leds: flash: leds-qcom-flash: disable LED when changing brightness
-Date:   Sun,  7 May 2023 19:29:41 +0200
-Message-Id: <20230507172941.364852-3-me@dylanvanassche.be>
-In-Reply-To: <20230507172941.364852-1-me@dylanvanassche.be>
-References: <20230507172941.364852-1-me@dylanvanassche.be>
+        with ESMTP id S231654AbjEGUMn (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 7 May 2023 16:12:43 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFD9A269E;
+        Sun,  7 May 2023 13:12:41 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2ac89e6a5a1so30151711fa.0;
+        Sun, 07 May 2023 13:12:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683490361; x=1686082361;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZkTrjWn9MXIx9ar7sdUfBpNB62vFCZeO4ohEw8FEUIo=;
+        b=VdixB5NjZcMvRHt8b1EKbYy8A/KU5sq5dWqBZLGQVLGcq751KXhSInQRhGRPNGy3DV
+         nPlinNKv6AdF5FV4ecOTfUlwQdgO2CLTD21rtkRdPyZpr7cedoJsDJT6Cj4TGNvTjizm
+         N2rUkMWqurGp2u7mpazlcLYHsBwDK02vFctv+trdUjqSXbyZbbnulNbd1ekFN1qoNBAO
+         0z2A0b/te1uVJctzUQTvZyEBiGL4WEsQsFWK1A6q5oWGPyt7sPBrLyYvXpXZcqd/jjfD
+         JyUrVLrcIwQ2D1RxbeKgyUrukWH9h5NRxfh5un5DL5rQsHyKnPzdFCW2b+TPEcTLfdeM
+         a89g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683490361; x=1686082361;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZkTrjWn9MXIx9ar7sdUfBpNB62vFCZeO4ohEw8FEUIo=;
+        b=FUZHQoY89EmvfMkHlVuXnuerKilwrX1BAB7dL5RgHnkx9/+uTOgsGfglTgLgFzA8vJ
+         Hp/N4Mt2tPukfqFINqjhEHdoub6puRlnzJYZbY2F2rLucqZVDqTW+thxEqjhmc+fL6yU
+         iBMsJqPFX/e/caPIEOOLlaxaZErHDsb8u9CnPe179oFBmSuPEg2phqiU6XVr9jiWDGjh
+         voYuEt/+GxGMcNrdLEj1ywP3OqNdJkm+eDGYUDM9HBqARWlHCDN5pv9rEhZ49ToVHWjV
+         K9kpIRRhfoxSnVH9SR7VWVaNuDxLHI4bo1fBsCRN2RNOHu+AYH3z9qSFpzAeF8zrAJIb
+         bolw==
+X-Gm-Message-State: AC+VfDw2fIBK9K5kobmsSjri4Q3SecGZeykHGyjHaC5O+zVf7ggdgruQ
+        KZVxSN5Dx44X7/UjegxWUkoktPDhbDk=
+X-Google-Smtp-Source: ACHHUZ51+VQTFiy6DyJv03cqNFG965h0mnjVDc23i/s7gKTCdIFqUYaOOQdAYhuoOZzUe8YkCY0JAg==
+X-Received: by 2002:a05:651c:1044:b0:2a8:c858:fb9 with SMTP id x4-20020a05651c104400b002a8c8580fb9mr2289679ljm.29.1683490361330;
+        Sun, 07 May 2023 13:12:41 -0700 (PDT)
+Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
+        by smtp.gmail.com with ESMTPSA id m19-20020a2e9113000000b00293d7c95df1sm918031ljg.78.2023.05.07.13.12.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 May 2023 13:12:40 -0700 (PDT)
+From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+        Amit Kucheria <amitk@kernel.org>, devicetree@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>
+Subject: [PATCH 0/6] Enable MSM8226 TSENS support
+Date:   Sun,  7 May 2023 23:12:18 +0300
+Message-Id: <20230507201225.89694-1-matti.lehtimaki@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The Qualcomm PMI8998 PMIC requires the LED to be disabled when configuring
-the brightness. Always disable the LED when setting the brightness and
-re-enable it afterwards.
+Add support for tsens in MSM8226. Add qfprom compatible for MSM8226.
+Add device tree nodes for qfprom, tsens and thermal zones for MSM8226.
 
-Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
----
- drivers/leds/flash/leds-qcom-flash.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Matti Lehtimäki (6):
+  dt-bindings: nvmem: qfprom: Add compatible for MSM8226
+  dt-bindings: thermal: tsens: Add compatible for MSM8226
+  thermal/drivers/qcom/tsens-v0_1: Add support for MSM8226
+  ARM: dts: msm8226: Add qfprom node
+  ARM: dts: msm8226: Add tsens node and related nvmem cells
+  ARM: dts: msm8226: Add thermal zones node
 
-diff --git a/drivers/leds/flash/leds-qcom-flash.c b/drivers/leds/flash/leds-qcom-flash.c
-index 16045b5d89b1..c8d41a3caf38 100644
---- a/drivers/leds/flash/leds-qcom-flash.c
-+++ b/drivers/leds/flash/leds-qcom-flash.c
-@@ -417,6 +417,14 @@ static int qcom_flash_led_brightness_set(struct led_classdev *led_cdev,
- 	bool enable = !!brightness;
- 	int rc;
- 
-+	rc = set_flash_strobe(led, SW_STROBE, false);
-+	if (rc)
-+		return rc;
-+
-+	rc = set_flash_module_en(led, false);
-+	if (rc)
-+		return rc;
-+
- 	rc = set_flash_current(led, current_ma, TORCH_MODE);
- 	if (rc)
- 		return rc;
+ .../bindings/nvmem/qcom,qfprom.yaml           |   1 +
+ .../bindings/thermal/qcom-tsens.yaml          |   1 +
+ arch/arm/boot/dts/qcom-msm8226.dtsi           | 164 ++++++++++++++++++
+ drivers/thermal/qcom/tsens-v0_1.c             |  27 ++-
+ drivers/thermal/qcom/tsens.c                  |   3 +
+ drivers/thermal/qcom/tsens.h                  |   2 +-
+ 6 files changed, 196 insertions(+), 2 deletions(-)
+
 -- 
-2.40.1
+2.34.1
 
