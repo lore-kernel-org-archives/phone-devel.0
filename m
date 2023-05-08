@@ -2,169 +2,154 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7208CC77B75
-	for <phone-devel@archiver.kernel.org>; Mon,  8 May 2023 07:09:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E662AC77B75
+	for <phone-devel@archiver.kernel.org>; Mon,  8 May 2023 07:23:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232993AbjEHHJn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 May 2023 03:09:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46874 "EHLO
+        id S233223AbjEHHXV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 May 2023 03:23:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233176AbjEHHJ0 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 May 2023 03:09:26 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 907612130
-        for <phone-devel@vger.kernel.org>; Mon,  8 May 2023 00:09:03 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4f00d41df22so27099533e87.1
-        for <phone-devel@vger.kernel.org>; Mon, 08 May 2023 00:09:03 -0700 (PDT)
+        with ESMTP id S232717AbjEHHXS (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 May 2023 03:23:18 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61A451AEC0
+        for <phone-devel@vger.kernel.org>; Mon,  8 May 2023 00:23:06 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f004cc54f4so4749256e87.3
+        for <phone-devel@vger.kernel.org>; Mon, 08 May 2023 00:23:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683529697; x=1686121697;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ftyvbCgmWp8H2Qr0+yYXF7ju9jiJ+4pp3cSZzRUkdGQ=;
-        b=O2ICGqfQOgrHHsf8HlKKcIEfwGOs64G1rpnfJAS/o7dPnN4ovfsNZUOwz6UJeMzk0e
-         ko/oGWa9nEYqyO8uUWzxjFqYLp/uLyCOuubrqU9yEqNfD4Bx+1qzrWNFyYrVul10Ua/D
-         Sq3J7DLhRfNo6JepbWGRX7VxV/T2qONb387FoU/M5k3y7440aB5/Br2jhbippkcesgVN
-         ym7sEpw0p28gNrR7/S+Mc8XEjt7uy8E+gr2gGONEYtaBvyWBH5s6VyBXJkxdndWFdSBG
-         y4/pEpo7NJyEfCQBHcQwz5UIl6jTzzoAooecwdwHf1pRLbO2Oi7TfOXXuMo/uqp/m9Go
-         maHA==
+        d=linaro.org; s=google; t=1683530584; x=1686122584;
+        h=content-transfer-encoding:in-reply-to:subject:from:content-language
+         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TcajkMFg+Ijs1is/I9T3sNOP6ZgzZEyX3QOUPBnk/dc=;
+        b=FC6fI1KiPdx+e67WHc+0iGmLtivABnz8MrKkTMaTy8j2fSHT+89HwVPiRw3bAJNrC/
+         0j65IwEydYg9NiJdl6qFH6PugeMwIlaXzKrjo1BLAZ+C/pI9LCROGvwJ0lydfoPSfle8
+         ovKlA53T47amHxIk7ClUN4x5vmxO2eTTX2q2G53oBDH6wkuj8mmoA44p8YuHjAe3HDNY
+         04zKaWmQpSuvlAiybds3j7cC+yVVy+27Jl9TE+mD9ZpYTo7f1r9j8ttYPKpN8mzI4dag
+         ZKPLv93zUHVRQc4nDHGDB6B5wE9w/AsjCpzWR2YJk7j8hSNcltTfSFafL040x2RrgHiz
+         dlXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683529697; x=1686121697;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ftyvbCgmWp8H2Qr0+yYXF7ju9jiJ+4pp3cSZzRUkdGQ=;
-        b=gl2pJyXhFKbSbBGlaPmaJcm8chrnfd3X9K/rYGYH1/t9G7mWF7Gl6RNYMVp/TjrPD1
-         /ImHtZl09grUm2RvyB1ZpeihwtfXnslWUmGtiLhzLphAVbWqMnzPRJ/XanAhidgkBqAc
-         mhi4+XjZfC5nvCGEsK5+dgZZcTepbzzE18c5yuzUCWXCLDz4pDO60IxBp9Co4EnIHq2h
-         aqdae+G6Oec93itXkrBKX4+szIAZl8m2AcfUNdB69xjhvZ07iSLI3q0/0KKr838nC6eO
-         V0kwS5JnmUCAaWJihhkMSxZLgJnqQc91G9udOLl6iqAC4yB3piTwLN1uOmef7jUKccy7
-         VwSA==
-X-Gm-Message-State: AC+VfDwtpXUB/F4vtwnruEIc1m4sHdVTQb0zmqCF8OCc6Whlf40TDjRj
-        shjkpzdT3nOBG6RlA7AFzzWL+g==
-X-Google-Smtp-Source: ACHHUZ7Y0PWTKcGLWzfm2qG+pTVh9dQwDGjaJ31lOuLstjylZKCo5LFMAIanDeiAggqmtWM6/uOhZw==
-X-Received: by 2002:a2e:8895:0:b0:295:9906:64e4 with SMTP id k21-20020a2e8895000000b00295990664e4mr2382433lji.2.1683529697410;
-        Mon, 08 May 2023 00:08:17 -0700 (PDT)
-Received: from Fecusia.lan (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
-        by smtp.gmail.com with ESMTPSA id w8-20020a2e9bc8000000b002a8b205bb50sm1050219ljj.61.2023.05.08.00.08.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 May 2023 00:08:17 -0700 (PDT)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     linux-arm-kernel@lists.infradead.org, phone-devel@vger.kernel.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH] ARM: dts: ux500: Fix STMPE device nodes
-Date:   Mon,  8 May 2023 09:08:11 +0200
-Message-Id: <20230508070811.965762-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.40.1
+        d=1e100.net; s=20221208; t=1683530584; x=1686122584;
+        h=content-transfer-encoding:in-reply-to:subject:from:content-language
+         :references:cc:to:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TcajkMFg+Ijs1is/I9T3sNOP6ZgzZEyX3QOUPBnk/dc=;
+        b=YcfVUwHluw1wYtwd1jgYwrCRQOIPYIkJz9RK0CjCy7m8eh/xZpBoRr/y55PB4cK7dM
+         lkVFqz2FzkQIcX4zi5OrA1tulSBix3TMfEZ/0H3tclEt2c1Z9/uLIO300PqUl9vL0K/F
+         trqrj4fQboC+1KN+l5BbLM2GtKvpL6oDKe6KNKO3UGbHNNFVOM+Wv6duXu19aV1RYmMF
+         w+6JyM42iDPI8SrZBfurOUGbvb8Z7QC68HNP41fsif2fByuDR6VA+7wLKiPOztv3MVhV
+         k+ku3vhRAR6a+pJp/ED0v9vvCc1/cP2K0eiTrSXCrBka9FHLHcUpWHEWgRcfvnUg4YYK
+         aS0g==
+X-Gm-Message-State: AC+VfDzCxxYcxAAO08kE7/Dwqzhneb8J7S3G9hbxrD0tKz5fTVXRDlqo
+        guhXHuBeIatJ1FkCn873I0+sTg==
+X-Google-Smtp-Source: ACHHUZ6ejBx1vKnzKsGGvjQPIgfuX8+QSRfspSO3bKunB3U8xP/D7kfgYBUc8w9TLE7z9shOBp4lOg==
+X-Received: by 2002:a19:7016:0:b0:4f2:4d32:9b62 with SMTP id h22-20020a197016000000b004f24d329b62mr995245lfc.20.1683530584507;
+        Mon, 08 May 2023 00:23:04 -0700 (PDT)
+Received: from [192.168.1.101] (abyl248.neoplus.adsl.tpnet.pl. [83.9.31.248])
+        by smtp.gmail.com with ESMTPSA id b4-20020ac25624000000b004f127652954sm1187107lff.184.2023.05.08.00.23.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 May 2023 00:23:04 -0700 (PDT)
+Message-ID: <cef7b823-451f-e98a-65d3-3e396124071a@linaro.org>
+Date:   Mon, 8 May 2023 09:23:02 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org,
+        Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Bartosz Dudziak <bartosz.dudziak@snejp.pl>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230506-msm8226-oxilicx-v1-1-52e34b94ff22@z3ntu.xyz>
+Content-Language: en-US
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Subject: Re: [PATCH] clk: qcom: mmcc-msm8974: Add OXILICX_GDSC for msm8226
+In-Reply-To: <20230506-msm8226-oxilicx-v1-1-52e34b94ff22@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The STMPE device nodes need to be augmented to fit with current
-naming policies.
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
- arch/arm/boot/dts/ste-href-stuib.dtsi   |  5 ++---
- arch/arm/boot/dts/ste-nomadik-nhk15.dts | 16 +++++++---------
- 2 files changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ste-href-stuib.dtsi b/arch/arm/boot/dts/ste-href-stuib.dtsi
-index e32d0c36feb8..79c2be36acae 100644
---- a/arch/arm/boot/dts/ste-href-stuib.dtsi
-+++ b/arch/arm/boot/dts/ste-href-stuib.dtsi
-@@ -30,12 +30,11 @@ button@145 {
- 
- 	soc {
- 		i2c@80004000 {
--			stmpe1601: stmpe1601@40 {
-+			stmpe1601: port-expander@40 {
- 				compatible = "st,stmpe1601";
- 				reg = <0x40>;
- 				interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
- 				interrupt-parent = <&gpio6>;
--				interrupt-controller;
- 				vcc-supply = <&db8500_vsmps2_reg>;
- 				vio-supply = <&db8500_vsmps2_reg>;
- 				pinctrl-names = "default";
-@@ -44,7 +43,7 @@ stmpe1601: stmpe1601@40 {
- 				wakeup-source;
- 				st,autosleep-timeout = <1024>;
- 
--				stmpe_keypad {
-+				keyboard-controller {
- 					compatible = "st,stmpe-keypad";
- 
- 					debounce-interval = <64>;
-diff --git a/arch/arm/boot/dts/ste-nomadik-nhk15.dts b/arch/arm/boot/dts/ste-nomadik-nhk15.dts
-index 4d741adc16cd..1cba130dde8f 100644
---- a/arch/arm/boot/dts/ste-nomadik-nhk15.dts
-+++ b/arch/arm/boot/dts/ste-nomadik-nhk15.dts
-@@ -99,17 +99,16 @@ lis3lv02dl@1d {
- 			pinctrl-names = "default";
- 			reg = <0x1d>;
- 		};
--		stmpe0: stmpe2401@43 {
-+		stmpe0: port-expander@43 {
- 			compatible = "st,stmpe2401";
- 			reg = <0x43>;
- 			reset-gpios = <&gpio2 13 GPIO_ACTIVE_LOW>; // GPIO77
- 			interrupts = <12 IRQ_TYPE_EDGE_FALLING>; // GPIO76
- 			interrupt-parent = <&gpio2>;
--			interrupt-controller;
- 			wakeup-source;
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&stmpe2401_1_nhk_mode>;
--			stmpe_gpio43: stmpe_gpio {
-+			stmpe_gpio43: gpio {
- 				compatible = "st,stmpe-gpio";
- 				gpio-controller;
- 				#gpio-cells = <2>;
-@@ -118,7 +117,7 @@ stmpe_gpio43: stmpe_gpio {
- 				/* Some pins in alternate functions */
- 				st,norequest-mask = <0xf0f002>;
- 			};
--			stmpe_keypad {
-+			keyboard-controller {
- 				compatible = "st,stmpe-keypad";
- 				debounce-interval = <64>;
- 				st,scan-count = <8>;
-@@ -140,22 +139,21 @@ stmpe_keypad {
- 						0x03020067 // Up
- 						0x0303006c>; // Down
- 			};
--			stmpe0_pwm: stmpe_pwm {
-+			stmpe0_pwm: pwm {
- 				compatible = "st,stmpe-pwm";
- 				#pwm-cells = <2>;
- 			};
- 		};
--		stmpe1: stmpe2401@44 {
-+		stmpe1: port-expander@44 {
- 			compatible = "st,stmpe2401";
- 			reg = <0x44>;
- 			reset-gpios = <&gpio2 15 GPIO_ACTIVE_LOW>; // GPIO79
- 			interrupts = <14 IRQ_TYPE_EDGE_FALLING>; // GPIO78
- 			interrupt-parent = <&gpio2>;
--			interrupt-controller;
- 			wakeup-source;
- 			pinctrl-names = "default";
- 			pinctrl-0 = <&stmpe2401_2_nhk_mode>;
--			stmpe_gpio44: stmpe_gpio {
-+			stmpe_gpio44: gpio {
- 				compatible = "st,stmpe-gpio";
- 				gpio-controller;
- 				#gpio-cells = <2>;
-@@ -165,7 +163,7 @@ stmpe_gpio44: stmpe_gpio {
- 				 * This will turn off SATA so that MMC/SD
- 				 * can thrive
- 				 */
--				mmcsd-gpio {
-+				mmcsd-hog {
- 					gpio-hog;
- 					gpios = <2 0x0>;
- 					output-low;
--- 
-2.34.1
+On 6.05.2023 23:20, Luca Weiss wrote:
+> On msm8226 we also have OXILICX_GDSC but we need a slighly different
+> config, with a .cxcs defined for clock but with no parent.
+Hm, on newer (a5xx+) GPUs, CX needs to be turned on first and
+to achieve that, we sometimes define it to be the GX's (also
+implicitly known as "oxili-non-CX" in before-a6xx-times) parent..
 
+Roughly speaking CX powers the "GPU hardware owned by the broader
+SoC that may not need the GPU core clock to be up" and GX powers
+the "GPU hardware owned strictly by the GPU that needs at least some
+GPU clocks to be enabled"
+
+Maybe 8974 simply has a bug in the driver that would do the reverse?
+Could you (and perhaps Dmitry on his shiny new 13yo board) test that
+theory, preferably on both SoCs?
+
+--- a/drivers/clk/qcom/mmcc-msm8974.c
++++ b/drivers/clk/qcom/mmcc-msm8974.c
+@@ -2431,6 +2431,7 @@ static struct gdsc oxili_gdsc = {
+        .pd = {
+                .name = "oxili",
+        },
++       .parent = &oxili_gdsc.pd,
+        .pwrsts = PWRSTS_OFF_ON,
+ };
+ 
+@@ -2439,7 +2440,6 @@ static struct gdsc oxilicx_gdsc = {
+        .pd = {
+                .name = "oxilicx",
+        },
+-       .parent = &oxili_gdsc.pd,
+        .pwrsts = PWRSTS_OFF_ON,
+ };
+
+Konrad
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  drivers/clk/qcom/mmcc-msm8974.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/drivers/clk/qcom/mmcc-msm8974.c b/drivers/clk/qcom/mmcc-msm8974.c
+> index 4273fce9a4a4..39ee3953567c 100644
+> --- a/drivers/clk/qcom/mmcc-msm8974.c
+> +++ b/drivers/clk/qcom/mmcc-msm8974.c
+> @@ -2443,6 +2443,16 @@ static struct gdsc oxilicx_gdsc = {
+>  	.pwrsts = PWRSTS_OFF_ON,
+>  };
+>  
+> +static struct gdsc oxilicx_gdsc_msm8226 = {
+> +	.gdscr = 0x4034,
+> +	.cxcs = (unsigned int []){ 0x4028 },
+> +	.cxc_count = 1,
+> +	.pd = {
+> +		.name = "oxilicx",
+> +	},
+> +	.pwrsts = PWRSTS_OFF_ON,
+> +};
+> +
+>  static struct clk_regmap *mmcc_msm8226_clocks[] = {
+>  	[MMSS_AHB_CLK_SRC] = &mmss_ahb_clk_src.clkr,
+>  	[MMSS_AXI_CLK_SRC] = &mmss_axi_clk_src.clkr,
+> @@ -2533,6 +2543,7 @@ static struct gdsc *mmcc_msm8226_gdscs[] = {
+>  	[MDSS_GDSC] = &mdss_gdsc,
+>  	[CAMSS_JPEG_GDSC] = &camss_jpeg_gdsc,
+>  	[CAMSS_VFE_GDSC] = &camss_vfe_gdsc,
+> +	[OXILICX_GDSC] = &oxilicx_gdsc_msm8226,
+>  };
+>  
+>  static const struct regmap_config mmcc_msm8226_regmap_config = {
+> 
+> ---
+> base-commit: dd9e11d6477a52ede9ebe575c83285e79e823889
+> change-id: 20230506-msm8226-oxilicx-7f3f0f8e491d
+> 
+> Best regards,
