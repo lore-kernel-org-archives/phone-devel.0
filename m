@@ -2,91 +2,183 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A4E3DC77B75
-	for <phone-devel@archiver.kernel.org>; Mon,  8 May 2023 07:32:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FEF6C77B75
+	for <phone-devel@archiver.kernel.org>; Mon,  8 May 2023 07:38:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233367AbjEHHcZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 May 2023 03:32:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43968 "EHLO
+        id S229457AbjEHHiD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 May 2023 03:38:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233434AbjEHHcT (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 May 2023 03:32:19 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A86441E99F
-        for <phone-devel@vger.kernel.org>; Mon,  8 May 2023 00:32:10 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-965ac4dd11bso840741366b.2
-        for <phone-devel@vger.kernel.org>; Mon, 08 May 2023 00:32:10 -0700 (PDT)
+        with ESMTP id S233248AbjEHHiB (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 May 2023 03:38:01 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D21215FD0
+        for <phone-devel@vger.kernel.org>; Mon,  8 May 2023 00:37:58 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2ac80ed7f26so45357901fa.1
+        for <phone-devel@vger.kernel.org>; Mon, 08 May 2023 00:37:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683531129; x=1686123129;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uVwziNhIELnrU+msU0cBqkd5hQoILFKtwmATbaq5QLA=;
-        b=EYF+5tkUKxgkjCSY5WCaTpcQMRTq1sqsxay0yL9Du4kthI/wyGl/WAM9N4yiUh1H0Z
-         r0eXZ9Y/4C9asr/mZRm7eZJ0STqFHTC0LQjfbDeH9IWDNufBoG7DHIH/l/UBhJX//1gT
-         IQly3Pahxthg49j3/bKzdJtKgkNvFO64sNk2RhWiaoFVuSgCNijEU8sI2E0OyEr/C8UJ
-         GY1GnE2ebX/1DVTdVTwYMdFc7dcV2ZBhlmjtSkIuv+8alFtmnwIBnkCCfB42t4sM/cfB
-         H+gyM8wVUzw+x2NOBHrZpGgddT38coyC3OqLSjV+AykRVOJK8o6wheOlSFCxD9+UxjdB
-         WIjA==
+        d=linaro.org; s=google; t=1683531477; x=1686123477;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=igOidM55jTLRiFTsSNNJdbhAlQx6xHp4xjUBma9E7bc=;
+        b=RxJ0Mr/7ZCEaj/z1YJAAkQJlLJKnLkibtNK/TP6P4+vDgz6bsC0JB3+ALVM9/NQD19
+         PtLQX+BAxaXadicFoOx//IHBK5WAHhMQ7xDCP+wsGNWb+dlNVvt46rRyRSCWFYUp9Qu2
+         oQbYN232aa+GokrPYPjiKgNCDLtX23AQaturns9s7pIgHDuW8K2yDNwTrixAjrr+k+qE
+         gwXQwoHkT/GtRsGDGp1BBoz5EarvQN10gXkZ9ed3O9mcSELIBAxr+Z6gmeoq22ss3uQm
+         0SbfrDTiHEQO0apj00Yn2YFxhuuv0BKfi1jXwRtLHtMtWTvq6P+gGegFJnf35s5fwy3k
+         XROg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683531129; x=1686123129;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uVwziNhIELnrU+msU0cBqkd5hQoILFKtwmATbaq5QLA=;
-        b=IZFbmpZvc1VrH9GbsdFypmMuhoaYPpFC26L1gNmHJdt+ywMgOZb9DZMpIUgylW9HLd
-         DBozHpkAJH3yYRyrFW9WQi3Omg/lJbZvdRq6/LEgn+/qc2kCmcgArmsmjqM8mmTNnSvr
-         tMG8wn2+VrIlyIVPEvUD/6i25e4vryUgq9sBCeU7H211JjJiMGbU+F9SpCpv/l0FfERU
-         cxzKZPN0mQpUXRXFJUlJB3qGDNlo0BDCe4t0rxvbPMk37ByyCiDeWY8HfzuomD3/l74W
-         Bdw71igAsateyJGfXv1282SlPaSoJfNFcoIK8faKHsywuH1r61ECeawLtwzoSrZiQPN1
-         oSMw==
-X-Gm-Message-State: AC+VfDzPTmEWdID8laBd3kcalF39BliNIjyhpkAp9BADL25rWQiuHb82
-        Cy2bTtblpNJ9vwu6LSs/Id/Nmw==
-X-Google-Smtp-Source: ACHHUZ6qm8w6e7V9hkRXe1GUsKJWnoFAYhj2cejiwFkjKzXzUZrfMpDmzfA8q55ifm5Z/O9EE2+qKQ==
-X-Received: by 2002:a17:907:94c3:b0:947:4481:105b with SMTP id dn3-20020a17090794c300b009474481105bmr7226148ejc.3.1683531129062;
-        Mon, 08 May 2023 00:32:09 -0700 (PDT)
-Received: from krzk-bin.. ([2a02:810d:15c0:828:50e0:ebdf:b755:b300])
-        by smtp.gmail.com with ESMTPSA id jz27-20020a17090775fb00b00932fa67b48fsm4594535ejc.183.2023.05.08.00.32.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 May 2023 00:32:08 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Shunqian Zheng <zhengsq@rock-chips.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        d=1e100.net; s=20221208; t=1683531477; x=1686123477;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=igOidM55jTLRiFTsSNNJdbhAlQx6xHp4xjUBma9E7bc=;
+        b=aJMGCFn5qOx7N9cwC7+pJIBB+ytQjyWFEMnV02LS2nXVlNix1Kh6oVnJsAtWg4I2fU
+         MaSth2/PP2nx4V/1hxp1RlsmDq8g1/6zYTYGeMMPhmJjPca+Oy6zAd9CXShtx6cFr57Y
+         hFM0AxI0V0/p0RHfN3PHNXO/kQd1IsU8UULMf1Lx6/f/vk2dsK870HksycQ9fcabKhEv
+         pGrhFZ6l4Avkuj9hFuvd/ZXXvXVonE/3Vb83UyFeD5ha3sHQlA/UP2Ei0so4+kSGmreE
+         cgZxumI/ThcIMbZKC9BFyDvIFLKYZWYyac/RiNlW4kXmw2i835lQBgTQZCJWD3EMx4Bs
+         EqsA==
+X-Gm-Message-State: AC+VfDwkj4rDm6HjNp8R0VBD9btd88cDdh/tUzeH+uEzvgG6MruYPLVl
+        n2tR1dj00yL0VYDoVrFTix11Gw==
+X-Google-Smtp-Source: ACHHUZ6XMHCTOPTRkqco61kyNi4aDDhkl+zXb5UKpmV5EdMdwy09a+NPnCeGTi4N8zBc6qbuQtpumQ==
+X-Received: by 2002:a2e:8eca:0:b0:2ac:85d7:342b with SMTP id e10-20020a2e8eca000000b002ac85d7342bmr2582044ljl.29.1683531477081;
+        Mon, 08 May 2023 00:37:57 -0700 (PDT)
+Received: from [192.168.1.101] (abyl248.neoplus.adsl.tpnet.pl. [83.9.31.248])
+        by smtp.gmail.com with ESMTPSA id l17-20020a05651c10d100b002ab0c9fab23sm1089550ljn.79.2023.05.08.00.37.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 May 2023 00:37:56 -0700 (PDT)
+Message-ID: <4e9275be-c584-8656-2edb-447ab5546e5c@linaro.org>
+Date:   Mon, 8 May 2023 09:37:55 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH 3/6] soc: qcom: ocmem: make iface clock optional
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Brian Masney <masneyb@onstation.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Luca Weiss <luca@z3ntu.xyz>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-media@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] media: dt-bindings: ov2685: Correct data-lanes attribute
-Date:   Mon,  8 May 2023 09:32:02 +0200
-Message-Id: <168353111984.70771.6252965278692799714.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230419-ov2685-dtschema-fixup-v1-1-c850a34b3a26@z3ntu.xyz>
-References: <20230419-ov2685-dtschema-fixup-v1-1-c850a34b3a26@z3ntu.xyz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+References: <20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz>
+ <20230506-msm8226-ocmem-v1-3-3e24e2724f01@z3ntu.xyz>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230506-msm8226-ocmem-v1-3-3e24e2724f01@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-On Wed, 19 Apr 2023 17:58:27 +0200, Luca Weiss wrote:
-> When adapting the original doc conversion to support 2 lanes, minItems
-> should've been added as well since the sensor supports either 1 or 2
-> lanes. Add minItems to make the validation happy again.
+
+On 7.05.2023 11:12, Luca Weiss wrote:
+> Some platforms such as msm8226 do not have an iface clk. Since clk_bulk
+> APIs don't offer to a way to treat some clocks as optional simply add
+> core_clk and iface_clk members to our drvdata.
 > 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+I think I don't see anything wrong in here!
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+
+Konrad
+>  drivers/soc/qcom/ocmem.c | 42 ++++++++++++++++++++++++------------------
+>  1 file changed, 24 insertions(+), 18 deletions(-)
 > 
-
-Applied, thanks!
-
-[1/1] media: dt-bindings: ov2685: Correct data-lanes attribute
-      https://git.kernel.org/krzk/linux-dt/c/048bce15da19e46ce5e866a48338929c76ca4152
-
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+> index a11a955a1327..6235065d3bc9 100644
+> --- a/drivers/soc/qcom/ocmem.c
+> +++ b/drivers/soc/qcom/ocmem.c
+> @@ -54,6 +54,8 @@ struct ocmem {
+>  	const struct ocmem_config *config;
+>  	struct resource *memory;
+>  	void __iomem *mmio;
+> +	struct clk *core_clk;
+> +	struct clk *iface_clk;
+>  	unsigned int num_ports;
+>  	unsigned int num_macros;
+>  	bool interleaved;
+> @@ -91,16 +93,6 @@ struct ocmem {
+>  #define OCMEM_PSGSC_CTL_MACRO2_MODE(val)	FIELD_PREP(0x00000700, (val))
+>  #define OCMEM_PSGSC_CTL_MACRO3_MODE(val)	FIELD_PREP(0x00007000, (val))
+>  
+> -#define OCMEM_CLK_CORE_IDX			0
+> -static struct clk_bulk_data ocmem_clks[] = {
+> -	{
+> -		.id = "core",
+> -	},
+> -	{
+> -		.id = "iface",
+> -	},
+> -};
+> -
+>  static inline void ocmem_write(struct ocmem *ocmem, u32 reg, u32 data)
+>  {
+>  	writel(data, ocmem->mmio + reg);
+> @@ -316,9 +308,15 @@ static int ocmem_dev_probe(struct platform_device *pdev)
+>  	ocmem->dev = dev;
+>  	ocmem->config = device_get_match_data(dev);
+>  
+> -	ret = devm_clk_bulk_get(dev, ARRAY_SIZE(ocmem_clks), ocmem_clks);
+> -	if (ret)
+> -		return dev_err_probe(dev, ret, "Unable to get clocks\n");
+> +	ocmem->core_clk = devm_clk_get(dev, "core");
+> +	if (IS_ERR(ocmem->core_clk))
+> +		return dev_err_probe(dev, PTR_ERR(ocmem->core_clk),
+> +				     "Unable to get core clock\n");
+> +
+> +	ocmem->iface_clk = devm_clk_get_optional(dev, "iface");
+> +	if (IS_ERR(ocmem->iface_clk))
+> +		return dev_err_probe(dev, PTR_ERR(ocmem->iface_clk),
+> +				     "Unable to get iface clock\n");
+>  
+>  	ocmem->mmio = devm_platform_ioremap_resource_byname(pdev, "ctrl");
+>  	if (IS_ERR(ocmem->mmio))
+> @@ -333,11 +331,15 @@ static int ocmem_dev_probe(struct platform_device *pdev)
+>  	}
+>  
+>  	/* The core clock is synchronous with graphics */
+> -	WARN_ON(clk_set_rate(ocmem_clks[OCMEM_CLK_CORE_IDX].clk, 1000) < 0);
+> +	WARN_ON(clk_set_rate(ocmem->core_clk, 1000) < 0);
+> +
+> +	ret = clk_prepare_enable(ocmem->core_clk);
+> +	if (ret)
+> +		return dev_err_probe(ocmem->dev, ret, "Failed to enable core clock\n");
+>  
+> -	ret = clk_bulk_prepare_enable(ARRAY_SIZE(ocmem_clks), ocmem_clks);
+> +	ret = clk_prepare_enable(ocmem->iface_clk);
+>  	if (ret)
+> -		return dev_err_probe(ocmem->dev, ret, "Failed to enable clocks\n");
+> +		return dev_err_probe(ocmem->dev, ret, "Failed to enable iface clock\n");
+>  
+>  	if (qcom_scm_restore_sec_cfg_available()) {
+>  		dev_dbg(dev, "configuring scm\n");
+> @@ -396,13 +398,17 @@ static int ocmem_dev_probe(struct platform_device *pdev)
+>  	return 0;
+>  
+>  err_clk_disable:
+> -	clk_bulk_disable_unprepare(ARRAY_SIZE(ocmem_clks), ocmem_clks);
+> +	clk_disable_unprepare(ocmem->core_clk);
+> +	clk_disable_unprepare(ocmem->iface_clk);
+>  	return ret;
+>  }
+>  
+>  static int ocmem_dev_remove(struct platform_device *pdev)
+>  {
+> -	clk_bulk_disable_unprepare(ARRAY_SIZE(ocmem_clks), ocmem_clks);
+> +	struct ocmem *ocmem = platform_get_drvdata(pdev);
+> +
+> +	clk_disable_unprepare(ocmem->core_clk);
+> +	clk_disable_unprepare(ocmem->iface_clk);
+>  
+>  	return 0;
+>  }
+> 
