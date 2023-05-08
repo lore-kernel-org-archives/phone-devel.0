@@ -2,96 +2,99 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6FC6C7EE2C
-	for <phone-devel@archiver.kernel.org>; Mon,  8 May 2023 16:44:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F3F2C77B75
+	for <phone-devel@archiver.kernel.org>; Mon,  8 May 2023 17:04:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233677AbjEHQoy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 May 2023 12:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44932 "EHLO
+        id S234359AbjEHRE0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 May 2023 13:04:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234372AbjEHQox (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 May 2023 12:44:53 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D511C1;
-        Mon,  8 May 2023 09:44:52 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-24e14a24c9dso3404138a91.0;
-        Mon, 08 May 2023 09:44:52 -0700 (PDT)
+        with ESMTP id S234077AbjEHREZ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 May 2023 13:04:25 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 033EC6A68
+        for <phone-devel@vger.kernel.org>; Mon,  8 May 2023 10:04:23 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-50bc37e1525so9341155a12.1
+        for <phone-devel@vger.kernel.org>; Mon, 08 May 2023 10:04:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683564291; x=1686156291;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UKOFP0LLYct/YBl+wmdCJgmdIN9Q6Kmod9oJFxHPnG8=;
-        b=eDuemYLgMp+hP02pNfGL38Lj7cmF7Lcg0ru42KOTSqQH+a/+lZEee/0n77rs0+Qw9D
-         t7OleNMBEgDNouG/C9ywXSOevHA/xDZnEc4Eps19CLWCufLc8yz65y3mneisG8O1KHLb
-         8AqCAkUaXov329W4Sn8I5aUN+D/e+ECUxr4QCA+GeKZJZo5JuBkoB+CPVNKgfU8/bO3R
-         5dGeQwgBAPZ8KQnQSdLeSfoS7cq3YJXIKNMQQmOOIW5uxXOGWCJwXeBVtirr8jE/n5nw
-         Q+H4M3eJtaz6BMHAgzUGrSjeMwsX6QyBWHBFbg6Ic+2ofqNw35ElUmcmD+qm6nd9YQDR
-         fFFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683564291; x=1686156291;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1683565461; x=1686157461;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UKOFP0LLYct/YBl+wmdCJgmdIN9Q6Kmod9oJFxHPnG8=;
-        b=UV0yhOTKoQeFBbBwIxJd/Q3ajD4+RWv+xxWyr6/lcq/9P74InL07YT3HaFv/HFCyzb
-         QSij2o3hVr0Tu287vfPsInB0w3NfCMWGgpT9+Zl51tL4Eo/Xf9EM7lViYbDrOoyH4AK5
-         h8vXVudSxnrcXLcVCdeDoaa0GASO7omvTiLKMQZlbOohiZVi6IhL55v4thuFoDwSL6EB
-         JayjTgkkq3Ta0d6kO765pjVNIL/IwConI9aLN1k/7c1ofOSofyF6i959TdWXloPl32Nc
-         hrt47Q5U3CUlC5eM6t16Zc+Flq1T80JAFv6lei+w7S3qqkWhJRjmsyxnMee5OaZaNxC3
-         0sVA==
-X-Gm-Message-State: AC+VfDxykjUtPnsXNmSiDuTyxzJsiSOdE1Q3vb64SrOj3QeLtzGjlvf3
-        eMGEQj6S1ZTvkwZ/tUbRhSo=
-X-Google-Smtp-Source: ACHHUZ4b60htdC5Ba/WYAyy3RZgAunPovWBQwfeAFAtW54RnyVFENO+/sbQQrEs92yGJ4+qX0s7tTQ==
-X-Received: by 2002:a17:90a:f488:b0:247:8ce1:996e with SMTP id bx8-20020a17090af48800b002478ce1996emr11038074pjb.29.1683564291416;
-        Mon, 08 May 2023 09:44:51 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:4d1:db5a:dbba:cd34])
-        by smtp.gmail.com with ESMTPSA id k11-20020a63ff0b000000b00528af015a8dsm6502153pgi.14.2023.05.08.09.44.49
+        bh=KMFdLRNKQ89jJWRkxs/WTlt3m6Pbvn2x9h9FIbEb5x0=;
+        b=AxnghwstEQhO39B6QSm2G8PlgQCU/YSWbI6KEW0CUllAThoQL1D8ZF6rDIxZVaXieM
+         ZkecNE0Jb9tUnJz7UFK2pHacZu1wBqY+tkndEA6n9zIqaEr8ccGdF7n3p6Y+anLuZyip
+         12EHqkEa+iN2sRE7tZT+loysW9l7elKiXj69EqoQcFwJasVDepuh+W/Yop9ndEVThlaG
+         8FlLKYBfiofA5AjSJeqbV0/Xper1I8iOZUIn/w7l6OMj1b6WrrvBCahDKX9nxNXPR2qd
+         x/i11oI2LuvrrNBsMRf3SC3E5yX2Kb9Fw00p6OrTeuh25OHWkew0YllVcRPjrvnGbTXf
+         6dOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683565461; x=1686157461;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KMFdLRNKQ89jJWRkxs/WTlt3m6Pbvn2x9h9FIbEb5x0=;
+        b=b4x58a9VsY4vcpEvOgfS1DX9sMS0YFGIsySpIaveBts24nG7NEGMDLOiuD8nLpw43E
+         VGfHUgjuz+kNh1XuA9AV5Y9GCuquHzYAzSDpKvtJvKzlu3eN7s6hFuzCc7EfMmu/NSCd
+         qzoG7aq6wrw25HoTS2AeTYyDDAXPU/0WbYqUNnCwEaDUhmtNVjpl5n+s5cHlbGDqrXyO
+         defxwkJls0345CLW/pGiHXaV++x8yl2As1NhnmZ+UqwQAFxR0XegmVUbDBYXaEHJR+4S
+         lDMTqsXh/MjYStBVDYjZb+RN7XUERqCqBMPktFMAh3u9YBk1v++Za/OQklbZ6L7h9nwt
+         t2SQ==
+X-Gm-Message-State: AC+VfDzLfNtRBMJ4L/dv3L7DVZppA96fV3RP+NrLg7fKZSVv7VbkIPQy
+        /htGZz3w+fpInxeHWq65ft6ttw==
+X-Google-Smtp-Source: ACHHUZ7heYG/3KrnBEYF/XVGw7VXdqdVwiYVnNEeRZ+GWNpSFSE08M6AJptKknVSO+zhUto4UiMDYQ==
+X-Received: by 2002:a17:907:1687:b0:94e:1764:b0b5 with SMTP id hc7-20020a170907168700b0094e1764b0b5mr11381209ejc.69.1683565461155;
+        Mon, 08 May 2023 10:04:21 -0700 (PDT)
+Received: from krzk-bin.. ([2a02:810d:15c0:828:50e0:ebdf:b755:b300])
+        by smtp.gmail.com with ESMTPSA id lh2-20020a170906f8c200b00965b7bf6aa5sm206862ejb.52.2023.05.08.10.04.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 May 2023 09:44:50 -0700 (PDT)
-Date:   Mon, 8 May 2023 09:44:47 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>,
+        Mon, 08 May 2023 10:04:20 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Brian Masney <masneyb@onstation.org>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 0/4] Add haptics support to Nexus 5 using pwm-vibra driver
-Message-ID: <ZFkm/wT/+5mlChWO@google.com>
-References: <20230427-hammerhead-vibra-v1-0-e87eeb94da51@z3ntu.xyz>
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     replicant@osuosl.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Jonathan Bakker <xc-racer2@live.ca>,
+        Pawel Chmiel <pawel.mikolaj.chmiel@gmail.com>
+Subject: Re: [PATCH 1/4] ARM: dts: s5pv210: align pin configuration nodes with bindings
+Date:   Mon,  8 May 2023 19:04:13 +0200
+Message-Id: <168356544397.281925.18235527816257782599.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230421095721.31857-1-krzysztof.kozlowski@linaro.org>
+References: <20230421095721.31857-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230427-hammerhead-vibra-v1-0-e87eeb94da51@z3ntu.xyz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Apr 27, 2023 at 10:34:25PM +0200, Luca Weiss wrote:
-> A while ago Brian Masney sent some patches for a clk-vibrator which was
-> then succeeded by the idea of a clk-pwm driver that "converts" a clock
-> into a PWM and to use the existing pwm-vibra driver.
-> 
-> Since clk-pwm has landed last year we can finally add haptics support
-> upstream.
-> 
-> We just need to add support for an enable GPIO to the pwm-vibra driver
-> since that also needs to be high for the haptics to work on this device.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-> Luca Weiss (4):
->       dt-bindings: input: pwm-vibrator: Add enable-gpio
->       Input: pwm-vibra - add newline to dev_err prints
->       Input: pwm-vibra - add support for enable GPIO
->       ARM: dts: qcom: msm8974-hammerhead: Add vibrator
 
-Applied patches 1-3, thank you.
+On Fri, 21 Apr 2023 11:57:18 +0200, Krzysztof Kozlowski wrote:
+> Bindings expect that pins in initial and sleep states nodes end with
+> '-pin':
+> 
+>   s5pv210-fascinate4g.dtb: pinctrl@e0200000: sleep-state: 'gpa0-0', ...
+>     'mp07-7' do not match any of the regexes: '^(pin-[a-z0-9-]+|[a-z0-9-]+-pin)$', 'pinctrl-[0-9]+'
+> 
+> 
+> [...]
 
+Applied, thanks!
+
+[1/4] ARM: dts: s5pv210: align pin configuration nodes with bindings
+      https://git.kernel.org/krzk/linux/c/7e98d368887c08a6cb79e79684f851e9bd9a3550
+[2/4] ARM: dts: s5pv210: align USB node name with bindings
+      https://git.kernel.org/krzk/linux/c/64f92c24aa57f8bfc389fe6638f0ffb7e4605928
+[3/4] ARM: dts: s5pv210: re-order MFC clock names to match Exynos and bindings
+      https://git.kernel.org/krzk/linux/c/6175f658ae07804f7c347903b8c6781e0914d3e6
+[4/4] ARM: dts: s5pv210: add dummy 5V regulator for backlight on SMDKv210
+      https://git.kernel.org/krzk/linux/c/b77904ba177a9c67b6dbc3637fdf1faa22df6e5c
+
+Best regards,
 -- 
-Dmitry
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
