@@ -2,141 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B5D9C7EE24
-	for <phone-devel@archiver.kernel.org>; Mon,  8 May 2023 07:27:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4E3DC77B75
+	for <phone-devel@archiver.kernel.org>; Mon,  8 May 2023 07:32:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233343AbjEHH1y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 8 May 2023 03:27:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40280 "EHLO
+        id S233367AbjEHHcZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 8 May 2023 03:32:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233329AbjEHH1v (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 May 2023 03:27:51 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B85201FCA
-        for <phone-devel@vger.kernel.org>; Mon,  8 May 2023 00:27:48 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4f14ec4efb0so2567101e87.2
-        for <phone-devel@vger.kernel.org>; Mon, 08 May 2023 00:27:48 -0700 (PDT)
+        with ESMTP id S233434AbjEHHcT (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 8 May 2023 03:32:19 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A86441E99F
+        for <phone-devel@vger.kernel.org>; Mon,  8 May 2023 00:32:10 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-965ac4dd11bso840741366b.2
+        for <phone-devel@vger.kernel.org>; Mon, 08 May 2023 00:32:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683530867; x=1686122867;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yWIT3tKT1sQBbkQMfM8DlJGawqUZsqkYk/H8oimS2uc=;
-        b=WUiXaHTJ4F0b6KpaDCEbx7fnAGN2W4vLxeyUiU5Emt4RjGYUNMjnlmdrXW7Al/Ovf/
-         fdbEHz2c8GuktB5IVl+guXMq9rWllYjBebZE65FbQRbUzXPmZgU0dEKu6e9QGnYYpK/N
-         KmjNNGnDrP72roLWCoxsCGxCRpZ306saumW//AkJncAXQv6nbfH1PlBDADb+BCtjii/A
-         Ty673Wh0qZXSSGdgAEcnapBL5MtPBsVOOkeQhEAKPpkLtjctYDKYpEh6bR5Xx/rTHTG9
-         ttHDG5u02tQW3K2NpKaqsm3n91a6YXJxcV8yWtRgfC7tz2+tz28uw3IgnFJtLLOWqqKE
-         k8Xg==
+        d=linaro.org; s=google; t=1683531129; x=1686123129;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uVwziNhIELnrU+msU0cBqkd5hQoILFKtwmATbaq5QLA=;
+        b=EYF+5tkUKxgkjCSY5WCaTpcQMRTq1sqsxay0yL9Du4kthI/wyGl/WAM9N4yiUh1H0Z
+         r0eXZ9Y/4C9asr/mZRm7eZJ0STqFHTC0LQjfbDeH9IWDNufBoG7DHIH/l/UBhJX//1gT
+         IQly3Pahxthg49j3/bKzdJtKgkNvFO64sNk2RhWiaoFVuSgCNijEU8sI2E0OyEr/C8UJ
+         GY1GnE2ebX/1DVTdVTwYMdFc7dcV2ZBhlmjtSkIuv+8alFtmnwIBnkCCfB42t4sM/cfB
+         H+gyM8wVUzw+x2NOBHrZpGgddT38coyC3OqLSjV+AykRVOJK8o6wheOlSFCxD9+UxjdB
+         WIjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683530867; x=1686122867;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yWIT3tKT1sQBbkQMfM8DlJGawqUZsqkYk/H8oimS2uc=;
-        b=k9fRqgY+JU1fl3112SMKem6zQeC43fHnHCu4cGlp8zsFknZXgRQUmQk32jIBLiEfF1
-         2OI8UZyRHJ1UebJKeDHDh4sWm8q+UPuwd+VOjS03O4aRojr+/Xj0iBdPEsD39JcxZ+NR
-         Me9iCsnE4Artu2eU/ob5Bo4rcWrPYI329BOTuD48I3QWk77Rn5lSq38CXwgab4qs4CgT
-         fLs+3/ps9xz0BqbeN255ZFkg/PXOL4oeskpw74t75yVBwohReC305gagIM6qz/eYawjr
-         inF5FILl7LGZJsp1KFcVfS095XdrGc44bKfqR2fYz7G0H9DqqSe5FgSFJ9lTfzZStitg
-         LW1Q==
-X-Gm-Message-State: AC+VfDxMi4uXEH/QTqZpHKWg0JoiX3X7aXMadMnVAeH5iwY5hkssxaTm
-        DXojogNyCp5a3/xsY4GIx8/e9A==
-X-Google-Smtp-Source: ACHHUZ4PSH1A7Sehd9IVsIjG4ut3ss+fHSiFGlVQHCw+aKxVEbjaQBRnyh9lrMih5EfpeQsqh8d3lQ==
-X-Received: by 2002:a05:6512:49b:b0:4ec:8524:65a4 with SMTP id v27-20020a056512049b00b004ec852465a4mr2425525lfq.55.1683530867153;
-        Mon, 08 May 2023 00:27:47 -0700 (PDT)
-Received: from [192.168.1.101] (abyl248.neoplus.adsl.tpnet.pl. [83.9.31.248])
-        by smtp.gmail.com with ESMTPSA id n18-20020a195512000000b004cb23904bd9sm1216133lfe.144.2023.05.08.00.27.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 May 2023 00:27:46 -0700 (PDT)
-Message-ID: <f8347dc4-f48f-be87-ba12-dd2ca97df6d8@linaro.org>
-Date:   Mon, 8 May 2023 09:27:45 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH 2/6] soc: qcom: ocmem: Use dev_err_probe where appropriate
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Brian Masney <masneyb@onstation.org>,
+        d=1e100.net; s=20221208; t=1683531129; x=1686123129;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uVwziNhIELnrU+msU0cBqkd5hQoILFKtwmATbaq5QLA=;
+        b=IZFbmpZvc1VrH9GbsdFypmMuhoaYPpFC26L1gNmHJdt+ywMgOZb9DZMpIUgylW9HLd
+         DBozHpkAJH3yYRyrFW9WQi3Omg/lJbZvdRq6/LEgn+/qc2kCmcgArmsmjqM8mmTNnSvr
+         tMG8wn2+VrIlyIVPEvUD/6i25e4vryUgq9sBCeU7H211JjJiMGbU+F9SpCpv/l0FfERU
+         cxzKZPN0mQpUXRXFJUlJB3qGDNlo0BDCe4t0rxvbPMk37ByyCiDeWY8HfzuomD3/l74W
+         Bdw71igAsateyJGfXv1282SlPaSoJfNFcoIK8faKHsywuH1r61ECeawLtwzoSrZiQPN1
+         oSMw==
+X-Gm-Message-State: AC+VfDzPTmEWdID8laBd3kcalF39BliNIjyhpkAp9BADL25rWQiuHb82
+        Cy2bTtblpNJ9vwu6LSs/Id/Nmw==
+X-Google-Smtp-Source: ACHHUZ6qm8w6e7V9hkRXe1GUsKJWnoFAYhj2cejiwFkjKzXzUZrfMpDmzfA8q55ifm5Z/O9EE2+qKQ==
+X-Received: by 2002:a17:907:94c3:b0:947:4481:105b with SMTP id dn3-20020a17090794c300b009474481105bmr7226148ejc.3.1683531129062;
+        Mon, 08 May 2023 00:32:09 -0700 (PDT)
+Received: from krzk-bin.. ([2a02:810d:15c0:828:50e0:ebdf:b755:b300])
+        by smtp.gmail.com with ESMTPSA id jz27-20020a17090775fb00b00932fa67b48fsm4594535ejc.183.2023.05.08.00.32.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 May 2023 00:32:08 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Shunqian Zheng <zhengsq@rock-chips.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-References: <20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz>
- <20230506-msm8226-ocmem-v1-2-3e24e2724f01@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230506-msm8226-ocmem-v1-2-3e24e2724f01@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Luca Weiss <luca@z3ntu.xyz>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] media: dt-bindings: ov2685: Correct data-lanes attribute
+Date:   Mon,  8 May 2023 09:32:02 +0200
+Message-Id: <168353111984.70771.6252965278692799714.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230419-ov2685-dtschema-fixup-v1-1-c850a34b3a26@z3ntu.xyz>
+References: <20230419-ov2685-dtschema-fixup-v1-1-c850a34b3a26@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
+On Wed, 19 Apr 2023 17:58:27 +0200, Luca Weiss wrote:
+> When adapting the original doc conversion to support 2 lanes, minItems
+> should've been added as well since the sensor supports either 1 or 2
+> lanes. Add minItems to make the validation happy again.
+> 
+> 
 
-On 7.05.2023 11:12, Luca Weiss wrote:
-> Use dev_err_probe in the driver probe function where useful, to simplify
-> getting PTR_ERR and to ensure the underlying errors are included in the
-> error message.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Applied, thanks!
 
-Konrad
->  drivers/soc/qcom/ocmem.c | 23 ++++++++---------------
->  1 file changed, 8 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-> index c3e78411c637..a11a955a1327 100644
-> --- a/drivers/soc/qcom/ocmem.c
-> +++ b/drivers/soc/qcom/ocmem.c
-> @@ -317,18 +317,13 @@ static int ocmem_dev_probe(struct platform_device *pdev)
->  	ocmem->config = device_get_match_data(dev);
->  
->  	ret = devm_clk_bulk_get(dev, ARRAY_SIZE(ocmem_clks), ocmem_clks);
-> -	if (ret) {
-> -		if (ret != -EPROBE_DEFER)
-> -			dev_err(dev, "Unable to get clocks\n");
-> -
-> -		return ret;
-> -	}
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Unable to get clocks\n");
->  
->  	ocmem->mmio = devm_platform_ioremap_resource_byname(pdev, "ctrl");
-> -	if (IS_ERR(ocmem->mmio)) {
-> -		dev_err(&pdev->dev, "Failed to ioremap ocmem_ctrl resource\n");
-> -		return PTR_ERR(ocmem->mmio);
-> -	}
-> +	if (IS_ERR(ocmem->mmio))
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(ocmem->mmio),
-> +				     "Failed to ioremap ocmem_ctrl resource\n");
->  
->  	ocmem->memory = platform_get_resource_byname(pdev, IORESOURCE_MEM,
->  						     "mem");
-> @@ -341,16 +336,14 @@ static int ocmem_dev_probe(struct platform_device *pdev)
->  	WARN_ON(clk_set_rate(ocmem_clks[OCMEM_CLK_CORE_IDX].clk, 1000) < 0);
->  
->  	ret = clk_bulk_prepare_enable(ARRAY_SIZE(ocmem_clks), ocmem_clks);
-> -	if (ret) {
-> -		dev_info(ocmem->dev, "Failed to enable clocks\n");
-> -		return ret;
-> -	}
-> +	if (ret)
-> +		return dev_err_probe(ocmem->dev, ret, "Failed to enable clocks\n");
->  
->  	if (qcom_scm_restore_sec_cfg_available()) {
->  		dev_dbg(dev, "configuring scm\n");
->  		ret = qcom_scm_restore_sec_cfg(QCOM_SCM_OCMEM_DEV_ID, 0);
->  		if (ret) {
-> -			dev_err(dev, "Could not enable secure configuration\n");
-> +			dev_err_probe(dev, ret, "Could not enable secure configuration\n");
->  			goto err_clk_disable;
->  		}
->  	}
-> 
+[1/1] media: dt-bindings: ov2685: Correct data-lanes attribute
+      https://git.kernel.org/krzk/linux-dt/c/048bce15da19e46ce5e866a48338929c76ca4152
+
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
