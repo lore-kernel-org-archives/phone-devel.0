@@ -2,235 +2,121 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7448C7EE22
-	for <phone-devel@archiver.kernel.org>; Tue,  9 May 2023 21:41:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B009EC7EE22
+	for <phone-devel@archiver.kernel.org>; Tue,  9 May 2023 22:31:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235006AbjEIVlH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 May 2023 17:41:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38294 "EHLO
+        id S235621AbjEIWbV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 9 May 2023 18:31:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235626AbjEIVlG (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 May 2023 17:41:06 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68EFF83;
-        Tue,  9 May 2023 14:41:05 -0700 (PDT)
-Received: from g550jk.localnet (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 833BDCECA8;
-        Tue,  9 May 2023 21:41:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1683668463; bh=gsYPDBwIud9iyVw2mn3lgwZmX4+b0Pkui6afxVuIAkE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=wfTf1Hp/uDeEtmiNGTNwffR8LgKAqpcApdi6SjbAHH2NDKLXRT0tGDxiP4d0WMAVw
-         au9Euc+w41Hruk65kpbH8X5hCOL3pGvG6a9C5Yr1d1cMXq8zweit/eTksj2D32VpGx
-         npqoMnPD2Ra3Y+PBz/p9p2C6cL4lGMzj6cbn0Wcg=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+        with ESMTP id S235447AbjEIWbU (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 May 2023 18:31:20 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D8752711
+        for <phone-devel@vger.kernel.org>; Tue,  9 May 2023 15:31:18 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3f420618d5bso24929885e9.1
+        for <phone-devel@vger.kernel.org>; Tue, 09 May 2023 15:31:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683671476; x=1686263476;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=H+e/daKX9drvWfcCFRUKynPMFbFB2xNv5pizYcQC/Ps=;
+        b=GFKH2bIxWke50r1pk7SF3vM1y+2UUkocKOj6AaVv+BIbIfPb50J4niBeH1qWBCHgYn
+         pMhPqIqQDEDD+sPbCSttytseujK0mOooNf2ruJHaG29ec55LjHb0G2J+HEq5FzmvvBp0
+         36d7RVt4jcPGXnfNoReBUhTuSBiVFtHWQ5yoGoRTRce32Mfu9+o1ydhhQHD8tlLMkmK3
+         4CO3f3u0TLd1Eke1T5U/18ADKLGOZowqrg8mCMirvnC+NslO3BpmNQVi7rNa4vAHzXJ2
+         0rrUakHbjlgSUan4I1Om8PTRhYDXNkfSDTSScef8xYGdK9XcxQrVhfmrxBdG9Js19fVk
+         Ozkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683671476; x=1686263476;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=H+e/daKX9drvWfcCFRUKynPMFbFB2xNv5pizYcQC/Ps=;
+        b=g8rC1H3OJY/wP25YqXMvA2r4CqiZFrR0634NaaZGXREm2+gRipc6bNCzDvQNFAVj/j
+         dUvYzhfre2w5omH5VV5drjacMEFr8PKIV/qmXErdHAuDUjnJqn85OE4Z2hvV8oylV06L
+         Mjq8x7115r3nE9GLf/zZq7/yBtbLGgdUwfPfMhMepWWa39CQhYn3dpTi87QOi5axK5zJ
+         ARrTamMcScjcLq9qhx9aKVjpOvteqgDSSPusmvt+cmJFX94/PDFr5vZdGr8YajrYABBc
+         FnK7zjJoRHLTzt69j/3bOyY/aDJ1e2hhVg1n0kln4RFUJUTeWxV9liL3AunDhJVSa24G
+         m9vQ==
+X-Gm-Message-State: AC+VfDyMEti8b4COrwUr+zKCo4gjjdywMGGUU9224OagVDb0yPXhTu+N
+        Td2hnoAhkpEKgvucsrCYUIdINw==
+X-Google-Smtp-Source: ACHHUZ6si+b8+Ej7zsK3mGDrXpwwIIjfiDltVqOh0t/imBMJJulNtoJoVip+zo8oVrlJXojtlzg4yg==
+X-Received: by 2002:a05:600c:29a:b0:3f4:2973:b8c8 with SMTP id 26-20020a05600c029a00b003f42973b8c8mr3730808wmk.26.1683671476656;
+        Tue, 09 May 2023 15:31:16 -0700 (PDT)
+Received: from [192.168.0.15] (cpc76484-cwma10-2-0-cust274.7-3.cable.virginm.net. [82.31.201.19])
+        by smtp.gmail.com with ESMTPSA id z10-20020a05600c220a00b003f17122587bsm21203561wml.36.2023.05.09.15.31.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 May 2023 15:31:16 -0700 (PDT)
+Message-ID: <53f6e9c7-26e2-94be-fa02-0c3cbb65372b@linaro.org>
+Date:   Tue, 9 May 2023 23:31:15 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Subject: Re: [PATCH 1/6] soc: qcom: ocmem: Fix NUM_PORTS & NUM_MACROS macros
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Clark <robdclark@gmail.com>,
         Brian Masney <masneyb@onstation.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: Re: [PATCH 3/6] soc: qcom: ocmem: make iface clock optional
-Date:   Tue, 09 May 2023 23:41:02 +0200
-Message-ID: <4094905.iIbC2pHGDl@z3ntu.xyz>
-In-Reply-To: <CAA8EJpo_x=q8yBSUV=owYvQqD30YQbhU51iKHUjr-_doLk6HPw@mail.gmail.com>
 References: <20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz>
- <3479852.e9J7NaK4W3@z3ntu.xyz>
- <CAA8EJpo_x=q8yBSUV=owYvQqD30YQbhU51iKHUjr-_doLk6HPw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+ <20230506-msm8226-ocmem-v1-1-3e24e2724f01@z3ntu.xyz>
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+In-Reply-To: <20230506-msm8226-ocmem-v1-1-3e24e2724f01@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Dienstag, 9. Mai 2023 19:08:50 CEST Dmitry Baryshkov wrote:
-> On Tue, 9 May 2023 at 19:47, Luca Weiss <luca@z3ntu.xyz> wrote:
-> > On Montag, 8. Mai 2023 13:34:23 CEST Dmitry Baryshkov wrote:
-> > > On 07/05/2023 12:12, Luca Weiss wrote:
-> > > > Some platforms such as msm8226 do not have an iface clk. Since
-> > > > clk_bulk
-> > > > APIs don't offer to a way to treat some clocks as optional simply add
-> > > > core_clk and iface_clk members to our drvdata.
-> > > 
-> > > What about using devm_clk_bulk_get_optional()? I think it would be
-> > > simpler this way.
-> > 
-> > Using that function both clocks would be optional which may or may not be
-> > a
-> > bad idea. Not sure how much binding yaml and/or driver should try and
-> > catch
-> > bad usages of the driver.
+
+
+On 07/05/2023 10:12, Luca Weiss wrote:
+> Since we're using these two macros to read a value from a register, we
+> need to use the FIELD_GET instead of the FIELD_PREP macro, otherwise
+> we're getting wrong values.
 > 
-> The generic rule is that we should not validate the DT unless required
-> (e.g. because of the possibility of legacy DT which used other
-> bindings or contained less information).
-
-Got it.
-
-But since in this driver we use one of the clocks for setting clock rate I'd
-keep using the two separate struct clk as I've done in this patch if you don't
-mind too much.
-
-Regards
-Luca
-
+> So instead of:
 > 
-> > But honestly the current usage of the bulk API seems a bit clunky, we have
-> > a static array of clocks that we use (not in struct ocmem for some
-> > reason) and then we refer to the core clock by index? Feels better to
-> > just have the two clock references in the device struct and then we're
-> > good.
-> > 
-> > Let me know.
-> > 
-> > Regards
-> > Luca
-> > 
-> > > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > > ---
-> > > > 
-> > > >   drivers/soc/qcom/ocmem.c | 42
-> > > >   ++++++++++++++++++++++++------------------
-> > > >   1 file changed, 24 insertions(+), 18 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-> > > > index a11a955a1327..6235065d3bc9 100644
-> > > > --- a/drivers/soc/qcom/ocmem.c
-> > > > +++ b/drivers/soc/qcom/ocmem.c
-> > > > @@ -54,6 +54,8 @@ struct ocmem {
-> > > > 
-> > > >     const struct ocmem_config *config;
-> > > >     struct resource *memory;
-> > > >     void __iomem *mmio;
-> > > > 
-> > > > +   struct clk *core_clk;
-> > > > +   struct clk *iface_clk;
-> > > > 
-> > > >     unsigned int num_ports;
-> > > >     unsigned int num_macros;
-> > > >     bool interleaved;
-> > > > 
-> > > > @@ -91,16 +93,6 @@ struct ocmem {
-> > > > 
-> > > >   #define OCMEM_PSGSC_CTL_MACRO2_MODE(val)  FIELD_PREP(0x00000700,
-> > 
-> > (val))
-> > 
-> > > >   #define OCMEM_PSGSC_CTL_MACRO3_MODE(val)  FIELD_PREP(0x00007000,
-> > 
-> > (val))
-> > 
-> > > > -#define OCMEM_CLK_CORE_IDX                 0
-> > > > -static struct clk_bulk_data ocmem_clks[] = {
-> > > > -   {
-> > > > -           .id = "core",
-> > > > -   },
-> > > > -   {
-> > > > -           .id = "iface",
-> > > > -   },
-> > > > -};
-> > > > -
-> > > > 
-> > > >   static inline void ocmem_write(struct ocmem *ocmem, u32 reg, u32
-> > > >   data)
-> > > >   {
-> > > >   
-> > > >     writel(data, ocmem->mmio + reg);
-> > > > 
-> > > > @@ -316,9 +308,15 @@ static int ocmem_dev_probe(struct platform_device
-> > > > *pdev)>
-> > > > 
-> > > >     ocmem->dev = dev;
-> > > >     ocmem->config = device_get_match_data(dev);
-> > > > 
-> > > > -   ret = devm_clk_bulk_get(dev, ARRAY_SIZE(ocmem_clks), ocmem_clks);
-> > > > -   if (ret)
-> > > > -           return dev_err_probe(dev, ret, "Unable to get clocks\n");
-> > > > +   ocmem->core_clk = devm_clk_get(dev, "core");
-> > > > +   if (IS_ERR(ocmem->core_clk))
-> > > > +           return dev_err_probe(dev, PTR_ERR(ocmem->core_clk),
-> > > > +                                "Unable to get core clock\n");
-> > > > +
-> > > > +   ocmem->iface_clk = devm_clk_get_optional(dev, "iface");
-> > > > +   if (IS_ERR(ocmem->iface_clk))
-> > > > +           return dev_err_probe(dev, PTR_ERR(ocmem->iface_clk),
-> > > > +                                "Unable to get iface clock\n");
-> > > > 
-> > > >     ocmem->mmio = devm_platform_ioremap_resource_byname(pdev, "ctrl");
-> > > >     if (IS_ERR(ocmem->mmio))
-> > > > 
-> > > > @@ -333,11 +331,15 @@ static int ocmem_dev_probe(struct
-> > > > platform_device
-> > > > *pdev)>
-> > > > 
-> > > >     }
-> > > >     
-> > > >     /* The core clock is synchronous with graphics */
-> > > > 
-> > > > -   WARN_ON(clk_set_rate(ocmem_clks[OCMEM_CLK_CORE_IDX].clk, 1000) <
-> > > > 0);
-> > > > +   WARN_ON(clk_set_rate(ocmem->core_clk, 1000) < 0);
-> > > > +
-> > > > +   ret = clk_prepare_enable(ocmem->core_clk);
-> > > > +   if (ret)
-> > > > +           return dev_err_probe(ocmem->dev, ret, "Failed to enable
-> > 
-> > core clock\n");
-> > 
-> > > > -   ret = clk_bulk_prepare_enable(ARRAY_SIZE(ocmem_clks), ocmem_clks);
-> > > > +   ret = clk_prepare_enable(ocmem->iface_clk);
-> > > > 
-> > > >     if (ret)
-> > > > 
-> > > > -           return dev_err_probe(ocmem->dev, ret, "Failed to enable
-> > 
-> > clocks\n");
-> > 
-> > > > +           return dev_err_probe(ocmem->dev, ret, "Failed to enable
-> > 
-> > iface
-> > 
-> > > > clock\n");
-> > > > 
-> > > >     if (qcom_scm_restore_sec_cfg_available()) {
-> > > >     
-> > > >             dev_dbg(dev, "configuring scm\n");
-> > > > 
-> > > > @@ -396,13 +398,17 @@ static int ocmem_dev_probe(struct
-> > > > platform_device
-> > > > *pdev)>
-> > > > 
-> > > >     return 0;
-> > > >   
-> > > >   err_clk_disable:
-> > > > -   clk_bulk_disable_unprepare(ARRAY_SIZE(ocmem_clks), ocmem_clks);
-> > > > +   clk_disable_unprepare(ocmem->core_clk);
-> > > > +   clk_disable_unprepare(ocmem->iface_clk);
-> > > > 
-> > > >     return ret;
-> > > >   
-> > > >   }
-> > > >   
-> > > >   static int ocmem_dev_remove(struct platform_device *pdev)
-> > > >   {
-> > > > 
-> > > > -   clk_bulk_disable_unprepare(ARRAY_SIZE(ocmem_clks), ocmem_clks);
-> > > > +   struct ocmem *ocmem = platform_get_drvdata(pdev);
-> > > > +
-> > > > +   clk_disable_unprepare(ocmem->core_clk);
-> > > > +   clk_disable_unprepare(ocmem->iface_clk);
-> > > > 
-> > > >     return 0;
-> > > >   
-> > > >   }
+>   [    3.111779] ocmem fdd00000.sram: 2 ports, 1 regions, 512 macros, not interleaved
+> 
+> we now get the correct value of:
+> 
+>   [    3.129672] ocmem fdd00000.sram: 2 ports, 1 regions, 2 macros, not interleaved
+> 
+> Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+> ---
+>  drivers/soc/qcom/ocmem.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+> index 199fe9872035..c3e78411c637 100644
+> --- a/drivers/soc/qcom/ocmem.c
+> +++ b/drivers/soc/qcom/ocmem.c
+> @@ -76,8 +76,8 @@ struct ocmem {
+>  #define OCMEM_REG_GFX_MPU_START			0x00001004
+>  #define OCMEM_REG_GFX_MPU_END			0x00001008
+>  
+> -#define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_PREP(0x0000000f, (val))
+> -#define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_PREP(0x00003f00, (val))
+> +#define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_GET(0x0000000f, (val))
+> +#define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_GET(0x00003f00, (val))
+>  
+>  #define OCMEM_HW_PROFILE_LAST_REGN_HALFSIZE	0x00010000
+>  #define OCMEM_HW_PROFILE_INTERLEAVING		0x00020000
+> 
 
-
-
+-- 
+Kind Regards,
+Caleb (they/them)
