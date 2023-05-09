@@ -2,129 +2,131 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5ACADC77B75
-	for <phone-devel@archiver.kernel.org>; Tue,  9 May 2023 21:11:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AAA68C7EE23
+	for <phone-devel@archiver.kernel.org>; Tue,  9 May 2023 21:16:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234515AbjEIVLJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 May 2023 17:11:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60164 "EHLO
+        id S234876AbjEIVQx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 9 May 2023 17:16:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbjEIVLI (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 May 2023 17:11:08 -0400
+        with ESMTP id S229498AbjEIVQv (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 May 2023 17:16:51 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C47862721;
-        Tue,  9 May 2023 14:11:06 -0700 (PDT)
-Received: from g550jk.localnet (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 8BBBFC7021;
-        Tue,  9 May 2023 21:10:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA08E198A;
+        Tue,  9 May 2023 14:16:50 -0700 (PDT)
+Received: from [192.168.178.23] (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id BCC68CED2C;
+        Tue,  9 May 2023 21:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1683666634; bh=G9P8GwMxO4SBZr0FJcEpePiv5xT0e9d3vve9PbLG8Cw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=ZFfUb9SBKGHc5M/ZQAqEuqxT2fF58wYdUFzK8kD86b/CdmObg9QviLsIl3ZFFBo2Q
-         ldWAbkw4sES7KBqg/u5glgbHPHy0g0ANNfamaSpgnGGtOtrQ5+9I71NX2S3tOJdy7D
-         nXtAL+7TrG79CnNixyNHMWhxmqkC5jPxnYBbmYfM=
+        t=1683667009; bh=lG1YLFdMOPVJ2F7GFyS2fMzqWjY+cPFGdTsfQNs2tc8=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=it1Zm6hgLJcnZN4/m2xwv5+5LuUrmBj1TuNeEsaKO8pbOrQExtgsSgyUEOT3aHrkY
+         puf1GVAFBVKnEMsEEP/E/WZ9wNmVtcaVGzK6qi884gdEo0LVRdqYBIamt2FCjML8PH
+         WGurMij36F/XTNDpGqpCwwcvHrScvkc/dFAZ5H/o=
 From:   Luca Weiss <luca@z3ntu.xyz>
+Date:   Tue, 09 May 2023 23:16:35 +0200
+Subject: [PATCH 1/3] ARM: dts: qcom: msm8226: Use XO from rpmcc where
+ possible
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230509-msm8226-mmcc-parents-v1-1-83a2dfc986ab@z3ntu.xyz>
+References: <20230509-msm8226-mmcc-parents-v1-0-83a2dfc986ab@z3ntu.xyz>
+In-Reply-To: <20230509-msm8226-mmcc-parents-v1-0-83a2dfc986ab@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Rob Clark <robdclark@gmail.com>,
-        Brian Masney <masneyb@onstation.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH 4/6] dt-bindings: sram: qcom,ocmem: Add msm8226 support
-Date:   Tue, 09 May 2023 23:10:33 +0200
-Message-ID: <8118185.EvYhyI6sBW@z3ntu.xyz>
-In-Reply-To: <bac82710-da26-7acf-4375-5c5346c01705@linaro.org>
-References: <20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz>
- <2449951.tdWV9SEqCh@z3ntu.xyz>
- <bac82710-da26-7acf-4375-5c5346c01705@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Taniya Das <tdas@codeaurora.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2209; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=lG1YLFdMOPVJ2F7GFyS2fMzqWjY+cPFGdTsfQNs2tc8=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkWrg970Ak6m7eyWn4rwysuprLFQDhVlQ6GbF7t
+ aGrzHOKU8GJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZFq4PQAKCRBy2EO4nU3X
+ VneHEACvGxKaU63dFjSuFQxhvuadm71Bi4y1YvCaMBB8d3N9rQIpNVdWOhIfqg22fYAUVFJ3JUO
+ PS8KziLR9LH/z/aD8LanXYxqPoP//Px/Z9KsOs2e8jqyF/CuOoMSpLet/zgE0UI46SCPmkQEaUS
+ 9s4QNzgj3QrxWwfC3kf0lOMizAJxO92DfSmZ7FLQFeklRUuIanmDIWwR+da9D9zRXD2Y6XR4jrU
+ iDGfSm/cYcvcwo99jO2Q0pDNtVnjtK0YxBvY7QocPfwoVu8qt/gWooWQbls+oej7xRvnwx8WsIF
+ Tm+fkm2SMLgIrKH+54c4R+opzcdmrhOvJ4y9aL/msFrguryvSE2bYJ1HetOgtq3MHedRPoy9e6J
+ CtMnoEpvG1FB+pm3f3oPR5H2rB1RyDfgDVGdBNSbchFKh3Yovcy1edqDX/45EVKNPEqiZjKU/ip
+ ITWEkarNCLN53XtZ6LghMJxprD02ukGNbhXMHP6qA+Hd5eudmmyN20aPER2mm6ZHW8U0Iors1xS
+ CnXZGq0dPGTehQP23+bPRtzrHe5BbXIytrZW3exzNrJUtA/odZAa69m+rXyWbfc4DLdT4hyxjd0
+ hbvzd4McraKMC2JNijevWuo7hEjKYjFfNd+jNFMHEVOZIjvBPJ3HKmDeAHrT7nT4YvnVHCVerwR
+ S/TuExYQZWUDe/A==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Dienstag, 9. Mai 2023 22:00:03 CEST Konrad Dybcio wrote:
-> On 9.05.2023 18:44, Luca Weiss wrote:
-> > On Montag, 8. Mai 2023 09:39:22 CEST Konrad Dybcio wrote:
-> >> On 7.05.2023 11:12, Luca Weiss wrote:
-> >>> Add the compatible for the OCMEM found on msm8226 which compared to
-> >>> msm8974 only has a core clock and no iface clock.
-> >>> 
-> >>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> >>> ---
-> >>> 
-> >>>  Documentation/devicetree/bindings/sram/qcom,ocmem.yaml | 6 +++++-
-> >>>  1 file changed, 5 insertions(+), 1 deletion(-)
-> >>> 
-> >>> diff --git a/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
-> >>> b/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml index
-> >>> 4bbf6db0b6bd..515f0d8ec641 100644
-> >>> --- a/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
-> >>> +++ b/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
-> >>> @@ -15,7 +15,9 @@ description: |
-> >>> 
-> >>>  properties:
-> >>>    compatible:
-> >>> -    const: qcom,msm8974-ocmem
-> >>> +    enum:
-> >>> +      - qcom,msm8226-ocmem
-> >>> +      - qcom,msm8974-ocmem
-> >> 
-> >> Any chance you could read the revision field on both and add comments
-> >> like:
-> >> 
-> >> - qcom,msm8974-ocmem # vX.Y
-> > 
-> > Do you mean the OCMEM_REG_HW_VERSION register?
-> 
-> Yep
-> 
-> It's currently not read in the
-> 
-> > driver so no idea what the value is - without adding some code.
-> 
-> Would be appreciated!
+The xo clock being used everywhere actually goes via the RPM. Since the
+rpmcc driver recently got support for this clock we can use this now.
 
-Appears msm8974 has v1.4.0 and msm8226 has v1.1.0. Will include this in the
-next revision.
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ arch/arm/boot/dts/qcom-msm8226.dtsi | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-Regards
-Luca
+diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
+index 42acb9ddb8cc..4dd4e26c73a2 100644
+--- a/arch/arm/boot/dts/qcom-msm8226.dtsi
++++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
+@@ -176,7 +176,7 @@ sdhc_1: mmc@f9824900 {
+ 			interrupt-names = "hc_irq", "pwr_irq";
+ 			clocks = <&gcc GCC_SDCC1_AHB_CLK>,
+ 				 <&gcc GCC_SDCC1_APPS_CLK>,
+-				 <&xo_board>;
++				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
+ 			clock-names = "iface", "core", "xo";
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&sdhc1_default_state>;
+@@ -192,7 +192,7 @@ sdhc_2: mmc@f98a4900 {
+ 			interrupt-names = "hc_irq", "pwr_irq";
+ 			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
+ 				 <&gcc GCC_SDCC2_APPS_CLK>,
+-				 <&xo_board>;
++				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
+ 			clock-names = "iface", "core", "xo";
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&sdhc2_default_state>;
+@@ -208,7 +208,7 @@ sdhc_3: mmc@f9864900 {
+ 			interrupt-names = "hc_irq", "pwr_irq";
+ 			clocks = <&gcc GCC_SDCC3_AHB_CLK>,
+ 				 <&gcc GCC_SDCC3_APPS_CLK>,
+-				 <&xo_board>;
++				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
+ 			clock-names = "iface", "core", "xo";
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&sdhc3_default_state>;
+@@ -362,7 +362,8 @@ usb_hs_phy: phy {
+ 					compatible = "qcom,usb-hs-phy-msm8226",
+ 						     "qcom,usb-hs-phy";
+ 					#phy-cells = <0>;
+-					clocks = <&xo_board>, <&gcc GCC_USB2A_PHY_SLEEP_CLK>;
++					clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>,
++						 <&gcc GCC_USB2A_PHY_SLEEP_CLK>;
+ 					clock-names = "ref", "sleep";
+ 					resets = <&gcc GCC_USB2A_PHY_BCR>, <&usb 0>;
+ 					reset-names = "phy", "por";
+@@ -617,7 +618,7 @@ adsp: remoteproc@fe200000 {
+ 			power-domains = <&rpmpd MSM8226_VDDCX>;
+ 			power-domain-names = "cx";
+ 
+-			clocks = <&xo_board>;
++			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>;
+ 			clock-names = "xo";
+ 
+ 			memory-region = <&adsp_region>;
 
-> 
-> Konrad
-> 
-> >>>    reg:
-> >>>      items:
-> >>> @@ -28,11 +30,13 @@ properties:
-> >>>        - const: mem
-> >>>    
-> >>>    clocks:
-> >>> +    minItems: 1
-> >>> 
-> >>>      items:
-> >>>        - description: Core clock
-> >>>        - description: Interface clock
-> >> 
-> >> allOf: if: properties: compatible: 8974 / then: clock(s|-names):
-> >> minItems: 2> 
-> > Sure, can update
-> > 
-> >> Konrad
-> >> 
-> >>>    clock-names:
-> >>> +    minItems: 1
-> >>> 
-> >>>      items:
-> >>>        - const: core
-> >>>        - const: iface
-
-
-
+-- 
+2.40.1
 
