@@ -2,45 +2,67 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA161C7EE22
-	for <phone-devel@archiver.kernel.org>; Tue,  9 May 2023 07:25:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3AAAEC77B75
+	for <phone-devel@archiver.kernel.org>; Tue,  9 May 2023 09:18:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229672AbjEIHZb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 May 2023 03:25:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47758 "EHLO
+        id S234877AbjEIJSm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 9 May 2023 05:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbjEIHZa (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 May 2023 03:25:30 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51A833C01;
-        Tue,  9 May 2023 00:25:25 -0700 (PDT)
-Received: from mercury (195-23-45-170.net.novis.pt [195.23.45.170])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: sre)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 3F4846602E9A;
-        Tue,  9 May 2023 08:25:23 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1683617123;
-        bh=QCGh3lAq+6+hpDBYQxXcBfE6/30zBXbnB7ZBE++m248=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nbkomN7Tvzin8TZA38FF5NgF4U8q7JxzcIvLI/mS2qExUPWu4K1Pmp/uXSG8nUb5W
-         av1+C2BiCxFT8XMwTFMFSpYFeDTSAQPcJgvWxvizi2KOrleGoHaQrmh4PghboHLNjc
-         jmqnKGNmqZfP5+o+5cFG9IICTO3LWq9J6br3rHIrJgzkag01vr1olRlXwmyGeGga3n
-         85WFg+ihga7Xno16IjeoYU7XL8IXw7V3DkRSNTDkSisbhixWAupiJXYRjyxKDJTkBJ
-         IBoSONEQXINbI6nWEd0kr6rNEzDf7nRk8XKj3yVfB4p4kBH/ImwsAzAga6qJjd5izL
-         prorw28QfDmiA==
-Received: by mercury (Postfix, from userid 1000)
-        id 9F0C71066FA2; Tue,  9 May 2023 09:25:20 +0200 (CEST)
-Date:   Tue, 9 May 2023 09:25:20 +0200
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Lee Jones <lee@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+        with ESMTP id S234811AbjEIJSe (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 May 2023 05:18:34 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F26E4EC3
+        for <phone-devel@vger.kernel.org>; Tue,  9 May 2023 02:18:31 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-50bc456cc39so8489012a12.1
+        for <phone-devel@vger.kernel.org>; Tue, 09 May 2023 02:18:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683623909; x=1686215909;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=I7FYzpXB4JAY8REQ6N17vUTvC/w9zteq+juJjffaEPw=;
+        b=UUacsfduaEDjEk0zUYDO7xJxrrsNgrmVWgnHsIaXTBKhdhoRSBOS29z6L/WVyViKWg
+         eiO3U10ZPG9+TqsanbULhqMK6vWctoMsZipmmyPjNq4567fWWceEq1idjIQ1AnqqGdkJ
+         ctmHwgityKDDvjP6CrnN1kHU7GIELc+tykk0gQh17QoXeaSh0JMgVDPX2Sogi8RrS7yE
+         ogR9ctz+11I568K64CbVxvB+hBwSeoVr/+dgSU8zceo/Bd0jidxAaKbFwA76vhQLshby
+         DsZe9k1oUEGoWXyZ39gNpZfNVa1RCReUv6TYsRRIK9yY27+5uGfv5hgVJgtf+fv8NnF1
+         kGQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683623909; x=1686215909;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I7FYzpXB4JAY8REQ6N17vUTvC/w9zteq+juJjffaEPw=;
+        b=WZd1f+qNKzFlrArgYYiKc75MOvOq+3phTlMrKvr52j76Dpg+VblHPaWtizUo2reKe3
+         S8dpkkztHsFoMV4fAaeoPqrjJsZnb42DpxAki5F6HFF4PivsxkXsDjbRkSTu/ew/qkPr
+         2/aRCG5pmjEkojPBeMOECMmCYvGImM+3IydylRYBPkFnOmuQQYlzSUuOI1N4+eLUGZcY
+         4AkiWsSUCcTv5UtDCWlbGjimYYB4gBzSdo2qaycJunw3HEomDW0PWWyBb/cL3w5kvngd
+         TMnZET2jMgncLqrT1Kjx1Z4kRh3SjG0x6r3IsQq9QQxXwDmk4k9qEereFVZzqzqSBCMe
+         4lZQ==
+X-Gm-Message-State: AC+VfDxeVGwA8FZijWdAC3+ObgpCDSR9TCTh3lJ6ASKBfATrhVHURXSV
+        87m9xEL3EXvuaHgXobrpDH7W/g==
+X-Google-Smtp-Source: ACHHUZ4EVVEITh4T8aJgcY8S930Dxi8YCadGVtavtGcs/hxxLvRYRvnzqhUfz+9hiFzzvr259Kr4Pw==
+X-Received: by 2002:a17:907:6d20:b0:969:e304:441d with SMTP id sa32-20020a1709076d2000b00969e304441dmr2095523ejc.4.1683623909486;
+        Tue, 09 May 2023 02:18:29 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:d0d5:7818:2f46:5e76? ([2a02:810d:15c0:828:d0d5:7818:2f46:5e76])
+        by smtp.gmail.com with ESMTPSA id s7-20020a170906220700b0096792b56c47sm1048546ejs.167.2023.05.09.02.18.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 May 2023 02:18:28 -0700 (PDT)
+Message-ID: <fbfd02d5-183a-118c-5743-dee6c9367bf6@linaro.org>
+Date:   Tue, 9 May 2023 11:18:27 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 8/8] dt-bindings: Add rt5033 mfd, regulator and charger
+Content-Language: en-US
+To:     Jakob Hauser <jahau@rocketmail.com>,
+        Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Beomho Seo <beomho.seo@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Beomho Seo <beomho.seo@samsung.com>,
         Chanwoo Choi <cw00.choi@samsung.com>,
         Stephan Gerhold <stephan@gerhold.net>,
         Raymond Hackley <raymondhackley@protonmail.com>,
@@ -50,214 +72,225 @@ Cc:     Lee Jones <lee@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
         Henrik Grimler <henrik@grimler.se>, linux-pm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v4 7/8] power: supply: rt5033_battery: Adopt status
- property from charger
-Message-ID: <20230509072520.3e4jibiis654izom@mercury.elektranox.org>
 References: <20230506155435.3005-1-jahau@rocketmail.com>
- <20230506155435.3005-8-jahau@rocketmail.com>
- <20230508113518.nfwchl5wusmnkjp6@mercury.elektranox.org>
- <899d6604-7b15-ac37-c624-987a2bb7875e@rocketmail.com>
- <20230508220605.kderc3nihhezouit@mercury.elektranox.org>
- <55fd9835-4246-00e8-b641-c8b0ee3f7e22@rocketmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="iet7ywalyankg5v4"
-Content-Disposition: inline
-In-Reply-To: <55fd9835-4246-00e8-b641-c8b0ee3f7e22@rocketmail.com>
+ <20230506155435.3005-9-jahau@rocketmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230506155435.3005-9-jahau@rocketmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 06/05/2023 17:54, Jakob Hauser wrote:
+> Add device tree binding documentation for rt5033 multifunction device, voltage
+> regulator and battery charger.
+> 
+> Cc: Beomho Seo <beomho.seo@samsung.com>
+> Cc: Chanwoo Choi <cw00.choi@samsung.com>
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+> The patch is based on next-20230505.
+> 
+> The drivers for rt5033 (mfd) and rt5033-regulator are existing. Whereas the
+> the driver rt5033-charger is new in this patchset.
+> 
+>  .../bindings/mfd/richtek,rt5033.yaml          | 113 ++++++++++++++++++
+>  .../power/supply/richtek,rt5033-charger.yaml  |  64 ++++++++++
+>  2 files changed, 177 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
+>  create mode 100644 Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml b/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
+> new file mode 100644
+> index 000000000000..0aa0a556b50f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
+> @@ -0,0 +1,113 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mfd/richtek,rt5033.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Richtek RT5033 Power Management Integrated Circuit
+> +
+> +maintainers:
+> +  - Jakob Hauser <jahau@rocketmail.com>
+> +
+> +description:
+> +  RT5033 is a multifunction device which includes battery charger, fuel gauge,
+> +  flash LED current source, LDO and synchronous Buck converter for portable
+> +  applications. It is interfaced to host controller using I2C interface. The
+> +  battery fuel gauge uses a separate I2C bus.
+> +
+> +properties:
+> +  compatible:
+> +    const: richtek,rt5033
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  regulators:
+> +    description:
+> +      The regulators of RT5033 have to be instantiated under a sub-node named
+> +      "regulators". For SAFE_LDO voltage there is only one value of 4.9 V. LDO
+> +      voltage ranges from 1.2 V to 3.0 V in 0.1 V steps. BUCK voltage ranges
+> +      from 1.0 V to 3.0 V in 0.1 V steps.
+> +    type: object
+> +    patternProperties:
+> +      "^(SAFE_LDO|LDO|BUCK)$":
+> +        type: object
+> +        $ref: /schemas/regulator/regulator.yaml#
+> +        unevaluatedProperties: false
+> +    additionalProperties: false
+> +
+> +  charger:
+> +    type: object
+> +    $ref: /schemas/power/supply/richtek,rt5033-charger.yaml#
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    battery: battery {
+> +        compatible = "simple-battery";
+> +        precharge-current-microamp = <450000>;
+> +        constant-charge-current-max-microamp = <1000000>;
+> +        charge-term-current-microamp = <150000>;
+> +        precharge-upper-limit-microvolt = <3500000>;
+> +        constant-charge-voltage-max-microvolt = <4350000>;
+> +    };
+> +
+> +    extcon {
+> +        usb_con: connector {
+> +            compatible = "usb-b-connector";
+> +            label = "micro-USB";
+> +            type = "micro";
+> +        };
+> +    };
+> +
+> +    i2c {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        pmic@34 {
+> +            compatible = "richtek,rt5033";
+> +            reg = <0x34>;
+> +
+> +            interrupt-parent = <&msmgpio>;
+> +            interrupts = <62 IRQ_TYPE_EDGE_FALLING>;
+> +
+> +            pinctrl-names = "default";
+> +            pinctrl-0 = <&pmic_int_default>;
+> +
+> +            regulators {
+> +                safe_ldo_reg: SAFE_LDO {
+> +                    regulator-name = "SAFE_LDO";
+> +                    regulator-min-microvolt = <4900000>;
+> +                    regulator-max-microvolt = <4900000>;
+> +                    regulator-always-on;
+> +                };
+> +                ldo_reg: LDO {
+> +                    regulator-name = "LDO";
+> +                    regulator-min-microvolt = <2800000>;
+> +                    regulator-max-microvolt = <2800000>;
+> +                };
+> +                buck_reg: BUCK {
+> +                    regulator-name = "BUCK";
+> +                    regulator-min-microvolt = <1200000>;
+> +                    regulator-max-microvolt = <1200000>;
+> +                };
+> +            };
+> +
+> +            charger {
+> +                compatible = "richtek,rt5033-charger";
+> +                monitored-battery = <&battery>;
+> +                connector = <&usb_con>;
+> +            };
+> +        };
+> +    };
+> diff --git a/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml b/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
+> new file mode 100644
+> index 000000000000..b8607cc6ec63
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
+> @@ -0,0 +1,64 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/power/supply/richtek,rt5033-charger.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Richtek RT5033 PIMC Battery Charger
 
---iet7ywalyankg5v4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+PMIC
 
-Hi,
+> +
+> +maintainers:
+> +  - Jakob Hauser <jahau@rocketmail.com>
+> +
+> +description:
+> +  The battery charger of the multifunction device RT5033 has to be instantiated
+> +  under sub-node named "charger" using the following format.
+> +
+> +properties:
+> +  compatible:
+> +    const: richtek,rt5033-charger
+> +
+> +  monitored-battery:
+> +    description: |
+> +      Phandle to the monitored battery according to battery.yaml. The battery
+> +      node needs to contain five parameters.
+> +
+> +      precharge-current-microamp:
+> +      Current of pre-charge mode. The pre-charge current levels are 350 mA
+> +      to 650 mA programmed by I2C per 100 mA.
+> +
+> +      constant-charge-current-max-microamp:
+> +      Current of fast-charge mode. The fast-charge current levels are 700 mA
+> +      to 2000 mA programmed by I2C per 100 mA.
+> +
+> +      charge-term-current-microamp:
+> +      This property is end of charge current. Its level ranges from 150 mA
+> +      to 600 mA. Between 150 mA and 300 mA in 50 mA steps, between 300 mA and
+> +      600 mA in 100 mA steps.
+> +
+> +      precharge-upper-limit-microvolt:
+> +      Voltage of pre-charge mode. If the battery voltage is below the pre-charge
+> +      threshold voltage, the charger is in pre-charge mode with pre-charge
+> +      current. Its levels are 2.3 V to 3.8 V programmed by I2C per 0.1 V.
+> +
+> +      constant-charge-voltage-max-microvolt:
+> +      Battery regulation voltage of constant voltage mode. This voltage levels
+> +      from 3.65 V to 4.4 V by I2C per 0.025 V.
+> +
+> +  connector:
+> +    description:
+> +      Phandle to a USB connector according to usb-connector.yaml. The connector
+> +      should be a child of the extcon device.
+> +    maxItems: 1
 
-On Tue, May 09, 2023 at 03:01:32AM +0200, Jakob Hauser wrote:
-> On 09.05.23 00:06, Sebastian Reichel wrote:
-> > On Mon, May 08, 2023 at 11:18:28PM +0200, Jakob Hauser wrote:
-> > > On 08.05.23 13:35, Sebastian Reichel wrote:
-> > > > On Sat, May 06, 2023 at 05:54:34PM +0200, Jakob Hauser wrote:
-> > > > > The rt5033-battery fuelgauge can't get a status by itself. The rt=
-5033-charger
-> > > > > can, let's get this value.
-> > > > >=20
-> > > > > Tested-by: Raymond Hackley <raymondhackley@protonmail.com>
-> > > > > Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
-> > > > > ---
-> > > > >    drivers/power/supply/rt5033_battery.c | 24 +++++++++++++++++++=
-+++++
-> > > > >    1 file changed, 24 insertions(+)
-> > > > >=20
-> > > > > diff --git a/drivers/power/supply/rt5033_battery.c b/drivers/powe=
-r/supply/rt5033_battery.c
-> > > > > index 5c04cf305219..a6520716d813 100644
-> > > > > --- a/drivers/power/supply/rt5033_battery.c
-> > > > > +++ b/drivers/power/supply/rt5033_battery.c
-> > > > > @@ -12,6 +12,26 @@
-> > > > >    #include <linux/mfd/rt5033-private.h>
-> > > > >    #include <linux/mfd/rt5033.h>
-> > > > > +static int rt5033_battery_get_status(struct i2c_client *client)
-> > > > > +{
-> > > > > +	struct power_supply *charger;
-> > > > > +	union power_supply_propval val;
-> > > > > +	int ret;
-> > > > > +
-> > > > > +	charger =3D power_supply_get_by_name("rt5033-charger");
-> > > > > +	if (!charger)
-> > > > > +		return POWER_SUPPLY_STATUS_UNKNOWN;
-> > > > > +
-> > > > > +	ret =3D power_supply_get_property(charger, POWER_SUPPLY_PROP_ST=
-ATUS, &val);
-> > > > > +	if (ret) {
-> > > > > +		power_supply_put(charger);
-> > > > > +		return POWER_SUPPLY_STATUS_UNKNOWN;
-> > > > > +	}
-> > > >=20
-> > > > struct rt5033_battery *battery =3D i2c_get_clientdata(client);
-> > > > ret =3D power_supply_get_property_from_supplier(battery->psy, POWER=
-_SUPPLY_PROP_STATUS, &val);
-> > > > if (ret)
-> > > >       val.intval =3D POWER_SUPPLY_STATUS_UNKNOWN;
-> > >=20
-> > > I don't think this works. There is no direct relationship between
-> > > rt5033-charger and rt5033-battery. They operate independently from ea=
-ch
-> > > other.
-> >=20
-> > That should be fine as long as the supply dependency is properly declar=
-ed.
-> >=20
-> > > I had a short try and the status property of rt5033-battery was "unkn=
-own".
-> > >=20
-> > > Just for the record, the full function I tried was:
-> > >=20
-> > > static int rt5033_battery_get_status(struct i2c_client *client)
-> > > {
-> > >          struct rt5033_battery *battery =3D i2c_get_clientdata(client=
-);
-> > >          union power_supply_propval val;
-> > >          int ret;
-> > >=20
-> > >          ret =3D power_supply_get_property_from_supplier(battery->psy,
-> > >                                               POWER_SUPPLY_PROP_STATU=
-S,
-> > >                                               &val);
-> > >          if (ret)
-> > >                  val.intval =3D POWER_SUPPLY_STATUS_UNKNOWN;
-> > >=20
-> > >          return val.intval;
-> > > }
-> > >=20
-> > > Later on I added a read-out of the "ret" value. It is "-19". I guess =
-that's
-> > > the "return -ENODEV;" from function
-> > > power_supply_get_property_from_supplier(). [2]
-> > >=20
-> > > [2] https://github.com/torvalds/linux/blob/v6.4-rc1/drivers/power/sup=
-ply/power_supply_core.c#L397-L421
-> >=20
-> > I suppose your DT is missing the connection between the charger and
-> > the battery:
-> >=20
-> > rt5033_charger: charger {
-> >      compatible =3D "rt5033-charger";
-> >      ...
-> > }
-> >=20
-> > fuel-gauge {
-> >      compatible =3D "rt5033-battery";
-> >      ...
-> >      power-supplies =3D <&rt5033_charger>; // you are probably missing =
-this
-> > };
-> >=20
-> > See also Documentation/devicetree/bindings/power/supply/power-supply.ya=
-ml
->=20
-> ...
->=20
-> Thanks for the hints.
->=20
-> This leads to updating the dt-bindings because adding the "power-supplies"
-> property is important to be aware of.
+Missing type/ref... but then you will notice you have conflicting ref
+with existing connector. connector is usb-connector.yaml, not phandle. I
+am not sure if we need generic property, so let's go with device
+specific - richtek,usb-connector
 
-It should already be part of the binding, because richtek,rt5033-battery.ya=
-ml has
 
-allOf:
-  - $ref: power-supply.yaml#
+> +
+> +required:
+> +  - monitored-battery
+Best regards,
+Krzysztof
 
-> Btw. first it didn't work. It took me quite some time to debug. I needed =
-to
-> add "psy_cfg.of_node =3D client->dev.of_node;" to the rt5033-battery probe
-> function.
->=20
-> Now it works. However, there is a new problem. The battery driver gets
-> probed first. The charger driver a bit later. In the meantime the battery
-> driver spams dmesg with several "Failed to register power supply" because
-> the charger driver isn't available yet. Once the charger driver is there,=
- it
-> works fine and dmesg becomes silent.
->=20
-> With the current state of the patchset:
-> dmesg | grep rt5033
-> [   13.628030] rt5033 6-0034: Device found (rev. 6)
-> [   13.633552] rt5033-led: Failed to locate of_node [id: -1]
-> [   13.790478] rt5033-charger rt5033-charger: DMA mask not set
->=20
-> With the changes discussed here:
-> dmesg | grep rt5033
-> [   15.741915] rt5033-battery 4-0035: Failed to register power supply
-> [   15.752894] rt5033-battery 4-0035: Failed to register power supply
-> [   15.795458] rt5033-battery 4-0035: Failed to register power supply
-> [   15.910760] rt5033-battery 4-0035: Failed to register power supply
-> [   15.913187] rt5033 6-0034: Device found (rev. 6)
-> [   15.914341] rt5033-led: Failed to locate of_node [id: -1]
-> [   15.920052] rt5033-battery 4-0035: Failed to register power supply
-> [   15.927262] rt5033-battery 4-0035: Failed to register power supply
-> [   16.017131] rt5033-battery 4-0035: Failed to register power supply
-> [   16.017401] rt5033-charger rt5033-charger: DMA mask not set
->=20
-> The message is comming from the rt5033-battery probe function, it's the
-> power_supply_register() that fails.
->=20
-> Any ideas what could be done about this?
-
-Replace the dev_err() with dev_err_probe():
-
-if (IS_ERR(battery->psy))
-    return dev_err_probe(&client->dev, PTR_ERR(battery->psy), "Failed to re=
-gister power supply\n");
-
-That will avoid printing an error for -EPROBE_DEFER.
-
-Greetings,
-
--- Sebastian
-
---iet7ywalyankg5v4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmRZ9VUACgkQ2O7X88g7
-+pr/Ag//eBPYQF9XRUneLbrr48ySTBKivB7FqbLJzfJg1llA51Bu95ykEeNTnyFv
-EyrTeoQTUJt+NeXg7wpnNbWSgqpX0pLpuQBe9zekWfHYtPkdzc4zO2C1wngtCZfG
-lldbyh4HdDEU1rFw79EUlWpilgO68BNBl1cPl8RQsztWcNKqTRtoVRga5aTxq8q3
-LkC7j5q2StxkVgKGwbBhYXb+mTQER8lTP05gT9B+173jCtkuOz7Rs+JdJLEbuKVG
-rxFqYNps9oOMzhUXxHJ1zeXvZ8s3oxzt+iWN7wiMMYTgc0GVIlwFo+RCxXSb+boM
-tSQ7PWnhungvLXu+gP9KSzNLWgz+x7Ei+MjJcMvMs95s7sG8G8UtsByooxm9CCxG
-5GMavPtLppwbPTvimy5HuqFWsZmu2dcLRTszVgugceXA1ExCKJ4r75dDyGiRxkiM
-FAD0i4eJ4HPR3i9h9tq8xOGPWNncUlj2xdthdE7qMP3vOtm+1borjIaXL7W53VbM
-WkVE/DO2NTU7dJLS2sGK+IPmMO/pIOwyL/Od6yw7rvZxS5zR7+BsEupr6UYyxiFg
-pcei8d2mAIFtZjVK+90zPeB6BbpHAAbvwycKFE6/wDI1ltA7ym7tvdKVzZYy2It5
-tGOAakYDtqAQjSTHe1iyXnAES3LwG9g5KpPZZT89BZ3vfnLJ2vQ=
-=18VY
------END PGP SIGNATURE-----
-
---iet7ywalyankg5v4--
