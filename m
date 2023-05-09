@@ -2,232 +2,151 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 30144C77B7C
-	for <phone-devel@archiver.kernel.org>; Tue,  9 May 2023 17:11:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E816BC7EE23
+	for <phone-devel@archiver.kernel.org>; Tue,  9 May 2023 20:00:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235307AbjEIRLG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 May 2023 13:11:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57190 "EHLO
+        id S229549AbjEIUAL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 9 May 2023 16:00:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235333AbjEIRKx (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 May 2023 13:10:53 -0400
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF1E95BB3
-        for <phone-devel@vger.kernel.org>; Tue,  9 May 2023 10:09:06 -0700 (PDT)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-55a44a2637bso91420027b3.2
-        for <phone-devel@vger.kernel.org>; Tue, 09 May 2023 10:09:06 -0700 (PDT)
+        with ESMTP id S229738AbjEIUAJ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 May 2023 16:00:09 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86DC73C0D
+        for <phone-devel@vger.kernel.org>; Tue,  9 May 2023 13:00:07 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4eed764a10cso7010271e87.0
+        for <phone-devel@vger.kernel.org>; Tue, 09 May 2023 13:00:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683652142; x=1686244142;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jfm0KBQ9DR7STkQ4Ltw82WaUahZ6L6awN8JsOodBX0Y=;
-        b=q3rd0xFj4mUdfXj00xHuH6LHaGJOT9PUs56S0vR5/NFQI8qTRY1k4iYPpEJWOVyycU
-         igFKK0Wbossj63BbPvvkkcbBWl8S6sbUIz0j8poT29XMyUxZjBxtvCGgvRpnw4V6T/7o
-         uteMFHakrZMtU2WGqWp5zZDFeouOtQeNM6bDSwvqpnJgit4D1xTAVSU0vq9KoEPFaILp
-         E4m4uFmzaBlI++ouNpDzePi+YQi3jOhQKlguPwRBXIqgZedvN0NIGk6KISKFxIXThOVd
-         JVRjQ2CWUDnXnou62SsiozIDJ4vQuJhGCS0Gb4QJXiWL5g2QqMHyXqArR54s0blAO1vm
-         bsog==
+        d=linaro.org; s=google; t=1683662406; x=1686254406;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kVOCE83AC4Gr91kmxIdlrW0vfunolQmhkIU/7LEMiDE=;
+        b=NSrXThnpwz8+ZOFEPNw+j54wWZw7gB2eE9Van5BJqd/Cz3HrmHy0NXEC90QlkYTeS9
+         IcT557kLFTiOkgt/76f+xT/Gg1IZoxLgsK413vjUSU1lioKNML81JYd/yV32t1KS7Dhx
+         iBh+uA7Ftb4Po7J7SSqGIkVbdTfuia5fBt3zpdFV59fO/zKlV8gz24KLcjpVUNx7N665
+         1WoS0kep/R8TGFrknEmtymbEDZ4HnHy1mrUZsJYEkgavgRiOFJQ7sWsc/Z1YcNhY28cq
+         SnImENNqDhvY1gWFH2hmlTCms/bAPLh2qe5pk3PUKJotKFBXVzaJ46GmE1hXeYCTDbM2
+         c6+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683652142; x=1686244142;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jfm0KBQ9DR7STkQ4Ltw82WaUahZ6L6awN8JsOodBX0Y=;
-        b=lQf/PjdE8xUmCeI2fz5PW8kjfS0PS6Hb9l8T6NybDcNTzMW3Ro4FJB9uRRunDUFtHx
-         z1kRZFwk61UpTILqE/+WoQDrwxxNsFC/PkWf0phDZMHKVkxy7k8l9WiaydQKHpwNCVyE
-         pWI14AAlDW85dTz+rR6wEndD6l44v+E8DP9RrB98vA57QOaIv4JNAeIFTJqWnKG1WZmK
-         Z2DpraMPHl3OJDhH3WJmfd5uXARzZCJFHN96/0sIeSBCvR18cjZoTXRItRNIx8QTC8IV
-         IInLjOulokucxNZ/bnG187MWQUs6VaP48XoPgdSVUSgyRDAp+VZ4vMfST1xLTmHOdAnU
-         iUTA==
-X-Gm-Message-State: AC+VfDwfCWOgWcr3tHBH6TEYr0/KEbFhY5cIOXiVQJ/TUFh7AigdPojm
-        iFpY4NORGAT+0X2u6M6Hdlwbs49fr300tcss2LbM9Q==
-X-Google-Smtp-Source: ACHHUZ79SEncwK77xAH4WbetBCAEI5m8i94f3WEMyQoN08RpAzmlGqR1IKtmAprylYYBaUwuT7FrSWJO0yWteZs+vMs=
-X-Received: by 2002:a25:d1d0:0:b0:b9d:f271:49b3 with SMTP id
- i199-20020a25d1d0000000b00b9df27149b3mr13598722ybg.65.1683652141784; Tue, 09
- May 2023 10:09:01 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683662406; x=1686254406;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kVOCE83AC4Gr91kmxIdlrW0vfunolQmhkIU/7LEMiDE=;
+        b=c5ZHtgqSt0jn8xH2+ZW6QzDpAUG/8p27P5n1qmtQpcKTozv13g34ghJPQwnhsehH2d
+         TN9lNspyycqeobjfPB2xWb20CRrzyFPj3AEfm5u7EsJQKR2Tmtq9CXnu0+or9jfHezxl
+         n9uOTV2cXeTHmkuEqOhulW65usOD/gNAIC5c+VlAohMz5F+n1SE58dCiWi4DrmbRJf/J
+         efo1ocp7eue35GgVDhLJvHVwaTEGFKZ549F8OnJBxPM5VHTBqNhvLSyNnpJbmNFra3Nd
+         Uwh9hou89b3sfXLn9l5iXOqp/RTOMZcSy1JZ8Wo3yY30GEZvChZz4pY5CUk0lzP4KeqA
+         kEjA==
+X-Gm-Message-State: AC+VfDwVVQxL6bhNnp8OhDoEFSwh1A7h9ZpqY5y//kb9K2Z9jbYaCF7F
+        5xDFx+r6Qi3Rini47c9Q7u6Q4w==
+X-Google-Smtp-Source: ACHHUZ6qzrmG/Y537HA1L9EPntjH1URRCnYapiYRs8xzhJtOeE/NQ7s6NscPh1CMAuIhRORb0KHxNw==
+X-Received: by 2002:ac2:5389:0:b0:4e9:afb3:d56a with SMTP id g9-20020ac25389000000b004e9afb3d56amr1216663lfh.7.1683662405724;
+        Tue, 09 May 2023 13:00:05 -0700 (PDT)
+Received: from [192.168.1.101] (abyl248.neoplus.adsl.tpnet.pl. [83.9.31.248])
+        by smtp.gmail.com with ESMTPSA id c14-20020a19760e000000b004efe6c36135sm444273lff.299.2023.05.09.13.00.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 May 2023 13:00:05 -0700 (PDT)
+Message-ID: <bac82710-da26-7acf-4375-5c5346c01705@linaro.org>
+Date:   Tue, 9 May 2023 22:00:03 +0200
 MIME-Version: 1.0
-References: <20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz>
- <20230506-msm8226-ocmem-v1-3-3e24e2724f01@z3ntu.xyz> <c9d319a6-36c6-b58c-70ce-65578fd364c3@linaro.org>
- <3479852.e9J7NaK4W3@z3ntu.xyz>
-In-Reply-To: <3479852.e9J7NaK4W3@z3ntu.xyz>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Tue, 9 May 2023 20:08:50 +0300
-Message-ID: <CAA8EJpo_x=q8yBSUV=owYvQqD30YQbhU51iKHUjr-_doLk6HPw@mail.gmail.com>
-Subject: Re: [PATCH 3/6] soc: qcom: ocmem: make iface clock optional
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH 4/6] dt-bindings: sram: qcom,ocmem: Add msm8226 support
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Clark <robdclark@gmail.com>,
         Brian Masney <masneyb@onstation.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+References: <20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz>
+ <20230506-msm8226-ocmem-v1-4-3e24e2724f01@z3ntu.xyz>
+ <29d1d210-8752-56b4-34be-8b078c639d36@linaro.org>
+ <2449951.tdWV9SEqCh@z3ntu.xyz>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <2449951.tdWV9SEqCh@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 9 May 2023 at 19:47, Luca Weiss <luca@z3ntu.xyz> wrote:
->
-> On Montag, 8. Mai 2023 13:34:23 CEST Dmitry Baryshkov wrote:
-> > On 07/05/2023 12:12, Luca Weiss wrote:
-> > > Some platforms such as msm8226 do not have an iface clk. Since clk_bulk
-> > > APIs don't offer to a way to treat some clocks as optional simply add
-> > > core_clk and iface_clk members to our drvdata.
-> >
-> > What about using devm_clk_bulk_get_optional()? I think it would be
-> > simpler this way.
->
-> Using that function both clocks would be optional which may or may not be a
-> bad idea. Not sure how much binding yaml and/or driver should try and catch
-> bad usages of the driver.
-
-The generic rule is that we should not validate the DT unless required
-(e.g. because of the possibility of legacy DT which used other
-bindings or contained less information).
-
-> But honestly the current usage of the bulk API seems a bit clunky, we have a
-> static array of clocks that we use (not in struct ocmem for some reason) and
-> then we refer to the core clock by index? Feels better to just have the two
-> clock references in the device struct and then we're good.
->
-> Let me know.
->
-> Regards
-> Luca
->
-> >
-> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > ---
-> > >
-> > >   drivers/soc/qcom/ocmem.c | 42 ++++++++++++++++++++++++------------------
-> > >   1 file changed, 24 insertions(+), 18 deletions(-)
-> > >
-> > > diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-> > > index a11a955a1327..6235065d3bc9 100644
-> > > --- a/drivers/soc/qcom/ocmem.c
-> > > +++ b/drivers/soc/qcom/ocmem.c
-> > > @@ -54,6 +54,8 @@ struct ocmem {
-> > >
-> > >     const struct ocmem_config *config;
-> > >     struct resource *memory;
-> > >     void __iomem *mmio;
-> > >
-> > > +   struct clk *core_clk;
-> > > +   struct clk *iface_clk;
-> > >
-> > >     unsigned int num_ports;
-> > >     unsigned int num_macros;
-> > >     bool interleaved;
-> > >
-> > > @@ -91,16 +93,6 @@ struct ocmem {
-> > >
-> > >   #define OCMEM_PSGSC_CTL_MACRO2_MODE(val)  FIELD_PREP(0x00000700,
-> (val))
-> > >   #define OCMEM_PSGSC_CTL_MACRO3_MODE(val)  FIELD_PREP(0x00007000,
-> (val))
-> > >
-> > > -#define OCMEM_CLK_CORE_IDX                 0
-> > > -static struct clk_bulk_data ocmem_clks[] = {
-> > > -   {
-> > > -           .id = "core",
-> > > -   },
-> > > -   {
-> > > -           .id = "iface",
-> > > -   },
-> > > -};
-> > > -
-> > >
-> > >   static inline void ocmem_write(struct ocmem *ocmem, u32 reg, u32 data)
-> > >   {
-> > >
-> > >     writel(data, ocmem->mmio + reg);
-> > >
-> > > @@ -316,9 +308,15 @@ static int ocmem_dev_probe(struct platform_device
-> > > *pdev)>
-> > >     ocmem->dev = dev;
-> > >     ocmem->config = device_get_match_data(dev);
-> > >
-> > > -   ret = devm_clk_bulk_get(dev, ARRAY_SIZE(ocmem_clks), ocmem_clks);
-> > > -   if (ret)
-> > > -           return dev_err_probe(dev, ret, "Unable to get clocks\n");
-> > > +   ocmem->core_clk = devm_clk_get(dev, "core");
-> > > +   if (IS_ERR(ocmem->core_clk))
-> > > +           return dev_err_probe(dev, PTR_ERR(ocmem->core_clk),
-> > > +                                "Unable to get core clock\n");
-> > > +
-> > > +   ocmem->iface_clk = devm_clk_get_optional(dev, "iface");
-> > > +   if (IS_ERR(ocmem->iface_clk))
-> > > +           return dev_err_probe(dev, PTR_ERR(ocmem->iface_clk),
-> > > +                                "Unable to get iface clock\n");
-> > >
-> > >     ocmem->mmio = devm_platform_ioremap_resource_byname(pdev, "ctrl");
-> > >     if (IS_ERR(ocmem->mmio))
-> > >
-> > > @@ -333,11 +331,15 @@ static int ocmem_dev_probe(struct platform_device
-> > > *pdev)>
-> > >     }
-> > >
-> > >     /* The core clock is synchronous with graphics */
-> > >
-> > > -   WARN_ON(clk_set_rate(ocmem_clks[OCMEM_CLK_CORE_IDX].clk, 1000) < 0);
-> > > +   WARN_ON(clk_set_rate(ocmem->core_clk, 1000) < 0);
-> > > +
-> > > +   ret = clk_prepare_enable(ocmem->core_clk);
-> > > +   if (ret)
-> > > +           return dev_err_probe(ocmem->dev, ret, "Failed to enable
-> core clock\n");
-> > >
-> > > -   ret = clk_bulk_prepare_enable(ARRAY_SIZE(ocmem_clks), ocmem_clks);
-> > > +   ret = clk_prepare_enable(ocmem->iface_clk);
-> > >
-> > >     if (ret)
-> > >
-> > > -           return dev_err_probe(ocmem->dev, ret, "Failed to enable
-> clocks\n");
-> > > +           return dev_err_probe(ocmem->dev, ret, "Failed to enable
-> iface
-> > > clock\n");
-> > >
-> > >     if (qcom_scm_restore_sec_cfg_available()) {
-> > >
-> > >             dev_dbg(dev, "configuring scm\n");
-> > >
-> > > @@ -396,13 +398,17 @@ static int ocmem_dev_probe(struct platform_device
-> > > *pdev)>
-> > >     return 0;
-> > >
-> > >   err_clk_disable:
-> > > -   clk_bulk_disable_unprepare(ARRAY_SIZE(ocmem_clks), ocmem_clks);
-> > > +   clk_disable_unprepare(ocmem->core_clk);
-> > > +   clk_disable_unprepare(ocmem->iface_clk);
-> > >
-> > >     return ret;
-> > >
-> > >   }
-> > >
-> > >   static int ocmem_dev_remove(struct platform_device *pdev)
-> > >   {
-> > >
-> > > -   clk_bulk_disable_unprepare(ARRAY_SIZE(ocmem_clks), ocmem_clks);
-> > > +   struct ocmem *ocmem = platform_get_drvdata(pdev);
-> > > +
-> > > +   clk_disable_unprepare(ocmem->core_clk);
-> > > +   clk_disable_unprepare(ocmem->iface_clk);
-> > >
-> > >     return 0;
-> > >
-> > >   }
->
->
->
->
 
 
--- 
-With best wishes
-Dmitry
+On 9.05.2023 18:44, Luca Weiss wrote:
+> On Montag, 8. Mai 2023 09:39:22 CEST Konrad Dybcio wrote:
+>> On 7.05.2023 11:12, Luca Weiss wrote:
+>>> Add the compatible for the OCMEM found on msm8226 which compared to
+>>> msm8974 only has a core clock and no iface clock.
+>>>
+>>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+>>> ---
+>>>
+>>>  Documentation/devicetree/bindings/sram/qcom,ocmem.yaml | 6 +++++-
+>>>  1 file changed, 5 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
+>>> b/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml index
+>>> 4bbf6db0b6bd..515f0d8ec641 100644
+>>> --- a/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
+>>> +++ b/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
+>>> @@ -15,7 +15,9 @@ description: |
+>>>
+>>>  properties:
+>>>    compatible:
+>>> -    const: qcom,msm8974-ocmem
+>>> +    enum:
+>>> +      - qcom,msm8226-ocmem
+>>> +      - qcom,msm8974-ocmem
+>>
+>> Any chance you could read the revision field on both and add comments
+>> like:
+>>
+>> - qcom,msm8974-ocmem # vX.Y
+> 
+> Do you mean the OCMEM_REG_HW_VERSION register?
+Yep
+
+It's currently not read in the 
+> driver so no idea what the value is - without adding some code.
+Would be appreciated!
+
+Konrad
+> 
+>>
+>>>    reg:
+>>>      items:
+>>> @@ -28,11 +30,13 @@ properties:
+>>>        - const: mem
+>>>    
+>>>    clocks:
+>>> +    minItems: 1
+>>>
+>>>      items:
+>>>        - description: Core clock
+>>>        - description: Interface clock
+>>
+>> allOf: if: properties: compatible: 8974 / then: clock(s|-names): minItems: 2
+> 
+> Sure, can update
+> 
+>>
+>> Konrad
+>>
+>>>    clock-names:
+>>> +    minItems: 1
+>>>
+>>>      items:
+>>>        - const: core
+>>>        - const: iface
+> 
+> 
+> 
+> 
