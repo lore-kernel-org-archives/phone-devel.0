@@ -2,46 +2,47 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C915FC77B7C
-	for <phone-devel@archiver.kernel.org>; Tue,  9 May 2023 16:45:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A63CC77B75
+	for <phone-devel@archiver.kernel.org>; Tue,  9 May 2023 16:47:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229610AbjEIQpX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 May 2023 12:45:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58136 "EHLO
+        id S233784AbjEIQru (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 9 May 2023 12:47:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbjEIQpW (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 May 2023 12:45:22 -0400
+        with ESMTP id S234098AbjEIQrt (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 May 2023 12:47:49 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 814A81BD3;
-        Tue,  9 May 2023 09:45:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC2A19B9;
+        Tue,  9 May 2023 09:47:46 -0700 (PDT)
 Received: from g550jk.localnet (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id D871ACED0E;
-        Tue,  9 May 2023 16:44:49 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 64EAFCCC1C;
+        Tue,  9 May 2023 16:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1683650690; bh=6jShHaL5Bxrkqcx7amecTm8ijF8yqLIpR690Y68mxYA=;
+        t=1683650864; bh=YmGG9f/8rs6Ur5dwQlDvBfm/MjPA8vPjlGeXn8jDq4U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=oY6birehiAO16hvkqDpR9EjJcuBAJMudXoAQD6T0CrXuusB10+hfH9dYFb0pOhtVY
-         zql0oo+JWog3pmO8EJuYL+tCbQuggxUhgUM88KsEue4K3/UEGXjRuX2EgCHuE/EyjT
-         kHchJcZ2u2vutda8g3egxFLyMNuVsTrl8sA6qnHw=
+        b=C1toL+z2apKYOKaOtjqiM/Qvm+An9ikl14FEZm3O2cP3KsA4eoFCiqR9iricnsJ3Z
+         dgne9CjGFeFX5smuW9AycrFBhjZ8CgvnNe8VxAmEWnxCbOCQDTYA70gBGP8OoSCRAr
+         4Yy80kpczNfND68B/hW+UDVQTlyOPm5Gt+epkr0I=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Clark <robdclark@gmail.com>,
         Brian Masney <masneyb@onstation.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org
-Subject: Re: [PATCH 4/6] dt-bindings: sram: qcom,ocmem: Add msm8226 support
-Date:   Tue, 09 May 2023 18:44:49 +0200
-Message-ID: <2449951.tdWV9SEqCh@z3ntu.xyz>
-In-Reply-To: <29d1d210-8752-56b4-34be-8b078c639d36@linaro.org>
+Subject: Re: [PATCH 3/6] soc: qcom: ocmem: make iface clock optional
+Date:   Tue, 09 May 2023 18:47:43 +0200
+Message-ID: <3479852.e9J7NaK4W3@z3ntu.xyz>
+In-Reply-To: <c9d319a6-36c6-b58c-70ce-65578fd364c3@linaro.org>
 References: <20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz>
- <20230506-msm8226-ocmem-v1-4-3e24e2724f01@z3ntu.xyz>
- <29d1d210-8752-56b4-34be-8b078c639d36@linaro.org>
+ <20230506-msm8226-ocmem-v1-3-3e24e2724f01@z3ntu.xyz>
+ <c9d319a6-36c6-b58c-70ce-65578fd364c3@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -49,65 +50,151 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Montag, 8. Mai 2023 09:39:22 CEST Konrad Dybcio wrote:
-> On 7.05.2023 11:12, Luca Weiss wrote:
-> > Add the compatible for the OCMEM found on msm8226 which compared to
-> > msm8974 only has a core clock and no iface clock.
-> > 
+On Montag, 8. Mai 2023 13:34:23 CEST Dmitry Baryshkov wrote:
+> On 07/05/2023 12:12, Luca Weiss wrote:
+> > Some platforms such as msm8226 do not have an iface clk. Since clk_bulk
+> > APIs don't offer to a way to treat some clocks as optional simply add
+> > core_clk and iface_clk members to our drvdata.
+> 
+> What about using devm_clk_bulk_get_optional()? I think it would be
+> simpler this way.
+
+Using that function both clocks would be optional which may or may not be a 
+bad idea. Not sure how much binding yaml and/or driver should try and catch 
+bad usages of the driver.
+
+But honestly the current usage of the bulk API seems a bit clunky, we have a 
+static array of clocks that we use (not in struct ocmem for some reason) and 
+then we refer to the core clock by index? Feels better to just have the two 
+clock references in the device struct and then we're good.
+
+Let me know.
+
+Regards
+Luca
+
+> 
 > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > > ---
 > > 
-> >  Documentation/devicetree/bindings/sram/qcom,ocmem.yaml | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> >   drivers/soc/qcom/ocmem.c | 42 ++++++++++++++++++++++++------------------
+> >   1 file changed, 24 insertions(+), 18 deletions(-)
 > > 
-> > diff --git a/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
-> > b/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml index
-> > 4bbf6db0b6bd..515f0d8ec641 100644
-> > --- a/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
-> > +++ b/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
-> > @@ -15,7 +15,9 @@ description: |
+> > diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+> > index a11a955a1327..6235065d3bc9 100644
+> > --- a/drivers/soc/qcom/ocmem.c
+> > +++ b/drivers/soc/qcom/ocmem.c
+> > @@ -54,6 +54,8 @@ struct ocmem {
 > > 
-> >  properties:
-> >    compatible:
-> > -    const: qcom,msm8974-ocmem
-> > +    enum:
-> > +      - qcom,msm8226-ocmem
-> > +      - qcom,msm8974-ocmem
-> 
-> Any chance you could read the revision field on both and add comments
-> like:
-> 
-> - qcom,msm8974-ocmem # vX.Y
-
-Do you mean the OCMEM_REG_HW_VERSION register? It's currently not read in the 
-driver so no idea what the value is - without adding some code.
-
-> 
-> >    reg:
-> >      items:
-> > @@ -28,11 +30,13 @@ properties:
-> >        - const: mem
-> >    
-> >    clocks:
-> > +    minItems: 1
+> >   	const struct ocmem_config *config;
+> >   	struct resource *memory;
+> >   	void __iomem *mmio;
 > > 
-> >      items:
-> >        - description: Core clock
-> >        - description: Interface clock
-> 
-> allOf: if: properties: compatible: 8974 / then: clock(s|-names): minItems: 2
-
-Sure, can update
-
-> 
-> Konrad
-> 
-> >    clock-names:
-> > +    minItems: 1
+> > +	struct clk *core_clk;
+> > +	struct clk *iface_clk;
 > > 
-> >      items:
-> >        - const: core
-> >        - const: iface
+> >   	unsigned int num_ports;
+> >   	unsigned int num_macros;
+> >   	bool interleaved;
+> > 
+> > @@ -91,16 +93,6 @@ struct ocmem {
+> > 
+> >   #define OCMEM_PSGSC_CTL_MACRO2_MODE(val)	FIELD_PREP(0x00000700, 
+(val))
+> >   #define OCMEM_PSGSC_CTL_MACRO3_MODE(val)	FIELD_PREP(0x00007000, 
+(val))
+> > 
+> > -#define OCMEM_CLK_CORE_IDX			0
+> > -static struct clk_bulk_data ocmem_clks[] = {
+> > -	{
+> > -		.id = "core",
+> > -	},
+> > -	{
+> > -		.id = "iface",
+> > -	},
+> > -};
+> > -
+> > 
+> >   static inline void ocmem_write(struct ocmem *ocmem, u32 reg, u32 data)
+> >   {
+> >   
+> >   	writel(data, ocmem->mmio + reg);
+> > 
+> > @@ -316,9 +308,15 @@ static int ocmem_dev_probe(struct platform_device
+> > *pdev)> 
+> >   	ocmem->dev = dev;
+> >   	ocmem->config = device_get_match_data(dev);
+> > 
+> > -	ret = devm_clk_bulk_get(dev, ARRAY_SIZE(ocmem_clks), ocmem_clks);
+> > -	if (ret)
+> > -		return dev_err_probe(dev, ret, "Unable to get clocks\n");
+> > +	ocmem->core_clk = devm_clk_get(dev, "core");
+> > +	if (IS_ERR(ocmem->core_clk))
+> > +		return dev_err_probe(dev, PTR_ERR(ocmem->core_clk),
+> > +				     "Unable to get core clock\n");
+> > +
+> > +	ocmem->iface_clk = devm_clk_get_optional(dev, "iface");
+> > +	if (IS_ERR(ocmem->iface_clk))
+> > +		return dev_err_probe(dev, PTR_ERR(ocmem->iface_clk),
+> > +				     "Unable to get iface clock\n");
+> > 
+> >   	ocmem->mmio = devm_platform_ioremap_resource_byname(pdev, "ctrl");
+> >   	if (IS_ERR(ocmem->mmio))
+> > 
+> > @@ -333,11 +331,15 @@ static int ocmem_dev_probe(struct platform_device
+> > *pdev)> 
+> >   	}
+> >   	
+> >   	/* The core clock is synchronous with graphics */
+> > 
+> > -	WARN_ON(clk_set_rate(ocmem_clks[OCMEM_CLK_CORE_IDX].clk, 1000) < 0);
+> > +	WARN_ON(clk_set_rate(ocmem->core_clk, 1000) < 0);
+> > +
+> > +	ret = clk_prepare_enable(ocmem->core_clk);
+> > +	if (ret)
+> > +		return dev_err_probe(ocmem->dev, ret, "Failed to enable 
+core clock\n");
+> > 
+> > -	ret = clk_bulk_prepare_enable(ARRAY_SIZE(ocmem_clks), ocmem_clks);
+> > +	ret = clk_prepare_enable(ocmem->iface_clk);
+> > 
+> >   	if (ret)
+> > 
+> > -		return dev_err_probe(ocmem->dev, ret, "Failed to enable 
+clocks\n");
+> > +		return dev_err_probe(ocmem->dev, ret, "Failed to enable 
+iface
+> > clock\n");
+> > 
+> >   	if (qcom_scm_restore_sec_cfg_available()) {
+> >   	
+> >   		dev_dbg(dev, "configuring scm\n");
+> > 
+> > @@ -396,13 +398,17 @@ static int ocmem_dev_probe(struct platform_device
+> > *pdev)> 
+> >   	return 0;
+> >   
+> >   err_clk_disable:
+> > -	clk_bulk_disable_unprepare(ARRAY_SIZE(ocmem_clks), ocmem_clks);
+> > +	clk_disable_unprepare(ocmem->core_clk);
+> > +	clk_disable_unprepare(ocmem->iface_clk);
+> > 
+> >   	return ret;
+> >   
+> >   }
+> >   
+> >   static int ocmem_dev_remove(struct platform_device *pdev)
+> >   {
+> > 
+> > -	clk_bulk_disable_unprepare(ARRAY_SIZE(ocmem_clks), ocmem_clks);
+> > +	struct ocmem *ocmem = platform_get_drvdata(pdev);
+> > +
+> > +	clk_disable_unprepare(ocmem->core_clk);
+> > +	clk_disable_unprepare(ocmem->iface_clk);
+> > 
+> >   	return 0;
+> >   
+> >   }
 
 
 
