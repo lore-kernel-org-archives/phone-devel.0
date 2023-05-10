@@ -2,179 +2,123 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1675AC77B75
-	for <phone-devel@archiver.kernel.org>; Tue,  9 May 2023 23:08:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA42DC77B7C
+	for <phone-devel@archiver.kernel.org>; Wed, 10 May 2023 06:47:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234671AbjEIXIg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 9 May 2023 19:08:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48906 "EHLO
+        id S236031AbjEJGrN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 10 May 2023 02:47:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229559AbjEIXIf (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 9 May 2023 19:08:35 -0400
-Received: from sonic314-20.consmr.mail.ir2.yahoo.com (sonic314-20.consmr.mail.ir2.yahoo.com [77.238.177.146])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A445030DF
-        for <phone-devel@vger.kernel.org>; Tue,  9 May 2023 16:08:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1683673712; bh=zp2c2cd4lwZqhHjdjVdFDoJiq8XP9spy5T+/kzV/2H8=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=YRKXllKXPkJjYzNv9qUn3bC9XiUM23lukQasnHqq2W1UqGsSKqPdxt3V2MnGpmFkQn5zCMYikVz0UGL2SfftP+icM6rtlWT2DLV15u3J/BMv5AW52SGSWmI75e9O7wvdZyQZkDK7QAgrRD/n1A3wrNUPZKYvjzGH236s3NC2S8Uv6xpM/xxmyE0o1yurPIPJhn2Up0a4Y2lviXPa/DDVZZkg17VMxtcE2g4h+TH0fRvD8ChugXD2PAR5ldWCFQ93FBWSBLFYezbtSgn00O7o08IWVmD6fftYErUmupms+baHoPhTTg3fd/wy55YroBPGzJSuiBosPOP1Ew5g2M8WeQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1683673712; bh=3bt0fE80k7Rxcpi/4RtFXVoaDMa2eRmUO6BCOqhmq0y=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=nrTo17tYlokj40BgbBijWTlsKKhPeajoeEOjjuEv/3S5IvB/xFzOcKaf7MwNb7hpXqTR2Z1zzvnCRVojZcgpsmN1nOUc7v4gXYsU95vJmV9ZeQLJ+COCzo7H0JDeESFKqvJF3Wpp74cLiA3u9OMQ3dUjEoV8f/TMBW1dloRPRBsGxwnX6YnIWvQ2xBk5GI05FthgKOSaWJjKpj+Y5oEp/i82NTh5WzmB6gttbI6sQMKdQUMb3J1dTkGOHLB0q1Jy0jzxRgNl/76ITfO2TyYWj6Mrpwr2mewnmiGoJ2iiyHIt4TXkgSeBzXwv7u95Y7VFXJEnVCexo+irQFzKdmih5A==
-X-YMail-OSG: dNLcEmYVM1mtV84oVum2i3KZLiY3yU5rrycjCHcF4QT5y8aEcJO1WCu.JAhZAJk
- 40_kCiH9IfTaVjYm0NqQjCcA2qpfNUqXzNWyIyOFsTmSZLvjJwsohVYDTF6vNpTq29o7.sdEu7AB
- 53O4ylzhAbqqpf0L6eswdgvdYHIJ3Hk1r58D4YysDeHRsSN5R2MVhpkqq0DOqHyMjCG.EcrzVov.
- W4.s8kHfFK.nHoa22P4hIz3euAf1Ltpr_BaTG7of6sbMVULOe39l3kQYa7i377._HKFJ.zglwi6U
- OX_fAvFFE7_nJ4sTOorDiAaiM0cSNfhQ4u5WzGpZW3dTqGM3FXHB3CAtrRJkntKvpYy.KI6xEbLT
- JMfo93q9bjfTOjwcVbDuwUeTJPlegnRQ_nbG6Nuvz9fe0s8j5XtLP5DGdtjP20RsP2IptNIxqzUg
- vW8RsF7WxaMCAtPGAkvVUO2ELosASXZOiRmlBdZ.5E5xlGu.sTcqeQwnDOd5VpmxaHM7ls6P8MHW
- UTUKYQdG3xulyFF.x21Z51r8SQ_uk1kgGsWGYzEPHA0WQTeGGadL04gA7zVMjoxU0EzA2sz8IZkD
- DxgWpPXfjXN1fe.wfogCSuPZTrmSVZMjBJ58OMsr2RMmLo0UTmEBKlozjrCyycL_79U7F2IBzVsV
- VI9UMKfIp4oEn.jXqqGxC.T0URthaOeFxXzA5wTe9j4SDgTklBxHWgyMWTfusWW5S2GQCRiIB9BJ
- 9PKk.jOa3bdDtPayGqtbpBp29BckvK0lAuJwc7kKOTulEk4X8QzLDFZH92hNwFhIXjUJwDHpp3Ij
- y15e_oSLqYos6k7ZoBva8KJ7pFGTHrnI4J.ySZsKC.S8y0.9uUC1o7PIAT6UhfpmK3w9QebxUuJC
- iD0nI5bu_fzbS78EcLAYs3.tejdw_R2.ENcO44_af2Dkx2lCAHfWmsURPMy3TdRIFK9wQcXUYux0
- fpM5rEW45S_0taEVQtMPe2giwv.7Y8w.4VHbhYJewXk45ak2O_H8SqJDutZA3NH0jwWuFgnKxAaD
- _1QP8xz65CB2UtKE09WnaLEdMMmxqsMB.DLLHFGXW7vN9STqAVb9cK_vyhtJGyvwDb1QjLA2VTiV
- g02cOsRJMyd0sBFitUkPDIC784qSzdsHODqMj6b3lL7duQLUi_K_LLRhEhNT.O2tSAxOUAgzrJCj
- sjMStT65WIhxYH2XrE1PxD5GjZMhobxnxCLgW8QlUs0.4l1qEcnElGpBT31shBxTNVBletNosGEK
- 7Okt_r.EGK8bNejBShVxsEat_mK58JENr4T6s4MyMPInC1wpoTJ3CqYxHEuRSq_aJR7V8KUHhV5x
- J2IO56F_hRfhbEqvR_rLdVwvRjoXlwdvvA0DrjHTP4eNOvpasxbi_Ta7Mc80FHksioQ60C6PWQig
- QUYR0MCZiEDSJFDlghIPcXVcJihxW27r5V7UAgxpGReJt42m0CQaTUGFFnBtiLRNh6zFBz4Z7DCK
- RPIHTqmeIBJfLgg.8RC18tgEF.PdFRTX9erZ6pYCX2gZn0asuLQzjwkX0XCfa.ULNOl9v9iyRtxK
- ww77YRxvdTl3Z3h1BnzQCIPBEfKOmuD5bZdaDCwK6lMoPvmPlUGOjaKarla7JBgsdJe00g6UtFj3
- QORtP5uUg1O7wGwLgBY0KnzwHqM61zp01xzL3yb9PmCtDhW6zn03SPifG5fSoeYw.PnP7FxZPah8
- CRbvJwymUF2zicLbKhCrDLh1jOHRnEVhMM7Vm3K2qbUIzVZ1_PWghw3mxy6hgaK4nkYWqHflv2Qs
- Nu50Sz1vCAzKh4f0QXDVnJL0Ystr6xsNBzSPV6eGMQsiF0Nou1ASRE5ITbuHRr5vAkIj3VhKdzv2
- GwtMu8dsYltGMhnutjY5YUXeDOazFHbqIgX7mX463.bAXeiyluNUTzphyQfyA19zMuw6X382rNnZ
- dBrDaSv4B_A_f9ypv4_4l.xftl5VBFxUCehWMjymvKirANPwxnwdCSGtLYBctkCt7yOKHxJR3_Ur
- 9qt77GMm7pnuh7csqxXH5C9RuqtWdOeZzRHhJY31PG9bWCaYmI5ZnIweM7U9n0_plz80g1KnT2PJ
- EfBpADrqwPFEoEyZmF0AYFBMvBigM6Hockr58zh.BDyanyUpbgaYNFZ10dvQSftoXv.sCKy1C0Z0
- oA0BssVDZp9x8thtnfLpeXtnlFRuCZet6ailZxPTir0eaDzqgGNin1aRHCiTOa5aVvMyHK8xyG4s
- 4ytzISpX9PsUN1f2E2H0UEivKDl9zL5OsPzPEUcpu6K06Pytv5pFMztSwFSapbDQAHcjDTLqI69a
- gJKLgLQ--
-X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: 1c7df8da-ea60-4aad-8ef7-a78a43a32e11
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ir2.yahoo.com with HTTP; Tue, 9 May 2023 23:08:32 +0000
-Received: by hermes--production-ir2-74cd8fc864-db5p9 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 837ff3d45b33d672f05185fc55fb6f66;
-          Tue, 09 May 2023 23:08:31 +0000 (UTC)
-Message-ID: <74ab2851-1ca4-dec1-850a-1811e5a7e22f@rocketmail.com>
-Date:   Wed, 10 May 2023 01:08:30 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v4 8/8] dt-bindings: Add rt5033 mfd, regulator and charger
-Content-Language: de-DE
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Beomho Seo <beomho.seo@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Raymond Hackley <raymondhackley@protonmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Henrik Grimler <henrik@grimler.se>, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20230506155435.3005-1-jahau@rocketmail.com>
- <20230506155435.3005-9-jahau@rocketmail.com>
- <fbfd02d5-183a-118c-5743-dee6c9367bf6@linaro.org>
-From:   Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <fbfd02d5-183a-118c-5743-dee6c9367bf6@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.21471 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+        with ESMTP id S235524AbjEJGrM (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Wed, 10 May 2023 02:47:12 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE3FD268D
+        for <phone-devel@vger.kernel.org>; Tue,  9 May 2023 23:47:10 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-965f7bdab6bso1051800566b.3
+        for <phone-devel@vger.kernel.org>; Tue, 09 May 2023 23:47:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1683701229; x=1686293229;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H//eZGlEJS/35YEhZwhGTWp7oEUZuMDqjOLd1KsW/Dk=;
+        b=je9yKiewPEqrhtPLrQqwPtxJPJwBxoylsg0o6HBvbvHaeaOCMwK2O/K63M9TCx581q
+         KMMEW5t63lQuVAUf1xo+olgAm9NiF6RqPLHCm5i+3249dA9gRah3aSuUILXkeOSWeZbG
+         nfU0EK3FPHsTNEA2Rzwnv+XtlWgxujJ+iefazA07nVnVP+axplHu7lDjdx8lkxhv/I1h
+         z9kYI5FDwrnlSuLvF0oE2woDtXjyXIGcPgE9ii0MybB5S5nbkMhDjAd0K6pMvyE+H0pd
+         xr+vKV4JEGeOhwrPDqHa3bBrM65Isgzv9dun7qEXa6Y9blruDQQRXwqOIl8ZCJ6oRCUs
+         Eu9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683701229; x=1686293229;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=H//eZGlEJS/35YEhZwhGTWp7oEUZuMDqjOLd1KsW/Dk=;
+        b=OHBCyxrDZJRVYeAqR3PX4x8YbaB5hJOILjkmkeOjioP/YIp6/3EO+UKMoTDuGaBcaz
+         Djxi/rTMTwZEx5sXfGCm7pDSSDptlOXDNs3JFKaom/vNoCI8C43G5Hi7ClQGViVwAzcb
+         9vh8yTMWESWi24F21DKOy+uQeznIfxKcewM/2VDedsFUSHI3f97SPleAYhDd2sRYWJnz
+         pC3jk+M3fERRuYysTqiWxTqtBbMejiS3V4GgWp+Yiplu2um7Be16KdLfJnm1PcQo7gqi
+         uShmsHIC8bjIgbYNfpkQZxSL71cP/MLi6dgo3a+9sx9CblT0jnrMRhqKBIXPNH//c/mR
+         51dQ==
+X-Gm-Message-State: AC+VfDw5zFodtOzRB3Qzpw22ox9LoFTqrw3xLNMGOZEV3UKBrU0EOXqJ
+        FP9HHhldzpsQTvraJT2zdwLIVQ==
+X-Google-Smtp-Source: ACHHUZ6oiJs4TBNp02xqpzNHKA1CCtOPDo+5SW3bC6Ts4SsxO/AZwHbz9fCAzOA3jOsEMZHvm8MaFg==
+X-Received: by 2002:a17:906:fd8d:b0:94f:3521:394 with SMTP id xa13-20020a170906fd8d00b0094f35210394mr13259517ejb.51.1683701229329;
+        Tue, 09 May 2023 23:47:09 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id pk25-20020a170906d7b900b00965d9892bafsm2273306ejb.111.2023.05.09.23.47.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 May 2023 23:47:08 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Wed, 10 May 2023 08:47:07 +0200
+Message-Id: <CSIE9TYTQUHL.3E769C2Y4RAAO@otso>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: pm7250b: make SID configurable
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
+        "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Konrad Dybcio" <konrad.dybcio@somainline.org>
+X-Mailer: aerc 0.15.1
+References: <20230407-pm7250b-sid-v1-0-fc648478cc25@fairphone.com>
+ <20230407-pm7250b-sid-v1-2-fc648478cc25@fairphone.com>
+ <f52524da-719b-790f-ad2c-0c3f313d9fe9@linaro.org>
+In-Reply-To: <f52524da-719b-790f-ad2c-0c3f313d9fe9@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 Hi Krzysztof,
 
-On 09.05.23 11:18, Krzysztof Kozlowski wrote:
-> On 06/05/2023 17:54, Jakob Hauser wrote:
+On Fri Apr 7, 2023 at 10:27 AM CEST, Krzysztof Kozlowski wrote:
+> On 07/04/2023 09:45, Luca Weiss wrote:
+> > Like other Qualcomm PMICs the PM7250B can be used on different addresse=
+s
+> > on the SPMI bus. Use similar defines like the PMK8350 to make this
+> > possible.
+> >=20
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> >  arch/arm64/boot/dts/qcom/pm7250b.dtsi | 23 ++++++++++++++++-------
+> >  1 file changed, 16 insertions(+), 7 deletions(-)
+> >=20
+> > diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot/dt=
+s/qcom/pm7250b.dtsi
+> > index daa6f1d30efa..eeb476edc79a 100644
+> > --- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+> > +++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+> > @@ -7,6 +7,15 @@
+> >  #include <dt-bindings/interrupt-controller/irq.h>
+> >  #include <dt-bindings/spmi/spmi.h>
+> > =20
+> > +/* This PMIC can be configured to be at different SIDs */
+> > +#ifndef PM7250B_SID
+> > +	#define PM7250B_SID 2
+>
+> Drop indentation, although anyway I am against this. Please don't bring
+> new patterns of this at least till we settle previous discussion.
+>
+> https://lore.kernel.org/linux-arm-msm/46658cbb-fff5-e98b-fdad-88fa683a9c7=
+5@linaro.org/
 
-...
+What's the outcome of the discussion? For this PMIC it's totally enough
+to have the SID configurable like in this patch, I don't think this PMIC
+will be included twice in a board - at least I'm not aware of such a
+configuration.
 
->> diff --git a/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml b/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
->> new file mode 100644
->> index 000000000000..b8607cc6ec63
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
->> @@ -0,0 +1,64 @@
->> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/power/supply/richtek,rt5033-charger.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Richtek RT5033 PIMC Battery Charger
-> 
-> PMIC
+Regards
+Luca
 
-Good catch.
+>
+>
+> Best regards,
+> Krzysztof
 
->> +
->> +maintainers:
->> +  - Jakob Hauser <jahau@rocketmail.com>
->> +
->> +description:
->> +  The battery charger of the multifunction device RT5033 has to be instantiated
->> +  under sub-node named "charger" using the following format.
->> +
->> +properties:
->> +  compatible:
->> +    const: richtek,rt5033-charger
->> +
->> +  monitored-battery:
->> +    description: |
->> +      Phandle to the monitored battery according to battery.yaml. The battery
->> +      node needs to contain five parameters.
->> +
->> +      precharge-current-microamp:
->> +      Current of pre-charge mode. The pre-charge current levels are 350 mA
->> +      to 650 mA programmed by I2C per 100 mA.
->> +
->> +      constant-charge-current-max-microamp:
->> +      Current of fast-charge mode. The fast-charge current levels are 700 mA
->> +      to 2000 mA programmed by I2C per 100 mA.
->> +
->> +      charge-term-current-microamp:
->> +      This property is end of charge current. Its level ranges from 150 mA
->> +      to 600 mA. Between 150 mA and 300 mA in 50 mA steps, between 300 mA and
->> +      600 mA in 100 mA steps.
->> +
->> +      precharge-upper-limit-microvolt:
->> +      Voltage of pre-charge mode. If the battery voltage is below the pre-charge
->> +      threshold voltage, the charger is in pre-charge mode with pre-charge
->> +      current. Its levels are 2.3 V to 3.8 V programmed by I2C per 0.1 V.
->> +
->> +      constant-charge-voltage-max-microvolt:
->> +      Battery regulation voltage of constant voltage mode. This voltage levels
->> +      from 3.65 V to 4.4 V by I2C per 0.025 V.
->> +
->> +  connector:
->> +    description:
->> +      Phandle to a USB connector according to usb-connector.yaml. The connector
->> +      should be a child of the extcon device.
->> +    maxItems: 1
-> 
-> Missing type/ref... but then you will notice you have conflicting ref
-> with existing connector. connector is usb-connector.yaml, not phandle. I
-> am not sure if we need generic property, so let's go with device
-> specific - richtek,usb-connector
-
-Actually, as we already switched to the connector thing, I would have 
-liked to do it properly, if at all. Again looking for examples how it 
-should be done, the usb-connector.yaml schema gets mostly used in the 
-USB and PHY domain. Those examples don't fit the specific case well. I 
-didn't find examples in the power supply domain.
-
-Therefore, giving in, I'll chage it to richtek,usb-connector.
-
-It's still hard for me to understand why phandle excton shouldn't fit 
-the specific simple case. Now we have neither a proper "connector" thing 
-nor a simple extcon phandle.
-
-...
-
-Kind regards,
-Jakob
