@@ -2,110 +2,93 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E21AAC77B7D
-	for <phone-devel@archiver.kernel.org>; Wed, 10 May 2023 14:14:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8495C77B7D
+	for <phone-devel@archiver.kernel.org>; Wed, 10 May 2023 14:42:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237248AbjEJOOn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 10 May 2023 10:14:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47772 "EHLO
+        id S237511AbjEJOmZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 10 May 2023 10:42:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232318AbjEJOOm (ORCPT
+        with ESMTP id S237258AbjEJOmX (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 10 May 2023 10:14:42 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B7922D43
-        for <phone-devel@vger.kernel.org>; Wed, 10 May 2023 07:14:41 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-b9d8730fe5aso9476658276.1
-        for <phone-devel@vger.kernel.org>; Wed, 10 May 2023 07:14:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683728080; x=1686320080;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eeEjyuMrbqfMpNPcDRFVw2ex39hATHSF3JS+o1uWYUQ=;
-        b=t24zatVrlZsbhKahM+eitmln7eVXtD6FflBoHJJJ8e0QA+jm+BRY22hRit7Vdf5fjm
-         wx3MYhgZFnlMlEtCeoS/uccdUs/dZWWPwmp84UQ1kpkbv+gPKSTAEs35Fp/DuFbBADtm
-         htBDCikvWLfx9b9Aise/8TLjveY2G+53B/9qbLmBLw9fcLwtcO6Q+fc/O/ooN38PsJAk
-         7v0954JXoIjNf/dc5fJqXIGiHSOqv3w0exTnHJmS3Xo/LV6B6WTRN7ur1y1TUm7Y9GO/
-         lEruzA3QHsn+eRXxwGsP0NtzOZmv+2ig+1qUA7+hVw3bDoFi0vInwZDZZjlzh+my5CXF
-         PT/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683728080; x=1686320080;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eeEjyuMrbqfMpNPcDRFVw2ex39hATHSF3JS+o1uWYUQ=;
-        b=HaXgb0v3sqvAWshC72kyqp7AvH486rELDpnlwED4rKEi0iQi+gLkz6kOy80pBK33+c
-         d9SQUXmQuBYZo+FN8qvum89EI9cEz3sMK/WwDigqxzjV+tVEpfZg9cqY8PuOZmaKgNY8
-         OCqQjS5MQ/EtnV+QkO1FJNbMnyNbOfYCMIdqGCS+HV11HMksVJxL5tH7nOoZftMxj0ng
-         5jQDl8Fwc3f/njP4hCUJTb4IVYnVK4HSsaYXM7XJ1U66K/Ib6h8GDUFuTqa/2LXzf3Bx
-         kUZWDYBqF+lheDcTIxBifLZi61Kg+MceWaOm74Pf6GV95JoT349UZDmCkneFjVwXLtbx
-         aHyQ==
-X-Gm-Message-State: AC+VfDxD8xfoCdny5QJS29amPAWoS18FY60MkaW4duGGIi73nKX/2kIj
-        29Ld93rj1VDp/se8jmZEEY8qCafjoGXnZ0QFK6aQCQ==
-X-Google-Smtp-Source: ACHHUZ6xpSFnvBXQI7tlJN/E9SCfMtOzfi0cGlq7Hjv4inn0uyniiBKBGI4JNKIJStbaYDH918BxS3uJ88M8sg0wvHk=
-X-Received: by 2002:a25:684b:0:b0:b9b:eeb9:925c with SMTP id
- d72-20020a25684b000000b00b9beeb9925cmr16771562ybc.34.1683728080264; Wed, 10
- May 2023 07:14:40 -0700 (PDT)
+        Wed, 10 May 2023 10:42:23 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 711A2BC;
+        Wed, 10 May 2023 07:42:22 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34AD7v6R020389;
+        Wed, 10 May 2023 14:41:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=yXhxwsbwi+08VkxnQt2ohjYL4NlaY/YYuUapTdI3wxc=;
+ b=pOizwmYzf1xO5LUmU3Al0wnCTSwbfrUb5CHD1ZycsEUMxw2pYfz3J5bBh3t1InNutbU1
+ mN38a0+vAu2sJCorvbP1IP+6lXU7nN9rRDA1CqaxMXk0IveC0dkq4iyI0rn2IYlQQZ98
+ R8dAi6Mp3l7UN4KMC7wdA8WYY+gYSY1Ld7cK8KXnSCItn6u7epFiFAnfdXkJzWhhg+TB
+ ZMPTpAgoTId0vPBjeV6MxzdlCtN7HU5shcue7094vM0+hsiDK2Nnhjgo7jqlo8VLphEE
+ /OiGMc62NEAV0iEn73qYQ7/1juFy1u12fyogiruWKvE6Y1bUeOR1QVp1WK6VpXgWDlFX mw== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qg79crqqy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 10 May 2023 14:41:52 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34AEfpKs021064
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 10 May 2023 14:41:51 GMT
+Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Wed, 10 May
+ 2023 07:41:50 -0700
+Message-ID: <7e28b8b7-1bc1-bd3a-a198-a0dfaf356c01@quicinc.com>
+Date:   Wed, 10 May 2023 08:41:33 -0600
 MIME-Version: 1.0
-References: <20230507201225.89694-1-matti.lehtimaki@gmail.com>
- <20230507201225.89694-5-matti.lehtimaki@gmail.com> <68818f45-199d-1b5b-d125-ce08205516bf@linaro.org>
-In-Reply-To: <68818f45-199d-1b5b-d125-ce08205516bf@linaro.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Wed, 10 May 2023 17:14:29 +0300
-Message-ID: <CAA8EJpro5Qk5w=TT4kPztGXZO3K526qh0_Mu1jSwEYF_RKaZzw@mail.gmail.com>
-Subject: Re: [PATCH 4/6] ARM: dts: msm8226: Add qfprom node
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     =?UTF-8?Q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-        linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [PATCH 2/3] dt-bindings: clock: qcom,mmcc: define
+ clocks/clock-names for MSM8226
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Conor Dooley <conor+dt@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Taniya Das <tdas@codeaurora.org>
+CC:     <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-clk@vger.kernel.org>
+References: <20230509-msm8226-mmcc-parents-v1-0-83a2dfc986ab@z3ntu.xyz>
+ <20230509-msm8226-mmcc-parents-v1-2-83a2dfc986ab@z3ntu.xyz>
+From:   Jeffrey Hugo <quic_jhugo@quicinc.com>
+In-Reply-To: <20230509-msm8226-mmcc-parents-v1-2-83a2dfc986ab@z3ntu.xyz>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: XbLxN-6knLr6YD1gg7LF60DfIzBiSfEr
+X-Proofpoint-ORIG-GUID: XbLxN-6knLr6YD1gg7LF60DfIzBiSfEr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-05-10_04,2023-05-05_01,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ lowpriorityscore=0 adultscore=0 clxscore=1011 mlxscore=0 suspectscore=0
+ bulkscore=0 spamscore=0 priorityscore=1501 mlxlogscore=807 malwarescore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2305100118
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 10 May 2023 at 16:59, Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 07/05/2023 22:12, Matti Lehtim=C3=A4ki wrote:
-> > Add missing QFPROM definition for MSM8226 SoC.
-> >
-> > Signed-off-by: Matti Lehtim=C3=A4ki <matti.lehtimaki@gmail.com>
-> > ---
-> >  arch/arm/boot/dts/qcom-msm8226.dtsi | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
-> > diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qc=
-om-msm8226.dtsi
-> > index c373081bc21b..c34b8f3139ae 100644
-> > --- a/arch/arm/boot/dts/qcom-msm8226.dtsi
-> > +++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
-> > @@ -505,6 +505,13 @@ restart@fc4ab000 {
-> >                       reg =3D <0xfc4ab000 0x4>;
-> >               };
-> >
-> > +             qfprom: qfprom@fc4bc000 {
->
-> We usually call this efuse@
+On 5/9/2023 3:16 PM, Luca Weiss wrote:
+> Define clock/clock-names properties of the MMCC device node to be used
+> on MSM8226 platform.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
-We have 5 efuse@ and 14 qfprom@ (next/master). But that probably means
-that we should rename existing qfprom@ to efuse@.
-
->
-> qfprom is Qualcomm specific.
->
-> Best regards,
-> Krzysztof
->
-
-
---=20
-With best wishes
-Dmitry
+Acked-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
