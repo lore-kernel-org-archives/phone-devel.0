@@ -2,146 +2,93 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC7BEC77B7F
-	for <phone-devel@archiver.kernel.org>; Thu, 11 May 2023 08:38:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 971E5C7EE22
+	for <phone-devel@archiver.kernel.org>; Thu, 11 May 2023 12:39:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236394AbjEKIi1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 11 May 2023 04:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47770 "EHLO
+        id S236911AbjEKMjg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 11 May 2023 08:39:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231802AbjEKIiY (ORCPT
+        with ESMTP id S229847AbjEKMjf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 11 May 2023 04:38:24 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4011776BC
-        for <phone-devel@vger.kernel.org>; Thu, 11 May 2023 01:38:23 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4efe8991b8aso9632024e87.0
-        for <phone-devel@vger.kernel.org>; Thu, 11 May 2023 01:38:23 -0700 (PDT)
+        Thu, 11 May 2023 08:39:35 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B537B26AB
+        for <phone-devel@vger.kernel.org>; Thu, 11 May 2023 05:39:33 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2ac87e7806aso79710121fa.3
+        for <phone-devel@vger.kernel.org>; Thu, 11 May 2023 05:39:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1683794301; x=1686386301;
+        d=linaro.org; s=google; t=1683808772; x=1686400772;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=FURj9AzValj5QACsSli0Vwx4tsK5MhX+LSZftjhcMSs=;
-        b=lkRhXgWkBGSBpDesK0bqg6v+YDvgBKhgGjN2r+PoBw8mBbRJugn2aoGdfYQoJoFpWk
-         1f+qQ2AKPJS03RABZp9M7oGR0TGRVGWgUkp6p1l3FZqCpMwioCV0qVBABiM4S6iw80+2
-         d9AzDz3uRRgBmevsFpZtNIwqXaIJl8VTEDIKbb5XCCulNk6kqpawCMPnDUi5SZmRRH30
-         KSzE+iZujHXyM/CVrHKqWuy/1osrF77FxcFYzB2iX9iRRrAI9ne/1ZONVS5ETFttVfmD
-         z8aUy0gw6ZeqpZOWNfh5h+5/z9GyX5ygX4IW6n0XZjPwPE+3SjHNu0B7Iu3KSqpCfdYJ
-         9GaQ==
+        bh=sguCADxh6/8JZhFfgnCw2t9kQNtuJnhKvTXcCcJKeVo=;
+        b=N+cChiVGWGTovdxW3imjqG5act1QQ5KtOXb3rtHLD0O5XukjYbg4R8yAFzaKwsj0LV
+         sw26mEJ4W2mmwpCqPIz/MEc9EQoRXJRPXV95YPcUdrkNXSLeKcwBT2cm9C1L+p+15dpr
+         2I6soBLa49oUYkTYkhbTtNs8tOFwxOiBNiP7z0uAqxtfQjmImVisFnxkF5u0k6k/t6pY
+         O0XkPrRpnSIpg9+5p6XpcY5Ax06D8WwHsdxn2h4MDX2SVSW6otTrHULi2pD5B9+N7Syy
+         eDWZx0fD9yAF6aAbOvxMrxefdna9pQ7gzLCjaHjYmEXVDiUUqx04bgounx98mhAekQTd
+         QfSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683794301; x=1686386301;
+        d=1e100.net; s=20221208; t=1683808772; x=1686400772;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FURj9AzValj5QACsSli0Vwx4tsK5MhX+LSZftjhcMSs=;
-        b=WrQ0vmDjm/UXWpilUfyJ2Z4dcpX3kNwfyL42eeU7kN5LR7+h6J7E7fdzgaXksJ/xa4
-         o+kBDx1+YhjkOi5GmP3zbDxUkLuwOOJJdukW6VaO45IVzKjTvK1wuzK8TtWjvw/X6Ejn
-         MiP6oqdt/3lNfJzwOJe9kWHf5+c4Yq6eKnDToeGDQUeYw+IpMaPfFgVckBeLrE25dZud
-         8fXEHrcFV7anA2RCRzShU1SH6W/48zzk7peMzd8WU7SvQ4YpJPz1VXKoi6G5TwFi4AiO
-         2tuy2prjS0jBYhr/IoAGoiofoodnuvCiPJXpRfht91YQQM9DnCU0prqU3EI7svNoJGyG
-         lr1Q==
-X-Gm-Message-State: AC+VfDygHSrq9P6WLiW/Tb2PWNb0kjpbTwlL/B6D0WG8epylqYkzhG5V
-        1wDSYBBjCiPQNEWrCk6ihwp10w==
-X-Google-Smtp-Source: ACHHUZ4KZqTl1GAfdpqLRF8PuNBZ3NweOSj0wV85fB2y/9k/HSNqCP2mYm7PItDI5hxP28D6L04hjQ==
-X-Received: by 2002:a05:6512:961:b0:4eb:7e:1fa5 with SMTP id v1-20020a056512096100b004eb007e1fa5mr2554589lft.8.1683794301026;
-        Thu, 11 May 2023 01:38:21 -0700 (PDT)
-Received: from [192.168.1.101] (abxi58.neoplus.adsl.tpnet.pl. [83.9.2.58])
-        by smtp.gmail.com with ESMTPSA id b28-20020ac25e9c000000b004f24ee39661sm1018858lfq.137.2023.05.11.01.38.18
+        bh=sguCADxh6/8JZhFfgnCw2t9kQNtuJnhKvTXcCcJKeVo=;
+        b=S19C3X2TjgOlMN/HTJ5iZSWVn1x80M/qEpvzd20uGu3vtIMrvX+JyhHDhu9aQJ0MRI
+         zKjWr0Ol6V829sP6bBkEjbgzuFYWJP5KPyKNabCOZZOqCPFbWneD21wyJnABEeu5kZAr
+         dRoR+LkUA4U66pgawQkw3ruk0jEGIUHuWaqKIieei168veabKBAyaVpMfNu6C7/dNYqs
+         Pzx1suVS1GZO7T3mExh1K205OjVRCETUzbTis8hsQVe4/B2BZ1lqnGpQjsWig3PxELQw
+         nRtQys6SMHykzxMBW90CAxDooq2FXboGctgH7zuRQbWK/ZK9/C5nuCBnmOHytxFscvkh
+         m60g==
+X-Gm-Message-State: AC+VfDzXkPmcaYoHClggyqhN5BYw2CcV/NdsVd+bm4qB/RFhqPez6nO3
+        1wKLEfA8nh3zsh8MLPH/j+vZew==
+X-Google-Smtp-Source: ACHHUZ6+tTZyN721QPlPxPuC2A0OHeNX3tT1BQq7UBNV3ZI/xQJB2a24CSnNTYmrGnjbCg+GxE97XQ==
+X-Received: by 2002:a2e:3211:0:b0:2a8:ba15:eb6f with SMTP id y17-20020a2e3211000000b002a8ba15eb6fmr3164629ljy.6.1683808771890;
+        Thu, 11 May 2023 05:39:31 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:a0db:1f00::8a5? (dzdqv0yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a0db:1f00::8a5])
+        by smtp.gmail.com with ESMTPSA id v23-20020a2e9617000000b002a8bc9918d4sm2374591ljh.97.2023.05.11.05.39.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 May 2023 01:38:20 -0700 (PDT)
-Message-ID: <cb04d8e1-f2ab-8a5f-5c2c-fde125cbb243@linaro.org>
-Date:   Thu, 11 May 2023 10:38:16 +0200
+        Thu, 11 May 2023 05:39:31 -0700 (PDT)
+Message-ID: <894ea5be-5126-b72b-ad88-4f06cb5c11ca@linaro.org>
+Date:   Thu, 11 May 2023 15:39:30 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Subject: Re: [PATCH 1/3] ARM: dts: qcom: msm8226: Use XO from rpmcc where
- possible
-Content-Language: en-US
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] drm/msm/iommu: Fix null pointer dereference in no-IOMMU
+ case
+Content-Language: en-GB
 To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Taniya Das <tdas@codeaurora.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
-References: <20230509-msm8226-mmcc-parents-v1-0-83a2dfc986ab@z3ntu.xyz>
- <20230509-msm8226-mmcc-parents-v1-1-83a2dfc986ab@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230509-msm8226-mmcc-parents-v1-1-83a2dfc986ab@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
+        phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>
+Cc:     Rob Clark <robdclark@chromium.org>, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+References: <20230508-6-4-drm-msm-iommu-fixup-v1-1-a7a21ec94f5b@z3ntu.xyz>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20230508-6-4-drm-msm-iommu-fixup-v1-1-a7a21ec94f5b@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-
-On 9.05.2023 23:16, Luca Weiss wrote:
-> The xo clock being used everywhere actually goes via the RPM. Since the
-> rpmcc driver recently got support for this clock we can use this now.
+On 08/05/2023 23:26, Luca Weiss wrote:
+> In the case that no IOMMU is available, msm_iommu_new can return NULL
+> which should be handled. Without we will get a NULL pointer dereference
+> in the next statement when we try to use the mmu variable.
 > 
+> Fixes: 8cceb773f565 ("drm/msm/adreno: stall translation on fault for all GPU families")
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+>   drivers/gpu/drm/msm/msm_iommu.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-Konrad
->  arch/arm/boot/dts/qcom-msm8226.dtsi | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
-> index 42acb9ddb8cc..4dd4e26c73a2 100644
-> --- a/arch/arm/boot/dts/qcom-msm8226.dtsi
-> +++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
-> @@ -176,7 +176,7 @@ sdhc_1: mmc@f9824900 {
->  			interrupt-names = "hc_irq", "pwr_irq";
->  			clocks = <&gcc GCC_SDCC1_AHB_CLK>,
->  				 <&gcc GCC_SDCC1_APPS_CLK>,
-> -				 <&xo_board>;
-> +				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
->  			clock-names = "iface", "core", "xo";
->  			pinctrl-names = "default";
->  			pinctrl-0 = <&sdhc1_default_state>;
-> @@ -192,7 +192,7 @@ sdhc_2: mmc@f98a4900 {
->  			interrupt-names = "hc_irq", "pwr_irq";
->  			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
->  				 <&gcc GCC_SDCC2_APPS_CLK>,
-> -				 <&xo_board>;
-> +				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
->  			clock-names = "iface", "core", "xo";
->  			pinctrl-names = "default";
->  			pinctrl-0 = <&sdhc2_default_state>;
-> @@ -208,7 +208,7 @@ sdhc_3: mmc@f9864900 {
->  			interrupt-names = "hc_irq", "pwr_irq";
->  			clocks = <&gcc GCC_SDCC3_AHB_CLK>,
->  				 <&gcc GCC_SDCC3_APPS_CLK>,
-> -				 <&xo_board>;
-> +				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
->  			clock-names = "iface", "core", "xo";
->  			pinctrl-names = "default";
->  			pinctrl-0 = <&sdhc3_default_state>;
-> @@ -362,7 +362,8 @@ usb_hs_phy: phy {
->  					compatible = "qcom,usb-hs-phy-msm8226",
->  						     "qcom,usb-hs-phy";
->  					#phy-cells = <0>;
-> -					clocks = <&xo_board>, <&gcc GCC_USB2A_PHY_SLEEP_CLK>;
-> +					clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>,
-> +						 <&gcc GCC_USB2A_PHY_SLEEP_CLK>;
->  					clock-names = "ref", "sleep";
->  					resets = <&gcc GCC_USB2A_PHY_BCR>, <&usb 0>;
->  					reset-names = "phy", "por";
-> @@ -617,7 +618,7 @@ adsp: remoteproc@fe200000 {
->  			power-domains = <&rpmpd MSM8226_VDDCX>;
->  			power-domain-names = "cx";
->  
-> -			clocks = <&xo_board>;
-> +			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>;
->  			clock-names = "xo";
->  
->  			memory-region = <&adsp_region>;
-> 
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
+-- 
+With best wishes
+Dmitry
+
