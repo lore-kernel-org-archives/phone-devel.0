@@ -2,93 +2,146 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8495C77B7D
-	for <phone-devel@archiver.kernel.org>; Wed, 10 May 2023 14:42:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC7BEC77B7F
+	for <phone-devel@archiver.kernel.org>; Thu, 11 May 2023 08:38:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237511AbjEJOmZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 10 May 2023 10:42:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45672 "EHLO
+        id S236394AbjEKIi1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 11 May 2023 04:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237258AbjEJOmX (ORCPT
+        with ESMTP id S231802AbjEKIiY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 10 May 2023 10:42:23 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 711A2BC;
-        Wed, 10 May 2023 07:42:22 -0700 (PDT)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34AD7v6R020389;
-        Wed, 10 May 2023 14:41:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=yXhxwsbwi+08VkxnQt2ohjYL4NlaY/YYuUapTdI3wxc=;
- b=pOizwmYzf1xO5LUmU3Al0wnCTSwbfrUb5CHD1ZycsEUMxw2pYfz3J5bBh3t1InNutbU1
- mN38a0+vAu2sJCorvbP1IP+6lXU7nN9rRDA1CqaxMXk0IveC0dkq4iyI0rn2IYlQQZ98
- R8dAi6Mp3l7UN4KMC7wdA8WYY+gYSY1Ld7cK8KXnSCItn6u7epFiFAnfdXkJzWhhg+TB
- ZMPTpAgoTId0vPBjeV6MxzdlCtN7HU5shcue7094vM0+hsiDK2Nnhjgo7jqlo8VLphEE
- /OiGMc62NEAV0iEn73qYQ7/1juFy1u12fyogiruWKvE6Y1bUeOR1QVp1WK6VpXgWDlFX mw== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3qg79crqqy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 10 May 2023 14:41:52 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 34AEfpKs021064
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 10 May 2023 14:41:51 GMT
-Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Wed, 10 May
- 2023 07:41:50 -0700
-Message-ID: <7e28b8b7-1bc1-bd3a-a198-a0dfaf356c01@quicinc.com>
-Date:   Wed, 10 May 2023 08:41:33 -0600
+        Thu, 11 May 2023 04:38:24 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4011776BC
+        for <phone-devel@vger.kernel.org>; Thu, 11 May 2023 01:38:23 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4efe8991b8aso9632024e87.0
+        for <phone-devel@vger.kernel.org>; Thu, 11 May 2023 01:38:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1683794301; x=1686386301;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FURj9AzValj5QACsSli0Vwx4tsK5MhX+LSZftjhcMSs=;
+        b=lkRhXgWkBGSBpDesK0bqg6v+YDvgBKhgGjN2r+PoBw8mBbRJugn2aoGdfYQoJoFpWk
+         1f+qQ2AKPJS03RABZp9M7oGR0TGRVGWgUkp6p1l3FZqCpMwioCV0qVBABiM4S6iw80+2
+         d9AzDz3uRRgBmevsFpZtNIwqXaIJl8VTEDIKbb5XCCulNk6kqpawCMPnDUi5SZmRRH30
+         KSzE+iZujHXyM/CVrHKqWuy/1osrF77FxcFYzB2iX9iRRrAI9ne/1ZONVS5ETFttVfmD
+         z8aUy0gw6ZeqpZOWNfh5h+5/z9GyX5ygX4IW6n0XZjPwPE+3SjHNu0B7Iu3KSqpCfdYJ
+         9GaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683794301; x=1686386301;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FURj9AzValj5QACsSli0Vwx4tsK5MhX+LSZftjhcMSs=;
+        b=WrQ0vmDjm/UXWpilUfyJ2Z4dcpX3kNwfyL42eeU7kN5LR7+h6J7E7fdzgaXksJ/xa4
+         o+kBDx1+YhjkOi5GmP3zbDxUkLuwOOJJdukW6VaO45IVzKjTvK1wuzK8TtWjvw/X6Ejn
+         MiP6oqdt/3lNfJzwOJe9kWHf5+c4Yq6eKnDToeGDQUeYw+IpMaPfFgVckBeLrE25dZud
+         8fXEHrcFV7anA2RCRzShU1SH6W/48zzk7peMzd8WU7SvQ4YpJPz1VXKoi6G5TwFi4AiO
+         2tuy2prjS0jBYhr/IoAGoiofoodnuvCiPJXpRfht91YQQM9DnCU0prqU3EI7svNoJGyG
+         lr1Q==
+X-Gm-Message-State: AC+VfDygHSrq9P6WLiW/Tb2PWNb0kjpbTwlL/B6D0WG8epylqYkzhG5V
+        1wDSYBBjCiPQNEWrCk6ihwp10w==
+X-Google-Smtp-Source: ACHHUZ4KZqTl1GAfdpqLRF8PuNBZ3NweOSj0wV85fB2y/9k/HSNqCP2mYm7PItDI5hxP28D6L04hjQ==
+X-Received: by 2002:a05:6512:961:b0:4eb:7e:1fa5 with SMTP id v1-20020a056512096100b004eb007e1fa5mr2554589lft.8.1683794301026;
+        Thu, 11 May 2023 01:38:21 -0700 (PDT)
+Received: from [192.168.1.101] (abxi58.neoplus.adsl.tpnet.pl. [83.9.2.58])
+        by smtp.gmail.com with ESMTPSA id b28-20020ac25e9c000000b004f24ee39661sm1018858lfq.137.2023.05.11.01.38.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 May 2023 01:38:20 -0700 (PDT)
+Message-ID: <cb04d8e1-f2ab-8a5f-5c2c-fde125cbb243@linaro.org>
+Date:   Thu, 11 May 2023 10:38:16 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [PATCH 2/3] dt-bindings: clock: qcom,mmcc: define
- clocks/clock-names for MSM8226
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH 1/3] ARM: dts: qcom: msm8226: Use XO from rpmcc where
+ possible
 Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, Andy Gross <agross@kernel.org>,
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
         Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>,
+        Jeffrey Hugo <quic_jhugo@quicinc.com>,
         Taniya Das <tdas@codeaurora.org>
-CC:     <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-clk@vger.kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
 References: <20230509-msm8226-mmcc-parents-v1-0-83a2dfc986ab@z3ntu.xyz>
- <20230509-msm8226-mmcc-parents-v1-2-83a2dfc986ab@z3ntu.xyz>
-From:   Jeffrey Hugo <quic_jhugo@quicinc.com>
-In-Reply-To: <20230509-msm8226-mmcc-parents-v1-2-83a2dfc986ab@z3ntu.xyz>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+ <20230509-msm8226-mmcc-parents-v1-1-83a2dfc986ab@z3ntu.xyz>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230509-msm8226-mmcc-parents-v1-1-83a2dfc986ab@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: XbLxN-6knLr6YD1gg7LF60DfIzBiSfEr
-X-Proofpoint-ORIG-GUID: XbLxN-6knLr6YD1gg7LF60DfIzBiSfEr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-05-10_04,2023-05-05_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 adultscore=0 clxscore=1011 mlxscore=0 suspectscore=0
- bulkscore=0 spamscore=0 priorityscore=1501 mlxlogscore=807 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2305100118
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 5/9/2023 3:16 PM, Luca Weiss wrote:
-> Define clock/clock-names properties of the MMCC device node to be used
-> on MSM8226 platform.
+
+
+On 9.05.2023 23:16, Luca Weiss wrote:
+> The xo clock being used everywhere actually goes via the RPM. Since the
+> rpmcc driver recently got support for this clock we can use this now.
 > 
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Acked-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Konrad
+>  arch/arm/boot/dts/qcom-msm8226.dtsi | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
+> index 42acb9ddb8cc..4dd4e26c73a2 100644
+> --- a/arch/arm/boot/dts/qcom-msm8226.dtsi
+> +++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
+> @@ -176,7 +176,7 @@ sdhc_1: mmc@f9824900 {
+>  			interrupt-names = "hc_irq", "pwr_irq";
+>  			clocks = <&gcc GCC_SDCC1_AHB_CLK>,
+>  				 <&gcc GCC_SDCC1_APPS_CLK>,
+> -				 <&xo_board>;
+> +				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
+>  			clock-names = "iface", "core", "xo";
+>  			pinctrl-names = "default";
+>  			pinctrl-0 = <&sdhc1_default_state>;
+> @@ -192,7 +192,7 @@ sdhc_2: mmc@f98a4900 {
+>  			interrupt-names = "hc_irq", "pwr_irq";
+>  			clocks = <&gcc GCC_SDCC2_AHB_CLK>,
+>  				 <&gcc GCC_SDCC2_APPS_CLK>,
+> -				 <&xo_board>;
+> +				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
+>  			clock-names = "iface", "core", "xo";
+>  			pinctrl-names = "default";
+>  			pinctrl-0 = <&sdhc2_default_state>;
+> @@ -208,7 +208,7 @@ sdhc_3: mmc@f9864900 {
+>  			interrupt-names = "hc_irq", "pwr_irq";
+>  			clocks = <&gcc GCC_SDCC3_AHB_CLK>,
+>  				 <&gcc GCC_SDCC3_APPS_CLK>,
+> -				 <&xo_board>;
+> +				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
+>  			clock-names = "iface", "core", "xo";
+>  			pinctrl-names = "default";
+>  			pinctrl-0 = <&sdhc3_default_state>;
+> @@ -362,7 +362,8 @@ usb_hs_phy: phy {
+>  					compatible = "qcom,usb-hs-phy-msm8226",
+>  						     "qcom,usb-hs-phy";
+>  					#phy-cells = <0>;
+> -					clocks = <&xo_board>, <&gcc GCC_USB2A_PHY_SLEEP_CLK>;
+> +					clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>,
+> +						 <&gcc GCC_USB2A_PHY_SLEEP_CLK>;
+>  					clock-names = "ref", "sleep";
+>  					resets = <&gcc GCC_USB2A_PHY_BCR>, <&usb 0>;
+>  					reset-names = "phy", "por";
+> @@ -617,7 +618,7 @@ adsp: remoteproc@fe200000 {
+>  			power-domains = <&rpmpd MSM8226_VDDCX>;
+>  			power-domain-names = "cx";
+>  
+> -			clocks = <&xo_board>;
+> +			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>;
+>  			clock-names = "xo";
+>  
+>  			memory-region = <&adsp_region>;
+> 
