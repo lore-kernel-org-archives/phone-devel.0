@@ -2,249 +2,197 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1BE5C7EE23
-	for <phone-devel@archiver.kernel.org>; Fri, 12 May 2023 00:43:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD838C77B75
+	for <phone-devel@archiver.kernel.org>; Fri, 12 May 2023 11:14:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239466AbjELAng (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 11 May 2023 20:43:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47264 "EHLO
+        id S241042AbjELLOZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 12 May 2023 07:14:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229654AbjELAnf (ORCPT
+        with ESMTP id S240853AbjELLOY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 11 May 2023 20:43:35 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 909BF2101;
-        Thu, 11 May 2023 17:43:33 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-b8bf64a4999so1420489276.1;
-        Thu, 11 May 2023 17:43:33 -0700 (PDT)
+        Fri, 12 May 2023 07:14:24 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3A31720
+        for <phone-devel@vger.kernel.org>; Fri, 12 May 2023 04:14:21 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-50be0d835aaso17319007a12.3
+        for <phone-devel@vger.kernel.org>; Fri, 12 May 2023 04:14:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683852213; x=1686444213;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xA9GTBUaLlTL5Dbrc7x2OWFAgSUirYMQNpAhJ3u77zc=;
-        b=H6aBAxY3wFF6Kt5Q/Y8uQ7NlsoJyI40Fa4BBxOhfdK+6FQIjv7OWSZ0IWj4xWsGTv/
-         m6RgetZqbEuwK/8+DAisyYV+yLEnhVqT01ChTlllvMTndZI1mCZjIOfPwxDvgHo7XNm4
-         ffuRw2hS698UDlRVNfZGdg+gPq5aRJZ9FLkxxm3b9Z6hNMB+mrVSAoHaywADN4LMpjbW
-         WIUIYNdkM2iPx4LSaWDfGk41QJPjOo7RPlWiyNsBHLGGBc8QwwxSy8R0BUl3jYFGi1HJ
-         Y8OkEDMLwKN7e2srUMI6gNo7sAQsqYWcAXR8WXS2cQG82RQcv+H1hetKvVORqzNDGOJQ
-         ZyNg==
+        d=fairphone.com; s=fair; t=1683890060; x=1686482060;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ubvb9p88+qXd6VOrp401GthxX4aOEOtnz4kgi/kUzHM=;
+        b=0DxQHN51nTkhDMihJi78b3ohzJMoM2rXRuga1g6tw0P6qNiVS4sVaDavvwMIT5/iJ0
+         Gyd4AtWdLZ5WJxMYmdxWl1sgVyeT/fA1AVb4pnZesPs4GAjkzKCCdzj13wDF3ZGCLXgP
+         /cwdnqPJKz2mPmZYNAhyABgUXcoDYYThXQVYyJUox8JCl4sX4QDb29r863JZZN2x5CeK
+         RKkhhEXl7XohTbmdb9Cms9xaWPK4UYp4HK4gfhE8VTjVlxxug2tdQhjIM10LhFv5XJkL
+         XI+ANWqOR1T7qPIYvtmfC7JKuEzDCWvGXQ5LA0LBl7zQmc0N7GhgzmlhRA3//yPTDNA3
+         znnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683852213; x=1686444213;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xA9GTBUaLlTL5Dbrc7x2OWFAgSUirYMQNpAhJ3u77zc=;
-        b=clzgGGSG/g1iR7HUz/URka4pdrGxHZOC13myn79ooNFCYUjkUCwNWTgGadKaz1o1Cz
-         Z3vtJjgRaonOXfMU9TxOiU0S2Z8bSAK7D8IxJkOPE5yu6oFHEJ3RvywxWzhmLtsr8V7N
-         JSi1ouJHkP+pCK5cevxaoio2yVbDlJGaWntvEypeZpiRRrZVVGoYhz2GP2Fh8jt8TsNE
-         33SEndhMP2QGL10aNWpoJxC8XYHMi+zI2OIjNHFCjd/NP3vFNdorAKxI4qRCGgBtc3uw
-         kH8LHpEs7nc9xM1KzZkeKf4ueBEne0n6jBMWsShcHnadJN8k1cV6dRfDf1Q1e10rh5O6
-         Pmhg==
-X-Gm-Message-State: AC+VfDz1JM61VGnue1Y/7k8lv+jYFtxWB5LYqNxtR6ntLf0LKvZ5tmxO
-        ve0ljTxJ05RayJH6mWPnps8=
-X-Google-Smtp-Source: ACHHUZ7lIqTYfEZVb6Rcz5y0htJbbqBQfSC+qrZdesnQVQbgeZE5eKfJD2KZM2NkkjD1OO0o6+hf/g==
-X-Received: by 2002:a81:1ad7:0:b0:55d:9a9c:f19e with SMTP id a206-20020a811ad7000000b0055d9a9cf19emr21949258ywa.0.1683852212629;
-        Thu, 11 May 2023 17:43:32 -0700 (PDT)
-Received: from ?IPV6:2604:2d80:4d87:cd00:e2d5:5eff:fe88:4a55? ([2604:2d80:4d87:cd00:e2d5:5eff:fe88:4a55])
-        by smtp.gmail.com with ESMTPSA id l62-20020a0de241000000b00560c2e3ec63sm2377401ywe.77.2023.05.11.17.43.30
+        d=1e100.net; s=20221208; t=1683890060; x=1686482060;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ubvb9p88+qXd6VOrp401GthxX4aOEOtnz4kgi/kUzHM=;
+        b=HfljJs7w8KDdi/VCGHoUGSaVsLEfRz3EbiRQDZyh20CMmbNOjlvqxo30cW5972sA2L
+         GBrm3OecldKGNnwlkaIzJwzTiACtv4TMC1ELPRRRurakVGlR7DTWAcRChlz909XQtFPB
+         7cZjJ2X8PYRb8jFtohfEMYnF1w23vbbsYBlBsEV5QI4tfBovRceXPd2bjpChWUQUvp4S
+         g+NQ3G/YX9ZZbTkXHyedIc8r8vsZLJvyDfTRBLottaIM5J/JOX5AWxy7YCYJ5yFcluXN
+         kqxH9XRAKcfQWN1OnX0M93bBfTKdcvHK2lj923fUHlJndZPI21u/QiggNUFG3FFpVC2T
+         nj0g==
+X-Gm-Message-State: AC+VfDzrPajq+xDZOETEjKDcOVUz2592zesdYghhuoyCj7BkBuOiOs9z
+        4lwfPbjI7I11akU9O8aFam6nhQ==
+X-Google-Smtp-Source: ACHHUZ52Czgk88thyOAzAK6r5gc3rGC6RgqVtFaULcxPliXgWW8mW3g/7ugZKJeeCj8A5U/8Lh8yPw==
+X-Received: by 2002:a17:907:a0e:b0:94e:e6b9:fef2 with SMTP id bb14-20020a1709070a0e00b0094ee6b9fef2mr20395577ejc.67.1683890060020;
+        Fri, 12 May 2023 04:14:20 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id l21-20020a1709062a9500b00969f44bbef3sm4734097eje.11.2023.05.12.04.14.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 May 2023 17:43:32 -0700 (PDT)
-Message-ID: <e25468f4-e3a3-bcf7-c2c0-826edb0600c2@gmail.com>
-Date:   Thu, 11 May 2023 19:43:28 -0500
-MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [PATCH v3 2/5] Input: add driver for Focaltech FTS touchscreen
-To:     Jeff LaBundy <jeff@labundy.com>
-Cc:     Caleb Connolly <caleb@connolly.tech>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Henrik Rydberg <rydberg@bitmath.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Jean Delvare <jdelvare@suse.de>,
-        Max Krummenacher <max.krummenacher@toradex.com>,
-        Chris Morgan <macromorgan@hotmail.com>,
-        Job Noorman <job@noorman.info>,
-        Alistair Francis <alistair@alistair23.me>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        linux-input@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230415020222.216232-1-joelselvaraj.oss@gmail.com>
- <20230415020222.216232-3-joelselvaraj.oss@gmail.com>
- <ZEXr1hC+Q5Bo/3Tc@nixie71>
-Content-Language: en-US
-From:   Joel Selvaraj <joelselvaraj.oss@gmail.com>
-In-Reply-To: <ZEXr1hC+Q5Bo/3Tc@nixie71>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Fri, 12 May 2023 04:14:19 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 12 May 2023 13:14:18 +0200
+Message-Id: <CSK97HK2XBSR.1Q5K7TUE55HH7@otso>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        "Eric Dumazet" <edumazet@google.com>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        "Paolo Abeni" <pabeni@redhat.com>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Balakrishna Godavarthi" <bgodavar@codeaurora.org>,
+        "Rocky Liao" <rjliao@codeaurora.org>,
+        "Marcel Holtmann" <marcel@holtmann.org>,
+        "Johan Hedberg" <johan.hedberg@gmail.com>,
+        "Luiz Augusto von Dentz" <luiz.dentz@gmail.com>,
+        "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-bluetooth@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH RFC 2/4] Bluetooth: btqca: Add WCN3988 support
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Simon Horman" <simon.horman@corigine.com>
+X-Mailer: aerc 0.15.1
+References: <20230421-fp4-bluetooth-v1-0-0430e3a7e0a2@fairphone.com>
+ <20230421-fp4-bluetooth-v1-2-0430e3a7e0a2@fairphone.com>
+ <ZE+6e7ZxJ2s9DHI1@corigine.com>
+In-Reply-To: <ZE+6e7ZxJ2s9DHI1@corigine.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Jeff LaBundy,
+Hi Simon,
 
-On 4/23/23 21:39, Jeff LaBundy wrote:
-> Hi Joel,
-> 
-> Great work so far! It's coming along nicely. Please find my latest
-> feedback below.
+On Mon May 1, 2023 at 3:11 PM CEST, Simon Horman wrote:
+> On Fri, Apr 21, 2023 at 04:11:39PM +0200, Luca Weiss wrote:
+> > Add support for the Bluetooth chip codenamed APACHE which is part of
+> > WCN3988.
+> >=20
+> > The firmware for this chip has a slightly different naming scheme
+> > compared to most others. For ROM Version 0x0200 we need to use
+> > apbtfw10.tlv + apnv10.bin and for ROM version 0x201 apbtfw11.tlv +
+> > apnv11.bin
+> >=20
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> >  drivers/bluetooth/btqca.c   | 13 +++++++++++--
+> >  drivers/bluetooth/btqca.h   | 12 ++++++++++--
+> >  drivers/bluetooth/hci_qca.c | 12 ++++++++++++
+> >  3 files changed, 33 insertions(+), 4 deletions(-)
+> >=20
+> > diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+> > index fd0941fe8608..3ee1ef88a640 100644
+> > --- a/drivers/bluetooth/btqca.c
+> > +++ b/drivers/bluetooth/btqca.c
+> > @@ -594,14 +594,20 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t =
+baudrate,
+> >  	/* Firmware files to download are based on ROM version.
+> >  	 * ROM version is derived from last two bytes of soc_ver.
+> >  	 */
+> > -	rom_ver =3D ((soc_ver & 0x00000f00) >> 0x04) | (soc_ver & 0x0000000f)=
+;
+> > +	if (soc_type =3D=3D QCA_WCN3988)
+> > +		rom_ver =3D ((soc_ver & 0x00000f00) >> 0x05) | (soc_ver & 0x0000000f=
+);
+> > +	else
+> > +		rom_ver =3D ((soc_ver & 0x00000f00) >> 0x04) | (soc_ver & 0x0000000f=
+);
+>
+> Hi Luca,
+>
+> perhaps it's just me. But I was wondering if this can be improved on a li=
+ttle.
+>
+> * Move the common portion outside of the conditional
+> * And also, I think it's normal to use decimal for shift values.
+>
+> e.g.
+> 	unsigned shift;
+> 	...
+>
+> 	shift =3D soc_type =3D=3D QCA_WCN3988 ? 5 : 4;
+> 	rom_ver =3D ((soc_ver & 0x00000f00) >> shift) | (soc_ver & 0x0000000f);
+>
+> Using some helpers such as GENMASK and FIELD_PREP might also be nice.
 
-Sorry for the late reply, university semester end got me hooked up.
-I have a sad kind of good news... As pointed out by Hans de Goede, the 
-edt-ft5x06 driver works out of the box for the fts8719 touchscreen in my 
-device. So I think this patch series is no longer needed. I did have a 
-look at the driver once when working on this patch series, but it looked 
-different/not compatible at that time. After mentioned by Hans de Goede, 
-I had a more closer look and the main touch buffer handling seems to be 
-the same.
+While I'm not opposed to the idea, I'm not sure it's worth making
+beautiful macros for this since - to my eyes - how the mapping of
+soc_ver to firmware name works is rather obscure since the sources from
+Qualcomm just have a static lookup table of soc_ver to firmware name so
+doing this dynamically like here is different.
 
-I am sorry as we put some considerable time in this patch series. I 
-should have noted more carefully. Thank you though as I learnt things 
-working on this patch series.
+And I haven't looked at other chips that are covered there to see if
+there's a pattern to this, for the most part it seems the original
+formula works for most chips and the one I added works for WCN3988 (and
+the other "APACHE" chips, whatever they are).
 
-I guess I will send a different patch to add the compatible data to the 
-existing edt-ft5x06 driver and dts changes to include that driver to my 
-device.
+If a third way is added then I would say for sure this line should be
+made nicer but for now I think it's easier to keep this as I sent it
+because we don't know what the future will hold.
 
-> On Fri, Apr 14, 2023 at 09:02:19PM -0500, Joel Selvaraj wrote:
->> The Focaltech FTS driver supports several variants of focaltech
->> touchscreens found in ~2018 era smartphones including variants found on
->> the PocoPhone F1 and the SHIFT6mq which are already present in mainline.
->> This driver is loosely based on the original driver from Focaltech
->> but has been simplified and largely reworked.
->>
->> Co-developed-by: Caleb Connolly <caleb@connolly.tech>
->> Signed-off-by: Caleb Connolly <caleb@connolly.tech>
->> Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
->> ---
->>   MAINTAINERS                                   |   8 +
->>   drivers/input/touchscreen/Kconfig             |  12 +
->>   drivers/input/touchscreen/Makefile            |   1 +
->>   drivers/input/touchscreen/focaltech_fts5452.c | 432 ++++++++++++++++++
->>   4 files changed, 453 insertions(+)
->>   create mode 100644 drivers/input/touchscreen/focaltech_fts5452.c
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 7ec4ce64f66d..1a3ea61e1f52 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -8028,6 +8028,14 @@ L:	linux-input@vger.kernel.org
->>   S:	Maintained
->>   F:	drivers/input/joystick/fsia6b.c
->>   
->> +FOCALTECH FTS5452 TOUCHSCREEN DRIVER
->> +M:	Joel Selvaraj <joelselvaraj.oss@gmail.com>
->> +M:	Caleb Connolly <caleb@connolly.tech>
->> +L:	linux-input@vger.kernel.org
->> +S:	Maintained
->> +F:	Documentation/devicetree/bindings/input/touchscreen/focaltech,fts5452.yaml
->> +F:	drivers/input/touchscreen/focaltech_fts5452.c
->> +
->>   FOCUSRITE SCARLETT GEN 2/3 MIXER DRIVER
->>   M:	Geoffrey D. Bennett <g@b4.vu>
->>   L:	alsa-devel@alsa-project.org (moderated for non-subscribers)
->> diff --git a/drivers/input/touchscreen/Kconfig b/drivers/input/touchscreen/Kconfig
->> index 1feecd7ed3cb..11af91504969 100644
->> --- a/drivers/input/touchscreen/Kconfig
->> +++ b/drivers/input/touchscreen/Kconfig
->> @@ -388,6 +388,18 @@ config TOUCHSCREEN_EXC3000
->>   	  To compile this driver as a module, choose M here: the
->>   	  module will be called exc3000.
->>   
->> +config TOUCHSCREEN_FOCALTECH_FTS5452
->> +	tristate "Focaltech FTS Touchscreen"
->> +	depends on I2C
->> +	help
->> +	  Say Y here to enable support for I2C connected Focaltech FTS
->> +	  based touch panels, including the 5452 and 8917 panels.
-> 
-> This language is a bit misleading, as it seems to suggest three or more
-> models are supported. It seems the title should simply be "FocalTech
-> FTS5452 touchscreen controller" with the description as "...FocalTech
-> FTS5452 and compatible touchscreen controllers."
-> 
-> As more are found to be compatible (e.g. FTS8917), the compatible strings
-> can simply be appended.
-> 
->> +
->> +	  If unsure, say N.
->> +
->> +	  To compile this driver as a module, choose M here: the
->> +	  module will be called focaltech_fts.
->> +
->>   config TOUCHSCREEN_FUJITSU
->>   	tristate "Fujitsu serial touchscreen"
->>   	select SERIO
->> diff --git a/drivers/input/touchscreen/Makefile b/drivers/input/touchscreen/Makefile
->> index 159cd5136fdb..47d78c9cff21 100644
->> --- a/drivers/input/touchscreen/Makefile
->> +++ b/drivers/input/touchscreen/Makefile
->> @@ -45,6 +45,7 @@ obj-$(CONFIG_TOUCHSCREEN_ELO)		+= elo.o
->>   obj-$(CONFIG_TOUCHSCREEN_EGALAX)	+= egalax_ts.o
->>   obj-$(CONFIG_TOUCHSCREEN_EGALAX_SERIAL)	+= egalax_ts_serial.o
->>   obj-$(CONFIG_TOUCHSCREEN_EXC3000)	+= exc3000.o
->> +obj-$(CONFIG_TOUCHSCREEN_FOCALTECH_FTS5452)	+= focaltech_fts5452.o
->>   obj-$(CONFIG_TOUCHSCREEN_FUJITSU)	+= fujitsu_ts.o
->>   obj-$(CONFIG_TOUCHSCREEN_GOODIX)	+= goodix_ts.o
->>   obj-$(CONFIG_TOUCHSCREEN_HIDEEP)	+= hideep.o
->> diff --git a/drivers/input/touchscreen/focaltech_fts5452.c b/drivers/input/touchscreen/focaltech_fts5452.c
->> new file mode 100644
->> index 000000000000..abf8a2f271ca
->> --- /dev/null
->> +++ b/drivers/input/touchscreen/focaltech_fts5452.c
->> @@ -0,0 +1,432 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * FocalTech touchscreen driver.
->> + *
->> + * Copyright (c) 2010-2017, FocalTech Systems, Ltd., all rights reserved.
->> + * Copyright (C) 2018 XiaoMi, Inc.
->> + * Copyright (c) 2021 Caleb Connolly <caleb@connolly.tech>
->> + * Copyright (c) 2023 Joel Selvaraj <joelselvaraj.oss@gmail.com>
->> + */
+>
+> > =20
+> >  	if (soc_type =3D=3D QCA_WCN6750)
+> >  		qca_send_patch_config_cmd(hdev);
+> > =20
+> >  	/* Download rampatch file */
+> >  	config.type =3D TLV_TYPE_PATCH;
+> > -	if (qca_is_wcn399x(soc_type)) {
+> > +	if (soc_type =3D=3D QCA_WCN3988) {
+> > +		snprintf(config.fwname, sizeof(config.fwname),
+> > +			 "qca/apbtfw%02x.tlv", rom_ver);
+> > +	} else if (qca_is_wcn399x(soc_type)) {
+> >  		snprintf(config.fwname, sizeof(config.fwname),
+> >  			 "qca/crbtfw%02x.tlv", rom_ver);
+> >  	} else if (soc_type =3D=3D QCA_QCA6390) {
+> > @@ -636,6 +642,9 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t ba=
+udrate,
+> >  	if (firmware_name)
+> >  		snprintf(config.fwname, sizeof(config.fwname),
+> >  			 "qca/%s", firmware_name);
+> > +	else if (soc_type =3D=3D QCA_WCN3988)
+> > +		snprintf(config.fwname, sizeof(config.fwname),
+> > +			 "qca/apnv%02x.bin", rom_ver);
+> >  	else if (qca_is_wcn399x(soc_type)) {
+> >  		if (ver.soc_id =3D=3D QCA_WCN3991_SOC_ID) {
+>
+> Not strictly related to this patch, but while reviewing this I noticed th=
+at
+> ver.soc_id is __le32 but QCA_WCN3991_SOC_ID is in host byteorder.
+>
+> Perhaps a cpu_to_le32() or le32_to_cpu() call is in order here?
 
-[skip]
+Good catch, as you've seen I sent a patch separately to fix that. :)
 
->> +static const struct of_device_id fts_of_match[] = {
->> +	{ .compatible = "focaltech,fts5452", .data = &fts5452_chip_data },
->> +	{ .compatible = "focaltech,fts8719", .data = &fts8719_chip_data },
->> +	{ /* sentinel */ }
->> +};
->> +
->> +MODULE_DEVICE_TABLE(of, fts_of_match);
->> +
->> +static struct i2c_driver fts_ts_driver = {
->> +	.probe_new = fts_ts_probe,
->> +	.id_table = fts_i2c_id,
->> +	.driver = {
->> +		.name = FTS_DRIVER_NAME,
->> +		.pm = pm_sleep_ptr(&fts_dev_pm_ops),
->> +		.of_match_table = fts_of_match,
->> +	},
->> +};
->> +module_i2c_driver(fts_ts_driver);
->> +
->> +MODULE_AUTHOR("Joel Selvaraj <joelselvaraj.oss@gmail.com>");
->> +MODULE_AUTHOR("Caleb Connolly <caleb@connolly.tech>");
->> +MODULE_DESCRIPTION("Focaltech Touchscreen Driver");
-> 
-> Nit: mixing 'FocalTech' and 'Focaltech' throughout.
-> 
->> +MODULE_LICENSE("GPL");
->> -- 
->> 2.40.0
->>
-> 
-> Kind regards,
-> Jeff LaBundy
+Regards
+Luca
 
-Thank you,
-Joel Selvaraj
+>
+> >  			snprintf(config.fwname, sizeof(config.fwname),
+>
+> ...
+
