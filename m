@@ -2,226 +2,115 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01222C77B75
-	for <phone-devel@archiver.kernel.org>; Fri, 12 May 2023 13:59:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF9EBC77B7F
+	for <phone-devel@archiver.kernel.org>; Fri, 12 May 2023 14:30:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241426AbjELN7W (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 12 May 2023 09:59:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36384 "EHLO
+        id S241294AbjELOaS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 12 May 2023 10:30:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241357AbjELN7G (ORCPT
+        with ESMTP id S241564AbjELOaQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 12 May 2023 09:59:06 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45D9714345
-        for <phone-devel@vger.kernel.org>; Fri, 12 May 2023 06:58:58 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-96652cb7673so1090867366b.0
-        for <phone-devel@vger.kernel.org>; Fri, 12 May 2023 06:58:58 -0700 (PDT)
+        Fri, 12 May 2023 10:30:16 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DB5514371
+        for <phone-devel@vger.kernel.org>; Fri, 12 May 2023 07:30:12 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-50bc4ba28cbso17730461a12.0
+        for <phone-devel@vger.kernel.org>; Fri, 12 May 2023 07:30:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1683899936; x=1686491936;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uD3Ipvt0NExfmILEv8OKGxIPIOoFOtued5pY1YUMvaA=;
-        b=ZPbUlqd510c1ym+w8AeWysEGsU8WE4AvhtiRwFFFnqVDALOh+khbiSvxLg23oSyqZb
-         m23j7QATGuiB4u5f77wUiSITvARRigOD9JS+B/tkoTq68F3Xv8HSx5C+8gufqCGb2jjJ
-         vfVjzyKT6UxdFfWKSp5p+ftUI4XHKVG3wf6dHJVycvhQkMEdGfMDVCKE6Q9hO5a7wwr4
-         faAyGH3z4UyfAob0fREEEbsUpcUmp5EOxCWdfKQsqY0Pp9kfi8jdZs0uKlY7pUej7IV6
-         GEgNxH+Bh2Ib7LWsorTTtcuvaEnZz+D04+udrmhsU1TW+sJBVVAmAn82d6dQyBoArZ56
-         biYQ==
+        d=fairphone.com; s=fair; t=1683901810; x=1686493810;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T0OGsKjyATKDb9jYmWbTNqZ4sLTa+V+9kzUcaHu+Bg4=;
+        b=NjrV3H/c9DiHGBEjjvqb8Ko94Brk1Dtf/oCUqkm+fROH8lHlSrr1UArdUvMSuEBrTZ
+         LG/tVEizSEHlJUQ6SllSMvjU3iTr8RuxOD5O+u1z9ny+O9O+qn5+rpUf8zaxad3xcWxy
+         JQN0iIZdGmRwGWUqSgV4B5rNFQVCc5GNL+f0uxFlOSL46MjDUc6RjinVG3auLy59Lnse
+         w+2tlm0HEpP81jVq5AOcpkkFZUZRCPRUR1AnN8yEihy7UhOoYS4+Iv+34hKuTifuEGJg
+         W2HF0KkXX8wGXC+UhlM6vOA8Bqs+Tku0ObCpDvdnf8n6wG3OfKQH8PW0B1e6Ic2kqOJo
+         bkxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683899936; x=1686491936;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uD3Ipvt0NExfmILEv8OKGxIPIOoFOtued5pY1YUMvaA=;
-        b=b9srFYCWXHjAcJ2NZ0wCry+xmRexxE5RB6/TLPMOL7aYmqk3HAQQy52apdfTzDbnBL
-         IfbsLnK7sMe4Qg4VhywviNcBaNV4ToxW6P8tdLenTTSpachazWgHuSNeqHUkGlVbHXSh
-         FfPVw1I+q4cZbbrzqGlhhCIQmi8RxeCZUsAxrCg6bwiCQF+UcNWcw5WKvwEHMnNVKoS+
-         EYJA6LjdPSGT26w2uy1SfcRbm6CPapotnxfib2SWy3lhOtclJDjinUTruvIeJW6lQXlx
-         uhdacCWvPkFfJib5njA/65DR8NNGkj2vIj9/fP00akJ4Fs4+laGeMjWgo4Tq8Hf/jza8
-         cBTw==
-X-Gm-Message-State: AC+VfDycZ63zY8xYGgtNKPcU86INRCkp2fBCEJbR9L9AHfRnJgUBPeuG
-        zYfTWnyGVf18kA80YZtRaYbVnQ==
-X-Google-Smtp-Source: ACHHUZ5NT+vNCm97DRq7kbKwyyr5lRuNUHvWe9eNLgCczj2xQoRRAEPi7wrQRonSYKHmEGpAR8uEog==
-X-Received: by 2002:a17:907:9347:b0:933:3814:e0f4 with SMTP id bv7-20020a170907934700b009333814e0f4mr23139917ejc.16.1683899936411;
-        Fri, 12 May 2023 06:58:56 -0700 (PDT)
-Received: from [172.16.240.113] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id mc27-20020a170906eb5b00b00966330021e9sm5399061ejb.47.2023.05.12.06.58.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 May 2023 06:58:55 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Fri, 12 May 2023 15:58:26 +0200
-Subject: [PATCH v2 4/4] arm64: dts: qcom: sm7225-fairphone-fp4: Add
- Bluetooth
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230421-fp4-bluetooth-v2-4-3de840d5483e@fairphone.com>
-References: <20230421-fp4-bluetooth-v2-0-3de840d5483e@fairphone.com>
-In-Reply-To: <20230421-fp4-bluetooth-v2-0-3de840d5483e@fairphone.com>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.12.2
+        d=1e100.net; s=20221208; t=1683901810; x=1686493810;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=T0OGsKjyATKDb9jYmWbTNqZ4sLTa+V+9kzUcaHu+Bg4=;
+        b=S0hA9sH2JTbft/xtmmAV2QdlDGRMJ9q8TCjnVsfl0v8YzEqQdyAz4M9JFoUkjr1cuC
+         vzb0xb6o1xRdLjJo1rSBVB6ntdXxKu3b5YGSZKcqUnF2r3bbaH9JKlj++i0pYY0ckKEN
+         QeZkDwBlBkvVjuOoYUo+QXp3bPI53yOAdYXQcYL0n3EJsWBfz3HPOdCxRZixjp6dkuYd
+         beIKN6MGy0mBjV5mP9+Ky2FrgMO7ZmUTTXUKLjCLZw6GmFzGWZY8+5s/XrF0h0GS+0J1
+         cFGATe8CfgBu3RLFE7fgbncPfzxqIrgfQp7RkFbjY+DVwe/VAkpZuxT2qlRFjAoqjcWr
+         XSXw==
+X-Gm-Message-State: AC+VfDx8MNQSB+vWjg9luXu9Cyrly9GiqwJ9O6oDQ8bZcaR57JKW+GG9
+        c2MOkYgRRZ8TfUxANbtO+IwCQQ==
+X-Google-Smtp-Source: ACHHUZ7wfROlWoHHVhBbZ9cSWpXy+k/in7usHaTGZqbXMeEoLhu2Kl4Yjqa2+xah0carSqkZXnUH/g==
+X-Received: by 2002:a17:907:a41e:b0:965:e556:8f6d with SMTP id sg30-20020a170907a41e00b00965e5568f6dmr23781673ejc.63.1683901810620;
+        Fri, 12 May 2023 07:30:10 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id kn3-20020a1709079b0300b0096a27dbb5b2sm3518504ejc.209.2023.05.12.07.30.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 May 2023 07:30:09 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 12 May 2023 16:30:08 +0200
+Message-Id: <CSKDDFPXC6FD.1TAU3XXOSGA0K@otso>
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Eric Dumazet" <edumazet@google.com>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        "Paolo Abeni" <pabeni@redhat.com>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Balakrishna Godavarthi" <bgodavar@codeaurora.org>,
+        "Rocky Liao" <rjliao@codeaurora.org>,
+        "Marcel Holtmann" <marcel@holtmann.org>,
+        "Johan Hedberg" <johan.hedberg@gmail.com>,
+        "Luiz Augusto von Dentz" <luiz.dentz@gmail.com>,
+        "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@linaro.org>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-bluetooth@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH RFC 3/4] arm64: dts: qcom: sm6350: add uart1 node
+X-Mailer: aerc 0.15.1
+References: <20230421-fp4-bluetooth-v1-0-0430e3a7e0a2@fairphone.com>
+ <20230421-fp4-bluetooth-v1-3-0430e3a7e0a2@fairphone.com>
+ <8f312ded-8456-eced-85cc-0ae32a0c8bba@linaro.org>
+In-Reply-To: <8f312ded-8456-eced-85cc-0ae32a0c8bba@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The device has a WCN3988 chip for WiFi and Bluetooth. Configure the
-Bluetooth node and enable the UART it is connected to, plus the
-necessary pinctrl that has been borrowed with comments from
-sc7280-idp.dtsi.
+On Sun Apr 23, 2023 at 12:51 PM CEST, Krzysztof Kozlowski wrote:
+> On 21/04/2023 16:11, Luca Weiss wrote:
+> > Add the node describing uart1 incl. opp table and pinctrl.
+> >=20
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> >  arch/arm64/boot/dts/qcom/sm6350.dtsi | 63 ++++++++++++++++++++++++++++=
+++++++++
+> >  1 file changed, 63 insertions(+)
+>
+> Please do not send DTS patches for net-next. DTS must go via Qualcomm
+> SoC. Split the series and mention where is the bindings change in DTS
+> patchset.
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 103 ++++++++++++++++++++++
- 1 file changed, 103 insertions(+)
+Sorry, just saw now after already sending v2.
 
-diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-index 7ae6aba5d2ec..e3dc49951523 100644
---- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-+++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-@@ -31,6 +31,7 @@ / {
- 
- 	aliases {
- 		serial0 = &uart9;
-+		serial1 = &uart1;
- 	};
- 
- 	chosen {
-@@ -524,6 +525,39 @@ adc-chan@644 {
- 	};
- };
- 
-+&qup_uart1_cts {
-+	/*
-+	 * Configure a bias-bus-hold on CTS to lower power
-+	 * usage when Bluetooth is turned off. Bus hold will
-+	 * maintain a low power state regardless of whether
-+	 * the Bluetooth module drives the pin in either
-+	 * direction or leaves the pin fully unpowered.
-+	 */
-+	bias-bus-hold;
-+};
-+
-+&qup_uart1_rts {
-+	/* We'll drive RTS, so no pull */
-+	drive-strength = <2>;
-+	bias-disable;
-+};
-+
-+&qup_uart1_rx {
-+	/*
-+	 * Configure a pull-up on RX. This is needed to avoid
-+	 * garbage data when the TX pin of the Bluetooth module is
-+	 * in tri-state (module powered off or not driving the
-+	 * signal yet).
-+	 */
-+	bias-pull-up;
-+};
-+
-+&qup_uart1_tx {
-+	/* We'll drive TX, so no pull */
-+	drive-strength = <2>;
-+	bias-disable;
-+};
-+
- &qupv3_id_0 {
- 	status = "okay";
- };
-@@ -561,6 +595,75 @@ &sdhc_2 {
- 
- &tlmm {
- 	gpio-reserved-ranges = <13 4>, <56 2>;
-+
-+	qup_uart1_sleep_cts: qup-uart1-sleep-cts-state {
-+		pins = "gpio61";
-+		function = "gpio";
-+		/*
-+		 * Configure a bias-bus-hold on CTS to lower power
-+		 * usage when Bluetooth is turned off. Bus hold will
-+		 * maintain a low power state regardless of whether
-+		 * the Bluetooth module drives the pin in either
-+		 * direction or leaves the pin fully unpowered.
-+		 */
-+		bias-bus-hold;
-+	};
-+
-+	qup_uart1_sleep_rts: qup-uart1-sleep-rts-state {
-+		pins = "gpio62";
-+		function = "gpio";
-+		/*
-+		 * Configure pull-down on RTS. As RTS is active low
-+		 * signal, pull it low to indicate the BT SoC that it
-+		 * can wakeup the system anytime from suspend state by
-+		 * pulling RX low (by sending wakeup bytes).
-+		 */
-+		bias-pull-down;
-+	};
-+
-+	qup_uart1_sleep_rx: qup-uart1-sleep-rx-state {
-+		pins = "gpio64";
-+		function = "gpio";
-+		/*
-+		 * Configure a pull-up on RX. This is needed to avoid
-+		 * garbage data when the TX pin of the Bluetooth module
-+		 * is floating which may cause spurious wakeups.
-+		 */
-+		bias-pull-up;
-+	};
-+
-+	qup_uart1_sleep_tx: qup-uart1-sleep-tx-state {
-+		pins = "gpio63";
-+		function = "gpio";
-+		/*
-+		 * Configure pull-up on TX when it isn't actively driven
-+		 * to prevent BT SoC from receiving garbage during sleep.
-+		 */
-+		bias-pull-up;
-+	};
-+};
-+
-+&uart1 {
-+	/delete-property/ interrupts;
-+	interrupts-extended = <&intc GIC_SPI 602 IRQ_TYPE_LEVEL_HIGH>,
-+			      <&tlmm 64 IRQ_TYPE_EDGE_FALLING>;
-+
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-1 = <&qup_uart1_sleep_cts>, <&qup_uart1_sleep_rts>, <&qup_uart1_sleep_tx>, <&qup_uart1_sleep_rx>;
-+
-+	status = "okay";
-+
-+	bluetooth {
-+		compatible = "qcom,wcn3988-bt";
-+
-+		vddio-supply = <&vreg_l11a>;
-+		vddxo-supply = <&vreg_l7a>;
-+		vddrf-supply = <&vreg_l2e>;
-+		vddch0-supply = <&vreg_l10e>;
-+		swctrl-gpios = <&tlmm 69 GPIO_ACTIVE_HIGH>;
-+
-+		max-speed = <3200000>;
-+	};
- };
- 
- &uart9 {
+Is this a special rule for linux-bluetooth@ / netdev@? Isn't it easier
+to keep it together so the status of series can be assessed easier? I've
+always submitted patches by topic, like input patches + dts patches and
+it was never mentioned.
 
--- 
-2.40.1
+Regards
+Luca
+
+>
+>
+> Best regards,
+> Krzysztof
 
