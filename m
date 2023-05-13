@@ -2,145 +2,121 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5966C77B7C
-	for <phone-devel@archiver.kernel.org>; Fri, 12 May 2023 20:53:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82D7AC77B7F
+	for <phone-devel@archiver.kernel.org>; Sat, 13 May 2023 08:50:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236785AbjELUxq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 12 May 2023 16:53:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55952 "EHLO
+        id S232234AbjEMIul (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 13 May 2023 04:50:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229611AbjELUxp (ORCPT
+        with ESMTP id S229463AbjEMIuk (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 12 May 2023 16:53:45 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 938331FE5;
-        Fri, 12 May 2023 13:53:42 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-4f00d41df22so55366219e87.1;
-        Fri, 12 May 2023 13:53:42 -0700 (PDT)
+        Sat, 13 May 2023 04:50:40 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE9E646BC
+        for <phone-devel@vger.kernel.org>; Sat, 13 May 2023 01:50:38 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2ad714536cfso88585571fa.0
+        for <phone-devel@vger.kernel.org>; Sat, 13 May 2023 01:50:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683924821; x=1686516821;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dK9pTU3dCszxfhakIo6H9xZVLUDy3fIcZSz6A27TG8M=;
-        b=FD/zAsysSg3L3OXq9M6zoEHXlfE7Zfisk0oebJg9PxeK9WD3m7uBHxhWl00zt77u+z
-         0tUZ4noCfxhvkE0k3KBAqdr6hd/MIfK7l6RCJC5VXN0uA6dKVGWFLnIKdlHEpNsfYARY
-         N5BPheqRnYf8SWrvmYRPSDLSWEVrx6KNGuVl0Sm7yzG5k+XyxctahUO6aWQyG6j3WcHL
-         TjFAnpxP8mTK2AVe9C1aOf7iAXfQg9+e2lfBpBFMX1bD2A2DQAzihjZRhv1n+/q20MbV
-         iQxoBV3Z5SgOkCWqzEhXleobkJpZw1Wxo2FgVZky9NuWoS5Sf6gx3O6rYux5izXhmZPy
-         w9EA==
+        d=linaro.org; s=google; t=1683967837; x=1686559837;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZA+KVArcmXjb5W6mmCGUzDH85J25BuQco6W+6t2c4RM=;
+        b=jeo/gJrKUI0IM8cpVDGXdRLOySjJYBKq46qyfunJdWGTofoXMFtLlVZNWK5jKIwmrc
+         Jkb4JFU10nJ/S+lKp5mzoj7w5Bi6irzmRwad1/yihy3jGHZCeLIm/plOEkKhHhdqLDeH
+         ZRuz8kJpW7LFknwxpccUDtYFdG5J5k/cSLPJiHe7USy22OaB1dZKsuYw7ohlsOY3OLJy
+         MXWLNhtK6IEUVqv1dI+2w6FLgg92yEBewDVq94eTSMkv7wpnHf793rG1AaEed2mn/lqi
+         8JLF9+RMgPrNyiXLNNoxxKVLP2PyaJijENINQkFT+7TDemICgTeb4MpaxnSdHir7+wVF
+         G0hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683924821; x=1686516821;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dK9pTU3dCszxfhakIo6H9xZVLUDy3fIcZSz6A27TG8M=;
-        b=fRVTNlfiLiDtne+VJahvV2rIQ7nmma2LiYl5cTXIG22FRgxQ/IPx8hw23fLylYBS1l
-         /GITN6Pus8wX1xGrB76kCqh4n/UB/fLzFWZlNOJ61wWJs8UxNTumf0swVVAlmV+BHFZi
-         +/+GKzFEklpAFyo/oMjm4jsVT/wJa6UlHpkYnYf+yskTefnp6/g8wwzNuHi3z77Fx9R6
-         lwpVqd2skXDq7Nm8uf4dcuw42K/OcIOdR8REumbWZwr0bHpEXtjcw9DwM7En3XjoC2ma
-         dgvQ4TsJtPfrPbh3XsZIFpBe4riGuXSve7CsBEICJ/Xpw2aNuFs7VVIge72O2craF4C2
-         CUMw==
-X-Gm-Message-State: AC+VfDxUUvj234Hr65zNvhku1e6pctP9DyuQvzqMHCl1DlhYo1F/Dsai
-        H942MTRdPnLc6R6GeX9cWTSuUTrR6EdghdvcQfk=
-X-Google-Smtp-Source: ACHHUZ4QVh0Plexs1KGYcEgkQrE+RKTmMsf2h41mEIoiKb7iyK0IcQzM41HYhHzu7YrAE3Za0Omy3humMqCta3K95Ik=
-X-Received: by 2002:a2e:9355:0:b0:293:4b60:419c with SMTP id
- m21-20020a2e9355000000b002934b60419cmr3647191ljh.18.1683924820549; Fri, 12
- May 2023 13:53:40 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1683967837; x=1686559837;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZA+KVArcmXjb5W6mmCGUzDH85J25BuQco6W+6t2c4RM=;
+        b=Ulyxl+i/1xo6iyUraWrtMFd4Lsbjscx/dV5TGm4lSk3ZsPivgb8R/yW3OtfDYTeRok
+         LkJ+Hm6x+0fHaOpozmbl4pVD56wqDjwai1eFBBRTnlqbZdnHqKDmzkacQ/vOp6e/I8PF
+         Vuy97KYwA2dQA11BCa1OSzBgGiHsUGokeOj5N/CsKjYi68VMji/7zS0eSWTcerhbCb7J
+         uDL/Yz6v+/QNY10ofaWLQEG431qjkfG3U0QeQwTse9UDTb06dDlgAZGbNfW8Tw59QVey
+         hiPVWmoB0YOeaHRrbA6E2AcfrEWbdI4ToQBAXAJRcN6L3qJQM3zxc0BuCMtIA+2MX8Ja
+         ZvLw==
+X-Gm-Message-State: AC+VfDyhQa2LtHIXscWT49KtqMZs4NUqc25oF5wv1PVD+BWgqfg55UHS
+        Dpj4nLxlNJFI/GP/ojj6ihd8gRX/g4ibKy2e3i4=
+X-Google-Smtp-Source: ACHHUZ5l3WP6SXF4/TAtrgwSMcYwjtbVgGIN2dCv9it8ot2NpYp2tlqdQ/CGgy9I7uZ+fnv0945pfA==
+X-Received: by 2002:a05:651c:82:b0:2a8:ba49:a811 with SMTP id 2-20020a05651c008200b002a8ba49a811mr4673879ljq.25.1683967836975;
+        Sat, 13 May 2023 01:50:36 -0700 (PDT)
+Received: from [192.168.1.101] (abxi58.neoplus.adsl.tpnet.pl. [83.9.2.58])
+        by smtp.gmail.com with ESMTPSA id x15-20020a2e9dcf000000b002adb566dc10sm1316566ljj.129.2023.05.13.01.50.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 13 May 2023 01:50:36 -0700 (PDT)
+Message-ID: <ff01b0d2-6e00-40dc-37bc-236c5510aaf5@linaro.org>
+Date:   Sat, 13 May 2023 10:50:34 +0200
 MIME-Version: 1.0
-References: <20230421-fp4-bluetooth-v2-0-3de840d5483e@fairphone.com>
-In-Reply-To: <20230421-fp4-bluetooth-v2-0-3de840d5483e@fairphone.com>
-From:   Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date:   Fri, 12 May 2023 13:53:28 -0700
-Message-ID: <CABBYNZJPw=Oxi+J2oA=6aosEZjCBK=u=8HEJywzRJCCrmGnkGA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] Add WCN3988 Bluetooth support for Fairphone 4
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH 3/3] ARM: dts: qcom: msm8226: Provide clocks to mmcc node
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        netdev@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Taniya Das <tdas@codeaurora.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org
+References: <20230509-msm8226-mmcc-parents-v1-0-83a2dfc986ab@z3ntu.xyz>
+ <20230509-msm8226-mmcc-parents-v1-3-83a2dfc986ab@z3ntu.xyz>
+Content-Language: en-US
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230509-msm8226-mmcc-parents-v1-3-83a2dfc986ab@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Luca,
 
-On Fri, May 12, 2023 at 6:58=E2=80=AFAM Luca Weiss <luca.weiss@fairphone.co=
-m> wrote:
->
-> Add support in the btqca/hci_qca driver for the WCN3988 and add it to
-> the sm7225 Fairphone 4 devicetree.
->
-> Devicetree patches go via Qualcomm tree, the rest via their respective
-> trees.
 
-Just to be sure, patches 1-2 shall be applied to bluetooth-next the
-remaining are going to be handled elsewhere?
-
-> --
-> Previously with the RFC version I've had problems before with Bluetooth
-> scanning failing like the following:
->
->   [bluetooth]# scan on
->   Failed to start discovery: org.bluez.Error.InProgress
->
->   [  202.371374] Bluetooth: hci0: Opcode 0x200b failed: -16
->
-> This appears to only happen with driver built-in (=3Dy) when the supporte=
-d
-> local commands list doesn't get updated in the Bluetooth core and
-> use_ext_scan() returning false. I'll try to submit this separately since
-> this now works well enough with =3Dm. But in both cases (=3Dy, =3Dm) it's
-> behaving a bit weirdly before (re-)setting the MAC address with "sudo
-> btmgmt public-addr fo:oo:ba:ar"
->
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+On 9.05.2023 23:16, Luca Weiss wrote:
+> The mmcc needs several clocks that are being used as parents. Provide
+> them in dt.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
-> Changes in v2:
-> - Add pinctrl & 'tlmm 64' irq to uart node
-> - Pick up tags
-> - Link to v1: https://lore.kernel.org/r/20230421-fp4-bluetooth-v1-0-0430e=
-3a7e0a2@fairphone.com
->
-> ---
-> Luca Weiss (4):
->       dt-bindings: net: qualcomm: Add WCN3988
->       Bluetooth: btqca: Add WCN3988 support
->       arm64: dts: qcom: sm6350: add uart1 node
->       arm64: dts: qcom: sm7225-fairphone-fp4: Add Bluetooth
->
->  .../bindings/net/bluetooth/qualcomm-bluetooth.yaml |   2 +
->  arch/arm64/boot/dts/qcom/sm6350.dtsi               |  63 +++++++++++++
->  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts  | 103 +++++++++++++++=
-++++++
->  drivers/bluetooth/btqca.c                          |  13 ++-
->  drivers/bluetooth/btqca.h                          |  12 ++-
->  drivers/bluetooth/hci_qca.c                        |  12 +++
->  6 files changed, 201 insertions(+), 4 deletions(-)
-> ---
-> base-commit: f2fe50eb7ca6b7bc6c63745f5c26f7c6022fcd4a
-> change-id: 20230421-fp4-bluetooth-b36a0e87b9c8
->
-> Best regards,
-> --
-> Luca Weiss <luca.weiss@fairphone.com>
->
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-
---=20
-Luiz Augusto von Dentz
+Konrad
+>  arch/arm/boot/dts/qcom-msm8226.dtsi | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
+> index 4dd4e26c73a2..3187b6853445 100644
+> --- a/arch/arm/boot/dts/qcom-msm8226.dtsi
+> +++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
+> @@ -392,6 +392,21 @@ mmcc: clock-controller@fd8c0000 {
+>  			#clock-cells = <1>;
+>  			#reset-cells = <1>;
+>  			#power-domain-cells = <1>;
+> +
+> +			clocks = <&rpmcc RPM_SMD_XO_CLK_SRC>,
+> +				 <&gcc GCC_MMSS_GPLL0_CLK_SRC>,
+> +				 <&gcc GPLL0_VOTE>,
+> +				 <&gcc GPLL1_VOTE>,
+> +				 <&rpmcc RPM_SMD_GFX3D_CLK_SRC>,
+> +				 <0>,
+> +				 <0>;
+> +			clock-names = "xo",
+> +				      "mmss_gpll0_vote",
+> +				      "gpll0_vote",
+> +				      "gpll1_vote",
+> +				      "gfx3d_clk_src",
+> +				      "dsi0pll",
+> +				      "dsi0pllbyte";
+>  		};
+>  
+>  		tlmm: pinctrl@fd510000 {
+> 
