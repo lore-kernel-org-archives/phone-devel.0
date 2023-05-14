@@ -2,133 +2,98 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB651C77B7F
-	for <phone-devel@archiver.kernel.org>; Sun, 14 May 2023 14:32:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 12779C77B7D
+	for <phone-devel@archiver.kernel.org>; Sun, 14 May 2023 16:43:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233095AbjENOcB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 14 May 2023 10:32:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36016 "EHLO
+        id S233374AbjENQnZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 14 May 2023 12:43:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232258AbjENOcA (ORCPT
+        with ESMTP id S230496AbjENQnY (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 14 May 2023 10:32:00 -0400
-Received: from smtp.smtpout.orange.fr (smtp-30.smtpout.orange.fr [80.12.242.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7533E30D5
-        for <phone-devel@vger.kernel.org>; Sun, 14 May 2023 07:31:56 -0700 (PDT)
-Received: from [192.168.1.18] ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id yClJps2VJKyEByClJpiTwJ; Sun, 14 May 2023 16:31:54 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1684074714;
-        bh=6dTqDvAKG79B/2e2RDgHQKyZvLzcOF4scBFg7nUwea4=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=MI9OJ8Svm31cyT9bP/+QGf/dgGfmyuld8CPIVqfZ3UW+0jNrNwQ9udVp7Z1kq1cQ+
-         veoATUUZ8OEcBQQsbXZcoir1Vvp8o9gMr3MPk1eZhyLjKFE8JGlgsfSGakdUuPlBBi
-         /xwvBBC9O4XI/Si7mmb27L0mfwY6RLcgx4NlwMKlW14I/usuXDA1Q1SyOmsc0NaStG
-         HpiklhZFJwamsYnbr/KkdlgsqGGTDjXSFEN6epIFkC2+cjSfvf5h/nRjWYktpiiOMT
-         WLhCrsTFDGGGCoHIinYCRt1pL+XGWc0fYvEF1kjwmlnV5dX3VtPkBOgqX4d7Ne5cX/
-         AaY8xf3yq8zwQ==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 14 May 2023 16:31:54 +0200
-X-ME-IP: 86.243.2.178
-Message-ID: <2e0f37ef-b80c-1a4d-2159-29598ac11156@wanadoo.fr>
-Date:   Sun, 14 May 2023 16:31:49 +0200
+        Sun, 14 May 2023 12:43:24 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C683F3C12
+        for <phone-devel@vger.kernel.org>; Sun, 14 May 2023 09:43:22 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-953343581a4so1855909066b.3
+        for <phone-devel@vger.kernel.org>; Sun, 14 May 2023 09:43:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1684082601; x=1686674601;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4spgMntPB3LCUVqHkhSqU+qO4ZV/kE2zwnApUafRYkg=;
+        b=wnDSe5Eh1EA+khgHLHK6bWcwx6mk/1MFGA0p08W5Mwz1YJyRBppd2MLg73PSsDASFe
+         mj8Icbp6p32t6oMzSkm3S+wKamKURvyA7/RUeq8sxOP96YthFvrZZkblByhqk/GI8Scu
+         p6PVmJJNygjxVStUSFXYzkVTubqi35niAID5iFMvo049WgFwOZVmeGeqs8ZqSjqjOSWu
+         I50MrK2eoA4UgUkeTW0g+53oo8bbv1FdWKCEfzUG4ww1qaj+SJomd5YynDfRQx6JfKs6
+         53QnyRRpgmWV1n0iMeZ7Y69k+T9T+pNuwfq+KVrmRFi/0jXRl6U7Bho+MogixhZ33ic0
+         nn9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684082601; x=1686674601;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4spgMntPB3LCUVqHkhSqU+qO4ZV/kE2zwnApUafRYkg=;
+        b=HKsgNeKt+e7AJF+PBWtUYm3pZKXu1O+88YGpRV4SmVYKTgr1ZJhI/f5ps03AUzTBwF
+         LZLYbsaPzJnxBK4rLn3grrWpGYnCL5wUNXUSOG2gXCvoMiIG77hsWMhX0K5f53t/6PKU
+         ugskA2z6RsBlwq0Ei+j5xHJTmww2kvIwVkFDe3bP9gIAkik1isRs9MJ/uIu6E9b65i97
+         DSLVwBaI4sWnYdldIGmDuUIHc8+icf8wfNAhWfOYmVkrKSJdFJNiZOLpaD2FIf9bxjjJ
+         S76mvoBbArqhgrxI8N3K46cbWBkWyC6CeLYdRnx4G6SAhQJXIosWWLgXK5O690NU2gcb
+         iV6A==
+X-Gm-Message-State: AC+VfDyRRUJ3S3ClS/4OHsBC5f+HW5leSf6KVbCJ6gf7JS7YlJuftXaM
+        Mp5nbzT0asrUu1hW89CX2FKQaQ==
+X-Google-Smtp-Source: ACHHUZ4wKLYVNC10wfemrXflp1NJh60COumq314MHATvysNxMLWA0CUuYlbZZ5GDFvDfcBKLz94RDA==
+X-Received: by 2002:a17:906:58c8:b0:966:168d:8c5 with SMTP id e8-20020a17090658c800b00966168d08c5mr26374950ejs.57.1684082601102;
+        Sun, 14 May 2023 09:43:21 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:15c0:828:a146:6594:d73a:8280? ([2a02:810d:15c0:828:a146:6594:d73a:8280])
+        by smtp.gmail.com with ESMTPSA id fe18-20020a1709072a5200b00968242f8c37sm8341504ejc.50.2023.05.14.09.43.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 14 May 2023 09:43:20 -0700 (PDT)
+Message-ID: <bd03403e-9246-faad-c23f-89417e31aeda@linaro.org>
+Date:   Sun, 14 May 2023 18:43:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v5 05/10] power: supply: rt5033_charger: Add RT5033
- charger device driver
-Content-Language: fr
-To:     jahau@rocketmail.com
-Cc:     axel.lin@ingics.com, beomho.seo@samsung.com, broonie@kernel.org,
-        cw00.choi@samsung.com, cy_huang@richtek.com,
-        devicetree@vger.kernel.org, henrik@grimler.se,
-        krzysztof.kozlowski+dt@linaro.org, lee@kernel.org,
-        lgirdwood@gmail.com, linus.walleij@linaro.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        pavel@ucw.cz, phone-devel@vger.kernel.org,
-        raymondhackley@protonmail.com, robh+dt@kernel.org, sre@kernel.org,
-        stephan@gerhold.net, ~postmarketos/upstreaming@lists.sr.ht
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v5 09/10] dt-bindings: power: supply: rt5033-battery: Add
+ power-supplies as a property
+To:     Jakob Hauser <jahau@rocketmail.com>,
+        Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc:     Beomho Seo <beomho.seo@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Henrik Grimler <henrik@grimler.se>, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
 References: <20230514123130.41172-1-jahau@rocketmail.com>
- <20230514123130.41172-6-jahau@rocketmail.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20230514123130.41172-6-jahau@rocketmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ <20230514123130.41172-10-jahau@rocketmail.com>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230514123130.41172-10-jahau@rocketmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Le 14/05/2023 à 14:31, Jakob Hauser a écrit :
-> This patch adds device driver of Richtek RT5033 PMIC. The driver supports
-> switching charger. rt5033 charger provides three charging modes. The charging
-> modes are pre-charge mode, fast charge mode and constant voltage mode. They
-> vary in charge rate, the charge parameters can be controlled by i2c interface.
+On 14/05/2023 14:31, Jakob Hauser wrote:
+> Additionally to the already available ref "power-supply.yaml", add
+> "power-supplies" as a property. Otherwise, when referencing rt5033-battery in
+> an example, message "'power-supplies' does not match any of the regexes:
+> 'pinctrl-[0-9]+'" will be returned.
 > 
-> Cc: Beomho Seo <beomho.seo-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> Cc: Chanwoo Choi <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> Tested-by: Raymond Hackley <raymondhackley-g/b1ySJe57IN+BqQ9rBEUg@public.gmane.org>
-> Signed-off-by: Jakob Hauser <jahau-ur4TIblo6goN+BqQ9rBEUg@public.gmane.org>
-> Reviewed-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> ---
->   drivers/power/supply/Kconfig          |   8 +
->   drivers/power/supply/Makefile         |   1 +
->   drivers/power/supply/rt5033_charger.c | 472 ++++++++++++++++++++++++++
->   include/linux/mfd/rt5033.h            |  16 -
->   4 files changed, 481 insertions(+), 16 deletions(-)
->   create mode 100644 drivers/power/supply/rt5033_charger.c
-> 
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 
-[...]
+Instead just change additionalProp->unevaluatedProperties: false.
 
-> +static int rt5033_charger_probe(struct platform_device *pdev)
-> +{
-> +	struct rt5033_charger *charger;
-> +	struct power_supply_config psy_cfg = {};
-> +	int ret;
-> +
-> +	charger = devm_kzalloc(&pdev->dev, sizeof(*charger), GFP_KERNEL);
-> +	if (!charger)
-> +		return -ENOMEM;
-> +
-> +	platform_set_drvdata(pdev, charger);
-> +	charger->dev = &pdev->dev;
-> +	charger->regmap = dev_get_regmap(pdev->dev.parent, NULL);
-> +
-> +	psy_cfg.of_node = pdev->dev.of_node;
-> +	psy_cfg.drv_data = charger;
-> +
-> +	charger->psy = devm_power_supply_register(&pdev->dev,
-> +						  &rt5033_charger_desc,
-> +						  &psy_cfg);
-> +	if (IS_ERR(charger->psy))
-> +		return dev_err_probe(&pdev->dev, PTR_ERR(charger->psy),
-> +				     "Failed to register power supply\n");
-> +
-> +	charger->chg = rt5033_charger_dt_init(charger);
-> +	if (IS_ERR_OR_NULL(charger->chg))
+Best regards,
+Krzysztof
 
-Hi,
-
-Nit: charger->chg can't be NULL.
-
-> +		return -ENODEV;
-
-Why bother returning specific error code in rt5033_charger_dt_init() if 
-they are eaten here.
-
-return PTR_ERR(charger->chg)?
-
-
-CJ
-
-> +
-> +	ret = rt5033_charger_reg_init(charger);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-
-[...]
