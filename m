@@ -2,68 +2,65 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 189B4C77B75
-	for <phone-devel@archiver.kernel.org>; Mon, 15 May 2023 13:17:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 99CB9C7EE2F
+	for <phone-devel@archiver.kernel.org>; Mon, 15 May 2023 16:19:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238913AbjEONRp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 15 May 2023 09:17:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35888 "EHLO
+        id S242440AbjEOQS5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 15 May 2023 12:18:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233763AbjEONRo (ORCPT
+        with ESMTP id S242453AbjEOQSt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 15 May 2023 09:17:44 -0400
+        Mon, 15 May 2023 12:18:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED1CD10A;
-        Mon, 15 May 2023 06:17:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A096E95;
+        Mon, 15 May 2023 09:18:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8299762462;
-        Mon, 15 May 2023 13:17:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647A5C433D2;
-        Mon, 15 May 2023 13:17:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 363D46202D;
+        Mon, 15 May 2023 16:18:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05DEC433D2;
+        Mon, 15 May 2023 16:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684156662;
-        bh=ptDRNornCJGXOlGr4nU5vrPyK26ECBlQszQEugZstUQ=;
+        s=k20201202; t=1684167527;
+        bh=ofL+sBmDU00qKVVpaS2uC/73jlaEQ7fpFiViTop8mSU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=iws3ptO9Y43Dk6Huf+l2QWXtv3DcWcG6tiJSo117mnlxgnUXpX9DIQWm2GgA35dow
-         aUd+0SANkCLuUna5px+0qnwTMsaBBx+Cv9+aZdhEmZ/ivDLExQXbs/i72ZQQESqghj
-         B789wdoeWb+9ic8yh9M3A0QKsplQj67+tN2MZ29vW5Ffdl5TeoQe7qlipSKIjFMvD+
-         dAMc040gh6y4QdqgxL3u5lOTqpmxBdTIoZvx9diD2tkT74GJVrzQqDy4w77Nwg7AgY
-         61tRB7ZPEBJ/kp1qbE/OBdF8Pd4e1f4CgNdRyN+Al0wCx3O2G8KHmsKtKdKIXGW8Gg
-         EC9woxkEF1JsQ==
-Date:   Mon, 15 May 2023 14:17:37 +0100
+        b=svDtCZrp7xXzJCeNqbc16cztM0Qg+rLC3jBYeowCCi7ah1+M3djBCbgsghJtHU/S7
+         I5DPpZ90DaK+L4bpdpCWmp7PaZ68jKVYCB6/Gz7FOYv/91csytsPoYTTugalIKN0sv
+         rpiFxFhBKNfSPgnSosTGL5ZYVI3vjYrf4pSu+AInvCXA29NASDPTSP+zDg+dRT3b3n
+         uckyupb5sQNLmNid/tU9hW0EHq1r0KNckYduYvIAbI6S8rbbG+EYoHVWuGCqjPj/Sa
+         Z9UFmes7CgnbatXArp6kLaA2Ro1XSJPN4QRCCkC9bnduUolISCfoKWuCDcT0NpKOb1
+         PpAwaU6m1KJkw==
+Date:   Mon, 15 May 2023 17:18:42 +0100
 From:   Lee Jones <lee@kernel.org>
-To:     Jianhua Lu <lujianhua000@gmail.com>
-Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     Dylan Van Assche <me@dylanvanassche.be>
+Cc:     pavel@ucw.cz, quic_fenglinw@quicinc.com, trix@redhat.com,
+        linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: leds: backlight: ktz8866: Add reg property
- and update example
-Message-ID: <20230515131737.GG10825@google.com>
-References: <20230428160246.16982-1-lujianhua000@gmail.com>
+Subject: Re: [PATCH 1/2] leds: flash: leds-qcom-flash: add PMI8998 support
+Message-ID: <20230515161842.GZ10825@google.com>
+References: <20230507172941.364852-1-me@dylanvanassche.be>
+ <20230507172941.364852-2-me@dylanvanassche.be>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230428160246.16982-1-lujianhua000@gmail.com>
+In-Reply-To: <20230507172941.364852-2-me@dylanvanassche.be>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, 29 Apr 2023, Jianhua Lu wrote:
+On Sun, 07 May 2023, Dylan Van Assche wrote:
 
-> The kinetic,ktz8866 is a I2C driver, so add the missing reg property.
-> And update example to make it clear.
+> Add subtype for the Qualcomm PMI8998 PMIC to support it besides the
+> PM8150 PMIC which has the same registers. Adjust the driver to recognize
+> both PMIC subtypes as a 3 channel LED driver.
 > 
-> Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
 > ---
->  .../leds/backlight/kinetic,ktz8866.yaml       | 29 ++++++++++++-------
->  1 file changed, 19 insertions(+), 10 deletions(-)
+>  drivers/leds/flash/leds-qcom-flash.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
