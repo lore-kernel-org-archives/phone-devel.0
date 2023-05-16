@@ -2,158 +2,100 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84818C77B75
-	for <phone-devel@archiver.kernel.org>; Tue, 16 May 2023 12:05:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83A23C77B75
+	for <phone-devel@archiver.kernel.org>; Tue, 16 May 2023 21:28:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232750AbjEPMFU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 16 May 2023 08:05:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59166 "EHLO
+        id S229464AbjEPV2g (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 16 May 2023 17:28:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232592AbjEPMFT (ORCPT
+        with ESMTP id S229458AbjEPV2f (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 16 May 2023 08:05:19 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C71983A86
-        for <phone-devel@vger.kernel.org>; Tue, 16 May 2023 05:05:16 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4f137dbaa4fso16827910e87.2
-        for <phone-devel@vger.kernel.org>; Tue, 16 May 2023 05:05:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684238715; x=1686830715;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rRsFkWQdRztNUEVr5b1qEyPiJ5e054yVlq4FCkoAX7A=;
-        b=HbU7Vc1GdA8WTZkAGCmYqdLFayXBcTZzSxnuAaGkrynx2D20BBb7+WsmmQdD3xFEd3
-         R6Jd16ME3b8U2P3S3IDZApftGRWRSHZRu1FnuKz4UbKliQcWo82jPRx2zDJn+uCTP1gA
-         x/mA5jzA3mLbB1Q+xsVidaFrnmQeiOhfOzljZJfckZmPOlIlxMAe6pTiEAStpbX8j54t
-         niXakkpaoROJBHtV/1BE+afKBBPpzDtgax1jFWEfONmvKeZhQr2a6mln0ipiFNW9+6sN
-         u+2K8itsie9l1T5Vdvtg2ybdk81HghMKZBHJlLymLX90rSSRTApY6i7B6Q9B5tjy33IW
-         zIJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684238715; x=1686830715;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rRsFkWQdRztNUEVr5b1qEyPiJ5e054yVlq4FCkoAX7A=;
-        b=j6M3FGs9RFLyMKiRu1HtAKTPXmcyOiGQMYQWwzeb6NnbHjUqlosYP4+IC4qSa+hYZk
-         ZVViYmvEjC2KcjrFnr79fg7J6W9vifP/TQBSAhjDW0kQeAED1HTy3HIVuoq4aBJOr4Rf
-         8dfjx89dgkwnSzUjVsJeVvBlSmVSBwWNXlrAPIhdLJV2PbmB2fgg97CrUwuW32tDwlkm
-         5n4ZLKbKUQjZafeWhULDFfZyK4+16EGgg0c3W1h2kc1ymH3D5ybhw4exfBUS2gi5EUzR
-         IAXljzK/HMxUj/4NGgztZrP9se0cFWeKnv/H+ywTrT3IcEnlXv1/ZGVwkADOd70VRDev
-         ZtLA==
-X-Gm-Message-State: AC+VfDykszQfOYCLIUnJoTL+/t0UvAZMBTnNGBQCO2FTksaceTzCy0aF
-        ljekuHZ6PGI7dNK+bkevRWW46w==
-X-Google-Smtp-Source: ACHHUZ7+Yoo9sdUMFiE9OTFOqeFzd6VNnni/6f5lk1zZYWWBjCfcYaD/eQhRgkAdSwu2kTB4WyGS9w==
-X-Received: by 2002:a19:701a:0:b0:4f2:62aa:986a with SMTP id h26-20020a19701a000000b004f262aa986amr5384931lfc.21.1684238715067;
-        Tue, 16 May 2023 05:05:15 -0700 (PDT)
-Received: from [192.168.1.101] (abxi58.neoplus.adsl.tpnet.pl. [83.9.2.58])
-        by smtp.gmail.com with ESMTPSA id q22-20020ac24a76000000b004f2509b87cesm2948907lfp.107.2023.05.16.05.05.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 May 2023 05:05:14 -0700 (PDT)
-Message-ID: <8deef09d-236b-e25a-ad5f-fe75e272541d@linaro.org>
-Date:   Tue, 16 May 2023 14:05:13 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] arm64: dts: qcom: sm6350: Move wifi node to correct place
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Tue, 16 May 2023 17:28:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 637806A54;
+        Tue, 16 May 2023 14:28:34 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0098E63F95;
+        Tue, 16 May 2023 21:28:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B337C433D2;
+        Tue, 16 May 2023 21:28:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684272513;
+        bh=Ey5gUSi9t1a1IP9c0w+UzkQFrYVXDaDnsgN/sFKjGII=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jbfkaV+z+GlS+eJJ0v3BcteCWgB1jJAn8xGbb1QZ1gRI7alLNu1Smy2pZdSmvbr5M
+         kMoVHI6j4etTpAtqqGGpYnJph98zsolr7xmNA4jNen1H2Bhseb2HZVuPRkliScWe+c
+         Wn7SLMjTQuREt085xZNEtZWnkHeJxD5lb09fO1kAceumTJ4ZIodvs2yWhI4FOsuvfv
+         DPgnjVzpkfZqRSXj8XdmwW13PmhSWCR+KVcIsv8nxjaVzybGuxJ/NgAVc/B4M2M/Ta
+         BnQHeBXb3CR6yT5F/xw9vjYflBUECL12c/97crcOaO68aG4X4OqAf/qbiUwPyN8q2K
+         p284Wcu+4dU0w==
+Date:   Tue, 16 May 2023 22:28:26 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230516-sm6350-order-v1-1-5c3b7c4cd761@fairphone.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230516-sm6350-order-v1-1-5c3b7c4cd761@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Beomho Seo <beomho.seo@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Henrik Grimler <henrik@grimler.se>,
+        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v6 09/10 RESEND] dt-bindings: power: supply:
+ rt5033-battery: Apply unevaluatedProperties
+Message-ID: <20230516-nursery-thespian-c1555bfae0e1@spud>
+References: <cover.1684182964.git.jahau@rocketmail.com>
+ <ef86067348f01a3bbf1bd9b4f81716b62ea1f552.1684182964.git.jahau@rocketmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="XHyEp9fDNNnMOGLu"
+Content-Disposition: inline
+In-Reply-To: <ef86067348f01a3bbf1bd9b4f81716b62ea1f552.1684182964.git.jahau@rocketmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
+--XHyEp9fDNNnMOGLu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 16.05.2023 08:56, Luca Weiss wrote:
-> Somehow wifi was placed further up in the file than where it should be.
-> Move it down so the nodes are sorted by reg again.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+On Mon, May 15, 2023 at 10:57:18PM +0200, Jakob Hauser wrote:
+> Additionally to the already available ref "power-supply.yaml", replace
+> "additionalProperties: false" by "unevaluatedProperties: false". Otherwis=
+e,
+> when referencing rt5033-battery in an example, message "'power-supplies' =
+does
+> not match any of the regexes: 'pinctrl-[0-9]+'" will be returned.
+>=20
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 
-Konrad
->  arch/arm64/boot/dts/qcom/sm6350.dtsi | 44 ++++++++++++++++++------------------
->  1 file changed, 22 insertions(+), 22 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-> index 18c4616848ce..4dffd7974fa3 100644
-> --- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-> @@ -1891,28 +1891,6 @@ frame@17c2d000 {
->  			};
->  		};
->  
-> -		wifi: wifi@18800000 {
-> -			compatible = "qcom,wcn3990-wifi";
-> -			reg = <0 0x18800000 0 0x800000>;
-> -			reg-names = "membase";
-> -			memory-region = <&wlan_fw_mem>;
-> -			interrupts = <GIC_SPI 414 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 415 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 416 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 417 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 418 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 419 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 420 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 421 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 422 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 423 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 424 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 425 IRQ_TYPE_LEVEL_HIGH>;
-> -			iommus = <&apps_smmu 0x20 0x1>;
-> -			qcom,msa-fixed-perm;
-> -			status = "disabled";
-> -		};
-> -
->  		apps_rsc: rsc@18200000 {
->  			compatible = "qcom,rpmh-rsc";
->  			label = "apps_rsc";
-> @@ -2010,6 +1988,28 @@ cpufreq_hw: cpufreq@18323000 {
->  			#freq-domain-cells = <1>;
->  			#clock-cells = <1>;
->  		};
-> +
-> +		wifi: wifi@18800000 {
-> +			compatible = "qcom,wcn3990-wifi";
-> +			reg = <0 0x18800000 0 0x800000>;
-> +			reg-names = "membase";
-> +			memory-region = <&wlan_fw_mem>;
-> +			interrupts = <GIC_SPI 414 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 415 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 416 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 417 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 418 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 419 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 420 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 421 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 422 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 423 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 424 IRQ_TYPE_LEVEL_HIGH>,
-> +				     <GIC_SPI 425 IRQ_TYPE_LEVEL_HIGH>;
-> +			iommus = <&apps_smmu 0x20 0x1>;
-> +			qcom,msa-fixed-perm;
-> +			status = "disabled";
-> +		};
->  	};
->  
->  	timer {
-> 
-> ---
-> base-commit: f1fcbaa18b28dec10281551dfe6ed3a3ed80e3d6
-> change-id: 20230516-sm6350-order-f9a836dc7247
-> 
-> Best regards,
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+Thanks,
+Conor.
+
+--XHyEp9fDNNnMOGLu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZGP1egAKCRB4tDGHoIJi
+0shZAQC/GEQJMZqeVof/CRj6u51s7skMPLITFZJ2QlYgo7U1AAD/TSYyeeLBD9Yp
+SkuJv3wbFVOcDZ7TKpuDnA1xHEgMwwY=
+=nE0N
+-----END PGP SIGNATURE-----
+
+--XHyEp9fDNNnMOGLu--
