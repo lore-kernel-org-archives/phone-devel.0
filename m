@@ -2,97 +2,160 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 83679C77B75
-	for <phone-devel@archiver.kernel.org>; Wed, 17 May 2023 13:34:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EADCC7EE2A
+	for <phone-devel@archiver.kernel.org>; Wed, 17 May 2023 15:02:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232091AbjEQNe0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 17 May 2023 09:34:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44358 "EHLO
+        id S231866AbjEQPCQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 17 May 2023 11:02:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232065AbjEQNeP (ORCPT
+        with ESMTP id S232433AbjEQPBs (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 17 May 2023 09:34:15 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECF7493FB;
-        Wed, 17 May 2023 06:33:49 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1ae52ce3250so6412065ad.2;
-        Wed, 17 May 2023 06:33:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684330429; x=1686922429;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rbMQ0v3qCDD0ikHRHPJXrlACnnN8XxCRviK30k53MMg=;
-        b=RdHpAmHAmgLsJMNhFGmDLliPlydekszKQt9Tz6yED4lbjlyJO4WP+zJvjbG2AEPCBE
-         qZYxCpEgK72p119skAHTvpTu/9wKzeUFsKVv/61qVsje+kxlLhrjYrzqvsRLhufEwVYx
-         FGTVULU3Nd+prqhRnzpbDs6IhiwIvP+9lKTvIKQQ8PzikNiQQVnkp7DpZkeNMUuPXz1I
-         b+rCUMMmkjCPF8Gp1mVtDNGaIVhndd6XCSwzm4MbruhtfDrYbaafrXrEbkfgcSJlgs8E
-         ZDi81QQF9NjPkeISnDfrD+Bby7q3cAnq4j92YpUmuJMo17tJvXPBzIka8C2pgw5A+yyb
-         a6ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684330429; x=1686922429;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rbMQ0v3qCDD0ikHRHPJXrlACnnN8XxCRviK30k53MMg=;
-        b=Ti7VTpASYhBag0yzRzjOJfViAJWjUOakuINHVOK95t8QWCVQ8ei71EQ5BRmNE2ku3U
-         yvElxLsb5t+l0cTdi9+sOEw/01FRqZDqIIkFjJjeNwrP1uyNKQS4hfUoIrlY7Zt9x8sK
-         x3xP4UOqfHSPpwaQ2RdIMiLFQ4odwJTtPA+c99tF0UM3iq1XRdBvUoyPcWZb1RJlCIOC
-         kUIhhGU57w7+20BZ5o+5rCm61qbezkPyKfGVFS12bO1xRvx4cb7ud2lD3LzTpBUn/G2z
-         GYKv6U9onCY3udd1cvl7LCu4Wy7Nk3bUtI+qg1bZJ1+u6uSb18UIsgn5U/EOWy8eHJYC
-         de2Q==
-X-Gm-Message-State: AC+VfDzOHcknG+7waMRzGqXdY7yB1dmo/qNxmGBvApnZQ+5jiLhF6vpg
-        75E0RD2luw4ZW+K5Mf4cwow=
-X-Google-Smtp-Source: ACHHUZ5neLbN65pdb8800vQuzivVb7/qsgL/pjdYn69YBg2IaPl14+iRcWaf3Y3bIRvpHHYhq3gkMw==
-X-Received: by 2002:a17:902:da91:b0:1ae:f37:c1ab with SMTP id j17-20020a170902da9100b001ae0f37c1abmr16417374plx.25.1684330429024;
-        Wed, 17 May 2023 06:33:49 -0700 (PDT)
-Received: from localhost.localdomain (n220246252240.netvigator.com. [220.246.252.240])
-        by smtp.gmail.com with ESMTPSA id m5-20020a170902db0500b001ac7f583f72sm17519253plx.209.2023.05.17.06.33.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 May 2023 06:33:48 -0700 (PDT)
-From:   Jianhua Lu <lujianhua000@gmail.com>
-To:     Andy Gross <agross@kernel.org>,
+        Wed, 17 May 2023 11:01:48 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C06AD84E;
+        Wed, 17 May 2023 08:00:33 -0700 (PDT)
+Received: from g550jk.localnet (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id B99AECE0B8;
+        Wed, 17 May 2023 14:59:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1684335570; bh=b+cK+yIredBclcZLDhIrSKK1DPiHez1yG+yF+QpEoIA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=dwp2HpAqySkhm6KLTWLtXtB124Zj7Xpxw0ZItIvaTZF0S1HEPdLbMbjIrKYOBRZbz
+         hZBTrKZwbig8CtBwGP23KUmU7+F9VM4+PDzgP9RE2eq9hOjdNkZi8nuqmOrJkf7Zhu
+         OT0QpD4A5WpyPqaF1yrRPqfu3GNRE5p0n2GyM6BM=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Jianhua Lu <lujianhua000@gmail.com>
-Subject: [PATCH v2] arm64: dts: qcom: sm8250-xiaomi-elish: remove redundant empty line
-Date:   Wed, 17 May 2023 21:33:40 +0800
-Message-Id: <20230517133340.21111-1-lujianhua000@gmail.com>
-X-Mailer: git-send-email 2.39.3
+        Andy Gross <agross@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] clk: qcom: smd-rpm: conditionally enable scaling before doing
+ handover
+Date:   Wed, 17 May 2023 16:59:29 +0200
+Message-ID: <2679120.mvXUDI8C0e@z3ntu.xyz>
+In-Reply-To: <20bd79c1-6c38-f1ed-1661-6fa4c308c5c5@linaro.org>
+References: <20230506-rpmcc-scaling-handover-v1-1-374338a8dfd9@z3ntu.xyz>
+ <20bd79c1-6c38-f1ed-1661-6fa4c308c5c5@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Remove a redundant empty line introduced by
-  commit 51c4c2bd6f31 ("arm64: dts: qcom: sm8250-xiaomi-elish-boe: Add mdss and dsi panel")
+On Dienstag, 16. Mai 2023 03:27:46 CEST Konrad Dybcio wrote:
+> On 6.05.2023 22:10, Luca Weiss wrote:
+> > On older platforms like msm8226, msm8974 and msm8916 the driver in the
+> > downstream kernel enables scaling first before doing the handover of the
+> > clocks.
+> > 
+> > While this normally doesn't seem to cause noticeable problems, on
+> > apq8026-asus-sparrow this causes the device to immediately reboot,
+> > perhaps due to older rpm firmware that becomes unhappy.
+> > 
+> > On newer platforms the order has swapped and enabling scaling is done
+> > after the handover, so let's introduce this behavior only conditionally
+> > for msm8226 and msm8974 for now.
+> > 
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> 
+> Did you give this a spin on some 8974? I think hammerhead had
+> issues around rpmcc in the past..
 
-Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
----
-Changes in v2:
- - Drop fixes tag
+Yes, appears to be fine on msm8974 also.
 
- arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+I tried to reproduce the hammerhead ocmem hang we had in the past but even 
+with v6.3 rpmcc it seems to be fine. But iirc it was happening more or less at 
+random in the past so wouldn't be surprised if my tests just didn't show 
+anything on accident.
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
-index 8af6a0120a50..eaac00085894 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
-@@ -504,7 +504,6 @@ panel_in_1: endpoint {
- 					remote-endpoint = <&dsi1_out>;
- 				};
- 			};
--
- 		};
- 	};
- };
--- 
-2.39.3
+Regards
+Luca
+
+> 
+> Konrad
+> 
+> >  drivers/clk/qcom/clk-smd-rpm.c | 16 +++++++++++++---
+> >  1 file changed, 13 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/drivers/clk/qcom/clk-smd-rpm.c
+> > b/drivers/clk/qcom/clk-smd-rpm.c index 887b945a6fb7..6d5476afc4d1 100644
+> > --- a/drivers/clk/qcom/clk-smd-rpm.c
+> > +++ b/drivers/clk/qcom/clk-smd-rpm.c
+> > @@ -178,6 +178,7 @@ struct clk_smd_rpm_req {
+> > 
+> >  struct rpm_smd_clk_desc {
+> >  
+> >  	struct clk_smd_rpm **clks;
+> >  	size_t num_clks;
+> > 
+> > +	bool scaling_before_handover;
+> > 
+> >  };
+> >  
+> >  static DEFINE_MUTEX(rpm_smd_clk_lock);
+> > 
+> > @@ -693,6 +694,7 @@ static struct clk_smd_rpm *msm8974_clks[] = {
+> > 
+> >  static const struct rpm_smd_clk_desc rpm_clk_msm8974 = {
+> >  
+> >  	.clks = msm8974_clks,
+> >  	.num_clks = ARRAY_SIZE(msm8974_clks),
+> > 
+> > +	.scaling_before_handover = true,
+> > 
+> >  };
+> >  
+> >  static struct clk_smd_rpm *msm8976_clks[] = {
+> > 
+> > @@ -1318,6 +1320,12 @@ static int rpm_smd_clk_probe(struct platform_device
+> > *pdev)> 
+> >  	rpm_smd_clks = desc->clks;
+> >  	num_clks = desc->num_clks;
+> > 
+> > +	if (desc->scaling_before_handover) {
+> > +		ret = clk_smd_rpm_enable_scaling(rpm);
+> > +		if (ret)
+> > +			goto err;
+> > +	}
+> > +
+> > 
+> >  	for (i = 0; i < num_clks; i++) {
+> >  	
+> >  		if (!rpm_smd_clks[i])
+> >  		
+> >  			continue;
+> > 
+> > @@ -1329,9 +1337,11 @@ static int rpm_smd_clk_probe(struct platform_device
+> > *pdev)> 
+> >  			goto err;
+> >  	
+> >  	}
+> > 
+> > -	ret = clk_smd_rpm_enable_scaling(rpm);
+> > -	if (ret)
+> > -		goto err;
+> > +	if (!desc->scaling_before_handover) {
+> > +		ret = clk_smd_rpm_enable_scaling(rpm);
+> > +		if (ret)
+> > +			goto err;
+> > +	}
+> > 
+> >  	for (i = 0; i < num_clks; i++) {
+> >  	
+> >  		if (!rpm_smd_clks[i])
+> > 
+> > ---
+> > base-commit: dd9e11d6477a52ede9ebe575c83285e79e823889
+> > change-id: 20230506-rpmcc-scaling-handover-a63029ed9d13
+> > 
+> > Best regards,
+
+
+
 
