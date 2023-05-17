@@ -2,37 +2,37 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E3CC4C7EE23
-	for <phone-devel@archiver.kernel.org>; Wed, 17 May 2023 18:21:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 638B0C7EE2E
+	for <phone-devel@archiver.kernel.org>; Wed, 17 May 2023 18:21:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229733AbjEQSVy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 17 May 2023 14:21:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52078 "EHLO
+        id S229635AbjEQSVz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 17 May 2023 14:21:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjEQSVx (ORCPT
+        with ESMTP id S229677AbjEQSVx (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Wed, 17 May 2023 14:21:53 -0400
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050:0:465::201])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419C77EC5;
-        Wed, 17 May 2023 11:21:52 -0700 (PDT)
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 781475BB3;
+        Wed, 17 May 2023 11:21:51 -0700 (PDT)
 Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4QM1f50hvRz9sjK;
-        Wed, 17 May 2023 20:21:49 +0200 (CEST)
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4QM1f22KRRz9sps;
+        Wed, 17 May 2023 20:21:46 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
-        s=MBO0001; t=1684347709;
+        s=MBO0001; t=1684347706;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OUTW/1nl21rkbLxL1BJ2Mi9Ky/aG3WBLvZCR8496Gfs=;
-        b=w0HCpVe9Kotu/fkyqY2cfKBbv77oO28uUCYSzLZnCvp/agfv5jqwAH8mgzXj0KrxJirrn1
-        um+rkgAHzOa34d6ZhBSMs0ULabSrpQRq0h0tn+23lrkS/Oy6BVvY1pHhaU4KQ/Zh8SxyAx
-        yfxHlGAfsoiiVKWaGIwfB6PTTMnkGOPO1VXyRYHXLXmiIel99xgCa6HPH4NSLN84z0NIUe
-        igov0CNskxLwSWUflZNoxKD17vsHn7GSNVMQDWQjUifkZEaKVHTJ38M/0wi+wxNS2Wph1f
-        D9RWLEiZZHAP9XhFXXVMQ+s97ksAS1x2/mVj58diwtBgmCUMPLoKqZNtltW+cA==
+        bh=AKhFIBENbm+x57efQqNUL+MpkzQuf72J2Na/e8+68Qg=;
+        b=Z7rv4tlUYbSR+QiMIboqSZR9DXWdS9bGMZA/lPo1VhoWF4IjKB0I9OJqrPrIQ2xEb8gwIU
+        fLodr9NjkGsGNcaz/GoTl9AaM2uN2QWIo+HMPp/8szQvA+4xozP6J1P2/i/IMTDDFwWDSp
+        eZ/x/PPcjbmDL2NUhWWA44067Q9kmKQV20iIU6jlqSy9FWHKAfjNuOBMLtd5AW+WcEwhs1
+        SrL5dVKNrsV3Q/rmZC8d9Ee6c0ngt6xcSLKq8ZWpsiHhqqvcPKSXq7ibCi9wAOaDjlB6On
+        TsRYVT2SRXUU66g2nC0DeJRRGCMw3rUDoWR5mHqmbDeR13JD8goEo9vlTeWx2g==
 From:   Dylan Van Assche <me@dylanvanassche.be>
 To:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
         robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
@@ -41,9 +41,9 @@ Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         amartinz@shiftphones.com, Dylan Van Assche <me@dylanvanassche.be>
-Subject: [PATCH 2/2] arm64: dts: qcom: sdm845-shift-axolotl: enable flash LED
-Date:   Wed, 17 May 2023 20:21:33 +0200
-Message-Id: <20230517182133.72590-3-me@dylanvanassche.be>
+Subject: [PATCH 1/2] arm64: dts: qcom: pmi8998: add flash LED
+Date:   Wed, 17 May 2023 20:21:32 +0200
+Message-Id: <20230517182133.72590-2-me@dylanvanassche.be>
 In-Reply-To: <20230517182133.72590-1-me@dylanvanassche.be>
 References: <20230517182133.72590-1-me@dylanvanassche.be>
 MIME-Version: 1.0
@@ -52,48 +52,32 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The SHIFT6mq (axolotl) is an SDM845-based smartphone with 2 flash LEDs.
-One LED is white, the other one is yellow. Define both LEDs in the DTS
-so they can be used as flash or torch.
+Qualcomm PMIC PMI8998 has a 3 channel flash LED driver which is used
+by many phones for 1 or 2 flash LEDs. Each LED can be used in flash mode
+or torch mode. Add the flash LED node to PMI8998 DTS.
 
 Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
 ---
- .../boot/dts/qcom/sdm845-shift-axolotl.dts    | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ arch/arm64/boot/dts/qcom/pmi8998.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-index 0ad891348e0c..e7fc0c3cae58 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-@@ -554,6 +554,28 @@ led@5 {
- 	};
- };
+diff --git a/arch/arm64/boot/dts/qcom/pmi8998.dtsi b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
+index ffe587f281d8..89f959353ad5 100644
+--- a/arch/arm64/boot/dts/qcom/pmi8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
+@@ -60,6 +60,12 @@ pmi8998_lpg: pwm {
+ 			status = "disabled";
+ 		};
  
-+&pmi8998_flash {
-+	status = "okay";
++		pmi8998_flash: led-controller@d300 {
++			compatible = "qcom,spmi-flash-led";
++			reg = <0xd300>;
++			status = "disabled";
++		};
 +
-+	led-0 {
-+		function = LED_FUNCTION_FLASH;
-+		color = <LED_COLOR_ID_WHITE>;
-+		led-sources = <1>;
-+		led-max-microamp = <180000>;
-+		flash-max-microamp = <1000000>;
-+		flash-max-timeout-us = <1280000>;
-+	};
-+
-+	led-1 {
-+		function = LED_FUNCTION_FLASH;
-+		color = <LED_COLOR_ID_YELLOW>;
-+		led-sources = <2>;
-+		led-max-microamp = <180000>;
-+		flash-max-microamp = <1000000>;
-+		flash-max-timeout-us = <1280000>;
-+	};
-+};
-+
- &qup_uart9_rx {
- 	drive-strength = <2>;
- 	bias-pull-up;
+ 		pmi8998_wled: leds@d800 {
+ 			compatible = "qcom,pmi8998-wled";
+ 			reg = <0xd800>, <0xd900>;
 -- 
 2.40.1
 
