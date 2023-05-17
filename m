@@ -2,87 +2,70 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1EDCC77B7D
-	for <phone-devel@archiver.kernel.org>; Wed, 17 May 2023 16:21:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BEA23C77B75
+	for <phone-devel@archiver.kernel.org>; Wed, 17 May 2023 18:21:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbjEQQVQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 17 May 2023 12:21:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49690 "EHLO
+        id S229502AbjEQSVx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 17 May 2023 14:21:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjEQQVP (ORCPT
+        with ESMTP id S229457AbjEQSVw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 17 May 2023 12:21:15 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A4DE66;
-        Wed, 17 May 2023 09:20:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684340452; x=1715876452;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TJJjxZv/+YTJMh3VqRy+st8hbyyXa/vAr7VoctwQbvw=;
-  b=KiIPepszxpUvCBIONHQKwZVbs7cSwTD3lsEUWlHbzioq83QW1UKXOIX6
-   SBUE9GVb+g8qHtcRVM7Z2/x3XYVlh+upHjWWOnwZ0AbmNZJBaQtX/cmaV
-   +Z2AdDcIF4KXQ34a4WlLF5XMEFgJAmEHHqbWQoHOy8tC1GS6aB3/VoEX5
-   TVhP5pXmuuj09MggEP7rj1Gp4Gfll8G7LAeyXzLnPi4nobb0OmqfYD7C7
-   RN6PiwU3eC53LxBfd6RKtnvKGE8mZ2mGBXJfhaMmpBl7RmeANBJxhwfgy
-   GTOkqxLN4wF9wCRw4CWnjjaGWsc4xNjakp4u4dNm/mGwtvQMELRh+oVKW
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="354106510"
-X-IronPort-AV: E=Sophos;i="5.99,282,1677571200"; 
-   d="scan'208";a="354106510"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2023 09:19:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10713"; a="766838897"
-X-IronPort-AV: E=Sophos;i="5.99,282,1677571200"; 
-   d="scan'208";a="766838897"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga008.fm.intel.com with ESMTP; 17 May 2023 09:19:34 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pzJsC-0008TH-1n;
-        Wed, 17 May 2023 19:19:32 +0300
-Date:   Wed, 17 May 2023 19:19:32 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Jonathan Corbet <corbet@lwn.net>,
+        Wed, 17 May 2023 14:21:52 -0400
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [IPv6:2001:67c:2050:0:465::101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E20691739;
+        Wed, 17 May 2023 11:21:48 -0700 (PDT)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4QM1dz0p6hz9sm8;
+        Wed, 17 May 2023 20:21:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
+        s=MBO0001; t=1684347703;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=JZFA1fokFB4103V8XqAdq7PRJrsJa9ZW4IaScwv4dpM=;
+        b=i5afpNj+4tAaMSY8vlNVHk+zeq6oDydbw0sned08JSk0QG2ULlRKKZJE2Lfw1Nc8hku5RW
+        QEHTWDL/cXPZstB7f8ffijGwCBi8oHdKaGhLc7yuukO/3YUT3xf9LcNqMab80kew57vjOM
+        Ng+q4WLNmZXazxiZ7gMaMsXFkcd3ZavPNT2NO8HOCj+VHbDRcE10Efhx0RsyqzC+5PNEbN
+        jQWyVA92TPb8aevE2DqqR86SkqFAz+f5AAbckMMWHPfZC9yken4oCxIhPRTj7ARrsm4YDy
+        nJtW6LwIh3sMuFP5j4aC+xSRYvaqdXYWdE/Kw/YoSYj0cj9/4+gPiO84qUDvlw==
+From:   Dylan Van Assche <me@dylanvanassche.be>
+To:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: printk-formats: Clarify %*pb format parameters
-Message-ID: <ZGT+lJasWhZ0TPRi@smile.fi.intel.com>
-References: <20230516-printk-bitmap-v1-1-d5f810192a10@fairphone.com>
+        amartinz@shiftphones.com, Dylan Van Assche <me@dylanvanassche.be>
+Subject: [PATCH 0/2] arm64: dts: qcom: pmi8998: add and enable flash LED
+Date:   Wed, 17 May 2023 20:21:31 +0200
+Message-Id: <20230517182133.72590-1-me@dylanvanassche.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230516-printk-bitmap-v1-1-d5f810192a10@fairphone.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, May 16, 2023 at 08:52:43AM +0200, Luca Weiss wrote:
-> Since it's rather unusual for printk formats to require two parameters,
+Qualcomm PMI8998 has support for 3 flash LEDs which got support in [1].
+Add this driver to the PMI8998 DTS and enable 2 flash LEDs in the SHIFTPHONES SHIFT6mq 
+smartphone. This smartphone has a white and yellow flash LED.
 
-I don't think this is "unusual". The %*... is very well described in the
-printf(3) (the meaning of *). It applies here for %*p... as well.
+[1] https://lore.kernel.org/all/20230507172941.364852-1-me@dylanvanassche.be
 
-> expand the documentation to clearly mention that in the printk format
-> for bitmaps.
-> 
-> As an extra example, for example from include/net/bluetooth/hci_core.h
-> we have a bitmap DECLARE_BITMAP(dev_flags, __HCI_NUM_FLAGS);
-> This can be printed with ("%*pb", __HCI_NUM_FLAGS, hdev->dev_flags)
+Kind regards,
+Dylan Van Assche
 
-I think this change is not needed. But try to convince PRINTK maintainers.
-Maybe they will be okay with it if it covers all %*p... cases (like %*ph).
+Dylan Van Assche (2):
+  arm64: dts: qcom: pmi8998: add flash LED
+  arm64: dts: qcom: sdm845-shift-axolotl: enable flash LED
+
+ arch/arm64/boot/dts/qcom/pmi8998.dtsi         |  6 +++++
+ .../boot/dts/qcom/sdm845-shift-axolotl.dts    | 22 +++++++++++++++++++
+ 2 files changed, 28 insertions(+)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.40.1
 
