@@ -2,74 +2,75 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BC84C77B7D
-	for <phone-devel@archiver.kernel.org>; Wed, 17 May 2023 18:52:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49823C77B75
+	for <phone-devel@archiver.kernel.org>; Wed, 17 May 2023 18:52:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229492AbjEQSwv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 17 May 2023 14:52:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46022 "EHLO
+        id S229661AbjEQSww (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 17 May 2023 14:52:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229678AbjEQSwa (ORCPT
+        with ESMTP id S229719AbjEQSwb (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 17 May 2023 14:52:30 -0400
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0D1DD05F
-        for <phone-devel@vger.kernel.org>; Wed, 17 May 2023 11:52:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1684349340; cv=none;
+        Wed, 17 May 2023 14:52:31 -0400
+Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [81.169.146.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F49D07D
+        for <phone-devel@vger.kernel.org>; Wed, 17 May 2023 11:52:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1684349341; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=M5GWUMN0EEzPZsLNvNrjnO0io3WTqLo/6vRK8PdlVP19uH0N+L7dBR1QTCLF1aoLos
-    iPifJcKiWWJ+XaCqRFCpPZgYSvNyWSYVjNBuwl7fLY8jrs7amEhsErcpeEy0h064Fk1g
-    4da34HdjZnZPnFjruU2nGa/jf6kvB2vHmPgOwynBqH+vcGUFDmCDKc5UyxQ7MdPRyIkg
-    9SWPOAYGSx0+qvNl1FxfxJQDFvLNw3Sk7HA3q8p8c4fya7yM+ulsOFGcC9gblWxIyU4T
-    tuci2ouAwA8Q9UrrQCTOs+CxU+ik59LiVK+Ycje9dFnvrIQcCNrHhlzWFsQSpOBMTDe6
-    Z7jQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1684349340;
+    b=sujEGaU2LtqwQEXig1SJPnzwVZjlI4/HdAf+ckkD4+gxIpLQlrbxeZEfsnqCcSDZhN
+    LH2f9ZE0BL769WqPCBCDHdxcHRzu1FyUUPbRq9buW+XR2YuQq1iSjdM2zW2cbcsDjEFG
+    L2KTElS2NdfJpmTle4jBfwZFp+pBDpJvr+XSWRkyYmOMMtKGF8dksg1+4rlEVPOnyNJ+
+    rj2ax/prsoglzYAcLbcfW8pn0QcxCaQtys2QQD6Tl56jp9EVE0MWjVc7fQs0ftX5FNPD
+    2DBNxJOqol1wFdwXZEJpxuKamqPoxZEKi9XcK2Bkt/qGjtqJ5uE2LSpPEEfdAusoX8zb
+    U/5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1684349341;
     s=strato-dkim-0002; d=strato.com;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=fVtyqhrRJ5UbBMQWImjynUVkIpRXG8Ma+YZD4PD5Xk4=;
-    b=ZrQjSgU14tTkQLjGaI27JNsEFdquU2ofszinBct+ih8u+m6V+iyH/Iz06a6/0OeiP9
-    F2dbtalio7fup8yoP07PJ7bm8NopjWXmn4JSUZ/Pz8FH6CHYn8YcT+NSWyZw33kxOYDc
-    by+BUceSVFK3F/WkgjrS/rG8zeoCoY62iXtTad5gGlp2NMZUBj9QYz18DyoTCJekK/vF
-    UfByQGfabNDl/daxEcI/lHIKSlaXFq+oOwkAmGe2WlCGsfjjqm3LcXQoyu0ZMZgK5JKb
-    7QDa+pZF05dqqldUAdurVFmwLmapTe6bJBNYUHJWcMzdNWwBJEo6/HrHbobTPML0vRl6
-    ghIQ==
+    bh=wA5JA5aTgG5tPkRsBk2d9ad8ys2Ecjc8lpm75dE5DTs=;
+    b=S2G5G8siY9AKNYAOkcZtMY9AKStklC8iuNxd56tkNJ1zNcpD8t5gevtLTOx5DcGRz9
+    9DFGenh2rL5f6ica+cU0LftGLWtrAnD5oGqC1pGgmV6Got3mz5RmV7sGUs3adwFL/kCe
+    K1GUPZu/mwDLMo9zfTLcODbpBRA/K2MIqaFGmQaGoJ7OChfuuxzU3DBRiBrdxMz94YO8
+    VdXrwqaFfHCsueoHy3mpjpacXPj//TkMiaPLCNS+j+UOne0kOpOxc5PzA2VZGLcjZQBz
+    YRpsQtkcOWFBop0CMvIQYels9gdgkcVq3nDFJ9jQw5xMJixLIi6TKlY8/RMxNLdo8bq+
+    gJVQ==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1684349340;
+X-RZG-CLASS-ID: mo03
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1684349341;
     s=strato-dkim-0002; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=fVtyqhrRJ5UbBMQWImjynUVkIpRXG8Ma+YZD4PD5Xk4=;
-    b=qdGYTiHVtvluXOGpep78DSShguuxZ80kFTKXgo9OTaylv1U8lALmsG90J+iP5TWFS2
-    mrR5UJheywZsgPhswC9qNKSV0t6l2tNHcCahOmxbyK22GbYWtTymw1CH6kfaJCoLAZaf
-    Pa6Tu6zVmPeKJCIl67j7iLFBSsIk00sFEltEfQN4FmAmzbpl9KZGjoo3gi9CqqRyMEM1
-    57W4T9wQ3/vjSXkBWqTqs05KIxTi0thPuDIjXV4CSzoPnxRkbgCpreub9f3FxfQo6C43
-    xpvGvZWdAA0NCYuC4xpjVO1aFgIHmzZ1+YfGeUVEd3B2gNbW2AXYHThsjGTT5K9AbMYo
-    xVHg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1684349340;
+    bh=wA5JA5aTgG5tPkRsBk2d9ad8ys2Ecjc8lpm75dE5DTs=;
+    b=D/eh1UHOAi5S5ZulIwBZQR48JzrncAOA+eHiIcttyuQ4139i4tY2CYNdYVpRoogOVn
+    lmaAak3GI8YT7qoXinFizlWSJp9qGxQSxzPk3JvFTml0A9eCPBgwxruGNBvj0XfocCMU
+    QwZKi/XT03pl6x1q/yms71c6stEFf+dVF0YBYl5ffzSSXFml5JPzkZKkCejlqB0FsUO+
+    wfP/sQ02tBCVPhZPQrTDNY9uZ44+ls3JI3SYyxJDhNbU/XUvFZj2nkDs3B4HeMKJJzqy
+    Z/AFKJbZXlGnyzt8mrpphj7bhR0kHaJjRMHholU8wjejnvEkdIsDMOzpS+KligkDG1Vj
+    3ylA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1684349341;
     s=strato-dkim-0003; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=fVtyqhrRJ5UbBMQWImjynUVkIpRXG8Ma+YZD4PD5Xk4=;
-    b=NWPhlgBodgHN9M+vyxAZFodMqB2pmWiLsFRlYycKbzZ/9U391Mx1bvNqxXdY0hGoum
-    ll1dkGM7W/IMtHzmxLBw==
+    bh=wA5JA5aTgG5tPkRsBk2d9ad8ys2Ecjc8lpm75dE5DTs=;
+    b=ABjxH+PkY/l5iS5ggLe/bNvhiAANxTd0N9RI+iccSlJw96s33oboyVfH9b1krr9f64
+    dtSx8ctBnhVDkKDc/WBg==
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQjVd4CteZ/7jYgS+mLFY+H0JAn8u4ly9TY="
 Received: from [192.168.244.3]
     by smtp.strato.de (RZmta 49.4.0 DYNA|AUTH)
-    with ESMTPSA id j6420az4HIn0BIL
+    with ESMTPSA id j6420az4HIn1BIN
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Wed, 17 May 2023 20:49:00 +0200 (CEST)
+    Wed, 17 May 2023 20:49:01 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
-Date:   Wed, 17 May 2023 20:48:45 +0200
-Subject: [PATCH 6/8] arm64: dts: qcom: msm8916-pm8916: Clarify purpose
+Date:   Wed, 17 May 2023 20:48:47 +0200
+Subject: [PATCH 8/8] arm64: dts: qcom: msm8916-pm8916: Mark always-on
+ regulators
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230510-msm8916-regulators-v1-6-54d4960a05fc@gerhold.net>
+Message-Id: <20230510-msm8916-regulators-v1-8-54d4960a05fc@gerhold.net>
 References: <20230510-msm8916-regulators-v1-0-54d4960a05fc@gerhold.net>
 In-Reply-To: <20230510-msm8916-regulators-v1-0-54d4960a05fc@gerhold.net>
 To:     Bjorn Andersson <andersson@kernel.org>
@@ -85,44 +86,86 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Goal of the msm8916-pm8916.dtsi is to reduce the boilerplate necessary
-to create a device tree for a typical board with the MSM8916 SoC
-combined with the PM8916 PMIC. > 99% of all MSM8916 boards use the same
-standard setup where many of the PM8916 regulators have a fixed purpose
-and only some are left up for board-specific use.
+Some of the regulators must be always-on to ensure correct operation of
+the system, e.g. PM8916 L2 for the LPDDR RAM, L5 for most digital I/O
+and L7 for the CPU PLL (strictly speaking the CPU PLL might only need
+an active-only vote but this is not supported for regulators in
+mainline currently).
 
-While MSM8916 (and perhaps MSM8939 soon) is currently the only platform
-with such an include, it has definitely proven useful. With more than
-30 boards using it (not all of them upstream yet) it simplifies the
-review a lot and reduces the chance of configuring the standard
-components incorrectly.
+The RPM firmware seems to enforce that internally, these supplies stay
+on even if we vote for them to power off (and there is no other
+processor running). This means it's pointless to keep sending
+enable/disable requests because they will just be ignored.
+Also, drivers are much more likely to get a wrong impression of the
+regulator status, because regulator_is_enabled() will return false when
+there are no users, even though the regulator is always on.
 
-In preparation of extending its scope slightly, add a comment at the
-top that clearly explains what the .dtsi represents and when it should
-(or should not) be used.
+Describe this properly by marking the regulators as always-on.
 
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- arch/arm64/boot/dts/qcom/msm8916-pm8916.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/qcom/apq8016-sbc.dts     | 5 -----
+ arch/arm64/boot/dts/qcom/msm8916-pm8916.dtsi | 5 +++++
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
+diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+index ab8dfd858025..1c5d55854893 100644
+--- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
++++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+@@ -358,11 +358,6 @@ pm8916_l17: l17 {
+ 	};
+ };
+ 
+-&pm8916_s4 {
+-	regulator-always-on;
+-	regulator-boot-on;
+-};
+-
+ &sdhc_1 {
+ 	status = "okay";
+ 
 diff --git a/arch/arm64/boot/dts/qcom/msm8916-pm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916-pm8916.dtsi
-index 5b3ed7137e1f..29ef46c33350 100644
+index b38eecbd6253..64d7228bee07 100644
 --- a/arch/arm64/boot/dts/qcom/msm8916-pm8916.dtsi
 +++ b/arch/arm64/boot/dts/qcom/msm8916-pm8916.dtsi
-@@ -1,4 +1,12 @@
- // SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * msm8916-pm8916.dtsi describes common properties (e.g. regulator connections)
-+ * that apply to most devices that make use of the MSM8916 SoC and PM8916 PMIC.
-+ * Many regulators have a fixed purpose in the original reference design and
-+ * were rarely re-used for different purposes. Devices that deviate from the
-+ * typical reference design should not make use of this include and instead add
-+ * the necessary properties in the board-specific device tree.
-+ */
+@@ -72,11 +72,13 @@ pm8916_rpm_regulators: regulators {
+ 		pm8916_s3: s3 {
+ 			regulator-min-microvolt = <1250000>;
+ 			regulator-max-microvolt = <1350000>;
++			regulator-always-on; /* Needed for L2 */
+ 		};
  
- #include "msm8916.dtsi"
- #include "pm8916.dtsi"
+ 		pm8916_s4: s4 {
+ 			regulator-min-microvolt = <1850000>;
+ 			regulator-max-microvolt = <2150000>;
++			regulator-always-on; /* Needed for L5/L7 */
+ 		};
+ 
+ 		/*
+@@ -93,6 +95,7 @@ pm8916_s4: s4 {
+ 		pm8916_l2: l2 {
+ 			regulator-min-microvolt = <1200000>;
+ 			regulator-max-microvolt = <1200000>;
++			regulator-always-on; /* Needed for LPDDR RAM */
+ 		};
+ 
+ 		/* pm8916_l3 is managed by rpmpd (MSM8916_VDDMX) */
+@@ -102,6 +105,7 @@ pm8916_l2: l2 {
+ 		pm8916_l5: l5 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
++			regulator-always-on; /* Needed for most digital I/O */
+ 		};
+ 
+ 		pm8916_l6: l6 {
+@@ -112,6 +116,7 @@ pm8916_l6: l6 {
+ 		pm8916_l7: l7 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
++			regulator-always-on; /* Needed for CPU PLL */
+ 		};
+ 
+ 		pm8916_l8: l8 {
 
 -- 
 2.40.1
