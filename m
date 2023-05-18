@@ -2,198 +2,80 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 727E3C77B7D
-	for <phone-devel@archiver.kernel.org>; Wed, 17 May 2023 19:11:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FA82C7EE24
+	for <phone-devel@archiver.kernel.org>; Thu, 18 May 2023 06:14:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229665AbjEQTLr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 17 May 2023 15:11:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58774 "EHLO
+        id S229976AbjERGOM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 18 May 2023 02:14:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbjEQTLr (ORCPT
+        with ESMTP id S229557AbjERGOM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 17 May 2023 15:11:47 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47A0610D0
-        for <phone-devel@vger.kernel.org>; Wed, 17 May 2023 12:11:45 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-4ec8eca56cfso1392520e87.0
-        for <phone-devel@vger.kernel.org>; Wed, 17 May 2023 12:11:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684350703; x=1686942703;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=54iwv/pGzux9yUooHmL70lgD44/ZcJlgzOCmfdHgBto=;
-        b=uXKqksZ2ucaYLlDpISTIWF6CU6gZIsSWQMMCvItyiZPfUXEnKMqv/zEdE1mKgC9o9A
-         uixAWtffzvQv+EwuxqvWr1aUCuYCC+lLVO51NVwdAIw/iC0GF7UeaevYSFG6lOhg1QUN
-         NI2ka+hKR8P88dK4M/uWuO093Hvn0+9IzfsXrdPu13JYVLhXWWQw7VvAHctUUKxxeGA7
-         YaxZlFD2VNm3ZhTCW1T8DnEXe1ggMBwa9OWTmn+A3iad+dnNbSrKq9uLoxmWbfRt8t7N
-         UhYpbq6QP+V1nlv5NQuatD9WMsTTasTm/qBzTqyvaESVvMYNNNzj21L0BPKHpGELKD9u
-         op2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684350703; x=1686942703;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=54iwv/pGzux9yUooHmL70lgD44/ZcJlgzOCmfdHgBto=;
-        b=jMSLTYZdord2iuFdvRQ4QJFP73qgmbhxNw0NmIjcQVli371Iqvy+JDVMafAIhb8s8B
-         FVeEgKZuNd7SQ/ROL8PG9IOjJB2UOU+R4TyE/swD5nhFlkuA6OXj9t5jf/PP2teY02Dr
-         Y7f/VWP0ii1yFkLnnU2Eocfw0vh/QAKLt1DUYqK5nFhlL5zMRPPvdylUGIxh9DT2XOXq
-         tFbIKe/LXDRyWdGEc9PnPUxh1x/OBMcB0F0O/CrbetN1cKmdOx7AFin5k1DBu7r+DaPG
-         goG/pu31+LTSSBm2Hzmb/T8TBbeY4/uJSze7tap0LMxSamcwjerarwu/Use0R6G4GIL7
-         72FA==
-X-Gm-Message-State: AC+VfDzpDpnSqdEtnA6sWPpYtjuTL7Yq5sq5dr7xEUVYUqh8TIldocV2
-        byaUxyecuEANXL1hoGpDp6vDaA==
-X-Google-Smtp-Source: ACHHUZ7Ok6LehYkCwfiScUDyFS6l76YaTjpbf2vGVyHHiMNUo1oqXp2JOmH5PCmZZEe8/TewtLBSBQ==
-X-Received: by 2002:ac2:4143:0:b0:4f3:895f:f3f8 with SMTP id c3-20020ac24143000000b004f3895ff3f8mr410341lfi.16.1684350703501;
-        Wed, 17 May 2023 12:11:43 -0700 (PDT)
-Received: from [192.168.1.101] (abxi58.neoplus.adsl.tpnet.pl. [83.9.2.58])
-        by smtp.gmail.com with ESMTPSA id t24-20020ac243b8000000b004eff4f67f1csm3478306lfl.304.2023.05.17.12.11.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 May 2023 12:11:43 -0700 (PDT)
-Message-ID: <2a04cde4-ae8e-82b0-d467-0fc32d0c67b7@linaro.org>
-Date:   Wed, 17 May 2023 21:11:41 +0200
+        Thu, 18 May 2023 02:14:12 -0400
+X-Greylist: delayed 42739 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 17 May 2023 23:14:08 PDT
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [IPv6:2001:67c:2050:0:465::102])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 514B4E52;
+        Wed, 17 May 2023 23:14:08 -0700 (PDT)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4QMKRv56gYz9sqc;
+        Thu, 18 May 2023 08:14:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dylanvanassche.be;
+        s=MBO0001; t=1684390443;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Qj2hNQs6e7b9/J4YVNaFwfq4+eID2dfYLuBUt5E1CTQ=;
+        b=u5tpKkEM9Ko03m5ukA/ywrnNrNAPDQE+a1ees3WzNC9tuAIDpBok8xWUGMIEJIYmjG6091
+        1paXPVNfgR3m9eBjBi5jn4WnHWqhlPgEPHG9F/xdCV/Gc5nAt+lNdSaUBbFECSTdHTwsLt
+        CEvmuaKin2cAMA3qtFopZ5Lx1d9IY6VMrWN+p/wznugPeRpRvxhOL71bRoLrJdhI+S82BB
+        ABr15kzOHc2GIPLixU0/l4bPiQD4X+CKPz2x3TYUhUM6C6jSFnOCo5KzWPryqTiDNiYqLI
+        2U40TcLXMBRDB+7N8qga8C+LcnEcl44B4xv962/nliK/u9NEFAWBVuGgu9v3CQ==
+From:   Dylan Van Assche <me@dylanvanassche.be>
+To:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        amartinz@shiftphones.com, Dylan Van Assche <me@dylanvanassche.be>
+Subject: [PATCH v2 0/3] arm64: dts: qcom: pmi8998: add and enable flash LED controller
+Date:   Thu, 18 May 2023 08:13:25 +0200
+Message-Id: <20230518061328.146847-1-me@dylanvanassche.be>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] clk: qcom: smd-rpm: conditionally enable scaling before
- doing handover
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org,
-        Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230506-rpmcc-scaling-handover-v1-1-374338a8dfd9@z3ntu.xyz>
- <20bd79c1-6c38-f1ed-1661-6fa4c308c5c5@linaro.org>
- <2679120.mvXUDI8C0e@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <2679120.mvXUDI8C0e@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Qualcomm PMI8998 has support for 3 flash LEDs which got support in [1].
+Add this driver to the PMI8998 DTS and enable 2 flash LEDs in the SHIFTPHONES SHIFT6mq 
+smartphone. This smartphone has a white and yellow flash LED.
 
+* Changelog *
 
-On 17.05.2023 16:59, Luca Weiss wrote:
-> On Dienstag, 16. Mai 2023 03:27:46 CEST Konrad Dybcio wrote:
->> On 6.05.2023 22:10, Luca Weiss wrote:
->>> On older platforms like msm8226, msm8974 and msm8916 the driver in the
->>> downstream kernel enables scaling first before doing the handover of the
->>> clocks.
->>>
->>> While this normally doesn't seem to cause noticeable problems, on
->>> apq8026-asus-sparrow this causes the device to immediately reboot,
->>> perhaps due to older rpm firmware that becomes unhappy.
->>>
->>> On newer platforms the order has swapped and enabling scaling is done
->>> after the handover, so let's introduce this behavior only conditionally
->>> for msm8226 and msm8974 for now.
->>>
->>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
->>> ---
->>
->> Did you give this a spin on some 8974? I think hammerhead had
->> issues around rpmcc in the past..
-> 
-> Yes, appears to be fine on msm8974 also.
-> 
-> I tried to reproduce the hammerhead ocmem hang we had in the past but even 
-> with v6.3 rpmcc it seems to be fine. But iirc it was happening more or less at 
-> random in the past so wouldn't be surprised if my tests just didn't show 
-> anything on accident.
-> 
-> Regards
-> Luca
-OK sg
+Changes in v2:
+- Document compatible for PMI8998 to fix missing compatible in DTS.
+- Improved commit messages, following [2]
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+[1] https://lore.kernel.org/all/20230507172941.364852-1-me@dylanvanassche.be
+[2] https://lore.kernel.org/all/20230516150202.188655-1-krzysztof.kozlowski@linaro.org/
 
-Konrad
-> 
->>
->> Konrad
->>
->>>  drivers/clk/qcom/clk-smd-rpm.c | 16 +++++++++++++---
->>>  1 file changed, 13 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/drivers/clk/qcom/clk-smd-rpm.c
->>> b/drivers/clk/qcom/clk-smd-rpm.c index 887b945a6fb7..6d5476afc4d1 100644
->>> --- a/drivers/clk/qcom/clk-smd-rpm.c
->>> +++ b/drivers/clk/qcom/clk-smd-rpm.c
->>> @@ -178,6 +178,7 @@ struct clk_smd_rpm_req {
->>>
->>>  struct rpm_smd_clk_desc {
->>>  
->>>  	struct clk_smd_rpm **clks;
->>>  	size_t num_clks;
->>>
->>> +	bool scaling_before_handover;
->>>
->>>  };
->>>  
->>>  static DEFINE_MUTEX(rpm_smd_clk_lock);
->>>
->>> @@ -693,6 +694,7 @@ static struct clk_smd_rpm *msm8974_clks[] = {
->>>
->>>  static const struct rpm_smd_clk_desc rpm_clk_msm8974 = {
->>>  
->>>  	.clks = msm8974_clks,
->>>  	.num_clks = ARRAY_SIZE(msm8974_clks),
->>>
->>> +	.scaling_before_handover = true,
->>>
->>>  };
->>>  
->>>  static struct clk_smd_rpm *msm8976_clks[] = {
->>>
->>> @@ -1318,6 +1320,12 @@ static int rpm_smd_clk_probe(struct platform_device
->>> *pdev)> 
->>>  	rpm_smd_clks = desc->clks;
->>>  	num_clks = desc->num_clks;
->>>
->>> +	if (desc->scaling_before_handover) {
->>> +		ret = clk_smd_rpm_enable_scaling(rpm);
->>> +		if (ret)
->>> +			goto err;
->>> +	}
->>> +
->>>
->>>  	for (i = 0; i < num_clks; i++) {
->>>  	
->>>  		if (!rpm_smd_clks[i])
->>>  		
->>>  			continue;
->>>
->>> @@ -1329,9 +1337,11 @@ static int rpm_smd_clk_probe(struct platform_device
->>> *pdev)> 
->>>  			goto err;
->>>  	
->>>  	}
->>>
->>> -	ret = clk_smd_rpm_enable_scaling(rpm);
->>> -	if (ret)
->>> -		goto err;
->>> +	if (!desc->scaling_before_handover) {
->>> +		ret = clk_smd_rpm_enable_scaling(rpm);
->>> +		if (ret)
->>> +			goto err;
->>> +	}
->>>
->>>  	for (i = 0; i < num_clks; i++) {
->>>  	
->>>  		if (!rpm_smd_clks[i])
->>>
->>> ---
->>> base-commit: dd9e11d6477a52ede9ebe575c83285e79e823889
->>> change-id: 20230506-rpmcc-scaling-handover-a63029ed9d13
->>>
->>> Best regards,
-> 
-> 
-> 
-> 
+Kind regards,
+Dylan Van Assche
+
+Dylan Van Assche (3):
+  dt-bindings: leds: qcom,spmi-flash-led: add PMI8998
+  arm64: dts: qcom: pmi8998: add flash LED controller
+  arm64: dts: qcom: sdm845-shift-axolotl: enable flash LEDs
+
+ .../bindings/leds/qcom,spmi-flash-led.yaml    |  1 +
+ arch/arm64/boot/dts/qcom/pmi8998.dtsi         |  6 +++++
+ .../boot/dts/qcom/sdm845-shift-axolotl.dts    | 22 +++++++++++++++++++
+ 3 files changed, 29 insertions(+)
+
+-- 
+2.40.1
+
