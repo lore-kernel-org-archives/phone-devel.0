@@ -2,128 +2,171 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 25394C7EE2C
-	for <phone-devel@archiver.kernel.org>; Thu, 18 May 2023 14:06:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19E1BC77B7A
+	for <phone-devel@archiver.kernel.org>; Thu, 18 May 2023 21:02:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231189AbjEROG2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 18 May 2023 10:06:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43612 "EHLO
+        id S229569AbjERVC5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 18 May 2023 17:02:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231589AbjEROG1 (ORCPT
+        with ESMTP id S229849AbjERVC5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 18 May 2023 10:06:27 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 426D910D8
-        for <phone-devel@vger.kernel.org>; Thu, 18 May 2023 07:06:25 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-307d58b3efbso1397989f8f.0
-        for <phone-devel@vger.kernel.org>; Thu, 18 May 2023 07:06:25 -0700 (PDT)
+        Thu, 18 May 2023 17:02:57 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE04E127
+        for <phone-devel@vger.kernel.org>; Thu, 18 May 2023 14:02:54 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2ad9f2926adso27454451fa.1
+        for <phone-devel@vger.kernel.org>; Thu, 18 May 2023 14:02:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684418784; x=1687010784;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=azqpCVnd/614+AfKRHDl6hN6ez5a51IoobwFr9W5qBQ=;
-        b=h+GRLvpVsV6qF+yhQyC+9b89tOnb+IO73WPsf/PENnlj/jBn9IHDnS3KG2cpxTAoSi
-         ix13lFUJ/6yah6rp5/iuHqJzworFHDCDRWlmVTJfPoIyi/b8ZQWsq7QGGwXxS3MgKR5b
-         lxVSwmnxQIbRUscKxLYp1u/pdm+ggnBOTSW6oFHFM6nnLsAoAL8a3GI8E3kjQK+xlHIo
-         eNomgcLsFD3Byhthgx2JOBp3d81/Qf2/lXHfkszJkGuHG0EovhpGJeXYXJ16T8GiKbaF
-         JTwccEgIFv27bd9bxEelXasc/qEmPjALXS/fhVMT625offvc0Gb7VwOivbAqiwudCXRu
-         7iYg==
+        d=linaro.org; s=google; t=1684443773; x=1687035773;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4G/ypnTlXP4W9YP4yFZVLIByppuXGY5xpC0A2Ptkn3o=;
+        b=DFdOB7eKGcqxxSuHNtOSjwyWO2dAjoPmGTPylJ1IpBJspPmIa+u/kfPx8yW4k5Zt+v
+         b6IShs/9RGcBNORsufG0710YZkbM5P6skUh6ytsSfeQwH324NbXsBmzzRempIb099Sy9
+         bL67x+FwyC0QkrBDdfGAbq/DSfDWtrrzEIus64R/ANDCwWmZan23ILgPKO1AOiyboJpF
+         Z+myqL7xGiS1azy96kVbX8Glmt+OqnBxPRaHtC+LI0CerhrKny/VDWMZDzQMRsBggJtM
+         Zw5dec39O7OcO8zUNd0MOH9QutA4w7UFLCSQjC1qpY/HTuaQ8l03RzmCpLD7l03Bx1/r
+         wNkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684418784; x=1687010784;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=azqpCVnd/614+AfKRHDl6hN6ez5a51IoobwFr9W5qBQ=;
-        b=CyOKxthS8teaL5iNWAL/U8OYvV/TgpAs0YuM0eJYHUJgH93PLfx5vv69WNI0o7KoZ9
-         JKfInCdPrABCI0Gqqm+cvFULoVZZJZeC9PAygH4yzzGw/cZwBu7myNXUirWYQuPQidWc
-         iSqLwmtvhtmbhhEMxT5WAcQwlksB4BP1bpCh4R1OR20oNwFQe9QOIWmmPmZNOOXDMF0v
-         MgkPuyz2/dP0IACCCyKU+Hc1BSBWrsTPqxi3oDTWby/9uROj33MLqeFW/Q/jK6vtrRqH
-         a2NOwrfGxcbv3cVtEmfNDFJw9PYmU8euq1t+09Oo684em6hjtrg4aLbmMBH3k+GVN/IE
-         LQTQ==
-X-Gm-Message-State: AC+VfDx9ib0McRPvRHNa/6LHsS5fJtRzER/eKh2T/kWdJbIM3rvc6Xwd
-        ANC1ptWiBhjTXDcqcxjIJVjdKQ==
-X-Google-Smtp-Source: ACHHUZ7G56jeX+RtKQ3jgdBRAl+/CNsoOO6ryL3IsYzeTnzcHLO0SRpVzbHO+rNNmTHmhy28FkvR+w==
-X-Received: by 2002:a05:6000:1245:b0:2ef:b19f:b24c with SMTP id j5-20020a056000124500b002efb19fb24cmr2059445wrx.0.1684418783660;
-        Thu, 18 May 2023 07:06:23 -0700 (PDT)
-Received: from localhost (cpc76484-cwma10-2-0-cust274.7-3.cable.virginm.net. [82.31.201.19])
-        by smtp.gmail.com with ESMTPSA id n16-20020a1c7210000000b003f19b3d89e9sm5389587wmc.33.2023.05.18.07.06.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 May 2023 07:06:23 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Thu, 18 May 2023 15:06:22 +0100
-Message-Id: <CSPGMHY9BH1S.J16A0P4WUJ9V@lion>
-Cc:     <linux-arm-msm@vger.kernel.org>, <linux-leds@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, <amartinz@shiftphones.com>
-Subject: Re: [PATCH v3 3/3] arm64: dts: qcom: sdm845-shift-axolotl: enable
- flash LEDs
-From:   "Caleb Connolly" <caleb.connolly@linaro.org>
-To:     "Dylan Van Assche" <me@dylanvanassche.be>, <agross@kernel.org>,
-        <andersson@kernel.org>, <konrad.dybcio@linaro.org>, <pavel@ucw.cz>,
-        <lee@kernel.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <quic_fenglinw@quicinc.com>
-X-Mailer: aerc 0.15.1
-References: <20230518133113.273880-1-me@dylanvanassche.be>
- <20230518133113.273880-4-me@dylanvanassche.be>
-In-Reply-To: <20230518133113.273880-4-me@dylanvanassche.be>
+        d=1e100.net; s=20221208; t=1684443773; x=1687035773;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4G/ypnTlXP4W9YP4yFZVLIByppuXGY5xpC0A2Ptkn3o=;
+        b=PfJHQWlLudF9wdr6V4ZIiHjAGLKlCpih+P8/daFv99MNgr+/xdsJEOWfMdU0VV5yPA
+         0lkCUisMh9EzPzERo11sU4YmpjA2UaczRNpof9seB17WZi3kqKvZokvbTqviEvs+MQtz
+         JUb6qOnTKst0ZcXbQnwascrbFin+XKfuvLJnyCZdH9HwX/m7XK8HT5oXFFkK9yGk/l60
+         dW+ak4GJ/cLZl1c/i24lufW1nVdI6WSrxX19Qshu6wJm2TB2pIqWEEU1t7lgoV3lV3j9
+         exvzyqjIExbbuHEWGTgWz7impRdeJ9b95gCwusTcpii62HA2MLSYz4soh3rXjkh7dhFy
+         Zxig==
+X-Gm-Message-State: AC+VfDytbTJbg3tUIpUcvMWV9U9OZUmWNiaewdzv46Gg1Lr/MOq9JYKy
+        VtupqkdNnfQRr8PLJquq+Lh8bw==
+X-Google-Smtp-Source: ACHHUZ6p5AD48mQDJSPMyJR1xmeALZxRdNttjQaQKjI3gTpssk9h4Kvj4nRFh7kTVHC8olyzm88VKw==
+X-Received: by 2002:ac2:5973:0:b0:4f3:7a8c:d46c with SMTP id h19-20020ac25973000000b004f37a8cd46cmr62166lfp.66.1684443773143;
+        Thu, 18 May 2023 14:02:53 -0700 (PDT)
+Received: from Fecusia.lan (c-05d8225c.014-348-6c756e10.bbcust.telenor.se. [92.34.216.5])
+        by smtp.gmail.com with ESMTPSA id i13-20020ac25d2d000000b004b40c1f1c70sm354976lfb.212.2023.05.18.14.02.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 May 2023 14:02:52 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Stephan Gerhold <stephan@gerhold.net>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        stable@vger.kernel.org, phone-devel@vger.kernel.org,
+        Stefan Hansson <newbyte@disroot.org>
+Subject: [PATCH v3] mmc: mmci: Add busydetect timeout
+Date:   Thu, 18 May 2023 23:02:46 +0200
+Message-Id: <20230518210246.2401737-1-linus.walleij@linaro.org>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu May 18, 2023 at 2:31 PM BST, Dylan Van Assche wrote:
-> The SHIFT6mq (axolotl) is an SDM845-based smartphone with 2 flash LEDs.
-> One LED is white, the other one is yellow. Define both LEDs in the DTS
-> so they can be used as flash or torch and enable the flash LED
-> controller to control them in PMI8998.
->
-> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Add a timeout for busydetect IRQs using a delayed work.
+It might happen (and does happen) on Ux500 that the first
+busy detect IRQ appears and not the second one. This will
+make the host hang indefinitely waiting for the second
+IRQ to appear.
 
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+Fire a delayed work after 10ms and re-engage the command
+IRQ so the transaction finishes: we are certainly done
+at this point, or we will catch an error in the status
+register.
 
-// Caleb (they/them)
+This makes the eMMC work again on Skomer and Codina phones.
 
-> ---
->  .../boot/dts/qcom/sdm845-shift-axolotl.dts    | 22 +++++++++++++++++++
->  1 file changed, 22 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm=
-64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> index 0ad891348e0c..1eaff964b202 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-> @@ -554,6 +554,28 @@ led@5 {
->  	};
->  };
-> =20
-> +&pmi8998_flash {
-> +	status =3D "okay";
-> +
-> +	led-0 {
-> +		function =3D LED_FUNCTION_FLASH;
-> +		color =3D <LED_COLOR_ID_WHITE>;
-> +		led-sources =3D <1>;
-> +		led-max-microamp =3D <100000>;
-> +		flash-max-microamp =3D <1100000>;
-> +		flash-max-timeout-us =3D <1280000>;
-> +	};
-> +
-> +	led-1 {
-> +		function =3D LED_FUNCTION_FLASH;
-> +		color =3D <LED_COLOR_ID_YELLOW>;
-> +		led-sources =3D <2>;
-> +		led-max-microamp =3D <100000>;
-> +		flash-max-microamp =3D <1100000>;
-> +		flash-max-timeout-us =3D <1280000>;
-> +	};
-> +};
-> +
->  &qup_uart9_rx {
->  	drive-strength =3D <2>;
->  	bias-pull-up;
+Notice that the hardware time-out cannot be used, because
+the state machine in the MMCI will not see that something
+is wrong.
+
+Cc: stable@vger.kernel.org
+Cc: phone-devel@vger.kernel.org
+Cc: Stefan Hansson <newbyte@disroot.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ChangeLog v2->v3:
+- Took out the most urgent fix from the pile of changes
+  and send separately, without the rest of the refactorings
+  that were used for debugging the issue. After this the
+  Skomer and Codina with problematic eMMC boots fine.
+- Now just a single patch!
+- This version should be easier to backport as well.
+---
+ drivers/mmc/host/mmci.c | 22 ++++++++++++++++++++++
+ drivers/mmc/host/mmci.h |  1 +
+ 2 files changed, 23 insertions(+)
+
+diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+index f2b2e8b0574e..f3349fb99590 100644
+--- a/drivers/mmc/host/mmci.c
++++ b/drivers/mmc/host/mmci.c
+@@ -37,6 +37,7 @@
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/reset.h>
+ #include <linux/gpio/consumer.h>
++#include <linux/workqueue.h>
+ 
+ #include <asm/div64.h>
+ #include <asm/io.h>
+@@ -695,6 +696,8 @@ static bool ux500_busy_complete(struct mmci_host *host, u32 status, u32 err_msk)
+ 	if (host->busy_status &&
+ 	    (status & host->variant->busy_detect_flag)) {
+ 		writel(host->variant->busy_detect_mask, base + MMCICLEAR);
++		schedule_delayed_work(&host->busy_timeout_work,
++				      msecs_to_jiffies(10));
+ 		return false;
+ 	}
+ 
+@@ -1429,6 +1432,22 @@ mmci_cmd_irq(struct mmci_host *host, struct mmc_command *cmd,
+ 	}
+ }
+ 
++/*
++ * This busy timeout worker is used to "kick" the command IRQ if a
++ * busy detect IRQ fails to appear in reasonable time. Only used on
++ * variants with busy detection IRQ delivery.
++ */
++static void busy_timeout_work(struct work_struct *work)
++{
++        struct mmci_host *host =
++		container_of(work, struct mmci_host, busy_timeout_work.work);
++	u32 status;
++
++	dev_dbg(mmc_dev(host->mmc), "timeout waiting for busy IRQ\n");
++	status = readl(host->base + MMCISTATUS);
++	mmci_cmd_irq(host, host->cmd, status);
++}
++
+ static int mmci_get_rx_fifocnt(struct mmci_host *host, u32 status, int remain)
+ {
+ 	return remain - (readl(host->base + MMCIFIFOCNT) << 2);
+@@ -2242,6 +2261,9 @@ static int mmci_probe(struct amba_device *dev,
+ 			goto clk_disable;
+ 	}
+ 
++	if (host->variant->busy_detect && host->ops->busy_complete)
++		INIT_DELAYED_WORK(&host->busy_timeout_work, busy_timeout_work);
++
+ 	writel(MCI_IRQENABLE | variant->start_err, host->base + MMCIMASK0);
+ 
+ 	amba_set_drvdata(dev, mmc);
+diff --git a/drivers/mmc/host/mmci.h b/drivers/mmc/host/mmci.h
+index e1a9b96a3396..de2c1436f4cd 100644
+--- a/drivers/mmc/host/mmci.h
++++ b/drivers/mmc/host/mmci.h
+@@ -437,6 +437,7 @@ struct mmci_host {
+ 	void			*dma_priv;
+ 
+ 	s32			next_cookie;
++	struct delayed_work	busy_timeout_work;
+ };
+ 
+ #define dma_inprogress(host)	((host)->dma_in_progress)
+-- 
+2.40.1
 
