@@ -2,110 +2,106 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 27E90C7EE2D
-	for <phone-devel@archiver.kernel.org>; Fri, 19 May 2023 21:09:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2404C77B7A
+	for <phone-devel@archiver.kernel.org>; Fri, 19 May 2023 23:22:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230373AbjESVJ1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 19 May 2023 17:09:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43314 "EHLO
+        id S229885AbjESXWU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 19 May 2023 19:22:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229996AbjESVJZ (ORCPT
+        with ESMTP id S229782AbjESXWT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 19 May 2023 17:09:25 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 435FDE40;
-        Fri, 19 May 2023 14:09:22 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4f13d8f74abso4257068e87.0;
-        Fri, 19 May 2023 14:09:22 -0700 (PDT)
+        Fri, 19 May 2023 19:22:19 -0400
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 152181BD
+        for <phone-devel@vger.kernel.org>; Fri, 19 May 2023 16:22:17 -0700 (PDT)
+Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2af1c884b08so17468651fa.1
+        for <phone-devel@vger.kernel.org>; Fri, 19 May 2023 16:22:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684530560; x=1687122560;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fgph3LS4pLGw0I7O6nZ7pygXe/8MJCvzAR/p+azXAfY=;
-        b=HeTa9iVo1Tl/G0OAy3bTVLWiYiXWqZ29was/JRi4akoPmN5WrKU4boKnLmI8aibxUi
-         qdZ72wazUiVMcgBnJvAifL0q79b88amjYa5wKIHpEYW54dh9MteNzz9Ss5QTeLP2qh3M
-         BWLQuMZSVJovMUlAb7q9BFguF0XxXUPtOlOZkLOLP6jWGywdBLife11HoDbk1G69D6w7
-         AWUq5Vxl6BsJFzl55O8zZ1yMjNGcbEK9fgS2tID9oFPO9hn5UNDHdDHm6IS8ccDD8nVL
-         o6mX1EJFqGXt36y5wpoZs29jhLQ/xRe0PQKbXv1fyz8cSf8Phba15FNYZIjujxsNbgZa
-         d7hw==
+        d=linaro.org; s=google; t=1684538535; x=1687130535;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nepunp4fNJZ0cdeTy2tGfj9P3Fsv1fCmkFoDKdwZv4A=;
+        b=plWSAUmHNgwvxDHwmWGqig3CyFIRbk+eq02fNiaiEbqEvwLRUbPPa5L4qpdnMQZUZq
+         LCa1q1HLCspncGuheQ9wdpOBBDLBlSjjb/pnoAnEkr1FHiADSBbefcR1vlN4fvA8bI3A
+         l5umLiHwAPs2Vzeem4avtzXSW+E4toLpRfd5/idCSYW2Z7WK0/+epr+X/WyEoZZDMWBT
+         UXVLkLExDfAQUYmL56J6GWhBsPmEok0bYB9IFxDNLq2NUC5lxj9c4R7URJoE5cNzXPoH
+         2YZYGQGlE1WbeWnF/9ks7hDmFTnuG41J9wMAHPSl6gwr4dM+aiuOKlL+0DApaMug8qE1
+         68sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684530560; x=1687122560;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fgph3LS4pLGw0I7O6nZ7pygXe/8MJCvzAR/p+azXAfY=;
-        b=DLFhTsA0gZoDc9kznq6LBUNU51avMd9EknTllEtMFvsGirrvLOma/FIpvEqwrRutuq
-         1auOteVN5cFR7bZe6mK3KJiPSSX88xlrntEorz/wywpU8zWM2GofBiw977GwJtidapOQ
-         0Nmph/URqngbSwnq9vFicc8p1M5F/GywA+rHjqV5+ZAiRDonNJ8rhpjsJCdJryCoWPEV
-         97OXs0PYXURgxArM+bd+SzSYvB7yMyiqAhFaWF75FgQNqMLPE8gTdFffveLX3r01SCi4
-         +OVwbKbxyfsbsnuAiOVDQu2gvdIeNjFmirjwqBSBu+e3Krc7iQI6Vrtg97lMGZkZseNh
-         itxw==
-X-Gm-Message-State: AC+VfDx15SmJyoo/VJ4i4ME335E+iTT8ANC7ykr5ZKzlEHT0avSPrIZA
-        Nl5LiAkNDNjzmySLXNA0I8FlVy+3aWK2jA==
-X-Google-Smtp-Source: ACHHUZ4iimSOWfmEqDIxad899sMlnIZG8XI9lBNAVhBk5RpRrZaAAkPftJTVwvGJtBsspxjH3skbKA==
-X-Received: by 2002:a19:ee01:0:b0:4f2:5d05:f19d with SMTP id g1-20020a19ee01000000b004f25d05f19dmr1123709lfb.69.1684530560480;
-        Fri, 19 May 2023 14:09:20 -0700 (PDT)
-Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
-        by smtp.gmail.com with ESMTPSA id i14-20020ac2522e000000b004f3945751b2sm30043lfl.43.2023.05.19.14.09.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 May 2023 14:09:20 -0700 (PDT)
-From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-To:     linux-arm-msm@vger.kernel.org
+        d=1e100.net; s=20221208; t=1684538535; x=1687130535;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nepunp4fNJZ0cdeTy2tGfj9P3Fsv1fCmkFoDKdwZv4A=;
+        b=U4PVl1F0Za+RSTRS8tZ3EbZiDOc8FQpdkeYRzZBjTU7uvl2XCImxaY4z6hXw30SmfN
+         7dmN//WSy2TY4u7rAQ1sYFsnzyAxIz5e1CFmfx6KxbKjjyvpMG4aNTacUmDc5cf+LqtP
+         HE3LvouQyBm3GppvW4gHC0pI97quqMFa8npQF/wU4xdjkG+IUMn+QPSUaXoCMlherr6l
+         QM9dteCDU4JkRmRnLeTCoeV9hDT8yz68F2zpXfs0GWF9TQP2MopHFy4yli4qIuxP9Wu9
+         q4f+8FKqRleqwoi4dWqTIQr3VbXTl5G6dEytxnEDkW9NHZwhDrXLCsCSjqUxAwFtcS3E
+         TwbQ==
+X-Gm-Message-State: AC+VfDzGgUzwWagZvbi2o1B4fNn8k+6QZiUK7o5gLi4XQRT6Vjbnf++1
+        z9PjhuYjvJbLBUyGb03WpyRIhw==
+X-Google-Smtp-Source: ACHHUZ5aLyr+vu0y1hUGSRxUui+KRWNbohGetFXOjorq5/KI1ZLq9496kUMUjGd7qzP6313HAZmTGg==
+X-Received: by 2002:a2e:b4a2:0:b0:2af:2451:b346 with SMTP id q2-20020a2eb4a2000000b002af2451b346mr1055041ljm.11.1684538535312;
+        Fri, 19 May 2023 16:22:15 -0700 (PDT)
+Received: from [192.168.1.101] (abxi58.neoplus.adsl.tpnet.pl. [83.9.2.58])
+        by smtp.gmail.com with ESMTPSA id s17-20020a2e9c11000000b002a9eba29c39sm38061lji.91.2023.05.19.16.22.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 May 2023 16:22:14 -0700 (PDT)
+Message-ID: <beb391ac-e646-d5e9-1a5b-02d6477c2517@linaro.org>
+Date:   Sat, 20 May 2023 01:22:13 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 2/5] ARM: dts: qcom: msm8226: Add PMU node
+Content-Language: en-US
+To:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
+        linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] ARM: dts: qcom: apq8026-samsung-matisse-wifi: Add reboot-mode node
-Date:   Sat, 20 May 2023 00:09:02 +0300
-Message-Id: <20230519210903.117030-6-matti.lehtimaki@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230519210903.117030-1-matti.lehtimaki@gmail.com>
 References: <20230519210903.117030-1-matti.lehtimaki@gmail.com>
-MIME-Version: 1.0
+ <20230519210903.117030-3-matti.lehtimaki@gmail.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230519210903.117030-3-matti.lehtimaki@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This enables userspace to signal the bootloader to go into the
-bootloader or recovery mode.
 
-The magic values can be found in both the downstream kernel and the LK
-kernel (bootloader).
 
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
----
- .../arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+On 19.05.2023 23:08, Matti Lehtimäki wrote:
+> Enable perf events on MSM8226 devices by adding the PMU node.
+> 
+> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+> ---
+>  arch/arm/boot/dts/qcom-msm8226.dtsi | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
+> index 42acb9ddb8cc..e272a1e15b44 100644
+> --- a/arch/arm/boot/dts/qcom-msm8226.dtsi
+> +++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
+> @@ -47,6 +47,11 @@ scm {
+>  		};
+>  	};
+>  
+> +	pmu {
+> +		compatible = "arm,cortex-a7-pmu";
+> +		interrupts = <GIC_PPI 7 0xf04>;
+GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_HIGH
 
-diff --git a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
-index 91b860e24681..a05c41191efd 100644
---- a/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
-+++ b/arch/arm/boot/dts/qcom-apq8026-samsung-matisse-wifi.dts
-@@ -279,6 +279,16 @@ touchscreen@4a {
- 	};
- };
- 
-+&imem {
-+	status = "okay";
-+
-+	reboot-mode {
-+		mode-bootloader = <0x77665500>;
-+		mode-normal     = <0x77665501>;
-+		mode-recovery   = <0x77665502>;
-+	};
-+};
-+
- &rpm_requests {
- 	regulators {
- 		compatible = "qcom,rpm-pm8226-regulators";
--- 
-2.34.1
-
+Konrad
+> +	};
+> +
+>  	reserved-memory {
+>  		#address-cells = <1>;
+>  		#size-cells = <1>;
