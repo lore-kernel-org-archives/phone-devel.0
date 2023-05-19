@@ -2,112 +2,81 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B77E1C7EE26
-	for <phone-devel@archiver.kernel.org>; Fri, 19 May 2023 17:41:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 962DDC7EE26
+	for <phone-devel@archiver.kernel.org>; Fri, 19 May 2023 20:20:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229715AbjESRlP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 19 May 2023 13:41:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47240 "EHLO
+        id S229947AbjESUUX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 19 May 2023 16:20:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229693AbjESRlO (ORCPT
+        with ESMTP id S229653AbjESUUW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 19 May 2023 13:41:14 -0400
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E06EF4;
-        Fri, 19 May 2023 10:41:13 -0700 (PDT)
-Received: by mail-oi1-x22d.google.com with SMTP id 5614622812f47-3940f546923so2583334b6e.2;
-        Fri, 19 May 2023 10:41:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684518073; x=1687110073;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zyC8PnfI9XbbL3zj+lnVWVG5hpCaOmXN3AIjDOl28/4=;
-        b=obalH9qRMLvilwY6q3sKWeoK0cZLDmYuPqooShs6Bo6GWuY3cw5Ax/+UWHRhtKsWGF
-         1+mJasCGgAtSAUtluHAkY7EOcCoAVqFaImwZdd5zsLdz1Vyf9hu4a/tYqcrHk02E0t3k
-         dZCxxsydPp2En9kEb3YxoRJ4qQFNH4yE+QYa2KxdlmUqydsdqkfZhIYK0ewUrc1EU3sG
-         q/igIXxQTuvsTVn9eJRk8c0Cjs29WvGzWMrspABgVLhnkA5j9KERZt+Svi3YvIfAkhzR
-         d7dtMNl1PJTouGcOI8F1Hemn0wMhZWauSv/Q3hgUltfbIbxnP0ajsV7Ri+pGOaLCBHVB
-         d57A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684518073; x=1687110073;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zyC8PnfI9XbbL3zj+lnVWVG5hpCaOmXN3AIjDOl28/4=;
-        b=lbUY8HMhs9D/rxdrHEZNko2SLSFW2leagigvz8Ra5KcD3bPJJnyJJnoLrrTLMnzMmO
-         22BGdEDEfRwxonAsfaeiVU88C0kD43z+nfo6lekqWs1k0973GRdF8Cc92u98XJiZQ7Mu
-         Sa+veDY84FcaHF0wA97Oh+C04pAe/LFhMP6AbLSmI9RRcqZ8w3Nw6EraeJxFz8+ch62B
-         lKyxpPorgCUdRqNkIz0WpHLtwxe2H+ZcBNRcvFb+0FaY1V/1NIR1QSc+UK+K2tnLTyMV
-         XfAxnbC5jDTpJR0OTe24QULrR07vyBk8utpoHcjeMZ00tPe46JqfkefgEDv2MAaw+Xv/
-         K/SA==
-X-Gm-Message-State: AC+VfDyqJqseDa2ZXK4PgSzFrnpfjSHeJasnbcN/3d6Ev5wd/FGxT7nb
-        V1WQ2DkZOeVPYzvvltuCVCmTkOYI48nlpbGfCpi68lzc
-X-Google-Smtp-Source: ACHHUZ4UrVLa0agrHncr8UIMxx3FQcGtiLA3QhZsr8KzI+qP/P4/TkwFJt/+/sZZthwoJmnOS95iwVJZitvckESHRbc=
-X-Received: by 2002:a05:6808:8dc:b0:38e:c2a4:3530 with SMTP id
- k28-20020a05680808dc00b0038ec2a43530mr1408267oij.9.1684518072697; Fri, 19 May
- 2023 10:41:12 -0700 (PDT)
+        Fri, 19 May 2023 16:20:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA367FE;
+        Fri, 19 May 2023 13:20:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 41B8E6578B;
+        Fri, 19 May 2023 20:20:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9E1F3C433D2;
+        Fri, 19 May 2023 20:20:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684527620;
+        bh=N3VANGUb4aHSfCOqfO6QrYJYArpb3F+YiYYG3POd9tk=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=QyHDdOas0TjGGseC8ggyxvcA3+jg5eeE24+V/cNGrFWVcBOzLF32wE7ywf5IHWPg4
+         AWuyCNcpNA68+gabexMd8cn4oVNVf8T68AWUet95zoFYVz7i+FGGRsCYRWXViwQUfc
+         rXiQV7YVXrS3sGOWZImXM/w3HTxrJGLJiHTdem1EXp1jQxh/C/dyxMQjUo6J//j514
+         M2rNEGE+4A8YLcuIxmv/OeUCFOAwQzjYJM3e1ha7ZpgdJ772gMvWz24eB4f6X1ryJg
+         Q2xEBgQB0I+m/n29sn6GQ4HBLd4lVSK73OCqd2LLqh6j/eGCzMRmgnda9P/9ujRBpq
+         PvrbqJ1spChtA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 8277EC3959E;
+        Fri, 19 May 2023 20:20:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20230411224308.440550-1-marijn.suijten@somainline.org> <e6407312-c2fb-e77e-0c9e-abc2a014464a@linaro.org>
-In-Reply-To: <e6407312-c2fb-e77e-0c9e-abc2a014464a@linaro.org>
-From:   Rob Clark <robdclark@gmail.com>
-Date:   Fri, 19 May 2023 10:41:01 -0700
-Message-ID: <CAF6AEGsPOb-EzBjRTZC1ik5QB65E4yVhfFei05uS1+CVAJ4weg@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: Add Marijn Suijten as drm/msm reviewer
-To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc:     Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Sean Paul <sean@poorly.run>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] Bluetooth: btqca: make sure to handle byte order for
+ soc_id
+From:   patchwork-bot+bluetooth@kernel.org
+Message-Id: <168452762053.10748.12822242658004808633.git-patchwork-notify@kernel.org>
+Date:   Fri, 19 May 2023 20:20:20 +0000
+References: <20230510-btqca-byte-order-v1-1-82e6a371c5aa@fairphone.com>
+In-Reply-To: <20230510-btqca-byte-order-v1-1-82e6a371c5aa@fairphone.com>
+To:     Luca Weiss <luca.weiss@fairphone.com>
+Cc:     marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
+        gubbaven@codeaurora.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, johan.hedberg@intel.com,
+        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+        simon.horman@corigine.com
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Apr 11, 2023 at 3:46=E2=80=AFPM Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org> wrote:
->
-> On 12/04/2023 01:43, Marijn Suijten wrote:
-> > As I get more and more active in the drm/msm space, yet sometimes miss
-> > out on patches (where I was involved in previous discussions), add
-> > myself as reviewer to make this involvement clear.
-> >
-> > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-> > ---
-> >
-> > Note that this is only a slight commitment from my part to look at
-> > patches arriving in this area, most notably on the DPU1 driver and only
-> > if day-to-day workload allows for it.
->
-> I think Marijn does a good job of reviewing incoming patches in the
-> mentioned area.
->
-> Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Hello:
 
-Acked-by: Rob Clark <robdclark@gmail.com>
+This patch was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
 
->
-> >
-> >   MAINTAINERS | 1 +
-> >   1 file changed, 1 insertion(+)
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 04d7c816d46a..fd1b717c57d8 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -6536,6 +6536,7 @@ M:      Rob Clark <robdclark@gmail.com>
-> >   M:  Abhinav Kumar <quic_abhinavk@quicinc.com>
-> >   M:  Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> >   R:  Sean Paul <sean@poorly.run>
-> > +R:   Marijn Suijten <marijn.suijten@somainline.org>
-> >   L:  linux-arm-msm@vger.kernel.org
-> >   L:  dri-devel@lists.freedesktop.org
-> >   L:  freedreno@lists.freedesktop.org
->
-> --
-> With best wishes
-> Dmitry
->
+On Wed, 10 May 2023 11:27:21 +0200 you wrote:
+> The field soc_id in struct qca_btsoc_version is __le32 so we need to
+> convert it to host byteorder before using.
+> 
+> Reported-by: Simon Horman <simon.horman@corigine.com>
+> Fixes: 059924fdf6c1 ("Bluetooth: btqca: Use NVM files based on SoC ID for WCN3991")
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> 
+> [...]
+
+Here is the summary with links:
+  - Bluetooth: btqca: make sure to handle byte order for soc_id
+    https://git.kernel.org/bluetooth/bluetooth-next/c/0f1e103dc579
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
