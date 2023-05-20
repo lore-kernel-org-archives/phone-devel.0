@@ -2,86 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2CFFEC77B7A
-	for <phone-devel@archiver.kernel.org>; Sat, 20 May 2023 09:59:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98F06C77B7D
+	for <phone-devel@archiver.kernel.org>; Sat, 20 May 2023 12:19:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230420AbjETJ76 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 20 May 2023 05:59:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53944 "EHLO
+        id S231390AbjETMTr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 20 May 2023 08:19:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229946AbjETJ75 (ORCPT
+        with ESMTP id S229464AbjETMTq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 20 May 2023 05:59:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 255A8E46;
-        Sat, 20 May 2023 02:59:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B6F9360FE0;
-        Sat, 20 May 2023 09:59:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B863DC433D2;
-        Sat, 20 May 2023 09:59:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684576796;
-        bh=DxoajCPa+2FvZZ5OhrT8JkkDXOxmrx33rD6QPWVeGqE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pnBKgCHh2Q+afDI+ZhBdd1yB/TC3tRFlHvcThgL37HN7hPeY501rNvey5TpCg8ahS
-         p05rFzz0JNZNbxBVmOMj5rWYhqwXfnhFnE76NFzlm8ksVkjeh0Eu5WOZHT+mf9NVIU
-         5ZBgI4K1NGbUlnR3ahkiTjWknQQv33eaqqOHE/Cdqw0p11KwCzAUPtBw9wtp4gYPgd
-         61iok8Jl/wy2qpA6ywjBY7bd76rvwSLUW+xScI6+H9LzVvlYbiPKjxlZoOvj3hwHDJ
-         NMpM3P4eOJnRKhHt6z40Cb57ooL/lopO/Y/ykYCINC49dGjDacgD8Zs/e87IUQm0n0
-         ELpkA8v3nBDTQ==
-Date:   Sat, 20 May 2023 10:59:51 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Matti =?iso-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>
-Cc:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+        Sat, 20 May 2023 08:19:46 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA63114;
+        Sat, 20 May 2023 05:19:45 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2af2c35fb85so7754941fa.3;
+        Sat, 20 May 2023 05:19:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1684585183; x=1687177183;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ILLhjigqsA3yiwYXuL0DC8PXe0piY++zMYPrg96OeNg=;
+        b=qwkLzQ4YRZhk3RZ3BE+JIupUhQ7cbgzhs7jMmfZVu9XxbcSiWRvTiHk5+7U2SigKyY
+         HZDu3kREXMUlKrKLw+dCRTqhxrx1QG7ZP6W6XVzdEmIsWz1U0LM3lbbTd6SDNyNXgGcq
+         agaHNR1uNVVa4NMaz3e0Vj3ouDl9gtun/nVMfLFQ9Mt7uhWIctWTh8rBBxk276BvXu7c
+         X1TliX7tjnmVi+camRnd3ixYnbp4Kq0P4lOmZiyJyWJFnwzBEw/ULoowW0zVb5Pt1AG8
+         hjmD67QwlDq9zmnlZIrFnqYBwk5J6Mz3jCiiWeDomQedOgSvIZQYL5QSMVLChIcL3XkS
+         /uqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684585183; x=1687177183;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ILLhjigqsA3yiwYXuL0DC8PXe0piY++zMYPrg96OeNg=;
+        b=mGy1IyTcUds9Rfcixtnc37jc3hih69RnN/cxxk29X+lHJs1RyW2Wl7H1CSBXXiGAEz
+         YqjPlXdk57b7dYgSaGCw5W36lPTJAnS1MoKJfMuSDTcsrQCOE2kribf1YwhQMLOAppsu
+         Uw9Hi9IguRgDmvymmYAtRQv1LHOVpXR39K9BItvp01ZKirhmfgncDiOIfN085qfq74yA
+         BI+5WFWlc8Z+e6C6yzTaifFcZGGj4TK+pnBSiCmvlbP9nGeE6f/y5LD3x4TD4shpZOvG
+         WAev8EvX2vT5JJ/IREy2JOP94wnL6nRcckB13acF8S4/SxHL6TELrpE5I9OWqNz5ZIJ+
+         OmwQ==
+X-Gm-Message-State: AC+VfDyxlKI6VZZDHeJ8ZTE1eNhvF16kRI3StfpBcwHdJ7XyuKudzmCi
+        0bRhJJkx0upv0evHHOPjr/AfBBvihEpJKg==
+X-Google-Smtp-Source: ACHHUZ78w1zsmlXELXaaj9eQ72xXXUDt4ZQztkvyVbwHUU934HtIeGV4VklGfl4+gijuMPGdz3jt+A==
+X-Received: by 2002:a05:6512:984:b0:4f3:7ba4:939a with SMTP id w4-20020a056512098400b004f37ba4939amr1452967lft.67.1684585182927;
+        Sat, 20 May 2023 05:19:42 -0700 (PDT)
+Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
+        by smtp.gmail.com with ESMTPSA id r11-20020a19ac4b000000b004edafe3f8dbsm260303lfc.11.2023.05.20.05.19.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 May 2023 05:19:42 -0700 (PDT)
+From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
         Bjorn Andersson <andersson@kernel.org>,
+        devicetree@vger.kernel.org,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/5] dt-bindings: sram: qcom,imem: Document MSM8226
-Message-ID: <20230520-waltz-growing-13c2536672d6@spud>
-References: <20230519210903.117030-1-matti.lehtimaki@gmail.com>
- <20230519210903.117030-2-matti.lehtimaki@gmail.com>
+Subject: [PATCH v2 0/4] PMU, rpm-stats and IMEM for MSM8226
+Date:   Sat, 20 May 2023 15:19:29 +0300
+Message-Id: <20230520121933.15533-1-matti.lehtimaki@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="aHnMxTr/suFljBxF"
-Content-Disposition: inline
-In-Reply-To: <20230519210903.117030-2-matti.lehtimaki@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+This series adds PMU, rpm-stats and IMEM nodes for MSM8226.
+It also defines reboot modes for MSM8226.
 
---aHnMxTr/suFljBxF
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Changes in v2:
+  - Use constants instead of magic number in PMU node
+  - Always enable IMEM node
+  - Move reboot-mode magic numbers to platform,
+    those should be always the same, drop patch for matisse-wifi
 
-On Sat, May 20, 2023 at 12:08:58AM +0300, Matti Lehtim=E4ki wrote:
-> Add compatible for MSM8226 IMEM.
->=20
-> Signed-off-by: Matti Lehtim=E4ki <matti.lehtimaki@gmail.com>
+Matti Lehtimäki (4):
+  dt-bindings: sram: qcom,imem: Document MSM8226
+  ARM: dts: qcom: msm8226: Add PMU node
+  ARM: dts: qcom: msm8226: Add rpm-stats device node
+  ARM: dts: qcom: msm8226: Add IMEM node
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+ .../devicetree/bindings/sram/qcom,imem.yaml   |  1 +
+ arch/arm/boot/dts/qcom-msm8226.dtsi           | 25 +++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
-Thanks,
-Conor.
+-- 
+2.34.1
 
---aHnMxTr/suFljBxF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZGiaFwAKCRB4tDGHoIJi
-0m9BAP9Fs9SqElbBNdiIcqgKQXkILr2JclrTyc15gnm3eqUxPAD+PRA14Dnvy6Et
-WLuMC/14lmHv/xCXCR1KzcEIyJmbXgE=
-=KCh3
------END PGP SIGNATURE-----
-
---aHnMxTr/suFljBxF--
