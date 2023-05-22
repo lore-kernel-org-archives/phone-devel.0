@@ -2,118 +2,112 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2CF1FC7EE2A
-	for <phone-devel@archiver.kernel.org>; Sat, 20 May 2023 12:19:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 325F0C7EE26
+	for <phone-devel@archiver.kernel.org>; Mon, 22 May 2023 06:42:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231561AbjETMT4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 20 May 2023 08:19:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50810 "EHLO
+        id S231720AbjEVGmB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 22 May 2023 02:42:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231592AbjETMTy (ORCPT
+        with ESMTP id S230150AbjEVGl7 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 20 May 2023 08:19:54 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BBD7192;
-        Sat, 20 May 2023 05:19:52 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2af30d10d8fso1778801fa.0;
-        Sat, 20 May 2023 05:19:52 -0700 (PDT)
+        Mon, 22 May 2023 02:41:59 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CFE9103
+        for <phone-devel@vger.kernel.org>; Sun, 21 May 2023 23:41:55 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-965ac4dd11bso1125027366b.2
+        for <phone-devel@vger.kernel.org>; Sun, 21 May 2023 23:41:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684585190; x=1687177190;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=fairphone.com; s=fair; t=1684737713; x=1687329713;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WTDs5T5uCBqEAuJsK/qWf1YHHB6qWweCx58+58dFY6M=;
-        b=Of4IIg1K+UDpULUhjv5cPFSXDvRipy7Y7jEdh6MXGzI150kUF8Hhk7tugF90O7y0lA
-         ao4A9TFH9j+QXQDElIMC4Cr62774B19N2UDy2eBKsfLBbIO6hDLFF02j09mKUXCYBMlC
-         bVDWWwlaK2mYob9FSDvIXqRs9bGEYSSSyo0hXr4NtekrpgBZJNbCYxmHE0IajzD+UPAS
-         F8oEek2l0OorvEmKfzxps9sWTQvBQfyIi875yY5oEi8nZjlNIlJKxnm5zXFKj5w1nvRE
-         qvZqRm1hMSKf3wkTe3A/sU23Ig+ZY2aRH04xPGYM/0cO4RhrML2gUJlLRvF0NnoMj47w
-         XvxQ==
+        bh=yJchVhVXH9Pf5bh8o3X5e0MaNqDm51aU4pHZLRBh/rY=;
+        b=kVpTRRWGT8/kR5rq5l+1tj8tRbHVbcbOY43GPRrEz/3+jvFN03mEhiYBzdumHr19/m
+         thDKxvBRKoe4AVhhXmFn8e45GNFQMsoCg8FiXam2IdlWsH+Qjs70VQogzVJYCFiTNPED
+         RlFPMXobgftiq5AhziO413H9tHO3BZPf2CzwJJZarEpDI0f/LfivagNY6+9Y9if1OuD5
+         tDYQCGXBIBjyZGFsmBf2HI7/EGowdeRpDWr68JxVpfju+SWi5qhkL5is2Iut09J3Tosv
+         zHYMpyAxfL653C10gG54Z1FtngnARUgw8/OD6j7VlIxkdbeThAb1Et9WsX3QMqnAcpUW
+         MWqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684585190; x=1687177190;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WTDs5T5uCBqEAuJsK/qWf1YHHB6qWweCx58+58dFY6M=;
-        b=WSxqB94IX2ZUUzkrSK2bHJ7McLk7ATWFYDaXsyiY92lqO2rmW4nwaP869oLl/wy8SA
-         Bx+nLvGzZiv143HJFKP+GnfTb0ZhkC65QG/bvVAyQslSc0LAMVxizcNSPX2xZ4IUqHMR
-         8J+2J51Hw+XB6o9pdH/76lfQI0u+KJSbnT68xvn3TfpVPTu/SM1ZkGPILbne+jmcEYrz
-         tchwM/hSOEwvJk42S+JUCl5KrMwXAHRMzfJl6mlwK+5WqiqcWxsd0NQDDapYtNxNpz3j
-         Efp0mbMQpw7r3eTapiiR1xYi5OKw09NqqfdjmoL2aprrsa0w2nbSb9ONBhf2zXzKyaaa
-         O+5g==
-X-Gm-Message-State: AC+VfDwj/BzEXpgtwmakX2zMsE9VUQHfI2wm9gmfVYSsfEjyaLmRsTAy
-        HgNR2jx2H59nOoXr0WbaZ5+CBbzECyTYnA==
-X-Google-Smtp-Source: ACHHUZ7QrfT/5BEmdGjiycLsgUYp3379mFZ57nb3ewc71UgOq/XL5au1ti4PjtbZ4KAqOFZko4dcsg==
-X-Received: by 2002:ac2:5dfa:0:b0:4f1:36fb:7535 with SMTP id z26-20020ac25dfa000000b004f136fb7535mr1901973lfq.68.1684585190237;
-        Sat, 20 May 2023 05:19:50 -0700 (PDT)
-Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
-        by smtp.gmail.com with ESMTPSA id r11-20020a19ac4b000000b004edafe3f8dbsm260303lfc.11.2023.05.20.05.19.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 May 2023 05:19:49 -0700 (PDT)
-From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/4] ARM: dts: qcom: msm8226: Add IMEM node
-Date:   Sat, 20 May 2023 15:19:33 +0300
-Message-Id: <20230520121933.15533-5-matti.lehtimaki@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230520121933.15533-1-matti.lehtimaki@gmail.com>
-References: <20230520121933.15533-1-matti.lehtimaki@gmail.com>
-MIME-Version: 1.0
+        d=1e100.net; s=20221208; t=1684737713; x=1687329713;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=yJchVhVXH9Pf5bh8o3X5e0MaNqDm51aU4pHZLRBh/rY=;
+        b=AGXTvXjTYgsRv+BYvIKL0sDhJRmDZDySuPSX/ZKLsMI+mK9gyHGJVvVhcj81lRqKH5
+         GmGtb9kKUIrUi31fjEv8QWBPGs5doxM2/akc6W3eX9by1A7huZ3g1fB+g9lu1D+x3dph
+         I+ZW23P4UlxRnSp/NbJV6d2MsQ54S8XISQbUu7Z+2pB5iVPJ+PFGu7T5VysAsYSkW8om
+         I1Wu8bm52LKz5aFLE+HsnRu0NE3rbHtZInDkPUUb7hBs84lDpjejDApoB7yz1VOhEZWH
+         djjj7qi1oNblQg4P6j2fxo2vCO2cKZR3fYxOtwKkAeY5LAAz2S+BlGnY3tQOXwK11luf
+         JOew==
+X-Gm-Message-State: AC+VfDzvvDRw6x92pNixZqrnFitHR3TYF/sIM7IMf5tHxFEbxazh+Btn
+        7xrMceQAuI5Yss3qj6s/4H+a5A==
+X-Google-Smtp-Source: ACHHUZ5AsJHZlgYjQ+r41PLZ3kgOLmnY3ldyRb6lRs48EHoxQ970/CCsXl5nSXAJur/0g4HRNW5B/g==
+X-Received: by 2002:a17:907:3f29:b0:966:63ac:3706 with SMTP id hq41-20020a1709073f2900b0096663ac3706mr10075942ejc.26.1684737713543;
+        Sun, 21 May 2023 23:41:53 -0700 (PDT)
+Received: from localhost (84-115-214-73.cable.dynamic.surfer.at. [84.115.214.73])
+        by smtp.gmail.com with ESMTPSA id my19-20020a1709065a5300b0094f3d700868sm2673332ejc.80.2023.05.21.23.41.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 21 May 2023 23:41:52 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date:   Mon, 22 May 2023 08:41:51 +0200
+Message-Id: <CSSLOC8WDIPE.1WO9BXZQA7A12@otso>
+Cc:     "Petr Mladek" <pmladek@suse.com>,
+        "Steven Rostedt" <rostedt@goodmis.org>,
+        "Sergey Senozhatsky" <senozhatsky@chromium.org>,
+        "Rasmus Villemoes" <linux@rasmusvillemoes.dk>,
+        "Jonathan Corbet" <corbet@lwn.net>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] docs: printk-formats: Clarify %*pb format parameters
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>
+X-Mailer: aerc 0.15.1
+References: <20230516-printk-bitmap-v1-1-d5f810192a10@fairphone.com>
+ <ZGT+lJasWhZ0TPRi@smile.fi.intel.com>
+In-Reply-To: <ZGT+lJasWhZ0TPRi@smile.fi.intel.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This enables userspace to signal the bootloader to go into the
-bootloader or recovery mode.
+On Wed May 17, 2023 at 6:19 PM CEST, Andy Shevchenko wrote:
+> On Tue, May 16, 2023 at 08:52:43AM +0200, Luca Weiss wrote:
+> > Since it's rather unusual for printk formats to require two parameters,
+>
+> I don't think this is "unusual".
 
-The magic values can be found in both the downstream kernel and the LK
-kernel (bootloader).
+Well, unusual for me at least. I've never really used anything except
+the standard integer types and %px. And I've been contributing to the
+kernel since 2017.
 
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
----
-Changes in v2:
-  - Always enable IMEM node
-  - Move reboot-mode magic numbers to platform,
-    those should be always the same
----
- arch/arm/boot/dts/qcom-msm8226.dtsi | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+> The %*... is very well described in the printf(3) (the meaning of *).
+> It applies here for %*p... as well.
 
-diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
-index 8644540f5aae..284b7c666fea 100644
---- a/arch/arm/boot/dts/qcom-msm8226.dtsi
-+++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
-@@ -641,6 +641,20 @@ smd-edge {
- 				label = "lpass";
- 			};
- 		};
-+
-+		sram@fe805000 {
-+			compatible = "qcom,msm8226-imem", "syscon", "simple-mfd";
-+			reg = <0xfe805000 0x1000>;
-+
-+			reboot-mode {
-+				compatible = "syscon-reboot-mode";
-+				offset = <0x65c>;
-+
-+				mode-bootloader = <0x77665500>;
-+				mode-normal     = <0x77665501>;
-+				mode-recovery   = <0x77665502>;
-+			};
-+		};
- 	};
- 
- 	timer {
--- 
-2.34.1
+The printf(3) man page is never mentioned on this docs page. And even if
+it would be mentioned somewhere, I doubt anyone is reading most of the
+page when they're just looking for a format specifier for e.g. bitmap.
+At least I am not.
 
+>
+> > expand the documentation to clearly mention that in the printk format
+> > for bitmaps.
+> >=20
+> > As an extra example, for example from include/net/bluetooth/hci_core.h
+> > we have a bitmap DECLARE_BITMAP(dev_flags, __HCI_NUM_FLAGS);
+> > This can be printed with ("%*pb", __HCI_NUM_FLAGS, hdev->dev_flags)
+>
+> I think this change is not needed. But try to convince PRINTK maintainers=
+.
+> Maybe they will be okay with it if it covers all %*p... cases (like %*ph)=
+.
+
+Cannot say I haven't tried :) As I wrote in the initial email I'd be
+happy also if someone who knows more about the formats to include some
+text for all the %* options so users know what's up.
+
+Regards
+Luca
