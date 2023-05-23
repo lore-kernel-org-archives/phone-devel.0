@@ -2,40 +2,37 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1088FC7EE2E
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5F59C7EE2F
 	for <phone-devel@archiver.kernel.org>; Tue, 23 May 2023 20:55:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230374AbjEWUz1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 23 May 2023 16:55:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45418 "EHLO
+        id S238101AbjEWUz2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 23 May 2023 16:55:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230215AbjEWUzV (ORCPT
+        with ESMTP id S237846AbjEWUzZ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 23 May 2023 16:55:21 -0400
+        Tue, 23 May 2023 16:55:25 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03FD98E;
-        Tue, 23 May 2023 13:55:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EEEE192;
+        Tue, 23 May 2023 13:55:23 -0700 (PDT)
 Received: from [192.168.122.1] (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id CE959CFB2A;
-        Tue, 23 May 2023 20:55:17 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 71CDCCFBBF;
+        Tue, 23 May 2023 20:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1684875318; bh=uQFqe5iVdN9eN/p5L3w9/rrS5p9PnWq9XPTlLZU9wdQ=;
-        h=From:Subject:Date:To:Cc;
-        b=NVgKbTcYbsH90zxHKbMvTCrS0WZLOSoqHBsMvtDNHpfGp+5xuOs8gtow7KZE706jv
-         Cz08E5jgb4d5/a/L+Vzn7yFOMf3WSoJvTLfBZN8PPmoM5p8GtAtB5t+82n8lVFz12i
-         tLi/WiXGXPIWGYs5s1SY42ftNswu3sjdPYdUqfFA=
+        t=1684875322; bh=aDpqE5sNhXGbjAX9JLCTPksROWy3/PvZ9EHy0OnWauA=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=dBJGw0gNdyu9hLScQKC0ssdduM3zm+nPw8O/5x8SHaR0J4p/RSXDNa54ThzTXDlVd
+         SJfCws/2257g+JAwUKr1OoejAwceNSg5HasXrO2Gf6X/SeCytSsv6nJ8hrkLjvSVH8
+         XcfAUXIGK3euMBI6qjMst5LA5pDlt2xqVmB2dA/0=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Subject: [PATCH v2 0/6] Add MSM8226 OCMEM support plus some extra OCMEM
- driver fixes
-Date:   Tue, 23 May 2023 22:55:07 +0200
-Message-Id: <20230506-msm8226-ocmem-v2-0-177d697e43a9@z3ntu.xyz>
+Date:   Tue, 23 May 2023 22:55:12 +0200
+Subject: [PATCH v2 5/6] soc: qcom: ocmem: Add support for msm8226
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACsobWQC/3WNOw6DMBAFr4K2zkb28lWq3COiwGQJlrBBNlh8x
- N3j0Keckd6bAzw7zR4eyQGOg/Z6tBHolkDbN/bDqN+RgQSlIhcFGm8qogLH1rBBxSzLvJRcsYK
- 4UY1nVK6xbR9XdhmGKCfHnV6vyKuO3Gs/j267mkH+7L/7IFFgypQxlZR1Qj731M7Lfd12qM/z/
- AJ/CN7mvwAAAA==
+Message-Id: <20230506-msm8226-ocmem-v2-5-177d697e43a9@z3ntu.xyz>
+References: <20230506-msm8226-ocmem-v2-0-177d697e43a9@z3ntu.xyz>
+In-Reply-To: <20230506-msm8226-ocmem-v2-0-177d697e43a9@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -46,62 +43,60 @@ To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>
 Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>,
-        Caleb Connolly <caleb.connolly@linaro.org>
+        devicetree@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1360; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=uQFqe5iVdN9eN/p5L3w9/rrS5p9PnWq9XPTlLZU9wdQ=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkbSgt7sUiKz4ME5XGxcVEPS6FyEdN4zJb9wYLV
- nbImeMc17OJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZG0oLQAKCRBy2EO4nU3X
- VtWZD/9Scy+RTRdb0GgGgkI/rmfcu8Lujfpk5jK4NZFApFtgTuBlCAeemp2DyB/IuPvLH3mjeaS
- Z6HV407kOafUPf6crxSfTiH/0DlaWvO0HKBt3ea+BSGLAbmsuLm9WkSRRyxAlqQlFBPd1niUmum
- fBT2Yky4Livacu8kvtjcQkCtSpOQsAnJPtuRYVhFxGirdSDCNEt73RqGnynYnq5bmoet0a4CIac
- IK01tPVlbeqjlasThw3KWYLtODUM5R9tKjHwhDj6+r+fFjzQbGLikFP626AW+0KQeLSV7Fu+hru
- GbLc2hijSN78b16tfqbTHYjENmdY+aAqaJ0QKbiKwWZw5AwnwWRnc9i/1Y3IAray7xiePkhcCiD
- rwfBGow7SYxwBw481fvxlHJX9I1zwz+LzsLM2vN+Si6LsMMkJKkrql18R+oy5rPxPFHMy1brN1k
- wPPr1ddDVTB5MWHjo4kuN23Vr6hJNWOXeyn7epHJC/jsPtafrxc3tiUGakeFfuzKoM7cVdTEEBN
- y09Kr517jW4QAmdLXqjbXeBY4jpw6V6q2p7zqv8LAHphKOPe4E3Bjcmb4Az7Fh9iER1L1etoFhH
- ps2v3rJpYBl2+HyQLVB3gYKTdIGKeCOesNV1dIz/WHSHt2RmUbZ7MhyCbP6g4HKyMTzs4kCAH14
- BT377SRU1Sfljtg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=964; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=aDpqE5sNhXGbjAX9JLCTPksROWy3/PvZ9EHy0OnWauA=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkbSgzjZe8geHMxNlgyKmC13XCKhTjhGg2GPOE9
+ ld3edkHq/6JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZG0oMwAKCRBy2EO4nU3X
+ Vso5D/9pWg+T3ytFhvltXhLKg4OxDz/EMvbbSNNzrZB4bVUbuKY/6k8cWdhDEQhQ15Wv36ZJd65
+ d2ZeKmYS8S41v+62hXe9B1kuNCaQ9GMnoH2Allq27TwqQAyTKjUvTtMgqSW04fN+Yc8jsgNXKGh
+ B4j6JrOuDasfFZUxjBNVLS/Gh68NW/XCPAUKio9Aj24Oeo/ectjxzAtPRJHntTTX3+wSBfmvGyK
+ cv6wipk5jF3prvqN6dqRRFqyj1W5+JnVqUAwjUYnqVGJ6j8TAd6SPozkWm+SGB9NaB75lj+gjaC
+ CAOl0Jak8EXDLHHgtoBEKmKyyaWQJPuz0mYTZGNizSxOWQfnPETRz43FbwVGJynlu6HjdYrZ3/n
+ V8dbVUk12muHSi0AfYtGJmMobHEw85a49S+kEi6lnH9KS/YwQBavPzhYH74eOotA09gz2YWnptQ
+ eHX45WDg2UmN+nvaZb1escdrt5Qr7c8cB8lOBLIFl1Zojn1iqg4ud2TgKWPPRub4Q8II+4kB2Bm
+ q8qekReGj8Fi4pWagrCpTdb1o6PuJx/uMloFFTX5shWJIH07aWfP/MximXWMM7wa7bmWCfws1WI
+ 2Y22wW8P0+GVKnZfPk8WOmjs5z/Rx3JjT52jf3KajmLIon7Nvaq/x0ztdcvrccqA9UKhZt1Ohm/
+ kumzeN7IPlmiHpA==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Like MSM8974 the MSM8226 SoC also contains some OCMEM but it has just
-one region for graphics compared to 8974.
+The msm8226 SoC also contains OCMEM but with one region only.
 
-While adding support I found a bug in the existing driver that is being
-fixed in this series also and the rest of the matches are mostly
-preparations for MSM8226 support.
-
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
-Changes in v2:
-- dt-bindings: add hw version hint to msm8974 & msm8226 variant (Konrad)
-- dt-bindings: add constraints for clock (Konrad)
-- Pick up tags
-- Link to v1: https://lore.kernel.org/r/20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz
+ drivers/soc/qcom/ocmem.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
----
-Luca Weiss (6):
-      soc: qcom: ocmem: Fix NUM_PORTS & NUM_MACROS macros
-      soc: qcom: ocmem: Use dev_err_probe where appropriate
-      soc: qcom: ocmem: make iface clock optional
-      dt-bindings: sram: qcom,ocmem: Add msm8226 support
-      soc: qcom: ocmem: Add support for msm8226
-      ARM: dts: qcom: msm8226: Add ocmem
+diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+index 6235065d3bc9..d5892ce999c9 100644
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -413,12 +413,18 @@ static int ocmem_dev_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++static const struct ocmem_config ocmem_8226_config = {
++	.num_regions = 1,
++	.macro_size = SZ_128K,
++};
++
+ static const struct ocmem_config ocmem_8974_config = {
+ 	.num_regions = 3,
+ 	.macro_size = SZ_128K,
+ };
+ 
+ static const struct of_device_id ocmem_of_match[] = {
++	{ .compatible = "qcom,msm8226-ocmem", .data = &ocmem_8226_config },
+ 	{ .compatible = "qcom,msm8974-ocmem", .data = &ocmem_8974_config },
+ 	{ }
+ };
 
- .../devicetree/bindings/sram/qcom,ocmem.yaml       | 20 ++++++-
- arch/arm/boot/dts/qcom-msm8226.dtsi                | 17 ++++++
- drivers/soc/qcom/ocmem.c                           | 67 ++++++++++++----------
- 3 files changed, 72 insertions(+), 32 deletions(-)
----
-base-commit: 8a80314554f679bc440e2affd842ece2048031ea
-change-id: 20230506-msm8226-ocmem-bee17571e8eb
-
-Best regards,
 -- 
-Luca Weiss <luca@z3ntu.xyz>
+2.40.1
 
