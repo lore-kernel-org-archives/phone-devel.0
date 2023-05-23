@@ -2,35 +2,35 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F1AEC7EE2A
-	for <phone-devel@archiver.kernel.org>; Tue, 23 May 2023 20:56:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4994DC7EE2F
+	for <phone-devel@archiver.kernel.org>; Tue, 23 May 2023 20:56:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238374AbjEWU41 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 23 May 2023 16:56:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46572 "EHLO
+        id S238418AbjEWU42 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 23 May 2023 16:56:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238372AbjEWU4Z (ORCPT
+        with ESMTP id S238377AbjEWU40 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 23 May 2023 16:56:25 -0400
+        Tue, 23 May 2023 16:56:26 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F542E47;
-        Tue, 23 May 2023 13:55:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64741E4F;
+        Tue, 23 May 2023 13:55:57 -0700 (PDT)
 Received: from [192.168.122.1] (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id C2217CFBBE;
-        Tue, 23 May 2023 20:55:20 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 225CDCFBC0;
+        Tue, 23 May 2023 20:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1684875321; bh=aPtCVb7bMGI3Bez5WNGrIPZXM0gwdzb6rJaHCsnocYU=;
+        t=1684875322; bh=/f9dqg9L6IlOJuDdcS8mZ2hEPNfzmqpNeoG6GKRuzBk=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=coK+yKsOw86vwe8Hi00MaAmKNDBCUZmxlp31PgyID85GJ4sEVdT+R1rKkfun0B1j+
-         r4fmp09OFvlJHfXhhxBEXyROXPFYRDTEHUyWFJStpyhm7/C5Wf+PT45MKhQz588NNm
-         SQPADe8B8Px1wNC0vg6iqCY6e1G1JF5pXGWoAHPo=
+        b=kTU+SPIoooPWjW1kd9VLXHp2SOo1A9Fkoq6bV45jjH8L8FtkiaVwX58XAU6lCdYYb
+         4ACwAbEKWm2AvdNVwYadHMO8M+BDV/H71yFbMllYBTS6BlXgpzcQaWQJBcc+hBFxQE
+         bQ3eSv6Nv/TEm/+uIJ7a15qSzyF7NGwCh/cPCp6M=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Tue, 23 May 2023 22:55:11 +0200
-Subject: [PATCH v2 4/6] dt-bindings: sram: qcom,ocmem: Add msm8226 support
+Date:   Tue, 23 May 2023 22:55:13 +0200
+Subject: [PATCH v2 6/6] ARM: dts: qcom: msm8226: Add ocmem
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230506-msm8226-ocmem-v2-4-177d697e43a9@z3ntu.xyz>
+Message-Id: <20230506-msm8226-ocmem-v2-6-177d697e43a9@z3ntu.xyz>
 References: <20230506-msm8226-ocmem-v2-0-177d697e43a9@z3ntu.xyz>
 In-Reply-To: <20230506-msm8226-ocmem-v2-0-177d697e43a9@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -45,84 +45,63 @@ To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1487; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=aPtCVb7bMGI3Bez5WNGrIPZXM0gwdzb6rJaHCsnocYU=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkbSgyWin8k5mWSVatDg1flE4t9aVuyq4JFZYg3
- OOBJTafggyJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZG0oMgAKCRBy2EO4nU3X
- Vi/LEADWu/gzjzzWKwuTgK0ZS+N6xklZGSQ/H8f6X8i6Oi0GvkD035oMlm5ylVw97hIzLblkPz6
- O1n1Tn0RSseS/XfSrh5s0wlzn5wcHLLuNFcgaRYXPiYnoBvE4IGKeyRkC4bSUHv4uls38oO7tVQ
- INJZBmXrnTdrcccDZWSJ5F7oZMKVD3wZSBsWiPoCNvV4Yx7Hw1rMYXdxX0+pLElx7LSgSswt92A
- DElKqvlcZyBDKatBHElj7dyLuZrW/qdgi/acXnVDe4US1OAqiqG4Cew6AXkSim9dzHF34lGIBWb
- IgbRdRMK8AW8LGA2XVDaLaFUe1pTmnPPSeUZ9MeGSrCgRFTjE+NgaVXst+mo/PYu+5Gy9/vXlhP
- 7r8vXyT1YabttpzLiTKefm/kc4CX/TgCAIF41qU6cO0Yy12ZDy6oLqtYmBF1qyJCA5DFgGDKpdS
- HTpSN+y0gdGbW8IcoRPxAWlnDbPH91KEvFwor7TuoijJYOA3j84rBgNX5W0TwK5LCuMmbeR8qgP
- 4UDfM/CVQOIfxOrArQzSpJUe9P+aqVijb2p/GLSaiiy5Kw+LKkxhVecOp3D14DD7h7t4eI0y1pm
- RCr69knGTJ1rABXnxX/jKfqndY0tN4DI/UOXAWi/eDPFKYEqyzehZHJKVvFGiTLuYdAtP0aD9+9
- qF1ia0L5LxqGMEw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1007; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=/f9dqg9L6IlOJuDdcS8mZ2hEPNfzmqpNeoG6GKRuzBk=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkbSg0MIzSV935ZDPSAxyzVLovGYyPf1a9yrySF
+ zmowdqy7OiJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZG0oNAAKCRBy2EO4nU3X
+ VhwfEACYCNM7mdJN4oOSZxaoDgx+xQTsWllDrNHV57pSzIortFI7G3syWNStMvYjrXm9j+/jTTD
+ U0lCK522IX/UAbpVNT7rUrbg/5tacpsi7oS35D9oqdksTpDlJ4K8pXxT3tmuXQJ3FJilVJQpVow
+ cG8IGvDBFejF7kbcSa2wBJvzSbJZUBzhawmZjHdDHShaVTMEUuApy7q+fhLruMMlR6VJ6aNVdZ9
+ 36chQ+IM8gJd4YBaFbGopL/Gw8QptWNR1WsgCH7xiMONvFW4Q/3mumc636CWE4zEid0kbv6zHqt
+ V+bRwo+PhwV3qYX4NNcmgTtBmFBV/I1r0dwD+ls786ogbEBBfXsiFkzhl68b9Tjza700R0ro3Lm
+ qO0IYT4Y25SHs+YF8jcwhn3PdOpDMdmaJRatn5F69+lzgltzMU3Y+6/3md7uiAtErVRYgmBruIh
+ Cnyualdp8zXCosACUuhgatRTrSGjIps6Rk9yAT9QpGTDhkVhW4N/ulE2FM+lEf+bLRCtsM6CYJM
+ D7rl4Cpmx8ScugJDRA56XwJbcfDY9GGMid5woeYBy4M13ciR+lwyp4/unWz1Sf1G0gwKXtjsyZ4
+ 3eJzqlNP6IrF8pDgfdGX+h3t6qQX7B7MyLNiuAv4XQS6axh266gtHr2CM+7s/ECKHbhowhN32Uv
+ 6q+G4xkJu1GoDUw==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the compatible for the OCMEM found on msm8226 which compared to
-msm8974 only has a core clock and no iface clock.
+Add a node for the ocmem found on msm8226. It contains one region, used
+as gmu_ram.
 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- .../devicetree/bindings/sram/qcom,ocmem.yaml         | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/qcom-msm8226.dtsi | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml b/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
-index 4bbf6db0b6bd..02e4da9649fd 100644
---- a/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
-+++ b/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
-@@ -15,7 +15,9 @@ description: |
- 
- properties:
-   compatible:
--    const: qcom,msm8974-ocmem
-+    enum:
-+      - qcom,msm8226-ocmem  # v1.1.0
-+      - qcom,msm8974-ocmem  # v1.4.0
- 
-   reg:
-     items:
-@@ -28,11 +30,13 @@ properties:
-       - const: mem
- 
-   clocks:
-+    minItems: 1
-     items:
-       - description: Core clock
-       - description: Interface clock
- 
-   clock-names:
-+    minItems: 1
-     items:
-       - const: core
-       - const: iface
-@@ -58,6 +62,20 @@ required:
- 
- additionalProperties: false
- 
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - qcom,msm8974-ocmem
-+    then:
-+      properties:
-+        clocks:
-+          minItems: 2
-+        clock-names:
-+          minItems: 2
+diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
+index 42acb9ddb8cc..7ad073eb85c8 100644
+--- a/arch/arm/boot/dts/qcom-msm8226.dtsi
++++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
+@@ -636,6 +636,23 @@ smd-edge {
+ 				label = "lpass";
+ 			};
+ 		};
 +
- patternProperties:
-   "-sram@[0-9a-f]+$":
-     type: object
++		sram@fdd00000 {
++			compatible = "qcom,msm8226-ocmem";
++			reg = <0xfdd00000 0x2000>,
++			      <0xfec00000 0x20000>;
++			reg-names = "ctrl", "mem";
++			ranges = <0 0xfec00000 0x20000>;
++			clocks = <&rpmcc RPM_SMD_OCMEMGX_CLK>;
++			clock-names = "core";
++
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			gmu_sram: gmu-sram@0 {
++				reg = <0x0 0x20000>;
++			};
++		};
+ 	};
+ 
+ 	timer {
 
 -- 
 2.40.1
