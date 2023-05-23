@@ -2,256 +2,197 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0DB3DC7EE37
-	for <phone-devel@archiver.kernel.org>; Tue, 23 May 2023 20:42:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C44BC7EE26
+	for <phone-devel@archiver.kernel.org>; Tue, 23 May 2023 20:45:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238557AbjEWUmj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 23 May 2023 16:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40194 "EHLO
+        id S238496AbjEWUpM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 23 May 2023 16:45:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238431AbjEWUmh (ORCPT
+        with ESMTP id S229483AbjEWUpL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 23 May 2023 16:42:37 -0400
+        Tue, 23 May 2023 16:45:11 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 197DA185;
-        Tue, 23 May 2023 13:42:22 -0700 (PDT)
-Received: from [192.168.122.1] (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id C4414CFBBB;
-        Tue, 23 May 2023 20:41:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99981DD;
+        Tue, 23 May 2023 13:45:09 -0700 (PDT)
+Received: from g550jk.localnet (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 549F7CFB2A;
+        Tue, 23 May 2023 20:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1684874500; bh=HFBWsBkYn2DBr6AAVznAZpdgrKhwcQeGU1Uuc9j2Tyo=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=aB8Kt7UZQxO2zuc5lflRIrvIhssI9kLblxslBjA+RN7je3JmR/UiM2ESFLmFIYKgC
-         BLrv3dXaEU4K6q35fSHwZQaOx5A+q4OcMPDttVs/wDBEFbp3jgR3DXTRBIFeDpYiFp
-         Q55sOyBTMP7p92bDwE5yE5VRrAfJSPx674LhSiK0=
+        t=1684874677; bh=hf2bRrtkE7BS5A0mmGFa7Qf7cV1g96tWEvxW3j9c9ZE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=sz9Zzt9hEHTckVzVId8EBNby0cpihMPdqKh3pLJ+bap8ADKknIv57R1YI1dkrF0Oj
+         SOIA4u/PTLozaCgbLQY6tDr7bCdnjkTT9TZNs+xZMPj2J8rkOWREBx0Ir8CV8+RWGT
+         7zSXFC1TTVzJH/fOG6zUf14Pjhg3/StKd6QtHI48=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Tue, 23 May 2023 22:41:28 +0200
-Subject: [PATCH v3 1/3] arm64: dts: qcom: Add PMI632 PMIC
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230414-pmi632-v3-1-079d2cada699@z3ntu.xyz>
-References: <20230414-pmi632-v3-0-079d2cada699@z3ntu.xyz>
-In-Reply-To: <20230414-pmi632-v3-0-079d2cada699@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+To:     Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        Andy Gross <agross@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-leds@vger.kernel.org, linux-iio@vger.kernel.org,
-        linux-doc@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4065; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=HFBWsBkYn2DBr6AAVznAZpdgrKhwcQeGU1Uuc9j2Tyo=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkbST/jPJnNPzcCOq8KElAPLGfrMhiVGRehOhpa
- HyCVST7TWmJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZG0k/wAKCRBy2EO4nU3X
- VuKyEACpa+TDToJSB3k9vfbSK0mPOS3p3K4/3lzzuNN/GV4sTKmlgw9l3FnApTzXZm0Lg8k3kPx
- eKqAuXb+sf44JFE/6kMRiMFo9brJspUqov02Rl6vbWrz6vfQcVoNC6c9IbmoH2/Q0A+0hGWOGFm
- uO6xdHOKGHaVgUXTzCpCGFcD/EJkXW0a8Vv2k2MmjCUWmoMdFAGd05mvNa6UpU9aIwCghwNLJpn
- VBhg50eaZB7yxxxGFnJb3RuS/78a/A5jb9ikk8B0VrBxVNIWFvmpCC9eEF7oLbh+4N5kaAWhjRV
- hv1UwMvya+ToF2xICEAxPVpQPWzZcr/5PRFVs+krJWfVOntEmxGXWnj1p4+q5pmR+xVtAc3w22t
- RcQDXcaVvsIsXhLoogPBxeDGNTdaScPySQNkkm6qx+FuUKxLauklx301AuYk/RRJIVeW+hCwrxI
- mHHAY+Csy+fYIWkUz6EpiJZ4Any8p63jU2nJ4jvyFYkVXwmIVkL5wNdq1qTiKM0daaQS/SwLVtf
- FOSbthPM9Ra2O/Ddi/Uddba8MNire+o0u2pqTI8O8V8a8IZCE1oen8ZoVwscZfQB0u+1qi7tkSZ
- dzTAerS9gmuQjXJn1GDpXnwrpSmiPM8rEk9uWhwD2RAEayuTkJghYQTgHdPgloNsznHREEMg0fx
- l5xdQP2ofIyuP/Q==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+        Bartosz Dudziak <bartosz.dudziak@snejp.pl>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] clk: qcom: mmcc-msm8974: Add OXILICX_GDSC for msm8226
+Date:   Tue, 23 May 2023 22:44:36 +0200
+Message-ID: <2679976.mvXUDI8C0e@z3ntu.xyz>
+In-Reply-To: <275c997a-a09d-113f-631d-bb677a05ac5f@linaro.org>
+References: <20230506-msm8226-oxilicx-v1-1-52e34b94ff22@z3ntu.xyz>
+ <2528191.PYKUYFuaPT@z3ntu.xyz>
+ <275c997a-a09d-113f-631d-bb677a05ac5f@linaro.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The PMI632, commonly found on SoCs with SDM632 has various standard
-functions like ADC, GPIOs, LPG and more.
+On Dienstag, 16. Mai 2023 02:15:06 CEST Konrad Dybcio wrote:
+> On 9.05.2023 18:57, Luca Weiss wrote:
+> > On Montag, 8. Mai 2023 13:35:07 CEST Konrad Dybcio wrote:
+> >> On 8.05.2023 13:32, Dmitry Baryshkov wrote:
+> >>> On 08/05/2023 10:23, Konrad Dybcio wrote:
+> >>>> On 6.05.2023 23:20, Luca Weiss wrote:
+> >>>>> On msm8226 we also have OXILICX_GDSC but we need a slighly different
+> >>>>> config, with a .cxcs defined for clock but with no parent.
+> >>>> 
+> >>>> Hm, on newer (a5xx+) GPUs, CX needs to be turned on first and
+> >>>> to achieve that, we sometimes define it to be the GX's (also
+> >>>> implicitly known as "oxili-non-CX" in before-a6xx-times) parent..
+> >>>> 
+> >>>> Roughly speaking CX powers the "GPU hardware owned by the broader
+> >>>> SoC that may not need the GPU core clock to be up" and GX powers
+> >>>> the "GPU hardware owned strictly by the GPU that needs at least some
+> >>>> GPU clocks to be enabled"
+> >>>> 
+> >>>> Maybe 8974 simply has a bug in the driver that would do the reverse?
+> >>>> Could you (and perhaps Dmitry on his shiny new 13yo board) test that
+> >>>> theory, preferably on both SoCs?
+> >>>> 
+> >>>> --- a/drivers/clk/qcom/mmcc-msm8974.c
+> >>>> +++ b/drivers/clk/qcom/mmcc-msm8974.c
+> >>>> @@ -2431,6 +2431,7 @@ static struct gdsc oxili_gdsc = {
+> >>>> 
+> >>>>          .pd = {
+> >>>>          
+> >>>>                  .name = "oxili",
+> >>>>          
+> >>>>          },
+> >>>> 
+> >>>> +       .parent = &oxili_gdsc.pd,
+> >>>> 
+> >>>>          .pwrsts = PWRSTS_OFF_ON,
+> >>>>   
+> >>>>   };
+> >>> 
+> >>> Are you declaring oxili_gdsc to be a parent of itself?
+> >> 
+> >> lol.. nice catch of course this line should have been
+> >> 
+> >> +       .parent = &oxilicx_gdsc.pd,
+> >> 
+> >> and the definitions would need to be swapped
+> > 
+> > The 0x4024 oxili_gdsc (downstream name gdsc_oxili_gx) is disabled in 8226
+> > dts.
+> > 
+> > Only in downstream msm8974.dtsi this gdsc gets "parent-supply =
+> > <&pm8841_s4_corner>;", on 8226 there's no parent-supply. And the gdsc
+> > parent doesn't even seem to be described there.
+> > 
+> > Should I still try?
+> 
+> No, nevermind, this SoC is cut down more than I had initially thought.
+> 
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> 
+> with a minor nit: oxilicx -> oxili_cx
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- arch/arm64/boot/dts/qcom/pmi632.dtsi | 165 +++++++++++++++++++++++++++++++++++
- 1 file changed, 165 insertions(+)
+Hi Konrad,
 
-diff --git a/arch/arm64/boot/dts/qcom/pmi632.dtsi b/arch/arm64/boot/dts/qcom/pmi632.dtsi
-new file mode 100644
-index 000000000000..4eb79e0ce40a
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/pmi632.dtsi
-@@ -0,0 +1,165 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (C) 2023 Luca Weiss <luca@z3ntu.xyz>
-+ */
-+
-+#include <dt-bindings/iio/qcom,spmi-vadc.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/spmi/spmi.h>
-+
-+/ {
-+	thermal-zones {
-+		pmi632-thermal {
-+			polling-delay-passive = <100>;
-+			polling-delay = <0>;
-+
-+			thermal-sensors = <&pmi632_temp>;
-+
-+			trips {
-+				trip0 {
-+					temperature = <95000>;
-+					hysteresis = <0>;
-+					type = "passive";
-+				};
-+
-+				trip1 {
-+					temperature = <115000>;
-+					hysteresis = <0>;
-+					type = "hot";
-+				};
-+
-+				trip2 {
-+					temperature = <125000>;
-+					hysteresis = <0>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+	};
-+};
-+
-+&spmi_bus {
-+	pmic@2 {
-+		compatible = "qcom,pmi632", "qcom,spmi-pmic";
-+		reg = <0x2 SPMI_USID>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		pmi632_temp: temp-alarm@2400 {
-+			compatible = "qcom,spmi-temp-alarm";
-+			reg = <0x2400>;
-+			interrupts = <0x2 0x24 0x0 IRQ_TYPE_EDGE_BOTH>;
-+			#thermal-sensor-cells = <0>;
-+		};
-+
-+		pmi632_adc: adc@3100 {
-+			compatible = "qcom,spmi-adc5";
-+			reg = <0x3100>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			#io-channel-cells = <1>;
-+			interrupts = <0x2 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
-+
-+			channel@0 {
-+				reg = <ADC5_REF_GND>;
-+				qcom,pre-scaling = <1 1>;
-+				label = "ref_gnd";
-+			};
-+
-+			channel@1 {
-+				reg = <ADC5_1P25VREF>;
-+				qcom,pre-scaling = <1 1>;
-+				label = "vref_1p25";
-+			};
-+
-+			channel@6 {
-+				reg = <ADC5_DIE_TEMP>;
-+				qcom,pre-scaling = <1 1>;
-+				label = "die_temp";
-+			};
-+
-+			channel@7 {
-+				reg = <ADC5_USB_IN_I>;
-+				qcom,pre-scaling = <1 1>;
-+				label = "usb_in_i_uv";
-+			};
-+
-+			channel@8 {
-+				reg = <ADC5_USB_IN_V_16>;
-+				qcom,pre-scaling = <1 16>;
-+				label = "usb_in_v_div_16";
-+			};
-+
-+			channel@9 {
-+				reg = <ADC5_CHG_TEMP>;
-+				qcom,pre-scaling = <1 1>;
-+				label = "chg_temp";
-+			};
-+
-+			channel@4b {
-+				reg = <ADC5_BAT_ID_100K_PU>;
-+				qcom,hw-settle-time = <200>;
-+				qcom,pre-scaling = <1 1>;
-+				qcom,ratiometric;
-+				label = "bat_id";
-+			};
-+
-+			channel@83 {
-+				reg = <ADC5_VPH_PWR>;
-+				qcom,pre-scaling = <1 3>;
-+				label = "vph_pwr";
-+			};
-+
-+			channel@84 {
-+				reg = <ADC5_VBAT_SNS>;
-+				qcom,pre-scaling = <1 3>;
-+				label = "vbat_sns";
-+			};
-+		};
-+
-+		pmi632_adc_tm: adc-tm@3500 {
-+			compatible = "qcom,spmi-adc-tm5";
-+			reg = <0x3500>;
-+			interrupts = <0x2 0x35 0x0 IRQ_TYPE_EDGE_RISING>;
-+			#thermal-sensor-cells = <1>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			status = "disabled";
-+		};
-+
-+		pmi632_sdam_7: nvram@b600 {
-+			compatible = "qcom,spmi-sdam";
-+			reg = <0xb600>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0 0xb600 0x100>;
-+		};
-+
-+		pmi632_gpios: gpio@c000 {
-+			compatible = "qcom,pmi632-gpio", "qcom,spmi-gpio";
-+			reg = <0xc000>;
-+			gpio-controller;
-+			gpio-ranges = <&pmi632_gpios 0 0 8>;
-+			#gpio-cells = <2>;
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
-+	};
-+
-+	pmic@3 {
-+		compatible = "qcom,pmi632", "qcom,spmi-pmic";
-+		reg = <0x3 SPMI_USID>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		pmi632_lpg: pwm {
-+			compatible = "qcom,pmi632-lpg";
-+
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			#pwm-cells = <2>;
-+
-+			status = "disabled";
-+		};
-+	};
-+};
+where do you want this changed? Just the .name field? But even that one is now 
+matching the other oxilicx variant. And there's also gdscs like 
+oxilicx_ahb_clk.
 
--- 
-2.40.1
+Let me know.
+
+Regards
+Luca
+
+> 
+> Konrad
+> 
+> >> Konrad
+> >> 
+> >>>>   @@ -2439,7 +2440,6 @@ static struct gdsc oxilicx_gdsc = {
+> >>>>   
+> >>>>          .pd = {
+> >>>>          
+> >>>>                  .name = "oxilicx",
+> >>>>          
+> >>>>          },
+> >>>> 
+> >>>> -       .parent = &oxili_gdsc.pd,
+> >>>> 
+> >>>>          .pwrsts = PWRSTS_OFF_ON,
+> >>>>   
+> >>>>   };
+> >>>> 
+> >>>> Konrad
+> >>>> 
+> >>>>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> >>>>> ---
+> >>>>> 
+> >>>>>   drivers/clk/qcom/mmcc-msm8974.c | 11 +++++++++++
+> >>>>>   1 file changed, 11 insertions(+)
+> >>>>> 
+> >>>>> diff --git a/drivers/clk/qcom/mmcc-msm8974.c
+> >>>>> b/drivers/clk/qcom/mmcc-msm8974.c index 4273fce9a4a4..39ee3953567c
+> >>>>> 100644
+> >>>>> --- a/drivers/clk/qcom/mmcc-msm8974.c
+> >>>>> +++ b/drivers/clk/qcom/mmcc-msm8974.c
+> >>>>> @@ -2443,6 +2443,16 @@ static struct gdsc oxilicx_gdsc = {
+> >>>>> 
+> >>>>>       .pwrsts = PWRSTS_OFF_ON,
+> >>>>>   
+> >>>>>   };
+> >>>>>   +static struct gdsc oxilicx_gdsc_msm8226 = {
+> >>>>> 
+> >>>>> +    .gdscr = 0x4034,
+> >>>>> +    .cxcs = (unsigned int []){ 0x4028 },
+> >>>>> +    .cxc_count = 1,
+> >>>>> +    .pd = {
+> >>>>> +        .name = "oxilicx",
+> >>>>> +    },
+> >>>>> +    .pwrsts = PWRSTS_OFF_ON,
+> >>>>> +};
+> >>>>> +
+> >>>>> 
+> >>>>>   static struct clk_regmap *mmcc_msm8226_clocks[] = {
+> >>>>>   
+> >>>>>       [MMSS_AHB_CLK_SRC] = &mmss_ahb_clk_src.clkr,
+> >>>>>       [MMSS_AXI_CLK_SRC] = &mmss_axi_clk_src.clkr,
+> >>>>> 
+> >>>>> @@ -2533,6 +2543,7 @@ static struct gdsc *mmcc_msm8226_gdscs[] = {
+> >>>>> 
+> >>>>>       [MDSS_GDSC] = &mdss_gdsc,
+> >>>>>       [CAMSS_JPEG_GDSC] = &camss_jpeg_gdsc,
+> >>>>>       [CAMSS_VFE_GDSC] = &camss_vfe_gdsc,
+> >>>>> 
+> >>>>> +    [OXILICX_GDSC] = &oxilicx_gdsc_msm8226,
+> >>>>> 
+> >>>>>   };
+> >>>>>   
+> >>>>>     static const struct regmap_config mmcc_msm8226_regmap_config = {
+> >>>>> 
+> >>>>> ---
+> >>>>> base-commit: dd9e11d6477a52ede9ebe575c83285e79e823889
+> >>>>> change-id: 20230506-msm8226-oxilicx-7f3f0f8e491d
+> >>>>> 
+> >>>>> Best regards,
+
+
+
 
