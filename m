@@ -2,138 +2,145 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15F07C83005
-	for <phone-devel@archiver.kernel.org>; Wed, 24 May 2023 17:39:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52B54C77B7A
+	for <phone-devel@archiver.kernel.org>; Wed, 24 May 2023 18:15:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231759AbjEXRjN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 24 May 2023 13:39:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52552 "EHLO
+        id S232786AbjEXSPB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 24 May 2023 14:15:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235819AbjEXRjL (ORCPT
+        with ESMTP id S229591AbjEXSPA (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 24 May 2023 13:39:11 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B75FA135
-        for <phone-devel@vger.kernel.org>; Wed, 24 May 2023 10:39:09 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3f423521b10so10636295e9.0
-        for <phone-devel@vger.kernel.org>; Wed, 24 May 2023 10:39:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1684949948; x=1687541948;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yraIyPA2BgDA4BIOOp7PQH949sD2z61pp/1v2JrtXPY=;
-        b=DY31kIh3aVYnf4wn/0At0p5yFpWyKnjUqsxQYy7bLxQHzyFrKSzTBlgRRHbdcTLFgU
-         Qgg+DRA9Mcw5Xwe8qB063u3aZaqr9bIsv6w8y1ar6Vv3np7H/CShjxccdEalR/+WMZ5x
-         +O1kKsPuzOoldU00zzPvW/6W77Pi0Me8+L8i0S2CsxEYKagO/kOpKPenNrLvc5GgXeZp
-         yKl6Eh16JBjT5Q/Mze+0Liq/Rxw2/SodmpcvBUq4rQd/oQ1pJatzabv/CN7pDy9djXB/
-         eNAd1E5cnsWN1Z89ruCBfyggY1XkaCit/ttnVAOh88MiKX6p4ljCL9RKXFOQvRbOveMK
-         Avdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684949948; x=1687541948;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yraIyPA2BgDA4BIOOp7PQH949sD2z61pp/1v2JrtXPY=;
-        b=AbQWP+5sQL7QjBm7W0j181Se9erkrQ7Tm6FOcmV1hu+Ow3AcJ8gCo5rJ3P/N9PA8de
-         gk8uTh54MzL1k4WqI77q5CZ33HrsiMfuWNDLLpb8xOjWz7zhllLOIB6hBcKEXZw5hy/d
-         ZtInV4vbjeCq8eh7hL2B8HtO9QAEHrlbx7dZwbsDfpcFI6fx9JvIPpMEszAD82lMsf1e
-         de/haYPcesATGe8b26TlwdKbY4XKWsZ2v3/yskbH7BUvVhoGImPkkC8fF/mXERNbLRJb
-         5JaD16KMslpUPNS1HQb2EquPf1bv5UKPMJInUDnSaJ+os+eHveQ4/VsERp41MYplivmf
-         R3vQ==
-X-Gm-Message-State: AC+VfDw1G4WjO1LNYLv6Pd7DTBiKN0VEqjo+Iz8oEDYcui3/C2M+6FFa
-        GbcFdHsJctgcjjmCAY1A/Sw5G9AXwklhSSidux4Mkg==
-X-Google-Smtp-Source: ACHHUZ4NaKC5+C9EVQJYZF90OvpHsU8S0zaefx3Fy0napWhJqMm0j/KvuVGrHLcKuqFoH/Sf2BkM6Q==
-X-Received: by 2002:a1c:7415:0:b0:3f6:11cb:4926 with SMTP id p21-20020a1c7415000000b003f611cb4926mr497885wmc.22.1684949948093;
-        Wed, 24 May 2023 10:39:08 -0700 (PDT)
-Received: from lion.localdomain (cpc76484-cwma10-2-0-cust274.7-3.cable.virginm.net. [82.31.201.19])
-        by smtp.gmail.com with ESMTPSA id l17-20020a7bc451000000b003f4fb5532a1sm2993053wmi.43.2023.05.24.10.39.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 May 2023 10:39:07 -0700 (PDT)
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-Date:   Wed, 24 May 2023 18:38:57 +0100
-Subject: [PATCH 6/6] arm64: dts: qcom: sdm845-xiaomi-beryllium: enable
- pmi8998 charger
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230524-pmi8998-charger-dts-v1-6-f9334afc4505@linaro.org>
-References: <20230524-pmi8998-charger-dts-v1-0-f9334afc4505@linaro.org>
-In-Reply-To: <20230524-pmi8998-charger-dts-v1-0-f9334afc4505@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
+        Wed, 24 May 2023 14:15:00 -0400
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8737798;
+        Wed, 24 May 2023 11:14:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1684952085; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=Bi+o9EhqUBz+vngYotyvibyzjoU5I0xOePtrwM/AbFH0OVmr6UqXFWM4OleDSBtfyw
+    Wty1QmVi5ZwsApOg0c4k9Wn9FECPB1B9Nau4rVDrI41Kv1kLqi81qrOxn2E85WrGtuQI
+    20HE1hCJohJaWkL3H3vMozZYIxxlJXQQINUuNvznKoY5FCCP7O8kSTMZgpHEprKfA3mm
+    +WKRSQE0u2GmDVoF9zHUAyXqqNUyoCkTWG0fE0qUBa0XcGhrMtxVOOTnrfokzJQJb1ad
+    WIi4ma7Gb/TvTmuYZ4bPrflMspiEoa9XvRgS2XrBTHICNqMgKZVJ6ot/+jA7Q8UZV6yv
+    ePOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1684952085;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=ebMjJAQLyC7d5uZBcrDbK4kzzjssGBQJQs+ymJkCW0o=;
+    b=PY6chqOzsqwO9h8bnO+gFbOB3sYwqDA4SnMqy6NFcP0So1544F1s8S0NlLli4G+jWu
+    8Tp9Ivp5c7SW6OmMhHzyxd92k60g2kYVn4mmkRbU/cwZLDFA9LpAxP+MNK0dlWN40RcT
+    z7LOcxU1UhIKK7Nqi8j01QPnucoHY7iVoVREHWfygmcYTouFue1817dFSSQZRoJOQmhr
+    qu/OauQrfzs+TKP4LDP8Kc9rM+4w96LyOeaRZ77YaQjqDzAmMShQpuqmAe5TeAz3FHq8
+    6Ukp7ItOCrtYN87M3Q6SZZg9e4bkVtA/AUUqqbm88/d+PDgjatEes2nfsxhyvaaC0AnK
+    +xOg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1684952085;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=ebMjJAQLyC7d5uZBcrDbK4kzzjssGBQJQs+ymJkCW0o=;
+    b=gCipYpstZUxMWzmMtbzfYywFa0p7z1r/hLWElZmhBqoH9+xnxOTnGvbmrbebQzF8ku
+    VIjTS6HDXMz3SAmBjT5fF9LIMA3k/gRZo/ldHkuFTwLIT7LTfITIRWn3lbX0bqkYS3s0
+    oIcfDvImfnwBYQVRCHshRNKgQCUE9BCJdUr9iZKOjRhJSyJDSVbzmymbBxphmIjWA+O2
+    HONv+hCrCLSoPUo//JxfIQmNYV8ctMEhamOikibbJ46l9r9LxAuef1VqVmQpNVV7DwSc
+    WQyYns8TYpLLdzFc3OQjRoGsJKcGnncsPBDHA10k2zh6wWOMJvX9BP8+kgNlmnn3smjL
+    1wKw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1684952085;
+    s=strato-dkim-0003; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=ebMjJAQLyC7d5uZBcrDbK4kzzjssGBQJQs+ymJkCW0o=;
+    b=AcHTJRa7hcIGqmJtHAZLEtrKxDeYEgt/omI4t5D46LvbJmpSYt2Nj3nt9uSiaXMA9H
+    2QTiM4FiZxIrQWWnibDQ==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA8Z+J1A=="
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 49.4.0 DYNA|AUTH)
+    with ESMTPSA id j6420az4OIEiUJW
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Wed, 24 May 2023 20:14:44 +0200 (CEST)
+Date:   Wed, 24 May 2023 20:14:37 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        phone-devel@vger.kernel.org,
-        Joel Selvaraj <joelselvaraj.oss@gmail.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>
-X-Mailer: b4 0.13-dev-46309
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1243;
- i=caleb.connolly@linaro.org; h=from:subject:message-id;
- bh=ToLXeAXHYgqFaLcdjgSd/3kgLEeAYg+/fgo08zw4cTg=;
- b=owEBbQKS/ZANAwAIAQWDMSsZX2S2AcsmYgBkbku19HgF5fzwDwv9U2d4P8Fejop2E9wPj6+io
- /2YrwJpojqJAjMEAAEIAB0WIQS2UaFGPGq+0GkMVc0FgzErGV9ktgUCZG5LtQAKCRAFgzErGV9k
- tts0D/kBmYxYj9KrLGWdwPOVNinxqTdresr8OhmwTdMqOfYymjS3B/F+eqhVCAJEG7y/7zYt8Eg
- EZJYjN0rCTTVmnjwaw2nXuiVhdlPy6ZzApN9+sZpVWEyKwDCWOFtXlIT8UaWQduum1jF41J/Jf0
- rtTyXmfwp034WkiC1K8bzz79szRThBWd0A7YlyDmw6rTmSoxyXl5Q5NNPlQtYqEUYx9QNHD4j/U
- zymKWWwbI4/whNxj3MdPEx5Nas5EECSMxhMjpXyy1Yb0RpUagCL9mFv6AvAwtsT6qNjikmJQTLM
- SvdDvdcNIjZej2w3yo8IrUGRCifmx1tonxGm+olDCyh1AxeauPvH70YUk/m34VRgexkbUwUHdaj
- Iy93sbdoP1dWbW414mOXs5M79hrKTzIXfS2+v3ljXK35i3JvQGBQjqmwldyOHW5+Uxv2Jh4aX83
- lCR149QAbh9Y2on4VHYadwSZ7AU4iO7w727Bo6WW+yUb+gJaaf8UA0+Lhr+5/qPCv/ClYEcAJsy
- u3GlOzIhpgSdyevteZvWNcOOmHSaMzWUi6bVWZRL2FTxnzy/oOW1GB2qd2fvsa2GCMmknZRcw3c
- HQNN9gCFIS4YqBL/3M7QSVg4Jlqln3u5lFK4mGvIHPGUNTl4njNQSnlSbAAJ+ODWGTABJ4n8ata
- ojZbcl+0E4UUCEQ==
-X-Developer-Key: i=caleb.connolly@linaro.org; a=openpgp;
- fpr=83B24DA7FE145076BC38BB250CD904EB673A7C47
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: dts: qcom: msm8953: Add BLSP DMAs for I2C
+Message-ID: <ZG5UDYXLkfRK0dTy@gerhold.net>
+References: <20230422-msm8953-blsp-dma-v2-1-076134481b1b@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230422-msm8953-blsp-dma-v2-1-076134481b1b@z3ntu.xyz>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Joel Selvaraj <joelselvaraj.oss@gmail.com>
+On Tue, May 23, 2023 at 10:36:49PM +0200, Luca Weiss wrote:
+> MSM8953 has two DMA controllers for the various I2C, SPI and UART
+> busses. Add the nodes and configure all the I2C nodes so that the driver
+> can use the DMA.
+> 
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+> Changes in v2:
+> - Fix subject line, add "msm8953" (thanks Alexey)
+> - Pick up tags
+> - Link to v1: https://lore.kernel.org/r/20230422-msm8953-blsp-dma-v1-1-0024801bb587@z3ntu.xyz
+> ---
+>  arch/arm64/boot/dts/qcom/msm8953.dtsi | 48 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 48 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> index 602cb188a635..c9b589353918 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> @@ -1274,6 +1274,19 @@ opp-200000000 {
+>  			};
+>  		};
+>  
+> +		blsp1_dma: dma-controller@7884000 {
+> +			compatible = "qcom,bam-v1.7.0";
+> +			reg = <0x07884000 0x1f000>;
+> +			interrupts = <GIC_SPI 238 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&gcc GCC_BLSP1_AHB_CLK>;
+> +			clock-names = "bam_clk";
+> +			num-channels = <12>;
+> +			#dma-cells = <1>;
+> +			qcom,ee = <0>;
+> +			qcom,num-ees = <4>;
 
-Enable the pmi8998 charger and define some basic battery properties.
+You can omit num-channels/qcom,num-ees here if you have a clock.
 
-Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
----
- .../arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+"dmaengine: qcom: bam_dma: allow omitting num-{channels,ees}" [1] helps
+with doing this, although it also works without the patch. (The patch
+just avoids a non-critical error in dmesg...)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-index 1915643f1c49..2060b31648fc 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-@@ -115,6 +115,14 @@ rmtfs_mem: memory@f6301000 {
- 		};
- 	};
- 
-+	battery: battery {
-+		compatible = "simple-battery";
-+
-+		charge-full-design-microamp-hours = <4000000>;
-+		voltage-min-design-microvolt = <3400000>;
-+		voltage-max-design-microvolt = <4400000>;
-+	};
-+
- 	vreg_s4a_1p8: vreg-s4a-1p8 {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vreg_s4a_1p8";
-@@ -341,6 +349,11 @@ &pmi8998_wled {
- 	qcom,cabc;
- };
- 
-+&pmi8998_charger {
-+	status = "okay";
-+	monitored-battery = <&battery>;
-+};
-+
- &pm8998_resin {
- 	linux,code = <KEY_VOLUMEDOWN>;
- 	status = "okay";
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/vkoul/dmaengine.git/commit/?id=8975dd41a9dbca3b47f7b8dac5bc4dfb23011000
 
--- 
-2.40.1
+> +		blsp2_dma: dma-controller@7ac4000 {
+> +			compatible = "qcom,bam-v1.7.0";
+> +			reg = <0x07ac4000 0x1f000>;
+> +			interrupts = <GIC_SPI 239 IRQ_TYPE_LEVEL_HIGH>;
+> +			clocks = <&gcc GCC_BLSP2_AHB_CLK>;
+> +			clock-names = "bam_clk";
+> +			num-channels = <12>;
+> +			#dma-cells = <1>;
+> +			qcom,ee = <0>;
+> +			qcom,num-ees = <4>;
 
+Same here.
+
+Thanks,
+Stephan
