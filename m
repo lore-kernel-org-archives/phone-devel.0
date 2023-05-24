@@ -2,99 +2,111 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A6F6EC77B7A
-	for <phone-devel@archiver.kernel.org>; Wed, 24 May 2023 18:24:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 632D8C77B7A
+	for <phone-devel@archiver.kernel.org>; Wed, 24 May 2023 19:02:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237126AbjEXSYG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 24 May 2023 14:24:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54104 "EHLO
+        id S230478AbjEXTC0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 24 May 2023 15:02:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231526AbjEXSYF (ORCPT
+        with ESMTP id S229482AbjEXTCJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 24 May 2023 14:24:05 -0400
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6402C98;
-        Wed, 24 May 2023 11:24:04 -0700 (PDT)
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-6a984993740so272645a34.2;
-        Wed, 24 May 2023 11:24:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684952643; x=1687544643;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8bcNBSFf0r6rM89+plD7hrjF2xX7NyiQ83JQGrpkWFM=;
-        b=OuFtSZahaE4BMPBkB6gb1nsyAFDcXSpoPJwpwb0rX0UvYTSMQcP1X65XAW1u6gcj1F
-         m/tGWMkPIoFycydW3J4hLQG740uGiLG62cP+BNW/9EdYEFuuiHCR8r+QGE5ic6v6aTu3
-         XaZlajcqSM9xShlyoqxV1HniVz1m7V2ppCInfjJPBNZOz66SaNl8hi5y++NlULvg3VRh
-         YVSimpwbT3P+cN04w6f4toM4xnzG7DyjwCvkZV4zownrWSEbyl0mNe27QlNti6Gr7CdX
-         IiV1F5YUJs/rexknECB4h7CIAmy99MHU/Jrit+TYeGFSnSU8lCD3CA/cTW20ERdXAFz2
-         H1ng==
-X-Gm-Message-State: AC+VfDzjH+7Sn8P07GfcGAAfufb9TQ+GxbYdF4YKvnxkp17sS9wNabDv
-        SL6qHwNJt7NeVBE0YJ7pSw==
-X-Google-Smtp-Source: ACHHUZ5VwAG4ALDtmwg2oVBuz75YfVWoi3IFWgKU8VxJs/MbWsV0LwP02+JOp6CWVkAl1jN/8qSkmg==
-X-Received: by 2002:a05:6830:1bcc:b0:6a5:f147:5255 with SMTP id v12-20020a0568301bcc00b006a5f1475255mr9857122ota.6.1684952643543;
-        Wed, 24 May 2023 11:24:03 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id m10-20020a056830328a00b006a6558ef17fsm4829900ott.30.2023.05.24.11.24.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 May 2023 11:24:02 -0700 (PDT)
-Received: (nullmailer pid 4092086 invoked by uid 1000);
-        Wed, 24 May 2023 18:24:02 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
+        Wed, 24 May 2023 15:02:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8B87113;
+        Wed, 24 May 2023 12:02:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 839C063807;
+        Wed, 24 May 2023 19:02:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E06C433D2;
+        Wed, 24 May 2023 19:02:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1684954926;
+        bh=VNKHn0SZDqR/mrYPz6QqnCj7r2lNBj8zwgfZHkp0CuM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=kMbzMl/hL5vDTI4it9QSvuQd/E6w76q86NL5BcQnqwFlgsvC509EvVKAMHSt0G2+B
+         WcaM/aDRavm78j8cRafF5WpxsWB5zyutFCflL8WfHujEqoE/44Kt02Lsg+7a5r5nUB
+         WRcXkUT3kf6ztPgfwyihUQc9QH8c2m09aPB2Y5qrgCafb5HyB+nRGZ0nQjuiltUgVb
+         nGMdJL98A4rqwxmLzu6lr/XCR2cAkO3wBipJIPELqzoirYRtY1UmIwj1y6aq46Mcps
+         +pfRIhuIdKfaKJQ6RhZfVOuzBmwdw9aPbfU2KEPaNb0fV5W4uSvvHZ5NrybbJmQvTs
+         hE3JLDHzw7HTg==
+Date:   Wed, 24 May 2023 20:02:02 +0100
+From:   Conor Dooley <conor@kernel.org>
 To:     Caleb Connolly <caleb.connolly@linaro.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        Bjorn Andersson <andersson@kernel.org>
-In-Reply-To: <20230524-pmi8998-charger-dts-v1-1-f9334afc4505@linaro.org>
-References: <20230524-pmi8998-charger-dts-v1-0-f9334afc4505@linaro.org>
- <20230524-pmi8998-charger-dts-v1-1-f9334afc4505@linaro.org>
-Message-Id: <168495264200.4092051.1331327210839405499.robh@kernel.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        phone-devel@vger.kernel.org
 Subject: Re: [PATCH 1/6] dt-bindings: mfd: qcom,spmi-pmic: Document pmi8998
  charger
-Date:   Wed, 24 May 2023 13:24:02 -0500
+Message-ID: <20230524-cache-gonad-fde614bbea50@spud>
+References: <20230524-pmi8998-charger-dts-v1-0-f9334afc4505@linaro.org>
+ <20230524-pmi8998-charger-dts-v1-1-f9334afc4505@linaro.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="CsWgg3ZzuQdgYD9J"
+Content-Disposition: inline
+In-Reply-To: <20230524-pmi8998-charger-dts-v1-1-f9334afc4505@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-On Wed, 24 May 2023 18:38:52 +0100, Caleb Connolly wrote:
+--CsWgg3ZzuQdgYD9J
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hey Caleb,
+
+On Wed, May 24, 2023 at 06:38:52PM +0100, Caleb Connolly wrote:
 > Document the new pmi8998 charger bindings
-> 
+
+This commit message looks a bit odd compared to the contents of the
+diff. Did you forget to git add something?
+
+Cheers,
+Conor.
+
+>=20
 > Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
 > ---
 >  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 1 +
 >  1 file changed, 1 insertion(+)
-> 
+>=20
+> diff --git a/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml b/=
+Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
+> index 36de335a33aa..44590dc112be 100644
+> --- a/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
+> +++ b/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
+> @@ -133,6 +133,7 @@ patternProperties:
+>      oneOf:
+>        - $ref: /schemas/power/supply/qcom,pm8941-charger.yaml#
+>        - $ref: /schemas/power/supply/qcom,pm8941-coincell.yaml#
+> +      - $ref: /schemas/power/supply/qcom,pmi8998-charger.yaml#
+> =20
+>    "gpio@[0-9a-f]+$":
+>      type: object
+>=20
+> --=20
+> 2.40.1
+>=20
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+--CsWgg3ZzuQdgYD9J
+Content-Type: application/pgp-signature; name="signature.asc"
 
-yamllint warnings/errors:
+-----BEGIN PGP SIGNATURE-----
 
-dtschema/dtc warnings/errors:
-./Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml: Unable to find schema file matching $id: http://devicetree.org/schemas/power/supply/qcom,pmi8998-charger.yaml
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZG5fKgAKCRB4tDGHoIJi
+0snHAQCM4EF5bqKKng3sxE7RhYKI/9QBS836bM5s+fVa395qqAEA4haUQTItWb4j
+sVpajXnQV4aUxn6WtGOprJtPYUUmkws=
+=skOs
+-----END PGP SIGNATURE-----
 
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230524-pmi8998-charger-dts-v1-1-f9334afc4505@linaro.org
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+--CsWgg3ZzuQdgYD9J--
