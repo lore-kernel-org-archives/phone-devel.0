@@ -2,145 +2,99 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 52B54C77B7A
-	for <phone-devel@archiver.kernel.org>; Wed, 24 May 2023 18:15:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6F6EC77B7A
+	for <phone-devel@archiver.kernel.org>; Wed, 24 May 2023 18:24:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232786AbjEXSPB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 24 May 2023 14:15:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47658 "EHLO
+        id S237126AbjEXSYG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 24 May 2023 14:24:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229591AbjEXSPA (ORCPT
+        with ESMTP id S231526AbjEXSYF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 24 May 2023 14:15:00 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8737798;
-        Wed, 24 May 2023 11:14:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1684952085; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=Bi+o9EhqUBz+vngYotyvibyzjoU5I0xOePtrwM/AbFH0OVmr6UqXFWM4OleDSBtfyw
-    Wty1QmVi5ZwsApOg0c4k9Wn9FECPB1B9Nau4rVDrI41Kv1kLqi81qrOxn2E85WrGtuQI
-    20HE1hCJohJaWkL3H3vMozZYIxxlJXQQINUuNvznKoY5FCCP7O8kSTMZgpHEprKfA3mm
-    +WKRSQE0u2GmDVoF9zHUAyXqqNUyoCkTWG0fE0qUBa0XcGhrMtxVOOTnrfokzJQJb1ad
-    WIi4ma7Gb/TvTmuYZ4bPrflMspiEoa9XvRgS2XrBTHICNqMgKZVJ6ot/+jA7Q8UZV6yv
-    ePOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1684952085;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=ebMjJAQLyC7d5uZBcrDbK4kzzjssGBQJQs+ymJkCW0o=;
-    b=PY6chqOzsqwO9h8bnO+gFbOB3sYwqDA4SnMqy6NFcP0So1544F1s8S0NlLli4G+jWu
-    8Tp9Ivp5c7SW6OmMhHzyxd92k60g2kYVn4mmkRbU/cwZLDFA9LpAxP+MNK0dlWN40RcT
-    z7LOcxU1UhIKK7Nqi8j01QPnucoHY7iVoVREHWfygmcYTouFue1817dFSSQZRoJOQmhr
-    qu/OauQrfzs+TKP4LDP8Kc9rM+4w96LyOeaRZ77YaQjqDzAmMShQpuqmAe5TeAz3FHq8
-    6Ukp7ItOCrtYN87M3Q6SZZg9e4bkVtA/AUUqqbm88/d+PDgjatEes2nfsxhyvaaC0AnK
-    +xOg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1684952085;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=ebMjJAQLyC7d5uZBcrDbK4kzzjssGBQJQs+ymJkCW0o=;
-    b=gCipYpstZUxMWzmMtbzfYywFa0p7z1r/hLWElZmhBqoH9+xnxOTnGvbmrbebQzF8ku
-    VIjTS6HDXMz3SAmBjT5fF9LIMA3k/gRZo/ldHkuFTwLIT7LTfITIRWn3lbX0bqkYS3s0
-    oIcfDvImfnwBYQVRCHshRNKgQCUE9BCJdUr9iZKOjRhJSyJDSVbzmymbBxphmIjWA+O2
-    HONv+hCrCLSoPUo//JxfIQmNYV8ctMEhamOikibbJ46l9r9LxAuef1VqVmQpNVV7DwSc
-    WQyYns8TYpLLdzFc3OQjRoGsJKcGnncsPBDHA10k2zh6wWOMJvX9BP8+kgNlmnn3smjL
-    1wKw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1684952085;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=ebMjJAQLyC7d5uZBcrDbK4kzzjssGBQJQs+ymJkCW0o=;
-    b=AcHTJRa7hcIGqmJtHAZLEtrKxDeYEgt/omI4t5D46LvbJmpSYt2Nj3nt9uSiaXMA9H
-    2QTiM4FiZxIrQWWnibDQ==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA8Z+J1A=="
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.4.0 DYNA|AUTH)
-    with ESMTPSA id j6420az4OIEiUJW
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Wed, 24 May 2023 20:14:44 +0200 (CEST)
-Date:   Wed, 24 May 2023 20:14:37 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: qcom: msm8953: Add BLSP DMAs for I2C
-Message-ID: <ZG5UDYXLkfRK0dTy@gerhold.net>
-References: <20230422-msm8953-blsp-dma-v2-1-076134481b1b@z3ntu.xyz>
+        Wed, 24 May 2023 14:24:05 -0400
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6402C98;
+        Wed, 24 May 2023 11:24:04 -0700 (PDT)
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-6a984993740so272645a34.2;
+        Wed, 24 May 2023 11:24:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1684952643; x=1687544643;
+        h=date:subject:message-id:references:in-reply-to:cc:to:from
+         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8bcNBSFf0r6rM89+plD7hrjF2xX7NyiQ83JQGrpkWFM=;
+        b=OuFtSZahaE4BMPBkB6gb1nsyAFDcXSpoPJwpwb0rX0UvYTSMQcP1X65XAW1u6gcj1F
+         m/tGWMkPIoFycydW3J4hLQG740uGiLG62cP+BNW/9EdYEFuuiHCR8r+QGE5ic6v6aTu3
+         XaZlajcqSM9xShlyoqxV1HniVz1m7V2ppCInfjJPBNZOz66SaNl8hi5y++NlULvg3VRh
+         YVSimpwbT3P+cN04w6f4toM4xnzG7DyjwCvkZV4zownrWSEbyl0mNe27QlNti6Gr7CdX
+         IiV1F5YUJs/rexknECB4h7CIAmy99MHU/Jrit+TYeGFSnSU8lCD3CA/cTW20ERdXAFz2
+         H1ng==
+X-Gm-Message-State: AC+VfDzjH+7Sn8P07GfcGAAfufb9TQ+GxbYdF4YKvnxkp17sS9wNabDv
+        SL6qHwNJt7NeVBE0YJ7pSw==
+X-Google-Smtp-Source: ACHHUZ5VwAG4ALDtmwg2oVBuz75YfVWoi3IFWgKU8VxJs/MbWsV0LwP02+JOp6CWVkAl1jN/8qSkmg==
+X-Received: by 2002:a05:6830:1bcc:b0:6a5:f147:5255 with SMTP id v12-20020a0568301bcc00b006a5f1475255mr9857122ota.6.1684952643543;
+        Wed, 24 May 2023 11:24:03 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id m10-20020a056830328a00b006a6558ef17fsm4829900ott.30.2023.05.24.11.24.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 May 2023 11:24:02 -0700 (PDT)
+Received: (nullmailer pid 4092086 invoked by uid 1000);
+        Wed, 24 May 2023 18:24:02 -0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230422-msm8953-blsp-dma-v2-1-076134481b1b@z3ntu.xyz>
-Content-Transfer-Encoding: 7bit
+From:   Rob Herring <robh@kernel.org>
+To:     Caleb Connolly <caleb.connolly@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+        Bjorn Andersson <andersson@kernel.org>
+In-Reply-To: <20230524-pmi8998-charger-dts-v1-1-f9334afc4505@linaro.org>
+References: <20230524-pmi8998-charger-dts-v1-0-f9334afc4505@linaro.org>
+ <20230524-pmi8998-charger-dts-v1-1-f9334afc4505@linaro.org>
+Message-Id: <168495264200.4092051.1331327210839405499.robh@kernel.org>
+Subject: Re: [PATCH 1/6] dt-bindings: mfd: qcom,spmi-pmic: Document pmi8998
+ charger
+Date:   Wed, 24 May 2023 13:24:02 -0500
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, May 23, 2023 at 10:36:49PM +0200, Luca Weiss wrote:
-> MSM8953 has two DMA controllers for the various I2C, SPI and UART
-> busses. Add the nodes and configure all the I2C nodes so that the driver
-> can use the DMA.
+
+On Wed, 24 May 2023 18:38:52 +0100, Caleb Connolly wrote:
+> Document the new pmi8998 charger bindings
 > 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
 > ---
-> Changes in v2:
-> - Fix subject line, add "msm8953" (thanks Alexey)
-> - Pick up tags
-> - Link to v1: https://lore.kernel.org/r/20230422-msm8953-blsp-dma-v1-1-0024801bb587@z3ntu.xyz
-> ---
->  arch/arm64/boot/dts/qcom/msm8953.dtsi | 48 +++++++++++++++++++++++++++++++++++
->  1 file changed, 48 insertions(+)
+>  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> index 602cb188a635..c9b589353918 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> @@ -1274,6 +1274,19 @@ opp-200000000 {
->  			};
->  		};
->  
-> +		blsp1_dma: dma-controller@7884000 {
-> +			compatible = "qcom,bam-v1.7.0";
-> +			reg = <0x07884000 0x1f000>;
-> +			interrupts = <GIC_SPI 238 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&gcc GCC_BLSP1_AHB_CLK>;
-> +			clock-names = "bam_clk";
-> +			num-channels = <12>;
-> +			#dma-cells = <1>;
-> +			qcom,ee = <0>;
-> +			qcom,num-ees = <4>;
 
-You can omit num-channels/qcom,num-ees here if you have a clock.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-"dmaengine: qcom: bam_dma: allow omitting num-{channels,ees}" [1] helps
-with doing this, although it also works without the patch. (The patch
-just avoids a non-critical error in dmesg...)
+yamllint warnings/errors:
 
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/vkoul/dmaengine.git/commit/?id=8975dd41a9dbca3b47f7b8dac5bc4dfb23011000
+dtschema/dtc warnings/errors:
+./Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml: Unable to find schema file matching $id: http://devicetree.org/schemas/power/supply/qcom,pmi8998-charger.yaml
 
-> +		blsp2_dma: dma-controller@7ac4000 {
-> +			compatible = "qcom,bam-v1.7.0";
-> +			reg = <0x07ac4000 0x1f000>;
-> +			interrupts = <GIC_SPI 239 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&gcc GCC_BLSP2_AHB_CLK>;
-> +			clock-names = "bam_clk";
-> +			num-channels = <12>;
-> +			#dma-cells = <1>;
-> +			qcom,ee = <0>;
-> +			qcom,num-ees = <4>;
+doc reference errors (make refcheckdocs):
 
-Same here.
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230524-pmi8998-charger-dts-v1-1-f9334afc4505@linaro.org
 
-Thanks,
-Stephan
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
