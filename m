@@ -2,37 +2,37 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4B49C77B7A
-	for <phone-devel@archiver.kernel.org>; Wed, 24 May 2023 20:34:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D13EC7EE2E
+	for <phone-devel@archiver.kernel.org>; Wed, 24 May 2023 21:13:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235342AbjEXUe3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 24 May 2023 16:34:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40984 "EHLO
+        id S232134AbjEXVNC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 24 May 2023 17:13:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234345AbjEXUe2 (ORCPT
+        with ESMTP id S229682AbjEXVNB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 24 May 2023 16:34:28 -0400
+        Wed, 24 May 2023 17:13:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D262AE42;
-        Wed, 24 May 2023 13:34:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDA26C1;
+        Wed, 24 May 2023 14:13:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D76C61221;
-        Wed, 24 May 2023 20:34:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14B4C4339B;
-        Wed, 24 May 2023 20:34:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 67ECB61221;
+        Wed, 24 May 2023 21:13:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E658EC433EF;
+        Wed, 24 May 2023 21:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684960451;
-        bh=kiVdWQSTTav/tshrrGYq/uWbw/+JKIr66Tdi+u9F4eg=;
+        s=k20201202; t=1684962779;
+        bh=O4tVFqzxzYJMltd6cz92CwwCySf1erTEHtbiFOsH+OE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ePUf6CTM3RQFyjPtTOOcu4EjixxuaPcm824GPFrSFSO3dSTs9ZvGUFN1eJbX6pIvb
-         KgmuEDbTPt2s0sNkLZxCWrACnF3VAlzGVOfz7PpfLIWR5b/sFjC+ppfpNW8slpuu+4
-         NaZH1U9E6s2wEggXCV61Dxb46Im9taS7IHPEFit+SeCFGxVb1WefmvOYc4SvqHLdJY
-         kgWvOkiCiwABLmlVPwgCffeiQKtg/aDlTN4J5LY5xKpJPFvzhrTUn2rUorruoZUXxD
-         +iyHCquWKqrEPXzbxHhXPp30rLBDcM88iCPmgZLvppSllPXlG7GsByBq+MgXRs2LMH
-         F354+8R5flg8Q==
-Date:   Wed, 24 May 2023 21:34:06 +0100
+        b=JT1cBJ8PDH+s5KW76ymG6ic5d90KB6voto/Su6ZJ9TqYi7V8g2DOZk2okNs55QIPE
+         8SCSO5VIxb9bhz7yo9xHKRD9tp0lU247Ry6q3CUpKQMN7EYac1jYaVmwxCaS4baQLd
+         W8G3XXoStpIoECvbRhH/nWgM3hQV2izBXajGk9bSdz6jgq4kKPPBXDgBvO2xh7F67Y
+         KR10V2K+fEUYWUtVs/IDwChbPcb4vUovO2qaT7VVrFKkF2yV6Y7y0hFrQqfuGc1MxH
+         4Pm0ZVv//CR5CnivIeiRzrbO2nCR3Qq1y2PGbIxJJP76azryjt5r6PQY7e2AyC800Y
+         fWmUTD6Bb755Q==
+Date:   Wed, 24 May 2023 22:12:54 +0100
 From:   Conor Dooley <conor@kernel.org>
 To:     Luca Weiss <luca@z3ntu.xyz>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -47,48 +47,56 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org
 Subject: Re: [PATCH v2 4/6] dt-bindings: sram: qcom,ocmem: Add msm8226 support
-Message-ID: <20230524-conjure-gag-731ab10fd7ff@spud>
+Message-ID: <20230524-sesame-badly-b641dd49b2f2@spud>
 References: <20230506-msm8226-ocmem-v2-0-177d697e43a9@z3ntu.xyz>
  <20230506-msm8226-ocmem-v2-4-177d697e43a9@z3ntu.xyz>
+ <20230524-conjure-gag-731ab10fd7ff@spud>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="nS212F5uUQ8wUpOz"
+        protocol="application/pgp-signature"; boundary="MRlk0mJGvtQbkhPr"
 Content-Disposition: inline
-In-Reply-To: <20230506-msm8226-ocmem-v2-4-177d697e43a9@z3ntu.xyz>
+In-Reply-To: <20230524-conjure-gag-731ab10fd7ff@spud>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
---nS212F5uUQ8wUpOz
+--MRlk0mJGvtQbkhPr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 23, 2023 at 10:55:11PM +0200, Luca Weiss wrote:
-> Add the compatible for the OCMEM found on msm8226 which compared to
-> msm8974 only has a core clock and no iface clock.
+On Wed, May 24, 2023 at 09:34:06PM +0100, Conor Dooley wrote:
+> On Tue, May 23, 2023 at 10:55:11PM +0200, Luca Weiss wrote:
+> > Add the compatible for the OCMEM found on msm8226 which compared to
+> > msm8974 only has a core clock and no iface clock.
+> >=20
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 >=20
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> Could you please either send me the cover-letter or include the
+> changelog in the patch under the ---?
 
-Could you please either send me the cover-letter or include the
-changelog in the patch under the ---?
+Apparently I did get the cover, but in another mailbox for IDK what
+reason. Sorry!
 
-Otherwise,
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+>=20
+> Otherwise,
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+>=20
+> Thanks,
+> Conor.
 
-Thanks,
-Conor.
 
---nS212F5uUQ8wUpOz
+
+--MRlk0mJGvtQbkhPr
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZG50vgAKCRB4tDGHoIJi
-0oV5AP4muNXeDIDKZSnwI44nTQX8Oq7xiJgcllvvUusHL5Dq7wEAroPwkJCcfwiA
-zWyvNeuCPs9ELGc0lBPSmZUvWOSuvgc=
-=WxuP
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZG591gAKCRB4tDGHoIJi
+0gInAP0UWgoIftKXeOkrEkouygZ+REuYZ1hiD+xn6WbVRSDAyAD/b8FuHIVmUBmu
+6jmEoMlmJSBHbbVNJe40n8+/NNOO1QE=
+=G8Yn
 -----END PGP SIGNATURE-----
 
---nS212F5uUQ8wUpOz--
+--MRlk0mJGvtQbkhPr--
