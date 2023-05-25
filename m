@@ -2,51 +2,49 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D4D65C7EE2C
-	for <phone-devel@archiver.kernel.org>; Thu, 25 May 2023 04:56:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CD3DC7EE2C
+	for <phone-devel@archiver.kernel.org>; Thu, 25 May 2023 04:57:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239992AbjEYE4S (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 25 May 2023 00:56:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53540 "EHLO
+        id S240239AbjEYE5o (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 25 May 2023 00:57:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239589AbjEYEys (ORCPT
+        with ESMTP id S239857AbjEYEzy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 25 May 2023 00:54:48 -0400
+        Thu, 25 May 2023 00:55:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA2AF1981;
-        Wed, 24 May 2023 21:52:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E7B2E49;
+        Wed, 24 May 2023 21:52:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C76DB63BA0;
-        Thu, 25 May 2023 04:51:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13057C4339B;
-        Thu, 25 May 2023 04:51:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF88264288;
+        Thu, 25 May 2023 04:52:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A27C4339B;
+        Thu, 25 May 2023 04:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684990311;
-        bh=V0AR9VB0Abuf/boWapRE1QYU924C/0nH8pQepDItrIA=;
+        s=k20201202; t=1684990327;
+        bh=d4oVeUBU42q3WJHBxZEjzM7+775YK2xmbsXgqd+qmyw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UWJDMpUtGLAut5O1NSPjjzVnhfXNvVBBZn0Hqk45UMwXA92bUeJ+HVoLQPwfyHZ1g
-         c5cQc7yr4nzef+VkRNhEOB+MwOPYe+Aemntjl9BzaKqH/aNxSItH1+2IIrVmg7ZfyO
-         GQBr8EPVdkfXVL533eK++sugk7iNZWP1a2znkZedJoWTLGHQaxylNWq92jn4dLax8D
-         oaRJEBNN131HhrQK8wN1/zr5T7nP523j8dWam+m1Qjd4sSxNxHIfp5DIx8lDqEPFwF
-         zMLBjZyQi4dy309rbY1DUZ8Ew2fvmkzRaWZL7xsZs0/CLrwH3wJhsqwq/Rb2JMWso2
-         svRAmSE3nUuVA==
+        b=WP+Zhbsj2viboZ6gfU2jbVtEl1izU+S/UehAQ38axoMBwFSyzqB/4tpLC+7Ng6/N6
+         858vzW14oVLZqJBqa9zdxjZZ8FFnqlgnWEWpmgn+nr0ZHZFkz3KSvrgjMuyAKBXLa8
+         JE6tNwjiUIhVh5kjyS8kH536D8YTTDTTmcsOmW8q64SAXZ9zpLQ8oLlijIJLKZni6C
+         Sfu/iejd7oeIGn+bCQgXhY7JzQj6xjcIs7lGVniJei/Z7UtjGWiAGqgkv7nq3TtJKY
+         mI7qPnceUMITrHaIqZKJW5HbDBJsC1yeqn5g9nEocoDETc4ZKGvoK7kofHRLFEP8Ej
+         2Dp0QiqHdxCbg==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     agross@kernel.org, quic_fenglinw@quicinc.com,
-        konrad.dybcio@linaro.org, Dylan Van Assche <me@dylanvanassche.be>,
-        conor+dt@kernel.org, robh+dt@kernel.org, pavel@ucw.cz,
-        krzysztof.kozlowski+dt@linaro.org, lee@kernel.org
+To:     Stephan Gerhold <stephan@gerhold.net>
 Cc:     linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        amartinz@shiftphones.com, devicetree@vger.kernel.org,
-        linux-leds@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org
-Subject: Re: (subset) [PATCH v3 0/3] arm64: dts: qcom: pmi8998: add and enable flash LED controller
-Date:   Wed, 24 May 2023 21:54:29 -0700
-Message-Id: <168499048186.3998961.14574911875082597467.b4-ty@kernel.org>
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        devicetree@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 0/8] arm64: dts: qcom: msm8916: Rework regulator constraints
+Date:   Wed, 24 May 2023 21:54:44 -0700
+Message-Id: <168499048186.3998961.1070779668049062036.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230518133113.273880-1-me@dylanvanassche.be>
-References: <20230518133113.273880-1-me@dylanvanassche.be>
+In-Reply-To: <20230510-msm8916-regulators-v1-0-54d4960a05fc@gerhold.net>
+References: <20230510-msm8916-regulators-v1-0-54d4960a05fc@gerhold.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,25 +52,35 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 18 May 2023 15:31:10 +0200, Dylan Van Assche wrote:
-> Qualcomm PMI8998 has support for 3 flash LEDs which got support in [1].
-> Add this driver to the PMI8998 DTS and enable 2 flash LEDs in the SHIFTPHONES SHIFT6mq
-> smartphone. This smartphone has a white and yellow flash LED.
-> 
-> * Changelog *
-> 
-> Changes in v2:
-> - Document compatible for PMI8998 to fix missing compatible in DTS.
-> - Improved commit messages, following [2]
+On Wed, 17 May 2023 20:48:39 +0200, Stephan Gerhold wrote:
+> Rework the regulator constraints for the MSM8916 device trees to be
+> closer to reality. There are several mistakes in there, some of them
+> taken over directly from Qualcomm's vendor kernel. Fortunately, none of
+> the mistakes is absolutely critical because it turns out that the RPM
+> firmware also validates the voltages and silently clamps the requests
+> to a proper range. Still, this behavior should be clearly represented
+> in the device tree rather than pretending to apply the wrong voltages.
 > 
 > [...]
 
 Applied, thanks!
 
-[2/3] arm64: dts: qcom: pmi8998: add flash LED controller
-      commit: 9139bb56734a14c156d3ef736c22a06bd1a9d22c
-[3/3] arm64: dts: qcom: sdm845-shift-axolotl: enable flash LEDs
-      commit: 8587d217ec3c09268d2023758e5fd6dbc3529c2b
+[1/8] arm64: dts: qcom: apq8016-sbc: Fix regulator constraints
+      commit: e27654df20d77ad7549a3cf6739ebaa3aa59a088
+[2/8] arm64: dts: qcom: apq8016-sbc: Fix 1.8V power rail on LS expansion
+      commit: 5500f823db38db073d30557af159b77fb1f2bf26
+[3/8] arm64: dts: qcom: msm8916: Fix regulator constraints
+      commit: 355750828c5519c88de6ac0d09202d2a7e5892c5
+[4/8] arm64: dts: qcom: msm8916: Disable audio codecs by default
+      commit: a5cf21b14666c42912327c7bece38711f6e0d708
+[5/8] arm64: dts: qcom: pm8916: Move default regulator "-supply"s
+      commit: 38218822a72fd31e89affc7fc457d527f65581aa
+[6/8] arm64: dts: qcom: msm8916-pm8916: Clarify purpose
+      commit: f193264986b5944216e574b9962616f2524aac08
+[7/8] arm64: dts: qcom: msm8916: Define regulator constraints next to usage
+      commit: b0a8f16ae4a0eb423122256691849b3ebc64efc2
+[8/8] arm64: dts: qcom: msm8916-pm8916: Mark always-on regulators
+      commit: 8bbd35771f903a9d14fe95bcba8c7b9f07aeb958
 
 Best regards,
 -- 
