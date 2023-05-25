@@ -2,51 +2,50 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D70CC7EE2C
-	for <phone-devel@archiver.kernel.org>; Thu, 25 May 2023 04:55:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E4F0C77B7A
+	for <phone-devel@archiver.kernel.org>; Thu, 25 May 2023 04:55:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239184AbjEYEzR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 25 May 2023 00:55:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54176 "EHLO
+        id S239628AbjEYEzZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 25 May 2023 00:55:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238160AbjEYExl (ORCPT
+        with ESMTP id S237549AbjEYEx4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 25 May 2023 00:53:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD5A83;
-        Wed, 24 May 2023 21:51:46 -0700 (PDT)
+        Thu, 25 May 2023 00:53:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 587CC1B3;
+        Wed, 24 May 2023 21:51:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AF9E642BD;
-        Thu, 25 May 2023 04:51:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D265C433D2;
-        Thu, 25 May 2023 04:51:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E01A9642C8;
+        Thu, 25 May 2023 04:51:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F76EC43445;
+        Thu, 25 May 2023 04:51:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684990302;
-        bh=YZf72VNbah8S00sNKS32JtZ4PfsEFEbfvpF2uheSpjU=;
+        s=k20201202; t=1684990304;
+        bh=IVPrSp1Rzd/jeDknlfHG2qYxHMpBodqY31lMRg/JiG8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YO2TJ4Kcisim7rOmGF03TFHQNGBYu6FxxSrr4TDStwTGl5iCpBYdWnyDFG7x4HEjG
-         oubigVgG9mHqmX6FZ8Cui2HWxbSCsz45VtNlDW4E4r0GDibPG7GIH2hhrzslilmsoX
-         HTZaXwbIjNvrvCrmgQxgsMEgGjGhB7n21u+8rhIJtZ4RQ+I6gZO1m22URnqGIrg5BI
-         G7zLFClHX+jTWi4cIaEPGcV9/CzwzQi9j7Yb4GLWy77TcezmyoMW+8lI6u4Bl4gfZq
-         sUGFVqLY4IO1nwYkUUtP6vGrftlkMeGuod2At/czVN35HZryELmD2Lh/Bl0fXbYWUw
-         c+hw/IJEmHUnA==
+        b=DQXutS5hkqBfHRbwqtdlEDGseXSkzk7nOANff1iYVmL64i6753B1Igc3bAi32jKYe
+         5+JPitil0U2D2u59uMEcR4V5X6sqbzLIZkqWwWCzrAy0Y46zmTkmlEUE03BONpFm55
+         6wJL0guDArSxIuISvyP4cEnqve8DMxqqC980FRNdqKF+CIorFm931Erob6jGfXEOO/
+         djubnindno1SFO2PGfWCyqJ5npo1dcvkrr4gvXOYizZhj/gpuA6gDi+DaRW8418GwQ
+         WbxXyG9hgMf1TYrpP1Xj1wzIBowLsrlMOFKOXeLQkyxAxD3RQESrJ048sOLWAC3GNc
+         qLP9qawYEnWWA==
 From:   Bjorn Andersson <andersson@kernel.org>
 To:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Andy Gross <agross@kernel.org>, Luca Weiss <luca@z3ntu.xyz>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
 Cc:     linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: (subset) [PATCH 0/3] Add GPIO support to PM8953 PMIC
-Date:   Wed, 24 May 2023 21:54:21 -0700
-Message-Id: <168499048184.3998961.10910306353238353863.b4-ty@kernel.org>
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: Add BLSP DMAs for I2C
+Date:   Wed, 24 May 2023 21:54:23 -0700
+Message-Id: <168499048184.3998961.13911841167895422124.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230421-pm8953-gpio-v1-0-3d33e2de47e3@z3ntu.xyz>
-References: <20230421-pm8953-gpio-v1-0-3d33e2de47e3@z3ntu.xyz>
+In-Reply-To: <20230422-msm8953-blsp-dma-v1-1-0024801bb587@z3ntu.xyz>
+References: <20230422-msm8953-blsp-dma-v1-1-0024801bb587@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,16 +53,17 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 21 Apr 2023 23:56:19 +0200, Luca Weiss wrote:
-> Add support for the 8 GPIOs found on the PM8953 PMIC used with msm8953
-> SoC.
+On Sat, 22 Apr 2023 13:39:16 +0200, Luca Weiss wrote:
+> MSM8953 has two DMA controllers for the various I2C, SPI and UART
+> busses. Add the nodes and configure all the I2C nodes so that the driver
+> can use the DMA.
 > 
 > 
 
 Applied, thanks!
 
-[3/3] arm64: dts: qcom: pm8953: add GPIOs
-      commit: 5a60e72c3eff0747cc779b8067cd795acf6beecd
+[1/1] arm64: dts: qcom: Add BLSP DMAs for I2C
+      commit: a5317b23fe6f26307f4c821d56d694c893887675
 
 Best regards,
 -- 
