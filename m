@@ -2,131 +2,2088 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8039BC77B7A
-	for <phone-devel@archiver.kernel.org>; Thu, 25 May 2023 17:17:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A12CC7EE29
+	for <phone-devel@archiver.kernel.org>; Thu, 25 May 2023 23:35:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240831AbjEYRRA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 25 May 2023 13:17:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33836 "EHLO
+        id S229583AbjEYXfS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 25 May 2023 19:35:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231263AbjEYRQ7 (ORCPT
+        with ESMTP id S233687AbjEYXfQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 25 May 2023 13:16:59 -0400
-Received: from sonic308-18.consmr.mail.ir2.yahoo.com (sonic308-18.consmr.mail.ir2.yahoo.com [77.238.178.146])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78512194
-        for <phone-devel@vger.kernel.org>; Thu, 25 May 2023 10:16:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1685035015; bh=xkgnHjBKgUoTwdkT61NT3PpvtEjCsZBF89ShWXMrk8A=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=HaTVT25f9lqUnbp8L5yar5hbbsHNlY0LyA4z4xDpKfjuquHCus8yaXs3rCDKo9x66KsZz+h6+Wp5VtIDnspos8woLlBvKFPipqzKx3nFKbKhJb/APNybvAcvSQ/wFCFdFBGQymd6ghuRfD1/lLb8SXYMUlpYaaFgns/UG60n/lJ6or4pNNlaHSaDBCeAZ8hxn84mGIJgW0ODm+C+NH8+WCBoExTCUvY8PwUDkKDvH/aBqk/7wY4vZzbiePXiCPD0fiGi+1HZrCw7qYqjFeoTD3saMq/XyZ5U9HuRi6yv+5hYj44MtBOpGndEaL8LilpR6JvxVSB4Y8bElbdjQ2KqpA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1685035015; bh=PawQULQLg4LscEgh9vaZZDdtXDFK5uRu7EfNU7g6Wm4=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=JbdOqQ6ZdbOnTNnRm3U2tV1/BRfm7bpMlpIOpC4eX+uoZIuMOsGIz3kcg7ocdcD3jNtYgoHEkErTRhNkJ5hZqOTzhwsG9klQQbAF3nj1Vvybriys2E6JlcTTXDqlfRt9rBQAiqx+bbr83b+EphAnbaCg4RfHveqXGBRZi3o2Fij2upiZB9kY6SllgRAXCFvueSm84aPVkQsHmxg/IG7eqN2uSz4l5ri7wynJ8jIjrzlhsoTw2RrEQiOSY6T4tTHOgLA7VU3vN648++EA86XCvmsjodnc3j85FowixOJD2Nltacv9ZFIqyu75W5VJodiGgeLG/05Jk16/BIFKT1cJjw==
-X-YMail-OSG: RgaBlaIVM1nUppqx0Hh5l3kHWwZNL_1F8cFW6_8SOqX8CAftl676FQNZCItEdLs
- CSG5XHlk3ZiKUuvCG7jkEr7sBbM0cJvdG8V8HpUaAte_xx_UkqvmSTto3jJ8OFqDsSqTq25.wXKN
- xF1Hyj_Bi1hOgJSMLuCjY1XF_ZJGF4Ta3TYVIyOem_Lv87szWzR6HjTVm7dXSNje40SGyfbkUJrv
- H2Ly6lsR8ZuJ6xeG0v9Nq81cO3Apm5VL5z0PDjxdoFUt5o8HkMoKDNjRkbf5i1MaccC0abH24cJq
- N.XeDPH1EIfZMcEhZbZhcApAZa6_sm61gS5zyqzHnZa3_TsW5BBDjLKQduMl_hE9BUY75Gsrfz3u
- SfHnVyiyC0hQjy1mx8Rj9Mecy.wNZtyHOmgXrT0yqteJv9kBpWMy.Y94.MJ6HqIOUdYFeFQztf3Q
- PR.4NPCxFnXrvmBmuqx.vU.CfT3IxH8lZsjW0lVyHl3nEEfM40UKHwQ7.bmNZSopxx_93Htopt6T
- 3qgxmP1GcsEgobeZrwG2xTFlKuCQ8tD6gtWAR4zeLjQcXLNfLbGGeMKE0CgF5Tj.Du8FTddRzl5N
- DIOluI1N8esuPvBBBoQf1MTtmSUOA9f6ho5VCbh1WLAtHyGXNT4U8kwSSVKtvOvhDkWcgqqN0SnK
- KQtSAe6HQVD8_fF.8gz0Mxsffodk8oyaC9eE6HG_SVGSgPAV1wp65pEHZexiWdFW41SU5EEgKW0O
- i6LJH_VAH7gVEaFob6iccdzcw9VcFtWekBJWZv4uHV2c66q2WB_pTayN0C2TUTuX29M4xHv9c1F9
- WREzHvzNzvncX56AP0d55kdC9w0eveA_yP04sFhs4uo8kYHViC5k9NuprmbAbAhKkRImJQY61Qca
- RPDoXMwsZPDrEq9AjfxHVEotepGY8FGMmrMw4bTZw8BXqTNQCPt9DxbqQO0FdvSukIszIC5Cj5Iz
- HYPavvaVv4tliCGJ6ZA9ikZVgiwh89mIZG4DYzPlsRPaFyVgqC4oDtedwMOtgaTTccDNu3e8.3XO
- wHjr7FF6aTwoTMLfuq1iK9u3CsPt28ZnJWM.v8FffHQ.cIaYj5JdpGDCk2Ar8s3937w2471PoFYV
- wu1f5GwMl7EpNjUEE_7XiRjWbcaWdxdojZoNaRHcGO0GsPVGtvbKk3esyEHFptbL7My_b9dLQtdf
- 71W0tuFHUk727cCz2VtdYRgXq5W62XTCPwNje6NmPDZlDJ58H6RPfnzpDQD_2Bz4cX2WdUEjrSlf
- CbkrUlgYxeJp8NoZp5TaoNpw6TiNOttl_2dCJcTw_07LxDOVYWb_Ej8lXjbyqqEYJ1LSmnoAZreW
- yPTgb5HanuoDFQVhon9VzFUWSdeFFBvIa0uhKQRR2TAj_7q2vckt8NkpVbVs6peyrn8RmAdgSO5m
- tXAUIDiFY5xvyK9AHFeJgad45l5L_BmS2P7fS_wxkVDjVVDzyJJ8XjAF0d9cjV9audh_9SzSVQDD
- 2f.zLr.7PIbMvvgJo.1JTewYBYXLM3elEG_uaBn0WZqTtvhLaHpaXoAVyqSMOC8ZGzmHsvMG3Am1
- mGrfXpuOCGwjdiS.8wu195hq_XsqL.oHtUHOk1GqyoNEGJwv2fxYb41iT5yWGRHD3BQ9COoL2U0M
- qWEnv99aG_l2PitQIv8v1PP.9nvy8sYNtVH81HvbnTMJTd3v6sjsqL_CsJPI4KkKefNK8JhpNRqG
- Bc1RUCORhUuZ6jqcNoO6MEj1EEbL2XXl8rQ2wzLdhTXV9u8KCYX1Dt75IzwClIcSLrDKfQbY6460
- XhbXFDw4pvrfpZw6713ou4iiFvEs2CZ2MC7IlMdZUHj9Nsdu1VdZlaiiDOFf.oX0h5nAk76puZrB
- HNlOVuBla6dXq8BlPUID66yQYt7lkrYY03Qh0EHTJMuAsRrmeIk1jFCQMSUmvhxaOA_AjYGJDvZw
- MZuybCRml22EzhFR7oewV5zG7ZnQDmfrJJspdJdYpimh0xFUDRDPV6CyhNRj3VXQfTZN2yQdj6nT
- 9IShBPDECyOhurwCgyg_C9WVkvmnmpj3Rsh.CqJb8UfTMN42TZ4o5j0jbyqJ8xJf74ph3BbEnyft
- evJ4HYF5Rqsmsv_VIOAv.LViEd2zNVE0KV2ckd1HiZY8GqktH2ZE3LQvcShtnsVOJCwNoZ2EcWDt
- oWJQ1NrM1tt_mHlgUdHSA_5E_xU8q3x0zRXafmby40u.m0.1MKIDO04yv.GG4xvFPqjTqyFIShYH
- trRF2yQzZJTLsjK3VU4ueTvyI_mWBKHYb6J3XGPAzjySizWw2p4NUMfrJ5LjFvGOS444kbaKFQlr
- W7RYuI._tXg--
-X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: 6296b9f7-b72c-4688-8d28-6ed9ad826277
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ir2.yahoo.com with HTTP; Thu, 25 May 2023 17:16:55 +0000
-Received: by hermes--production-ir2-7867f454fc-tvsct (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 728940cf93f8512d21c18c5c5db9725e;
-          Thu, 25 May 2023 17:16:50 +0000 (UTC)
-Message-ID: <8ba9bb4c-6b9f-21ea-e9fe-89d5038dff2c@rocketmail.com>
-Date:   Thu, 25 May 2023 19:16:48 +0200
+        Thu, 25 May 2023 19:35:16 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A38412F
+        for <phone-devel@vger.kernel.org>; Thu, 25 May 2023 16:35:11 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2af2451b3f1so1187801fa.2
+        for <phone-devel@vger.kernel.org>; Thu, 25 May 2023 16:35:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685057708; x=1687649708;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NvHp9kbCmzprhhlxYhMadzLgMrWsN+n0AbItfKTfEyY=;
+        b=izymOdd+Q29tsFN7jNoCbsg0wB+kGwbMnM3zrwJEWCMOimOc/KcmYHpX9bB2aNtkET
+         2GroRU66e5TB7d61WOeVZmXrkrpsuhOL4sbS4fAhUXp2p/huKn3mEW6jUuJLR64YVo2m
+         pcypEfSV1ljmkHBG8pgfyh78AzSm9H2aAnHN7NIILyFZjJkhcNWO7hRYM3FXJzbVcGmw
+         7jLlzFCyKqYT4+XzF/pdjT9cXs8+NgQRdwlq4kHDZGkoDkbyT805xxJghWmz53tqI6mJ
+         84HjEcnpYzQNCDygdq8qqqgOn7UWFSywV7eMaLgfdk2Husu8WCSg7wa2eWvLW9kvIQUJ
+         NKqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685057708; x=1687649708;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NvHp9kbCmzprhhlxYhMadzLgMrWsN+n0AbItfKTfEyY=;
+        b=PfBiSHYvuIeVr7wBpda9DVgFqTtzwok0p05kh4MAUpPt+mfNj5ZbKdyN0O41royJLw
+         Ipe1xFOlMO6JCl+z3kOdpCMl93UlSrlrse9dirMt9KU/6omX2DoDhNJb6BI7B3hRLpLv
+         sWG39McONEfY4Ok0CsKnNX5UdgBYqnpseDamZ6ubrwuare7vQc1tuRIWKkHb9PxPLv0D
+         QV9pD46ijJmJG6tI6xQxVu7r1GLJmnq3Al8AqQJFoQxHmwuTIFJVQUV68JHXuwlEK7Co
+         sqoref7Y3eYwN3AHV6KVn4EW1WFWExA++pO+uNjot6i3TdCowDWuZ9vVEntLCN8gtVgf
+         +uMw==
+X-Gm-Message-State: AC+VfDxLSUHrrGolkZcZWbEghPY3CPgSjK3wpgtOqryIq7jIJzdrQ9YL
+        M6bn9IhKvOZM5/Xjt2+PN4oMk1N5QmPTyegbzgg=
+X-Google-Smtp-Source: ACHHUZ4lkGqNKo23snGWN8LOFvAhtqK5N/i32hhWlYsc4buR3LXuRttdrfl8uPX6tIVI4EqDKUKI5w==
+X-Received: by 2002:a2e:b00a:0:b0:2ad:988e:7f8e with SMTP id y10-20020a2eb00a000000b002ad988e7f8emr38933ljk.51.1685057708430;
+        Thu, 25 May 2023 16:35:08 -0700 (PDT)
+Received: from [192.168.1.101] (abyj77.neoplus.adsl.tpnet.pl. [83.9.29.77])
+        by smtp.gmail.com with ESMTPSA id j6-20020a2e3c06000000b002a8d01905f7sm420891lja.101.2023.05.25.16.35.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 May 2023 16:35:08 -0700 (PDT)
+Message-ID: <9f474fe8-523c-3668-540a-a8fc04ed64a6@linaro.org>
+Date:   Fri, 26 May 2023 01:35:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v6 04/10 RESEND] mfd: rt5033: Apply preparatory changes
- before adding rt5033-charger driver
-To:     Lee Jones <lee@kernel.org>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Beomho Seo <beomho.seo@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Raymond Hackley <raymondhackley@protonmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Henrik Grimler <henrik@grimler.se>,
-        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 7/8] arm64: dts: qcom: msm8916: Define regulator
+ constraints next to usage
+Content-Language: en-US
+To:     Stephan Gerhold <stephan@gerhold.net>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
-References: <cover.1684182964.git.jahau@rocketmail.com>
- <31c750ae13a1c1896b51d8f0a0d9869f8b85624f.1684182964.git.jahau@rocketmail.com>
- <20230525104434.GD9691@google.com>
-Content-Language: en-US
-From:   Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <20230525104434.GD9691@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+References: <20230510-msm8916-regulators-v1-0-54d4960a05fc@gerhold.net>
+ <20230510-msm8916-regulators-v1-7-54d4960a05fc@gerhold.net>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230510-msm8916-regulators-v1-7-54d4960a05fc@gerhold.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.21495 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Lee,
 
-On 25.05.23 12:44, Lee Jones wrote:
-> On Mon, 15 May 2023, Jakob Hauser wrote:
 
-...
-
->> diff --git a/include/linux/mfd/rt5033.h b/include/linux/mfd/rt5033.h
->> index 8f306ac15a27..e99e2ab0c1c1 100644
->> --- a/include/linux/mfd/rt5033.h
->> +++ b/include/linux/mfd/rt5033.h
->> @@ -51,7 +51,7 @@ struct rt5033_charger_data {
->>   struct rt5033_charger {
->>   	struct device			*dev;
->>   	struct rt5033_dev		*rt5033;
->> -	struct power_supply		psy;
->> +	struct power_supply		*psy;
+On 17.05.2023 20:48, Stephan Gerhold wrote:
+> Right now each MSM8916 device has a huge block of regulator constraints
+> with allowed voltages for each regulator. For lack of better
+> documentation these voltages are often copied as-is from the vendor
+> device tree, without much extra thought.
 > 
-> Is this current unused?
+> Unfortunately, the voltages in the vendor device trees are often
+> misleading or even wrong, e.g. because:
+> 
+>  - There is a large voltage range allowed and the actual voltage is
+>    only set somewhere hidden in some messy vendor driver. This is often
+>    the case for pm8916_{l14,l15,l16} because they have a broad range of
+>    1.8-3.3V by default.
+> 
+>  - The voltage is actually wrong but thanks to the voltage constraints
+>    in the RPM firmware it still ends up applying the correct voltage.
+> 
+> To have proper regulator constraints it is important to review them in
+> context of the usage. The current setup in the MSM8916 device trees
+> makes this quite hard because each device duplicates the standard
+> voltages for components of the SoC and mixes those with minor
+> device-specific additions and dummy voltages for completely unused
+> regulators.
+> 
+> The actual usage of the regulators for the SoC components is in
+> msm8916-pm8916.dtsi, so it can and should also define the related
+> voltage constraints. These are not board-specific but defined in the
+> APQ8016E/PM8916 Device Specification. The board DT can then focus on
+> describing the actual board-specific regulators, which makes it much
+> easier to review and spot potential mistakes there.
+> 
+> Note that this commit does not make any functional change. All used
+> regulators still have the same regulator constraints as before. Unused
+> regulators do not have regulator constraints anymore because most of
+> these were too broad or even entirely wrong. They should be added back
+> with proper voltage constraints when there is an actual usage.
+> 
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> ---
+I'm a bit torn between saying "this is very nice already" and "we should
+probably override each regulator individually" like so:
 
-Currently this is not in use. The rt5033 charger driver gets introduced 
-by this pachset.
+&pm8916_l17 {
+	[...]
+}
 
-The struct rt5033_charger was added in Dec 2014 with the mfd driver [1] 
-but the charger driver didn't make it [2] and further effort to 
-implement it phased out [3].
+to minimize mistakes..
 
-[1] https://lore.kernel.org/lkml/20141209140102.GZ3951@x1
-[2] https://lore.kernel.org/lkml/20150122183037.GA24898@earth.universe
-[3] 
-https://lore.kernel.org/lkml/1425864191-4121-1-git-send-email-beomho.seo@samsung.com/T/#t
+Not sure what to make of it, I see Bjorn already applied this, so I guess
+I'm just leaving some potential ideas for the future here.
 
->>   	struct rt5033_charger_data	*chg;
->>   };
->>   
+Konrad
 
-Kind regards,
-Jakob
+>  arch/arm64/boot/dts/qcom/apq8016-sbc.dts           | 153 +++++----------------
+>  arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts   | 115 ++--------------
+>  .../boot/dts/qcom/msm8916-alcatel-idol347.dts      | 110 +--------------
+>  arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts     | 110 +--------------
+>  arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts | 110 +--------------
+>  arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts     | 120 +++-------------
+>  .../boot/dts/qcom/msm8916-longcheer-l8150.dts      | 110 +--------------
+>  .../boot/dts/qcom/msm8916-longcheer-l8910.dts      | 110 +--------------
+>  arch/arm64/boot/dts/qcom/msm8916-pm8916.dtsi       | 102 +++++++++++---
+>  .../dts/qcom/msm8916-samsung-a2015-common.dtsi     | 110 +--------------
+>  .../boot/dts/qcom/msm8916-samsung-gt5-common.dtsi  | 110 +--------------
+>  .../boot/dts/qcom/msm8916-samsung-j5-common.dtsi   | 103 --------------
+>  .../boot/dts/qcom/msm8916-samsung-serranove.dts    | 103 --------------
+>  arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi          | 103 --------------
+>  .../boot/dts/qcom/msm8916-wingtech-wt88047.dts     | 119 +++-------------
+>  15 files changed, 210 insertions(+), 1478 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+> index 7d7af6406c39..ab8dfd858025 100644
+> --- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+> +++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+> @@ -329,6 +329,40 @@ &pm8916_resin {
+>  	linux,code = <KEY_VOLUMEDOWN>;
+>  };
+>  
+> +&pm8916_rpm_regulators {
+> +	/*
+> +	 * The 96Boards specification expects a 1.8V power rail on the low-speed
+> +	 * expansion connector that is able to provide at least 0.18W / 100 mA.
+> +	 * L15/L16 are connected in parallel to provide 55 mA each. A minimum load
+> +	 * must be specified to ensure the regulators are not put in LPM where they
+> +	 * would only provide 5 mA.
+> +	 */
+> +	pm8916_l15: l15 {
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <1800000>;
+> +		regulator-system-load = <50000>;
+> +		regulator-allow-set-load;
+> +		regulator-always-on;
+> +	};
+> +	pm8916_l16: l16 {
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <1800000>;
+> +		regulator-system-load = <50000>;
+> +		regulator-allow-set-load;
+> +		regulator-always-on;
+> +	};
+> +
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <3300000>;
+> +		regulator-max-microvolt = <3300000>;
+> +	};
+> +};
+> +
+> +&pm8916_s4 {
+> +	regulator-always-on;
+> +	regulator-boot-on;
+> +};
+> +
+>  &sdhc_1 {
+>  	status = "okay";
+>  
+> @@ -446,125 +480,6 @@ &wcnss_iris {
+>  &stm { status = "okay"; };
+>  &tpiu { status = "okay"; };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -
+> -		regulator-always-on;
+> -		regulator-boot-on;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-allow-set-load;
+> -		regulator-system-load = <200000>;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	/*
+> -	 * The 96Boards specification expects a 1.8V power rail on the low-speed
+> -	 * expansion connector that is able to provide at least 0.18W / 100 mA.
+> -	 * L15/L16 are connected in parallel to provide 55 mA each. A minimum load
+> -	 * must be specified to ensure the regulators are not put in LPM where they
+> -	 * would only provide 5 mA.
+> -	 */
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -		regulator-system-load = <50000>;
+> -		regulator-allow-set-load;
+> -		regulator-always-on;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -		regulator-system-load = <50000>;
+> -		regulator-allow-set-load;
+> -		regulator-always-on;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  /*
+>   * 2mA drive strength is not enough when connecting multiple
+>   * I2C devices with different pull up resistors.
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts b/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts
+> index 0d517804e44e..753413b48751 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts
+> @@ -114,6 +114,18 @@ &pm8916_resin {
+>  	status = "okay";
+>  };
+>  
+> +&pm8916_rpm_regulators {
+> +	pm8916_l16: l16 {
+> +		regulator-min-microvolt = <2900000>;
+> +		regulator-max-microvolt = <2900000>;
+> +	};
+> +
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <2850000>;
+> +		regulator-max-microvolt = <2850000>;
+> +	};
+> +};
+> +
+>  &pm8916_vib {
+>  	status = "okay";
+>  };
+> @@ -153,109 +165,6 @@ &wcnss_iris {
+>  	compatible = "qcom,wcn3620";
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-system-load = <200000>;
+> -		regulator-allow-set-load;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <2850000>;
+> -		regulator-max-microvolt = <2850000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	accel_int_default: accel-int-default-state {
+>  		pins = "gpio115";
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts b/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
+> index ddd64cc46998..4bfbad669b1e 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
+> @@ -156,6 +156,13 @@ &pm8916_resin {
+>  	linux,code = <KEY_VOLUMEDOWN>;
+>  };
+>  
+> +&pm8916_rpm_regulators {
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <2850000>;
+> +		regulator-max-microvolt = <2850000>;
+> +	};
+> +};
+> +
+>  &pm8916_vib {
+>  	status = "okay";
+>  };
+> @@ -195,109 +202,6 @@ &wcnss_iris {
+>  	compatible = "qcom,wcn3620";
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-allow-set-load;
+> -		regulator-system-load = <200000>;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <2850000>;
+> -		regulator-max-microvolt = <2850000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	accel_int_default: accel-int-default-state {
+>  		pins = "gpio31";
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts b/arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts
+> index 982457503a3c..37755e885395 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts
+> @@ -128,6 +128,13 @@ &blsp1_uart2 {
+>  	status = "okay";
+>  };
+>  
+> +&pm8916_rpm_regulators {
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <2850000>;
+> +		regulator-max-microvolt = <2850000>;
+> +	};
+> +};
+> +
+>  &sdhc_1 {
+>  	status = "okay";
+>  
+> @@ -163,109 +170,6 @@ &wcnss_iris {
+>  	compatible = "qcom,wcn3620";
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-allow-set-load;
+> -		regulator-system-load = <200000>;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <2850000>;
+> -		regulator-max-microvolt = <2850000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	gpio_keys_default: gpio-keys-default-state {
+>  		pins = "gpio107", "gpio117";
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts b/arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts
+> index 9584d271c526..4a6bf99c755f 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts
+> @@ -114,6 +114,13 @@ &pm8916_resin {
+>  	status = "okay";
+>  };
+>  
+> +&pm8916_rpm_regulators {
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <2850000>;
+> +		regulator-max-microvolt = <2850000>;
+> +	};
+> +};
+> +
+>  &pm8916_vib {
+>  	status = "okay";
+>  };
+> @@ -153,109 +160,6 @@ &wcnss_iris {
+>  	compatible = "qcom,wcn3620";
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-system-load = <200000>;
+> -		regulator-allow-set-load;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <2850000>;
+> -		regulator-max-microvolt = <2850000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	camera_flash_default: camera-flash-default-state {
+>  		pins = "gpio31", "gpio32";
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts b/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
+> index 8197710372ad..29aaa35438a3 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
+> @@ -222,11 +222,28 @@ &lpass_codec {
+>  	status = "okay";
+>  };
+>  
+> +&pm8916_l8 {
+> +	regulator-min-microvolt = <2950000>;
+> +	regulator-max-microvolt = <2950000>;
+> +};
+> +
+>  &pm8916_resin {
+>  	status = "okay";
+>  	linux,code = <KEY_VOLUMEDOWN>;
+>  };
+>  
+> +&pm8916_rpm_regulators {
+> +	pm8916_l16: l16 {
+> +		regulator-min-microvolt = <1800000>;
+> +		regulator-max-microvolt = <1800000>;
+> +	};
+> +
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <2850000>;
+> +		regulator-max-microvolt = <2850000>;
+> +	};
+> +};
+> +
+>  &pm8916_vib {
+>  	status = "okay";
+>  };
+> @@ -321,109 +338,6 @@ &wcnss_iris {
+>  	compatible = "qcom,wcn3620";
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-allow-set-load;
+> -		regulator-system-load = <200000>;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <2850000>;
+> -		regulator-max-microvolt = <2850000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	accel_irq_default: accel-irq-default-state {
+>  		pins = "gpio115";
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
+> index 68d1b76aaf77..b7b1f1ceaf1f 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
+> @@ -223,6 +223,13 @@ &pm8916_resin {
+>  	linux,code = <KEY_VOLUMEDOWN>;
+>  };
+>  
+> +&pm8916_rpm_regulators {
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <2850000>;
+> +		regulator-max-microvolt = <2850000>;
+> +	};
+> +};
+> +
+>  &pm8916_usbin {
+>  	status = "okay";
+>  };
+> @@ -267,109 +274,6 @@ &wcnss_iris {
+>  	compatible = "qcom,wcn3620";
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-allow-set-load;
+> -		regulator-system-load = <200000>;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <2850000>;
+> -		regulator-max-microvolt = <2850000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	accel_int_default: accel-int-default-state {
+>  		pins = "gpio116";
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
+> index 5ef51d3e9098..d1eb3f2ecf3f 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
+> @@ -95,6 +95,13 @@ &pm8916_resin {
+>  	linux,code = <KEY_VOLUMEDOWN>;
+>  };
+>  
+> +&pm8916_rpm_regulators {
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <2850000>;
+> +		regulator-max-microvolt = <2850000>;
+> +	};
+> +};
+> +
+>  &pm8916_vib {
+>  	status = "okay";
+>  };
+> @@ -134,109 +141,6 @@ &wcnss_iris {
+>  	compatible = "qcom,wcn3620";
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-allow-set-load;
+> -		regulator-system-load = <200000>;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <2850000>;
+> -		regulator-max-microvolt = <2850000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	button_backlight_default: button-backlight-default-state {
+>  		pins = "gpio17";
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-pm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916-pm8916.dtsi
+> index 29ef46c33350..b38eecbd6253 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-pm8916.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-pm8916.dtsi
+> @@ -61,30 +61,92 @@ &wcnss_iris {
+>  };
+>  
+>  &rpm_requests {
+> -	smd_rpm_regulators: regulators {
+> +	pm8916_rpm_regulators: regulators {
+>  		compatible = "qcom,rpm-pm8916-regulators";
+> +		vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> +		vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> +		vdd_l7-supply = <&pm8916_s4>;
+>  
+>  		/* pm8916_s1 is managed by rpmpd (MSM8916_VDDCX) */
+> -		pm8916_s3: s3 {};
+> -		pm8916_s4: s4 {};
+>  
+> -		pm8916_l1: l1 {};
+> -		pm8916_l2: l2 {};
+> +		pm8916_s3: s3 {
+> +			regulator-min-microvolt = <1250000>;
+> +			regulator-max-microvolt = <1350000>;
+> +		};
+> +
+> +		pm8916_s4: s4 {
+> +			regulator-min-microvolt = <1850000>;
+> +			regulator-max-microvolt = <2150000>;
+> +		};
+> +
+> +		/*
+> +		 * Some of the regulators are unused or managed by another
+> +		 * processor (e.g. the modem). We should still define nodes for
+> +		 * them to ensure the vote from the application processor can be
+> +		 * dropped in case the regulators are already on during boot.
+> +		 *
+> +		 * The labels for these nodes are omitted on purpose because
+> +		 * boards should configure a proper voltage before using them.
+> +		 */
+> +		l1 {};
+> +
+> +		pm8916_l2: l2 {
+> +			regulator-min-microvolt = <1200000>;
+> +			regulator-max-microvolt = <1200000>;
+> +		};
+> +
+>  		/* pm8916_l3 is managed by rpmpd (MSM8916_VDDMX) */
+> -		pm8916_l4: l4 {};
+> -		pm8916_l5: l5 {};
+> -		pm8916_l6: l6 {};
+> -		pm8916_l7: l7 {};
+> -		pm8916_l8: l8 {};
+> -		pm8916_l9: l9 {};
+> -		pm8916_l10: l10 {};
+> -		pm8916_l11: l11 {};
+> -		pm8916_l12: l12 {};
+> -		pm8916_l13: l13 {};
+> -		pm8916_l14: l14 {};
+> -		pm8916_l15: l15 {};
+> -		pm8916_l16: l16 {};
+> -		pm8916_l17: l17 {};
+> -		pm8916_l18: l18 {};
+> +
+> +		l4 {};
+> +
+> +		pm8916_l5: l5 {
+> +			regulator-min-microvolt = <1800000>;
+> +			regulator-max-microvolt = <1800000>;
+> +		};
+> +
+> +		pm8916_l6: l6 {
+> +			regulator-min-microvolt = <1800000>;
+> +			regulator-max-microvolt = <1800000>;
+> +		};
+> +
+> +		pm8916_l7: l7 {
+> +			regulator-min-microvolt = <1800000>;
+> +			regulator-max-microvolt = <1800000>;
+> +		};
+> +
+> +		pm8916_l8: l8 {
+> +			regulator-min-microvolt = <2900000>;
+> +			regulator-max-microvolt = <2900000>;
+> +		};
+> +
+> +		pm8916_l9: l9 {
+> +			regulator-min-microvolt = <3300000>;
+> +			regulator-max-microvolt = <3300000>;
+> +		};
+> +
+> +		l10 {};
+> +
+> +		pm8916_l11: l11 {
+> +			regulator-min-microvolt = <2950000>;
+> +			regulator-max-microvolt = <2950000>;
+> +			regulator-allow-set-load;
+> +			regulator-system-load = <200000>;
+> +		};
+> +
+> +		pm8916_l12: l12 {
+> +			regulator-min-microvolt = <1800000>;
+> +			regulator-max-microvolt = <2950000>;
+> +		};
+> +
+> +		pm8916_l13: l13 {
+> +			regulator-min-microvolt = <3075000>;
+> +			regulator-max-microvolt = <3075000>;
+> +		};
+> +
+> +		l14 {};
+> +		l15 {};
+> +		l16 {};
+> +		l17 {};
+> +		l18 {};
+>  	};
+>  };
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
+> index b362a76eebc9..37a872949851 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
+> @@ -252,6 +252,13 @@ &pm8916_resin {
+>  	linux,code = <KEY_VOLUMEDOWN>;
+>  };
+>  
+> +&pm8916_rpm_regulators {
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <2850000>;
+> +		regulator-max-microvolt = <2850000>;
+> +	};
+> +};
+> +
+>  &sdhc_1 {
+>  	status = "okay";
+>  
+> @@ -279,109 +286,6 @@ &usb_hs_phy {
+>  	extcon = <&muic>;
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-allow-set-load;
+> -		regulator-system-load = <200000>;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <2850000>;
+> -		regulator-max-microvolt = <2850000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	accel_int_default: accel-int-default-state {
+>  		pins = "gpio115";
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
+> index 4464beeeaab1..a49e1641e59b 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
+> @@ -120,6 +120,13 @@ &pm8916_resin {
+>  	status = "okay";
+>  };
+>  
+> +&pm8916_rpm_regulators {
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <2850000>;
+> +		regulator-max-microvolt = <2850000>;
+> +	};
+> +};
+> +
+>  /* FIXME: Replace with MAX77849 MUIC when driver is available */
+>  &pm8916_usbin {
+>  	status = "okay";
+> @@ -162,109 +169,6 @@ &wcnss_iris {
+>  	compatible = "qcom,wcn3660b";
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-system-load = <200000>;
+> -		regulator-allow-set-load;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <2850000>;
+> -		regulator-max-microvolt = <2850000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	accel_int_default: accel-int-default-state {
+>  		pins = "gpio115";
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi
+> index 6e231e92e675..6192d04a58ae 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi
+> @@ -128,109 +128,6 @@ &wcnss_iris {
+>  	compatible = "qcom,wcn3620";
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-allow-set-load;
+> -		regulator-system-load = <200000>;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <3000000>;
+> -		regulator-max-microvolt = <3000000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
+>  		pins = "gpio52";
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+> index fa5b330aaeae..fc4c61c4e1e6 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+> @@ -320,109 +320,6 @@ &wcnss_iris {
+>  	compatible = "qcom,wcn3660b";
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-allow-set-load;
+> -		regulator-system-load = <200000>;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <2850000>;
+> -		regulator-max-microvolt = <2850000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	fg_alert_default: fg-alert-default-state {
+>  		pins = "gpio121";
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi b/arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi
+> index b27896e83a0e..c8ea2f6f6b3d 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi
+> @@ -126,109 +126,6 @@ &wcnss_iris {
+>  	compatible = "qcom,wcn3620";
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-system-load = <200000>;
+> -		regulator-allow-set-load;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <2850000>;
+> -		regulator-max-microvolt = <2850000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	/* pins are board-specific */
+>  	button_default: button-default-state {
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
+> index 78020a0db4e4..323590598113 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
+> @@ -149,6 +149,22 @@ &pm8916_resin {
+>  	linux,code = <KEY_VOLUMEDOWN>;
+>  };
+>  
+> +&pm8916_rpm_regulators {
+> +	pm8916_l16: l16 {
+> +		/*
+> +		 * L16 is only used for AW2013 which is fine with 2.5-3.3V.
+> +		 * Use the recommended typical voltage of 2.8V as minimum.
+> +		 */
+> +		regulator-min-microvolt = <2800000>;
+> +		regulator-max-microvolt = <3300000>;
+> +	};
+> +
+> +	pm8916_l17: l17 {
+> +		regulator-min-microvolt = <2850000>;
+> +		regulator-max-microvolt = <2850000>;
+> +	};
+> +};
+> +
+>  &pm8916_vib {
+>  	status = "okay";
+>  };
+> @@ -188,109 +204,6 @@ &wcnss_iris {
+>  	compatible = "qcom,wcn3620";
+>  };
+>  
+> -&smd_rpm_regulators {
+> -	vdd_l1_l2_l3-supply = <&pm8916_s3>;
+> -	vdd_l4_l5_l6-supply = <&pm8916_s4>;
+> -	vdd_l7-supply = <&pm8916_s4>;
+> -
+> -	s3 {
+> -		regulator-min-microvolt = <1250000>;
+> -		regulator-max-microvolt = <1350000>;
+> -	};
+> -
+> -	s4 {
+> -		regulator-min-microvolt = <1850000>;
+> -		regulator-max-microvolt = <2150000>;
+> -	};
+> -
+> -	l1 {
+> -		regulator-min-microvolt = <1225000>;
+> -		regulator-max-microvolt = <1225000>;
+> -	};
+> -
+> -	l2 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1200000>;
+> -	};
+> -
+> -	l4 {
+> -		regulator-min-microvolt = <2050000>;
+> -		regulator-max-microvolt = <2050000>;
+> -	};
+> -
+> -	l5 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l6 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l7 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <1800000>;
+> -	};
+> -
+> -	l8 {
+> -		regulator-min-microvolt = <2900000>;
+> -		regulator-max-microvolt = <2900000>;
+> -	};
+> -
+> -	l9 {
+> -		regulator-min-microvolt = <3300000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l10 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <2800000>;
+> -	};
+> -
+> -	l11 {
+> -		regulator-min-microvolt = <2950000>;
+> -		regulator-max-microvolt = <2950000>;
+> -		regulator-allow-set-load;
+> -		regulator-system-load = <200000>;
+> -	};
+> -
+> -	l12 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2950000>;
+> -	};
+> -
+> -	l13 {
+> -		regulator-min-microvolt = <3075000>;
+> -		regulator-max-microvolt = <3075000>;
+> -	};
+> -
+> -	l14 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l15 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l16 {
+> -		regulator-min-microvolt = <2800000>;
+> -		regulator-max-microvolt = <3300000>;
+> -	};
+> -
+> -	l17 {
+> -		regulator-min-microvolt = <2850000>;
+> -		regulator-max-microvolt = <2850000>;
+> -	};
+> -
+> -	l18 {
+> -		regulator-min-microvolt = <2700000>;
+> -		regulator-max-microvolt = <2700000>;
+> -	};
+> -};
+> -
+>  &msmgpio {
+>  	camera_flash_default: camera-flash-default-state {
+>  		pins = "gpio31", "gpio32";
+> 
