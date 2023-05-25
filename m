@@ -2,49 +2,52 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5CD3DC7EE2C
-	for <phone-devel@archiver.kernel.org>; Thu, 25 May 2023 04:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C8F9C7EE2E
+	for <phone-devel@archiver.kernel.org>; Thu, 25 May 2023 05:17:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240239AbjEYE5o (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 25 May 2023 00:57:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53938 "EHLO
+        id S240098AbjEYFRI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 25 May 2023 01:17:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239857AbjEYEzy (ORCPT
+        with ESMTP id S240004AbjEYFQh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 25 May 2023 00:55:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E7B2E49;
-        Wed, 24 May 2023 21:52:20 -0700 (PDT)
+        Thu, 25 May 2023 01:16:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9B993C21;
+        Wed, 24 May 2023 22:03:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF88264288;
-        Thu, 25 May 2023 04:52:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A27C4339B;
-        Thu, 25 May 2023 04:52:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A571642C0;
+        Thu, 25 May 2023 04:51:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A56EC4339B;
+        Thu, 25 May 2023 04:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684990327;
-        bh=d4oVeUBU42q3WJHBxZEjzM7+775YK2xmbsXgqd+qmyw=;
+        s=k20201202; t=1684990300;
+        bh=ycn3DV7+eOp/cPpjQQmSMRmMh8OHrtULiaAVj3rnCJw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WP+Zhbsj2viboZ6gfU2jbVtEl1izU+S/UehAQ38axoMBwFSyzqB/4tpLC+7Ng6/N6
-         858vzW14oVLZqJBqa9zdxjZZ8FFnqlgnWEWpmgn+nr0ZHZFkz3KSvrgjMuyAKBXLa8
-         JE6tNwjiUIhVh5kjyS8kH536D8YTTDTTmcsOmW8q64SAXZ9zpLQ8oLlijIJLKZni6C
-         Sfu/iejd7oeIGn+bCQgXhY7JzQj6xjcIs7lGVniJei/Z7UtjGWiAGqgkv7nq3TtJKY
-         mI7qPnceUMITrHaIqZKJW5HbDBJsC1yeqn5g9nEocoDETc4ZKGvoK7kofHRLFEP8Ej
-         2Dp0QiqHdxCbg==
+        b=jnbN12MD+cXxN6kzmH/Rtt4fyTqRseqw4jsMOIjKki24bI7ATxqjhTaVz97+H7Ff+
+         bYViHY23E8R1g5vqebteEqGzo1A2fY4CdL1QLfroYU5m7ZbS0+0YQEWw0GwC5W3530
+         WhVXuUzwxco8Wvtjo25CiMjcxkSTWW/ihXevhCAU6LnabzjG1iNWdR+4yy6j+5TEnQ
+         v3u9AJUP/EVGTAFbj0RPKL0va+n/bhmpNdfCp7zriLDNlRpfjHsA+d3QjP5LVobM7W
+         25xnLI6a3sZGiApg3mQpOWRK92PPY/uaApubvGXD+NyOYucjom3XrLz8CcZNJNFBZ0
+         8KsP1Z19HuiPQ==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+To:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        devicetree@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 0/8] arm64: dts: qcom: msm8916: Rework regulator constraints
-Date:   Wed, 24 May 2023 21:54:44 -0700
-Message-Id: <168499048186.3998961.1070779668049062036.b4-ty@kernel.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: sm6350: Move wifi node to correct place
+Date:   Wed, 24 May 2023 21:54:20 -0700
+Message-Id: <168499048185.3998961.5560910405642492988.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230510-msm8916-regulators-v1-0-54d4960a05fc@gerhold.net>
-References: <20230510-msm8916-regulators-v1-0-54d4960a05fc@gerhold.net>
+In-Reply-To: <20230516-sm6350-order-v1-1-5c3b7c4cd761@fairphone.com>
+References: <20230516-sm6350-order-v1-1-5c3b7c4cd761@fairphone.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,35 +55,16 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 17 May 2023 20:48:39 +0200, Stephan Gerhold wrote:
-> Rework the regulator constraints for the MSM8916 device trees to be
-> closer to reality. There are several mistakes in there, some of them
-> taken over directly from Qualcomm's vendor kernel. Fortunately, none of
-> the mistakes is absolutely critical because it turns out that the RPM
-> firmware also validates the voltages and silently clamps the requests
-> to a proper range. Still, this behavior should be clearly represented
-> in the device tree rather than pretending to apply the wrong voltages.
+On Tue, 16 May 2023 08:56:14 +0200, Luca Weiss wrote:
+> Somehow wifi was placed further up in the file than where it should be.
+> Move it down so the nodes are sorted by reg again.
 > 
-> [...]
+> 
 
 Applied, thanks!
 
-[1/8] arm64: dts: qcom: apq8016-sbc: Fix regulator constraints
-      commit: e27654df20d77ad7549a3cf6739ebaa3aa59a088
-[2/8] arm64: dts: qcom: apq8016-sbc: Fix 1.8V power rail on LS expansion
-      commit: 5500f823db38db073d30557af159b77fb1f2bf26
-[3/8] arm64: dts: qcom: msm8916: Fix regulator constraints
-      commit: 355750828c5519c88de6ac0d09202d2a7e5892c5
-[4/8] arm64: dts: qcom: msm8916: Disable audio codecs by default
-      commit: a5cf21b14666c42912327c7bece38711f6e0d708
-[5/8] arm64: dts: qcom: pm8916: Move default regulator "-supply"s
-      commit: 38218822a72fd31e89affc7fc457d527f65581aa
-[6/8] arm64: dts: qcom: msm8916-pm8916: Clarify purpose
-      commit: f193264986b5944216e574b9962616f2524aac08
-[7/8] arm64: dts: qcom: msm8916: Define regulator constraints next to usage
-      commit: b0a8f16ae4a0eb423122256691849b3ebc64efc2
-[8/8] arm64: dts: qcom: msm8916-pm8916: Mark always-on regulators
-      commit: 8bbd35771f903a9d14fe95bcba8c7b9f07aeb958
+[1/1] arm64: dts: qcom: sm6350: Move wifi node to correct place
+      commit: fbd47f83c5a94f6e3772b4087c97292601857e68
 
 Best regards,
 -- 
