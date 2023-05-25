@@ -2,73 +2,131 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FD76C77B7A
-	for <phone-devel@archiver.kernel.org>; Thu, 25 May 2023 11:55:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8039BC77B7A
+	for <phone-devel@archiver.kernel.org>; Thu, 25 May 2023 17:17:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236182AbjEYLyw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 25 May 2023 07:54:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41022 "EHLO
+        id S240831AbjEYRRA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 25 May 2023 13:17:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241097AbjEYLyf (ORCPT
+        with ESMTP id S231263AbjEYRQ7 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 25 May 2023 07:54:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94FD397;
-        Thu, 25 May 2023 04:54:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 29B05619D0;
-        Thu, 25 May 2023 11:54:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5AB6C433D2;
-        Thu, 25 May 2023 11:54:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685015673;
-        bh=yXZLjlUFVFHvH63iorAG2OYiK40XGG0ldq70nvT1LEc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=d0lx+BlXBW/xUsIE+/dkKUPR97iPr0VZf9W7k/0jUEs2TRygd2opXRRVm+bguIBxQ
-         rCqG4KVn6tcduP+stzIX8LFPe2XESXTKfn6V8w9jqwK9O8cZwT6maAGc5OqIDei0RC
-         2oeTJld6DZ3M36SmGzvZOuC1660EGo8SilQIpXikG9pmPLn+U/FpRJexcXbOXNJlLI
-         ANeKHJAEZD+igxwusQbcaXvtc/lV4o/IpFk48cDt7zDBETP4l9whNoQQV6ZN1FJO5c
-         Ujr4GlKj7XCVcU6u1oSPCEkBLCbYiSLr69rabudVmMZ6h+8bMDpRPDyQOVFZvMFj6F
-         kUmV3aOXeH+0A==
-Date:   Thu, 25 May 2023 12:54:26 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Dylan Van Assche <me@dylanvanassche.be>
-Cc:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        pavel@ucw.cz, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        quic_fenglinw@quicinc.com, linux-arm-msm@vger.kernel.org,
-        linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        amartinz@shiftphones.com,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v3 1/3] dt-bindings: leds: qcom,spmi-flash-led: add
- PMI8998
-Message-ID: <20230525115426.GN423913@google.com>
-References: <20230518133113.273880-1-me@dylanvanassche.be>
- <20230518133113.273880-2-me@dylanvanassche.be>
+        Thu, 25 May 2023 13:16:59 -0400
+Received: from sonic308-18.consmr.mail.ir2.yahoo.com (sonic308-18.consmr.mail.ir2.yahoo.com [77.238.178.146])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78512194
+        for <phone-devel@vger.kernel.org>; Thu, 25 May 2023 10:16:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1685035015; bh=xkgnHjBKgUoTwdkT61NT3PpvtEjCsZBF89ShWXMrk8A=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=HaTVT25f9lqUnbp8L5yar5hbbsHNlY0LyA4z4xDpKfjuquHCus8yaXs3rCDKo9x66KsZz+h6+Wp5VtIDnspos8woLlBvKFPipqzKx3nFKbKhJb/APNybvAcvSQ/wFCFdFBGQymd6ghuRfD1/lLb8SXYMUlpYaaFgns/UG60n/lJ6or4pNNlaHSaDBCeAZ8hxn84mGIJgW0ODm+C+NH8+WCBoExTCUvY8PwUDkKDvH/aBqk/7wY4vZzbiePXiCPD0fiGi+1HZrCw7qYqjFeoTD3saMq/XyZ5U9HuRi6yv+5hYj44MtBOpGndEaL8LilpR6JvxVSB4Y8bElbdjQ2KqpA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1685035015; bh=PawQULQLg4LscEgh9vaZZDdtXDFK5uRu7EfNU7g6Wm4=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=JbdOqQ6ZdbOnTNnRm3U2tV1/BRfm7bpMlpIOpC4eX+uoZIuMOsGIz3kcg7ocdcD3jNtYgoHEkErTRhNkJ5hZqOTzhwsG9klQQbAF3nj1Vvybriys2E6JlcTTXDqlfRt9rBQAiqx+bbr83b+EphAnbaCg4RfHveqXGBRZi3o2Fij2upiZB9kY6SllgRAXCFvueSm84aPVkQsHmxg/IG7eqN2uSz4l5ri7wynJ8jIjrzlhsoTw2RrEQiOSY6T4tTHOgLA7VU3vN648++EA86XCvmsjodnc3j85FowixOJD2Nltacv9ZFIqyu75W5VJodiGgeLG/05Jk16/BIFKT1cJjw==
+X-YMail-OSG: RgaBlaIVM1nUppqx0Hh5l3kHWwZNL_1F8cFW6_8SOqX8CAftl676FQNZCItEdLs
+ CSG5XHlk3ZiKUuvCG7jkEr7sBbM0cJvdG8V8HpUaAte_xx_UkqvmSTto3jJ8OFqDsSqTq25.wXKN
+ xF1Hyj_Bi1hOgJSMLuCjY1XF_ZJGF4Ta3TYVIyOem_Lv87szWzR6HjTVm7dXSNje40SGyfbkUJrv
+ H2Ly6lsR8ZuJ6xeG0v9Nq81cO3Apm5VL5z0PDjxdoFUt5o8HkMoKDNjRkbf5i1MaccC0abH24cJq
+ N.XeDPH1EIfZMcEhZbZhcApAZa6_sm61gS5zyqzHnZa3_TsW5BBDjLKQduMl_hE9BUY75Gsrfz3u
+ SfHnVyiyC0hQjy1mx8Rj9Mecy.wNZtyHOmgXrT0yqteJv9kBpWMy.Y94.MJ6HqIOUdYFeFQztf3Q
+ PR.4NPCxFnXrvmBmuqx.vU.CfT3IxH8lZsjW0lVyHl3nEEfM40UKHwQ7.bmNZSopxx_93Htopt6T
+ 3qgxmP1GcsEgobeZrwG2xTFlKuCQ8tD6gtWAR4zeLjQcXLNfLbGGeMKE0CgF5Tj.Du8FTddRzl5N
+ DIOluI1N8esuPvBBBoQf1MTtmSUOA9f6ho5VCbh1WLAtHyGXNT4U8kwSSVKtvOvhDkWcgqqN0SnK
+ KQtSAe6HQVD8_fF.8gz0Mxsffodk8oyaC9eE6HG_SVGSgPAV1wp65pEHZexiWdFW41SU5EEgKW0O
+ i6LJH_VAH7gVEaFob6iccdzcw9VcFtWekBJWZv4uHV2c66q2WB_pTayN0C2TUTuX29M4xHv9c1F9
+ WREzHvzNzvncX56AP0d55kdC9w0eveA_yP04sFhs4uo8kYHViC5k9NuprmbAbAhKkRImJQY61Qca
+ RPDoXMwsZPDrEq9AjfxHVEotepGY8FGMmrMw4bTZw8BXqTNQCPt9DxbqQO0FdvSukIszIC5Cj5Iz
+ HYPavvaVv4tliCGJ6ZA9ikZVgiwh89mIZG4DYzPlsRPaFyVgqC4oDtedwMOtgaTTccDNu3e8.3XO
+ wHjr7FF6aTwoTMLfuq1iK9u3CsPt28ZnJWM.v8FffHQ.cIaYj5JdpGDCk2Ar8s3937w2471PoFYV
+ wu1f5GwMl7EpNjUEE_7XiRjWbcaWdxdojZoNaRHcGO0GsPVGtvbKk3esyEHFptbL7My_b9dLQtdf
+ 71W0tuFHUk727cCz2VtdYRgXq5W62XTCPwNje6NmPDZlDJ58H6RPfnzpDQD_2Bz4cX2WdUEjrSlf
+ CbkrUlgYxeJp8NoZp5TaoNpw6TiNOttl_2dCJcTw_07LxDOVYWb_Ej8lXjbyqqEYJ1LSmnoAZreW
+ yPTgb5HanuoDFQVhon9VzFUWSdeFFBvIa0uhKQRR2TAj_7q2vckt8NkpVbVs6peyrn8RmAdgSO5m
+ tXAUIDiFY5xvyK9AHFeJgad45l5L_BmS2P7fS_wxkVDjVVDzyJJ8XjAF0d9cjV9audh_9SzSVQDD
+ 2f.zLr.7PIbMvvgJo.1JTewYBYXLM3elEG_uaBn0WZqTtvhLaHpaXoAVyqSMOC8ZGzmHsvMG3Am1
+ mGrfXpuOCGwjdiS.8wu195hq_XsqL.oHtUHOk1GqyoNEGJwv2fxYb41iT5yWGRHD3BQ9COoL2U0M
+ qWEnv99aG_l2PitQIv8v1PP.9nvy8sYNtVH81HvbnTMJTd3v6sjsqL_CsJPI4KkKefNK8JhpNRqG
+ Bc1RUCORhUuZ6jqcNoO6MEj1EEbL2XXl8rQ2wzLdhTXV9u8KCYX1Dt75IzwClIcSLrDKfQbY6460
+ XhbXFDw4pvrfpZw6713ou4iiFvEs2CZ2MC7IlMdZUHj9Nsdu1VdZlaiiDOFf.oX0h5nAk76puZrB
+ HNlOVuBla6dXq8BlPUID66yQYt7lkrYY03Qh0EHTJMuAsRrmeIk1jFCQMSUmvhxaOA_AjYGJDvZw
+ MZuybCRml22EzhFR7oewV5zG7ZnQDmfrJJspdJdYpimh0xFUDRDPV6CyhNRj3VXQfTZN2yQdj6nT
+ 9IShBPDECyOhurwCgyg_C9WVkvmnmpj3Rsh.CqJb8UfTMN42TZ4o5j0jbyqJ8xJf74ph3BbEnyft
+ evJ4HYF5Rqsmsv_VIOAv.LViEd2zNVE0KV2ckd1HiZY8GqktH2ZE3LQvcShtnsVOJCwNoZ2EcWDt
+ oWJQ1NrM1tt_mHlgUdHSA_5E_xU8q3x0zRXafmby40u.m0.1MKIDO04yv.GG4xvFPqjTqyFIShYH
+ trRF2yQzZJTLsjK3VU4ueTvyI_mWBKHYb6J3XGPAzjySizWw2p4NUMfrJ5LjFvGOS444kbaKFQlr
+ W7RYuI._tXg--
+X-Sonic-MF: <jahau@rocketmail.com>
+X-Sonic-ID: 6296b9f7-b72c-4688-8d28-6ed9ad826277
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ir2.yahoo.com with HTTP; Thu, 25 May 2023 17:16:55 +0000
+Received: by hermes--production-ir2-7867f454fc-tvsct (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 728940cf93f8512d21c18c5c5db9725e;
+          Thu, 25 May 2023 17:16:50 +0000 (UTC)
+Message-ID: <8ba9bb4c-6b9f-21ea-e9fe-89d5038dff2c@rocketmail.com>
+Date:   Thu, 25 May 2023 19:16:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230518133113.273880-2-me@dylanvanassche.be>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v6 04/10 RESEND] mfd: rt5033: Apply preparatory changes
+ before adding rt5033-charger driver
+To:     Lee Jones <lee@kernel.org>
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Beomho Seo <beomho.seo@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Henrik Grimler <henrik@grimler.se>,
+        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1684182964.git.jahau@rocketmail.com>
+ <31c750ae13a1c1896b51d8f0a0d9869f8b85624f.1684182964.git.jahau@rocketmail.com>
+ <20230525104434.GD9691@google.com>
+Content-Language: en-US
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <20230525104434.GD9691@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.21495 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, 18 May 2023, Dylan Van Assche wrote:
+Hi Lee,
 
-> Document compatible for PMI8998 Torch and Flash LED controller.
+On 25.05.23 12:44, Lee Jones wrote:
+> On Mon, 15 May 2023, Jakob Hauser wrote:
+
+...
+
+>> diff --git a/include/linux/mfd/rt5033.h b/include/linux/mfd/rt5033.h
+>> index 8f306ac15a27..e99e2ab0c1c1 100644
+>> --- a/include/linux/mfd/rt5033.h
+>> +++ b/include/linux/mfd/rt5033.h
+>> @@ -51,7 +51,7 @@ struct rt5033_charger_data {
+>>   struct rt5033_charger {
+>>   	struct device			*dev;
+>>   	struct rt5033_dev		*rt5033;
+>> -	struct power_supply		psy;
+>> +	struct power_supply		*psy;
 > 
-> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  Documentation/devicetree/bindings/leds/qcom,spmi-flash-led.yaml | 1 +
->  1 file changed, 1 insertion(+)
+> Is this current unused?
 
-Applied, thanks
+Currently this is not in use. The rt5033 charger driver gets introduced 
+by this pachset.
 
--- 
-Lee Jones [李琼斯]
+The struct rt5033_charger was added in Dec 2014 with the mfd driver [1] 
+but the charger driver didn't make it [2] and further effort to 
+implement it phased out [3].
+
+[1] https://lore.kernel.org/lkml/20141209140102.GZ3951@x1
+[2] https://lore.kernel.org/lkml/20150122183037.GA24898@earth.universe
+[3] 
+https://lore.kernel.org/lkml/1425864191-4121-1-git-send-email-beomho.seo@samsung.com/T/#t
+
+>>   	struct rt5033_charger_data	*chg;
+>>   };
+>>   
+
+Kind regards,
+Jakob
