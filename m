@@ -2,151 +2,162 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37B84C7EE23
-	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 06:47:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA869C7EE23
+	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 08:51:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242304AbjEZGrd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 May 2023 02:47:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43672 "EHLO
+        id S237004AbjEZIvA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 May 2023 04:51:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236735AbjEZGrc (ORCPT
+        with ESMTP id S242723AbjEZIu7 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 May 2023 02:47:32 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20A63125;
-        Thu, 25 May 2023 23:47:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1685083643; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=cGFNG/Ocgdc+dGc7sNDnP7vWTbWW3rY57OYtVrFvT90iVgYGWtGgs6F56DuvWeDEFP
-    GrDEqUfrGRFBsplVwgx3g2/i3ITfRE4hjqNrbBwyIhRsQOHpyC9RsMtD5wyvEHzU6s2P
-    wHqBp7xgXhoIZ8uOfC89rlCelJsmZWifn1MPJiqU+oTmkilGx0S+w/BRJZOf69E3Ggs4
-    BWIvi/6VWdDxFOUM5Z3E7aPVJ+P/sg8mC1Niz3fZIU5i6wVkDyBO5wcawyT7nfig0Wt8
-    zV2/ENx0cMZb4ksIQexTZl/khgh5s55jEXuVYkG/AZCSdEojqPOX/Hc4UCr5EKPN3xzU
-    9HZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1685083643;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=7/3hdjTLdwnUD4fcMlMWezGKin7mL9oy2oTZnbl8DKw=;
-    b=splIQfVuoDoN411bUPZ520MEKWVQazFwDJZsv29u0LeP32Z6p199s/II9/1WQSVXe0
-    ehOB4e8g6vVm1RKbOgFv0EE2aOhAO4UHZoVs9XPg5SVPLai2qIyXzxpuwnGH6ReP3wHQ
-    4eTWMdcxvlfaWycfImhYubLVOH58jMY3TgFT04queyUNAWT5Mqp1hg8XPQh5QEVtI3ij
-    FuoaZp9hWGi/HLpQxjFLt7TKkB0JgAu1np0CaY0dx8swYFVpSd04jrMAt8E+t5P/5a6j
-    SzMl6WvsXcTneQsJOe7KXfqRPSuRZ6880BFEfDxnDxJtwCGkqccvVunXrTLiolQQvB/C
-    Xpbg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1685083643;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=7/3hdjTLdwnUD4fcMlMWezGKin7mL9oy2oTZnbl8DKw=;
-    b=DYc4nd6QHcrkspgh7v3YsOExpph17K2jV78DX5o1wVCQScVGnj5zaxkdK3USiUQL92
-    PFSVI0+780XvcMctRH5C4784ikj2AOglKtcJtT2d1DCkvouKDgKD0gzBc4A6fDHYo754
-    Ea30yzL6O/wICVtBgz0TlWT9FlcHHMRqufzpHBBsyeDsL7cLUUWLRf+E10i4yPVjlexG
-    SsEL48gYeUnxbPHR07PQdvXp+ZGS1cRPYSAeJnJk5fnKGzr6uNVdnn1pAri0Y3+1xD7k
-    O/ouBIBNQqDvhW4VP+hS7M2et0WnZXsCzTp9I1NAVeDdWS8zTYcE0c8NaruNhPxZjour
-    lLCA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1685083643;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=7/3hdjTLdwnUD4fcMlMWezGKin7mL9oy2oTZnbl8DKw=;
-    b=VvYzGK5yvvo0GEomb2DLIj5qSBTDxEsg1uPBtcOpUAHKC4gmODToKrqZIxTuy0nkVh
-    tPbRLbdo0hE4pBdXxrAg==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA95nh"
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.4.0 DYNA|AUTH)
-    with ESMTPSA id j6420az4Q6lNZGK
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Fri, 26 May 2023 08:47:23 +0200 (CEST)
-Date:   Fri, 26 May 2023 08:47:22 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>
+        Fri, 26 May 2023 04:50:59 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AA0812C
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 01:50:56 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-4effb818c37so447280e87.3
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 01:50:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685091054; x=1687683054;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vFgq2+VVrviL7UALj9pqiFm5m6vdqKFWr7xuBpXEGgk=;
+        b=ME1+1zcdcnrW6W4YFgkJY1I+UtG6/knxC7rNTHRZcgSM65ZRaaM3RkNSBBfDbBa6FU
+         jw/VX2m07hj8QVYd2l74yQUINdMLICa9Oh4jqTlcVTA03+F9s3TdNzDcQIzxUdo40B9d
+         p/O8jNChmQHvRz4y2q7Oe8OzM2C2vfiNu0I+OUyqFXtkKwCX9c1yH8ViS4T6P3FC6SyT
+         NXF5XEPuQ3qeUM4dfs/pS88L7OJOsZE5uOeI7h6OsFYioA53ZA0vO9VC4NYpDB11xS9/
+         MzgWJuFbwum+WYKpWuVHsfpXi7+TAlqfG4Fr9XeObmZCsNWvF/W1mrLQnon99FphY4ix
+         raHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685091054; x=1687683054;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vFgq2+VVrviL7UALj9pqiFm5m6vdqKFWr7xuBpXEGgk=;
+        b=kDoYmxpxgJuksGEiT7R8Qvxv9ElfZIY0icCKeRKPPMco3dpa0JzClGBVuzfM07d9Js
+         j3kENLxZu8zVj2Ku/de1XdwlLraakomtAzFrFTSchQBHFBulbzrUIIPBqXK8EqQMfGAs
+         EYJoqYi6BWdT1xNJwAMK++8QG2acEpz6IJbFIcK+A+gkCnmn+xb4cqa+hL53QbDt56OD
+         FawVk+CFIqfvPB5JHcCFSVBB1XN1VFNNDSWKnv4apB/9AegcQmwbEwyzlsWqV1HLTQ8/
+         HXVEyPWihgY/1G2+KjDH5hBtQ3ggjTke7jDEzNHICB9Zi0KBmkXcuoGIPsYL+pcsRPpR
+         CbuA==
+X-Gm-Message-State: AC+VfDyPsA5Cs/stjN3CMfVmEJ8Q5++qIxdqVWrbxZX+FrK9JG3zT7A5
+        pFukMwNTXaS4MJDqdp+IvuES9A==
+X-Google-Smtp-Source: ACHHUZ6SBk/LbQLpRdgponALylw72ijErfTNlvdTRC9EnogFDghqyrnhNRt206k+lEMedSeVjT/SeQ==
+X-Received: by 2002:ac2:4571:0:b0:4f3:f98c:77fc with SMTP id k17-20020ac24571000000b004f3f98c77fcmr307628lfm.8.1685091054513;
+        Fri, 26 May 2023 01:50:54 -0700 (PDT)
+Received: from [192.168.1.101] (abyj77.neoplus.adsl.tpnet.pl. [83.9.29.77])
+        by smtp.gmail.com with ESMTPSA id d16-20020ac25450000000b004f3b2d3fc25sm542344lfn.10.2023.05.26.01.50.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 May 2023 01:50:54 -0700 (PDT)
+Message-ID: <41f5b7a9-d927-e468-d1ea-291ad35ba943@linaro.org>
+Date:   Fri, 26 May 2023 10:50:53 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-US
+To:     Stephan Gerhold <stephan@gerhold.net>
 Cc:     Bjorn Andersson <andersson@kernel.org>,
         Andy Gross <agross@kernel.org>,
         Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH 7/8] arm64: dts: qcom: msm8916: Define regulator
- constraints next to usage
-Message-ID: <ZHBV-mBPhoqy8yvs@gerhold.net>
 References: <20230510-msm8916-regulators-v1-0-54d4960a05fc@gerhold.net>
- <20230510-msm8916-regulators-v1-7-54d4960a05fc@gerhold.net>
- <9f474fe8-523c-3668-540a-a8fc04ed64a6@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9f474fe8-523c-3668-540a-a8fc04ed64a6@linaro.org>
+ <20230510-msm8916-regulators-v1-8-54d4960a05fc@gerhold.net>
+ <ea53525b-749b-25e2-6dde-662a8e273597@linaro.org>
+ <ef7b7335-d20c-3ddc-52df-b2801fa40283@linaro.org>
+ <ZHBTi-j657tW3jIu@gerhold.net>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Subject: Re: [PATCH 8/8] arm64: dts: qcom: msm8916-pm8916: Mark always-on
+ regulators
+In-Reply-To: <ZHBTi-j657tW3jIu@gerhold.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, May 26, 2023 at 01:35:06AM +0200, Konrad Dybcio wrote:
-> On 17.05.2023 20:48, Stephan Gerhold wrote:
-> > Right now each MSM8916 device has a huge block of regulator constraints
-> > with allowed voltages for each regulator. For lack of better
-> > documentation these voltages are often copied as-is from the vendor
-> > device tree, without much extra thought.
-> > 
-> > Unfortunately, the voltages in the vendor device trees are often
-> > misleading or even wrong, e.g. because:
-> > 
-> >  - There is a large voltage range allowed and the actual voltage is
-> >    only set somewhere hidden in some messy vendor driver. This is often
-> >    the case for pm8916_{l14,l15,l16} because they have a broad range of
-> >    1.8-3.3V by default.
-> > 
-> >  - The voltage is actually wrong but thanks to the voltage constraints
-> >    in the RPM firmware it still ends up applying the correct voltage.
-> > 
-> > To have proper regulator constraints it is important to review them in
-> > context of the usage. The current setup in the MSM8916 device trees
-> > makes this quite hard because each device duplicates the standard
-> > voltages for components of the SoC and mixes those with minor
-> > device-specific additions and dummy voltages for completely unused
-> > regulators.
-> > 
-> > The actual usage of the regulators for the SoC components is in
-> > msm8916-pm8916.dtsi, so it can and should also define the related
-> > voltage constraints. These are not board-specific but defined in the
-> > APQ8016E/PM8916 Device Specification. The board DT can then focus on
-> > describing the actual board-specific regulators, which makes it much
-> > easier to review and spot potential mistakes there.
-> > 
-> > Note that this commit does not make any functional change. All used
-> > regulators still have the same regulator constraints as before. Unused
-> > regulators do not have regulator constraints anymore because most of
-> > these were too broad or even entirely wrong. They should be added back
-> > with proper voltage constraints when there is an actual usage.
-> > 
-> > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> > ---
-> I'm a bit torn between saying "this is very nice already" and "we should
-> probably override each regulator individually" like so:
-> 
-> &pm8916_l17 {
-> 	[...]
-> }
-> 
-> to minimize mistakes..
-> 
-> Not sure what to make of it, I see Bjorn already applied this, so I guess
-> I'm just leaving some potential ideas for the future here.
-> 
 
-Sorry, could you elaborate a bit on what changes you would make exactly?
 
-The way it works in this patch is that regulators that are used by the
-SoC are defined in msm8916-pm8916.dtsi. All other (board-specific)
-regulators must be defined together with proper voltages in the board DT.
+On 26.05.2023 08:36, Stephan Gerhold wrote:
+> On Fri, May 26, 2023 at 02:28:52AM +0200, Konrad Dybcio wrote:
+>> On 26.05.2023 01:39, Konrad Dybcio wrote:
+>>> On 17.05.2023 20:48, Stephan Gerhold wrote:
+>>>> Some of the regulators must be always-on to ensure correct operation of
+>>>> the system, e.g. PM8916 L2 for the LPDDR RAM, L5 for most digital I/O
+>>>> and L7 for the CPU PLL (strictly speaking the CPU PLL might only need
+>>>> an active-only vote but this is not supported for regulators in
+>>>> mainline currently).
+>>> Would you be interested in implementing this?
+> 
+> At least on MSM8916 there is currently no advantage implementing this.
+> The "active-only" votes only have the CPU as limited use case. S1 (aka
+> MSM8916_VDDCX) and L3 (MSM8916_VDDMX) are both used via rpmpd/power
+> domains which already provides separate active-only variants. L7 (for
+> the CPU PLL) is the only other regulator used in "active-only" mode.
+> However, at least on MSM8916 L7 seems to stay always-on no matter what I
+> do, so having an active-only vote on L7 doesn't provide any advantage.
+In this case it may be more important that we tell RPM that we want it
+to be active-only, even if it ultimately makes a different decision.
+You probably played with this more, but my guess would be that not letting
+off of an a-s vote could confuse the algos
 
-What kind of mistake are you thinking of?
+> 
+>> Actually, I think currently all votes are active-only votes and what
+>> we're missing is sleep-only (and active-sleep if we vote on both)
+> 
+> If you only send the "active" votes but no "sleep" votes for a resource
+> then the RPM firmware treats it as active+sleep, see [1].
+> The active/sleep separation only starts once a separate sleep vote has
+> been sent for a resource for the first time.
+> 
+> Therefore, all requests from the SMD regulator driver apply for both
+> active+sleep at the moment.
+> 
+> [1]: https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.2.9.1-02310-8x16.0/drivers/regulator/rpm-smd-regulator.c#L202-204
+/me *dies*
 
-Thanks,
-Stephan
+that's a design decision if i've ever seen one..
+
+> 
+>>>
+>>> Ancient downstream defines a second device (vregname_ao) and basically
+>>> seems to select QCOM_SMD_(ACTIVE/SLEEP)_STATE based on that..
+>>>
+>>> Looks like `struct regulator` stores voltage in an array that wouldn't
+>>> you know it, depends on the PM state. Perhaps that could be something
+>>> to explore!
+>>>
+> 
+> Don't get confused by the similar naming here. RPM sleep votes are
+> unrelated to the "system suspend" voltages the regulator framework
+> supports. :)
+> 
+> RPM sleep votes become active if the cpuidle reaches the deepest state
+> for the (cpu/)cluster(/CCI). This can happen anytime at runtime when the
+> system is idle long enough. On the other hand, the regulator suspend
+> voltages are meant to become active during system suspend (where all the
+> devices get suspended as well).
+Yes and pm_genpd tracks that very meticulously, at least in the case of PSCI.
+
+> 
+> Since we do have "active-only" support in rpmpd I think the question is
+> if it is worth bringing the feature also to regulators. Perhaps one
+> could simply treat all regulators that are needed by the CPU as power
+> domain.
+That would make sense..
+
+> 
+> For example, L7 on MSM8916 is fixed at 1.8V so while it doesn't have
+> corners the simple enable/disable votes could also be sent via rpmpd.
+> In some places in downstream L7 is also called VDDPX, similar to
+> VDDCX and VDDMX which are already in rpmpd.
+Yeah, anything available from RPM is only vaguely categorized as being
+a clock/regulator/bus, sometimes wrongly (see: bus clocks in rpmcc) so
+there's some flexibility here.
+
+Konrad
+> 
+> Thanks,
+> Stephan
