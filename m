@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89B13C7EE23
-	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 19:46:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78105C77B7A
+	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 19:46:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229511AbjEZTqO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 May 2023 15:46:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59422 "EHLO
+        id S236768AbjEZTqc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 May 2023 15:46:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229704AbjEZTqN (ORCPT
+        with ESMTP id S231132AbjEZTqa (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 May 2023 15:46:13 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EB54BD
-        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 12:46:11 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-4f122ff663eso1213414e87.2
-        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 12:46:11 -0700 (PDT)
+        Fri, 26 May 2023 15:46:30 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED69BBB
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 12:46:28 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4f3bb61f860so1275761e87.3
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 12:46:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685130369; x=1687722369;
+        d=linaro.org; s=google; t=1685130387; x=1687722387;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=+GTsz5u1wW/FiKtBa8EeOzOAv+pOLAsqX8XjPemiGIE=;
-        b=CuMzMw5QCiAQ8Fg9w5cWoaoAIb7FqAJTRFoiXoLpotQYFDZQHFaJwTqQjqz8tBqZaf
-         4AZlQ1ZbluRl5T4IaXassjYIxEfMDxiHaUrOGTylWSBvNIpAp8ixlHUMacJ5G+O9DIQX
-         XW5iQ8VaHJck3LdvqXVchE0/sNLsU/+UH7TWswuRKW/Eh/PoJsN2iu5u+va1LVJ8eymu
-         G5MyAuoUtKzq/u7MZp3lAs+3p/Z3PmsdHFhsZmDquNmiNhRLW/I63cCsdrM91LMGbbyZ
-         Zd73CThEbmgwq9wfdXmRg52Ep1wz6Gtgaqc1vm61nlJPuogJZPh26M8sbBNHoL4nL1u3
-         YAwA==
+        bh=XGRmQVz2qOO/JHGqdPvAPL5aOAN7tSdjqi8YZkSo1xs=;
+        b=voBhsyIBCO5EPlcOz0jKXU8ijOs06ei0PEKdaElwd3YFnKM4vSmbg7X/adzwx+OGEE
+         wssOaRNAVuKinyffQoY0hE0CVdQBKGTcgRsPfJrOTaL5hTIXWS2Nwyat4FpMkGeNQ3wX
+         hiECqW/PwwytXVaZeImaQBnKdrhq/4oxCQexJ017nwtLvCc9OqqSpdWd9IC7BRT6Endu
+         ZqDajo81sQ3I/t9BH2+FXjkY/uG/PsATnzgnt9WCiS4PmIEo9W85bAOJlBP/OLFox1un
+         ZkZyrPqKXUF67qU3Yq/DYubaOHgvqYoZtnlJPp/m0tOZ+eSJRhK1K7C5DtWx1yYloAO5
+         Blqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685130369; x=1687722369;
+        d=1e100.net; s=20221208; t=1685130387; x=1687722387;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+GTsz5u1wW/FiKtBa8EeOzOAv+pOLAsqX8XjPemiGIE=;
-        b=NLB4enZJCD1pyID/6U8a5Sz1ta6vCWAt4NkW6x5oP6DruZ14y0J/HdSeyARVwAuck1
-         K4qQOKOpkLgeTQi9WgTqtKJExN0xuALTPak0qZpxlIGwkcMfeCMo0SVAEYy8AQeO8XKz
-         7Nxoecwt2G8lbGpwiD89sGS0v/sSRJtezVypjZXUFtUyx93jQSCa7yrLo7RBA6eppJJc
-         JPkY2yudJ1YuL0zugmsQukF2LApYZGsVYPfS53oaqlW/808eX2Dfp74JDS1oATs9yyYT
-         KQz4tw87BOrpbIYpae966kcqU3HV9EwC7HYUW+2F+UMo8owUOAR3hiG3KawwIaUsrgmH
-         lBAA==
-X-Gm-Message-State: AC+VfDxaP04tZWKKpfAR8VaERhvqthdA4ESK5RNwAIwORxFQSt7knxj/
-        oPBVNz/OCSNqOoaIiUiuQ93Na4JHFKww4fSWoTg=
-X-Google-Smtp-Source: ACHHUZ7jAItGZpQxn5hpWSY3sF/IIdRPkF69Ot+D7Syi4ndXBc6xL6fNSRM0U2KahCKxhtRYhrg5Aw==
-X-Received: by 2002:ac2:5183:0:b0:4ed:ca3b:40f0 with SMTP id u3-20020ac25183000000b004edca3b40f0mr878426lfi.9.1685130369450;
-        Fri, 26 May 2023 12:46:09 -0700 (PDT)
+        bh=XGRmQVz2qOO/JHGqdPvAPL5aOAN7tSdjqi8YZkSo1xs=;
+        b=YFLZKxs3CD2Thy/4vtOkcC0jiOAgrAo0b8YnTD/Iw3z9oiqggfFYuhZPM1fiDPXY7t
+         kln3/asl/g6PZ64tECC7bOpR9QwxpQXeIi54ElnAIMn7JJ/4FKYDU7hHd1Uv8pDkGu3w
+         OeoWsvoHIWSFyxGBsbwAaNGIulm1eNOBb2Fs+OhN/8Xmr6kSRB2aT+vV6OHvmNX6SinC
+         /3PbLEYAjMBjxc1pimCZKndu4hQCHRCNeeOZgQKetCgHAOW4PacnnFEgHRYlKPv0XWk/
+         UwxBcxuZcCsHGGgvMTa8VHH5DOJ4vAbduEMAHGpCrwNkvEPQSajQnT6Ip/Nr7AdqXTGq
+         +E/g==
+X-Gm-Message-State: AC+VfDySO4obRwbE8hJWBzbSSmQ7iLNjlVfONr2l5ussFD/ySCfMpeKF
+        agkTB15zP+0W+9HmME1XXxzSEw==
+X-Google-Smtp-Source: ACHHUZ4oVU/CuIh38JWiwcfSKfq4DCuUPWaxrg5aT4d8kWdUFMenhjIRlFtDPog3S+d3vemyn3407Q==
+X-Received: by 2002:ac2:51ad:0:b0:4e0:a426:6ddc with SMTP id f13-20020ac251ad000000b004e0a4266ddcmr931823lfk.0.1685130387203;
+        Fri, 26 May 2023 12:46:27 -0700 (PDT)
 Received: from [192.168.1.101] (abyj77.neoplus.adsl.tpnet.pl. [83.9.29.77])
-        by smtp.gmail.com with ESMTPSA id c22-20020a2e9496000000b002a7853b9339sm887300ljh.119.2023.05.26.12.46.08
+        by smtp.gmail.com with ESMTPSA id i7-20020a056512006700b004eb4074f40fsm747155lfo.241.2023.05.26.12.46.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 May 2023 12:46:08 -0700 (PDT)
-Message-ID: <6ca15f25-b4aa-1806-06ef-343c11f8f19a@linaro.org>
-Date:   Fri, 26 May 2023 21:46:07 +0200
+        Fri, 26 May 2023 12:46:26 -0700 (PDT)
+Message-ID: <e7786af1-f19d-abb4-59ce-d08fb25bd091@linaro.org>
+Date:   Fri, 26 May 2023 21:46:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 2/6] arm64: dts: qcom: pmi8998: enable rradc by default
+Subject: Re: [PATCH 3/6] arm64: dts: qcom: pmi8998: add charger node
 Content-Language: en-US
 To:     Caleb Connolly <caleb.connolly@linaro.org>,
         Andy Gross <agross@kernel.org>,
@@ -66,9 +66,9 @@ To:     Caleb Connolly <caleb.connolly@linaro.org>,
 Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org
 References: <20230524-pmi8998-charger-dts-v1-0-f9334afc4505@linaro.org>
- <20230524-pmi8998-charger-dts-v1-2-f9334afc4505@linaro.org>
+ <20230524-pmi8998-charger-dts-v1-3-f9334afc4505@linaro.org>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230524-pmi8998-charger-dts-v1-2-f9334afc4505@linaro.org>
+In-Reply-To: <20230524-pmi8998-charger-dts-v1-3-f9334afc4505@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -78,92 +78,46 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 
 On 24.05.2023 19:38, Caleb Connolly wrote:
-> There is no need for the RRADC to be disabled by default,
-> lets just enable it by default and not clutter up DT.
+> Add a node for the smb2 charger hardware found on the pmi8998 pmic
+> following the DT bindings.
 > 
 > Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
 > ---
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-
-Konrad
->  arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi         | 4 ----
->  arch/arm64/boot/dts/qcom/pmi8998.dtsi                        | 2 --
->  arch/arm64/boot/dts/qcom/sdm845-db845c.dts                   | 4 ----
->  arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi          | 4 ----
->  arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 4 ----
->  5 files changed, 18 deletions(-)
+>  arch/arm64/boot/dts/qcom/pmi8998.dtsi | 20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi
-> index 062d56c42385..68e634f8212c 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi
-> @@ -279,10 +279,6 @@ vol_keys_default: vol-keys-state {
->  	};
->  };
->  
-> -&pmi8998_rradc {
-> -	status = "okay";
-> -};
-> -
->  &qusb2phy {
->  	status = "okay";
->  
 > diff --git a/arch/arm64/boot/dts/qcom/pmi8998.dtsi b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-> index ffe587f281d8..be6f60bfc26c 100644
+> index be6f60bfc26c..73f51451d21d 100644
 > --- a/arch/arm64/boot/dts/qcom/pmi8998.dtsi
 > +++ b/arch/arm64/boot/dts/qcom/pmi8998.dtsi
-> @@ -23,8 +23,6 @@ pmi8998_rradc: adc@4500 {
->  			compatible = "qcom,pmi8998-rradc";
->  			reg = <0x4500>;
->  			#io-channel-cells = <1>;
-> -
-> -			status = "disabled";
->  		};
->  	};
+> @@ -9,6 +9,26 @@ pmi8998_lsid0: pmic@2 {
+>  		#address-cells = <1>;
+>  		#size-cells = <0>;
 >  
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-> index e14fe9bbb386..66087af02d74 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-> @@ -649,10 +649,6 @@ led@5 {
->  	};
->  };
->  
-> -&pmi8998_rradc {
-> -	status = "okay";
-> -};
-> -
->  /* QUAT I2S Uses 4 I2S SD Lines for audio on LT9611 HDMI Bridge */
->  &q6afedai {
->  	dai@22 {
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-> index 5c384345c05d..55ee8dcf27c3 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-> @@ -480,10 +480,6 @@ pinconf {
->  	};
->  };
->  
-> -&pmi8998_rradc {
-> -	status = "okay";
-> -};
-> -
->  &q6afedai {
->  	qi2s@22 {
->  		reg = <22>;
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> index 5ed975cc6ecb..1915643f1c49 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> @@ -346,10 +346,6 @@ &pm8998_resin {
->  	status = "okay";
->  };
->  
-> -&pmi8998_rradc {
-> -	status = "okay";
-> -};
-> -
->  /* QUAT I2S Uses 1 I2S SD Line for audio on TAS2559/60 amplifiers */
->  &q6afedai {
->  	dai@22 {
+> +		pmi8998_charger: charger@1000 {
+> +			compatible = "qcom,pmi8998-charger";
+> +			reg = <0x1000>;
+> +
+> +			interrupts = <0x2 0x13 0x4 IRQ_TYPE_EDGE_BOTH>,
+> +				     <0x2 0x12 0x2 IRQ_TYPE_EDGE_BOTH>,
+> +				     <0x2 0x16 0x1 IRQ_TYPE_EDGE_RISING>,
+> +				     <0x2 0x13 0x6 IRQ_TYPE_EDGE_RISING>;
+> +			interrupt-names = "usb-plugin",
+> +					  "bat-ov",
+> +					  "wdog-bark",
+> +					  "usbin-icl-change";
+> +
+> +			io-channels = <&pmi8998_rradc 3>,
+> +				      <&pmi8998_rradc 4>;
+> +			io-channel-names = "usbin_i", "usbin_v";
+Are these hard-wired internally?
+
+Konrad
+> +
+> +			status = "disabled";
+> +		};
+> +
+>  		pmi8998_gpios: gpio@c000 {
+>  			compatible = "qcom,pmi8998-gpio", "qcom,spmi-gpio";
+>  			reg = <0xc000>;
 > 
