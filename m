@@ -2,56 +2,56 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD531C7EE2C
-	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 15:42:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26C6EC77B73
+	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 15:43:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244133AbjEZPm4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 May 2023 11:42:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45240 "EHLO
+        id S243818AbjEZPny (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 May 2023 11:43:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243855AbjEZPm4 (ORCPT
+        with ESMTP id S244118AbjEZPny (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 May 2023 11:42:56 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3804F7
-        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 08:42:53 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-307d58b3efbso587056f8f.0
-        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 08:42:53 -0700 (PDT)
+        Fri, 26 May 2023 11:43:54 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75B7E116
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 08:43:52 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-30ab87a1897so543460f8f.1
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 08:43:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexus-software-ie.20221208.gappssmtp.com; s=20221208; t=1685115772; x=1687707772;
+        d=linaro.org; s=google; t=1685115831; x=1687707831;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=CQw+zfZTmj3Rrv2z68fRpRd9uvWpwcM+LxwxnhqEPSc=;
-        b=O8tXlthhBgjEbO1XpEqH7NlZTs+2M3Y+z9Bi4BJz+glfTwjV57YuE3j/vS/GCCr8b0
-         bAziTwsMOOggSsOc90DoDDi2QrbytKM+faq7nGVYvPD/AaelwXY9jHCiKi2XJ6PXiC/d
-         QnlMWyiZecupq7QnD8y4liWV9HKxePbVkKSopDBwY85zbg9Lweju7J/hWkiz/7AenKOw
-         X/45v15UzzQWChHdc5WI1b6ZEmxMNFDTybImmGlvIkNNuip2hXMS5xsCMjWn8FYVyiFD
-         z6guOz701BjiQppy3mkeL5xzOuMOK8o3/vqGVIdNBc43krCl8rFl92ElBaNiiFoWnueU
-         mtYQ==
+        bh=312Qxv20qtT6z2BiqRrmUkxmiNN8OsfraYgPOBDA1W8=;
+        b=gKwC8mFgz6AhT4BVC44KDGqdc4siWRAA2cwNYRpG+Gj9crgr6dhZ6pYJQsUUCyeVrj
+         REXzngGbGddXxxlwLdb9y0SFXydTR15KsaXewI8Un8LjR9QXDQnvphhmkpaXvGlMvvXE
+         kbgKT9FZix51RWAsK+xC5W2VFV9ZkJfodxXD6DElgUiDTI2Z2oPRbaAsz/7nzvQbhYi/
+         FDsS7Uma40dFkNb4F1DD8FGEcc9Lw53l1FfaOdVnJTE1jaBlo4ezpmnmgVsmIFlJGmlS
+         d43EViDu4edo8XqbvPrft05qomlCWQ/5Dbu0qnoiAIhHqzKW0pfgh3EQ88pZFvQiNnNS
+         rdyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685115772; x=1687707772;
+        d=1e100.net; s=20221208; t=1685115831; x=1687707831;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CQw+zfZTmj3Rrv2z68fRpRd9uvWpwcM+LxwxnhqEPSc=;
-        b=VeprQSawoKP1YTlXrJ63Ekxkyp+bTvV2lasvLJBNBvCkkCFCgphEYi+Bja+G51D46c
-         lt+Umoeq9rEFGiudohZbrLkzQebjITOBXUInsFZK3+3T67PHVEIXENetb7HxnzWyPWQd
-         gpNzKqzn3AQq2juJSBju5LtKOrMSDcIGGn6IG1f8r7sZ/WaIdEWuc7vYor6SiUyxaAiQ
-         k6eCJywVNKJWHb/mUZboDBBME9F2kgBTmBERGx93Dqs4m1TaauUDEi3IdTfQRfb+H5PQ
-         amxsx2RzEoUuQ4o7z7J0y7rO/iQMCTv7hdfvm5D9HhooBN6VxzX7WovOpxOaRmkSRomq
-         FOIw==
-X-Gm-Message-State: AC+VfDyVUVGYv+l/yqUGYMmdUnDoDG7AyMfqP4JFGCttW9Aicmhux2T0
-        iNgAOPk8gonSrbsJ30fvLKtJFg==
-X-Google-Smtp-Source: ACHHUZ438yXRK5wT8tUO+6PCb06t7sypVhoVCPPpwgAqaqggPoqzquUPLXg0ZIVMzMpbthYUwg1ZVw==
-X-Received: by 2002:adf:e792:0:b0:309:51ec:9ce0 with SMTP id n18-20020adfe792000000b0030951ec9ce0mr1942254wrm.69.1685115772372;
-        Fri, 26 May 2023 08:42:52 -0700 (PDT)
+        bh=312Qxv20qtT6z2BiqRrmUkxmiNN8OsfraYgPOBDA1W8=;
+        b=O7Oy6sTQM/9nV0vN2tcf6U+Q6zyyqsrXqTQ2IYRgTYV1ysgrX1nj8Gp8AcQiAZe7bn
+         S3llChnUmb3bhytEv4k0xsId3z+AQkgqmeymn9WZ7WO5CF+9ZLZEEiVVqRasH5daXz/S
+         tw54dibxibTwkr0D3p/C+YfsTXnT1iDj8AjNWG3BFOB559Gnrx2C2jZ1Qc0EVkD3VKm+
+         c+ddNOVGQcmk7cM+J5A5sT3xtzmffdy7SVUPCq/wu7OiXmMqojh2ScUy0ZHGFD+T21X0
+         IhkIOc1/OZfeqZ357mzlSAd+hBMdbPW9dhSpXLr12FzrVRhuWD0XvPjvADgLjhjdiQHV
+         FFIA==
+X-Gm-Message-State: AC+VfDxvcBEdlhn7/n0B/n3zsy9GJfDJwRBa40i1v+pwHWZ8QyWknxco
+        8c1qyWysGuz7jTj9meknv8nNTQ==
+X-Google-Smtp-Source: ACHHUZ7Q6nwIhAVYfGO39O3z0eWSlyDAMusz11lFgR+cnF8WvUYT41nznEDgEmFKXVCC33L0gLJUvA==
+X-Received: by 2002:adf:e792:0:b0:306:340c:4737 with SMTP id n18-20020adfe792000000b00306340c4737mr1703838wrm.67.1685115830955;
+        Fri, 26 May 2023 08:43:50 -0700 (PDT)
 Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id u3-20020adfdb83000000b0030aded83385sm533922wri.27.2023.05.26.08.42.51
+        by smtp.gmail.com with ESMTPSA id c2-20020adfed82000000b003078a3f3a24sm5472890wro.114.2023.05.26.08.43.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 May 2023 08:42:51 -0700 (PDT)
-Message-ID: <cf03b068-2d2d-45e4-f724-83304992550e@nexus-software.ie>
-Date:   Fri, 26 May 2023 16:42:50 +0100
+        Fri, 26 May 2023 08:43:50 -0700 (PDT)
+Message-ID: <8bc6aaac-f28a-3ce7-8dea-f8484fd5b6c9@linaro.org>
+Date:   Fri, 26 May 2023 16:43:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.8.0
@@ -67,7 +67,7 @@ Cc:     Andy Gross <agross@kernel.org>,
         ~postmarketos/upstreaming@lists.sr.ht
 References: <20230510-msm8916-regulators-v1-0-54d4960a05fc@gerhold.net>
  <20230510-msm8916-regulators-v1-3-54d4960a05fc@gerhold.net>
-From:   Bryan O'Donoghue <pure.logic@nexus-software.ie>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 In-Reply-To: <20230510-msm8916-regulators-v1-3-54d4960a05fc@gerhold.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -95,6 +95,21 @@ On 17/05/2023 19:48, Stephan Gerhold wrote:
 > the PM8916 Device Specification which is enforced by the RPM firmware.
 > 
 > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> ---
+>   arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts           | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts       | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts             | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts         | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts             | 12 ++++++------
+>   arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts       | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts       | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi   | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi    | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts     | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi                  | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts      | 12 ++++++------
+>   13 files changed, 89 insertions(+), 89 deletions(-)
 
 Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
