@@ -2,244 +2,99 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 401DEC77B7A
-	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 14:03:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD531C7EE2C
+	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 15:42:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237381AbjEZOD6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 May 2023 10:03:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47904 "EHLO
+        id S244133AbjEZPm4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 May 2023 11:42:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231470AbjEZOD6 (ORCPT
+        with ESMTP id S243855AbjEZPm4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 May 2023 10:03:58 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.164])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FFE8DF;
-        Fri, 26 May 2023 07:03:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1685109831; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=hLUup2AF9FjJX3SMqEQuyazTJe76uPhq3N5Y5PXkfpaRiyzM5FpddJu3G6ItAOMuyY
-    ifwKgrDEHeAIbEvTzXH4oTYkchscNRd3Ds8temLtjJWEJeJ+TWzcdDlkuXaC0eWTxjhu
-    DpLq1TZ+xgGbh+5c2qg5N0/00KTUIgm6H0V+sk6BVsAYyffZhPy+6pHHx6T76v1x3Row
-    O2nH+afdd3hRa2VeKwh5AApRy8Vjx5L9JlndeB46Kog6OrXy8ie2VqmzBRVupoUYPYPm
-    IMpk/+8dm22Z4ydb3bXTrpwhiPwNtXUNf3MNbgx+9vvnuvIH/qtouG4HnnyzjhPj1yKf
-    Sd0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1685109831;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=zhOGk10ygmP7nNAqxT0dbqHX7vPqfMWPQJ7k5CUCTa0=;
-    b=VGHr/FLlie96uxjg+9EXTHmy+BshFP8VAAxMY7Ld1NWVm57J23rpER/5ju7KeR78Q8
-    2AtnPwcg8KavV/Or40kAjYAIx7BTUlpXPgfMc04yMX8jwfd6SSYApsUIuCLtsAN4622d
-    zqK3zPaKckiNBcJAz21HwuFjhKx3WdTuMO7cR4ymhDDdHzgNlTiuQ++NBKqhR7w2IRKR
-    QeW/EcGLZIQHkiXRSqxvbzy+5EtMOp1fQsDOWprq6XYU8fVXMp1Ac9KnTA9a6uBFyBJD
-    wPLcy4UZvR0AF5tDnVnBHSrtUNX84yVS2kJKP3GP3y6wm6IEyGec1fL7ubjOBnBbEHvH
-    Z71w==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1685109831;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=zhOGk10ygmP7nNAqxT0dbqHX7vPqfMWPQJ7k5CUCTa0=;
-    b=f6hJ1FRE/GLVsml2gNyEOZUIjT8T4oSPS0AgMjyaPfwa+twJ2ggOYpzMwQ5UESAlZ/
-    3pPfRn4v7WU3a0HtQa7SG52h79FLsn4iDDDecycyEPhxgMdpEDlO/DA8IpKfuC+nibdv
-    fMcap24ucTRdEOCyOvstv1RXiW+JgzBiPmF42igCdMJuP9Ojo3KY63gb70zi2FQP5jRA
-    sPlTferRFA0jkpZbfvDkuX9eyG4BkAB/WIOW+r6+bOOfgR5WVpt4vLkBMXZ0GK/8pyHU
-    Tg+PB+DRJR60gtdCN2zdKki8Gu0jBaOuFULWIpXZi9QSzaeGqgFmo2CCChL2RKMdXZfq
-    kadA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1685109831;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=zhOGk10ygmP7nNAqxT0dbqHX7vPqfMWPQJ7k5CUCTa0=;
-    b=enApK+9wIHXRh8zq75pO2ifgtcphtLsDfa/ojSAkLIVBkRi+uv9pjitMcWvUAsx8xe
-    FZ1rUG+DdzGOruzhlIAA==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA95nh"
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.4.0 DYNA|AUTH)
-    with ESMTPSA id j6420az4QE3obOP
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Fri, 26 May 2023 16:03:50 +0200 (CEST)
-Date:   Fri, 26 May 2023 16:03:42 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc:     Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
+        Fri, 26 May 2023 11:42:56 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3804F7
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 08:42:53 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-307d58b3efbso587056f8f.0
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 08:42:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nexus-software-ie.20221208.gappssmtp.com; s=20221208; t=1685115772; x=1687707772;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CQw+zfZTmj3Rrv2z68fRpRd9uvWpwcM+LxwxnhqEPSc=;
+        b=O8tXlthhBgjEbO1XpEqH7NlZTs+2M3Y+z9Bi4BJz+glfTwjV57YuE3j/vS/GCCr8b0
+         bAziTwsMOOggSsOc90DoDDi2QrbytKM+faq7nGVYvPD/AaelwXY9jHCiKi2XJ6PXiC/d
+         QnlMWyiZecupq7QnD8y4liWV9HKxePbVkKSopDBwY85zbg9Lweju7J/hWkiz/7AenKOw
+         X/45v15UzzQWChHdc5WI1b6ZEmxMNFDTybImmGlvIkNNuip2hXMS5xsCMjWn8FYVyiFD
+         z6guOz701BjiQppy3mkeL5xzOuMOK8o3/vqGVIdNBc43krCl8rFl92ElBaNiiFoWnueU
+         mtYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685115772; x=1687707772;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CQw+zfZTmj3Rrv2z68fRpRd9uvWpwcM+LxwxnhqEPSc=;
+        b=VeprQSawoKP1YTlXrJ63Ekxkyp+bTvV2lasvLJBNBvCkkCFCgphEYi+Bja+G51D46c
+         lt+Umoeq9rEFGiudohZbrLkzQebjITOBXUInsFZK3+3T67PHVEIXENetb7HxnzWyPWQd
+         gpNzKqzn3AQq2juJSBju5LtKOrMSDcIGGn6IG1f8r7sZ/WaIdEWuc7vYor6SiUyxaAiQ
+         k6eCJywVNKJWHb/mUZboDBBME9F2kgBTmBERGx93Dqs4m1TaauUDEi3IdTfQRfb+H5PQ
+         amxsx2RzEoUuQ4o7z7J0y7rO/iQMCTv7hdfvm5D9HhooBN6VxzX7WovOpxOaRmkSRomq
+         FOIw==
+X-Gm-Message-State: AC+VfDyVUVGYv+l/yqUGYMmdUnDoDG7AyMfqP4JFGCttW9Aicmhux2T0
+        iNgAOPk8gonSrbsJ30fvLKtJFg==
+X-Google-Smtp-Source: ACHHUZ438yXRK5wT8tUO+6PCb06t7sypVhoVCPPpwgAqaqggPoqzquUPLXg0ZIVMzMpbthYUwg1ZVw==
+X-Received: by 2002:adf:e792:0:b0:309:51ec:9ce0 with SMTP id n18-20020adfe792000000b0030951ec9ce0mr1942254wrm.69.1685115772372;
+        Fri, 26 May 2023 08:42:52 -0700 (PDT)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id u3-20020adfdb83000000b0030aded83385sm533922wri.27.2023.05.26.08.42.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 May 2023 08:42:51 -0700 (PDT)
+Message-ID: <cf03b068-2d2d-45e4-f724-83304992550e@nexus-software.ie>
+Date:   Fri, 26 May 2023 16:42:50 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH 3/8] arm64: dts: qcom: msm8916: Fix regulator constraints
+Content-Language: en-US
+To:     Stephan Gerhold <stephan@gerhold.net>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH 3/8] arm64: dts: qcom: msm8916: Fix regulator constraints
-Message-ID: <ZHC8PhUi0H4o4TUR@gerhold.net>
 References: <20230510-msm8916-regulators-v1-0-54d4960a05fc@gerhold.net>
  <20230510-msm8916-regulators-v1-3-54d4960a05fc@gerhold.net>
- <cae30437-f9bc-6e7a-8371-bba7eeff1e8f@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cae30437-f9bc-6e7a-8371-bba7eeff1e8f@linaro.org>
+From:   Bryan O'Donoghue <pure.logic@nexus-software.ie>
+In-Reply-To: <20230510-msm8916-regulators-v1-3-54d4960a05fc@gerhold.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, May 26, 2023 at 02:38:01PM +0100, Bryan O'Donoghue wrote:
-> On 17/05/2023 19:48, Stephan Gerhold wrote:
-> > The regulator constraints for most MSM8916 devices (except DB410c) were
-> > originally taken from Qualcomm's msm-3.10 vendor device tree (for lack
-> > of better documentation). Unfortunately it turns out that Qualcomm's
-> > voltages are slightly off as well and do not match the voltage
-> > constraints applied by the RPM firmware.
-> > 
-> > This means that we sometimes request a specific voltage but the RPM
-> > firmware actually applies a much lower or higher voltage. This is
-> > particularly critical for pm8916_l11 which is used as SD card VMMC
-> > regulator: The SD card can choose a voltage from the current range of
-> > 1.8 - 2.95V. If it chooses to run at 1.8V we pretend that this is fine
-> > but the RPM firmware will still silently end up configuring 2.95V.
-> > This can be easily reproduced with a multimeter or by checking the
-> > SPMI hardware registers of the regulator.
-> > 
-> > Fix this by making the voltages match the actual "specified range" in
-> > the PM8916 Device Specification which is enforced by the RPM firmware.
-> > 
-> > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-> > ---
-> >   arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts           | 14 +++++++-------
-> >   arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts       | 14 +++++++-------
-> >   arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts             | 14 +++++++-------
-> >   arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts         | 14 +++++++-------
-> >   arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts             | 12 ++++++------
-> >   arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts       | 14 +++++++-------
-> >   arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts       | 14 +++++++-------
-> >   arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi | 14 +++++++-------
-> >   arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi   | 14 +++++++-------
-> >   arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi    | 14 +++++++-------
-> >   arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts     | 14 +++++++-------
-> >   arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi                  | 14 +++++++-------
-> >   arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts      | 12 ++++++------
-> >   13 files changed, 89 insertions(+), 89 deletions(-)
-> > 
-> > diff --git a/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts b/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts
-> > index 13cd9ad167df..0d517804e44e 100644
-> > --- a/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts
-> > +++ b/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts
-> > @@ -159,13 +159,13 @@ &smd_rpm_regulators {
-> >   	vdd_l7-supply = <&pm8916_s4>;
-> >   	s3 {
-> > -		regulator-min-microvolt = <1200000>;
-> > -		regulator-max-microvolt = <1300000>;
-> > +		regulator-min-microvolt = <1250000>;
-> > +		regulator-max-microvolt = <1350000>;
+On 17/05/2023 19:48, Stephan Gerhold wrote:
+> The regulator constraints for most MSM8916 devices (except DB410c) were
+> originally taken from Qualcomm's msm-3.10 vendor device tree (for lack
+> of better documentation). Unfortunately it turns out that Qualcomm's
+> voltages are slightly off as well and do not match the voltage
+> constraints applied by the RPM firmware.
 > 
-> Where are you getting these 5s from ?
+> This means that we sometimes request a specific voltage but the RPM
+> firmware actually applies a much lower or higher voltage. This is
+> particularly critical for pm8916_l11 which is used as SD card VMMC
+> regulator: The SD card can choose a voltage from the current range of
+> 1.8 - 2.95V. If it chooses to run at 1.8V we pretend that this is fine
+> but the RPM firmware will still silently end up configuring 2.95V.
+> This can be easily reproduced with a multimeter or by checking the
+> SPMI hardware registers of the regulator.
 > 
-
-I have two explanations for this, one is "documentation", the other is
-"experimental testing". You can choose the one you find more convincing. :)
-
-### Documentation ###
-
-For documentation, the S3 range is defined in "PM8916/PM8916-1 Power
-Management ICs - Device Specification - LM80-P0436-35 Rev.C - Table 3-16
-Regulator high-level summary". The "Specified Range" for this regulator
-is 1.25–1.35V.
-
-Also, if you look at typical schematics (e.g. DB410c) you can see that
-PM8916 S3 supplies the VDD_xxx_1P3 rails of the WCN3620/WCN3660/WCN3680
-chip. Looking at the defined "Operating conditions" in the datasheets of
-those they define "Min: 1.25V, Typ: 1.3V, Max: 1.38V". As such, 1.2V is
-not even a valid voltage for the actual usage of this regulator.
-
-### Experimental Testing ###
-
-The reason why it still works in practice is that the RPM firmware does
-not let you apply invalid voltages here. With experimental testing
-I observed that it keeps the voltage always in the "Specified Range"
-of 1.25–1.35V.
-
-You can reproduce this easily by adding the SPMI regulators in
-pm8916.dtsi. These represent the actual regulator hardware registers:
-
-diff --git a/arch/arm64/boot/dts/qcom/pm8916.dtsi b/arch/arm64/boot/dts/qcom/pm8916.dtsi
-index 864bb1cd68db..22ab0f59be4a 100644
---- a/arch/arm64/boot/dts/qcom/pm8916.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pm8916.dtsi
-@@ -177,5 +177,9 @@ wcd_codec: audio-codec@f000 {
- 			#sound-dai-cells = <1>;
- 			status = "disabled";
- 		};
-+
-+		regulators {
-+			compatible = "qcom,pm8916-regulators";
-+		};
- 	};
- };
-
-With this each of the regulators will show up twice in /sys/class/regulator.
-Once the RPM version and once the SPMI version. If you check the
-/sys/class/regulator/.../microvolts of the SPMI variant you can see the
-actual voltage that was applied by the RPM firmware.
-
-For example, if you think that 1.2V is really possible then try:
-
-	s3 {
-		regulator-min-microvolt = <1200000>;
-		regulator-max-microvolt = <1200000>;
-	};
-
-In sysfs you will almost certainly see that the SPMI regulator is
-actually configured with 1.25V by the RPM firmware. It does not allow
-setting anything lower.
-
-> >   	};
-> >   	s4 {
-> > -		regulator-min-microvolt = <1800000>;
-> > -		regulator-max-microvolt = <2100000>;
-> > +		regulator-min-microvolt = <1850000>;
-> > +		regulator-max-microvolt = <2150000>;
-> >   	};
-> >   	l1 {
-> > @@ -199,7 +199,7 @@ l7 {
-> >   	};
-> >   	l8 {
-> > -		regulator-min-microvolt = <2850000>;
-> > +		regulator-min-microvolt = <2900000>;
-> >   		regulator-max-microvolt = <2900000>;
-> >   	};
-> > @@ -209,12 +209,12 @@ l9 {
-> >   	};
-> >   	l10 {
-> > -		regulator-min-microvolt = <2700000>;
-> > +		regulator-min-microvolt = <2800000>;
-> >   		regulator-max-microvolt = <2800000>;
-> >   	};
-> >   	l11 {
-> > -		regulator-min-microvolt = <1800000>;
-> > +		regulator-min-microvolt = <2950000>;
+> Fix this by making the voltages match the actual "specified range" in
+> the PM8916 Device Specification which is enforced by the RPM firmware.
 > 
-> Wouldn't 1v8 be the right voltage for eMMC !SD though have you tested eMMC
-> instead of SD ?
-> 
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 
-This is the supply voltage (not I/O voltage) which is also 2.9V for the
-eMMC typically. But the point here is that only 2.95V can be set for
-this regulator on most RPM firmware versions.
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-It does not matter what you connect there. I tried setting
-
-	l11 {
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
-	};
-
-but the RPM firmware still applies 2.95V. In this case I even verified
-this with a multimeter. The regulator is always 2.95V, even if you ask
-the RPM firmware to apply 1.8V.
-
-Thanks,
-Stephan
