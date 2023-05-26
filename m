@@ -2,62 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B04ABC7EE31
-	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 21:50:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94989C7EE3A
+	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 21:50:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237839AbjEZVu3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 May 2023 17:50:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45884 "EHLO
+        id S243280AbjEZVu2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 May 2023 17:50:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237957AbjEZVu1 (ORCPT
+        with ESMTP id S237839AbjEZVu0 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 May 2023 17:50:27 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0702E116
-        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 14:50:26 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3f6da07ff00so12942295e9.3
+        Fri, 26 May 2023 17:50:26 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B13DEF7
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 14:50:25 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-3078cc99232so1083641f8f.3
         for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 14:50:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685137824; x=1687729824;
+        d=linaro.org; s=google; t=1685137825; x=1687729825;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LbbKXkEwNc8+Wi+7L4Y9FUnUfGWKREA2C+RjRq+6R1I=;
-        b=jebmOqrKt2pcISZSGHiZwykJv1ftJHZVHf3oqTOzuOA/bet9cpxKVCzOVy43ShLMVH
-         LqgdOh+Wb3duTANx6H2cZDSlEkcw18mvLZGUCZQSnWWnmXBKVP5nA0NGoFbXNt7E32BI
-         pAFp3iEWj1yNVbXGeP67nTxwwb9QPkBDVEeWNzNECa5JNlFPH5SDyzO/ZbzxMBMbzTnZ
-         V1YgGVx/qQEGZmjVjRg3yO0S8YYenlySM5yAp1RCaL2/IciMWIXTRq6oyAhTe9ug7jbu
-         rq74Qzjd8NHCITiDZzeFCO/7o4HfWzhrpP9lyPv6f/pLCizKh/eENi0+CIjBO7VbN8vc
-         iqSg==
+        bh=er/2tuStc06EOJAYB0EC0jKDQF+rhEFocuKHGZ+uPaY=;
+        b=dbHNhiexvqcQIvBBx61Rj2SqPYE/CBJTFGnQOi5PQrYfQmqqwnSqxTOIajoEgnx1Gc
+         Gt+zXxA3+JdWzFsmmQJc+ZEXfp2ppf9s6RGzgDgc2E9q1MW6BLjPXDDs0zKubGLxTt34
+         k95Jg6+RgElnyUqoI9OTMD1WOO3pz0Ph8qJIHRvgRgnGSsF/v+m03SjKNhC2pJZhQ36/
+         9HGRiHiFjYh3LxCPkHmkpEqxA8EgORY5BY1C9zNHALu23bPTnYywVt1WTvxCQVytwQHj
+         cZivVrF9ZKzdJIXqr9jsvTO41Uutzg38UY5dRjpO1sJn16aoNRe7yVAiFUnr1MeQxk1o
+         4muA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685137824; x=1687729824;
+        d=1e100.net; s=20221208; t=1685137825; x=1687729825;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=LbbKXkEwNc8+Wi+7L4Y9FUnUfGWKREA2C+RjRq+6R1I=;
-        b=icvWiHqmyjVH9xSHDLLuU/gsE8TE0QCgooQt65aLvWvA9JI9bezyMBpXfdBv9zk/6s
-         pYQrRjD8IGG/RjDYlsc78A2AV96Voq4U0CPa1jpOhR1uir1INZUPEub67YrHd3ERfmnr
-         eI/MR5dEDZWXYajwe3t8OkIvmenkjTw8j9+Szm6Kx1BVqz2MJft1V29qV8yTtrR2m8sO
-         bP+yfPWLULDY76ZbHTfgwx8af72wCquuMURB/KHDMXH7Ti1eQI6j0BP1ryIHRfvqcTde
-         dOvRYa+YW7wh+faPNdJX+HaSj/f3gt+Ra3gTI9o44wwG44W7EFV0Tuol9yz7bWrhM+cb
-         FILg==
-X-Gm-Message-State: AC+VfDyXuyr9UHEqo0FcCEnq1lJ7rJhmST9Gs+2jtrnu2ovrw8J1X5yN
-        TVjgBBM/g2UN+Cx1gsvvk3/xtw==
-X-Google-Smtp-Source: ACHHUZ61EpRUrODQNdqOsDPr5voBi3qNDTxvf7SK+DcehCnjCW/wnFf/3SpXviRBgSY2smFQW64J3Q==
-X-Received: by 2002:a05:600c:2141:b0:3f5:fff8:d4f3 with SMTP id v1-20020a05600c214100b003f5fff8d4f3mr2773445wml.7.1685137824477;
-        Fri, 26 May 2023 14:50:24 -0700 (PDT)
+        bh=er/2tuStc06EOJAYB0EC0jKDQF+rhEFocuKHGZ+uPaY=;
+        b=j+fh9q5pm61wyaXGN0DfO1Uk0mmFrdW79hS+qrrICHOrD3cA5lzGPe4R73+v0dYzDH
+         pMZ4LeT/0GBZwJ8z0m7lhrIYscWEYTcHUWTk+yT7n1VrkeTXWhc94bMCe1nwVW3Fq0OT
+         tzYdYkNUjL4BwbuXpmT3ZS3SzPSUJJW/afRqRNvQRremuYhU5+gn1YmWyvgF8MT8nQqj
+         re7gkeFwBtJqN6sCTDPOUAyic8g1HeQzuq+YWPeSjsTkZ+xdVTf5EqtHYr/+zIp/nuDi
+         RqLwo12+VFelMPKSUEfZBX7rWVkf32VQQek3jf/CqWM17FntcfvnSssxSYIXqpRhGlY3
+         8NuQ==
+X-Gm-Message-State: AC+VfDwG/tXssTnEUAoyldcIUY4XTXDt8ozDl9HB+h1lFkGVQVpUwoTR
+        jbWnx8dHy3FteU4Jx+o/bduNMhVB7YIK3ZELTFm4Dw==
+X-Google-Smtp-Source: ACHHUZ4h3F97kw674IYL9xtz7a8u+ZZsGXwyGv6N7y4HIF0ZLx/vUkW9YkJC+lxmbD73aes0lvJ5Lg==
+X-Received: by 2002:adf:e4cf:0:b0:309:3e48:f400 with SMTP id v15-20020adfe4cf000000b003093e48f400mr2789165wrm.18.1685137825357;
+        Fri, 26 May 2023 14:50:25 -0700 (PDT)
 Received: from lion.localdomain (cpc76484-cwma10-2-0-cust274.7-3.cable.virginm.net. [82.31.201.19])
-        by smtp.gmail.com with ESMTPSA id u4-20020adfdd44000000b003063176ef09sm6294314wrm.6.2023.05.26.14.50.23
+        by smtp.gmail.com with ESMTPSA id u4-20020adfdd44000000b003063176ef09sm6294314wrm.6.2023.05.26.14.50.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 May 2023 14:50:24 -0700 (PDT)
+        Fri, 26 May 2023 14:50:25 -0700 (PDT)
 From:   Caleb Connolly <caleb.connolly@linaro.org>
-Date:   Fri, 26 May 2023 22:50:23 +0100
-Subject: [PATCH v2 4/5] arm64: dts: qcom: sdm845-shift-axolotl: enable
+Date:   Fri, 26 May 2023 22:50:24 +0100
+Subject: [PATCH v2 5/5] arm64: dts: qcom: sdm845-xiaomi-beryllium: enable
  pmi8998 charger
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230524-pmi8998-charger-dts-v2-4-2a5c77d2ff0c@linaro.org>
+Message-Id: <20230524-pmi8998-charger-dts-v2-5-2a5c77d2ff0c@linaro.org>
 References: <20230524-pmi8998-charger-dts-v2-0-2a5c77d2ff0c@linaro.org>
 In-Reply-To: <20230524-pmi8998-charger-dts-v2-0-2a5c77d2ff0c@linaro.org>
 To:     Andy Gross <agross@kernel.org>,
@@ -68,54 +68,61 @@ To:     Andy Gross <agross@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>
 Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         phone-devel@vger.kernel.org,
+        Joel Selvaraj <joelselvaraj.oss@gmail.com>,
         Caleb Connolly <caleb.connolly@linaro.org>
 X-Mailer: b4 0.13-dev-46309
-X-Developer-Signature: v=1; a=openpgp-sha256; l=941;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1246;
  i=caleb.connolly@linaro.org; h=from:subject:message-id;
- bh=2/Cc6BpYgqPsrx9w4jVR7e8BD1UNIMng3Nd624AJy8g=;
- b=owEBbQKS/ZANAwAIAQWDMSsZX2S2AcsmYgBkcSmcOjg5t0ENlODajWGoR5qw9sEEiSaWJnStn
- 3T86SsDMhyJAjMEAAEIAB0WIQS2UaFGPGq+0GkMVc0FgzErGV9ktgUCZHEpnAAKCRAFgzErGV9k
- trS1D/9vwhkTOZpbZwWTaRjEHsFDyVCHjfytKTRT63TO6u9GsW8XnFhw4T5br0kMVRvGEtqwz8b
- Qr+QgYup7s1Hzqd4tskC3zh5tG5xhOEb7UP8ubRKkJxTnju2T4UEba9rLD5ElRexlW5qr3YIykn
- Vn5nzCx+2dVmKRUmS7DAHb1UTM5+2FY93uVEME8hlCiQ5HEmUvtpbC+/mJIy8TzIPfsg2nEUVZ9
- Xpk0tPdUJRA9OCeUXGNP5hkdRZrukNcz7g2k7BS/+GybXdPEddLyBQALTToWHTGp0mzON5yi1au
- zShiB4/wSEom4APXhnRBp4QI7P6snSibEN3mt4fjXwv59sYjot8iUJLEmtnR5H6LzsT/ekRWzVq
- TUaxb5EihMxOL2BEXNPwjWtTaAmvFhfkvVH6rQx62sZc0fu1FneMgl6QdnlYb2EFtQ34doTOBfd
- k9si0YzGNwdXFcK39zOAaarwSDNf7lTekMEqoEQpjjnGL+rcXWDDiDjUIOiGX9Zl+/bwDElEJjL
- li2LArtTY1fu4MZc5A5EmeqKkvWhv9xkTQXCiBCs+9Wfoch4pwjgi/gn7407+ufkakz0BLt7ID4
- ja//NpWf1mXMk9qOxi3OpKDE2/tYJXU7fBxV1X0po1KLm4+YscZ/uBB3XUc49pslbA5JMRSe4ip
- bGWlcAy6NLz0Bag==
+ bh=TWdn+N73wTGUSjs6c9D0VmHIB8Wx2mCJogU9cJy2wTA=;
+ b=owEBbQKS/ZANAwAIAQWDMSsZX2S2AcsmYgBkcSmc5CpiRZ2Q7Ru4yPYpv1I2fGMJsvMYY+x+b
+ VGowKFFlnmJAjMEAAEIAB0WIQS2UaFGPGq+0GkMVc0FgzErGV9ktgUCZHEpnAAKCRAFgzErGV9k
+ thoTD/9Z4Ax636Vned+uscdxImWart6i6LOH+2P+Y9xstVS23XWqkjQg6wea8MHrSSWUgu7BW5N
+ j6mZE9UUV160GTGvGUXa33J2u93uUbeYuxRpeUuYNbmvekTzcruX6eB6WB1TLop3pR0hA2aYmP/
+ /aT5Gafk9wf9tNBTqb/8CcnlzO8J6UnVRHYD2V++F4bzmA7qeoaupnuUpYvW9Al9Lt8yiG5+dc8
+ lK389PDSnjSkB6PW1Mhdmmj+ZIgsQTNZprxaIjkFK9LEyH9S9aQcaKdzBho60I0SdUUvhtoOjAb
+ 4Orx/6FGvOZ8AckPCMrOKj/WPW7CgacjQoGcfq0SnOnFaObNp9fbzzT+vtcBVxdvU8L9vDmS4Bj
+ sbr+rQ1cTMSADxGMElW6chA7PvR1v/A5U9JBYDYfClXQu04VMUDo0xbj6DOkfVWh8BPV9k7Lzyj
+ zsMoD3peKvLM3nObjQVeJU/h3/AafBDwA/VC6dOaDhvlm/vY19/Xoy8C7owD9X21eVf4uCcy+xz
+ nbE7EY86KywGG0a7hcqNb8IhcgE3r4u8qQ+q5VGpXh+7XNYFpkpVn6snoKuGWxFnyauiX3Fw812
+ pQ7Qk2AIxku8k8c1pqq8hn2cDonwnV7nbv02UimTUJvSzFc2To4Jw9P0HP5oN8/+jAZ5QS2Navk
+ yM+C/O3jc19gBEQ==
 X-Developer-Key: i=caleb.connolly@linaro.org; a=openpgp;
  fpr=83B24DA7FE145076BC38BB250CD904EB673A7C47
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Enable the PMI8998/smb2 charger, and denote the secondary SMB1355
-charger which is used for parallel charging.
+From: Joel Selvaraj <joelselvaraj.oss@gmail.com>
 
+Enable the pmi8998 charger and define some basic battery properties.
+
+Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
 Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi      | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-index 0ad891348e0c..de5f26fb780b 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts
-@@ -494,6 +494,10 @@ touchscreen@38 {
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+index 1915643f1c49..f7fd897afe1e 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
+@@ -115,6 +115,14 @@ rmtfs_mem: memory@f6301000 {
+ 		};
  	};
- };
  
-+&i2c10 {
-+	/* SMB1355@0x0C */
-+};
++	battery: battery {
++		compatible = "simple-battery";
 +
- &ipa {
- 	qcom,gsi-loader = "self";
- 	memory-region = <&ipa_fw_mem>;
-@@ -522,6 +526,12 @@ pinconf {
- 	};
++		charge-full-design-microamp-hours = <4000000>;
++		voltage-min-design-microvolt = <3400000>;
++		voltage-max-design-microvolt = <4400000>;
++	};
++
+ 	vreg_s4a_1p8: vreg-s4a-1p8 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vreg_s4a_1p8";
+@@ -341,6 +349,12 @@ &pmi8998_wled {
+ 	qcom,cabc;
  };
  
 +&pmi8998_charger {
