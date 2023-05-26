@@ -2,174 +2,165 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 619D9C77B7A
-	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 12:57:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F598C77B7A
+	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 13:38:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237306AbjEZM47 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 May 2023 08:56:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45702 "EHLO
+        id S243760AbjEZNiH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 May 2023 09:38:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243446AbjEZM45 (ORCPT
+        with ESMTP id S243219AbjEZNiG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 May 2023 08:56:57 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43292E54;
-        Fri, 26 May 2023 05:56:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1685105776; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=ecL/yX4ACBM0LoiZ16bdV3ydQYoiCYrkxktY56WRb5lnQJu19PzOoJ45TErSAWXks6
-    lFSYVNmIEAiG2+R6QP3QkuLi7jmNTFAywCbG0Y9ZygwUau6WYQJu7hkJb9fmHZiiaZ4g
-    MAlfdBhuI+QN6vwH932S8PDGBjoM2ZUsMxO9+VfVxIkR2VP8t9npmC51YIKqb/QRUbxo
-    S85YOyWODE1jhvFbCYsN4Mb+CslSsT+hbPWtxa8QN6wjnY6Iq3BGAW8Cs4TX8zTw15iG
-    FLg6xVWlhZ4K/lz+wfZyqpb/klwrSe9CGM7Hy52VYmZbbPgHoWhIdLVZAui1foyhaZmh
-    Ju+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1685105776;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=DQwmMMMxe4xHLS95ZMRaVWsx8QFAdxS0MuuF8Lk0U/4=;
-    b=le1+x/EDVncfHty+3X2zPjyOC3b/+MRDUbEiNtpTmxWKUIZSPihowxhFbBLUpPPF4y
-    HO7jkVDgMf7Rm6iJBmhdW8XbTf8ZL18ol9x16nm757ATIz+68H9zK30BhB7RlQYtqXqq
-    evM/QjUcUSVAGzCSJH8V0NTXTEli6nc0osXdbK9Diyn+Ryd6vz3CkNrJBv+qst8r/z2W
-    DKTCd+U7Wf9rAjqWkUI5+31RKJt0Sc4Wst9noDv861CtK6n1zsivvy9dURmEkfuX4f6n
-    mx/jO5X26sWz2pcxayolH6vta3gou6O5x+45lDmEgd4C681WPem/nC9uClpb+MNV6ICe
-    +k2g==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1685105776;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=DQwmMMMxe4xHLS95ZMRaVWsx8QFAdxS0MuuF8Lk0U/4=;
-    b=THhVJ6kZHG3cNYJZU4e8XwjPTlZsnstmWqzIFirvFs7/A18HSFrd0i4RTMqtZvhLFm
-    9rrwwajo8gOPuxTDbEPtJraxTFDhcG4PoWJyeehADMQtIfJ6QqNrtcu1CXYyFX3IHYLf
-    XL70Z14m3W77cFZpjLyX1PuZozF6//d62/42QCby6ZM5g/mDlBeamVTjSPqIRHTbghVn
-    VCGo+VhpwkU7Bgmr7h0AKNKp1tmjUUW/ukvAHmqfwO1owb6cX3OVc2CqkOZ5Zrqv8Tfw
-    sxwElq1TXu53HyIXk5Pd76Bs40l0u7vLqnTt/EhWvllwMfVzqaHMAmibokhCllKfmqlZ
-    EYbg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1685105776;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=DQwmMMMxe4xHLS95ZMRaVWsx8QFAdxS0MuuF8Lk0U/4=;
-    b=mof1MmHH21Ht8aPq/JeiWg3YRDolNLMTriPICUmGx31NfAzamUfqQ1+SyGvS2xm+ym
-    d5SxuLHLOgg4LxBcK6Cw==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA95nh"
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.4.0 DYNA|AUTH)
-    with ESMTPSA id j6420az4QCuFb9P
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Fri, 26 May 2023 14:56:15 +0200 (CEST)
-Date:   Fri, 26 May 2023 14:55:56 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
+        Fri, 26 May 2023 09:38:06 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB40F3
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 06:38:04 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3f6094cb2ebso5482065e9.3
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 06:38:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685108283; x=1687700283;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kRNhz/1ssZp7GmMjGCU/2aCWcpCSy7S5uy3uYHdmw7Y=;
+        b=UK2zb07TRRz408dzHN0N/0vYmIJfV431IB7X8ANOYPkRHJPIfACk52Z+ortc1DPIGR
+         ym3FHdPARthYj9fHb1Y77DWDBlDDxcN6mz8VnzkIC83BfLSOozkYbj6WeZWqN84w5zhB
+         48eJuVq+F92uKNK/YsObvKq0i/YjH6oNpyqSFUqJOYhaJC+bb8iExFUzUgidocdy+UQ7
+         v+fwn+FgrB1OTSQpbGwM5C0/mHtFV4UHHIgIasF4MVW0cfxPC89wAdiYN3fUfwQ4kTEF
+         DjUMj8J6g4qvUnl762VOKsF3aEmswJ4TZUDK1gGmpRlkYSNOvnChdVdAh3HR0Oix55pz
+         EQHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685108283; x=1687700283;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kRNhz/1ssZp7GmMjGCU/2aCWcpCSy7S5uy3uYHdmw7Y=;
+        b=JuaOUlWu/nrp/YNP9z/PKTNzO+puIPomTI/BUseskkrGR2eQzA/VmV77lCspTPvhoi
+         0dZ0S4kzP+EZ4sCPBpkZqSwiU7EQliia1O6czKFuim/gBGh4EG3zAt2Ku2ELehITJ9qK
+         7DzIEk4pJk1d2sDvv8h6BsM9gQi9nMrDUwvpTFs4G3UMik4CL7YzTbWy2ezfaVfLWbTy
+         Dn1oFlQO0fWs9CdqT8hBr85a+bT+vzS7cqoLEhRG6pcLIgM+cxK3MC/+JktgvaNi5HEb
+         MM0dREzBK4914I/RaFnMBvGdFGHPVjePaXXQ9gBQeg9VJnW71eAoDqmI+shmcYeQ60p4
+         oUOA==
+X-Gm-Message-State: AC+VfDzPC8lRuyMp+lKvlKv7pVJ4g4/ExsgF7Q3KiHFQNMh3FZwKlBp9
+        5LLRqD/BDw6Ekab8TR9pnLZUFw==
+X-Google-Smtp-Source: ACHHUZ4/TvkidQGqm2je1FAQ3GSQm0puIZ2fO6yxBGt5bIoGb3dqxAif8j+LCNz9JMwYn75vWYsdtg==
+X-Received: by 2002:a7b:c412:0:b0:3f5:fa8e:aaa3 with SMTP id k18-20020a7bc412000000b003f5fa8eaaa3mr1595377wmi.28.1685108283226;
+        Fri, 26 May 2023 06:38:03 -0700 (PDT)
+Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
+        by smtp.gmail.com with ESMTPSA id n11-20020a05600c294b00b003f6129d2e30sm8900220wmd.1.2023.05.26.06.38.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 May 2023 06:38:02 -0700 (PDT)
+Message-ID: <cae30437-f9bc-6e7a-8371-bba7eeff1e8f@linaro.org>
+Date:   Fri, 26 May 2023 14:38:01 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH 3/8] arm64: dts: qcom: msm8916: Fix regulator constraints
+Content-Language: en-US
+To:     Stephan Gerhold <stephan@gerhold.net>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH 8/8] arm64: dts: qcom: msm8916-pm8916: Mark always-on
- regulators
-Message-ID: <ZHCsXKejQxuGH2ZP@gerhold.net>
 References: <20230510-msm8916-regulators-v1-0-54d4960a05fc@gerhold.net>
- <20230510-msm8916-regulators-v1-8-54d4960a05fc@gerhold.net>
- <ea53525b-749b-25e2-6dde-662a8e273597@linaro.org>
- <ef7b7335-d20c-3ddc-52df-b2801fa40283@linaro.org>
- <ZHBTi-j657tW3jIu@gerhold.net>
- <41f5b7a9-d927-e468-d1ea-291ad35ba943@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41f5b7a9-d927-e468-d1ea-291ad35ba943@linaro.org>
+ <20230510-msm8916-regulators-v1-3-54d4960a05fc@gerhold.net>
+From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <20230510-msm8916-regulators-v1-3-54d4960a05fc@gerhold.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, May 26, 2023 at 10:50:53AM +0200, Konrad Dybcio wrote:
-> On 26.05.2023 08:36, Stephan Gerhold wrote:
-> > On Fri, May 26, 2023 at 02:28:52AM +0200, Konrad Dybcio wrote:
-> >> On 26.05.2023 01:39, Konrad Dybcio wrote:
-> >>> On 17.05.2023 20:48, Stephan Gerhold wrote:
-> >>>> Some of the regulators must be always-on to ensure correct operation of
-> >>>> the system, e.g. PM8916 L2 for the LPDDR RAM, L5 for most digital I/O
-> >>>> and L7 for the CPU PLL (strictly speaking the CPU PLL might only need
-> >>>> an active-only vote but this is not supported for regulators in
-> >>>> mainline currently).
-> >>> Would you be interested in implementing this?
-> > 
-> > At least on MSM8916 there is currently no advantage implementing this.
-> > The "active-only" votes only have the CPU as limited use case. S1 (aka
-> > MSM8916_VDDCX) and L3 (MSM8916_VDDMX) are both used via rpmpd/power
-> > domains which already provides separate active-only variants. L7 (for
-> > the CPU PLL) is the only other regulator used in "active-only" mode.
-> > However, at least on MSM8916 L7 seems to stay always-on no matter what I
-> > do, so having an active-only vote on L7 doesn't provide any advantage.
-> In this case it may be more important that we tell RPM that we want it
-> to be active-only, even if it ultimately makes a different decision.
-> You probably played with this more, but my guess would be that not letting
-> off of an a-s vote could confuse the algos
+On 17/05/2023 19:48, Stephan Gerhold wrote:
+> The regulator constraints for most MSM8916 devices (except DB410c) were
+> originally taken from Qualcomm's msm-3.10 vendor device tree (for lack
+> of better documentation). Unfortunately it turns out that Qualcomm's
+> voltages are slightly off as well and do not match the voltage
+> constraints applied by the RPM firmware.
 > 
-
-I think in this case it does not make any difference. There is no
-difference to downstream for the power consumption during VMIN suspend
-(with these changes and my hack patches). In fact the power consumption
-is so ridiculously low (about 0.008W / 0.096 A @ 12V) that my
-measurement thing can barely measure it. :D
-
-There are definitely more important things to work on right now that
-will make a much larger difference. Perhaps one day when we have the
-important things like cpuidle, bus scaling/interconnect etc we can look
-again at this tiny little regulator that probably will never turn off
-anyway. :D
-
-> > 
-> >> Actually, I think currently all votes are active-only votes and what
-> >> we're missing is sleep-only (and active-sleep if we vote on both)
-> > 
-> > If you only send the "active" votes but no "sleep" votes for a resource
-> > then the RPM firmware treats it as active+sleep, see [1].
-> > The active/sleep separation only starts once a separate sleep vote has
-> > been sent for a resource for the first time.
-> > 
-> > Therefore, all requests from the SMD regulator driver apply for both
-> > active+sleep at the moment.
-> > 
-> > [1]: https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.2.9.1-02310-8x16.0/drivers/regulator/rpm-smd-regulator.c#L202-204
-> /me *dies*
+> This means that we sometimes request a specific voltage but the RPM
+> firmware actually applies a much lower or higher voltage. This is
+> particularly critical for pm8916_l11 which is used as SD card VMMC
+> regulator: The SD card can choose a voltage from the current range of
+> 1.8 - 2.95V. If it chooses to run at 1.8V we pretend that this is fine
+> but the RPM firmware will still silently end up configuring 2.95V.
+> This can be easily reproduced with a multimeter or by checking the
+> SPMI hardware registers of the regulator.
 > 
-> that's a design decision if i've ever seen one..
+> Fix this by making the voltages match the actual "specified range" in
+> the PM8916 Device Specification which is enforced by the RPM firmware.
 > 
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> ---
+>   arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts           | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts       | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts             | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts         | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts             | 12 ++++++------
+>   arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts       | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts       | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi   | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi    | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts     | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi                  | 14 +++++++-------
+>   arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts      | 12 ++++++------
+>   13 files changed, 89 insertions(+), 89 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts b/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts
+> index 13cd9ad167df..0d517804e44e 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts
+> @@ -159,13 +159,13 @@ &smd_rpm_regulators {
+>   	vdd_l7-supply = <&pm8916_s4>;
+>   
+>   	s3 {
+> -		regulator-min-microvolt = <1200000>;
+> -		regulator-max-microvolt = <1300000>;
+> +		regulator-min-microvolt = <1250000>;
+> +		regulator-max-microvolt = <1350000>;
 
-:D
+Where are you getting these 5s from ?
 
-> > 
-> >>>
-> >>> Ancient downstream defines a second device (vregname_ao) and basically
-> >>> seems to select QCOM_SMD_(ACTIVE/SLEEP)_STATE based on that..
-> >>>
-> >>> Looks like `struct regulator` stores voltage in an array that wouldn't
-> >>> you know it, depends on the PM state. Perhaps that could be something
-> >>> to explore!
-> >>>
-> > 
-> > Don't get confused by the similar naming here. RPM sleep votes are
-> > unrelated to the "system suspend" voltages the regulator framework
-> > supports. :)
-> > 
-> > RPM sleep votes become active if the cpuidle reaches the deepest state
-> > for the (cpu/)cluster(/CCI). This can happen anytime at runtime when the
-> > system is idle long enough. On the other hand, the regulator suspend
-> > voltages are meant to become active during system suspend (where all the
-> > devices get suspended as well).
-> Yes and pm_genpd tracks that very meticulously, at least in the case of PSCI.
+>   	};
+>   
+>   	s4 {
+> -		regulator-min-microvolt = <1800000>;
+> -		regulator-max-microvolt = <2100000>;
+> +		regulator-min-microvolt = <1850000>;
+> +		regulator-max-microvolt = <2150000>;
+>   	};
+>   
+>   	l1 {
+> @@ -199,7 +199,7 @@ l7 {
+>   	};
+>   
+>   	l8 {
+> -		regulator-min-microvolt = <2850000>;
+> +		regulator-min-microvolt = <2900000>;
+>   		regulator-max-microvolt = <2900000>;
+>   	};
+>   
+> @@ -209,12 +209,12 @@ l9 {
+>   	};
+>   
+>   	l10 {
+> -		regulator-min-microvolt = <2700000>;
+> +		regulator-min-microvolt = <2800000>;
+>   		regulator-max-microvolt = <2800000>;
+>   	};
+>   
+>   	l11 {
+> -		regulator-min-microvolt = <1800000>;
+> +		regulator-min-microvolt = <2950000>;
 
-Meh, having a proper PSCI implementation is luxury! I have to mess with
-the good old way of poking the SPM/SAWs from Linux... :P
+Wouldn't 1v8 be the right voltage for eMMC !SD though have you tested 
+eMMC instead of SD ?
 
-Thanks,
-Stephan
+---
+bod
+
