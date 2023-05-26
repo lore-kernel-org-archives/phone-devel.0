@@ -2,73 +2,135 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64C09C77B7A
-	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 19:34:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DF3E7C77B73
+	for <phone-devel@archiver.kernel.org>; Fri, 26 May 2023 19:39:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243796AbjEZTe5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 26 May 2023 15:34:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51418 "EHLO
+        id S237705AbjEZTj6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 26 May 2023 15:39:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243937AbjEZTeu (ORCPT
+        with ESMTP id S234792AbjEZTjv (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 26 May 2023 15:34:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68B82D9;
-        Fri, 26 May 2023 12:34:49 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00F2A652F5;
-        Fri, 26 May 2023 19:34:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E95FC433EF;
-        Fri, 26 May 2023 19:34:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685129688;
-        bh=9CnqtJ+xZPCklFKySxlmg3pL3aVQfh/FISGl/AWWx7Y=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R4j69AIkVy1BaUaCF291wHM3aOvJ1ggnVwJR/zeayqJLvGxBluTsRz0jLP5HDb/wM
-         9hp6CGUblOZnSARpfK4lbSGap2gzv6QIOwkgLiyjh4/5CWdGEf6N/84Vn0XlVz2zuW
-         BcS9mnKa7JUL1Anq0bLQh5FHtGMW4cljQYpf0C0AOvilahDH7DRywREZNJuHJOCToe
-         38IcOqRnkfTBEh9uKcyOIp35YlwDu2fbJzoih0Ftx7yK64O+Gr8ANiY9+Jl53hHK8u
-         o1Q9qoVTrNoVD/ROI3n87y7VpouPaMLiRWcPZuOS5CkIURpFuntrri9DLFQ5Kk/5NT
-         PdPFBrnP/M1lA==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        phone-devel@vger.kernel.org
-Subject: Re: [PATCH 0/2] Make SID for PM7250B configurable (and a small fixup)
-Date:   Fri, 26 May 2023 12:38:29 -0700
-Message-Id: <168512991477.248818.5074877208402046287.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230407-pm7250b-sid-v1-0-fc648478cc25@fairphone.com>
-References: <20230407-pm7250b-sid-v1-0-fc648478cc25@fairphone.com>
+        Fri, 26 May 2023 15:39:51 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 059CDD9
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 12:39:48 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4f3a873476bso1200447e87.1
+        for <phone-devel@vger.kernel.org>; Fri, 26 May 2023 12:39:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685129986; x=1687721986;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5WI2LTwzJHU557PoCZSLz2JLeX8daKZdszLEHuH3r0E=;
+        b=Eo5uxTlt/6W269kAamuYc/3SjguYbwh5M1sJgy4c320v9hHZRg/kgnJ0TUrK6WLz0i
+         ayO9E/XVGysp6jY1fUCGmcOHPuTkNP6zqkfqlV5BWyGOmfudoEZKkf5jFoi3Wn/s8WvT
+         MGwQ7ltdtLNW0x83zgy1gNu08LY8mfCmta1x+/7XkK1NLvUjrzdqhsXI7XcZsKAaZ5cu
+         NxYER1KlzLbyl0mLs66/QsCNs5NUESj3BJIvY6Y7L9uSipohVGQVohnw26BwXKDrTULO
+         p7/A+LfQEAq3mjxrEM+KNJ0yq3Uzgj75I89bmtukj24zx1lWgjERCzO66oB+M1h9Pl/A
+         lGQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685129986; x=1687721986;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5WI2LTwzJHU557PoCZSLz2JLeX8daKZdszLEHuH3r0E=;
+        b=RQoW9kYX1skUd93KPgxzwhKr9WLFNmJsXbb6lmUee/CU322VDKuRMuW98FnivZHa+o
+         SBQOEN3j5RW3uc6O65NPrYgLZKu8k//HdBp0AP3z+4Sy4oWrOrvegh1kwJkc4q0FIMf2
+         DGKpJNttISLOa56NazVIQqM5qjKhwPL0VDiG8EDNXtvpT9VrqKeP2jk4N+V+IuuSobrt
+         1+AQQrlyhqqyPbVNNJ10XAyqWnGOVkKHj9Hey9wljzrCQMUeEo7fOQxZPLpdPbASWz8B
+         xpxLIF9gqFPQoRky3LMxziGVqmnuC9fRs9L8Tz+UQhzB++yLO4Oi+BB+MW1MhQ7PiuaF
+         u0Dw==
+X-Gm-Message-State: AC+VfDwEbnkA5bF20cpJSwE/39iTR4YA6zS1zNoT0EaVrMti3W/c6vJG
+        NcSRAUbUHQn+zT8KfYyaKNo+pg==
+X-Google-Smtp-Source: ACHHUZ7UJCwOLtq5QxseZ5COplXCOHeuL++AWt2jw96lbOL6anuJG5/xRTT2MrbBWIY9RgnCjvNeoA==
+X-Received: by 2002:ac2:4a9a:0:b0:4f4:b3a6:4135 with SMTP id l26-20020ac24a9a000000b004f4b3a64135mr857536lfp.55.1685129986199;
+        Fri, 26 May 2023 12:39:46 -0700 (PDT)
+Received: from [192.168.1.101] (abyj77.neoplus.adsl.tpnet.pl. [83.9.29.77])
+        by smtp.gmail.com with ESMTPSA id p1-20020a19f001000000b004f1406b059asm747276lfc.219.2023.05.26.12.39.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 May 2023 12:39:45 -0700 (PDT)
+Message-ID: <cac92fae-310f-79b1-7204-ac9deb2c3319@linaro.org>
+Date:   Fri, 26 May 2023 21:39:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v2] soc: qcom: ocmem: Add OCMEM hardware version print
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Brian Masney <masneyb@onstation.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230509-ocmem-hwver-v2-1-8c8793a07dfc@z3ntu.xyz>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230509-ocmem-hwver-v2-1-8c8793a07dfc@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 07 Apr 2023 09:45:43 +0200, Luca Weiss wrote:
-> Like other Qualcomm PMICs the PM7250B can be used on different addresses
-> on the SPMI bus. Use similar defines like the PMK8350 to make this
-> possible.
+
+
+On 23.05.2023 22:32, Luca Weiss wrote:
+> It might be useful to know what hardware version of the OCMEM block the
+> SoC contains. Add a debug print for that.
 > 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+> This patch is depends on [0] but could also be applied in the other
+> order, if conflicts are resolved.
 > 
+> [0] https://lore.kernel.org/linux-arm-msm/20230506-msm8226-ocmem-v1-1-3e24e2724f01@z3ntu.xyz/
+> ---
+> Changes in v2:
+> - Use FIELD_GET macros for getting correct bits from register (take
+>   wording from mdp5: major, minor, step which hopefully is sort of
+>   accurate)
+Qualcomm uses that (or that-ish) nomenclature for many hw blocks, so
+it's likely spot on.
 
-Applied, thanks!
+> - Link to v1: https://lore.kernel.org/r/20230509-ocmem-hwver-v1-1-b83ece3f2168@z3ntu.xyz
+> ---
+>  drivers/soc/qcom/ocmem.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+> index c3e78411c637..9f7c3348cbb9 100644
+> --- a/drivers/soc/qcom/ocmem.c
+> +++ b/drivers/soc/qcom/ocmem.c
+> @@ -76,6 +76,10 @@ struct ocmem {
+>  #define OCMEM_REG_GFX_MPU_START			0x00001004
+>  #define OCMEM_REG_GFX_MPU_END			0x00001008
+>  
+> +#define OCMEM_HW_VERSION_MAJOR(val)		FIELD_GET(GENMASK(31, 28), val)
+> +#define OCMEM_HW_VERSION_MINOR(val)		FIELD_GET(GENMASK(27, 16), val)
+> +#define OCMEM_HW_VERSION_STEP(val)		FIELD_GET(GENMASK(15, 0), val)
+> +
+>  #define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_GET(0x0000000f, (val))
+>  #define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_GET(0x00003f00, (val))
+>  
+> @@ -355,6 +359,11 @@ static int ocmem_dev_probe(struct platform_device *pdev)
+>  		}
+>  	}
+>  
+> +	reg = ocmem_read(ocmem, OCMEM_REG_HW_VERSION);
+> +	dev_dbg(dev, "OCMEM hardware version: %ld.%ld.%ld\n",
+reg is an unsigned long (u32), this should probably be %u
 
-[1/2] arm64: dts: qcom: pm7250b: add missing spmi-vadc include
-      commit: 83022f6484b11a60dbf9a95a88c7ef8e59c4b19c
-[2/2] arm64: dts: qcom: pm7250b: make SID configurable
-      (no commit info)
+> +		OCMEM_HW_VERSION_MAJOR(reg), OCMEM_HW_VERSION_MINOR(reg),
+> +		OCMEM_HW_VERSION_STEP(reg));
+Nit: one per line would make this the tiniest bit easier to read
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+Konrad
+> +
+>  	reg = ocmem_read(ocmem, OCMEM_REG_HW_PROFILE);
+>  	ocmem->num_ports = OCMEM_HW_PROFILE_NUM_PORTS(reg);
+>  	ocmem->num_macros = OCMEM_HW_PROFILE_NUM_MACROS(reg);
+> 
+> ---
+> base-commit: 8705151771af822ac794b44504cd72eebc423499
+> change-id: 20230509-ocmem-hwver-99bcb33b028b
+> 
+> Best regards,
