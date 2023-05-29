@@ -2,135 +2,94 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74CDFC7EE2E
-	for <phone-devel@archiver.kernel.org>; Mon, 29 May 2023 14:07:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5EB2C7EE2C
+	for <phone-devel@archiver.kernel.org>; Mon, 29 May 2023 18:20:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230097AbjE2OHZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 29 May 2023 10:07:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49064 "EHLO
+        id S229621AbjE2SU0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 29 May 2023 14:20:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229790AbjE2OHY (ORCPT
+        with ESMTP id S229459AbjE2SUZ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 29 May 2023 10:07:24 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A330A8;
-        Mon, 29 May 2023 07:07:23 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3f61530506aso34876985e9.1;
-        Mon, 29 May 2023 07:07:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685369241; x=1687961241;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LuPny2OtXAzM2wWK6VJ+p5t+ABcpKnPrmiRDWrl/TM4=;
-        b=S2L7ubx5W2cOkZ8pVxf0WL9LIoKztesZZ7B2oDF4cIv688EwisgTFdGiM051ckbdog
-         IXapWwJUh2Sh6C7luDJmahU3Z1RFiNnb2Xcc5ff1MQi/cBNguGxh3qq9r2Bl7TGwBbE1
-         bSK0Ywk6NRfXydQ4E8JfKxCbrJbbQTkPJbgXxCEC6adjw90zodzr7FC+1MguNY0Y2fQ+
-         zR31DzhDv+0TkE1tTVvgqkRujPKG05bWuEgyAx+upRvmciOpX7BQvMA1kJnAfcSwE2q/
-         7Bnlpgt016RARi6s5pTc1VXtFlvPg1WJ1f3QbiwkXDjMkEARdqGYdrv5Dqbly81nqaFT
-         oyLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685369241; x=1687961241;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LuPny2OtXAzM2wWK6VJ+p5t+ABcpKnPrmiRDWrl/TM4=;
-        b=QiucotOh6qZe45DCaoE2f9cQKfg0clcRCmFmVzUxmEZ1/r3cwg8Tnhx2Lmw7x8t4eB
-         2Z+D7hwuwOuSbJNIFY1U2UBTeqjtc2WnIinCl44FXx3wr0P+gquehq3lXsNb7I3ZvV1k
-         z6/NYUe+8t8Z+hUjhRzHLM2QJweRvixuPgnFxF9dZy+WDOBWhi0BrpioiOV++bKnK0Ru
-         DZ1i1fTlNkImC+tCh7JXVANygrqn4Z01yK/QuGQSkXcEO5wiTvY1yEtFeljA+AaL41YE
-         3ZrmrHTYAzkcwOsnN+sJtWd7huWeqOYt/+wQo/DpQtGF80E843Cov1BFZ8DT7meodTh5
-         t4fQ==
-X-Gm-Message-State: AC+VfDwlK1iCIoCNnJaWUdmkS0xSMy2KPFCFLYUfc7cft/5Y/+X1dGwk
-        fDBqZBO1IUoxHVQon19Oyac=
-X-Google-Smtp-Source: ACHHUZ6zxu2kt7VKYzBTez/NpRcKvfFT/05iC4XI/22RhPD4iBaJlYpy/McywyI+4iaDMmBq5kffpQ==
-X-Received: by 2002:a7b:cb9a:0:b0:3f1:72e2:5d13 with SMTP id m26-20020a7bcb9a000000b003f172e25d13mr9545158wmi.16.1685369241290;
-        Mon, 29 May 2023 07:07:21 -0700 (PDT)
-Received: from [192.168.2.177] ([207.188.167.132])
-        by smtp.gmail.com with ESMTPSA id z17-20020a1c4c11000000b003f4ecf1fcbcsm18247034wmf.22.2023.05.29.07.07.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 May 2023 07:07:20 -0700 (PDT)
-Message-ID: <02a588ca-680f-ab45-1005-768d5b5db252@gmail.com>
-Date:   Mon, 29 May 2023 16:07:16 +0200
+        Mon, 29 May 2023 14:20:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C40E90;
+        Mon, 29 May 2023 11:20:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A69DC614D9;
+        Mon, 29 May 2023 18:20:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9D2C433D2;
+        Mon, 29 May 2023 18:20:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685384424;
+        bh=7MpIpDU1CNrNOt/ZqprpU9B3GzC0GmpemsVfLWbSRfY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FQBSoGk13CHPbD1i+HoYN6Fd98SK4Kx5bnt7Ri64EZ6xyz5Q693vqQtrt6z8lR/z0
+         eynffBTcoPELDuQHSHHIdBh9jBP6/PfhK+SUpBnITDG4kT/h7XqSUd+tEFXEs4vLAi
+         bLhAvNEqRZpg+JIeDf01H/W6jN0sK33G9x5DspLs8QuFfuYMd8BBoW5ivH1xTQyuZu
+         Kj7vGzaWAlW7LKpRnJG5hNeoUw/UOnuDYHN+bkkrtsZDcTY17vQABztP4CLytE2C+9
+         YRvRSTSBtVHteNCsXxzSTvZUjX/Rqe+mOAaqygHHI7wc/J1LMA1C3jobFC2CFxlIBb
+         yZ86Z+RUIJrwA==
+Date:   Mon, 29 May 2023 19:20:17 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krishna Manikandan <quic_mkrishn@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/7] dt-bindings: display/msm: dsi-controller-main: Add
+ msm8226 compatible
+Message-ID: <20230529-opossum-powdered-b60cc970f512@spud>
+References: <20230308-msm8226-mdp-v1-0-679f335d3d5b@z3ntu.xyz>
+ <20230308-msm8226-mdp-v1-2-679f335d3d5b@z3ntu.xyz>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH 03/27] dt-bindings: display: mediatek: dpi: Add compatible
- for MediaTek MT6795
-Content-Language: en-US, ca-ES, es-ES
-To:     AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Cc:     p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        jassisinghbrar@gmail.com, chunfeng.yun@mediatek.com,
-        vkoul@kernel.org, kishon@kernel.org, thierry.reding@gmail.com,
-        u.kleine-koenig@pengutronix.de, chunkuang.hu@kernel.org,
-        ck.hu@mediatek.com, jitao.shi@mediatek.com,
-        xinlei.lee@mediatek.com, houlong.wei@mediatek.com,
-        dri-devel@lists.freedesktop.org,
-        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org,
-        kernel@collabora.com, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-References: <20230412112739.160376-1-angelogioacchino.delregno@collabora.com>
- <20230412112739.160376-4-angelogioacchino.delregno@collabora.com>
-From:   Matthias Brugger <matthias.bgg@gmail.com>
-In-Reply-To: <20230412112739.160376-4-angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="KvERIVUtKpYboQE3"
+Content-Disposition: inline
+In-Reply-To: <20230308-msm8226-mdp-v1-2-679f335d3d5b@z3ntu.xyz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Chun-Kuang Hu,
 
-Can you help to merge the missing DT-binding patches in this series?
+--KvERIVUtKpYboQE3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks a lot,
-Matthias
+On Mon, May 29, 2023 at 11:43:59AM +0200, Luca Weiss wrote:
+> Add the compatible for the DSI found on MSM8226.
+>=20
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
-On 12/04/2023 13:27, AngeloGioacchino Del Regno wrote:
-> Add a compatible string for the MediaTek Helio X10 MT6795 SoC, using
-> the same parameters as MT8183.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> ---
->   .../display/mediatek/mediatek,dpi.yaml        | 23 +++++++++++--------
->   1 file changed, 14 insertions(+), 9 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/display/mediatek/mediatek,dpi.yaml b/Documentation/devicetree/bindings/display/mediatek/mediatek,dpi.yaml
-> index d976380801e3..803c00f26206 100644
-> --- a/Documentation/devicetree/bindings/display/mediatek/mediatek,dpi.yaml
-> +++ b/Documentation/devicetree/bindings/display/mediatek/mediatek,dpi.yaml
-> @@ -17,15 +17,20 @@ description: |
->   
->   properties:
->     compatible:
-> -    enum:
-> -      - mediatek,mt2701-dpi
-> -      - mediatek,mt7623-dpi
-> -      - mediatek,mt8173-dpi
-> -      - mediatek,mt8183-dpi
-> -      - mediatek,mt8186-dpi
-> -      - mediatek,mt8188-dp-intf
-> -      - mediatek,mt8192-dpi
-> -      - mediatek,mt8195-dp-intf
-> +    oneOf:
-> +      - enum:
-> +          - mediatek,mt2701-dpi
-> +          - mediatek,mt7623-dpi
-> +          - mediatek,mt8173-dpi
-> +          - mediatek,mt8183-dpi
-> +          - mediatek,mt8186-dpi
-> +          - mediatek,mt8188-dp-intf
-> +          - mediatek,mt8192-dpi
-> +          - mediatek,mt8195-dp-intf
-> +      - items:
-> +          - enum:
-> +              - mediatek,mt6795-dpi
-> +          - const: mediatek,mt8183-dpi
->   
->     reg:
->       maxItems: 1
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+Thanks,
+Conor.
+
+--KvERIVUtKpYboQE3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZHTs4QAKCRB4tDGHoIJi
+0gJxAP9g6+VXCSHKqz1Dcy+kVMyFENy8a9usGNKOXK3mcW573QEAzDGitMkl6s4w
+uEoqf99Wl2Wpn+Nz3yXyk0bHQnA0ow8=
+=9WvT
+-----END PGP SIGNATURE-----
+
+--KvERIVUtKpYboQE3--
