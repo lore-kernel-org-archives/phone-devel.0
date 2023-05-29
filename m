@@ -2,39 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38550C77B7E
-	for <phone-devel@archiver.kernel.org>; Mon, 29 May 2023 09:46:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42D98C7EE2E
+	for <phone-devel@archiver.kernel.org>; Mon, 29 May 2023 10:25:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231799AbjE2JqE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 29 May 2023 05:46:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44962 "EHLO
+        id S231565AbjE2KZY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 29 May 2023 06:25:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231771AbjE2JqB (ORCPT
+        with ESMTP id S231708AbjE2KZX (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 29 May 2023 05:46:01 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0857D133;
-        Mon, 29 May 2023 02:45:34 -0700 (PDT)
-Received: from [192.168.122.1] (217-149-172-244.nat.highway.telekom.at [217.149.172.244])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 83F58CFC29;
-        Mon, 29 May 2023 09:45:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1685353502; bh=Pw/tZJzdE92dqB5g65+01DVbNHwSCp+HTkrhVc7vhDQ=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=xaTDwxwxipXWTzZ8oghu7wOEUErbqayRlrch8IEtgWPWG19IHihBvIB9MMlVpQlob
-         9OXzQF3L7WXCBslmKDtil2z94gZVfmzHdhz85GrDIUeKurmjhCErW1axLi4Z4J2/1j
-         C/TBelcvKr+SDMTmSyIJweRul2RwB8o9IuDsikoI=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Mon, 29 May 2023 11:44:02 +0200
-Subject: [PATCH 5/7] drm/msm/dsi: Add configuration for MSM8226
+        Mon, 29 May 2023 06:25:23 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77272C9
+        for <phone-devel@vger.kernel.org>; Mon, 29 May 2023 03:25:19 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2af2b74d258so32536251fa.3
+        for <phone-devel@vger.kernel.org>; Mon, 29 May 2023 03:25:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685355918; x=1687947918;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DZdc6i5z2R/+Y9/ZFuY2y7w4jz+QILDjulsUhtAyGX4=;
+        b=QNCnfs6uHjOyrcMnfQ8vqUApOV5PYhd2YixOtZ7ZLvFcGAb6Pb0aoP3puWryA+eRMF
+         OJ+TttCaALibGx5g/3d20G59+wyTb4AcAIYonXNHlIGNNSvcA6etaisqMX/KFPN8LdOi
+         u45uXcF9YqwZpUIKi5nbVvyfNtY7dC1jiUf+KzlOYXTKTvtyrAuzPLjdnouSQ3J+/7PR
+         U9Fx1vCsn9yIS6lHP631N6DB/5W0s+QezhHySMggtRmrAAinkVQ1oeNq6eaBWORj6ntF
+         wGlq3kjjX1JnvGuIJ4CZNUXMTni0jXDlxQbvqRZkkRe6cLMIt+zwWHBlUzKOeT7hYcJk
+         JR+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685355918; x=1687947918;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DZdc6i5z2R/+Y9/ZFuY2y7w4jz+QILDjulsUhtAyGX4=;
+        b=loO3vnl1rRPtMUARUqQgcEyGWfV2r3w/gccKg2OcRIkGD22us+eksmkHyachoYQU9b
+         CETVoDdsMVDBOl9HR5rPcvcb2v7HeLtUlW00b0bPfVjMk6j2c7BJcRQBoy0J9P3U7sTB
+         c7K7G8doLuIYWyNSrUmZdmLs6C9C0qpa+CswU6znOHGe9d8hoCIqIVDk4UHKWlpvpNJ9
+         LAsy27leISqvM3EmLFCwxtgv+AbUYKtC2Ap9A0aIAAcvCW0Q0dXh65WRpyauGYIlPZzP
+         X/gDGom3HvF7JaGfL0vZ7ctOkkU6T3R+lxl2s/tGzQUCSpAhhhR8WmYTZ6vssK1GCbf5
+         nKuw==
+X-Gm-Message-State: AC+VfDxd9f+6j61/l9bO1iNjIKy/1GEvFjGN8cyH9eIOfPB03ohhjcKO
+        rreCLKDBxbW2E8+fxy9IqxlVe5ARvagzs3hfwVI=
+X-Google-Smtp-Source: ACHHUZ4vIs5yH8NjfN0Nkf8gbyCGQ+5UHb7B/5mHAM8XHR9LNDJubjGFpITvbLKj2kdYgWG0sTKPqA==
+X-Received: by 2002:ac2:593b:0:b0:4f4:e26c:644c with SMTP id v27-20020ac2593b000000b004f4e26c644cmr3364039lfi.68.1685355917693;
+        Mon, 29 May 2023 03:25:17 -0700 (PDT)
+Received: from [192.168.1.101] (abyj77.neoplus.adsl.tpnet.pl. [83.9.29.77])
+        by smtp.gmail.com with ESMTPSA id i20-20020ac25234000000b004e887fd71acsm1905505lfl.236.2023.05.29.03.25.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 May 2023 03:25:17 -0700 (PDT)
+Message-ID: <ef8e2090-7e55-14c1-1472-cee7c0ee66ea@linaro.org>
+Date:   Mon, 29 May 2023 12:25:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230308-msm8226-mdp-v1-5-679f335d3d5b@z3ntu.xyz>
-References: <20230308-msm8226-mdp-v1-0-679f335d3d5b@z3ntu.xyz>
-In-Reply-To: <20230308-msm8226-mdp-v1-0-679f335d3d5b@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rob Clark <robdclark@gmail.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH 6/7] drm/msm/dsi: Add phy configuration for MSM8226
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
@@ -44,67 +67,210 @@ To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Conor Dooley <conor+dt@kernel.org>,
         Krishna Manikandan <quic_mkrishn@quicinc.com>,
         Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
+        Bjorn Andersson <andersson@kernel.org>
 Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1569; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=Pw/tZJzdE92dqB5g65+01DVbNHwSCp+HTkrhVc7vhDQ=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkdHQXOlXijtO852UPpnlIg90qlR4MN3zR81Avh
- 77qBL9ZSDiJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHR0FwAKCRBy2EO4nU3X
- Vn9yD/0Z6AqFRQtU4+CdXfKWFfJSwiR5sWlSwFhLRwQnAuBualX0I8ESk3FVmeB1GlQ8FSB/6ZA
- 99MzWjny6n0lkf67+TvTjGOyhYZEskjGjnV3xDT45q96WTd5vUMROANkgf6ZDVljuZdZSc5Dkcy
- laPOw4pFFgpLOrBR9qivQdlARkQ291EltQ/T/MiwJxZjK8QcwkQ6TIaJTOEu60qvKa5rMfkx5QG
- TG3yrerfNgCspdDrJImMSjo2V+IRNZRa7c+iMzmEPCM8dodZi8r8jW/+V6YVyloRpu9HIE7oZ4K
- N+FJaToslOTwKajqwFny9kfs2qj7NvzUdEpt/rC/ZpL31iQYpQkb3J9QQHh/QDQ1i6LOycznslG
- vI120GksPJTV2QxlFdF8vRHUsKYKHCQ4dBKMwgH9O3chrvaTWnNCxtIBOpXyFERt77wfZZIfbcs
- itdto2mZ8G4MHTwyZwWzrGuFRryC5+bJoqLrhfromXyzBdi+AfaY8FmJsNRntptYGFsrJTMy8Gu
- YzT74YzceyM4Kn864Hr0QAr5fMsJ3ybCJF23lzk1zGb5tlhxYrmneM6/Ij/veTIZcXeYE+w85hR
- cpqthUod5rSSJD+NuhTUl/YW4hwNlJQWgrxj5gZ63lw1DpIE75wwagAuRiSdWOYGqw7ppOltfQ9
- Q4aVDvFrPaCjYvQ==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+        linux-kernel@vger.kernel.org
+References: <20230308-msm8226-mdp-v1-0-679f335d3d5b@z3ntu.xyz>
+ <20230308-msm8226-mdp-v1-6-679f335d3d5b@z3ntu.xyz>
+Content-Language: en-US
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230308-msm8226-mdp-v1-6-679f335d3d5b@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the config for the v1.0.2 DSI found on MSM8226. We can reuse
-existing bits from other revisions that are identical for v1.0.2.
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- drivers/gpu/drm/msm/dsi/dsi_cfg.c | 2 ++
- drivers/gpu/drm/msm/dsi/dsi_cfg.h | 1 +
- 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.c b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-index 29ccd755cc2e..8a5fb6df7210 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-@@ -245,6 +245,8 @@ static const struct msm_dsi_cfg_handler dsi_cfg_handlers[] = {
- 		&apq8064_dsi_cfg, &msm_dsi_v2_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_0,
- 		&msm8974_apq8084_dsi_cfg, &msm_dsi_6g_host_ops},
-+	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_0_2,
-+		&msm8974_apq8084_dsi_cfg, &msm_dsi_6g_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_1,
- 		&msm8974_apq8084_dsi_cfg, &msm_dsi_6g_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_1_1,
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.h b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-index 91bdaf50bb1a..43f0dd74edb6 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-+++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-@@ -11,6 +11,7 @@
- #define MSM_DSI_VER_MAJOR_V2	0x02
- #define MSM_DSI_VER_MAJOR_6G	0x03
- #define MSM_DSI_6G_VER_MINOR_V1_0	0x10000000
-+#define MSM_DSI_6G_VER_MINOR_V1_0_2	0x10000002
- #define MSM_DSI_6G_VER_MINOR_V1_1	0x10010000
- #define MSM_DSI_6G_VER_MINOR_V1_1_1	0x10010001
- #define MSM_DSI_6G_VER_MINOR_V1_2	0x10020000
+On 29.05.2023 11:44, Luca Weiss wrote:
+> MSM8226 uses a modified PLL lock sequence compared to MSM8974, which is
+> based on the function dsi_pll_enable_seq_m in the msm-3.10 kernel.
+> 
+> Worth noting that the msm-3.10 downstream kernel also will try other
+> sequences in case this one doesn't work, but during testing it has shown
+> that the _m sequence succeeds first time also:
+> 
+>   .pll_enable_seqs[0] = dsi_pll_enable_seq_m,
+>   .pll_enable_seqs[1] = dsi_pll_enable_seq_m,
+>   .pll_enable_seqs[2] = dsi_pll_enable_seq_d,
+>   .pll_enable_seqs[3] = dsi_pll_enable_seq_d,
+>   .pll_enable_seqs[4] = dsi_pll_enable_seq_f1,
+>   .pll_enable_seqs[5] = dsi_pll_enable_seq_c,
+>   .pll_enable_seqs[6] = dsi_pll_enable_seq_e,
+> 
+> We may need to expand this in the future.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy.c      |  2 +
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy.h      |  3 +-
+>  drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c | 97 ++++++++++++++++++++++++++++++
+>  3 files changed, 101 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+> index bb09cbe8ff86..9d5795c58a98 100644
+> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+> @@ -541,6 +541,8 @@ static const struct of_device_id dsi_phy_dt_match[] = {
+>  	  .data = &dsi_phy_28nm_hpm_famb_cfgs },
+>  	{ .compatible = "qcom,dsi-phy-28nm-lp",
+>  	  .data = &dsi_phy_28nm_lp_cfgs },
+> +	{ .compatible = "qcom,dsi-phy-28nm-8226",
+> +	  .data = &dsi_phy_28nm_8226_cfgs },
+>  #endif
+>  #ifdef CONFIG_DRM_MSM_DSI_20NM_PHY
+>  	{ .compatible = "qcom,dsi-phy-20nm",
+> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h
+> index 7137a17ae523..8b640d174785 100644
+> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h
+> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h
+> @@ -46,8 +46,9 @@ struct msm_dsi_phy_cfg {
+>  extern const struct msm_dsi_phy_cfg dsi_phy_28nm_hpm_cfgs;
+>  extern const struct msm_dsi_phy_cfg dsi_phy_28nm_hpm_famb_cfgs;
+>  extern const struct msm_dsi_phy_cfg dsi_phy_28nm_lp_cfgs;
+> -extern const struct msm_dsi_phy_cfg dsi_phy_20nm_cfgs;
+> +extern const struct msm_dsi_phy_cfg dsi_phy_28nm_8226_cfgs;
+>  extern const struct msm_dsi_phy_cfg dsi_phy_28nm_8960_cfgs;
+> +extern const struct msm_dsi_phy_cfg dsi_phy_20nm_cfgs;
+>  extern const struct msm_dsi_phy_cfg dsi_phy_14nm_cfgs;
+>  extern const struct msm_dsi_phy_cfg dsi_phy_14nm_660_cfgs;
+>  extern const struct msm_dsi_phy_cfg dsi_phy_14nm_2290_cfgs;
+> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
+> index 4c1bf55c5f38..f71308387566 100644
+> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
+> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
+> @@ -37,6 +37,7 @@
+>  
+>  /* v2.0.0 28nm LP implementation */
+>  #define DSI_PHY_28NM_QUIRK_PHY_LP	BIT(0)
+> +#define DSI_PHY_28NM_QUIRK_PHY_8226	BIT(1)
+>  
+>  #define LPFR_LUT_SIZE			10
+>  struct lpfr_cfg {
+> @@ -377,6 +378,74 @@ static int dsi_pll_28nm_vco_prepare_hpm(struct clk_hw *hw)
+>  	return ret;
+>  }
+>  
+> +static int dsi_pll_28nm_vco_prepare_8226(struct clk_hw *hw)
+> +{
+> +	struct dsi_pll_28nm *pll_28nm = to_pll_28nm(hw);
+> +	struct device *dev = &pll_28nm->phy->pdev->dev;
+> +	void __iomem *base = pll_28nm->phy->pll_base;
+> +	u32 max_reads = 5, timeout_us = 100;
+> +	bool locked;
+> +	u32 val;
+> +	int i;
+> +
+> +	DBG("id=%d", pll_28nm->phy->id);
+> +
+> +	pll_28nm_software_reset(pll_28nm);
+> +
+> +	/*
+> +	 * PLL power up sequence.
+> +	 * Add necessary delays recommended by hardware.
+> +	 */
+> +	dsi_phy_write(base + REG_DSI_28nm_PHY_PLL_CAL_CFG1, 0x34);
+> +
+> +	val = DSI_28nm_PHY_PLL_GLB_CFG_PLL_PWRDN_B; // 1
+Did you send the correct revision?
 
--- 
-2.40.1
-
+Konrad
+> +	dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 200);
+> +
+> +	val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_PWRGEN_PWRDN_B; // 4
+> +	dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 200);
+> +
+> +	val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_LDO_PWRDN_B; // 2
+> +	val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_ENABLE; // 8
+> +	dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 600);
+> +
+> +	for (i = 0; i < 7; i++) {
+> +		/* DSI Uniphy lock detect setting */
+> +		dsi_phy_write(base + REG_DSI_28nm_PHY_PLL_LKDET_CFG2, 0x0d);
+> +		dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_LKDET_CFG2,
+> +				0x0c, 100);
+> +		dsi_phy_write(base + REG_DSI_28nm_PHY_PLL_LKDET_CFG2, 0x0d);
+> +
+> +		/* poll for PLL ready status */
+> +		locked = pll_28nm_poll_for_ready(pll_28nm,
+> +						max_reads, timeout_us);
+> +		if (locked)
+> +			break;
+> +
+> +		pll_28nm_software_reset(pll_28nm);
+> +
+> +		/*
+> +		 * PLL power up sequence.
+> +		 * Add necessary delays recommended by hardware.
+> +		 */
+> +		dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_PWRGEN_CFG, 0x00, 50);
+> +
+> +		val = DSI_28nm_PHY_PLL_GLB_CFG_PLL_PWRDN_B; // 1
+> +		val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_PWRGEN_PWRDN_B; // 4
+> +		dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 100);
+> +
+> +		val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_LDO_PWRDN_B; // 2
+> +		val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_ENABLE; // 8
+> +		dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 600);
+> +	}
+> +
+> +	if (unlikely(!locked))
+> +		DRM_DEV_ERROR(dev, "DSI PLL lock failed\n");
+> +	else
+> +		DBG("DSI PLL Lock success");
+> +
+> +	return locked ? 0 : -EINVAL;
+> +}
+> +
+>  static int dsi_pll_28nm_vco_prepare_lp(struct clk_hw *hw)
+>  {
+>  	struct dsi_pll_28nm *pll_28nm = to_pll_28nm(hw);
+> @@ -471,6 +540,15 @@ static const struct clk_ops clk_ops_dsi_pll_28nm_vco_lp = {
+>  	.is_enabled = dsi_pll_28nm_clk_is_enabled,
+>  };
+>  
+> +static const struct clk_ops clk_ops_dsi_pll_28nm_vco_8226 = {
+> +	.round_rate = dsi_pll_28nm_clk_round_rate,
+> +	.set_rate = dsi_pll_28nm_clk_set_rate,
+> +	.recalc_rate = dsi_pll_28nm_clk_recalc_rate,
+> +	.prepare = dsi_pll_28nm_vco_prepare_8226,
+> +	.unprepare = dsi_pll_28nm_vco_unprepare,
+> +	.is_enabled = dsi_pll_28nm_clk_is_enabled,
+> +};
+> +
+>  /*
+>   * PLL Callbacks
+>   */
+> @@ -536,6 +614,8 @@ static int pll_28nm_register(struct dsi_pll_28nm *pll_28nm, struct clk_hw **prov
+>  
+>  	if (pll_28nm->phy->cfg->quirks & DSI_PHY_28NM_QUIRK_PHY_LP)
+>  		vco_init.ops = &clk_ops_dsi_pll_28nm_vco_lp;
+> +	else if (pll_28nm->phy->cfg->quirks & DSI_PHY_28NM_QUIRK_PHY_8226)
+> +		vco_init.ops = &clk_ops_dsi_pll_28nm_vco_8226;
+>  	else
+>  		vco_init.ops = &clk_ops_dsi_pll_28nm_vco_hpm;
+>  
+> @@ -820,3 +900,20 @@ const struct msm_dsi_phy_cfg dsi_phy_28nm_lp_cfgs = {
+>  	.quirks = DSI_PHY_28NM_QUIRK_PHY_LP,
+>  };
+>  
+> +const struct msm_dsi_phy_cfg dsi_phy_28nm_8226_cfgs = {
+> +	.has_phy_regulator = true,
+> +	.regulator_data = dsi_phy_28nm_regulators,
+> +	.num_regulators = ARRAY_SIZE(dsi_phy_28nm_regulators),
+> +	.ops = {
+> +		.enable = dsi_28nm_phy_enable,
+> +		.disable = dsi_28nm_phy_disable,
+> +		.pll_init = dsi_pll_28nm_init,
+> +		.save_pll_state = dsi_28nm_pll_save_state,
+> +		.restore_pll_state = dsi_28nm_pll_restore_state,
+> +	},
+> +	.min_pll_rate = VCO_MIN_RATE,
+> +	.max_pll_rate = VCO_MAX_RATE,
+> +	.io_start = { 0xfd922b00 },
+> +	.num_dsi_phy = 1,
+> +	.quirks = DSI_PHY_28NM_QUIRK_PHY_8226,
+> +};
+> 
