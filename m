@@ -2,157 +2,85 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4499C7EE23
-	for <phone-devel@archiver.kernel.org>; Mon, 29 May 2023 19:55:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5401C77B7A
+	for <phone-devel@archiver.kernel.org>; Mon, 29 May 2023 22:15:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229650AbjE2TzS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 29 May 2023 15:55:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36664 "EHLO
+        id S229829AbjE2WP6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 29 May 2023 18:15:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229808AbjE2TzR (ORCPT
+        with ESMTP id S229785AbjE2WP5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 29 May 2023 15:55:17 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C3CC11B
-        for <phone-devel@vger.kernel.org>; Mon, 29 May 2023 12:55:10 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-3063433fa66so2259102f8f.3
-        for <phone-devel@vger.kernel.org>; Mon, 29 May 2023 12:55:10 -0700 (PDT)
+        Mon, 29 May 2023 18:15:57 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15469F7;
+        Mon, 29 May 2023 15:15:35 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4effb818c37so4008743e87.3;
+        Mon, 29 May 2023 15:15:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685390108; x=1687982108;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=w0aZ5p38I8kGX/b4ujTIQb0+CgzOUSjO4R9Z3nmx/B0=;
-        b=Nl5hN6WIcwrkM/W4vP0xtrM3JIaapuSG+YWFJdovnzE+q6WKTRQD0EccvJ16YgONZi
-         /SipZIEFcxmiHlNlqnr2+VmU7ZNeu/PRmiWDdx2EpDrwMGs7Qq4Ytgb+Y6fNUPFS569I
-         3v+l8w3uwjQ7X1a/NVKzfTYFdm4hHjw17OrXkEMX1uIOEBco0hvGrynBwly2umgWs4bn
-         LoE+8xcsDGiKBq7ZL8zu4UOVWvKVIgNTK5n1+Jh/z2FOYn7QhV/lS/Xa0+PgYIQ4MCqN
-         mB1BtvDg7AgcVbPwIjjtAfFH4gsCpSVFHDTXHjZuoKRW7zSNyaasDN913rDFI+9fjffS
-         4ANw==
+        d=gmail.com; s=20221208; t=1685398533; x=1687990533;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=omqCaXtVC+28c1kFU0RPDtI49AzoCHe4tZEXBsZDVYE=;
+        b=gP4Yj2e6yHQP6kwcNhQJOznSJm0upDrS12CVyrB9FNFm70wYYBHEIB7Fk4xACCtOC+
+         gzfbw8WSAtKIA9LtlVt2buW/MTXVSgsCIE6+g1GKYVk7AFLp/xtT+D04WUMbq8l//N8+
+         3Kk84zdAyAzqb4UIN5Jt+sL1VMOKdW67Im1ZPchJkFEctdPIVF+LNCEYYiK7dpHlHl0F
+         9YnOrsoiwUxakQMdo8wLgDjkgTxSJI7Pj2Gil91F7vphwE6jyYPjHmIcPYyJzpprUjDx
+         YcJZxAJywV2dzmTl6DK6bhPcWW9JQHjn88WKYhECc0hJVCgrFI56kyDWebukOS1iBeiq
+         c/Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685390108; x=1687982108;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w0aZ5p38I8kGX/b4ujTIQb0+CgzOUSjO4R9Z3nmx/B0=;
-        b=f0YhvozR63quzUWZP9rd186w4QnEwxx7+ANx4dowQSRkUNkPOAB3niiRpl+MX69TRy
-         R0tw17AHmvN158+iffD0psCUruPEgPVD4mEzY5BsMX0yIsxCtzzJn9vjbphnUv5efQKX
-         CdXWWfaZ/2+i1HV7B13mX301SSYxzUJnRVrpvkwCvBFqBNU4z40kCyi/12pWFB5cTWxD
-         wWrOQ0Zz88mkak80RAi1D5bPzfvlh4GKT3QehWsIPzzUj5ZDc+qubhbftlji+UEIcs/G
-         CWDDkgXj/hx0xlwC3WTC/hwzjhFlVyEROoqHYrz4V6Yviny6OGReirlaapC6otupLwXv
-         QnNA==
-X-Gm-Message-State: AC+VfDyFaar2tggsnQbM1dTLiYoireQmiIfhm07U3iwlB89Nn3bLr1T5
-        Y3KEjTKoqIosMkS42lYq2ehTtA==
-X-Google-Smtp-Source: ACHHUZ5scsnRAa6maUSyB+VGI1WUs37mgaAQKqz8cg8ttQni03kekKKe6WOhnuk1PRvBxDLPlT9Kaw==
-X-Received: by 2002:a5d:6545:0:b0:306:32c4:7e7b with SMTP id z5-20020a5d6545000000b0030632c47e7bmr9098898wrv.41.1685390108735;
-        Mon, 29 May 2023 12:55:08 -0700 (PDT)
-Received: from lion.localdomain (cpc76484-cwma10-2-0-cust274.7-3.cable.virginm.net. [82.31.201.19])
-        by smtp.gmail.com with ESMTPSA id t7-20020a5d4607000000b0030647449730sm887364wrq.74.2023.05.29.12.55.08
+        d=1e100.net; s=20221208; t=1685398533; x=1687990533;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=omqCaXtVC+28c1kFU0RPDtI49AzoCHe4tZEXBsZDVYE=;
+        b=eY/GT182vPrvCnHYtit2kAPEz7BY4NFho9IbzulMUWtBEBjCiWtyaWKEGHE0LFCe0u
+         ikynB3wotmUUxTT/vzaXRimgNBP8vKirLFBM4wA9TgI64BHmbfdmxGXzAhIsnXuBzITn
+         +CAe69F204Bar0t+JnV6a4V0JWHx3PzEfavL5DSAdEKTUwRnwnF3r+D2XLF0BFMMr0RN
+         +K3DXopradMKUVcTj71HOVvQ4AluYj/H6DAyWlZVzfNeq3Duk8vgfBAJ1N0vKhYQzdiH
+         TAYUDAr6d4CLqSLE1ZZM7Zy7TcibaxooB8An8wTtMKqKDKHsOjSGS3RMeKf3MYMpUFuZ
+         FEsA==
+X-Gm-Message-State: AC+VfDzxmtjlvh2+vI8gxtIUO2qbKUQGyuQvCm8jI36NhH336T2PLnJO
+        T4ttppvDBMZLv834VLhXcVNWTQTa1xU=
+X-Google-Smtp-Source: ACHHUZ7W8aOor5s+8ZSQ0DagnTbiBBnZeZiFLUkTd8wBNVbYn/RZV4eB5iZHdtnz4PUbctZ9nmW5+A==
+X-Received: by 2002:ac2:5a1e:0:b0:4f4:d41b:f421 with SMTP id q30-20020ac25a1e000000b004f4d41bf421mr17708lfn.33.1685398533040;
+        Mon, 29 May 2023 15:15:33 -0700 (PDT)
+Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
+        by smtp.gmail.com with ESMTPSA id c20-20020ac24154000000b004eb12850c40sm132993lfi.14.2023.05.29.15.15.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 May 2023 12:55:08 -0700 (PDT)
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-Date:   Mon, 29 May 2023 20:55:07 +0100
-Subject: [PATCH 2/2] Input: pm8941-powerkey - fix debounce on gen2+ PMICs
+        Mon, 29 May 2023 15:15:30 -0700 (PDT)
+From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+To:     linux-arm-msm@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+        devicetree@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] Thermal zones for pm8226, pm8841 and pm8941
+Date:   Tue, 30 May 2023 01:14:58 +0300
+Message-Id: <20230529221501.43455-1-matti.lehtimaki@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230529-pm8941-pwrkey-debounce-v1-2-c043a6d5c814@linaro.org>
-References: <20230529-pm8941-pwrkey-debounce-v1-0-c043a6d5c814@linaro.org>
-In-Reply-To: <20230529-pm8941-pwrkey-debounce-v1-0-c043a6d5c814@linaro.org>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     linux-input@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        phone-devel@vger.kernel.org,
-        Caleb Connolly <caleb.connolly@linaro.org>
-X-Mailer: b4 0.13-dev-46309
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2348;
- i=caleb.connolly@linaro.org; h=from:subject:message-id;
- bh=921JPz9IiVwykXMRmrs9/Yug9/udoa0UJjhfiNsKYF4=;
- b=owEBbQKS/ZANAwAIAQWDMSsZX2S2AcsmYgBkdQMaOd/WMyUunFsyvX4zsfUwXfUwuiBLOZjKZ
- Bhlyi4jofSJAjMEAAEIAB0WIQS2UaFGPGq+0GkMVc0FgzErGV9ktgUCZHUDGgAKCRAFgzErGV9k
- tmO2D/9yRPBbl07O79CjqtknN1c0Dx2W7x9CpRo90zxJe9EQr1GRO1+NFD4v9Zy4ujlxJuo7Hyh
- np+RVQP+bpzbelXslgsDZjYp7fTz0y2Df8dBkoDZP4RKxhSKK5JVe0onmj5eqokOEDE37BQL6RS
- Lt9XY1DRm9Ay3O35WHc4GRYjl58QSE0PcP5Oct/m8fHGvrY+z7mhatURr72SpC4WVjaJFxdESqk
- /GU8Edtcb/wRkDczVuB2ojmN9fM3o0xcPTDuwDE3SkOe5RPOHs3S1CVS99wLYEIBEsL7frDtvOJ
- RwILxNyE1oxEaDDNfp+WHAmM9yP+/XOM4Lm5DYf07n/Gh8xDh/DUG2bN6t9/FdBN/kzEf5ttFOm
- tK/k0MsAt2DEM0PMVAG2qrWn74uqi0w65FQHiBAMOwk28qDQz/cT7rBXWfR8r6Gs6QMCDtxnxnG
- TxiQz8220pmIZALwnj7eOLwqMrohgYiyt7UFggMUtyb/2zT+JECYgiFVq6Mqcqdo9QfBMC3MOjy
- 0SpzHW1aEu9OmEF6XBbooBefdLIn/eEbEpWzSbUQMRK9tCLpgtT5ZmmVSFCyqm3DuZjZmuMEuss
- KnPalhVKgkrDl0//20kHTGG7sGDRtznwkm5rUTSpbJD4IRRRCu7cDdBKWEob8t6BWBQgOlbuRRv
- NWYWDUhq+q0dJZg==
-X-Developer-Key: i=caleb.connolly@linaro.org; a=openpgp;
- fpr=83B24DA7FE145076BC38BB250CD904EB673A7C47
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Since PM8998/PM660, the power key debounce register was redefined to
-support shorter debounce times. On PM8941 the shortest debounce time
-(represented by register value 0) was 15625us, on PM8998 the shortest
-debounce time is 62us, with the default being 2ms.
+Add thermal sensor for pm8226, which is using on chip VADC channel to
+report PMIC die temperature. Add thermal zone configurations for
+PMIC thermal sensors found in pm8226, pm8841 and pm8941.
 
-Adjust the bit shift to correctly program debounce on PM8998 and newer.
+Matti Lehtimäki (3):
+  ARM: dts: qcom: pm8226: Add thermal sensor and thermal zone config
+  ARM: dts: qcom: pm8841: Add thermal zone config
+  ARM: dts: qcom: pm8941: Add thermal zone config
 
-Fixes: 68c581d5e7d8 ("Input: add Qualcomm PM8941 power key driver")
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
----
-This patch shouldn't be backported earlier then 5.4, as that is the
-first kernel with support for PM8998.
----
- drivers/input/misc/pm8941-pwrkey.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/input/misc/pm8941-pwrkey.c b/drivers/input/misc/pm8941-pwrkey.c
-index b6a27ebae977..74d77d8aaeff 100644
---- a/drivers/input/misc/pm8941-pwrkey.c
-+++ b/drivers/input/misc/pm8941-pwrkey.c
-@@ -50,7 +50,10 @@
- #define  PON_RESIN_PULL_UP		BIT(0)
- 
- #define PON_DBC_CTL			0x71
--#define  PON_DBC_DELAY_MASK		0x7
-+#define  PON_DBC_DELAY_MASK_GEN1	0x7
-+#define  PON_DBC_DELAY_MASK_GEN2	0xf
-+#define  PON_DBC_SHIFT_GEN1		6
-+#define  PON_DBC_SHIFT_GEN2		14
- 
- struct pm8941_data {
- 	unsigned int	pull_up_bit;
-@@ -247,7 +250,7 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
- 	struct device *parent;
- 	struct device_node *regmap_node;
- 	const __be32 *addr;
--	u32 req_delay;
-+	u32 req_delay, mask, delay_shift;
- 	int error;
- 
- 	if (of_property_read_u32(pdev->dev.of_node, "debounce", &req_delay))
-@@ -336,12 +339,20 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
- 	pwrkey->input->phys = pwrkey->data->phys;
- 
- 	if (pwrkey->data->supports_debounce_config) {
--		req_delay = (req_delay << 6) / USEC_PER_SEC;
-+		if (pwrkey->subtype >= PON_SUBTYPE_GEN2_PRIMARY) {
-+			mask = PON_DBC_DELAY_MASK_GEN2;
-+			delay_shift = PON_DBC_SHIFT_GEN2;
-+		} else {
-+			mask = PON_DBC_DELAY_MASK_GEN1;
-+			delay_shift = PON_DBC_SHIFT_GEN1;
-+		}
-+
-+		req_delay = (req_delay << delay_shift) / USEC_PER_SEC;
- 		req_delay = ilog2(req_delay);
- 
- 		error = regmap_update_bits(pwrkey->regmap,
- 					   pwrkey->baseaddr + PON_DBC_CTL,
--					   PON_DBC_DELAY_MASK,
-+					   mask,
- 					   req_delay);
- 		if (error) {
- 			dev_err(&pdev->dev, "failed to set debounce: %d\n",
+ arch/arm/boot/dts/qcom-pm8226.dtsi | 39 ++++++++++++++++++++++++++++++
+ arch/arm/boot/dts/qcom-pm8841.dtsi | 33 ++++++++++++++++++++++++-
+ arch/arm/boot/dts/qcom-pm8941.dtsi | 31 ++++++++++++++++++++++++
+ 3 files changed, 102 insertions(+), 1 deletion(-)
 
 -- 
-2.40.1
+2.34.1
 
