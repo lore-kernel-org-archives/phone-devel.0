@@ -2,36 +2,35 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 084ADC77B7E
-	for <phone-devel@archiver.kernel.org>; Mon, 29 May 2023 09:45:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D78AC7EE31
+	for <phone-devel@archiver.kernel.org>; Mon, 29 May 2023 09:45:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229615AbjE2JpD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 29 May 2023 05:45:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44024 "EHLO
+        id S231726AbjE2JpF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 29 May 2023 05:45:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbjE2JpC (ORCPT
+        with ESMTP id S231719AbjE2JpE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 29 May 2023 05:45:02 -0400
+        Mon, 29 May 2023 05:45:04 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F042D8E;
-        Mon, 29 May 2023 02:45:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 000DB90;
+        Mon, 29 May 2023 02:45:02 -0700 (PDT)
 Received: from [192.168.122.1] (217-149-172-244.nat.highway.telekom.at [217.149.172.244])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 76460CFC23;
-        Mon, 29 May 2023 09:44:58 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id BFAECCFC28;
+        Mon, 29 May 2023 09:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1685353499; bh=fKHguGMctFNCESACSZJ0OkdRQtMgSdg2Fb+SHug/OJY=;
+        t=1685353501; bh=Pvj7kBCbsncRN/r2Hw0hNp6SoznPdByBlaY/zEcd12o=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=bYRgCX1Ct/yYkMnlN9yCglsXXuZ1BQk3uiLrHhLsUtetfldu11etU/2uFd0IPxM8D
-         A3ir4xouCPzZVRQXHVZ1j7RrHFoXmirxFrSCvoB4i5LkQS+ewEWFjUgOk+biEZ/7MA
-         Zh0sxnYZqoS/IhwlJxL4oOq9a556IjcAyuFz9C4I=
+        b=VXAtWFzmQx4kMmbXVxJ0/jmTihf4UrGIeQkLpL+R6GblDaVyskNs80P6za/28yJ/K
+         Clt1xm12l7JsJylg1YLvWtSXrDpFxy8Us53pSPaIWWSO+ZWSgLNt8/JQK4wDMQLmhI
+         muG4CFJ6lfLHoeEsTL3sEimH4xzOAyvBJLVc75Sg=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Mon, 29 May 2023 11:43:58 +0200
-Subject: [PATCH 1/7] dt-bindings: msm: dsi-phy-28nm: Document msm8226
- compatible
+Date:   Mon, 29 May 2023 11:44:01 +0200
+Subject: [PATCH 4/7] drm/msm/mdp5: Add MDP5 configuration for MSM8226
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230308-msm8226-mdp-v1-1-679f335d3d5b@z3ntu.xyz>
+Message-Id: <20230308-msm8226-mdp-v1-4-679f335d3d5b@z3ntu.xyz>
 References: <20230308-msm8226-mdp-v1-0-679f335d3d5b@z3ntu.xyz>
 In-Reply-To: <20230308-msm8226-mdp-v1-0-679f335d3d5b@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -51,59 +50,133 @@ Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1472; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=fKHguGMctFNCESACSZJ0OkdRQtMgSdg2Fb+SHug/OJY=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkdHQT9jqIw6A1vUzspKqvEWAMqlztD1SJhxJ7V
- eBnFLL0nG6JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHR0EwAKCRBy2EO4nU3X
- VplIEADTELAz3DmTbckP/EXs0s8kIO2qRB8KJ/Gxh8KNnF7/ZIAfmfut/0ZvL90EA4Zg0DFlz1W
- XAg27cSf2RdPkngXT8HlHZOJTNbVmBk/I9r+er/qQHAV9Ab6yMEWs9qNk4KX1aKaHTS7E283kf+
- 9X+Gwx9qwvsNoivbYSUryR17/67wARPVIO7Hwl+WWgmf3dtwbNNNp8N9Zm6sN/KMU2+wJyCVFlD
- I+wSPWUEs1nLX4uaPJdks84IlKzAzcAobwWe49l1kXVF5mQbOwsfIFTQREPNRsTFRmtf0Aqrw2q
- k8oJChDdnQ2ZJfaAF6lK92Y7Uywc7NDVLkQmg21VwKHGY9ZFLPmAivgf5y+acIluAnt0m9a9HgY
- Gx2FxW03P0FM0JRxHIHMFyDFM8kpB+UX9X0r3DxRMB2stX2hlhryH6HXjRv3AhyTqczUhQZ/gUZ
- L4mQr0epIMJrYt6aivv+6PeC6yowY97Jh/NqBypIGquta1VVUZhxI/eHkuSonJO9+wWcIqo9WTo
- 2zlKxFWQVHOz1JhZgKaQoH6zgXXyZT8nyPLteelSEvG/1duBPmhJLNND+d4Ww5ATyOpCaT+xSBn
- fWUu+u7h1h7ObzKox0Vo9XaLr9mDYaU2a8XnoTs/3x1xs54VbAHMyiGH825y+GEsNVdS2ExWFm+
- WXDMKfb5l4dd9Xg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2673; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=Pvj7kBCbsncRN/r2Hw0hNp6SoznPdByBlaY/zEcd12o=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkdHQWyEjmV/3z2MU1XlxJRVfIBRMSNKm7z5lbm
+ 12NOYLf2emJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHR0FgAKCRBy2EO4nU3X
+ VoKvD/0WXNNBwPvWw6sReo8s/QeM2zmgoi9Y5n3wNabBguRjFnoTmZ7sxp4cXMmMvc5XIAesKJb
+ +QitMyQy9JcfnXzc5Kp0XPSSmKfNYQMzvqmBsnCZswlk84PnRKz0NUz8+zaUfUyG7aN/3G98JDy
+ k5F3S9Zd6Ho5A3322YWKeoLuPxqjLPE3WVMatZWmYnvY6jfYzmL8M2AbVsMnY1ClnaEU/ClWtk8
+ dI7PzSJ2vpZYSfzZO+Xvya+30SU6AmHUzqsRC/UepLLAxd1q4SPuPVxNezhy969xoxr5vCQbNWm
+ oSVTPKdbL997vj1hwFTPLqEzNA7SgVdbyToPb03M7/KZZ3MPVBVMhS6Yka/LFSgzXfocuX6EgQZ
+ mroGU7i0frgwEtYMi/Jq52M7H0MDKaFXzFSeuKed6yzfG0zpUW6i6liG1oGRICCZp/tWVwdiKAN
+ ruzeOhP1bWMuNfOy4Pfpulijt3iOxuKtrMVwlaVQ6NCj7U61J640D6FrnX2z7b5xxDvR+0+1OUw
+ hCD8UtVTP5S3URKTmVYHu71Mz9l7952HYiChQaQqgHGiZvBiQopvOjaC+1ow7rrsRnq3jEqWfib
+ /kMPOLGIuOsADktLQx73Z8j0EvyjGH+3NvHZwioJvBjA82QLIcmVcn05b0OTHYVIj5ZZA4RjJt6
+ u9s8OyTA39pA6qA==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The MSM8226 SoC uses a slightly different 28nm dsi phy. Add a new
-compatible for it.
+Add the required config for the v1.1 MDP5 found on MSM8226.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml | 1 +
- Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml    | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c | 82 ++++++++++++++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml b/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
-index cf4a338c4661..bd70c3873ca9 100644
---- a/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
-+++ b/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
-@@ -18,6 +18,7 @@ properties:
-       - qcom,dsi-phy-28nm-hpm
-       - qcom,dsi-phy-28nm-hpm-fam-b
-       - qcom,dsi-phy-28nm-lp
-+      - qcom,dsi-phy-28nm-8226
-       - qcom,dsi-phy-28nm-8960
+diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
+index 2eec2d78f32a..694d54341337 100644
+--- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
++++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
+@@ -103,6 +103,87 @@ static const struct mdp5_cfg_hw msm8x74v1_config = {
+ 	.max_clk = 200000000,
+ };
  
-   reg:
-diff --git a/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml
-index b0100105e428..db9f07c6142d 100644
---- a/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml
-+++ b/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml
-@@ -125,6 +125,7 @@ patternProperties:
-           - qcom,dsi-phy-14nm-660
-           - qcom,dsi-phy-14nm-8953
-           - qcom,dsi-phy-20nm
-+          - qcom,dsi-phy-28nm-8226
-           - qcom,dsi-phy-28nm-hpm
-           - qcom,dsi-phy-28nm-lp
-           - qcom,hdmi-phy-8084
++static const struct mdp5_cfg_hw msm8x26_config = {
++	.name = "msm8x26",
++	.mdp = {
++		.count = 1,
++		.caps = MDP_CAP_SMP |
++			0,
++	},
++	.smp = {
++		.mmb_count = 7,
++		.mmb_size = 4096,
++		.clients = {
++			[SSPP_VIG0] =  1,
++			[SSPP_DMA0] = 4,
++			[SSPP_RGB0] = 7,
++		},
++	},
++	.ctl = {
++		.count = 2,
++		.base = { 0x00500, 0x00600 },
++		.flush_hw_mask = 0x0003ffff,
++	},
++	.pipe_vig = {
++		.count = 1,
++		.base = { 0x01100 },
++		.caps = MDP_PIPE_CAP_HFLIP |
++			MDP_PIPE_CAP_VFLIP |
++			MDP_PIPE_CAP_SCALE |
++			MDP_PIPE_CAP_CSC   |
++			0,
++	},
++	.pipe_rgb = {
++		.count = 1,
++		.base = { 0x01d00 },
++		.caps = MDP_PIPE_CAP_HFLIP |
++			MDP_PIPE_CAP_VFLIP |
++			MDP_PIPE_CAP_SCALE |
++			0,
++	},
++	.pipe_dma = {
++		.count = 1,
++		.base = { 0x02900 },
++		.caps = MDP_PIPE_CAP_HFLIP |
++			MDP_PIPE_CAP_VFLIP |
++			0,
++	},
++	.lm = {
++		.count = 2,
++		.base = { 0x03100, 0x03d00 },
++		.instances = {
++				{ .id = 0, .pp = 0, .dspp = 0,
++				  .caps = MDP_LM_CAP_DISPLAY, },
++				{ .id = 1, .pp = -1, .dspp = -1,
++				  .caps = MDP_LM_CAP_WB },
++			     },
++		.nb_stages = 2,
++		.max_width = 2048,
++		.max_height = 0xFFFF,
++	},
++	.dspp = {
++		.count = 1,
++		.base = { 0x04500 },
++	},
++	.pp = {
++		.count = 1,
++		.base = { 0x21a00 },
++	},
++	.intf = {
++		.base = { 0x00000, 0x21200 },
++		.connect = {
++			[0] = INTF_DISABLED,
++			[1] = INTF_DSI,
++		},
++	},
++	.perf = {
++		.ab_inefficiency = 100,
++		.ib_inefficiency = 200,
++		.clk_inefficiency = 125
++	},
++	.max_clk = 200000000,
++};
++
+ static const struct mdp5_cfg_hw msm8x74v2_config = {
+ 	.name = "msm8x74",
+ 	.mdp = {
+@@ -1236,6 +1317,7 @@ static const struct mdp5_cfg_hw sdm660_config = {
+ 
+ static const struct mdp5_cfg_handler cfg_handlers_v1[] = {
+ 	{ .revision = 0, .config = { .hw = &msm8x74v1_config } },
++	{ .revision = 1, .config = { .hw = &msm8x26_config } },
+ 	{ .revision = 2, .config = { .hw = &msm8x74v2_config } },
+ 	{ .revision = 3, .config = { .hw = &apq8084_config } },
+ 	{ .revision = 6, .config = { .hw = &msm8x16_config } },
 
 -- 
 2.40.1
