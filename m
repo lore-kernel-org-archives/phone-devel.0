@@ -2,133 +2,112 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC140C7EE23
-	for <phone-devel@archiver.kernel.org>; Mon, 29 May 2023 18:22:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B68EC77B7E
+	for <phone-devel@archiver.kernel.org>; Mon, 29 May 2023 19:55:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229551AbjE2SWZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 29 May 2023 14:22:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40768 "EHLO
+        id S229498AbjE2TzQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 29 May 2023 15:55:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbjE2SWY (ORCPT
+        with ESMTP id S229808AbjE2TzO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 29 May 2023 14:22:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B209C4;
-        Mon, 29 May 2023 11:22:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E19E61B00;
-        Mon, 29 May 2023 18:22:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8170DC433D2;
-        Mon, 29 May 2023 18:22:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685384542;
-        bh=oCMX/Geu63rceF98CJ4hQyNEh8roIyS9yo/tz8IHJuc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ilh+jWqCoBaVa6PXTgaflF1MN1eQX6Ro1ekApfU2/9nYgdf0ImtiEGMHPkee4JDcz
-         jsBHaLxgISpJFp010BZFPG+5zJjsjjf7phcPMrP79szhjgxiLoNTSMT3RQ4km6iCcz
-         mEYUEtKZatnlgOMOMlEasG2QxbNDAwuaW91x/Kl57ooXbG0RNobfEpoVq/jrAHWmDr
-         NcsxWz45vF0fpYXCL1EJ0Ah89NtOIqktL5mxXv3HF16Ezqx81yTu/Ywzx9fxCfdPQ2
-         DT5n0iT17ldfHlRBF1QrclTHBmetTLu1NQ89Kwu2mrzFkj03tT+K4kQjS0HBNoy4AU
-         f9o0ktwOhwmKw==
-Date:   Mon, 29 May 2023 19:22:15 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krishna Manikandan <quic_mkrishn@quicinc.com>,
+        Mon, 29 May 2023 15:55:14 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C178EED
+        for <phone-devel@vger.kernel.org>; Mon, 29 May 2023 12:55:08 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-30ae5f2ac94so1952909f8f.1
+        for <phone-devel@vger.kernel.org>; Mon, 29 May 2023 12:55:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685390107; x=1687982107;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UBSONiyq8ZSgo95IwQOW+zN2QkXEPgex9gl6YgjWGRU=;
+        b=nEr6mmv2rVEDCRQwGzIf5WvVB4UnG4rceoZaSoaDdH5mXhEwMU80fss55ueRL8/ici
+         UVBZfYJf3l1hTAuyvHzQ+zDUuSt/3BiA3iTrVoiD2gfaWQhkue1/fxujqtOKmlxhi9O8
+         Sf1z0Gv7/mteFlvHPByomUm+goX0P9NOUS7NM7BNiqU8yahk8F1aB8P/u3C6pZp1YG/q
+         rBRCzK7aAA8lT8k0szfv2xjgxqSXDSI4fUuyh4/BnsgYE64CDDtpBHUogDVSk5TFMYBD
+         MshAnCXd0FBW87puw1QKIJ0b6lDN14SlJ5xsNeBgaysuRzayV9ArL0V8wYaRRDoQO+Rs
+         lDTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685390107; x=1687982107;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UBSONiyq8ZSgo95IwQOW+zN2QkXEPgex9gl6YgjWGRU=;
+        b=AoW7wcGYGxtjlceZo0wH19L8/lVZA/9YZutEh8De7eMnF/FdlgFNFVJuin6PC/FOAJ
+         MINCOrubiBOxzU/wjevrVkro47wiXDDwkxKDkYsvc1vWg4maxDGOFmq112UDjvre0QL8
+         x+dgpDFHC/Pm8MOGIAIssXhL+4yv3qNqcLm8i7Yy5NRyN2Rwu3L5xWmbz7Tpa1TDv3li
+         3Mjq3q6wPvlBFe+OrMLBqQbHQeMmtZNiiqHn6oew5G//wDUdyrP5llpn2vd1EmQSkWHX
+         nW0qyzpxN/x7oMPnk7dw5Mk795PCYw30YVvdEvzgR2yX2tx1gfT3/PYtRCDMqKi+x6/m
+         WfYA==
+X-Gm-Message-State: AC+VfDwV/E7m+fmcYGWfDwaD3Cs4M+HYtu5HcrIB4ei3XeCQp6nT+i9q
+        I0+oPWom3eIErqItWp46lvwQAQ==
+X-Google-Smtp-Source: ACHHUZ5GfwpPYm/NfeFmfvtM5xuxflgHh9nfyUgpt+u1fKEzK1WlHnlXKSZKdnPUPz8OliWPbOFFfw==
+X-Received: by 2002:a5d:45cf:0:b0:2fb:1d3a:93ff with SMTP id b15-20020a5d45cf000000b002fb1d3a93ffmr9131254wrs.61.1685390107241;
+        Mon, 29 May 2023 12:55:07 -0700 (PDT)
+Received: from lion.localdomain (cpc76484-cwma10-2-0-cust274.7-3.cable.virginm.net. [82.31.201.19])
+        by smtp.gmail.com with ESMTPSA id t7-20020a5d4607000000b0030647449730sm887364wrq.74.2023.05.29.12.55.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 May 2023 12:55:06 -0700 (PDT)
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+Subject: [PATCH 0/2] Fix pm8941-pwrkey debounce programming
+Date:   Mon, 29 May 2023 20:55:05 +0100
+Message-Id: <20230529-pm8941-pwrkey-debounce-v1-0-c043a6d5c814@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABkDdWQC/x2N2wrCMBAFf6XsswvdWC/xV8SHJD3aIE3Dxiul/
+ 27q4zAMM1OBRhQ6NTMpXrHEKVWQTUNhcOkGjn1lMq3ZtjtjOY9H2wnnt97x5R5+eqYAFpGDdb4
+ TYE819q6AvboUhjUfXXlAV5EV1/j5H8+XZfkBMpZ/5IEAAAA=
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/7] dt-bindings: msm: dsi-phy-28nm: Document msm8226
- compatible
-Message-ID: <20230529-encircle-cherub-374102ca43d4@spud>
-References: <20230308-msm8226-mdp-v1-0-679f335d3d5b@z3ntu.xyz>
- <20230308-msm8226-mdp-v1-1-679f335d3d5b@z3ntu.xyz>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="UyjEm4CeDHfnthCw"
-Content-Disposition: inline
-In-Reply-To: <20230308-msm8226-mdp-v1-1-679f335d3d5b@z3ntu.xyz>
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     linux-input@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org,
+        Caleb Connolly <caleb.connolly@linaro.org>
+X-Mailer: b4 0.13-dev-46309
+X-Developer-Signature: v=1; a=openpgp-sha256; l=753;
+ i=caleb.connolly@linaro.org; h=from:subject:message-id;
+ bh=69Sxru6xrRyg5y8CAaJKdsYttoRQnjQieSGPqXGUZsw=;
+ b=owEBbQKS/ZANAwAIAQWDMSsZX2S2AcsmYgBkdQMaUVI9IEWUIggm5Li94NSCWquclCVuQGzyb
+ c6cYkK1IPmJAjMEAAEIAB0WIQS2UaFGPGq+0GkMVc0FgzErGV9ktgUCZHUDGgAKCRAFgzErGV9k
+ tlpsEACIUlS3bOWKb235EZw5kDYqF2Oon9gzdj2bO7KFTIMhqbOupk087Q1z+trLTgplc8BJOih
+ w7XDzwY2iWQG8vardxKYnBd/s+OIQozhiRzbg61GHh/CC962KjXIln2wLobwy85zXL8Iq9GHhch
+ BCakL0VCMvQSpiZZbJaY7WY9/FAew4WS0vM4Iw5ywy8XRyQCez/3fWmhEXVKVpsd/rFm58YK7gY
+ 68jCDZhVeb8AZ7Gz/Kl5xBSc27e72W/eLisP1qFPi4XzvLm90MAiKVGr5n6Sn+LWVUvXN2zYhLB
+ lfIUjM0+qncxu0/dtfmz+gA2kyn65PQv67Pg0HC8LDsXTOT/OdlAwv+1Xt9Z/mE8FpxNeppN2TZ
+ SUTNf/qellsGtB19dWRYBoVFZHFHvH5tCSPbuSO+/3qwv7jSjpdnouaLXydpX4lq/r22YLjhKed
+ P3LHmYWe9C5hkoElp2aknca2H4eCfkHJVgOXERuWroZCFjgpcevBJkk38up6rmKjDBtXv+MG3Ji
+ dG08wYUTb+IDaM/IZzskZTXWpDCm+TyhaOQggBgYQedjkpUN1PFZWH/x9vpI8kJuTTWZRpDfghd
+ ONQYe/5QqOyofPBT2GpBEE4sCpkfSSTrebe7lBsmFJM9sSLsPU4m6xqNrZ2AAbsie4GS5rU5I1e
+ nUNDtO1Sdd2ZFJg==
+X-Developer-Key: i=caleb.connolly@linaro.org; a=openpgp;
+ fpr=83B24DA7FE145076BC38BB250CD904EB673A7C47
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Since PM8998 the pon debounce register was adjusted to support much
+lower debounce times however the driver was never changed to reflect
+this.
 
---UyjEm4CeDHfnthCw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This resulted in the debounce time being set to the minimum ~62us on
+PMICs from PM8998/PM660 up until PMk8350.
 
-On Mon, May 29, 2023 at 11:43:58AM +0200, Luca Weiss wrote:
-> The MSM8226 SoC uses a slightly different 28nm dsi phy. Add a new
-> compatible for it.
->=20
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml | 1 +
->  Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml    | 1 +
->  2 files changed, 2 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.y=
-aml b/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
-> index cf4a338c4661..bd70c3873ca9 100644
-> --- a/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
-> +++ b/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
-> @@ -18,6 +18,7 @@ properties:
->        - qcom,dsi-phy-28nm-hpm
->        - qcom,dsi-phy-28nm-hpm-fam-b
->        - qcom,dsi-phy-28nm-lp
-> +      - qcom,dsi-phy-28nm-8226
+Set the shift and mask correctly, and adjust MAINTAINERS to include the
+driver under Qualcomm support.
 
-How come the order is different in both places?
+---
+Caleb Connolly (2):
+      MAINTAINERS: Adjust Qualcomm driver globbing
+      Input: pm8941-powerkey - fix debounce on gen2+ PMICs
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+ MAINTAINERS                        |  2 +-
+ drivers/input/misc/pm8941-pwrkey.c | 19 +++++++++++++++----
+ 2 files changed, 16 insertions(+), 5 deletions(-)
+---
+base-commit: 44c026a73be8038f03dbdeef028b642880cf1511
 
-Thanks,
-Conor.
+// Caleb (they/them)
 
->        - qcom,dsi-phy-28nm-8960
-> =20
->    reg:
-> diff --git a/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml=
- b/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml
-> index b0100105e428..db9f07c6142d 100644
-> --- a/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml
-> +++ b/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml
-> @@ -125,6 +125,7 @@ patternProperties:
->            - qcom,dsi-phy-14nm-660
->            - qcom,dsi-phy-14nm-8953
->            - qcom,dsi-phy-20nm
-> +          - qcom,dsi-phy-28nm-8226
->            - qcom,dsi-phy-28nm-hpm
->            - qcom,dsi-phy-28nm-lp
->            - qcom,hdmi-phy-8084
->=20
-> --=20
-> 2.40.1
->=20
-
---UyjEm4CeDHfnthCw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZHTtVwAKCRB4tDGHoIJi
-0nvKAQDbhG5jqoLQjbATFU8ogWNuoWFeY5pQPfj1a1MKxd++VAD/fQ/wznbK/2Ma
-4WV5Mn40WKJywRLn/w7MU15yVh9TGgk=
-=M/da
------END PGP SIGNATURE-----
-
---UyjEm4CeDHfnthCw--
