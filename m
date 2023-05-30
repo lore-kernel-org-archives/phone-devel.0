@@ -2,147 +2,163 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9ED0BC7EE2E
-	for <phone-devel@archiver.kernel.org>; Tue, 30 May 2023 09:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA196C77B7A
+	for <phone-devel@archiver.kernel.org>; Tue, 30 May 2023 10:52:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229917AbjE3Jge (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 30 May 2023 05:36:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50562 "EHLO
+        id S229946AbjE3KwY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 30 May 2023 06:52:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230444AbjE3JgP (ORCPT
+        with ESMTP id S229823AbjE3KwX (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 30 May 2023 05:36:15 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14A42121
-        for <phone-devel@vger.kernel.org>; Tue, 30 May 2023 02:36:12 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2af2451b3f1so44682391fa.2
-        for <phone-devel@vger.kernel.org>; Tue, 30 May 2023 02:36:11 -0700 (PDT)
+        Tue, 30 May 2023 06:52:23 -0400
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E42FFCD
+        for <phone-devel@vger.kernel.org>; Tue, 30 May 2023 03:52:21 -0700 (PDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-3f6d01d390bso44789885e9.2
+        for <phone-devel@vger.kernel.org>; Tue, 30 May 2023 03:52:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685439370; x=1688031370;
+        d=linaro.org; s=google; t=1685443940; x=1688035940;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=QSUpm3/kHitKHIXTkMpVUuYD6zV358mNlZy1Pw8cixM=;
-        b=eiEr/MUuXHMH+B06zqSRgv42erPKMAj9Kx7w2rZzcp4nobfc3K048jWMZ6fDFJfPoK
-         ejzb1MhduHHuqF7qeVrAMH9ReQKlWVpyY/jHgMSrmhZXSq//xbDeIszHR7plCUiuUk6Q
-         mB2LsUOQuyD2IOR9sbU0TqQ1q98GGIGZP+DzsiZIUTFMVMpvVMI6QzJ+x+4YKuJqXc2n
-         zLhh8tC/UG9m/l/+ErMPijBdFB4jnnvtaENg+T7XfZYc95gmZ7fnIaq+eM8dMKoLIhXW
-         9hLPUbsbVwaQgcU03vnEjtQXlECdjwzywct8uf+gw4nzJLtGkt3jP7A0ox4XILvb9y5s
-         nhEw==
+        bh=Q8nDMmF4Rh/Bd+3WSVAUVjbCxPcVcJxjYrTTKFRXjQU=;
+        b=Iz6D0NJ9GiwWAnNbVNcYPRQp1/nDJGM6uiQ3d8ME2qjRhYpFokvrj3HXZO+ucf1bGW
+         d9Ffq98ymGW2mawVpYeqCS/f6tS+kYzrljXLPuZHvKBCtdF00m4WiEa05Hpx7/aIp8jI
+         H/udGK/kVmlyGfrPFR+W9iw3tYJ5YIABvC/f6nju4JgkKX9m9dRzAWsMwLAP4kTEhn0k
+         P4LO1tGnOqCYEcLSkZKRERpSDk6G3YFcKAYu97Pgo6Pv7ey5LirN3tAgmlRTlKSunvzF
+         iE5rTPan4HUXqkvZNTzZ9nL2CXlSLU5jOvYZh6NebzV6UXx7fnl/QJGwCrA/S4FZ9a7M
+         Oo/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685439370; x=1688031370;
+        d=1e100.net; s=20221208; t=1685443940; x=1688035940;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QSUpm3/kHitKHIXTkMpVUuYD6zV358mNlZy1Pw8cixM=;
-        b=BTJkEcm2vR/hAUT2YWuZtSpYFaCBXtuB4n/aD0cEuci/tGmSrfMMAqSBMhXIxybMBh
-         X0ZTw54Qhrxdrtw4FRC7lZcAYgWhKwwvNdvzU14D8f1xAyhM08pMSoqP3zYt2SqN2F1a
-         Rbs9qssdAsztUyj+XRppejObD/3nIQ23yfQWu+SjebKNEyfEGBfDT286956FRIqzegbB
-         e06ZOkKxNKw7cBhhkRXsCkdUjlY+x6EnZI9XpoZTiJDHiACYoVGSNj07unwSh/E0VGQa
-         2NFQRhv0IhsFiz/4IaqSTPU7dCLHWIhtthMrp1+P4+ym/qZCnE43uKog+ZAk2A9hFZJG
-         gwqQ==
-X-Gm-Message-State: AC+VfDzQpfjsQ4WzGKSxdcmMcaW2yZXOnlulifFeyRgZEKCTF2Ox/5Nx
-        6Wl43ADfGscHctg+HiVRtiPSR38eOeJRFSqklQw=
-X-Google-Smtp-Source: ACHHUZ4tCAl6cvbdjWTI7/zfy8x3QXYa2qQO3s7DQVmQFB/T0fJOaknRaI1yYbkdD+4GwTgultZbig==
-X-Received: by 2002:a2e:3e01:0:b0:2b0:4953:e535 with SMTP id l1-20020a2e3e01000000b002b04953e535mr509158lja.19.1685439370299;
-        Tue, 30 May 2023 02:36:10 -0700 (PDT)
-Received: from [192.168.1.101] (abyj77.neoplus.adsl.tpnet.pl. [83.9.29.77])
-        by smtp.gmail.com with ESMTPSA id c10-20020a2e9d8a000000b002af03f75edasm2775171ljj.80.2023.05.30.02.36.09
+        bh=Q8nDMmF4Rh/Bd+3WSVAUVjbCxPcVcJxjYrTTKFRXjQU=;
+        b=RRsKSbK+sNwr9Szq7b98vQFdyX/Z1cI52zjJAvc14q0JHEmE75l2NDbDys7jm4mx+u
+         TF8y/qjau1MHvrSy8/MDyg1mm0olNTiQcswNIdKOLi2FSGQwtLgTCqbg8UgqaOechk37
+         KAUqGC/6Mccp9JIqUYV6e/5vtv0V2FG1H9tXc6aM1ruCGTWg26043gmwQN1o7l69ZQBV
+         bwTMaOl5w6CTpNOw/aFzbid3h3FXdcA6dr3Ry/h1kE1Z7NtkAQrAZRBjGn+6n7lQOop3
+         H+Nezz2c1+fw0o0HqiQw1C8Nd7GLqygS0Dcm44JQe9ERVMsWf0iVAh4ZgBD4ODm12T6N
+         Cgiw==
+X-Gm-Message-State: AC+VfDwvRVyV8aUDhoC5g9GeOQkTpa0axSlIDHHZD2ZzcGhNN0imOcCg
+        Ga0DA+pNsXSh9ycfYW/FuvwVyg==
+X-Google-Smtp-Source: ACHHUZ7EeQU6wTwePyW5SsSph7bmWmzBh+YfoN1Ytx0QPg1J133jcsV49lUTfOYqjFJIGBKh6l84JA==
+X-Received: by 2002:a7b:cbc8:0:b0:3f6:3ad:16a with SMTP id n8-20020a7bcbc8000000b003f603ad016amr1741490wmi.31.1685443940263;
+        Tue, 30 May 2023 03:52:20 -0700 (PDT)
+Received: from [192.168.1.195] ([5.133.47.210])
+        by smtp.googlemail.com with ESMTPSA id j18-20020a5d4492000000b002ffbf2213d4sm2870418wrq.75.2023.05.30.03.52.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 May 2023 02:36:09 -0700 (PDT)
-Message-ID: <d3e6a788-ecab-dd12-f091-279157ea3ad5@linaro.org>
-Date:   Tue, 30 May 2023 11:36:08 +0200
+        Tue, 30 May 2023 03:52:19 -0700 (PDT)
+Message-ID: <e0365591-0f03-ab3d-61b4-c016541f2157@linaro.org>
+Date:   Tue, 30 May 2023 11:52:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH 2/2] Input: pm8941-powerkey - fix debounce on gen2+ PMICs
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 1/2] misc: fastrpc: support complete DMA pool access to
+ the DSP
 Content-Language: en-US
-To:     Caleb Connolly <caleb.connolly@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Cc:     linux-input@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        phone-devel@vger.kernel.org
-References: <20230529-pm8941-pwrkey-debounce-v1-0-c043a6d5c814@linaro.org>
- <20230529-pm8941-pwrkey-debounce-v1-2-c043a6d5c814@linaro.org>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230529-pm8941-pwrkey-debounce-v1-2-c043a6d5c814@linaro.org>
-Content-Type: text/plain; charset=UTF-8
+To:     Dylan Van Assche <me@dylanvanassche.be>, amahesh@qti.qualcomm.com,
+        arnd@arndb.de, gregkh@linuxfoundation.org
+Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        dan.carpenter@linaro.org,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Ekansh Gupta <quic_ekangupt@quicinc.com>
+References: <20230511141146.30465-1-me@dylanvanassche.be>
+ <20230511141146.30465-2-me@dylanvanassche.be>
+From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+In-Reply-To: <20230511141146.30465-2-me@dylanvanassche.be>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 11/05/2023 15:11, Dylan Van Assche wrote:
+> To support FastRPC Context Banks which aren't mapped via the SMMU,
+> make the whole reserved memory region available to the DSP to allow
+> access to coherent buffers.
+
+Mapping the whole region sounds very inefficient, and also possibly 
+making the cma region not usable by others.
+
+> 
+
+AFAIU SDM845 does not have any context banks for SDSP. All new SoCs 
+after 865 have moved to having a context bank.
+
+For such cases (w/o cb) we can make fastrpc_session_alloc use channel 
+context device instead of session ctx device. As this is going to be an 
+issue when we try to allocate buffers dynamically for that cb.
+
+In the newer platforms (from 865) there is support for iommu and context 
+banks on SDSP, so the existing code flow is identical for both ADSP and 
+SDSP.
 
 
-On 29.05.2023 21:55, Caleb Connolly wrote:
-> Since PM8998/PM660, the power key debounce register was redefined to
-> support shorter debounce times. On PM8941 the shortest debounce time
-> (represented by register value 0) was 15625us, on PM8998 the shortest
-> debounce time is 62us, with the default being 2ms.
+We should be careful not to break newer platfroms while adding support 
+to this.
+
+Both myself and Ekansh thought about this and see that the better way to 
+add support to this is by
+
+1. extend fastrpc_session_alloc() to support zero context banks.
+
+2. add flags to mark this and allocate meta data using secure allocation 
+when its required based on this flag.
+
+3.  buffer allocation can either go with 2 or with a new flag coming 
+from userspace.
+
+
+
+> This is performed by assigning the memory to the DSP via a hypervisor
+> call to set the correct permissions for the Virtual Machines on the DSP.
+> This is only necessary when a memory region is provided for SLPI DSPs
+> so guard this with a domain ID check.
 > 
-> Adjust the bit shift to correctly program debounce on PM8998 and newer.
-> 
-> Fixes: 68c581d5e7d8 ("Input: add Qualcomm PM8941 power key driver")
-> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+> Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
 > ---
-> This patch shouldn't be backported earlier then 5.4, as that is the
-> first kernel with support for PM8998.
-> ---
->  drivers/input/misc/pm8941-pwrkey.c | 19 +++++++++++++++----
->  1 file changed, 15 insertions(+), 4 deletions(-)
+>   drivers/misc/fastrpc.c | 15 +++++++++++++++
+>   1 file changed, 15 insertions(+)
 > 
-> diff --git a/drivers/input/misc/pm8941-pwrkey.c b/drivers/input/misc/pm8941-pwrkey.c
-> index b6a27ebae977..74d77d8aaeff 100644
-> --- a/drivers/input/misc/pm8941-pwrkey.c
-> +++ b/drivers/input/misc/pm8941-pwrkey.c
-> @@ -50,7 +50,10 @@
->  #define  PON_RESIN_PULL_UP		BIT(0)
->  
->  #define PON_DBC_CTL			0x71
-> -#define  PON_DBC_DELAY_MASK		0x7
-> +#define  PON_DBC_DELAY_MASK_GEN1	0x7
-> +#define  PON_DBC_DELAY_MASK_GEN2	0xf
-> +#define  PON_DBC_SHIFT_GEN1		6
-> +#define  PON_DBC_SHIFT_GEN2		14
-mask+shift -> field_prep/get?
-
-Nice find!
-
-Konrad
->  
->  struct pm8941_data {
->  	unsigned int	pull_up_bit;
-> @@ -247,7 +250,7 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
->  	struct device *parent;
->  	struct device_node *regmap_node;
->  	const __be32 *addr;
-> -	u32 req_delay;
-> +	u32 req_delay, mask, delay_shift;
->  	int error;
->  
->  	if (of_property_read_u32(pdev->dev.of_node, "debounce", &req_delay))
-> @@ -336,12 +339,20 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
->  	pwrkey->input->phys = pwrkey->data->phys;
->  
->  	if (pwrkey->data->supports_debounce_config) {
-> -		req_delay = (req_delay << 6) / USEC_PER_SEC;
-> +		if (pwrkey->subtype >= PON_SUBTYPE_GEN2_PRIMARY) {
-> +			mask = PON_DBC_DELAY_MASK_GEN2;
-> +			delay_shift = PON_DBC_SHIFT_GEN2;
-> +		} else {
-> +			mask = PON_DBC_DELAY_MASK_GEN1;
-> +			delay_shift = PON_DBC_SHIFT_GEN1;
+> diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+> index f48466960f1b..1ced553ae959 100644
+> --- a/drivers/misc/fastrpc.c
+> +++ b/drivers/misc/fastrpc.c
+> @@ -2231,6 +2231,8 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
+>   	int i, err, domain_id = -1, vmcount;
+>   	const char *domain;
+>   	bool secure_dsp;
+> +	struct device_node *rmem_node;
+> +	struct reserved_mem *rmem;
+>   	unsigned int vmids[FASTRPC_MAX_VMIDS];
+>   
+>   	err = of_property_read_string(rdev->of_node, "label", &domain);
+> @@ -2274,6 +2276,19 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
+>   		}
+>   	}
+>   
+> +	rmem_node = of_parse_phandle(rdev->of_node, "memory-region", 0);
+> +	if (domain_id == SDSP_DOMAIN_ID && rmem_node) {
+> +		rmem = of_reserved_mem_lookup(rmem_node);
+> +		if (!rmem) {
+> +			err = -EINVAL;
+> +			goto fdev_error;
 > +		}
 > +
-> +		req_delay = (req_delay << delay_shift) / USEC_PER_SEC;
->  		req_delay = ilog2(req_delay);
->  
->  		error = regmap_update_bits(pwrkey->regmap,
->  					   pwrkey->baseaddr + PON_DBC_CTL,
-> -					   PON_DBC_DELAY_MASK,
-> +					   mask,
->  					   req_delay);
->  		if (error) {
->  			dev_err(&pdev->dev, "failed to set debounce: %d\n",
-> 
+> +		qcom_scm_assign_mem(rmem->base, rmem->size, &data->perms,
+> +				    data->vmperms, data->vmcount);
+
+vmperms need to be a bit field.
+
+> +
+> +	}
+> +
+>   	secure_dsp = !(of_property_read_bool(rdev->of_node, "qcom,non-secure-domain"));
+>   	data->secure = secure_dsp;
+>   
+
+--srini
