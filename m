@@ -2,127 +2,66 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE592C7EE39
-	for <phone-devel@archiver.kernel.org>; Mon, 29 May 2023 22:16:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 287FFC77B7E
+	for <phone-devel@archiver.kernel.org>; Tue, 30 May 2023 00:12:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229871AbjE2WQB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 29 May 2023 18:16:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43660 "EHLO
+        id S229501AbjE3AMl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 29 May 2023 20:12:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229847AbjE2WQA (ORCPT
+        with ESMTP id S229478AbjE3AMk (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 29 May 2023 18:16:00 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E7F5120;
-        Mon, 29 May 2023 15:15:41 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4f3b9e54338so4246137e87.0;
-        Mon, 29 May 2023 15:15:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685398540; x=1687990540;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AqYkfa5sDJgAMTWjlOv2KfLblT5wPAPNCKQ3KCIe074=;
-        b=SbjrkF9wlug1TUgUyIl+ptIUjtXZLUSEU+mKA9hy8iP/IYdaEuk4WIVHKJa+kPlVM9
-         AYqBuXrEeMS+NaF7Zw63BKXhbQhPEjn2RhsW7QmTi0kxnwP986IMW7YgAedFc4E6hSL4
-         RiwyJU5iQT6C+1GGh5mDkpQogDTcG8mhXxYgsmf145q9u1B/6fuvrH7HXX5MYEUI9qMm
-         Q4eGitAL0eQSk1K2ULVjEyZ/g0+lyJ66anMm7ByH6gnSeEJZ86m2pqgvw5NRdwHCPdef
-         hvMbSn76zLCzjHWPCoxJpnfK7BTWLG1G9F303Er0EgV/Vwi8nH+FGCWmfbKaunu+SGv+
-         crMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685398540; x=1687990540;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AqYkfa5sDJgAMTWjlOv2KfLblT5wPAPNCKQ3KCIe074=;
-        b=ZD1TOWelI3QhOxYPSTg0WtpzSFg6Pau66PT76kfQdLlvXBXpt/VJy4lG8ILmGDmMou
-         MXE68sJeQs05b6EEcYO1+F+l3pUhRNR3wz4DlaLegrTrt3rPsjQIdNVhTlxN6XrEMRQ0
-         8E1zQoHQU069P2V2WjP6/sCjXRO2w2IARTm7yuqdFYkbkqhuaotovQxCR6TzBqsQrvT9
-         ix0ghHONohUBWKvu10fLdSTo5vj57S7AsQL+UGWBkdEzJLiGnlmhALJWmJt7GesmHDg1
-         3+5KMk4uTnsr0itwqxAfbR+gXcubcHrHeb/4yGGv08xO+R8l5oQ2hgg+P8kkeJm+j34L
-         aUFA==
-X-Gm-Message-State: AC+VfDxK4IiRZna94nIgG3sGmkM9btDTrry/WcHfrSaodL1RFF6mrAin
-        cWvL0+glQKrMDtiMMuT+LZ2veaBZXSL0ew==
-X-Google-Smtp-Source: ACHHUZ6Mfd9AZLyIGNfOj5sv2Lt7e9LVTCTXeVYrnqr6Vg4aoeoL3DR83Q6prMThRXl9YQMLj/a8SA==
-X-Received: by 2002:ac2:4d10:0:b0:4f2:5393:b7c with SMTP id r16-20020ac24d10000000b004f253930b7cmr12095lfi.67.1685398539899;
-        Mon, 29 May 2023 15:15:39 -0700 (PDT)
-Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
-        by smtp.gmail.com with ESMTPSA id c20-20020ac24154000000b004eb12850c40sm132993lfi.14.2023.05.29.15.15.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 May 2023 15:15:39 -0700 (PDT)
-From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-To:     linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Mon, 29 May 2023 20:12:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65389D2;
+        Mon, 29 May 2023 17:12:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0AAB62911;
+        Tue, 30 May 2023 00:12:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB88C433EF;
+        Tue, 30 May 2023 00:12:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685405558;
+        bh=5nnc/xve3txZvnGeXvtuJbHv/rAFYkFBRCZNo3lum0Q=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=VhkERC8gyT+QADhjHHtme6n+hHfohb5uaxkVM4H/VHkbQmA5BaFTRvMoFWW8AbKtu
+         MuXigU5YQsuOepF2hWk2qOLpk9M0Hf6mvC31N5AJQgwZlG+xE4u884+ZG+59HUpsEN
+         ht7jezmdD4VqQYYaSRJTDALrxeVglsCzhAqom/wuXZ2raXTYo8FUP5O+1WJLzB2kcc
+         kVZS4Gkj0ArHQWAIhi7IcFxZvoBZjBM+auHl7u+QDFi99Cs5lfXseV5X180giuOxw2
+         s1orFeIearjBgfazhGNdIFyrt+crA0lcSfPC+6tNXITopZX8VyXBaMW2XHcqGd10ZZ
+         NFmevGReBj95Q==
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Brian Masney <masneyb@onstation.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] ARM: dts: qcom: pm8941: Add thermal zone config
-Date:   Tue, 30 May 2023 01:15:01 +0300
-Message-Id: <20230529221501.43455-4-matti.lehtimaki@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230529221501.43455-1-matti.lehtimaki@gmail.com>
-References: <20230529221501.43455-1-matti.lehtimaki@gmail.com>
+        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] soc: qcom: ocmem: Add OCMEM hardware version print
+Date:   Mon, 29 May 2023 17:16:22 -0700
+Message-Id: <168540577537.2201922.14315010265492564569.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230509-ocmem-hwver-v3-1-e51f3488e0f4@z3ntu.xyz>
+References: <20230509-ocmem-hwver-v3-1-e51f3488e0f4@z3ntu.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add thermal zone for the PMIC thermal sensor.
+On Mon, 29 May 2023 10:41:15 +0200, Luca Weiss wrote:
+> It might be useful to know what hardware version of the OCMEM block the
+> SoC contains. Add a debug print for that.
+> 
+> 
 
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
----
- arch/arm/boot/dts/qcom-pm8941.dtsi | 31 ++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+Applied, thanks!
 
-diff --git a/arch/arm/boot/dts/qcom-pm8941.dtsi b/arch/arm/boot/dts/qcom-pm8941.dtsi
-index a821f0368a28..b3e246bacd78 100644
---- a/arch/arm/boot/dts/qcom-pm8941.dtsi
-+++ b/arch/arm/boot/dts/qcom-pm8941.dtsi
-@@ -3,6 +3,37 @@
- #include <dt-bindings/interrupt-controller/irq.h>
- #include <dt-bindings/spmi/spmi.h>
- 
-+
-+/ {
-+	thermal-zones {
-+		pm8941-thermal {
-+			polling-delay-passive = <100>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&pm8941_temp>;
-+
-+			trips {
-+				trip0 {
-+					temperature = <105000>;
-+					hysteresis = <2000>;
-+					type = "passive";
-+				};
-+
-+				trip1 {
-+					temperature = <125000>;
-+					hysteresis = <2000>;
-+					type = "hot";
-+				};
-+
-+				crit {
-+					temperature = <145000>;
-+					hysteresis = <2000>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+	};
-+};
-+
- &spmi_bus {
- 
- 	pm8941_0: pm8941@0 {
+[1/1] soc: qcom: ocmem: Add OCMEM hardware version print
+      commit: e81a16e77259294cd4ff0a9c1fbe5aa0e311a47d
+
+Best regards,
 -- 
-2.34.1
-
+Bjorn Andersson <andersson@kernel.org>
