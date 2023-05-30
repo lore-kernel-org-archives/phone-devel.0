@@ -2,66 +2,147 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 287FFC77B7E
-	for <phone-devel@archiver.kernel.org>; Tue, 30 May 2023 00:12:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9ED0BC7EE2E
+	for <phone-devel@archiver.kernel.org>; Tue, 30 May 2023 09:36:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229501AbjE3AMl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 29 May 2023 20:12:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45384 "EHLO
+        id S229917AbjE3Jge (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 30 May 2023 05:36:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjE3AMk (ORCPT
+        with ESMTP id S230444AbjE3JgP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 29 May 2023 20:12:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65389D2;
-        Mon, 29 May 2023 17:12:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0AAB62911;
-        Tue, 30 May 2023 00:12:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB88C433EF;
-        Tue, 30 May 2023 00:12:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685405558;
-        bh=5nnc/xve3txZvnGeXvtuJbHv/rAFYkFBRCZNo3lum0Q=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VhkERC8gyT+QADhjHHtme6n+hHfohb5uaxkVM4H/VHkbQmA5BaFTRvMoFWW8AbKtu
-         MuXigU5YQsuOepF2hWk2qOLpk9M0Hf6mvC31N5AJQgwZlG+xE4u884+ZG+59HUpsEN
-         ht7jezmdD4VqQYYaSRJTDALrxeVglsCzhAqom/wuXZ2raXTYo8FUP5O+1WJLzB2kcc
-         kVZS4Gkj0ArHQWAIhi7IcFxZvoBZjBM+auHl7u+QDFi99Cs5lfXseV5X180giuOxw2
-         s1orFeIearjBgfazhGNdIFyrt+crA0lcSfPC+6tNXITopZX8VyXBaMW2XHcqGd10ZZ
-         NFmevGReBj95Q==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Brian Masney <masneyb@onstation.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>, Andy Gross <agross@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] soc: qcom: ocmem: Add OCMEM hardware version print
-Date:   Mon, 29 May 2023 17:16:22 -0700
-Message-Id: <168540577537.2201922.14315010265492564569.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230509-ocmem-hwver-v3-1-e51f3488e0f4@z3ntu.xyz>
-References: <20230509-ocmem-hwver-v3-1-e51f3488e0f4@z3ntu.xyz>
+        Tue, 30 May 2023 05:36:15 -0400
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14A42121
+        for <phone-devel@vger.kernel.org>; Tue, 30 May 2023 02:36:12 -0700 (PDT)
+Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2af2451b3f1so44682391fa.2
+        for <phone-devel@vger.kernel.org>; Tue, 30 May 2023 02:36:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685439370; x=1688031370;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QSUpm3/kHitKHIXTkMpVUuYD6zV358mNlZy1Pw8cixM=;
+        b=eiEr/MUuXHMH+B06zqSRgv42erPKMAj9Kx7w2rZzcp4nobfc3K048jWMZ6fDFJfPoK
+         ejzb1MhduHHuqF7qeVrAMH9ReQKlWVpyY/jHgMSrmhZXSq//xbDeIszHR7plCUiuUk6Q
+         mB2LsUOQuyD2IOR9sbU0TqQ1q98GGIGZP+DzsiZIUTFMVMpvVMI6QzJ+x+4YKuJqXc2n
+         zLhh8tC/UG9m/l/+ErMPijBdFB4jnnvtaENg+T7XfZYc95gmZ7fnIaq+eM8dMKoLIhXW
+         9hLPUbsbVwaQgcU03vnEjtQXlECdjwzywct8uf+gw4nzJLtGkt3jP7A0ox4XILvb9y5s
+         nhEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685439370; x=1688031370;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QSUpm3/kHitKHIXTkMpVUuYD6zV358mNlZy1Pw8cixM=;
+        b=BTJkEcm2vR/hAUT2YWuZtSpYFaCBXtuB4n/aD0cEuci/tGmSrfMMAqSBMhXIxybMBh
+         X0ZTw54Qhrxdrtw4FRC7lZcAYgWhKwwvNdvzU14D8f1xAyhM08pMSoqP3zYt2SqN2F1a
+         Rbs9qssdAsztUyj+XRppejObD/3nIQ23yfQWu+SjebKNEyfEGBfDT286956FRIqzegbB
+         e06ZOkKxNKw7cBhhkRXsCkdUjlY+x6EnZI9XpoZTiJDHiACYoVGSNj07unwSh/E0VGQa
+         2NFQRhv0IhsFiz/4IaqSTPU7dCLHWIhtthMrp1+P4+ym/qZCnE43uKog+ZAk2A9hFZJG
+         gwqQ==
+X-Gm-Message-State: AC+VfDzQpfjsQ4WzGKSxdcmMcaW2yZXOnlulifFeyRgZEKCTF2Ox/5Nx
+        6Wl43ADfGscHctg+HiVRtiPSR38eOeJRFSqklQw=
+X-Google-Smtp-Source: ACHHUZ4tCAl6cvbdjWTI7/zfy8x3QXYa2qQO3s7DQVmQFB/T0fJOaknRaI1yYbkdD+4GwTgultZbig==
+X-Received: by 2002:a2e:3e01:0:b0:2b0:4953:e535 with SMTP id l1-20020a2e3e01000000b002b04953e535mr509158lja.19.1685439370299;
+        Tue, 30 May 2023 02:36:10 -0700 (PDT)
+Received: from [192.168.1.101] (abyj77.neoplus.adsl.tpnet.pl. [83.9.29.77])
+        by smtp.gmail.com with ESMTPSA id c10-20020a2e9d8a000000b002af03f75edasm2775171ljj.80.2023.05.30.02.36.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 May 2023 02:36:09 -0700 (PDT)
+Message-ID: <d3e6a788-ecab-dd12-f091-279157ea3ad5@linaro.org>
+Date:   Tue, 30 May 2023 11:36:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH 2/2] Input: pm8941-powerkey - fix debounce on gen2+ PMICs
+Content-Language: en-US
+To:     Caleb Connolly <caleb.connolly@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     linux-input@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org
+References: <20230529-pm8941-pwrkey-debounce-v1-0-c043a6d5c814@linaro.org>
+ <20230529-pm8941-pwrkey-debounce-v1-2-c043a6d5c814@linaro.org>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230529-pm8941-pwrkey-debounce-v1-2-c043a6d5c814@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 29 May 2023 10:41:15 +0200, Luca Weiss wrote:
-> It might be useful to know what hardware version of the OCMEM block the
-> SoC contains. Add a debug print for that.
+
+
+On 29.05.2023 21:55, Caleb Connolly wrote:
+> Since PM8998/PM660, the power key debounce register was redefined to
+> support shorter debounce times. On PM8941 the shortest debounce time
+> (represented by register value 0) was 15625us, on PM8998 the shortest
+> debounce time is 62us, with the default being 2ms.
 > 
+> Adjust the bit shift to correctly program debounce on PM8998 and newer.
 > 
+> Fixes: 68c581d5e7d8 ("Input: add Qualcomm PM8941 power key driver")
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> ---
+> This patch shouldn't be backported earlier then 5.4, as that is the
+> first kernel with support for PM8998.
+> ---
+>  drivers/input/misc/pm8941-pwrkey.c | 19 +++++++++++++++----
+>  1 file changed, 15 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/input/misc/pm8941-pwrkey.c b/drivers/input/misc/pm8941-pwrkey.c
+> index b6a27ebae977..74d77d8aaeff 100644
+> --- a/drivers/input/misc/pm8941-pwrkey.c
+> +++ b/drivers/input/misc/pm8941-pwrkey.c
+> @@ -50,7 +50,10 @@
+>  #define  PON_RESIN_PULL_UP		BIT(0)
+>  
+>  #define PON_DBC_CTL			0x71
+> -#define  PON_DBC_DELAY_MASK		0x7
+> +#define  PON_DBC_DELAY_MASK_GEN1	0x7
+> +#define  PON_DBC_DELAY_MASK_GEN2	0xf
+> +#define  PON_DBC_SHIFT_GEN1		6
+> +#define  PON_DBC_SHIFT_GEN2		14
+mask+shift -> field_prep/get?
 
-Applied, thanks!
+Nice find!
 
-[1/1] soc: qcom: ocmem: Add OCMEM hardware version print
-      commit: e81a16e77259294cd4ff0a9c1fbe5aa0e311a47d
-
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+Konrad
+>  
+>  struct pm8941_data {
+>  	unsigned int	pull_up_bit;
+> @@ -247,7 +250,7 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
+>  	struct device *parent;
+>  	struct device_node *regmap_node;
+>  	const __be32 *addr;
+> -	u32 req_delay;
+> +	u32 req_delay, mask, delay_shift;
+>  	int error;
+>  
+>  	if (of_property_read_u32(pdev->dev.of_node, "debounce", &req_delay))
+> @@ -336,12 +339,20 @@ static int pm8941_pwrkey_probe(struct platform_device *pdev)
+>  	pwrkey->input->phys = pwrkey->data->phys;
+>  
+>  	if (pwrkey->data->supports_debounce_config) {
+> -		req_delay = (req_delay << 6) / USEC_PER_SEC;
+> +		if (pwrkey->subtype >= PON_SUBTYPE_GEN2_PRIMARY) {
+> +			mask = PON_DBC_DELAY_MASK_GEN2;
+> +			delay_shift = PON_DBC_SHIFT_GEN2;
+> +		} else {
+> +			mask = PON_DBC_DELAY_MASK_GEN1;
+> +			delay_shift = PON_DBC_SHIFT_GEN1;
+> +		}
+> +
+> +		req_delay = (req_delay << delay_shift) / USEC_PER_SEC;
+>  		req_delay = ilog2(req_delay);
+>  
+>  		error = regmap_update_bits(pwrkey->regmap,
+>  					   pwrkey->baseaddr + PON_DBC_CTL,
+> -					   PON_DBC_DELAY_MASK,
+> +					   mask,
+>  					   req_delay);
+>  		if (error) {
+>  			dev_err(&pdev->dev, "failed to set debounce: %d\n",
+> 
