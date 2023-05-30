@@ -2,35 +2,35 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5FA0C7EE2F
-	for <phone-devel@archiver.kernel.org>; Tue, 30 May 2023 18:24:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B87F5C7EE37
+	for <phone-devel@archiver.kernel.org>; Tue, 30 May 2023 18:24:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232958AbjE3SYf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 30 May 2023 14:24:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53702 "EHLO
+        id S233382AbjE3SYh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 30 May 2023 14:24:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233351AbjE3SYd (ORCPT
+        with ESMTP id S231690AbjE3SYf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 30 May 2023 14:24:33 -0400
+        Tue, 30 May 2023 14:24:35 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32FCBA7;
-        Tue, 30 May 2023 11:24:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A5BCA7;
+        Tue, 30 May 2023 11:24:34 -0700 (PDT)
 Received: from [192.168.122.1] (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id EA9E8CFC42;
-        Tue, 30 May 2023 18:24:29 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id A394ACFC44;
+        Tue, 30 May 2023 18:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1685471070; bh=tSyVDSi1R0wPUkpeZdZY3/k1LG5m9jxQOZeT/ptDISM=;
+        t=1685471072; bh=z/aQiTQcE2QuOfic75RRo/hFCpeXMEDvL82sQ0eB9MU=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=TlDQIwMxQNaz6waHH9OYtBwLvLeRaosqpKMkSdBffpf9RevXbBZcUyKp4NvRRVhtJ
-         UcBb+CA/kpXAgLcQKFiESVLGQA3b1kLfWUY607k0pjFXWrnRP4ajecUTS2i3o1pcwv
-         Vj/9HchqkJ5anWbPln/H8aiXxnhovOVSF3n+RC88=
+        b=PNuNaQPfPXQXcBI3A0XralCb8FDrEGVTHYmJ3aCA10HzXvrQq0T06xM4qdA7AP/Kf
+         Rs/LIrqV8Q/oGBuvhsJub9kXZDnNjm8OJIEXQ8s6F4sgXt/3jvZRsS495NrY5qT7gm
+         p2PrPr2h/JIWbw214A1oylzKbjYO50YaA8oxpzJo=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Tue, 30 May 2023 20:24:15 +0200
-Subject: [PATCH v2 5/7] drm/msm/dsi: Add configuration for MSM8226
+Date:   Tue, 30 May 2023 20:24:17 +0200
+Subject: [PATCH v2 7/7] ARM: dts: qcom: msm8226: Add mdss nodes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230308-msm8226-mdp-v2-5-e005b769ee28@z3ntu.xyz>
+Message-Id: <20230308-msm8226-mdp-v2-7-e005b769ee28@z3ntu.xyz>
 References: <20230308-msm8226-mdp-v2-0-e005b769ee28@z3ntu.xyz>
 In-Reply-To: <20230308-msm8226-mdp-v2-0-e005b769ee28@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -50,62 +50,172 @@ Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1685; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=tSyVDSi1R0wPUkpeZdZY3/k1LG5m9jxQOZeT/ptDISM=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkdj9VaoueF0hGskMcZQ/G+5BNdYTyh3QFo84xA
- FYiXB3mHMWJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHY/VQAKCRBy2EO4nU3X
- VvdAEACWLm51oDLFfRk14xBcRWiP8GhkLFr61vb6hVhnfbwULHe0mkDIIA6gypDvcWSJ2UgqaoV
- RUG63J3n0SWC4sqsfEs5aE41ZtpxVxylRrgxHxCeS6Hh9X0kDCtkTrzLIeuLBnYEx6tVlgtOD6r
- +x/mFYTJuD/oN6xcuyCOrNq7rg9G+PF2ifMotLyVEwxxvL0pNUb0tHIIo/0dVXLC2bOxofgu6pe
- oGId0qQmjBLfoOtJf0VE3Hpkmy8knIvuzAziXGb92G/qLUb8rIJiXJN/0oAHjBXARVIG6PFxRAy
- dN3WpI8w59SpB3Y4g/3ZMNHJXrzvXgahRij+lroW5yL8ikMIInQNYuQ0/RephC/UzN/F4Qb0xCJ
- l/Hk1rUoe7Y+0vCkCzbtttOuqhXz+5KbiffoQo6iWUWmkTKEO6mDndJ49gCl0GKjkL1k38wGL1O
- BZE1jLvqdeFb7oMf1EEm9oHywhwU9O68JMLhRCumUjdUmPkPBeSLS2x0QoiL17sGaMH2s4zc57m
- JXdnhsCUGm4dja0JMuzEfqTb2st6g4kM/oJepG5LWCNGHM9eZTTKhMwad+1TbbsnawSPupjMbQW
- 3Li8Cq6E6jDaChFA7qqgbo43DrGaMKLZdY7in1+CYPwINkomafRAm5lMpwM8MniPFaH6ApeahrE
- d9gzXg9MVdxaqeQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3445; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=z/aQiTQcE2QuOfic75RRo/hFCpeXMEDvL82sQ0eB9MU=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkdj9XQ26mD638qkdilZENNBfMnjNRu6b0TrM9i
+ x5nSITiamCJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHY/VwAKCRBy2EO4nU3X
+ VnLUEACNBeNSCjbsj9aGEIRQvH3o2vtqRbOvDk1zU6BBbiSmbXGGieqeWgf9FXKZhiGQnUqICnG
+ D387FPjOyiicfJ6MYqFNbcGgWiFQIbfTdcdBGXSkOxH1Kk3Issd3qQ1rhIhBKrjRMR+geDo/DAt
+ XlxcxB+3/DVPPuvjLM0y5ZIKCqriFjP5zla9Y0qpGsvWrK3E4SqyyajciObw7ZiGWFkbM7rn4fY
+ WyAqFoFStaRYCRl+etjNwL/hiiq/EO91rK+jUwTugLrJVJHoxtun+yeu24BI3cJz6/POGnpGKU2
+ y5aUG8C1AznkHXBOHTKBleqMRwr5SgjUstlCCiYiZtdO+7Vn4I7lIE31LMFx7C7/lgzFHvveRph
+ TasTKWPQFROsT408+XGDL2gMaFf5884CEmACaEn+UWzI5KCSG/OpwUFI9AUimawI67VV21z0gS0
+ XNLPEw2N+7Qz/IubFzbMzlvnL4UDwZiW+vy4o+QqphcvK4wms6ke2co5aED9B/JFxrqYeMzFBcl
+ vuDuFXJCFGtvM7UZlS6suSn0NZOOaEyW2SOrCFqbfuvNGWjuBa8SJ/CONwBlsxfEbLIET85jWti
+ rGguMvuupfUzUS+YXnGFbcxOpGMgvWvHAfyCV6jj/WhxH22uouhYvUk1MqOVoq+Hvb8DOHyYIiG
+ EewI8xHb5XplNzg==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the config for the v1.0.2 DSI found on MSM8226. We can reuse
-existing bits from other revisions that are identical for v1.0.2.
+Add the nodes that describe the mdss so that display can work on
+MSM8226.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- drivers/gpu/drm/msm/dsi/dsi_cfg.c | 2 ++
- drivers/gpu/drm/msm/dsi/dsi_cfg.h | 1 +
- 2 files changed, 3 insertions(+)
+ arch/arm/boot/dts/qcom-msm8226.dtsi | 127 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 127 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.c b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-index 29ccd755cc2e..8a5fb6df7210 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-@@ -245,6 +245,8 @@ static const struct msm_dsi_cfg_handler dsi_cfg_handlers[] = {
- 		&apq8064_dsi_cfg, &msm_dsi_v2_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_0,
- 		&msm8974_apq8084_dsi_cfg, &msm_dsi_6g_host_ops},
-+	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_0_2,
-+		&msm8974_apq8084_dsi_cfg, &msm_dsi_6g_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_1,
- 		&msm8974_apq8084_dsi_cfg, &msm_dsi_6g_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_1_1,
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.h b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-index 91bdaf50bb1a..43f0dd74edb6 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-+++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-@@ -11,6 +11,7 @@
- #define MSM_DSI_VER_MAJOR_V2	0x02
- #define MSM_DSI_VER_MAJOR_6G	0x03
- #define MSM_DSI_6G_VER_MINOR_V1_0	0x10000000
-+#define MSM_DSI_6G_VER_MINOR_V1_0_2	0x10000002
- #define MSM_DSI_6G_VER_MINOR_V1_1	0x10010000
- #define MSM_DSI_6G_VER_MINOR_V1_1_1	0x10010001
- #define MSM_DSI_6G_VER_MINOR_V1_2	0x10020000
+diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
+index 42acb9ddb8cc..c794f5ece1d1 100644
+--- a/arch/arm/boot/dts/qcom-msm8226.dtsi
++++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
+@@ -636,6 +636,133 @@ smd-edge {
+ 				label = "lpass";
+ 			};
+ 		};
++
++		mdss: display-subsystem@fd900000 {
++			compatible = "qcom,mdss";
++			reg = <0xfd900000 0x100>, <0xfd924000 0x1000>;
++			reg-names = "mdss_phys", "vbif_phys";
++
++			power-domains = <&mmcc MDSS_GDSC>;
++
++			clocks = <&mmcc MDSS_AHB_CLK>,
++				 <&mmcc MDSS_AXI_CLK>,
++				 <&mmcc MDSS_VSYNC_CLK>;
++			clock-names = "iface",
++				      "bus",
++				      "vsync";
++
++			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
++
++			interrupt-controller;
++			#interrupt-cells = <1>;
++
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges;
++
++			status = "disabled";
++
++			mdp: display-controller@fd900000 {
++				compatible = "qcom,msm8226-mdp5", "qcom,mdp5";
++				reg = <0xfd900100 0x22000>;
++				reg-names = "mdp_phys";
++
++				interrupt-parent = <&mdss>;
++				interrupts = <0>;
++
++				clocks = <&mmcc MDSS_AHB_CLK>,
++					 <&mmcc MDSS_AXI_CLK>,
++					 <&mmcc MDSS_MDP_CLK>,
++					 <&mmcc MDSS_VSYNC_CLK>;
++				clock-names = "iface",
++					      "bus",
++					      "core",
++					      "vsync";
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++						mdp5_intf1_out: endpoint {
++							remote-endpoint = <&dsi0_in>;
++						};
++					};
++				};
++			};
++
++			dsi0: dsi@fd922800 {
++				compatible = "qcom,msm8226-dsi-ctrl",
++					     "qcom,mdss-dsi-ctrl";
++				reg = <0xfd922800 0x1f8>;
++				reg-names = "dsi_ctrl";
++
++				interrupt-parent = <&mdss>;
++				interrupts = <4>;
++
++				assigned-clocks = <&mmcc BYTE0_CLK_SRC>,
++						  <&mmcc PCLK0_CLK_SRC>;
++				assigned-clock-parents = <&dsi_phy0 0>,
++							 <&dsi_phy0 1>;
++
++				clocks = <&mmcc MDSS_MDP_CLK>,
++					 <&mmcc MDSS_AHB_CLK>,
++					 <&mmcc MDSS_AXI_CLK>,
++					 <&mmcc MDSS_BYTE0_CLK>,
++					 <&mmcc MDSS_PCLK0_CLK>,
++					 <&mmcc MDSS_ESC0_CLK>,
++					 <&mmcc MMSS_MISC_AHB_CLK>;
++				clock-names = "mdp_core",
++					      "iface",
++					      "bus",
++					      "byte",
++					      "pixel",
++					      "core",
++					      "core_mmss";
++
++				phys = <&dsi_phy0>;
++
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++						dsi0_in: endpoint {
++							remote-endpoint = <&mdp5_intf1_out>;
++						};
++					};
++
++					port@1 {
++						reg = <1>;
++						dsi0_out: endpoint {
++						};
++					};
++				};
++			};
++
++			dsi_phy0: phy@fd922a00 {
++				compatible = "qcom,dsi-phy-28nm-8226";
++				reg = <0xfd922a00 0xd4>,
++				      <0xfd922b00 0x280>,
++				      <0xfd922d80 0x30>;
++				reg-names = "dsi_pll",
++					    "dsi_phy",
++					    "dsi_phy_regulator";
++
++				#clock-cells = <1>;
++				#phy-cells = <0>;
++
++				clocks = <&mmcc MDSS_AHB_CLK>,
++					 <&rpmcc RPM_SMD_XO_CLK_SRC>;
++				clock-names = "iface",
++					      "ref";
++			};
++		};
+ 	};
+ 
+ 	timer {
 
 -- 
 2.40.1
