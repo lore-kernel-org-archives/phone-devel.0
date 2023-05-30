@@ -2,182 +2,119 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 25B6AC77B73
-	for <phone-devel@archiver.kernel.org>; Tue, 30 May 2023 13:31:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC1E4C77B7A
+	for <phone-devel@archiver.kernel.org>; Tue, 30 May 2023 18:24:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230076AbjE3Nbz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 30 May 2023 09:31:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54678 "EHLO
+        id S232548AbjE3SYb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 30 May 2023 14:24:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230471AbjE3Nbx (ORCPT
+        with ESMTP id S229870AbjE3SYa (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 30 May 2023 09:31:53 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C571C9
-        for <phone-devel@vger.kernel.org>; Tue, 30 May 2023 06:31:52 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-3f6e1393f13so30843615e9.0
-        for <phone-devel@vger.kernel.org>; Tue, 30 May 2023 06:31:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685453511; x=1688045511;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=O4TkSxjrXFcrtwILbeS9FwTTUMwJjznUHF2WZNJpwBU=;
-        b=KZxGd9Leab3vyVTua670SESofGfH/vNC8uJ9Ks4PZVINHELyk+1/3H7CokcsEJWai/
-         9Pk6jGg+MoBlyGzKk2cYHyzHY2usokRuZtaVj27zNrSF6d+LqEVqXFiksGqE7FQWj2Yk
-         7EImtBRAy/Gxp7F5BhhqJ4VgGrp5aiuIpJYqlm5R6eEhL8YEeAkR1WkloBdQMofcx4fB
-         euoMJhMNT+8KnCjB8gTzLxnm1JhlydhO7KOXi5Ij5vftg+PTRlTy/psHV2lr7TAq2Nd2
-         aLz8LxSVU/u4SNwRoCRnbz8R07xeDGKtW7dhVXQMo7Cqjn4bAks58xI5vZjWF456vqsk
-         7S3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685453511; x=1688045511;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O4TkSxjrXFcrtwILbeS9FwTTUMwJjznUHF2WZNJpwBU=;
-        b=Vvq5Eizv/FXDV4MY4B+GODsSLZz8JfOeeuGZu62iwZLtL14C96GbIyF/o6V50nQnx6
-         g/1QQrgvIj6sV//qOoXi/10VDgbC+GAmUfTMSQTnJHRz2yrPgRL0PVIzx4yC9D7P7nMO
-         8bc32rK8myFAxWp8iZ9JRjiXe1SK0Aj6LpEzr0EcUS0THdC4JFwGUsqRZ5qDnv3l30Tk
-         iE9wyQxbwuYQxEMwoJmeq+bm9iRMBHTMMG6zPxdgtLg7l413w7cxX9UI/B7WlAKtOldp
-         oOZVWdRy8nfNAyVi99dXHJZpDFb4s1o6sFJfdB9/aA6Ve1SWMBs+ulAeSzf6yW6co7xJ
-         AHjQ==
-X-Gm-Message-State: AC+VfDyvIfGIxggHZj2cJG+VMa2QBbCed2fkPya6+TPsP+Am/9fh1KNC
-        +Iu4ilvdmbhD5+NWzi69DnjRlA==
-X-Google-Smtp-Source: ACHHUZ4S7Q0TZkKc2h+WlslbMqi6X7Va2BSFmmk0dtePu/I7yooYlXUSA/kGWkN7npTrb2BeQm95Lw==
-X-Received: by 2002:a1c:7206:0:b0:3f6:50e:315f with SMTP id n6-20020a1c7206000000b003f6050e315fmr1442827wmc.41.1685453510780;
-        Tue, 30 May 2023 06:31:50 -0700 (PDT)
-Received: from [192.168.0.84] (cpc76484-cwma10-2-0-cust274.7-3.cable.virginm.net. [82.31.201.19])
-        by smtp.gmail.com with ESMTPSA id c21-20020a7bc855000000b003f1958eeadcsm20906694wml.17.2023.05.30.06.31.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 May 2023 06:31:50 -0700 (PDT)
-Message-ID: <44ec7cce-cd7d-27a3-149b-49fda6308777@linaro.org>
-Date:   Tue, 30 May 2023 14:31:49 +0100
+        Tue, 30 May 2023 14:24:30 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC153A7;
+        Tue, 30 May 2023 11:24:28 -0700 (PDT)
+Received: from [192.168.122.1] (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 9641ECFBF1;
+        Tue, 30 May 2023 18:24:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1685471066; bh=liwsTCjCFh4bjc2tccmTcIdepPTZlH+GSHh7zUBFyD8=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=dhksoKsGL2grQYBlSfAvCvfjGmBo6+Oa16homBpPILDBH37GjJaG5Tr2OcBXj1cSy
+         jzi/cHjDzRgN4vvUDQaeqa1Al3CkSgdwAqBMwnulu8oTQhy1PCekXM65oXljYuKDJr
+         Kp8c1t5ls34irWI+TQeMiLjFxsmwrpOk6ZYrZkEM=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Date:   Tue, 30 May 2023 20:24:11 +0200
+Subject: [PATCH v2 1/7] dt-bindings: msm: dsi-phy-28nm: Document msm8226
+ compatible
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v4 1/2] misc: fastrpc: support complete DMA pool access to
- the DSP
-Content-Language: en-US
-To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Dylan Van Assche <me@dylanvanassche.be>,
-        amahesh@qti.qualcomm.com, arnd@arndb.de, gregkh@linuxfoundation.org
-Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        dan.carpenter@linaro.org, Ekansh Gupta <quic_ekangupt@quicinc.com>
-References: <20230511141146.30465-1-me@dylanvanassche.be>
- <20230511141146.30465-2-me@dylanvanassche.be>
- <e0365591-0f03-ab3d-61b4-c016541f2157@linaro.org>
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <e0365591-0f03-ab3d-61b4-c016541f2157@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230308-msm8226-mdp-v2-1-e005b769ee28@z3ntu.xyz>
+References: <20230308-msm8226-mdp-v2-0-e005b769ee28@z3ntu.xyz>
+In-Reply-To: <20230308-msm8226-mdp-v2-0-e005b769ee28@z3ntu.xyz>
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krishna Manikandan <quic_mkrishn@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>,
+        Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1755; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=liwsTCjCFh4bjc2tccmTcIdepPTZlH+GSHh7zUBFyD8=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkdj9SjUruR4ADWTpHi7+GTTaTpMZj6bZzb6Qfv
+ 0RkZVneKzKJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHY/UgAKCRBy2EO4nU3X
+ Vk2DEACiZgwSlgjzsFFEgTllFUUs27lF3o3FSBCPBPo/Fw2X8wJbyk5OpS1IH00YE4tK2Pe6VIl
+ T8DX7+k37Bj+1piISY6ufoZ3UOvYs/pTwC7YwcCYG+MGyXHFpCOX3rXElruK8rtni85WP0hLXDV
+ AkDAv03OdcvvAPhJygI9RSSbSJeJj12N/ue1XAvgM81t5butJIaBL9lbfGjT7/zVtuLJub0yZiX
+ 7T4QsT3MGgVJBaV+KA5Uii4+6+uBlRxUejTrE546knHx5CJHlJ0DcSzbnLnLpGqE5YckYVKLe62
+ GknDT+at8VZm1gssdWsH/1/WF9PiY51TlTPEl7aHkD87yFr9BHo7L5EyzNhUUfjKo6SAp3SY07M
+ l8KKxSLObaZjeis05pKbTOLu3IqQORyG6a9BW36RgUO0xLET/1fz87U5lK4UqLjhksChfOa34eG
+ jyrnDt8XGMwhQ63QSa2/mX7JWWmipphiz3ZxDDlrYf8CO5b4khLwXSnm4gBiTLuBDA74RBUGvai
+ 7bRe3Pyk+J9BTev9BKzUJP1BO0MpukeohzIwEW12C2jex28M9QnhMXlJhBrTKTtX0XlbLWgnWcf
+ hbYXfFDlFjD06Mtgs9Ac5E4pKpuyDxQO7QfdyTQW/gJ2/uzrxXOUobDarjVLIuZM3v1rmNoQNTN
+ rI0NC3AJv+pDjSA==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+The MSM8226 SoC uses a slightly different 28nm dsi phy. Add a new
+compatible for it.
 
+And while we're at it, in the dsi-phy-28nm.yaml move the 8960 compatible
+to its correct place so its sorted alphabetically.
 
-On 30/05/2023 11:52, Srinivas Kandagatla wrote:
-> On 11/05/2023 15:11, Dylan Van Assche wrote:
->> To support FastRPC Context Banks which aren't mapped via the SMMU,
->> make the whole reserved memory region available to the DSP to allow
->> access to coherent buffers.
-> 
-> Mapping the whole region sounds very inefficient, and also possibly
-> making the cma region not usable by others.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml | 3 ++-
+ Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml    | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-Probably I'm missing something obvious here... The downstream driver
-maps the whole region, what are the advantages to doing it on a
-per-allocation basis?
-
-What are the other users?
-> 
->>
-> 
-> AFAIU SDM845 does not have any context banks for SDSP. All new SoCs
-> after 865 have moved to having a context bank.
-> 
-> For such cases (w/o cb) we can make fastrpc_session_alloc use channel
-> context device instead of session ctx device. As this is going to be an
-> issue when we try to allocate buffers dynamically for that cb.
-
-Right.. This is what patch 2 does, but presumably the ALLOC_DMA_BUF,
-MMAP, etc ioctls won't work with the current iteration?
-
-> 
-> In the newer platforms (from 865) there is support for iommu and context
-> banks on SDSP, so the existing code flow is identical for both ADSP and
-> SDSP.
-> 
-> 
-> We should be careful not to break newer platfroms while adding support
-> to this.
-> 
-> Both myself and Ekansh thought about this and see that the better way to
-> add support to this is by
-> 
-> 1. extend fastrpc_session_alloc() to support zero context banks.
-> 
-> 2. add flags to mark this and allocate meta data using secure allocation
-> when its required based on this flag.
-> 
-> 3.  buffer allocation can either go with 2 or with a new flag coming
-> from userspace.
-
-This sounds pretty good to me!
-> 
-> 
-> 
->> This is performed by assigning the memory to the DSP via a hypervisor
->> call to set the correct permissions for the Virtual Machines on the DSP.
->> This is only necessary when a memory region is provided for SLPI DSPs
->> so guard this with a domain ID check.
->>
->> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
->> Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
->> ---
->>   drivers/misc/fastrpc.c | 15 +++++++++++++++
->>   1 file changed, 15 insertions(+)
->>
->> diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
->> index f48466960f1b..1ced553ae959 100644
->> --- a/drivers/misc/fastrpc.c
->> +++ b/drivers/misc/fastrpc.c
->> @@ -2231,6 +2231,8 @@ static int fastrpc_rpmsg_probe(struct
->> rpmsg_device *rpdev)
->>       int i, err, domain_id = -1, vmcount;
->>       const char *domain;
->>       bool secure_dsp;
->> +    struct device_node *rmem_node;
->> +    struct reserved_mem *rmem;
->>       unsigned int vmids[FASTRPC_MAX_VMIDS];
->>         err = of_property_read_string(rdev->of_node, "label", &domain);
->> @@ -2274,6 +2276,19 @@ static int fastrpc_rpmsg_probe(struct
->> rpmsg_device *rpdev)
->>           }
->>       }
->>   +    rmem_node = of_parse_phandle(rdev->of_node, "memory-region", 0);
->> +    if (domain_id == SDSP_DOMAIN_ID && rmem_node) {
->> +        rmem = of_reserved_mem_lookup(rmem_node);
->> +        if (!rmem) {
->> +            err = -EINVAL;
->> +            goto fdev_error;
->> +        }
->> +
->> +        qcom_scm_assign_mem(rmem->base, rmem->size, &data->perms,
->> +                    data->vmperms, data->vmcount);
-> 
-> vmperms need to be a bit field.
-> 
->> +
->> +    }
->> +
->>       secure_dsp = !(of_property_read_bool(rdev->of_node,
->> "qcom,non-secure-domain"));
->>       data->secure = secure_dsp;
->>   
-> 
-> --srini
+diff --git a/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml b/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
+index cf4a338c4661..62fb3e484eb2 100644
+--- a/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
++++ b/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
+@@ -15,10 +15,11 @@ allOf:
+ properties:
+   compatible:
+     enum:
++      - qcom,dsi-phy-28nm-8226
++      - qcom,dsi-phy-28nm-8960
+       - qcom,dsi-phy-28nm-hpm
+       - qcom,dsi-phy-28nm-hpm-fam-b
+       - qcom,dsi-phy-28nm-lp
+-      - qcom,dsi-phy-28nm-8960
+ 
+   reg:
+     items:
+diff --git a/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml
+index b0100105e428..db9f07c6142d 100644
+--- a/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml
++++ b/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml
+@@ -125,6 +125,7 @@ patternProperties:
+           - qcom,dsi-phy-14nm-660
+           - qcom,dsi-phy-14nm-8953
+           - qcom,dsi-phy-20nm
++          - qcom,dsi-phy-28nm-8226
+           - qcom,dsi-phy-28nm-hpm
+           - qcom,dsi-phy-28nm-lp
+           - qcom,hdmi-phy-8084
 
 -- 
-// Caleb (they/them)
+2.40.1
+
