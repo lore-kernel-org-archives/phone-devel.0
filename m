@@ -2,38 +2,71 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 08022C7EE24
-	for <phone-devel@archiver.kernel.org>; Tue, 30 May 2023 18:25:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A61A1C7EE23
+	for <phone-devel@archiver.kernel.org>; Tue, 30 May 2023 19:13:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233429AbjE3SZe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 30 May 2023 14:25:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54526 "EHLO
+        id S232360AbjE3TNO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 30 May 2023 15:13:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233413AbjE3SZ3 (ORCPT
+        with ESMTP id S232184AbjE3TNN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 30 May 2023 14:25:29 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13880F9;
-        Tue, 30 May 2023 11:25:03 -0700 (PDT)
-Received: from [192.168.122.1] (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id B52A8CFC43;
-        Tue, 30 May 2023 18:24:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1685471071; bh=rnv3mbRpScpgrIa7uhlioBc67H4h1mLQDF3YL9pvLZQ=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=kC5jDogkPQEBPz3ndzMhDpYTBcY8Cc/4A7Hyq/kffTYEFGrsua/T+KUpVXWB8wBzT
-         HPbqcsnp2JZz1swgb/BJapvuvDZ/enZy3jqrJ1LAFVZ2VPLuElyrxqbeBBhfTvu2iR
-         8cMxi/iMOb67nUlq3KBTxjXmcsXZmkza9LCA6eTE=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Tue, 30 May 2023 20:24:16 +0200
-Subject: [PATCH v2 6/7] drm/msm/dsi: Add phy configuration for MSM8226
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230308-msm8226-mdp-v2-6-e005b769ee28@z3ntu.xyz>
-References: <20230308-msm8226-mdp-v2-0-e005b769ee28@z3ntu.xyz>
-In-Reply-To: <20230308-msm8226-mdp-v2-0-e005b769ee28@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Tue, 30 May 2023 15:13:13 -0400
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FF9DF7;
+        Tue, 30 May 2023 12:13:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1685473973; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=qU7DNAy+pcGWmhjuiAm9kRZRamd3CjaN4FZNo9xxupruZsjDBjvzGYUulmhex1Zlwp
+    DOiZ4qkHMR/aQpg2cu0cRw20HEyDKlNDudjwV+BGS/gjuN9rUd2pllHPAADyp9DAEgSY
+    htpHb/Va2PtU8Z5jl4OlABXcLf3Ii9niXp55rSKDaqyelj8Q+1ZlB3gjIt/0RGdKCY6Y
+    msD/Hql5puJ3ip7ltNIILq8P5PBiVq/L0zjFu3QoLgXMXbsjAvoPJb0w9/TxmAs0v2Bc
+    kfqzMJ1IYgz6CskDpEtINT8vQsL6LcawSHipczl9zx0gY8zdJLJqLRhZiJ280SfBRzfp
+    t0sg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1685473973;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=SWANTZ5LEi/i+/1OmwNVpeU8Q7B6L98dYRwCag1X3IU=;
+    b=I/X0CW8WhEp2A4za5NpiYhBoom9IHdgSls/ubMEOPaT8J1rbLK3S1KeSPh9/cdkImH
+    Mc8Gtpp5K7lG02FNrycaMZHZZneNAaamPSrI3sLh3NStwALNiYBo6Ba6gzeVo48veVVv
+    N5jF3q9VoQqQkomhORZllXoV/2IWine2tS9h2wO8CB+tepaYN5KpXU+NufA+68ihYoGw
+    cujGTpWNvsslgYNFMWeB28bjgScQ4WGRPHD8ST6PW5hl9eYrF+7T46DPoFYNxtfZNSe4
+    7iMTZcmRrH7j8YkVp4sBWi4RRA4b9+tJtwumAF2NhFfz8kAZp4PuRDdb9TRFjh3WBYqE
+    GTrw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1685473973;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=SWANTZ5LEi/i+/1OmwNVpeU8Q7B6L98dYRwCag1X3IU=;
+    b=FP15hFHt7bpGY5RHvuIydONPTqUWgn24aeD7J7cIsVVjJXLrUejy1YuCBUDpJevVXz
+    rPBRIk/7SgXG2EaWgrXi0HBJVyZ7muRUNHrCjJhuyeCCi31FNHu8r9kcSGXq+Uh2H+qE
+    CaYRYiiwjsGhO0zC4y5I2XPVjzAeRPWjr2MNaunRs9YQpWYliWqoYHmc5At14PMNm8Kx
+    Xphp8uejnz0yblvdUpE7iYSL45VJuH5lT/g2uZXqGKgIgVAgj3qFjZZxaVcMtQWp00CU
+    00mW+9EyixBVFTDmsODxP1yOZ5bsRMtTO+bofUgdoFf9drpApWxf5CShK7feZklkUKNl
+    YxIA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1685473973;
+    s=strato-dkim-0003; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=SWANTZ5LEi/i+/1OmwNVpeU8Q7B6L98dYRwCag1X3IU=;
+    b=0vKC/pbXCFw865TKgWIbeMWtQkGyD0pg9Z0RZOOHqaY3uiXaPDPu+L1OTpT1tORz68
+    RTtLOfqc4pWs5wpougBg==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA95nh"
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 49.4.0 DYNA|AUTH)
+    with ESMTPSA id j6420az4UJCqjnU
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Tue, 30 May 2023 21:12:52 +0200 (CEST)
+Date:   Tue, 30 May 2023 21:12:46 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Rob Clark <robdclark@gmail.com>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
@@ -45,217 +78,198 @@ To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Krishna Manikandan <quic_mkrishn@quicinc.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6897; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=rnv3mbRpScpgrIa7uhlioBc67H4h1mLQDF3YL9pvLZQ=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkdj9W/xWMtWP2NpPcoje4Jm9Rov5PF1ELb+BJk
- hDZDdwF9oaJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHY/VgAKCRBy2EO4nU3X
- VqG9D/9fNrDvTyCrpYq0HNFrrS4afwRF/4T5hZMlA5mgXJr/gqjM1HPzErCXda4uBfeZOzk9J3m
- iooFTgdxMeFpbZffwtcylCqcNMlyQhithe2eBARwzUWJ+kHDeAz8YsWmtXRgVHGmvctyTCe3suI
- x1z+iK4ocJ+WOLAyziB0D1ctyDsfJl344WLQ0SLppYqyS5rr+0ul4PyPxmt9Wb4rEiu6UhAwbKx
- FfHk6DYqUucxPSV1fIN633YxN52O6UpfQffeuEGlbz7PfpIJtqAivRpBiQ7ULa94+dkfb423G71
- 29uSkndnJEHU6UWyat9VcmBO6QSp7tS4NxxEqNDjJk1F4JeP34JLnKA5/7F8KNYhNRJmNK1X0tv
- j6gqP3gdF96yV9nfbq/Lsyo2UvkTZw9MbJjPz1oFmSGvOWEylKPpkKTxIF6FwVGQ+spmoD4lrRx
- j+CuFzP7Di8WjTkzCRGaIyZTjp66HsGinTY/yIWHh0ZMFhxtk6/DC0vMr/ygvm2rnPfIQquQJke
- lCrWmJOV5EYVrKgUQ1af1DxJr3nIQru7FsTpFW+UaB1FpaHl+vhFySY3+fctM5hbyuTQDkV4Ibc
- m65TDGFsoo+8tLnM4MjRtNvQhYbRw3AVriWz6eIFQrYoIGk67wxZXdbtFzVG458vYjCoy/cYmJW
- FkVmEXCTLMyBG3Q==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 7/7] ARM: dts: qcom: msm8226: Add mdss nodes
+Message-ID: <ZHZKriRXoh9gHpWg@gerhold.net>
+References: <20230308-msm8226-mdp-v2-0-e005b769ee28@z3ntu.xyz>
+ <20230308-msm8226-mdp-v2-7-e005b769ee28@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230308-msm8226-mdp-v2-7-e005b769ee28@z3ntu.xyz>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-MSM8226 uses a modified PLL lock sequence compared to MSM8974, which is
-based on the function dsi_pll_enable_seq_m in the msm-3.10 kernel.
+On Tue, May 30, 2023 at 08:24:17PM +0200, Luca Weiss wrote:
+> Add the nodes that describe the mdss so that display can work on
+> MSM8226.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
-Worth noting that the msm-3.10 downstream kernel also will try other
-sequences in case this one doesn't work, but during testing it has shown
-that the _m sequence succeeds first time also:
+Can you update this to use labels like in [1]? See inline below.
+This will allow proper grouping of the labels in the board DT.
 
-  .pll_enable_seqs[0] = dsi_pll_enable_seq_m,
-  .pll_enable_seqs[1] = dsi_pll_enable_seq_m,
-  .pll_enable_seqs[2] = dsi_pll_enable_seq_d,
-  .pll_enable_seqs[3] = dsi_pll_enable_seq_d,
-  .pll_enable_seqs[4] = dsi_pll_enable_seq_f1,
-  .pll_enable_seqs[5] = dsi_pll_enable_seq_c,
-  .pll_enable_seqs[6] = dsi_pll_enable_seq_e,
+Thanks,
+Stephan
 
-We may need to expand this in the future.
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/commit/?h=for-next&id=835f939501769253eb7eb2dc5389b8592a63a3ed
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- drivers/gpu/drm/msm/dsi/phy/dsi_phy.c      |  2 +
- drivers/gpu/drm/msm/dsi/phy/dsi_phy.h      |  3 +-
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c | 97 ++++++++++++++++++++++++++++++
- 3 files changed, 101 insertions(+), 1 deletion(-)
+> ---
+>  arch/arm/boot/dts/qcom-msm8226.dtsi | 127 ++++++++++++++++++++++++++++++++++++
+>  1 file changed, 127 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
+> index 42acb9ddb8cc..c794f5ece1d1 100644
+> --- a/arch/arm/boot/dts/qcom-msm8226.dtsi
+> +++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
+> @@ -636,6 +636,133 @@ smd-edge {
+>  				label = "lpass";
+>  			};
+>  		};
+> +
+> +		mdss: display-subsystem@fd900000 {
+> +			compatible = "qcom,mdss";
+> +			reg = <0xfd900000 0x100>, <0xfd924000 0x1000>;
+> +			reg-names = "mdss_phys", "vbif_phys";
+> +
+> +			power-domains = <&mmcc MDSS_GDSC>;
+> +
+> +			clocks = <&mmcc MDSS_AHB_CLK>,
+> +				 <&mmcc MDSS_AXI_CLK>,
+> +				 <&mmcc MDSS_VSYNC_CLK>;
+> +			clock-names = "iface",
+> +				      "bus",
+> +				      "vsync";
+> +
+> +			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <1>;
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <1>;
+> +			ranges;
+> +
+> +			status = "disabled";
+> +
+> +			mdp: display-controller@fd900000 {
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-index bb09cbe8ff86..9d5795c58a98 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-@@ -541,6 +541,8 @@ static const struct of_device_id dsi_phy_dt_match[] = {
- 	  .data = &dsi_phy_28nm_hpm_famb_cfgs },
- 	{ .compatible = "qcom,dsi-phy-28nm-lp",
- 	  .data = &dsi_phy_28nm_lp_cfgs },
-+	{ .compatible = "qcom,dsi-phy-28nm-8226",
-+	  .data = &dsi_phy_28nm_8226_cfgs },
- #endif
- #ifdef CONFIG_DRM_MSM_DSI_20NM_PHY
- 	{ .compatible = "qcom,dsi-phy-20nm",
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h
-index 7137a17ae523..8b640d174785 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h
-@@ -46,8 +46,9 @@ struct msm_dsi_phy_cfg {
- extern const struct msm_dsi_phy_cfg dsi_phy_28nm_hpm_cfgs;
- extern const struct msm_dsi_phy_cfg dsi_phy_28nm_hpm_famb_cfgs;
- extern const struct msm_dsi_phy_cfg dsi_phy_28nm_lp_cfgs;
--extern const struct msm_dsi_phy_cfg dsi_phy_20nm_cfgs;
-+extern const struct msm_dsi_phy_cfg dsi_phy_28nm_8226_cfgs;
- extern const struct msm_dsi_phy_cfg dsi_phy_28nm_8960_cfgs;
-+extern const struct msm_dsi_phy_cfg dsi_phy_20nm_cfgs;
- extern const struct msm_dsi_phy_cfg dsi_phy_14nm_cfgs;
- extern const struct msm_dsi_phy_cfg dsi_phy_14nm_660_cfgs;
- extern const struct msm_dsi_phy_cfg dsi_phy_14nm_2290_cfgs;
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
-index 4c1bf55c5f38..ceec7bb87bf1 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
-@@ -37,6 +37,7 @@
- 
- /* v2.0.0 28nm LP implementation */
- #define DSI_PHY_28NM_QUIRK_PHY_LP	BIT(0)
-+#define DSI_PHY_28NM_QUIRK_PHY_8226	BIT(1)
- 
- #define LPFR_LUT_SIZE			10
- struct lpfr_cfg {
-@@ -377,6 +378,74 @@ static int dsi_pll_28nm_vco_prepare_hpm(struct clk_hw *hw)
- 	return ret;
- }
- 
-+static int dsi_pll_28nm_vco_prepare_8226(struct clk_hw *hw)
-+{
-+	struct dsi_pll_28nm *pll_28nm = to_pll_28nm(hw);
-+	struct device *dev = &pll_28nm->phy->pdev->dev;
-+	void __iomem *base = pll_28nm->phy->pll_base;
-+	u32 max_reads = 5, timeout_us = 100;
-+	bool locked;
-+	u32 val;
-+	int i;
-+
-+	DBG("id=%d", pll_28nm->phy->id);
-+
-+	pll_28nm_software_reset(pll_28nm);
-+
-+	/*
-+	 * PLL power up sequence.
-+	 * Add necessary delays recommended by hardware.
-+	 */
-+	dsi_phy_write(base + REG_DSI_28nm_PHY_PLL_CAL_CFG1, 0x34);
-+
-+	val = DSI_28nm_PHY_PLL_GLB_CFG_PLL_PWRDN_B;
-+	dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 200);
-+
-+	val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_PWRGEN_PWRDN_B;
-+	dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 200);
-+
-+	val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_LDO_PWRDN_B;
-+	val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_ENABLE;
-+	dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 600);
-+
-+	for (i = 0; i < 7; i++) {
-+		/* DSI Uniphy lock detect setting */
-+		dsi_phy_write(base + REG_DSI_28nm_PHY_PLL_LKDET_CFG2, 0x0d);
-+		dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_LKDET_CFG2,
-+				0x0c, 100);
-+		dsi_phy_write(base + REG_DSI_28nm_PHY_PLL_LKDET_CFG2, 0x0d);
-+
-+		/* poll for PLL ready status */
-+		locked = pll_28nm_poll_for_ready(pll_28nm,
-+						max_reads, timeout_us);
-+		if (locked)
-+			break;
-+
-+		pll_28nm_software_reset(pll_28nm);
-+
-+		/*
-+		 * PLL power up sequence.
-+		 * Add necessary delays recommended by hardware.
-+		 */
-+		dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_PWRGEN_CFG, 0x00, 50);
-+
-+		val = DSI_28nm_PHY_PLL_GLB_CFG_PLL_PWRDN_B;
-+		val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_PWRGEN_PWRDN_B;
-+		dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 100);
-+
-+		val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_LDO_PWRDN_B;
-+		val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_ENABLE;
-+		dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 600);
-+	}
-+
-+	if (unlikely(!locked))
-+		DRM_DEV_ERROR(dev, "DSI PLL lock failed\n");
-+	else
-+		DBG("DSI PLL Lock success");
-+
-+	return locked ? 0 : -EINVAL;
-+}
-+
- static int dsi_pll_28nm_vco_prepare_lp(struct clk_hw *hw)
- {
- 	struct dsi_pll_28nm *pll_28nm = to_pll_28nm(hw);
-@@ -471,6 +540,15 @@ static const struct clk_ops clk_ops_dsi_pll_28nm_vco_lp = {
- 	.is_enabled = dsi_pll_28nm_clk_is_enabled,
- };
- 
-+static const struct clk_ops clk_ops_dsi_pll_28nm_vco_8226 = {
-+	.round_rate = dsi_pll_28nm_clk_round_rate,
-+	.set_rate = dsi_pll_28nm_clk_set_rate,
-+	.recalc_rate = dsi_pll_28nm_clk_recalc_rate,
-+	.prepare = dsi_pll_28nm_vco_prepare_8226,
-+	.unprepare = dsi_pll_28nm_vco_unprepare,
-+	.is_enabled = dsi_pll_28nm_clk_is_enabled,
-+};
-+
- /*
-  * PLL Callbacks
-  */
-@@ -536,6 +614,8 @@ static int pll_28nm_register(struct dsi_pll_28nm *pll_28nm, struct clk_hw **prov
- 
- 	if (pll_28nm->phy->cfg->quirks & DSI_PHY_28NM_QUIRK_PHY_LP)
- 		vco_init.ops = &clk_ops_dsi_pll_28nm_vco_lp;
-+	else if (pll_28nm->phy->cfg->quirks & DSI_PHY_28NM_QUIRK_PHY_8226)
-+		vco_init.ops = &clk_ops_dsi_pll_28nm_vco_8226;
- 	else
- 		vco_init.ops = &clk_ops_dsi_pll_28nm_vco_hpm;
- 
-@@ -820,3 +900,20 @@ const struct msm_dsi_phy_cfg dsi_phy_28nm_lp_cfgs = {
- 	.quirks = DSI_PHY_28NM_QUIRK_PHY_LP,
- };
- 
-+const struct msm_dsi_phy_cfg dsi_phy_28nm_8226_cfgs = {
-+	.has_phy_regulator = true,
-+	.regulator_data = dsi_phy_28nm_regulators,
-+	.num_regulators = ARRAY_SIZE(dsi_phy_28nm_regulators),
-+	.ops = {
-+		.enable = dsi_28nm_phy_enable,
-+		.disable = dsi_28nm_phy_disable,
-+		.pll_init = dsi_pll_28nm_init,
-+		.save_pll_state = dsi_28nm_pll_save_state,
-+		.restore_pll_state = dsi_28nm_pll_restore_state,
-+	},
-+	.min_pll_rate = VCO_MIN_RATE,
-+	.max_pll_rate = VCO_MAX_RATE,
-+	.io_start = { 0xfd922b00 },
-+	.num_dsi_phy = 1,
-+	.quirks = DSI_PHY_28NM_QUIRK_PHY_8226,
-+};
+			mdss_mdp:
 
--- 
-2.40.1
+> +				compatible = "qcom,msm8226-mdp5", "qcom,mdp5";
+> +				reg = <0xfd900100 0x22000>;
+> +				reg-names = "mdp_phys";
+> +
+> +				interrupt-parent = <&mdss>;
+> +				interrupts = <0>;
+> +
+> +				clocks = <&mmcc MDSS_AHB_CLK>,
+> +					 <&mmcc MDSS_AXI_CLK>,
+> +					 <&mmcc MDSS_MDP_CLK>,
+> +					 <&mmcc MDSS_VSYNC_CLK>;
+> +				clock-names = "iface",
+> +					      "bus",
+> +					      "core",
+> +					      "vsync";
+> +
+> +				ports {
+> +					#address-cells = <1>;
+> +					#size-cells = <0>;
+> +
+> +					port@0 {
+> +						reg = <0>;
+> +						mdp5_intf1_out: endpoint {
 
+						mdss_mdp_intf1_out:
+
+> +							remote-endpoint = <&dsi0_in>;
+> +						};
+> +					};
+> +				};
+> +			};
+> +
+> +			dsi0: dsi@fd922800 {
+
+			mdss_dsi0:
+
+> +				compatible = "qcom,msm8226-dsi-ctrl",
+> +					     "qcom,mdss-dsi-ctrl";
+> +				reg = <0xfd922800 0x1f8>;
+> +				reg-names = "dsi_ctrl";
+> +
+> +				interrupt-parent = <&mdss>;
+> +				interrupts = <4>;
+> +
+> +				assigned-clocks = <&mmcc BYTE0_CLK_SRC>,
+> +						  <&mmcc PCLK0_CLK_SRC>;
+> +				assigned-clock-parents = <&dsi_phy0 0>,
+> +							 <&dsi_phy0 1>;
+> +
+> +				clocks = <&mmcc MDSS_MDP_CLK>,
+> +					 <&mmcc MDSS_AHB_CLK>,
+> +					 <&mmcc MDSS_AXI_CLK>,
+> +					 <&mmcc MDSS_BYTE0_CLK>,
+> +					 <&mmcc MDSS_PCLK0_CLK>,
+> +					 <&mmcc MDSS_ESC0_CLK>,
+> +					 <&mmcc MMSS_MISC_AHB_CLK>;
+> +				clock-names = "mdp_core",
+> +					      "iface",
+> +					      "bus",
+> +					      "byte",
+> +					      "pixel",
+> +					      "core",
+> +					      "core_mmss";
+> +
+> +				phys = <&dsi_phy0>;
+> +
+> +				#address-cells = <1>;
+> +				#size-cells = <0>;
+> +
+> +				ports {
+> +					#address-cells = <1>;
+> +					#size-cells = <0>;
+> +
+> +					port@0 {
+> +						reg = <0>;
+> +						dsi0_in: endpoint {
+
+						mdss_dsi0_in:
+
+> +							remote-endpoint = <&mdp5_intf1_out>;
+> +						};
+> +					};
+> +
+> +					port@1 {
+> +						reg = <1>;
+> +						dsi0_out: endpoint {
+
+						mdss_dsi0_out:
+
+> +						};
+> +					};
+> +				};
+> +			};
+> +
+> +			dsi_phy0: phy@fd922a00 {
+
+			mdss_dsi0_phy:
+
+> +				compatible = "qcom,dsi-phy-28nm-8226";
+> +				reg = <0xfd922a00 0xd4>,
+> +				      <0xfd922b00 0x280>,
+> +				      <0xfd922d80 0x30>;
+> +				reg-names = "dsi_pll",
+> +					    "dsi_phy",
+> +					    "dsi_phy_regulator";
+> +
+> +				#clock-cells = <1>;
+> +				#phy-cells = <0>;
+> +
+> +				clocks = <&mmcc MDSS_AHB_CLK>,
+> +					 <&rpmcc RPM_SMD_XO_CLK_SRC>;
+> +				clock-names = "iface",
+> +					      "ref";
+> +			};
+> +		};
+>  	};
+>  
+>  	timer {
+> 
+> -- 
+> 2.40.1
+> 
