@@ -2,36 +2,38 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 36A2AC77B7A
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Jun 2023 17:00:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6130C77B7E
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Jun 2023 17:01:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232223AbjFARAb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Jun 2023 13:00:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43158 "EHLO
+        id S232314AbjFARBK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 1 Jun 2023 13:01:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232160AbjFARA1 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Jun 2023 13:00:27 -0400
+        with ESMTP id S232332AbjFARAy (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Jun 2023 13:00:54 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5E6CD1;
-        Thu,  1 Jun 2023 10:00:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60FE91B7;
+        Thu,  1 Jun 2023 10:00:51 -0700 (PDT)
 Received: from [192.168.122.1] (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 70759CFC95;
-        Thu,  1 Jun 2023 17:00:24 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id AB9D7CFC14;
+        Thu,  1 Jun 2023 17:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1685638825; bh=eKeJWu3f/K9fInmraz7fujMKEyoO5YqMeg0ocfPUaZk=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=pjAzBJB1NE9OKSaN9I3P20sycTyjb6pXf0Mw4byihxdSSGCuP2ZBjfRNv3CFxz1P6
-         HEc1M9yG9XlckffcoObCzgxTz2SNQx3wZB3yFl5vmjXRRr+1raQdOyNZ3tMQIPcBoN
-         fSqf27cw0X0+JqnMeQ4Lrpu7+W6o7m/4PNo1teJM=
+        t=1685638819; bh=E9mUjQDo8UyBbkmWjAQSJdUKojwYy/hcV0Ek0774vo8=;
+        h=From:Subject:Date:To:Cc;
+        b=js7W3ejGpmo/uNG1c+7ZzZVZbgWdWL4uFUp9SOFdlinQDZ8UrSa7sxJGkAUS94th2
+         vu82c2MspfTUymLeFadExvzSkH4CQ6ZKvh6kLdVZTMJLVbZF3ucNrkWE6m5ypmtkVT
+         U5VjiOymzPzgSMUQrHSQzW1uTZ6ri9iYo6y3TU40=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Thu, 01 Jun 2023 19:00:14 +0200
-Subject: [PATCH v3 7/7] ARM: dts: qcom: msm8226: Add mdss nodes
+Subject: [PATCH v3 0/7] Display support for MSM8226
+Date:   Thu, 01 Jun 2023 19:00:07 +0200
+Message-Id: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230308-msm8226-mdp-v3-7-b6284145d67a@z3ntu.xyz>
-References: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
-In-Reply-To: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
+X-B4-Tracking: v=1; b=H4sIAJfOeGQC/32Oyw6CMBBFf4V0bUmZSimu/A/jgtJBuihgiw2P8
+ O8WFsaFcXkm99w7K/HoDHpySVbiMBhv+i4CPyWkbqvugdToyAQYcMaZpNZbCSCo1QMVZ56h1KK
+ AipFoqMojVa7q6nZ3nnVvP3mRQjrvocFhY6Zj8naP3Bo/9m4+PgjZfv09FjLKqCjKhvNcc52r6
+ 8K78ZVO80L2ngB/XIguMparQpSIIL/dbdveivtSuwcBAAA=
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Rob Clark <robdclark@gmail.com>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
@@ -47,175 +49,76 @@ To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Konrad Dybcio <konrad.dybcio@linaro.org>
 Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>,
+        Conor Dooley <conor.dooley@microchip.com>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3498; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=eKeJWu3f/K9fInmraz7fujMKEyoO5YqMeg0ocfPUaZk=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkeM6h05rTstajjbAt+kVtioKTNC37puxYbWPQm
- BTuFhUuiQuJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHjOoQAKCRBy2EO4nU3X
- Vv4hD/0WEov8+ZNLq0Q5ol0zU/7j43NKM1dVC6HyNyEHS5sRr4q3y8LKlQ/m3lzk2eKq89I6Zoa
- 0wA+H6g00UjIjDShXCCNLa/I0XkuwuGb4nXsF5fX/8OmCwRBBQX5XaP2m3DlkWivhe7xEj4qw+6
- BoKeBzDn/g+lFAUKX8+616t3lCvpK1BRatKOMfqMnikGKSji0DdKH8ODP2qH0LsmmQETwEg4jb5
- qQxBSRJ1vZf/OE9B7RVyCQTzimae1j++fugad5zuBDXLzgzJJDclMzlORxZr+k2hNuJM5GihgO7
- IxNGErKKY7PTyfXRC2Zirh9PwcGbY3zX6tJ6uQbKDwRA8GzJ0g4Ib9DXegvW8Iloex7kvC3HZXi
- uZ68MJxFjDXvR/KpKQwoRppp6tJX8lRvivMnYa8zqJT3c/uetq1zkpedfG2Slas0QQxEK2WYCWY
- bVZk/gxbJpVOdfERXlpFbK/9m7/7Zn0yiN9csQ0R77W+dXgm1d8VlsNdTU3EHgHthNYS/Ymsxwr
- q/3qCeNr8VE/vRHDnVoEPIHEd9G1D9FxxWYSbr2/hcnm+LpucX2G4ENbWCp/64eFfLJLQfcuzOT
- PVe3yL89QxXqgV14B1ATyLSlO2TqQdhRgUNAnhhbJOOgXeO9dTc1ztTtmd1WoA0wqdjtRP8UIkW
- WgdUOM8ZyUlSCwA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2110; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=E9mUjQDo8UyBbkmWjAQSJdUKojwYy/hcV0Ek0774vo8=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkeM6Zxutcw3C8PPM2W0MlOxwMLfEqVfzbxhHqm
+ W7xap/SoRiJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHjOmQAKCRBy2EO4nU3X
+ VthWEACX3g9quntLQ1EbVMqXp5IC9GIbgA27GePnz645CnqflV4RI9q1nJjWUecniJAOBjM5MAM
+ xaM5ZBI0G9tqAoepgqPtiinLcBZBLpv0kdhOGlUmabgc9mhAVIPeoggNz/6KYqlZmjYNxN9OXgm
+ zhxgXFAOL8z0P8B9nkk+WTvbmxY6oHfLW5R1RNSqoVJ1Pn4WRcrfgih11e929+MdburA1WzRO6N
+ 2czha8byQiO0dCB/AFEk6UXHr0TkJczNCeuzLqLLSKolgqpVELASn70X5/9OFTFwuk4zVQ/oInd
+ Uuu/VNs3jkA58XBw/rEZqPc15w7rCzkOKfc26mFMil24agAQOKAV6AH/6sSwCeaec5kptUyYbv/
+ kZH48cl3Msl3mnYIVnqjK8w3Wl18LwLN4pPCUZh5oQxWcnZIF9wNWNOuQQuH53m5RM3VBA6Ubho
+ XAkr7ZZHhnwyT3Y3rs4OKgOqFXP5C7e6m0OwRiVka7hzYxjblCdHTgIsLNKIlec4o0s9Jq7IHKh
+ 8O0TfadwYSTtUzErlcOk8F49wuDFn9u1Pb+BmAy9ZShiyQ9mI3ZQqgm6JVZMo+cJ0XBbsWThmNV
+ 7RZxR/BRrtsFp2soLuSSou/Mb0X3uaXB7/hkmeGnhW9TgtD4wt2AEEARYKABLA+cE4jxTMXQwxm
+ y1pu1GSScDwgbOw==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the nodes that describe the mdss so that display can work on
-MSM8226.
+This series adds the required configs for MDP5 and DSI blocks that are
+needed for MDSS on MSM8226. Finally we can add the new nodes into the
+dts.
+
+Tested on apq8026-lg-lenok and msm8926-htc-memul.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- arch/arm/boot/dts/qcom-msm8226.dtsi | 127 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 127 insertions(+)
+Changes in v3:
+- Adjust mdss labels to new style (Stephan)
+- Link to v2: https://lore.kernel.org/r/20230308-msm8226-mdp-v2-0-e005b769ee28@z3ntu.xyz
 
-diff --git a/arch/arm/boot/dts/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom-msm8226.dtsi
-index 42acb9ddb8cc..9f53747d2990 100644
---- a/arch/arm/boot/dts/qcom-msm8226.dtsi
-+++ b/arch/arm/boot/dts/qcom-msm8226.dtsi
-@@ -636,6 +636,133 @@ smd-edge {
- 				label = "lpass";
- 			};
- 		};
-+
-+		mdss: display-subsystem@fd900000 {
-+			compatible = "qcom,mdss";
-+			reg = <0xfd900000 0x100>, <0xfd924000 0x1000>;
-+			reg-names = "mdss_phys", "vbif_phys";
-+
-+			power-domains = <&mmcc MDSS_GDSC>;
-+
-+			clocks = <&mmcc MDSS_AHB_CLK>,
-+				 <&mmcc MDSS_AXI_CLK>,
-+				 <&mmcc MDSS_VSYNC_CLK>;
-+			clock-names = "iface",
-+				      "bus",
-+				      "vsync";
-+
-+			interrupts = <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>;
-+
-+			interrupt-controller;
-+			#interrupt-cells = <1>;
-+
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges;
-+
-+			status = "disabled";
-+
-+			mdss_mdp: display-controller@fd900000 {
-+				compatible = "qcom,msm8226-mdp5", "qcom,mdp5";
-+				reg = <0xfd900100 0x22000>;
-+				reg-names = "mdp_phys";
-+
-+				interrupt-parent = <&mdss>;
-+				interrupts = <0>;
-+
-+				clocks = <&mmcc MDSS_AHB_CLK>,
-+					 <&mmcc MDSS_AXI_CLK>,
-+					 <&mmcc MDSS_MDP_CLK>,
-+					 <&mmcc MDSS_VSYNC_CLK>;
-+				clock-names = "iface",
-+					      "bus",
-+					      "core",
-+					      "vsync";
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+						mdss_mdp_intf1_out: endpoint {
-+							remote-endpoint = <&mdss_dsi0_in>;
-+						};
-+					};
-+				};
-+			};
-+
-+			mdss_dsi0: dsi@fd922800 {
-+				compatible = "qcom,msm8226-dsi-ctrl",
-+					     "qcom,mdss-dsi-ctrl";
-+				reg = <0xfd922800 0x1f8>;
-+				reg-names = "dsi_ctrl";
-+
-+				interrupt-parent = <&mdss>;
-+				interrupts = <4>;
-+
-+				assigned-clocks = <&mmcc BYTE0_CLK_SRC>,
-+						  <&mmcc PCLK0_CLK_SRC>;
-+				assigned-clock-parents = <&mdss_dsi0_phy 0>,
-+							 <&mdss_dsi0_phy 1>;
-+
-+				clocks = <&mmcc MDSS_MDP_CLK>,
-+					 <&mmcc MDSS_AHB_CLK>,
-+					 <&mmcc MDSS_AXI_CLK>,
-+					 <&mmcc MDSS_BYTE0_CLK>,
-+					 <&mmcc MDSS_PCLK0_CLK>,
-+					 <&mmcc MDSS_ESC0_CLK>,
-+					 <&mmcc MMSS_MISC_AHB_CLK>;
-+				clock-names = "mdp_core",
-+					      "iface",
-+					      "bus",
-+					      "byte",
-+					      "pixel",
-+					      "core",
-+					      "core_mmss";
-+
-+				phys = <&mdss_dsi0_phy>;
-+
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+						mdss_dsi0_in: endpoint {
-+							remote-endpoint = <&mdss_mdp_intf1_out>;
-+						};
-+					};
-+
-+					port@1 {
-+						reg = <1>;
-+						mdss_dsi0_out: endpoint {
-+						};
-+					};
-+				};
-+			};
-+
-+			mdss_dsi0_phy: phy@fd922a00 {
-+				compatible = "qcom,dsi-phy-28nm-8226";
-+				reg = <0xfd922a00 0xd4>,
-+				      <0xfd922b00 0x280>,
-+				      <0xfd922d80 0x30>;
-+				reg-names = "dsi_pll",
-+					    "dsi_phy",
-+					    "dsi_phy_regulator";
-+
-+				#clock-cells = <1>;
-+				#phy-cells = <0>;
-+
-+				clocks = <&mmcc MDSS_AHB_CLK>,
-+					 <&rpmcc RPM_SMD_XO_CLK_SRC>;
-+				clock-names = "iface",
-+					      "ref";
-+			};
-+		};
- 	};
- 
- 	timer {
+Changes in v2:
+- In dsi-phy-28nm.yaml fix the order of the compatibles 1/7 (Conor)
+- Remove leftover debugging comments from 6/7 (Konrad)
+- Rewrap some clock-names lines and move status property last in 7/7
+  (Konrad)
+- Pick up tags
+- Link to v1: https://lore.kernel.org/r/20230308-msm8226-mdp-v1-0-679f335d3d5b@z3ntu.xyz
 
+---
+Luca Weiss (7):
+      dt-bindings: msm: dsi-phy-28nm: Document msm8226 compatible
+      dt-bindings: display/msm: dsi-controller-main: Add msm8226 compatible
+      dt-bindings: display/msm: qcom,mdp5: Add msm8226 compatible
+      drm/msm/mdp5: Add MDP5 configuration for MSM8226
+      drm/msm/dsi: Add configuration for MSM8226
+      drm/msm/dsi: Add phy configuration for MSM8226
+      ARM: dts: qcom: msm8226: Add mdss nodes
+
+ .../bindings/display/msm/dsi-controller-main.yaml  |   2 +
+ .../bindings/display/msm/dsi-phy-28nm.yaml         |   3 +-
+ .../devicetree/bindings/display/msm/qcom,mdp5.yaml |   1 +
+ .../devicetree/bindings/display/msm/qcom,mdss.yaml |   1 +
+ arch/arm/boot/dts/qcom-msm8226.dtsi                | 127 +++++++++++++++++++++
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c           |  82 +++++++++++++
+ drivers/gpu/drm/msm/dsi/dsi_cfg.c                  |   2 +
+ drivers/gpu/drm/msm/dsi/dsi_cfg.h                  |   1 +
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.c              |   2 +
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.h              |   3 +-
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c         |  97 ++++++++++++++++
+ 11 files changed, 319 insertions(+), 2 deletions(-)
+---
+base-commit: 1b3183710d69a48baf728cc1bee9f1fb3cfeb507
+change-id: 20230308-msm8226-mdp-6431e8d672a0
+
+Best regards,
 -- 
-2.40.1
+Luca Weiss <luca@z3ntu.xyz>
 
