@@ -2,38 +2,36 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6130C77B7E
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Jun 2023 17:01:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B1DBC7EE2F
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Jun 2023 17:01:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232314AbjFARBK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Jun 2023 13:01:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43380 "EHLO
+        id S232283AbjFARBS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 1 Jun 2023 13:01:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232332AbjFARAy (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Jun 2023 13:00:54 -0400
+        with ESMTP id S232411AbjFARBE (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Jun 2023 13:01:04 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60FE91B7;
-        Thu,  1 Jun 2023 10:00:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 488DBE61;
+        Thu,  1 Jun 2023 10:00:54 -0700 (PDT)
 Received: from [192.168.122.1] (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id AB9D7CFC14;
-        Thu,  1 Jun 2023 17:00:18 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 15043CFC92;
+        Thu,  1 Jun 2023 17:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1685638819; bh=E9mUjQDo8UyBbkmWjAQSJdUKojwYy/hcV0Ek0774vo8=;
-        h=From:Subject:Date:To:Cc;
-        b=js7W3ejGpmo/uNG1c+7ZzZVZbgWdWL4uFUp9SOFdlinQDZ8UrSa7sxJGkAUS94th2
-         vu82c2MspfTUymLeFadExvzSkH4CQ6ZKvh6kLdVZTMJLVbZF3ucNrkWE6m5ypmtkVT
-         U5VjiOymzPzgSMUQrHSQzW1uTZ6ri9iYo6y3TU40=
+        t=1685638822; bh=Jm/DdiEm/EekWEu0ec6gDTbUQ0p4VEB89p93cuEm6n4=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=AlU5UvedF4QUAVYwX4BDXDHpiAuc4iOLwpIdq39UeU8zYn0OTNsV6dQZAjUwXPtKo
+         JBZ7/NgEH10zNtk3VVzwQbZziA7q5rfsWGvlkTaobCTYvN39DXml4jCsXHEJ+nR6Lx
+         eZTMyZMWSQprU8YFYbFthPh+HmmHbt7+WYO0FsBw=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Subject: [PATCH v3 0/7] Display support for MSM8226
-Date:   Thu, 01 Jun 2023 19:00:07 +0200
-Message-Id: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
+Date:   Thu, 01 Jun 2023 19:00:11 +0200
+Subject: [PATCH v3 4/7] drm/msm/mdp5: Add MDP5 configuration for MSM8226
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJfOeGQC/32Oyw6CMBBFf4V0bUmZSimu/A/jgtJBuihgiw2P8
- O8WFsaFcXkm99w7K/HoDHpySVbiMBhv+i4CPyWkbqvugdToyAQYcMaZpNZbCSCo1QMVZ56h1KK
- AipFoqMojVa7q6nZ3nnVvP3mRQjrvocFhY6Zj8naP3Bo/9m4+PgjZfv09FjLKqCjKhvNcc52r6
- 8K78ZVO80L2ngB/XIguMparQpSIIL/dbdveivtSuwcBAAA=
+Message-Id: <20230308-msm8226-mdp-v3-4-b6284145d67a@z3ntu.xyz>
+References: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
+In-Reply-To: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Rob Clark <robdclark@gmail.com>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
@@ -49,76 +47,137 @@ To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Konrad Dybcio <konrad.dybcio@linaro.org>
 Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>,
-        Conor Dooley <conor.dooley@microchip.com>
+        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2110; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=E9mUjQDo8UyBbkmWjAQSJdUKojwYy/hcV0Ek0774vo8=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkeM6Zxutcw3C8PPM2W0MlOxwMLfEqVfzbxhHqm
- W7xap/SoRiJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHjOmQAKCRBy2EO4nU3X
- VthWEACX3g9quntLQ1EbVMqXp5IC9GIbgA27GePnz645CnqflV4RI9q1nJjWUecniJAOBjM5MAM
- xaM5ZBI0G9tqAoepgqPtiinLcBZBLpv0kdhOGlUmabgc9mhAVIPeoggNz/6KYqlZmjYNxN9OXgm
- zhxgXFAOL8z0P8B9nkk+WTvbmxY6oHfLW5R1RNSqoVJ1Pn4WRcrfgih11e929+MdburA1WzRO6N
- 2czha8byQiO0dCB/AFEk6UXHr0TkJczNCeuzLqLLSKolgqpVELASn70X5/9OFTFwuk4zVQ/oInd
- Uuu/VNs3jkA58XBw/rEZqPc15w7rCzkOKfc26mFMil24agAQOKAV6AH/6sSwCeaec5kptUyYbv/
- kZH48cl3Msl3mnYIVnqjK8w3Wl18LwLN4pPCUZh5oQxWcnZIF9wNWNOuQQuH53m5RM3VBA6Ubho
- XAkr7ZZHhnwyT3Y3rs4OKgOqFXP5C7e6m0OwRiVka7hzYxjblCdHTgIsLNKIlec4o0s9Jq7IHKh
- 8O0TfadwYSTtUzErlcOk8F49wuDFn9u1Pb+BmAy9ZShiyQ9mI3ZQqgm6JVZMo+cJ0XBbsWThmNV
- 7RZxR/BRrtsFp2soLuSSou/Mb0X3uaXB7/hkmeGnhW9TgtD4wt2AEEARYKABLA+cE4jxTMXQwxm
- y1pu1GSScDwgbOw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2734; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=Jm/DdiEm/EekWEu0ec6gDTbUQ0p4VEB89p93cuEm6n4=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkeM6fYU+7o/XkxueT0obX8SuJUz4ZGFUVdqcb0
+ sha9DpnFO+JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHjOnwAKCRBy2EO4nU3X
+ Vkl3D/0XJavl8qtEyvMTHH4vkLUEAc0Zx5egxwfV/0TpHTmC0VGddlo/czdAKGuJ19vdWDiDuIJ
+ dQzmegIs0katqQzMl/MOkNr/y6KHGovc403DCZMdj8nmjQNZa/l3pY5OmuJ4FjyBv/qyppj6owo
+ JcUPzkTmRgIR1cYoN02Bcjo4AWbk5oK+uaXvNNzEiE4+DIqtQhBhuJ5CFmBWHOqUtOiMiUWB0FR
+ wjgnpHFPyAmlHDS3W3dxXXLrOKVEFXYlbMqxOmDstzf+2MIcXOEXPcsu8z+z+FDPDiCXOooWf1D
+ R9DF+i/x428eyS/3MkVUgprJWk1Z9AcXRC53y9yd/HzKFYl5F8lf60rswmphgubUnhHir85CCXr
+ j9eX4vDHX1FTWbtAe9uZLbalQXn6pm0ufxUvJ26gCzG2Dsx3tRP0+0ipDaFiC7BTzTVpS5Wl668
+ o7CqAnZXU7oVOkhebQ1PeSHz1uiYtuC4IGOzrRuYrrQEUuPqt5UHsfuB7tpxbgM99ixZ6IFQFwJ
+ RGTCKFS7/FvgfwhXV/aD4jALXBKAkWeREkkEfuwl4W5VlFbIcntFjtiAXCNbHwby5sDJDq0UVTB
+ VoS0perIoe2cwXx/rV3oB1I7MTX08Ncdbhf0jmPmxVcKVbEqJduwEB+No1eIqd1mt7KnNUNW04+
+ mNStLDtRH0J7GLw==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This series adds the required configs for MDP5 and DSI blocks that are
-needed for MDSS on MSM8226. Finally we can add the new nodes into the
-dts.
+Add the required config for the v1.1 MDP5 found on MSM8226.
 
-Tested on apq8026-lg-lenok and msm8926-htc-memul.
-
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
-Changes in v3:
-- Adjust mdss labels to new style (Stephan)
-- Link to v2: https://lore.kernel.org/r/20230308-msm8226-mdp-v2-0-e005b769ee28@z3ntu.xyz
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c | 82 ++++++++++++++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
 
-Changes in v2:
-- In dsi-phy-28nm.yaml fix the order of the compatibles 1/7 (Conor)
-- Remove leftover debugging comments from 6/7 (Konrad)
-- Rewrap some clock-names lines and move status property last in 7/7
-  (Konrad)
-- Pick up tags
-- Link to v1: https://lore.kernel.org/r/20230308-msm8226-mdp-v1-0-679f335d3d5b@z3ntu.xyz
+diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
+index 2eec2d78f32a..694d54341337 100644
+--- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
++++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
+@@ -103,6 +103,87 @@ static const struct mdp5_cfg_hw msm8x74v1_config = {
+ 	.max_clk = 200000000,
+ };
+ 
++static const struct mdp5_cfg_hw msm8x26_config = {
++	.name = "msm8x26",
++	.mdp = {
++		.count = 1,
++		.caps = MDP_CAP_SMP |
++			0,
++	},
++	.smp = {
++		.mmb_count = 7,
++		.mmb_size = 4096,
++		.clients = {
++			[SSPP_VIG0] =  1,
++			[SSPP_DMA0] = 4,
++			[SSPP_RGB0] = 7,
++		},
++	},
++	.ctl = {
++		.count = 2,
++		.base = { 0x00500, 0x00600 },
++		.flush_hw_mask = 0x0003ffff,
++	},
++	.pipe_vig = {
++		.count = 1,
++		.base = { 0x01100 },
++		.caps = MDP_PIPE_CAP_HFLIP |
++			MDP_PIPE_CAP_VFLIP |
++			MDP_PIPE_CAP_SCALE |
++			MDP_PIPE_CAP_CSC   |
++			0,
++	},
++	.pipe_rgb = {
++		.count = 1,
++		.base = { 0x01d00 },
++		.caps = MDP_PIPE_CAP_HFLIP |
++			MDP_PIPE_CAP_VFLIP |
++			MDP_PIPE_CAP_SCALE |
++			0,
++	},
++	.pipe_dma = {
++		.count = 1,
++		.base = { 0x02900 },
++		.caps = MDP_PIPE_CAP_HFLIP |
++			MDP_PIPE_CAP_VFLIP |
++			0,
++	},
++	.lm = {
++		.count = 2,
++		.base = { 0x03100, 0x03d00 },
++		.instances = {
++				{ .id = 0, .pp = 0, .dspp = 0,
++				  .caps = MDP_LM_CAP_DISPLAY, },
++				{ .id = 1, .pp = -1, .dspp = -1,
++				  .caps = MDP_LM_CAP_WB },
++			     },
++		.nb_stages = 2,
++		.max_width = 2048,
++		.max_height = 0xFFFF,
++	},
++	.dspp = {
++		.count = 1,
++		.base = { 0x04500 },
++	},
++	.pp = {
++		.count = 1,
++		.base = { 0x21a00 },
++	},
++	.intf = {
++		.base = { 0x00000, 0x21200 },
++		.connect = {
++			[0] = INTF_DISABLED,
++			[1] = INTF_DSI,
++		},
++	},
++	.perf = {
++		.ab_inefficiency = 100,
++		.ib_inefficiency = 200,
++		.clk_inefficiency = 125
++	},
++	.max_clk = 200000000,
++};
++
+ static const struct mdp5_cfg_hw msm8x74v2_config = {
+ 	.name = "msm8x74",
+ 	.mdp = {
+@@ -1236,6 +1317,7 @@ static const struct mdp5_cfg_hw sdm660_config = {
+ 
+ static const struct mdp5_cfg_handler cfg_handlers_v1[] = {
+ 	{ .revision = 0, .config = { .hw = &msm8x74v1_config } },
++	{ .revision = 1, .config = { .hw = &msm8x26_config } },
+ 	{ .revision = 2, .config = { .hw = &msm8x74v2_config } },
+ 	{ .revision = 3, .config = { .hw = &apq8084_config } },
+ 	{ .revision = 6, .config = { .hw = &msm8x16_config } },
 
----
-Luca Weiss (7):
-      dt-bindings: msm: dsi-phy-28nm: Document msm8226 compatible
-      dt-bindings: display/msm: dsi-controller-main: Add msm8226 compatible
-      dt-bindings: display/msm: qcom,mdp5: Add msm8226 compatible
-      drm/msm/mdp5: Add MDP5 configuration for MSM8226
-      drm/msm/dsi: Add configuration for MSM8226
-      drm/msm/dsi: Add phy configuration for MSM8226
-      ARM: dts: qcom: msm8226: Add mdss nodes
-
- .../bindings/display/msm/dsi-controller-main.yaml  |   2 +
- .../bindings/display/msm/dsi-phy-28nm.yaml         |   3 +-
- .../devicetree/bindings/display/msm/qcom,mdp5.yaml |   1 +
- .../devicetree/bindings/display/msm/qcom,mdss.yaml |   1 +
- arch/arm/boot/dts/qcom-msm8226.dtsi                | 127 +++++++++++++++++++++
- drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c           |  82 +++++++++++++
- drivers/gpu/drm/msm/dsi/dsi_cfg.c                  |   2 +
- drivers/gpu/drm/msm/dsi/dsi_cfg.h                  |   1 +
- drivers/gpu/drm/msm/dsi/phy/dsi_phy.c              |   2 +
- drivers/gpu/drm/msm/dsi/phy/dsi_phy.h              |   3 +-
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c         |  97 ++++++++++++++++
- 11 files changed, 319 insertions(+), 2 deletions(-)
----
-base-commit: 1b3183710d69a48baf728cc1bee9f1fb3cfeb507
-change-id: 20230308-msm8226-mdp-6431e8d672a0
-
-Best regards,
 -- 
-Luca Weiss <luca@z3ntu.xyz>
+2.40.1
 
