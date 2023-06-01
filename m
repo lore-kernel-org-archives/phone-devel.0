@@ -2,147 +2,118 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7CFDC7EE23
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Jun 2023 14:01:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C539AC77B7A
+	for <phone-devel@archiver.kernel.org>; Thu,  1 Jun 2023 17:00:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233530AbjFAOBA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Jun 2023 10:01:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53812 "EHLO
+        id S231703AbjFARAZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 1 Jun 2023 13:00:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233230AbjFAOBA (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Jun 2023 10:01:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFBE9184;
-        Thu,  1 Jun 2023 07:00:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B90E64562;
-        Thu,  1 Jun 2023 14:00:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECD8C4339B;
-        Thu,  1 Jun 2023 14:00:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685628058;
-        bh=k0lroTYvtzGNwTev1CPUc1dbilaAPIIZm6XNUqRGNLg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hRoX7cPhPvvJnIoEKa2MoFUn8l+YPPLQxGZp0KkE4D5M4OMjdNFagc1pic1TaDzFC
-         zWOlIfTCBiIqQA//MIYLdhzh1BCBls/zq3gN062MoZvhKDRcsuJgdUqw6FGzIeSOll
-         bH1QVDhTDzc74GjUpmfUajEk2dz80+XbokU4WwhLMX2y1oQCEpdPlZaL8B3xxEjxng
-         nMJmY1yqGm2h2qt2uN22hTOgF7cq0eS1Nlfy5c8HLnL9I/ekUP0UUeati+kvqHi/v+
-         ddhgngSXrIlfX6iJb7ax8iP9q55cnnjYoFMqssj8+Qx+RJfU5VY/M60CtPrWaxW1tj
-         PUIwhunq6gX8Q==
-Date:   Thu, 1 Jun 2023 15:00:49 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
+        with ESMTP id S229598AbjFARAX (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Jun 2023 13:00:23 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2629196;
+        Thu,  1 Jun 2023 10:00:22 -0700 (PDT)
+Received: from [192.168.122.1] (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 893EECFC8B;
+        Thu,  1 Jun 2023 17:00:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1685638820; bh=liwsTCjCFh4bjc2tccmTcIdepPTZlH+GSHh7zUBFyD8=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=AbIqqufT4U2JyvBx09ZBvo75XZHM4bIwgCyV3j9PFAIPzHhEZ4XZ6CYsQ38VaqFj7
+         w/XwM6+vsw/85bUVuYYIk9JDUhQ3ECJ/myLFRLOIg8VjJmK6e0yPsVMd/UrfO7+lfA
+         1arFyu7DJSzuM0/w8XRFkOeCgVtHgAh2pEaAfyCM=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Date:   Thu, 01 Jun 2023 19:00:08 +0200
+Subject: [PATCH v3 1/7] dt-bindings: msm: dsi-phy-28nm: Document msm8226
+ compatible
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230308-msm8226-mdp-v3-1-b6284145d67a@z3ntu.xyz>
+References: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
+In-Reply-To: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Beomho Seo <beomho.seo@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Raymond Hackley <raymondhackley@protonmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Henrik Grimler <henrik@grimler.se>,
-        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v6 00/10 RESEND] Add RT5033 charger device driver
-Message-ID: <20230601140049.GF449117@google.com>
-References: <cover.1684182964.git.jahau.ref@rocketmail.com>
- <cover.1684182964.git.jahau@rocketmail.com>
- <a308cd6f-0f72-6a12-aa34-ce06290ce0bb@rocketmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a308cd6f-0f72-6a12-aa34-ce06290ce0bb@rocketmail.com>
+        Conor Dooley <conor+dt@kernel.org>,
+        Krishna Manikandan <quic_mkrishn@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>,
+        Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1755; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=liwsTCjCFh4bjc2tccmTcIdepPTZlH+GSHh7zUBFyD8=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkeM6c0sP+UId+y6wLfEJfVjt2h7jHBbz6Gk6jE
+ sJE4cDlaJmJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHjOnAAKCRBy2EO4nU3X
+ VpHGD/9VT1CjSGY7weNbH6UOmol+5VjzWZKCzcHe9+j4peI3wQ7d6DOwDf3k4a1ebyxpgeSOjAz
+ ttH1Qs6DPRfHK+u5D/73nqAJ8M+dh3fmXctEQb0tV4SOI9I69fEevpno3sltLIdEGxEVZAchtF+
+ X/XVaKAVRm7S5syZqIZZ1+lVO98mVVOfg3+uJknd+Q/F/qtB4j1120hFEh8lRWeb2unbhvaq/mU
+ xsn41+E9Faw7ChQ8AbPW5KI/vELcA7hZnkawh9UN8hz+ZNkIACaWzHlEdWKyUr0YR7LhWFJE1MY
+ QfU7zs0MEMOQldL6Se/eoB7OdCyWi69UM67uGJVA3cir87m78Yj6BBJhj7fHbzOoCRwAo4cQiU7
+ mRxUaGgpxET/dkpIvCePgl3Pcq1GrqiStLxWcvEVN9sBEfpJmD/HEZeeWsft8/Z09PEUNaibepq
+ NvzpqKVbf3lz+yErUDWvIVGTDVhgCtGpBF0QvAtyY/l3Ax5XOzFFlzmeUurmx65tYPdlSsulqYK
+ OUVkx5vBwWkS59zkFK0ByRKvsiT42mTTpHXSoGxGlVzo5EuDdDqXWMdNfZOhWrZZxgcAf+EBpn1
+ 2s6sAS4nMoXLFmQR8A/AOU6cgm//Ahy62XpxzFXkW+pt3Lzt+PL9w/CKJmmBjkpbHBruRluUcDN
+ oIMGhmHvpIPLuWA==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 31 May 2023, Jakob Hauser wrote:
+The MSM8226 SoC uses a slightly different 28nm dsi phy. Add a new
+compatible for it.
 
-> Dear all,
-> 
-> On 15.05.23 22:57, Jakob Hauser wrote:
-> > This patchset adds the charger driver "rt5033-charger". It is part of the
-> > multifunction device rt5033. The patchset is based on an older version by
-> > Beomho Seo of March 2015. For more information on the history and setup of
-> > the patchset see the cover sheet of version v1, there is a link further down
-> > below the changelog.
-> > 
-> > RESEND: Sorry for spamming. The first try of sending v6 got interrupted and
-> > was split into two threads on the lore list. Therefore sending it again.
-> > 
-> > Changes in v6:
-> >   - Patch 5: In function rt5033_charger_probe() after
-> >     calling rt5033_charger_dt_init() replaced the return value from "-ENODEV"
-> >     to "PTR_ERR(charger->chg)", as suggested by Christophe.
-> >   - Patch 9: Changed the patch from adding "power-supplies: true" to replacing
-> >     "additionalProperties: false" by "unevaluatedProperties: false", as
-> >     suggested by Krzysztof.
-> > 
-> > v1: https://lore.kernel.org/linux-pm/cover.1677620677.git.jahau@rocketmail.com/T/#t
-> > v2: https://lore.kernel.org/linux-pm/cover.1681646904.git.jahau@rocketmail.com/T/#t
-> > v3: https://lore.kernel.org/linux-pm/cover.1682636929.git.jahau@rocketmail.com/T/#t
-> > v4: https://lore.kernel.org/linux-pm/20230506155435.3005-1-jahau@rocketmail.com/T/#t
-> > v5: https://lore.kernel.org/linux-pm/20230514123130.41172-1-jahau@rocketmail.com/T/#t
-> > 
-> > The result of the patchset v6 can be seen at:
-> > https://github.com/Jakko3/linux/blob/rt5033-charger_v6/drivers/power/supply/rt5033_charger.c
-> 
-> What's missing on this patchset? I'm not familiar with the procedures. If
-> all patches need ack's, then the ones for mfd (patches 2 & 4) and for
-> dt-bindings (patch 10) are missing.
+And while we're at it, in the dsi-phy-28nm.yaml move the 8960 compatible
+to its correct place so its sorted alphabetically.
 
-You're waiting on me.  I will apply all of the patches and submit a PR.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml | 3 ++-
+ Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml    | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-You're in the queue - please stand-by.
+diff --git a/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml b/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
+index cf4a338c4661..62fb3e484eb2 100644
+--- a/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
++++ b/Documentation/devicetree/bindings/display/msm/dsi-phy-28nm.yaml
+@@ -15,10 +15,11 @@ allOf:
+ properties:
+   compatible:
+     enum:
++      - qcom,dsi-phy-28nm-8226
++      - qcom,dsi-phy-28nm-8960
+       - qcom,dsi-phy-28nm-hpm
+       - qcom,dsi-phy-28nm-hpm-fam-b
+       - qcom,dsi-phy-28nm-lp
+-      - qcom,dsi-phy-28nm-8960
  
-> Link to the current patchset v6:
-> - on lore: https://lore.kernel.org/linux-pm/cover.1684182964.git.jahau@rocketmail.com/T/#t
-> - on patchwork: https://patchwork.kernel.org/project/linux-pm/list/?series=747771&state=%2A&archive=both
-> 
-> > Jakob Hauser (9):
-> >    mfd: rt5033: Fix chip revision readout
-> >    mfd: rt5033: Fix STAT_MASK, HZ_MASK and AICR defines
-> >    mfd: rt5033: Apply preparatory changes before adding rt5033-charger
-> >      driver
-> >    power: supply: rt5033_charger: Add RT5033 charger device driver
-> >    power: supply: rt5033_charger: Add cable detection and USB OTG supply
-> >    power: supply: rt5033_battery: Move struct rt5033_battery to battery
-> >      driver
-> >    power: supply: rt5033_battery: Adopt status property from charger
-> >    dt-bindings: power: supply: rt5033-battery: Apply
-> >      unevaluatedProperties
-> >    dt-bindings: Add rt5033 mfd, regulator and charger
-> > 
-> > Stephan Gerhold (1):
-> >    mfd: rt5033: Drop rt5033-battery sub-device
-> > 
-> >   .../bindings/mfd/richtek,rt5033.yaml          | 138 ++++
-> >   .../power/supply/richtek,rt5033-battery.yaml  |   2 +-
-> >   .../power/supply/richtek,rt5033-charger.yaml  |  65 ++
-> >   drivers/mfd/rt5033.c                          |   8 +-
-> >   drivers/power/supply/Kconfig                  |   8 +
-> >   drivers/power/supply/Makefile                 |   1 +
-> >   drivers/power/supply/rt5033_battery.c         |  38 +-
-> >   drivers/power/supply/rt5033_charger.c         | 744 ++++++++++++++++++
-> >   include/linux/mfd/rt5033-private.h            |  64 +-
-> >   include/linux/mfd/rt5033.h                    |  24 -
-> >   10 files changed, 1034 insertions(+), 58 deletions(-)
-> >   create mode 100644 Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
-> >   create mode 100644 Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
-> >   create mode 100644 drivers/power/supply/rt5033_charger.c
-> 
-> Kind regards,
-> Jakob
+   reg:
+     items:
+diff --git a/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml
+index b0100105e428..db9f07c6142d 100644
+--- a/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml
++++ b/Documentation/devicetree/bindings/display/msm/qcom,mdss.yaml
+@@ -125,6 +125,7 @@ patternProperties:
+           - qcom,dsi-phy-14nm-660
+           - qcom,dsi-phy-14nm-8953
+           - qcom,dsi-phy-20nm
++          - qcom,dsi-phy-28nm-8226
+           - qcom,dsi-phy-28nm-hpm
+           - qcom,dsi-phy-28nm-lp
+           - qcom,hdmi-phy-8084
 
 -- 
-Lee Jones [李琼斯]
+2.40.1
+
