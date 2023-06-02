@@ -2,110 +2,105 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44D5AC7EE32
-	for <phone-devel@archiver.kernel.org>; Thu,  1 Jun 2023 17:01:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7920FC7EE29
+	for <phone-devel@archiver.kernel.org>; Fri,  2 Jun 2023 09:15:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232433AbjFARBU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 1 Jun 2023 13:01:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43916 "EHLO
+        id S234577AbjFBJPZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 2 Jun 2023 05:15:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232279AbjFARBF (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 1 Jun 2023 13:01:05 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D8E5E64;
-        Thu,  1 Jun 2023 10:00:55 -0700 (PDT)
-Received: from [192.168.122.1] (84-115-214-73.cable.dynamic.surfer.at [84.115.214.73])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id D92F7CFC93;
-        Thu,  1 Jun 2023 17:00:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1685638823; bh=tSyVDSi1R0wPUkpeZdZY3/k1LG5m9jxQOZeT/ptDISM=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=hYcd9KCffXLP+MqQ9Yk1gcojJniV/6hqkn4x+6rGt0OiW9hoACHAa7QEhd4Q+YOqN
-         aqvqyIGsr1x5WwhGHYzEAssTNhI4fpf6+T4j2tuSA8L4DnLlUlDTbeY+yVTH6Ayh8F
-         sIqDIX7spisOUEHNIAn6Ng8oVgrtjS3rs1oJgG68=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Thu, 01 Jun 2023 19:00:12 +0200
-Subject: [PATCH v3 5/7] drm/msm/dsi: Add configuration for MSM8226
+        with ESMTP id S234672AbjFBJPK (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 2 Jun 2023 05:15:10 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79A4D1BB
+        for <phone-devel@vger.kernel.org>; Fri,  2 Jun 2023 02:15:09 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-96f5d651170so658949366b.1
+        for <phone-devel@vger.kernel.org>; Fri, 02 Jun 2023 02:15:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1685697308; x=1688289308;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LO2AVakNJYdGKKswXTJ62e7wU1rklDdTnrJOOA69PQc=;
+        b=fNPHwES7nVPEk1F4Ce1u9HTwBf9Q5hmjvDjfKwjvXVqDyeAxH9fGVRv95PEXIEY3Lm
+         qdqLzy19YupyJ6GDsN9Bq4TsZqRB2BxTBcq4SKhp8Kfgcf2LH0AxUL/G19NDua38KFra
+         5mWK9F9EB2pMs992dzETb8uCfQrNbwwG3pOPGtj3ZJZmJbrnvSt+GJusXkDWQtHLsBOC
+         9V+bvPIVRK+HInWgnmDNO/lCu3LpcecuLKHO+SyfY+Bkz5Rkf2mzDGbKmx3BCFJZs5Hb
+         bVyqFcNW4M7wOm8VQUtrHKMoZ2JWwoJhtcp+QL4ZVFFbPrk2zaKdCncyCWrvOGntPojM
+         VcbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685697308; x=1688289308;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LO2AVakNJYdGKKswXTJ62e7wU1rklDdTnrJOOA69PQc=;
+        b=Sudx/C8fVyNSH2t0bcuyDobrm7Mmk/tYvYU98NuWQB+Fh43cZO/pfgeaGdj0JcBgeI
+         Wun1pz38d81A4r/Xdz0/YF8LTr67QayGKnBDQiWHxZKWiZyo8mnNYtrSaIZ99m4VRGYR
+         2A4ewWrMVF7/vWB2/I0NV0WxDPVMlL3YFyY8U9GaQRW6YRZxGxZAYdb58DyblmgxlUdJ
+         gfved3tobdagEDgoB6XzPDZse2yvJWqqTuZ7usP1OEpPbfixiJ1dR8alm97ibSVf/roh
+         HS2uIfg4HA7kfGs1mRgw91kc5Pd1NOeVQy3umWFQ8bHwJnxwFIpjyxhdiN5V5135BHrU
+         IEpg==
+X-Gm-Message-State: AC+VfDx9oznGgbxbgOo6N51iZIXyUQWWszoDDhGvLRY0YOgrVEXZNBvs
+        OR0ASZD+mqQsonUvzYIL3f4Yrg==
+X-Google-Smtp-Source: ACHHUZ4O1wFDHonDAt4o3zgFrpiAG47R8DbHaXAWXu0IVs5q3bQKTSlvn1fgFIYPRsi6pLeRT+VCWA==
+X-Received: by 2002:a17:907:2d8c:b0:96f:a412:8b03 with SMTP id gt12-20020a1709072d8c00b0096fa4128b03mr4528979ejc.5.1685697307942;
+        Fri, 02 Jun 2023 02:15:07 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.199.204])
+        by smtp.gmail.com with ESMTPSA id z13-20020a170906240d00b0094e597f0e4dsm514255eja.121.2023.06.02.02.15.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Jun 2023 02:15:07 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
+        arm@kernel.org, soc@kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>, replicant@osuosl.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
+        Henrik Grimler <henrik@grimler.se>,
+        Artur Weber <aweber.kernel@gmail.com>
+Subject: [GIT PULL 1/3] samsung: drivers for v6.5
+Date:   Fri,  2 Jun 2023 11:14:59 +0200
+Message-Id: <20230602091501.15178-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230308-msm8226-mdp-v3-5-b6284145d67a@z3ntu.xyz>
-References: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
-In-Reply-To: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Krishna Manikandan <quic_mkrishn@quicinc.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1685; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=tSyVDSi1R0wPUkpeZdZY3/k1LG5m9jxQOZeT/ptDISM=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkeM6gWw6yZiYyLcuYiHJeFcES8vcJvAACJntyd
- Nbdj4N7fIKJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZHjOoAAKCRBy2EO4nU3X
- Vnw2D/9Up8zeyFOejwgiAMUhaF31/KqiqCC7YT64PqkHA4qYVd6Pn6JAieUzK29+3ZgJFJFNXCW
- MJ23bZh3MWKWbiAdUYG+M9hu+dJg5apipkcsf7MOGmrZHQ5RzKLZTttz5pLOVvmeWIZF1QihUSX
- EPQSqQQ42K0Zg+CeKnuOV1IBrblhw5ZtkmIz0IiH8wxmVdzcsb7tnVTSVvk1mmPhgWRB+JeqJcN
- 3BsRb80Ln2W4Vj9PvS4Rtjuu/LvCJ5VzmYTZyXlAVePmitehklMg7y8jZ4AsADx6SJu4yQuMDIj
- Cms4DhMENJPQxHu/okxryFfZ0+n88Q2rkuURhg8nSmUI7WOj5tmrXs8S2wwOKuvLdxFJPvcH86s
- gKdu5c0JSOcX5ZsoyxUJQQJKz+lJQp1jkqFWjh5LOf8vpJbmBpCJeeJcwQgHE5DXIQh59QsvDfk
- bWsLM0YsINkBeYyudeuutm6A0oQFhWGIgu5KYN3iShanO1QpOWzlV7fKw4H5SeAByoEy/O5lUZm
- Uy69VsevyV8Hx0Qpel+mIrH5/FwyZc+xw802bH/FCOiBASKahJrOIO4HsPqYe6nHzTn4bJuizk6
- QbNlwUyjZZsY9T3WM+b3+aF7v2md/xypHnAeE0IbgKfhNe3FkYwaczUoMnZnU4NxNJJ7cGXjYab
- 2PkBDoyNA9ReVqQ==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the config for the v1.0.2 DSI found on MSM8226. We can reuse
-existing bits from other revisions that are identical for v1.0.2.
+The following changes since commit ac9a78681b921877518763ba0e89202254349d1b:
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- drivers/gpu/drm/msm/dsi/dsi_cfg.c | 2 ++
- drivers/gpu/drm/msm/dsi/dsi_cfg.h | 1 +
- 2 files changed, 3 insertions(+)
+  Linux 6.4-rc1 (2023-05-07 13:34:35 -0700)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.c b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-index 29ccd755cc2e..8a5fb6df7210 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.c
-@@ -245,6 +245,8 @@ static const struct msm_dsi_cfg_handler dsi_cfg_handlers[] = {
- 		&apq8064_dsi_cfg, &msm_dsi_v2_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_0,
- 		&msm8974_apq8084_dsi_cfg, &msm_dsi_6g_host_ops},
-+	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_0_2,
-+		&msm8974_apq8084_dsi_cfg, &msm_dsi_6g_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_1,
- 		&msm8974_apq8084_dsi_cfg, &msm_dsi_6g_host_ops},
- 	{MSM_DSI_VER_MAJOR_6G, MSM_DSI_6G_VER_MINOR_V1_1_1,
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_cfg.h b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-index 91bdaf50bb1a..43f0dd74edb6 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-+++ b/drivers/gpu/drm/msm/dsi/dsi_cfg.h
-@@ -11,6 +11,7 @@
- #define MSM_DSI_VER_MAJOR_V2	0x02
- #define MSM_DSI_VER_MAJOR_6G	0x03
- #define MSM_DSI_6G_VER_MINOR_V1_0	0x10000000
-+#define MSM_DSI_6G_VER_MINOR_V1_0_2	0x10000002
- #define MSM_DSI_6G_VER_MINOR_V1_1	0x10010000
- #define MSM_DSI_6G_VER_MINOR_V1_1_1	0x10010001
- #define MSM_DSI_6G_VER_MINOR_V1_2	0x10020000
+are available in the Git repository at:
 
--- 
-2.40.1
+  https://git.kernel.org/pub/scm/linux/kernel/git/krzk/linux.git tags/samsung-drivers-6.5
 
+for you to fetch changes up to 538af6e5856b1aa971975c747a2974a74db48928:
+
+  dt-bindings: media: s5p-mfc: convert bindings to json-schema (2023-05-13 19:41:11 +0200)
+
+----------------------------------------------------------------
+Samsung SoC driver changes for v6.5
+
+1. Re-introduce Exynos4212: Exynos PMU driver.
+2. Convert S5P/Exynos Multi Format Codec bindings to DT schema.
+
+----------------------------------------------------------------
+Aakarsh Jain (1):
+      dt-bindings: media: s5p-mfc: convert bindings to json-schema
+
+Artur Weber (2):
+      dt-bindings: soc: samsung: exynos-pmu: add Exynos4212 compatible
+      soc: samsung: exynos-pmu: Re-introduce Exynos4212 support
+
+ .../devicetree/bindings/media/s5p-mfc.txt          |  78 ---------
+ .../devicetree/bindings/media/samsung,s5p-mfc.yaml | 184 +++++++++++++++++++++
+ .../bindings/soc/samsung/exynos-pmu.yaml           |   5 +
+ drivers/soc/samsung/exynos-pmu.c                   |   9 +
+ drivers/soc/samsung/exynos-pmu.h                   |   2 +
+ drivers/soc/samsung/exynos4-pmu.c                  |  15 +-
+ 6 files changed, 212 insertions(+), 81 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/media/samsung,s5p-mfc.yaml
