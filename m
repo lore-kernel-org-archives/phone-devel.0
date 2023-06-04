@@ -2,114 +2,113 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10F41C7EE29
-	for <phone-devel@archiver.kernel.org>; Fri,  2 Jun 2023 09:15:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2512EC7EE24
+	for <phone-devel@archiver.kernel.org>; Sun,  4 Jun 2023 02:39:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229495AbjFBJP2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 2 Jun 2023 05:15:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39888 "EHLO
+        id S229935AbjFDCjR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 3 Jun 2023 22:39:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233997AbjFBJPS (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 2 Jun 2023 05:15:18 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 159E713D
-        for <phone-devel@vger.kernel.org>; Fri,  2 Jun 2023 02:15:14 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-51475e981f0so2584960a12.1
-        for <phone-devel@vger.kernel.org>; Fri, 02 Jun 2023 02:15:14 -0700 (PDT)
+        with ESMTP id S229485AbjFDCjQ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 3 Jun 2023 22:39:16 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46714197
+        for <phone-devel@vger.kernel.org>; Sat,  3 Jun 2023 19:39:15 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b1ba018d94so11927401fa.0
+        for <phone-devel@vger.kernel.org>; Sat, 03 Jun 2023 19:39:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685697312; x=1688289312;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yLdU4Q8ozDdxq74yNihKW+OJlWWA0/2lZXXu2wMUGK0=;
-        b=hoTFOaLz93wlq05dLe0Yk0a+roPiXut39EDht3/CVz2w1euedsX2QEBsuiqI4vt0UO
-         ia91d0+VlCHK26rzDq4b5PC48HtoK98XO156DGHthjoL1MF8r6a5oF7UgCNpJKebuzqj
-         XOLWdPu8Ei1fqkt9r0vqIvn22QUkP29U7TNNUbw8t7M4oP0HJGLRE9yZlbwDjFEjuKgq
-         YRYCpUO+WBo/k09VH3awCcm8eWT2zFjk6ElB8XvXFNQTtii76845VRF1Nc8ZMV4qYxpA
-         nDqMVLsSnnJSKrjvpV03rHVv5u+p+/5+nThy/XuYR9ka+6KpoqbulEWzXJfLeIsyRx1m
-         ULHA==
+        d=linaro.org; s=google; t=1685846353; x=1688438353;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oMukeZsIPK9VY+jN6lO5nE+HniRt3DWSTDLIp8k6jQc=;
+        b=jtROz0fXdfiIHIOYlEGo1RqI57Xt9Eh7ZYyQddwsfunow3aWsMu+/HxczEcLuRPp4Z
+         dKNJIgsMVM+VI9k3As1NYL/xM04D0fuv5WSC60Osribmnui3GsuILV5nN7UdslLRJOr4
+         GTgyMtPEEn9aI5eHz3iisjsZ2bfqOL6povcl77pSnghRPbZVb4BoDtq/QDjEmBNZmgU2
+         Atsa6su2/AssHHBu/bWGpBELJ1aj3i046yFYYR6rwNaF/4Lt6eBARlYFG0VqxSjOciIT
+         yRbwGjO6oWfFV+za0yY6Wfz7P7JcI7raZvcOfx4x8MZ/FdPqu+kJOZpK46YhRY8rZ3TX
+         u2qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685697312; x=1688289312;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yLdU4Q8ozDdxq74yNihKW+OJlWWA0/2lZXXu2wMUGK0=;
-        b=I1ohSHrSjehia7pA41uANRaV+DiRP+BfjyurJitrCGkSiHx8aXs91z9Uv9mOfoxu0e
-         9XJf/R2VSi3eGtYqa4lOwau/Z/Htny2kZ8E2Mdeh5iC0XmlHnD0brhT5SreUUQDGKx34
-         KyZrXdQeFnorv6LqAS3XH01nOdk3xg9j8e3JbPin0URMgng3Kq3frZNOYCxgbmzJpj+H
-         3cov1CU5fQV6o35oudNtf2pCbkHQaeOEGyAAz3pM0eBVmyriLWTTUS86dwcSqxdhqbgU
-         EyI+DFMjbyedEzB7nQ98yAWbRm5noWfepUVOGwb+pjCs9BvoFePLMtgEbyipGUN1kYVX
-         aizw==
-X-Gm-Message-State: AC+VfDwpDbufaXiUdy31grIvoJvsW3idSblTPs6DefEjV3C1y1CWWVit
-        NFdZUj/5rTVkct3yvgX/gZxYSw==
-X-Google-Smtp-Source: ACHHUZ46P9H+JJXIA3e7YoKj3JBcYOwil7LjToqG+b/wH8fdOhwkND9umKE0x7FpXb0LBZM1aiRffA==
-X-Received: by 2002:a17:907:d88:b0:96a:43b9:95b1 with SMTP id go8-20020a1709070d8800b0096a43b995b1mr11242892ejc.59.1685697312691;
-        Fri, 02 Jun 2023 02:15:12 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.199.204])
-        by smtp.gmail.com with ESMTPSA id z13-20020a170906240d00b0094e597f0e4dsm514255eja.121.2023.06.02.02.15.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jun 2023 02:15:12 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Olof Johansson <olof@lixom.net>, Arnd Bergmann <arnd@arndb.de>,
-        arm@kernel.org, soc@kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>, replicant@osuosl.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
-        Henrik Grimler <henrik@grimler.se>,
-        Artur Weber <aweber.kernel@gmail.com>
-Subject: [GIT PULL 3/3] ARM: samsung: soc for v6.5
-Date:   Fri,  2 Jun 2023 11:15:01 +0200
-Message-Id: <20230602091501.15178-3-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230602091501.15178-1-krzysztof.kozlowski@linaro.org>
-References: <20230602091501.15178-1-krzysztof.kozlowski@linaro.org>
+        d=1e100.net; s=20221208; t=1685846353; x=1688438353;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oMukeZsIPK9VY+jN6lO5nE+HniRt3DWSTDLIp8k6jQc=;
+        b=QXNBqy5BWmgVjAUt/Fdym6dCVO61YaeBnZkjlPxUoY3jJ8n+h+LhfNotabFJMb4Gaw
+         aSfK0WNBMnv26Cf5RdId2pLKAsvojFOeUEQqDwiJFgzbR47QimJ+/2NIir3+AK2LPvCB
+         wrd/zg/p7nyYGDOFDyQ8vxmIswW6MLHBUwYJq9KrEZwlYcBSz3QQYg9pdxgtBwY6EsSM
+         0UfQKPuq4WIMV4ZEOXYLwnkqU+35R73mjrKM6wiz9Zi9q68ive3wngDySB0yg6yE3jlG
+         BLKKRTqW6scl2fM2uVqMtpGs4ZVA6e+VNhU1TlryOu65N4hqDDnqlBpj6G21LcXtvX8n
+         I3cw==
+X-Gm-Message-State: AC+VfDxspND3ixiFI640Bn37X+3Fx6La3WnyfvwvbNVwuUmVmjfLPMRh
+        Pr8yYgnlL1vxut0eHgKiqvSw9Q==
+X-Google-Smtp-Source: ACHHUZ5D9QfTFJ7LYIjyZ34kZ1xnm+FM48ToTGYMYOaQS6D5GlphlJ2LfDuS/Lo1Qo+BuGyfh75rVw==
+X-Received: by 2002:a2e:6a18:0:b0:2b1:af36:93d9 with SMTP id f24-20020a2e6a18000000b002b1af3693d9mr1987200ljc.26.1685846353479;
+        Sat, 03 Jun 2023 19:39:13 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:a0db:1f00::8a5? (dzdqv0yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a0db:1f00::8a5])
+        by smtp.gmail.com with ESMTPSA id d9-20020ac244c9000000b004f24db9248dsm210750lfm.141.2023.06.03.19.39.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 03 Jun 2023 19:39:12 -0700 (PDT)
+Message-ID: <b038052c-c8e2-9aa1-2b80-792563d219ba@linaro.org>
+Date:   Sun, 4 Jun 2023 05:39:12 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3 6/7] drm/msm/dsi: Add phy configuration for MSM8226
+Content-Language: en-GB
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Krishna Manikandan <quic_mkrishn@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
+ <20230308-msm8226-mdp-v3-6-b6284145d67a@z3ntu.xyz>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20230308-msm8226-mdp-v3-6-b6284145d67a@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The following changes since commit ac9a78681b921877518763ba0e89202254349d1b:
+On 01/06/2023 20:00, Luca Weiss wrote:
+> MSM8226 uses a modified PLL lock sequence compared to MSM8974, which is
+> based on the function dsi_pll_enable_seq_m in the msm-3.10 kernel.
+> 
+> Worth noting that the msm-3.10 downstream kernel also will try other
+> sequences in case this one doesn't work, but during testing it has shown
+> that the _m sequence succeeds first time also:
+> 
+>    .pll_enable_seqs[0] = dsi_pll_enable_seq_m,
+>    .pll_enable_seqs[1] = dsi_pll_enable_seq_m,
+>    .pll_enable_seqs[2] = dsi_pll_enable_seq_d,
+>    .pll_enable_seqs[3] = dsi_pll_enable_seq_d,
+>    .pll_enable_seqs[4] = dsi_pll_enable_seq_f1,
+>    .pll_enable_seqs[5] = dsi_pll_enable_seq_c,
+>    .pll_enable_seqs[6] = dsi_pll_enable_seq_e,
+> 
+> We may need to expand this in the future.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>   drivers/gpu/drm/msm/dsi/phy/dsi_phy.c      |  2 +
+>   drivers/gpu/drm/msm/dsi/phy/dsi_phy.h      |  3 +-
+>   drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c | 97 ++++++++++++++++++++++++++++++
+>   3 files changed, 101 insertions(+), 1 deletion(-)
 
-  Linux 6.4-rc1 (2023-05-07 13:34:35 -0700)
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-are available in the Git repository at:
+-- 
+With best wishes
+Dmitry
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/krzk/linux.git tags/samsung-soc-6.5
-
-for you to fetch changes up to ca027ae58eaab3632966158ce440a7f50da52bef:
-
-  ARM: s3c: Switch i2c drivers back to use .probe() (2023-05-30 09:40:37 +0200)
-
-----------------------------------------------------------------
-Samsung mach/soc changes for v6.5
-
-1. Re-introduce Exynos4212 which was removed because of lack of upstream
-   users.  Artur Weber adds now Samsung Galaxy Tab3 with Exynos4212.
-
-2. Minor cleanups.
-
-----------------------------------------------------------------
-Artur Weber (1):
-      ARM: exynos: Re-introduce Exynos4212 support
-
-Lukas Bulwahn (1):
-      ARM: s3c: remove obsolete config S3C64XX_SETUP_IDE
-
-Uwe Kleine-König (1):
-      ARM: s3c: Switch i2c drivers back to use .probe()
-
- arch/arm/mach-exynos/Kconfig             | 5 +++++
- arch/arm/mach-exynos/common.h            | 8 ++++++++
- arch/arm/mach-exynos/exynos.c            | 2 ++
- arch/arm/mach-exynos/firmware.c          | 8 +++++++-
- arch/arm/mach-exynos/pm.c                | 2 +-
- arch/arm/mach-exynos/suspend.c           | 4 ++++
- arch/arm/mach-s3c/Kconfig.s3c64xx        | 6 ------
- arch/arm/mach-s3c/mach-crag6410-module.c | 2 +-
- 8 files changed, 28 insertions(+), 9 deletions(-)
