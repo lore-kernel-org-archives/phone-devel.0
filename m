@@ -2,62 +2,56 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2512EC7EE24
-	for <phone-devel@archiver.kernel.org>; Sun,  4 Jun 2023 02:39:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74376C77B7A
+	for <phone-devel@archiver.kernel.org>; Sun,  4 Jun 2023 03:01:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbjFDCjR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 3 Jun 2023 22:39:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44444 "EHLO
+        id S229812AbjFDDBt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 3 Jun 2023 23:01:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjFDCjQ (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 3 Jun 2023 22:39:16 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46714197
-        for <phone-devel@vger.kernel.org>; Sat,  3 Jun 2023 19:39:15 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2b1ba018d94so11927401fa.0
-        for <phone-devel@vger.kernel.org>; Sat, 03 Jun 2023 19:39:15 -0700 (PDT)
+        with ESMTP id S229785AbjFDDBs (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 3 Jun 2023 23:01:48 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E92E219A
+        for <phone-devel@vger.kernel.org>; Sat,  3 Jun 2023 20:01:46 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-4f4e71a09a7so4474347e87.1
+        for <phone-devel@vger.kernel.org>; Sat, 03 Jun 2023 20:01:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685846353; x=1688438353;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oMukeZsIPK9VY+jN6lO5nE+HniRt3DWSTDLIp8k6jQc=;
-        b=jtROz0fXdfiIHIOYlEGo1RqI57Xt9Eh7ZYyQddwsfunow3aWsMu+/HxczEcLuRPp4Z
-         dKNJIgsMVM+VI9k3As1NYL/xM04D0fuv5WSC60Osribmnui3GsuILV5nN7UdslLRJOr4
-         GTgyMtPEEn9aI5eHz3iisjsZ2bfqOL6povcl77pSnghRPbZVb4BoDtq/QDjEmBNZmgU2
-         Atsa6su2/AssHHBu/bWGpBELJ1aj3i046yFYYR6rwNaF/4Lt6eBARlYFG0VqxSjOciIT
-         yRbwGjO6oWfFV+za0yY6Wfz7P7JcI7raZvcOfx4x8MZ/FdPqu+kJOZpK46YhRY8rZ3TX
-         u2qw==
+        d=linaro.org; s=google; t=1685847705; x=1688439705;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Cvt9G4J1O7RH3aFrrj/0ASjX+P7Libu13qWrQpH+1W0=;
+        b=jwdNqVOfCMQGFGzIo6Fy5QfIGbKN9WEsl0CvXsOM7pH9ZAMtDUm+ituEFIsXd2kNpQ
+         9kPkqZPOAEdijexsiPcy+MT3717tgrvgaSZHmA3N19UN43hjCQwhuAyy+wJ6hDAwumCS
+         oqDnMhdM3G5aa7qa80K5KCx76KLR4JYEN/Mc3/p82LASs4M4gYYSd3pZnwH8frQHRGfJ
+         eN3j8eAwrtOiRBlaag5IfKpGVCApZWRDyERY4g5l40WG0VTKiGng/+PVRdL84z8IVP7X
+         hnSChs3htNWrlbyycexFJHcUfkwnPv7SfmxpefgEnSgSXA4a3NNqrBUTqvqJfwNOaAmZ
+         UzTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685846353; x=1688438353;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oMukeZsIPK9VY+jN6lO5nE+HniRt3DWSTDLIp8k6jQc=;
-        b=QXNBqy5BWmgVjAUt/Fdym6dCVO61YaeBnZkjlPxUoY3jJ8n+h+LhfNotabFJMb4Gaw
-         aSfK0WNBMnv26Cf5RdId2pLKAsvojFOeUEQqDwiJFgzbR47QimJ+/2NIir3+AK2LPvCB
-         wrd/zg/p7nyYGDOFDyQ8vxmIswW6MLHBUwYJq9KrEZwlYcBSz3QQYg9pdxgtBwY6EsSM
-         0UfQKPuq4WIMV4ZEOXYLwnkqU+35R73mjrKM6wiz9Zi9q68ive3wngDySB0yg6yE3jlG
-         BLKKRTqW6scl2fM2uVqMtpGs4ZVA6e+VNhU1TlryOu65N4hqDDnqlBpj6G21LcXtvX8n
-         I3cw==
-X-Gm-Message-State: AC+VfDxspND3ixiFI640Bn37X+3Fx6La3WnyfvwvbNVwuUmVmjfLPMRh
-        Pr8yYgnlL1vxut0eHgKiqvSw9Q==
-X-Google-Smtp-Source: ACHHUZ5D9QfTFJ7LYIjyZ34kZ1xnm+FM48ToTGYMYOaQS6D5GlphlJ2LfDuS/Lo1Qo+BuGyfh75rVw==
-X-Received: by 2002:a2e:6a18:0:b0:2b1:af36:93d9 with SMTP id f24-20020a2e6a18000000b002b1af3693d9mr1987200ljc.26.1685846353479;
-        Sat, 03 Jun 2023 19:39:13 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:a0db:1f00::8a5? (dzdqv0yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a0db:1f00::8a5])
-        by smtp.gmail.com with ESMTPSA id d9-20020ac244c9000000b004f24db9248dsm210750lfm.141.2023.06.03.19.39.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 03 Jun 2023 19:39:12 -0700 (PDT)
-Message-ID: <b038052c-c8e2-9aa1-2b80-792563d219ba@linaro.org>
-Date:   Sun, 4 Jun 2023 05:39:12 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3 6/7] drm/msm/dsi: Add phy configuration for MSM8226
-Content-Language: en-GB
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+        d=1e100.net; s=20221208; t=1685847705; x=1688439705;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Cvt9G4J1O7RH3aFrrj/0ASjX+P7Libu13qWrQpH+1W0=;
+        b=ahg/1SVmZtPthwKakkqjY6kkT2KkBnwxPFiCoSvB6XZAS7Ua9NhvwICiOhJy9ECVTz
+         jS+2yYSGqZRW3pu3XsOrBtecD6yUZafGw5l4CLFO7cIMZilq9bTZYRsuDEpt7m6EwAv4
+         DQJA1F3r09UWTvZpu46+fmQYck6NJH+Hk3+Y46Y7g3pKi0lLoJtvslmrOEDfRpl6WPlX
+         X/8Y49rxP8VQQQgEyw6rGkfxLrIfdK7I/xQGvfESMSu0j9nyMpnWZnJ22Z19sOM856Ap
+         fWpNkwv760m4sQjOE/jcDMVUWVR+i24H1LtjQEImFQeu6u2ySnEn8gakwuAUquqXn5XY
+         BwAA==
+X-Gm-Message-State: AC+VfDwXoqa4BsAxntrzHeJmn4OPMd3KMc+jQLx1ymsN4KqvABHJUkaJ
+        R24ffh7G6ClwZ6DxTZmYOUAi4g==
+X-Google-Smtp-Source: ACHHUZ4sQcWfNKUlG0DqZ/vYCqit1XPzQoNH6htAfSRlcYilAK2WeoGTVLW4LeyBjez3ROjkfj7idg==
+X-Received: by 2002:a19:7014:0:b0:4eb:e8e:4139 with SMTP id h20-20020a197014000000b004eb0e8e4139mr2202168lfc.2.1685847705229;
+        Sat, 03 Jun 2023 20:01:45 -0700 (PDT)
+Received: from eriador.lan (dzdqv0yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a0db:1f00::8a5])
+        by smtp.gmail.com with ESMTPSA id d15-20020ac24c8f000000b004eb4357122bsm653181lfl.259.2023.06.03.20.01.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Jun 2023 20:01:44 -0700 (PDT)
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Rob Clark <robdclark@gmail.com>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
         Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
         Daniel Vetter <daniel@ffwll.ch>,
@@ -67,48 +61,51 @@ To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
         Krishna Manikandan <quic_mkrishn@quicinc.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Luca Weiss <luca@z3ntu.xyz>
 Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
         freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        linux-kernel@vger.kernel.org,
+        Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v3 0/7] Display support for MSM8226
+Date:   Sun,  4 Jun 2023 06:01:33 +0300
+Message-Id: <168584750427.890410.10501565225418024189.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
 References: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
- <20230308-msm8226-mdp-v3-6-b6284145d67a@z3ntu.xyz>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-In-Reply-To: <20230308-msm8226-mdp-v3-6-b6284145d67a@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 01/06/2023 20:00, Luca Weiss wrote:
-> MSM8226 uses a modified PLL lock sequence compared to MSM8974, which is
-> based on the function dsi_pll_enable_seq_m in the msm-3.10 kernel.
-> 
-> Worth noting that the msm-3.10 downstream kernel also will try other
-> sequences in case this one doesn't work, but during testing it has shown
-> that the _m sequence succeeds first time also:
-> 
->    .pll_enable_seqs[0] = dsi_pll_enable_seq_m,
->    .pll_enable_seqs[1] = dsi_pll_enable_seq_m,
->    .pll_enable_seqs[2] = dsi_pll_enable_seq_d,
->    .pll_enable_seqs[3] = dsi_pll_enable_seq_d,
->    .pll_enable_seqs[4] = dsi_pll_enable_seq_f1,
->    .pll_enable_seqs[5] = dsi_pll_enable_seq_c,
->    .pll_enable_seqs[6] = dsi_pll_enable_seq_e,
-> 
-> We may need to expand this in the future.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->   drivers/gpu/drm/msm/dsi/phy/dsi_phy.c      |  2 +
->   drivers/gpu/drm/msm/dsi/phy/dsi_phy.h      |  3 +-
->   drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c | 97 ++++++++++++++++++++++++++++++
->   3 files changed, 101 insertions(+), 1 deletion(-)
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+On Thu, 01 Jun 2023 19:00:07 +0200, Luca Weiss wrote:
+> This series adds the required configs for MDP5 and DSI blocks that are
+> needed for MDSS on MSM8226. Finally we can add the new nodes into the
+> dts.
+> 
+> Tested on apq8026-lg-lenok and msm8926-htc-memul.
+> 
+> 
+> [...]
 
+Applied, thanks!
+
+[1/7] dt-bindings: msm: dsi-phy-28nm: Document msm8226 compatible
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/d01eb3421b10
+[2/7] dt-bindings: display/msm: dsi-controller-main: Add msm8226 compatible
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/46ccf3e0ed63
+[3/7] dt-bindings: display/msm: qcom,mdp5: Add msm8226 compatible
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/c6e79fd5c80d
+[4/7] drm/msm/mdp5: Add MDP5 configuration for MSM8226
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/eed3f9c7c36a
+[5/7] drm/msm/dsi: Add configuration for MSM8226
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/82cf4954a0d5
+[6/7] drm/msm/dsi: Add phy configuration for MSM8226
+      https://gitlab.freedesktop.org/lumag/msm/-/commit/1531d0b9235e
+
+Best regards,
 -- 
-With best wishes
-Dmitry
-
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
