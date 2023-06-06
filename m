@@ -2,25 +2,24 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 439FCC7EE43
-	for <phone-devel@archiver.kernel.org>; Tue,  6 Jun 2023 20:09:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 16AD1C7EE45
+	for <phone-devel@archiver.kernel.org>; Tue,  6 Jun 2023 21:14:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234164AbjFFUJC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 6 Jun 2023 16:09:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44656 "EHLO
+        id S238286AbjFFVOd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 6 Jun 2023 17:14:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234163AbjFFUIv (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Jun 2023 16:08:51 -0400
-X-Greylist: delayed 374 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 06 Jun 2023 13:08:50 PDT
-Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [IPv6:2001:4b7a:2000:18::167])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1345710F2;
-        Tue,  6 Jun 2023 13:08:50 -0700 (PDT)
+        with ESMTP id S238008AbjFFVOc (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Jun 2023 17:14:32 -0400
+Received: from relay07.th.seeweb.it (relay07.th.seeweb.it [IPv6:2001:4b7a:2000:18::168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0943C1725;
+        Tue,  6 Jun 2023 14:14:30 -0700 (PDT)
 Received: from localhost.localdomain (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 768533F7EF;
-        Tue,  6 Jun 2023 22:02:31 +0200 (CEST)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id EC0C53F7B7;
+        Tue,  6 Jun 2023 23:14:28 +0200 (CEST)
 From:   Marijn Suijten <marijn.suijten@somainline.org>
 To:     phone-devel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht,
@@ -37,9 +36,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht,
         Conor Dooley <conor+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] arm64: dts: qcom: sm8250-edo: Panel framebuffer is 2.5k instead of 4k
-Date:   Tue,  6 Jun 2023 22:02:20 +0200
-Message-ID: <20230606200220.506583-1-marijn.suijten@somainline.org>
+Subject: [PATCH v2] arm64: dts: qcom: sm8250-edo: Panel framebuffer is 2.5k instead of 4k
+Date:   Tue,  6 Jun 2023 23:14:18 +0200
+Message-ID: <20230606211418.587676-1-marijn.suijten@somainline.org>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -61,11 +60,15 @@ same for the previous generation Sony platform.
 Fixes: 69cdb97ef652 ("arm64: dts: qcom: sm8250: Add support for SONY Xperia 1 II / 5 II (Edo platform)")
 Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
 ---
+
+Changes since v2:
+- Rename griffin (copy-paste from related patch) to pdx203 in comment.
+
  arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
-index 3d22be747f042..17979c545cbf1 100644
+index 3d22be747f042..8f867f841cb83 100644
 --- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
 @@ -54,9 +54,10 @@ chosen {
@@ -75,7 +78,7 @@ index 3d22be747f042..17979c545cbf1 100644
 -			width = <1644>;
 -			height = <3840>;
 -			stride = <(1644 * 4)>;
-+			/* Griffin BL initializes in 2.5k mode, not 4k */
++			/* pdx203 BL initializes in 2.5k mode, not 4k */
 +			width = <1096>;
 +			height = <2560>;
 +			stride = <(1096 * 4)>;
