@@ -2,241 +2,79 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BF12C7EE32
-	for <phone-devel@archiver.kernel.org>; Tue,  6 Jun 2023 12:55:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0987EC77B73
+	for <phone-devel@archiver.kernel.org>; Tue,  6 Jun 2023 19:13:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237611AbjFFMzF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 6 Jun 2023 08:55:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53736 "EHLO
+        id S239521AbjFFTNl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 6 Jun 2023 15:13:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237919AbjFFMy6 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Jun 2023 08:54:58 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DC0DE73
-        for <phone-devel@vger.kernel.org>; Tue,  6 Jun 2023 05:54:44 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2b1a7e31dcaso65152491fa.2
-        for <phone-devel@vger.kernel.org>; Tue, 06 Jun 2023 05:54:43 -0700 (PDT)
+        with ESMTP id S239520AbjFFTNT (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Jun 2023 15:13:19 -0400
+Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 486251BDF;
+        Tue,  6 Jun 2023 12:12:13 -0700 (PDT)
+Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-19e7008a20aso5920659fac.1;
+        Tue, 06 Jun 2023 12:12:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686056082; x=1688648082;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=29byLYkD06epxWvaEwoGaPGYgdfPe7JpaZeRRJG1+CU=;
-        b=D5XaxIQKQ/doqcc8DuXkgTHCTvXjNsqVWPozqMUda9OiW7AjyFLHFyJkH9Nsx7ML2i
-         aWv31ktclhLy45aXYbmF+U5v3iOMc+raYmqOmFe7qZoBBor/nyp6888wvAEEEqtnXb0A
-         xAV/PMg6nUMdRFkKan9zlqdcnfBEssrMFKLnw0/7l2yv49WZCvyZFHq6I65Rv6NsUX0G
-         DTJQ2KEYTsDCf3b9fas55+m7+wmZAIkZcA5DMpYaIov5qsKuQsQH0srevTXs7EAkBjsK
-         bpMXitjocOV4Xz4JYYIVBGzn4lDEMxs1p1Cm8nVnbOUprTw9leyl2Pm44tuPMksrTwBE
-         iQCg==
+        d=gmail.com; s=20221208; t=1686078732; x=1688670732;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pYmXlwlNlqu1aS3DpIG1pLZKIKZ3QBEVtT7TAsgr7lo=;
+        b=N9qIXf0TlQPmsX/zvV6gAm3Xlmx/9CC4/qclMAkIoDNsDgcu/UGwRid6HuxFSRvnyi
+         MxIP579+F2EPvIbLgxU/lfg1ONjK2GeA0IqCyNN+f9G8zWW95QDDHSoK5JCogBhNDMLV
+         z8wDArRoVKEwE+IcrLTunzvKY/7jkjDMR2YS0uoPYB/LueHkSGOSvteAvDTrbijpxYSV
+         kcaJ9mHcKOkqiXOqOnF72s4R3tHUF8v/+tv5N2Ko1ll7fzgNe2Jw7ZNJ6UP5VLV3QiFd
+         Ufk/cmJ6I4wOGc+3Jm7g2volD+N7ptI/TDV/af2UhQfFPRGuNI3bvV6Gr7gtGcn5Cxeo
+         2saA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686056082; x=1688648082;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=29byLYkD06epxWvaEwoGaPGYgdfPe7JpaZeRRJG1+CU=;
-        b=JgOaP9i/01FoxE0/TBfDqACAtl6NJhYpLVPhM+uI/dpAv7J0xrj91dQAir0TYgfO/e
-         p1T7XyS+9432DZm4nPMR8Ynp8DUm716vvWgkYL27lSqkpurCp0Wur7euOdQFaK34a5oK
-         kQIxCkmLEZUNN2N5JAQjmdQh7v5syaObIeEYSWk0pIweaQqfEDWLz2ED1jeH5VjBhlXM
-         5vTnMXQqohJFbEvvs5CuGXW5dgEgbdAX4O8CybOxAMCnPaHCmp4NrAnQhyp4CpQM5tWc
-         pmCIGtK0ioIKM91QiDw8Ui+kHdgmKkqreGOyISPF0N1/funOG96pJoYeNmYhI4NJMTzI
-         hyHQ==
-X-Gm-Message-State: AC+VfDzzXBk8AjEk8znxZfNfoGRJm1MKNm/eOkQhr9R9yMKZs5uuQXAV
-        RvL4HfOekC9+a13aEuc1lfXMgg==
-X-Google-Smtp-Source: ACHHUZ49XQlBrwtKYXFqe0/3nJfe8j1/38BI40A3xg/WttZ1Xjsx/kEy5WnlSU5+sttm1HBSPstNWw==
-X-Received: by 2002:a05:651c:d5:b0:2ad:9c17:a78f with SMTP id 21-20020a05651c00d500b002ad9c17a78fmr1099893ljr.53.1686056082286;
-        Tue, 06 Jun 2023 05:54:42 -0700 (PDT)
-Received: from [192.168.1.101] (abyl150.neoplus.adsl.tpnet.pl. [83.9.31.150])
-        by smtp.gmail.com with ESMTPSA id w13-20020a2e300d000000b002af25598f07sm1843047ljw.78.2023.06.06.05.54.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Jun 2023 05:54:41 -0700 (PDT)
-Message-ID: <1f1cdf5d-075a-7e75-9dac-840f3dcfe9e9@linaro.org>
-Date:   Tue, 6 Jun 2023 14:54:40 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH 2/3] remoteproc: qcom: q6v5-mss: Add support for
- SDM630/636/660
-Content-Language: en-US
-To:     Alexey Minnekhanov <alexeymin@postmarketos.org>,
-        Andy Gross <agross@kernel.org>,
+        d=1e100.net; s=20221208; t=1686078732; x=1688670732;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pYmXlwlNlqu1aS3DpIG1pLZKIKZ3QBEVtT7TAsgr7lo=;
+        b=LQ0UbJFbTq6yvyToXLgSyi0faTQa/B9DETaR4SgKgkd62/0rqgjDTetdXSnuYPi7dp
+         Esm3GMvhnO2WdvmD5hhFJIL7XuweKZI+/vqSclLbSq2XkcvoOmWePf8qgUJgOJILBuMS
+         QbwcivmUJ/fOb6puRnTHCorst45MQY1Cb69URONXdp82++TLxYDVBRlejjSZIsghNAfL
+         L519gznglD8BbRt3msSjc0279fE5MjCzM81I5aLuHlx8IUu04TFJk4fh48Jdz0RojDix
+         uHGm1n9iklngJ0gKeKMF9cl32A4in6CUt61Bal0qlhgC1iEt9bnAz1j/h755P2uL+GJn
+         jSlQ==
+X-Gm-Message-State: AC+VfDzqwihE+m5oclLznes9xCzSdpSW4JGDzZLR12ooZ6XXf7uLbpXi
+        OeYFDqiW+1hSMc1MQXGTd7o=
+X-Google-Smtp-Source: ACHHUZ4DQ8U6awdwmeg6L/dX0hWrf4foOyfjTwHtxWa/6jiw8Se/9CablpDJi1Xp3Wg027X4Gg+RYA==
+X-Received: by 2002:a05:6358:b506:b0:129:1c2e:6487 with SMTP id de6-20020a056358b50600b001291c2e6487mr690282rwb.13.1686078732316;
+        Tue, 06 Jun 2023 12:12:12 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:f59e:5ad5:28cc:2003])
+        by smtp.gmail.com with ESMTPSA id s1-20020a17090a13c100b00258f9597e9fsm6721841pjf.45.2023.06.06.12.12.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jun 2023 12:12:11 -0700 (PDT)
+Date:   Tue, 6 Jun 2023 12:12:08 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Caleb Connolly <caleb.connolly@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konradybcio@gmail.com>
-References: <20230604061421.3787649-1-alexeymin@postmarketos.org>
- <20230604061421.3787649-2-alexeymin@postmarketos.org>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230604061421.3787649-2-alexeymin@postmarketos.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-input@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org
+Subject: Re: [PATCH 1/2] MAINTAINERS: Adjust Qualcomm driver globbing
+Message-ID: <ZH+FCC35uux5zrrG@google.com>
+References: <20230529-pm8941-pwrkey-debounce-v1-0-c043a6d5c814@linaro.org>
+ <20230529-pm8941-pwrkey-debounce-v1-1-c043a6d5c814@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230529-pm8941-pwrkey-debounce-v1-1-c043a6d5c814@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On Mon, May 29, 2023 at 08:55:06PM +0100, Caleb Connolly wrote:
+> The only drivers matching pm8???-* are two levels deep, adjust the glob
+> to match them.
+> 
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
 
+Applied, thank you.
 
-On 4.06.2023 08:14, Alexey Minnekhanov wrote:
-> Snapdragon 630/660 modem subsystem is similar to one in MSM8998
-> and can almost reuse it's reset sequence.
-> 
-> Downstream sources call this q6v5 version "qdsp6v62-1-5" and its
-> code path has additional checks for QDSP6v55_BHS_EN_REST_ACK
-> status [2].
-> 
-> Inspiration is taken from Konrad Dybcio's work in [1], but reworked
-> to use common code path with MSM8996/8998, instead of completely
-> separate "if" block for SDM660.
-> 
-> [1] https://github.com/SoMainline/linux/commit/7dd6dd9b936dc8d6c1f1abe299e5b065c33741e8
-> [2] https://github.com/MiCode/Xiaomi_Kernel_OpenSource/blob/lavender-q-oss/drivers/soc/qcom/pil-q6v5.c#L393
-> 
-> Co-developed-by: Konrad Dybcio <konradybcio@gmail.com>
-> Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
-> Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
-> 
-> ---
-> 
-> In his commit Konrad mentions that modem was unstable, but I don't
-> observe such behaviour on my device. Modem does not restart by itself,
-> and I could successfully enable ath10k Wi-Fi with this (and it was
-> also stable).
-> 
-> Also worth saying that in my initial tests just using qcom,msm8998-mss-pil
-> as-is, without separate resource struct and separate code paths for
-> SDM660, was also working fine. So I'm not sure if separate struct and
-> code path is even needed for sdm660.
-> ---
->  drivers/remoteproc/qcom_q6v5_mss.c | 54 ++++++++++++++++++++++++++++--
->  1 file changed, 52 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-> index 8e15e4f85de13..e270fc4798766 100644
-> --- a/drivers/remoteproc/qcom_q6v5_mss.c
-> +++ b/drivers/remoteproc/qcom_q6v5_mss.c
-> @@ -71,6 +71,7 @@
->  #define QDSP6SS_MEM_PWR_CTL		0x0B0
->  #define QDSP6V6SS_MEM_PWR_CTL		0x034
->  #define QDSP6SS_STRAP_ACC		0x110
-> +#define QDSP6V62SS_BHS_STATUS		0x0C4
->  
->  /* AXI Halt Register Offsets */
->  #define AXI_HALTREQ_REG			0x0
-> @@ -123,6 +124,7 @@
->  #define QDSP6v56_CLAMP_QMC_MEM		BIT(22)
->  #define QDSP6SS_XO_CBCR		0x0038
->  #define QDSP6SS_ACC_OVERRIDE_VAL		0x20
-> +#define QDSP6v55_BHS_EN_REST_ACK	BIT(0)
->  
->  /* QDSP6v65 parameters */
->  #define QDSP6SS_CORE_CBCR		0x20
-> @@ -130,6 +132,7 @@
->  #define QDSP6SS_BOOT_CORE_START         0x400
->  #define QDSP6SS_BOOT_CMD                0x404
->  #define BOOT_FSM_TIMEOUT                10000
-> +#define BHS_CHECK_MAX_LOOPS             200
->  
->  struct reg_info {
->  	struct regulator *reg;
-> @@ -250,6 +253,7 @@ enum {
->  	MSS_MSM8998,
->  	MSS_SC7180,
->  	MSS_SC7280,
-> +	MSS_SDM660,
->  	MSS_SDM845,
->  };
->  
-> @@ -700,7 +704,8 @@ static int q6v5proc_reset(struct q6v5 *qproc)
->  	} else if (qproc->version == MSS_MSM8909 ||
->  		   qproc->version == MSS_MSM8953 ||
->  		   qproc->version == MSS_MSM8996 ||
-> -		   qproc->version == MSS_MSM8998) {
-> +		   qproc->version == MSS_MSM8998 ||
-> +		   qproc->version == MSS_SDM660) {
->  
->  		if (qproc->version != MSS_MSM8909 &&
->  		    qproc->version != MSS_MSM8953)
-> @@ -734,6 +739,19 @@ static int q6v5proc_reset(struct q6v5 *qproc)
->  		val |= readl(qproc->reg_base + QDSP6SS_PWR_CTL_REG);
->  		udelay(1);
->  
-> +		if (qproc->version == MSS_SDM660) {
-> +			for (i = BHS_CHECK_MAX_LOOPS; i > 0; i--) {
-> +				if (readl_relaxed(qproc->reg_base + QDSP6V62SS_BHS_STATUS)
-> +					& QDSP6v55_BHS_EN_REST_ACK)
-> +					break;
-> +				udelay(1);
-> +			}
-> +			if (!i) {
-> +				dev_err(qproc->dev, "BHS_EN_REST_ACK not set!\n");
-> +				return -ETIMEDOUT;
-> +			}
-> +		}
-We could use something like readl_relaxed_poll_timeout instead!
-
-I think it looks good otherwise!
-
-Konrad
-> +
->  		/* Put LDO in bypass mode */
->  		val |= QDSP6v56_LDO_BYP;
->  		writel(val, qproc->reg_base + QDSP6SS_PWR_CTL_REG);
-> @@ -756,7 +774,7 @@ static int q6v5proc_reset(struct q6v5 *qproc)
->  				mem_pwr_ctl = QDSP6SS_MEM_PWR_CTL;
->  				i = 19;
->  			} else {
-> -				/* MSS_MSM8998 */
-> +				/* MSS_MSM8998, MSS_SDM660 */
->  				mem_pwr_ctl = QDSP6V6SS_MEM_PWR_CTL;
->  				i = 28;
->  			}
-> @@ -2193,6 +2211,37 @@ static const struct rproc_hexagon_res sc7280_mss = {
->  	.version = MSS_SC7280,
->  };
->  
-> +static const struct rproc_hexagon_res sdm660_mss = {
-> +	.hexagon_mba_image = "mba.mbn",
-> +	.proxy_clk_names = (char*[]){
-> +			"xo",
-> +			"qdss",
-> +			"mem",
-> +			NULL
-> +	},
-> +	.active_clk_names = (char*[]){
-> +			"iface",
-> +			"bus",
-> +			"gpll0_mss",
-> +			"mnoc_axi",
-> +			"snoc_axi",
-> +			NULL
-> +	},
-> +	.proxy_pd_names = (char*[]){
-> +			"cx",
-> +			"mx",
-> +			NULL
-> +	},
-> +	.need_mem_protection = true,
-> +	.has_alt_reset = false,
-> +	.has_mba_logs = false,
-> +	.has_spare_reg = false,
-> +	.has_qaccept_regs = false,
-> +	.has_ext_cntl_regs = false,
-> +	.has_vq6 = false,
-> +	.version = MSS_SDM660,
-> +};
-> +
->  static const struct rproc_hexagon_res sdm845_mss = {
->  	.hexagon_mba_image = "mba.mbn",
->  	.proxy_clk_names = (char*[]){
-> @@ -2475,6 +2524,7 @@ static const struct of_device_id q6v5_of_match[] = {
->  	{ .compatible = "qcom,msm8998-mss-pil", .data = &msm8998_mss},
->  	{ .compatible = "qcom,sc7180-mss-pil", .data = &sc7180_mss},
->  	{ .compatible = "qcom,sc7280-mss-pil", .data = &sc7280_mss},
-> +	{ .compatible = "qcom,sdm660-mss-pil", .data = &sdm660_mss},
->  	{ .compatible = "qcom,sdm845-mss-pil", .data = &sdm845_mss},
->  	{ },
->  };
+-- 
+Dmitry
