@@ -2,97 +2,168 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB83CC7EE24
-	for <phone-devel@archiver.kernel.org>; Mon,  5 Jun 2023 14:40:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 25367C77B73
+	for <phone-devel@archiver.kernel.org>; Tue,  6 Jun 2023 12:51:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233657AbjFEOkA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 5 Jun 2023 10:40:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59766 "EHLO
+        id S237740AbjFFMvA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 6 Jun 2023 08:51:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234150AbjFEOj7 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 5 Jun 2023 10:39:59 -0400
+        with ESMTP id S237768AbjFFMuv (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 6 Jun 2023 08:50:51 -0400
 Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B086E9E
-        for <phone-devel@vger.kernel.org>; Mon,  5 Jun 2023 07:39:57 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f62b512fe2so1332909e87.1
-        for <phone-devel@vger.kernel.org>; Mon, 05 Jun 2023 07:39:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E61301996
+        for <phone-devel@vger.kernel.org>; Tue,  6 Jun 2023 05:50:29 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f4bdcde899so7488962e87.0
+        for <phone-devel@vger.kernel.org>; Tue, 06 Jun 2023 05:50:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685975996; x=1688567996;
+        d=linaro.org; s=google; t=1686055820; x=1688647820;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=mZ/Wx/zgJSwTp0t38WigvjTJRaMO4qIiJIqQKGcMOHk=;
-        b=nTxpFfcBbzT/AvpjfHhD0vjOL/nnhWeDIgReAfU/7mTBRdEo7UTeyRb+celMb6ool6
-         YvHkgSKDWEgEWiohHMQ6gCaYspB4RcZSE3w1+XosRPylxtbtGcpjPxAB1EpYNGH1s3om
-         5DLnkvUz9+VBulBxLJj5S66zZSr2OcO2st0sEiSq0RCYB/qFwV1UmDly+WiaaGmRW8hy
-         1o750eifhSEE4t2APzqhbV2o+OPJCB6F5G8XNNn3GULCL/WP9es3atal4Yno1/jWm+9u
-         DU6FPYbnA+yoqk7nex7sOVAldrEFfu9pZr9fYh6DIyg0NX9ej8Hcow9XlwjPZfhVgBqZ
-         qstg==
+        bh=wyaDAeF5F3ya0H2Tt5M7GqFjZHMBxCl1PByfjSc9IM0=;
+        b=sg/fn/LP4T98vqK7J06CTcM1xWWhpaiETXdTxN0iyfmKx4avnn6f8QtfkJwqzQw7vE
+         p0fp1s4kjDo8IEOirogy6pmvbsutr5cjxcj8RHkDI3AEJnU2Zs+fd1dw9HHokcyvkXn9
+         kMj289MmSuVzatmCP1IfN0V1llUPHCCGA0up78/HciRYojx7CDTcB5PqDgtLjZLHyKCT
+         gsiyCrJJ36DBmhtCGHy9o1QjO5rM+sunRwZs9DkkuvF44eYggLNRnyNH9s53ywMa849T
+         rd3pWv5rtkF2fFMsbNs5uiIsHXHxR406bpoR4du3lAh30u4JAao+xdzVXUVGBIMJGksl
+         qEEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685975996; x=1688567996;
+        d=1e100.net; s=20221208; t=1686055820; x=1688647820;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mZ/Wx/zgJSwTp0t38WigvjTJRaMO4qIiJIqQKGcMOHk=;
-        b=D6GOIWrYHmuNjDtoS3zGCWprWh9BFNE3cu3n9I0I1+bkFePLwe1osPNwmobAdu8QuP
-         ThxFqsN3Hr2cQICCahZ6M29ySwr4a6/SZ64gcyaDPPerB9q38AOD0wpz7A76adlIYR9p
-         b9CCmETkY6vmBgZ/9aZxaeZt8tIBvzcw18FYLM1budmsrZUwjkkUKWWuNvtJ1t8iULu5
-         P2U11YX0spc4PWmoqXAG+pVUSLVrO1Tir5anOXuQ9+7l7XV/DHcSidgB5MkEMILvfDwM
-         kVcrd38ruVmzOXQZ/jv2iIlOoKxFWFtp8uqrFfHQRJsMqTdWnxS0a1DkyTzIiXv5pBmA
-         E3sA==
-X-Gm-Message-State: AC+VfDxOQmbAANT7Bl4PSYYP1Fahk2ulDm7QK7j+TF8V5g8tJ0PAAFet
-        Wp+7zlBc16uM+8Zi7rUiGvfOwlcMT5bgemDwOZE=
-X-Google-Smtp-Source: ACHHUZ7WDoAhYXeQfKqx3mhLebnwXX+a5Kx8rUIlNfmQYvJmv/Cuj8dkaJfOMD2HqLlQTsBU2ee3cw==
-X-Received: by 2002:a19:740f:0:b0:4f6:217a:5620 with SMTP id v15-20020a19740f000000b004f6217a5620mr2681255lfe.39.1685975995851;
-        Mon, 05 Jun 2023 07:39:55 -0700 (PDT)
-Received: from ?IPV6:2a05:6e02:1041:c10:2385:9257:ace1:1efc? ([2a05:6e02:1041:c10:2385:9257:ace1:1efc])
-        by smtp.googlemail.com with ESMTPSA id g26-20020a7bc4da000000b003f50e88ffc1sm14725899wmk.0.2023.06.05.07.39.54
+        bh=wyaDAeF5F3ya0H2Tt5M7GqFjZHMBxCl1PByfjSc9IM0=;
+        b=lH2GN3QY/L8lPohOzR3U/KFhwfYnNGYNmLPJ0MqDy6m3BPpUuyf+/Jm5zF5TbxQ4UE
+         CDxJcSoUmO9czimy3QIjJtRLFXyaHhI/Q5aemWCrO6s4FrG+NTo+HgOmmlYRDTYdZGmn
+         uZeFQRrrfWa3ZlDm1aI3bKFxT9ZUogXVZJ8t9nlSTqoS5/Lxkfj9wM5mkgqjKjPFsenw
+         suKI1gAVbbHF1ZSKbZDxJySnr7M2dP0E3/VaUYBefcizoKa7kmkANYUV675zzB70y+wA
+         JV5NOPHzI4gxLQ4Hcc9MatIYl/jJEyE/obrDeHzN3B2umtqucW0CxbqDjok15xCUWFGU
+         lw4w==
+X-Gm-Message-State: AC+VfDyeQKDjRiCx4FFDw7MzN8mVosiCB83So4x5e/skxeLfir5zzxlr
+        O5EczViD+W0hmj146W2KmPO40g==
+X-Google-Smtp-Source: ACHHUZ4Y81qFM9U/GDkX5tXxeRfM60Qt/9uvjraZLnDE2TOtWXWePKm5uGOXaAJX30RsgDBdyD+bUw==
+X-Received: by 2002:a19:7514:0:b0:4f6:274e:42f0 with SMTP id y20-20020a197514000000b004f6274e42f0mr1050438lfe.15.1686055820708;
+        Tue, 06 Jun 2023 05:50:20 -0700 (PDT)
+Received: from [192.168.1.101] (abyl150.neoplus.adsl.tpnet.pl. [83.9.31.150])
+        by smtp.gmail.com with ESMTPSA id m7-20020a195207000000b004f11e965308sm1456274lfb.20.2023.06.06.05.50.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Jun 2023 07:39:55 -0700 (PDT)
-Message-ID: <751ed2d6-3008-bd47-1921-2f2ca7cc92e1@linaro.org>
-Date:   Mon, 5 Jun 2023 16:39:54 +0200
+        Tue, 06 Jun 2023 05:50:20 -0700 (PDT)
+Message-ID: <d7132808-1b24-08ab-0d78-9f4012c4da04@linaro.org>
+Date:   Tue, 6 Jun 2023 14:50:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 2/6] dt-bindings: thermal: tsens: Add compatible for
- MSM8226
+ Thunderbird/102.11.2
+Subject: Re: [PATCH 3/3] arm64: dts: qcom: sdm630: Add support for modem
+ remoteproc
 Content-Language: en-US
-To:     =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>,
-        linux-arm-msm@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
+To:     Alexey Minnekhanov <alexeymin@postmarketos.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230507201225.89694-1-matti.lehtimaki@gmail.com>
- <20230507201225.89694-3-matti.lehtimaki@gmail.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20230507201225.89694-3-matti.lehtimaki@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20230604061421.3787649-1-alexeymin@postmarketos.org>
+ <20230604061421.3787649-3-alexeymin@postmarketos.org>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230604061421.3787649-3-alexeymin@postmarketos.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 07/05/2023 22:12, Matti Lehtimäki wrote:
-> Qualcomm MSM8226 has tsens v0.1 block.
+
+
+On 4.06.2023 08:14, Alexey Minnekhanov wrote:
+> Modem subsystem in SDM630/660 is similar to MSM8998 and
+> device tree node for it is based on the one from msm8998.dtsi.
 > 
-> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+> Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
 > ---
+>  arch/arm64/boot/dts/qcom/sdm630.dtsi | 57 ++++++++++++++++++++++++++++
+>  1 file changed, 57 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
+> index 5c4086d2fa99c..5e68972d48fb4 100644
+> --- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
+> @@ -1026,6 +1026,63 @@ data-pins {
+>  			};
+>  		};
+>  
+> +		remoteproc_mss: remoteproc@4080000 {
+> +			compatible = "qcom,sdm660-mss-pil";
+> +			reg = <0x04080000 0x100>, <0x04180000 0x40>;
+> +			reg-names = "qdsp6", "rmb";
+> +
+> +			interrupts-extended =
+> +				<&intc GIC_SPI 448 IRQ_TYPE_EDGE_RISING>,
+> +				<&modem_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
+> +				<&modem_smp2p_in 1 IRQ_TYPE_EDGE_RISING>,
+> +				<&modem_smp2p_in 2 IRQ_TYPE_EDGE_RISING>,
+> +				<&modem_smp2p_in 3 IRQ_TYPE_EDGE_RISING>,
+> +				<&modem_smp2p_in 7 IRQ_TYPE_EDGE_RISING>;
+Please remove the \n\t\t\t after = and align them to the first entry
 
-Applied, thanks
+> +			interrupt-names = "wdog", "fatal", "ready",
+> +					"handover", "stop-ack",
+> +					"shutdown-ack";
+Please turn this and clock-names into vertical lists with one
+entry per line
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+> +
+> +			clocks = <&gcc GCC_MSS_CFG_AHB_CLK>,
+> +				<&gcc GCC_BIMC_MSS_Q6_AXI_CLK>,
+And these too, align them with a space.
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
 
+looks good otherwise!
+
+Konrad
+> +				<&gcc GCC_BOOT_ROM_AHB_CLK>,
+> +				<&gcc GPLL0_OUT_MSSCC>,
+> +				<&gcc GCC_MSS_SNOC_AXI_CLK>,
+> +				<&gcc GCC_MSS_MNOC_BIMC_AXI_CLK>,
+> +				<&rpmcc RPM_SMD_QDSS_CLK>,
+> +				<&rpmcc RPM_SMD_XO_CLK_SRC>;
+> +			clock-names = "iface", "bus", "mem", "gpll0_mss",
+> +				"snoc_axi", "mnoc_axi", "qdss", "xo";
+> +
+> +			qcom,smem-states = <&modem_smp2p_out 0>;
+> +			qcom,smem-state-names = "stop";
+> +
+> +			resets = <&gcc GCC_MSS_RESTART>;
+> +			reset-names = "mss_restart";
+> +
+> +			qcom,halt-regs = <&tcsr_regs_1 0x3000 0x5000 0x4000>;
+> +
+> +			power-domains = <&rpmpd SDM660_VDDCX>,
+> +					<&rpmpd SDM660_VDDMX>;
+> +			power-domain-names = "cx", "mx";
+> +
+> +			status = "disabled";
+> +
+> +			mba {
+> +				memory-region = <&mba_region>;
+> +			};
+> +
+> +			mpss {
+> +				memory-region = <&mpss_region>;
+> +			};
+> +
+> +			glink-edge {
+> +				interrupts = <GIC_SPI 452 IRQ_TYPE_EDGE_RISING>;
+> +				label = "modem";
+> +				qcom,remote-pid = <1>;
+> +				mboxes = <&apcs_glb 15>;
+> +			};
+> +		};
+> +
+>  		adreno_gpu: gpu@5000000 {
+>  			compatible = "qcom,adreno-508.0", "qcom,adreno";
+>  
