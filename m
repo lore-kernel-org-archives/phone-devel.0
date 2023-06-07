@@ -2,119 +2,283 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 444A8C77B7A
-	for <phone-devel@archiver.kernel.org>; Wed,  7 Jun 2023 07:15:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 753C6C7EE2E
+	for <phone-devel@archiver.kernel.org>; Wed,  7 Jun 2023 19:47:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238289AbjFGHPX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 7 Jun 2023 03:15:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49180 "EHLO
+        id S231839AbjFGTrN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 7 Jun 2023 15:47:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238841AbjFGHPR (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Jun 2023 03:15:17 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D36A19AA;
-        Wed,  7 Jun 2023 00:15:13 -0700 (PDT)
-Received: from [IPV6:2001:b07:2ed:14ed:a962:cd4d:a84:1eab] (unknown [IPv6:2001:b07:2ed:14ed:a962:cd4d:a84:1eab])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 328FC6606EF8;
-        Wed,  7 Jun 2023 08:15:11 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1686122111;
-        bh=f4cx7LEjgdBQ20mkfGT5V8OCsYXY+yPh4SHMgyvYoA8=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=PfH5PXmP10MTgpuggjPd6ZbKaX8Mx7dBqMJ2fE+38L3nNITZRu7McUYHTijXarED4
-         tzOUGPOwy0uVroSBq5Yjn523Gdvpg6iSsXDV6pgqew8Blx5gPt19HS6MgBAcyqoy95
-         4iTqXDKTKFGy03knE7QPJwBmyc2gnuiEqva4Gno9eKzyDvhX3OEkb8n9bjbDS1+SY7
-         DmQUxiNZcsklXUdbHphyaTboQ0mNJmNHJ6sdBMpg8o8tipzfjFDFlfps/vjpt8Ki9v
-         RmCWzlCZJTSaZITqhoX4S6P+UYPKrt+mwwf80zypwdIIpioGdivJhUqHUFXqjNSuE1
-         RIwHdPCG16s/g==
-Message-ID: <a69ddadd-8d59-e784-ddce-16c83a7f13a6@collabora.com>
-Date:   Wed, 7 Jun 2023 09:15:08 +0200
+        with ESMTP id S231643AbjFGTrG (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 7 Jun 2023 15:47:06 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B26052682;
+        Wed,  7 Jun 2023 12:46:44 -0700 (PDT)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 357JT57k000503;
+        Wed, 7 Jun 2023 19:46:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=5G6HDYV61owlTxtOzctRQ3nN88GKhOoD0XA1tYt2JAs=;
+ b=PgOT/HZXCbQa1kGYbLsNeVg+XA/ISyVi7VDGg3iEazwC/5Gfgdx1eXNwPCgb2vxCRUYg
+ 3gnx+6a72JCWpsQx2wkXuma3aQ0Yl9cSOHZhfcQZrYd2GqiaDtz2pW5dORmuRmBF30iD
+ m4W/81yuUyFrcOCcPCAZtZh4xH91i5IbPQH0fecYIj9nvPXErCeG9CEjwrhh2EQVAz8v
+ FaM4I4iKG1OaQmuK7MTdx1vVSHOSN0Zi+JXlzM7EYJvJs58dk8c+mWMrUTkax3Iiq4ht
+ zPgFNrXTwhu9k+NV+fxLc5Ug/xGurKqw9xYbo5SIQIbAv0RSWHVmisC5l/Z8m9hD7koC 1Q== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3r2a7k2sm5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 07 Jun 2023 19:46:36 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 357JkZ6e026091
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 7 Jun 2023 19:46:35 GMT
+Received: from [10.110.54.114] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Wed, 7 Jun 2023
+ 12:46:34 -0700
+Message-ID: <51712e34-c964-a5b3-3df8-1af10c7751f6@quicinc.com>
+Date:   Wed, 7 Jun 2023 12:46:31 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v2] arm64: dts: qcom: sm8250-edo: Panel framebuffer is
- 2.5k instead of 4k
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [Freedreno] [PATCH v3 6/7] drm/msm/dsi: Add phy configuration for
+ MSM8226
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230606211418.587676-1-marijn.suijten@somainline.org>
- <974f68dc-b667-c9a7-94c4-1023ef271fab@linaro.org>
-Content-Language: en-US
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <974f68dc-b667-c9a7-94c4-1023ef271fab@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+        Krishna Manikandan <quic_mkrishn@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+CC:     <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <freedreno@lists.freedesktop.org>
+References: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
+ <20230308-msm8226-mdp-v3-6-b6284145d67a@z3ntu.xyz>
+From:   Jeykumar Sankaran <quic_jeykumar@quicinc.com>
+In-Reply-To: <20230308-msm8226-mdp-v3-6-b6284145d67a@z3ntu.xyz>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: JfdO3l81FXQYiHJVxQ4Of-WTisJFXX7-
+X-Proofpoint-GUID: JfdO3l81FXQYiHJVxQ4Of-WTisJFXX7-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-07_09,2023-06-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
+ impostorscore=0 spamscore=0 lowpriorityscore=0 phishscore=0
+ mlxlogscore=999 adultscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306070171
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 07/06/23 00:52, Konrad Dybcio ha scritto:
-> 
-> 
-> On 6.06.2023 23:14, Marijn Suijten wrote:
->> The framebuffer configuration for edo pdx203, written in edo dtsi (which
->> is overwritten in pdx206 dts for its smaller panel) has to use a
->> 1096x2560 configuration as this is what the panel (and framebuffer area)
->> has been initialized to.  Downstream userspace also has access to (and
->> uses) this 2.5k mode by default, and only switches the panel to 4k when
->> requested.
->>
->> This is similar to commit be8de06dc397 ("arm64: dts: qcom:
->> sm8150-kumano: Panel framebuffer is 2.5k instead of 4k") which fixed the
->> same for the previous generation Sony platform.
->>
->> Fixes: 69cdb97ef652 ("arm64: dts: qcom: sm8250: Add support for SONY Xperia 1 II / 5 II (Edo platform)")
->> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
->> ---
-> And so I derped again.
-> 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-I would've liked more to see a commit saying "replace simple-framebuffer with xxxx"
-(where xxxx is DSI panel, etc) but that will as well do for now... :-)
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-
+On 6/1/2023 10:00 AM, Luca Weiss wrote:
+> MSM8226 uses a modified PLL lock sequence compared to MSM8974, which is
+> based on the function dsi_pll_enable_seq_m in the msm-3.10 kernel.
 > 
-> Konrad
->>
->> Changes since v2:
->> - Rename griffin (copy-paste from related patch) to pdx203 in comment.
->>
->>   arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi | 7 ++++---
->>   1 file changed, 4 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
->> index 3d22be747f042..8f867f841cb83 100644
->> --- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
->> @@ -54,9 +54,10 @@ chosen {
->>   		framebuffer: framebuffer@9c000000 {
->>   			compatible = "simple-framebuffer";
->>   			reg = <0 0x9c000000 0 0x2300000>;
->> -			width = <1644>;
->> -			height = <3840>;
->> -			stride = <(1644 * 4)>;
->> +			/* pdx203 BL initializes in 2.5k mode, not 4k */
->> +			width = <1096>;
->> +			height = <2560>;
->> +			stride = <(1096 * 4)>;
->>   			format = "a8r8g8b8";
->>   		};
->>   	};
+> Worth noting that the msm-3.10 downstream kernel also will try other
+> sequences in case this one doesn't work, but during testing it has shown
+> that the _m sequence succeeds first time also:
+> 
+>    .pll_enable_seqs[0] = dsi_pll_enable_seq_m,
+>    .pll_enable_seqs[1] = dsi_pll_enable_seq_m,
+>    .pll_enable_seqs[2] = dsi_pll_enable_seq_d,
+>    .pll_enable_seqs[3] = dsi_pll_enable_seq_d,
+>    .pll_enable_seqs[4] = dsi_pll_enable_seq_f1,
+>    .pll_enable_seqs[5] = dsi_pll_enable_seq_c,
+>    .pll_enable_seqs[6] = dsi_pll_enable_seq_e,
+> 
+> We may need to expand this in the future.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>   drivers/gpu/drm/msm/dsi/phy/dsi_phy.c      |  2 +
+>   drivers/gpu/drm/msm/dsi/phy/dsi_phy.h      |  3 +-
+>   drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c | 97 ++++++++++++++++++++++++++++++
+>   3 files changed, 101 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+> index bb09cbe8ff86..9d5795c58a98 100644
+> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+> @@ -541,6 +541,8 @@ static const struct of_device_id dsi_phy_dt_match[] = {
+>   	  .data = &dsi_phy_28nm_hpm_famb_cfgs },
+>   	{ .compatible = "qcom,dsi-phy-28nm-lp",
+>   	  .data = &dsi_phy_28nm_lp_cfgs },
+> +	{ .compatible = "qcom,dsi-phy-28nm-8226",
+> +	  .data = &dsi_phy_28nm_8226_cfgs },
+>   #endif
+>   #ifdef CONFIG_DRM_MSM_DSI_20NM_PHY
+>   	{ .compatible = "qcom,dsi-phy-20nm",
+> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h
+> index 7137a17ae523..8b640d174785 100644
+> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h
+> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.h
+> @@ -46,8 +46,9 @@ struct msm_dsi_phy_cfg {
+>   extern const struct msm_dsi_phy_cfg dsi_phy_28nm_hpm_cfgs;
+>   extern const struct msm_dsi_phy_cfg dsi_phy_28nm_hpm_famb_cfgs;
+>   extern const struct msm_dsi_phy_cfg dsi_phy_28nm_lp_cfgs;
+> -extern const struct msm_dsi_phy_cfg dsi_phy_20nm_cfgs;
+> +extern const struct msm_dsi_phy_cfg dsi_phy_28nm_8226_cfgs;
+>   extern const struct msm_dsi_phy_cfg dsi_phy_28nm_8960_cfgs;
+> +extern const struct msm_dsi_phy_cfg dsi_phy_20nm_cfgs;
+>   extern const struct msm_dsi_phy_cfg dsi_phy_14nm_cfgs;
+>   extern const struct msm_dsi_phy_cfg dsi_phy_14nm_660_cfgs;
+>   extern const struct msm_dsi_phy_cfg dsi_phy_14nm_2290_cfgs;
+> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
+> index 4c1bf55c5f38..ceec7bb87bf1 100644
+> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
+> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_28nm.c
+> @@ -37,6 +37,7 @@
+>   
+>   /* v2.0.0 28nm LP implementation */
+>   #define DSI_PHY_28NM_QUIRK_PHY_LP	BIT(0)
+> +#define DSI_PHY_28NM_QUIRK_PHY_8226	BIT(1)
+>   
+>   #define LPFR_LUT_SIZE			10
+>   struct lpfr_cfg {
+> @@ -377,6 +378,74 @@ static int dsi_pll_28nm_vco_prepare_hpm(struct clk_hw *hw)
+>   	return ret;
+>   }
+>   
+> +static int dsi_pll_28nm_vco_prepare_8226(struct clk_hw *hw)
+> +{
+> +	struct dsi_pll_28nm *pll_28nm = to_pll_28nm(hw);
+> +	struct device *dev = &pll_28nm->phy->pdev->dev;
+> +	void __iomem *base = pll_28nm->phy->pll_base;
+> +	u32 max_reads = 5, timeout_us = 100;
+> +	bool locked;
+> +	u32 val;
+> +	int i;
+> +
+> +	DBG("id=%d", pll_28nm->phy->id);
+> +
+> +	pll_28nm_software_reset(pll_28nm);
+> +
+> +	/*
+> +	 * PLL power up sequence.
+> +	 * Add necessary delays recommended by hardware.
+> +	 */
+> +	dsi_phy_write(base + REG_DSI_28nm_PHY_PLL_CAL_CFG1, 0x34);
+> +
+> +	val = DSI_28nm_PHY_PLL_GLB_CFG_PLL_PWRDN_B;
+> +	dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 200);
+> +
+> +	val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_PWRGEN_PWRDN_B;
+> +	dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 200);
+> +
+> +	val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_LDO_PWRDN_B;
+> +	val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_ENABLE;
+> +	dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 600);
+> +
+> +	for (i = 0; i < 7; i++) {
+> +		/* DSI Uniphy lock detect setting */
+> +		dsi_phy_write(base + REG_DSI_28nm_PHY_PLL_LKDET_CFG2, 0x0d);
+> +		dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_LKDET_CFG2,
+> +				0x0c, 100);
+> +		dsi_phy_write(base + REG_DSI_28nm_PHY_PLL_LKDET_CFG2, 0x0d);
+> +
+> +		/* poll for PLL ready status */
+> +		locked = pll_28nm_poll_for_ready(pll_28nm,
+> +						max_reads, timeout_us);
+> +		if (locked)
+> +			break;
+> +
+> +		pll_28nm_software_reset(pll_28nm);
+> +
+> +		/*
+> +		 * PLL power up sequence.
+> +		 * Add necessary delays recommended by hardware.
+> +		 */
+> +		dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_PWRGEN_CFG, 0x00, 50);
+> +
+> +		val = DSI_28nm_PHY_PLL_GLB_CFG_PLL_PWRDN_B;
+> +		val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_PWRGEN_PWRDN_B;
+> +		dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 100);
+> +
+> +		val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_LDO_PWRDN_B;
+> +		val |= DSI_28nm_PHY_PLL_GLB_CFG_PLL_ENABLE;
+> +		dsi_phy_write_udelay(base + REG_DSI_28nm_PHY_PLL_GLB_CFG, val, 600);
+> +	}
+> +
+> +	if (unlikely(!locked))
+> +		DRM_DEV_ERROR(dev, "DSI PLL lock failed\n");
+> +	else
+> +		DBG("DSI PLL Lock success");
+> +
+> +	return locked ? 0 : -EINVAL;
+> +}
+> +
+Could you please share the downstream reference you used to come up with 
+this sequence?
 
+Thanks and Regards,
+Jeykumar S.
+>   static int dsi_pll_28nm_vco_prepare_lp(struct clk_hw *hw)
+>   {
+>   	struct dsi_pll_28nm *pll_28nm = to_pll_28nm(hw);
+> @@ -471,6 +540,15 @@ static const struct clk_ops clk_ops_dsi_pll_28nm_vco_lp = {
+>   	.is_enabled = dsi_pll_28nm_clk_is_enabled,
+>   };
+>   
+> +static const struct clk_ops clk_ops_dsi_pll_28nm_vco_8226 = {
+> +	.round_rate = dsi_pll_28nm_clk_round_rate,
+> +	.set_rate = dsi_pll_28nm_clk_set_rate,
+> +	.recalc_rate = dsi_pll_28nm_clk_recalc_rate,
+> +	.prepare = dsi_pll_28nm_vco_prepare_8226,
+> +	.unprepare = dsi_pll_28nm_vco_unprepare,
+> +	.is_enabled = dsi_pll_28nm_clk_is_enabled,
+> +};
+> +
+>   /*
+>    * PLL Callbacks
+>    */
+> @@ -536,6 +614,8 @@ static int pll_28nm_register(struct dsi_pll_28nm *pll_28nm, struct clk_hw **prov
+>   
+>   	if (pll_28nm->phy->cfg->quirks & DSI_PHY_28NM_QUIRK_PHY_LP)
+>   		vco_init.ops = &clk_ops_dsi_pll_28nm_vco_lp;
+> +	else if (pll_28nm->phy->cfg->quirks & DSI_PHY_28NM_QUIRK_PHY_8226)
+> +		vco_init.ops = &clk_ops_dsi_pll_28nm_vco_8226;
+>   	else
+>   		vco_init.ops = &clk_ops_dsi_pll_28nm_vco_hpm;
+>   
+> @@ -820,3 +900,20 @@ const struct msm_dsi_phy_cfg dsi_phy_28nm_lp_cfgs = {
+>   	.quirks = DSI_PHY_28NM_QUIRK_PHY_LP,
+>   };
+>   
+> +const struct msm_dsi_phy_cfg dsi_phy_28nm_8226_cfgs = {
+> +	.has_phy_regulator = true,
+> +	.regulator_data = dsi_phy_28nm_regulators,
+> +	.num_regulators = ARRAY_SIZE(dsi_phy_28nm_regulators),
+> +	.ops = {
+> +		.enable = dsi_28nm_phy_enable,
+> +		.disable = dsi_28nm_phy_disable,
+> +		.pll_init = dsi_pll_28nm_init,
+> +		.save_pll_state = dsi_28nm_pll_save_state,
+> +		.restore_pll_state = dsi_28nm_pll_restore_state,
+> +	},
+> +	.min_pll_rate = VCO_MIN_RATE,
+> +	.max_pll_rate = VCO_MAX_RATE,
+> +	.io_start = { 0xfd922b00 },
+> +	.num_dsi_phy = 1,
+> +	.quirks = DSI_PHY_28NM_QUIRK_PHY_8226,
+> +};
+> 
