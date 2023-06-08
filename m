@@ -2,131 +2,137 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 36C47C7EE25
-	for <phone-devel@archiver.kernel.org>; Thu,  8 Jun 2023 17:19:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B2FBAC7EE23
+	for <phone-devel@archiver.kernel.org>; Thu,  8 Jun 2023 23:24:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236988AbjFHRTq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 8 Jun 2023 13:19:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44794 "EHLO
+        id S229771AbjFHXY6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 8 Jun 2023 19:24:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236934AbjFHRTo (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Jun 2023 13:19:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65A762733;
-        Thu,  8 Jun 2023 10:19:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229817AbjFHXY6 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Jun 2023 19:24:58 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE2D30D6;
+        Thu,  8 Jun 2023 16:24:30 -0700 (PDT)
+Received: from mercury (unknown [185.209.196.239])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D19ED64FCD;
-        Thu,  8 Jun 2023 17:19:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DFDFC433EF;
-        Thu,  8 Jun 2023 17:19:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686244779;
-        bh=jVlKyMFufGCHlZkmMNuunClFNKP+T7ofi0jXzgtrTD0=;
+        (Authenticated sender: sre)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 753836606F1D;
+        Fri,  9 Jun 2023 00:24:24 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1686266664;
+        bh=mCFzt9Y8896kdcxmhKQPvHOnPkcXSRatB/HlXjIKGQc=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=doce8hIRJB6dZQNaJxkYXuCr8PvIPHT5XfQXwRvtsRKUrt6mSENxR9smISl9Qts37
-         YoWdffdY0CRrwSqxAoYTby1eMN2kKHmepYtgzCU5z/5wXxH7FsvqCmH3lbZ3hP7C/+
-         DtBDFV7iKL7sa3qqtytcNN74IuWeIvED0beA2QQ0pED0JECCcne+y9MIOWPa2D6zEf
-         SJg+T/ZOJvm7kjhWCnvvxkWZFB7GbU+9nTqa+kYhFM+CY1q+PJse7qam2riRrUVyMX
-         6k82RPM+ce7LT8A7fR0fFK0plbvuS+DQg7YrsnFMwFLOHSPEC4bfIkPja/ixTE/y4U
-         twSDGNiDululA==
-Date:   Thu, 8 Jun 2023 18:19:32 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        b=HcSfKi7LayIU/v34zNkIEAO6QPFs20sykANJIiRceDpKRd4hBFyrlKfBYal9/3iIr
+         5rvtCnsvrR8Ta18JeX7S0pkSdvFl/iJwv+QYkGizxbrD+0dnQQ1vPOTcb7h9uMaZKP
+         N0KFG+JJc0i6PRfIffG8SDw+EROmPehrb56fXbhnxQBFJuSZuCL7S/Xkj6n4edo1Yo
+         +G0ew41QMVPpyrzOs91GRBeMrMKaMa3kB19Q5dnfFJsZ/1ukC7e2ydRG51aqBPeZcd
+         6+VXsmfU4oyTvEQnzvqo5BKme0Nzlcb0o1ZeX7nsg+tfoW/+arro/nm7rJHew23KZp
+         ofFBskKzAUpgA==
+Received: by mercury (Postfix, from userid 1000)
+        id 29AFB1060A24; Fri,  9 Jun 2023 01:24:22 +0200 (CEST)
+Date:   Fri, 9 Jun 2023 01:24:22 +0200
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Caleb Connolly <caleb.connolly@linaro.org>
+Cc:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Beomho Seo <beomho.seo@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Raymond Hackley <raymondhackley@protonmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Henrik Grimler <henrik@grimler.se>,
-        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v6 00/10 RESEND] Add RT5033 charger device driver
-Message-ID: <20230608171932.GG3572061@google.com>
-References: <cover.1684182964.git.jahau.ref@rocketmail.com>
- <cover.1684182964.git.jahau@rocketmail.com>
+        Conor Dooley <conor+dt@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, linux-pm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        phone-devel@vger.kernel.org,
+        Joel Selvaraj <joelselvaraj.oss@gmail.com>
+Subject: Re: [PATCH v9 0/2] power: supply: introduce support for the Qualcomm
+ smb2 charger
+Message-ID: <20230608232422.ikckij5m4adwnrap@mercury.elektranox.org>
+References: <20230524-pmi8998-charger-v9-0-cd7f6d03c0ab@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="cv4aioka2xke3d7y"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1684182964.git.jahau@rocketmail.com>
+In-Reply-To: <20230524-pmi8998-charger-v9-0-cd7f6d03c0ab@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 15 May 2023, Jakob Hauser wrote:
 
-> This patchset adds the charger driver "rt5033-charger". It is part of the
-> multifunction device rt5033. The patchset is based on an older version by
-> Beomho Seo of March 2015. For more information on the history and setup of
-> the patchset see the cover sheet of version v1, there is a link further down
-> below the changelog.
-> 
-> RESEND: Sorry for spamming. The first try of sending v6 got interrupted and
-> was split into two threads on the lore list. Therefore sending it again.
-> 
-> Changes in v6:
->  - Patch 5: In function rt5033_charger_probe() after
->    calling rt5033_charger_dt_init() replaced the return value from "-ENODEV"
->    to "PTR_ERR(charger->chg)", as suggested by Christophe.
->  - Patch 9: Changed the patch from adding "power-supplies: true" to replacing
->    "additionalProperties: false" by "unevaluatedProperties: false", as
->    suggested by Krzysztof.
-> 
-> v1: https://lore.kernel.org/linux-pm/cover.1677620677.git.jahau@rocketmail.com/T/#t
-> v2: https://lore.kernel.org/linux-pm/cover.1681646904.git.jahau@rocketmail.com/T/#t
-> v3: https://lore.kernel.org/linux-pm/cover.1682636929.git.jahau@rocketmail.com/T/#t
-> v4: https://lore.kernel.org/linux-pm/20230506155435.3005-1-jahau@rocketmail.com/T/#t
-> v5: https://lore.kernel.org/linux-pm/20230514123130.41172-1-jahau@rocketmail.com/T/#t
-> 
-> The result of the patchset v6 can be seen at:
-> https://github.com/Jakko3/linux/blob/rt5033-charger_v6/drivers/power/supply/rt5033_charger.c
-> 
-> Jakob Hauser (9):
->   mfd: rt5033: Fix chip revision readout
->   mfd: rt5033: Fix STAT_MASK, HZ_MASK and AICR defines
->   mfd: rt5033: Apply preparatory changes before adding rt5033-charger
->     driver
->   power: supply: rt5033_charger: Add RT5033 charger device driver
->   power: supply: rt5033_charger: Add cable detection and USB OTG supply
->   power: supply: rt5033_battery: Move struct rt5033_battery to battery
->     driver
->   power: supply: rt5033_battery: Adopt status property from charger
->   dt-bindings: power: supply: rt5033-battery: Apply
->     unevaluatedProperties
->   dt-bindings: Add rt5033 mfd, regulator and charger
-> 
-> Stephan Gerhold (1):
->   mfd: rt5033: Drop rt5033-battery sub-device
-> 
->  .../bindings/mfd/richtek,rt5033.yaml          | 138 ++++
->  .../power/supply/richtek,rt5033-battery.yaml  |   2 +-
->  .../power/supply/richtek,rt5033-charger.yaml  |  65 ++
->  drivers/mfd/rt5033.c                          |   8 +-
->  drivers/power/supply/Kconfig                  |   8 +
->  drivers/power/supply/Makefile                 |   1 +
->  drivers/power/supply/rt5033_battery.c         |  38 +-
->  drivers/power/supply/rt5033_charger.c         | 744 ++++++++++++++++++
->  include/linux/mfd/rt5033-private.h            |  64 +-
->  include/linux/mfd/rt5033.h                    |  24 -
->  10 files changed, 1034 insertions(+), 58 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
->  create mode 100644 Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
->  create mode 100644 drivers/power/supply/rt5033_charger.c
+--cv4aioka2xke3d7y
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-All applied.  Sent for build testing.
+Hi,
 
-I'll follow-up with a PR soon.
+On Fri, May 26, 2023 at 10:44:13PM +0100, Caleb Connolly wrote:
+> Add a driver for the Qualcomm PMI8998/PM660 Switch-Mode Battery Charger.
+> This is the second generation SMB charger, and replaces the previous
+> SMBB hardware found in older PMICs.
+>=20
+> Changes since v8:
+>  * Add charger bindings reference to qcom,spmi-pmic.yaml
+> V8: https://lore.kernel.org/all/20230524-pmi8998-charger-v8-0-b87ffcd9864=
+d@linaro.org/
+>=20
+> Changes since v7:
+>  * Implement fixes suggested by Sebastian
+>  * Fix format warning
+> V7: https://lore.kernel.org/linux-arm-msm/20230127230506.3140297-1-caleb.=
+connolly@linaro.org/
+>=20
+> To: Sebastian Reichel <sre@kernel.org>
+> To: Rob Herring <robh+dt@kernel.org>
+> To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> To: Conor Dooley <conor+dt@kernel.org>
+> To: Caleb Connolly <caleb.connolly@linaro.org>
+> To: Andy Gross <agross@kernel.org>
+> To: Bjorn Andersson <andersson@kernel.org>
+> To: Konrad Dybcio <konrad.dybcio@linaro.org>
+> To: Nathan Chancellor <nathan@kernel.org>
+> To: Nick Desaulniers <ndesaulniers@google.com>
+> To: Tom Rix <trix@redhat.com>
+> ---
+> Caleb Connolly (2):
+>       dt-bindings: power: supply: qcom,pmi8998-charger: add bindings for =
+smb2 driver
+>       power: supply: add Qualcomm PMI8998 SMB2 Charger driver
+>=20
+>  .../devicetree/bindings/mfd/qcom,spmi-pmic.yaml    |    1 +
+>  .../power/supply/qcom,pmi8998-charger.yaml         |   82 ++
+>  drivers/power/supply/Kconfig                       |    9 +
+>  drivers/power/supply/Makefile                      |    1 +
+>  drivers/power/supply/qcom_pmi8998_charger.c        | 1059 ++++++++++++++=
+++++++
+>  5 files changed, 1152 insertions(+)
+> ---
 
--- 
-Lee Jones [李琼斯]
+Thanks, queued.
+
+-- Sebastian
+
+--cv4aioka2xke3d7y
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmSCYyEACgkQ2O7X88g7
++ppw6w//Zzu/r/8Xz5uRQd7GSe12Dh9LxYrMQSBlUvnx7kDxgozjcNN+g34yd0aQ
+sRewvvYQy3jh5ssfNhTWI3uNp0TIeEtk+t1kJE2iTSry5wH7QikVOdydzd6+9CT1
+8TEEzUQBywONL3GxSMUeN05Wb72hTKWUeQgoLiSbeogp9G5oBcWKvimG8mEM0jIB
+yEazx6NM1SOdCMkA8LH89KoLo2xgXILpL6f2wFpCO3xYeKAa7n4+ifqweyOyvtjH
+JMK21eCrP1Zp3LHLYOQNrf+I535Geqh8QpSl4joqm3xfBWE3WqMUFVRhRucyQXPa
+k7PNzSwmmuf08w1unEXFImu5zSL1IvYwFRX+9dVPdxle2RmJnPjW3DJpCSyd+Zwk
+6NqL6q+4jU7VwrZHwSGEqXS1EDJXcEfIFdEKyZHTIJ8HaUfREmzeVIihUwOsGu00
+ifTffm90ySSeaZTIcQ0jZmNDryfF+hRTiNx5FgffjEqds/ppGmhackacJ86iefsu
+o6c6fhBbMJPSzc3oHfBrMz8sfQlu6AJw0wDq1PJp8SNpqLoFSOVc3rL6ksJAaXJj
+kmjYzOsfXiI+j5qN0aq+fac6uF875psA0DQFpjJSv4Qq01WhQAyxg4aLLKug2vyO
+blz63/fj3Qmq9fZA8axOy+JJpylYjkqX3WaQsZSvRGYh2Se/vr0=
+=F7Hh
+-----END PGP SIGNATURE-----
+
+--cv4aioka2xke3d7y--
