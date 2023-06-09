@@ -2,137 +2,114 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2FBAC7EE23
-	for <phone-devel@archiver.kernel.org>; Thu,  8 Jun 2023 23:24:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2407C7EE25
+	for <phone-devel@archiver.kernel.org>; Fri,  9 Jun 2023 06:48:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229771AbjFHXY6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 8 Jun 2023 19:24:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44910 "EHLO
+        id S238429AbjFIGsC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 9 Jun 2023 02:48:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229817AbjFHXY6 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 8 Jun 2023 19:24:58 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE2D30D6;
-        Thu,  8 Jun 2023 16:24:30 -0700 (PDT)
-Received: from mercury (unknown [185.209.196.239])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        with ESMTP id S229808AbjFIGsB (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 9 Jun 2023 02:48:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DB911FDF;
+        Thu,  8 Jun 2023 23:48:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: sre)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 753836606F1D;
-        Fri,  9 Jun 2023 00:24:24 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1686266664;
-        bh=mCFzt9Y8896kdcxmhKQPvHOnPkcXSRatB/HlXjIKGQc=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DEF865418;
+        Fri,  9 Jun 2023 06:48:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1E5C4339B;
+        Fri,  9 Jun 2023 06:47:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686293280;
+        bh=qHylMj+O05wPU2VW1GAa6GYS/uQ6kFv5HBrVK/YKR0o=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HcSfKi7LayIU/v34zNkIEAO6QPFs20sykANJIiRceDpKRd4hBFyrlKfBYal9/3iIr
-         5rvtCnsvrR8Ta18JeX7S0pkSdvFl/iJwv+QYkGizxbrD+0dnQQ1vPOTcb7h9uMaZKP
-         N0KFG+JJc0i6PRfIffG8SDw+EROmPehrb56fXbhnxQBFJuSZuCL7S/Xkj6n4edo1Yo
-         +G0ew41QMVPpyrzOs91GRBeMrMKaMa3kB19Q5dnfFJsZ/1ukC7e2ydRG51aqBPeZcd
-         6+VXsmfU4oyTvEQnzvqo5BKme0Nzlcb0o1ZeX7nsg+tfoW/+arro/nm7rJHew23KZp
-         ofFBskKzAUpgA==
-Received: by mercury (Postfix, from userid 1000)
-        id 29AFB1060A24; Fri,  9 Jun 2023 01:24:22 +0200 (CEST)
-Date:   Fri, 9 Jun 2023 01:24:22 +0200
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Caleb Connolly <caleb.connolly@linaro.org>
-Cc:     Rob Herring <robh+dt@kernel.org>,
+        b=AxvpGWngHVM0reEcrMhJ4OZJ30v4PAc+Z5PEHVsC14WimGkcAZJLXyiqiNTSbCi2+
+         0KM3Xm36YYR4YnABIZsWqjBXYQb1IQWkOacgpZxVAl4xqOF8jeWGxbOxManjlUzfug
+         ck9lims1kEwL0PRwf28WkaPG50YXGmLYr00j8I2cz8mlkfCoLTedC+PsaAfrsiH0u/
+         0q6quWtaAu3+cqJ9QaI2OcaRyXW7UkLlwOpBNqS3W0c9JcRndP+M7JVLLtbccZ713f
+         o7iVFkOHwKJELhH+3Yrs3vMJgyqbSnC1ag5tIL5w9Xqxg55BA01J6LzeEoGOLwlxRL
+         J+1CAvpaRiUmw==
+Date:   Fri, 9 Jun 2023 07:47:53 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, linux-pm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        phone-devel@vger.kernel.org,
-        Joel Selvaraj <joelselvaraj.oss@gmail.com>
-Subject: Re: [PATCH v9 0/2] power: supply: introduce support for the Qualcomm
- smb2 charger
-Message-ID: <20230608232422.ikckij5m4adwnrap@mercury.elektranox.org>
-References: <20230524-pmi8998-charger-v9-0-cd7f6d03c0ab@linaro.org>
+        Beomho Seo <beomho.seo@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Henrik Grimler <henrik@grimler.se>,
+        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: [GIT PULL] Immutable branch between MFD and Power due for the v6.5
+ merge window
+Message-ID: <20230609064753.GL3635807@google.com>
+References: <cover.1684182964.git.jahau.ref@rocketmail.com>
+ <cover.1684182964.git.jahau@rocketmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="cv4aioka2xke3d7y"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230524-pmi8998-charger-v9-0-cd7f6d03c0ab@linaro.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1684182964.git.jahau@rocketmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Enjoy!
 
---cv4aioka2xke3d7y
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The following changes since commit ac9a78681b921877518763ba0e89202254349d1b:
 
-Hi,
+  Linux 6.4-rc1 (2023-05-07 13:34:35 -0700)
 
-On Fri, May 26, 2023 at 10:44:13PM +0100, Caleb Connolly wrote:
-> Add a driver for the Qualcomm PMI8998/PM660 Switch-Mode Battery Charger.
-> This is the second generation SMB charger, and replaces the previous
-> SMBB hardware found in older PMICs.
->=20
-> Changes since v8:
->  * Add charger bindings reference to qcom,spmi-pmic.yaml
-> V8: https://lore.kernel.org/all/20230524-pmi8998-charger-v8-0-b87ffcd9864=
-d@linaro.org/
->=20
-> Changes since v7:
->  * Implement fixes suggested by Sebastian
->  * Fix format warning
-> V7: https://lore.kernel.org/linux-arm-msm/20230127230506.3140297-1-caleb.=
-connolly@linaro.org/
->=20
-> To: Sebastian Reichel <sre@kernel.org>
-> To: Rob Herring <robh+dt@kernel.org>
-> To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> To: Conor Dooley <conor+dt@kernel.org>
-> To: Caleb Connolly <caleb.connolly@linaro.org>
-> To: Andy Gross <agross@kernel.org>
-> To: Bjorn Andersson <andersson@kernel.org>
-> To: Konrad Dybcio <konrad.dybcio@linaro.org>
-> To: Nathan Chancellor <nathan@kernel.org>
-> To: Nick Desaulniers <ndesaulniers@google.com>
-> To: Tom Rix <trix@redhat.com>
-> ---
-> Caleb Connolly (2):
->       dt-bindings: power: supply: qcom,pmi8998-charger: add bindings for =
-smb2 driver
->       power: supply: add Qualcomm PMI8998 SMB2 Charger driver
->=20
->  .../devicetree/bindings/mfd/qcom,spmi-pmic.yaml    |    1 +
->  .../power/supply/qcom,pmi8998-charger.yaml         |   82 ++
->  drivers/power/supply/Kconfig                       |    9 +
->  drivers/power/supply/Makefile                      |    1 +
->  drivers/power/supply/qcom_pmi8998_charger.c        | 1059 ++++++++++++++=
-++++++
->  5 files changed, 1152 insertions(+)
-> ---
+are available in the Git repository at:
 
-Thanks, queued.
+  git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-power-v6.5
 
--- Sebastian
+for you to fetch changes up to b54185c1e3b02c91e4a190ac5c346ea7bfb0de93:
 
---cv4aioka2xke3d7y
-Content-Type: application/pgp-signature; name="signature.asc"
+  dt-bindings: Add rt5033 MFD, Regulator and Charger (2023-06-08 18:18:13 +0100)
 
------BEGIN PGP SIGNATURE-----
+----------------------------------------------------------------
+Immutable branch between MFD and Power due for the v6.5 merge window
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmSCYyEACgkQ2O7X88g7
-+ppw6w//Zzu/r/8Xz5uRQd7GSe12Dh9LxYrMQSBlUvnx7kDxgozjcNN+g34yd0aQ
-sRewvvYQy3jh5ssfNhTWI3uNp0TIeEtk+t1kJE2iTSry5wH7QikVOdydzd6+9CT1
-8TEEzUQBywONL3GxSMUeN05Wb72hTKWUeQgoLiSbeogp9G5oBcWKvimG8mEM0jIB
-yEazx6NM1SOdCMkA8LH89KoLo2xgXILpL6f2wFpCO3xYeKAa7n4+ifqweyOyvtjH
-JMK21eCrP1Zp3LHLYOQNrf+I535Geqh8QpSl4joqm3xfBWE3WqMUFVRhRucyQXPa
-k7PNzSwmmuf08w1unEXFImu5zSL1IvYwFRX+9dVPdxle2RmJnPjW3DJpCSyd+Zwk
-6NqL6q+4jU7VwrZHwSGEqXS1EDJXcEfIFdEKyZHTIJ8HaUfREmzeVIihUwOsGu00
-ifTffm90ySSeaZTIcQ0jZmNDryfF+hRTiNx5FgffjEqds/ppGmhackacJ86iefsu
-o6c6fhBbMJPSzc3oHfBrMz8sfQlu6AJw0wDq1PJp8SNpqLoFSOVc3rL6ksJAaXJj
-kmjYzOsfXiI+j5qN0aq+fac6uF875psA0DQFpjJSv4Qq01WhQAyxg4aLLKug2vyO
-blz63/fj3Qmq9fZA8axOy+JJpylYjkqX3WaQsZSvRGYh2Se/vr0=
-=F7Hh
------END PGP SIGNATURE-----
+----------------------------------------------------------------
+Jakob Hauser (8):
+      mfd: rt5033: Fix chip revision readout
+      mfd: rt5033: Fix STAT_MASK, HZ_MASK and AICR defines
+      mfd: rt5033: Apply preparatory changes before adding rt5033-charger driver
+      power: supply: rt5033_charger: Add RT5033 charger device driver
+      power: supply: rt5033_battery: Move struct rt5033_battery to battery driver
+      power: supply: rt5033_battery: Adopt status property from charger
+      dt-bindings: power: supply: rt5033-battery: Apply unevaluatedProperties
+      dt-bindings: Add rt5033 MFD, Regulator and Charger
 
---cv4aioka2xke3d7y--
+Stephan Gerhold (1):
+      mfd: rt5033: Drop rt5033-battery sub-device
+
+ .../devicetree/bindings/mfd/richtek,rt5033.yaml    | 138 ++++++
+ .../power/supply/richtek,rt5033-battery.yaml       |   2 +-
+ .../power/supply/richtek,rt5033-charger.yaml       |  65 +++
+ drivers/mfd/rt5033.c                               |   8 +-
+ drivers/power/supply/Kconfig                       |   8 +
+ drivers/power/supply/Makefile                      |   1 +
+ drivers/power/supply/rt5033_battery.c              |  38 +-
+ drivers/power/supply/rt5033_charger.c              | 472 +++++++++++++++++++++
+ include/linux/mfd/rt5033-private.h                 |  64 ++-
+ include/linux/mfd/rt5033.h                         |  24 --
+ 10 files changed, 762 insertions(+), 58 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
+ create mode 100644 Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
+ create mode 100644 drivers/power/supply/rt5033_charger.c
+
+-- 
+Lee Jones [李琼斯]
