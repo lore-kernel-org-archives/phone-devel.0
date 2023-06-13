@@ -2,239 +2,144 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21533C7EE43
-	for <phone-devel@archiver.kernel.org>; Mon, 12 Jun 2023 23:37:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 60A6DC88CB2
+	for <phone-devel@archiver.kernel.org>; Tue, 13 Jun 2023 00:15:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230337AbjFLXg7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 12 Jun 2023 19:36:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39680 "EHLO
+        id S239207AbjFMAPe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 12 Jun 2023 20:15:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233202AbjFLXg6 (ORCPT
+        with ESMTP id S239092AbjFMAOH (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 12 Jun 2023 19:36:58 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02397124
-        for <phone-devel@vger.kernel.org>; Mon, 12 Jun 2023 16:36:57 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-978863fb00fso869501066b.3
-        for <phone-devel@vger.kernel.org>; Mon, 12 Jun 2023 16:36:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686613015; x=1689205015;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FBvGuFld2HS/YosRMlyucSBC03CdK0iBFINjDwbRfPc=;
-        b=Nr7M7W4DM2srgt2XAqJ3BZ7rmizWMJa+c3nQhqhiqq1zRKhrd/rAiJ491SPbJzzL4I
-         MXoTTD+1hI2EAXoHfmKMkmoVpmV3mZ1cN9Gfk95zSBWmzl/LGfAL7UT6Rz8/0G7eNoDo
-         WXcxwOm6aDcvn5j5FgpSRSkUbDNQIkM8nbHCB5RxUJuYTz+/kEkLUgycd+fxFF7kMvW2
-         J2STipYuWula3ILDWFGVs9i1t9WG/RJYvVaV1kDhcq7PcyQDpaFATVT7vr5iP63cHSWQ
-         +eVGoeolXRofbw7Mg43tZq8HYv8h8J63fZmW8+yD5QWtWKD1mN904bWOTompJfXXe3bX
-         RRJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686613015; x=1689205015;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FBvGuFld2HS/YosRMlyucSBC03CdK0iBFINjDwbRfPc=;
-        b=fEa6zxun8uyJkFHIgeFo3Q/2WYZUhEpPcU7Iqd9qiHzniaOsv16YAZ+QyJxWY4Z/aK
-         zlea/YPFvdhMYYewZcBSnrev0eegZtvmhXVul8kWMk3BxdS7JjeZTXwxpTiSgUYbJ0v/
-         X8/ZsXEe1P+HxTmJDbsXdTItHkoiIXlEk/PwCnSPcDT/cdwSbK6liimW07/xg5WpI8xY
-         9nRTCWXd+UUpuMKmtPgsVgGgrYaMzjCFwpnhnK/I7WQ3eJDzcTOmSuTrYneaoFhXtL2k
-         Ny77g+8yadPUttqmXyS7OMb2ca65yDaGQuvp+I6fKTgFe7Ivi7vj+G2Ne+76MTl9v1pS
-         iuVA==
-X-Gm-Message-State: AC+VfDzI/0X9FBW9KWyOkZNWbhI8ewtaT/QI3V9LJdGxGRjXmZvSCRo6
-        IGydMhzzF1KZ48FTUHsN+2VtjA==
-X-Google-Smtp-Source: ACHHUZ5p/S1juWDIvqs7Js8VFADv/Kqifh3jM+HNo9Bydhpu6ctZ8ybaLwE01ft1NqDQMOognsNQzw==
-X-Received: by 2002:a17:907:d09:b0:982:26c5:6525 with SMTP id gn9-20020a1709070d0900b0098226c56525mr2325960ejc.60.1686613015473;
-        Mon, 12 Jun 2023 16:36:55 -0700 (PDT)
-Received: from lion.localdomain (cpc76484-cwma10-2-0-cust274.7-3.cable.virginm.net. [82.31.201.19])
-        by smtp.gmail.com with ESMTPSA id h14-20020adff4ce000000b0030c40e2cf42sm13551195wrp.116.2023.06.12.16.36.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jun 2023 16:36:55 -0700 (PDT)
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-Date:   Tue, 13 Jun 2023 00:36:52 +0100
-Subject: [PATCH] drm/panel: move some dsi commands from unprepare to
- disable
+        Mon, 12 Jun 2023 20:14:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85FDC1FC4;
+        Mon, 12 Jun 2023 17:12:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 092356305B;
+        Tue, 13 Jun 2023 00:12:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A60C433AC;
+        Tue, 13 Jun 2023 00:12:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686615156;
+        bh=fgQezU9Uhtd/cvT8fMXHuHFSkNX/SBX6F17ynk+Li7c=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=qpA4jI42/zyo7xTLzS4PdiFvs6Shs4bsvDP7FZ95DpUGkl5Mjs6Z7Qg28S75n5pS6
+         RR6Me5RUfUoCZTeWuhzve2bSQiYsVRHO35Oim0DLaEalBT9u71eJ+fPNkYqcn4uBeM
+         SE/Y+sgyd/s3KddBGvibVr9EPqrMspPYGWom/RzVYoQEauETXMjb6JWUu2rFVwdpg4
+         XjssPWBFj+pFXbXSB11GOincfTGTzmma7Rb5hnii5wg0JtTyHZBdrGY+wZRiGpSchj
+         FHTYgcWt7T0DGpx+svuZ+z9y1s+A8cef1LzLrzyC3cC4CMvW+RYRVep3SScEUodCym
+         48ZVwvYB5SHWA==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-4f611ac39c5so6132978e87.2;
+        Mon, 12 Jun 2023 17:12:36 -0700 (PDT)
+X-Gm-Message-State: AC+VfDw1Z5vunOMqExez1R/6rXbsJpRKVZsScB0TFLmEGFAcsnaZze5n
+        slO4uHNrQayDY4B3M8AT34VNDeOlnhnslRZTjw==
+X-Google-Smtp-Source: ACHHUZ5DoNUKSvAIXqJyVR/dJqHjMXAJmhqi/nRReR8o6lChwcUCm3nF+VoA8dUPGUnBoXAPQ8cGXyQokNL17p9GqwE=
+X-Received: by 2002:a2e:9012:0:b0:2af:30d8:527f with SMTP id
+ h18-20020a2e9012000000b002af30d8527fmr3553372ljg.19.1686615154438; Mon, 12
+ Jun 2023 17:12:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230613-panel-dsi-disable-v1-1-5e454e409fa8@linaro.org>
-X-B4-Tracking: v=1; b=H4sIABOsh2QC/x2N0QqDMAwAf0XyvGza1jL2K2MPqYkz4DppQAbiv
- 6/6eHDHbWBSVAwezQZFVjX95grdpYFhovwWVK4MrnW+jZ3HhbLMyKbIapRmwRBFkuudD0xQu0Q
- mmArlYTpK48899Ld4DciyHsJSZNTfOX2+9v0PdXG024QAAAA=
-To:     Joel Selvaraj <jo@jsfamily.in>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Sumit Semwal <sumit.semwal@linaro.org>
-Cc:     dri-devel@lists.freedesktop.org, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Joel Selvaraj <joelselvaraj.oss@gmail.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>
-X-Mailer: b4 0.13-dev-46309
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5281;
- i=caleb.connolly@linaro.org; h=from:subject:message-id;
- bh=LDXAOSVx2AwP5lALm4/+utu1HKQoCclWHiZGLxOOTrM=;
- b=owEBbQKS/ZANAwAIAQWDMSsZX2S2AcsmYgBkh6wWExg9yTR1ZKMRcvSWNxbsSETPrEZDsJXWP
- QLkss/i5jmJAjMEAAEIAB0WIQS2UaFGPGq+0GkMVc0FgzErGV9ktgUCZIesFgAKCRAFgzErGV9k
- tqa0D/43doUtBqfSPTEtKcLtc2u81ViN/BICLW5biLCOJ70EeR9yq5HSf3tiYhQR2YGWnIbM87u
- 1DcEZLBxW3dBKl8crH62FoH1rLM1xBRALwPd9shldj6EqQxObeottIZNUdU7AF0NBNfaG2KxVpF
- 4Qfe+Q1XwBp60mA7v5iASuEJ7IOsyo1sjAc9F/5zyPP1fJPPIkWJbvDmpcCbpfo00mq/pxcUw8A
- hADdg2/lIVB6b0O4h5UMQM3si0+y8ya/Ja9OAIK6deFcl2+T5FMF22jy/nXcz7G4e19q5QgDWe+
- ty4g//CV7kqemfcO5HzGfjpwbo8j9nx02MWbyFfaGrSuS1K9r8xPN8f4gfHWtQJLjKvTOd1urJq
- O3Gq6Jc5OeioTXmC2nOgZKvXYLjVfeWX5MTLEyeT1r1KNxDaaZrDHL833GLve+fknmV+A6JUYcg
- G4WyRxZjHwR7xXBSfv/FEP9MhXMv6aZ1tJOWr6rDNIbQY71dXXQmlBbcLh7/WcapNVDMMbf6Oh3
- RImkG0wytQle7kgQA9jvYzWHpd5ss74uPSAa5s42lT92akJD/8myqCT9JmeC3tZLnhG9lTFwjcV
- +dS64EL+0lEHMpSfyVunsj9GGyXTudtDyXr1pZQRVjhcBaS/jNiRe2/cnK8uXsvbMx4wV/ampAR
- SsBJBYkvmXwyvcQ==
-X-Developer-Key: i=caleb.connolly@linaro.org; a=openpgp;
- fpr=83B24DA7FE145076BC38BB250CD904EB673A7C47
+References: <20230412112739.160376-1-angelogioacchino.delregno@collabora.com>
+ <20230412112739.160376-4-angelogioacchino.delregno@collabora.com> <02a588ca-680f-ab45-1005-768d5b5db252@gmail.com>
+In-Reply-To: <02a588ca-680f-ab45-1005-768d5b5db252@gmail.com>
+From:   Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Date:   Tue, 13 Jun 2023 08:12:22 +0800
+X-Gmail-Original-Message-ID: <CAAOTY_9Heu3yzwbJgEpOwqabwpyTXMByFgcpoBojaM7MaRTUnQ@mail.gmail.com>
+Message-ID: <CAAOTY_9Heu3yzwbJgEpOwqabwpyTXMByFgcpoBojaM7MaRTUnQ@mail.gmail.com>
+Subject: Re: [PATCH 03/27] dt-bindings: display: mediatek: dpi: Add compatible
+ for MediaTek MT6795
+To:     Matthias Brugger <matthias.bgg@gmail.com>
+Cc:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        jassisinghbrar@gmail.com, chunfeng.yun@mediatek.com,
+        vkoul@kernel.org, kishon@kernel.org, thierry.reding@gmail.com,
+        u.kleine-koenig@pengutronix.de, ck.hu@mediatek.com,
+        jitao.shi@mediatek.com, xinlei.lee@mediatek.com,
+        houlong.wei@mediatek.com, dri-devel@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-phy@lists.infradead.org, linux-pwm@vger.kernel.org,
+        kernel@collabora.com, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The commit 007ac0262b0d ("drm/msm/dsi: switch to DRM_PANEL_BRIDGE")
-breaks panels which send DSI commands in their .unprepare callbacks.
-Migrate to using .disable for that for some SDM845 panels.
+Hi, Matthias:
 
-Co-developed-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
-Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
----
-base-commit: 858fd168a95c5b9669aac8db6c14a9aeab446375
+Matthias Brugger <matthias.bgg@gmail.com> =E6=96=BC 2023=E5=B9=B45=E6=9C=88=
+29=E6=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=8810:07=E5=AF=AB=E9=81=93=EF=
+=BC=9A
+>
+> Hi Chun-Kuang Hu,
+>
+> Can you help to merge the missing DT-binding patches in this series?
 
-// Caleb (they/them)
----
- drivers/gpu/drm/panel/panel-ebbg-ft8719.c      | 18 +++++++-----------
- drivers/gpu/drm/panel/panel-novatek-nt36672a.c | 11 ++++++++++-
- drivers/gpu/drm/panel/panel-visionox-rm69299.c | 11 ++++++++++-
- 3 files changed, 27 insertions(+), 13 deletions(-)
+Apply display binding of this series to  mediatek-drm-next [1].
 
-diff --git a/drivers/gpu/drm/panel/panel-ebbg-ft8719.c b/drivers/gpu/drm/panel/panel-ebbg-ft8719.c
-index e85d63a176d0..b40a27558e7c 100644
---- a/drivers/gpu/drm/panel/panel-ebbg-ft8719.c
-+++ b/drivers/gpu/drm/panel/panel-ebbg-ft8719.c
-@@ -87,22 +87,22 @@ static int ebbg_ft8719_on(struct ebbg_ft8719 *ctx)
- 	return 0;
- }
- 
--static int ebbg_ft8719_off(struct ebbg_ft8719 *ctx)
-+static int ebbg_ft8719_disable(struct drm_panel *panel)
- {
--	struct mipi_dsi_device *dsi = ctx->dsi;
--	struct device *dev = &dsi->dev;
-+	struct ebbg_ft8719 *ctx = to_ebbg_ft8719(panel);
-+	struct device *dev = &ctx->dsi->dev;
- 	int ret;
- 
--	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-+	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
- 
--	ret = mipi_dsi_dcs_set_display_off(dsi);
-+	ret = mipi_dsi_dcs_set_display_off(ctx->dsi);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to set display off: %d\n", ret);
- 		return ret;
- 	}
- 	usleep_range(10000, 11000);
- 
--	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
-+	ret = mipi_dsi_dcs_enter_sleep_mode(ctx->dsi);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to enter sleep mode: %d\n", ret);
- 		return ret;
-@@ -137,13 +137,8 @@ static int ebbg_ft8719_prepare(struct drm_panel *panel)
- static int ebbg_ft8719_unprepare(struct drm_panel *panel)
- {
- 	struct ebbg_ft8719 *ctx = to_ebbg_ft8719(panel);
--	struct device *dev = &ctx->dsi->dev;
- 	int ret;
- 
--	ret = ebbg_ft8719_off(ctx);
--	if (ret < 0)
--		dev_err(dev, "Failed to un-initialize panel: %d\n", ret);
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/chunkuang.hu/linux.git/=
+log/?h=3Dmediatek-drm-next
+
+Regards,
+Chun-Kuang.
+
+>
+> Thanks a lot,
+> Matthias
+>
+> On 12/04/2023 13:27, AngeloGioacchino Del Regno wrote:
+> > Add a compatible string for the MediaTek Helio X10 MT6795 SoC, using
+> > the same parameters as MT8183.
+> >
+> > Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@co=
+llabora.com>
+> > ---
+> >   .../display/mediatek/mediatek,dpi.yaml        | 23 +++++++++++-------=
 -
- 	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
- 
- 	ret = regulator_bulk_disable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
-@@ -188,6 +183,7 @@ static int ebbg_ft8719_get_modes(struct drm_panel *panel,
- 
- static const struct drm_panel_funcs ebbg_ft8719_panel_funcs = {
- 	.prepare = ebbg_ft8719_prepare,
-+	.disable = ebbg_ft8719_disable,
- 	.unprepare = ebbg_ft8719_unprepare,
- 	.get_modes = ebbg_ft8719_get_modes,
- };
-diff --git a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
-index 73bcffa1e0c1..2e1a87001479 100644
---- a/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
-+++ b/drivers/gpu/drm/panel/panel-novatek-nt36672a.c
-@@ -115,7 +115,7 @@ static int nt36672a_panel_power_off(struct drm_panel *panel)
- 	return ret;
- }
- 
--static int nt36672a_panel_unprepare(struct drm_panel *panel)
-+static int nt36672a_panel_disable(struct drm_panel *panel)
- {
- 	struct nt36672a_panel *pinfo = to_nt36672a_panel(panel);
- 	int ret;
-@@ -144,6 +144,14 @@ static int nt36672a_panel_unprepare(struct drm_panel *panel)
- 	/* 0x3C = 60ms delay */
- 	msleep(60);
- 
-+	return ret;
-+}
-+
-+static int nt36672a_panel_unprepare(struct drm_panel *panel)
-+{
-+	struct nt36672a_panel *pinfo = to_nt36672a_panel(panel);
-+	int ret;
-+
- 	ret = nt36672a_panel_power_off(panel);
- 	if (ret < 0)
- 		dev_err(panel->dev, "power_off failed ret = %d\n", ret);
-@@ -255,6 +263,7 @@ static int nt36672a_panel_get_modes(struct drm_panel *panel,
- }
- 
- static const struct drm_panel_funcs panel_funcs = {
-+	.disable = nt36672a_panel_disable,
- 	.unprepare = nt36672a_panel_unprepare,
- 	.prepare = nt36672a_panel_prepare,
- 	.get_modes = nt36672a_panel_get_modes,
-diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-index ec228c269146..9dc17afbe540 100644
---- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-+++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-@@ -59,7 +59,7 @@ static int visionox_rm69299_power_off(struct visionox_rm69299 *ctx)
- 	return regulator_bulk_disable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
- }
- 
--static int visionox_rm69299_unprepare(struct drm_panel *panel)
-+static int visionox_rm69299_disable(struct drm_panel *panel)
- {
- 	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
- 	int ret;
-@@ -78,6 +78,14 @@ static int visionox_rm69299_unprepare(struct drm_panel *panel)
- 		dev_err(ctx->panel.dev, "enter_sleep cmd failed ret = %d\n", ret);
- 	}
- 
-+	return ret;
-+}
-+
-+static int visionox_rm69299_unprepare(struct drm_panel *panel)
-+{
-+	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
-+	int ret;
-+
- 	ret = visionox_rm69299_power_off(ctx);
- 
- 	ctx->prepared = false;
-@@ -184,6 +192,7 @@ static int visionox_rm69299_get_modes(struct drm_panel *panel,
- }
- 
- static const struct drm_panel_funcs visionox_rm69299_drm_funcs = {
-+	.disable = visionox_rm69299_disable,
- 	.unprepare = visionox_rm69299_unprepare,
- 	.prepare = visionox_rm69299_prepare,
- 	.get_modes = visionox_rm69299_get_modes,
-
+> >   1 file changed, 14 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/Documentation/devicetree/bindings/display/mediatek/mediate=
+k,dpi.yaml b/Documentation/devicetree/bindings/display/mediatek/mediatek,dp=
+i.yaml
+> > index d976380801e3..803c00f26206 100644
+> > --- a/Documentation/devicetree/bindings/display/mediatek/mediatek,dpi.y=
+aml
+> > +++ b/Documentation/devicetree/bindings/display/mediatek/mediatek,dpi.y=
+aml
+> > @@ -17,15 +17,20 @@ description: |
+> >
+> >   properties:
+> >     compatible:
+> > -    enum:
+> > -      - mediatek,mt2701-dpi
+> > -      - mediatek,mt7623-dpi
+> > -      - mediatek,mt8173-dpi
+> > -      - mediatek,mt8183-dpi
+> > -      - mediatek,mt8186-dpi
+> > -      - mediatek,mt8188-dp-intf
+> > -      - mediatek,mt8192-dpi
+> > -      - mediatek,mt8195-dp-intf
+> > +    oneOf:
+> > +      - enum:
+> > +          - mediatek,mt2701-dpi
+> > +          - mediatek,mt7623-dpi
+> > +          - mediatek,mt8173-dpi
+> > +          - mediatek,mt8183-dpi
+> > +          - mediatek,mt8186-dpi
+> > +          - mediatek,mt8188-dp-intf
+> > +          - mediatek,mt8192-dpi
+> > +          - mediatek,mt8195-dp-intf
+> > +      - items:
+> > +          - enum:
+> > +              - mediatek,mt6795-dpi
+> > +          - const: mediatek,mt8183-dpi
+> >
+> >     reg:
+> >       maxItems: 1
