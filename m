@@ -2,152 +2,112 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 951C5EB64D8
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Jun 2023 13:14:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C09D6EB64D9
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Jun 2023 16:36:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244909AbjFNNOO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Jun 2023 09:14:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35230 "EHLO
+        id S235063AbjFNQg1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Jun 2023 12:36:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240303AbjFNNOM (ORCPT
+        with ESMTP id S234804AbjFNQgN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 14 Jun 2023 09:14:12 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC22269A;
-        Wed, 14 Jun 2023 06:13:50 -0700 (PDT)
-Received: from [IPV6:2001:b07:2ed:14ed:c5f8:7372:f042:90a2] (unknown [IPv6:2001:b07:2ed:14ed:c5f8:7372:f042:90a2])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id BF9966606F20;
-        Wed, 14 Jun 2023 14:13:47 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1686748428;
-        bh=K4WTi0JZ7NzreJtn6e/6oeiwkA8ObHQNkqYaWXGPEjc=;
-        h=Date:Subject:To:References:From:In-Reply-To:From;
-        b=moJB43tmRR3Wb0jBxt3y3HdKfsoko9VHoMjH60aEQvKudl12WyStjZImqLkSqXX36
-         Kucm92qM5YMyKkS+JCQWgZuqLLM1kMw+mLwhWjFC5F59O0nsSNLudU4jkdtWMeBojj
-         2sU91HWKD9B3oVkm1weJOVKwt+nk9IvfN+nLzKrutyCZan3cGkFwxCkf31aKRwGMCL
-         0SDZcyq33ssyOrywTKM8LRT1XMloROjmM3G4nCL301Y/V9V2KdmnEZ0wYF/aaJbLcM
-         cM0gFX90gzQVJzFh44XbnV9xSxkp3SiE8IxD2Lw3Km/hBB+DpaaDK7zAPH97WnnpRs
-         WDOx5dAy2H5WQ==
-Message-ID: <057386c7-a7cf-14cb-d564-1b30e79806f6@collabora.com>
-Date:   Wed, 14 Jun 2023 15:13:44 +0200
+        Wed, 14 Jun 2023 12:36:13 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DE1A212B;
+        Wed, 14 Jun 2023 09:36:12 -0700 (PDT)
+Received: from [192.168.178.23] (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 46E4ECFCAF;
+        Wed, 14 Jun 2023 16:36:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1686760570; bh=OJMtAUAytlFBSm6etVG7AgdKyXd/04mqeGE4t7oTRIg=;
+        h=From:Subject:Date:To:Cc;
+        b=QKK27an9PIDLEstUsKB16j5lH0PeQr5+zOhOVq0Tn81KjE6AAetlCVjMngvl2Ml4b
+         eN+5kJlbWfaeJiFn48jl3eE5ZVij1ZfGaKif93+vdETcbhbkQtjVbUAocLW9LbVvRb
+         /aaClIPt9/r4BOAHjYM1fogcR7lgXkk8xmC27rZQ=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Subject: [PATCH v3 0/6] Add MSM8226 OCMEM support plus some extra OCMEM
+ driver fixes
+Date:   Wed, 14 Jun 2023 18:35:46 +0200
+Message-Id: <20230506-msm8226-ocmem-v3-0-79da95a2581f@z3ntu.xyz>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v2] arm64: dts: qcom: sm8250-edo: Panel framebuffer is
- 2.5k instead of 4k
-Content-Language: en-US
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Martin Botka <martin.botka@somainline.org>,
-        Jami Kettunen <jami.kettunen@somainline.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGLsiWQC/32Nyw6DIBQFf8WwLg1cVLSr/kfTBei1kig2oMRH/
+ Peiq27a5Zxk5mzEozPoyS3ZiMNgvBlsBHFJSNUq+0Jq6sgEGAiWsZz2vi8AcjpUPfZUI3KZSY4
+ FahIdrTxS7ZSt2mjZqevi+HbYmPk8eTwjt8aPg1vOz8CP9Vc+cMqoQEgRJKQN4/dV2HG6zstKj
+ lKAvzZEm0tZ56XEVKjy2973/QN4Aaq//QAAAA==
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Brian Masney <masneyb@onstation.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230606211418.587676-1-marijn.suijten@somainline.org>
- <974f68dc-b667-c9a7-94c4-1023ef271fab@linaro.org>
- <a69ddadd-8d59-e784-ddce-16c83a7f13a6@collabora.com>
- <kdu6apwgp7nu6mwqatufhxvnbunwodr4iu2uaqjacbjgbmmy5y@zh53imtpqfgs>
- <8d91dfc0-f6c0-813f-de9c-1befdd0ccfdf@linaro.org>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <8d91dfc0-f6c0-813f-de9c-1befdd0ccfdf@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1556; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=OJMtAUAytlFBSm6etVG7AgdKyXd/04mqeGE4t7oTRIg=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkiextv7z/LWT6N0CVbvOiOoWWGarCvipr2SG0P
+ Glgs+aMXDeJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZInsbQAKCRBy2EO4nU3X
+ Vtl6EACkQiGYF6MAeTl/QY9qjGzCHcthbN8ZSRrNf9/voBLP8pWP8Hg+8LNM95StxkpCrJ0Zs3y
+ ly1muyKav0tUeZMXtrlw8vQPx0LL+iYDHBVoQIhmyTwphbOY6IzIoeB/y+zrNVUlUJ/Dn6Seq2Z
+ FkNoe6s7WBu7h49Tw118OM7KKt0xx4w5Gg+AIq1wPJQXkinhTji6AETjh65aO27gxbkZBWjivSL
+ oOUga6DTMUO6HhuHtow5cTmhv73JdiyWcGK9mn86Isktlbu+++b6rGmoQPRBD4RIegbXX2++07G
+ I6guKTWCS6ThZK3q1ZCX35y2b/bRd26nXjmghf6w7KjgtTYhQ+C4qvySxbWvW/cwNCOekzNzTFj
+ hVgAvu5awLPhViAKsMIIyx5D2BtV220SxEGmKCZrqB87pmzjE3dlhvmdtSdxMsioaSgcvUzt/A6
+ 0UkutFIZQmkth6IX7YPgeYxr/zNnqj7VzwtjGsPPmtdbLxB29wKE8cXymFwSu+zup+zLihKLGny
+ Hf6tslETpJUCHHeIAavw1Rd927FpuU2VU7a9gPP/uNPWbvJDRbODV/z7wErJd0FzF5kKXoCe71R
+ UfBzs/KwgA7EMvIrh0PXlU3YxSvn80KRqbl6Di7iVunbGzlbjFDn+eu6DtS/MIWDpy/SPgISVKH
+ TES+22n3mvTN1Hw==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 14/06/23 14:43, Konrad Dybcio ha scritto:
-> On 14.06.2023 14:40, Marijn Suijten wrote:
->> On 2023-06-07 09:15:08, AngeloGioacchino Del Regno wrote:
->>> Il 07/06/23 00:52, Konrad Dybcio ha scritto:
->>>>
->>>>
->>>> On 6.06.2023 23:14, Marijn Suijten wrote:
->>>>> The framebuffer configuration for edo pdx203, written in edo dtsi (which
->>>>> is overwritten in pdx206 dts for its smaller panel) has to use a
->>>>> 1096x2560 configuration as this is what the panel (and framebuffer area)
->>>>> has been initialized to.  Downstream userspace also has access to (and
->>>>> uses) this 2.5k mode by default, and only switches the panel to 4k when
->>>>> requested.
->>>>>
->>>>> This is similar to commit be8de06dc397 ("arm64: dts: qcom:
->>>>> sm8150-kumano: Panel framebuffer is 2.5k instead of 4k") which fixed the
->>>>> same for the previous generation Sony platform.
->>>>>
->>>>> Fixes: 69cdb97ef652 ("arm64: dts: qcom: sm8250: Add support for SONY Xperia 1 II / 5 II (Edo platform)")
->>>>> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
->>>>> ---
->>>> And so I derped again.
->>>>
->>>> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
->>>
->>> I would've liked more to see a commit saying "replace simple-framebuffer with xxxx"
->>> (where xxxx is DSI panel, etc) but that will as well do for now... :-)
->>
->> Fwiw we could keep it around as MDSS "gracefully" takes over when it
->> probes a little bit later with fbcon over DRM/KMS, and it sometimes
->> helps reading what is up when something fails before or during MDSS
->> probe.
-> I believe we should do this. Perhaps even add some early code to drm/msm
-> that'd read out the address (and other configuration) from the mdp hw and
-> set it up automagically.
-> 
+Like MSM8974 the MSM8226 SoC also contains some OCMEM but it has just
+one region for graphics compared to 8974.
 
-As far as I remember, some bootloaders are reading devicetrees to setup the display
-at boot with "continuous splash", that's why I would be for *replacing* the simple
-framebuffer with the mdss-dsi.
+While adding support I found a bug in the existing driver that is being
+fixed in this series also and the rest of the matches are mostly
+preparations for MSM8226 support.
 
-Adding early code to drm/msm to read out the address and check the state of the HW
-before pushing an early framebuffer would be a definitive solution for that corner
-case. Good call, Konrad.
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Changes in v3:
+- Rebase on linux-next
+- Add 'else' to clk/clk-names in dt-bindings limiting to 1
+- Link to v2: https://lore.kernel.org/r/20230506-msm8226-ocmem-v2-0-177d697e43a9@z3ntu.xyz
 
-Cheers,
-Angelo
+Changes in v2:
+- dt-bindings: add hw version hint to msm8974 & msm8226 variant (Konrad)
+- dt-bindings: add constraints for clock (Konrad)
+- Pick up tags
+- Link to v1: https://lore.kernel.org/r/20230506-msm8226-ocmem-v1-0-3e24e2724f01@z3ntu.xyz
 
-> Konrad
->>
->> - Marijn
->>
->>> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->>>
->>>>
->>>> Konrad
->>>>>
->>>>> Changes since v2:
->>>>> - Rename griffin (copy-paste from related patch) to pdx203 in comment.
->>>>>
->>>>>    arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi | 7 ++++---
->>>>>    1 file changed, 4 insertions(+), 3 deletions(-)
->>>>>
->>>>> diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
->>>>> index 3d22be747f042..8f867f841cb83 100644
->>>>> --- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
->>>>> +++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
->>>>> @@ -54,9 +54,10 @@ chosen {
->>>>>    		framebuffer: framebuffer@9c000000 {
->>>>>    			compatible = "simple-framebuffer";
->>>>>    			reg = <0 0x9c000000 0 0x2300000>;
->>>>> -			width = <1644>;
->>>>> -			height = <3840>;
->>>>> -			stride = <(1644 * 4)>;
->>>>> +			/* pdx203 BL initializes in 2.5k mode, not 4k */
->>>>> +			width = <1096>;
->>>>> +			height = <2560>;
->>>>> +			stride = <(1096 * 4)>;
->>>>>    			format = "a8r8g8b8";
->>>>>    		};
->>>>>    	};
->>>
+---
+Luca Weiss (6):
+      soc: qcom: ocmem: Fix NUM_PORTS & NUM_MACROS macros
+      soc: qcom: ocmem: Use dev_err_probe where appropriate
+      soc: qcom: ocmem: make iface clock optional
+      dt-bindings: sram: qcom,ocmem: Add msm8226 support
+      soc: qcom: ocmem: Add support for msm8226
+      ARM: dts: qcom: msm8226: Add ocmem
 
+ .../devicetree/bindings/sram/qcom,ocmem.yaml       | 26 ++++++++-
+ arch/arm/boot/dts/qcom-msm8226.dtsi                | 17 ++++++
+ drivers/soc/qcom/ocmem.c                           | 67 ++++++++++++----------
+ 3 files changed, 78 insertions(+), 32 deletions(-)
+---
+base-commit: bcbf7634663f705695e9faa80ef419c2b1589f8e
+change-id: 20230506-msm8226-ocmem-bee17571e8eb
 
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
