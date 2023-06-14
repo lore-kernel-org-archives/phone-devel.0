@@ -2,35 +2,36 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A068EB64D9
-	for <phone-devel@archiver.kernel.org>; Wed, 14 Jun 2023 16:37:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9078EB64DC
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Jun 2023 16:37:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235510AbjFNQhM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 14 Jun 2023 12:37:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49742 "EHLO
+        id S235442AbjFNQhK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Jun 2023 12:37:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235460AbjFNQgr (ORCPT
+        with ESMTP id S235462AbjFNQgr (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Wed, 14 Jun 2023 12:36:47 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2D521BD4;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FE92E62;
         Wed, 14 Jun 2023 09:36:43 -0700 (PDT)
 Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 308C9CFDC3;
-        Wed, 14 Jun 2023 16:36:11 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id BE29ACFDAF;
+        Wed, 14 Jun 2023 16:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1686760571; bh=YDl2tvHHlHynpu6yX+1RRCk0EMdjswQ742sDIsDbcEQ=;
+        t=1686760570; bh=UYXnMctzgGjbbadSnEuPjVT8RCUV5VfXXmHjVfoOibo=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=LzrVXewQaK3NM+myFVY67p5y86JuEt2MBPfRCqwU5uNsBtvB0mOOn7GFIdCDVR0Qb
-         7vQCUt2MSBhA1E6qCdNcajFPY1cHrELMaBZ/Nr34zyxvCjMggN64wFN5heIyhnM6uQ
-         0ZbmWwHly/ta0xGD4UHyZuvBwKU9buPOGZwYsl1M=
+        b=wA+XiKeBtGN6GMSTX5e1oi7/z6XgDwt7+3jUj29l1ni6lL4w23/jqqkreDk2wcVjE
+         MMM1nUFWWd8aqIs4QOh1mPHlb7wo7fP24HvEuwKcGtTTOYCrFqRAMZUyLayI4jQWRb
+         HWN1mWmvQn5COg50iKLhBzhlAPZFyqPDpgn5vsPY=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Wed, 14 Jun 2023 18:35:50 +0200
-Subject: [PATCH v3 4/6] dt-bindings: sram: qcom,ocmem: Add msm8226 support
+Date:   Wed, 14 Jun 2023 18:35:48 +0200
+Subject: [PATCH v3 2/6] soc: qcom: ocmem: Use dev_err_probe where
+ appropriate
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230506-msm8226-ocmem-v3-4-79da95a2581f@z3ntu.xyz>
+Message-Id: <20230506-msm8226-ocmem-v3-2-79da95a2581f@z3ntu.xyz>
 References: <20230506-msm8226-ocmem-v3-0-79da95a2581f@z3ntu.xyz>
 In-Reply-To: <20230506-msm8226-ocmem-v3-0-79da95a2581f@z3ntu.xyz>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
@@ -44,93 +45,87 @@ To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Conor Dooley <conor+dt@kernel.org>
 Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         devicetree@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>,
-        Conor Dooley <conor.dooley@microchip.com>
+        Caleb Connolly <caleb.connolly@linaro.org>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1664; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=YDl2tvHHlHynpu6yX+1RRCk0EMdjswQ742sDIsDbcEQ=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkiex3PqIJUJA1I7YxQu4nSojJ4YWb5CZNxFSTT
- 9L39yLTMCyJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZInsdwAKCRBy2EO4nU3X
- VnruEACC+AoxPpJqOz/fFKRniSPON+RnZBUgxdx6q7gZK/p4gppq4qm1ysNyyM5CvXepyc4a4NK
- 1hEzMN2bxqMje+OPRAU95HWm1ethnmRn/R8OYPdJJYcyB+tWRXxZJnWFL9cqDcoSWsPzxDUPxss
- 1zKp4MeDg85zkDzcxfoP9CsM25lSv8WTjttWy1c9MrYAVxT8Y/OY0HkeumZaontCt57SgTTq3fw
- qvW+GQulTHdnp2QiHWQi2kkhsIjlOY48ZwnFwFdMo8Nq2mNsA47bSe+ts45VlztoojIm1bAII1J
- E57Y5C8+8bJaN0+dKBt+SRI9E4QwV9nM94ETgznOlD8KBuXeYgjEwJ4ZtWVmrT+pb045VRz2hQb
- /ObxxhU5i5/J0ot3Myyw1t7iCYHX+YetaYL2EKGQd5ndtM1YyecDDKkWhBBqzaDqEbWVdnZIIY4
- NremeuFAQg4OOZqKtJPfwTq4FSaks1Z+tJDL2D4tzP0fUpAPO6wUY6jvFGOCpLYGW8BdGqlNRvx
- dbgpOuSdbfFydxk/j+BABPM75aDF2EZvWIiwbNyxrQtAiV4fzFRSHrus1oUEseroiChLfYkiGRJ
- qaRJvr+q8Ot6Y5+UolGRh9cnvZZ2lyB9I6SWu7PkQj2Gcf1ZjlaGT/LA0P1K4MqtBu1wQpLxaRO
- 8E2PV4FqHA+mFSA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2190; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=UYXnMctzgGjbbadSnEuPjVT8RCUV5VfXXmHjVfoOibo=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkiex1EvDlh0l16NTUdVdGYGuATCym7G2cRt0lj
+ SXH0W1bVI+JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZInsdQAKCRBy2EO4nU3X
+ Vh7rD/9CywBQ8OuCcA8kGTFpjO+zzsF4FW8sLiLeFiL/4/HUqU+0VktLnBbPSDLVS4j4GFPZbNK
+ tNlPZ+IMch07xfpPyq8UmSe9K9/Uubocc2PAGhO8zkt25SL406h72GhggPchNvQCmAmpgtQmYsu
+ SoBSOnO5SCA7HXFvGu01L4ju1YmA6zfdRIal62/KPNkPHQuF0c78M8hLIroGcLNvvSrPNgXmmrh
+ quw7aeZq6hCRb930xBoZpErBdN84PS31VYyt6HpD5Cpkxcxdqj5LoHDoNkOspDOB6BIpBz2Hy1I
+ L6uIm2/IwZrRkzp9/x1RnWHQ4xtrUkcsCKJdCptEhvzEvbZ6h1UdgSsWUS4iogm0edEEjO3xjKp
+ rNl4b5y6rV1ogwC3x4NuwjATdlmuQSAEVRkCQaImFM42VyMuy5LfQXtyvLPl4Gyf1MqBqv2dA7T
+ 6YLYyjA6qAjuIqsCPH7rAUSWX2AJ8+kGx19ILL5rbhvdq6exjvc113xTSUK2yIGZ6TD2iNDVwJZ
+ fNww2a5gYJSBf9WYKCI1kzKLVmFimDRN+DZhu4/RC+WKinc9b2P4RbsvxWxNmyAewJlSPP3hGG4
+ EBYLgafwkGVnRb0pejuWKRd1jddbvG5t//KLIXhYBIH1VFbEtsJKFjTtGV6QfuEOP37F7UKscfS
+ nD1M96KnPqsNVpA==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the compatible for the OCMEM found on msm8226 which compared to
-msm8974 only has a core clock and no iface clock.
+Use dev_err_probe in the driver probe function where useful, to simplify
+getting PTR_ERR and to ensure the underlying errors are included in the
+error message.
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- .../devicetree/bindings/sram/qcom,ocmem.yaml       | 26 +++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/ocmem.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml b/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
-index 4bbf6db0b6bd..61c784ef7b51 100644
---- a/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
-+++ b/Documentation/devicetree/bindings/sram/qcom,ocmem.yaml
-@@ -15,7 +15,9 @@ description: |
+diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+index ef7c1748242a..462514dfd9e3 100644
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -321,18 +321,13 @@ static int ocmem_dev_probe(struct platform_device *pdev)
+ 	ocmem->config = device_get_match_data(dev);
  
- properties:
-   compatible:
--    const: qcom,msm8974-ocmem
-+    enum:
-+      - qcom,msm8226-ocmem  # v1.1.0
-+      - qcom,msm8974-ocmem  # v1.4.0
+ 	ret = devm_clk_bulk_get(dev, ARRAY_SIZE(ocmem_clks), ocmem_clks);
+-	if (ret) {
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(dev, "Unable to get clocks\n");
+-
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Unable to get clocks\n");
  
-   reg:
-     items:
-@@ -28,11 +30,13 @@ properties:
-       - const: mem
+ 	ocmem->mmio = devm_platform_ioremap_resource_byname(pdev, "ctrl");
+-	if (IS_ERR(ocmem->mmio)) {
+-		dev_err(&pdev->dev, "Failed to ioremap ocmem_ctrl resource\n");
+-		return PTR_ERR(ocmem->mmio);
+-	}
++	if (IS_ERR(ocmem->mmio))
++		return dev_err_probe(&pdev->dev, PTR_ERR(ocmem->mmio),
++				     "Failed to ioremap ocmem_ctrl resource\n");
  
-   clocks:
-+    minItems: 1
-     items:
-       - description: Core clock
-       - description: Interface clock
+ 	ocmem->memory = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+ 						     "mem");
+@@ -345,16 +340,14 @@ static int ocmem_dev_probe(struct platform_device *pdev)
+ 	WARN_ON(clk_set_rate(ocmem_clks[OCMEM_CLK_CORE_IDX].clk, 1000) < 0);
  
-   clock-names:
-+    minItems: 1
-     items:
-       - const: core
-       - const: iface
-@@ -58,6 +62,26 @@ required:
+ 	ret = clk_bulk_prepare_enable(ARRAY_SIZE(ocmem_clks), ocmem_clks);
+-	if (ret) {
+-		dev_info(ocmem->dev, "Failed to enable clocks\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(ocmem->dev, ret, "Failed to enable clocks\n");
  
- additionalProperties: false
- 
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - qcom,msm8974-ocmem
-+    then:
-+      properties:
-+        clocks:
-+          minItems: 2
-+        clock-names:
-+          minItems: 2
-+    else:
-+      properties:
-+        clocks:
-+          minItems: 1
-+        clock-names:
-+          minItems: 1
-+
- patternProperties:
-   "-sram@[0-9a-f]+$":
-     type: object
+ 	if (qcom_scm_restore_sec_cfg_available()) {
+ 		dev_dbg(dev, "configuring scm\n");
+ 		ret = qcom_scm_restore_sec_cfg(QCOM_SCM_OCMEM_DEV_ID, 0);
+ 		if (ret) {
+-			dev_err(dev, "Could not enable secure configuration\n");
++			dev_err_probe(dev, ret, "Could not enable secure configuration\n");
+ 			goto err_clk_disable;
+ 		}
+ 	}
 
 -- 
 2.41.0
