@@ -2,77 +2,122 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 32EDEEB64DB
-	for <phone-devel@archiver.kernel.org>; Tue, 13 Jun 2023 23:47:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D9517EB64DB
+	for <phone-devel@archiver.kernel.org>; Wed, 14 Jun 2023 12:40:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241366AbjFMXrt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 13 Jun 2023 19:47:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38274 "EHLO
+        id S235887AbjFNMkK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 14 Jun 2023 08:40:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241460AbjFMXrY (ORCPT
+        with ESMTP id S244756AbjFNMkG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 13 Jun 2023 19:47:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A783C2D50;
-        Tue, 13 Jun 2023 16:46:29 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        Wed, 14 Jun 2023 08:40:06 -0400
+Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50029195;
+        Wed, 14 Jun 2023 05:40:03 -0700 (PDT)
+Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A11B63C8B;
-        Tue, 13 Jun 2023 23:45:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C112C433D9;
-        Tue, 13 Jun 2023 23:45:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686699948;
-        bh=p2R+/mHF91wIebjpSsBTFu4SEbaQgfELL3DvhNmbKdI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YrY9G0vKO0SclZJ/92dsXCMoMzdICPVzDUOH4MrNuxyniJx67fYfKGIwLVTzeP5Jv
-         dBRfp2bJTtIHlJRTwmAchq6ICuWmTNz+rX/vMr1uxn2kQ+kucipF+Wn9C2MgdL8ZjY
-         OLQuxsFswWdaykzo2WsfONd3Lu+UypJobHlR6RYwk6TxU3WXi1l8eJ565dXZbJ3PJ/
-         athgw/0mP7v/QMXGwQvl1+gbc5psesaAmV13qpto4cNL5+HZFU/eVdtJBw7vpRAjUs
-         XYCAfnrrNbHTsQlE7SZssMOXLyZfN1f5fiJJc7WXypP4cdPylPX+ANsmprGNr2fYLh
-         ZFI+OrtT4bJ8w==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     linux-arm-msm@vger.kernel.org,
-        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-Cc:     devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 0A3783EBC2;
+        Wed, 14 Jun 2023 14:40:02 +0200 (CEST)
+Date:   Wed, 14 Jun 2023 14:40:00 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Subject: Re: [PATCH 0/3] Thermal zones for pm8226, pm8841 and pm8941
-Date:   Tue, 13 Jun 2023 16:48:51 -0700
-Message-Id: <168670013503.1400697.7077988789865184986.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230529221501.43455-1-matti.lehtimaki@gmail.com>
-References: <20230529221501.43455-1-matti.lehtimaki@gmail.com>
+        Martin Botka <martin.botka@somainline.org>,
+        Jami Kettunen <jami.kettunen@somainline.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: dts: qcom: sm8250-edo: Panel framebuffer is
+ 2.5k instead of 4k
+Message-ID: <kdu6apwgp7nu6mwqatufhxvnbunwodr4iu2uaqjacbjgbmmy5y@zh53imtpqfgs>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>, 
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+        Martin Botka <martin.botka@somainline.org>, Jami Kettunen <jami.kettunen@somainline.org>, 
+        Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+        Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+        Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+        linux-kernel@vger.kernel.org
+References: <20230606211418.587676-1-marijn.suijten@somainline.org>
+ <974f68dc-b667-c9a7-94c4-1023ef271fab@linaro.org>
+ <a69ddadd-8d59-e784-ddce-16c83a7f13a6@collabora.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a69ddadd-8d59-e784-ddce-16c83a7f13a6@collabora.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, 30 May 2023 01:14:58 +0300, Matti Lehtimäki wrote:
-> Add thermal sensor for pm8226, which is using on chip VADC channel to
-> report PMIC die temperature. Add thermal zone configurations for
-> PMIC thermal sensors found in pm8226, pm8841 and pm8941.
+On 2023-06-07 09:15:08, AngeloGioacchino Del Regno wrote:
+> Il 07/06/23 00:52, Konrad Dybcio ha scritto:
+> > 
+> > 
+> > On 6.06.2023 23:14, Marijn Suijten wrote:
+> >> The framebuffer configuration for edo pdx203, written in edo dtsi (which
+> >> is overwritten in pdx206 dts for its smaller panel) has to use a
+> >> 1096x2560 configuration as this is what the panel (and framebuffer area)
+> >> has been initialized to.  Downstream userspace also has access to (and
+> >> uses) this 2.5k mode by default, and only switches the panel to 4k when
+> >> requested.
+> >>
+> >> This is similar to commit be8de06dc397 ("arm64: dts: qcom:
+> >> sm8150-kumano: Panel framebuffer is 2.5k instead of 4k") which fixed the
+> >> same for the previous generation Sony platform.
+> >>
+> >> Fixes: 69cdb97ef652 ("arm64: dts: qcom: sm8250: Add support for SONY Xperia 1 II / 5 II (Edo platform)")
+> >> Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> >> ---
+> > And so I derped again.
+> > 
+> > Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 > 
-> Matti Lehtimäki (3):
->   ARM: dts: qcom: pm8226: Add thermal sensor and thermal zone config
->   ARM: dts: qcom: pm8841: Add thermal zone config
->   ARM: dts: qcom: pm8941: Add thermal zone config
+> I would've liked more to see a commit saying "replace simple-framebuffer with xxxx"
+> (where xxxx is DSI panel, etc) but that will as well do for now... :-)
+
+Fwiw we could keep it around as MDSS "gracefully" takes over when it
+probes a little bit later with fbcon over DRM/KMS, and it sometimes
+helps reading what is up when something fails before or during MDSS
+probe.
+
+- Marijn
+
+> Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 > 
-> [...]
-
-Applied, thanks!
-
-[1/3] ARM: dts: qcom: pm8226: Add thermal sensor and thermal zone config
-      commit: 1b118df488f2be09b846994a4135d57f634e564b
-[2/3] ARM: dts: qcom: pm8841: Add thermal zone config
-      commit: 84e72ea467db83043858b48fcd97de4c9e68881a
-[3/3] ARM: dts: qcom: pm8941: Add thermal zone config
-      commit: 637cc974046abe5718bf045a1bc66a238778a145
-
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+> > 
+> > Konrad
+> >>
+> >> Changes since v2:
+> >> - Rename griffin (copy-paste from related patch) to pdx203 in comment.
+> >>
+> >>   arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi | 7 ++++---
+> >>   1 file changed, 4 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
+> >> index 3d22be747f042..8f867f841cb83 100644
+> >> --- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
+> >> +++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
+> >> @@ -54,9 +54,10 @@ chosen {
+> >>   		framebuffer: framebuffer@9c000000 {
+> >>   			compatible = "simple-framebuffer";
+> >>   			reg = <0 0x9c000000 0 0x2300000>;
+> >> -			width = <1644>;
+> >> -			height = <3840>;
+> >> -			stride = <(1644 * 4)>;
+> >> +			/* pdx203 BL initializes in 2.5k mode, not 4k */
+> >> +			width = <1096>;
+> >> +			height = <2560>;
+> >> +			stride = <(1096 * 4)>;
+> >>   			format = "a8r8g8b8";
+> >>   		};
+> >>   	};
+> 
