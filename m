@@ -2,126 +2,231 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE7B9EB64DA
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Jun 2023 18:20:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23C0CEB64DA
+	for <phone-devel@archiver.kernel.org>; Thu, 15 Jun 2023 23:36:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229529AbjFOSUs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 15 Jun 2023 14:20:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37746 "EHLO
+        id S229767AbjFOXgw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 15 Jun 2023 19:36:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229789AbjFOSUr (ORCPT
+        with ESMTP id S237188AbjFOXgv (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 15 Jun 2023 14:20:47 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8BD295B
-        for <phone-devel@vger.kernel.org>; Thu, 15 Jun 2023 11:20:45 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4f769c37d26so3057715e87.1
-        for <phone-devel@vger.kernel.org>; Thu, 15 Jun 2023 11:20:45 -0700 (PDT)
+        Thu, 15 Jun 2023 19:36:51 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6622E2951
+        for <phone-devel@vger.kernel.org>; Thu, 15 Jun 2023 16:36:49 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-982ae93386aso4133966b.1
+        for <phone-devel@vger.kernel.org>; Thu, 15 Jun 2023 16:36:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686853243; x=1689445243;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=L86ku+7+LZQwdB7LY2vEzyd00L4TaNLzuqM/PGY++fA=;
-        b=arTUyMobZK0/1k5hhhUhyJT2jUNGhSGsNAcNWzGam6h3yvKOLLF9B6nFrb2tM3Tmlr
-         EudvbD1uHXsiZXGdaIy7mLb6GaJOqiamXP84/gtVzonNxNcVcwHRbopHPKB5Br+HPIho
-         gd+Xr+VAfxHPoZQylbhX1Z5XtbV3NwBooyPZ0o/c9i4hxvGOv1d1szjJ0Z+q278peJoB
-         MvnsiKMzcY3Nq4amJvcsyQAZtTY3f4LqJVhjZTF9OLRH//j625LClyOgoUXtp1HH8SqK
-         At/CS2hxE3jI9A8VX8zIvHC29Njea6523hyBJRUYivUOYY40nC0p3UeyC4ogXm32ZlNg
-         gF/Q==
+        d=chromium.org; s=google; t=1686872208; x=1689464208;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T0rZt7VTxPy2u4yytr6naYAQkiPv4eyJaIUeBq2hAvA=;
+        b=WMcVFZfYytJrXyV/njwScqfSzNqe5oxlUN3Q6hyz705c+JFv2Ow5OURfLadEzDAAUK
+         GRcfIIcOQ78345tw3GyWOUUzz3Xi+rtX4TI7JKJMIvDOpkrWuxA3qXwXA9b+SIIM+nSy
+         /l3tmyjFU1gRj8VW8oSnbUPUtHWJwfJEzfMd4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686853244; x=1689445244;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L86ku+7+LZQwdB7LY2vEzyd00L4TaNLzuqM/PGY++fA=;
-        b=jb+N2JS4lA7VUnwkzTkkAG7EtQXpX5r98Jctc6xqPnEEamcM31sDwjKwV33YRInjQk
-         WtOdzpCdIZ02SHn/MYV3vGkotXeUWlnMpjdld4CADy/ucYI6ElT1etvqh1+EJyY/iWPz
-         DliF6jzblMoHLFZb5ZT0ykii4rnEj6M1fwCeTnc75gflWs6/7gg2RExeJL01QsO2sg6k
-         XIcWFeg5y7CDwk3pHUf7CXe8Iz3te5hdWqJiUAYOajMzpyB1FZ5lhcqBKB2//CNZLiav
-         41ekOfakx6WpiL2fH/At6ZgeVq5XK3PxsCL5uAM4FB/rxdNBzARbjbnEBJFykyI5ONkm
-         VxyQ==
-X-Gm-Message-State: AC+VfDy161nMFPoK2Uk1AT6/wyCW/n+PMloaSS/eHzY4xwolD8z/rf79
-        hORG8gcXXLhpYWHbtyvwzgM2yQ==
-X-Google-Smtp-Source: ACHHUZ402ziYL5TvXfixIJ4Rjk5NUObRoP16/IYruQqcuIlOd4fwWY+IubMf34Q80/dG580p0yGxmQ==
-X-Received: by 2002:a19:ca58:0:b0:4f4:b592:74ab with SMTP id h24-20020a19ca58000000b004f4b59274abmr8857833lfj.62.1686853243607;
-        Thu, 15 Jun 2023 11:20:43 -0700 (PDT)
-Received: from [192.168.1.101] (abyj190.neoplus.adsl.tpnet.pl. [83.9.29.190])
-        by smtp.gmail.com with ESMTPSA id v27-20020a056512049b00b004f74160c9cesm1806292lfq.130.2023.06.15.11.20.42
+        d=1e100.net; s=20221208; t=1686872208; x=1689464208;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T0rZt7VTxPy2u4yytr6naYAQkiPv4eyJaIUeBq2hAvA=;
+        b=E5N3CO2WK6RFlWKSSARwvr6yQyEQa2fZgQ9rXhWnpU5u3bj1o9OVahUnUi2teyc6q0
+         IbSiCcOGZlCxnmyDYQsbib4DzcuqGtOFOsdVjupfB5e63Y+NCLQrroe6D7R8goQshpGV
+         JRlq0LXxiw1wPP3NGKWj6CHpWRWhT7koh/NSi4Fgrv4u4j0Uxd8EuxIuSUSUPoEUg/YO
+         WGXcbPQCNlnrkm4mJ3FK84txZ2/UfSBAeBKeuLgnn3GaBPoEDHzvSmAzM7pxu0E/0RD/
+         kG8MMxnBro5vGOKBEI3pzBr+YMFx9V+KLRkHjNBWM5uu1el0EH1w8R68nUKTvkoH4XGW
+         M8Wg==
+X-Gm-Message-State: AC+VfDwYl+JF7JJE/VPACglofwnZ2prZNYy+GO98SbHAik6X71nLBv2K
+        N6ymKra6Ck34xB/MSYIPg7GtcUXGIZe0gNUn5Z4+Narv
+X-Google-Smtp-Source: ACHHUZ59yIO3vfymQ1dcI6br8i+vTya/rZs4ChMIYR3xwj2FV6IV9us2y1MdcoI5EBcsNZLRVWjdAg==
+X-Received: by 2002:a17:907:7287:b0:973:93e3:bc9a with SMTP id dt7-20020a170907728700b0097393e3bc9amr470233ejc.6.1686872207967;
+        Thu, 15 Jun 2023 16:36:47 -0700 (PDT)
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
+        by smtp.gmail.com with ESMTPSA id n25-20020a170906379900b00977cc473b41sm10131345ejc.142.2023.06.15.16.36.47
+        for <phone-devel@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Jun 2023 11:20:43 -0700 (PDT)
-Message-ID: <866f1f66-8845-2453-ab9c-d125e23ae758@linaro.org>
-Date:   Thu, 15 Jun 2023 20:20:41 +0200
+        Thu, 15 Jun 2023 16:36:47 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-513ea2990b8so4577a12.0
+        for <phone-devel@vger.kernel.org>; Thu, 15 Jun 2023 16:36:47 -0700 (PDT)
+X-Received: by 2002:a50:d681:0:b0:514:95d4:c2bb with SMTP id
+ r1-20020a50d681000000b0051495d4c2bbmr182302edi.2.1686872207006; Thu, 15 Jun
+ 2023 16:36:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: [PATCH v2] ARM: dts: qcom: msm8974: correct qfprom node size
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Rajendra Nayak <quic_rjendra@quicinc.com>
-Cc:     Rob Herring <robh@kernel.org>, Andy Gross <andy.gross@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Craig Tatlor <ctatlor97@gmail.com>
-References: <20230130-msm8974-qfprom-v2-1-3839cf41d9ee@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230130-msm8974-qfprom-v2-1-3839cf41d9ee@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20230613-panel-dsi-disable-v1-1-5e454e409fa8@linaro.org>
+ <ZIjayn8nVy-ejThH@gerhold.net> <CACRpkdZ7a3aARMs3iBbBavF_0AkPOPs3fH8e6CrZYo7Ybr6m_A@mail.gmail.com>
+ <4f78b601-6e6e-2274-3174-87c62d7cfcd5@linaro.org>
+In-Reply-To: <4f78b601-6e6e-2274-3174-87c62d7cfcd5@linaro.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Thu, 15 Jun 2023 16:36:34 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=X_xonf1Dz0BsNTKm4-zBm+ccKvPO+wEWFVMUVY_2=h3Q@mail.gmail.com>
+Message-ID: <CAD=FV=X_xonf1Dz0BsNTKm4-zBm+ccKvPO+wEWFVMUVY_2=h3Q@mail.gmail.com>
+Subject: Re: [PATCH] drm/panel: move some dsi commands from unprepare to disable
+To:     neil.armstrong@linaro.org
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Ajay Kumar <ajaykumar.rs@samsung.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Joel Selvaraj <joelselvaraj.oss@gmail.com>,
+        dri-devel@lists.freedesktop.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        phone-devel@vger.kernel.org,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Joel Selvaraj <jo@jsfamily.in>,
+        Dave Stevenson <dave.stevenson@raspberrypi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 15.06.2023 20:17, Luca Weiss wrote:
-> From: Craig Tatlor <ctatlor97@gmail.com>
-> 
-> The qfprom actually has size 0x3000, so adjust the reg.
-> 
-> Note that the non-ECC-corrected qfprom can be found at 0xfc4b8000
-> (-0x4000). The current reg points to the ECC-corrected qfprom block
-> which should have equivalent values at all offsets compared to the
-> non-corrected version.
-> 
-> [luca@z3ntu.xyz: extract to standalone patch and adjust for review
-> comments]
-> 
-> Fixes: c59ffb519357 ("arm: dts: msm8974: Add thermal zones, tsens and qfprom nodes")
-> Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-Not sure of the actual size of the region, maybe Bjorn can help..
+Hi,
 
-Downstream 3.10 suggests 0x60F0, 0x20F0 after adjusting for the ECC offset
+On Thu, Jun 15, 2023 at 12:49=E2=80=AFAM Neil Armstrong
+<neil.armstrong@linaro.org> wrote:
+>
+> On 14/06/2023 22:58, Linus Walleij wrote:
+> > On Tue, Jun 13, 2023 at 11:08=E2=80=AFPM Stephan Gerhold <stephan@gerho=
+ld.net> wrote:
+> >
+> >> I'm still quite confused about what exactly is supposed to be in
+> >> (un)prepare and what in enable/disable. I've seen some related
+> >> discussion every now and then but it's still quite inconsistent across
+> >> different panel drivers... Can someone clarify this?
+> >
+> > It is somewhat clarified in commit 45527d435c5e39b6eec4aa0065a562e7cf05=
+d503
+> > that added the callbacks:
+> >
+> > Author: Ajay Kumar <ajaykumar.rs@samsung.com>
+> > Date:   Fri Jul 18 02:13:48 2014 +0530
+> >
+> >      drm/panel: add .prepare() and .unprepare() functions
+> >
+> >      Panels often require an initialization sequence that consists of t=
+hree
+> >      steps: a) powering up the panel, b) starting transmission of video=
+ data
+> >      and c) enabling the panel (e.g. turn on backlight). This is usuall=
+y
+> >      necessary to avoid visual glitches at the beginning of video data
+> >      transmission.
+> >
+> >      Similarly, the shutdown sequence is typically done in three steps =
+as
+> >      well: a) disable the panel (e.g. turn off backlight), b) cease vid=
+eo
+> >      data transmission and c) power down the panel.
+> >
+> >      Currently drivers can only implement .enable() and .disable() func=
+tions,
+> >      which is not enough to implement the above sequences. This commit =
+adds a
+> >      second pair of functions, .prepare() and .unprepare() to allow mor=
+e
+> >      fine-grained control over when the above steps are performed.
+> >
+> >      Signed-off-by: Ajay Kumar <ajaykumar.rs@samsung.com>
+> >      [treding: rewrite changelog, add kerneldoc]
+> >      Signed-off-by: Thierry Reding <treding@nvidia.com>
+> >
+> > My interpretation is that .enable/.disable is for enabling/disabling
+> > backlight and well, make things show up on the display, and that
+> > happens quickly.
+> >
+> > prepare/unprepare is for everything else setting up/tearing down
+> > the data transmission pipeline.
+> >
+> > In the clock subsystem the enable/disable could be called in fastpath
+> > and prepare/unprepare only from slowpath so e.g an IRQ handler
+> > can gate a simple gated clock. This semantic seems to have nothing
+> > to do with the display semantic. :/
+>
+> It had to do, .prepare is called when the DSI link is at LP11 state
+> before it has switched to the VIDEO mode, and .unprepare is the
+> reverse when VIDEO mode has been disabled and before the DSI link
+> is totally disabled.
+>
+> https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/bridge/syn=
+opsys/dw-mipi-dsi.c#L938
+>
+> then
+>
+> https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/bridge/syn=
+opsys/dw-mipi-dsi.c#L855
+>
+> but Doug has started changing this starting with MSM DSI driver, leading =
+to
+> current panel drivers not working anymore with the current DSI init mode
+> and requires setting pre_enable_prev_first for only some DSI hosts
+> who switched out of set_mode().
+>
+> The DSI init model doesn't fit at all with the atomic bridge model and
+> some DSI controllers doesn't support the same features like the allwinner
+> DSI controller not support sending LP commands when in HS video mode
+> for example.
 
-Konrad
-> Changes in v2:
-> - Keep base offset but expand reg from 0x1000 to 0x3000 (Konrad)
-> - Link to v1: https://lore.kernel.org/r/20230130-msm8974-qfprom-v1-1-975aa0e5e083@z3ntu.xyz
-> ---
->  arch/arm/boot/dts/qcom-msm8974.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
-> index 7ed0d925a4e9..3156fe25967f 100644
-> --- a/arch/arm/boot/dts/qcom-msm8974.dtsi
-> +++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
-> @@ -1194,7 +1194,7 @@ restart@fc4ab000 {
->  
->  		qfprom: qfprom@fc4bc000 {
->  			compatible = "qcom,msm8974-qfprom", "qcom,qfprom";
-> -			reg = <0xfc4bc000 0x1000>;
-> +			reg = <0xfc4bc000 0x3000>;
->  			#address-cells = <1>;
->  			#size-cells = <1>;
->  
-> 
-> ---
-> base-commit: 858fd168a95c5b9669aac8db6c14a9aeab446375
-> change-id: 20230130-msm8974-qfprom-619c0e8f26eb
-> 
-> Best regards,
+Summary of the history here as I understand it:
+
+1. Before the switch to DRM_PANEL_BRIDGE, things worked OK.
+
+2. After the switch to DRM_PANEL_BRIDGE, things broke for tc358762.
+That led to commit 7d8e9a90509f ("drm/msm/dsi: move DSI host powerup
+to modeset time"), which was a little ugly but sorta OK, except ...
+
+3. Moving the DSI host powerup to modeset time broke ps8640. That led
+to commit ec7981e6c614 ("drm/msm/dsi: don't powerup at modeset time
+for parade-ps8640"), which was a hack.
+
+4. We fixed tc358762 using the new "pre_enable_prev_first" in commit
+55cac10739d5 ("drm/bridge: tc358762: Set pre_enable_prev_first") and
+thus were able to undo moving DSI host powerup to modeset time and
+then undo the ps8640 hack. I talk about this a bit more in the message
+for commit 9e15123eca79 ("drm/msm/dsi: Stop unconditionally powering
+up DSI hosts at modeset").
+
+If there are other things that need "pre_enable_prev_first" we could
+do that. If I understand Dave Stevenson [1], though, this doesn't hurt
+but technically shouldn't be required. He says that "It is documented
+that the mipi_dsi_host_ops transfer function should be called with the
+host in any state [1], so the host driver is failing there." Even if
+it shouldn't be required, though, "pre_enable_prev_first" can still
+have a benefit as Dave says [2] because it would mean that the DSI
+controller doesn't have to power itself up and down for each
+transfer...
+
+If I understand, if the MSM DSI driver did what Dave said (proactive
+turn on if someone sends commands) then we'd actually be OK even with
+ps8640, since we don't send any commands in the ps8640 pre_enable()
+function.
+
+I guess one other point of reference is commit a3ee9e0b57f8
+("drm/panel: boe-tv101wum-nl6: Ensure DSI writes succeed during
+disable"). I think Stephen made that change before
+"pre_enable_prev_first" was widely available...
+
+Hopefully I summarized all that correctly. If I messed up, please yell.
+
+I guess the tl;dr (summary of my summary) is:
+
+a) Moving panels like this to "pre_enable_prev_first" seems like a
+reasonable idea anyway and (presumably) works around the issue.
+
+b) Moving some commands between disable() / post_diable() or
+pre_enable() / enable() can also make sense and isn't terrible. As
+people have pointed out, there is some vagueness on exactly what
+belongs in each.
+
+c) Ideally someone could fix the MSM DSI driver to behave as Dave documente=
+d.
+
+
+[1] https://lore.kernel.org/r/CAPY8ntA=3DDq6GFQ3gEOm9PzPyOa9bHTr8JrpXLibnai=
+7xKqRbpQ@mail.gmail.com
+[2] https://lore.kernel.org/r/CAPY8ntAUhVB6UtQTeHAcxNW950Ou+NcEoGwk3JnVWLay=
+89_0Nw@mail.gmail.com
