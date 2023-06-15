@@ -2,169 +2,115 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73187EB64D9
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Jun 2023 08:09:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06BC4EB64DA
+	for <phone-devel@archiver.kernel.org>; Thu, 15 Jun 2023 18:18:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244266AbjFOIJ0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 15 Jun 2023 04:09:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45298 "EHLO
+        id S229905AbjFOSSH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 15 Jun 2023 14:18:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239368AbjFOIJZ (ORCPT
+        with ESMTP id S229734AbjFOSSG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 15 Jun 2023 04:09:25 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A97F1A1;
-        Thu, 15 Jun 2023 01:09:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1686816558; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=CM7X1acMlB9WU8dvRzsFaeuR+Zxu4lSplpwEgbSpugUa9RAg2qqohuAnJAoqe8ZAhF
-    6pPANXYTQH9flPD4cWTmMgVPfXT83mP1DUIZgqMqTyGvYptaP5EMXyktTqJkUKwrHkog
-    K+D33JWQkJmx+bwHHWXgoDQ98IvEMkso2v0y3VpwchWop/OoT9ZzRbLwFGYdu02vTTGV
-    ywdG5X7y6IPwO3v6poPLO+NHEmdfpuHJKZPiGIrmpdkIl4fjaAh9jyyc06sfATA7XWTz
-    GtDXf/iMgnZBYUAFacExRV/40+NfkfiSGMUwL5R74oyBPy0TqAgrbFpSPPD4A5/Se6rF
-    SMvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1686816558;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=fHWWafcLE6QbxDZMj4uI+BLupiwN2GnJnfQh/hNxH3w=;
-    b=EilZDXPgL9RnXrs4Q7bb79kSb+2Y9saXgDc5xqj6kXL0/7zFSLob8W7rcyJPmZCLbJ
-    KJ9CyeBMGPwN4WaydiABVLlViwq5cXGIdPn+su4Lw1wuI/diBmcx1dF6PLKtzLd86aut
-    ZGD5A2nLamYb56Pwmv2WjTGX255u6Oyu1QuRQKggUGDdgzdfxB08r8wVPyrsnFx1qBQ1
-    ipHmc2bYGUbhDCByXlA27mjFFS9hzKRKx3cuvuk9VRxMm+6chG/Up64Na14bOu+nteiP
-    mji12lqb8bzyZOZqdmtlrBy3xabd8hVduUgSYQOltkQXa87cKBJ5LCjn6Z5fKvbgzl0D
-    6yzQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1686816558;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=fHWWafcLE6QbxDZMj4uI+BLupiwN2GnJnfQh/hNxH3w=;
-    b=fYekLnWK/msIk09f0xVngrxb/OzQleVapVWg8qySgcFjEdgLF919n2Apkg3Upqa450
-    o/h2jP/g2cyoLffYtEllyfHjHhTmSI5RS9/7RUalT3wK9xxt2/hDKvSF8ddLzEw7aChx
-    CICeaH1+kkxzvKjmXk9DxDwtIUDFhCUocCLBWUS00/hi+vZr1T/UuRLAdzlpiMvntFzD
-    n9lyltZarnb2oZLE1mLKIoAY8lYsdqCVhD9RARrQF8X4dPUCreMQWh5Dnr5RRGvCLEI5
-    rGn0MQ5zkKIyGV+m02w5VcrAKo3PBUavQ1ifEQkasdblhLttKJVyHyMX+7CWRcCeYBU7
-    P+uQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1686816558;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=fHWWafcLE6QbxDZMj4uI+BLupiwN2GnJnfQh/hNxH3w=;
-    b=8W/5Wst501Ovg8dERHZTLgFkDKd47TFrLgU6DVM53Ic/bnegN1+Mlaw9glGzNOUn2m
-    YV7Z6Evh/7EWHjGD8wCQ==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA9J/h"
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.6.0 DYNA|AUTH)
-    with ESMTPSA id D0d0a8z5F89H1vN
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Thu, 15 Jun 2023 10:09:17 +0200 (CEST)
-Date:   Thu, 15 Jun 2023 10:09:11 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Neil Armstrong <neil.armstrong@linaro.org>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Ajay Kumar <ajaykumar.rs@samsung.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Joel Selvaraj <joelselvaraj.oss@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        phone-devel@vger.kernel.org,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Joel Selvaraj <jo@jsfamily.in>
-Subject: Re: [PATCH] drm/panel: move some dsi commands from unprepare to
- disable
-Message-ID: <ZIrHJwm2-ghSUHL0@gerhold.net>
-References: <20230613-panel-dsi-disable-v1-1-5e454e409fa8@linaro.org>
- <ZIjayn8nVy-ejThH@gerhold.net>
- <CACRpkdZ7a3aARMs3iBbBavF_0AkPOPs3fH8e6CrZYo7Ybr6m_A@mail.gmail.com>
- <4f78b601-6e6e-2274-3174-87c62d7cfcd5@linaro.org>
+        Thu, 15 Jun 2023 14:18:06 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 142BB1BF8;
+        Thu, 15 Jun 2023 11:18:05 -0700 (PDT)
+Received: from [192.168.178.23] (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 01090CE6AF;
+        Thu, 15 Jun 2023 18:17:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1686853053; bh=ugMipXK+nPc+Xd0ZaX7mPO2A2Ca+rG1kX4NQoi4EwMU=;
+        h=From:Date:Subject:To:Cc;
+        b=Uj8RyxvN70jrrEHAuk2KK9V0OuGn6s831dQ0WoGRgG8wRr/lS6QBvWx+fC77B5oE4
+         S7s6BSOSNTvThYvB8Idbbz6XYUieym7uL/Elki7k6/LLmZ2nORFl6NDQigh0hVhHeK
+         YDzPYoqbGdFIg8gLdL2xOTGr7TcHO7DYE2og5w1M=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Date:   Thu, 15 Jun 2023 20:17:12 +0200
+Subject: [PATCH v2] ARM: dts: qcom: msm8974: correct qfprom node size
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4f78b601-6e6e-2274-3174-87c62d7cfcd5@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230130-msm8974-qfprom-v2-1-3839cf41d9ee@z3ntu.xyz>
+X-B4-Tracking: v=1; b=H4sIAKdVi2QC/3WOOQ6DMBREr4Jc5yMvYUuVe0QUxvkOLjDGBsQi7
+ h6DlDLlG83TzE4CeoOBPJKdeJxNML2NwG8JUa20HwTzjkw45YIyQaELXVkVdxi0830HOasUxVL
+ zHBsSpUYGhMZLq9pTG1Ts/JQ8ZekKyk3a43CWnUdtlmv9VUduTRh7v15nZnamf3dnBgyqIpOSY
+ oa0FM9N2HFKl3Uj9XEcX5LdFmbZAAAA
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Rajendra Nayak <quic_rjendra@quicinc.com>
+Cc:     Rob Herring <robh@kernel.org>, Andy Gross <andy.gross@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Craig Tatlor <ctatlor97@gmail.com>,
+        Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1457; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=CEB4c/s6J/pZAcxWuRvn233hJFsOJA018x2AsQ+Iqjw=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBki1W60QkmzyTC110njYohlKqolQLQCLjeMCCui
+ Z8scKBL2yWJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZItVugAKCRBy2EO4nU3X
+ VhmOEADR5SRR416eXnGqX21q7pqrOIjGCMkg+sG82eO0rF/W/c5xD6Zh3n2Rw+/MNZDxBbOGDxI
+ fhdNVfdWPeDSySSGJWhJlu+jWeA7VI1rp/5Poy4wwq617qSatFhnfT/wuj1+GdnHM+XQ+qlq0s3
+ uj7GUOxEwufePdMFhW1es2caQqCH/jhlNL9e2ArscNK68KwEZyrsrjXjkHuZuEW3u0UYMTvlJDS
+ WNDbfZiNLm/gnxBlh2Kpuuhs9HriBSDWF2599eRoWMWx+cRayV4a7TkC8AeIyBhlcAIQwD5Mn1I
+ ZYPN4x8CQ8A9umfN7c5+Aj/KRZc6CmFGAxcwL8W9RSP0Fkp1MvgqQ7b7Jro2WSWh4xgJgvEytDy
+ kODWBFDE4AyhrgNFHLcS+vYtN35iXoYkj5KGW2PlnNDV84MINWT1f5EKOxMdcJinrTG6r3S1HLC
+ EUmn3qFA3nwobuIxiEZJzGMtZYuXXYYDTPaHngzUgknaWXGaR0+YvS+HBbAXCTgO7tBvQvB/u/A
+ yZ5TbEHDZMB4yeyLWsLNnklADTSIXifXGyuClvbqeLTd5RGq6KWEXE1wVd5sWrDUXH12iyPnjLw
+ hlEEqQHbhuI3K0aN3Mi1BKeKfgbQ6wrARFkchmPdoujiYpoITe3oLmTiu1XcAeA+66KmeNkNOUt
+ VEYYLnQcpk6g3nA==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jun 15, 2023 at 09:49:27AM +0200, Neil Armstrong wrote:
-> On 14/06/2023 22:58, Linus Walleij wrote:
-> > On Tue, Jun 13, 2023 at 11:08 PM Stephan Gerhold <stephan@gerhold.net> wrote:
-> > 
-> > > I'm still quite confused about what exactly is supposed to be in
-> > > (un)prepare and what in enable/disable. I've seen some related
-> > > discussion every now and then but it's still quite inconsistent across
-> > > different panel drivers... Can someone clarify this?
-> > 
-> > It is somewhat clarified in commit 45527d435c5e39b6eec4aa0065a562e7cf05d503
-> > that added the callbacks:
-> > 
-> > Author: Ajay Kumar <ajaykumar.rs@samsung.com>
-> > Date:   Fri Jul 18 02:13:48 2014 +0530
-> > 
-> >      drm/panel: add .prepare() and .unprepare() functions
-> > 
-> >      Panels often require an initialization sequence that consists of three
-> >      steps: a) powering up the panel, b) starting transmission of video data
-> >      and c) enabling the panel (e.g. turn on backlight). This is usually
-> >      necessary to avoid visual glitches at the beginning of video data
-> >      transmission.
-> > 
-> >      Similarly, the shutdown sequence is typically done in three steps as
-> >      well: a) disable the panel (e.g. turn off backlight), b) cease video
-> >      data transmission and c) power down the panel.
-> > 
-> >      Currently drivers can only implement .enable() and .disable() functions,
-> >      which is not enough to implement the above sequences. This commit adds a
-> >      second pair of functions, .prepare() and .unprepare() to allow more
-> >      fine-grained control over when the above steps are performed.
-> > 
-> >      Signed-off-by: Ajay Kumar <ajaykumar.rs@samsung.com>
-> >      [treding: rewrite changelog, add kerneldoc]
-> >      Signed-off-by: Thierry Reding <treding@nvidia.com>
-> > 
-> > My interpretation is that .enable/.disable is for enabling/disabling
-> > backlight and well, make things show up on the display, and that
-> > happens quickly.
-> > 
-> > prepare/unprepare is for everything else setting up/tearing down
-> > the data transmission pipeline.
-> > 
-> > In the clock subsystem the enable/disable could be called in fastpath
-> > and prepare/unprepare only from slowpath so e.g an IRQ handler
-> > can gate a simple gated clock. This semantic seems to have nothing
-> > to do with the display semantic. :/
-> 
-> It had to do, .prepare is called when the DSI link is at LP11 state
-> before it has switched to the VIDEO mode, and .unprepare is the
-> reverse when VIDEO mode has been disabled and before the DSI link
-> is totally disabled.
-> 
-> https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c#L938
-> 
-> then
-> 
-> https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c#L855
-> 
-> but Doug has started changing this starting with MSM DSI driver, leading to
-> current panel drivers not working anymore with the current DSI init mode
-> and requires setting pre_enable_prev_first for only some DSI hosts
-> who switched out of set_mode().
-> 
+From: Craig Tatlor <ctatlor97@gmail.com>
 
-Hm, do I understand you correctly that setting
-bridge->pre_enable_prev_first / panel->prepare_prev_first should work as
-an alternative to $subject patch, at least for the MSM DSI driver? With
-it DSI commands should be possible to be sent in .unprepare()?
+The qfprom actually has size 0x3000, so adjust the reg.
 
-Thanks,
-Stephan
+Note that the non-ECC-corrected qfprom can be found at 0xfc4b8000
+(-0x4000). The current reg points to the ECC-corrected qfprom block
+which should have equivalent values at all offsets compared to the
+non-corrected version.
+
+[luca@z3ntu.xyz: extract to standalone patch and adjust for review
+comments]
+
+Fixes: c59ffb519357 ("arm: dts: msm8974: Add thermal zones, tsens and qfprom nodes")
+Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Changes in v2:
+- Keep base offset but expand reg from 0x1000 to 0x3000 (Konrad)
+- Link to v1: https://lore.kernel.org/r/20230130-msm8974-qfprom-v1-1-975aa0e5e083@z3ntu.xyz
+---
+ arch/arm/boot/dts/qcom-msm8974.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
+index 7ed0d925a4e9..3156fe25967f 100644
+--- a/arch/arm/boot/dts/qcom-msm8974.dtsi
++++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
+@@ -1194,7 +1194,7 @@ restart@fc4ab000 {
+ 
+ 		qfprom: qfprom@fc4bc000 {
+ 			compatible = "qcom,msm8974-qfprom", "qcom,qfprom";
+-			reg = <0xfc4bc000 0x1000>;
++			reg = <0xfc4bc000 0x3000>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 
+
+---
+base-commit: 858fd168a95c5b9669aac8db6c14a9aeab446375
+change-id: 20230130-msm8974-qfprom-619c0e8f26eb
+
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
+
