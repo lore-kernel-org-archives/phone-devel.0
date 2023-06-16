@@ -2,231 +2,162 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 23C0CEB64DA
-	for <phone-devel@archiver.kernel.org>; Thu, 15 Jun 2023 23:36:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09723EB64D7
+	for <phone-devel@archiver.kernel.org>; Fri, 16 Jun 2023 20:03:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229767AbjFOXgw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 15 Jun 2023 19:36:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56474 "EHLO
+        id S229542AbjFPUDH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 16 Jun 2023 16:03:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237188AbjFOXgv (ORCPT
+        with ESMTP id S1345983AbjFPUC4 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 15 Jun 2023 19:36:51 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6622E2951
-        for <phone-devel@vger.kernel.org>; Thu, 15 Jun 2023 16:36:49 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-982ae93386aso4133966b.1
-        for <phone-devel@vger.kernel.org>; Thu, 15 Jun 2023 16:36:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686872208; x=1689464208;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T0rZt7VTxPy2u4yytr6naYAQkiPv4eyJaIUeBq2hAvA=;
-        b=WMcVFZfYytJrXyV/njwScqfSzNqe5oxlUN3Q6hyz705c+JFv2Ow5OURfLadEzDAAUK
-         GRcfIIcOQ78345tw3GyWOUUzz3Xi+rtX4TI7JKJMIvDOpkrWuxA3qXwXA9b+SIIM+nSy
-         /l3tmyjFU1gRj8VW8oSnbUPUtHWJwfJEzfMd4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686872208; x=1689464208;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T0rZt7VTxPy2u4yytr6naYAQkiPv4eyJaIUeBq2hAvA=;
-        b=E5N3CO2WK6RFlWKSSARwvr6yQyEQa2fZgQ9rXhWnpU5u3bj1o9OVahUnUi2teyc6q0
-         IbSiCcOGZlCxnmyDYQsbib4DzcuqGtOFOsdVjupfB5e63Y+NCLQrroe6D7R8goQshpGV
-         JRlq0LXxiw1wPP3NGKWj6CHpWRWhT7koh/NSi4Fgrv4u4j0Uxd8EuxIuSUSUPoEUg/YO
-         WGXcbPQCNlnrkm4mJ3FK84txZ2/UfSBAeBKeuLgnn3GaBPoEDHzvSmAzM7pxu0E/0RD/
-         kG8MMxnBro5vGOKBEI3pzBr+YMFx9V+KLRkHjNBWM5uu1el0EH1w8R68nUKTvkoH4XGW
-         M8Wg==
-X-Gm-Message-State: AC+VfDwYl+JF7JJE/VPACglofwnZ2prZNYy+GO98SbHAik6X71nLBv2K
-        N6ymKra6Ck34xB/MSYIPg7GtcUXGIZe0gNUn5Z4+Narv
-X-Google-Smtp-Source: ACHHUZ59yIO3vfymQ1dcI6br8i+vTya/rZs4ChMIYR3xwj2FV6IV9us2y1MdcoI5EBcsNZLRVWjdAg==
-X-Received: by 2002:a17:907:7287:b0:973:93e3:bc9a with SMTP id dt7-20020a170907728700b0097393e3bc9amr470233ejc.6.1686872207967;
-        Thu, 15 Jun 2023 16:36:47 -0700 (PDT)
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
-        by smtp.gmail.com with ESMTPSA id n25-20020a170906379900b00977cc473b41sm10131345ejc.142.2023.06.15.16.36.47
-        for <phone-devel@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Jun 2023 16:36:47 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-513ea2990b8so4577a12.0
-        for <phone-devel@vger.kernel.org>; Thu, 15 Jun 2023 16:36:47 -0700 (PDT)
-X-Received: by 2002:a50:d681:0:b0:514:95d4:c2bb with SMTP id
- r1-20020a50d681000000b0051495d4c2bbmr182302edi.2.1686872207006; Thu, 15 Jun
- 2023 16:36:47 -0700 (PDT)
+        Fri, 16 Jun 2023 16:02:56 -0400
+Received: from sonic301-22.consmr.mail.ir2.yahoo.com (sonic301-22.consmr.mail.ir2.yahoo.com [77.238.176.99])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FB103C1B
+        for <phone-devel@vger.kernel.org>; Fri, 16 Jun 2023 13:02:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1686945768; bh=7VIg2OskWnaHeGIh2/02xDBsEiU6cbaw6bxetVSvniY=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=XSfgOm84t1Q/PF7baXtE1kq3V6DUz/ew03bL6jFy++3hBk5KW88cgxRVHqaYwtjPBmfZznKRHoWcST2jOKs7zQwMfWRFqlYTzM7guJLblMyHiqmehEkix/TkyOdBuDAhDluu8erboUXU5twjPHfesopNY1lutRPIrOYdcSnu4uok+kEy3+RfFfqB7TagES8I2qF3HVOPwYBSDOKCNKaHpZO0wopEKABlBDEvPiGn1U3kvZSLpw5t5aLarHiykdw2KjdI2xxCiGzQeBYz6wlenlOMVrDuWMRhQXsdZtrwE4SGf3SlBKxeGOp8zTvui/PK9ilrXNvVaSAL3ADy5nJ4lA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1686945768; bh=CB0V2BCA4hR4eBIB8o/GC/QgYjnmsr4ogI6UW55EfX4=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=VNpD57dVPLk3Jft4Wlh/K34jU8w+uJBPC7MyIMqPomcOGv0y0asF2oo4IcmMNY1SIceY7vlV04tdv/T5eD5V9fZb7x4y8fsAazEiFY/A+8eDX3fChfJy4S53fIlP8kof59pbOi/Rfpl1HSkUQXAsMhbxQR5SeimOrXIXXhd/fyN4ffGeszH2f7eXaTX+X0LO0xtFU1zEB/ei2GbrVkio3EaLBFDsxNN0b1K+jy29f2rHUYzpS8jdp+VlJPZGNAwsbupcL8xxM+fRcjtcg8gi8zhwK3+JjU3u0gkMqyjBFmGZq4WDC3JjTJOt56RIT9xZMqemofXPzxVorGgcxjubIg==
+X-YMail-OSG: kOllkm8VM1m8IHFgxV.hizl2LUrDP7Tp1uRkTyzYIovcwM_ATgBilsQ3EORS.zW
+ czQKCrXvnPqLoBCrPd8wwgpk_o7PRnFqw5Y_Z2h7OrNV3qV5004VND4bjGd0vx5PMjsgotn3S.HT
+ gGn94Az9sBGyQY7B3L0QMw1kcldLpfCo.3HhlmwB.YYu31sv8eItFdw3NnM7aMKSd.vG7RdkyTRe
+ noLkqqCBh_LyQQeaATg8vakclMId0V_.rGPtwMyVAM1_GqL0cP98NSSPaXLvbdE9IeLnsalsE8rM
+ 1rZitsm4TSomLZYtrE3YXO.dWJhHsBzhLtSVLAqnQEUbTzGsO._jKmqUXt1HY2UoAhvfzGEFJWsP
+ 83mdU90kpJr_yr92lYC.dAf57gBVnqEMuGzE7eJZhym8BBPCwU1Itj_DYb6dZ5V6.4GEMH_6RVVU
+ qap0wUcblIS607qT4idHQC7_wO_JwVvkmvUDeGnzB1AYcWKW7xRr_vNXIqEUfyIyqdF_xiO79D3D
+ qYiwHKNnpxp9GU1tay3a221YdaOBp6RkF3BSNK7y6Z4gVeABIRKu1EPQVob5VcxUkWO8D6Q.9gWJ
+ kjmSvnhnQQcOUOV4y5XuaFq8prdCa8kxzGPVyxmovHQxjzCksvBzG1fDxiJPu8AeOjakA3N7UQu9
+ .DDNrL9OmPDvPW1mZ2MA1xVkIYIzf4PFRHKPZaeE3T9tdMVjGIiUrGvjpjaYJ4E6pnUURBteGofG
+ wrfqhH2t7suskI2n3GCoH0uoCRFvpHzaLnJxu2e5Cj7sHXGSRVt_7FGsPRSxF9SSb8UOTr4cV9Ve
+ lQcgZL1PnnbhbRFl0vIktQfXDIoUImh4ZvNitiHkanBEY3UKntSwjVnIgEc0C5tx17RPe505uZwT
+ UTrNZ853aya9sbDGHO9d1VPlNxxjKYGx6VRVYbM2iiNvMBE6Hjq0TBxnU4WyBM_zXtW5lBtEFopG
+ ZUtfFbeE24zLezZRG5eSRqqwP9gaRFKSAJcvauUcH4FM3qr_eP5YO3kak1uFaFKgn0aePGSNXoNo
+ dP9NYSmJe4q3SXu4_OViFeAGgBVMMTnBgwgQV25tjOtXlAiiWSt1KIEJLyQUSM30HBq_5DAEszoF
+ 59uwn02rQ08VqtoMCPatoz18jlqr3Tlx4YMz0aHAKuuwfNIhpgM3jKV.aPstjT4CAtAvuRfDB3cb
+ CeVz.BIQjYqa9ZkYblQx_utd3elL4DQjcNGcI3r7P30ZcHZQLeCOVOSi_I_YrXOVVqst48XttI0h
+ dCjEN7HVIRFURhsVfc2K1dUUt2Z6Ewr92UZcDF8L2jplUjNP3EJ.awdnncEw4n8IxXDEZ0hlfyb9
+ TsYYi0uKAqWHzinH10bIHYBrPrcwBvLEKpUZW6HJQr6xOrT9.K0woN7ra6jYwun0xRWxMCxYzEOS
+ tVPorHV36yOX3bOaW35hqraCCcwuTtiTgKy7qoxt_IUJVuJVwjI6pFUY855_D2.drFO3s84B7NIa
+ u6Hzh_3zyjDO3gSXVR5aGwGkR8AU5lv7KG4._Jwtl4qtFDyEbZdNDpeAM8NUeQi8TQ42plu9.mdL
+ NFfELDr1nUNQTZbAAKnzfTbfGycOn1L3fm_J2QdVIbXyAwXRwQk4_8KUL5CZbkUbiLJyxtWxu94d
+ Sae3e2vr60mKbVRAGIUL38WpiD7m4vo7..MZ8am4OCNkG0LtRwJAaqhXFE5R2Uq5FvV4xWndAZGp
+ 8s.wjpFa1TyzuuVehZ62fvUQEyri51KWmOWSfd5kJFB7_lhLWxmXmjo_8mr9AxyQkJvOr1jmSs_R
+ bZNyHbKctM_vdIXpUwEk1GWOUvQ25RKRWfm6LyKT5Q79BMFvUnLjGB8GgXcvqWsi6L4JcN8DpK8a
+ s79w3mZ5R1VgHF7nc3zmWo3q0.X.9Yo8u5_3mFYAM7LwB_JBs11TnN74xVLQ3shLTx9WXpgPCvEa
+ U0xH_6ZTy..qOa5ck1SNM57Ulix__KSh6h1vCGpwJaYSyTEDH3gj5mzaqOyhhgid.8vXiiLjU3c2
+ fLafXkF6gCMU3.av8VIHKuFblYj_cEZbvLeUOdf.iGr7q75CFVKtYATjgWfDJhyScosTNOumQIIJ
+ ary3dryfhHUu4upw9RxcpMlEdB3yQywtH4ltJHMVfNbo2ujEEip8ZfDzruO04aJzty4FJPluJkLl
+ avUnbZtsJRPB32wm78eJ0Ws53YdwvLH8ONjm1ZoM_xwQMnrkqHiivoxr7AvXB6Sl.4Zf24UUcOZx
+ 8gNmShH45jJjHudbOaEm48gTk1u1fxIs0qukvg9aqLo_fynwr3Jq2Togc7nN5O1RA6gN6MHw-
+X-Sonic-MF: <jahau@rocketmail.com>
+X-Sonic-ID: a147aced-bc38-408b-b8c0-f83847a401c3
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ir2.yahoo.com with HTTP; Fri, 16 Jun 2023 20:02:48 +0000
+Received: by hermes--production-ir2-7867f454fc-z6m77 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 4c9e8265e02e87a162885ce9dfef0a17;
+          Fri, 16 Jun 2023 20:02:43 +0000 (UTC)
+Message-ID: <faff027d-2a6a-22ca-2487-2ae05223fabd@rocketmail.com>
+Date:   Fri, 16 Jun 2023 22:02:41 +0200
 MIME-Version: 1.0
-References: <20230613-panel-dsi-disable-v1-1-5e454e409fa8@linaro.org>
- <ZIjayn8nVy-ejThH@gerhold.net> <CACRpkdZ7a3aARMs3iBbBavF_0AkPOPs3fH8e6CrZYo7Ybr6m_A@mail.gmail.com>
- <4f78b601-6e6e-2274-3174-87c62d7cfcd5@linaro.org>
-In-Reply-To: <4f78b601-6e6e-2274-3174-87c62d7cfcd5@linaro.org>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Thu, 15 Jun 2023 16:36:34 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=X_xonf1Dz0BsNTKm4-zBm+ccKvPO+wEWFVMUVY_2=h3Q@mail.gmail.com>
-Message-ID: <CAD=FV=X_xonf1Dz0BsNTKm4-zBm+ccKvPO+wEWFVMUVY_2=h3Q@mail.gmail.com>
-Subject: Re: [PATCH] drm/panel: move some dsi commands from unprepare to disable
-To:     neil.armstrong@linaro.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [GIT PULL] Immutable branch between MFD and Power due for the
+ v6.5 merge window
+To:     Lee Jones <lee@kernel.org>
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Beomho Seo <beomho.seo@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
         Stephan Gerhold <stephan@gerhold.net>,
-        Ajay Kumar <ajaykumar.rs@samsung.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Joel Selvaraj <joelselvaraj.oss@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        phone-devel@vger.kernel.org,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Joel Selvaraj <jo@jsfamily.in>,
-        Dave Stevenson <dave.stevenson@raspberrypi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Henrik Grimler <henrik@grimler.se>,
+        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1684182964.git.jahau.ref@rocketmail.com>
+ <cover.1684182964.git.jahau@rocketmail.com>
+ <20230609064753.GL3635807@google.com>
+Content-Language: en-US
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <20230609064753.GL3635807@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.21557 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
+Hi Lee,
 
-On Thu, Jun 15, 2023 at 12:49=E2=80=AFAM Neil Armstrong
-<neil.armstrong@linaro.org> wrote:
->
-> On 14/06/2023 22:58, Linus Walleij wrote:
-> > On Tue, Jun 13, 2023 at 11:08=E2=80=AFPM Stephan Gerhold <stephan@gerho=
-ld.net> wrote:
-> >
-> >> I'm still quite confused about what exactly is supposed to be in
-> >> (un)prepare and what in enable/disable. I've seen some related
-> >> discussion every now and then but it's still quite inconsistent across
-> >> different panel drivers... Can someone clarify this?
-> >
-> > It is somewhat clarified in commit 45527d435c5e39b6eec4aa0065a562e7cf05=
-d503
-> > that added the callbacks:
-> >
-> > Author: Ajay Kumar <ajaykumar.rs@samsung.com>
-> > Date:   Fri Jul 18 02:13:48 2014 +0530
-> >
-> >      drm/panel: add .prepare() and .unprepare() functions
-> >
-> >      Panels often require an initialization sequence that consists of t=
-hree
-> >      steps: a) powering up the panel, b) starting transmission of video=
- data
-> >      and c) enabling the panel (e.g. turn on backlight). This is usuall=
-y
-> >      necessary to avoid visual glitches at the beginning of video data
-> >      transmission.
-> >
-> >      Similarly, the shutdown sequence is typically done in three steps =
-as
-> >      well: a) disable the panel (e.g. turn off backlight), b) cease vid=
-eo
-> >      data transmission and c) power down the panel.
-> >
-> >      Currently drivers can only implement .enable() and .disable() func=
-tions,
-> >      which is not enough to implement the above sequences. This commit =
-adds a
-> >      second pair of functions, .prepare() and .unprepare() to allow mor=
-e
-> >      fine-grained control over when the above steps are performed.
-> >
-> >      Signed-off-by: Ajay Kumar <ajaykumar.rs@samsung.com>
-> >      [treding: rewrite changelog, add kerneldoc]
-> >      Signed-off-by: Thierry Reding <treding@nvidia.com>
-> >
-> > My interpretation is that .enable/.disable is for enabling/disabling
-> > backlight and well, make things show up on the display, and that
-> > happens quickly.
-> >
-> > prepare/unprepare is for everything else setting up/tearing down
-> > the data transmission pipeline.
-> >
-> > In the clock subsystem the enable/disable could be called in fastpath
-> > and prepare/unprepare only from slowpath so e.g an IRQ handler
-> > can gate a simple gated clock. This semantic seems to have nothing
-> > to do with the display semantic. :/
->
-> It had to do, .prepare is called when the DSI link is at LP11 state
-> before it has switched to the VIDEO mode, and .unprepare is the
-> reverse when VIDEO mode has been disabled and before the DSI link
-> is totally disabled.
->
-> https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/bridge/syn=
-opsys/dw-mipi-dsi.c#L938
->
-> then
->
-> https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/bridge/syn=
-opsys/dw-mipi-dsi.c#L855
->
-> but Doug has started changing this starting with MSM DSI driver, leading =
-to
-> current panel drivers not working anymore with the current DSI init mode
-> and requires setting pre_enable_prev_first for only some DSI hosts
-> who switched out of set_mode().
->
-> The DSI init model doesn't fit at all with the atomic bridge model and
-> some DSI controllers doesn't support the same features like the allwinner
-> DSI controller not support sending LP commands when in HS video mode
-> for example.
+On 09.06.23 08:47, Lee Jones wrote:
+> Enjoy!
+> 
+> The following changes since commit ac9a78681b921877518763ba0e89202254349d1b:
+> 
+>    Linux 6.4-rc1 (2023-05-07 13:34:35 -0700)
+> 
+> are available in the Git repository at:
+> 
+>    git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-power-v6.5
+> 
+> for you to fetch changes up to b54185c1e3b02c91e4a190ac5c346ea7bfb0de93:
+> 
+>    dt-bindings: Add rt5033 MFD, Regulator and Charger (2023-06-08 18:18:13 +0100)
+> 
+> ----------------------------------------------------------------
+> Immutable branch between MFD and Power due for the v6.5 merge window
+> 
+> ----------------------------------------------------------------
+> Jakob Hauser (8):
+>        mfd: rt5033: Fix chip revision readout
+>        mfd: rt5033: Fix STAT_MASK, HZ_MASK and AICR defines
+>        mfd: rt5033: Apply preparatory changes before adding rt5033-charger driver
+>        power: supply: rt5033_charger: Add RT5033 charger device driver
+>        power: supply: rt5033_battery: Move struct rt5033_battery to battery driver
+>        power: supply: rt5033_battery: Adopt status property from charger
+>        dt-bindings: power: supply: rt5033-battery: Apply unevaluatedProperties
+>        dt-bindings: Add rt5033 MFD, Regulator and Charger
+> 
+> Stephan Gerhold (1):
+>        mfd: rt5033: Drop rt5033-battery sub-device
+> 
+>   .../devicetree/bindings/mfd/richtek,rt5033.yaml    | 138 ++++++
+>   .../power/supply/richtek,rt5033-battery.yaml       |   2 +-
+>   .../power/supply/richtek,rt5033-charger.yaml       |  65 +++
+>   drivers/mfd/rt5033.c                               |   8 +-
+>   drivers/power/supply/Kconfig                       |   8 +
+>   drivers/power/supply/Makefile                      |   1 +
+>   drivers/power/supply/rt5033_battery.c              |  38 +-
+>   drivers/power/supply/rt5033_charger.c              | 472 +++++++++++++++++++++
+>   include/linux/mfd/rt5033-private.h                 |  64 ++-
+>   include/linux/mfd/rt5033.h                         |  24 --
+>   10 files changed, 762 insertions(+), 58 deletions(-)
+>   create mode 100644 Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
+>   create mode 100644 Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
+>   create mode 100644 drivers/power/supply/rt5033_charger.c
+> 
 
-Summary of the history here as I understand it:
+I just realized that there is one patch missing in the immutable branch 
+"ib-mfd-power-v6.5" [1]. Unfortunately I haven't noticed earlier. The 
+immutable branch holds 9 patches, the patchset has 10 patches [2]. The 
+missing patch is No. 6 "power: supply: rt5033_charger: Add cable 
+detection and USB OTG supply".
 
-1. Before the switch to DRM_PANEL_BRIDGE, things worked OK.
+As this patch No. 6 affects only the file 
+drivers/power/supply/rt5033_charger.c and is the last patch on that 
+file, it's no problem to add this patch on top of the other patches.
 
-2. After the switch to DRM_PANEL_BRIDGE, things broke for tc358762.
-That led to commit 7d8e9a90509f ("drm/msm/dsi: move DSI host powerup
-to modeset time"), which was a little ugly but sorta OK, except ...
+Could you submit another pull request for the v6.5 merge window to add 
+this patch?
 
-3. Moving the DSI host powerup to modeset time broke ps8640. That led
-to commit ec7981e6c614 ("drm/msm/dsi: don't powerup at modeset time
-for parade-ps8640"), which was a hack.
+[1] 
+https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git/log/?h=ib-mfd-power-6.5
+[2] 
+https://lore.kernel.org/linux-pm/cover.1684182964.git.jahau@rocketmail.com/T/#t
 
-4. We fixed tc358762 using the new "pre_enable_prev_first" in commit
-55cac10739d5 ("drm/bridge: tc358762: Set pre_enable_prev_first") and
-thus were able to undo moving DSI host powerup to modeset time and
-then undo the ps8640 hack. I talk about this a bit more in the message
-for commit 9e15123eca79 ("drm/msm/dsi: Stop unconditionally powering
-up DSI hosts at modeset").
-
-If there are other things that need "pre_enable_prev_first" we could
-do that. If I understand Dave Stevenson [1], though, this doesn't hurt
-but technically shouldn't be required. He says that "It is documented
-that the mipi_dsi_host_ops transfer function should be called with the
-host in any state [1], so the host driver is failing there." Even if
-it shouldn't be required, though, "pre_enable_prev_first" can still
-have a benefit as Dave says [2] because it would mean that the DSI
-controller doesn't have to power itself up and down for each
-transfer...
-
-If I understand, if the MSM DSI driver did what Dave said (proactive
-turn on if someone sends commands) then we'd actually be OK even with
-ps8640, since we don't send any commands in the ps8640 pre_enable()
-function.
-
-I guess one other point of reference is commit a3ee9e0b57f8
-("drm/panel: boe-tv101wum-nl6: Ensure DSI writes succeed during
-disable"). I think Stephen made that change before
-"pre_enable_prev_first" was widely available...
-
-Hopefully I summarized all that correctly. If I messed up, please yell.
-
-I guess the tl;dr (summary of my summary) is:
-
-a) Moving panels like this to "pre_enable_prev_first" seems like a
-reasonable idea anyway and (presumably) works around the issue.
-
-b) Moving some commands between disable() / post_diable() or
-pre_enable() / enable() can also make sense and isn't terrible. As
-people have pointed out, there is some vagueness on exactly what
-belongs in each.
-
-c) Ideally someone could fix the MSM DSI driver to behave as Dave documente=
-d.
-
-
-[1] https://lore.kernel.org/r/CAPY8ntA=3DDq6GFQ3gEOm9PzPyOa9bHTr8JrpXLibnai=
-7xKqRbpQ@mail.gmail.com
-[2] https://lore.kernel.org/r/CAPY8ntAUhVB6UtQTeHAcxNW950Ou+NcEoGwk3JnVWLay=
-89_0Nw@mail.gmail.com
+Kind regards,
+Jakob
