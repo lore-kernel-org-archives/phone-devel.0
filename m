@@ -2,162 +2,181 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09723EB64D7
-	for <phone-devel@archiver.kernel.org>; Fri, 16 Jun 2023 20:03:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C45A3EB64DA
+	for <phone-devel@archiver.kernel.org>; Fri, 16 Jun 2023 21:11:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbjFPUDH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 16 Jun 2023 16:03:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44496 "EHLO
+        id S1345367AbjFPVLX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 16 Jun 2023 17:11:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345983AbjFPUC4 (ORCPT
+        with ESMTP id S232040AbjFPVLV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 16 Jun 2023 16:02:56 -0400
-Received: from sonic301-22.consmr.mail.ir2.yahoo.com (sonic301-22.consmr.mail.ir2.yahoo.com [77.238.176.99])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FB103C1B
-        for <phone-devel@vger.kernel.org>; Fri, 16 Jun 2023 13:02:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1686945768; bh=7VIg2OskWnaHeGIh2/02xDBsEiU6cbaw6bxetVSvniY=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=XSfgOm84t1Q/PF7baXtE1kq3V6DUz/ew03bL6jFy++3hBk5KW88cgxRVHqaYwtjPBmfZznKRHoWcST2jOKs7zQwMfWRFqlYTzM7guJLblMyHiqmehEkix/TkyOdBuDAhDluu8erboUXU5twjPHfesopNY1lutRPIrOYdcSnu4uok+kEy3+RfFfqB7TagES8I2qF3HVOPwYBSDOKCNKaHpZO0wopEKABlBDEvPiGn1U3kvZSLpw5t5aLarHiykdw2KjdI2xxCiGzQeBYz6wlenlOMVrDuWMRhQXsdZtrwE4SGf3SlBKxeGOp8zTvui/PK9ilrXNvVaSAL3ADy5nJ4lA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1686945768; bh=CB0V2BCA4hR4eBIB8o/GC/QgYjnmsr4ogI6UW55EfX4=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=VNpD57dVPLk3Jft4Wlh/K34jU8w+uJBPC7MyIMqPomcOGv0y0asF2oo4IcmMNY1SIceY7vlV04tdv/T5eD5V9fZb7x4y8fsAazEiFY/A+8eDX3fChfJy4S53fIlP8kof59pbOi/Rfpl1HSkUQXAsMhbxQR5SeimOrXIXXhd/fyN4ffGeszH2f7eXaTX+X0LO0xtFU1zEB/ei2GbrVkio3EaLBFDsxNN0b1K+jy29f2rHUYzpS8jdp+VlJPZGNAwsbupcL8xxM+fRcjtcg8gi8zhwK3+JjU3u0gkMqyjBFmGZq4WDC3JjTJOt56RIT9xZMqemofXPzxVorGgcxjubIg==
-X-YMail-OSG: kOllkm8VM1m8IHFgxV.hizl2LUrDP7Tp1uRkTyzYIovcwM_ATgBilsQ3EORS.zW
- czQKCrXvnPqLoBCrPd8wwgpk_o7PRnFqw5Y_Z2h7OrNV3qV5004VND4bjGd0vx5PMjsgotn3S.HT
- gGn94Az9sBGyQY7B3L0QMw1kcldLpfCo.3HhlmwB.YYu31sv8eItFdw3NnM7aMKSd.vG7RdkyTRe
- noLkqqCBh_LyQQeaATg8vakclMId0V_.rGPtwMyVAM1_GqL0cP98NSSPaXLvbdE9IeLnsalsE8rM
- 1rZitsm4TSomLZYtrE3YXO.dWJhHsBzhLtSVLAqnQEUbTzGsO._jKmqUXt1HY2UoAhvfzGEFJWsP
- 83mdU90kpJr_yr92lYC.dAf57gBVnqEMuGzE7eJZhym8BBPCwU1Itj_DYb6dZ5V6.4GEMH_6RVVU
- qap0wUcblIS607qT4idHQC7_wO_JwVvkmvUDeGnzB1AYcWKW7xRr_vNXIqEUfyIyqdF_xiO79D3D
- qYiwHKNnpxp9GU1tay3a221YdaOBp6RkF3BSNK7y6Z4gVeABIRKu1EPQVob5VcxUkWO8D6Q.9gWJ
- kjmSvnhnQQcOUOV4y5XuaFq8prdCa8kxzGPVyxmovHQxjzCksvBzG1fDxiJPu8AeOjakA3N7UQu9
- .DDNrL9OmPDvPW1mZ2MA1xVkIYIzf4PFRHKPZaeE3T9tdMVjGIiUrGvjpjaYJ4E6pnUURBteGofG
- wrfqhH2t7suskI2n3GCoH0uoCRFvpHzaLnJxu2e5Cj7sHXGSRVt_7FGsPRSxF9SSb8UOTr4cV9Ve
- lQcgZL1PnnbhbRFl0vIktQfXDIoUImh4ZvNitiHkanBEY3UKntSwjVnIgEc0C5tx17RPe505uZwT
- UTrNZ853aya9sbDGHO9d1VPlNxxjKYGx6VRVYbM2iiNvMBE6Hjq0TBxnU4WyBM_zXtW5lBtEFopG
- ZUtfFbeE24zLezZRG5eSRqqwP9gaRFKSAJcvauUcH4FM3qr_eP5YO3kak1uFaFKgn0aePGSNXoNo
- dP9NYSmJe4q3SXu4_OViFeAGgBVMMTnBgwgQV25tjOtXlAiiWSt1KIEJLyQUSM30HBq_5DAEszoF
- 59uwn02rQ08VqtoMCPatoz18jlqr3Tlx4YMz0aHAKuuwfNIhpgM3jKV.aPstjT4CAtAvuRfDB3cb
- CeVz.BIQjYqa9ZkYblQx_utd3elL4DQjcNGcI3r7P30ZcHZQLeCOVOSi_I_YrXOVVqst48XttI0h
- dCjEN7HVIRFURhsVfc2K1dUUt2Z6Ewr92UZcDF8L2jplUjNP3EJ.awdnncEw4n8IxXDEZ0hlfyb9
- TsYYi0uKAqWHzinH10bIHYBrPrcwBvLEKpUZW6HJQr6xOrT9.K0woN7ra6jYwun0xRWxMCxYzEOS
- tVPorHV36yOX3bOaW35hqraCCcwuTtiTgKy7qoxt_IUJVuJVwjI6pFUY855_D2.drFO3s84B7NIa
- u6Hzh_3zyjDO3gSXVR5aGwGkR8AU5lv7KG4._Jwtl4qtFDyEbZdNDpeAM8NUeQi8TQ42plu9.mdL
- NFfELDr1nUNQTZbAAKnzfTbfGycOn1L3fm_J2QdVIbXyAwXRwQk4_8KUL5CZbkUbiLJyxtWxu94d
- Sae3e2vr60mKbVRAGIUL38WpiD7m4vo7..MZ8am4OCNkG0LtRwJAaqhXFE5R2Uq5FvV4xWndAZGp
- 8s.wjpFa1TyzuuVehZ62fvUQEyri51KWmOWSfd5kJFB7_lhLWxmXmjo_8mr9AxyQkJvOr1jmSs_R
- bZNyHbKctM_vdIXpUwEk1GWOUvQ25RKRWfm6LyKT5Q79BMFvUnLjGB8GgXcvqWsi6L4JcN8DpK8a
- s79w3mZ5R1VgHF7nc3zmWo3q0.X.9Yo8u5_3mFYAM7LwB_JBs11TnN74xVLQ3shLTx9WXpgPCvEa
- U0xH_6ZTy..qOa5ck1SNM57Ulix__KSh6h1vCGpwJaYSyTEDH3gj5mzaqOyhhgid.8vXiiLjU3c2
- fLafXkF6gCMU3.av8VIHKuFblYj_cEZbvLeUOdf.iGr7q75CFVKtYATjgWfDJhyScosTNOumQIIJ
- ary3dryfhHUu4upw9RxcpMlEdB3yQywtH4ltJHMVfNbo2ujEEip8ZfDzruO04aJzty4FJPluJkLl
- avUnbZtsJRPB32wm78eJ0Ws53YdwvLH8ONjm1ZoM_xwQMnrkqHiivoxr7AvXB6Sl.4Zf24UUcOZx
- 8gNmShH45jJjHudbOaEm48gTk1u1fxIs0qukvg9aqLo_fynwr3Jq2Togc7nN5O1RA6gN6MHw-
+        Fri, 16 Jun 2023 17:11:21 -0400
+Received: from sonic311-31.consmr.mail.ir2.yahoo.com (sonic311-31.consmr.mail.ir2.yahoo.com [77.238.176.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6591359C
+        for <phone-devel@vger.kernel.org>; Fri, 16 Jun 2023 14:11:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1686949878; bh=YjKr9kfUpqIEiBIGHJQUMWUtyBPUuXHIW1WGIJcpt2o=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=qOK92UQBcz4YTCNRW/ckInwSTYODoQGpaIcDCWIvecXWa5I8Vb9SAyq7k4que5nszxSJsmdqHWSPyXoAqDcHN2YKYgqeWd5DTDk3zGJ6c+j3zqYYpijPqz10s4e7ffeZl0IH1XGiAtTxGwSOmBBp1k+EgglnVUxgRVd+ccetxUuk/brW2ahvGnbKJyDa9sqvyzZ8vCyDCQCuJLTuQWKSNlKDF4uNRinq3NJTfhsfka5XVVT0WDlSqwjgLou+9QlhU5841UtFkxcLV5RplZ41TZfnakBQFpdeYamx/DB0atocO+grUlzsCwPfBnn8hyj9EUJ545q1xrwtQGuwaB+AwA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1686949878; bh=xV9Ew2IZtRvoMvZ3PbQTQkgjLFdHGDcn51oVjLpziI5=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=Fh8DIma2QIDPYYVdHjhdudItXi16ZqEt0Zam4tLBHMSsIHineJLTD+/E/idoA+DhYhVgFn/S1jMBGJrwx47rgF7qMCTlmxCp7RJEeZ1TxP4EiwzGvBzyxSQlS6jI+zZ7s7fsRFxaeD3MWCNyOb9QOfb8HjTt1s82wKtEsin4GujbM5dJ0oOJBXEj1zJIn05cqn0fyyNRhPBwX5mf2ZJKBMgryU+gqCjpRdFCUPzwVLU6WDE+ztXlfNoDbdnTmV6bldlR+LzjOL0yM0PEFgY+Lh0vzFOmXJuJWeYUlOUAKEmjFvwfhmJxu2B4v4dAxB3vZdp/udhUmwUYNL6Qi9ds3A==
+X-YMail-OSG: tu6Ow8cVM1kFUR5B8_LSKVkmjInbn1l7C2dK1MaB2XCCxYKpXhtm8Jl9i_HULnn
+ wNL5dPW3rdJ2Ag_NG1jf2VZ7H7la7yUfsABxO3BRK9TGA29f1pf2voBKjFvHR6KOtrMU6I90W0KU
+ fhIeB4aaLQmFl9LZZg3fv0UvQl_kSt6yMua_zhoHNHMSSv1Rb1paEdpR3ZL0OqelN99ysfpuCPFv
+ FRGGQgLyZj1NjoR2q.pUCDWtklJ9UwWtRZfH0BGWysZkbzj.vipf7Y6nm3H3XoP5adg7QbPIKzlL
+ Y.P83m96aA.o7zTLO3HZUHuNMWaA_lJc3.Y2OAvRtcqf.DU8xR_XQTkYRLfC08Y3pfodNNr30yzH
+ KwTCsRbA8Ky1pIdJldo1Kvlldd9ectmV03z31IUGQALuOYHt7mQLIQlEhhNQKKF526sh8ukW1ihU
+ M5b63araRmpphHYC8tSQ7NY8JP.pyuCWrrFECr5ZWiS.qJvhIIUvzg.Dnrx3RY3726Sj1DKZ5U7H
+ QiMbG7rtS22xx.qBppUdTtDRReV6QsXHOqWIkVCdToVCM5MElVZzU7aohhMKHa68KpyzCJB2E2Oq
+ EJwlAcx9C7LhbMF7er28BdV1YMB7yXoIPi0Hndcr2xXg_iBc20tAJP3xWtdRUibx7qQwHAW.YAKG
+ KdPC642bEbuvs2PQXjF4Pg915Vfuhg9JvW3Cgwh1nj_X4EQZQO4I1Bv8_Uf4eQaIh9CQW0HcMKc.
+ RCW.Lb47z5hmJn57Orn5KCEJ0CYlcxkhZ3nPDRxnk32CH.zlZm0HifufBdgHrtuPb3PsGQQBEd5l
+ xygCYt7oPDXNtM8V28E6Y15kcB_9Yfx2Hg7UwIwIqcCkkHWN5915YWSZ.nPEgOiC2r.6E9Nrd9Wr
+ XQ2iW5K7r3kDATsyi1joKkIr0nzFyV3DowG6tgS5Zqi51DNPjIVnXmRWR9OGm1UrgUO4TcItEkVX
+ WJXEltzWDGXyZYSTVS9ESmzPytKq_5qOI1wBqN9iqBo4.kZZa_Lpry7M6O31g1eY0ONfZ5uS3CWt
+ KXIxLchoAJimymYq_loz0tXMoKiptqqklEwrdu0JU3Oot2jtQepjfFJRevjOziUyRFtvoIPDnk8m
+ dlqNVrDLMvyhkbgVo9nHGS5kFf_R5o_XnyY41PvB03TlgPVSqROUdZaDMTuBuEvGe0WBQWZJtLfV
+ .BHvnGa_ynmG3s7H339MWUsl.5KTT6_otsRyAHP0p9DkgTvu0eWNMFliD9QUHchjjZh94dlkD5iB
+ ETWIm494f.HU.AQqRVqQT5z03zbY0dpFedwkBdAxaFK2xulbqLVXUCyzBuBRJdBrb3YeVDiM2aa3
+ wpaPYfXYH12Ipl1cqUdV0vVkK8LDqIF48l7Vu8YCmETJQys_Bk3NOcOsTTPnFT.fYGRsw4Pk_JdE
+ lF6905BdYMlwuT_5P1IjogqO226oCT72qai8jfcXRESBJ46QFyx8ZLIucXCZdHu1v7WL1hLlQewt
+ iHzZ.GY.8l9V4OQwsHUnE90VATlSM94GQtQFYfbXlNnp81G9sa1xHA4aJjxjeSOXlNcaSrMzoN1t
+ qNK8Q4wxY6Guj8QT4wEs9I.Cf3ijOvfqXg_SjeUmjpxCkSXA2DmCiZ4YBAkmD5KkWk54FfZj3___
+ txy8GQLXRuXo7Pmo.FOO.S4y1nbExiSfNdF.IU.MScI5yv7eveaNBy1LwkRqEfeexcLVDuJsdg85
+ 9Wz4M_hHJMmmRR4mOy50wPn6W2Ssz4EAnUPFEvfrM4yMJ9onu_OTHYK8PHYwskxL24Hlf1AY.YrI
+ sAb7le599nRuOxOCGfaoNktC4LgH641RVpblADHXx5hOBMFm6TOfGV0Slqvlobyr8zUmoRQOVz_f
+ FG6eHMgb83V_QYhjgYoRKEXpPjScSNy7IqjVlGqEAMJ2sYFpGAAenYcxWxGOwpcmbWcG6pkpBZto
+ SVE6s4VlLLyCvYoxjFerEh81H2lyhzUblm98u08_X4rRKWnVOjOqK4U0Uvb9yVzz5qwipVyOhZOO
+ AViwEts6h.F3VZowoSoy_oaJ5MT7RlJihYhfG6yC9wi9V09x4ZyBnKs.NdKQYizRBN7rfmCIRqX2
+ I143kwMeO4kr7NQSbUSf9tIF3a_ww.061IeMThKf5kv.AQoOWCUoVYLCYO_.OZ.qtUEoAIOear.n
+ 9S8zROeEKdgyenXF_p2_6glhtDtLZS1LJtGJZpP33bYMSNvvMVqDJz05cwV8jkwHWxxNXR0XkSve
+ H6cnQMf1te6pqA8uqYinJLOg9wd689fM3kiJzLP6zpAhK2MBkfGDWZs5cMWKYdVc2ovRjIGhiVNe
+ mCtvw2i6hhf5HuZzBEq5p92E_vrFev995yg--
 X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: a147aced-bc38-408b-b8c0-f83847a401c3
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ir2.yahoo.com with HTTP; Fri, 16 Jun 2023 20:02:48 +0000
-Received: by hermes--production-ir2-7867f454fc-z6m77 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 4c9e8265e02e87a162885ce9dfef0a17;
-          Fri, 16 Jun 2023 20:02:43 +0000 (UTC)
-Message-ID: <faff027d-2a6a-22ca-2487-2ae05223fabd@rocketmail.com>
-Date:   Fri, 16 Jun 2023 22:02:41 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [GIT PULL] Immutable branch between MFD and Power due for the
- v6.5 merge window
-To:     Lee Jones <lee@kernel.org>
-Cc:     Sebastian Reichel <sre@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Beomho Seo <beomho.seo@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
+X-Sonic-ID: 03f28b74-5c07-42cd-8eba-1a8f59d9f5b9
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ir2.yahoo.com with HTTP; Fri, 16 Jun 2023 21:11:18 +0000
+Received: by hermes--production-ir2-7867f454fc-gg9x8 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c618d34c94eed5ad1e4505ee686233db;
+          Fri, 16 Jun 2023 21:11:17 +0000 (UTC)
+From:   Jakob Hauser <jahau@rocketmail.com>
+To:     Sebastian Reichel <sre@kernel.org>
+Cc:     Lee Jones <lee@kernel.org>,
+        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
         Stephan Gerhold <stephan@gerhold.net>,
         Raymond Hackley <raymondhackley@protonmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Henrik Grimler <henrik@grimler.se>,
-        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        Henrik Grimler <henrik@grimler.se>, linux-pm@vger.kernel.org,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-References: <cover.1684182964.git.jahau.ref@rocketmail.com>
- <cover.1684182964.git.jahau@rocketmail.com>
- <20230609064753.GL3635807@google.com>
-Content-Language: en-US
-From:   Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <20230609064753.GL3635807@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.21557 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Jakob Hauser <jahau@rocketmail.com>
+Subject: [PATCH 1/2] power: supply: rt5033_charger: Simplify initialization of rt5033_charger_data
+Date:   Fri, 16 Jun 2023 23:10:47 +0200
+Message-Id: <3936e777efe1e9d11462ce81bb177690b982a807.1686948074.git.jahau@rocketmail.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <cover.1686948074.git.jahau@rocketmail.com>
+References: <cover.1686948074.git.jahau@rocketmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Lee,
+Currently the struct "rt5033_charger_data" is initialized rather complicated.
+The cause lies inside of the struct "rt5033_charger", where struct
+"rt5033_charger_data" is implemented as a pointer *chg.
 
-On 09.06.23 08:47, Lee Jones wrote:
-> Enjoy!
-> 
-> The following changes since commit ac9a78681b921877518763ba0e89202254349d1b:
-> 
->    Linux 6.4-rc1 (2023-05-07 13:34:35 -0700)
-> 
-> are available in the Git repository at:
-> 
->    git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-power-v6.5
-> 
-> for you to fetch changes up to b54185c1e3b02c91e4a190ac5c346ea7bfb0de93:
-> 
->    dt-bindings: Add rt5033 MFD, Regulator and Charger (2023-06-08 18:18:13 +0100)
-> 
-> ----------------------------------------------------------------
-> Immutable branch between MFD and Power due for the v6.5 merge window
-> 
-> ----------------------------------------------------------------
-> Jakob Hauser (8):
->        mfd: rt5033: Fix chip revision readout
->        mfd: rt5033: Fix STAT_MASK, HZ_MASK and AICR defines
->        mfd: rt5033: Apply preparatory changes before adding rt5033-charger driver
->        power: supply: rt5033_charger: Add RT5033 charger device driver
->        power: supply: rt5033_battery: Move struct rt5033_battery to battery driver
->        power: supply: rt5033_battery: Adopt status property from charger
->        dt-bindings: power: supply: rt5033-battery: Apply unevaluatedProperties
->        dt-bindings: Add rt5033 MFD, Regulator and Charger
-> 
-> Stephan Gerhold (1):
->        mfd: rt5033: Drop rt5033-battery sub-device
-> 
->   .../devicetree/bindings/mfd/richtek,rt5033.yaml    | 138 ++++++
->   .../power/supply/richtek,rt5033-battery.yaml       |   2 +-
->   .../power/supply/richtek,rt5033-charger.yaml       |  65 +++
->   drivers/mfd/rt5033.c                               |   8 +-
->   drivers/power/supply/Kconfig                       |   8 +
->   drivers/power/supply/Makefile                      |   1 +
->   drivers/power/supply/rt5033_battery.c              |  38 +-
->   drivers/power/supply/rt5033_charger.c              | 472 +++++++++++++++++++++
->   include/linux/mfd/rt5033-private.h                 |  64 ++-
->   include/linux/mfd/rt5033.h                         |  24 --
->   10 files changed, 762 insertions(+), 58 deletions(-)
->   create mode 100644 Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
->   create mode 100644 Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
->   create mode 100644 drivers/power/supply/rt5033_charger.c
-> 
+Therefore, inside of struct "rt5033_charger" change the struct
+"rt5033_charger_data" to non-pointer "chg". It is then initialized right
+away and can be accessed more easily.
 
-I just realized that there is one patch missing in the immutable branch 
-"ib-mfd-power-v6.5" [1]. Unfortunately I haven't noticed earlier. The 
-immutable branch holds 9 patches, the patchset has 10 patches [2]. The 
-missing patch is No. 6 "power: supply: rt5033_charger: Add cable 
-detection and USB OTG supply".
+Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+---
+ drivers/power/supply/rt5033_charger.c | 29 +++++++++++----------------
+ 1 file changed, 12 insertions(+), 17 deletions(-)
 
-As this patch No. 6 affects only the file 
-drivers/power/supply/rt5033_charger.c and is the last patch on that 
-file, it's no problem to add this patch on top of the other patches.
+diff --git a/drivers/power/supply/rt5033_charger.c b/drivers/power/supply/rt5033_charger.c
+index e0303ca5a8db..361a36c2a195 100644
+--- a/drivers/power/supply/rt5033_charger.c
++++ b/drivers/power/supply/rt5033_charger.c
+@@ -28,7 +28,7 @@ struct rt5033_charger {
+ 	struct device			*dev;
+ 	struct regmap			*regmap;
+ 	struct power_supply		*psy;
+-	struct rt5033_charger_data	*chg;
++	struct rt5033_charger_data	chg;
+ 	struct extcon_dev		*edev;
+ 	struct notifier_block		extcon_nb;
+ 	struct work_struct		extcon_work;
+@@ -130,7 +130,7 @@ static int rt5033_get_charger_const_voltage(struct rt5033_charger *charger)
+ 
+ static inline int rt5033_init_const_charge(struct rt5033_charger *charger)
+ {
+-	struct rt5033_charger_data *chg = charger->chg;
++	struct rt5033_charger_data *chg = &charger->chg;
+ 	int ret;
+ 	unsigned int val;
+ 	u8 reg_data;
+@@ -204,7 +204,7 @@ static inline int rt5033_init_const_charge(struct rt5033_charger *charger)
+ 
+ static inline int rt5033_init_fast_charge(struct rt5033_charger *charger)
+ {
+-	struct rt5033_charger_data *chg = charger->chg;
++	struct rt5033_charger_data *chg = &charger->chg;
+ 	int ret;
+ 	unsigned int val;
+ 	u8 reg_data;
+@@ -249,7 +249,7 @@ static inline int rt5033_init_fast_charge(struct rt5033_charger *charger)
+ 
+ static inline int rt5033_init_pre_charge(struct rt5033_charger *charger)
+ {
+-	struct rt5033_charger_data *chg = charger->chg;
++	struct rt5033_charger_data *chg = &charger->chg;
+ 	int ret;
+ 	unsigned int val;
+ 	u8 reg_data;
+@@ -539,21 +539,16 @@ static int rt5033_charger_get_property(struct power_supply *psy,
+ 	return 0;
+ }
+ 
+-static struct rt5033_charger_data *rt5033_charger_dt_init(
+-						struct rt5033_charger *charger)
++static int rt5033_charger_dt_init(struct rt5033_charger *charger)
+ {
+-	struct rt5033_charger_data *chg;
++	struct rt5033_charger_data *chg = &charger->chg;
+ 	struct power_supply_battery_info *info;
+ 	int ret;
+ 
+-	chg = devm_kzalloc(charger->dev, sizeof(*chg), GFP_KERNEL);
+-	if (!chg)
+-		return ERR_PTR(-ENOMEM);
+-
+ 	ret = power_supply_get_battery_info(charger->psy, &info);
+ 	if (ret)
+-		return ERR_PTR(dev_err_probe(charger->dev, -EINVAL,
+-			       "missing battery info\n"));
++		return dev_err_probe(charger->dev, -EINVAL,
++				     "missing battery info\n");
+ 
+ 	/* Assign data. Validity will be checked in the init functions. */
+ 	chg->pre_uamp = info->precharge_current_ua;
+@@ -562,7 +557,7 @@ static struct rt5033_charger_data *rt5033_charger_dt_init(
+ 	chg->pre_uvolt = info->precharge_voltage_max_uv;
+ 	chg->const_uvolt = info->constant_charge_voltage_max_uv;
+ 
+-	return chg;
++	return 0;
+ }
+ 
+ static void rt5033_charger_extcon_work(struct work_struct *work)
+@@ -679,9 +674,9 @@ static int rt5033_charger_probe(struct platform_device *pdev)
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(charger->psy),
+ 				     "Failed to register power supply\n");
+ 
+-	charger->chg = rt5033_charger_dt_init(charger);
+-	if (IS_ERR_OR_NULL(charger->chg))
+-		return PTR_ERR(charger->chg);
++	ret = rt5033_charger_dt_init(charger);
++	if (ret)
++		return ret;
+ 
+ 	ret = rt5033_charger_reg_init(charger);
+ 	if (ret)
+-- 
+2.39.2
 
-Could you submit another pull request for the v6.5 merge window to add 
-this patch?
-
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git/log/?h=ib-mfd-power-6.5
-[2] 
-https://lore.kernel.org/linux-pm/cover.1684182964.git.jahau@rocketmail.com/T/#t
-
-Kind regards,
-Jakob
