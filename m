@@ -2,135 +2,241 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D3FAEB64D7
-	for <phone-devel@archiver.kernel.org>; Fri, 16 Jun 2023 21:11:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1A04EB64D8
+	for <phone-devel@archiver.kernel.org>; Fri, 16 Jun 2023 23:43:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345430AbjFPVLd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 16 Jun 2023 17:11:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38782 "EHLO
+        id S1345651AbjFPXnd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 16 Jun 2023 19:43:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345554AbjFPVL0 (ORCPT
+        with ESMTP id S234108AbjFPXnc (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 16 Jun 2023 17:11:26 -0400
-Received: from sonic306-21.consmr.mail.ir2.yahoo.com (sonic306-21.consmr.mail.ir2.yahoo.com [77.238.176.207])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A38535B0
-        for <phone-devel@vger.kernel.org>; Fri, 16 Jun 2023 14:11:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1686949884; bh=2W0/s9Ei/3O15AUKoqqy+U+PAyRYFPdruzdJ33WOGco=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=IlbipCUnNwFJWBJMWof8BoQrRUxxcHM+casc6zwXMefAcLU4ICOt0KxjWc329Esd+HiWUrNKs/mP/Lnxwfm98qnRzCXMC5NpBSdmQH8SC29RnIE5T9OCQUbpOUL4HLco9reM2mjwqQEIzKpt3hDDOs8l7Gtr+xaeg7kBWk4MfOep/mpX248EzKVTJPA9ARIMmCTWcLlQvTy1JkPnMPO/bS5S9ZCR75iUr7gtnSkdbon9QoBsgfEqyQjFjh7iWqmZt8afYVnxKd0nNinzjtHlHKptqt/2d06dGhGYjKBgNj5evxVVHGKh3L/nvY50Od0auhRMdTNci6wbiulfSXKvMg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1686949884; bh=gYfF9Km1KkuiJgjuJx7CFL7L6+LHkiGQFKAZPKxrRos=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=Pi+3f/9k2VyDUtCVS55SQvFqqMKdnGb5r2a8KD8lJL8wLHH7aj4dYdV9EVfp0BXyQ2KvyNOu/+62Ncclr5GXzuhB9Xl8PxgI5ldrjQGoog1JuKWFRs3cvZaHuOlH8G53Gy+1zQ24dDdnz8VI6TZAwWVTwsZSok6ZJtmoUBFdYMIVUdf9AdH4Mpylfn+kkyCLh7+HgDfdeedLMFsjnwOlKBSFS0Cn1gxuwZs2irYt2d/Ej+2QXZQlm5LqH0UcGXlCv4raxoYoVtGKA3uQdp1TkFVffleYb4tS5U5PYkhtjePHK9D/+Gg3TcrYM8Re9JHfi+BQn+Isex6oIdIPvUyR7g==
-X-YMail-OSG: ER_yI88VM1mo2Ge8EsI_.ohOcn10sxXGnW_m6.KqjdOYAnYpqKsNDVyWA98CJur
- p5cjWPEHhgmSLjgAlvw4Nju3_ccMcxObzv8Eb6wS87lmdMC4kUOcvy3YRzPehB6DU1hZPkqluDSp
- qpG8HxoB7aL8cqF45PrKqNqe2U.g6AxgctDAnBsyPVVKzlrdS1HayYBaK90SvZMPJQSk5Cu.KDf6
- CFRlZkZDjnmTZVHUrA6ZdS0T4sVG5IIaiiuq1JVBr.nyASj_A7Fi6UFzeSgxoF1neCj700H4WMJG
- m.Y00Cplo76qjNQdHGvs8pPen1iQ1klQul7TjrfXS54mDathcdeqMqpcY6HHG328JlidjE212VnU
- o5ZflK3JTTWY4IlUY5hgYeLkn0KmJzUFpRm494oR5jxPUNWoPvRyBav_mJeHMwSjGcX2MZmsfo2L
- YzZtFdqSiORm8xEu5NVpP9sXQlBhixjSlUlYWlaQ3NLm4RQqasBR8QxkP2IChLyBnZ3XagDAMNJn
- X1zlBVdlrqZNXGguS1nemXx9Ipdv8OIs66yhSflCRrZwKDfecP6L3hlcEUagW3TWuH2uHuGP7CRP
- ZYS.KROGc6_XxXfgPtPP6YiMELUf_rv7mvJKXIFQMmqPz29i6_sta30IEpvV_02jf8TOpo66m2a6
- cRfcK.fqnQAXmxGBCoJOQTmc67.ljuwvOyzo0AGiXkaTk9NcTiynC.k4W04_T0oXmJr_2c9axp__
- VU63avlMIJ5wJQt9jCm3x__XbqGoE0Uo6xTViqcPLkQteIOlTsHVAXUMVF_No8fCjFCxqfJgE4Tg
- beTpWzWdn_6FgmoXfaH1vwI.b4VjoT5FxLaMC3VGQyKzn8EiHolPhSRKe16kIRSdhZQ6mSM9KIrd
- IwbnrNhz21AZfyac1AELFnT3DeAOoNLsP3k1eJOUDzbJgXLtlhPb5qXzejOfQy00.392DFE_nWqx
- 7CRhq4Bpix2.t4sec5_ZrDgXi40D.7fo.tON1FP5T29TOU_a.7XpKbTIRE14a7zsA7O9mxH5NVyN
- FePtXpe_rF6t3HFFLaWyCVESxgz3.xvG7vLQZ0VlDeElVIIboSH1grMDfXItJwOeYiLBnJT6CXiN
- LzmMX4We_PcXS0YSO_qQpnaDco_apOH0aVnmRRWlJWwwSQsNEuI9Ska5HT84QJUJDGJdUBwVfHLw
- 9ag.Ur1.8dsiKj3ggLsfe.rmR.cZ3Q2iJR_nGB41FK65S9fea16lCwVSF.RGCt_XXkKyqSMoTczb
- UncQQHLNLW0r8bvMG1V0Dk0qJKMw23uQiGqs4MyZmeKDwFCKSORPSjLhT68EuFz9ngvVsnSLWdI0
- tP45Fu2wWdacaFNGwg27iIymB3YRkKHBmluOYHNBYlgI1TYwm7wXp2WOacxZ2JFf9gTqz1dxeDDy
- 3pkdO2.qP4B_y4XLYR_oi.bgmX4OE54.p.LZ0Ma37XgOAPE3em4Oia4Udv.Ya7PIh2tNlVXAQSoo
- x5YAG67uYFQsZUwzJjsw1ca.4H7xH7CxYDMpec_8Yo44MUs1xM9pIR2yILR98Qc1GjGLhySdiSff
- q7QlJD_PQM2QnhBFvsuuYfWND9TE_TS.P73.0fwXPaPpFS2tEgYlBGFrrOxuK4f8WtuqF3HXPmlL
- bflq4vBoqhnXLMHYk6n6kYBzyM5oPKnxnbcGJnTLdo351C57b5cvaMjgeeAtaxxHlJy3x3zwv8q8
- ISVWMP4DCgb0tagzHbviMdbMnGLgtKikxXSpzeduWgEbUoZ3kLR6uXPG._KrWFF8_uvJSNLKbn6D
- THiaJMukf1bAH5FF8mSz.N1xg7RtbRi_5CVDiOyVsmJiWBISaNR1hRJEPL9ZKiM.bs6uYd2WZmeu
- yHVhjn2KywLgC9xhKVfVW0NuYVfNz9kXnNkOQXsPUfPmYDdnJiD1RkRifYSXI8WiATRec.SKOgxb
- 6oFC.KETpTdyg6aBTtxE_BDKAUcUfAj28keIwI9AOyZt0wHpD_TZxTcWdDR0fv9.VM.Gn_S32iMw
- PjCDjz5GthAXJKcDzkhnY3P9dpsDv4i0Y2GRgoVqwU2glquDoBIYHB8hkfZI53DzRLKFgenpIpjH
- 0XG3.KbeTvo3bmMBV_1Y7vACxJKGG6dapu7FmeoeMbj05hg.QiW9g4C7k7x0JZdz29jK7OXP0YO9
- BvCxNRQcQSKUJjz8KJ85EWLFMOYAmb77aXQq_iMyEDAV5VHsFZpdx3lKFjC_QRuDgwCG6a6AyL7U
- F0kzalVh9ibkeLeAM3cVju8tkmYPr6xGKFrdwG3U6BLHDfCVGpTzKbXPdP08XaiBJhhnjJuh48ek
- N92Xo2ROKHnls1hR0l5p9peOusLlp41zXNA--
+        Fri, 16 Jun 2023 19:43:32 -0400
+Received: from sonic304-23.consmr.mail.ir2.yahoo.com (sonic304-23.consmr.mail.ir2.yahoo.com [77.238.179.148])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F238426BA
+        for <phone-devel@vger.kernel.org>; Fri, 16 Jun 2023 16:43:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1686959008; bh=KHptyEX2xsFZL+j88dnXHyUe4p3sh5ko9681QkeWbuI=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=RPnLuCpzbtlKK37vRsdZrzwQ7+AFw+ReYmfz5I8WNbr9WTjoFIwHoyNgq9sheDineLm5CIvc/Jvo9K5l8ZJlFbPoMQZkFQ6cZEUXIvI1+oTel9JTLLvOmI5nCwjTFpIbdnV3K/RYQ9dHkmrtzncdEQcIaGOqmkL41IxCmf+dfKqj5j68jdt9rTs/AObkc3oMDoXsSUuTpp6e/9LWVPXNQuOYztCM+ESqyMKlkSzh2X4Kayz9cBZoEXhARFFRixOpfZmSDVxTEaKSnKY5w27QbdhVhzLjOghDb2qmdgZDpB2ecdtQbTBbaPdIO0qGnuw3UNQpYFnjxCzrUVBPkfxIHg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1686959008; bh=u36nD8DK6VJYWCg9SV9eCoc5jm4KgzdxzuMPbtALCoR=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=jYpBbu38meAXNvAG9Tvze2HUj3JHynNN2QR4VQPPtY6k3BjBd/Kpro4WZjP3RfeW3hwfXPhlQLR+TO0BWdgeQ1so7q6xMXAtaiJ4HTV9KtQHH161zosWDUezBG8+aEC04OBE/vYlwaYjg55iC/IwtWrvFSefr9F/XSGcIeD/egPj7lXyIsyPVOP4dNQ/cA1VxH6jxxKqC0JXAIZctCr/KgNL9RYjnHzStovEQST+XpQ7JQjgMRf7oalsdmlCo0MteMsuKS8wbHfydLb9IoQ9Ur/cfO6RqHcJD3YQv3+yl+L2XM8KeaO06pSexJ4QtTE1Tn6dj6RKkAhf44aO/XhIXg==
+X-YMail-OSG: XW4b4rgVM1mt62u.7floGH_4Kc.IcQVTnXVOppQWC7n_Iz2L7EQm1rF4FQswjIv
+ B8yxxmC6uea0H9J7C2pauWrblZK2sGFzs3VLkH7p4s0d4iHpE6h5CYx2RvxbrooNPEbMQJaH4JwZ
+ J4d7DABH.Vee0e29iRu8yj6OBxBq74nxmX2q.5M2r5Tl7bb9vNtHgBylRTCrZLm3FHkLVQrV8u1Y
+ r7OLrOelw6LM2HvmciElfqi0t_qsAbL8haP0Q7DIRyN_brEYsU76uVZDml4XeAP5xIn8otMWIhQB
+ .qsYjvNDfSefaL4sYe7Ap_6QRwF43dbugOVMn3ql3Vzht10NPdF6IyRHF1WtaZSClCpWnn6UqsGG
+ iGdSzOwXgNU9GqteohmwICGkyCTJ8Ti7cJ6AybpX0ImN29efLiX3uVmiLSFejxXbybhXxNjtKBbL
+ 64FQeHqoA0ntMDWRKa5eOGbKU4rNKsedaazdAJb.veBepRtyd2HyJxUhG2PduSqtQB9_EQcYERnU
+ N.gQ7zQUrXpTZ9v2Rsqi8zkTbPRHIGz9_LoWP5JeyGJQdcyBwgexDIUPixAk6FlhccvcRxT9vzge
+ 8l2TiCJFg4.6.mxZ43YKMAFLaIYHtpu7fNEfvhrCLJ47Kj1wluW3oFRBG3xihLk7p7nWBc2uVOJp
+ SJvWXfeGtHjXfWUordL.P8a6OB.DwBxCNv0W9rYZ_tQlcraEjyICgcatkBKgo5S.3TMyEkb2j3od
+ xRpzgMOX26zd449E82aVY67w9fJOgL_i.syQ7EEgl.Gq3PHhpQB6j5PJmn4xeoPg7PAMpyBwPb26
+ LNyBkVFtZL1gFpDP3c0Pt322mhlQwCLOxWEBs_FWkQUaMQ0yA1uQm1_WSwkBZnj473VVH75ZHvkb
+ k4qNozZatsK.ZILvNy4Zyd0cQXzOdo_LvTqUGQ2MkPr34BsZcnMR0UcZEioC1JlUDO4RV6v8X.mC
+ nUr2ZmxBxJxjh1obQjjatZPwGEyAgY9Y3xpvNt_fey6IPt.cNtzlfFDTGfW82ZzCULWW74ZLIsFE
+ LU0ZP3ZLKlArSyowTZttnWbA_lNOFgEBg4h9DIhBuG3g4Spogu1QVANGsdHsaO_4qT9A_jo1A_r1
+ yDxC0gqyHjeeI1_3xXSDgE2N5a1uqF0FhgOoQYZHoUHxXc28MhBO.iyTOTdyE_QbNfTk1CPFrM9X
+ vFaYiEFqryOAAdshhkohWOYL5GCV8.z4phabILLkgrnK4oQXMOxRkLWyspMB3ujGfLUltRtS_sKO
+ zYf8XoKx8K2HEnX_SFmIHwtONYWBJwxGFf0MnuASLjmhdjCqw0hDT0soRGjzpTK.BIFoDnlYyhgV
+ 0r2bAUImChHxUWWdEm05uxXXOAL9mcdVdv0QEKP4pmlUJ8OroxtiEQvslZX3_mHarPLR85f5nFAz
+ aiVeSJQJTD2JDbXN2bxNwkaCUwoepWudXpEwL_eaN4ad2O2ZRSxS3WOu0K3vp3OHrOvqVWtdan6d
+ m9zxtzlkYK7QceBAdZfQmpAuKRbTyBOGm2cWi_ZLME0Na2YtfnGP98UFZOG5cPhwq34TP3CDd8g2
+ 5wWl9QYnKmawa7GKSc0Fhm_yBJz7dbmRMdmlo2pZJIIP6gFvPU6JYnSpFkcqMVm4yyZL6cO0rwrr
+ e.TpYCK2vmZ.FW0tkmr3h6Oe2634o6VC9tAqvzcYDw_O8C6nBsTQ89xSvoZyeWzhXOoMojdySQ7T
+ yLFSIXFzYtW85iGbJHuD0OQqw0LAtkYyjINcy4GCSFYsnPLFHqaAd_vUZUXStT852LwTAjlCPrLV
+ .k8Op8rzteaPgAgBKMtVpWDMCXV5IsBMIR3ESEcixpla.AQ6PivPnLJm9nVA_9knaORqH.Ej0m6N
+ RKpZXruGmHde_rP4KNi_TK7Gpp_U.5IgMvRb1uVn6arBzDDJ1sr0ScrKaDCzHiVkcx_KIIN2Drnc
+ W0HbIDJMC07mSPCHQBSHao28Vb2xv4E5U7GPWMHz9e7G91XSodmQ.iwErt0UMFKxrtNYKCYwc0uv
+ W7jIbP3NiO0mN2X3Pl6FnPc7LpnjuJ8a4N..lnssATLxuNZvoIuYS1cimIdX5lMq_KnHQVmQ.l4A
+ ggqPrNLIvXJ7yPcBi6r0xCz4LJrZ8EjKS3K.Mqcn6n4s12.LoHRBFSHa0uup9UHU918bdj.TQ9q.
+ rbSQpWQLFl_Ulo4_Mi.eAURRiGy9QkmGzMzwfayULEvC73dFOErf6KaE.HKyG3jmk6cUs6PKtifb
+ 6KVGamdVmlbwvw0SImgzUiF3zUDLIICXiCzGLcsEt2WVSlLluOgug3TJJgWF8yY5ZocUA2XiMsDl
+ s_iepXLFAbT2yokkdDypMuZOr_yrDUwlWfIkGFls-
 X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: 5be4c50b-e39c-4e3f-8b4e-f2655f0c20ef
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ir2.yahoo.com with HTTP; Fri, 16 Jun 2023 21:11:24 +0000
-Received: by hermes--production-ir2-7867f454fc-gg9x8 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID c618d34c94eed5ad1e4505ee686233db;
-          Fri, 16 Jun 2023 21:11:18 +0000 (UTC)
+X-Sonic-ID: a67a19a1-1c3c-4ec4-977e-cd0e4aa19324
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ir2.yahoo.com with HTTP; Fri, 16 Jun 2023 23:43:28 +0000
+Received: by hermes--production-ir2-7867f454fc-8nkq6 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 5636cffc5e4b0771cd0c200ffdd51601;
+          Fri, 16 Jun 2023 23:43:23 +0000 (UTC)
 From:   Jakob Hauser <jahau@rocketmail.com>
-To:     Sebastian Reichel <sre@kernel.org>
-Cc:     Lee Jones <lee@kernel.org>,
-        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
         Stephan Gerhold <stephan@gerhold.net>,
         Raymond Hackley <raymondhackley@protonmail.com>,
-        Henrik Grimler <henrik@grimler.se>, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
+        Henrik Grimler <henrik@grimler.se>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Jakob Hauser <jahau@rocketmail.com>
-Subject: [PATCH 2/2] power: supply: rt5033_charger: Replace "&pdev->dev" by "charger->dev" in probe
-Date:   Fri, 16 Jun 2023 23:10:48 +0200
-Message-Id: <99b76d5ed0d47f55ddbf55564a0424d67af1a447.1686948074.git.jahau@rocketmail.com>
+Subject: [PATCH] arm64: dts: qcom: msm8916-samsung-serranove: Add RT5033 PMIC with charger
+Date:   Sat, 17 Jun 2023 01:42:52 +0200
+Message-Id: <20230616234252.37022-1-jahau@rocketmail.com>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1686948074.git.jahau@rocketmail.com>
-References: <cover.1686948074.git.jahau@rocketmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+References: <20230616234252.37022-1-jahau.ref@rocketmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-At the beginning of the probe function, "charger->dev" is set equal to
-"&pdev->dev". Therefore it's more clear to subsequently use "charger->dev"
-instead of "&pdev->dev".
+For the regulators, apply the same settings as in the downstream
+devicetree [1], including the "regulator-always-on" for the SAFE_LDO.
+For the voltage of SAFE_LDO, however, there is only one voltage of 4.9 V
+available in the mainline driver [2][3].
+
+The values of the battery data evolve from following sources:
+- precharge current: 450 mA corresponds to the default value of the chip. It
+  doesn't get changed by the downstream Android driver. Therefore let's stick
+  to this value.
+- constant charge current: The 1000 mA are taken from the downstream devicetree
+  of the serranove battery. It's not easy to spot. The value is in the line
+  "input_current_limit" [4]. The rows are according to the power supply type,
+  the 4th value stands for "main supply" [5]. That's the value used by the
+  Android driver when a charging cable is plugged into the device.
+- charge termination current: In the downstream devicetree of the battery
+  that's the line "full_check_current_1st", which contains the 150 mA [6].
+- precharge voltage: This one doesn't get set in the downstream Android driver.
+  The chip's default is 2.8 V. That seemed too low to have a notable effect of
+  handling the battery gentle. The chosen value of 3.5 V is a bit arbitrary
+  and possibly rather high. As the device is already several years old and
+  therefore most batteries too, a value on the safe side seems reasonable.
+- constant charge voltage: The value of 4.35 V is set in the line
+  "chg_float_voltage" of the downstream battery devicetree [7].
+
+The "connector" sub-node in the extcon node, the "battery" node in the
+general section and the line "power-supplies" in the fuel-gauge node result
+from the way of implementation documented in the dt-bindings of
+rt5033-charger [8] and mfd rt5033 [9].
+
+[1] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-eur-r03.dtsi#L135-L181
+[2] https://github.com/torvalds/linux/blob/v6.3/include/linux/mfd/rt5033-private.h#L211-L212
+[3] https://github.com/torvalds/linux/blob/v6.3/drivers/regulator/rt5033-regulator.c#L83
+[4] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-battery-r01.dtsi#L100
+[5] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/include/linux/power_supply.h#L173-L177
+[6] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-battery-r01.dtsi#L102
+[7] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-battery-r01.dtsi#L95
+[8] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml?h=next-20230616
+[9] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml?h=next-20230616
 
 Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 ---
- drivers/power/supply/rt5033_charger.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+The patch is based on linux-next "next-20230616".
 
-diff --git a/drivers/power/supply/rt5033_charger.c b/drivers/power/supply/rt5033_charger.c
-index 361a36c2a195..71a237cd1d61 100644
---- a/drivers/power/supply/rt5033_charger.c
-+++ b/drivers/power/supply/rt5033_charger.c
-@@ -667,11 +667,11 @@ static int rt5033_charger_probe(struct platform_device *pdev)
- 	psy_cfg.of_node = pdev->dev.of_node;
- 	psy_cfg.drv_data = charger;
+The driver rt5033-charger was just recently added to linux-next.
+
+ .../dts/qcom/msm8916-samsung-serranove.dts    | 67 ++++++++++++++++++-
+ 1 file changed, 66 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+index 15dc246e84e2..2114d26548db 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+@@ -142,6 +142,12 @@ muic: extcon@14 {
  
--	charger->psy = devm_power_supply_register(&pdev->dev,
-+	charger->psy = devm_power_supply_register(charger->dev,
- 						  &rt5033_charger_desc,
- 						  &psy_cfg);
- 	if (IS_ERR(charger->psy))
--		return dev_err_probe(&pdev->dev, PTR_ERR(charger->psy),
-+		return dev_err_probe(charger->dev, PTR_ERR(charger->psy),
- 				     "Failed to register power supply\n");
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&muic_irq_default>;
++
++			usb_con: connector {
++				compatible = "usb-b-connector";
++				label = "micro-USB";
++				type = "micro";
++			};
+ 		};
+ 	};
  
- 	ret = rt5033_charger_dt_init(charger);
-@@ -690,22 +690,22 @@ static int rt5033_charger_probe(struct platform_device *pdev)
- 	np_edev = of_get_parent(np_conn);
- 	charger->edev = extcon_find_edev_by_node(np_edev);
- 	if (IS_ERR(charger->edev)) {
--		dev_warn(&pdev->dev, "no extcon device found in device-tree\n");
-+		dev_warn(charger->dev, "no extcon device found in device-tree\n");
- 		goto out;
- 	}
+@@ -199,6 +205,15 @@ nfc@2b {
+ 			pinctrl-0 = <&nfc_default>;
+ 		};
+ 	};
++
++	battery: battery {
++		compatible = "simple-battery";
++		precharge-current-microamp = <450000>;
++		constant-charge-current-max-microamp = <1000000>;
++		charge-term-current-microamp = <150000>;
++		precharge-upper-limit-microvolt = <3500000>;
++		constant-charge-voltage-max-microvolt = <4350000>;
++	};
+ };
  
--	ret = devm_work_autocancel(&pdev->dev, &charger->extcon_work,
-+	ret = devm_work_autocancel(charger->dev, &charger->extcon_work,
- 				   rt5033_charger_extcon_work);
- 	if (ret) {
--		dev_err(&pdev->dev, "failed to initialize extcon work\n");
-+		dev_err(charger->dev, "failed to initialize extcon work\n");
- 		return ret;
- 	}
+ &blsp_i2c2 {
+@@ -228,7 +243,7 @@ magnetometer@2e {
+ &blsp_i2c4 {
+ 	status = "okay";
  
- 	charger->extcon_nb.notifier_call = rt5033_charger_extcon_notifier;
--	ret = devm_extcon_register_notifier_all(&pdev->dev, charger->edev,
-+	ret = devm_extcon_register_notifier_all(charger->dev, charger->edev,
- 						&charger->extcon_nb);
- 	if (ret) {
--		dev_err(&pdev->dev, "failed to register extcon notifier\n");
-+		dev_err(charger->dev, "failed to register extcon notifier\n");
- 		return ret;
- 	}
- out:
+-	battery@35 {
++	fuel-gauge@35 {
+ 		compatible = "richtek,rt5033-battery";
+ 		reg = <0x35>;
+ 
+@@ -237,6 +252,8 @@ battery@35 {
+ 
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&fg_alert_default>;
++
++		power-supplies = <&rt5033_charger>;
+ 	};
+ };
+ 
+@@ -261,6 +278,46 @@ touchscreen@20 {
+ 	};
+ };
+ 
++&blsp_i2c6 {
++	status = "okay";
++
++	pmic@34 {
++		compatible = "richtek,rt5033";
++		reg = <0x34>;
++
++		interrupt-parent = <&tlmm>;
++		interrupts = <62 IRQ_TYPE_EDGE_FALLING>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&pmic_int_default>;
++
++		regulators {
++			safe_ldo_reg: SAFE_LDO {
++				regulator-name = "SAFE_LDO";
++				regulator-min-microvolt = <4900000>;
++				regulator-max-microvolt = <4900000>;
++				regulator-always-on;
++			};
++			ldo_reg: LDO {
++				regulator-name = "LDO";
++				regulator-min-microvolt = <2800000>;
++				regulator-max-microvolt = <2800000>;
++			};
++			buck_reg: BUCK {
++				regulator-name = "BUCK";
++				regulator-min-microvolt = <1200000>;
++				regulator-max-microvolt = <1200000>;
++			};
++		};
++
++		rt5033_charger: charger {
++			compatible = "richtek,rt5033-charger";
++			monitored-battery = <&battery>;
++			richtek,usb-connector = <&usb_con>;
++		};
++	};
++};
++
+ &blsp_uart2 {
+ 	status = "okay";
+ };
+@@ -387,6 +444,14 @@ nfc_i2c_default: nfc-i2c-default-state {
+ 		bias-disable;
+ 	};
+ 
++	pmic_int_default: pmic-int-default-state {
++		pins = "gpio62";
++		function = "gpio";
++
++		drive-strength = <2>;
++		bias-disable;
++	};
++
+ 	tkey_default: tkey-default-state {
+ 		pins = "gpio98";
+ 		function = "gpio";
 -- 
 2.39.2
 
