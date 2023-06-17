@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F1A04EB64D8
-	for <phone-devel@archiver.kernel.org>; Fri, 16 Jun 2023 23:43:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 337B2EB64D7
+	for <phone-devel@archiver.kernel.org>; Sat, 17 Jun 2023 00:30:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345651AbjFPXnd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 16 Jun 2023 19:43:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51904 "EHLO
+        id S230020AbjFQAaA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 16 Jun 2023 20:30:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234108AbjFPXnc (ORCPT
+        with ESMTP id S229671AbjFQA37 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 16 Jun 2023 19:43:32 -0400
-Received: from sonic304-23.consmr.mail.ir2.yahoo.com (sonic304-23.consmr.mail.ir2.yahoo.com [77.238.179.148])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F238426BA
-        for <phone-devel@vger.kernel.org>; Fri, 16 Jun 2023 16:43:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1686959008; bh=KHptyEX2xsFZL+j88dnXHyUe4p3sh5ko9681QkeWbuI=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=RPnLuCpzbtlKK37vRsdZrzwQ7+AFw+ReYmfz5I8WNbr9WTjoFIwHoyNgq9sheDineLm5CIvc/Jvo9K5l8ZJlFbPoMQZkFQ6cZEUXIvI1+oTel9JTLLvOmI5nCwjTFpIbdnV3K/RYQ9dHkmrtzncdEQcIaGOqmkL41IxCmf+dfKqj5j68jdt9rTs/AObkc3oMDoXsSUuTpp6e/9LWVPXNQuOYztCM+ESqyMKlkSzh2X4Kayz9cBZoEXhARFFRixOpfZmSDVxTEaKSnKY5w27QbdhVhzLjOghDb2qmdgZDpB2ecdtQbTBbaPdIO0qGnuw3UNQpYFnjxCzrUVBPkfxIHg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1686959008; bh=u36nD8DK6VJYWCg9SV9eCoc5jm4KgzdxzuMPbtALCoR=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=jYpBbu38meAXNvAG9Tvze2HUj3JHynNN2QR4VQPPtY6k3BjBd/Kpro4WZjP3RfeW3hwfXPhlQLR+TO0BWdgeQ1so7q6xMXAtaiJ4HTV9KtQHH161zosWDUezBG8+aEC04OBE/vYlwaYjg55iC/IwtWrvFSefr9F/XSGcIeD/egPj7lXyIsyPVOP4dNQ/cA1VxH6jxxKqC0JXAIZctCr/KgNL9RYjnHzStovEQST+XpQ7JQjgMRf7oalsdmlCo0MteMsuKS8wbHfydLb9IoQ9Ur/cfO6RqHcJD3YQv3+yl+L2XM8KeaO06pSexJ4QtTE1Tn6dj6RKkAhf44aO/XhIXg==
-X-YMail-OSG: XW4b4rgVM1mt62u.7floGH_4Kc.IcQVTnXVOppQWC7n_Iz2L7EQm1rF4FQswjIv
- B8yxxmC6uea0H9J7C2pauWrblZK2sGFzs3VLkH7p4s0d4iHpE6h5CYx2RvxbrooNPEbMQJaH4JwZ
- J4d7DABH.Vee0e29iRu8yj6OBxBq74nxmX2q.5M2r5Tl7bb9vNtHgBylRTCrZLm3FHkLVQrV8u1Y
- r7OLrOelw6LM2HvmciElfqi0t_qsAbL8haP0Q7DIRyN_brEYsU76uVZDml4XeAP5xIn8otMWIhQB
- .qsYjvNDfSefaL4sYe7Ap_6QRwF43dbugOVMn3ql3Vzht10NPdF6IyRHF1WtaZSClCpWnn6UqsGG
- iGdSzOwXgNU9GqteohmwICGkyCTJ8Ti7cJ6AybpX0ImN29efLiX3uVmiLSFejxXbybhXxNjtKBbL
- 64FQeHqoA0ntMDWRKa5eOGbKU4rNKsedaazdAJb.veBepRtyd2HyJxUhG2PduSqtQB9_EQcYERnU
- N.gQ7zQUrXpTZ9v2Rsqi8zkTbPRHIGz9_LoWP5JeyGJQdcyBwgexDIUPixAk6FlhccvcRxT9vzge
- 8l2TiCJFg4.6.mxZ43YKMAFLaIYHtpu7fNEfvhrCLJ47Kj1wluW3oFRBG3xihLk7p7nWBc2uVOJp
- SJvWXfeGtHjXfWUordL.P8a6OB.DwBxCNv0W9rYZ_tQlcraEjyICgcatkBKgo5S.3TMyEkb2j3od
- xRpzgMOX26zd449E82aVY67w9fJOgL_i.syQ7EEgl.Gq3PHhpQB6j5PJmn4xeoPg7PAMpyBwPb26
- LNyBkVFtZL1gFpDP3c0Pt322mhlQwCLOxWEBs_FWkQUaMQ0yA1uQm1_WSwkBZnj473VVH75ZHvkb
- k4qNozZatsK.ZILvNy4Zyd0cQXzOdo_LvTqUGQ2MkPr34BsZcnMR0UcZEioC1JlUDO4RV6v8X.mC
- nUr2ZmxBxJxjh1obQjjatZPwGEyAgY9Y3xpvNt_fey6IPt.cNtzlfFDTGfW82ZzCULWW74ZLIsFE
- LU0ZP3ZLKlArSyowTZttnWbA_lNOFgEBg4h9DIhBuG3g4Spogu1QVANGsdHsaO_4qT9A_jo1A_r1
- yDxC0gqyHjeeI1_3xXSDgE2N5a1uqF0FhgOoQYZHoUHxXc28MhBO.iyTOTdyE_QbNfTk1CPFrM9X
- vFaYiEFqryOAAdshhkohWOYL5GCV8.z4phabILLkgrnK4oQXMOxRkLWyspMB3ujGfLUltRtS_sKO
- zYf8XoKx8K2HEnX_SFmIHwtONYWBJwxGFf0MnuASLjmhdjCqw0hDT0soRGjzpTK.BIFoDnlYyhgV
- 0r2bAUImChHxUWWdEm05uxXXOAL9mcdVdv0QEKP4pmlUJ8OroxtiEQvslZX3_mHarPLR85f5nFAz
- aiVeSJQJTD2JDbXN2bxNwkaCUwoepWudXpEwL_eaN4ad2O2ZRSxS3WOu0K3vp3OHrOvqVWtdan6d
- m9zxtzlkYK7QceBAdZfQmpAuKRbTyBOGm2cWi_ZLME0Na2YtfnGP98UFZOG5cPhwq34TP3CDd8g2
- 5wWl9QYnKmawa7GKSc0Fhm_yBJz7dbmRMdmlo2pZJIIP6gFvPU6JYnSpFkcqMVm4yyZL6cO0rwrr
- e.TpYCK2vmZ.FW0tkmr3h6Oe2634o6VC9tAqvzcYDw_O8C6nBsTQ89xSvoZyeWzhXOoMojdySQ7T
- yLFSIXFzYtW85iGbJHuD0OQqw0LAtkYyjINcy4GCSFYsnPLFHqaAd_vUZUXStT852LwTAjlCPrLV
- .k8Op8rzteaPgAgBKMtVpWDMCXV5IsBMIR3ESEcixpla.AQ6PivPnLJm9nVA_9knaORqH.Ej0m6N
- RKpZXruGmHde_rP4KNi_TK7Gpp_U.5IgMvRb1uVn6arBzDDJ1sr0ScrKaDCzHiVkcx_KIIN2Drnc
- W0HbIDJMC07mSPCHQBSHao28Vb2xv4E5U7GPWMHz9e7G91XSodmQ.iwErt0UMFKxrtNYKCYwc0uv
- W7jIbP3NiO0mN2X3Pl6FnPc7LpnjuJ8a4N..lnssATLxuNZvoIuYS1cimIdX5lMq_KnHQVmQ.l4A
- ggqPrNLIvXJ7yPcBi6r0xCz4LJrZ8EjKS3K.Mqcn6n4s12.LoHRBFSHa0uup9UHU918bdj.TQ9q.
- rbSQpWQLFl_Ulo4_Mi.eAURRiGy9QkmGzMzwfayULEvC73dFOErf6KaE.HKyG3jmk6cUs6PKtifb
- 6KVGamdVmlbwvw0SImgzUiF3zUDLIICXiCzGLcsEt2WVSlLluOgug3TJJgWF8yY5ZocUA2XiMsDl
- s_iepXLFAbT2yokkdDypMuZOr_yrDUwlWfIkGFls-
+        Fri, 16 Jun 2023 20:29:59 -0400
+Received: from sonic309-26.consmr.mail.ir2.yahoo.com (sonic309-26.consmr.mail.ir2.yahoo.com [77.238.179.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A16833A8D
+        for <phone-devel@vger.kernel.org>; Fri, 16 Jun 2023 17:29:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1686961796; bh=3ubr12IgCaxiPc2P8P9TgUxEmc8Jyb9OzmeOqzumtgk=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=M4Updjdi/OxKbtaffuNH0NEQsq2dfOH3jBxf+nDZMVzh3GGJus6BAo3PD4VGUzZIUsk8dzhmumQpsthkSMFgIUySZQ5Oy10wQLb8Yc64GNPKWqLyb3FyHZBohgi9PPHHw0Qslg/1cyt6yMr4LJTlPBAtxFKra17viSo27OMYMLRXrv+O+uK6l5y8TqjKKQlag63Gto1MaOGiCutsj4B/SRs5l/QuLRFqSVxZXLjR2GBrE7ThuV8aHw/fXAP6oKhAe852cPzciit/kHMNnGoH6XnktlCLzfgqugCyYXTy0HvfdWbuXV0rks3EF1r3HNoIudujY0wGtfWkgYTUoR79xQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1686961796; bh=MH5EA0KMdDcFFmZklUynEhNEW+WykT6rpUiuQIMgOS9=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=HyAHiozHGMTZDiDgduuyEbzkitm2Ac+++dCwWPUySoSvCjgqeCWqJ7ZHZNw5/mzhuxpqfEr0/W/nD91+2bxlHyfJ9aUScOBVCn6yzU4ncMkSsIXmWOv1Bd3NNG5ccS5SphMf3eXmbix7E77MFIj6df2L8b+QipOJcF0WbmUd6/oRwAyebU6UoT9H2hYu8hfag32aIgabZuy1q4sIC7XUThBk/8iPx9iqtaPjFt/omRjDSRYukJybQ5Y10Q4lqcC459egjUMJ+T/01WBsEZWvoRK/JCp3bv0/puqr7G+be+JnDR0zScccGSMEaYhcY33iv/YRfnhKaje5uZ2EwCIsMg==
+X-YMail-OSG: mN13q3sVM1keDcvr7VW0xFSaD4WqKY.6_NqMnAy7IeEb54cIHb0m.w826wvgL6R
+ S7PW.GFHt16fIeBCoKFLlY6WkLKNqSVSls1AtZL.1ZnghE7B3Jf0pqUHOIFEM0RFYToddOdduNzs
+ Y9e1A0jenAGXyYPLFiMx0JKphCjhUGWqaQf__4i6WWJeWolVafO8ugECPjWPqn7WWs6FgZrUHBP3
+ T0xemv8oyCHc4IHeYQD6p0W75JpnLjxVxUUSAYIXXbM4v_sFIxoD2WIRgNcndmSjj_tpTHEt1yFe
+ 3qTILi9zWmNzHlKv7bFCsc32oXsKAdemCl9HZdCLyL4cO9r0culLLLH58JU5YdGcmgvWDU0n.ksS
+ VQT9VHI_QLoqc_dQ9_j0ZYCMo8r5iTzRa92JMfewl420rlMkdTMvaG3HPUmNtXem0sa7U7KlDocO
+ 789gAmrLeSav_RIlOMoOOyi4ncf2JUoefj3XKfuNU_WvlxuTpjJusVlTjLy__5K5Dlj_4VY62NDO
+ otQgW4KZwig8BnOFt07mCEumsJd52EF4Lw_OBpHeXULKvNqVkjMSHCwLqv9YUTsdLqD09BJ6oyq2
+ oI.GZ1Vn.LYoJ0Cc8RIemsvmTJr_X1lFzAHzhdXzTazfBi6NGYcCogOTu9Yyt4SfGeVeqwq0lvXS
+ kZnpQGeBoJSVv4ROtfwwMneeKFFNQ2avayUcreJjl7jyXZuq4O1qKeoK7CLUpvGGgK9Myo3Q1AUQ
+ f0w.Ye.ZZ1CRH2i9zVEShFgwZaGpUFmEyfeIXNTg5NWu8_fqN0GEFO85aAuZVyseRC2aOX7ljF0y
+ rA6Dte_363jC5kVMbOfM5YjAGBwmDg3YRcr9RFvd_6QQQpv.jvCdj_Ac1TIHcB31ixbeniojQc5p
+ 6K.3yg_.JCSpQ5sN8SYCDPgSjkD1hUWnNm7Wa0FE3anb2DvYNMB84_AGT2aKLpYim2tjjsM28HO7
+ JoyAWz1RsU6uCHjfUEwrFuh_fx3F8eZR3avAqhPTaSEK3oaz.Y4pB_ERI5vOcQDBnW7w7nn3N7Ft
+ 3ZjGi.I6sBNBQqnNUQ58fYrZqfW8rq5KVNL9jMOt7kVuFRcvcMFhVkMBBUST38WWeMVw2IcfeTit
+ MEoz3THhM18sLKjjmt4rZ6XfengcOP0rgRpIi5umgOCsZ.LGaYHNAh_Bf5CV21yT6_F4qQUbDrca
+ EpdqNJbO0umP07rDQEQ9vwMtNDcoyZy0rn0jkineORZSASP0DRscThl3YcG_XD3ggJZKKcqti3fn
+ 9_rE5EOjUCmHhdNQQsRF1lIMTtm0j6B0LDu6ZPzRH4ENCNlq_a7zq0XCU8cFoGUoOWs7bTpeak4g
+ N7Whj.bO5bzaVGSfRZeR.INgOr5gMbrzYjoeRdGlPHUbrKuB_dswbQiSee5Pk5Zb3fBaY3WtkK8e
+ p4oGIPJjzuCAjPv55hAdxb4LM0ljSzZB0CPf9yJYEm5fRRnmiWwt7kz_j7LJVnrK.L5h_.C2lwBi
+ HW.i.q4dEBwdLU.4oyBhiWSFM7gK.etrQSJ3OisJSFQI3jo090uUKNrgqRPUvWhrxHQ5c8SXU10w
+ osiEStVZZ6LKa99ptOVV3zmGkJx.WD1q2E7v3UYdXcf7z3tBxqJHr7vOoqgxXO1sTcWywwofBbV_
+ .UMwN0Ebn9NdwwwFYBGx7bj943zhF60lQqXfuBXgaPUqNpWdFJEFUnp8Pxov7Yb9BrNUMPR666rc
+ l8V2cpj2qJ_WxKN99Q4624oRStpoiomYIDCnxLdr6Zwb.fIuqDQPI3ZBrlGpYHVOWXZGdA3Aqj.b
+ Y00ZpYqdCKYV.VpHuMin7ALSwdGJvFZowiZ0F6O_tC3nZSR.TtrSvztPjHVGjJWrTy0Kxobw1ENy
+ uGYoYnO30Wifu5gJailc2gnxphEU.KWwooJApGRIsHd3MOMXmF3ayJN5H1_qJ0orTOoBemH_QQxw
+ ydMAzwLghF3Jnfp5VUWkCHXBzTM.CtAc_6WLINbF6ooZpPlLiw_S_kjME3bqZKLvCczWk7pRIacw
+ R.tbp2Jc0rPmE2doXZzPqkmLOs8XH2Etllup7xDxkLZ2YZU8NjtN7FX9SbY0ckmpk2nMtJTNXByT
+ vqUZ4g5tWiiFhgR5tgDjOcGxDMO9zFRZHWSB9rPwOhkvPoOHdkZ8FCov0VVLFQL1GSiZkQDjCTi5
+ _M8fd_zA1LttfTOi6ewcSahLBX3t7hbbHYuOav_tMi6hj.qrNoq2WhplOrsWBzgExJMgf8Fisej4
+ p5ZGUCBwbE3GthfHETSSN7hGfE1KqH3vsejcU8ocTyLAw2tIKtrQuooSC1WAul65N_KAhXiV51ZI
+ n5GvVQ1Mc5gXWXMUIfQVZNiGRkgDJ0Qi1Yh2OAQ_r.L1Abg--
 X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: a67a19a1-1c3c-4ec4-977e-cd0e4aa19324
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ir2.yahoo.com with HTTP; Fri, 16 Jun 2023 23:43:28 +0000
-Received: by hermes--production-ir2-7867f454fc-8nkq6 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 5636cffc5e4b0771cd0c200ffdd51601;
-          Fri, 16 Jun 2023 23:43:23 +0000 (UTC)
+X-Sonic-ID: affb121a-d648-453f-a0ed-9ac74f21d891
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ir2.yahoo.com with HTTP; Sat, 17 Jun 2023 00:29:56 +0000
+Received: by hermes--production-ir2-7867f454fc-8nkq6 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID e11accc94c1b3a6c23a5a72d5ce29def;
+          Sat, 17 Jun 2023 00:29:54 +0000 (UTC)
 From:   Jakob Hauser <jahau@rocketmail.com>
 To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>
 Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
         Stephan Gerhold <stephan@gerhold.net>,
@@ -65,13 +65,13 @@ Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
         linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Jakob Hauser <jahau@rocketmail.com>
-Subject: [PATCH] arm64: dts: qcom: msm8916-samsung-serranove: Add RT5033 PMIC with charger
-Date:   Sat, 17 Jun 2023 01:42:52 +0200
-Message-Id: <20230616234252.37022-1-jahau@rocketmail.com>
+Subject: [PATCH RESEND] arm64: dts: qcom: msm8916-samsung-serranove: Add RT5033 PMIC with charger
+Date:   Sat, 17 Jun 2023 02:29:34 +0200
+Message-Id: <20230617002934.39408-1-jahau@rocketmail.com>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-References: <20230616234252.37022-1-jahau.ref@rocketmail.com>
+References: <20230617002934.39408-1-jahau.ref@rocketmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
@@ -120,6 +120,8 @@ Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 The patch is based on linux-next "next-20230616".
 
 The driver rt5033-charger was just recently added to linux-next.
+
+RESEND because I used an outdated e-mail address of Bjorn before.
 
  .../dts/qcom/msm8916-samsung-serranove.dts    | 67 ++++++++++++++++++-
  1 file changed, 66 insertions(+), 1 deletion(-)
