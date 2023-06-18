@@ -2,191 +2,223 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69741EB64D9
-	for <phone-devel@archiver.kernel.org>; Sat, 17 Jun 2023 14:15:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98C41EB64D7
+	for <phone-devel@archiver.kernel.org>; Sun, 18 Jun 2023 13:47:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235750AbjFQOPZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 17 Jun 2023 10:15:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52144 "EHLO
+        id S229565AbjFRNrU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 18 Jun 2023 09:47:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231648AbjFQOPZ (ORCPT
+        with ESMTP id S229542AbjFRNrT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 17 Jun 2023 10:15:25 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77EFA1BD1;
-        Sat, 17 Jun 2023 07:15:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1687011310; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=UiLias+d1CKFQudf7HvmdiB29NDf1GbdStqyFgAEf9oSLAD6lAyDREP0Kpb1+3bp6R
-    trlYmzzi36/KUZud0raGEuvD9sOjcB8YoUFoOMQNUz6AX4N+9baxPMAHIgSXpn0Pib8q
-    H+HCmNK8UPB5boLYYSFbNs7GvtzMqk3YXXjcedankQGMtnFv6/REGgfZtNQ7Rcr1FaAd
-    hOM8rTJAvk4QsUZNWax4ce6//4Usg/sb9akXihNgrNQtXDpH/yEGBXchaOT3Prt8E0Tv
-    2iLdBCh9ehNzmrcNnIgqPOlECKrUv8uOEQfuHCLkwM3V/OXEo4dejQ+FIMfcb7F80wGy
-    iDqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1687011310;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=y0b7he3HXOLqe7VbS+H+PIvkibqHGVaV+hOty/itXJY=;
-    b=i7oyBJptOC72RfTg787sy7RLdtClSB6CdRArbk7C1JTDlnC39FPFbOpPILa2qZ42h3
-    49lOGT1PD7H8iXW7K34FAqnreLNJkXhDL9pdkDrylIV1/x6/TJJaDFOUQcrE82tONKZY
-    Ybd+mfTeKD93ooLL1p95FNUJk/vAQtJbm8NRXI2//KL0OvJGuSB24GLH0SfTrpzDgqkb
-    dqhDuH+sJvB/JoGMX6QiuBEDcDhdugu6uU40lE6quzY39z9jqTy3vQqcO5OUXUo9Wfk7
-    ReSxrPOLp8J9yxSGm3NJVuKq3Ra1tqNZ/Qair/9lgGv3pPqHfx5fZCYL7GnQ9+VsSCeJ
-    hbcw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1687011310;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=y0b7he3HXOLqe7VbS+H+PIvkibqHGVaV+hOty/itXJY=;
-    b=Mw3xpHOgdAXOTj3RbzSJdMwNiE5Emj10hxklRy++KFFnWaooYHeArdxBn4il3PioRP
-    rPn7snv7U1pYiCLhnYhNIIZG97rgI7tGmFJuvaiBw/7xvQUewA6sUM2vYdKQ0/Fx3V2V
-    J/uXEZY0qt++ZGpMDM4hmctGmyysLuWSAeraUhJDJ67R7l7oDkCApwpZd0/vS7OrM2Rn
-    anFDo/YbG2SPTZhgJ5JsXAlhNqj4GGcbpu1EdUAmLnJxvOxGstNpC7GreJhsGNrFx+EA
-    WthgnnB676j/yUiToRg6S1etVr1zzxKtzWcCnqI5k57LjYKOnZEIeBvu8aGegrzzkLzJ
-    e6pw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1687011310;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=y0b7he3HXOLqe7VbS+H+PIvkibqHGVaV+hOty/itXJY=;
-    b=DksqII6+OZ1i49BQBKI11R4ZINk9g3AHXe1YsF7OgSDZccsyASYrWFFnUDfoXf4d9R
-    LJN/H6EVDwTXI8p3eKCA==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA+pvh"
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.6.0 DYNA|AUTH)
-    with ESMTPSA id D0d0a8z5HEF98GB
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Sat, 17 Jun 2023 16:15:09 +0200 (CEST)
-Date:   Sat, 17 Jun 2023 16:15:03 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
-        Raymond Hackley <raymondhackley@protonmail.com>,
-        Henrik Grimler <henrik@grimler.se>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH RESEND] arm64: dts: qcom: msm8916-samsung-serranove: Add
- RT5033 PMIC with charger
-Message-ID: <ZI2_565RFDtR3Sa-@gerhold.net>
-References: <20230617002934.39408-1-jahau.ref@rocketmail.com>
- <20230617002934.39408-1-jahau@rocketmail.com>
+        Sun, 18 Jun 2023 09:47:19 -0400
+Received: from sonic307-53.consmr.mail.ir2.yahoo.com (sonic307-53.consmr.mail.ir2.yahoo.com [87.248.110.30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9FC21BF
+        for <phone-devel@vger.kernel.org>; Sun, 18 Jun 2023 06:47:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1687096036; bh=zJAq0DJA5QUBWq8RFx6AILq6sCNRAR/2bfV+wVuC21A=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=FsTWxoWKfwhMFjo9pdz2YSfIdAUHVSZFqY6B5m/7baYYVQ9QlNdhWR4sLqUYXBJQRR3e9yMMazmU4X8l12O/IzhHXENKtvyabnc3bmYZyJQ3OSycPldjTTvHuXhK5+0LvBweFlpF+yLom2H15MerwFtLszZ6DlabAMTtNDcxxWk7Nbbl4MmF2w9adgDrQceenTMVdv4PM5NISdLBAuqJYSF0T3rpeRzbdGWnDKCw/KcqYJWcSLEXtU2w3q9GT9V/yqAXeiyfkGEZKY000FO/lrlz+hNY5GICmNCZTqAfuNJTsGbjUyjCaVE+pOJXZG72Pss/mWVwjGsDMGTFip75Ig==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1687096036; bh=LGk08Mv2Ubrkr9kUJRdAxgVuQGhyijsBrTNpv5qiv6A=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=kqopV+bDkYelYVadOYM+00JClAKd6py2fClSgZsUnvXi51cbUZa63elCoXo35BtlbM9f4niv7s+ySIrZCsgc2nYs790WiNBZBTNTlfwnMsrLtBcV4QmyWpe3AB+p3hYBKgbdb5YNYbIp3VpFMB16gmEbDcHVZNvFtPXJKQjS6sLrqmjyEJC+A/bRi2V+wQSc2SspjyvNCCpTzXDT+RN9zWmKY9hpphkvTGZ0LoI4mfrpTw+xEC3Zb05RWJdtGlK1j2B4Y471CGHxFSLc4OqCMmFaI/V76a3FF5eiv9PqXDFQhiQDgsBQmCqD8SiyzUk1uwJX+HNhXhqdI3ytIBi0wA==
+X-YMail-OSG: 8rbh2GoVM1mcywPMqjbJ3ItK8VLFiy5H.gOM_P32Q6RgqB5K1lBfcURQHrC1iN1
+ N2nIpEG_UVe.Ts6YrMtWZDgxAekS7BOuh.bJC1oVtVg3yu_7H8jEu6Mra2Wj9C9ybJbQo0iObW.h
+ cjG0Z_TzvkmFlIBy1rxVbHlxslx2jScydEd5stAnKFipJgIc6sQ0TjfortlE5kdKQWtu7TphupdE
+ vrbYDKRq5OglBCelSXx9ywERAaJDak25lCzoeal54CKF6m10Jl.Bnxh8X6gcckI1ON9GBQGYRWf.
+ nvD88jtrX5Cyd0wnF8MNaflZRoqaM6eeEoplDeyS.R5j46yaLqA_9R15EA_aWLfe155_mBQWw1Ux
+ n82ndtPxAsMJvFZ6Dt5V1eZosNbpX.fsC4aDv20sGY2Sz34nyt.guCMAZdjbQWbC8JTQuytF_LTj
+ 1F5XZFzylGytryCu7sG.ZWr6NVk4ptHDDqtmvKwFHosINLhvCeNYlJKMnHotTdN0IF4hRXAFrG_9
+ iRSA42dGF.u6qNGMDIHRFE59aA0gFT.IImv3MA64SXIVcVrCm7ti8l0L5imVxcPB6HCWE4NWsH5V
+ uwh5beXJhdZqap7HQWEIpC.I_f5tWwR5hnxuNoehL_BtUv39jWc4dMhxWN6yKjnHSu8T_qVVNkuE
+ Qf9GA_YTthndEmNwMETGXMnCqEqbcokai6KH9EbZDBQAlcxK8WDGzV5fZg68774Cn1RIyKCEhf4J
+ wqOG8kv.aEJkK0X4NJeRQ45mwSzXixK_DsAZ0H_UKgnb5URbpSFAN5tMJ8Az1P7q59znknu8wciX
+ lXb.7TrxZzGN9vN_EzaMB0ASsN7vV983JKOUCORXPBFDx.KpeHqPdV4jRMG8rejvWFkTSylSkAZp
+ 8wRw7cWyOvQdN9mxdp77G2myoBmrDHGZYo3qsGdf3hghlncWH0r2q49o4t70Gl84YZHoP127rdnY
+ LX9sVNo_J4yTFzVTR0eMBxCOFteBIAnuEfZi9WIf5CmPda5ZQb4CgNydshoqU_EaeXOcb4VFEk7t
+ bL0TO7Th1Xx4oy_S8Vk1z8V7DHlWAPq4VnhX16TbldDCQOjDaId3SvqXhRDF3tILrooJDt.Np9cW
+ OR_i7GVwYkxQFcgTwTeTie0_PJPWXQYUd6EwdHOVK558MRDTHxkXLCnhgnIqUjIAofHxh9cLdbza
+ K1mpHyIY8fzYhcVaIXxOUZUY7IdoJMTc4X.rwWqPY_vOXryHrzP4_bUJ.fjyHwHakZ376qzauIjH
+ 8djayxk8IgKm5lrYuiroxyEUZWc2i67hdDkQpNZBbobbaunKduwa.RgpKEXdvLyXQDuKwWRS4KPF
+ U_I6S2s9GYINGyFww1Alpz7mior2p5uNsCcBL_B6fExorcESuXq62oje93Sch1g1bbBmjDUFha9K
+ 1Ei5YFD2Q4XRmrgakmgOzr.haz6Y2QDGFmMGLBGdvsXoJGoy4LAw1n35CZe._naOV9gQJ3yq388D
+ wGSEVB9KuXqtR8q.IIRzf1jEav46V5pYZgKmY3msJh_wsyucDpCw0aWa1Oj1rfuMu06CwN9juQnk
+ f_vKeqkXW31YtEy2OOI4TtCD58bMRII5UOsiJYHKV8eMvs9DBUSmhpyrH00K7jg9RPMVzN6v4eCG
+ o1y5OdvPJ2g.u_yVlhgGSyQgReJp4F2HaPCHH4MTFdhSikq6SgBHCneUKRyODjHVhEopokihyPd6
+ wwK1dZsOLpb.EHyPk5VkMVt4mmYZb6t.ihpFEwSerSoxZOyhKN8NMMEoOAUHF9sQYnv_A1tNxjp0
+ DEORT2bjAionpodtwjGhTWYn4Rhv.L_oT.nsWEiDeitRUt8.J7UeJwlDiUup0dF.8n8idGJdizeD
+ MgDIddvOz.IBo1RsDfIKOqujTsy9TPhkkE9Ga5zBWxtyXbbW2aFhkxDObTtVhOsbGYdEmKpboMXc
+ pz3u0vgUaOwUtMBqF9NBcmZPAFjNyyl3zPLYEGeSkIqx.6uGxR6mfsdztomwxSTIXGL_R6hC1zXV
+ 5wDKCWxzZ.SLB25fbr8Z6uzg2pPGgnYGtXHtEn9wbKFbONhQ5fHMY.QJjmBiSXbX4Wo1LNAWoGw.
+ FeerH.bCYGeKQhUGcCvpbKyMPxUGtb.Ux0r_LxUBxsD7F0VKn6mTxvzdsc0w30Qm9ddMCIyDXFc2
+ rQneOpiq._BiF1IL1nGpDZMkiaKIqeJuzwrwU5QXBWJ8jLiXq1Lb67Uzr5_iYkjlCwq.Qrxn.EoY
+ ymiJb7A6MXN0I8QMB6mloGD2plXLn.CBH4v87fLx1NyXL5F4jHqvQvSM9aFW9QVZ2DIROohujgiV
+ Sh8Bf10WGCc7SZ5UGGWQ222eq3kOH20Ynwi8-
+X-Sonic-MF: <jahau@rocketmail.com>
+X-Sonic-ID: b274ec6a-3ff9-4e9c-8d6f-3a0c8da40061
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ir2.yahoo.com with HTTP; Sun, 18 Jun 2023 13:47:16 +0000
+Received: by hermes--production-ir2-7867f454fc-kqstn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 82fed9c2dc15f8b9aba5a128f5ba0cec;
+          Sun, 18 Jun 2023 13:47:12 +0000 (UTC)
+Message-ID: <e644a590-27f6-0eed-af58-097677beaf13@rocketmail.com>
+Date:   Sun, 18 Jun 2023 15:47:10 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230617002934.39408-1-jahau@rocketmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] drm/panel: move some dsi commands from unprepare to
+ disable
+Content-Language: en-US
+To:     Doug Anderson <dianders@chromium.org>
+Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Ajay Kumar <ajaykumar.rs@samsung.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Joel Selvaraj <joelselvaraj.oss@gmail.com>,
+        dri-devel@lists.freedesktop.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        linux-arm-msm@vger.kernel.org,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        phone-devel@vger.kernel.org,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Joel Selvaraj <jo@jsfamily.in>,
+        Dave Stevenson <dave.stevenson@raspberrypi.com>
+References: <20230613-panel-dsi-disable-v1-1-5e454e409fa8@linaro.org>
+ <ZIjayn8nVy-ejThH@gerhold.net>
+ <CACRpkdZ7a3aARMs3iBbBavF_0AkPOPs3fH8e6CrZYo7Ybr6m_A@mail.gmail.com>
+ <4f78b601-6e6e-2274-3174-87c62d7cfcd5@linaro.org>
+ <CAD=FV=X_xonf1Dz0BsNTKm4-zBm+ccKvPO+wEWFVMUVY_2=h3Q@mail.gmail.com>
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <CAD=FV=X_xonf1Dz0BsNTKm4-zBm+ccKvPO+wEWFVMUVY_2=h3Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.21557 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Jun 17, 2023 at 02:29:34AM +0200, Jakob Hauser wrote:
-> For the regulators, apply the same settings as in the downstream
-> devicetree [1], including the "regulator-always-on" for the SAFE_LDO.
-> For the voltage of SAFE_LDO, however, there is only one voltage of 4.9 V
-> available in the mainline driver [2][3].
-> 
-> The values of the battery data evolve from following sources:
-> - precharge current: 450 mA corresponds to the default value of the chip. It
->   doesn't get changed by the downstream Android driver. Therefore let's stick
->   to this value.
-> - constant charge current: The 1000 mA are taken from the downstream devicetree
->   of the serranove battery. It's not easy to spot. The value is in the line
->   "input_current_limit" [4]. The rows are according to the power supply type,
->   the 4th value stands for "main supply" [5]. That's the value used by the
->   Android driver when a charging cable is plugged into the device.
-> - charge termination current: In the downstream devicetree of the battery
->   that's the line "full_check_current_1st", which contains the 150 mA [6].
-> - precharge voltage: This one doesn't get set in the downstream Android driver.
->   The chip's default is 2.8 V. That seemed too low to have a notable effect of
->   handling the battery gentle. The chosen value of 3.5 V is a bit arbitrary
->   and possibly rather high. As the device is already several years old and
->   therefore most batteries too, a value on the safe side seems reasonable.
-> - constant charge voltage: The value of 4.35 V is set in the line
->   "chg_float_voltage" of the downstream battery devicetree [7].
-> 
-> The "connector" sub-node in the extcon node, the "battery" node in the
-> general section and the line "power-supplies" in the fuel-gauge node result
-> from the way of implementation documented in the dt-bindings of
-> rt5033-charger [8] and mfd rt5033 [9].
-> 
-> [1] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-eur-r03.dtsi#L135-L181
-> [2] https://github.com/torvalds/linux/blob/v6.3/include/linux/mfd/rt5033-private.h#L211-L212
-> [3] https://github.com/torvalds/linux/blob/v6.3/drivers/regulator/rt5033-regulator.c#L83
-> [4] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-battery-r01.dtsi#L100
-> [5] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/include/linux/power_supply.h#L173-L177
-> [6] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-battery-r01.dtsi#L102
-> [7] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-battery-r01.dtsi#L95
-> [8] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml?h=next-20230616
-> [9] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml?h=next-20230616
-> 
-> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
-> ---
-> The patch is based on linux-next "next-20230616".
-> 
-> The driver rt5033-charger was just recently added to linux-next.
-> 
-> RESEND because I used an outdated e-mail address of Bjorn before.
-> 
->  .../dts/qcom/msm8916-samsung-serranove.dts    | 67 ++++++++++++++++++-
->  1 file changed, 66 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-> index 15dc246e84e2..2114d26548db 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-> [...]
-> @@ -261,6 +278,46 @@ touchscreen@20 {
->  	};
->  };
->  
-> +&blsp_i2c6 {
-> +	status = "okay";
-> +
-> +	pmic@34 {
-> +		compatible = "richtek,rt5033";
-> +		reg = <0x34>;
-> +
-> +		interrupt-parent = <&tlmm>;
-> +		interrupts = <62 IRQ_TYPE_EDGE_FALLING>;
-> +
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pmic_int_default>;
-> +
-> +		regulators {
-> +			safe_ldo_reg: SAFE_LDO {
-> +				regulator-name = "SAFE_LDO";
-> +				regulator-min-microvolt = <4900000>;
-> +				regulator-max-microvolt = <4900000>;
-> +				regulator-always-on;
-> +			};
-> +			ldo_reg: LDO {
-> +				regulator-name = "LDO";
-> +				regulator-min-microvolt = <2800000>;
-> +				regulator-max-microvolt = <2800000>;
-> +			};
-> +			buck_reg: BUCK {
-> +				regulator-name = "BUCK";
-> +				regulator-min-microvolt = <1200000>;
-> +				regulator-max-microvolt = <1200000>;
-> +			};
+Hi all,
 
-The "regulator-name"s here don't really seem useful, since they're just
-the same as the ones already declared in the driver. Can you drop them?
-Alternatively you could assign more useful board-specific names, such as
-the CAM_SENSOR_A2.8V that was used downstream.
+On 16.06.23 01:36, Doug Anderson wrote:
+...
+> I guess the tl;dr (summary of my summary) is:
+> 
+> a) Moving panels like this to "pre_enable_prev_first" seems like a
+> reasonable idea anyway and (presumably) works around the issue.
+> 
+> b) Moving some commands between disable() / post_diable() or
+> pre_enable() / enable() can also make sense and isn't terrible. As
+> people have pointed out, there is some vagueness on exactly what
+> belongs in each.
+> 
+> c) Ideally someone could fix the MSM DSI driver to behave as Dave documented.
+...
+Actually I don't want to disturb the discussion here. Still I would like 
+to point out that option a) "pre_enable_prev_first" doesn't seem to work 
+well yet. On my device samsung-serranove with panel 
+samsung-s6e88a0-ams427ap24 (not in mainline, [1]), when applying 
+"pre_enable_prev_first" I notice two issues.
 
-Also, I think it would be slightly clearer to prefix the regulator
-labels (safe_ldo_reg, ldo_reg etc) with rt5033_. Perhaps
-"rt5033_ldo_reg" or "rt5033_reg_ldo"?
+1) According to commig 4fb912e5e190 ("drm/bridge: Introduce 
+pre_enable_prev_first to alter bridge init order") [2] it's supposed to 
+reverse the order in "post_disable" as well. That doesn't work on my 
+device, the "post_disable" order doesn't get changed by 
+"pre_enable_prev_first".
 
-Thanks,
-Stephan
+2) When enabling the panel, for each mipi_dsi_dcs_... command there is 
+an error in dmesg "msm_dsi 1a98000.dsi: [drm:dsi_cmds2buf_tx [msm]] 
+*ERROR* wait for video done timed out". The panel works well 
+nonetheless. However, before commit 007ac0262b0d ("drm/msm/dsi: switch 
+to DRM_PANEL_BRIDGE") these errors didn't show up.
+
+I tried to get more insight in the order of issue 1). I added additional 
+debug markers in drivers/gpu/drm/drm_bridge.c (original state linked in 
+[3]) and got the following behavior. To me it's rather hard to 
+understand the decision-making, to be honest. Both in "pre_enable" as 
+well as in "post_disable" first the host and then the panel are 
+processed. At "post_disable" it should be the other way around.
+
+I'm currently on kernel 6.4-rc4 with cherry-picked commits from 
+linux-next 9e15123eca79 ("drm/msm/dsi: Stop unconditionally powering up 
+DSI hosts at modeset") and d8dd416cb420 ("drm/msm/dsi: More properly 
+handle errors in regards to dsi_mgr_bridge_power_on()") and added 
+"pre_enable_prev_first" to the panel driver. Device is samsung-serranove 
+in X11 environment.
+
+At boot:
+--------
+chain_pre_enable: bridge at beginning: 'host'
+chain_pre_enable: iter in the list loop at the beginning: 'panel'
+chain_pre_enable: next if iter prev_first: 'panel'
+chain_pre_enable: limit if iter prev_first: 'host'
+chain_pre_enable: next in list loop from_reverse: 'panel'
+chain_pre_enable: next in list loop from_reverse: 'host'
+chain_pre_enable: break because 'next == bridge' 'host'
+chain_pre_enable: marker at end of first list loop block
+chain_pre_enable: iter at end of first list loop block: 'panel'
+chain_pre_enable: next at end of first list loop block: 'host'
+chain_pre_enable: limit at end of first list loop block: 'host'
+chain_pre_enable: next in 2nd list loop block: 'host'
+chain_pre_enable: next is not iter, call pre_enable within 2nd list loop
+                   block: 'host'
+call_pre_enable: pre_enable bridge 'host'
+call_pre_enable: inside 'else if', do pre_enable
+chain_pre_enable: next in 2nd list loop block: 'panel'
+chain_pre_enable: break because 'next == iter': 'panel'
+chain_pre_enable: marker at end of 2nd list loop block
+chain_pre_enable: iter after 2nd list loop block, call pre_enable:
+                  'panel'
+call_pre_enable: pre_enable bridge 'panel'
+call_pre_enable: inside 'if'
+call_pre_enable: passed second 'if', do atomic_pre_enable
+msm_dsi 1a98000.dsi: [drm:dsi_cmds2buf_tx [msm]] *ERROR* wait for video
+                      done timed out
+msm_dsi 1a98000.dsi: [drm:dsi_cmds2buf_tx [msm]] *ERROR* wait for video
+                      done timed out
+...
+chain_pre_enable: if iter is prev_first...: 'panel'
+chain_pre_enable: ... change iter to 'limit': 'host'
+chain_pre_enable: iter at the end of function: 'host'
+chain_pre_enable: bridge at the end of function: 'host'
+chain_pre_enable: break if iter is bridge at the end of function: 'host'
+
+Then the panel get's turned off:
+--------------------------------
+chain_post_disable: bridge at beginning: 'host'
+chain_post_disable: bridge of the list loop at the beginning: 'host'
+chain_post_disable: if entry is not last, set 'next' to next entry:
+                     'panel'
+chain_post_disable: if 'next' is prev_first, set 'limit' to next:
+                     'panel'
+chain_post_disable: loop through the list of 'next': 'panel'
+chain_post_disable: if 'next' is prev_first, change 'next' to: 'host'
+chain_post_disable: ... and 'limit' to the same: 'host'
+chain_post_disable: new loop through list of 'next' in reverse order:
+                     'host'
+chain_post_disable: break because 'next == bridge' 'host'
+chain_post_disable: after !list_is_last block, call post_disable for
+                     bridge: 'host'
+call_post_disable: post_disable bridge: 'host'
+call_post_disable: inside 'else if', do post_disable
+chain_post_disable: if limit available, set 'bridge = limit': 'host'
+chain_post_disable: bridge of the list loop at the beginning: 'panel'
+chain_post_disable: after !list_is_last block, call post_disable for
+                     bridge: 'panel'
+call_post_disable: post_disable bridge: 'panel'
+call_post_disable: inside 'if'
+call_post_disable: passed second 'if', do atomic_post_disable
+panel-s6e88a0-ams427ap24 1a98000.dsi.0: Failed to set display off: -22
+panel-s6e88a0-ams427ap24 1a98000.dsi.0: Failed to un-initialize panel:
+                                         -22
+
+It's not my idea to go into detailed debugging. I just wanted to say 
+that option a) "pre_enable_prev_first" currently doesn't work well, at 
+least on my device. I would assume it affects other devices too. Also I 
+didn't want to delay Caleb's patch review. However, it might be related 
+if the "pre_enable_prev_first" approach doesn't work on disable.
+
+[1] 
+https://github.com/msm8916-mainline/linux/blob/msm8916/6.4-rc4/drivers/gpu/drm/panel/msm8916-generated/panel-samsung-s6e88a0-ams427ap24.c
+[2] 
+https://github.com/torvalds/linux/commit/4fb912e5e19075874379cfcf074d90bd51ebf8ea
+[3] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/drm_bridge.c?h=v6.4-rc4
+
+Kind regards,
+Jakob
