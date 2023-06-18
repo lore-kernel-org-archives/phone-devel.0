@@ -2,91 +2,79 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1790DEB64D8
-	for <phone-devel@archiver.kernel.org>; Sun, 18 Jun 2023 13:52:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76309EB64D7
+	for <phone-devel@archiver.kernel.org>; Sun, 18 Jun 2023 16:49:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbjFRNwp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 18 Jun 2023 09:52:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46344 "EHLO
+        id S229560AbjFRQt0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 18 Jun 2023 12:49:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229814AbjFRNwp (ORCPT
+        with ESMTP id S229478AbjFRQtZ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 18 Jun 2023 09:52:45 -0400
-Received: from sonic301-21.consmr.mail.ir2.yahoo.com (sonic301-21.consmr.mail.ir2.yahoo.com [77.238.176.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F1BE40
-        for <phone-devel@vger.kernel.org>; Sun, 18 Jun 2023 06:52:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1687096362; bh=/RyinwaMhv2u3rKYkX1+azxoI3ZagrDxsiuTKytoILU=; h=Date:Subject:From:To:Cc:References:In-Reply-To:From:Subject:Reply-To; b=eey+7ucCiXAnE7Pdl/ETdJCLMfnMCG4vJxSlKn+6dZCzn/yJsQ9RsXC6d0FjjLIcZwcE7BtuwKV7TgJgyA2Q0bT8ULx8Z17+pFVqrjDQCRwbB/lgyT8WNRRz3VGY1yZS2X2Hdg9Q1qJzWfzEUfVHy9zPEbro7nqsLbmVAPYINIfrH9rGbRw9z4qv2HfGr3CNF+or4l29CwEmuPAgv5bgpXlMs4TxNEMQskFQffr0zOCQxTJv/a4Qd4FtPuF5r4bone6e7cH0kscoIjFPQqslUvNLsxsWSeFojOEQMbVgXdn38udzq4+zN/OdNQETc8SY0HONDDNVnPOJu3LHM5Je5A==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1687096362; bh=n9imRzBVXK7LGuUd0QaSdKLiyaIbu04UryOZl2q/fov=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=mumhHzmlb3aOvvOPiuG3laa+t1lQpe8L59WCMleICmWr/QIHPbRYZmgBqMjN6DsopiJpnuedSQ73PLj1V/klXM1uPUWupzq16XYXMNCew4gs9Q7rI/RblFI8+JKo1QOJyHbEvXP/p/PQi5L6Ce81D3kGpFpDwaKOG/9wyImjOTCUQHBxI328mZl+ba/qNqlUZli66T8Ohf+HCfjCZzl9xAxZI6hL4oBFE7GxErgBmHFUdCxSFDDv1dFrHX1d06N2M28QlygeKv3721TH+N0GCAdhTM6vQvbyvKFUPFcj9frD9LUNRCnGSvTZOmq0L5yQasVXlF4wL5QspBc5fKDQOQ==
-X-YMail-OSG: DEs9pR0VM1lcWgD7m46SXnY8tyIKgkGbnglhExNMQZaLjo2RjlC0bL_4fpCiP7i
- QwuCCNtqNh_LCTlgx5HzhUvlXe4xqwPT7X6LpuDkSRMTxJTywAFxrlvlm5B31hXE23MVbqInDBgg
- ahQ71Bbm9DV2Lo3LPBb0tW7Bq4S6Mt06cWdJuHFVpNDz0BP7Kx5jVaasBv_EcXhHItS7Kl17G1wh
- fGpt9MuyZZrJWnq0ROyGPdtaMhsJZf2A37C7NPyB_1i_cIMwNDJunh_2.EYmQdu8Dt01hGCyjXri
- v1ZrN6FvruQ6wbzrfQSuI0WNzdXvwlnCDC3Cd8pn3_vSHwkypwzylTcOyfvdyZB4Z15cAhkmSUVk
- YUQ.sXzEVZJEHBjfoVwkuRPA7CfncRYIFe6y5y9josXWlrvnnzU53bHJ62vq0a9kaeHiOLLJpDCj
- 8vCeh3q1AZenRfqBVtYG6ZSVHQ_U2GF583iZjppsWx88omtdhofaswmlOjxlixZDG805SwXMlicU
- 3MZZ_jr4CcQFAQEniipeWIWRvpRfXFQ9ncYAX6iWMMyujysRtrV3Cgjp_VwLdEETaDdrXbKYY1hc
- aE9LmG67TH.aHA0zXKFumBePCux0sPdXLFLaWyH0.I4cMUl_K0IA3GBXLkgBVjiDCWurmmgoVAEz
- 2owjt_L7SZ9cov6gdKnR0kwWkSy_Ubtxak7GqvxyBxD2fKC.CT0P_EoKB114ThEJZULnqf287o6X
- dBCCiy7SOxFih5Cd0XrhbPRHPB2p1J._Tf1JCyWinYuHsxSRtSeu8KOKrPHbI0t8Dmt8q.3UEJnw
- t.FtAp0iqxaLUKqrFO0.rPBjMJQQxuFbJ0eY.aqJR_QMDwrgiattllU.91Q7naIWpbi0lLbxhV8W
- rh14DpapCbO0x5m07YuddkKY85jW1cmCkSM0I6eJ8q1EIydg412cEOUBDABbLLkwxiI5So0CaF5R
- ge5UdFAveaj.Z9_Q7atiepn14kaxpS2T0V4vHL_rz8SsGKefHHD3IZGwv43MN3HMLcJ7CtTH0x6e
- 7E8BRW64mxImjJ3cOl4sQKRoRYYPqyf5HxtVX5kFFca0UYpZD4zRhCpSugRnAsjqrTdWbiCABbSf
- e4bNxsW.g0_pnokuW4EL0QJLCXwUKKT1Ng258iGxRD9he828tNNn2Dq0p9Ksr.oX16oTLCm8rxxF
- tt8ZY_rv53Bmdl6W5QtqkX5bweD4quvipQi7M.p8inTMzbo_x8zCYyqdstMzX2OUCQzotSQpxWPf
- VJx_jRrxnRIu1XWuPDlWklzs00S8a8PEWq6YBCA2ZCAjBTjYC7i5wDqlyUSF36LiZVKyDRvXtkuE
- s_5HYB9PqiCzU6SirAHH0Ch3F_vC7Rag6DOxgPwsWbNCCptKZYmJ4ni8hGpIfasfPvThF2CD4Eqw
- odd41UJAsDF8ltnKumythcK8e4qVoGY64Dbk2cKDz7dIs8m0F2k5Oo7uroW2wIXF1HiKXgXYB2J1
- Xbh6IDP4UEwGRDnl0miKM0qSbX1vQUhevw3JGaOEIAesXqLk8tnDC8k4DGUbvMkdqIGyMneN2AYj
- syBvrzJuH.pnJkdlbhsYHQ0LRRWW1gqJAOkhQo87zlP0I7kfY2acwGOdv7Q_nx06inK5dnZMLJo1
- 94X3rT309.dZ63.EKBjAcWLhBA2tZppbmrtiN2q5vbjfvlwEp6eLTKlHo5ib8Cxl5U1RJLwVF027
- XDCL_IIjaANVVCcsvTqMlZmhlRIVG4u48OOjejZo.2_GDXoIPAbaQJ5rcEi1KNoc3p9JmqWnYAOT
- GtSd2uDlFM.Wm7zCWoQSJSR0c4vvarBpfdQ6fsLj7CdaTP_OCUZrvZa_5SI9q9yfwWYOUV3GyrHv
- FEUiQbIGucwo28CHMNG75EoC32lVEjanyuElOb0_wVcdo.cF_EgtcGveB2c_67_EdONiV.HJ0S6t
- 0PtcUg0BLGhzyoplFH9JVhAiOxtL4O7Kq6stkurUCZcGi4Sn7iqgqjA.kvl4vnGURy2UQ3dvOUL7
- AGmqVOLP2k2iLmWGNlNi5Hu8CSMoUji9u5YnAvuiuOfK7yW2DlRalYy1j195v4oMj78PC.zK4CoW
- UDsbr1BKGh8sfcm13lkZg5yKgsL8N7HyCM3.9i1.amXkAcdtSkFfd6UZKBEnuVFbWYUJD4efIi6i
- 3Gp8Go48S5_eiSX1Iw.OluL0AagoaZVU4cOblPFuqwXNWsypbwvsEekClo9og3Cjhb1BZy9aNpND
- Kl4G4Ed2U3Wty8lDAOfQMLRqmPoSmSbYA9jO17Hvy_3NkG6GnvGJXDG69zy_ePUzbGh9xUCQsSG7
- woNtKSqAs9hI1OS.r2n4CyymygZDYRGg-
+        Sun, 18 Jun 2023 12:49:25 -0400
+Received: from sonic309-25.consmr.mail.ir2.yahoo.com (sonic309-25.consmr.mail.ir2.yahoo.com [77.238.179.83])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94BE4E54
+        for <phone-devel@vger.kernel.org>; Sun, 18 Jun 2023 09:49:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1687106962; bh=1byxmKsuwVtHNKVjs0CfYPPIiLgXwsmmbrJRN3DT5sY=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=uha/SwH7I7rs/r5ZpEHymasRxI2NNC+1btE5cJbHnBVi/+2EP7LDhN4wP0wDJUYFZOHGiyqYc6KUZdGxbK/K5mHGpV0F5Op8ZtJI8ZAGhObL62malGYW6geWo/PDkaNG+bbZx5AixdS/ovGfmzqmzPLyac5wc/8HU47ZdWI6bRFyGu2FAmtdOxy+Zs18pBuCIB3ns2p/sxLaJI9ag/V6BGpq651v+Mdo5Mt8drysFdU2I6OIGYU0/6jEiLIUIkufSuDABDMOHHFDT5favNAZie9mABoyfHlT/MRyDTqRa4+qr2JkIAxUZsyjmSV3WR7UptRCAYk0k1y5Sie2SoaKkA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1687106962; bh=aJFsOPX7ARn/sObHD13lQRHiRpseUebdhxOsSCSQNu9=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=pnZ2jomD+qitYFiL0hkl3X6RthizvbE/SLUTXcJrhYl98NczZJKkXP2bQI9AHkdXsajDhiSPhjsTpHboF6vn+fdmACCYu9w2UGz/LDqZ6nb9z5FCLXaI13nX5BDu7uEIB6oRBBakArIL09jTJT16NJJNz4/T2nCeQkR2MhZqmM0DhM1B62TOzJd1CmhhRYskRyVTkPccRGNQPRNzJ1Rz58GN33Z8ZQOLJ79mEKObXjTyRCepkukeVHCK2OG/v3m7JuX1Uugj2ozeDjpTB5fzhhtQI/9RqdLe6mtSaW/y0vyIBmpsWssIa6/BD1irrJACUsSHr20N1X2YKExjn6fxcg==
+X-YMail-OSG: y1.8yFUVM1nNIPH0bembKj4.xSeiOLT4LwMSpl8Fo4EH0ZaQSwdfamb.Rx4slUh
+ 7baTXb1K7zM.3kQpzH8Ut2G1xug_uq4zseHmxx_kanDYG3syXd1cOAe1zyH779ysxCKV9YEnSW1l
+ FCGTHDUJPGzqh3qneYpBMye0SWkONmrU6C3NM3p.7PWscqnII.v7kzwtzsoSbVl6rKH3opYc4.Ol
+ Ohz_Xgaltk8D4Lo6ca8Ms4QLPF9scTKV.X03OZUFxAIsFopmBjXG6d1De88FtZ68aLOuhYsRcMMP
+ W6o01rAep6TzOWOYngW.u6xI_VES6dvwhkkFkWq8zduOGQkbcOoqB58Pyih9bmPYkA1igg1dneck
+ Eabn95qIKME_eoi1yTKOREO5HigP7Mt84bwGUNlJmoi1AYjWWqxIU9DC321_K8o4P.6IzBj1mJux
+ HG2aWh7eWwnl0gQY2yFmgZ36Bljt1CCsu_gMeES_cSmbukeRWhD.eApRt14XcXvxiX782ubfprf_
+ o9MTiiHmF6gMf5Ji23L7DuSuSOjDQW87703aR1sTlbkComoBFSkeGy3jNP7tx9Pazqg72MUv9T_A
+ 0O61VhZpoGjllLpcXmAyETtli1E415ZnH.bY_.RrS2B2v3GRU5vkMoSvk60pZ.abI6X1VGyL3oHg
+ TlOOnSG.fl1jdJWS7MsOfDHdDqOmtFvuxKV35CRMVC5pLscK6eiWVEw3fqxqlhlbLja8yAC_B1cx
+ _7i85Auca2KrGtsByuXX.0VUKb2a4EtJHvb5Fl49jfleS6skZLLRrpO77yNK35xSBjdfAebBmkcs
+ Z3oAvk6suwoUeTMxfKUCctfZlhcmsaV3KQCwuosh73jegIX4P6GqP0AKbreH.eYFrE154.FNQwxE
+ hBIgLNxlJSZmxfrCVoz1JZIPxrQJrkLb39vtXnCZNWQoPwV3WaEEcnsdFS_wJ_IGwoAONTT8fYnR
+ abm5fbjD.HHpj0mDbSmbFEtHu5VPSC51I8C_uwU7d.bYhTtcEOkW7w3luHruedxZUafW7LC.XvRD
+ CzDl34SGHnHONDEPffx7eUsK1hMZb1B.bWJC_OXwBj_r66M5ScCWHZ8ebwUfHR5AY26H_nx2.Mys
+ dirxSG69kKE8aBl0mybEDi.9g1yF9V2y9cXK1HrNWg5VYTZwAbW_XcYmpwZJem4sQgxti3jYFyxv
+ XS4JUypxm88YYDKOXGtBlvePamRdNN4hNpBJJzd3TJaml2gChrBHE0LFBDBY4yfj9nzKTBNzGxks
+ tRA8nkI.BL5InLQY_gceaK0BHF.QqxhWFNVod8EpDBYO5L5cbUqcoeY__sbHxu.meiZKhHUNVeE9
+ v1Btbe3aHDeY2Wu_aLTleBkcoJgyywzLazzK4QoptBHXrZbWGRFvckfa_F8Z4HlOYCJyCnKN7391
+ AgHfUWrH3cP6KyH51olSlCAchgSjqCl8a58pZ0cudm0EI4qTTdnRfFWL6FlIU1LqRcecGKr3ZitK
+ 0FrSEVnDqHAUz01DWkb0y8Xj6znxBorKK4K.LN7lZAk53NxixcfLm1yzwJw2oYi4HQfj.asZl16Y
+ FKFYkbv7ROyoeRRIDdzye7qX89TkptfquKr9aZDl6YHjxKNmhQqDixsD4iK30BO.4m574LOB.xmN
+ QkOq6RQGdy2mVEXQ1DXabbJuf7m4EYzs.IJ9hpdR6uOCmhquk.CPfXlKRmyIMCa2MT8fGs6.Cu1M
+ nIbdc2KXQLcuon2JxEacK7yi5Oi2vMP6fyNKimQIXeOu0U6IZkaB8wvDPZFlOZDg8VYS8QoFJlLP
+ uZSr9nszMXwNPb.rMU1DeJdCg0aJKeIo..GDT6rFsNbpy9p9h.GsEMENJ5oCHEe9JGL69xCPuTar
+ Ba0zlgJdJI7i5IxK1XIDz_ZGr.fQLHwhYg8HSaUuxN89hG1RVZPFuozz2BTOws9KmNhKsxngAc1F
+ HnF0UuNQ.sJwO_VOj4wEfSbL6mdCBXYXA1y38RryQhBdvQoKPS27J1rvW02EhffbqNK9ufmwEd.X
+ VvZ63ckWZLIVlShmNdOe6R2IcQrpsDJ4f2PrweVTLRcNHbWvtpzZrupUL2qlF0D1WR6zOUOJ8ALu
+ XUFhSZqpETKd_Fjt3YO5Z7TL6y1CjbofIEDyv.VkTyzckCVbipbv_f8NV6.o4ivr829cFn4G1jwC
+ bp3ZhyXiSlUV3Djteo2.RxciRbsFTTi4itNpdiBCPfFJ7Wi4JzSQQLctQ8Wir7_ooQwmqbYDJ6MW
+ 3KvS2_l8AhA5PjNJCM6JsP2PQrKddsvL1idKtjCKyyIFEu2KCBjTFknxeqrBOrxFnk2J7RMwubGz
+ 0KxZ7L7G_HTpsmQcak1kuLNTdp65MF03k
 X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: 3485778f-c7ed-4cf2-97dc-cf0adc5eff8f
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ir2.yahoo.com with HTTP; Sun, 18 Jun 2023 13:52:42 +0000
-Received: by hermes--production-ir2-7867f454fc-z6m77 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 349a3a6a98baa16b39454e13896df300;
-          Sun, 18 Jun 2023 13:52:39 +0000 (UTC)
-Message-ID: <e542b4f8-2149-0136-6892-59390f96cf90@rocketmail.com>
-Date:   Sun, 18 Jun 2023 15:52:37 +0200
+X-Sonic-ID: 0a8d3c80-63d9-43ac-ad23-34ea945a5cd7
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ir2.yahoo.com with HTTP; Sun, 18 Jun 2023 16:49:22 +0000
+Received: by hermes--production-ir2-7867f454fc-z6m77 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 4eb4576de48997a989d0f23ab4fb0b6c;
+          Sun, 18 Jun 2023 16:49:18 +0000 (UTC)
+Message-ID: <ab3e475f-27ae-e718-60bd-cb22f5070942@rocketmail.com>
+Date:   Sun, 18 Jun 2023 18:49:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] drm/panel: move some dsi commands from unprepare to
- disable
+ Thunderbird/102.12.0
+Subject: Re: [PATCH RESEND] arm64: dts: qcom: msm8916-samsung-serranove: Add
+ RT5033 PMIC with charger
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Henrik Grimler <henrik@grimler.se>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <20230617002934.39408-1-jahau.ref@rocketmail.com>
+ <20230617002934.39408-1-jahau@rocketmail.com> <ZI2_565RFDtR3Sa-@gerhold.net>
 Content-Language: en-US
 From:   Jakob Hauser <jahau@rocketmail.com>
-To:     Doug Anderson <dianders@chromium.org>
-Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Ajay Kumar <ajaykumar.rs@samsung.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Joel Selvaraj <joelselvaraj.oss@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        linux-arm-msm@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        phone-devel@vger.kernel.org,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Joel Selvaraj <jo@jsfamily.in>,
-        Dave Stevenson <dave.stevenson@raspberrypi.com>
-References: <20230613-panel-dsi-disable-v1-1-5e454e409fa8@linaro.org>
- <ZIjayn8nVy-ejThH@gerhold.net>
- <CACRpkdZ7a3aARMs3iBbBavF_0AkPOPs3fH8e6CrZYo7Ybr6m_A@mail.gmail.com>
- <4f78b601-6e6e-2274-3174-87c62d7cfcd5@linaro.org>
- <CAD=FV=X_xonf1Dz0BsNTKm4-zBm+ccKvPO+wEWFVMUVY_2=h3Q@mail.gmail.com>
- <e644a590-27f6-0eed-af58-097677beaf13@rocketmail.com>
-In-Reply-To: <e644a590-27f6-0eed-af58-097677beaf13@rocketmail.com>
+In-Reply-To: <ZI2_565RFDtR3Sa-@gerhold.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Mailer: WebService/1.1.21557 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
@@ -94,11 +82,93 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-A typo in my previous e-mail:
+Hi Stephan,
 
-On 18.06.23 15:47, Jakob Hauser wrote:
+On 17.06.23 16:15, Stephan Gerhold wrote:
+> On Sat, Jun 17, 2023 at 02:29:34AM +0200, Jakob Hauser wrote:
+
 ...
-> Then the panel get's turned off:
-> --------------------------------
 
-... should be "When..." instead of "Then...".
+>> +		regulators {
+>> +			safe_ldo_reg: SAFE_LDO {
+>> +				regulator-name = "SAFE_LDO";
+>> +				regulator-min-microvolt = <4900000>;
+>> +				regulator-max-microvolt = <4900000>;
+>> +				regulator-always-on;
+>> +			};
+>> +			ldo_reg: LDO {
+>> +				regulator-name = "LDO";
+>> +				regulator-min-microvolt = <2800000>;
+>> +				regulator-max-microvolt = <2800000>;
+>> +			};
+>> +			buck_reg: BUCK {
+>> +				regulator-name = "BUCK";
+>> +				regulator-min-microvolt = <1200000>;
+>> +				regulator-max-microvolt = <1200000>;
+>> +			};
+> 
+> The "regulator-name"s here don't really seem useful, since they're just
+> the same as the ones already declared in the driver. Can you drop them?
+> Alternatively you could assign more useful board-specific names, such as
+> the CAM_SENSOR_A2.8V that was used downstream.
+> 
+> Also, I think it would be slightly clearer to prefix the regulator
+> labels (safe_ldo_reg, ldo_reg etc) with rt5033_. Perhaps
+> "rt5033_ldo_reg" or "rt5033_reg_ldo"?
+
+...
+About the "regulator-name"s I wasn't really aware. I don't have a strong 
+opinion on this.
+
+With the downstream names, it would look like this:
+
+regulators {
+	rt5033_reg_safe_ldo: SAFE_LDO {
+		regulator-name = "RT5033SafeLDO";
+		regulator-min-microvolt = <4900000>;
+		regulator-max-microvolt = <4900000>;
+		regulator-always-on;
+	};
+	rt5033_reg_ldo: LDO {
+		regulator-name = "CAM_SENSOR_A2.8V";
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+	};
+	rt5033_reg_buck: BUCK {
+		regulator-name = "CAM_SENSOR_CORE_1.25V";
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+	};
+
+Dropping them would look like this:
+
+regulators {
+	rt5033_reg_safe_ldo: SAFE_LDO {
+		regulator-min-microvolt = <4900000>;
+		regulator-max-microvolt = <4900000>;
+		regulator-always-on;
+	};
+	rt5033_reg_ldo: LDO {
+		regulator-min-microvolt = <2800000>;
+		regulator-max-microvolt = <2800000>;
+	};
+	rt5033_reg_buck: BUCK {
+		regulator-min-microvolt = <1200000>;
+		regulator-max-microvolt = <1200000>;
+	};
+
+I would rather drop them. The first name "RT5033SafeLDO" doesn't add 
+much information. The other two I'm not fully sure if they provide the 
+cam sensor only or if there might be other users as well. Also it add an 
+additional set of names. When dropping them, the generic names SAFE_LDO, 
+LDO and BUCK are taken from the rt5033-regulator driver.
+
+Unfortunately, I added the example in the dt-bindings with the generic 
+names. So this question might come up again when someone else adds 
+rt5033-regulators to another device.
+
+For the phandle labels I'd go for rt5033_reg_..., I already changed them 
+in the examples above.
+
+Kind regards,
+Jakob
