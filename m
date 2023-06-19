@@ -2,182 +2,144 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38F7DEB64D7
-	for <phone-devel@archiver.kernel.org>; Sun, 18 Jun 2023 19:11:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CB0D7EB64DB
+	for <phone-devel@archiver.kernel.org>; Mon, 19 Jun 2023 10:36:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbjFRTLj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 18 Jun 2023 15:11:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37238 "EHLO
+        id S231629AbjFSKgL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 19 Jun 2023 06:36:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229543AbjFRTLi (ORCPT
+        with ESMTP id S231245AbjFSKfj (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 18 Jun 2023 15:11:38 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898821B6;
-        Sun, 18 Jun 2023 12:11:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1687115492; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=lQynQm4TBgm2oPzFgVhKTiDlfm5RqIGuhIDN8h1xeR0njFroEQGHuHLeiVWBAJpupP
-    eS33rLTDtS893Gj9pW4C+YHTF4vrb5Q/zK+KxCvEX6h8Zmx2Ol0w0/r4hRUYurN/WhrY
-    NKZ8Nn0nd2W3dob3OkPr1262Odw6MyQ6GofT5kCLviHyhpXgU+mdQrbLC/EAqAbJG/fQ
-    KGbW2XTf5JCkIPCF6ckwuaBWqpFuU2RcW8OlHI01+LGWrQQP/bCdS0dBnfyHclXqan0h
-    SWuQ60GzrX2TTFpyDycNRDGrCmrF5hdLqkynZUTSDdrodxhojwAczDcOVnxi91i2ym6D
-    dcmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1687115492;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=FJMWBLVxHgWe48faKZRs40upiT2yzn0xKgnw2MVIZWM=;
-    b=hE67MlzWy6GMUIMCASjLk4ocMHGbl/nFQIi9hmUfe3P+Apv9l4VTDcRAnufN7lJwIl
-    aMJA072Slf3hR63aSEF2xfJjvjCzj5pWv6FizIHVQ6ucwagV8lFQ5Y0ZaNaH3B/lQhPX
-    vUVeujLRG1eZOH/CB5KrdsdFngzOqBkBTSJU5QciXz7IUQbHS4HOjSVQxQ+DVbaN5BUx
-    K5jAE94bjkwytAIElot4XSOmJn85pNaqf5KTvkSYdkKJsQJ+7QeJ/1rEt+L0bwzAwcKF
-    iW24CutL6/mP/JRHyIyV+oz+1oDYiKlL/LO3gfYXDTjDUxh1zQ/YXNLG+hwXwerXmq24
-    qBjg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1687115492;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=FJMWBLVxHgWe48faKZRs40upiT2yzn0xKgnw2MVIZWM=;
-    b=YbhDKRYKpFWVDUU2/MBK6STXwSjorBYv7xYEmS6a6yOGzkaTX/9zeJtMkcYndQ18c7
-    iUv7YxoBOSLiTNYokZjyd4sf+JSuez0ggkAZckwQL+L/2Lkf1qQxq4xFkPeh178OCf7F
-    yTyhDGCv5aUMI554B5knidfXNnxr6+yMbVG4PA6bjPlrodXSFGQSY5V/Zqp+R2TEvkQh
-    thT7JJhq/8fQw0dS45qBRe+UEDbV2Z2apYLYW78qcOrc7wAdYNQCl5WEw9YboWDFITsU
-    oZEpSrNI1axVP+PXWuYiRo7AHNR4aiDAhM3p5rLgGu/XU9Ajj1RBkAPXuVxY24chzbC/
-    dNAg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1687115492;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=FJMWBLVxHgWe48faKZRs40upiT2yzn0xKgnw2MVIZWM=;
-    b=oF54QNymzT0Ibs4uevVULRe9zB9GwGr3yz6CddEyWCruKLzznt8IRe5aKPHvcgcJ1y
-    gYTMNeJHYjqgNPXf7fDw==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA+pvh"
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.6.0 DYNA|AUTH)
-    with ESMTPSA id D0d0a8z5IJBW9YU
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Sun, 18 Jun 2023 21:11:32 +0200 (CEST)
-Date:   Sun, 18 Jun 2023 21:11:29 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
+        Mon, 19 Jun 2023 06:35:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B7B3173D;
+        Mon, 19 Jun 2023 03:35:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B0CAE60B6D;
+        Mon, 19 Jun 2023 10:35:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC56C433C9;
+        Mon, 19 Jun 2023 10:35:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687170931;
+        bh=5dt6l3lx8FHqgt+yEGvI0hRPuTRkjicnDuM52S/ToEU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZektIom2LsRtOyxwQz8sOmWcQciXT8JR4ZjkunidMtKtQvHPoKihYbDXYj7jb8/vU
+         hPNrYAL0YBaU3WLs0kYtWu+mwxs/owBgjD3NNWW8lgIWnbFSRFYNXZ9drkrNS/EGqV
+         g1XzT83U7UMZ7vH1hzwvYbcih25AMOhSnfOWGTQueLHP2klGaqI81AUmvZlhb7A3ld
+         11BHHDw733l04et6x9BJwan0nQ0019Z1TQJ81ni18nKLyKxWGtxvG20zPDonFh5MGF
+         0P/gCyZ2aDF9HXTlpWTWffoh0r3YT5XW/jGQg1Evijre2cX8IagbSdg53Z2EQXJ3je
+         N36FmOjONZjXA==
+Date:   Mon, 19 Jun 2023 11:35:24 +0100
+From:   Lee Jones <lee@kernel.org>
 To:     Jakob Hauser <jahau@rocketmail.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Beomho Seo <beomho.seo@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
         Raymond Hackley <raymondhackley@protonmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Henrik Grimler <henrik@grimler.se>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH RESEND] arm64: dts: qcom: msm8916-samsung-serranove: Add
- RT5033 PMIC with charger
-Message-ID: <ZI9WjmWhkUh_bdz6@gerhold.net>
-References: <20230617002934.39408-1-jahau.ref@rocketmail.com>
- <20230617002934.39408-1-jahau@rocketmail.com>
- <ZI2_565RFDtR3Sa-@gerhold.net>
- <ab3e475f-27ae-e718-60bd-cb22f5070942@rocketmail.com>
+        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [GIT PULL] Immutable branch between MFD and Power due for the
+ v6.5 merge window
+Message-ID: <20230619103524.GA1472962@google.com>
+References: <cover.1684182964.git.jahau.ref@rocketmail.com>
+ <cover.1684182964.git.jahau@rocketmail.com>
+ <20230609064753.GL3635807@google.com>
+ <faff027d-2a6a-22ca-2487-2ae05223fabd@rocketmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ab3e475f-27ae-e718-60bd-cb22f5070942@rocketmail.com>
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <faff027d-2a6a-22ca-2487-2ae05223fabd@rocketmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Jun 18, 2023 at 06:49:16PM +0200, Jakob Hauser wrote:
-> On 17.06.23 16:15, Stephan Gerhold wrote:
-> > On Sat, Jun 17, 2023 at 02:29:34AM +0200, Jakob Hauser wrote:
-> 
-> ...
-> 
-> > > +		regulators {
-> > > +			safe_ldo_reg: SAFE_LDO {
-> > > +				regulator-name = "SAFE_LDO";
-> > > +				regulator-min-microvolt = <4900000>;
-> > > +				regulator-max-microvolt = <4900000>;
-> > > +				regulator-always-on;
-> > > +			};
-> > > +			ldo_reg: LDO {
-> > > +				regulator-name = "LDO";
-> > > +				regulator-min-microvolt = <2800000>;
-> > > +				regulator-max-microvolt = <2800000>;
-> > > +			};
-> > > +			buck_reg: BUCK {
-> > > +				regulator-name = "BUCK";
-> > > +				regulator-min-microvolt = <1200000>;
-> > > +				regulator-max-microvolt = <1200000>;
-> > > +			};
-> > 
-> > The "regulator-name"s here don't really seem useful, since they're just
-> > the same as the ones already declared in the driver. Can you drop them?
-> > Alternatively you could assign more useful board-specific names, such as
-> > the CAM_SENSOR_A2.8V that was used downstream.
-> > 
-> > Also, I think it would be slightly clearer to prefix the regulator
-> > labels (safe_ldo_reg, ldo_reg etc) with rt5033_. Perhaps
-> > "rt5033_ldo_reg" or "rt5033_reg_ldo"?
-> 
-> ...
-> About the "regulator-name"s I wasn't really aware. I don't have a strong
-> opinion on this.
-> 
-> With the downstream names, it would look like this:
-> 
-> regulators {
-> 	rt5033_reg_safe_ldo: SAFE_LDO {
-> 		regulator-name = "RT5033SafeLDO";
-> 		regulator-min-microvolt = <4900000>;
-> 		regulator-max-microvolt = <4900000>;
-> 		regulator-always-on;
-> 	};
-> 	rt5033_reg_ldo: LDO {
-> 		regulator-name = "CAM_SENSOR_A2.8V";
-> 		regulator-min-microvolt = <2800000>;
-> 		regulator-max-microvolt = <2800000>;
-> 	};
-> 	rt5033_reg_buck: BUCK {
-> 		regulator-name = "CAM_SENSOR_CORE_1.25V";
-> 		regulator-min-microvolt = <1200000>;
-> 		regulator-max-microvolt = <1200000>;
-> 	};
-> 
-> Dropping them would look like this:
-> 
-> regulators {
-> 	rt5033_reg_safe_ldo: SAFE_LDO {
-> 		regulator-min-microvolt = <4900000>;
-> 		regulator-max-microvolt = <4900000>;
-> 		regulator-always-on;
-> 	};
-> 	rt5033_reg_ldo: LDO {
-> 		regulator-min-microvolt = <2800000>;
-> 		regulator-max-microvolt = <2800000>;
-> 	};
-> 	rt5033_reg_buck: BUCK {
-> 		regulator-min-microvolt = <1200000>;
-> 		regulator-max-microvolt = <1200000>;
-> 	};
-> 
-> I would rather drop them. The first name "RT5033SafeLDO" doesn't add much
-> information. The other two I'm not fully sure if they provide the cam sensor
-> only or if there might be other users as well. Also it add an additional set
-> of names. When dropping them, the generic names SAFE_LDO, LDO and BUCK are
-> taken from the rt5033-regulator driver.
-> 
-> Unfortunately, I added the example in the dt-bindings with the generic
-> names. So this question might come up again when someone else adds
-> rt5033-regulators to another device.
-> 
-> For the phandle labels I'd go for rt5033_reg_..., I already changed them in
-> the examples above.
-> 
+Sebastian,
 
-Sounds good to me, thanks!
+On Fri, 16 Jun 2023, Jakob Hauser wrote:
+> On 09.06.23 08:47, Lee Jones wrote:
+> > Enjoy!
+> > 
+> > The following changes since commit ac9a78681b921877518763ba0e89202254349d1b:
+> > 
+> >    Linux 6.4-rc1 (2023-05-07 13:34:35 -0700)
+> > 
+> > are available in the Git repository at:
+> > 
+> >    git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git ib-mfd-power-v6.5
+> > 
+> > for you to fetch changes up to b54185c1e3b02c91e4a190ac5c346ea7bfb0de93:
+> > 
+> >    dt-bindings: Add rt5033 MFD, Regulator and Charger (2023-06-08 18:18:13 +0100)
+> > 
+> > ----------------------------------------------------------------
+> > Immutable branch between MFD and Power due for the v6.5 merge window
+> > 
+> > ----------------------------------------------------------------
+> > Jakob Hauser (8):
+> >        mfd: rt5033: Fix chip revision readout
+> >        mfd: rt5033: Fix STAT_MASK, HZ_MASK and AICR defines
+> >        mfd: rt5033: Apply preparatory changes before adding rt5033-charger driver
+> >        power: supply: rt5033_charger: Add RT5033 charger device driver
+> >        power: supply: rt5033_battery: Move struct rt5033_battery to battery driver
+> >        power: supply: rt5033_battery: Adopt status property from charger
+> >        dt-bindings: power: supply: rt5033-battery: Apply unevaluatedProperties
+> >        dt-bindings: Add rt5033 MFD, Regulator and Charger
+> > 
+> > Stephan Gerhold (1):
+> >        mfd: rt5033: Drop rt5033-battery sub-device
+> > 
+> >   .../devicetree/bindings/mfd/richtek,rt5033.yaml    | 138 ++++++
+> >   .../power/supply/richtek,rt5033-battery.yaml       |   2 +-
+> >   .../power/supply/richtek,rt5033-charger.yaml       |  65 +++
+> >   drivers/mfd/rt5033.c                               |   8 +-
+> >   drivers/power/supply/Kconfig                       |   8 +
+> >   drivers/power/supply/Makefile                      |   1 +
+> >   drivers/power/supply/rt5033_battery.c              |  38 +-
+> >   drivers/power/supply/rt5033_charger.c              | 472 +++++++++++++++++++++
+> >   include/linux/mfd/rt5033-private.h                 |  64 ++-
+> >   include/linux/mfd/rt5033.h                         |  24 --
+> >   10 files changed, 762 insertions(+), 58 deletions(-)
+> >   create mode 100644 Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml
+> >   create mode 100644 Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml
+> >   create mode 100644 drivers/power/supply/rt5033_charger.c
+> > 
+> 
+> I just realized that there is one patch missing in the immutable branch
+> "ib-mfd-power-v6.5" [1]. Unfortunately I haven't noticed earlier. The
+> immutable branch holds 9 patches, the patchset has 10 patches [2]. The
+> missing patch is No. 6 "power: supply: rt5033_charger: Add cable detection
+> and USB OTG supply".
 
-Stephan
+Did you take this pull-request?
+
+If so, would you like to apply the missing patch or would you like me to
+take it via MFD (without a subsequent PR)?
+
+> As this patch No. 6 affects only the file
+> drivers/power/supply/rt5033_charger.c and is the last patch on that file,
+> it's no problem to add this patch on top of the other patches.
+> 
+> Could you submit another pull request for the v6.5 merge window to add this
+> patch?
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git/log/?h=ib-mfd-power-6.5
+> [2] https://lore.kernel.org/linux-pm/cover.1684182964.git.jahau@rocketmail.com/T/#t
+
+-- 
+Lee Jones [李琼斯]
