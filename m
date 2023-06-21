@@ -2,150 +2,143 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 38D71EB64D7
-	for <phone-devel@archiver.kernel.org>; Tue, 20 Jun 2023 10:03:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8280EB64D8
+	for <phone-devel@archiver.kernel.org>; Wed, 21 Jun 2023 17:56:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231225AbjFTKD0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 20 Jun 2023 06:03:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36024 "EHLO
+        id S231808AbjFUR4C (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 21 Jun 2023 13:56:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231144AbjFTKDD (ORCPT
+        with ESMTP id S231139AbjFURzn (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 20 Jun 2023 06:03:03 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5F1019BD;
-        Tue, 20 Jun 2023 03:02:21 -0700 (PDT)
-Received: from [IPV6:2001:b07:2ed:14ed:c5f8:7372:f042:90a2] (unknown [IPv6:2001:b07:2ed:14ed:c5f8:7372:f042:90a2])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        Wed, 21 Jun 2023 13:55:43 -0400
+Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [213.239.216.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3A87419AB;
+        Wed, 21 Jun 2023 10:54:45 -0700 (PDT)
+Received: from lexxgentoo.devos.club (unknown [77.239.252.99])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 756F06606F23;
-        Tue, 20 Jun 2023 11:02:19 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1687255340;
-        bh=RLHVI/wjjEu7tgaFY7P5mxMUKibf2l0LJy6KXwWfTcA=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=MNBGt+PAu1mufc3pOtgjMZsDRsZVkBktZDjH9Dz7Uj7xuARm3UE1Hp+m1EuAIkv1B
-         wsq6HxhL47hyFqG48h1AfLyEMdcZsEm0/sSi/U9RmHlRp92TaYQ+I/IBQ1CRI0TpL0
-         UZH2wsHoxlN5X0vH2NahxbvGryTduWB+/Bu5n9jlo8uFISCOE69AArOmnuKga363U4
-         ZTLQKgeyWz4WLy76ZsYBMetcLMh9wOugHPNULDaww5W4x8zAMemG0KQnL3cz74M+vs
-         +LflWzhOmPJXhdCE4lDo68BVQwnIOdTiPxnHCKfh/uElBlSBNNhpyMR/xEPikge/JQ
-         t4n5olsHSPtmA==
-Message-ID: <491fab1f-e1fe-4388-52a7-05adb17c2c36@collabora.com>
-Date:   Tue, 20 Jun 2023 12:02:16 +0200
+        by proxmox1.postmarketos.org (Postfix) with ESMTPSA id F150C1408B3;
+        Wed, 21 Jun 2023 17:52:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+        s=donut; t=1687369959;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=spj7M1eu0BpTeWO4D88uXHofRs63AcicfCjtgCEG0j4=;
+        b=bUP0j+i7VThOhmj1qULSbsnS2q8655wfM/XpfJNl53YC4HK7km1yUcz5GBjPsrwQtrYOzT
+        isUEBs95ZytRcRA/wMVGrEHCOxyLzG3GfiWf4DzgtLbi5EFx+ZGmPJ6GsoDThl46xQk3bh
+        P9+yHoMSdQ7mLSvfECwFnVjK1SfbUME=
+From:   Alexey Minnekhanov <alexeymin@postmarketos.org>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Alexey Minnekhanov <alexeymin@postmarketos.org>
+Subject: [PATCH v2 3/3] arm64: dts: qcom: sdm630: Add support for modem remoteproc
+Date:   Wed, 21 Jun 2023 20:50:46 +0300
+Message-Id: <20230621175046.61521-3-alexeymin@postmarketos.org>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20230621175046.61521-1-alexeymin@postmarketos.org>
+References: <20230621175046.61521-1-alexeymin@postmarketos.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v3 0/6] Add support for Qualcomm's legacy IOMMU v2
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, agross@kernel.org
-Cc:     andersson@kernel.org, konrad.dybcio@linaro.org, joro@8bytes.org,
-        will@kernel.org, robin.murphy@arm.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, robdclark@gmail.com,
-        linux-arm-msm@vger.kernel.org, iommu@lists.linux.dev,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        marijn.suijten@somainline.org, kernel@collabora.com,
-        a39.skl@gmail.com, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        =?UTF-8?Q?Matti_Lehtim=c3=a4ki?= <matti.lehtimaki@gmail.com>
-References: <20221115101122.155440-1-angelogioacchino.delregno@collabora.com>
- <254cfbb5-c8b8-0abc-e6bc-5007fe757004@collabora.com>
- <2759637.mvXUDI8C0e@z3ntu.xyz>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <2759637.mvXUDI8C0e@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 19/06/23 23:42, Luca Weiss ha scritto:
-> On Mittwoch, 22. Februar 2023 10:57:47 CEST AngeloGioacchino Del Regno wrote:
->> Il 15/11/22 11:11, AngeloGioacchino Del Regno ha scritto:
->>> This series adds support for handling "v2" firmware's IOMMU, found
->>> on at least MSM8956 and MSM8976 (some other SoCs also need the same
->>> but I honestly don't remember which ones precisely).
->>>
->>> This is strictly required to get functional IOMMUs on these SoCs.
->>>
->>> I'm sorry for not performing a much needed schema conversion on
->>> qcom,iommu.txt, but I really didn't have time to do that :-(
->>>
->>> This series was tested on Sony Xperia X and X Compact (MSM8956):
->>> ADSP, LPASS, Venus, MSS, MDP and GPU are happy :-)
->>
->> Hello,
->> this series is really old and got sent and resent many times.
->> The first time I've sent this one was .. I think in 2019, then, at the
->> end of 2022, I had some time to actually respin it and send another
->> three versions. It's been 3 long years :-)
->> The third version got the last comments addressed.
->>
->> Since this didn't get any more feedback for 3 months, I'm worried that it
->> will be forgotten again, hence:
->>
->> Is there any more feedback? Anything else to fix?
->> If not, can this be picked, please?
-> 
-> Hi Angelo,
-> 
-> there's some open review comments since March now on this series. Since some
-> of these patches are also needed for msm8953 and msm8974 IOMMU it would be
-> nice if you could respin :)
-> 
+Modem subsystem in SDM630/660 is similar to MSM8998 and
+device tree node for it is based on the one from msm8998.dtsi.
 
-Hello Luca,
+Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
+---
+ arch/arm64/boot/dts/qcom/sdm630.dtsi | 65 ++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
 
-I've just sent a v4, but I'm sorry I forgot to Cc you. Please find it at [1].
+diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
+index 014237d4b5b2..ad01f2951154 100644
+--- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
+@@ -1028,6 +1028,71 @@ data-pins {
+ 			};
+ 		};
+ 
++		remoteproc_mss: remoteproc@4080000 {
++			compatible = "qcom,sdm660-mss-pil";
++			reg = <0x04080000 0x100>, <0x04180000 0x40>;
++			reg-names = "qdsp6", "rmb";
++
++			interrupts-extended = <&intc GIC_SPI 448 IRQ_TYPE_EDGE_RISING>,
++					      <&modem_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
++					      <&modem_smp2p_in 1 IRQ_TYPE_EDGE_RISING>,
++					      <&modem_smp2p_in 2 IRQ_TYPE_EDGE_RISING>,
++					      <&modem_smp2p_in 3 IRQ_TYPE_EDGE_RISING>,
++					      <&modem_smp2p_in 7 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "wdog",
++					  "fatal",
++					  "ready",
++					  "handover",
++					  "stop-ack",
++					  "shutdown-ack";
++
++			clocks = <&gcc GCC_MSS_CFG_AHB_CLK>,
++				 <&gcc GCC_BIMC_MSS_Q6_AXI_CLK>,
++				 <&gcc GCC_BOOT_ROM_AHB_CLK>,
++				 <&gcc GPLL0_OUT_MSSCC>,
++				 <&gcc GCC_MSS_SNOC_AXI_CLK>,
++				 <&gcc GCC_MSS_MNOC_BIMC_AXI_CLK>,
++				 <&rpmcc RPM_SMD_QDSS_CLK>,
++				 <&rpmcc RPM_SMD_XO_CLK_SRC>;
++			clock-names = "iface",
++				      "bus",
++				      "mem",
++				      "gpll0_mss",
++				      "snoc_axi",
++				      "mnoc_axi",
++				      "qdss",
++				      "xo";
++
++			qcom,smem-states = <&modem_smp2p_out 0>;
++			qcom,smem-state-names = "stop";
++
++			resets = <&gcc GCC_MSS_RESTART>;
++			reset-names = "mss_restart";
++
++			qcom,halt-regs = <&tcsr_regs_1 0x3000 0x5000 0x4000>;
++
++			power-domains = <&rpmpd SDM660_VDDCX>,
++					<&rpmpd SDM660_VDDMX>;
++			power-domain-names = "cx", "mx";
++
++			status = "disabled";
++
++			mba {
++				memory-region = <&mba_region>;
++			};
++
++			mpss {
++				memory-region = <&mpss_region>;
++			};
++
++			glink-edge {
++				interrupts = <GIC_SPI 452 IRQ_TYPE_EDGE_RISING>;
++				label = "modem";
++				qcom,remote-pid = <1>;
++				mboxes = <&apcs_glb 15>;
++			};
++		};
++
+ 		adreno_gpu: gpu@5000000 {
+ 			compatible = "qcom,adreno-508.0", "qcom,adreno";
+ 
+-- 
+2.39.3
 
-[1]: 
-https://lore.kernel.org/all/20230620095127.96600-1-angelogioacchino.delregno@collabora.com/
-
-Cheers,
-Angelo
-
-> Regards
-> Luca
-> 
->>
->> Thank you.
->>
->> Best regards,
->> Angelo
->>
->>> Changes in v3:
->>>    - Removed useless FSRRESTORE reset and definition as pointed
->>>    
->>>      out in Robin Murphy's review
->>>    
->>>    - Fixed qcom,iommu.txt changes: squashed MSM8976 compatible
->>>    
->>>      string addition with msm-iommu-v2 generics addition
->>>
->>> Changes in v2:
->>>    - Added back Marijn's notes (sorry man!)
->>>    - Added ARM_SMMU_CB_FSRRESTORE definition
->>>    - Changed context bank reset to properly set FSR and FSRRESTORE
->>>
->>> AngeloGioacchino Del Regno (6):
->>>     dt-bindings: iommu: qcom,iommu: Document qcom,ctx-num property
->>>     iommu/qcom: Use the asid read from device-tree if specified
->>>     iommu/qcom: Properly reset the IOMMU context
->>>     iommu/qcom: Index contexts by asid number to allow asid 0
->>>     dt-bindings: iommu: qcom,iommu: Document QSMMUv2 and MSM8976
->>>     
->>>       compatibles
->>>     
->>>     iommu/qcom: Add support for QSMMUv2 and QSMMU-500 secured contexts
->>>    
->>>    .../devicetree/bindings/iommu/qcom,iommu.txt  |  9 +++
->>>    drivers/iommu/arm/arm-smmu/qcom_iommu.c       | 78 +++++++++++++++----
->>>    2 files changed, 70 insertions(+), 17 deletions(-)
-> 
-> 
-> 
-> 
-> 
