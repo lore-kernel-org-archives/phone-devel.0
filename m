@@ -2,237 +2,143 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71B63EB64DA
-	for <phone-devel@archiver.kernel.org>; Thu, 22 Jun 2023 13:41:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CE7B2EB64DC
+	for <phone-devel@archiver.kernel.org>; Sun, 25 Jun 2023 11:11:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230489AbjFVNlz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 22 Jun 2023 09:41:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44310 "EHLO
+        id S231591AbjFYLLt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 25 Jun 2023 07:11:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230379AbjFVNlz (ORCPT
+        with ESMTP id S230029AbjFYLLs (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 22 Jun 2023 09:41:55 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8FFEA2
-        for <phone-devel@vger.kernel.org>; Thu, 22 Jun 2023 06:41:52 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2b4769a2ee5so72427871fa.3
-        for <phone-devel@vger.kernel.org>; Thu, 22 Jun 2023 06:41:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687441311; x=1690033311;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ve+OWfFYUCiv6UHrWR4xPWh16PPXcMY6jkpEu/4lkPk=;
-        b=mEsIWVfPlLZBJzIrz6iH+Fqscjlr8yqjSX/5UY7QAb3wOE2jQ2vPCbjehTp3ugtIiJ
-         ciU4iqovmzpuCDqQtO5+gQSjh2MCgfV5H3YuXXzeeBaJtWKeJYCIUMRnmcoV3ctUcrb/
-         WbBkwO5OHGyWKPM50Od1ru2DwqTAFuj24/eLFE0jB4gP/bwOeTDM9isWdVnMpgfSa5tZ
-         m1sUp7gRYFgazJUpUNVlsajcsWWdv4hbANzEnpvJaI7zMfeikYQE9yjVJnaycXMlDoC+
-         YWUD5bkYcXcPo7DZOXX94crnIPS2gohNMatnMHIDly51LQ27u2UZOKS//FyWgE9XIu+d
-         YVkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687441311; x=1690033311;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ve+OWfFYUCiv6UHrWR4xPWh16PPXcMY6jkpEu/4lkPk=;
-        b=d96VoR6g8YSugmWo7zbTxj2WTR9HRZpK3CVKCh1c/z3bBXw0WnC9G2ZHkMCikdskX7
-         TJOHiLRxd5DCur50xuHh20wYFH6wmpDkxgG6cu4A+jk6YoR/5yDBrnaTlQ4QWzJ9JLh+
-         SkPERsA93Z38s62Ifd8OEuIeOruQkS5T4kxusGIpY2vIBcXuxA90v8PO2HF+q/dF1Gkx
-         opPjFmUYgH+5GnEnEPAMwEybfNgBGgNtRyrHlv+fy8OF9JYw++xX4IF2penhYEfP1Qly
-         G3DN9EcJ55suiOjGuLov+TMW6iJrITa2SL+v7lyN/aiwNkwAl0maxVmlL2jxw0isCmE3
-         oY2g==
-X-Gm-Message-State: AC+VfDywRI6Xiz+AOom8GfZtPEmKC6lLyifLHXzAwwimZ1UE0AupT8jB
-        /HMEl+MrmrgfQGkwvv6XxoZoPQ==
-X-Google-Smtp-Source: ACHHUZ693SHZ00xXP/TUAnRuoBeJF7p+1FXKnQq8Ptl5OFmwybVISLqAUR5w8tE+g41UXjI9uCFi6g==
-X-Received: by 2002:a2e:7007:0:b0:2b5:923a:2a55 with SMTP id l7-20020a2e7007000000b002b5923a2a55mr1263369ljc.1.1687441310860;
-        Thu, 22 Jun 2023 06:41:50 -0700 (PDT)
-Received: from [192.168.1.101] (abyl165.neoplus.adsl.tpnet.pl. [83.9.31.165])
-        by smtp.gmail.com with ESMTPSA id 3-20020a05651c00c300b002b31ec01c97sm1332296ljr.15.2023.06.22.06.41.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Jun 2023 06:41:50 -0700 (PDT)
-Message-ID: <9dbbfa6a-b302-3bdb-4bfb-51409b34dd42@linaro.org>
-Date:   Thu, 22 Jun 2023 15:41:48 +0200
+        Sun, 25 Jun 2023 07:11:48 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12A97118;
+        Sun, 25 Jun 2023 04:11:47 -0700 (PDT)
+Received: from [192.168.178.23] (unknown [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 30E97CEF26;
+        Sun, 25 Jun 2023 11:11:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1687691505; bh=J9jEPcx35Z5VZe9C9tWJdEOLs/nTvAKqqUQBcM//nqs=;
+        h=From:Date:Subject:To:Cc;
+        b=ZTaOJvnWvHNVZZOo5ByIpJ4x+KlTSI7Sj95fBInT9p8MxgFqDh5iqFooy4Jr55H7I
+         gHBS2vyubRfhHkRfp6A3mvYVVcDw5p4o809SZUTVNWM177RRKmdicis1CdMG+HG1wn
+         PQ6QwdKryccfHWB6zFiqc2ZgxLrIV985lUsN7Uis=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Date:   Sun, 25 Jun 2023 13:11:33 +0200
+Subject: [PATCH] thermal/drivers/qcom/temp-alarm: Use dev_err_probe
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 2/3] remoteproc: qcom: q6v5-mss: Add support for
- SDM630/636/660
-Content-Language: en-US
-To:     Alexey Minnekhanov <alexeymin@postmarketos.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230625-spmi-temp-alarm-defer-v1-1-2d57acf36855@z3ntu.xyz>
+X-B4-Tracking: v=1; b=H4sIAOQgmGQC/x2N0QrCMAwAf2Xk2UDtNqn+iviQbpkLtLWkU4Sxf
+ zf4eAfH7dBYhRvcuh2UP9LkVQzOpw6mlcqTUWZj8M737uJHbDULbpwrUiLNOPPCii6EawxuHAb
+ uwdpIjTEqlWm1urxTMlmVF/n+Z/fHcfwABt/pPnwAAAA=
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konradybcio@gmail.com>
-References: <20230621175046.61521-1-alexeymin@postmarketos.org>
- <20230621175046.61521-2-alexeymin@postmarketos.org>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230621175046.61521-2-alexeymin@postmarketos.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>
+Cc:     linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2434; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=J9jEPcx35Z5VZe9C9tWJdEOLs/nTvAKqqUQBcM//nqs=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkmCDtc1cXyq8Q5wrREWnpoRf9hEL/1VSO6b6NE
+ xzAuZiyZQeJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZJgg7QAKCRBy2EO4nU3X
+ VomyEAC1VhrEgpBghMAwvSNzEy1D7IPcSBEygZuyinpKla3Kok+wCKdAoQeOAXT6XJoqQ+fkYm1
+ yCMbX/KYKloLmmk7jFJE2lD9acv6hv6DJJMQ5jVgzNBDY4V7dbYt2KtVwrkCrraPM25XPHFP6EF
+ VAjoAYW8+i0TPdh9avP8L+95CfVen0Wm4TidFN/mXBIB39cfBNAn36vtfBYqocEwqPJX/IFLrNa
+ pNRAXlrPysutQq7GMoXzChiy65N7NlYIKf8yxEys/9fP3kkwlRNRY78rmaT0O8zfZHKno0vRNVO
+ wcNOQ1sP9RbQb2ESpqL3o249aC9z0Dgk4HmRBENVnuAtCpe0Kk3Kn15gxF7i0UCauUr/VUEe3rj
+ YD+3NKew3yxQTxqgLW8uhaUVAA4PIkscUxM8DNFfKYCO1CAvijlVJKAgfQIhs1n6I2q127bCogW
+ S5eNExxx+QnEc1I58G1YOKzFGq3FTy5Vtkv2PqzBoIySagUEWjKnjR4KwfuEG8yK4Tp7TKBS1js
+ 1R3g7CPnePZMskrsERKbegPYhJ51yUk5Qr4VVqngagXXesJI/T4IQ4+Gz1/bSx42ulxxpQUptkQ
+ gMcYYFElPet5P5sdoPQbozjzliP9/8/38A7tvKvc227JPAl3krsRIEffKC6Nioq4d6CnWDVIdv8
+ imLJ3uPndRAWc9Q==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 21.06.2023 19:50, Alexey Minnekhanov wrote:
-> Snapdragon 630/660 modem subsystem is similar to one in MSM8998
-> and can almost reuse it's reset sequence.
-> 
-> Downstream sources call this q6v5 version "qdsp6v62-1-5" and its
-> code path has additional checks for QDSP6v55_BHS_EN_REST_ACK
-> status [2].
-> 
-> Inspiration is taken from Konrad Dybcio's work in [1], but reworked
-> to use common code path with MSM8996/8998, instead of completely
-> separate "if" block for SDM660.
-> 
-> [1] https://github.com/SoMainline/linux/commit/7dd6dd9b936dc8d6c1f1abe299e5b065c33741e8
-> [2] https://github.com/MiCode/Xiaomi_Kernel_OpenSource/blob/lavender-q-oss/drivers/soc/qcom/pil-q6v5.c#L393
-> 
-> Co-developed-by: Konrad Dybcio <konradybcio@gmail.com>
-> Signed-off-by: Konrad Dybcio <konradybcio@gmail.com>
-> Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
-> 
-> ---
-> 
-> V2: use readl_relaxed_poll_timeout instead of hand-coded for loop.
-> 
-> In his commit Konrad mentions that modem was unstable, but I don't
-> observe such behaviour on my device. Modem does not restart by itself,
-> and I could successfully enable ath10k wcn3990 Wi-Fi with this.
-> 
-> Also worth saying that in my initial tests just using qcom,msm8998-mss-pil
-> as-is, without separate resource struct and separate code paths for
-> SDM660, was also working fine.
-> ---
-Looks like pre-SMxxxx Sony devices have some touchy watchdog..
+Use the dev_err_probe function instead of dev_err in the probe function
+so that the printed message includes the return value and also handles
+-EPROBE_DEFER nicely.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ drivers/thermal/qcom/qcom-spmi-temp-alarm.c | 34 ++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 20 deletions(-)
 
-Konrad
->  drivers/remoteproc/qcom_q6v5_mss.c | 51 ++++++++++++++++++++++++++++--
->  1 file changed, 49 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-> index 8e15e4f85de1..dcbecae675e2 100644
-> --- a/drivers/remoteproc/qcom_q6v5_mss.c
-> +++ b/drivers/remoteproc/qcom_q6v5_mss.c
-> @@ -71,6 +71,7 @@
->  #define QDSP6SS_MEM_PWR_CTL		0x0B0
->  #define QDSP6V6SS_MEM_PWR_CTL		0x034
->  #define QDSP6SS_STRAP_ACC		0x110
-> +#define QDSP6V62SS_BHS_STATUS		0x0C4
->  
->  /* AXI Halt Register Offsets */
->  #define AXI_HALTREQ_REG			0x0
-> @@ -123,6 +124,7 @@
->  #define QDSP6v56_CLAMP_QMC_MEM		BIT(22)
->  #define QDSP6SS_XO_CBCR		0x0038
->  #define QDSP6SS_ACC_OVERRIDE_VAL		0x20
-> +#define QDSP6v55_BHS_EN_REST_ACK	BIT(0)
->  
->  /* QDSP6v65 parameters */
->  #define QDSP6SS_CORE_CBCR		0x20
-> @@ -130,6 +132,7 @@
->  #define QDSP6SS_BOOT_CORE_START         0x400
->  #define QDSP6SS_BOOT_CMD                0x404
->  #define BOOT_FSM_TIMEOUT                10000
-> +#define BHS_CHECK_MAX_LOOPS             200
->  
->  struct reg_info {
->  	struct regulator *reg;
-> @@ -250,6 +253,7 @@ enum {
->  	MSS_MSM8998,
->  	MSS_SC7180,
->  	MSS_SC7280,
-> +	MSS_SDM660,
->  	MSS_SDM845,
->  };
->  
-> @@ -700,7 +704,8 @@ static int q6v5proc_reset(struct q6v5 *qproc)
->  	} else if (qproc->version == MSS_MSM8909 ||
->  		   qproc->version == MSS_MSM8953 ||
->  		   qproc->version == MSS_MSM8996 ||
-> -		   qproc->version == MSS_MSM8998) {
-> +		   qproc->version == MSS_MSM8998 ||
-> +		   qproc->version == MSS_SDM660) {
->  
->  		if (qproc->version != MSS_MSM8909 &&
->  		    qproc->version != MSS_MSM8953)
-> @@ -734,6 +739,16 @@ static int q6v5proc_reset(struct q6v5 *qproc)
->  		val |= readl(qproc->reg_base + QDSP6SS_PWR_CTL_REG);
->  		udelay(1);
->  
-> +		if (qproc->version == MSS_SDM660) {
-> +			ret = readl_relaxed_poll_timeout(qproc->reg_base + QDSP6V62SS_BHS_STATUS,
-> +							 i, (i & QDSP6v55_BHS_EN_REST_ACK),
-> +							 1, BHS_CHECK_MAX_LOOPS);
-> +			if (ret == -ETIMEDOUT) {
-> +				dev_err(qproc->dev, "BHS_EN_REST_ACK not set!\n");
-> +				return -ETIMEDOUT;
-> +			}
-> +		}
-> +
->  		/* Put LDO in bypass mode */
->  		val |= QDSP6v56_LDO_BYP;
->  		writel(val, qproc->reg_base + QDSP6SS_PWR_CTL_REG);
-> @@ -756,7 +771,7 @@ static int q6v5proc_reset(struct q6v5 *qproc)
->  				mem_pwr_ctl = QDSP6SS_MEM_PWR_CTL;
->  				i = 19;
->  			} else {
-> -				/* MSS_MSM8998 */
-> +				/* MSS_MSM8998, MSS_SDM660 */
->  				mem_pwr_ctl = QDSP6V6SS_MEM_PWR_CTL;
->  				i = 28;
->  			}
-> @@ -2193,6 +2208,37 @@ static const struct rproc_hexagon_res sc7280_mss = {
->  	.version = MSS_SC7280,
->  };
->  
-> +static const struct rproc_hexagon_res sdm660_mss = {
-> +	.hexagon_mba_image = "mba.mbn",
-> +	.proxy_clk_names = (char*[]){
-> +			"xo",
-> +			"qdss",
-> +			"mem",
-> +			NULL
-> +	},
-> +	.active_clk_names = (char*[]){
-> +			"iface",
-> +			"bus",
-> +			"gpll0_mss",
-> +			"mnoc_axi",
-> +			"snoc_axi",
-> +			NULL
-> +	},
-> +	.proxy_pd_names = (char*[]){
-> +			"cx",
-> +			"mx",
-> +			NULL
-> +	},
-> +	.need_mem_protection = true,
-> +	.has_alt_reset = false,
-> +	.has_mba_logs = false,
-> +	.has_spare_reg = false,
-> +	.has_qaccept_regs = false,
-> +	.has_ext_cntl_regs = false,
-> +	.has_vq6 = false,
-> +	.version = MSS_SDM660,
-> +};
-> +
->  static const struct rproc_hexagon_res sdm845_mss = {
->  	.hexagon_mba_image = "mba.mbn",
->  	.proxy_clk_names = (char*[]){
-> @@ -2475,6 +2521,7 @@ static const struct of_device_id q6v5_of_match[] = {
->  	{ .compatible = "qcom,msm8998-mss-pil", .data = &msm8998_mss},
->  	{ .compatible = "qcom,sc7180-mss-pil", .data = &sc7180_mss},
->  	{ .compatible = "qcom,sc7280-mss-pil", .data = &sc7280_mss},
-> +	{ .compatible = "qcom,sdm660-mss-pil", .data = &sdm660_mss},
->  	{ .compatible = "qcom,sdm845-mss-pil", .data = &sdm845_mss},
->  	{ },
->  };
+diff --git a/drivers/thermal/qcom/qcom-spmi-temp-alarm.c b/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
+index 2a3b3e21260f..0e8ebfcd84c5 100644
+--- a/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
++++ b/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
+@@ -411,22 +411,19 @@ static int qpnp_tm_probe(struct platform_device *pdev)
+ 	chip->base = res;
+ 
+ 	ret = qpnp_tm_read(chip, QPNP_TM_REG_TYPE, &type);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "could not read type\n");
+-		return ret;
+-	}
++	if (ret < 0)
++		return dev_err_probe(&pdev->dev, ret,
++				     "could not read type\n");
+ 
+ 	ret = qpnp_tm_read(chip, QPNP_TM_REG_SUBTYPE, &subtype);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "could not read subtype\n");
+-		return ret;
+-	}
++	if (ret < 0)
++		return dev_err_probe(&pdev->dev, ret,
++				     "could not read subtype\n");
+ 
+ 	ret = qpnp_tm_read(chip, QPNP_TM_REG_DIG_MAJOR, &dig_major);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "could not read dig_major\n");
+-		return ret;
+-	}
++	if (ret < 0)
++		return dev_err_probe(&pdev->dev, ret,
++				     "could not read dig_major\n");
+ 
+ 	if (type != QPNP_TM_TYPE || (subtype != QPNP_TM_SUBTYPE_GEN1
+ 				     && subtype != QPNP_TM_SUBTYPE_GEN2)) {
+@@ -448,16 +445,13 @@ static int qpnp_tm_probe(struct platform_device *pdev)
+ 	 */
+ 	chip->tz_dev = devm_thermal_of_zone_register(
+ 		&pdev->dev, 0, chip, &qpnp_tm_sensor_ops);
+-	if (IS_ERR(chip->tz_dev)) {
+-		dev_err(&pdev->dev, "failed to register sensor\n");
+-		return PTR_ERR(chip->tz_dev);
+-	}
++	if (IS_ERR(chip->tz_dev))
++		return dev_err_probe(&pdev->dev, PTR_ERR(chip->tz_dev),
++				     "failed to register sensor\n");
+ 
+ 	ret = qpnp_tm_init(chip);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "init failed\n");
+-		return ret;
+-	}
++	if (ret < 0)
++		return dev_err_probe(&pdev->dev, ret, "init failed\n");
+ 
+ 	devm_thermal_add_hwmon_sysfs(&pdev->dev, chip->tz_dev);
+ 
+
+---
+base-commit: 8d2be868b42c08290509c60515865f4de24ea704
+change-id: 20230625-spmi-temp-alarm-defer-0889b80544e3
+
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
+
