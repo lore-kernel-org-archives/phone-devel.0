@@ -2,113 +2,145 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B3151EB64DA
-	for <phone-devel@archiver.kernel.org>; Mon, 26 Jun 2023 09:30:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B0DE0EB64D7
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Jun 2023 09:46:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229570AbjFZJaV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 26 Jun 2023 05:30:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38252 "EHLO
+        id S230064AbjFZJqe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Jun 2023 05:46:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230385AbjFZJaI (ORCPT
+        with ESMTP id S229553AbjFZJqd (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 26 Jun 2023 05:30:08 -0400
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3453B9;
-        Mon, 26 Jun 2023 02:30:05 -0700 (PDT)
-Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-345a0cf5b3bso8682275ab.0;
-        Mon, 26 Jun 2023 02:30:05 -0700 (PDT)
+        Mon, 26 Jun 2023 05:46:33 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80C60C6
+        for <phone-devel@vger.kernel.org>; Mon, 26 Jun 2023 02:46:31 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f766777605so3871518e87.1
+        for <phone-devel@vger.kernel.org>; Mon, 26 Jun 2023 02:46:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1687772790; x=1690364790;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AALGroa+oxrQ4QAJxx6E4/UMQk8ojzz4Y2q62IP4vFI=;
+        b=meGT7R2tRZt+cvxEidV5mPxrhTtG+1180rEwRUdYShJHuvVDZgaszHDKGTSGmepGun
+         GUfUHJkmfh2UxiKhuk1/Jq8t0Cc6pZFOslyOrCGC/PwvM0UhtlHdMBQBfts7GXou0Juo
+         SnbBQqp417VGhxsIxE4+rst1V3YaZ9GDL2Rf2E5LFHBh06AK/8NLLTCRqd9lzvaDdbPn
+         l+UF2AMuhD/v725R+sbLY+evphljTz8qfB1dQV0GzduYmdmGY7//qHkBXzC4qeQfjFDM
+         yDAeQ78AOomqFH3443ArtMhunOcyVptq2QF69TN2AWI/QJ2lFVgHtsiP7nr9/GSUfYDh
+         b6uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687771805; x=1690363805;
-        h=date:subject:message-id:references:in-reply-to:cc:to:from
-         :mime-version:content-transfer-encoding:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+OtaETWb24m97Ds/UuSIviPp/udpUqkFteTCOvggmng=;
-        b=HjEhtpSZrlJBIXPBgyEwMzVVrssHF6MJZQ8i6vFqvk5jMqR40EyvKIrqyI33FTi9NZ
-         6bonRSu7Q0ATA8TVDeTsp7UOIRn/BtmQky8wNVACxRxacQdL6DW6tbU1QPmh7ZYF8bNT
-         49AWd+WiqLtWDsRB/aKQta6hfrlfpfmQscZZj1orPhMMjL2jJCQ/tfHHKmZZRaWXoysf
-         G3CfGop70rxEYw9bGr24bXyMXYvTqKcQXLOa4HYo8XlUnPvw1B0sQNQs7dh7uiCL3/bN
-         HuoXrJ6EmbehYPtA8sBDGm8i8LXVXsrWD2q1+g6f7+JeO/lQ59Fg/oA3mVNw+53JbOBp
-         1/qw==
-X-Gm-Message-State: AC+VfDx/2L2sbfkXFpOsWnFoTriIgnJtsIdH3YMK2MT8XOyXwGP1h6q9
-        SvKPoPsD0yet8vLQviJYog==
-X-Google-Smtp-Source: ACHHUZ7ma3u80z5g13zdtQF0PPsMHvxWrDwncZTbHWyQ5p5pXLKxhjX3k1XvOGgqqkWOSND7WCI3Qg==
-X-Received: by 2002:a92:d309:0:b0:33d:3b69:2d23 with SMTP id x9-20020a92d309000000b0033d3b692d23mr22947121ila.19.1687771804923;
-        Mon, 26 Jun 2023 02:30:04 -0700 (PDT)
-Received: from robh_at_kernel.org ([64.188.179.250])
-        by smtp.gmail.com with ESMTPSA id p17-20020a056e0206d100b00341fa29aaf4sm1886925ils.39.2023.06.26.02.30.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jun 2023 02:30:04 -0700 (PDT)
-Received: (nullmailer pid 2436844 invoked by uid 1000);
-        Mon, 26 Jun 2023 09:30:02 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        d=1e100.net; s=20221208; t=1687772790; x=1690364790;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AALGroa+oxrQ4QAJxx6E4/UMQk8ojzz4Y2q62IP4vFI=;
+        b=TsK+GaROmYKtW2fF9VJwgVYkNeaKwbr5ex8hNFqbl+UkNg6fo6+AMG9tY6355o7MYX
+         5fFWGLLNJ1mSu8qG93vxiD0NmM9SjkD+e+syhdMW9ezKCaOO5A4vu6YsIIfpDkK6Pfnk
+         3FW4NDJM9XWUpBsiby9cOmb9sk5UV34YknaSzDxBfOemS9IwlEfWLJg7beytIVMQpqhf
+         Uxi7CqNS/yqteTsa0i+IGKt52MoqYBJTsKJ9x3IvMNERvPVHuz6XQpVFH9ZzVYXPHFP6
+         Mscfyj9p+Z80KVey1tHANDvbKS6J2vZSOIqn96RCy8KEkwPzhbir8v1DPrtolq8eRIlq
+         xt+A==
+X-Gm-Message-State: AC+VfDxupWMYQtLiinZ25XlN6YiY4dhASBo0LM2zsj3cTaoqH8MEWvue
+        gSDPUzJ6LcUNC+vpJfu3Od9gJQ==
+X-Google-Smtp-Source: ACHHUZ5KPZnllce2bChpYblFlyi/WUt304k5xmFjzG6Ny9pe88sqe7XeDP4dm9DtG/uaJGBpFlxfYA==
+X-Received: by 2002:a05:6512:2513:b0:4f9:608b:1e58 with SMTP id be19-20020a056512251300b004f9608b1e58mr8026993lfb.20.1687772789751;
+        Mon, 26 Jun 2023 02:46:29 -0700 (PDT)
+Received: from [192.168.1.101] (abyk179.neoplus.adsl.tpnet.pl. [83.9.30.179])
+        by smtp.gmail.com with ESMTPSA id j23-20020a19f517000000b004f842e58d08sm1024860lfb.84.2023.06.26.02.46.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Jun 2023 02:46:28 -0700 (PDT)
+Message-ID: <aae76828-fcc8-506b-e68b-775f864fd159@linaro.org>
+Date:   Mon, 26 Jun 2023 11:46:27 +0200
 MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     phone-devel@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Iskren Chernev <me@iskren.info>,
-        Avri Altman <avri.altman@wdc.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] arm64: dts: qcom: pm8953: Add thermal zone
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Eric Biggers <ebiggers@google.com>,
-        linux-arm-msm@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        devicetree@vger.kernel.org,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-scsi@vger.kernel.org
-In-Reply-To: <20221209-dt-binding-ufs-v4-3-14ced60f3d1b@fairphone.com>
-References: <20221209-dt-binding-ufs-v4-0-14ced60f3d1b@fairphone.com>
- <20221209-dt-binding-ufs-v4-3-14ced60f3d1b@fairphone.com>
-Message-Id: <168777180225.2436813.12641828486385303318.robh@kernel.org>
-Subject: Re: [PATCH v4 3/3] dt-bindings: ufs: qcom: Fix sm8450 bindings
-Date:   Mon, 26 Jun 2023 03:30:02 -0600
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230625-pm8953-thermal-v1-1-2b4247d2f769@z3ntu.xyz>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230625-pm8953-thermal-v1-1-2b4247d2f769@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-On Mon, 26 Jun 2023 10:15:59 +0200, Luca Weiss wrote:
-> SM8450 actually supports ICE (Inline Crypto Engine) so adjust the
-> bindings and the example to match.
+On 25.06.2023 13:13, Luca Weiss wrote:
+> Define the themal zones using the temperature values found in the
+> downstream 4.9 sources so that the spmi-temp-alarm driver becomes
+> active.
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Reviewed-by: Eric Biggers <ebiggers@google.com>
-> Reviewed-by: Iskren Chernev <me@iskren.info>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
->  Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 15 ++++++++++-----
->  1 file changed, 10 insertions(+), 5 deletions(-)
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+
+Konrad
+>  arch/arm64/boot/dts/qcom/pm8953.dtsi | 33 ++++++++++++++++++++++++++++++++-
+>  1 file changed, 32 insertions(+), 1 deletion(-)
 > 
-
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/ufs/qcom,ufs.example.dtb: ufs@1d84000: Unevaluated properties are not allowed ('reg-names' was unexpected)
-	from schema $id: http://devicetree.org/schemas/ufs/qcom,ufs.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20221209-dt-binding-ufs-v4-3-14ced60f3d1b@fairphone.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+> diff --git a/arch/arm64/boot/dts/qcom/pm8953.dtsi b/arch/arm64/boot/dts/qcom/pm8953.dtsi
+> index 2268daf27fa7..d2dfc1699174 100644
+> --- a/arch/arm64/boot/dts/qcom/pm8953.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/pm8953.dtsi
+> @@ -6,6 +6,37 @@
+>  #include <dt-bindings/input/linux-event-codes.h>
+>  #include <dt-bindings/spmi/spmi.h>
+>  
+> +/ {
+> +	thermal-zones {
+> +		pm8953-thermal {
+> +			polling-delay-passive = <0>;
+> +			polling-delay = <0>;
+> +
+> +			thermal-sensors = <&pm8953_temp>;
+> +
+> +			trips {
+> +				trip0 {
+> +					temperature = <105000>;
+> +					hysteresis = <0>;
+> +					type = "passive";
+> +				};
+> +
+> +				trip1 {
+> +					temperature = <125000>;
+> +					hysteresis = <0>;
+> +					type = "hot";
+> +				};
+> +
+> +				trip2 {
+> +					temperature = <145000>;
+> +					hysteresis = <0>;
+> +					type = "critical";
+> +				};
+> +			};
+> +		};
+> +	};
+> +};
+> +
+>  &spmi_bus {
+>  	pmic@0 {
+>  		compatible = "qcom,pm8953", "qcom,spmi-pmic";
+> @@ -36,7 +67,7 @@ pm8953_resin: resin {
+>  			};
+>  		};
+>  
+> -		temp-alarm@2400 {
+> +		pm8953_temp: temp-alarm@2400 {
+>  			compatible = "qcom,spmi-temp-alarm";
+>  			reg = <0x2400>;
+>  			interrupts = <0x0 0x24 0x0 IRQ_TYPE_EDGE_RISING>;
+> 
+> ---
+> base-commit: 8d2be868b42c08290509c60515865f4de24ea704
+> change-id: 20230625-pm8953-thermal-fc3b2deeeb7b
+> 
+> Best regards,
