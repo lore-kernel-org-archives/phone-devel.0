@@ -2,134 +2,146 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB649EB64DC
-	for <phone-devel@archiver.kernel.org>; Sun, 25 Jun 2023 11:13:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A561C0015E
+	for <phone-devel@archiver.kernel.org>; Mon, 26 Jun 2023 08:16:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231705AbjFYLNm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 25 Jun 2023 07:13:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35098 "EHLO
+        id S230146AbjFZIQT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 26 Jun 2023 04:16:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230029AbjFYLNl (ORCPT
+        with ESMTP id S230041AbjFZIQQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 25 Jun 2023 07:13:41 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B223F8F;
-        Sun, 25 Jun 2023 04:13:40 -0700 (PDT)
-Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 4E752CEF26;
-        Sun, 25 Jun 2023 11:13:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1687691589; bh=wI5u0NGeSSUlZf/2J353zgzUWn1fQwb+XGClthQG6Zw=;
-        h=From:Date:Subject:To:Cc;
-        b=cS2361+bahIAJ5HTwuX2+pZRE9Ogl0KqWJwp3C5YMTUhBBu5MC8h+WGBNl61Rx4Po
-         mhVHeiNOcZQFQvVrVioAnRIz7e8N7DJ5BNTgsAurc28L1+KWUgc/v1MlSqFVdoIRVy
-         U1SWmJKAyj+TXJyHUmOHhsZ59cLM3UM1A6rX2seM=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Sun, 25 Jun 2023 13:13:05 +0200
-Subject: [PATCH] arm64: dts: qcom: pm8953: Add thermal zone
+        Mon, 26 Jun 2023 04:16:16 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 666B7E74
+        for <phone-devel@vger.kernel.org>; Mon, 26 Jun 2023 01:16:14 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-98bcc533490so358644966b.0
+        for <phone-devel@vger.kernel.org>; Mon, 26 Jun 2023 01:16:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1687767373; x=1690359373;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=au1yDGBbuG2KvGbbaHGSTXZWdfA4ztHMw3WrPNWrTzo=;
+        b=ATmDKIVxKZmu6V2OsJmS527ytHC3/nzhAbRym76yS1NeD0+Rl11EaV+HO0ewbaZALG
+         MEJl2a0KoLifFgC61un/CxkkQyWvbMVcigawRXi/j2CSev3MQoJAzLlL4Yavs9uZchum
+         Wdfd9Nv0pP8+vFSK18PQ64Hq5Y5ovz61Nfo5CZGSvpiSelBdOeBJfPDPHlZWro/J1rFi
+         qCC405LjI0EUPZGqRDMVXJfPjjd0/VQ2oP+EfJoDCIgXdlsymOccP3j2CTO9tvI80kyd
+         yyQECLszW3UYtIIMGNfuhhmInfYL/0ty9f1fQ7+SLUEp9T9KVJQiSkk2TTRvfY+Rbv3k
+         twhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687767373; x=1690359373;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=au1yDGBbuG2KvGbbaHGSTXZWdfA4ztHMw3WrPNWrTzo=;
+        b=UNNyBjsv8iSjc00ziGNRQ6p6aURPfhiKGdgrtvtGniAMuVMaUjatD2G70uf7/SWOM+
+         0OV8DAk9JPfNpx+3DtSQFgCWV4MDqCd4Dz22B1wHVN/KzIG3ax82YabNB1JRHxDTg65E
+         a9XpgDrfUmRaRa734yBH8ghAF2FntS695cgyFslJKodY9837Oh+hIuFAnc7kjMZJO5xO
+         9/YuHudUVa3JxmS5OoPNDmyt/7Vc+kvQ/mWblTBV1hHwNanIHqGhurq2FZe6tsQGxOpL
+         vwJ4glhK2Cw4PmswGQFZKXdoRCeRek9sBtLD8i8zJlE+kZPjJO2+BNaX3Mj2OjG5XKte
+         4BIw==
+X-Gm-Message-State: AC+VfDxBlcPdsOpjjTpAC6A+WEGmX8KkMOqk0j2lp8/f0XYlrxDQFAMD
+        aKnffwdpiFxeVjTKH/I8zZMk+A==
+X-Google-Smtp-Source: ACHHUZ7O4faFqU7lLgdylwIcAApDlj7SmoDKa5OSu959zyIml4rFcUIj0XvEDXRwVvYzXDhoXQv9UQ==
+X-Received: by 2002:a17:907:2d20:b0:991:de8e:4f91 with SMTP id gs32-20020a1709072d2000b00991de8e4f91mr734446ejc.11.1687767372890;
+        Mon, 26 Jun 2023 01:16:12 -0700 (PDT)
+Received: from [172.16.240.113] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id bm4-20020a170906c04400b0094f07545d40sm2935617ejb.220.2023.06.26.01.16.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jun 2023 01:16:12 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Date:   Mon, 26 Jun 2023 10:15:57 +0200
+Subject: [PATCH v4 1/3] dt-bindings: ufs: qcom: Add sm6115 binding
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230625-pm8953-thermal-v1-1-2b4247d2f769@z3ntu.xyz>
-X-B4-Tracking: v=1; b=H4sIAEAhmGQC/x2NzQrCMBAGX6Xs2YWaUP9eRTwk6VezkMayqSKUv
- ruLxxkYZqMGFTS6dRspPtLkVQ2Oh45SDvUJltGYXO98f3IDL/PlOnheM3QOhafkoxsBxHMki2J
- o4KihpmxZfZdiclFM8v1f7o99/wE6MUqqdQAAAA==
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+Message-Id: <20221209-dt-binding-ufs-v4-1-14ced60f3d1b@fairphone.com>
+References: <20221209-dt-binding-ufs-v4-0-14ced60f3d1b@fairphone.com>
+In-Reply-To: <20221209-dt-binding-ufs-v4-0-14ced60f3d1b@fairphone.com>
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Iskren Chernev <me@iskren.info>,
+        Manivannan Sadhasivam <mani@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        Eric Biggers <ebiggers@google.com>,
+        Iskren Chernev <me@iskren.info>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1632; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=wI5u0NGeSSUlZf/2J353zgzUWn1fQwb+XGClthQG6Zw=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkmCFEYQMMNleZfNMjccn+/aY8Cu4nK/zRDFLKE
- pGl2pTFhGuJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZJghRAAKCRBy2EO4nU3X
- VoJREADXdHwoHiJOv1rM6dCwoekWFQXBaztUWM0J7IMKNSE1msVg8ri0tIJdTDb8HVfdtfAEsZd
- Uc14rzItPp/Rl2p+adHViJPfOg1uZ5bvwspPAsenIMhzplTJKBssDxFh9nxALA2ikCxnoe7EHAE
- nV3XaWS2kcnLnzrkUE3fZJQuHI4Po0m0CaSG7+N4QnFUcNOppdLrWWjn2Pjm1bwbkIvxs7u11WF
- 905lNwW9HKVlQdaf6y3m5kzV5dKvFa892fpZ5nUUWKQPnus4929VX2cHnbCRwHB1bEvQiq3IVq3
- K4aiDZTMuhJhvJaJCLdpCuYv8P8HF37jmr5P8QaXmLkHj4Wx9MMvH9nURlHA+XA4WdsFw0//bQt
- xfsQ4B9/xKB9wKd50ARi5akqoWM8okQQHasKxVddXefSggzfzqJKsu0iMTl5rOxMsD5Ojq2WVoH
- 5AhK/FaeFV1sSEQhQ8gnptMQPPIxLxn9v95kRW9u/isu/WwvJxO2E81jd5jFkXjFym2CDlhWiBI
- 0mojQo8VyaCujly/eVyzjz6hhI6Rxqyot/VSB0AHZa7smb+lInBMQaOdn7RRaWEFaS9rc9H8mRy
- /normb31f/ODjpOTD2d1eZMv69gSMdYc/mfZoTNzd9cUhZwK4ZalGOFSR7FJdvkMH8AXk5bhNYs
- mRyqX+TIi+UahEA==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Define the themal zones using the temperature values found in the
-downstream 4.9 sources so that the spmi-temp-alarm driver becomes
-active.
+From: Iskren Chernev <me@iskren.info>
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Add SM6115 UFS to DT schema.
+
+Signed-off-by: Iskren Chernev <iskren.chernev@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Bhupesh Sharma <bhupesh.sharma@linaro.org>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Iskren Chernev <me@iskren.info>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/pm8953.dtsi | 33 ++++++++++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+ .../devicetree/bindings/ufs/qcom,ufs.yaml          | 26 ++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/pm8953.dtsi b/arch/arm64/boot/dts/qcom/pm8953.dtsi
-index 2268daf27fa7..d2dfc1699174 100644
---- a/arch/arm64/boot/dts/qcom/pm8953.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pm8953.dtsi
-@@ -6,6 +6,37 @@
- #include <dt-bindings/input/linux-event-codes.h>
- #include <dt-bindings/spmi/spmi.h>
+diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+index bdfa86a0cc98..eb3de2fde6b0 100644
+--- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
++++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+@@ -29,6 +29,7 @@ properties:
+           - qcom,sa8775p-ufshc
+           - qcom,sc8280xp-ufshc
+           - qcom,sdm845-ufshc
++          - qcom,sm6115-ufshc
+           - qcom,sm6350-ufshc
+           - qcom,sm8150-ufshc
+           - qcom,sm8250-ufshc
+@@ -191,6 +192,31 @@ allOf:
+           minItems: 1
+           maxItems: 1
  
-+/ {
-+	thermal-zones {
-+		pm8953-thermal {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - qcom,sm6115-ufshc
++    then:
++      properties:
++        clocks:
++          minItems: 8
++          maxItems: 8
++        clock-names:
++          items:
++            - const: core_clk
++            - const: bus_aggr_clk
++            - const: iface_clk
++            - const: core_clk_unipro
++            - const: ref_clk
++            - const: tx_lane0_sync_clk
++            - const: rx_lane0_sync_clk
++            - const: ice_core_clk
++        reg:
++          minItems: 2
++          maxItems: 2
 +
-+			thermal-sensors = <&pm8953_temp>;
-+
-+			trips {
-+				trip0 {
-+					temperature = <105000>;
-+					hysteresis = <0>;
-+					type = "passive";
-+				};
-+
-+				trip1 {
-+					temperature = <125000>;
-+					hysteresis = <0>;
-+					type = "hot";
-+				};
-+
-+				trip2 {
-+					temperature = <145000>;
-+					hysteresis = <0>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+	};
-+};
-+
- &spmi_bus {
- 	pmic@0 {
- 		compatible = "qcom,pm8953", "qcom,spmi-pmic";
-@@ -36,7 +67,7 @@ pm8953_resin: resin {
- 			};
- 		};
+     # TODO: define clock bindings for qcom,msm8994-ufshc
  
--		temp-alarm@2400 {
-+		pm8953_temp: temp-alarm@2400 {
- 			compatible = "qcom,spmi-temp-alarm";
- 			reg = <0x2400>;
- 			interrupts = <0x0 0x24 0x0 IRQ_TYPE_EDGE_RISING>;
+   - if:
 
----
-base-commit: 8d2be868b42c08290509c60515865f4de24ea704
-change-id: 20230625-pm8953-thermal-fc3b2deeeb7b
-
-Best regards,
 -- 
-Luca Weiss <luca@z3ntu.xyz>
+2.41.0
 
