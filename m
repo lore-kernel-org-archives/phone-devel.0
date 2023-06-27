@@ -2,84 +2,148 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 532ECC001B3
-	for <phone-devel@archiver.kernel.org>; Tue, 27 Jun 2023 19:49:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20B65EB64DC
+	for <phone-devel@archiver.kernel.org>; Tue, 27 Jun 2023 20:49:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230299AbjF0TtP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 27 Jun 2023 15:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54648 "EHLO
+        id S231491AbjF0Uto (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 27 Jun 2023 16:49:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230037AbjF0TtG (ORCPT
+        with ESMTP id S229977AbjF0Utm (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 27 Jun 2023 15:49:06 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2109730CF;
-        Tue, 27 Jun 2023 12:48:55 -0700 (PDT)
-Received: from [192.168.178.23] (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 73A8BCEF4B;
-        Tue, 27 Jun 2023 19:48:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1687895303; bh=WQfLl7OfFm+7vEzr6DvwYm+yVB/bM3NCu3Q+HA/I2CQ=;
-        h=From:Subject:Date:To:Cc;
-        b=LNYsFG99xcWLOLrRebbEBUBFNQfVKzuDN7kdgg2cy+xw13N6helDdkXzfgctOHgki
-         0alOBOajXRwz8sLDDj+rb75IerELtDF2YyDuAY/2TTTTRWckohZgzGdUNSlqU5U5kb
-         dnRApTNrqa4YX3f2Ew/GFny1DgIjU+puMpd4hse8=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Subject: [PATCH 0/2] Small style fixes in msm8974.dtsi
-Date:   Tue, 27 Jun 2023 21:45:12 +0200
-Message-Id: <20230627-msm8974-sort-v1-0-75c5800a2e09@z3ntu.xyz>
+        Tue, 27 Jun 2023 16:49:42 -0400
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E736319A4
+        for <phone-devel@vger.kernel.org>; Tue, 27 Jun 2023 13:49:40 -0700 (PDT)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-4f8775126d3so7074427e87.1
+        for <phone-devel@vger.kernel.org>; Tue, 27 Jun 2023 13:49:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1687898979; x=1690490979;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=u5FTPvn30QPL4kCu475gLqCpNlEhXjGVNlal9AK4Pd8=;
+        b=il25tTPhW/Rvl1RK/G0wd46AH78H28kA4j0hHV2yb+D9YTW2Oa7jgQwACbaoKaOT5M
+         XG3Gz8kVhsQaPelu834BdknOebU6ml46yRNAbtTMjGp2/mUdVEL98cu1ef67IJVyoxzD
+         JU1lO1/63ourhjsCO2FCPYYrItDBXIDduWGYOto0/flbaT7S6DQwYmsCi2xQLBoSAvYb
+         to8A/InaT9JVoPSO3VUiV2b81xR8yabdI/BmmWHnlvhJboCjjUZaKaMgFN0hCbZ7tBhR
+         5bWRYOMY9VLbIiOKhcUglhjPL6jMXxo3Xe6O7JkQvazDziLAuc3fdFL/6Auw28lL76CJ
+         d6zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687898979; x=1690490979;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u5FTPvn30QPL4kCu475gLqCpNlEhXjGVNlal9AK4Pd8=;
+        b=Dc5WEhMwnZqHGuwViV7pUTzxveYXNjusS4AhKxiweMdnUhGo8S8OJkWh9qS5QxdFqZ
+         dJwWYyUYmak0+TC9yqFEJ0zPe02xs/sZDsia2P6YOenGSU3gbjUhCBJvwTo2uMDSDqgC
+         sSJtnf0s2nwvL7Sfs2dSVUfIzmeWUr499793jcR8Kh9zNGyXVXkLwVuL2v2ZGcBBvSnt
+         sOgzhnfSh/K/ob2QywaLpXRELhhYXWuzd6tV8x66HYMN75ym+cgvLzR1DelabgEwlJeP
+         Jnvked1nDXkks4aeC4KLBpyO80xydFUsonOR6Orm6B6EbaYgNLsnciTv87vBdTkcEpHo
+         KtZg==
+X-Gm-Message-State: AC+VfDy9wBT29xzEzdoFzkj1E9EXjZj9mR94wor2I6OEmv0wn9/nglJa
+        SvhCb/mFEvOl7OCIYxQ62W1ziw==
+X-Google-Smtp-Source: ACHHUZ56rZXCHV+7wUEkRISGb+GdewVmnF02vDb/vrwCgBxxR+1Gg68dP7hpYy5JEb+vQz8qobD9bg==
+X-Received: by 2002:a05:6512:1cd:b0:4f9:57e3:ba0b with SMTP id f13-20020a05651201cd00b004f957e3ba0bmr13314170lfp.23.1687898979125;
+        Tue, 27 Jun 2023 13:49:39 -0700 (PDT)
+Received: from [192.168.1.101] (abxj103.neoplus.adsl.tpnet.pl. [83.9.3.103])
+        by smtp.gmail.com with ESMTPSA id l11-20020ac2554b000000b004fad5602c18sm1371420lfk.73.2023.06.27.13.49.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jun 2023 13:49:38 -0700 (PDT)
+Message-ID: <e9cbebe4-a400-8635-406e-f0ab9151e784@linaro.org>
+Date:   Tue, 27 Jun 2023 22:49:37 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEg8m2QC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI2MDMyNz3dziXAtLcxPd4vyiEt1UY5MkI4s0Q4NEYxMloJaCotS0zAqwcdG
- xtbUAwAUuWV4AAAA=
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 1/2] ARM: dts: qcom: msm8974: replace incorrect
+ indentation in interconnect
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>
 Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=604; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=WQfLl7OfFm+7vEzr6DvwYm+yVB/bM3NCu3Q+HA/I2CQ=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkmzz+3GctDA05lNilZYVW0LMuK19ZFB4CQKYFW
- YkOdzJvVFWJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZJs8/gAKCRBy2EO4nU3X
- VmqcEACSkTr/6pJmspl5Aqo/BTk0a/NgfzcHwOGbGFEDGwG3rHISFkK6+vIhk6K8P1j86v1yM4B
- OCrxmIj1coer93NcJEWPazrJ4HiVy4pRZhAlnGguTNjJUFTmzOtu6reyCSzTCnclufiEHODfHvT
- p8CRJVlLfrKlYMy2KA6ctqRWMIVAvMBXSQ3sAR3ItfiLbOJ6WbkChhtE3jYzVXonpCclAfPodWC
- BNf9HNKk3ZRNxW3mHPxRos4TJbnZRE45raj3T5D7XljKAcvGHQ0G1vxVGuxtB68NZxwrsaN/BXA
- 2cryFTwCXBSkd6s0ikVz2eL+qs2uaDglb0ZuDA/YiMa15feNIWVjQjGUsjhVZ07EeB+NDt4T0GV
- ZQ3os9zRAngLw3M2hq3POvldJeGM8yXJQBJMH+/ITKvHVKHibYQTOam4dBmQonm8YsiPWxFZr1N
- kCHF/gHUbfT+KjlVdqhDHZeulq+38PXMWXQezhZ70ewocqwNqGbfGaTtypuE0dI+amlcfeG+ulf
- LXm+/LZwKLvjIKJpq0ri9bKONOIR49IxIgsl41Y5FQfZkR458HxOT1UK3CVzaXh/2GAQXe9s80f
- Lw64fufGu8XMryoj/JeTTJ3Vj2/wcMSuY7XHcKBGsbzZE7gUrGQ/jSuautD8MQzIxQm8bgokD7E
- K2HUxramt9aTW4A==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+        linux-kernel@vger.kernel.org
+References: <20230627-msm8974-sort-v1-0-75c5800a2e09@z3ntu.xyz>
+ <20230627-msm8974-sort-v1-1-75c5800a2e09@z3ntu.xyz>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230627-msm8974-sort-v1-1-75c5800a2e09@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-While making sure the nodes are sorted correctly, I also noticed that
-some lines are wrongly indented. Fix both.
+On 27.06.2023 21:45, Luca Weiss wrote:
+> The clocks definition in the interconnect nodes should use tabs (+ 1
+> space) for indentation instead of 9 spaces. Fix that.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
-Luca Weiss (2):
-      ARM: dts: qcom: msm8974: replace incorrect indentation in interconnect
-      ARM: dts: qcom: msm8974: sort nodes by reg
-
- arch/arm/boot/dts/qcom/qcom-msm8974.dtsi | 80 ++++++++++++++++----------------
- 1 file changed, 40 insertions(+), 40 deletions(-)
----
-base-commit: 53cdf865f90ba922a854c65ed05b519f9d728424
-change-id: 20230627-msm8974-sort-e34b28f10a34
-
-Best regards,
--- 
-Luca Weiss <luca@z3ntu.xyz>
-
+Konrad
+>  arch/arm/boot/dts/qcom/qcom-msm8974.dtsi | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi
+> index aeca504918a0..c6475837eda3 100644
+> --- a/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi
+> +++ b/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi
+> @@ -1075,7 +1075,7 @@ bimc: interconnect@fc380000 {
+>  			#interconnect-cells = <1>;
+>  			clock-names = "bus", "bus_a";
+>  			clocks = <&rpmcc RPM_SMD_BIMC_CLK>,
+> -			         <&rpmcc RPM_SMD_BIMC_A_CLK>;
+> +				 <&rpmcc RPM_SMD_BIMC_A_CLK>;
+>  		};
+>  
+>  		snoc: interconnect@fc460000 {
+> @@ -1084,7 +1084,7 @@ snoc: interconnect@fc460000 {
+>  			#interconnect-cells = <1>;
+>  			clock-names = "bus", "bus_a";
+>  			clocks = <&rpmcc RPM_SMD_SNOC_CLK>,
+> -			         <&rpmcc RPM_SMD_SNOC_A_CLK>;
+> +				 <&rpmcc RPM_SMD_SNOC_A_CLK>;
+>  		};
+>  
+>  		pnoc: interconnect@fc468000 {
+> @@ -1093,7 +1093,7 @@ pnoc: interconnect@fc468000 {
+>  			#interconnect-cells = <1>;
+>  			clock-names = "bus", "bus_a";
+>  			clocks = <&rpmcc RPM_SMD_PNOC_CLK>,
+> -			         <&rpmcc RPM_SMD_PNOC_A_CLK>;
+> +				 <&rpmcc RPM_SMD_PNOC_A_CLK>;
+>  		};
+>  
+>  		ocmemnoc: interconnect@fc470000 {
+> @@ -1102,7 +1102,7 @@ ocmemnoc: interconnect@fc470000 {
+>  			#interconnect-cells = <1>;
+>  			clock-names = "bus", "bus_a";
+>  			clocks = <&rpmcc RPM_SMD_OCMEMGX_CLK>,
+> -			         <&rpmcc RPM_SMD_OCMEMGX_A_CLK>;
+> +				 <&rpmcc RPM_SMD_OCMEMGX_A_CLK>;
+>  		};
+>  
+>  		mmssnoc: interconnect@fc478000 {
+> @@ -1111,7 +1111,7 @@ mmssnoc: interconnect@fc478000 {
+>  			#interconnect-cells = <1>;
+>  			clock-names = "bus", "bus_a";
+>  			clocks = <&mmcc MMSS_S0_AXI_CLK>,
+> -			         <&mmcc MMSS_S0_AXI_CLK>;
+> +				 <&mmcc MMSS_S0_AXI_CLK>;
+>  		};
+>  
+>  		cnoc: interconnect@fc480000 {
+> @@ -1120,7 +1120,7 @@ cnoc: interconnect@fc480000 {
+>  			#interconnect-cells = <1>;
+>  			clock-names = "bus", "bus_a";
+>  			clocks = <&rpmcc RPM_SMD_CNOC_CLK>,
+> -			         <&rpmcc RPM_SMD_CNOC_A_CLK>;
+> +				 <&rpmcc RPM_SMD_CNOC_A_CLK>;
+>  		};
+>  
+>  		tsens: thermal-sensor@fc4a9000 {
+> 
