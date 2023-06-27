@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A237EB64D9
-	for <phone-devel@archiver.kernel.org>; Tue, 27 Jun 2023 13:46:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6FA7EB64D9
+	for <phone-devel@archiver.kernel.org>; Tue, 27 Jun 2023 13:47:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230453AbjF0NqO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 27 Jun 2023 09:46:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42832 "EHLO
+        id S231133AbjF0NrF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 27 Jun 2023 09:47:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229985AbjF0NqN (ORCPT
+        with ESMTP id S231134AbjF0NrD (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 27 Jun 2023 09:46:13 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5BE72D62
-        for <phone-devel@vger.kernel.org>; Tue, 27 Jun 2023 06:46:11 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-991fee3a6b1so162482366b.0
-        for <phone-devel@vger.kernel.org>; Tue, 27 Jun 2023 06:46:11 -0700 (PDT)
+        Tue, 27 Jun 2023 09:47:03 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AB7930D2
+        for <phone-devel@vger.kernel.org>; Tue, 27 Jun 2023 06:46:54 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-51d804c7d14so3823018a12.3
+        for <phone-devel@vger.kernel.org>; Tue, 27 Jun 2023 06:46:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687873570; x=1690465570;
+        d=linaro.org; s=google; t=1687873613; x=1690465613;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=C6GDo/PCyqeJlmAp+L1F523ncEm2Dlcbpi4EhLPM6dU=;
-        b=VjJou39mArRU2SgqQPw9V/Fz0rmQl9FBZLCoxY1lHgZdRbLHHVGzyXkrWFhuuFq4XR
-         R5pa8lUtxrOOEdaKith9uy4f0YD+o98lEuHj5GVNuivN6JEfk4qQRuMQeXUlZlO+8rqU
-         rMihmvUxzZSY6fTIrlujRJKWA5yxkrtiQ6cgk2ofBJOGScGE6zlmwTZWCzX9X3l8e+XE
-         /NLwgwbLVnFwsM6c6+tzQ/ydZOuGgJASHvbnNofhr5RzGitmrEr1nf0gu3TdH5U6Khg5
-         FD8H9Ge4+ZJUGRY0uwAEA+xHePEo/2N1kNxvk5lHgU9qx3eUxxrphBTBxR6KUQ7daEvT
-         596A==
+        bh=ovdi3NoFM51haUam0p0BHU27Xr8YaY7wpx+YxNLA8fA=;
+        b=vHuAAeiPDae36BOR/3xcpceQeXwHjd1clPQd7HXDxjfwz16HpoOFB3sJmx9M4iqeM0
+         45GcuRtECK9sRSJMzdfz5jiMjD3+icLeG0xuXttoOjRieKAzOtW6XPyZaOuFPhqIZi83
+         gpMxrFJOOFf56FVs4KwaB1v8O0BEYVNGLxodYqzMZnYbvt6Bden7br0zHQrKp1fALApC
+         1WzLbD33ic0OhlWfH6n8t1aFMGGOKZp4U5lwlKaPQXIYqjjk7/uiObyVxksf3tF0k24K
+         WHcDg1VkJcY++zt3KfTcoFlCqGoNf/S126nCf8r4+VpAXfmqrK2BFfdk6pfCDQLlRQSo
+         Kc0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687873570; x=1690465570;
+        d=1e100.net; s=20221208; t=1687873613; x=1690465613;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=C6GDo/PCyqeJlmAp+L1F523ncEm2Dlcbpi4EhLPM6dU=;
-        b=Cxkmz2Jc78XbpOYd8rDf8wvSvse7sY4MsBlbnTCiymTXmj+5NjTpEsouxRpeUdqMPJ
-         QKrObA5Fqwv07x3Mzr7+j+sqxLbddXh2M3lYvKkwnNF/GiXchRFVBJXxv3i85AkVaORY
-         w51JPdHocD5NZSENC1AfpJ7OUitbPyNWJDziglRYKwTYr2V+38OzHpFIBKVDA/d+NH+u
-         2K4puRp6CQXGY7NdIDCYu/+imIeCSF4sdJP9pVGWAQ+qStMrgEYQ4+leUjIyAeqdlRJv
-         VeOhodOdf2Jo8wC7iEB/Tw9ocZBljqKM+dTrTuglMYQklcBSWXOWjrriv57bgyq8Dc+v
-         LJXA==
-X-Gm-Message-State: AC+VfDy1CJVJT3UIO8mHL+Re4szgm7Vj7rcptutnGSOlc0Ts5T2zIy9/
-        uApAapFcBnbOSZFvulEDlLEyYQ==
-X-Google-Smtp-Source: ACHHUZ7IYXJwXk1SNEMr8oz4RHlt3J2yBev4bixokO+Gc4xB2ZZl/W+WNtdQLEJHfex8XUxvCy52iw==
-X-Received: by 2002:a17:907:3e16:b0:978:a186:464f with SMTP id hp22-20020a1709073e1600b00978a186464fmr31854500ejc.39.1687873570345;
-        Tue, 27 Jun 2023 06:46:10 -0700 (PDT)
+        bh=ovdi3NoFM51haUam0p0BHU27Xr8YaY7wpx+YxNLA8fA=;
+        b=a3WYRxkLEv1BtRsjJQV3daIMkQDp/h4V9kB6yPqyYnqEguXKLWkO8gkXPrZxD9GCM0
+         ziYGvketa07bvWc/ko5f2O7QKkz7waHykS3Jt1e5cdad6Gz15U+KOc8AlH30CFNP6q3t
+         pBmq4fXV/FntooFKv1XB8qluYuJzMXFnoXdm+bbnH6dJF6dEsKj8vypEFCfNTYY1KvZh
+         /3vhXtZBFGHcT+N46iUeUuA8ZLUfgu2oG5Ntnxo2jL9B1RkSfLQzXIm4Uo0Rx2OYSyhU
+         fRRYXnOfku3dCuSbbPRBZFZsQnF0HzpafZVOnD4M9B/Gpr1tIghNxhOX5JAn3NX7s2Pd
+         0eEQ==
+X-Gm-Message-State: AC+VfDzMfohQCZRTvD6YTuMCmJWKCc3aD0uQOzXUb39N8vzNMSIJdPmn
+        3mC97DnFjOOZQI7BSeswWN0N8w==
+X-Google-Smtp-Source: ACHHUZ7Pgq4TaD98zOdQJZwiNqdo6lU1g3UzFJniq6T+CNL/Dtshy/7q83LPm0cpURchTf+OcpaFeg==
+X-Received: by 2002:aa7:cf1a:0:b0:51d:91d2:335b with SMTP id a26-20020aa7cf1a000000b0051d91d2335bmr5492032edy.1.1687873612834;
+        Tue, 27 Jun 2023 06:46:52 -0700 (PDT)
 Received: from [10.230.170.72] (46-253-189-43.dynamic.monzoon.net. [46.253.189.43])
-        by smtp.gmail.com with ESMTPSA id s17-20020a170906bc5100b009920a690cd9sm1018937ejv.59.2023.06.27.06.46.09
+        by smtp.gmail.com with ESMTPSA id a15-20020aa7d90f000000b0051bc5adc942sm3858850edr.47.2023.06.27.06.46.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jun 2023 06:46:09 -0700 (PDT)
-Message-ID: <3b8156f3-ae92-b7ed-60d5-b7558903e179@linaro.org>
-Date:   Tue, 27 Jun 2023 15:46:08 +0200
+        Tue, 27 Jun 2023 06:46:52 -0700 (PDT)
+Message-ID: <25ca1872-3ea2-aa44-37f0-13510b81dd50@linaro.org>
+Date:   Tue, 27 Jun 2023 15:46:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH v5 1/5] dt-bindings: ufs: qcom: Add reg-names property for
- ICE
+Subject: Re: [PATCH v5 4/5] dt-bindings: crypto: ice: Document sm8450 inline
+ crypto engine
 Content-Language: en-US
 To:     Luca Weiss <luca.weiss@fairphone.com>,
         Andy Gross <agross@kernel.org>,
@@ -74,9 +74,9 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
 References: <20221209-dt-binding-ufs-v5-0-c9a58c0a53f5@fairphone.com>
- <20221209-dt-binding-ufs-v5-1-c9a58c0a53f5@fairphone.com>
+ <20221209-dt-binding-ufs-v5-4-c9a58c0a53f5@fairphone.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20221209-dt-binding-ufs-v5-1-c9a58c0a53f5@fairphone.com>
+In-Reply-To: <20221209-dt-binding-ufs-v5-4-c9a58c0a53f5@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -84,14 +84,11 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 27/06/2023 10:28, Luca Weiss wrote:
-> The code in ufs-qcom-ice.c needs the ICE reg to be named "ice". Add this
-> in the bindings so the existing dts can validate successfully.
+> Document the compatible used for the inline crypto engine found on
+> SM8450.
 > 
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->  Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
 
 
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
