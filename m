@@ -2,281 +2,119 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3EFB0EB64DA
-	for <phone-devel@archiver.kernel.org>; Tue,  4 Jul 2023 18:10:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F4E5EB64DD
+	for <phone-devel@archiver.kernel.org>; Wed,  5 Jul 2023 04:27:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231521AbjGDSKV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 4 Jul 2023 14:10:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51186 "EHLO
+        id S230407AbjGEE1y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 5 Jul 2023 00:27:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231460AbjGDSKS (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 4 Jul 2023 14:10:18 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC2E610D5
-        for <phone-devel@vger.kernel.org>; Tue,  4 Jul 2023 11:10:15 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2b69f71a7easo96303131fa.1
-        for <phone-devel@vger.kernel.org>; Tue, 04 Jul 2023 11:10:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688494214; x=1691086214;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vZVADByWajD+t+CUY4Se4uIQW6pfNssor2L/f13xpRE=;
-        b=dcQRRcprAu3XN0C7BImZpG+nU0EeXSlVAvSXS/gC+47zSZaz01TLKMP9KySl7aUTwp
-         cQXhYTUQ8eDK1SKWrXAFxccNlqtBGPB9y0+InNq9x14hKnx+nL/04R9eEmB6ROG37vwc
-         nFYgWIVQTK6ehHTW8SQqgArQ2VcJDvnKCC605Qv0Gf9/deCOXsFFoAWKvgShznc6XtjW
-         EI3uWxr0XE+oYPtuoXDJDLhBFIvK4J+raWc16Q6IxeYKaPrWy/nNou6oLmS1v+V9z/sb
-         23DRaO3cMWXV2PKVq63FXemvDMbkcGzaqd1b/vWWgDmmtLZlHU74HQCd9xCD5gChXgTA
-         DSQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688494214; x=1691086214;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vZVADByWajD+t+CUY4Se4uIQW6pfNssor2L/f13xpRE=;
-        b=FGOj+PR2g+4trlmiRKdXiHByvJIqGrThFIobG4ov9qsVjbpA/z/kTfcViAixpLjIQO
-         AEShSbTMxUtlblEz1WHq4tY4aJ4lsojjwxgk4EsQ1J6cc49jrDa8mcl59jB1htmSHOgM
-         x7QMcfMNKZG5jIObImGqjVehi8YRGWaWLUD04RGIbNeFyGRf39LuXoDIDIFOf23GnCxR
-         5LsluAn9Qx2ix6Ie162+tXKU2U8xjw9MyLwrRiGomurdQ1iLkNGuf2h0SMtQ1VCjB5H3
-         4qN6YT71uDqzoCMbQI6pnQhx1xIpggb8DwKFUk8JHrqWNszVXNnmeG2yGmosUo6694DF
-         2nAw==
-X-Gm-Message-State: ABy/qLYweaiSah0tYaf46lOn9Rx6PADY6D/r3OPncPBKit1OOYdy8qFl
-        KgV92wXcWEnvv63v523816zvig==
-X-Google-Smtp-Source: APBJJlHrnNrnwlPD56QQejDLxMHR4kGkWkgUG38Egxu3JAebh4cEXsTZQro1inS42seg91dtBKUAxg==
-X-Received: by 2002:a2e:8215:0:b0:2b6:cf64:7a8e with SMTP id w21-20020a2e8215000000b002b6cf647a8emr9049787ljg.19.1688494213946;
-        Tue, 04 Jul 2023 11:10:13 -0700 (PDT)
-Received: from [192.168.1.101] (abyj26.neoplus.adsl.tpnet.pl. [83.9.29.26])
-        by smtp.gmail.com with ESMTPSA id s24-20020a2e98d8000000b002b6ebc61e85sm1152448ljj.54.2023.07.04.11.10.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Jul 2023 11:10:13 -0700 (PDT)
-Message-ID: <10660989-4f1d-0107-f595-bcfd1ca5ea95@linaro.org>
-Date:   Tue, 4 Jul 2023 20:10:11 +0200
+        with ESMTP id S229469AbjGEE1x (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 Jul 2023 00:27:53 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7DB510F2;
+        Tue,  4 Jul 2023 21:27:51 -0700 (PDT)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36541Olm027002;
+        Wed, 5 Jul 2023 04:27:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=eYUVnt6Wi+jIiqMPQqigPy6gPw+ZrOvBJs+sKNwn0s0=;
+ b=onNdyOX0UsACwxtosHgJ0YmEdC56WnQuijX9mPZUZV9RJLA90LKYtHoWM1SnmTlJPrU4
+ E3ygCB2XCfCGpADcRmUvS3eoY2VKQhTRyglDvl6XeluwQLaiLyMUAWg6Br21dtIfnSF6
+ tZUK3wCO89TA+91NOCfLx1EHld3BZrH9HRs6owe4B5/h4P5AWTcfOF5Dp/+dlUn+K079
+ 4gpbYg2REtagoNI5zc8u+x6U3ktGDuAGjI55G0RiAugj1sfblUNFlP7f/8gyNWBCoznq
+ UD1p0iqSwF2ruaOLHzff9c8ATrvwFdUVkXSpGiYYVt0XU4GL72RI7qL8AwRR/wU6blxP 5A== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rmny98vn6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 05 Jul 2023 04:27:21 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3654RKQU008607
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 5 Jul 2023 04:27:20 GMT
+Received: from [10.217.216.152] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.7; Tue, 4 Jul 2023
+ 21:27:15 -0700
+Message-ID: <9f06d400-be7b-6806-b055-8cc7f11db6ca@quicinc.com>
+Date:   Wed, 5 Jul 2023 09:57:12 +0530
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 7/7] arm64: dts: qcom: Add support for the Xiaomi SM7125
- platform
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 4/7] clk: qcom: gcc-sc7180: Fix up gcc_sdcc2_apps_clk_src
 Content-Language: en-US
 To:     David Wronek <davidwronek@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
         Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>,
         Taniya Das <tdas@codeaurora.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+CC:     <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, map220v <map220v300@gmail.com>
 References: <20230704163848.169853-2-davidwronek@gmail.com>
- <20230704163848.169853-9-davidwronek@gmail.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20230704163848.169853-9-davidwronek@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+ <20230704163848.169853-6-davidwronek@gmail.com>
+From:   Taniya Das <quic_tdas@quicinc.com>
+In-Reply-To: <20230704163848.169853-6-davidwronek@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Yss-_JO1LGGMGq4qXZE38ClSYKdjeKti
+X-Proofpoint-ORIG-GUID: Yss-_JO1LGGMGq4qXZE38ClSYKdjeKti
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-07-04_16,2023-07-04_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1011 priorityscore=1501
+ spamscore=0 impostorscore=0 mlxscore=0 adultscore=0 mlxlogscore=992
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2307050039
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 4.07.2023 18:32, David Wronek wrote:
-> There are 6 Xiaomi smartphones with the SM7125 SoC:
+
+
+On 7/4/2023 10:01 PM, David Wronek wrote:
+> From: map220v <map220v300@gmail.com>
 > 
-> - POCO M2 Pro (gram)
-> - Redmi Note 9S (curtana)
-> - Redmi Note 9 Pro (Global, joyeuse)
-> - Redmi Note 9 Pro (India, curtana)
-> - Redmi Note 9 Pro Max (excalibur)
-> - Redmi Note 10 Lite (curtana)
+> Add the PARENT_ENABLE flag to prevent the clock from getting stuck at
+> boot.
 > 
-> These devices share a common board design (a.k.a miatoll) with only a
-> few differences. Add support for the common board, as well as support
-> for the global Redmi Note 9 Pro.
-> 
+> Fixes: 17269568f726 ("clk: qcom: Add Global Clock controller (GCC) driver for SC7180")
+> Signed-off-by: map220v <map220v300@gmail.com>
 > Signed-off-by: David Wronek <davidwronek@gmail.com>
 > ---
->  arch/arm64/boot/dts/qcom/Makefile             |   1 +
->  .../boot/dts/qcom/sm7125-xiaomi-joyeuse.dts   |  16 +
->  .../boot/dts/qcom/sm7125-xiaomi-miatoll.dtsi  | 420 ++++++++++++++++++
->  3 files changed, 437 insertions(+)
->  create mode 100644 arch/arm64/boot/dts/qcom/sm7125-xiaomi-joyeuse.dts
->  create mode 100644 arch/arm64/boot/dts/qcom/sm7125-xiaomi-miatoll.dtsi
+>   drivers/clk/qcom/gcc-sc7180.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-> index 337abc4ceb17..7ef9e7d43904 100644
-> --- a/arch/arm64/boot/dts/qcom/Makefile
-> +++ b/arch/arm64/boot/dts/qcom/Makefile
-> @@ -192,6 +192,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-sony-xperia-seine-pdx201.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-xiaomi-laurel-sprout.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm6350-sony-xperia-lena-pdx213.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm6375-sony-xperia-murray-pdx225.dtb
-> +dtb-$(CONFIG_ARCH_QCOM)	+= sm7125-xiaomi-joyeuse.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm7225-fairphone-fp4.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm8150-hdk.dtb
->  dtb-$(CONFIG_ARCH_QCOM)	+= sm8150-microsoft-surface-duo.dtb
-> diff --git a/arch/arm64/boot/dts/qcom/sm7125-xiaomi-joyeuse.dts b/arch/arm64/boot/dts/qcom/sm7125-xiaomi-joyeuse.dts
-> new file mode 100644
-> index 000000000000..670fd63f3416
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/sm7125-xiaomi-joyeuse.dts
-> @@ -0,0 +1,16 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (c) 2023, David Wronek <davidwronek@gmail.com>
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include "sm7125-xiaomi-miatoll.dtsi"
-> +
-> +/ {
-> +	model = "Xiaomi Redmi Note 9 Pro (Global)";
-> +	compatible = "xiaomi,joyeuse", "qcom,sm7125";
-> +
-> +	/* required for bootloader to select correct board */
-> +	qcom,board-id = <0x50022 1>;
-I think you need to amend some list in bindings to allow qcom,abcd-id properties
+> diff --git a/drivers/clk/qcom/gcc-sc7180.c b/drivers/clk/qcom/gcc-sc7180.c
+> index cef3c77564cf..49f36e1df4fa 100644
+> --- a/drivers/clk/qcom/gcc-sc7180.c
+> +++ b/drivers/clk/qcom/gcc-sc7180.c
+> @@ -651,6 +651,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+>   		.name = "gcc_sdcc2_apps_clk_src",
+>   		.parent_data = gcc_parent_data_5,
+>   		.num_parents = ARRAY_SIZE(gcc_parent_data_5),
+> +		.flags = CLK_OPS_PARENT_ENABLE,
 
-[...]
+Could you please share what Stuck warnings are you observing?
 
-> +		rmtfs_mem: memory@fa601000 {
-> +			compatible = "qcom,rmtfs-mem";
-> +			reg = <0x0 0xfa601000 0x0 0x200000>;
-> +			no-map;
-> +
-> +			qcom,client-id = <1>;
-> +			qcom,vmid = <15>;
-QCOM_SCM_VMID_MSS_MSA
+>   		.ops = &clk_rcg2_floor_ops,
+>   	},
+>   };
 
-from
-
-include/dt-bindings/firmware/qcom,scm.h
-
-> +		};
-> +	};
-> +};
-> +
-> +&apps_rsc {
-> +	regulators-0 {
-> +		compatible = "qcom,pm6150-rpmh-regulators";
-> +		qcom,pmic-id = "a";
-> +
-> +		vreg_s1a_1p1: smps1 {
-> +			regulator-min-microvolt = <1128000>;
-> +			regulator-max-microvolt = <1128000>;
-> +		};
-> +
-> +		vreg_s4a_1p0: smps4 {
-> +			regulator-min-microvolt = <824000>;
-> +			regulator-max-microvolt = <1120000>;
-> +		};
-> +
-> +		vreg_s5a_2p0: smps5 {
-> +			regulator-min-microvolt = <1744000>;
-> +			regulator-max-microvolt = <2040000>;
-> +		};
-> +
-> +		vreg_l1a_1p2: ldo1 {
-> +			regulator-min-microvolt = <1178000>;
-> +			regulator-max-microvolt = <1256000>;
-> +			regulator-initial-mode = <RPMH_REGULATOR_MODE_LPM>;
-You want HPM, LPM is not guaranteed to give you the desired voltages.
-
-[...]
-
-> +&sdhc_2 {
-> +	status = "okay";
-Status last, everywhere
-
-Konrad
-> +
-> +	pinctrl-names = "default","sleep";
-> +	pinctrl-0 = <&sdc2_on>;
-> +	pinctrl-1 = <&sdc2_off>;
-> +	vmmc-supply = <&vreg_l9c_2p9>;
-> +	vqmmc-supply = <&vreg_l6c_3p0>;
-> +
-> +	cd-gpios = <&tlmm 69 GPIO_ACTIVE_HIGH>;
-> +};
-> +
-> +&tlmm {
-> +	gpio-reserved-ranges = <0 4>, <34 4>, <59 4>;
-> +
-> +	sdc2_on: sdc2-on-state {
-> +		clk-pins {
-> +			pins = "sdc2_clk";
-> +			bias-disable;
-> +			drive-strength = <16>;
-> +		};
-> +
-> +		cmd-pins {
-> +			pins = "sdc2_cmd";
-> +			bias-pull-up;
-> +			drive-strength = <10>;
-> +		};
-> +
-> +		data-pins {
-> +			pins = "sdc2_data";
-> +			bias-pull-up;
-> +			drive-strength = <10>;
-> +		};
-> +
-> +		sd-cd-pins {
-> +			pins = "gpio69";
-> +			function = "gpio";
-> +			bias-pull-up;
-> +			drive-strength = <2>;
-> +		};
-> +	};
-> +
-> +	sdc2_off: sdc2-off-state {
-> +		clk-pins {
-> +			pins = "sdc2_clk";
-> +			bias-disable;
-> +			drive-strength = <2>;
-> +		};
-> +
-> +		cmd-pins {
-> +			pins = "sdc2_cmd";
-> +			bias-pull-up;
-> +			drive-strength = <2>;
-> +		};
-> +
-> +		data-pins {
-> +			pins = "sdc2_data";
-> +			bias-pull-up;
-> +			drive-strength = <2>;
-> +		};
-> +
-> +		sd-cd-pins {
-> +			pins = "gpio69";
-> +			function = "gpio";
-> +			bias-pull-up;
-> +			drive-strength = <2>;
-> +		};
-> +	};
-> +};
-> +
-> +&usb_1 {
-> +	qcom,select-utmi-as-pipe-clk;
-> +	status = "okay";
-> +};
-> +
-> +&usb_1_dwc3 {
-> +	maximum-speed = "high-speed";
-> +	dr_mode = "peripheral";
-> +	status = "okay";
-> +};
-> +
-> +&usb_1_hsphy {
-> +	vdd-supply = <&vreg_l4a_0p88>;
-> +	vdda-pll-supply = <&vreg_l11a_1p8>;
-> +	vdda-phy-dpdm-supply = <&vreg_l17a_3p1>;
-> +	status = "okay";
-> +};
-> +
-> +&usb_1_qmpphy {
-> +	status = "okay";
-> +	vdda-phy-supply = <&vreg_l4a_0p88>;
-> +	vdda-pll-supply = <&vreg_l3c_1p23>;
-> +};
+-- 
+Thanks & Regards,
+Taniya Das.
