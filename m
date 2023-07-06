@@ -2,59 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71EB5C001E0
-	for <phone-devel@archiver.kernel.org>; Wed,  5 Jul 2023 15:49:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2275FC001DD
+	for <phone-devel@archiver.kernel.org>; Thu,  6 Jul 2023 06:10:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232344AbjGEPtP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 5 Jul 2023 11:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58626 "EHLO
+        id S233382AbjGFGKX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 6 Jul 2023 02:10:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232587AbjGEPs6 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 5 Jul 2023 11:48:58 -0400
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8F921730;
-        Wed,  5 Jul 2023 08:48:57 -0700 (PDT)
-Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-c2743325e2dso1293987276.1;
-        Wed, 05 Jul 2023 08:48:57 -0700 (PDT)
+        with ESMTP id S233559AbjGFGKR (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Thu, 6 Jul 2023 02:10:17 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D8E71BFC
+        for <phone-devel@vger.kernel.org>; Wed,  5 Jul 2023 23:09:34 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-991f956fb5aso31065566b.0
+        for <phone-devel@vger.kernel.org>; Wed, 05 Jul 2023 23:09:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688572137; x=1691164137;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rADWg9u/1BJDYIt3vLRjrV0s75Gr6YuZE8thJU8q/rI=;
-        b=VU68UufOWgKJSjdhtCDRT9FixyTZ/q2/t2AjAxdb4F2M3BlToo54fs1FEA0XP6kRql
-         W5h3m/VZtGm790+6AOkFaIhAzmI9P4o0N+GgSJeK1t8yoqoXaoe1CHrlk0UybtpT4gNA
-         EDZX0DbhVcnJOpYLbBRQl8jgYd4Lz4Ux/2a+eJgGHCDEBtpUMyRfy3J+/5bYgUvoBodt
-         VrLsArNFscIKLEbOPBaW9Nzv8cEaT1Xs4eZzPOjYeld6gKoT5gS6wU0Z7A4IUJQQFBoU
-         EvCvAdYlHAO1zihB6YyEbGv3TcoGg/PuONPvNfLljmkjHVO5Hrww0l+mxOHrkOQMP6c2
-         BxRA==
+        d=linaro.org; s=google; t=1688623771; x=1691215771;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ASMfahTCCTR31kbFV53HclK76U9QaQoyXHB0KJC8e7c=;
+        b=ZIdU45UNL3olfI00eJtIJKgx3twq68In1VUvi4+ics5kf6rjOx83JPX4SFt4TR7V+m
+         cjKs34qcRRmw10v5XDcwYFWvKd7RVhBhbqCdYmzx/QET3EfZN6rvwf3jjtVOY7vUIpLF
+         l8U4PaoHRZpqxfryxVBXO4lxXqQFRhvY+hWZzRb82aomC3GLyrMVIW89TxFTeG3oLXeR
+         oF8e6IRy9pIO5G4X6VbHcgWLg8ydMeVRWfpWumqsCIK1LzLlrkpjFWXigy3jcqIKHOT6
+         9PBplTfq2oy+SRR80u7j9aFnC6AX7UhBC37zTHZwN7FdXY65LN9y75n3eIvLTDIz76Wu
+         OxBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688572137; x=1691164137;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rADWg9u/1BJDYIt3vLRjrV0s75Gr6YuZE8thJU8q/rI=;
-        b=PTq243Yg6wCN3/EE2k0WqWvrzcNZwiqf7bT6w++l2duObLAW5CsbMYNLSuMlYkoj9P
-         idaGsU3xiRPZsdmmT+GyrSCFzWlOhtKOxTdwcczpS3JC7rmdlc8R2evsuK7R10hP8zVj
-         Vh0kQf1rJ0qIPLLz5EusM+lJja3dycyZPR1UyULChSD7byp/HSKW6eUlq+OzrqhTHvsU
-         WOMbwdKozFCD0IknynIihKh4NJnOCwyHsmeGrBVNjrkbe45OmRcpeYtNJjhHo1CoDihd
-         y8ECOOpvKGmrxpiXGioaZI0GWDorNc9+dXEtqo8n40btX5BMm6DPAX1gNiiwkWh88xOi
-         BjOg==
-X-Gm-Message-State: ABy/qLZ9DQ/Vei71T68Wk/KAOOfH4S0MTxz9Jd3jZ2vXA17sdrkKdIaC
-        n4GqR+6EBqZMwRyyzuVsjH/D50wQMndUU+aAfr+j3uEObj2a2aJG
-X-Google-Smtp-Source: APBJJlHPCTYg9Bs30dB81jOMQaHgFQ11PYgkS06RIQYtcad/nb1fw3CXz1aH2kMto4mPbGAQOrv6zcc83hJYsI1n7vM=
-X-Received: by 2002:a25:9f8e:0:b0:c3d:eff4:1c39 with SMTP id
- u14-20020a259f8e000000b00c3deff41c39mr1717279ybq.12.1688572136950; Wed, 05
- Jul 2023 08:48:56 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1688623771; x=1691215771;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ASMfahTCCTR31kbFV53HclK76U9QaQoyXHB0KJC8e7c=;
+        b=cSgQA2c3hwfZholYeZgvpDkWRRyi+Xn++NVu4ZRSz5b0j6t53nIYI8o0oXRzyLNNb5
+         L8J1cO+mjoLCfyIBUsqA9NsYKO+PFfHwT+d0co4gmKN9+KCymS85+ZaTdqw7wQR8QySI
+         6xXJXYbllvf4wbGTjtP47Lf9yg3qnVwcfmTCa5CLSJ+T8csuZZa11zOXerUXwsEeFWk4
+         eeimKsPxrTeCH4C/Ydgq492JqvS1CnccCR9TLJInN4vrEoAe0QPeU9HVlz5b70xnPmOj
+         z093MKzEViFjKpbd8z2hLhfeiA5I7Ju3sjRt1CxNSrF/GjDbNsU0HoQbpH/MHX04x5RS
+         aQjg==
+X-Gm-Message-State: ABy/qLYNc0Yjcoj03N9Dsf5C0LPFI9rqMwjhxM4P33lHxdkmUutVQ9+t
+        QH5T1AbPrfUTJ5k8dSk79+6jFg==
+X-Google-Smtp-Source: APBJJlEJYhWKCUxNLn2gxQTdXoxo87IFqc1/LNXMaz/l/0oZ2H2zmsfqlt3EOaTU88nlptY/EVaXZg==
+X-Received: by 2002:a17:906:209d:b0:973:d06d:545f with SMTP id 29-20020a170906209d00b00973d06d545fmr614778ejq.24.1688623771672;
+        Wed, 05 Jul 2023 23:09:31 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.26])
+        by smtp.gmail.com with ESMTPSA id r16-20020a170906c29000b00991d54db2acsm367657ejz.44.2023.07.05.23.09.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Jul 2023 23:09:31 -0700 (PDT)
+Message-ID: <f8e5c6de-0ff7-4b8e-d6bd-73be0b8a854c@linaro.org>
+Date:   Thu, 6 Jul 2023 08:09:27 +0200
 MIME-Version: 1.0
-References: <20230704163848.169853-2-davidwronek@gmail.com>
- <20230704163848.169853-3-davidwronek@gmail.com> <a0bd842d-b6d0-e126-7b05-e488357330ab@linaro.org>
-In-Reply-To: <a0bd842d-b6d0-e126-7b05-e488357330ab@linaro.org>
-From:   David Wronek <davidwronek@gmail.com>
-Date:   Wed, 5 Jul 2023 17:48:46 +0200
-Message-ID: <CAEoe_eWHbnE2EeWerkZAmGznagCoxB7kXsqtbTUxjtzgdmMRtQ@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
 Subject: Re: [PATCH 1/7] dt-bindings: arm: qcom,ids: Add SoC ID for SM7125
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+To:     David Wronek <davidwronek@gmail.com>
 Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
@@ -67,37 +69,47 @@ Cc:     Andy Gross <agross@kernel.org>,
         linux-clk@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org, map220v <map220v300@gmail.com>,
         Taniya Das <quic_tdas@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+References: <20230704163848.169853-2-davidwronek@gmail.com>
+ <20230704163848.169853-3-davidwronek@gmail.com>
+ <a0bd842d-b6d0-e126-7b05-e488357330ab@linaro.org>
+ <CAEoe_eWHbnE2EeWerkZAmGznagCoxB7kXsqtbTUxjtzgdmMRtQ@mail.gmail.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <CAEoe_eWHbnE2EeWerkZAmGznagCoxB7kXsqtbTUxjtzgdmMRtQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, Jul 5, 2023 at 11:46=E2=80=AFAM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 04/07/2023 18:31, David Wronek wrote:
-> > From: map220v <map220v300@gmail.com>
-> >
-> > Add the SoC ID for Qualcomm SM7125.
-> >
-> > Signed-off-by: map220v <map220v300@gmail.com>
->
-> We accept known identities, but this looks like a nickname/pseudonym.
-> Are you sure you got such SoB from map220v?
->
-> None of the commits here:
-> https://github.com/map220v/sm7125-mainline/commits/a72q-6.0
-> have signed-off-by. Did you add it by yourself?
->
-> Best regards,
-> Krzysztof
->
-(Please ignore my E-Mail from before, I forgot to click "reply all")
+On 05/07/2023 17:48, David Wronek wrote:
+> On Wed, Jul 5, 2023 at 11:46 AM Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+>>
+>> On 04/07/2023 18:31, David Wronek wrote:
+>>> From: map220v <map220v300@gmail.com>
+>>>
+>>> Add the SoC ID for Qualcomm SM7125.
+>>>
+>>> Signed-off-by: map220v <map220v300@gmail.com>
+>>
+>> We accept known identities, but this looks like a nickname/pseudonym.
+>> Are you sure you got such SoB from map220v?
+>>
+>> None of the commits here:
+>> https://github.com/map220v/sm7125-mainline/commits/a72q-6.0
+>> have signed-off-by. Did you add it by yourself?
+>>
+>> Best regards,
+>> Krzysztof
+>>
+> (Please ignore my E-Mail from before, I forgot to click "reply all")
+> 
+> I have asked map220v for permission to add their Signed-off-by to the commits
+> and this is the one they gave me. Is the nickname a problem?
 
-I have asked map220v for permission to add their Signed-off-by to the commi=
-ts
-and this is the one they gave me. Is the nickname a problem?
+Yes, because it looks anonymous. We need known identity. Just take the
+ownership of the patches...
 
-Sincerely,
-David
+Best regards,
+Krzysztof
+
