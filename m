@@ -2,52 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88CE3EB64D9
-	for <phone-devel@archiver.kernel.org>; Mon, 10 Jul 2023 05:06:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 147ABEB64DA
+	for <phone-devel@archiver.kernel.org>; Mon, 10 Jul 2023 05:07:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231646AbjGJFGy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 10 Jul 2023 01:06:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55344 "EHLO
+        id S231260AbjGJFHD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 10 Jul 2023 01:07:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231208AbjGJFFz (ORCPT
+        with ESMTP id S231458AbjGJFGI (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 10 Jul 2023 01:05:55 -0400
+        Mon, 10 Jul 2023 01:06:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082A41BE8;
-        Sun,  9 Jul 2023 22:05:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50D0410C2;
+        Sun,  9 Jul 2023 22:05:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 65A2860DF2;
-        Mon, 10 Jul 2023 05:04:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6022C433C9;
-        Mon, 10 Jul 2023 05:04:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A96A460DE9;
+        Mon, 10 Jul 2023 05:05:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86FB5C433C9;
+        Mon, 10 Jul 2023 05:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688965496;
-        bh=nub8H/mw+X988/i6k3Paz/dN4alhePOr2o2MoVrSaZI=;
+        s=k20201202; t=1688965501;
+        bh=YFjhvatW0hePg8+5hNpwF77bjV3DIDQRM2rj8LszAm4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UX5tQu8EGfaRPbUhMXdNVLldZuWflSqWZblfQxwthG45TjzC2b7e+uM0CGBLhySnu
-         zguHTczJiCsI76FHnpsAyBul6tHQqQst5C6+SUcFvnZMsem1G2PyHxodWSmqCmwYgV
-         X33ATNCz7r01gn/4qrnTPTNVg0Uo74X8JrYmBYoGIyjDgSiKwT+AX+yn+4AIpKA2W5
-         sCNYJFPEoGzYFaLGc876CAAfJnSEhdpjj5Fe3LD+H9nLHrXzXvQdHYCbXoR+prAqVS
-         7OvugmMewYqiniOnHOT1dKSuR9NOFLq8L096Ci84cz4ucsTYHOAHFPixcY9RHiATqp
-         Gc6qKjE3WVbTg==
+        b=BjK9vKsICxkBzHxVV9KtYyBijYI6tgdX9QYtoOWg6L7+/JDlKnDhbxtK/9FahkIl0
+         zUTbWmrMvS6Pxv3h9q252yotY3DmxSkxPQCr5KW+RFSOEsQauzoi0nvgEa00mNlQjF
+         I9fbiUlmlNckU9Siw3tXNCbxGAtNn0rgR0sJziArV8BCAwwAlUDZkQFFqQg5kWBI+R
+         Oq1hNzx1EMtssEgR36aX3JrPwLfzpsPVdsV0aHltTOxiMd97KQo/495SQarz/ZVcjd
+         e1SzxOf+DeBtecRcFR0PUEjYDiksO0wEx4XAhHTnFb+/AxxBxStNgj8YTRKycDL3MM
+         6ycnuKZCaZGew==
 From:   Bjorn Andersson <andersson@kernel.org>
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom: pm8953: Add thermal zone
-Date:   Sun,  9 Jul 2023 22:07:35 -0700
-Message-ID: <168896565970.1376307.8219500292825816238.b4-ty@kernel.org>
+        Conor Dooley <conor+dt@kernel.org>,
+        Krishna Manikandan <quic_mkrishn@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: (subset) [PATCH v3 0/7] Display support for MSM8226
+Date:   Sun,  9 Jul 2023 22:07:38 -0700
+Message-ID: <168896565945.1376307.16565002896351645834.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230625-pm8953-thermal-v1-1-2b4247d2f769@z3ntu.xyz>
-References: <20230625-pm8953-thermal-v1-1-2b4247d2f769@z3ntu.xyz>
+In-Reply-To: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
+References: <20230308-msm8226-mdp-v3-0-b6284145d67a@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -56,17 +65,20 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-On Sun, 25 Jun 2023 13:13:05 +0200, Luca Weiss wrote:
-> Define the themal zones using the temperature values found in the
-> downstream 4.9 sources so that the spmi-temp-alarm driver becomes
-> active.
+On Thu, 01 Jun 2023 19:00:07 +0200, Luca Weiss wrote:
+> This series adds the required configs for MDP5 and DSI blocks that are
+> needed for MDSS on MSM8226. Finally we can add the new nodes into the
+> dts.
+> 
+> Tested on apq8026-lg-lenok and msm8926-htc-memul.
 > 
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] arm64: dts: qcom: pm8953: Add thermal zone
-      commit: 519c47acac28db7cec7ab5d929055a73001ac2d9
+[7/7] ARM: dts: qcom: msm8226: Add mdss nodes
+      commit: d5fb01ad5eb449ccfd950e946a882639cad168b3
 
 Best regards,
 -- 
