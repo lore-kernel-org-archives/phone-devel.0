@@ -2,61 +2,53 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D46AEB64D9
-	for <phone-devel@archiver.kernel.org>; Mon, 10 Jul 2023 05:08:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48BC3EB64DA
+	for <phone-devel@archiver.kernel.org>; Mon, 10 Jul 2023 05:09:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232312AbjGJFIm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 10 Jul 2023 01:08:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55344 "EHLO
+        id S231569AbjGJFJE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 10 Jul 2023 01:09:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232465AbjGJFIH (ORCPT
+        with ESMTP id S232658AbjGJFIL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 10 Jul 2023 01:08:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0A2A2723;
-        Sun,  9 Jul 2023 22:06:09 -0700 (PDT)
+        Mon, 10 Jul 2023 01:08:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F4F273E;
+        Sun,  9 Jul 2023 22:06:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 460F660DED;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8328460E15;
+        Mon, 10 Jul 2023 05:04:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAF9C433CC;
         Mon, 10 Jul 2023 05:04:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C10C433C7;
-        Mon, 10 Jul 2023 05:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688965495;
-        bh=phIY5znAcGKL80ExVNQ3VL4dsnbeApEXQjzAcBy/Heo=;
+        s=k20201202; t=1688965497;
+        bh=ml1LSHyojLz2JBk3IY0Usxxos+JwtW8hWEoiEyom2wc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KB49TV6oNCWuupaGeHBI3nsULIkXkIg0rBQZr0iNROmFevzopdFISYMbG0E8ezVt1
-         qILV60r+MwChIAqVXgmNDnvDYqe4+Fr8RuVrD1z5fM6TniGQUJy8iMIHrSW9tVeMJi
-         tA2CT1iwQROjuB8gJ3YSyAGgNROrfBazpYAGWEjpsJXNlNkyVKnQ0tDG/9QmhBiN28
-         2GtGE6TqcGcK6cHgZ4pwMNnDIpdcChmormHBBvGyKBSv4cQJH2D+n86opwuTtfmbx9
-         cB5b54j0j+hsFSFkMjhJ/PEXBAiOR7TjPeX2ck7A4U9pntQD6PHOcBnk3Ri2Fjf/GP
-         vzA5n5DvMRiFg==
+        b=ST8O1PoGeL3NF2ukVRZBOfxkhMc/paqzQz4/jy9l5MpkhJ5VyS8TkPE8IUN1dnqaU
+         oVUclAlzBSLUoEGII8UpNZrlER+QQAOjBcCkF1DzLseppeTaYTqH35NhCHhs1r2e8D
+         x9HOSPqxzeVJqNqIsBG1WiKs4/v0XTeQVScSyB+Z+ZdDrvqiw1AnNPpID0JGr8PRkg
+         PzFKIyLpzGFVt4Y/gjKsxomyVTGMRFTtIb0+1sg8dpjBmjWa8fC2a+zKoomW76jyiD
+         j48ze37ZOxe1c6XS5BNdaAtlJvnwe40TKHyzpICAqzd7y9gVTTD7rU6LixRtz/M2n8
+         I1XEgLUxu0/zA==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     Andy Gross <agross@kernel.org>,
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Iskren Chernev <me@iskren.info>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Luca Weiss <luca.weiss@fairphone.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
-        Eric Biggers <ebiggers@google.com>
-Subject: Re: (subset) [PATCH v5 0/5] Fix some issues in QCOM UFS bindings
-Date:   Sun,  9 Jul 2023 22:07:34 -0700
-Message-ID: <168896565974.1376307.14861663929943818215.b4-ty@kernel.org>
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Bartosz Dudziak <bartosz.dudziak@snejp.pl>,
+        Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] clk: qcom: mmcc-msm8974: Add OXILICX_GDSC for msm8226
+Date:   Sun,  9 Jul 2023 22:07:36 -0700
+Message-ID: <168896565940.1376307.16512891292048089013.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20221209-dt-binding-ufs-v5-0-c9a58c0a53f5@fairphone.com>
-References: <20221209-dt-binding-ufs-v5-0-c9a58c0a53f5@fairphone.com>
+In-Reply-To: <20230506-msm8226-oxilicx-v2-1-f7e4ebff3d61@z3ntu.xyz>
+References: <20230506-msm8226-oxilicx-v2-1-f7e4ebff3d61@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -65,20 +57,16 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-On Tue, 27 Jun 2023 10:28:00 +0200, Luca Weiss wrote:
-> This series aims to solve the dtbs_check errors from the qcom ufs
-> bindings. It has changed in scope a bit since v1, so it may be a bit all
-> over the place.
+On Mon, 29 May 2023 10:34:40 +0200, Luca Weiss wrote:
+> On msm8226 we also have OXILICX_GDSC but we need a slighly different
+> config, with a .cxcs defined for clock but with no parent.
 > 
-> Please note, that I have not tested the sm8450.dtsi patch since I don't
-> have any hardware there. Testing would be appreciated.
 > 
-> [...]
 
 Applied, thanks!
 
-[5/5] arm64: dts: qcom: sm8450: Use standalone ICE node for UFS
-      commit: 86b0aef435851dec9e5202d22dfbfff56da4440c
+[1/1] clk: qcom: mmcc-msm8974: Add OXILICX_GDSC for msm8226
+      commit: e21e74c6e251152dfc45efdf2279db2778d51223
 
 Best regards,
 -- 
