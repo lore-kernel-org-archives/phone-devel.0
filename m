@@ -2,138 +2,93 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A678DEB64D9
-	for <phone-devel@archiver.kernel.org>; Fri,  7 Jul 2023 12:31:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B7D4EB64DA
+	for <phone-devel@archiver.kernel.org>; Mon, 10 Jul 2023 05:04:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232073AbjGGMbG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 7 Jul 2023 08:31:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59810 "EHLO
+        id S229963AbjGJFEa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 10 Jul 2023 01:04:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231845AbjGGMbD (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 7 Jul 2023 08:31:03 -0400
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0B3A213F
-        for <phone-devel@vger.kernel.org>; Fri,  7 Jul 2023 05:30:55 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2b6a084a34cso27463031fa.1
-        for <phone-devel@vger.kernel.org>; Fri, 07 Jul 2023 05:30:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1688733054; x=1691325054;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iGvyCAsX8L6WnC8v9SRyT2lXuT9dJtv6Ob7UfVhRf9g=;
-        b=u7ln/9RrvRdtuIdt+mrgHIC4WouXbUjvvcIVfUQeCc9olrHTNL+Xsz/i6tHmVIFHov
-         BT/41CpZZMgWHCcDQQw5z+/9MP7kVM0Op4jNJXt1x0b2k3IDHC+2Y069a/yUZ3q5mmB4
-         14yJrVWZI2i0ymEfyZAe9EfFHKdM6vyxeyAvT/fZFjGyEhjY1anAHfwkflU8qiYZAUFS
-         9b38yUCTryN1/fjlrmgEGzpp91TJS/uGRN0dpd1FKmY9k8L8sKKMNogghvqmKVdocCHY
-         LVLvvpnEhxLZFV6VadxC2JiCNHTjGS/MmLvaQfRwt1yBPMy+M4BSBEjxfw7RumA/1IsH
-         OsgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688733054; x=1691325054;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iGvyCAsX8L6WnC8v9SRyT2lXuT9dJtv6Ob7UfVhRf9g=;
-        b=jMbe3Tj39mxiRVYKp6px+8Jib3UoVn+XV7hRSTDAv5TZbXL8x+QTLh6nO9+VTwop6U
-         wNIFzOLsCJzgbBqeayajnPq5ftv+yUo4HooP/sNytJMV9qya8DFXqhI7rgqCbLYxVCAe
-         KDPRhq4S0yD/rQ+NY4bhdDjqYJjK952d61ggstWRbK+cHFvLBTixsiVHouTIX4d6mDmD
-         ZKzX6bI9RVHHFOv6AVJX6z/MUt0sbhnCv3mrOwdz33ZCtoDiafuuYOOcdRG0WtjiSoWz
-         YNCd6iH6BcLdDME0OMipni3PgiAY2kRyhG4rd/ONLiTyh0iqzPQbzVSfeYb2d/fAU/o+
-         CjUw==
-X-Gm-Message-State: ABy/qLaBO8TGS5oOOuJxFo40SpjOSGvLy4/J9xaNxC9JgCAv+17GrKZ3
-        RphdJ1z80s4Mah1Py3AUEFzeIA==
-X-Google-Smtp-Source: APBJJlFVEtG496EnoT85BigKA2kUu5jfUK+oufO+W1N79iqyCJ+ptwY0uD9THh4p7PbnlmkyehJ19Q==
-X-Received: by 2002:a2e:9596:0:b0:2b6:d4f7:b7fa with SMTP id w22-20020a2e9596000000b002b6d4f7b7famr3220754ljh.5.1688733053913;
-        Fri, 07 Jul 2023 05:30:53 -0700 (PDT)
-Received: from [192.168.1.101] (abyj26.neoplus.adsl.tpnet.pl. [83.9.29.26])
-        by smtp.gmail.com with ESMTPSA id m18-20020a2eb6d2000000b002b6e00a3e19sm751496ljo.132.2023.07.07.05.30.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Jul 2023 05:30:53 -0700 (PDT)
-Message-ID: <95ac3e2d-69c6-e795-af68-924000eb318e@linaro.org>
-Date:   Fri, 7 Jul 2023 14:30:52 +0200
+        with ESMTP id S230016AbjGJFE3 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Mon, 10 Jul 2023 01:04:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D8A612A;
+        Sun,  9 Jul 2023 22:04:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2954F60DE5;
+        Mon, 10 Jul 2023 05:04:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A22E8C43391;
+        Mon, 10 Jul 2023 05:04:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1688965464;
+        bh=ni2upZI8kEppFCVo7r7vCrGM7+j/rJ5swOEAL7zFOGE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=QbSs0uPa/EZyfZfDToS3gWqbV24BkP6Qnrv1A7zmbv7MxznqsPcbi3jFE0j9Pf5G+
+         qTB5EKYIhI9+jLkeh/ZzKG3CrKkOnOgXUWtgWMGv5YZBVPk2DNYEyWnTRRjcvnGeXy
+         tpU4akA4a/DBlpy+nREbs83gxMU43vGS386QlK/LSfoN1aA+ZPZUJU3Y7voB6YCjGJ
+         wtGqCDDoR2QQUMGwXztU2VgHlM2j2likFMvCh/X6N+dLhqg6dBQgwxQbTeds5rNWho
+         SmFaZTx0l4gqAbAhkbR98SmYP4vQ9sWxxbiAbwyW6uDwlD4r/JyrREuS4HPm8yC3dS
+         0u/Qu3ESaDV3A==
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jakob Hauser <jahau@rocketmail.com>
+Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Henrik Grimler <henrik@grimler.se>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v2] arm64: dts: qcom: msm8916-samsung-serranove: Add RT5033 PMIC with charger
+Date:   Sun,  9 Jul 2023 22:07:08 -0700
+Message-ID: <168896565963.1376307.362293397029491245.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230619203743.8136-1-jahau@rocketmail.com>
+References: <20230619203743.8136-1-jahau.ref@rocketmail.com> <20230619203743.8136-1-jahau@rocketmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v2 6/7] arm64: dts: qcom: Add SM7125 device tree
-Content-Language: en-US
-To:     David Wronek <davidwronek@gmail.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Taniya Das <quic_tdas@quicinc.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230706124339.134272-1-davidwronek@gmail.com>
- <20230706124339.134272-7-davidwronek@gmail.com>
- <021ad5b4-772d-f2f6-f9ec-bca06db04dd8@linaro.org>
- <CAEoe_eVAeNZVUHgpj64Redx5vg7wfzU4wjgH33TZ7ieoDifH-Q@mail.gmail.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <CAEoe_eVAeNZVUHgpj64Redx5vg7wfzU4wjgH33TZ7ieoDifH-Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 6.07.2023 17:36, David Wronek wrote:
-> On Thu, Jul 6, 2023 at 5:25 PM Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
->> On 6.07.2023 14:40, David Wronek wrote:
->>> The Snapdragon 720G (sm7125) is software-wise very similar to the
->>> Snapdragon 7c with minor differences in clock speeds and as added here,
->>> it uses the Kryo 465 instead of Kryo 468.
->>>
->>> Signed-off-by: David Wronek <davidwronek@gmail.com>
->>> ---
->> Can you please paste the output of `dmesg | grep "secondary processor"`?
->>
->> That would let us determine the unique identifier of the cores.
->>
->> Konrad
-> I get this output with the command:
-> [    0.005884] CPU1: Booted secondary processor 0x0000000100 [0x51df805e]
-> [    0.007191] CPU2: Booted secondary processor 0x0000000200 [0x51df805e]
-> [    0.008559] CPU3: Booted secondary processor 0x0000000300 [0x51df805e]
-> [    0.010046] CPU4: Booted secondary processor 0x0000000400 [0x51df805e]
-> [    0.011639] CPU5: Booted secondary processor 0x0000000500 [0x51df805e]
-> [    0.014424] CPU6: Booted secondary processor 0x0000000600 [0x51ff804f]
-> [    0.016421] CPU7: Booted secondary processor 0x0000000700 [0x51ff804f]
-Hm okay so they are indeed Qualcomm-branded cores.. Sometimes they use the
-ARM ones and still call it Kryo 
 
-btw the implementer id of 0x51 is the ascii code of 'Q', nice quirk
-
-Konrad
+On Mon, 19 Jun 2023 22:37:43 +0200, Jakob Hauser wrote:
+> For the regulators, apply the same settings as in the downstream
+> devicetree [1], including the "regulator-always-on" for the SAFE_LDO.
+> For the voltage of SAFE_LDO, however, there is only one voltage of 4.9 V
+> available in the mainline driver [2][3].
 > 
-> Sincerely,
-> David
->>>  arch/arm64/boot/dts/qcom/sm7125.dtsi | 16 ++++++++++++++++
->>>  1 file changed, 16 insertions(+)
->>>  create mode 100644 arch/arm64/boot/dts/qcom/sm7125.dtsi
->>>
->>> diff --git a/arch/arm64/boot/dts/qcom/sm7125.dtsi b/arch/arm64/boot/dts/qcom/sm7125.dtsi
->>> new file mode 100644
->>> index 000000000000..12dd72859a43
->>> --- /dev/null
->>> +++ b/arch/arm64/boot/dts/qcom/sm7125.dtsi
->>> @@ -0,0 +1,16 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +/*
->>> + * Copyright (c) 2021, The Linux Foundation. All rights reserved.
->>> + */
->>> +
->>> +#include "sc7180.dtsi"
->>> +
->>> +/* SM7125 uses Kryo 465 instead of Kryo 468 */
->>> +&CPU0 { compatible = "qcom,kryo465"; };
->>> +&CPU1 { compatible = "qcom,kryo465"; };
->>> +&CPU2 { compatible = "qcom,kryo465"; };
->>> +&CPU3 { compatible = "qcom,kryo465"; };
->>> +&CPU4 { compatible = "qcom,kryo465"; };
->>> +&CPU5 { compatible = "qcom,kryo465"; };
->>> +&CPU6 { compatible = "qcom,kryo465"; };
->>> +&CPU7 { compatible = "qcom,kryo465"; };
+> The values of the battery data evolve from following sources:
+> - precharge current: 450 mA corresponds to the default value of the chip. It
+>   doesn't get changed by the downstream Android driver. Therefore let's stick
+>   to this value.
+> - constant charge current: The 1000 mA are taken from the downstream devicetree
+>   of the serranove battery. It's not easy to spot. The value is in the line
+>   "input_current_limit" [4]. The rows are according to the power supply type,
+>   the 4th value stands for "main supply" [5]. That's the value used by the
+>   Android driver when a charging cable is plugged into the device.
+> - charge termination current: In the downstream devicetree of the battery
+>   that's the line "full_check_current_1st", which contains the 150 mA [6].
+> - precharge voltage: This one doesn't get set in the downstream Android driver.
+>   The chip's default is 2.8 V. That seemed too low to have a notable effect of
+>   handling the battery gentle. The chosen value of 3.5 V is a bit arbitrary
+>   and possibly rather high. As the device is already several years old and
+>   therefore most batteries too, a value on the safe side seems reasonable.
+> - constant charge voltage: The value of 4.35 V is set in the line
+>   "chg_float_voltage" of the downstream battery devicetree [7].
+> 
+> [...]
+
+Applied, thanks!
+
+[1/1] arm64: dts: qcom: msm8916-samsung-serranove: Add RT5033 PMIC with charger
+      commit: 404d7f65767dde3a0eb3d6127b458b61ed7d7118
+
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
