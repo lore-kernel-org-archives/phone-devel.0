@@ -2,116 +2,122 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2574EB64D9
-	for <phone-devel@archiver.kernel.org>; Mon, 10 Jul 2023 06:53:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA62EEB64DD
+	for <phone-devel@archiver.kernel.org>; Tue, 11 Jul 2023 06:14:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231381AbjGJGxL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 10 Jul 2023 02:53:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52554 "EHLO
+        id S231183AbjGKGOL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 11 Jul 2023 02:14:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230187AbjGJGxK (ORCPT
+        with ESMTP id S230353AbjGKGOK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 10 Jul 2023 02:53:10 -0400
-X-Greylist: delayed 599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 09 Jul 2023 23:53:09 PDT
-Received: from box.trvn.ru (box.trvn.ru [194.87.146.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0D23B8;
-        Sun,  9 Jul 2023 23:53:08 -0700 (PDT)
-Received: from authenticated-user (box.trvn.ru [194.87.146.52])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        Tue, 11 Jul 2023 02:14:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3861E5;
+        Mon, 10 Jul 2023 23:14:05 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by box.trvn.ru (Postfix) with ESMTPSA id 0BBDC400F4;
-        Mon, 10 Jul 2023 11:34:05 +0500 (+05)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=trvn.ru; s=mail;
-        t=1688970846; bh=DND5rpm/wmgsLveMaPobuACP8Vr/HQmeyKyeNsCd8+o=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=VatCx4zNsH8XVhtDNxxMbWubQSaBJWHv2qOvFQJfQjjrrc3MiDS/75JNYt2c/uQhW
-         FUYY5uJ5wlFRyEE7nF1sA/j7HnSqWPm5MMOVYXydradsjlibExvSNRV/SI20ifKLH/
-         DQJteOgLnHvSyWw6LLYJ9oIvKwRNlkFHdz0aRv+FIuIFsBq7/Q/TS7Upn2Uaqz2+Bq
-         zkD7Lu/LMJOT33H6ev6pRbawd3rV+/nQKyCQVlV2Kimam72MCdEbuTm+EzFWJzE36r
-         LKio3U6j2EfMhcnWp/eCEG1bsoUZKATUp0nQUFr5OHtNG6FfOqZcllcfOrsrtbe333
-         KpyTN0MGCxVQA==
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E6BD6132D;
+        Tue, 11 Jul 2023 06:14:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4947DC433C8;
+        Tue, 11 Jul 2023 06:14:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689056044;
+        bh=OX+EN9qbWJzWqP/kGmkt0uY4vfp67tjShrtEo3vYIIs=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=XHcBvWqqsh7Y/fCXX+ln3tRKqpaTOfV7QFUKmY0Z4YHGpV+NhQLCAY4cdZI23ruHi
+         W9CFe8hSqcGwczouqGiLmr8f43f2Utzg5fSvzYLisoobL+zCYv/wy98p8wUoz3QYv4
+         4n9XddiPtuFKdmapWP43qzI5xeFzn8ehyngy+KMrdsbdtfhUQw00d1o1sQga/64v3z
+         4P4hG6aiJsyY+iq6QlvA6AbUTlAQv+4QiS28YlRd6TStwI22re/xO4GQAiYO3M5vyj
+         cp4YFXUYJNGbqQusxqTYDGjToyBF8BEnDvebrxUKo8lDGfI9pEIotFmWep2UUYi61K
+         9AUJW4mzRXafw==
+Message-ID: <02fe7c1e-cb6a-14bc-73fc-04956a2b8396@kernel.org>
+Date:   Tue, 11 Jul 2023 08:13:55 +0200
 MIME-Version: 1.0
-Date:   Mon, 10 Jul 2023 11:34:04 +0500
-From:   Nikita Travkin <nikita@trvn.ru>
-To:     David Wronek <davidwronek@gmail.com>
-Cc:     Andy Gross <agross@kernel.org>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] arm64: dts: qcom: msm8916-samsung-serranove: Add
+ RT5033 PMIC with charger
+Content-Language: en-US
+To:     Jakob Hauser <jahau@rocketmail.com>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Taniya Das <quic_tdas@quicinc.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        cros-qcom-dts-watchers@chromium.org
-Subject: Re: [PATCH v2 5/7] arm64: dts: qcom: pm6150: Add resin and rtc nodes
-In-Reply-To: <20230706124339.134272-6-davidwronek@gmail.com>
-References: <20230706124339.134272-1-davidwronek@gmail.com>
- <20230706124339.134272-6-davidwronek@gmail.com>
-Message-ID: <c4fa68f151b043bc60848f621b9aea66@trvn.ru>
-X-Sender: nikita@trvn.ru
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Henrik Grimler <henrik@grimler.se>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <20230619203743.8136-1-jahau.ref@rocketmail.com>
+ <20230619203743.8136-1-jahau@rocketmail.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <20230619203743.8136-1-jahau@rocketmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-David Wronek писал(а) 06.07.2023 17:40:
-> Add support for the RTC which is the same as on other PMICs and add the
-> resin child node to the PM6150 PON device and disable it by default.
+On 19/06/2023 22:37, Jakob Hauser wrote:
+> For the regulators, apply the same settings as in the downstream
+> devicetree [1], including the "regulator-always-on" for the SAFE_LDO.
+> For the voltage of SAFE_LDO, however, there is only one voltage of 4.9 V
+> available in the mainline driver [2][3].
 > 
-> Signed-off-by: David Wronek <davidwronek@gmail.com>
-
-Actually... (+CC CROS watchers) Doug, this would enable a somewhat
-dubious RTC for trogdor devices. On qcom firmware the rtc is
-forever write-protected but you run TF-A so maybe it's more
-cooperative and you can add "allow-set-time" prop for trogdor, in
-case qtiseclib doesn't mess with it? Or, alternatively, disable this
-rtc for trogdor completely so it doesn't cause trouble?
-
-In any case, on the WoA firmware and with userspace offset handling,
-this works beautifully, so:
-
-Tested-by: Nikita Travkin <nikita@trvn.ru> # sc7180, Aspire 1
-
-Thanks!
+> The values of the battery data evolve from following sources:
+> - precharge current: 450 mA corresponds to the default value of the chip. It
+>   doesn't get changed by the downstream Android driver. Therefore let's stick
+>   to this value.
+> - constant charge current: The 1000 mA are taken from the downstream devicetree
+>   of the serranove battery. It's not easy to spot. The value is in the line
+>   "input_current_limit" [4]. The rows are according to the power supply type,
+>   the 4th value stands for "main supply" [5]. That's the value used by the
+>   Android driver when a charging cable is plugged into the device.
+> - charge termination current: In the downstream devicetree of the battery
+>   that's the line "full_check_current_1st", which contains the 150 mA [6].
+> - precharge voltage: This one doesn't get set in the downstream Android driver.
+>   The chip's default is 2.8 V. That seemed too low to have a notable effect of
+>   handling the battery gentle. The chosen value of 3.5 V is a bit arbitrary
+>   and possibly rather high. As the device is already several years old and
+>   therefore most batteries too, a value on the safe side seems reasonable.
+> - constant charge voltage: The value of 4.35 V is set in the line
+>   "chg_float_voltage" of the downstream battery devicetree [7].
+> 
+> The "connector" sub-node in the extcon node, the "battery" node in the
+> general section and the line "power-supplies" in the fuel-gauge node result
+> from the way of implementation documented in the dt-bindings of
+> rt5033-charger [8] and mfd rt5033 [9].
+> 
+> [1] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-eur-r03.dtsi#L135-L181
+> [2] https://github.com/torvalds/linux/blob/v6.3/include/linux/mfd/rt5033-private.h#L211-L212
+> [3] https://github.com/torvalds/linux/blob/v6.3/drivers/regulator/rt5033-regulator.c#L83
+> [4] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-battery-r01.dtsi#L100
+> [5] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/include/linux/power_supply.h#L173-L177
+> [6] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-battery-r01.dtsi#L102
+> [7] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-battery-r01.dtsi#L95
+> [8] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml?h=next-20230616
+> [9] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml?h=next-20230616
+> 
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 > ---
->  arch/arm64/boot/dts/qcom/pm6150.dtsi | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+> The patch is based on linux-next "next-20230616".
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/pm6150.dtsi b/arch/arm64/boot/dts/qcom/pm6150.dtsi
-> index 2e6afa296141..43c50f890e8b 100644
-> --- a/arch/arm64/boot/dts/qcom/pm6150.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/pm6150.dtsi
-> @@ -53,6 +53,14 @@ pm6150_pwrkey: pwrkey {
->  				bias-pull-up;
->  				linux,code = <KEY_POWER>;
->  			};
-> +
-> +			pm6150_resin: resin {
-> +				compatible = "qcom,pm8941-resin";
-> +				interrupts = <0x0 0x8 1 IRQ_TYPE_EDGE_BOTH>;
-> +				debounce = <15625>;
-> +				bias-pull-up;
-> +				status = "disabled";
-> +			};
->  		};
->  
->  		pm6150_temp: temp-alarm@2400 {
-> @@ -88,6 +96,13 @@ pm6150_adc_tm: adc-tm@3500 {
->  			status = "disabled";
->  		};
->  
-> +		rtc@6000 {
-> +			compatible = "qcom,pm8941-rtc";
-> +			reg = <0x6000>, <0x6100>;
-> +			reg-names = "rtc", "alarm";
-> +			interrupts = <0x0 0x61 0x1 IRQ_TYPE_EDGE_RISING>;
-> +		};
-> +
->  		pm6150_gpios: gpio@c000 {
->  			compatible = "qcom,pm6150-gpio", "qcom,spmi-gpio";
->  			reg = <0xc000>;
+> The driver rt5033-charger was just recently added to linux-next.
+
+This appeared in today's next next-20230711 and causes new warnings
+
+msm8916-samsung-serranove.dtb: extcon@14: 'connector' does not match any
+of the regexes: 'pinctrl-[0-9]+'
+https://krzk.eu/#/builders/90/builds/40/steps/17/logs/stdio
+
+The commit mentions rt5033, but that is not the schema being here
+tested, so clearly this is wrong or bindings were not updated.
+
+Please fix (and test your future patches).
+
+Best regards,
+Krzysztof
+
