@@ -2,66 +2,46 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4F00EB64DA
-	for <phone-devel@archiver.kernel.org>; Wed, 12 Jul 2023 19:50:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 668A1EB64DD
+	for <phone-devel@archiver.kernel.org>; Wed, 12 Jul 2023 20:28:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232341AbjGLTuX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 12 Jul 2023 15:50:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38828 "EHLO
+        id S231856AbjGLU2r (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 12 Jul 2023 16:28:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbjGLTuW (ORCPT
+        with ESMTP id S229720AbjGLU2q (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 12 Jul 2023 15:50:22 -0400
-Received: from sonic301-22.consmr.mail.ir2.yahoo.com (sonic301-22.consmr.mail.ir2.yahoo.com [77.238.176.99])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A9D81FDA
-        for <phone-devel@vger.kernel.org>; Wed, 12 Jul 2023 12:50:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1689191415; bh=RWAkhT59zZM0AfIRKdW4h+zvOFYdEnDRJrBHYKcnTxc=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=H7hNWhlGBkazO4KwCcPCf5NX6O+ItnAOS1kkPsx/K9jfr2B/Vxk9k3CZ4fcty4xK/snGPHD7NrRmAi8b7+F0lBi5lTcni9/CODrfwjqXNKxsGBwf1ccNPKsBqpsIaS09S6ARQ5M94ob8oVe6qaxi2SghSRmRokKn6c/UtmxLZt0UtENrhf3sMqskVyOgBFcGSXyMv5lnBe71Z1aqp75bjKe2djR830DWhPMCUdKqld3GJgZJxhI0Yn2WRh9b7ia/Qb7NX7fiR9q0Qm7dJ/p4pejNOd7NG9Xz3gv/I2LFZ2rxhjE6WCr4pI9XnY463zfHx4ca/gf09F3db0CtzTntjQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1689191415; bh=THHorsTaa2MP6suR4fxi9S6ZelrgpwGnQq4ICMK7tnE=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=n5zVIvvJgk6F9L8BVOze0V7ytu+p3x22rafAjYaflyQCaUnRKGDIEt0R2kPys2TFYp2HO+Yc1VuaJ1WMAseF8V2uuMYv7NImW4saEtqv/v4Tg6WUCORlP+rXjeyxDd6xgXtdJm9QUnDytxonmQQfULwkGX8iYiVr2aR7IcHvbLJ6nniNQ9eiRDlOIWI9DNqjMdxKhhh7G+d9P9kG076j964jAzPI8q84FKU6RuDd6x6B09nU4o2H4QGnmjzBHSO1Jj0h0orVKaSkuVbN9TCQsdyIyJwQlE9ZrwbQiNaAfl0Kx+h65dlh/WL3H33kR9YA7hIzcTY292b9p3FENb/gcg==
-X-YMail-OSG: qG6Nc_4VM1mLFs8qAvV_3_6TP6d54il25rPdfU6sjqginxCWIK0ZgcUKoSDQrlh
- tJbB83PTJq21Qd9717vagpunf_bUoVTBMC810ebsvniL03kFGi18NVKKqVWZiQC90PwGXa_.EqVo
- LX92bHwnge7RsAkc9VLNoIKZfzzx0IrKm1izqfYJDuGejnaZkqH2yhHdbmm_b2ugrYtKCi735KGE
- VZnIAboImERQl90iYBTryDC89o3La7Nj7K65TZSD9ajze0w809Xrmh6fd571qYsN7I4ZOBspr1It
- BKKzTTQ4Z7fivbYwOTJeaZPYnQvJ2QdYpW90Av9AzdCG7fUi2_A7Yz7wIqehLMpz0F2aeBtWltWw
- A1KacSoaMM3y4kBxQB7jL_1E2SaDRm2Mge.xqenitqxV47n8eP8PQXthj_LcipHdrb2AzAduiE9Q
- XU.GhrkJPQF9V22G_06TinTgJ.7_aPclvcmALBVRxqN7OUvimnaPhd64GMgpjz_NUHaokOU8QBu9
- qkGVb_fwJBksZ_sPeOe1SEseOoxuveqjhZJZ20aLv0TnXyc.TxlXQrJ0dbTzALyKdVhVRPWzcUxj
- EqUu3xeu0fbx1hLvbqhFSF1cW.9olau8rAGzlY1Az1ZuE6cLL9tXTEuzAiLcowlzwxA5z9IeLabO
- laPOLltC1Onako3uTcTyheZQ6FwrTtpbl4Lz907_2jplPAQUD.Zcd3poY3IeZf98lg_Q7Hn3NBpr
- juh_E70P20pah_BLCDs0aAFBelRNAxnfSq0QrsFhC9MWhVdBq_R9mc32MsPhfCz2mhxquNcjQR94
- An8LqymU_u719TuUYCgtEzkzC9h915aCpQ6Fsnt0urHg_i9AYQ_zeQvL6IDZEISOVRbpJK989lUa
- Slyb6dakvZ2LbXSK0z3J2OA_.KxADNDiRgxbgEOO_oGyv7ieeEoDWOBtb0UWaFTCfTheo5Hm9k3T
- u9_Elo3mzeaIFX4ZA89fJiSYZ3FfMfaqsARFCacJXJktLHG_VFd8QrHuIZGFOLLHgYrx0HfRl0zH
- xALfmwUlYU7EbUa_DOtCrUBhkrTtsIEWMhVaMoBHvdO.LMOD2MFbJRIn06fnYcQO4tu3kA28x8Fu
- WgUu4SCQZLL8RFQN0wCBauPqes8pD8aBE4jGPzhnCw2Vh1Nciam_V.qFZGEOI0LrTGUsajVWUUkB
- 8Kzuh52vgcRhju6Wg.RwHV3XbLC._0W9zpSdz4ldU0jl4AAXpFku_hUL7jzfZh0ctWa.rx0qfTFf
- sXiMjQeecr0tKHacvO5ufywzEUPyqZ3MX91wWS3HX6Lijr56nLND8kLxHRj4vH0Jh9uayLhZMgQI
- QGrFOArC8J24gwa3p7QckD73qW_sOrp05.W_hplkfIKxbTmRf_7gwfleQI18aSlYQCJ5POKKULvz
- BMXNyCJ.sMh27cz1OYiHx.yFPpBxPpXgKUqJKQYseXosozxCEHViUoIQeOW4OsmPrigfIP7aaL8.
- yEOG8F3rLvX_TIB2wxUz11c2IilySDrFvKXgiANSBKNYM70RFcR4su9hS5ByKFJO69sDN.QOh.a8
- FQe5EsdfRWA7U4FWod9CM8xP3LEBptgwE1ldSkY_ZHr.SVqBa97esQGGD9p0scVtgAAWDX9VIB3w
- 2ETBjkJu6gCeFp2tCt4zFWGARPHpMU79sdABPPfvSgO2uVpKH96VJvOPwZ5qI3uB9Czffz_vR7mw
- MQqkBD6FFr.ZiGFFK_.6.EXpvHMNjRq4ByHX2xI0_AFMq0kYvW9rD78WhNrW4.zyJpR9_KwjsMta
- Re8iH0IHFRJ2xjXadhWxHD4o0wPkaG33md7lu59KLkArXCUiJKCzRb_3rezdVIkFMXDfQft8i8WA
- RKJeLZgExLNb9Oy1GFF7I5S2OB4k4zbD5tE0lZT4UtxK7p.8nxw7n84gxyKUsSjaytC.yWfNb.Xt
- A2RH9A8scvpdFDmu.BMgqI120nHJ4nr5a9RhLmLZ6QzqCdVDrXC1BBiROKQ5W7JiasAq5Skunmtj
- b3cg.tLICYuE9ZZQbGOlOl2pD1H3iGXu_8cV2ADKx.OVqWc1s36SjBchQ.g0KA8FGx523YC9rBRx
- bnsEEtdXKl4lZ9s25t8HbEbAa_5waLUaG5xJpTJsCoIO9O8r5Th8Ed5KXt9J6C2aZVyTSAt5hF9J
- UCSYI6N5xDzPMfR8hkpbh80h7CrEK05.nQZNFXPNBZfXwRdFOx1XW6dyTOTgqrN3f0Lxwp2eFIO7
- FGHfs3pitFCEgy8pP8YSoYVxANoY2XnWYwv32IUbnPLRIP4tOPOoWaCZuPnnAU.71tm_.PAAlV9f
- NhxN4RY_pu.Fy2KOOOf75YQ--
-X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: f03bcd76-0802-4e51-a492-99ad6d1058e2
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ir2.yahoo.com with HTTP; Wed, 12 Jul 2023 19:50:15 +0000
-Received: by hermes--production-ir2-7858d959bd-hmv8h (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID ca8b1e30b4f74ff6f1793e599fa400fa;
-          Wed, 12 Jul 2023 19:50:14 +0000 (UTC)
-Message-ID: <3376e14a-4fc7-160e-509e-8dcbe627ef62@rocketmail.com>
-Date:   Wed, 12 Jul 2023 21:50:12 +0200
+        Wed, 12 Jul 2023 16:28:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D375EAC;
+        Wed, 12 Jul 2023 13:28:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 584E86190E;
+        Wed, 12 Jul 2023 20:28:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D182C433C7;
+        Wed, 12 Jul 2023 20:28:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689193721;
+        bh=876vMbdDchntAjuToedm5xOzqNo7Ul0MnYeWWTPdCMY=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=eACfpRiSuGFNCoKwHUokCNLHShdTqUaEB+yMCm7UodrZnAWyb7kRAGYvG6KlYUDbv
+         rDl1Up2Vy9PWNfTaIIcUB6IrXQ4zUdbsCZZUs/s+nmYGC/Gvr2b9nQ8Ysnxl2l1xhz
+         ExXxkoXpDMqS1KBlwTe9yU3BTZ29tp5H0WoWuXg6TFV6wwRusqzIMo1fBfZn9oHmZT
+         f0QYpk700Sb5x7hEM59rBSw1WvJsf7hriq9NVeV4tsv2TkzFkRN3w4TlwrhpAk/KUF
+         Tge3u9Audc6b+N8Ea5awJtdxVlLWvebui2j3Vj6hxjZBXCc5nxitFop6B/mjMRJdz0
+         4Py4QeqjGhFtQ==
+Message-ID: <b8e21ba1-900d-6731-579d-e18c37a97a71@kernel.org>
+Date:   Wed, 12 Jul 2023 22:28:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
 Subject: Re: [PATCH v2] arm64: dts: qcom: msm8916-samsung-serranove: Add
  RT5033 PMIC with charger
-To:     Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+To:     Jakob Hauser <jahau@rocketmail.com>
 Cc:     Rob Herring <robh+dt@kernel.org>,
         Chanwoo Choi <cw00.choi@samsung.com>,
         MyungJoo Ham <myungjoo.ham@samsung.com>,
@@ -77,71 +57,105 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
 References: <20230619203743.8136-1-jahau.ref@rocketmail.com>
  <20230619203743.8136-1-jahau@rocketmail.com>
  <02fe7c1e-cb6a-14bc-73fc-04956a2b8396@kernel.org>
-Content-Language: en-US
-From:   Jakob Hauser <jahau@rocketmail.com>
-In-Reply-To: <02fe7c1e-cb6a-14bc-73fc-04956a2b8396@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-X-Mailer: WebService/1.1.21638 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+ <3376e14a-4fc7-160e-509e-8dcbe627ef62@rocketmail.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+In-Reply-To: <3376e14a-4fc7-160e-509e-8dcbe627ef62@rocketmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-SGkgS3J6eXN6dG9mLA0KDQpDYzogUm9iLCBDaGFud29vICYgTXl1bmdKb28NCg0KT24gMTEu
-MDcuMjMgMDg6MTMsIEtyenlzenRvZiBLb3psb3dza2kgd3JvdGU6DQouLi4NCj4gVGhpcyBh
-cHBlYXJlZCBpbiB0b2RheSdzIG5leHQgbmV4dC0yMDIzMDcxMSBhbmQgY2F1c2VzIG5ldyB3
-YXJuaW5ncw0KPiANCj4gbXNtODkxNi1zYW1zdW5nLXNlcnJhbm92ZS5kdGI6IGV4dGNvbkAx
-NDogJ2Nvbm5lY3RvcicgZG9lcyBub3QgbWF0Y2ggYW55DQo+IG9mIHRoZSByZWdleGVzOiAn
-cGluY3RybC1bMC05XSsnDQo+IGh0dHBzOi8va3J6ay5ldS8jL2J1aWxkZXJzLzkwL2J1aWxk
-cy80MC9zdGVwcy8xNy9sb2dzL3N0ZGlvDQo+IA0KPiBUaGUgY29tbWl0IG1lbnRpb25zIHJ0
-NTAzMywgYnV0IHRoYXQgaXMgbm90IHRoZSBzY2hlbWEgYmVpbmcgaGVyZQ0KPiB0ZXN0ZWQs
-IHNvIGNsZWFybHkgdGhpcyBpcyB3cm9uZyBvciBiaW5kaW5ncyB3ZXJlIG5vdCB1cGRhdGVk
-Lg0KPiANCj4gUGxlYXNlIGZpeCAoYW5kIHRlc3QgeW91ciBmdXR1cmUgcGF0Y2hlcykuDQoN
-ClRoZSBpbXBsZW1lbnRhdGlvbiB5b3Ugc2VlIGluIHRoaXMgcGF0Y2ggZm9sbG93cyB0aGUg
-Z3VpZGFuY2Ugb2YgeW91cnMgDQphbmQgUm9i4oCZcy4gSSBhbHJlYWR5IGV4cHJlc3NlZCBt
-eSBkaXNjb250ZW50IGFib3V0IGl0IGJlZm9yZS4NCg0KVG8gc29sdmUgdGhlIG1lc3NhZ2Us
-IHRoZSBkdC1iaW5kaW5ncyBvZiBleHRjb24gZGV2aWNlIHNtNTUwMi1tdWljIFsxXSANCndv
-dWxkIG5lZWQgdG8gYmUgY2hhbmdlZCB0byBhbGxvdyBhICJjb25uZWN0b3IiIHN1Yi1ub2Rl
-LiBUaGF04oCZcyBub3QgdGhlIA0KcmlnaHQgYXBwcm9hY2guDQoNCkkgc3RpbGwgaGF2ZSB0
-aGUgaW1wcmVzc2lvbiB0aGF0IHRoZSBjdXJyZW50IGltcGxlbWVudGF0aW9uIGlzIGJhc2Vk
-IG9uIA0KbWlzdW5kZXJzdGFuZGluZ3MuIEkgZG8gdGhpbmsgUm9i4oCZcyBjb21tZW50IHRo
-YXQgZXhjb24gcGhhbmRsZSBiZWluZyANCmRlcHJlY2F0ZWQgWzJdIGlzIHZhbGlkIGZvciB0
-aGUgVVNCIHN1YnN5c3RlbS4gWW91ciBzdWdnZXN0aW9uIHRvIGNoZWNrIA0KInBvcnRzIGdy
-YXBoIiwgIm9yaWVudGF0aW9uIiBhbmQgInVzYi1yb2xlLXN3aXRjaCIgYXBwbGllcyB0byBV
-U0IgDQpzdWJzeXN0ZW0gYXMgd2VsbCBbM10uIFJvYiB0b29rIHRoZSB0aW1lIHRvIGFkZCBt
-b3JlIGV4cGxhbmF0aW9uIFs0XSBidXQgDQppdOKAmXMgc3RpbGwgYWJvdXQgaGFuZGxpbmcg
-Y29ubmVjdG9ycyBpbiB0aGUgbW9yZSBzdHJpY3Qgc2Vuc2UsIHdoaWNoIGlzIA0KY2lyY2xp
-bmcgYXJvdW5kIFVCUyBzdWJzeXN0ZW0uDQoNClRoZXNlIGRpc2N1c3Npb25zIGxlZCB0byBh
-IHN0cmFuZ2VseSBtaXhlZC11cCByZXN1bHQuIEkgd2FzIHB1c2hlZCB0byANCmltcGxlbWVu
-dCB0aGUgVVNCIHN1YnN5c3RlbSBjb25uZWN0b3IgYXBwcm9hY2ggdXBvbiBhbiBleGN0b24g
-c3Vic3lzdGVtIA0KZGV2aWNlLiBBcyB0aGUgc3RhbmRhcmQgVVNCIGNvbm5lY3RvciBhcHBy
-b2FjaCBkaWRu4oCZdCBmaXQsIHdlIHN3aXRjaGVkIA0KdG8gYSB2ZW5kb3Itc3BlY2lmaWMg
-Y29ubmVjdG9yIHBoYW5kbGUgWzVdLiBJbiBmYWN0IGl04oCZcyBraW5kIG9mIGEgDQp3b3Jr
-YXJvdW5kIGZvciB0aGUgZXh0Y29uIHBoYW5kbGUuDQoNClRoZSBleHRjb24gZGV2aWNlIHNt
-NTUwNCBpcyBhIHJlYWwgcGllY2Ugb2YgaGFyZHdhcmUuIEl04oCZcyBub3QgaGFuZGxlZCAN
-CmJ5IFVTQiBzdWJzeXN0ZW0gYnV0IGJ5IGV4dGNvbiBzdWJzeXN0ZW0uIFRoZSBleGN0b24g
-c3Vic3lzdGVtIGhhcyBhIA0KbWV0aG9kIGltcGxlbWVudGVkIHRvIGdldCB0aGUgZGV2aWNl
-IGJ5IHBoYW5kbGUgWzZdLg0KDQpJIHRoZXJlZm9yZSBwcm9wb3NlIHRvIHVzZSB0aGUgcGhh
-bmRsZSBvZiB0aGUgZXh0Y29uIHN1YnN5c3RlbS4gSSBtZWFuIA0KZXh0Y29uIHN1YnN5c3Rl
-bSwgbm90IFVTQiBzdWJzeXN0ZW0uIEluIGNhc2UgeW91IGRpc2FncmVlLCBJIGtpbmRseSBh
-c2sgDQp5b3UgdG8gdGFrZSBtb3JlIHRpbWUgdG8gYW5zd2VyIGluIG1vcmUgZGV0YWlsIGFu
-ZCBlc3BlY2lhbGx5IA0KY2FzZS1yZWxhdGVkLiBBbmQgc3BlY2lmaWNhbGx5IHRvIEtyenlz
-enRvZiBJIGFzayBmb3IgbW9yZSBwb2xpdGVuZXNzIGluIA0KeW91ciB3YXkgb2YgY29tbXVu
-aWNhdGluZy4gSSB1bmRlcnN0YW5kIHlvdeKAmXJlIGFuc3dlcmluZyBodW5kcmVkcyBvZiAN
-CnJlcXVlc3RzIGEgZGF5IGJ1dCB0aGUgY29tbXVuaWNhdGlvbiB3ZSBoYWQgaW4gdGhlIHBh
-c3Qgd2Vla3MgaXMgcmVhbGx5IA0KZnJ1c3RyYXRpbmcuDQoNClsxXSANCmh0dHBzOi8vZ2l0
-Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3RvcnZhbGRzL2xpbnV4Lmdp
-dC90cmVlL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9leHRjb24vc2lsaWNv
-bm1pdHVzLHNtNTUwMi1tdWljLnlhbWw/aD12Ni41LXJjMQ0KWzJdIA0KaHR0cHM6Ly9sb3Jl
-Lmtlcm5lbC5vcmcvbGludXgtcG0vY292ZXIuMTY3NzYyMDY3Ny5naXQuamFoYXVAcm9ja2V0
-bWFpbC5jb20vVC8jbTFmNTdhMzZkNTM0ZTY3N2Y4NDE1OGU2ODg2YzEzNDBlMDM2YWI1YzYN
-ClszXSANCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LXBtL2NvdmVyLjE2ODI2MzY5
-MjkuZ2l0LmphaGF1QHJvY2tldG1haWwuY29tL1QvI203NjcyYWQwNTU5MGU0MTIzYmE1NjIy
-YmM1OWE5YjRkY2MwZjcwZTNhDQpbNF0gDQpodHRwczovL2xvcmUua2VybmVsLm9yZy9saW51
-eC1wbS9jb3Zlci4xNjgyNjM2OTI5LmdpdC5qYWhhdUByb2NrZXRtYWlsLmNvbS9ULyNtNjVk
-YjA3MDlmMGFkM2ZlYWM2YzI4OWY2NWJlNWEzNTFjYWNkMjgzNQ0KWzVdIA0KaHR0cHM6Ly9s
-b3JlLmtlcm5lbC5vcmcvbGludXgtcG0vMjAyMzA1MDYxNTU0MzUuMzAwNS0xLWphaGF1QHJv
-Y2tldG1haWwuY29tL1QvI20yYWE2NTJjNDFiYWQ5M2Q2MDA0MmQ4MzFjNjM5N2U3ODM4ZDNj
-YmZjDQpbNl0gDQpodHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVs
-L2dpdC90b3J2YWxkcy9saW51eC5naXQvdHJlZS9kcml2ZXJzL2V4dGNvbi9leHRjb24uYz9o
-PXY2LjUtcmMxI24xNDE3DQoNCktpbmQgcmVnYXJkcywNCkpha29iDQo=
+On 12/07/2023 21:50, Jakob Hauser wrote:
+> Hi Krzysztof,
+> 
+> Cc: Rob, Chanwoo & MyungJoo
+> 
+> On 11.07.23 08:13, Krzysztof Kozlowski wrote:
+> ...
+>> This appeared in today's next next-20230711 and causes new warnings
+>>
+>> msm8916-samsung-serranove.dtb: extcon@14: 'connector' does not match any
+>> of the regexes: 'pinctrl-[0-9]+'
+>> https://krzk.eu/#/builders/90/builds/40/steps/17/logs/stdio
+>>
+>> The commit mentions rt5033, but that is not the schema being here
+>> tested, so clearly this is wrong or bindings were not updated.
+>>
+>> Please fix (and test your future patches).
+> 
+> The implementation you see in this patch follows the guidance of yours 
+> and Rob’s. I already expressed my discontent about it before.
+> 
+> To solve the message, the dt-bindings of extcon device sm5502-muic [1] 
+> would need to be changed to allow a "connector" sub-node. That’s not the 
+> right approach.
+> 
+> I still have the impression that the current implementation is based on 
+> misunderstandings. I do think Rob’s comment that excon phandle being 
+> deprecated [2] is valid for the USB subsystem. Your suggestion to check 
+> "ports graph", "orientation" and "usb-role-switch" applies to USB 
+> subsystem as well [3]. Rob took the time to add more explanation [4] but 
+> it’s still about handling connectors in the more strict sense, which is 
+> circling around UBS subsystem.
+> 
+> These discussions led to a strangely mixed-up result. I was pushed to 
+> implement the USB subsystem connector approach upon an excton subsystem 
+> device. As the standard USB connector approach didn’t fit, we switched 
+> to a vendor-specific connector phandle [5]. In fact it’s kind of a 
+> workaround for the extcon phandle.
+> 
+> The extcon device sm5504 is a real piece of hardware. It’s not handled 
+> by USB subsystem but by extcon subsystem. The excton subsystem has a 
+> method implemented to get the device by phandle [6].
+
+I am not sure if we discuss the same problem. My email was about the DTS
+and bindings, not whether this works in Linux drivers. From your reply I
+feel that this patch might actually not work? This would be quite
+confusing...
+
+You added new child node "connector" to the siliconmitus,sm5504-muic, so
+all I would expect that we miss here only updating that binding.
+Assuming that your code was working...
+
+> 
+> I therefore propose to use the phandle of the extcon subsystem.
+
+extcon in the bindings? Then we would be back to square one.
+
+> I mean 
+> extcon subsystem, not USB subsystem. In case you disagree, I kindly ask 
+> you to take more time to answer in more detail and especially 
+> case-related.
+
+Assuming your patch works, I think above is quite specific answer - new
+property is missing in sm5504 binding.
+
+
+> And specifically to Krzysztof I ask for more politeness in 
+> your way of communicating. I understand you’re answering hundreds of 
+> requests a day but the communication we had in the past weeks is really 
+> frustrating.
+
+Sorry to hear that, please accept my apologies. I went through all my
+replies to you in past few weeks and could not find any particular
+impolite behavior from my side.
+
+> 
+> [1] 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/extcon/siliconmitus,sm5502-muic.yaml?h=v6.5-rc1
+> [2] 
+> https://lore.kernel.org/linux-pm/cover.1677620677.git.jahau@rocketmail.com/T/#m1f57a36d534e677f84158e6886c1340e036ab5c6
+> [3] 
+> https://lore.kernel.org/linux-pm/cover.1682636929.git.jahau@rocketmail.com/T/#m7672ad05590e4123ba5622bc59a9b4dcc0f70e3a
+> [4] 
+> https://lore.kernel.org/linux-pm/cover.1682636929.git.jahau@rocketmail.com/T/#m65db0709f0ad3feac6c289f65be5a351cacd2835
+> [5] 
+> https://lore.kernel.org/linux-pm/20230506155435.3005-1-jahau@rocketmail.com/T/#m2aa652c41bad93d60042d831c6397e7838d3cbfc
+> [6] 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/extcon/extcon.c?h=v6.5-rc1#n1417
+
+
+Best regards,
+Krzysztof
+
