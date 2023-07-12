@@ -2,122 +2,99 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AA62EEB64DD
-	for <phone-devel@archiver.kernel.org>; Tue, 11 Jul 2023 06:14:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4823AEB64DA
+	for <phone-devel@archiver.kernel.org>; Wed, 12 Jul 2023 07:53:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231183AbjGKGOL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 11 Jul 2023 02:14:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47966 "EHLO
+        id S231867AbjGLHxm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 12 Jul 2023 03:53:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230353AbjGKGOK (ORCPT
+        with ESMTP id S229505AbjGLHx0 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 11 Jul 2023 02:14:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3861E5;
-        Mon, 10 Jul 2023 23:14:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E6BD6132D;
-        Tue, 11 Jul 2023 06:14:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4947DC433C8;
-        Tue, 11 Jul 2023 06:14:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689056044;
-        bh=OX+EN9qbWJzWqP/kGmkt0uY4vfp67tjShrtEo3vYIIs=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=XHcBvWqqsh7Y/fCXX+ln3tRKqpaTOfV7QFUKmY0Z4YHGpV+NhQLCAY4cdZI23ruHi
-         W9CFe8hSqcGwczouqGiLmr8f43f2Utzg5fSvzYLisoobL+zCYv/wy98p8wUoz3QYv4
-         4n9XddiPtuFKdmapWP43qzI5xeFzn8ehyngy+KMrdsbdtfhUQw00d1o1sQga/64v3z
-         4P4hG6aiJsyY+iq6QlvA6AbUTlAQv+4QiS28YlRd6TStwI22re/xO4GQAiYO3M5vyj
-         cp4YFXUYJNGbqQusxqTYDGjToyBF8BEnDvebrxUKo8lDGfI9pEIotFmWep2UUYi61K
-         9AUJW4mzRXafw==
-Message-ID: <02fe7c1e-cb6a-14bc-73fc-04956a2b8396@kernel.org>
-Date:   Tue, 11 Jul 2023 08:13:55 +0200
+        Wed, 12 Jul 2023 03:53:26 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E17E6F;
+        Wed, 12 Jul 2023 00:53:23 -0700 (PDT)
+Received: from [192.168.122.1] (ip-185-104-138-31.ptr.icomera.net [185.104.138.31])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 82344CC3EB;
+        Wed, 12 Jul 2023 07:52:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1689148371; bh=W0P04Vhx8qS619L9ZTBVUiI27HUFLd5sCIaoSWjtgkA=;
+        h=From:Date:Subject:To:Cc;
+        b=mxxkdumr4hGkQzgngKVqzaYk5JsKFOFntqLbo5//OKIoSSLA5jeDgGskhA8ZWp/ku
+         K6hKyzCeNgvgFsAWYl8rRXoYC0NOS2eV1ODnuqt11tVotxClSE0L+Ey5kS1s7iyDAY
+         JrSuZ/mUzAIZ29+H1KmQAVSgnf4u/7r+ClNBWAW4=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Date:   Wed, 12 Jul 2023 09:52:07 +0200
+Subject: [PATCH] ARM: dts: qcom: msm8226: provide dsi phy clocks to mmcc
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] arm64: dts: qcom: msm8916-samsung-serranove: Add
- RT5033 PMIC with charger
-Content-Language: en-US
-To:     Jakob Hauser <jahau@rocketmail.com>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230712-msm8226-dsi-clock-fixup-v1-1-71010b0b89ca@z3ntu.xyz>
+X-B4-Tracking: v=1; b=H4sIAKZbrmQC/x2MSQqAMAwAvyI5G7BR3L4iHrSNGlxpUATx7xaPw
+ zDzgLIXVqijBzxforJvAUwcgZ26bWQUFxgooTQpDOGqa0mUo1NBu+x2xkHu88DOlf3gMmO4ryD
+ Uh+cg/nPTvu8H8H4GGGkAAAA=
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Raymond Hackley <raymondhackley@protonmail.com>,
-        Henrik Grimler <henrik@grimler.se>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20230619203743.8136-1-jahau.ref@rocketmail.com>
- <20230619203743.8136-1-jahau@rocketmail.com>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-In-Reply-To: <20230619203743.8136-1-jahau@rocketmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1085; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=W0P04Vhx8qS619L9ZTBVUiI27HUFLd5sCIaoSWjtgkA=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBkrlupfex/RXqA4VNxPMkUWev3LX1aRm99yBmdi
+ T+wnyLBCsSJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZK5bqQAKCRBy2EO4nU3X
+ Vmj+D/93y5smNx9A9xlHXoL5FiCXexitXuiZzcvXyX3QubiH+E++JM4hYX+wW+L7sPUFoqoENbd
+ aHuj9GSSgilf0RfE1cdHE+dFsi5SGQHVCo1cYU8+goWqXhccnBu3hX8Ll2JgS08e+L+QZLZc91U
+ TldzwCN7SNuG4Of+whf1R6L4BSFhLiGEbl80b1Vc5e7GuGpJhGMn2jOPpKAeAomdllY51U86+j0
+ wCKTjym1h7YluHeMWNFjlb7HI8LiAPNJ5dDEoEHT8uoPMLMP23Jh5ZeL1GkrqLCiqb8zd8f3OQT
+ bTnuIL3m9pPToj9JbbV0QEKcPoj7SJWun5LyGQYzgJAZebXAv83xde+Wmy9ZxX9mTUU6s3GnN0E
+ 8E82h/ciX1X5sm+HznoyJsHmfmcWe2rPJB9gD6XEgO/5dxJK3qM31bBzsirx/6azdGqrKPg1z6m
+ rXaVTIm7I44nmc1CNWrv1LV4+orRh56icP1pen2tBprLjpSWJKgoZJl4D62JbBrd7xhFc+vQ93T
+ /GZ+bHvuljtJ9GtOtKsoo2Li/kulLPUsNOfduwMNYSmBaqwIMqBkEmfJWYdYOZoMXn7RSVRGBxB
+ 0EjrhBL4Y02Q/fkU+SnhitQ1aldBKp3Ew0Um4jgbk9R/QEikNYb9hU9LVopbDePPA1thZKuqHMM
+ oeqfMqWAOw8RUkg==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 19/06/2023 22:37, Jakob Hauser wrote:
-> For the regulators, apply the same settings as in the downstream
-> devicetree [1], including the "regulator-always-on" for the SAFE_LDO.
-> For the voltage of SAFE_LDO, however, there is only one voltage of 4.9 V
-> available in the mainline driver [2][3].
-> 
-> The values of the battery data evolve from following sources:
-> - precharge current: 450 mA corresponds to the default value of the chip. It
->   doesn't get changed by the downstream Android driver. Therefore let's stick
->   to this value.
-> - constant charge current: The 1000 mA are taken from the downstream devicetree
->   of the serranove battery. It's not easy to spot. The value is in the line
->   "input_current_limit" [4]. The rows are according to the power supply type,
->   the 4th value stands for "main supply" [5]. That's the value used by the
->   Android driver when a charging cable is plugged into the device.
-> - charge termination current: In the downstream devicetree of the battery
->   that's the line "full_check_current_1st", which contains the 150 mA [6].
-> - precharge voltage: This one doesn't get set in the downstream Android driver.
->   The chip's default is 2.8 V. That seemed too low to have a notable effect of
->   handling the battery gentle. The chosen value of 3.5 V is a bit arbitrary
->   and possibly rather high. As the device is already several years old and
->   therefore most batteries too, a value on the safe side seems reasonable.
-> - constant charge voltage: The value of 4.35 V is set in the line
->   "chg_float_voltage" of the downstream battery devicetree [7].
-> 
-> The "connector" sub-node in the extcon node, the "battery" node in the
-> general section and the line "power-supplies" in the fuel-gauge node result
-> from the way of implementation documented in the dt-bindings of
-> rt5033-charger [8] and mfd rt5033 [9].
-> 
-> [1] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-eur-r03.dtsi#L135-L181
-> [2] https://github.com/torvalds/linux/blob/v6.3/include/linux/mfd/rt5033-private.h#L211-L212
-> [3] https://github.com/torvalds/linux/blob/v6.3/drivers/regulator/rt5033-regulator.c#L83
-> [4] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-battery-r01.dtsi#L100
-> [5] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/include/linux/power_supply.h#L173-L177
-> [6] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-battery-r01.dtsi#L102
-> [7] https://github.com/msm8916-mainline/linux-downstream/blob/GT-I9195I/arch/arm/boot/dts/samsung/msm8916/msm8916-sec-serranovelte-battery-r01.dtsi#L95
-> [8] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/power/supply/richtek,rt5033-charger.yaml?h=next-20230616
-> [9] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/mfd/richtek,rt5033.yaml?h=next-20230616
-> 
-> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
-> ---
-> The patch is based on linux-next "next-20230616".
-> 
-> The driver rt5033-charger was just recently added to linux-next.
+Some mmcc clocks have dsi0pll & dsi0pllbyte as clock parents so we
+should provide them in the dt, which I missed in the commit adding the
+mdss nodes.
 
-This appeared in today's next next-20230711 and causes new warnings
+Fixes: d5fb01ad5eb4 ("ARM: dts: qcom: msm8226: Add mdss nodes")
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ arch/arm/boot/dts/qcom/qcom-msm8226.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-msm8916-samsung-serranove.dtb: extcon@14: 'connector' does not match any
-of the regexes: 'pinctrl-[0-9]+'
-https://krzk.eu/#/builders/90/builds/40/steps/17/logs/stdio
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
+index b6ae4b7936e3..d2d09f2f3cee 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
+@@ -404,8 +404,8 @@ mmcc: clock-controller@fd8c0000 {
+ 				 <&gcc GPLL0_VOTE>,
+ 				 <&gcc GPLL1_VOTE>,
+ 				 <&rpmcc RPM_SMD_GFX3D_CLK_SRC>,
+-				 <0>,
+-				 <0>;
++				 <&mdss_dsi0_phy 1>,
++				 <&mdss_dsi0_phy 0>;
+ 			clock-names = "xo",
+ 				      "mmss_gpll0_vote",
+ 				      "gpll0_vote",
 
-The commit mentions rt5033, but that is not the schema being here
-tested, so clearly this is wrong or bindings were not updated.
-
-Please fix (and test your future patches).
+---
+base-commit: 40b055fe7f276cf2c1da47316c52f2ff9255a68a
+change-id: 20230712-msm8226-dsi-clock-fixup-ad8bfd411eb9
 
 Best regards,
-Krzysztof
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
