@@ -2,125 +2,110 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BA0FC18E72
-	for <phone-devel@archiver.kernel.org>; Sat, 15 Jul 2023 09:20:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1348C001DE
+	for <phone-devel@archiver.kernel.org>; Sat, 15 Jul 2023 14:08:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231246AbjGOJUv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 15 Jul 2023 05:20:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49686 "EHLO
+        id S230056AbjGOOIq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 15 Jul 2023 10:08:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230328AbjGOJU3 (ORCPT
+        with ESMTP id S230029AbjGOOIn (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 15 Jul 2023 05:20:29 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 161543C05;
-        Sat, 15 Jul 2023 02:20:07 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3fbc6ab5ff5so24484465e9.1;
-        Sat, 15 Jul 2023 02:20:07 -0700 (PDT)
+        Sat, 15 Jul 2023 10:08:43 -0400
+Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C68FC1989
+        for <phone-devel@vger.kernel.org>; Sat, 15 Jul 2023 07:08:40 -0700 (PDT)
+Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-2b7430a07b7so44947841fa.1
+        for <phone-devel@vger.kernel.org>; Sat, 15 Jul 2023 07:08:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689412805; x=1692004805;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=16dil7uZ1WaYzCMze6Rz4ebNuwh6PjdbRucSC4l5wwA=;
-        b=PQ5HwDQAstwI8XvaYHRCnN5BPDOq3/zF/9r/cDfT7McPHFhmG+Z6SwIkBWvp5/lSLR
-         ru7sUyy4zDkce54S/UJk1eGyDpS0ym4THJQtJjoQiuLjAL0195zE4YCU8ee/s8/mGlwB
-         6XYnZkI8xD804+jk7R7mlTt/LN7ov6GuaVGDI43cr0nN3Q3jJFKZdbcu/8XoB/52qiId
-         h3cDKeMmCvyFgu018zO46oZVe+bD+ifPz8fqTAwBY10QgkCWXt/6V3RwclJanXqIrYMn
-         Oh8p8JTQhGA28pn6Iq9H2IzgYLxuFyEZpIR5/xrmflE4+6KhlkowDq85dUcTZH2xuuGr
-         AKcg==
+        d=linaro.org; s=google; t=1689430119; x=1692022119;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6Ll+dFRODO/7ee6rRlWXrO/wH1U0TwY1Wqw8OK3QY9U=;
+        b=Kw7fSn1NkSVkKGb3Cl/TVCZFuPgCl18Mb1lDONdgsL1l72mZ/audBVhO2kdo4MNX3d
+         kfQpU7tgK7Y1/e4naNhimnpGpcatIcBjppEraE+KwYCm6eNXQavCMBjZqTWlddt4fWNo
+         j+bKCRbUVR/FvrOv1+C4OlUFhwLxV05C8Ft/AWz+juDr3xLzUqH1BtCmOyL5x/CB21zE
+         9WSqG0NWpadnB6XujTiqccMTV49m4tLJvrbgmtZVGHCXhaskyn0Qq0MBhlOLtromjzwI
+         ZiPwr8g9nE/Qhc4ZGA2wS4K1WNuQlMMyCW+GuU66eu+rlUX9yeVUzcNRkibnl5vKA9Ld
+         NHog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689412805; x=1692004805;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=16dil7uZ1WaYzCMze6Rz4ebNuwh6PjdbRucSC4l5wwA=;
-        b=RRFlh+HdJRUOntNxW0iOT7l9i/ODl9oQzKEYpKu2SNp4WLd7zCBx9i8qHAM2Fcl8Mn
-         G3ROQ7LVo8EAQFAt+skznMN84SaZ9U3rAmZz8CNmwQXffBbP9aCRWLXPsivqrkjl09JJ
-         7UOjCMorpN3G6Cw/i7MavB0Q15qTq9OD3Hc+K5XTtM9ykH7QEfSRkaNvFN0hgmXQPs1s
-         IRlYHlv7PNwxvi+eiSpnzTcIfUSw5aXfqn9/JuTYgP/dxnhPJjl50q9FDk41xBN7XN6r
-         xIoTwz3cl+kb03J24cDeLTNnrMRp+PgZ5gEyZ2fV62lgLBeuiMsR2219I7N861Ccm7o2
-         k69A==
-X-Gm-Message-State: ABy/qLa1x11e+zos5yW2AIQOUUyIFCSJ1YKOEAsnIuknJQkPUJmBWH1J
-        gPvdW0IMZhKkkyvmz0SgZmk=
-X-Google-Smtp-Source: APBJJlHYP7HEns13EOIHz08VVyobQchPqzj3s+RZ6iWGV5V8JDGaWqeub3CgPcfCln225Ss0QmS8TA==
-X-Received: by 2002:a05:600c:22c4:b0:3fa:9767:c816 with SMTP id 4-20020a05600c22c400b003fa9767c816mr5339647wmg.39.1689412805593;
-        Sat, 15 Jul 2023 02:20:05 -0700 (PDT)
-Received: from david-ryuzu.fritz.box ([188.195.202.152])
-        by smtp.googlemail.com with ESMTPSA id f22-20020a7bc8d6000000b003fbb5142c4bsm3238133wml.18.2023.07.15.02.20.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Jul 2023 02:20:05 -0700 (PDT)
-From:   David Wronek <davidwronek@gmail.com>
-To:     Andy Gross <agross@kernel.org>,
+        d=1e100.net; s=20221208; t=1689430119; x=1692022119;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6Ll+dFRODO/7ee6rRlWXrO/wH1U0TwY1Wqw8OK3QY9U=;
+        b=eNVefQdD5GD5x7NLmrbfXB+tWm+MgV4wQm6URLkLjqoQEn9CCMuYECByh7OWwwO9vK
+         DXkizVvki4QnbSPBTCIV/uw1F2zmvDUa0fWxxr/anoSMnPmubSEHsBNXa6SM6GAJxHTI
+         5l3EjSKgvnQsYEd93URCg6vHin3owjMuEtWCOLaB+BHQ0jRiYC2coWnX3nbzmtnnRS+w
+         tG+c+OseWuwzELKvTrLvIImTETZHiNBtnFzsZEPpi56RrEwUfRir2IQ2VkrZHK7f1UJq
+         5wWdrChZy6fNO0VU92sGU8PpZ+8JSa4AWi34crjXkkmEcEGkVWAvnuzWHhtFra7K+ULS
+         atuA==
+X-Gm-Message-State: ABy/qLadod58N8ayoyS/Zytrg0umtnJqbRNDlWU4w6Yi7aCudkedwjPW
+        5Md8kTj5GSRhT4eYVXnDptqR/g==
+X-Google-Smtp-Source: APBJJlH7VKNPGyyy4U7Wb6bR6bZlBUUanCcsH6t6s5sQy0mmPU5TmlD3Ev1JRSoDGDOv2Wdn01X4wA==
+X-Received: by 2002:a05:6512:1190:b0:4fb:9f93:365e with SMTP id g16-20020a056512119000b004fb9f93365emr6344267lfr.41.1689430119087;
+        Sat, 15 Jul 2023 07:08:39 -0700 (PDT)
+Received: from [192.168.1.101] (abxi167.neoplus.adsl.tpnet.pl. [83.9.2.167])
+        by smtp.gmail.com with ESMTPSA id m26-20020ac24ada000000b004fcdea129b1sm581684lfp.279.2023.07.15.07.08.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 15 Jul 2023 07:08:38 -0700 (PDT)
+Message-ID: <3275085e-e4ed-6b0b-c108-cde90a8283b8@linaro.org>
+Date:   Sat, 15 Jul 2023 16:08:37 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] ARM: dts: qcom: msm8226: provide dsi phy clocks to mmcc
+Content-Language: en-US
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Taniya Das <quic_tdas@quicinc.com>
+        Conor Dooley <conor+dt@kernel.org>
 Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        cros-qcom-dts-watchers@chromium.org,
-        David Wronek <davidwronek@gmail.com>,
-        Nikita Travkin <nikita@trvn.ru>
-Subject: [PATCH v3 5/7] arm64: dts: qcom: pm6150: Add resin and rtc nodes
-Date:   Sat, 15 Jul 2023 11:16:11 +0200
-Message-ID: <20230715091932.161507-6-davidwronek@gmail.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230715091932.161507-1-davidwronek@gmail.com>
-References: <20230715091932.161507-1-davidwronek@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        linux-kernel@vger.kernel.org
+References: <20230712-msm8226-dsi-clock-fixup-v1-1-71010b0b89ca@z3ntu.xyz>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20230712-msm8226-dsi-clock-fixup-v1-1-71010b0b89ca@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add support for the RTC which is the same as on other PMICs and add the
-resin child node to the PM6150 PON device, both disabled by default.
+On 12.07.2023 09:52, Luca Weiss wrote:
+> Some mmcc clocks have dsi0pll & dsi0pllbyte as clock parents so we
+> should provide them in the dt, which I missed in the commit adding the
+> mdss nodes.
+> 
+> Fixes: d5fb01ad5eb4 ("ARM: dts: qcom: msm8226: Add mdss nodes")
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Signed-off-by: David Wronek <davidwronek@gmail.com>
-Tested-by: Nikita Travkin <nikita@trvn.ru>
----
- arch/arm64/boot/dts/qcom/pm6150.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/pm6150.dtsi b/arch/arm64/boot/dts/qcom/pm6150.dtsi
-index 2e6afa296141..af51eb0646ba 100644
---- a/arch/arm64/boot/dts/qcom/pm6150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pm6150.dtsi
-@@ -53,6 +53,14 @@ pm6150_pwrkey: pwrkey {
- 				bias-pull-up;
- 				linux,code = <KEY_POWER>;
- 			};
-+
-+			pm6150_resin: resin {
-+				compatible = "qcom,pm8941-resin";
-+				interrupts = <0x0 0x8 1 IRQ_TYPE_EDGE_BOTH>;
-+				debounce = <15625>;
-+				bias-pull-up;
-+				status = "disabled";
-+			};
- 		};
- 
- 		pm6150_temp: temp-alarm@2400 {
-@@ -88,6 +96,14 @@ pm6150_adc_tm: adc-tm@3500 {
- 			status = "disabled";
- 		};
- 
-+		pm6150_rtc: rtc@6000 {
-+			compatible = "qcom,pm8941-rtc";
-+			reg = <0x6000>, <0x6100>;
-+			reg-names = "rtc", "alarm";
-+			interrupts = <0x0 0x61 0x1 IRQ_TYPE_EDGE_RISING>;
-+			status = "disabled";
-+		};
-+
- 		pm6150_gpios: gpio@c000 {
- 			compatible = "qcom,pm6150-gpio", "qcom,spmi-gpio";
- 			reg = <0xc000>;
--- 
-2.41.0
-
+Konrad
+>  arch/arm/boot/dts/qcom/qcom-msm8226.dtsi | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
+> index b6ae4b7936e3..d2d09f2f3cee 100644
+> --- a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
+> +++ b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
+> @@ -404,8 +404,8 @@ mmcc: clock-controller@fd8c0000 {
+>  				 <&gcc GPLL0_VOTE>,
+>  				 <&gcc GPLL1_VOTE>,
+>  				 <&rpmcc RPM_SMD_GFX3D_CLK_SRC>,
+> -				 <0>,
+> -				 <0>;
+> +				 <&mdss_dsi0_phy 1>,
+> +				 <&mdss_dsi0_phy 0>;
+>  			clock-names = "xo",
+>  				      "mmss_gpll0_vote",
+>  				      "gpll0_vote",
+> 
+> ---
+> base-commit: 40b055fe7f276cf2c1da47316c52f2ff9255a68a
+> change-id: 20230712-msm8226-dsi-clock-fixup-ad8bfd411eb9
+> 
+> Best regards,
