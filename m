@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E194C04E69
-	for <phone-devel@archiver.kernel.org>; Sat, 15 Jul 2023 09:20:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 51262C10F00
+	for <phone-devel@archiver.kernel.org>; Sat, 15 Jul 2023 09:20:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231218AbjGOJUu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S231197AbjGOJUu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Sat, 15 Jul 2023 05:20:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50094 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230103AbjGOJU3 (ORCPT
+        with ESMTP id S230389AbjGOJU2 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 15 Jul 2023 05:20:29 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3498F3C0D;
-        Sat, 15 Jul 2023 02:20:08 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-3fbc59de0e2so24466965e9.3;
-        Sat, 15 Jul 2023 02:20:08 -0700 (PDT)
+        Sat, 15 Jul 2023 05:20:28 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3864E3C02;
+        Sat, 15 Jul 2023 02:20:04 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3fb4146e8deso26956575e9.0;
+        Sat, 15 Jul 2023 02:20:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689412806; x=1692004806;
+        d=gmail.com; s=20221208; t=1689412803; x=1692004803;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bcIHaSKrR4JjJODseymsMqDO3fa+MLFhDB6UjbjUTpo=;
-        b=AkcQaKMBERDjTs1UIrpydrPTPsZ61nJCxnccPi60KmmMOcsVgLNr9hUAMdXiNbzaD4
-         q1D1OxfcioUs9Y0IHhuHnOTZHlCSRLvY/AXq/5iLRbSDh129e2kTZIkQwa74UFhdfF00
-         ZqYbH3ua5FkBDYNC9r+yRk6d0lEMaKu5aoCkkR3rJZtjoApL46xbMcocRomRpZhtQxIz
-         A1ebtVVfQwgwNyGbir4Kr0yGMlt+XF4LJpbTBJcSOexSni0cnImqXhBU4Sfz9ZlAzVze
-         7IHwrHH4MJEP3f0IaqFeHs6qa0Ca6sBF8zEBhXLLOdyWMzxyvvDrolToQEhqW+7FORG5
-         J5ZQ==
+        bh=hnVCby4OzPzkMY2F/B5v8SGADAGIqKWRP6OZFHSrWRw=;
+        b=VkQi3RlvOhFSRYWKw9dMDmDiqjbmiZddvl4R4S0nQcI2Pu4uqN4elqX9SgHhzOcI0y
+         tgADBbSRHXHN3JVd8DsmjRgOKOS+Bax/HLZ9nwH1xqntRMjQSNAYB5ppL6IiygNA1WMf
+         Y6dnX/CwUb74MA2zyNeHw7Kv3tM9tJy3jdE1RM5kIwerLk8v89UBwN0yjC+aZTnVifMy
+         R+jcfNs5Y3WWlyfQiOO8VC/EdHIU6vzxOweqxzbsnjRP6criyvNDyLMkI5Lalz4l2aH1
+         AfbMq1ez0Nna51Rc5oC7YA41IBeQAQBaDOiYMeGMByqZRaX3jq/K2O8tzyg19H3uRDct
+         eigA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689412806; x=1692004806;
+        d=1e100.net; s=20221208; t=1689412803; x=1692004803;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bcIHaSKrR4JjJODseymsMqDO3fa+MLFhDB6UjbjUTpo=;
-        b=K4hmlOphbWgWV0rLwqUPoCjQx7y+tYGJtdPkfI1lESJx+l4I3k+Ao5yfO00dSLwfWW
-         zAcj46XCrCyFrHVpdpQpf3mdSGfmb+Qa+eznAKBEx5C4Za7fxSDrsPvoYOFmVJ45MK9M
-         ntYOWJDRu9ivvFcWEXX2FBiqzy58V456cyknYowyhZXKGeYZaHA2atoV9K4u4zZgstmk
-         +5t7qz77+6vJ6SFWDp/MbkYLDE96oxlYS30ih2pFJYd3/X4PyF3TX0Qm+VZM7jo+AQdb
-         ReIp67i3ONbm7SdKdZ9Q1pKxO/2r6c6oHt75SLtT/HZqlkxG2F1nZ0jZTpWoKMK8xpxw
-         ReHw==
-X-Gm-Message-State: ABy/qLZfJW8CYhjN3cr928FGQSQRItON1bdG378N+Q69KICxjy3D7202
-        /EKpe2xbWczstkWrlSPkTu3SqwUqIv0=
-X-Google-Smtp-Source: APBJJlGv8dHKCO/r29rQsgsQOIVVso/vVhMdbGJ51bXTdUlhMiljiUkWfMHrLjloHsgJomwyh1skMw==
-X-Received: by 2002:a05:600c:2489:b0:3fb:b3aa:1c8f with SMTP id 9-20020a05600c248900b003fbb3aa1c8fmr5896747wms.28.1689412806652;
-        Sat, 15 Jul 2023 02:20:06 -0700 (PDT)
+        bh=hnVCby4OzPzkMY2F/B5v8SGADAGIqKWRP6OZFHSrWRw=;
+        b=Vc15Ze8ab5losw/w2OKKTUAu/PL++14OMnZVZV3WR1cAjVdrXKHvlv9arynOZLCAHM
+         sYpF0GtMwdUntA3UCDIiO6iVipRWwjH8dEIpdfBTWO+FQ4hhUBXHtxHDwjEsUvXaeLFs
+         haONzYvIV6/1RhsSbbA36zVNDsmpoDCU9Wlgy2rWxkroKGGIeOgRAou7P8hKNRVLthj6
+         HWSec+M0sPi0tU3P/ZAu6zCFyELR4yIXG3VnDP1hhXJsluzdTVcbj7X18HU4twOxqWZk
+         W8OUhy8cldB1v3s3GBWPATvgIkICOj66I92P0eF0RD5svtHgcx25G5Jj+Z8qV6Oj7erQ
+         4eOA==
+X-Gm-Message-State: ABy/qLZMB/l9g28vWt9mWX4c1MyDIiyLa3nsMIC3RvtQnTOm7XJtzgvz
+        9KqmFSFemOgGJB+So5pa4Pc=
+X-Google-Smtp-Source: APBJJlHephmSGNo6yqNxglL8a1kuciWQYQvlLXQHxbUJ7SvTRxdl6PXgHC6AvEI3g34VvK+WvYHMDw==
+X-Received: by 2002:a7b:ce08:0:b0:3f6:1474:905 with SMTP id m8-20020a7bce08000000b003f614740905mr7127494wmc.29.1689412802500;
+        Sat, 15 Jul 2023 02:20:02 -0700 (PDT)
 Received: from david-ryuzu.fritz.box ([188.195.202.152])
-        by smtp.googlemail.com with ESMTPSA id f22-20020a7bc8d6000000b003fbb5142c4bsm3238133wml.18.2023.07.15.02.20.05
+        by smtp.googlemail.com with ESMTPSA id f22-20020a7bc8d6000000b003fbb5142c4bsm3238133wml.18.2023.07.15.02.20.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Jul 2023 02:20:06 -0700 (PDT)
+        Sat, 15 Jul 2023 02:20:02 -0700 (PDT)
 From:   David Wronek <davidwronek@gmail.com>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -64,10 +64,11 @@ Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         cros-qcom-dts-watchers@chromium.org,
-        David Wronek <davidwronek@gmail.com>
-Subject: [PATCH v3 6/7] arm64: dts: qcom: Add SM7125 device tree
-Date:   Sat, 15 Jul 2023 11:16:12 +0200
-Message-ID: <20230715091932.161507-7-davidwronek@gmail.com>
+        David Wronek <davidwronek@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3 2/7] dt-bindings: arm: qcom,ids: Add SoC ID for SM7125
+Date:   Sat, 15 Jul 2023 11:16:08 +0200
+Message-ID: <20230715091932.161507-3-davidwronek@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230715091932.161507-1-davidwronek@gmail.com>
 References: <20230715091932.161507-1-davidwronek@gmail.com>
@@ -77,38 +78,26 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The Snapdragon 720G (sm7125) is software-wise very similar to the
-Snapdragon 7c with minor differences in clock speeds and as added here,
-it uses the Kryo 465 instead of Kryo 468.
+Add the SoC ID for Qualcomm SM7125.
 
 Signed-off-by: David Wronek <davidwronek@gmail.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- arch/arm64/boot/dts/qcom/sm7125.dtsi | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/sm7125.dtsi
+ include/dt-bindings/arm/qcom,ids.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm7125.dtsi b/arch/arm64/boot/dts/qcom/sm7125.dtsi
-new file mode 100644
-index 000000000000..12dd72859a43
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/sm7125.dtsi
-@@ -0,0 +1,16 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2021, The Linux Foundation. All rights reserved.
-+ */
-+
-+#include "sc7180.dtsi"
-+
-+/* SM7125 uses Kryo 465 instead of Kryo 468 */
-+&CPU0 { compatible = "qcom,kryo465"; };
-+&CPU1 { compatible = "qcom,kryo465"; };
-+&CPU2 { compatible = "qcom,kryo465"; };
-+&CPU3 { compatible = "qcom,kryo465"; };
-+&CPU4 { compatible = "qcom,kryo465"; };
-+&CPU5 { compatible = "qcom,kryo465"; };
-+&CPU6 { compatible = "qcom,kryo465"; };
-+&CPU7 { compatible = "qcom,kryo465"; };
+diff --git a/include/dt-bindings/arm/qcom,ids.h b/include/dt-bindings/arm/qcom,ids.h
+index bcbe9ee2cdaf..6a8dd2e42b24 100644
+--- a/include/dt-bindings/arm/qcom,ids.h
++++ b/include/dt-bindings/arm/qcom,ids.h
+@@ -215,6 +215,7 @@
+ #define QCOM_ID_SDA429W			437
+ #define QCOM_ID_SM8350			439
+ #define QCOM_ID_QCM2290			441
++#define QCOM_ID_SM7125			443
+ #define QCOM_ID_SM6115			444
+ #define QCOM_ID_IPQ5010			446
+ #define QCOM_ID_IPQ5018			447
 -- 
 2.41.0
 
