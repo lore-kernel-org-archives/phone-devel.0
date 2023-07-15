@@ -2,37 +2,37 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70CEAC001B0
-	for <phone-devel@archiver.kernel.org>; Sat, 15 Jul 2023 22:10:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B24F4C001B0
+	for <phone-devel@archiver.kernel.org>; Sat, 15 Jul 2023 22:19:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230097AbjGOWKV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 15 Jul 2023 18:10:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55886 "EHLO
+        id S229587AbjGOWTz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 15 Jul 2023 18:19:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229981AbjGOWKT (ORCPT
+        with ESMTP id S229481AbjGOWTy (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 15 Jul 2023 18:10:19 -0400
+        Sat, 15 Jul 2023 18:19:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFBDD2723;
-        Sat, 15 Jul 2023 15:10:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E93511C;
+        Sat, 15 Jul 2023 15:19:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 640A460C50;
-        Sat, 15 Jul 2023 22:10:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F7BC433CD;
-        Sat, 15 Jul 2023 22:10:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC9DF60C52;
+        Sat, 15 Jul 2023 22:19:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E26C433C8;
+        Sat, 15 Jul 2023 22:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689459016;
-        bh=fzXa2Uoxmo5Pv7nm/8+pm9wLcvtWAWr1jggWVxuBw00=;
+        s=k20201202; t=1689459592;
+        bh=cPSD/msIwpbAtGZBWD1hHdsevZO1x68F7ugLJt7drlo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b1pagmP32wtVHiXPU+YIl4NOlKlY2I60P+Ef+Zh1ztvzV/A59jXBMnjXPdyN9qJO8
-         8pLuv8Rz3y2Wk70v/Pmmi7Bg+rDyItime+rIBWZmX8JnZGFo4Ztp6N5GTXRioj3Lqt
-         mT67SL4SVs2nAHLib464zKmgZoZarxnoLV3UXysQ+BtL50PIkC1TlLyK1cuumGi3DD
-         KDo4ZPXaCbFkLS2FHHjc9SEmiXhkVlQczKl+M8AcO+pawmKT5lH/lEsgYaP/HYrDZA
-         6TKLNSA/uusSaT8EpaueLvgzEZM2rHLtLOaEHWhm2LU4do0z7pfxGyEN2cNdPIWomp
-         3sgtTkQk7oJRQ==
+        b=RFCJR5xGY1+op40JzY3qUpD+hjKHTlXxEQwPl8h6nkEyjmh1R6PEUWf1IaLTcBcN9
+         21f+BSDYqJcHod2KW9DCmZzhWQbu5Vb89H4AUxey07gEC5oYIbtBy+9QH0p+vFtSZA
+         9vE3LtvMMygOBHDGwl/fLAsbjDvhkvEI/dS6VP35TDf4I9bWzXUiq6LFQ6+Nh3b1/u
+         q9H+0hrv6pzTtp9xOpV1nlXdmFRs8efL5kaZWOwetdKOufv/CuIQHF/LJX2xG457MA
+         VMwUBRSphl4zwOYgMNipmbRFJuNO2hUpnmcIzWCcw+567WTMgJlyLLuzwefgumObWJ
+         Q49B/pMp/qOzw==
 From:   Bjorn Andersson <andersson@kernel.org>
 To:     Andy Gross <agross@kernel.org>,
         Mathieu Poirier <mathieu.poirier@linaro.org>,
@@ -44,9 +44,9 @@ Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
         linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: (subset) [PATCH v3 0/3] remoteproc: qcom: pas: Support SDM845 SLPI
-Date:   Sat, 15 Jul 2023 15:13:32 -0700
-Message-ID: <168945921474.1805013.11097249554000566257.b4-ty@kernel.org>
+Subject: Re: [PATCH v3 0/3] remoteproc: qcom: pas: Support SDM845 SLPI
+Date:   Sat, 15 Jul 2023 15:23:15 -0700
+Message-ID: <168945977672.1841372.3215501922819767032.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230330164633.117335-1-me@dylanvanassche.be>
 References: <20230330164633.117335-1-me@dylanvanassche.be>
@@ -80,6 +80,8 @@ Applied, thanks!
       commit: 242a626870eb453934b75749f8dbab997556b555
 [2/3] remoteproc: qcom: pas: refactor SLPI remoteproc init
       commit: 637e98bfe20b2c6866cd79b8d487430af09dc8ac
+[3/3] remoteproc: qcom: pas: add SDM845 SLPI compatible
+      commit: ba3125b47016cdc66454cf720f899b3bf806debc
 
 Best regards,
 -- 
