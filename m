@@ -2,87 +2,77 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B24F4C001B0
-	for <phone-devel@archiver.kernel.org>; Sat, 15 Jul 2023 22:19:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EAA8DC001B0
+	for <phone-devel@archiver.kernel.org>; Mon, 17 Jul 2023 10:01:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229587AbjGOWTz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 15 Jul 2023 18:19:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60198 "EHLO
+        id S231293AbjGQKBZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 17 Jul 2023 06:01:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229481AbjGOWTy (ORCPT
+        with ESMTP id S230114AbjGQKBT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 15 Jul 2023 18:19:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E93511C;
-        Sat, 15 Jul 2023 15:19:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC9DF60C52;
-        Sat, 15 Jul 2023 22:19:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E26C433C8;
-        Sat, 15 Jul 2023 22:19:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689459592;
-        bh=cPSD/msIwpbAtGZBWD1hHdsevZO1x68F7ugLJt7drlo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RFCJR5xGY1+op40JzY3qUpD+hjKHTlXxEQwPl8h6nkEyjmh1R6PEUWf1IaLTcBcN9
-         21f+BSDYqJcHod2KW9DCmZzhWQbu5Vb89H4AUxey07gEC5oYIbtBy+9QH0p+vFtSZA
-         9vE3LtvMMygOBHDGwl/fLAsbjDvhkvEI/dS6VP35TDf4I9bWzXUiq6LFQ6+Nh3b1/u
-         q9H+0hrv6pzTtp9xOpV1nlXdmFRs8efL5kaZWOwetdKOufv/CuIQHF/LJX2xG457MA
-         VMwUBRSphl4zwOYgMNipmbRFJuNO2hUpnmcIzWCcw+567WTMgJlyLLuzwefgumObWJ
-         Q49B/pMp/qOzw==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Andy Gross <agross@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Dylan Van Assche <me@dylanvanassche.be>
-Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 0/3] remoteproc: qcom: pas: Support SDM845 SLPI
-Date:   Sat, 15 Jul 2023 15:23:15 -0700
-Message-ID: <168945977672.1841372.3215501922819767032.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230330164633.117335-1-me@dylanvanassche.be>
-References: <20230330164633.117335-1-me@dylanvanassche.be>
+        Mon, 17 Jul 2023 06:01:19 -0400
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43D22136
+        for <phone-devel@vger.kernel.org>; Mon, 17 Jul 2023 03:01:15 -0700 (PDT)
+Received: from submission (posteo.de [185.67.36.169]) 
+        by mout01.posteo.de (Postfix) with ESMTPS id 01D3224002A
+        for <phone-devel@vger.kernel.org>; Mon, 17 Jul 2023 12:01:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
+        t=1689588073; bh=cGdADOGHy3QeQCyvjOMz+FvDAOetEKi2ZS2r9cKyFpA=;
+        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:
+         Content-Transfer-Encoding:From;
+        b=Gty7Ys9V0mv1X9ezSN5JDm7Axn4dxM4eRGhhLnBpK8h/5dsGQkXEYlcYnJiTEJUZ4
+         gIA9fDWXFS05XHuFui0otttJZx6gGESXlUfezGpH9JziXGjWA7+LATStAdUepsJBC8
+         rr0VUXtZ0P4Y5rRzkrOeFKHEQ4bvz61w1H4fq9Hzz9qwqTdWCigFhSTQIAZ2XpQTJi
+         cwaxeZ9fmNWiH7wMI9HI64OQcluGsaRIHtj+SjMfe9YAzAXqWoyJ6YGTeiQm8op6kW
+         LG9R4BGKVAYpK7p0XJfeUojCR9gEXJYFXCCzytJPU/JEOp7KhAWrfAK8DiHNOFopDa
+         ZkiKqENOm7nWQ==
+Received: from customer (localhost [127.0.0.1])
+        by submission (posteo.de) with ESMTPSA id 4R4HfG3xfNz6tvw;
+        Mon, 17 Jul 2023 12:01:10 +0200 (CEST)
+From:   Martin Kepplinger <martink@posteo.de>
+To:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, shawnguo@kernel.org, festevam@gmail.com
+Cc:     kernel@pengutronix.de, linux-imx@nxp.com, kernel@puri.sm,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        Martin Kepplinger <martin.kepplinger@puri.sm>
+Subject: [PATCH v1 0/4] arm64: dts: imx8mq-librem5: description updates
+Date:   Mon, 17 Jul 2023 10:00:52 +0000
+Message-Id: <20230717100056.4047292-1-martink@posteo.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+From: Martin Kepplinger <martin.kepplinger@puri.sm>
 
-On Thu, 30 Mar 2023 18:46:30 +0200, Dylan Van Assche wrote:
-> * About *
-> 
-> The Qualcomm SDM845 SoC has a separate SLPI (Sensor Low Power Island)
-> DSP for sensors connected to the SoC which is responsible for exposing
-> sensors to userspace, power saving, and other features.
-> While sensors are connected to GPIOs of the SoC, they cannot be used
-> because the hypervisor blocks direct access to the sensors, thus the
-> DSP must be used to access any sensor on this SoC. The SLPI DSP uses a
-> GLink edge (dsps) to communicate with the host and has a FastRPC interface
-> to load files from the host filesystem such as sensor configuration files.
-> The FastRPC interface does not use regular FastRPC Compute Banks
-> but instead uses an allocated CMA region through which communication happens.
-> 
-> [...]
+hi Shaw and all interested,
 
-Applied, thanks!
+This is another small but important round of hardware description updates
+for the Librem 5 phone. The first allows to use the display stack in
+the first place. The other 3 patches improve diplay-blanking when talking,
+enable fast charging when system-suspended, and faster system-resume.
 
-[1/3] dt-bindings: remoteproc: qcom: adsp: add qcom,sdm845-slpi-pas compatible
-      commit: 242a626870eb453934b75749f8dbab997556b555
-[2/3] remoteproc: qcom: pas: refactor SLPI remoteproc init
-      commit: 637e98bfe20b2c6866cd79b8d487430af09dc8ac
-[3/3] remoteproc: qcom: pas: add SDM845 SLPI compatible
-      commit: ba3125b47016cdc66454cf720f899b3bf806debc
+thanks,
 
-Best regards,
+                         martin
+
+Martin Kepplinger (1):
+  arm64: dts: imx8mq-librem5: set audio-1v8 always-on
+
+Sebastian Krzyszkowiak (3):
+  arm64: dts: imx8mq-librem5-r4: Bump up proximity sensor's near level
+  arm64: dts: imx8mq-librem5: Mark tps65982 as wakeup source
+  arm64: dts: imx8mq-librem5: Reduce usdhc2's post-power-on-delay-ms to
+    20ms
+
+ arch/arm64/boot/dts/freescale/imx8mq-librem5-r4.dts | 2 +-
+ arch/arm64/boot/dts/freescale/imx8mq-librem5.dtsi   | 5 ++++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
 -- 
-Bjorn Andersson <andersson@kernel.org>
+2.30.2
+
