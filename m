@@ -2,121 +2,87 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C6ECEB64DA
-	for <phone-devel@archiver.kernel.org>; Thu, 20 Jul 2023 11:52:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9215EEB64DD
+	for <phone-devel@archiver.kernel.org>; Thu, 20 Jul 2023 11:57:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231216AbjGTLwm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 20 Jul 2023 07:52:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49486 "EHLO
+        id S231249AbjGTL5D (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 20 Jul 2023 07:57:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230388AbjGTLwl (ORCPT
+        with ESMTP id S229682AbjGTL5B (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 20 Jul 2023 07:52:41 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D1E9CC;
-        Thu, 20 Jul 2023 04:52:40 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 563926607083;
-        Thu, 20 Jul 2023 12:52:38 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1689853959;
-        bh=j6JBGmm4BC6EWYmzoUGSqSenhIca3LpJaT76xsHZwTE=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Xt7dJTYXN55pPb9ezM3gpK0FtimTlDw7eTmN3DLYu08lxxv4dULmDgIaFCwqKpXvU
-         fiG2EzYCp8fB+UTzq6z7slCqfMQf5u1p55ad1Aqvi4ExKDjm7dsgpaSa4dtFRoXkKT
-         9/xR7zKY3lu6JJltvecbzCjKZv/d1sYlAoC9ZTxbIYIKy6AX1kr5/rTwNR/kH6A9eH
-         vyzAu2pTQQksxKIvYazhCByzBKnBAXZJwPJ0fj+ePBAaxZhoklRT+yAJqhyKb8+Lp0
-         aasAo/fJ/rtk4CH7TqyrftTCZTiNxTnVPQhyVIp7o3UWoESWUX9iUh+5qdr1DY3CNA
-         sFFv0X/sG+5zA==
-Message-ID: <d892a76c-165b-dbeb-79aa-70f3ebd7f07c@collabora.com>
-Date:   Thu, 20 Jul 2023 13:52:36 +0200
+        Thu, 20 Jul 2023 07:57:01 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61B8A26B2
+        for <phone-devel@vger.kernel.org>; Thu, 20 Jul 2023 04:56:38 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-992af8b3b1bso129551466b.1
+        for <phone-devel@vger.kernel.org>; Thu, 20 Jul 2023 04:56:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1689854197; x=1690458997;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XT+twtxTCYlY8c/fAcsypV3E8gY0Retau05eex4/coc=;
+        b=XS8Ww8msMEZs/ipVPCAvtq8Bb80loTAB6c409luGUXfM0uY2yxO7tdkgsdWp3hU54n
+         lQtIY5uBPsxjMB8DL81Yd9XaIUxUFm3B50keC7pUXieqY3L0EGoVLPhrNDeb54L3nOPZ
+         c6HvYnaLhpByo7cYJSnzwyEpibnMSOEFT/+fu3xfycGw4qKGdWDoPQ2hOJ4aHzyaKY4W
+         xuoOJ4ihqSQTMMcGpZunWRKdrPEJ0HCtI9pXMT887hBwufx0xALi5w1ooXOmaPvVoCio
+         ZJinjazCqrnYQLOuaC/3R4Zm2ruf1C+D5lAWf48MuoJ3vt9CGKzW2Jax6s1kBFQouXXu
+         rirg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689854197; x=1690458997;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XT+twtxTCYlY8c/fAcsypV3E8gY0Retau05eex4/coc=;
+        b=igOs+4ZqrX+sT1iY4HG0qAKWg/1EBmhaGUWvweA+r/PDCy57csf+wQLKmmsfkmhikT
+         iiu4xUG4IXvRW3geLP5ppUdfOVjs2fs4Kr0lSnPv6/U4mKcy7iUNx2a8tm/uTJlk3Jkv
+         PXmKeW72CisQfuLCzNITxXHP9imjkzZ00K7xrQdIAdFZFs5MYcMQbkDXVFQ2qX13LwzA
+         CQJf/pvMOE/2cGy15a/o8ktKlcsh3NUovGHuFiwADBeJNbSPuLh19xXvqwcCU1PvZ7Qh
+         v65skKfd1ItWK7tGpCUzyl6jM7BSdoBsek1JAO2axS+MG4hXRcTghRRIgh8axT4Nf7tz
+         Sqng==
+X-Gm-Message-State: ABy/qLbBsXTOFcLZqzls8W3I1NooshFwPvH+FAdU0p7aXadk4tZ6/ufJ
+        W0J4CEyZSc9M2aaiPOq6kATzbg==
+X-Google-Smtp-Source: APBJJlFVjStzouiZKnkcXn2pw0FoxAW2Q1fP+GOjFCDM1mx82BJGWEwxEzIbVUCBJBs1m8ITXpnTVg==
+X-Received: by 2002:a17:906:1059:b0:982:1936:ad27 with SMTP id j25-20020a170906105900b009821936ad27mr5349271ejj.11.1689854196613;
+        Thu, 20 Jul 2023 04:56:36 -0700 (PDT)
+Received: from [10.1.3.131] (laubervilliers-658-1-213-31.w90-63.abo.wanadoo.fr. [90.63.244.31])
+        by smtp.gmail.com with ESMTPSA id lv19-20020a170906bc9300b00989257be620sm587462ejb.200.2023.07.20.04.56.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Jul 2023 04:56:36 -0700 (PDT)
+Message-ID: <4e0bd4ce-1344-4a63-e1c3-333857b3d226@baylibre.com>
+Date:   Thu, 20 Jul 2023 13:56:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/3] arm64: dts: mediatek: mt6795: Add support for display
- blocks and DPI/DSI
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 2/3] arm64: dts: mediatek: mt6795-xperia-m5: Add display
+ backlight support
 Content-Language: en-US
-To:     Alexandre Mergnat <amergnat@baylibre.com>, matthias.bgg@gmail.com
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, matthias.bgg@gmail.com
 Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         conor+dt@kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, kernel@collabora.com
 References: <20230720091559.86406-1-angelogioacchino.delregno@collabora.com>
- <20230720091559.86406-2-angelogioacchino.delregno@collabora.com>
- <0809ac02-b8bf-ed63-9e2e-e77cd7e93464@baylibre.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <0809ac02-b8bf-ed63-9e2e-e77cd7e93464@baylibre.com>
+ <20230720091559.86406-3-angelogioacchino.delregno@collabora.com>
+From:   Alexandre Mergnat <amergnat@baylibre.com>
+In-Reply-To: <20230720091559.86406-3-angelogioacchino.delregno@collabora.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 20/07/23 13:35, Alexandre Mergnat ha scritto:
-> 
-> 
-> On 20/07/2023 11:15, AngeloGioacchino Del Regno wrote:
->> Introduce all nodes for all of the display blocks in the MediaTek Helio
->> X10 MT6795 SoC, including the DSI PHY and DSI/DPI interfaces: those are
->> left disabled as usage is board specific.
->>
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->> ---
->>   arch/arm64/boot/dts/mediatek/mt6795.dtsi | 252 +++++++++++++++++++++++
->>   1 file changed, 252 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/mediatek/mt6795.dtsi 
->> b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
->> index 597bce2fed72..d805d7a63024 100644
->> --- a/arch/arm64/boot/dts/mediatek/mt6795.dtsi
->> +++ b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
->> @@ -2,6 +2,9 @@
->>   /*
->>    * Copyright (c) 2015 MediaTek Inc.
->>    * Author: Mars.C <mars.cheng@mediatek.com>
->> + *
->> + * Copyright (C) 2023 Collabora Ltd.
->> + *                    AngeloGioacchino Del Regno 
->> <angelogioacchino.delregno@collabora.com>
-> 
-> Shouldn't be like this ?
-> 
->   * Copyright (c) 2015 MediaTek Inc.
->   * Copyright (C) 2023 Collabora Ltd.
->   * Authors: Mars.C <mars.cheng@mediatek.com>
->   *          AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> 
-> 
-
-I don't think that there's any rule about this?
-Also I don't really mind the strings order, but if anyone really does, I can change
-it....
-
->>    */
->>   #include <dt-bindings/interrupt-controller/irq.h>
-...
->> @@ -708,6 +953,13 @@ smi_common: smi@14022000 {
->>               clock-names = "apb", "smi";
->>           };
->> +        od@14023000 {
->> +            compatible = "mediatek,mt6795-disp-od", "mediatek,mt8173-disp-od";
->> +            reg = <0 0x14023000 0 0x1000>;
->> +            clocks = <&mmsys CLK_MM_DISP_OD>;
->> +            mediatek,gce-client-reg = <&gce SUBSYS_1402XXXX 0x3000 0x1000>;
->> +        };
->> +
->>           larb2: larb@15001000 {
->>               compatible = "mediatek,mt6795-smi-larb";
->>               reg = <0 0x15001000 0 0x1000>;
-> 
-> Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-> 
 
 
+On 20/07/2023 11:15, AngeloGioacchino Del Regno wrote:
+> Add the relevant nodes for display backlight on Sony Xperia M5: this
+> needs both the SoC PWM IP and MT6332 PMIC LED strings.
 
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+
+-- 
+Regards,
+Alexandre
