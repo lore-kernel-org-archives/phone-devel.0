@@ -2,35 +2,30 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A927C04FDF
-	for <phone-devel@archiver.kernel.org>; Fri, 21 Jul 2023 21:12:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 087DAEB64DD
+	for <phone-devel@archiver.kernel.org>; Fri, 21 Jul 2023 21:12:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231166AbjGUVMF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 21 Jul 2023 17:12:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35582 "EHLO
+        id S229515AbjGUVMH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 21 Jul 2023 17:12:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230078AbjGUVMD (ORCPT
+        with ESMTP id S231142AbjGUVMF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 21 Jul 2023 17:12:03 -0400
-X-Greylist: delayed 344 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 21 Jul 2023 14:11:57 PDT
+        Fri, 21 Jul 2023 17:12:05 -0400
 Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D26E359C;
-        Fri, 21 Jul 2023 14:11:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB148359C;
+        Fri, 21 Jul 2023 14:12:03 -0700 (PDT)
 Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-        by mx.skole.hr (mx.skole.hr) with ESMTP id 8B8B486D1B;
-        Fri, 21 Jul 2023 23:06:11 +0200 (CEST)
+        by mx.skole.hr (mx.skole.hr) with ESMTP id D413086D15;
+        Fri, 21 Jul 2023 23:06:15 +0200 (CEST)
 From:   =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-To:     Robert Jarzmik <robert.jarzmik@free.fr>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andy@kernel.org>, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+To:     linux-kernel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         afaerber@suse.com,
         =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Subject: [PATCH 03/10] gpio: pxa: make pxa_gpio_has_pinctrl return false for MMP_GPIO
-Date:   Fri, 21 Jul 2023 22:37:45 +0200
-Message-ID: <20230721210042.21535-4-duje.mihanovic@skole.hr>
+Subject: [PATCH 10/10] MAINTAINERS: add myself as Marvell PXA1908 maintainer
+Date:   Fri, 21 Jul 2023 22:37:52 +0200
+Message-ID: <20230721210042.21535-11-duje.mihanovic@skole.hr>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721210042.21535-1-duje.mihanovic@skole.hr>
 References: <20230721210042.21535-1-duje.mihanovic@skole.hr>
@@ -41,26 +36,34 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Fixes the incorrect assumption that mmp-gpio needs a pinctrl handle,
-causing devices consuming GPIO to be indefinitely deferred.
+Add myself as the maintainer for Marvell PXA1908 SoC support.
 
 Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 ---
- drivers/gpio/gpio-pxa.c | 1 +
- 1 file changed, 1 insertion(+)
+ MAINTAINERS | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpio/gpio-pxa.c b/drivers/gpio/gpio-pxa.c
-index 076ee6dff4d5..b48d142b736d 100644
---- a/drivers/gpio/gpio-pxa.c
-+++ b/drivers/gpio/gpio-pxa.c
-@@ -238,6 +238,7 @@ static bool pxa_gpio_has_pinctrl(void)
- 	switch (gpio_type) {
- 	case PXA3XX_GPIO:
- 	case MMP2_GPIO:
-+	case MMP_GPIO:
- 		return false;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index aee340630eca..263fd6db0f7b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2297,6 +2297,16 @@ F:	drivers/irqchip/irq-mvebu-*
+ F:	drivers/pinctrl/mvebu/
+ F:	drivers/rtc/rtc-armada38x.c
  
- 	default:
++ARM/Marvell PXA1908 SOC support
++M:	Duje Mihanović <duje.mihanovic@skole.hr>
++L:	linux-arm-kernel@lists.infradead.org (moderated for non-subscribers)
++S:	Maintained
++T:	git https://gitlab.com/LegoLivesMatter/linux
++F:	Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml
++F:	arch/arm64/boot/dts/marvell/pxa1908*
++F:	drivers/clk/mmp/clk-of-pxa1908.c
++F:	include/dt-bindings/clock/marvell,pxa1908.h
++
+ ARM/Mediatek RTC DRIVER
+ M:	Eddie Huang <eddie.huang@mediatek.com>
+ M:	Sean Wang <sean.wang@mediatek.com>
 -- 
 2.41.0
 
