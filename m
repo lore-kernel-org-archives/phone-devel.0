@@ -2,37 +2,33 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E1CBCC41513
-	for <phone-devel@archiver.kernel.org>; Fri, 21 Jul 2023 21:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0F0AC04A6A
+	for <phone-devel@archiver.kernel.org>; Fri, 21 Jul 2023 21:12:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230136AbjGUVMD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 21 Jul 2023 17:12:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35578 "EHLO
+        id S230326AbjGUVME (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 21 Jul 2023 17:12:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjGUVMD (ORCPT
+        with ESMTP id S229763AbjGUVMD (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Fri, 21 Jul 2023 17:12:03 -0400
-X-Greylist: delayed 343 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 21 Jul 2023 14:11:57 PDT
+X-Greylist: delayed 344 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 21 Jul 2023 14:11:57 PDT
 Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D08330E2;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D39E359D;
         Fri, 21 Jul 2023 14:11:57 -0700 (PDT)
 Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-        by mx.skole.hr (mx.skole.hr) with ESMTP id C2ED386D1E;
-        Fri, 21 Jul 2023 23:06:13 +0200 (CEST)
+        by mx.skole.hr (mx.skole.hr) with ESMTP id 80C4986D18;
+        Fri, 21 Jul 2023 23:06:10 +0200 (CEST)
 From:   =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        =?UTF-8?q?=87?= <duje.mihanovic@skole.hr>,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.com
-Subject: [PATCH 06/10] dt-bindings: clock: Add documentation for Marvell PXA1908
-Date:   Fri, 21 Jul 2023 22:37:48 +0200
-Message-ID: <20230721210042.21535-7-duje.mihanovic@skole.hr>
+        afaerber@suse.com,
+        =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Subject: [PATCH 01/10] tty: serial: 8250: Define earlycon for mrvl,mmp-uart
+Date:   Fri, 21 Jul 2023 22:37:43 +0200
+Message-ID: <20230721210042.21535-2-duje.mihanovic@skole.hr>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230721210042.21535-1-duje.mihanovic@skole.hr>
 References: <20230721210042.21535-1-duje.mihanovic@skole.hr>
@@ -43,74 +39,27 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add dt bindings and documentation for Marvell PXA1908's clock controller
-blocks.
+mrvl,pxa-uart already supports earlycon and both compatible strings use
+the same driver, so there's no reason for mmp-uart to not have earlycon
+as well.
 
 Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 ---
- .../bindings/clock/marvell,pxa1908.yaml       | 53 +++++++++++++++++++
- 1 file changed, 53 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
+ drivers/tty/serial/8250/8250_pxa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml b/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
-new file mode 100644
-index 000000000000..3fa6f00a26f7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
-@@ -0,0 +1,53 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/clock/marvell,pxa1908.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Marvell PXA1908 Clock Controllers
-+
-+maintainers:
-+  - Duje Mihanović <duje.mihanovic@skole.hr>
-+
-+description: |
-+  The PXA1908 clock subsystem generates and supplies clock to various
-+  controllers within the PXA1908 SoC. The PXA1908 contains numerous clock
-+  controller blocks, with the ones currently supported being APBC, APBCP, MPMU
-+  and APMU roughly corresponding to internal buses.
-+
-+  Each clock is assigned an identifier and client nodes use this identifier to
-+  specify the clock which they consume.
-+
-+  All these identifiers could be found in <include/dt-bindings/marvell,pxa1908.h>.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - marvell,pxa1908-apbc
-+      - marvell,pxa1908-apbcp
-+      - marvell,pxa1908-mpmu
-+      - marvell,pxa1908-apmu
-+  reg:
-+    maxItems: 1
-+    description: |
-+      Physical address of the clock controller and length of the memory mapped
-+      region.
-+
-+  '#clock-cells':
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - '#clock-cells'
-+
-+additionalProperties: false
-+
-+examples:
-+  # APMU block:
-+  - |
-+    clock-controller@d4282800 {
-+      compatible = "marvell,pxa1908-apmu";
-+      reg = <0xd4282800 0x400>;
-+      #clock-cells = <1>;
-+    };
+diff --git a/drivers/tty/serial/8250/8250_pxa.c b/drivers/tty/serial/8250/8250_pxa.c
+index 28b341f602c6..a5b3ea27fc90 100644
+--- a/drivers/tty/serial/8250/8250_pxa.c
++++ b/drivers/tty/serial/8250/8250_pxa.c
+@@ -183,6 +183,7 @@ static int __init early_serial_pxa_setup(struct earlycon_device *device,
+ 	return early_serial8250_setup(device, NULL);
+ }
+ OF_EARLYCON_DECLARE(early_pxa, "mrvl,pxa-uart", early_serial_pxa_setup);
++OF_EARLYCON_DECLARE(mmp, "mrvl,mmp-uart", early_serial_pxa_setup);
+ #endif
+ 
+ MODULE_AUTHOR("Sergei Ianovich");
 -- 
 2.41.0
 
