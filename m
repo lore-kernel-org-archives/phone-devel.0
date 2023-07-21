@@ -2,116 +2,73 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89310EB64DC
-	for <phone-devel@archiver.kernel.org>; Thu, 20 Jul 2023 12:05:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DF9D0EB64DC
+	for <phone-devel@archiver.kernel.org>; Fri, 21 Jul 2023 08:28:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229880AbjGTMF3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 20 Jul 2023 08:05:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59054 "EHLO
+        id S229450AbjGUI2d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 21 Jul 2023 04:28:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230244AbjGTMF2 (ORCPT
+        with ESMTP id S229752AbjGUI2c (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 20 Jul 2023 08:05:28 -0400
+        Fri, 21 Jul 2023 04:28:32 -0400
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 087BD10FC;
-        Thu, 20 Jul 2023 05:05:24 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B6BD121;
+        Fri, 21 Jul 2023 01:28:31 -0700 (PDT)
+Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id DBDD16607083;
-        Thu, 20 Jul 2023 13:05:21 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 59DD96606FD8;
+        Fri, 21 Jul 2023 09:28:29 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1689854722;
-        bh=4zdlMTy2Q9xaiOXHklHe2EJ+an362L+tbbNoTvs277Q=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=PHtnqlc7wNEtf+0+9asTEBLPgo5wze4be0hStobRTy0R6rwA22zNO9NTVSd9r8rKx
-         FsPD10bOkxbdjvSH3z2HjVy7ztDBTVIFCXA2vqM0y20mbdfYMdAA8xOgp6UkHKPZnE
-         yiSQ+uiIySkDWLCvRWVt9J0Kk0zn+r/hMmm/e0ipaDxBoYMhnGrKZFPGKFPAvgxCtp
-         m4v31whL4HjmrG+VOJfAwwyYiuINYXe77MWs0qyrTViuXb5K6tjla+hQ7OQQlESjKL
-         VHVqO4rq0ri1s8iilG/b65BdyjvhVD5xQI4L2LVikN6flY2YLaVXo7waj2GZl4wPRP
-         lBFFvT60bwfoQ==
-Message-ID: <ac583fec-d991-713b-8329-96b3626465ef@collabora.com>
-Date:   Thu, 20 Jul 2023 14:05:19 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 1/3] arm64: dts: mediatek: mt6795: Add support for display
- blocks and DPI/DSI
-Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        matthias.bgg@gmail.com
+        s=mail; t=1689928110;
+        bh=S2daYs/q6aqCT0TpIyUa+05O3Rn3ykyFm+Hh/ppB/7o=;
+        h=From:To:Cc:Subject:Date:From;
+        b=DlxTsX6WPi0EA46bobSmiVfjhwZ8LHFFBtVF+XfvRpKH7CXzKB+/qw9JTWxh8pD0g
+         1AqdhIk5T5PrVyyT68YHM2rMLggw9WKJwbJzjVKLEjAYTM5/MkZAX7jze3h/En88gD
+         m+PXLAS0PCZdOlSEenpzqo3PKTGbnmoCk873F8Gnn9o8we9UNwUM1Gv7FeDNAakpDa
+         EHCfpc3VGhljELNiKnvGqWnOh31jcIWx5xC8vl8fDc00ynpCyKkcIYPVPFzDTYJGU9
+         5YDTM5/D7BQxxf6TAPt6jbfeKugn1JFg50sClKB8PxxmOmnwyTjMX25d5zBcAe8usb
+         tXOz1C6M9aFjw==
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+To:     matthias.bgg@gmail.com
 Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         conor+dt@kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, kernel@collabora.com
-References: <20230720091559.86406-1-angelogioacchino.delregno@collabora.com>
- <20230720091559.86406-2-angelogioacchino.delregno@collabora.com>
- <0809ac02-b8bf-ed63-9e2e-e77cd7e93464@baylibre.com>
- <d892a76c-165b-dbeb-79aa-70f3ebd7f07c@collabora.com>
- <ab463c69-59e0-99b5-1526-7c344fcc593f@linaro.org>
-From:   AngeloGioacchino Del Regno 
+        ~postmarketos/upstreaming@lists.sr.ht, kernel@collabora.com,
+        AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <ab463c69-59e0-99b5-1526-7c344fcc593f@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: [PATCH v2 0/3] MT6795 Helio X10 and Xperia M5: Display support
+Date:   Fri, 21 Jul 2023 10:28:19 +0200
+Message-ID: <20230721082822.680010-1-angelogioacchino.delregno@collabora.com>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Il 20/07/23 14:01, Krzysztof Kozlowski ha scritto:
-> On 20/07/2023 13:52, AngeloGioacchino Del Regno wrote:
->> Il 20/07/23 13:35, Alexandre Mergnat ha scritto:
->>>
->>>
->>> On 20/07/2023 11:15, AngeloGioacchino Del Regno wrote:
->>>> Introduce all nodes for all of the display blocks in the MediaTek Helio
->>>> X10 MT6795 SoC, including the DSI PHY and DSI/DPI interfaces: those are
->>>> left disabled as usage is board specific.
->>>>
->>>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->>>> ---
->>>>    arch/arm64/boot/dts/mediatek/mt6795.dtsi | 252 +++++++++++++++++++++++
->>>>    1 file changed, 252 insertions(+)
->>>>
->>>> diff --git a/arch/arm64/boot/dts/mediatek/mt6795.dtsi
->>>> b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
->>>> index 597bce2fed72..d805d7a63024 100644
->>>> --- a/arch/arm64/boot/dts/mediatek/mt6795.dtsi
->>>> +++ b/arch/arm64/boot/dts/mediatek/mt6795.dtsi
->>>> @@ -2,6 +2,9 @@
->>>>    /*
->>>>     * Copyright (c) 2015 MediaTek Inc.
->>>>     * Author: Mars.C <mars.cheng@mediatek.com>
->>>> + *
->>>> + * Copyright (C) 2023 Collabora Ltd.
->>>> + *                    AngeloGioacchino Del Regno
->>>> <angelogioacchino.delregno@collabora.com>
->>>
->>> Shouldn't be like this ?
->>>
->>>    * Copyright (c) 2015 MediaTek Inc.
->>>    * Copyright (C) 2023 Collabora Ltd.
->>>    * Authors: Mars.C <mars.cheng@mediatek.com>
->>>    *          AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->>>
->>>
->>
->> I don't think that there's any rule about this?
->> Also I don't really mind the strings order, but if anyone really does, I can change
->> it....
-> 
-> These have two entirely different meanings. Your patch suggests you hold
-> copyrights (which is usually not true if working for employer).
+Changes in v2:
+ - Changed/clarified copyright addition in patch [1/3]
 
-Right. Thank you, I'll send a new version tomorrow :-)
+This series adds DSI display support for the MediaTek Helio X10 MT6795
+and also adds support for the specific DSI display and its backlight,
+found on the Sony Xperia M5 smartphone.
 
-> 
-> Best regards,
-> Krzysztof
-> 
+AngeloGioacchino Del Regno (3):
+  arm64: dts: mediatek: mt6795: Add support for display blocks and
+    DPI/DSI
+  arm64: dts: mediatek: mt6795-xperia-m5: Add display backlight support
+  arm64: dts: mediatek: mt6795-xperia-m5: Add DSI Display and its vregs
 
+ .../dts/mediatek/mt6795-sony-xperia-m5.dts    | 101 +++++++
+ arch/arm64/boot/dts/mediatek/mt6795.dtsi      | 251 ++++++++++++++++++
+ 2 files changed, 352 insertions(+)
+
+-- 
+2.41.0
 
