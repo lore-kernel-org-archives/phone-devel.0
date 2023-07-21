@@ -2,42 +2,35 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AC1EC05051
-	for <phone-devel@archiver.kernel.org>; Fri, 21 Jul 2023 21:12:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7155AEB64DD
+	for <phone-devel@archiver.kernel.org>; Fri, 21 Jul 2023 21:13:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229709AbjGUVMG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 21 Jul 2023 17:12:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35588 "EHLO
+        id S229457AbjGUVNq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 21 Jul 2023 17:13:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230252AbjGUVME (ORCPT
+        with ESMTP id S229756AbjGUVNp (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 21 Jul 2023 17:12:04 -0400
-X-Greylist: delayed 334 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 21 Jul 2023 14:11:57 PDT
-Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D504359F;
-        Fri, 21 Jul 2023 14:11:57 -0700 (PDT)
-Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-        by mx.skole.hr (mx.skole.hr) with ESMTP id 9401986D1F;
-        Fri, 21 Jul 2023 23:06:15 +0200 (CEST)
+        Fri, 21 Jul 2023 17:13:45 -0400
+Received: from mx.skole.hr (mx2.hosting.skole.hr [161.53.165.186])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495CB3A85;
+        Fri, 21 Jul 2023 14:13:16 -0700 (PDT)
+Received: from mx2.hosting.skole.hr (localhost.localdomain [127.0.0.1])
+        by mx.skole.hr (mx.skole.hr) with ESMTP id BF357880C0;
+        Fri, 21 Jul 2023 23:06:11 +0200 (CEST)
 From:   =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hardening@vger.kernel.org
+To:     Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.com
-Subject: [PATCH 08/10] arm64: dts: Add DTS for Marvell PXA1908 and samsung,coreprimevelte
-Date:   Fri, 21 Jul 2023 22:37:50 +0200
-Message-ID: <20230721210042.21535-9-duje.mihanovic@skole.hr>
+        afaerber@suse.com,
+        =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Subject: [PATCH 00/10] Initial Marvell PXA1908 support
+Date:   Fri, 21 Jul 2023 22:37:42 +0200
+Message-ID: <20230721210042.21535-1-duje.mihanovic@skole.hr>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230721210042.21535-1-duje.mihanovic@skole.hr>
-References: <20230721210042.21535-1-duje.mihanovic@skole.hr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -45,658 +38,75 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add DTS for Marvell PXA1908 SoC and Samsung Galaxy Core Prime Value
-Edition LTE, a smartphone based on said SoC.
+Hello,
 
-Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
----
+This series adds initial support for the Marvell PXA1908 SoC and
+"samsung,coreprimevelte", a smartphone using the SoC.
+
+USB works and the phone can boot a rootfs from an SD card, but there are
+some warnings in the dmesg:
+
+During SMP initialization:
+[    0.006519] CPU features: SANITY CHECK: Unexpected variation in SYS_CNTFRQ_EL0. Boot CPU: 0x000000018cba80, CPU1: 0x00000000000000
+[    0.006542] CPU features: Unsupported CPU feature variation detected.
+[    0.006589] CPU1: Booted secondary processor 0x0000000001 [0x410fd032]
+[    0.010710] Detected VIPT I-cache on CPU2
+[    0.010716] CPU features: SANITY CHECK: Unexpected variation in SYS_CNTFRQ_EL0. Boot CPU: 0x000000018cba80, CPU2: 0x00000000000000
+[    0.010758] CPU2: Booted secondary processor 0x0000000002 [0x410fd032]
+[    0.014849] Detected VIPT I-cache on CPU3
+[    0.014855] CPU features: SANITY CHECK: Unexpected variation in SYS_CNTFRQ_EL0. Boot CPU: 0x000000018cba80, CPU3: 0x00000000000000
+[    0.014895] CPU3: Booted secondary processor 0x0000000003 [0x410fd032]
+
+SMMU probing fails:
+[    0.101798] arm-smmu c0010000.iommu: probing hardware configuration...
+[    0.101809] arm-smmu c0010000.iommu: SMMUv1 with:
+[    0.101816] arm-smmu c0010000.iommu: 	no translation support!
+
+On Samsung's PXA1908 phones, the bootloader does not start the ARM
+system timer, and my temporary solution (which isn't present in this
+series) was to put the code for starting the timer in the clock driver.
+Would this hack be accepted upstream in the form of a platform or
+clocksource driver such as drivers/clocksource/timer-mediatek-cpux.c?
+
+A 3.14 based Marvell tree is available on GitHub
+acorn-marvell/brillo_pxa_kernel, and a Samsung one on GitHub
+CoderCharmander/g361f-kernel.
+
+Andreas Färber attempted to upstream support for this SoC in 2017:
+https://lore.kernel.org/lkml/20170222022929.10540-1-afaerber@suse.de/
+
+Duje Mihanović (10):
+  tty: serial: 8250: Define earlycon for mrvl,mmp-uart
+  gpio: pxa: use dynamic allocation of base
+  gpio: pxa: make pxa_gpio_has_pinctrl return false for MMP_GPIO
+  clk: mmp: Add Marvell PXA1908 clock driver
+  dt-bindings: clock: Add Marvell PXA1908 clock bindings
+  dt-bindings: clock: Add documentation for Marvell PXA1908
+  arm64: Kconfig.platforms: Add config for Marvell PXA1908 platform
+  arm64: dts: Add DTS for Marvell PXA1908 and samsung,coreprimevelte
+  dt-bindings: marvell: Document PXA1908 SoC
+  MAINTAINERS: add myself as Marvell PXA1908 maintainer
+
+ .../bindings/arm/marvell/marvell,pxa1908.yaml |  33 ++
+ .../bindings/clock/marvell,pxa1908.yaml       |  53 +++
+ MAINTAINERS                                   |  10 +
+ arch/arm64/Kconfig.platforms                  |  11 +
  arch/arm64/boot/dts/marvell/Makefile          |   1 +
  .../pxa1908-samsung-coreprimevelte.dts        | 321 ++++++++++++++++++
  arch/arm64/boot/dts/marvell/pxa1908.dtsi      | 298 ++++++++++++++++
- 3 files changed, 620 insertions(+)
+ drivers/clk/mmp/Makefile                      |   2 +-
+ drivers/clk/mmp/clk-of-pxa1908.c              | 282 +++++++++++++++
+ drivers/gpio/gpio-pxa.c                       |   2 +
+ drivers/tty/serial/8250/8250_pxa.c            |   1 +
+ include/dt-bindings/clock/marvell,pxa1908.h   |  93 +++++
+ 12 files changed, 1106 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml
+ create mode 100644 Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
  create mode 100644 arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dts
  create mode 100644 arch/arm64/boot/dts/marvell/pxa1908.dtsi
+ create mode 100644 drivers/clk/mmp/clk-of-pxa1908.c
+ create mode 100644 include/dt-bindings/clock/marvell,pxa1908.h
 
-diff --git a/arch/arm64/boot/dts/marvell/Makefile b/arch/arm64/boot/dts/marvell/Makefile
-index 79ac09b58a89..0e277a0d368b 100644
---- a/arch/arm64/boot/dts/marvell/Makefile
-+++ b/arch/arm64/boot/dts/marvell/Makefile
-@@ -27,3 +27,4 @@ dtb-$(CONFIG_ARCH_MVEBU) += cn9132-db-B.dtb
- dtb-$(CONFIG_ARCH_MVEBU) += cn9130-crb-A.dtb
- dtb-$(CONFIG_ARCH_MVEBU) += cn9130-crb-B.dtb
- dtb-$(CONFIG_ARCH_MVEBU) += ac5-98dx35xx-rd.dtb
-+dtb-$(CONFIG_ARCH_MMP) += pxa1908-samsung-coreprimevelte.dtb
-diff --git a/arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dts b/arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dts
-new file mode 100644
-index 000000000000..3e10a77a106e
---- /dev/null
-+++ b/arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dts
-@@ -0,0 +1,321 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include "pxa1908.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/linux-event-codes.h>
-+
-+/ {
-+	pxa,rev-id = <3928 2>;
-+	model = "Samsung Galaxy Core Prime VE LTE";
-+	compatible = "samsung,coreprimevelte", "marvell,pxa1908";
-+
-+	/* Bootloader fills this in */
-+	memory {
-+		device_type = "memory";
-+		reg = <0 0 0 0>;
-+	};
-+
-+	reserved-memory {
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		framebuffer@17000000 {
-+			reg = <0 0x17000000 0 0x1800000>;
-+			no-map;
-+		};
-+
-+		gpu@9000000 {
-+			reg = <0 0x9000000 0 0x1000000>;
-+		};
-+
-+		/* Communications processor, aka modem */
-+		cp@3000000 {
-+			reg = <0 0x3000000 0 0x5000000>;
-+		};
-+
-+		cm3@a000000 {
-+			reg = <0 0xa000000 0 0x80000>;
-+		};
-+
-+		seclog@8000000 {
-+			reg = <0 0x8000000 0 0x100000>;
-+		};
-+
-+		ramoops@8100000 {
-+			compatible = "ramoops";
-+			reg = <0 0x8100000 0 0x40000>;
-+			record-size = <0x8000>;
-+			console-size = <0x20000>;
-+			max-reason = <5>;
-+		};
-+	};
-+
-+	fb0: framebuffer@17177000 {
-+		compatible = "simple-framebuffer";
-+		reg = <0 0x17177000 0 (480 * 800 * 4)>;
-+		width = <480>;
-+		height = <800>;
-+		stride = <(480 * 4)>;
-+		format = "a8r8g8b8";
-+	};
-+
-+	muic-i2c {
-+		compatible = "i2c-gpio";
-+		sda-gpios = <&gpio 30 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+		scl-gpios = <&gpio 29 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+		i2c-gpio,delay-us = <3>;
-+		i2c-gpio,timeout-ms = <100>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&muic_i2c_pins>;
-+
-+		muic: extcon@14 {
-+			compatible = "siliconmitus,sm5504-muic";
-+			reg = <0x14>;
-+			interrupt-parent = <&gpio>;
-+			interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
-+		};
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&gpio_keys_pins>;
-+		autorepeat;
-+
-+		key-home {
-+			label = "Home";
-+			linux,code = <KEY_HOME>;
-+			gpios = <&gpio 50 GPIO_ACTIVE_LOW>;
-+		};
-+
-+		key-volup {
-+			label = "Volume Up";
-+			linux,code = <KEY_VOLUMEUP>;
-+			gpios = <&gpio 16 GPIO_ACTIVE_LOW>;
-+		};
-+
-+		key-voldown {
-+			label = "Volume Down";
-+			linux,code = <KEY_VOLUMEDOWN>;
-+			gpios = <&gpio 17 GPIO_ACTIVE_LOW>;
-+		};
-+	};
-+
-+	chosen {};
-+};
-+
-+&smmu {
-+	status = "okay";
-+};
-+
-+&pmx {
-+	pinctrl-single,gpio-range = <&range 55 55 0>,
-+				    <&range 110 32 0>,
-+				    <&range 52 1 0>;
-+
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&board_pins_1 &board_pins_2 &board_pins_3>;
-+
-+	board_pins_1: pinmux_board_1 {
-+		pinctrl-single,pins = <
-+			0x160 0
-+			0x164 0
-+			0x168 0
-+			0x16c 0
-+		>;
-+		pinctrl-single,drive-strength = <0x1000 0x1800>;
-+		pinctrl-single,bias-pullup = <0x8000 0x8000 0 0xc000>;
-+		pinctrl-single,bias-pulldown = <0x8000 0x8000 0 0xa000>;
-+		pinctrl-single,input-schmitt = <0 0x30>;
-+		pinctrl-single,input-schmitt-enable = <0x40 0 0x40 0x40>;
-+		pinctrl-single,low-power-mode = <0x288 0x388>;
-+	};
-+
-+	board_pins_2: pinmux_board_2 {
-+		pinctrl-single,pins = <
-+			0x44 1
-+			0x48 1
-+			0x20 1
-+			0x18 1
-+			0x14 1
-+			0x10 1
-+			0xc 1
-+			0x8 1
-+			0x68 1
-+			0x58 0
-+			0x54 0
-+			0x7c 0
-+			0x6c 0
-+			0x70 0
-+			0x4c 1
-+			0x50 1
-+			0xac 0
-+			0x90 0
-+			0x8c 0
-+			0x88 0
-+			0x84 0
-+			0xc8 0
-+			0x128 0
-+			0x190 0
-+			0x194 0
-+			0x1a0 0
-+			0x114 0
-+			0x118 0
-+			0x1d8 0
-+			0x1e4 0
-+			0xe8 0
-+			0x100 0
-+			0x204 0
-+			0x210 0
-+			0x218 0
-+		>;
-+		pinctrl-single,bias-pullup = <0xc000 0xc000 0 0xc000>;
-+		pinctrl-single,bias-pulldown = <0x8000 0xa000 0x8000 0xc000>;
-+		pinctrl-single,low-power-mode = <0x288 0x388>;
-+	};
-+
-+	board_pins_3: pinmux_board_3 {
-+		pinctrl-single,pins = <
-+			0x260 0
-+			0x264 0
-+			0x268 0
-+			0x26c 0
-+			0x270 0
-+			0x274 0
-+			0x78 0
-+			0x74 0
-+			0xb0 1
-+		>;
-+		pinctrl-single,drive-strength = <0x1000 0x1800>;
-+		pinctrl-single,bias-pullup = <0 0xc000 0 0xc000>;
-+		pinctrl-single,bias-pulldown = <0 0xa000 0 0xa000>;
-+		pinctrl-single,input-schmitt = <0 0x30>;
-+		pinctrl-single,input-schmitt-enable = <0x40 0 0x40 0x40>;
-+		pinctrl-single,low-power-mode = <0 0x388>;
-+	};
-+
-+	uart0_pins: pinmux_uart0 {
-+		pinctrl-single,pins = <
-+			0x198 6
-+			0x19c 6
-+		>;
-+		pinctrl-single,drive-strength = <0x1000 0x1800>;
-+		pinctrl-single,bias-pullup = <0 0xc000 0 0xc000>;
-+		pinctrl-single,bias-pulldown = <0 0xa000 0 0xa000>;
-+		pinctrl-single,input-schmitt = <0 0x30>;
-+		pinctrl-single,input-schmitt-enable = <0x40 0 0x40 0x40>;
-+		pinctrl-single,low-power-mode = <0 0x388>;
-+	};
-+
-+	gpio_keys_pins: pinmux_gpio_keys {
-+		pinctrl-single,pins = <
-+			0x11c 0
-+			0x120 0
-+			0x1a4 0
-+		>;
-+		pinctrl-single,drive-strength = <0x1000 0x1800>;
-+		pinctrl-single,bias-pullup = <0xc000 0xc000 0 0xc000>;
-+		pinctrl-single,bias-pulldown = <0x8000 0xa0000 0x8000 0xa000>;
-+		pinctrl-single,input-schmitt = <0 0x30>;
-+		pinctrl-single,input-schmitt-enable = <0x40 0 0x40 0x40>;
-+		pinctrl-single,low-power-mode = <0 0x388>;
-+	};
-+
-+	muic_i2c_pins: pinmux_muic_i2c {
-+		pinctrl-single,pins = <
-+			0x154 0
-+			0x150 0
-+		>;
-+		pinctrl-single,drive-strength = <0x1000 0x1800>;
-+		pinctrl-single,bias-pullup = <0 0xc000 0 0xc000>;
-+		pinctrl-single,bias-pulldown = <0 0xa000 0 0xa000>;
-+		pinctrl-single,input-schmitt = <0 0x30>;
-+		pinctrl-single,input-schmitt-enable = <0x40 0 0x40 0x40>;
-+		pinctrl-single,low-power-mode = <0x288 0x388>;
-+	};
-+
-+	sdh0_pins_1: pinmux_sdh0_1 {
-+		pinctrl-single,pins = <
-+			0x108 0
-+		>;
-+		pinctrl-single,drive-strength = <0x1000 0x1800>;
-+		pinctrl-single,bias-pullup = <0xc000 0xc000 0 0xc000>;
-+		pinctrl-single,bias-pulldown = <0x8000 0xa000 0x8000 0xa000>;
-+		pinctrl-single,input-schmitt = <0 0x30>;
-+		pinctrl-single,input-schmitt-enable = <0x40 0 0x40 0x40>;
-+		pinctrl-single,low-power-mode = <0 0x388>;
-+	};
-+
-+	sdh0_pins_2: pinmux_sdh0_2 {
-+		pinctrl-single,pins = <
-+			0x94 0
-+			0x98 0
-+			0x9c 0
-+			0xa0 0
-+			0xa4 0
-+		>;
-+		pinctrl-single,drive-strength = <0x800 0x1800>;
-+		pinctrl-single,bias-pullup = <0xc000 0xc000 0 0xc000>;
-+		pinctrl-single,bias-pulldown = <0x8000 0xa000 0x8000 0xa000>;
-+		pinctrl-single,input-schmitt = <0 0x30>;
-+		pinctrl-single,input-schmitt-enable = <0x40 0 0x40 0x40>;
-+		pinctrl-single,low-power-mode = <0 0x388>;
-+	};
-+
-+	sdh0_pins_3: pinmux_sdh0_3 {
-+		pinctrl-single,pins = <
-+			0xa8 0
-+		>;
-+		pinctrl-single,drive-strength = <0x1000 0x1800>;
-+		pinctrl-single,bias-pullup = <0 0xc000 0 0xc000>;
-+		pinctrl-single,bias-pulldown = <0 0xa000 0 0xa000>;
-+		pinctrl-single,input-schmitt = <0 0x30>;
-+		pinctrl-single,input-schmitt-enable = <0x40 0 0x40 0x40>;
-+		pinctrl-single,low-power-mode = <0x208 0x388>;
-+	};
-+};
-+
-+&uart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0_pins>;
-+};
-+
-+&twsi0 {
-+	status = "okay";
-+};
-+
-+&twsi1 {
-+	status = "okay";
-+};
-+
-+&twsi2 {
-+	status = "okay";
-+};
-+
-+&twsi3 {
-+	status = "okay";
-+};
-+
-+&usb {
-+	extcon = <&muic>, <&muic>;
-+};
-+
-+&sdh2 {
-+	/* Disabled for now because initialization fails with -ETIMEDOUT. */
-+	status = "disabled";
-+	bus-width = <8>;
-+	non-removable;
-+	broken-cd;
-+	mmc-ddr-1_8v;
-+};
-+
-+&sdh0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&sdh0_pins_1 &sdh0_pins_2 &sdh0_pins_3>;
-+	cd-gpios = <&gpio 11 0>;
-+	cd-inverted;
-+	bus-width = <4>;
-+	wp-inverted;
-+};
-diff --git a/arch/arm64/boot/dts/marvell/pxa1908.dtsi b/arch/arm64/boot/dts/marvell/pxa1908.dtsi
-new file mode 100644
-index 000000000000..7131b2070b72
---- /dev/null
-+++ b/arch/arm64/boot/dts/marvell/pxa1908.dtsi
-@@ -0,0 +1,298 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/dts-v1/;
-+
-+#include <dt-bindings/interrupt-controller/arm-gic.h>
-+#include <dt-bindings/clock/marvell,pxa1908.h>
-+
-+/ {
-+	model = "Marvell Armada PXA1908";
-+	compatible = "marvell,pxa1908";
-+	#address-cells = <2>;
-+	#size-cells = <2>;
-+	interrupt-parent = <&gic>;
-+
-+	cpus {
-+		#address-cells = <2>;
-+		#size-cells = <0>;
-+
-+		cpu@0 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a53", "arm,armv8";
-+			reg = <0 0>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu@1 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a53", "arm,armv8";
-+			reg = <0 1>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu@2 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a53", "arm,armv8";
-+			reg = <0 2>;
-+			enable-method = "psci";
-+		};
-+
-+		cpu@3 {
-+			device_type = "cpu";
-+			compatible = "arm,cortex-a53", "arm,armv8";
-+			reg = <0 3>;
-+			enable-method = "psci";
-+		};
-+	};
-+
-+	psci {
-+		compatible = "arm,psci-0.2";
-+		method = "smc";
-+	};
-+
-+	timer {
-+		compatible = "arm,armv8-timer";
-+		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
-+			<GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
-+			<GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
-+			<GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>;
-+	};
-+
-+	soc {
-+		compatible = "simple-bus";
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		smmu: iommu@c0010000 {
-+			compatible = "arm,mmu-400";
-+			reg = <0 0xc0010000 0 0x10000>;
-+			#global-interrupts = <1>;
-+			#iommu-cells = <1>;
-+			interrupts = <GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>,
-+				<GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>;
-+			status = "disabled";
-+		};
-+
-+		gic: interrupt-controller@d1df9000 {
-+			compatible = "arm,gic-400";
-+			reg = <0 0xd1df9000 0 0x1000>,
-+				<0 0xd1dfa000 0 0x2000>;
-+			interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>;
-+			interrupt-controller;
-+			#interrupt-cells = <3>;
-+		};
-+
-+		apb@d4000000 {
-+			compatible = "simple-bus";
-+			reg = <0 0xd4000000 0 0x200000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0 0 0xd4000000 0x200000>;
-+
-+			pdma: dma-controller@0 {
-+				compatible = "marvell,pdma-1.0";
-+				reg = <0 0x10000>;
-+				interrupts = <GIC_SPI 47 IRQ_TYPE_LEVEL_HIGH>;
-+				dma-channels = <30>;
-+				#dma-cells = <2>;
-+			};
-+
-+			twsi1: i2c@10800 {
-+				compatible = "mrvl,mmp-twsi";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				reg = <0x10800 0x64>;
-+				interrupts = <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&apbc PXA1908_CLK_TWSI1>;
-+				mrvl,i2c-fast-mode;
-+				status = "disabled";
-+			};
-+
-+			twsi0: i2c@11000 {
-+				compatible = "mrvl,mmp-twsi";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				reg = <0x11000 0x64>;
-+				interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&apbc PXA1908_CLK_TWSI0>;
-+				mrvl,i2c-fast-mode;
-+				status = "disabled";
-+			};
-+
-+			twsi3: i2c@13800 {
-+				compatible = "mrvl,mmp-twsi";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				reg = <0x13800 0x64>;
-+				interrupts = <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&apbc PXA1908_CLK_TWSI3>;
-+				mrvl,i2c-fast-mode;
-+				status = "disabled";
-+			};
-+
-+			apbc: clock-controller@15000 {
-+				compatible = "marvell,pxa1908-apbc";
-+				reg = <0x15000 0x1000>;
-+				#clock-cells = <1>;
-+			};
-+
-+			uart0: serial@17000 {
-+				compatible = "mrvl,mmp-uart";
-+				reg = <0x17000 0x1000>;
-+				interrupts = <GIC_SPI 27 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&pdma 21 1>,
-+					<&pdma 22 1>;
-+				dma-names = "rx", "tx";
-+				clocks = <&apbc PXA1908_CLK_UART0>;
-+			};
-+
-+			uart1: serial@18000 {
-+				compatible = "mrvl,mmp-uart";
-+				reg = <0x18000 0x1000>;
-+				interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&pdma 23 1>,
-+					<&pdma 24 1>;
-+				dma-names = "rx", "tx";
-+				clocks = <&apbc PXA1908_CLK_UART1>;
-+			};
-+
-+			gpio: gpio@19000 {
-+				compatible = "marvell,mmp-gpio";
-+				reg = <0x19000 0x800>;
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+				gpio-controller;
-+				#gpio-cells = <2>;
-+				clocks = <&apbc PXA1908_CLK_GPIO>;
-+				interrupts = <GIC_SPI 49 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupt-names = "gpio_mux";
-+				interrupt-controller;
-+				#interrupt-cells = <2>;
-+				ranges = <0 0x19000 0x800>;
-+
-+				gpio@0 {
-+					reg = <0x0 0x4>;
-+				};
-+
-+				gpio@4 {
-+					reg = <0x4 0x4>;
-+				};
-+
-+				gpio@8 {
-+					reg = <0x8 0x4>;
-+				};
-+
-+				gpio@100 {
-+					reg = <0x100 0x4>;
-+				};
-+			};
-+
-+			pmx: pinmux@1e000 {
-+				compatible = "pinconf-single";
-+				reg = <0x1e000 0x330>;
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+				#gpio-range-cells = <3>;
-+				ranges;
-+
-+				#pinctrl-cells = <1>;
-+				pinctrl-single,register-width = <32>;
-+				pinctrl-single,function-mask = <7>;
-+
-+				range: gpio-range {
-+					#pinctrl-single,gpio-range-cells = <3>;
-+				};
-+			};
-+
-+			uart2: serial@36000 {
-+				compatible = "mrvl,mmp-uart";
-+				reg = <0x36000 0x1000>;
-+				interrupts = <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>;
-+				dmas = <&pdma 4 1>,
-+					<&pdma 5 1>;
-+				dma-names = "rx", "tx";
-+				clocks = <&apbcp PXA1908_CLK_UART2>;
-+			};
-+
-+			twsi2: i2c@37000 {
-+				compatible = "mrvl,mmp-twsi";
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				reg = <0x37000 0x64>;
-+				interrupts = <GIC_SPI 54 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&apbcp PXA1908_CLK_TWSI2>;
-+				mrvl,i2c-fast-mode;
-+				status = "disabled";
-+			};
-+
-+			apbcp: clock-controller@3b000 {
-+				compatible = "marvell,pxa1908-apbcp";
-+				reg = <0x3b000 0x1000>;
-+				#clock-cells = <1>;
-+			};
-+
-+			mpmu: clock-controller@50000 {
-+				compatible = "marvell,pxa1908-mpmu";
-+				reg = <0x50000 0x1000>;
-+				#clock-cells = <1>;
-+			};
-+		};
-+
-+		axi@d4200000 {
-+			compatible = "simple-bus";
-+			reg = <0 0xd4200000 0 0x200000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0 0 0xd4200000 0x200000>;
-+
-+			usbphy: phy@7000 {
-+				compatible = "marvell,pxa1928-usb-phy";
-+				reg = <0x7000 0x200>;
-+				clocks = <&apmu PXA1908_CLK_USB>;
-+				#phy-cells = <0>;
-+			};
-+
-+			usb: usb@8000 {
-+				compatible = "chipidea,usb2";
-+				reg = <0x8000 0x200>;
-+				interrupts = <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&apmu PXA1908_CLK_USB>;
-+				phys = <&usbphy>;
-+				phy-names = "usb-phy";
-+			};
-+
-+			sdh0: mmc@80000 {
-+				compatible = "mrvl,pxav3-mmc";
-+				reg = <0x80000 0x120>;
-+				interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&apmu PXA1908_CLK_SDH0>;
-+				clock-names = "io";
-+				mrvl,clk-delay-cycles = <31>;
-+			};
-+
-+			sdh1: mmc@80800 {
-+				compatible = "mrvl,pxav3-mmc";
-+				reg = <0x80800 0x120>;
-+				interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&apmu PXA1908_CLK_SDH1>;
-+				clock-names = "io";
-+				mrvl,clk-delay-cycles = <31>;
-+			};
-+
-+			sdh2: mmc@81000 {
-+				compatible = "mrvl,pxav3-mmc";
-+				reg = <0x81000 0x120>;
-+				interrupts = <GIC_SPI 39 IRQ_TYPE_LEVEL_HIGH>;
-+				clocks = <&apmu PXA1908_CLK_SDH2>;
-+				clock-names = "io";
-+				mrvl,clk-delay-cycles = <31>;
-+			};
-+
-+			apmu: clock-controller@82800 {
-+				compatible = "marvell,pxa1908-apmu";
-+				reg = <0x82800 0x400>;
-+				#clock-cells = <1>;
-+			};
-+		};
-+	};
-+};
 -- 
 2.41.0
 
