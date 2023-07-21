@@ -2,36 +2,36 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DF9D0EB64DC
-	for <phone-devel@archiver.kernel.org>; Fri, 21 Jul 2023 08:28:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92067EB64DD
+	for <phone-devel@archiver.kernel.org>; Fri, 21 Jul 2023 08:28:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229450AbjGUI2d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 21 Jul 2023 04:28:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39484 "EHLO
+        id S231186AbjGUI2h (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 21 Jul 2023 04:28:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229752AbjGUI2c (ORCPT
+        with ESMTP id S230517AbjGUI2f (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 21 Jul 2023 04:28:32 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B6BD121;
-        Fri, 21 Jul 2023 01:28:31 -0700 (PDT)
+        Fri, 21 Jul 2023 04:28:35 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6298273A;
+        Fri, 21 Jul 2023 01:28:32 -0700 (PDT)
 Received: from IcarusMOD.eternityproject.eu (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 59DD96606FD8;
-        Fri, 21 Jul 2023 09:28:29 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id F1629660709A;
+        Fri, 21 Jul 2023 09:28:30 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1689928110;
-        bh=S2daYs/q6aqCT0TpIyUa+05O3Rn3ykyFm+Hh/ppB/7o=;
-        h=From:To:Cc:Subject:Date:From;
-        b=DlxTsX6WPi0EA46bobSmiVfjhwZ8LHFFBtVF+XfvRpKH7CXzKB+/qw9JTWxh8pD0g
-         1AqdhIk5T5PrVyyT68YHM2rMLggw9WKJwbJzjVKLEjAYTM5/MkZAX7jze3h/En88gD
-         m+PXLAS0PCZdOlSEenpzqo3PKTGbnmoCk873F8Gnn9o8we9UNwUM1Gv7FeDNAakpDa
-         EHCfpc3VGhljELNiKnvGqWnOh31jcIWx5xC8vl8fDc00ynpCyKkcIYPVPFzDTYJGU9
-         5YDTM5/D7BQxxf6TAPt6jbfeKugn1JFg50sClKB8PxxmOmnwyTjMX25d5zBcAe8usb
-         tXOz1C6M9aFjw==
+        s=mail; t=1689928111;
+        bh=BVidntw4WSumarLqrqu9nRPaS3zqlQubYugq7T2Z6Lw=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=mWJ1uKGSJUvbCfz9wGn2aYA/MnFxOtz/6yrxod0OX7qfmXa1KeQJudjX0C14+uSlD
+         wfeVk18PCtwKE95J2Oa/LTAljA0agxFbPp9wH+IJn18OhWHjN72hXSovvg0L4xIjlg
+         mm3i39lcZVTQxhdVGJN1l+HjUacspRxxjhcSLfeildEly+PCHkAEp+hFO1LFLiaw0B
+         y6R5kOqSHB4WJgUo821Ut9O/i5SHlDsD7+AZjZdaxx31t5XYT11kazbaGfMKLNji2A
+         Q9ZB4bNIimCq0Gym+H07nZw+I/M2gqUQuqulL2DHZauWV415EpM5QbLCVzzDiicmEn
+         HNrMQ6mQp2/tg==
 From:   AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
 To:     matthias.bgg@gmail.com
@@ -41,34 +41,79 @@ Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
         linux-mediatek@lists.infradead.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, kernel@collabora.com,
         AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH v2 0/3] MT6795 Helio X10 and Xperia M5: Display support
-Date:   Fri, 21 Jul 2023 10:28:19 +0200
-Message-ID: <20230721082822.680010-1-angelogioacchino.delregno@collabora.com>
+        <angelogioacchino.delregno@collabora.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>
+Subject: [PATCH v2 2/3] arm64: dts: mediatek: mt6795-xperia-m5: Add display backlight support
+Date:   Fri, 21 Jul 2023 10:28:21 +0200
+Message-ID: <20230721082822.680010-3-angelogioacchino.delregno@collabora.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230721082822.680010-1-angelogioacchino.delregno@collabora.com>
+References: <20230721082822.680010-1-angelogioacchino.delregno@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Changes in v2:
- - Changed/clarified copyright addition in patch [1/3]
+Add the relevant nodes for display backlight on Sony Xperia M5: this
+needs both the SoC PWM IP and MT6332 PMIC LED strings.
 
-This series adds DSI display support for the MediaTek Helio X10 MT6795
-and also adds support for the specific DSI display and its backlight,
-found on the Sony Xperia M5 smartphone.
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+---
+ .../dts/mediatek/mt6795-sony-xperia-m5.dts    | 32 +++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-AngeloGioacchino Del Regno (3):
-  arm64: dts: mediatek: mt6795: Add support for display blocks and
-    DPI/DSI
-  arm64: dts: mediatek: mt6795-xperia-m5: Add display backlight support
-  arm64: dts: mediatek: mt6795-xperia-m5: Add DSI Display and its vregs
-
- .../dts/mediatek/mt6795-sony-xperia-m5.dts    | 101 +++++++
- arch/arm64/boot/dts/mediatek/mt6795.dtsi      | 251 ++++++++++++++++++
- 2 files changed, 352 insertions(+)
-
+diff --git a/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts b/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
+index b5746e6d0b15..ecdf00707a44 100644
+--- a/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
++++ b/arch/arm64/boot/dts/mediatek/mt6795-sony-xperia-m5.dts
+@@ -22,6 +22,23 @@ aliases {
+ 		serial1 = &uart1;
+ 	};
+ 
++	backlight_lcd0: backlight {
++		compatible = "led-backlight";
++		leds = <&disp_led_pwm>, <&pmic_bl_led>;
++
++		default-brightness-level = <300>;
++	};
++
++	led-controller-display {
++		compatible = "pwm-leds";
++
++		disp_led_pwm: led-0 {
++			label = "backlight-pwm";
++			pwms = <&pwm0 0 500000>;
++			max-brightness = <1024>;
++		};
++	};
++
+ 	memory@40000000 {
+ 		device_type = "memory";
+ 		reg = <0 0x40000000 0 0x1e800000>;
+@@ -338,6 +355,21 @@ &pmic {
+ 	 * an interrupt on the companion, so we use the MT6332 IRQ GPIO.
+ 	 */
+ 	interrupts = <GIC_SPI 160 IRQ_TYPE_LEVEL_HIGH>;
++
++	mt6332-led {
++		compatible = "mediatek,mt6332-led";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		pmic_bl_led: led@0 {
++			reg = <0>;
++			label = "backlight-pmic";
++		};
++	};
++};
++
++&pwm0 {
++	status = "okay";
+ };
+ 
+ &uart0 {
 -- 
 2.41.0
 
