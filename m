@@ -2,97 +2,122 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E86DEB64DD
-	for <phone-devel@archiver.kernel.org>; Fri, 21 Jul 2023 22:28:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3337EEB64DC
+	for <phone-devel@archiver.kernel.org>; Sat, 22 Jul 2023 09:22:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230031AbjGUW2t (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 21 Jul 2023 18:28:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37954 "EHLO
+        id S230010AbjGVJWL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 22 Jul 2023 05:22:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229843AbjGUW2s (ORCPT
+        with ESMTP id S229601AbjGVJWJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 21 Jul 2023 18:28:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 005DA3580;
-        Fri, 21 Jul 2023 15:28:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8958D61D96;
-        Fri, 21 Jul 2023 22:28:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAF7C433C8;
-        Fri, 21 Jul 2023 22:28:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1689978527;
-        bh=Pu9+C0+/vaNa0w1WSwqJheO/DmqUC3KPyRJRrtpicKA=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=T1q53V3R+aFNMmFf2lX8GV7fzCU/BXaWOeETTjTfQo/4vsZo71/2SM8gC5flMBc3E
-         b5Sfb8A4enVhssL9BJYsXO2qxU+x4nK3zmPPqjxZRzkvDZ2fqqLYLlmXRQmyiCiokg
-         /zCR9FizIvWdxNwFzjTZ/fF/iYgKINFREtXZVQ42Uq06L9DrD8if9DFaakA4x/v1yJ
-         ZdnpPubZs1QlUhpqGxcDhPC5KRry7EISD8NsdNhxVkOiTqisVInhNjDf20he86hifZ
-         jBVIoofrw8xHhRvtAwXIH3J9Kp0s2Q18AvyF+wnd+Anvsh7Ivd+CNkN7vq0U1fGMw3
-         z+3dhyB5WfsHw==
-Received: (nullmailer pid 2098550 invoked by uid 1000);
-        Fri, 21 Jul 2023 22:28:44 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Sat, 22 Jul 2023 05:22:09 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F24262D47
+        for <phone-devel@vger.kernel.org>; Sat, 22 Jul 2023 02:22:03 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-316f9abf204so2369606f8f.1
+        for <phone-devel@vger.kernel.org>; Sat, 22 Jul 2023 02:22:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690017722; x=1690622522;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XlWUiLbsFW9gesDugN/U0p0RaEcbTcHTBcVbcBj+HXg=;
+        b=CI08LP4aadB+oNdXlPDEAPGTp8O5rg6MvDCNomF23KOitLAJCoMub6+oeJztpDtdKL
+         I7SU0lrp+h5M3oc2m+GnAcWm/R1x2Krj1/6wc6NQ1+dsb+W8fyfhatQv3C5tY705F7hz
+         wsobw6sBx58PWvDIwjUHi3Mqp5Bc/VUl9Npz5o+8o/w33QP3w9tqg4ig2PdgQpJdSKpn
+         rheQaBqFYuxgqDdyrK+AhY/JxMj/5Jto8UcbUmjr0nieuQ9qU7mO/hXZfxjDxEFn931v
+         AQUPNOpWVzhmdyd/eEKJeQqkKZOEbv7TUEI5d2A3iJKjYMjRniO3ab04FdUP1xN5O6+u
+         AqbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690017722; x=1690622522;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XlWUiLbsFW9gesDugN/U0p0RaEcbTcHTBcVbcBj+HXg=;
+        b=HJQ6dSRWQssX/c1Wnu0rR+LY4ns5rdGLAuMQ23AhfXMqms4q0QpngPC8b5Z97Cpe4C
+         Kl3Y0JnjI3Q6q80kgPElgbwT3Vi54nUxSQlqXga84SEvGHhounYoEO69MMhcadWsBv7l
+         lBAb5H+UVh6i8pSM5DXvnzK/JsR3hjrR1EtJQzFEXyp9Y9lIOWs8aAqYbvrhLlhp9wdx
+         9qKgYj5TdkvnbHtjF5itetoxsGcfFZpOJvgfq3xW5goaudCUm/nTOpqcsRzH5pMG+w2v
+         sxt4W2WTLFh3Ozhxgn/mS780ikI+ZzW5pqKwoM41fN0AcOrRatVp5Vn3bojpszdJv/Rv
+         WMPA==
+X-Gm-Message-State: ABy/qLZm5BFWZA+xs1e0X9Xv1hK0oAl5B5jPw+/JXMzvkdkYnAVk3rRn
+        2INZ/yQtAZa1uG6KRbv9gq8X2w==
+X-Google-Smtp-Source: APBJJlGciMsKReNcuLPKE1QAwsa1Oi7HAcIFG8DTm5d14xl/+70pIMi7zRqGA4Brp9CNWPPTo4v8kg==
+X-Received: by 2002:a5d:638b:0:b0:314:1e73:d15d with SMTP id p11-20020a5d638b000000b003141e73d15dmr3633892wru.11.1690017722488;
+        Sat, 22 Jul 2023 02:22:02 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.104])
+        by smtp.gmail.com with ESMTPSA id q14-20020a1cf30e000000b003fbe561f6a3sm7730446wmq.37.2023.07.22.02.22.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 22 Jul 2023 02:22:01 -0700 (PDT)
+Message-ID: <25689bef-2dc9-a1ac-1ba4-0321813d5793@linaro.org>
+Date:   Sat, 22 Jul 2023 11:21:59 +0200
 MIME-Version: 1.0
-From:   Rob Herring <robh@kernel.org>
-To:     =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc:     Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 05/10] dt-bindings: clock: Add Marvell PXA1908 clock
+ bindings
+Content-Language: en-US
+To:     =?UTF-8?Q?Duje_Mihanovi=c4=87?= <duje.mihanovic@skole.hr>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Andrew Lunn <andrew@lunn.ch>, linux-kernel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org,
-        afaerber@suse.com, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-In-Reply-To: <20230721210042.21535-10-duje.mihanovic@skole.hr>
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afaerber@suse.com
 References: <20230721210042.21535-1-duje.mihanovic@skole.hr>
- <20230721210042.21535-10-duje.mihanovic@skole.hr>
-Message-Id: <168997852495.2098511.9116115004654888753.robh@kernel.org>
-Subject: Re: [PATCH 09/10] dt-bindings: marvell: Document PXA1908 SoC
-Date:   Fri, 21 Jul 2023 16:28:44 -0600
+ <20230721210042.21535-6-duje.mihanovic@skole.hr>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230721210042.21535-6-duje.mihanovic@skole.hr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-On Fri, 21 Jul 2023 22:37:51 +0200, Duje Mihanović wrote:
-> Add dt bindings and documentation for Marvell PXA1908 SoC.
+On 21/07/2023 22:37, Duje Mihanović wrote:
+> Add the dt bindings for Marvell PXA1908 clock controller.
 > 
+
+Squash the patch with bindings change. It has little sense on its own,
+
+
 > Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 > ---
->  .../bindings/arm/marvell/marvell,pxa1908.yaml | 33 +++++++++++++++++++
->  1 file changed, 33 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml
+>  include/dt-bindings/clock/marvell,pxa1908.h | 93 +++++++++++++++++++++
+>  1 file changed, 93 insertions(+)
+>  create mode 100644 include/dt-bindings/clock/marvell,pxa1908.h
 > 
+> diff --git a/include/dt-bindings/clock/marvell,pxa1908.h b/include/dt-bindings/clock/marvell,pxa1908.h
+> new file mode 100644
+> index 000000000000..da9c5d499ae4
+> --- /dev/null
+> +++ b/include/dt-bindings/clock/marvell,pxa1908.h
+> @@ -0,0 +1,93 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Dual license. Didn't checkpatch complain?
 
-yamllint warnings/errors:
+> +#ifndef __DTS_MARVELL_PXA1908_CLOCK_H
+> +#define __DTS_MARVELL_PXA1908_CLOCK_H
+> +
+> +/* plls */
+> +#define PXA1908_CLK_CLK32		0x1
+> +#define PXA1908_CLK_VCTCXO		0x2
+> +#define PXA1908_CLK_PLL1_624		0x3
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml: $id: Cannot determine base path from $id, relative path/filename doesn't match actual path or filename
- 	 $id: http://devicetree.org/schemas/arm/marvell/pxa1908.yaml
- 	file: /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml
+IDs are decimal numbers.
 
-doc reference errors (make refcheckdocs):
+> +#define PXA1908_CLK_PLL1_416		0x4
+> +#define PXA1908_CLK_PLL1_499		0x5
+> +#define PXA1908_CLK_PLL1_832		0x6
+> +#define PXA1908_CLK_PLL1_1248		0x7
+> +#define PXA1908_CLK_PLL1_D2		0x8
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20230721210042.21535-10-duje.mihanovic@skole.hr
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+Best regards,
+Krzysztof
 
