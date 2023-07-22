@@ -2,135 +2,174 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BF44EB64DA
-	for <phone-devel@archiver.kernel.org>; Sat, 22 Jul 2023 09:27:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 02678C001DE
+	for <phone-devel@archiver.kernel.org>; Sat, 22 Jul 2023 20:20:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229828AbjGVJ11 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 22 Jul 2023 05:27:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55134 "EHLO
+        id S229866AbjGVUUs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 22 Jul 2023 16:20:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229569AbjGVJ10 (ORCPT
+        with ESMTP id S229723AbjGVUUr (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 22 Jul 2023 05:27:26 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8143D2D7B
-        for <phone-devel@vger.kernel.org>; Sat, 22 Jul 2023 02:27:25 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-992f6d7c7fbso442015266b.3
-        for <phone-devel@vger.kernel.org>; Sat, 22 Jul 2023 02:27:25 -0700 (PDT)
+        Sat, 22 Jul 2023 16:20:47 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DB371FDF
+        for <phone-devel@vger.kernel.org>; Sat, 22 Jul 2023 13:20:45 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-3159d75606dso2227038f8f.1
+        for <phone-devel@vger.kernel.org>; Sat, 22 Jul 2023 13:20:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690018044; x=1690622844;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ai82Wrekmosu/e1xBDYmI0QwCtbmqg3REKABzbU6LFM=;
-        b=D/DtNfu6XOgJzcTudHDJQ107+DyewK2ItCpjW8zJc1RBWWUsuYBNq6fE+phHALO4Ln
-         n8LrZbYkJpAZvPJbyVBV+2VT064Z98On28LzBsur8T7jLFZuvxHpeGvF1u6tbqXB93Pn
-         tAh/rMOnBIqBYlekVA/NAD9ZQMX0y96ASBnuvnjHYMRRWYq748OXQMOV2rhsfR7+OSSp
-         AT5MKlFba2CbwairDMHIiHJpSvmUiX+uVCfgmd7kTNyD0fpQlYrT7R1I/koqG417nyBq
-         yeZ/zx4rV/DPDmDoEQ7lEiXvcJ4HH09V1yGokHWJ1ElXzHv0peHNnASayZh5v/fi5c/w
-         bVEg==
+        d=linaro.org; s=google; t=1690057244; x=1690662044;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uqgsDoxp+a0ulkkTMnYutRgTki2aDg/PYW80rkVVPp8=;
+        b=kYZne3f9yGRgh6iPxanTdnhcjLJm2mlrZslm1lNk8kQmuV2BBbGujayti+IPSxQ8OX
+         JPWq6WIGuSfOlZS0iNpb1PWMJ/4sKGSHVt63UEfoN5633s0LU1FlFlCLlpPdE/GsjnIu
+         9EjVJY3hgmRiGMWNABQfG+dvUF/WpEI6/ugsG1mCFPiqjDo6eprxME1Y/ZFcW6U7VP2b
+         +rJYg3CXgGkJpzrGlJCGYBHVhgcvsbLFcIKtKlt1zHPIqb5aWn3IyT3xdJjQ3TygYN5A
+         X3FC7VQ3guZTZNYdZoJMrDJm/MtdyL/fIHpOyqNpzTB+K1hdxTiG3EC+QbNFtm7EmFbJ
+         p3Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690018044; x=1690622844;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ai82Wrekmosu/e1xBDYmI0QwCtbmqg3REKABzbU6LFM=;
-        b=NzJQbSvC7XPVupPCnZObfeI2V4eVezfhes3M2y6orhH10OUql+K7ON7Cil9IV+Oy0n
-         PiMq8bPJVCB8EUxzIU+60cUc7+Ru9trufgPl2q/eqHUYdJ0QcBDROrddFppp5G2WOVpe
-         JffDLxuNt7WWUOzpPjj+2hLnOuTdQsAh5LqkWwWsftRmshh6zbXCKxihg4Yt4L7oFOVr
-         XFNMe10ni5Rsf39OPSTsAyNJV30VT04pyfDPWLHRAJKaQJcm/AiIgud3pUwaiDC+9dk8
-         JeVGpEDMvYrZ1cptmLdUC7bsVhMwZcn5q7Eg7mNOc1FwwC3EfkkBnyVa/PjcCkuHpcZ+
-         iaQA==
-X-Gm-Message-State: ABy/qLadNsYj6Z97VkW9P4gwmcvvQLZDhUYPqhkO9hQcCmEys/S2z1b9
-        I7v19Ex5VfLWbVo+FecwdGX2cA==
-X-Google-Smtp-Source: APBJJlHUtRQDwd8sM4l2X8YK6IQU8Kbe2XFpBsg4mJWZC52R65UXpZn/EJxY/cKdFj5v8qtfFw8gkw==
-X-Received: by 2002:a17:907:2bfa:b0:99b:56d4:82dc with SMTP id gv58-20020a1709072bfa00b0099b56d482dcmr4005509ejc.67.1690018044023;
-        Sat, 22 Jul 2023 02:27:24 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id mh3-20020a170906eb8300b00982b204678fsm3269058ejb.207.2023.07.22.02.27.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jul 2023 02:27:23 -0700 (PDT)
-Message-ID: <5266764a-4551-4117-8aa4-bd435f63f450@linaro.org>
-Date:   Sat, 22 Jul 2023 11:27:21 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 09/10] dt-bindings: marvell: Document PXA1908 SoC
-Content-Language: en-US
-To:     =?UTF-8?Q?Duje_Mihanovi=c4=87?= <duje.mihanovic@skole.hr>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
+        d=1e100.net; s=20221208; t=1690057244; x=1690662044;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uqgsDoxp+a0ulkkTMnYutRgTki2aDg/PYW80rkVVPp8=;
+        b=RAiTv1Pxnrv96dyh6DohwHh/orNj2HeE2NainzJ2Z3w611WiEYt0xC5lNXrxsNbg5k
+         RABY18tD8ka842xefPHLq9lG7ea0yfUGqQ+eZO/fPv2DjNeDcQBT2U0Ts2wyoTJKlurV
+         iNbmunCWFQ8kpDz0OTAfTDaKy2zcumqqtCTuLUUEDWFJhKHcdvw2L2e74t3Mgzm9SYJB
+         8MHgy8YddVdUwiyAf6R8VjhIDVY5MmyUsUPKNi4rXFVNUsoK5Xj7a1pdGGvOO3Vh539c
+         Hva6CqAerpJp/3PHy5R2lxtEpEeJtJ07VJaaO4KuKutvbRjuPEmFHp+qlYUK+eR5H+WK
+         4QxQ==
+X-Gm-Message-State: ABy/qLbN2i9Uviycf81ufHAb14mW179dW2bwFaUL2FZT8YzlEwUN3Tuz
+        3Q7g9oRa6nDkiQqEe3z2petldw==
+X-Google-Smtp-Source: APBJJlHtGR5LPmf1KqxQqGuubWj7q/2swHpo0BwtoPPXrcKJwOgxc6GbBBBkKHLogidNI3C5Z/BtHA==
+X-Received: by 2002:adf:f8d1:0:b0:316:ee7f:f9bb with SMTP id f17-20020adff8d1000000b00316ee7ff9bbmr3436488wrq.65.1690057243072;
+        Sat, 22 Jul 2023 13:20:43 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.223.104])
+        by smtp.gmail.com with ESMTPSA id w10-20020adfd4ca000000b003140f47224csm7773076wrk.15.2023.07.22.13.20.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Jul 2023 13:20:42 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.com
-References: <20230721210042.21535-1-duje.mihanovic@skole.hr>
- <20230721210042.21535-10-duje.mihanovic@skole.hr>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230721210042.21535-10-duje.mihanovic@skole.hr>
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        replicant@osuosl.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        =?UTF-8?q?Martin=20J=C3=BCcker?= <martin.juecker@gmail.com>,
+        Henrik Grimler <henrik@grimler.se>,
+        Artur Weber <aweber.kernel@gmail.com>
+Subject: [PATCH RFT] ARM: dts: samsung: exynos4412-midas: add USB connector and USB OTG
+Date:   Sat, 22 Jul 2023 22:20:39 +0200
+Message-Id: <20230722202039.35877-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 21/07/2023 22:37, Duje Mihanović wrote:
-> Add dt bindings and documentation for Marvell PXA1908 SoC.
-> 
-> Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
-> ---
->  .../bindings/arm/marvell/marvell,pxa1908.yaml | 33 +++++++++++++++++++
->  1 file changed, 33 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml b/Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml
-> new file mode 100644
-> index 000000000000..085d238129ad
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml
+Add full description of USB-MUIC and MUIC-MHL connections, along with
+proper USB connector and OTG mode for DWC2 USB controller.
 
-I suggest having one bindings file for all pxa platforms, not per one SoC.
+This fixes dtc W=1 warnings:
 
-> @@ -0,0 +1,33 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/arm/marvell/pxa1908.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Marvell PXA1908 Platforms
-> +
-> +maintainers:
-> +  - Duje Mihanović <duje.mihanovic@skole.hr>
-> +
-> +properties:
-> +  $nodename:
-> +    const: '/'
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - samsung,coreprimevelte
-> +          - const: marvell,pxa1908
-> +
-> +  pxa,rev-id:
+  Warning (graph_child_address): /i2c-mhl/hdmi-bridge@39/ports: graph node has single child node 'port@0', #address-cells/#size-cells are not necessary
 
-Incorrect vendor prefix
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: replicant@osuosl.org
+Cc: phone-devel@vger.kernel.org
+Cc: ~postmarketos/upstreaming@lists.sr.ht
+Cc: Martin Jücker <martin.juecker@gmail.com>
+Cc: Henrik Grimler <henrik@grimler.se>
+Cc: Artur Weber <aweber.kernel@gmail.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    oneOf:
+---
 
-That's not oneOf, so just items:
+Not tested on hardware. Please kindly check if peripheral mode is not
+broken. Or maybe OTG started to work?
+---
+ .../boot/dts/samsung/exynos4412-midas.dtsi    | 46 ++++++++++++++++++-
+ 1 file changed, 45 insertions(+), 1 deletion(-)
 
-> +      - items:
-> +          - description: Board ID
-> +          - description: Board revision
-> +    description: |
-
-Best regards,
-Krzysztof
+diff --git a/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi b/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
+index 57836d5554d0..6057f9d9811e 100644
+--- a/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
++++ b/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
+@@ -182,6 +182,34 @@ pmic@66 {
+ 			pinctrl-0 = <&max77693_irq>;
+ 			reg = <0x66>;
+ 
++			connector {
++				compatible = "samsung,usb-connector-11pin",
++					     "usb-b-connector";
++				label = "micro-USB";
++				type = "micro";
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++
++						muic_to_usb: endpoint {
++							remote-endpoint = <&usb_to_muic>;
++						};
++					};
++
++					port@3 {
++						reg = <3>;
++
++						muic_to_mhl: endpoint {
++							remote-endpoint = <&mhl_to_muic>;
++						};
++					};
++				};
++			};
++
+ 			regulators {
+ 				esafeout1_reg: ESAFEOUT1 {
+ 					regulator-name = "ESAFEOUT1";
+@@ -287,6 +315,14 @@ mhl_to_hdmi: endpoint {
+ 						remote-endpoint = <&hdmi_to_mhl>;
+ 					};
+ 				};
++
++				port@1 {
++					reg = <1>;
++
++					mhl_to_muic: endpoint {
++						remote-endpoint = <&muic_to_mhl>;
++					};
++				};
+ 			};
+ 		};
+ 	};
+@@ -545,8 +581,16 @@ hdmi_to_mhl: endpoint {
+ &hsotg {
+ 	vusb_d-supply = <&ldo15_reg>;
+ 	vusb_a-supply = <&ldo12_reg>;
+-	dr_mode = "peripheral";
++	dr_mode = "otg";
++	role-switch-default-mode = "peripheral";
++	usb-role-switch;
+ 	status = "okay";
++
++	port {
++		usb_to_muic: endpoint {
++			remote-endpoint = <&muic_to_usb>;
++		};
++	};
+ };
+ 
+ &i2c_0 {
+-- 
+2.34.1
 
