@@ -2,75 +2,78 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5337C0015E
-	for <phone-devel@archiver.kernel.org>; Sat, 22 Jul 2023 09:23:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6930EEB64DA
+	for <phone-devel@archiver.kernel.org>; Sat, 22 Jul 2023 09:25:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230014AbjGVJXO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 22 Jul 2023 05:23:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53316 "EHLO
+        id S229779AbjGVJZs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 22 Jul 2023 05:25:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229749AbjGVJXN (ORCPT
+        with ESMTP id S229591AbjGVJZr (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 22 Jul 2023 05:23:13 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FD2E2D4A
-        for <phone-devel@vger.kernel.org>; Sat, 22 Jul 2023 02:23:11 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-31427ddd3fbso2095126f8f.0
-        for <phone-devel@vger.kernel.org>; Sat, 22 Jul 2023 02:23:11 -0700 (PDT)
+        Sat, 22 Jul 2023 05:25:47 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B02162D7B
+        for <phone-devel@vger.kernel.org>; Sat, 22 Jul 2023 02:25:45 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-5221ee899a0so17696a12.1
+        for <phone-devel@vger.kernel.org>; Sat, 22 Jul 2023 02:25:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690017790; x=1690622590;
+        d=linaro.org; s=google; t=1690017944; x=1690622744;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=XT0YJwA5wpgSh6StJpWCXO4kO37kVk1+EeRpL2QWvQg=;
-        b=Pfehy92aCJXBtpRKzQtpThMxokjeL6Ic1k6Ueq7iZYeTyvAtMWgFloMV+YjwCKqF8i
-         j5sqoOIYq/BfxqdTdoq1J6lR/+EODlVlM9D7F632Xbahl43rTHNbVoYI17rT894cTwyo
-         2nVNNJhX8NRJ119IGZvtIF6ZKum9mg/7MY8ig00FJu/W59avstexgBM7KiX/H6GY29UJ
-         WCegQaw3u+J0rWCut9Y4/KmpSd5tbP7VNSNsWDjMK+sdwdDmA2MnsLQhQi5QYo2+Oy9m
-         L0IP1t/M/Zy19wzDbkEMVoqDHq6IUeXMP4r9mH0hgkI0sX7IP22v3zmQhm3DLsQ7yy1x
-         ARnw==
+        bh=ny814m9gzq+Ob9vj2yLBGuOvxN+pshyDPV5HjC/GEAk=;
+        b=NVo7nwO3gE/bJodg4uEVVkqgSBQp0dAI/Wv5nmuSrPOJhED358gZ/3mIu2vFOAqEmm
+         PnWC/EspHvBd20sgweZmuiYA+H4PIRZufN4fWED4QomiMiLWmm0hp3Ghx16d061qpRP7
+         EzOvpFrUlpvPtI2bSiknnI6QQ1S9hlJKntCSPxK/CmT6O5hA0MtckZSgpOeSPW7LRHl2
+         xHlwImk/g3jG+QZ7Up1bajMFwRqao1bQxkMNpKo28sx3MvCmFNEKm2kXdcnbcZxtnQpa
+         PmHxYJQNCFqiT+lW6pdfIFdNf9EGuoeisFmDlx6wJGNiylCBTCHQ/ryQ5VOg3Tabkt7F
+         G0Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690017790; x=1690622590;
+        d=1e100.net; s=20221208; t=1690017944; x=1690622744;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XT0YJwA5wpgSh6StJpWCXO4kO37kVk1+EeRpL2QWvQg=;
-        b=DZJX5EZW8ILmDdEdK9WZzSmcuPNuhxT5MdUg5p5+4dbeS7oXhDUhneSr4f9rNY4pHW
-         hosH2wqIacp20zTMQoH+Ad50XsRK2gYpklDWqvGbdk71E8flvshvL2vmI59ls5Bx8GYE
-         GE7TuEkAhnNBYRtrS2XqTR7cPN6pXbjr9CHkpNx2WychfzIElezhT7QovGP6aCEamxPJ
-         GVJFKn+sTD8LNha8VTBgmuwriw5XzizaeKeqwZF+jwShesMckREOY08Mr39fvE83hG4T
-         eY8ecIZuDXvjkw9js/iiAoUqqr+9deJ2Gcc8OJmTWpOzTg+mgDdgmSyN7h3BEhqDAByK
-         DHZw==
-X-Gm-Message-State: ABy/qLZ/JwIkxNrfI7PpE3gQAw2amEO3q/PBaQnXcGahI9HDEGmiRj5w
-        afzM5rJuifRb8UdHH2eLHtMLdA==
-X-Google-Smtp-Source: APBJJlEnLE1qzuS1Tfe9PmJ2bcAEPtnmhDzQJf77UYJ0uwmIPXcyl539LotgSBUbG/F5DzqS4zABJw==
-X-Received: by 2002:a05:6000:545:b0:313:f862:6e3e with SMTP id b5-20020a056000054500b00313f8626e3emr2787726wrf.40.1690017790136;
-        Sat, 22 Jul 2023 02:23:10 -0700 (PDT)
+        bh=ny814m9gzq+Ob9vj2yLBGuOvxN+pshyDPV5HjC/GEAk=;
+        b=dgKJAdTIfmhsdejJBDY9uWTsyP58+rfEss3Bs9dP81ArApoSpEpjl6Mn96G1qn3yMQ
+         VrZXY0GUvzOB5YkfUMETHgXOu184LCg0s6zhVTvTqjlAmv8vNpiuJPGy3oVfW2Gs1zZ+
+         nnWqYpGRx9KvJPjt0jgpT97PSFrKjR+245F26Ip62wLb15aGDyNXmFgo5TlZ23eiz3rU
+         iHPd4vcxAW4MfLzHlGBzOQqlt6swnZgqcYywhZefzUZysfA6L6aikRADqceU/4XRYsiH
+         /EC93gGAVfL1rzavr+XSmObMvR2X/vH0Y+wqDFTzO51ItNVRcfwLnDyxaAk71GpGuJVu
+         eArg==
+X-Gm-Message-State: ABy/qLbh4Q+EYm7c9sKAF9A3vAGRdqZ2Lw/y4vTAmNCVLcpobxxxNgh4
+        LOLd+TL9Hrky+GpcPHV5DVCg9Q==
+X-Google-Smtp-Source: APBJJlFw9zZYX/873W0uin+HNe+VGWU45JIV0csnyr/Iwd3oCwewenuXTxL/NjbssP4+UL8o+MXLXg==
+X-Received: by 2002:a05:6402:2da:b0:51d:a488:3b3d with SMTP id b26-20020a05640202da00b0051da4883b3dmr3288580edx.35.1690017944148;
+        Sat, 22 Jul 2023 02:25:44 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id n8-20020adfe348000000b00315af025098sm6432802wrj.46.2023.07.22.02.23.08
+        by smtp.gmail.com with ESMTPSA id b25-20020aa7d499000000b0050bc4eb9846sm3163598edr.1.2023.07.22.02.25.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jul 2023 02:23:09 -0700 (PDT)
-Message-ID: <2067e0ec-0c5c-4f0f-6b1e-c084a3e433f4@linaro.org>
-Date:   Sat, 22 Jul 2023 11:23:08 +0200
+        Sat, 22 Jul 2023 02:25:43 -0700 (PDT)
+Message-ID: <e4024f81-2d05-f02c-020c-e0a83f9fc68c@linaro.org>
+Date:   Sat, 22 Jul 2023 11:25:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 06/10] dt-bindings: clock: Add documentation for Marvell
- PXA1908
+Subject: Re: [PATCH 08/10] arm64: dts: Add DTS for Marvell PXA1908 and
+ samsung,coreprimevelte
 Content-Language: en-US
 To:     =?UTF-8?Q?Duje_Mihanovi=c4=87?= <duje.mihanovic@skole.hr>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+        Conor Dooley <conor+dt@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hardening@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         afaerber@suse.com
 References: <20230721210042.21535-1-duje.mihanovic@skole.hr>
- <20230721210042.21535-7-duje.mihanovic@skole.hr>
+ <20230721210042.21535-9-duje.mihanovic@skole.hr>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230721210042.21535-7-duje.mihanovic@skole.hr>
+In-Reply-To: <20230721210042.21535-9-duje.mihanovic@skole.hr>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -78,70 +81,197 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 21/07/2023 22:37, Duje Mihanović wrote:
-> Add dt bindings and documentation for Marvell PXA1908's clock controller
-> blocks.
+> Add DTS for Marvell PXA1908 SoC and Samsung Galaxy Core Prime Value
+> Edition LTE, a smartphone based on said SoC.
 > 
 > Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 > ---
->  .../bindings/clock/marvell,pxa1908.yaml       | 53 +++++++++++++++++++
->  1 file changed, 53 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
+>  arch/arm64/boot/dts/marvell/Makefile          |   1 +
+>  .../pxa1908-samsung-coreprimevelte.dts        | 321 ++++++++++++++++++
+>  arch/arm64/boot/dts/marvell/pxa1908.dtsi      | 298 ++++++++++++++++
+>  3 files changed, 620 insertions(+)
+>  create mode 100644 arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dts
+>  create mode 100644 arch/arm64/boot/dts/marvell/pxa1908.dtsi
 > 
-> diff --git a/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml b/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
+> diff --git a/arch/arm64/boot/dts/marvell/Makefile b/arch/arm64/boot/dts/marvell/Makefile
+> index 79ac09b58a89..0e277a0d368b 100644
+> --- a/arch/arm64/boot/dts/marvell/Makefile
+> +++ b/arch/arm64/boot/dts/marvell/Makefile
+> @@ -27,3 +27,4 @@ dtb-$(CONFIG_ARCH_MVEBU) += cn9132-db-B.dtb
+>  dtb-$(CONFIG_ARCH_MVEBU) += cn9130-crb-A.dtb
+>  dtb-$(CONFIG_ARCH_MVEBU) += cn9130-crb-B.dtb
+>  dtb-$(CONFIG_ARCH_MVEBU) += ac5-98dx35xx-rd.dtb
+> +dtb-$(CONFIG_ARCH_MMP) += pxa1908-samsung-coreprimevelte.dtb
+> diff --git a/arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dts b/arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dts
 > new file mode 100644
-> index 000000000000..3fa6f00a26f7
+> index 000000000000..3e10a77a106e
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
-> @@ -0,0 +1,53 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/clock/marvell,pxa1908.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +++ b/arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dts
+> @@ -0,0 +1,321 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +#include "pxa1908.dtsi"
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/input/linux-event-codes.h>
 > +
-> +title: Marvell PXA1908 Clock Controllers
-> +
-> +maintainers:
-> +  - Duje Mihanović <duje.mihanovic@skole.hr>
-> +
-> +description: |
-> +  The PXA1908 clock subsystem generates and supplies clock to various
-> +  controllers within the PXA1908 SoC. The PXA1908 contains numerous clock
-> +  controller blocks, with the ones currently supported being APBC, APBCP, MPMU
-> +  and APMU roughly corresponding to internal buses.
-> +
-> +  Each clock is assigned an identifier and client nodes use this identifier to
-> +  specify the clock which they consume.
+> +/ {
+> +	pxa,rev-id = <3928 2>;
 
-Drop this sentence, it's obvious.
+Drop. This is not documented.
 
-> +
-> +  All these identifiers could be found in <include/dt-bindings/marvell,pxa1908.h>.
+It does not look like you tested the DTS against bindings. Please run
+`make dtbs_check` (see
+Documentation/devicetree/bindings/writing-schema.rst or
+https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+for instructions).
 
-"Clock identifiers ..."
+
+> +	model = "Samsung Galaxy Core Prime VE LTE";
+> +	compatible = "samsung,coreprimevelte", "marvell,pxa1908";
+
+Missing bindings.
 
 > +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - marvell,pxa1908-apbc
-> +      - marvell,pxa1908-apbcp
-> +      - marvell,pxa1908-mpmu
-> +      - marvell,pxa1908-apmu
-
-Blank line
-
-> +  reg:
-> +    maxItems: 1
-> +    description: |
-> +      Physical address of the clock controller and length of the memory mapped
-> +      region.
-
-Drop description, it is obvious.
-
+> +	/* Bootloader fills this in */
+> +	memory {
+> +		device_type = "memory";
+> +		reg = <0 0 0 0>;
+> +	};
 > +
-> +  '#clock-cells':
-> +    const: 1
+> +	reserved-memory {
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		ranges;
+> +
+> +		framebuffer@17000000 {
+> +			reg = <0 0x17000000 0 0x1800000>;
+> +			no-map;
+> +		};
+> +
+> +		gpu@9000000 {
+> +			reg = <0 0x9000000 0 0x1000000>;
+> +		};
+> +
+> +		/* Communications processor, aka modem */
+> +		cp@3000000 {
+> +			reg = <0 0x3000000 0 0x5000000>;
+> +		};
+> +
+> +		cm3@a000000 {
+> +			reg = <0 0xa000000 0 0x80000>;
+> +		};
+> +
+> +		seclog@8000000 {
+> +			reg = <0 0x8000000 0 0x100000>;
+> +		};
+> +
+> +		ramoops@8100000 {
+> +			compatible = "ramoops";
+> +			reg = <0 0x8100000 0 0x40000>;
+> +			record-size = <0x8000>;
+> +			console-size = <0x20000>;
+> +			max-reason = <5>;
+> +		};
+> +	};
+> +
+> +	fb0: framebuffer@17177000 {
+> +		compatible = "simple-framebuffer";
+> +		reg = <0 0x17177000 0 (480 * 800 * 4)>;
+> +		width = <480>;
+> +		height = <800>;
+> +		stride = <(480 * 4)>;
+> +		format = "a8r8g8b8";
+> +	};
+> +
+> +	muic-i2c {
+> +		compatible = "i2c-gpio";
+> +		sda-gpios = <&gpio 30 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+> +		scl-gpios = <&gpio 29 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+> +		i2c-gpio,delay-us = <3>;
+> +		i2c-gpio,timeout-ms = <100>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&muic_i2c_pins>;
+> +
+> +		muic: extcon@14 {
+> +			compatible = "siliconmitus,sm5504-muic";
+> +			reg = <0x14>;
+> +			interrupt-parent = <&gpio>;
+> +			interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
+> +		};
+> +	};
+> +
+> +	gpio-keys {
+> +		compatible = "gpio-keys";
+> +		pinctrl-names = "default";
+> +		pinctrl-0 = <&gpio_keys_pins>;
+> +		autorepeat;
+> +
+> +		key-home {
+> +			label = "Home";
+> +			linux,code = <KEY_HOME>;
+> +			gpios = <&gpio 50 GPIO_ACTIVE_LOW>;
+> +		};
+> +
+> +		key-volup {
+> +			label = "Volume Up";
+> +			linux,code = <KEY_VOLUMEUP>;
+> +			gpios = <&gpio 16 GPIO_ACTIVE_LOW>;
+> +		};
+> +
+> +		key-voldown {
+> +			label = "Volume Down";
+> +			linux,code = <KEY_VOLUMEDOWN>;
+> +			gpios = <&gpio 17 GPIO_ACTIVE_LOW>;
+> +		};
+> +	};
+> +
+> +	chosen {};
+
+chosen is usually at the top (as alphabetical order suggests)
+
+> +};
+> +
+> +&smmu {
+> +	status = "okay";
+> +};
+> +
+> +&pmx {
+> +	pinctrl-single,gpio-range = <&range 55 55 0>,
+> +				    <&range 110 32 0>,
+> +				    <&range 52 1 0>;
+> +
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&board_pins_1 &board_pins_2 &board_pins_3>;
+> +
+> +	board_pins_1: pinmux_board_1 {
+
+No underscores in node names.
+
+...
+
+> diff --git a/arch/arm64/boot/dts/marvell/pxa1908.dtsi b/arch/arm64/boot/dts/marvell/pxa1908.dtsi
+> new file mode 100644
+> index 000000000000..7131b2070b72
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/marvell/pxa1908.dtsi
+> @@ -0,0 +1,298 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/dts-v1/;
+> +
+> +#include <dt-bindings/interrupt-controller/arm-gic.h>
+> +#include <dt-bindings/clock/marvell,pxa1908.h>
+> +
+> +/ {
+> +	model = "Marvell Armada PXA1908";
+> +	compatible = "marvell,pxa1908";
+
+Undocumented compatible.
+
+Please run scripts/checkpatch.pl and fix reported warnings. Some
+warnings can be ignored, but the code here looks like it needs a fix.
+Feel free to get in touch if the warning is not clear.
+
 
 Best regards,
 Krzysztof
