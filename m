@@ -2,57 +2,30 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6898C00528
-	for <phone-devel@archiver.kernel.org>; Sun, 23 Jul 2023 16:11:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22F32C001B0
+	for <phone-devel@archiver.kernel.org>; Sun, 23 Jul 2023 16:37:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230143AbjGWQL1 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 23 Jul 2023 12:11:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35120 "EHLO
+        id S229503AbjGWQhV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 23 Jul 2023 12:37:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230119AbjGWQLK (ORCPT
+        with ESMTP id S229452AbjGWQhU (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 23 Jul 2023 12:11:10 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA5C119AC;
-        Sun, 23 Jul 2023 09:10:36 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-991ef0b464cso987253566b.0;
-        Sun, 23 Jul 2023 09:10:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690128575; x=1690733375;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kJXUCfPfxMZDrw8reVp/mOwjqAotIrdk28gOPKfujpk=;
-        b=CiD0CijqD2LZn4fISlmA/WzpS0y7CDEsbIh1bTpP/35MGba94PiLhenPUkvaIBCVDu
-         j9Kq7hLo8z36/0ceBT4KyoxzUkbTxjI+9xSkjxFtGXkTo5I545PhwQZW799+xaM4+gt1
-         ph1/P22d4mxXnURSmuQubquB4YLYiWb6cDoPzGhxKKlNEctEZFxtd4j+nrJ1UQm4m7Sc
-         k+N6UoaTyi3bcf5Qezgj9KxbTdhQxxnICjctuFBC8rXiO0VgjSPOs1VFi9gLtR4RsEHw
-         13Rqm6OiG6PGYum+h6hq9HtBqnZsiw5uQh98cZmueJEewiFJrb2PncfgmtUgyQ0tifr/
-         6QRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690128575; x=1690733375;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kJXUCfPfxMZDrw8reVp/mOwjqAotIrdk28gOPKfujpk=;
-        b=TttoT6eQqk4jo3FtLsme9Mco/Spi1DEW8QsoooBzy1kEw1/8qfl50JEYdH2QQa8nAp
-         4elhPOlRwP3O3FJUDZUOvOMh72npTqhAM2M2fFM2o9tn5EgLOMkpHjuxrH54gI5rOGc2
-         Cqwm3Vlpfbk2BpfMhbuq0ciiutByOu6iUH/HvFucts8gZ29UrZxCqvH04tGKEgaYVNaY
-         0gFJtP6MFMwdHiDsR3rAnkN+cr9i74xH/F0FtXuPKM3VPjJj/37KJQ4K/NomsXmuGorJ
-         4g3JgAVmMRrGa7tWChopNG6tT9qtYw8+W/+BbKv7bzMXpmL8GTArIilVgwRaoPkgfO5+
-         v+tA==
-X-Gm-Message-State: ABy/qLb6uVbjmNiGwwqi0ZqtffdjTppOqlYfWBT07eLKjANSzuHTGGkk
-        FfpQ6S7cpVOR5KWxsRLUmiyJhwAm8bg=
-X-Google-Smtp-Source: APBJJlG3ZC0ztrZPhpT4podw6SZVxxGG31tprJEN0TaQkh2VnoG4Ub1tVZe25vh8DB+dkWy4OBcY6w==
-X-Received: by 2002:a17:906:30c5:b0:993:fb68:ed6c with SMTP id b5-20020a17090630c500b00993fb68ed6cmr7568461ejb.15.1690128575066;
-        Sun, 23 Jul 2023 09:09:35 -0700 (PDT)
-Received: from localhost.localdomain (ccx116.neoplus.adsl.tpnet.pl. [83.30.147.116])
-        by smtp.gmail.com with ESMTPSA id u16-20020a170906951000b0099b4d86fbccsm5425039ejx.141.2023.07.23.09.09.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Jul 2023 09:09:34 -0700 (PDT)
-From:   Adam Skladowski <a39.skl@gmail.com>
+        Sun, 23 Jul 2023 12:37:20 -0400
+X-Greylist: delayed 511 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 23 Jul 2023 09:37:19 PDT
+Received: from m-r2.th.seeweb.it (m-r2.th.seeweb.it [IPv6:2001:4b7a:2000:18::171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6658AEA
+        for <phone-devel@vger.kernel.org>; Sun, 23 Jul 2023 09:37:19 -0700 (PDT)
+Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 6B2053EBD9;
+        Sun, 23 Jul 2023 18:28:40 +0200 (CEST)
+Date:   Sun, 23 Jul 2023 18:28:38 +0200
+From:   Marijn Suijten <marijn.suijten@somainline.org>
+To:     Adam Skladowski <a39.skl@gmail.com>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Adam Skladowski <a39.skl@gmail.com>,
         Bjorn Andersson <andersson@kernel.org>,
         Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
@@ -61,47 +34,75 @@ Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        AngeloGioacchino Del Regno <kholk11@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
         linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 7/7] arm64: dts: qcom: msm8976: Fix smsm ipc bit shifts
-Date:   Sun, 23 Jul 2023 18:08:26 +0200
-Message-Id: <20230723160827.22660-8-a39.skl@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230723160827.22660-1-a39.skl@gmail.com>
-References: <20230723160827.22660-1-a39.skl@gmail.com>
+Subject: Re: [PATCH 7/7] arm64: dts: qcom: msm8976: Fix smsm ipc bit shifts
+Message-ID: <x2674ff4qgimlw4swothcvau73oqhphqrap6nmb6atpj2dnhya@ep6co23rj2ez>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>, 
+        Adam Skladowski <a39.skl@gmail.com>, phone-devel@vger.kernel.org, 
+        ~postmarketos/upstreaming@lists.sr.ht, Bjorn Andersson <andersson@kernel.org>, 
+        Andy Gross <agross@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+        Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+        Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+        Conor Dooley <conor+dt@kernel.org>, 
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230723140712.9438-1-a39.skl@gmail.com>
+ <20230723140712.9438-8-a39.skl@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230723140712.9438-8-a39.skl@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Update bits to match downstream irq-bitmask values.
+On 2023-07-23 16:06:54, Adam Skladowski wrote:
+> Update bits to match downstream irq-bitmask values.
+> Fixes: 0484d3ce0902 ("arm64: dts: qcom: Add DTS for MSM8976 and MSM8956 SoCs")
+> 
 
-Fixes: 0484d3ce0902 ("arm64: dts: qcom: Add DTS for MSM8976 and MSM8956 SoCs")
-Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
----
- arch/arm64/boot/dts/qcom/msm8976.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This whitespace should be the other way around.  And Fixes: patches
+should typically be at the beginning of the series to show that they do
+are independent of the rest of the series.
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-index 7385d5edec04..5537ec049451 100644
---- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-@@ -433,9 +433,9 @@ smsm {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 
--		qcom,ipc-1 = <&apcs 8 12>;
-+		qcom,ipc-1 = <&apcs 8 13>;
- 		qcom,ipc-2 = <&apcs 8 9>;
--		qcom,ipc-3 = <&apcs 8 18>;
-+		qcom,ipc-3 = <&apcs 8 19>;
- 
- 		apps_smsm: apps@0 {
- 			reg = <0>;
--- 
-2.25.1
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> ---
+>  arch/arm64/boot/dts/qcom/msm8976.dtsi | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+> index 7385d5edec04..5537ec049451 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
+> @@ -433,9 +433,9 @@ smsm {
+>  		#address-cells = <1>;
+>  		#size-cells = <0>;
+>  
+> -		qcom,ipc-1 = <&apcs 8 12>;
+> +		qcom,ipc-1 = <&apcs 8 13>;
 
+This now overlaps with smp2p-modem which also has 13, but should be 14
+according to my downstream 8956 sources:
+
+    qcom,irq-bitmask = <0x4000>;
+
+>  		qcom,ipc-2 = <&apcs 8 9>;
+> -		qcom,ipc-3 = <&apcs 8 18>;
+> +		qcom,ipc-3 = <&apcs 8 19>;
+
+And for wcnss the smp2p-wcnss node in mainline currently has 17 but that
+mask (0x20000) is used downstream for smd-wcnss; smp2p-wcnss downstream
+has 0x40000 equalling a shift of 18.  Perhaps more apcs ipc references
+need to be fixed before this is complete?
+
+- Marijn
+
+>  
+>  		apps_smsm: apps@0 {
+>  			reg = <0>;
+> -- 
+> 2.41.0
+> 
