@@ -2,139 +2,126 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8ADECC001B0
-	for <phone-devel@archiver.kernel.org>; Mon, 24 Jul 2023 09:05:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E907C41513
+	for <phone-devel@archiver.kernel.org>; Mon, 24 Jul 2023 14:08:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231824AbjGXJFg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 24 Jul 2023 05:05:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58362 "EHLO
+        id S231871AbjGXOI5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 24 Jul 2023 10:08:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229538AbjGXJFf (ORCPT
+        with ESMTP id S231725AbjGXOIt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 24 Jul 2023 05:05:35 -0400
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30D51F9;
-        Mon, 24 Jul 2023 02:05:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690189534; x=1721725534;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=vawks+SEXMGtEO1DjTLzv4gtbu550zJgPIxABvCGJa0=;
-  b=nQ/dTPjJ8dGC9DhbxwwbeveQVq4YP52UfPBd+mjniVd2DO9aPNg5vBCt
-   ic4itVZdvVYfFKihKB49NgVP8KbRKAa2T7PyHQC9Ee1vbQ1VnEBpaDnB9
-   r9TqasUhmeHUjbyngyFLJInSLHvv2XDpCe18f/jo7WsATIqRgYnjRnn7h
-   I61cJP1XLmfFoy7J654JghkfZJMIiAH6boRNqKtgXgULOvdsbVTDqQtew
-   O6yykteRqC1GDEOfDokOcN+y3q3gyvzFQkX0S9ANTlnoxLLMnHH8UBVB7
-   X99pXVJ9kmipSKFs76iSiTn36ljxZUC78iMZuNXU5zJXBV7hs85DuB+yS
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="431184897"
-X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="431184897"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jul 2023 02:05:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10780"; a="839376346"
-X-IronPort-AV: E=Sophos;i="6.01,228,1684825200"; 
-   d="scan'208";a="839376346"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP; 24 Jul 2023 02:05:31 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@intel.com>)
-        id 1qNrVR-005iUH-1g;
-        Mon, 24 Jul 2023 12:05:29 +0300
-Date:   Mon, 24 Jul 2023 12:05:29 +0300
-From:   Andy Shevchenko <andriy.shevchenko@intel.com>
-To:     Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.com
-Subject: Re: [PATCH 04/10] clk: mmp: Add Marvell PXA1908 clock driver
-Message-ID: <ZL4+2bS3cVGq7q/5@smile.fi.intel.com>
-References: <20230721210042.21535-1-duje.mihanovic@skole.hr>
- <20230721210042.21535-5-duje.mihanovic@skole.hr>
+        Mon, 24 Jul 2023 10:08:49 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7737E1716
+        for <phone-devel@vger.kernel.org>; Mon, 24 Jul 2023 07:08:29 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4fb77f21c63so6639499e87.2
+        for <phone-devel@vger.kernel.org>; Mon, 24 Jul 2023 07:08:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690207694; x=1690812494;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3FNW9VRZHhgIzd5ftbN7Gghi1gRBQjf9A2ZRcYqwmWw=;
+        b=wp7b5MeMVKmKocDMY2GV1UwU06P62+OxtE9rEvdebP3m6olboAaxCFT/VYdUIPnkCA
+         Izwq7+Qc5j1AgH+sMk1JUsdeG0aaxmnHxLwdJbIlitL0lohqsQtkJCHA0+vHKJ331OwA
+         ebBHV29050CjjWD3dDtHncDtpLRjjqx/wu1YemN2MQ68/2KZpunj9WIG1FLaZIEVjaRz
+         ZzlzlgQpP0YbHARuwXjdPl9C3CZLOo7Mt8t1HQ4kN8YMauJSrDbtD5Csqu+lTLpslsGm
+         ueec52gbzxhktik5pE/SOpkUYSTrSHKBNMj+KsqqUxtsuPNGtkRi0Nqd+nGKwljf5usM
+         G5gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690207694; x=1690812494;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3FNW9VRZHhgIzd5ftbN7Gghi1gRBQjf9A2ZRcYqwmWw=;
+        b=Y8r+lJS1YZWUmQFkP5sUTMuQ5uHwzcP4KBPRqyXsk0HKSAcnqPmyEx6OL2sPbmeQfG
+         klvcedoG5zEamRG00Vq8B6zkOlCVI1vVLLdQJqruUb0O2wtmr02SIJIHSVPk3WhMPinK
+         RawAc82vmZKykKHPlgvahtzHNj0TO+x+Y1ByUIp8G1fk0x9aA6Lusx2JFsk8iIJ3quZf
+         j3btDvXGn7HTsT2ikNAK1vjBef5o70J01FAYMCHIOHTvP8XJWQx8gm6ofWJuZU6xZ48V
+         VFjoSy5N+20sRvxWbr43ZYuFFfws3ZmcSYQXGlT0RT3qBJpnUihDuDWxbZ6XMuNvpS9t
+         H0ow==
+X-Gm-Message-State: ABy/qLYbyMlCC9FfSyoryxg/v40oFxowKqU06ENikeR4SQtGKKDIDg03
+        gVjG1nlyDLhdLbT+vPbUgZ0KRQ==
+X-Google-Smtp-Source: APBJJlE+NyuVm5cmUEeVFaq4u66Cz/M0UhmRgH9clb5xq02ToKHR+gKXadt4v3ozS0wXqYtBWWiH+A==
+X-Received: by 2002:a05:6512:3e0d:b0:4f8:68a3:38e2 with SMTP id i13-20020a0565123e0d00b004f868a338e2mr6927769lfv.0.1690207694600;
+        Mon, 24 Jul 2023 07:08:14 -0700 (PDT)
+Received: from [192.168.1.101] (abxj221.neoplus.adsl.tpnet.pl. [83.9.3.221])
+        by smtp.gmail.com with ESMTPSA id q11-20020ac25fcb000000b004f85d247069sm2217257lfg.218.2023.07.24.07.08.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jul 2023 07:08:14 -0700 (PDT)
+Message-ID: <72d60064-224e-7d1a-3d8d-3680ce451a8d@linaro.org>
+Date:   Mon, 24 Jul 2023 16:08:12 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230721210042.21535-5-duje.mihanovic@skole.hr>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] clk: qcom: clk-hfpll: Configure l_val in init when
+ required
+Content-Language: en-US
+To:     Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        AngeloGioacchino Del Regno <kholk11@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230723160827.22660-1-a39.skl@gmail.com>
+ <20230723160827.22660-3-a39.skl@gmail.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20230723160827.22660-3-a39.skl@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, Jul 21, 2023 at 10:37:46PM +0200, Duje Mihanović wrote:
-> Add driver for Marvell PXA1908 clock controller blocks. The SoC has
-> numerous clock controller blocks, currently supporting APBC, APBCP, MPMU
-> and APMU.
+On 23.07.2023 18:08, Adam Skladowski wrote:
+> Add support for pre-configuring default frequency multiplier,
+> this appears to be required on some platforms like MSM8976.
+> Without configuring L_VAL device reboots when trying to bring PLL up.
+> 
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-...
-
-> +#include <linux/kernel.h>
-
-Try to avoid using this header without real need.
-You have missing a ton of the header inclusions, btw.
-
-> +#include <linux/of_address.h>
-
-> +#define APBC_INDEX_TO_OFFSET(n)	((n - 1) * 4)
-> +
-> +#define APMU_CLK_GATE_CTRL	0x40
-> +#define MPMU_UART_PLL		0x14
-
-...
-
-> +static struct mmp_param_fixed_rate_clk fixed_rate_clks[] = {
-> +	{PXA1908_CLK_CLK32, "clk32", NULL, 0, 32768},
-> +	{PXA1908_CLK_VCTCXO, "vctcxo", NULL, 0, 26000000},
-
-HZ_PER_MHZ (from units.h) here and elsewhere?
-
-> +	{PXA1908_CLK_PLL1_624, "pll1_624", NULL, 0, 624000000},
-> +	{PXA1908_CLK_PLL1_416, "pll1_416", NULL, 0, 416000000},
-> +	{PXA1908_CLK_PLL1_499, "pll1_499", NULL, 0, 499000000},
-> +	{PXA1908_CLK_PLL1_832, "pll1_832", NULL, 0, 832000000},
-> +	{PXA1908_CLK_PLL1_1248, "pll1_1248", NULL, 0, 1248000000},
-> +};
-
-...
-
-> +static struct mmp_clk_factor_masks uart_factor_masks = {
-> +	.factor = 2,
-
-> +	.num_mask = 0x1fff,
-> +	.den_mask = 0x1fff,
-
-GENMASK() (provided in bits.h).
-
-> +	.num_shift = 16,
-> +	.den_shift = 0,
-> +};
-
-...
-
-> +static struct mmp_clk_factor_tbl uart_factor_tbl[] = {
-> +	{.num = 8125, .den = 1536},	/* 14.745MHz */
-> +};
-
-Can this struct be dropped in favour of struct u32_fract (from math.h)?
-
-...
-
-> +	pxa_unit->apbc_base = of_iomap(np, 0);
-> +	if (!pxa_unit->apbc_base) {
-> +		pr_err("failed to map apbc registers\n");
-
-Haven't noticed if you are using pr_fmt().
-
-> +		kfree(pxa_unit);
-> +		return;
-> +	}
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Konrad
