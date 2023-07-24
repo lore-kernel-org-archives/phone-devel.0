@@ -2,86 +2,103 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD888C001DF
-	for <phone-devel@archiver.kernel.org>; Mon, 24 Jul 2023 14:15:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 47E5FEB64DD
+	for <phone-devel@archiver.kernel.org>; Mon, 24 Jul 2023 20:36:09 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231941AbjGXOPb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 24 Jul 2023 10:15:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43174 "EHLO
+        id S230029AbjGXUgI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 24 Jul 2023 16:36:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231978AbjGXOPV (ORCPT
+        with ESMTP id S229602AbjGXUgH (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 24 Jul 2023 10:15:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05A2B10E2;
-        Mon, 24 Jul 2023 07:14:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B1D4161213;
-        Mon, 24 Jul 2023 14:14:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D08BC433C7;
-        Mon, 24 Jul 2023 14:14:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690208079;
-        bh=LcBzGcu8cVrPU7UOdv69Qy9MBw+HUBFHBZ8ZEqiYA7o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=j3w7M18NfN8wHEy4MvyA5rAIA3HhCkqYs8txQ6Ud3x98Vctx5hZIW6gRHkHrQADAu
-         qj9obGjkxps45h7nKoSwGiIjwTZuNpN0KvNA4lSyimkJOTdgmFNo1+m8Lehjo8koee
-         Ry/H1V8/09khGZp5AXBgOANM6TC0j+YR+FUu2nwIr3zOepU/9k1V6ddfS7ms+boG3J
-         7gbsyTDJoFKKUvGT+LSIztLbl4rVBG5OZM6MYWQA+Yhz2wMviqdlKXzj/qhHX5bU2s
-         oCmqCmIaRp0rBJxadlbbMLFoCM8uGynvx7Z6G0TCd/qFUFaS35rYB9A4cnLF/4HyXK
-         PMG2FcosvcbNQ==
-Received: (nullmailer pid 3401627 invoked by uid 1000);
-        Mon, 24 Jul 2023 14:14:35 -0000
-Date:   Mon, 24 Jul 2023 08:14:35 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Mon, 24 Jul 2023 16:36:07 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 221F210EF
+        for <phone-devel@vger.kernel.org>; Mon, 24 Jul 2023 13:36:06 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-4fb7373dd35so7323175e87.1
+        for <phone-devel@vger.kernel.org>; Mon, 24 Jul 2023 13:36:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690230964; x=1690835764;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mLdFsPRAS8xCwJorGH97RJOgCVh7iDyyrluQEQtwOCQ=;
+        b=Fk1dzY+FjjjXjhSvAzTq8uOpc7/d9zhEn/iO551BOTW8UZ7DlvgjxeCh7oT1mb97zV
+         iRXi0GFupN7gJ5MOC8STPPHwXjtmDUEVhflKuxICKFPaUHHz0n3bEb2AOhSNxP+gvBNp
+         9YH4//F9blipEA/m+kX+f8pZK8saHoEWxYATAGsCD7XIbHcMYOn5vIAU5dXDPpW7Doeh
+         oK6+8xVvV2bM5vaWoaXqZygdIfzOYJoVxG6nyaEonutrzoX/lTRGr4lW4tg4K/cN9B6R
+         xnkfW+FmKBTOKbSPPT6rykCxbAB748baF/O3Bp89oODerJAbf0Q+MvNRsSRbixRSpjlP
+         FEzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690230964; x=1690835764;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mLdFsPRAS8xCwJorGH97RJOgCVh7iDyyrluQEQtwOCQ=;
+        b=eJdsc2gIcoZgLUcNyOwIuMlstqOr0WiIHAvZicKjiu+ss4GpQq5xLCKMw0aqmcVpOW
+         h13pQBiAhzTjLSxG6XZz4DrPd12tkZzbb7I9maIooBs6zxqSZMbpkBafLYf3wLxn/arO
+         HIkUb7BQOZ37xYBJ3c2j9vQ4ihlMJtbCEGc9sBZYkua9oKp8+4WPFEHhJs8sWPKqXCOM
+         yHzwwLQcN7bA0lIQdTlxSNjz40KmmGzmrfH4VAUJRZMSuKLV3Vdk6x3V5neCZo+vhUws
+         2JFqc6TIELcgNUCYA6ryxA1d1q9avtVsf+79SV7AwnsLfBFQTGalB6EgSbryw2nCH07E
+         DAeg==
+X-Gm-Message-State: ABy/qLaOZcWLqlztEXLZgDA/m3fzJAQn5cYP7cHw4Dcfju3rAIiTWayc
+        0GfwY30BOCyB/HgKuomXOQN+Nw==
+X-Google-Smtp-Source: APBJJlGAyvOSXg9MYrlihpCf1WwARrBoed9/YAGHC1BuEiH2ayUiymDgCEUM4mEOC+/YhSVqhqrW6Q==
+X-Received: by 2002:a05:6512:ac5:b0:4f8:4b19:9533 with SMTP id n5-20020a0565120ac500b004f84b199533mr106930lfu.19.1690230963879;
+        Mon, 24 Jul 2023 13:36:03 -0700 (PDT)
+Received: from ?IPV6:2001:14ba:a0db:1f00::8a5? (dzdqv0yyyyyyyyyyybcwt-3.rev.dnainternet.fi. [2001:14ba:a0db:1f00::8a5])
+        by smtp.gmail.com with ESMTPSA id j14-20020ac253ae000000b004fb757bd429sm2414910lfh.96.2023.07.24.13.36.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jul 2023 13:36:03 -0700 (PDT)
+Message-ID: <d1951f5d-d3d9-f04d-7b76-38d8a0e27c56@linaro.org>
+Date:   Mon, 24 Jul 2023 23:36:02 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 1/7] drivers: soc: qcom: rpmpd: Fix MSM8976 power
+ domains setup
+Content-Language: en-GB
+To:     Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.com
-Subject: Re: [PATCH 09/10] dt-bindings: marvell: Document PXA1908 SoC
-Message-ID: <20230724141435.GA3378340-robh@kernel.org>
-References: <20230721210042.21535-1-duje.mihanovic@skole.hr>
- <20230721210042.21535-10-duje.mihanovic@skole.hr>
- <5266764a-4551-4117-8aa4-bd435f63f450@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5266764a-4551-4117-8aa4-bd435f63f450@linaro.org>
+        AngeloGioacchino Del Regno <kholk11@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230723160827.22660-1-a39.skl@gmail.com>
+ <20230723160827.22660-2-a39.skl@gmail.com>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+In-Reply-To: <20230723160827.22660-2-a39.skl@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Jul 22, 2023 at 11:27:21AM +0200, Krzysztof Kozlowski wrote:
-> On 21/07/2023 22:37, Duje Mihanović wrote:
-> > Add dt bindings and documentation for Marvell PXA1908 SoC.
-> > 
-> > Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
-> > ---
-> >  .../bindings/arm/marvell/marvell,pxa1908.yaml | 33 +++++++++++++++++++
-> >  1 file changed, 33 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml b/Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml
-> > new file mode 100644
-> > index 000000000000..085d238129ad
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/arm/marvell/marvell,pxa1908.yaml
+On 23/07/2023 19:08, Adam Skladowski wrote:
+> Downstream kernel parses resource names based on pm8950-rpm-regulator.dtsi
+> in such file qcom,resource-name takes three values: smpa,ldoa and clk0.
+> First appearance of RWSC/RWSM point to msm-4.4 kernel
+> which is way newer than what this platform was shipped with (msm-3.10).
+> For the max_state downstream code limit value to TURBO inside dts
+> with only one turbo_high being placed in msm-thermal bindings.
+> One of effects of requesting TURBO_HIGH vote is rebooting of device
+> which happens during voting inside WCNSS/IRIS,
+> this behavior was observed on LeEco S2 smartphone.
+> Fix regulator setup and drop unused resources.
 > 
-> I suggest having one bindings file for all pxa platforms, not per one SoC.
+> Fixes: b1d522443b4b ("soc: qcom: rpmpd: Add rpm power domains for msm8976")
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 
-Or perhaps mirroring the new dts directory structure. PXA is really 
-multiple families. This one is more aligned with MMP than the 
-PXA2xx/3xx.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+-- 
+With best wishes
+Dmitry
 
-Rob
