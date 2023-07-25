@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12AF9C0015E
-	for <phone-devel@archiver.kernel.org>; Tue, 25 Jul 2023 08:46:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BB786C001DF
+	for <phone-devel@archiver.kernel.org>; Tue, 25 Jul 2023 09:46:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231273AbjGYIqa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 25 Jul 2023 04:46:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32984 "EHLO
+        id S232152AbjGYJqf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 25 Jul 2023 05:46:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231809AbjGYIqB (ORCPT
+        with ESMTP id S232128AbjGYJqe (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 25 Jul 2023 04:46:01 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 819EF3AA6
-        for <phone-devel@vger.kernel.org>; Tue, 25 Jul 2023 01:44:43 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3fbc59de009so42814985e9.3
-        for <phone-devel@vger.kernel.org>; Tue, 25 Jul 2023 01:44:43 -0700 (PDT)
+        Tue, 25 Jul 2023 05:46:34 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 724A711B;
+        Tue, 25 Jul 2023 02:46:30 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-313e742a787so3393289f8f.1;
+        Tue, 25 Jul 2023 02:46:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690274677; x=1690879477;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20221208; t=1690278389; x=1690883189;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=lvR6rub+9duf7nx9W/8a24Rc1YmvAVHDfFG2zjK3XY0=;
-        b=NOysYy1wO/LZrUx0c4Xsn14mxW1p458xRIILlfmpfqmLJA98us6St9qYLuLGMs83ou
-         J0rRRwwb9DTnknXVlzrR/MXRJaFn3CFwJZi9ywlEDUAdYVadyF3OSdNHd+L/mV68a7IG
-         9mv0g62qydKd6nZ00Mng35Uk7IfG5uHhDsIg3P01dcTIIVCJ5hHwrq5d93pEpZhAFW5/
-         mS86OTF5g6vgFdEePwHXiGcLNnE7Kn+YfrGQBw7ECdS5S1vLV+0CqHQ5gvP0boNoc8p5
-         enhb0NaBcGksFZQhtXQgO56YqkZCbTYYeg4SzhP6nu6Fq2BT5hSWEW6f6bhh2nTr701B
-         e+Cw==
+        bh=x1dn5lNZqmwY15rBpdBpJTcWOK1VivmrD2jmZ3IZxi4=;
+        b=Z51pyJ5/nycopIH5zIHEHDVQYAq2V7diulALk4BHl55COuR7x6J3JGUbbWKheci3xm
+         r/E9pwlUU3X/vKswxR1612lmt3jgGeAkK5G3sswsGwgGUMJoExBpw1iiunb4qPGV4vWn
+         L8RnuaU143TlsB1OPR9NN5V9HtbJxVHwiKOWB5i44PKcRKpD6v1PC6diyvYqiL7ca+TR
+         Zpr0I0PtBzXF/d2NnxjUBkIk1/0PFNiGZjKufaiWoBca0thMIkaE4qZyYY2/m1WD7pL/
+         lXdLZAjx6nf4QnTgNRz0gfeHhbMp/JaSAjCzIvQ46qXSJalSw54O7cCoKzTlinyTMB1Z
+         9RGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690274677; x=1690879477;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1690278389; x=1690883189;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lvR6rub+9duf7nx9W/8a24Rc1YmvAVHDfFG2zjK3XY0=;
-        b=eU/EbHeTBhcyyl4Ji2jvF1FvM1WsZ3KI5sA6wBHuTTBNCXlN54k3oh6/OBey5alN/s
-         henpRRVmMP/ZFdozaQIJZf/OfQldcn55uKYed4hrjwiqpVxAiJlAalBivZc30M3Ttkse
-         Z5+adk7BsQQRJXwWSeUmv2BLioe0o/WmaYenSdSPcdKI5hAQKULMEA3s+xJAn8+xEyIG
-         6hNu+ujOMw42m1yScCtB3gYGGIr7KGcL5sCnUBpna+BX8MoUC4TmHnunxokH+uO1gaNJ
-         FEu4dS27Hj2tzGoMf1+cV3ug4xftBRqngBY8Bssw/kTWKXk6Gk4/R/B9TxYwKkBFi36H
-         9Y4Q==
-X-Gm-Message-State: ABy/qLY9q3d3yQcJpN6MUQK4FbIc0UK4QXNz43pW2+6BAIfO0XzC4FOu
-        zb4AnAh+ckQrxzsGW0W6QzxHgA==
-X-Google-Smtp-Source: APBJJlEAskAc1V3TVk77zXM/5qcda9+gxdB2bskSYs/Vo2nBJ+b++XWTh6JXNuwv0wXDXA4O2ZfNig==
-X-Received: by 2002:a05:600c:ac8:b0:3fb:9ef2:157 with SMTP id c8-20020a05600c0ac800b003fb9ef20157mr8136776wmr.28.1690274677481;
-        Tue, 25 Jul 2023 01:44:37 -0700 (PDT)
-Received: from [192.168.1.101] (abxj221.neoplus.adsl.tpnet.pl. [83.9.3.221])
-        by smtp.gmail.com with ESMTPSA id y15-20020a7bcd8f000000b003fbdd5d0758sm12370627wmj.22.2023.07.25.01.44.35
+        bh=x1dn5lNZqmwY15rBpdBpJTcWOK1VivmrD2jmZ3IZxi4=;
+        b=NW3n+SIdNP9xThCogwNDqBcy9AeTZr5+n95xDntktA0aqbxePNwqyFf0+gmQC1Mr7u
+         zFSkEpllE8q9ATGha5wgoW08e8j+CC19thMmXzDXjq6zVCK2ZPJvCYfVoq7VdIl3C9jv
+         hSWzKgcU7A9VTjfelsVxwejc14jfBzAWEsVhECqfXBZ3iJgjLasHM+31OKYJqc1Dvjdf
+         yayK9uxX3GkKVwXJxQhscGFGJm6l13VcEfB0tSH/wbZ3Wtvl1vN1st+PC2Nk+VACuxHu
+         //LSfDx0Gn60cPxoDcnuZw5TNZOY0FFpMLdOEaooUuwy6jWpsWvMOTfy8lozq4siTrrw
+         TYRw==
+X-Gm-Message-State: ABy/qLaguNYFuCjDKGd4WhS8xe8GFYKwO/VB/WQApipeTvmm9FKG4IIx
+        3M0+srKdRQzOlvPntBudjF8TGnxCkpTAqw==
+X-Google-Smtp-Source: APBJJlEssHXAU9u+CHEEFVKJsaYPTIj+RSJJ0AdcGXaasOWgN4UXMrXvvemxECzYlMn5VGYiBrXiIQ==
+X-Received: by 2002:adf:f8c7:0:b0:311:360e:ea3a with SMTP id f7-20020adff8c7000000b00311360eea3amr1706865wrq.34.1690278388631;
+        Tue, 25 Jul 2023 02:46:28 -0700 (PDT)
+Received: from [192.168.1.107] (ccx116.neoplus.adsl.tpnet.pl. [83.30.147.116])
+        by smtp.gmail.com with ESMTPSA id q17-20020adff511000000b0031272fced4dsm15728148wro.52.2023.07.25.02.46.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jul 2023 01:44:37 -0700 (PDT)
-Message-ID: <fda13f70-1062-c3dc-b3ed-c7f1ad9a07db@linaro.org>
-Date:   Tue, 25 Jul 2023 10:44:35 +0200
+        Tue, 25 Jul 2023 02:46:28 -0700 (PDT)
+Message-ID: <6008bc09-7746-546f-2c00-9b9812854ff7@gmail.com>
+Date:   Tue, 25 Jul 2023 11:46:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 6/7] arm64: dts: qcom: msm8976: Split lpass region
 Content-Language: en-US
-To:     Adam Skladowski <a39.skl@gmail.com>
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Bjorn Andersson <andersson@kernel.org>,
         Andy Gross <agross@kernel.org>,
@@ -71,57 +71,45 @@ Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20230723160827.22660-1-a39.skl@gmail.com>
  <20230723160827.22660-7-a39.skl@gmail.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
- BB/OmIWU6X+LZW6P88ZmHe+KeyABLMP5s1tJNK1j4ntT7mECcWZDzafPWF4F6m4WJOG27kTJ
- HGWdmtO+RvadOVi6CoUDqALsmfS3MUG5Pj2Ne9+0jRg4hEnB92AyF9rW2G3qisFcwPgvatt7
- TXD5E38mLyOPOUyXNj9XpDbt1hNwKQfiidmPh5e7VNAWRnW1iCMMoKqzM1Anzq7e5Afyeifz
- zRcQPLaqrPjnKqZGL2BKQSZDh6NkI5ZLRhhHQf61fkWcUpTp1oDC6jWVfT7hwRVIQLrrNj9G
- MpPzrlN4YuAqKeIer1FMt8cq64ifgTzxHzXsMcUdclzq2LTk2RXaPl6Jg/IXWqUClJHbamSk
- t1bfif3SnmhA6TiNvEpDKPiT3IDs42THU6ygslrBxyROQPWLI9IL1y8S6RtEh8H+NZQWZNzm
- UQ3imZirlPjxZtvz1BtnnBWS06e7x/UEAguj7VHCuymVgpl2Za17d1jj81YN5Rp5L9GXxkV1
- aUEwONM3eCI3qcYm5JNc5X+JthZOWsbIPSC1Rhxz3JmWIwP1udr5E3oNRe9u2LIEq+wH/toH
- kpPDhTeMkvt4KfE5m5ercid9+ZXAqoaYLUL4HCEw+HW0DXcKDwARAQABzShLb25yYWQgRHli
- Y2lvIDxrb25yYWQuZHliY2lvQGxpbmFyby5vcmc+wsGOBBMBCAA4FiEEU24if9oCL2zdAAQV
- R4cBcg5dfFgFAmQ5bqwCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQR4cBcg5dfFjO
- BQ//YQV6fkbqQCceYebGg6TiisWCy8LG77zV7DB0VMIWJv7Km7Sz0QQrHQVzhEr3trNenZrf
- yy+o2tQOF2biICzbLM8oyQPY8B///KJTWI2khoB8IJSJq3kNG68NjPg2vkP6CMltC/X3ohAo
- xL2UgwN5vj74QnlNneOjc0vGbtA7zURNhTz5P/YuTudCqcAbxJkbqZM4WymjQhe0XgwHLkiH
- 5LHSZ31MRKp/+4Kqs4DTXMctc7vFhtUdmatAExDKw8oEz5NbskKbW+qHjW1XUcUIrxRr667V
- GWH6MkVceT9ZBrtLoSzMLYaQXvi3sSAup0qiJiBYszc/VOu3RbIpNLRcXN3KYuxdQAptacTE
- mA+5+4Y4DfC3rUSun+hWLDeac9z9jjHm5rE998OqZnOU9aztbd6zQG5VL6EKgsVXAZD4D3RP
- x1NaAjdA3MD06eyvbOWiA5NSzIcC8UIQvgx09xm7dThCuQYJR4Yxjd+9JPJHI6apzNZpDGvQ
- BBZzvwxV6L1CojUEpnilmMG1ZOTstktWpNzw3G2Gis0XihDUef0MWVsQYJAl0wfiv/0By+XK
- mm2zRR+l/dnzxnlbgJ5pO0imC2w0TVxLkAp0eo0LHw619finad2u6UPQAkZ4oj++iIGrJkt5
- Lkn2XgB+IW8ESflz6nDY3b5KQRF8Z6XLP0+IEdLOOARkOW7yEgorBgEEAZdVAQUBAQdAwmUx
- xrbSCx2ksDxz7rFFGX1KmTkdRtcgC6F3NfuNYkYDAQgHwsF2BBgBCAAgFiEEU24if9oCL2zd
- AAQVR4cBcg5dfFgFAmQ5bvICGwwACgkQR4cBcg5dfFju1Q//Xta1ShwL0MLSC1KL1lXGXeRM
- 8arzfyiB5wJ9tb9U/nZvhhdfilEDLe0jKJY0RJErbdRHsalwQCrtq/1ewQpMpsRxXzAjgfRN
- jc4tgxRWmI+aVTzSRpywNahzZBT695hMz81cVZJoZzaV0KaMTlSnBkrviPz1nIGHYCHJxF9r
- cIu0GSIyUjZ/7xslxdvjpLth16H27JCWDzDqIQMtg61063gNyEyWgt1qRSaK14JIH/DoYRfn
- jfFQSC8bffFjat7BQGFz4ZpRavkMUFuDirn5Tf28oc5ebe2cIHp4/kajTx/7JOxWZ80U70mA
- cBgEeYSrYYnX+UJsSxpzLc/0sT1eRJDEhI4XIQM4ClIzpsCIN5HnVF76UQXh3a9zpwh3dk8i
- bhN/URmCOTH+LHNJYN/MxY8wuukq877DWB7k86pBs5IDLAXmW8v3gIDWyIcgYqb2v8QO2Mqx
- YMqL7UZxVLul4/JbllsQB8F/fNI8AfttmAQL9cwo6C8yDTXKdho920W4WUR9k8NT/OBqWSyk
- bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
- nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
- izWDgYvmBE8=
-In-Reply-To: <20230723160827.22660-7-a39.skl@gmail.com>
+ <fda13f70-1062-c3dc-b3ed-c7f1ad9a07db@linaro.org>
+From:   Adam Skladowski <a39.skl@gmail.com>
+In-Reply-To: <fda13f70-1062-c3dc-b3ed-c7f1ad9a07db@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 23.07.2023 18:08, Adam Skladowski wrote:
-> Some devices like Sony Loire uses Broadcom module over sdc3 however others
-> utilize qcom WCNSS, split shared region based on downstream pil-tz loader.
-> 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-> ---
-Looks like 0x1800000 is the generic configuration:
 
-https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.3.7.c26-05300-8976.0/arch/arm/boot/dts/qcom/msm8976.dtsi#L93-98
+On 25.07.2023 10:44, Konrad Dybcio wrote:
+> On 23.07.2023 18:08, Adam Skladowski wrote:
+>> Some devices like Sony Loire uses Broadcom module over sdc3 however others
+>> utilize qcom WCNSS, split shared region based on downstream pil-tz loader.
+>>
+>> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+>> ---
+> Looks like 0x1800000 is the generic configuration:
+>
+> https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.3.7.c26-05300-8976.0/arch/arm/boot/dts/qcom/msm8976.dtsi#L93-98
+>
+> Konrad
 
-Konrad
+Yes, indeed however as you probably noticed this region isn't called lpass rather reloc.
+
+Downstream sometimes tends to define pools of memory where loader will do its own job.
+
+If you read later wcnss/lpass both point to same shared memory which im not sure without reworks will work with mainline.
+
+On top it's not really that it will even hurt Loire at the end, if you browse around internet you can easily find gists
+from Pavel which have logs of pil-tz loading of lpass:
+
+https://gist.github.com/bartcubbins/c2ff215f39fe2b3ed5d3f8444bcec83b#file-gistfile1-txt-L1289
+
+As you can see even on loire where region is bigger it only loads first 0x1000000.
+Do we really need to complicate things just for everyone else for sake of not ending with one platform having to adjust
+or even not(it probably wouldn't even make a difference for loader as it will fit anyway)
+
+On the ending note i apologize if this msg gets broken formatting first time using thunderbird
+and after redesign im unable to find most options mentioned in guide.
+.
+
