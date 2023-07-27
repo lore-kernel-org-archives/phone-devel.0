@@ -2,67 +2,81 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B5F97C001E0
-	for <phone-devel@archiver.kernel.org>; Thu, 27 Jul 2023 16:42:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78371C001DC
+	for <phone-devel@archiver.kernel.org>; Thu, 27 Jul 2023 16:43:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232003AbjG0QmE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 27 Jul 2023 12:42:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53018 "EHLO
+        id S229966AbjG0Qnb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 27 Jul 2023 12:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229895AbjG0Qlx (ORCPT
+        with ESMTP id S229526AbjG0Qna (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 27 Jul 2023 12:41:53 -0400
-Received: from mgamail.intel.com (unknown [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A09AE3A85;
-        Thu, 27 Jul 2023 09:41:45 -0700 (PDT)
-X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="365828585"
+        Thu, 27 Jul 2023 12:43:30 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE6BF1BF2;
+        Thu, 27 Jul 2023 09:43:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1690476210; x=1722012210;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=1CLEKciZ7vMQwlx5CCt/8Pv6yTX7KNyg6xp32XDo6iM=;
+  b=ATUGjFxcMen1KlNtdZ3vBxwV8Rwud7+eGTEjOI314zXwFDY9FG1PAetu
+   n117ehh+cy3lubkW4DYiouRDz7J2PQwpRntUKoyBv9y1nyQbNcUAdVGPk
+   LAYpnGrBSQ11bI93ygKJY1xq0at1IGX2HJSCml0Om3X9CL4o4eHB52Ulr
+   gAdT8/NQaedeX6zMcCJZK6+xSs0kwkXVRkYWerRlCzLfQt0nMS64xiJjz
+   md2LdDECJvp1hDiGO0h41Ng+uJJhzObF1AWAd125s+gIsLKz50OdSfqOg
+   xRg4/qkqi1Qnt+CgGKoq17MrhKxjbMs7NWc7LmB9/8fcAfpsxdoS7x5ZK
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="367244204"
 X-IronPort-AV: E=Sophos;i="6.01,235,1684825200"; 
-   d="scan'208";a="365828585"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2023 09:41:00 -0700
+   d="scan'208";a="367244204"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2023 09:42:42 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="727083881"
+X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="704252007"
 X-IronPort-AV: E=Sophos;i="6.01,235,1684825200"; 
-   d="scan'208";a="727083881"
+   d="scan'208";a="704252007"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP; 27 Jul 2023 09:40:26 -0700
+  by orsmga006.jf.intel.com with ESMTP; 27 Jul 2023 09:42:39 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andy@kernel.org>)
-        id 1qP42K-00CQVZ-2F;
-        Thu, 27 Jul 2023 19:40:24 +0300
-Date:   Thu, 27 Jul 2023 19:40:24 +0300
-From:   Andy Shevchenko <andy@kernel.org>
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1qP44T-00CV3h-1v;
+        Thu, 27 Jul 2023 19:42:37 +0300
+Date:   Thu, 27 Jul 2023 19:42:37 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc:     Robert Jarzmik <robert.jarzmik@free.fr>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+Cc:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         afaerber@suse.com
-Subject: Re: [PATCH v2 2/9] gpio: pxa: use dynamic allocation of base
-Message-ID: <ZMKd+CoWu7QjOxHo@smile.fi.intel.com>
+Subject: Re: [PATCH v2 3/9] clk: mmp: Switch to use struct u32_fract instead
+ of custom one
+Message-ID: <ZMKefY+LMqahz/bO@smile.fi.intel.com>
 References: <20230727162909.6031-1-duje.mihanovic@skole.hr>
- <20230727162909.6031-3-duje.mihanovic@skole.hr>
+ <20230727162909.6031-4-duje.mihanovic@skole.hr>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230727162909.6031-3-duje.mihanovic@skole.hr>
+In-Reply-To: <20230727162909.6031-4-duje.mihanovic@skole.hr>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jul 27, 2023 at 06:29:00PM +0200, Duje Mihanović wrote:
-> Fixes the warning in dmesg that static allocation of the base is
-> deprecated.
+On Thu, Jul 27, 2023 at 06:29:01PM +0200, Duje Mihanović wrote:
+> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> The struct mmp_clk_factor_tbl repeats the generic struct u32_fract.
+> Kill the custom one and use the generic one instead.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Right.
+I believe you missed your own Tested-by here.
 
-> This will break some older PXA boards (such as Spitz) as they still
-> seem to rely on fixed GPIO numbers with gpio_request and such.
-
-So...? Why do you think this patch can be accepted?
+> Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 
 -- 
 With Best Regards,
