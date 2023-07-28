@@ -2,84 +2,127 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78371C001DC
-	for <phone-devel@archiver.kernel.org>; Thu, 27 Jul 2023 16:43:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EBF5C00528
+	for <phone-devel@archiver.kernel.org>; Fri, 28 Jul 2023 07:19:04 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229966AbjG0Qnb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 27 Jul 2023 12:43:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54734 "EHLO
+        id S234094AbjG1HTD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 28 Jul 2023 03:19:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229526AbjG0Qna (ORCPT
+        with ESMTP id S234031AbjG1HSu (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 27 Jul 2023 12:43:30 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE6BF1BF2;
-        Thu, 27 Jul 2023 09:43:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1690476210; x=1722012210;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=1CLEKciZ7vMQwlx5CCt/8Pv6yTX7KNyg6xp32XDo6iM=;
-  b=ATUGjFxcMen1KlNtdZ3vBxwV8Rwud7+eGTEjOI314zXwFDY9FG1PAetu
-   n117ehh+cy3lubkW4DYiouRDz7J2PQwpRntUKoyBv9y1nyQbNcUAdVGPk
-   LAYpnGrBSQ11bI93ygKJY1xq0at1IGX2HJSCml0Om3X9CL4o4eHB52Ulr
-   gAdT8/NQaedeX6zMcCJZK6+xSs0kwkXVRkYWerRlCzLfQt0nMS64xiJjz
-   md2LdDECJvp1hDiGO0h41Ng+uJJhzObF1AWAd125s+gIsLKz50OdSfqOg
-   xRg4/qkqi1Qnt+CgGKoq17MrhKxjbMs7NWc7LmB9/8fcAfpsxdoS7x5ZK
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="367244204"
-X-IronPort-AV: E=Sophos;i="6.01,235,1684825200"; 
-   d="scan'208";a="367244204"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2023 09:42:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10784"; a="704252007"
-X-IronPort-AV: E=Sophos;i="6.01,235,1684825200"; 
-   d="scan'208";a="704252007"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP; 27 Jul 2023 09:42:39 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1qP44T-00CV3h-1v;
-        Thu, 27 Jul 2023 19:42:37 +0300
-Date:   Thu, 27 Jul 2023 19:42:37 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.com
-Subject: Re: [PATCH v2 3/9] clk: mmp: Switch to use struct u32_fract instead
- of custom one
-Message-ID: <ZMKefY+LMqahz/bO@smile.fi.intel.com>
-References: <20230727162909.6031-1-duje.mihanovic@skole.hr>
- <20230727162909.6031-4-duje.mihanovic@skole.hr>
+        Fri, 28 Jul 2023 03:18:50 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14A432129
+        for <phone-devel@vger.kernel.org>; Fri, 28 Jul 2023 00:18:49 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-522462d8416so2289590a12.1
+        for <phone-devel@vger.kernel.org>; Fri, 28 Jul 2023 00:18:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1690528727; x=1691133527;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZFRs+1l4ttYgce/W/Q/lR0//anrGUYTWZshXgYuQpfM=;
+        b=X+8YpOCRlNu+CrYzZ9s51R51phORgLLkvU1YXhrdW4w3DQXRasewx+yxyK/GVhvqv0
+         m6wo2m08SQArbieyg2c9eHYamZfJHMvQ9UMYU4EX7bqS7UsOWwi2wSpsgeopvZLgt1RD
+         w2LMTxdQQrn6oenHpc2ZPpAlYtMuDy+TsEYOIo8gyykcJqYmkCtkC05G3M+MZvhuZeZn
+         MwraUPRQUDxjDLIyH0g2yPlWHU/fQLHCbpDH4pLVw+2Iwm+HolXeILpXhjvWOcXJPBnE
+         ZdtTKK9oXIu1mRsBQDqmTgeylHBOBDnikFUMkUw2GqVA3KYLHHoLXnJ7hsaTn2NAuudZ
+         xyvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690528727; x=1691133527;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZFRs+1l4ttYgce/W/Q/lR0//anrGUYTWZshXgYuQpfM=;
+        b=R0r9DBSX0MB9x5RhK7fdI8vTKnsENC3+4Wkx4JKiiuzV3zXwz32giDgwhfjGgb3GEf
+         CYBPuZpisLP/SWgFuMZcaK9ciRlZRFtnW3N4zXoxLLfIdOwJ8/uSJZ/+z7LUBwyhzmzt
+         V1kyvs5wZ5Rs3Y4y8FVx856GYPP5SNrkeVMzpxm2qBG/UU/iyYtanRmrx9NEz0EMsqEB
+         e8B3E/CIQW5/fUbgtewHWCYnX1V2zN6jTk8IT9zp28f8UUnvAZw5TbtLxAYlOb/bwZvq
+         SF3JeQk+YfG5O/6opjlTS80iKXT6wvIkQWUn6x6ysowKm8xvl6JI9cQdIhgobIz0McAZ
+         1Pgw==
+X-Gm-Message-State: ABy/qLbN2zW8+rR6tb7ggphN2wD18AvDKyA4M3iSmNe9MMKjXyXUZOs4
+        +zph+V4LGfVpJqjZGJQ1w9BGz3o9dCDMHGjZRMFb3Q==
+X-Google-Smtp-Source: APBJJlHB7YcDxfEFdwmeU91iDamcQPeuv4jgYP8CBYnnw95qVTyfL/9+3ouqOSWZtgQ1H53Yh82/3w==
+X-Received: by 2002:aa7:df89:0:b0:522:3aae:c69b with SMTP id b9-20020aa7df89000000b005223aaec69bmr918747edy.20.1690528727494;
+        Fri, 28 Jul 2023 00:18:47 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.104])
+        by smtp.gmail.com with ESMTPSA id e8-20020a056402148800b0052227c4384esm1467532edv.34.2023.07.28.00.18.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 28 Jul 2023 00:18:46 -0700 (PDT)
+Message-ID: <fe60d09a-aa79-f3b9-cf9d-e8ae8ff58d09@linaro.org>
+Date:   Fri, 28 Jul 2023 09:18:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 4/9] dt-bindings: clock: Add Marvell PXA1908 clock
+ bindings
+Content-Language: en-US
+To:     =?UTF-8?Q?Duje_Mihanovi=c4=87?= <duje.mihanovic@skole.hr>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afaerber@suse.com
+References: <20230727162909.6031-1-duje.mihanovic@skole.hr>
+ <20230727162909.6031-5-duje.mihanovic@skole.hr>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230727162909.6031-5-duje.mihanovic@skole.hr>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230727162909.6031-4-duje.mihanovic@skole.hr>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jul 27, 2023 at 06:29:01PM +0200, Duje Mihanović wrote:
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+On 27/07/2023 18:29, Duje Mihanović wrote:
+> Add dt bindings and documentation for the Marvell PXA1908 clock
+> controller.
 > 
-> The struct mmp_clk_factor_tbl repeats the generic struct u32_fract.
-> Kill the custom one and use the generic one instead.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-I believe you missed your own Tested-by here.
-
 > Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+> ---
 
--- 
-With Best Regards,
-Andy Shevchenko
+...
 
+> +/* apb (apbc) peripherals */
+> +#define PXA1908_CLK_UART0		1
+> +#define PXA1908_CLK_UART1		2
+> +#define PXA1908_CLK_GPIO		3
+> +#define PXA1908_CLK_PWM0		4
+> +#define PXA1908_CLK_PWM1		5
+> +#define PXA1908_CLK_PWM2		6
+> +#define PXA1908_CLK_PWM3		7
+> +#define PXA1908_CLK_SSP0		8
+> +#define PXA1908_CLK_SSP1		9
+> +#define PXA1908_CLK_IPC_RST		10
+> +#define PXA1908_CLK_RTC			11
+> +#define PXA1908_CLK_TWSI0		12
+> +#define PXA1908_CLK_KPC			13
+> +#define PXA1908_CLK_SWJTAG		17
+> +#define PXA1908_CLK_SSP2		20
+> +#define PXA1908_CLK_TWSI1		25
+> +#define PXA1908_CLK_THERMAL		28
+> +#define PXA1908_CLK_TWSI3		29
+> +#define PXA1908_APBC_NR_CLKS		48
+> +
+> +/* apb (apbcp) peripherals */
+> +#define PXA1908_CLK_UART2		7
+> +#define PXA1908_CLK_TWSI2		10
+> +#define PXA1908_CLK_AICER		14
+> +#define PXA1908_APBCP_NR_CLKS		14
+> +
+> +/* axi (apmu) peripherals */
+> +#define PXA1908_CLK_CCIC1		9
+> +#define PXA1908_CLK_ISP			14
+
+Why do you have gaps between IDs? The clock IDs are supposed to be
+continuous, otherwise it is not an ID.
+
+> +#define PXA1908_CLK_GATE_CTRL		16
+
+Best regards,
+Krzysztof
 
