@@ -2,93 +2,78 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D9844C001E0
-	for <phone-devel@archiver.kernel.org>; Fri, 28 Jul 2023 07:20:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C709EB64DD
+	for <phone-devel@archiver.kernel.org>; Sun, 30 Jul 2023 05:58:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233271AbjG1HUA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 28 Jul 2023 03:20:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51146 "EHLO
+        id S229613AbjG3F6f (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 30 Jul 2023 01:58:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233880AbjG1HT7 (ORCPT
+        with ESMTP id S229379AbjG3F6e (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 28 Jul 2023 03:19:59 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A67C19AF
-        for <phone-devel@vger.kernel.org>; Fri, 28 Jul 2023 00:19:57 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-5223fbd54c6so2393243a12.3
-        for <phone-devel@vger.kernel.org>; Fri, 28 Jul 2023 00:19:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1690528795; x=1691133595;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JqRRiR8VkpaMhtKpEftGhV4PfsIPNNbg3qA5sIbC3z4=;
-        b=IY9iYBKD2r3GQqscCvdEYLaXqRI0XD4+ok1V6PND5stEUuPFmBObfrUxEW8hfQyb3A
-         dSW8NDfLWBItgytjLGYvgKHPWDK+wBJ83c8T/Q+nPHoSVveT1SoOoQht2DjTkZ8l9dmQ
-         tMxfLFcpZwggR2fU5L78Ayr6ICUnN0CRXEeM7SNyIPaZLVjtTDuMKHbveUdKZ7n+zxgx
-         6Hcw4angUbRvkeDns2puJqfHfrUieeT9SPKYWJmbWhXBYBk5/yXS0ExKE7rzn51OJ5Dp
-         vx+5Ywve8c6al47PyjRFrK02UkY4IESOFhCkWQ7U+GTtsAlH781+IGzoj6b8Q7fOn4tU
-         83uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690528795; x=1691133595;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JqRRiR8VkpaMhtKpEftGhV4PfsIPNNbg3qA5sIbC3z4=;
-        b=amtBS0mu8BCLK+8vjejsiQ9pVhXuYer50THvxUXan2dAehHfg9dHKBDwlWpRzKvXhs
-         ZyppYYR92NX194OaEchIInS7ueHFrvUzcUSxaM6OkgFkyyRTOduzoFp3mRRlSYc1grJc
-         D6KNCJ52o7D+7941bTLhK5ObMTUk2V2IYCFj1pvQcmuZEwkEjY8mvjagVYLRBuDwl9FI
-         lTgpJwP7ouZlZBev/LqNVk+l0rRO7MNDTDuzMGzx2zmqQO6rbE+wSVjOWyEzS+/9JWcd
-         ezETLRFBD+Gu87P1qDG8zJAUJ1C+V7wbCL77RNyyFfCHcFHDFh5IvJ5TDU4PtG+GL+4K
-         3pDQ==
-X-Gm-Message-State: ABy/qLYJBbW6jXWhxoNX8pCyamJ8F5yqrX/MUToDeTflv4K+wfTw1fZG
-        mqvBMk3OH0Xk4j/lMD0jspwiGA==
-X-Google-Smtp-Source: APBJJlFISI1yEJtOqHT3no0w/lPVrAq3lmXshtCkHPOJisrzANsOP19oOy6NxkVFujpY/kpnY9QHlw==
-X-Received: by 2002:a05:6402:613:b0:51d:d450:cfe4 with SMTP id n19-20020a056402061300b0051dd450cfe4mr1284575edv.22.1690528795534;
-        Fri, 28 Jul 2023 00:19:55 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.104])
-        by smtp.gmail.com with ESMTPSA id u19-20020a056402111300b0050bc4600d38sm1465196edv.79.2023.07.28.00.19.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Jul 2023 00:19:55 -0700 (PDT)
-Message-ID: <08deec6b-870b-d9cb-3ebd-b845340c4952@linaro.org>
-Date:   Fri, 28 Jul 2023 09:19:52 +0200
+        Sun, 30 Jul 2023 01:58:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2003E54;
+        Sat, 29 Jul 2023 22:58:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7778A60B94;
+        Sun, 30 Jul 2023 05:58:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113FDC433C7;
+        Sun, 30 Jul 2023 05:58:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690696712;
+        bh=BYFB0o2Oy4njxqSbjsRDEiL3hDbe6BYOk76QKE2aJ/A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hODyUmU3bpdQytWVZi8LfHwjSRrz3nhDFYM26gEwsHZkHTUtYSUtn88BlFk/qU2H5
+         EQJfs9Zk9Vl2T7CXyalyCTEi/5DHkbJfPLRo+ijmp8CHq03wBEHDLD9nUZRageGbet
+         9puubxPhT3PDrd/RyI50qrO0rujV+IQcx0qxN9QC7AlV/kBRsMNWfYN+S3c/lLBRlt
+         WyQmN6sR5MGOq1ftpWRh7PfTunkcSN+mMfeYor+AemEqjvNWKHxq+eUkBTk04tGLJ9
+         jhA2j8eni+E50071TnnjGDukbLhNgu995fXAbSwu1aa7Vf9iLwmwYedM6m/FuUQXaA
+         v+x4/nO5MRQYQ==
+Date:   Sun, 30 Jul 2023 13:58:18 +0800
+From:   Shawn Guo <shawnguo@kernel.org>
+To:     Martin Kepplinger <martink@posteo.de>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, festevam@gmail.com, kernel@pengutronix.de,
+        linux-imx@nxp.com, kernel@puri.sm, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org,
+        Martin Kepplinger <martin.kepplinger@puri.sm>
+Subject: Re: [PATCH v1 0/4] arm64: dts: imx8mq-librem5: description updates
+Message-ID: <20230730055818.GW151430@dragon>
+References: <20230717100056.4047292-1-martink@posteo.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 6/9] dt-bindings: marvell: Document PXA1908 SoC
-Content-Language: en-US
-To:     =?UTF-8?Q?Duje_Mihanovi=c4=87?= <duje.mihanovic@skole.hr>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Gregory Clement <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.com
-References: <20230727162909.6031-1-duje.mihanovic@skole.hr>
- <20230727162909.6031-7-duje.mihanovic@skole.hr>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230727162909.6031-7-duje.mihanovic@skole.hr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230717100056.4047292-1-martink@posteo.de>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 27/07/2023 18:29, Duje Mihanović wrote:
-> Add dt bindings and documentation for Marvell PXA1908 SoC.
+On Mon, Jul 17, 2023 at 10:00:52AM +0000, Martin Kepplinger wrote:
+> From: Martin Kepplinger <martin.kepplinger@puri.sm>
 > 
-> Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
-> ---
+> hi Shaw and all interested,
+> 
+> This is another small but important round of hardware description updates
+> for the Librem 5 phone. The first allows to use the display stack in
+> the first place. The other 3 patches improve diplay-blanking when talking,
+> enable fast charging when system-suspended, and faster system-resume.
+> 
+> thanks,
+> 
+>                          martin
+> 
+> Martin Kepplinger (1):
+>   arm64: dts: imx8mq-librem5: set audio-1v8 always-on
+> 
+> Sebastian Krzyszkowiak (3):
+>   arm64: dts: imx8mq-librem5-r4: Bump up proximity sensor's near level
+>   arm64: dts: imx8mq-librem5: Mark tps65982 as wakeup source
+>   arm64: dts: imx8mq-librem5: Reduce usdhc2's post-power-on-delay-ms to
+>     20ms
 
-This is v2, so where is the changelog?
-
-What happened with Rob's comment?
-
-
-Best regards,
-Krzysztof
-
+Applied all, thanks!
