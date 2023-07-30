@@ -2,37 +2,40 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 81652C001DE
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5194C04FDF
 	for <phone-devel@archiver.kernel.org>; Sun, 30 Jul 2023 21:19:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229610AbjG3VTM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S229618AbjG3VTM convert rfc822-to-8bit (ORCPT
+        <rfc822;phone-devel@archiver.kernel.org>);
         Sun, 30 Jul 2023 17:19:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41634 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjG3VTK (ORCPT
+        with ESMTP id S229604AbjG3VTM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 30 Jul 2023 17:19:10 -0400
+        Sun, 30 Jul 2023 17:19:12 -0400
 Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F9FD1703;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ABA61704;
         Sun, 30 Jul 2023 14:19:06 -0700 (PDT)
 Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-        by mx.skole.hr (mx.skole.hr) with ESMTP id EACAC83BEA;
-        Sun, 30 Jul 2023 23:18:53 +0200 (CEST)
+        by mx.skole.hr (mx.skole.hr) with ESMTP id 9940683BF4;
+        Sun, 30 Jul 2023 23:18:57 +0200 (CEST)
 From:   Duje =?utf-8?B?TWloYW5vdmnEhw==?= <duje.mihanovic@skole.hr>
-To:     Andy Shevchenko <andy@kernel.org>
-Cc:     Robert Jarzmik <robert.jarzmik@free.fr>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.com
-Subject: Re: [PATCH v2 2/9] gpio: pxa: use dynamic allocation of base
-Date:   Sun, 30 Jul 2023 23:18:08 +0200
-Message-ID: <13320053.uLZWGnKmhe@radijator>
-In-Reply-To: <ZMKd+CoWu7QjOxHo@smile.fi.intel.com>
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Cc:     phone-devel@vger.kernel.org, afaerber@suse.com
+Subject: Re: [PATCH v2 6/9] dt-bindings: marvell: Document PXA1908 SoC
+Date:   Sun, 30 Jul 2023 23:18:11 +0200
+Message-ID: <3246035.aeNJFYEL58@radijator>
+In-Reply-To: <08deec6b-870b-d9cb-3ebd-b845340c4952@linaro.org>
 References: <20230727162909.6031-1-duje.mihanovic@skole.hr>
- <20230727162909.6031-3-duje.mihanovic@skole.hr>
- <ZMKd+CoWu7QjOxHo@smile.fi.intel.com>
+ <20230727162909.6031-7-duje.mihanovic@skole.hr>
+ <08deec6b-870b-d9cb-3ebd-b845340c4952@linaro.org>
 MIME-Version: 1.0
 Autocrypt: addr=duje.mihanovic@skole.hr;
  keydata=
@@ -119,19 +122,28 @@ Autocrypt: addr=duje.mihanovic@skole.hr;
  p8AXRgtzZw2vsqERylx1Ug35G/xRIVrjf9bU2fersVWLR3JZ/rJwdjev4cJqzqJ9nBzblHky3K1
  cqiNEM/CU+JLBsZMc4jti/3tDv8VKfZiwLMIsVrfPgTM/97CCW3QDwVcreUGx81kemiAweXENWk
  MGQfJ+8rfAdLHf7iECLWLtrqyfYFQCZGhA5rPPr27TjOLaLV5ObMMBsUY=
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thursday, July 27, 2023 6:40:24 PM CEST Andy Shevchenko wrote:
-> > This will break some older PXA boards (such as Spitz) as they still
-> > seem to rely on fixed GPIO numbers with gpio_request and such.
+On Friday, July 28, 2023 9:19:52 AM CEST Krzysztof Kozlowski wrote:
+> On 27/07/2023 18:29, Duje Mihanović wrote:
+> > Add dt bindings and documentation for Marvell PXA1908 SoC.
+> > 
+> > Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+> > ---
 > 
-> So...? Why do you think this patch can be accepted?
+> This is v2, so where is the changelog?
 
-Understandable, I'll drop it.
+Isn't it in the cover letter?
+
+> What happened with Rob's comment?
+
+I'm not sure where I should move the bindings. I'm considering arm/mrvl/
+mrvl.yaml where MMP2 and MMP3 are currently documented because as Rob said the 
+PXA1908 is very similar to these.
 
 Regards,
 Duje
