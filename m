@@ -2,87 +2,90 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 70719C001DC
-	for <phone-devel@archiver.kernel.org>; Sun, 30 Jul 2023 17:28:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C9BBC04A94
+	for <phone-devel@archiver.kernel.org>; Sun, 30 Jul 2023 17:58:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229809AbjG3R20 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 30 Jul 2023 13:28:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45802 "EHLO
+        id S229651AbjG3R65 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 30 Jul 2023 13:58:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbjG3R2Z (ORCPT
+        with ESMTP id S229639AbjG3R65 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 30 Jul 2023 13:28:25 -0400
-Received: from sonic310-11.consmr.mail.ir2.yahoo.com (sonic310-11.consmr.mail.ir2.yahoo.com [77.238.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80EFA1BF1
-        for <phone-devel@vger.kernel.org>; Sun, 30 Jul 2023 10:27:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1690738068; bh=hWfMoHRlHCYqzwj6mCje4QmZV1hDjbVs6uGSWYCu1JI=; h=Date:Subject:From:To:Cc:References:In-Reply-To:From:Subject:Reply-To; b=VpppghCCAZJBtRqePPFm9dIaNhqJ/+lar8i2SJ93EzhJm1JyP1ARSitrjd/Ad272vkPmwKrEt38QYaYjL30DKA2qbej7zMJUFHXGE1wVN6aocBcDqtKgmN3sdz8G9RJNV3AEJ0+2Dku/Iz+yu4FJLgawtJxwzoCTbc2Wi4ECHovzFUnkt3vhjgxfVqnoJx0S1jo2Gc5ThpVIFG2t/8cGHGJ6iO7ZovfSLYv99MWAkwT2k5kg35jqET4I9CrRj564Ah6MhMdaGulNJVMdNy8JqmbasbcE8bivXXqLith6OnoLkeU2EHHIz3xE948WaTqUXgfDVF4d2hLNy0wmfIOQBA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1690738068; bh=vTI1C89cbZHBYomYvy9u8bKqarvrA/R4pIe4R5+qyth=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=ON3NGV7qvYES/L856SYMwhNzK/vB4Xnq+KuWGzMnuLAg0KeovamSL3JzD2GLs1/HsdHIq6Ug+imivDas7spTt99ViJa0Kw5HG6XIUy5obuJzVfIgB0Fxh3ZS/lCN3PHACd4WaAJmNaQj95dlncjDAJZZM0wUakZCiBzLeAXy33nJDTpy7BeAw98FD7rKRlxabiV7HInG5FJyGbxFe1JXTDF+2HzsK2Bw6MKsE+X2gwTWN4JWvM3xw1FSaiwfPnZbcvAuWkdcUlsy2RrsoIvhZDwUZsrt8aEuqg+aqltrSjxT9u2xP3a3SDDj411SwdeRoaLSobNOZkcNsYZifPrcMw==
-X-YMail-OSG: uRjkjrEVM1nvnEEfyr5_XZclxlQWp46OC92Ue.GDyEduMkvFE3_cp9R3I8k3IkX
- CLX92CTbRCq9FOb6XnvPCxquIfJzOVW0alAx2RlJbvZLKlowP1x9SJXhKUwxmJEoU.omHisPmNA1
- Xxn0xr3qX0qU_e4lDsNV4JsxMG96MC_fRxHnhn5VKDYoZjglWOKj__H58ElgA82Wb4uhR4NQA4hi
- smQI1Un85h9MAQUbg1kfdR5AVx5hn1SoQ26oAdBrvJ_asFicvGHZQPCTSUUS0sptA.EqjkCa3i_u
- utM3vX9CXRkyZCD3ATbz7CWEqS4C6UN1Wb6wyFBH8VGzyMmwEpyVzLw_v9HWGc1SWG4pdGTVVrUG
- mI8yRassAHYh6k4dbqkmZxcCuQ8q0kAzDG2wGnTmTihoamkD3jtnG6x36gb7Kc20BDT4._uDLTiq
- 7_5i.BqeVl27zAMN6PuGQYVEulk8odgVSfcz6.c2JLxSAujaT8_fk7.J5.9JIBMs3lrkkV7t.zGd
- g64cOXLNfmKwaNhRioIlvTGDGa8fM_PXq5PTyWJsJEZC1DYuI0gaL.yrqUIvaNu7pGxny4uUfGif
- Qovw8pE.gz7eOuuPqW52Ab6yiRFjtvPCFs9g98DBJLRrBgZBtDb0e3u3DyXgnQQWoA0EBVhAt.ld
- qtctTZCxXC5ENBPNXgqHCwXOSTlmUPXWKwwZeF9py_kWoQsSyZt2_BVKz34M3Is5isI.wpOKjetK
- 567q9Ti7UK.hZKygkL3EY2pNCtEg5JhqoP3OJ5KdBMngbubVYCcKxn81JTW1.3Y2MaAIWgrq9L.c
- ed9BfhvyfmNviBUs_8f2mWgiS.e4mON.3UHdENpoMK9zG.vs4zv_w2FrOJA2Az9Zl443nlv0KZ9_
- aC2ZDgUtSGwzWubPX6QfxdWiO1Wvo91rakdJPbyOoSawCKVsmGr9K5HfUBzy9o28mJpmVq9GB6FH
- pLQXIcuRYOo_LZV6va3NLB00igX1onuKHE9vMDiwm3WVDp0zcKtSVnf8BZ5QknB2l1Pfye4Vwfop
- ttPa0OCI9QG_ykl9U.rSRMRdetCuc0tXIz6yzEeaUE.9OXhDIESpPsJnKCt5ttIRuoi8VgTqQZAA
- b4MavHj34hvu_7udPli9eC4tVx_aTaPud8E78VTxgu6wpw6jqpK6EpZNhxxmUHfwn6G_gdocqj1y
- Ke_PzM4ZLAGXDcLyC2lUSfrHhT.ze.8fCGj8vcc_EthcbqkhQtfK8rlF.spDe1le88Cv0qJ8JGH4
- s1qf3H57mfIjGTdoHoExjcOLf_xQd2U9a7Odb_VASmGZVxE0.3acSIOBweJsu6pya8G6KjPkCPt5
- SzHA36IKKZVLB8dZtIJ94Qn4JkkbpgdC36DdC2zzXlvW9iLGjyexThUlXHmLZR1zaLWJPfpyqmvN
- FjZJ4a1bKGKf7Xn81mWIGMFtIgOlqoz2sMT3yUSj7kXNwsmQSsEnXuJ7vdsyuBog5Tl4uP7l19HJ
- ZFtQqftSHv32dfBLxtH87IvD3Zm4YGSD10L4lHhFTK3eu2QzFYmEsxa.BEj.J9rzHOdeaPHCXWuD
- jsAHfV5w7OrC5Qy0MAyECHNzLzI1ebC1CCW20ZdB2D_X1qgwnTZTmamDXG6rWltxDOfVO9y2QbfO
- 3tgSz6lkhjRksFXibN4sJJwjEP23.qcsFP.7cbQy4RQ9NqJk8hX0LzNXKPYsoi1CBasnKX20xpfE
- CPr7NP9Rcf3J0MA78ZcFX73bI8qGGCGBaSF.ggPduAJUgUrkpdcmtssk1VovcYzeIftwlxtw0BE0
- nEuVGcM4eff4jESoqG7.9wCKmiCiIJsPTW5aGmg0TiZPGJ0FvXgnqS1ftJCmqOmAvPjBgQ22DvEO
- 5WrJ695darV98U0.Amn2gxO9YneI0rYOLY3nEyWKnWVciNILmzgkEZbhc1Fdy003Bys9ZSIkD7tv
- aOolqUndx84MvKpzba4rVKQ9pqzdFyoMAtYnTi1yEsA.yzuBLAaFaq7PynFQlWwT0IaIwcAYUW36
- Bp9tCZo59YSYbj7MmHPrQgT4qDpnlfw5_HqqhOrQSukAjeoeQ_.ns7VvBD_x1pCeTgzTELdOx6mR
- NPw_4AEbwzSLtb7NptDGOAlGArKCMPTBOZfSBIB4QmewaqhKFJUclSryfJtUR61PTfAaOAjAhNmO
- sRVD8_m4Gu3LYcdHnIFgmzql0S3EdwQ7WrIhMRusS1j5lLRcneOm2fNT7Cv9VphJwZFqkZJvcvoe
- TU_cglHYpNupk9deKr2mcFtk.Cy.fCjXF6tQuwDZI0PAAB7Scf7eK.q9YnlSAOPqAvYhbrQKhp_g
- y36i5EuF_egshD0KXszTb0oOjpw--
+        Sun, 30 Jul 2023 13:58:57 -0400
+Received: from sonic302-21.consmr.mail.ir2.yahoo.com (sonic302-21.consmr.mail.ir2.yahoo.com [87.248.110.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6266B1B2
+        for <phone-devel@vger.kernel.org>; Sun, 30 Jul 2023 10:58:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1690739932; bh=qdmZlgfteMifBTTRwS+MuuJoyBhIjTJdVNv+FQYKI6c=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=TPqRt/D4v5cIIUffCfrsXEJ2cj2/M0Gvr40n8Ikujk02jXv6A0Y7C7+QV0FtV/l4aSI2mOh26thkKlnI9LZ/778cwIddla0N7UetWmIm7kpMd5PChICUD2hh+C9nEVgvfuYw2SwwGb8g772fVGjSeOjWBfBed0nE484GNAmcgSlWZnt8E700FzyD5a62N4Udy0uBRRTGlUU65siEanimVfWnzqnKh3erYEfF9x7AiMqBdh8K2R/HD2D8HTbFUGL3Sbb93cDI0H7vchu+RLw+b1fnGPGKjHqim4A0C1Pk/YwqzeWIUO/jzmy3ecqayZzW2TKTGQv1anxpg50h61ShPQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1690739932; bh=SE1LGEcuKKt+RF+O1daF7g2no92d/TJtm6esaQd8jtI=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=m+a2NubljPbNjpS/I0fALoxN8x+AFA6ItwCLKVDYuWNWL8Rqco4VzPT4ycCFRBbMWfFJgXtOHUsB9dBltd39Nl2onu3IlE47vJW772zSabdWDrB0lISNKUNTmt1201tH1Uof2efwovXuPSU1DWo/MCnJsIbUCFapCn/Y5M1fP7X3zY/7irdwBwDOs1CXi1hgXpUUIfFntJo5lm9BI584yAQ3I9AlaZwHTJpL+U6wGt4WYTNn8Qjl11p//cwSwkqD2IaGii7ReyUBGVoFjaO4uOnNJuE6pKdi94m4E9HIBpvsY5zxXW1fFiMGIPfel5dTiemcn6hkKQoeII2tBl5XqQ==
+X-YMail-OSG: LXNV7YUVM1m4q6BXHuyV2ByO5wHVtjLRn0C7WNEpRGqNZCSpstQSBB4aA4hRUqG
+ yzIFgGcAysxWxcQdzcLD6x7pT19Y9aCVDlel4jCG.hi2jqJl9KuxnZNyqmmmfw25SJzy8h1yxjaf
+ Y76vXf2OEI2w5qmPAQg6whv6d_AU0y62MlktmXrY2bsfWaQmA1R_Mmh59liMSWNYXOcH4iIDmt.X
+ _CRDkk.XWfVAG5Mk5xgKc2op33ZnWVK3femIvHBBSHEQpgMZXQId_di7tKBPPrW._LLdp7hsoqGF
+ h1F4Q5hTKKmac7fxVUA7hTn6UCCfl1VAbwBwKvmKxlMcBI4F7YUTfQ_qYhihkBuwkMf_1WU5Rc_P
+ HqXu9FMQ5InVIVjQ3CZjDiehZ3jCS3Ld5a.d5pd6RSqPUVAVKWjCp4_tDEImBu26RBvCsniif70p
+ 2_6oeHxOCxsvodOtwvmfhLDf7JeTFHfIxVo9HALG5M0qgqo6Lj9vSyiSo95LQMRENYUa6xidXgoS
+ Qe35qaRUcFR_Jpj5VJaMgMIaJrL19Qm01PSTb0VeJu1zke3CBIbagfbk0ti12_4nMyk3h624tiwV
+ edVjth4NCsazkEUIQb1FLfKJiou9XJkC9e3a3g_7UtsTsNedzFuVszg2zdOLipifswkOAG..rUk3
+ pHk2qT1Ac1Uy6jsq52D_KYIHpBb7J1X90Ww_QSKRDTJQQHtHZP6Bj_8rWogfPRlCsPPjmX0d2wNn
+ 7HZImw2zoxpirJeyVlec7ARhHqEVKFPLZKSMX_yPcymEEGcRcby2qHgaavi2muBM0l6VZ34myqtV
+ VH4DvIEAuNUcxAAskqzRDqWlM9dCop90h7e7A5VQ7KMfdlpVINvGPYk7rcKs1PwM5nI2uMJarRjp
+ KDE3NkC6JWOryS_O_Z4VP7k4.ZaMfwPLp0MWIF1_i.aYjglJHUk8cKawBGmv2S6UMZsr38nf8S8u
+ lJ2gM2Y2hpvq5bOOA1gBWnS86AOL6eO169bEnFPPvtmz7jt0hRqaS9fE_E3K6NJhMiXJU7kFO68F
+ 3RpbyMouFqIkG4U5DEuFRKPT.Yv0gViuf9oHXJw16gdlOM9A0u3j_d4vLTI2DJ13n_Qq6pZTAmnn
+ fGnFem8nqlx0KpBVD096EhOVyyy5AaQajjrjzZiZ8DQgS8bdc5nhAEoQWCe9BEElqJ7K_nCjiDcb
+ mPfVc1x_D.nz4B6Q2SDRCVMPiAt2Sj4x2ib1mslDcINLfWOu4mKS00z2Q_rphIeWNxeNp2ux.tdR
+ mqkYciXEh5Z05ZltnaPDtoXfaxuGBGMNT5ai2Ra67tdHGXi5ZPPnO1ClgLfuTp5gHt_L02gXcXUk
+ ryx_.L9sF.YZq8PcsNP3HJdFkQAKHRgtucX1q3DXDDeawQAoGsbSFTQT67ZAhniWNbIRSryjjpQR
+ vhXRzl6RHn5ps_n3qnverRsN8_9w3jsU4YYaU3W2g8urUhFomVgybyiA1HfXskumynxtYv92Ovux
+ VqXs1GVUGGeEmCqfodsxeT.5xF56p9cT8LYVLn9oYXoTsshqFbv0Cv.oImkECycB6Sehwr7BHnNE
+ w3j76UKqqNnco50Hl4WtPDfY8OAUCNJYJwbRHjGZD1CtotrYSwH58qqdXG20kCeeOYMVjQ7V9GDP
+ YdzgqcBSM6okww3tFo7yoO0WwEcRB6FBH37..Gs._xigD4N.RnP6_eVa_1EA6xex0VFa3Vy3Pcos
+ QDsx0d4SAPEQCe8hBUfQVaqzivI23OWYdBcBweCjhlaRojyneD8sfSsfBk2Gq.o_rNjPT1c.PZWi
+ 1abYsdvl.6RLBzp_KsPkhKIjlYc.dyHbCU3nNX57I4MxTYNlwGhwDNr1lelNf6T7hgs_sa3NMrAS
+ KVOu5VEUoKpZ0u8YHYjRQfcsirerWtX6Ahh7Ku06BGPXs0WFSoebGJyU4I8rlgkRnKd1qXDWFDBa
+ yIFusshKRrITwoe.JW79U.JPWJ1gdb6E18dj6YjXsy4Wea.E6FYpdt1lEF4z_OrfaSGx_Et0yK7r
+ eKlWtIAG2YS6g8aorH2YMBuW.FJ8M1nH6UIfcKixziQMVUTvZ3LZ0FAvvjbL2hhWyRJ1s78X5XTS
+ D60rQvr6xC.K35XNg3lMcbExsStgdVpNz2jG3G1UYM8TZ6G71j.x83GZ6BmEZw43BOAM8hYjTZEL
+ hkb_lbDvmERtXzUaVZR1oIzFcnJn2OYfXPOZGGY9.XYgP09ke2zf8ox4asah1TwCYTjf3rY2TzvQ
+ 5UCslaL0N3veINW9XhOP6ZzSkr96nHp9OjwqQLqk5tcgCJVkRYkOy2a9w4KOBss0XbY0.VfR86Xa
+ 09M1hT.wF
 X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: 781161b7-5478-413a-8f8e-7dea003a7a72
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ir2.yahoo.com with HTTP; Sun, 30 Jul 2023 17:27:48 +0000
-Received: by hermes--production-ir2-7b7ddb79d8-pz5sj (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID ec871f8548a1982f3d0a52553952b962;
-          Sun, 30 Jul 2023 17:27:43 +0000 (UTC)
-Message-ID: <0cc0b1de-5f9b-5f0c-77fa-42fc5fa2f887@rocketmail.com>
-Date:   Sun, 30 Jul 2023 19:27:41 +0200
+X-Sonic-ID: 863f03c4-a2b9-49af-9003-742551aabaca
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ir2.yahoo.com with HTTP; Sun, 30 Jul 2023 17:58:52 +0000
+Received: by hermes--production-ir2-7b7ddb79d8-nb2vw (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID b6bf6624ec9fc85e0e6c51824a35a031;
+          Sun, 30 Jul 2023 17:58:48 +0000 (UTC)
+Message-ID: <bac8be58-8cac-4bf3-5754-974c7d7ecdba@rocketmail.com>
+Date:   Sun, 30 Jul 2023 19:58:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2] arm64: dts: qcom: msm8916-samsung-serranove: Add
- RT5033 PMIC with charger
-From:   Jakob Hauser <jahau@rocketmail.com>
-To:     Krzysztof Kozlowski <krzk@kernel.org>,
+Subject: Re: [GIT PULL] Immutable branch between MFD and Power due for the
+ v6.5 merge window
+Content-Language: en-US
+To:     Sebastian Reichel <sre@kernel.org>
+Cc:     Lee Jones <lee@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Beomho Seo <beomho.seo@samsung.com>,
         Chanwoo Choi <cw00.choi@samsung.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Sebastian Reichel <sre@kernel.org>, Lee Jones <lee@kernel.org>,
         Stephan Gerhold <stephan@gerhold.net>,
         Raymond Hackley <raymondhackley@protonmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Henrik Grimler <henrik@grimler.se>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-References: <20230619203743.8136-1-jahau.ref@rocketmail.com>
- <20230619203743.8136-1-jahau@rocketmail.com>
- <02fe7c1e-cb6a-14bc-73fc-04956a2b8396@kernel.org>
- <3376e14a-4fc7-160e-509e-8dcbe627ef62@rocketmail.com>
- <b8e21ba1-900d-6731-579d-e18c37a97a71@kernel.org>
- <b067e3c0-c2fe-21ce-b398-3f889adbfd06@rocketmail.com>
-Content-Language: en-US
-In-Reply-To: <b067e3c0-c2fe-21ce-b398-3f889adbfd06@rocketmail.com>
+        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <cover.1684182964.git.jahau.ref@rocketmail.com>
+ <cover.1684182964.git.jahau@rocketmail.com>
+ <20230609064753.GL3635807@google.com>
+ <faff027d-2a6a-22ca-2487-2ae05223fabd@rocketmail.com>
+ <20230619103524.GA1472962@google.com>
+From:   Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <20230619103524.GA1472962@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Mailer: WebService/1.1.21647 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
@@ -90,26 +93,56 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi all,
+Hi Sebastian,
 
-To close this thread:
+The patch 6 "power: supply: rt5033_charger: Add cable detection and USB 
+OTG supply" of the series v6 RESEND of rt5033-charger is still missing.
 
-On 14.07.23 00:26, Jakob Hauser wrote:
-...
-> I can prepare a patchset to dissolve this USB/extcon mix-up (basically 
-> square one, as you called it).
+On 19.06.23 12:35, Lee Jones wrote:
+> Sebastian,
 > 
-> Alternatively, if all my tries to clarify a possible misunderstanding 
-> are in vain and no one else intervenes, I guess I have no other option 
-> than preparing a patch to change the dt-bindungs of 
-> siliconmitus,sm5502-muic.yaml.
+> On Fri, 16 Jun 2023, Jakob Hauser wrote:
+
 ...
 
-Krzysztof added a connector node to the dt-bindungs of 
-siliconmitus,sm5502-muic.yaml.
+>> I just realized that there is one patch missing in the immutable branch
+>> "ib-mfd-power-v6.5" [1]. Unfortunately I haven't noticed earlier. The
+>> immutable branch holds 9 patches, the patchset has 10 patches [2]. The
+>> missing patch is No. 6 "power: supply: rt5033_charger: Add cable detection
+>> and USB OTG supply".
+> 
+> Did you take this pull-request?
+> 
+> If so, would you like to apply the missing patch or would you like me to
+> take it via MFD (without a subsequent PR)?
+> 
+>> As this patch No. 6 affects only the file
+>> drivers/power/supply/rt5033_charger.c and is the last patch on that file,
+>> it's no problem to add this patch on top of the other patches.
+>>
+>> Could you submit another pull request for the v6.5 merge window to add this
+>> patch?
+>>
+>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git/log/?h=ib-mfd-power-6.5
+>> [2] https://lore.kernel.org/linux-pm/cover.1684182964.git.jahau@rocketmail.com/T/#t
+...
 
-lore link:
-https://lore.kernel.org/linux-devicetree/20230720080141.56329-2-krzysztof.kozlowski@linaro.org/T/#u
+The lore link of the series v6 RESEND is above [2]. The patchwork link 
+to v6 RESEND is:
+https://patchwork.kernel.org/project/linux-pm/list/?series=747771&state=%2A&archive=both
+
+Additionally, there were two follow-up clean-up patches. There were no 
+review comments so far. Lore and patchwork links are:
+https://lore.kernel.org/linux-pm/cover.1686948074.git.jahau@rocketmail.com/T/#t
+https://patchwork.kernel.org/project/linux-pm/list/?series=758018&state=%2A&archive=both
+
+Could you apply those three patches? (1x patch 6 of v6 RESEND series + 
+2x clean-up patches.)
+
+I've just noticed that a new patch by Rob was added to rt5033-charger. 
+Can you rebase the other three patches by your own or do you want me to 
+rebase and resend them?
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/drivers/power/supply/rt5033_charger.c?id=2ce8284c31156c432df60d4497ec68cca04e128f
 
 Kind regards,
 Jakob
