@@ -2,119 +2,167 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B284DC001DE
-	for <phone-devel@archiver.kernel.org>; Mon, 31 Jul 2023 21:42:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2057C001DF
+	for <phone-devel@archiver.kernel.org>; Tue,  1 Aug 2023 10:07:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229881AbjGaVmT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 31 Jul 2023 17:42:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53866 "EHLO
+        id S233813AbjHAKHc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 1 Aug 2023 06:07:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229612AbjGaVmT (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 31 Jul 2023 17:42:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEAD8130;
-        Mon, 31 Jul 2023 14:42:17 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53D50612F2;
-        Mon, 31 Jul 2023 21:42:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94784C433C7;
-        Mon, 31 Jul 2023 21:42:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690839736;
-        bh=Iu978Lm0V72u8OFjnPHx80yu7uDx5IJV9cwyHqcixlY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=pND/HZjsDfEoMrstHlrtfbI0w5JkC46OzgkAIBjPDJ5gMO0tsBHnZn/5Y0F/FaIUi
-         EjTijss5T1pBEyg5GYPgMb894tDOEJv0G3xzy/cvTzUe4W9y/iZHDmTaqJSpF1D7Yg
-         YBKkYZXhYQB2jo8BVxm3g+vmI7EWOUdBCwZ4q6k4Yjsg6Tm0xEWTPihJche2AU4WU3
-         aE73vJpjboSRWpCU/Wd8kQSsjAS12YxBun/6x668Drzh5W8wu7Rhs892wJXfPoM367
-         tPodV2RomJMGMhUHdK7dPoZ6+/GD9nXPdGgnCuDkMLqPhtceeymTeIs5AUYAB5uzR8
-         FMXwxUZ2OAXUA==
-Date:   Mon, 31 Jul 2023 14:45:21 -0700
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Rajendra Nayak <quic_rjendra@quicinc.com>,
-        Rob Herring <robh@kernel.org>,
-        Andy Gross <andy.gross@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Craig Tatlor <ctatlor97@gmail.com>
-Subject: Re: [PATCH v2] ARM: dts: qcom: msm8974: correct qfprom node size
-Message-ID: <ff6fwomoik6kz4jtbm5jac7jahrtcia5fb6dj5ykxg7xt574sn@ti42sevqj6pk>
-References: <20230130-msm8974-qfprom-v2-1-3839cf41d9ee@z3ntu.xyz>
- <866f1f66-8845-2453-ab9c-d125e23ae758@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <866f1f66-8845-2453-ab9c-d125e23ae758@linaro.org>
+        with ESMTP id S233811AbjHAKHa (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 1 Aug 2023 06:07:30 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9249010C
+        for <phone-devel@vger.kernel.org>; Tue,  1 Aug 2023 03:07:26 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-4fe27849e6aso4610664e87.1
+        for <phone-devel@vger.kernel.org>; Tue, 01 Aug 2023 03:07:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1690884445; x=1691489245;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J1/ktHF3masxab3vl++0ZCMEyPiHHu6fAAPxOuhQTwg=;
+        b=xsjiWuIwfUDV/UvQ4A+bNQ6Kll4xU/AWU7vrqDequWsRjYbxqyr6NpQ9L1k2WXfGXX
+         iQmBDBjsVgWbjYlcUjZUXXQVXnrEMnQK46i9/PiL9V3Fo0IXBw8vbMT3dL+W6Dtxt0qn
+         RK0oylHJogJybBe0f2yQMbQpJcvrdmqfCmfaH7tUN4IYtW/rzH418YGFkFhRaGo3aA9L
+         x6Df8m49fyrYPq8sm23wef7IDELHRngYTWhaSyMCM+zGa9s9mAYlE0p06z2arZdeA1Zj
+         odemvH6lvXjzKfn0dI9wHccAxaKLRVHpusXPpanuqDzOLtRQrr+I4M1DOUx2A8qCb3YJ
+         bxaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690884445; x=1691489245;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=J1/ktHF3masxab3vl++0ZCMEyPiHHu6fAAPxOuhQTwg=;
+        b=SRyaPiu6u87mvf90vj2E6v+t/YK1QWz2CALxlAbFonT8ZhElKQ0mI31l9JZjcw9d8A
+         QnKe9weydCfdctfyH6A40icuq5YVsmkIPUMyoFLJVf9VxleUIw1AY/06pVl18HwKtUty
+         Xsz4fro0wWHQPVfmdbhJTlBujWPDVyXDPqSYjUL/zNUg87g7iW0zaOdOeZyCOodbUoYv
+         g2uzTEFnw4GCz394bLSQcUgLwnfAKPqIwKe/GFjtR2agwZz2TQLvdzaUsBaCKB3CiD2i
+         fKv1fiaPPeFs1tnr4nxa7rdjNIqWmn3p30KCG2SZGx6kBmDpMhxlqSnThOzDq4QkP8Xe
+         EdgA==
+X-Gm-Message-State: ABy/qLZGd1ZfsVIk5KMw3jvMguHa6CACzeSGK+gE5Ow2WpeT2p6Ulfd3
+        2cRORsiN5GMRGDVhr1ocSXs5bw==
+X-Google-Smtp-Source: APBJJlFLcqzXBAeAzahiYVP4fQYhmRmePiAZ7Yb6nHC/hVOWnsutc6859fMSxTqWPAPLzdg6erg9dA==
+X-Received: by 2002:ac2:5b4e:0:b0:4fe:1f1c:184f with SMTP id i14-20020ac25b4e000000b004fe1f1c184fmr1894304lfp.44.1690884444841;
+        Tue, 01 Aug 2023 03:07:24 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id c7-20020aa7c747000000b0052237839229sm6658440eds.21.2023.08.01.03.07.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Aug 2023 03:07:24 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Tue, 01 Aug 2023 12:07:24 +0200
+Message-Id: <CUH4IE1600FN.2SYHOEBM2LS1K@otso>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        "Eric Dumazet" <edumazet@google.com>,
+        "Jakub Kicinski" <kuba@kernel.org>,
+        "Paolo Abeni" <pabeni@redhat.com>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Marcel Holtmann" <marcel@holtmann.org>,
+        "Johan Hedberg" <johan.hedberg@gmail.com>,
+        "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+        "Conor Dooley" <conor+dt@kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-bluetooth@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v2 0/4] Add WCN3988 Bluetooth support for Fairphone 4
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Luca Weiss" <luca.weiss@fairphone.com>,
+        "Luiz Augusto von Dentz" <luiz.dentz@gmail.com>
+X-Mailer: aerc 0.15.2
+References: <20230421-fp4-bluetooth-v2-0-3de840d5483e@fairphone.com>
+ <CABBYNZJPw=Oxi+J2oA=6aosEZjCBK=u=8HEJywzRJCCrmGnkGA@mail.gmail.com>
+ <CSMMO2ZBOS6Y.3SAQOHDLW68ME@otso>
+In-Reply-To: <CSMMO2ZBOS6Y.3SAQOHDLW68ME@otso>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Jun 15, 2023 at 08:20:41PM +0200, Konrad Dybcio wrote:
-> On 15.06.2023 20:17, Luca Weiss wrote:
-> > From: Craig Tatlor <ctatlor97@gmail.com>
-> > 
-> > The qfprom actually has size 0x3000, so adjust the reg.
-> > 
-> > Note that the non-ECC-corrected qfprom can be found at 0xfc4b8000
-> > (-0x4000). The current reg points to the ECC-corrected qfprom block
-> > which should have equivalent values at all offsets compared to the
-> > non-corrected version.
-> > 
-> > [luca@z3ntu.xyz: extract to standalone patch and adjust for review
-> > comments]
-> > 
-> > Fixes: c59ffb519357 ("arm: dts: msm8974: Add thermal zones, tsens and qfprom nodes")
-> > Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> Not sure of the actual size of the region, maybe Bjorn can help..
-> 
-> Downstream 3.10 suggests 0x60F0, 0x20F0 after adjusting for the ECC offset
-> 
+Hi Luiz,
 
-There is indeed 0x3000 bytes until the next region, but afaict the
-corrected ECC values only cover the first 0x800 bytes thereof.
+On Mon May 15, 2023 at 8:12 AM CEST, Luca Weiss wrote:
+> On Fri May 12, 2023 at 10:53 PM CEST, Luiz Augusto von Dentz wrote:
+> > Hi Luca,
+> >
+> > On Fri, May 12, 2023 at 6:58=E2=80=AFAM Luca Weiss <luca.weiss@fairphon=
+e.com> wrote:
+> > >
+> > > Add support in the btqca/hci_qca driver for the WCN3988 and add it to
+> > > the sm7225 Fairphone 4 devicetree.
+> > >
+> > > Devicetree patches go via Qualcomm tree, the rest via their respectiv=
+e
+> > > trees.
+> >
+> > Just to be sure, patches 1-2 shall be applied to bluetooth-next the
+> > remaining are going to be handled elsewhere?
+>
+> Sounds good.
 
-Can you please let me know if this patch fixes a problem, or just
-makes the numbers look better?
+Is anything missing for the patches 1 & 2 to be applied? I don't see
+them yet in linux-next. Should I resend them?
 
-Regards,
-Bjorn
+Regards
+Luca
 
-> Konrad
-> > Changes in v2:
-> > - Keep base offset but expand reg from 0x1000 to 0x3000 (Konrad)
-> > - Link to v1: https://lore.kernel.org/r/20230130-msm8974-qfprom-v1-1-975aa0e5e083@z3ntu.xyz
-> > ---
-> >  arch/arm/boot/dts/qcom-msm8974.dtsi | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom-msm8974.dtsi
-> > index 7ed0d925a4e9..3156fe25967f 100644
-> > --- a/arch/arm/boot/dts/qcom-msm8974.dtsi
-> > +++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
-> > @@ -1194,7 +1194,7 @@ restart@fc4ab000 {
-> >  
-> >  		qfprom: qfprom@fc4bc000 {
-> >  			compatible = "qcom,msm8974-qfprom", "qcom,qfprom";
-> > -			reg = <0xfc4bc000 0x1000>;
-> > +			reg = <0xfc4bc000 0x3000>;
-> >  			#address-cells = <1>;
-> >  			#size-cells = <1>;
-> >  
-> > 
-> > ---
-> > base-commit: 858fd168a95c5b9669aac8db6c14a9aeab446375
-> > change-id: 20230130-msm8974-qfprom-619c0e8f26eb
-> > 
-> > Best regards,
+>
+> >
+> > > --
+> > > Previously with the RFC version I've had problems before with Bluetoo=
+th
+> > > scanning failing like the following:
+> > >
+> > >   [bluetooth]# scan on
+> > >   Failed to start discovery: org.bluez.Error.InProgress
+> > >
+> > >   [  202.371374] Bluetooth: hci0: Opcode 0x200b failed: -16
+> > >
+> > > This appears to only happen with driver built-in (=3Dy) when the supp=
+orted
+> > > local commands list doesn't get updated in the Bluetooth core and
+> > > use_ext_scan() returning false. I'll try to submit this separately si=
+nce
+> > > this now works well enough with =3Dm. But in both cases (=3Dy, =3Dm) =
+it's
+> > > behaving a bit weirdly before (re-)setting the MAC address with "sudo
+> > > btmgmt public-addr fo:oo:ba:ar"
+> > >
+> > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > > ---
+> > > Changes in v2:
+> > > - Add pinctrl & 'tlmm 64' irq to uart node
+> > > - Pick up tags
+> > > - Link to v1: https://lore.kernel.org/r/20230421-fp4-bluetooth-v1-0-0=
+430e3a7e0a2@fairphone.com
+> > >
+> > > ---
+> > > Luca Weiss (4):
+> > >       dt-bindings: net: qualcomm: Add WCN3988
+> > >       Bluetooth: btqca: Add WCN3988 support
+> > >       arm64: dts: qcom: sm6350: add uart1 node
+> > >       arm64: dts: qcom: sm7225-fairphone-fp4: Add Bluetooth
+> > >
+> > >  .../bindings/net/bluetooth/qualcomm-bluetooth.yaml |   2 +
+> > >  arch/arm64/boot/dts/qcom/sm6350.dtsi               |  63 +++++++++++=
+++
+> > >  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts  | 103 +++++++++++=
+++++++++++
+> > >  drivers/bluetooth/btqca.c                          |  13 ++-
+> > >  drivers/bluetooth/btqca.h                          |  12 ++-
+> > >  drivers/bluetooth/hci_qca.c                        |  12 +++
+> > >  6 files changed, 201 insertions(+), 4 deletions(-)
+> > > ---
+> > > base-commit: f2fe50eb7ca6b7bc6c63745f5c26f7c6022fcd4a
+> > > change-id: 20230421-fp4-bluetooth-b36a0e87b9c8
+> > >
+> > > Best regards,
+> > > --
+> > > Luca Weiss <luca.weiss@fairphone.com>
+> > >
+
