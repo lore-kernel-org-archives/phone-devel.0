@@ -2,65 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26E00C001DB
-	for <phone-devel@archiver.kernel.org>; Fri,  4 Aug 2023 14:09:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0D50C001DE
+	for <phone-devel@archiver.kernel.org>; Fri,  4 Aug 2023 15:25:52 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231269AbjHDOJm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 4 Aug 2023 10:09:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42230 "EHLO
+        id S232039AbjHDPZw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 4 Aug 2023 11:25:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229851AbjHDOJl (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Aug 2023 10:09:41 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E036FCC
-        for <phone-devel@vger.kernel.org>; Fri,  4 Aug 2023 07:09:39 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9936b3d0286so311205666b.0
-        for <phone-devel@vger.kernel.org>; Fri, 04 Aug 2023 07:09:39 -0700 (PDT)
+        with ESMTP id S232123AbjHDPZd (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Aug 2023 11:25:33 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0E164C3F
+        for <phone-devel@vger.kernel.org>; Fri,  4 Aug 2023 08:24:56 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-4f4b2bc1565so3857329e87.2
+        for <phone-devel@vger.kernel.org>; Fri, 04 Aug 2023 08:24:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1691158178; x=1691762978;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lJYYaTKtey3y+Pz5jtqG8m2sUM8QfqZdeIkGFwZW7AI=;
-        b=ytQS9ilJGngjOx4zUsX+iZ5BR8SfUtQIMb+IvPQJFuDAyfEjKGQBDH5MOy5719P+1m
-         bWoDpfIfWA/lKe2W9J11doI2F0EEzWU5LOcmz34lg4dvyXllzdxmH7V8pBknfGOztDjs
-         Pz+xEsoaSCBYf9qeJlgf2WeG8bICMGp+zt1qmVSkJiBCmtPrnUexwlrFB94iNCteOaoZ
-         mMr78Dvonb//OZOzOqhZlw6azTPN8CO6Yr35Uhhz7pqdmzshhqIaJ/4uueYTJ0gA7fUq
-         tR9fAlACfHOjZHmCDYymfDRN1iGqoWAzvM+g1lpjwEk0XegLD6h8cTfOGwsKpzREsWWc
-         oTMw==
+        d=linaro.org; s=google; t=1691162693; x=1691767493;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=O1Or5NpNw41SHQj2iyH+eJyA3dinn8/BZZ3KWUyyGdY=;
+        b=HGy68hWNUTpYoQmPbBUKb6KmzzOSlxuaLUpFV5oYNPo95vLciBnk45JtiI9QKRPdhx
+         cL1UedO1TlShJcR/zgpn+Rg4UANbDv20yOYr1G1JU1zjfPLDjD1eVFpCwNRHicyjSOni
+         MPMfWdHl6Mv1gh/fa459OnYp0y2XMWfBVSQ4K/x9FndJCx8Kj5/zKGl2MmB/eRZ0hwNL
+         WgB6kNcyfErUQIvkDDP0pdYfstqPZSPXpO4KExFKnIAMeBks60QAKLaRj3QsVzfvXQGe
+         F0pnqJGO8SL39wV2uk7eMQvLbo7ayo0JlSUwlUVyaDdbKpf5lEZls2GBtiu4JEcqeh4h
+         c5IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691158178; x=1691762978;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lJYYaTKtey3y+Pz5jtqG8m2sUM8QfqZdeIkGFwZW7AI=;
-        b=TyZNcebvrTMV9RgChc8nvqDGmAhHnmavifOadVhWooLE09MLNw/GYIppWdO1m+67LZ
-         6B1pbJHm/I8btSfy38XXu+K0m9mwSb5Jc06GCC5+psSqaHNBmFXPiWdcgI252gZO4Ozj
-         181WwKMh5FwMNQAyfHVdghNOhUhXrsO9sl1rnhhKenG4Ix39qpsnprZ+xBMs02+fM41k
-         zwuVVLP0h7+YWVbEIn5ZWElmJzu4iyiiunqYINIIvtNMvzEG4Zd38k0X52s59CvB6itj
-         xx9hzK6e3H1gTPTrXwk2+aqnqMCVZh4HJrempi0jEpQrML6H31jc64kvxyW54SMZRV2q
-         yq3g==
-X-Gm-Message-State: AOJu0Yz/Mb73rW26LhxKwwX6MBP5a1mKVgKiQZYZop0yaK1PQ8WgtS3q
-        IU+V2AN9eyWArOgf2j8rsZ25dA==
-X-Google-Smtp-Source: AGHT+IE699YJCjVVMQ7Rm/VlK3NqzIiAfSaTnWHMOiZ+PGgPu3gCxJcNnPlDcybNKeB4NaCwq9M6CA==
-X-Received: by 2002:a17:907:7638:b0:99b:cf57:11e3 with SMTP id jy24-20020a170907763800b0099bcf5711e3mr1501607ejc.59.1691158178378;
-        Fri, 04 Aug 2023 07:09:38 -0700 (PDT)
-Received: from [172.16.240.113] ([144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id k14-20020a170906158e00b00982d0563b11sm1350160ejd.197.2023.08.04.07.09.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Aug 2023 07:09:38 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Fri, 04 Aug 2023 16:09:30 +0200
-Subject: [PATCH] clk: qcom: gcc-sm6350: Fix gcc_sdcc2_apps_clk_src
+        d=1e100.net; s=20221208; t=1691162693; x=1691767493;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O1Or5NpNw41SHQj2iyH+eJyA3dinn8/BZZ3KWUyyGdY=;
+        b=lI6WY8cdw92Cl+lahvHM1SmeZxxOYu3SmGQg4gW+H3BHog8vrzUKn7Uvi/MwqwXkEq
+         codbqa9vDTYP5t3IqMxLWuKr4cCkjUkepZGDvuQQc6m9dxD9/mSJ8BfkrxBFCZkFIBtj
+         cugzEAIibIwRv6At3In7Y3kKjNlDBmvQf5Fw8Q3hNWim8vr7YHhvgGN/9py4JbLLTI2n
+         W+1L7gX5mSgCWSrFCSIz+IqED1Dez365Uc2EcQ9lQ/y0LaLkCJeuWNS9ykJi9oHcYBPz
+         +okvXEuq7Grp7/rjKXX5j+7n+hCaIs1EaBq5H/2nImG8LS8Z1uuxK/XcmKz8ypJr5Ml6
+         rFnQ==
+X-Gm-Message-State: AOJu0YwI4tc1SXMDf7WM+501uH1DiK++w7aW6kxw+9JGzdJOq+/LKejE
+        3CcGaZamtgEQ8S3sJdyXy2KFhQ==
+X-Google-Smtp-Source: AGHT+IGjXT+2eDwqicNrccsDlhQSZH8EsWtYCj4nBKE927hnDWkDF04fzthDynVquMC40LvH2Oyqtg==
+X-Received: by 2002:a05:6512:2149:b0:4fd:faa2:884c with SMTP id s9-20020a056512214900b004fdfaa2884cmr1570202lfr.29.1691162693232;
+        Fri, 04 Aug 2023 08:24:53 -0700 (PDT)
+Received: from [192.168.1.101] (abyk53.neoplus.adsl.tpnet.pl. [83.9.30.53])
+        by smtp.gmail.com with ESMTPSA id u28-20020ac2519c000000b004fe38e566cfsm408201lfi.280.2023.08.04.08.24.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Aug 2023 08:24:52 -0700 (PDT)
+Message-ID: <1532622f-0ba8-4af1-b44a-eecf7fbdfc70@linaro.org>
+Date:   Fri, 4 Aug 2023 17:24:51 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230804-sm6350-sdcc2-v1-1-3d946927d37d@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAJkGzWQC/x3MMQqAMAxA0atIZgtpqyJeRRxKEzWDVRoQQXp3i
- +Mb/n9BOQsrTM0LmW9ROVOFbRuIe0gbG6FqcOg8jtgZPQbfo1GK0Rka+0iENgxsoSZX5lWefzc
- vpXzA9fv6XgAAAA==
-To:     Bjorn Andersson <andersson@kernel.org>,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] clk: qcom: gcc-sm6350: Fix gcc_sdcc2_apps_clk_src
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>,
         AngeloGioacchino Del Regno 
@@ -68,45 +65,60 @@ To:     Bjorn Andersson <andersson@kernel.org>,
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Konrad Dybcio <konrad.dybcio@somainline.org>,
         linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.12.3
+        linux-kernel@vger.kernel.org
+References: <20230804-sm6350-sdcc2-v1-1-3d946927d37d@fairphone.com>
+Content-Language: en-US
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20230804-sm6350-sdcc2-v1-1-3d946927d37d@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-GPLL7 is not on by default, which causes a "gcc_sdcc2_apps_clk_src: rcg
-didn't update its configuration" error when booting. Set .flags =
-CLK_OPS_PARENT_ENABLE to fix the error.
+On 4.08.2023 16:09, Luca Weiss wrote:
+> GPLL7 is not on by default, which causes a "gcc_sdcc2_apps_clk_src: rcg
+> didn't update its configuration" error when booting. Set .flags =
+> CLK_OPS_PARENT_ENABLE to fix the error.
+> 
+> Fixes: 131abae905df ("clk: qcom: Add SM6350 GCC driver")
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Fixes: 131abae905df ("clk: qcom: Add SM6350 GCC driver")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
-As with sm8250[0], we need the same fix for sm6350 as we have the same
-warning on boot. With this patch the warning disappears.
-
-[0] https://lore.kernel.org/linux-arm-msm/20230802210359.408-1-patrick.whewell@sightlineapplications.com/
----
- drivers/clk/qcom/gcc-sm6350.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
-index 9b4e4bb05963..cf4a7b6e0b23 100644
---- a/drivers/clk/qcom/gcc-sm6350.c
-+++ b/drivers/clk/qcom/gcc-sm6350.c
-@@ -641,6 +641,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 		.name = "gcc_sdcc2_apps_clk_src",
- 		.parent_data = gcc_parent_data_8,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_8),
-+		.flags = CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_rcg2_floor_ops,
- 	},
- };
-
----
-base-commit: fb4327106e5250ee360d0d8b056c1eef7eeb9a98
-change-id: 20230804-sm6350-sdcc2-d85cdd01a6e1
-
-Best regards,
--- 
-Luca Weiss <luca.weiss@fairphone.com>
-
+Konrad
