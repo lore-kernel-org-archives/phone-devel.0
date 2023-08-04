@@ -2,91 +2,98 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37A06C001E0
-	for <phone-devel@archiver.kernel.org>; Wed,  2 Aug 2023 20:30:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7CAEEC10F1A
+	for <phone-devel@archiver.kernel.org>; Fri,  4 Aug 2023 13:35:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230460AbjHBUaZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 2 Aug 2023 16:30:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36368 "EHLO
+        id S229706AbjHDNfD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 4 Aug 2023 09:35:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbjHBUaY (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Wed, 2 Aug 2023 16:30:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07E7826A2;
-        Wed,  2 Aug 2023 13:30:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8FBD561AFE;
-        Wed,  2 Aug 2023 20:30:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E347FC433C9;
-        Wed,  2 Aug 2023 20:30:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691008223;
-        bh=EmWbaenOMDMD6nYdMzBFCScTkic4CvjgRoEjkBg+bnE=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=VvEEJn4ZP6H4Q7fIJSQjyMaGQyiLccK7NXIEXRuMbSrVtwDsqvcAejUc2tGH5pae6
-         fMQ7pxeSQBIuhEwYHHI27EyCsNmhk9p7nA8AHCvgfG8Pk4s5A9vAWpy7qjVyLqHQtF
-         R6FoA3B9ngUfgMdE7WBiuKHfMEEq7sv/pZFRiirj/+UK2XWO075tP5HAmzNLoJ58sD
-         F5n6tRD2YRHmhFBwp9qCso2O/92w/PHOhwMmElhigy4x7WBM418XzRFgsas+oP2Gpr
-         O9C6dRL9rgRlmmEbn2vnJW/kWRcdIWyjDNtrbApwfOAoyfxjKDfnM/AS4/65d2Rzil
-         V0Jwvv2I4L/PQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id C4843C6445B;
-        Wed,  2 Aug 2023 20:30:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S231186AbjHDNew (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 4 Aug 2023 09:34:52 -0400
+Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898AB11B;
+        Fri,  4 Aug 2023 06:34:42 -0700 (PDT)
+Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
+        by mx.skole.hr (mx.skole.hr) with ESMTP id 7D3D9837FE;
+        Fri,  4 Aug 2023 15:34:40 +0200 (CEST)
+From:   =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Date:   Fri, 04 Aug 2023 15:32:31 +0200
+Subject: [PATCH v3 1/8] gpio: pxa: disable pinctrl calls for MMP_GPIO
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 0/2] Add WCN3988 Bluetooth support for Fairphone 4
-From:   patchwork-bot+bluetooth@kernel.org
-Message-Id: <169100822279.572.3966556819111433761.git-patchwork-notify@kernel.org>
-Date:   Wed, 02 Aug 2023 20:30:22 +0000
-References: <20230802-fp4-bluetooth-v3-0-7c9e7a6e624b@fairphone.com>
-In-Reply-To: <20230802-fp4-bluetooth-v3-0-7c9e7a6e624b@fairphone.com>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, marcel@holtmann.org,
-        johan.hedberg@gmail.com, luiz.dentz@gmail.com, agross@kernel.org,
-        andersson@kernel.org, konrad.dybcio@linaro.org,
-        conor+dt@kernel.org, quic_bgodavar@quicinc.com,
-        quic_rjliao@quicinc.com, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-bluetooth@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        krzysztof.kozlowski@linaro.org
+Message-Id: <20230804-pxa1908-lkml-v3-1-8e48fca37099@skole.hr>
+References: <20230804-pxa1908-lkml-v3-0-8e48fca37099@skole.hr>
+In-Reply-To: <20230804-pxa1908-lkml-v3-0-8e48fca37099@skole.hr>
+To:     Robert Jarzmik <robert.jarzmik@free.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andy Shevchenko <andy@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hardening@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afaerber@suse.de
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=717;
+ i=duje.mihanovic@skole.hr; h=from:subject:message-id;
+ bh=KpHlcLrUY59P26MylBMaHpzA91WHfXQj5w9V31CEE9k=;
+ b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBkzP48AZceUblxAiuJ5KgUSAnXzzFTNjATUDUjM
+ C5BfXeom6qJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZMz+PAAKCRCaEZ6wQi2W
+ 4V+iD/9LZHUwUQv8ebIUN4OHwIkM4NYbYKjSgrY0mPmZYX4ZWO/4R0GWHMS24Dh4qWUT4EoTEq3
+ q8usrjH1B7NIB5FVYLW5B13eVT3eXUrnmxI82VInekPQ0LCbFS5sZS80/Lr0uMTXM90U3nvomkW
+ 1SM5MHuKvtoWDqLdNY6mE35obYgli7uHNoO/QvCprshio0ETcZWnzjqaMzlKXngW3CcThLhdVLC
+ 0sm9qQo+nngr5z9raW+svdF8ilndckrN0FHcWFg2QKjwnOYH3qngkZYZC0Q2X0n+TrpVRJULSRr
+ VvJJH/6/z03q1Z7+zYcZhY+UVhamD9rJwdccuFmPpOjuxjorCXrMO+2PqW/VOjBLKHFjcGIwjec
+ 68kJeNhqN78zHtO5OLPAhighRYQLBAZgMj8ziu7pC19BaLUZKQ/bxDTXWK++KNJyGaqrJN1poCa
+ hDq88OAtrxNv8yPPuRL2+eSnFC/92/d0PVt8Tq0tDM4k1LOT3BmiYu2C9fqO2O0yM/SzYSEV/Wu
+ huCX4YljTpettw91qzBKuZbIIwH2A9jwrDehtzKNzIfxUWjNISqfrRSBleZOJsNEgW94RQoVF3E
+ b6qW9t5Brb1VQ5DC5vOo63rVdqJHv1oyQvlyk8LSVz3j63cGE+7VS/nG9wN3WNRRoU+afpvBu2E
+ DH75gaHziN7O+JA==
+X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
+ fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hello:
+Similarly to PXA3xx and MMP2, pinctrl-single isn't capable of setting
+pin direction on MMP either.
 
-This series was applied to bluetooth/bluetooth-next.git (master)
-by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
+Fixes: a770d946371e ("gpio: pxa: add pin control gpio direction and request")
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+---
+ drivers/gpio/gpio-pxa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Wed, 02 Aug 2023 08:56:27 +0200 you wrote:
-> Add support in the btqca/hci_qca driver for the WCN3988 and add it to
-> the sm7225 Fairphone 4 devicetree.
-> 
-> Devicetree patches go via Qualcomm tree, the rest via their respective
-> trees.
-> 
-> --
-> Previously with the RFC version I've had problems before with Bluetooth
-> scanning failing like the following:
-> 
-> [...]
+diff --git a/drivers/gpio/gpio-pxa.c b/drivers/gpio/gpio-pxa.c
+index a1630ed4b741..d92650aecb06 100644
+--- a/drivers/gpio/gpio-pxa.c
++++ b/drivers/gpio/gpio-pxa.c
+@@ -238,6 +238,7 @@ static bool pxa_gpio_has_pinctrl(void)
+ 	switch (gpio_type) {
+ 	case PXA3XX_GPIO:
+ 	case MMP2_GPIO:
++	case MMP_GPIO:
+ 		return false;
+ 
+ 	default:
 
-Here is the summary with links:
-  - [v3,1/2] dt-bindings: net: qualcomm: Add WCN3988
-    https://git.kernel.org/bluetooth/bluetooth-next/c/d2a31b6f9701
-  - [v3,2/2] Bluetooth: btqca: Add WCN3988 support
-    https://git.kernel.org/bluetooth/bluetooth-next/c/f2e1dd87c9cd
-
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+2.41.0
 
 
