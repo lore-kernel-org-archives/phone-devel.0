@@ -2,142 +2,110 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5928C001DE
-	for <phone-devel@archiver.kernel.org>; Sun,  6 Aug 2023 10:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF59CC001DF
+	for <phone-devel@archiver.kernel.org>; Sun,  6 Aug 2023 15:40:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230335AbjHFKsD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 6 Aug 2023 06:48:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49072 "EHLO
+        id S229480AbjHFPkr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 6 Aug 2023 11:40:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbjHFKr7 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 6 Aug 2023 06:47:59 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAEBDB8;
-        Sun,  6 Aug 2023 03:47:54 -0700 (PDT)
-Received: from g550jk.localnet (unknown [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id C0D4FCF63C;
-        Sun,  6 Aug 2023 10:47:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1691318873; bh=cADcKcnDy8gLxnojyW532VLW7T8QirnxnQhcPDcckqo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=W8JMkEKrEKilRpRJOOyop+A9Z1lwHYBuY/Y6h0EpEB4ujaHvE+oviJ34f1Nvj8wP7
-         JK52mmBnBsCL3smqQPA0w45gU/AWDa8+0ZFMA87K6BlDCaCAKaXYg0D1AfGJtXsQoG
-         ZE+91uFeMiSHfk/2ddeS8L5iq+/0Y9HRh4ArPOPs=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
+        with ESMTP id S229844AbjHFPkq (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 6 Aug 2023 11:40:46 -0400
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C2011737
+        for <phone-devel@vger.kernel.org>; Sun,  6 Aug 2023 08:40:42 -0700 (PDT)
+Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2ba0f27a4c2so53769451fa.2
+        for <phone-devel@vger.kernel.org>; Sun, 06 Aug 2023 08:40:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1691336440; x=1691941240;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NvrJhNF2ptJeK82ja3ZQd6T/ZNrSYQqFaROioQHlrZ8=;
+        b=Rbxl662yzahhaRZ96Ibb8CJ0bsgb9ziq7x+yyodzm3YsjHT+UWsDw5bVUfcruk7bRt
+         OiabEfA8365KOlfoMfaQ/UYBBDTqoUNAt5nWYTCJSki8MxLdCDduizpBY2KQrEuGOq6A
+         3p3qX3EsHOQ0BYxnQVzJ/oYuJzrCPM/KnW9ioxprAftXRO4QOIXkm4ku5y2ihKtLcjfk
+         cSqzu+yZZFyZ9mkeiLFPrm+q6HNOdBcvzkNvu3vKIXjT6jk3ioMBrQIGwyKnthBU/+YR
+         2qrXEg3ep43xHxnSombwVI+WVlXradB2g8Tcxxf+u0w0obTyB/3zD+wTVAho1mXz7qTT
+         CjLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691336440; x=1691941240;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NvrJhNF2ptJeK82ja3ZQd6T/ZNrSYQqFaROioQHlrZ8=;
+        b=coHvifXC0Q0rdHUmxZXOA5hW4uJrqzI4lED9u6LoYd108NMe6o3Lhi9Vr+7kcVvzmf
+         N4fYn+m9e7niyDURW9nZkP1+4sCRddsdnHKVorkpTqIBR+OQo0JF2aR5HynBDJRu6g9J
+         U7b2NkkMEKXkyksPRw/ep5RqE2QEK1ZvRmoLYv+LB8JIjrAJ+L5kIYoSoX9ZZB6pLJBZ
+         VZDQpnDYwapW7ACkBh/ZmUdO0qJzpUjgPUhgf7CdqWwBQtaYztRn49a6bVZOM7UT2koq
+         3vyqGaegwieQlPSkBAi/wJm2e6X6x6pDzi6XS2VcaMAx1fHSX47tfrEFWTRFeqX9rQ8n
+         pj2w==
+X-Gm-Message-State: AOJu0Yysx7ru9PJfp/ZWe53sCakrc/QRP5FtMSIFFCj2UhQqxuf7sadl
+        8l9b/BBg6fQ3+mAJi4NCcKnVLw==
+X-Google-Smtp-Source: AGHT+IFNMyVbRJe9rPBqBTNx9wcpb/IUXe6XB58mQ1XqTq+4gtOHNPHNj6XJybnL/Vzg7a1MmWl+eg==
+X-Received: by 2002:a2e:95cc:0:b0:2b6:dc55:c3c7 with SMTP id y12-20020a2e95cc000000b002b6dc55c3c7mr5108273ljh.20.1691336440481;
+        Sun, 06 Aug 2023 08:40:40 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.222.245])
+        by smtp.gmail.com with ESMTPSA id u20-20020a05600c00d400b003fbb346279dsm7990880wmm.38.2023.08.06.08.40.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 06 Aug 2023 08:40:39 -0700 (PDT)
+Message-ID: <f920abc5-d627-fee5-4973-d57b099f7fc9@linaro.org>
+Date:   Sun, 6 Aug 2023 17:40:37 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v3 3/8] dt-bindings: clock: Add Marvell PXA1908 clock
+ bindings
+To:     =?UTF-8?Q?Duje_Mihanovi=c4=87?= <duje.mihanovic@skole.hr>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andy Shevchenko <andy@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Eduardo Valentin <edubezval@gmail.com>,
         Conor Dooley <conor+dt@kernel.org>,
-        Rajendra Nayak <quic_rjendra@quicinc.com>,
-        Rob Herring <robh@kernel.org>,
-        Andy Gross <andy.gross@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Craig Tatlor <ctatlor97@gmail.com>
-Subject: Re: [PATCH v2] ARM: dts: qcom: msm8974: correct qfprom node size
-Date:   Sun, 06 Aug 2023 12:47:51 +0200
-Message-ID: <12394955.O9o76ZdvQC@z3ntu.xyz>
-In-Reply-To: <ff6fwomoik6kz4jtbm5jac7jahrtcia5fb6dj5ykxg7xt574sn@ti42sevqj6pk>
-References: <20230130-msm8974-qfprom-v2-1-3839cf41d9ee@z3ntu.xyz>
- <866f1f66-8845-2453-ab9c-d125e23ae758@linaro.org>
- <ff6fwomoik6kz4jtbm5jac7jahrtcia5fb6dj5ykxg7xt574sn@ti42sevqj6pk>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hardening@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afaerber@suse.de
+References: <20230804-pxa1908-lkml-v3-0-8e48fca37099@skole.hr>
+ <20230804-pxa1908-lkml-v3-3-8e48fca37099@skole.hr>
+ <609d5c1d-4ef7-22d5-d951-f32dbe410906@linaro.org>
+ <12276137.O9o76ZdvQC@radijator>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <12276137.O9o76ZdvQC@radijator>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Bjorn,
-
-On Montag, 31. Juli 2023 23:45:21 CEST Bjorn Andersson wrote:
-> On Thu, Jun 15, 2023 at 08:20:41PM +0200, Konrad Dybcio wrote:
-> > On 15.06.2023 20:17, Luca Weiss wrote:
-> > > From: Craig Tatlor <ctatlor97@gmail.com>
-> > > 
-> > > The qfprom actually has size 0x3000, so adjust the reg.
-> > > 
-> > > Note that the non-ECC-corrected qfprom can be found at 0xfc4b8000
-> > > (-0x4000). The current reg points to the ECC-corrected qfprom block
-> > > which should have equivalent values at all offsets compared to the
-> > > non-corrected version.
-> > > 
-> > > [luca@z3ntu.xyz: extract to standalone patch and adjust for review
-> > > comments]
-> > > 
-> > > Fixes: c59ffb519357 ("arm: dts: msm8974: Add thermal zones, tsens and
-> > > qfprom nodes") Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
-> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > ---
-> > 
-> > Not sure of the actual size of the region, maybe Bjorn can help..
-> > 
-> > Downstream 3.10 suggests 0x60F0, 0x20F0 after adjusting for the ECC offset
+On 06/08/2023 12:12, Duje Mihanović wrote:
+> On Saturday, August 5, 2023 10:52:22 PM CEST Krzysztof Kozlowski wrote:
+>> On 04/08/2023 15:32, Duje Mihanović wrote:
+>>> Add dt bindings and documentation for the Marvell PXA1908 clock
+>>> controller.
+>>>
+>>> +/* SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause */
+>>
+>> Any particular reason to use different BSD-3 than bindings? Not easy to
+>> spot this difference...
 > 
-> There is indeed 0x3000 bytes until the next region, but afaict the
-> corrected ECC values only cover the first 0x800 bytes thereof.
-> 
-> Can you please let me know if this patch fixes a problem, or just
-> makes the numbers look better?
+> Not really, I can change it to BSD-2 if needed.
 
-Initially this patch came from a different direction, to make space to use the 
-PVS bits for cpufreq. Since Konrad said in earlier revisions that I should 
-always use the +0x4000 space for the ECC-corrected variant I've switched to 
-that.
+Yes, please, keep the same license as other part of bindings.
 
-If you think it's not useful to have the qfprom size reflect the actual size, 
-we can also drop this patch since I don't think it's actually necessary for 
-anything that I have lying around in some branches.
-
-I think I've just sent the current patch to make sure the hardware description 
-(dts) is as accurate as possible, but of course since any info on Qualcomm is 
-very restricted it could also be a bit wrong.
-
-Regards
-Luca
-
-> 
-> Regards,
-> Bjorn
-> 
-> > Konrad
-> > 
-> > > Changes in v2:
-> > > - Keep base offset but expand reg from 0x1000 to 0x3000 (Konrad)
-> > > - Link to v1:
-> > > https://lore.kernel.org/r/20230130-msm8974-qfprom-v1-1-975aa0e5e083@z3n
-> > > tu.xyz ---
-> > > 
-> > >  arch/arm/boot/dts/qcom-msm8974.dtsi | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi
-> > > b/arch/arm/boot/dts/qcom-msm8974.dtsi index 7ed0d925a4e9..3156fe25967f
-> > > 100644
-> > > --- a/arch/arm/boot/dts/qcom-msm8974.dtsi
-> > > +++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
-> > > @@ -1194,7 +1194,7 @@ restart@fc4ab000 {
-> > > 
-> > >  		qfprom: qfprom@fc4bc000 {
-> > >  		
-> > >  			compatible = "qcom,msm8974-qfprom", 
-"qcom,qfprom";
-> > > 
-> > > -			reg = <0xfc4bc000 0x1000>;
-> > > +			reg = <0xfc4bc000 0x3000>;
-> > > 
-> > >  			#address-cells = <1>;
-> > >  			#size-cells = <1>;
-> > > 
-> > > ---
-> > > base-commit: 858fd168a95c5b9669aac8db6c14a9aeab446375
-> > > change-id: 20230130-msm8974-qfprom-619c0e8f26eb
-> > > 
-> > > Best regards,
-
-
-
+Best regards,
+Krzysztof
 
