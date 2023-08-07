@@ -2,110 +2,106 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF59CC001DF
-	for <phone-devel@archiver.kernel.org>; Sun,  6 Aug 2023 15:40:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19DCFC001DB
+	for <phone-devel@archiver.kernel.org>; Mon,  7 Aug 2023 13:32:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229480AbjHFPkr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 6 Aug 2023 11:40:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33154 "EHLO
+        id S231265AbjHGNct (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 7 Aug 2023 09:32:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229844AbjHFPkq (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sun, 6 Aug 2023 11:40:46 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C2011737
-        for <phone-devel@vger.kernel.org>; Sun,  6 Aug 2023 08:40:42 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2ba0f27a4c2so53769451fa.2
-        for <phone-devel@vger.kernel.org>; Sun, 06 Aug 2023 08:40:42 -0700 (PDT)
+        with ESMTP id S231889AbjHGNcs (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 7 Aug 2023 09:32:48 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C3B51724
+        for <phone-devel@vger.kernel.org>; Mon,  7 Aug 2023 06:32:29 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-5860c7fc2fcso46346957b3.2
+        for <phone-devel@vger.kernel.org>; Mon, 07 Aug 2023 06:32:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691336440; x=1691941240;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NvrJhNF2ptJeK82ja3ZQd6T/ZNrSYQqFaROioQHlrZ8=;
-        b=Rbxl662yzahhaRZ96Ibb8CJ0bsgb9ziq7x+yyodzm3YsjHT+UWsDw5bVUfcruk7bRt
-         OiabEfA8365KOlfoMfaQ/UYBBDTqoUNAt5nWYTCJSki8MxLdCDduizpBY2KQrEuGOq6A
-         3p3qX3EsHOQ0BYxnQVzJ/oYuJzrCPM/KnW9ioxprAftXRO4QOIXkm4ku5y2ihKtLcjfk
-         cSqzu+yZZFyZ9mkeiLFPrm+q6HNOdBcvzkNvu3vKIXjT6jk3ioMBrQIGwyKnthBU/+YR
-         2qrXEg3ep43xHxnSombwVI+WVlXradB2g8Tcxxf+u0w0obTyB/3zD+wTVAho1mXz7qTT
-         CjLw==
+        d=linaro.org; s=google; t=1691415091; x=1692019891;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=77FFwVNR6VccWA56eXDJXbo5f9GOe5qfBgpPLU1lyeI=;
+        b=vo3pI61ugEwL+E90t+QyewuSiHEJNVoGpi5eDkheF1WzYk7EPT4hsCZVhWG7VNnGGP
+         2kRtKNkTlYuQrdLFX7LfGgwUitZSW0StTJRCTUs37XihTdKrIu/fwlvA/ci06v5yCs1R
+         uUywlRG6P9GZWUHrEGGWnHBDYztqtzzOjFfOnAIGrCzfhZrTU0w6GEqYpL13qOtd24zQ
+         1RlO06m+u+cDMvY83wjCgz8lzdX4WVU6QPfF3oFckpbNQt2N0D50S17MLpOlA9vA1XLi
+         10R1SmMkh2pHjsuzhbVDWnXx63r0jE7EtoThO4pktENrdl2IXyMN7bPdCSNVoZfCy0Oy
+         v7zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691336440; x=1691941240;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NvrJhNF2ptJeK82ja3ZQd6T/ZNrSYQqFaROioQHlrZ8=;
-        b=coHvifXC0Q0rdHUmxZXOA5hW4uJrqzI4lED9u6LoYd108NMe6o3Lhi9Vr+7kcVvzmf
-         N4fYn+m9e7niyDURW9nZkP1+4sCRddsdnHKVorkpTqIBR+OQo0JF2aR5HynBDJRu6g9J
-         U7b2NkkMEKXkyksPRw/ep5RqE2QEK1ZvRmoLYv+LB8JIjrAJ+L5kIYoSoX9ZZB6pLJBZ
-         VZDQpnDYwapW7ACkBh/ZmUdO0qJzpUjgPUhgf7CdqWwBQtaYztRn49a6bVZOM7UT2koq
-         3vyqGaegwieQlPSkBAi/wJm2e6X6x6pDzi6XS2VcaMAx1fHSX47tfrEFWTRFeqX9rQ8n
-         pj2w==
-X-Gm-Message-State: AOJu0Yysx7ru9PJfp/ZWe53sCakrc/QRP5FtMSIFFCj2UhQqxuf7sadl
-        8l9b/BBg6fQ3+mAJi4NCcKnVLw==
-X-Google-Smtp-Source: AGHT+IFNMyVbRJe9rPBqBTNx9wcpb/IUXe6XB58mQ1XqTq+4gtOHNPHNj6XJybnL/Vzg7a1MmWl+eg==
-X-Received: by 2002:a2e:95cc:0:b0:2b6:dc55:c3c7 with SMTP id y12-20020a2e95cc000000b002b6dc55c3c7mr5108273ljh.20.1691336440481;
-        Sun, 06 Aug 2023 08:40:40 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.222.245])
-        by smtp.gmail.com with ESMTPSA id u20-20020a05600c00d400b003fbb346279dsm7990880wmm.38.2023.08.06.08.40.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 06 Aug 2023 08:40:39 -0700 (PDT)
-Message-ID: <f920abc5-d627-fee5-4973-d57b099f7fc9@linaro.org>
-Date:   Sun, 6 Aug 2023 17:40:37 +0200
+        d=1e100.net; s=20221208; t=1691415091; x=1692019891;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=77FFwVNR6VccWA56eXDJXbo5f9GOe5qfBgpPLU1lyeI=;
+        b=d13suKeUrJoYkyFnpK/l/njJpYlWcsLcKn3/L9vw4AzSe6UvJI8j8cQnRM3rMdZ3HP
+         maKAhxMqC8udJChTu8isuDcRlu7BmJPAaKMDVfRrpG3bJCmkJga/KeX9ju6cRWpC1jlk
+         eLQIfF6xfUnrQQzgIuXfja3+Kd4q9urXrN7Ju4bEkoObJ7oO4/vS0pCnhM1O/5pGZzq2
+         03F3c9ILgKKhWqmNU9jtD1fOJNC4D3bPjFc0ue5h9pmF+wkSJ1ayk8CJwk5l5Cyi61Cg
+         p2yFsaitnpXm+tiVatOfV+CwWnER6fZbyDgmOzA88kaceVHoXh/QXigxwqjd5GcmIa6T
+         FHBQ==
+X-Gm-Message-State: AOJu0YwOvy8r4d+odMXbM23J8zW4oUHP4vhdAKdk3rZpmW5z+ON+zcyp
+        6/lgdHeFV/SN6AyS5SPLUQyjERqodFBvicDgnehpGQ==
+X-Google-Smtp-Source: AGHT+IGIYZn00w6gD6Z/MkLFgzZSDuhV8m/QCC+e8oE+tOcEDDUxG8sSwO0x65+BCApTE3Zz6bXa9bBFs7SI2w2lL4o=
+X-Received: by 2002:a25:cec8:0:b0:d3a:28bb:2c95 with SMTP id
+ x191-20020a25cec8000000b00d3a28bb2c95mr7392239ybe.22.1691415091461; Mon, 07
+ Aug 2023 06:31:31 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v3 3/8] dt-bindings: clock: Add Marvell PXA1908 clock
- bindings
-To:     =?UTF-8?Q?Duje_Mihanovi=c4=87?= <duje.mihanovic@skole.hr>,
+References: <20230727162909.6031-1-duje.mihanovic@skole.hr>
+ <20230727162909.6031-3-duje.mihanovic@skole.hr> <ZMKd+CoWu7QjOxHo@smile.fi.intel.com>
+ <13320053.uLZWGnKmhe@radijator>
+In-Reply-To: <13320053.uLZWGnKmhe@radijator>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Mon, 7 Aug 2023 15:31:19 +0200
+Message-ID: <CACRpkdZdpHjh_CCmuT2ORpuZ=CbUECW7dBXsL+P+aNvfMYmEuA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/9] gpio: pxa: use dynamic allocation of base
+To:     =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc:     Andy Shevchenko <andy@kernel.org>,
         Robert Jarzmik <robert.jarzmik@free.fr>,
-        Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andy@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hardening@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.de
-References: <20230804-pxa1908-lkml-v3-0-8e48fca37099@skole.hr>
- <20230804-pxa1908-lkml-v3-3-8e48fca37099@skole.hr>
- <609d5c1d-4ef7-22d5-d951-f32dbe410906@linaro.org>
- <12276137.O9o76ZdvQC@radijator>
-Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <12276137.O9o76ZdvQC@radijator>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        afaerber@suse.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 06/08/2023 12:12, Duje Mihanović wrote:
-> On Saturday, August 5, 2023 10:52:22 PM CEST Krzysztof Kozlowski wrote:
->> On 04/08/2023 15:32, Duje Mihanović wrote:
->>> Add dt bindings and documentation for the Marvell PXA1908 clock
->>> controller.
->>>
->>> +/* SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause */
->>
->> Any particular reason to use different BSD-3 than bindings? Not easy to
->> spot this difference...
-> 
-> Not really, I can change it to BSD-2 if needed.
+On Sun, Jul 30, 2023 at 11:18=E2=80=AFPM Duje Mihanovi=C4=87 <duje.mihanovi=
+c@skole.hr> wrote:
+> On Thursday, July 27, 2023 6:40:24 PM CEST Andy Shevchenko wrote:
+> > > This will break some older PXA boards (such as Spitz) as they still
+> > > seem to rely on fixed GPIO numbers with gpio_request and such.
+> >
+> > So...? Why do you think this patch can be accepted?
+>
+> Understandable, I'll drop it.
 
-Yes, please, keep the same license as other part of bindings.
+Or you can fix the real issue! This is what I had to do to fix the
+OMAP, all the way down:
 
-Best regards,
-Krzysztof
+8e0285ab95a9 ARM/musb: omap2: Remove global GPIO numbers from TUSB6010
+078dc5194c0a ARM: omap2: Rewrite WLAN quirk to use GPIO descriptors
+94075d16beef ARM: omap2: Get USB hub reset GPIO from descriptor
+d5f4fa60d63a ARM/gpio: Push OMAP2 quirk down into TWL4030 driver
+c729baa86042 ARM: omap1: Exorcise the legacy GPIO header
+df89de979f0e ARM: omap1: Make serial wakeup GPIOs use descriptors
+084b6f216778 ARM: omap1: Fix up the Nokia 770 board device IRQs
+e519f0bb64ef ARM/mmc: Convert old mmci-omap to GPIO descriptors
+767d83361aaa Input: ads7846 - Convert to use software nodes
+480c82daa3e4 ARM: omap1: Remove reliance on GPIO numbers from SX1
+4c40db6249ff ARM: omap1: Remove reliance on GPIO numbers from PalmTE
+fa1ae0cd897b ARM: omap1: Drop header on AMS Delta
+c32c81f3dbdf ARM/mfd/gpio: Fixup TPS65010 regression on OMAP1 OSK1
+a47137a5134b mfd/omap1: htc-i2cpld: Convert to a pure GPIO driver
+6efac0173cd1 ARM: OMAP1: OSK: fix ohci-omap breakage
+45c5775460f3 usb: ohci-omap: Fix descriptor conversion
+f3ef38160e3d usb: isp1301-omap: Convert to use GPIO descriptors
+15d157e87443 usb: ohci-omap: Convert to use GPIO descriptors
+e63201f19438 mmc: omap_hsmmc: Delete platform data GPIO CD and WP
 
+And maybe some more. Yeah it's tough, but it can be done!
+
+Yours,
+Linus Walleij
