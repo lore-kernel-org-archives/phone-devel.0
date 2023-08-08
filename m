@@ -2,27 +2,25 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7998EC04FE0
-	for <phone-devel@archiver.kernel.org>; Tue,  8 Aug 2023 20:36:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7C76C001DB
+	for <phone-devel@archiver.kernel.org>; Tue,  8 Aug 2023 20:48:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232262AbjHHUg1 convert rfc822-to-8bit (ORCPT
+        id S234811AbjHHUsW convert rfc822-to-8bit (ORCPT
         <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 8 Aug 2023 16:36:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40952 "EHLO
+        Tue, 8 Aug 2023 16:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234816AbjHHUfu (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 8 Aug 2023 16:35:50 -0400
+        with ESMTP id S234590AbjHHUsF (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 8 Aug 2023 16:48:05 -0400
 Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C88F7156FA9;
-        Tue,  8 Aug 2023 10:07:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47C0B3DE08;
+        Tue,  8 Aug 2023 09:42:16 -0700 (PDT)
 Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-        by mx.skole.hr (mx.skole.hr) with ESMTP id 6023B83F34;
-        Tue,  8 Aug 2023 13:04:31 +0200 (CEST)
+        by mx.skole.hr (mx.skole.hr) with ESMTP id 5E3BB83E5A;
+        Tue,  8 Aug 2023 12:42:17 +0200 (CEST)
 From:   Duje =?utf-8?B?TWloYW5vdmnEhw==?= <duje.mihanovic@skole.hr>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     Conor Dooley <conor+dt@kernel.org>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
+To:     Conor Dooley <conor+dt@kernel.org>, Lubomir Rintel <lkundrak@v3.sk>
+Cc:     Robert Jarzmik <robert.jarzmik@free.fr>,
         Linus Walleij <linus.walleij@linaro.org>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
         Andy Shevchenko <andy@kernel.org>,
@@ -40,15 +38,14 @@ Cc:     Conor Dooley <conor+dt@kernel.org>,
         linux-arm-kernel@lists.infradead.org,
         linux-hardening@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.de,
-        Duje =?utf-8?B?TWloYW5vdmnEhw==?= <duje.mihanovic@skole.hr>
+        afaerber@suse.de
 Subject: Re: [PATCH v4 3/8] dt-bindings: clock: Add Marvell PXA1908 clock bindings
-Date:   Tue, 08 Aug 2023 13:03:33 +0200
-Message-ID: <10320606.nUPlyArG6x@radijator>
-In-Reply-To: <20230808-quizzical-footwork-4846d6461f74@spud>
+Date:   Tue, 08 Aug 2023 12:41:22 +0200
+Message-ID: <2155917.irdbgypaU6@radijator>
+In-Reply-To: <20230808-equator-professor-fcc4564b4ef5@spud>
 References: <20230807-pxa1908-lkml-v4-0-cb387d73b452@skole.hr>
- <2155917.irdbgypaU6@radijator>
- <20230808-quizzical-footwork-4846d6461f74@spud>
+ <20230807-pxa1908-lkml-v4-3-cb387d73b452@skole.hr>
+ <20230808-equator-professor-fcc4564b4ef5@spud>
 MIME-Version: 1.0
 Autocrypt: addr=duje.mihanovic@skole.hr;
  keydata=
@@ -141,22 +138,33 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tuesday, August 8, 2023 12:46:23 PM CEST Conor Dooley wrote:
-> On Tue, Aug 08, 2023 at 12:41:22PM +0200, Duje Mihanović wrote:
-> > They are used by the clock driver when calling mmp_clk_init which then 
-uses
-> > that as the size of a struct clk array it allocates. In retrospect, 50 for
-> > each block may be too much as from what I can tell by reading the
-> > mmp_register_* functions (number of clocks + 1) for each block should be
-> > enough, anything less than that causes a null pointer dereference sometime
-> > during clock initialization.
+On Tuesday, August 8, 2023 9:49:49 AM CEST Conor Dooley wrote:
+> On Mon, Aug 07, 2023 at 05:42:37PM +0200, Duje Mihanović wrote:
+> > diff --git a/include/dt-bindings/clock/marvell,pxa1908.h
+> > b/include/dt-bindings/clock/marvell,pxa1908.h new file mode 100644
+> > index 000000000000..0c1f328bf534
+> > --- /dev/null
+> > +++ b/include/dt-bindings/clock/marvell,pxa1908.h
+> > +#define PXA1908_CLK_PLL4VCODIV3		38
+> > +#define PXA1908_MPMU_NR_CLKS		38
+> > 
+> > +#define PXA1908_CLK_TWSI3		18
+> > +#define PXA1908_APBC_NR_CLKS		50
+> > 
+> > +#define PXA1908_CLK_AICER		3
+> > +#define PXA1908_APBCP_NR_CLKS		50
+> > 
+> > +#define PXA1908_CLK_DVC_DFC_DEBUG	16
+> > +#define PXA1908_APMU_NR_CLKS		50
 > 
-> I think you might have misread my question, I'm not really interested in
-> the implementation detail of the driver. If these are not used in
-> devicetree, remove them - otherwise they are being needlessly added to
-> the ABI.
+> How are these "NR_CLKS" things helpful to the binding?
 
-Should I also do this in the rest of the MMP clock drivers?
+They are used by the clock driver when calling mmp_clk_init which then uses 
+that as the size of a struct clk array it allocates. In retrospect, 50 for 
+each block may be too much as from what I can tell by reading the 
+mmp_register_* functions (number of clocks + 1) for each block should be 
+enough, anything less than that causes a null pointer dereference sometime 
+during clock initialization.
 
 Regards,
 Duje
