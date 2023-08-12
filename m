@@ -2,75 +2,99 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5C74C04A94
-	for <phone-devel@archiver.kernel.org>; Fri, 11 Aug 2023 15:18:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3A5DC001DB
+	for <phone-devel@archiver.kernel.org>; Sat, 12 Aug 2023 10:26:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236316AbjHKPSH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 11 Aug 2023 11:18:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38972 "EHLO
+        id S236752AbjHLK0K (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 12 Aug 2023 06:26:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236169AbjHKPSD (ORCPT
+        with ESMTP id S229727AbjHLK0F (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 11 Aug 2023 11:18:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4104530DE;
-        Fri, 11 Aug 2023 08:17:55 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BEF3E6748A;
-        Fri, 11 Aug 2023 15:17:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE9DC433CC;
-        Fri, 11 Aug 2023 15:17:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691767074;
-        bh=PoROgr1ezcari3jTV71mALtsKzk/4Owqf38304zYh0U=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fkhRj0T7n8hC921y+qFzPwZ1e1kXJ7SdxBWAwtzj2X2noTyak9wML6sl1OEQDlaAM
-         uUrusYfJvDHzWXVyQxm1UnfdDzl3bmcxPBODhkJ+6UpQHR0kLzVFqFmYSGkfpj/50t
-         rzM+oQrJyP0eGSvvkjJSQeoUhn6u5ANVUJUTCoFZxXaOGsMCDgsWQTcKHQJyWGch4k
-         pzhb6RGH8hjbGi4chikOnN0ISTv62IoDJzD+7nw17fSfG6002LftIvRhrl7MSmj0f7
-         8XLw51YQ8LwCyLuXjl6MLX1zi2i8yNLz6yrCnt7QDevB7UhzhhWtZGod+dJ0JQCsYP
-         GHX0/BmNipOXg==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@somainline.org>,
-        Luca Weiss <luca.weiss@fairphone.com>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@somainline.org>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] clk: qcom: gcc-sm6350: Fix gcc_sdcc2_apps_clk_src
-Date:   Fri, 11 Aug 2023 08:20:41 -0700
-Message-ID: <169176724021.691796.4516185582008783101.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230804-sm6350-sdcc2-v1-1-3d946927d37d@fairphone.com>
-References: <20230804-sm6350-sdcc2-v1-1-3d946927d37d@fairphone.com>
+        Sat, 12 Aug 2023 06:26:05 -0400
+Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3CED170D;
+        Sat, 12 Aug 2023 03:26:08 -0700 (PDT)
+Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
+        by mx.skole.hr (mx.skole.hr) with ESMTP id 293A182A9B;
+        Sat, 12 Aug 2023 12:26:07 +0200 (CEST)
+From:   =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Date:   Sat, 12 Aug 2023 12:25:05 +0200
+Subject: [PATCH v5 1/8] gpio: pxa: disable pinctrl calls for MMP_GPIO
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20230812-pxa1908-lkml-v5-1-a5d51937ee34@skole.hr>
+References: <20230812-pxa1908-lkml-v5-0-a5d51937ee34@skole.hr>
+In-Reply-To: <20230812-pxa1908-lkml-v5-0-a5d51937ee34@skole.hr>
+To:     Robert Jarzmik <robert.jarzmik@free.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andy Shevchenko <andy@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hardening@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afaerber@suse.de
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=717;
+ i=duje.mihanovic@skole.hr; h=from:subject:message-id;
+ bh=KpHlcLrUY59P26MylBMaHpzA91WHfXQj5w9V31CEE9k=;
+ b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBk114Ejn0o+sJ9R66MpkeqR5THvpE/2hx19CFsu
+ I+erCRU2huJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZNdeBAAKCRCaEZ6wQi2W
+ 4U+wD/4rCSSTNj8ky6MrA4t2w8MZUprN7nQFoRNWTzeT1k/JBeLJD232B4AWHVBaN8s645nc8zZ
+ t/uLIrN77JlBAzm9+qTc97mF3MPZ3bmrxlRLgnqnLWxg+l+B+PmA4GzmoIw7QN1qW6F3De+LPkl
+ yfIMQX653+tM16G8/P4FTzM/jcc4QvVmjuWEjLfv/Ocz0+5BuQxuqODvOVaMFZIsqimCp2ocYdB
+ Uf6Br+DO06FPqtJ1+SEH2fUR8W/D6sR0K0D0dA3syjHqbN1tiUNlc74zJB6zFeZqciFt2f28OoP
+ 27sT3lXuTCuj2CrUvF+Zs7YpfUge+P/fEyubSiAX0yvqfPfb/R5O+xFhGZhqzUwFsQ0r+nFw5UX
+ qg9N5idsmwbelsRjz5UVoBgXymjaq8ehv0k8JkC/iRKAJF6Xe4JLuPSor5s+P4CskhKHBxGz7fR
+ lwE/VpOFmjErezbJtr77NHhla7OGyTqcvkbb08q5AnWX4+Uy8nsBqs3CHEUXKNg60o8xY4PNl4k
+ zCjYDqU7WX2C3rUC/n9iJTKYlCgiproqDqGQ/kq7JgptLm+qYKuD5GctY7ilirzgUm5a32VVenv
+ BOWkAtwezBuJpuJnb0rHbaM5aXDVAuWn5lyetOgXqetp4br3+/PDSRd1BDDieLQsxybkM4N/XRu
+ TXEKM5RqVOxT1oQ==
+X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
+ fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Similarly to PXA3xx and MMP2, pinctrl-single isn't capable of setting
+pin direction on MMP either.
 
-On Fri, 04 Aug 2023 16:09:30 +0200, Luca Weiss wrote:
-> GPLL7 is not on by default, which causes a "gcc_sdcc2_apps_clk_src: rcg
-> didn't update its configuration" error when booting. Set .flags =
-> CLK_OPS_PARENT_ENABLE to fix the error.
-> 
-> 
+Fixes: a770d946371e ("gpio: pxa: add pin control gpio direction and request")
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+---
+ drivers/gpio/gpio-pxa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Applied, thanks!
+diff --git a/drivers/gpio/gpio-pxa.c b/drivers/gpio/gpio-pxa.c
+index a1630ed4b741..d92650aecb06 100644
+--- a/drivers/gpio/gpio-pxa.c
++++ b/drivers/gpio/gpio-pxa.c
+@@ -238,6 +238,7 @@ static bool pxa_gpio_has_pinctrl(void)
+ 	switch (gpio_type) {
+ 	case PXA3XX_GPIO:
+ 	case MMP2_GPIO:
++	case MMP_GPIO:
+ 		return false;
+ 
+ 	default:
 
-[1/1] clk: qcom: gcc-sm6350: Fix gcc_sdcc2_apps_clk_src
-      commit: df04d166d1f346dbf740bbea64a3bed3e7f14c8d
-
-Best regards,
 -- 
-Bjorn Andersson <andersson@kernel.org>
+2.41.0
+
+
