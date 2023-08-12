@@ -2,59 +2,59 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 929B5C04A94
-	for <phone-devel@archiver.kernel.org>; Sat, 12 Aug 2023 11:48:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17C25C001B0
+	for <phone-devel@archiver.kernel.org>; Sat, 12 Aug 2023 15:48:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237084AbjHLLst (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 12 Aug 2023 07:48:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46078 "EHLO
+        id S229452AbjHLPsG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 12 Aug 2023 11:48:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237074AbjHLLse (ORCPT
+        with ESMTP id S229664AbjHLPsE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 12 Aug 2023 07:48:34 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 132CD1707
-        for <phone-devel@vger.kernel.org>; Sat, 12 Aug 2023 04:48:37 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4fe7e67cc77so4554359e87.2
-        for <phone-devel@vger.kernel.org>; Sat, 12 Aug 2023 04:48:36 -0700 (PDT)
+        Sat, 12 Aug 2023 11:48:04 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48982170A
+        for <phone-devel@vger.kernel.org>; Sat, 12 Aug 2023 08:48:07 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4fe655796faso4661832e87.2
+        for <phone-devel@vger.kernel.org>; Sat, 12 Aug 2023 08:48:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691840915; x=1692445715;
+        d=linaro.org; s=google; t=1691855285; x=1692460085;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=LfI0Ot2bUrwRsw6GQEsr9wIkJZLiGCkI2QpujSVBMAg=;
-        b=R/HD4zWtfV1t+b+V0In6rTXIT05L0LOG61TsAP2U3KsE4sETkI8CbVuEifJQKLGDZG
-         tOQyQ35RZ6esZsnw8X53E1eFKSYHoqOvzwv4SUoWoRpLzIy3UPxkkn5qy3CouQdkEbtm
-         a6rvTmNMPrPRK0KsyX7TwFOqcNYb8izvoJijEzIWoNbp0dIef/PUbCDriZ/Z1rxKg4xe
-         QXuuk+XtmPO3+iPxDsrMugOoujGw7xS0Ewadd9m4jkOcD26C7UVTGlfioP6l2IoIg4nZ
-         7nFFRZNvX4tPLW2VyUzuc2uefDCxj29A/qo74oZD+OfGKtSjemjcydFOjnpEcCHG/RHC
-         NuXg==
+        bh=+7EmhC7IvfDMyhQW+vcMkOmpd2esE3mk9TXXEdkzT+8=;
+        b=A7GLIvcjYO96fYqCj6TXYiCoi+IFnBozs0dHCAMwuIz1SVTqmQ13MSQKg5x6B+Q1wI
+         2DkJ+RIxYyp9toISocgyAfo7Jhn3dQ/81rS6BEU4y4q8k/7beXVZ1e5FG0SLrxejg17N
+         1mJ7gWGKiYjgVonsWK8eyOWkMAnm9AsMBSlv7Bon+NDVz7C90oWfrQwK5OH4Q2PvJ9G7
+         WxIaWUlsAzFflKy2hjdtmhXhKEH47ts0iEHEWN4xIQ9QNbHG+PUqfu209LvsseRrO+ZL
+         93bN3XBWozPYK33/amI2eDS8i0Ek4WZWU+xmoc4RmOduDwmgXb76cDxMhPQMdkJ6J0T8
+         wkUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691840915; x=1692445715;
+        d=1e100.net; s=20221208; t=1691855285; x=1692460085;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LfI0Ot2bUrwRsw6GQEsr9wIkJZLiGCkI2QpujSVBMAg=;
-        b=lYeu3Eh7e5x2fHP2J9q3oXNBLl3ejx06TaVq4JjWPNzR7YGKi3ZEGxNIQuS8vIGFJY
-         BzN2qVx6lKwYvC5zMa+PjX3Q+jCS6eO39SNGIFK5NJXjBxbOTTJaimP+ZgLEBLhM0Tb5
-         JAEjoQ8FdwH0KhJSGJ0mBeZOCbpGR07USlFjomopepcepZqUu0MoVkMGAF7+vArrSprt
-         l9AJ7b5x7WwglKYHimV5H0epOV2WjU2A491vtKGhlDCOvEzmZP7KQfR0WE4Tdc2ZBeqR
-         a7juQXIuUJqLxctrkiDEsljla8EdftOZeKXrDdxITjgxoUFrMxBDnjsuOMp6OX8uu0I9
-         2yxQ==
-X-Gm-Message-State: AOJu0YzqqSJgL+wViiOnF8g1wvLmwLQcmwcjRwQDjGTUC7v8sYU7kqJT
-        6Iuum/+ICihNp/xgt2cI1ftasQ==
-X-Google-Smtp-Source: AGHT+IGo2fBKr2DiWlhiGXKDgUrYclUgc1Whq3WazgngnzJ/Pa8W78OCICi5dMP3Avi04ASJEji2mA==
-X-Received: by 2002:a05:6512:15a7:b0:4f9:6842:afc with SMTP id bp39-20020a05651215a700b004f968420afcmr4007296lfb.64.1691840915241;
-        Sat, 12 Aug 2023 04:48:35 -0700 (PDT)
+        bh=+7EmhC7IvfDMyhQW+vcMkOmpd2esE3mk9TXXEdkzT+8=;
+        b=fma+oK6J/zRLjrRLVIliyLhj5+hjWrxXeFu9/x2ZLJfrxkxkbSECG18I4S2EOyfdYM
+         9YrEBJjLlHbq85m7xRKLRvuOiq6a1RmUbULS5Q8U5d+WR637pCPgXWFAS2GL+NbPDnK/
+         +RL+Xel6xE2hS0JdQFpokmoS2PvDBxUybNSt/U4P9dqPy2i9Kb4CCuaQv4om19YxABD7
+         GzfHbbkiFKMuy8hmP9sthpZeoWTqQh99ScGATQAUjCgYL5sAa7/7zZ9SsyTqOIdOQKLx
+         y0yiy/0YzfgpxsZAFneasaNSIboYnCzMrTCg2T9RPe4RRjH4DJ0k4/9Y3LXkLZUj57uV
+         x6xA==
+X-Gm-Message-State: AOJu0YwPiZrd+FfK/edrQ7RnYWos4t6+WyhzVZ1Yneqb4A9PCiXbam9c
+        JVXL9xnoWG/NOWGitsWGBlv0yA==
+X-Google-Smtp-Source: AGHT+IH+/xOszBXGiiStoi3yRcILGLTaELHC86haK/0LqUTXljUMl1J1PwCbM3VVp5BWwhMudgfdKw==
+X-Received: by 2002:a19:5e49:0:b0:4fd:d7ac:2654 with SMTP id z9-20020a195e49000000b004fdd7ac2654mr2709878lfi.13.1691855285513;
+        Sat, 12 Aug 2023 08:48:05 -0700 (PDT)
 Received: from [192.168.1.101] (abyj188.neoplus.adsl.tpnet.pl. [83.9.29.188])
-        by smtp.gmail.com with ESMTPSA id j3-20020ac24543000000b004fe10276bbfsm1090168lfm.296.2023.08.12.04.48.33
+        by smtp.gmail.com with ESMTPSA id d25-20020ac25459000000b004fde91ea57bsm1177780lfn.11.2023.08.12.08.48.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 12 Aug 2023 04:48:34 -0700 (PDT)
-Message-ID: <d584a9bc-4f71-4e57-b0e5-f86173e6a20f@linaro.org>
-Date:   Sat, 12 Aug 2023 13:48:33 +0200
+        Sat, 12 Aug 2023 08:48:05 -0700 (PDT)
+Message-ID: <6e1271b0-61b2-4e7c-ae38-c436134e288f@linaro.org>
+Date:   Sat, 12 Aug 2023 17:48:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/7] clk: qcom: hfpll: Allow matching pdata
+Subject: Re: [PATCH v3 5/7] clk: qcom: hfpll: Add MSM8976 PLL data
 Content-Language: en-US
 To:     Adam Skladowski <a39.skl@gmail.com>
 Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
@@ -70,7 +70,7 @@ Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20230812112534.8610-1-a39.skl@gmail.com>
- <20230812112534.8610-4-a39.skl@gmail.com>
+ <20230812112534.8610-6-a39.skl@gmail.com>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -107,7 +107,7 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20230812112534.8610-4-a39.skl@gmail.com>
+In-Reply-To: <20230812112534.8610-6-a39.skl@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -115,9 +115,13 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 12.08.2023 13:24, Adam Skladowski wrote:
-> HFPLL driver can be used to drive PLLs also on different SoCs like MSM8976
-> On MSM8976 each PLL gets it own different configuration,
-> add matching pdata to driver to support multiple configurations.
+> Add PLL configuration for MSM8976 SoC, this SoC offers 3 HFPLL.
+> Small cluster offers two presets for 652-902Mhz range and 902Mhz-1.47Ghz.
+> For simplicity only add second range as smaller frequencies can be obtained
+> via apcs divider or safe parent this also saves us
+> a hassle of reconfiguring VCO bit and config_val.
+> A72 and CCI cluster only use single frequency range with their
+> outputs/post_dividers/vco_bits being static.
 > 
 > Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 > ---
