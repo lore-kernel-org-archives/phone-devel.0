@@ -2,129 +2,91 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 17C25C001B0
-	for <phone-devel@archiver.kernel.org>; Sat, 12 Aug 2023 15:48:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96E07C04A6A
+	for <phone-devel@archiver.kernel.org>; Sun, 13 Aug 2023 10:01:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229452AbjHLPsG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 12 Aug 2023 11:48:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50544 "EHLO
+        id S229802AbjHMKBg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 13 Aug 2023 06:01:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229664AbjHLPsE (ORCPT
+        with ESMTP id S229553AbjHMKBf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 12 Aug 2023 11:48:04 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48982170A
-        for <phone-devel@vger.kernel.org>; Sat, 12 Aug 2023 08:48:07 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-4fe655796faso4661832e87.2
-        for <phone-devel@vger.kernel.org>; Sat, 12 Aug 2023 08:48:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691855285; x=1692460085;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+7EmhC7IvfDMyhQW+vcMkOmpd2esE3mk9TXXEdkzT+8=;
-        b=A7GLIvcjYO96fYqCj6TXYiCoi+IFnBozs0dHCAMwuIz1SVTqmQ13MSQKg5x6B+Q1wI
-         2DkJ+RIxYyp9toISocgyAfo7Jhn3dQ/81rS6BEU4y4q8k/7beXVZ1e5FG0SLrxejg17N
-         1mJ7gWGKiYjgVonsWK8eyOWkMAnm9AsMBSlv7Bon+NDVz7C90oWfrQwK5OH4Q2PvJ9G7
-         WxIaWUlsAzFflKy2hjdtmhXhKEH47ts0iEHEWN4xIQ9QNbHG+PUqfu209LvsseRrO+ZL
-         93bN3XBWozPYK33/amI2eDS8i0Ek4WZWU+xmoc4RmOduDwmgXb76cDxMhPQMdkJ6J0T8
-         wkUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691855285; x=1692460085;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+7EmhC7IvfDMyhQW+vcMkOmpd2esE3mk9TXXEdkzT+8=;
-        b=fma+oK6J/zRLjrRLVIliyLhj5+hjWrxXeFu9/x2ZLJfrxkxkbSECG18I4S2EOyfdYM
-         9YrEBJjLlHbq85m7xRKLRvuOiq6a1RmUbULS5Q8U5d+WR637pCPgXWFAS2GL+NbPDnK/
-         +RL+Xel6xE2hS0JdQFpokmoS2PvDBxUybNSt/U4P9dqPy2i9Kb4CCuaQv4om19YxABD7
-         GzfHbbkiFKMuy8hmP9sthpZeoWTqQh99ScGATQAUjCgYL5sAa7/7zZ9SsyTqOIdOQKLx
-         y0yiy/0YzfgpxsZAFneasaNSIboYnCzMrTCg2T9RPe4RRjH4DJ0k4/9Y3LXkLZUj57uV
-         x6xA==
-X-Gm-Message-State: AOJu0YwPiZrd+FfK/edrQ7RnYWos4t6+WyhzVZ1Yneqb4A9PCiXbam9c
-        JVXL9xnoWG/NOWGitsWGBlv0yA==
-X-Google-Smtp-Source: AGHT+IH+/xOszBXGiiStoi3yRcILGLTaELHC86haK/0LqUTXljUMl1J1PwCbM3VVp5BWwhMudgfdKw==
-X-Received: by 2002:a19:5e49:0:b0:4fd:d7ac:2654 with SMTP id z9-20020a195e49000000b004fdd7ac2654mr2709878lfi.13.1691855285513;
-        Sat, 12 Aug 2023 08:48:05 -0700 (PDT)
-Received: from [192.168.1.101] (abyj188.neoplus.adsl.tpnet.pl. [83.9.29.188])
-        by smtp.gmail.com with ESMTPSA id d25-20020ac25459000000b004fde91ea57bsm1177780lfn.11.2023.08.12.08.48.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 12 Aug 2023 08:48:05 -0700 (PDT)
-Message-ID: <6e1271b0-61b2-4e7c-ae38-c436134e288f@linaro.org>
-Date:   Sat, 12 Aug 2023 17:48:03 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/7] clk: qcom: hfpll: Add MSM8976 PLL data
-Content-Language: en-US
-To:     Adam Skladowski <a39.skl@gmail.com>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Sun, 13 Aug 2023 06:01:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA4151708;
+        Sun, 13 Aug 2023 03:01:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 314C061BE9;
+        Sun, 13 Aug 2023 10:01:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D509BC433C8;
+        Sun, 13 Aug 2023 10:01:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691920896;
+        bh=5hO7G8BpKx5nLqEG8LO3RfxbwU3vMuk/JGHyD8Z2QPM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nNEi0tg2ThEOU476rUdbxfpBIRh3p8owJCpaS8oA7kQ8WJeDFHDmdQkhkxLjQg9u3
+         tPQmoiEFXwniy2ScG0BxiJbYWEs17LtjbKj/F6oqvCMfHYCrVveh8HqHHNlpKy9Y0b
+         4AYbVRa7pqxM5s1yc2sDNRpESknRRQ9nZkVdJkK8cmHYlzL1vKx6hr+3OqmrzWCRUo
+         bAcrp0+iyINQGe/GalQ1ZYOSG4pjbYlJhWXhuFR3gPetlHkPRSGbm8QNqOQf6HXrt3
+         wmeJ7QhD7abO+hPyJdY5+grsZhWUIenzv/SAW3yXKe8twRgJPVGcu+/g9DTPXfvjLA
+         LDdNIcEBRq9IA==
+Date:   Sun, 13 Aug 2023 11:01:29 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc:     Robert Jarzmik <robert.jarzmik@free.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andy Shevchenko <andy@kernel.org>,
         Michael Turquette <mturquette@baylibre.com>,
         Stephen Boyd <sboyd@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        AngeloGioacchino Del Regno <kholk11@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230812112534.8610-1-a39.skl@gmail.com>
- <20230812112534.8610-6-a39.skl@gmail.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20230812112534.8610-6-a39.skl@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hardening@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afaerber@suse.de
+Subject: Re: [PATCH v5 3/8] dt-bindings: clock: Add Marvell PXA1908 clock
+ bindings
+Message-ID: <20230813-overarch-golf-e467a8adc559@spud>
+References: <20230812-pxa1908-lkml-v5-0-a5d51937ee34@skole.hr>
+ <20230812-pxa1908-lkml-v5-3-a5d51937ee34@skole.hr>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="geLVKEvy9vaVuliu"
+Content-Disposition: inline
+In-Reply-To: <20230812-pxa1908-lkml-v5-3-a5d51937ee34@skole.hr>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 12.08.2023 13:24, Adam Skladowski wrote:
-> Add PLL configuration for MSM8976 SoC, this SoC offers 3 HFPLL.
-> Small cluster offers two presets for 652-902Mhz range and 902Mhz-1.47Ghz.
-> For simplicity only add second range as smaller frequencies can be obtained
-> via apcs divider or safe parent this also saves us
-> a hassle of reconfiguring VCO bit and config_val.
-> A72 and CCI cluster only use single frequency range with their
-> outputs/post_dividers/vco_bits being static.
-> 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-> ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Konrad
+--geLVKEvy9vaVuliu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+
+--geLVKEvy9vaVuliu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZNip+QAKCRB4tDGHoIJi
+0uMvAQCKjDQuz5Y5rfSWj6T8SBT3jfQqFD74ecb2X5GpM7fftgD8Co75UBnhhlzD
+FVVRrZys1XbsY13gOt1vF3MQjAcP5g8=
+=ZSrA
+-----END PGP SIGNATURE-----
+
+--geLVKEvy9vaVuliu--
