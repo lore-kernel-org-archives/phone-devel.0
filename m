@@ -2,64 +2,65 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 400DFEB64DD
-	for <phone-devel@archiver.kernel.org>; Mon, 14 Aug 2023 10:15:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 12E3CC001B0
+	for <phone-devel@archiver.kernel.org>; Mon, 14 Aug 2023 10:15:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235006AbjHNKOl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S231727AbjHNKOl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Mon, 14 Aug 2023 06:14:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48582 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236609AbjHNKOW (ORCPT
+        with ESMTP id S236490AbjHNKOV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 14 Aug 2023 06:14:22 -0400
+        Mon, 14 Aug 2023 06:14:21 -0400
 Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82EE910D0
-        for <phone-devel@vger.kernel.org>; Mon, 14 Aug 2023 03:14:21 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-99cdb0fd093so569500366b.1
-        for <phone-devel@vger.kernel.org>; Mon, 14 Aug 2023 03:14:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F123210CE
+        for <phone-devel@vger.kernel.org>; Mon, 14 Aug 2023 03:14:19 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-99c3d3c3db9so554154966b.3
+        for <phone-devel@vger.kernel.org>; Mon, 14 Aug 2023 03:14:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1692008060; x=1692612860;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SkXTYbxi8WsuAx3brFiN3d9aFfnzOfLnWqXE8pepV8E=;
-        b=SW3PgpkMGdRLpwTKiD2cGqxzUT4MRFRGhPbqlmmV1bg9hpAqQ4GiQUFDoj8Ipv2XSA
-         U2xu2X4WEY/spbe5GWKQ5tpSOawfizR9yldqvPWA0ZqihXwA6jAP2CF6kukIgDabu6nr
-         DJgc6y4Bg05Giv+k3zOOUTbWDQofSs07j181Tykuy8fW/R79mQPdWMoMi9+EjYntMwJz
-         /pnRimwEp2P1W4xq3Dp53k/nw9tN24SL2oJ1q/0rZEO/RZWQCW/8KtKsgEzUYiHTTmv7
-         T5f8x8+ouQrK1r74zKdFQrVqTWitMrq1tL0x6bzxVtPfDthWyMQMURnmaQqYbQX1szHM
-         POqg==
+        d=fairphone.com; s=fair; t=1692008058; x=1692612858;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OaliXMOmH9SU1C2DkaplWarCzA0RpYIWvO0eSAY4J5I=;
+        b=vhCN3qS28z+GMKAMta2CsJCod5E7MyhhhaMf8cj9l8nCIRSTLPjLvlnMVZEAmZkgZC
+         yKZrsq0jgS11wzSOqKQh1GTzxApFlOVH/VwbQ32oInbjMF6eDt8eC6pH0Z72biW/Bnid
+         aHu5GAx8MzjyGI0j8xBURqGZyfYML1egsi2pHUNiDqqBHm/Zka0fL6Bya2jjdbGuKZb0
+         KR6hRXDM+ZaSXYLvb5jkxxYHE892EGSjXnxtoTMYwwi5s2KqFzbplyidMBAY8v/xkY5z
+         tzwOTnhRjdDlrRGRU+iSYJFhzv2KbqrgFh2zsNlv3Z/dCiDdrcX3yp10SJkf2DswHOEQ
+         1IxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692008060; x=1692612860;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SkXTYbxi8WsuAx3brFiN3d9aFfnzOfLnWqXE8pepV8E=;
-        b=dplh6WmtqEajwqhAi1eumx2pnlaKeMe9baxBzN23v9kw3IdeqejxDgNAHlDfK3stlM
-         NPWJNHh7p++svT29CeMeFDrZn5+lRIQhDf5u/FUwOpiD+cPvZ9E7isHrUeZFM2XSb1Cp
-         NRDHVv40XsJYyaES6DY1CL9h8w7B4ZS/q6172Q6JfvrloHxRl6bqzcblvd23PIuvPr8q
-         rFUXUMCIgayZkANLK/xdGZ9x8sqou4uuPXQyRcusLYBw9wfLTUXudD/KqQxiHQoGuQrY
-         N+Ma1Bt7Wxjb3qNVoLvODHqDhLu4+gQtL1OAv5mlcXK+RaQu6JkRYD4l1sk1jLNeNNRS
-         kp3g==
-X-Gm-Message-State: AOJu0YyB7YSw26+fMEfNFOd15Ba0H2BrQyRGY0M3WQ834vA0SVQtHN2T
-        MEfsQuiFOkoUySS8B6z/rB7+dQ==
-X-Google-Smtp-Source: AGHT+IFoHxMBCJ6ihiQY7oKhpRGwHadxLpkZDfkgnb07niT0v85Ddz8JnmeAUkKxzzzYDvSl1egqGA==
-X-Received: by 2002:a17:906:30cf:b0:99c:bb4d:f59e with SMTP id b15-20020a17090630cf00b0099cbb4df59emr7476010ejb.63.1692008060084;
-        Mon, 14 Aug 2023 03:14:20 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1692008058; x=1692612858;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OaliXMOmH9SU1C2DkaplWarCzA0RpYIWvO0eSAY4J5I=;
+        b=K96WH7jd55FIzhrziZr1KQKKg/o/l6udEtlAud8Y/bjvMLBFcnAjjCCxKe94cumDLD
+         7Ji73/ZDpZpUJaHzDnP8BJINGI70N6TzI/jqHY7Geg9f28NmAlkuM0q7Tage6+s3MiF2
+         C+SVH+TxLKSdKb10gOuvrsdBuoWOGB0Di2/8VcqbDATim2zjFxGjQ30aEti4uE8I9Z5s
+         VEsLpP7QbIAQY7PNb+3i4us8VP1ySF8J3drtImPUxQxkS7kQlx1hN24YzoCodP6ZRQWG
+         MwLo/seBVVukVoaiXhTafZKk8ow/fWlDIiibgBJvsQYW1c7W/G4BU8vGNCuWRxCpRW/9
+         35yA==
+X-Gm-Message-State: AOJu0YyyhNjQNMJO/2mvu29Kv6hfqZokboYVLfj9utCRgoq6XGbNDbdG
+        Fp56qb18+JGjneQQTwhKjdSMlg==
+X-Google-Smtp-Source: AGHT+IFAjrefQcQM3SmBv83W2ILzm+6amDEF8zNjt221YcLaHgS5StgoYPz3Ya4i5UynFBXurtVucw==
+X-Received: by 2002:a17:906:2ce:b0:99c:aa43:b20c with SMTP id 14-20020a17090602ce00b0099caa43b20cmr7183610ejk.33.1692008058483;
+        Mon, 14 Aug 2023 03:14:18 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (212095005216.public.telering.at. [212.95.5.216])
-        by smtp.gmail.com with ESMTPSA id os5-20020a170906af6500b00993a37aebc5sm5472870ejb.50.2023.08.14.03.14.18
+        by smtp.gmail.com with ESMTPSA id os5-20020a170906af6500b00993a37aebc5sm5472870ejb.50.2023.08.14.03.14.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Aug 2023 03:14:19 -0700 (PDT)
+        Mon, 14 Aug 2023 03:14:18 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Mon, 14 Aug 2023 12:14:13 +0200
-Subject: [PATCH v6 1/4] dt-bindings: ufs: qcom: Add reg-names property for
- ICE
+Subject: [PATCH v6 0/4] Fix some issues in QCOM UFS bindings
+Date:   Mon, 14 Aug 2023 12:14:12 +0200
+Message-Id: <20230814-dt-binding-ufs-v6-0-fd94845adeda@fairphone.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230814-dt-binding-ufs-v6-1-fd94845adeda@fairphone.com>
-References: <20230814-dt-binding-ufs-v6-0-fd94845adeda@fairphone.com>
-In-Reply-To: <20230814-dt-binding-ufs-v6-0-fd94845adeda@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAHT+2WQC/33QzW7DIAwA4FepOJfJGAilp77HtAPB0CC1pII20
+ lTl3Wftuiwn/0j+LPstemoldXE+vEVLS+llrlwMx4OIU6jXJAtxLRAQFYKX9JRjqVTqVb5yl0g
+ uD8Z5lzMKHhpDT3JsocaJx+rrduPmVPpzbt+/SxbF4fNfb1ES5IksYIakOLnkUNpjmmv6iPNdf
+ DG34D6BTFB0AczgvXV+i9D7hGbCeE98lQ6g4xZh9gnDhDIx0QBZkxq3CLtPWCaiD/YUIVid//x
+ iXdcf5L0meMEBAAA=
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
@@ -79,67 +80,70 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-crypto@vger.kernel.org,
         Luca Weiss <luca.weiss@fairphone.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        Eric Biggers <ebiggers@google.com>,
+        Rob Herring <robh@kernel.org>, Iskren Chernev <me@iskren.info>
 X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The code in ufs-qcom-ice.c needs the ICE reg to be named "ice". Add this
-in the bindings so the existing dts can validate successfully.
+This series aims to solve the dtbs_check errors from the qcom ufs
+bindings. It has changed in scope a bit since v1, so it may be a bit all
+over the place.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Changes in v6:
+- Rebase on linux-next
+- Drop applied dts patch
+- Pick up tags
+- Link to v5: https://lore.kernel.org/r/20221209-dt-binding-ufs-v5-0-c9a58c0a53f5@fairphone.com
 
-diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-index bdfa86a0cc98..4cc3f8f03b33 100644
---- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-+++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
-@@ -79,6 +79,11 @@ properties:
-     minItems: 1
-     maxItems: 2
- 
-+  reg-names:
-+    items:
-+      - const: std
-+      - const: ice
-+
-   required-opps:
-     maxItems: 1
- 
-@@ -134,6 +139,8 @@ allOf:
-         reg:
-           minItems: 1
-           maxItems: 1
-+        reg-names:
-+          maxItems: 1
- 
-   - if:
-       properties:
-@@ -162,6 +169,10 @@ allOf:
-         reg:
-           minItems: 2
-           maxItems: 2
-+        reg-names:
-+          minItems: 2
-+      required:
-+        - reg-names
- 
-   - if:
-       properties:
-@@ -190,6 +201,8 @@ allOf:
-         reg:
-           minItems: 1
-           maxItems: 1
-+        reg-names:
-+          maxItems: 1
- 
-     # TODO: define clock bindings for qcom,msm8994-ufshc
- 
+Changes in v5:
+- Convert sm8450.dtsi to use qcom,ice property, so stop modifying schema
+  for sm8450 and only add qcom,ice property.
+- Move reg-names names to top-level with only minItems/maxItems in the
+  'if'
+- Link to v4: https://lore.kernel.org/r/20221209-dt-binding-ufs-v4-0-14ced60f3d1b@fairphone.com
 
+Changes in v4:
+- Pick up tags
+- Rebase on linux-next (again)
+- Link to v3: https://lore.kernel.org/r/20221209-dt-binding-ufs-v3-0-499dff23a03c@fairphone.com
+
+Changes in v3:
+- Drop applied patch
+- Pick up sm6115 patch from v5 https://lore.kernel.org/all/20221030094258.486428-2-iskren.chernev@gmail.com/
+- Rebase on linux-next
+- Link to v2: https://lore.kernel.org/r/20221209-dt-binding-ufs-v2-0-dc7a04699579@fairphone.com
+
+Changes in v2:
+- Add new patch adding reg-names to sm6115 & rebase series on top of sm6115
+  addition
+- Fix binding example after sm8450 move, split this patch from original patch
+  since it became too big
+- Move reg-names definition to top-level
+- Link to v1: https://lore.kernel.org/r/20221209-dt-binding-ufs-v1-0-8d502f0e18d5@fairphone.com
+
+---
+Iskren Chernev (1):
+      dt-bindings: ufs: qcom: Add sm6115 binding
+
+Luca Weiss (3):
+      dt-bindings: ufs: qcom: Add reg-names property for ICE
+      dt-bindings: ufs: qcom: Add ICE to sm8450 example
+      dt-bindings: crypto: ice: Document sm8450 inline crypto engine
+
+ .../bindings/crypto/qcom,inline-crypto-engine.yaml |  1 +
+ .../devicetree/bindings/ufs/qcom,ufs.yaml          | 44 ++++++++++++++++++++++
+ 2 files changed, 45 insertions(+)
+---
+base-commit: 13055cce6d3df0a2704721d6e2fd9011e973f53d
+change-id: 20221209-dt-binding-ufs-2d7f64797ff2
+
+Best regards,
 -- 
-2.41.0
+Luca Weiss <luca.weiss@fairphone.com>
 
