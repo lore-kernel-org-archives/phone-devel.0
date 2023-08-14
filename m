@@ -2,115 +2,144 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D82D8C001E0
-	for <phone-devel@archiver.kernel.org>; Sun, 13 Aug 2023 18:59:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 400DFEB64DD
+	for <phone-devel@archiver.kernel.org>; Mon, 14 Aug 2023 10:15:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231487AbjHMS7o (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 13 Aug 2023 14:59:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41862 "EHLO
+        id S235006AbjHNKOl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 14 Aug 2023 06:14:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjHMS7n (ORCPT
+        with ESMTP id S236609AbjHNKOW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 13 Aug 2023 14:59:43 -0400
-Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E01F91708
-        for <phone-devel@vger.kernel.org>; Sun, 13 Aug 2023 11:59:45 -0700 (PDT)
-Received: by mail-vs1-xe2d.google.com with SMTP id ada2fe7eead31-4478ea3ac05so1434591137.2
-        for <phone-devel@vger.kernel.org>; Sun, 13 Aug 2023 11:59:45 -0700 (PDT)
+        Mon, 14 Aug 2023 06:14:22 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82EE910D0
+        for <phone-devel@vger.kernel.org>; Mon, 14 Aug 2023 03:14:21 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-99cdb0fd093so569500366b.1
+        for <phone-devel@vger.kernel.org>; Mon, 14 Aug 2023 03:14:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20221208.gappssmtp.com; s=20221208; t=1691953185; x=1692557985;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mvSEBb+mluam1nmVpoK29fUncMJsHTGSApagTYFZ+Nw=;
-        b=pFVAQ/sNHiDXrGMz9gVFrGk2RoyqRTEw1A8tOgJUVd9tH/SoMcC4+2/HnhEgNGyqry
-         y5eF3PH4E5Ljq8EAuiT4NILGWvm9UpdMnZN+PPX7q4BfSDcUQdZi08uoijQXZTyvTc1N
-         sQExNrek1/cDxrigvgPUQTrFENNXxGF0C29mUtIV5UayKQEolEHPhIwNqoKkFarvejJE
-         1/qkbE7EyLKltNSugm7eoJtMJUz8wmSUlxm3n8qP/n/OH1ipG9b3P4KBBqt5v+L45imk
-         u17e8fPs0O8H0YPNEKv35qJS4NW6FrC7lgI7FPLc9427hSnejGg2qIvsAOXUJHzI0eOj
-         YR2w==
+        d=fairphone.com; s=fair; t=1692008060; x=1692612860;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SkXTYbxi8WsuAx3brFiN3d9aFfnzOfLnWqXE8pepV8E=;
+        b=SW3PgpkMGdRLpwTKiD2cGqxzUT4MRFRGhPbqlmmV1bg9hpAqQ4GiQUFDoj8Ipv2XSA
+         U2xu2X4WEY/spbe5GWKQ5tpSOawfizR9yldqvPWA0ZqihXwA6jAP2CF6kukIgDabu6nr
+         DJgc6y4Bg05Giv+k3zOOUTbWDQofSs07j181Tykuy8fW/R79mQPdWMoMi9+EjYntMwJz
+         /pnRimwEp2P1W4xq3Dp53k/nw9tN24SL2oJ1q/0rZEO/RZWQCW/8KtKsgEzUYiHTTmv7
+         T5f8x8+ouQrK1r74zKdFQrVqTWitMrq1tL0x6bzxVtPfDthWyMQMURnmaQqYbQX1szHM
+         POqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691953185; x=1692557985;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1692008060; x=1692612860;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mvSEBb+mluam1nmVpoK29fUncMJsHTGSApagTYFZ+Nw=;
-        b=TOXKxrC6BrSDOX09ovLJC5GErqSnqXK1Lx7z8qMPi1oyiHS7Dbe55TpzOfGRTJkKct
-         q/42SrP/OtlHxN6IKAC8XB9R2S8qjF5MGfdipRC4MJ6MWp2snwtsDYhZDQzKOGKyhOdT
-         FBfAJcKomBpI9gx3uccordyG2JdM+8wtQECinm2p0BVbwGGlBADyao3T9Q3fCgFt43Jh
-         k6EIRyQLPQBhrsosy1YtfHaezCMNc6Ic66yDX1NvF8KxozzN89KF9B1cMIDV75tEb5X/
-         BWUHLWSBiXGtUJGKUh4ZwV58QfRHLqk5/tF3TMQXtd2L11tfm1ZOhb4VHhp3yL8aEIMa
-         OuDA==
-X-Gm-Message-State: AOJu0YxC46AWBpUwxFcXWVIpqkKYeSKWSpWJQFiP+4ZET4rg7U2ffi/7
-        Y9UtnGFhGQGFwbXd5bCVnJNH0aU21T15rAnG3CO7dA==
-X-Google-Smtp-Source: AGHT+IGluhxjUnvE0HEw7R1pBnoP9kfF80Uw2gAE8xhlQCTYodKi9s2rNhKVE9dOn2oFx7nOecRGqHm+O1G5Ai9/VuY=
-X-Received: by 2002:a67:f28b:0:b0:447:6965:7284 with SMTP id
- m11-20020a67f28b000000b0044769657284mr7883113vsk.8.1691953185055; Sun, 13 Aug
- 2023 11:59:45 -0700 (PDT)
+        bh=SkXTYbxi8WsuAx3brFiN3d9aFfnzOfLnWqXE8pepV8E=;
+        b=dplh6WmtqEajwqhAi1eumx2pnlaKeMe9baxBzN23v9kw3IdeqejxDgNAHlDfK3stlM
+         NPWJNHh7p++svT29CeMeFDrZn5+lRIQhDf5u/FUwOpiD+cPvZ9E7isHrUeZFM2XSb1Cp
+         NRDHVv40XsJYyaES6DY1CL9h8w7B4ZS/q6172Q6JfvrloHxRl6bqzcblvd23PIuvPr8q
+         rFUXUMCIgayZkANLK/xdGZ9x8sqou4uuPXQyRcusLYBw9wfLTUXudD/KqQxiHQoGuQrY
+         N+Ma1Bt7Wxjb3qNVoLvODHqDhLu4+gQtL1OAv5mlcXK+RaQu6JkRYD4l1sk1jLNeNNRS
+         kp3g==
+X-Gm-Message-State: AOJu0YyB7YSw26+fMEfNFOd15Ba0H2BrQyRGY0M3WQ834vA0SVQtHN2T
+        MEfsQuiFOkoUySS8B6z/rB7+dQ==
+X-Google-Smtp-Source: AGHT+IFoHxMBCJ6ihiQY7oKhpRGwHadxLpkZDfkgnb07niT0v85Ddz8JnmeAUkKxzzzYDvSl1egqGA==
+X-Received: by 2002:a17:906:30cf:b0:99c:bb4d:f59e with SMTP id b15-20020a17090630cf00b0099cbb4df59emr7476010ejb.63.1692008060084;
+        Mon, 14 Aug 2023 03:14:20 -0700 (PDT)
+Received: from otso.luca.vpn.lucaweiss.eu (212095005216.public.telering.at. [212.95.5.216])
+        by smtp.gmail.com with ESMTPSA id os5-20020a170906af6500b00993a37aebc5sm5472870ejb.50.2023.08.14.03.14.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Aug 2023 03:14:19 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Date:   Mon, 14 Aug 2023 12:14:13 +0200
+Subject: [PATCH v6 1/4] dt-bindings: ufs: qcom: Add reg-names property for
+ ICE
 MIME-Version: 1.0
-References: <20230812-pxa1908-lkml-v5-0-a5d51937ee34@skole.hr> <20230812-pxa1908-lkml-v5-1-a5d51937ee34@skole.hr>
-In-Reply-To: <20230812-pxa1908-lkml-v5-1-a5d51937ee34@skole.hr>
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-Date:   Sun, 13 Aug 2023 20:59:34 +0200
-Message-ID: <CAMRc=MfS7Ybr0sxCmgh98+7+3pnRmWFVutTgz4+sa1nsTdh3Hg@mail.gmail.com>
-Subject: Re: [PATCH v5 1/8] gpio: pxa: disable pinctrl calls for MMP_GPIO
-To:     =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc:     Robert Jarzmik <robert.jarzmik@free.fr>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andy@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230814-dt-binding-ufs-v6-1-fd94845adeda@fairphone.com>
+References: <20230814-dt-binding-ufs-v6-0-fd94845adeda@fairphone.com>
+In-Reply-To: <20230814-dt-binding-ufs-v6-0-fd94845adeda@fairphone.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Iskren Chernev <me@iskren.info>,
+        Manivannan Sadhasivam <mani@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hardening@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        linux-crypto@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Aug 12, 2023 at 12:26=E2=80=AFPM Duje Mihanovi=C4=87 <duje.mihanovi=
-c@skole.hr> wrote:
->
-> Similarly to PXA3xx and MMP2, pinctrl-single isn't capable of setting
-> pin direction on MMP either.
->
-> Fixes: a770d946371e ("gpio: pxa: add pin control gpio direction and reque=
-st")
-> Signed-off-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
-> Reviewed-by: Andy Shevchenko <andy@kernel.org>
-> ---
->  drivers/gpio/gpio-pxa.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/gpio/gpio-pxa.c b/drivers/gpio/gpio-pxa.c
-> index a1630ed4b741..d92650aecb06 100644
-> --- a/drivers/gpio/gpio-pxa.c
-> +++ b/drivers/gpio/gpio-pxa.c
-> @@ -238,6 +238,7 @@ static bool pxa_gpio_has_pinctrl(void)
->         switch (gpio_type) {
->         case PXA3XX_GPIO:
->         case MMP2_GPIO:
-> +       case MMP_GPIO:
->                 return false;
->
->         default:
->
-> --
-> 2.41.0
->
->
+The code in ufs-qcom-ice.c needs the ICE reg to be named "ice". Add this
+in the bindings so the existing dts can validate successfully.
 
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ Documentation/devicetree/bindings/ufs/qcom,ufs.yaml | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+index bdfa86a0cc98..4cc3f8f03b33 100644
+--- a/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
++++ b/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml
+@@ -79,6 +79,11 @@ properties:
+     minItems: 1
+     maxItems: 2
+ 
++  reg-names:
++    items:
++      - const: std
++      - const: ice
++
+   required-opps:
+     maxItems: 1
+ 
+@@ -134,6 +139,8 @@ allOf:
+         reg:
+           minItems: 1
+           maxItems: 1
++        reg-names:
++          maxItems: 1
+ 
+   - if:
+       properties:
+@@ -162,6 +169,10 @@ allOf:
+         reg:
+           minItems: 2
+           maxItems: 2
++        reg-names:
++          minItems: 2
++      required:
++        - reg-names
+ 
+   - if:
+       properties:
+@@ -190,6 +201,8 @@ allOf:
+         reg:
+           minItems: 1
+           maxItems: 1
++        reg-names:
++          maxItems: 1
+ 
+     # TODO: define clock bindings for qcom,msm8994-ufshc
+ 
+
+-- 
+2.41.0
+
