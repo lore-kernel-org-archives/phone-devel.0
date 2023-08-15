@@ -2,96 +2,96 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 88843C001DE
-	for <phone-devel@archiver.kernel.org>; Tue, 15 Aug 2023 08:33:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6658FC41513
+	for <phone-devel@archiver.kernel.org>; Tue, 15 Aug 2023 19:53:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235642AbjHOIdA (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 15 Aug 2023 04:33:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36170 "EHLO
+        id S240039AbjHOTxG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 15 Aug 2023 15:53:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235661AbjHOIco (ORCPT
+        with ESMTP id S240036AbjHOTwf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 15 Aug 2023 04:32:44 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2788610C6
-        for <phone-devel@vger.kernel.org>; Tue, 15 Aug 2023 01:32:42 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-d6d52f4f977so1310769276.2
-        for <phone-devel@vger.kernel.org>; Tue, 15 Aug 2023 01:32:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692088361; x=1692693161;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VZAjQaDsCnRIDl9aQDrjmakMDdJ/kCnfJXWB5dbc3P0=;
-        b=jYzRlm8JrziIQLzbP27Eefb+wVJdzOl3JqzSe3PNIOYqLaKHZUWEy8e/X2fPr+dphU
-         p6H9WmsjA2NybRl5eoDqM0GBn1gzJhFFsmwJhHcKIJS9zl27YI/l0zmJb4O86z4xLXxZ
-         tgE+X4lz+6fZGHoHHcXKawTyxtRQhKYJ/NjzWbCcoGN9jlE4qc34bbdiSZcTZzgULxMq
-         iengflFRIFh8HSYfL01OC+8mFf4NDiebrNruLerEws8bjSpp5vFiE6dcr8X1fAxt9Zz6
-         9lkk0OdZF0mKHuYHRL3q1vJqTfz8B9hVvBqSDPYYnp7dOJGMV8An7JXlIRqAHxkmyh4U
-         jffQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692088361; x=1692693161;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VZAjQaDsCnRIDl9aQDrjmakMDdJ/kCnfJXWB5dbc3P0=;
-        b=WM0aKhjLTmPSIVzGdGXK0sZGAM+T6s6x9D3f6wBC6qt36qOGp32iZmdlO+SlRvIFI4
-         rH0+53DEnaAxN7fceOHHj4wCi5e1xTItH5v4ItiDmO1hxqiwjX9YcO311rJUJFVarwUt
-         XL3bBAthYwd+Om3FJi0oyPrIIpd6OXz4blmc67u6yNLpcIgw1wEEDW2rvl3JPWWQRDBK
-         dQq5D1BZ0TmGOboV+/B0irh+RzMVG2Ra3tE8bWxaDhiTLgPkNKnhjfpOoUjfDmzRwHTT
-         Sfpa2Km+r7caL79I1pUbyDJ97Jg8Nwbb7+YFiKs6TRuVmsHW1qoT7ana8vEHWBYKz0It
-         /WAA==
-X-Gm-Message-State: AOJu0Yxj1T+rT8htAS4jps76BtkuyAE0DFS4uezyMkkY1JJhCzoPYbX9
-        GeXYkIWEulQ6eyZGGt4RX9F5whDBVZkGzbDtYQoOKA==
-X-Google-Smtp-Source: AGHT+IG0H51wCa6PmYWPCyxguFPsNbhjv2lmrIY2yYx1KK/MZ8UDuaCPbLbx4vhaQopqGxG8q0rHVd4001OjOPyHkZA=
-X-Received: by 2002:a25:b85:0:b0:d12:25d:fd5f with SMTP id 127-20020a250b85000000b00d12025dfd5fmr12359370ybl.5.1692088361388;
- Tue, 15 Aug 2023 01:32:41 -0700 (PDT)
+        Tue, 15 Aug 2023 15:52:35 -0400
+X-Greylist: delayed 166 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 15 Aug 2023 12:52:34 PDT
+Received: from smtprelay02.ispgateway.de (smtprelay02.ispgateway.de [80.67.18.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DB1519A7;
+        Tue, 15 Aug 2023 12:52:34 -0700 (PDT)
+Received: from [77.64.243.219] (helo=note-book.lan)
+        by smtprelay02.ispgateway.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <git@apitzsch.eu>)
+        id 1qW02z-0003fk-OD; Tue, 15 Aug 2023 21:49:45 +0200
+From:   =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Subject: [PATCH RESEND v3 0/2] arm64: dts: qcom: msm8939-longcheer-l9100:
+ Add initial dts
+Date:   Tue, 15 Aug 2023 21:49:04 +0200
+Message-Id: <20230815-bq_m5-v3-0-fd26d7c76a1f@apitzsch.eu>
 MIME-Version: 1.0
-References: <20230812-pxa1908-lkml-v5-0-a5d51937ee34@skole.hr> <20230812-pxa1908-lkml-v5-1-a5d51937ee34@skole.hr>
-In-Reply-To: <20230812-pxa1908-lkml-v5-1-a5d51937ee34@skole.hr>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 15 Aug 2023 10:32:30 +0200
-Message-ID: <CACRpkdbFz-huUHkECKvJec3CpnOjKsu+MJA2ajoAbh1opjtr9A@mail.gmail.com>
-Subject: Re: [PATCH v5 1/8] gpio: pxa: disable pinctrl calls for MMP_GPIO
-To:     =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc:     Robert Jarzmik <robert.jarzmik@free.fr>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andy@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hardening@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Stephan Gerhold <stephan@gerhold.net>,
+        =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.12.3
+X-Df-Sender: YW5kcmVAYXBpdHpzY2guZXU=
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Aug 12, 2023 at 12:26=E2=80=AFPM Duje Mihanovi=C4=87 <duje.mihanovi=
-c@skole.hr> wrote:
+This dts adds support for BQ Aquaris M5 (Longcheer L9100) released in
+2015.
 
-> Similarly to PXA3xx and MMP2, pinctrl-single isn't capable of setting
-> pin direction on MMP either.
->
-> Fixes: a770d946371e ("gpio: pxa: add pin control gpio direction and reque=
-st")
-> Signed-off-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
-> Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Add a device tree with initial support for:
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+- GPIO keys
+- Hall sensor
+- SDHCI
+- WCNSS (BT/WIFI)
+- Accelerometer/Magnetometer
+- Vibrator
+- Touchscreen
+- Front flash
 
-Yours,
-Linus Walleij
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+Changes in v3:
+- use "id-gpios" instead of "id-gpio" to avoid conflicts with
+  https://lore.kernel.org/linux-arm-msm/20230724103914.1779027-7-alexander.stein@ew.tq-group.com/
+  (v2 only contained the changelog entry, but not the actual change)
+- Link to v2: https://lore.kernel.org/r/20230725-bq_m5-v2-0-9779c249aeb1@apitzsch.eu
+
+Changes in v2:
+- add R-b to first patch
+- sort node extends/overrides by name, but keep &tlmm last, as done in
+  msm8939-samsung-a7.dts
+- use id-gpios, to avoid conflict with
+  https://lore.kernel.org/linux-arm-msm/20230724103914.1779027-7-alexander.stein@ew.tq-group.com/
+- don't enable mdss for now; postpone it till display support is added
+- Link to v1: https://lore.kernel.org/r/20230724-bq_m5-v1-0-17a0870a73be@apitzsch.eu
+
+---
+André Apitzsch (2):
+      dt-bindings: arm: qcom: Add BQ Aquaris M5
+      arm64: dts: qcom: msm8939-longcheer-l9100: Add initial device tree
+
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+ arch/arm64/boot/dts/qcom/Makefile                  |   1 +
+ .../boot/dts/qcom/msm8939-longcheer-l9100.dts      | 336 +++++++++++++++++++++
+ 3 files changed, 338 insertions(+)
+---
+base-commit: 451cc82bd11eb6a374f4dbcfc1cf007eafea91ab
+change-id: 20230724-bq_m5-bc9afe378f8d
+
+Best regards,
+-- 
+André Apitzsch <git@apitzsch.eu>
+
