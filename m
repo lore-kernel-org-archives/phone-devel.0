@@ -2,65 +2,63 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7969C05052
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Aug 2023 09:26:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24382C05052
+	for <phone-devel@archiver.kernel.org>; Fri, 18 Aug 2023 10:51:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359052AbjHRJZl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Aug 2023 05:25:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45438 "EHLO
+        id S1359318AbjHRKvR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 18 Aug 2023 06:51:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1359049AbjHRJY7 (ORCPT
+        with ESMTP id S1376456AbjHRKuw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Aug 2023 05:24:59 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 663A5359D
-        for <phone-devel@vger.kernel.org>; Fri, 18 Aug 2023 02:24:46 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fe2fb9b4d7so6848335e9.1
-        for <phone-devel@vger.kernel.org>; Fri, 18 Aug 2023 02:24:46 -0700 (PDT)
+        Fri, 18 Aug 2023 06:50:52 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1509230C5
+        for <phone-devel@vger.kernel.org>; Fri, 18 Aug 2023 03:50:50 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2b9b5ee9c5aso11320401fa.1
+        for <phone-devel@vger.kernel.org>; Fri, 18 Aug 2023 03:50:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nexus-software-ie.20221208.gappssmtp.com; s=20221208; t=1692350685; x=1692955485;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dGeud8/LCN66PtLt+JkTQZpCvrnUyZTBaR7+fmpgOZQ=;
-        b=RWm0QTDvw9f41zFPdUGKkb4IJbKr6MTveOi/uWPyhS4F1kO3Orv7ApuiD5PGllFr6w
-         /+xsiTCtivnl+OZ5aV3KkKvPFGFgmX8MpS7kKn/KZmACOHGWjqTeXPWzfgmRHx66gny5
-         jIuL1NESET1iSbUmmX0AnXibEMnSKe4i6JPIzfpa59jeM5Q6FD8JmoOqKXyNc3ltCnwc
-         Ark2wHTAozDmj5LNuiYe0POAkKcB0ZTPYPAzy/XxM+0HYb6EZl0jNqEHCV64eGBCfobd
-         vDNGMttOKiRjgm8+9Hi+QQN2XOt0vVwtOuJKm1tbghDN43kuwNHFq/ZYZOV3/eF/wopJ
-         9YIQ==
+        d=linaro.org; s=google; t=1692355848; x=1692960648;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=/6jSuC3ZsL86KaAv6TVYVHDxBfpmKhlmD3RAmvNe8sk=;
+        b=pOnXW89U6brNuKK/AsmE6yGcJmK+NS/BagDJ19+oEhKVzU5kAvyvtrWZALLfV9el89
+         7oYOiXALMHrplRHsmE+t1FsHxjOFO9cNjte3OWeN9lDeo7zo9ICbNh5WDPprVRgK9tY3
+         X3U9Tsw5lt85RvXOEnEtpXcfXdPkRbPF+/t3guUPGvdTupHNbCWE+mmKTt7HnA6+rgyc
+         Q2EqUKgGiqRL/LenfKrS+rjEOLXUBuYosRIqfvgFp3mdog2pRyRuxwE0QKARlzenCbVD
+         JNn02uuzIEjvDPHjHSYZDWijblJYMAaauVdz1rEm5lNNfjR4y48TTWeWKbQpY41/aitb
+         cRJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692350685; x=1692955485;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dGeud8/LCN66PtLt+JkTQZpCvrnUyZTBaR7+fmpgOZQ=;
-        b=brDd4M0eAxFRu19uG1lnThQEMQEIs3IE0n+ropa3nCN9PsDVrOKY3TpVvbUuh66SZ7
-         UbcZTlgy3YT9AxVN6kgtDDl2vkJM/2Y/NqxYc5nZRE+eVR60gtEYnvDPFHfB+ZWH7Wdk
-         AVKXwJrx1QnPx1Kfx+9gmyaC57+KsAQ/JyI/ZFWF+P1GUifWfA8s7JR++PTk55ATL7Pw
-         N/KqB49e0H3XZhrXhv8ZVIXLbU0tSqvNaMgFQtlw/ziOocVcDhRGDDoVKKOSxdf2bnb/
-         //wMafGyevKJkrDmYHCK6rUHxsXf1PtmD8h8Z2gtQYuZYP7FvcQEqFVpp6ojGRvGvl9R
-         z7bA==
-X-Gm-Message-State: AOJu0Yx4dGuyYkUylU4w5CBzNGrYer67ELqBgJA4KJvByf7x77dqtL+a
-        QMrGhGXHYo6cL/5oHRE5Y/1tMg==
-X-Google-Smtp-Source: AGHT+IFTvP3Wf65NjXpx47x/yisJ7n5vuQ+OEFbehrvfi4VTsb45m2Zk3RNJbV/U6pmRWt7sWCtDlQ==
-X-Received: by 2002:adf:f043:0:b0:315:a1f9:8667 with SMTP id t3-20020adff043000000b00315a1f98667mr1446492wro.23.1692350684666;
-        Fri, 18 Aug 2023 02:24:44 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id t12-20020a5d6a4c000000b003179d5aee63sm2114923wrw.91.2023.08.18.02.24.43
+        d=1e100.net; s=20221208; t=1692355848; x=1692960648;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/6jSuC3ZsL86KaAv6TVYVHDxBfpmKhlmD3RAmvNe8sk=;
+        b=Feg1gEIwC7euWubsSzvxdTLPD/DBpKcX9Hfph6m7FoUVOhL/VnYHr7xZZ9Cq+N5Dk/
+         cng61IuzmH8wXPCMAimM6WvFXh2RjpHt28G0Mbdlywkhh8jmAlyAQpOUWf9GbEhbhPTC
+         Sco7vCjG3sVCNPxu1eb6lBKCoAhb5k1tXRqSV0/rJl+O4uI4st51lMwf+9a2vKr8bLJT
+         ABjg8rD0xPXi4Z4TtJu2w2VfVJDUCdiUxxUOi92LWtcdI0yFOq6T19geCiGt/QMTPJvU
+         wtKoaWLiB7DN24QkE8LTdNGZE6Ikd42QMoxK4p740ShbASc/Ig4ZOvRc7wIvKVo+4Iio
+         2Pzw==
+X-Gm-Message-State: AOJu0YwgrDrngdKSnP823HoOtIQeMsab41rmCpgBxbdBL3kXLXYfJSXs
+        72ELX/hZ6bVAOsv32wUVzC8FmQ==
+X-Google-Smtp-Source: AGHT+IFqoRW48KQkQdO1pml8q37zXJP7n6MGoUYfyI9Q5r2eyiksZbegQMSfkLp3eJ820lFmYO6dxQ==
+X-Received: by 2002:a2e:7410:0:b0:2b7:364e:91ec with SMTP id p16-20020a2e7410000000b002b7364e91ecmr1558338ljc.13.1692355848303;
+        Fri, 18 Aug 2023 03:50:48 -0700 (PDT)
+Received: from [192.168.1.101] (abxh52.neoplus.adsl.tpnet.pl. [83.9.1.52])
+        by smtp.gmail.com with ESMTPSA id c20-20020a2e9d94000000b002b9e5afa14csm366121ljj.42.2023.08.18.03.50.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Aug 2023 02:24:44 -0700 (PDT)
-Message-ID: <7d932461-bb81-5a6e-4252-fa56ddf2ace5@nexus-software.ie>
-Date:   Fri, 18 Aug 2023 10:24:43 +0100
+        Fri, 18 Aug 2023 03:50:47 -0700 (PDT)
+Message-ID: <ef33eee3-42a7-419b-bbe4-e4fe681156ca@linaro.org>
+Date:   Fri, 18 Aug 2023 12:50:46 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] arm64: dts: qcom: Use QCOM_SCM_VMID defines for qcom,vmid
-Content-Language: en-US
 To:     Luca Weiss <luca.weiss@fairphone.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
@@ -69,391 +67,56 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
 References: <20230818-qcom-vmid-defines-v1-1-45b610c96b13@fairphone.com>
-From:   Bryan O'Donoghue <pure.logic@nexus-software.ie>
+Content-Language: en-US
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
 In-Reply-To: <20230818-qcom-vmid-defines-v1-1-45b610c96b13@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 18/08/2023 09:06, Luca Weiss wrote:
+On 18.08.2023 10:06, Luca Weiss wrote:
 > Since we have those defines available in a header, let's use them
 > everywhere where qcom,vmid property is used.
 > 
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->   arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi          | 2 +-
->   arch/arm64/boot/dts/qcom/msm8996.dtsi                        | 3 ++-
->   arch/arm64/boot/dts/qcom/msm8998.dtsi                        | 3 ++-
->   arch/arm64/boot/dts/qcom/sc7180.dtsi                         | 3 ++-
->   arch/arm64/boot/dts/qcom/sc7280.dtsi                         | 3 ++-
->   arch/arm64/boot/dts/qcom/sc8180x-lenovo-flex-5g.dts          | 3 ++-
->   arch/arm64/boot/dts/qcom/sc8180x-primus.dts                  | 3 ++-
->   arch/arm64/boot/dts/qcom/sdm630.dtsi                         | 3 ++-
->   arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi               | 2 +-
->   arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi          | 2 +-
->   arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 2 +-
->   arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts           | 2 +-
->   arch/arm64/boot/dts/qcom/sdm845.dtsi                         | 2 +-
->   arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts            | 3 ++-
->   arch/arm64/boot/dts/qcom/sm8150.dtsi                         | 3 ++-
->   arch/arm64/boot/dts/qcom/sm8350.dtsi                         | 3 ++-
->   arch/arm64/boot/dts/qcom/sm8450-sony-xperia-nagara.dtsi      | 2 +-
->   arch/arm64/boot/dts/qcom/sm8450.dtsi                         | 3 ++-
->   arch/arm64/boot/dts/qcom/sm8550.dtsi                         | 3 ++-
->   19 files changed, 31 insertions(+), 19 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-> index bcd2397eb373..baa7472b7a28 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
-> @@ -117,7 +117,7 @@ rmtfs@f6c00000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		/delete-node/ mba@91500000;
-> diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-> index c8e0986425ab..6ba9da9e6a8b 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-> @@ -9,6 +9,7 @@
->   #include <dt-bindings/clock/qcom,rpmcc.h>
->   #include <dt-bindings/interconnect/qcom,msm8996.h>
->   #include <dt-bindings/interconnect/qcom,msm8996-cbf.h>
-> +#include <dt-bindings/firmware/qcom,scm.h>
->   #include <dt-bindings/gpio/gpio.h>
->   #include <dt-bindings/power/qcom-rpmpd.h>
->   #include <dt-bindings/soc/qcom,apr.h>
-> @@ -538,7 +539,7 @@ rmtfs_mem: rmtfs {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		mpss_mem: mpss@88800000 {
-> diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-> index f180047cacb0..aac23a8ef6c8 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-> @@ -6,6 +6,7 @@
->   #include <dt-bindings/clock/qcom,gpucc-msm8998.h>
->   #include <dt-bindings/clock/qcom,mmcc-msm8998.h>
->   #include <dt-bindings/clock/qcom,rpmcc.h>
-> +#include <dt-bindings/firmware/qcom,scm.h>
->   #include <dt-bindings/power/qcom-rpmpd.h>
->   #include <dt-bindings/gpio/gpio.h>
->   
-> @@ -56,7 +57,7 @@ rmtfs_mem: memory@88f00000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		spss_mem: memory@8ab00000 {
-> diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-> index a79c0f2e1879..d57418113b36 100644
-> --- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-> @@ -11,6 +11,7 @@
->   #include <dt-bindings/clock/qcom,lpasscorecc-sc7180.h>
->   #include <dt-bindings/clock/qcom,rpmh.h>
->   #include <dt-bindings/clock/qcom,videocc-sc7180.h>
-> +#include <dt-bindings/firmware/qcom,scm.h>
->   #include <dt-bindings/interconnect/qcom,icc.h>
->   #include <dt-bindings/interconnect/qcom,osm-l3.h>
->   #include <dt-bindings/interconnect/qcom,sc7180.h>
-> @@ -687,7 +688,7 @@ rmtfs_mem: memory@94600000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   	};
->   
-> diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> index 925428a5f6ae..042908048d09 100644
-> --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> @@ -13,6 +13,7 @@
->   #include <dt-bindings/clock/qcom,rpmh.h>
->   #include <dt-bindings/clock/qcom,videocc-sc7280.h>
->   #include <dt-bindings/dma/qcom-gpi.h>
-> +#include <dt-bindings/firmware/qcom,scm.h>
->   #include <dt-bindings/gpio/gpio.h>
->   #include <dt-bindings/interconnect/qcom,osm-l3.h>
->   #include <dt-bindings/interconnect/qcom,sc7280.h>
-> @@ -156,7 +157,7 @@ rmtfs_mem: memory@9c900000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   	};
->   
-> diff --git a/arch/arm64/boot/dts/qcom/sc8180x-lenovo-flex-5g.dts b/arch/arm64/boot/dts/qcom/sc8180x-lenovo-flex-5g.dts
-> index abc66613ccaa..3ea07d094b60 100644
-> --- a/arch/arm64/boot/dts/qcom/sc8180x-lenovo-flex-5g.dts
-> +++ b/arch/arm64/boot/dts/qcom/sc8180x-lenovo-flex-5g.dts
-> @@ -6,6 +6,7 @@
->   
->   /dts-v1/;
->   
-> +#include <dt-bindings/firmware/qcom,scm.h>
->   #include <dt-bindings/gpio/gpio.h>
->   #include <dt-bindings/input/gpio-keys.h>
->   #include <dt-bindings/input/input.h>
-> @@ -130,7 +131,7 @@ rmtfs_mem: rmtfs-region@85500000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		wlan_mem: wlan-region@8bc00000 {
-> diff --git a/arch/arm64/boot/dts/qcom/sc8180x-primus.dts b/arch/arm64/boot/dts/qcom/sc8180x-primus.dts
-> index 834e6f9fb7c8..fd2fab4895b3 100644
-> --- a/arch/arm64/boot/dts/qcom/sc8180x-primus.dts
-> +++ b/arch/arm64/boot/dts/qcom/sc8180x-primus.dts
-> @@ -6,6 +6,7 @@
->   
->   /dts-v1/;
->   
-> +#include <dt-bindings/firmware/qcom,scm.h>
->   #include <dt-bindings/gpio/gpio.h>
->   #include <dt-bindings/input/gpio-keys.h>
->   #include <dt-bindings/input/input.h>
-> @@ -135,7 +136,7 @@ rmtfs_mem: rmtfs-region@85500000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		wlan_mem: wlan-region@8bc00000 {
-> diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-> index ec6003212c4d..c17719086085 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
-> @@ -8,6 +8,7 @@
->   #include <dt-bindings/clock/qcom,gpucc-sdm660.h>
->   #include <dt-bindings/clock/qcom,mmcc-sdm660.h>
->   #include <dt-bindings/clock/qcom,rpmcc.h>
-> +#include <dt-bindings/firmware/qcom,scm.h>
->   #include <dt-bindings/interconnect/qcom,sdm660.h>
->   #include <dt-bindings/power/qcom-rpmpd.h>
->   #include <dt-bindings/gpio/gpio.h>
-> @@ -453,7 +454,7 @@ rmtfs_mem: memory@85e00000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		smem_region: smem-mem@86000000 {
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> index f942c5afea9b..99dafc6716e7 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-> @@ -111,7 +111,7 @@ rmtfs_mem: memory@f0801000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		/* rmtfs upper guard */
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-> index 122c7128dea9..b523b5fff702 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
-> @@ -90,7 +90,7 @@ rmtfs_mem: rmtfs-mem@f5b01000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   		rmtfs_upper_guard: rmtfs-upper-guard@f5d01000 {
->   			no-map;
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> index 9d6faeb65624..93b1582e807d 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-> @@ -111,7 +111,7 @@ rmtfs_mem: memory@f6301000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   	};
->   
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts
-> index 6db12abaa88d..e386b504e978 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts
-> +++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts
-> @@ -108,7 +108,7 @@ rmtfs_mem: memory@f6301000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   	};
->   
-> diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> index 055ca80c0075..eede4b18fb98 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-> @@ -813,7 +813,7 @@ rmtfs_mem: rmtfs@88f00000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		qseecom_mem: qseecom@8ab00000 {
-> diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> index 18171c5d8a38..136e273d09a7 100644
-> --- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> +++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-> @@ -8,6 +8,7 @@
->   /* PMK8350 (in reality a PMK8003) is configured to use SID6 instead of 0 */
->   #define PMK8350_SID 6
->   
-> +#include <dt-bindings/firmware/qcom,scm.h>
->   #include <dt-bindings/gpio/gpio.h>
->   #include <dt-bindings/iio/qcom,spmi-adc7-pmk8350.h>
->   #include <dt-bindings/input/input.h>
-> @@ -75,7 +76,7 @@ memory@efe01000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   	};
->   
-> diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-> index a7c3020a5de4..fd5c3139f4ce 100644
-> --- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-> @@ -5,6 +5,7 @@
->    */
->   
->   #include <dt-bindings/dma/qcom-gpi.h>
-> +#include <dt-bindings/firmware/qcom,scm.h>
->   #include <dt-bindings/interrupt-controller/arm-gic.h>
->   #include <dt-bindings/power/qcom-rpmpd.h>
->   #include <dt-bindings/soc/qcom,rpmh-rsc.h>
-> @@ -720,7 +721,7 @@ rmtfs_mem: memory@89b00000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		camera_mem: memory@8b700000 {
-> diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-> index 00604bf7724f..4989a3971c94 100644
-> --- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-> @@ -10,6 +10,7 @@
->   #include <dt-bindings/clock/qcom,gpucc-sm8350.h>
->   #include <dt-bindings/clock/qcom,rpmh.h>
->   #include <dt-bindings/dma/qcom-gpi.h>
-> +#include <dt-bindings/firmware/qcom,scm.h>
->   #include <dt-bindings/gpio/gpio.h>
->   #include <dt-bindings/interconnect/qcom,sm8350.h>
->   #include <dt-bindings/mailbox/qcom-ipcc.h>
-> @@ -503,7 +504,7 @@ rmtfs_mem: memory@9b800000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		hyp_reserved_mem: memory@d0000000 {
-> diff --git a/arch/arm64/boot/dts/qcom/sm8450-sony-xperia-nagara.dtsi b/arch/arm64/boot/dts/qcom/sm8450-sony-xperia-nagara.dtsi
-> index 001fb2723fbb..8b29fcf483a3 100644
-> --- a/arch/arm64/boot/dts/qcom/sm8450-sony-xperia-nagara.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sm8450-sony-xperia-nagara.dtsi
-> @@ -80,7 +80,7 @@ rmtfs_mem: memory@f3300000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		ramoops@ffc00000 {
-> diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-> index 2a60cf8bd891..09a0c35dd514 100644
-> --- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-> @@ -10,6 +10,7 @@
->   #include <dt-bindings/clock/qcom,sm8450-dispcc.h>
->   #include <dt-bindings/clock/qcom,sm8450-videocc.h>
->   #include <dt-bindings/dma/qcom-gpi.h>
-> +#include <dt-bindings/firmware/qcom,scm.h>
->   #include <dt-bindings/gpio/gpio.h>
->   #include <dt-bindings/mailbox/qcom-ipcc.h>
->   #include <dt-bindings/phy/phy-qcom-qmp.h>
-> @@ -540,7 +541,7 @@ rmtfs_mem: memory@9fd00000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		xbl_sc_mem2: memory@a6e00000 {
-> diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-> index d115960bdeec..1a3bbd62e540 100644
-> --- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-> @@ -10,6 +10,7 @@
->   #include <dt-bindings/clock/qcom,sm8550-tcsr.h>
->   #include <dt-bindings/clock/qcom,sm8550-dispcc.h>
->   #include <dt-bindings/dma/qcom-gpi.h>
-> +#include <dt-bindings/firmware/qcom,scm.h>
->   #include <dt-bindings/gpio/gpio.h>
->   #include <dt-bindings/interrupt-controller/arm-gic.h>
->   #include <dt-bindings/interconnect/qcom,sm8550-rpmh.h>
-> @@ -570,7 +571,7 @@ rmtfs_mem: rmtfs-region@d4a80000 {
->   			no-map;
->   
->   			qcom,client-id = <1>;
-> -			qcom,vmid = <15>;
-> +			qcom,vmid = <QCOM_SCM_VMID_MSS_MSA>;
->   		};
->   
->   		mpss_dsm_mem: mpss-dsm-region@d4d00000 {
-> 
-> ---
-> base-commit: 7271b2a530428b879443b274c191b34536a4ea11
-> change-id: 20230818-qcom-vmid-defines-adc1794c6d01
-> 
-> Best regards,
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Obvioiusly correct
-
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Konrad
