@@ -2,121 +2,115 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24382C05052
-	for <phone-devel@archiver.kernel.org>; Fri, 18 Aug 2023 10:51:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 65879EE4993
+	for <phone-devel@archiver.kernel.org>; Sun, 20 Aug 2023 17:41:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359318AbjHRKvR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 18 Aug 2023 06:51:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36878 "EHLO
+        id S231204AbjHTRlt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 20 Aug 2023 13:41:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376456AbjHRKuw (ORCPT
+        with ESMTP id S231522AbjHTRlr (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 18 Aug 2023 06:50:52 -0400
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1509230C5
-        for <phone-devel@vger.kernel.org>; Fri, 18 Aug 2023 03:50:50 -0700 (PDT)
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2b9b5ee9c5aso11320401fa.1
-        for <phone-devel@vger.kernel.org>; Fri, 18 Aug 2023 03:50:49 -0700 (PDT)
+        Sun, 20 Aug 2023 13:41:47 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 647FD422D;
+        Sun, 20 Aug 2023 10:38:47 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4ffa248263cso3860045e87.2;
+        Sun, 20 Aug 2023 10:38:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692355848; x=1692960648;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=/6jSuC3ZsL86KaAv6TVYVHDxBfpmKhlmD3RAmvNe8sk=;
-        b=pOnXW89U6brNuKK/AsmE6yGcJmK+NS/BagDJ19+oEhKVzU5kAvyvtrWZALLfV9el89
-         7oYOiXALMHrplRHsmE+t1FsHxjOFO9cNjte3OWeN9lDeo7zo9ICbNh5WDPprVRgK9tY3
-         X3U9Tsw5lt85RvXOEnEtpXcfXdPkRbPF+/t3guUPGvdTupHNbCWE+mmKTt7HnA6+rgyc
-         Q2EqUKgGiqRL/LenfKrS+rjEOLXUBuYosRIqfvgFp3mdog2pRyRuxwE0QKARlzenCbVD
-         JNn02uuzIEjvDPHjHSYZDWijblJYMAaauVdz1rEm5lNNfjR4y48TTWeWKbQpY41/aitb
-         cRJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692355848; x=1692960648;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1692553125; x=1693157925;
+        h=in-reply-to:content-disposition:mime-version:mail-followup-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/6jSuC3ZsL86KaAv6TVYVHDxBfpmKhlmD3RAmvNe8sk=;
-        b=Feg1gEIwC7euWubsSzvxdTLPD/DBpKcX9Hfph6m7FoUVOhL/VnYHr7xZZ9Cq+N5Dk/
-         cng61IuzmH8wXPCMAimM6WvFXh2RjpHt28G0Mbdlywkhh8jmAlyAQpOUWf9GbEhbhPTC
-         Sco7vCjG3sVCNPxu1eb6lBKCoAhb5k1tXRqSV0/rJl+O4uI4st51lMwf+9a2vKr8bLJT
-         ABjg8rD0xPXi4Z4TtJu2w2VfVJDUCdiUxxUOi92LWtcdI0yFOq6T19geCiGt/QMTPJvU
-         wtKoaWLiB7DN24QkE8LTdNGZE6Ikd42QMoxK4p740ShbASc/Ig4ZOvRc7wIvKVo+4Iio
-         2Pzw==
-X-Gm-Message-State: AOJu0YwgrDrngdKSnP823HoOtIQeMsab41rmCpgBxbdBL3kXLXYfJSXs
-        72ELX/hZ6bVAOsv32wUVzC8FmQ==
-X-Google-Smtp-Source: AGHT+IFqoRW48KQkQdO1pml8q37zXJP7n6MGoUYfyI9Q5r2eyiksZbegQMSfkLp3eJ820lFmYO6dxQ==
-X-Received: by 2002:a2e:7410:0:b0:2b7:364e:91ec with SMTP id p16-20020a2e7410000000b002b7364e91ecmr1558338ljc.13.1692355848303;
-        Fri, 18 Aug 2023 03:50:48 -0700 (PDT)
-Received: from [192.168.1.101] (abxh52.neoplus.adsl.tpnet.pl. [83.9.1.52])
-        by smtp.gmail.com with ESMTPSA id c20-20020a2e9d94000000b002b9e5afa14csm366121ljj.42.2023.08.18.03.50.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Aug 2023 03:50:47 -0700 (PDT)
-Message-ID: <ef33eee3-42a7-419b-bbe4-e4fe681156ca@linaro.org>
-Date:   Fri, 18 Aug 2023 12:50:46 +0200
+        bh=rIr7RBh4/ml00M/dYodkytiKu3g9NjluUKtt0N6VKJM=;
+        b=Fo0k1/S6GFD849p84Y8bd3daQpb0QyUebtOE3cSC5EOtxd6K6jxH6kQk4jme0XpceI
+         lmQJGh0SZobwKQzqfJmuiozO+UQIi4ytjbfJYUDsz3g0p1hWBbKMZwGVHVRY+9NzQ6l6
+         WJM19T6vAOr0bs1GhZQkpnMOZlt0j9A1UZlkVcORpk1UijBW4rXhD5rV0g+peA13NLKt
+         qvHqVYpZnKzNPBr2s+K6RTk8C89rQQu7P3rErQ8Mj1xE42qQQP9OZQhtLxCjcx8Yyu8r
+         lNr9/WbQsDH6oJZnoL0ecHeL4EdriaYDa8R32RrWQfs9enamqtKUok/YzPUdiIw+pnVo
+         zJjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692553125; x=1693157925;
+        h=in-reply-to:content-disposition:mime-version:mail-followup-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rIr7RBh4/ml00M/dYodkytiKu3g9NjluUKtt0N6VKJM=;
+        b=YWb8k/dO5Z7eBsNnKEcLhMEwElB0MzMZo+O89XtXHBVFv/85qGUoOlRIhB4vwM3bUj
+         lvPaXOqRRMBSw21hK2PttS4NUHvXEmjDBPJC90QeCPCsneI9XIE+DOOiPaPgT4YnU0qs
+         tWODYqTeT2elu5xghTpvEwEK5cJ5W646G92p+jhNVK7023d5NkL6m04zw/fRDKHheErt
+         1BpY7YP7fhGyav7d7fxAe79mrSeDJ8sUKLKvjVJ97Q0bc2hoDRx9r95gGSqr77MK+EKF
+         US9xYfvjqDtldTz2NsLZxFUeXMXyEkfwPKSFXhjUhQ5Jv24bMe+562CIYVbKOy2EgHnR
+         hTSg==
+X-Gm-Message-State: AOJu0YyzHBaXN0DvjNRFrVy52wIaF/REN9hTlZWTmcm0vImpS5pEXzpb
+        1FcrmEPxHCYkiA94hp6vWk0=
+X-Google-Smtp-Source: AGHT+IEY+jK9VXQeo68jFfmbeLhhcDVJjqoZoQ6pD+nmHMqQhVZcjPtHV+pjhmzyE/uM0tTzSYGkEQ==
+X-Received: by 2002:ac2:5dc9:0:b0:4fb:7b4c:d38c with SMTP id x9-20020ac25dc9000000b004fb7b4cd38cmr2367546lfq.60.1692553125261;
+        Sun, 20 Aug 2023 10:38:45 -0700 (PDT)
+Received: from localhost ([2a05:3580:f312:6c00:826c:ae47:61a7:8af8])
+        by smtp.gmail.com with ESMTPSA id a11-20020a056512020b00b004fdbb36a677sm1326832lfo.288.2023.08.20.10.38.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Aug 2023 10:38:44 -0700 (PDT)
+Date:   Sun, 20 Aug 2023 20:38:44 +0300
+From:   Andrey Skvortsov <andrej.skvortzov@gmail.com>
+To:     Alain Volmat <alain.volmat@foss.st.com>
+Cc:     Pavel Machek <pavel@ucw.cz>, icenowy@aosc.xyz, martijn@brixit.nl,
+        megous@megous.com, kernel list <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org, mchehab@kernel.org,
+        linux-media@vger.kernel.org, megi@xff.cz
+Subject: Re: gc2145 camera driver (front camera on PinePhone)
+Message-ID: <ZOJPpBoiC92VsOV+@skv.local>
+Mail-Followup-To: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+        Alain Volmat <alain.volmat@foss.st.com>,
+        Pavel Machek <pavel@ucw.cz>, icenowy@aosc.xyz, martijn@brixit.nl,
+        megous@megous.com, kernel list <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org, mchehab@kernel.org,
+        linux-media@vger.kernel.org, megi@xff.cz
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: Use QCOM_SCM_VMID defines for qcom,vmid
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230818-qcom-vmid-defines-v1-1-45b610c96b13@fairphone.com>
-Content-Language: en-US
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20230818-qcom-vmid-defines-v1-1-45b610c96b13@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <Y6tGfxrq/Mh1JoA9@duo.ucw.cz>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 18.08.2023 10:06, Luca Weiss wrote:
-> Since we have those defines available in a header, let's use them
-> everywhere where qcom,vmid property is used.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Hi Alain,
 
-Konrad
+> we are also using the GC2145 sensor but in a CSI based environment.
+> 
+> We are in contact with GalaxyCore and following discussions we had with them
+> and data they provided us with, we've made a driver for that, supporting for
+> the time being 3 different resolutions via the CSI interface.
+> 
+> The driver is available on the STMicroelectronics STM32 github [1].
+> 
+> If you are ok with that, we could go further upstreaming it while testing/adding
+> features necessary for the PinePhone.
+> 
+> [1] https://github.com/STMicroelectronics/linux/blob/v5.15-stm32mp/drivers/media/i2c/gc2145.c
+
+I've implemented basic parallel bus support to check your driver [1] on
+the PinePhone. My changes are here [2].
+With your driver results are much better in compare to Megi's
+driver (I'm still glad, that Megi has written one). See pictures for
+comparison here [3]. Access to vendor support and (probably)
+documentation gives great results.
+
+I'd recommend to replace more of hard-coded parts of initialization
+sequences with functions like in proposed Megi's driver. So this will
+be clearer what different register values mean. Since you have access
+to support channel/documentation it'd be easier for you to do.
+
+It'd be nice to have at least some gc2145 driver in mainline. Do you
+still have plans/time to mainline driver?
+
+P.S.
+Alain, I don't see your address in the list of recipients of last Pavel's
+response. In case you have not received it, it's here [4].
+
+1. https://github.com/STMicroelectronics/linux/blob/v6.1-stm32mp/drivers/media/i2c/gc2145.c
+2. https://github.com/AndreySV/linux/commit/f06ff60eb7a664dcafa8d40901a1ab0f59071529
+3. https://github.com/AndreySV/linux/issues/1
+4. https://lwn.net/ml/linux-kernel/Y6tGfxrq/Mh1JoA9@duo.ucw.cz
+-- 
+Best regards,
+Andrey Skvortsov
