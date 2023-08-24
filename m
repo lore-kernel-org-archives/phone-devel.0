@@ -2,108 +2,126 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFB84C6FA8F
-	for <phone-devel@archiver.kernel.org>; Thu, 24 Aug 2023 10:39:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 341A9C7EE43
+	for <phone-devel@archiver.kernel.org>; Thu, 24 Aug 2023 17:12:01 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239499AbjHXKjU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 24 Aug 2023 06:39:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37526 "EHLO
+        id S237548AbjHXRL3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 24 Aug 2023 13:11:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240878AbjHXKjR (ORCPT
+        with ESMTP id S230385AbjHXRK6 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 24 Aug 2023 06:39:17 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E9F819B6;
-        Thu, 24 Aug 2023 03:38:59 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-d6b1025fc7aso6040776276.3;
-        Thu, 24 Aug 2023 03:38:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692873538; x=1693478338;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ku30yGR4fsIAVCtmRwOtJYE7C4zQBYo4YJCwft/LQ/M=;
-        b=dimZI7NLJY2HQ1/qZ7BKTpu4u9yGwKhafQCY3K6zD1b0kbjvwFDzFnZpZtRLjGUVdI
-         XkXW+3jg+a/uJu0dPdpLXWge4OgH6yaly8/3thpU9gZeGGY/T0XhRi3jTov4EldI56i7
-         rSi9FyKFIqPw3d7ZcXzzzYJbTOCyW01eApO5Y5f+yaXjgYxJoNuG0bGW2PhmT9BCT7aQ
-         iwl/uOp7rgx96TZO+tsfjbjbqi9GhAbWLKnVtIBdMK65iVkmJFrYJWTgnV5XJ9DfRyz3
-         MHmABmClsz8qxb99GSgC3E1cpr9oP+AKghUlR+AvV5QbE8QidovT/aZYXwW7OKnkrZ7F
-         /vqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692873538; x=1693478338;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ku30yGR4fsIAVCtmRwOtJYE7C4zQBYo4YJCwft/LQ/M=;
-        b=hWb7KeHN4e1IBSrDlLxT8Q4vklyEfaE+OYamEYLVAr/0Bz7Bc64tEhxTu5UoujVZT8
-         8ArAA3RJVK1DPROOXkQz69nTf1yOeDgDw2PjJjtCobjsjaK0WUsJAgug12aPEEPbnrgB
-         f8UYwy8rNCWrCEWrONYgbPO2Ftoff6zj73yaPTaUlNMd/xBdMwxcGoR0jdWz+caE+Wd3
-         yk0RQqbKzqF5h1E06bq7gfzmpdfhMs9DJv1JnL1DyKKcGBsj9T8MKS60YHLia4DRACWH
-         bFC+B9/JbDR5xQPKmAh8P4wuYZRM4/MWy/EnZblF6BZ31A7/U2/oePJudeVbVLJvyPIL
-         /9gw==
-X-Gm-Message-State: AOJu0Yx2GG9wgn2ncJ1H0b5CS9IDwgVyURwnGl014J7WkUo7PjCDDaoU
-        mud/SU0w1bOJQXUEpeFSqDgP53ywTC3oG4c8ZaCNRxriHj+e2Szq
-X-Google-Smtp-Source: AGHT+IHy0ZBnflfuFgKSkYkYtritFVAMG3KoOaW8jzLLo68VUseS23HYJcxULEi6DpiFPJZhEVYWbkVINdPfVS8NUPM=
-X-Received: by 2002:a25:6412:0:b0:d77:a0a5:e1a3 with SMTP id
- y18-20020a256412000000b00d77a0a5e1a3mr5838002ybb.33.1692873538363; Thu, 24
- Aug 2023 03:38:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230824091737.75813-1-davidwronek@gmail.com> <9db02015-2c41-40d6-bf35-69ef277e9ce4@linaro.org>
-In-Reply-To: <9db02015-2c41-40d6-bf35-69ef277e9ce4@linaro.org>
-From:   David Wronek <davidwronek@gmail.com>
-Date:   Thu, 24 Aug 2023 12:38:47 +0200
-Message-ID: <CAEoe_eUJWAG71VcYCfLWC5KCamRBjUZ+V3j4ZrSjBunh35s6Rw@mail.gmail.com>
-Subject: Re: [PATCH v5 0/4] Add initial support for SM7125 and Xiaomi SM7125 platform
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>
+        Thu, 24 Aug 2023 13:10:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC797199D;
+        Thu, 24 Aug 2023 10:10:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70EDC632D2;
+        Thu, 24 Aug 2023 17:10:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F54CC433C7;
+        Thu, 24 Aug 2023 17:10:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692897055;
+        bh=3MUBjtSfXVqcpiARHA23t0wkZwet4S8Qo1HUSXv+dLw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=J1ANo/ABTwMz16yeMQJCeo+LiDN4EkwDchvmdXQnwIlgBWS4QG1igD1xKD3jduqzQ
+         hHZ6XV1D1ECNCW4nFsX5XXww1ZLlRlcNUA8XjxQ+3AW7DwNXNFzMWHwNqbp0aPEwUX
+         J0eZe3G7EXZpv5LAbVDk6makQuKsEBAZnxStwtwknsOFpCPTrrd0m7OH01L7b+qGr2
+         bdoyTz+a12JKOr+vnaSluTXQhYg7dmwRZrOaxqLbHjHhGdw8uEY3hniLqMzSN413Dt
+         sapgArOv+LCgRFhfHKSokZb4svCzEIHy1dMpASY62OvKxheGFG1qOHZ11miUKiw58k
+         KY+C1QJInLFrQ==
+Received: (nullmailer pid 1048461 invoked by uid 1000);
+        Thu, 24 Aug 2023 17:10:52 -0000
+Date:   Thu, 24 Aug 2023 12:10:52 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Luca Weiss <luca.weiss@fairphone.com>
 Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Iskren Chernev <me@iskren.info>,
+        Manivannan Sadhasivam <mani@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        cros-qcom-dts-watchers@chromium.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        linux-crypto@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        Eric Biggers <ebiggers@google.com>
+Subject: Re: [PATCH v6 0/4] Fix some issues in QCOM UFS bindings
+Message-ID: <20230824171052.GA1037612-robh@kernel.org>
+References: <20230814-dt-binding-ufs-v6-0-fd94845adeda@fairphone.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230814-dt-binding-ufs-v6-0-fd94845adeda@fairphone.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu, Aug 24, 2023 at 11:53=E2=80=AFAM Konrad Dybcio <konrad.dybcio@linar=
-o.org> wrote:
->
-> On 24.08.2023 11:15, David Wronek wrote:
-> > This series introduces support for the Qualcomm SM7125 SoC and the
-> > Xiaomi SM7125 platform.
-> >
-> > Signed-off-by: David Wronek <davidwronek@gmail.com>
-> > ---
-> Would your device boot if you:
->
-> - removed qcom,board-id and qcom,msm-id
-> - created the image like this:
->
-> mkbootimg \
-> --kernel arch/arm64/boot/Image.gz \
-> --dtb arch/arm64/boot/dts/qcom/blahblah.dtb \
-> --ramdisk blah.img \
-> --pagesize 4096 \
-> --base 0x0 \
-> --kernel_offset 0x8000 \
-> --ramdisk_offset 0x1000000 \
-> --tags_offset 0x100 \
-> --cmdline "foobarbaz" \
-> --dtb_offset 0x1f00000 \
-> --header_version 2 \
-> -o boot.img
->
-> ?
->
-> Konrad
+On Mon, Aug 14, 2023 at 12:14:12PM +0200, Luca Weiss wrote:
+> This series aims to solve the dtbs_check errors from the qcom ufs
+> bindings. It has changed in scope a bit since v1, so it may be a bit all
+> over the place.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+> Changes in v6:
+> - Rebase on linux-next
+> - Drop applied dts patch
+> - Pick up tags
+> - Link to v5: https://lore.kernel.org/r/20221209-dt-binding-ufs-v5-0-c9a58c0a53f5@fairphone.com
+> 
+> Changes in v5:
+> - Convert sm8450.dtsi to use qcom,ice property, so stop modifying schema
+>   for sm8450 and only add qcom,ice property.
+> - Move reg-names names to top-level with only minItems/maxItems in the
+>   'if'
+> - Link to v4: https://lore.kernel.org/r/20221209-dt-binding-ufs-v4-0-14ced60f3d1b@fairphone.com
+> 
+> Changes in v4:
+> - Pick up tags
+> - Rebase on linux-next (again)
+> - Link to v3: https://lore.kernel.org/r/20221209-dt-binding-ufs-v3-0-499dff23a03c@fairphone.com
+> 
+> Changes in v3:
+> - Drop applied patch
+> - Pick up sm6115 patch from v5 https://lore.kernel.org/all/20221030094258.486428-2-iskren.chernev@gmail.com/
+> - Rebase on linux-next
+> - Link to v2: https://lore.kernel.org/r/20221209-dt-binding-ufs-v2-0-dc7a04699579@fairphone.com
+> 
+> Changes in v2:
+> - Add new patch adding reg-names to sm6115 & rebase series on top of sm6115
+>   addition
+> - Fix binding example after sm8450 move, split this patch from original patch
+>   since it became too big
+> - Move reg-names definition to top-level
+> - Link to v1: https://lore.kernel.org/r/20221209-dt-binding-ufs-v1-0-8d502f0e18d5@fairphone.com
+> 
+> ---
+> Iskren Chernev (1):
+>       dt-bindings: ufs: qcom: Add sm6115 binding
+> 
+> Luca Weiss (3):
+>       dt-bindings: ufs: qcom: Add reg-names property for ICE
+>       dt-bindings: ufs: qcom: Add ICE to sm8450 example
+>       dt-bindings: crypto: ice: Document sm8450 inline crypto engine
+> 
+>  .../bindings/crypto/qcom,inline-crypto-engine.yaml |  1 +
+>  .../devicetree/bindings/ufs/qcom,ufs.yaml          | 44 ++++++++++++++++++++++
+>  2 files changed, 45 insertions(+)
 
-Seems like my device needs those properties, it does not boot without
-msm-id and board-id and the command you sent.
+I guess the subsystem maintainers aren't going to pick this up, so I've 
+applied it.
 
-Sincerely,
-David
+Rob
