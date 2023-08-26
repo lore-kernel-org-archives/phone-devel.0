@@ -2,71 +2,73 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F0E2C83F15
-	for <phone-devel@archiver.kernel.org>; Sat, 26 Aug 2023 11:55:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79549C83F16
+	for <phone-devel@archiver.kernel.org>; Sat, 26 Aug 2023 12:08:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232496AbjHZLy3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 26 Aug 2023 07:54:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52312 "EHLO
+        id S229526AbjHZMHh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 26 Aug 2023 08:07:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232662AbjHZLyI (ORCPT
+        with ESMTP id S232749AbjHZMHE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 26 Aug 2023 07:54:08 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2332B2121
-        for <phone-devel@vger.kernel.org>; Sat, 26 Aug 2023 04:54:05 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-4ff09632194so2734412e87.2
-        for <phone-devel@vger.kernel.org>; Sat, 26 Aug 2023 04:54:05 -0700 (PDT)
+        Sat, 26 Aug 2023 08:07:04 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD9502106
+        for <phone-devel@vger.kernel.org>; Sat, 26 Aug 2023 05:07:01 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2bcb54226e7so21153311fa.1
+        for <phone-devel@vger.kernel.org>; Sat, 26 Aug 2023 05:07:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693050843; x=1693655643;
+        d=linaro.org; s=google; t=1693051620; x=1693656420;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=0EPL7CpeoFMQKYf4z4yYjBTqb+sh6kMqAld0BDX3+D0=;
-        b=twctIUtxpdCrBA8JWcIBD9SsZLshnmf59XH4A9iSrlrOpytGMja7r5SGm77ULd+yOE
-         BM5ohhyNQsZmyggCUGYzOg3HmGXySwmDvYs/+KAbLd1k6LEbp3cIv2w971h9yA10QnYL
-         KEUu+eJfUIUu8mNwCghguKaQjVS2E9ZABF1vgfhdOQE7VuUEN++xDDGrZXqQ3PSIQkjj
-         dWTxqxZi/GdlbNI4V8lB+d0rDjt0pNgb7axjmeDrSuCpjcbjY2LChXQqNOpM6RBta3qb
-         l4p/6wxmpLr7zzMpzQ57W5GS7+PjK/xEXq8pfowP8n8cP3h+9tle4JrsUInSjGob8EDZ
-         htog==
+        bh=fxY8GzOUSjJpbnpDLCF9tnnYblSq+xTqK+i5DsaGhz0=;
+        b=xPuwmgJqltwIl5qjdyaSFaAR3hozi7pzkl283hOFK2jHekRzRsO8UHXQKXUT3J0+1Y
+         ZnK6qysEPNN4NykZwfy62Uh8JVXrzq9ggqjA1hnHMcMnxQSy6mgi2ELATbtP5Qha3msE
+         mLdGWbliwXX9E7N9R6L3LplGJcvOupwA1BQ5P801jz7bPEForgun34tFdCjt9eiU1MdV
+         Y7KDgjfmuWwO6nEdZyJb3gbMFLwg4fh7PsaqgKeLJYFRvM0196Lb/gBglNhelyJFw0LL
+         Ed8A64GJYi1w8qD1g41u5UyAw+tdlRvhehKumf7PFonAdcfMtwCDZv9bs0Ac/r23YXsU
+         tXPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693050843; x=1693655643;
+        d=1e100.net; s=20221208; t=1693051620; x=1693656420;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0EPL7CpeoFMQKYf4z4yYjBTqb+sh6kMqAld0BDX3+D0=;
-        b=UikByTCsnU7oVLIiatnSTsjX+iNosX1Xoy/9ltPrnUkAMskgiJSGMhfnCbBXGw7gp7
-         kvVBaRnHOKXFG4NGlono8cu2Z2Eo/eg7ADoLSJRQRToJDLLF65SIHg3v1hZQ+ZlC+oAJ
-         hQPTFeRfV6sg9MZWoAlqUhmPQKcMP0qHctBQv+gpQIKsZSAcmzX+hAVNKKstC7PGdR2X
-         aL/OmU1iTlSAKwT1UMo6poLQhPrK3V8PuJ2LrHRsW6B1pC3om/oESBEYfVlj97XoBt1m
-         u9zTvDEhKyfDE5MkSm0nnWIbhIqJRlmfHspp+aREHDOVJkovYitchahrXpf+mZRj5Zib
-         KO/Q==
-X-Gm-Message-State: AOJu0YydryGVBDYUYymIYP6YWbKcjukBR/HU9E2ymdtCwdm7dChplFi3
-        18hNxzK2dy5+teNvUeZo8vXIAK5kAupCbIzfPgc7nw==
-X-Google-Smtp-Source: AGHT+IGQz3D0e/LO4hq0lAnDSzmewRMNFKZuEg8PxttLrhlcau0b09dIkzJ9letpNn7nnqUv2LhtPQ==
-X-Received: by 2002:a05:6512:4026:b0:4fe:d0f:1f1b with SMTP id br38-20020a056512402600b004fe0d0f1f1bmr17280471lfb.65.1693050843279;
-        Sat, 26 Aug 2023 04:54:03 -0700 (PDT)
+        bh=fxY8GzOUSjJpbnpDLCF9tnnYblSq+xTqK+i5DsaGhz0=;
+        b=W8GyPDjl9rMlX1euq1VneqycpG19t58JDU8bYJ552BeiSoS9fflbKJzevd39Fe1sIe
+         MYcS415CTxzrx+euXKEL7GhkBT3MQq3KA4jdYd5wYYcfRQZQtfKRQnp5ObkKDODQqr6R
+         Q9cbwQXWCKJZ5Nhl/tchk58RBcCHsyL3EFcsIMMvwiEcgL1nN/fNGyzObrDA2QJuIDpA
+         4I5jW+4KaZXQLjSkB5QbZcibhxwSYMKL0jp0sp3TobRnh62safH3LfYFObKcm1CbLkfe
+         tDzrqiccctj3SRvIAuZD7IA0saUSpGxMt3oeaTYkTAQbEHfWcJqR8OQ+nP2pfU3NTq/l
+         OYuQ==
+X-Gm-Message-State: AOJu0Yyibt1xoEzp32yVawfo4V4xIj5MoJmAPcdcETNEI72TFdQrfQUj
+        DinGnGF4IobFgBwENhi4RsiFSg==
+X-Google-Smtp-Source: AGHT+IH8TVip4xI95ezyyOf6FmQm74KohrLqFBiRaCOmUZfCvyGjphngtDD9yytWeUO2Vl23ErGyrg==
+X-Received: by 2002:a2e:b0c3:0:b0:2bc:c4fa:489c with SMTP id g3-20020a2eb0c3000000b002bcc4fa489cmr6166606ljl.8.1693051620086;
+        Sat, 26 Aug 2023 05:07:00 -0700 (PDT)
 Received: from [192.168.1.101] (abyl74.neoplus.adsl.tpnet.pl. [83.9.31.74])
-        by smtp.gmail.com with ESMTPSA id q27-20020ac2515b000000b005008c11ca6dsm678165lfd.184.2023.08.26.04.54.02
+        by smtp.gmail.com with ESMTPSA id a8-20020a2e88c8000000b002b9f0b25ff6sm776135ljk.4.2023.08.26.05.06.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 26 Aug 2023 04:54:02 -0700 (PDT)
-Message-ID: <561e75e8-cb97-4d19-a9a4-e9029d91633e@linaro.org>
-Date:   Sat, 26 Aug 2023 13:54:02 +0200
+        Sat, 26 Aug 2023 05:06:59 -0700 (PDT)
+Message-ID: <cca2a215-e71d-4e8c-a5d9-93aa870b7995@linaro.org>
+Date:   Sat, 26 Aug 2023 14:06:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: sdm630: remove refs to nonexistent
- clocks
+Subject: Re: [PATCH RESEND v3 2/2] arm64: dts: qcom: msm8939-longcheer-l9100:
+ Add initial device tree
 Content-Language: en-US
-To:     Alexey Minnekhanov <alexeymin@postmarketos.org>,
+To:     =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20230719073520.2644966-1-alexeymin@postmarketos.org>
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Stephan Gerhold <stephan@gerhold.net>,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+References: <20230815-bq_m5-v3-0-fd26d7c76a1f@apitzsch.eu>
+ <20230815-bq_m5-v3-2-fd26d7c76a1f@apitzsch.eu>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -103,22 +105,67 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20230719073520.2644966-1-alexeymin@postmarketos.org>
+In-Reply-To: <20230815-bq_m5-v3-2-fd26d7c76a1f@apitzsch.eu>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 19.07.2023 09:35, Alexey Minnekhanov wrote:
-> Since commit d6edc31f3a68 ("clk: qcom: smd-rpm: Separate out
-> interconnect bus clocks") rpmcc-sdm660 no longer provides
-> RPM_SMD_AGGR2_NOC_CLK and RPM_SMD_AGGR2_NOC_A_CLK clocks.
-> Remove them to fix various probe failures and get devices
-> booting again.
+On 15.08.2023 21:49, André Apitzsch wrote:
+> This dts adds support for BQ Aquaris M5 (Longcheer L9100) released in
+> 2015.
 > 
-> Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
-> ---
-You need to update the bindings, see commits I made for 8998
+> Add a device tree with initial support for:
+> 
+> - GPIO keys
+> - Hall sensor
+> - SDHCI
+> - WCNSS (BT/WIFI)
+> - Accelerometer/Magnetometer
+> - Vibrator
+> - Touchscreen
+> - Front flash
+> 
+> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> ---> +	light-sensor@23 {
+> +		compatible = "liteon,ltr559";
+> +		reg = <0x23>;
+> +
+> +		vdd-supply = <&pm8916_l17>;
+> +		vddio-supply = <&pm8916_l5>;
+> +
+> +		interrupt-parent = <&tlmm>;
+> +		interrupts = <113 IRQ_TYPE_EDGE_FALLING>;
+interrupts-extended = <&tlmm 113 IRQ_TYPE_EDGE_FALLING>;
+
+> +
+> +		pinctrl-0 = <&light_int_default>;
+> +		pinctrl-names = "default";
+> +	};
+> +
+> +	imu@68 {
+> +		compatible = "bosch,bmi160";
+> +		reg = <0x68>;
+> +
+> +		vdd-supply = <&pm8916_l17>;
+> +		vddio-supply = <&pm8916_l6>;
+> +	};
+> +};
+> +
+> +&blsp_i2c5 {
+> +	status = "okay";
+> +
+> +	touchscreen@4a {
+> +		compatible = "atmel,maxtouch";
+> +		reg = <0x4a>;
+> +
+> +		interrupt-parent = <&tlmm>;
+> +		interrupts = <13 IRQ_TYPE_LEVEL_LOW>;
+similarly here
+
+otherwise:
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
 Konrad
