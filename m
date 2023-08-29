@@ -2,425 +2,132 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 93C6CC83F11
-	for <phone-devel@archiver.kernel.org>; Sun, 27 Aug 2023 08:53:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 018C4C6FA8F
+	for <phone-devel@archiver.kernel.org>; Tue, 29 Aug 2023 14:41:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbjH0Iwt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 27 Aug 2023 04:52:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58786 "EHLO
+        id S230217AbjH2OlV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 29 Aug 2023 10:41:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229734AbjH0IwM (ORCPT
+        with ESMTP id S232893AbjH2Okt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 27 Aug 2023 04:52:12 -0400
-Received: from smtprelay02.ispgateway.de (smtprelay02.ispgateway.de [80.67.18.14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B8C8AB;
-        Sun, 27 Aug 2023 01:52:09 -0700 (PDT)
-Received: from [77.64.243.219] (helo=note-book.lan)
-        by smtprelay02.ispgateway.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <git@apitzsch.eu>)
-        id 1qaBS1-0000Bt-5J; Sun, 27 Aug 2023 10:48:53 +0200
-From:   =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-Date:   Sun, 27 Aug 2023 10:48:00 +0200
-Subject: [PATCH v4 2/2] arm64: dts: qcom: msm8939-longcheer-l9100: Add
- initial device tree
+        Tue, 29 Aug 2023 10:40:49 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4DAEE1;
+        Tue, 29 Aug 2023 07:40:46 -0700 (PDT)
+Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 37TC53c6016602;
+        Tue, 29 Aug 2023 16:40:32 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        date:from:to:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=selector1; bh=4PWDKgxwZIJSbPew0UgQ/
+        oUfBjtE2Peg1n6O5qbRfq0=; b=GgjnIXWv35TCEJisI4F8dP6T6vuX7KBFdVEor
+        WPomEcwrYe2CgXvcI34+RIV6pJkQPLyNVDtrDpbRXXHkHz8ClaFbxeHusXOA+syH
+        /kp5xvKeaMPjtTa+U3AEg9fTgg+PmJyjck3o6JBA9uAmPqfY1fsG2J6QDjaWcSEi
+        HSiwC2il/CI0hhH+Shx0/y+W0f0HUYmS4X4xRBFoKVs1J6oDCIvCA7N0xx8QzJy9
+        KAFT6pWUxZQnquYBrRV1s6a6KTeUisJ/GHGAVRj5IuUi7PyPFV2U9sPwjcqRRcN/
+        BEptez/2Hi72GtWLIYU8MqxnUPMyMDwA3izak2rVeHu479U3w==
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3sqtxyt6js-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 29 Aug 2023 16:40:32 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C3301100057;
+        Tue, 29 Aug 2023 16:40:30 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 9C62F2309CC;
+        Tue, 29 Aug 2023 16:40:30 +0200 (CEST)
+Received: from gnbcxd0016.gnb.st.com (10.129.178.213) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Tue, 29 Aug
+ 2023 16:40:30 +0200
+Date:   Tue, 29 Aug 2023 16:40:29 +0200
+From:   Alain Volmat <alain.volmat@foss.st.com>
+To:     Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, <icenowy@aosc.xyz>,
+        <martijn@brixit.nl>, <megous@megous.com>,
+        kernel list <linux-kernel@vger.kernel.org>,
+        <phone-devel@vger.kernel.org>, <mchehab@kernel.org>,
+        <linux-media@vger.kernel.org>, <megi@xff.cz>
+Subject: Re: gc2145 camera driver (front camera on PinePhone)
+Message-ID: <20230829144029.GB193536@gnbcxd0016.gnb.st.com>
+Mail-Followup-To: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, icenowy@aosc.xyz, martijn@brixit.nl,
+        megous@megous.com, kernel list <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org, mchehab@kernel.org,
+        linux-media@vger.kernel.org, megi@xff.cz
+References: <Y6tGfxrq/Mh1JoA9@duo.ucw.cz>
+ <ZOJPpBoiC92VsOV+@skv.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20230827-bq_m5-v4-2-f8435fb8f955@apitzsch.eu>
-References: <20230827-bq_m5-v4-0-f8435fb8f955@apitzsch.eu>
-In-Reply-To: <20230827-bq_m5-v4-0-f8435fb8f955@apitzsch.eu>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Stephan Gerhold <stephan@gerhold.net>,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-X-Mailer: b4 0.12.3
-X-Df-Sender: YW5kcmVAYXBpdHpzY2guZXU=
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ZOJPpBoiC92VsOV+@skv.local>
+X-Disclaimer: ce message est personnel / this message is private
+X-Originating-IP: [10.129.178.213]
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-29_12,2023-08-29_01,2023-05-22_02
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This dts adds support for BQ Aquaris M5 (Longcheer L9100) released in
-2015.
+Hi Andrey,
 
-Add a device tree with initial support for:
+sorry for the delay and huge thanks for the effort of adding parallel
+support into the driver.
 
-- GPIO keys
-- Hall sensor
-- SDHCI
-- WCNSS (BT/WIFI)
-- Accelerometer/Magnetometer
-- Vibrator
-- Touchscreen
-- Front flash
+Yeah pushing this driver is still in my todo and your effort for the
+parallel part helps me a lot.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
----
- arch/arm64/boot/dts/qcom/Makefile                  |   1 +
- .../boot/dts/qcom/msm8939-longcheer-l9100.dts      | 334 +++++++++++++++++++++
- 2 files changed, 335 insertions(+)
+Since you already have a commit which adds the parallel support, what
+about I prepare the driver with only CSI support for the time being
+(after cleanup as you also suggested) and then you can push additionnal
+patches on top of it to add parallel support ?
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index 2cca20563a1d..f79b9eaab323 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -41,6 +41,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-thwc-uf896.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-thwc-ufi001c.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt88047.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-yiming-uz801v3.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-longcheer-l9100.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-samsung-a7.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-sony-xperia-kanuti-tulip.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8953-motorola-potter.dtb
-diff --git a/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts b/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts
-new file mode 100644
-index 000000000000..6802714fda3f
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts
-@@ -0,0 +1,334 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/dts-v1/;
-+
-+#include "msm8939-pm8916.dtsi"
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/leds/common.h>
-+#include <dt-bindings/pinctrl/qcom,pmic-mpp.h>
-+
-+/ {
-+	model = "BQ Aquaris M5 (Longcheer L9100)";
-+	compatible = "longcheer,l9100", "qcom,msm8939";
-+	chassis-type = "handset";
-+
-+	aliases {
-+		mmc0 = &sdhc_1; /* eMMC */
-+		mmc1 = &sdhc_2; /* SD card */
-+		serial0 = &blsp_uart2;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0";
-+	};
-+
-+	gpio-hall-sensor {
-+		compatible = "gpio-keys";
-+
-+		pinctrl-0 = <&gpio_hall_sensor_default>;
-+		pinctrl-names = "default";
-+
-+		label = "GPIO Hall Effect Sensor";
-+
-+		event-hall-sensor {
-+			label = "Hall Effect Sensor";
-+			gpios = <&tlmm 20 GPIO_ACTIVE_LOW>;
-+			linux,input-type = <EV_SW>;
-+			linux,code = <SW_LID>;
-+			linux,can-disable;
-+		};
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+
-+		pinctrl-0 = <&gpio_keys_default>;
-+		pinctrl-names = "default";
-+
-+		label = "GPIO Buttons";
-+
-+		button-volume-up {
-+			label = "Volume Up";
-+			gpios = <&tlmm 107 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEUP>;
-+		};
-+	};
-+
-+	leds {
-+		compatible = "gpio-leds";
-+
-+		led-0 {
-+			gpios = <&tlmm 17 GPIO_ACTIVE_HIGH>;
-+			color = <LED_COLOR_ID_WHITE>;
-+			default-state = "off";
-+			function = LED_FUNCTION_KBD_BACKLIGHT;
-+
-+			pinctrl-0 = <&button_backlight_default>;
-+			pinctrl-names = "default";
-+		};
-+	};
-+
-+	reg_ts_vdd: regulator-vdd-ts {
-+		compatible = "regulator-fixed";
-+		regulator-name = "regulator-vdd-ts";
-+		regulator-min-microvolt = <2850000>;
-+		regulator-max-microvolt = <2850000>;
-+
-+		gpio = <&tlmm 78 GPIO_ACTIVE_HIGH>;
-+		enable-active-high;
-+
-+		pinctrl-0 = <&ts_vdd_default>;
-+		pinctrl-names = "default";
-+	};
-+
-+	backlight {
-+		compatible = "pwm-backlight";
-+		pwms = <&pm8916_pwm 0 100000>;
-+		brightness-levels = <0 255>;
-+		num-interpolated-steps = <255>;
-+		default-brightness-level = <128>;
-+		enable-gpios = <&tlmm 98 GPIO_ACTIVE_HIGH>;
-+
-+		pinctrl-0 = <&lcd_bl_en_default>;
-+		pinctrl-names = "default";
-+	};
-+
-+	flash-led-controller {
-+		compatible = "ocs,ocp8110";
-+		flash-gpios = <&tlmm 8 GPIO_ACTIVE_HIGH>;
-+		enable-gpios = <&tlmm 49 GPIO_ACTIVE_HIGH>;
-+
-+		pinctrl-0 = <&camera_front_flash_default>;
-+		pinctrl-names = "default";
-+
-+		led {
-+			function = LED_FUNCTION_FLASH;
-+			color = <LED_COLOR_ID_WHITE>;
-+			flash-max-timeout-us = <250000>;
-+		};
-+	};
-+
-+	usb_id: usb-id {
-+		compatible = "linux,extcon-usb-gpio";
-+		id-gpios = <&tlmm 110 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&usb_id_default &usb_id_switch_default>;
-+		pinctrl-names = "default";
-+	};
-+
-+};
-+
-+&blsp_i2c3 {
-+	status = "okay";
-+
-+	magnetometer@d {
-+		compatible = "asahi-kasei,ak09911";
-+		reg = <0x0d>;
-+
-+		vdd-supply = <&pm8916_l17>;
-+		vid-supply = <&pm8916_l6>;
-+
-+		reset-gpios = <&tlmm 68 GPIO_ACTIVE_HIGH>;
-+
-+		pinctrl-0 = <&mag_reset_default>;
-+		pinctrl-names = "default";
-+	};
-+
-+	light-sensor@23 {
-+		compatible = "liteon,ltr559";
-+		reg = <0x23>;
-+
-+		vdd-supply = <&pm8916_l17>;
-+		vddio-supply = <&pm8916_l5>;
-+
-+		interrupts-extended = <&tlmm 113 IRQ_TYPE_EDGE_FALLING>;
-+
-+		pinctrl-0 = <&light_int_default>;
-+		pinctrl-names = "default";
-+	};
-+
-+	imu@68 {
-+		compatible = "bosch,bmi160";
-+		reg = <0x68>;
-+
-+		vdd-supply = <&pm8916_l17>;
-+		vddio-supply = <&pm8916_l6>;
-+	};
-+};
-+
-+&blsp_i2c5 {
-+	status = "okay";
-+
-+	touchscreen@4a {
-+		compatible = "atmel,maxtouch";
-+		reg = <0x4a>;
-+
-+		interrupts-extended = <&tlmm 13 IRQ_TYPE_LEVEL_LOW>;
-+
-+		reset-gpios = <&tlmm 12 GPIO_ACTIVE_LOW>;
-+
-+		vdda-supply = <&pm8916_l6>;
-+		vdd-supply = <&reg_ts_vdd>;
-+
-+		pinctrl-0 = <&ts_int_reset_default>;
-+		pinctrl-names = "default";
-+
-+		/* Keys listed from right to left */
-+		linux,keycodes = <KEY_APPSELECT KEY_HOMEPAGE KEY_BACK>;
-+	};
-+};
-+
-+&blsp_uart2 {
-+	status = "okay";
-+};
-+
-+&pm8916_mpps {
-+	pwm_out: mpp4-state {
-+		pins = "mpp4";
-+		function = "digital";
-+		power-source = <PM8916_MPP_VPH>;
-+		output-low;
-+		qcom,dtest = <1>;
-+	};
-+};
-+
-+&pm8916_pwm {
-+	pinctrl-0 = <&pwm_out>;
-+	pinctrl-names = "default";
-+	status = "okay";
-+};
-+
-+&pm8916_resin {
-+	linux,code = <KEY_VOLUMEDOWN>;
-+	status = "okay";
-+};
-+
-+&pm8916_rpm_regulators {
-+	pm8916_l17: l17 {
-+		regulator-min-microvolt = <2850000>;
-+		regulator-max-microvolt = <2850000>;
-+	};
-+};
-+
-+&pm8916_vib {
-+	status = "okay";
-+};
-+
-+&sdhc_1 {
-+	status = "okay";
-+};
-+
-+&sdhc_2 {
-+	pinctrl-0 = <&sdc2_default &sdc2_cd_default>;
-+	pinctrl-1 = <&sdc2_sleep &sdc2_cd_default>;
-+	pinctrl-names = "default", "sleep";
-+
-+	cd-gpios = <&tlmm 38 GPIO_ACTIVE_LOW>;
-+
-+	status = "okay";
-+};
-+
-+&usb {
-+	extcon = <&usb_id>, <&usb_id>;
-+	status = "okay";
-+};
-+
-+&usb_hs_phy {
-+	extcon = <&usb_id>;
-+};
-+
-+&wcnss {
-+	status = "okay";
-+};
-+
-+&wcnss_iris {
-+	compatible = "qcom,wcn3620";
-+};
-+
-+&tlmm {
-+	button_backlight_default: button-backlight-default-state {
-+		pins = "gpio17";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	camera_front_flash_default: camera-front-flash-default-state {
-+		pins = "gpio8", "gpio49";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
-+		pins = "gpio20";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	gpio_keys_default: gpio-keys-default-state {
-+		pins = "gpio107";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
-+
-+	lcd_bl_en_default: lcd-bl-en-default-state {
-+		pins = "gpio98";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	light_int_default: light-int-default-state {
-+		pins = "gpio113";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	mag_reset_default: mag-reset-default-state {
-+		pins = "gpio68";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	sdc2_cd_default: sdc2-cd-default-state {
-+		pins = "gpio38";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	ts_int_reset_default: ts-int-reset-default-state {
-+		pins = "gpio12", "gpio13";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	ts_vdd_default: ts-vdd-default-state {
-+		pins = "gpio78";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	usb_id_default: usb-id-default-state {
-+		pins = "gpio110";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-pull-up;
-+	};
-+
-+	usb_id_switch_default: usb-id-switch-default-state {
-+		pins = "gpio121";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		output-high;
-+	};
-+};
+Regards,
+Alain
 
--- 
-2.42.0
-
+On Sun, Aug 20, 2023 at 08:38:44PM +0300, Andrey Skvortsov wrote:
+> Hi Alain,
+> 
+> > we are also using the GC2145 sensor but in a CSI based environment.
+> > 
+> > We are in contact with GalaxyCore and following discussions we had with them
+> > and data they provided us with, we've made a driver for that, supporting for
+> > the time being 3 different resolutions via the CSI interface.
+> > 
+> > The driver is available on the STMicroelectronics STM32 github [1].
+> > 
+> > If you are ok with that, we could go further upstreaming it while testing/adding
+> > features necessary for the PinePhone.
+> > 
+> > [1] https://github.com/STMicroelectronics/linux/blob/v5.15-stm32mp/drivers/media/i2c/gc2145.c
+> 
+> I've implemented basic parallel bus support to check your driver [1] on
+> the PinePhone. My changes are here [2].
+> With your driver results are much better in compare to Megi's
+> driver (I'm still glad, that Megi has written one). See pictures for
+> comparison here [3]. Access to vendor support and (probably)
+> documentation gives great results.
+> 
+> I'd recommend to replace more of hard-coded parts of initialization
+> sequences with functions like in proposed Megi's driver. So this will
+> be clearer what different register values mean. Since you have access
+> to support channel/documentation it'd be easier for you to do.
+> 
+> It'd be nice to have at least some gc2145 driver in mainline. Do you
+> still have plans/time to mainline driver?
+> 
+> P.S.
+> Alain, I don't see your address in the list of recipients of last Pavel's
+> response. In case you have not received it, it's here [4].
+> 
+> 1. https://github.com/STMicroelectronics/linux/blob/v6.1-stm32mp/drivers/media/i2c/gc2145.c
+> 2. https://github.com/AndreySV/linux/commit/f06ff60eb7a664dcafa8d40901a1ab0f59071529
+> 3. https://github.com/AndreySV/linux/issues/1
+> 4. https://lwn.net/ml/linux-kernel/Y6tGfxrq/Mh1JoA9@duo.ucw.cz
+> -- 
+> Best regards,
+> Andrey Skvortsov
