@@ -2,62 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C890C83F19
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6A7FC83F18
 	for <phone-devel@archiver.kernel.org>; Wed, 30 Aug 2023 18:52:46 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242963AbjH3Ssn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Aug 2023 14:48:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45254 "EHLO
+        id S243486AbjH3Ssj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Aug 2023 14:48:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242941AbjH3J64 (ORCPT
+        with ESMTP id S242963AbjH3J67 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Aug 2023 05:58:56 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71A331B0
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 02:58:52 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-99df431d4bfso708781066b.1
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 02:58:52 -0700 (PDT)
+        Wed, 30 Aug 2023 05:58:59 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4C651BB
+        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 02:58:55 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-99c4923195dso675929966b.2
+        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 02:58:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1693389531; x=1693994331; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1693389534; x=1693994334; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YGoqMS3E9hTzuAlLYY6w0VLAfh40RFv1IavK9K8DmYI=;
-        b=CjGFqdJfOF8HLg2x3svVkHLT1/f3rtrUo4CK7HQSGxhoVy20LmBAEj1L9Po+E3yu4n
-         bi3IZ0cH3MEjXmQSsjkkAfmwagl6MH8sSwrwpPldrxYmzZudD5xz7PT0FXGIrMamye3N
-         /U7rBjo/uQQyilCVC8cZOsiRlxkIo7wsKI0XCdANbVdncNhSI9vct5hraMG5elhCWADM
-         4hNZGG3oiY5K8mn+YqjdtqILKHv719r91HgKOdHYg0iDiFQfIfEez69/cj4c6O1AsK6g
-         tjy/PWkoG7jT3A5Kedvj72XTGWEoYjBiGF5P2z4PfJdcA5Zq0dp5dZExBJYLcISnYJBx
-         TT8w==
+        bh=NMaT33TMEcSdAqEfjzHnfiZm0MHlTu0tg8DNCHLNy/4=;
+        b=HBV0EOKdS+6uEzk0jhmP4YwUyavmqI+ctdqAq583d3cTi2Q+Th15NIUXDqyct9quqa
+         9DxMt2cfdeGsCNqfRmjY8t/TRlgycmD2mJVi1Af9vWfusDSZamFkPidxgLd7bbsPziwn
+         dWDVoVIiSXOYCW4HAwCh8jAd67gTLXl+NR2ybhHIxQH4XKW1zkFY5PVXhXA9zjlpE+db
+         kkzlt3dFT8uW4Kem2lICOB/moVgQERsQPy/7C879ou1ZGJvjF+NEWlms8zZD9f8ihiz0
+         u1KK8yDsm+aXe08FZq+WPFy01p0pfpPI8G3k/7ATYDJEfpu/z2T4fU5NDEyw/QulgT/e
+         2rwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693389531; x=1693994331;
+        d=1e100.net; s=20221208; t=1693389534; x=1693994334;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YGoqMS3E9hTzuAlLYY6w0VLAfh40RFv1IavK9K8DmYI=;
-        b=cy7O9r90dom6GxgWi5ppYyT6PmoOtPLoiJBe0Zr5j8tYLkyS5J7WRvwRg4YEpKWvFA
-         vcbcno5dlCDMVmpKre3JNvtTSU2kU2TCIaa11r0vANz4I6pgZ9KjSkrkn90oJzsVpEgH
-         zdcW4xkp5YvKeHebbTawqV0mtAKTDXMCDWf7PvPJmKH6uMHTSRqt0OIGOoNIgxb99PMn
-         3ptlcQOAt2FHWqi2hEtMb35Avm9vrojo/heXjxe3CUEGZ0QVlK++73PNlSzUJGr+/93w
-         J9trObLXX6YeqLZI1y8zVbz2XnR5yjO1xYouxqjjLCUnB2nxwR0OcjH5jtJ7MDiQchte
-         6k1w==
-X-Gm-Message-State: AOJu0Yx/6uXQbUvBaGeuX1y7XgNIIB+YJrEwt/oxjvD6PTT/MbzCg0TS
-        v3/8jdoDJfvDpiHtGun59hGjvw==
-X-Google-Smtp-Source: AGHT+IGEi+xlIOcDOFaLVY6bYdh1pBTkM7v6Adr6xHtbqgnNFa13d99vlQbglBCKCVSoJg9wbvFyPg==
-X-Received: by 2002:a17:906:74d4:b0:9a5:d657:47ee with SMTP id z20-20020a17090674d400b009a5d65747eemr1227676ejl.58.1693389530986;
-        Wed, 30 Aug 2023 02:58:50 -0700 (PDT)
+        bh=NMaT33TMEcSdAqEfjzHnfiZm0MHlTu0tg8DNCHLNy/4=;
+        b=dqWbTx9YBBKOKlUPGr4inOicKFIuSVojjglvRrGlogGgXiBtkZ9x4XD48EmueJrd1J
+         kcnjPeC00QFbmRlX62eTQdojfswtOGCziBikseejztJVccHyXQ+rTZcWd6O+Aq6OwWoh
+         REh0CtbypIs/V1enmwnWghSAM/rwli3hYznurtkJkRm6AUUH3IgvvgPv8pQ9EW4t5ogN
+         mMUG/AeHtj9x36SKFvrK5jpJHonDJF8AcXs1HqOZ/RoNzpWRASWlATdkXd5AWDKlZHko
+         +OIvXdwgy3FZqISDsIvBxojv7/pEUBvpoVFx5eBSqdOL3qwQ4Cy9eUo6YbYaCv3FQIqb
+         9mjQ==
+X-Gm-Message-State: AOJu0YyRgIsyl/4aeYJxRB9Io6O2Ar088ibe3kOAuBXXlyznx31lsdKC
+        c7o+htBHKEzh8IDYkVW4gQt8Rw==
+X-Google-Smtp-Source: AGHT+IEsayzgtGNMlFizdpOnfPYW6WrLF+nLZTrAoohOtQ7FLTkln95jhDk+INqp8xVX4Gj4B65n1A==
+X-Received: by 2002:a17:906:20dd:b0:9a1:c89a:9260 with SMTP id c29-20020a17090620dd00b009a1c89a9260mr1229467ejc.51.1693389534562;
+        Wed, 30 Aug 2023 02:58:54 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (5073ED84.static.ziggozakelijk.nl. [80.115.237.132])
-        by smtp.gmail.com with ESMTPSA id i15-20020a1709064ecf00b009a2202bfce5sm6957130ejv.118.2023.08.30.02.58.49
+        by smtp.gmail.com with ESMTPSA id i15-20020a1709064ecf00b009a2202bfce5sm6957130ejv.118.2023.08.30.02.58.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Aug 2023 02:58:50 -0700 (PDT)
+        Wed, 30 Aug 2023 02:58:54 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Wed, 30 Aug 2023 11:58:31 +0200
-Subject: [PATCH 06/11] dt-bindings: pinctrl: qcom,sc7280: Allow
- gpio-reserved-ranges
+Date:   Wed, 30 Aug 2023 11:58:34 +0200
+Subject: [PATCH 09/11] cpufreq: Add QCM6490 to cpufreq-dt-platdev blocklist
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230830-fp5-initial-v1-6-5a954519bbad@fairphone.com>
+Message-Id: <20230830-fp5-initial-v1-9-5a954519bbad@fairphone.com>
 References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
 In-Reply-To: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
 To:     cros-qcom-dts-watchers@chromium.org,
@@ -80,28 +79,26 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Allow the gpio-reserved-ranges property on SC7280 TLMM.
+The Qualcomm QCM6490 platform uses the qcom-cpufreq-hw driver, so add it
+to the cpufreq-dt-platdev driver's blocklist.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/cpufreq/cpufreq-dt-platdev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml
-index 368d44ff5468..c8735ab97e40 100644
---- a/Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml
-+++ b/Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml
-@@ -41,6 +41,10 @@ properties:
-   gpio-ranges:
-     maxItems: 1
- 
-+  gpio-reserved-ranges:
-+    minItems: 1
-+    maxItems: 88
-+
-   gpio-line-names:
-     maxItems: 175
- 
+diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
+index fb2875ce1fdd..02ec58a8603b 100644
+--- a/drivers/cpufreq/cpufreq-dt-platdev.c
++++ b/drivers/cpufreq/cpufreq-dt-platdev.c
+@@ -145,6 +145,7 @@ static const struct of_device_id blocklist[] __initconst = {
+ 	{ .compatible = "qcom,msm8996", },
+ 	{ .compatible = "qcom,msm8998", },
+ 	{ .compatible = "qcom,qcm2290", },
++	{ .compatible = "qcom,qcm6490", },
+ 	{ .compatible = "qcom,qcs404", },
+ 	{ .compatible = "qcom,qdu1000", },
+ 	{ .compatible = "qcom,sa8155p" },
 
 -- 
 2.42.0
