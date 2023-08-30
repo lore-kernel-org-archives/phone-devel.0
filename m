@@ -2,61 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BAA3C6FA8F
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Aug 2023 18:48:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 20A2AC83F19
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Aug 2023 18:48:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242982AbjH3Srm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Aug 2023 14:47:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51940 "EHLO
+        id S243330AbjH3Srp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Aug 2023 14:47:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243024AbjH3KIc (ORCPT
+        with ESMTP id S243035AbjH3KJB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Aug 2023 06:08:32 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E20211B0
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 03:08:28 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-5009969be25so8392854e87.3
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 03:08:28 -0700 (PDT)
+        Wed, 30 Aug 2023 06:09:01 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C9931B3
+        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 03:08:58 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-986d8332f50so700004866b.0
+        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 03:08:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693390107; x=1693994907; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1693390137; x=1693994937; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=8Nxn5up4QextamTtIqwX1SELm1/pR8j6Wz4/nOgg0Fk=;
-        b=JoYBvOJcSozegsbQV/FmZWEE8MK24oh+oklOxl5RhYTi1Mqx+hbEk3FG12c1cnTTmm
-         omviN62AGBfvENZvLSp94GygoYvuCtrH/yAdx+5NC8sfV62/LMPAPTSzVN5YL5dG8ZOr
-         Jd3DibpzgwhRJ3+jhFP+VgBr8VR0R3EeZKmGuO/sr+hMCHzddzNHLlGzJpjR+bfS/zs7
-         WAgnF6R2yRH8TMZlcitYSYWaWXM3YZSVJmiEv2G4p2znGDSs+wf3IiGAz1GdN8q7MCjz
-         5FecveOcPv/GSJxlm6Ea6cPe4Glup0tDbzj09Jqe3QcdJPdz/9pZVcXFCZvyq8NErJ9v
-         eADw==
+        bh=a01//fw4C/o1Ax6ZZd2xqsEK3Vj5eisKt7KkBfMjlv4=;
+        b=neNK6eWeGTk61TdEJq6/56WDSi98uvh86dqK2+/Se+2XemxK8T6i+2QPysJ0XyR//Y
+         r+iPr9MTd2uEcnaeLdW/DEk++MaIJ5X+10G2vWY1qFrTvfjWqtOf/VYj7huFjRgOVdmV
+         JChIHuTX5ts/dzjSTUqzvsa6gl5NaaHIb2YOJLint53jUNZBJIu1ds0ukyOxU/VzMJ2m
+         wSJtt5S8ykIiaA3SgFgKcU6h4qz14uKeWHkvy5QNWqq4jlRz2dA9Q3Kuy8qxiK3YFW/V
+         AlFcXtrEFR2k05WdKpC8BEPRVmuG7KczW7ZgmUzFrHcXq3bexSxh8QwEUVRBjiUw+997
+         NFFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693390107; x=1693994907;
+        d=1e100.net; s=20221208; t=1693390137; x=1693994937;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8Nxn5up4QextamTtIqwX1SELm1/pR8j6Wz4/nOgg0Fk=;
-        b=B7VuI8TUyNI2lwGe4PKhAZ3AL0QjBhXVPcHfOFCEJJIeQ4nUxjeL/E5CJ2rAh/lntk
-         GFcKgn3J6WgANWSyeIdW7Ac89pDTzmGkeSdX3x9HmBjudlRwa7rl3uAlx+LcukrBvpfF
-         LKoKtDwmJOy1+IMsjxO4QUNhhb0UJcICDv/9DIsqVHVHV+c5DivBdQbm8ez/cLUbs1nE
-         0pY+JqblgluJ3+0AhHBYJDuUsZrC12IZazblqSUAdyQlYPHccsPrNXRh+ckX2nRXCiDc
-         U2RDdTNa5qWfQ6qN5OeMm8vESlHOZi0EYB4vB6qbhxXzWaUjraCNyaVp0HmpsrapyKxd
-         yU9w==
-X-Gm-Message-State: AOJu0Ywr3fAntQnxnMKLDAGFyNhUzi8xA6Mq4M/4CYfhQ463zQKcVkTM
-        w7Li3FpmMWu544q5FD+d7VHpDQ==
-X-Google-Smtp-Source: AGHT+IEy9l5e5D7iUZ81rJNqEUxrnyMDRnW81xox92SRBSuK5C6pMKRSp+8HSo+rFsIkbxdhltWdLA==
-X-Received: by 2002:a05:6512:3111:b0:4fd:fad6:5495 with SMTP id n17-20020a056512311100b004fdfad65495mr1017342lfb.18.1693390107091;
-        Wed, 30 Aug 2023 03:08:27 -0700 (PDT)
+        bh=a01//fw4C/o1Ax6ZZd2xqsEK3Vj5eisKt7KkBfMjlv4=;
+        b=EOmpIDOXw6PU1Wco1v9e3ABipCX/cyyJqEcxbO7+TjgZDXRjuGB7TiRoTJSilnCeNm
+         o871/vPsD1FCdMhgm+dJBuL3wzsLOO4x4gi3ZOYSE0En35Vvc9IDygcM1aXk8bLY8P6B
+         GaLQ7YOjbK5Q4jN+aBaLOT82STrWLFqu12EuPM7aXlyrJKtSrr3gQSqZessA57tf47bB
+         PpdDg/5B4V45N6y516uh/MYuwuipt1f1kQ4zqpLA528nALJhL4UFqhTdZQo6y5LC3mjl
+         P6yYrF2vYS/SSFi0FQlN+OTWoSsQ59Nw7cZrBTwBUFpUvl24//wNbcZJGs7VtX5frGlZ
+         BlJw==
+X-Gm-Message-State: AOJu0YwakWn+p+swF2vRUpmk87I8zLsIsDZEOZrWFeQ7UB5vkVVO7Z1r
+        pOd/+CSUO8NsGMcg6NDU1GqGVg==
+X-Google-Smtp-Source: AGHT+IFUObuijfTAqYpf5OFv3XkT14r+q5WT8p2VJy471qW5Z6XW1Gcxtic0L8+1lZWXjo/qcqBvPQ==
+X-Received: by 2002:a17:906:cd1:b0:9a1:e011:1a62 with SMTP id l17-20020a1709060cd100b009a1e0111a62mr1204136ejh.38.1693390137090;
+        Wed, 30 Aug 2023 03:08:57 -0700 (PDT)
 Received: from [192.168.0.22] (77-252-46-238.static.ip.netia.com.pl. [77.252.46.238])
-        by smtp.gmail.com with ESMTPSA id i5-20020aa7dd05000000b0052333d7e320sm6591175edv.27.2023.08.30.03.08.25
+        by smtp.gmail.com with ESMTPSA id s25-20020a170906bc5900b009a193a5acffsm6951329ejv.121.2023.08.30.03.08.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Aug 2023 03:08:26 -0700 (PDT)
-Message-ID: <8cb65ac9-a8f0-2df9-cd05-e6afdf8f7e36@linaro.org>
-Date:   Wed, 30 Aug 2023 12:08:25 +0200
+        Wed, 30 Aug 2023 03:08:56 -0700 (PDT)
+Message-ID: <23d32e4f-ce08-b89a-fc5a-c5ec0cdb6b9e@linaro.org>
+Date:   Wed, 30 Aug 2023 12:08:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.14.0
-Subject: Re: [PATCH 06/11] dt-bindings: pinctrl: qcom,sc7280: Allow
- gpio-reserved-ranges
+Subject: Re: [PATCH 07/11] dt-bindings: arm: qcom,ids: Add SoC ID for QCM6490
 Content-Language: en-US
 To:     Luca Weiss <luca.weiss@fairphone.com>,
         cros-qcom-dts-watchers@chromium.org,
@@ -75,9 +74,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
         linux-pm@vger.kernel.org
 References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
- <20230830-fp5-initial-v1-6-5a954519bbad@fairphone.com>
+ <20230830-fp5-initial-v1-7-5a954519bbad@fairphone.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230830-fp5-initial-v1-6-5a954519bbad@fairphone.com>
+In-Reply-To: <20230830-fp5-initial-v1-7-5a954519bbad@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -85,12 +84,12 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 30/08/2023 11:58, Luca Weiss wrote:
-> Allow the gpio-reserved-ranges property on SC7280 TLMM.
+> Add the ID for the Qualcomm QCM6490 SoC.
 > 
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
