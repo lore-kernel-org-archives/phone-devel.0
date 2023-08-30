@@ -2,64 +2,66 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DBF3DC83F17
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Aug 2023 18:52:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AAB1AC6FA8F
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Aug 2023 18:52:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243447AbjH3SsZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Aug 2023 14:48:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37694 "EHLO
+        id S243457AbjH3Ss3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Aug 2023 14:48:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243180AbjH3KQX (ORCPT
+        with ESMTP id S243017AbjH3KHG (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Aug 2023 06:16:23 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C48E1B3
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 03:16:20 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-500bbe3ef0eso840406e87.1
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 03:16:20 -0700 (PDT)
+        Wed, 30 Aug 2023 06:07:06 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D9F1B7
+        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 03:07:02 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-99c3d3c3db9so694330366b.3
+        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 03:07:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693390578; x=1693995378; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1693390021; x=1693994821; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=SCycU/0xjFZ34GQd8Xc6zCT4MEY2pCO1qubommXUTPE=;
-        b=pEpE8id9TDvdx3zKJQ+lFGQ4c9z9vrMPjQgwhLbDvow8AXO6SqDzZvlsiEZ+0mn9ci
-         GmSZql/8Vk87tzYANL61dHD4xvx9xpfKQcD+97Uf9aYNSTsT+xKQ/qT8KWq7z30GDN+y
-         qBKaVsUojxD3tjjMGNCc8UPR/E7lOtEhJW87WSOxtDwFjVbWDYatcRf0NL9JZqs6hTq4
-         rqN4zpCb5SGU+oSnD+CEmR3u8o6+w9J6DGuJ90X9Y4VGwuBua2MtdoggEwbzjBPg9NKN
-         ZqFP/ZgjdTP9XPUfQIbhMdUp0LjoOp3lMVxRMU0xoxoOnO8p226dsbvxax+XF8TnoWYp
-         YdUg==
+        bh=z0QDt8EBpEbkK9eM1eqblOra9xMFCfCG0zgEGNvO4kk=;
+        b=iknhdr+RtT51/E9pRpCGXYg8VKSsjn8eD6bbYy5EPLyBxYubJoc/ADhuQVfG8xjwdy
+         jBnl2TSrnrGB3ir9o9I5/aJUJRSHYqt2n6cZ2N1pW0/XMHC5usD7CWN27MuJT9ND6tBV
+         ob6lZjCu7fOefUDIhPQtU7waXbLAZhCClABdkXQQD5C0XxHwyvHiZF+QKiknZnZ4hHFI
+         nozbAycdbnrCu4dh38u3YdPHJKs/pU+DZOfG0zZvMMYbi21TBQsIJGc88TyTULI6mPw0
+         HHgAHTtHBevZZRUE6sXO0bzvJu9rcpVoVIuHrPnxEoX46mSYoWLVcqiNq0Eyk/Ys+gM9
+         1kYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693390578; x=1693995378;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1693390021; x=1693994821;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SCycU/0xjFZ34GQd8Xc6zCT4MEY2pCO1qubommXUTPE=;
-        b=Q+LgoUlxBYUgRg4zfTdh4nA5ZmCohhenF8fmNAABOSHVTY/Yr9wb7sthYQcL4GLfYZ
-         Cw5BBzeEd6bFlu0dsKxvEeKyCjK8jXK1oRuHm7wnoSbd0505wxJCE7HGZyjZ2oBaGGie
-         qRP8UnJnBRbHY1RK4cyZ9ZBPMKCpYC2wGpDyP+XEwxbsfwY492ucoYYMZSxFCs3dr0B/
-         GC6HJ9k1swvWjeyZhHo73tVS91xIT70HWZO/gysii1Y60d42MtE3lyMWXesFfgrAmUOw
-         BqKUuTo42KAeBPXBOVy1qM7feoUrADsQ0UkQeXpbL76aPSgMNWrfI31ZNLEb2RMpuO8Y
-         uT3w==
-X-Gm-Message-State: AOJu0YwplNQvemKyTTRDjsMVWAX5zW6TrDL674/kAe3A0fsMb0buMMj0
-        SGCmmvCcPPv1DbYRNpGD5THdaQ==
-X-Google-Smtp-Source: AGHT+IHmOlBEZ393iGobxhlTVe1wLheuMhJdQ2v68IlzVNE1xIOL7q0Ig5gu4MDPYErBrvDrobVahg==
-X-Received: by 2002:a05:6512:a95:b0:4fd:d254:edc6 with SMTP id m21-20020a0565120a9500b004fdd254edc6mr2120069lfu.26.1693390578587;
-        Wed, 30 Aug 2023 03:16:18 -0700 (PDT)
-Received: from [192.168.1.101] (abyl195.neoplus.adsl.tpnet.pl. [83.9.31.195])
-        by smtp.gmail.com with ESMTPSA id d20-20020ac24c94000000b00500a297ec4esm2298627lfl.102.2023.08.30.03.16.17
+        bh=z0QDt8EBpEbkK9eM1eqblOra9xMFCfCG0zgEGNvO4kk=;
+        b=ao4ya0oD2jlC4sGttRKG6zkpAYi+cV4LzTEAl58plGfWajhQzTbYLfbQkeFMpr2pSf
+         WW7xZVNW7qOPYQO6HhuTO0DeVOVR0yxUEZe9WKeYHvu5aoxRIMhGLjQ5UgrpDnJcqjEE
+         TUB9u8I//2yOrH/fAMOqhHZAhyLnJSnp97LkAqmLTKClwrt0QOo5NVrZX7Y8PFxUIkKd
+         nzlhEJSKl2RXVLztaD7z6L5RKoSGfTekwQCXSa+MrCEZHkIPBhiHQilQJkzcYfcEsnQT
+         Un3Q1SAw4ZmE1J5n2Yj6juXPWhTkH/6ESYr0RDkO72bq9TcNY/C8Kc+wbWpR8rUZMXAF
+         0S6A==
+X-Gm-Message-State: AOJu0Yy9oMtgYVDrK6Js+Ip1MK+OdBjGC+lbTql/MYxZa9SvuTZaeCAu
+        BT+xRSAEWEWSex4D2kzjD3D0TA==
+X-Google-Smtp-Source: AGHT+IFv/0eMRaF8EMn6yKSAU640SOXFjwBHm7nT9hJcJOrflNyyJnp5etXNA0N+OfyvOIj+/VbXmw==
+X-Received: by 2002:a17:907:9719:b0:99d:f5dd:6b3 with SMTP id jg25-20020a170907971900b0099df5dd06b3mr1572959ejc.76.1693390021173;
+        Wed, 30 Aug 2023 03:07:01 -0700 (PDT)
+Received: from [192.168.0.22] (77-252-46-238.static.ip.netia.com.pl. [77.252.46.238])
+        by smtp.gmail.com with ESMTPSA id cl7-20020a170906c4c700b009a5f1d15642sm228320ejb.158.2023.08.30.03.06.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Aug 2023 03:16:18 -0700 (PDT)
-Message-ID: <db0c5ff6-fcf7-4b75-864a-1db620c2e1ef@linaro.org>
-Date:   Wed, 30 Aug 2023 12:16:16 +0200
+        Wed, 30 Aug 2023 03:07:00 -0700 (PDT)
+Message-ID: <b82f4683-e8b5-b424-8f7a-6d2ba1cab61f@linaro.org>
+Date:   Wed, 30 Aug 2023 12:06:59 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/11] dt-bindings: arm: qcom,ids: Add SoC ID for QCM6490
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 04/11] arm64: dts: qcom: pm7250b: make SID configurable
 Content-Language: en-US
 To:     Luca Weiss <luca.weiss@fairphone.com>,
         cros-qcom-dts-watchers@chromium.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
@@ -72,55 +74,45 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
         linux-pm@vger.kernel.org
 References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
- <20230830-fp5-initial-v1-7-5a954519bbad@fairphone.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20230830-fp5-initial-v1-7-5a954519bbad@fairphone.com>
+ <20230830-fp5-initial-v1-4-5a954519bbad@fairphone.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230830-fp5-initial-v1-4-5a954519bbad@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 30.08.2023 11:58, Luca Weiss wrote:
-> Add the ID for the Qualcomm QCM6490 SoC.
+On 30/08/2023 11:58, Luca Weiss wrote:
+> Like other Qualcomm PMICs the PM7250B can be used on different addresses
+> on the SPMI bus. Use similar defines like the PMK8350 to make this
+> possible.
 > 
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+>  arch/arm64/boot/dts/qcom/pm7250b.dtsi | 23 ++++++++++++++++-------
+>  1 file changed, 16 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+> index e8540c36bd99..3514de536baa 100644
+> --- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+> @@ -7,6 +7,15 @@
+>  #include <dt-bindings/interrupt-controller/irq.h>
+>  #include <dt-bindings/spmi/spmi.h>
+>  
+> +/* This PMIC can be configured to be at different SIDs */
+> +#ifndef PM7250B_SID
+> +	#define PM7250B_SID 2
+> +#endif
 
-Konrad
+Why do you send the same patch as v1, without any reference to previous
+discussions?
+
+You got here feedback already.
+
+https://lore.kernel.org/linux-arm-msm/f52524da-719b-790f-ad2c-0c3f313d9fe9@linaro.org/
+
+Best regards,
+Krzysztof
+
