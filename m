@@ -2,64 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EEB06C83F18
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F221C83F17
 	for <phone-devel@archiver.kernel.org>; Wed, 30 Aug 2023 18:48:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243353AbjH3Sr7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Aug 2023 14:47:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45142 "EHLO
+        id S243065AbjH3Sr4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Aug 2023 14:47:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242927AbjH3J6y (ORCPT
+        with ESMTP id S243001AbjH3KD5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Aug 2023 05:58:54 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15E09CE0
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 02:58:47 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-51a52a7d859so1501091a12.0
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 02:58:47 -0700 (PDT)
+        Wed, 30 Aug 2023 06:03:57 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E335A1B7
+        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 03:03:53 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-5007616b756so8556518e87.3
+        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 03:03:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1693389525; x=1693994325; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gKtgdDeh3KGEuNDRaZoZ19ZkmrfCqDJYBlZVW0lWVIw=;
-        b=oRgKORGQ4IjGWo5kvSfaotzAPwxitDtK0ILXoqAtV2gfr4yjFH41ndOaRTCeHPmit1
-         Cuhhcy9mVbhbwe9YwSxd66AcinmBEaAYLACkuydS29uNg0OosW6EHkdjNYAvgxsMAr6e
-         1Z2HI+Y8hxZAVUOmPyTljmWX3GF1cc34lfSiYgV/cXbYn2Wt3Fnwcqsiz26NWA69lolC
-         H786Dy1vBwayvVf8B8nBjiedA6NE0NCgQlO+XfYIboc02SHNIxCguqpdcZaVPiz29Hq0
-         9OxJ9zu7B9/JQlsOCnZqfNUto3SYXu9dkXN87Ao3+C+tyniEIBVjCPZYqOlm2qOxYJll
-         zh4w==
+        d=linaro.org; s=google; t=1693389832; x=1693994632; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aA2Dayv4Oe/O8G7/FYwi9OP3/w4lpPEhlrM3LEd7RiU=;
+        b=DFZUkBlgMqHRmPlXC83xk7jbbdMkdRkXVZkJpxfjq/CLbcWtwknl2dZM6aerZ7MMW4
+         +vP2y2qni+baNx6Ab8Alu14IolWnxzIJKf4auunWfL4rhTWdKu9vALfIj39irIx8F3la
+         pRZeBEnTLFbX1tPD390apIR9sKETm4MR1eBAuhTtdaSCSLNxL+7iGddEdazmpsyZhU+S
+         a9Fm28LAvciFn9rl+ChWsrxOcsP3Xlk+hn4l1HUr97YpcHF26TBDxv5fvsT+vKeWc8L2
+         sZ2t+Xw84f6oiZlXq/wtOnwLzY2E2zhXx6ogdOwi92UAcSvaRGNotwFF1UJjYPVgIyru
+         1cFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693389525; x=1693994325;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gKtgdDeh3KGEuNDRaZoZ19ZkmrfCqDJYBlZVW0lWVIw=;
-        b=HCi/CIQ3pmYI8xLbCYAzZBlG2oAzgaziff0wBJZc0G3Siv89swbvLLj3Ly/hGYGrdg
-         wwIfk04hW4OcpsQ/JrXEiNIaoR4jzG98xERvM6r/HWFlCSDcxTeJ3ZqoAPxllQha9X1K
-         3ASMlv8AF6U8O6j2ztb1US7ZgBhWPaZNdU0/c35gCYuXfNJIl8KRYD9gcS1ss+JsH0WY
-         xZcNJ5hTcyzhvAaTZkqYjGUA+XU3DO99U1b0NJ84sbzNsvim4bqtBvdTwKTP8m0vAnBM
-         xUhXGfoIYpk9aJax41KxdCP7YjkkEVHTxa0LGcqOpLVvhzKdAPzW5zwaaWOJu+7sZ88N
-         Rt5w==
-X-Gm-Message-State: AOJu0YzZh5dHmpAwtsBZ3QnLLQx8jizjHVE6TnR5zOcJQmG96TxGzZFP
-        xlSthtFt8QtbPkiEWO3haP4xDA==
-X-Google-Smtp-Source: AGHT+IFvaPiFN9nageuHk31s1vdZkno6Ubq7GZhPBE0O982W9QQGDgTFFzP8fTeAc7MFi4EBvubAIw==
-X-Received: by 2002:a17:906:9bde:b0:9a2:1e14:86b9 with SMTP id de30-20020a1709069bde00b009a21e1486b9mr1942919ejc.0.1693389525352;
-        Wed, 30 Aug 2023 02:58:45 -0700 (PDT)
-Received: from otso.luca.vpn.lucaweiss.eu (5073ED84.static.ziggozakelijk.nl. [80.115.237.132])
-        by smtp.gmail.com with ESMTPSA id i15-20020a1709064ecf00b009a2202bfce5sm6957130ejv.118.2023.08.30.02.58.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Aug 2023 02:58:44 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Wed, 30 Aug 2023 11:58:27 +0200
-Subject: [PATCH 02/11] nvmem: qfprom: Mark core clk as optional
+        d=1e100.net; s=20221208; t=1693389832; x=1693994632;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aA2Dayv4Oe/O8G7/FYwi9OP3/w4lpPEhlrM3LEd7RiU=;
+        b=LWTbIICAFgUUmb4x7dvwFHBASA/hMds4E+pSsrY/nBld/cn789qI/gdAoLa/R+lOCL
+         hvEatAo3jDzM6TtP4fliks3H8Y8XNtuX1TvB3ubm1KjIbNxeVYkebhdRamwiJ+Ad/+3W
+         w/r5ZigBLEm6yF4uVTgwEaETdyvkznVFO457w+PvMtVgpNhXj3ZFMTybk7v3Glu9OiS5
+         DN/eG0AU+z9Zid6ouoKYapPsvPoCRmji+ddKayKtMNoan39VWIrMCOTeJ0n2483RGG6/
+         1DDanm5B2f5dv4W3ETj8cayjRrpDvb6ti9ldTtQzTYRyQGjwrwL+4JVdIp9WrqT6VTth
+         TAVQ==
+X-Gm-Message-State: AOJu0YwyoUlaJBkYv36MpMqq8/APDh13qE2CCH2vbEqmmGHEcxLR2JHV
+        0epCEunJcGFAYTc7c1HO+cy9Xw==
+X-Google-Smtp-Source: AGHT+IE3zXCljvqDSTqW4Fk1MJeyD7qTPp19ksqtWCrPK6ziygOgdXiN7RSHG5AANWY2Zv7kF+XIdw==
+X-Received: by 2002:a05:6512:2302:b0:4fb:8f79:631 with SMTP id o2-20020a056512230200b004fb8f790631mr1222638lfu.46.1693389832021;
+        Wed, 30 Aug 2023 03:03:52 -0700 (PDT)
+Received: from [192.168.0.22] (77-252-46-238.static.ip.netia.com.pl. [77.252.46.238])
+        by smtp.gmail.com with ESMTPSA id n26-20020aa7c69a000000b0052567e6586bsm6661378edq.38.2023.08.30.03.03.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Aug 2023 03:03:51 -0700 (PDT)
+Message-ID: <eed9ddbb-08ac-238c-82b8-a575076c5d71@linaro.org>
+Date:   Wed, 30 Aug 2023 12:03:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230830-fp5-initial-v1-2-5a954519bbad@fairphone.com>
-References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
-In-Reply-To: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
-To:     cros-qcom-dts-watchers@chromium.org,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH 02/11] nvmem: qfprom: Mark core clk as optional
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        cros-qcom-dts-watchers@chromium.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
@@ -73,35 +71,32 @@ To:     cros-qcom-dts-watchers@chromium.org,
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-pm@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.12.3
+        linux-pm@vger.kernel.org
+References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
+ <20230830-fp5-initial-v1-2-5a954519bbad@fairphone.com>
+Content-Language: en-US
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230830-fp5-initial-v1-2-5a954519bbad@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On some platforms like sc7280 on non-ChromeOS devices the core clock
-cannot be touched by Linux so we cannot provide it. Mark it as optional
-as accessing qfprom works without it.
+On 30/08/2023 11:58, Luca Weiss wrote:
+> On some platforms like sc7280 on non-ChromeOS devices the core clock
+> cannot be touched by Linux so we cannot provide it. Mark it as optional
+> as accessing qfprom works without it.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  drivers/nvmem/qfprom.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/nvmem/qfprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This should not be between DTS patches. DTS goes different tree than
+other driver changes. Please split your patchset and do not mix drivers
+and DTS.
 
-diff --git a/drivers/nvmem/qfprom.c b/drivers/nvmem/qfprom.c
-index 14814cba2dd6..739dc502b39e 100644
---- a/drivers/nvmem/qfprom.c
-+++ b/drivers/nvmem/qfprom.c
-@@ -423,7 +423,7 @@ static int qfprom_probe(struct platform_device *pdev)
- 		if (IS_ERR(priv->vcc))
- 			return PTR_ERR(priv->vcc);
- 
--		priv->secclk = devm_clk_get(dev, "core");
-+		priv->secclk = devm_clk_get_optional(dev, "core");
- 		if (IS_ERR(priv->secclk))
- 			return dev_err_probe(dev, PTR_ERR(priv->secclk), "Error getting clock\n");
- 
-
--- 
-2.42.0
+Best regards,
+Krzysztof
 
