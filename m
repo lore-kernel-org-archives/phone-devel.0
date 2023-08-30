@@ -2,63 +2,63 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 05E99C6FA8F
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Aug 2023 18:48:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E41FEC83F1D
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Aug 2023 18:48:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243359AbjH3SsC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Aug 2023 14:48:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45362 "EHLO
+        id S242955AbjH3Srw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Aug 2023 14:47:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242958AbjH3J66 (ORCPT
+        with ESMTP id S242908AbjH3J6s (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Aug 2023 05:58:58 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF40CCB
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 02:58:54 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-99bf1f632b8so728372166b.1
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 02:58:54 -0700 (PDT)
+        Wed, 30 Aug 2023 05:58:48 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C6D1B0
+        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 02:58:44 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-500a398cda5so8598722e87.0
+        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 02:58:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1693389533; x=1693994333; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YiPebw8AUtBAZvoypQvt5yInW2ANFxoq7EQf9ASV7vY=;
-        b=s6elejCV4+5kSfaPRqHegiqr5GFI3SCWy9NZYr5YTxxXG6C63BOSEvnVYitnpHHDM4
-         wBtgTxf6vihYtqYfL44a2/9Mys1oDZRFzyubjJjd0LJgvzXxF12H8+WUKvWyeTT+GJo6
-         mzmGT21xDlji1M8gOVJobc0Rpe3LJFcvh9KIVVMy/3LsbFGerKkvGw70y1p7q2tfLOQj
-         JVyzO/5D9mhyyyiM0x+TmU1jTi16PutieJab0Xe4YcaPRS7UMAtGRj1/1RA+7D139pO4
-         zVWEjR45g4ds5jN+CyqwtBj/RcVlpgVeFV+MVZ9v1dsjpsWa8hpQFNDVgXrsoPZRuH0Y
-         39rQ==
+        d=fairphone.com; s=fair; t=1693389522; x=1693994322; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ImC06/+tS7Twj3eQRRUsuycUqqVXH052q1hemh/ikWU=;
+        b=r8GAC4lMHUa5I2T/ySPKd0cIPPQWidpqX97LzVX/TOy2IDuwivuTKw8Iqz6DA1VQa/
+         OhFvUiDvaCIz0TNirzmBBK15++Vh0P+RiGU2RZfYPIPTR3zqJCoL242WasZCd3Jf4ggt
+         fYi+QCfjcNwHIWoAvP48Fnl5foc1u4ZK0KJuTuHxxwiaipK+AFmotyUc3xkom+RpsL+V
+         njQA0ZTUlUhBDurGXIM8dqBq7pZfioWaNfD6VjN/QnbQOquX/9vlivBZ77/Bs7tHF7dc
+         1/vlbj454uSNwRyAIPqc3hRzyCrEiCoCKBXWVU+P4sYVqoAEeF4quaM1zoncUfiJREG6
+         GvhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693389533; x=1693994333;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YiPebw8AUtBAZvoypQvt5yInW2ANFxoq7EQf9ASV7vY=;
-        b=RIZIf3q01GSURaCbOs6/4FiD++oz83W9Qs69smoBnrMyfk+L9NjLs23YtrZQmJ3Z1/
-         LRiLnsre3CstGkA1uw100TjCO5lwocmhZEZ0SfP9FH/guS2mcaKEEk/ID1N/d3i3NBll
-         6jpBj+E3TsJ5MQYItAZtoKk7E3sbNvqqeTtxwkphDqROjzCDUc9m2ctAhXlhHIVTSUJZ
-         GuFLlkhM9BSe3spWHxKnAXqkx05PeusA41RQDbZ1WEUA8+1RpawmM6SnoBjLf7TJiRLw
-         pAK1U6Rjwj8I3AgXi1oXGw4bgLdqFUO4cp9pBjIKO+mLi2K/t9q5hSYpz9Y57B1kP2P1
-         qtJw==
-X-Gm-Message-State: AOJu0YylDM8A4WjEgniSTHXv9zEpIOD0g2ukX0rp+C/jxjS1jZ0wuOeP
-        /zaV2L8/uL6BPzBkXDdKRfGYKw==
-X-Google-Smtp-Source: AGHT+IGJ3YpGP6qiQhKnwFsK8nLNTZdelqdfUpDmN15ez+b2NSkb/FF8/LNows39kAq7P5yJeDksbw==
-X-Received: by 2002:a17:907:2c59:b0:9a1:bd86:3acc with SMTP id hf25-20020a1709072c5900b009a1bd863accmr1248612ejc.12.1693389533533;
-        Wed, 30 Aug 2023 02:58:53 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1693389522; x=1693994322;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ImC06/+tS7Twj3eQRRUsuycUqqVXH052q1hemh/ikWU=;
+        b=DDwHq3NfNOyOsdtK0aEktqR9MOwJ7h+3nvO+HY9441HbjBWR41pBt6+fP0rHKcZ8d7
+         G0Jh3Kha3d/tLeUtcQJSlyKv4GLNCDA4I49JPh3qdN8o/7L/UU7o6YJPNBwF5HTVGPPj
+         Mej520Y2XB3ZERH3WTHKoeLa/Dj5IMlPJUFv/L9wH8AcZ6a93S+/rMqhEobCB5SJqSjH
+         IET7TpWv/hUEH2XarC+iQ25XJTauq8FIZaUybtVKSOiX0D8tD3big6AnUSLzIlMyRybZ
+         ys5kRLq4J2SpkCZqWYe7fUcmWZXx+MbLD/WZtWdNadIltlTSY4fLN3BJkgADf7fUGUoh
+         Hw9A==
+X-Gm-Message-State: AOJu0YxoiIAdX2lxaOcAv2wcGv7KVBcll6HBEeAkZJRadSyBhlQ+XxRx
+        eWZNpPuoPxRrjeVPYTnO9iZ+fQ==
+X-Google-Smtp-Source: AGHT+IHhkgd47WHbYn3fJiBbQlVzHfchnV6Zhz/9BP+uHBaTqzKkkSmXoZ5vGmgUP4lJA5UX0lAuqQ==
+X-Received: by 2002:a05:6512:224c:b0:4fe:cc2:247a with SMTP id i12-20020a056512224c00b004fe0cc2247amr1121093lfu.49.1693389522330;
+        Wed, 30 Aug 2023 02:58:42 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (5073ED84.static.ziggozakelijk.nl. [80.115.237.132])
-        by smtp.gmail.com with ESMTPSA id i15-20020a1709064ecf00b009a2202bfce5sm6957130ejv.118.2023.08.30.02.58.52
+        by smtp.gmail.com with ESMTPSA id i15-20020a1709064ecf00b009a2202bfce5sm6957130ejv.118.2023.08.30.02.58.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Aug 2023 02:58:52 -0700 (PDT)
+        Wed, 30 Aug 2023 02:58:41 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Wed, 30 Aug 2023 11:58:33 +0200
-Subject: [PATCH 08/11] soc: qcom: socinfo: Add SoC ID for QCM6490
+Subject: [PATCH 00/11] Initial support for the Fairphone 5 smartphone
+Date:   Wed, 30 Aug 2023 11:58:25 +0200
+Message-Id: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230830-fp5-initial-v1-8-5a954519bbad@fairphone.com>
-References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
-In-Reply-To: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAMES72QC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2MDC0ML3bQCU93MvMySzMQc3SSzZAsjQ4OkRMtkCyWgjoKi1LTMCrBp0bG
+ 1tQCNAZuXXQAAAA==
 To:     cros-qcom-dts-watchers@chromium.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -79,26 +79,59 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add SoC ID table entries for Qualcomm QCM6490.
+Add support to boot up mainline kernel on the QCM6490-based Fairphone 5
+smartphone.
+
+These patches only cover a part of the functionality brought up on
+mainline so far, with the rest needing larger dts and driver changes or
+depend on patches that are not yet merged. I will work on sending those
+once these base patches here have settled.
+
+Since QCM6490, like SC7280 are 'yupik' in the vendor-provided kernel, we
+can base the dts on it and leverage existing support. Though current
+sc7280 support mostly assumes ChromeOS devices which have a different
+TrustZone setup, so we need to move some ChromeOS-specific bits to the
+sc7280-chrome-common.dtsi file to make it boot on a standard TZ board.
+
+Depends on (just for the #include in sc7280.dtsi):
+https://lore.kernel.org/linux-arm-msm/20230818-qcom-vmid-defines-v1-1-45b610c96b13@fairphone.com/
+
+The pm7250b patch has been picked up from this series:
+https://lore.kernel.org/linux-arm-msm/20230407-pm7250b-sid-v1-2-fc648478cc25@fairphone.com/
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- drivers/soc/qcom/socinfo.c | 1 +
- 1 file changed, 1 insertion(+)
+Luca Weiss (11):
+      arm64: dts: qcom: sc7280: Mark some nodes as 'reserved'
+      nvmem: qfprom: Mark core clk as optional
+      arm64: dts: qcom: sc7280: Move qfprom clock to chrome-common
+      arm64: dts: qcom: pm7250b: make SID configurable
+      arm64: dts: qcom: pm8350c: Add flash led node
+      dt-bindings: pinctrl: qcom,sc7280: Allow gpio-reserved-ranges
+      dt-bindings: arm: qcom,ids: Add SoC ID for QCM6490
+      soc: qcom: socinfo: Add SoC ID for QCM6490
+      cpufreq: Add QCM6490 to cpufreq-dt-platdev blocklist
+      dt-bindings: arm: qcom: Add QCM6490 Fairphone 5
+      arm64: dts: qcom: qcm6490: Add device-tree for Fairphone 5
 
-diff --git a/drivers/soc/qcom/socinfo.c b/drivers/soc/qcom/socinfo.c
-index 497cfb720fcb..649732bf9f88 100644
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -389,6 +389,7 @@ static const struct soc_id soc_id[] = {
- 	{ qcom_board_id_named(SM8450_3, "SM8450") },
- 	{ qcom_board_id(SC7280) },
- 	{ qcom_board_id(SC7180P) },
-+	{ qcom_board_id(QCM6490) },
- 	{ qcom_board_id(IPQ5000) },
- 	{ qcom_board_id(IPQ0509) },
- 	{ qcom_board_id(IPQ0518) },
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   6 +
+ .../bindings/pinctrl/qcom,sc7280-pinctrl.yaml      |   4 +
+ arch/arm64/boot/dts/qcom/Makefile                  |   1 +
+ arch/arm64/boot/dts/qcom/pm7250b.dtsi              |  23 +-
+ arch/arm64/boot/dts/qcom/pm8350c.dtsi              |   6 +
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 659 +++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi |  17 +
+ arch/arm64/boot/dts/qcom/sc7280.dtsi               |   7 +-
+ drivers/cpufreq/cpufreq-dt-platdev.c               |   1 +
+ drivers/nvmem/qfprom.c                             |   2 +-
+ drivers/soc/qcom/socinfo.c                         |   1 +
+ include/dt-bindings/arm/qcom,ids.h                 |   1 +
+ 12 files changed, 717 insertions(+), 11 deletions(-)
+---
+base-commit: 0255bba921438ea1e45d3f0873c3e8c5a1e03876
+change-id: 20230818-fp5-initial-b6c8210ba9c8
 
+Best regards,
 -- 
-2.42.0
+Luca Weiss <luca.weiss@fairphone.com>
 
