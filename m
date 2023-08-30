@@ -2,65 +2,67 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C5F3C83F17
-	for <phone-devel@archiver.kernel.org>; Wed, 30 Aug 2023 18:48:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5817C83F1A
+	for <phone-devel@archiver.kernel.org>; Wed, 30 Aug 2023 18:49:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243189AbjH3SsP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 30 Aug 2023 14:48:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48868 "EHLO
+        id S243407AbjH3SsR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 30 Aug 2023 14:48:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243033AbjH3KIn (ORCPT
+        with ESMTP id S242969AbjH3J67 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 30 Aug 2023 06:08:43 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E17BC1B0
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 03:08:39 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-5007abb15e9so8437055e87.0
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 03:08:39 -0700 (PDT)
+        Wed, 30 Aug 2023 05:58:59 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E15CD7
+        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 02:58:56 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99cdb0fd093so707694666b.1
+        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 02:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693390118; x=1693994918; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=eAqOqp/qX5GAJ+lIepAXe1gVh2RwipsIy+5N0NkJlmY=;
-        b=QJr4zoDQkf4X4iBjfc3Bn1nBj3JbDav38sOhxLBQ+tT4qf1Ch5ndT+ogQUvvGy5T0Q
-         3eukfjzf/Dp269DaKZ3hciT+MNqG5qd0n/B/Sh8I4LAvK9j2iGQb11gyYtQNAj5LyCbh
-         J4RtaIXCEmhMjtmOxE6m0Yv+GTaK/+Ur/S8bZ9Hr1n6japARsiyFQbG0cGkwMwbhnV0t
-         DIJJ5LnzLe2XdBPycBlNlJqxgtqG7bM1H+XK/lfOOBYoF0cdM5CZx8CzUj0fkrSEqioR
-         8FqhymQLLnPPNOatZ+S6R9CprCzUceOIBfFQpkxwV5UVfLDsDPcymnBpa81qm0Gc2SfV
-         kkpA==
+        d=fairphone.com; s=fair; t=1693389535; x=1693994335; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4WJXFKBPivuvpwQ6jhhHOzI4G6pGyYQNiDeZ/V0B5Vw=;
+        b=MoZY9pPxilgBBRsXnGVnVL3hic/IHnNnC5KVyj4Vty5j7wogS+MJ41fN0hwrEJLR9Y
+         YND617iI56GqC4jKvA7UoFdNJxp6TpRZvMJ4DR1rw8Ct4B/COsj6KqILPCW0iTcRqAJ2
+         eW0yx+VYeG2XnCiVNYkaOq1wbHOs6USJ0aJERHb0JQd13MFJtCf6SwBTPWy/rULJSSQD
+         +HNHQxQ6tfXb3hwOldfIyEYu3DhOmOW8YBLdhgIXe1YR1wR0rubMvN7EnEUo1ZIAJa6+
+         KzRyDefkYyPRkJ7nIkfiuRiLNVSxTtb6m6UyqU6PPvI/f+/AQqLiNTS70ws2atv2VoKs
+         P3qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693390118; x=1693994918;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eAqOqp/qX5GAJ+lIepAXe1gVh2RwipsIy+5N0NkJlmY=;
-        b=bPeGHjWWfMUAGci1/PKwLWxiYIQ2V6+rIZ3uRBOzm6U8p1eC29/pbxiCxODkU9CORy
-         AX0ha5OtbS9zWDPu4w9nbuxYGo9xejYv4lXkFCQmNwyt83COzzynY2tbtAzbX4/PS0IT
-         eEjGzd8SmFGXhwplDPnmcJEcp9s3FiSNcx5NJP/da7EFnoGLDTD7fRBm7sl/1p/VRX99
-         roZq0t9P+jWCzKJHHBUUwhqp073mMyZ3o8/SQ7tIZXvTrRr8SPwM3y7xMm19aGNguHJD
-         b1Gy3OaETk+TTT33ZjlPMxS+6fd/W+CYdbRSSp5GsZ97LBkdOJuDyx8VI0HshgnZCGW9
-         k0sQ==
-X-Gm-Message-State: AOJu0Yw6dzOI02a0mxMhKmoX7XXvR3P80WDRn+ASkfBpHHg8eQPbmxGL
-        xRDMvG+gtbO1EW75c409ETydJA==
-X-Google-Smtp-Source: AGHT+IE92OQVS5oe/JHRvqZ82sm0hmHEr4wwSCTuDV2ycRxvzvLuWPDkeJhHOyLvY8B3+7xZS1jR4w==
-X-Received: by 2002:a2e:87d0:0:b0:2b6:fa3f:9230 with SMTP id v16-20020a2e87d0000000b002b6fa3f9230mr1401982ljj.46.1693390118195;
-        Wed, 30 Aug 2023 03:08:38 -0700 (PDT)
-Received: from [192.168.1.101] (abyl195.neoplus.adsl.tpnet.pl. [83.9.31.195])
-        by smtp.gmail.com with ESMTPSA id w16-20020a2e9990000000b002b6d7682050sm2537655lji.89.2023.08.30.03.08.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Aug 2023 03:08:37 -0700 (PDT)
-Message-ID: <160d6151-914b-4f2f-9f7c-d14cbb901619@linaro.org>
-Date:   Wed, 30 Aug 2023 12:08:35 +0200
+        d=1e100.net; s=20221208; t=1693389535; x=1693994335;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4WJXFKBPivuvpwQ6jhhHOzI4G6pGyYQNiDeZ/V0B5Vw=;
+        b=IZVtPSMXdTXk31+s4Vs5avK8MO7lX+1UProsjCslXWGd16ucAuvP1CpQ/IbOxbTcZH
+         5UloQMqV+wuM48nzbhK5nnpD4jVEx3f+cHKdgqyeyDZex374COHFnigghN9bzF+O1aCS
+         uokty4b4AufgD4fJXpb47WErpHRctQ/zRMqudXj+pPF+kOZIrn7p18Ascx1a1zW2qBfk
+         D7uaIAluJvZ7QOuBR87JalEykoIZIX8rO2jKnuGz9nzVW1/+azBBtKqkQlhBkVtNzOYO
+         uF9qpZ1F5llmOPKgw9N4zqV1kDtnmDIKF7ta3VFHNl34vemNCf5I+d6HpER+x25jYvYT
+         F93A==
+X-Gm-Message-State: AOJu0YwGJQ8v9iYIUmur/ovT93k8zuyRD8U7c2ypz8cF7QISXEkI8a8l
+        GOrACLn9pDnQebztG0HSpUV4dQ==
+X-Google-Smtp-Source: AGHT+IFKLkuiehndiEFuV1D5Mo9Zs1yQrxnE7Qv9Ywvmj3voRbSWIyG43aNwn+Yw9fOV3z1/ycB/Qg==
+X-Received: by 2002:a17:906:301b:b0:9a1:aea2:d18d with SMTP id 27-20020a170906301b00b009a1aea2d18dmr1164824ejz.48.1693389535513;
+        Wed, 30 Aug 2023 02:58:55 -0700 (PDT)
+Received: from otso.luca.vpn.lucaweiss.eu (5073ED84.static.ziggozakelijk.nl. [80.115.237.132])
+        by smtp.gmail.com with ESMTPSA id i15-20020a1709064ecf00b009a2202bfce5sm6957130ejv.118.2023.08.30.02.58.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Aug 2023 02:58:55 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Date:   Wed, 30 Aug 2023 11:58:35 +0200
+Subject: [PATCH 10/11] dt-bindings: arm: qcom: Add QCM6490 Fairphone 5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/11] arm64: dts: qcom: sc7280: Mark some nodes as
- 'reserved'
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        cros-qcom-dts-watchers@chromium.org,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230830-fp5-initial-v1-10-5a954519bbad@fairphone.com>
+References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
+In-Reply-To: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
+To:     cros-qcom-dts-watchers@chromium.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
@@ -71,62 +73,47 @@ To:     Luca Weiss <luca.weiss@fairphone.com>,
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
- <20230830-fp5-initial-v1-1-5a954519bbad@fairphone.com>
-Content-Language: en-US
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20230830-fp5-initial-v1-1-5a954519bbad@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        linux-pm@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 30.08.2023 11:58, Luca Weiss wrote:
-> With the standard Qualcomm TrustZone setup, components such as lpasscc,
-> pdc_reset and watchdog shouldn't be touched by Linux. Mark them with
-> the status 'reserved' and reeable them in the chrome-common dtsi.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-Could probably use /* Owned by ADSP firmware */ or /* Owned by Gunyah hyp */
+Fairphone 5 is a smartphone based on the QCM6490 SoC.
 
-the change lgtm though
+Also allow qcom,board-id and qcom,msm-id for QCM6490 since it's required
+by the bootloader.
 
-Konrad
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ Documentation/devicetree/bindings/arm/qcom.yaml | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index adbfaea32343..b09a41812cf0 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -391,6 +391,11 @@ properties:
+           - const: qcom,qrb2210
+           - const: qcom,qcm2290
+ 
++      - items:
++          - enum:
++              - fairphone,fp5
++          - const: qcom,qcm6490
++
+       - description: Qualcomm Technologies, Inc. Distributed Unit 1000 platform
+         items:
+           - enum:
+@@ -1074,6 +1079,7 @@ allOf:
+               - qcom,msm8994
+               - qcom,msm8996
+               - qcom,msm8998
++              - qcom,qcm6490
+               - qcom,sdm450
+               - qcom,sdm630
+               - qcom,sdm632
+
+-- 
+2.42.0
+
