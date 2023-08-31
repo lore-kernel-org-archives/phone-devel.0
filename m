@@ -2,106 +2,134 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 761BAC83F29
-	for <phone-devel@archiver.kernel.org>; Thu, 31 Aug 2023 05:01:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 88B40C83F32
+	for <phone-devel@archiver.kernel.org>; Thu, 31 Aug 2023 10:13:12 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241370AbjHaFBR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 31 Aug 2023 01:01:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45004 "EHLO
+        id S1343768AbjHaKNN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 31 Aug 2023 06:13:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239914AbjHaFBQ (ORCPT
+        with ESMTP id S1343781AbjHaKNN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 31 Aug 2023 01:01:16 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 937DEEA
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 22:01:12 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1bdf4752c3cso2681825ad.2
-        for <phone-devel@vger.kernel.org>; Wed, 30 Aug 2023 22:01:12 -0700 (PDT)
+        Thu, 31 Aug 2023 06:13:13 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4414DE4A
+        for <phone-devel@vger.kernel.org>; Thu, 31 Aug 2023 03:13:01 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-522bd411679so786482a12.0
+        for <phone-devel@vger.kernel.org>; Thu, 31 Aug 2023 03:13:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693458072; x=1694062872; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LG57Ipqd8qnPkHXmEM2qU3rXEf7cPd3YjyUXTm2SJUY=;
-        b=ZW7uzyAA3Mj4dWvC2R0TadSaGLhea/1SJyIyxX1ek9CNtwKfUFk1/EVyLrKPT1pAr3
-         y5J0UEF8eSaWE+KjtBFWZ8hjCARAFpy7phcCrj/HG//iXJX3TJ+/lx88DvOnsaY42rXd
-         cq0EzWV3FvR8Z/0wtPxW256BQXfFoCNSByabYVlQOIpAU3UfkQW7LGvGpCHw53p1UraX
-         gcZEtgEkbkaY591Jd7nVKwKVRC8jyWh9/y79UMHhzX9eSjWLwTmjcXAfYhKLqSynZRyw
-         O31PiLfPEWxOJp7j+uy1Xp30ytdc+hhvZQwmGTTrS36vkgoPZtqTzqo3PL/ozt4B8RbV
-         GMtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693458072; x=1694062872;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=fairphone.com; s=fair; t=1693476780; x=1694081580; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LG57Ipqd8qnPkHXmEM2qU3rXEf7cPd3YjyUXTm2SJUY=;
-        b=dbar4YVCE+Pit75ublV98I2EycaPFGbHVmJd/X6yioJnASCp34ChLvEZZnRwAZvzSl
-         4o37FZ98S61FmdmzyHtb8+HBzPtvYdZ0fgYWlm0mZR/L6WZzMngeidigizgYhr0ggVJ2
-         YgI3D7oh7zV5hZKbBKT3TS/O95RhoByBh0xcEvu6gjw7d8DREuUML5YVdx3cs/X1B2kk
-         cg6VEgunY/FLlU201EilfUk7+1aB8JJAis538cyN0X4FWlSFe27DewaOoZ7QdNRJ8kyh
-         GTC8xs3ss0nym+fxRlnL1v3uujvDIaKP7nVBIcp3DoVKhKw9Rn9HRXpGo9/Y9jbodAw+
-         q/tg==
-X-Gm-Message-State: AOJu0YyTXprwDfwnFkZpgNLw4+suxgTBkIwQDyltDsCF2OAnpsePGFZw
-        MXo0/rc/KGG6jhaIQWXat1ljBw==
-X-Google-Smtp-Source: AGHT+IFQZQgyo7Kbxxv4n+DzGhsaV/YCZE33tGBr+rqZ2mBEdrv8HmDOp79McCilJd8OH8ltr0xGIg==
-X-Received: by 2002:a17:902:c409:b0:1bc:6266:d0e4 with SMTP id k9-20020a170902c40900b001bc6266d0e4mr5133728plk.69.1693458072003;
-        Wed, 30 Aug 2023 22:01:12 -0700 (PDT)
-Received: from localhost ([122.172.87.195])
-        by smtp.gmail.com with ESMTPSA id i2-20020a170902eb4200b001bf2dcfe352sm370068pli.234.2023.08.30.22.01.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Aug 2023 22:01:11 -0700 (PDT)
-Date:   Thu, 31 Aug 2023 10:31:08 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     cros-qcom-dts-watchers@chromium.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        bh=e7v4YEHKe+eCw/TeGULI02ezKGrSX/6FZe8vszhKShU=;
+        b=GDZ07FpT+CNej/aZSh1Np170rhrgZlJvNr7rN2UfCQCEFdE+x0XoodqDWDnbK7AEaR
+         7vbJCYHNV9WoepvB26K4Na02Ai3SiwGPSONp7aPVTvCuko0DKAZxhGb5333X2dYucEco
+         3tgh+LSaeYPjOsC121NFuJAvWmdasM2Sw3YWwA76BOBV+bFDE1h7kssMqZDaX6hJ5zZh
+         t0Z85r0ZfgrBcxWXBsu5UcgVM4e4BLR0UjnTdMF6inOqmHqIBMsxmL1i7t4aBrirlRBv
+         LGa02fBEJxENZ575c6mrk1xDPeDNNdHwHp2FmxkwrLGheY6OAKxMI2I3Q63/eCX/f6mr
+         VRvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693476780; x=1694081580;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=e7v4YEHKe+eCw/TeGULI02ezKGrSX/6FZe8vszhKShU=;
+        b=RD1wHYNPRIHXMY7d2z8YDYLd7kJanIo/BqhWo7L2mP5j3ZmA+i/Ey8bIIpyORCianw
+         U35enDga2ve8o7L9CVkdVJ66bN90VeZdnw8T2neUViSjHlmPQZCzD7PRNRX4QmQtcVvp
+         vLzhMLTkMAKIlnGKDH7kk2C/6CsZgHNkomB28urO/cezhR369j7VxMzGPnV3slGsz3AD
+         apf95xbAhVTcZq7C99V44eKCL6ORn1dp3urYHGgg9jljR8/ZgZrBktFVT+Wikbshg5SY
+         AhRrkYhiMAtg1KPj9vUskd8u/yzDOvBtHooPdQLEqJhZb9WlzaHIZtcxQX8Kn+sKfah7
+         Yrow==
+X-Gm-Message-State: AOJu0YwqyPLcFKiK1Ckdvs3LfDaP7YvcoL7G+AjG61zyulz1SqTx450w
+        xZ1fWyUPQ40l3xX6KAtrvrWQEw==
+X-Google-Smtp-Source: AGHT+IEuYVCopo/jdrk+kN9i1QSXZe6VfZ6G0pxlPUpl/QjLI2c9L+8wfjA/Ey3Yg4SWpToT5CAN9w==
+X-Received: by 2002:a50:fc05:0:b0:525:680a:6b89 with SMTP id i5-20020a50fc05000000b00525680a6b89mr3661319edr.12.1693476779584;
+        Thu, 31 Aug 2023 03:12:59 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id x18-20020aa7d6d2000000b0052718577668sm608976edr.11.2023.08.31.03.12.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 31 Aug 2023 03:12:59 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Thu, 31 Aug 2023 12:12:58 +0200
+Message-Id: <CV6NF0466658.20DGU7QKF2UBR@otso>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH 04/11] arm64: dts: qcom: pm7250b: make SID configurable
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
+        <cros-qcom-dts-watchers@chromium.org>,
+        "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Conor Dooley" <conor+dt@kernel.org>,
+        "Srinivas Kandagatla" <srinivas.kandagatla@linaro.org>,
+        "Linus Walleij" <linus.walleij@linaro.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-Subject: Re: [PATCH 09/11] cpufreq: Add QCM6490 to cpufreq-dt-platdev
- blocklist
-Message-ID: <20230831050108.yt7obgdqmcz73brn@vireshk-i7>
+        "Viresh Kumar" <viresh.kumar@linaro.org>
+X-Mailer: aerc 0.15.2
 References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
- <20230830-fp5-initial-v1-9-5a954519bbad@fairphone.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230830-fp5-initial-v1-9-5a954519bbad@fairphone.com>
+ <20230830-fp5-initial-v1-4-5a954519bbad@fairphone.com>
+ <b82f4683-e8b5-b424-8f7a-6d2ba1cab61f@linaro.org>
+In-Reply-To: <b82f4683-e8b5-b424-8f7a-6d2ba1cab61f@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 30-08-23, 11:58, Luca Weiss wrote:
-> The Qualcomm QCM6490 platform uses the qcom-cpufreq-hw driver, so add it
-> to the cpufreq-dt-platdev driver's blocklist.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  drivers/cpufreq/cpufreq-dt-platdev.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
-> index fb2875ce1fdd..02ec58a8603b 100644
-> --- a/drivers/cpufreq/cpufreq-dt-platdev.c
-> +++ b/drivers/cpufreq/cpufreq-dt-platdev.c
-> @@ -145,6 +145,7 @@ static const struct of_device_id blocklist[] __initconst = {
->  	{ .compatible = "qcom,msm8996", },
->  	{ .compatible = "qcom,msm8998", },
->  	{ .compatible = "qcom,qcm2290", },
-> +	{ .compatible = "qcom,qcm6490", },
->  	{ .compatible = "qcom,qcs404", },
->  	{ .compatible = "qcom,qdu1000", },
->  	{ .compatible = "qcom,sa8155p" },
+On Wed Aug 30, 2023 at 12:06 PM CEST, Krzysztof Kozlowski wrote:
+> On 30/08/2023 11:58, Luca Weiss wrote:
+> > Like other Qualcomm PMICs the PM7250B can be used on different addresse=
+s
+> > on the SPMI bus. Use similar defines like the PMK8350 to make this
+> > possible.
+> >=20
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> >  arch/arm64/boot/dts/qcom/pm7250b.dtsi | 23 ++++++++++++++++-------
+> >  1 file changed, 16 insertions(+), 7 deletions(-)
+> >=20
+> > diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot/dt=
+s/qcom/pm7250b.dtsi
+> > index e8540c36bd99..3514de536baa 100644
+> > --- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+> > +++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+> > @@ -7,6 +7,15 @@
+> >  #include <dt-bindings/interrupt-controller/irq.h>
+> >  #include <dt-bindings/spmi/spmi.h>
+> > =20
+> > +/* This PMIC can be configured to be at different SIDs */
+> > +#ifndef PM7250B_SID
+> > +	#define PM7250B_SID 2
+> > +#endif
+>
+> Why do you send the same patch as v1, without any reference to previous
+> discussions?
+>
+> You got here feedback already.
+>
+> https://lore.kernel.org/linux-arm-msm/f52524da-719b-790f-ad2c-0c3f313d9fe=
+9@linaro.org/
 
-Applied. Thanks.
+Hi Krzysztof,
 
--- 
-viresh
+I did mention that original patch in the cover letter of this series.
+I'm definitely aware of the discussion earlier this year there but also
+tried to get an update lately if there's any update with no response.
+
+If you want to block this patch, I'll have to remove pm7250b from the
+device dts, so we'll lose some functionality. Not sure what other
+approaches there could be.
+
+Regards
+Luca
+
+>
+> Best regards,
+> Krzysztof
+
