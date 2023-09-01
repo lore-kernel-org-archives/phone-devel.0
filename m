@@ -2,172 +2,360 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6BD60C83F01
-	for <phone-devel@archiver.kernel.org>; Thu, 31 Aug 2023 12:32:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E78CCA0FE4
+	for <phone-devel@archiver.kernel.org>; Fri,  1 Sep 2023 14:27:59 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240919AbjHaMcm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 31 Aug 2023 08:32:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51208 "EHLO
+        id S234692AbjIAO2A (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 1 Sep 2023 10:28:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231908AbjHaMcm (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 31 Aug 2023 08:32:42 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE77C1A4
-        for <phone-devel@vger.kernel.org>; Thu, 31 Aug 2023 05:32:38 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-99bf8e5ab39so87269666b.2
-        for <phone-devel@vger.kernel.org>; Thu, 31 Aug 2023 05:32:38 -0700 (PDT)
+        with ESMTP id S233065AbjIAO2A (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 1 Sep 2023 10:28:00 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE2BAA1
+        for <phone-devel@vger.kernel.org>; Fri,  1 Sep 2023 07:27:55 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-99bdeae1d0aso247017866b.1
+        for <phone-devel@vger.kernel.org>; Fri, 01 Sep 2023 07:27:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1693485157; x=1694089957; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1693578474; x=1694183274; darn=vger.kernel.org;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Cj4e69HAaMOOdlvr+WIWTnSbaYlLGaoLGvsHESxOroI=;
-        b=t80J9iBsHgwc38mPwyXOf6kIGe08KqFyxVERI58fPPJoQ20bgP12GYKTPg8X2jQw0U
-         yY+0fJVSLNhf1/skaoCvFWhiv80HuXbeZH7ePs1TS/aTJuB/xcaK8DPYZhJnHRd5dCbu
-         JGvsWNPFeWZv/SwFM7BD3O6n+oco8yQmp3PYzEWJJf6PzSUpyqsNeDteJtEj645o3gHO
-         Ld4HDDbTSyhKgze3fRNpZI+6/S1FtLa9poO5lXspbLJBcqJmje/PzslEFYaZiJlghK9/
-         WLQrZ3xWM3+5WhHI8sx+au4F3Q7nMVQf/Ir097g72WjnYgnWTcTXupC3RI/dZSG4QB80
-         85aw==
+        bh=rEyh/swy7SSq80cvkD8Ou9qWCXNx2KRhHBoyBHAptPo=;
+        b=0R3e9ICKhKNJS/iJ9j7O52ReWKyd0kKZi3ClpctBmj3YKR6NdCqo/sWNJZgk/HLrjm
+         vVkObw5hJHuAGO8BirB6oWwg9VcDM4auE0TgSMbcMWSemvotcdgpqCf4j69cKVA4zouH
+         aQKsaYlcBR/EKGVKSfSsi7UxbCk++dLsVvPibqhnwmWSAqeuKXYHPSYf0KlkYWBTU/+G
+         hNDpPQPBQSsdC/JzNFUWYd8Ec/rFxzaI2UOhzwekFM5zB76sUQzzqy/7yu41ioqjMlEX
+         grCYLlZon22Qj1yhrkZ7P1C0+aq62AJwY/Fiy83BSTmxYnkLS085VRIODNx1Q44g9mXH
+         9WmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693485157; x=1694089957;
+        d=1e100.net; s=20221208; t=1693578474; x=1694183274;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Cj4e69HAaMOOdlvr+WIWTnSbaYlLGaoLGvsHESxOroI=;
-        b=UeV/n0Iaoon45TZSe7vhleL/H3IHeG6AcHPI4hdQ+GoKFBFVWi/Gt/UG87faLL3GkP
-         FvdxRu/tIEqNgENxjXYqIghIFAmN3aBFCvQvt+PZDhFYfm1LXHnxnFCzO6sI051c1hUg
-         qvTDulifTzKPgZ/Xxcp9/NatA9LlHDkl4SmmMVQbMUfy6ZJVBiZPTS3VmyOqs75K5S66
-         VUOtnMaTpuSRVnigXviHhoN7jOPCeSqZEUP3LuGEMDEXBz4Bee1Ymyyb9BqqRgK6pMVM
-         S0SGaogQ5M6rKZweuOvgYKJOwF9puK6E5QbJy7JiTKLLMn67m/IXHazcRY1+WROcAbcD
-         bk6A==
-X-Gm-Message-State: AOJu0YyiNmMjt6sy63MgA569nibdaOl5V+mOXP6cjLc2kHqd/2OX/gYS
-        zK7B3sM5y9g2gDGj9XKlgNrDnA==
-X-Google-Smtp-Source: AGHT+IHyE5BVYp70Ll+vKcK9XwzMnRGpWsl9jIQBoASbYwV/rC/46WZgUGOARkhdfkh5OQgp6z9Qug==
-X-Received: by 2002:a17:907:75f6:b0:988:9b29:5653 with SMTP id jz22-20020a17090775f600b009889b295653mr3326856ejc.77.1693485157385;
-        Thu, 31 Aug 2023 05:32:37 -0700 (PDT)
+        bh=rEyh/swy7SSq80cvkD8Ou9qWCXNx2KRhHBoyBHAptPo=;
+        b=E5ig2IxmeFhOW9b8/+RjbuHsw/vCczTKIv/K8nurizMz3QdJPrgeZjxnN5AE+Peuzw
+         FhirMJMjs/DfvUInUrKnGvRE69pdSPRo337aXTMX7Q2KqndokGlixGKj4gtNxjMCjIL0
+         wzHxnTK8Iu2bEoDmS6U0+TuW3L5AxAqOua+70p2xWiyp3dOKRpzOL+sxRrT7s+OF6MlX
+         xAf+C9quiZBt7nul5ZT2V8xVR8kr9WpYf5eUI6+1w+p+jJR/xMiJ8sr8xDHcQ2bSAJfT
+         Zd7kZTl92GTCYTVu2W5FvNqrBAOkCakA8f/5lgdh+i+j7/jkvKJr8a+zk1HbW3nZEvtO
+         InLg==
+X-Gm-Message-State: AOJu0YxnLCFXJsEuAgjkscjFJl19bPBHKEODHVGEh/zwiFHLabnnPrRM
+        /uJh2PD4t0QYSE1F3XeYkQYZig==
+X-Google-Smtp-Source: AGHT+IELTYphsKmoa8uElxOgpt0BvTXKmP3twY/vRn2bptNKZ/qbTpEogtbv4BH6+FLnvY95r/VDOA==
+X-Received: by 2002:a17:907:7847:b0:99d:101b:8403 with SMTP id lb7-20020a170907784700b0099d101b8403mr1928742ejc.36.1693578474415;
+        Fri, 01 Sep 2023 07:27:54 -0700 (PDT)
 Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id g3-20020a170906594300b0099cf44adf2csm703919ejr.46.2023.08.31.05.32.36
+        by smtp.gmail.com with ESMTPSA id mc24-20020a170906eb5800b00997e99a662bsm2033443ejb.20.2023.09.01.07.27.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Aug 2023 05:32:37 -0700 (PDT)
+        Fri, 01 Sep 2023 07:27:53 -0700 (PDT)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Thu, 31 Aug 2023 14:32:35 +0200
-Message-Id: <CV6QDWJRJNRH.27JMF9AB7MEXO@otso>
-Cc:     <cros-qcom-dts-watchers@chromium.org>,
+Date:   Fri, 01 Sep 2023 16:27:53 +0200
+Message-Id: <CV7NGPVH4U0W.PN2NOIO19Z7U@otso>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH 11/11] arm64: dts: qcom: qcm6490: Add device-tree for
+ Fairphone 5
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+        <cros-qcom-dts-watchers@chromium.org>,
         "Andy Gross" <agross@kernel.org>,
         "Bjorn Andersson" <andersson@kernel.org>,
-        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
         "Rob Herring" <robh+dt@kernel.org>,
         "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
         "Conor Dooley" <conor+dt@kernel.org>,
         "Srinivas Kandagatla" <srinivas.kandagatla@linaro.org>,
         "Linus Walleij" <linus.walleij@linaro.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Viresh Kumar" <viresh.kumar@linaro.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH 04/11] arm64: dts: qcom: pm7250b: make SID configurable
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>
+        "Viresh Kumar" <viresh.kumar@linaro.org>
 X-Mailer: aerc 0.15.2
 References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
- <20230830-fp5-initial-v1-4-5a954519bbad@fairphone.com>
- <b82f4683-e8b5-b424-8f7a-6d2ba1cab61f@linaro.org>
- <CV6NF0466658.20DGU7QKF2UBR@otso>
- <CAA8EJpr1+W3f08X-FpiiVrJ98kg52HaMwbbKn=fG15Whm4C8aQ@mail.gmail.com>
- <728003b9-db27-fdc0-e761-197a02a38c24@linaro.org>
-In-Reply-To: <728003b9-db27-fdc0-e761-197a02a38c24@linaro.org>
+ <20230830-fp5-initial-v1-11-5a954519bbad@fairphone.com>
+ <72c2fd33-613b-49be-b394-0663f459f0c5@linaro.org>
+In-Reply-To: <72c2fd33-613b-49be-b394-0663f459f0c5@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Thu Aug 31, 2023 at 1:54 PM CEST, Krzysztof Kozlowski wrote:
-> On 31/08/2023 13:33, Dmitry Baryshkov wrote:
-> > On Thu, 31 Aug 2023 at 13:13, Luca Weiss <luca.weiss@fairphone.com> wro=
-te:
-> >>
-> >> On Wed Aug 30, 2023 at 12:06 PM CEST, Krzysztof Kozlowski wrote:
-> >>> On 30/08/2023 11:58, Luca Weiss wrote:
-> >>>> Like other Qualcomm PMICs the PM7250B can be used on different addre=
-sses
-> >>>> on the SPMI bus. Use similar defines like the PMK8350 to make this
-> >>>> possible.
-> >>>>
-> >>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> >>>> ---
-> >>>>  arch/arm64/boot/dts/qcom/pm7250b.dtsi | 23 ++++++++++++++++-------
-> >>>>  1 file changed, 16 insertions(+), 7 deletions(-)
-> >>>>
-> >>>> diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot=
-/dts/qcom/pm7250b.dtsi
-> >>>> index e8540c36bd99..3514de536baa 100644
-> >>>> --- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-> >>>> +++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-> >>>> @@ -7,6 +7,15 @@
-> >>>>  #include <dt-bindings/interrupt-controller/irq.h>
-> >>>>  #include <dt-bindings/spmi/spmi.h>
-> >>>>
-> >>>> +/* This PMIC can be configured to be at different SIDs */
-> >>>> +#ifndef PM7250B_SID
-> >>>> +   #define PM7250B_SID 2
-> >>>> +#endif
-> >>>
-> >>> Why do you send the same patch as v1, without any reference to previo=
-us
-> >>> discussions?
-> >>>
-> >>> You got here feedback already.
-> >>>
-> >>> https://lore.kernel.org/linux-arm-msm/f52524da-719b-790f-ad2c-0c3f313=
-d9fe9@linaro.org/
-> >>
-> >> Hi Krzysztof,
-> >>
-> >> I did mention that original patch in the cover letter of this series.
-> >> I'm definitely aware of the discussion earlier this year there but als=
-o
-> >> tried to get an update lately if there's any update with no response.
+On Wed Aug 30, 2023 at 12:45 PM CEST, Konrad Dybcio wrote:
+> On 30.08.2023 11:58, Luca Weiss wrote:
+> > Add device tree for the Fairphone 5 smartphone which is based on
+> > the QCM6490 SoC.
 > >=20
-> > I think the overall consensus was that my proposal is too complicated
-> > for the DT files.
+> > Supported features are, as of now:
+> > * Bluetooth
+> > * Debug UART
+> > * Display via simplefb
+> > * Flash/torch LED
+> > * Flip cover sensor
+> > * Power & volume buttons
+> > * RTC
+> > * SD card
+> > * USB
+> > * Various plumbing like regulators, i2c, spi, etc
+> >=20
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> >  arch/arm64/boot/dts/qcom/Makefile                  |   1 +
+> >  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 659 +++++++++++++=
+++++++++
+> >  2 files changed, 660 insertions(+)
+> >=20
+> > diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qc=
+om/Makefile
+> > index 2cca20563a1d..73c3be0f8872 100644
+> > --- a/arch/arm64/boot/dts/qcom/Makefile
+> > +++ b/arch/arm64/boot/dts/qcom/Makefile
+> > @@ -81,6 +81,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+=3D msm8998-sony-xperia-yosh=
+ino-lilac.dtb
+> >  dtb-$(CONFIG_ARCH_QCOM)	+=3D msm8998-sony-xperia-yoshino-maple.dtb
+> >  dtb-$(CONFIG_ARCH_QCOM)	+=3D msm8998-sony-xperia-yoshino-poplar.dtb
+> >  dtb-$(CONFIG_ARCH_QCOM)	+=3D msm8998-xiaomi-sagit.dtb
+> > +dtb-$(CONFIG_ARCH_QCOM)	+=3D qcm6490-fairphone-fp5.dtb
+> >  dtb-$(CONFIG_ARCH_QCOM)	+=3D qcs404-evb-1000.dtb
+> >  dtb-$(CONFIG_ARCH_QCOM)	+=3D qcs404-evb-4000.dtb
+> >  dtb-$(CONFIG_ARCH_QCOM)	+=3D qdu1000-idp.dtb
+> > diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/=
+arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> > new file mode 100644
+> > index 000000000000..572b254d3af2
+> > --- /dev/null
+> > +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> > @@ -0,0 +1,659 @@
+> > +// SPDX-License-Identifier: BSD-3-Clause
+> > +/*
+> > + * Copyright (c) 2023, Luca Weiss <luca.weiss@fairphone.com>
+> > + */
+> > +
+> > +/dts-v1/;
+> > +
+> > +/* PM7250B is configured to use SID8/9 instead of SID2/3 */
+> > +#define PM7250B_SID 8
+> > +#define PM7250B_SID1 9
+> > +
+> > +#include <dt-bindings/arm/qcom,ids.h>
+> > +#include <dt-bindings/leds/common.h>
+> > +#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+> > +#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+> > +#include "sc7280.dtsi"
+> > +#include "pm7250b.dtsi"
+> > +#include "pm7325.dtsi"
+> > +#include "pm8350c.dtsi" /* PM7350C */
+> > +#include "pmk8350.dtsi" /* PMK7325 */
+> > +
+> > +/ {
+> > +	model =3D "Fairphone 5";
+> > +	compatible =3D "fairphone,fp5", "qcom,qcm6490";
+> > +	chassis-type =3D "handset";
+> > +
+> > +	/* required for bootloader to select correct board */
+> > +	qcom,msm-id =3D <QCOM_ID_QCM6490 0x10000>;
+> > +	qcom,board-id =3D <34 0>;
+> Try [1], it worked for me on a picky device.
+
+Yes, that works! Thanks!
+
 >
-> I proposed to duplicate the entries.
+> > +
+> > +	aliases {
+> > +		serial0 =3D &uart5;
+> > +		serial1 =3D &uart7;
+> > +	};
+> > +
+> > +	chosen {
+> > +		#address-cells =3D <2>;
+> > +		#size-cells =3D <2>;
+> > +		ranges;
+> > +
+> > +		framebuffer0: framebuffer@a000000 {
+> > +			compatible =3D "simple-framebuffer";
+> > +			reg =3D <0 0xe1000000 0 (2700 * 1224 * 4)>;
+> 0x0?
 
-If you mean creating a pm7250b-8.dtsi with pm7250b copy-pasted but the
-SID changed from 2 & 3 to 8 & 9, I can do that if that's the way
-forward.
+Ack
 
-If this was done, I'd also say then that pm7250b.dtsi should be renamed
-to e.g. pm7250b-2.dtsi since it's currently sitting on SID 2 & 3.
-
-> Do you keep QUP nodes in DTSI and customize per address? No.
 >
-> I definitely do not agree to these ifndef->define. Maybe using just
-> define would work (so drop ifndef->define), because this makes it
-> obvious and fail-safe if included in wrong place... except that it is
-> still not the define we expect. This is not the coding style present in
-> other DTSes.
+> > +			width =3D <1224>;
+> > +			height =3D <2700>;
+> > +			stride =3D <(1224 * 4)>;
+> > +			format =3D "a8r8g8b8";
+> > +			panel =3D <&panel>;
+> > +			clocks =3D <&gcc GCC_DISP_HF_AXI_CLK>;
+> > +		};
+> > +	};
+> > +
+> > +	gpio-keys {
+> > +		compatible =3D "gpio-keys";
+> > +
+> > +		pinctrl-0 =3D <&volume_down_default>, <&hall_sensor_default>;
+> > +		pinctrl-names =3D "default";
+> > +
+> > +		key-volume-up {
+> > +			label =3D "Volume up";
+> > +			gpios =3D <&pm7325_gpios 6 GPIO_ACTIVE_LOW>;
+> > +			linux,code =3D <KEY_VOLUMEUP>;
+> > +		};
+> > +
+> > +		/* Hall sensor uses vreg_l8c as VDD, it's being enabled using
+> > +		 * always-on on the regulator
+> > +		 */
+> /* Powered by the always-on vreg_l8c */ - fits in a single line
 
-I really don't mind either way, I'd just like to have some way for now.
+Ack
 
 >
-> The true problem how these SPMI bindings were created. Requiring SID
-> address in every child is clearly redundant and I think we do not follow
-> such approach anywhere else.
+> > +		event-hall-sensor {
+> > +			label =3D "Hall Effect Sensor";
+> > +			gpios =3D <&tlmm 155 GPIO_ACTIVE_LOW>;
+> > +			linux,input-type =3D <EV_SW>;
+> > +			linux,code =3D <SW_LID>;
+> > +			linux,can-disable;
+> > +			wakeup-source;
+> > +		};
+> > +	};
+> > +
+> > +	panel: panel {
+> > +		compatible =3D "boe,rm692e5";
+> Undocumented compatbile
 
-Is this something that could be fixed long term? Especially since
-Qualcomm is reconfiguring PMICs on different addresses nowadays maybe
-there's more or a push to do this?
+Not quite sure how to document this properly. This dummy panel node is
+used for the simplefb/simpledrm so that user space can get panel
+dimensions already.
+
+This approach of a separate panel node was apparently preferred when the
+functionality was upstreamed but of course as can be seen this panel
+node is very barebones where many properties are not present which would
+be needed with the full panel driver (once it's working).
+
+Also for example for the bindings I think width-mm and height-mm won't
+be needed anymore since that information will be provided by the driver
+then.
+
+Please let me know how/where to document this.
+
+>
+> > +
+> > +		width-mm =3D <68>;
+> > +		height-mm =3D <150>;
+> > +	};
+> > +
+> > +	reserved-memory {
+> > +		cont_splash_mem: cont-splash@e1000000 {
+> > +			reg =3D <0 0xe1000000 0 0x2300000>;
+> 0x0
+
+Ack
+
+>
+> [...]
+>
+> > +		vreg_s1b: smps1 {
+> > +			regulator-min-microvolt =3D <1840000>;
+> > +			regulator-max-microvolt =3D <2040000>;
+> No regulator-initial-mode on this pmic?
+
+This specific regulator doesn't have one downstream, but it seems other
+pm7325 regulators do have this downstream so I'll add it in v2.
+
+>
+> [...]
+>
+> > +
+> > +	/* PM8008 PMIC @ 8 and 9 */
+> > +	/* Pixelworks @ 26 */
+> > +	/* FSA4480 USB audio switch @ 42 */
+> There's a driver for the fsa4480, you may wanna include a node here
+
+I'm aware, but will work on this later since it's not useful without
+USB-C role switching and working audio.
+
+>
+> > +	/* AW86927FCR haptics @ 5a */
+> > +};
+> [...]
+>
+> > +
+> > +	led-0 {
+> > +		function =3D LED_FUNCTION_FLASH;
+> No dual-tone stuff?
+
+Nope.
+
+>
+> > +		color =3D <LED_COLOR_ID_WHITE>;
+> > +		led-sources =3D <1>, <4>;
+> > +		led-max-microamp =3D <500000>;
+> > +		flash-max-microamp =3D <1500000>;
+> > +		flash-max-timeout-us =3D <1280000>;
+> > +	};
+> > +};
+> > +
+> > +&pmk8350_rtc {
+> > +	status =3D "okay";
+> > +};
+> > +
+> > +&pon_pwrkey {
+> > +	status =3D "okay";
+> > +};
+> > +
+> > +&pon_resin {
+> > +	status =3D "okay";
+> > +	linux,code =3D <KEY_VOLUMEDOWN>;
+> status last
+
+Ack
+
+>
+> [...]
+>
+> > +&rmtfs_mem {
+> > +	qcom,vmid =3D <QCOM_SCM_VMID_MSS_MSA>, <QCOM_SCM_VMID_NAV>;
+> > +	reg =3D <0x0 0xf8500000 0x0 0x600000>;
+> > +};
+> /delete-node/ + redefinition would probably be cleaner-looking
+
+Ack, looks better.
+
+>
+> [...]
+>
+> > +&uart7 {
+> > +	/delete-property/interrupts;
+> > +	interrupts-extended =3D <&intc GIC_SPI 608 IRQ_TYPE_LEVEL_HIGH>,
+> > +			      <&tlmm 31 IRQ_TYPE_EDGE_FALLING>;
+> > +
+> > +	pinctrl-names =3D "default", "sleep";
+> > +	pinctrl-1 =3D <&qup_uart7_sleep_cts>, <&qup_uart7_sleep_rts>, <&qup_u=
+art7_sleep_tx>, <&qup_uart7_sleep_rx>;
+> property-n
+> property-names
+
+Ack
+
+>
+> > +
+> > +	status =3D "okay";
+> > +
+> > +	bluetooth: bluetooth {
+> > +		compatible =3D "qcom,wcn6750-bt";
+> > +
+> > +		pinctrl-names =3D "default";
+> > +		pinctrl-0 =3D <&bluetooth_enable_default>, <&sw_ctrl_default>;
+> property-n
+> property-names
+
+Ack
 
 Regards
 Luca
 
 >
-> Best regards,
-> Krzysztof
+> Konrad
+>
+> [1] https://lore.kernel.org/linux-arm-msm/9db02015-2c41-40d6-bf35-69ef277=
+e9ce4@linaro.org/
 
