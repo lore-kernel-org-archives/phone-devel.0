@@ -2,69 +2,52 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BF19CA0FE5
-	for <phone-devel@archiver.kernel.org>; Fri,  1 Sep 2023 15:09:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EFCFFCA0FE8
+	for <phone-devel@archiver.kernel.org>; Fri,  1 Sep 2023 20:29:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345398AbjIAPJE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 1 Sep 2023 11:09:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46664 "EHLO
+        id S1350726AbjIAU3X (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 1 Sep 2023 16:29:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240715AbjIAPJB (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Fri, 1 Sep 2023 11:09:01 -0400
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ED6F10CF
-        for <phone-devel@vger.kernel.org>; Fri,  1 Sep 2023 08:08:58 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2bcde83ce9fso34889991fa.1
-        for <phone-devel@vger.kernel.org>; Fri, 01 Sep 2023 08:08:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1693580934; x=1694185734; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ir5d0LdfkLCgxj9RUuUc7L+7Tk1dgspXe4TSyCCKnNc=;
-        b=OrjALxhjcjO9OQoFxn5KZDSD4vm7r0lBFN26CuNBcCt4fU4JwKPYNZj36/hRtKuM00
-         CwfVu0u+RBMmb7S2++v4EP+B8eHGAqcRNVDdzlyqQimivNNoZ9Diu4yb85icU9qU6tdc
-         cfoANkEFP8La/Ch1xM/3pBQnO4a8Jz1EnqaUo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693580934; x=1694185734;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ir5d0LdfkLCgxj9RUuUc7L+7Tk1dgspXe4TSyCCKnNc=;
-        b=Vmt6rUZ5N1utnhpEEuDBlw7jnqKK/sfYlTz243ufSD7RpTR6Gp/XjXXbLIaCX5ib13
-         nk9GbyINyuSt8NSAEbUWJs61styx2biqCvISkakOCL3niwq0jBXq5TzmSYde0ylymXqS
-         XQ1/yXt36N3W833f+NFm2C2F/Gx+p3opzDwJK0fmLPmAlb0gjShpqiK3k3rKFyecosiB
-         cVILrV+GeJ0AaNzY9RwtGjXZvrCEJPAMvGzQ3ciJzyGszqAnm34sZTcQ3hxkuxj4YiSL
-         yYRDFXWGSmIHGEFsZSSgIkyHxSipc5m49qGoywnsZFR+1vxb83uA1BxD08tku69E17dq
-         YyUA==
-X-Gm-Message-State: AOJu0YzGv0pXV/QjgGPsFW8DrFVh3mE9mCxC5LLNBxeO92ovPcBngPWJ
-        Ym7XaadWRItLwMLYSEFXOSldpywvwwugOD+pZFnyt2hz
-X-Google-Smtp-Source: AGHT+IH8SV13fjOk1MkrwITJKzzf8ieu55bl3BwPDbSCzlP12ML6VLxORSktMj4rVHHX4ceC5eX41w==
-X-Received: by 2002:a2e:9d8d:0:b0:2bc:fd7b:8ded with SMTP id c13-20020a2e9d8d000000b002bcfd7b8dedmr2104821ljj.20.1693580933949;
-        Fri, 01 Sep 2023 08:08:53 -0700 (PDT)
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com. [209.85.128.44])
-        by smtp.gmail.com with ESMTPSA id d19-20020a1709067f1300b0098748422178sm2077156ejr.56.2023.09.01.08.08.52
-        for <phone-devel@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Sep 2023 08:08:53 -0700 (PDT)
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-402bec56ca6so4525e9.0
-        for <phone-devel@vger.kernel.org>; Fri, 01 Sep 2023 08:08:52 -0700 (PDT)
-X-Received: by 2002:a05:600c:282:b0:3fe:dd72:13ae with SMTP id
- 2-20020a05600c028200b003fedd7213aemr166371wmk.0.1693580932622; Fri, 01 Sep
- 2023 08:08:52 -0700 (PDT)
+        with ESMTP id S242521AbjIAU3W (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Fri, 1 Sep 2023 16:29:22 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9FD4E7E;
+        Fri,  1 Sep 2023 13:29:19 -0700 (PDT)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 381ItjDG005899;
+        Fri, 1 Sep 2023 20:29:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=2FYXvMmpReuPlYSmTDcvNg1rIzAmGZtkeMDCuhzAtGw=;
+ b=RpGMbsimYgMc3eNR7ei7vHPVzYUwHYGYWfqvFd5Hm0dfsshzelWMpDIZ1rnuLnmPTBJW
+ QrE9r0G9055pwpCfvVOPDMYtRHxC1oQjdFF+Gqzr4/3Fj+LWLC7Ub9J9K4ZZKtKtFbum
+ sHYN6I0cLw7UKq0OoSob97cywjNlU+qDOZ1qNg1FPayvbNvP7zzH3hwGYkQ+kG9Bx9jv
+ pkoE04KD1f8QglapQUr69SaBGB43NBDRiCuHqw/3ZSvJVuKYp2UadZBnGPAgApX2FtyJ
+ dkQahInoVqPNSAkfaD2bOsDEwD7LSCXJ9CVg7yTTQ0XSZVrP7POVtWlVknMqnRdcBF39 TQ== 
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3suc22hupp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 01 Sep 2023 20:29:05 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 381KT4X3011614
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 1 Sep 2023 20:29:04 GMT
+Received: from [10.110.95.146] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Fri, 1 Sep
+ 2023 13:29:04 -0700
+Message-ID: <deeefaf8-2ac9-cee0-eed4-687e36ac6f10@quicinc.com>
+Date:   Fri, 1 Sep 2023 13:29:03 -0700
 MIME-Version: 1.0
-References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
- <20230830-fp5-initial-v1-2-5a954519bbad@fairphone.com> <CAD=FV=WS2hgY=bQjLOs3Fdp8pbZyMsaS-0BpoxPq90Etfi+Xuw@mail.gmail.com>
- <CV5YJVXIL8OT.1ZWW3KVCHPTA5@otso> <CAD=FV=XhdORH=naTtoc+kCC4A7UdAJKwq=Te6B3qvXNGBwBieg@mail.gmail.com>
- <CV7O0TYYEFA8.1Q42JITFSW77Q@otso>
-In-Reply-To: <CV7O0TYYEFA8.1Q42JITFSW77Q@otso>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Fri, 1 Sep 2023 08:08:36 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=UG-dFg7wZsn6n=pkejie0fr+G0q3CguNspGYxoC2ZBLw@mail.gmail.com>
-Message-ID: <CAD=FV=UG-dFg7wZsn6n=pkejie0fr+G0q3CguNspGYxoC2ZBLw@mail.gmail.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
 Subject: Re: [PATCH 02/11] nvmem: qfprom: Mark core clk as optional
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     cros-qcom-dts-watchers@chromium.org,
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Doug Anderson <dianders@chromium.org>
+CC:     <cros-qcom-dts-watchers@chromium.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
@@ -75,111 +58,83 @@ Cc:     cros-qcom-dts-watchers@chromium.org,
         Linus Walleij <linus.walleij@linaro.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Viresh Kumar <viresh.kumar@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-pm@vger.kernel.org
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>
+References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
+ <20230830-fp5-initial-v1-2-5a954519bbad@fairphone.com>
+ <CAD=FV=WS2hgY=bQjLOs3Fdp8pbZyMsaS-0BpoxPq90Etfi+Xuw@mail.gmail.com>
+ <CV5YJVXIL8OT.1ZWW3KVCHPTA5@otso>
+From:   Trilok Soni <quic_tsoni@quicinc.com>
+In-Reply-To: <CV5YJVXIL8OT.1ZWW3KVCHPTA5@otso>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 9Ar9RfHXW3BZTXygIUaxyBxzbbtd8VRn
+X-Proofpoint-ORIG-GUID: 9Ar9RfHXW3BZTXygIUaxyBxzbbtd8VRn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-01_17,2023-08-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ clxscore=1011 mlxscore=0 impostorscore=0 suspectscore=0 malwarescore=0
+ mlxlogscore=999 phishscore=0 lowpriorityscore=0 priorityscore=1501
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309010192
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
+On 8/30/2023 7:43 AM, Luca Weiss wrote:
+> On Wed Aug 30, 2023 at 4:30 PM CEST, Doug Anderson wrote:
+>> Hi,
+>>
+>> On Wed, Aug 30, 2023 at 2:58 AM Luca Weiss <luca.weiss@fairphone.com> wrote:
+>>>
+>>> On some platforms like sc7280 on non-ChromeOS devices the core clock
+>>> cannot be touched by Linux so we cannot provide it. Mark it as optional
+>>> as accessing qfprom works without it.
+>>>
+>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>> ---
+>>>  drivers/nvmem/qfprom.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> Are you actually testing burning fuses from the OS, or are you just
+>> using the nvmem in "read-only" mode? From comments in the bindings, if
+>> you're trying to burn the fuses then the clock is required. If things
+>> are in read-only mode then the clock isn't required.
+> 
+> Hi Doug,
+> 
+> I definitely don't plan on burning any fuses on this phone. Not even
+> sure that's allowed by the TZ / boot stack.
+> 
+>>
+>> When I compare to the driver, it seems like the driver assumes that if
+>> more than one memory region is provided then you must be supporting
+>> burning fuses. The bindings agree that having 4 memory regions
+>> specified means that the nvmem supports burning and 1 memory region
+>> specified means read-only. The extra 3 memory regions in the nvmem are
+>> all about fuse burning, I believe.
+>>
+>> So maybe the right fix here is to just change your dts to specify one
+>> memory region?
+> 
+> I got feedback from Konrad that this here would be the preferred
+> approach compared to having a different dts for ChromeOS vs non-ChromeOS
+> devices. I don't feel strongly to either, for me it's also okay to
+> remove the extra memory regions and only have the main one used on
+> regular qcom devices.
+> 
+> Let me know what you think.
 
-On Fri, Sep 1, 2023 at 7:54=E2=80=AFAM Luca Weiss <luca.weiss@fairphone.com=
-> wrote:
->
-> > > > So maybe the right fix here is to just change your dts to specify o=
-ne
-> > > > memory region?
-> > >
-> > > I got feedback from Konrad that this here would be the preferred
-> > > approach compared to having a different dts for ChromeOS vs non-Chrom=
-eOS
-> > > devices. I don't feel strongly to either, for me it's also okay to
-> > > remove the extra memory regions and only have the main one used on
-> > > regular qcom devices.
-> > >
-> > > Let me know what you think.
-> >
-> > I don't hate the idea of leaving the extra memory regions in the dts.
-> > They do describe the hardware, after all, even if the main OS can't
-> > actually access those memory regions. ...though the same could also be
-> > said about the clock you've removed. Said another way: if you want to
-> > fully describe the hardware then the dts should have the extra memory
-> > regions and the clock. If you are OK w/ just describing the hardware
-> > in the way that the OS has access to then the dts should not have the
-> > extra memory regions and not have the clock. Does that sound right?
->
-> Not sure which of those memory regions are actually accessible on this
-> board, but honestly I don't even want to try accessing it. Blowing fuses
-> is not my wish there ;)
->
-> On downstream the node is just described like the following:
->
->         qfprom: qfprom@780000 {
->                 compatible =3D "qcom,qfprom";
->                 reg =3D <0x780000 0x7000>;
->                 ...
->         };
->
-> So we have 0x780000 - 0x786fff here.
->
-> In sc7280.dtsi we have the following:
->
->         qfprom: efuse@784000 {
->                 compatible =3D "qcom,sc7280-qfprom", "qcom,qfprom";
->                 reg =3D <0 0x00784000 0 0xa20>,
->                           <0 0x00780000 0 0xa20>,
->                           <0 0x00782000 0 0x120>,
->                           <0 0x00786000 0 0x1fff>;
->                 ...
->         };
->
-> So I guess this:
-> * 0x780000 - 0x780a1f
-> * 0x782000 - 0x78211f
-> * 0x784000 - 0x784a1f
-> * 0x786000 - 0x787ffe
->
-> So at least the last memory region seems to be partially out of range
-> according to downstream.
+I would prefer to re-use the sc7280 DT as well. Thank you for your patches. We plan to use your patches for platform on the same part. 
 
-From the other discussion, it sounds as if you _can_ leave the clock
-in the device tree and then use "clk_get_optional" here. IMO then, the
-right answer is to use "clk_get_optional" but then also modify the
-check below so that instead of:
+-- 
+---Trilok Soni
 
-/* Only enable writing if we have SoC data. */
-if (priv->soc_data)
-  econfig.reg_write =3D qfprom_reg_write;
-
-It is:
-
-/* Only enable writing if we have SoC data and a valid clock */
-if (priv->soc_data && priv->secclk)
-  econfig.reg_write =3D qfprom_reg_write;
-
-
-Does that work for you?
-
-
-> So after reading all of this I tried running this commmand on the phone
-> and the phone reboots into 900e mode.
->
->   $ cat /sys/devices/platform/soc@0/784000.efuse/qfprom0/nvmem
->
-> I guess normally this should work? So if I interpret this correctly, the
-> Linux driver thinks it can access more than it can/should. But also
-> should probably try this command on another chipset to see if it works
-> on any really?
-
-Presumably your firmware needs a different "sc7280_qfprom_keepout". If
-that's true then I guess you'll have to undergo negotiations with the
-DT bindings folks and the nvmem maintainer to figure out how to
-specify that your firmware protects different things than the ChromeOS
-firmware?
-
-
--Doug
