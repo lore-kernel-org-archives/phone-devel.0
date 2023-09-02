@@ -2,172 +2,93 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A71E4C71153
-	for <phone-devel@archiver.kernel.org>; Sat,  2 Sep 2023 20:33:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C543C71153
+	for <phone-devel@archiver.kernel.org>; Sat,  2 Sep 2023 21:39:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234458AbjIBUdT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 2 Sep 2023 16:33:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51696 "EHLO
+        id S234975AbjIBVjk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 2 Sep 2023 17:39:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233780AbjIBUdS (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 2 Sep 2023 16:33:18 -0400
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D161A8
-        for <phone-devel@vger.kernel.org>; Sat,  2 Sep 2023 13:33:15 -0700 (PDT)
-Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-5008d16cc36so416328e87.2
-        for <phone-devel@vger.kernel.org>; Sat, 02 Sep 2023 13:33:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693686793; x=1694291593; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dH6NiKbQqe9vmnrJhfaltDvwHP6URRATlfVkCOgJw/A=;
-        b=UI/XtxaIdFuJGAoWO7uQ7Umhizh1IIONklRZO7+dLCNMSDO56BW/wyL+ZoxKObL+1L
-         AbZGD5RbduzbZg8aF+AjeUOyjLxo8nKJJSOEe4J1f8c34CeaLztExaMzQudHRfhoyrFr
-         23kuXXWIucZt1va5ZlVVJN0rOm5LhuWgeWoRCPXYoUzfvVjnAvp705vt0a4F8y7zQPED
-         Rk8+h98PbebcUSsjzZxiOwBZ184ow2equOFYyvJzU6q/s/mziNeoT+exdpCrg+hNn+Qc
-         lhMB3veYcFQixxChVSc8u25t4HCkPjwLFyneiC+l51LvDyBPKBU0EIuFzebrk1Tf8fCQ
-         xswA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693686793; x=1694291593;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dH6NiKbQqe9vmnrJhfaltDvwHP6URRATlfVkCOgJw/A=;
-        b=AR378ZY9c7zjzsgjHwpNc9JAccema3hUtNkPkUrCtIvxT0JnJY87xzPLsiBAbAXjFW
-         nxLHYffEDhKnLpe+hmsMJLQMQnC/NYAppEL+nInSjTo/iOa+EDa4oxu6M0jclLsCFlyF
-         zFyR7tb5PsaAZsQF/vjUpwGhhQU3eym12AHexBnE7oI23whEtMvegatwmqfubF9grdCi
-         KnH2slcNWT/iLtLHCcJdMkksDMgncz+NBtveiQ5NhuESdSc+r4NuPnr/pAscSHuSRUVL
-         yQO5nW+usOY+NcXCHebyFoNeR1Lv3NKnAhhGkyQRvKmhlWIpQ48tiLO/Nf1R21moeDnt
-         5dNw==
-X-Gm-Message-State: AOJu0YyfSZB4hTJmCMQqDO71PCY/FO2mqKEaAnVGY/sy9g8x9Yg11f1c
-        Jw13ddxMqbOV44ZDrO10nTwd8Q==
-X-Google-Smtp-Source: AGHT+IG/ehxGK8nYwyOuB9I9WzwivyALoSIWWDeFS2WRms80E8dL9EPXOMGZNN4nZuejWRmw6y8bxA==
-X-Received: by 2002:a2e:95d7:0:b0:2bc:e330:660b with SMTP id y23-20020a2e95d7000000b002bce330660bmr4212501ljh.9.1693686793674;
-        Sat, 02 Sep 2023 13:33:13 -0700 (PDT)
-Received: from [192.168.1.101] (abxi170.neoplus.adsl.tpnet.pl. [83.9.2.170])
-        by smtp.gmail.com with ESMTPSA id z5-20020a2e9645000000b002b9f1538816sm1292880ljh.80.2023.09.02.13.33.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 02 Sep 2023 13:33:13 -0700 (PDT)
-Message-ID: <11f4e8f9-1193-4c6a-a5ae-cf592039a6b9@linaro.org>
-Date:   Sat, 2 Sep 2023 22:33:11 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] ARM: dts: qcom: msm8226: Add blsp1_i2c6 and
- blsp1_uart2
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        with ESMTP id S229796AbjIBVjj (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 2 Sep 2023 17:39:39 -0400
+X-Greylist: delayed 1008 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 02 Sep 2023 14:39:36 PDT
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D179FE42
+        for <phone-devel@vger.kernel.org>; Sat,  2 Sep 2023 14:39:36 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qcY4W-0006CP-Tu; Sat, 02 Sep 2023 23:22:24 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qcY4V-003V6R-2G; Sat, 02 Sep 2023 23:22:23 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qcY4U-000jBN-AY; Sat, 02 Sep 2023 23:22:22 +0200
+Date:   Sat, 2 Sep 2023 23:22:11 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     =?utf-8?B?QW5kcsOp?= Apitzsch <git@apitzsch.eu>
+Cc:     Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20230902-msm8226-i2c6-v1-0-9632b8916789@z3ntu.xyz>
- <20230902-msm8226-i2c6-v1-2-9632b8916789@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20230902-msm8226-i2c6-v1-2-9632b8916789@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Conor Dooley <conor+dt@kernel.org>, linux-leds@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v2 2/2] leds: add ktd202x driver
+Message-ID: <20230902212211.egbmusrbawkrrdlu@pengutronix.de>
+References: <20230901-ktd202x-v2-0-3cb8b0ca02ed@apitzsch.eu>
+ <20230901-ktd202x-v2-2-3cb8b0ca02ed@apitzsch.eu>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="3yy36qt3op6mlcma"
+Content-Disposition: inline
+In-Reply-To: <20230901-ktd202x-v2-2-3cb8b0ca02ed@apitzsch.eu>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: phone-devel@vger.kernel.org
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 2.09.2023 19:32, Luca Weiss wrote:
-> Add more busses found on msm8226 SoC.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  arch/arm/boot/dts/qcom/qcom-msm8226.dtsi | 29 +++++++++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
-> index b6ae4b7936e3..3b6114049e61 100644
-> --- a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
-> +++ b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
-> @@ -230,6 +230,15 @@ blsp1_uart1: serial@f991d000 {
->  			status = "disabled";
->  		};
->  
-> +		blsp1_uart2: serial@f991e000 {
-> +			compatible = "qcom,msm-uartdm-v1.4", "qcom,msm-uartdm";
-> +			reg = <0xf991e000 0x1000>;
-> +			interrupts = <GIC_SPI 108 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&gcc GCC_BLSP1_UART2_APPS_CLK>, <&gcc GCC_BLSP1_AHB_CLK>;
-One per line, please
-> +			clock-names = "core", "iface";
-> +			status = "disabled";
-> +		};
-> +
->  		blsp1_uart3: serial@f991f000 {
->  			compatible = "qcom,msm-uartdm-v1.4", "qcom,msm-uartdm";
->  			reg = <0xf991f000 0x1000>;
-> @@ -313,6 +322,19 @@ blsp1_i2c5: i2c@f9927000 {
->  			#size-cells = <0>;
->  		};
->  
-> +		blsp1_i2c6: i2c@f9928000 {
-> +			status = "disabled";
-> +			compatible = "qcom,i2c-qup-v2.1.1";
-> +			reg = <0xf9928000 0x1000>;
-> +			interrupts = <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>;
-> +			clocks = <&gcc GCC_BLSP1_QUP6_I2C_APPS_CLK>, <&gcc GCC_BLSP1_AHB_CLK>;
-> +			clock-names = "core", "iface";
-> +			pinctrl-names = "default";
-> +			pinctrl-0 = <&blsp1_i2c6_pins>;
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +		};
-compatible
-reg
-interrupts
-clocks
-clock-names
-pinctrl-0
-pinctrl-names
-addrsizecells
-status
 
-to make it coherent ish with new nodes being added today
+--3yy36qt3op6mlcma
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I know it's rather incoherent with what's in the file, but I guess
-my wunderwaffe dt sorter script is still on the back burner..
+Hello Andr=E9,
 
-Konrad
+On Fri, Sep 01, 2023 at 11:19:59PM +0200, Andr=E9 Apitzsch wrote:
+> +	.probe_new =3D ktd202x_probe,
+
+probe_new is about to go away and since commit
+03c835f498b540087244a6757e87dfe7ef10999b you can just use .probe with
+the same prototype. So please use .probe here.
+
+(Disclaimer: This is the only thing I checked here.)
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--3yy36qt3op6mlcma
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmTzp4MACgkQj4D7WH0S
+/k6paggAr8GWkS0QCAUDHE36Yy80iYlPCMDhK+Buxs+2gjg2gfr3l+qI3D32cX37
+RsA3B94vmdZCx8Dkm1KPIwA3udb4/seZyzbwXO/9Qp5tt6J4K4OfD3sWeZKhQdgf
+BDH5xeKmnQZthacdfiEZs7h0Rjpm6nQrMuuYLKURhTb0yd9L7XZcdIig9jd45Cio
+BP2b+pNlSu2lP6mY5yZXmVVeApfx6uHRtRj9E4NJBz/SH/afu+MgUl+zs5MyHLoI
+r9Hp8JGT4TJ/DqsSr5zheOofJnNN5lSzaDNEZWpc/rbhhYHn7EEsZ+R4R67WNjX6
+kvLLcYguDddAChTqoOpJEsaprYHDOQ==
+=Puti
+-----END PGP SIGNATURE-----
+
+--3yy36qt3op6mlcma--
