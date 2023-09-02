@@ -2,179 +2,116 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 081C3C83F2D
-	for <phone-devel@archiver.kernel.org>; Sat,  2 Sep 2023 11:45:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06E49C71153
+	for <phone-devel@archiver.kernel.org>; Sat,  2 Sep 2023 17:32:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352056AbjIBLps (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 2 Sep 2023 07:45:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35058 "EHLO
+        id S229699AbjIBRcy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 2 Sep 2023 13:32:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1352050AbjIBLpo (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 2 Sep 2023 07:45:44 -0400
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C523F10F4
-        for <phone-devel@vger.kernel.org>; Sat,  2 Sep 2023 04:45:39 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2bcfdadd149so50583081fa.0
-        for <phone-devel@vger.kernel.org>; Sat, 02 Sep 2023 04:45:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693655138; x=1694259938; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zorMJs2VMBIVf26DDqKbZ6mYOJqpHE4v3AzFjSkIo58=;
-        b=C0VvNqwy+HFtsTOr0QwqPfaErpnJ+j+gbK+OgW5cm8ltddV0QZzA7EHkoRC0OZf5SR
-         rNU8NR/WmaKCdy8A/hKkysdtTlVFdesRIBgA/UASNPamtiTP2KtDTRBMhlaeT8YLdehX
-         TX1gF2g7KRZBBSE4OfaWG35xZGNzWFX0+Vv1RcZgH7ONyqsKxeggXkb16H4iHsZgXTkv
-         d2xg8J2UXSSbA9DkSVIyE4lAE/EJq/bFI2B8e9bwML/vMg2+HQA8tm20C5TzFl6zYUUt
-         uxHkBwsSdws+/5gDBNvz+LqVZuU6KnrF3wOtnm0DRJmPtVkUKEOw3yxiJvmD6/xYGAki
-         zvTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693655138; x=1694259938;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zorMJs2VMBIVf26DDqKbZ6mYOJqpHE4v3AzFjSkIo58=;
-        b=NlHGfejWWQn1kzOqCGi6Wbn2UHnsOhRz+7pE84iLA6W1iPpkkcMbBsZU24k7qqlvD+
-         ba4AmnEtI7AdZgOEO5FPPVc/etJA70NGhl4nCE584aHK4t2mOWzcxsOqQZZ+AKfSHuzK
-         fCSPyofGe+0Ud+x6O/9klUvnSQyhYsxzGAETsn2OLsQP3mP3YIdyB4Lz0EdwuTqagAHi
-         bu3WEXDSsISbDQ80hKLBOdmeTTzVnMzCW+zIMrt/9YZO6u79igiR4tZbFIi/bGzGB4Wv
-         r1Opc/BkgewndaGDVdEXBnmZMQPoXNLmEI1bJqVXa4XASOaNsS7RGh45/cI0iMfhv8IW
-         +9DQ==
-X-Gm-Message-State: AOJu0YzlxNvbB0INSxXQM3zLwSTqcaM5evIityQ09eBJi9XgKuiB/JpQ
-        KIfv7srOa7NNBVYocSuG6pdQ7w==
-X-Google-Smtp-Source: AGHT+IFqP05K7+DSnGRKSlA7ReM081tFrZrwpnWX1jlZNOk+CT3xMfqqzeSpSMMca0sSWBFoIRRtUQ==
-X-Received: by 2002:a2e:7d18:0:b0:2bc:e1a3:fbaa with SMTP id y24-20020a2e7d18000000b002bce1a3fbaamr3630421ljc.22.1693655137988;
-        Sat, 02 Sep 2023 04:45:37 -0700 (PDT)
-Received: from [192.168.1.101] (abxi170.neoplus.adsl.tpnet.pl. [83.9.2.170])
-        by smtp.gmail.com with ESMTPSA id v2-20020a2e9602000000b002b9fe77d00dsm1168719ljh.93.2023.09.02.04.45.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 02 Sep 2023 04:45:37 -0700 (PDT)
-Message-ID: <5f05c76e-e74e-4954-a729-3ed2a1d33605@linaro.org>
-Date:   Sat, 2 Sep 2023 13:45:35 +0200
+        with ESMTP id S229436AbjIBRcq (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 2 Sep 2023 13:32:46 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D025A4;
+        Sat,  2 Sep 2023 10:32:42 -0700 (PDT)
+Received: from [192.168.178.23] (k10064.upc-k.chello.nl [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 4073AD0764;
+        Sat,  2 Sep 2023 17:32:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1693675960; bh=29unbUdSjssR6lCbO5AvxRnTJpcHD6ixkyfP951p+1A=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=jniO2c/id9WRq0ST9jXwjuxGLn6z9r95u3jYdW40Uggp50sfJVDKyrQoos0Sc+wY1
+         z/fY3wllu6+KvUMfxEufOswPbkTv8NVNp1sqB2Dvnr8GSkVZPtvDgkI7pr5s3ztTaX
+         YjLueZebKmuXjRdY9L2vxd1dyub0Ul83ZA4zKQas=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Date:   Sat, 02 Sep 2023 19:32:24 +0200
+Subject: [PATCH 1/2] pinctrl: qcom: msm8226: Add blsp_i2c6 function
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/11] arm64: dts: qcom: qcm6490: Add device-tree for
- Fairphone 5
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        cros-qcom-dts-watchers@chromium.org,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230902-msm8226-i2c6-v1-1-9632b8916789@z3ntu.xyz>
+References: <20230902-msm8226-i2c6-v1-0-9632b8916789@z3ntu.xyz>
+In-Reply-To: <20230902-msm8226-i2c6-v1-0-9632b8916789@z3ntu.xyz>
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-pm@vger.kernel.org
-References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
- <20230830-fp5-initial-v1-11-5a954519bbad@fairphone.com>
- <72c2fd33-613b-49be-b394-0663f459f0c5@linaro.org>
- <CV7NGPVH4U0W.PN2NOIO19Z7U@otso>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <CV7NGPVH4U0W.PN2NOIO19Z7U@otso>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1885; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=29unbUdSjssR6lCbO5AvxRnTJpcHD6ixkyfP951p+1A=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBk83G1izVHNETlovIhCBg9yuJuS/VWWe7y/qoD+
+ Y0bxBzruKWJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZPNxtQAKCRBy2EO4nU3X
+ Vq9cD/9W2tmntRL/M3zo7gNixWZzbIZqVRJibbPPBBmtJkAKx65I/EwqqgLwi2AE6FSVC5SC6IO
+ VGU93GmywZ8Dz+H34dFCicEWy9Xj/XP1pn4/+9JQFKIw42pcOG0DZlsQe+tVQGjywvUSgrK2u5a
+ r56FF2FJyWhrPfZMef2FBpSfTCdIi7mcFLxIRNA2wMflY3R7A5PPho6GLVoUuaqnNSijprcCl6R
+ ycl/r10Jw+gGOZc2hvZr7BRXEI2SgUpJikJdQ6KmDmeKLsysqBrTJj0bGupCNhRa+msWntqwtOS
+ w9NgthxkX52ezoLOPnSzewxe1V0NNBFvHb1fFw1/pZHJjLAar+WlZmyKkS+CO2FtZYLeUfZX3Aj
+ sSW1mbAl2t6o2fm3COSy3Y2Oa0yTcZpa/xGg/JEqt0eG2EDgakcAo6J9dcxRXZ84Qubc8mQw8eN
+ I9SU40mJv/TWoioiVFch2xSqjpd8CCoeZwo9vZeGhPzxTCAA9TLmJTXmFsssYo7xrwP8dTOevdA
+ GrQA7DtjqcabKBl1+7bNHPsZw+zJpSFWuheJilY26rK/MXjaYGRGgHlcH+7X9nuxSk+Ag1OgByL
+ hYGvhGngYraT4gRCV8GlBliLV9OTIyLzZYyzdDinOres5GPO4hI81BEUtoi3DcAXUSA6BXaOPLU
+ PeL7kfJzXbPEzVA==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 1.09.2023 16:27, Luca Weiss wrote:
-> On Wed Aug 30, 2023 at 12:45 PM CEST, Konrad Dybcio wrote:
->> On 30.08.2023 11:58, Luca Weiss wrote:
->>> Add device tree for the Fairphone 5 smartphone which is based on
->>> the QCM6490 SoC.
->>>
->>> Supported features are, as of now:
->>> * Bluetooth
->>> * Debug UART
->>> * Display via simplefb
->>> * Flash/torch LED
->>> * Flip cover sensor
->>> * Power & volume buttons
->>> * RTC
->>> * SD card
->>> * USB
->>> * Various plumbing like regulators, i2c, spi, etc
->>>
->>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>> ---
-[...]
+On GPIO22 and GPIO23 there is another I2C bus. Add the function for it.
 
->>> +	panel: panel {
->>> +		compatible = "boe,rm692e5";
->> Undocumented compatbile
-> 
-> Not quite sure how to document this properly. This dummy panel node is
-> used for the simplefb/simpledrm so that user space can get panel
-> dimensions already.
-> 
-> This approach of a separate panel node was apparently preferred when the
-> functionality was upstreamed but of course as can be seen this panel
-> node is very barebones where many properties are not present which would
-> be needed with the full panel driver (once it's working).
-> 
-> Also for example for the bindings I think width-mm and height-mm won't
-> be needed anymore since that information will be provided by the driver
-> then.
-> 
-> Please let me know how/where to document this.
-As discussed offline, the workflow here would be to oneOf: (wink)
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ drivers/pinctrl/qcom/pinctrl-msm8226.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-- wait until there's a proper driver and create a binding based on
-  what you know (because you have a working driver and can test it)
-  is necessary for it to function
+diff --git a/drivers/pinctrl/qcom/pinctrl-msm8226.c b/drivers/pinctrl/qcom/pinctrl-msm8226.c
+index 994619840a70..da964eebd313 100644
+--- a/drivers/pinctrl/qcom/pinctrl-msm8226.c
++++ b/drivers/pinctrl/qcom/pinctrl-msm8226.c
+@@ -336,6 +336,7 @@ enum msm8226_functions {
+ 	msm_mux_blsp_i2c3,
+ 	msm_mux_blsp_i2c4,
+ 	msm_mux_blsp_i2c5,
++	msm_mux_blsp_i2c6,
+ 	msm_mux_blsp_spi1,
+ 	msm_mux_blsp_spi2,
+ 	msm_mux_blsp_spi3,
+@@ -436,6 +437,8 @@ static const char * const blsp_spi5_groups[] = {
+ 	"gpio16", "gpio17", "gpio18", "gpio19"
+ };
+ 
++static const char * const blsp_i2c6_groups[] = { "gpio22", "gpio23" };
++
+ static const char * const cci_i2c0_groups[] = { "gpio29", "gpio30" };
+ 
+ static const char * const cam_mclk0_groups[] = { "gpio26" };
+@@ -459,6 +462,7 @@ static const struct pinfunction msm8226_functions[] = {
+ 	MSM_PIN_FUNCTION(blsp_i2c3),
+ 	MSM_PIN_FUNCTION(blsp_i2c4),
+ 	MSM_PIN_FUNCTION(blsp_i2c5),
++	MSM_PIN_FUNCTION(blsp_i2c6),
+ 	MSM_PIN_FUNCTION(blsp_spi1),
+ 	MSM_PIN_FUNCTION(blsp_spi2),
+ 	MSM_PIN_FUNCTION(blsp_spi3),
+@@ -507,8 +511,8 @@ static const struct msm_pingroup msm8226_groups[] = {
+ 	PINGROUP(19,  blsp_spi5, blsp_uart5, blsp_i2c5, NA, NA, NA, NA),
+ 	PINGROUP(20,  NA, NA, NA, NA, NA, NA, NA),
+ 	PINGROUP(21,  NA, NA, NA, NA, NA, NA, NA),
+-	PINGROUP(22,  NA, NA, NA, NA, NA, NA, NA),
+-	PINGROUP(23,  NA, NA, NA, NA, NA, NA, NA),
++	PINGROUP(22,  NA, NA, blsp_i2c6, NA, NA, NA, NA),
++	PINGROUP(23,  NA, NA, blsp_i2c6, NA, NA, NA, NA),
+ 	PINGROUP(24,  NA, NA, NA, NA, NA, NA, NA),
+ 	PINGROUP(25,  NA, NA, NA, NA, NA, NA, NA),
+ 	PINGROUP(26,  cam_mclk0, NA, NA, NA, NA, NA, NA),
 
-- create the binding for that display panel + driver ic combo in
-  advance and pray that whatever you put there will be enough when
-  you take upon yourself to write the driver
+-- 
+2.42.0
 
-I'd suggest dropping these properties (or keeping them downstream or
-something) for now, the display should not be terribly hard to bring
-up properly, let's hope that can be done soon!
-
-> I'm aware, but will work on this later since it's not useful without
-> USB-C role switching and working audio.
-You can still peek at it in like sysfs or so, but up to you.
-
-
-Konrad
