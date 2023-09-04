@@ -2,162 +2,178 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FDAFC83F3F
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Sep 2023 08:19:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C8DBC83F33
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Sep 2023 14:27:27 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352503AbjIDIT4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 4 Sep 2023 04:19:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38984 "EHLO
+        id S239467AbjIDO13 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 4 Sep 2023 10:27:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351473AbjIDITz (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Sep 2023 04:19:55 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D063109
-        for <phone-devel@vger.kernel.org>; Mon,  4 Sep 2023 01:19:51 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9a1de3417acso441699266b.0
-        for <phone-devel@vger.kernel.org>; Mon, 04 Sep 2023 01:19:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1693815590; x=1694420390; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4SqCPlUACmzuR897Jw/2/k1NSEPnLNm8tSMQQYrDWME=;
-        b=sCURjlIECG75NChDPAFgJtYUliKIkBlB5lHdZQsZ03Nz7U91Yl93d2PkC76eTQNQk/
-         y0slJPkhPVfgWNEAicJ2mbdQB0OnQhmscuPWuv5ky5okEf7xFID7n7oroxJrHDZBO0sq
-         3FsW5kDCZHGOb/9qkERTek0aJxrchdLiTtpNQL3rvxN9b9O2xGfZePu1+Jc6RufwuLlR
-         DbA1aI0VzXXBXSQjBtLWvcSjhj7kDTNZFpHDoGX2YKkyIs43Wxps+LCXh7azfN0k0Zqr
-         qHNbnaC0hiDziup3gy7Oq38fzCrnTcnC7TJyESBQxbhLMtqlj7Kj0IJPDvwzP2V4Ly4B
-         n45w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693815590; x=1694420390;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4SqCPlUACmzuR897Jw/2/k1NSEPnLNm8tSMQQYrDWME=;
-        b=C6d4J16CXtBCeb282wSgcGfkYooTfXRxgqazddD8kUR7srAufkUVayvv/Gc4xWtFV1
-         ouzyUpv79cDlXk79ajk02R7MZ7Slnu9qyCcbfWlgdwuvLegPxplppA/Qn1Y8W+DxaaTZ
-         oY3xm1PIf6nQdCnW8J+LyDPyEqot9CPwouegT4lV7Tc3X3J9HGzf/OG+7TkT7MPhszbi
-         +F8eyxpCI1leN03h9XZdQA9YIhyqad7gJOr/k+7eWgQzQcVf5HXrRFJsvrYlUNkVjtig
-         BifgSQzm8XmD4gZnqX3hdTSMBXq2/r8wTAW/o2e7LZvxpaBEneLQVypsFHD8PCZwXdn3
-         uafA==
-X-Gm-Message-State: AOJu0YxpxbHg7LCCyT9MtFGH+shJqklwQTOa3wisseo0tKEukvVTMgzn
-        jac7yq5Y2FWEKrQl4Q6o9E1n3A==
-X-Google-Smtp-Source: AGHT+IFdJLo8jZ3klMSQBPs2qIeMjRwZjzw3rOcgPXXM7tKUsmLDAMqJLlkkomMSQn9J8vCqgpfIIg==
-X-Received: by 2002:a17:906:76c9:b0:9a1:fc1e:19b8 with SMTP id q9-20020a17090676c900b009a1fc1e19b8mr9748830ejn.29.1693815589734;
-        Mon, 04 Sep 2023 01:19:49 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id le18-20020a170906ae1200b0099bcbaa242asm5757648ejb.9.2023.09.04.01.19.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Sep 2023 01:19:49 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 04 Sep 2023 10:19:49 +0200
-Message-Id: <CV9ZIJFTEBQE.1035ODUQD2B78@otso>
-Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH 11/11] arm64: dts: qcom: qcm6490: Add device-tree for
- Fairphone 5
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Konrad Dybcio" <konrad.dybcio@linaro.org>,
-        <cros-qcom-dts-watchers@chromium.org>,
-        "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>,
-        "Srinivas Kandagatla" <srinivas.kandagatla@linaro.org>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Viresh Kumar" <viresh.kumar@linaro.org>
-X-Mailer: aerc 0.15.2
-References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
- <20230830-fp5-initial-v1-11-5a954519bbad@fairphone.com>
- <72c2fd33-613b-49be-b394-0663f459f0c5@linaro.org>
- <CV7NGPVH4U0W.PN2NOIO19Z7U@otso>
- <5f05c76e-e74e-4954-a729-3ed2a1d33605@linaro.org>
-In-Reply-To: <5f05c76e-e74e-4954-a729-3ed2a1d33605@linaro.org>
+        with ESMTP id S233251AbjIDO12 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Sep 2023 10:27:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CEB3CC8;
+        Mon,  4 Sep 2023 07:27:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10366612B4;
+        Mon,  4 Sep 2023 14:27:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D8F0C433C7;
+        Mon,  4 Sep 2023 14:27:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693837644;
+        bh=C3brLRwlEVnjDBLps6JTkkIjEzKkSs+Sjv0Eo3AGAp8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Nnta60zQUNQ7MXOoKWGQxw0gXdbgTKmMzEvts4bfzajeyvdcA9gVFEFaNosOxtsVc
+         /RTMXMRXMmhoevsNxBfM4a9A/lk1cItNmX8P66Qcu8NKZk0wR4Z/1gdu23pxoPmK0E
+         nyGauJya4nopHWwHwxaMnEGBSIBXHR9+aYqkTX9XfPR8BuE3ScMDF0ia3ezliv/mPC
+         Fc3/IYm61exkgyzF3roe2AUdhVMGOS+6UyBopL2JEO4JdSUSWOkVU6+xppmh+uytXD
+         Cu7vWvLKQE7ptNF7d3GZgIJ6wIYJQ4jngZksYpkuPFfp4a910jxs3o4In1u2bLNwBl
+         WR0J2bdoX0Pug==
+Date:   Mon, 4 Sep 2023 15:27:17 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Jakob Hauser <jahau@rocketmail.com>
+Cc:     Sebastian Reichel <sre@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Beomho Seo <beomho.seo@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Stephan Gerhold <stephan@gerhold.net>,
+        Raymond Hackley <raymondhackley@protonmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Axel Lin <axel.lin@ingics.com>,
+        ChiYuan Huang <cy_huang@richtek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Henrik Grimler <henrik@grimler.se>,
+        Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Yang Yingliang <yangyingliang@huawei.com>,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: (subset) [PATCH v6 06/10 RESEND] power: supply: rt5033_charger:
+ Add cable detection and USB OTG supply
+Message-ID: <20230904142717.GD13143@google.com>
+References: <cover.1684182964.git.jahau@rocketmail.com>
+ <223b440ab6831f2e7302d2c49b2cfd7779d5effd.1684182964.git.jahau@rocketmail.com>
+ <169226510772.947223.494995318945916008.b4-ty@kernel.org>
+ <20230822070737.GP1380343@google.com>
+ <20230822212909.mcnziqsuu523e4gk@mercury.elektranox.org>
+ <96c08475-72e7-9ef4-2f16-e962f9338e78@rocketmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <96c08475-72e7-9ef4-2f16-e962f9338e78@rocketmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat Sep 2, 2023 at 1:45 PM CEST, Konrad Dybcio wrote:
-> On 1.09.2023 16:27, Luca Weiss wrote:
-> > On Wed Aug 30, 2023 at 12:45 PM CEST, Konrad Dybcio wrote:
-> >> On 30.08.2023 11:58, Luca Weiss wrote:
-> >>> Add device tree for the Fairphone 5 smartphone which is based on
-> >>> the QCM6490 SoC.
-> >>>
-> >>> Supported features are, as of now:
-> >>> * Bluetooth
-> >>> * Debug UART
-> >>> * Display via simplefb
-> >>> * Flash/torch LED
-> >>> * Flip cover sensor
-> >>> * Power & volume buttons
-> >>> * RTC
-> >>> * SD card
-> >>> * USB
-> >>> * Various plumbing like regulators, i2c, spi, etc
-> >>>
-> >>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> >>> ---
-> [...]
->
-> >>> +	panel: panel {
-> >>> +		compatible =3D "boe,rm692e5";
-> >> Undocumented compatbile
-> >=20
-> > Not quite sure how to document this properly. This dummy panel node is
-> > used for the simplefb/simpledrm so that user space can get panel
-> > dimensions already.
-> >=20
-> > This approach of a separate panel node was apparently preferred when th=
-e
-> > functionality was upstreamed but of course as can be seen this panel
-> > node is very barebones where many properties are not present which woul=
-d
-> > be needed with the full panel driver (once it's working).
-> >=20
-> > Also for example for the bindings I think width-mm and height-mm won't
-> > be needed anymore since that information will be provided by the driver
-> > then.
-> >=20
-> > Please let me know how/where to document this.
-> As discussed offline, the workflow here would be to oneOf: (wink)
->
-> - wait until there's a proper driver and create a binding based on
->   what you know (because you have a working driver and can test it)
->   is necessary for it to function
->
-> - create the binding for that display panel + driver ic combo in
->   advance and pray that whatever you put there will be enough when
->   you take upon yourself to write the driver
->
-> I'd suggest dropping these properties (or keeping them downstream or
-> something) for now, the display should not be terribly hard to bring
-> up properly, let's hope that can be done soon!
+On Sun, 03 Sep 2023, Jakob Hauser wrote:
 
-Yeah that sounds like a solution for now.
+> Hi Sebastian,
+> 
+> On 22.08.23 23:29, Sebastian Reichel wrote:
+> > Hi,
+> > 
+> > On Tue, Aug 22, 2023 at 08:07:37AM +0100, Lee Jones wrote:
+> > > On Thu, 17 Aug 2023, Lee Jones wrote:
+> > > 
+> > > > On Mon, 15 May 2023 22:57:15 +0200, Jakob Hauser wrote:
+> > > > > Implement cable detection by extcon and handle the driver according to the
+> > > > > connector type.
+> > > > > 
+> > > > > There are basically three types of action: "set_charging", "set_otg" and
+> > > > > "set_disconnect".
+> > > > > 
+> > > > > A forth helper function to "unset_otg" was added because this is used in both
+> > > > > "set_charging" and "set_disconnect". In the first case it covers the rather
+> > > > > rare event that someone changes from OTG to charging without disconnect. In
+> > > > > the second case, when disconnecting, the values are set back to the ones from
+> > > > > initialization to return into a defined state.
+> > > > > 
+> > > > > [...]
+> > > > 
+> > > > Applied, thanks!
+> > > > 
+> > > > [06/10] power: supply: rt5033_charger: Add cable detection and USB OTG supply
+> > > >          commit: c1af6bcc8583b0a1083338cd26c2090d0bcb0810
+> > > 
+> > > Multiple fixes now follow this patch, so I am unapplying it.
+> > > 
+> > > Sebastian, would you mind collecting it up please?
+> > 
+> > I'm leaving for a two week hiking trip (with basically no internet
+> > access) in some hours. My planed return date is basically when Linus
+> > is expected to tag 6.6-rc1, so I will not queue any more patches and
+> > send my pull request early (within the next few hours).
+> > 
+> > I planned to catch up with the power-supply backlog last week during
+> > Chaos Communication Camp, but it was too hot to do any sensible
+> > review. Now I expect to process the power-supply backlog in the
+> > week after the merge window.
+> 
+> The patch 6 of the rt5033-charger series v6 gathered some issues. For all of
+> them a solution was provided. Thanks to everyone involved! However, I don't
+> know what's the best way to put them together.
+> 
+> - As the patch 6 was forgotten to apply with the others of the
+>   patchset, in the meantime another small patch by Rob sneaked in. The
+>   patch 6 needs to be rebased on Rob's patch. It affects the includes.
+>   Would be nice to order them alphabetically after rebase.
+> 
+> - After patch 6 was added on top of Rob's patch in linux-next, there
+>   was a build failure. This is because "linux/of.h" now explicitly
+>   needs to be added to the rt5033-charger driver. Stephen Rothwell
+>   provided a fix. I'm not sure on the order: Maybe that needs to be
+>   added before adding patch 6 to avoid the build failure when the
+>   kernel test bot checks each commit separately.
+> 
+> https://lore.kernel.org/linux-next/20230821125741.3a2474d7@canb.auug.org.au/T/#u
+> 
+> - Beyond that, the kernel test bot also complained about undefined
+>   reference related to extcon. I didn't understand why this happens
+>   because the driver has "linux/extcon.h" included. Randy was attentive
+>   and provided a fix. Here again I'm not sure about the order, I guess
+>   this should be added before adding patch 6 to avoid build failures if
+>   each commit is tested separately.
+>   Kernel test bot complaints:
+>     x86_64 clang https://lore.kernel.org/oe-kbuild-all/202308220324.LsI8q3ML-lkp@intel.com/T/#u
+>     x86_64 gcc https://lore.kernel.org/oe-kbuild-all/202308240723.O2rW0InU-lkp@intel.com/T/#u
+>     arm gcc https://lore.kernel.org/oe-kbuild-all/202308250617.ue4uQxWa-lkp@intel.com/T/#u
+>   Fix by Randy:
+> 
+> https://lore.kernel.org/linux-pm/20230828224201.26823-1-rdunlap@infradead.org/T/#u
+> 
+> - Yang noticed that the mutex_unlock() is not handled correctly in
+>   some error path and provided a fix:
+> 
+> https://lore.kernel.org/linux-pm/20230822030207.644738-1-yangyingliang@huawei.com/T/#u
+> 
+> - There are two clean-up patches by me. They need to be rebased to the
+>   patches mentioned above but there shouldn't be conflicts with them.
+> 
+> https://lore.kernel.org/linux-pm/cover.1686948074.git.jahau@rocketmail.com/T/#u
+> 
+> Please also note that the commit hash in the linked fixes above refers to
+> linux-next, where the patch 6 had been applied. As the patch was dropped
+> later on, I don't know what this means for the commit hashes in the fixes.
+> 
+> What's the best way to proceed? Can you put these patches together? Or do
+> you want me something to do?
 
-But for other devices I hope something can be figured out so that these
-dummy panels can go into upstream dts. Otherwise the functionality added
-in the simplefb driver is kinda useless for pure upstream if noone's
-allowed to have incomplete bindings for providing the panel dimensions.
+You need to do this yourself.
 
->
-> > I'm aware, but will work on this later since it's not useful without
-> > USB-C role switching and working audio.
-> You can still peek at it in like sysfs or so, but up to you.
+Rebase all of the fixes on top of v6.6-rc1 (which will be released in a
+little under a week).  Ensure that each patch builds as it's applied so
+as not to harm bisecability.  If you have to squash them to prevent
+built-breakages, then so be it, but don't forget to credit the
+contributors.  Once complete, post as a set and we'll take it from
+there.
 
-Yes, later ;)
-
-Regards
-Luca
-
->
->
-> Konrad
-
+-- 
+Lee Jones [李琼斯]
