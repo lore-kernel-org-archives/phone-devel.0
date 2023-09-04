@@ -2,86 +2,201 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D9A4C83F33
-	for <phone-devel@archiver.kernel.org>; Mon,  4 Sep 2023 07:34:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75F75C83F2C
+	for <phone-devel@archiver.kernel.org>; Mon,  4 Sep 2023 08:14:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235694AbjIDHe5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 4 Sep 2023 03:34:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54770 "EHLO
+        id S1352527AbjIDIOu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 4 Sep 2023 04:14:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233632AbjIDHe4 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Sep 2023 03:34:56 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D60CCCD
-        for <phone-devel@vger.kernel.org>; Mon,  4 Sep 2023 00:34:37 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99bf3f59905so172060766b.3
-        for <phone-devel@vger.kernel.org>; Mon, 04 Sep 2023 00:34:37 -0700 (PDT)
+        with ESMTP id S237540AbjIDIOt (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 4 Sep 2023 04:14:49 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89A9D106
+        for <phone-devel@vger.kernel.org>; Mon,  4 Sep 2023 01:14:45 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-99cce6f7de2so173165266b.3
+        for <phone-devel@vger.kernel.org>; Mon, 04 Sep 2023 01:14:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693812876; x=1694417676; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hdXa4mrHl/rCBUCuTmE6oGWdTSGG32wB1sLBcKUuBZY=;
-        b=emQfnitRnD87rsxgrCzhR+mz4qGBcF0geDCSymsFNvK5+0kIclnuylx6mdS08vxZWK
-         NVAcF9A2fChMue0BaXRRaRHa8SCV8inN6uuQcuWChlrILGSbFpoK+9FX+Cg6EctZhRAv
-         Cy5PLo20h6e96GHdZnrwNETC0hk/dkB6D8r5bRP0+VY947l7XaPJdzyYWV5zbHfA47nl
-         e7n8ooMOmDzGExwDPrH3LKiWodt0UFEBXdDAXEam0PVtJxavdUuanDYrvUg+g5G3ZLB4
-         lUgYWJphYmd2StjSnqP0PT8o9zxB4WKVuEsATqs3pegdvtRoK52aPv1RvYr12lvDPwp1
-         doiQ==
+        d=fairphone.com; s=fair; t=1693815284; x=1694420084; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MWMi9FtNgdsDW9Ls5zX1bxJmX9VcD9rhfLYu4eJXCwc=;
+        b=xd8Bcb7IDJ5lyj9B7pfTxOZfGpY5+VosjSWfwM9iVg1ZH4nq+N1FBGJUKc+5Vleecb
+         r7XZ8aMdUWoidP6SytEJNrO0A3dMsv04pHKMXr8V3IdbmDYhoy9wrMQo3jxH1FmNDsQI
+         gxyXnjxSMqPWUAFZU0V3BmbFe5JW0NugZhFPP6hkF+plKCrfJLZ9B0UK01VhH3au/pSu
+         wp4W6rlRgX2aCr4/KDPaqWtdizv1OFVvAIL5jAyEM3yyJuu+5A6LppDUy69Bf9RGbVJt
+         fNKKxPG6E6TLDXlQk7Mw1/TFd5MDdKC2/AouzGP/0UzBZvhme3GmP38ZQDWrOgDp+kEK
+         t8Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693812876; x=1694417676;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hdXa4mrHl/rCBUCuTmE6oGWdTSGG32wB1sLBcKUuBZY=;
-        b=Mivp4VE9GRWsTOziyqzTzWvIaRhDiv5CkJ5ob2Lnd3CdHkRjf5RdxZYYfzqCf8dJuI
-         WZRsRW73GwxN/t6R2h0wXqJ66d1UKQl8av6D8xcAKfZ4FirpawsPVR+zaQ1XVuAllhZr
-         YwAfyVLWNKLgRTKQI0jtPtrKm/42Uw8uEzCcAU85L3Bgr7BsSxo3aNV3HNInqlGyR3Nz
-         1BMrVUCQOLD0u+wJqokhz1IDOf8VNXK+UEjTOqgEfynTMEpgnEXCrlbc+HAAeQzcuBL7
-         oXjtk2X9dEJGFWf3+kihcVxva799N/YviVJUaYH6ptWotXV374I9Z8ePu7fpeWQkFp+v
-         SXUQ==
-X-Gm-Message-State: AOJu0Yx2VXGYKxDujYvnlJ7WbAg89Gd99ZJMxj6Y1NOERaL+hwY34om4
-        f8Kclc0II+o3UB1BYejVyUEzDw==
-X-Google-Smtp-Source: AGHT+IHbWmAUROTewDWolOIgM3V2bpTgkoevsKI89Njs6MPM5Z5dpBn3JDym25bUXcQ7HOCTIhKUSw==
-X-Received: by 2002:a17:906:295:b0:9a5:bce9:ffb7 with SMTP id 21-20020a170906029500b009a5bce9ffb7mr6704526ejf.19.1693812875875;
-        Mon, 04 Sep 2023 00:34:35 -0700 (PDT)
-Received: from [192.168.0.22] (77-252-46-238.static.ip.netia.com.pl. [77.252.46.238])
-        by smtp.gmail.com with ESMTPSA id gf20-20020a170906e21400b0099ce23c57e6sm5745528ejb.224.2023.09.04.00.34.34
+        d=1e100.net; s=20221208; t=1693815284; x=1694420084;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=MWMi9FtNgdsDW9Ls5zX1bxJmX9VcD9rhfLYu4eJXCwc=;
+        b=gueDuDjfdA6DuBhOgumTP1hdNcV5fn/m+ckYDX9+HTXt0sDfmWnLfNCnZIuLuHvxok
+         tKLoi5OjT5hZ7SGBP7pK3FH+m6DA+/doUQnzhO2o0sNwyztV9sNTuxtNeODKtR840YIA
+         GwjBI4AkeZ8Jkpgu3DinPei03JXQSjL6SbrpZEDnktJW/Aw+sJvmiTJP6VXIevcBEGGg
+         RRO0mmUNicH/gYezJvKqtGWQY0QDZ/kea2Qn4mRf61LZdE5UGF3rwEeXvnkxWc9SM4oB
+         rpwC71OTcbKgWMq/3uRM37kBC2ZS11hr2dQl9Bah13glTM9eygY3HZXAEnjZJFJH6NNi
+         79xg==
+X-Gm-Message-State: AOJu0YwkteG4hjeoUSM+/gllbUAD2waRxd7S0pCoSQIuBx1Hl9mo5/e7
+        pbWheEtT17g0nT87pT9OnzDmvA==
+X-Google-Smtp-Source: AGHT+IHUaOSlrS5L3pk5vdj2p6HRN/GNfjoEP6nrYuWjZ/0Ux6QVQihqo46O6Ejh8hYfgT+s6QlW4w==
+X-Received: by 2002:a17:906:20dd:b0:9a1:eef2:a110 with SMTP id c29-20020a17090620dd00b009a1eef2a110mr7175962ejc.19.1693815284020;
+        Mon, 04 Sep 2023 01:14:44 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id e7-20020a170906248700b009920a690cd9sm5787656ejb.59.2023.09.04.01.14.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Sep 2023 00:34:35 -0700 (PDT)
-Message-ID: <1b086e32-fa1f-815f-f326-ef4d13f6fbc6@linaro.org>
-Date:   Mon, 4 Sep 2023 09:34:34 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH v2 1/2] dt-bindings: leds: Add Kinetic KTD2026/2027 LED
-Content-Language: en-US
-To:     =?UTF-8?Q?Andr=c3=a9_Apitzsch?= <git@apitzsch.eu>,
-        Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-References: <20230901-ktd202x-v2-0-3cb8b0ca02ed@apitzsch.eu>
- <20230901-ktd202x-v2-1-3cb8b0ca02ed@apitzsch.eu>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230901-ktd202x-v2-1-3cb8b0ca02ed@apitzsch.eu>
+        Mon, 04 Sep 2023 01:14:43 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date:   Mon, 04 Sep 2023 10:14:42 +0200
+Message-Id: <CV9ZEMOTNO1D.378QGW3KMG4E8@otso>
+Cc:     <cros-qcom-dts-watchers@chromium.org>,
+        "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Conor Dooley" <conor+dt@kernel.org>,
+        "Srinivas Kandagatla" <srinivas.kandagatla@linaro.org>,
+        "Linus Walleij" <linus.walleij@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "Viresh Kumar" <viresh.kumar@linaro.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH 02/11] nvmem: qfprom: Mark core clk as optional
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Doug Anderson" <dianders@chromium.org>
+X-Mailer: aerc 0.15.2
+References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
+ <20230830-fp5-initial-v1-2-5a954519bbad@fairphone.com>
+ <CAD=FV=WS2hgY=bQjLOs3Fdp8pbZyMsaS-0BpoxPq90Etfi+Xuw@mail.gmail.com>
+ <CV5YJVXIL8OT.1ZWW3KVCHPTA5@otso>
+ <CAD=FV=XhdORH=naTtoc+kCC4A7UdAJKwq=Te6B3qvXNGBwBieg@mail.gmail.com>
+ <CV7O0TYYEFA8.1Q42JITFSW77Q@otso>
+ <CAD=FV=UG-dFg7wZsn6n=pkejie0fr+G0q3CguNspGYxoC2ZBLw@mail.gmail.com>
+In-Reply-To: <CAD=FV=UG-dFg7wZsn6n=pkejie0fr+G0q3CguNspGYxoC2ZBLw@mail.gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 01/09/2023 23:19, André Apitzsch wrote:
-> Document Kinetic KTD2026/2027 LED driver devicetree bindings.
-> 
-> Signed-off-by: André Apitzsch <git@apitzsch.eu>
-> ---
+On Fri Sep 1, 2023 at 5:08 PM CEST, Doug Anderson wrote:
+> Hi,
+>
+> On Fri, Sep 1, 2023 at 7:54=E2=80=AFAM Luca Weiss <luca.weiss@fairphone.c=
+om> wrote:
+> >
+> > > > > So maybe the right fix here is to just change your dts to specify=
+ one
+> > > > > memory region?
+> > > >
+> > > > I got feedback from Konrad that this here would be the preferred
+> > > > approach compared to having a different dts for ChromeOS vs non-Chr=
+omeOS
+> > > > devices. I don't feel strongly to either, for me it's also okay to
+> > > > remove the extra memory regions and only have the main one used on
+> > > > regular qcom devices.
+> > > >
+> > > > Let me know what you think.
+> > >
+> > > I don't hate the idea of leaving the extra memory regions in the dts.
+> > > They do describe the hardware, after all, even if the main OS can't
+> > > actually access those memory regions. ...though the same could also b=
+e
+> > > said about the clock you've removed. Said another way: if you want to
+> > > fully describe the hardware then the dts should have the extra memory
+> > > regions and the clock. If you are OK w/ just describing the hardware
+> > > in the way that the OS has access to then the dts should not have the
+> > > extra memory regions and not have the clock. Does that sound right?
+> >
+> > Not sure which of those memory regions are actually accessible on this
+> > board, but honestly I don't even want to try accessing it. Blowing fuse=
+s
+> > is not my wish there ;)
+> >
+> > On downstream the node is just described like the following:
+> >
+> >         qfprom: qfprom@780000 {
+> >                 compatible =3D "qcom,qfprom";
+> >                 reg =3D <0x780000 0x7000>;
+> >                 ...
+> >         };
+> >
+> > So we have 0x780000 - 0x786fff here.
+> >
+> > In sc7280.dtsi we have the following:
+> >
+> >         qfprom: efuse@784000 {
+> >                 compatible =3D "qcom,sc7280-qfprom", "qcom,qfprom";
+> >                 reg =3D <0 0x00784000 0 0xa20>,
+> >                           <0 0x00780000 0 0xa20>,
+> >                           <0 0x00782000 0 0x120>,
+> >                           <0 0x00786000 0 0x1fff>;
+> >                 ...
+> >         };
+> >
+> > So I guess this:
+> > * 0x780000 - 0x780a1f
+> > * 0x782000 - 0x78211f
+> > * 0x784000 - 0x784a1f
+> > * 0x786000 - 0x787ffe
+> >
+> > So at least the last memory region seems to be partially out of range
+> > according to downstream.
+>
+> From the other discussion, it sounds as if you _can_ leave the clock
+> in the device tree and then use "clk_get_optional" here. IMO then, the
+> right answer is to use "clk_get_optional" but then also modify the
+> check below so that instead of:
+>
+> /* Only enable writing if we have SoC data. */
+> if (priv->soc_data)
+>   econfig.reg_write =3D qfprom_reg_write;
+>
+> It is:
+>
+> /* Only enable writing if we have SoC data and a valid clock */
+> if (priv->soc_data && priv->secclk)
+>   econfig.reg_write =3D qfprom_reg_write;
+>
+>
+> Does that work for you?
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Thanks Doug, this feels like a good solution. I'll update v2 with that.
 
-Best regards,
-Krzysztof
+>
+>
+> > So after reading all of this I tried running this commmand on the phone
+> > and the phone reboots into 900e mode.
+> >
+> >   $ cat /sys/devices/platform/soc@0/784000.efuse/qfprom0/nvmem
+> >
+> > I guess normally this should work? So if I interpret this correctly, th=
+e
+> > Linux driver thinks it can access more than it can/should. But also
+> > should probably try this command on another chipset to see if it works
+> > on any really?
+>
+> Presumably your firmware needs a different "sc7280_qfprom_keepout". If
+> that's true then I guess you'll have to undergo negotiations with the
+> DT bindings folks and the nvmem maintainer to figure out how to
+> specify that your firmware protects different things than the ChromeOS
+> firmware?
+
+Right. But based on Konrad's reply here, I think I'll skip this for now
+since generally qfprom seems to be fine with the current data, at least
+for the purposes it's used for on my device.
+
+Regards
+Luca
+
+
+>
+>
+> -Doug
 
