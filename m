@@ -2,81 +2,78 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 94346CA0EC3
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1A08CA0EC7
 	for <phone-devel@archiver.kernel.org>; Mon, 11 Sep 2023 21:10:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236033AbjIKVFJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 11 Sep 2023 17:05:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43524 "EHLO
+        id S236055AbjIKVFN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 11 Sep 2023 17:05:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236220AbjIKJ7t (ORCPT
+        with ESMTP id S235868AbjIKJov (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 11 Sep 2023 05:59:49 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F3C0E6D
-        for <phone-devel@vger.kernel.org>; Mon, 11 Sep 2023 02:59:42 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9a9f2827131so400115866b.1
-        for <phone-devel@vger.kernel.org>; Mon, 11 Sep 2023 02:59:42 -0700 (PDT)
+        Mon, 11 Sep 2023 05:44:51 -0400
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC67E44
+        for <phone-devel@vger.kernel.org>; Mon, 11 Sep 2023 02:44:46 -0700 (PDT)
+Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-501eec0a373so6773074e87.3
+        for <phone-devel@vger.kernel.org>; Mon, 11 Sep 2023 02:44:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1694426381; x=1695031181; darn=vger.kernel.org;
-        h=in-reply-to:references:message-id:to:from:subject:cc:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H4q2sE+nIlzdDQo1wwer1+w9izjQ9tSODQcg+90cI/s=;
-        b=jSD15mYGTWO5ekKGi593w4g+e7ueZOOCflWEaLq7haQESzPQ+DLgErskn11aF13xXg
-         iyw2/SLAmXrkNHr53SgbII/b0SvFZV0ZGQnRxrw4T9hg3e6mH7zVz17YbBmV3cMShYay
-         bCVph7bj1UAZzTMdZRpgQxvd16qkzHxRcykHgL/0dslYH/0UjrdJTzyASEvDvsPao4le
-         riLhYhmaj3+bW5Sv2ZLFuKBMY8M7cVWFMMz7ASkiEYTAu4C/vlt9FSH/+Tx2R86BR6/1
-         pKNK5MuhxIXEgxnom5cSYkTTqysawLsJdcHIxfDJPWz2pxH3UsPwFM6cWzx1+YfOJPRC
-         1U0w==
+        d=linaro.org; s=google; t=1694425485; x=1695030285; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OmsynpPSy7TOyfTB3IX6VnuTU3cYL9zuQjAjoIV3s/c=;
+        b=VzBFzEV1J4+IxY34LUtLRlUghGnPQ4UQQBAMmtnYIzgbRpD+uAAD0jtOMvD0RF1OqB
+         z9sv0ZNioLLu2E9zlIobh11tDdZPNhqo5Un1eB8pmUlb6FZw1EQVT1WsHkxDLTxS3PtD
+         waydRo7pFXWLjuHkEIsi+5mjq81lCfx5zjG88Hj0sNJymCcCLvPEmt/IIQOWr7QqeCv2
+         2977GOCSpJBM9a18P86vMO9v0J7mn5Y1xPBMn7v9SAXPshLpCmpYutt+yanb11JXhDds
+         J0cTeiKcZkIpiMr11Q2zibDopGx1B53Kb4hoGZGTL5BCj2CAMcQwd3EcQUOeheRclrdz
+         7ltQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694426381; x=1695031181;
-        h=in-reply-to:references:message-id:to:from:subject:cc:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=H4q2sE+nIlzdDQo1wwer1+w9izjQ9tSODQcg+90cI/s=;
-        b=JTaxe3VHxnLhWubXLDuNp4ppoDRQKE+CPW92H5h44z9ddBSshnDTWi3NWaqoUg0WAq
-         mz4f7i7hLTCMMYVhS+hENan/J4HtixaYZOP9XlpUuQXfL6OuHi6Il8f219OxKc2jiBcK
-         5X0wFc/XE5gYZCu9mzksDtxXuXISr5KXrwAVmW5BBRm/ELjAXQgXRFZn99t3O6unnFFM
-         jVg28dEQ6vNgzHt3F9npbi/4Q5FtkSb/N049TuDj3TUN4wyQa+8Hg4aJWAAaTDnVLIX0
-         1eYUKHPx0jY6Udu6vJRelJqfVpfXPIGe57qzTOhIs8p9zeOQUG40VFd02r7H1cSvarmY
-         YFMQ==
-X-Gm-Message-State: AOJu0Yyfp70VpHtUImhTAxhC6cQKLLI9S2hT47pFS85VA0ioEaPO40aX
-        y9932w4U5vTriQp91CKLj3nTLA==
-X-Google-Smtp-Source: AGHT+IHaH1tUVrRWgxCIcILhOE8tAFxtIWyr4iIxgNdhrWJ59XIwWMwYw8gM0nfQEgcQ8f2sEyoPJA==
-X-Received: by 2002:a17:906:5a51:b0:9a1:ffa7:d2da with SMTP id my17-20020a1709065a5100b009a1ffa7d2damr7237115ejc.17.1694426380363;
-        Mon, 11 Sep 2023 02:59:40 -0700 (PDT)
-Received: from localhost (k10064.upc-k.chello.nl. [62.108.10.64])
-        by smtp.gmail.com with ESMTPSA id h3-20020a170906718300b0098e34446464sm5104386ejk.25.2023.09.11.02.59.38
+        d=1e100.net; s=20230601; t=1694425485; x=1695030285;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OmsynpPSy7TOyfTB3IX6VnuTU3cYL9zuQjAjoIV3s/c=;
+        b=Tqx8qi17guwtjCMKinhL9RxX5z06qu2Z3gKxlvWojlha8SPtEzezH8q4ttogHlJ5fX
+         0baE2Or1TSFx99mJLvV1QZxRC46j9O7eAr2OCTzmGAxELED6ZXWyVqUOyyUbmzCEI3YC
+         FSm0oIGd5yIUgRg15cRLauXi2bipfBOCyeLi5MB2fU0sBx2AUT8hfe1MjZiyR5/pAixN
+         8mL092nCjBk1/chds0NhIBstEvSG7JBY34WuOz0mle8q9RNxOGjl60178oF8TLQD3iIo
+         rE743VTV0+nbLh3K7r508pFj+ay6CX2kO8Lk3Yr6wLuEmmq5ZU1XXQUm2oK7tDKHmP4v
+         3VFA==
+X-Gm-Message-State: AOJu0YzZPHlyEg6rvLetRHkeQLMxyPvLG4HwBsRWYluelaRHO+dJae8n
+        jNt+g6E4Vf1E3EUuGZxL84rjQA==
+X-Google-Smtp-Source: AGHT+IFVrYxA7iHydVJRTySy5FxdaMSR909EKZE3dfa0mH+F5dKlXdxHMp4UmfcWfyRPypkx7BXujw==
+X-Received: by 2002:ac2:5bd1:0:b0:4fd:faf0:6591 with SMTP id u17-20020ac25bd1000000b004fdfaf06591mr6586243lfn.10.1694425484839;
+        Mon, 11 Sep 2023 02:44:44 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.214.188])
+        by smtp.gmail.com with ESMTPSA id w5-20020a17090652c500b0099bd453357esm5030071ejn.41.2023.09.11.02.44.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Sep 2023 02:59:39 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 11 Sep 2023 11:59:38 +0200
-Cc:     <cros-qcom-dts-watchers@chromium.org>,
-        "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>,
-        "Srinivas Kandagatla" <srinivas.kandagatla@linaro.org>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Viresh Kumar" <viresh.kumar@linaro.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>
+        Mon, 11 Sep 2023 02:44:43 -0700 (PDT)
+Message-ID: <cae7261a-6727-6163-1420-01039bfb8396@linaro.org>
+Date:   Mon, 11 Sep 2023 11:44:42 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
 Subject: Re: [PATCH 04/11] arm64: dts: qcom: pm7250b: make SID configurable
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        "Konrad Dybcio" <konrad.dybcio@linaro.org>
-Message-Id: <CVFZZ0YSWQ6J.2AKRML6LWRMUH@otso>
-X-Mailer: aerc 0.15.2
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     cros-qcom-dts-watchers@chromium.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-pm@vger.kernel.org
 References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
  <20230830-fp5-initial-v1-4-5a954519bbad@fairphone.com>
  <b82f4683-e8b5-b424-8f7a-6d2ba1cab61f@linaro.org>
@@ -85,138 +82,106 @@ References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
  <728003b9-db27-fdc0-e761-197a02a38c24@linaro.org>
  <CAA8EJpoXreHpxZQ2G10n0OiQzUX4ffk=gvo87dAU4-r+Svqpeg@mail.gmail.com>
  <CVAUDGBO4S08.1F0O66ZE6I4IG@otso> <CVFY7D7ND3WS.2B2EYB4ZO86P@otso>
- <cae7261a-6727-6163-1420-01039bfb8396@linaro.org>
-In-Reply-To: <cae7261a-6727-6163-1420-01039bfb8396@linaro.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <CVFY7D7ND3WS.2B2EYB4ZO86P@otso>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon Sep 11, 2023 at 11:44 AM CEST, Krzysztof Kozlowski wrote:
-> On 11/09/2023 10:34, Luca Weiss wrote:
-> > On Tue Sep 5, 2023 at 10:30 AM CEST, Luca Weiss wrote:
-> >> On Thu Aug 31, 2023 at 2:27 PM CEST, Dmitry Baryshkov wrote:
-> >>> On Thu, 31 Aug 2023 at 14:54, Krzysztof Kozlowski
-> >>> <krzysztof.kozlowski@linaro.org> wrote:
-> >>>>
-> >>>> On 31/08/2023 13:33, Dmitry Baryshkov wrote:
-> >>>>> On Thu, 31 Aug 2023 at 13:13, Luca Weiss <luca.weiss@fairphone.com>=
- wrote:
-> >>>>>>
-> >>>>>> On Wed Aug 30, 2023 at 12:06 PM CEST, Krzysztof Kozlowski wrote:
-> >>>>>>> On 30/08/2023 11:58, Luca Weiss wrote:
-> >>>>>>>> Like other Qualcomm PMICs the PM7250B can be used on different a=
-ddresses
-> >>>>>>>> on the SPMI bus. Use similar defines like the PMK8350 to make th=
-is
-> >>>>>>>> possible.
-> >>>>>>>>
-> >>>>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> >>>>>>>> ---
-> >>>>>>>>  arch/arm64/boot/dts/qcom/pm7250b.dtsi | 23 ++++++++++++++++----=
----
-> >>>>>>>>  1 file changed, 16 insertions(+), 7 deletions(-)
-> >>>>>>>>
-> >>>>>>>> diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/=
-boot/dts/qcom/pm7250b.dtsi
-> >>>>>>>> index e8540c36bd99..3514de536baa 100644
-> >>>>>>>> --- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-> >>>>>>>> +++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-> >>>>>>>> @@ -7,6 +7,15 @@
-> >>>>>>>>  #include <dt-bindings/interrupt-controller/irq.h>
-> >>>>>>>>  #include <dt-bindings/spmi/spmi.h>
-> >>>>>>>>
-> >>>>>>>> +/* This PMIC can be configured to be at different SIDs */
-> >>>>>>>> +#ifndef PM7250B_SID
-> >>>>>>>> +   #define PM7250B_SID 2
-> >>>>>>>> +#endif
-> >>>>>>>
-> >>>>>>> Why do you send the same patch as v1, without any reference to pr=
-evious
-> >>>>>>> discussions?
-> >>>>>>>
-> >>>>>>> You got here feedback already.
-> >>>>>>>
-> >>>>>>> https://lore.kernel.org/linux-arm-msm/f52524da-719b-790f-ad2c-0c3=
-f313d9fe9@linaro.org/
-> >>>>>>
-> >>>>>> Hi Krzysztof,
-> >>>>>>
-> >>>>>> I did mention that original patch in the cover letter of this seri=
-es.
-> >>>>>> I'm definitely aware of the discussion earlier this year there but=
- also
-> >>>>>> tried to get an update lately if there's any update with no respon=
-se.
-> >>>>>
-> >>>>> I think the overall consensus was that my proposal is too complicat=
-ed
-> >>>>> for the DT files.
-> >>>>
-> >>>> I proposed to duplicate the entries. Do you keep QUP nodes in DTSI a=
-nd
-> >>>> customize per address? No.
-> >>>
-> >>> At the same time, we do keep SoC files separate from the board files.
-> >>> Yes, I'm slightly exaggerating here.
-> >>>
-> >>> I think that for PMIC files it makes sense to extract common parts if
-> >>> that eases reuse of the common parts.
-> >>
-> >> Hi all,
-> >>
-> >> what can I do for v2 now?
-> >>
-> >> 1. Keep this patch as-is, and keep pm7250b in device dts.
->
-> This was NAKed by me. What Qualcomm SoC maintainers decide (or not
-> decide) about other options, should not cause the wrong solution to be
-> re-posted...
->
-> >>
-> >> 2. Drop pm7250b patch and drop from device dts, until _someone_ figure=
-s
-> >> out a solution talking to the PMIC on different SID.
-> >>
-> >> 3. Something else like copy-pasting pm7250b.dtsi to pm7250-8.dtsi and
-> >> changing the SID there, and using that in device dts.
+On 11/09/2023 10:34, Luca Weiss wrote:
+> On Tue Sep 5, 2023 at 10:30 AM CEST, Luca Weiss wrote:
+>> On Thu Aug 31, 2023 at 2:27 PM CEST, Dmitry Baryshkov wrote:
+>>> On Thu, 31 Aug 2023 at 14:54, Krzysztof Kozlowski
+>>> <krzysztof.kozlowski@linaro.org> wrote:
+>>>>
+>>>> On 31/08/2023 13:33, Dmitry Baryshkov wrote:
+>>>>> On Thu, 31 Aug 2023 at 13:13, Luca Weiss <luca.weiss@fairphone.com> wrote:
+>>>>>>
+>>>>>> On Wed Aug 30, 2023 at 12:06 PM CEST, Krzysztof Kozlowski wrote:
+>>>>>>> On 30/08/2023 11:58, Luca Weiss wrote:
+>>>>>>>> Like other Qualcomm PMICs the PM7250B can be used on different addresses
+>>>>>>>> on the SPMI bus. Use similar defines like the PMK8350 to make this
+>>>>>>>> possible.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>>>>>> ---
+>>>>>>>>  arch/arm64/boot/dts/qcom/pm7250b.dtsi | 23 ++++++++++++++++-------
+>>>>>>>>  1 file changed, 16 insertions(+), 7 deletions(-)
+>>>>>>>>
+>>>>>>>> diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+>>>>>>>> index e8540c36bd99..3514de536baa 100644
+>>>>>>>> --- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+>>>>>>>> +++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
+>>>>>>>> @@ -7,6 +7,15 @@
+>>>>>>>>  #include <dt-bindings/interrupt-controller/irq.h>
+>>>>>>>>  #include <dt-bindings/spmi/spmi.h>
+>>>>>>>>
+>>>>>>>> +/* This PMIC can be configured to be at different SIDs */
+>>>>>>>> +#ifndef PM7250B_SID
+>>>>>>>> +   #define PM7250B_SID 2
+>>>>>>>> +#endif
+>>>>>>>
+>>>>>>> Why do you send the same patch as v1, without any reference to previous
+>>>>>>> discussions?
+>>>>>>>
+>>>>>>> You got here feedback already.
+>>>>>>>
+>>>>>>> https://lore.kernel.org/linux-arm-msm/f52524da-719b-790f-ad2c-0c3f313d9fe9@linaro.org/
+>>>>>>
+>>>>>> Hi Krzysztof,
+>>>>>>
+>>>>>> I did mention that original patch in the cover letter of this series.
+>>>>>> I'm definitely aware of the discussion earlier this year there but also
+>>>>>> tried to get an update lately if there's any update with no response.
+>>>>>
+>>>>> I think the overall consensus was that my proposal is too complicated
+>>>>> for the DT files.
+>>>>
+>>>> I proposed to duplicate the entries. Do you keep QUP nodes in DTSI and
+>>>> customize per address? No.
+>>>
+>>> At the same time, we do keep SoC files separate from the board files.
+>>> Yes, I'm slightly exaggerating here.
+>>>
+>>> I think that for PMIC files it makes sense to extract common parts if
+>>> that eases reuse of the common parts.
+>>
+>> Hi all,
+>>
+>> what can I do for v2 now?
+>>
+>> 1. Keep this patch as-is, and keep pm7250b in device dts.
 
-@Konrad, @Bjorn: Can you give any feedback here what's preferable?
-Otherwise I'm just blocked on this series.
+This was NAKed by me. What Qualcomm SoC maintainers decide (or not
+decide) about other options, should not cause the wrong solution to be
+re-posted...
 
-> >>
-> >> Please let me know what to do.
-> >>
-> >> Regards
-> >> Luca
-> >=20
-> > Hi,
-> >=20
-> > if there's no feedback I'll keep this patch in v2 of this series and we
-> > can continue to discuss there (if necessary).
->
-> Sorry, I still do not agree and there were no arguments convincing me to
-> change the mind.
->
-> I gave you the solution from my perspective. Why do you decided to
-> ignore it and send it as is?
+>>
+>> 2. Drop pm7250b patch and drop from device dts, until _someone_ figures
+>> out a solution talking to the PMIC on different SID.
+>>
+>> 3. Something else like copy-pasting pm7250b.dtsi to pm7250-8.dtsi and
+>> changing the SID there, and using that in device dts.
+>>
+>> Please let me know what to do.
+>>
+>> Regards
+>> Luca
+> 
+> Hi,
+> 
+> if there's no feedback I'll keep this patch in v2 of this series and we
+> can continue to discuss there (if necessary).
 
-I get it that you are not final decider for qcom dts changes but it's
-quite difficult for someone sending patches to not get any feedback what
-other change to replace this is appropriate. I doubt it's a good idea to
-just implement some random pm7250-8.dtsi or whatever to potentially
-immediately get a response that that way is also bad.
+Sorry, I still do not agree and there were no arguments convincing me to
+change the mind.
 
-That's why I'm trying to get some info before working on something and
-sending it. Hopefully Bjorn or Konrad can add their thoughts above.
+I gave you the solution from my perspective. Why do you decided to
+ignore it and send it as is?
 
-Also I don't recall me ever reading a "solution" from your side but
-maybe I need to dig through the old emails again.
 
-Regards
-Luca
-
->
->
-> Best regards,
-> Krzysztof
+Best regards,
+Krzysztof
 
