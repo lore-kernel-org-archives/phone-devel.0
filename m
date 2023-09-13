@@ -2,203 +2,153 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B9F64CA0EC3
-	for <phone-devel@archiver.kernel.org>; Mon, 11 Sep 2023 21:10:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2233FEE0202
+	for <phone-devel@archiver.kernel.org>; Wed, 13 Sep 2023 19:01:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234240AbjIKVFR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 11 Sep 2023 17:05:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48662 "EHLO
+        id S231981AbjIMTBm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 13 Sep 2023 15:01:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235399AbjIKIeU (ORCPT
+        with ESMTP id S230311AbjIMTBl (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 11 Sep 2023 04:34:20 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D6D3FB
-        for <phone-devel@vger.kernel.org>; Mon, 11 Sep 2023 01:34:15 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-99bf3f59905so514875966b.3
-        for <phone-devel@vger.kernel.org>; Mon, 11 Sep 2023 01:34:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1694421254; x=1695026054; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XJm1KaNRweMkGVAymSAxQbFYuR9Q/QDHdaAfSIOtOtY=;
-        b=snoiVXErePqPv15Ov6YYqDsErLkyeRomEvttbFZlvfsaKz8W7DEzqzhqqOv4JPO58e
-         hueYhhGy4d//Ns30AaauvV6CiM8JrDN6bbz8/7uEHD9m8zqSaSxpk93orUy4uiROjT2A
-         XnDn+Du8jSzlH9TgsKmSwU0ka4kqIW5aw59TV5n7r3R7RHi5LwnIWBbCyt2gWT1g3VMW
-         CzE/MaW7BbgLmmQF4oTS3INXAQZflcmS/mn67R029HtPhkcZfrh4M5QCNNrlfV+LtRL4
-         eBjJlx2KAnMpzzNQnA/13u0L9gBRZ7puIXew2OogC76rmA12X/JOUCmIJkYuQgx9v3mS
-         fbaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694421254; x=1695026054;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=XJm1KaNRweMkGVAymSAxQbFYuR9Q/QDHdaAfSIOtOtY=;
-        b=jJ6CvciXlpBeXv1XYCRwG1Vh7cNw56UUFAv1pnQKCyJgPqq+2cXzg+iLpywp5rUOY7
-         0a8FGaeARZV9QNgexZrkFnggCaOH6eNHjwc1rX+IXa1UmeQlvvizgw46ptS7vgj5X70r
-         wGpZqYcFtz2QXB1aMylhf+SHXtnrNbCbD9oEHfkJxDcXAZr5KR8Gqbt6MJ6RQXqv4dro
-         txqVyJf9fzMQjsTh5kNbZK1U3m8vLrX0duc820g7MBZstbUfnjHxwhn+YRo1av91Hljo
-         1608nkKqQRLR5ClKipHSsGJHSzbiEOoe+6HFZwp0U/5Yd9J7nVhzeKAPmbtD8nOmwHS1
-         90qA==
-X-Gm-Message-State: AOJu0YxSBSBtnRsjSTe2Y+kP/0lNzsxUa/+9bd+1SnBWZu2/rdYIPkPb
-        mwosIAnWFOfo1yl416gdA/lhiQ==
-X-Google-Smtp-Source: AGHT+IFj11zWwg4l2ZYoi5wwOlV3+q/kHSKszsCHlHHWLxUQKUTp28BwxRBudKWY2XQcGgljf2DGcg==
-X-Received: by 2002:a17:906:5a49:b0:9a2:24f9:fabe with SMTP id my9-20020a1709065a4900b009a224f9fabemr7402648ejc.66.1694421253741;
-        Mon, 11 Sep 2023 01:34:13 -0700 (PDT)
-Received: from localhost (k10064.upc-k.chello.nl. [62.108.10.64])
-        by smtp.gmail.com with ESMTPSA id w20-20020a1709064a1400b00991faf3810esm5046605eju.146.2023.09.11.01.34.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Sep 2023 01:34:13 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 11 Sep 2023 10:34:12 +0200
-Message-Id: <CVFY7D7ND3WS.2B2EYB4ZO86P@otso>
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Luca Weiss" <luca.weiss@fairphone.com>,
-        "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>
-Cc:     <cros-qcom-dts-watchers@chromium.org>,
-        "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>,
-        "Srinivas Kandagatla" <srinivas.kandagatla@linaro.org>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Viresh Kumar" <viresh.kumar@linaro.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>
-Subject: Re: [PATCH 04/11] arm64: dts: qcom: pm7250b: make SID configurable
-X-Mailer: aerc 0.15.2
-References: <20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com>
- <20230830-fp5-initial-v1-4-5a954519bbad@fairphone.com>
- <b82f4683-e8b5-b424-8f7a-6d2ba1cab61f@linaro.org>
- <CV6NF0466658.20DGU7QKF2UBR@otso>
- <CAA8EJpr1+W3f08X-FpiiVrJ98kg52HaMwbbKn=fG15Whm4C8aQ@mail.gmail.com>
- <728003b9-db27-fdc0-e761-197a02a38c24@linaro.org>
- <CAA8EJpoXreHpxZQ2G10n0OiQzUX4ffk=gvo87dAU4-r+Svqpeg@mail.gmail.com>
- <CVAUDGBO4S08.1F0O66ZE6I4IG@otso>
-In-Reply-To: <CVAUDGBO4S08.1F0O66ZE6I4IG@otso>
+        Wed, 13 Sep 2023 15:01:41 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95FE0170F;
+        Wed, 13 Sep 2023 12:01:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1093AC433C9;
+        Wed, 13 Sep 2023 19:01:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694631697;
+        bh=3toOGgkkDZ9WvilW/3M+1Ng0BLERDJ4aV1HGhaAbhus=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=V4FCumqrQb/aKzssL2Onwpx0UuMy0gFzJB1TI+bff9eHTEn0MW52Z0Dllp+1K33qE
+         RLnwHqijXH9+rw45W+Gkoo/a+NV7BMHdug5FBHT+OSUPQ4BdUOzrjDyQdvGwMWK4Nc
+         CF8dkVMQxZGG8MBnJcDYMcS/siLjKJkMMaj9OkP6w8uZUZg1YU19txvJJU7myowabd
+         KXqztyiydkTW3ore+AKj2J0zJ7lhWmzoqCXL1HC8GYgUoV4/wO1ZSe7WZ6p0OgNX3Z
+         Q/LwLYyE/ho6FrMph3FgS2YdJlqcCNCvJgiFGDbNsugVWvJChBCzUVZNuhCjxgxM3N
+         +i8ksbwP6v/3Q==
+Date:   Wed, 13 Sep 2023 12:05:42 -0700
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     Adam Skladowski <a39.skl@gmail.com>
+Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        AngeloGioacchino Del Regno <kholk11@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH v3 1/7] drivers: genpd: qcom: rpmpd: Fix MSM8976 power
+ domains setup
+Message-ID: <kci26pgiwgtconpmvuyw5ugi33algwvd75smvo34non73onvqm@z7mxzpdkp2po>
+References: <20230812112534.8610-1-a39.skl@gmail.com>
+ <20230812112534.8610-2-a39.skl@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230812112534.8610-2-a39.skl@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue Sep 5, 2023 at 10:30 AM CEST, Luca Weiss wrote:
-> On Thu Aug 31, 2023 at 2:27 PM CEST, Dmitry Baryshkov wrote:
-> > On Thu, 31 Aug 2023 at 14:54, Krzysztof Kozlowski
-> > <krzysztof.kozlowski@linaro.org> wrote:
-> > >
-> > > On 31/08/2023 13:33, Dmitry Baryshkov wrote:
-> > > > On Thu, 31 Aug 2023 at 13:13, Luca Weiss <luca.weiss@fairphone.com>=
- wrote:
-> > > >>
-> > > >> On Wed Aug 30, 2023 at 12:06 PM CEST, Krzysztof Kozlowski wrote:
-> > > >>> On 30/08/2023 11:58, Luca Weiss wrote:
-> > > >>>> Like other Qualcomm PMICs the PM7250B can be used on different a=
-ddresses
-> > > >>>> on the SPMI bus. Use similar defines like the PMK8350 to make th=
-is
-> > > >>>> possible.
-> > > >>>>
-> > > >>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > > >>>> ---
-> > > >>>>  arch/arm64/boot/dts/qcom/pm7250b.dtsi | 23 ++++++++++++++++----=
----
-> > > >>>>  1 file changed, 16 insertions(+), 7 deletions(-)
-> > > >>>>
-> > > >>>> diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/=
-boot/dts/qcom/pm7250b.dtsi
-> > > >>>> index e8540c36bd99..3514de536baa 100644
-> > > >>>> --- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-> > > >>>> +++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-> > > >>>> @@ -7,6 +7,15 @@
-> > > >>>>  #include <dt-bindings/interrupt-controller/irq.h>
-> > > >>>>  #include <dt-bindings/spmi/spmi.h>
-> > > >>>>
-> > > >>>> +/* This PMIC can be configured to be at different SIDs */
-> > > >>>> +#ifndef PM7250B_SID
-> > > >>>> +   #define PM7250B_SID 2
-> > > >>>> +#endif
-> > > >>>
-> > > >>> Why do you send the same patch as v1, without any reference to pr=
-evious
-> > > >>> discussions?
-> > > >>>
-> > > >>> You got here feedback already.
-> > > >>>
-> > > >>> https://lore.kernel.org/linux-arm-msm/f52524da-719b-790f-ad2c-0c3=
-f313d9fe9@linaro.org/
-> > > >>
-> > > >> Hi Krzysztof,
-> > > >>
-> > > >> I did mention that original patch in the cover letter of this seri=
-es.
-> > > >> I'm definitely aware of the discussion earlier this year there but=
- also
-> > > >> tried to get an update lately if there's any update with no respon=
-se.
-> > > >
-> > > > I think the overall consensus was that my proposal is too complicat=
-ed
-> > > > for the DT files.
-> > >
-> > > I proposed to duplicate the entries. Do you keep QUP nodes in DTSI an=
-d
-> > > customize per address? No.
-> >
-> > At the same time, we do keep SoC files separate from the board files.
-> > Yes, I'm slightly exaggerating here.
-> >
-> > I think that for PMIC files it makes sense to extract common parts if
-> > that eases reuse of the common parts.
->
-> Hi all,
->
-> what can I do for v2 now?
->
-> 1. Keep this patch as-is, and keep pm7250b in device dts.
->
-> 2. Drop pm7250b patch and drop from device dts, until _someone_ figures
-> out a solution talking to the PMIC on different SID.
->
-> 3. Something else like copy-pasting pm7250b.dtsi to pm7250-8.dtsi and
-> changing the SID there, and using that in device dts.
->
-> Please let me know what to do.
->
-> Regards
-> Luca
+On Sat, Aug 12, 2023 at 01:24:44PM +0200, Adam Skladowski wrote:
 
-Hi,
+Please drop the "drivers:" prefix in $subject, and resubmit this with
+patch (alone should be fine) with the new maintainer, and appropriate
+mailing list, included.
 
-if there's no feedback I'll keep this patch in v2 of this series and we
-can continue to discuss there (if necessary).
+Thanks,
+Bjorn
 
-Regards
-Luca
-
->
-> >
-> > >
-> > > I definitely do not agree to these ifndef->define. Maybe using just
-> > > define would work (so drop ifndef->define), because this makes it
-> > > obvious and fail-safe if included in wrong place... except that it is
-> > > still not the define we expect. This is not the coding style present =
-in
-> > > other DTSes.
-> > >
-> > > The true problem how these SPMI bindings were created. Requiring SID
-> > > address in every child is clearly redundant and I think we do not fol=
-low
-> > > such approach anywhere else.
-> > >
-> > > Best regards,
-> > > Krzysztof
-> > >
-
+> Downstream kernel parses resource names based on pm8950-rpm-regulator.dtsi
+> in such file qcom,resource-name takes three values: smpa,ldoa and clk0.
+> First appearance of RWSC/RWSM point to msm-4.4 kernel
+> which is way newer than what this platform was shipped with (msm-3.10).
+> For the max_state downstream code limit value to TURBO inside dts
+> with only one turbo_high being placed in msm-thermal bindings.
+> One of effects of requesting TURBO_HIGH vote is rebooting of device
+> which happens during voting inside WCNSS/IRIS,
+> this behavior was observed on LeEco S2 smartphone.
+> Fix regulator setup and drop unused resources.
+> 
+> Fixes: b1d522443b4b ("soc: qcom: rpmpd: Add rpm power domains for msm8976")
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> ---
+>  drivers/genpd/qcom/rpmpd.c | 27 ++++++++++-----------------
+>  1 file changed, 10 insertions(+), 17 deletions(-)
+> 
+> diff --git a/drivers/genpd/qcom/rpmpd.c b/drivers/genpd/qcom/rpmpd.c
+> index 3135dd1dafe0..59caa4e7b99a 100644
+> --- a/drivers/genpd/qcom/rpmpd.c
+> +++ b/drivers/genpd/qcom/rpmpd.c
+> @@ -166,13 +166,6 @@ static struct rpmpd cx_rwcx0_vfl = {
+>  	.key = KEY_FLOOR_LEVEL,
+>  };
+>  
+> -static struct rpmpd cx_rwsc2_vfl = {
+> -	.pd = { .name = "cx_vfl", },
+> -	.res_type = RPMPD_RWSC,
+> -	.res_id = 2,
+> -	.key = KEY_FLOOR_LEVEL,
+> -};
+> -
+>  static struct rpmpd cx_s1a_vfc = {
+>  	.pd = { .name = "cx_vfc", },
+>  	.res_type = RPMPD_SMPA,
+> @@ -329,6 +322,13 @@ static struct rpmpd mx_s6a_lvl_ao = {
+>  	.key = KEY_LEVEL,
+>  };
+>  
+> +static struct rpmpd mx_s6a_vfl = {
+> +	.pd = { .name = "mx_vfl", },
+> +	.res_type = RPMPD_SMPA,
+> +	.res_id = 6,
+> +	.key = KEY_FLOOR_LEVEL,
+> +};
+> +
+>  static struct rpmpd mx_s7a_lvl_ao;
+>  static struct rpmpd mx_s7a_lvl = {
+>  	.pd = { .name = "mx", },
+> @@ -361,13 +361,6 @@ static struct rpmpd mx_rwmx0_vfl = {
+>  	.key = KEY_FLOOR_LEVEL,
+>  };
+>  
+> -static struct rpmpd mx_rwsm6_vfl = {
+> -	.pd = { .name = "mx_vfl", },
+> -	.res_type = RPMPD_RWSM,
+> -	.res_id = 6,
+> -	.key = KEY_FLOOR_LEVEL,
+> -};
+> -
+>  /* MD */
+>  static struct rpmpd md_s1a_corner_ao;
+>  static struct rpmpd md_s1a_corner = {
+> @@ -591,16 +584,16 @@ static const struct rpmpd_desc msm8953_desc = {
+>  static struct rpmpd *msm8976_rpmpds[] = {
+>  	[MSM8976_VDDCX] =	&cx_s2a_lvl,
+>  	[MSM8976_VDDCX_AO] =	&cx_s2a_lvl_ao,
+> -	[MSM8976_VDDCX_VFL] =	&cx_rwsc2_vfl,
+> +	[MSM8976_VDDCX_VFL] =	&cx_s2a_vfl,
+>  	[MSM8976_VDDMX] =	&mx_s6a_lvl,
+>  	[MSM8976_VDDMX_AO] =	&mx_s6a_lvl_ao,
+> -	[MSM8976_VDDMX_VFL] =	&mx_rwsm6_vfl,
+> +	[MSM8976_VDDMX_VFL] =	&mx_s6a_vfl,
+>  };
+>  
+>  static const struct rpmpd_desc msm8976_desc = {
+>  	.rpmpds = msm8976_rpmpds,
+>  	.num_pds = ARRAY_SIZE(msm8976_rpmpds),
+> -	.max_state = RPM_SMD_LEVEL_TURBO_HIGH,
+> +	.max_state = RPM_SMD_LEVEL_TURBO,
+>  };
+>  
+>  static struct rpmpd *msm8994_rpmpds[] = {
+> -- 
+> 2.41.0
+> 
