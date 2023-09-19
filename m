@@ -2,61 +2,61 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E41EFCD5BB2
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Sep 2023 12:46:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C43ECCD5BB4
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Sep 2023 12:46:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232156AbjISMqV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Sep 2023 08:46:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55894 "EHLO
+        id S232141AbjISMqS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Sep 2023 08:46:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232099AbjISMqT (ORCPT
+        with ESMTP id S232093AbjISMqQ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Sep 2023 08:46:19 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21488F4
-        for <phone-devel@vger.kernel.org>; Tue, 19 Sep 2023 05:46:10 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-50300141a64so5244230e87.0
-        for <phone-devel@vger.kernel.org>; Tue, 19 Sep 2023 05:46:10 -0700 (PDT)
+        Tue, 19 Sep 2023 08:46:16 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65126119
+        for <phone-devel@vger.kernel.org>; Tue, 19 Sep 2023 05:46:07 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-52f3ba561d9so12244621a12.1
+        for <phone-devel@vger.kernel.org>; Tue, 19 Sep 2023 05:46:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1695127568; x=1695732368; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1695127565; x=1695732365; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7fWFiq2Z3kzEyU88O2c9+i0+0nk8+Hu7Vs+xo2WgRZY=;
-        b=0qu5Ts8zT7BUKq+V4tf8qNL+Uamsn0u4PCcd/SdXWT66uBOofC56VEyRBtviIASGBt
-         Fri7YsQnAta4i68K5lR9fRr86BuIsSfJjVuz2LD5/l0QM8X8ZXzfvEBXMujWlx1la7cW
-         qvFI+xYOAX523nh/J32xpYNYTPdY5PnFU7yIQTDhjfHQ/shfG2rJVuWdVMt/fv+aZzen
-         dNqp1ckCWBw8IbGaB+GzaXRAUBVt6a2N/2nVSMMLKaIdVSpjd7HlWynoRZ921MSAH/W9
-         AyvWhlToFeX598Mks+iZGC9GadgNcHgQ2HtHEflgKgosd2gCtyU1L6euO/c6TTajnQRi
-         eWrw==
+        bh=kA0NToIbWuR6d6alRKXkP3KfjrWVM/I6SsyvDthzTxU=;
+        b=CwS/cyREVeEVLjvlCgp1qJoyrdqn3ckGQeuCVT7k803ktVJdi99D8nGB4rCroWlSH6
+         Z8VEdaVRvV/2JjQ+d8twp+AoEZfAzUMOMoSbq5FXjhkeIyMRYPKRQfUo6zwQ/EcjaMJd
+         5lbL4f5MQvC9fo0IpzWO3Fs+K6rlyUQg2acbjEuiTAv+hSrT56vYc/9hzb5nUXPjItae
+         SY3sKi+zVCnO5oPtRDC9zHBBPUZMVIutka6hlo1TyaMGzQQGth0WxF50pOVvf6ATNTOF
+         N5JpqylEJnqXK5oAlZFGIwEQS/bfjwgDK/jsn3y5f1Ih+4RE0CXRIdHwIlvjMitcfDTb
+         CG9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695127568; x=1695732368;
+        d=1e100.net; s=20230601; t=1695127565; x=1695732365;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7fWFiq2Z3kzEyU88O2c9+i0+0nk8+Hu7Vs+xo2WgRZY=;
-        b=IjTxqeKcpnayLTAuMYIX+NqlFYzHx6zgYse+EqboXt5emKHK14YgUxI8nIaV0aXt0D
-         exJDusicIMaTFvibCEEQdH7lnYYnlEcex985nve7P5UHwVZeRYu06I5U86/78AaQWh8y
-         tLxqEbVA33ebydkQhHodHoDCAq/zV1muRDLPteiy2Z8gG0GhF5rT5hd09H2fJCM+4FYo
-         XOofE525Vbc4QAOiObbeV8RN18nP+Y8ihRbCHLGhYo+X+FfmEb4aUy1oEGWOe8SmZThN
-         bXYxiks2ORpRNEyDt6cvrhBtYhQ1HWCvd4NYTw+FBEEObe6OUMZ8OZUuv35Ml+Ww0Pqz
-         wwCQ==
-X-Gm-Message-State: AOJu0YxISL3I7pLaQXsHvPAFNT1DEXEWZMJ55E6wK9X9Tx+Ljja6Qvcc
-        92Qsiyi7E8f+rpBLaYCTndfr2w==
-X-Google-Smtp-Source: AGHT+IGZklR6vmwx+I1m2TYBs5iOwsPLRBe+Obf/CId5PwS12y8h+KZFNQQ9tDvt0rDzC8/Y2ewakQ==
-X-Received: by 2002:a05:6512:31cd:b0:503:1722:bf3a with SMTP id j13-20020a05651231cd00b005031722bf3amr5986480lfe.1.1695127568502;
-        Tue, 19 Sep 2023 05:46:08 -0700 (PDT)
+        bh=kA0NToIbWuR6d6alRKXkP3KfjrWVM/I6SsyvDthzTxU=;
+        b=V9gcVZUsh2sVUcMlez4uTxs7Z1LnIEfui1EExXp+fdpcGxUL6g1mMGUlBC+c5gVMzc
+         GHCSBCZOsIalnUG11rxCZkt5ByYo28Q3etVarU7C/Vy1c3AJ2jV/RUl0GKJN6qlfyZoI
+         WXRrJICqwEc0mx1nm7rHaEdrTTB3hRUWJ6HuuV9A1GvA9fsSsUJqFhUGieDuLcq3SEs5
+         syR6j38kTj4t9amYo/GeaoKiuOqjNET37iJ6ulJh4WzqLTE/0k1wccQ3nCLr43x6Cah9
+         wiQFnXr2E6Cu0oNYW02n2qmXK6l7GvwaDzkJNsVW5DtwWjrv0zFic7Lt++eFTY/fkVCX
+         PdzQ==
+X-Gm-Message-State: AOJu0YxzD7iue45zUSclp0//yEPkmp9SzLwOs+CsyGEPAfjY5LZAuelz
+        weH4R/eP0XouRBwU98yuXV18hw==
+X-Google-Smtp-Source: AGHT+IFrtYCZSQ5shL6KQpW4yzOiSjutPhoOz2W7aPnHTf+JUa1mxqdR6aoD/M8rkYHlMxdTQEDweg==
+X-Received: by 2002:a05:6402:43c3:b0:531:157d:ba2d with SMTP id p3-20020a05640243c300b00531157dba2dmr3611058edc.4.1695127565674;
+        Tue, 19 Sep 2023 05:46:05 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (static-212-193-78-212.thenetworkfactory.nl. [212.78.193.212])
-        by smtp.gmail.com with ESMTPSA id dn22-20020a05640222f600b00532c1dfe8ecsm635878edb.66.2023.09.19.05.46.07
+        by smtp.gmail.com with ESMTPSA id dn22-20020a05640222f600b00532c1dfe8ecsm635878edb.66.2023.09.19.05.46.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 05:46:08 -0700 (PDT)
+        Tue, 19 Sep 2023 05:46:05 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Tue, 19 Sep 2023 14:46:00 +0200
-Subject: [PATCH v2 6/7] dt-bindings: arm: qcom: Add QCM6490 Fairphone 5
+Date:   Tue, 19 Sep 2023 14:45:56 +0200
+Subject: [PATCH v2 2/7] nvmem: qfprom: Mark core clk as optional
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230919-fp5-initial-v2-6-14bb7cedadf5@fairphone.com>
+Message-Id: <20230919-fp5-initial-v2-2-14bb7cedadf5@fairphone.com>
 References: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com>
 In-Reply-To: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com>
 To:     cros-qcom-dts-watchers@chromium.org,
@@ -79,37 +79,36 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Fairphone 5 is a smartphone based on the QCM6490 SoC.
+On some platforms like sc7280 on non-ChromeOS devices the core clock
+cannot be touched by Linux so we cannot provide it. Mark it as optional
+as accessing qfprom for reading works without it but we still prohibit
+writing if we cannot provide the clock.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- Documentation/devicetree/bindings/arm/qcom.yaml | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/nvmem/qfprom.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
-index adbfaea32343..76934f4772e9 100644
---- a/Documentation/devicetree/bindings/arm/qcom.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-@@ -50,6 +50,7 @@ description: |
-         msm8998
-         qcs404
-         qcm2290
-+        qcm6490
-         qdu1000
-         qrb2210
-         qrb4210
-@@ -391,6 +392,11 @@ properties:
-           - const: qcom,qrb2210
-           - const: qcom,qcm2290
+diff --git a/drivers/nvmem/qfprom.c b/drivers/nvmem/qfprom.c
+index 14814cba2dd6..525be03b7bba 100644
+--- a/drivers/nvmem/qfprom.c
++++ b/drivers/nvmem/qfprom.c
+@@ -423,12 +423,12 @@ static int qfprom_probe(struct platform_device *pdev)
+ 		if (IS_ERR(priv->vcc))
+ 			return PTR_ERR(priv->vcc);
  
-+      - items:
-+          - enum:
-+              - fairphone,fp5
-+          - const: qcom,qcm6490
-+
-       - description: Qualcomm Technologies, Inc. Distributed Unit 1000 platform
-         items:
-           - enum:
+-		priv->secclk = devm_clk_get(dev, "core");
++		priv->secclk = devm_clk_get_optional(dev, "core");
+ 		if (IS_ERR(priv->secclk))
+ 			return dev_err_probe(dev, PTR_ERR(priv->secclk), "Error getting clock\n");
+ 
+-		/* Only enable writing if we have SoC data. */
+-		if (priv->soc_data)
++		/* Only enable writing if we have SoC data and a valid clock */
++		if (priv->soc_data && priv->secclk)
+ 			econfig.reg_write = qfprom_reg_write;
+ 	}
+ 
 
 -- 
 2.42.0
