@@ -2,64 +2,64 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45756CD5BB0
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Sep 2023 12:46:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 976C1CD5BB2
+	for <phone-devel@archiver.kernel.org>; Tue, 19 Sep 2023 12:46:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232083AbjISMqP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Sep 2023 08:46:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55796 "EHLO
+        id S232174AbjISMqT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Sep 2023 08:46:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230021AbjISMqP (ORCPT
+        with ESMTP id S232115AbjISMqR (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Sep 2023 08:46:15 -0400
-Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B917E3
+        Tue, 19 Sep 2023 08:46:17 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A82E7F9
         for <phone-devel@vger.kernel.org>; Tue, 19 Sep 2023 05:46:06 -0700 (PDT)
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2c022ce8114so15323961fa.1
-        for <phone-devel@vger.kernel.org>; Tue, 19 Sep 2023 05:46:05 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-53087f0e18bso5289830a12.3
+        for <phone-devel@vger.kernel.org>; Tue, 19 Sep 2023 05:46:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1695127564; x=1695732364; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9z07Us7rZb6gq2/8xqzCrZiW902N6IA0/Qa57rZImpc=;
-        b=afOu+bj3bvS5xpftK+GPwcqggMusHDEaHeGy93P8OqtScfCzupWEzT5pfz3KZSSTLt
-         yKadZHNZlm4I6mXafKBFTqMynlDBFjrT24YJgVej0OUbndcG1EX9+V+1ZTC2BQqg4YMG
-         ZyXpK5wRnzEol/MNuTLyvPNHppHJMTuz99AnicM/pZFL0ZkqbOzK6CA1UKV1fSXPOG7e
-         7N0lB3g/2M6WgKPZevqu/3YspW7SXPf9EgC7T44uc4LRZ+gjkP2UCdTThcZsrSnVYSwa
-         MZqz2lYYruq036l1JvloBeSinaGuEA/DzHTpQ9bi0LRe290uax0PBNenXgQD0aUz0n0C
-         9OeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695127564; x=1695732364;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=fairphone.com; s=fair; t=1695127565; x=1695732365; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9z07Us7rZb6gq2/8xqzCrZiW902N6IA0/Qa57rZImpc=;
-        b=mH4tsqXoinn0WlQw0rzSvr7lLiF4MfQVaYyvPNPcPv0VniLTYTCd8dDAcSN29qOSTR
-         5piDrPJfxYV3XA1dSU62/GA9QHAeExxIckYlYXBC2FekenxftbVHwZ/osxCCLbDD2l13
-         //m9lsAN77iqhzu2D/Sdeqlk4BfUFHHyVpbq+AsBe9YW6KHs90KPJR183otPRT/UFtcJ
-         Wt3ulvqwKH/RFUj3k2U9UYQ6tu7Vtmaqwxx7MCsNne74a26IoagIlN1BfC7iyLl+0DCH
-         xuaCpuwL8gfOeaJsfclj3wODnRYw1vdBm5jg4/T/Ragao+zf+i/p0nagyeokqPbt6EcN
-         mEDg==
-X-Gm-Message-State: AOJu0Ywq2yGdcBoleBHS90LJUYV+a4ihOZgNh3/N0tK1FQlY07dq8OKE
-        AhVRUAUeDiPdrvL8hHX0nuUEcg==
-X-Google-Smtp-Source: AGHT+IHNhIbT5BUwfUlNuBFu/j2zIN14WtAoppACWN5FjNtYRlzDPYwsw3kpRqLU5mmUrubIPzBMPQ==
-X-Received: by 2002:a05:6512:b10:b0:503:2555:d1e7 with SMTP id w16-20020a0565120b1000b005032555d1e7mr4227843lfu.45.1695127564047;
+        bh=sLLpoq+DcvN55YeifZ9SGsL5kC0r1lCyLX42UdQGXRo=;
+        b=ZM35CBM6YRAPDvoUBrk9km8C+ovnxTJZyhk9lv5c5yUnvFyFiwO/G/QyiWncM7vPU8
+         Ndhht4hVSiEy94DtJ7XiAO0fRts8PlhDbcXaZ3paBZUNqka7KkDuuIPUpwE2tLgl4GNN
+         tO9hwrAn4ntzhRT8KVasQCeoRoyJ7HhmjaQx9XuhaJh4X6nrU5TMPpZCirFj2oqwfQwl
+         RGqSufOhV2AdmrgFbAU7EWdF5egUgzTKWubI+3CckomBpWPFW58gcOr3WHvRZZSApdUV
+         z2U00uELE+0Y/FmkYcJi2SAkNQaVNofh/4OidxP9o1HlW1DXljY/xzd0h03GG2acI5aq
+         0wfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695127565; x=1695732365;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sLLpoq+DcvN55YeifZ9SGsL5kC0r1lCyLX42UdQGXRo=;
+        b=IBdiDe7XW6ljc2q01ACdwbYo69Irc63y9K90hKxasUHYK3/1V0IsylOk7/4BWLtx+j
+         THbV2QnK9eVE9d7PFRWoPI6EK5Jcq2dPjjfuyAXL0JeliWPgwvj4/XMnEIdZsfNHa/N/
+         F9kF4woCxbW3gw3e8aAfj2mp02bjts3321Nt0iJn0vT2X3+P2yk0H25mdwM3OdBRw4gp
+         +T8dPgH8ALnGJZRC5EvyECzF+sh2oHHXxErip2BK3+GK6Edq7LcDXpXd6mM6yhHRfaur
+         XGznstNBHdSpjb2DWeRfT/D4g8civMQVM3q0TaiEEgj+KrPWElayh+5wAp2P6MWc6mat
+         M5Vw==
+X-Gm-Message-State: AOJu0YwFDPXfMGltP2mlGxBd+8+GVYPOVOU6MUt8QNPNF+7vvj7mt5gQ
+        b1yzasPVwI6L/fucVrcpGNXs1g==
+X-Google-Smtp-Source: AGHT+IFOoSh8VwSk3uaWIZRjca8rl/eH5qw0/LYnlSu9ZwfYCdjYA7p6eBAc6sBe6o86gMi+lEAZdQ==
+X-Received: by 2002:a05:6402:206c:b0:530:ad02:a6e8 with SMTP id bd12-20020a056402206c00b00530ad02a6e8mr7303734edb.42.1695127564948;
         Tue, 19 Sep 2023 05:46:04 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (static-212-193-78-212.thenetworkfactory.nl. [212.78.193.212])
-        by smtp.gmail.com with ESMTPSA id dn22-20020a05640222f600b00532c1dfe8ecsm635878edb.66.2023.09.19.05.46.03
+        by smtp.gmail.com with ESMTPSA id dn22-20020a05640222f600b00532c1dfe8ecsm635878edb.66.2023.09.19.05.46.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 05:46:03 -0700 (PDT)
+        Tue, 19 Sep 2023 05:46:04 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH v2 0/7] Initial support for the Fairphone 5 smartphone
-Date:   Tue, 19 Sep 2023 14:45:54 +0200
-Message-Id: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com>
+Date:   Tue, 19 Sep 2023 14:45:55 +0200
+Subject: [PATCH v2 1/7] arm64: dts: qcom: sc7280: Mark some nodes as
+ 'reserved'
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAKYCWUC/1XMwQoCIRSF4VcZ7jpDnQynVe8Rs1BH80Kp6CDF4
- LtnQ5uW/4HzbVBsRlvgMmyQbcWCMfTghwGMV+FuCS69gVM+UskkcUkQDLiiehB9NpIzqtVkJPR
- Hytbha9duc2+PZY35veOVfdefM9I/pzJCiVCTOAk2aa2Wq1OYk4/BHk18wtxa+wCZ7WMEqgAAA
- A==
+Message-Id: <20230919-fp5-initial-v2-1-14bb7cedadf5@fairphone.com>
+References: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com>
+In-Reply-To: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com>
 To:     cros-qcom-dts-watchers@chromium.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -74,78 +74,123 @@ To:     cros-qcom-dts-watchers@chromium.org,
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-pm@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+        linux-pm@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add support to boot up mainline kernel on the QCM6490-based Fairphone 5
-smartphone.
-
-These patches only cover a part of the functionality brought up on
-mainline so far, with the rest needing larger dts and driver changes or
-depend on patches that are not yet merged. I will work on sending those
-once these base patches here have settled.
-
-Since QCM6490, like SC7280 are 'yupik' in the vendor-provided kernel, we
-can base the dts on it and leverage existing support. Though current
-sc7280 support mostly assumes ChromeOS devices which have a different
-TrustZone setup, so we need to move some ChromeOS-specific bits to the
-sc7280-chrome-common.dtsi file to make it boot on a standard TZ board.
-
-Depends on (just for the #include in sc7280.dtsi):
-https://lore.kernel.org/linux-arm-msm/20230818-qcom-vmid-defines-v1-1-45b610c96b13@fairphone.com/
-
-The pm7250b patch has been picked up from this series:
-https://lore.kernel.org/linux-arm-msm/20230407-pm7250b-sid-v1-2-fc648478cc25@fairphone.com/
+With the standard Qualcomm TrustZone setup, components such as lpasscc,
+pdc_reset and watchdog shouldn't be touched by Linux. Mark them with
+the status 'reserved' and reenable them in the chrome-common dtsi.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Changes in v2:
-- Add comments why nodes in sc7280.dtsi get disabled (Konrad)
-- Mark more nodes in sc7280.dtsi as reserved
-- Don't allow writing qfprom when (optional) clock isn't found
-- Device dts changes:
-  - Stylistic changes in device dts
-  - Remove qcom,msm-id & qcom,board-id properties
-  - Add regulator-initial-mode
-- Pick up tags
-- Drop patch 03 "arm64: dts: qcom: sc7280: Move qfprom clock to
-  chrome-common", it's actually not needed with qfprom-clock-optional
-  patch
-- Drop patch 07 "dt-bindings: arm: qcom,ids: Add SoC ID for QCM6490",
-  patch 08 "soc: qcom: socinfo: Add SoC ID for QCM6490" and patch 09
-  "cpufreq: Add QCM6490 to cpufreq-dt-platdev blocklist", all applied.
-- Link to v1: https://lore.kernel.org/r/20230830-fp5-initial-v1-0-5a954519bbad@fairphone.com
+ arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi | 24 ++++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/sc7280.dtsi               |  8 +++++++-
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
----
-Luca Weiss (7):
-      arm64: dts: qcom: sc7280: Mark some nodes as 'reserved'
-      nvmem: qfprom: Mark core clk as optional
-      arm64: dts: qcom: pm7250b: make SID configurable
-      arm64: dts: qcom: pm8350c: Add flash led node
-      dt-bindings: pinctrl: qcom,sc7280: Allow gpio-reserved-ranges
-      dt-bindings: arm: qcom: Add QCM6490 Fairphone 5
-      arm64: dts: qcom: qcm6490: Add device-tree for Fairphone 5
+diff --git a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+index 2e1cd219fc18..5d462ae14ba1 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+@@ -46,6 +46,26 @@ wpss_mem: memory@9ae00000 {
+ 	};
+ };
+ 
++&lpass_aon {
++	status = "okay";
++};
++
++&lpass_core {
++	status = "okay";
++};
++
++&lpass_hm {
++	status = "okay";
++};
++
++&lpasscc {
++	status = "okay";
++};
++
++&pdc_reset {
++	status = "okay";
++};
++
+ /* The PMIC PON code isn't compatible w/ how Chrome EC/BIOS handle things. */
+ &pmk8350_pon {
+ 	status = "disabled";
+@@ -84,6 +104,10 @@ &scm {
+ 	dma-coherent;
+ };
+ 
++&watchdog {
++	status = "okay";
++};
++
+ &wifi {
+ 	status = "okay";
+ 
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 2af42d0ad99e..3f7f5c99eaf8 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -2316,6 +2316,7 @@ lpasscc: lpasscc@3000000 {
+ 			clocks = <&gcc GCC_CFG_NOC_LPASS_CLK>;
+ 			clock-names = "iface";
+ 			#clock-cells = <1>;
++			status = "reserved"; /* Owned by ADSP firmware */
+ 		};
+ 
+ 		lpass_rx_macro: codec@3200000 {
+@@ -2467,6 +2468,7 @@ lpass_aon: clock-controller@3380000 {
+ 			clock-names = "bi_tcxo", "bi_tcxo_ao", "iface";
+ 			#clock-cells = <1>;
+ 			#power-domain-cells = <1>;
++			status = "reserved"; /* Owned by ADSP firmware */
+ 		};
+ 
+ 		lpass_core: clock-controller@3900000 {
+@@ -2477,6 +2479,7 @@ lpass_core: clock-controller@3900000 {
+ 			power-domains = <&lpass_hm LPASS_CORE_CC_LPASS_CORE_HM_GDSC>;
+ 			#clock-cells = <1>;
+ 			#power-domain-cells = <1>;
++			status = "reserved"; /* Owned by ADSP firmware */
+ 		};
+ 
+ 		lpass_cpu: audio@3987000 {
+@@ -2547,6 +2550,7 @@ lpass_hm: clock-controller@3c00000 {
+ 			clock-names = "bi_tcxo";
+ 			#clock-cells = <1>;
+ 			#power-domain-cells = <1>;
++			status = "reserved"; /* Owned by ADSP firmware */
+ 		};
+ 
+ 		lpass_ag_noc: interconnect@3c40000 {
+@@ -4243,6 +4247,7 @@ pdc_reset: reset-controller@b5e0000 {
+ 			compatible = "qcom,sc7280-pdc-global";
+ 			reg = <0 0x0b5e0000 0 0x20000>;
+ 			#reset-cells = <1>;
++			status = "reserved"; /* Owned by firmware */
+ 		};
+ 
+ 		tsens0: thermal-sensor@c263000 {
+@@ -5239,11 +5244,12 @@ msi-controller@17a40000 {
+ 			};
+ 		};
+ 
+-		watchdog@17c10000 {
++		watchdog: watchdog@17c10000 {
+ 			compatible = "qcom,apss-wdt-sc7280", "qcom,kpss-wdt";
+ 			reg = <0 0x17c10000 0 0x1000>;
+ 			clocks = <&sleep_clk>;
+ 			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++			status = "reserved"; /* Owned by Gunyah hyp */
+ 		};
+ 
+ 		timer@17c20000 {
 
- Documentation/devicetree/bindings/arm/qcom.yaml    |   6 +
- .../bindings/pinctrl/qcom,sc7280-pinctrl.yaml      |   4 +
- arch/arm64/boot/dts/qcom/Makefile                  |   1 +
- arch/arm64/boot/dts/qcom/pm7250b.dtsi              |  14 +-
- arch/arm64/boot/dts/qcom/pm8350c.dtsi              |   6 +
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 667 +++++++++++++++++++++
- arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi |  24 +
- arch/arm64/boot/dts/qcom/sc7280.dtsi               |   8 +-
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts  |   4 +
- drivers/nvmem/qfprom.c                             |   6 +-
- 10 files changed, 729 insertions(+), 11 deletions(-)
----
-base-commit: b3b1378016952541463ef2369da780d4f9bf02b3
-change-id: 20230818-fp5-initial-b6c8210ba9c8
-
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.42.0
 
