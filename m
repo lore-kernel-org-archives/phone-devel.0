@@ -2,61 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6657CCD5BB5
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4B7DCD5BB6
 	for <phone-devel@archiver.kernel.org>; Tue, 19 Sep 2023 12:46:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232198AbjISMqU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Sep 2023 08:46:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55932 "EHLO
+        id S232125AbjISMqV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Sep 2023 08:46:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232124AbjISMqR (ORCPT
+        with ESMTP id S232093AbjISMqS (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Sep 2023 08:46:17 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09E3E129
-        for <phone-devel@vger.kernel.org>; Tue, 19 Sep 2023 05:46:07 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-404573e6c8fso57252945e9.1
-        for <phone-devel@vger.kernel.org>; Tue, 19 Sep 2023 05:46:07 -0700 (PDT)
+        Tue, 19 Sep 2023 08:46:18 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F577138
+        for <phone-devel@vger.kernel.org>; Tue, 19 Sep 2023 05:46:09 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-52683b68c2fso6953227a12.0
+        for <phone-devel@vger.kernel.org>; Tue, 19 Sep 2023 05:46:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1695127566; x=1695732366; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1695127567; x=1695732367; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=1cayq2XwlrQqenkKdhvhc7PohXHp9znYKa41IjUAF5M=;
-        b=1jHnQ4nnifw4Tu6o8RPPr/cQxt9dmogX5YtccjTHuwNL7YhLYIL5v6HyOk7WP2Yxn2
-         XPmwVGwch5YBwGeBzjiJ2yit/yBPvI53LZ/RHPleL1Rd7PYpGLLx20cQHLCypcDA2cr7
-         /a1LtU6oDy9B2v5q/OfQ1X4y0Bnw8VSMP++8g4rHEmim6PQ3Ch7+40sNs7URuMJlteJJ
-         nzA/1POYQ7UvRnNvfvHAHYt1YzxOz8fKVw+cOWgdeF1j6MczUYbN/dnZ5Jhc2boXfRup
-         BtNTBPU2D7j1Ehk1gFd38lFHGbYXvRQpUZDIgEvpzkAKjmOLw4juM8AdP0bBzY/P9yyF
-         4FTQ==
+        bh=4Aj8Gv+tiuDZcymBcA5+44sWc7PVlwPM61yOxENISt0=;
+        b=QFvoPxcWxC4AInGhfcpr3jXInoOj9Z8yuVESonyQSvAbur0SuwG5HFwW76b4iXh/nI
+         EXqmpYPJ1UTGea6KjCCI065YeUv16qJ+DaZN9WI8s0o/jbIyCYACmt1Vz67dQZBGPBA9
+         fj0Vl22RISTwWkXiVJ878qa5QwcYbM+89JT48dSFQCex9ySu6NPEbUnomgzxJAJSJ9I9
+         w59DtG7xU10sc6do+Mx+9bMyMFCQzklR27rcpi40qQ+KhgIExicJergjAxj13KP80tJi
+         lNM1h8Zcc57ZmYq1oyktGTpRinf1Ay2niJpkS8FOVbWqDBRpHwgRwqr6k0XrLDBrs4Df
+         m8zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695127566; x=1695732366;
+        d=1e100.net; s=20230601; t=1695127567; x=1695732367;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1cayq2XwlrQqenkKdhvhc7PohXHp9znYKa41IjUAF5M=;
-        b=j/ntmjBG4HbQyK9obiu1Gu5fDixLVPAujYRJWutJunpuok3v8YjRHUfT2EYaGvtSVX
-         EcisTUy302niZzx8OeNUn6bjupS4jbi2IbBt2JEVDH+O2MR/RYS9ZyuTmKpW6k3LKdhN
-         8E5TO8e+CInvONPfL0uSLqigUeGbyv8/LIxcZWtr+Ni5nFXZTA0B5v5UBHIYgPcIa5Fn
-         KUIPhdl6+J/NOXhVjCh3semsKo1/TykxvxR+NY1JX/g3rciMLHcq6VRqLSenQ4McVdOK
-         FYSCcJQYX3FBtMx6WFsEpl7wGb2d0VAmLalPTM1xssnwqAsEW1skVHzaYz+VGkWZsKKf
-         oUAA==
-X-Gm-Message-State: AOJu0Yz73wxyu3zQ88bU9RmNra5tRxjA7H6eUK2Pi4ge/Coc1J4Yfg6U
-        6p5s2vNguy6rxf5JE3DE0c60EA==
-X-Google-Smtp-Source: AGHT+IHQmdZ3mCAQWWF0IvQWyCVEp8mSaOHrK4oyGbefs0W0x7kd31beka/YHFqu8VaqZfM7QZIPNA==
-X-Received: by 2002:a05:6000:612:b0:321:55e6:9a12 with SMTP id bn18-20020a056000061200b0032155e69a12mr4808624wrb.6.1695127566482;
-        Tue, 19 Sep 2023 05:46:06 -0700 (PDT)
+        bh=4Aj8Gv+tiuDZcymBcA5+44sWc7PVlwPM61yOxENISt0=;
+        b=evjkGUaeISWT//n27R9P2HvDOZfzFAevZpd4cAIPekOYydh1ZMy/KEf34dKSkY9lDs
+         t256ZeLxFU2y6B/SYdl8Jd5AI6k+oAEKESyveyIwMesYzlppJ8sXQSSMXvj1aJM7sE7q
+         PWI4G7ogYLxqIxOBnRTsC+1apo6Mv2KyjrNMbE3stORdNz7UHwn3ZcOM38HXvHk/QS1F
+         w/4kw2YawKndKr2h6bLIdVfyT9WMYhXtGgaFLnSy+aoFFO6p4WZ0oCjxdmQNZe3GkXUR
+         TyZu72uYdzGHHjvqLDtwluT8k0M/t8jX9KX3Z9qeITjp8e954NnrbmK0HEiR6EkG/K7z
+         x10Q==
+X-Gm-Message-State: AOJu0YyFtIIo2TSSkWnmaTImBomm6DT30nYGtR7LbHy1BlXi8QXlGrqy
+        4tG/mtFdom1JGjjjdJKpVr1sTw==
+X-Google-Smtp-Source: AGHT+IHY4XkH3n3f08uxPsLLePpLe5k2m9wL4+D7Lpa4GDsuvM4bqhqKckSMAs66C27gXJW0c+//AQ==
+X-Received: by 2002:aa7:d954:0:b0:526:9c4:bc06 with SMTP id l20-20020aa7d954000000b0052609c4bc06mr9723390eds.18.1695127567821;
+        Tue, 19 Sep 2023 05:46:07 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (static-212-193-78-212.thenetworkfactory.nl. [212.78.193.212])
-        by smtp.gmail.com with ESMTPSA id dn22-20020a05640222f600b00532c1dfe8ecsm635878edb.66.2023.09.19.05.46.05
+        by smtp.gmail.com with ESMTPSA id dn22-20020a05640222f600b00532c1dfe8ecsm635878edb.66.2023.09.19.05.46.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 05:46:06 -0700 (PDT)
+        Tue, 19 Sep 2023 05:46:07 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Tue, 19 Sep 2023 14:45:57 +0200
-Subject: [PATCH v2 3/7] arm64: dts: qcom: pm7250b: make SID configurable
+Date:   Tue, 19 Sep 2023 14:45:59 +0200
+Subject: [PATCH v2 5/7] dt-bindings: pinctrl: qcom,sc7280: Allow
+ gpio-reserved-ranges
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230919-fp5-initial-v2-3-14bb7cedadf5@fairphone.com>
+Message-Id: <20230919-fp5-initial-v2-5-14bb7cedadf5@fairphone.com>
 References: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com>
 In-Reply-To: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com>
 To:     cros-qcom-dts-watchers@chromium.org,
@@ -73,90 +74,36 @@ To:     cros-qcom-dts-watchers@chromium.org,
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-pm@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+        linux-pm@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Like other Qualcomm PMICs the PM7250B can be used on different addresses
-on the SPMI bus. Use similar defines like the PMK8350 to make this
-possible but skip the ifndef based on maintainer feedback.
+Allow the gpio-reserved-ranges property on SC7280 TLMM.
 
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/pm7250b.dtsi             | 14 +++++++-------
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts |  4 ++++
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-index e8540c36bd99..df0afe82f250 100644
---- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-@@ -39,16 +39,16 @@ trip2 {
- };
+diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml
+index 368d44ff5468..c8735ab97e40 100644
+--- a/Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml
++++ b/Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml
+@@ -41,6 +41,10 @@ properties:
+   gpio-ranges:
+     maxItems: 1
  
- &spmi_bus {
--	pmic@2 {
-+	pmic@PM7250B_SID {
- 		compatible = "qcom,pm7250b", "qcom,spmi-pmic";
--		reg = <0x2 SPMI_USID>;
-+		reg = <PM7250B_SID SPMI_USID>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 
- 		pm7250b_temp: temp-alarm@2400 {
- 			compatible = "qcom,spmi-temp-alarm";
- 			reg = <0x2400>;
--			interrupts = <0x2 0x24 0x0 IRQ_TYPE_EDGE_BOTH>;
-+			interrupts = <PM7250B_SID 0x24 0x0 IRQ_TYPE_EDGE_BOTH>;
- 			io-channels = <&pm7250b_adc ADC5_DIE_TEMP>;
- 			io-channel-names = "thermal";
- 			#thermal-sensor-cells = <0>;
-@@ -60,7 +60,7 @@ pm7250b_adc: adc@3100 {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			#io-channel-cells = <1>;
--			interrupts = <0x2 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
-+			interrupts = <PM7250B_SID 0x31 0x0 IRQ_TYPE_EDGE_RISING>;
- 
- 			channel@0 {
- 				reg = <ADC5_REF_GND>;
-@@ -141,7 +141,7 @@ channel@99 {
- 		pm7250b_adc_tm: adc-tm@3500 {
- 			compatible = "qcom,spmi-adc-tm5";
- 			reg = <0x3500>;
--			interrupts = <0x2 0x35 0x0 IRQ_TYPE_EDGE_RISING>;
-+			interrupts = <PM7250B_SID 0x35 0x0 IRQ_TYPE_EDGE_RISING>;
- 			#thermal-sensor-cells = <1>;
- 			#address-cells = <1>;
- 			#size-cells = <0>;
-@@ -159,9 +159,9 @@ pm7250b_gpios: pinctrl@c000 {
- 		};
- 	};
- 
--	pmic@3 {
-+	pmic@PM7250B_SID1 {
- 		compatible = "qcom,pm7250b", "qcom,spmi-pmic";
--		reg = <0x3 SPMI_USID>;
-+		reg = <PM7250B_SID1 SPMI_USID>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 	};
-diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-index 136e273d09a7..943d5a150b64 100644
---- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-+++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-@@ -5,6 +5,10 @@
- 
- /dts-v1/;
- 
-+/* PM7250B is configured to use SID2/3 */
-+#define PM7250B_SID 2
-+#define PM7250B_SID1 3
++  gpio-reserved-ranges:
++    minItems: 1
++    maxItems: 88
 +
- /* PMK8350 (in reality a PMK8003) is configured to use SID6 instead of 0 */
- #define PMK8350_SID 6
+   gpio-line-names:
+     maxItems: 175
  
 
 -- 
