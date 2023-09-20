@@ -2,51 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6D87C04FCE
-	for <phone-devel@archiver.kernel.org>; Wed, 20 Sep 2023 18:11:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AC82C04FE4
+	for <phone-devel@archiver.kernel.org>; Wed, 20 Sep 2023 18:54:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229677AbjITSLc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 20 Sep 2023 14:11:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58446 "EHLO
+        id S229745AbjITSyU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 20 Sep 2023 14:54:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229669AbjITSLc (ORCPT
+        with ESMTP id S229518AbjITSyU (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 20 Sep 2023 14:11:32 -0400
+        Wed, 20 Sep 2023 14:54:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D8B6D7;
-        Wed, 20 Sep 2023 11:11:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC852C433C8;
-        Wed, 20 Sep 2023 18:11:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAF62C6;
+        Wed, 20 Sep 2023 11:54:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26676C433C9;
+        Wed, 20 Sep 2023 18:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695233484;
-        bh=eBhQGHLnDBA306YDLUtLnfWfnfa686CaUaNAJLwdKnQ=;
+        s=k20201202; t=1695236054;
+        bh=otb5DM/4dhf30T5dFnYMnw7MyuNEWEkpWHoB3snPXyU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cjBssFR+sHxsHVeFelfJ9QS31m7R5ZqOWqbelESqVVyC3astpMIcQirTaHiXeJzhZ
-         Yk30FBs7I8xcxYFDp6UipAdYgVj7y7UW2l1BRaeQx9iNz3BMaH4iF2qhELX8T+6EPj
-         Dwd07GRZgBD32pU+uuDT5oL1UdF0U0a8KCsBOTiGYhpnwTM9PjkfhydyqTIPIxITF+
-         fYKR6LYuAgdzjBIXd0Yb7Kb721q2+KB9jZmRwKdZrKb33kOy2Xd0THmXmlKdhTulgr
-         g0uciVYwXr7u52Flbv69ue49A7Vzfu117RGSM2N/YJbSEkWqcHanSqLC7F/sEU0yoZ
-         NdDz1UVfqR54A==
+        b=MhubmkO7L0v45tnu09+stzCUT/fNV/OtFtzPV8j8YSjueRocNpa4Y3ESgPVAOXvOb
+         1XOf05kQpaHXhFl35oTfA4t7OSxaZbp1AoFT9CdbISs4nE7qFCOe2egbldrJATe6aA
+         WODXdTYMuURkoptVMo/Wz32NwkD0woOBrjK4V5uV8INwzP572JZ5b6fbkfyCnZqByb
+         YJqe01YJbHtGa1IE2uCsWmtnsaCCYPXm6D4r4BmDklrmvyVjl5G3nRsX3+gAxMSyIp
+         XSZj2zQLjSq8mPfS5ADNfbP7DkEEVL1N65qkwvM94O83yU6uvv+wcDW/hOBW6a/Cbn
+         zvZ6c8BAuqPHQ==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     Adam Skladowski <a39.skl@gmail.com>
-Cc:     phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+To:     cros-qcom-dts-watchers@chromium.org,
         Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        AngeloGioacchino Del Regno <kholk11@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH v3 0/7] MSM8976 PLL,RPMPD and DTS changes
-Date:   Wed, 20 Sep 2023 11:15:30 -0700
-Message-ID: <169523372598.2994310.11789786910326394347.b4-ty@kernel.org>
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Luca Weiss <luca.weiss@fairphone.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-pm@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: (subset) [PATCH v2 0/7] Initial support for the Fairphone 5 smartphone
+Date:   Wed, 20 Sep 2023 11:58:20 -0700
+Message-ID: <169523629862.3360741.11240206637939402551.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230812112534.8610-1-a39.skl@gmail.com>
-References: <20230812112534.8610-1-a39.skl@gmail.com>
+In-Reply-To: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com>
+References: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -55,24 +58,29 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-On Sat, 12 Aug 2023 13:24:43 +0200, Adam Skladowski wrote:
-> This patch series fixes introduce support for msm8976 pll,
-> also brings some adjustments and fixes domains setup and few dts nitpicks.
+On Tue, 19 Sep 2023 14:45:54 +0200, Luca Weiss wrote:
+> Add support to boot up mainline kernel on the QCM6490-based Fairphone 5
+> smartphone.
 > 
-> Changes since v1
-> ================
-> 1. Fixed few styling issues
-> 2. Changed compatibles for plls
-> 3. Added fixes: tag to first patch
+> These patches only cover a part of the functionality brought up on
+> mainline so far, with the rest needing larger dts and driver changes or
+> depend on patches that are not yet merged. I will work on sending those
+> once these base patches here have settled.
 > 
 > [...]
 
 Applied, thanks!
 
-[6/7] arm64: dts: qcom: msm8976: Split lpass region
-      commit: 31c133b4a07e3db456a7e661c96653cd65a25bc6
-[7/7] arm64: dts: qcom: msm8976: Fix ipc bit shifts
-      commit: 684277525c70f329300cc687e27248e405a4ff9e
+[1/7] arm64: dts: qcom: sc7280: Mark some nodes as 'reserved'
+      commit: 6da24ba932082bae110feb917a64bb54637fa7c0
+[3/7] arm64: dts: qcom: pm7250b: make SID configurable
+      commit: 8e2d56f64572e0432c355093a7601bde29677490
+[4/7] arm64: dts: qcom: pm8350c: Add flash led node
+      commit: bfd4412a023b2a3a2f858f2ffc13705aaeef5737
+[6/7] dt-bindings: arm: qcom: Add QCM6490 Fairphone 5
+      commit: 4b1a16d776b474345b12f834de1fd42bca226d90
+[7/7] arm64: dts: qcom: qcm6490: Add device-tree for Fairphone 5
+      commit: eee9602ad6498eee9ddab1b7eb6aede288f0b934
 
 Best regards,
 -- 
