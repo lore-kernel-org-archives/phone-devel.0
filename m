@@ -2,47 +2,51 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0783CE79A9
-	for <phone-devel@archiver.kernel.org>; Tue, 19 Sep 2023 23:03:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 43180CE79AE
+	for <phone-devel@archiver.kernel.org>; Wed, 20 Sep 2023 03:55:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbjISXDo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 19 Sep 2023 19:03:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37720 "EHLO
+        id S232547AbjITDzE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 19 Sep 2023 23:55:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232649AbjISXDo (ORCPT
+        with ESMTP id S232539AbjITDy7 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 19 Sep 2023 19:03:44 -0400
+        Tue, 19 Sep 2023 23:54:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427ABC6;
-        Tue, 19 Sep 2023 16:03:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F064FC433C9;
-        Tue, 19 Sep 2023 23:03:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0858B9;
+        Tue, 19 Sep 2023 20:54:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72111C433CA;
+        Wed, 20 Sep 2023 03:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695164616;
-        bh=/Dcw7zKC8BcBHNTeIR44kvNUH+eJPDiCfQUsI4Z5I54=;
+        s=k20201202; t=1695182093;
+        bh=GXSUaLuNK5r0XvwfaHFTrr+dslJlUGIbM/d+lmdmSAQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rCclC7fIhDJmgNDXlHqsdnjDeyHaEABcJWcMB2oy6ta2zyQ7K3TIfp0Xi/73mq5ti
-         NrCTFJGnwrvfkkl0vbIfeogl+eXNyzWiuPbXgyQpJg3TiCm/JzCCt9QlQFn6O3NOnZ
-         8rkVxX/NzgEZZtkIuG7iaJ47hnaWpksnrbaL0cS1j5ybgyfncJAgtC9Dgf5e8qImOT
-         sns4X861QhvvPXJNiuJw1wpKIu8vpAws8wilxkQ1fy0ATZZKtRNv1fWpjS2gOtHOzL
-         CEVgoXV60Fms9j8TVrogasL1Se4NGh0b8LhP3TcCM4Mtl5x97q9QJd6riCQtE6w++0
-         OOTC4kW7xY1uA==
+        b=Sjz/B+LMt+UIfdCK/yDaa1GHCRDeQ2ECYbFeeu1CZdUN9HL2Bh8B7KQXfnMg1qhGJ
+         ntID01kvozO15BOnTMXxOXfnbpa7oygg3F159pn5Klt6nFZcGqVPSuf0R1JTEFe5x3
+         DCRernp3wjLBZHGR/4CfBkedOxR/GOR2v7aUWFJgTEA4jOyA1fKzZgFnVriPZCTOIU
+         GYn5BVPi3SVwPxRH31X1s8qp9oohhejuOHVkTO+EEunNmm+xaGywOB592dggcxA0Xl
+         U0LutQNOgSfKMiEnGIcQH2j5ZcW8htQu92qDvEPJ+ujqBe+PliS0im4Grl5MBPhkmj
+         C8WPmYouYwonQ==
 From:   Bjorn Andersson <andersson@kernel.org>
 To:     Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Alexey Minnekhanov <alexeymin@postmarketos.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3] arm64: dts: qcom: sdm630: Add support for modem remoteproc
-Date:   Tue, 19 Sep 2023 16:07:28 -0700
-Message-ID: <169516485985.787935.13554174726198807178.b4-ty@kernel.org>
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Taniya Das <quic_tdas@quicinc.com>,
+        David Wronek <davidwronek@gmail.com>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        cros-qcom-dts-watchers@chromium.org
+Subject: Re: (subset) [PATCH v4 0/7] Add initial support for SM7125 and Xiaomi SM7125 platform
+Date:   Tue, 19 Sep 2023 20:58:44 -0700
+Message-ID: <169518233709.1055386.6053331761982073486.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230719093458.2668842-1-alexeymin@postmarketos.org>
-References: <20230719093458.2668842-1-alexeymin@postmarketos.org>
+In-Reply-To: <20230723190725.1619193-1-davidwronek@gmail.com>
+References: <20230723190725.1619193-1-davidwronek@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,16 +55,22 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-On Wed, 19 Jul 2023 12:34:58 +0300, Alexey Minnekhanov wrote:
-> Modem subsystem in SDM630/660 is similar to MSM8998 and
-> device tree node for it is based on the one from msm8998.dtsi.
+On Sun, 23 Jul 2023 21:05:01 +0200, David Wronek wrote:
+> This series introduces support for the Qualcomm SM7125 SoC and the
+> Xiaomi SM7125 platform.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] arm64: dts: qcom: sdm630: Add support for modem remoteproc
-      commit: 09f1642eca6eb6d25a630214098350dc02917954
+[3/7] dt-bindings: arm: qcom: Document SM7125 and xiaomi,joyeuse board
+      commit: 9b4adf37fdc0ca8cd1d14b4160e2f04b63df98e6
+[5/7] arm64: dts: qcom: pm6150: Add resin and rtc nodes
+      commit: ec053ec90c245a4efc8dda87d9207de0adf0040e
+[6/7] arm64: dts: qcom: Add SM7125 device tree
+      commit: 72fbf05149bd451e7222c2ed1e3823972f19df9c
+[7/7] arm64: dts: qcom: Add support for the Xiaomi SM7125 platform
+      commit: 7d65d4b7d70fb9560ce9baaf4219fb24646bd578
 
 Best regards,
 -- 
