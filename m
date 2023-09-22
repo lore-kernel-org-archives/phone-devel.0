@@ -2,108 +2,80 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2ABD4E7D0A9
-	for <phone-devel@archiver.kernel.org>; Thu, 21 Sep 2023 19:12:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E20CE7D0B7
+	for <phone-devel@archiver.kernel.org>; Fri, 22 Sep 2023 00:35:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229506AbjIUTMk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 21 Sep 2023 15:12:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42562 "EHLO
+        id S229503AbjIVAgC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Thu, 21 Sep 2023 20:36:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231482AbjIUTE4 (ORCPT
+        with ESMTP id S229458AbjIVAgB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 21 Sep 2023 15:04:56 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EC0F53EEC
-        for <phone-devel@vger.kernel.org>; Thu, 21 Sep 2023 11:45:29 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-9a9d82d73f9so157874066b.3
-        for <phone-devel@vger.kernel.org>; Thu, 21 Sep 2023 11:45:29 -0700 (PDT)
+        Thu, 21 Sep 2023 20:36:01 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC49F5;
+        Thu, 21 Sep 2023 17:35:55 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2c00b37ad84so27861741fa.0;
+        Thu, 21 Sep 2023 17:35:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1695321928; x=1695926728; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wT6/A5jKUKPNqREpSjfwwNBvJsp9RJseHUsd7KRCJ5w=;
-        b=05NZ35LVScgpGKp0/k0L1rkjii2pPlwvEBCpx2ralUl1tNsuuIahvFNT4uwySmF8eg
-         v1Z7FAPGLFFA3F/VFEBa+EA2rPQp587ubgle+G0a7F/LWb3XXDvKxl5ZSCqk5gTQuTfC
-         COXeC3FTpjVq2NHn7HLpz8giRfHKg650/xOBS1JXUMepnPmC4LKhrzJR0yVnVDxO+zAl
-         FEBrZQQUHKpZRtQLag8Yt8JrquYF4VLFUs3Qkmfo7RaoF1NlC8CmkTeJFrKgqat1eyBA
-         qf2hjiIMi47Kkbi9Cgk/DF1M0ABSJsBTzzyCk5WILq7vXPDA/wz+f2BARJrDaFokABCr
-         Hfvg==
+        d=gmail.com; s=20230601; t=1695342953; x=1695947753; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pcgEpxf6nFpDc1AoWBX1NbEg1wTZhjC9vC9cuLFntGk=;
+        b=bP4VmE/yFI4vZJuXrzG/dTfW722v32fqJ01fOeyJGWPQRhdLLZcF8GdGCDtrA/A0Ap
+         eOxx5sBxTu7FUM3KXH05jHHIG6bpBHg+MamyPSgGRVqhTabdMgefO5ZbITa2EcVRxxze
+         VMR4Hf3YNVvQK84aBqQfXqmet/QqsYR/+5bj63oy2ARMIH/LbQ9FjR9xdmsg8q9+5wZX
+         Mo8UuHQXOrilQBm7cr89IzkSwVS8mBsebqetQaNQ8TR7CmcR0FsSvhFmQv8vAb+p1v4Y
+         X4bnMq8Tsz7p4ElxBYg5vWHubTsyadrsrqa7ATKSzaAAgHO0vkf8tJIJJTj+HixXN0fi
+         Ou6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695321928; x=1695926728;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1695342953; x=1695947753;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=wT6/A5jKUKPNqREpSjfwwNBvJsp9RJseHUsd7KRCJ5w=;
-        b=UYwZuAnHKgbkjPKBL2XzTgERGB6G8pANpg6eX9jZS6osRgntIbIm0nrPe0PB1mER4z
-         9dTM847jkxCVAtUCbZAK3n13hquC1gV4r+/CrMO1DvZFEU4Yku1634mf4LByCUbf2JKH
-         vgz1m4/gCfy254vTLSJNItF33nxx3u9msFx+1irEJpAC6MlZh1wBA1QsTQmzVOkI9QyT
-         TPOFL2zz40dAaQY3r8vl7/wRMJZjXu5DNZ1cUGd0OMQ1ofozJNi1tzrpPLfloHWYPALb
-         fPbsxiqXGLvEjGXQ3BZ0HOTY4D0ruNaj9J3AZ/o0r3WgaUVf2H9Q9Me1PLheNkuqrHKV
-         o34Q==
-X-Gm-Message-State: AOJu0Yx7cfgAEzkxkFU6N17Ah5kAggZElP2qV8ZObLonYQpG0UWHuCik
-        MfJjUjnEiHhOlkjWYyYwXOzwwoTBFLaZ1ssFdMm97g==
-X-Google-Smtp-Source: AGHT+IGieRqnzeLuaUx6Ie7RXs8JxfkdBUmowjxYl2mDxddATi1AGsiIJ7LQSmc6+cCJVTz0fUr3Aw==
-X-Received: by 2002:a2e:8696:0:b0:2ba:18e5:1064 with SMTP id l22-20020a2e8696000000b002ba18e51064mr3815918lji.14.1695278048481;
-        Wed, 20 Sep 2023 23:34:08 -0700 (PDT)
-Received: from otso.local (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id z25-20020aa7c659000000b00530ba0fd672sm367971edr.75.2023.09.20.23.34.07
+        bh=pcgEpxf6nFpDc1AoWBX1NbEg1wTZhjC9vC9cuLFntGk=;
+        b=U/lEXPxmwL0mxeIG5E8LC+vexqnWflYQXUUaumYdPbS6apT+nnUcofO4UoWCVIXAU1
+         0eVZwInILYlqSyBfcPyoh6z3lPa415v0PGUXKoh+pn0v6UZerjXhxTEJN3mg0BcdS8B0
+         7+a49D23fY4FJ0PwWgRCUC2V2l6AHlTCHd+EFzjVXERBGCE5wlEFt3KjJ564op6ZWSHf
+         EymniS3vqBpGAyPXRPm2qSjEQXrc3scLFcrCu7Bvff8JreRqTmXM7My9lFfjb2yvdtnK
+         cWsbJdbd+ppdCuSaq7kw3FbNByhJlP5dSNOzXoTxkjSlrGRQeh2Ya3+ATJaY/0lxfmtA
+         L8sA==
+X-Gm-Message-State: AOJu0YycTfgQrbghQXnPGxTJOF20S5iN2QDuWb8O2s2Z6+RfKLI6CNpT
+        ZhFQZ4Ah/myIHWIECzZZts42LaMNKMY=
+X-Google-Smtp-Source: AGHT+IGH/FfccntZ6SNaaAn/GWzo7C23wHsPYmFcJSIYjoNSGJSSL4IrSjXHAakui0LRqDfkJhDUjQ==
+X-Received: by 2002:a2e:9295:0:b0:2b6:dc55:c3c7 with SMTP id d21-20020a2e9295000000b002b6dc55c3c7mr6360106ljh.20.1695342953141;
+        Thu, 21 Sep 2023 17:35:53 -0700 (PDT)
+Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
+        by smtp.gmail.com with ESMTPSA id j23-20020a2e3c17000000b002bff365c7bfsm615462lja.35.2023.09.21.17.35.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Sep 2023 23:34:08 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Thu, 21 Sep 2023 08:34:02 +0200
-Subject: [PATCH] ARM: dts: qcom: sdx65-mtp: Specify PM7250B SID to use
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230921-pm7250b-sid-fixup-v1-1-231c1a65471f@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIANnjC2UC/x2MQQqAIBAAvxJ7bkFXJOwr0aFsqz1kohRB+Pek4
- zDMvJA5CWfomxcS35LlDBV024Dfp7AxylIZSJFRjjTGoyOrZsyy4CrPFVF5Y73x1hlNULuYuIr
- /OYylfA4JhdVjAAAA
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
+        Thu, 21 Sep 2023 17:35:52 -0700 (PDT)
+From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+To:     linux-arm-msm@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.12.3
+        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] Add rpm-master-stats nodes for MSM8226 and MSM8974
+Date:   Fri, 22 Sep 2023 03:35:31 +0300
+Message-Id: <20230922003533.107835-1-matti.lehtimaki@gmail.com>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Now that the pm7250b.dtsi can be configured to be on a different SID, we
-also need to specify it for this dts file. Set it to the SID 2/3 like it
-was before commit 8e2d56f64572 ("arm64: dts: qcom: pm7250b: make SID
-configurable").
+Add rpm-master-stats nodes and the required RPM MSG RAM slices
+for MSM8226 and MSM8974.
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm/boot/dts/qcom/qcom-sdx65-mtp.dts | 4 ++++
- 1 file changed, 4 insertions(+)
+Matti Lehtimäki (2):
+  ARM: qcom: msm8226: Add rpm-master-stats node
+  ARM: qcom: msm8974: Add rpm-master-stats node
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-sdx65-mtp.dts b/arch/arm/boot/dts/qcom/qcom-sdx65-mtp.dts
-index fcf1c51c5e7a..9649c859a2c3 100644
---- a/arch/arm/boot/dts/qcom/qcom-sdx65-mtp.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-sdx65-mtp.dts
-@@ -4,6 +4,10 @@
-  */
- /dts-v1/;
- 
-+/* PM7250B is configured to use SID2/3 */
-+#define PM7250B_SID 2
-+#define PM7250B_SID1 3
-+
- #include "qcom-sdx65.dtsi"
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
- #include <arm64/qcom/pmk8350.dtsi>
+ arch/arm/boot/dts/qcom/qcom-msm8226.dtsi | 32 ++++++++++++++++++++++++
+ arch/arm/boot/dts/qcom/qcom-msm8974.dtsi | 32 ++++++++++++++++++++++++
+ 2 files changed, 64 insertions(+)
 
----
-base-commit: 7fc7222d9680366edeecc219c21ca96310bdbc10
-change-id: 20230921-pm7250b-sid-fixup-0c35c3c59312
-
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.39.2
 
