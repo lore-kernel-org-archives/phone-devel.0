@@ -2,28 +2,28 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 05359CD4843
-	for <phone-devel@archiver.kernel.org>; Fri, 22 Sep 2023 16:35:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5777FCD4848
+	for <phone-devel@archiver.kernel.org>; Fri, 22 Sep 2023 16:43:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230373AbjIVQfq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 22 Sep 2023 12:35:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54746 "EHLO
+        id S232770AbjIVQnT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 22 Sep 2023 12:43:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229623AbjIVQfl (ORCPT
+        with ESMTP id S232556AbjIVQnL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 22 Sep 2023 12:35:41 -0400
+        Fri, 22 Sep 2023 12:43:11 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 246FC114;
-        Fri, 22 Sep 2023 09:35:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A59D119E;
+        Fri, 22 Sep 2023 09:43:03 -0700 (PDT)
 Received: from g550jk.localnet (k10064.upc-k.chello.nl [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 2EA7DD0F4B;
-        Fri, 22 Sep 2023 16:35:32 +0000 (UTC)
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id A5267CFADA;
+        Fri, 22 Sep 2023 16:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1695400532; bh=Trik2Fp3cY2CgD0hfjMvGBShjwznm5mwm8ZrD31Rg80=;
+        t=1695400981; bh=0b9u8zcILOem+66IO8g6cH96H5GxmSzUl5aFzzdzuW8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=giDUjNsSKjxev//ztHAX9kkPdkuwYheyNNlkpF/jVatsZ5aFJkxSu9xaMq2CZ5+he
-         nLInojaidcckO2Mv36MboCSDCBC61Pe8AsLPh9GERGk+JtQ53J5ezw9qhr8Cs9e60L
-         TU8ZTXYgVHV51G4iy59TJIFtYeMUFh2dN5YIUqrA=
+        b=XrjPV40DalNTQrJ6fdCZWFTsRz5xOS/Oi9jYxZnQ7usBvRV24cXlwMyJUYiIOSqIi
+         odsYwrrzlH3jVMP/5WtZqZTbzW1CBScU8jlzbn80F1xPr6S0/QB3c/3Ff1Ryd1vxhV
+         WZAmh9bYYzYg2RAh8OoyZVwrne/5aCTaUeujWOIQ=
 From:   Luca Weiss <luca@z3ntu.xyz>
 To:     linux-arm-msm@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
@@ -37,12 +37,12 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Matti =?ISO-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>
-Subject: Re: [PATCH 1/2] ARM: qcom: msm8226: Add rpm-master-stats node
-Date:   Fri, 22 Sep 2023 18:35:31 +0200
-Message-ID: <5709950.DvuYhMxLoT@z3ntu.xyz>
-In-Reply-To: <20230922003533.107835-2-matti.lehtimaki@gmail.com>
+Subject: Re: [PATCH 2/2] ARM: qcom: msm8974: Add rpm-master-stats node
+Date:   Fri, 22 Sep 2023 18:43:00 +0200
+Message-ID: <4510576.LvFx2qVVIh@z3ntu.xyz>
+In-Reply-To: <20230922003533.107835-3-matti.lehtimaki@gmail.com>
 References: <20230922003533.107835-1-matti.lehtimaki@gmail.com>
- <20230922003533.107835-2-matti.lehtimaki@gmail.com>
+ <20230922003533.107835-3-matti.lehtimaki@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="iso-8859-1"
@@ -50,31 +50,31 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Freitag, 22. September 2023 02:35:32 CEST Matti Lehtim=E4ki wrote:
-> Add rpm-master-stats node for MSM8226 and the required RPM MSG RAM
+On Freitag, 22. September 2023 02:35:33 CEST Matti Lehtim=E4ki wrote:
+> Add rpm-master-stats node for MSM8974 and the required RPM MSG RAM
 > slices for memory access.
 >=20
 > Signed-off-by: Matti Lehtim=E4ki <matti.lehtimaki@gmail.com>
 
-Makes sense from what I can see in msm-3.10 msm8226-v2-pm.dtsi and the driv=
-er=20
-code.
+Like in the msm8226 patch, also here this appears to match msm8974-v2-pm.dt=
+si=20
+/ msm8974pro-pm.dtsi from msm-3.4 kernel.
 
 Reviewed-by: Luca Weiss <luca@z3ntu.xyz>
 
 > ---
->  arch/arm/boot/dts/qcom/qcom-msm8226.dtsi | 32 ++++++++++++++++++++++++
+>  arch/arm/boot/dts/qcom/qcom-msm8974.dtsi | 32 ++++++++++++++++++++++++
 >  1 file changed, 32 insertions(+)
 >=20
-> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
-> b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi index 44f3f0127fd7..98cc5ea637=
-e1
+> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi
+> b/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi index 706fef53767e..0bc2e66d15=
+b1
 > 100644
-> --- a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
-> +++ b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
-> @@ -56,6 +56,18 @@ pmu {
+> --- a/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi
+> +++ b/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi
+> @@ -116,6 +116,18 @@ pmu {
 >  	rpm: remoteproc {
->  		compatible =3D "qcom,msm8226-rpm-proc", "qcom,rpm-proc";
+>  		compatible =3D "qcom,msm8974-rpm-proc", "qcom,rpm-proc";
 >=20
 > +		master-stats {
 > +			compatible =3D "qcom,rpm-master-stats";
@@ -91,7 +91,7 @@ e1
 >  		smd-edge {
 >  			interrupts =3D <GIC_SPI 168 IRQ_TYPE_EDGE_RISING>;
 >  			qcom,ipc =3D <&apcs 8 0>;
-> @@ -742,6 +754,26 @@ sram@fc190000 {
+> @@ -1067,6 +1079,26 @@ gcc: clock-controller@fc400000 {
 >  		rpm_msg_ram: sram@fc428000 {
 >  			compatible =3D "qcom,rpm-msg-ram";
 >  			reg =3D <0xfc428000 0x4000>;
@@ -117,7 +117,7 @@ e1
 > +			};
 >  		};
 >=20
->  		tcsr_mutex: hwlock@fd484000 {
+>  		bimc: interconnect@fc380000 {
 
 
 
