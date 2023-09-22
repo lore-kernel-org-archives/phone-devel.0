@@ -2,102 +2,88 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB502E7D0BB
-	for <phone-devel@archiver.kernel.org>; Fri, 22 Sep 2023 01:12:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B56FCD4843
+	for <phone-devel@archiver.kernel.org>; Fri, 22 Sep 2023 16:24:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229572AbjIVBMZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 21 Sep 2023 21:12:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57162 "EHLO
+        id S230445AbjIVQY7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 22 Sep 2023 12:24:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbjIVBMY (ORCPT
+        with ESMTP id S231912AbjIVQYx (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 21 Sep 2023 21:12:24 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB9DFCC;
-        Thu, 21 Sep 2023 18:12:18 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2c00b37ad84so28144111fa.0;
-        Thu, 21 Sep 2023 18:12:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695345137; x=1695949937; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Rq82wx/J2BnMt9Mh1FLCBxp+NcwkPBk3LgXjrklglE=;
-        b=fNBqvxnKsSSWVewrSz8ANnaRPSA+vYHsGWDqzpjqBx1U34KhT38p8vgh+qVUyDfR3b
-         j0W8Vf8EbBssackNH64pV7Hjl0d+iU8aMe6p1ran1AjApv0Su09SAYLDtF9BJWCdWIpZ
-         6xgoFLPvqaRci4mdEOwWHsqFsKuXNcn9VdcLvOpAsu+GvuC47ty9rblxhtpGPtiRxjU3
-         ZqihiLJ1LjeKIlvC4RNoDbYixAwWVs2a/G85ZGVC8wDapvrsJMK3bIwuqDKoHNpNMChc
-         MLYXi7XJgdnXoQp8c0g90GijfPAqP12MD1/yHnW8qZ2JV9IP3i17TAtsoElm96MRgOf7
-         rR+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695345137; x=1695949937;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+Rq82wx/J2BnMt9Mh1FLCBxp+NcwkPBk3LgXjrklglE=;
-        b=FcdFch78L+OB8wbo39o6hCQ2nru/Ep08DlUAoO7lVcCPRuO3Vob70hlM0432Nsq+wA
-         LqdUEhL9pVuahPZv87r6ttWqfK5AhWrMeFMedU7nh9jIHWaE5GHdEB7p/4feek3vteBB
-         dm9WYP10zoTIAGwhLoZgdCm+52jlsgbXa7vJuwAFByS9T3RELfkj93eUNq2Qc9h+HsdA
-         np+pQWlVVKr4gE+zaztiWDLuOEE7pWma8u18d+xVz7eryquCcYcyd3ZkuO3+FsfOulru
-         s9zL8n2UgtHZBH0KdipYI+1fMI0M02jt3wLCZrIMkM+aOMkgxMH1590RO1Q1d/JJ9hLL
-         +SWg==
-X-Gm-Message-State: AOJu0YylfA5FLnxVRhksmSj5JW+uDTan/Y/9EMMZxflgP0SFdBfGGLKc
-        A8fDjR1SPh9LhOYsdv/RYbTFL9mvQVe8Dw==
-X-Google-Smtp-Source: AGHT+IHcUyeJmxxV2sQ3q19siVjabbSs1LW6kJYyDzbwc1nSxLC9hL0WXQXDMCU3cO/jSZxEAf4CWw==
-X-Received: by 2002:a2e:98cb:0:b0:2c0:2124:7a06 with SMTP id s11-20020a2e98cb000000b002c021247a06mr6138901ljj.45.1695345136772;
-        Thu, 21 Sep 2023 18:12:16 -0700 (PDT)
-Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
-        by smtp.gmail.com with ESMTPSA id l6-20020a2e7006000000b002b6e77e87fcsm609446ljc.68.2023.09.21.18.12.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Sep 2023 18:12:16 -0700 (PDT)
-From:   =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-To:     linux-arm-msm@vger.kernel.org
+        Fri, 22 Sep 2023 12:24:53 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21484196;
+        Fri, 22 Sep 2023 09:24:45 -0700 (PDT)
+Received: from g550jk.localnet (k10064.upc-k.chello.nl [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 03FC9D0F4B;
+        Fri, 22 Sep 2023 16:24:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1695399884; bh=vz9aLGwD2omT0ckR2F/Kh+4o0j42RWhh8kqv+jYgp98=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=CWQ9NOtYU+KW5FdqRC+Rn3+KpfTfUDLrZ9kWZBjEN9Pzuid3bdJ37+4+Fqm2EB2JU
+         QvgITVOM8HmgEPI15JDPKXg83ZeBxmCxgj7Jja8s6T1WdMaZ7F/YjESuTTH9sTMSx2
+         Dy4bumrBIjRAFDdb8GsCW/NLgZkqiTxuOaIFu5+k=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+        Matti =?ISO-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: qcom: apq8026-samsung-matisse-wifi: Fix inverted hall sensor
-Date:   Fri, 22 Sep 2023 04:12:11 +0300
-Message-Id: <20230922011211.115234-1-matti.lehtimaki@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        linux-kernel@vger.kernel.org,
+        Matti =?ISO-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>
+Subject: Re: [PATCH] ARM: dts: qcom: apq8026-samsung-matisse-wifi: Fix inverted hall
+ sensor
+Date:   Fri, 22 Sep 2023 18:24:43 +0200
+Message-ID: <2696920.mvXUDI8C0e@z3ntu.xyz>
+In-Reply-To: <20230922011211.115234-1-matti.lehtimaki@gmail.com>
+References: <20230922011211.115234-1-matti.lehtimaki@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Fix hall sensor GPIO polarity and also allow disabling the sensor.
-Remove unneeded interrupt.
+On Freitag, 22. September 2023 03:12:11 CEST Matti Lehtim=E4ki wrote:
+> Fix hall sensor GPIO polarity and also allow disabling the sensor.
+> Remove unneeded interrupt.
+>=20
+> Fixes: f15623bda1dc ("ARM: dts: qcom: Add support for Samsung Galaxy Tab 4
+> 10.1 (SM-T530)")
+> Signed-off-by: Matti Lehtim=E4ki <matti.lehtimaki@gmail.com>
 
-Fixes: f15623bda1dc ("ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 10.1 (SM-T530)")
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
----
- arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Reviewed-by: Luca Weiss <luca@z3ntu.xyz>
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts b/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts
-index 884d99297d4c..f516e0426bb9 100644
---- a/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts
-@@ -45,11 +45,11 @@ gpio-hall-sensor {
- 
- 		event-hall-sensor {
- 			label = "Hall Effect Sensor";
--			gpios = <&tlmm 110 GPIO_ACTIVE_HIGH>;
--			interrupts = <&tlmm 110 IRQ_TYPE_EDGE_FALLING>;
-+			gpios = <&tlmm 110 GPIO_ACTIVE_LOW>;
- 			linux,input-type = <EV_SW>;
- 			linux,code = <SW_LID>;
- 			debounce-interval = <15>;
-+			linux,can-disable;
- 			wakeup-source;
- 		};
- 	};
--- 
-2.39.2
+> ---
+>  arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts
+> b/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts index
+> 884d99297d4c..f516e0426bb9 100644
+> --- a/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts
+> +++ b/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts
+> @@ -45,11 +45,11 @@ gpio-hall-sensor {
+>=20
+>  		event-hall-sensor {
+>  			label =3D "Hall Effect Sensor";
+> -			gpios =3D <&tlmm 110 GPIO_ACTIVE_HIGH>;
+> -			interrupts =3D <&tlmm 110 IRQ_TYPE_EDGE_FALLING>;
+> +			gpios =3D <&tlmm 110 GPIO_ACTIVE_LOW>;
+>  			linux,input-type =3D <EV_SW>;
+>  			linux,code =3D <SW_LID>;
+>  			debounce-interval =3D <15>;
+> +			linux,can-disable;
+>  			wakeup-source;
+>  		};
+>  	};
+
+
+
 
