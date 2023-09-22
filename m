@@ -2,93 +2,155 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DC81CD4844
-	for <phone-devel@archiver.kernel.org>; Fri, 22 Sep 2023 16:56:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AEADCD4847
+	for <phone-devel@archiver.kernel.org>; Fri, 22 Sep 2023 16:57:28 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230166AbjIVQ43 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 22 Sep 2023 12:56:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54094 "EHLO
+        id S232489AbjIVQ5b (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 22 Sep 2023 12:57:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232415AbjIVQ40 (ORCPT
+        with ESMTP id S230443AbjIVQ50 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 22 Sep 2023 12:56:26 -0400
+        Fri, 22 Sep 2023 12:57:26 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B71E8198;
-        Fri, 22 Sep 2023 09:56:19 -0700 (PDT)
-Received: from [192.168.178.23] (k10064.upc-k.chello.nl [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id E0CFDD0F53;
-        Fri, 22 Sep 2023 16:55:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84DFB198;
+        Fri, 22 Sep 2023 09:57:18 -0700 (PDT)
+Received: from g550jk.localnet (k10064.upc-k.chello.nl [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 01F29CFADA;
+        Fri, 22 Sep 2023 16:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1695401748; bh=X0qHRPoLMOxnQvNTYqWxzwszdU93Rpm9tgDuGSYM6ZM=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=xJV5IO0BHfjForF/fu7DKg7FrKJkm3SoDR78oqY1nFNpBHWKxtrN9Grq6DAY70QM2
-         +bbEfAGRzW0FgtxIrPUisiP8VqmQh0Os1Enpu0ehSHFUA/LTTHe5T0hFQ2Ofg0XNTb
-         qfzd9to9qT6VgEYhomcq3w3QBNY+6CO/C/BADhF0=
+        t=1695401807; bh=rK5mAbbiQpqlLCWKbud4SA+Xd793oMxnhhSEUiqVv/w=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=TaNlayt6gRWpSNQ0zSytpOvDi8n403zBwEqlSZfulE94+TaduxD2u4h1t+k0+5vQq
+         0SA9PpSvKSoHvNRP9XzPySVYsbJ1EARl00BFMI3t5e1p59bWQDmwu+8GoyuRxuWp2D
+         gMjmQx2UVwyFVFM2G9Ve9Q1Dm1aXGLmZQ7JlWQLE=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Fri, 22 Sep 2023 18:55:12 +0200
-Subject: [PATCH v2 1/3] dt-bindings: pinctrl: qcom,msm8226: Add blsp_i2c6
- function
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230922-msm8226-i2c6-v2-1-3fb55c47a084@z3ntu.xyz>
-References: <20230922-msm8226-i2c6-v2-0-3fb55c47a084@z3ntu.xyz>
-In-Reply-To: <20230922-msm8226-i2c6-v2-0-3fb55c47a084@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1299; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=X0qHRPoLMOxnQvNTYqWxzwszdU93Rpm9tgDuGSYM6ZM=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlDccQAOOjIIixL9TPZtAThpL4kvoT6rE8z0wgN
- kOSnZV3YF+JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZQ3HEAAKCRBy2EO4nU3X
- Vju/D/9pwdg6ip6qbgk0hAq3itmbmv9SUJnAWCFphTCtqhgk5xBKN76Wjyjh4bMQT+F/pB/YfMJ
- rbKfqBMmYbfs4+F5QsIgxd+30V2FeQO1RMKwgtuBo6Mp9NT7xbYqxr04jlFWZO6yMhoaOmd1lLb
- T80Q8hJPfmV6z8zVVhkdPp4XMDlW1ajrp6d1L8tuVJvA7675YxQmjLCmLz2Z0FyGjRZfor0NvQs
- up68hUZYmM0AI4D0r61LcgwzEeN3PynGQEXE8WuHn0gA7ZrOhrpCmyJgkgGpWw5inR+8Qec8GwF
- l+L/OBWWs9beQk9tA9+EwMCN6AmW0NCcve4ZNzt4V2r2BJ9M+v1f3I1mptZp/Md4BlnI8fM2bKs
- G7EZBWV4faj3TBsn2DQZEXj4VicNXVSd2+YD2CMMhlRP/0+wn7aSA64RkB7zNAc2bkQKqk5EWBY
- mA0LdgyFCI8PIppNWYknLHGCR8H6yX46fQqVgjJMxPm2DzdHQFTsZtIOAWEqiA3O+1VktjB/Rb4
- Usn4xgF9iLXo82GKPKyMYSwfnjrwtMwxVeRvdgl320AB0xulF2ppYic7mYICc0WSqd643ohtf3U
- NptN3RisfPZcWBIlC3yDm6mU4eDy/EcZ/aAQTdXyas2fd7/7em/zlwsYIAYXfvnd6O/YCRlgGnO
- gQHUR/o0lF4M/Sg==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+        Eduardo Valentin <edubezval@gmail.com>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Rajendra Nayak <quic_rjendra@quicinc.com>,
+        Rob Herring <robh@kernel.org>,
+        Andy Gross <andy.gross@linaro.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Craig Tatlor <ctatlor97@gmail.com>
+Subject: Re: [PATCH v2] ARM: dts: qcom: msm8974: correct qfprom node size
+Date:   Fri, 22 Sep 2023 18:56:46 +0200
+Message-ID: <4831735.GXAFRqVoOG@z3ntu.xyz>
+In-Reply-To: <12394955.O9o76ZdvQC@z3ntu.xyz>
+References: <20230130-msm8974-qfprom-v2-1-3839cf41d9ee@z3ntu.xyz>
+ <ff6fwomoik6kz4jtbm5jac7jahrtcia5fb6dj5ykxg7xt574sn@ti42sevqj6pk>
+ <12394955.O9o76ZdvQC@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the blsp_i2c6 function that can be found on some pins.
+On Sonntag, 6. August 2023 12:47:51 CEST Luca Weiss wrote:
+> Hi Bjorn,
+> 
+> On Montag, 31. Juli 2023 23:45:21 CEST Bjorn Andersson wrote:
+> > On Thu, Jun 15, 2023 at 08:20:41PM +0200, Konrad Dybcio wrote:
+> > > On 15.06.2023 20:17, Luca Weiss wrote:
+> > > > From: Craig Tatlor <ctatlor97@gmail.com>
+> > > > 
+> > > > The qfprom actually has size 0x3000, so adjust the reg.
+> > > > 
+> > > > Note that the non-ECC-corrected qfprom can be found at 0xfc4b8000
+> > > > (-0x4000). The current reg points to the ECC-corrected qfprom block
+> > > > which should have equivalent values at all offsets compared to the
+> > > > non-corrected version.
+> > > > 
+> > > > [luca@z3ntu.xyz: extract to standalone patch and adjust for review
+> > > > comments]
+> > > > 
+> > > > Fixes: c59ffb519357 ("arm: dts: msm8974: Add thermal zones, tsens and
+> > > > qfprom nodes") Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
+> > > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > > > ---
+> > > 
+> > > Not sure of the actual size of the region, maybe Bjorn can help..
+> > > 
+> > > Downstream 3.10 suggests 0x60F0, 0x20F0 after adjusting for the ECC
+> > > offset
+> > 
+> > There is indeed 0x3000 bytes until the next region, but afaict the
+> > corrected ECC values only cover the first 0x800 bytes thereof.
+> > 
+> > Can you please let me know if this patch fixes a problem, or just
+> > makes the numbers look better?
+> 
+> Initially this patch came from a different direction, to make space to use
+> the PVS bits for cpufreq. Since Konrad said in earlier revisions that I
+> should always use the +0x4000 space for the ECC-corrected variant I've
+> switched to that.
+> 
+> If you think it's not useful to have the qfprom size reflect the actual
+> size, we can also drop this patch since I don't think it's actually
+> necessary for anything that I have lying around in some branches.
+> 
+> I think I've just sent the current patch to make sure the hardware
+> description (dts) is as accurate as possible, but of course since any info
+> on Qualcomm is very restricted it could also be a bit wrong.
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- Documentation/devicetree/bindings/pinctrl/qcom,msm8226-pinctrl.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hi Bjorn,
 
-diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,msm8226-pinctrl.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,msm8226-pinctrl.yaml
-index 9efb76509580..a602bf0d27fb 100644
---- a/Documentation/devicetree/bindings/pinctrl/qcom,msm8226-pinctrl.yaml
-+++ b/Documentation/devicetree/bindings/pinctrl/qcom,msm8226-pinctrl.yaml
-@@ -67,8 +67,8 @@ $defs:
-           Specify the alternative function to be configured for the specified
-           pins. Functions are only valid for gpio pins.
-         enum: [ gpio, cci_i2c0, blsp_uim1, blsp_uim2, blsp_uim3, blsp_uim5,
--                blsp_i2c1, blsp_i2c2, blsp_i2c3, blsp_i2c4, blsp_i2c5, blsp_spi1,
--                blsp_spi2, blsp_spi3, blsp_spi5, blsp_uart1, blsp_uart2,
-+                blsp_i2c1, blsp_i2c2, blsp_i2c3, blsp_i2c4, blsp_i2c5, blsp_i2c6,
-+                blsp_spi1, blsp_spi2, blsp_spi3, blsp_spi5, blsp_uart1, blsp_uart2,
-                 blsp_uart3, blsp_uart4, blsp_uart5, cam_mclk0, cam_mclk1,
-                 gp0_clk, gp1_clk, sdc3, wlan ]
- 
+this patch is still lying in my inbox. Do you think it's correct or incorrect 
+- so should we drop it?
 
--- 
-2.42.0
+Regards
+Luca
+
+> 
+> Regards
+> Luca
+> 
+> > Regards,
+> > Bjorn
+> > 
+> > > Konrad
+> > > 
+> > > > Changes in v2:
+> > > > - Keep base offset but expand reg from 0x1000 to 0x3000 (Konrad)
+> > > > - Link to v1:
+> > > > https://lore.kernel.org/r/20230130-msm8974-qfprom-v1-1-975aa0e5e083@z3
+> > > > n
+> > > > tu.xyz ---
+> > > > 
+> > > >  arch/arm/boot/dts/qcom-msm8974.dtsi | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/arch/arm/boot/dts/qcom-msm8974.dtsi
+> > > > b/arch/arm/boot/dts/qcom-msm8974.dtsi index 7ed0d925a4e9..3156fe25967f
+> > > > 100644
+> > > > --- a/arch/arm/boot/dts/qcom-msm8974.dtsi
+> > > > +++ b/arch/arm/boot/dts/qcom-msm8974.dtsi
+> > > > @@ -1194,7 +1194,7 @@ restart@fc4ab000 {
+> > > > 
+> > > >  		qfprom: qfprom@fc4bc000 {
+> > > >  		
+> > > >  			compatible = "qcom,msm8974-qfprom",
+> 
+> "qcom,qfprom";
+> 
+> > > > -			reg = <0xfc4bc000 0x1000>;
+> > > > +			reg = <0xfc4bc000 0x3000>;
+> > > > 
+> > > >  			#address-cells = <1>;
+> > > >  			#size-cells = <1>;
+> > > > 
+> > > > ---
+> > > > base-commit: 858fd168a95c5b9669aac8db6c14a9aeab446375
+> > > > change-id: 20230130-msm8974-qfprom-619c0e8f26eb
+> > > > 
+> > > > Best regards,
+
+
+
 
