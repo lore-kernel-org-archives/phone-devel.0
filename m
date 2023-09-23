@@ -2,101 +2,112 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB396CE7A89
-	for <phone-devel@archiver.kernel.org>; Sat, 23 Sep 2023 12:13:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C745CE7A88
+	for <phone-devel@archiver.kernel.org>; Sat, 23 Sep 2023 13:09:57 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231405AbjIWMNS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 23 Sep 2023 08:13:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53956 "EHLO
+        id S231688AbjIWNKB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 23 Sep 2023 09:10:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231343AbjIWMNR (ORCPT
+        with ESMTP id S231410AbjIWNKA (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 23 Sep 2023 08:13:17 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D63A3197;
-        Sat, 23 Sep 2023 05:13:11 -0700 (PDT)
-Received: from g550jk.localnet (k10064.upc-k.chello.nl [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 5560ED0F49;
-        Sat, 23 Sep 2023 12:12:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1695471160; bh=Xj/Uw7m2O7QMa0IkU2qWDtz5/lenB2nNjxkSTe8qFYs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=sa0RpBTjd2XsuLTx3H6lYlWvkLTKLXQ/GottY4arpVDzHeWt9NwX9o9uwVfinJZeQ
-         oWfv1qtdXQRTz18dQDCBKNkV8HH5qevgk+dsE2UEmaB6/d4i+OMu29jL3pRLIh0smR
-         jHxhC1dL+Zt0KFR2RBncSdEf7/XctTNd/JO7PRuk=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Sat, 23 Sep 2023 09:10:00 -0400
+Received: from smtprelay03.ispgateway.de (smtprelay03.ispgateway.de [80.67.18.15])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8B24199;
+        Sat, 23 Sep 2023 06:09:50 -0700 (PDT)
+Received: from [92.206.139.21] (helo=note-book.lan)
+        by smtprelay03.ispgateway.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <git@apitzsch.eu>)
+        id 1qk2OD-00056I-S5; Sat, 23 Sep 2023 15:09:41 +0200
+From:   =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Subject: [PATCH v4 0/2] leds: Add a driver for KTD202x
+Date:   Sat, 23 Sep 2023 15:09:00 +0200
+Message-Id: <20230923-ktd202x-v4-0-14f724f6d43b@apitzsch.eu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAGzjDmUC/2XNyQ7CIBQF0F8xrMUwdHTlfxhjHvAQorYVauOQ/
+ rvUTTXdcck9775JxOAxku3qTQIOPvq2SSFbr4h20JyQepMyEUxIVvCKnnuT3g+aZ4USUBqRMUV
+ SW0FEqgI02k19dbvmR3uB6I4BIUyNLqD1j+/W/pCy87Fvw/M7PfDpd7kycMqo1bwSFi0YU+6g8
+ /0rarfBO5muDGKWNeOzFElKrSrFNDCBZinlryxmKZMsrVY110VuJPzLcRw/gsxM4zYBAAA=
+To:     Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] Small style fixes in msm8974.dtsi
-Date:   Sat, 23 Sep 2023 14:12:39 +0200
-Message-ID: <1961613.usQuhbGJ8B@z3ntu.xyz>
-In-Reply-To: <a26911e0-c77b-1eee-5f85-1491b83acd10@linaro.org>
-References: <20230627-msm8974-sort-v1-0-75c5800a2e09@z3ntu.xyz>
- <2899653.e9J7NaK4W3@z3ntu.xyz>
- <a26911e0-c77b-1eee-5f85-1491b83acd10@linaro.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+        =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.12.3
+X-Df-Sender: YW5kcmVAYXBpdHpzY2guZXU=
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Samstag, 23. September 2023 14:03:05 CEST Konrad Dybcio wrote:
-> On 9/22/23 18:59, Luca Weiss wrote:
-> > On Dienstag, 27. Juni 2023 21:45:12 CEST Luca Weiss wrote:
-> >> While making sure the nodes are sorted correctly, I also noticed that
-> >> some lines are wrongly indented. Fix both.
-> >> 
-> >> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> >> ---
-> >> 
-> >> Luca Weiss (2):
-> >>        ARM: dts: qcom: msm8974: replace incorrect indentation in
-> >>        interconnect
-> >> 
-> >> ARM: dts: qcom: msm8974: sort nodes by reg
-> >> 
-> >>   arch/arm/boot/dts/qcom/qcom-msm8974.dtsi | 80
-> >> 
-> >> ++++++++++++++++---------------- 1 file changed, 40 insertions(+), 40
-> >> deletions(-)
-> >> ---
-> >> base-commit: 53cdf865f90ba922a854c65ed05b519f9d728424
-> >> change-id: 20230627-msm8974-sort-e34b28f10a34
-> >> 
-> >> Best regards,
-> > 
-> > Hi Bjorn,
-> > 
-> > also ping on this one. I didn't check again if it now conflicts with -next
-> > (as pointed out by Konrad a while ago), if it does let me know and I'll
-> > resend.
-> git fetch linux-next
-> git checkout linux-next/master
-> b4 shazam <msgid>
-> 
-> if retval == 0:
-> 	ping
-> else
-> 	resend
-> 
-> this only takes a couple seconds and saves you the burden of sending
-> an email and Bjorn of checking ^^
+Add the binding description and the corresponding driver for
+the Kinetic KTD2026 and KTD2027.
 
-Well, seems to apply fine still, so seems the other series wasn't picked up 
-yet. But true, would've been faster to check instead of writing that message 
-;)
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+Changes in v4:
+- Annotate struct ktd202x with __counted_by
+- Link to v3: https://lore.kernel.org/r/20230906-ktd202x-v3-0-7fcb91c65d3a@apitzsch.eu
 
-> 
-> Konrad
+Changes in v3:
+- Add r-b to bindings patch
+- Replace .probe_new by .probe
+- Link to v2: https://lore.kernel.org/r/20230901-ktd202x-v2-0-3cb8b0ca02ed@apitzsch.eu
 
+Changes in v2:
+- Make binding description filename match compatible
+- Address comments by Lee Jones
+  - Extend driver description in Kconfig
+  - Add copyright + link to datasheet
+  - Add unit to definition/variable names, where needed
+  - Define magic numbers
+  - Remove forward declaration of 'struct ktd202x'
+  - Remove superfluous comments
+  - Get rid of struct ktd202x_info
+  - Join ktd202x_chip_init() with ktd202x_chip_enable()
+  - Return the error on ktd202x_chip_disable()
+  - Remove unreachable case from chip_in_use()
+  - Rename ktd202x_brightness_set() argument from num_colors to num_channels
+  - Forward errors received in ktd202x_brightness_set()
+  - Remove variable for 'num_channels = 1'
+  - Add some explanations to blink time calculation
+  - Remove unneeded lcdev from ktd202x_blink_*_set()
+  - Add define for max brightness and replace deprecated LED_FULL by it
+  - Move setting led_classdev.brightness to ktd202x_brightness_*_set()
+  - Move mutex_lock inside ktd202x_blink_set()
+  - Add comment that 'color' property is optional (allow EINVAL)
+  - Replace escaped double quotes by single quotes
+  - Avoid overloading variable 'color'
+  - Do not lock during probe
+  - Remove usage of 'of_match_ptr'
+- Document interrupt and pull-up supply, like done for aw2013[1]
+- Fix error in num_steps calculation
+- Link to v1: https://lore.kernel.org/r/20230618-ktd202x-v1-0-fc182fefadd7@apitzsch.eu
 
+[1] https://lore.kernel.org/linux-leds/20230815-aw2013-vio-v3-0-2505296b0856@gerhold.net/
 
+---
+André Apitzsch (2):
+      dt-bindings: leds: Add Kinetic KTD2026/2027 LED
+      leds: add ktd202x driver
+
+ .../devicetree/bindings/leds/kinetic,ktd202x.yaml  | 171 ++++++
+ drivers/leds/rgb/Kconfig                           |  13 +
+ drivers/leds/rgb/Makefile                          |   1 +
+ drivers/leds/rgb/leds-ktd202x.c                    | 625 +++++++++++++++++++++
+ 4 files changed, 810 insertions(+)
+---
+base-commit: 9641a13970d832d821ad304e187b80dbe70bae30
+change-id: 20230618-ktd202x-546b2a7d240b
+
+Best regards,
+-- 
+André Apitzsch <git@apitzsch.eu>
 
