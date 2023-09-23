@@ -2,67 +2,144 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 326EECE7A81
-	for <phone-devel@archiver.kernel.org>; Fri, 22 Sep 2023 22:52:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 671D5CE7A89
+	for <phone-devel@archiver.kernel.org>; Sat, 23 Sep 2023 09:33:42 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230142AbjIVWwq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 22 Sep 2023 18:52:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45110 "EHLO
+        id S231271AbjIWJdp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 23 Sep 2023 05:33:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230081AbjIVWwp (ORCPT
+        with ESMTP id S231255AbjIWJdb (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 22 Sep 2023 18:52:45 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA027AB;
-        Fri, 22 Sep 2023 15:52:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EB9C433C7;
-        Fri, 22 Sep 2023 22:52:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695423159;
-        bh=WpOE5/YOMJhoOrRKC3VTuOefYY+YCBJ0gqxE+bPM+M8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vMU06/uZQoE7+sMmxCUfnkaIc4TbQPw+xy1evSjIiX21OrPo1IYOmUn2r3SUCYQkm
-         QjSiluwmbtqxuEfGHRSs2VWH7LOeJoXRuW3WiiPkHVs50qu0idnALp7V1XsWalZZmT
-         u/GSeT5H721/K/z2aOgETtz4BD2REKdWl6332N3DEZIN0eSuCmEt8PhP40E8UvmTi7
-         P8T6ATfWIHTf9AeK5No1lLcfsrdF8CiOejhLo/eusnPEv7xbfODCOXJT0O91SO8jPi
-         tO98bE0pF7sRnvPt2MMlGcAi94RWbOGCZj//WSW8a7xg4cvQI/6/tZwt3n/X7MWxVN
-         pGGQ73Zi6lufA==
-Received: (nullmailer pid 4077777 invoked by uid 1000);
-        Fri, 22 Sep 2023 22:52:37 -0000
-Date:   Fri, 22 Sep 2023 17:52:37 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        Rob Herring <robh+dt@kernel.org>, linux-gpio@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        linux-kernel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+        Sat, 23 Sep 2023 05:33:31 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8201F1A6;
+        Sat, 23 Sep 2023 02:33:20 -0700 (PDT)
+Received: from g550jk.localnet (k10064.upc-k.chello.nl [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 8FCC9D0F4B;
+        Sat, 23 Sep 2023 09:32:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1695461568; bh=qtF8rK3zTiN2N092gDgKMwaqzb1vmROqLxC+bL23f3k=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=WhGhanFsA9HVICbckx6VJX3a1hl1DaBYbJJz9vGxfG11xRmoG8Rsei+yz2JHNjQYz
+         WphJqbTejdyILZoQUjTh/WOktZTepsXXlGj1TMCIbYNQptGnp/64FJZkD413Biux8v
+         KL/lgS855QqktfdrF4b5ZeJhJm4Fu2CbGZzmVRcM=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     linux-arm-msm@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Matti =?ISO-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>,
         Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v2 1/3] dt-bindings: pinctrl: qcom,msm8226: Add blsp_i2c6
- function
-Message-ID: <169542315692.4077737.2123562166324056718.robh@kernel.org>
-References: <20230922-msm8226-i2c6-v2-0-3fb55c47a084@z3ntu.xyz>
- <20230922-msm8226-i2c6-v2-1-3fb55c47a084@z3ntu.xyz>
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matti =?ISO-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>
+Subject: Re: [PATCH 1/2] pinctrl: qcom: msm8226: Add MPM pin mappings
+Date:   Sat, 23 Sep 2023 11:32:47 +0200
+Message-ID: <10339711.nUPlyArG6x@z3ntu.xyz>
+In-Reply-To: <20230922224027.85291-2-matti.lehtimaki@gmail.com>
+References: <20230922224027.85291-1-matti.lehtimaki@gmail.com>
+ <20230922224027.85291-2-matti.lehtimaki@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230922-msm8226-i2c6-v2-1-3fb55c47a084@z3ntu.xyz>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Matti,
 
-On Fri, 22 Sep 2023 18:55:12 +0200, Luca Weiss wrote:
-> Add the blsp_i2c6 function that can be found on some pins.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+On Samstag, 23. September 2023 00:40:26 CEST Matti Lehtim=E4ki wrote:
+> Add pin <-> wakeirq mappings to allow for waking up the AP from sleep
+> through MPM-connected pins.
+>=20
+> Signed-off-by: Matti Lehtim=E4ki <matti.lehtimaki@gmail.com>
 > ---
->  Documentation/devicetree/bindings/pinctrl/qcom,msm8226-pinctrl.yaml | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
+>  drivers/pinctrl/qcom/pinctrl-msm8226.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>=20
+> diff --git a/drivers/pinctrl/qcom/pinctrl-msm8226.c
+> b/drivers/pinctrl/qcom/pinctrl-msm8226.c index 994619840a70..1e46a9ab382f
+> 100644
+> --- a/drivers/pinctrl/qcom/pinctrl-msm8226.c
+> +++ b/drivers/pinctrl/qcom/pinctrl-msm8226.c
+> @@ -612,6 +612,16 @@ static const struct msm_pingroup msm8226_groups[] =
+=3D {
+>=20
+>  #define NUM_GPIO_PINGROUPS 117
+>=20
+> +static const struct msm_gpio_wakeirq_map msm8226_mpm_map[] =3D {
+> +	{ 1, 3 }, { 4, 4 }, { 5, 5 }, { 9, 6 }, { 13, 7 }, { 17, 8 },
 
-Acked-by: Rob Herring <robh@kernel.org>
+I'm not really convinced this is the correct order of values...
+
+Let's look at downstream:
+
+  qcom,gpio-map =3D <3  1>,
+                  <4  4 >,
+                  <5  5 >,
+                  <6  9 >,
+                  [...]
+
+=46rom Documentation/devicetree/bindings/arm/msm/mpm.txt downstream:
+
+  Each tuple represents a MPM pin and which GIC interrupt is routed to it.
+
+So first is pin number, second is interrupt number.
+
+And check mainline:=20
+
+  /**
+   * struct msm_gpio_wakeirq_map - Map of GPIOs and their wakeup pins
+   * @gpio:          The GPIOs that are wakeup capable
+   * @wakeirq:       The interrupt at the always-on interrupt controller
+   */
+  struct msm_gpio_wakeirq_map {
+  	unsigned int gpio;
+  	unsigned int wakeirq;
+  };
+
+So here we also have the order pin-interrupt, not the reverse order.
+
+Therefore I believe the order in this patch is incorrect, and it should rat=
+her=20
+be:
+
+  { 3, 1 }, { 4, 4 }, { 5, 5 }, { 6, 9 }, { 7, 13 }, { 8, 17 },
+  [...]
+
+Or do you think I'm missing something?
+
+Regards
+Luca
+
+> +	{ 21, 9 }, { 27, 10 }, { 29, 11 }, { 31, 12 }, { 33, 13 }, { 35, 14=20
+},
+> +	{ 37, 15 }, { 38, 16 }, { 39, 17 }, { 41, 18 }, { 46, 19 }, { 48, 20=20
+},
+> +	{ 49, 21 }, { 50, 22 }, { 51, 23 }, { 52, 24 }, { 54, 25 }, { 62, 26=20
+},
+> +	{ 63, 27 }, { 64, 28 }, { 65, 29 }, { 66, 30 }, { 67, 31 }, { 68, 32=20
+},
+> +	{ 69, 33 }, { 71, 34 }, { 72, 35 }, { 106, 36 }, { 107, 37 },
+> +	{ 108, 38 }, { 109, 39 }, { 110, 40 }, { 111, 54 }, { 113, 55 },
+> +};
+> +
+>  static const struct msm_pinctrl_soc_data msm8226_pinctrl =3D {
+>  	.pins =3D msm8226_pins,
+>  	.npins =3D ARRAY_SIZE(msm8226_pins),
+> @@ -620,6 +630,8 @@ static const struct msm_pinctrl_soc_data msm8226_pinc=
+trl
+> =3D { .groups =3D msm8226_groups,
+>  	.ngroups =3D ARRAY_SIZE(msm8226_groups),
+>  	.ngpios =3D NUM_GPIO_PINGROUPS,
+> +	.wakeirq_map =3D msm8226_mpm_map,
+> +	.nwakeirq_map =3D ARRAY_SIZE(msm8226_mpm_map),
+>  };
+>=20
+>  static int msm8226_pinctrl_probe(struct platform_device *pdev)
+
+
+
 
