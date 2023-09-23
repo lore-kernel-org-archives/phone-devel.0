@@ -2,106 +2,115 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61CC7CE7A89
-	for <phone-devel@archiver.kernel.org>; Sat, 23 Sep 2023 11:53:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70EA3CE7A89
+	for <phone-devel@archiver.kernel.org>; Sat, 23 Sep 2023 12:03:11 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231453AbjIWLxY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 23 Sep 2023 07:53:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41120 "EHLO
+        id S231458AbjIWMDP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 23 Sep 2023 08:03:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231446AbjIWLxX (ORCPT
+        with ESMTP id S231445AbjIWMDP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 23 Sep 2023 07:53:23 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03930199;
-        Sat, 23 Sep 2023 04:53:17 -0700 (PDT)
-Received: from g550jk.localnet (k10064.upc-k.chello.nl [62.108.10.64])
-        by mail.z3ntu.xyz (Postfix) with ESMTPSA id 26024D0F49;
-        Sat, 23 Sep 2023 11:52:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1695469965; bh=OKF1zzcs43ZDoi4cDiGqdLlW1pZIC+kMc6jGkGBwd0c=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=E6p3uEeWIWbNdfji9G0Dqf9szr70mHEXuu2bSClzufk+CT7OCosIoZBxpRe7elbZY
-         cYGfeC/FXzvHXmtpY//wSNV1NA8CQeXmg3OOJo2fMJql4Trupg3PSq0uQd8cHFVyuZ
-         KIhFlplG2nYWhtS7sG650wYiuwywHiUKqOs9nzqM=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     linux-arm-msm@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Matti =?ISO-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matti =?ISO-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>
-Subject: Re: [PATCH 2/2] pinctrl: qcom: msm8974: Add MPM pin mappings
-Date:   Sat, 23 Sep 2023 13:52:44 +0200
-Message-ID: <1769487.VLH7GnMWUR@z3ntu.xyz>
-In-Reply-To: <20230922224027.85291-3-matti.lehtimaki@gmail.com>
-References: <20230922224027.85291-1-matti.lehtimaki@gmail.com>
- <20230922224027.85291-3-matti.lehtimaki@gmail.com>
+        Sat, 23 Sep 2023 08:03:15 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 033091B5
+        for <phone-devel@vger.kernel.org>; Sat, 23 Sep 2023 05:03:08 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-5031ccf004cso5770141e87.2
+        for <phone-devel@vger.kernel.org>; Sat, 23 Sep 2023 05:03:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695470587; x=1696075387; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=f55qP7nCVYbXurKDZckzIAMBIRtqowALRh+W0NZh5Nc=;
+        b=zbmwnZLmbWrAjWaROPIfiAa8xavQ9/OM6jfWAqBDe1xbJZK4GleV5bSmf4J1NmIl+r
+         Y2mFCyJZ8bJ59SE5jbKCwhzB5vwBVQGzJtDQRAR2MhDBjepMPCdplsQicBonxVdeDMK6
+         dJB9Fuh9wRUTpRfFTX7nIef4S9pb4HDkUu1aEB9g7hcew1nWVbwmADMEjeMNNzjeNldq
+         9js6h7L4i+QhqjgdOc8WZses/xySWMfi9qPX0+N1wJInD246wM4GwuzTiv+iE0jzS2/D
+         DXhUJc8mH/SajaShSfy3l1IFtNPBwjG6Deeo7tu6FgtsqzQMsVxbTTnjDOWOQwWo2cyU
+         7Kdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695470587; x=1696075387;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f55qP7nCVYbXurKDZckzIAMBIRtqowALRh+W0NZh5Nc=;
+        b=G7M/7IBAqFXjSAI6foZQRxmXXwHlTygUmJv1I4yvE0w7Zk2nXVLFewpEpkjvVifzJc
+         CD0He+5jxTpi5qX620ZDc6KplcJxJOgDSwajMBj2h8NQEXyXJGtu9JdAHCiOkkvQNI5V
+         Nvqy2Kr3iFezfQIW/mRc9ay3CjO7vVTatwHdiGy/JsLb+4fjmaSIpiz1LAXqpoBhKyuU
+         WKngE4Q6rMrDb01cAMitXVZjbNvQBJWHVcZqB4b7GsYSE1gVzK7X4TqKjpzvVMXwzIaF
+         BYVXx3JUNU5+gXrlTH4hje4eVRplFAXsWWjBhINpsYFkY33dIT0U+xFf6IOMB7NNtddo
+         Mbwg==
+X-Gm-Message-State: AOJu0Yz0NvOAALIB/JOMEvVtUPi1FLoXcc8AO24cVPH78IkWh+0eFVIl
+        /Yqd8R/LY4RMt4muHiy9VbpfCQ==
+X-Google-Smtp-Source: AGHT+IFMHyw3oyV/wPERpsJHswm4pIY5M0fNziIV/0COuSfToqBWfJ3sEzb8zWNZJEh87HB5E+edrQ==
+X-Received: by 2002:a05:6512:2812:b0:503:1913:ed8e with SMTP id cf18-20020a056512281200b005031913ed8emr1848786lfb.61.1695470586790;
+        Sat, 23 Sep 2023 05:03:06 -0700 (PDT)
+Received: from [192.168.1.110] (abyk237.neoplus.adsl.tpnet.pl. [83.9.30.237])
+        by smtp.gmail.com with ESMTPSA id s6-20020a19ad46000000b004fe15a2f0f6sm1065533lfd.62.2023.09.23.05.03.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 23 Sep 2023 05:03:06 -0700 (PDT)
+Message-ID: <a26911e0-c77b-1eee-5f85-1491b83acd10@linaro.org>
+Date:   Sat, 23 Sep 2023 14:03:05 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 0/2] Small style fixes in msm8974.dtsi
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230627-msm8974-sort-v1-0-75c5800a2e09@z3ntu.xyz>
+ <2899653.e9J7NaK4W3@z3ntu.xyz>
+Content-Language: en-US
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <2899653.e9J7NaK4W3@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Samstag, 23. September 2023 00:40:27 CEST Matti Lehtim=E4ki wrote:
-> Add pin <-> wakeirq mappings to allow for waking up the AP from sleep
-> through MPM-connected pins.
->=20
-> Signed-off-by: Matti Lehtim=E4ki <matti.lehtimaki@gmail.com>
-
-Based on the discussion in the 8226 patch, this looks correct, compared wit=
-h=20
-downstream arch/arm/boot/dts/msm8974pro-pm.dtsi.
-
-Reviewed-by: Luca Weiss <luca@z3ntu.xyz>
-
-> ---
->  drivers/pinctrl/qcom/pinctrl-msm8x74.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->=20
-> diff --git a/drivers/pinctrl/qcom/pinctrl-msm8x74.c
-> b/drivers/pinctrl/qcom/pinctrl-msm8x74.c index d5fe62992849..238c83f6ec4f
-> 100644
-> --- a/drivers/pinctrl/qcom/pinctrl-msm8x74.c
-> +++ b/drivers/pinctrl/qcom/pinctrl-msm8x74.c
-> @@ -1045,6 +1045,16 @@ static const struct msm_pingroup msm8x74_groups[] =
-=3D {
->=20
->  #define NUM_GPIO_PINGROUPS 146
->=20
-> +static const struct msm_gpio_wakeirq_map msm8x74_mpm_map[] =3D {
-> +	{ 1, 4 }, { 5, 5 }, { 9, 6 }, { 18, 7 }, { 20, 8 }, { 24, 9 },
-> +	{ 27, 10 }, { 28, 11 }, { 34, 12 }, { 35, 13 }, { 37, 14 }, { 42, 15=20
-},
-> +	{ 44, 16 }, { 46, 17 }, { 50, 18 }, { 54, 19 }, { 59, 20 }, { 61, 21=20
-},
-> +	{ 62, 22 }, { 64, 23 }, { 65, 24 }, { 66, 25 }, { 67, 26 }, { 68, 27=20
-},
-> +	{ 71, 28 }, { 72, 29 }, { 73, 30 }, { 74, 31 }, { 75, 32 }, { 77, 33=20
-},
-> +	{ 79, 34 }, { 80, 35 }, { 82, 36 }, { 86, 37 }, { 92, 38 }, { 93, 39=20
-},
-> +	{ 95, 40 }, { 102, 3 }, { 144, 41 },
-> +};
-> +
->  static const struct msm_pinctrl_soc_data msm8x74_pinctrl =3D {
->  	.pins =3D msm8x74_pins,
->  	.npins =3D ARRAY_SIZE(msm8x74_pins),
-> @@ -1053,6 +1063,8 @@ static const struct msm_pinctrl_soc_data
-> msm8x74_pinctrl =3D { .groups =3D msm8x74_groups,
->  	.ngroups =3D ARRAY_SIZE(msm8x74_groups),
->  	.ngpios =3D NUM_GPIO_PINGROUPS,
-> +	.wakeirq_map =3D msm8x74_mpm_map,
-> +	.nwakeirq_map =3D ARRAY_SIZE(msm8x74_mpm_map),
->  };
->=20
->  static int msm8x74_pinctrl_probe(struct platform_device *pdev)
 
 
+On 9/22/23 18:59, Luca Weiss wrote:
+> On Dienstag, 27. Juni 2023 21:45:12 CEST Luca Weiss wrote:
+>> While making sure the nodes are sorted correctly, I also noticed that
+>> some lines are wrongly indented. Fix both.
+>>
+>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+>> ---
+>> Luca Weiss (2):
+>>        ARM: dts: qcom: msm8974: replace incorrect indentation in interconnect
+>> ARM: dts: qcom: msm8974: sort nodes by reg
+>>
+>>   arch/arm/boot/dts/qcom/qcom-msm8974.dtsi | 80
+>> ++++++++++++++++---------------- 1 file changed, 40 insertions(+), 40
+>> deletions(-)
+>> ---
+>> base-commit: 53cdf865f90ba922a854c65ed05b519f9d728424
+>> change-id: 20230627-msm8974-sort-e34b28f10a34
+>>
+>> Best regards,
+> 
+> Hi Bjorn,
+> 
+> also ping on this one. I didn't check again if it now conflicts with -next (as
+> pointed out by Konrad a while ago), if it does let me know and I'll resend.
+git fetch linux-next
+git checkout linux-next/master
+b4 shazam <msgid>
 
+if retval == 0:
+	ping
+else
+	resend
 
+this only takes a couple seconds and saves you the burden of sending
+an email and Bjorn of checking ^^
+
+Konrad
