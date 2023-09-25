@@ -2,103 +2,118 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E25CBCE7A94
-	for <phone-devel@archiver.kernel.org>; Mon, 25 Sep 2023 11:24:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5C49CE7A81
+	for <phone-devel@archiver.kernel.org>; Mon, 25 Sep 2023 14:28:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231189AbjIYLYU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 25 Sep 2023 07:24:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35092 "EHLO
+        id S232295AbjIYO2Y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 25 Sep 2023 10:28:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230450AbjIYLYT (ORCPT
+        with ESMTP id S232255AbjIYO2W (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Sep 2023 07:24:19 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B2C8106
-        for <phone-devel@vger.kernel.org>; Mon, 25 Sep 2023 04:24:12 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-5041d6d8b10so10144655e87.2
-        for <phone-devel@vger.kernel.org>; Mon, 25 Sep 2023 04:24:12 -0700 (PDT)
+        Mon, 25 Sep 2023 10:28:22 -0400
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2B0A10E
+        for <phone-devel@vger.kernel.org>; Mon, 25 Sep 2023 07:28:14 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-3232be274a0so996289f8f.1
+        for <phone-devel@vger.kernel.org>; Mon, 25 Sep 2023 07:28:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695641051; x=1696245851; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qMhmMAQQbl/7qD+DBAIyGJ2AG8c+5UuMVzq4znI+3L8=;
-        b=g8p9/4FKFnMY5PNu7jaucK+xOc9vl50UhHgSTb1pm8FhSYghQxjl4DAxhVANmTKTP7
-         zlgKau0n+r0/478OUsXbw8a5OctYBaWQRUkAjA5ghoJWQ18IeMsJ3Ev3XuwcFXVxD4Rg
-         imvCt4OwF6gVk76FzaYTh3j1xb2qMNnCzs40OXaA15CiEBMLd2DrvvGmJFaeGXQ4gJLp
-         5npCJlNRMirQQNhG1mz9rZ8oyNIdcHzIvmMfXlEa+ti5Cv+Xxh1ZsUOasgk8yE8YCe1U
-         ORQ3WTg2YBUGdJIxEQRYezZiR2aQVukb6jr4Q4Xu7bqiLQqalR7l4i9Uxw1+lCRH+uMm
-         h0Vg==
+        d=aceart.de; s=google; t=1695652093; x=1696256893; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:organization
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=o3p8nJzBx02DNMJ+7EnZtFgR5MAZSx4FbGOUUlLpYxw=;
+        b=d9Lkph9E3pMO4GQYRdiuYmhfuCQRo0HYu2OVHL7mzNYBTBpuRd0DftyfFmVJ5F5Wm1
+         N/kcJQtI7m54vukvj6tNBZpFPCqWY8PfyxnlGREn1IYM/Lo9gkfMCHcGu5GX5GsfgOyR
+         hV4g+AP56ngrIZZxshO46d+Hz1D0jtn+Qoq+alBkAafHdb18uvWcgu3kfYMdrUq12nTy
+         mmJvQi1R8tdUnMtRITfbzTHmXXw7T2q6RcO1D1Wws7b1U7hijbEYS5uI00PlomE4ZMZt
+         nVZBdAIbvr26Kc49OOxUd54kPMOfIp4ROU4wJ4Nx7BxKZ4gi/IkfCM+Kfc4nHuwOvigR
+         mTSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695641051; x=1696245851;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qMhmMAQQbl/7qD+DBAIyGJ2AG8c+5UuMVzq4znI+3L8=;
-        b=nIJE+cdcy8amfoRwIeosZftu0HEFuliTOU12ycD132yaz/Y0MweAGGIFWXvBLm1ywb
-         WZ+FSqa3HtVhuqspij6UW92BLPwtEm334GyMNx+wfJC1Gt/sFBcSv9cJ7spHxQTTYvHt
-         3xXRrQPe+JRyZ1BGe+wvwDSc4IKoZR/VqGuye69zToQywpQuhB227+zYzmRNKRy651/8
-         rMEyAD+byLa0ch/CqtDot9683Bya0TuGXn9ShaaLae85TKu9RdINyaOo+oOgd47i/fpq
-         RvQcouJ0PjXxoCf7VMXvZsIPOhFMurVilgPThW37Co6tOPllqyz9a5YNQahLDWdaY7R2
-         J0+g==
-X-Gm-Message-State: AOJu0YyhPfUDLIF4sewlht8rJf2dseLu5jM6AXna8np9lZGAzgITu+lX
-        Zx5p73brtJt0OpD2hQRFTzM02Yvsy2zEbC6pliXGfg==
-X-Google-Smtp-Source: AGHT+IFqIBkgVpP+AhlxyEQ0hkTfnfhpfzlJa4GthGn4gn/ftTVslN7s9txRdFNAZVQPZpNXmO0eXg==
-X-Received: by 2002:a05:6512:3d9e:b0:504:3424:215c with SMTP id k30-20020a0565123d9e00b005043424215cmr6852228lfv.51.1695641051028;
-        Mon, 25 Sep 2023 04:24:11 -0700 (PDT)
-Received: from srini-hackbase.lan ([5.133.47.210])
-        by smtp.gmail.com with ESMTPSA id x62-20020a50bac4000000b0053443c8fd90sm152170ede.24.2023.09.25.04.24.09
+        d=1e100.net; s=20230601; t=1695652093; x=1696256893;
+        h=mime-version:user-agent:content-transfer-encoding:organization
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=o3p8nJzBx02DNMJ+7EnZtFgR5MAZSx4FbGOUUlLpYxw=;
+        b=eYFZ+ocmjc2Kn7Ju4ROYsos1AztY4DJH1CYi1Zrcw9sOgD+aKPl9A1ZBo3iiHMLbUf
+         QEWFRpGrmkd05aeocvwJes1POR9AuheMaS+RxwJbrZpjDT0AFyxjB8ct1M3ntJlCioYN
+         O6vCr5ZPNJHtSocbxWSYCQeJj/xXUVQioO6XrIeLsirgAdrywI4CBSwGlO7YkUen1mqA
+         k1/jqcDOYWG66huAnavFvBlYz4rF+sZLQo6APcI/fAkbw2dts3kTlRMNPJGtOjjTrDHz
+         RVxAGb47VvzPFmXuvpoZWotK5zYkBWJO3b6EotSXSSBBR3bXtBZZ38yFKNOrnPjbYpxt
+         Cc8w==
+X-Gm-Message-State: AOJu0Yy2eSA2RWc666eFBcbC0xA7Jpnn5SbFAk/4EYo9TIc5W4Qwfp2o
+        jqzRJQ3kRLHZ1duhfKjgPNVOBg==
+X-Google-Smtp-Source: AGHT+IHyhLLHIMrxMT5+MjTuP9mXxsxsvs3bZXzseRBVbE5hWbY+ZOUden2sS//p4i8tzLc8BaX4jw==
+X-Received: by 2002:adf:ef0b:0:b0:316:fc03:3c66 with SMTP id e11-20020adfef0b000000b00316fc033c66mr5604701wro.3.1695652093259;
+        Mon, 25 Sep 2023 07:28:13 -0700 (PDT)
+Received: from [192.168.2.171] ([94.186.212.25])
+        by smtp.gmail.com with ESMTPSA id o9-20020a5d6849000000b0031989784d96sm12043993wrw.76.2023.09.25.07.28.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Sep 2023 04:24:10 -0700 (PDT)
-From:   Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-To:     cros-qcom-dts-watchers@chromium.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Luca Weiss <luca.weiss@fairphone.com>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-pm@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com>
-References: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com>
-Subject: Re: (subset) [PATCH v2 0/7] Initial support for the Fairphone 5
- smartphone
-Message-Id: <169564104980.23811.11629211382725152116.b4-ty@linaro.org>
-Date:   Mon, 25 Sep 2023 12:24:09 +0100
+        Mon, 25 Sep 2023 07:28:12 -0700 (PDT)
+Message-ID: <9ca32137e42a22b016d8d417ee9e0dc024ef2aa9.camel@aceart.de>
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: msm8939-huawei-kiwi: Add initial
+ device tree
+From:   lukas walter <lukas.walter@aceart.de>
+To:     konrad.dybcio@linaro.org
+Cc:     agross@kernel.org, andersson@kernel.org, conor+dt@kernel.org,
+        devicetree@vger.kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        lukas.walter@aceart.de, phone-devel@vger.kernel.org,
+        raymondhackley@protonmail.com, robh+dt@kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Date:   Mon, 25 Sep 2023 16:28:12 +0200
+In-Reply-To: <44a00fc6-d700-4713-34f0-36b172d8cb90@linaro.org>
+Organization: aceArt GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.2
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Date: Wed, 20 Sep 2023 16:47:30 +0200
 
-On Tue, 19 Sep 2023 14:45:54 +0200, Luca Weiss wrote:
-> Add support to boot up mainline kernel on the QCM6490-based Fairphone 5
-> smartphone.
-> 
-> These patches only cover a part of the functionality brought up on
-> mainline so far, with the rest needing larger dts and driver changes or
-> depend on patches that are not yet merged. I will work on sending those
-> once these base patches here have settled.
-> 
-> [...]
+>> +
+>> +	reserved-memory {
+>> +		reserved@84a00000 {
+>> +			reg =3D <0x0 0x84a00000 0x0 0x1600000>;
+>> +			no-map;
+>> +		};
+>Do we know what this is for?
 
-Applied, thanks!
+This seems to be some QSEE/TrustZone memory required to boot.
+I would name it `qseecom_mem: qseecom@84a00000` like other phones
+currently have it.
 
-[2/7] nvmem: qfprom: Mark core clk as optional
-      commit: 844ac302b2aa81c47a4323fc34a0a454cc749dbc
+`[    1.162115] QSEECOM: qseecom_probe: secure app region
+addr=3D0x84a00000 size=3D0x1900000`
 
-Best regards,
--- 
-Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+>> +	};
+>> +
+>> +	gpio-hall-sensor {
+>> +		compatible =3D "gpio-keys";
+>> +
+>> +		pinctrl-0 =3D <&gpio_hall_sensor_default>;
+>> +		pinctrl-names =3D "default";
+>> +
+>> +		label =3D "GPIO Hall Effect Sensor";
+>I think we can have both hall sensor and V+ under gpio-keys
+>
+>And then I am not sure how useful the label is for the container
+>node, maybe you or somebody else can tell me whether it's used
+>anywhere
+>> +
+>> +		event-hall-sensor {
+>> +			label =3D "Hall Effect Sensor";
+>> +			gpios =3D <&tlmm 69 GPIO_ACTIVE_LOW>;
+>> +			linux,input-type =3D <EV_SW>;
+>> +			linux,code =3D <SW_LID>;
+>> +			linux,can-disable;
+>Should this not be a wakeup-source btw?
 
+I am not sure how to change this. I would like to leave this as many
+other hall sensors seem to be configured identically.
+
+Is this fine?
+Should I send a V2 with the signoff and reserved-memory changes?
