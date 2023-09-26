@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 57A5BE7E65D
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 18:58:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37F8CE7E65E
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 18:58:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230361AbjIZS63 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Sep 2023 14:58:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36852 "EHLO
+        id S235656AbjIZS67 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Sep 2023 14:58:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230259AbjIZS63 (ORCPT
+        with ESMTP id S235438AbjIZS66 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Sep 2023 14:58:29 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E61E126
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:58:21 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-5041cc983f9so15422674e87.3
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:58:21 -0700 (PDT)
+        Tue, 26 Sep 2023 14:58:58 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 949FC12A
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:58:51 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-5230a22cfd1so11183466a12.1
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:58:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695754699; x=1696359499; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1695754730; x=1696359530; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=reCvRq/NnxYu9sIfFdvRfqpBWzEbvbSpbbJREhi5taQ=;
-        b=h7FSL+w37tFz1irrI6PHPKDCaQY53HoY0+BZE4HBveEYLywkdeNbYI4SaudBaNYdrt
-         kA2/32X338js7Qh1EMiMneG4bqy8CsRiR4DMDGENL4ruB+N+t5NiJu4v077YehVaXz5W
-         lwdydsfqBf/gZ+YcX+RpZLpiO7ePECHIz98U/MmA0i9k18ZuqKWN872vL+pIc+zP+iRF
-         Z5wTjrFDHa7KPeVRP84eLrx9gDkYRtGy8dIXzO5OHIQRtTQPyOi5ENG6R88baiQlHAxe
-         +QAC/UV7vyZLmRXNIBNpqjjDPUiJPtVtMITL+rl/9DVZBy8gRMWKBbaing890qSnUqbX
-         5QVQ==
+        bh=Hk1J9RCasnvG6e6o9YLP75HHSMhMiZcPHRcgR1qmnvE=;
+        b=g3KXGWx2IdmOrwelh2GinmhgsmLwXdtrZfJXfj9xeaU39YPRbm8ZDZUt5Wgjry2c6z
+         goORivLPj5XqNzEXSc3oIwAQQVXZkQejBnATsNEXeX4uPOwxvzL59pl7O/mAUpaWlyRY
+         QYAzJ/bdd/d2qCGgSDrUl4pLAGhIx04+5dPoBw+1TXGn7gbIRna3oVpPZxiW39dIUcU+
+         zVSyQinuaRvwFfYfkpG6a2DZ/ZC2v9XMtoztMnz09dg2L4dv8UA0LdYBl1pYWdv5+QKc
+         kbeog+752ZDouFwfIp1NcwU32VpnOEALyjaPejPZwYEkGxswWAk8Z5tD3GjHG3QTc2Ga
+         FhZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695754699; x=1696359499;
+        d=1e100.net; s=20230601; t=1695754730; x=1696359530;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=reCvRq/NnxYu9sIfFdvRfqpBWzEbvbSpbbJREhi5taQ=;
-        b=YVwu6mg7wbTgBmCJj03kVQ+o7geRYsn9hzGlBuj1dsfVsHgpi/TFMzcjheAaxIA66y
-         T7qbqWcXBFSVQP6XsnW7ys0aKnOwwoiLiheTXzTG6Ng1WzJjScRMUgs/hh1jnG5b10mI
-         w0OnrCLm0OR+6bPfg18bv+WV9U4NOJ4qGCxen4o7rvJ9G67TZGc4kUqni/I1EdmJI9+D
-         bXjvStnedt2uHj2L5jYfHDBW4Ip6+S6fYB2mwEWkibny2lAtW7fNomaQthA15Rm/C2s1
-         bVzdw0Eub60sWW4cwuOz3XRmH3rPRbTZgMJSya9dLs5meChlUjz6LoP9b57ma9q/4rB2
-         1BsQ==
-X-Gm-Message-State: AOJu0Yxs6jqc6U3Aq43JBugJ9JCgUVaRA3FoFbYrQonClOsAe8sL+TsS
-        YjNV33T7hxvNh8SEGNmOI4LfIw==
-X-Google-Smtp-Source: AGHT+IHKBhpGjC98lG/MGQPk3CygpoJrNlE1A9f69Glf68/UnUOgwi2c92R3jU1tEEEG5wxBD1j76A==
-X-Received: by 2002:a19:671e:0:b0:4fe:49d:6ae2 with SMTP id b30-20020a19671e000000b004fe049d6ae2mr8728803lfc.0.1695754699447;
-        Tue, 26 Sep 2023 11:58:19 -0700 (PDT)
+        bh=Hk1J9RCasnvG6e6o9YLP75HHSMhMiZcPHRcgR1qmnvE=;
+        b=EKKqFi2zkmOSYqWuQtYx7puEl8ahiYZxzcUuQsL3RM87jQxG21tKoJiTK2YBodjnNk
+         hauoTaqDQcChv6j3JulB3s68p140m8WFygkP6Hh1r+gcr2e4q0NFpCbuNxfntiSzwHXH
+         mN/zbSlRzWtLMSm8MVmKMVH6AFja4LL8bfWG6+Ju3UF2CSZnLkhh/oMA3MKhBGArfN7x
+         vzYFZb9a+aNmEEfKwXdHgQuQh3LvWTEvon/5NTUt0QnJDKNch1f4gMuWGf01HxG3R//s
+         uk2fCdFVRcAkBU5AlyM5TXTcAWrXmi3HLvjXXqyDWnVnz9OUp6CAZo6ddIaN5qQwhv1M
+         Jw+g==
+X-Gm-Message-State: AOJu0YyGYKnL4z/CHzt6gg8WVkxxvlruLPgo9NX/1cqY9WivwFoqg1AX
+        kHlM1QcdmINwimjZrYmQWGbgCw==
+X-Google-Smtp-Source: AGHT+IH07nID6HNn8quuPFyW5umCXgmEfh1kjJSu/qyUmeXCaewTsNuk6OFtNdmHuBnedAgzWhMAkQ==
+X-Received: by 2002:aa7:d5c6:0:b0:533:6ef4:9f5b with SMTP id d6-20020aa7d5c6000000b005336ef49f5bmr8299368eds.6.1695754730060;
+        Tue, 26 Sep 2023 11:58:50 -0700 (PDT)
 Received: from [192.168.33.189] ([178.235.177.23])
-        by smtp.gmail.com with ESMTPSA id f15-20020a50ee8f000000b0052a19a75372sm7088795edr.90.2023.09.26.11.58.17
+        by smtp.gmail.com with ESMTPSA id f15-20020a50ee8f000000b0052a19a75372sm7088795edr.90.2023.09.26.11.58.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Sep 2023 11:58:19 -0700 (PDT)
-Message-ID: <cb78cd52-c638-4977-a762-365a6fe5f723@linaro.org>
-Date:   Tue, 26 Sep 2023 20:58:12 +0200
+        Tue, 26 Sep 2023 11:58:49 -0700 (PDT)
+Message-ID: <7eee967a-0900-4a0c-b609-93d5c784ebd6@linaro.org>
+Date:   Tue, 26 Sep 2023 20:58:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/13] arm64: dts: qcom: msm8916-alcatel-idol347: Add
- sound and modem
+Subject: Re: [PATCH 08/13] arm64: dts: qcom: msm8916-asus-z00l: Add sound and
+ modem
 Content-Language: en-US
 To:     Stephan Gerhold <stephan@gerhold.net>,
         Bjorn Andersson <andersson@kernel.org>
@@ -63,9 +63,9 @@ Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Vincent Knecht <vincent.knecht@mailoo.org>
+        "J.R. Divya Antony" <d.antony.jr@gmail.com>
 References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
- <20230926-msm8916-modem-v1-7-398eec74bac9@gerhold.net>
+ <20230926-msm8916-modem-v1-8-398eec74bac9@gerhold.net>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -102,7 +102,7 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20230926-msm8916-modem-v1-7-398eec74bac9@gerhold.net>
+In-Reply-To: <20230926-msm8916-modem-v1-8-398eec74bac9@gerhold.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -110,77 +110,21 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 26.09.2023 18:51, Stephan Gerhold wrote:
-> From: Vincent Knecht <vincent.knecht@mailoo.org>
+> From: "J.R. Divya Antony" <d.antony.jr@gmail.com>
 > 
-> Enable sound and modem for the Alcatel Idol 3 (4.7"). The setup is
+> Enable sound and modem for the ASUS Zenfone 2 Laser. The setup is
 > similar to most MSM8916 devices, i.e.:
 > 
 >  - QDSP6 audio
->  - Microphones via digital/analog codec in MSM8916/PM8916
+>  - Speakear/earpiece/headphones/microphones via digital/analog codec
+>    in MSM8916/PM8916
+>  - Audio jack detection via analog codec in PM8916
 >  - WWAN Internet via BAM-DMUX
 > 
-> except:
-> 
->  - Stereo NXP TFA9890 codecs for speakers on Quaternary MI2S
->    - These are also used as earpieces at the top/bottom.
->  - Asahi Kasei AK4375 headphone codec on Secondary MI2S
->  -> Primary MI2S is not used for playback
-> 
-> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
-> [Stephan: minor cleanup, add consistent commit message]
+> Signed-off-by: J.R. Divya Antony <d.antony.jr@gmail.com>
+> [Stephan: rebase and simplify, add consistent commit message]
 > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 > ---
-> There are some trivial conflicts unless
-> https://lore.kernel.org/linux-arm-msm/20230921-msm8916-rmem-fixups-v1-3-34d2b6e721cf@gerhold.net/
-> is applied first. But given that there are important fixups for the
-> dynamic reserved memory changes in that series it should preferably
-> get applied before this one anyway.
-> ---
->  .../boot/dts/qcom/msm8916-alcatel-idol347.dts      | 164 +++++++++++++++++++++
->  1 file changed, 164 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts b/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
-> index fade93c55299..ef5fc9289754 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
-> @@ -3,6 +3,8 @@
->  /dts-v1/;
->  
->  #include "msm8916-pm8916.dtsi"
-> +#include "msm8916-modem-qdsp6.dtsi"
-> +
->  #include <dt-bindings/gpio/gpio.h>
->  #include <dt-bindings/input/input.h>
->  #include <dt-bindings/leds/common.h>
-> @@ -22,6 +24,19 @@ chosen {
->  		stdout-path = "serial0";
->  	};
->  
-> +	reserved-memory {
-> +		/delete-node/ reserved@86680000;
-> +		/delete-node/ rmtfs@86700000;
-Deleting with a label reference is strongly preferred to avoid
-mistakes.
-
-[...]
-
->  
-> +&q6afedai {
-> +	dai@18 {
-> +		reg = <SECONDARY_MI2S_RX>;
-> +		qcom,sd-lines = <0>;
-> +	};
-> +	dai@22 {
-Missing newline above
-
-[...]
-
-> +
-> +&sound_dai_primary {
-> +	status = "disabled";
-> +};
-> +
-Hm, gives me an idea to sprinkle a bit more /omit-if-no-ref/ in
-patch 3..
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
 Konrad
