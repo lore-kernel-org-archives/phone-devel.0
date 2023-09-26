@@ -2,74 +2,75 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02157E7E655
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 287A8E7E650
 	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 16:54:45 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235481AbjIZQyu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S234564AbjIZQyu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Tue, 26 Sep 2023 12:54:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54570 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235483AbjIZQyt (ORCPT
+        with ESMTP id S235481AbjIZQyt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Tue, 26 Sep 2023 12:54:49 -0400
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585A6196
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 09:54:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1695747098; cv=none;
+Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [81.169.146.175])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEAC913A
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 09:54:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1695747100; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=Xk4+uFMuPXrdK9kPdhFIG7bwBV9I7VU3dM2KHFwJgqken2GuFWmLxgk/U8BftlubPV
-    j8jtiMHv/wmOViqIt/sgD+hmyxtBMCGIciTsarIWb4HWQ6M89JTaDsosdo9RBKZWmF6v
-    1MGmUQ/gilxgfougNFcPJDF/UsGQ2+v/nW88YzOPFSFV1ZrcAHKCE9/tUTviweyTL2U0
-    mrRJJIHXXsYNTsXsf6q6CcYT0NTkXR4HlbiS67SjtwBSG1QaVcU31Lta6VPc3zhD8Lp/
-    wW4Tpcu6ep+8RRPmJgCZcr6zQc7qgvfaFhURB15lWuNyLXeBPVGq0AtJSN7UOvuBX6Yx
-    9DKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747098;
+    b=ZO1bkRACfadu9xOhXlCcAPEtWgKgleYqnaaYoY9+kAaAVUwYTc6CoR2YVNiWt132WG
+    n2vcRbZ5MSrknEcpK++XAWZt+ohVivDbC6qmXzLGFMf8wVetlcWO010dFl+krRkaV1a+
+    OE/tDpd5r2rduuzfofgZQIK0C2yYwj8JOisFIYWt4ioWQ+hzeyGl06P19x28+EB7zlMo
+    nXSFUx+BaAYs2S5yFj/wfU+Hh2Lm3eiuzeH61qhrdgglf0YWc+rnUnUT96Nbxe5ihA4t
+    IEzPO+thJ8KvKvdTvXOFiXwIdP3QjlVYlFC8HPzTenPkDM5EN1sgCzRnfjEAetFOVE1O
+    st2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747100;
     s=strato-dkim-0002; d=strato.com;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=qFtKSiZynUSedTLMAKU165/f1jdDEGvPsLRJR3qqVJc=;
-    b=bGvmX4/6Sfh+xTGv6JUa63KTUX/isKepvGc3Fzzeo1PsqQVufj9SToL6b3MHoAX2AH
-    GzpYfbP3ndtnw4gyT6HlvshR/BvBF8A7qcwzs3cD1p3PN8Z/JmtENL3oxkk6dfyWAMXr
-    h69RzkzU8t543jjd68cisiyaCwHISXFv03s0PaD9Oqc64943yo/7arVHmiqODlCaDWX8
-    ngBXHg58YVZ+uI6DrnPhBMCiQnkWqvOZ0pRDWjo2qz4EdWxauQtj4edx3RKu9/YlooEQ
-    2Jt6G6pMTCnbSAtUKff2svvstRDsojesBOQZdCp5AM5pXbM2Wywsk6N06alDtGBomYX0
-    NhNw==
+    bh=gmsYc8rXCbXWg/VO14Z+EOACh1i4V1W7ETcSIol4nmk=;
+    b=QgHwPgg1hBnZ2d2DcL1EehrHe+nubZbpTi+wJZmmxErqDkiQwowjYSjJwDGNzaTmuy
+    dMbm8cwSmFvVjbKlkfWDYYezgLdKPmLVWIkOljbU4TqvsDhnkFUFevCMJDohbf6nc0AO
+    N3oWmUqQdb/wmE+dTL2Xxk21XHfxBl1cpNQ6sDOi7yZy6kJuJnTzPvByY2bQZWIcbVdl
+    t0PSVX1ODFze+QIacR1MZTfGBKU7giIm0Mj+4HxWn2xGW8vytUUPEaCnlyUSmK/AeYfv
+    5+kEXu96MPdrYIc4gleuf5QheOG3XA23C1LdAa5dxs0kpNIorZ77YcYmTXeuURSTz7BD
+    mFFQ==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747098;
+X-RZG-CLASS-ID: mo03
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747100;
     s=strato-dkim-0002; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=qFtKSiZynUSedTLMAKU165/f1jdDEGvPsLRJR3qqVJc=;
-    b=ntYXhbqp4cMmiQJr3YNfbQ/ATtcq81KqovYUhjDTIrSq0sX5gvsW73IKLPPCJjPn/A
-    yWfuqkn7d7TszNUMyS0wXQtV/ChS0ZeSUlF5SJ7EqbGonXoJSQHJAI4MCBeiFCe+job2
-    5OgQ93gjLXzSsLqmq3kBNdwnCfjkf7AaitsCwUsN4qpABcg0LM51U38tH6HymNYnuIKM
-    MsEJLsvMiB9NQNWOeihBOP06UI1efh4yryq+D9j386y922NcLz6ZpDjkUOA7aM63OuYo
-    7tuF4zMefEX3YAiI3wFtHpVpiHWupZz1mMUeNvlN2AEWP5UWUub18mm3SVXCi/G5evW/
-    iT1g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695747098;
+    bh=gmsYc8rXCbXWg/VO14Z+EOACh1i4V1W7ETcSIol4nmk=;
+    b=AZvtVSur+sBsv5AGZTweqSIzkEGC0C2TupeYszbk0BFZfdCM9rIMzyrYaGV2BjNT9l
+    DtEVBDgloO0rkcGnHcVXPRriftf//GpkbmrMgXmEgGgTV4i/fRQjKsLzE0oUf7mjWO+5
+    EXoMAbGcPg6DuC4CQoosGYRZNH+nILPBHS538fGe2fK6ivKRm2ejkf9zkpDo7PDebpfh
+    ngCPKDhs9PK53VYFCViLFuyLzfwy2Ni4OhQVI1tUpoCNHy58CkOEHNLprZLc9IQD4dN5
+    RPXCYLeNJVdOr13MJvBm4JuNa0ukGtlqq0Oy6iJKwoolegGjlnN+BL5jUvCu0/Rcqnj9
+    QwpQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695747100;
     s=strato-dkim-0003; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=qFtKSiZynUSedTLMAKU165/f1jdDEGvPsLRJR3qqVJc=;
-    b=Tw/Mj7fBTyaddFKP74FCIr/0BgmSaN7FhnOreVAwQIAu67ZyTxj/5/7oyFxglu0CPd
-    MXH0k1kJKXO0oIqV6WAw==
+    bh=gmsYc8rXCbXWg/VO14Z+EOACh1i4V1W7ETcSIol4nmk=;
+    b=WxbKU7DA/kq7Axy8ayGYSniTa3U9Cn1gmmFpkLiTRAdKDAUKYXE9bP0FgilXtKvV+2
+    ebcHZhNibhdGd1xQ3QAA==
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQjVd4CteZ/7jYgS+mLFY+H0JAn9VOH+nz0="
 Received: from [192.168.244.3]
     by smtp.strato.de (RZmta 49.8.2 SBL|AUTH)
-    with ESMTPSA id R04c57z8QGpbg5Z
+    with ESMTPSA id R04c57z8QGpeg5g
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Tue, 26 Sep 2023 18:51:37 +0200 (CEST)
+    Tue, 26 Sep 2023 18:51:40 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
-Date:   Tue, 26 Sep 2023 18:51:16 +0200
-Subject: [PATCH 02/13] arm64: dts: qcom: msm8916/39: Add QDSP6
+Date:   Tue, 26 Sep 2023 18:51:23 +0200
+Subject: [PATCH 09/13] arm64: dts: qcom: msm8916-longcheer-l8150: Add sound
+ and modem
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230926-msm8916-modem-v1-2-398eec74bac9@gerhold.net>
+Message-Id: <20230926-msm8916-modem-v1-9-398eec74bac9@gerhold.net>
 References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
 In-Reply-To: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
 To:     Bjorn Andersson <andersson@kernel.org>
@@ -79,163 +80,115 @@ Cc:     Andy Gross <agross@kernel.org>,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>
+        Stephan Gerhold <stephan@gerhold.net>,
+        Nikita Travkin <nikita@trvn.ru>
 X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-MSM8916 and MSM8939 do not have a dedicated ADSP. Instead, the audio
-services via APR are also implemented by the modem DSP. Audio can be
-either routed via the modem DSP (necessary for voice call audio etc)
-or directly sent to the LPASS hardware (currently used by DB410c).
-Bypassing QDSP6 audio is only possible with special firmware
-(on DB410c) or when the modem DSP is completely disabled.
+From: Nikita Travkin <nikita@trvn.ru>
 
-Add the typical nodes for QDSP6 audio to msm8916.dtsi and msm8939.dtsi.
-The apr node is disabled by default to avoid changing behavior for
-devices like DB410c that use the bypassed audio path.
+Enable sound and modem for the Longcheer L8150 (e.g. Wileyfox Swift).
+The setup is similar to most MSM8916 devices, i.e.:
 
+ - QDSP6 audio
+ - Speaker/earpiece/headphones/microphones via digital/analog codec
+   in MSM8916/PM8916
+ - Audio jack detection via analog codec in PM8916
+ - WWAN Internet via BAM-DMUX
+
+except:
+
+ - The mpss firmware region must be relocated to a different address.
+   This is because the wcnss firmware is not relocatable for some
+   reason. The mpss firmware is too large to avoid overlap with wcnss
+   when placed at the default address (0x86800000).
+
+   Surprisingly the vendor kernel does not handle this. The firmware
+   regions end up overlapping there and somehow this does not explode.
+   We try to handle this more safely by relocating the mpss region to
+   the first higher address that is working correctly: 0x8e800000.
+
+Signed-off-by: Nikita Travkin <nikita@trvn.ru>
+Co-developed-by: Stephan Gerhold <stephan@gerhold.net>
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- arch/arm64/boot/dts/qcom/msm8916.dtsi | 49 +++++++++++++++++++++++++++++++++++
- arch/arm64/boot/dts/qcom/msm8939.dtsi | 49 +++++++++++++++++++++++++++++++++++
- 2 files changed, 98 insertions(+)
+ .../boot/dts/qcom/msm8916-longcheer-l8150.dts      | 32 ++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-index 4f799b536a92..e8a14dd7e7c2 100644
---- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-@@ -10,6 +10,7 @@
- #include <dt-bindings/interrupt-controller/arm-gic.h>
- #include <dt-bindings/power/qcom-rpmpd.h>
- #include <dt-bindings/reset/qcom,gcc-msm8916.h>
-+#include <dt-bindings/soc/qcom,apr.h>
- #include <dt-bindings/thermal/thermal.h>
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
+index 47d1c5cb13f4..78f08254b287 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
+@@ -3,6 +3,8 @@
+ /dts-v1/;
  
- / {
-@@ -1989,6 +1990,54 @@ smd-edge {
+ #include "msm8916-pm8916.dtsi"
++#include "msm8916-modem-qdsp6.dtsi"
++
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/input/input.h>
+ #include <dt-bindings/interrupt-controller/irq.h>
+@@ -25,17 +27,26 @@ chosen {
  
- 				label = "hexagon";
+ 	/*
+ 	 * For some reason, the signed wcnss firmware is not relocatable.
+-	 * It must be loaded at 0x8b600000. All other firmware is relocatable,
+-	 * so place wcnss at the fixed address and then all other firmware
+-	 * regions will be automatically allocated at a fitting place.
++	 * It must be loaded at 0x8b600000. Unfortunately, this also means that
++	 * mpss_mem does not fit when loaded to the typical address at 0x86800000.
++	 *
++	 * Load wcnss_mem to the fixed address and relocate mpss_mem to the next
++	 * working higher address. For some reason the modem firmware does not
++	 * boot when placed at 0x8a800000 to 0x8e800000.
+ 	 */
+ 	reserved-memory {
++		/delete-node/ mpss@86800000;
+ 		/delete-node/ wcnss;
  
-+				apr: apr {
-+					compatible = "qcom,apr-v2";
-+					qcom,smd-channels = "apr_audio_svc";
-+					qcom,domain = <APR_DOMAIN_ADSP>;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+					status = "disabled";
-+
-+					q6core: service@3 {
-+						compatible = "qcom,q6core";
-+						reg = <APR_SVC_ADSP_CORE>;
-+					};
-+
-+					q6afe: service@4 {
-+						compatible = "qcom,q6afe";
-+						reg = <APR_SVC_AFE>;
-+
-+						q6afedai: dais {
-+							compatible = "qcom,q6afe-dais";
-+							#address-cells = <1>;
-+							#size-cells = <0>;
-+							#sound-dai-cells = <1>;
-+						};
-+					};
-+
-+					q6asm: service@7 {
-+						compatible = "qcom,q6asm";
-+						reg = <APR_SVC_ASM>;
-+
-+						q6asmdai: dais {
-+							compatible = "qcom,q6asm-dais";
-+							#address-cells = <1>;
-+							#size-cells = <0>;
-+							#sound-dai-cells = <1>;
-+						};
-+					};
-+
-+					q6adm: service@8 {
-+						compatible = "qcom,q6adm";
-+						reg = <APR_SVC_ADM>;
-+
-+						q6routing: routing {
-+							compatible = "qcom,q6adm-routing";
-+							#sound-dai-cells = <0>;
-+						};
-+					};
-+				};
-+
- 				fastrpc {
- 					compatible = "qcom,fastrpc";
- 					qcom,smd-channels = "fastrpcsmd-apps-dsp";
-diff --git a/arch/arm64/boot/dts/qcom/msm8939.dtsi b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-index 65c68e0e88d5..95610a32750a 100644
---- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-@@ -10,6 +10,7 @@
- #include <dt-bindings/interrupt-controller/arm-gic.h>
- #include <dt-bindings/power/qcom-rpmpd.h>
- #include <dt-bindings/reset/qcom,gcc-msm8939.h>
-+#include <dt-bindings/soc/qcom,apr.h>
- #include <dt-bindings/thermal/thermal.h>
- 
- / {
-@@ -1615,6 +1616,54 @@ smd-edge {
- 				qcom,remote-pid = <1>;
- 
- 				label = "hexagon";
-+
-+				apr: apr {
-+					compatible = "qcom,apr-v2";
-+					qcom,smd-channels = "apr_audio_svc";
-+					qcom,domain = <APR_DOMAIN_ADSP>;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+					status = "disabled";
-+
-+					q6core: service@3 {
-+						compatible = "qcom,q6core";
-+						reg = <APR_SVC_ADSP_CORE>;
-+					};
-+
-+					q6afe: service@4 {
-+						compatible = "qcom,q6afe";
-+						reg = <APR_SVC_AFE>;
-+
-+						q6afedai: dais {
-+							compatible = "qcom,q6afe-dais";
-+							#address-cells = <1>;
-+							#size-cells = <0>;
-+							#sound-dai-cells = <1>;
-+						};
-+					};
-+
-+					q6asm: service@7 {
-+						compatible = "qcom,q6asm";
-+						reg = <APR_SVC_ASM>;
-+
-+						q6asmdai: dais {
-+							compatible = "qcom,q6asm-dais";
-+							#address-cells = <1>;
-+							#size-cells = <0>;
-+							#sound-dai-cells = <1>;
-+						};
-+					};
-+
-+					q6adm: service@8 {
-+						compatible = "qcom,q6adm";
-+						reg = <APR_SVC_ADM>;
-+
-+						q6routing: routing {
-+							compatible = "qcom,q6adm-routing";
-+							#sound-dai-cells = <0>;
-+						};
-+					};
-+				};
- 			};
+ 		wcnss_mem: wcnss@8b600000 {
+ 			reg = <0x0 0x8b600000 0x0 0x600000>;
+ 			no-map;
  		};
++
++		mpss_mem: mpss@8e800000 {
++			reg = <0x0 0x8e800000 0x0 0x5000000>;
++			no-map;
++		};
+ 	};
  
+ 	gpio-keys {
+@@ -225,6 +236,13 @@ &blsp_uart2 {
+ 	status = "okay";
+ };
+ 
++&pm8916_codec {
++	qcom,micbias-lvl = <2800>;
++	qcom,mbhc-vthreshold-low = <75 150 237 450 500>;
++	qcom,mbhc-vthreshold-high = <75 150 237 450 500>;
++	qcom,hphl-jack-type-normally-open;
++};
++
+ &pm8916_resin {
+ 	status = "okay";
+ 	linux,code = <KEY_VOLUMEDOWN>;
+@@ -254,6 +272,14 @@ &sdhc_2 {
+ 	non-removable;
+ };
+ 
++&sound {
++	status = "okay";
++	audio-routing =
++		"AMIC1", "MIC BIAS Internal1",
++		"AMIC2", "MIC BIAS Internal2",
++		"AMIC3", "MIC BIAS Internal3";
++};
++
+ &usb {
+ 	status = "okay";
+ 	dr_mode = "peripheral";
 
 -- 
 2.42.0
