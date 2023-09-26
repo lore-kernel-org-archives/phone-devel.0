@@ -2,121 +2,122 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A0F78E7E65A
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 19:06:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F011E7E65A
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 19:07:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235764AbjIZTGk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Sep 2023 15:06:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49300 "EHLO
+        id S235603AbjIZTIB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Sep 2023 15:08:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235687AbjIZTGj (ORCPT
+        with ESMTP id S229580AbjIZTIA (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Sep 2023 15:06:39 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97D8D126
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 12:06:32 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-405524e6769so46528625e9.1
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 12:06:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1695755191; x=1696359991; darn=vger.kernel.org;
-        h=in-reply-to:references:message-id:to:from:subject:cc:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0WhT3I1HoyzXvrF4bNIAgqqZZC+4W+J5yKlGXFNwrb0=;
-        b=xT9mI7pRhQ0ktJdTvbx9kmBaq+XPr9CzwEeuIgFIXMyBB6xMOhnAYpFGPAcpFKdj4H
-         C2u1hPJYYZbFxJmLPfgscZb0Q856XJ5tmRrFQnwTDMBIiCHsYGBaL4Zxy3ZBvW6bg+N+
-         WdmaUAFZI+22Dxkw05dFh8kdhIJYGU6sBTaoVjKLvwQL0zx0D0IEJtOIRrnrqT/OcSCo
-         UfWWOCIWYOQ51q8oRz0eezv5O+r2CPoXFWy7aifFkCfPpoEBINhrbXxCeTbWcs426ocT
-         cgg/mjuV+UEhhmtn3hQ2hBmVYJIQBp5icgh1ACmxF/1nkvEOS1csavjMUZE3v8joeJoo
-         /gAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695755191; x=1696359991;
-        h=in-reply-to:references:message-id:to:from:subject:cc:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0WhT3I1HoyzXvrF4bNIAgqqZZC+4W+J5yKlGXFNwrb0=;
-        b=FX9g5ryTNtmTSGRFjB5Tp7Dk4pmYW+qe2B7ErByoO4z2C1w5DyC+fJcYbsNwoyzGSC
-         OzTv9j8uFqsuL/mrBc0EajvIA+7Gg/kqPayhUSWuuGn//nibnV3ohwtHmT5TP4Kmgbwn
-         yD6j+14pxaBC22/0qXemhlk6Sw1K9J1WoTumXRTGDRbnp+hj0uCbh09XvIWlAXvyZVLv
-         jAnOH+mKEHSIe3DEbiowBZwRXyXxS7OP5b8hE66ogmDrUhZaB6t8BEd4EJOJDSFDFNma
-         WuHJ5ch1Gt4T6bqcnkWCwUpdoxSbVtbPY6ahbpYo2Ntk4vKLgS2cN1GE3iiXZXWWjVjm
-         GPgA==
-X-Gm-Message-State: AOJu0YypxgXPKToNrlhHEWxg/+TpQG5wHPGaKhg7TV+PgYdblgzVHgxo
-        n3gba0yLau962I5beK12hZyliA==
-X-Google-Smtp-Source: AGHT+IGaUXN/N9KEtl6bp24m+BoEu1jQER0zYBcCo8xTUVE52B6AjkzCayrdZDCq5883ChqfuRarjA==
-X-Received: by 2002:a7b:ce0a:0:b0:3fe:1587:fdf3 with SMTP id m10-20020a7bce0a000000b003fe1587fdf3mr2743086wmc.14.1695755190970;
-        Tue, 26 Sep 2023 12:06:30 -0700 (PDT)
-Received: from localhost ([213.144.205.82])
-        by smtp.gmail.com with ESMTPSA id q25-20020a7bce99000000b003fefcbe7fa8sm3624996wmj.28.2023.09.26.12.06.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Sep 2023 12:06:30 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 26 Sep 2023 21:06:30 +0200
-Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-gpio@vger.kernel.org>, <linux-pm@vger.kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v2 5/7] dt-bindings: pinctrl: qcom,sc7280: Allow
- gpio-reserved-ranges
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Luca Weiss" <luca.weiss@fairphone.com>,
-        <cros-qcom-dts-watchers@chromium.org>,
-        "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>,
-        "Srinivas Kandagatla" <srinivas.kandagatla@linaro.org>,
-        "Linus Walleij" <linus.walleij@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "Viresh Kumar" <viresh.kumar@linaro.org>
-Message-Id: <CVT30PLQGDL5.3A3O07UX6YCL2@otso>
-X-Mailer: aerc 0.15.2
-References: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com>
- <20230919-fp5-initial-v2-5-14bb7cedadf5@fairphone.com>
-In-Reply-To: <20230919-fp5-initial-v2-5-14bb7cedadf5@fairphone.com>
+        Tue, 26 Sep 2023 15:08:00 -0400
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A41910A;
+        Tue, 26 Sep 2023 12:07:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1695755270; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=bmK9YiIauI3v+dHbLhOZdo5K6olJAgjjGluVMQN74bDxe2tgdlA2VR19+t+iAZcFh1
+    cgojPnG48bjBW71t8eyKq1obG4eIQBMklKl/w5NATSWyTm08j1kKKXv2wJeOXkSfeN8W
+    Q3g29ZZUBVbLbDMQpDXDq6/+a10gHT7BYimaunuJdlh/o7zovtGNZhlWnfsDPL5mVL+/
+    mqqlHBE/39+D8CXr7SAvDzFcCLmrJ2G6qA2dy1lesrhIQZDPlwDNwc8pWIz75sK4zaTb
+    roCAc4fdzh9eWub5Vu4C3NlHUivDm2Rkw2gQ8CPn80WP5DmuiQUvQ6kdHAi/dIzX6u19
+    7HeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695755270;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=uIAfzuyOkWSBhmXtnv7qdoctSqDjtDtiTDiNqyABclA=;
+    b=YVERfBqahebHAuzX7dB93jWMHzoAjdkXL5tCwU9QrXO+HMosPuP14Uek/k+shSg9Uf
+    mN68wFyu3OYCzO5TERpp+Mhr4yz1aXgoFgkpmGoj1gtqLv3XBMBUmEHEhOith9yLiRHB
+    UpCRytDLXefKDab9Fp/sl+i9XG48x0sAUuMdn0PiDzyZEwafGbr4VK7JTUjK6asbPusQ
+    70zDBeONd6TP3yTopXyG4KjAM9SpD/AAx4+wSiKOfeAKOZrYIHhAmbyJ6HSyVq8hd87k
+    H6ijwqOJO0Hs/WA3Jq/qI3SgsbLuATgIdSHRj45UXSOw09AglMtkG8IQDvfmiW1calXU
+    +C1w==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695755270;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=uIAfzuyOkWSBhmXtnv7qdoctSqDjtDtiTDiNqyABclA=;
+    b=T24Dc6v9Kk5enqUaX+vCpgzgLnI3Oa22QeN05xyBDZNPyPl5ytNWkI7+4SoQ7kFbDH
+    Vpw2pBLPpUaCos7zbw+lNtD7tCVAF48Xm1RhmwxbxhIY6Bcrqre7H5JAfC86k27O/IHd
+    hKEEU6o/yT20PJgFxlWOk5S7Wc+AyxQz78jkcY/jzK0l+D7Wm/M/ws+hGwOh6qc+o06x
+    DY9DmN9TZq7QmOO3U4q+oW4hgn4S5bKU+7WvUtxViYIaYj4Sn0DzFRv89VkyQVBQvrbV
+    VhvJRSzX0jdAKK9hhmJhc4iLVPgZMR62vuTanWgxzyD/cixNwjQ7UK79pfDcRRVDVuBf
+    Po8Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695755270;
+    s=strato-dkim-0003; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=uIAfzuyOkWSBhmXtnv7qdoctSqDjtDtiTDiNqyABclA=;
+    b=wEwob8SeFNbAHztdM6zN7erhPW9K1z0JJCmPJ6yEU5Lf/yn0MIj/i0YgB/HC/2wg4+
+    YuVwLDR9KgB3Ge4FrEAw==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA8piJ1A=="
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 49.8.2 SBL|AUTH)
+    with ESMTPSA id R04c57z8QJ7ogKg
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Tue, 26 Sep 2023 21:07:50 +0200 (CEST)
+Date:   Tue, 26 Sep 2023 21:07:49 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: Re: [PATCH 02/13] arm64: dts: qcom: msm8916/39: Add QDSP6
+Message-ID: <ZRMsBcqvB9b-IxZi@gerhold.net>
+References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
+ <20230926-msm8916-modem-v1-2-398eec74bac9@gerhold.net>
+ <698c8d60-e284-4267-8349-b327712c94cc@linaro.org>
+ <ZRMo8oxIKJIY5WG8@gerhold.net>
+ <959825a0-5327-46b7-b91d-9753601c7ba0@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <959825a0-5327-46b7-b91d-9753601c7ba0@linaro.org>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue Sep 19, 2023 at 2:45 PM CEST, Luca Weiss wrote:
-> Allow the gpio-reserved-ranges property on SC7280 TLMM.
->
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+On Tue, Sep 26, 2023 at 09:05:24PM +0200, Konrad Dybcio wrote:
+> On 26.09.2023 20:54, Stephan Gerhold wrote:
+> > On Tue, Sep 26, 2023 at 08:46:36PM +0200, Konrad Dybcio wrote:
+> >> On 26.09.2023 18:51, Stephan Gerhold wrote:
+> >>> MSM8916 and MSM8939 do not have a dedicated ADSP. Instead, the audio
+> >>> services via APR are also implemented by the modem DSP. Audio can be
+> >>> either routed via the modem DSP (necessary for voice call audio etc)
+> >>> or directly sent to the LPASS hardware (currently used by DB410c).
+> >>> Bypassing QDSP6 audio is only possible with special firmware
+> >>> (on DB410c) or when the modem DSP is completely disabled.
+> >>>
+> >>> Add the typical nodes for QDSP6 audio to msm8916.dtsi and msm8939.dtsi.
+> >>> The apr node is disabled by default to avoid changing behavior for
+> >>> devices like DB410c that use the bypassed audio path.
+> >>>
+> >>> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> >>> ---
+> >> I'm generally grumpy with regards to multi-soc changes that
+> >> have no need to be multi-soc..
+> >>
+> > 
+> > Well it's 100% the same diff so reviewing it separately doesn't really
+> > make sense IMHO. When I do "msm8916/39" patches these are generally the
+> > changes where strictly speaking there is no need to duplicate at all.
+> > It could go into a common include between both. We just haven't found
+> > a good solution/agreement yet how sharing SoC components could work.
+> My bottom line is that, somebody trying to track down an issue on
+> one may need to unnecessarily resolve 2 merge conflicts when reverting :/
+> 
 
-Hi Linus,
+I mean you could easily discard the changes in the other .dtsi. Probably
+a single shell command if one knows enough "Git-fu".
 
-the rest of this series is merged so would be great if you could pick up
-this patch (as you wrote in v1) :)
-
-Regards
-Luca
-
-> ---
->  Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml | 4 +=
-+++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctr=
-l.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml
-> index 368d44ff5468..c8735ab97e40 100644
-> --- a/Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml
-> +++ b/Documentation/devicetree/bindings/pinctrl/qcom,sc7280-pinctrl.yaml
-> @@ -41,6 +41,10 @@ properties:
->    gpio-ranges:
->      maxItems: 1
-> =20
-> +  gpio-reserved-ranges:
-> +    minItems: 1
-> +    maxItems: 88
-> +
->    gpio-line-names:
->      maxItems: 175
-> =20
-
+Stephan
