@@ -2,174 +2,121 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BCF6E7E652
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 16:54:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C7D5E7E657
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 18:44:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235483AbjIZQyy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Sep 2023 12:54:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55352 "EHLO
+        id S235552AbjIZSoF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Sep 2023 14:44:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235485AbjIZQyx (ORCPT
+        with ESMTP id S235419AbjIZSoE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Sep 2023 12:54:53 -0400
-Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [81.169.146.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA5BE4
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 09:54:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1695747101; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=nkG3qo4wxa6uPpr8wezU1QB3J9gPmARwh2pUsEBIO4644ypuWj3bpf4jKsNSGPvWsG
-    nl/MuQeFBWPMKOUYuANpUr9YbI3GtmsAz98pY+MR3fF399SvTCEQIYNE+9tFSBW4n9uo
-    dOrXyYy9YhviBsVcejoXiOUB3OFdAwXN/Mao0I+mZMqc3+9GU+dDg2A6yvPh2Rg9rr90
-    YaOUAK6OAhYR0JAZbzHGQxdu2EBgeHpVRfmevT7IxMYgdKGhTRUlRXEuWbp0cmgTPVGJ
-    OWI4GctFmkqzvS9etyeH3uQXQPz39SZdEVVfLsfpVbDEYrGaoJBXNUG8+3dp9lc8Wqql
-    biWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747101;
-    s=strato-dkim-0002; d=strato.com;
-    h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
-    From:Subject:Sender;
-    bh=tufcaIR3gqhuRrY5aJ18aw1wfuMM/cmSUyyyezmaDvk=;
-    b=M28tOYed4a+uDYp3SoHeC+ceSs4//LjQgD/5ycLgv4AdtTpGim06TmHxZXG/jakZMM
-    87fcbONDMmIGaaZLoibW/DUKlPJs/22vqL56EOAgSqNk/JpcmeRPnnIGsr5MV9D6gzzP
-    ncgBOxfn55AyDy1Fzcg3nY80B8stlFSdsGbAepZ3hgm5awLqzw0ofluuoSec6fCz0NMb
-    b4OpQR5ePCD4tim2FMamSNjVRr25f/2zGExPXPkC26cdNpBJ3CVYrBOa+oX9lYIkc2fk
-    oNHE9TbepYh7m6BLwP1MeqZVsUssdzs1kDRzmkjl0dKZLunwIVc7P+7+bnrsx0428sIF
-    EMmA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo03
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747101;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
-    From:Subject:Sender;
-    bh=tufcaIR3gqhuRrY5aJ18aw1wfuMM/cmSUyyyezmaDvk=;
-    b=MpeJFR55+/Kra0BqLqqlt8ubm8S6O6XtQqKaj4XZPWGn1lG//QsIOEhcgoThOYgN3C
-    /Xe7X7fSTuMqKkBdp88GFh2QHVE5VgflVpDzVhm78C+Ncqj3o6x8w7F6C5DhBUDuK8cJ
-    uK6ncWrZa6EU5JAi8Oc65/nw0K9ajxpQp2f20z8Nd2VnPd5oJkK5NV7buJkKONEx0rrH
-    LvrzI7l2MTX9oAhndIqPRF/wcKiWXpl7V7Xon3T32aouvXxpuVVFs5dExqN8biUjNA4t
-    /EBVm+zcT0yP+cpAEyp44eqK1EaWSoLJxwdnMtpOQpdWWVgtyNL3fxu9QoAnM7roS45m
-    TUew==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695747101;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
-    From:Subject:Sender;
-    bh=tufcaIR3gqhuRrY5aJ18aw1wfuMM/cmSUyyyezmaDvk=;
-    b=DSs3zEBZOD9PDojf0ZDEnz39N/bXVBh80JJXu3OOaptca1U40I7321k1R3mY0/Rv0q
-    M9SzyIlCTUqrcKTGjxBg==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQjVd4CteZ/7jYgS+mLFY+H0JAn9VOH+nz0="
-Received: from [192.168.244.3]
-    by smtp.strato.de (RZmta 49.8.2 SBL|AUTH)
-    with ESMTPSA id R04c57z8QGpfg5j
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Tue, 26 Sep 2023 18:51:41 +0200 (CEST)
-From:   Stephan Gerhold <stephan@gerhold.net>
-Date:   Tue, 26 Sep 2023 18:51:26 +0200
-Subject: [PATCH 12/13] arm64: dts: qcom: msm8916-samsung-j5: Add sound and
- modem
+        Tue, 26 Sep 2023 14:44:04 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 296B712A
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:43:57 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2bffdf50212so154408301fa.1
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:43:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695753835; x=1696358635; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OSU+SZPxKGYTjIc6rJyWeRopODL5gheCV1/1DObf/og=;
+        b=XWo4S2sk8fepgsSTr7NoxlsWdv7VDA1Qr9O9NIpsWYGew3bpazMXfnQj3iGOdg26iA
+         RshP3qQh1dtw/J2OEe0FDTEd0WNuTV8vCYkeycVbnlC+ozP+1/L3tOsB5nca/7UTPxGT
+         zQZCBKSZTXlUquGPdifrXuVvHXsxqo8wNOumqpuRMWObrQUfkp2A6znnum+MvNl6DoA/
+         SIo5fIHuu5U/ZJp9oIU3+E4X0Tunn4bj+WT7KNBcDbcLsepSahPzoGZpDwjvonzdSJhj
+         OMSADP0yG5v78cwoZV2NPP9o4/z/4tbBOF6nqrErBaMSoBzSpSfp0T3yVAD+XEIemKi1
+         IHXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695753835; x=1696358635;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OSU+SZPxKGYTjIc6rJyWeRopODL5gheCV1/1DObf/og=;
+        b=YJKZZnub3hcrGl2UqKcOTPHnJi134HZ2ytVLgsxUwGFumXx4RBKNaQtEO04pshvCBY
+         qXASjfS898FXfG0F6vMloVcpFBh4QLUTnIildhCWLj2o0er4xfE2TihhbGJYDpF+CWwk
+         gbmsrW7XkuDMH3bL4YK6IzHCEPmAlhx+pWTdjVP4kCF7qjI4ZhyYXh57yDjVVXgDkbt/
+         /22emczpCQtY4vaVfnIzho5xf1VhSl4BKc/KOy9gH5qn3osPu1E7blgOI3B/F+fzyfLR
+         0pcFhIPHUV0SvqRF9sAYNtDL5/R3LW+IlwLhdSF4gG/1sRE+VkgydCHOq5tnAnAkiHoS
+         ekcw==
+X-Gm-Message-State: AOJu0Yx/OOIHhQ73W69t28eYIZ3LLJv44LlNKaRxYxhKap4a3maoBPKm
+        HsSbeFc+zg7OvLmuiiA3g/vQSg==
+X-Google-Smtp-Source: AGHT+IF9pReSezCP0GUZ6S6nPiyNYYJPmFuruAVe0wO+kMf8MTtHPsimOosx/kfGfD2v5tJV7zQGTQ==
+X-Received: by 2002:a05:6512:3a89:b0:503:a9c:af83 with SMTP id q9-20020a0565123a8900b005030a9caf83mr10336058lfu.41.1695753835393;
+        Tue, 26 Sep 2023 11:43:55 -0700 (PDT)
+Received: from [192.168.33.189] (178235177023.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.23])
+        by smtp.gmail.com with ESMTPSA id b25-20020a056512025900b004fe4d45f56bsm2267177lfo.68.2023.09.26.11.43.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Sep 2023 11:43:55 -0700 (PDT)
+Message-ID: <12d47129-4bf6-4ccc-930a-b0a6b8825124@linaro.org>
+Date:   Tue, 26 Sep 2023 20:43:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230926-msm8916-modem-v1-12-398eec74bac9@gerhold.net>
-References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
-In-Reply-To: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
-To:     Bjorn Andersson <andersson@kernel.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/13] arm64: dts: qcom: msm8939: Add BAM-DMUX WWAN
+Content-Language: en-US
+To:     Stephan Gerhold <stephan@gerhold.net>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        "Lin, Meng-Bo" <linmengbo0689@protonmail.com>,
-        Markuss Broks <markuss.broks@gmail.com>
-X-Mailer: b4 0.12.3
+        Vincent Knecht <vincent.knecht@mailoo.org>
+References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
+ <20230926-msm8916-modem-v1-1-398eec74bac9@gerhold.net>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
+ BB/OmIWU6X+LZW6P88ZmHe+KeyABLMP5s1tJNK1j4ntT7mECcWZDzafPWF4F6m4WJOG27kTJ
+ HGWdmtO+RvadOVi6CoUDqALsmfS3MUG5Pj2Ne9+0jRg4hEnB92AyF9rW2G3qisFcwPgvatt7
+ TXD5E38mLyOPOUyXNj9XpDbt1hNwKQfiidmPh5e7VNAWRnW1iCMMoKqzM1Anzq7e5Afyeifz
+ zRcQPLaqrPjnKqZGL2BKQSZDh6NkI5ZLRhhHQf61fkWcUpTp1oDC6jWVfT7hwRVIQLrrNj9G
+ MpPzrlN4YuAqKeIer1FMt8cq64ifgTzxHzXsMcUdclzq2LTk2RXaPl6Jg/IXWqUClJHbamSk
+ t1bfif3SnmhA6TiNvEpDKPiT3IDs42THU6ygslrBxyROQPWLI9IL1y8S6RtEh8H+NZQWZNzm
+ UQ3imZirlPjxZtvz1BtnnBWS06e7x/UEAguj7VHCuymVgpl2Za17d1jj81YN5Rp5L9GXxkV1
+ aUEwONM3eCI3qcYm5JNc5X+JthZOWsbIPSC1Rhxz3JmWIwP1udr5E3oNRe9u2LIEq+wH/toH
+ kpPDhTeMkvt4KfE5m5ercid9+ZXAqoaYLUL4HCEw+HW0DXcKDwARAQABzShLb25yYWQgRHli
+ Y2lvIDxrb25yYWQuZHliY2lvQGxpbmFyby5vcmc+wsGOBBMBCAA4FiEEU24if9oCL2zdAAQV
+ R4cBcg5dfFgFAmQ5bqwCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQR4cBcg5dfFjO
+ BQ//YQV6fkbqQCceYebGg6TiisWCy8LG77zV7DB0VMIWJv7Km7Sz0QQrHQVzhEr3trNenZrf
+ yy+o2tQOF2biICzbLM8oyQPY8B///KJTWI2khoB8IJSJq3kNG68NjPg2vkP6CMltC/X3ohAo
+ xL2UgwN5vj74QnlNneOjc0vGbtA7zURNhTz5P/YuTudCqcAbxJkbqZM4WymjQhe0XgwHLkiH
+ 5LHSZ31MRKp/+4Kqs4DTXMctc7vFhtUdmatAExDKw8oEz5NbskKbW+qHjW1XUcUIrxRr667V
+ GWH6MkVceT9ZBrtLoSzMLYaQXvi3sSAup0qiJiBYszc/VOu3RbIpNLRcXN3KYuxdQAptacTE
+ mA+5+4Y4DfC3rUSun+hWLDeac9z9jjHm5rE998OqZnOU9aztbd6zQG5VL6EKgsVXAZD4D3RP
+ x1NaAjdA3MD06eyvbOWiA5NSzIcC8UIQvgx09xm7dThCuQYJR4Yxjd+9JPJHI6apzNZpDGvQ
+ BBZzvwxV6L1CojUEpnilmMG1ZOTstktWpNzw3G2Gis0XihDUef0MWVsQYJAl0wfiv/0By+XK
+ mm2zRR+l/dnzxnlbgJ5pO0imC2w0TVxLkAp0eo0LHw619finad2u6UPQAkZ4oj++iIGrJkt5
+ Lkn2XgB+IW8ESflz6nDY3b5KQRF8Z6XLP0+IEdLOOARkOW7yEgorBgEEAZdVAQUBAQdAwmUx
+ xrbSCx2ksDxz7rFFGX1KmTkdRtcgC6F3NfuNYkYDAQgHwsF2BBgBCAAgFiEEU24if9oCL2zd
+ AAQVR4cBcg5dfFgFAmQ5bvICGwwACgkQR4cBcg5dfFju1Q//Xta1ShwL0MLSC1KL1lXGXeRM
+ 8arzfyiB5wJ9tb9U/nZvhhdfilEDLe0jKJY0RJErbdRHsalwQCrtq/1ewQpMpsRxXzAjgfRN
+ jc4tgxRWmI+aVTzSRpywNahzZBT695hMz81cVZJoZzaV0KaMTlSnBkrviPz1nIGHYCHJxF9r
+ cIu0GSIyUjZ/7xslxdvjpLth16H27JCWDzDqIQMtg61063gNyEyWgt1qRSaK14JIH/DoYRfn
+ jfFQSC8bffFjat7BQGFz4ZpRavkMUFuDirn5Tf28oc5ebe2cIHp4/kajTx/7JOxWZ80U70mA
+ cBgEeYSrYYnX+UJsSxpzLc/0sT1eRJDEhI4XIQM4ClIzpsCIN5HnVF76UQXh3a9zpwh3dk8i
+ bhN/URmCOTH+LHNJYN/MxY8wuukq877DWB7k86pBs5IDLAXmW8v3gIDWyIcgYqb2v8QO2Mqx
+ YMqL7UZxVLul4/JbllsQB8F/fNI8AfttmAQL9cwo6C8yDTXKdho920W4WUR9k8NT/OBqWSyk
+ bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
+ nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
+ izWDgYvmBE8=
+In-Reply-To: <20230926-msm8916-modem-v1-1-398eec74bac9@gerhold.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
+On 26.09.2023 18:51, Stephan Gerhold wrote:
+> From: Vincent Knecht <vincent.knecht@mailoo.org>
+> 
+> BAM DMUX is used as the network interface to the modem. This is copied
+> as-is from msm8916.dtsi.
+> 
+> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+> Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Enable sound and modem for the Samsung J5 smartphones. The setup is
-similar to most MSM8916 devices, i.e.:
-
- - QDSP6 audio
- - Speaker/earpiece/headphones/microphones via digital/analog codec
-   in MSM8916/PM8916
- - WWAN Internet via BAM-DMUX
-
-except:
-
- - There is no secondary microphone, so a different "model" is used to
-   differentiate that in the UCM configuration.
- - Samsung-specific audio jack detection (not supported yet)
-
-Co-developed-by: Markuss Broks <markuss.broks@gmail.com>
-Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-Signed-off-by: "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
-[Stephan: Add consistent commit message]
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
----
- arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi | 15 +++++++++++++++
- arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts         |  4 ++++
- 2 files changed, 19 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi
-index fe59be3505fe..2caa820b0c26 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi
-@@ -1,6 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
- #include "msm8916-pm8916.dtsi"
-+#include "msm8916-modem-qdsp6.dtsi"
-+
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/input/input.h>
- #include <dt-bindings/interrupt-controller/irq.h>
-@@ -135,6 +137,10 @@ &blsp_uart2 {
- 	status = "okay";
- };
- 
-+&mpss_mem {
-+	reg = <0x0 0x86800000 0x0 0x5800000>;
-+};
-+
- &pm8916_resin {
- 	status = "okay";
- 	linux,code = <KEY_VOLUMEDOWN>;
-@@ -154,6 +160,15 @@ &sdhc_2 {
- 	cd-gpios = <&tlmm 38 GPIO_ACTIVE_LOW>;
- };
- 
-+&sound {
-+	model = "msm8916-1mic";
-+	audio-routing =
-+		"AMIC1", "MIC BIAS External1",
-+		"AMIC2", "MIC BIAS Internal2",
-+		"AMIC3", "MIC BIAS External1";
-+	status = "okay";
-+};
-+
- &usb {
- 	extcon = <&muic>, <&muic>;
- 	status = "okay";
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts
-index 58c2f5a70e78..ba8650971d6a 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts
-@@ -19,6 +19,10 @@ &blsp_i2c5 {
- 	status = "disabled";
- };
- 
-+&pm8916_codec {
-+	qcom,micbias1-ext-cap;
-+};
-+
- &touchscreen {
- 	/* FIXME: Missing sm5703-mfd driver to power up vdd-supply */
- };
-
--- 
-2.42.0
-
+Konrad
