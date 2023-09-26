@@ -2,62 +2,68 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E19A2CE7A94
-	for <phone-devel@archiver.kernel.org>; Mon, 25 Sep 2023 14:36:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DE3AE7D240
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 07:14:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231181AbjIYOhD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 25 Sep 2023 10:37:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60292 "EHLO
+        id S229776AbjIZHO2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Sep 2023 03:14:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbjIYOhD (ORCPT
+        with ESMTP id S229585AbjIZHO1 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 25 Sep 2023 10:37:03 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A1B2101;
-        Mon, 25 Sep 2023 07:36:54 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 916EF1C001E; Mon, 25 Sep 2023 16:36:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1695652612;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=A7Kx6EcoVfeBKi/SbwuwCQZldltNiCrHCuxYKrSTkLM=;
-        b=bTgxHCrLGiy6IbyXRORlo36rCN9vZbwl0l3j/og4gJKP1+jG7UozXISxwxIFXeRVHzoFeT
-        Z0lDrMBrDnppBRrH9QBhubb025oZjEU3iJ4BWvtIF3HfMJyOrliUZroTZqI9tWOcH0cpbi
-        RcMPC5Yquju+aFsap1ThfO1Nfh0dsU0=
-Date:   Mon, 25 Sep 2023 16:36:43 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     kernel list <linux-kernel@vger.kernel.org>,
+        Tue, 26 Sep 2023 03:14:27 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 97FC6DE;
+        Tue, 26 Sep 2023 00:14:17 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 0427D80A3;
+        Tue, 26 Sep 2023 07:14:17 +0000 (UTC)
+Date:   Tue, 26 Sep 2023 10:14:15 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
         linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, tony@atomide.com, sre@kernel.org,
-        nekit1000@gmail.com, mpartap@gmx.net, merlijn@wizzup.org,
-        martin_rysavy@centrum.cz, phone-devel@vger.kernel.org,
-        maemo-leste@lists.dyne.org
-Subject: droid4 -- weird behaviour when attempting to use usb host
-Message-ID: <ZRGa+0OFNluV4T5t@localhost>
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
+Subject: Re: droid4 -- weird behaviour when attempting to use usb host
+Message-ID: <20230926071415.GW5285@atomide.com>
+References: <ZRGa+0OFNluV4T5t@localhost>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ZRGa+0OFNluV4T5t@localhost>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi!
+* Pavel Machek <pavel@ucw.cz> [230925 14:36]:
+> Hi!
+> 
+> I'm having some fun with usb host. Good news is it works with
+> externally powered hub... after a while. I get some error messages
+> about inability to go host mode, but with enough patience it
+> eventually does enter host mode and I see my keyboard/mouse.
+> 
+> And usually in that process, one of my cpu cores disappear. top no
+> longer shows 2 cores, and I was wondering for a while if d4 is
+> single-core system. It is not, my two cores are back after reboot.
+> 
+> That's with 6.1.9 kernel from leste. Ideas how to debug this would be
+> welcome. (Do you use usb host?)
 
-I'm having some fun with usb host. Good news is it works with
-externally powered hub... after a while. I get some error messages
-about inability to go host mode, but with enough patience it
-eventually does enter host mode and I see my keyboard/mouse.
+You are using a "proper" non-standard usb micro-b cable that grounds
+the id pin, right?
 
-And usually in that process, one of my cpu cores disappear. top no
-longer shows 2 cores, and I was wondering for a while if d4 is
-single-core system. It is not, my two cores are back after reboot.
+If not, try with one of those as it allows the hardware to do what it's
+supposed to do.
 
-That's with 6.1.9 kernel from leste. Ideas how to debug this would be
-welcome. (Do you use usb host?)
+And presumably you don't have a hacked usb hub that feeds back the
+vbus to your phone, right?
 
-Best regards,
-							Pavel
---=20
+If you have, that should not be used as the pmic can feed vbus.
+
+Regards,
+
+Tony
+
