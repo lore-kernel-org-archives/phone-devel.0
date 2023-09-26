@@ -2,76 +2,75 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4843E7E652
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 16:54:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 590D0E7E650
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 16:54:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235428AbjIZQyp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Sep 2023 12:54:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54456 "EHLO
+        id S235434AbjIZQyq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Sep 2023 12:54:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234564AbjIZQyp (ORCPT
+        with ESMTP id S235367AbjIZQyp (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Tue, 26 Sep 2023 12:54:45 -0400
-X-Greylist: delayed 164 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 26 Sep 2023 09:54:37 PDT
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04EBCCE
+Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [81.169.146.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0629C10A
         for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 09:54:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1695747098; cv=none;
+ARC-Seal: i=1; a=rsa-sha256; t=1695747100; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=k/rKQBb2dF9ATI80TPY5GeU+GDXwp8btyYSvV7lXIE9fIo+1xaK4aBlId1hZt3Zn4p
-    dCKxzzOIiUGmDnJykSCbobgvLgUidW7soVjUnj0SGsyUisgatrOxq5cUaVDoDf4rWxPx
-    tZ2Jymo/Nq3qC9YNKyo5fkx3OGzXiSnuUhEPkii5Qlda7VdCZ7iiYnamJQdoWKpPFOpd
-    VSQP/hZBjMhfa/CN/4S9sKyYC+IJ7Kuy/PHpQb/9et1qsdWnKwKk9DLb8uo+aKVt+pB5
-    Bjm11F0Cqm/JZNWjV6+d/2af8NJN1mCMmbRsxVufn8mkgsVY2MMYYQPjPibkXS8cWPiy
-    jJoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747098;
+    b=DrT7d0EoBEjte4zmnLlGHPYfKKaN2tMoRKImlvAv3lbIaU7RbP8z6hiRw9q11U1Nxt
+    tfd7MQrr2+GYLk3fjQNmt6O6B0l0u6WtWedroQL+EYtzeby3crJj/AN22DAdoTZb2cFu
+    ZPXbA+OYXQxFzGRO6087+wYW5pZmszhKfviZUkDl8JqxwxCLxTFDxEBC/Y+pcRFGq/ZE
+    msWCnFOPSDlnvZWpTaURreIMwy22qLPmrKs1oI4qdWwZKu7EraWxXRM5L+fUKA4n1aP6
+    u9s6ZTZ+aiyUz+UmfkzwHuAQrfvgqo4oYevxYrtSyyyhgksY6iSRl/Ami0D5Yan2MoRf
+    JyFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747100;
     s=strato-dkim-0002; d=strato.com;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=T07F4EQbQn/5OhhvTsQJCuEuYJbCRTqeoJsSzoUsJB4=;
-    b=Cuo5OmzPvHviifAilu+MPo75WomBntft5H5EHYvh/NZlmzI9BweSPNrP6PNnsjAnGO
-    aimNjrD78uKTFATUiMk/ST2u0ov2HOaSVo6o5fGW35ihMHxg++bv+z3FsU5YVMsR+q/J
-    mXFaeh9nbxG8SbPyTz0jSgB7jOyXatv2pPIsOgj8SCkBvGjUcZAVI5008FPh1ve4hMto
-    wbC0Tu7jRyKm9nrh9m3iXLCS8nGmkjKDarMSs18ca9FR4DGF14PaxAdm+XL8xLMlbLi2
-    h9c65QBugH0kzx+sW0YzLIoA/Lb1Pkwxhr5BGg/f+BTQIuyKz17FhzprL9UFCdqOZMn6
-    aTOg==
+    bh=TjlGsMrVPvSVvQFf2520Dzig5Hy6M5stTmN9mxXlD8U=;
+    b=doYsI8WcSk87MTjUWy5FMc1Wv2GQH/GE8Z8H5T02uUC+/ThsE3aXlf2sXFmc+yfM4R
+    uUCBARxNWA/tDJCXiAMUZoJOTJ2eVEd91OxzPgRRX329kdS3nxDh51QNE558pDKm+V6A
+    gNLyNbKV6zrrYggDtR15rx7Ji0UG9bCntodGYZKwF7ATh67kQTxzRHOp7wFE8wuMfZe+
+    /477PS9B9GFtCaHw4elmk3JtZIOPCZhooQ+02dTGCPbyrEqHVU5qTpMTjKDbC00HHT03
+    6VkoSSRHNZuawa8NP3b4Z5z14fkDr8GHyCDFbSJmzHWqFjAyMvr2HqhYIzfCJHEdKVUU
+    GsAQ==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747098;
+X-RZG-CLASS-ID: mo03
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747100;
     s=strato-dkim-0002; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=T07F4EQbQn/5OhhvTsQJCuEuYJbCRTqeoJsSzoUsJB4=;
-    b=NRwYpKAMjSLyaRZn/1zRX+en2LxRUOsr4QeiXfyx2uFDUzQiSKiz5eyDcFI/nGzUvI
-    vMImm2I2wieMFoUPSpfNfAZvjwsg9OAuq/3ExaRLEUAMoOWbjE7dkSQXDeUawebIOYcB
-    FviX5mprGUQVmqq01be9ytcHI5KbvzSDmKb5sLRk6R66Ke1b6ba68BwO4g1xO+ET7F+q
-    JaqlH/HcLgPalZcvVbZec1ECNNTnjMonmLCWQkk0dcvqHQtEFvbh/scttpfVPwbhrgEG
-    yYgESSinaWEyz6op6il6b12wHYn44NboqsaVVjPE80XHSSEf4uYgnjPvbtQuCnsG0nF/
-    PxyA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695747098;
+    bh=TjlGsMrVPvSVvQFf2520Dzig5Hy6M5stTmN9mxXlD8U=;
+    b=VeP9YNUlw3wmwzA/UDIjTmTGDX1DyDpKfRz/Eb3KOc+ISqC6T1iJf5bk6WOAHu0xcU
+    BJkIvJ38Pu1eLrECV0NWZAL2Dk+p4ixvyUF2ZlTd5ulNLru6v+1PwdRqRvpX/G1iZNhR
+    kIaTBAcxIsLu0RvQ19/jpv/9dgAmWhtk45c8TfasP7gXvtjFZbFgmFnZfM8ASjaSftHW
+    qJMxxE92RvI2ixizCZZhdU6LfWkH0MB0T0F15oqHaG+kZSqYujykhJyjc6xw7igjqRvF
+    KPHqxXJ4IodRW+qQUQDobRPqYFx9/+OprjNgKFPvq3qrH9zqnWvwdMncmfvF2tepTI72
+    JADg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695747100;
     s=strato-dkim-0003; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=T07F4EQbQn/5OhhvTsQJCuEuYJbCRTqeoJsSzoUsJB4=;
-    b=x9Rdz8G7gfyyVlgEQ6VB8y5XO1BTiX5HjDy6pfrFXGF6UcP8COOL7aVzJNgE33tLRJ
-    dHMFf82MKetj4mKWnkAA==
+    bh=TjlGsMrVPvSVvQFf2520Dzig5Hy6M5stTmN9mxXlD8U=;
+    b=Nes1SYo+Pb3s8ekeJe04W4ujCF+piDyaVgv/P3iUlhshqA8rkF2oo883qVnOWvcksd
+    6WHC5LQF9CwcgQe1BOBg==
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQjVd4CteZ/7jYgS+mLFY+H0JAn9VOH+nz0="
 Received: from [192.168.244.3]
     by smtp.strato.de (RZmta 49.8.2 SBL|AUTH)
-    with ESMTPSA id R04c57z8QGpcg5b
+    with ESMTPSA id R04c57z8QGpeg5h
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Tue, 26 Sep 2023 18:51:38 +0200 (CEST)
+    Tue, 26 Sep 2023 18:51:40 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
-Date:   Tue, 26 Sep 2023 18:51:18 +0200
-Subject: [PATCH 04/13] arm64: dts: qcom: msm8916-samsung-a2015: Add sound
+Date:   Tue, 26 Sep 2023 18:51:24 +0200
+Subject: [PATCH 10/13] arm64: dts: qcom: msm8916-longcheer-l8910: Add sound
  and modem
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230926-msm8916-modem-v1-4-398eec74bac9@gerhold.net>
+Message-Id: <20230926-msm8916-modem-v1-10-398eec74bac9@gerhold.net>
 References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
 In-Reply-To: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
 To:     Bjorn Andersson <andersson@kernel.org>
@@ -82,170 +81,130 @@ Cc:     Andy Gross <agross@kernel.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
         Stephan Gerhold <stephan@gerhold.net>,
-        "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
+        Jonathan Albrieux <jonathan.albrieux@gmail.com>
 X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Enable sound and modem for the Samsung A2015 based devices (A3, A5, E5,
-E7, Grand Max). The setup is similar to most MSM8916 devices, i.e.:
+From: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+
+Enable sound and modem for the Longcheer L8910 (BQ Aquaris X5).
+The setup is similar to most MSM8916 devices, i.e.:
 
  - QDSP6 audio
  - Earpiece/headphones/microphones via digital/analog codec in
    MSM8916/PM8916
+ - Audio jack detection via analog codec in PM8916
  - WWAN Internet via BAM-DMUX
 
 except:
 
- - NXP TFA9895 codec for speaker on Quaternary MI2S
- - Samsung-specific audio jack detection (not supported yet)
+ - Awinic AW8738 connected to HPH_R (headphones) output of the analog
+   codec. Note that unlike for wingtech-wt88047 there is no analog
+   switch that would allow disabling output via the headphone jack
+   when the speaker is enabled.
 
-[Lin: Add e2015 and grandmax]
-Co-developed-by: "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
-Signed-off-by: "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
+Signed-off-by: Jonathan Albrieux <jonathan.albrieux@gmail.com>
+Co-developed-by: Stephan Gerhold <stephan@gerhold.net>
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- .../dts/qcom/msm8916-samsung-a2015-common.dtsi     | 55 ++++++++++++++++++++++
- .../dts/qcom/msm8916-samsung-e2015-common.dtsi     |  4 ++
- .../boot/dts/qcom/msm8916-samsung-grandmax.dts     |  4 ++
- 3 files changed, 63 insertions(+)
+ .../boot/dts/qcom/msm8916-longcheer-l8910.dts      | 54 ++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
-index 0b29132b74e1..f71b18d89bf9 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
-@@ -1,10 +1,13 @@
- // SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
+index 41cadb906b98..c0dc9a3bbac4 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
+@@ -3,6 +3,8 @@
+ /dts-v1/;
  
  #include "msm8916-pm8916.dtsi"
 +#include "msm8916-modem-qdsp6.dtsi"
 +
  #include <dt-bindings/gpio/gpio.h>
  #include <dt-bindings/input/input.h>
- #include <dt-bindings/interrupt-controller/irq.h>
- #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
-+#include <dt-bindings/sound/apq8016-lpass.h>
- 
- / {
- 	aliases {
-@@ -196,6 +199,18 @@ vibrator: vibrator {
+ #include <dt-bindings/leds/common.h>
+@@ -22,6 +24,16 @@ chosen {
+ 		stdout-path = "serial0";
  	};
- };
  
-+&blsp_i2c1 {
-+	status = "okay";
++	speaker_amp: audio-amplifier {
++		compatible = "awinic,aw8738";
++		mode-gpios = <&tlmm 114 GPIO_ACTIVE_HIGH>;
++		awinic,mode = <5>;
++		sound-name-prefix = "Speaker Amp";
 +
-+	speaker_codec: audio-codec@34 {
-+		compatible = "nxp,tfa9895";
-+		reg = <0x34>;
-+		vddd-supply = <&pm8916_l5>;
-+		sound-name-prefix = "Speaker";
-+		#sound-dai-cells = <0>;
++		pinctrl-0 = <&spk_ext_pa_default>;
++		pinctrl-names = "default";
 +	};
-+};
 +
- &blsp_i2c2 {
+ 	flash-led-controller {
+ 		compatible = "ocs,ocp8110";
+ 		enable-gpios = <&tlmm 49 GPIO_ACTIVE_HIGH>;
+@@ -107,6 +119,17 @@ &blsp_uart2 {
  	status = "okay";
- 
-@@ -243,6 +258,13 @@ &gpu {
- 	status = "okay";
- };
- 
-+&lpass {
-+	dai-link@3 {
-+		reg = <MI2S_QUATERNARY>;
-+		qcom,playback-sd-lines = <1>;
-+	};
-+};
-+
- &mdss {
- 	status = "okay";
- };
-@@ -253,6 +275,10 @@ &mdss_dsi0 {
- 	pinctrl-1 = <&mdss_sleep>;
  };
  
 +&mpss_mem {
-+	reg = <0x0 0x86800000 0x0 0x5400000>;
++	reg = <0x0 0x86800000 0x0 0x5000000>;
++};
++
++&pm8916_codec {
++	qcom,micbias-lvl = <2800>;
++	qcom,mbhc-vthreshold-low = <75 100 120 180 500>;
++	qcom,mbhc-vthreshold-high = <75 100 120 180 500>;
++	qcom,hphl-jack-type-normally-open;
 +};
 +
  &pm8916_resin {
  	status = "okay";
  	linux,code = <KEY_VOLUMEDOWN>;
-@@ -265,6 +291,13 @@ pm8916_l17: l17 {
- 	};
- };
- 
-+&q6afedai {
-+	dai@22 {
-+		reg = <QUATERNARY_MI2S_RX>;
-+		qcom,sd-lines = <1>;
-+	};
-+};
-+
- &sdhc_1 {
- 	status = "okay";
- };
-@@ -279,6 +312,28 @@ &sdhc_2 {
+@@ -137,6 +160,30 @@ &sdhc_2 {
  	cd-gpios = <&tlmm 38 GPIO_ACTIVE_LOW>;
  };
  
 +&sound {
 +	status = "okay";
 +
-+	model = "samsung-a2015";
++	/*
++	 * Provide widgets/pin-switches to allow enabling speaker separately.
++	 * The hardware does not provide a way to disable the output via the
++	 * headphone jack when the speaker is enabled.
++	 */
++	model = "bq-paella";
++	widgets =
++		"Speaker", "Speaker",
++		"Headphone", "Headphones";
++	pin-switches = "Speaker";
 +	audio-routing =
++		"Speaker", "Speaker Amp OUT",
++		"Speaker Amp IN", "HPH_R",
++		"Headphones", "HPH_L",
++		"Headphones", "HPH_R",
 +		"AMIC1", "MIC BIAS External1",
 +		"AMIC2", "MIC BIAS Internal2",
 +		"AMIC3", "MIC BIAS External1";
-+
-+	pinctrl-0 = <&cdc_pdm_default &sec_mi2s_default>;
-+	pinctrl-1 = <&cdc_pdm_sleep &sec_mi2s_sleep>;
-+	pinctrl-names = "default", "sleep";
-+};
-+
-+&sound_dai_quaternary {
-+	status = "okay";
-+
-+	codec {
-+		sound-dai = <&speaker_codec>;
-+	};
++	aux-devs = <&speaker_amp>;
 +};
 +
  &usb {
  	status = "okay";
- 	extcon = <&muic>, <&muic>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-e2015-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-e2015-common.dtsi
-index 0824ab041d80..3c49dac92d2d 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-e2015-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-e2015-common.dtsi
-@@ -65,6 +65,10 @@ accelerometer@1d {
+ 	extcon = <&usb_id>, <&usb_id>;
+@@ -205,6 +252,13 @@ sdc2_cd_default: sdc2-cd-default-state {
+ 		bias-disable;
  	};
- };
  
-+&mpss_mem {
-+	reg = <0x0 0x86800000 0x0 0x5a00000>;
-+};
++	spk_ext_pa_default: spk-ext-pa-default-state {
++		pins = "gpio114";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
 +
- &reg_motor_vdd {
- 	regulator-min-microvolt = <3300000>;
- 	regulator-max-microvolt = <3300000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts
-index 3f145dde4059..5882b3a593b8 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts
-@@ -49,6 +49,10 @@ &reg_touch_key {
- 	status = "disabled";
- };
- 
-+&sound {
-+	model = "samsung-gmax"; /* No secondary microphone */
-+};
-+
- &tlmm {
- 	gpio_leds_default: gpio-led-default-state {
- 		pins = "gpio60";
+ 	usb_id_default: usb-id-default-state {
+ 		pins = "gpio110";
+ 		function = "gpio";
 
 -- 
 2.42.0
