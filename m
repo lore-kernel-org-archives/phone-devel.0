@@ -2,74 +2,75 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BFB0E7E653
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 16:54:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08D72E7E658
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 16:54:48 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235482AbjIZQyv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Sep 2023 12:54:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54578 "EHLO
+        id S235480AbjIZQyw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Sep 2023 12:54:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235480AbjIZQyu (ORCPT
+        with ESMTP id S235486AbjIZQyv (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Sep 2023 12:54:50 -0400
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.82])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC7E9199
+        Tue, 26 Sep 2023 12:54:51 -0400
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.80])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB5113A
         for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 09:54:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1695747097; cv=none;
+ARC-Seal: i=1; a=rsa-sha256; t=1695747099; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=e1FNutQA0rwb5SsRlUBxMtZeclHqJHfw6ET2YwpVwH0LXp6902zwVGrBR8E+nO1dLD
-    vfl01YDLnUU91Gvd2IzR6Hd2wecr+i6rMzTddi3yy0BZ/ErJGhNo9mZyL2iSQ3UKi8F7
-    /CrTfAsLQP8+5Mu7OhQ22Np8+O2HYsXWWjjfsU/EPMNC0KVKpZH3x8XmjV+N9fBORmmM
-    4BcNs07v+R8jtSpYB9uRELSk9wOJIyiwQ2WTcTCLDMunM3h3zhRcK7pZ1zMaS75m36+c
-    FCvftLe+JFL0DhHUkgX6KUkI02GFM2sTif5V6N6wjHvSpyoitXJxUhJMcpXaAb8nJYcP
-    /iog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747097;
+    b=FbzLcPaUSXtu2eM+7okVlwAn1nUxWOu+b7iqtKWYzRd2QUaTn3EjaRN9IlSgup3aQr
+    iAuTXBBXs4fzkOghrwEKzBlayJ95bxObPJUp5yw97xFMzWYvP00KIDn2qKxUJwiPtuE4
+    MY1QC9opGqsaQAYgFPEpTbcpzirCwKjqOVfzSj2vVSHW6iPP/NZLHsx68iG39VpvOX7d
+    J/0VWSIsiC6q2gMORCIJ3FmhmgBFukadRChpvSiqLXz9KTwfdD58uT4bCn+nsYizsOg4
+    wvmPhrpw+EEz2NlbBW8aN/ckomQ9jmwEdM3RZjb06dofGpR7ekNTc9nQnmxmPzac4o7n
+    rmaw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747099;
     s=strato-dkim-0002; d=strato.com;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=LqBmkyhk2Cb/MLq0OkUi2RjkOOdxDVt4cx89VaPtOEQ=;
-    b=GOptnwsm87mWrCCOfCnuaD430Q1VawHc6SAE8tX4LDcS6rjygS1RXo0GU/NqEBEwNV
-    JIz7+DjhmE/SNfVSd3XCoN7HLZfkMM35jaefg0XxGHh19MPhW6sboMVg7BnqnXwBHRHn
-    lwXldSNg+J8T93/rTQs+K2r5VbCc6NCTepMRonU2yOhLSH0fs8lwcNTxi04gr2NU7mPK
-    il6lQFohJ54cI7l4QIxGejoVEEHf3/DGKNcqWXdLrky2ZtyWN+mLc9kNGKCc/N7Nu9Yp
-    fcYxxoF6YGUaosgdGhqawXJBLDxXSQzLtheHePZYhnQtt+I9GpS1XRlXzcQBmFxD2C2U
-    m74Q==
+    bh=JtAzqCADYdUtAE2X5Cl5VjSMCmhUr+SxQulvUa9cK1o=;
+    b=n2RDWVFQ4vFATxaCR1Z8Y0oLbGwHCguFbSuMTu62QAdbovLFaZpphkp59h44ltRIPx
+    58otBbRaVXZsAfyt8Qo1CdNRmNt3fH10LLvpgRFN9cPoxzYgOgj+ocH1baZAdZBDOjt8
+    jZlqXrBQbJnEpiUX05NyloGNex5hM7HO9tcti68q5acFwe2K5/3+upDulTZ1zwGQR5Lr
+    flYXl9oNhg27zNUCrS5TRXllGeZs0qL1hMeJ63PLbDugfDNzteB560eubKopCLjg552d
+    apqIzfUZGt6C/sNpOlijRkwMgjx0aBv1NlevzcrwuLq4OVSLbQN1QG66mnz0xcJDrsXF
+    gp2g==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
 X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747097;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747099;
     s=strato-dkim-0002; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=LqBmkyhk2Cb/MLq0OkUi2RjkOOdxDVt4cx89VaPtOEQ=;
-    b=Ur/W/iLroAUK7McesfMrwT02l1GYMGln9gEPFlhE+BarkeHm8eUOr4sqkxX2wPo0P7
-    OLcHQevQvEJvTG5uYutL3aCESZj/yWQdxVGpdJAMnh/j3JIXumwiosEVZSXZxy2jbtGO
-    zNJR4+CWQDhcEayl1qTJzUTkn+UQ6wbLgziXKric9fUsZXmsqHw49Jrj1d4xi+npJRL+
-    wuFhNUhcoUxVT40brpyGd7FiQuWV7iKNILqTAE7YH/ZQkwnkz7wLTT29uY/z9QQ1inLX
-    gkGS7uGWaTAF7XHuUe+zfqy+riHxLzgwdH4bSFTU6irip2nhFZj/0vUfYt8SjBj3e5Fc
-    1AFw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695747097;
+    bh=JtAzqCADYdUtAE2X5Cl5VjSMCmhUr+SxQulvUa9cK1o=;
+    b=C33kZA77J+Gr2LZsPpxSfx3T64m34q/5tKcM0CsIz6cAlUCzx9Kz/fnCgd0v2aDvaw
+    HgyMvO2ysg7qjS8eE6eCn30W6yZD+gn7QQw09hjUL+7H3ivt+0iBHfkc0Vpm4ZwdbtDM
+    OqSFqqRmsRdsK/bjZk6vH7ceprOk3C4KSCPZBdZ1X7FMmAN0cQyYZRFrzoFwpuwnT+G4
+    PKh9b728IM+Y52BgVL13+GTewaH7MlexIwXS0WyLerSIyvHs/+LW7ukgmD6BavWftJyg
+    rHKwYHkrLH62JAICw8dgATf4MhdILXV14C/6hSSqS81PELP0sshavomnW/sHu/H3V51L
+    fIFQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695747099;
     s=strato-dkim-0003; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=LqBmkyhk2Cb/MLq0OkUi2RjkOOdxDVt4cx89VaPtOEQ=;
-    b=DoOuoN9jIWIN+/UZBvQaShXJAACURU/iwsdMf0qhCIirNZrYdLC+U7gvhRazff/ZVM
-    D+53Zrp7yX3WHv+058DA==
+    bh=JtAzqCADYdUtAE2X5Cl5VjSMCmhUr+SxQulvUa9cK1o=;
+    b=7GbuwZRrLkBNbxhnnCz6LAVNWMFNXXT1K+XFuDr+JIEjOtM4z5xhfAcg5Z/mkQaI94
+    d6oCi9JbAB+5BHT1gTCA==
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQjVd4CteZ/7jYgS+mLFY+H0JAn9VOH+nz0="
 Received: from [192.168.244.3]
     by smtp.strato.de (RZmta 49.8.2 SBL|AUTH)
-    with ESMTPSA id R04c57z8QGpbg5Y
+    with ESMTPSA id R04c57z8QGpdg5d
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Tue, 26 Sep 2023 18:51:37 +0200 (CEST)
+    Tue, 26 Sep 2023 18:51:39 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
-Date:   Tue, 26 Sep 2023 18:51:15 +0200
-Subject: [PATCH 01/13] arm64: dts: qcom: msm8939: Add BAM-DMUX WWAN
+Date:   Tue, 26 Sep 2023 18:51:20 +0200
+Subject: [PATCH 06/13] arm64: dts: qcom: msm8916-wingtech-wt88047: Add
+ sound and modem
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230926-msm8916-modem-v1-1-398eec74bac9@gerhold.net>
+Message-Id: <20230926-msm8916-modem-v1-6-398eec74bac9@gerhold.net>
 References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
 In-Reply-To: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
 To:     Bjorn Andersson <andersson@kernel.org>
@@ -79,72 +80,154 @@ Cc:     Andy Gross <agross@kernel.org>,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Vincent Knecht <vincent.knecht@mailoo.org>
+        Stephan Gerhold <stephan@gerhold.net>
 X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Vincent Knecht <vincent.knecht@mailoo.org>
+Enable sound and modem for the Xiaomi Redmi 2. The setup
+is similar to most MSM8916 devices, i.e.:
 
-BAM DMUX is used as the network interface to the modem. This is copied
-as-is from msm8916.dtsi.
+ - QDSP6 audio
+ - Earpiece/headphones/microphones via digital/analog codec in
+   MSM8916/PM8916
+ - Audio jack detection via analog codec in PM8916
+ - WWAN Internet via BAM-DMUX
 
-Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+except:
+
+ - Speaker amplifier is connected to HPH_R (headphones) output of the
+   analog codec. There is a separate analog switch that allows disabling
+   playback via the headphone jack.
+
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- arch/arm64/boot/dts/qcom/msm8939.dtsi | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ .../boot/dts/qcom/msm8916-wingtech-wt88047.dts     | 76 ++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8939.dtsi b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-index 324b5d26db40..65c68e0e88d5 100644
---- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-@@ -1537,6 +1537,20 @@ spmi_bus: spmi@200f000 {
- 			#interrupt-cells = <4>;
- 		};
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
+index 419f35c1fc92..600c225a2568 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
+@@ -6,6 +6,8 @@
+ /dts-v1/;
  
-+		bam_dmux_dma: dma-controller@4044000 {
-+			compatible = "qcom,bam-v1.7.0";
-+			reg = <0x04044000 0x19000>;
-+			interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>;
-+			#dma-cells = <1>;
-+			qcom,ee = <0>;
+ #include "msm8916-pm8916.dtsi"
++#include "msm8916-modem-qdsp6.dtsi"
 +
-+			num-channels = <6>;
-+			qcom,num-ees = <1>;
-+			qcom,powered-remotely;
-+
-+			status = "disabled";
-+		};
-+
- 		mpss: remoteproc@4080000 {
- 			compatible = "qcom,msm8916-mss-pil";
- 			reg = <0x04080000 0x100>, <0x04020000 0x040>;
-@@ -1569,6 +1583,22 @@ mpss: remoteproc@4080000 {
- 			qcom,halt-regs = <&tcsr 0x18000 0x19000 0x1a000>;
- 			status = "disabled";
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/input/input.h>
+ #include <dt-bindings/leds/common.h>
+@@ -25,6 +27,28 @@ chosen {
+ 		stdout-path = "serial0";
+ 	};
  
-+			bam_dmux: bam-dmux {
-+				compatible = "qcom,bam-dmux";
++	speaker_amp: audio-amplifier {
++		compatible = "simple-audio-amplifier";
++		enable-gpios = <&tlmm 117 GPIO_ACTIVE_HIGH>;
++		sound-name-prefix = "Speaker Amp";
++		pinctrl-0 = <&speaker_amp_default>;
++		pinctrl-names = "default";
++	};
 +
-+				interrupt-parent = <&hexagon_smsm>;
-+				interrupts = <1 IRQ_TYPE_EDGE_BOTH>, <11 IRQ_TYPE_EDGE_BOTH>;
-+				interrupt-names = "pc", "pc-ack";
++	/*
++	 * This seems to be actually an analog switch that either routes audio
++	 * to the headphone jack or nowhere. Given that we need to enable a GPIO
++	 * to get sound on headphones, modelling it as simple-audio-amplifier
++	 * works just fine.
++	 */
++	headphones_switch: audio-switch {
++		compatible = "simple-audio-amplifier";
++		enable-gpios = <&tlmm 8 GPIO_ACTIVE_HIGH>;
++		sound-name-prefix = "Headphones Switch";
++		pinctrl-0 = <&headphones_switch_default>;
++		pinctrl-names = "default";
++	};
 +
-+				qcom,smem-states = <&apps_smsm 1>, <&apps_smsm 11>;
-+				qcom,smem-state-names = "pc", "pc-ack";
+ 	flash-led-controller {
+ 		compatible = "ocs,ocp8110";
+ 		enable-gpios = <&tlmm 31 GPIO_ACTIVE_HIGH>;
+@@ -146,6 +170,18 @@ &blsp_uart2 {
+ 	status = "okay";
+ };
+ 
++&mpss_mem {
++	reg = <0x0 0x86800000 0x0 0x5100000>;
++};
 +
-+				dmas = <&bam_dmux_dma 4>, <&bam_dmux_dma 5>;
-+				dma-names = "tx", "rx";
++&pm8916_codec {
++	qcom,micbias1-ext-cap;
++	qcom,micbias-lvl = <2800>;
++	qcom,mbhc-vthreshold-low = <75 100 120 180 500>;
++	qcom,mbhc-vthreshold-high = <75 100 120 180 500>;
++	qcom,hphl-jack-type-normally-open;
++};
 +
-+				status = "disabled";
-+			};
+ &pm8916_resin {
+ 	status = "okay";
+ 	linux,code = <KEY_VOLUMEDOWN>;
+@@ -180,6 +216,32 @@ &sdhc_2 {
+ 	non-removable;
+ };
+ 
++&sound {
++	status = "okay";
 +
- 			mba {
- 				memory-region = <&mba_mem>;
- 			};
++	/*
++	 * Provide widgets/pin-switches to allow enabling speaker and headphones
++	 * separately. Both are routed via the HPH_L/HPH_R pins of the codec.
++	 */
++	model = "wt88047";
++	widgets =
++		"Speaker", "Speaker",
++		"Headphone", "Headphones";
++	pin-switches = "Speaker", "Headphones";
++	audio-routing =
++		"Speaker", "Speaker Amp OUTL",
++		"Speaker", "Speaker Amp OUTR",
++		"Speaker Amp INL", "HPH_R",
++		"Speaker Amp INR", "HPH_R",
++		"Headphones", "Headphones Switch OUTL",
++		"Headphones", "Headphones Switch OUTR",
++		"Headphones Switch INL", "HPH_L",
++		"Headphones Switch INR", "HPH_R",
++		"AMIC1", "MIC BIAS External1",
++		"AMIC2", "MIC BIAS Internal2";
++	aux-devs = <&speaker_amp>, <&headphones_switch>;
++};
++
+ &usb {
+ 	status = "okay";
+ 	extcon = <&usb_id>, <&usb_id>;
+@@ -226,6 +288,13 @@ gpio_keys_default: gpio-keys-default-state {
+ 		bias-pull-up;
+ 	};
+ 
++	headphones_switch_default: headphones-switch-default-state {
++		pins = "gpio8";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
++
+ 	imu_default: imu-default-state {
+ 		pins = "gpio115";
+ 		function = "gpio";
+@@ -234,6 +303,13 @@ imu_default: imu-default-state {
+ 		bias-disable;
+ 	};
+ 
++	speaker_amp_default: speaker-amp-default-state {
++		pins = "gpio117";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
++
+ 	touchscreen_default: touchscreen-default-state {
+ 		touchscreen-pins {
+ 			pins = "gpio13";
 
 -- 
 2.42.0
