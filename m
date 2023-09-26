@@ -2,59 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F39CBE7E65E
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 18:46:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4AFC9E7E654
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 18:49:32 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235619AbjIZSqt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Sep 2023 14:46:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55734 "EHLO
+        id S235489AbjIZStg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Sep 2023 14:49:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235600AbjIZSqs (ORCPT
+        with ESMTP id S235395AbjIZStg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Sep 2023 14:46:48 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2ED0197
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:46:40 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-5041335fb9cso15223769e87.0
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:46:40 -0700 (PDT)
+        Tue, 26 Sep 2023 14:49:36 -0400
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92923136
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:49:28 -0700 (PDT)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2c038a1e2e6so148640751fa.2
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:49:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695753999; x=1696358799; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1695754166; x=1696358966; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=NadJLUD/WUTfQyTRvPLc0aWcku/CjVqqV/Vkjig6NCs=;
-        b=ibYqRr4kDH+TXfKLhwgLN2nadFEqOO9cZe1tAv1VCxhp0ZGZ9KvXr8vfeWRsr+sVrM
-         YqTevnIMPqwdA+xbgXe0D+ODmoaPSg507oKPEauu8uMIlG4BjnIzx889Qs7An0fwAWHd
-         zmVitu1nS7ymZgPxCjM57e+hfcrHMiF4mfWYfqb73T2ypKldR3sm+FZeepWNOzuKFyHZ
-         +oadRjZcwIixnFkyy9kwFP1xWvqY9dVvDkDw2LyYnd0juluhjw75O1UXgqoGwyW9a8f7
-         QpxVuLljp3fWxT1he4ISXx6jxceEskmCtrDvIVdxlovxjPX4uNl79Etp45jHZsO9E8FH
-         MSzw==
+        bh=sQEYrcp4hCId8DFy/OWciQ71/q8cTnKBaLY4kmvMAVA=;
+        b=jsBQ7Pw+xhQZ9FRVLqYyoYvGVr1Uo8LpwC5WRPya/T59AcwcjOfs87wCNwJkl93vIj
+         d5rYsW33y9vAo619S1Hurn8VlKf8B2kAWX/QnnTFcc1W7GYjaMwIyQClLUQV+m0S+Nk5
+         u/usKqtHj6G0adbFEjKFBE7zFYnCTBMMZE2vdmlmgazbHzZsz0xJ9IdLi+WLhRup/Rl9
+         64vhlABKrTnji0UZZfvrm7gZZYegk68Q1zsXvE2owcCOxoO80d9RXA7QAXwsLtXpbTKM
+         KJFAaXsPFZjq0OOV2YY67/B/rftrH/kYMC0gteklwmpX1nU62Vv65XSWVXT28n5Nsf4Q
+         c1tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695753999; x=1696358799;
+        d=1e100.net; s=20230601; t=1695754166; x=1696358966;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NadJLUD/WUTfQyTRvPLc0aWcku/CjVqqV/Vkjig6NCs=;
-        b=SovJXLzW45+m+iiwiLtebOS/DEhp2Kzxd+YTY+agOr7q5tptBSqedObFXBzlBWJVeU
-         ZT2LSE3wl4/R1rJ861reQ13KCwNN3EuYOUoFQZKFt5xv7+Wd3iFC/0E1lt65JDA2xxLu
-         OqeSWOQ6+Mc2GK7m8JB4VLKaEJ7uvknoVM+ujw/p4YRsXKn4JBbfaDTWLAa+u4Dd3UDR
-         G9MzJBEsZrYWqJDLVNJyp2JBwcCLVS7fiuCGJnS/1LE7gheiJ4Vaf7OC8kPntOdRgYbr
-         zN8HhjIdvpT3Shr8Uv9r5iJ6k4X+Tz1aUOkbnSkgGkPNZM9/uxS7VMUR8QS4y6JgOOzd
-         dG9g==
-X-Gm-Message-State: AOJu0YyuTEA5rTwmtfQFWCqv5R8/O65UmLXBU6XnuaHcs+AHFYMOfota
-        U4B7FkcQS78itdQBbJNIWxypyQ==
-X-Google-Smtp-Source: AGHT+IH1edATO4YtoxPkIrT4GQA5z9UNOHT4LgI3ZsUXu8Kz0Gu9E3/9El902f/VDd6bVuMEACYkpw==
-X-Received: by 2002:a05:6512:33d4:b0:4ff:7e1e:b4b4 with SMTP id d20-20020a05651233d400b004ff7e1eb4b4mr10395268lfg.39.1695753998826;
-        Tue, 26 Sep 2023 11:46:38 -0700 (PDT)
+        bh=sQEYrcp4hCId8DFy/OWciQ71/q8cTnKBaLY4kmvMAVA=;
+        b=lbLmY2M5qf7vhI1xdYEgfh/Pw+wN7pKId6lerx23VaHaMblmYXXrfj1IKvoign8vq1
+         x11cGaVksnYFtzvRjB9zVRqLhaiZIU42Zmhugossfxcpwo3sWymWTb+dxVtcralD8Q+e
+         3wXEQbOAQF4HMydTtJNlwEFWxuSnHf4LrX2dKze/E6scoQ6qwt5S18r+gM3I9zDXFhyU
+         H9VykvUnQaCgeCXdMTioMVeFWLBeEo+nxFSCyth7nHOrvN/wQOsDTv2mX1Vq8R8siw0r
+         nITLG/ivM6oRvCoyoDkZqs3dt9CQmpWnfdZx/DiWDjcSURi0Y4rrJPMaR+DpugFiSSQf
+         qXKQ==
+X-Gm-Message-State: AOJu0Yx3YIVcEMnI24nwnD+en9u6EZwXjgJHpqp3C2wrABXXDww5WVn+
+        HNTpEjCFAl53TK57o/zK3WfwsA==
+X-Google-Smtp-Source: AGHT+IFHuUE/ejWsm/2gcvHsHlH8Oap8j5q7xrRfq5jU5rji7grAclPVJ2wHv6eoHUAAVtXsFEuVww==
+X-Received: by 2002:a2e:87c8:0:b0:2bc:c21d:311f with SMTP id v8-20020a2e87c8000000b002bcc21d311fmr8723515ljj.52.1695754166496;
+        Tue, 26 Sep 2023 11:49:26 -0700 (PDT)
 Received: from [192.168.33.189] (178235177023.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.23])
-        by smtp.gmail.com with ESMTPSA id r5-20020ac252a5000000b0050306259d88sm2283081lfm.23.2023.09.26.11.46.37
+        by smtp.gmail.com with ESMTPSA id qk8-20020a170906d9c800b009ad89697c86sm8184915ejb.144.2023.09.26.11.49.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Sep 2023 11:46:38 -0700 (PDT)
-Message-ID: <698c8d60-e284-4267-8349-b327712c94cc@linaro.org>
-Date:   Tue, 26 Sep 2023 20:46:36 +0200
+        Tue, 26 Sep 2023 11:49:26 -0700 (PDT)
+Message-ID: <45665b43-3be9-4f27-aa88-12cdef56346d@linaro.org>
+Date:   Tue, 26 Sep 2023 20:49:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/13] arm64: dts: qcom: msm8916/39: Add QDSP6
+Subject: Re: [PATCH 03/13] arm64: dts: qcom: msm8916: Add common
+ msm8916-modem-qdsp6.dtsi
 Content-Language: en-US
 To:     Stephan Gerhold <stephan@gerhold.net>,
         Bjorn Andersson <andersson@kernel.org>
@@ -63,7 +64,7 @@ Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
- <20230926-msm8916-modem-v1-2-398eec74bac9@gerhold.net>
+ <20230926-msm8916-modem-v1-3-398eec74bac9@gerhold.net>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -100,7 +101,7 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20230926-msm8916-modem-v1-2-398eec74bac9@gerhold.net>
+In-Reply-To: <20230926-msm8916-modem-v1-3-398eec74bac9@gerhold.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -108,20 +109,93 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 26.09.2023 18:51, Stephan Gerhold wrote:
-> MSM8916 and MSM8939 do not have a dedicated ADSP. Instead, the audio
-> services via APR are also implemented by the modem DSP. Audio can be
-> either routed via the modem DSP (necessary for voice call audio etc)
-> or directly sent to the LPASS hardware (currently used by DB410c).
-> Bypassing QDSP6 audio is only possible with special firmware
-> (on DB410c) or when the modem DSP is completely disabled.
+> Most MSM8916/MSM8939 devices use very similar setups for the modem,
+> because most of the device-specific details are abstracted by the modem
+> firmware. There are several definitions (status switches, DAI links
+> etc) that will be exactly the same for every board.
 > 
-> Add the typical nodes for QDSP6 audio to msm8916.dtsi and msm8939.dtsi.
-> The apr node is disabled by default to avoid changing behavior for
-> devices like DB410c that use the bypassed audio path.
+> Introduce a common msm8916-modem-qdsp6.dtsi include that can be used to
+> simplify enabling the modem for such devices. By default the
+> digital/analog codec in the SoC/PMIC is used, but boards can define
+> additional codecs using the templates for Secondary and Quaternary
+> MI2S.
 > 
 > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 > ---
-I'm generally grumpy with regards to multi-soc changes that
-have no need to be multi-soc..
+I'd rather see at least one usage so that you aren't introducing
+effectively non-compiled code..
+
+>  arch/arm64/boot/dts/qcom/msm8916-modem-qdsp6.dtsi | 163 ++++++++++++++++++++++
+>  1 file changed, 163 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-modem-qdsp6.dtsi b/arch/arm64/boot/dts/qcom/msm8916-modem-qdsp6.dtsi
+> new file mode 100644
+> index 000000000000..ddd74d428406
+> --- /dev/null
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-modem-qdsp6.dtsi
+> @@ -0,0 +1,163 @@
+> +// SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause)
+> +/*
+> + * msm8916-modem-qdsp6.dtsi describes the typical modem setup on MSM8916 devices
+> + * (or similar SoCs) with audio routed via the QDSP6 services provided by the
+> + * modem firmware. The digital/analog codec in the SoC/PMIC is used by default,
+> + * but boards can define additional codecs using the templates for Secondary and
+> + * Quaternary MI2S.
+> + */
+> +
+> +#include <dt-bindings/sound/qcom,q6afe.h>
+> +#include <dt-bindings/sound/qcom,q6asm.h>
+> +
+> +&apr {
+> +	status = "okay";
+> +};
+> +
+> +&bam_dmux {
+> +	status = "okay";
+> +};
+> +
+> +&bam_dmux_dma {
+> +	status = "okay";
+> +};
+> +
+> +&lpass {
+> +	status = "reserved"; /* Controlled by QDSP6 */
+> +};
+> +
+> +&lpass_codec {
+> +	status = "okay";
+> +};
+Any reason for it to stay disabled?
+
+> +
+> +&mba_mem {
+> +	status = "okay";
+> +};
+> +
+> +&mpss {
+> +	status = "okay";
+> +};
+> +
+> +&mpss_mem {
+> +	status = "okay";
+> +};
+> +
+> +&pm8916_codec {
+> +	status = "okay";
+> +};
+Ditto
+
+[...]
+
+> +	multimedia1-dai-link {
+> +		link-name = "MultiMedia1";
+Newline before last property and subnodes, please
+
+[...]
+
+> +	sound_dai_secondary: mi2s-secondary-dai-link {
+> +		link-name = "Secondary MI2S";
+> +		status = "disabled"; /* Needs extra codec configuration */
+Hmm.. Potential good user of /omit-if-no-ref/?
 
 Konrad
