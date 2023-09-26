@@ -2,59 +2,59 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6AC4E7E65A
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 18:56:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 57A5BE7E65D
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 18:58:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235655AbjIZS4a (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Sep 2023 14:56:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59386 "EHLO
+        id S230361AbjIZS63 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Sep 2023 14:58:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235610AbjIZS43 (ORCPT
+        with ESMTP id S230259AbjIZS63 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Sep 2023 14:56:29 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80998136
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:56:22 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-5031ccf004cso15425772e87.2
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:56:22 -0700 (PDT)
+        Tue, 26 Sep 2023 14:58:29 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E61E126
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:58:21 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-5041cc983f9so15422674e87.3
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:58:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695754581; x=1696359381; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1695754699; x=1696359499; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=gjOTSiRr1QYByHRomcjvEjQ4oNDx5RrtbuBvHCe/QwM=;
-        b=aZHF7NUkdWWkiOwD/hQ1iyzjuMKSq6SAj9HMFsj6eCfc6PYMtigD2XMTaXIvn7eLPi
-         sb1Izr65pmRvajnlAdghocPVAFOCg2tEqrIMPeUHdRNGpZ+a0nqDaKy3sQZBB5BXAHSt
-         iZxJ4D88nIIJK7oj1JzTMGP0ubscodk83r1jWFoFIzKoGMPTzkUdqs+h5zgCG1MPtKrT
-         eyjDxUtXYVcHAKwsPGwGnglLYWgld1MNsrgWtdhVLxiq0fDhCzv89gg87Xq9RvOaIcn6
-         4GzZ4+3BHuU3JuJs3Z+JBlHT5J0Kcwdig/C/11RQGZH0+hAbpf1xgFhx5Bibto0eQKro
-         NwtQ==
+        bh=reCvRq/NnxYu9sIfFdvRfqpBWzEbvbSpbbJREhi5taQ=;
+        b=h7FSL+w37tFz1irrI6PHPKDCaQY53HoY0+BZE4HBveEYLywkdeNbYI4SaudBaNYdrt
+         kA2/32X338js7Qh1EMiMneG4bqy8CsRiR4DMDGENL4ruB+N+t5NiJu4v077YehVaXz5W
+         lwdydsfqBf/gZ+YcX+RpZLpiO7ePECHIz98U/MmA0i9k18ZuqKWN872vL+pIc+zP+iRF
+         Z5wTjrFDHa7KPeVRP84eLrx9gDkYRtGy8dIXzO5OHIQRtTQPyOi5ENG6R88baiQlHAxe
+         +QAC/UV7vyZLmRXNIBNpqjjDPUiJPtVtMITL+rl/9DVZBy8gRMWKBbaing890qSnUqbX
+         5QVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695754581; x=1696359381;
+        d=1e100.net; s=20230601; t=1695754699; x=1696359499;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gjOTSiRr1QYByHRomcjvEjQ4oNDx5RrtbuBvHCe/QwM=;
-        b=mj8RcCZM6/0SDnlP5xMf0fPaNZL3yS/jbRJtWdqN2hsQD+/psSxXt85ZSxZyfa6q3C
-         oSa6GjZDdmMFAaviBIK8th77ydAJXn3C3NZxymom2lPu/fhXlvNz/B/kAYMr1uu/VX7P
-         7tP742YfQFu8gS9oF6s4JInx8CGR1hd6TS/8MCVQzMmO9hDHY5LG6rFZRYNLPeJ8O7qR
-         fj0lVV57hJEYDnm++HQNh5PR0i8KXnuTuMRQ7vO0hEWTRYlOkabCbydp2iI51aGpLstL
-         GWWTqxaQESTe/qz5t5BkvLxA8KK4iKYbL8vGjuX4vo2Emgc3dJ1et++7+2aDAUmo4Fef
-         NgWA==
-X-Gm-Message-State: AOJu0Yw4xHap9jqGkW1iYywB+yOfDb+pUZho+9hcoML+i7wJWyns9D+B
-        fh59CxCSoMWtSD9x1Zv5FNNnvQ==
-X-Google-Smtp-Source: AGHT+IFhS0HLyds3AlLnzZ4rnlPAmfrPrf8WmwXD1hazwRU1Bjp2Fa/VISnkYkKZRGaWGPBrjVyQug==
-X-Received: by 2002:ac2:4c41:0:b0:504:7bb0:9d7e with SMTP id o1-20020ac24c41000000b005047bb09d7emr804632lfk.27.1695754580610;
-        Tue, 26 Sep 2023 11:56:20 -0700 (PDT)
-Received: from [192.168.33.189] (178235177023.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.23])
-        by smtp.gmail.com with ESMTPSA id c6-20020ac244a6000000b00504230986fbsm2271509lfm.52.2023.09.26.11.56.19
+        bh=reCvRq/NnxYu9sIfFdvRfqpBWzEbvbSpbbJREhi5taQ=;
+        b=YVwu6mg7wbTgBmCJj03kVQ+o7geRYsn9hzGlBuj1dsfVsHgpi/TFMzcjheAaxIA66y
+         T7qbqWcXBFSVQP6XsnW7ys0aKnOwwoiLiheTXzTG6Ng1WzJjScRMUgs/hh1jnG5b10mI
+         w0OnrCLm0OR+6bPfg18bv+WV9U4NOJ4qGCxen4o7rvJ9G67TZGc4kUqni/I1EdmJI9+D
+         bXjvStnedt2uHj2L5jYfHDBW4Ip6+S6fYB2mwEWkibny2lAtW7fNomaQthA15Rm/C2s1
+         bVzdw0Eub60sWW4cwuOz3XRmH3rPRbTZgMJSya9dLs5meChlUjz6LoP9b57ma9q/4rB2
+         1BsQ==
+X-Gm-Message-State: AOJu0Yxs6jqc6U3Aq43JBugJ9JCgUVaRA3FoFbYrQonClOsAe8sL+TsS
+        YjNV33T7hxvNh8SEGNmOI4LfIw==
+X-Google-Smtp-Source: AGHT+IHKBhpGjC98lG/MGQPk3CygpoJrNlE1A9f69Glf68/UnUOgwi2c92R3jU1tEEEG5wxBD1j76A==
+X-Received: by 2002:a19:671e:0:b0:4fe:49d:6ae2 with SMTP id b30-20020a19671e000000b004fe049d6ae2mr8728803lfc.0.1695754699447;
+        Tue, 26 Sep 2023 11:58:19 -0700 (PDT)
+Received: from [192.168.33.189] ([178.235.177.23])
+        by smtp.gmail.com with ESMTPSA id f15-20020a50ee8f000000b0052a19a75372sm7088795edr.90.2023.09.26.11.58.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Sep 2023 11:56:20 -0700 (PDT)
-Message-ID: <f66409be-8444-468e-9e48-cbca5e5a84f7@linaro.org>
-Date:   Tue, 26 Sep 2023 20:56:19 +0200
+        Tue, 26 Sep 2023 11:58:19 -0700 (PDT)
+Message-ID: <cb78cd52-c638-4977-a762-365a6fe5f723@linaro.org>
+Date:   Tue, 26 Sep 2023 20:58:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/13] arm64: dts: qcom: msm8916-wingtech-wt88047: Add
+Subject: Re: [PATCH 07/13] arm64: dts: qcom: msm8916-alcatel-idol347: Add
  sound and modem
 Content-Language: en-US
 To:     Stephan Gerhold <stephan@gerhold.net>,
@@ -62,9 +62,10 @@ To:     Stephan Gerhold <stephan@gerhold.net>,
 Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Vincent Knecht <vincent.knecht@mailoo.org>
 References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
- <20230926-msm8916-modem-v1-6-398eec74bac9@gerhold.net>
+ <20230926-msm8916-modem-v1-7-398eec74bac9@gerhold.net>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -101,7 +102,7 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20230926-msm8916-modem-v1-6-398eec74bac9@gerhold.net>
+In-Reply-To: <20230926-msm8916-modem-v1-7-398eec74bac9@gerhold.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -109,31 +110,40 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 26.09.2023 18:51, Stephan Gerhold wrote:
-> Enable sound and modem for the Xiaomi Redmi 2. The setup
-> is similar to most MSM8916 devices, i.e.:
+> From: Vincent Knecht <vincent.knecht@mailoo.org>
+> 
+> Enable sound and modem for the Alcatel Idol 3 (4.7"). The setup is
+> similar to most MSM8916 devices, i.e.:
 > 
 >  - QDSP6 audio
->  - Earpiece/headphones/microphones via digital/analog codec in
->    MSM8916/PM8916
->  - Audio jack detection via analog codec in PM8916
+>  - Microphones via digital/analog codec in MSM8916/PM8916
 >  - WWAN Internet via BAM-DMUX
 > 
 > except:
 > 
->  - Speaker amplifier is connected to HPH_R (headphones) output of the
->    analog codec. There is a separate analog switch that allows disabling
->    playback via the headphone jack.
+>  - Stereo NXP TFA9890 codecs for speakers on Quaternary MI2S
+>    - These are also used as earpieces at the top/bottom.
+>  - Asahi Kasei AK4375 headphone codec on Secondary MI2S
+>  -> Primary MI2S is not used for playback
 > 
+> Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+> [Stephan: minor cleanup, add consistent commit message]
 > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 > ---
->  .../boot/dts/qcom/msm8916-wingtech-wt88047.dts     | 76 ++++++++++++++++++++++
->  1 file changed, 76 insertions(+)
+> There are some trivial conflicts unless
+> https://lore.kernel.org/linux-arm-msm/20230921-msm8916-rmem-fixups-v1-3-34d2b6e721cf@gerhold.net/
+> is applied first. But given that there are important fixups for the
+> dynamic reserved memory changes in that series it should preferably
+> get applied before this one anyway.
+> ---
+>  .../boot/dts/qcom/msm8916-alcatel-idol347.dts      | 164 +++++++++++++++++++++
+>  1 file changed, 164 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-> index 419f35c1fc92..600c225a2568 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-> @@ -6,6 +6,8 @@
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts b/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
+> index fade93c55299..ef5fc9289754 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
+> @@ -3,6 +3,8 @@
 >  /dts-v1/;
 >  
 >  #include "msm8916-pm8916.dtsi"
@@ -142,26 +152,35 @@ On 26.09.2023 18:51, Stephan Gerhold wrote:
 >  #include <dt-bindings/gpio/gpio.h>
 >  #include <dt-bindings/input/input.h>
 >  #include <dt-bindings/leds/common.h>
-> @@ -25,6 +27,28 @@ chosen {
+> @@ -22,6 +24,19 @@ chosen {
 >  		stdout-path = "serial0";
 >  	};
 >  
-> +	speaker_amp: audio-amplifier {
-> +		compatible = "simple-audio-amplifier";
-> +		enable-gpios = <&tlmm 117 GPIO_ACTIVE_HIGH>;
-> +		sound-name-prefix = "Speaker Amp";
-> +		pinctrl-0 = <&speaker_amp_default>;
-> +		pinctrl-names = "default";
-> +	};
-> +
-> +	/*
-> +	 * This seems to be actually an analog switch that either routes audio
-> +	 * to the headphone jack or nowhere. Given that we need to enable a GPIO
-> +	 * to get sound on headphones, modelling it as simple-audio-amplifier
-> +	 * works just fine.
-> +	 */
-Funny phones, as always
+> +	reserved-memory {
+> +		/delete-node/ reserved@86680000;
+> +		/delete-node/ rmtfs@86700000;
+Deleting with a label reference is strongly preferred to avoid
+mistakes.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+[...]
+
+>  
+> +&q6afedai {
+> +	dai@18 {
+> +		reg = <SECONDARY_MI2S_RX>;
+> +		qcom,sd-lines = <0>;
+> +	};
+> +	dai@22 {
+Missing newline above
+
+[...]
+
+> +
+> +&sound_dai_primary {
+> +	status = "disabled";
+> +};
+> +
+Hm, gives me an idea to sprinkle a bit more /omit-if-no-ref/ in
+patch 3..
 
 Konrad
