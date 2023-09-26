@@ -2,59 +2,59 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21ED7E7E65A
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 18:55:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6AC4E7E65A
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 18:56:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235657AbjIZSz0 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Sep 2023 14:55:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52654 "EHLO
+        id S235655AbjIZS4a (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Sep 2023 14:56:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235613AbjIZSzZ (ORCPT
+        with ESMTP id S235610AbjIZS43 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Sep 2023 14:55:25 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B114511F
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:55:17 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-50307759b65so15563005e87.0
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:55:17 -0700 (PDT)
+        Tue, 26 Sep 2023 14:56:29 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80998136
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:56:22 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-5031ccf004cso15425772e87.2
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 11:56:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695754516; x=1696359316; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1695754581; x=1696359381; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=OjdCyJ/FvEzhEhoubMvWZvwq8WbbOpviKxl9l9bFvCY=;
-        b=YKzvl4JAqAnz6G2aMuqVVOod86ZidNtY1iwa0qcMmTbMHWx5Kaque5Z8fe15L39rbu
-         jOT9CQJasSIxdz3iP9HCB7SqZpgOmGfwx20WR6FOTADv6k1oWd9m/oFc/kZr1mS1H7im
-         LWanBoeLYsW+GEUTiPUNmlutXebVhxfHTP8gWlE3pXiEea+JKjnsSjwXAROL66ZKQRFy
-         d0HCjpzvLgpVMN2UDC/c6OtkCpd/7Z0RcptlqyVVGCZVa7+opptI6ZFmiN9bjy2mOTu7
-         jG0TxpuZgmiLq+apQNkL8IVwhuNPJUoCbnkSbsihNZTAjO5Db4mzkT3tO2OgQuH92mIl
-         qPAg==
+        bh=gjOTSiRr1QYByHRomcjvEjQ4oNDx5RrtbuBvHCe/QwM=;
+        b=aZHF7NUkdWWkiOwD/hQ1iyzjuMKSq6SAj9HMFsj6eCfc6PYMtigD2XMTaXIvn7eLPi
+         sb1Izr65pmRvajnlAdghocPVAFOCg2tEqrIMPeUHdRNGpZ+a0nqDaKy3sQZBB5BXAHSt
+         iZxJ4D88nIIJK7oj1JzTMGP0ubscodk83r1jWFoFIzKoGMPTzkUdqs+h5zgCG1MPtKrT
+         eyjDxUtXYVcHAKwsPGwGnglLYWgld1MNsrgWtdhVLxiq0fDhCzv89gg87Xq9RvOaIcn6
+         4GzZ4+3BHuU3JuJs3Z+JBlHT5J0Kcwdig/C/11RQGZH0+hAbpf1xgFhx5Bibto0eQKro
+         NwtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695754516; x=1696359316;
+        d=1e100.net; s=20230601; t=1695754581; x=1696359381;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OjdCyJ/FvEzhEhoubMvWZvwq8WbbOpviKxl9l9bFvCY=;
-        b=hdG1jO9Xgbpok+S0Vez/NS1R0e9U/Fv1eVH6/UGroUlvdxJYzx073I8YysYpW6kh7n
-         J0UNLbF2dzlrOPFSMiROqRTlQijyftWISI2BgUXCct25CUsfiLVWQe8LzzHOqJn03ZoR
-         00NN6mrecPIzZQOX99eOhvLL7BlFG7Czz4K0VCQFOx41wi6b5ojCjgh+rgc9z5kgmS0p
-         GqQkal7YliEafiw0wyY3cYbGYXgflpcfVrYgj4PxfgBQtiq9932keCZq94s5UqTabMbz
-         Tfm0XmswK67cxTxDnnYrYrk8Ua5s8rXv+I18rzJ8DEYDoY92iAZemnd81ZpyFWBwCq4X
-         fqOg==
-X-Gm-Message-State: AOJu0YxOzXvmJZ2ns9+SC7qyRkWkYePqc08gxrlQiVh0FNWNqUQ6Q/av
-        yLbrDgoQFBow5Iy6w89nB4xsRA==
-X-Google-Smtp-Source: AGHT+IEFX9uoo72tTJmaHBDlVw49AIXZcU66qLJ/D5P/GeMjMIjp93RVrKc4wlY/QNKvXHule0sFMg==
-X-Received: by 2002:a05:6512:1044:b0:503:35b3:aa31 with SMTP id c4-20020a056512104400b0050335b3aa31mr10328093lfb.27.1695754515843;
-        Tue, 26 Sep 2023 11:55:15 -0700 (PDT)
+        bh=gjOTSiRr1QYByHRomcjvEjQ4oNDx5RrtbuBvHCe/QwM=;
+        b=mj8RcCZM6/0SDnlP5xMf0fPaNZL3yS/jbRJtWdqN2hsQD+/psSxXt85ZSxZyfa6q3C
+         oSa6GjZDdmMFAaviBIK8th77ydAJXn3C3NZxymom2lPu/fhXlvNz/B/kAYMr1uu/VX7P
+         7tP742YfQFu8gS9oF6s4JInx8CGR1hd6TS/8MCVQzMmO9hDHY5LG6rFZRYNLPeJ8O7qR
+         fj0lVV57hJEYDnm++HQNh5PR0i8KXnuTuMRQ7vO0hEWTRYlOkabCbydp2iI51aGpLstL
+         GWWTqxaQESTe/qz5t5BkvLxA8KK4iKYbL8vGjuX4vo2Emgc3dJ1et++7+2aDAUmo4Fef
+         NgWA==
+X-Gm-Message-State: AOJu0Yw4xHap9jqGkW1iYywB+yOfDb+pUZho+9hcoML+i7wJWyns9D+B
+        fh59CxCSoMWtSD9x1Zv5FNNnvQ==
+X-Google-Smtp-Source: AGHT+IFhS0HLyds3AlLnzZ4rnlPAmfrPrf8WmwXD1hazwRU1Bjp2Fa/VISnkYkKZRGaWGPBrjVyQug==
+X-Received: by 2002:ac2:4c41:0:b0:504:7bb0:9d7e with SMTP id o1-20020ac24c41000000b005047bb09d7emr804632lfk.27.1695754580610;
+        Tue, 26 Sep 2023 11:56:20 -0700 (PDT)
 Received: from [192.168.33.189] (178235177023.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.23])
-        by smtp.gmail.com with ESMTPSA id c6-20020ac244a6000000b00504230986fbsm2271509lfm.52.2023.09.26.11.55.14
+        by smtp.gmail.com with ESMTPSA id c6-20020ac244a6000000b00504230986fbsm2271509lfm.52.2023.09.26.11.56.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Sep 2023 11:55:15 -0700 (PDT)
-Message-ID: <64f030ca-27e5-47c8-b0d4-5fd0d4fce9d9@linaro.org>
-Date:   Tue, 26 Sep 2023 20:55:14 +0200
+        Tue, 26 Sep 2023 11:56:20 -0700 (PDT)
+Message-ID: <f66409be-8444-468e-9e48-cbca5e5a84f7@linaro.org>
+Date:   Tue, 26 Sep 2023 20:56:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 05/13] arm64: dts: qcom: msm8916-samsung-serranove: Add
+Subject: Re: [PATCH 06/13] arm64: dts: qcom: msm8916-wingtech-wt88047: Add
  sound and modem
 Content-Language: en-US
 To:     Stephan Gerhold <stephan@gerhold.net>,
@@ -64,7 +64,7 @@ Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
- <20230926-msm8916-modem-v1-5-398eec74bac9@gerhold.net>
+ <20230926-msm8916-modem-v1-6-398eec74bac9@gerhold.net>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -101,7 +101,7 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20230926-msm8916-modem-v1-5-398eec74bac9@gerhold.net>
+In-Reply-To: <20230926-msm8916-modem-v1-6-398eec74bac9@gerhold.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -109,27 +109,30 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 26.09.2023 18:51, Stephan Gerhold wrote:
-> Enable sound and modem for the Samsung S4 Mini Value Edition. The setup
+> Enable sound and modem for the Xiaomi Redmi 2. The setup
 > is similar to most MSM8916 devices, i.e.:
 > 
 >  - QDSP6 audio
->  - Speaker/earpiece/headphones/microphones via digital/analog codec in
+>  - Earpiece/headphones/microphones via digital/analog codec in
 >    MSM8916/PM8916
+>  - Audio jack detection via analog codec in PM8916
 >  - WWAN Internet via BAM-DMUX
 > 
 > except:
 > 
->  - Samsung-specific audio jack detection (not supported yet)
+>  - Speaker amplifier is connected to HPH_R (headphones) output of the
+>    analog codec. There is a separate analog switch that allows disabling
+>    playback via the headphone jack.
 > 
 > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 > ---
->  arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
+>  .../boot/dts/qcom/msm8916-wingtech-wt88047.dts     | 76 ++++++++++++++++++++++
+>  1 file changed, 76 insertions(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-> index 68da2a2d3077..5f33aa0ad7b5 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-> +++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
+> index 419f35c1fc92..600c225a2568 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
 > @@ -6,6 +6,8 @@
 >  /dts-v1/;
 >  
@@ -138,29 +141,27 @@ On 26.09.2023 18:51, Stephan Gerhold wrote:
 > +
 >  #include <dt-bindings/gpio/gpio.h>
 >  #include <dt-bindings/input/input.h>
->  #include <dt-bindings/interrupt-controller/irq.h>
-> @@ -319,6 +321,10 @@ &blsp_uart2 {
->  	status = "okay";
->  };
+>  #include <dt-bindings/leds/common.h>
+> @@ -25,6 +27,28 @@ chosen {
+>  		stdout-path = "serial0";
+>  	};
 >  
-> +&mpss_mem {
-> +	reg = <0x0 0x86800000 0x0 0x5a00000>;
-> +};
+> +	speaker_amp: audio-amplifier {
+> +		compatible = "simple-audio-amplifier";
+> +		enable-gpios = <&tlmm 117 GPIO_ACTIVE_HIGH>;
+> +		sound-name-prefix = "Speaker Amp";
+> +		pinctrl-0 = <&speaker_amp_default>;
+> +		pinctrl-names = "default";
+> +	};
 > +
->  &pm8916_resin {
->  	status = "okay";
->  	linux,code = <KEY_VOLUMEDOWN>;
-> @@ -350,6 +356,14 @@ &sdhc_2 {
->  	no-1-8-v;
->  };
->  
-> +&sound {
-> +	status = "okay";
-> +	audio-routing =
-> +		"AMIC1", "MIC BIAS External1",
-> +		"AMIC2", "MIC BIAS Internal2",
-> +		"AMIC3", "MIC BIAS External1";
-> +};
-I *think* we should be able to harmlessly enable &audio globally?
+> +	/*
+> +	 * This seems to be actually an analog switch that either routes audio
+> +	 * to the headphone jack or nowhere. Given that we need to enable a GPIO
+> +	 * to get sound on headphones, modelling it as simple-audio-amplifier
+> +	 * works just fine.
+> +	 */
+Funny phones, as always
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
 Konrad
