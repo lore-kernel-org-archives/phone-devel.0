@@ -2,75 +2,75 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 47A26E7E650
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BCF6E7E652
 	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 16:54:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235469AbjIZQyy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S235483AbjIZQyy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Tue, 26 Sep 2023 12:54:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55370 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235489AbjIZQyx (ORCPT
+        with ESMTP id S235485AbjIZQyx (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Tue, 26 Sep 2023 12:54:53 -0400
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CA10124
+Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [81.169.146.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA5BE4
         for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 09:54:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1695747099; cv=none;
+ARC-Seal: i=1; a=rsa-sha256; t=1695747101; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=kSGFRL0zczKR3GIhD0fBFecewo53+uDiKTogTmJlTtLxM+8XNEtStpUE7lOJGNU6Xs
-    bBs4QfG7Tk2O7mbnEAAj0hyuiHLFZx6e6Uf7tYxlkXqZw4OxVeddi3LYUCNDz+TB9oGG
-    1z3QfVXD9I7CoOwxFDLcbZUEuJuck72kSinX3DYvSw7YAvcd7BgGWfb2JQfkHdfLlJyB
-    29FZdPCxjLIgmBbO/2oFOCivPKdt6WqCZIoRHw5fsKtn2dpVk6vLm8NZ++Es54+y85Gm
-    QoT1TEH7X7nWognKz3StPwsUUWLpNl5LD8a4Sbm7+HMYgJvD5RF1MW7yZIzqdxlLdVLH
-    +o/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747099;
+    b=nkG3qo4wxa6uPpr8wezU1QB3J9gPmARwh2pUsEBIO4644ypuWj3bpf4jKsNSGPvWsG
+    nl/MuQeFBWPMKOUYuANpUr9YbI3GtmsAz98pY+MR3fF399SvTCEQIYNE+9tFSBW4n9uo
+    dOrXyYy9YhviBsVcejoXiOUB3OFdAwXN/Mao0I+mZMqc3+9GU+dDg2A6yvPh2Rg9rr90
+    YaOUAK6OAhYR0JAZbzHGQxdu2EBgeHpVRfmevT7IxMYgdKGhTRUlRXEuWbp0cmgTPVGJ
+    OWI4GctFmkqzvS9etyeH3uQXQPz39SZdEVVfLsfpVbDEYrGaoJBXNUG8+3dp9lc8Wqql
+    biWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747101;
     s=strato-dkim-0002; d=strato.com;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=kyLgD0VCEKhD2y8R4NJw6xg2f+jq7nFO8XPoZEM39PI=;
-    b=qWUp7D/ozf0IoHlmaMWDw66CbbZAaOgOVF5vpVQSd4goJ7i8TC6x9qua40FvR3DKoG
-    qpwojcngonQsxk6oz8g2naNoicw3LrvkDqeIdq7/4AucGeeGmGKGy6OM3MieeIOiPcdg
-    k+/MFAn9yVdd4mrFz+C6OLwMVt/Y378t+EqKcOeEXVH+BLVrYBAcWv2FKxcjvdRPzF9U
-    Ndf+K6Dj2+TymDiwnraGv+VcAhzgfOFVF89bFtN6o36+u4FM+8SLrz0c2zyiujvyH3xm
-    Ff0N/2HV1a2UFN7TMFdeOWYGc8HQs4i7bOE/aCnk4zXqmiG3YXWe5TENNqkSkU3FkSV7
-    UsUg==
+    bh=tufcaIR3gqhuRrY5aJ18aw1wfuMM/cmSUyyyezmaDvk=;
+    b=M28tOYed4a+uDYp3SoHeC+ceSs4//LjQgD/5ycLgv4AdtTpGim06TmHxZXG/jakZMM
+    87fcbONDMmIGaaZLoibW/DUKlPJs/22vqL56EOAgSqNk/JpcmeRPnnIGsr5MV9D6gzzP
+    ncgBOxfn55AyDy1Fzcg3nY80B8stlFSdsGbAepZ3hgm5awLqzw0ofluuoSec6fCz0NMb
+    b4OpQR5ePCD4tim2FMamSNjVRr25f/2zGExPXPkC26cdNpBJ3CVYrBOa+oX9lYIkc2fk
+    oNHE9TbepYh7m6BLwP1MeqZVsUssdzs1kDRzmkjl0dKZLunwIVc7P+7+bnrsx0428sIF
+    EMmA==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747099;
+X-RZG-CLASS-ID: mo03
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747101;
     s=strato-dkim-0002; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=kyLgD0VCEKhD2y8R4NJw6xg2f+jq7nFO8XPoZEM39PI=;
-    b=qN0xIDrnsba8VB+jVQHf8f8g+5cKa03AFC4PUnujw6zKM82sxvp5NrPmeY8sVQVwyQ
-    jT8FQ8+tvBJYObv3M3BW6cLvJYVX7Qaiu3iJQhl0lFVB3DHq0j3Vd+2FIewJOMA7xxB7
-    lTA6drxIdkGrs6VxtkTL/0xB1Xt1Mmm0FTwVSwMGdV8UJrOmqJrTTwDrSW2em78GQg5R
-    waa1eBENczjTxSuvkf2q7CwHsJ3sh5064AZlavj7V5Rc0f3s5vEo7K411FMLRmKfHIHn
-    iboUpJYZQXPeBXMdNmhoxC3JUQNXDRL1ibeuk/c973LoVKX01yknpJtW0IOdUKv3n2UF
-    cAyA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695747099;
+    bh=tufcaIR3gqhuRrY5aJ18aw1wfuMM/cmSUyyyezmaDvk=;
+    b=MpeJFR55+/Kra0BqLqqlt8ubm8S6O6XtQqKaj4XZPWGn1lG//QsIOEhcgoThOYgN3C
+    /Xe7X7fSTuMqKkBdp88GFh2QHVE5VgflVpDzVhm78C+Ncqj3o6x8w7F6C5DhBUDuK8cJ
+    uK6ncWrZa6EU5JAi8Oc65/nw0K9ajxpQp2f20z8Nd2VnPd5oJkK5NV7buJkKONEx0rrH
+    LvrzI7l2MTX9oAhndIqPRF/wcKiWXpl7V7Xon3T32aouvXxpuVVFs5dExqN8biUjNA4t
+    /EBVm+zcT0yP+cpAEyp44eqK1EaWSoLJxwdnMtpOQpdWWVgtyNL3fxu9QoAnM7roS45m
+    TUew==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695747101;
     s=strato-dkim-0003; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=kyLgD0VCEKhD2y8R4NJw6xg2f+jq7nFO8XPoZEM39PI=;
-    b=QfnfrnH4GbxLcHfantWYb0dmhglBgmIv6aNlJsC7JvONpru5q5gfW2qCoNpG4BVjrV
-    XTj0hjpfp8ghGdHxXZAA==
+    bh=tufcaIR3gqhuRrY5aJ18aw1wfuMM/cmSUyyyezmaDvk=;
+    b=DSs3zEBZOD9PDojf0ZDEnz39N/bXVBh80JJXu3OOaptca1U40I7321k1R3mY0/Rv0q
+    M9SzyIlCTUqrcKTGjxBg==
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQjVd4CteZ/7jYgS+mLFY+H0JAn9VOH+nz0="
 Received: from [192.168.244.3]
     by smtp.strato.de (RZmta 49.8.2 SBL|AUTH)
-    with ESMTPSA id R04c57z8QGpcg5c
+    with ESMTPSA id R04c57z8QGpfg5j
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Tue, 26 Sep 2023 18:51:38 +0200 (CEST)
+    Tue, 26 Sep 2023 18:51:41 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
-Date:   Tue, 26 Sep 2023 18:51:19 +0200
-Subject: [PATCH 05/13] arm64: dts: qcom: msm8916-samsung-serranove: Add
- sound and modem
+Date:   Tue, 26 Sep 2023 18:51:26 +0200
+Subject: [PATCH 12/13] arm64: dts: qcom: msm8916-samsung-j5: Add sound and
+ modem
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230926-msm8916-modem-v1-5-398eec74bac9@gerhold.net>
+Message-Id: <20230926-msm8916-modem-v1-12-398eec74bac9@gerhold.net>
 References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
 In-Reply-To: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
 To:     Bjorn Andersson <andersson@kernel.org>
@@ -80,35 +80,46 @@ Cc:     Andy Gross <agross@kernel.org>,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>
+        Stephan Gerhold <stephan@gerhold.net>,
+        "Lin, Meng-Bo" <linmengbo0689@protonmail.com>,
+        Markuss Broks <markuss.broks@gmail.com>
 X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Enable sound and modem for the Samsung S4 Mini Value Edition. The setup
-is similar to most MSM8916 devices, i.e.:
+From: "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
+
+Enable sound and modem for the Samsung J5 smartphones. The setup is
+similar to most MSM8916 devices, i.e.:
 
  - QDSP6 audio
- - Speaker/earpiece/headphones/microphones via digital/analog codec in
-   MSM8916/PM8916
+ - Speaker/earpiece/headphones/microphones via digital/analog codec
+   in MSM8916/PM8916
  - WWAN Internet via BAM-DMUX
 
 except:
 
+ - There is no secondary microphone, so a different "model" is used to
+   differentiate that in the UCM configuration.
  - Samsung-specific audio jack detection (not supported yet)
 
+Co-developed-by: Markuss Broks <markuss.broks@gmail.com>
+Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+Signed-off-by: "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
+[Stephan: Add consistent commit message]
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi | 15 +++++++++++++++
+ arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts         |  4 ++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-index 68da2a2d3077..5f33aa0ad7b5 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-@@ -6,6 +6,8 @@
- /dts-v1/;
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi
+index fe59be3505fe..2caa820b0c26 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi
+@@ -1,6 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
  #include "msm8916-pm8916.dtsi"
 +#include "msm8916-modem-qdsp6.dtsi"
@@ -116,32 +127,48 @@ index 68da2a2d3077..5f33aa0ad7b5 100644
  #include <dt-bindings/gpio/gpio.h>
  #include <dt-bindings/input/input.h>
  #include <dt-bindings/interrupt-controller/irq.h>
-@@ -319,6 +321,10 @@ &blsp_uart2 {
+@@ -135,6 +137,10 @@ &blsp_uart2 {
  	status = "okay";
  };
  
 +&mpss_mem {
-+	reg = <0x0 0x86800000 0x0 0x5a00000>;
++	reg = <0x0 0x86800000 0x0 0x5800000>;
 +};
 +
  &pm8916_resin {
  	status = "okay";
  	linux,code = <KEY_VOLUMEDOWN>;
-@@ -350,6 +356,14 @@ &sdhc_2 {
- 	no-1-8-v;
+@@ -154,6 +160,15 @@ &sdhc_2 {
+ 	cd-gpios = <&tlmm 38 GPIO_ACTIVE_LOW>;
  };
  
 +&sound {
-+	status = "okay";
++	model = "msm8916-1mic";
 +	audio-routing =
 +		"AMIC1", "MIC BIAS External1",
 +		"AMIC2", "MIC BIAS Internal2",
 +		"AMIC3", "MIC BIAS External1";
++	status = "okay";
 +};
 +
  &usb {
- 	status = "okay";
  	extcon = <&muic>, <&muic>;
+ 	status = "okay";
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts
+index 58c2f5a70e78..ba8650971d6a 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5.dts
+@@ -19,6 +19,10 @@ &blsp_i2c5 {
+ 	status = "disabled";
+ };
+ 
++&pm8916_codec {
++	qcom,micbias1-ext-cap;
++};
++
+ &touchscreen {
+ 	/* FIXME: Missing sm5703-mfd driver to power up vdd-supply */
+ };
 
 -- 
 2.42.0
