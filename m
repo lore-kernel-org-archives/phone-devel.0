@@ -2,72 +2,71 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2177FEE0205
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 19:56:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D93AEEB563
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 19:57:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234253AbjIZT4Y (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Sep 2023 15:56:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34622 "EHLO
+        id S233435AbjIZT6D (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Sep 2023 15:58:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233431AbjIZT4X (ORCPT
+        with ESMTP id S229817AbjIZT6D (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Sep 2023 15:56:23 -0400
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FDFE11D
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 12:56:16 -0700 (PDT)
-Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2bffa8578feso163044931fa.2
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 12:56:16 -0700 (PDT)
+        Tue, 26 Sep 2023 15:58:03 -0400
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1337D121
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 12:57:54 -0700 (PDT)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-9ada2e6e75fso1264343566b.2
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 12:57:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695758175; x=1696362975; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1695758272; x=1696363072; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZWwru9Tps9HZuVOzGRrxWEvHqJ8rz14pCmAeXDoZTt4=;
-        b=oyDlSWxP4l/wAIekY45zNBEVZHyh5loCfQv/ZLOSlUft4Hd6DjG+VcmwafNx4Jt4Gb
-         j0TnwWEzESAqxQfDG10WLsiY3WQEcjkthdol7FVC2mmHB4pF/DUhMPNK1vzXC7l2AayG
-         kAhD02GonUCSTAL6jLQKjzgJJSwjRjT7vZBgr6uOwal/cJuMhzeCAKPnvRKVi8ys5fdF
-         VrVwodsz7V1B825eZsjivVMkRN/JVOUDkB1rgYJ10nNeZ67UkUVmh/IYWH+3aESmMRS1
-         ZjL6w9UH6MqzxUSRoc5BuXWRS5zugvbhgZ/n48Fz8jRpPzUBs0H0BwbBERjdjqZQ5NAn
-         ImrA==
+        bh=s0kSwK3PVk7H9vqR6LJUrVkOaC2Hn8PPpjAomEPL3kY=;
+        b=wyQnV90dnER2pauqvwS3EVchmsVgjbxJq4kAlatt7HUkKxosEyJ5XD4hreMLMLyrQT
+         8Q8hDN1b2f1vinA7cQa59H8okH9FtXRJv3qe8Hf22txPBanPYzZY0YECmfP3d/OSBzN+
+         ILZnGJcOX4hpv7BG+1o1a28eG54Nrp4idiQ6eDevvabqYaEGOGnO65ZK2W52Cqtmuseo
+         F+3lEMdBapqgy8VKGrkcZdc9jseHrmDcYI5itfaOTzEs7L/na4L+3xYdIUQN7meMYZzs
+         9E6IjPLbbfAxgVVNgaKPep9rqQZgGXYcKqHWh4xFcMtcf5q5Yu2zETcQxBA8MMUTMKZd
+         PlBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695758175; x=1696362975;
+        d=1e100.net; s=20230601; t=1695758272; x=1696363072;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZWwru9Tps9HZuVOzGRrxWEvHqJ8rz14pCmAeXDoZTt4=;
-        b=RzooVFFHVN5uZW9Q5ZbfsupXmLBblZgJ3lR9OSIf126V+i2n2JZmlq9qWny3aPwLWz
-         kMppuG0wH9+oix5uhWI4DeNhgVcKWEppkq+FZ3rrOZlaGDFPIr24g8J5gFe31JUayfqv
-         aKdNtT9HU2+guBvTl1NsWtBD98802R4DNN+lvUDyxja7Ex24hUcDDVegVTZpmjD5G6Fh
-         cVt9iVNOoA8QwMyl5zStAf8nFniYwnRkTc/41v17YKKfsBRaUZLeBySvC26ufaQaCFwI
-         imMbcnVS8IlcTct6wP7TUs84xV6icWBteVH/xvsI1wn45nZqrT+rEGm5+LrAjmXGWulv
-         0S3Q==
-X-Gm-Message-State: AOJu0YygqUNxesD3TljNmxFc0f5lzfIcFlKQJ2c8zr1cTWCK7JOSou1F
-        0vAMvaAsYRWUyg4qUgaw6BHF6HQMl0W+MHEc/x0CPw==
-X-Google-Smtp-Source: AGHT+IF/n55V2ruGDazD2dr+p7at0YbpTrosrtedX3N1FGnJ0vXRFBHWAZ/JMeQtlsUVSoG4I8QUEg==
-X-Received: by 2002:a2e:8256:0:b0:2c0:158f:8133 with SMTP id j22-20020a2e8256000000b002c0158f8133mr39125ljh.28.1695758174694;
-        Tue, 26 Sep 2023 12:56:14 -0700 (PDT)
+        bh=s0kSwK3PVk7H9vqR6LJUrVkOaC2Hn8PPpjAomEPL3kY=;
+        b=GSJmuiaiE0rTmeaYrQizDLJTU1yEORovjUpchaWdf+5c9b0vUIjjYNpb7KLJIqKmtz
+         hl08dg+8L0d2ja1mAS5Umo//xRYkTJlQbeJYTBZlu5R9jvKXfiMn+6+xUqbLRN8RThFZ
+         ukNWSHffETKWlTPO035TpL6VmYlBr0se2s9YyRsB4khWiVMbuSOemOiiv3Sb0sUytVqZ
+         uTygf7NZZdyx1nrp4ApeLIgK87K3eMKlH/Aardd6dmVBk9Ntbjvs71jTFAQMMk4Q+qPZ
+         PTIziOlScsqvuOH5s/KjarlWwBwTe5xW59xRpAunkyB8zdlXG7QlMAvLS0jfYB/5arWu
+         0JCQ==
+X-Gm-Message-State: AOJu0YwcYtDGAkXMFd+tuSvqgch2wWJxezI9zGKaFyRGXod9iIF2XeX/
+        SKGRpGrvNjiK0UXcQCfsw1eGryga5Kh6oZOX62IOqQ==
+X-Google-Smtp-Source: AGHT+IHjbWORZPXjmDOgqu7p72QUQqNxDanzZxOQWlI3iMKFmTK9o5TkYkJYJt/utg0kDv6Sl696wg==
+X-Received: by 2002:a17:907:7818:b0:9ae:654d:5105 with SMTP id la24-20020a170907781800b009ae654d5105mr10095500ejc.47.1695758272572;
+        Tue, 26 Sep 2023 12:57:52 -0700 (PDT)
 Received: from [192.168.33.189] (178235177023.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.23])
-        by smtp.gmail.com with ESMTPSA id v6-20020a170906380600b0099c53c4407dsm8109693ejc.78.2023.09.26.12.56.13
+        by smtp.gmail.com with ESMTPSA id v6-20020a170906380600b0099c53c4407dsm8109693ejc.78.2023.09.26.12.57.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Sep 2023 12:56:14 -0700 (PDT)
-Message-ID: <278ac134-992e-460a-b37a-60a746eab107@linaro.org>
-Date:   Tue, 26 Sep 2023 21:56:12 +0200
+        Tue, 26 Sep 2023 12:57:52 -0700 (PDT)
+Message-ID: <449f8299-3694-49e9-ba18-38cb52b5f196@linaro.org>
+Date:   Tue, 26 Sep 2023 21:57:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/13] arm64: dts: qcom: msm8916-samsung-a2015: Add sound
- and modem
+Subject: Re: [PATCH 05/13] arm64: dts: qcom: msm8916-samsung-serranove: Add
+ sound and modem
 Content-Language: en-US
 To:     Stephan Gerhold <stephan@gerhold.net>
 Cc:     Bjorn Andersson <andersson@kernel.org>,
         Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
- <20230926-msm8916-modem-v1-4-398eec74bac9@gerhold.net>
- <2c9eda54-a90e-483a-abc2-865d82854b80@linaro.org>
- <ZRMwdRo9hAm4BO5E@gerhold.net>
+ <20230926-msm8916-modem-v1-5-398eec74bac9@gerhold.net>
+ <64f030ca-27e5-47c8-b0d4-5fd0d4fce9d9@linaro.org>
+ <ZRMxDjVKu-kGIs5f@gerhold.net>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -104,7 +103,7 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <ZRMwdRo9hAm4BO5E@gerhold.net>
+In-Reply-To: <ZRMxDjVKu-kGIs5f@gerhold.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -113,46 +112,29 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 [...]
 
->>> +
->>>  &blsp_i2c2 {
->>>  	status = "okay";
 >>>  
->>> @@ -243,6 +258,13 @@ &gpu {
->>>  	status = "okay";
->>>  };
->>>  
->>> +&lpass {
->>> +	dai-link@3 {
->>> +		reg = <MI2S_QUATERNARY>;
->>> +		qcom,playback-sd-lines = <1>;
->>> +	};
+>>> +&sound {
+>>> +	status = "okay";
+>>> +	audio-routing =
+>>> +		"AMIC1", "MIC BIAS External1",
+>>> +		"AMIC2", "MIC BIAS Internal2",
+>>> +		"AMIC3", "MIC BIAS External1";
 >>> +};
->> Is that not status = reserved?
+>> I *think* we should be able to harmlessly enable &audio globally?
 >>
 > 
-> Correct. This is here to simplify switching to the modem-bypass audio
-> routing if someone does not need (or want) the modem. The direct audio
-> path with the LPASS drivers tends to be more reliable and configurable
-> (especially wrt bit formats, sampling rates, latency, channels etc).
-> I know that at some point this helped someone who tried to use an old
-> phone as some kind of portable musical instrument / synthesizer.
-> 
-> It's not too obvious that these definitions would be needed when making
-> those changes (because devices using the standard SD lines (i.e <0>) do
-> not need it). If you forget about this you get non-functional audio with
-> no error or any hint what could be wrong.
-> 
-> To simplify switching between the different audio routing options, the
-> lk2nd bootloader actually has an option to do this transformation in the
-> DTB automagically during boot. It's sort of like a DTB overlay that
-> disables the QDSP6 audio path and enables this node instead. The DAI
-> links are also adjusted where necessary.
-> 
-> Do you think a comment would help here?
-I'd say a comment would be necessary here :D
+> What about boards that do not have/use audio at all? (see
+> msm8916-ufi.dtsi). We don't even want to load the kernel modules on
+> those.
+Is it really an issue other than losing a few kb of memory?
 
-While I understand this use-case, I believe this is better suited
-for an actual DTBO or something entirely kept inside lk2nd.
-Otherwise this looks very confusing to an outside reader.
+> 
+> IMO the SoC dtsi should always be minimal by default. This also
+> guarantees that you don't run into trouble because of half- or
+> incorrectly configured components during early bring-up, especially if
+> you don't have serial and are hoping to get the device booting far
+> enough to debug it.
+Generally I'd agree, but if the audio machine driver cannot NOP
+successfully without a topology configuration, that's a problem.
 
 Konrad
