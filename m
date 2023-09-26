@@ -2,75 +2,75 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 887B4E7E652
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 16:54:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF3BBE7E654
+	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 16:54:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235478AbjIZQys (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Sep 2023 12:54:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54496 "EHLO
+        id S235484AbjIZQyt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 26 Sep 2023 12:54:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234564AbjIZQyr (ORCPT
+        with ESMTP id S235367AbjIZQyt (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Sep 2023 12:54:47 -0400
-Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [85.215.255.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 699CA126
-        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 09:54:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1695747101; cv=none;
+        Tue, 26 Sep 2023 12:54:49 -0400
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.80])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 065E0193
+        for <phone-devel@vger.kernel.org>; Tue, 26 Sep 2023 09:54:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1695747098; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=I087cDp+xqCYUjw6/43+b5IuBfqjjY6U6CmaqPglsDk5tyvQlmQJ5j7tlS+rtHq0+K
-    jkQ23XY/qOr45HELq4UqyS/RyGIo3fWEg9QHXoJ2S4PkvY8u1WuqsEu946cWJ6+xa0bQ
-    0qUXwFMSRgs4FMr37+9Lb4SLosg0GwD0pxSRh50yTYicQfsr4PaheQJ2mQc9+dPaRLrf
-    6Ngq6N6C2ppyBhlTFmEeZ4xV7zq351pR7H2fBaamUnyPYESI/D5F+j/5oPh5LaHyiwLw
-    tHMJ6K+XI9oT7s1WjZtXbjJkj/2I4QGzkMFv7IBZ2WkU8oyOxzRB+8fHr3NXQse0GLD0
-    xzow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747101;
+    b=H5P4gPqWPdASQgN0J9MvA38y9FS++YGC0baFALLTTJGLOx4v9OZJ6ENtfLVnIxjYeN
+    MAJ+fabaeG7kolEBB5c/yK+gHExClvA4bPYE2RPoTOxd6ZP4ApUdnT5FNabHdXjeU8bz
+    6u0Dzv6vlqR9uMzM3YVYoqg2MdBzuFPzOYPjK5axKfFpZ+cxCLVGxy8laf3RMibDQnc7
+    fJcSN3u6fs4gWBcNp7PwS8RmMrxs+HzXTWqbz3mwBfKwxbxjzFRnfnZMvfL1McycRpt9
+    yBhYgj2nB1JgCuBqC5QLnZRmqADmnSjGOLjlDSidk7Rg09gNaIZYkdRMxpPuNAMTC+vm
+    N+cw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747098;
     s=strato-dkim-0002; d=strato.com;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=JwD/YT0S8yNhTCX5nf+jLPmde3EQ0AXW+GeRKTVLvbw=;
-    b=dnGJmcpVZ1d5GakmBFVsDSSM7em1lRvSdWRW4i3ElRdIN7OQZ4HluWmsYPX/ONWaJK
-    h07mj3xnhwz7z5VV/LHnkXHp5akXjsxaIr/Qk/VRle8AWlTfnfISuT7iP6uTdxABY/Kk
-    8Gb6DsxJTfGmS4MTQJ/wUGHFI543EopsqM/EXcyN/q+UQY8hPIPkbRa0M1MPKF0Ys9GB
-    nytBggnN5RrvuQwGP1LdfBBno88ab+U8NKPDEvTYSK3QuT8pafS0zWvqvHKmCbRsReS0
-    FSDQW8RuZVxWZSt7v1SgQI00F7AiVFd7CrTkdB2/D2aJ0LjhlmqSH7D2nMH4CSShdVBF
-    t10A==
+    bh=1536gHXq9U1hhAc8goTXUqrlTguEtR9wsGCkW3wI2Aw=;
+    b=Vn991DqjgxgrIB2jKIFc5e1l1lFbIY9HiGwj8rw4fwHy+hGIdTu7z/NeyLAKSHXOTl
+    OGFzH5ApKsW9qMZTXovsKPHtEAGQmQ0wGtiquCLFTQHlitwWf93bWTaOSKJ83d9BHuEy
+    EsjimAWELsG+nHXccLteRjELpj8D0r5rMntfny6muE0BKxj2IikCWPTYmJUwDAdyJ2HF
+    asuiF4S511dx6+CXB7+e649KBJilKAZz69nwI5CvY3CycbcGa4PgV5miBuiYD67yL2hI
+    n7pdoVM81WFzYpgmTSmFQ4BBxltmthkbJfpwexgOWsCoM0nOPjiJpPvZo/LQngnU5Q0+
+    UTOQ==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
-X-RZG-CLASS-ID: mo03
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747101;
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695747098;
     s=strato-dkim-0002; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=JwD/YT0S8yNhTCX5nf+jLPmde3EQ0AXW+GeRKTVLvbw=;
-    b=Yq8hJp6irxQ1QoPlCzPl76eK/okNwWk37pTerBop+4dO0vZCjdYp6LTQD0j0c84Xqe
-    twZLJKBBwjhhgwRN3x9lCRWUSfFgVmjrJFKL5nnqMZ3Ngmg/pAHWIsmPQ7QmYDnbRjkU
-    byXkOiGNvxl6fg+S/kXLSIW7umIwLgiA4h4YbqSuYcCJ/Llf4PcMvAsB4Ny3XJGjlM5V
-    dlp2r9Svyi1G6u1Qee/S/iMconY4FCZAaNn1arQijow5w8iJj8TaqViJZSGhKqZ8N6sN
-    Xtn/0kzJfxYYCA+6NDqdxXeOUz9r8djnRUZR8Dh++3EVZiNPMiovNlHFdv9vaIHbL0IX
-    MKNA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695747101;
+    bh=1536gHXq9U1hhAc8goTXUqrlTguEtR9wsGCkW3wI2Aw=;
+    b=rma6xtcgISk3dsIn3b60GbvrLLl4ScGfdKqkwBNjMaz6LwSBnWY32hjARGtA4wlUG1
+    o8UYGZHZjQX3OjVP+Md+lGIV9UvPbgIzZIM6g2MxwgPmDDVoMH8Arb5pGzgX5KJ9eYah
+    zln5xZu2+nTfrjBkFmWqnpGJasSB3ZfGxmFpHJeqQYwNV1hwxxo2UKWkxiD4g7ZSVtTh
+    Hw9xQDRZZSgnpNCjH1USs2GQMuMCjkJvDl1NTelb6GGdHwJZbktiJ+3UujDNROvBXnZs
+    7sEHhLO7d4T9YROnmUc3S/NaRYwtZjOhnIRzRZaSnN5Tb9ou2hYAgUh6hwtwzdIs2otY
+    GBDw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695747098;
     s=strato-dkim-0003; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=JwD/YT0S8yNhTCX5nf+jLPmde3EQ0AXW+GeRKTVLvbw=;
-    b=KZXwupghlVW6i2gIsokdIWWYxx7hweWEv8zBCynMkjuLNPfkql0GFIl89LOdTikzZX
-    M0cpBLyaKNeOhPNiEDBw==
+    bh=1536gHXq9U1hhAc8goTXUqrlTguEtR9wsGCkW3wI2Aw=;
+    b=YeV2s4BkV493tIvEnXZDtJjLe8tGu3qobpBweQdIlZJfgUmMwoVLGiuWMP38Nt2H+z
+    EwmkH8AY+cxK6exDc6Ag==
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQjVd4CteZ/7jYgS+mLFY+H0JAn9VOH+nz0="
 Received: from [192.168.244.3]
     by smtp.strato.de (RZmta 49.8.2 SBL|AUTH)
-    with ESMTPSA id R04c57z8QGpeg5i
+    with ESMTPSA id R04c57z8QGpcg5a
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Tue, 26 Sep 2023 18:51:40 +0200 (CEST)
+    Tue, 26 Sep 2023 18:51:38 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
-Date:   Tue, 26 Sep 2023 18:51:25 +0200
-Subject: [PATCH 11/13] arm64: dts: qcom: msm8916-samsung-gt5: Add sound and
- modem
+Date:   Tue, 26 Sep 2023 18:51:17 +0200
+Subject: [PATCH 03/13] arm64: dts: qcom: msm8916: Add common
+ msm8916-modem-qdsp6.dtsi
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230926-msm8916-modem-v1-11-398eec74bac9@gerhold.net>
+Message-Id: <20230926-msm8916-modem-v1-3-398eec74bac9@gerhold.net>
 References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
 In-Reply-To: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
 To:     Bjorn Andersson <andersson@kernel.org>
@@ -80,228 +80,197 @@ Cc:     Andy Gross <agross@kernel.org>,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>,
-        Jasper Korten <jja2000@gmail.com>,
-        Siddharth Manthan <siddharth.manthan@gmail.com>,
-        Nikita Travkin <nikita@trvn.ru>
+        Stephan Gerhold <stephan@gerhold.net>
 X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Jasper Korten <jja2000@gmail.com>
+Most MSM8916/MSM8939 devices use very similar setups for the modem,
+because most of the device-specific details are abstracted by the modem
+firmware. There are several definitions (status switches, DAI links
+etc) that will be exactly the same for every board.
 
-Enable sound and modem for the Samsung Galaxy Tab A 2015 tablets.
-The setup is similar to most MSM8916 devices, i.e.:
+Introduce a common msm8916-modem-qdsp6.dtsi include that can be used to
+simplify enabling the modem for such devices. By default the
+digital/analog codec in the SoC/PMIC is used, but boards can define
+additional codecs using the templates for Secondary and Quaternary
+MI2S.
 
- - QDSP6 audio
- - Headphones/microphones via digital/analog codec in
-   MSM8916/PM8916. Earpiece exists on samsung-gt58 only.
- - WWAN Internet via BAM-DMUX
-
-except:
-
- - gt510: Stereo Maxim MAX98357A codecs for speaker on Quaternary MI2S
- - gt58: Mono NXP TFA9895 codec for speaker on Quaternary MI2S
-   - For some reason connected to GPIOs where no hardware I2C
-     controller is available -> need to use i2c-gpio
-- Samsung-specific audio jack detection (not supported yet)
-
-Signed-off-by: Jasper Korten <jja2000@gmail.com>
-Co-developed-by: Siddharth Manthan <siddharth.manthan@gmail.com>
-Signed-off-by: Siddharth Manthan <siddharth.manthan@gmail.com>
-Co-developed-by: Nikita Travkin <nikita@trvn.ru>
-Signed-off-by: Nikita Travkin <nikita@trvn.ru>
-[Stephan: Add consistent commit message]
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- .../boot/dts/qcom/msm8916-samsung-gt5-common.dtsi  | 36 ++++++++++++++++++
- arch/arm64/boot/dts/qcom/msm8916-samsung-gt510.dts | 23 ++++++++++++
- arch/arm64/boot/dts/qcom/msm8916-samsung-gt58.dts  | 43 ++++++++++++++++++++++
- 3 files changed, 102 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8916-modem-qdsp6.dtsi | 163 ++++++++++++++++++++++
+ 1 file changed, 163 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
-index 6a16eb5ce07b..396853fcece5 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
-@@ -3,9 +3,12 @@
- /dts-v1/;
- 
- #include "msm8916-pm8916.dtsi"
-+#include "msm8916-modem-qdsp6.dtsi"
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-modem-qdsp6.dtsi b/arch/arm64/boot/dts/qcom/msm8916-modem-qdsp6.dtsi
+new file mode 100644
+index 000000000000..ddd74d428406
+--- /dev/null
++++ b/arch/arm64/boot/dts/qcom/msm8916-modem-qdsp6.dtsi
+@@ -0,0 +1,163 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause)
++/*
++ * msm8916-modem-qdsp6.dtsi describes the typical modem setup on MSM8916 devices
++ * (or similar SoCs) with audio routed via the QDSP6 services provided by the
++ * modem firmware. The digital/analog codec in the SoC/PMIC is used by default,
++ * but boards can define additional codecs using the templates for Secondary and
++ * Quaternary MI2S.
++ */
 +
- #include <dt-bindings/gpio/gpio.h>
- #include <dt-bindings/input/input.h>
- #include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/sound/apq8016-lpass.h>
- 
- / {
- 	aliases {
-@@ -116,6 +119,17 @@ &blsp_uart2 {
- 	status = "okay";
- };
- 
++#include <dt-bindings/sound/qcom,q6afe.h>
++#include <dt-bindings/sound/qcom,q6asm.h>
++
++&apr {
++	status = "okay";
++};
++
++&bam_dmux {
++	status = "okay";
++};
++
++&bam_dmux_dma {
++	status = "okay";
++};
++
 +&lpass {
-+	dai-link@3 {
-+		reg = <MI2S_QUATERNARY>;
-+		qcom,playback-sd-lines = <1>;
-+	};
++	status = "reserved"; /* Controlled by QDSP6 */
++};
++
++&lpass_codec {
++	status = "okay";
++};
++
++&mba_mem {
++	status = "okay";
++};
++
++&mpss {
++	status = "okay";
 +};
 +
 +&mpss_mem {
-+	reg = <0x0 0x86800000 0x0 0x5400000>;
++	status = "okay";
 +};
 +
- &pm8916_resin {
- 	linux,code = <KEY_VOLUMEDOWN>;
- 	status = "okay";
-@@ -133,6 +147,13 @@ &pm8916_usbin {
- 	status = "okay";
- };
- 
++&pm8916_codec {
++	status = "okay";
++};
++
 +&q6afedai {
-+	dai@22 {
-+		reg = <QUATERNARY_MI2S_RX>;
-+		qcom,sd-lines = <1>;
++	dai@16 {
++		reg = <PRIMARY_MI2S_RX>;
++		qcom,sd-lines = <0 1>;
++	};
++	dai@20 {
++		reg = <TERTIARY_MI2S_TX>;
++		qcom,sd-lines = <0 1>;
 +	};
 +};
 +
- &sdhc_1 {
- 	status = "okay";
- };
-@@ -147,6 +168,21 @@ &sdhc_2 {
- 	status = "okay";
- };
- 
++&q6asmdai {
++	dai@0 {
++		reg = <0>;
++		direction = <Q6ASM_DAI_RX>;
++	};
++	dai@1 {
++		reg = <1>;
++		direction = <Q6ASM_DAI_TX>;
++	};
++	dai@2 {
++		reg = <2>;
++		direction = <Q6ASM_DAI_RX>;
++	};
++	dai@3 {
++		reg = <3>;
++		direction = <Q6ASM_DAI_RX>;
++		is-compress-dai;
++	};
++};
++
 +&sound {
-+	audio-routing =
-+		"AMIC1", "MIC BIAS External1",
-+		"AMIC2", "MIC BIAS Internal2",
-+		"AMIC3", "MIC BIAS External1";
-+};
++	compatible = "qcom,msm8916-qdsp6-sndcard";
++	model = "msm8916";
 +
-+&sound_dai_quaternary {
-+	status = "okay";
-+
-+	codec {
-+		sound-dai = <&speaker_codec>;
-+	};
-+};
-+
- &usb {
- 	dr_mode = "peripheral";
- 	extcon = <&pm8916_usbin>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt510.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt510.dts
-index c3f1acc55078..f393e9efa72c 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt510.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt510.dts
-@@ -9,6 +9,14 @@ / {
- 	compatible = "samsung,gt510", "qcom,msm8916";
- 	chassis-type = "tablet";
- 
-+	speaker_codec: audio-codec {
-+		compatible = "maxim,max98357a";
-+		sdmode-gpios = <&tlmm 55 GPIO_ACTIVE_HIGH>;
-+		#sound-dai-cells = <0>;
-+		pinctrl-0 = <&audio_sdmode_default>;
-+		pinctrl-names = "default";
-+	};
-+
- 	clk_pwm: pwm {
- 		compatible = "clk-pwm";
- 		#pwm-cells = <2>;
-@@ -146,7 +154,22 @@ &mdss_dsi0_out {
- 	remote-endpoint = <&panel_in>;
- };
- 
-+&sound {
-+	model = "samsung-gt510";
-+	pinctrl-0 = <&cdc_pdm_default &sec_mi2s_default>;
-+	pinctrl-1 = <&cdc_pdm_sleep &sec_mi2s_sleep>;
++	pinctrl-0 = <&cdc_pdm_default>;
++	pinctrl-1 = <&cdc_pdm_sleep>;
 +	pinctrl-names = "default", "sleep";
-+	status = "okay";
-+};
 +
- &tlmm {
-+	audio_sdmode_default: audio-sdmode-default-state {
-+		pins = "gpio55";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	buckbooster_en_default: buckbooster-en-default-state {
- 		pins = "gpio51";
- 		function = "gpio";
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt58.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt58.dts
-index 998625abd409..3f2165556986 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt58.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt58.dts
-@@ -35,6 +35,26 @@ reg_vdd_tsp: regulator-vdd-tsp {
- 		pinctrl-names = "default";
- 	};
- 
-+	i2c-amplifier {
-+		compatible = "i2c-gpio";
-+		sda-gpios = <&tlmm 55 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+		scl-gpios = <&tlmm 56 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
-+
-+		pinctrl-0 = <&amp_i2c_default>;
-+		pinctrl-names = "default";
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		speaker_codec: audio-codec@34 {
-+			compatible = "nxp,tfa9895";
-+			reg = <0x34>;
-+			vddd-supply = <&pm8916_l5>;
-+			sound-name-prefix = "Speaker";
-+			#sound-dai-cells = <0>;
++	multimedia1-dai-link {
++		link-name = "MultiMedia1";
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA1>;
 +		};
 +	};
 +
- 	vibrator {
- 		compatible = "gpio-vibrator";
- 		enable-gpios = <&tlmm 76 GPIO_ACTIVE_HIGH>;
-@@ -98,7 +118,22 @@ &mdss_dsi0_out {
- 	remote-endpoint = <&panel_in>;
- };
- 
-+&sound {
-+	model = "samsung-a2015";
-+	pinctrl-0 = <&cdc_pdm_default &sec_mi2s_default &secondary_mic_default>;
-+	pinctrl-1 = <&cdc_pdm_sleep &sec_mi2s_sleep &secondary_mic_default>;
-+	pinctrl-names = "default", "sleep";
-+	status = "okay";
++	multimedia2-dai-link {
++		link-name = "MultiMedia2";
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA2>;
++		};
++	};
++
++	multimedia3-dai-link {
++		link-name = "MultiMedia3";
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA3>;
++		};
++	};
++
++	multimedia4-dai-link {
++		link-name = "MultiMedia4";
++		cpu {
++			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA4>;
++		};
++	};
++
++	sound_dai_primary: mi2s-primary-dai-link {
++		link-name = "Primary MI2S";
++		cpu {
++			sound-dai = <&q6afedai PRIMARY_MI2S_RX>;
++		};
++		platform {
++			sound-dai = <&q6routing>;
++		};
++		codec {
++			sound-dai = <&lpass_codec 0>, <&pm8916_codec 0>;
++		};
++	};
++
++	sound_dai_secondary: mi2s-secondary-dai-link {
++		link-name = "Secondary MI2S";
++		status = "disabled"; /* Needs extra codec configuration */
++		cpu {
++			sound-dai = <&q6afedai SECONDARY_MI2S_RX>;
++		};
++		platform {
++			sound-dai = <&q6routing>;
++		};
++	};
++
++	sound_dai_tertiary: mi2s-tertiary-dai-link {
++		link-name = "Tertiary MI2S";
++		cpu {
++			sound-dai = <&q6afedai TERTIARY_MI2S_TX>;
++		};
++		platform {
++			sound-dai = <&q6routing>;
++		};
++		codec {
++			sound-dai = <&lpass_codec 1>, <&pm8916_codec 1>;
++		};
++	};
++
++	sound_dai_quaternary: mi2s-quaternary-dai-link {
++		link-name = "Quaternary MI2S";
++		status = "disabled"; /* Needs extra codec configuration */
++		cpu {
++			sound-dai = <&q6afedai QUATERNARY_MI2S_RX>;
++		};
++		platform {
++			sound-dai = <&q6routing>;
++		};
++	};
 +};
-+
- &tlmm {
-+	amp_i2c_default: amp-i2c-default-state {
-+		pins = "gpio55", "gpio56";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	buckbooster_en_default: buckbooster-en-default-state {
- 		pins = "gpio8";
- 		function = "gpio";
-@@ -127,6 +162,14 @@ reg_tsp_en_default: reg-tsp-en-default-state {
- 		bias-disable;
- 	};
- 
-+	secondary_mic_default: secondary-mic-default-state {
-+		pins = "gpio98";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-high;
-+	};
-+
- 	tsp_int_default: tsp-int-default-state {
- 		pins = "gpio13";
- 		function = "gpio";
 
 -- 
 2.42.0
