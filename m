@@ -2,90 +2,105 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7625E810AD
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Sep 2023 08:58:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA55AE82CA5
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Sep 2023 15:55:14 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230150AbjI0I6J (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Sep 2023 04:58:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35490 "EHLO
+        id S232910AbjI0PzN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Sep 2023 11:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229958AbjI0I6I (ORCPT
+        with ESMTP id S232650AbjI0PzC (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Sep 2023 04:58:08 -0400
-Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 253AADE
-        for <phone-devel@vger.kernel.org>; Wed, 27 Sep 2023 01:58:07 -0700 (PDT)
-Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-5a1f00b75aaso21347977b3.2
-        for <phone-devel@vger.kernel.org>; Wed, 27 Sep 2023 01:58:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695805086; x=1696409886; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y4Qt7MPKUZBp7gXinhRZHu894kl5p4OlGl8pyoVCVvw=;
-        b=PSQCUa4zSz9zdkYl+3UDVCmwQISAkb+w8sFU5aKVoEc0sgMZtODT1kw4VrXFOSyRth
-         85Uun9MjT09IcWH7298B4sNWtKrSEz0q55baMLNFaiY8oTVXFdBJxXFxxDN4dqFYoCEt
-         ALpyUbtTBXiG7oHVaXk+M3J8vZyCyPH2iathfT4drvfQzCDpWcHC5QB9Xte9jsvj3D69
-         qS+9WRZEmJbFG8Q+nd+RdQgUAO4npr6cuL3f+GRVmbo9S1kYQwLdGLkpe/egOpD+JJ0E
-         KfOw/wBhENPbSk6DM4DEV6kpnxmkFL1DYcdiaLcKP3xgnlNHPZbF1Jtd63dYgXn8o+1i
-         fiJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695805086; x=1696409886;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y4Qt7MPKUZBp7gXinhRZHu894kl5p4OlGl8pyoVCVvw=;
-        b=B6hDLFyV+LpJ5sTp0wKhh8kABpEH0gB2h65eOkk8cOP9McOMZIcErgWJjYZ7wZvH35
-         fXLfMxBaX5AFbVrfslxQZYn/VbTjg0IbJ54Zh+4QCS7QOzpdkPwgfY4ZY2Uczl3Sge11
-         4/rDBPM4/VgXsGwnDlfM/qDCeBoV+B7pnmqhqZQ7zvXotvnBIQ148KtHVmiUqHuYucbp
-         Z1ebyIxbYw3xm2WM/074hDhKzwq7IoBvSXwrTKNjSE8AztbrRVS0zyqcDpfncmvnXtaC
-         m7sGosmzHJBJuzrrgLx69eL5Z18svbedTiR1Xf6M6dp8At2yS2nb9aaWYCp0kzM0Q97T
-         OANQ==
-X-Gm-Message-State: AOJu0Yzs0y0vgqLq7W0E9Wl/v7IaHbKiMXoniKEMbpGudUQMVANnAE5Z
-        PlHQt5/t3jp1pgDVlZ180/ZuRfBnga02Etowr810ag==
-X-Google-Smtp-Source: AGHT+IEUmKO2BsqC37PrNycNqioSf/28nUrv3FZyiL1k0/yaHaLFkmQkRcbVXqDppaKLaYKSl/j7y7Gt5sdoNpGrogI=
-X-Received: by 2002:a81:48d8:0:b0:59f:6212:e170 with SMTP id
- v207-20020a8148d8000000b0059f6212e170mr1641107ywa.10.1695805086311; Wed, 27
- Sep 2023 01:58:06 -0700 (PDT)
+        Wed, 27 Sep 2023 11:55:02 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 838FD10DB;
+        Wed, 27 Sep 2023 08:52:27 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 6EE071C002E; Wed, 27 Sep 2023 17:52:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+        t=1695829945;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=gKmlF24D9wEYZmpPY4pyhX2RZKAFbVwikfJcj8WeaM0=;
+        b=oO1c9uhQ2eI5cunUP9Zglr8sb92Noy1qFKhmSpB8VGObMguJ5N7hwEEMiybrDyAHHvU8ss
+        wjoU8hwybc60n/+zprXid9vQ2OsKhSwhAW+c2Kb9gkg1VkMig2GDmeyD10Q2h/Whfl6aU8
+        ZEA3J/LTB1acZQZQJbaOWptd79iIZok=
+Date:   Wed, 27 Sep 2023 17:52:17 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     kernel list <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
+        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
+        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
+Subject: Re: droid4 -- weird behaviour when attempting to use usb host
+Message-ID: <ZRRPsWQiTP21hozK@duo.ucw.cz>
+References: <ZRGa+0OFNluV4T5t@localhost>
+ <20230926071415.GW5285@atomide.com>
 MIME-Version: 1.0
-References: <20230919-fp5-initial-v2-0-14bb7cedadf5@fairphone.com> <20230919-fp5-initial-v2-5-14bb7cedadf5@fairphone.com>
-In-Reply-To: <20230919-fp5-initial-v2-5-14bb7cedadf5@fairphone.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 27 Sep 2023 10:57:55 +0200
-Message-ID: <CACRpkdap7ZC=KokB4ysgvDVPRYP0ns3Dqz6p4d6cQqGmWWX2EQ@mail.gmail.com>
-Subject: Re: [PATCH v2 5/7] dt-bindings: pinctrl: qcom,sc7280: Allow gpio-reserved-ranges
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     cros-qcom-dts-watchers@chromium.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-pm@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="dNROfh5L9PZtEJdO"
+Content-Disposition: inline
+In-Reply-To: <20230926071415.GW5285@atomide.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Sep 19, 2023 at 2:46=E2=80=AFPM Luca Weiss <luca.weiss@fairphone.co=
-m> wrote:
 
-> Allow the gpio-reserved-ranges property on SC7280 TLMM.
->
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+--dNROfh5L9PZtEJdO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch 5/7 applied to the pinctrl tree!
+Hi!
 
-Yours,
-Linus Walleij
+> > I'm having some fun with usb host. Good news is it works with
+> > externally powered hub... after a while. I get some error messages
+> > about inability to go host mode, but with enough patience it
+> > eventually does enter host mode and I see my keyboard/mouse.
+> >=20
+> > And usually in that process, one of my cpu cores disappear. top no
+> > longer shows 2 cores, and I was wondering for a while if d4 is
+> > single-core system. It is not, my two cores are back after reboot.
+> >=20
+> > That's with 6.1.9 kernel from leste. Ideas how to debug this would be
+> > welcome. (Do you use usb host?)
+>=20
+> You are using a "proper" non-standard usb micro-b cable that grounds
+> the id pin, right?
+
+Yes.
+
+> If not, try with one of those as it allows the hardware to do what it's
+> supposed to do.
+>=20
+> And presumably you don't have a hacked usb hub that feeds back the
+> vbus to your phone, right?
+
+Do have hacked hub. Or more precisely, have device that needs external
+power (spinning rust), and hub passes it back to the device.
+
+I'll retry with a keyboard... but I recall it behaved funny with that, too.
+
+> If you have, that should not be used as the pmic can feed vbus.
+
+Well, my plan was to use it as a desktop, and external power is useful
+that as Droid battery is not that big.
+
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--dNROfh5L9PZtEJdO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZRRPsQAKCRAw5/Bqldv6
+8ra8AKC7lzjBB+3yYRhK28e2x1T8h8LbwwCgqUR1vYbz8ywFk9hMmsDOjdNra2g=
+=ItwB
+-----END PGP SIGNATURE-----
+
+--dNROfh5L9PZtEJdO--
