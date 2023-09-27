@@ -2,190 +2,82 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20A13E7F126
-	for <phone-devel@archiver.kernel.org>; Tue, 26 Sep 2023 20:36:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 18B8EE810B1
+	for <phone-devel@archiver.kernel.org>; Wed, 27 Sep 2023 08:43:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235840AbjIZUgg (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 26 Sep 2023 16:36:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37454 "EHLO
+        id S230254AbjI0InO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Sep 2023 04:43:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230447AbjIZUgf (ORCPT
+        with ESMTP id S229459AbjI0InN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 26 Sep 2023 16:36:35 -0400
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F165411D;
-        Tue, 26 Sep 2023 13:36:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1695760583; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=roJkjRPytFe+ilRPDRBnAwnfATFMlU6JKNGkPnkXDJbldCHMQIew/MqqE9SPzYb4ar
-    VePz7nWkWd1AvQV5JdmD0b3ZDO0dStQcJBGFWdG6risllwSnLfKj6bW06EaperZ85856
-    xnoBggYGThfb1THQTTkUxzaycaLKZMZU9Un7DNqtzMB4/gVw2D6PTTSZOD0f40U1h3p8
-    GWH3TWUCE6XhEYydjXvoEGORq3rS9f8ixYxlL6McJPvGPeukHPbQWxpjrSNp1z6JO00A
-    3M3601IfDbftsqMMklJvLIQXyY2dY7CTvjG+UO8DCihSBUEaqpFFlykRqiFoEuwZNi4y
-    HT7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1695760583;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=OJrtho2IVaxqErbZWEznLM2Z5nnZpsNCEW0/xMDGh5o=;
-    b=MGyIvS9j+Q++hoqb5muSnWVf3OJ5838/pfiuB5vPN55GpZUmE+LfQoWdCaCnv3I6Fr
-    NimjOCMgzCN00gQBaunS7M6CPCj8MQ0rDpwAl4VvzCAU9pNY+uwXFB9dG0ykPCVDEj+W
-    BUUtp5wfLRy0gMmK4gL7jEF6S7syEzO0jsFoJn/PxtyD35LmJdYDQGIvVg8IDvkPEMM2
-    DxVgQWEazAWLEHlXrv3NGUmzeFj3ywlZxWkfVJKK0VhBZsOvf8Gdc/tCDJly/hsFaSV5
-    EQEMplmotGErQzU6hYRO8Id4mL3GVyIo2z1vD6QNc1n6cPO9DT7taCdaIgO1CI5f5MJe
-    /NGw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1695760583;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=OJrtho2IVaxqErbZWEznLM2Z5nnZpsNCEW0/xMDGh5o=;
-    b=M0/oHz7yATE3swJ4RIi+YsO6iOqPBQrgnobuxAWgbxZ53Y3vnPpOTHnFdwtzrRIQkq
-    qEH/Dbjprh0z8DwP5b+KR4GUMIdTTktNxaKm8fA6lFFYHft4BRZkY2K9UraQd75le3/a
-    GYlnu6oaETd/yZtQwvnqWvriShnEQJ+N3rG50uAzRLqj0yyzTlxRYS1qGzMMD0gBLX4S
-    cot6Lz7yTtD7qFNq5uFWNfjf4NI623hZiXCh3PwB9qtEwxKHk1BUK3TOEgiSk8VyQFPV
-    De9Qo3esLP4CR2XnrOzTVXWAh40BmdjFmvWAH1RMqAHUI/XUQSGTJHYMP85j/Dg79b0w
-    ynoQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1695760583;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=OJrtho2IVaxqErbZWEznLM2Z5nnZpsNCEW0/xMDGh5o=;
-    b=IticiGBVOhZeFF0AUEGfJwYNVp30y32eUCcGu4HX01JJUV8Sx026X9WI21ryqNIK04
-    XlE44b3l8fFwb1lxsDBg==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA8piJ1A=="
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.8.2 SBL|AUTH)
-    with ESMTPSA id R04c57z8QKaNgTq
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Tue, 26 Sep 2023 22:36:23 +0200 (CEST)
-Date:   Tue, 26 Sep 2023 22:36:16 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
-Subject: Re: [PATCH 04/13] arm64: dts: qcom: msm8916-samsung-a2015: Add sound
- and modem
-Message-ID: <ZRNAwO-f2dpNJs5x@gerhold.net>
-References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
- <20230926-msm8916-modem-v1-4-398eec74bac9@gerhold.net>
- <2c9eda54-a90e-483a-abc2-865d82854b80@linaro.org>
- <ZRMwdRo9hAm4BO5E@gerhold.net>
- <278ac134-992e-460a-b37a-60a746eab107@linaro.org>
- <ZRM6dJXNvx93jFrM@gerhold.net>
- <9b9a9c0d-8a09-48a4-b996-554d7e1b9340@linaro.org>
- <ZRM-u3gIoOsHVp7c@gerhold.net>
- <4d8292ca-c5fe-4270-8d93-66b721903528@linaro.org>
+        Wed, 27 Sep 2023 04:43:13 -0400
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7D3AC0
+        for <phone-devel@vger.kernel.org>; Wed, 27 Sep 2023 01:43:11 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-59c0d329a8bso131087067b3.1
+        for <phone-devel@vger.kernel.org>; Wed, 27 Sep 2023 01:43:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695804191; x=1696408991; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tbZf2fFA2FQ5qrsMA6J+4jlQPmdMuMWJbNxXkcx0woQ=;
+        b=ttxs85YMPPlc891Jam9KQgtHLayUWR9Y8PTt9jjRiyfrzIc3ou/w/TM2pwe3w+c6Zy
+         BRfu3Qhap3uw/i7IISn6kNQoO54OXPyiouk248Dhb2zqRz3FzK6c4V6f+jiX22I/14ep
+         os1MxLf9tYs2kbEwNIjiTD9gfSnvR5lP/xwPRL3+KuIAshXxqH95yJqKYoH2hJhPgCIx
+         w6V+XoYbzGnw3hM5Do+NT8eOZV+wRO7lKHEHXv3GJyB3/bgm/PBtjO83XieBntqGBGgJ
+         HwYUNxqL6XRLx+n60pRXrYk+qiVxlS+Md1t5U56Np5VzCZVIbyvxU+FjP3YmDgzNGi7+
+         Dgtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695804191; x=1696408991;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tbZf2fFA2FQ5qrsMA6J+4jlQPmdMuMWJbNxXkcx0woQ=;
+        b=uPZWaSR7+J52Rti9RDs+VJMr7BeCgZZEQPaypGMxNKxnsCFuO8vw5MoGRlVUr5FO0C
+         FZbNUJueg04UxsVrzaFlNigsDom8BnEmL6V93qhY83SqWuXciaVrtFDUUdoPJZhrPfnW
+         McYeL/uEdM+TgM+C4aslmZV/tROiCfhSzBDqGlpgR1afcsC5FpWy8o7Jf6MR1nnP2OSy
+         dZbiW89CQEbut1pRBBz19h6XA0E/3+mzt13AtRXX9Eigs90kF3cUGXxgmegEo0MVYRFY
+         RPuS56YTQEprpTB7lFdcqgnquVddEsYajQTcHhpwopI9ltv8i57T/j/WiUGWRSLVCJeT
+         ul8Q==
+X-Gm-Message-State: AOJu0Yyic0NBK1gZMtlW+V4U31L3eBDm8W9paXfjZ5rkn4YnYyZM4Jqc
+        kGFSMyG9lMV7Oh0ZqtuHIZJpnjwgxPepFGL7KW9g1GxkjlBzER99
+X-Google-Smtp-Source: AGHT+IGARZ/ws1fRu2Yb4a4UQx44nHbRJFszxMdFAdC60oItaObm/kXlaW74QXdyzbXLViFp8x3ekZb9MDLlCcs2TJI=
+X-Received: by 2002:a81:5d87:0:b0:59b:cff1:a8eb with SMTP id
+ r129-20020a815d87000000b0059bcff1a8ebmr1698986ywb.34.1695804191087; Wed, 27
+ Sep 2023 01:43:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4d8292ca-c5fe-4270-8d93-66b721903528@linaro.org>
-Content-Transfer-Encoding: 7bit
+References: <20230922-msm8226-i2c6-v2-0-3fb55c47a084@z3ntu.xyz>
+In-Reply-To: <20230922-msm8226-i2c6-v2-0-3fb55c47a084@z3ntu.xyz>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 27 Sep 2023 10:43:00 +0200
+Message-ID: <CACRpkdZHjsm8HLg9B1KYHnhstcjwd18r0bE5GF0_Z4EqcuAWWA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Add blsp1_i2c6 and blsp1_uart2 to MSM8226 SoC
+To:     Luca Weiss <luca@z3ntu.xyz>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Sep 26, 2023 at 10:29:29PM +0200, Konrad Dybcio wrote:
-> On 26.09.2023 22:27, Stephan Gerhold wrote:
-> > On Tue, Sep 26, 2023 at 10:18:22PM +0200, Konrad Dybcio wrote:
-> >> On 26.09.2023 22:09, Stephan Gerhold wrote:
-> >>> On Tue, Sep 26, 2023 at 09:56:12PM +0200, Konrad Dybcio wrote:
-> >>>> [...]
-> >>>>
-> >>>>>>> +
-> >>>>>>>  &blsp_i2c2 {
-> >>>>>>>  	status = "okay";
-> >>>>>>>  
-> >>>>>>> @@ -243,6 +258,13 @@ &gpu {
-> >>>>>>>  	status = "okay";
-> >>>>>>>  };
-> >>>>>>>  
-> >>>>>>> +&lpass {
-> >>>>>>> +	dai-link@3 {
-> >>>>>>> +		reg = <MI2S_QUATERNARY>;
-> >>>>>>> +		qcom,playback-sd-lines = <1>;
-> >>>>>>> +	};
-> >>>>>>> +};
-> >>>>>> Is that not status = reserved?
-> >>>>>>
-> >>>>>
-> >>>>> Correct. This is here to simplify switching to the modem-bypass audio
-> >>>>> routing if someone does not need (or want) the modem. The direct audio
-> >>>>> path with the LPASS drivers tends to be more reliable and configurable
-> >>>>> (especially wrt bit formats, sampling rates, latency, channels etc).
-> >>>>> I know that at some point this helped someone who tried to use an old
-> >>>>> phone as some kind of portable musical instrument / synthesizer.
-> >>>>>
-> >>>>> It's not too obvious that these definitions would be needed when making
-> >>>>> those changes (because devices using the standard SD lines (i.e <0>) do
-> >>>>> not need it). If you forget about this you get non-functional audio with
-> >>>>> no error or any hint what could be wrong.
-> >>>>>
-> >>>>> To simplify switching between the different audio routing options, the
-> >>>>> lk2nd bootloader actually has an option to do this transformation in the
-> >>>>> DTB automagically during boot. It's sort of like a DTB overlay that
-> >>>>> disables the QDSP6 audio path and enables this node instead. The DAI
-> >>>>> links are also adjusted where necessary.
-> >>>>>
-> >>>>> Do you think a comment would help here?
-> >>>> I'd say a comment would be necessary here :D
-> >>>>
-> >>>
-> >>> No problem, I will try to add something simple.
-> >>>
-> >>>> While I understand this use-case, I believe this is better suited
-> >>>> for an actual DTBO or something entirely kept inside lk2nd.
-> >>>> Otherwise this looks very confusing to an outside reader.
-> >>>>
-> >>>
-> >>> Translating from the QDSP6 audio setup to the LPASS one is mostly simple
-> >>> but not entirely trivial (especially the patching needed for the DAI
-> >>> links). Main blocker for DTBOs is that you can only add or change, but
-> >>> AFAIK there is no mechanism to _delete_ or fully recreate nodes.
-> >> Correct.
-> >>
-> >>>
-> >>> I guess I could maybe derive this from the QDSP6 definitions using
-> >>> custom magic code, but the code complexity for that is much higher than
-> >>> adding these nodes here for completeness.
-> >> I hate to be the bearer of bad news, but this is probably more
-> >> of a "do we reasonably want this upstream" type question, as
-> >> you'll probably get some grumpy emails about upstream not caring
-> >> about what's outside the mainline tree..
-> >>
-> > 
-> > IMHO this is hardly a "downstream" type of situation. The whole point of
-> > the magic in lk2nd is to make the life for the mainline code base easier
-> > and simpler, while still allowing the "bypass modem audio" feature with
-> > an unmodified kernel.
-> > 
-> > Before implementing it like this I used to have this directly in the
-> > kernel tree, by duplicating each device into a normal XYZ.dts and
-> > "XYZ-no-modem.dts". If you apply this to the total of ~45 different
-> > MSM8916/MSM8939 DTBs I would like to get upstream this options gets
-> > extremely ugly. :'D
-> Maybe a kernel module parameter could be somehow useful here?
-> 
+On Fri, Sep 22, 2023 at 6:56=E2=80=AFPM Luca Weiss <luca@z3ntu.xyz> wrote:
 
-Maybe, but ultimately this affecs multiple modules that do not
-necessarily know about each other. You need to enable the &lpass node
-but also adjust the DAI links in the &sound node to refer to the lpass
-DAIs instead of q6afe/q6routing. Implementing this in the kernel would
-be complexity everyone would have to carry, while in lk2nd it's local to
-the devices that can actually make use of it.
+> Add the I2C bus and UART interface found on the MSM8226. For the I2C bus
+> we also first need to add the pinctrl function in the driver.
+>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
-With the device tree we have the flexibility to adjust it based on
-device-specifics (RAM size, display panels, broken CPU cores, ...).
-I think it's perfectly fine if the bootloader makes good use of this
-capability to keep Linux code simple and focused.
+v2 looks fine and ACKs in place, so patches applied!
 
-Thanks,
-Stephan
+Yours,
+Linus Walleij
