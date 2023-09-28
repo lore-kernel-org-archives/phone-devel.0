@@ -2,110 +2,67 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 847F1E82CAE
-	for <phone-devel@archiver.kernel.org>; Wed, 27 Sep 2023 17:06:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 005CCE80ABF
+	for <phone-devel@archiver.kernel.org>; Thu, 28 Sep 2023 00:30:06 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229568AbjI0RGT convert rfc822-to-8bit (ORCPT
-        <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 27 Sep 2023 13:06:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56974 "EHLO
+        id S229878AbjI1AaF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 27 Sep 2023 20:30:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjI0RGT (ORCPT
+        with ESMTP id S229445AbjI1AaE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 27 Sep 2023 13:06:19 -0400
-X-Greylist: delayed 907 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 27 Sep 2023 10:06:15 PDT
-Received: from sender-of-o49.zoho.eu (sender11-of-o53.zoho.eu [31.186.226.239])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAADF95;
-        Wed, 27 Sep 2023 10:06:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1695833431; cv=none; 
-        d=zohomail.eu; s=zohoarc; 
-        b=hotgoDEPYTwzrbPtF5xB3V1zHmZgMpbqYamrkCWowv4aY1gfZVZsIFPlmMs9+i8KCCxQVC7AGrYz42Uj/z/P0mLnvVPDBTI4nZOFV8czeD+LiJnhUAIwFfMaeTmUMaJbsqvR+44LTxjRKwHMkhiZBFGJVDLaUha48S9E8QST5I0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1695833431; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-        bh=/KrHy5tQAsIei5Iqu5rYZG0GhfjNKeGvw6jsZ0TcLY8=; 
-        b=T+nkQv4IoPSVfjqN9+ddTcBlo0Gg7I6YmAmnVvlLFC2TM5OzT3RDFq3yoJHYmgcSsTA2LWdiOtnFk/e8zZeqOlsjPAop+PHfs7Bvu2KTHGY5XS0dju/IlCNRvK0jwjxB/X8qE1WTY5aPFFv2iz5zz8g518QJ3FyUDJ6coSbs3/0=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-        spf=pass  smtp.mailfrom=devnull@uvos.xyz;
-        dmarc=pass header.from=<devnull@uvos.xyz>
-Received: from [10.0.0.2] (ip-037-201-240-143.um10.pools.vodafone-ip.de [37.201.240.143]) by mx.zoho.eu
-        with SMTPS id 1695833428206965.6284300956125; Wed, 27 Sep 2023 18:50:28 +0200 (CEST)
-Message-ID: <994d5d7187a96fa48ade9244bcc9bd57465bf487.camel@uvos.xyz>
-Subject: Re: droid4 -- weird behaviour when attempting to use usb host
-From:   Unknown <devnull@uvos.xyz>
-To:     Pavel Machek <pavel@ucw.cz>, Tony Lindgren <tony@atomide.com>
-Cc:     kernel list <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-omap@vger.kernel.org, sre@kernel.org, nekit1000@gmail.com,
-        mpartap@gmx.net, merlijn@wizzup.org, martin_rysavy@centrum.cz,
-        phone-devel@vger.kernel.org, maemo-leste@lists.dyne.org
-Date:   Wed, 27 Sep 2023 18:50:26 +0200
-In-Reply-To: <ZRRPsWQiTP21hozK@duo.ucw.cz>
-References: <ZRGa+0OFNluV4T5t@localhost> <20230926071415.GW5285@atomide.com>
-         <ZRRPsWQiTP21hozK@duo.ucw.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.48.4 
+        Wed, 27 Sep 2023 20:30:04 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6068FBF;
+        Wed, 27 Sep 2023 17:30:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B0FC433CB;
+        Thu, 28 Sep 2023 00:30:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695861003;
+        bh=bMT9IxhC+TNBsZCKniLy1v2Qfy6SFvVS8eBjXCrZ3BI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=hvA+oy0tl44XIOyXLhCwdasZIY8+R/RFvsM2YCWymp4MhJDBJ3QL0yYAHK7pApCrl
+         KHJYURAXxaz9D/JNABijsONbhSXSfD6jHrFAX6nnobRN2jOgiSMaq+qqu96EUF4qzg
+         lwhiGs1aH8RQ93+JsW/3Fc12rRiXPQo6puQm9QXnxGEVYMmHTd6f5gw+nIxvYyKQvb
+         7k9AhFHO9V7/TIa9slJAqI+TxpYP5z0NcGSu3xI+ADQWSo6GbS7ZUJ/V8ScvQ8TG+r
+         o+km8BWuNckna4saUxEBftiElcY+v8WyIlMvKJjjj+dnfErA+miwCftkbGPZCdTNqh
+         Hds7TEdZIR9BA==
+From:   Bjorn Andersson <andersson@kernel.org>
+To:     linux-arm-msm@vger.kernel.org,
+        =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] Add rpm-master-stats nodes for MSM8226 and MSM8974
+Date:   Wed, 27 Sep 2023 17:34:07 -0700
+Message-ID: <169586125032.1226038.15416891451357190920.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20230922003533.107835-1-matti.lehtimaki@gmail.com>
+References: <20230922003533.107835-1-matti.lehtimaki@gmail.com>
 MIME-Version: 1.0
-X-ZohoMailClient: External
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed, 2023-09-27 at 17:52 +0200, Pavel Machek wrote:
-> Hi!
-> 
-> > > I'm having some fun with usb host. Good news is it works with
-> > > externally powered hub... after a while. I get some error
-> > > messages
-> > > about inability to go host mode, but with enough patience it
-> > > eventually does enter host mode and I see my keyboard/mouse.
-> > > 
-> > > And usually in that process, one of my cpu cores disappear. top
-> > > no
-> > > longer shows 2 cores, and I was wondering for a while if d4 is
-> > > single-core system. It is not, my two cores are back after
-> > > reboot.
-> > > 
-> > > That's with 6.1.9 kernel from leste. Ideas how to debug this
-> > > would be
-> > > welcome. (Do you use usb host?)
-> > 
-> > You are using a "proper" non-standard usb micro-b cable that
-> > grounds
-> > the id pin, right?
-> 
-> Yes.
-> 
-> > If not, try with one of those as it allows the hardware to do what
-> > it's
-> > supposed to do.
-> > 
-> > And presumably you don't have a hacked usb hub that feeds back the
-> > vbus to your phone, right?
-> 
-> Do have hacked hub. Or more precisely, have device that needs
-> external
-> power (spinning rust), and hub passes it back to the device.
-> 
-> I'll retry with a keyboard... but I recall it behaved funny with
-> that, too.
-> 
-> > If you have, that should not be used as the pmic can feed vbus.
-> 
-> Well, my plan was to use it as a desktop, and external power is
-> useful
-> that as Droid battery is not that big.
-> 
-> Best regards,
->                                                                 Pavel
 
-I use usb host quite a bit with xt875, mostly to have a keyboard.
-I have noted that several hubs i have don't work reliably, im not sure
-why. Its possible that they use or request too mutch power from the
-port as cpcap has a pretty small vbus out limit.
+On Fri, 22 Sep 2023 03:35:31 +0300, Matti Lehtimäki wrote:
+> Add rpm-master-stats nodes and the required RPM MSG RAM slices
+> for MSM8226 and MSM8974.
+> 
+> Matti Lehtimäki (2):
+>   ARM: qcom: msm8226: Add rpm-master-stats node
+>   ARM: qcom: msm8974: Add rpm-master-stats node
+> 
+> [...]
 
-All my regular otg adapters work fine however.
+Applied, thanks!
 
-I also have a powered hub that works quite well, its item 373697032160
-on ebay
+[1/2] ARM: qcom: msm8226: Add rpm-master-stats node
+      commit: bd837be0ff3879209df6fb85cf9e22fd1ba7f79b
+[2/2] ARM: qcom: msm8974: Add rpm-master-stats node
+      commit: 02c58ac774a03ffefd3708f9c17ea4d911e0ade7
 
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
