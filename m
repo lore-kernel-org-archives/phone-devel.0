@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7358E743F8
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 08:41:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7EC9EE743FA
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 08:44:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232748AbjI2Iln (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Sep 2023 04:41:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44094 "EHLO
+        id S233040AbjI2IoW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Sep 2023 04:44:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232746AbjI2Ilm (ORCPT
+        with ESMTP id S232851AbjI2In5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Sep 2023 04:41:42 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B59951AE
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 01:41:39 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-406612942c8so453185e9.0
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 01:41:39 -0700 (PDT)
+        Fri, 29 Sep 2023 04:43:57 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F62E10D9
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 01:43:49 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-40652e5718cso14591115e9.3
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 01:43:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695976898; x=1696581698; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1695977027; x=1696581827; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=M1qa9MPXO3QkuATigdmsJ+7YJ61rWQy2j+JwMEZKO3Y=;
-        b=o6TPz/5CBu7SXr1j3rNH31VLcRQY8LPeiS8s2phtQWSG/TzyMAMNADW2e8yg7kyVTm
-         DD0U8k7Ts6v0fMxpI3qsJCYQsc5VYCoLy6/bKRrnAVqr9Aq3or4u8d34PcyifAbq7Cbb
-         R0hDRB0U8bdcmStxO7KmFSnZ76baZwaWHVeLwSav+6Vsk1Pi3xVUyCN1yo3Y/IQR+JBp
-         6BFgbrmEvmJlRqSHVFNia3IzqPSM41vhFar1WlRh01ChiG/BecC4/Eh74ow9sG8ahKzq
-         tGg6TV6TxBhTVnz5fdkKbxhI/ir7QUrlR9xPcHlD8f7i86f9VoJSL/QO1GRSmXF0qNTE
-         RWQg==
+        bh=rp1s3Cc6q3I+T5FJVJHZiDlmNzAU9w/FLuJ7hihiwMM=;
+        b=Kev7qdyDbfV0PuiAmVc4soJBmzZdk/mduOoXAzXHKnjHQQV1kTR6+jLlbC84ZtQdAo
+         aHMxH513OEpTjgExCfa+XZb57lSxBIVEOpQbbdpDRmIIzKfAJemdmZPwamiaE+Lq853M
+         cT2xQs336asEyk8EA+m6Ub82IYVl/F6Bpu/ZGqQo4cW4gP286zK5i4StpgRCI1d6yFY+
+         N4VTfB3+P58ud8CmlvSDPAcRnmOcuErXtL+4rUn0tSk9RwSyIOCx3uKJGYwdtyGKQywD
+         MJZz7ac8JFwW+O4GBVWJuNycuYt5046Mpvg2W9laFgPnP+CK6QGKfr4AqYsyWL5Tk7cc
+         WNOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695976898; x=1696581698;
+        d=1e100.net; s=20230601; t=1695977027; x=1696581827;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M1qa9MPXO3QkuATigdmsJ+7YJ61rWQy2j+JwMEZKO3Y=;
-        b=S4zk7rBcD4QDsX1G49QHziVBRYXRHYIehwEBoKEcETnuW9BSOvlxCNZVdeP3EgE+x1
-         Q1lPtA3ogA5LShcL7UYqX61y6QACERVxVAFeVNhv5C81LzR3UQpRKsy/PZpYjqMqotcL
-         FWGrJiLwX46OWZI18YxU9+2OKV9i6JtunAebfHcDNVFTe9QShmuRu9OMYaeYRky9Qcgy
-         o12BYiP/FyaHUofdHDfXKmG0etPAtbFizCGE6yTfvFSWlyswxmAJnAsiYdNbmQHjHho3
-         2O/KGLYhKBt8TM6k/6qflQHIHrx99L9zSi9Jsu8ylkSlcXesQsTQghv5BlI60d5qHjj3
-         pkGw==
-X-Gm-Message-State: AOJu0YzwmMqFpyR2+zfWtuNgY7lHjUQdIot/Qt18V37Ugrtxv5P/7nGx
-        IhiXY0Mglm+bY7sgudW6/l+W3w==
-X-Google-Smtp-Source: AGHT+IGoAq5YuKVMoGvdyZ7QMvGcwB5OFGA+8f2cwGQcecWyWkmY78FgzMH9ry9w/k10s4mUQpQonw==
-X-Received: by 2002:adf:ead1:0:b0:315:ad1a:5abc with SMTP id o17-20020adfead1000000b00315ad1a5abcmr3241388wrn.5.1695976898094;
-        Fri, 29 Sep 2023 01:41:38 -0700 (PDT)
+        bh=rp1s3Cc6q3I+T5FJVJHZiDlmNzAU9w/FLuJ7hihiwMM=;
+        b=W6TOpOzB6HmUi+iVHo5ZH/R6nNKewVr7gtES8eWua9+7bwoRLcCUlrBIULQ/YJ/qHO
+         L1retL86nt5uinSabzmejXOonHwPGsmsw+mJZc2gJKjalllogi3MLrUjuk4uNcABWj35
+         v1TJ3jJHfPUARsVyQdH4FPtqlTz6Ujj5Fqr0VL9zs1RYYMq0ogyUR9jJk5AwQxUrq5J8
+         PDsGxOz36odX0FCWve70wDVDZcNsiELUwpvBpIi05Ot4l8qSYBzSWj4kTa2OC5OG77qS
+         v9iTfzFbTXuXYs8lx3TeFZeOSMIF4Z3eOfncFVaBEWbZSdON5n/XC/Qqfgf8UYL0UfkU
+         N0Ww==
+X-Gm-Message-State: AOJu0YzGcMkDDRQICyw9lDkSvHlAdBYVw7uU+Hrz59CgNPoSPHhNxU/e
+        CxHZ8qDfmbUt+Si9s/uxwjSKWQ==
+X-Google-Smtp-Source: AGHT+IGwhDUE56Q/LmypNp76kDCQmaKpYWqYnLhqhoVI2+et2l65D8wf54XUidmiN018A3eQsslWJQ==
+X-Received: by 2002:a1c:7209:0:b0:403:cab3:b763 with SMTP id n9-20020a1c7209000000b00403cab3b763mr3252182wmc.33.1695977027437;
+        Fri, 29 Sep 2023 01:43:47 -0700 (PDT)
 Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id z17-20020adfd0d1000000b00317a04131c5sm21032893wrh.57.2023.09.29.01.41.37
+        by smtp.gmail.com with ESMTPSA id o11-20020a5d4a8b000000b0031ffb51f6f9sm21113634wrq.30.2023.09.29.01.43.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Sep 2023 01:41:37 -0700 (PDT)
-Message-ID: <0523aa22-5a82-488a-b325-0cab6a4c95aa@linaro.org>
-Date:   Fri, 29 Sep 2023 09:41:36 +0100
+        Fri, 29 Sep 2023 01:43:47 -0700 (PDT)
+Message-ID: <91fa3315-b3da-430d-bc3c-7ec5ccbf419c@linaro.org>
+Date:   Fri, 29 Sep 2023 09:43:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] media: venus: core: Set up secure memory ranges for
- SC7280
+Subject: Re: [PATCH 2/3] arm64: dts: qcom: sc7280: Move video-firmware to
+ chrome-common
 Content-Language: en-US
 To:     Luca Weiss <luca.weiss@fairphone.com>,
         Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
@@ -72,9 +72,9 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 References: <20230929-sc7280-venus-pas-v1-0-9c6738cf157a@fairphone.com>
- <20230929-sc7280-venus-pas-v1-1-9c6738cf157a@fairphone.com>
+ <20230929-sc7280-venus-pas-v1-2-9c6738cf157a@fairphone.com>
 From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20230929-sc7280-venus-pas-v1-1-9c6738cf157a@fairphone.com>
+In-Reply-To: <20230929-sc7280-venus-pas-v1-2-9c6738cf157a@fairphone.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -82,30 +82,62 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 29/09/2023 09:38, Luca Weiss wrote:
-> Not all SC7280 devices ship with ChromeOS firmware. Other devices need
-> PAS for image authentication. That requires the predefined virtual
-> address ranges to be passed via scm calls. Define them to enable Venus
-> on non-CrOS SC7280 devices.
+> If the video-firmware node is present, the venus driver assumes we're on
+> a non-TZ system. Move the video-firmware node to chrome-common.dtsi so
+> we can use venus on a TZ board.
+> 
+> At the same time let's disable the venus node by default as is custom on
+> such nodes.
 > 
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->   drivers/media/platform/qcom/venus/core.c | 4 ++++
->   1 file changed, 4 insertions(+)
+>   arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi | 8 ++++++++
+>   arch/arm64/boot/dts/qcom/sc7280.dtsi               | 6 ++----
+>   2 files changed, 10 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
-> index 054b8e74ba4f..5c6baa0f4d45 100644
-> --- a/drivers/media/platform/qcom/venus/core.c
-> +++ b/drivers/media/platform/qcom/venus/core.c
-> @@ -881,6 +881,10 @@ static const struct venus_resources sc7280_res = {
->   	.vmem_size = 0,
->   	.vmem_addr = 0,
->   	.dma_mask = 0xe0000000 - 1,
-> +	.cp_start = 0,
-> +	.cp_size = 0x25800000,
-> +	.cp_nonpixel_start = 0x1000000,
-> +	.cp_nonpixel_size = 0x24800000,
->   	.fwname = "qcom/vpu-2.0/venus.mbn",
+> diff --git a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+> index 5d462ae14ba1..cd491e46666d 100644
+> --- a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+> @@ -104,6 +104,14 @@ &scm {
+>   	dma-coherent;
 >   };
 >   
+> +&venus {
+> +	status = "okay";
+> +
+> +	video-firmware {
+> +		iommus = <&apps_smmu 0x21a2 0x0>;
+> +	};
+> +};
+> +
+>   &watchdog {
+>   	status = "okay";
+>   };
+> diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+> index 66f1eb83cca7..fa53f54d4675 100644
+> --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+> @@ -3740,6 +3740,8 @@ venus: video-codec@aa00000 {
+>   				 <&apps_smmu 0x2184 0x20>;
+>   			memory-region = <&video_mem>;
+>   
+> +			status = "disabled";
+> +
+>   			video-decoder {
+>   				compatible = "venus-decoder";
+>   			};
+> @@ -3748,10 +3750,6 @@ video-encoder {
+>   				compatible = "venus-encoder";
+>   			};
+>   
+> -			video-firmware {
+> -				iommus = <&apps_smmu 0x21a2 0x0>;
+> -			};
+> -
+>   			venus_opp_table: opp-table {
+>   				compatible = "operating-points-v2";
+>   
 > 
+
 Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
