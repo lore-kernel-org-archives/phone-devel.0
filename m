@@ -2,59 +2,58 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA1B8E81815
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 21:51:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A3BDE82CDE
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 22:05:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233807AbjI2VvH (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Sep 2023 17:51:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33708 "EHLO
+        id S233781AbjI2WF5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Sep 2023 18:05:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233516AbjI2VvG (ORCPT
+        with ESMTP id S233179AbjI2WF5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Sep 2023 17:51:06 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E47FE6
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 14:51:03 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-59bc956b029so176669637b3.2
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 14:51:03 -0700 (PDT)
+        Fri, 29 Sep 2023 18:05:57 -0400
+Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C285F1B7
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 15:05:54 -0700 (PDT)
+Received: by mail-oi1-x230.google.com with SMTP id 5614622812f47-3ae55c2e12bso3892262b6e.0
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 15:05:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696024262; x=1696629062; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1696025154; x=1696629954; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Hskw88hLeAFbdhf2MCWNUtrnHOIlmXUQ4ZL1O7T/y0E=;
-        b=M2ygEO2xao9bi1LsQy8OB5+84c6hVswvmjJwxCoJHSHOM/pIbKXoenew8o0NL1JgGW
-         kxRUK8At0IKdWg2TuKHOrVi9ymb9Eeckmr211X/KOAYMMyfc2BuOyCkWnBdDxVs/c60r
-         m9FF3Q0Vz6Q8ZqFB+m5MxoSLqtg0PwzRA9arXKzXvO3KYW3enAZACmKI8MFDldD05HNl
-         Qd0ZDPm4RbB2K8CtconqBtn0QE/xeC2UiSp5KDOFODfrbEXgRUs/GU1BCMqnMEguarnd
-         4GZn0piAkt8redRma/jLzZza9yszARRsyaXGc/C03Phckc79/4p4X/pbUDWj+zqg6sPk
-         RpdQ==
+        bh=naHj0xuXcByQMM+TdtCohvVCq+osNBK01cxTTEKKxyw=;
+        b=EMu61RC9E0ws5MSlrG2oGhY1AnPg/IGdr04eGFJ3BsNxIEOKmnxqTy9B8MNlvN7b3n
+         S63AA34zWXuXcY0mR8qFLGNJCBXQEsZW+kwFqwl331FDfQXaEUMvkMNM5EeAaQKoWivB
+         65S+Ztu5IvAGRoOM09th3MPCD/oAAN7C+FBnELRuCA3BV94svnENd0nNgHoSRtPWPkMW
+         4Kuk7MmMXNthr5O1wJsSbcfqauVEDNUzI96KAQYZzE7FIORehlmuZ0eboHekUpVDQC71
+         nbth5Gi600YW39RapUI4yVvTgZZ+XWmoJ78eOtzOGdoyqzOx8bGBQ70vRBPXI3VWTnG2
+         KMXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696024262; x=1696629062;
+        d=1e100.net; s=20230601; t=1696025154; x=1696629954;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Hskw88hLeAFbdhf2MCWNUtrnHOIlmXUQ4ZL1O7T/y0E=;
-        b=bu9pKPmGuQM0NyzFo/Ofc5boYa5hMOMXoaqm+GSHCFeH7xswFbM2tVI7SbrIOIxklx
-         cVwWjsGONs/2CoGVpSAXX7mEe3dkpQTULJNyeS8EF95y9oarUtl38s7/dxU5A9mjXUqq
-         BTzDvhjd9R7OIFKsMLMOp8CvNBS4pw9z0ec66q7xd4o9ngioqjmD3hzU7pg5yupU7Gyf
-         bU2F6F2GkveQLYwb1DdJz+b5IYzsxF7m04IgWVL8DHYkDXKu9E1J9I3iU1BB9aC98MYU
-         jEYQKxN7cw6vFSwny+fSKbXM7Sw/13TK0pZkj3R5Rr9knJnHrVGXbHzbAzGEIu1q4Vdu
-         adGg==
-X-Gm-Message-State: AOJu0Yx9XgvsNGfSSqFwTX4WuB/7yJBHZPbZR7C9CImybFamJSZfzwfr
-        AnYWja6oUWUrnex5dCsiU74Hrrx+qhR6UWPbqyxBQg==
-X-Google-Smtp-Source: AGHT+IE63fBH+1dNUwDRNH6iqlkLqEfx/+NHRsl/1r9uDgfQ0bqotCuiv4a9l+YPI2jFuA031iE6BeH9RXt0OKpKTI8=
-X-Received: by 2002:a0d:dd11:0:b0:59b:e97e:f7ce with SMTP id
- g17-20020a0ddd11000000b0059be97ef7cemr5210736ywe.22.1696024262418; Fri, 29
- Sep 2023 14:51:02 -0700 (PDT)
+        bh=naHj0xuXcByQMM+TdtCohvVCq+osNBK01cxTTEKKxyw=;
+        b=wb+gUyQsKlHhoBdbxtW8AOY90bgfogL0E5WONeLTioJ6XQs6jgwms/I9xVmLFANlBD
+         2yVTCaGNJdPOKG66da6HiqcOutmjIFFgJtb5N+i6SP7UE67W6m6yFKvOd4Zk5JYGdMKM
+         C4KzproEtDLIOw7ssJjt1sm5sSsSYuZp7xGWdFHMf9y9J5X4QxmOuweNHjNvN4BUrBV1
+         6SmZFPloDu/0WAQpQTmyuz2lN4E8pSOFVqeSHuXH1BsCWYBFpXh4MZagKw7cD45CtBcS
+         7yEGZVxHJG6YrCypYm2Noo8vemXAEB4AQKH8BVZ8+X5YtJgIYpP5JizHG04BBtIMJIf3
+         dMDA==
+X-Gm-Message-State: AOJu0Yx9yZv6/FPNxI4vHC/hCz7mqwf6D56OJg/kPhWO1i4t0rJf5TTV
+        RoOWEl5BdhWkswOcEEn/+DNSAOQqnSbqQWnuaNpRjQ==
+X-Google-Smtp-Source: AGHT+IHyE4YQUm7vQs1QcqQjr5b1q+oQmKp3WntnD5jmb4mEWI4W6j13UW4F5G4vJnz8UfQSlOEZzp7+UN0w1kzOeHs=
+X-Received: by 2002:a05:6358:e49c:b0:143:8aa4:30bc with SMTP id
+ by28-20020a056358e49c00b001438aa430bcmr5947074rwb.8.1696025154053; Fri, 29
+ Sep 2023 15:05:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230929-pxa1908-lkml-v5-0-5aa5a1109c5f@skole.hr> <20230929-pxa1908-lkml-v5-2-5aa5a1109c5f@skole.hr>
-In-Reply-To: <20230929-pxa1908-lkml-v5-2-5aa5a1109c5f@skole.hr>
+References: <20230929-pxa1908-lkml-v5-0-5aa5a1109c5f@skole.hr> <20230929-pxa1908-lkml-v5-7-5aa5a1109c5f@skole.hr>
+In-Reply-To: <20230929-pxa1908-lkml-v5-7-5aa5a1109c5f@skole.hr>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 29 Sep 2023 23:50:51 +0200
-Message-ID: <CACRpkdbgbu=1kD=+f83NUZwXZ80-yjGOdH2CR7Lbg4rhubaR0g@mail.gmail.com>
-Subject: Re: [PATCH RESEND v5 2/8] clk: mmp: Switch to use struct u32_fract
- instead of custom one
+Date:   Sat, 30 Sep 2023 00:05:41 +0200
+Message-ID: <CACRpkdb=8LU9Mkkn_VDcTGoH1pWn=hp9ZhN5dLm5pykif8cp-w@mail.gmail.com>
+Subject: Re: [PATCH RESEND v5 7/8] arm64: dts: Add DTS for Marvell PXA1908 and samsung,coreprimevelte
 To:     =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
 Cc:     Robert Jarzmik <robert.jarzmik@free.fr>,
         Bartosz Golaszewski <brgl@bgdev.pl>,
@@ -75,8 +74,7 @@ Cc:     Robert Jarzmik <robert.jarzmik@free.fr>,
         linux-arm-kernel@lists.infradead.org,
         linux-hardening@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.de, balejk@matfyz.cz,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+        afaerber@suse.de, balejk@matfyz.cz
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -86,16 +84,54 @@ X-Mailing-List: phone-devel@vger.kernel.org
 On Fri, Sep 29, 2023 at 5:42=E2=80=AFPM Duje Mihanovi=C4=87 <duje.mihanovic=
 @skole.hr> wrote:
 
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Add DTS for Marvell PXA1908 SoC and Samsung Galaxy Core Prime Value
+> Edition LTE, a smartphone based on said SoC.
 >
-> The struct mmp_clk_factor_tbl repeats the generic struct u32_fract.
-> Kill the custom one and use the generic one instead.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Tested-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
 > Signed-off-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
+(...)
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> +&pmx {
+> +       pinctrl-single,gpio-range =3D <&range 55 55 0>,
+> +                                   <&range 110 32 0>,
+> +                                   <&range 52 1 0>;
+> +
+> +       pinctrl-names =3D "default";
+> +       pinctrl-0 =3D <&board_pins_1 &board_pins_2 &board_pins_3>;
+> +
+> +       board_pins_1: pinmux-board-1 {
+> +               pinctrl-single,pins =3D <
+> +                       0x160 0
+> +                       0x164 0
+> +                       0x168 0
+> +                       0x16c 0
+> +               >;
+> +               pinctrl-single,drive-strength =3D <0x1000 0x1800>;
+> +               pinctrl-single,bias-pullup =3D <0x8000 0x8000 0 0xc000>;
+> +               pinctrl-single,bias-pulldown =3D <0x8000 0x8000 0 0xa000>=
+;
+> +               pinctrl-single,input-schmitt =3D <0 0x30>;
+> +               pinctrl-single,input-schmitt-enable =3D <0x40 0 0x40 0x40=
+>;
+> +               pinctrl-single,low-power-mode =3D <0x288 0x388>;
+> +       };
+(...)
+> +                       pmx: pinmux@1e000 {
+> +                               compatible =3D "pinconf-single";
+
+At least add a new binding for "marvell,pxa1908-padconf"
+and use that like this:
+
+compatible =3D "marvell,pxa1908-padconf", "pinconf-single";
+
+When you use pinctrl-single you get the slightly opaque device
+trees as seen above, so it's not something I'd recommend, I'd
+rather write my own pin controller.
+
+But it exists, so I can't say you can't use it. Not my choice.
+I understand it is convenient.
+
+It is possible to switch later, but only if you have a unique
+pin controller compatible so please add that.
 
 Yours,
 Linus Walleij
