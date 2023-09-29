@@ -2,106 +2,157 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A9DCE743F9
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 08:44:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94702E732D0
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 09:53:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232748AbjI2Iok (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Sep 2023 04:44:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35254 "EHLO
+        id S232875AbjI2JxK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Sep 2023 05:53:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232975AbjI2IoO (ORCPT
+        with ESMTP id S232746AbjI2JxJ (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Sep 2023 04:44:14 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6CFE10F9
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 01:44:06 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-406402933edso55088275e9.2
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 01:44:06 -0700 (PDT)
+        Fri, 29 Sep 2023 05:53:09 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EB1A1A4
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 02:53:06 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-5347e657a11so7048991a12.2
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 02:53:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695977045; x=1696581845; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=b6Qp6y9nYtGfWeIZZkb4YL1o7pvTbfFEpaXOlB4gSy4=;
-        b=Fji4YadnkHqXTKx9dVJVTK2taQY5IfSMYPmyG7Eazl8meAleJBsSLRWkJ5e50ew56w
-         MB74PJtqSb4ZrUp90yJPsoQGHhTzmSYL41zQk+UiRiybHFRcTUv0w8YLNaqq2VXYzCBi
-         m9ZkYGf1eq/+eUcbiU80gyz7If0OnPlS/8aP0oZsH3RzVFEqCDfZO+Bg2iIrj8LF3ufd
-         Dw6BTn3v3GtaM1KBPRzDaI+8Oab4CGZvbe4kYKrnsIDvdYNYyNRbWWIObeYnGRuEzfho
-         /GkF1tE7y+P99ha8n7cuWSya3feMwgllVxiCYoUHPxVGdwhZU5PIWU1GrNhMORbsAOkn
-         UsyQ==
+        d=fairphone.com; s=fair; t=1695981185; x=1696585985; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zcabyV/ntBQljUCLvUhOeWEh6aipQODXnykgj24wk+U=;
+        b=f5AzrhcWu8q2UPT/JgsQlNgE+QNKroGP/TNlZRRC0LWovDx+xhf6Fu7L5mFUou0fWH
+         t4eq72dUMhLN/t2uCv8mTQTTNGWN1I209Gdw7LGAUiNHnocz4rSVxro5kV4g4Sm9oTS/
+         hcl14VHz/gFWKz6TFLTpl6jQpr9cvOIzXp9WiXV6iJb2SY2iDbBZyO7akIaYlNr4AHUR
+         vZptdOUeH/cdOc4fTVIwb4W7Zqb9d1uaqpL0YQpT627rEmg3mNUY+AfYezZmhYGv/l1+
+         kB9GsdoR7/New9AGDQkzVeba8Ie+oZ3DxWvH2F5sEZNv6yEiIEqCrBBWZg9pVMKts0pG
+         /DYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695977045; x=1696581845;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b6Qp6y9nYtGfWeIZZkb4YL1o7pvTbfFEpaXOlB4gSy4=;
-        b=quPchgPra9yzToHQGLg7Q2qZ803pHXqt715j51wIQotXrG7xCBxBnssDf4anBkz6VF
-         7iif1oM+Cf+f+HrkveGqfFVETtb4AGUzIX4lPr7S95q26Z9AYk1xPHkbcNtd5ItMlGTi
-         XlTjp5QzXyHc2bfjofva+p1bCBx4arPPIp37TDWKAVyVJIGfNIdbpQLzvDGSTmR4GVOO
-         4nRd9F4MkhadIwt9HrUOgqbB6/RkmrLGkoI1Br2yJySfYJTxPt0HXpi2hIPBu3Ojf/Oe
-         xkxN5XKA0iHGDIF3z/QzdVUu1xxj7/xjNn2hqsn+WxD0BZKVK8IQfhTWjGLf4YNMT/8S
-         zdPw==
-X-Gm-Message-State: AOJu0YygiYs0v6Mu/kyak7E/9mGPtuhWRfB+iP/u+Fj1mlPV7vVZtDlK
-        UQm4Od1YQPD70FHRm/l6ODQcaA==
-X-Google-Smtp-Source: AGHT+IHUEB1LQYQGWJ4qw3MkH7TU+QOAa6gnK1NDNZI1/qGzE2+ETeE+sqUe+xgafIdK1bdFgFk5cQ==
-X-Received: by 2002:adf:fe42:0:b0:317:5747:b955 with SMTP id m2-20020adffe42000000b003175747b955mr3131037wrs.17.1695977045118;
-        Fri, 29 Sep 2023 01:44:05 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id o11-20020a5d4a8b000000b0031ffb51f6f9sm21113634wrq.30.2023.09.29.01.44.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Sep 2023 01:44:04 -0700 (PDT)
-Message-ID: <686dc4d4-778b-4fd6-93e9-e25fd71fc75a@linaro.org>
-Date:   Fri, 29 Sep 2023 09:44:04 +0100
+        d=1e100.net; s=20230601; t=1695981185; x=1696585985;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zcabyV/ntBQljUCLvUhOeWEh6aipQODXnykgj24wk+U=;
+        b=isWww8HU2DJYSQu+S8iCuK+s7Ac8ucLirGFAmqABAH8XKtWVj7a/dG63nbR5vz0U4M
+         FZydVxPjQy6uIF16r2GbwsI8iWLzLA9G0JstNI50C26YcbmN7Gy572PQmGijdL2Qw0dS
+         V75yNvthLYm7AZYvaWAxSsHLe+2jFulF99RstSrfEPvKgtVdb2R5nO6elE2/AZ5oGzdH
+         RUFHXfQu0YyqTYbCnUn7JzYsHhmbeuDy/t9XI8QEYXOdwA5URXCcCukdwYoZEdGjYf0L
+         8MBWQ0NBwOoPspjdJmeLhTIaInCK3jTRBCevXWJ69Y6xlQS98Ja0SCP+osJCE9i4NSRI
+         PbTQ==
+X-Gm-Message-State: AOJu0Yz/LyJBHrUgTM8VieWqBZhzpVBVuIUpqlqy7ira8BQx6zC/vnBb
+        bjdCOyeRCU6EcxPmnzyTsLUH6g==
+X-Google-Smtp-Source: AGHT+IEABpRwvS+iiXrZW7y7gBe7i8X3Nre76cQ+E3KUWZskMC/wFMBqv3YxleUQNJrF7fpO/K9THg==
+X-Received: by 2002:a05:6402:14cb:b0:533:c55f:582a with SMTP id f11-20020a05640214cb00b00533c55f582amr3132986edx.27.1695981184900;
+        Fri, 29 Sep 2023 02:53:04 -0700 (PDT)
+Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id cy23-20020a0564021c9700b005362c9905b2sm1967034edb.35.2023.09.29.02.53.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Sep 2023 02:53:04 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Date:   Fri, 29 Sep 2023 11:52:59 +0200
+Subject: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable UFS
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable venus
- node
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Vikash Garodia <quic_vgarodia@quicinc.com>,
-        Andy Gross <agross@kernel.org>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230929-fp5-ufs-v1-1-122941e28b06@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAHqeFmUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2MDSyNL3bQCU93StGLdVKNkg1Qjw0QDQxMjJaDqgqLUtMwKsEnRsbW1AA7
+ SNQRZAAAA
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
+        Conor Dooley <conor+dt@kernel.org>,
+        Nitin Rawat <quic_nitirawa@quicinc.com>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20230929-sc7280-venus-pas-v1-0-9c6738cf157a@fairphone.com>
- <20230929-sc7280-venus-pas-v1-3-9c6738cf157a@fairphone.com>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20230929-sc7280-venus-pas-v1-3-9c6738cf157a@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 29/09/2023 09:38, Luca Weiss wrote:
-> Enable the venus node so that the video encoder/decoder will start
-> working.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->   arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> index 2de0b8c26c35..d29f10f822c9 100644
-> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> @@ -665,3 +665,8 @@ &usb_1_qmpphy {
->   
->   	status = "okay";
->   };
-> +
-> +&venus {
-> +	firmware-name = "qcom/qcm6490/fairphone5/venus.mbn";
-> +	status = "okay";
-> +};
-> 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Enable the UFS phy and controller so that we can access the internal
+storage of the phone.
+
+At the same time we need to bump the minimum voltage used for UFS VCC,
+otherwise it doesn't initialize properly. The new range is taken from
+the vcc-voltage-level property downstream.
+
+See also the following link for more information about the VCCQ/VCCQ2:
+https://gerrit-public.fairphone.software/plugins/gitiles/kernel/msm-extra/devicetree/+/1590a3739e7dc29d2597307881553236d492f188/fp5/yupik-idp-pm7250b.dtsi#207
+
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+I'm not 100% convinced about the regulator range change. For sure with
+the original voltage range the UFS fails to initialize, but looking at
+downstream kernel during runtime (debugfs) we see the VCC voltage
+switches between 2.4V (idle?) and 2.952V (active?). But even with this
+change in mainline the regulator would always stay at 2.504V which is
+for sure lower than the downstream operating voltage of 2.952V. Behavior
+wise I don't see a difference between ~2.5V and ~2.9V.
+
+Should I just constrain the regulator here to min=max=2.952V? Or just
+say it's okay as-is?
+
+Depends on: https://lore.kernel.org/linux-arm-msm/20230927081858.15961-1-quic_nitirawa@quicinc.com/
+---
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 27 ++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+index 2de0b8c26c35..fea7639fc0bc 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+@@ -182,8 +182,9 @@ vreg_l6b: ldo6 {
+ 		};
+ 
+ 		vreg_l7b: ldo7 {
+-			regulator-min-microvolt = <2400000>;
+-			regulator-max-microvolt = <3544000>;
++			/* Constrained for UFS VCC */
++			regulator-min-microvolt = <2504000>;
++			regulator-max-microvolt = <2952000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+ 		};
+ 
+@@ -632,6 +633,28 @@ bluetooth: bluetooth {
+ 	};
+ };
+ 
++&ufs_mem_hc {
++	reset-gpios = <&tlmm 175 GPIO_ACTIVE_LOW>;
++
++	vcc-supply = <&vreg_l7b>;
++	vcc-max-microamp = <800000>;
++	/*
++	 * Technically l9b enables an eLDO (supplied by s1b) which then powers
++	 * VCCQ2 of the UFS.
++	 */
++	vccq-supply = <&vreg_l9b>;
++	vccq-max-microamp = <900000>;
++
++	status = "okay";
++};
++
++&ufs_mem_phy {
++	vdda-phy-supply = <&vreg_l10c>;
++	vdda-pll-supply = <&vreg_l6b>;
++
++	status = "okay";
++};
++
+ &usb_1 {
+ 	status = "okay";
+ };
+
+---
+base-commit: d85348daa4407216e47198ed35a43a66883edab6
+change-id: 20230929-fp5-ufs-e2c0e21a0142
+
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
+
