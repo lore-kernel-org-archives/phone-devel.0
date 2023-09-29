@@ -2,89 +2,147 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AE72E71D2B
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 12:54:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B4B5E71D2D
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 13:12:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233218AbjI2Myc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Sep 2023 08:54:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40498 "EHLO
+        id S233257AbjI2NMr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Sep 2023 09:12:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233217AbjI2Myc (ORCPT
+        with ESMTP id S232786AbjI2NMq (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Sep 2023 08:54:32 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FB35B7;
-        Fri, 29 Sep 2023 05:54:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A1BC433C8;
-        Fri, 29 Sep 2023 12:54:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695992069;
-        bh=EoBxvrxDfGkVdyIyzpMbPaY4B2XdkS2E9Vlf3uqDKBo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nQL3CFIlVUWSxJbvvFJ5D6ryVfPSd4t2vrMpnI3g/vlQJNjKl9PzT2h0PH9DDi4H4
-         6VWWjQqELAI+VoZ0pMXf8PLIkszYnqqicz53+I8xYrT1Tw5DdJphpJaycyG8mQJOGo
-         VOIDTPE2EvHzUIkmzXXzPVNea1bMGWL+t0v7bFjQGxJdUQyCOXjgbLUhYegkO3ejW6
-         kpx7h4abs5V/ZIuse+/5Z6lAPvLGYNogP/2LRS4Q/YX4Hq4a8gew5stD7z7bF+M+SL
-         V8RXDlREFHZtvQJqkS2OrlKPcaBTYryhp5IdilsbRozpcBm3IoYFA0gA8fExZRWVUJ
-         D7sxFQiTk9Xkw==
-Date:   Fri, 29 Sep 2023 14:54:27 +0200
-From:   Mark Brown <broonie@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Weidong Wang <wangweidong.a@awinic.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC] ASoC: codecs: aw88261: Remove non-existing reset gpio
-Message-ID: <ZRbJAwoanwLnnaJ1@finisterre.sirena.org.uk>
-References: <20230929-aw88261-reset-v1-1-fcbce194a823@fairphone.com>
- <ZRbDW3OiAYyAkWgN@finisterre.sirena.org.uk>
- <CVVET1A2CO26.3O47662JKAL6@otso>
+        Fri, 29 Sep 2023 09:12:46 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745A41AC
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 06:12:43 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-99c3c8adb27so1915017766b.1
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 06:12:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695993162; x=1696597962; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=W+V6aJ381tI2A5gtE2dQcrFHINgoS2cHdZ6PB5Ir1HE=;
+        b=hfBS3KD9GSiK9c4ULe9G3pmoF8MBkXPdWndTICFI2xP+4I4UGdLTTLxFXPylahVkyU
+         pmpJImbF/lAmWZvLOkHcNFbfEJZeihslZPMgDru4QmG3B3Q0kwI2bYIG09zQwNWA5NtU
+         FM8oUs7f1pQ/gvPfkdFg5Omion+W/JNI2YwtJfWJH+g73OcBZCWP0mANbAYE7Z019Srf
+         pReI7yjKZyI1CZ9XW95EfqGOPwys1J0sxEFFHGsWEl2PoqKokyZajmCfgLmQK5X2GJud
+         QgcZcC4E82/ogvxhhM7Pwn/s8pz/4GZn2ziB1fVw4kWHNGH54XP59mNmTaMgvAr3DlMN
+         iG4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695993162; x=1696597962;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=W+V6aJ381tI2A5gtE2dQcrFHINgoS2cHdZ6PB5Ir1HE=;
+        b=V3XKwVZt9vAJHCeo7ej8Q4ppnn+iy90ZAJZPW3GCtsPtAqFkji5781GnF4qPvO/l8I
+         4BrJD4xqQJ4u4YOjHFoNeehADGC6+XONRW+0doXFv7SPQYhU8XM+rYgEMXwjYm+B7GXE
+         ifaw7e43POhPFLmNr7Igjht8oTZC7UJBbrkLYQmhuvN5yGwglGVO89YupJcec/hYBgPO
+         51pr4F9+CJ+xlOQ1AREBRGdLXKXW6Rv4TSWzh+ZSnHr9+McOqUuPNZdVzhnSl/ZL6zqY
+         B0QJMCCLYTiMk2HwKHrBO+hR6qM+srbwBhYIBJflPB2+XxG/IW/Evk+Lc5i1OUFRrKu6
+         CZ5Q==
+X-Gm-Message-State: AOJu0YzxadDHpbePHInuqJ0RHXKet84ylfWIHZHwXSS/7yZs7A9q9xDe
+        ipO6BhMlf1Za/4nHUJHZAbSjVw==
+X-Google-Smtp-Source: AGHT+IEuvHg+LC2h/UL9ELESKzXJdbw5aHzvCxcQVIdD5DW+GAnoxIHa8/c/fNRjcF1LIqJ4V9Pniw==
+X-Received: by 2002:a17:906:2216:b0:9ad:ef31:6efc with SMTP id s22-20020a170906221600b009adef316efcmr4144816ejs.21.1695993161872;
+        Fri, 29 Sep 2023 06:12:41 -0700 (PDT)
+Received: from [192.168.33.189] (178235177217.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.217])
+        by smtp.gmail.com with ESMTPSA id rh27-20020a17090720fb00b009930c80b87csm12606288ejb.142.2023.09.29.06.12.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 Sep 2023 06:12:41 -0700 (PDT)
+Message-ID: <cac1b912-e08b-4643-b081-834fdee30ea7@linaro.org>
+Date:   Fri, 29 Sep 2023 15:12:39 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="qONoz+opKwc0uBGE"
-Content-Disposition: inline
-In-Reply-To: <CVVET1A2CO26.3O47662JKAL6@otso>
-X-Cookie: Save energy:  Drive a smaller shell.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable UFS
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Nitin Rawat <quic_nitirawa@quicinc.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230929-fp5-ufs-v1-1-122941e28b06@fairphone.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20230929-fp5-ufs-v1-1-122941e28b06@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+On 29.09.2023 11:52, Luca Weiss wrote:
+> Enable the UFS phy and controller so that we can access the internal
+> storage of the phone.
+> 
+> At the same time we need to bump the minimum voltage used for UFS VCC,
+> otherwise it doesn't initialize properly. The new range is taken from
+> the vcc-voltage-level property downstream.
+> 
+> See also the following link for more information about the VCCQ/VCCQ2:
+> https://gerrit-public.fairphone.software/plugins/gitiles/kernel/msm-extra/devicetree/+/1590a3739e7dc29d2597307881553236d492f188/fp5/yupik-idp-pm7250b.dtsi#207
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+> I'm not 100% convinced about the regulator range change. For sure with
+> the original voltage range the UFS fails to initialize, but looking at
+> downstream kernel during runtime (debugfs) we see the VCC voltage
+> switches between 2.4V (idle?) and 2.952V (active?). But even with this
+> change in mainline the regulator would always stay at 2.504V which is
+> for sure lower than the downstream operating voltage of 2.952V. Behavior
+> wise I don't see a difference between ~2.5V and ~2.9V.
+> 
+> Should I just constrain the regulator here to min=max=2.952V? Or just
+> say it's okay as-is?
+> 
+> Depends on: https://lore.kernel.org/linux-arm-msm/20230927081858.15961-1-quic_nitirawa@quicinc.com/
+> ---
+There's a little funny hack inside the driver
 
---qONoz+opKwc0uBGE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+#if defined(CONFIG_SCSI_UFSHCD_QTI)
+                        if (vreg->low_voltage_sup && !vreg->low_voltage_active && on)
+                                min_uV = vreg->max_uV;
+#endif
 
-On Fri, Sep 29, 2023 at 02:44:47PM +0200, Luca Weiss wrote:
+so, when the ufs is in use, it's pinned to vmax
 
-> Unfortunately the dt binding is a bit trickier to update since it's made
-> for both AW88261 and AW88395.
-
-> After spending a bit of time using non-Google search machines (Google
-> seems incapable of finding anything there) I found a datasheet for
-> AW88395 and that does appear to have a RSTN "Active low hardware reset"
-> pin so we should not remove that one.
-
-> Probably it's easier to separate the two dt bindings then, instead of
-> trying to keep them together?
-
-You can do conditionals based on compatibles so it might not be
-required.
-
---qONoz+opKwc0uBGE
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmUWyQIACgkQJNaLcl1U
-h9A/xAf/XN4jfnsD6rctf5QA0do+w2dON4lVcBHZWLQoVexuH4atppdPKFOGfwfW
-ycEeWWnTssfIhxGIiQ97rN8onZpMEWh4TI1cfBbUDKnpP1E5tRlLrhBEFH6q6bYe
-rK5H9ScASfpxab9MrL5YczeE5aX2LwGNvlfYbPqMP2uOYxuVBZYX7saf7nE8uY9j
-k+1wj+aMhW0MUcOJaIiSpyINPL2i/C7Tr0eV5Zfdly0f7iPCV9QiJjbhXzXyr+2q
-FbZIqxtzRLJcy2lG2Yw24pc3/AgJdm1RD3b0a0CEayYcRMe1VOlxMMDrDoB2D6XH
-w8Y0zxbwNy/sTRiXIBUJZnf3Yc+xcg==
-=55Gl
------END PGP SIGNATURE-----
-
---qONoz+opKwc0uBGE--
+Konrad
