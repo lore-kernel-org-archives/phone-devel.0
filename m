@@ -2,30 +2,31 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 906A6E728C3
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 15:52:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B39F9E728C7
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 15:52:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233615AbjI2PwX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Sep 2023 11:52:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55148 "EHLO
+        id S233141AbjI2PwZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Sep 2023 11:52:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233646AbjI2PwW (ORCPT
+        with ESMTP id S233704AbjI2PwW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Fri, 29 Sep 2023 11:52:22 -0400
+X-Greylist: delayed 569 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 29 Sep 2023 08:52:18 PDT
 Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 201341AE;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0589819F;
         Fri, 29 Sep 2023 08:52:18 -0700 (PDT)
 Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-        by mx.skole.hr (mx.skole.hr) with ESMTP id B954F8349A;
-        Fri, 29 Sep 2023 17:42:53 +0200 (CEST)
+        by mx.skole.hr (mx.skole.hr) with ESMTP id 0A9F482388;
+        Fri, 29 Sep 2023 17:42:47 +0200 (CEST)
 From:   =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Date:   Fri, 29 Sep 2023 17:42:02 +0200
-Subject: [PATCH RESEND v5 6/8] arm64: Kconfig.platforms: Add config for
- Marvell PXA1908 platform
+Date:   Fri, 29 Sep 2023 17:41:57 +0200
+Subject: [PATCH RESEND v5 1/8] gpio: pxa: disable pinctrl calls for
+ MMP_GPIO
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20230929-pxa1908-lkml-v5-6-5aa5a1109c5f@skole.hr>
+Message-Id: <20230929-pxa1908-lkml-v5-1-5aa5a1109c5f@skole.hr>
 References: <20230929-pxa1908-lkml-v5-0-5aa5a1109c5f@skole.hr>
 In-Reply-To: <20230929-pxa1908-lkml-v5-0-5aa5a1109c5f@skole.hr>
 To:     Robert Jarzmik <robert.jarzmik@free.fr>,
@@ -51,56 +52,49 @@ Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         afaerber@suse.de, balejk@matfyz.cz
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=848;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=717;
  i=duje.mihanovic@skole.hr; h=from:subject:message-id;
- bh=EiZLJFEyV4LY8QGlZs87/IL+BtGJZigZwDQYelB5sZM=;
- b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlFvBy5uzW/LL/CcRvs8TKhAE2CJDg53uNJXpqB
- WIj3G5CfaSJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZRbwcgAKCRCaEZ6wQi2W
- 4eK1D/oDPrI8Qg9Z7g/Nm10aEg0oGnGPrgFYif0TsiH1kF4RdzGfuNlM7Ph+z9VZysWbnCxvcFr
- JL7IVR5E86SvYVoWbtDyP8gt51aHZeW4wYs0LT+c/9zuZa49I4SGDKdPwHpyTPzYEYuU1clJ7qk
- oABb32rdSPMhbVHK0g4t0oKhAr0rrHOuQYGVIf0pa8Eyj/IM1HA6NzT6N3eDRY1XY1oBE84FwxW
- dJCRJ3NaEi0gef08e0kdkVrxx++x+1U8l+c6qWLx6/J+m7BP7/L7IJS5dqumHc15FOgSNtL4Abs
- MBoviEwxZqrwELp76IQUwK5SKCoJ/hyCnDEoNs8CViHPsZP3o8id3b2DcPauZwEp4+0lB6y08Mn
- Qfyhx5Ag6WQFMec/fhRG3xEbFBhwnuONl8waiBt0riSVCmkYIvc0HDRbW/c1OrEvmgPD2BCIKeB
- 4yTRZsRuyefAfCANJ4uXKpQ4Q37BJaPATaAqo6kR7HPrNga6v8+JzA9L3nWoB9ni8P5XfyWKBrp
- EZR7etx4f70NwLUNAjDw2jk85nwnREnuTKP/7U4NZJ9PhHVX2/J7IisV2MYuLVHj6hReE77M8yO
- E6S5080StLX2ysPiwQ6m8kYP0BwIuA1oVNriwAjlPUwh0f4bi1hA3r42Q3Fv/JSGRmRpmm0CTC5
- CYB0hDhLjSL1CPg==
+ bh=yNr4Eqx9Bi0YeNPlA8O02XTVqPtmRaJFN4LA8s4bBdA=;
+ b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlFvByWVc9E8OD4qhhAbUIxeBnSccOKCeOL4dds
+ BFOjRd1vQSJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZRbwcgAKCRCaEZ6wQi2W
+ 4Xt+D/0TkYMy0YcQtgCw1tS6bwfNQts/LWwksqUegyHiR+8ItFU8dUPsHHhVUyUETy+QZnZ9yFe
+ fdDylRoUvEPfTKXyX1aba+iNDXCNtiRslTIq10o3WgqjhYn7xiZap6MNQw2/npQLRrEv83R2vGN
+ BCWApSlXUs3+XcCxU2IJeM1zh6wtZtpwHi+ibfA3DK6e5BW1npgmhlZ+agh8eIwWg8oN/LB6l+x
+ H0rBmWO1tykmEqLGz1DoWulk60a94q6PbDUzYVrC1cSjiCLMfIG3lp6cc/Y/Z3TyF/rhLxipy3O
+ Q34V5ttDxgT4JRmG4Xw7fQODVW1A9nGsT1KIXRSR17ElB+DtvgA3ySHXSMTrgK+Wgpu9XgraUn2
+ 9LfmdNeBPeLfiQqkZLbyEagThieqKEhH/o6yDal+VKtFXOXGUPmQPadERGaW27Z0Ecd8mvwW9a4
+ TF/sWvOK3xwfzmVehdYNbpnmxUUsSHWYaCfWmhsxW3s4bBB1ZDTdFba11tBR2Uq89fX3XMc3M3g
+ bUbLNE8hrGfkQqklQJokC5iqgpM37srWx3bM49TvzinFl0qr7ljxxwxqkbeUJa5mGSXNSWcuVXs
+ 53Qpht9sYMVXc+0oNC06dEs+XGnqgq85xBEGmo2m8AvoiwF5pAh8+Z59UrvM0P4CgWAjZp7CQbt
+ oTYCARrGmyFRdVQ==
 X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
  fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add ARCH_MMP configuration option for Marvell PXA1908 SoC.
+Similarly to PXA3xx and MMP2, pinctrl-single isn't capable of setting
+pin direction on MMP either.
 
+Fixes: a770d946371e ("gpio: pxa: add pin control gpio direction and request")
 Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 ---
- arch/arm64/Kconfig.platforms | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpio/gpio-pxa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/Kconfig.platforms b/arch/arm64/Kconfig.platforms
-index 6069120199bb..b417cae42c84 100644
---- a/arch/arm64/Kconfig.platforms
-+++ b/arch/arm64/Kconfig.platforms
-@@ -89,6 +89,17 @@ config ARCH_BERLIN
- 	help
- 	  This enables support for Marvell Berlin SoC Family
+diff --git a/drivers/gpio/gpio-pxa.c b/drivers/gpio/gpio-pxa.c
+index a1630ed4b741..d92650aecb06 100644
+--- a/drivers/gpio/gpio-pxa.c
++++ b/drivers/gpio/gpio-pxa.c
+@@ -238,6 +238,7 @@ static bool pxa_gpio_has_pinctrl(void)
+ 	switch (gpio_type) {
+ 	case PXA3XX_GPIO:
+ 	case MMP2_GPIO:
++	case MMP_GPIO:
+ 		return false;
  
-+config ARCH_MMP
-+	bool "Marvell MMP SoC Family"
-+	select ARM_GIC
-+	select ARM_ARCH_TIMER
-+	select ARM_SMMU
-+	select MMP_PDMA
-+	select PINCTRL_SINGLE
-+	help
-+	  This enables support for Marvell MMP SoC family, currently
-+	  supporting PXA1908 aka IAP140.
-+
- config ARCH_BITMAIN
- 	bool "Bitmain SoC Platforms"
- 	help
+ 	default:
 
 -- 
 2.42.0
