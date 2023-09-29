@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29A24E810D5
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 11:37:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B06DE810D5
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 11:39:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233033AbjI2LhO (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Sep 2023 07:37:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54516 "EHLO
+        id S233044AbjI2LjX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Sep 2023 07:39:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233009AbjI2LhN (ORCPT
+        with ESMTP id S232994AbjI2LjW (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Sep 2023 07:37:13 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43FA71AB
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 04:37:10 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-533c4d20b33so1278160a12.0
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 04:37:10 -0700 (PDT)
+        Fri, 29 Sep 2023 07:39:22 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCB271B1
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 04:39:18 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-5346b64f17aso8959902a12.2
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 04:39:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695987429; x=1696592229; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1695987557; x=1696592357; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZVXBaUdZuWKwijDr+1t4ohaYkGxEB+hc3BtA9q2v7ZI=;
-        b=qe5t48ExZtypK/sqfe7cP4Q1HWnZ2my7oY95CApe8I9zZvOgYf79nKh7rQfk6X/YR9
-         upjeCWC/673Iw90SdzLWzTug/BuA4RAuaae3vGyUQMlz0r5A973nzaWY2xpNKeCyEy7k
-         gAxt7Mq7CJwx9GWSi4gq8Db1Bb/4a9WpHGsYLzus8HkT2joT2/J8PC+s1D2DE8GYqzKp
-         mN54yYcE0ZVLEwUYI9TWyH/elcUv/6b2TCJjo/Ontenu5XA3p7J7eepJraWhT/t43rGe
-         ypzMjjv/NQDYaZA4WOfKtettQZkkdD0GgF6XQt++SodrUfflCzJsEcyxw1NPWNnBPle3
-         3dEQ==
+        bh=AfJJ0030JKB1yzeOGLUCUkQWGJonxi9tVIc/d+x42jM=;
+        b=SermqvEkXSIUgLsv8GCFqe/dvnPMCznEUYsuAGtIB3N4St9LVsB9UUFKziilwGkZII
+         bwv5sH0TdyEcSVSgimV/coJGSPE+cJRqBKmqF3JjCO6cpN0QhyBXhox4Z1PDukUg8d2j
+         7C/VLCTAnDwgPjGxV15Tf/oKs8vtmrw7/G009XggJIfJvAxQY6AEuRyCULL/d8bI2ovV
+         d2BVj7v3biiMFLjHOCpvSKCqNviq4sl3si3Rch59DY9H20sxzhnuYTBlLrTRblGu3M/d
+         qDHoRKvvjUNSKr/1NPBdvT5uiwnHcVIexLHng6tS0/nA1QZuIGIARB/1yL8/eu3VwCIQ
+         5OKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695987429; x=1696592229;
+        d=1e100.net; s=20230601; t=1695987557; x=1696592357;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZVXBaUdZuWKwijDr+1t4ohaYkGxEB+hc3BtA9q2v7ZI=;
-        b=sMW7JuvJvYrzHkMHzaPwSOq+P/uIpmwljC1dyMA7wg5oB2t9qMuhByKb5v+UvVx4BN
-         hcVTBOcADwH3o6+Ho4l7UTgmEDT8qc0AU33aihoRqLeGPCZgTP+ZU0rk7+ws2sz8gr51
-         G6g5Tkt2WljLtRSsdpLIDNVp0gs2VkZCVZhnkrV/PaM0yFwAy0o/+lYM32WVVaUUJCVu
-         uYQ86vE6VspMf5tslZNfUXcapfposBOXcJ3kmE2O0L709KpPPILRSAOtF8P3DXvrkaDM
-         T2DoyN86otWJlPVQ4Cpiv1U5dimmttOYsYwrl3eJvHmU+omVdh+z5tV17gMEGhMXxgmi
-         MlkQ==
-X-Gm-Message-State: AOJu0Yys9jZv2nY0gOufrihxqC+xtOOu4w43oJx6JJ+J3uSqj7fAa4v6
-        pax8bTYPVJ+3LDthUxeeMuObgw==
-X-Google-Smtp-Source: AGHT+IGfn7JNgmv2XHJPju4nNbhYlyFx5eaFEgbWPI2WE/wGiViM36fknEX1kTDa9PruvCaYXOg5rQ==
-X-Received: by 2002:a05:6402:50c8:b0:536:169a:4ac3 with SMTP id h8-20020a05640250c800b00536169a4ac3mr3257371edb.8.1695987428732;
-        Fri, 29 Sep 2023 04:37:08 -0700 (PDT)
+        bh=AfJJ0030JKB1yzeOGLUCUkQWGJonxi9tVIc/d+x42jM=;
+        b=VdEw425jKNGULH5iWEX6c44I2KzW7pqGXGYK67Osa4tba51+1tWMPx0tyZna0Xelql
+         QmlH2dNyASiUN9ddcSaeHBDAu2zPzpeZ4sVkITXDsfGZx+Zaq3Tb5s9G8FMQKsJBjmIu
+         BcCgnbX2yidfx8G//XFWNi3MU/bGWrPHxTEvWCc+jafj1q6NJRSKgZuyTP2PK1nRHnqd
+         HZXYRRvdvD4XlZ973IiRuYyDE00QPWA/j2p3ZEcOPMDGjGQsRiSqGL7M1L+9F0o2FjXV
+         03amjg2V2QXh3qSpPFcMhXSnp0fKy+laOmySCXctizdAK5YvEx/feBMsAqqiBVcu2Up1
+         ou+Q==
+X-Gm-Message-State: AOJu0YxTyp4ur31s8LnjeX2DEfiDYqQGe3diMC8in1dOIGupW4sx0HWL
+        rKGh7Sw83V1wADv6s443M6RTMA==
+X-Google-Smtp-Source: AGHT+IEGkWblMRzDRA978+tRhSnClEy4OGcd1B1a+/WEgY267oTd5XsIvCKGm6rQabIxgTdlBsOHlQ==
+X-Received: by 2002:a05:6402:504:b0:530:c34b:8277 with SMTP id m4-20020a056402050400b00530c34b8277mr3061039edv.6.1695987557290;
+        Fri, 29 Sep 2023 04:39:17 -0700 (PDT)
 Received: from [192.168.33.189] (178235177217.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.217])
-        by smtp.gmail.com with ESMTPSA id s16-20020a05640217d000b0053420e55616sm6595226edy.75.2023.09.29.04.37.06
+        by smtp.gmail.com with ESMTPSA id y15-20020aa7cccf000000b0053691cacd95sm1144197edt.87.2023.09.29.04.39.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Sep 2023 04:37:08 -0700 (PDT)
-Message-ID: <0e760d7a-f855-4e45-ae6d-9ea376ed6860@linaro.org>
-Date:   Fri, 29 Sep 2023 13:37:05 +0200
+        Fri, 29 Sep 2023 04:39:16 -0700 (PDT)
+Message-ID: <28dfbb1e-364f-410c-b668-23543b7e19c3@linaro.org>
+Date:   Fri, 29 Sep 2023 13:39:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] media: venus: core: Set up secure memory ranges for
- SC7280
+Subject: Re: [PATCH 2/3] arm64: dts: qcom: sc7280: Move video-firmware to
+ chrome-common
 Content-Language: en-US
 To:     Luca Weiss <luca.weiss@fairphone.com>,
         Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
@@ -72,7 +72,7 @@ Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
         linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 References: <20230929-sc7280-venus-pas-v1-0-9c6738cf157a@fairphone.com>
- <20230929-sc7280-venus-pas-v1-1-9c6738cf157a@fairphone.com>
+ <20230929-sc7280-venus-pas-v1-2-9c6738cf157a@fairphone.com>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -109,7 +109,7 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20230929-sc7280-venus-pas-v1-1-9c6738cf157a@fairphone.com>
+In-Reply-To: <20230929-sc7280-venus-pas-v1-2-9c6738cf157a@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -117,26 +117,22 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 29.09.2023 10:38, Luca Weiss wrote:
-> Not all SC7280 devices ship with ChromeOS firmware. Other devices need
-> PAS for image authentication. That requires the predefined virtual
-> address ranges to be passed via scm calls. Define them to enable Venus
-> on non-CrOS SC7280 devices.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-The media tree (or at least venus) moves quite slugglishly..
+> If the video-firmware node is present, the venus driver assumes we're on
+> a non-TZ system.
+On a system that doesn't use TZ for kickstarting Venus
 
-But looks like applying just the DT patches (which I expect to get
-in first) results in a non-platform-killing:
+Chrome devices have something running in EL3, so TZ is present,
+just not the standard qcom one that we've grown to.. love..
 
-[   25.851120] qcom-venus aa00000.video-codec: Adding to iommu group 11
-[   25.851618] qcom-venus aa00000.video-codec: non legacy binding
-[   25.916562] qcom-venus aa00000.video-codec: invalid setting for UC_REGION
-[   25.916569] qcom-venus aa00000.video-codec: failed to reset venus core
-[   25.919000] qcom-venus: probe of aa00000.video-codec failed with error -22
+ Move the video-firmware node to chrome-common.dtsi so
+> we can use venus on a TZ board.
+On non-Chrome boards
 
-So it should be okay either way.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> At the same time let's disable the venus node by default as is custom on
+> such nodes.
+I think that's not what you tried to say
+
+The contents look good!
 
 Konrad
