@@ -2,125 +2,97 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 117FBE810D5
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 11:45:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C3FEDE71D21
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 12:23:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233088AbjI2Lp3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Sep 2023 07:45:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52414 "EHLO
+        id S232819AbjI2MX7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Sep 2023 08:23:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232994AbjI2LpM (ORCPT
+        with ESMTP id S232732AbjI2MX6 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Sep 2023 07:45:12 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3904F1B1
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 04:44:57 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-9b2cee55056so167881066b.3
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 04:44:56 -0700 (PDT)
+        Fri, 29 Sep 2023 08:23:58 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E855BE
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 05:23:56 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-533edb5ac54so13108489a12.0
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 05:23:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695987895; x=1696592695; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EZG+GtLVVH/lMxWTWwLGb8GiDQzIXOUCAVXXzCLziwE=;
-        b=j9bOZQNHHPbSv6X64gZwdGjbdC9q+fq/0N+OFxH1jVXbuJKyCcMp5D3EVpErhCz5OX
-         LKQyRyFxQEObLi94JBVfqrmXYpsQ2Jk/Xg5a0vEbFWXytDM2k1r0DaWyI9XmUmgm96lf
-         pQ7ZXYitQajAIa+k9lslbB5GIuHMyD2PdIYWjxi6ctA4eWAPkNeKeOEDMxrnE7gE9ewd
-         7oVWZrXHPvVrSYBHt8hMM3mKsC1YaOguzwaEBYkji89a+IugPB+Y163a+d7kSQbTKuh0
-         1oULLUZLMokP1AFVzwE8kK8ffILgQOVnKl4TPWBnDbqVqvSftgBxirXM0SiakX0hlZxy
-         oJ0w==
+        d=fairphone.com; s=fair; t=1695990235; x=1696595035; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sla6wmpD1DUPXq81GA+Qf96ZRYBJdn00BJ+JAxCtCQg=;
+        b=RDfYwL3iPdVBDnC8c57GDN+3kAlSFgn5Pk66grBMHHnzbWdvN2tFRo44knjhLxTt5C
+         9Uh5rBzShfr2JTTiOhbqy7JkGfDaU3aNlfBMuKTuPl1EzvdmLXOH8+Zve8niBcasOB6Q
+         4kWQNebEPoXfwLeYrGappNCQqgPnSyr5iG7/OVStx84oRhoPxGQ36W2o3TokPG/6hqBK
+         tKAnHHkhrLP1PRr7ScmXkrGstwguOGQRLax7wKx3qz8LCt/octdtupAdDbEjGypZ2tMb
+         n6bOIGxa1DTBEVa9t1U6r7hxFq5NPNFIlyMjc5f02hEjapJH3MumFYJKHUD3T92Pj1x7
+         /HIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695987895; x=1696592695;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EZG+GtLVVH/lMxWTWwLGb8GiDQzIXOUCAVXXzCLziwE=;
-        b=FsTK82BAsH2BTkcRw1mYHTWFEYCV488sCv0IRs++u1TNWSY/no155SkYfjXjdhgIiq
-         1KRXBIW7y5ULhZ85WT5RYEeL+1O4Ubh2utaTBvW6a5W4eEN0YvEkq1/jMREVyd1EdRlI
-         jJ80C5YXwOCRUn1WfvptvWQYgjDRYSpe9B2vJrG7Y6u5nLSDUutMWBjK/GW9vneThmdq
-         uEvNX2UQ57Av2hQsTBxdEt2Yumd06YqGwzXaNezYm91swIVuNlbMFp/s55tum5TJBsTp
-         XQdTRj7iOlel06u8zc3BuJUmznolLrGmvnGNL/in5DXXz+HSyj+0kkIvgrVDE7k5vXCT
-         tysA==
-X-Gm-Message-State: AOJu0YxoSD2xVWxEF4bD8rTJDM/E5CObWM7ycZRzy5itWvOyvumWzhL+
-        85q7XvY6r4VPwn9GuMw1anId+w==
-X-Google-Smtp-Source: AGHT+IFwFWUmFGUUKVwOnmzO/7z4t0gU+3VuGDuYQS4Od9dsL8sbkvMmV5EErokYlS/Fn290q7Ok6g==
-X-Received: by 2002:a17:906:23f1:b0:9b2:b153:925 with SMTP id j17-20020a17090623f100b009b2b1530925mr2882218ejg.21.1695987894982;
-        Fri, 29 Sep 2023 04:44:54 -0700 (PDT)
-Received: from [192.168.33.189] (178235177217.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.217])
-        by smtp.gmail.com with ESMTPSA id mh2-20020a170906eb8200b00992b2c55c67sm12324412ejb.156.2023.09.29.04.44.53
+        d=1e100.net; s=20230601; t=1695990235; x=1696595035;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=sla6wmpD1DUPXq81GA+Qf96ZRYBJdn00BJ+JAxCtCQg=;
+        b=oB4172/8P5uXbcrYLoLjapZRjHgj8Jy3MkfbckxCyUd2M4rSHLJucAWd3cyIhTOv8V
+         JIhMmPjJAXbfNKo4dIagVYuq5r8/B8JQLFVO0I+oC/S8zw2pCpDgmW6QnsIA4ZNikkK+
+         KTMep1fXFMzFvcOf98UP1cDu+fU3U2H++pYpC/qKnwRQsj00PYt58cruSK1kCL+n/2m9
+         ruO+VZaOlxcHFkc/njuMU5YcgL7b97wZOT0wgr3sWF8bcu2vo5olmyOMe5pfiu+ASUpN
+         ScmZx6ZiI6uCCHTwdeJGVMhU2Vfel0ktMJvtgze11POpA9JfQt/geiFuBYzAJ4J6v5AR
+         IucQ==
+X-Gm-Message-State: AOJu0Yyz4EOQpQeRVaw2ZfYrHQG/vYXKuccpI+pA8N2OAKz38D0DM7c5
+        2Fnlgx12wKcLHHVqL7jMt4yb5Q==
+X-Google-Smtp-Source: AGHT+IG2kjzZLb1SdI6/JkmBGM33kigR2o+WpFZUGImV1UHmk2br8Y6U1scGw32/Vw2pa3JA1cAbFg==
+X-Received: by 2002:a17:906:217:b0:9ae:3210:22fd with SMTP id 23-20020a170906021700b009ae321022fdmr3509603ejd.48.1695990234936;
+        Fri, 29 Sep 2023 05:23:54 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id mc1-20020a170906eb4100b009a5f1d1564dsm12209790ejb.126.2023.09.29.05.23.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Sep 2023 04:44:54 -0700 (PDT)
-Message-ID: <af19b32e-9e91-4829-8d77-9cf154e19bac@linaro.org>
-Date:   Fri, 29 Sep 2023 13:44:52 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+        Fri, 29 Sep 2023 05:23:54 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 29 Sep 2023 14:23:54 +0200
+Message-Id: <CVVED1K40NK5.1MFHLQH8YS4IY@otso>
+Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] arm64: dts: qcom: sc7280: Add ports subnodes in usb/dp
  qmpphy node
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        cros-qcom-dts-watchers@chromium.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+        <cros-qcom-dts-watchers@chromium.org>,
+        "Andy Gross" <agross@kernel.org>,
+        "Bjorn Andersson" <andersson@kernel.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Conor Dooley" <conor+dt@kernel.org>
+X-Mailer: aerc 0.15.2
 References: <20230929-sc7280-qmpphy-ports-v1-1-7532c11973af@fairphone.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20230929-sc7280-qmpphy-ports-v1-1-7532c11973af@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <af19b32e-9e91-4829-8d77-9cf154e19bac@linaro.org>
+In-Reply-To: <af19b32e-9e91-4829-8d77-9cf154e19bac@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 29.09.2023 09:31, Luca Weiss wrote:
-> Add the USB3+DP Combo QMP PHY port subnodes in the SC7280 SoC DTSI to
-> avoid duplication in the devices DTs.
-The rationale here is to make describing the connections between
-certain hw blocks possible. Defining it in the soc dtsi gives us
-a very cool side-effect of not having to repeat this, but it's not
-the main point here
+On Fri Sep 29, 2023 at 1:44 PM CEST, Konrad Dybcio wrote:
+> On 29.09.2023 09:31, Luca Weiss wrote:
+> > Add the USB3+DP Combo QMP PHY port subnodes in the SC7280 SoC DTSI to
+> > avoid duplication in the devices DTs.
+> The rationale here is to make describing the connections between
+> certain hw blocks possible. Defining it in the soc dtsi gives us
+> a very cool side-effect of not having to repeat this, but it's not
+> the main point here
 
-With the commit msg amended:
+Commit message is copy-pasted from sm8550 commit with has your R-b ;)
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+But I'll change it for this commit since your comment makes sense.
 
-Konrad
+>
+> With the commit msg amended:
+>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+>
+> Konrad
+
