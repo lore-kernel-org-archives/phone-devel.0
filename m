@@ -2,77 +2,72 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EEE4AE80ABE
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 11:39:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 117FBE810D5
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 11:45:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232993AbjI2Lji (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Sep 2023 07:39:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42418 "EHLO
+        id S233088AbjI2Lp3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Sep 2023 07:45:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232803AbjI2Ljh (ORCPT
+        with ESMTP id S232994AbjI2LpM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Sep 2023 07:39:37 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0811D1AE
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 04:39:36 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-533cbbd0153so14556834a12.0
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 04:39:35 -0700 (PDT)
+        Fri, 29 Sep 2023 07:45:12 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3904F1B1
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 04:44:57 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-9b2cee55056so167881066b.3
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 04:44:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695987574; x=1696592374; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1695987895; x=1696592695; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z31jYXdsNTXjAi/vSZQ7yUFG59HA5IfRzJkXzIYXTIo=;
-        b=SfIQAbYvDVIO52mCOhwEEsWtpo3M7lYjRZ4AWvxz7g6Nyf2X/Uua2us+HKP3K3flwH
-         fzbYRF800q/80y+UUFt/WlUZ5jrneBJm7JdR0gn39BdaH8XOimKbfNey+WvRNwhcQQfo
-         Gkp5XKnD6ATG11PpX2oFR0fMSDSYd/JUr0l1NMdzbrd4ECWxDIIYLDD4JvileOHPduYm
-         xREzytER44FdRQX87iyLCYy1RgDP6O+vy4nMBjnZFRyugxGs+BzhyimX3AkM8V8SsNDt
-         azPaEW2dx+9JND9X8LaFfPKdSsrDdYTS8p5YjOR360IswEhA2OakF1YxTsWI7vbbHHrm
-         DcgA==
+        bh=EZG+GtLVVH/lMxWTWwLGb8GiDQzIXOUCAVXXzCLziwE=;
+        b=j9bOZQNHHPbSv6X64gZwdGjbdC9q+fq/0N+OFxH1jVXbuJKyCcMp5D3EVpErhCz5OX
+         LKQyRyFxQEObLi94JBVfqrmXYpsQ2Jk/Xg5a0vEbFWXytDM2k1r0DaWyI9XmUmgm96lf
+         pQ7ZXYitQajAIa+k9lslbB5GIuHMyD2PdIYWjxi6ctA4eWAPkNeKeOEDMxrnE7gE9ewd
+         7oVWZrXHPvVrSYBHt8hMM3mKsC1YaOguzwaEBYkji89a+IugPB+Y163a+d7kSQbTKuh0
+         1oULLUZLMokP1AFVzwE8kK8ffILgQOVnKl4TPWBnDbqVqvSftgBxirXM0SiakX0hlZxy
+         oJ0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695987574; x=1696592374;
+        d=1e100.net; s=20230601; t=1695987895; x=1696592695;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z31jYXdsNTXjAi/vSZQ7yUFG59HA5IfRzJkXzIYXTIo=;
-        b=emTLsz0Q8FTV0DtfdMhsW/hx8QVxS0GDlP8r1iLvzLoeZG5KYDBzVBrmiDuK+Uq/Wc
-         01IkeG090BBjyeng7BOhBSVV0f7HByMHGHgaNkHhC9WGYWRUEwMqLQbUl/t2iXKNufUW
-         rruKNkf8iFKuZwomGC9/smJipqxsJiFRhKBJFUQ0S8tx1/SLrJ/0NoJLErtgVg+/EF2b
-         8EIU8+A8SSDLgNJMzhC+aEiWuPn3bL78hVBgXIIEKNaVFtBJbCFTdcvrc/6KQJFPRU+U
-         bNYSH3GC3iYRdVeJsEyZVK+UepSf6B+6Qv3Hu3tY6SU6ddqIYJIGHxS7/FaKYsu8OrVs
-         j7TQ==
-X-Gm-Message-State: AOJu0YzAQHEp5imcLpw3JjlQT8b1crm1Q/Qx39D/W35xd6DjIrk7dKCn
-        M6TLD5NW5LNjn3824SaikNSU4g==
-X-Google-Smtp-Source: AGHT+IGddUo1x5ZOTTd0itDwUJMnI2TtGLK4Jd3E99eY7fCMN2zTtR87z4kiBBe3ZMs2GbCLQzv+Mg==
-X-Received: by 2002:a05:6402:1812:b0:52a:1d9c:83ff with SMTP id g18-20020a056402181200b0052a1d9c83ffmr3974551edy.1.1695987574437;
-        Fri, 29 Sep 2023 04:39:34 -0700 (PDT)
+        bh=EZG+GtLVVH/lMxWTWwLGb8GiDQzIXOUCAVXXzCLziwE=;
+        b=FsTK82BAsH2BTkcRw1mYHTWFEYCV488sCv0IRs++u1TNWSY/no155SkYfjXjdhgIiq
+         1KRXBIW7y5ULhZ85WT5RYEeL+1O4Ubh2utaTBvW6a5W4eEN0YvEkq1/jMREVyd1EdRlI
+         jJ80C5YXwOCRUn1WfvptvWQYgjDRYSpe9B2vJrG7Y6u5nLSDUutMWBjK/GW9vneThmdq
+         uEvNX2UQ57Av2hQsTBxdEt2Yumd06YqGwzXaNezYm91swIVuNlbMFp/s55tum5TJBsTp
+         XQdTRj7iOlel06u8zc3BuJUmznolLrGmvnGNL/in5DXXz+HSyj+0kkIvgrVDE7k5vXCT
+         tysA==
+X-Gm-Message-State: AOJu0YxoSD2xVWxEF4bD8rTJDM/E5CObWM7ycZRzy5itWvOyvumWzhL+
+        85q7XvY6r4VPwn9GuMw1anId+w==
+X-Google-Smtp-Source: AGHT+IFwFWUmFGUUKVwOnmzO/7z4t0gU+3VuGDuYQS4Od9dsL8sbkvMmV5EErokYlS/Fn290q7Ok6g==
+X-Received: by 2002:a17:906:23f1:b0:9b2:b153:925 with SMTP id j17-20020a17090623f100b009b2b1530925mr2882218ejg.21.1695987894982;
+        Fri, 29 Sep 2023 04:44:54 -0700 (PDT)
 Received: from [192.168.33.189] (178235177217.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.217])
-        by smtp.gmail.com with ESMTPSA id y15-20020aa7cccf000000b0053691cacd95sm1144197edt.87.2023.09.29.04.39.32
+        by smtp.gmail.com with ESMTPSA id mh2-20020a170906eb8200b00992b2c55c67sm12324412ejb.156.2023.09.29.04.44.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Sep 2023 04:39:34 -0700 (PDT)
-Message-ID: <4c0c9b95-859b-4dae-9dac-ef0a27004b4b@linaro.org>
-Date:   Fri, 29 Sep 2023 13:39:32 +0200
+        Fri, 29 Sep 2023 04:44:54 -0700 (PDT)
+Message-ID: <af19b32e-9e91-4829-8d77-9cf154e19bac@linaro.org>
+Date:   Fri, 29 Sep 2023 13:44:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable venus
- node
+Subject: Re: [PATCH] arm64: dts: qcom: sc7280: Add ports subnodes in usb/dp
+ qmpphy node
 Content-Language: en-US
 To:     Luca Weiss <luca.weiss@fairphone.com>,
-        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Vikash Garodia <quic_vgarodia@quicinc.com>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        cros-qcom-dts-watchers@chromium.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20230929-sc7280-venus-pas-v1-0-9c6738cf157a@fairphone.com>
- <20230929-sc7280-venus-pas-v1-3-9c6738cf157a@fairphone.com>
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20230929-sc7280-qmpphy-ports-v1-1-7532c11973af@fairphone.com>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -109,19 +104,23 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20230929-sc7280-venus-pas-v1-3-9c6738cf157a@fairphone.com>
+In-Reply-To: <20230929-sc7280-qmpphy-ports-v1-1-7532c11973af@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 29.09.2023 10:38, Luca Weiss wrote:
-> Enable the venus node so that the video encoder/decoder will start
-> working.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
+On 29.09.2023 09:31, Luca Weiss wrote:
+> Add the USB3+DP Combo QMP PHY port subnodes in the SC7280 SoC DTSI to
+> avoid duplication in the devices DTs.
+The rationale here is to make describing the connections between
+certain hw blocks possible. Defining it in the soc dtsi gives us
+a very cool side-effect of not having to repeat this, but it's not
+the main point here
+
+With the commit msg amended:
+
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
 Konrad
