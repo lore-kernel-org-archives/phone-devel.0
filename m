@@ -2,62 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D5D0E743F9
-	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 08:01:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CE20E743F5
+	for <phone-devel@archiver.kernel.org>; Fri, 29 Sep 2023 08:01:18 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232833AbjI2IBQ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 29 Sep 2023 04:01:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50672 "EHLO
+        id S229754AbjI2IBR (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 29 Sep 2023 04:01:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232827AbjI2IBO (ORCPT
+        with ESMTP id S232832AbjI2IBP (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 29 Sep 2023 04:01:14 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B10CACC0
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 01:01:11 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-533d9925094so13831301a12.2
-        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 01:01:11 -0700 (PDT)
+        Fri, 29 Sep 2023 04:01:15 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE1671A7
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 01:01:10 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-5344d996bedso10198042a12.3
+        for <phone-devel@vger.kernel.org>; Fri, 29 Sep 2023 01:01:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1695974470; x=1696579270; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1695974469; x=1696579269; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=K4AXanlYkF1UctT0i4z2SSgLVfpVBN6YLneat8LfHMI=;
-        b=clRznoFA1sY2osFvY6SDGuCgw1iQ6CK9eZIp7dhSezFQ3hmQ8wJLVXT1QNRsY+DEH7
-         ygNCbw7cRgl6Jx/qWYAamNcpt5WZp2C1vATWLMYZGNL7AqnrucBnErXFDZgdW2HmQJDv
-         Xg9waeCO16E85Q0AdD9t/wH1IPHdscbTBaoSZXr8N/BGuQZN8bl9/4HAq8aOQfvO1Pjf
-         +vDp1/GlGocuRYUKqwaVyfeJ+Ycu/nXxyUo4aJmzRKLIcggQGIFOjdc6U/55vfHcTpX6
-         s9014kPx+L0HZwbN67mVCMko6m1LYX1yffqD0XPGgVn0B3ztmB5p7I6XuWpV4g7HGPe7
-         G4mQ==
+        bh=EYzKGHRYLJ6g+A5OXZ4xV/Es8JjR1AM+0LwhrF0kzy4=;
+        b=aig+9hcZnVthGb4gyq2ydfqHOpzS9esCDegx9CQ8vn1pcjxo+Bvf/EetqGbsmnDKdX
+         L21wmhc62T16A5VDZQJOdjsAXg/zON/XvFVsjhVi5FzwSQZQXfA4yiNG325zqh5m7WmN
+         YliRVbRFPXySfVL7qy7VwHPVjufmhA4EWWaI7JBaTwNPff21GLLoTfvS122a/nj1aCz+
+         nQ3AXcO/WEXTX1oVhplUUej9JthHsqRTSPpkB9/fvznpOeQcObVU0ow+mNwjmnzvqy2Q
+         yJssgM4nvoaENshjmHx/DS0LOemq3sbpAESFB1+Q38vHUYQ9ts01iVP4pBMjA8HM0f1P
+         HBXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695974470; x=1696579270;
+        d=1e100.net; s=20230601; t=1695974469; x=1696579269;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=K4AXanlYkF1UctT0i4z2SSgLVfpVBN6YLneat8LfHMI=;
-        b=urAdL+YFlZ5pNZNHaOC2pE0EbCxAMc4/9SBS4hMZR5Dw9V+0hL3ePqoS64o2mHO2jt
-         nQ0ai2WwNDU95gi5hT8kk2JONgHqNpts0rUYJ7hxND110StiZejLly3umoRPUoR0jwhC
-         FC3xPih1Jr+z+8K3v1Vq5jRtrYpSCM2m7veBRcZ8rQ+B3m4AOEyfA72JS35WPgov6ego
-         fOe6v7dhCBy4e+ObzIKqKqgLQ41eOHKzRN7FpTZrcpIyigkD70mtE3zjNCfqLRY6I/jX
-         WwHNWi1X8HB3YpOP+DkJmfhQLvjKaIsx8YyeuN/5pq3UyEEluzOIkIHwLNJIMw2rkWaF
-         BXPw==
-X-Gm-Message-State: AOJu0YxMVEw1yarYeVgbu+jEVwuEn5d+xH0yma1Pe14kSCX21yhkwUBf
-        1YbvJoKpKQRV337r1ASG21L9m/pc/I4WL3pHpMn0zSFZ
-X-Google-Smtp-Source: AGHT+IG+juZVGk+drK2JRLPswl8hxtyEq3YJ8XGPJn2oMYNzLrEwcoHY46wVzk0EZrzIatxtdRwhnw==
-X-Received: by 2002:a05:6402:751:b0:531:9c1:8276 with SMTP id p17-20020a056402075100b0053109c18276mr3035733edy.4.1695974469876;
+        bh=EYzKGHRYLJ6g+A5OXZ4xV/Es8JjR1AM+0LwhrF0kzy4=;
+        b=PrBBu/oympUHyErhytfM8L58BcN0TDPxw+1nYZox/GUqyF9rVPAnSnqw7FISTAG8eh
+         7lbC3DG7TKq9/p9Xh3wjIw0JGpYw6wgwPHA5usreNrurs7NO22v3bNc/ozWwCWU8Qmn6
+         YmxGvy9TMua/QjE9WGhzb/wKWs8sk5n98Oh9BywkZakB6DPyh63gCT5M8sHb6fqDDvJN
+         fSo0LxgnIM7rO7V6e1GoZC2onEqWuAab7ihODsqPT6HLHX4bpT3oeBu6OaogYiwOiZfG
+         s+Qz80Bu2QyE209suAIfnLVE5SnYLCvzmHJTE6EztSk3mxnameRBwiohXWK+jtGONVOG
+         2Uuw==
+X-Gm-Message-State: AOJu0YyMDchjmLm0FspjLp1YmU5fAw5UDqny4VwWkrpp3S2KvBwlfETi
+        owM/j4DO9/BTX7GYXZb/Uo/X4tMLAwwE4ME7gPp70B1J
+X-Google-Smtp-Source: AGHT+IHJBvE2q/+7hRsyhn1O0y4IxujNTuvfrEPD8B7LeqjNrRbB7ab95rqVG4rYWD0lWKFme/7IpA==
+X-Received: by 2002:aa7:c409:0:b0:531:1455:7528 with SMTP id j9-20020aa7c409000000b0053114557528mr2896677edq.40.1695974469074;
         Fri, 29 Sep 2023 01:01:09 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id j6-20020aa7ca46000000b0052889d090bfsm10825040edt.79.2023.09.29.01.01.09
+        by smtp.gmail.com with ESMTPSA id j6-20020aa7ca46000000b0052889d090bfsm10825040edt.79.2023.09.29.01.01.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Sep 2023 01:01:09 -0700 (PDT)
+        Fri, 29 Sep 2023 01:01:08 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Fri, 29 Sep 2023 10:01:07 +0200
-Subject: [PATCH 3/3] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable CCI
+Date:   Fri, 29 Sep 2023 10:01:06 +0200
+Subject: [PATCH 2/3] arm64: dts: qcom: sc7280: Add Camera Control Interface
  busses
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230929-sc7280-cci-v1-3-16c7d386f062@fairphone.com>
+Message-Id: <20230929-sc7280-cci-v1-2-16c7d386f062@fairphone.com>
 References: <20230929-sc7280-cci-v1-0-16c7d386f062@fairphone.com>
 In-Reply-To: <20230929-sc7280-cci-v1-0-16c7d386f062@fairphone.com>
 To:     Andy Gross <agross@kernel.org>,
@@ -79,47 +79,167 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Enable the CCI busses where sensors are connected to.
-
-Not covered here is the regulator used for pull-up on the I2C busses.
-This would be pm8008_l6 (L6P).
+Add the CCI busses found on sc7280 and their pinctrl states.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 136 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 136 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index c8e7e6689b20..3fc0b3f7dc31 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -388,6 +388,26 @@ vreg_bob: bob {
- 	};
- };
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 66f1eb83cca7..65550de2e4ff 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -3793,6 +3793,86 @@ videocc: clock-controller@aaf0000 {
+ 			#power-domain-cells = <1>;
+ 		};
  
-+&cci0 {
-+	status = "okay";
-+};
++		cci0: cci@ac4a000 {
++			compatible = "qcom,sc7280-cci", "qcom,msm8996-cci";
++			reg = <0 0x0ac4a000 0 0x1000>;
++			interrupts = <GIC_SPI 460 IRQ_TYPE_EDGE_RISING>;
++			power-domains = <&camcc CAM_CC_TITAN_TOP_GDSC>;
 +
-+&cci0_i2c0 {
-+	/* IMX800 @ 1a */
-+};
++			clocks = <&camcc CAM_CC_CAMNOC_AXI_CLK>,
++				 <&camcc CAM_CC_SLOW_AHB_CLK_SRC>,
++				 <&camcc CAM_CC_CPAS_AHB_CLK>,
++				 <&camcc CAM_CC_CCI_0_CLK>,
++				 <&camcc CAM_CC_CCI_0_CLK_SRC>;
++			clock-names = "camnoc_axi",
++				      "slow_ahb_src",
++				      "cpas_ahb",
++				      "cci",
++				      "cci_src";
++			pinctrl-0 = <&cci0_default &cci1_default>;
++			pinctrl-1 = <&cci0_sleep &cci1_sleep>;
++			pinctrl-names = "default", "sleep";
 +
-+&cci0_i2c1 {
-+	/* IMX858 @ 29 */
-+};
++			#address-cells = <1>;
++			#size-cells = <0>;
 +
-+&cci1 {
-+	status = "okay";
-+};
++			status = "disabled";
 +
-+&cci1_i2c1 {
-+	/* S5KJN1SQ03 @ 10 */
-+};
++			cci0_i2c0: i2c-bus@0 {
++				reg = <0>;
++				clock-frequency = <1000000>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++			};
 +
- &dispcc {
- 	/* Disable for now so simple-framebuffer continues working */
- 	status = "disabled";
++			cci0_i2c1: i2c-bus@1 {
++				reg = <1>;
++				clock-frequency = <1000000>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++			};
++		};
++
++		cci1: cci@ac4b000 {
++			compatible = "qcom,sc7280-cci", "qcom,msm8996-cci";
++			reg = <0 0x0ac4b000 0 0x1000>;
++			interrupts = <GIC_SPI 271 IRQ_TYPE_EDGE_RISING>;
++			power-domains = <&camcc CAM_CC_TITAN_TOP_GDSC>;
++
++			clocks = <&camcc CAM_CC_CAMNOC_AXI_CLK>,
++				 <&camcc CAM_CC_SLOW_AHB_CLK_SRC>,
++				 <&camcc CAM_CC_CPAS_AHB_CLK>,
++				 <&camcc CAM_CC_CCI_1_CLK>,
++				 <&camcc CAM_CC_CCI_1_CLK_SRC>;
++			clock-names = "camnoc_axi",
++				      "slow_ahb_src",
++				      "cpas_ahb",
++				      "cci",
++				      "cci_src";
++			pinctrl-0 = <&cci2_default &cci3_default>;
++			pinctrl-1 = <&cci2_sleep &cci3_sleep>;
++			pinctrl-names = "default", "sleep";
++
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			status = "disabled";
++
++			cci1_i2c0: i2c-bus@0 {
++				reg = <0>;
++				clock-frequency = <1000000>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++			};
++
++			cci1_i2c1: i2c-bus@1 {
++				reg = <1>;
++				clock-frequency = <1000000>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++			};
++		};
++
+ 		camcc: clock-controller@ad00000 {
+ 			compatible = "qcom,sc7280-camcc";
+ 			reg = <0 0x0ad00000 0 0x10000>;
+@@ -4298,6 +4378,62 @@ tlmm: pinctrl@f100000 {
+ 			gpio-ranges = <&tlmm 0 0 175>;
+ 			wakeup-parent = <&pdc>;
+ 
++			cci0_default: cci0-default-state {
++				pins = "gpio69", "gpio70";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-up;
++			};
++
++			cci0_sleep: cci0-sleep-state {
++				pins = "gpio69", "gpio70";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-down;
++			};
++
++			cci1_default: cci1-default-state {
++				pins = "gpio71", "gpio72";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-up;
++			};
++
++			cci1_sleep: cci1-sleep-state {
++				pins = "gpio71", "gpio72";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-down;
++			};
++
++			cci2_default: cci2-default-state {
++				pins = "gpio73", "gpio74";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-up;
++			};
++
++			cci2_sleep: cci2-sleep-state {
++				pins = "gpio73", "gpio74";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-down;
++			};
++
++			cci3_default: cci3-default-state {
++				pins = "gpio75", "gpio76";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-up;
++			};
++
++			cci3_sleep: cci3-sleep-state {
++				pins = "gpio75", "gpio76";
++				function = "cci_i2c";
++				drive-strength = <2>;
++				bias-pull-down;
++			};
++
+ 			dp_hot_plug_det: dp-hot-plug-det-state {
+ 				pins = "gpio47";
+ 				function = "dp_hot";
 
 -- 
 2.42.0
