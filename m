@@ -2,103 +2,149 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 943BEE7737A
-	for <phone-devel@archiver.kernel.org>; Sat, 30 Sep 2023 16:59:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D3FB2E7737C
+	for <phone-devel@archiver.kernel.org>; Sat, 30 Sep 2023 17:09:23 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234461AbjI3Q7W (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 30 Sep 2023 12:59:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48792 "EHLO
+        id S234568AbjI3RJY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 30 Sep 2023 13:09:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229788AbjI3Q7W (ORCPT
+        with ESMTP id S234461AbjI3RJX (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 30 Sep 2023 12:59:22 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2C5DA;
-        Sat, 30 Sep 2023 09:59:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1696093152; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=dKfB3rzlSTaQ5lAnhYw5ZHc/GAKC0tzXbAa3YUlecJOVdi+dyOCi+ZLi3FzGNebZAr
-    lI3EU01JzTm75CsgAVJF/bAj16kjAbzOHPGr0ZIC29n6k+6DiatXQW9xYboJqWETuUWX
-    LNlf0ZBH30Ip9RL8CP1DRkIYgevpw8LBG5lYICpepHfMfr/VOdD2rqSAVgaFDpxZwV1X
-    coRLWxKus6qmi4NB5In3smlMxEXENOP+5Df+ssVkJe62ItcKPLyPwtspHDCi87dJj3pM
-    lDlBnf8pfBaOab2RO1KExe1uJsOEYRcxVUCBYU+UHIBdEfMVf8kGuVAnZmodoQbJ8QCp
-    +ZZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1696093152;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=TU2Xrc/bzSKmZicBoMMbvWmVhTF3do+bM2vLEZ56zHI=;
-    b=XlUdQCIZn+wCPXLfRkD5GGML/kgWlJh+9uj8w9kbWtnU124iNllfNTQ6pl9M7krPSX
-    3vZ9YPPwnGVFg9h8Ghga5ILuLuGORKH2Hx+f0hbZQnQGhDtzl4qoxLv9ldgwvfM0XK1u
-    WgyDfE3ZaU/rI8f56535Q/oa9EaiL5ETx9YY+vdfXIc/2yLPQWnLmoPBQhe67TfLPI3Q
-    5RifrHEsMkAap/lH8e9vs/alPwVONTc1X3UMVjkGHTy3z/h3Fagx87c7rqRsIhsWYYo6
-    7IU2ehtD6HKp5wrhPIfkNOgNh7FGA1OJZfo2FHdKUdhRNqGsr0b+OBPHSV9E2aBeU8ST
-    Fl5A==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1696093152;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=TU2Xrc/bzSKmZicBoMMbvWmVhTF3do+bM2vLEZ56zHI=;
-    b=IxNrK7RvW0zN+V4yN/8HaDf2gNQRvktawhCuJYW7M3tBhO9CdkGZRMm/LQCfp7wgGj
-    6XtQWcZWRQQpq/bzCIu5CFpL7soxovEc60WRZYpft23IMsK5vWUf4phWfn4qdRhJrbpo
-    GXeMSVIqpsHU5Qp34UnJw8CcO2geyCNa16lN1neL3smi5tBYz9QIDpb0IBe7P/jgEizd
-    /RiP02vR4XuwfAp0P79+SFuqBCB7f7nIRqC4FOEZh0ggVI9WtlI7n6jZaWiGqmVzwKJ6
-    xPN26fJJCK5v9Cd93Ry5S/coXU4u8AGLWP4Fb6PSjoaL8O7sQbFrY3+CETWt7R2AfqaQ
-    plZg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1696093152;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=TU2Xrc/bzSKmZicBoMMbvWmVhTF3do+bM2vLEZ56zHI=;
-    b=mi98OHSv1laQUGcpQjULy+EDwplTrI0le7dgliKxerfPaFLUlEFFYVQzmfvFgRbQKt
-    sN1W2UFjixI6rt7WSeAQ==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA8paF1A=="
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.8.2 DYNA|AUTH)
-    with ESMTPSA id R04c57z8UGxBtdR
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Sat, 30 Sep 2023 18:59:11 +0200 (CEST)
-Date:   Sat, 30 Sep 2023 18:59:04 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Nikita Travkin <nikita@trvn.ru>
-Subject: Re: [PATCH 09/13] arm64: dts: qcom: msm8916-longcheer-l8150: Add
- sound and modem
-Message-ID: <ZRhT2PRwAoB39J_0@gerhold.net>
-References: <20230926-msm8916-modem-v1-0-398eec74bac9@gerhold.net>
- <20230926-msm8916-modem-v1-9-398eec74bac9@gerhold.net>
- <14262938-4150-429f-a730-df1b2fadd9ff@linaro.org>
+        Sat, 30 Sep 2023 13:09:23 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE895E1
+        for <phone-devel@vger.kernel.org>; Sat, 30 Sep 2023 10:09:20 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-40572aeb6d0so118419155e9.1
+        for <phone-devel@vger.kernel.org>; Sat, 30 Sep 2023 10:09:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1696093759; x=1696698559; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=edC6x00Inj1s4qyRHimLVzDVlcaNUKPTSDx/R9zDRl4=;
+        b=smFJ94/v3yCSzOAmT2ZacqaE7tcnPp0WvRqhAoEvUx53tm6Laplis2NEYqiQeQqD+3
+         edvPLIHJmeZTijPrxMLtXGc4U7S+QnNFOi4c1LKDe1GO152OAvg4TdqAWXkkB8n2/D2J
+         mTm3apsEOQNdN90RyDVjVm033XO1A4/RrTsMTmASt2rnNLZHem8R8YU1ebPc92UVFTuO
+         c593p3FUbXOefloy7NARchloFc3lEfxyoTcHOTmzPR06aToNkf1xuQpdALom1GIF2RzZ
+         LGV5zSVdyEtKUtMGihC6Z6aQuZXgr9WulXo7Nyg+ial1Hy+r9A6RHd4GWzirvf2bOggA
+         4vnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696093759; x=1696698559;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=edC6x00Inj1s4qyRHimLVzDVlcaNUKPTSDx/R9zDRl4=;
+        b=VGUj7OKHsX8kup7+6IPSq4uXl7hNJWrd1SM5tgImnRHGXCGhRjoJ9ua9ZTRbzRZRkL
+         fOpW0yrVRejd/d59Eb7vfD7vmGgdElekh0Jr5uHqrrgoZaCibLUbFPNzMAQ/wR3g/dJc
+         hqO01C1z0dZhIRirmb7b0fwqxv7vM9uZ8/cim2+uLEnEirjfQQBFK3nIiGq3IetCev0U
+         6F1ldh2dx7/Wq6q15jA1g5l273ydrfOaiItRjOWgm3pEIBo+/u/VmkDlsubPSg/aAf0V
+         VVRiIuIJOEBwwND4HPR6Vl7QEfgyFfHqgwl55CMTHL6JFopMrwqRormpW20+7PPfY+p5
+         oFYQ==
+X-Gm-Message-State: AOJu0Yy1fZ/hRKNxV2SRQl9PakhcVcaEc+RSsEB2Rct4aaaENmi9/N7O
+        izUvjzDcGkD45meOZytVFuAb4LzLhDyV28UcN23vYg==
+X-Google-Smtp-Source: AGHT+IGIUGd8Wune8NTqwsbYwwRc0eM5/iMcLLF4YPLHnyhIRg7lPOLu+W6bLyngqXqhpfh5VS2few==
+X-Received: by 2002:a05:600c:22cf:b0:405:4776:735a with SMTP id 15-20020a05600c22cf00b004054776735amr6876672wmg.2.1696093759123;
+        Sat, 30 Sep 2023 10:09:19 -0700 (PDT)
+Received: from lion.localdomain (host-2-99-112-229.as13285.net. [2.99.112.229])
+        by smtp.gmail.com with ESMTPSA id y21-20020a7bcd95000000b00405c7591b09sm3756368wmj.35.2023.09.30.10.09.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 Sep 2023 10:09:18 -0700 (PDT)
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+Subject: [PATCH 0/7] Input: synaptics-rmi4: add quirks for third party
+ touchscreen controllers
+Date:   Sat, 30 Sep 2023 18:08:44 +0100
+Message-Id: <20230929-caleb-rmi4-quirks-v1-0-cc3c703f022d@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <14262938-4150-429f-a730-df1b2fadd9ff@linaro.org>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABxWGGUC/x2NywrCQAwAf6XkbGBdn+uviIdkjTa4rjWhpVD67
+ y4eZ2CYBVxMxeHSLWAyqeunNthuOsg91aeg3htDDHEXUkyYqQijvXWP31Ht5RiOkcLhJOnMDK1
+ jckE2qrlvZR1LaXIweej8H11v6/oDsA7GdngAAAA=
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Vincent Huang <vincent.huang@tw.synaptics.com>
+Cc:     methanal <baclofen@tuta.io>, linux-input@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+X-Mailer: b4 0.13-dev-46309
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2970;
+ i=caleb.connolly@linaro.org; h=from:subject:message-id;
+ bh=5HhZieyBDy198zquZsrV9eoaiwNnkNUkr0zt1cW65t8=;
+ b=owGbwMvMwCFYaeA6f6eBkTjjabUkhlSJMNva2D//tz5y2aTOE/2vO2SJjPwz2wqmL1GqRT8Xq
+ f2RlX3WUcrCIMjBICumyCJ+Ypll09rL9hrbF1yAmcPKBDKEgYtTACbilMjwz5pn4SKfbm+ReG2G
+ Ozbt+3fpfvfau9Y/RIalykH73In+Wwy/mMIzmIvuBcyRN7vLcqIxWHzWz0cKk8226F//d9n+0wt
+ bcwA=
+X-Developer-Key: i=caleb.connolly@linaro.org; a=openpgp;
+ fpr=83B24DA7FE145076BC38BB250CD904EB673A7C47
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Tue, Sep 26, 2023 at 08:59:52PM +0200, Konrad Dybcio wrote:
-> On 26.09.2023 18:51, Stephan Gerhold wrote:
-> > From: Nikita Travkin <nikita@trvn.ru>
-> > 
-> > Enable sound and modem for the Longcheer L8150 (e.g. Wileyfox Swift).
-> e.g. -> i.e., or is that thing sold under many labels?
-> 
+With the growing popularity of running upstream Linux on mobile devices,
+we're beginning to run into more and more edgecases. The OnePlus 6 is a
+fairly well supported 2018 era smartphone, selling over a million units
+in it's first 22 days. With this level of popularity, it's almost
+inevitable that we get third party replacement displays, and as a
+result, replacement touchscreen controllers.
 
-Yes, "e.g." is indeed correct here. AFAIK the MSM8916-based Android One
-devices (aka "google-seed") are also based on the Longcheer L8150. They
-are available under names like "Cherry Mobile One G1", "i-mobile IQ II",
-and "General Mobile 4G". They are also covered by this device tree.
+The OnePlus 6 shipped with an extremely usecase specific touchscreen
+driver, it implemented only the bare minimum parts of the highly generic
+rmi4 protocol, instead hardcoding most of the register addresses.
 
-Thanks,
-Stephan
+As a result, the third party touchscreen controllers that are often
+found in replacement screens, implement only the registers that the
+downstream driver reads from. They additionally have other restrictions
+such as heavy penalties on unaligned reads.
+
+This series attempts to implement the necessary workaround to support
+some of these chips with the rmi4 driver. Although it's worth noting
+that at the time of writing there are other unofficial controllers in
+the wild that don't work even with these patches.
+
+We have been shipping these patches in postmarketOS for the last several
+months, and they are known to not cause any regressions on the OnePlus
+6/6T (with the official Synaptics controller), however I don't own any
+other rmi4 hardware to further validate this.
+
+These patches were contributed by a community developer who has given
+permission for me to submit them on their behalf.
+
+---
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Vincent Huang <vincent.huang@tw.synaptics.com>
+Cc: methanal <baclofen@tuta.io>
+Cc: linux-input@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: phone-devel@vger.kernel.org
+Cc: ~postmarketos/upstreaming@lists.sr.ht
+
+---
+Caleb Connolly (2):
+      dt-bindings: input: syna,rmi4: document syna,pdt-fallback-desc
+      Input: synaptics-rmi4 - handle duplicate/unknown PDT entries
+
+methanal (5):
+      Input: synaptics-rmi4 - f12: use hardcoded values for aftermarket touch ICs
+      Input: synaptics-rmi4 - f55: handle zero electrode count
+      Input: synaptics-rmi4 - don't do unaligned reads in IRQ context
+      Input: synaptics-rmi4 - read product ID on aftermarket touch ICs
+      Input: synaptics-rmi4 - support fallback values for PDT descriptor bytes
+
+ .../devicetree/bindings/input/syna,rmi4.yaml       |  10 ++
+ drivers/input/rmi4/rmi_driver.c                    | 134 ++++++++++++++++++---
+ drivers/input/rmi4/rmi_driver.h                    |   8 ++
+ drivers/input/rmi4/rmi_f01.c                       |  14 +++
+ drivers/input/rmi4/rmi_f12.c                       | 117 ++++++++++++++----
+ drivers/input/rmi4/rmi_f55.c                       |   5 +
+ include/linux/rmi.h                                |   3 +
+ 7 files changed, 247 insertions(+), 44 deletions(-)
+---
+base-commit: b0d95ff7653ef6ace66a24d6c09147d0731825ce
+
+// Caleb (they/them)
+
