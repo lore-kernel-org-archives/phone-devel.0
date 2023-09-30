@@ -2,259 +2,149 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD176E7735F
-	for <phone-devel@archiver.kernel.org>; Sat, 30 Sep 2023 09:30:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A8E15E77376
+	for <phone-devel@archiver.kernel.org>; Sat, 30 Sep 2023 14:22:19 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233964AbjI3Jai (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 30 Sep 2023 05:30:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50090 "EHLO
+        id S234255AbjI3OWU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 30 Sep 2023 10:22:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229645AbjI3Jah (ORCPT
+        with ESMTP id S234250AbjI3OWT (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 30 Sep 2023 05:30:37 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 507B8CA;
-        Sat, 30 Sep 2023 02:30:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4FFC433C7;
-        Sat, 30 Sep 2023 09:30:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696066232;
-        bh=tin0U19Nf4ANHDkcJXK1cl2YnmWbZlWUAWYQns6q95A=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GrJMGkZXrPIT7StjOmeW+Fl8xwgebNyjtUdAOXRb7MJ/TkKMz13DPx5Qoi0HwXWp1
-         Mj2c9yfx7SVQvUXsKfnq2P+RHMAyI6mccAk8fKyDW4gULxhlZPGShSX0WB+iPaLSr7
-         mUiK0T0ddtqYsPPd0h1y920r2619heC5HkItOvuIA5vB7ZbXGsO9h6OwebpZKIXYfF
-         cpzqp4c9klicbTpjXdFyqmWoSxM1g9gXG3Rv/6g0U6gQbBYq5kpvOkn71X4pJA4cJz
-         KBit/mnJ2hHesyHyAhpoqwuKWDve8VIIRBfPJ7YgW7vnqnXZCqNQXymd7meZ+Cwm2y
-         ZlR+A2h8PKMfg==
-Date:   Sat, 30 Sep 2023 10:30:24 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc:     Robert Jarzmik <robert.jarzmik@free.fr>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andy@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        Sat, 30 Sep 2023 10:22:19 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F89ACF
+        for <phone-devel@vger.kernel.org>; Sat, 30 Sep 2023 07:22:16 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-405497850dbso131195155e9.0
+        for <phone-devel@vger.kernel.org>; Sat, 30 Sep 2023 07:22:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1696083735; x=1696688535; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tmWoBEvDsZo+e0om3qRJkcAT9R6+73QWglFrdYXAq8Q=;
+        b=abwEmbI4X7kocLwgSnqgpPOYSmR7K9dr0eVU9ORPgkTYMAzxufw6EGjYlCxFLbc+Sg
+         df5FSXwmzRWGHo+V523+Wgc3/P5y2SE3sdVHDyJ6OmM5xZmwdwIyLlNwxCjh6Cv6gK9J
+         Bi1mois5inNmiFUniKtXdeuxdHuap8pHnAuzYhc6Hyb7HJRjNAqcitRXnWArIhZpWeM2
+         CZsZglbmP3Bum42rfJ0LyBukgBLQO3R1OauwETRoj+dImXmSZbZGf/EIPm936Mr+eyfS
+         eOf68TVuBVvlga3SeX8Jk2pVNKtUUEtkkA58u+Wm9UJ6gNr1dmC/FiEaBcpmabAZq+/i
+         1cBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696083735; x=1696688535;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tmWoBEvDsZo+e0om3qRJkcAT9R6+73QWglFrdYXAq8Q=;
+        b=itbxl6nXea2tFffC0RxLWEuQR/B565LUFGf4V4MgWuxzsZgFlYFfCbU9Nj5wZLtOsu
+         K+jzJT+WKlhC/kEBBKI4LDKd26mPy8ZLGSJwcQyG8WO4xtmNbIv1PcbMTlG6vhmvfoB4
+         aF3EMQdXDqB9TOFdXjY8LABZlScJXOtwU1P2qwZRuTNlIWHa01aV7hQ97SX6ES0aKuoE
+         QBla/kHO8tMXPpY/fHuBf5uOQSdsopKxuLsMUPasgN0cSm+PIa+R5BNaFZ/VEhxFyXeK
+         8PJdoK6Kq3GiF1h0QtKdRr+G5DvdhEIJy71BLPwyJZzrMTdX1uwzVTaxodUqc4qpmO7i
+         J4Yg==
+X-Gm-Message-State: AOJu0YxktEVRqk/43/njaBaTG5cimfh3aDgXaE2hMfXw8nDPkXNAoovt
+        nlGSv2doc24pBjux4SHIe3uD1g==
+X-Google-Smtp-Source: AGHT+IEeOLZjQRlPTA2YJ4zNm6tK9BdP1lPn6tu9mG+qkL95RPggeetZ4BN4mEQD6tyVTR9TnnAd5Q==
+X-Received: by 2002:a1c:7211:0:b0:405:367d:4656 with SMTP id n17-20020a1c7211000000b00405367d4656mr6670092wmc.29.1696083734983;
+        Sat, 30 Sep 2023 07:22:14 -0700 (PDT)
+Received: from [192.168.8.76] ([88.154.47.206])
+        by smtp.gmail.com with ESMTPSA id p14-20020adfe60e000000b003197b85bad2sm23963175wrm.79.2023.09.30.07.22.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 30 Sep 2023 07:22:14 -0700 (PDT)
+Message-ID: <c5753cf5-044c-4494-b58e-0c133e7a4a42@linaro.org>
+Date:   Sat, 30 Sep 2023 16:22:08 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] dt-bindings: i2c: qcom-cci: Document SC7280
+ compatible
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hardening@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        afaerber@suse.de, balejk@matfyz.cz
-Subject: Re: [PATCH RESEND v5 3/8] dt-bindings: clock: Add Marvell PXA1908
- clock bindings
-Message-ID: <20230930-purr-catchable-7149ee271df9@spud>
-References: <20230929-pxa1908-lkml-v5-0-5aa5a1109c5f@skole.hr>
- <20230929-pxa1908-lkml-v5-3-5aa5a1109c5f@skole.hr>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="xztbYI3ipS2Vh9bj"
-Content-Disposition: inline
-In-Reply-To: <20230929-pxa1908-lkml-v5-3-5aa5a1109c5f@skole.hr>
+        cros-qcom-dts-watchers@chromium.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230929-sc7280-cci-v1-0-16c7d386f062@fairphone.com>
+ <20230929-sc7280-cci-v1-1-16c7d386f062@fairphone.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20230929-sc7280-cci-v1-1-16c7d386f062@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
---xztbYI3ipS2Vh9bj
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Sep 29, 2023 at 05:41:59PM +0200, Duje Mihanovi=C4=87 wrote:
-> Add dt bindings and documentation for the Marvell PXA1908 clock
-> controller.
->=20
-> Signed-off-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
-
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-
-Thanks,
-Conor.
-
+On 29/09/2023 10:01, Luca Weiss wrote:
+> Document the compatible for the CCI block found on SC7280 SoC.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->  .../devicetree/bindings/clock/marvell,pxa1908.yaml | 48 ++++++++++++
->  include/dt-bindings/clock/marvell,pxa1908.h        | 88 ++++++++++++++++=
-++++++
->  2 files changed, 136 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml=
- b/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
-> new file mode 100644
-> index 000000000000..4e78933232b6
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/marvell,pxa1908.yaml
-> @@ -0,0 +1,48 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/clock/marvell,pxa1908.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Marvell PXA1908 Clock Controllers
-> +
-> +maintainers:
-> +  - Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
-> +
-> +description: |
-> +  The PXA1908 clock subsystem generates and supplies clock to various
-> +  controllers within the PXA1908 SoC. The PXA1908 contains numerous clock
-> +  controller blocks, with the ones currently supported being APBC, APBCP=
-, MPMU
-> +  and APMU roughly corresponding to internal buses.
-> +
-> +  All these clock identifiers could be found in <include/dt-bindings/mar=
-vell,pxa1908.h>.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - marvell,pxa1908-apbc
-> +      - marvell,pxa1908-apbcp
-> +      - marvell,pxa1908-mpmu
-> +      - marvell,pxa1908-apmu
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  '#clock-cells':
-> +    const: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - '#clock-cells'
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  # APMU block:
-> +  - |
-> +    clock-controller@d4282800 {
-> +      compatible =3D "marvell,pxa1908-apmu";
-> +      reg =3D <0xd4282800 0x400>;
-> +      #clock-cells =3D <1>;
-> +    };
-> diff --git a/include/dt-bindings/clock/marvell,pxa1908.h b/include/dt-bin=
-dings/clock/marvell,pxa1908.h
-> new file mode 100644
-> index 000000000000..fb15b0d0cd4c
-> --- /dev/null
-> +++ b/include/dt-bindings/clock/marvell,pxa1908.h
-> @@ -0,0 +1,88 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause */
-> +#ifndef __DTS_MARVELL_PXA1908_CLOCK_H
-> +#define __DTS_MARVELL_PXA1908_CLOCK_H
-> +
-> +/* plls */
-> +#define PXA1908_CLK_CLK32		1
-> +#define PXA1908_CLK_VCTCXO		2
-> +#define PXA1908_CLK_PLL1_624		3
-> +#define PXA1908_CLK_PLL1_416		4
-> +#define PXA1908_CLK_PLL1_499		5
-> +#define PXA1908_CLK_PLL1_832		6
-> +#define PXA1908_CLK_PLL1_1248		7
-> +#define PXA1908_CLK_PLL1_D2		8
-> +#define PXA1908_CLK_PLL1_D4		9
-> +#define PXA1908_CLK_PLL1_D8		10
-> +#define PXA1908_CLK_PLL1_D16		11
-> +#define PXA1908_CLK_PLL1_D6		12
-> +#define PXA1908_CLK_PLL1_D12		13
-> +#define PXA1908_CLK_PLL1_D24		14
-> +#define PXA1908_CLK_PLL1_D48		15
-> +#define PXA1908_CLK_PLL1_D96		16
-> +#define PXA1908_CLK_PLL1_D13		17
-> +#define PXA1908_CLK_PLL1_32		18
-> +#define PXA1908_CLK_PLL1_208		19
-> +#define PXA1908_CLK_PLL1_117		20
-> +#define PXA1908_CLK_PLL1_416_GATE	21
-> +#define PXA1908_CLK_PLL1_624_GATE	22
-> +#define PXA1908_CLK_PLL1_832_GATE	23
-> +#define PXA1908_CLK_PLL1_1248_GATE	24
-> +#define PXA1908_CLK_PLL1_D2_GATE	25
-> +#define PXA1908_CLK_PLL1_499_EN		26
-> +#define PXA1908_CLK_PLL2VCO		27
-> +#define PXA1908_CLK_PLL2		28
-> +#define PXA1908_CLK_PLL2P		29
-> +#define PXA1908_CLK_PLL2VCODIV3		30
-> +#define PXA1908_CLK_PLL3VCO		31
-> +#define PXA1908_CLK_PLL3		32
-> +#define PXA1908_CLK_PLL3P		33
-> +#define PXA1908_CLK_PLL3VCODIV3		34
-> +#define PXA1908_CLK_PLL4VCO		35
-> +#define PXA1908_CLK_PLL4		36
-> +#define PXA1908_CLK_PLL4P		37
-> +#define PXA1908_CLK_PLL4VCODIV3		38
-> +
-> +/* apb (apbc) peripherals */
-> +#define PXA1908_CLK_UART0		1
-> +#define PXA1908_CLK_UART1		2
-> +#define PXA1908_CLK_GPIO		3
-> +#define PXA1908_CLK_PWM0		4
-> +#define PXA1908_CLK_PWM1		5
-> +#define PXA1908_CLK_PWM2		6
-> +#define PXA1908_CLK_PWM3		7
-> +#define PXA1908_CLK_SSP0		8
-> +#define PXA1908_CLK_SSP1		9
-> +#define PXA1908_CLK_IPC_RST		10
-> +#define PXA1908_CLK_RTC			11
-> +#define PXA1908_CLK_TWSI0		12
-> +#define PXA1908_CLK_KPC			13
-> +#define PXA1908_CLK_SWJTAG		14
-> +#define PXA1908_CLK_SSP2		15
-> +#define PXA1908_CLK_TWSI1		16
-> +#define PXA1908_CLK_THERMAL		17
-> +#define PXA1908_CLK_TWSI3		18
-> +
-> +/* apb (apbcp) peripherals */
-> +#define PXA1908_CLK_UART2		1
-> +#define PXA1908_CLK_TWSI2		2
-> +#define PXA1908_CLK_AICER		3
-> +
-> +/* axi (apmu) peripherals */
-> +#define PXA1908_CLK_CCIC1		1
-> +#define PXA1908_CLK_ISP			2
-> +#define PXA1908_CLK_DSI1		3
-> +#define PXA1908_CLK_DISP1		4
-> +#define PXA1908_CLK_CCIC0		5
-> +#define PXA1908_CLK_SDH0		6
-> +#define PXA1908_CLK_SDH1		7
-> +#define PXA1908_CLK_USB			8
-> +#define PXA1908_CLK_NF			9
-> +#define PXA1908_CLK_CORE_DEBUG		10
-> +#define PXA1908_CLK_VPU			11
-> +#define PXA1908_CLK_GC			12
-> +#define PXA1908_CLK_SDH2		13
-> +#define PXA1908_CLK_GC2D		14
-> +#define PXA1908_CLK_TRACE		15
-> +#define PXA1908_CLK_DVC_DFC_DEBUG	16
-> +
-> +#endif
->=20
-> --=20
-> 2.42.0
->=20
->=20
+>  Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+> index 042d4dc636ee..158588236749 100644
+> --- a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+> +++ b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
+> @@ -25,6 +25,7 @@ properties:
+>  
+>        - items:
 
---xztbYI3ipS2Vh9bj
-Content-Type: application/pgp-signature; name="signature.asc"
+This is not enough.
 
------BEGIN PGP SIGNATURE-----
+You miss constraining clocks.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZRfqsAAKCRB4tDGHoIJi
-0jIyAQClD4BtPUpM5qBMvLM7SmIKbmSXy1dLhn3+zWj1ceg1kgD/XLaUdvmI7W0U
-Itc9gfrWaDvaBLCZSGLLCFp10gm07AE=
-=eaix
------END PGP SIGNATURE-----
+Best regards,
+Krzysztof
 
---xztbYI3ipS2Vh9bj--
