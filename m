@@ -2,251 +2,233 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35860E743DD
-	for <phone-devel@archiver.kernel.org>; Sat, 30 Sep 2023 17:09:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A684CE748E9
+	for <phone-devel@archiver.kernel.org>; Sun,  1 Oct 2023 13:52:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234618AbjI3RJa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 30 Sep 2023 13:09:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50370 "EHLO
+        id S235005AbjJANws (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 1 Oct 2023 09:52:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234609AbjI3RJa (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 30 Sep 2023 13:09:30 -0400
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E3811F
-        for <phone-devel@vger.kernel.org>; Sat, 30 Sep 2023 10:09:27 -0700 (PDT)
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-40572aeb673so123693635e9.0
-        for <phone-devel@vger.kernel.org>; Sat, 30 Sep 2023 10:09:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696093765; x=1696698565; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0S4YyoMRJsfSt6+U3bqbOqX9jPh1v33yWTsmXu+J/uw=;
-        b=YUaXy7xrG5NEVOCLES2IcQxnzjsmtTtvxqDd0r0rjaDxeGud1SyOckjfvnlrBfdrPY
-         AwkStSfqYh/4X7RNoyp3HM/eYPr0VtUT8Ii9UXrD8FZO8DwIz8aAW9N/PlU+/SzXNRQi
-         GazVTd59QcrbqSwwYYozBUlUj08UH3GrL/vslOylLvtTQXjYC4qqz+EBtb7lisrTKP/N
-         RqKj1GQAu7mChbERhqyx1fBgY114fXs3NDQIr79weCqEpDrrW+Sb+ijZdzWgMIpf0JmL
-         MPfGmw0jbA++XSEsqc1zpr9vqsZI9D4CnZ9kBbroEKlijniA/ix4rFs2vq0qr8fdhIrA
-         J7+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696093765; x=1696698565;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0S4YyoMRJsfSt6+U3bqbOqX9jPh1v33yWTsmXu+J/uw=;
-        b=bLDzzcruWpmA+Y0ZmfpJ5Cn7uGx2u1bQxj/RGoJAZRvyaL3T7C0uol08SpEvgV+BAV
-         yCLVS4ocwlQe/m/Mfu4bkhJpB/2vIGYwstbaxVOI8N+KJLZiN0/z/Z4hXIrO/fBZIhxp
-         4vBZmv3umO30w6PBomCalbb46SjEAeVsxEHNc3fjhevFC7DcY7Alcs0SEHMfaPEXNbZm
-         NC4I7+1VDjULpehoMqZDy77FC6LWXvhNui1n32a1glv4pD6lFvZplf4qSE2x2RpjE6xV
-         U5S7CpRvQVL1Pmrco2SLg503M5XZZ5QEOX5xYx84QS1JVfXzHPRpz3zWmfUfmmqMzj47
-         xIag==
-X-Gm-Message-State: AOJu0YwfavyMOkZjgE+rv82l9pDEUtW3rFlOjq2kAeKkWPEvyeRU6jpO
-        UjUaUMJWdXwME7J3GMfgykVBSyL04p7tW2Hm3W6/8A==
-X-Google-Smtp-Source: AGHT+IEuMQArzFFl4o3M9NXXO87+2a99RjnP9y0Nf+twdzXJ0GajD6y4kBW4h3foq2wahu9I0hEgQw==
-X-Received: by 2002:a05:600c:b4e:b0:402:95a0:b2ae with SMTP id k14-20020a05600c0b4e00b0040295a0b2aemr6499769wmr.32.1696093765288;
-        Sat, 30 Sep 2023 10:09:25 -0700 (PDT)
-Received: from lion.localdomain (host-2-99-112-229.as13285.net. [2.99.112.229])
-        by smtp.gmail.com with ESMTPSA id y21-20020a7bcd95000000b00405c7591b09sm3756368wmj.35.2023.09.30.10.09.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Sep 2023 10:09:24 -0700 (PDT)
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-Date:   Sat, 30 Sep 2023 18:08:51 +0100
-Subject: [PATCH 7/7] Input: synaptics-rmi4 - support fallback values for
- PDT descriptor bytes
+        with ESMTP id S234379AbjJANws (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sun, 1 Oct 2023 09:52:48 -0400
+Received: from smtprelay05.ispgateway.de (smtprelay05.ispgateway.de [80.67.18.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D71EF91;
+        Sun,  1 Oct 2023 06:52:44 -0700 (PDT)
+Received: from [92.206.139.21] (helo=note-book.lan)
+        by smtprelay05.ispgateway.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <git@apitzsch.eu>)
+        id 1qmwsE-0004h3-1S; Sun, 01 Oct 2023 15:52:42 +0200
+From:   =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Date:   Sun, 01 Oct 2023 15:52:12 +0200
+Subject: [PATCH v5 1/2] dt-bindings: leds: Add Kinetic KTD2026/2027 LED
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230929-caleb-rmi4-quirks-v1-7-cc3c703f022d@linaro.org>
-References: <20230929-caleb-rmi4-quirks-v1-0-cc3c703f022d@linaro.org>
-In-Reply-To: <20230929-caleb-rmi4-quirks-v1-0-cc3c703f022d@linaro.org>
-To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Vincent Huang <vincent.huang@tw.synaptics.com>
-Cc:     methanal <baclofen@tuta.io>, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+Content-Transfer-Encoding: 8bit
+Message-Id: <20231001-ktd202x-v5-1-f544a1d0510d@apitzsch.eu>
+References: <20231001-ktd202x-v5-0-f544a1d0510d@apitzsch.eu>
+In-Reply-To: <20231001-ktd202x-v5-0-f544a1d0510d@apitzsch.eu>
+To:     Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
-        Caleb Connolly <caleb.connolly@linaro.org>
-X-Mailer: b4 0.13-dev-46309
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5765;
- i=caleb.connolly@linaro.org; h=from:subject:message-id;
- bh=Y56SCFSNeAsG17qE46++u/KK8CjxJ0A7DKHt1n0Mzm8=;
- b=owGbwMvMwCFYaeA6f6eBkTjjabUkhlSJMLsWUysxr4yCxe9SzmpfERdzilSRm7Nix0rhIqGZL
- IX7jT90lLIwCHIwyIopsoifWGbZtPayvcb2BRdg5rAygQxh4OIUgIncWcLwT23BkQAxBb/EAxO7
- zJtexfD7R+0VvXlIoC0jQW2NrHCDF8N/T+mb1YczeXY8PZr4537K7oDnKhutAr/MuNAb7TD59Ck
- +awA=
-X-Developer-Key: i=caleb.connolly@linaro.org; a=openpgp;
- fpr=83B24DA7FE145076BC38BB250CD904EB673A7C47
+        =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+        =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.12.3
+X-Df-Sender: YW5kcmVAYXBpdHpzY2guZXU=
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: methanal <baclofen@tuta.io>
+Document Kinetic KTD2026/2027 LED driver devicetree bindings.
 
-Some replacement displays include third-party touch ICs which do not
-expose the function number and the interrupt status in its PDT entries.
-
-OnePlus 6 (original touch IC)
-  rmi4_i2c 12-0020: read 6 bytes at 0x00e3: 0 (2b 22 0d 06 01 01)
-
-OnePlus 6 (aftermarket touch IC)
-  rmi4_i2c 12-0020: read 6 bytes at 0x00e3: 0 (2c 23 0d 06 00 00)
-
-Introduce a new devicetree property `syna,pdt-desc` which can be used to
-provide platform-specific fallback values for users with a replacement
-display with an aftermarket touch IC.
-
-Signed-off-by: methanal <baclofen@tuta.io>
-[codeflow adjustments, checkpatch fixes, wording]
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
 ---
- drivers/input/rmi4/rmi_driver.c | 67 ++++++++++++++++++++++++++++++++++++++---
- drivers/input/rmi4/rmi_driver.h |  2 ++
- include/linux/rmi.h             |  3 ++
- 3 files changed, 67 insertions(+), 5 deletions(-)
+ .../devicetree/bindings/leds/kinetic,ktd202x.yaml  | 171 +++++++++++++++++++++
+ 1 file changed, 171 insertions(+)
 
-diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
-index 58bf3dfbf81c..5e1e3d5dd800 100644
---- a/drivers/input/rmi4/rmi_driver.c
-+++ b/drivers/input/rmi4/rmi_driver.c
-@@ -461,9 +461,10 @@ static int rmi_driver_reset_handler(struct rmi_device *rmi_dev)
- 	return 0;
- }
- 
--static int rmi_read_pdt_entry(struct rmi_device *rmi_dev,
--			      struct pdt_entry *entry, u16 pdt_address)
-+static int rmi_read_pdt_entry(struct rmi_device *rmi_dev, struct pdt_entry *entry,
-+			      struct pdt_scan_state *state, u16 pdt_address)
- {
-+	const struct rmi_device_platform_data *pdata = rmi_get_platform_data(rmi_dev);
- 	u8 buf[RMI_PDT_ENTRY_SIZE];
- 	int error;
- 
-@@ -474,6 +475,21 @@ static int rmi_read_pdt_entry(struct rmi_device *rmi_dev,
- 		return error;
- 	}
- 
-+	if (pdata->pdt_fallback_size > state->pdt_count * RMI_OF_PDT_DESC_CELLS + 1) {
-+		/* Use the description bytes from DT */
-+		buf[5] = pdata->pdt_fallback_desc[state->pdt_count * RMI_OF_PDT_DESC_CELLS];
-+		buf[4] = pdata->pdt_fallback_desc[state->pdt_count * RMI_OF_PDT_DESC_CELLS + 1];
+diff --git a/Documentation/devicetree/bindings/leds/kinetic,ktd202x.yaml b/Documentation/devicetree/bindings/leds/kinetic,ktd202x.yaml
+new file mode 100644
+index 000000000000..832c030a5acf
+--- /dev/null
++++ b/Documentation/devicetree/bindings/leds/kinetic,ktd202x.yaml
+@@ -0,0 +1,171 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/leds/kinetic,ktd202x.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+		error = rmi_read_block(rmi_dev, pdt_address, buf,
-+				RMI_PDT_ENTRY_SIZE - 2);
-+		if (error) {
-+			dev_err(&rmi_dev->dev,
-+					"Read PDT entry at %#06x failed, code: %d.\n",
-+					pdt_address, error);
-+			return error;
-+		}
-+	}
++title: Kinetic KTD2026/7 RGB/White LED Driver
 +
- 	entry->page_start = pdt_address & RMI4_PAGE_MASK;
- 	entry->query_base_addr = buf[0];
- 	entry->command_base_addr = buf[1];
-@@ -551,7 +567,7 @@ static int rmi_scan_pdt_page(struct rmi_device *rmi_dev,
- 	int retval;
- 
- 	for (addr = pdt_start; addr >= pdt_end; addr -= RMI_PDT_ENTRY_SIZE) {
--		error = rmi_read_pdt_entry(rmi_dev, &pdt_entry, addr);
-+		error = rmi_read_pdt_entry(rmi_dev, &pdt_entry, state, addr);
- 		if (error)
- 			return error;
- 
-@@ -1028,9 +1044,11 @@ static int rmi_driver_remove(struct device *dev)
- }
- 
- #ifdef CONFIG_OF
--static int rmi_driver_of_probe(struct device *dev,
-+static int rmi_driver_of_probe(struct rmi_device *rmi_dev,
- 				struct rmi_device_platform_data *pdata)
- {
-+	struct device *dev = rmi_dev->xport->dev;
-+	u8 buf[RMI_PDT_ENTRY_SIZE];
- 	int retval;
- 
- 	retval = rmi_of_property_read_u32(dev, &pdata->reset_delay_ms,
-@@ -1038,6 +1056,45 @@ static int rmi_driver_of_probe(struct device *dev,
- 	if (retval)
- 		return retval;
- 
-+	/*
-+	 * In some aftermerket touch ICs, the first PDT entry is empty and
-+	 * the function number register is 0. If so, the platform
-+	 * may have provided backup PDT entries in the device tree.
-+	 */
++maintainers:
++  - André Apitzsch <git@apitzsch.eu>
 +
-+	retval = rmi_read_block(rmi_dev, PDT_START_SCAN_LOCATION,
-+			buf, RMI_PDT_ENTRY_SIZE);
-+	if (retval) {
-+		dev_err(dev, "Read PDT entry at %#06x failed, code: %d.\n",
-+			PDT_START_SCAN_LOCATION, retval);
-+		return retval;
-+	}
++description: |
++  The KTD2026/7 is a RGB/White LED driver with I2C interface.
 +
-+	if (!RMI4_END_OF_PDT(buf[5]))
-+		return 0;
++  The data sheet can be found at:
++    https://www.kinet-ic.com/uploads/KTD2026-7-04h.pdf
 +
-+	pdata->pdt_fallback_size = of_property_count_u8_elems(dev->of_node,
-+						  "syna,pdt-fallback-desc");
++properties:
++  compatible:
++    enum:
++      - kinetic,ktd2026
++      - kinetic,ktd2027
 +
-+	/* The rmi4 driver would fail later anyway, so just error out now. */
-+	if (pdata->pdt_fallback_size == -EINVAL) {
-+		dev_err(dev, "First PDT entry is empty and no backup values provided\n");
-+		return -EINVAL;
-+	}
++  reg:
++    maxItems: 1
 +
-+	if (pdata->pdt_fallback_size < 0) {
-+		dev_err(dev, "syna,ptd-desc property was not specified properly: %d\n",
-+			pdata->pdt_fallback_size);
-+		return pdata->pdt_fallback_size;
-+	}
++  vin-supply:
++    description: Regulator providing power to the "VIN" pin.
 +
-+	pdata->pdt_fallback_desc = devm_kzalloc(dev, pdata->pdt_fallback_size, GFP_KERNEL);
++  vio-supply:
++    description: Regulator providing power for pull-up of the I/O lines.
++      Note that this regulator does not directly connect to KTD2026, but is
++      needed for the correct operation of the status ("ST") and I2C lines.
 +
-+	retval = of_property_read_u8_array(dev->of_node, "syna,pdt-fallback-desc",
-+		pdata->pdt_fallback_desc, pdata->pdt_fallback_size);
-+	if (retval < 0)
-+		return retval;
++  "#address-cells":
++    const: 1
 +
- 	return 0;
- }
- #else
-@@ -1163,7 +1220,7 @@ static int rmi_driver_probe(struct device *dev)
- 	pdata = rmi_get_platform_data(rmi_dev);
- 
- 	if (rmi_dev->xport->dev->of_node) {
--		retval = rmi_driver_of_probe(rmi_dev->xport->dev, pdata);
-+		retval = rmi_driver_of_probe(rmi_dev, pdata);
- 		if (retval)
- 			return retval;
- 	}
-diff --git a/drivers/input/rmi4/rmi_driver.h b/drivers/input/rmi4/rmi_driver.h
-index e1a5412f2f8f..2531c32d6163 100644
---- a/drivers/input/rmi4/rmi_driver.h
-+++ b/drivers/input/rmi4/rmi_driver.h
-@@ -31,6 +31,8 @@
- #define RMI_PDT_FUNCTION_VERSION_MASK   0x60
- #define RMI_PDT_INT_SOURCE_COUNT_MASK   0x07
- 
-+#define RMI_OF_PDT_DESC_CELLS 2
++  "#size-cells":
++    const: 0
 +
- #define PDT_START_SCAN_LOCATION 0x00e9
- #define PDT_END_SCAN_LOCATION	0x0005
- #define RMI4_END_OF_PDT(id) ((id) == 0x00 || (id) == 0xff)
-diff --git a/include/linux/rmi.h b/include/linux/rmi.h
-index ab7eea01ab42..974597960b5e 100644
---- a/include/linux/rmi.h
-+++ b/include/linux/rmi.h
-@@ -214,6 +214,9 @@ struct rmi_device_platform_data {
- 	int reset_delay_ms;
- 	int irq;
- 
-+	u8 *pdt_fallback_desc;
-+	int pdt_fallback_size;
++  multi-led:
++    type: object
++    $ref: leds-class-multicolor.yaml#
++    unevaluatedProperties: false
 +
- 	struct rmi_device_platform_data_spi spi_data;
- 
- 	/* function handler pdata */
++    properties:
++      "#address-cells":
++        const: 1
++
++      "#size-cells":
++        const: 0
++
++    patternProperties:
++      "^led@[0-3]$":
++        type: object
++        $ref: common.yaml#
++        unevaluatedProperties: false
++
++        properties:
++          reg:
++            description: Index of the LED.
++            minimum: 0
++            maximum: 3
++
++        required:
++          - reg
++          - color
++
++    required:
++      - "#address-cells"
++      - "#size-cells"
++
++patternProperties:
++  "^led@[0-3]$":
++    type: object
++    $ref: common.yaml#
++    unevaluatedProperties: false
++
++    properties:
++      reg:
++        description: Index of the LED.
++        minimum: 0
++        maximum: 3
++
++    required:
++      - reg
++
++required:
++  - compatible
++  - reg
++  - "#address-cells"
++  - "#size-cells"
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/leds/common.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        led-controller@30 {
++            compatible = "kinetic,ktd2026";
++            reg = <0x30>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            vin-supply = <&pm8916_l17>;
++            vio-supply = <&pm8916_l6>;
++
++            led@0 {
++                reg = <0>;
++                function = LED_FUNCTION_STATUS;
++                color = <LED_COLOR_ID_RED>;
++            };
++
++            led@1 {
++                reg = <1>;
++                function = LED_FUNCTION_STATUS;
++                color = <LED_COLOR_ID_GREEN>;
++            };
++
++            led@2 {
++                reg = <2>;
++                function = LED_FUNCTION_STATUS;
++                color = <LED_COLOR_ID_BLUE>;
++            };
++        };
++    };
++  - |
++    #include <dt-bindings/leds/common.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        led-controller@30 {
++            compatible = "kinetic,ktd2026";
++            reg = <0x30>;
++            #address-cells = <1>;
++            #size-cells = <0>;
++
++            vin-supply = <&pm8916_l17>;
++            vio-supply = <&pm8916_l6>;
++
++            multi-led {
++                color = <LED_COLOR_ID_RGB>;
++                function = LED_FUNCTION_STATUS;
++
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                led@0 {
++                    reg = <0>;
++                    color = <LED_COLOR_ID_RED>;
++                };
++
++                led@1 {
++                    reg = <1>;
++                    color = <LED_COLOR_ID_GREEN>;
++                };
++
++                led@2 {
++                    reg = <2>;
++                    color = <LED_COLOR_ID_BLUE>;
++                };
++            };
++        };
++    };
 
 -- 
 2.42.0
