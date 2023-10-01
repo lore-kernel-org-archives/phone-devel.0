@@ -2,61 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E5BFE748F3
-	for <phone-devel@archiver.kernel.org>; Sun,  1 Oct 2023 17:19:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E3766E748F7
+	for <phone-devel@archiver.kernel.org>; Sun,  1 Oct 2023 17:19:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233932AbjJARTM (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 1 Oct 2023 13:19:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44438 "EHLO
+        id S235230AbjJARTL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 1 Oct 2023 13:19:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235223AbjJARTL (ORCPT
+        with ESMTP id S235184AbjJARTL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>); Sun, 1 Oct 2023 13:19:11 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46BE1E3
-        for <phone-devel@vger.kernel.org>; Sun,  1 Oct 2023 10:19:09 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-405497850dbso138154815e9.0
-        for <phone-devel@vger.kernel.org>; Sun, 01 Oct 2023 10:19:09 -0700 (PDT)
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87F9DE0
+        for <phone-devel@vger.kernel.org>; Sun,  1 Oct 2023 10:19:08 -0700 (PDT)
+Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-32799639a2aso848540f8f.3
+        for <phone-devel@vger.kernel.org>; Sun, 01 Oct 2023 10:19:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696180747; x=1696785547; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1696180746; x=1696785546; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=N9kK3xz4P/eX7Le3jl9/AW07O1aDO3RSdht/nTqRVdY=;
-        b=VtDVSFLm5oQrjzQFvRjQO3kqUvu04tn8pB+KcbVX1N0OjHDhhM53niIcfT78i1qyup
-         HYx5BjocNNtWO9mNajxgEgdy/ay7z/oZY2jIvtZUTW476lEXLj0wq04W58Af1eXPIjvr
-         JjUhW4p+QOFXkeB6pcv9pmjFfAPtudwEmldC5+/dxcL16p1vdmhvmk/TgplGM7H5vb7S
-         t5rhyVUodxTW6soh5iPuXbX0+tD1f6J899Go8k2wbnPwus7oLkg9WqiF3Q4FlKZUtANA
-         oWA10J4VHCfUSZ5vrvv0U6/QDh3u7rVCcAxJ6Rf4ExhrvcNUX6gPdHkXIy8GdC9ImBi1
-         c0Yw==
+        bh=gHH2omA1s8Yg4jj5Xktf/NmIdGT8UW7+Aak9UE+FTBI=;
+        b=j5cN/Z1mok7o8siqeWG+WD7COhBsh1EfF1IK3wWOlp1Pq5K1Hx+kXf8TSjtpLaQg3C
+         07Zz95enVn9p9Z6OzfVcJuSh6hXRHoQZSvPeenwNgulPsCMHNWk9iaNWIAyRkxNuJZg4
+         ENW7J5xiMIZZ0+BZNX9eicPU1Gx1/thuIZ3pmXuidh4FcbbgTBnr9z/U+KnH24l8zZQy
+         RqFi1WGIcaA+xaRImZBmHGOvQOJX5slVCOEFK1i2JLVdjlmlo9vi91eqRhbSmEJf1ObK
+         6wNmMDUN2AFs9Gw4gSLaCR2b5f1gB+iFdF3Si3tGE+viLvGZNv5X89Uo9nwUI6zNG+nB
+         EQAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696180747; x=1696785547;
+        d=1e100.net; s=20230601; t=1696180746; x=1696785546;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=N9kK3xz4P/eX7Le3jl9/AW07O1aDO3RSdht/nTqRVdY=;
-        b=Byp1URTjYaRedGu9PWHCErbX5BHzt5a5uzOTUYkddjjeselTPj5MfgULBxFWinrUTA
-         R/wuysU0/Q+QczZ5F1bZyadouRtQnCPijiX11fVqePGvBS1Ne2EGqdbGLra6joWMgtkT
-         gjDdyfCu0ypUGl2F4ve4V3yZzTVFB7hDM6jtY+9lxm2W4Uxkarnsgk4Tm2kcGgaPITXl
-         V78WZ7jj+4/6xhMw/prK2Th+Zq+82n2K+TGzRJ9q+m4ifGa1qVHS1wNUdjUsrCZOAkWa
-         ve4mgpTp7+/eWBcJJJVvSphMCeC7t/hwDrnhliLNuJzsYHUbPzI3UPi7FKunWC+Ze9B/
-         hGWQ==
-X-Gm-Message-State: AOJu0YzLi8bnd53fiwtoxzgN7At6gtvy+quC4O/D+F9tOwZGCFkbiaD5
-        tYoJnLwKNr4gD786xVbvY/wtKg==
-X-Google-Smtp-Source: AGHT+IHIB0SpJbf0xXHuk1VkGpM+Jm6rRCg8f1bsuc4iyDLaThzDkvU0xHssP3o6ngwAk7EkNMh0Yg==
-X-Received: by 2002:a7b:c84d:0:b0:405:1bbd:aa9c with SMTP id c13-20020a7bc84d000000b004051bbdaa9cmr9330111wml.34.1696180747646;
-        Sun, 01 Oct 2023 10:19:07 -0700 (PDT)
+        bh=gHH2omA1s8Yg4jj5Xktf/NmIdGT8UW7+Aak9UE+FTBI=;
+        b=ZAh50dNOduh60Iox456dk6WNdgo0uyIO2r5h8TLe4eAIJWIh7DrQp/fOHtxWc35Bpl
+         MC+stMlzb4QYFoLyQX4BNqAcw+DqzzdGo4h8M4rA4fSMgSYX9Me46INcMoiLWnZm39++
+         d+gboRn9jS577NchmytSyPuhuGtMxpI+BmIwjDqZjN10dp7QDArsJ1ZreHwWfIuRWlij
+         XG6LVmHVxkoTH4eTLpg8XSyTYc+rUAz3Kq5raFAFbPaF8Lw6+pEMio8WANCJbFDVUYHP
+         ctSym14sYpFMuxbbDnDrmGL5Qy85uj2YJCPkZxt3X1MI1ICJ3FsFpNe2HPFfYJWL6kMY
+         aW4A==
+X-Gm-Message-State: AOJu0YzTKPMPkAeyADJgHsHcKlYo6f2nGP7bAPh6oEeJyfnSV6dFoY9I
+        I2qnEUmNuI/XzH0uj56fTRdXvg==
+X-Google-Smtp-Source: AGHT+IGvryi3AuJAk5xX9EktDr0cH+kRACmbSovIRj9gkarcNRzSIBNoBKPinxh4g7gj7OGePOBEpg==
+X-Received: by 2002:a5d:4b89:0:b0:31a:ea9a:b602 with SMTP id b9-20020a5d4b89000000b0031aea9ab602mr8900195wrt.1.1696180746558;
+        Sun, 01 Oct 2023 10:19:06 -0700 (PDT)
 Received: from lion.localdomain (host-2-99-112-229.as13285.net. [2.99.112.229])
-        by smtp.gmail.com with ESMTPSA id n9-20020a05600c294900b00401c595fcc7sm5613042wmd.11.2023.10.01.10.19.06
+        by smtp.gmail.com with ESMTPSA id n9-20020a05600c294900b00401c595fcc7sm5613042wmd.11.2023.10.01.10.19.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Oct 2023 10:19:07 -0700 (PDT)
+        Sun, 01 Oct 2023 10:19:06 -0700 (PDT)
 From:   Caleb Connolly <caleb.connolly@linaro.org>
-Date:   Sun, 01 Oct 2023 18:19:04 +0100
-Subject: [PATCH 2/2] arm64: dts: qcom: sdm845-xiaomi-beryllium: enable
- flash led
+Date:   Sun, 01 Oct 2023 18:19:03 +0100
+Subject: [PATCH 1/2] arm64: dts: qcom: sdm845-oneplus: enable flash LED
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231001-b4-sdm845-flash-dts-v1-2-275a3abb0b10@linaro.org>
+Message-Id: <20231001-b4-sdm845-flash-dts-v1-1-275a3abb0b10@linaro.org>
 References: <20231001-b4-sdm845-flash-dts-v1-0-275a3abb0b10@linaro.org>
 In-Reply-To: <20231001-b4-sdm845-flash-dts-v1-0-275a3abb0b10@linaro.org>
 To:     Andy Gross <agross@kernel.org>,
@@ -67,37 +66,41 @@ To:     Andy Gross <agross@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>
 Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Joel Selvaraj <joelselvaraj.oss@gmail.com>,
         Caleb Connolly <caleb.connolly@linaro.org>
 X-Mailer: b4 0.13-dev-46309
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1256;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1400;
  i=caleb.connolly@linaro.org; h=from:subject:message-id;
- bh=evdVYIXgQSOtBTuRnl5BDevEMjhQURNfxR9UNO8Qn8w=;
- b=owGbwMvMwCFYaeA6f6eBkTjjabUkhlTJVRyhR/fmTj3ed+VE4qI8v+tH7h/bGC0efcEj8X/Lx
- ReB6z/YdJSyMAhyMMiKKbKIn1hm2bT2sr3G9gUXYOawMoEMYeDiFICJmJ5lZNjRkB7558qeWbPm
- zsvW2rOuK4DrZv2+S3pCEyYeYHo3I7eQ4X983pPbFeHXKko9XnBohmWI3o4p814XGhqvnyv7SFG
- uZQkA
+ bh=Zfz2LQwvMPPiN2Qwb+dfpDk64wKyyMi0H5c+r0COrD8=;
+ b=owGbwMvMwCFYaeA6f6eBkTjjabUkhlTJVRxHvwc41StImQSdnztb95HEs7dXjC9EH3P/aOTPs
+ E9/YwBTRykLgyAHg6yYIov4iWWWTWsv22tsX3ABZg4rE8gQBi5OAZjIrA2MDFuM5h4JyrdM5lpg
+ 8/SmRcet65cK6xYK/rXw1fWqLjCfJcfwP9O6VuiV3P1fxwxW3Rc5bubwIOWb1SMFL0bZ7wY8DBP
+ 0fwAA
 X-Developer-Key: i=caleb.connolly@linaro.org; a=openpgp;
  fpr=83B24DA7FE145076BC38BB250CD904EB673A7C47
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Joel Selvaraj <joelselvaraj.oss@gmail.com>
+Both the 6 and 6T feature a dual tone flash, enable it.
 
-Configure and enable the dual-tone on the PocoPhone F1
-
-Signed-off-by: Joel Selvaraj <joelselvaraj.oss@gmail.com>
 Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
 ---
- .../dts/qcom/sdm845-xiaomi-beryllium-common.dtsi   | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ .../arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 23 ++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-index 93b1582e807d..617b17b2d7d9 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi
-@@ -355,6 +355,28 @@ &pmi8998_charger {
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index b523b5fff702..e821103d49c0 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -8,6 +8,7 @@
+ /dts-v1/;
+ 
+ #include <dt-bindings/input/linux-event-codes.h>
++#include <dt-bindings/leds/common.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ #include <dt-bindings/sound/qcom,q6afe.h>
+ #include <dt-bindings/sound/qcom,q6asm.h>
+@@ -484,6 +485,28 @@ &pmi8998_charger {
  	status = "okay";
  };
  
@@ -123,9 +126,9 @@ index 93b1582e807d..617b17b2d7d9 100644
 +	};
 +};
 +
- &pm8998_resin {
- 	linux,code = <KEY_VOLUMEDOWN>;
- 	status = "okay";
+ &q6afedai {
+ 	qi2s@22 {
+ 		reg = <22>;
 
 -- 
 2.42.0
