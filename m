@@ -2,105 +2,109 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C71EE7490C
-	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 19:23:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F180AE776C6
+	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 21:35:50 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229667AbjJBTXu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 2 Oct 2023 15:23:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59920 "EHLO
+        id S229925AbjJBVfw (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 2 Oct 2023 17:35:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbjJBTXu (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 15:23:50 -0400
+        with ESMTP id S229840AbjJBVfv (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 17:35:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E68BDB0;
-        Mon,  2 Oct 2023 12:23:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6961BC433C7;
-        Mon,  2 Oct 2023 19:23:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEEB2AD;
+        Mon,  2 Oct 2023 14:35:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7AC9C433C7;
+        Mon,  2 Oct 2023 21:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696274627;
-        bh=ofpdpmQtMZ6ZQQu7vySCzJkB3i/t2T7OkqBMbhU8iEc=;
+        s=k20201202; t=1696282548;
+        bh=dtMicesKSYyffCRL1N76vJcab9XftRh1uSrvFlXyJlQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YykjI2haE4KxzAMaSHcWZlZ/4L5AuU88QdPDlbMB0ZOImoTWHtgFKa/wdzZsjw4jt
-         PEHVr5C1tt8tBa0bquE3qTwaT4UxFsHhHgAbdLTaVIy9refhutrQ8riAqVzHE18h1G
-         zxLqQKiX9WkTYTK3TwNRjiNI59bujRNVv6Rs81doQftFy+zQXZc/yham4SwCvKFoMV
-         ZKjMbdzMzfycUu8+kKsKJL03U+jrB08cBHBPHUuhhTJsXxbKOSaaH5EtXRxdlpqdXJ
-         4uzur1TJMNf0DqpaflXxeaYxKGMHrGPHjdTPjIZ9yzPGVOKFWKFqSimWwD0cW81Vy/
-         szy1gj2rweqXw==
-Received: (nullmailer pid 2383796 invoked by uid 1000);
-        Mon, 02 Oct 2023 19:23:45 -0000
-Date:   Mon, 2 Oct 2023 14:23:45 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Caleb Connolly <caleb.connolly@linaro.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Vincent Huang <vincent.huang@tw.synaptics.com>,
-        methanal <baclofen@tuta.io>, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+        b=H6oQheMcpgg3FqmQTqYroj15/fG8I5vXCMRa88CBhuyBN3mstQ0cxbevUHPrWkg/F
+         CKAohIBN5cRLup6hOZLTxl8QhgsZcfPFhKm3+4V683KHwb0KhbEZB1Er4FG2UWxrc/
+         3/3hQaiaYkmJwXDf95Nmts2yk/jb8tP8wHccTv8XMWqQGsXLAzZu0FhZ6j+cuE8dCY
+         G+kk7NyGmDF770sUphucFI1SFADPh0BXdo0kZJpSN1ZDr4WJk6C/0elwsaBHlvg6oQ
+         HJHC59BhXeXOxzJI2bFY25gngbeZSVqYCpsQFCJsS4AlrkTxWMLrsrGv2k0fw5yYg0
+         dzz5bV0LhI29g==
+Date:   Mon, 2 Oct 2023 23:35:42 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Luca Weiss <luca.weiss@fairphone.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH 1/7] dt-bindings: input: syna,rmi4: document
- syna,pdt-fallback-desc
-Message-ID: <20231002192345.GA2380027-robh@kernel.org>
-References: <20230929-caleb-rmi4-quirks-v1-0-cc3c703f022d@linaro.org>
- <20230929-caleb-rmi4-quirks-v1-1-cc3c703f022d@linaro.org>
+        Conor Dooley <conor+dt@kernel.org>,
+        cros-qcom-dts-watchers@chromium.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: i2c: qcom-cci: Document SC7280
+ compatible
+Message-ID: <ZRs3rlbPAfYJtHJ0@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Robert Foss <rfoss@kernel.org>, Andi Shyti <andi.shyti@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        cros-qcom-dts-watchers@chromium.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+References: <20231002-sc7280-cci-v2-0-9333fda4612a@fairphone.com>
+ <20231002-sc7280-cci-v2-1-9333fda4612a@fairphone.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="KUY/m73HFlcH/V/c"
 Content-Disposition: inline
-In-Reply-To: <20230929-caleb-rmi4-quirks-v1-1-cc3c703f022d@linaro.org>
+In-Reply-To: <20231002-sc7280-cci-v2-1-9333fda4612a@fairphone.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sat, Sep 30, 2023 at 06:08:45PM +0100, Caleb Connolly wrote:
-> This new property allows devices to specify some register values which
-> are missing on units with third party replacement displays. These
-> displays use unofficial touch ICs which only implement a subset of the
-> RMI4 specification.
-> 
-> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-> ---
-> To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-> To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-> To: Rob Herring <robh+dt@kernel.org>
-> To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> To: Conor Dooley <conor+dt@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> ---
->  Documentation/devicetree/bindings/input/syna,rmi4.yaml | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/input/syna,rmi4.yaml b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
-> index 4d4e1a8e36be..bd6beb67ac21 100644
-> --- a/Documentation/devicetree/bindings/input/syna,rmi4.yaml
-> +++ b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
-> @@ -49,6 +49,16 @@ properties:
->      description:
->        Delay to wait after powering on the device.
->  
-> +  syna,pdt-fallback-desc:
-> +    $ref: /schemas/types.yaml#/definitions/uint8-array
-> +    description:
-> +      An array of pairs of function number and version. These are used
 
-array of pairs is a matrix, not array. Or it is just 2 values? Needs 
-some size constraints.
+--KUY/m73HFlcH/V/c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Oct 02, 2023 at 08:55:30AM +0200, Luca Weiss wrote:
+> Document the compatible for the CCI block found on SC7280 SoC.
+>=20
+> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+
+Applied to for-next, thanks!
 
 
-> +      on some devices with replacement displays that use unofficial touch
-> +      controllers. These controllers do report the properties of their PDT
+--KUY/m73HFlcH/V/c
+Content-Type: application/pgp-signature; name="signature.asc"
 
-PDT?
+-----BEGIN PGP SIGNATURE-----
 
-> +      entries, but leave the function_number and function_version registers
-> +      blank. These values should match exactly the 5th and 4th bytes of each
-> +      PDT entry from the original display's touch controller.
-> +
->    vdd-supply: true
->    vio-supply: true
->  
-> 
-> -- 
-> 2.42.0
-> 
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmUbN6oACgkQFA3kzBSg
+KbbccRAAnY69h6ee7uMb2v5YFdYnPQWU+bEimrwo3FXAphFPDwoPoenF6H2hsZ3j
+R6GnkgpK6cJekEOZNV5lGtT7EuX8qqea15ap0KKyZ7h6ueX9ZvNVfkD0gUcCDE2L
+sgYkNS0ekYs4mwr2LnnaFD3jDaMWwQMZXcZiMubYGjX5Qhzwik428eNjeug5w5/G
+/dzwmJBVYV27XL8JOePFgkc013qcs4a1E7G7esmKuLVphiUj2M8/qeoBkbaAqPx0
+SsbpMpvCzwWBymeXZTU/8LEkpTGfF8wJoqKV3+KUl4CcdTp05NGlwj3MI66PfZa1
+kb/KxyKBHkjH5G5l4R+PnGh6T4+NnQ6vzb6p4rviOxtq1J3us5Vlf5YCHrs73KTT
+d7fuo1p7AUQRp3say4pGBKHB0cKhZMMMGIZLvMng1uXHYx+j0lVa+rOsyjMzN1Q3
+qiu4hixoqdIbZIgWkSzkNbDWdC7DU7SUpEfZcJbUEx+kczDb3pA4UZXK96ERLez4
+Yw9l8Gy5ZRPP0SfVl5/GRVC/OQtgYG8y4MBNle6ZIPDSKJGI+z5jPiksv7lW7ekS
+MalQ/bNfiAGlvzjeTT+yP4dj0lghU4kCRg2uuf9D5AcPZzBIsGtZJRPr4U4MFaR0
+gkmU7G7J3mS//puQm1tAdhnqArIUX/UMUqA6Crn3Re7EettcXX8=
+=RDHQ
+-----END PGP SIGNATURE-----
+
+--KUY/m73HFlcH/V/c--
