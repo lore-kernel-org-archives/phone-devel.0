@@ -2,128 +2,116 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4447BE784A5
-	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 07:02:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD0DBE7849A
+	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 07:19:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235695AbjJBHCr (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 2 Oct 2023 03:02:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45806 "EHLO
+        id S235696AbjJBHTZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 2 Oct 2023 03:19:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235682AbjJBHCp (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 03:02:45 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFEB8107
-        for <phone-devel@vger.kernel.org>; Mon,  2 Oct 2023 00:02:40 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-99bdcade7fbso2159541566b.1
-        for <phone-devel@vger.kernel.org>; Mon, 02 Oct 2023 00:02:40 -0700 (PDT)
+        with ESMTP id S235701AbjJBHTZ (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 03:19:25 -0400
+Received: from mail-vk1-xa2e.google.com (mail-vk1-xa2e.google.com [IPv6:2607:f8b0:4864:20::a2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEB14A6
+        for <phone-devel@vger.kernel.org>; Mon,  2 Oct 2023 00:19:22 -0700 (PDT)
+Received: by mail-vk1-xa2e.google.com with SMTP id 71dfb90a1353d-49618e09f16so5778880e0c.2
+        for <phone-devel@vger.kernel.org>; Mon, 02 Oct 2023 00:19:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1696230159; x=1696834959; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1696231162; x=1696835962; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PeSmx0D2O0/a7oNGI2vszLu5YKBAPoxdy4aY0mQYyUI=;
-        b=gBee/ib04lb8Su5dE1/csNqk7QhGlcoWLm257hjst94+6JplyfreEF1J7Pg0azyqtG
-         semeU2l/YR+vdQg3JxOEAYI+fB9O4moXqGQBRChnyAvz2gFnI/J7mcLgB5O1PjWVyldf
-         zJIzZ64zzvZCxAN8QY3USX5+Nm3FWWM15VaYzvniOuyrDQZA+EWUcoavvVOa/BR5W2lV
-         D0OIVcLiXVAvbWxiYPOU5b8DDLSP4Iq3WG1jLzUtp9q0B0WB0cuQjoFm9qdmjfxg5jfG
-         MAaE0o/lWmynDU4sCCkLl5yMG86qwApHeT1k84pHBYV+MiwcJIPUigXNIasznIYsTFHD
-         0rpg==
+        bh=GJYpofyuAEv4jvR+QfJqDzbesTQIm4BiLwBiP1RFTxg=;
+        b=FD2cCmBvfbdxp2rLmRGjB/OdFADslsSKGVp42pVAxaeWvBZszsCx24W/Kf/JZlwFiM
+         jmXKHNwLPquWnloEZgDT0Qgu3/qLuEaLJGf5CWPSQbuTMXUNkS+nZgFEnc0EmtDMv4G5
+         oNhdzAczo3SAKu/rdINO48fWzDqmTg+Q9/XMrkdDpWjON2s1IJKoIQ45rwG+k8rxsiww
+         F3SptW+aY75B1Eu+t+YjUBtZU5vfD20WIJgOzRClGNdqUsJaE4kzA5/9wXqtGQDv8qgB
+         x+kKLxexiMva5x3RVrzqAS9/gxQDPsnMt8KEDkeGDkHRACtzCVdT2nLSQNHoyjIx9sQX
+         Ny2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696230159; x=1696834959;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=PeSmx0D2O0/a7oNGI2vszLu5YKBAPoxdy4aY0mQYyUI=;
-        b=IfC/KR90svQI1ILFslgE0LdR89+rnGuyRDyr1bNyhCxq15/cApfKxX0g9OW0TvywJC
-         t9c2g1Wadm6s0r5sGdlJPvvGW2nUF8zqHHWThelDCpju/wdnS1pRFqAQWZnRIXZ2ntqO
-         i1PlMwhB56dsBHwUmnDMhLg1TPxgcORxFIfaZgB+g/MrMOUb9xClbRoB/O0SkANi64zO
-         zh4ImlbLq2VOnQwRqXUiTVqlEvCfAgTgEatE1uOEetyKhPSH441tHhVrduBZqJ8uGbX9
-         n8Yrdr20ReFrlz8H1ro3dny+T8XDacGPvox6GsWoJj+KHh9CNdo0XqOxWGYlQsbba2kW
-         w61Q==
-X-Gm-Message-State: AOJu0Yyfxl63RygEqau2yhEFKFJpH/L0OfZeJIf9aAmDS9fli+lnCBHE
-        DGjHZ4sIS97uCFhAc3nQy5TKNw==
-X-Google-Smtp-Source: AGHT+IH37QpKi/pRabAVwX8WI7qczpBr3LGNV8QJIAxW4evWS9WWvOYpM3vfLk1f8Jvg8ql7AlYMlA==
-X-Received: by 2002:a17:906:76d1:b0:9ae:729c:f651 with SMTP id q17-20020a17090676d100b009ae729cf651mr9070622ejn.17.1696230159028;
-        Mon, 02 Oct 2023 00:02:39 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id t15-20020a170906608f00b009a9fbeb15f2sm16459798ejj.62.2023.10.02.00.02.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Oct 2023 00:02:38 -0700 (PDT)
-Mime-Version: 1.0
+        d=1e100.net; s=20230601; t=1696231162; x=1696835962;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GJYpofyuAEv4jvR+QfJqDzbesTQIm4BiLwBiP1RFTxg=;
+        b=EtBFxZEZC/30ALztxaBjPqnRpVjrOVAhBOGFwgAPDcmX2SZXKQCPPndDCQyjGcKc5x
+         reIYZmkiV2UVPNQ6sNQWOLq2YnN9MlO6RFyhf576yHzzsUVSgtw1KRc0+y61UJj1/aPm
+         jp2eQAs4atbn4Ta8uEmP7wXpjn0jYIeiouCJew3X9d4RKqTWqbTwBH5LsGNYghnskskk
+         ijmy/tyJ7cHbV0WwHchvc80kzaUPSQdRcRs7pIRN3zRh7SwG/0y7BQxdWEM9WPy5Rv+r
+         nYbf9IjgRJYvJH5+1uJVBq6bWdJRgIaRdxJwiuHBsBHRFggOYC4yUJHNDUqxv2Igpo/J
+         jZxA==
+X-Gm-Message-State: AOJu0Ywpx04aY15mVAL2a44DL+0DWUP1PZ7f/ovAQfzNIJGPhCE6uXnN
+        OM0AGj20AHTtNxZhEkzx3u2Dx8O2kO37HzMepxV0pw==
+X-Google-Smtp-Source: AGHT+IFzc+4NII5E+Bbq2HSe+Tfh0b+oyGG0oCJoYCRjhheamRaNHC0qOW9XNPegrbm7tafeSUWThKV2MC2+atCwOHc=
+X-Received: by 2002:a67:fdc9:0:b0:452:829e:ac90 with SMTP id
+ l9-20020a67fdc9000000b00452829eac90mr9154479vsq.28.1696231162035; Mon, 02 Oct
+ 2023 00:19:22 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230929-pxa1908-lkml-v5-0-5aa5a1109c5f@skole.hr> <20230929-pxa1908-lkml-v5-1-5aa5a1109c5f@skole.hr>
+In-Reply-To: <20230929-pxa1908-lkml-v5-1-5aa5a1109c5f@skole.hr>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Mon, 2 Oct 2023 09:19:11 +0200
+Message-ID: <CAMRc=MerAnyZd08S61YEn6Gu0VmK+KmNyChbtBuCfBpaUGFvug@mail.gmail.com>
+Subject: Re: [PATCH RESEND v5 1/8] gpio: pxa: disable pinctrl calls for MMP_GPIO
+To:     =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc:     Robert Jarzmik <robert.jarzmik@free.fr>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hardening@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        afaerber@suse.de, balejk@matfyz.cz
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 02 Oct 2023 09:02:38 +0200
-Message-Id: <CVXREP4FCX4E.3M77P8JP1T27M@otso>
-Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable UFS
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Konrad Dybcio" <konrad.dybcio@linaro.org>,
-        "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>,
-        "Nitin Rawat" <quic_nitirawa@quicinc.com>
-X-Mailer: aerc 0.15.2
-References: <20230929-fp5-ufs-v1-1-122941e28b06@fairphone.com>
- <cac1b912-e08b-4643-b081-834fdee30ea7@linaro.org>
-In-Reply-To: <cac1b912-e08b-4643-b081-834fdee30ea7@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri Sep 29, 2023 at 3:12 PM CEST, Konrad Dybcio wrote:
-> On 29.09.2023 11:52, Luca Weiss wrote:
-> > Enable the UFS phy and controller so that we can access the internal
-> > storage of the phone.
-> >=20
-> > At the same time we need to bump the minimum voltage used for UFS VCC,
-> > otherwise it doesn't initialize properly. The new range is taken from
-> > the vcc-voltage-level property downstream.
-> >=20
-> > See also the following link for more information about the VCCQ/VCCQ2:
-> > https://gerrit-public.fairphone.software/plugins/gitiles/kernel/msm-ext=
-ra/devicetree/+/1590a3739e7dc29d2597307881553236d492f188/fp5/yupik-idp-pm72=
-50b.dtsi#207
-> >=20
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> > I'm not 100% convinced about the regulator range change. For sure with
-> > the original voltage range the UFS fails to initialize, but looking at
-> > downstream kernel during runtime (debugfs) we see the VCC voltage
-> > switches between 2.4V (idle?) and 2.952V (active?). But even with this
-> > change in mainline the regulator would always stay at 2.504V which is
-> > for sure lower than the downstream operating voltage of 2.952V. Behavio=
-r
-> > wise I don't see a difference between ~2.5V and ~2.9V.
-> >=20
-> > Should I just constrain the regulator here to min=3Dmax=3D2.952V? Or ju=
-st
-> > say it's okay as-is?
-> >=20
-> > Depends on: https://lore.kernel.org/linux-arm-msm/20230927081858.15961-=
-1-quic_nitirawa@quicinc.com/
-> > ---
-> There's a little funny hack inside the driver
+On Fri, Sep 29, 2023 at 5:42=E2=80=AFPM Duje Mihanovi=C4=87 <duje.mihanovic=
+@skole.hr> wrote:
 >
-> #if defined(CONFIG_SCSI_UFSHCD_QTI)
->                         if (vreg->low_voltage_sup && !vreg->low_voltage_a=
-ctive && on)
->                                 min_uV =3D vreg->max_uV;
-> #endif
+> Similarly to PXA3xx and MMP2, pinctrl-single isn't capable of setting
+> pin direction on MMP either.
 >
-> so, when the ufs is in use, it's pinned to vmax
-
-Hi Konrad,
-
-Are you implying I *should* or *should not* pin the voltage range to
-2.952V-2.952V for mainline?
-
-Regards
-Luca
-
+> Fixes: a770d946371e ("gpio: pxa: add pin control gpio direction and reque=
+st")
+> Signed-off-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
+> Reviewed-by: Andy Shevchenko <andy@kernel.org>
+> ---
+>  drivers/gpio/gpio-pxa.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> Konrad
+> diff --git a/drivers/gpio/gpio-pxa.c b/drivers/gpio/gpio-pxa.c
+> index a1630ed4b741..d92650aecb06 100644
+> --- a/drivers/gpio/gpio-pxa.c
+> +++ b/drivers/gpio/gpio-pxa.c
+> @@ -238,6 +238,7 @@ static bool pxa_gpio_has_pinctrl(void)
+>         switch (gpio_type) {
+>         case PXA3XX_GPIO:
+>         case MMP2_GPIO:
+> +       case MMP_GPIO:
+>                 return false;
+>
+>         default:
+>
+> --
+> 2.42.0
+>
+>
 
+Queued for fixes, thanks!
+
+Bart
