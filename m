@@ -2,78 +2,73 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B4D7E7849A
-	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 13:49:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BC98E784AC
+	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 13:55:00 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237496AbjJBNtU (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 2 Oct 2023 09:49:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45064 "EHLO
+        id S237590AbjJBNzB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 2 Oct 2023 09:55:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237278AbjJBNtU (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 09:49:20 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF5C4AD
-        for <phone-devel@vger.kernel.org>; Mon,  2 Oct 2023 06:49:16 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-991c786369cso2214966366b.1
-        for <phone-devel@vger.kernel.org>; Mon, 02 Oct 2023 06:49:16 -0700 (PDT)
+        with ESMTP id S237573AbjJBNzA (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 09:55:00 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71272CE
+        for <phone-devel@vger.kernel.org>; Mon,  2 Oct 2023 06:54:57 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-53639fb0ba4so6844756a12.0
+        for <phone-devel@vger.kernel.org>; Mon, 02 Oct 2023 06:54:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696254555; x=1696859355; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xty2hjrI0rUBwt6hciFpO785hSratICpEH6GmITOrmY=;
-        b=nPWvEbWi24k3iMR8R3oNeK4iqMOQupp8pTY55DrOmqycxcb3cS2gknlMQH6l6mYjgH
-         N380taxuo6eoP1qiDbofBFRDysilmnuZLYmxbEqJTfn+YLLDpWDFJ19m52M5G5XKREq7
-         DRyGCNrEkA/y57dqd5aHH7zJq3QfJHYHtyJ2183ZanZPMmnvnTa+utcDedebpy7/0st4
-         qqQn5W2CTjfxZI/BxmLIhVT4MoowuXOQfLbEHHPi6DUewrqUtH2xsHKPGmJsoKEkAVhb
-         IueyTikHEN0SyG/+/3M7LnkgKbXTPMyL8cHkSXvFus3NpoYiHeyB9JZ5PwDVZGdBWRbA
-         PVAg==
+        d=linaro.org; s=google; t=1696254896; x=1696859696; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7TPy5OXdxGXkOF5NkG2BaNgpvs7RNm3dPQYOlkwRqQI=;
+        b=eS2qCZhILxliwOX2FjdrETgUbbYrnTqEQz89T+Y/ZgmQ4WxTJ4jUIakdkldei8OH2y
+         I+oCGfX9SMwKUqxE8lX17vgDUkQaAxegF/X/2QY3b+Xl/frBIUYDSiQ9GjsctMV9Jqud
+         SqgFi6FpbqdY3JcNxDL391GBL3BlvSioxRIb2R2pu9PFxyj+3OJJPwW4+JarV4ZuhHOA
+         SFegaE3gi5YtL6edlMmDGeG1+DbtsSl9QjfABe0ZXtC40AB+0gHnmhs6+CBf+cxU8e8C
+         WMPCxiQP7HnauXEjGk02dU4w6e1jKJyx7kxeVsBCqtI9q1JoNuUXvkiZFc3w07JKCF7t
+         8WRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696254555; x=1696859355;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xty2hjrI0rUBwt6hciFpO785hSratICpEH6GmITOrmY=;
-        b=M2oYfLTOuxAxsSjTMrGJVq8rlmXT/uyN8Syg/A5nJL8De4uVlGdrZaK8ms5kjxc5kO
-         /l9lagAQ+9Id4bTSN2cOqk4BRZ2zKYOs4J/r6wuy1SrcRBzTXlaKbMG41BiBOfhk6Coa
-         tNuvakbprojax1oBEffMt/hrXOzSF/rvm8Ei0oBB7vrpL7we4vGxbhgA4YwrvAI/RNH1
-         HHkbgoRDNp54UlGMiMr6uAjRDEO2RChwb9QWzqnaKaJZx+C3ydHOgnh6leIAhcSA+ysM
-         yXz8Lm0FDR4q+iJVUzPMTRprUAxsCCkIPP3g8sDAHDsFB8ehRmnTqWFSqucptxpS1fb2
-         MtPw==
-X-Gm-Message-State: AOJu0YxjPlIST6FN8hjaZ/3xRgLlPab4fA8RvoEz3Og1jjvNo3wGmpHf
-        OlHvZPZnxr+Yjf0UuHBdUKOQqg==
-X-Google-Smtp-Source: AGHT+IETS5hDzPJJ8t+72ICyq1R9SLNSuaLJXKC/3tvPE/8bRhg8x7jridIpwkTKhuCdTCrqni9G+w==
-X-Received: by 2002:a17:907:770d:b0:9ae:5370:81d5 with SMTP id kw13-20020a170907770d00b009ae537081d5mr10086083ejc.41.1696254555327;
-        Mon, 02 Oct 2023 06:49:15 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696254896; x=1696859696;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7TPy5OXdxGXkOF5NkG2BaNgpvs7RNm3dPQYOlkwRqQI=;
+        b=dqXP/z3r79B8a5K4VAE3E63SQs9+DCSCmU4wde/mLyGV0Llo1rPUu6Q1stEXPwM1/R
+         9NoYE+SuBuHBYlInf+dvkepRAAFad89ZjixRAyry6KLm1TY3KejVDRUFe1dmPSF/wAJR
+         PQb8nKQZXasVD/dKQmMaWZYqxeINB9nnKPG8jh3ivj3kxkjMmNO67GQM7ZS1ZYB7YjrL
+         FIJP41t9irllfqWd+sGm4TWXzmqM3fTs5xBwVkjWaVWmVga2kS2c1JP0vu90PJXcOUDm
+         UNvDJeUcPleDKJ6NS3pyJP42gxqOq5tvta3ZjescaigtEM1+fCMPJ30m7IiAhOGfFuo3
+         5yaA==
+X-Gm-Message-State: AOJu0YxRiPtZMEAZZIiifArbhgmc7OOZRW7vRik+OjbTEXQl5WjqONQQ
+        FPEl2zmz4RvjxdYF283+ufda9Q==
+X-Google-Smtp-Source: AGHT+IHQtXACmY84x7mDj9zOmBhv/fzHfqzmzgeiuNL1je7vJF86OELXC9DhMZEvCwCIH1y4xxNTvA==
+X-Received: by 2002:a17:907:2711:b0:9b2:a7e1:3708 with SMTP id w17-20020a170907271100b009b2a7e13708mr10092419ejk.21.1696254895955;
+        Mon, 02 Oct 2023 06:54:55 -0700 (PDT)
 Received: from [192.168.1.197] (5-157-101-10.dyn.eolo.it. [5.157.101.10])
-        by smtp.gmail.com with ESMTPSA id h13-20020a170906584d00b00992b8d56f3asm17008467ejs.105.2023.10.02.06.49.13
+        by smtp.gmail.com with ESMTPSA id bn23-20020a170906c0d700b0099cd1c0cb21sm17019317ejb.129.2023.10.02.06.54.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Oct 2023 06:49:14 -0700 (PDT)
-Message-ID: <9f09757e-1ab6-4e5f-8c70-fbb9acd179e8@linaro.org>
-Date:   Mon, 2 Oct 2023 15:49:12 +0200
+        Mon, 02 Oct 2023 06:54:55 -0700 (PDT)
+Message-ID: <856c87b4-7c7c-4a62-8013-5afd75535ae5@linaro.org>
+Date:   Mon, 2 Oct 2023 15:54:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: i2c: qcom-cci: Document SC7280
- compatible
+Subject: Re: [PATCH v2 1/2] dt-bindings: mfd: qcom,spmi-pmic: Drop unused
+ labels from examples
+Content-Language: en-US
 To:     Luca Weiss <luca.weiss@fairphone.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org
+        Stephen Boyd <sboyd@kernel.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-References: <20231002-sc7280-cci-v2-0-9333fda4612a@fairphone.com>
- <20231002-sc7280-cci-v2-1-9333fda4612a@fairphone.com>
-Content-Language: en-US
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20231002-pm7250b-gpio-fixup-v2-0-debb8b599989@fairphone.com>
+ <20231002-pm7250b-gpio-fixup-v2-1-debb8b599989@fairphone.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -119,24 +114,26 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231002-sc7280-cci-v2-1-9333fda4612a@fairphone.com>
+In-Reply-To: <20231002-pm7250b-gpio-fixup-v2-1-debb8b599989@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 02/10/2023 08:55, Luca Weiss wrote:
-> Document the compatible for the CCI block found on SC7280 SoC.
+On 02/10/2023 09:00, Luca Weiss wrote:
+> There's not much point in having unused labels in the binding example,
+> so drop them.
 > 
-> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> This patch was originally motivated by ea25d61b448a ("arm64: dts: qcom:
+> Use plural _gpios node label for PMIC gpios") updating all dts files to
+> use the plural _gpios label instead of the singular _gpio as label but
+> this example wasn't updated. But since we should just drop the label
+> alltogether, do that.
+> 
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
 
-Thanks, looks good now.
-
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
