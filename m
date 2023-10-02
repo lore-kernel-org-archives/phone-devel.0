@@ -2,117 +2,149 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB629E784AC
-	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 11:17:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74D66E784AC
+	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 12:30:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236623AbjJBLRh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 2 Oct 2023 07:17:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39506 "EHLO
+        id S237024AbjJBMay (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 2 Oct 2023 08:30:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236609AbjJBLRg (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 07:17:36 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08713DD;
-        Mon,  2 Oct 2023 04:17:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE31C433C9;
-        Mon,  2 Oct 2023 11:17:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696245453;
-        bh=2bmKRrOZ9VWZskLx+eJzTp2iUx/wx8oS6h69Tph3GzU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PcqNrh57u3Afc6ESzkYtFZRvNxGolGfYJRWyFXgkalv2pipu6A+4PrUwaMUMoaXlP
-         FVjgBaO9Ts0WsbQg8CbfPX8c9ANlcSyD85dDbSYRT6HQBulvZCfR6FlFYVfxCdPsTb
-         hS1Na2S+894LjDOjLlP2yoYIsbwaKE4rXFbp8M2wU0omNw+jrUT78kZKCj7bULwODQ
-         m0L2pXlsxu03xoXd+u2VJYTgld43t/kfTdzuqdopkrq1Tbwb6P0owd9OytEwp4Gmd+
-         OF0UiTLU7B+0vF9b/GLKvaXNXmvrbZDdSy+nmj7fh8nTNWjZDhWBFasoEQezKez8oO
-         6UhsRBJPDT74w==
-Date:   Mon, 2 Oct 2023 12:17:27 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Andy Gross <agross@kernel.org>,
+        with ESMTP id S236958AbjJBMay (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 08:30:54 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4378BB0
+        for <phone-devel@vger.kernel.org>; Mon,  2 Oct 2023 05:30:50 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-9ad810be221so2335538066b.2
+        for <phone-devel@vger.kernel.org>; Mon, 02 Oct 2023 05:30:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1696249848; x=1696854648; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oUM3IeGYooZNDk2CRvBMQ1vJndezulmjEoPqwHgdaxM=;
+        b=R94eh1WOYcJB04MPrp/P9ViOr1A4TlCCMpTY3PY+1NqMs2lOPuoqyI4Cq320h2C/VQ
+         QpYfQbyzfjA70Z/kKgjiTbs/cVzUOOTa5JhRXQ5nltQ4LlNjVWbOkc+VsBU9IQOVaqV5
+         qazyByFrY2IvTMPMxIjwcXc5W48idpV0oP9enPh0GHi4qgpRQ0bQLZc4o3plN+fI9K4I
+         1z+9Eb41cKGXFRbAqwAQYLvN/BvcSGVyFCMJyGTAT92VRZLrU1wVa5ZlMav6ifRKDuyt
+         YioKWAFBfTNegKoyqGSZkWQvT+Af18AIG8PHiGEUMKxxHILfqfYkD90/dPYH5+t73T+j
+         EGRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696249848; x=1696854648;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oUM3IeGYooZNDk2CRvBMQ1vJndezulmjEoPqwHgdaxM=;
+        b=YlyXCRvVRyKzg1AciSWNKn1vq0PMGN1E6+EOjojU7ZfYEU6cguMvoLTdb/8HZWLgy2
+         LSZ8/OB6IeRPPCM3DMHPvnv3uXOTJ563b0+xNcXoEOQWZjrzUUZMwBdPNpoK9kqdSvIl
+         t4SLMsdbf6m6V+cPUt1yAKSieE7qmgK21m6oLhx09CQ/rDBEtIi4FZkvy3IgggkNNEko
+         IEg/GHl+x3QKs1E/SDr7XHa5ObEuicw/atXhbY/0Hj92Cku567VGd0vut9kCLHGzYrbd
+         fB347E17soN2sQLURuViyCWHJvjP0tmpzKa0xi+qHOjoT6yF/1pJNwSPGm9IEDKqxIbC
+         5FOw==
+X-Gm-Message-State: AOJu0Yxkq/YpHx9se/3l0eD8J9qZDkZWPuJZ85tRbhWTf8CuuyNL5BwF
+        5VZHDHziDu5LJcgiekSLjbZsANnUCLf876gvxck6zg==
+X-Google-Smtp-Source: AGHT+IE3YTg0aW8wLSZxL54dovsNHca4kmWOjfPQQNWlq8cjQLvkLT7CIl3iAVUgcPvXk9q6mScVSw==
+X-Received: by 2002:a17:907:75d9:b0:9b2:7148:dd5e with SMTP id jl25-20020a17090775d900b009b27148dd5emr10317571ejc.16.1696249848444;
+        Mon, 02 Oct 2023 05:30:48 -0700 (PDT)
+Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id gx10-20020a170906f1ca00b0099cb349d570sm16957197ejb.185.2023.10.02.05.30.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Oct 2023 05:30:47 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Date:   Mon, 02 Oct 2023 14:30:41 +0200
+Subject: [PATCH v2] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable UFS
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231002-fp5-ufs-v2-1-e2d7de522134@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAPC3GmUC/2WMQQ7CIBBFr9LMWgyM1Ygr72G6QBxkFgIBJW0a7
+ i52a/7q/by8FQplpgKXYYVMlQvH0AF3A1hvwpMEPzoDSjxIjVq4dBQfVwShlYTKSDUidDtlcjx
+ vpdvU2XN5x7xs4ap+73+jKtGHqEdFeL7L09UZzsnHQHsbXzC11r4zB49NogAAAA==
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: i2c: qcom-cci: Document SC7280
- compatible
-Message-ID: <20231002-magnetize-regulator-b98bcc3d4a30@spud>
-References: <20231002-sc7280-cci-v2-0-9333fda4612a@fairphone.com>
- <20231002-sc7280-cci-v2-1-9333fda4612a@fairphone.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="kqiXeAPr6klURmAS"
-Content-Disposition: inline
-In-Reply-To: <20231002-sc7280-cci-v2-1-9333fda4612a@fairphone.com>
+        Nitin Rawat <quic_nitirawa@quicinc.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Enable the UFS phy and controller so that we can access the internal
+storage of the phone.
 
---kqiXeAPr6klURmAS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+At the same time we need to bump the minimum voltage used for UFS VCC,
+otherwise it doesn't initialize properly. The 2.952V is taken from the
+vcc-voltage-level property downstream.
 
-On Mon, Oct 02, 2023 at 08:55:30AM +0200, Luca Weiss wrote:
-> Document the compatible for the CCI block found on SC7280 SoC.
->=20
-> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+See also the following link for more information about the VCCQ/VCCQ2:
+https://gerrit-public.fairphone.software/plugins/gitiles/kernel/msm-extra/devicetree/+/1590a3739e7dc29d2597307881553236d492f188/fp5/yupik-idp-pm7250b.dtsi#207
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Depends on: https://lore.kernel.org/linux-arm-msm/20230927081858.15961-1-quic_nitirawa@quicinc.com/
+---
+Changes in v2:
+- Constrain UFS voltage to only 2.952V
+- Link to v1: https://lore.kernel.org/r/20230929-fp5-ufs-v1-1-122941e28b06@fairphone.com
+---
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 27 ++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-Thanks,
-Conor.
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+index 2de0b8c26c35..762c5db29520 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+@@ -182,8 +182,9 @@ vreg_l6b: ldo6 {
+ 		};
+ 
+ 		vreg_l7b: ldo7 {
+-			regulator-min-microvolt = <2400000>;
+-			regulator-max-microvolt = <3544000>;
++			/* Constrained for UFS VCC, at least until UFS driver scales voltage */
++			regulator-min-microvolt = <2952000>;
++			regulator-max-microvolt = <2952000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+ 		};
+ 
+@@ -632,6 +633,28 @@ bluetooth: bluetooth {
+ 	};
+ };
+ 
++&ufs_mem_hc {
++	reset-gpios = <&tlmm 175 GPIO_ACTIVE_LOW>;
++
++	vcc-supply = <&vreg_l7b>;
++	vcc-max-microamp = <800000>;
++	/*
++	 * Technically l9b enables an eLDO (supplied by s1b) which then powers
++	 * VCCQ2 of the UFS.
++	 */
++	vccq-supply = <&vreg_l9b>;
++	vccq-max-microamp = <900000>;
++
++	status = "okay";
++};
++
++&ufs_mem_phy {
++	vdda-phy-supply = <&vreg_l10c>;
++	vdda-pll-supply = <&vreg_l6b>;
++
++	status = "okay";
++};
++
+ &usb_1 {
+ 	status = "okay";
+ };
 
-> ---
->  Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml b/Do=
-cumentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
-> index 042d4dc636ee..8386cfe21532 100644
-> --- a/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
-> +++ b/Documentation/devicetree/bindings/i2c/qcom,i2c-cci.yaml
-> @@ -25,6 +25,7 @@ properties:
-> =20
->        - items:
->            - enum:
-> +              - qcom,sc7280-cci
->                - qcom,sdm845-cci
->                - qcom,sm6350-cci
->                - qcom,sm8250-cci
-> @@ -159,6 +160,7 @@ allOf:
->          compatible:
->            contains:
->              enum:
-> +              - qcom,sc7280-cci
->                - qcom,sm8250-cci
->                - qcom,sm8450-cci
->      then:
->=20
-> --=20
-> 2.42.0
->=20
+---
+base-commit: d85348daa4407216e47198ed35a43a66883edab6
+change-id: 20230929-fp5-ufs-e2c0e21a0142
 
---kqiXeAPr6klURmAS
-Content-Type: application/pgp-signature; name="signature.asc"
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
------BEGIN PGP SIGNATURE-----
-
-iHQEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZRqmxwAKCRB4tDGHoIJi
-0ogIAP9NCHC88Aezq70XG1fYtnFB5qjR72uBP7sD6ilqzpG3UwD48OOjo2MuBZeu
-+KBPM6znytsGCqfoZEsVKOp5ZCZTAA==
-=nmti
------END PGP SIGNATURE-----
-
---kqiXeAPr6klURmAS--
