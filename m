@@ -2,91 +2,105 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2CDFE784AB
-	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 17:03:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8C71EE7490C
+	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 19:23:49 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238621AbjJBRDa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 2 Oct 2023 13:03:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48758 "EHLO
+        id S229667AbjJBTXu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 2 Oct 2023 15:23:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238594AbjJBRDa (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 13:03:30 -0400
+        with ESMTP id S229552AbjJBTXu (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 15:23:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9221EAB;
-        Mon,  2 Oct 2023 10:03:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB023C433C7;
-        Mon,  2 Oct 2023 17:03:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E68BDB0;
+        Mon,  2 Oct 2023 12:23:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6961BC433C7;
+        Mon,  2 Oct 2023 19:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696266207;
-        bh=eTPkDa6a/QY4l/amWClioZkJAZkSQGjRiz057XQ/UYw=;
+        s=k20201202; t=1696274627;
+        bh=ofpdpmQtMZ6ZQQu7vySCzJkB3i/t2T7OkqBMbhU8iEc=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aCy6+hI5eNsm3aL4CMUwUls8d64SXntTTk626CotTyBSXXABXchdii7bUkfTJQ3Pl
-         6NZwzqmBiblpP2gp0NO3RwVrcj+UhCsBkrb//iSMR/4D7SYQVPkGV3m59e7O56s60h
-         GuS1teww0a6KQN1jIouDyPArYnt+i+u82LI3fWYEPN4Q/BB6HE5xZCu3gcAhFX3wut
-         MMZ1HHDwp0wd3/aqZ6fBfgX9yfFtc+SGYBWi/pqjNqCsqB8JYvWqVAUdygD/n6eViX
-         oRzDlVnSnqWc6/JY46787qdZSvuqo47KMILclhGZ56Egiq1DhAy/HV3KRDDrOZDZTw
-         87gK0CQ7F1wqw==
-Received: (nullmailer pid 1941416 invoked by uid 1000);
-        Mon, 02 Oct 2023 17:03:24 -0000
-Date:   Mon, 2 Oct 2023 12:03:24 -0500
+        b=YykjI2haE4KxzAMaSHcWZlZ/4L5AuU88QdPDlbMB0ZOImoTWHtgFKa/wdzZsjw4jt
+         PEHVr5C1tt8tBa0bquE3qTwaT4UxFsHhHgAbdLTaVIy9refhutrQ8riAqVzHE18h1G
+         zxLqQKiX9WkTYTK3TwNRjiNI59bujRNVv6Rs81doQftFy+zQXZc/yham4SwCvKFoMV
+         ZKjMbdzMzfycUu8+kKsKJL03U+jrB08cBHBPHUuhhTJsXxbKOSaaH5EtXRxdlpqdXJ
+         4uzur1TJMNf0DqpaflXxeaYxKGMHrGPHjdTPjIZ9yzPGVOKFWKFqSimWwD0cW81Vy/
+         szy1gj2rweqXw==
+Received: (nullmailer pid 2383796 invoked by uid 1000);
+        Mon, 02 Oct 2023 19:23:45 -0000
+Date:   Mon, 2 Oct 2023 14:23:45 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Lee Jones <lee@kernel.org>,
+To:     Caleb Connolly <caleb.connolly@linaro.org>
+Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Vincent Huang <vincent.huang@tw.synaptics.com>,
+        methanal <baclofen@tuta.io>, linux-input@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: mfd: qcom,spmi-pmic: Update gpio example
-Message-ID: <20231002170324.GA1934850-robh@kernel.org>
-References: <20230929-pm7250b-gpio-fixup-v1-0-ef68543c1d3b@fairphone.com>
- <20230929-pm7250b-gpio-fixup-v1-1-ef68543c1d3b@fairphone.com>
- <510d6407-8033-4f2e-aabf-bd3fb84875a9@linaro.org>
- <CVXQXI5E053J.386OVO28LNSYT@otso>
+        Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH 1/7] dt-bindings: input: syna,rmi4: document
+ syna,pdt-fallback-desc
+Message-ID: <20231002192345.GA2380027-robh@kernel.org>
+References: <20230929-caleb-rmi4-quirks-v1-0-cc3c703f022d@linaro.org>
+ <20230929-caleb-rmi4-quirks-v1-1-cc3c703f022d@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CVXQXI5E053J.386OVO28LNSYT@otso>
+In-Reply-To: <20230929-caleb-rmi4-quirks-v1-1-cc3c703f022d@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Oct 02, 2023 at 08:40:10AM +0200, Luca Weiss wrote:
-> On Sat Sep 30, 2023 at 5:06 PM CEST, Krzysztof Kozlowski wrote:
-> > On 29/09/2023 10:17, Luca Weiss wrote:
-> > > As per commit ea25d61b448a ("arm64: dts: qcom: Use plural _gpios node
-> > > label for PMIC gpios") all dts files now use the plural _gpios instead
-> > > of the singular _gpio as label. Update the schema example also to match.
-> > > 
-> > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > > ---
-> > >  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml b/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
-> > > index 55e931ba5b47..e4842e1fbd65 100644
-> > > --- a/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
-> > > +++ b/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
-> > > @@ -245,7 +245,7 @@ examples:
-> > >              #address-cells = <1>;
-> > >              #size-cells = <0>;
-> > >  
-> > > -            pmi8998_gpio: gpio@c000 {
-> > > +            pmi8998_gpios: gpio@c000 
-> >
-> > This does no make sense... you update label only here, but not in any
-> > user of it which proves that label is not used. If it is not used, it
-> > should be dropped, not changed...
+On Sat, Sep 30, 2023 at 06:08:45PM +0100, Caleb Connolly wrote:
+> This new property allows devices to specify some register values which
+> are missing on units with third party replacement displays. These
+> displays use unofficial touch ICs which only implement a subset of the
+> RMI4 specification.
 > 
-> Okay, I will drop the label instead of updating it in v2.
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> ---
+> To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+> To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+> To: Rob Herring <robh+dt@kernel.org>
+> To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> To: Conor Dooley <conor+dt@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> ---
+>  Documentation/devicetree/bindings/input/syna,rmi4.yaml | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/input/syna,rmi4.yaml b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
+> index 4d4e1a8e36be..bd6beb67ac21 100644
+> --- a/Documentation/devicetree/bindings/input/syna,rmi4.yaml
+> +++ b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
+> @@ -49,6 +49,16 @@ properties:
+>      description:
+>        Delay to wait after powering on the device.
+>  
+> +  syna,pdt-fallback-desc:
+> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+> +    description:
+> +      An array of pairs of function number and version. These are used
 
-Or just drop the patch and skip the trivial changes. If you want to fix 
-unused labels, fix it for the whole subsystem (mfd) or treewide.
+array of pairs is a matrix, not array. Or it is just 2 values? Needs 
+some size constraints.
 
-Rob
+
+> +      on some devices with replacement displays that use unofficial touch
+> +      controllers. These controllers do report the properties of their PDT
+
+PDT?
+
+> +      entries, but leave the function_number and function_version registers
+> +      blank. These values should match exactly the 5th and 4th bytes of each
+> +      PDT entry from the original display's touch controller.
+> +
+>    vdd-supply: true
+>    vio-supply: true
+>  
+> 
+> -- 
+> 2.42.0
+> 
