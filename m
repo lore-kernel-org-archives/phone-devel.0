@@ -2,246 +2,100 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A495E784B1
-	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 06:55:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36B07E7849A
+	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 07:00:21 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235584AbjJBGzt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 2 Oct 2023 02:55:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58870 "EHLO
+        id S235601AbjJBHAW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 2 Oct 2023 03:00:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235593AbjJBGzr (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 02:55:47 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C574C11C
-        for <phone-devel@vger.kernel.org>; Sun,  1 Oct 2023 23:55:38 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-534659061afso12343282a12.3
-        for <phone-devel@vger.kernel.org>; Sun, 01 Oct 2023 23:55:38 -0700 (PDT)
+        with ESMTP id S235596AbjJBHAV (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 03:00:21 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D78E6BD
+        for <phone-devel@vger.kernel.org>; Mon,  2 Oct 2023 00:00:18 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-533c8f8f91dso18356432a12.0
+        for <phone-devel@vger.kernel.org>; Mon, 02 Oct 2023 00:00:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1696229737; x=1696834537; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CLUF0/a7PdgNt6u9Pw5UnwojPsRQiGDOxDcNhly3Luw=;
-        b=QWjeYU1Of290RGkt5rXqZrsegGBEwMXrs1wsqAMDq8fMDKbhsJ2bX46PdlTH3fsMUi
-         H86NLXevjPr5vIoPMbXDBK25TaCAJ1tN164lRdgs3U43/D42udyv7Mtxo6ClTLWviifT
-         rFvCP7CEoj9I4v07jYg93YfMumdu8aaMSU22/Ubd3vJ5vYxS8hYf+oaCuNid9B5LZcPu
-         YE8y0RglHgxfQUOztnMXg4G01uAEytz4P77UoA7EDVqfH5WiIs32U40O4sUy9mqk7vg9
-         I15HnVHhs5dh9tPeRmYHAfAFT2tHKrgACLUTTkeVIFuZV0ZLNQ8/Djz/iz/6xx0lBy2F
-         tpYg==
+        d=fairphone.com; s=fair; t=1696230017; x=1696834817; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=b4mI7wPjfIFJjRgS4m9j0vBzf0bhNyvH1PWkrNn+YUw=;
+        b=KNhAsxmL87TmGWjswS8Q41/DmigVAE4iZak/ipzI/ysf6WxNXOLgZ0txZLG9x6Mke+
+         SjvQMv3FjAsZGfWP5J4L6bZyHHJSlhsdELtr2OcEaJUbi8+fyCHDZD7v/t2vOHH4Qlm6
+         tQLWabA7cOcYK/sSz69VcHWkh+GkignjqbuyIhp+ZwXscx+iGEomGn68DYqIV9Mp/7N7
+         vYZSXrzEqGyERtvdZIZgsipgSMV0Q1Fkez5q9hD48xJbrMuf0Gjzk5XprmzhrtuBLjs3
+         HHHh+Rf72qoV3Vl1duKMhnoStvYCU3RGL/+vdFAr9TC5uFOG27NMxutOqhQoN0AgySsc
+         AqsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696229737; x=1696834537;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CLUF0/a7PdgNt6u9Pw5UnwojPsRQiGDOxDcNhly3Luw=;
-        b=uHblR4bCY0IE7zODiL8CTqH0tQIQQn8DaqSZ8buAE8MjWb+fshTuL8Bz8ShIVTJ+nF
-         gf/Fci3awnnFqVoq+n5ESr1zs2zfCl+XkZXbT/xcCIhOSjhze7OteHks/0hFBERFzzmx
-         xvh0Gjz3wPfvMubqhw1GMNSw6JGPMVW3sFj6En9YNHvddYH4K/bhtx739ABFaqsnBi5n
-         FYtmKu1IEnIxSZ4P8YqTEeq7v+n1V85IjekD9SOpPcumoEBOV9PRZZGUoH486VqNYJod
-         ZvwPAkxEY+YGsKMP2z0n3Ztm9Vq0ng4Qc3Kc9tDQJi2mnXF3GmwL9uiFLRCFgUXvpJNc
-         PeJw==
-X-Gm-Message-State: AOJu0YyjuDSwfc9Y0JtaxEjNvLa4fMGBojPBq+iIaJ9XCuYGJ3fSlkGE
-        YduDUqFcYUub8vkwFURr5a8tyA==
-X-Google-Smtp-Source: AGHT+IEvPypp8fZTob08fjR9qOqeRPvfVW8GbTB3iOc2doKjnm7+JLd5MoVpJ/Ej47EE5oKwpDVpaA==
-X-Received: by 2002:a05:6402:2694:b0:530:dd97:fe78 with SMTP id w20-20020a056402269400b00530dd97fe78mr12220249edd.7.1696229737219;
-        Sun, 01 Oct 2023 23:55:37 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696230017; x=1696834817;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b4mI7wPjfIFJjRgS4m9j0vBzf0bhNyvH1PWkrNn+YUw=;
+        b=U3f7ONasy46F785ZyBwLWC2IGsLnsSyBvWzoGV9TBL691EoNO6YguD6bX3VoJf5gDt
+         Y7ghsmtcS6ijut7n1230jhL8BnI11pNmeo+6jE0uciPRDHi0pNeMozXPdh7lJTo2EMxK
+         u104tQ7xmdXNjRERU6fzgAnCvNNHLBW2nOAmM6e2zQBiD8Iuzyyq1nWlSePEC6cL6+m3
+         iCKRZP6noKFCJvRfvpEmofOwb8wYLG/buUVpT2bRTmRWu4/aXUS6SYEjB9YpUU5NQevQ
+         aStb0CqImTrbUHMsXoffEK4mO+JPOhF0X/ngUppzVUJuA9LyRsRZ/F0NT2lGc4h6RdBm
+         0g9g==
+X-Gm-Message-State: AOJu0YxLpKjImfHzf6JNn6Kqe1gWVMr6y1synYzSRBvbHNP4T2fmvztE
+        DEPFhrRzY3mg8ZwQV+SdOMxIFw==
+X-Google-Smtp-Source: AGHT+IGHstSSOjwQORJoy/Ro5XBc08vqCnp7VSvvKVm9VrTRh96OXqE6aYHnx6tEAm9+uPnY2S3fOA==
+X-Received: by 2002:a17:906:3116:b0:9a2:16e2:353 with SMTP id 22-20020a170906311600b009a216e20353mr9427422ejx.6.1696230017331;
+        Mon, 02 Oct 2023 00:00:17 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id m7-20020a056402050700b00537f44827a8sm4095557edv.64.2023.10.01.23.55.36
+        by smtp.gmail.com with ESMTPSA id z10-20020a170906714a00b0098ce63e36e9sm16692013ejj.16.2023.10.02.00.00.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Oct 2023 23:55:37 -0700 (PDT)
+        Mon, 02 Oct 2023 00:00:17 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Mon, 02 Oct 2023 08:55:31 +0200
-Subject: [PATCH v2 2/2] arm64: dts: qcom: sc7280: Add Camera Control
- Interface busses
+Subject: [PATCH v2 0/2] Small updates / fixups for PMIC spmi-gpio
+Date:   Mon, 02 Oct 2023 09:00:10 +0200
+Message-Id: <20231002-pm7250b-gpio-fixup-v2-0-debb8b599989@fairphone.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231002-sc7280-cci-v2-2-9333fda4612a@fairphone.com>
-References: <20231002-sc7280-cci-v2-0-9333fda4612a@fairphone.com>
-In-Reply-To: <20231002-sc7280-cci-v2-0-9333fda4612a@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAHpqGmUC/32NOw6DMBBEr4K2zkbGmPCpco+IAswabwG27MRKh
+ Lh7HA6Q8s1o3uwQKTBF6IsdAiWO7LYM8lKAtuO2EPKcGaSQlehkh35tZC0mXDw7NPx+eTRKNER
+ dq2Q9Qh76QLk4pY8hs+X4dOFzfqTyl/7VpRIFkrm1tap0OVfT3YwcvHUbXbVbYTiO4wvnuraNu
+ AAAAA==
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org
+        Stephen Boyd <sboyd@kernel.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-i2c@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the CCI busses found on sc7280 and their pinctrl states.
+Update the schema to use plural _gpios label in the example. And fix a
+dtbs_check warning in pm7250b.dtsi.
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 136 +++++++++++++++++++++++++++++++++++
- 1 file changed, 136 insertions(+)
+Changes in v2:
+- Remove labels instead of updating them in documentation patch
+- Link to v1: https://lore.kernel.org/r/20230929-pm7250b-gpio-fixup-v1-0-ef68543c1d3b@fairphone.com
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 66f1eb83cca7..65550de2e4ff 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -3793,6 +3793,86 @@ videocc: clock-controller@aaf0000 {
- 			#power-domain-cells = <1>;
- 		};
- 
-+		cci0: cci@ac4a000 {
-+			compatible = "qcom,sc7280-cci", "qcom,msm8996-cci";
-+			reg = <0 0x0ac4a000 0 0x1000>;
-+			interrupts = <GIC_SPI 460 IRQ_TYPE_EDGE_RISING>;
-+			power-domains = <&camcc CAM_CC_TITAN_TOP_GDSC>;
-+
-+			clocks = <&camcc CAM_CC_CAMNOC_AXI_CLK>,
-+				 <&camcc CAM_CC_SLOW_AHB_CLK_SRC>,
-+				 <&camcc CAM_CC_CPAS_AHB_CLK>,
-+				 <&camcc CAM_CC_CCI_0_CLK>,
-+				 <&camcc CAM_CC_CCI_0_CLK_SRC>;
-+			clock-names = "camnoc_axi",
-+				      "slow_ahb_src",
-+				      "cpas_ahb",
-+				      "cci",
-+				      "cci_src";
-+			pinctrl-0 = <&cci0_default &cci1_default>;
-+			pinctrl-1 = <&cci0_sleep &cci1_sleep>;
-+			pinctrl-names = "default", "sleep";
-+
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			status = "disabled";
-+
-+			cci0_i2c0: i2c-bus@0 {
-+				reg = <0>;
-+				clock-frequency = <1000000>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+			};
-+
-+			cci0_i2c1: i2c-bus@1 {
-+				reg = <1>;
-+				clock-frequency = <1000000>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+			};
-+		};
-+
-+		cci1: cci@ac4b000 {
-+			compatible = "qcom,sc7280-cci", "qcom,msm8996-cci";
-+			reg = <0 0x0ac4b000 0 0x1000>;
-+			interrupts = <GIC_SPI 271 IRQ_TYPE_EDGE_RISING>;
-+			power-domains = <&camcc CAM_CC_TITAN_TOP_GDSC>;
-+
-+			clocks = <&camcc CAM_CC_CAMNOC_AXI_CLK>,
-+				 <&camcc CAM_CC_SLOW_AHB_CLK_SRC>,
-+				 <&camcc CAM_CC_CPAS_AHB_CLK>,
-+				 <&camcc CAM_CC_CCI_1_CLK>,
-+				 <&camcc CAM_CC_CCI_1_CLK_SRC>;
-+			clock-names = "camnoc_axi",
-+				      "slow_ahb_src",
-+				      "cpas_ahb",
-+				      "cci",
-+				      "cci_src";
-+			pinctrl-0 = <&cci2_default &cci3_default>;
-+			pinctrl-1 = <&cci2_sleep &cci3_sleep>;
-+			pinctrl-names = "default", "sleep";
-+
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			status = "disabled";
-+
-+			cci1_i2c0: i2c-bus@0 {
-+				reg = <0>;
-+				clock-frequency = <1000000>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+			};
-+
-+			cci1_i2c1: i2c-bus@1 {
-+				reg = <1>;
-+				clock-frequency = <1000000>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+			};
-+		};
-+
- 		camcc: clock-controller@ad00000 {
- 			compatible = "qcom,sc7280-camcc";
- 			reg = <0 0x0ad00000 0 0x10000>;
-@@ -4298,6 +4378,62 @@ tlmm: pinctrl@f100000 {
- 			gpio-ranges = <&tlmm 0 0 175>;
- 			wakeup-parent = <&pdc>;
- 
-+			cci0_default: cci0-default-state {
-+				pins = "gpio69", "gpio70";
-+				function = "cci_i2c";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			cci0_sleep: cci0-sleep-state {
-+				pins = "gpio69", "gpio70";
-+				function = "cci_i2c";
-+				drive-strength = <2>;
-+				bias-pull-down;
-+			};
-+
-+			cci1_default: cci1-default-state {
-+				pins = "gpio71", "gpio72";
-+				function = "cci_i2c";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			cci1_sleep: cci1-sleep-state {
-+				pins = "gpio71", "gpio72";
-+				function = "cci_i2c";
-+				drive-strength = <2>;
-+				bias-pull-down;
-+			};
-+
-+			cci2_default: cci2-default-state {
-+				pins = "gpio73", "gpio74";
-+				function = "cci_i2c";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			cci2_sleep: cci2-sleep-state {
-+				pins = "gpio73", "gpio74";
-+				function = "cci_i2c";
-+				drive-strength = <2>;
-+				bias-pull-down;
-+			};
-+
-+			cci3_default: cci3-default-state {
-+				pins = "gpio75", "gpio76";
-+				function = "cci_i2c";
-+				drive-strength = <2>;
-+				bias-pull-up;
-+			};
-+
-+			cci3_sleep: cci3-sleep-state {
-+				pins = "gpio75", "gpio76";
-+				function = "cci_i2c";
-+				drive-strength = <2>;
-+				bias-pull-down;
-+			};
-+
- 			dp_hot_plug_det: dp-hot-plug-det-state {
- 				pins = "gpio47";
- 				function = "dp_hot";
+---
+Luca Weiss (2):
+      dt-bindings: mfd: qcom,spmi-pmic: Drop unused labels from examples
+      arm64: dts: qcom: pm7250b: Use correct node name for gpios
 
+ Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 6 +++---
+ arch/arm64/boot/dts/qcom/pm7250b.dtsi                     | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+---
+base-commit: df964ce9ef9fea10cf131bf6bad8658fde7956f6
+change-id: 20230929-pm7250b-gpio-fixup-f407ee98425a
+
+Best regards,
 -- 
-2.42.0
+Luca Weiss <luca.weiss@fairphone.com>
 
