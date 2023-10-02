@@ -2,63 +2,63 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 36B07E7849A
-	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 07:00:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04504E7849A
+	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 07:00:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235601AbjJBHAW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 2 Oct 2023 03:00:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48602 "EHLO
+        id S235620AbjJBHAX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 2 Oct 2023 03:00:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235596AbjJBHAV (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 03:00:21 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D78E6BD
-        for <phone-devel@vger.kernel.org>; Mon,  2 Oct 2023 00:00:18 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-533c8f8f91dso18356432a12.0
-        for <phone-devel@vger.kernel.org>; Mon, 02 Oct 2023 00:00:18 -0700 (PDT)
+        with ESMTP id S235603AbjJBHAW (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 03:00:22 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DF80D7
+        for <phone-devel@vger.kernel.org>; Mon,  2 Oct 2023 00:00:19 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-5347e657a11so10913599a12.2
+        for <phone-devel@vger.kernel.org>; Mon, 02 Oct 2023 00:00:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1696230017; x=1696834817; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=b4mI7wPjfIFJjRgS4m9j0vBzf0bhNyvH1PWkrNn+YUw=;
-        b=KNhAsxmL87TmGWjswS8Q41/DmigVAE4iZak/ipzI/ysf6WxNXOLgZ0txZLG9x6Mke+
-         SjvQMv3FjAsZGfWP5J4L6bZyHHJSlhsdELtr2OcEaJUbi8+fyCHDZD7v/t2vOHH4Qlm6
-         tQLWabA7cOcYK/sSz69VcHWkh+GkignjqbuyIhp+ZwXscx+iGEomGn68DYqIV9Mp/7N7
-         vYZSXrzEqGyERtvdZIZgsipgSMV0Q1Fkez5q9hD48xJbrMuf0Gjzk5XprmzhrtuBLjs3
-         HHHh+Rf72qoV3Vl1duKMhnoStvYCU3RGL/+vdFAr9TC5uFOG27NMxutOqhQoN0AgySsc
-         AqsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696230017; x=1696834817;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=fairphone.com; s=fair; t=1696230018; x=1696834818; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=b4mI7wPjfIFJjRgS4m9j0vBzf0bhNyvH1PWkrNn+YUw=;
-        b=U3f7ONasy46F785ZyBwLWC2IGsLnsSyBvWzoGV9TBL691EoNO6YguD6bX3VoJf5gDt
-         Y7ghsmtcS6ijut7n1230jhL8BnI11pNmeo+6jE0uciPRDHi0pNeMozXPdh7lJTo2EMxK
-         u104tQ7xmdXNjRERU6fzgAnCvNNHLBW2nOAmM6e2zQBiD8Iuzyyq1nWlSePEC6cL6+m3
-         iCKRZP6noKFCJvRfvpEmofOwb8wYLG/buUVpT2bRTmRWu4/aXUS6SYEjB9YpUU5NQevQ
-         aStb0CqImTrbUHMsXoffEK4mO+JPOhF0X/ngUppzVUJuA9LyRsRZ/F0NT2lGc4h6RdBm
-         0g9g==
-X-Gm-Message-State: AOJu0YxLpKjImfHzf6JNn6Kqe1gWVMr6y1synYzSRBvbHNP4T2fmvztE
-        DEPFhrRzY3mg8ZwQV+SdOMxIFw==
-X-Google-Smtp-Source: AGHT+IGHstSSOjwQORJoy/Ro5XBc08vqCnp7VSvvKVm9VrTRh96OXqE6aYHnx6tEAm9+uPnY2S3fOA==
-X-Received: by 2002:a17:906:3116:b0:9a2:16e2:353 with SMTP id 22-20020a170906311600b009a216e20353mr9427422ejx.6.1696230017331;
-        Mon, 02 Oct 2023 00:00:17 -0700 (PDT)
+        bh=ktFRr1CyTGjJizjBCavkn96vmdNuVPfuYSai3Lj20Ho=;
+        b=A8rTHl0bHs+fQRldcQ2EKRUpzMdadYZwDJJBbKmb1acAmtTL6s56RkTMynTuXRjW4q
+         NJzre3dW/lyhnPmR4x6oLoyjwNfY5r24iNX6vRsR1HGq5CdO6tFJn0Am5JeVFC05ycfK
+         iTvNuAUT1XyuVIqEhu3q5lfj1JW649Wn4Ld+EIXSc2t28q3oJ2ghc6YtcvuvrhttxkRd
+         8k4X7MY/JMI+kqeD4xO1gd/kjglvyde4Wc2VWeD+t+FuKtXJc/1kIkcQUfOAZNgg+LZB
+         3N3ri1Qugg8Bm7GiOoEU0l3reA2QcuTWv7h3sf5JduTReMpMgWIcvcumlYo6pppCQ+HC
+         wKTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696230018; x=1696834818;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ktFRr1CyTGjJizjBCavkn96vmdNuVPfuYSai3Lj20Ho=;
+        b=F682f6vSR8W0yT1A4livSXhXETegFKlYqyzOYi+VREnxSAcpCtDr/tco32Wzvu7hXr
+         kmF8yvw40j7G8T4f7pyzHTkPlgaCT6BHj21maXludjhEkExGRoEMhaO7y4AEeYaH6WWc
+         Ip18oZhjk7YD/QmsJKTC5agmUNVd3CKL2bHkwsF+8TRQBHij04RHnmlk19p6NxUTW/GL
+         HtLSgG9Ml4xI7smISMOPY2OOLRP8INF6P3L0k4l8Yo1818sojwTCnCvesOfUgctATrld
+         AsCOWYtza1VqGEDvzGaxpHYP3bsQTMQhByk/PwvY2sAqgNQys1iEFPBFjeRshAyzZ4tG
+         veOA==
+X-Gm-Message-State: AOJu0Yxv1n85s4U48OHFLQ10oDAN1/e9Z+cN5L8vzNXHZl6XlAyYk4AX
+        3Utm+E5xK2Mt/SQSVoDzz3dfsA==
+X-Google-Smtp-Source: AGHT+IEJS20GX9/Mz9Z0qBVhL4ZNvgD0cSbmWS3xm8ggW22h2lQIbSpD0NnWIB2Ep/fOKv1woD89+g==
+X-Received: by 2002:a17:906:cc15:b0:9b6:53a9:792c with SMTP id ml21-20020a170906cc1500b009b653a9792cmr238046ejb.15.1696230018260;
+        Mon, 02 Oct 2023 00:00:18 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id z10-20020a170906714a00b0098ce63e36e9sm16692013ejj.16.2023.10.02.00.00.16
+        by smtp.gmail.com with ESMTPSA id z10-20020a170906714a00b0098ce63e36e9sm16692013ejj.16.2023.10.02.00.00.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 02 Oct 2023 00:00:17 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH v2 0/2] Small updates / fixups for PMIC spmi-gpio
-Date:   Mon, 02 Oct 2023 09:00:10 +0200
-Message-Id: <20231002-pm7250b-gpio-fixup-v2-0-debb8b599989@fairphone.com>
+Date:   Mon, 02 Oct 2023 09:00:11 +0200
+Subject: [PATCH v2 1/2] dt-bindings: mfd: qcom,spmi-pmic: Drop unused
+ labels from examples
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHpqGmUC/32NOw6DMBBEr4K2zkbGmPCpco+IAswabwG27MRKh
- Lh7HA6Q8s1o3uwQKTBF6IsdAiWO7LYM8lKAtuO2EPKcGaSQlehkh35tZC0mXDw7NPx+eTRKNER
- dq2Q9Qh76QLk4pY8hs+X4dOFzfqTyl/7VpRIFkrm1tap0OVfT3YwcvHUbXbVbYTiO4wvnuraNu
- AAAAA==
+Message-Id: <20231002-pm7250b-gpio-fixup-v2-1-debb8b599989@fairphone.com>
+References: <20231002-pm7250b-gpio-fixup-v2-0-debb8b599989@fairphone.com>
+In-Reply-To: <20231002-pm7250b-gpio-fixup-v2-0-debb8b599989@fairphone.com>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
@@ -74,28 +74,50 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Update the schema to use plural _gpios label in the example. And fix a
-dtbs_check warning in pm7250b.dtsi.
+There's not much point in having unused labels in the binding example,
+so drop them.
+
+This patch was originally motivated by ea25d61b448a ("arm64: dts: qcom:
+Use plural _gpios node label for PMIC gpios") updating all dts files to
+use the plural _gpios label instead of the singular _gpio as label but
+this example wasn't updated. But since we should just drop the label
+alltogether, do that.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Changes in v2:
-- Remove labels instead of updating them in documentation patch
-- Link to v1: https://lore.kernel.org/r/20230929-pm7250b-gpio-fixup-v1-0-ef68543c1d3b@fairphone.com
-
----
-Luca Weiss (2):
-      dt-bindings: mfd: qcom,spmi-pmic: Drop unused labels from examples
-      arm64: dts: qcom: pm7250b: Use correct node name for gpios
-
  Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 6 +++---
- arch/arm64/boot/dts/qcom/pm7250b.dtsi                     | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
----
-base-commit: df964ce9ef9fea10cf131bf6bad8658fde7956f6
-change-id: 20230929-pm7250b-gpio-fixup-f407ee98425a
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Best regards,
+diff --git a/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml b/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
+index 55e931ba5b47..9fa568603930 100644
+--- a/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
++++ b/Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml
+@@ -239,13 +239,13 @@ examples:
+         interrupt-controller;
+         #interrupt-cells = <4>;
+ 
+-        pmi8998_lsid0: pmic@2 {
++        pmic@2 {
+             compatible = "qcom,pmi8998", "qcom,spmi-pmic";
+             reg = <0x2 SPMI_USID>;
+             #address-cells = <1>;
+             #size-cells = <0>;
+ 
+-            pmi8998_gpio: gpio@c000 {
++            gpio@c000 {
+                 compatible = "qcom,pmi8998-gpio", "qcom,spmi-gpio";
+                 reg = <0xc000>;
+                 gpio-controller;
+@@ -330,7 +330,7 @@ examples:
+             };
+         };
+ 
+-        pm6150_gpio: gpio@c000 {
++        gpio@c000 {
+             compatible = "qcom,pm6150-gpio", "qcom,spmi-gpio";
+             reg = <0xc000>;
+             gpio-controller;
+
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.42.0
 
