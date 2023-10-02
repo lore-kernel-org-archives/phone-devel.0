@@ -2,75 +2,72 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A70F7E784AF
-	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 09:14:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46769E784AF
+	for <phone-devel@archiver.kernel.org>; Mon,  2 Oct 2023 09:15:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235974AbjJBJOo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 2 Oct 2023 05:14:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49084 "EHLO
+        id S236002AbjJBJPs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 2 Oct 2023 05:15:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235931AbjJBJOn (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 05:14:43 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05BBC83
-        for <phone-devel@vger.kernel.org>; Mon,  2 Oct 2023 02:14:40 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-50308217223so24748952e87.3
-        for <phone-devel@vger.kernel.org>; Mon, 02 Oct 2023 02:14:39 -0700 (PDT)
+        with ESMTP id S235965AbjJBJPr (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 2 Oct 2023 05:15:47 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E8F6B3
+        for <phone-devel@vger.kernel.org>; Mon,  2 Oct 2023 02:15:43 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-505748580ceso2574145e87.3
+        for <phone-devel@vger.kernel.org>; Mon, 02 Oct 2023 02:15:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696238078; x=1696842878; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1696238142; x=1696842942; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=hegxgNO6/eJmMi3xYv5xPqS6nCUbQPuKqJAOsVw9YZU=;
-        b=exODTJckfjOSaiP0BD1SXvH0KxA+TQrsM2Rjzu+cjpjTmb5f3S46nXUzjzQAFoVfMr
-         roPw3hrJN1P7VrOjTQ5pDeprwdI4PumNichevxqtioAPKeIFCuTMm6td/o7lZctdHRJg
-         GNg/dHhvn819wXHNIQ8KttSgeWG6q7wwy5apTx7BKQWyTM768XU800qJNmoIxX8Ka1xy
-         rnNpNMvsfSmtKiF/ZeLqVHLivmTVrx5IHOyqJNlirbmgTAQSbfpXXVg6ItkEFb2P6gbV
-         mOwXOK6NfwNMPfORUybfYFVjOGPscuzUnWxlMXJn/ZF77/2iMseuHBbb4m3NN0cPm79r
-         Ncbw==
+        bh=XKFgAZi/L0N2kp9XV6Gn5/hvFVeYhucp7Px8g6ewoQo=;
+        b=fNGkKexhuzgLEeVpkFKN8w0ybe47T9Jsz8vWB1GNOkG0zW3Cb/a+oTk9uGbY9C09rx
+         2qzZxWIg2JDpJy0+S9h6DKUcpIb3whVQBl70/qVodKP5NE/X6TLSLYeQVgwW+TCIzwBm
+         NKXw+A9yUtONRBG3pa9SvqF4DzWxxMBVjSddaAHS/5jeXzge1XdHIopORf2g8AN5PiUo
+         9oTZyP8oqjSY1kvOlMgHBPGdLZ+iyJeE60wkYik+PVfZ+PJYqWaWgmnZbFqLgy+bK/Zb
+         iQabvdG1MUx2Bj7LGS/bKfRKX3uDj988zHonbqn4z3g1hZc26D10FXAQPD9JAuoRhCSw
+         bEdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696238078; x=1696842878;
+        d=1e100.net; s=20230601; t=1696238142; x=1696842942;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hegxgNO6/eJmMi3xYv5xPqS6nCUbQPuKqJAOsVw9YZU=;
-        b=QLKsq5LNdmTp9KGaWyJcb+TQ+Mipqh+uHirMwY4jvvIftvNMEXKYl3vmEcmxLK0Yyx
-         t+3Y8jOqcf6oJ9cL/vJzYZ4hlWKPwi/ivsmlXY0xKQ1TWP/5OrzsU/34U0FkCiYw0Tk5
-         WfmwGhnEuPVkQnizWjCEOx/T6/h0OlLCEumzIHfmo9oLWEJUVZw9seUlYFLnUUlu52/3
-         G0ar0cQCmWWXWadaPQUKYGxCKG3Qi/62YcDZcZrQBd0hNzAhK4rsfUOTHBbquDNbAFLz
-         F1KiEL+Nf6zUQ3wzUjvochiw9mDmSH0GLtovbOJjFq/Ms77Ze3O2eh5IoXv6+xBpdCBg
-         zGCw==
-X-Gm-Message-State: AOJu0YxUpq78awVIgtoBDzFBwR67FFggkd+GnGvf6frGE6/ix1BKHNzE
-        zMBm1tD19y2u9tpRfGe1TcgWoQ==
-X-Google-Smtp-Source: AGHT+IHhbJ4Zq+s+rSs8FNu7KDcaBBB/nMuvHKF9xaETSqN4qzFpE0HCxDNLu5zink+hPe+tNdEDjA==
-X-Received: by 2002:a05:6512:693:b0:4ff:7e80:4f1d with SMTP id t19-20020a056512069300b004ff7e804f1dmr11149698lfe.57.1696238078052;
-        Mon, 02 Oct 2023 02:14:38 -0700 (PDT)
+        bh=XKFgAZi/L0N2kp9XV6Gn5/hvFVeYhucp7Px8g6ewoQo=;
+        b=rOF70oM0MYTE6tk/YuQjRPJ5carqOzKn227sO4a+1q92jomYGQlmeqg0ukkM2F3F0F
+         e8Jh39f/ioGPALU+Ab1BZiPeSRdWTgTxbR7q5Yrz7Q95F0EUlQ4fTB1HRz1y8xjQCcmX
+         bUe2AOZBrGbpMX4zIoTY+yDElAZ6My1AQnhE/sYIkz+ewcBpvXvl2TfWsWvfmwmFXj6Z
+         0gBlZ+UJta51ffYnAV9Yf3oE4j1IRfO6pnvrUAeTT7tAwu0PQ9Yv66BrN0n6EAtDo0bT
+         p9CipY7RliCWsJlQJGmwFDsu/ioOsbCUqRRTredCWzZWFULcy0lw++5uOT8qOYk9qofV
+         KTVA==
+X-Gm-Message-State: AOJu0Yw0bx3u/SdVDAUHIZDmKglPdFkqQWg1VX+C/GfgJEQJGCMktUi8
+        vfm2asjf4K+DiZEKcfwTZLZeUA==
+X-Google-Smtp-Source: AGHT+IGa14XP+UqD8pYmtIu92W58oS/MZa2G9p8QeeBfIWcQQPykrUqAviYI11e1nL5dRWwmQFPPGQ==
+X-Received: by 2002:ac2:5453:0:b0:4fe:8c4:44fb with SMTP id d19-20020ac25453000000b004fe08c444fbmr9238541lfn.38.1696238141849;
+        Mon, 02 Oct 2023 02:15:41 -0700 (PDT)
 Received: from [172.30.204.164] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id j5-20020a05651231c500b0050482d4727fsm2210852lfe.233.2023.10.02.02.14.37
+        by smtp.gmail.com with ESMTPSA id w21-20020ac24435000000b0050307304a80sm4674723lfl.205.2023.10.02.02.15.40
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Oct 2023 02:14:37 -0700 (PDT)
-Message-ID: <3267eb4b-7154-200a-ec10-d795acc029f1@linaro.org>
-Date:   Mon, 2 Oct 2023 11:14:36 +0200
+        Mon, 02 Oct 2023 02:15:41 -0700 (PDT)
+Message-ID: <5864a318-f45f-49c7-0680-de50fa2b9f31@linaro.org>
+Date:   Mon, 2 Oct 2023 11:15:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable UFS
+Subject: Re: [PATCH 1/2] arm64: dts: qcom: sdm845-oneplus: enable flash LED
 Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
+To:     Caleb Connolly <caleb.connolly@linaro.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Nitin Rawat <quic_nitirawa@quicinc.com>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230929-fp5-ufs-v1-1-122941e28b06@fairphone.com>
- <cac1b912-e08b-4643-b081-834fdee30ea7@linaro.org>
- <CVXREP4FCX4E.3M77P8JP1T27M@otso>
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20231001-b4-sdm845-flash-dts-v1-0-275a3abb0b10@linaro.org>
+ <20231001-b4-sdm845-flash-dts-v1-1-275a3abb0b10@linaro.org>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <CVXREP4FCX4E.3M77P8JP1T27M@otso>
+In-Reply-To: <20231001-b4-sdm845-flash-dts-v1-1-275a3abb0b10@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -79,51 +76,11 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 
 
-On 10/2/23 09:02, Luca Weiss wrote:
-> On Fri Sep 29, 2023 at 3:12 PM CEST, Konrad Dybcio wrote:
->> On 29.09.2023 11:52, Luca Weiss wrote:
->>> Enable the UFS phy and controller so that we can access the internal
->>> storage of the phone.
->>>
->>> At the same time we need to bump the minimum voltage used for UFS VCC,
->>> otherwise it doesn't initialize properly. The new range is taken from
->>> the vcc-voltage-level property downstream.
->>>
->>> See also the following link for more information about the VCCQ/VCCQ2:
->>> https://gerrit-public.fairphone.software/plugins/gitiles/kernel/msm-extra/devicetree/+/1590a3739e7dc29d2597307881553236d492f188/fp5/yupik-idp-pm7250b.dtsi#207
->>>
->>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>> ---
->>> I'm not 100% convinced about the regulator range change. For sure with
->>> the original voltage range the UFS fails to initialize, but looking at
->>> downstream kernel during runtime (debugfs) we see the VCC voltage
->>> switches between 2.4V (idle?) and 2.952V (active?). But even with this
->>> change in mainline the regulator would always stay at 2.504V which is
->>> for sure lower than the downstream operating voltage of 2.952V. Behavior
->>> wise I don't see a difference between ~2.5V and ~2.9V.
->>>
->>> Should I just constrain the regulator here to min=max=2.952V? Or just
->>> say it's okay as-is?
->>>
->>> Depends on: https://lore.kernel.org/linux-arm-msm/20230927081858.15961-1-quic_nitirawa@quicinc.com/
->>> ---
->> There's a little funny hack inside the driver
->>
->> #if defined(CONFIG_SCSI_UFSHCD_QTI)
->>                          if (vreg->low_voltage_sup && !vreg->low_voltage_active && on)
->>                                  min_uV = vreg->max_uV;
->> #endif
->>
->> so, when the ufs is in use, it's pinned to vmax
+On 10/1/23 19:19, Caleb Connolly wrote:
+> Both the 6 and 6T feature a dual tone flash, enable it.
 > 
-> Hi Konrad,
-> 
-> Are you implying I *should* or *should not* pin the voltage range to
-> 2.952V-2.952V for mainline?
-Neither, voltage scaling should be implemented :P
-
-But for now, pinning it to 2.952 const is the right temporary
-solution, as having working UFS is generally better than one
-that can only idle in a stable manner :D
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
 Konrad
