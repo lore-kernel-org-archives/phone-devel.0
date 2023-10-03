@@ -2,74 +2,74 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F3F06E7AD4A
-	for <phone-devel@archiver.kernel.org>; Tue,  3 Oct 2023 13:19:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1FB7FE7AD42
+	for <phone-devel@archiver.kernel.org>; Tue,  3 Oct 2023 13:19:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235154AbjJCNTG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 3 Oct 2023 09:19:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34994 "EHLO
+        id S234951AbjJCNTK (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 3 Oct 2023 09:19:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235625AbjJCNS7 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 3 Oct 2023 09:18:59 -0400
-Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [85.215.255.104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D8D8D3;
-        Tue,  3 Oct 2023 06:18:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1696339128; cv=none;
+        with ESMTP id S235893AbjJCNTC (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 3 Oct 2023 09:19:02 -0400
+Received: from mo4-p04-ob.smtp.rzone.de (mo4-p04-ob.smtp.rzone.de [81.169.146.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F690A1;
+        Tue,  3 Oct 2023 06:18:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1696339129; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=sBTOCYL0l7xpzClqzSaMp1yAB+TbcIG0/h+JA1rplR1ec06wItNwxweMhv8iR8CCSW
-    8ubxVOrPS44ovxVBBGV8QqHhfrG+ntjnDzd8LbrDNJzrbgvEmKm5kdQdnmf5J1tj+ZvA
-    WJGudu03eOChKkhboox6R7KZzB3BSNB/N/aniSUIjj4RCRRw9VFeFjMZG2BGlNGLJjZx
-    55DwQD/JksF79TBsJOCYB1mwtIlxAFAqcbpAaq1WGWrwC3N8yCtJc2+TFkowHY5hXfNv
-    SMEe7110tvV2j3Hx8yL6NDjAMKYeDtwV1b+M23fYzOHE/wTy1HV89ffr8S9DzC6UfXw7
-    iQaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1696339128;
+    b=FfXHI5z85pFW5Y617fsif0hDGFdhByWmGZKgyC6ItfYRrl6e1uxDUztu58PDnWw1sG
+    ggE0w0gBXVVI3Dz21GwEWXMeC7qxh8V4lR/5Tp28a7VM5r8WiX5OLAKmejzSNk6GNbFB
+    RAb/4XDrZOkbQ+XBnc6PijJwgZkOWkuSQq4g7q/uyqgovRDTmpy2GB2cXDHZhZrtF/tl
+    C6z0fXXMl75uJrXCV8R86uWk6IE+xBHGENy00ZsnfZmlKSyP9v9iOgd7BSWR6qhH9QmH
+    KpiAkfUFu0SRy+0Yo0XvfhunwlatvDK9dRADIBBySCjJx05uLCBKVMVEp797h0YC1QBX
+    Hjiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1696339129;
     s=strato-dkim-0002; d=strato.com;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=ABcr19tRNPJA9WwA6xu4YglVdNWC2sFiJ/DvAai4lIo=;
-    b=n+5mtP/7v2dRfGdBn8FC2cQEDqZz4nUXdZP8O654BJCrtbaUrRouH54pq+F6Pa+cYD
-    32f2ac0KAfmyRm5Y/hvxCVcDqwKT//49ZwHK1D9lDC3bMp3GzCXTpfYaAEtdszAYvuRj
-    LKsanQSFDxSr+IxI2NoHhmK3LLcDbQUgj4P1/siUW2gSNNWREe3NHIo1hnkYLZIgm0BK
-    AR6vaKU9L1TtwqpMJApzauyb2zN9soGYOGYuCds/596vWfIJDMisLYC1g7ZE94wCbMIO
-    GLXrU1rViq/I7lUzHpkeC41/QxV9ahLjf4wP3lvb0mK2Mekk/ATR7yUkJv/7yzSqrOMA
-    pdAg==
+    bh=Gthy3JZsd0POCax8iakG2TwMg0evFgfpOwFOAF4TfGU=;
+    b=OIxGCXWXBRM8TQ0arBmYXi0iUmNH0KTrIJTF40U0/mfTFHE9sfrNt5L34/eqOshA/p
+    Nu9rfTA6Cn/9fh9baQwgDO7oNFX4+yMOO/uzDp/lU1iy5bbxDeZqBdDtvKTiZV+8FuUB
+    y0aJjREap5C9HMXMIf54nS2xX/7+MMNykC4JaZivWwHHgEVcPoyFyrQtdFyPhqdBKApq
+    zfS3RyxuvKDWmMwPRL4YVHsgPf37OLbK0oHEMfK34sDk+a++egG2pCJRE8Iql+xO+pSs
+    JqF0Ly9IoTAw/a21azfUWgM2yI/XQV5Tj9prZBvYdUcYteuoVGlAWNYZT31Paq4WSQi9
+    LJhw==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
-X-RZG-CLASS-ID: mo03
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1696339128;
+X-RZG-CLASS-ID: mo04
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1696339129;
     s=strato-dkim-0002; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=ABcr19tRNPJA9WwA6xu4YglVdNWC2sFiJ/DvAai4lIo=;
-    b=mtGigz86apnLDj4Aef2RFkKeMYEQ4Fj06SefhLGT8Mjc9F+Pd+TGxdNGqDhBCARhEA
-    ke+fm003Xb6as6voEbHMBN5/LsG8e7x1KmQyCWa+YxqygUDUPMP/JmEMOuzgnAxH1oJS
-    baXA+edN4EGbQg5w7pvBAs90gqMyrOAP238dHYRTXsgTyur/n+/XlZVUUs6IplXMTymi
-    G3rFarBl3Ba8qWBiU8E8DuQgELKIJ8a8hRfxHWzNY1iqBoliwIR1SZ53KYPDkgmCicgA
-    dwlbPJMGRiI/QVfD22X5pYhp+ukAJPPkL4mTjQ2UcEdXqmD50LPN4e5tdVzx1ygaIv+3
-    JMxA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1696339128;
+    bh=Gthy3JZsd0POCax8iakG2TwMg0evFgfpOwFOAF4TfGU=;
+    b=KpgqbqGlCBEbqsIh5Z5cnOA9nM8SvKhW1z4HpDvLrq56BdRL3uh2MeeFPcYb7Eaaif
+    gixvA/zzA7054hPv/qDNNUx9vLqor+1GNmC/nzxt/mm/YtQ8OOiAsQ7OVnqcY3k1dG+3
+    ylM6zaZKu1WsF/4y/+VTWOU0z0NcB4Mh3294xL7JEMdNUb0mazI1XecGKTNrpAMArraa
+    EY9wPYMjHEaPg4qQsRXeQv3WwxfU25frVHyiJRTxIeoVNRe5rEVWugcPqw1yvlkZHwPZ
+    12V8Uuyj1xcGbxLYsSnWTp4qC2WJnnPU9Lx6Bh0l9WeBI78LCrbIViaGenSlW/j4VECM
+    TOaA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1696339129;
     s=strato-dkim-0003; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=ABcr19tRNPJA9WwA6xu4YglVdNWC2sFiJ/DvAai4lIo=;
-    b=0rBD6xGGMzYpccoyDhR5F3E2OKkHPicRep76JrYZNxJE09AEt7xPEWwEbMgYxtlCVH
-    pgcSghTHcwohbkBWCXDg==
+    bh=Gthy3JZsd0POCax8iakG2TwMg0evFgfpOwFOAF4TfGU=;
+    b=DKuerXdB9UpbvEy5/to8ka0g/S5knTp24S+f3VVpez6j1EOLt8x/FNCqbE2XNjw5wo
+    uuGsMjzl7cSS1/tGCyBg==
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQjVd4CteZ/7jYgS+mLFY+H0JAn8u4l+/zY="
 Received: from [192.168.244.3]
     by smtp.strato.de (RZmta 49.8.2 DYNA|AUTH)
-    with ESMTPSA id R04c57z93DIm2OO
+    with ESMTPSA id R04c57z93DIn2OQ
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Tue, 3 Oct 2023 15:18:48 +0200 (CEST)
+    Tue, 3 Oct 2023 15:18:49 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
-Date:   Tue, 03 Oct 2023 15:18:30 +0200
-Subject: [PATCH v2 12/14] arm64: dts: qcom: msm8916-samsung-gt5: Add sound
+Date:   Tue, 03 Oct 2023 15:18:32 +0200
+Subject: [PATCH v2 14/14] arm64: dts: qcom: msm8939-samsung-a7: Add sound
  and modem
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231003-msm8916-modem-v2-12-61b684be55c0@gerhold.net>
+Message-Id: <20231003-msm8916-modem-v2-14-61b684be55c0@gerhold.net>
 References: <20231003-msm8916-modem-v2-0-61b684be55c0@gerhold.net>
 In-Reply-To: <20231003-msm8916-modem-v2-0-61b684be55c0@gerhold.net>
 To:     Bjorn Andersson <andersson@kernel.org>
@@ -80,63 +80,72 @@ Cc:     Andy Gross <agross@kernel.org>,
         ~postmarketos/upstreaming@lists.sr.ht,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
         Stephan Gerhold <stephan@gerhold.net>,
-        Jasper Korten <jja2000@gmail.com>,
-        Siddharth Manthan <siddharth.manthan@gmail.com>,
-        Nikita Travkin <nikita@trvn.ru>
+        "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
 X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-From: Jasper Korten <jja2000@gmail.com>
+From: "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
 
-Enable sound and modem for the Samsung Galaxy Tab A 2015 tablets.
-The setup is similar to most MSM8916 devices, i.e.:
+Enable sound and modem for the Samsung A7. The setup is similar to most
+MSM8916 devices, i.e.:
 
  - QDSP6 audio
- - Headphones/microphones via digital/analog codec in
-   MSM8916/PM8916. Earpiece exists on samsung-gt58 only.
+ - Earpiece/headphones/microphones via digital/analog codec in
+   MSM8916/PM8916
  - WWAN Internet via BAM-DMUX
 
-except:
+except for the same differences as the MSM8916-based Samsung A2015
+devices:
 
- - gt510: Stereo Maxim MAX98357A codecs for speaker on Quaternary MI2S
- - gt58: Mono NXP TFA9895 codec for speaker on Quaternary MI2S
-   - For some reason connected to GPIOs where no hardware I2C
-     controller is available -> need to use i2c-gpio
-- Samsung-specific audio jack detection (not supported yet)
+ - NXP TFA9895 codec for speaker on Quaternary MI2S
+ - Samsung-specific audio jack detection (not supported yet)
 
-Signed-off-by: Jasper Korten <jja2000@gmail.com>
-Co-developed-by: Siddharth Manthan <siddharth.manthan@gmail.com>
-Signed-off-by: Siddharth Manthan <siddharth.manthan@gmail.com>
-Co-developed-by: Nikita Travkin <nikita@trvn.ru>
-Signed-off-by: Nikita Travkin <nikita@trvn.ru>
+Signed-off-by: "Lin, Meng-Bo" <linmengbo0689@protonmail.com>
 [Stephan: Add consistent commit message, minor refactoring]
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- .../boot/dts/qcom/msm8916-samsung-gt5-common.dtsi  | 54 ++++++++++++++++++++++
- arch/arm64/boot/dts/qcom/msm8916-samsung-gt510.dts | 22 +++++++++
- arch/arm64/boot/dts/qcom/msm8916-samsung-gt58.dts  | 42 +++++++++++++++++
- 3 files changed, 118 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8939-samsung-a7.dts | 70 +++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
-index 6a16eb5ce07b..fbd2caf405d5 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
-@@ -3,9 +3,12 @@
+diff --git a/arch/arm64/boot/dts/qcom/msm8939-samsung-a7.dts b/arch/arm64/boot/dts/qcom/msm8939-samsung-a7.dts
+index fccd8fec8b8f..aa6c39482a2f 100644
+--- a/arch/arm64/boot/dts/qcom/msm8939-samsung-a7.dts
++++ b/arch/arm64/boot/dts/qcom/msm8939-samsung-a7.dts
+@@ -3,10 +3,12 @@
  /dts-v1/;
  
- #include "msm8916-pm8916.dtsi"
+ #include "msm8939-pm8916.dtsi"
 +#include "msm8916-modem-qdsp6.dtsi"
-+
+ 
  #include <dt-bindings/gpio/gpio.h>
  #include <dt-bindings/input/input.h>
  #include <dt-bindings/interrupt-controller/irq.h>
 +#include <dt-bindings/sound/apq8016-lpass.h>
  
  / {
- 	aliases {
-@@ -116,6 +119,29 @@ &blsp_uart2 {
+ 	model = "Samsung Galaxy A7 (2015)";
+@@ -287,6 +289,18 @@ muic: extcon@25 {
+ 	};
+ };
+ 
++&blsp_i2c2 {
++	status = "okay";
++
++	speaker_codec: audio-codec@34 {
++		compatible = "nxp,tfa9895";
++		reg = <0x34>;
++		vddd-supply = <&pm8916_l5>;
++		sound-name-prefix = "Speaker";
++		#sound-dai-cells = <0>;
++	};
++};
++
+ &blsp_i2c5 {
+ 	status = "okay";
+ 
+@@ -309,6 +323,29 @@ &blsp_uart2 {
  	status = "okay";
  };
  
@@ -160,14 +169,14 @@ index 6a16eb5ce07b..fbd2caf405d5 100644
 +};
 +
 +&mpss_mem {
-+	reg = <0x0 0x86800000 0x0 0x5400000>;
++	reg = <0x0 0x86800000 0x0 0x5800000>;
 +};
 +
  &pm8916_resin {
  	linux,code = <KEY_VOLUMEDOWN>;
  	status = "okay";
-@@ -133,6 +159,13 @@ &pm8916_usbin {
- 	status = "okay";
+@@ -321,6 +358,13 @@ pm8916_l17: l17 {
+ 	};
  };
  
 +&q6afedai {
@@ -180,15 +189,20 @@ index 6a16eb5ce07b..fbd2caf405d5 100644
  &sdhc_1 {
  	status = "okay";
  };
-@@ -147,6 +180,27 @@ &sdhc_2 {
+@@ -335,6 +379,32 @@ &sdhc_2 {
  	status = "okay";
  };
  
 +&sound {
++	model = "samsung-a2015";
 +	audio-routing =
 +		"AMIC1", "MIC BIAS External1",
 +		"AMIC2", "MIC BIAS Internal2",
 +		"AMIC3", "MIC BIAS External1";
++
++	pinctrl-0 = <&cdc_pdm_default &sec_mi2s_default>;
++	pinctrl-1 = <&cdc_pdm_sleep &sec_mi2s_sleep>;
++	pinctrl-names = "default", "sleep";
 +
 +	sound_link_backend2: backend2-dai-link {
 +		link-name = "Quaternary MI2S";
@@ -206,117 +220,8 @@ index 6a16eb5ce07b..fbd2caf405d5 100644
 +};
 +
  &usb {
- 	dr_mode = "peripheral";
- 	extcon = <&pm8916_usbin>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt510.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt510.dts
-index c3f1acc55078..5b34529b816c 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt510.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt510.dts
-@@ -9,6 +9,14 @@ / {
- 	compatible = "samsung,gt510", "qcom,msm8916";
- 	chassis-type = "tablet";
- 
-+	speaker_codec: audio-codec {
-+		compatible = "maxim,max98357a";
-+		sdmode-gpios = <&tlmm 55 GPIO_ACTIVE_HIGH>;
-+		#sound-dai-cells = <0>;
-+		pinctrl-0 = <&audio_sdmode_default>;
-+		pinctrl-names = "default";
-+	};
-+
- 	clk_pwm: pwm {
- 		compatible = "clk-pwm";
- 		#pwm-cells = <2>;
-@@ -146,7 +154,21 @@ &mdss_dsi0_out {
- 	remote-endpoint = <&panel_in>;
- };
- 
-+&sound {
-+	model = "samsung-gt510";
-+	pinctrl-0 = <&cdc_pdm_default &sec_mi2s_default>;
-+	pinctrl-1 = <&cdc_pdm_sleep &sec_mi2s_sleep>;
-+	pinctrl-names = "default", "sleep";
-+};
-+
- &tlmm {
-+	audio_sdmode_default: audio-sdmode-default-state {
-+		pins = "gpio55";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	buckbooster_en_default: buckbooster-en-default-state {
- 		pins = "gpio51";
- 		function = "gpio";
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt58.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt58.dts
-index 998625abd409..579312ed53ce 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt58.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt58.dts
-@@ -35,6 +35,26 @@ reg_vdd_tsp: regulator-vdd-tsp {
- 		pinctrl-names = "default";
- 	};
- 
-+	i2c-amplifier {
-+		compatible = "i2c-gpio";
-+		sda-gpios = <&tlmm 55 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+		scl-gpios = <&tlmm 56 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+
-+		pinctrl-0 = <&amp_i2c_default>;
-+		pinctrl-names = "default";
-+
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		speaker_codec: audio-codec@34 {
-+			compatible = "nxp,tfa9895";
-+			reg = <0x34>;
-+			vddd-supply = <&pm8916_l5>;
-+			sound-name-prefix = "Speaker";
-+			#sound-dai-cells = <0>;
-+		};
-+	};
-+
- 	vibrator {
- 		compatible = "gpio-vibrator";
- 		enable-gpios = <&tlmm 76 GPIO_ACTIVE_HIGH>;
-@@ -98,7 +118,21 @@ &mdss_dsi0_out {
- 	remote-endpoint = <&panel_in>;
- };
- 
-+&sound {
-+	model = "samsung-a2015";
-+	pinctrl-0 = <&cdc_pdm_default &sec_mi2s_default &secondary_mic_default>;
-+	pinctrl-1 = <&cdc_pdm_sleep &sec_mi2s_sleep &secondary_mic_default>;
-+	pinctrl-names = "default", "sleep";
-+};
-+
- &tlmm {
-+	amp_i2c_default: amp-i2c-default-state {
-+		pins = "gpio55", "gpio56";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	buckbooster_en_default: buckbooster-en-default-state {
- 		pins = "gpio8";
- 		function = "gpio";
-@@ -127,6 +161,14 @@ reg_tsp_en_default: reg-tsp-en-default-state {
- 		bias-disable;
- 	};
- 
-+	secondary_mic_default: secondary-mic-default-state {
-+		pins = "gpio98";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-high;
-+	};
-+
- 	tsp_int_default: tsp-int-default-state {
- 		pins = "gpio13";
- 		function = "gpio";
+ 	extcon = <&muic>, <&muic>;
+ 	status = "okay";
 
 -- 
 2.42.0
