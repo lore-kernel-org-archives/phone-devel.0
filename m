@@ -2,74 +2,74 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B589FE75455
-	for <phone-devel@archiver.kernel.org>; Tue,  3 Oct 2023 13:18:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01AC5E7AD41
+	for <phone-devel@archiver.kernel.org>; Tue,  3 Oct 2023 13:18:58 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235428AbjJCNSy (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 3 Oct 2023 09:18:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46152 "EHLO
+        id S235690AbjJCNS7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 3 Oct 2023 09:18:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234909AbjJCNSw (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Tue, 3 Oct 2023 09:18:52 -0400
-Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [81.169.146.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90469BD;
-        Tue,  3 Oct 2023 06:18:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1696339126; cv=none;
+        with ESMTP id S235144AbjJCNSx (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Tue, 3 Oct 2023 09:18:53 -0400
+Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [85.215.255.103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97968C9;
+        Tue,  3 Oct 2023 06:18:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1696339128; cv=none;
     d=strato.com; s=strato-dkim-0002;
-    b=L1oQY7PnVX/f6k10ssuj3NeRvAvSwmvEvpCWMQ7B8o3qWsQB8fxtjpA8rWmehWX+Gv
-    Agtb7WK0WCsF4tL+jAI//5JmtobedGbkAb5hjJLB6lKLoAppta40KQYTrA0hGUWVQuFy
-    qcvXhW5oiBGd7DE8xE631leYAfa1Y0dRz7u6jLc96hoSRiCWxhIUL5hHD9h54xrX++fb
-    tN91gPUr3pmZDhZAQCCZNwrLJZHxEdvAB3BCvvY8HZ93hAbMeEV9Y+FUp9lyq+33YF/R
-    Zp8fhO3w11iMgIQmvVfB652kp8tEBhA6z8ZEJwuMrfQU63jQkfuqf2/HOw4Y38QFs5pu
-    itng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1696339126;
+    b=TD1KFakuRZxiSGXYRwMy++LKN5m/TwQVAup1OshHdXHDHjZlulOS5gp6mjEYMcRYIo
+    nNWCXtOmU8pcGLFarvpIWth361Wx27APwN7cmCty2bVyvihAUgR5W8/P68yHwMfTpvr4
+    F/U/8m4Fjeroj2R6nbwpv02x3JygRbxDoRi0gWvfWuaEwgQjjGDoT9Q1Zck+/ydTMmdP
+    2AMfUcm5bxRVSS2TvqSRRq/Sa8nPkEUStf/V4nracW81aCFK80pabPQB2tZaxJz0eBZb
+    UDEKt8W4iqT8JROJEtrVBCSYD5AjbisONNsoBablUI9XRVKyHQc62axx8cLlI3V8x62D
+    05og==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1696339128;
     s=strato-dkim-0002; d=strato.com;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=CJfhHqq4bYPkDlzc+To1FAdUVzbIpBsNH1YlvpKh7/I=;
-    b=GeCizgeOuxN19DGUGNvSNXNywnok/uHOL1mE25O4V0d/egFPgQVoIJlE49hg6E/5cp
-    GI5Im/xIkWSfIrcX3qqhB6YwNdiEacnPmFrR+6E0WbizE7+SfSaO1+/dg16dr78DcAFT
-    fd05xQNOOhXQqWD8OKnLAZna9VVuhGAlG0GPCSMfgTZlg/gBdoCBmiNgcQiIzkb6fzwc
-    8G5BZQXg6VTnD+G/kEweLFpcHNQugXX10Xexx9KlNl8cUik6bDWOTNVm3frD66gOsebW
-    52BE8cJUNVTfXjkVJ38gXXe97KA8CqvQ8UXkOxI3kKGDjhVsgNm6AgH70uTu2jQJ9GyZ
-    gZbQ==
+    bh=5bjXhesMmGj3qm6NxqLDNr7lzDiYOW8cVTbalWvbuQc=;
+    b=a240hws91gaaA/tI9/tPi0xK9GYMCzuSrHS1EKOe3khoCifItn3V34cehYNmtd6/ZV
+    gH1Q5QMJoXcAL/Mc3rFTLlQbGtJusry40dwtOVHPgkyh/9fxj/ILYvdtwzE4SRbwC1Vw
+    XHJJq8dUxUbZq9OqBSPpbTEBdBI37fS3K/8fSA+Me2SXwIrRJFX3p/weqUr0WFpXdJ5N
+    iKKuaIbJs7X+CfaJf8/L5Az5JzHTK0PTgHsUnLjkm2yluYdxQ8lCSvoE3XiSfzHdglMS
+    51GPDPo38WqWsBAlgoUXoqV0haDEYup/u3szRFo+O2ZebsRULZ0oyvwUN0BsvyVfHRvs
+    sNvA==
 ARC-Authentication-Results: i=1; strato.com;
     arc=none;
     dkim=none
 X-RZG-CLASS-ID: mo03
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1696339126;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1696339128;
     s=strato-dkim-0002; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=CJfhHqq4bYPkDlzc+To1FAdUVzbIpBsNH1YlvpKh7/I=;
-    b=EfvDZSgkuR9Cx98wiizOeEeMWht+xrpoEDw1AB/0eRTxZwK20bcFaDJqFSvLdMonng
-    meP1aURrKGxzzGHq3lxQI+7Kwu8LaO89Day/IwpJIgG3y2nWNFDqe3f9Y4mdgB3ONJAV
-    W3CwPpXtKCXGWr/um0B14pom0TylTpgJ5eZpNVWGpjNEEOf6MMNm4C+cvGw4Y3a7+gkw
-    UXscrg/YPMaRhnQGt90KtuGolUaAJ6bIgI2LrTV0H8xLFkFYFTVUMZxdKdHwdSujQ9k/
-    yGYTyYbBFJxi5F9hijx8Pe5fUVvQLplzutpYgZoWEm0lXXWj2Kt156oyi3j30dztV2Pc
-    tJtg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1696339126;
+    bh=5bjXhesMmGj3qm6NxqLDNr7lzDiYOW8cVTbalWvbuQc=;
+    b=SatUV8jMwzJWRYy+QYQz5EDs3Od8DmThzcd2f2wNyf9lLJkIyHni/IdnztjCSo8PRW
+    P0F4WSty6g4MFDM6IC2Dfz1/FIIYxA+FOFHB/ALJ5q31m0eURlRsbNAr6IngvlJUsDVx
+    1KD05E/DWA9GGxHCQr1kpXFWH7hwJBU7UpiBfGRld8LA3RhG2RSB0N2DXCUBCUQ9lSkD
+    YGcLGSw65CSqRTDBXPMTv2ZGy8Nq5s1kvVB2yn++bJh3RKcW6VREl66OejMB4wDaukIu
+    MWnwkfgkbD0AXU+daW0xheaYLUOdB9lVLsHIlg2wXgAiFBkskJhQ8R5glUD5LjtKieXH
+    3wLw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1696339128;
     s=strato-dkim-0003; d=gerhold.net;
     h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
     From:Subject:Sender;
-    bh=CJfhHqq4bYPkDlzc+To1FAdUVzbIpBsNH1YlvpKh7/I=;
-    b=fvq1pFVmORGTNpEVVlqgoTlioAa5Ef0OxDhYhkMTxHkkD847h4/mvZAJv1yny9obVy
-    HAIj2Y043r2904QSHsCg==
+    bh=5bjXhesMmGj3qm6NxqLDNr7lzDiYOW8cVTbalWvbuQc=;
+    b=jNGWsy1w0WWdM5V5n0Xblcc4uRuG988okfqOTbx1E7gMttEmqudKafIP7LMbZ7Cqu4
+    ga5oJo2NSGvt7yV7gHCw==
 X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQjVd4CteZ/7jYgS+mLFY+H0JAn8u4l+/zY="
 Received: from [192.168.244.3]
     by smtp.strato.de (RZmta 49.8.2 DYNA|AUTH)
-    with ESMTPSA id R04c57z93DIk2OJ
+    with ESMTPSA id R04c57z93DIl2OM
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
         (Client did not present a certificate);
-    Tue, 3 Oct 2023 15:18:46 +0200 (CEST)
+    Tue, 3 Oct 2023 15:18:47 +0200 (CEST)
 From:   Stephan Gerhold <stephan@gerhold.net>
-Date:   Tue, 03 Oct 2023 15:18:25 +0200
-Subject: [PATCH v2 07/14] arm64: dts: qcom: msm8916-wingtech-wt88047: Add
+Date:   Tue, 03 Oct 2023 15:18:28 +0200
+Subject: [PATCH v2 10/14] arm64: dts: qcom: msm8916-longcheer-l8150: Add
  sound and modem
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231003-msm8916-modem-v2-7-61b684be55c0@gerhold.net>
+Message-Id: <20231003-msm8916-modem-v2-10-61b684be55c0@gerhold.net>
 References: <20231003-msm8916-modem-v2-0-61b684be55c0@gerhold.net>
 In-Reply-To: <20231003-msm8916-modem-v2-0-61b684be55c0@gerhold.net>
 To:     Bjorn Andersson <andersson@kernel.org>
@@ -79,38 +79,48 @@ Cc:     Andy Gross <agross@kernel.org>,
         linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stephan Gerhold <stephan@gerhold.net>
+        Stephan Gerhold <stephan@gerhold.net>,
+        Nikita Travkin <nikita@trvn.ru>
 X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Enable sound and modem for the Xiaomi Redmi 2. The setup
-is similar to most MSM8916 devices, i.e.:
+From: Nikita Travkin <nikita@trvn.ru>
+
+Enable sound and modem for the Longcheer L8150 (e.g. Wileyfox Swift).
+The setup is similar to most MSM8916 devices, i.e.:
 
  - QDSP6 audio
- - Earpiece/headphones/microphones via digital/analog codec in
-   MSM8916/PM8916
+ - Speaker/earpiece/headphones/microphones via digital/analog codec
+   in MSM8916/PM8916
  - Audio jack detection via analog codec in PM8916
  - WWAN Internet via BAM-DMUX
 
 except:
 
- - Speaker amplifier is connected to HPH_R (headphones) output of the
-   analog codec. There is a separate analog switch that allows disabling
-   playback via the headphone jack.
+ - The mpss firmware region must be relocated to a different address.
+   This is because the wcnss firmware is not relocatable for some
+   reason. The mpss firmware is too large to avoid overlap with wcnss
+   when placed at the default address (0x86800000).
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+   Surprisingly the vendor kernel does not handle this. The firmware
+   regions end up overlapping there and somehow this does not explode.
+   We try to handle this more safely by relocating the mpss region to
+   the first higher address that is working correctly: 0x8e800000.
+
+Signed-off-by: Nikita Travkin <nikita@trvn.ru>
+Co-developed-by: Stephan Gerhold <stephan@gerhold.net>
 Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 ---
- .../boot/dts/qcom/msm8916-wingtech-wt88047.dts     | 74 ++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
+ .../boot/dts/qcom/msm8916-longcheer-l8150.dts      | 31 +++++++++++++++++++---
+ 1 file changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-index 419f35c1fc92..d4b88c787e59 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-@@ -6,6 +6,8 @@
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
+index 47d1c5cb13f4..37fa55166918 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
+@@ -3,6 +3,8 @@
  /dts-v1/;
  
  #include "msm8916-pm8916.dtsi"
@@ -118,114 +128,65 @@ index 419f35c1fc92..d4b88c787e59 100644
 +
  #include <dt-bindings/gpio/gpio.h>
  #include <dt-bindings/input/input.h>
- #include <dt-bindings/leds/common.h>
-@@ -25,6 +27,28 @@ chosen {
- 		stdout-path = "serial0";
+ #include <dt-bindings/interrupt-controller/irq.h>
+@@ -25,17 +27,26 @@ chosen {
+ 
+ 	/*
+ 	 * For some reason, the signed wcnss firmware is not relocatable.
+-	 * It must be loaded at 0x8b600000. All other firmware is relocatable,
+-	 * so place wcnss at the fixed address and then all other firmware
+-	 * regions will be automatically allocated at a fitting place.
++	 * It must be loaded at 0x8b600000. Unfortunately, this also means that
++	 * mpss_mem does not fit when loaded to the typical address at 0x86800000.
++	 *
++	 * Load wcnss_mem to the fixed address and relocate mpss_mem to the next
++	 * working higher address. For some reason the modem firmware does not
++	 * boot when placed at 0x8a800000 to 0x8e800000.
+ 	 */
+ 	reserved-memory {
++		/delete-node/ mpss@86800000;
+ 		/delete-node/ wcnss;
+ 
+ 		wcnss_mem: wcnss@8b600000 {
+ 			reg = <0x0 0x8b600000 0x0 0x600000>;
+ 			no-map;
+ 		};
++
++		mpss_mem: mpss@8e800000 {
++			reg = <0x0 0x8e800000 0x0 0x5000000>;
++			no-map;
++		};
  	};
  
-+	speaker_amp: audio-amplifier {
-+		compatible = "simple-audio-amplifier";
-+		enable-gpios = <&tlmm 117 GPIO_ACTIVE_HIGH>;
-+		sound-name-prefix = "Speaker Amp";
-+		pinctrl-0 = <&speaker_amp_default>;
-+		pinctrl-names = "default";
-+	};
-+
-+	/*
-+	 * This seems to be actually an analog switch that either routes audio
-+	 * to the headphone jack or nowhere. Given that we need to enable a GPIO
-+	 * to get sound on headphones, modelling it as simple-audio-amplifier
-+	 * works just fine.
-+	 */
-+	headphones_switch: audio-switch {
-+		compatible = "simple-audio-amplifier";
-+		enable-gpios = <&tlmm 8 GPIO_ACTIVE_HIGH>;
-+		sound-name-prefix = "Headphones Switch";
-+		pinctrl-0 = <&headphones_switch_default>;
-+		pinctrl-names = "default";
-+	};
-+
- 	flash-led-controller {
- 		compatible = "ocs,ocp8110";
- 		enable-gpios = <&tlmm 31 GPIO_ACTIVE_HIGH>;
-@@ -146,6 +170,18 @@ &blsp_uart2 {
+ 	gpio-keys {
+@@ -225,6 +236,13 @@ &blsp_uart2 {
  	status = "okay";
  };
  
-+&mpss_mem {
-+	reg = <0x0 0x86800000 0x0 0x5100000>;
-+};
-+
 +&pm8916_codec {
-+	qcom,micbias1-ext-cap;
 +	qcom,micbias-lvl = <2800>;
-+	qcom,mbhc-vthreshold-low = <75 100 120 180 500>;
-+	qcom,mbhc-vthreshold-high = <75 100 120 180 500>;
++	qcom,mbhc-vthreshold-low = <75 150 237 450 500>;
++	qcom,mbhc-vthreshold-high = <75 150 237 450 500>;
 +	qcom,hphl-jack-type-normally-open;
 +};
 +
  &pm8916_resin {
  	status = "okay";
  	linux,code = <KEY_VOLUMEDOWN>;
-@@ -180,6 +216,30 @@ &sdhc_2 {
+@@ -254,6 +272,13 @@ &sdhc_2 {
  	non-removable;
  };
  
 +&sound {
-+	/*
-+	 * Provide widgets/pin-switches to allow enabling speaker and headphones
-+	 * separately. Both are routed via the HPH_L/HPH_R pins of the codec.
-+	 */
-+	model = "wt88047";
-+	widgets =
-+		"Speaker", "Speaker",
-+		"Headphone", "Headphones";
-+	pin-switches = "Speaker", "Headphones";
 +	audio-routing =
-+		"Speaker", "Speaker Amp OUTL",
-+		"Speaker", "Speaker Amp OUTR",
-+		"Speaker Amp INL", "HPH_R",
-+		"Speaker Amp INR", "HPH_R",
-+		"Headphones", "Headphones Switch OUTL",
-+		"Headphones", "Headphones Switch OUTR",
-+		"Headphones Switch INL", "HPH_L",
-+		"Headphones Switch INR", "HPH_R",
-+		"AMIC1", "MIC BIAS External1",
-+		"AMIC2", "MIC BIAS Internal2";
-+	aux-devs = <&speaker_amp>, <&headphones_switch>;
++		"AMIC1", "MIC BIAS Internal1",
++		"AMIC2", "MIC BIAS Internal2",
++		"AMIC3", "MIC BIAS Internal3";
 +};
 +
  &usb {
  	status = "okay";
- 	extcon = <&usb_id>, <&usb_id>;
-@@ -226,6 +286,13 @@ gpio_keys_default: gpio-keys-default-state {
- 		bias-pull-up;
- 	};
- 
-+	headphones_switch_default: headphones-switch-default-state {
-+		pins = "gpio8";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	imu_default: imu-default-state {
- 		pins = "gpio115";
- 		function = "gpio";
-@@ -234,6 +301,13 @@ imu_default: imu-default-state {
- 		bias-disable;
- 	};
- 
-+	speaker_amp_default: speaker-amp-default-state {
-+		pins = "gpio117";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	touchscreen_default: touchscreen-default-state {
- 		touchscreen-pins {
- 			pins = "gpio13";
+ 	dr_mode = "peripheral";
 
 -- 
 2.42.0
