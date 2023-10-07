@@ -2,74 +2,106 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BA2CE92731
-	for <phone-devel@archiver.kernel.org>; Thu,  5 Oct 2023 15:58:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 40520E95A63
+	for <phone-devel@archiver.kernel.org>; Sat,  7 Oct 2023 14:01:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238041AbjJEP6L (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 5 Oct 2023 11:58:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50908 "EHLO
+        id S1343933AbjJGOBC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 7 Oct 2023 10:01:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234355AbjJEP44 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Thu, 5 Oct 2023 11:56:56 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF6FA5BB2;
-        Thu,  5 Oct 2023 06:55:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FF0C43215;
-        Thu,  5 Oct 2023 13:55:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696514104;
-        bh=ruPafLxqiqN5GVxCe5nkJ2euYsptGUelC3r4B7yxjts=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=WQz4G4yYnAdDDEo1AaWaMUeq+Ut8JXdSfJlNQcrG0O9WNOg2EptQ/FY/ZcdWUvTMG
-         i3Fngj/gkp6CClxwXXLKWH+0xKI/IGpm3cg8WCvtLWM5xwmNt7wx0TAOKFJOzC/928
-         VoNPrNPKCDAoqctzmVPhaRbjgre0dB7d0bpKvb/u3rDa+5EfIF1vSjUzFCthlVqHQz
-         bdPlYV7e1P2sDeS7IAYcqyxA3hUL7NH1diuUHIAM/xis2VRjtNvljpYzVTwnjkzSC5
-         IVmC/vjFvY+q0nmbauREp932iuThtGgzHx/YVkUKsQqFHfF6R2y3+FtDwQG6DrKYlZ
-         on2FyWwL/MOmw==
-From:   Lee Jones <lee@kernel.org>
+        with ESMTP id S1343627AbjJGOBB (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Sat, 7 Oct 2023 10:01:01 -0400
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 702DEB6;
+        Sat,  7 Oct 2023 07:01:00 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-406650da82bso27725625e9.3;
+        Sat, 07 Oct 2023 07:01:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696687258; x=1697292058; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JA8pNS1sjO+SvOcd9f6aWXsYXEvGmALJgnPRfN+5ZZI=;
+        b=UDnIXIB++NvBHV9SoQCxqfjMq56DJVSBM5z50WqruSFt0D/CpePQzTycSdXcn56RY9
+         yb0Pda6b8xa8ocvBAyV2onRN+4BkIfHmQs8KC56PExjaSekwU5dqcShBBlBLhfPfsDbZ
+         KD2/tNFdxSlyYrtiC4tZ9zknfNalf8Q3Ju3DyAQNCmZOtvtGTq/rpxvS+vlAU9Wu1ulz
+         mu/dTgJ/KMV3ax1Yoce5WqItvlX1Cz1wIwPnAyDoOy7OnPNly/6J27fac88phZlj40hy
+         1BsAfFggVIx1adAsOnDRgOsn+atTXIVoaAlOsOL1N7aTnw3PV+SylLuvOEhYz0GUwdR/
+         YyyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696687258; x=1697292058;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JA8pNS1sjO+SvOcd9f6aWXsYXEvGmALJgnPRfN+5ZZI=;
+        b=U4HMmMIdFacu88IWGUoxvISys3ipvr0/rIhG++8yoSnhLMFtuD8g2MVSiwtmFhM9Cf
+         yfI7Z/qvx7eqnqbdbaW22O0NpA7CS4nbDvJi+85FjAQw6i81AHQ7nNvNvGGGhlnvsQf9
+         e2R+YHTz1ORL523Ry+AAsKqJyiqFRdPzA3GvT7DwGqnbKmlDTKxLxc/aIAAvfHxS8xLU
+         +9wWE7AQZsaw6rDg4lNRww+siNIVdz7ZT6rgghcputP38D4bH8tODqTYkrYzbRTNA8q+
+         TnQBxgRAgc08nnuj8IzeAkhijomH9tkEak353pVg/ex/yTKxI/J53Hh7DYCFxZhCAxcq
+         sSfQ==
+X-Gm-Message-State: AOJu0Yx/8z8FXZR5jcMYAdTuCe2r1ECjBb8RzJlVbA/ryrn0ycWod5Pu
+        o6rYt/pB5AsjUO2Yb1ie4UM=
+X-Google-Smtp-Source: AGHT+IGw5xKTNOEryOEGkm2GmWpAQMQ7XWxlFiwFmem0T2DEt25XxN9BwEq7jE9+BmH9cReNhqOUuQ==
+X-Received: by 2002:a1c:4c09:0:b0:401:b204:3b97 with SMTP id z9-20020a1c4c09000000b00401b2043b97mr10662857wmf.4.1696687258088;
+        Sat, 07 Oct 2023 07:00:58 -0700 (PDT)
+Received: from david-ryuzu.fritz.box ([77.22.112.104])
+        by smtp.googlemail.com with ESMTPSA id q8-20020a05600000c800b0032415213a6fsm4332043wrx.87.2023.10.07.07.00.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Oct 2023 07:00:57 -0700 (PDT)
+From:   David Wronek <davidwronek@gmail.com>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Luca Weiss <luca.weiss@fairphone.com>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231002-pm7250b-gpio-fixup-v2-1-debb8b599989@fairphone.com>
-References: <20231002-pm7250b-gpio-fixup-v2-0-debb8b599989@fairphone.com>
- <20231002-pm7250b-gpio-fixup-v2-1-debb8b599989@fairphone.com>
-Subject: Re: (subset) [PATCH v2 1/2] dt-bindings: mfd: qcom,spmi-pmic: Drop
- unused labels from examples
-Message-Id: <169651410138.777767.3255528451615557124.b4-ty@kernel.org>
-Date:   Thu, 05 Oct 2023 14:55:01 +0100
+        Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Joe Mason <buddyjojo06@outlook.com>
+Cc:     cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-phy@lists.infradead.org, linux-scsi@vger.kernel.org,
+        hexdump0815@googlemail.com, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, David Wronek <davidwronek@gmail.com>
+Subject: [PATCH 0/7] Add UFS support for SC7180/SM7125
+Date:   Sat,  7 Oct 2023 15:58:24 +0200
+Message-ID: <20231007140053.1731245-1-davidwronek@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.2
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, 02 Oct 2023 09:00:11 +0200, Luca Weiss wrote:
-> There's not much point in having unused labels in the binding example,
-> so drop them.
-> 
-> This patch was originally motivated by ea25d61b448a ("arm64: dts: qcom:
-> Use plural _gpios node label for PMIC gpios") updating all dts files to
-> use the plural _gpios label instead of the singular _gpio as label but
-> this example wasn't updated. But since we should just drop the label
-> alltogether, do that.
-> 
-> [...]
+This patchset introduces UFS storage support for SC7180 and SM7125, as
+well as support for the Xiaomi Redmi Note 9S.
 
-Applied, thanks!
+David Wronek (6):
+  dt-bindings: ufs: qcom: Add SC7180 compatible string
+  dt-bindings: phy: Add QMP UFS PHY compatible for SC7180
+  dt-bindings: arm: qcom: Add Xiaomi Redmi Note 9S
+  phy: qcom: qmp-ufs: Add SC7180 support
+  arm64: dts: qcom: sc7180: Add UFS nodes
+  arm64: dts: qcom: sm7125-xiaomi-common: Add UFS nodes
 
-[1/2] dt-bindings: mfd: qcom,spmi-pmic: Drop unused labels from examples
-      commit: cac94656ff2b16827d7cd455f0d3746280cf3138
+Joe Mason (1):
+  arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S
 
---
-Lee Jones [李琼斯]
+ .../devicetree/bindings/arm/qcom.yaml         |  1 +
+ .../phy/qcom,sc8280xp-qmp-ufs-phy.yaml        |  1 +
+ .../devicetree/bindings/ufs/qcom,ufs.yaml     |  2 +
+ arch/arm64/boot/dts/qcom/Makefile             |  1 +
+ arch/arm64/boot/dts/qcom/sc7180.dtsi          | 70 +++++++++++++++++++
+ .../boot/dts/qcom/sm7125-xiaomi-common.dtsi   | 16 +++++
+ .../boot/dts/qcom/sm7125-xiaomi-curtana.dts   | 16 +++++
+ drivers/phy/qualcomm/phy-qcom-qmp-ufs.c       |  3 +
+ 8 files changed, 110 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/sm7125-xiaomi-curtana.dts
+
+-- 
+2.42.0
 
