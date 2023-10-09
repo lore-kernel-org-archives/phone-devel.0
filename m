@@ -2,58 +2,58 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12A73CD6137
-	for <phone-devel@archiver.kernel.org>; Mon,  9 Oct 2023 21:12:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98215CD613A
+	for <phone-devel@archiver.kernel.org>; Mon,  9 Oct 2023 21:16:41 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378168AbjJIVMm (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 9 Oct 2023 17:12:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54178 "EHLO
+        id S233903AbjJIVQk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 9 Oct 2023 17:16:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378136AbjJIVMl (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Oct 2023 17:12:41 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0907CA6
-        for <phone-devel@vger.kernel.org>; Mon,  9 Oct 2023 14:12:39 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-5041cc983f9so5932447e87.3
-        for <phone-devel@vger.kernel.org>; Mon, 09 Oct 2023 14:12:38 -0700 (PDT)
+        with ESMTP id S234707AbjJIVQ0 (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Oct 2023 17:16:26 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2E4BE6
+        for <phone-devel@vger.kernel.org>; Mon,  9 Oct 2023 14:15:13 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2c1807f3400so60879341fa.1
+        for <phone-devel@vger.kernel.org>; Mon, 09 Oct 2023 14:15:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696885957; x=1697490757; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1696886111; x=1697490911; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=jGoGhItmjXMm5592hTQT86oDx5AEAugpeAAG92Ldv9c=;
-        b=XVQJc+0rZA8e6WctYFLbKYDlqtPNU0ZOYg/EpwZlsFUo4wMxi/Kwi+8ys0qxhealS8
-         JVvJKdvbUZs9jSIwbRiT5f6faiSGpnnpbzof2hFjrHZBOozuBpMTlWoicCDA49T44VZj
-         rBuRFOtEw7uN+kDke20ZmGLdqDk7hggxhnFqD+IoFyJfBCp4Ve9sRZaSHszSWM91jhIJ
-         8v0PVpGGQbI/J0z5BRwruraF3K1wAiPFoRtloMxCKnIldNmVpQmJT+D+exEO4fNWc4SB
-         tycTDPKn/zpB+dVuXUqA/itEo477KlsAekt6b4BVAm/o2NNxZw5LV9e+ikfOZTJfuLMq
-         4KnA==
+        bh=GF8sVvByPhILrt0ONAgfOaeyuIu1HrfcOafsBj1Kszo=;
+        b=jDW6Nw2XwVMmxv3s8Jy+owRjhpcl5rJmP3z0COTeBVfsRHY9GcZUB4KPVeRQSXZH9D
+         4MLHVGV1POq1NppcUkViz3eI+FU59J5Ehm57PoONo/2e1ORENe5noa6zeUVgqrQGrrFo
+         CNJh5uv3xW+mhwd8G64i0pvvugzbzAzpF/Q+WAs7AIbEwMWkMzCjqo3eDS1M0QacNhjH
+         vTyv9oWjeWlhCuBaE+5lfeXcxEsxQTg8fktc902n5xmIA07DOQvQUr2YKbMqy5ZB6ID1
+         XAbQoAR69MwFli0bPcNhzFyFhGDcn+hPZHglfYqSirAIoJdNJ6iOLaLwgQy6YNDRk7Xg
+         bm1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696885957; x=1697490757;
+        d=1e100.net; s=20230601; t=1696886111; x=1697490911;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jGoGhItmjXMm5592hTQT86oDx5AEAugpeAAG92Ldv9c=;
-        b=Pko5J2XMu3pfgp7/Lnb0DE8LmIaFY3u/ouUwaA0kuMel82R5prLQ7sF5yRNlV/17E4
-         apDe1RJEy0wGYoX1UU6KDEFlFhHSSqKbiBGrzNEEJsbk2il/ij1cWnrbEi2UuCF6ygzE
-         x8OSz1O63HVDSbb2eOgeNWlUX4B7/pnShsQ559uAJiuQOc9AYRxa8ZF6ETxhQRXfdIrA
-         gBy5ACHu1Mtu+IX6ai0rRtXiTTqLsLrF/xqJ/UTOBQ4GJptZaaxNolnVTuzhmD56dNl7
-         zE8dW29ghjlhQcP3FmoCBIWnuMNAKIdpA4RfS+C39G2qSDRkj7YsMgj7frnnmYZDmknq
-         8JlA==
-X-Gm-Message-State: AOJu0YwWhLMqwh9ux3FRWJX2CeeFfPYdcdhNWRrZKqhTc/uF7KE3k2f0
-        kysnawDh1xeNgcPdEIbuc9qU9w==
-X-Google-Smtp-Source: AGHT+IES2gxCqlfZ4jVm2fkrFudmIdnYvMcqyuJquOODcke/lKVXTFzg0TPAm6K5BgdJCoKWv5t6WA==
-X-Received: by 2002:a05:6512:138e:b0:503:7dd:7ebc with SMTP id fc14-20020a056512138e00b0050307dd7ebcmr18050066lfb.18.1696885957242;
-        Mon, 09 Oct 2023 14:12:37 -0700 (PDT)
+        bh=GF8sVvByPhILrt0ONAgfOaeyuIu1HrfcOafsBj1Kszo=;
+        b=JX3YcubL5LbNTWp7JTEd9b0h2lbIF7EuGZskeSYy5cn/Ox3bSFJ00AYRlH50UJ0dAV
+         UY6Go8dXVMJFjX5sQXDxVCT67BmbHGVEqfs82/22fohBCgIU7CwGwRz6VWwqYFaO5N0L
+         ZNNe69/vXwoSKDp8nju2HecUhzzW0erVO1+z3vKQpTpuJZzEsjRhZPS83baneUUOteTC
+         Sbicpy9KkImSrRdbn1rVGapsLi3+gf+/StU829VVe8LIYhfX8/ocim5nV1b4GqYgdDI9
+         IrWIAQEge9+fcng7zG8t3b8qewMy9jH/pl6NQpO2yeFRcSHZl7jtmrhFJcs+v95NHemw
+         oc9w==
+X-Gm-Message-State: AOJu0YyZDBjFCbpfAFjPvwmuqQ4SuNJWugx3p/4GpmCNAE01qb6D3OlH
+        fcB5XRv0w3manV8F/Wu4IqUAew==
+X-Google-Smtp-Source: AGHT+IHPANy7utWKq+Nt0JGanJ/qxGKrfFVdkzSlLFJqrNsi+LPmEIbl3s9Am1RcS03FjaY5Al1gyQ==
+X-Received: by 2002:a05:651c:2049:b0:2c0:12f9:3b7c with SMTP id t9-20020a05651c204900b002c012f93b7cmr10214544ljo.11.1696886111428;
+        Mon, 09 Oct 2023 14:15:11 -0700 (PDT)
 Received: from [172.30.204.90] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id w10-20020a19c50a000000b005056efabed0sm1563171lfe.29.2023.10.09.14.12.35
+        by smtp.gmail.com with ESMTPSA id n10-20020a2e86ca000000b002c029a4b681sm2175771ljj.15.2023.10.09.14.15.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Oct 2023 14:12:36 -0700 (PDT)
-Message-ID: <c69dc6e0-30a8-460c-a718-99874b543534@linaro.org>
-Date:   Mon, 9 Oct 2023 23:12:34 +0200
+        Mon, 09 Oct 2023 14:15:11 -0700 (PDT)
+Message-ID: <c4d418b3-86e7-4768-8d18-bf0c05690ddc@linaro.org>
+Date:   Mon, 9 Oct 2023 23:15:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] arm64: dts: qcom: sc7180: Add UFS nodes
+Subject: Re: [PATCH 6/7] arm64: dts: qcom: sm7125-xiaomi-common: Add UFS nodes
 Content-Language: en-US
 To:     David Wronek <davidwronek@gmail.com>,
         Andy Gross <agross@kernel.org>,
@@ -74,9 +74,9 @@ Cc:     cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
         hexdump0815@googlemail.com, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org
 References: <20231007140053.1731245-1-davidwronek@gmail.com>
- <20231007140053.1731245-6-davidwronek@gmail.com>
+ <20231007140053.1731245-7-davidwronek@gmail.com>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20231007140053.1731245-6-davidwronek@gmail.com>
+In-Reply-To: <20231007140053.1731245-7-davidwronek@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -86,85 +86,10 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 
 On 10/7/23 15:58, David Wronek wrote:
-> Add the UFS and QMP PHY nodes for the Qualcomm SC7180 SoC.
+> Enable the UFS found on the SM7125 Xiaomi smartphones.
 > 
 > Signed-off-by: David Wronek <davidwronek@gmail.com>
 > ---
->   arch/arm64/boot/dts/qcom/sc7180.dtsi | 70 ++++++++++++++++++++++++++++
->   1 file changed, 70 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-> index 11f353d416b4..9f18be4fd61a 100644
-> --- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-> @@ -1532,6 +1532,76 @@ mmss_noc: interconnect@1740000 {
->   			qcom,bcm-voters = <&apps_bcm_voter>;
->   		};
->   
-> +		ufs_mem_hc: ufshc@1d84000 {
-> +			compatible = "qcom,sc7180-ufshc", "qcom,ufshc",
-> +				     "jedec,ufs-2.0";
-> +			reg = <0 0x01d84000 0 0x3000>,
-> +			      <0 0x01d90000 0 0x8000>;
-> +			reg-names = "std", "ice";
-Recently the ICE was separated into its own node
-
-> +			interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
-> +			phys = <&ufs_mem_phy>;
-> +			phy-names = "ufsphy";
-> +			lanes-per-direction = <1>;
-> +			power-domains = <&gcc UFS_PHY_GDSC>;
-> +			#reset-cells = <1>;
-> +			resets = <&gcc GCC_UFS_PHY_BCR>;
-> +			reset-names = "rst";
-> +
-> +			iommus = <&apps_smmu 0xa0 0x0>;
-> +
-> +			clock-names =
-> +				"core_clk",
-Remove the newline after the =, here and below
-
-> +				"bus_aggr_clk",
-> +				"iface_clk",
-> +				"core_clk_unipro",
-> +				"ref_clk",
-> +				"tx_lane0_sync_clk",
-> +				"rx_lane0_sync_clk",
-> +				"ice_core_clk";
-> +			clocks =
-> +				<&gcc GCC_UFS_PHY_AXI_CLK>,
-> +				<&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
-> +				<&gcc GCC_UFS_PHY_AHB_CLK>,
-> +				<&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
-> +				<&rpmhcc RPMH_CXO_CLK>,
-> +				<&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
-> +				<&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
-> +				<&gcc GCC_UFS_PHY_ICE_CORE_CLK>;
-> +			freq-table-hz =
-> +				<50000000 200000000>,
-> +				<0 0>,
-> +				<0 0>,
-> +				<37500000 150000000>,
-> +				<0 0>,
-> +				<0 0>,
-> +				<0 0>,
-> +				<0 300000000>;
-> +
-> +			interconnects = <&aggre1_noc MASTER_UFS_MEM 0 &mc_virt SLAVE_EBI1 0>,
-> +				<&gem_noc MASTER_APPSS_PROC 0 &config_noc SLAVE_UFS_MEM_CFG 0>;
-Please make the <s align and use QCOM_ICC_TAG_ALWAYS from 
-include/dt-bindings/interconnect/qcom,icc.h like in sa8775p.dtsi
-> +			interconnect-names = "ufs-ddr", "cpu-ufs";
-> +
-> +			status = "disabled";
-> +		};
-> +
-> +		ufs_mem_phy: phy@1d87000 {
-> +			compatible = "qcom,sc7180-qmp-ufs-phy";
-> +			reg = <0 0x01d87000 0 0x1000>;
-> +
-> +			clocks = <&gcc GCC_UFS_MEM_CLKREF_CLK>,
-> +				<&gcc GCC_UFS_PHY_PHY_AUX_CLK>;
-Please align the <s
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
 Konrad
