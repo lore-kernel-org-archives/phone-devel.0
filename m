@@ -2,124 +2,356 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C27A5CD6139
-	for <phone-devel@archiver.kernel.org>; Mon,  9 Oct 2023 21:17:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ADAF4CD80DB
+	for <phone-devel@archiver.kernel.org>; Tue, 10 Oct 2023 14:05:53 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378236AbjJIVRk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 9 Oct 2023 17:17:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38396 "EHLO
+        id S232517AbjJJOFx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 10 Oct 2023 10:05:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378776AbjJIVR2 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Mon, 9 Oct 2023 17:17:28 -0400
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E71E910E3
-        for <phone-devel@vger.kernel.org>; Mon,  9 Oct 2023 14:16:05 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2c135cf2459so57102441fa.0
-        for <phone-devel@vger.kernel.org>; Mon, 09 Oct 2023 14:16:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696886164; x=1697490964; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1QJllRkKfyLXLeIPvgYtOO8kIRJqQX9SQuociu6Txv4=;
-        b=tjoCHSwboFvojO7WJ9P1KtKgXXEuu9Dd34hrx1QXPIA8Fo+l4FB/y5dmuUh8XstT/a
-         pOV4JXPtqYAOyD469G5YFLIOinw9/BvzVi45xIELPwUVv2NV25A8LoFHpbKzhC8kbYW6
-         B7GhTGJ1seWdKzIAUAc4FzPTfxLqll6wCLq2MpEOf/4Jagt9jyF3q5PzB8qxgxsWqbHY
-         DQKpQY2Wk2yncLT1D17QxMwvU9VxsGWzu0bGJqmrXLpgDzFM6Cz26CjCLZkiZzdfrSlX
-         I0z0aFBB1j8gY2UHhRa8ub29yYl71FGY6ARejw69jejupeeJg9bUkz7Soiqe5UXnQ/pD
-         Cf+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696886164; x=1697490964;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1QJllRkKfyLXLeIPvgYtOO8kIRJqQX9SQuociu6Txv4=;
-        b=FcOoHiIcQYf2VMb8uNx5ZRoz7HiFYwaDWc3bHDhoQ/gzPqowoO9Sls76L8LvtTkL8F
-         q6aQML5+8r8aiz0y9/3b3VyfStl7yFofkGw7YlC3ulyNbo0Z681fx5ZfuhPftZKOEgmX
-         t8QWAwOzUyu4Rpm2wWvUUcmLX7lgAopupt4H1nnVQ3Y5GT9DlpSW79F9q6TJIuSl0ahP
-         bnmAyPYL2zX3t0RUTX9cvqa4JsH9rImWlCBbo2PFYNKp5JUmwvTWQo/C6jOvzUQ18J8P
-         ATft/E48arTKNu+XG22NE716gK2D4Nag2Wsx+V3+oyjZZKkgVtg+/Z5xVGjuo3eb764/
-         /18Q==
-X-Gm-Message-State: AOJu0YzIdL9winnA1WBkKwYSwrxgiiZony5hzDNxgNxUtoyPv0VzRmKl
-        cjxbrZvet1UtQMTcWOWYLaftHA==
-X-Google-Smtp-Source: AGHT+IFI+Nis6dD7nYVGj7SaBgIGgfknIUViG8EGepXxTPbJSHP5l8mwxp1h9hfC4Uz41QB9vPjQjQ==
-X-Received: by 2002:a2e:9794:0:b0:2b9:e1dd:5756 with SMTP id y20-20020a2e9794000000b002b9e1dd5756mr14413302lji.45.1696886164263;
-        Mon, 09 Oct 2023 14:16:04 -0700 (PDT)
-Received: from [172.30.204.90] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id n10-20020a2e86ca000000b002c029a4b681sm2175771ljj.15.2023.10.09.14.16.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Oct 2023 14:16:03 -0700 (PDT)
-Message-ID: <c72cb819-ffdb-4f6a-8567-3f5bf3368a05@linaro.org>
-Date:   Mon, 9 Oct 2023 23:16:02 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] arm64: dts: qcom: Add support for Xiaomi Redmi Note
- 9S
-Content-Language: en-US
-To:     David Wronek <davidwronek@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        with ESMTP id S232043AbjJJOFw (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>);
+        Tue, 10 Oct 2023 10:05:52 -0400
+X-Greylist: delayed 518 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 10 Oct 2023 07:05:48 PDT
+Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A6B691;
+        Tue, 10 Oct 2023 07:05:48 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by honk.sigxcpu.org (Postfix) with ESMTP id E2C93FB16;
+        Tue, 10 Oct 2023 15:57:06 +0200 (CEST)
+Received: from honk.sigxcpu.org ([127.0.0.1])
+        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id DC-5xPbGdTKb; Tue, 10 Oct 2023 15:57:04 +0200 (CEST)
+Date:   Tue, 10 Oct 2023 15:57:02 +0200
+From:   Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
+To:     Caleb Connolly <caleb.connolly@linaro.org>
+Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Joe Mason <buddyjojo06@outlook.com>
-Cc:     cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-scsi@vger.kernel.org,
-        hexdump0815@googlemail.com, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org
-References: <20231007140053.1731245-1-davidwronek@gmail.com>
- <20231007140053.1731245-8-davidwronek@gmail.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20231007140053.1731245-8-davidwronek@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        Thierry Reding <thierry.reding@gmail.com>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Robert Mader <robert.mader@posteo.de>,
+        dri-devel@lists.freedesktop.org, Hector Martin <marcan@marcan.st>,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        asahi@lists.linux.dev, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH RFC] dt-bindings: display: document display panel
+ occlusions
+Message-ID: <ZSVYLiwzSZi4mSy7@qwark.sigxcpu.org>
+References: <20231009-caleb-notch-example-v1-1-9e0a43ae233c@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231009-caleb-notch-example-v1-1-9e0a43ae233c@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Hi Caleb,
+thanks for putting this out. 
 
+On Mon, Oct 09, 2023 at 06:32:50PM +0100, Caleb Connolly wrote:
+> Some display panels found in modern phones and laptops feature
+> non-standard display shapes with features like rounded corners, notches
+> (sections of the display that are cut-out from the edge), and cutouts
+> (such as circular "hole punch" camera cutouts, or wider pill-shaped
+> "islands").
+> 
+> Some discussion has been underway previously on how best to describe
+> these features [1][2], including a reference userspace implementation
+> using SVG paths [3]. Using this previous discussion as a jumping off
+> point, this RFC allows for describing the following display features:
+> 
+> * Corner radius (on a per-corner basis)
+> * Circular or pill-shaped cutouts
+> * Notches with arbitrary shapes
 
-On 10/7/23 15:58, David Wronek wrote:
-> From: Joe Mason <buddyjojo06@outlook.com>
+The coordinate systems is 0,0 at top,left display corner?
+
+> It's easy to make a case for only using rectangles to describe these
+> missing parts of a display, however this severely limits their utility.
+> Describing display occlusions as accurately as possible allows for a lot of
+> useful UX features. For example, displaying a ring around a hole-punch
+> camera when it's in use, or wrapping UI elements around a notch. These
+> behaviours are only possible to implement when the dimensions are known
+> with near pixel-perfect accuracy.
 > 
-> Add a device tree for the Xiaomi Redmi Note 9S (curtana) phone, based on
-> sm7125-xiaomi-common.dtsi.
+> Cutouts are described as rectangles with a width, height, and corner
+> radius.
+> A radius of half the width longest edge will definitionally be an ellipse.
+> This simple description is suitable for describing hole-punch cameras,
+> as well
+> as pill-shaped cutouts. I'm not aware of any devices that can't be
+> described like this.
+
+I wonder if we shouldn't just use a closed SVG path and put this and notches
+in one bucket that way. We need to indicate the "type" of a notch/cutout
+anyway as there's e.g. ones which aren't fully opaque but "just" lower
+resolution areas. We could start out with one type "fully opaque".
+
+> Notches are a little more complicated, they usually feature convex and
+> concave corners as well as straight lines. Here they are described as a
+> sequence of optionally disjoint arcs, where the space between one arc ending
+> and another starting is inferred to be a straight line.
+
+gmobile is using a subset of a closed SVG path (so does Android
+afaik). The upside of "just arcs" would be that bounding box is even simpler
+but as this affects userspace I think getting a better approximation
+using a path would be worth it and we could treat it the same as
+cutouts.
+
+> Each arc is described with an X and Y pixel coordinate, a radius, and a
+> start and end point in degrees. These arcs can precisely describe the
+> shape of a notch, and easily allow for a basic bounding box to be
+> derived using the min/max coordinates specified in the path.
 > 
-> Signed-off-by: Joe Mason <buddyjojo06@outlook.com>
-> Signed-off-by: David Wronek <davidwronek@gmail.com>
+> Some displays feature partially occluded edges ("waterfall edges") where
+> the screen bends, it may be useful for user interfaces to avoid placing
+> certain UI elements like buttons too close to these edges. These edges
+> are described by a distance from the edge where it begins to be
+> occluded, and the number of degrees that the display curves (this
+> directly affects how usable this edge of the screen is).
+
+I've not yet seen a device with this on Linux. Would it make sense to
+leave it out until we have those coming. E.g. are all waterfalls the
+same or are some more usable for displaying information than others?
+
+What is your plan on informing userspace about that? Feed it through DRM
+via drm properties or would userspace poke at /sys and try to find the
+right panel for the connector? drm would have the upside of not being
+bound to device-tree using platforms.
+
+Cheers,
+ -- Guido
+
+> 
+> [1]: https://lore.kernel.org/dri-devel/f8747f99-0695-5be0-841f-4f72ba5d5da3@connolly.tech/
+> [2]: https://gitlab.freedesktop.org/wayland/wayland-protocols/-/issues/87
+> [3]: https://gitlab.gnome.org/World/Phosh/gmobile
+> 
+> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
 > ---
->   arch/arm64/boot/dts/qcom/Makefile                |  1 +
->   .../boot/dts/qcom/sm7125-xiaomi-curtana.dts      | 16 ++++++++++++++++
->   2 files changed, 17 insertions(+)
->   create mode 100644 arch/arm64/boot/dts/qcom/sm7125-xiaomi-curtana.dts
+> Some folks have previously suggested that this information belongs in
+> userspace and not in devicetree. I would like to be clear that
+> devicetree is for describing hardware, and parts of a display which can
+> never actually be seen are very much properties of the underlying
+> hardware.
+> ---
+> base-commit: 268c4b354d66908697299063c44c0b553b01d935
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-> index d6cb840b7050..57974fb0c580 100644
-> --- a/arch/arm64/boot/dts/qcom/Makefile
-> +++ b/arch/arm64/boot/dts/qcom/Makefile
-> @@ -207,6 +207,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-sony-xperia-seine-pdx201.dtb
->   dtb-$(CONFIG_ARCH_QCOM)	+= sm6125-xiaomi-laurel-sprout.dtb
->   dtb-$(CONFIG_ARCH_QCOM)	+= sm6350-sony-xperia-lena-pdx213.dtb
->   dtb-$(CONFIG_ARCH_QCOM)	+= sm6375-sony-xperia-murray-pdx225.dtb
-> +dtb-$(CONFIG_ARCH_QCOM)	+= sm7125-xiaomi-curtana.dtb
->   dtb-$(CONFIG_ARCH_QCOM)	+= sm7125-xiaomi-joyeuse.dtb
->   dtb-$(CONFIG_ARCH_QCOM)	+= sm7225-fairphone-fp4.dtb
->   dtb-$(CONFIG_ARCH_QCOM)	+= sm8150-hdk.dtb
-> diff --git a/arch/arm64/boot/dts/qcom/sm7125-xiaomi-curtana.dts b/arch/arm64/boot/dts/qcom/sm7125-xiaomi-curtana.dts
+> // Caleb (they/them)
+> ---
+>  .../bindings/display/panel/panel-common.yaml       |   7 +
+>  .../bindings/display/panel/panel-occlusions.yaml   | 182 +++++++++++++++++++++
+>  2 files changed, 189 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/display/panel/panel-common.yaml b/Documentation/devicetree/bindings/display/panel/panel-common.yaml
+> index 0a57a31f4f3d..6ea52a031872 100644
+> --- a/Documentation/devicetree/bindings/display/panel/panel-common.yaml
+> +++ b/Documentation/devicetree/bindings/display/panel/panel-common.yaml
+> @@ -150,6 +150,13 @@ properties:
+>        controller, this property contains a phandle that references the
+>        controller.
+>  
+> +  occlusions:
+> +    $ref: panel-occlusions.yaml#
+> +    description:
+> +      Some panels have non-standard shapes due to features like rounded corners,
+> +      notches, cutouts, and "waterfall" edges. The panel-occlusions bindings
+> +      can be used to describe these features.
+> +
+>  dependencies:
+>    width-mm: [ height-mm ]
+>    height-mm: [ width-mm ]
+> diff --git a/Documentation/devicetree/bindings/display/panel/panel-occlusions.yaml b/Documentation/devicetree/bindings/display/panel/panel-occlusions.yaml
 > new file mode 100644
-> index 000000000000..12f517a8492c
+> index 000000000000..0932026bbd8c
 > --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/sm7125-xiaomi-curtana.dts
-> @@ -0,0 +1,16 @@
-> +// SPDX-License-Identifier: GPL-2.0
-I have no idea if you can just include a bunch of bsd3 source and slap 
-gpl2 atop your changes.. Somebody else could probably chime in
-
-Konrad
+> +++ b/Documentation/devicetree/bindings/display/panel/panel-occlusions.yaml
+> @@ -0,0 +1,182 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/panel/panel-occlusions.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Common Properties for describing display notches, cutouts, and other occlusions
+> +
+> +maintainers:
+> +  - Caleb Connolly <caleb.connolly@linaro.org>
+> +
+> +description: |
+> +  This document defines devicetree nodes that can be used to describe
+> +  different kind of display occlusions such as notches, camera cutouts, rounded
+> +  corners, and other features that may require special treatment by the display
+> +  subsystem. All pixel values should be given in the displays native resolution.
+> +
+> +properties:
+> +  $nodename:
+> +    const: occlusions
+> +
+> +  corners:
+> +    type: object
+> +    description: |
+> +      An area of the display which is fully obscured by a notch.
+> +    properties:
+> +      radius-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: Describes the radius when it's identical for all corners
+> +
+> +      radius-top-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: Describes the radius when it's identical for both top corners
+> +
+> +      radius-bottom-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: Describes the radius when it's identical for both top corners
+> +
+> +      radius-top-left-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: The radius of the top left corner in pixels
+> +
+> +      radius-top-right-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: The radius of the top right corner in pixels
+> +
+> +      radius-bottom-left-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: The radius of the bottom left corner in pixels
+> +
+> +      radius-bottom-right-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: The radius of the bottom right corner in pixels
+> +
+> +    dependencies:
+> +      radius-top-left-px: [ radius-top-right-px ]
+> +      radius-top-right-px: [ radius-top-left-px ]
+> +      radius-bottom-left-px: [ radius-bottom-right-px ]
+> +      radius-bottom-right-px: [ radius-bottom-left-px ]
+> +
+> +    anyOf:
+> +      - required:
+> +          - radius-px
+> +      - required:
+> +          - radius-top-px
+> +          - radius-bottom-px
+> +      - required:
+> +          - radius-top-px
+> +          - radius-bottom-left-px
+> +          - radius-bottom-right-px
+> +      - required:
+> +          - radius-bottom-px
+> +          - radius-top-left-px
+> +          - radius-top-right-px
+> +      - required:
+> +          - radius-top-left-px
+> +          - radius-top-right-px
+> +          - radius-bottom-left-px
+> +          - radius-bottom-right-px
+> +
+> +    additionalProperties: false
+> +
+> +patternProperties:
+> +  "^cutout(-[0-9])?$":
+> +    type: object
+> +    description: |
+> +      An area of the display which is not directly adjacent to an
+> +      edge and is fully occluded (for example, a camera cutout).
+> +    properties:
+> +      x-position-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: The horizontal coordinate of the center of the cutout.
+> +
+> +      y-position-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: The horizontal coordinate of the center of the cutout.
+> +
+> +      width-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: The width of the cutout in pixels.
+> +
+> +      height-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: The width of the cutout in pixels.
+> +
+> +      corner-radius-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: |
+> +          The radius of the corners in pixels. For a circle this should be half of
+> +          the width/height.
+> +
+> +    required:
+> +      - x-position-px
+> +      - y-position-px
+> +      - width-px
+> +      - height-px
+> +      - corner-radius-px
+> +
+> +    additionalProperties: false
+> +
+> +  "^notch(-[0-9])?$":
+> +    type: object
+> +    description: |
+> +      An area of the display which is fully occluded by a notch.
+> +    properties:
+> +      path:
+> +        $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> +        description: |
+> +          Sequence of values defining the arcs which describe this path. Lines
+> +          are inserted between arcs that don't directly meet.
+> +        maxItems: 8 # Ought to cover most scenarios
+> +        items:
+> +          items:
+> +            - description: X coordinate of center point in pixels
+> +            - description: Y coordinate of center point in pixels
+> +            - description: Circle radius
+> +            - description: Starting angle in degrees
+> +            - description: Ending angle in degrees
+> +
+> +    required:
+> +      - path
+> +
+> +    additionalProperties: false
+> +
+> +  "^(left|right|top|bottom)-edge$":
+> +    type: object
+> +    description: |
+> +      An edge of the screen with reduced visibility due to a waterfall design
+> +      or similar.
+> +    properties:
+> +      size-px:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: The distance from the edge where it begins to obscure visbility
+> +
+> +      curve-degrees:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description: The number of degrees that the display curves.
+> +        maximum: 100
+> +
+> +    required:
+> +      - size-px
+> +      - curve-degrees
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - | # A panel with a large-ish notch on the top edge, and different corner radii
+> +    panel {
+> +        occlusions {
+> +            notch {
+> +                path = <360 8  10 0    90>,
+> +                       <435 10 20 270 180>,
+> +                       <645 10 20 180  90>,
+> +                       <645 8  10  90   0>;
+> +            };
+> +
+> +            corners {
+> +                radius-top-px = <30>;
+> +                radius-bottom-px = <40>;
+> +            };
+> +        };
+> +    };
+> 
