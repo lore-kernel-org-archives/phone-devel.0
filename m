@@ -2,45 +2,52 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ADAF4CD80DB
-	for <phone-devel@archiver.kernel.org>; Tue, 10 Oct 2023 14:05:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AE48CD8CAB
+	for <phone-devel@archiver.kernel.org>; Tue, 10 Oct 2023 16:53:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232517AbjJJOFx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 10 Oct 2023 10:05:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51566 "EHLO
+        id S229674AbjJJQxE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 10 Oct 2023 12:53:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232043AbjJJOFw (ORCPT
+        with ESMTP id S231682AbjJJQxE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 10 Oct 2023 10:05:52 -0400
-X-Greylist: delayed 518 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 10 Oct 2023 07:05:48 PDT
-Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A6B691;
-        Tue, 10 Oct 2023 07:05:48 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id E2C93FB16;
-        Tue, 10 Oct 2023 15:57:06 +0200 (CEST)
-Received: from honk.sigxcpu.org ([127.0.0.1])
-        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id DC-5xPbGdTKb; Tue, 10 Oct 2023 15:57:04 +0200 (CEST)
-Date:   Tue, 10 Oct 2023 15:57:02 +0200
-From:   Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
+        Tue, 10 Oct 2023 12:53:04 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D83893
+        for <phone-devel@vger.kernel.org>; Tue, 10 Oct 2023 09:53:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2479BC433C7;
+        Tue, 10 Oct 2023 16:53:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696956781;
+        bh=L5NwNsdKwVFJ/8I5C1ECPq8/UGrIVwLZ62+G3nk+qZQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ixZ3L1KpzZYR9ac4+c83YyvHUbQ6QiNVsnCzriaqpl2dZS0O9Wt+iDWopL9QTB7Pq
+         rIklS7PHt/ibA/U6T2HlBjlnvpBOJSiL9V5gEqVX+G+qmr0NWG4PNwT/ukIG7gxnfH
+         Iz6tX2HCrFk2nrWug8Kb/Z3KU+doCpQ3kIrCAy8aMYuyMyXHDIaPEPM5tKqRVqxkH8
+         EGbfjWcyrApN8hsMLSDMgycFK1aRPUcJzIfPMZuMuRvideQ1lOj+mgrOMb4Wb2ENAD
+         fS+nV1M2D+xEgD/e0kv0U4gNWGnrTpDT9amZTnDMhAU4Ef9TZ4XwPHLE1yIcSj/Amw
+         1nA8znjotxPVA==
+Received: (nullmailer pid 1039505 invoked by uid 1000);
+        Tue, 10 Oct 2023 16:52:58 -0000
+Date:   Tue, 10 Oct 2023 11:52:58 -0500
+From:   Rob Herring <robh@kernel.org>
 To:     Caleb Connolly <caleb.connolly@linaro.org>
 Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
         Sam Ravnborg <sam@ravnborg.org>,
         David Airlie <airlied@gmail.com>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
         Thierry Reding <thierry.reding@gmail.com>,
         Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
         Robert Mader <robert.mader@posteo.de>,
+        Guido Gunther <agx@sigxcpu.org>,
         dri-devel@lists.freedesktop.org, Hector Martin <marcan@marcan.st>,
         devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
         asahi@lists.linux.dev, ~postmarketos/upstreaming@lists.sr.ht
 Subject: Re: [PATCH RFC] dt-bindings: display: document display panel
  occlusions
-Message-ID: <ZSVYLiwzSZi4mSy7@qwark.sigxcpu.org>
+Message-ID: <20231010165258.GA1012576-robh@kernel.org>
 References: <20231009-caleb-notch-example-v1-1-9e0a43ae233c@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -49,9 +56,6 @@ In-Reply-To: <20231009-caleb-notch-example-v1-1-9e0a43ae233c@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
-
-Hi Caleb,
-thanks for putting this out. 
 
 On Mon, Oct 09, 2023 at 06:32:50PM +0100, Caleb Connolly wrote:
 > Some display panels found in modern phones and laptops feature
@@ -68,9 +72,7 @@ On Mon, Oct 09, 2023 at 06:32:50PM +0100, Caleb Connolly wrote:
 > * Corner radius (on a per-corner basis)
 > * Circular or pill-shaped cutouts
 > * Notches with arbitrary shapes
-
-The coordinate systems is 0,0 at top,left display corner?
-
+> 
 > It's easy to make a case for only using rectangles to describe these
 > missing parts of a display, however this severely limits their utility.
 > Describing display occlusions as accurately as possible allows for a lot of
@@ -86,23 +88,12 @@ The coordinate systems is 0,0 at top,left display corner?
 > as well
 > as pill-shaped cutouts. I'm not aware of any devices that can't be
 > described like this.
-
-I wonder if we shouldn't just use a closed SVG path and put this and notches
-in one bucket that way. We need to indicate the "type" of a notch/cutout
-anyway as there's e.g. ones which aren't fully opaque but "just" lower
-resolution areas. We could start out with one type "fully opaque".
-
+> 
 > Notches are a little more complicated, they usually feature convex and
 > concave corners as well as straight lines. Here they are described as a
 > sequence of optionally disjoint arcs, where the space between one arc ending
 > and another starting is inferred to be a straight line.
-
-gmobile is using a subset of a closed SVG path (so does Android
-afaik). The upside of "just arcs" would be that bounding box is even simpler
-but as this affects userspace I think getting a better approximation
-using a path would be worth it and we could treat it the same as
-cutouts.
-
+> 
 > Each arc is described with an X and Y pixel coordinate, a radius, and a
 > start and end point in degrees. These arcs can precisely describe the
 > shape of a notch, and easily allow for a basic bounding box to be
@@ -114,19 +105,6 @@ cutouts.
 > are described by a distance from the edge where it begins to be
 > occluded, and the number of degrees that the display curves (this
 > directly affects how usable this edge of the screen is).
-
-I've not yet seen a device with this on Linux. Would it make sense to
-leave it out until we have those coming. E.g. are all waterfalls the
-same or are some more usable for displaying information than others?
-
-What is your plan on informing userspace about that? Feed it through DRM
-via drm properties or would userspace poke at /sys and try to find the
-right panel for the connector? drm would have the upside of not being
-bound to device-tree using platforms.
-
-Cheers,
- -- Guido
-
 > 
 > [1]: https://lore.kernel.org/dri-devel/f8747f99-0695-5be0-841f-4f72ba5d5da3@connolly.tech/
 > [2]: https://gitlab.freedesktop.org/wayland/wayland-protocols/-/issues/87
@@ -139,6 +117,12 @@ Cheers,
 > devicetree is for describing hardware, and parts of a display which can
 > never actually be seen are very much properties of the underlying
 > hardware.
+
+Makes sense to me.
+
+There's similar work happening for touchscreens/pads here[1]. Seems like 
+there might be some overlap in terms of what the binding needs.
+
 > ---
 > base-commit: 268c4b354d66908697299063c44c0b553b01d935
 > 
@@ -184,6 +168,9 @@ Cheers,
 > +  - Caleb Connolly <caleb.connolly@linaro.org>
 > +
 > +description: |
+
+You don't need '|' unless there is formatting which is significant.
+
 > +  This document defines devicetree nodes that can be used to describe
 > +  different kind of display occlusions such as notches, camera cutouts, rounded
 > +  corners, and other features that may require special treatment by the display
@@ -197,6 +184,9 @@ Cheers,
 > +    type: object
 > +    description: |
 > +      An area of the display which is fully obscured by a notch.
+
+notch?
+
 > +    properties:
 > +      radius-px:
 > +        $ref: /schemas/types.yaml#/definitions/uint32
@@ -225,6 +215,13 @@ Cheers,
 > +      radius-bottom-right-px:
 > +        $ref: /schemas/types.yaml#/definitions/uint32
 > +        description: The radius of the bottom right corner in pixels
+
+I think I would define the corner positions the same way as cutouts 
+rather than encoding the position into property names. 
+
+I'm not sure I'd try to optimize describing all 4 corners other than the 
+all 4 the same case.
+
 > +
 > +    dependencies:
 > +      radius-top-left-px: [ radius-top-right-px ]
@@ -298,6 +295,10 @@ Cheers,
 > +      An area of the display which is fully occluded by a notch.
 > +    properties:
 > +      path:
+
+Too vague a name. Ideally, a given property name has only 1 type 
+(globally).
+
 > +        $ref: /schemas/types.yaml#/definitions/uint32-matrix
 > +        description: |
 > +          Sequence of values defining the arcs which describe this path. Lines
@@ -313,6 +314,10 @@ Cheers,
 > +
 > +    required:
 > +      - path
+
+Couldn't you just describe the whole edge of the screen this way? IOW, 
+the corners and edges, too.
+
 > +
 > +    additionalProperties: false
 > +
@@ -336,22 +341,6 @@ Cheers,
 > +      - curve-degrees
 > +
 > +additionalProperties: false
-> +
-> +examples:
-> +  - | # A panel with a large-ish notch on the top edge, and different corner radii
-> +    panel {
-> +        occlusions {
-> +            notch {
-> +                path = <360 8  10 0    90>,
-> +                       <435 10 20 270 180>,
-> +                       <645 10 20 180  90>,
-> +                       <645 8  10  90   0>;
-> +            };
-> +
-> +            corners {
-> +                radius-top-px = <30>;
-> +                radius-bottom-px = <40>;
-> +            };
-> +        };
-> +    };
-> 
+
+
+[1] https://lore.kernel.org/all/20230510-feature-ts_virtobj_patch-v4-2-5c6c0fc1eed6@wolfvision.net/
