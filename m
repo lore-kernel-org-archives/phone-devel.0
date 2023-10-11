@@ -2,175 +2,103 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B61A3CD98E0
-	for <phone-devel@archiver.kernel.org>; Wed, 11 Oct 2023 01:34:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F065BCDB463
+	for <phone-devel@archiver.kernel.org>; Wed, 11 Oct 2023 16:33:47 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344546AbjJKBej (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 10 Oct 2023 21:34:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52286 "EHLO
+        id S232761AbjJKQdp (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 11 Oct 2023 12:33:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344381AbjJKBei (ORCPT
+        with ESMTP id S232718AbjJKQdf (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 10 Oct 2023 21:34:38 -0400
-X-Greylist: delayed 19968 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 10 Oct 2023 18:34:35 PDT
-Received: from mail.maslowski.xyz (mail.maslowski.xyz [IPv6:2001:19f0:5:5b98:5400:3ff:fe59:951d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F2CC93;
-        Tue, 10 Oct 2023 18:34:35 -0700 (PDT)
-Received: from localhost (ett70.neoplus.adsl.tpnet.pl [83.20.165.70])
-        by mail.maslowski.xyz (Postfix) with ESMTPSA id 12A7C7DCBC;
-        Wed, 11 Oct 2023 01:34:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=maslowski.xyz;
-        s=mail; t=1696988071;
-        bh=NnfFpwUX9CGJeaS2KmvWkwSGRdoXuydK9QlAfgDJ3Yk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Xjbi52/vD13NDSbJSQIRBk7ZVbVGxQCaa91wwiTsnt2n7CrxtkS2ySt2OGjMp8DTQ
-         PI+SOcNz2NCXVb89prO9tekNjSZLXYJB5v6z45sDXaqf3AVwRlog5WwQRGTYHpOWwr
-         LmV16P/DPjUuONSKm7WupOjniA4dHVBzLpmgJvko0Abi6MfVGdoh+HU+r3NhDYTbUR
-         fQdWOD4zySb5APuu8M/eGbLMc03Kx1dctII/mOt9GL4I+eYgXf8vvT7DiGML9swBrk
-         Djdpw3ZQqurHfk6c+xQM7NgKvXabxS41PAEF2hZxZP/YTkmVQyW+zyBxctsF1qHqyL
-         EcPHlotITQWZg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 11 Oct 2023 03:34:26 +0200
-Message-Id: <CW582BCPP7D9.323NL89SO8H7N@andrad>
-From:   =?utf-8?q?Piotr_Mas=C5=82owski?= <piotr@maslowski.xyz>
-To:     "Caleb Connolly" <caleb.connolly@linaro.org>
-Cc:     "Neil Armstrong" <neil.armstrong@linaro.org>,
-        "Sam Ravnborg" <sam@ravnborg.org>,
-        "David Airlie" <airlied@gmail.com>,
-        "Daniel Vetter" <daniel@ffwll.ch>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>,
-        "Thierry Reding" <thierry.reding@gmail.com>,
-        "Laurent Pinchart" <laurent.pinchart+renesas@ideasonboard.com>,
-        "Robert Mader" <robert.mader@posteo.de>,
-        "Guido Gunther" <agx@sigxcpu.org>,
-        <dri-devel@lists.freedesktop.org>,
-        "Hector Martin" <marcan@marcan.st>, <devicetree@vger.kernel.org>,
-        <phone-devel@vger.kernel.org>, <asahi@lists.linux.dev>,
-        <~postmarketos/upstreaming@lists.sr.ht>
-Subject: Re: [PATCH RFC] dt-bindings: display: document display panel
- occlusions
-X-Mailer: aerc 0.15.2
-References: <20231009-caleb-notch-example-v1-1-9e0a43ae233c@linaro.org>
- <CW4UT45DZ5C6.3NIT2IFNSKD4O@andrad>
- <4ce2c3a6-6f66-4fe7-8616-a787a88dd250@linaro.org>
- <CW54GWXGYWEA.ER1Z3DVG83M0@andrad>
- <47bd1c5d-4bac-4772-bf05-509d516e201e@linaro.org>
-In-Reply-To: <47bd1c5d-4bac-4772-bf05-509d516e201e@linaro.org>
+        Wed, 11 Oct 2023 12:33:35 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22EBFB0;
+        Wed, 11 Oct 2023 09:33:31 -0700 (PDT)
+Received: from [192.168.178.23] (k10064.upc-k.chello.nl [62.108.10.64])
+        by mail.z3ntu.xyz (Postfix) with ESMTPSA id F38A6C88E9;
+        Wed, 11 Oct 2023 16:33:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1697042009; bh=qhKCT4xrkgikeWF4fbn1jxq8p8MIe5Q6C2l6e3PNY5U=;
+        h=From:Subject:Date:To:Cc;
+        b=JJHjEFTh/7Ebx5nZwH0dWU5pvi+UQhKvL++lM41KjvgR2JTNA7Dt9EP7fgPz8qhtO
+         WTxeRSc/x7b2HfNRiOjR4XouAQxXcY7YMz1bspN26XAcU4whLMYgi9lxaEHYWkvzS8
+         7bBYPqNkyZreyHfa2dk2idNQBemcQ1H282bGogSw=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Subject: [PATCH 0/3] Add watchdog nodes to msm8226 & msm8974
+Date:   Wed, 11 Oct 2023 18:33:12 +0200
+Message-Id: <20231011-msm8226-msm8974-watchdog-v1-0-2c472818fbce@z3ntu.xyz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAEjOJmUC/x2MQQqAIBAAvxJ7TsjNyvpKdJDacg9WaFQg/j3pN
+ MxhJkIgzxRgKCJ4ujnwsWeRZQGzNftGgpfsgBXWspJSuOA0Yvuz75R4zDXb5diE0ZpUsypCoyD
+ np6eV3389Til9TGLaR2oAAAA=
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Sai Prakash Ranjan <quic_saipraka@quicinc.com>
+Cc:     linux-arm-msm@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>,
+        =?utf-8?q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1366; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=qhKCT4xrkgikeWF4fbn1jxq8p8MIe5Q6C2l6e3PNY5U=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlJs5TOneAtkZj1F5CsZKdsfrGSrlcZ3qmg2NP5
+ +G8AI9e782JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZSbOUwAKCRBy2EO4nU3X
+ Vpx8D/4+FIELvM73S2A7NuOX0vSGtsp1r0yatMMV1Wch3QQ7mRCmUf/QYAUXzzHRMSndwTbSZoP
+ 4IlopG7Mehr9CmJDXnb5UqvQtUS2y9mtuhTqSi46h6MkeOKahnFzaKgg+CIwgCNtLPPLS/dNn7e
+ rTYWQsHj71XNTSEiMVOZa4p7bZkwHHBno0j471u+50B5OWCcsk+rjCKHZO191L0TlMgCDX9i5MT
+ N95M5MKc+0nBXzApPjgQjpr4fBPwMeaeEOo10CqEUbkWboQhMHB9X0uDePeZDZ2h0HgqIfRpwbn
+ sglh3bU3ZV7ylQfyn0Mx1l2TEhG5c+mNZ+d5r8FCIk2Z107FwGoPJq/JnMoHUR33sfhe9NaSO7h
+ QsH4CEgRqA1KDD5ivFB/fuZiWwcSzrZGlmXRH/3+eS9tnrsFmlR1ZBEMawYu8W8pPdBjgI5Rw7U
+ FML49dcMYg6wxgNFWlSOPP/b+Gz1Bjn5ggdTU3jDs8OGKb43caFM9qzFWu9B1XFYM5rQRLQ1VD8
+ 2p4jaWaLtkMjbEfdVv5OGkuIxQsMshoak9exWbYgXAJTxDbUpkYxLFOTWNDeynfy2prxeksjtPP
+ Xao+3N2cDUm1VqZBiXCODR/XuWfy83zk7FxoCWBSfJFooi0SgyuAc8J2HRaouZJipkhOPVLj/H6
+ Uv2pB34Thbld2uA==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed Oct 11, 2023 at 1:35 AM CEST, Caleb Connolly wrote:
-> On 10/10/2023 23:53, Piotr Mas=C5=82owski wrote:
+Document the compatible for the watchdog found on both SoCs, and add
+them to the SoC dtsi file. And especially for the case where the
+bootloader has already enabled the watchdog we need to start petting it
+on time, otherwise the system gets rebooted.
 
-> They don't need to be correct, you don't need to complicate it, you just
-> need a value that plays nice. When it comes down to it you're much more
-> likely to be constrained by UI layout limitations by not being able to
-> model the precise corner curves of your device. The difference between a
-> circular and elliptical arc is negligible in all real world use cases.
+It's worth noting that the watchdog behaves a bit unexpectedly.
+It appears the watchdog counts down significantly slower when there's no
+load on the system and can last far longer than 30 seconds until they
+bark. Only when putting load on the system, e.g. with stress-ng does the
+watchdog interrupt fire and kill the system within an expected amount of
+time.
 
-Well, with a large, weirdly-shaped display the curve will have to pass
-through more-or-less the right pixels for things like a-couple-px-thick
-frame to look right. I would expect e.g. a smartwatch UI to sometimes
-want to draw a constant-width frame along the screen border. Using a
-significantly different curve there will break that, so you would need
-to let them be similarly arbitrary to notches.
+This behavior has been observed on both msm8974 and msm8226 smartphones.
 
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Matti Lehtimäki (3):
+      dt-bindings: watchdog: qcom-wdt: Add MSM8226 and MSM8974 compatibles
+      ARM: dts: qcom: msm8226: Add watchdog node
+      ARM: dts: qcom: msm8974: Add watchdog node
 
->> That being said, imperfection isn't my main issue with curves. It's all
->> the non-discreteness they bring to the table. As in, you now need to car=
-e
->> about approximations, rounding, imprecise measurements and so on.
->
-> My point is that actually you don't. Other than for animated visual
-> effects (where an undersized curve would absolutely be acceptable) I
-> can't conceive of a situation where plain triangles wouldn't be
-> suitable, again slightly undersized of course.
+ Documentation/devicetree/bindings/watchdog/qcom-wdt.yaml | 2 ++
+ arch/arm/boot/dts/qcom/qcom-msm8226.dtsi                 | 8 ++++++++
+ arch/arm/boot/dts/qcom/qcom-msm8974.dtsi                 | 8 ++++++++
+ 3 files changed, 18 insertions(+)
+---
+base-commit: 2933a1156742d8c47550493a77af8e2d81cf3c84
+change-id: 20231011-msm8226-msm8974-watchdog-a88e45f4e2a4
 
-Well, what I meant is not that you "have to care or it won't look good",
-but rather "that's an unnecessary degree of freedom" and I'm sure pepole
-will spend non-insignificant amounts of time caring about it. Both while
-gathering the data and while processing it.
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
-But you're right that it won't matter for typical corners =E2=80=93 they ar=
-e
-simply too small to make any difference here.
-
-
->> Frankly, I don't see any significant cost here. It's very easy to gather
->> and rather easy to process.
->
-> Unless I'm mistaken, it would mean that for "odd" shapes like rounded
-> corners, the number of values you need to record would be directly
-> proportional to the number of rows. You can do some optimisations, but
-> that worst case is really not great. Especially when the arc
-> approximation requires a single value and covers all the same usecases
-> as well or better.
-
-You mean the devicetrees getting bloated? The blobs are already dozens
-of KiB in size. As for the sources, I don't have any real experience
-with them so I'm not sure what would be the best way of representing
-masks. Worst-case, they can be treated as raw bitmaps. But since the
-features will consist of typically one (or just a few) contiguous blobs
-they can be efficiently represented using for example chain codes.
-
-
-> You'd probably want your status bar icons to be equi-distant from the
-> top and side, at least that's what my Android phone does. But hey, maybe
-> you don't, we can't bikeshed UX design all day but I'd think a simple
-> radius is gonna be easier to deal with than a pixel mask in most cases
-> (especially considering that most UI frameworks don't work in the pixel
-> space anyway because of scaling).
-
-Good point!
-(Though don't they need to still align stuff to the pixel grid to avoid
-needless antialiasing?)
-
-Hmm, but known radius only helps you with the corners. For the notch,
-you would need a complex (and shape-shifting) equation, so you might as
-well figure out the constant-distance based on a mask I guess.
-
-
-> GNOME doesn't even use real pixels, macOS doesn't use real pixels. When
-> scaling comes into play the advantage is lost either way.
-
-Fractional scaling is a worthwile cause, but I don't think my argument
-really changes much when you're working with scaled pixels instead of
-real ones.
-
->>
->> Is there actually any use case that instead of ending up with pixels
->> either way, would be better served by a (possibly inaccurate) curve?
->> (future me here: that spline-along-the-border from earlier I guess)
->
-> I feel like the burden of proof still lies with you here. I feel much
-> more comfortable with a handful of easy to reason about and explain
-> values (that can be easily reviewed by maintainers) over a blob of data
-> that grows with the resolution of your display.
-
-How are these reviewable without testing them on a device though? True
-that with corners a maintainer can make sure the values make some sense.
-But for notches they can only try visualizing the data to see if it more
-or less looks right. And that's equally true for pixel masks. Drawing
-the shape by hand would be less tedious for a curve I guess.
-
-
-Thanks for going over these things with me. It has definitely clarified
-many points and gave me a better understanding overall. I guess we won't
-convince each other that easily, so maybe let's see what others think.
-(but if you want to discuss it further, I'm all ears)
-
-
-And now that I think about it, maybe it's chain codes that could be the
-best of both worlds? They operate on pixels and so remain exact, but
-also are basically curves =E2=80=93 just very simple ones. I'll have to thi=
-nk
-this through.
-
---
-Cheers,
-Piotr Mas=C5=82owski
