@@ -2,68 +2,74 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90D38CDB47E
-	for <phone-devel@archiver.kernel.org>; Fri, 13 Oct 2023 22:58:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 370CBCDB483
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Oct 2023 23:11:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232384AbjJMW6c (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 Oct 2023 18:58:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43500 "EHLO
+        id S232587AbjJMXLd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 Oct 2023 19:11:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232346AbjJMW6b (ORCPT
+        with ESMTP id S232273AbjJMXLc (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 Oct 2023 18:58:31 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 505A1BE
-        for <phone-devel@vger.kernel.org>; Fri, 13 Oct 2023 15:58:30 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2c50d1b9f22so7907111fa.0
-        for <phone-devel@vger.kernel.org>; Fri, 13 Oct 2023 15:58:30 -0700 (PDT)
+        Fri, 13 Oct 2023 19:11:32 -0400
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8F66C0
+        for <phone-devel@vger.kernel.org>; Fri, 13 Oct 2023 16:11:29 -0700 (PDT)
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2bffc55af02so31017711fa.2
+        for <phone-devel@vger.kernel.org>; Fri, 13 Oct 2023 16:11:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697237908; x=1697842708; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1uqCtAsTfHcqR/oA1gOEiEIXlrIe3/h8ohNMcatu9+4=;
-        b=sbHX+jn8vfJ83sj1VHP33aR/1aCrQhiFxuOqk72O6a13Onurk5PD1PqWcNWdJC6NwE
-         V2bL8Wn2ilzis6UiLggsPuV4gQ2Gdk6vudf5R6ePx99DP72ONHwgW7RI+w+zfOjFgYcg
-         9PK41w6F+UXH/jx+wRZnh5MnYgSV+9HDB/83qSPLVY7lZsNzyh+TOf/CE6prmm+oJEF+
-         mxsKlS9FRTRnOJSAZ+jHXTaY9rSh8fVb1dqcqoJKtKk1bvmcxgfHL0WKecN3Zra34u97
-         NnujeObq/FzKyf+/ZRktSjl3V5HAQarKdEVLmkXsNbKBlsKIk1O1WPCQp5gDOZyHoskC
-         qPQA==
+        d=linaro.org; s=google; t=1697238688; x=1697843488; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EWU/+WqAgXcxNYFK/JJOEWv3zLwoSSnl+KX8FO0LsS4=;
+        b=K/7eJcmTxUpFkXHXjohV5k+hqlyYSBv94aUq3CmhBGXtTrI8GD7gd1StiXIg9dAlcw
+         cUR3FtMOSW9THf5QSpVtW5xuK1DSyJZFPHGaM2hFP3nBqp76IeQIOK5ZFG0nmOugLZ7v
+         rlVafYMfJzJ0eA81gppPJ6JqrACZ+nllX/vTJWnxKd5yRzXnKlBERzFU4DZGIx/UTPMi
+         +BXfFEpFfWKzLJkau7Kr1DOxveMFF053zwX0gPvRn7eEA1tdV0Gu+Nf18Xm9RKcc0kW1
+         PRcCcRWjnf5+95OTrdz9j7AmGFHz0jM4MBc8ojes0HMRJtiIL/1BJlEBp6xLp8xYoT6D
+         bH0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697237908; x=1697842708;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1uqCtAsTfHcqR/oA1gOEiEIXlrIe3/h8ohNMcatu9+4=;
-        b=DhH44ZJv3l3l/EKrNXS4m2IouhRIYBGVr02Z4fq5gwsrOFY/EqblPzOohlO4ZyeCoQ
-         q07Qt2h7JxFgeRPhQ9NGXXYYExMTp2QS/ja+pTsudSr5KBrb7xkvbygXvUjlQfXk0Lrc
-         bNqfLXyBCTqD0sJ7vR6LhIQwrRF2KmY94x+az6XLEvkmMw55gm7gew9UP35itKkkhTVs
-         I35MZx10ASrsRtxEcb2Hl9kYNIiybpDnniTvDMGij0DwuZ59oVzyc2VnXUTpM9OiE/nx
-         Qdx/OdEOjsHSVE3inK/jjXDkqTmvOrnLJ1bEZVqa4WaRE/hQ6WuLCvQIv06pcbg61/bu
-         1XZw==
-X-Gm-Message-State: AOJu0YymKzjcaCeIIbGc7o3sMDk6ATksJAi9BVv4+SPSML6HNBpaFPrT
-        K0hOoORPuEWuXMHodgITHrrGcg==
-X-Google-Smtp-Source: AGHT+IEYluYBp3QhexUDfG+FFIOoQ6SnqxeyN10CTUhvnzyRfci78xhHo498ZkzZvGT5/DId3jScTQ==
-X-Received: by 2002:a2e:8912:0:b0:2c0:923:19c2 with SMTP id d18-20020a2e8912000000b002c0092319c2mr24444696lji.15.1697237907999;
-        Fri, 13 Oct 2023 15:58:27 -0700 (PDT)
-Received: from [192.168.4.141] ([178.235.177.169])
-        by smtp.gmail.com with ESMTPSA id 8-20020a2e1448000000b002c27cd20711sm84658lju.3.2023.10.13.15.58.27
+        d=1e100.net; s=20230601; t=1697238688; x=1697843488;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EWU/+WqAgXcxNYFK/JJOEWv3zLwoSSnl+KX8FO0LsS4=;
+        b=bfE3bdy/RJBIq1XKSsS+YCHk9yyEfgLVWFZHNwPIrPhkfK4X8hqRSFKuBT/JQt7Z7y
+         2cmfFe7VicBZ9bdyPDfFyAsxTXtKoEGy66ylBspQg2bVRGboLsdxipNuthFa/35F6WND
+         HzBfKMCOfqfutTnn0K52J6HEuZvHPRnPrq30dtuh8hDafxOkD8CKh3kkWQCn5qI2888d
+         F61xlHA43tP5Zthf77ODmj+wZFnxRqtIkbRDqKzlLpE8CETBWtkqk41DbTMNpq3Dvc4X
+         VOwaIuCrMex2HACnH7QgOFIS/vzfqXprcTuWd2ZsWjbeE7t+GDex3npUPxoogNAAEiNl
+         wT0w==
+X-Gm-Message-State: AOJu0YwjrFtUcRFaN2B9tj5DlfYFLHyQ2ho03ru6XBsZuc0ul5ZnBbh8
+        Hs+/dp4aFPmt6GCBCidEwpE6Kg==
+X-Google-Smtp-Source: AGHT+IECxyFGX1stwS0bg8+VeZ3MRPq6ISGYinfcRWYkJ8MHbnb6mRRnht2So4Vb1GODNQnZeh0jhQ==
+X-Received: by 2002:a2e:7010:0:b0:2c1:2211:97d1 with SMTP id l16-20020a2e7010000000b002c1221197d1mr21619139ljc.50.1697238688141;
+        Fri, 13 Oct 2023 16:11:28 -0700 (PDT)
+Received: from [192.168.4.141] (178235177169.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.169])
+        by smtp.gmail.com with ESMTPSA id s6-20020a2e81c6000000b002bffb3f8cebsm86473ljg.54.2023.10.13.16.11.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Oct 2023 15:58:27 -0700 (PDT)
-Message-ID: <b1e3fdc4-8f7a-409d-87d3-5b837af703a9@linaro.org>
-Date:   Sat, 14 Oct 2023 00:58:21 +0200
+        Fri, 13 Oct 2023 16:11:27 -0700 (PDT)
+Message-ID: <84c7bc95-0252-4a5b-9591-6c6d5e3bdb1e@linaro.org>
+Date:   Sat, 14 Oct 2023 01:11:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] soc: qcom: pmic_glink_altmode: Print error when retimer
- setup fails
+Subject: Re: [PATCH 2/4] arm64: dts: qcom: qcm6490-fairphone-fp5: Add PM7250B
+ thermals
+Content-Language: en-US
 To:     Luca Weiss <luca.weiss@fairphone.com>,
         Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
+        Bjorn Andersson <andersson@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231013-glink-altmode-ret-v1-1-77941537a35b@fairphone.com>
-Content-Language: en-US
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+References: <20231013-fp5-thermals-v1-0-f14df01922e6@fairphone.com>
+ <20231013-fp5-thermals-v1-2-f14df01922e6@fairphone.com>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -100,19 +106,44 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20231013-glink-altmode-ret-v1-1-77941537a35b@fairphone.com>
+In-Reply-To: <20231013-fp5-thermals-v1-2-f14df01922e6@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 13.10.2023 15:56, Luca Weiss wrote:
-> It can be useful to know with which return value the retimer_set call
-> failed, so include this info in the dev_err print.
+On 13.10.2023 10:09, Luca Weiss wrote:
+> Configure the thermals for the CHARGER_SKIN_THERM and USB_CONN_THERM
+> thermistors connected to PM7250B.
 > 
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+>  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 66 ++++++++++++++++++++++
+>  1 file changed, 66 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> index 2de0b8c26c35..7fe19b556e6a 100644
+> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> @@ -134,6 +134,36 @@ afvdd_2p8: regulator-afvdd-2p8 {
+>  		enable-active-high;
+>  		vin-supply = <&vreg_bob>;
+>  	};
+> +
+> +	thermal-zones {
+> +		chg-skin-thermal {
+skin
+
+> +			polling-delay-passive = <0>;
+> +			polling-delay = <0>;
+> +			thermal-sensors = <&pm7250b_adc_tm 0>;
+> +
+> +			trips {
+> +				active-config0 {
+> +					temperature = <125000>;
+125
+
+hmm..
 
 Konrad
