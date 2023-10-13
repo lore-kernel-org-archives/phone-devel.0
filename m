@@ -2,151 +2,124 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A2AEAC41513
-	for <phone-devel@archiver.kernel.org>; Fri, 13 Oct 2023 09:10:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3EF80C41513
+	for <phone-devel@archiver.kernel.org>; Fri, 13 Oct 2023 11:38:20 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230448AbjJMJKV (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 13 Oct 2023 05:10:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48958 "EHLO
+        id S230175AbjJMLiT (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 13 Oct 2023 07:38:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231263AbjJMJJ3 (ORCPT
+        with ESMTP id S231244AbjJMLiM (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 13 Oct 2023 05:09:29 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC54F5
-        for <phone-devel@vger.kernel.org>; Fri, 13 Oct 2023 02:09:27 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-4056ce55e7eso19183945e9.2
-        for <phone-devel@vger.kernel.org>; Fri, 13 Oct 2023 02:09:27 -0700 (PDT)
+        Fri, 13 Oct 2023 07:38:12 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250E2EE
+        for <phone-devel@vger.kernel.org>; Fri, 13 Oct 2023 04:38:10 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-523100882f2so3437745a12.2
+        for <phone-devel@vger.kernel.org>; Fri, 13 Oct 2023 04:38:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697188165; x=1697792965; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=y8CCmogIi92VYoNkeLx0fVwJKg4642VY3OwZz6FK9Qs=;
-        b=nsJt0tWth/dTjLhqnn7A08jDxCECyl1ZNy+I/Zad/EP5mc/TrkPLp7Q7yNmNAyFgI5
-         5To4n8PmBRQrpUJz+MmZ6EoIby7FgSdYCo4gmWLNKIpaWgKN8Z+4zM3DsaYGAmp90tgf
-         XYsowFv41dw8XWfve0nVdpwRajc2lTtXeLU+667Fu7uv+Ks+b1sa61RHXB5J5HMiC8QQ
-         zOaYbgrueTBpV5KiyV+G8+0E4GcF46na8y341ndxodxY56W77DKzvlBhWdk+bMch1Rj8
-         oRDiF74/K0jO9yvVrtO8/CW0dEAZm3KSiQM7b63BICwQ57CsnjMLUHkc19giZcoW4m7M
-         xxEA==
+        d=fairphone.com; s=fair; t=1697197088; x=1697801888; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aeuzswEtGNcv7PN7p/vCAjwlSADLyM73/cH0LYcA47I=;
+        b=ZmG025V4vsuxTVnYWAODi8mvbnl85+h9aWrAZT1KH17ad2i25YNQ/lktE+zpZUdv6V
+         dNsnqA3Cwuxbf2V7QlNpo3AyWsZmkWi6UiezX4AoQnT50DexT3xX2mVSQwJqM36spO/M
+         t9c13ciJUwGCVPbEreHdBmLjdptx78xcLSzv1QAXRkNx5M/pt8jfApSZHoGRJ4EZo7jj
+         4Nbe3hUNqyXGMXWIH3PpkwqlNc7QtoD8qDPMNBhLC4lZHNNuwVf3g1P4fYIhZAk039aV
+         LFxsPUHWx9o2lUip9BItNflyH20FX9/URpnrhyNUkDyRGkuKybguQoY6iYvRvT4DeJDX
+         SUHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697188165; x=1697792965;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=y8CCmogIi92VYoNkeLx0fVwJKg4642VY3OwZz6FK9Qs=;
-        b=XrTeHYLbEwTQLow0moC+rDVv2PvFsHP+Bsp/bV8PTTuPxM3Mn77s9XsZs+lNx6SMJ+
-         aXZFmKSDp0gVhzndE3Lg0ROwqng/ivKN0YQTEd2SmgcaLhNfxq4Oa7OsT0V7p4qyGV55
-         GXjsBpdsCBlOWOjpC6hWu36E3Tb5Ci+3Ooa8bhTIVHOvmluq22e5k6IwlD7zsJj9YQYY
-         8VEpBBod0djJOYcnf/VdgNAVuIx6WQm/IAJV8WXN37E/kLgfS1WxnpiTF4sFD4qjr+fi
-         QRPemA8S7bjFzrvpufT07+6JWrH6WroMwXBoa9BQyCpgkIIHut0u9kmWA+dBDf8JN+GT
-         usDw==
-X-Gm-Message-State: AOJu0YyGOG0UI61w66VN4tnEjk+BhSORCOoFwUS0MUggtaqtuJR/A+Vf
-        VNRQYoo0CGpGqZVdDY2FnRbQoA==
-X-Google-Smtp-Source: AGHT+IFjzvAZVO3bG9GttWTuKungZktrt3Ut6H5NpbyNZ7dl5mrYE/xSlFzJb+zyqPQ35LnJtq2KzA==
-X-Received: by 2002:a05:600c:d1:b0:405:3a3d:6f42 with SMTP id u17-20020a05600c00d100b004053a3d6f42mr22740244wmm.39.1697188165452;
-        Fri, 13 Oct 2023 02:09:25 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.100])
-        by smtp.gmail.com with ESMTPSA id k22-20020a05600c0b5600b0040588d85b3asm1960668wmr.15.2023.10.13.02.09.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Oct 2023 02:09:24 -0700 (PDT)
-Message-ID: <7022c64b-e983-4ea0-af4a-015b310661a8@linaro.org>
-Date:   Fri, 13 Oct 2023 11:09:23 +0200
+        d=1e100.net; s=20230601; t=1697197088; x=1697801888;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aeuzswEtGNcv7PN7p/vCAjwlSADLyM73/cH0LYcA47I=;
+        b=iqa1ZbTOGZnD9L4nbZtNBd5TWwJ5Kei1G5uH2Wnjx4tWqd4nqDfQRo/XNKHYXvZCOe
+         Lal1VptK8k3jNm8uKPXFPDaQ8Vbm5zcAFFV1ijSB8+KIX9CDhGJlENELh9IYTdDD6G/8
+         aHt3iqD2hchgh0wsam/EVHHba3rxh5HgJpCnC5EL2LqWIuDgLUku07m/dwU4eHfsmrHr
+         kmrzdPeiFY6D6g9rs+HftNf5KOlGdUpTwD9kkuiEVqsf0R7khT8k1fjludDJmHECOAa9
+         GU0TZJp9g5yvqzou7scxj5wx/Y1BX2yCO8s5XSCnYw4U89fPAa34NV6XGEIHkawuXvBM
+         LQ0Q==
+X-Gm-Message-State: AOJu0YxdnREqtizXkbLAnZ2Ll/7cGu/e9fJwhRraNRmx6NeRzCxUnua1
+        guw36QOaByn4sEUS8O18VSCKzg==
+X-Google-Smtp-Source: AGHT+IFkTEGA0TMga8AxlgGtGhqbCixlBZi81dfQxvPnWxxILoG3AlMI2uAQ2CNX7IniM8KJqIQCNQ==
+X-Received: by 2002:a05:6402:3605:b0:53d:be55:3ee8 with SMTP id el5-20020a056402360500b0053dbe553ee8mr6667395edb.12.1697197088595;
+        Fri, 13 Oct 2023 04:38:08 -0700 (PDT)
+Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id v18-20020aa7d652000000b00533dad8a9c5sm11360772edr.38.2023.10.13.04.38.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Oct 2023 04:38:08 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/3] Handle reversed SBU orientation for FSA4480
+Date:   Fri, 13 Oct 2023 13:38:04 +0200
+Message-Id: <20231013-fsa4480-swap-v1-0-b877f62046cc@fairphone.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] iio: adc: Add PM7325 PMIC7 ADC bindings
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABwsKWUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDA0Nj3bTiRBMTCwPd4vLEAl3LJIM0c7MUc+NkQ0sloJaCotS0zAqwcdG
+ xtbUA2ylJb14AAAA=
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20231013-fp5-thermals-v1-0-f14df01922e6@fairphone.com>
- <20231013-fp5-thermals-v1-1-f14df01922e6@fairphone.com>
- <d1c8a6e2-1c12-4b67-bc67-45f0b41a2fef@linaro.org>
- <CW76ONZKCJD7.RH8K3GG6ZT9R@fairphone.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <CW76ONZKCJD7.RH8K3GG6ZT9R@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 13/10/2023 10:54, Luca Weiss wrote:
->> We expect the bindings to be dual licensed. What was the license of the
->> original work?
-> 
-> Yes, just GPL-2.0-only:
-> https://git.codelinaro.org/clo/la/kernel/msm-5.4/-/blob/LA.UM.9.14.1.r1-08600-QCM6490.QSSI13.0/include/dt-bindings/iio/qcom%2Cspmi-adc7-pm7325.h
-> 
-> Unfortunately it's the same situation with all the other header files
-> like this one.
-> 
->   $ grep SPDX include/dt-bindings/iio/qcom,spmi-adc7-*
->   include/dt-bindings/iio/qcom,spmi-adc7-pm8350.h:/* SPDX-License-Identifier: GPL-2.0-only */
->   include/dt-bindings/iio/qcom,spmi-adc7-pm8350b.h:/* SPDX-License-Identifier: GPL-2.0-only */
->   include/dt-bindings/iio/qcom,spmi-adc7-pmk8350.h:/* SPDX-License-Identifier: GPL-2.0-only */
->   include/dt-bindings/iio/qcom,spmi-adc7-pmr735a.h:/* SPDX-License-Identifier: GPL-2.0-only */
->   include/dt-bindings/iio/qcom,spmi-adc7-pmr735b.h:/* SPDX-License-Identifier: GPL-2.0-only */
-> 
-> If you know someone at Qualcomm to ask nicely to relicense those (plus
-> ones that will presumably be added later), that'd be appreciated.
+Short reason:
+Without swapping the SBU lanes, on QCM6490 Fairphone 5 the
+DisplayPort-over-USB-C doesn't work.
 
-We could relicense Qualcomm stuff but this was transferred to Linux
-Foundation. :/
+The Orient-Chip OCP96011 used in this phone is generally compatible with
+FSA4480 but has a difference how AUX+/- should be connected to SBU1/2.
+
+Long explanation, with my current understanding:
+* FSA4480 block diagram shows AUX+ connected to SBU2 and AUX- to SBU1.
+* OCP96011 block diagram shows AUX+ connected to SBU1 and AUX- to SBU2
+  (it's not 100% clear though in the picture but makes sense with the
+  observed behavior)
+* Fairphone 5 schematics have AUX+ connected to SBU2 and AUX- to SBU1,
+  which would be correct for FSA4480 but since OCP96011 is used (which
+  expects it to be the other way around) the Linux driver needs to
+  reverse it.
+  If AUX+ would be connected to SBU1 and AUX- to SBU2 as shown in the
+  OCP96011 block diagram, then no driver/dts change would be needed.
+
+Not sure if I've implemented the best solution in this patch. Other
+solutions I could think of are:
+* Add some custom boolean property to the node, e.g. 'fsa,swap-sbu'
+* Reverse when ocs,ocp96011 compatible is used. This would be incorrect
+  since when following the OCP96011 block diagram no reversing would be
+  needed, as explained above.
+
+However I think the current solution with data-lanes in the endpoint is
+the best fit and is also already used for a similar purpose in another
+USB mux driver.
+
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Luca Weiss (3):
+      dt-bindings: usb: fsa4480: Add data-lanes property to endpoint
+      usb: typec: fsa4480: Add support to swap SBU orientation
+      dt-bindings: usb: fsa4480: Add compatible for OCP96011
+
+ .../devicetree/bindings/usb/fcs,fsa4480.yaml       | 43 +++++++++++-
+ drivers/usb/typec/mux/fsa4480.c                    | 81 ++++++++++++++++++++++
+ 2 files changed, 121 insertions(+), 3 deletions(-)
+---
+base-commit: e3b18f7200f45d66f7141136c25554ac1e82009b
+change-id: 20231013-fsa4480-swap-9b0f76d73c19
 
 Best regards,
-Krzysztof
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
