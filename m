@@ -2,147 +2,142 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2835BCDB465
-	for <phone-devel@archiver.kernel.org>; Sat, 14 Oct 2023 16:16:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A25C6CDB482
+	for <phone-devel@archiver.kernel.org>; Sat, 14 Oct 2023 17:53:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230016AbjJNQQJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 14 Oct 2023 12:16:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59340 "EHLO
+        id S233033AbjJNRx2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 14 Oct 2023 13:53:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230211AbjJNQQJ (ORCPT
+        with ESMTP id S230016AbjJNRxV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 14 Oct 2023 12:16:09 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50C4AA2;
-        Sat, 14 Oct 2023 09:16:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA56AC433C8;
-        Sat, 14 Oct 2023 16:16:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697300166;
-        bh=bloyWWM50cgSdXW/M/ONp1t9BKdvFll8JAVkflss0qk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=X1EmAge9ScIen7JtkLBWghNUQoZoy6NrdY9FNXqGPKimSOb8r1kTs7tfdeHZNPfu/
-         RNDhoI+VmRsexi0e0SXt+tc9EIjIPw60d/r6XV28LspIuwRUvGBI3kd8QaKzeGm5xO
-         hc/5VkpxH39bziNl07SEOdU0vq5RzDq1C+FQf1b2uytuIYtSFAbraSQ6PvaYPMD+Pn
-         fDZIA1nVe7FPGRpjsmAY+UsrMBb+u1HJKuhcDz0z/XmCgGRHTvAA2+eIWNZkz3ZVvN
-         EKkF8OvaUP1rPC18c8k7C6IkJHXQOQepCuXFEWq/hN9YlRf09M9E5jQs+JwqPpkXfK
-         ACSuaD8wHHS9w==
-Date:   Sat, 14 Oct 2023 17:16:19 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Andy Gross <agross@kernel.org>,
+        Sat, 14 Oct 2023 13:53:21 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ECAEAD;
+        Sat, 14 Oct 2023 10:53:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1697305966; bh=J6E11bWGXsldQJECPuC0snlXP/OiLacD+sKcuNZkyLM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References;
+        b=LHxU4RsKfzcPKNkWGel5p6xLlzZot7D1l8dhZ9lLIxbaXNCMd4FC1OB/U8Ssf79/n
+         MRk5MCU616km8zpjji8NK9FHAeUkHJh5ryfc96F1b2QWlM9UKZf8sK8e8YIMBgRR9u
+         1szYjx1LpkM4vHvGmBo9aLbB7BcpbQfyxve76LIo=
+From:   Luca Weiss <luca@z3ntu.xyz>
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/4] iio: adc: Add PM7325 PMIC7 ADC bindings
-Message-ID: <20231014171619.7b7ea921@jic23-huawei>
-In-Reply-To: <20231013-fp5-thermals-v1-1-f14df01922e6@fairphone.com>
+        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Subject: Re: [PATCH 4/4] arm64: dts: qcom: qcm6490-fairphone-fp5: Add PM7325 thermals
+Date:   Sat, 14 Oct 2023 19:52:45 +0200
+Message-ID: <4958673.31r3eYUQgx@z3ntu.xyz>
+In-Reply-To: <34da335e-cbcd-4dc2-8a86-f31369db1fcd@linaro.org>
 References: <20231013-fp5-thermals-v1-0-f14df01922e6@fairphone.com>
-        <20231013-fp5-thermals-v1-1-f14df01922e6@fairphone.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+ <20231013-fp5-thermals-v1-4-f14df01922e6@fairphone.com>
+ <34da335e-cbcd-4dc2-8a86-f31369db1fcd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri, 13 Oct 2023 10:09:53 +0200
-Luca Weiss <luca.weiss@fairphone.com> wrote:
-
-> Add the defines for the ADC channels found on the PM7325. The list is
-> taken from downstream msm-5.4 and adjusted for mainline.
+On Samstag, 14. Oktober 2023 01:13:29 CEST Konrad Dybcio wrote:
+> On 13.10.2023 10:09, Luca Weiss wrote:
+> > Configure the thermals for the QUIET_THERM, CAM_FLASH_THERM, MSM_THERM
+> > and RFC_CAM_THERM thermistors connected to PM7325.
+> > 
+> > With this PMIC the software communication to the ADC is going through
+> > PMK7325 (= PMK8350).
+> > 
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> > 
+> >  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 117
+> >  +++++++++++++++++++++ 1 file changed, 117 insertions(+)
+> > 
+> > diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> > b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts index
+> > 2c01f799a6b2..d0b1e4e507ff 100644
+> > --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> > +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> > @@ -9,6 +9,7 @@
+> > 
+> >  #define PM7250B_SID 8
+> >  #define PM7250B_SID1 9
+> > 
+> > +#include <dt-bindings/iio/qcom,spmi-adc7-pm7325.h>
+> > 
+> >  #include <dt-bindings/iio/qcom,spmi-adc7-pmk8350.h>
+> >  #include <dt-bindings/leds/common.h>
+> >  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+> > 
+> > @@ -137,6 +138,20 @@ afvdd_2p8: regulator-afvdd-2p8 {
+> > 
+> >  	};
+> >  	
+> >  	thermal-zones {
+> > 
+> > +		camera-thermal {
+> > +			polling-delay-passive = <0>;
+> > +			polling-delay = <0>;
+> > +			thermal-sensors = <&pmk8350_adc_tm 2>;
+> > +
+> > +			trips {
+> > +				active-config0 {
+> > +					temperature = <125000>;
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-
-I assume this will go with the dts changes that use it.
-
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-> ---
->  include/dt-bindings/iio/qcom,spmi-adc7-pm7325.h | 69 +++++++++++++++++++++++++
->  1 file changed, 69 insertions(+)
+> are
 > 
-> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-pm7325.h b/include/dt-bindings/iio/qcom,spmi-adc7-pm7325.h
-> new file mode 100644
-> index 000000000000..96908014e09e
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-pm7325.h
-> @@ -0,0 +1,69 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_PM7325_H
-> +#define _DT_BINDINGS_QCOM_SPMI_VADC_PM7325_H
-> +
-> +#ifndef PM7325_SID
-> +#define PM7325_SID					1
-> +#endif
-> +
-> +#include <dt-bindings/iio/qcom,spmi-vadc.h>
-> +
-> +/* ADC channels for PM7325_ADC for PMIC7 */
-> +#define PM7325_ADC7_REF_GND			(PM7325_SID << 8 | ADC7_REF_GND)
-> +#define PM7325_ADC7_1P25VREF			(PM7325_SID << 8 | ADC7_1P25VREF)
-> +#define PM7325_ADC7_VREF_VADC			(PM7325_SID << 8 | ADC7_VREF_VADC)
-> +#define PM7325_ADC7_DIE_TEMP			(PM7325_SID << 8 | ADC7_DIE_TEMP)
-> +
-> +#define PM7325_ADC7_AMUX_THM1			(PM7325_SID << 8 | ADC7_AMUX_THM1)
-> +#define PM7325_ADC7_AMUX_THM2			(PM7325_SID << 8 | ADC7_AMUX_THM2)
-> +#define PM7325_ADC7_AMUX_THM3			(PM7325_SID << 8 | ADC7_AMUX_THM3)
-> +#define PM7325_ADC7_AMUX_THM4			(PM7325_SID << 8 | ADC7_AMUX_THM4)
-> +#define PM7325_ADC7_AMUX_THM5			(PM7325_SID << 8 | ADC7_AMUX_THM5)
-> +#define PM7325_ADC7_GPIO1			(PM7325_SID << 8 | ADC7_GPIO1)
-> +#define PM7325_ADC7_GPIO2			(PM7325_SID << 8 | ADC7_GPIO2)
-> +#define PM7325_ADC7_GPIO3			(PM7325_SID << 8 | ADC7_GPIO3)
-> +#define PM7325_ADC7_GPIO4			(PM7325_SID << 8 | ADC7_GPIO4)
-> +
-> +/* 30k pull-up1 */
-> +#define PM7325_ADC7_AMUX_THM1_30K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM1_30K_PU)
-> +#define PM7325_ADC7_AMUX_THM2_30K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM2_30K_PU)
-> +#define PM7325_ADC7_AMUX_THM3_30K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM3_30K_PU)
-> +#define PM7325_ADC7_AMUX_THM4_30K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM4_30K_PU)
-> +#define PM7325_ADC7_AMUX_THM5_30K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM5_30K_PU)
-> +#define PM7325_ADC7_GPIO1_30K_PU		(PM7325_SID << 8 | ADC7_GPIO1_30K_PU)
-> +#define PM7325_ADC7_GPIO2_30K_PU		(PM7325_SID << 8 | ADC7_GPIO2_30K_PU)
-> +#define PM7325_ADC7_GPIO3_30K_PU		(PM7325_SID << 8 | ADC7_GPIO3_30K_PU)
-> +#define PM7325_ADC7_GPIO4_30K_PU		(PM7325_SID << 8 | ADC7_GPIO4_30K_PU)
-> +
-> +/* 100k pull-up2 */
-> +#define PM7325_ADC7_AMUX_THM1_100K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM1_100K_PU)
-> +#define PM7325_ADC7_AMUX_THM2_100K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM2_100K_PU)
-> +#define PM7325_ADC7_AMUX_THM3_100K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM3_100K_PU)
-> +#define PM7325_ADC7_AMUX_THM4_100K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM4_100K_PU)
-> +#define PM7325_ADC7_AMUX_THM5_100K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM5_100K_PU)
-> +#define PM7325_ADC7_GPIO1_100K_PU		(PM7325_SID << 8 | ADC7_GPIO1_100K_PU)
-> +#define PM7325_ADC7_GPIO2_100K_PU		(PM7325_SID << 8 | ADC7_GPIO2_100K_PU)
-> +#define PM7325_ADC7_GPIO3_100K_PU		(PM7325_SID << 8 | ADC7_GPIO3_100K_PU)
-> +#define PM7325_ADC7_GPIO4_100K_PU		(PM7325_SID << 8 | ADC7_GPIO4_100K_PU)
-> +
-> +/* 400k pull-up3 */
-> +#define PM7325_ADC7_AMUX_THM1_400K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM1_400K_PU)
-> +#define PM7325_ADC7_AMUX_THM2_400K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM2_400K_PU)
-> +#define PM7325_ADC7_AMUX_THM3_400K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM3_400K_PU)
-> +#define PM7325_ADC7_AMUX_THM4_400K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM4_400K_PU)
-> +#define PM7325_ADC7_AMUX_THM5_400K_PU		(PM7325_SID << 8 | ADC7_AMUX_THM5_400K_PU)
-> +#define PM7325_ADC7_GPIO1_400K_PU		(PM7325_SID << 8 | ADC7_GPIO1_400K_PU)
-> +#define PM7325_ADC7_GPIO2_400K_PU		(PM7325_SID << 8 | ADC7_GPIO2_400K_PU)
-> +#define PM7325_ADC7_GPIO3_400K_PU		(PM7325_SID << 8 | ADC7_GPIO3_400K_PU)
-> +#define PM7325_ADC7_GPIO4_400K_PU		(PM7325_SID << 8 | ADC7_GPIO4_400K_PU)
-> +
-> +/* 1/3 Divider */
-> +#define PM7325_ADC7_GPIO4_DIV3			(PM7325_SID << 8 | ADC7_GPIO4_DIV3)
-> +
-> +#define PM7325_ADC7_VPH_PWR			(PM7325_SID << 8 | ADC7_VPH_PWR)
-> +
-> +#endif /* _DT_BINDINGS_QCOM_SPMI_VADC_PM7325_H */
+> > +		rear-cam-thermal {
+> > 
+> > +					temperature = <125000>;
 > 
+> you
+> 
+> > +		sdm-skin-thermal {
+> > 
+> > +					temperature = <125000>;
+> 
+> sure
+> 
+> about these temps?
+
+(email from my other address, quicker right now)
+
+Well yes and no.
+
+Yes as in those are the temps specified in downstream dtb.
+No as in I'm 99% sure there's user space with definitely lower threshold that 
+actually does something in response to the temps.
+
+I didn't look too much into this but does the kernel even do something when it 
+hits one of these trip points? I assume when there's a cooling device thing 
+specified then it can actually tell the driver to do something, but without 
+(and most drivers don't support this?) I'm assuming the kernel can't do much 
+anyways?
+
+So e.g. when the temperature for the flash led is reached I'm assuming 
+downstream (+Android) either dims the led or turns it off? But I'd have to dig 
+quite a bit into the thermal setup there to check what it's really doing.
+
+But for now I think it's okay to put this current thermal config into dts and 
+we'll improve it later when 1. I understand more and 2. maybe some useful 
+drivers support the cooling bits?
+
+Regards
+Luca
+
+> 
+> Konrad
+
+
+
 
