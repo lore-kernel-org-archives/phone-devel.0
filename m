@@ -2,62 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99DB7CDB487
-	for <phone-devel@archiver.kernel.org>; Sun, 15 Oct 2023 21:12:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B7DBCDB489
+	for <phone-devel@archiver.kernel.org>; Sun, 15 Oct 2023 21:12:08 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229877AbjJOVMG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 15 Oct 2023 17:12:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58534 "EHLO
+        id S230442AbjJOVMI (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 15 Oct 2023 17:12:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230378AbjJOVMF (ORCPT
+        with ESMTP id S230385AbjJOVMH (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 15 Oct 2023 17:12:05 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6087D9
-        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 14:12:03 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-32d9cb5e0fcso2171232f8f.0
-        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 14:12:03 -0700 (PDT)
+        Sun, 15 Oct 2023 17:12:07 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CE49DC
+        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 14:12:04 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-4056ce55e7eso38468845e9.2
+        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 14:12:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697404322; x=1698009122; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1697404323; x=1698009123; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NtAKqaERolIHCTmRDg6aGz6W93ZG9oOqGRlldMnpGHM=;
-        b=S06nbPkHKWbq8lMMpSQqliQ6fTwNMaZSNfSkkm3EpX2wjdDaK9BJFVoTbIbVN0p5QA
-         SUKjV4fA3wr3w3PLMBblVBfD4gnVuACSThkuqjounaBgqygKswaeSDeeSo7sGgstsyJ2
-         jBeZbWPCI/kw04n1aegKD5sN1FJS0C/6tq7MSRy4/zVw707Cw7oD9bmribwyFce7gWWv
-         NVFuDmyo7+cWi6Ts9qvqHdppZMJC+N00mt5VxMdWzevjwnrFpYpXrWU9tNF7DSj8KMC3
-         Ab23JiqANogCLBmQ3N4Afr7kZRypaGjAHy1YMFVAkrlpabP6ncMDH027IUvkujK9T5cA
-         lUOw==
+        bh=AedAcjuUgBWTHFeLaxul+tdLLgXY9TFQqJmfe2wIWBo=;
+        b=rj01TjawRDF1rnwTuo6L6vRU2I2bBRWrTIGm08u7MtNruszRqWJFZN3fQxzUAw7l3k
+         996LsoYfQBt+qydXjluvtLCVZT4U/ppZ2vM+VF8S5728ZCy+A6Ekt381R4U+nosvdMEI
+         ycSTC4O5f02CDzZQNQZmsqthRdgip7XYZ+NkIyaHoRFj+qdtLuwL+F8ejHgQ2KhV5wKT
+         2UmB96CDN741Z9eBFgQG1pbi8go12HpUm63o+YQ2hxQgzGI6S457ar4WDErp9zv+Oqt3
+         /kaD8+/d1NFDvJKzQz0XFZ7/0n1S4l5BtFvA2kiNAWjUQSEurKCLaLezJMcO17+ESqIT
+         fOVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697404322; x=1698009122;
+        d=1e100.net; s=20230601; t=1697404323; x=1698009123;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NtAKqaERolIHCTmRDg6aGz6W93ZG9oOqGRlldMnpGHM=;
-        b=ucT9WbxJ3Pd7chU7m/a1HyChPWH41UwgY4+D1Th5oicamsvUyz29O5KFVJbeoDGeYz
-         X7ykKCcfdpT244v4J9hlPfzLP+f8G7ZWK5/idYiBuAz217WL7IGJfkBgh9kO0wFMqRbV
-         6RFQubgPNCaRN6lI2eXpM3v+sn7uPDtxc1F7CblOmsEqhkzrtpk+Mt3kRRRgGF29x4FD
-         LGzshDOCPNH4onGtUgji1EdFhJ0A5zyf5Tb1wXEIYKFnoZl7XYj9mcn/zZxlapi5vLaI
-         41OI23FFYKcPqiJhYqFwAMKxCO5/ng+1dpXKEdzZ3vkhVhL0VcuLiJFouEbaTom0LF/P
-         r7MQ==
-X-Gm-Message-State: AOJu0Yzfx3A3bNYn9eRAiTEisRkH4xKAt6grEucPALCLP6iRZ7+6K5RO
-        hYfejSFeXmi30q4YMeqPjZAaQw==
-X-Google-Smtp-Source: AGHT+IFgQdfSVH6YmUAINQJ2B5pMcPmsn3hKh1y9h+A3RjF+VDAzauaNUq4tqJu8camKnrex2Y1Opw==
-X-Received: by 2002:adf:f103:0:b0:32d:9cd3:6a9d with SMTP id r3-20020adff103000000b0032d9cd36a9dmr6017864wro.25.1697404322388;
-        Sun, 15 Oct 2023 14:12:02 -0700 (PDT)
+        bh=AedAcjuUgBWTHFeLaxul+tdLLgXY9TFQqJmfe2wIWBo=;
+        b=R9Rld97+GZJgaKSFb33LYTHOGfAJtYCKFB3TPu0A9PpwFPpnqYk3EYcSQXHb8lSZZs
+         UujSVWyCzqhZZdovOMoyTuclUy+XE4GifpiP/rrr9rqMYWrOeveM2Ybi0xq5ohLWHvXp
+         bw+9SYMGjecB1yH0Wo86rKCjhTVsFbFjL1fKxWqRd1Vl/flvi0FZB0GR2zUrIBLYaHgT
+         Ss6jgsDbeOLWTE0uxLbvb9/hgcNSf3H+v50uVknCTnaotFlpDB8xBa3MAjue2Gx7Z6zQ
+         XEhmLe1ypaX0hiVTS4neqTRtBwKs49SKjJ0W/aZmxDLOfKUTygAXc18xGiY19YzPVm8A
+         NKAw==
+X-Gm-Message-State: AOJu0YwP55Lsml78lzijiOrGtk+VIK+i1LPLn986ncch4ILq00JvUc5c
+        UBOjYWbT4p6I2U0YffVZbjrNJQ==
+X-Google-Smtp-Source: AGHT+IFGtaaSHr/fYdItsTeYh94JQPuopwM0WAo2Ur2Lhu2fZIQ/jZcsRTaTTdTrv3qzgCslNgvPTg==
+X-Received: by 2002:a5d:6b8a:0:b0:32d:a4fe:374 with SMTP id n10-20020a5d6b8a000000b0032da4fe0374mr3223214wrx.11.1697404323170;
+        Sun, 15 Oct 2023 14:12:03 -0700 (PDT)
 Received: from lion.localdomain (host-2-99-112-229.as13285.net. [2.99.112.229])
-        by smtp.gmail.com with ESMTPSA id z17-20020a5d4d11000000b0032d9548240fsm8456734wrt.82.2023.10.15.14.12.01
+        by smtp.gmail.com with ESMTPSA id z17-20020a5d4d11000000b0032d9548240fsm8456734wrt.82.2023.10.15.14.12.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Sun, 15 Oct 2023 14:12:02 -0700 (PDT)
 From:   Caleb Connolly <caleb.connolly@linaro.org>
-Date:   Sun, 15 Oct 2023 22:11:52 +0100
-Subject: [PATCH v2 4/7] Input: synaptics-rmi4 - f55: handle zero electrode
- count
+Date:   Sun, 15 Oct 2023 22:11:53 +0100
+Subject: [PATCH v2 5/7] Input: synaptics-rmi4 - don't do unaligned reads in
+ IRQ context
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230929-caleb-rmi4-quirks-v2-4-b227ac498d88@linaro.org>
+Message-Id: <20230929-caleb-rmi4-quirks-v2-5-b227ac498d88@linaro.org>
 References: <20230929-caleb-rmi4-quirks-v2-0-b227ac498d88@linaro.org>
 In-Reply-To: <20230929-caleb-rmi4-quirks-v2-0-b227ac498d88@linaro.org>
 To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
@@ -67,13 +67,13 @@ Cc:     methanal <baclofen@tuta.io>, linux-input@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         Caleb Connolly <caleb.connolly@linaro.org>
 X-Mailer: b4 0.13-dev-46309
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1064;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2502;
  i=caleb.connolly@linaro.org; h=from:subject:message-id;
- bh=+4DaGg6VDRBPUbN6NHpCk9CFy1rQXCDvptUHWZJ41N4=;
- b=owGbwMvMwCFYaeA6f6eBkTjjabUkhlSd0Llzrc/3fbiXJq5U8K9m8cPm6UWFBhuNWuo337/2k
- lNHZpNLRykLgyAHg6yYIov4iWWWTWsv22tsX3ABZg4rE8gQBi5OAZjIBW2Gv8KiTStc2WtcmpSY
- Wfi2aURt9NuxMyOVQ2/rlMwrH/oCJRgZZgrNZbrEotG15Nx8E9tdnO/ZHLVWcPyVDSyzzxVgM0l
- 0AAA=
+ bh=9h6YnRppF0cn5B+ZZui15RkAbUhNx8UlzxkXST9vk6s=;
+ b=owGbwMvMwCFYaeA6f6eBkTjjabUkhlSd0Ll89xcduRq/Uelnc5nQ5O7Jdq0KT8s3HNBNsF20r
+ p75wVKljlIWBkEOBlkxRRbxE8ssm9ZettfYvuACzBxWJpAhDFycAjCR55sZ/kdfOrz+kkOJ5dvp
+ N6RtCvYb3hBn4q09NdOt79nz1ild2wMYGZZ/31y+IENSRDF9rhjLnup5fdemRFvdyuGeK2xaydr
+ 3kQ8A
 X-Developer-Key: i=caleb.connolly@linaro.org; a=openpgp;
  fpr=83B24DA7FE145076BC38BB250CD904EB673A7C47
 Precedence: bulk
@@ -82,33 +82,64 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 From: methanal <baclofen@tuta.io>
 
-Some third party ICs claim to support f55 but report an electrode count
-of 0. Catch this and bail out early so that we don't confuse the i2c bus
-with 0 sized reads.
+Some replacement displays include third-party touch ICs which incur a
+significant penalty (1-2 seconds) when doing certain unaligned reads.
+This is enough to break functionality when it happens in the hot path,
+so adjust the interrupt handler to not read from an unaligned address.
 
 Signed-off-by: methanal <baclofen@tuta.io>
-[simplify code, adjust wording]
 Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
 ---
- drivers/input/rmi4/rmi_f55.c | 5 +++++
- 1 file changed, 5 insertions(+)
+This solution does wind up doing the unaligned reads on the CPU instead,
+although I'm not sure how significant of a penalty this is in practise.
+---
+ drivers/input/rmi4/rmi_driver.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/input/rmi4/rmi_f55.c b/drivers/input/rmi4/rmi_f55.c
-index 488adaca4dd0..ad2ef14ae9f4 100644
---- a/drivers/input/rmi4/rmi_f55.c
-+++ b/drivers/input/rmi4/rmi_f55.c
-@@ -52,6 +52,11 @@ static int rmi_f55_detect(struct rmi_function *fn)
+diff --git a/drivers/input/rmi4/rmi_driver.c b/drivers/input/rmi4/rmi_driver.c
+index cd3e4e77ab9b..22f0b35bb70b 100644
+--- a/drivers/input/rmi4/rmi_driver.c
++++ b/drivers/input/rmi4/rmi_driver.c
+@@ -136,9 +136,14 @@ static int rmi_process_interrupt_requests(struct rmi_device *rmi_dev)
+ 		return 0;
  
- 	f55->num_rx_electrodes = f55->qry[F55_NUM_RX_OFFSET];
- 	f55->num_tx_electrodes = f55->qry[F55_NUM_TX_OFFSET];
-+	if (!f55->num_rx_electrodes || !f55->num_tx_electrodes) {
-+		rmi_dbg(RMI_DEBUG_FN, &fn->dev,
-+			"F55 query returned no electrodes, giving up\n");
-+		return 0;
-+	}
+ 	if (!data->attn_data.data) {
++		/*
++		 * Read the device status register as well and ignore it.
++		 * Some aftermarket ICs have issues with interrupt requests
++		 * otherwise.
++		 */
+ 		error = rmi_read_block(rmi_dev,
+-				data->f01_container->fd.data_base_addr + 1,
+-				data->irq_status, data->num_of_irq_regs);
++				data->f01_container->fd.data_base_addr,
++				(u8*)data->irq_status - 1, data->num_of_irq_regs + 1);
+ 		if (error < 0) {
+ 			dev_err(dev, "Failed to read irqs, code=%d\n", error);
+ 			return error;
+@@ -1083,16 +1088,17 @@ int rmi_probe_interrupts(struct rmi_driver_data *data)
+ 	data->num_of_irq_regs = (data->irq_count + 7) / 8;
  
- 	f55->cfg_num_rx_electrodes = f55->num_rx_electrodes;
- 	f55->cfg_num_tx_electrodes = f55->num_rx_electrodes;
+ 	size = BITS_TO_LONGS(data->irq_count) * sizeof(unsigned long);
+-	data->irq_memory = devm_kcalloc(dev, size, 4, GFP_KERNEL);
++	data->irq_memory = devm_kzalloc(dev, size * 4 + 1, GFP_KERNEL);
+ 	if (!data->irq_memory) {
+ 		dev_err(dev, "Failed to allocate memory for irq masks.\n");
+ 		return -ENOMEM;
+ 	}
+ 
+-	data->irq_status	= data->irq_memory + size * 0;
+-	data->fn_irq_bits	= data->irq_memory + size * 1;
+-	data->current_irq_mask	= data->irq_memory + size * 2;
+-	data->new_irq_mask	= data->irq_memory + size * 3;
++	/* The first byte is reserved for the device status register */
++	data->irq_status	= data->irq_memory + size * 0 + 1;
++	data->fn_irq_bits	= data->irq_memory + size * 1 + 1;
++	data->current_irq_mask	= data->irq_memory + size * 2 + 1;
++	data->new_irq_mask	= data->irq_memory + size * 3 + 1;
+ 
+ 	return retval;
+ }
 
 -- 
 2.42.0
