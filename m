@@ -2,142 +2,132 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A25C6CDB482
-	for <phone-devel@archiver.kernel.org>; Sat, 14 Oct 2023 17:53:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E59BCDB47E
+	for <phone-devel@archiver.kernel.org>; Sun, 15 Oct 2023 12:56:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233033AbjJNRx2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 14 Oct 2023 13:53:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47478 "EHLO
+        id S229561AbjJOM4J (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 15 Oct 2023 08:56:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230016AbjJNRxV (ORCPT
+        with ESMTP id S229867AbjJOM4I (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 14 Oct 2023 13:53:21 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ECAEAD;
-        Sat, 14 Oct 2023 10:53:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1697305966; bh=J6E11bWGXsldQJECPuC0snlXP/OiLacD+sKcuNZkyLM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=LHxU4RsKfzcPKNkWGel5p6xLlzZot7D1l8dhZ9lLIxbaXNCMd4FC1OB/U8Ssf79/n
-         MRk5MCU616km8zpjji8NK9FHAeUkHJh5ryfc96F1b2QWlM9UKZf8sK8e8YIMBgRR9u
-         1szYjx1LpkM4vHvGmBo9aLbB7BcpbQfyxve76LIo=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Subject: Re: [PATCH 4/4] arm64: dts: qcom: qcm6490-fairphone-fp5: Add PM7325 thermals
-Date:   Sat, 14 Oct 2023 19:52:45 +0200
-Message-ID: <4958673.31r3eYUQgx@z3ntu.xyz>
-In-Reply-To: <34da335e-cbcd-4dc2-8a86-f31369db1fcd@linaro.org>
-References: <20231013-fp5-thermals-v1-0-f14df01922e6@fairphone.com>
- <20231013-fp5-thermals-v1-4-f14df01922e6@fairphone.com>
- <34da335e-cbcd-4dc2-8a86-f31369db1fcd@linaro.org>
+        Sun, 15 Oct 2023 08:56:08 -0400
+X-Greylist: delayed 398 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 15 Oct 2023 05:56:05 PDT
+Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0970D9
+        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 05:56:05 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by honk.sigxcpu.org (Postfix) with ESMTP id 7D3AFFB04;
+        Sun, 15 Oct 2023 14:50:09 +0200 (CEST)
+Received: from honk.sigxcpu.org ([127.0.0.1])
+        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id sQ3EZ0YgUYnD; Sun, 15 Oct 2023 14:50:06 +0200 (CEST)
+Date:   Sun, 15 Oct 2023 14:50:03 +0200
+From:   Guido =?iso-8859-1?Q?G=FCnther?= <guido.gunther@puri.sm>
+To:     Frank Oltmanns <frank@oltmanns.dev>
+Cc:     Ondrej Jirman <megi@xff.cz>, Purism Kernel Team <kernel@puri.sm>,
+        Ondrej Jirman <megous@megous.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        phone-devel@vger.kernel.org, Samuel Holland <samuel@sholland.org>
+Subject: Re: [PATCH v2 1/1] drm/panel: st7703: Fix timings when
+ entering/exiting sleep
+Message-ID: <ZSvf-xHBKRPzmNVf@qwark.sigxcpu.org>
+References: <20230213123238.76889-1-frank@oltmanns.dev>
+ <20230213123238.76889-2-frank@oltmanns.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230213123238.76889-2-frank@oltmanns.dev>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Samstag, 14. Oktober 2023 01:13:29 CEST Konrad Dybcio wrote:
-> On 13.10.2023 10:09, Luca Weiss wrote:
-> > Configure the thermals for the QUIET_THERM, CAM_FLASH_THERM, MSM_THERM
-> > and RFC_CAM_THERM thermistors connected to PM7325.
-> > 
-> > With this PMIC the software communication to the ADC is going through
-> > PMK7325 (= PMK8350).
-> > 
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> > 
-> >  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 117
-> >  +++++++++++++++++++++ 1 file changed, 117 insertions(+)
-> > 
-> > diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> > b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts index
-> > 2c01f799a6b2..d0b1e4e507ff 100644
-> > --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> > +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> > @@ -9,6 +9,7 @@
-> > 
-> >  #define PM7250B_SID 8
-> >  #define PM7250B_SID1 9
-> > 
-> > +#include <dt-bindings/iio/qcom,spmi-adc7-pm7325.h>
-> > 
-> >  #include <dt-bindings/iio/qcom,spmi-adc7-pmk8350.h>
-> >  #include <dt-bindings/leds/common.h>
-> >  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
-> > 
-> > @@ -137,6 +138,20 @@ afvdd_2p8: regulator-afvdd-2p8 {
-> > 
-> >  	};
-> >  	
-> >  	thermal-zones {
-> > 
-> > +		camera-thermal {
-> > +			polling-delay-passive = <0>;
-> > +			polling-delay = <0>;
-> > +			thermal-sensors = <&pmk8350_adc_tm 2>;
-> > +
-> > +			trips {
-> > +				active-config0 {
-> > +					temperature = <125000>;
+Hi,
+On Mon, Feb 13, 2023 at 01:32:38PM +0100, Frank Oltmanns wrote:
+> Fix flickering of the pinephone's XDB599 panel that happens after
+> resume.
 > 
-> are
+> Extend the delay after issuing the command to exit sleep mode from 60 to
+> 120 msec as per the controller's specification.
 > 
-> > +		rear-cam-thermal {
-> > 
-> > +					temperature = <125000>;
+> Introduce a 120 msec delay after issuing the command to enter sleep
+> mode. This is needed in order for the controller to reliably finalize
+> the sleep in sequence before switching of power supply.
 > 
-> you
+> In contrast to the JH057N panel, the XBD599 panel does not require a 20
+> msec delay after initialization and exiting sleep mode. Therefore, move
+> the delay into the already existing device specific initialization
+> function.
 > 
-> > +		sdm-skin-thermal {
-> > 
-> > +					temperature = <125000>;
+> The XDB599 does not require a 20 msec delay between the SETBGP and
+> SETVCOM commands. Therefore, remove the delay from the device specific
+> initialization function.
+
+Thanks. Applied to drm-misc-next.
+Cheers,
+ -- Guido
+
+> Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+> Cc: Ondrej Jirman <megi@xff.cz>
+> Reported-by: Samuel Holland <samuel@sholland.org>
+> ---
+>  drivers/gpu/drm/panel/panel-sitronix-st7703.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
 > 
-> sure
+> diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7703.c b/drivers/gpu/drm/panel/panel-sitronix-st7703.c
+> index 6747ca237ced..c49f4ef883fc 100644
+> --- a/drivers/gpu/drm/panel/panel-sitronix-st7703.c
+> +++ b/drivers/gpu/drm/panel/panel-sitronix-st7703.c
+> @@ -126,6 +126,7 @@ static int jh057n_init_sequence(struct st7703 *ctx)
+>  				   0x18, 0x00, 0x09, 0x0E, 0x29, 0x2D, 0x3C, 0x41,
+>  				   0x37, 0x07, 0x0B, 0x0D, 0x10, 0x11, 0x0F, 0x10,
+>  				   0x11, 0x18);
+> +	msleep(20);
+>  
+>  	return 0;
+>  }
+> @@ -273,7 +274,6 @@ static int xbd599_init_sequence(struct st7703 *ctx)
+>  	mipi_dsi_dcs_write_seq(dsi, ST7703_CMD_SETBGP,
+>  			       0x07, /* VREF_SEL = 4.2V */
+>  			       0x07  /* NVREF_SEL = 4.2V */);
+> -	msleep(20);
+>  
+>  	mipi_dsi_dcs_write_seq(dsi, ST7703_CMD_SETVCOM,
+>  			       0x2C, /* VCOMDC_F = -0.67V */
+> @@ -350,16 +350,14 @@ static int st7703_enable(struct drm_panel *panel)
+>  		return ret;
+>  	}
+>  
+> -	msleep(20);
+> -
+>  	ret = mipi_dsi_dcs_exit_sleep_mode(dsi);
+>  	if (ret < 0) {
+>  		dev_err(ctx->dev, "Failed to exit sleep mode: %d\n", ret);
+>  		return ret;
+>  	}
+>  
+> -	/* Panel is operational 120 msec after reset */
+> -	msleep(60);
+> +	/* It takes the controller 120 msec to wake up after sleep. */
+> +	msleep(120);
+>  
+>  	ret = mipi_dsi_dcs_set_display_on(dsi);
+>  	if (ret)
+> @@ -384,6 +382,9 @@ static int st7703_disable(struct drm_panel *panel)
+>  	if (ret < 0)
+>  		dev_err(ctx->dev, "Failed to enter sleep mode: %d\n", ret);
+>  
+> +	/* It takes the controller 120 msec to enter sleep mode. */
+> +	msleep(120);
+> +
+>  	return 0;
+>  }
+>  
+> -- 
+> 2.39.1
 > 
-> about these temps?
-
-(email from my other address, quicker right now)
-
-Well yes and no.
-
-Yes as in those are the temps specified in downstream dtb.
-No as in I'm 99% sure there's user space with definitely lower threshold that 
-actually does something in response to the temps.
-
-I didn't look too much into this but does the kernel even do something when it 
-hits one of these trip points? I assume when there's a cooling device thing 
-specified then it can actually tell the driver to do something, but without 
-(and most drivers don't support this?) I'm assuming the kernel can't do much 
-anyways?
-
-So e.g. when the temperature for the flash led is reached I'm assuming 
-downstream (+Android) either dims the led or turns it off? But I'd have to dig 
-quite a bit into the thermal setup there to check what it's really doing.
-
-But for now I think it's okay to put this current thermal config into dts and 
-we'll improve it later when 1. I understand more and 2. maybe some useful 
-drivers support the cooling bits?
-
-Regards
-Luca
-
-> 
-> Konrad
-
-
-
-
