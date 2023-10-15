@@ -2,92 +2,156 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1CA4C46CA1
-	for <phone-devel@archiver.kernel.org>; Sun, 15 Oct 2023 20:26:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81297CDB47E
+	for <phone-devel@archiver.kernel.org>; Sun, 15 Oct 2023 21:12:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230385AbjJOU0Q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 15 Oct 2023 16:26:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57056 "EHLO
+        id S229748AbjJOVMD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 15 Oct 2023 17:12:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230394AbjJOU0L (ORCPT
+        with ESMTP id S229518AbjJOVMC (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 15 Oct 2023 16:26:11 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EAFBE3;
-        Sun, 15 Oct 2023 13:26:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1697401566; bh=pdQHKOu9t+/50xiGW2M4xBTmedySUgBgfg2nCpLmelI=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=avpSesLluDv8IXS1K2V6/xdqPoVb73E/fHD2zkbf3pu60duvsd7G7I0mdSEdsHIkM
-         edBBrV8bB9OuqQB7nDBJxSRggwPa4Svf5pQRWFUOmVBV/9mV4ESoTMpPiMtIyqqUAz
-         /J3CB37CKPlyHw7wxgiJZu9nUgZ9nmO7m7fGkR4U=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Sun, 15 Oct 2023 22:26:01 +0200
-Subject: [PATCH 1/2] arm64: dts: qcom: msm8953: Set initial address for
- memory
+        Sun, 15 Oct 2023 17:12:02 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88AD5A9
+        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 14:12:00 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-323168869daso3708905f8f.2
+        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 14:12:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697404319; x=1698009119; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=20S+Zi7elh7aLrsKoDUlCT3P27T+k2m0t7D2LPdB+z4=;
+        b=x7okiY7YoHptuXu9jb9RX/AObiGXAc114+QJfmYVzmAXtM8U/ErZdnA1gnPGbOC3LH
+         V9wxO4Jv4DoOVF0icoZSYoJB1DBcUQpf5rIOrSyH5CIzpBUXw3pW5A5eYidJ0hVcwNSO
+         vVlz1s6NupOKBFe7hMOPPQtMveBqPjsfWcPtTlZMIS+7Z7zPgIaFMlERJWKem7/JJ44N
+         ORy9g6C7PAwLBYR+IxGods1S3QHdsmr06VIqAHxhYg8TIpCcXvtyeUiDac517d0ESIk6
+         7MVobY5pu47HR+AM/6BBQzerikqKb99DMQcVl3XAjxo2cpfwb8n3VcJQW0Pd6Y/cGjpV
+         AXug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697404319; x=1698009119;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=20S+Zi7elh7aLrsKoDUlCT3P27T+k2m0t7D2LPdB+z4=;
+        b=mXbfUm2AwCVlp3/GXNaQM/ET0/GcoaXeA/v0WqL0cCwEoi1Q9jC/+UdTUhSpZaZF0n
+         7XO+Tl+TeUDhZ0PrvaanaH6Th+VnyUPJUIdYl6Urtd+N3Pjb4IOwm32CnTdOUrd6MK8Y
+         mPjsbCBDw3wTHDMO5rSnrTs7quxINAU93CE32L7Die+j6lNMgmlZlmaRlBxq0lEwIsHc
+         P+JDroecOaBUwUK05ZP6oDlbnID763nlL8vGZX/pc4QiCinnjgM/o7osb7yuZafnbWQr
+         Zgx3LXaJqoBmFswzAzG0TMQOK7vNAu2ogPZXipBexTF0K38o5QYSlkHOocOLYK0mdjo9
+         Qx1Q==
+X-Gm-Message-State: AOJu0YyeBKN/YX3bAatTKgMndGm6d1WP7WepkFYBXt/QwKYYpbj76DtD
+        DyQyD2T9jcTtilygTHuCXG4HTw==
+X-Google-Smtp-Source: AGHT+IECSumT2r0PCYyiqzWjZFn7oRjS8L9sFtx878rqssf+v70qpMBjCDxJrfqfDpB7/LyhAX29uA==
+X-Received: by 2002:adf:a1d4:0:b0:32d:a310:cc2e with SMTP id v20-20020adfa1d4000000b0032da310cc2emr4244725wrv.34.1697404318959;
+        Sun, 15 Oct 2023 14:11:58 -0700 (PDT)
+Received: from lion.localdomain (host-2-99-112-229.as13285.net. [2.99.112.229])
+        by smtp.gmail.com with ESMTPSA id z17-20020a5d4d11000000b0032d9548240fsm8456734wrt.82.2023.10.15.14.11.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Oct 2023 14:11:58 -0700 (PDT)
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+Subject: [PATCH v2 0/7] Input: synaptics-rmi4: add quirks for third party
+ touchscreen controllers
+Date:   Sun, 15 Oct 2023 22:11:48 +0100
+Message-Id: <20230929-caleb-rmi4-quirks-v2-0-b227ac498d88@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231015-msm8953-misc-fixes-v1-1-b800deca9e46@z3ntu.xyz>
-References: <20231015-msm8953-misc-fixes-v1-0-b800deca9e46@z3ntu.xyz>
-In-Reply-To: <20231015-msm8953-misc-fixes-v1-0-b800deca9e46@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+X-B4-Tracking: v=1; b=H4sIAJRVLGUC/32NQQ6CMBAAv0J6ds1aVMST/zAc2rLAxtrqVoiG8
+ HcrD/A4k0xmVomEKalzMSuhiRPHkEFvCuUGE3oCbjMrjbrEWtfgjCcLcuc9PEeWWwI8aoOHiuq
+ TtSp31iQCKya4IZdh9D7Lh1DH73V0bTIPnF5RPut32v3sv8W0AwTnSldh2aHW7cVzMBK3UXrVL
+ MvyBd72d0fIAAAA
+To:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Vincent Huang <vincent.huang@tw.synaptics.com>
+Cc:     methanal <baclofen@tuta.io>, linux-input@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=791; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=pdQHKOu9t+/50xiGW2M4xBTmedySUgBgfg2nCpLmelI=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlLErbT6cFv2lgpENb1CvpAMNGXkA0xOmpL3PwX
- AhKvnHbHheJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZSxK2wAKCRBy2EO4nU3X
- VkDIEACtyr7+cPw/ykT67wSsZ20DIKwyfwXBPisvzvp/cA3NsGRgqpsgTwegVeqgBp/tQ3RqLtl
- 2hpjWhtiF4XAIRtl8Zfwc7d0z4QIGg168w147C0KlJbCBaV+T1BQ9tFukp47z8D66AvVkzAHyLu
- lY+xasEAJ6s5Bi63JDAUgDKK3vbEk/89hOYQXp9oXHPmkTOodIKGFjOKeY4XQ6cE6PvITWfEKTV
- 9VGSFf8q3QFF4WRJreqF5L3MSPkP1J6HokhAuir6Qt4b/HloqVs2baCqXdX0LgaJ+rVkb5EBblA
- oVmJy+xwgQYXzIOOcU4tC+RaetQtDzalgu1klocs6v4uQBZaVmcbjKXnHIKQuILgGMNspaYMYVO
- MFIZElkRWxC8FKI4KqFzOFxkdd6/8yTcup7dKS1010r6VgkzUqma5ESCyHt9VTLREZxkwjtCRHu
- 7XfLj/n1hnFmaCEnTd11xFqp/9W5S8z4KqX3pgIcF8AEUZv7DA5I/5xmJRV4yOSVckpuLhXRVpb
- 5iHqoE8er2XClxPHrIUHNmJey8OuUMAkSdyNoOiUfF8baGwjJrdA3sUN3Bcw0mIhT8O4eSvsmkM
- uG0o7DihtZ71Qg3gadbTfSmrYGY8L8CX9CRHW/xGTKXQelKyV03fZ6SCkmWZ32fL7d51bCJGsKm
- OuqqHlsifg0wt6g==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+X-Mailer: b4 0.13-dev-46309
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3197;
+ i=caleb.connolly@linaro.org; h=from:subject:message-id;
+ bh=5rq1EpQX0MP46UWiKDEFWm1ONq98fPC9YIe92JAevoI=;
+ b=owGbwMvMwCFYaeA6f6eBkTjjabUkhlSd0Llfinqybkh/rV11LJ6nbLLxh4KFgco+xi3PPb0+3
+ i/Qj2bqKGVhEORgkBVTZBE/scyyae1le43tCy7AzGFlAhnCwMUpABN5L8vwP7q06tDTXvZTl1Ya
+ iE8+9fzuy+406/uJRy5p/3JZlq4215zhN5uritUUkeknxNNTlpUUfWWZsMxYcG77kuS1z/yMm/L
+ lzwIA
+X-Developer-Key: i=caleb.connolly@linaro.org; a=openpgp;
+ fpr=83B24DA7FE145076BC38BB250CD904EB673A7C47
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The dtbs_check really doesn't like having memory without reg set.
-Address this by setting it to 0x10000000 which seems to be the value
-filled in by the bootloader.
+With the growing popularity of running upstream Linux on mobile devices,
+we're beginning to run into more and more edgecases. The OnePlus 6 is a
+fairly well supported 2018 era smartphone, selling over a million units
+in it's first 22 days. With this level of popularity, it's almost
+inevitable that we get third party replacement displays, and as a
+result, replacement touchscreen controllers.
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+The OnePlus 6 shipped with an extremely usecase specific touchscreen
+driver, it implemented only the bare minimum parts of the highly generic
+rmi4 protocol, instead hardcoding most of the register addresses.
+
+As a result, the third party touchscreen controllers that are often
+found in replacement screens, implement only the registers that the
+downstream driver reads from. They additionally have other restrictions
+such as heavy penalties on unaligned reads.
+
+This series attempts to implement the necessary workaround to support
+some of these chips with the rmi4 driver. Although it's worth noting
+that at the time of writing there are other unofficial controllers in
+the wild that don't work even with these patches.
+
+We have been shipping these patches in postmarketOS for the last several
+months, and they are known to not cause any regressions on the OnePlus
+6/6T (with the official Synaptics controller), however I don't own any
+other rmi4 hardware to further validate this.
+
+These patches were contributed by a community developer who has given
+permission for me to submit them on their behalf.
+
 ---
- arch/arm64/boot/dts/qcom/msm8953.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Vincent Huang <vincent.huang@tw.synaptics.com>
+Cc: methanal <baclofen@tuta.io>
+Cc: linux-input@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: phone-devel@vger.kernel.org
+Cc: ~postmarketos/upstreaming@lists.sr.ht
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-index e7de7632669a..a3ba24ca599b 100644
---- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-@@ -174,10 +174,10 @@ scm: scm {
- 		};
- 	};
- 
--	memory {
-+	memory@10000000 {
- 		device_type = "memory";
- 		/* We expect the bootloader to fill in the reg */
--		reg = <0 0 0 0>;
-+		reg = <0 0x10000000 0 0>;
- 	};
- 
- 	pmu {
+---
+Changes since v1:
+- Improve dt-bindings patch (thanks Rob)
+- Add missing cast in patch 5 to fix the pointer arithmetic
+- Link to v1: https://lore.kernel.org/r/20230929-caleb-rmi4-quirks-v1-0-cc3c703f022d@linaro.org
 
--- 
-2.42.0
+---
+Caleb Connolly (2):
+      dt-bindings: input: syna,rmi4: document syna,pdt-fallback-desc
+      Input: synaptics-rmi4 - handle duplicate/unknown PDT entries
+
+methanal (5):
+      Input: synaptics-rmi4 - f12: use hardcoded values for aftermarket touch ICs
+      Input: synaptics-rmi4 - f55: handle zero electrode count
+      Input: synaptics-rmi4 - don't do unaligned reads in IRQ context
+      Input: synaptics-rmi4 - read product ID on aftermarket touch ICs
+      Input: synaptics-rmi4 - support fallback values for PDT descriptor bytes
+
+ .../devicetree/bindings/input/syna,rmi4.yaml       |  15 +++
+ drivers/input/rmi4/rmi_driver.c                    | 134 ++++++++++++++++++---
+ drivers/input/rmi4/rmi_driver.h                    |   8 ++
+ drivers/input/rmi4/rmi_f01.c                       |  14 +++
+ drivers/input/rmi4/rmi_f12.c                       | 117 ++++++++++++++----
+ drivers/input/rmi4/rmi_f55.c                       |   5 +
+ include/linux/rmi.h                                |   3 +
+ 7 files changed, 252 insertions(+), 44 deletions(-)
+---
+base-commit: b0d95ff7653ef6ace66a24d6c09147d0731825ce
+
+// Caleb (they/them)
 
