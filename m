@@ -2,104 +2,81 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0D22CDB484
-	for <phone-devel@archiver.kernel.org>; Sun, 15 Oct 2023 20:09:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8790CDB47E
+	for <phone-devel@archiver.kernel.org>; Sun, 15 Oct 2023 20:26:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230261AbjJOUDt (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 15 Oct 2023 16:03:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50422 "EHLO
+        id S229641AbjJOU0P (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 15 Oct 2023 16:26:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229983AbjJOUDl (ORCPT
+        with ESMTP id S229766AbjJOU0L (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 15 Oct 2023 16:03:41 -0400
+        Sun, 15 Oct 2023 16:26:11 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53419C1;
-        Sun, 15 Oct 2023 13:03:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B1A8E4;
+        Sun, 15 Oct 2023 13:26:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1697400213; bh=kLp68k9o+Z3NX4GK3pTddX18ul/eLURnuKSPZR5q97Q=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=iZYKu6yb9DHMMwmDG9Er8Fd+KL1D1rEieDtFmUEezF0KCyfjsR/QPiHZrnOwj8OHC
-         8//xnOhd8vzsjYhQHJqothiczc2IWnzEtE7Tys+LELouHF15NdOJKfbbLPfv4FaA7j
-         EcLCiZCbXd7cS4G69+klB1b15iaP034/K0F25tso=
+        t=1697401566; bh=pbPno1ZqQXw35M/Z5s/GrtA5wtsZugP/6ACjMTW6oyI=;
+        h=From:Subject:Date:To:Cc;
+        b=y0/Jbv6UIndPL2kJAXCBHdQCEHOq2+12DPYwiBKLPtMkruNpf6q79BY5pvN7L+HlX
+         SV9GUYRuAi/mpPxyiv7hB2sE+eYAR42RW5z+br7HrSJYydXnKk+haVM/5Z8XTjakfK
+         mkimPLriTz+M6HitnenEGtbJCjEEmFzh/cE1a1og=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Sun, 15 Oct 2023 22:03:09 +0200
-Subject: [PATCH 4/4] arm64: dts: qcom: sdm632-fairphone-fp3: Enable
- WiFi/Bluetooth
+Subject: [PATCH 0/2] Small dtsi fixes for msm8953 SoC
+Date:   Sun, 15 Oct 2023 22:26:00 +0200
+Message-Id: <20231015-msm8953-misc-fixes-v1-0-b800deca9e46@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231015-fp3-wcnss-v1-4-1b311335e931@z3ntu.xyz>
-References: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
-In-Reply-To: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
+X-B4-Tracking: v=1; b=H4sIANlKLGUC/x3LMQqAMAxA0auUzAbaBrF6FXEQTTVDVRoQQXp3i
+ +Pj819QzsIKg3kh8y0q51HhGgPLPh8bo6zV4K0nZ12LSVPoW8IkumCUhxVDF6kjbyn2Aep4Zf5
+ D/caplA8JleMIZAAAAA==
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=872; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=kLp68k9o+Z3NX4GK3pTddX18ul/eLURnuKSPZR5q97Q=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlLEWTrklhyEZhz0lKiMUY6LmIk6xmg/ijZ1rGz
- 6UtFtx/ZlmJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZSxFkwAKCRBy2EO4nU3X
- VnKrD/45kk+lDiujez6dk+vdMqJ/6yD0XBxjLSrLYSbsOS6OayfTF9nbznHzoNIQYyeJCiXNt31
- /NRAg/gZXe94EXZdMWAeAk3GrTMGaapE6d+S93PyH81HrOxZR+b0OmGF2GibbItX0OZvkazLbvI
- vrorYRzu2b7Zpcs+8U8BpPLXzqkiPSax7pab6ZBpJFLGxzqgfJxpS+PL2cAYw5OrrL5hE1rs/UH
- Mp0tooxIkhsaBs00Wf0ZgLB49cpb8QgZWJZKHVgPZNJFbpJpTNQi6aah6su00wwGyEiVeX+2cTO
- r0RWE+xn6+QcADozVIRLlO2RjidwWGgaVXcAzaXHUzDn+egxGCqGPffuCHeNvehyeaaJIsF0ih+
- B/sxccssMEjV8jZsKpO0cW1JnOXwTaOHT/dd15W0P1N+0zax1eFriayoq2kBfUMPqhZTneK1NCp
- y1ijiqdiK4Ple4wW6NTlDLcL1dbvjN6Au5CKREwqo6xtc2u9e5lhfWlFyQk6bSLYkoac9jgmUkH
- zQTs0aBASH4d1GLGt31RHhgkClsaF+ws9xtIiNOJKJe3tWPRE7i+8NJ0sHZUHx0DBqPgME/C8TT
- 421wfgBiv74mvymR+sv6CwDQv6tZGPsO/QTTmEp7A+mx6rUs1GUf+pe+y4g8kxN51rrwJkluYoV
- OGXNKrGSYXVEPpQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=568; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=pbPno1ZqQXw35M/Z5s/GrtA5wtsZugP/6ACjMTW6oyI=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlLErbYljQeUeEnk/kRf8HLnZdN7A7BH52pEftn
+ 02ca11hPyCJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZSxK2wAKCRBy2EO4nU3X
+ VgcyEADJc8/zuEHN1PkJE9JjkV9O+rffDd9h//I6YG8s0693AJe6i8CE8tURZQqj8aVUzxbvXGd
+ E4NyVjsns4NGY4oYJumwkMgrqDh64f4wpzcL+3fQka/fXeK119+VgtB5t+wZFa/vF2M68YAABlg
+ AaC7ViGqRCfRUY4SZjTM690Cyw+SPRoJmehY6U0X7Ure4uE1rNdFF4jTxXJgxkU3I+z1sBG/8e1
+ IUR1EIHTpCkmawHGF4Tqc25XvZzcpMl8Zd1vfUtmFiM0Nvq8sPCk2xLIy1bzJPYa5iq5WAmi08q
+ FdAEKirNMaEB+iwHXJs1eLb517zaSw7zFTonzfoKdLoytcVSqu06SVZjagOgleeI9PX3OT9JLby
+ byy+G26Ulx4A65u6iu3DsG1ZSmMxyTc0xLsEM85QtgUBEX2IecSXGDU3yreO1qMw+AgD1LVdBdU
+ 52ZomDx7yR1NvlihRhV4h7Kvy9GNUJqFvFU5uIwQt/2hD6ZckxleQDO7A9ZCzpjwFxKcStvoB+Y
+ utcmBBj8bkLE7KPodbvc8HP/K0JfrAiV2qOX0fFpt2yn9UF3M+LD672jzU8qjVY8igUIw5Ftnca
+ vSHMdZ+Q3xiCZF1j6N471YonU32A+NWCPWC1YuV3V9xcDaAw8ijSYvLm1qSMHfjivezUeNlkHz7
+ QILNZwJAlnIr2Hg==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Configure and enable the WCNSS which provides WiFi and Bluetooth on this
-device.
+Fix some small things in the qcom/msm8953.dtsi file to make dtbs_check
+happier than before.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Luca Weiss (2):
+      arm64: dts: qcom: msm8953: Set initial address for memory
+      arm64: dts: qcom: msm8953: Use non-deprecated qcom,domain in LPASS
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-index 301eca9a4f31..addf56fb7937 100644
---- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-@@ -239,3 +239,18 @@ &usb3 {
- &usb3_dwc3 {
- 	dr_mode = "peripheral";
- };
-+
-+&wcnss {
-+	status = "okay";
-+
-+	vddpx-supply = <&pm8953_l5>;
-+};
-+
-+&wcnss_iris {
-+	compatible = "qcom,wcn3680b";
-+
-+	vddxo-supply = <&pm8953_l7>;
-+	vddrfa-supply = <&pm8953_l19>;
-+	vddpa-supply = <&pm8953_l9>;
-+	vdddig-supply = <&pm8953_l5>;
-+};
+ arch/arm64/boot/dts/qcom/msm8953.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+---
+base-commit: 2933a1156742d8c47550493a77af8e2d81cf3c84
+change-id: 20231015-msm8953-misc-fixes-87f373203f98
 
+Best regards,
 -- 
-2.42.0
+Luca Weiss <luca@z3ntu.xyz>
 
