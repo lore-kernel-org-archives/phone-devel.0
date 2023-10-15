@@ -2,125 +2,93 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E017CCDB483
-	for <phone-devel@archiver.kernel.org>; Sun, 15 Oct 2023 12:56:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FEC8C41513
+	for <phone-devel@archiver.kernel.org>; Sun, 15 Oct 2023 20:03:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229555AbjJOM4K (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 15 Oct 2023 08:56:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42756 "EHLO
+        id S230200AbjJOUDs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 15 Oct 2023 16:03:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229886AbjJOM4I (ORCPT
+        with ESMTP id S229518AbjJOUDk (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 15 Oct 2023 08:56:08 -0400
-Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37D27A9
-        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 05:56:05 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by honk.sigxcpu.org (Postfix) with ESMTP id 5C9B7FB03;
-        Sun, 15 Oct 2023 14:49:24 +0200 (CEST)
-Received: from honk.sigxcpu.org ([127.0.0.1])
-        by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id QmGYZ04xXnHb; Sun, 15 Oct 2023 14:49:23 +0200 (CEST)
-Date:   Sun, 15 Oct 2023 14:49:20 +0200
-From:   Guido =?iso-8859-1?Q?G=FCnther?= <guido.gunther@puri.sm>
-To:     Frank Oltmanns <frank@oltmanns.dev>
-Cc:     Purism Kernel Team <kernel@puri.sm>,
-        Ondrej Jirman <megous@megous.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        phone-devel@vger.kernel.org, Ondrej Jirman <megi@xff.cz>,
-        Samuel Holland <samuel@sholland.org>
-Subject: Re: [PATCH 1/1] drm/panel: st7703: Pick different reset sequence
-Message-ID: <ZSvf0HIA3GaZlbac@qwark.sigxcpu.org>
-References: <20230211171748.36692-1-frank@oltmanns.dev>
- <20230211171748.36692-2-frank@oltmanns.dev>
+        Sun, 15 Oct 2023 16:03:40 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51ADCB7;
+        Sun, 15 Oct 2023 13:03:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1697400213; bh=qZlNzEpRoS5paF/EbsvUPqS1Yv+qD45c+PbzCsHBeTY=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=HVBfOQozHsT0wnd4rGAVdyIdNep7uY/Mz/KEH2BlKWYMJFH02V/wTSvrrUPrFTsyu
+         rFdQ56rpQemoYvQxk9+eAzE1op8drtc/mTa5KP2dc/HbZdTOty6FgnSH0QV8xa2i8/
+         wt+gFWrFZXChbw6pjonXBl3ghMaQdCPcXVv8i2xg=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Date:   Sun, 15 Oct 2023 22:03:08 +0200
+Subject: [PATCH 3/4] wifi: wcn36xx: Add check for WCN3680B
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230211171748.36692-2-frank@oltmanns.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231015-fp3-wcnss-v1-3-1b311335e931@z3ntu.xyz>
+References: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
+In-Reply-To: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Loic Poulain <loic.poulain@linaro.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Cc:     linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=966; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=qZlNzEpRoS5paF/EbsvUPqS1Yv+qD45c+PbzCsHBeTY=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlLEWSIODDShP6A2fJ2Vf5LSlcaLukdHI504hZW
+ gRd8oh2nMCJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZSxFkgAKCRBy2EO4nU3X
+ VtSMD/44Ttl62qB0epFTn19gfFMWUYwSXnzdqFhapN+LsRfa10HzoTnuEEsQCl2LvpAzjRj1kgC
+ EaiQO372J3sCgPAIt4wTV/XM2HWxeGsKSPxNdFfRSsZxT24c5nRQuWQ7SJn3AF8PYB2eCBX9LPQ
+ JNmyJJ/U70XqT+TLvjrLVYO6rayCYRXhAEXESJPu4McFO6I2SKo6i6KWRhZn4aXOM6Flz/1+/Mk
+ rho9kpWhkBLcQXwDbjkPOwsWQEZT3a962deOwLkpbKQsw5I0IVce3xlx59aG/0FErAipgK51xke
+ m2QjHJnLjtC3UwEyjaMSaGeMkNVpn9x1+DW1IIbwX8RmmYDPXOj3btcE7um0fADKc5Fp+87FZmp
+ Iwycw+zbnt4dUX3RaOXG0KxY+DjU7TQHKlfSsIzcNulfhfmO7NFbXj9FT3Yd7iIyAUMJdQbK0DK
+ V5FZhDKDlx5qDCOX4CqrMkbpdH+cHgy+2l1Jya9JFr7lzBSCjjCLIv/E/FcJ2/NwGaCzco++sES
+ dACParyXrslCuJ0oc9MyPDBe2Gi3ETe/HFliGM8iZnflgmXpSeA9kqQ8nuaiZBvau177K7P93GS
+ duCitbhvfH1jKTyvvRNlAmBO3Xyzv6nzw9Mag4Yq1OACkr0iDWYRSWHJCg6Z3d3zl6hynYjEH0v
+ 6keZ4ZS6nCPNbkw==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi,
-On Sat, Feb 11, 2023 at 06:17:48PM +0100, Frank Oltmanns wrote:
-> From: Ondrej Jirman <megi@xff.cz>
-> 
-> Switching to a different reset sequence, enabling IOVCC before enabling
-> VCC.
-> 
-> There also needs to be a delay after enabling the supplies and before
-> deasserting the reset. The datasheet specifies 1ms after the supplies
-> reach the required voltage. Use 10-20ms to also give the power supplies
-> some time to reach the required voltage, too.
-> 
-> This fixes intermittent panel initialization failures and screen
-> corruption during resume from sleep on panel xingbangda,xbd599 (e.g.
-> used in PinePhone).
+Add a check for the WCN3680B compatible next to the WCN3680 compatible.
 
-Thanks, applied to drm-misc-next.
-Cheers,
- -- Guido
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ drivers/net/wireless/ath/wcn36xx/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> 
-> Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
-> Reported-by: Samuel Holland <samuel@sholland.org>
-> ---
->  drivers/gpu/drm/panel/panel-sitronix-st7703.c | 25 ++++++++++---------
->  1 file changed, 13 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7703.c b/drivers/gpu/drm/panel/panel-sitronix-st7703.c
-> index 6747ca237ced..45695aa51f62 100644
-> --- a/drivers/gpu/drm/panel/panel-sitronix-st7703.c
-> +++ b/drivers/gpu/drm/panel/panel-sitronix-st7703.c
-> @@ -411,29 +411,30 @@ static int st7703_prepare(struct drm_panel *panel)
->  		return 0;
->  
->  	dev_dbg(ctx->dev, "Resetting the panel\n");
-> -	ret = regulator_enable(ctx->vcc);
-> +	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-> +
-> +	ret = regulator_enable(ctx->iovcc);
->  	if (ret < 0) {
-> -		dev_err(ctx->dev, "Failed to enable vcc supply: %d\n", ret);
-> +		dev_err(ctx->dev, "Failed to enable iovcc supply: %d\n", ret);
->  		return ret;
->  	}
-> -	ret = regulator_enable(ctx->iovcc);
-> +
-> +	ret = regulator_enable(ctx->vcc);
->  	if (ret < 0) {
-> -		dev_err(ctx->dev, "Failed to enable iovcc supply: %d\n", ret);
-> -		goto disable_vcc;
-> +		dev_err(ctx->dev, "Failed to enable vcc supply: %d\n", ret);
-> +		regulator_disable(ctx->iovcc);
-> +		return ret;
->  	}
->  
-> -	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-> -	usleep_range(20, 40);
-> +	/* Give power supplies time to stabilize before deasserting reset. */
-> +	usleep_range(10000, 20000);
-> +
->  	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-> -	msleep(20);
-> +	usleep_range(15000, 20000);
->  
->  	ctx->prepared = true;
->  
->  	return 0;
-> -
-> -disable_vcc:
-> -	regulator_disable(ctx->vcc);
-> -	return ret;
->  }
->  
->  static const u32 mantix_bus_formats[] = {
-> -- 
-> 2.39.1
-> 
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index 2bd1163177f0..74b0b7074760 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -1535,7 +1535,8 @@ static int wcn36xx_platform_get_resources(struct wcn36xx *wcn,
+ 		if (of_device_is_compatible(iris_node, "qcom,wcn3660") ||
+ 		    of_device_is_compatible(iris_node, "qcom,wcn3660b"))
+ 			wcn->rf_id = RF_IRIS_WCN3660;
+-		if (of_device_is_compatible(iris_node, "qcom,wcn3680"))
++		if (of_device_is_compatible(iris_node, "qcom,wcn3680") ||
++		    of_device_is_compatible(iris_node, "qcom,wcn3680b"))
+ 			wcn->rf_id = RF_IRIS_WCN3680;
+ 		of_node_put(iris_node);
+ 	}
+
+-- 
+2.42.0
+
