@@ -2,92 +2,93 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56611CDB482
-	for <phone-devel@archiver.kernel.org>; Sun, 15 Oct 2023 20:04:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 61D85CDB47E
+	for <phone-devel@archiver.kernel.org>; Sun, 15 Oct 2023 20:07:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231181AbjJOUEJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 15 Oct 2023 16:04:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46636 "EHLO
+        id S229659AbjJOUHC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 15 Oct 2023 16:07:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230417AbjJOUEH (ORCPT
+        with ESMTP id S229518AbjJOUHB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 15 Oct 2023 16:04:07 -0400
+        Sun, 15 Oct 2023 16:07:01 -0400
 Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B89ED9;
-        Sun, 15 Oct 2023 13:04:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEADDB7;
+        Sun, 15 Oct 2023 13:06:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1697400213; bh=UBcuPPvCkMF5VJX2cM/TeeQFIz6MAcbcTnhTFVt0/f0=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=wCMCKUVtrDwe6X5Bg0nId5QFXMCRKYAZBulQ++9fqc4RZbqaXcXAEJ3pHToYx8aED
-         LCfIvxiV8jkgwvHzkyJAeGWDnDXrVnjh6vP3nrmocf6uFs6O+l8MUms6eq3qQDJBlS
-         wfmuo14ZjcLcv1Iy5UfrQEeHCmg0RKMgnmXepZyg=
+        t=1697400417; bh=gLXzkJlcOtiiXEeg7Iuty/PC2JvU2OIZdV/PvF/Q3tI=;
+        h=From:Date:Subject:To:Cc;
+        b=RN0J6xnJHoJM2GqLNuKraxSEjdpxtnbOWwlW8bSFR8bzyC1YvwKNIsWIkLN/vHi4G
+         Tk03S+7MiiBou2NRuVn0XSkeOhnRviUUDAzTYQKw0G/wKrutKC/ZGPzEAxDa2nRRfG
+         Z7PJy89ExVXA72jdu4ZGzwRfj+pPUYOoU4MaK75M=
 From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Sun, 15 Oct 2023 22:03:06 +0200
-Subject: [PATCH 1/4] dt-bindings: remoteproc: qcom: wcnss: Add WCN3680B
- compatible
+Date:   Sun, 15 Oct 2023 22:06:56 +0200
+Subject: [PATCH] arm64: dts: qcom: sdm632-fairphone-fp3: Enable LPASS
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231015-fp3-wcnss-v1-1-1b311335e931@z3ntu.xyz>
-References: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
-In-Reply-To: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
+Message-Id: <20231015-fp3-lpass-v1-1-4d46a399a035@z3ntu.xyz>
+X-B4-Tracking: v=1; b=H4sIAF9GLGUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDA0NT3bQCY92cgsTiYt0koxRTI4MUYzPTxCQloPqCotS0zAqwWdGxtbU
+ A2KJWP1sAAAA=
 To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=746; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=UBcuPPvCkMF5VJX2cM/TeeQFIz6MAcbcTnhTFVt0/f0=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlLEWQWYz3VnCBzuywdfmhz0FJE7b161pJE9+zl
- YZAeemp6A+JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZSxFkAAKCRBy2EO4nU3X
- VgUoD/957O200UjOLzDFN3HHOTl5/M5HtqlfCK+sAZl73OpKRDMj0Jcp8oMLl0OnrElRbTtpkJW
- croer+9sw6euIA03ntodsFpkA/HSSMSWV8fsYdsa5hs9Vl1M5KT1E8eskSJriUOML2thUt1uvBY
- PbB8K5X5pxSssglgqmFNhrYPaJzQz+rWYCiY1k5PQwHYj1SHfSGaPrT+nGYEK7TtyzZtA7vGOwE
- Os+46TJqIcBEDRjmgNDPR505ZSMESvjZB6tNhgN6bK9bJpb94Ef2uU+8fTXvWaB2ha+NSGQjEZ/
- 3O0jTCXwVfd5RitkoJPIPr8JsHmaZnmb4PzhuUa49t72dAuAVmaFKiG81Uvo75et+Q9Vi7UEWrD
- rpTdYS9lwzQIE7rFG6Hd4xJwe488aEEw1PusLwpksOBnxg31L3PRSw3ARAoObqG8751HWPdwCFB
- NAqpeCXIxCFEcYnzNDSA5NaMhSCMkEaUjPN7SaItoLNIy9FuCkqDsDGAPAe9+VJF1G53hpHk7ib
- 44eplItLHmqFYdpY7mkAUQjD1XW2Q3JPf0UtrwxiuKNj6slkNvhTBRLp7KZR2BGcFgiEi/eEdyV
- ki9H78THtYsJd2h9ziLiE+n0GyDHhK0GGhQjhLftDK+Ri1ruKO7l3K2K7jPLc+9VVANiw+uBku0
- dv2y6ikI1jaqFTQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=773; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=gLXzkJlcOtiiXEeg7Iuty/PC2JvU2OIZdV/PvF/Q3tI=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlLEZgmq7oITq5wM7PXUyggGCfRXuX9mJ0KLTY/
+ SozJ5Fy2cGJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZSxGYAAKCRBy2EO4nU3X
+ VpfjEACcqk+1T732HNrdfn+AJ9ugYpgKXBq9bE0K5SK+axr9bvZt6uRvclCYev4ciVyZ4ppoVcw
+ rt+I4J63pPERvCHknnsTgye+0w6HwPtvbrWLlS209Qz2HvGx5XYFxyGSJno2YofRgtSTJPtAOrB
+ dilapKAbC1RSfJz5MOkQCm0Av+Z2rJWiijswwuM/WHL6wlG8FcUd+fKCigWLewAQfVSTUfnWoL2
+ 5Usr2cczDIbU9Si5qBbwRnFIbrBbV5VB696J9y6/qDbz/7J7YZ6IAn7jf9af3G3sfuKJZA3ccMM
+ wDJjNpKoHVHJm/y1Dgdp1LwEusonryq7ZgY/8uEUQQiOJHWWGW4H7/nXWK8WP97gNY+ybC+6fSf
+ XFywaQD79CsQejuQvadQmkemcnckdS5fALY6KkGdjKnojQnX47TxemxnWow8RKcgKNinVbE7Uff
+ qkwe94C8BzqHeaikz11F+C6VFhfy78vvwEvf3YmekeJq7bwOo+PBDDESi3MQ1GJiS5vPnutQ4sF
+ o8Kfb8V956/TYJNmEPWDCy16YUeyFPIVi+KId206+jbUKRY/m/x1RpyA/Fx/JGEqA9TS+hKqmPh
+ QbdpHfA1sLICOPA1BiUW7uJcAevHkAmthkkJol/Fs1FNbnQPc398x1j9ccT1SXyqGzL1qv4vL6R
+ 7ObCugIq3Q3hCbw==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add a compatible for the iris subnode in the WCNSS PIL.
+Enable the LPASS/ADSP found on the phone.
 
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-index 45eb42bd3c2c..0e5e0b7a0610 100644
---- a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-+++ b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
-@@ -111,6 +111,7 @@ properties:
-           - qcom,wcn3660
-           - qcom,wcn3660b
-           - qcom,wcn3680
-+          - qcom,wcn3680b
+diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
+index 301eca9a4f31..50309b1a6b7a 100644
+--- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
++++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
+@@ -80,6 +80,10 @@ nfc@28 {
+ 	};
+ };
  
-       clocks:
-         minItems: 1
++&lpass {
++	status = "okay";
++};
++
+ &pm8953_resin {
+ 	status = "okay";
+ 	linux,code = <KEY_VOLUMEDOWN>;
 
+---
+base-commit: 2933a1156742d8c47550493a77af8e2d81cf3c84
+change-id: 20231015-fp3-lpass-b2d520d365ab
+
+Best regards,
 -- 
-2.42.0
+Luca Weiss <luca@z3ntu.xyz>
 
