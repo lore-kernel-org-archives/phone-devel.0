@@ -2,404 +2,159 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28A47CDB465
-	for <phone-devel@archiver.kernel.org>; Mon, 16 Oct 2023 14:33:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6482FCDB465
+	for <phone-devel@archiver.kernel.org>; Mon, 16 Oct 2023 14:45:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233537AbjJPOdi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 Oct 2023 10:33:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51616 "EHLO
+        id S231891AbjJPOpF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 Oct 2023 10:45:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233701AbjJPOdh (ORCPT
+        with ESMTP id S229459AbjJPOpF (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 Oct 2023 10:33:37 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22520E8
-        for <phone-devel@vger.kernel.org>; Mon, 16 Oct 2023 07:33:34 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-53e3b8f906fso5593587a12.2
-        for <phone-devel@vger.kernel.org>; Mon, 16 Oct 2023 07:33:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697466812; x=1698071612; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/9cl0XfvFGjZ0mqviaREEg8s3S3kUfmqVuMt9DyXc4w=;
-        b=v2/A+YX3CQs2o4ZwMir1Mnidixkzi2QzekDZZ0O6J1+xVlv23vT7Tuy1wMF4Bq9MQV
-         zrjEM2UHcS7kGG5bJYyY1ldL6r1hpl75Ad/yJDWRoeHYtAT2THXP5svRgzN7owQS5cIQ
-         TVVj/y50SYfqx3ppDBlAx4ZiTpgGomDfkL0QILbo5vHuXdaiIdCCvjd8IGL7wmYX2gxF
-         mMZBiSbO6eez8GsmpQNcQcGVu9+1j3p4O1+k9UQN/bJAVp0xb6vj7UfKTZRONPBR0OwG
-         w6YdxilxVsSrhfzHNiW1wmXRI/4/kyp5YXrAnGWLiYRmJS+VZVhsMPet2rfAdM20VBYR
-         zyBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697466812; x=1698071612;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/9cl0XfvFGjZ0mqviaREEg8s3S3kUfmqVuMt9DyXc4w=;
-        b=OAyRwFVJafOJQ+tV4VVFgzii1OVav7y+Sbaee2rJSk/13unJl+OnJUKmM+lBhXW/eu
-         mpRyMHu4SUnkXZjlVXKCIhIMH7tIOmp+LGcORRg1vC5sqX++wbmWciQq3/fgCol3SHhP
-         2QwYBhaC5qOmUjGbefUbglebZIJRYGjqWfV6CKOnB2OlruJu26rznR5rzU5jEBIc/jgq
-         DHeuA9rzz0i9yAiFpRINunOqrXSPII0y8poj6jUGZb9PGLEazndCaeSB+95kjDArPcmj
-         b0RIVEp09FbPRT2a+bnNVkoHl3FNrobSvcHRXPOu0RMUQAoP5GobLLlfBs9b92Y7AyC1
-         BAIg==
-X-Gm-Message-State: AOJu0YzyqPk/JsPLy/rrTy3BwWFSEdgP5n5m9kR3slTNFOu4pzAfij6O
-        KahdBQtxBISFoQtL+db30EsjJQ==
-X-Google-Smtp-Source: AGHT+IFyslTLdtWQZke/7rtFGYyKU93k4ENx8+WP6tj6Xir/n8aujyNL4Zw2dxteSst2mumDrkqtYA==
-X-Received: by 2002:a17:906:1ca:b0:9a5:9f3c:9615 with SMTP id 10-20020a17090601ca00b009a59f3c9615mr25894460ejj.63.1697466812422;
-        Mon, 16 Oct 2023 07:33:32 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.154])
-        by smtp.gmail.com with ESMTPSA id gw11-20020a170906f14b00b0098669cc16b2sm4105580ejb.83.2023.10.16.07.33.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Oct 2023 07:33:31 -0700 (PDT)
-Message-ID: <3a57e697-3958-4f6b-912d-e2ee0c41d4a1@linaro.org>
-Date:   Mon, 16 Oct 2023 16:33:30 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] arm64: dts: qcom: sm8350-lemonade(p): new devices
-Content-Language: en-US
-To:     Nia Espera <nespera@igalia.com>, Andy Gross <agross@kernel.org>,
+        Mon, 16 Oct 2023 10:45:05 -0400
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 571D8AB;
+        Mon, 16 Oct 2023 07:45:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1697467480; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=VQJg1RsTctPWMnunyunfLHy2rLs7zNB/CNL3uh76kEa1fZsXzKvAIpoB8tkgfT2RNu
+    2rKoWE5OPZRMM+BCSsYTpW6khc3tI1nH5N/1qJvDzfiYK5GlaTi3KbQDrkyeKDVWVMet
+    1A1bt/1meFjCYzuxWdYQsfyFAp9nQzs0T0qZM/x0FXBuhDfVWajh7E4FKGpP9uMECv4W
+    pH58fRwShTyIYR2EyKDqYwcy2HpGDlymYkPPDw1nmu2fhIAsnjXpQGKzZKO94ZNvNJKO
+    fhFeTMVj1meRxgiTyIgbwlDTjaiOswOuukT4Wc/XkYJFpqDhiQrrmpvh4S/2EAVFvBfv
+    REow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1697467480;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=xX5hBwIyyt+mobzNXbEEyEPguKjaJlDcotBwI7v0tiw=;
+    b=n+Mfk6c1CeBShSjZ88173Z2R7ZIK1RjEdPw3nYDGYcW1wK28Gt5wqklMEffbVD8iV6
+    vkvS7zxhGbuoPoAMPbESIGocsGxi+axSxo35rbLCka5+DEJFF18Xd+u0t6QCLVkZvrrP
+    gcwp26JgNliUepXjbaDE8CEUI+8yF6e+sZ7c140P8ZvM5ztoWB5t6qma0hERztyvDMHR
+    0tdEUBIP/RCR/hx2iOYUnNFGWWSMGx+FAbyNvbmvOrK6kjGrHx7DI4yjdIbWBqxcLq/x
+    JpWL4ayjasaa4YLb1lIcnpJ2VFYTBRrMxtFsGtcA3ENaBTcGij1fb4H9Iv60gY0JgjLM
+    ic7A==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1697467480;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=xX5hBwIyyt+mobzNXbEEyEPguKjaJlDcotBwI7v0tiw=;
+    b=G+2o7R0QMJJBT+YXg8vDQQQxGzsXPhWuM22xgxnzxP2fhmYCupPM4yKQPOdo0U5/Up
+    MhRXevKhGuT76C/ItYHomUyvnv9EWLUe2MK3Bj4kJ4xWCzRV0H0w6Z6iXXMUokyHGaHQ
+    w0GLCb15rSUmK6bQ8BG9LeDYy3dv+ftDmBdLsz/sQ/9hxS9yMKJiVvLbS5u6Al4ttAkf
+    nuZsNP0hcx2KQjItQL7vm763usWbbpKa8F/hoIIjRr5nbDk65f/vR8OMz5Hrb6T1Eiu8
+    QMp+UHCm8n1iy0tPNJvRI4UlQKaXhMwwt5HEjoqtPCQqw/oIvP0NOYLotbfj9+ZdK0AB
+    I8yg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1697467480;
+    s=strato-dkim-0003; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=xX5hBwIyyt+mobzNXbEEyEPguKjaJlDcotBwI7v0tiw=;
+    b=69+eKkTf5LWsB5y5p8U21qGYEfe9j1pEpjC8AFafAYiu3jM8pCAKLCE28qCC2LfAbd
+    s/WryFLK3a7YggE0SUCw==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA+p3h"
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 49.9.0 DYNA|AUTH)
+    with ESMTPSA id j34a49z9GEid25O
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Mon, 16 Oct 2023 16:44:39 +0200 (CEST)
+Date:   Mon, 16 Oct 2023 16:44:28 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Loic Poulain <loic.poulain@linaro.org>
+Cc:     Luca Weiss <luca@z3ntu.xyz>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        Rob <Me@orbit.sh>, Clayton Craft <clayton@igalia.com>,
-        ~postmarketos/upstreaming@lists.sr.ht
-References: <20231016-nia-sm8350-for-upstream-v1-0-bb557a0af2e9@igalia.com>
- <20231016-nia-sm8350-for-upstream-v1-5-bb557a0af2e9@igalia.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231016-nia-sm8350-for-upstream-v1-5-bb557a0af2e9@igalia.com>
-Content-Type: text/plain; charset=UTF-8
+        Kalle Valo <kvalo@kernel.org>,
+        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/4] dt-bindings: remoteproc: qcom: wcnss: Add WCN3680B
+ compatible
+Message-ID: <ZS1MTAHq6GLW6RAK@gerhold.net>
+References: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
+ <20231015-fp3-wcnss-v1-1-1b311335e931@z3ntu.xyz>
+ <ffca099a-bf05-4973-885d-b049a45d466f@linaro.org>
+ <CAMZdPi-S2_UQO-rD38-thwta-YgH3W78Ecd1Du7Q_US=J7k0ew@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMZdPi-S2_UQO-rD38-thwta-YgH3W78Ecd1Du7Q_US=J7k0ew@mail.gmail.com>
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 16/10/2023 14:47, Nia Espera wrote:
-> Device tree files for OnePlus 9 and 9 Pro. Details of supported features
-> mentioned in the cover letter for this patch series, but for
-> accessibility also repeated here:
+On Mon, Oct 16, 2023 at 03:16:14PM +0200, Loic Poulain wrote:
+> On Mon, 16 Oct 2023 at 07:35, Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+> >
+> > On 15/10/2023 22:03, Luca Weiss wrote:
+> > > Add a compatible for the iris subnode in the WCNSS PIL.
+> > >
+> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > > ---
+> > >  Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+> > > index 45eb42bd3c2c..0e5e0b7a0610 100644
+> > > --- a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+> > > +++ b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+> > > @@ -111,6 +111,7 @@ properties:
+> > >            - qcom,wcn3660
+> > >            - qcom,wcn3660b
+> > >            - qcom,wcn3680
+> > > +          - qcom,wcn3680b
+> >
+> > Looks like this should be made as compatible with qcom,wcn3680 (so with
+> > fallback).
 > 
-> - USB OTG
-> - UFS
-> - Framebuffer display
-> - Touchscreen (for lemonade)
-> - Power & volume down keys
-> - Battery reading
-> - Modem, IPA, and remoteproc bringup
+> Yes, agree, let's do a regular fallback as there is nothing 'b'
+> specific in the driver:
+> `compatible = "qcom,wcn3680b", "qcom,wcn3680";`
 > 
-> Steps to get booting:
+> And yes, we should also have done that for qcom,wcn3660b...
 > 
 
-...
+I don't think this would have worked properly for qcom,wcn3660b:
 
-> +};
-> +
-> +&pmk8350_adc_tm {
-> +	status = "okay";
-> +
-> +	pm8350_msm_therm {
+ - It's not compatible with "qcom,wcn3660", because they have different
+   regulator voltage requirements. wcn3660(a?) needs vddpa with
+   2.9-3.0V, but wcn3660b needs 3.3V. That's why wcn3660b uses the
+   wcn3680_data in qcom_wcnss.iris.c. Otherwise if you would run an
+   older kernel that knows "qcom,wcn3660" but not "qcom,wcn3660b" it
+   would apply the wrong voltage.
 
-No, underscores are not allowed. Do not usptream junky DTS from
-downstream. Instead take upstream, good quality DTS and customize it.
-Why do we need to point the issue fixed long, long time ago?
+ - It's not compatible with "qcom,wcn3680" either because that is used
+   as indication if 802.11ac is supported (wcn3660b doesn't).
 
+The main question here is: What does the current "qcom,wcn3680"
+compatible actually represent? It's defined with vddpa = 3.3V in the
+driver, which would suggest that:
 
-> +		reg = <0x144>;
-> +		qcom,ratiometric;
-> +		qcom,hw-settle-time = <0xc8>;
-> +	};
-> +
-> +	pm8350_cam_flash_therm {
-> +		reg = <0x145>;
-> +		qcom,ratiometric;
-> +		qcom,hw-settle-time = <0xc8>;
-> +	};
-> +
-> +	pm8350_hot_pocket_therm {
-> +		reg = <0x146>;
-> +		qcom,ratiometric;
-> +		qcom,hw-settle-time = <0xc8>;
-> +	};
-> +
-> +	pm8350_wide_rfc_therm {
-> +		reg = <0x147>;
-> +		qcom,ratiometric;
-> +		qcom,hw-settle-time = <0xc8>;
-> +	};
-> +
-> +	pm8350_rear_tof_therm {
-> +		reg = <0x148>;
-> +		qcom,ratiometric;
-> +		qcom,hw-settle-time = <0xc8>;
-> +	};
-> +
-> +	pm8350b_usb_conn_therm {
-> +		reg = <0x347>;
-> +		qcom,ratiometric;
-> +		qcom,hw-settle-time = <0xc8>;
-> +	};
-> +
-> +	pm8350b_wl_chg_therm {
-> +		reg = <0x34b>;
-> +		qcom,ratiometric;
-> +		qcom,hw-settle-time = <0xc8>;
-> +	};
-> +
-> +	pmk8350_xo_therm {
-> +		reg = <0x44>;
-> +		qcom,ratiometric;
-> +		qcom,hw-settle-time = <0xc8>;
-> +	};
-> +};
-> +
-> +&pon_pwrkey {
-> +	status = "okay";
-> +};
-> +
-> +&pon_resin {
-> +	linux,code = <KEY_VOLUMEUP>;
-> +	status = "okay";
-> +};
-> +
-> +&qupv3_id_0 {
-> +	status = "okay";
-> +};
-> +
-> +&qupv3_id_1 {
-> +	status = "okay";
-> +};
-> +
-> +&qupv3_id_2 {
-> +	status = "okay";
-> +};
-> +
-> +&gpi_dma0 {
-> +	status = "okay";
-> +};
-> +
-> +&gpi_dma1 {
-> +	status = "okay";
-> +};
-> +
-> +&gpi_dma2 {
-> +	status = "okay";
-> +};
-> +
-> +&removed_mem {
+ 1. It's actually meant to represent WCN3680B, which needs 3.3V vddpa
+    like WCN3660B, or
 
-Hm, what is removed_mem?
+ 2. WCN3680(A?) has different requirements than WCN3660(A?) and also
+    needs 3.3V vddpa. But then what is the difference between
+    WCN3680(A?) and WCN3680B? Is there even a variant without ...B?
 
-> +	reg = <0x0 0xd8800000 0x0 0x8e00000>;
-> +};
-> +
-> +&tlmm {
-> +	gpio-reserved-ranges = <52 8>;
-> +
-> +	pcie0_default_state: pcie0-default-state {
+There is public documentation for WCN3660B and WCN3680B but the non-B
+variants are shrouded in mystery.
 
-It does not look like you tested the DTS against bindings. Please run
-`make dtbs_check W=1` (see
-Documentation/devicetree/bindings/writing-schema.rst or
-https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
-for instructions).
-
-> +		perst-pins {
-> +			pins = "gpio94";
-> +			function = "gpio";
-> +			drive-strength = <2>;
-> +			bias-pull-down;
-> +		};
-> +
-
-
-> diff --git a/arch/arm64/boot/dts/qcom/sm8350-oneplus-lemonade.dts b/arch/arm64/boot/dts/qcom/sm8350-oneplus-lemonade.dts
-> new file mode 100644
-> index 000000000000..f2c27894f3c4
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/sm8350-oneplus-lemonade.dts
-> @@ -0,0 +1,82 @@
-> +// SPDX-License-Identifier: BSD-3-Clause
-> +/*
-> + * Copyright (c) 2023 Igalia S.L.
-> + * Authors:
-> + *	Nia Espera <nespera@igalia.com>
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include "sm8350-oneplus-common.dtsi"
-> +
-> +/ {
-> +	model = "OnePlus 9";
-> +	compatible = "oneplus,lemonade", "qcom,sm8350";
-> +};
-> +
-> +&i2c4 {
-> +	touchscreen@48 {
-> +		compatible = "samsung,s6sy761";
-> +		reg = <0x48>;
-> +		interrupts-extended = <&tlmm 23 0x2008>;
-> +
-> +		vdd-supply = <&pm8350c_l8>;
-> +		avdd-supply = <&pm8350c_l13>;
-> +
-> +		pinctrl-names = "default", "sleep";
-> +		pinctrl-0 = <&tp_rst_active &tp_irq_active>;
-
-Multiple phandles <>, not one.
-
-> +		pinctrl-1 = <&tp_rst_suspend &tp_irq_suspend>;
-> +	};
-> +};
-> +
-> +&tlmm {
-> +	tp_rst_suspend: tp_rst_suspend {
-
-Ehh...
-> +		pins = "gpio22";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-pull-down;
-> +	};
-> +
-> +	tp_enable_2v8: tp_enable_2v8 {
-> +		pins = "gpio74";
-> +		function = "gpio";
-> +		drive-strength = <8>;
-> +		bias-pull-up;
-> +		output-high;
-> +	};
-> +
-> +	/* Modem antenna pins exclusive to lemonade */
-> +	rf_cable_ant1_active: rf_cable_ant1_active {
-> +		pins = "gpio27";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-pull-up;
-> +	};
-> +	rf_cable_ant2_active: rf_cable_ant2_active {
-> +		pins = "gpio92";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-pull-up;
-> +	};
-> +	rf_cable_ant3_active: rf_cable_ant3_active {
-> +		pins = "gpio44";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-pull-up;
-> +	};
-> +	rf_cable_ant7_active: rf_cable_ant7_active {
-> +		pins = "gpio155";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-pull-up;
-> +	};
-> +};
-> +
-> +&mpss {
-
-Wrong order. t is after m
-
-> +	pinctrl-names = "default";
-> +	pinctrl-1 = <&rf_cable_ant0_active
-
-Same problem.
-
-> +		     &rf_cable_ant1_active
-> +		     &rf_cable_ant2_active
-> +		     &rf_cable_ant3_active
-> +		     &rf_cable_ant7_active>;
-> +};
-> diff --git a/arch/arm64/boot/dts/qcom/sm8350-oneplus-lemonadep.dts b/arch/arm64/boot/dts/qcom/sm8350-oneplus-lemonadep.dts
-> new file mode 100644
-> index 000000000000..de8597d26091
-> --- /dev/null
-> +++ b/arch/arm64/boot/dts/qcom/sm8350-oneplus-lemonadep.dts
-> @@ -0,0 +1,37 @@
-> +// SPDX-License-Identifier: BSD-3-Clause
-> +/*
-> + * Copyright (c) 2023 Igalia S.L.
-> + * Authors:
-> + *	Nia Espera <nespera@igalia.com>
-> + */
-> +
-> +/dts-v1/;
-> +
-> +#include "sm8350-oneplus-common.dtsi"
-> +
-> +/ {
-> +	model = "OnePlus 9 Pro";
-> +	compatible = "oneplus,lemonadep", "qcom,sm8350";
-
-Missing bindings.
-
-> +};
-> +
-> +&tlmm {
-> +	tp_rst_suspend: tp_rst_suspend {
-
-No underscores in node names. This wasn't tested.
-
-It does not look like you tested the DTS against bindings. Please run
-`make dtbs_check W=1` (see
-Documentation/devicetree/bindings/writing-schema.rst or
-https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
-for instructions).
-
-
-
-Best regards,
-Krzysztof
-
+Thanks,
+Stephan
