@@ -2,77 +2,75 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5E6F2C41513
-	for <phone-devel@archiver.kernel.org>; Mon, 16 Oct 2023 05:36:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0009BCDB482
+	for <phone-devel@archiver.kernel.org>; Mon, 16 Oct 2023 05:44:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231796AbjJPFgu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 Oct 2023 01:36:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46014 "EHLO
+        id S230479AbjJPFoz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 Oct 2023 01:44:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231791AbjJPFg3 (ORCPT
+        with ESMTP id S231719AbjJPFoz (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 Oct 2023 01:36:29 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5154F1BF
-        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 22:36:08 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-32799639a2aso3741306f8f.3
-        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 22:36:08 -0700 (PDT)
+        Mon, 16 Oct 2023 01:44:55 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 817DEE6
+        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 22:44:52 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-405417465aaso40250095e9.1
+        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 22:44:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697434567; x=1698039367; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1697435091; x=1698039891; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=BXw/oDaarshYGHMpn+qeNvALBBUUaTRSSPJ77H56dZk=;
-        b=gjpetzHJQObZzI3R87d2y5aDt/H1/vsXliDG8mrmwII91rqy23GH1RkOXyGpVu/WO4
-         2qzcpWoKgfMnmIXwwKfdfffn6xHAjgzF1Lc7JFM/lMdMqCM6sN152tHtFJfnO4RW+O4P
-         nrZtMdAjayS4Ii8lJ+zsejZiCwTkv1jqlVIRqV+WSypg6L16hxQA5wX93UZ83xhY3OGG
-         Zm6/Lk7fFlYY+PO0+CDzgjvEhgUn828SssCAiWSJa5UFbKQfwXg9m4nM4aTpYAJ+r6pa
-         HcK162DjInNqDByr3uIEelr5gDJqkf6xjcz1rD4djy9+Lzx4OLtbckv4fnSKqwLMkBC/
-         7+OA==
+        bh=mkWEIIkYYh6kK7b6r8XR0r+lXaNIK83y5EKUw/G8onE=;
+        b=Y5exdubUoLThgSmog8meKT7YU6yRHu7DoQkThMapQ3UKPoUzjyPn4PaNOcqp9lDoyV
+         VTCC9UiL8oBhbUU0fB37g91jqLCNK5pcOpM7RMHsQvlaXX8C7RQDTcteZQsSKjfUVrO+
+         cY/l1txPtb5zpWlF2Qd7H2uaroSFJ7Vyzimd4LdNcNAFOmPdnx+ywUVJGMn3MIO3/3c4
+         oopXEm3zTx2V8FvKLDNEvrldNapZF79O44FVuzqk7ixzMsgDnOgQqo051FrUWKuasktT
+         9htnXCX6iCpywJqf2TmgQG668iX9KCLlr5zef5+zeXddVGiczTVYn7iMDZ1GuQQnF+em
+         XQSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697434567; x=1698039367;
+        d=1e100.net; s=20230601; t=1697435091; x=1698039891;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BXw/oDaarshYGHMpn+qeNvALBBUUaTRSSPJ77H56dZk=;
-        b=KT9YhNJ177Zc3wVrf5g2/5Tm34Px+immIzib5nHCKgaxNNm4vprhAg3UMnPz39r8+F
-         gbsD3EZfB/vMr3hUHXX3sR3gZJU16JCc8dBe3W6FIwnW5WTTmCn8cdFxAcPzYZki0NPw
-         lJ8ieqhGR7lIFHL6aOzku/tuInDVwhwqUKm3NbTs3tw47fJWy6WsMRCfu09YUdNsqwVO
-         4MA225ksw/uV9LJ3t9hu1SUSebJ3cBxCvQUZYcyJli6C50OTPKKq9aJWV8J1r3wh0Md7
-         nfqF2joAR6dzkqv7Aig61lkOiSFkYmk0t3OQVJpdpoSdBhcnLLf5H1mh6EUvEcIuryeu
-         KbWw==
-X-Gm-Message-State: AOJu0YwHoLaHcecxANHmYDSPjSXN819Rf8Hmmsd12DFXe9J2qdOy3A0A
-        G0k2QBBfPUK2iqxMISp6hcRaLw==
-X-Google-Smtp-Source: AGHT+IEhA2DijsDO+u9HE+Y6HSk44U2WeaHve8BQ8t0z3vIcPmejXE70lzmu5R7lupXxYRoA8fO9Dg==
-X-Received: by 2002:a5d:5101:0:b0:32d:8f0a:d2e7 with SMTP id s1-20020a5d5101000000b0032d8f0ad2e7mr8807425wrt.42.1697434566790;
-        Sun, 15 Oct 2023 22:36:06 -0700 (PDT)
+        bh=mkWEIIkYYh6kK7b6r8XR0r+lXaNIK83y5EKUw/G8onE=;
+        b=KCjA+5Y54jB0RzKXYcT9fjOjOPiGry5jUcIknIksJlNYFgYqThZZUoKYRuw6k4PVIA
+         HBaDIXg5w/KCm0B4hu7eEHneIz4BZDIbCZHHbWVDCKTWB0pobjWsm3C7oYvorQ8hIPQi
+         HjsG7/cOh4hXEn1Jd342RmAbFf1zbnBQw/0F/WBbBOzXqfmS3oXXRwDXbjiZ3tUnvj4h
+         a/gU2a6RIpd/hd0BCKurqcKguH73rVoiSp5e4yPgcUCoeG04MxD3/ZH438mEoLu4fYE9
+         8XJoOMcwVLKC6+nyxoN0jMcUmlE6heYncdT0R0SqvfGpmyDwbjVq6GKWKBulL5IRXHpl
+         zoYA==
+X-Gm-Message-State: AOJu0Yyy4ZfcxShpZnT10gteAHZzffSipAX16SCaq9gaqwCoDrP3sMvx
+        sf2OIHAqBWhaLZWEg7IG9gcUcg==
+X-Google-Smtp-Source: AGHT+IFudYotk2IRfX0ILFNPW5CCt+h9JJHQxieqqhUMqKXFEf/MhwPiMQsfeho+Lc4GufWbqiQAfg==
+X-Received: by 2002:a05:600c:3b14:b0:407:4944:76e5 with SMTP id m20-20020a05600c3b1400b00407494476e5mr17309244wms.22.1697435091027;
+        Sun, 15 Oct 2023 22:44:51 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.154])
-        by smtp.gmail.com with ESMTPSA id p18-20020a05600c431200b0040642a1df1csm6114712wme.25.2023.10.15.22.36.04
+        by smtp.gmail.com with ESMTPSA id z15-20020a05600c220f00b0040684abb623sm6124155wml.24.2023.10.15.22.44.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 15 Oct 2023 22:36:06 -0700 (PDT)
-Message-ID: <ce9fd7d6-2811-4dbc-9652-ccb7f5d9aa7c@linaro.org>
-Date:   Mon, 16 Oct 2023 07:36:04 +0200
+        Sun, 15 Oct 2023 22:44:50 -0700 (PDT)
+Message-ID: <0990c5fb-7e02-436d-8ebf-6e9565b324e3@linaro.org>
+Date:   Mon, 16 Oct 2023 07:44:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] wifi: wcn36xx: Add check for WCN3680B
+Subject: Re: [PATCH 1/2] dt-bindings: usb: add NXP PTN36502 Type-C redriver
+ bindings
 Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
- <20231015-fp3-wcnss-v1-3-1b311335e931@z3ntu.xyz>
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20231013-ptn36502-v1-0-98109a430efc@fairphone.com>
+ <20231013-ptn36502-v1-1-98109a430efc@fairphone.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -118,34 +116,23 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231015-fp3-wcnss-v1-3-1b311335e931@z3ntu.xyz>
+In-Reply-To: <20231013-ptn36502-v1-1-98109a430efc@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 15/10/2023 22:03, Luca Weiss wrote:
-> Add a check for the WCN3680B compatible next to the WCN3680 compatible.
+On 13/10/2023 16:24, Luca Weiss wrote:
+> Document bindings for this Type-C USB 3.1 Gen 1 and DisplayPort v1.2
+> combo redriver.
 > 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  drivers/net/wireless/ath/wcn36xx/main.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> The PTN36502 can also run in GPIO mode where it is configured
+> differently, without any I2C connection, but this is not supported yet.
 > 
-> diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-> index 2bd1163177f0..74b0b7074760 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/main.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-> @@ -1535,7 +1535,8 @@ static int wcn36xx_platform_get_resources(struct wcn36xx *wcn,
->  		if (of_device_is_compatible(iris_node, "qcom,wcn3660") ||
->  		    of_device_is_compatible(iris_node, "qcom,wcn3660b"))
->  			wcn->rf_id = RF_IRIS_WCN3660;
-> -		if (of_device_is_compatible(iris_node, "qcom,wcn3680"))
-> +		if (of_device_is_compatible(iris_node, "qcom,wcn3680") ||
-> +		    of_device_is_compatible(iris_node, "qcom,wcn3680b"))
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-Same comment
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
