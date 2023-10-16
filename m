@@ -2,138 +2,136 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0009BCDB482
-	for <phone-devel@archiver.kernel.org>; Mon, 16 Oct 2023 05:44:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89113C46CA1
+	for <phone-devel@archiver.kernel.org>; Mon, 16 Oct 2023 06:56:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230479AbjJPFoz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 Oct 2023 01:44:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53676 "EHLO
+        id S231584AbjJPG4i (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 Oct 2023 02:56:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231719AbjJPFoz (ORCPT
+        with ESMTP id S229636AbjJPG4h (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 Oct 2023 01:44:55 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 817DEE6
-        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 22:44:52 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-405417465aaso40250095e9.1
-        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 22:44:52 -0700 (PDT)
+        Mon, 16 Oct 2023 02:56:37 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB89BC5
+        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 23:56:34 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-53db1fbee70so6912327a12.2
+        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 23:56:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697435091; x=1698039891; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mkWEIIkYYh6kK7b6r8XR0r+lXaNIK83y5EKUw/G8onE=;
-        b=Y5exdubUoLThgSmog8meKT7YU6yRHu7DoQkThMapQ3UKPoUzjyPn4PaNOcqp9lDoyV
-         VTCC9UiL8oBhbUU0fB37g91jqLCNK5pcOpM7RMHsQvlaXX8C7RQDTcteZQsSKjfUVrO+
-         cY/l1txPtb5zpWlF2Qd7H2uaroSFJ7Vyzimd4LdNcNAFOmPdnx+ywUVJGMn3MIO3/3c4
-         oopXEm3zTx2V8FvKLDNEvrldNapZF79O44FVuzqk7ixzMsgDnOgQqo051FrUWKuasktT
-         9htnXCX6iCpywJqf2TmgQG668iX9KCLlr5zef5+zeXddVGiczTVYn7iMDZ1GuQQnF+em
-         XQSQ==
+        d=fairphone.com; s=fair; t=1697439393; x=1698044193; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mIKLA6FpZ/tBtyGW8aEqqSCm4XNwQ5xgOuHWuH9vZ2k=;
+        b=dgRfnslNP51vNXEBXGgtzViY1hDiPbXcKH64h7XpGd2FwvdfiieKiXj2Un7gGdAqaS
+         vkf+PE4FVGGosfPy5hch0EvkIlg3kyiDxEJGXGcELmoVjLGT1hQECaV3S7l7EqPs7zOm
+         WcDN2Sp5JxEOVuNkGPGs6EKj36ZvUwwzl7Bsh1qMMPrNhmakFTa882lmPmFSiRYK340y
+         45GsM8AeebGFyl9Jduy876Nsox2zOZvTRAomequZ49LdZxyErIrbbxlndnUlN5h/gAfU
+         rZoyD3vRjFlJNJtFFxDyeLMF2BamnuReJ7LskSGhVLkIRx52MuxyUC6EIA6QTUy0NAzh
+         5csA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697435091; x=1698039891;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mkWEIIkYYh6kK7b6r8XR0r+lXaNIK83y5EKUw/G8onE=;
-        b=KCjA+5Y54jB0RzKXYcT9fjOjOPiGry5jUcIknIksJlNYFgYqThZZUoKYRuw6k4PVIA
-         HBaDIXg5w/KCm0B4hu7eEHneIz4BZDIbCZHHbWVDCKTWB0pobjWsm3C7oYvorQ8hIPQi
-         HjsG7/cOh4hXEn1Jd342RmAbFf1zbnBQw/0F/WBbBOzXqfmS3oXXRwDXbjiZ3tUnvj4h
-         a/gU2a6RIpd/hd0BCKurqcKguH73rVoiSp5e4yPgcUCoeG04MxD3/ZH438mEoLu4fYE9
-         8XJoOMcwVLKC6+nyxoN0jMcUmlE6heYncdT0R0SqvfGpmyDwbjVq6GKWKBulL5IRXHpl
-         zoYA==
-X-Gm-Message-State: AOJu0Yyy4ZfcxShpZnT10gteAHZzffSipAX16SCaq9gaqwCoDrP3sMvx
-        sf2OIHAqBWhaLZWEg7IG9gcUcg==
-X-Google-Smtp-Source: AGHT+IFudYotk2IRfX0ILFNPW5CCt+h9JJHQxieqqhUMqKXFEf/MhwPiMQsfeho+Lc4GufWbqiQAfg==
-X-Received: by 2002:a05:600c:3b14:b0:407:4944:76e5 with SMTP id m20-20020a05600c3b1400b00407494476e5mr17309244wms.22.1697435091027;
-        Sun, 15 Oct 2023 22:44:51 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.154])
-        by smtp.gmail.com with ESMTPSA id z15-20020a05600c220f00b0040684abb623sm6124155wml.24.2023.10.15.22.44.48
+        d=1e100.net; s=20230601; t=1697439393; x=1698044193;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mIKLA6FpZ/tBtyGW8aEqqSCm4XNwQ5xgOuHWuH9vZ2k=;
+        b=EosOPhkoblyS+UkSVoTG9V48eY0cg9Pnp/I+ZFAweNExMU+EeRxu6wLjONKnd6bA/k
+         zFIfbBWeRHOZdmxjWDasoDf/2iY3iGaUDssR45Cmt4KWrKXK+pQH1iZXwtSPwqcLp5uH
+         vGSk4vp0uKj8qjyiPZrRh0GBQNnalPBuqV24X2R9+qwMONGb/32Hbq75N7h6KKUnbQgk
+         wZRyyAkOLIphhoic+uzzN0uyq6Q979OJMUBNyciJfMDaECDqMs2YnlQVsC+jB+DcBoHz
+         6klLoRsJwJbWJUBwRCtICBYtdN00DhqlY2N1nhnHmJCaIg2pgjR8xuzm/bgoyxa+zE2G
+         jYNA==
+X-Gm-Message-State: AOJu0YwXVNJ1CTO6WSj5zxeN3uUEKfrTJJ2VdmY2vDmmPSWetEKo+oae
+        7SyIxdyMxGB2W8VQwBfkoG/17RA3r5a8r3UXQ/rxxQ==
+X-Google-Smtp-Source: AGHT+IEso5kuLZbg9p8FT8lVYXeK62hYjaBJ2yzw2VF1TjF8zIDcesabpryDe3mRe4T/YBqRFzY95Q==
+X-Received: by 2002:a17:907:3da5:b0:9bd:d961:ddea with SMTP id he37-20020a1709073da500b009bdd961ddeamr6901803ejc.45.1697439393118;
+        Sun, 15 Oct 2023 23:56:33 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id e3-20020a1709062c0300b0099bcf1c07c6sm3389234ejh.138.2023.10.15.23.56.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 15 Oct 2023 22:44:50 -0700 (PDT)
-Message-ID: <0990c5fb-7e02-436d-8ebf-6e9565b324e3@linaro.org>
-Date:   Mon, 16 Oct 2023 07:44:48 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: usb: add NXP PTN36502 Type-C redriver
- bindings
-Content-Language: en-US
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20231013-ptn36502-v1-0-98109a430efc@fairphone.com>
- <20231013-ptn36502-v1-1-98109a430efc@fairphone.com>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231013-ptn36502-v1-1-98109a430efc@fairphone.com>
+        Sun, 15 Oct 2023 23:56:32 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date:   Mon, 16 Oct 2023 08:56:31 +0200
+Message-Id: <CW9O1NB1NZHP.34BW2ZGP1WV8C@fairphone.com>
+Subject: Re: [PATCH] soc: qcom: pmic_glink_altmode: Print error when retimer
+ setup fails
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Bjorn Andersson" <andersson@kernel.org>
+Cc:     "Andy Gross" <agross@kernel.org>,
+        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.15.2
+References: <20231013-glink-altmode-ret-v1-1-77941537a35b@fairphone.com>
+ <6fw7eho6rapvlghujche4k3pm5mx7a7ojx6yyyreq6dhzjfwlt@ggqoxgirpcnr>
+In-Reply-To: <6fw7eho6rapvlghujche4k3pm5mx7a7ojx6yyyreq6dhzjfwlt@ggqoxgirpcnr>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 13/10/2023 16:24, Luca Weiss wrote:
-> Document bindings for this Type-C USB 3.1 Gen 1 and DisplayPort v1.2
-> combo redriver.
-> 
-> The PTN36502 can also run in GPIO mode where it is configured
-> differently, without any I2C connection, but this is not supported yet.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+On Mon Oct 16, 2023 at 5:18 AM CEST, Bjorn Andersson wrote:
+> On Fri, Oct 13, 2023 at 03:56:40PM +0200, Luca Weiss wrote:
+> > It can be useful to know with which return value the retimer_set call
+> > failed, so include this info in the dev_err print.
+> >=20
+>
+> Is this useful during development, or during normal execution etc. How
+> about using kretprobe or similar tools?
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Hi Bjorn,
 
-Best regards,
-Krzysztof
+IIRC I encountered this during development of my retimer driver, where
+the op in that driver failed for some reason and it was very useful to
+get the return value to debug that.
+
+And sure, I guess kretprobe might be also useful here but I think it's
+very common to include the return value in the error message when
+something fails, no?
+
+> If you insist, could you please make sure that the style matches across
+> the various typec_*_set() calls in the driver?
+
+Do you mean adding the return value to the other dev_err prints after
+typec_*_set() calls also?
+
+Regards
+Luca
+
+>
+> Regards,
+> Bjorn
+>
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> >  drivers/soc/qcom/pmic_glink_altmode.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/p=
+mic_glink_altmode.c
+> > index 9569d999391d..136713e1155e 100644
+> > --- a/drivers/soc/qcom/pmic_glink_altmode.c
+> > +++ b/drivers/soc/qcom/pmic_glink_altmode.c
+> > @@ -168,7 +168,7 @@ static void pmic_glink_altmode_enable_dp(struct pmi=
+c_glink_altmode *altmode,
+> > =20
+> >  	ret =3D typec_retimer_set(port->typec_retimer, &port->retimer_state);
+> >  	if (ret)
+> > -		dev_err(altmode->dev, "failed to setup retimer to DP\n");
+> > +		dev_err(altmode->dev, "failed to setup retimer to DP: %d\n", ret);
+> >  }
+> > =20
+> >  static void pmic_glink_altmode_enable_usb(struct pmic_glink_altmode *a=
+ltmode,
+> >=20
+> > ---
+> > base-commit: e3b18f7200f45d66f7141136c25554ac1e82009b
+> > change-id: 20231013-glink-altmode-ret-3911e6c1eab5
+> >=20
+> > Best regards,
+> > --=20
+> > Luca Weiss <luca.weiss@fairphone.com>
+> >=20
 
