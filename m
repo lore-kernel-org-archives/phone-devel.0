@@ -2,139 +2,151 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E81DCDB465
-	for <phone-devel@archiver.kernel.org>; Mon, 16 Oct 2023 07:37:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A58D5CDB465
+	for <phone-devel@archiver.kernel.org>; Mon, 16 Oct 2023 11:06:22 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232266AbjJPHhz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 Oct 2023 03:37:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42900 "EHLO
+        id S231971AbjJPLGW (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 Oct 2023 07:06:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232210AbjJPHhx (ORCPT
+        with ESMTP id S231321AbjJPLGV (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 Oct 2023 03:37:53 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2452AD;
-        Mon, 16 Oct 2023 00:37:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1697441859; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=Q7m8ITfBvAJ8v4ng1TMJI2xyAn+ApY7whJVrGseOfx/a2FcDvfWvOyaUrl7GGPWDZY
-    Ocu+VCLHA5WSQY+u4YVCONfL2awR6hbIEhFVk/lM9rbgynOHCode2ebRU5ubD6eVTIDy
-    TDA46/rncawma8Yd/OG0bZ5cmx2I3Dx+JvXknEp0WREb4jqdBc5w5yQi7Rq7yoW3yaH8
-    0zC6HHGdNMWWfMa1JEaojMNI3w3QnDzOESQ/Vchqp8BIq5K0jy4TIiGdAsB1lPkbA0fh
-    GxrYxebkFZiQ/9Y4QNn6lOtJ+LdDY5rFIHMwqwhddxiHvlt2Y0s6gm6GJhqvsJx5tpDb
-    SGBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1697441859;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=AlaJj77DqQEREN4W2oqNqqXui1B4mTuRTUEpEAgS0r8=;
-    b=fj1zC7R6C6s9VINtX4t1g4g1GwL6TIeWjJ+B2C14xlKa63pjJPxR9bE37k3zIa11PX
-    4B9Kab6uhjgxb4wRLgYZGhFXf1Xd+R6lZk9c7erDb1OY0uigUVnyA6PuabDmgNrr/kC5
-    KyV81YbVg5K2F5eQE2punq8HVTkg3KpAoLE1MDDAipzgoMBgXjd0Tebl7GMRs1DJ6JCD
-    0C7oTVbwnU/HnsEb1dNM5hwE9rvMPDp817F3mKPW0eDmr5hwPHb5EFg2vgnHRfF7SMWo
-    Lex3rWRw7wNNEjFzFEIi1TJ7ttJlzeCkNUSDz+oXXc0fnFAX0RUbuXSU3EFHQhYaXR4a
-    PW0w==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1697441859;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=AlaJj77DqQEREN4W2oqNqqXui1B4mTuRTUEpEAgS0r8=;
-    b=GATbcje9ZIPvGG9aoyTPYw9TbkgmY2rJM+D/Et2SeZDZob6MvZ+LaStP83a57t1VI0
-    +4510Ibba1zZxYZgPpCjqnXv+1n3uBfc5MaaCjThO8lWna/npO2MgfYhpPgPA5hiRBiY
-    8Z604Nm65fJK7wiRqTqxkkNrSMhQb94WJvInAAcCwvyqV7Ag/JoCKzOMhIgTYDslEzN/
-    ctHF4N5YV5vKnkz28PBOa4Q2R2HybSU1haWDoonGHbYeJLcIl4m5SWE8pmf6/ABGjKy8
-    KlYMfNt+Ws/ga0GYHr5WJzJ5FFE3x8MC3R+Up+88nBzam/qFWA9g5CWoJNh3JRwT8lWu
-    CF/Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1697441859;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=AlaJj77DqQEREN4W2oqNqqXui1B4mTuRTUEpEAgS0r8=;
-    b=5CUdjxelU8c93FFsQRaUtMK6Iyi5VN7qlbQyuc9UcIzmcjkUw+Hc/jaM0Ecs+TkH5D
-    QCWq+1Fihukfm0oX+sCQ==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA+p3h"
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.8.2 DYNA|AUTH)
-    with ESMTPSA id R04c57z9G7bcla6
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Mon, 16 Oct 2023 09:37:38 +0200 (CEST)
-Date:   Mon, 16 Oct 2023 09:37:31 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Luca Weiss <luca@z3ntu.xyz>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Mon, 16 Oct 2023 07:06:21 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EADC295
+        for <phone-devel@vger.kernel.org>; Mon, 16 Oct 2023 04:06:18 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-507adc3381cso1310970e87.3
+        for <phone-devel@vger.kernel.org>; Mon, 16 Oct 2023 04:06:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697454377; x=1698059177; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LXEVQS6bjiXAKpDplUeSAZwBvte/3ftCu9KDPLrWwj0=;
+        b=hjMQKLVCSNc4Z/e1tRujtYEocZEJ4C6FPbrlXV7pniRimHFQO/+Di7bmXM+q84CMZC
+         ICLLJ1Q45GmCpCpmbDuBMh/dDZt2Ncfo6g27lcJDjSYdA+2xaCqo+3w/4OJqZVY+g0B6
+         j/qiIvRs9s48QLGOwcEsKNxZuJ5VzJ8X+ewZCfVWWBbqEFigiUv+gKsObK/sFLGxF1/f
+         8VUHgLB/cutHSHCtPP4Mw3wUXGkLntKPtp8mOVGHhxwiBwEZQmMhPqHMGj1zeZsJnjPy
+         9ccJ6A/1U8UyE4PtFTjsFcKwQeg/L0NTroPjDFQ3sZP8nA8azUW3CvHaPPnDhINIKkLo
+         Si2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697454377; x=1698059177;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LXEVQS6bjiXAKpDplUeSAZwBvte/3ftCu9KDPLrWwj0=;
+        b=Fdlkl9ZysAONg1v85VhPnzx7Du2xMpXqM/Um1x8FpNH+70v7E3tA87rvQ/T28OifL3
+         FkslVw/8dVLGvWfmQA8ualpJZjCS1xqerOtYHz7ikWh6UW9z6dEAwzL7IHJDfAfujVFi
+         usNHTO6iwQnuIdcbV2Z5JY+GUF1Xb5tDZNuH4IhrCcI/xLtLLArvQ6s7R1Dmrc6XfDLc
+         TJJADb5DrTjGCEmp6bM5bEgVC02Hf6I4fJFgcUGiPg5lM7pJw3bsblh2XGJgzekxDF0V
+         hxLKODg5Rph511QsXCD+d1Z5Aby6r63bQLtjc2D4yB0a98uIZQi4c+snxqThz+M/66sn
+         V+8Q==
+X-Gm-Message-State: AOJu0YwUdFhGmSEISDIwe7pPdqhwtiOvNbX+8N95yzEaC8vO4waiGpPp
+        Qz8XtL6ldhxgzRMeRaPKzuzrwE7Ib88HXOmKO5Ce/A==
+X-Google-Smtp-Source: AGHT+IEYyBsPUxOh4md1Gs8glUia+ByhRldm5segshEthvDKHCAiPDGq5a3hP8xxDBKzG69zoztWBw==
+X-Received: by 2002:a19:ac0b:0:b0:507:a40e:d8bf with SMTP id g11-20020a19ac0b000000b00507a40ed8bfmr4130555lfc.7.1697454377148;
+        Mon, 16 Oct 2023 04:06:17 -0700 (PDT)
+Received: from [192.168.1.15] (host-2-99-112-229.as13285.net. [2.99.112.229])
+        by smtp.gmail.com with ESMTPSA id j11-20020a05600c190b00b0040646a708dasm6843691wmq.15.2023.10.16.04.06.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Oct 2023 04:06:16 -0700 (PDT)
+Message-ID: <77aa8c48-42da-46eb-92c1-5950c9bdfec7@linaro.org>
+Date:   Mon, 16 Oct 2023 12:06:15 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/7] dt-bindings: input: syna,rmi4: document
+ syna,pdt-fallback-desc
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Vincent Huang <vincent.huang@tw.synaptics.com>
+Cc:     methanal <baclofen@tuta.io>, linux-input@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] arm64: dts: qcom: msm8953: Set initial address for
- memory
-Message-ID: <ZSzoO9QhwVmL8jLk@gerhold.net>
-References: <20231015-msm8953-misc-fixes-v1-0-b800deca9e46@z3ntu.xyz>
- <20231015-msm8953-misc-fixes-v1-1-b800deca9e46@z3ntu.xyz>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231015-msm8953-misc-fixes-v1-1-b800deca9e46@z3ntu.xyz>
+        Conor Dooley <conor+dt@kernel.org>
+References: <20230929-caleb-rmi4-quirks-v2-0-b227ac498d88@linaro.org>
+ <20230929-caleb-rmi4-quirks-v2-1-b227ac498d88@linaro.org>
+ <42709208-6f3b-4ae0-a7bc-f23be6370171@linaro.org>
+From:   Caleb Connolly <caleb.connolly@linaro.org>
+In-Reply-To: <42709208-6f3b-4ae0-a7bc-f23be6370171@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Oct 15, 2023 at 10:26:01PM +0200, Luca Weiss wrote:
-> The dtbs_check really doesn't like having memory without reg set.
-> Address this by setting it to 0x10000000 which seems to be the value
-> filled in by the bootloader.
+
+
+On 16/10/2023 06:31, Krzysztof Kozlowski wrote:
+> On 15/10/2023 23:11, Caleb Connolly wrote:
+>> This new property allows devices to specify some register values which
+>> are missing on units with third party replacement displays. These
+>> displays use unofficial touch ICs which only implement a subset of the
+>> RMI4 specification.
+>>
+>> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+>> ---
+>> To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+>> To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+>> To: Rob Herring <robh+dt@kernel.org>
+>> To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+>> To: Conor Dooley <conor+dt@kernel.org>
+>> Cc: devicetree@vger.kernel.org
+>> ---
+>>  Documentation/devicetree/bindings/input/syna,rmi4.yaml | 15 +++++++++++++++
+>>  1 file changed, 15 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/input/syna,rmi4.yaml b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
+>> index 4d4e1a8e36be..1f4a2179e4d3 100644
+>> --- a/Documentation/devicetree/bindings/input/syna,rmi4.yaml
+>> +++ b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
+>> @@ -49,6 +49,21 @@ properties:
+>>      description:
+>>        Delay to wait after powering on the device.
+>>  
+>> +  syna,pdt-fallback-desc:
+>> +    $ref: /schemas/types.yaml#/definitions/uint8-matrix
+>> +    description:
+>> +      An array of pairs of function number and version. These are used
+> 
+> You nicely explained what is expected to be here, but what is the
+> purpose of adding this property? Please add it to the description.
+
+This property is to provide some "expected" register values to handle
+hardware where registers that should have values are empty (MCUs running
+dodgy firmware pretending to be an rmi4 capable controller).
+> 
+>> +      on some devices with replacement displays that use unofficial touch
+>> +      controllers. These controllers do report the properties of their Page
+>> +      Descriptor Table (PDT) entries, but leave the function_number and
+>> +      function_version registers blank. These values should match exactly
+>> +      the 5th and 4th bytes of each PDT entry from the original display's
+>> +      touch controller.
+>> +    items:
+>> +      items:
+>> +        - description: The 5th byte of the PDT entry
+>> +        - description: The 4th byte of the PDT entry
+> 
+> Missing constraints on outer level:
+>     maxItems: 1
+
+There can be (technically) an arbitrary number of pairs here, it should
+align with the number of Page Descriptor Tables supported by the device.
+This is basically meant to done on a best-effort basis. The OnePlus 6
+has 3 pairs here.
+
+I'll give another pass at the description and see if I can explain this
+better heh.
+> 
+> 
+> 
+> Best regards,
+> Krzysztof
 > 
 
-Looks like MSM8953 has the same RAM setup as MSM8916, where the base
-address depends on the amount of RAM you have:
-
-  <= 2.00 GiB RAM: 0x80000000
-   = 3.00 GiB RAM: 0x40000000
-   = 3.75 GiB RAM: 0x10000000
- (more does not fit into the 32-bit physical address space)
-
-So, 0x10000000 will only end up being used on devices with 3.75 GiB RAM.
-
-Can you add a note about this in the commit message maybe? We don't know
-in advance which base address a device will use, so I think it's fine to
-hardcode one of the choices by default. msm8916.dtsi does the same.
-
-Thanks,
-Stephan
-
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  arch/arm64/boot/dts/qcom/msm8953.dtsi | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> index e7de7632669a..a3ba24ca599b 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> @@ -174,10 +174,10 @@ scm: scm {
->  		};
->  	};
->  
-> -	memory {
-> +	memory@10000000 {
->  		device_type = "memory";
->  		/* We expect the bootloader to fill in the reg */
-> -		reg = <0 0 0 0>;
-> +		reg = <0 0x10000000 0 0>;
->  	};
->  
->  	pmu {
-> 
-> -- 
-> 2.42.0
-> 
+-- 
+// Caleb (they/them)
