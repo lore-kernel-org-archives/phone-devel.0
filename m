@@ -2,122 +2,112 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C8C9BCDB465
-	for <phone-devel@archiver.kernel.org>; Mon, 16 Oct 2023 13:53:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 271A6CDB465
+	for <phone-devel@archiver.kernel.org>; Mon, 16 Oct 2023 14:23:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232380AbjJPNxs (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 Oct 2023 09:53:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54386 "EHLO
+        id S233454AbjJPOXB (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 Oct 2023 10:23:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232259AbjJPNxs (ORCPT
+        with ESMTP id S233445AbjJPOXA (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 Oct 2023 09:53:48 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45F1AEB
-        for <phone-devel@vger.kernel.org>; Mon, 16 Oct 2023 06:53:46 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-53e751aeb3cso3418050a12.2
-        for <phone-devel@vger.kernel.org>; Mon, 16 Oct 2023 06:53:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1697464425; x=1698069225; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vOvRSIBCKDO/EoG06SNXpskpBSv5uHfI6z7Qbijhh84=;
-        b=ZGfXHDIEVPsrSdi6s+cmpqGpouYUKTMnHCS0XjgyskuNwWucIDjhMF7sJdA650u0aF
-         F6LffFSACGmJSI0ChVpnRRmsvDqaSedds+h4Pq2bhnEXceocq6j1uKfCv5VZk5GxK8LQ
-         QGlBpWwk0qLq3vPnL4ILlwUdvrCcYNkzABzYzs1HEiKVKwYFehlXmDnkLhGVla1K6qq/
-         5Dpoa8QwjjfdotnmCzsEhOl7rplTtfTMuEPnT6YtISlME/pEkSdm5bxTXeoB7YeiOgHN
-         TGDg77JFPEL7UTIhgBoRUTcVz+P0KCmntScaYclCQVXVL3ZqPWrlU5GndpHBd/CXgr9e
-         Hq7A==
+        Mon, 16 Oct 2023 10:23:00 -0400
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 930209B;
+        Mon, 16 Oct 2023 07:22:58 -0700 (PDT)
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6c63117a659so2758371a34.0;
+        Mon, 16 Oct 2023 07:22:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697464425; x=1698069225;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=vOvRSIBCKDO/EoG06SNXpskpBSv5uHfI6z7Qbijhh84=;
-        b=bFg//cekj3N7rqdTlDCeulNO/U12n/pEMVLKyFkav4RfcZSSKE2tKHauplZiLl3rwA
-         tmc3rqjXtP5RRR3MOUSiRlJjW6kbdijld3b2Afj7IS+ASrczp+OYRq8VHd1DVUY9WQ6f
-         OHU6fTmsvuv33jeMyeDO9oiF26Q3dxn1mJySzJ+l10RRz3JkS5Yl0RSJog9zfA+GaXM8
-         uuu0Rbs2u6uud7mY4y1wpAptyVjVoG5igaRzKTeP3Po2KITVVO4gmzB0FQZLyaJqWAc7
-         SfSnU0/+sakL8obx/GfRBrr01UHiVE+fuo0k2z94Yi6nANuKD+DtVaE/EXDyL7LDVWB7
-         IoMQ==
-X-Gm-Message-State: AOJu0YzCu4iOQnqiblIOVceXaTNyJWo4qTKv5wfQ8ZXluvrl8F/ySwss
-        DnyFTSazQFymwCZheeb3XQYfMQ==
-X-Google-Smtp-Source: AGHT+IHoxPW8PwdZUvfviYS7QdbDikx9yohEhHLS/XOTq3T9uH87ZFiSCdLJimiupbVDzkcfzqrchA==
-X-Received: by 2002:aa7:c549:0:b0:525:6e47:10f6 with SMTP id s9-20020aa7c549000000b005256e4710f6mr29895269edr.22.1697464424717;
-        Mon, 16 Oct 2023 06:53:44 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id q18-20020a50c352000000b0053e9352643csm3015296edb.62.2023.10.16.06.53.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Oct 2023 06:53:43 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 16 Oct 2023 15:53:42 +0200
-Message-Id: <CW9WX2BFW95K.2PHV8UU363BFE@fairphone.com>
-Cc:     <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <phone-devel@vger.kernel.org>,
-        "Rob" <Me@orbit.sh>, "Clayton Craft" <clayton@igalia.com>,
-        <~postmarketos/upstreaming@lists.sr.ht>
-Subject: Re: [PATCH 1/5] iio: adc: add smb139x bindings
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Nia Espera" <nespera@igalia.com>,
-        "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
-        "Jonathan Cameron" <jic23@kernel.org>,
-        "Lars-Peter Clausen" <lars@metafoo.de>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>,
-        "Kees Cook" <keescook@chromium.org>,
-        "Tony Luck" <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-X-Mailer: aerc 0.15.2
-References: <20231016-nia-sm8350-for-upstream-v1-0-bb557a0af2e9@igalia.com>
- <20231016-nia-sm8350-for-upstream-v1-1-bb557a0af2e9@igalia.com>
-In-Reply-To: <20231016-nia-sm8350-for-upstream-v1-1-bb557a0af2e9@igalia.com>
+        d=1e100.net; s=20230601; t=1697466178; x=1698070978;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q24oMIepkEQYDflYYzSU9nnBh24OKjrQkkccReE3wAU=;
+        b=DXjajUMHoZWwF0C+qWF5oA/N8elWgHF37Ct4haK7L/qfFWFMdZE90XPFHcGEWJadjb
+         Zk18oFv8XGeEQ6Kp/ObTxSBIOCPbZqYLX+MI0RJYVqRv2/cQXKTRjl7G/X1q2DFc1Xk1
+         nU1lWNqm4XwecOJmnLLrpExHxULHLtFOE15BbPoZxOSv09pBUDORxH9bDkhyix1Uh1BQ
+         QA3AA3uwefEbF8UMUXls914FGOZXf5GMRIV+7cZI2g+R4UkJEf1NyGjGZtS/cAug8pVb
+         PvUxI039a/4hDCa6Pr2B61rNh1DJ7xuHWtjO490i8psg0sk1yd7fwSkgIBBsqsQSEc4S
+         aGEg==
+X-Gm-Message-State: AOJu0YwCpigipwrHPPrxNeUwyaNGQFom53yaJT0wsZgp/ye/QbXBGOk0
+        yyVeZ9jyuPMLTb9XhqPOgNCIHR9XJA==
+X-Google-Smtp-Source: AGHT+IHDatH7iMrTU8/OQz9KXoChk5Xj9BDaKzNXuXVEEK0FA+cnAD8A1PfPH7soW8ENHm0VrAy/fA==
+X-Received: by 2002:a05:6830:3:b0:6b8:7d12:423d with SMTP id c3-20020a056830000300b006b87d12423dmr32663851otp.18.1697466177828;
+        Mon, 16 Oct 2023 07:22:57 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id a8-20020a9d74c8000000b006b753685cc5sm1704647otl.79.2023.10.16.07.22.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Oct 2023 07:22:57 -0700 (PDT)
+Received: (nullmailer pid 2766873 invoked by uid 1000);
+        Mon, 16 Oct 2023 14:22:56 -0000
+Date:   Mon, 16 Oct 2023 09:22:56 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Luca Weiss <luca.weiss@fairphone.com>
+Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/3] dt-bindings: usb: fsa4480: Add data-lanes property
+ to endpoint
+Message-ID: <20231016142256.GA2754674-robh@kernel.org>
+References: <20231013-fsa4480-swap-v1-0-b877f62046cc@fairphone.com>
+ <20231013-fsa4480-swap-v1-1-b877f62046cc@fairphone.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231013-fsa4480-swap-v1-1-b877f62046cc@fairphone.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon Oct 16, 2023 at 2:47 PM CEST, Nia Espera wrote:
-> Bindings for a charger controller chip found on sm8350
->
-> Signed-off-by: Nia Espera <nespera@igalia.com>
+On Fri, Oct 13, 2023 at 01:38:05PM +0200, Luca Weiss wrote:
+> Allow specifying data-lanes to reverse the SBU muxing orientation where
+> necessary by the hardware design.
+
+What situation in the hardware design makes this necessary. Please 
+describe the problem.
+
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->  include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->
-> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h b/include/d=
-t-bindings/iio/qcom,spmi-adc7-smb139x.h
-> new file mode 100644
-> index 000000000000..fe163cd8bbdd
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-> + */
+>  .../devicetree/bindings/usb/fcs,fsa4480.yaml       | 29 +++++++++++++++++++++-
+>  1 file changed, 28 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml b/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
+> index f6e7a5c1ff0b..86f6d633c2fb 100644
+> --- a/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
+> +++ b/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
+> @@ -32,10 +32,37 @@ properties:
+>      type: boolean
+>  
+>    port:
+> -    $ref: /schemas/graph.yaml#/properties/port
+> +    $ref: /schemas/graph.yaml#/$defs/port-base
+>      description:
+>        A port node to link the FSA4480 to a TypeC controller for the purpose of
+>        handling altmode muxing and orientation switching.
+> +    unevaluatedProperties: false
 > +
-> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-> +#define _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
+> +    properties:
+> +      endpoint:
+> +        $ref: /schemas/graph.yaml#/$defs/endpoint-base
+> +        unevaluatedProperties: false
 > +
-> +#define SMB139x_1_ADC7_SMB_TEMP			(SMB139x_1_SID << 8 | 0x06)
-> +#define SMB139x_1_ADC7_ICHG_SMB			(SMB139x_1_SID << 8 | 0x18)
-> +#define SMB139x_1_ADC7_IIN_SMB			(SMB139x_1_SID << 8 | 0x19)
-> +
-> +#define SMB139x_2_ADC7_SMB_TEMP			(SMB139x_2_SID << 8 | 0x06)
-> +#define SMB139x_2_ADC7_ICHG_SMB			(SMB139x_2_SID << 8 | 0x18)
-> +#define SMB139x_2_ADC7_IIN_SMB			(SMB139x_2_SID << 8 | 0x19)
+> +        properties:
+> +          data-lanes:
+> +            $ref: /schemas/types.yaml#/definitions/uint32-array
+> +            description:
+> +              Specifies how the AUX+/- lines are connected to SBU1/2.
 
-I think you should expand qcom,spmi-vadc.h with the 0x06, 0x18 and 0x19,
-in the ADC7 defines somewhere below ADC7_REF_GND.
+Doesn't this depend on the connector orientation? Or it is both that and 
+the lines can be swapped on the PCB?
 
-Regards
-Luca
+Seems like an abuse of data-lanes which already has a definition which 
+is not about swapping + and - differential lanes.
 
-> +
-> +#endif
-
+Rob
