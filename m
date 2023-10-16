@@ -2,74 +2,72 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 49D24C41513
-	for <phone-devel@archiver.kernel.org>; Mon, 16 Oct 2023 05:32:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DBEC8C41513
+	for <phone-devel@archiver.kernel.org>; Mon, 16 Oct 2023 05:32:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231908AbjJPFca (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 16 Oct 2023 01:32:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49492 "EHLO
+        id S231135AbjJPFcu (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 16 Oct 2023 01:32:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231605AbjJPFcQ (ORCPT
+        with ESMTP id S231587AbjJPFct (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 16 Oct 2023 01:32:16 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAAE0170C
-        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 22:31:45 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2c501bd6ff1so41522451fa.3
-        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 22:31:45 -0700 (PDT)
+        Mon, 16 Oct 2023 01:32:49 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05D2BF2
+        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 22:32:47 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-405361bb9f7so41724825e9.2
+        for <phone-devel@vger.kernel.org>; Sun, 15 Oct 2023 22:32:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697434304; x=1698039104; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1697434365; x=1698039165; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=5LzrbzCEzpt14vbBoE9s87dnrFaWt8dpWizanL2QoQg=;
-        b=Yug0XPa2kDjj4g1OmvpwZQK1Iof5kDe/0Bgs3dlSRnG9x8diuxEG42PTx/EdxFaQxZ
-         mXWWvnphrQ4C9jqHWeHhKQouMO2EteFYu6UrinfhW2bzIH75ftXRHGMFcNrBBkw2W/aj
-         5a9bbH0E0sr1NzKSCCd7RODA+ODR7jO7JVTWf1JGBSNQTwW+2Tr0YKx+KkUx9zDomgag
-         TBE0IbgKkgnmKoJc59z9O7Y7Ci42kll/MHoOHTmrkZqPVvyu7GHuzuygOPK9aorX+8lQ
-         76ndNQkgrY3JY7oznPZlogoQcJE+IXEudD7SDeb40HkRI5NuCLSwOMyoDCH2dxfjujqH
-         m37A==
+        bh=cahZBYlxb+nHcg00wtQSR4/273TLxW5YHWH0Zq0a+9k=;
+        b=bC45lCxGEG9ymuPX2oiVUgCiTtGHuyYawQeLZOmWZ0OiQh2s5y0pYFenfTo/R84MLd
+         TqwZYJbFmkDyt8gZeMG7lSsZJY/TYWEO+bwYmXFMVXFB9pEf96cPUpmxQ8ZlSipdEy/u
+         zpb/WUWtZGSRjiP6lCNi1xs6LVgYA1iWec7kAb4emMakKD/sAIHBbxQkkevHyQ0Ygbzk
+         CwXBw/0Pb5+OecvV/0tTffalfhs9fKgSFlS6N4gWGV0nH1GhFwmdv/BtvYIB0DB+DlhE
+         9OpcZXThtnIm4hJBMCSPPwZ6Gk57yTo7CZzoUlXo/txhWIzuNrNY+JrSWDb5c5sT+cQZ
+         ZHTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697434304; x=1698039104;
+        d=1e100.net; s=20230601; t=1697434365; x=1698039165;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5LzrbzCEzpt14vbBoE9s87dnrFaWt8dpWizanL2QoQg=;
-        b=qxy+4jBMCUfRnDFwd4Ktb+/t3wcHTXkwJZU75Dewyh7EqDw2IfbaMgIjW9gDd5pRtB
-         4oF+O+LliisLsPtsCJLyf0Q5hhLNmz4RXpjml77zVbBicmhO84YNBnMmMPIkzS0Dm1ow
-         lnw0EyZ5qKJ0cXIlku9NoWMGR2Ki03/npCgJFmOQS9BCwqw9Ue8nuZr48Wos+2+aRA31
-         rVILVguG9X2nl1jOIK3dA+y4U8uWkDYdYkJKlIgofMyD0UT4JwmyXGKiESrzsAjyXZrK
-         TTOeqVz6z3ZaI6eYmKFlSnCDRf3k6LAijSPgC7Tk589CCV+tYAJ2ayLgNzlJgWNp6iB7
-         m5ew==
-X-Gm-Message-State: AOJu0YxScNbPhCDWMsVBISaw12RnqRB0qgBlc8MARTlqW8tr6FVRDsHQ
-        0Sbl/rYEfY6srYZeh6217rqwCY2EnQ40UvOBCao=
-X-Google-Smtp-Source: AGHT+IGSkvlBKCosd0olm17I07FJgdH9chu6XyfR6FxGz/GT6Lfocs5u93ooQqc0i2OW9b9ZKsgzUA==
-X-Received: by 2002:a05:651c:54c:b0:2c5:569:5aaf with SMTP id q12-20020a05651c054c00b002c505695aafmr7322426ljp.51.1697434304014;
-        Sun, 15 Oct 2023 22:31:44 -0700 (PDT)
+        bh=cahZBYlxb+nHcg00wtQSR4/273TLxW5YHWH0Zq0a+9k=;
+        b=oOm/ftD9zaqqlNedfUL5IkCHu3m+mBGLQi6ZCpG/Swj2Hwzd+CyKi9SKMGZkzvJj1J
+         0aXa4Wolg8UVULaevpeXVj3r1W7x7xqZDrY9MfcXlFXjhF7Cv8om0tejXc2JtOAHP+Mn
+         uPTo5VCY1WDbXj8uuBKovTD73dKvGJ1vsqH0XG7iigdxpRRG7l3YKXeJHkRgxSwQbgi4
+         veSvbnRgWfvKdX9QTFQfwiyOJJ+UWAxXbQO4ZE62pUwfZORIof2xgYXISjj5HPbAFJR0
+         JDRvd8NZjJD5Y9j+DbXq8OSpOSTJcDAPl45LYDeRoky7smS7w09gEGcHBpuWJ511xmtr
+         tuaA==
+X-Gm-Message-State: AOJu0YzvaXcCPgr2+X9q04jACmi6F22ZLDImaarh1punN1SXK0eVYUux
+        90/rMnNzzKzvfTvxnXfwq0tpfg==
+X-Google-Smtp-Source: AGHT+IHT1DShnEauSsz6zKTV4Fd2wxmSLcXOWS+sIvsgHJ56bQ8Kjh/Cj77fjZJi0qpCVhhj/l+e/g==
+X-Received: by 2002:adf:f404:0:b0:31c:3136:60af with SMTP id g4-20020adff404000000b0031c313660afmr25541534wro.61.1697434365472;
+        Sun, 15 Oct 2023 22:32:45 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.154])
-        by smtp.gmail.com with ESMTPSA id w12-20020a05600c474c00b003fee6e170f9sm6128233wmo.45.2023.10.15.22.31.42
+        by smtp.gmail.com with ESMTPSA id w12-20020a05600c474c00b003fee6e170f9sm6128233wmo.45.2023.10.15.22.32.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 15 Oct 2023 22:31:43 -0700 (PDT)
-Message-ID: <42709208-6f3b-4ae0-a7bc-f23be6370171@linaro.org>
-Date:   Mon, 16 Oct 2023 07:31:41 +0200
+        Sun, 15 Oct 2023 22:32:45 -0700 (PDT)
+Message-ID: <4ad7cea6-806b-44cb-80ad-73d2f459936a@linaro.org>
+Date:   Mon, 16 Oct 2023 07:32:44 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] dt-bindings: input: syna,rmi4: document
- syna,pdt-fallback-desc
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: msm8953: Use non-deprecated
+ qcom,domain in LPASS
 Content-Language: en-US
-To:     Caleb Connolly <caleb.connolly@linaro.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Vincent Huang <vincent.huang@tw.synaptics.com>
-Cc:     methanal <baclofen@tuta.io>, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>
-References: <20230929-caleb-rmi4-quirks-v2-0-b227ac498d88@linaro.org>
- <20230929-caleb-rmi4-quirks-v2-1-b227ac498d88@linaro.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20231015-msm8953-misc-fixes-v1-0-b800deca9e46@z3ntu.xyz>
+ <20231015-msm8953-misc-fixes-v1-2-b800deca9e46@z3ntu.xyz>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -115,62 +113,20 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20230929-caleb-rmi4-quirks-v2-1-b227ac498d88@linaro.org>
+In-Reply-To: <20231015-msm8953-misc-fixes-v1-2-b800deca9e46@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 15/10/2023 23:11, Caleb Connolly wrote:
-> This new property allows devices to specify some register values which
-> are missing on units with third party replacement displays. These
-> displays use unofficial touch ICs which only implement a subset of the
-> RMI4 specification.
+On 15/10/2023 22:26, Luca Weiss wrote:
+> Use the qcom,domain property instead of the deprecated qcom,apr-domain,
+> which in turn also fixes a bunch of dtbs_checks warnings.
 > 
-> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-> ---
-> To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-> To: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-> To: Rob Herring <robh+dt@kernel.org>
-> To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> To: Conor Dooley <conor+dt@kernel.org>
-> Cc: devicetree@vger.kernel.org
-> ---
->  Documentation/devicetree/bindings/input/syna,rmi4.yaml | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/input/syna,rmi4.yaml b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
-> index 4d4e1a8e36be..1f4a2179e4d3 100644
-> --- a/Documentation/devicetree/bindings/input/syna,rmi4.yaml
-> +++ b/Documentation/devicetree/bindings/input/syna,rmi4.yaml
-> @@ -49,6 +49,21 @@ properties:
->      description:
->        Delay to wait after powering on the device.
->  
-> +  syna,pdt-fallback-desc:
-> +    $ref: /schemas/types.yaml#/definitions/uint8-matrix
-> +    description:
-> +      An array of pairs of function number and version. These are used
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
-You nicely explained what is expected to be here, but what is the
-purpose of adding this property? Please add it to the description.
-
-> +      on some devices with replacement displays that use unofficial touch
-> +      controllers. These controllers do report the properties of their Page
-> +      Descriptor Table (PDT) entries, but leave the function_number and
-> +      function_version registers blank. These values should match exactly
-> +      the 5th and 4th bytes of each PDT entry from the original display's
-> +      touch controller.
-> +    items:
-> +      items:
-> +        - description: The 5th byte of the PDT entry
-> +        - description: The 4th byte of the PDT entry
-
-Missing constraints on outer level:
-    maxItems: 1
-
-
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
