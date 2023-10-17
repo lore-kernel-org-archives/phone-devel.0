@@ -2,62 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19ED7CDB482
-	for <phone-devel@archiver.kernel.org>; Tue, 17 Oct 2023 16:05:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5E6BCDB482
+	for <phone-devel@archiver.kernel.org>; Tue, 17 Oct 2023 16:06:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344308AbjJQQFN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 Oct 2023 12:05:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40414 "EHLO
+        id S235093AbjJQQGd (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 17 Oct 2023 12:06:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344296AbjJQQFK (ORCPT
+        with ESMTP id S1343611AbjJQQG3 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 Oct 2023 12:05:10 -0400
-Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3CAF0
-        for <phone-devel@vger.kernel.org>; Tue, 17 Oct 2023 09:05:07 -0700 (PDT)
-Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-507c50b7c36so391212e87.3
-        for <phone-devel@vger.kernel.org>; Tue, 17 Oct 2023 09:05:07 -0700 (PDT)
+        Tue, 17 Oct 2023 12:06:29 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB7DBF9
+        for <phone-devel@vger.kernel.org>; Tue, 17 Oct 2023 09:06:25 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-507a55302e0so3803837e87.0
+        for <phone-devel@vger.kernel.org>; Tue, 17 Oct 2023 09:06:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697558706; x=1698163506; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1697558784; x=1698163584; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=dpl0IEEBpo2+vCTVkUTCV6LVt68FmaU7qfc6DIs4Uok=;
-        b=fxdBagBQfBM8/5JEt1iiLqcLb05372y7gNbTHFpEUbXIw3LNlWdOj+thEcFXaPOuHu
-         WjsvWdbjUO4jDdx/hwqe+nEEsuBZKmxQ2vh+NITEvSZ/YYvVxIQy/YNNYa56Ty8XdAHh
-         OM1NwqJ7MWQPg+sU+jebXm4RTgddYt2sp/MSiAnRYYCZN344LH5sk5s6tHkk1AoZyGN4
-         wWfyXYpwRv8aUa/JMv2e7bGUpDRDMvNdOUbzpN4r3RJ1tmH/zcuq6Sz0UH/lb7pyvHg0
-         ytOOio3/tgcmjQ98DJCiKizLG+9aGUb0e0mu2OLmKn/mVWnjt4aarEomTOm7NY8PWyDE
-         14bw==
+        bh=8xvYIvKO+3mIU3EAawcs2ywj4vAenzsPefTCCzUDayw=;
+        b=pQnEVIr0Xlan6GcNIOcP1aBX2wZxu2MaS4pBcb0hT2EmSlTCsbEtj7PnDDJi+gqbaj
+         jR1R8D3j6eczOG2ps5A4M2V5oPE4Zxw+TztolhBNwsUThOeD7ujq8G2bqEHTm0evIa88
+         IXzsAvD6et/w+twWTVa4WAZWKN5L5cgaHqZVWCMeLweKhrWBrAqtQjkG07etlGJ2yAOa
+         HjcRzXfv6FKf2lneHtcqLWkBH/odjsQx6uyvfvZzQ18JSUdcScGevWPCXZQxedT9SgbY
+         Qzm1muaiVgy7/3GP0sf2dqA2RZKxGFI6O6yY5sixfGVCw6dm3fl/qiqfL55uPzlotSQ9
+         NNbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697558706; x=1698163506;
+        d=1e100.net; s=20230601; t=1697558784; x=1698163584;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dpl0IEEBpo2+vCTVkUTCV6LVt68FmaU7qfc6DIs4Uok=;
-        b=v1IQD4vm2lWzXtH2Kkzl846ywMj2GL91DdaZK2HD0MZ5oaS9UViO9VvfmNakU2iSja
-         p33ZJRTKZw6ULUyIvgFXroISPfxD4FCT1ziPqtW7FTXd5UtAoukqdWKxdX/oP45c9M+8
-         HuXuZ6VYv3xQ+yb5R3MN4ajrg9DDyzZk1xT7oDJ3GeMLigTrxlPEB9EgJVqoZeeHHsES
-         BlNWzIKk92bVX+/Y51NNa/8wXjB6IbSt0WZuIVW5UvLVqzTEOqw7OXNaoeSy4Cdr3lsR
-         rgDhlo5EoUHtnIQJh9ZCy9PoWpZn4f62iu+KtFWh/JBdH5aIpELeO1ylrvzoLfRsokv0
-         folA==
-X-Gm-Message-State: AOJu0YyXLvgzYN/zu+rl/y1GYM1/vQkTsORw8HICsVtFNTy5I809BK3H
-        ZBip9K7W6fpWtryrrBpqF5vWPQ==
-X-Google-Smtp-Source: AGHT+IF3YfUnVeLx0IkWt7o3PFMF1fp39lH7ikypo14lurXsdGqba/iFAcbblTmg1R28GDI0V2f1ag==
-X-Received: by 2002:ac2:5187:0:b0:507:bb10:4354 with SMTP id u7-20020ac25187000000b00507bb104354mr2162392lfi.62.1697558705851;
-        Tue, 17 Oct 2023 09:05:05 -0700 (PDT)
+        bh=8xvYIvKO+3mIU3EAawcs2ywj4vAenzsPefTCCzUDayw=;
+        b=KTfqvBJjcontrrBK9hziXMQCYenWL6OfG/b4BF7kDXGLN2j0ziB/NMtUKS7InMrItr
+         fTsA3W60j1uKHo8QQb/6mTqle/771E4nBDi0KszGrhOcpUanl2TKOP7zuWwof5FgNrGH
+         4V+0F8jdOftNmZetKey67B7A6xtfRluNBG+Bg+slWbePD+bGgaMQ14EF0N/Kz5V0al8Z
+         Q9sC/4YipvNiN7zibj05/alu+c864goyhIaVjWWZaBOj5FKaFBibqs1/6tarTkODuISV
+         QFJk9yLGHa+NsJdwWlw+knmj0td7NVIEXDeg6RENwkXsjcIoGP9Wt8tCgAn8SnHGkSO6
+         +m+w==
+X-Gm-Message-State: AOJu0YybkG+ouZQ6nTa8qRwx37zfP+jSQwEFvpwmZl7IF2QmPBVTobjc
+        Cv47lrjig4x0idyGIK1A1gGkVA==
+X-Google-Smtp-Source: AGHT+IHhQNyrTYgGeequm9qL3R/xX0Qa+zpfneS2Tc5Nq7DmGCHtImf+Fy/36eKebqA5lYzx+mCbPQ==
+X-Received: by 2002:a05:6512:3ba4:b0:503:221:6b1a with SMTP id g36-20020a0565123ba400b0050302216b1amr2485376lfv.0.1697558783795;
+        Tue, 17 Oct 2023 09:06:23 -0700 (PDT)
 Received: from [172.30.204.57] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id w26-20020ac2443a000000b005030c533843sm329505lfl.154.2023.10.17.09.05.02
+        by smtp.gmail.com with ESMTPSA id w26-20020ac2443a000000b005030c533843sm329505lfl.154.2023.10.17.09.06.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Oct 2023 09:05:05 -0700 (PDT)
-Message-ID: <099f9bd8-f3c6-4864-8346-0151babc99b6@linaro.org>
-Date:   Tue, 17 Oct 2023 18:05:02 +0200
+        Tue, 17 Oct 2023 09:06:23 -0700 (PDT)
+Message-ID: <dfa1699b-271e-42b8-a8f3-17baef37f417@linaro.org>
+Date:   Tue, 17 Oct 2023 18:06:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 5/5] arm64: dts: qcom: sm8350-lemonade(p): new devices
 Content-Language: en-US
-To:     Nia Espera <nespera@igalia.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Nia Espera <nespera@igalia.com>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Jonathan Cameron <jic23@kernel.org>,
@@ -74,134 +74,24 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
 References: <20231016-nia-sm8350-for-upstream-v1-0-bb557a0af2e9@igalia.com>
  <20231016-nia-sm8350-for-upstream-v1-5-bb557a0af2e9@igalia.com>
- <5382aff2-30b0-4e6d-9fcd-ffd6dac0abff@linaro.org>
- <ef10aa1b-8365-41e1-992e-ee8711ae24cb@igalia.com>
+ <CW9WUOLK18R1.2HI2MM4P47HPV@fairphone.com>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <ef10aa1b-8365-41e1-992e-ee8711ae24cb@igalia.com>
+In-Reply-To: <CW9WUOLK18R1.2HI2MM4P47HPV@fairphone.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
 
-On 10/16/23 15:14, Nia Espera wrote:
-> Hey,
-> 
-> On 10/16/23 15:02, Caleb Connolly wrote:
->>
->> On 16/10/2023 13:47, Nia Espera wrote:
->>> Device tree files for OnePlus 9 and 9 Pro. Details of supported features
->>> mentioned in the cover letter for this patch series, but for
->>> accessibility also repeated here:
->>>
->>> - USB OTG
->>> - UFS
->>> - Framebuffer display
->>> - Touchscreen (for lemonade)
->>> - Power & volume down keys
->>> - Battery reading
->>> - Modem, IPA, and remoteproc bringup
->>>
->>> Steps to get booting:
->>>
->>> - Wipe dtbo partition
->>> - Flash vbmeta with disabled verity bit
->>> - Flash kernel and initfs to boot partition with CLI args 
->>> pd_ignore_unused
->>> and clk_ignore_unused
->>> - Flash rootfs to some other partition (probably super or userdata)
->>>
->>> Signed-off-by: Nia Espera <nespera@igalia.com>
->> Small comment below, for the next revision:
->>
->> Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
->>> ---
->>>   arch/arm64/boot/dts/qcom/Makefile                  |    2 +
->>>   .../arm64/boot/dts/qcom/sm8350-oneplus-common.dtsi | 1247 
->>> ++++++++++++++++++++
->>>   .../boot/dts/qcom/sm8350-oneplus-lemonade.dts      |   82 ++
->>>   .../boot/dts/qcom/sm8350-oneplus-lemonadep.dts     |   37 +
->>>   4 files changed, 1368 insertions(+)
->>>
->>> diff --git a/arch/arm64/boot/dts/qcom/Makefile 
->>> b/arch/arm64/boot/dts/qcom/Makefile
->>> index 2cca20563a1d..369ad4721b29 100644
->>> --- a/arch/arm64/boot/dts/qcom/Makefile
->>> +++ b/arch/arm64/boot/dts/qcom/Makefile
->>> @@ -211,6 +211,8 @@ dtb-$(CONFIG_ARCH_QCOM)    += 
->>> sm8250-xiaomi-elish-csot.dtb
->>>   dtb-$(CONFIG_ARCH_QCOM)    += sm8350-hdk.dtb
->>>   dtb-$(CONFIG_ARCH_QCOM)    += sm8350-microsoft-surface-duo2.dtb
->>>   dtb-$(CONFIG_ARCH_QCOM)    += sm8350-mtp.dtb
->>> +dtb-$(CONFIG_ARCH_QCOM)    += sm8350-oneplus-lemonade.dtb
->>> +dtb-$(CONFIG_ARCH_QCOM)    += sm8350-oneplus-lemonadep.dtb
->>>   dtb-$(CONFIG_ARCH_QCOM)    += sm8350-sony-xperia-sagami-pdx214.dtb
->>>   dtb-$(CONFIG_ARCH_QCOM)    += sm8350-sony-xperia-sagami-pdx215.dtb
->>>   dtb-$(CONFIG_ARCH_QCOM)    += sm8450-hdk.dtb
->>> diff --git a/arch/arm64/boot/dts/qcom/sm8350-oneplus-common.dtsi 
->>> b/arch/arm64/boot/dts/qcom/sm8350-oneplus-common.dtsi
->>> new file mode 100644
->>> index 000000000000..2f6768f35259
->>> --- /dev/null
->>> +++ b/arch/arm64/boot/dts/qcom/sm8350-oneplus-common.dtsi
->>> @@ -0,0 +1,1247 @@
->>> +// SPDX-License-Identifier: BSD-3-Clause
->>> +/*
->>> + * Copyright (c) 2023 Caleb Connolly <caleb.connolly@linaro.org>
->> This is loosely based on some initial work I did, but not to the degree
->> where this copyright is necessary, feel free to drop it on the next
->> revision.
-> Will do!
->>> + *
->>> + * Copyright (c) 2023 Igalia S.L.
->>> + * Authors:
->>> + *    Nia Espera <nespera@igalia.com>
->>> + */
->>> +
->>> +#include <dt-bindings/iio/qcom,spmi-adc7-pm8350.h>
->>> +#include <dt-bindings/iio/qcom,spmi-adc7-pm8350b.h>
->>> +#define SMB139x_1_SID 0x0b
->>> +#define SMB139x_2_SID 0x0c
->>> +#include <dt-bindings/iio/qcom,spmi-adc7-smb139x.h>
->>> +#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
->>> +#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
->>> +#include "sm8350.dtsi"
->>> +#include "pm8350.dtsi"
->>> +#include "pm8350b.dtsi"
->>> +#include "pm8350c.dtsi"
->>> +#include "pmk8350.dtsi"
->>> +#include "pmr735a.dtsi"
->>> +#include "pmr735b.dtsi"
->>> +
->>> +/ {
->>> +    /* As with the Sony devices, msm-id and board-id aren't needed 
->>> here */
->>> +    chassis-type = "handset";
->>> +    interrupt-parent = <&intc>;
->>> +
->> [...]
->>
->>> +
->>> +    /*
->>> +     * Hack; OP9 bootloader specifically checks that the timer node has
->>> +     * this label.
->>> +     */
->>> +    arch_timer: timer {};
->> For this to work you also need to build the DTB with labels (the -@ flag
->> to dtc), otherwise this board won't boot. You can add the following to
->> the Makefile:
->>
->> DTC_FLAGS_sm8350-oneplus-lemonade := -@
->> DTC_FLAGS_sm8350-oneplus-lemonadep := -@
-> This actually isn't necessary if building the image as an Android version 1
-> image; it will boot fine without, since it won't try to append to the 
-> DTB. I
-> should probably mention to do that in the patch, though.
->> See for reference:
->> https://lore.kernel.org/linux-arm-msm/20231009172717.2695854-1-dmitry.baryshkov@linaro.org/
-Yes, using mkbootimg arguments to our advantage to avoid hacks in the dt 
-is good.
+On 10/16/23 15:50, Luca Weiss wrote:
+
+[...]
+
+> You never plugged the device into a USB 3.0 port? Should be trivial to
+> test I think?
+
+The biggest blocker is usually the lack of an actual USB3 type-C cable :P
 
 Konrad
