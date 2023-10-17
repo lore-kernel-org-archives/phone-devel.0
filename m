@@ -2,108 +2,73 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AA07ECDB474
-	for <phone-devel@archiver.kernel.org>; Tue, 17 Oct 2023 19:41:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A955CDB474
+	for <phone-devel@archiver.kernel.org>; Tue, 17 Oct 2023 20:17:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234197AbjJQTlF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 Oct 2023 15:41:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45526 "EHLO
+        id S235209AbjJQURN convert rfc822-to-8bit (ORCPT
+        <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 17 Oct 2023 16:17:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235050AbjJQTlE (ORCPT
+        with ESMTP id S235211AbjJQURE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 Oct 2023 15:41:04 -0400
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DD8BC6;
-        Tue, 17 Oct 2023 12:41:03 -0700 (PDT)
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-1dd5b98d9aeso3106665fac.0;
-        Tue, 17 Oct 2023 12:41:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697571663; x=1698176463;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uR3bNC3fTwfH0+mhYEnQAuVSq+ou4a66cQX/8jr0NI4=;
-        b=NRaVK5o3/weqRS13rtDjVoYGGQFc3ZP4GFwbaBT4Y9Vq6hWD8B0LYipKnf/Qbm0WAC
-         TgxGUSwRyX2Y6IyMG9APXfR2MyQ0j3KlnX4ftgnrwc/zLLLqm7sA7TQYY1jwOea/4SYy
-         i/VFSKr/mkgYszBAF8Bhpi5wXyTIoP6lwgK+1HKWEx/17YzSS57+zJfibjDsjfk1LQjO
-         7HQO0jgLp/DxjbY58b72IcakagpRAK1GVimZRUw6P5D8u+rFERVD0ZuCD5mT+orLAuS3
-         gtssOTkKZ45uQQ30Vle2KlO9SNJvrXb8wqvInAIZoES65WlQthxdXH/jesubpabczHcd
-         U6UQ==
-X-Gm-Message-State: AOJu0YyESgxKsTB4BgsErkdwEvM5Oq7FqqBYN1XK0AFugGP3WyGHPYmQ
-        H7MKcczEpJAGwBU70ZTLBsCBv7+X/g==
-X-Google-Smtp-Source: AGHT+IGe43wxLK4YykHPPU0FQkbx4eJdg+n8Sp4kw8kXBTquDgR1Xt7DwrQ1p1kv7FxLUlj0E0nwzA==
-X-Received: by 2002:a05:6870:11d0:b0:1e9:fb1e:870a with SMTP id 16-20020a05687011d000b001e9fb1e870amr1981537oav.3.1697571662697;
-        Tue, 17 Oct 2023 12:41:02 -0700 (PDT)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id cj19-20020a05687c041300b001e11ad88f7csm379100oac.30.2023.10.17.12.41.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Oct 2023 12:41:02 -0700 (PDT)
-Received: (nullmailer pid 2561855 invoked by uid 1000);
-        Tue, 17 Oct 2023 19:41:00 -0000
-Date:   Tue, 17 Oct 2023 14:41:00 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Nia Espera <nespera@igalia.com>
-Cc:     Andy Gross <agross@kernel.org>,
+        Tue, 17 Oct 2023 16:17:04 -0400
+Received: from smtprelay07.ispgateway.de (smtprelay07.ispgateway.de [134.119.228.104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86DA23A8D;
+        Tue, 17 Oct 2023 13:03:43 -0700 (PDT)
+Received: from [92.206.139.21] (helo=note-book.lan)
+        by smtprelay07.ispgateway.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.96.1)
+        (envelope-from <git@apitzsch.eu>)
+        id 1qsqHz-0006Zq-2B;
+        Tue, 17 Oct 2023 22:03:39 +0200
+Message-ID: <65214451e02a38032e9fc6ac4cff185c6b2b5fc8.camel@apitzsch.eu>
+Subject: Re: [PATCH] arm64: dts: qcom: msm8939-longcheer-l9100: Add
+ proximity-near-level
+From:   =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+To:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        Rob <Me@orbit.sh>, Clayton Craft <clayton@igalia.com>,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH 1/5] iio: adc: add smb139x bindings
-Message-ID: <20231017194100.GA2560880-robh@kernel.org>
-References: <20231016-nia-sm8350-for-upstream-v1-0-bb557a0af2e9@igalia.com>
- <20231016-nia-sm8350-for-upstream-v1-1-bb557a0af2e9@igalia.com>
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Date:   Tue, 17 Oct 2023 22:03:33 +0200
+In-Reply-To: <3aede886-3219-4b9f-a44d-0c414979c260@linaro.org>
+References: <20231016-bqm5_prox-v1-1-2acdc732be9d@apitzsch.eu>
+         <3aede886-3219-4b9f-a44d-0c414979c260@linaro.org>
+Autocrypt: addr=git@apitzsch.eu; prefer-encrypt=mutual;
+ keydata=mQINBFZtkcEBEADF2OvkhLgFvPPShI0KqafRlTDlrZw5H7pGDHUCxh0Tnxsj7r1V6N7M8L2ck9GBhoQ9uSNeer9sYJV3QCMs6uIJD8XV60fsLrGZxSnZejYxAmT5IMp7hHZ6EXtgbRBwPUUymfKpMJ55pmyNFBkxWxQA6E33X/rH0ddtGmAsw+g6tOHBY+byBDZrsAZ7MLKqGVaW7IZCQAk4yzO7cLnLVHS2Pk4EOaG+XR/NYQ+jTfMtszD/zSW6hwskGZ6RbADHzCbV01105lnh61jvzpKPXMNTJ31L13orLJyaok1PUfyH0KZp8xki8+cXUxy+4m0QXVJemnnBNW5DG3YEpQ59jXn3I7Eu2pzn2N+NcjqK8sjOffXSccIyz8jwYdhASL5psEvQqZ6t60fvkwQw7++IZvs2BPmaCiQRo415/jZrEkBBE3xi1qdb3HEmpeASVaxkinM5O44bmQdsWTyamuuUOqziHZc9MO0lR0M1vUwnnQ3sZBu2lPx/HBLGWWOyzeERalqkXQz1w2p487Gc+fC8ZLXp7oknfX0Mo1hwTQ+2g2bf78xdsIhqH15KgRE/QiazM87mkaIcHz7UE+ikkffODyjtzGuaqDHQIUqpKIiXGKXoKzENFJel71Wb2FoSMXJfMNE/zEOE5ifufDkBGlwEqEUmkHzu7BbSPootR0GUInzm5QARAQABtCNBbmRyw6kgQXBpdHpzY2ggPGFuZHJlQGFwaXR6c2NoLmV1PokCVwQTAQoAQQIbAwIeAQIXgAULCQgHAgYVCgkICwIEFgIDAQIZARYhBGs5YOi9bIzbfpKzQoJ34hc2fkk7BQJjw9ROBQkPVdDvAAoJEIJ34hc2fkk7wkQP/RK8za0mwjXC0N3H3LG8b2dL9xvPNxOllbduGZ2VGypD4inCT/9bC7XXWr9aUqjfiNrZRf5DTUQeHf0hxeFndfjsJFODToQnnPDoZVIlEX7wS31MPYTpB
+        Gdkq687RJrHc4A7u/304OXaj4iXk3hmZDI4ax2XeFdj1Lt/PrfazCdtI8E6FvUBL5bcBdZsygeNWt5Jk3r2Gk4Gn+iuw1rxALfcBNIFD7dZiz7/KYycNJV6/ZQKXWWkHJZ8/MSwKhv6bJcAu5zkPKVnT3A/vZ/7bUWSXxR5Dy0i3Rbu2/DVGBBx/JRlmKy06KyE1Y9KmSt35NPJSimA7l4ITktfHiE3o6VXgvRX88h65RNiCi0zLl8jRCDTGkwv+DKFV1KcJTINgdbp310rZvMOaK0r16wzrWrTGmOiUv2ZTr8ZOJ+F9M2AxYwANrl72txyw9r6QKyIaHnbUeQjmnz28WtoxzVPHytuq7GIjn2YnJYeJnGC/12gmnRmq6jMiOhbA9kTCt5+gZONLk+D4AhBTIG71Z4e65mrGhoYYef8N4F0DAPhQgyoBxZuGmYQMPTV0VZc5EjLcAbXQeC1Gvhf/Kjc2T4uSAUGQq3zweRIdTOLDXmWTj9290aTiE12ZPXCrby103oTLyCdrC/5dAjlk0S+sgJm0dMr5uHcvl3W/Gt9sTejseOOtCFBbmRyw6kgQXBpdHpzY2ggPGdpdEBhcGl0enNjaC5ldT6JAlQEEwEKAD4CGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQRrOWDovWyM236Ss0KCd+IXNn5JOwUCY8PUTgUJD1XQ7wAKCRCCd+IXNn5JOy04EACmk3rjyBGaELCMdi9Ijv2P25nBhhWKHnY+w7UWvJ3QjkqFslYIwXTFqeue7yw+jeEEuqW0415e1SN8UKi8gkmlxSI5gahvmu3TA6sipBmiEhci2lli0jdz6scL85H4UIdnYrLqSP+liJmPv2tTChgJzPaOs/anyYGNom6+SYl3LdpWp5PjFxWkz4ERC5UDfhJa8fHzCw1xkadkxgz8ihBULzMfrea8crLF4W64qewrF032h4T4yCBqjqtARVFtikqAUvyxhGXmeU
+        Of5hPifLqjlzsIpszJOwGh32ggK2WxqqAB20aRyuCXKc2MshyD+ANUj4hZGYFp0hT1q0E1KLFoRhy+CAZ+DBGMSI3MlES/NNvm3wRVlc4lr2RkaPUmM6PyQtmbtM4xbgQGD29Q4D44tPoLLgh0jK6c05EA/ZSjA8KTj2HNL3lUSMXdEDBTql1ccFXDqPvl5YiTfcK6r72H8Zz20qFgxNOAYPEf7xCfoWJTpAPYNY5rJyAJWzEYFEqZolJXP768n3ObVVtJq0Q5cYf46IbtTXDHFOIFUvQVXzFh9eAyv1tN4ZlZAm/oyWYChgzOIoymFz8S9i8a4A07m3Zhgxa80vmMvlhQntd9Wc1OMkjnxLIl+4WZUKH4PLwccQGysSXC7UVWiO8ZtofyMOqYY7BwzMllhWoyoXwulbkCDQRWbZHBARAA35+q2gnCcqTJm3MCqTsGGfsKIpGSn7qnr7l7C+jomiQSfg84SP0f4GclhBfSghpgUqBFiIgv3BzJREDrziSaJLwRp+NKILkZ2QW41JccushDEcUCVWnZpViUF1als6PU4M8uHmfzoNXZtAaeTKpA3eeOyUPUuNm4lSZH9Aq20BeCNDy9puzCnjpKWemI2oVC5J0eNQ+tw3sOtO7GeOWZiDh/eciJAEF08H1FnJ+4Gs04NQUjAKiZobQIqJI2PuRWPUs2Ijjx7mp7SPNU/rmKXFWXT3o83WMxo41QLoyJoMnaocM7AeTT4PVv3Fnl7o9S36joAaFVZ7zTp86JluQavNK74y35sYTiDTSSeqpmOlcyGIjrqtOyCXoxHpwIL56YkHmsJ9b4zriFS/CplQJ5aXaUDiDNfbt+9Zm7KI4g6J59h5tQGVwz/4pmre02NJFh1yiILCfOkGtAr1uJAemk0P1E/5SmrTMSj5/zpuHV+wsUjMpRKoREWYBgHzypaJC93h9N+Wl2KjDdwfg7cBboKBKTjbjaofhkG6f4noKagB7IAEKf14EUg1e
+        r5/Xx0McgWkIzYEvmRJspoPoSH5DLSd05QwJmMjXoLsq74iRUf0Y8glNEquc7u8aDtfORxxzfcY2WuL6WsOy7YrKHpinrlODwgI1/zUXQirPIGdFV9MsAEQEAAYkCPAQYAQoAJgIbDBYhBGs5YOi9bIzbfpKzQoJ34hc2fkk7BQJjw9RjBQkPVdDvAAoJEIJ34hc2fkk7PMcP/3ew9uNxXMYPMs292yuromvRxUXcsryyT4sTcsQ/w/V+12teaZZemU/hf9rhyd/Op8osIKenTQYcUb0BrKYn7bEQRYXjIR8AkfkePmNYGqhs37SB7uqnz9u7twk2lvRmMV0lW25g3EHzveV5CrMpSsBZ6M5Pe0rMs/lT5ws5P7atgFUYmmpijIBi1pzT8OLKhsoGwMayB4Cctt2YU1tpAoFjFcB2i9cyfoxGyjqXBJ/0u+6V6EocSeJbpI8T07GlFRNQok9NvImqBfOvMKk7eSSNJVYRu9FkbFFVxFQKh5wbAZelGItQLr6yrVIKmZmi+DLQHPGKmvoSatwPKsKIqvNHdWJQyvhrkQnzxnbQsixH/InWhJ/qbPhWKWNAq+fGkAVVXlZW91RW9h3r+ZIH95dCBnYNgi0ehVftqf0AEHXWRZgtKToYrG9kfkUdxft0fpilIG5aK0r242OKtQcGESyCltiwGakQ4qytf7kQ4SUYiJ8YQ2E2QU19zUrOkmjq32Be4C3QUYRBloU2l2VyGghZxdShJvNIZvup0ID0BFhcs0+4dWS4Loz8HW7FBWcmsUsti3mUBuBb6PN+jRoIYBbsUGDffbxz2/tHF3mckCS4qVtwiD7noU0l69FqZm/aOOUbwZ7UiTuuYgZ0HvQBMEb9PiiC0qjrTIST/U6zqLs4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.50.0 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231016-nia-sm8350-for-upstream-v1-1-bb557a0af2e9@igalia.com>
+X-Df-Sender: YW5kcmVAYXBpdHpzY2guZXU=
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Oct 16, 2023 at 02:47:01PM +0200, Nia Espera wrote:
-> Bindings for a charger controller chip found on sm8350
+Am Dienstag, dem 17.10.2023 um 18:25 +0200 schrieb Konrad Dybcio:
 > 
-> Signed-off-by: Nia Espera <nespera@igalia.com>
-> ---
->  include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
 > 
-> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-> new file mode 100644
-> index 000000000000..fe163cd8bbdd
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
+> On 10/16/23 22:18, André Apitzsch wrote:
+> > Consider an object near to the sensor when their distance is about
+> > 4 cm
+> > or below.
+> > 
+> > Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> > ---
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> 
+> Out of interest, what is it set to by default?
+> 
+> Konrad
 
-Dual license please (matching Qcom dts files)
+The default value is 0.
 
-> +/*
-> + * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-> +#define _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-> +
-> +#define SMB139x_1_ADC7_SMB_TEMP			(SMB139x_1_SID << 8 | 0x06)
-> +#define SMB139x_1_ADC7_ICHG_SMB			(SMB139x_1_SID << 8 | 0x18)
-> +#define SMB139x_1_ADC7_IIN_SMB			(SMB139x_1_SID << 8 | 0x19)
-> +
-> +#define SMB139x_2_ADC7_SMB_TEMP			(SMB139x_2_SID << 8 | 0x06)
-> +#define SMB139x_2_ADC7_ICHG_SMB			(SMB139x_2_SID << 8 | 0x18)
-> +#define SMB139x_2_ADC7_IIN_SMB			(SMB139x_2_SID << 8 | 0x19)
-> +
-> +#endif
-> 
-> -- 
-> 2.42.0
-> 
+André
