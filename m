@@ -2,81 +2,75 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D012C41513
-	for <phone-devel@archiver.kernel.org>; Tue, 17 Oct 2023 16:28:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D63DCDB474
+	for <phone-devel@archiver.kernel.org>; Tue, 17 Oct 2023 16:30:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230045AbjJQQ20 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 Oct 2023 12:28:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55174 "EHLO
+        id S234972AbjJQQac (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 17 Oct 2023 12:30:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233587AbjJQQ2Z (ORCPT
+        with ESMTP id S234976AbjJQQab (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 Oct 2023 12:28:25 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 002C1F1
-        for <phone-devel@vger.kernel.org>; Tue, 17 Oct 2023 09:28:22 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-32d9cb5e0fcso3817373f8f.0
-        for <phone-devel@vger.kernel.org>; Tue, 17 Oct 2023 09:28:22 -0700 (PDT)
+        Tue, 17 Oct 2023 12:30:31 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A19FD
+        for <phone-devel@vger.kernel.org>; Tue, 17 Oct 2023 09:30:28 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-507962561adso6747459e87.0
+        for <phone-devel@vger.kernel.org>; Tue, 17 Oct 2023 09:30:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697560101; x=1698164901; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1697560227; x=1698165027; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=HQvXsaetNqAcFhMUG/2hK+pMDdXGtzxBnDJfKLjQOWI=;
-        b=NyBUxD/xEt8gzDTui6ihLOfdNJAnCdXVmxbYOwqf6MKSs3f1jpB0/pXLU2owluQ49e
-         kCcu8eiOUavtQR8/b4be5rU+EIWB4BX9vCsLChxec+wRefaURPk48sAGNILZptXQ1de/
-         REj0BKBM6xHoL/39klHGWzy+vTR5oZIDGNa3dGO0hdaMr8l8iOZ8n3v19InSm+cZEKJo
-         3KgIuQ/w+mD4afwIxSEXvAEdPSDwKf94oYAlPquc9Habr2gXtTkzphBvCAlcBSuaUNUa
-         uj7Jlfodzrny8HgVPIOhWAINLBvRlQcGWKzoPw03yn6hx6r5a90tn4YfX+5fQqloqAd8
-         kS6g==
+        bh=G0ZUMZHn3wvFYsU5SqLQBD+dmcl+H9Kyr5RC+TFVYd0=;
+        b=eY4f1UniU9X6quGsUIjVsa3Fmk4O4ZkihI/JleaqUjvBmkbEnEdZF6cTx/Pjq/4r65
+         PPL3arBQKeFHvwLNHXh84k7OctswFFW7bjzyg35GbxtS8LefErfoDL+34gqhv79CmRJx
+         iq8T33G26srcDkCTqyOTZHb+jJhQXVx1GtEenM0uLodVFlRZfaulwooc+qzckXcgUE8B
+         MUre7PHNPwKdAwXlSEqqMPz6ZlYP5D78t3eBwxwJapvd+cTS56qw+5RKSVO/XgqKSKNk
+         47Nn9jXZo50erwT9k+iRYYGfxEeP5yWbxEb5Cpt6o7mpzOG+KLZccqmG6cuQcj8IG4HQ
+         lz0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697560101; x=1698164901;
+        d=1e100.net; s=20230601; t=1697560227; x=1698165027;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HQvXsaetNqAcFhMUG/2hK+pMDdXGtzxBnDJfKLjQOWI=;
-        b=K9fk5rufrNANWGQjJCDxxY2Q6QGtkjGsW0lRO3IywTDrT0qNPNA3t6nhKwdFJQqmO0
-         AJqESE83syHcCYdkB5e55jsTKq+Ks5h79WhdLJvzKaiq7SUH/aaMgF4p4HfzHl0J8g+6
-         WpHuiiDj9sgqe6KX45p8K1fpNspJ6mevbftBXiobfHxOMHIMdgLTRc6AMV2XfORhw1Wm
-         8graRxdZbaLqmMMGlQl9SywVbvTzGvgkWqeUJXZZb17hI0NMmfUx+icqOfL3/EoqDAX9
-         pW5AovLkKnRtNfcCeDzUapVZSADyy0O1kU9c+YcDuYSLntKEpwoCUY45AuOp9pxwDRuh
-         BmAw==
-X-Gm-Message-State: AOJu0YzFXGgv5VWg1/1IqcCdGKiGgPfUSaWlabPfhJYy1IWJgDNys2o7
-        B0RryVd6/SqGRMlH/N1WduYJgftsdrlcofGbfi8=
-X-Google-Smtp-Source: AGHT+IHQcHoYySq8QpN4wpHWzqsBjw0L1AxQwuXVricWOgMzTjZ743oMCFukODi/CgNHu7nEXgxtpw==
-X-Received: by 2002:a5d:62d1:0:b0:32d:90f7:ce4f with SMTP id o17-20020a5d62d1000000b0032d90f7ce4fmr2133052wrv.38.1697560101213;
-        Tue, 17 Oct 2023 09:28:21 -0700 (PDT)
+        bh=G0ZUMZHn3wvFYsU5SqLQBD+dmcl+H9Kyr5RC+TFVYd0=;
+        b=CHbfxIAcUsc6Y/WrnEBXJLrgUub97w2hdcnzMaBtHCD1OuZDvE19/WATQDjTJT8wAH
+         fC93k+JZ3SvqsIWsMdtMD5nY9g2e0jA06DTgH9ZaReS8bFH8BDmm03b++kZH7awTwu8p
+         RQlrSqZuVcGIiLx9lXIKWp7HTgo+8WTqyiOMWS5BfTGIdI9+5bEFwC3zbygJ43X9cygL
+         GpO1rbDNg5oQpGcPl03/BG+ivfuiks4Dx6eDKDa0PuX8H97gKhb380TeS40b+qYYqmHC
+         aSY996zyOXK7Kp+SvyPZS2Di1SYUqYgF2vU2TSY5XsAmke5oKZZ19GJv02jaeY5YGj9j
+         L1KQ==
+X-Gm-Message-State: AOJu0Yxicl1hf/DyFwiw2G9SvTMDj5EmGpomBMsceO2IXP5vQvOugI3c
+        xNXurD7ph8G6NRxyeWhNzjdpqA==
+X-Google-Smtp-Source: AGHT+IGG1ozaE0+IWIfhVotIqz0IAdLawX4MRfy3widezuDNZt4n9ouXns3q/MtSkRCIzjokPx3oKw==
+X-Received: by 2002:a05:6512:4004:b0:500:bd6f:a320 with SMTP id br4-20020a056512400400b00500bd6fa320mr2729902lfb.42.1697560226942;
+        Tue, 17 Oct 2023 09:30:26 -0700 (PDT)
 Received: from [172.30.204.57] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id d15-20020a05600c34cf00b004063d8b43e7sm10257184wmq.48.2023.10.17.09.28.17
+        by smtp.gmail.com with ESMTPSA id d15-20020a05600c34cf00b004063d8b43e7sm10257184wmq.48.2023.10.17.09.30.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Oct 2023 09:28:20 -0700 (PDT)
-Message-ID: <f87ee117-ad72-40b8-9246-ddbd7dbe9383@linaro.org>
-Date:   Tue, 17 Oct 2023 18:28:16 +0200
+        Tue, 17 Oct 2023 09:30:26 -0700 (PDT)
+Message-ID: <c453e43c-2473-4da9-bc42-188cd4092682@linaro.org>
+Date:   Tue, 17 Oct 2023 18:30:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] remoteproc: qcom_wcnss: Add WCN3680B compatible
+Subject: Re: [PATCH 1/2] arm64: dts: qcom: msm8953: Set initial address for
+ memory
 Content-Language: en-US
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+To:     Stephan Gerhold <stephan@gerhold.net>, Luca Weiss <luca@z3ntu.xyz>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Loic Poulain <loic.poulain@linaro.org>,
-        Kalle Valo <kvalo@kernel.org>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
-References: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
- <20231015-fp3-wcnss-v1-2-1b311335e931@z3ntu.xyz>
- <f342446c-7afb-414c-a4d5-1eff03fe397e@linaro.org>
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20231015-msm8953-misc-fixes-v1-0-b800deca9e46@z3ntu.xyz>
+ <20231015-msm8953-misc-fixes-v1-1-b800deca9e46@z3ntu.xyz>
+ <ZSzoO9QhwVmL8jLk@gerhold.net>
 From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <f342446c-7afb-414c-a4d5-1eff03fe397e@linaro.org>
+In-Reply-To: <ZSzoO9QhwVmL8jLk@gerhold.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -85,29 +79,19 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 
 
-On 10/16/23 07:35, Krzysztof Kozlowski wrote:
-> On 15/10/2023 22:03, Luca Weiss wrote:
->> Add a compatible for the WCN3680B chip used with some Qualcomm SoCs.
+On 10/16/23 09:37, Stephan Gerhold wrote:
+> On Sun, Oct 15, 2023 at 10:26:01PM +0200, Luca Weiss wrote:
+>> The dtbs_check really doesn't like having memory without reg set.
+>> Address this by setting it to 0x10000000 which seems to be the value
+>> filled in by the bootloader.
 >>
->> It shares the same regulator setup as WCN3680, so we can reuse the
->> driver data for that.
->>
->> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
->> ---
->>   drivers/remoteproc/qcom_wcnss_iris.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/remoteproc/qcom_wcnss_iris.c b/drivers/remoteproc/qcom_wcnss_iris.c
->> index dd36fd077911..22acc609105f 100644
->> --- a/drivers/remoteproc/qcom_wcnss_iris.c
->> +++ b/drivers/remoteproc/qcom_wcnss_iris.c
->> @@ -99,6 +99,7 @@ static const struct of_device_id iris_of_match[] = {
->>   	{ .compatible = "qcom,wcn3660", .data = &wcn3660_data },
->>   	{ .compatible = "qcom,wcn3660b", .data = &wcn3680_data },
->>   	{ .compatible = "qcom,wcn3680", .data = &wcn3680_data },
->> +	{ .compatible = "qcom,wcn3680b", .data = &wcn3680_data },
 > 
-> Just make devices compatible and no need for this driver change.
-Or reconsider given <ZS1MTAHq6GLW6RAK@gerhold.net>
+> Looks like MSM8953 has the same RAM setup as MSM8916, where the base
+> address depends on the amount of RAM you have:
+> 
+>    <= 2.00 GiB RAM: 0x80000000
+>     = 3.00 GiB RAM: 0x40000000
+>     = 3.75 GiB RAM: 0x10000000
+What a royal mess
 
 Konrad
