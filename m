@@ -2,139 +2,108 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8167CDB484
-	for <phone-devel@archiver.kernel.org>; Tue, 17 Oct 2023 19:12:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA07ECDB474
+	for <phone-devel@archiver.kernel.org>; Tue, 17 Oct 2023 19:41:05 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344091AbjJQTMl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 17 Oct 2023 15:12:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55378 "EHLO
+        id S234197AbjJQTlF (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 17 Oct 2023 15:41:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343642AbjJQTMl (ORCPT
+        with ESMTP id S235050AbjJQTlE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 17 Oct 2023 15:12:41 -0400
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 910BAB0;
-        Tue, 17 Oct 2023 12:12:39 -0700 (PDT)
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6c4bad60a1aso3656654a34.2;
-        Tue, 17 Oct 2023 12:12:39 -0700 (PDT)
+        Tue, 17 Oct 2023 15:41:04 -0400
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DD8BC6;
+        Tue, 17 Oct 2023 12:41:03 -0700 (PDT)
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-1dd5b98d9aeso3106665fac.0;
+        Tue, 17 Oct 2023 12:41:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697569959; x=1698174759;
+        d=1e100.net; s=20230601; t=1697571663; x=1698176463;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YKOdpoZLrfC7mZi7adYpYhK/nK8naai8II+Wc2lfLxY=;
-        b=VH1fWjwecDmcLNZggU66HmnglpzwHfNtLJEN/PE4vQzDy9eKw+q0Q7I8XXybbRC6CU
-         PynCNYod0cYwmUEiEfpHCQwdMsMx6I7gl/rq9u00lwYama9ZEnurxRbNxWqxtV9fL/lx
-         +1xA2D+KP82NzkPYWgVLmZaDjYfe7/k0x32vAPJYs4RS/7VR5Y0NG0NsI6RlP2Kcy/MX
-         UrJ7VA3X+HxQ/WRCc1EVEOlbA5xBej4Y1QxLuCPa5X5GDCPEPl8xTLWsvHJzpTy2hTT1
-         i3b/rCWdDJTMt4wBQ+h1lDz1qLk8kosHW1rmAvcfbJR3+4ONn3p4BJqf+JdihfLPYHc9
-         EC/g==
-X-Gm-Message-State: AOJu0YzrWEBG8sZWVzpU2LPTXKlQ68NgwYWSGhfq45rB0auwqCWK505t
-        5yPr4mDS5iPR9qhhNCZg8LO8tliKMQ==
-X-Google-Smtp-Source: AGHT+IGkXqhJ5ElPxLv4x+02C3cqbHcjm/YAs7LK6bTEQxHSpBtRkAaBTPSRRFt1R25w+BMNr/s/zA==
-X-Received: by 2002:a05:6830:1d62:b0:6bc:8afe:8a15 with SMTP id l2-20020a0568301d6200b006bc8afe8a15mr2927536oti.38.1697569958861;
-        Tue, 17 Oct 2023 12:12:38 -0700 (PDT)
+        bh=uR3bNC3fTwfH0+mhYEnQAuVSq+ou4a66cQX/8jr0NI4=;
+        b=NRaVK5o3/weqRS13rtDjVoYGGQFc3ZP4GFwbaBT4Y9Vq6hWD8B0LYipKnf/Qbm0WAC
+         TgxGUSwRyX2Y6IyMG9APXfR2MyQ0j3KlnX4ftgnrwc/zLLLqm7sA7TQYY1jwOea/4SYy
+         i/VFSKr/mkgYszBAF8Bhpi5wXyTIoP6lwgK+1HKWEx/17YzSS57+zJfibjDsjfk1LQjO
+         7HQO0jgLp/DxjbY58b72IcakagpRAK1GVimZRUw6P5D8u+rFERVD0ZuCD5mT+orLAuS3
+         gtssOTkKZ45uQQ30Vle2KlO9SNJvrXb8wqvInAIZoES65WlQthxdXH/jesubpabczHcd
+         U6UQ==
+X-Gm-Message-State: AOJu0YyESgxKsTB4BgsErkdwEvM5Oq7FqqBYN1XK0AFugGP3WyGHPYmQ
+        H7MKcczEpJAGwBU70ZTLBsCBv7+X/g==
+X-Google-Smtp-Source: AGHT+IGe43wxLK4YykHPPU0FQkbx4eJdg+n8Sp4kw8kXBTquDgR1Xt7DwrQ1p1kv7FxLUlj0E0nwzA==
+X-Received: by 2002:a05:6870:11d0:b0:1e9:fb1e:870a with SMTP id 16-20020a05687011d000b001e9fb1e870amr1981537oav.3.1697571662697;
+        Tue, 17 Oct 2023 12:41:02 -0700 (PDT)
 Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id q20-20020a05683031b400b006b8c277be12sm359714ots.8.2023.10.17.12.12.37
+        by smtp.gmail.com with ESMTPSA id cj19-20020a05687c041300b001e11ad88f7csm379100oac.30.2023.10.17.12.41.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Oct 2023 12:12:38 -0700 (PDT)
-Received: (nullmailer pid 2529777 invoked by uid 1000);
-        Tue, 17 Oct 2023 19:12:37 -0000
-Date:   Tue, 17 Oct 2023 14:12:37 -0500
+        Tue, 17 Oct 2023 12:41:02 -0700 (PDT)
+Received: (nullmailer pid 2561855 invoked by uid 1000);
+        Tue, 17 Oct 2023 19:41:00 -0000
+Date:   Tue, 17 Oct 2023 14:41:00 -0500
 From:   Rob Herring <robh@kernel.org>
-To:     Neil Armstrong <neil.armstrong@linaro.org>
-Cc:     Luca Weiss <luca.weiss@fairphone.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+To:     Nia Espera <nespera@igalia.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/3] dt-bindings: usb: fsa4480: Add data-lanes property
- to endpoint
-Message-ID: <20231017191237.GA2527374-robh@kernel.org>
-References: <20231013-fsa4480-swap-v1-0-b877f62046cc@fairphone.com>
- <20231013-fsa4480-swap-v1-1-b877f62046cc@fairphone.com>
- <20231016142256.GA2754674-robh@kernel.org>
- <323ff7db-0963-4e63-94e9-551540dd6490@linaro.org>
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        Rob <Me@orbit.sh>, Clayton Craft <clayton@igalia.com>,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH 1/5] iio: adc: add smb139x bindings
+Message-ID: <20231017194100.GA2560880-robh@kernel.org>
+References: <20231016-nia-sm8350-for-upstream-v1-0-bb557a0af2e9@igalia.com>
+ <20231016-nia-sm8350-for-upstream-v1-1-bb557a0af2e9@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <323ff7db-0963-4e63-94e9-551540dd6490@linaro.org>
+In-Reply-To: <20231016-nia-sm8350-for-upstream-v1-1-bb557a0af2e9@igalia.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Mon, Oct 16, 2023 at 04:32:55PM +0200, Neil Armstrong wrote:
-> On 16/10/2023 16:22, Rob Herring wrote:
-> > On Fri, Oct 13, 2023 at 01:38:05PM +0200, Luca Weiss wrote:
-> > > Allow specifying data-lanes to reverse the SBU muxing orientation where
-> > > necessary by the hardware design.
-> > 
-> > What situation in the hardware design makes this necessary. Please
-> > describe the problem.
-> > 
-> > > 
-> > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > > ---
-> > >   .../devicetree/bindings/usb/fcs,fsa4480.yaml       | 29 +++++++++++++++++++++-
-> > >   1 file changed, 28 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml b/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
-> > > index f6e7a5c1ff0b..86f6d633c2fb 100644
-> > > --- a/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
-> > > +++ b/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
-> > > @@ -32,10 +32,37 @@ properties:
-> > >       type: boolean
-> > >     port:
-> > > -    $ref: /schemas/graph.yaml#/properties/port
-> > > +    $ref: /schemas/graph.yaml#/$defs/port-base
-> > >       description:
-> > >         A port node to link the FSA4480 to a TypeC controller for the purpose of
-> > >         handling altmode muxing and orientation switching.
-> > > +    unevaluatedProperties: false
-> > > +
-> > > +    properties:
-> > > +      endpoint:
-> > > +        $ref: /schemas/graph.yaml#/$defs/endpoint-base
-> > > +        unevaluatedProperties: false
-> > > +
-> > > +        properties:
-> > > +          data-lanes:
-> > > +            $ref: /schemas/types.yaml#/definitions/uint32-array
-> > > +            description:
-> > > +              Specifies how the AUX+/- lines are connected to SBU1/2.
-> > 
-> > Doesn't this depend on the connector orientation? Or it is both that and
-> > the lines can be swapped on the PCB?
-> > 
-> > Seems like an abuse of data-lanes which already has a definition which
-> > is not about swapping + and - differential lanes.
+On Mon, Oct 16, 2023 at 02:47:01PM +0200, Nia Espera wrote:
+> Bindings for a charger controller chip found on sm8350
 > 
-> The FSA acts as a mux between DP AUX, Audio lanes on one side and
-> the USB-C SBU lanes on the other side.
-> _______          ______
->       |          |     |
->       |-- HP   --|     |
->       |-- MIC  --|     |or
-> SoC   |          | MUX |-- SBU1 --->  To the USB-C
-> Codec |-- AUX+ --|     |-- SBU2 --->  connected
->       |-- AUX- --|     |
-> ______|          |____ |
+> Signed-off-by: Nia Espera <nespera@igalia.com>
+> ---
+>  include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 > 
-> The SBU1 & SBU2 are connected to the USB-C connector, and the actual orientation
-> to the connected devices/cable/whatever is determined by the TPCM and the MUX in
-> the FSA4480 with be dynamically changed according to the CC1/CC2 detection and PD alt mode.
-> 
-> But on the other side the orientation of the AUX+/AUX- connected to the SoC
-> is not tied to the USB-C orientation but how it's routed on the PCB.
-> 
-> This describes how the AUX+/AUX- are physically routed to the FSA4480 chip.
+> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
+> new file mode 100644
+> index 000000000000..fe163cd8bbdd
+> --- /dev/null
+> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
 
-I'd hate for this ASCII art to go to waste. Please add this detail to 
-the commit message.
+Dual license please (matching Qcom dts files)
 
-Rob
-
+> +/*
+> + * Copyright (c) 2020 The Linux Foundation. All rights reserved.
+> + */
+> +
+> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
+> +#define _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
+> +
+> +#define SMB139x_1_ADC7_SMB_TEMP			(SMB139x_1_SID << 8 | 0x06)
+> +#define SMB139x_1_ADC7_ICHG_SMB			(SMB139x_1_SID << 8 | 0x18)
+> +#define SMB139x_1_ADC7_IIN_SMB			(SMB139x_1_SID << 8 | 0x19)
+> +
+> +#define SMB139x_2_ADC7_SMB_TEMP			(SMB139x_2_SID << 8 | 0x06)
+> +#define SMB139x_2_ADC7_ICHG_SMB			(SMB139x_2_SID << 8 | 0x18)
+> +#define SMB139x_2_ADC7_IIN_SMB			(SMB139x_2_SID << 8 | 0x19)
+> +
+> +#endif
+> 
+> -- 
+> 2.42.0
+> 
