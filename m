@@ -2,163 +2,137 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 66926CDB47E
-	for <phone-devel@archiver.kernel.org>; Wed, 18 Oct 2023 14:59:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 12D74C41513
+	for <phone-devel@archiver.kernel.org>; Wed, 18 Oct 2023 15:46:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235230AbjJRO7z (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 18 Oct 2023 10:59:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42990 "EHLO
+        id S1344748AbjJRPqC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 18 Oct 2023 11:46:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235172AbjJRO7z (ORCPT
+        with ESMTP id S1345325AbjJROoB (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 18 Oct 2023 10:59:55 -0400
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3325F7;
-        Wed, 18 Oct 2023 07:59:53 -0700 (PDT)
-Received: by mail-ot1-x329.google.com with SMTP id 46e09a7af769-6c7c2c428c1so3927697a34.0;
-        Wed, 18 Oct 2023 07:59:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697641193; x=1698245993; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:subject:cc:to:from:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sHyZ+387T3oqeq7HqyYoKhzeb1fsbRphT6DeM11cMrU=;
-        b=UPGQmpPYMWFi+7dT10f6uc6yrlteDkfdqRvQY1jVE5+cNLt2FJrx5hzvRKplwlW2bZ
-         Y5WIo2NXQl7EKxTPwv8kXjalAl9eNd/9vyVyvc2dShyHYaEq8S+kE3Na46JxJElS3rhU
-         QTFUUJYU5yZjxGiI273cD/MTTgtIxh9Tll9dr90mLqV2KeRaverLjyNpIxLgWRI3FPkY
-         XbPCJoRwkIA7rvL+2202LsQcZJzPP0AJV1xT10u/42crogkZ3YuQ1Marrxpv+q44Yq+i
-         6WsSV2sCCIAvAsY/fkR6n5Ycy7+ii2XE6wYeqnWsZEA0UPnIgn++b+WLa8/auj+AaUMJ
-         JMsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697641193; x=1698245993;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:subject:cc:to:from:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sHyZ+387T3oqeq7HqyYoKhzeb1fsbRphT6DeM11cMrU=;
-        b=rI7pZx57fHs6ZynB3HaEmcWb7+HKya7XNg88AhiUSriG3PxQgEKvPD5SAH/0vg7qxb
-         gvc11WsAJEqyKVMurhxoQ+eaWaqcnc/rNm0QyYdin6mtI+iOjwsB9LjYFpwLaO5RmGFt
-         BPJP2a4aSAVUIZQhkhV70OSRxPaDzY5o4wYoQN3cHSCMpbb2FJ+EdWjj78u3RGSwrcb1
-         n7XBZ4QZMameYSeg49HGAAayI2kY4AqIUii0Sd8tehnFCU6tn6M7Is/4FNZ71ofNjchS
-         ArEHTFIP5fF6crfoHGeMkZPZspa+heySnWH/FI0GStd9/z40eqHQQU5iEAV9GR5m13Dk
-         6I9g==
-X-Gm-Message-State: AOJu0Yz3i2C7dUYYmQjfo2ow1V+320Vvezj5OFrPupYXk4dv84M93q7k
-        qE5MdRKi7vPG0PSsdfuPdSc=
-X-Google-Smtp-Source: AGHT+IEzA71SI0QmQIR3m82OpQngFmOKztXN6e8Mqg3eyX7M+EodNAtDriB1JpnpL66F+ts/JJJhBw==
-X-Received: by 2002:a05:6830:92a:b0:6c4:6af2:ea72 with SMTP id v42-20020a056830092a00b006c46af2ea72mr2634754ott.3.1697641192840;
-        Wed, 18 Oct 2023 07:59:52 -0700 (PDT)
-Received: from neuromancer. ([75.28.21.198])
-        by smtp.gmail.com with ESMTPSA id g8-20020a056830308800b006bf0f95f702sm652980ots.64.2023.10.18.07.59.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Oct 2023 07:59:52 -0700 (PDT)
-Message-ID: <652ff2e8.050a0220.2e2de.4666@mx.google.com>
-X-Google-Original-Message-ID: <ZS/y5yxqg4QE2QNH@neuromancer.>
-Date:   Wed, 18 Oct 2023 09:59:51 -0500
-From:   Chris Morgan <macroalpha82@gmail.com>
-To:     Guido =?iso-8859-1?Q?G=FCnther?= <guido.gunther@puri.sm>
-Cc:     Frank Oltmanns <frank@oltmanns.dev>,
-        Ondrej Jirman <megous@megous.com>,
-        Purism Kernel Team <kernel@puri.sm>,
-        Samuel Holland <samuel@sholland.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Ondrej Jirman <megi@xff.cz>, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 1/1] drm/panel: st7703: Pick different reset sequence
-References: <20230211171748.36692-1-frank@oltmanns.dev>
- <20230211171748.36692-2-frank@oltmanns.dev>
- <ZSvf0HIA3GaZlbac@qwark.sigxcpu.org>
+        Wed, 18 Oct 2023 10:44:01 -0400
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F031130;
+        Wed, 18 Oct 2023 07:43:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+        References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=TTb28us/+nt0VyWNDf1G8fD6GssJIzTImInNXKUHMRI=; b=WZZ9RIPWwej6QbEQBJBfXnwDPD
+        /P8nnJp2Hv+LKhF4fe5H04wZbHWrl3xCQJbqcQWm/ZtCo9/W3KUfon9WUxqfKMmxazLHOdzfd3J9A
+        04UyOOugu14uTOU8SvwySvdS9uW2DQYJl07y2EDwQ4bT5HWV2mfKcb8STLKOqbyXsPU0eNAENMBAO
+        8cXrtQH8nORWJatwPOBHNHmqhnWV0xQ9Ugqf0mrYwYXFcRANYo8JzMHy70COJNGRGrKmarEmMzRQW
+        37GWXZ8WkHIRgORS6BmKz+Xjev6NxpbEufCnEOUU+Se3kChfmHwrm6tldb6gZjqcMjvCotZHxS3iO
+        bmGA0qDg==;
+Received: from [145.18.212.154]
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+        id 1qt7ly-001puc-4j; Wed, 18 Oct 2023 16:43:46 +0200
+Message-ID: <a8a63e74-0966-4003-9b9a-be6d956df0d6@igalia.com>
+Date:   Wed, 18 Oct 2023 16:43:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZSvf0HIA3GaZlbac@qwark.sigxcpu.org>
+User-Agent: Thunderbird Daily
+Subject: Re: [PATCH v2 6/6] arm64: dts: qcom: sm8350-lemonade(p): new devices
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Vinod Koul <vkoul@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+        Rob <Me@orbit.sh>, Clayton Craft <clayton@igalia.com>,
+        Caleb Connolly <caleb.connolly@linaro.org>,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        ~postmarketos/upstreaming@lists.sr.ht
+References: <20231018-nia-sm8350-for-upstream-v2-0-7b243126cb77@igalia.com>
+ <20231018-nia-sm8350-for-upstream-v2-6-7b243126cb77@igalia.com>
+ <4810fc83-e232-4c2f-8c82-aefa493b86fe@linaro.org>
+From:   Nia Espera <nespera@igalia.com>
+Autocrypt: addr=nespera@igalia.com; keydata=
+ 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
+ T+I7o407lOB8a/PJA2YXM4VVC/iyMBM=
+In-Reply-To: <4810fc83-e232-4c2f-8c82-aefa493b86fe@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Oct 15, 2023 at 02:49:20PM +0200, Guido Günther wrote:
-> Hi,
-> On Sat, Feb 11, 2023 at 06:17:48PM +0100, Frank Oltmanns wrote:
-> > From: Ondrej Jirman <megi@xff.cz>
-> > 
-> > Switching to a different reset sequence, enabling IOVCC before enabling
-> > VCC.
-> > 
-> > There also needs to be a delay after enabling the supplies and before
-> > deasserting the reset. The datasheet specifies 1ms after the supplies
-> > reach the required voltage. Use 10-20ms to also give the power supplies
-> > some time to reach the required voltage, too.
-> > 
-> > This fixes intermittent panel initialization failures and screen
-> > corruption during resume from sleep on panel xingbangda,xbd599 (e.g.
-> > used in PinePhone).
+
+On 10/18/23 16:34, Krzysztof Kozlowski wrote:
+> On 18/10/2023 16:25, Nia Espera wrote:
+>> Device tree files for OnePlus 9 and 9 Pro. Details of supported features
+>> mentioned in the cover letter for this patch series, but for
+>> accessibility also repeated here:
+>>
 > 
-> Thanks, applied to drm-misc-next.
-> Cheers,
->  -- Guido
-
-Thank you. Probably too late, but this fixes problems I have with a
-different ST7703 based panel.
-
-Tested-by: Chris Morgan <macromorgan@hotmail.com>
-
+> ...
 > 
-> > 
-> > Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> > Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
-> > Reported-by: Samuel Holland <samuel@sholland.org>
-> > ---
-> >  drivers/gpu/drm/panel/panel-sitronix-st7703.c | 25 ++++++++++---------
-> >  1 file changed, 13 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7703.c b/drivers/gpu/drm/panel/panel-sitronix-st7703.c
-> > index 6747ca237ced..45695aa51f62 100644
-> > --- a/drivers/gpu/drm/panel/panel-sitronix-st7703.c
-> > +++ b/drivers/gpu/drm/panel/panel-sitronix-st7703.c
-> > @@ -411,29 +411,30 @@ static int st7703_prepare(struct drm_panel *panel)
-> >  		return 0;
-> >  
-> >  	dev_dbg(ctx->dev, "Resetting the panel\n");
-> > -	ret = regulator_enable(ctx->vcc);
-> > +	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-> > +
-> > +	ret = regulator_enable(ctx->iovcc);
-> >  	if (ret < 0) {
-> > -		dev_err(ctx->dev, "Failed to enable vcc supply: %d\n", ret);
-> > +		dev_err(ctx->dev, "Failed to enable iovcc supply: %d\n", ret);
-> >  		return ret;
-> >  	}
-> > -	ret = regulator_enable(ctx->iovcc);
-> > +
-> > +	ret = regulator_enable(ctx->vcc);
-> >  	if (ret < 0) {
-> > -		dev_err(ctx->dev, "Failed to enable iovcc supply: %d\n", ret);
-> > -		goto disable_vcc;
-> > +		dev_err(ctx->dev, "Failed to enable vcc supply: %d\n", ret);
-> > +		regulator_disable(ctx->iovcc);
-> > +		return ret;
-> >  	}
-> >  
-> > -	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-> > -	usleep_range(20, 40);
-> > +	/* Give power supplies time to stabilize before deasserting reset. */
-> > +	usleep_range(10000, 20000);
-> > +
-> >  	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
-> > -	msleep(20);
-> > +	usleep_range(15000, 20000);
-> >  
-> >  	ctx->prepared = true;
-> >  
-> >  	return 0;
-> > -
-> > -disable_vcc:
-> > -	regulator_disable(ctx->vcc);
-> > -	return ret;
-> >  }
-> >  
-> >  static const u32 mantix_bus_formats[] = {
-> > -- 
-> > 2.39.1
-> > 
+>> +	/* tp_rst_suspend pinctrl is different per device, don't specify here */
+>> +
+>> +	tp_irq_active: tp-irq-active-state {
+>> +		pins = "gpio23";
+>> +		function = "gpio";
+>> +		drive-strength = <8>;
+>> +		bias-disable;
+>> +		input-enable;
+> 
+> It does not look like you tested the DTS against bindings. Please run
+> `make dtbs_check W=1` (see
+> Documentation/devicetree/bindings/writing-schema.rst or
+> https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+> for instructions).
+
+I noticed that dtbs_check was unhappy here, but I figured it's okay to 
+ignore that since it didn't complain in other places (e.g. lines 
+554-555) and assumed the error was just a bug in the yaml. Sorry!
+
+> We shouldn't need to repeat the same comment twice.
+> 
+> Best regards,
+> Krzysztof
+> 
+
+
