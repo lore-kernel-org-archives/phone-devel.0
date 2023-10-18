@@ -2,56 +2,56 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2C6ECDB482
-	for <phone-devel@archiver.kernel.org>; Wed, 18 Oct 2023 14:36:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42959CDB483
+	for <phone-devel@archiver.kernel.org>; Wed, 18 Oct 2023 14:59:51 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345343AbjJROgi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 18 Oct 2023 10:36:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47610 "EHLO
+        id S235219AbjJRO7v (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 18 Oct 2023 10:59:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345620AbjJROgR (ORCPT
+        with ESMTP id S235238AbjJRO7u (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 18 Oct 2023 10:36:17 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05FAA10F3
-        for <phone-devel@vger.kernel.org>; Wed, 18 Oct 2023 07:34:25 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-408002b5b9fso13627605e9.3
-        for <phone-devel@vger.kernel.org>; Wed, 18 Oct 2023 07:34:24 -0700 (PDT)
+        Wed, 18 Oct 2023 10:59:50 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2376C11B
+        for <phone-devel@vger.kernel.org>; Wed, 18 Oct 2023 07:59:48 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-99c3d3c3db9so1110822766b.3
+        for <phone-devel@vger.kernel.org>; Wed, 18 Oct 2023 07:59:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697639663; x=1698244463; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1697641186; x=1698245986; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=6yoGq12UDqR/h6PR2YBg/Pa6GXpxrOAoLFGX9e5FEzo=;
-        b=Wc/wSaBhIloMW06Eiz/HiUjoO/j63Q3OAXUpYw3k4jrgnczMSqh3Ut5tDAsmthvZtY
-         OP0JyamtNe6nSEtlK0XilBuc970IVc0lFemmeFeNM1hDwClxoV2naUW0k9srjbRGlvYb
-         729vGAFmzXG3RZN/sdolUY7g3cRqiCgFuWId2931eVjKTSLCwkNMN61me/KvovBHN2SC
-         3yrMO1anKaYwu/DE8CmX6Y7JmGmpT75VMAMU6ceFKLf1uo6NjFlPEN8nVYCVoO/xU5ra
-         feAgd1emxm9fEbQlw78x63kL7J6heeT3LdZRUaQAjBa2cmA3NeSgyJtbeBRM/oBLKfSg
-         ozJA==
+        bh=sUnVfzDQrB5fC4+6uNcrB1ojZtxtIQMczDD6WVgxqHI=;
+        b=bgOsVzEk/eRHhSkKwVJc9yhepiNwHKGxLFKPEyQDB5D/a6yRZUdWcxG1YYbuGbmedk
+         PZnHx4UKHKNF0eWBLUsvslXjl1tFtiTpE2xoAh4z2uAae1bWWhCM3lBobR2iZwcXiNOy
+         25gQ/mf/H1wxZeUexFGUqJ0ZPtQdHNOMZ/Nf2voufA29/gTLzG0KbHDNObpeCdL56jNI
+         i3GyOaZWtwjnNBwPSlTPMifphx6A3Uhs/huwZQUflVOsK/YmJx300Dyz4A1lwY9R46NV
+         XQcDzRLAyhyPMhqpjNmZ+PC2h4ouyBRpFyjOgraqrhSMhJIuL+tCmBd850S84nuVJE8v
+         KjKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697639663; x=1698244463;
+        d=1e100.net; s=20230601; t=1697641186; x=1698245986;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6yoGq12UDqR/h6PR2YBg/Pa6GXpxrOAoLFGX9e5FEzo=;
-        b=mVzVseTv3gwUHF0C8Fltt1ivJUUDIwwl1YPRuL44Fy80lKHX0cC2jF1U6+akkm398s
-         tqb4Ef7pE2ri7ocMhpQSDG7MaxuEtKp8Tg9+CIOZKqSDwLUAuED5OQ3GX6R3Qm9FxiQT
-         VulydAp6kSX0XLivQV9tZCV+E6Tzsq2BfwwX7PqawR0RC5kFPuhVFpVdRYt7H/xHWGz8
-         6vwWDysiH61lzpsnoN4HMkIZfQsjkvhzg5X4QRMCi7OnD36NM8zqfg3qlLiHbnKvor7z
-         2d3sBPJ/xK3HbpmR1TYgfHHM0R/CKFlpt0XQkekneOsSRTXP8xazAUEiMJg8iTRQfTUE
-         hK7w==
-X-Gm-Message-State: AOJu0YybwBCnxJ4mWZ1B2/YXIZH3P0DY5FbCNYx1q4SiqcmpwY+4ZXL1
-        lkW9NDPTa7n7B4hmIlQ+qsl+QA==
-X-Google-Smtp-Source: AGHT+IF00zcoI7s1rRuTYasM4OxZYRZBSACEjAG88sD9Gtx5tLsu4i/lYhNUYcgVcG24jWwoWmXQtA==
-X-Received: by 2002:a05:6000:b46:b0:31f:f1f4:ca8e with SMTP id dk6-20020a0560000b4600b0031ff1f4ca8emr5103007wrb.36.1697639663446;
-        Wed, 18 Oct 2023 07:34:23 -0700 (PDT)
+        bh=sUnVfzDQrB5fC4+6uNcrB1ojZtxtIQMczDD6WVgxqHI=;
+        b=Bsl/JmK3Z27eeZSCyqDhMff8o5UEnzth7gQz4xQNcx/kEivhUS1xrFs86/3kwbD2Dp
+         aqWZ66YS0g+o/gNl2iRpPcfN9TpQN+hecEIcuUFOfhVs8nqAe2S1TLaK2kxoX8Olamvh
+         Szda4FY47S4Ru96OgyGjqGvBMBJpPMRxkLbirCOTbn3dhRTXVWqXm1PM9i6BhAEhLtWz
+         zqCO8gzxkFt7AJm5dSS8igaobgjO92sfin2BjzIFZ48DAUiAxkR3RnqWmweh/xQXl+ad
+         SATENWyYwJqEL3/ptKQQwTRiyYG2TQVDJejbgeHJJqV4mltMDu5pm9S4jRasTM0wM1ua
+         5enQ==
+X-Gm-Message-State: AOJu0YwZM1Tn6w6L5AtHU8WWCSESeD1fEgTRpvdJ0XVUuBC2MC6PMCt1
+        zagiR39VOF39xUWzuHfQciyZvg==
+X-Google-Smtp-Source: AGHT+IE5KskW1cRlcDlBdz5U5bVFrWsvTPf2ybgVFNnoAqu+PG6MRaRH8tNmJenuVJy47B/Gyw+Bmw==
+X-Received: by 2002:a17:907:d28:b0:9be:5ab2:73c0 with SMTP id gn40-20020a1709070d2800b009be5ab273c0mr5197515ejc.8.1697641186425;
+        Wed, 18 Oct 2023 07:59:46 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.154])
-        by smtp.gmail.com with ESMTPSA id n15-20020a5d4c4f000000b0032dc24ae625sm2254264wrt.12.2023.10.18.07.34.21
+        by smtp.gmail.com with ESMTPSA id 1-20020a170906014100b009bf7a4d591csm1894651ejh.11.2023.10.18.07.59.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Oct 2023 07:34:23 -0700 (PDT)
-Message-ID: <4810fc83-e232-4c2f-8c82-aefa493b86fe@linaro.org>
-Date:   Wed, 18 Oct 2023 16:34:20 +0200
+        Wed, 18 Oct 2023 07:59:46 -0700 (PDT)
+Message-ID: <7207a4f9-5f7f-4859-be2c-bb45afc50383@linaro.org>
+Date:   Wed, 18 Oct 2023 16:59:43 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 6/6] arm64: dts: qcom: sm8350-lemonade(p): new devices
@@ -75,6 +75,8 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht
 References: <20231018-nia-sm8350-for-upstream-v2-0-7b243126cb77@igalia.com>
  <20231018-nia-sm8350-for-upstream-v2-6-7b243126cb77@igalia.com>
+ <4810fc83-e232-4c2f-8c82-aefa493b86fe@linaro.org>
+ <a8a63e74-0966-4003-9b9a-be6d956df0d6@igalia.com>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -120,37 +122,45 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231018-nia-sm8350-for-upstream-v2-6-7b243126cb77@igalia.com>
+In-Reply-To: <a8a63e74-0966-4003-9b9a-be6d956df0d6@igalia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On 18/10/2023 16:25, Nia Espera wrote:
-> Device tree files for OnePlus 9 and 9 Pro. Details of supported features
-> mentioned in the cover letter for this patch series, but for
-> accessibility also repeated here:
+On 18/10/2023 16:43, Nia Espera wrote:
 > 
+> On 10/18/23 16:34, Krzysztof Kozlowski wrote:
+>> On 18/10/2023 16:25, Nia Espera wrote:
+>>> Device tree files for OnePlus 9 and 9 Pro. Details of supported features
+>>> mentioned in the cover letter for this patch series, but for
+>>> accessibility also repeated here:
+>>>
+>>
+>> ...
+>>
+>>> +	/* tp_rst_suspend pinctrl is different per device, don't specify here */
+>>> +
+>>> +	tp_irq_active: tp-irq-active-state {
+>>> +		pins = "gpio23";
+>>> +		function = "gpio";
+>>> +		drive-strength = <8>;
+>>> +		bias-disable;
+>>> +		input-enable;
+>>
+>> It does not look like you tested the DTS against bindings. Please run
+>> `make dtbs_check W=1` (see
+>> Documentation/devicetree/bindings/writing-schema.rst or
+>> https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
+>> for instructions).
+> 
+> I noticed that dtbs_check was unhappy here, but I figured it's okay to 
+> ignore that since it didn't complain in other places (e.g. lines 
+> 554-555) and assumed the error was just a bug in the yaml. Sorry!
 
-...
-
-> +	/* tp_rst_suspend pinctrl is different per device, don't specify here */
-> +
-> +	tp_irq_active: tp-irq-active-state {
-> +		pins = "gpio23";
-> +		function = "gpio";
-> +		drive-strength = <8>;
-> +		bias-disable;
-> +		input-enable;
-
-It does not look like you tested the DTS against bindings. Please run
-`make dtbs_check W=1` (see
-Documentation/devicetree/bindings/writing-schema.rst or
-https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sources-with-the-devicetree-schema/
-for instructions).
-
-We shouldn't need to repeat the same comment twice.
+There are no other DTS having this property for TLMM, so you could not
+have seen this in other boards.
 
 Best regards,
 Krzysztof
