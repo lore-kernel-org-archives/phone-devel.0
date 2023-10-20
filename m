@@ -2,136 +2,178 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 312D6C07480
-	for <phone-devel@archiver.kernel.org>; Fri, 20 Oct 2023 09:34:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB692CDB474
+	for <phone-devel@archiver.kernel.org>; Fri, 20 Oct 2023 09:49:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376710AbjJTJeS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 Oct 2023 05:34:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53842 "EHLO
+        id S1376601AbjJTJtf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 Oct 2023 05:49:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376760AbjJTJdr (ORCPT
+        with ESMTP id S1376670AbjJTJte (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 20 Oct 2023 05:33:47 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63AE219BA
-        for <phone-devel@vger.kernel.org>; Fri, 20 Oct 2023 02:33:28 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9c5b313b3ffso92056066b.0
-        for <phone-devel@vger.kernel.org>; Fri, 20 Oct 2023 02:33:28 -0700 (PDT)
+        Fri, 20 Oct 2023 05:49:34 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A90141AE
+        for <phone-devel@vger.kernel.org>; Fri, 20 Oct 2023 02:49:31 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9c5b313b3ffso94081966b.0
+        for <phone-devel@vger.kernel.org>; Fri, 20 Oct 2023 02:49:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1697794404; x=1698399204; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wBM6ErArjaeuBbIlwBAlMfcfi+6e43gtVVtakkQbEgY=;
-        b=aBYf6lF9OSoYYDPCHhRiksf2aJVMbKAK+E69a1WdAN9bnaaEF2vOud7VRVAQScOcna
-         6CoYbcm+aCLtPOhj0aqPuc+yTpwpjrjFDptuxwPcrECww+bGFiirr1ua/4SVesOU4mnl
-         tQvt7tLPg5AuVLyLc2JYLDwZvlo5RIblVG4YDfy/6sI/8Scq6htvmmyXwqsinRnCy3Ys
-         IHGXUDg31gx65gHdLLqHO2Is1MaOSkrp5ZfMRSPk8yfrY84AHVZBROpoKScHxJylCUMj
-         Bz0ywNAd7vmBE0S44ERwaS+akUeITa8Q+02bzzlIeNppdyArdQSG75KpP6V0E3hYutsX
-         fJ1A==
+        d=fairphone.com; s=fair; t=1697795370; x=1698400170; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y44OW1J6JIDiZk1ndwKKkQEZ9MRTX8zlFxWnOFyWMHw=;
+        b=GCvScr0TGlDunaG0QzaIyfycIG6wgJJ6B0+8dBGBYJXTpCAA6WTsHDWQQtXKKWc3XE
+         i9pHZ/BUWamiqauziyqvZHtGqjHmSNm6bunSSqq3KMqcPCufLIDCsirwo6QM5h0FkyUA
+         zqCaYPrUgMRJZSzr+6SzfjA3zzNQieg67d8nPaJ+x2bfebw6KIx0jNKRDrR4SVQTUBbz
+         /7T0PJDwATQbTFd13QFRlt77XgEhQiYGfIj2F9UkTfMeYsTmGwWTDcHweSzK0+aXKsje
+         j6WhSZHMUOlMwE+9Y8vA9sYyQIn2NQcVes4s+/UDGWxYTZO98UQTRRyFW3wpzUtf/ptn
+         haCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697794404; x=1698399204;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wBM6ErArjaeuBbIlwBAlMfcfi+6e43gtVVtakkQbEgY=;
-        b=mLyCzAv9kcKVoTTxYWe2MUGssFw2vrAHwPBRD/XKDIMRtElEtc8O6yoSyv/LwBip6p
-         2K8Frv8bT9Cueflnu5Si1RNaEBHnMalfbNSThZnjxFz2se4EETu2Yu5NaaljywcRFuzx
-         MgEM33VKHbEpo+uBg0MM1XSY7Ko5aL3IaysDfcL/TBwboOt+/Lur5tTuMtqrRuSUoG34
-         BQ2ZJo0xixS0bG6hnvXZsw+E42uML7Kc01dVx+rPzOQvkCh/qxiWY3OLICWA04NOUiAc
-         8SBDl7ABsdn1hi2YJkGMmUSUfAdfTyOS4+TKVJeYxISFLNmfixqcwod94fCfbzwOwC4L
-         /Kkw==
-X-Gm-Message-State: AOJu0YwJ9q5Y1vO2zUirpwWgRmHzgQbsdxtT7O6h7V0a9+SuNxoLafCB
-        HZrzr96e/3CgFTjABGItWKVDeQ==
-X-Google-Smtp-Source: AGHT+IEmwTBub4TTdlz1jMLWOrqXIJ66kAQDBOiG76tfqbcR00lkfhKrg/qt9xMsw3VGkkS/X7RPHA==
-X-Received: by 2002:a17:907:786:b0:9c4:41c9:6ac6 with SMTP id xd6-20020a170907078600b009c441c96ac6mr1006182ejb.33.1697794404139;
-        Fri, 20 Oct 2023 02:33:24 -0700 (PDT)
-Received: from otso.luca.vpn.lucaweiss.eu (k10064.upc-k.chello.nl. [62.108.10.64])
-        by smtp.gmail.com with ESMTPSA id t15-20020a1709066bcf00b009a13fdc139fsm1102535ejs.183.2023.10.20.02.33.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Oct 2023 02:33:23 -0700 (PDT)
-From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Fri, 20 Oct 2023 11:33:20 +0200
-Subject: [PATCH v2 3/3] dt-bindings: usb: fsa4480: Add compatible for
- OCP96011
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231020-fsa4480-swap-v2-3-9a7f9bb59873@fairphone.com>
-References: <20231020-fsa4480-swap-v2-0-9a7f9bb59873@fairphone.com>
-In-Reply-To: <20231020-fsa4480-swap-v2-0-9a7f9bb59873@fairphone.com>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.12.3
+        d=1e100.net; s=20230601; t=1697795370; x=1698400170;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=y44OW1J6JIDiZk1ndwKKkQEZ9MRTX8zlFxWnOFyWMHw=;
+        b=ZGDNy8fpwRf12JmQgwa7DZ722qt2bDi1EUD4hS4XMo6cvUOmLVciwMs1UVkP63qFPD
+         5LfTtP52J8zRcWFIEcgigR9BBdD/9cDDwRIv/fkK/+KBlKCo820DQBcvkaFHYr6AF9ko
+         QM2nRR48mRhQFVMelECTER3oJYTWw5p8FT75N2qxsxcurLgD6vWEo7tLm18MZ1htDiBc
+         bRfrMweWauv3xFWlClK9QTJDRSyN5XNvcLxLkMNB4+6YGLuVHSXkRG6/dggAi9HLnCPI
+         VrE7SqUCXp1dsJ7BHaiZcFj+QCf9pbQqoW4gu0bCzjoCI2SDXtwocyekCo0/dYCemOZS
+         zk/A==
+X-Gm-Message-State: AOJu0YxvxG6bbjJiE+rg0px4Or02qIym/S2Ry/K/OO5o8fRvVP7W5tbW
+        65PoNSvAFJHLcrDEltpmG6o2Tg==
+X-Google-Smtp-Source: AGHT+IEV1HsuFwDhHijM/7iC+A50rGae2ktwLJK4dZ7FF06nmrK6c3QxSHS7T8JUbYnkd0qj59n6bA==
+X-Received: by 2002:a17:907:c18:b0:9be:bf31:335f with SMTP id ga24-20020a1709070c1800b009bebf31335fmr989381ejc.46.1697795370105;
+        Fri, 20 Oct 2023 02:49:30 -0700 (PDT)
+Received: from localhost (k10064.upc-k.chello.nl. [62.108.10.64])
+        by smtp.gmail.com with ESMTPSA id pw7-20020a17090720a700b00992ea405a79sm1139574ejb.166.2023.10.20.02.49.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Oct 2023 02:49:28 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 20 Oct 2023 11:49:27 +0200
+Message-Id: <CWD6889N9X4U.3N5P65PFK5XK1@fairphone.com>
+Cc:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        "Rob Herring" <robh+dt@kernel.org>,
+        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        "Conor Dooley" <conor+dt@kernel.org>,
+        "Liam Girdwood" <lgirdwood@gmail.com>,
+        "Mark Brown" <broonie@kernel.org>,
+        "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH 2/2] usb: typec: add support for PTN36502 redriver
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     <neil.armstrong@linaro.org>,
+        "Heikki Krogerus" <heikki.krogerus@linux.intel.com>
+X-Mailer: aerc 0.15.2
+References: <20231013-ptn36502-v1-0-98109a430efc@fairphone.com>
+ <20231013-ptn36502-v1-2-98109a430efc@fairphone.com>
+ <ZS5HAQrUObdhHSdV@kuha.fi.intel.com>
+ <CWD1MKL68P2V.1QBJXJ0E5U171@fairphone.com>
+ <f29c43c6-0e73-4c04-9180-6c6088ab1f8a@linaro.org>
+In-Reply-To: <f29c43c6-0e73-4c04-9180-6c6088ab1f8a@linaro.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The Orient-Chip OCP96011 is generally compatible with the FSA4480, add a
-compatible for it with the fallback on fsa4480.
+On Fri Oct 20, 2023 at 9:18 AM CEST, Neil Armstrong wrote:
+> On 20/10/2023 08:13, Luca Weiss wrote:
+> > On Tue Oct 17, 2023 at 10:34 AM CEST, Heikki Krogerus wrote:
+> >> Hi,
+> >>
+> >> On Fri, Oct 13, 2023 at 04:24:48PM +0200, Luca Weiss wrote:
+> >>> Add a driver for the NXP PTN36502 Type-C USB 3.1 Gen 1 and DisplayPor=
+t
+> >>> v1.2 combo redriver.
+> >>>
+> >>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> >>
+> >> Looks OK to me, but couple of nitpicks below. With those fixed:
+> >>
+> >> Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+> >>
+> >>> ---
+> >>>   drivers/usb/typec/mux/Kconfig    |  10 +
+> >>>   drivers/usb/typec/mux/Makefile   |   1 +
+> >>>   drivers/usb/typec/mux/ptn36502.c | 421 ++++++++++++++++++++++++++++=
++++++++++++
+> >>>   3 files changed, 432 insertions(+)
+> >>>
 
-However the AUX/SBU connections are expected to be swapped compared to
-FSA4480, so document this in the data-lanes description.
+[snip]
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+> >>> +#define PTN36502_CHIP_ID_REG				0x00
+> >>> +#define PTN36502_CHIP_ID				0x02
+> >>> +
+> >>> +#define PTN36502_CHIP_REVISION_REG			0x01
+> >>> +#define PTN36502_CHIP_REVISION_BASE(val)		FIELD_GET(GENMASK(7, 4), (=
+val))
+> >>> +#define PTN36502_CHIP_REVISION_METAL(val)		FIELD_GET(GENMASK(3, 0), =
+(val))
+> >>> +
+> >>> +#define PTN36502_DP_LINK_CTRL_REG			0x06
+> >>> +#define PTN36502_DP_LINK_CTRL_LANES_2			(2 << 2)
+> >>> +#define PTN36502_DP_LINK_CTRL_LANES_4			(3 << 2)
+> >>> +#define PTN36502_DP_LINK_CTRL_LINK_RATE_5_4GBPS		(2 << 0)
+> >>> +
+> >>> +/* Registers for lane 0 (0x07) to lane 3 (0x0a) have the same layout=
+ */
+> >>> +#define PTN36502_DP_LANE_CTRL_REG(n)			(0x07 + (n))
+> >>> +#define PTN36502_DP_LANE_CTRL_RX_GAIN_3DB		(2<<4)
+> >>> +#define PTN36502_DP_LANE_CTRL_TX_SWING_800MVPPD		(2<<2)
+> >>> +#define PTN36502_DP_LANE_CTRL_PRE_EMPHASIS_3_5DB	(1<<0)
+> >>> +
+> >>> +#define PTN36502_MODE_CTRL1_REG				0x0b
+> >>> +#define PTN36502_MODE_CTRL1_PLUG_ORIENT_REVERSE		(1<<5)
+> >>> +#define PTN36502_MODE_CTRL1_AUX_CROSSBAR_SW_ON		(1<<3)
+> >>> +#define PTN36502_MODE_CTRL1_MODE_OFF			(0<<0)
+> >>> +#define PTN36502_MODE_CTRL1_MODE_USB_ONLY		(1<<0)
+> >>> +#define PTN36502_MODE_CTRL1_MODE_USB_DP			(2<<0)
+> >>> +#define PTN36502_MODE_CTRL1_MODE_DP			(3<<0)
+> >>> +
+> >>> +#define PTN36502_DEVICE_CTRL_REG			0x0d
+> >>> +#define PTN36502_DEVICE_CTRL_AUX_MONITORING_EN		(1<<7)
+> >>
+> >> You have couple of different styles here. Please try to always use
+> >> BIT() and GENMASK() macros when possible. At the very least put spaces
+> >> around << and >>.
+> >=20
+> > Hi Heikki,
+> >=20
+> > I was wondering when writing that whether GENMASK was actually proper
+> > use for values you write to registers, when not actually used as a
+> > bitmask.
+> >=20
+> > Since the datasheet refers to e.g. with TX_SWING_800MVPPD (2<<2) that
+> > you write a '2' to the correct bits of this register. But when using
+> > BIT(3) kind of hides this relationship if someone refers back to the
+> > datasheet. Or same with "3<<2" -> GENMASK(3, 2) or whatever.
+>
+> The proper way is to define the MASK for the field GENMASK(3, 2) and then
+> use FIELD_PREP(GENMASK(3, 2), 2) to write 2 in this field.
+>
+> You could replace with:
+> #define PTN36502_DP_LANE_CTRL_TX_SWING_MASK		GENMASK(3, 2)
+> #define PTN36502_DP_LANE_CTRL_TX_SWING_800MVPPD		(2)
+>
+> and in the code
+> lane_ctrl_val =3D FIELD_PREP(PTN36502_DP_LANE_CTRL_RX_GAIN_MASK,
+> 			   PTN36502_DP_LANE_CTRL_RX_GAIN_3DB) |
+> 		FIELD_PREP(PTN36502_DP_LANE_CTRL_TX_SWING_MASK,
+> 			   PTN36502_DP_LANE_CTRL_TX_SWING_800MVPPD) |
+> 		FIELD_PREP(PTN36502_DP_LANE_CTRL_PRE_EMPHASIS_MASK,
+> 			   PTN36502_DP_LANE_CTRL_PRE_EMPHASIS_3_5DB);
+>
+> It's a little more verbose but it's much clearer and defines stuff correc=
+tly,
+> no confusion possible.
 
-diff --git a/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml b/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
-index 86f6d633c2fb..f9410eb76a62 100644
---- a/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
-+++ b/Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml
-@@ -11,8 +11,12 @@ maintainers:
- 
- properties:
-   compatible:
--    enum:
--      - fcs,fsa4480
-+    oneOf:
-+      - const: fcs,fsa4480
-+      - items:
-+          - enum:
-+              - ocs,ocp96011
-+          - const: fcs,fsa4480
- 
-   reg:
-     maxItems: 1
-@@ -53,16 +57,22 @@ properties:
-                   - const: 0
-                   - const: 1
-                 description: |
--                  Default AUX/SBU layout
-+                  Default AUX/SBU layout (FSA4480)
-                   - AUX+ connected to SBU2
-                   - AUX- connected to SBU1
-+                  Default AUX/SBU layout (OCP96011)
-+                  - AUX+ connected to SBU1
-+                  - AUX- connected to SBU2
-               - items:
-                   - const: 1
-                   - const: 0
-                 description: |
--                  Swapped AUX/SBU layout
-+                  Swapped AUX/SBU layout (FSA4480)
-                   - AUX+ connected to SBU1
-                   - AUX- connected to SBU2
-+                  Swapped AUX/SBU layout (OCP96011)
-+                  - AUX+ connected to SBU2
-+                  - AUX- connected to SBU1
- 
- required:
-   - compatible
+Thanks for the advise, I'll update for v2!
 
--- 
-2.42.0
-
+Regards
+Luca
