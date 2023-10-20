@@ -2,131 +2,107 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 789D8CDB474
-	for <phone-devel@archiver.kernel.org>; Fri, 20 Oct 2023 10:09:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44405CDB474
+	for <phone-devel@archiver.kernel.org>; Fri, 20 Oct 2023 10:36:07 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376863AbjJTJdv (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 20 Oct 2023 05:33:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44840 "EHLO
+        id S1376933AbjJTKgG (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 20 Oct 2023 06:36:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376877AbjJTJdk (ORCPT
+        with ESMTP id S1376981AbjJTKf7 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 20 Oct 2023 05:33:40 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9792510D8
-        for <phone-devel@vger.kernel.org>; Fri, 20 Oct 2023 02:33:23 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-53db360294fso826864a12.3
-        for <phone-devel@vger.kernel.org>; Fri, 20 Oct 2023 02:33:23 -0700 (PDT)
+        Fri, 20 Oct 2023 06:35:59 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9553B170F
+        for <phone-devel@vger.kernel.org>; Fri, 20 Oct 2023 03:35:51 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-53fc7c67a41so1216126a12.0
+        for <phone-devel@vger.kernel.org>; Fri, 20 Oct 2023 03:35:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1697794402; x=1698399202; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1697798150; x=1698402950; darn=vger.kernel.org;
         h=cc:to:content-transfer-encoding:mime-version:message-id:date
          :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/B2a2ZXqLwls1Vsw3h8JmPF3a45COfQmKittozQNWE4=;
-        b=kvsXwxgbbBHLrKSqKTT2LlGy7jtyy9VqQKk4e9XS5oHt79uosPExgdSzyY+wSI8Wcp
-         gd+GRl9EADqF5z47SjLWcXBBM7N+AdB5z0JZy8fLzkTOXDo6ZLdWvLi2p09deVy0qWr5
-         lQidFsZzjsRJHGy7fnR7xYFOFLlMFhe+iCo6jZzx8tZHcryIKZ9M7YXmlrztqetyr6Tc
-         U2BrSwV+yby/sxVS1JKklGCgYJtHVGchhlwWxIG6aj0Qzuz3CSvAtPubKF9ZOgvOKb7+
-         WmZbFyFhQXSuOcUWIq1GiR+IdFiMLvHNfMqSSvinAEIL3iySOEtvllMj0hK1vjM5AGOH
-         EUew==
+        bh=GPV3+mSCa7UCq+L+t94qLITay8xgJ9TNT1tiFr6+L2c=;
+        b=im8LOf5Aa3rFTDlDd4uCcX98bBMcf5l9mwHcjs9CvBC0Cy1QhSvKJZBurpHsBmNtHz
+         akkOXLnSw+J1iIWa9jgI/4tyLTzWBRcAY9zL9d/gMFFO41A7RQ55wuDndVqqCA2XuP84
+         PHXxz68Ify+PA6KM7RPdiogAZDkmCwjJkjvwmsikOez4B4PvYZ9p6Huqv5VtwYQG8Xrl
+         dcMrzsIlTtEEU9MPj9Za6vBI4zgYd3N99YFvSrn1NWUMcntIEBgPtaPSYRMzHywTOGwJ
+         2sVlHfr/mOK2iKcG3LLSGK7aSYMp0nIlfanqtgFtRvtz1Rg1d96tL3leJQDZ+Zv4IIJE
+         Hukg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697794402; x=1698399202;
+        d=1e100.net; s=20230601; t=1697798150; x=1698402950;
         h=cc:to:content-transfer-encoding:mime-version:message-id:date
          :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/B2a2ZXqLwls1Vsw3h8JmPF3a45COfQmKittozQNWE4=;
-        b=J80fhaW7Q3I3APj9oQJCZ6NmRSFOpz78hPaMKFlRChXRK/aAhoHbSTxnkU7ORzUUht
-         YQ2r6LOhCkEByIT9JVdw/b9YvcK8dTkp7daej93We0cPFqfJQqcxDBxvX75VmLN7uGiY
-         Xb8cadPZ1Mwn05HF3fuE3OZQEJiTLLVB0VDs78SVP96dZPpxXlahA4+DhRGMjXxMxSah
-         gMog5YQnhHm71nPvjO29dXwb3AwfxlU+7F7j4QDCVZyWMKCJSm2WFtLuW1XsQC7XAdDX
-         hY7UjYKAcXC0YOkWu8kPrygs2nU+ryDZ/3tdLQBhOTnn7xy6bYZE+FbOU2mw6TwmeFLr
-         jxIw==
-X-Gm-Message-State: AOJu0YxioMnYSYYMJ3nmihxBuVMy/G7neIggs0fyhXiAaLHfWH3sxMuQ
-        Chihu2+CAj6NtK+UlNGmj6R9Fg==
-X-Google-Smtp-Source: AGHT+IFVzakVPdt1/cwktBRmr1g7l+TM3g6ka7ob34Ou2CK7EFqYB723oYUCwfieN9a13Q1zXeTLhA==
-X-Received: by 2002:a17:907:7ea3:b0:9c6:10d4:d09f with SMTP id qb35-20020a1709077ea300b009c610d4d09fmr993488ejc.63.1697794401731;
-        Fri, 20 Oct 2023 02:33:21 -0700 (PDT)
+        bh=GPV3+mSCa7UCq+L+t94qLITay8xgJ9TNT1tiFr6+L2c=;
+        b=VGeHEWoNHS1kE3xlhIJXE9iBAyTOegfXW+dAKWO7t48Sb9DG/CnwJhNhz18t68+MMY
+         KG7gv6D87Og6ji76ZVyfnSMRCnz+Wg4gw56M2UEbr5YSZQycLBCrRwNRiQZkTUYcX0nj
+         V/vFJdtTarFlHst2AQVbdOuDtiRZjEF/VFXYC13cazavl5fIMyRyYC1dLPy1V9TOhPBz
+         s71P6ouZE+rKmoQh1g5jRCxtYxGvUXB01r8qiMT3hTrEZScj6XMlUusPitN/CuKhJLJN
+         zRnp2FOlZzVd4Xzw5IyaXcPo5GTVCsw+goQmhcgr7iKhL8iVfUOvnsH5tN6fanGXNvXh
+         ZdTg==
+X-Gm-Message-State: AOJu0Yzuxoam5gdNJ6zRl64LjibBGNYc7wpra9UIMmbube18Q8noM4Uf
+        1GuPmY9qyUcfGbme4x/WiSXjUw==
+X-Google-Smtp-Source: AGHT+IHJToqlCc02RJhLLsWDtbne22EHGQDujcGIxJ09VOwX3CVtjhc4BmJbIkc8DjNLMYWuZ6+PBw==
+X-Received: by 2002:a17:907:728f:b0:9a5:7dec:fab9 with SMTP id dt15-20020a170907728f00b009a57decfab9mr4012688ejc.9.1697798149982;
+        Fri, 20 Oct 2023 03:35:49 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (k10064.upc-k.chello.nl. [62.108.10.64])
-        by smtp.gmail.com with ESMTPSA id t15-20020a1709066bcf00b009a13fdc139fsm1102535ejs.183.2023.10.20.02.33.20
+        by smtp.gmail.com with ESMTPSA id h7-20020a1709063c0700b0099c53c4407dsm1226701ejg.78.2023.10.20.03.35.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Oct 2023 02:33:21 -0700 (PDT)
+        Fri, 20 Oct 2023 03:35:49 -0700 (PDT)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH v2 0/3] Handle reversed SBU orientation for FSA4480
-Date:   Fri, 20 Oct 2023 11:33:17 +0200
-Message-Id: <20231020-fsa4480-swap-v2-0-9a7f9bb59873@fairphone.com>
+Subject: [PATCH v2 0/2] Add driver for NXP PTN36502 Type-C redriver
+Date:   Fri, 20 Oct 2023 12:35:45 +0200
+Message-Id: <20231020-ptn36502-v2-0-b37a337d463e@fairphone.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAF1JMmUC/3XMSw7CIBSF4a00dyyGV6B15D5MB5SC3IHQgEFNw
- 97Fzh3+JznfDsVldAUuww7ZVSyYYg9+GsAGE++O4NobOOWCUSaIL0bKkZLyMhuZFuq1WrWwbIJ
- +2bLz+D6429w7YHmm/Dn0yn7rH6gyQskyau0Vp1JZe/UG8xZSdGebHjC31r4InkxlrAAAAA==
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
+X-B4-Tracking: v=1; b=H4sIAAFYMmUC/23Myw7CIBCF4VdpZi1mAOlt5XuYLggd7CyEBhqia
+ fruYtcu/5OTb4dMiSnD2OyQqHDmGGqoSwNuseFJgufaoFBpiVKLdQu6NaiEsX1HBrtZtw7qfU3
+ k+X1Sj6n2wnmL6XPKRf7WP0iRAsXQSxzsTSN5d/eW07rEQFcXXzAdx/EFaEvHCKQAAAA=
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        Luca Weiss <luca.weiss@fairphone.com>
+        linux-usb@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Short reason:
-Without swapping the SBU lanes, on QCM6490 Fairphone 5 the
-DisplayPort-over-USB-C doesn't work.
-
-The Orient-Chip OCP96011 used in this phone is generally compatible with
-FSA4480 but has a difference how AUX+/- should be connected to SBU1/2.
-
-Long explanation, with my current understanding:
-* FSA4480 block diagram shows AUX+ connected to SBU2 and AUX- to SBU1.
-* OCP96011 block diagram shows AUX+ connected to SBU1 and AUX- to SBU2
-  (it's not 100% clear though in the picture but makes sense with the
-  observed behavior)
-* Fairphone 5 schematics have AUX+ connected to SBU2 and AUX- to SBU1,
-  which would be correct for FSA4480 but since OCP96011 is used (which
-  expects it to be the other way around) the Linux driver needs to
-  reverse it.
-  If AUX+ would be connected to SBU1 and AUX- to SBU2 as shown in the
-  OCP96011 block diagram, then no driver/dts change would be needed.
-
-Not sure if I've implemented the best solution in this patch. Other
-solutions I could think of are:
-* Add some custom boolean property to the node, e.g. 'fsa,swap-sbu'
-* Reverse when ocs,ocp96011 compatible is used. This would be incorrect
-  since when following the OCP96011 block diagram no reversing would be
-  needed, as explained above.
-
-However I think the current solution with data-lanes in the endpoint is
-the best fit and is also already used for a similar purpose in another
-USB mux driver.
+The NXP PTN36502 is used in the Fairphone 5 smartphone, add a driver for
+it so we can soon enable DisplayPort over USB-C on this phone.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
 Changes in v2:
-- Expand commit message for first dt-bindings patch incl. ASCII art
-- Use fwnode_* instead of_* APIs
-- Drop manual check for data-lanes property length, read_u32_array will
-  already error on too short or too long property.
-- Drop dev_info for reversed data-lanes mapping
-- Link to v1: https://lore.kernel.org/r/20231013-fsa4480-swap-v1-0-b877f62046cc@fairphone.com
+- Use FIELD_PREP+GENMASK for register values
+- Move FIELD_GET for chip revision from macro to code (to align with
+  new register definition style)
+- Fix bad code alignment at ptn36502_bridge_attach function
+- Pick up tags
+- Link to v1: https://lore.kernel.org/r/20231013-ptn36502-v1-0-98109a430efc@fairphone.com
 
 ---
-Luca Weiss (3):
-      dt-bindings: usb: fsa4480: Add data-lanes property to endpoint
-      usb: typec: fsa4480: Add support to swap SBU orientation
-      dt-bindings: usb: fsa4480: Add compatible for OCP96011
+Luca Weiss (2):
+      dt-bindings: usb: add NXP PTN36502 Type-C redriver bindings
+      usb: typec: add support for PTN36502 redriver
 
- .../devicetree/bindings/usb/fcs,fsa4480.yaml       | 43 ++++++++++++-
- drivers/usb/typec/mux/fsa4480.c                    | 71 ++++++++++++++++++++++
- 2 files changed, 111 insertions(+), 3 deletions(-)
+ .../devicetree/bindings/usb/nxp,ptn36502.yaml      |  94 +++++
+ drivers/usb/typec/mux/Kconfig                      |  10 +
+ drivers/usb/typec/mux/Makefile                     |   1 +
+ drivers/usb/typec/mux/ptn36502.c                   | 444 +++++++++++++++++++++
+ 4 files changed, 549 insertions(+)
 ---
 base-commit: e3b18f7200f45d66f7141136c25554ac1e82009b
-change-id: 20231013-fsa4480-swap-9b0f76d73c19
+change-id: 20231013-ptn36502-5a87e507d36c
 
 Best regards,
 -- 
