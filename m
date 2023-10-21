@@ -2,65 +2,68 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B332C001E0
-	for <phone-devel@archiver.kernel.org>; Sat, 21 Oct 2023 07:16:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8411CC001E0
+	for <phone-devel@archiver.kernel.org>; Sat, 21 Oct 2023 14:31:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229686AbjJUHQ3 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 21 Oct 2023 03:16:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59832 "EHLO
+        id S231295AbjJUObX (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 21 Oct 2023 10:31:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbjJUHQ2 (ORCPT
+        with ESMTP id S231178AbjJUObX (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 21 Oct 2023 03:16:28 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FB5AD79;
-        Sat, 21 Oct 2023 00:16:25 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-9bf0ac97fdeso228634266b.2;
-        Sat, 21 Oct 2023 00:16:25 -0700 (PDT)
+        Sat, 21 Oct 2023 10:31:23 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F9AFD68
+        for <phone-devel@vger.kernel.org>; Sat, 21 Oct 2023 07:31:17 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-4083740f92dso14465145e9.3
+        for <phone-devel@vger.kernel.org>; Sat, 21 Oct 2023 07:31:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697872583; x=1698477383; darn=vger.kernel.org;
+        d=aceart.de; s=google; t=1697898675; x=1698503475; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=319tOWKiJxTmOU+nAUz609yxNAFpaNDWP/G7nIp2qzU=;
-        b=i3ZgMJs7SRd58uk17jQYoyK3XIpmj4eha5pKpc8RKgzZiLpQUpAA+onu0H88M1BB33
-         vosslIoVtnWilOssmowBv94ik7nXykn6xcz/x5O7ucV+IhFXBwsrVS3t9VkNggM06gRT
-         gh0oiy6KEjW3sT5hHmgmlITOqh0zyodPD/KEWpXGPd/2r5yxxYMmJ6vwQWkHSCQNQNQT
-         XuvHnrF9JjbJR5jzoydjnLH+kCrIE+TsAyk32LE56w6QrgjrZ4TLghIbx4GUsbMNUgHb
-         VOX+rssSu5NOKPy1c7AHB3OG8D34sN1zRsP2N2gsTWnCvPbgi2zUvzW9BJulEGnY+92l
-         4pAw==
+        bh=5LJpDlIiRiwiuxdMoVURDKmaMGrN9X/vug2AO0xEv5U=;
+        b=H2rCcNXpA3jXDGeFbK9mj8zF5cR2vDU+1i0xbHxt+sZWDm4AduF7VCfvOLyUAPMkKz
+         UFK5RyKuwDR/TA4qlKctoO9TRXTz6deIZKcaceDcbCFJ1F7qfM5o/FMrOF72QRys7eY8
+         MXuckKa1UOfOOBGSskPKrnU3OeF0dT3MOuiF7TYYydCDFLbhZIfN+2dGmi+pkGCUjdcP
+         H/O0AY4oV7xvkmLuibBmpPHo9lNG+fAUbPrbfuOBmd+6jxajtYDC91qsxAjuVrbzwmBn
+         jkn65jw76k+WiVFm+VJ6878wSeLQ5qSXWJFZ/aMPy+7y5qY4+d/JFZfg9QhTnoeBFekz
+         iMrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697872583; x=1698477383;
+        d=1e100.net; s=20230601; t=1697898675; x=1698503475;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=319tOWKiJxTmOU+nAUz609yxNAFpaNDWP/G7nIp2qzU=;
-        b=Pq1G6FP1LOgV+pmaOXBkIUWZZmhtIv3Xq95buKEm+a0XSI7x7ftVaVbefzmV7RmZX1
-         rW7zl/4bBvCESKkMa42fJCxC8Mh2XhKV1FOEG2XN5LFOY953lFVQO/fMIEM/eaYluBwX
-         uumR2haNGsfXWua12n+WbrsVCNMGukxxBsBqe+4zLj+aODzHrIkNkpwajlqU88a0ZCcU
-         JVIwgbGOjjHb5/JenP0Gb+I/burF5oellGYCZ2GOhsVH/i7CZ+zE3WsFltX8eO1F8AHW
-         x2G4IGu4BofH3naiORZuh05CMuRvgtPFGc8J7NrcDg7tfRN7uz7JFEC4I4QFCstgCusq
-         77kA==
-X-Gm-Message-State: AOJu0YzuAJodXPmpfFab7+DeKVJ/5kRRYRXGlFTcEBahpO2Reycr6wg3
-        A9KcFUAzQMSh/ZdbIVSHE1A=
-X-Google-Smtp-Source: AGHT+IG39ADzdAQp/8lOcwMvnmWHY3WX5i0z7a25QTQrnwEW962Woy8xP2oOCPaDakreZrUU/rVAjg==
-X-Received: by 2002:a17:907:31c5:b0:9c3:cefa:93c0 with SMTP id xf5-20020a17090731c500b009c3cefa93c0mr2732945ejb.38.1697872583289;
-        Sat, 21 Oct 2023 00:16:23 -0700 (PDT)
-Received: from david-ryuzu.fritz.box ([188.195.202.64])
-        by smtp.googlemail.com with ESMTPSA id c11-20020a170906340b00b009be23a040cfsm2992035ejb.40.2023.10.21.00.16.22
+        bh=5LJpDlIiRiwiuxdMoVURDKmaMGrN9X/vug2AO0xEv5U=;
+        b=deq7fw3PNBMVQrmhL+0Fu1Rp89UhQnc1Eqad0t5BpZB16cKmwi74YBBlYPykP5n+9D
+         zuhj783xt83H7m3aWnxXWwknGi2gHY3/lWbHBjcmDzqsKIH/zKbF1bHnJzbk8uBRsvoA
+         btDzEAPdp8hw4TRvRit4vdEB4lCwrdXLnE71a54/5/q2Muf9ZAca88M7XIkt/M71tKu/
+         yQ+yaSmYTz3SD664oNmDrTpuR1O+rA391c/nEVSS1q/iBS96Dvx+pxTFfem7CUkRdvf3
+         HPXbrvzYwuYTbE0dHORycJ2Jam/OoTINFAcTkQoxsEXi831LIqeFAnghoTz83c5tQHC/
+         gMBQ==
+X-Gm-Message-State: AOJu0YwwMYV3IZXV1+E0rByEa3Gqv1dGN1D/lGbau1Hds5S8U1bq6EUt
+        00RWMRHfpiY4rA3okrJbJYdfLw==
+X-Google-Smtp-Source: AGHT+IGNJjyZb+7Uajr8RQ49cwaAVeZxiqb20qecfa04uv1b45gqac/gM6EA8xUjxJMHl12ZkWoRgw==
+X-Received: by 2002:a05:600c:4ec6:b0:408:54be:d961 with SMTP id g6-20020a05600c4ec600b0040854bed961mr2901184wmq.35.1697898675050;
+        Sat, 21 Oct 2023 07:31:15 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:8070:d89:b820:87f5:4b33:b582:39f3])
+        by smtp.gmail.com with ESMTPSA id u3-20020a5d5143000000b003296b488961sm3793917wrt.31.2023.10.21.07.31.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Oct 2023 00:16:22 -0700 (PDT)
-From:   David Wronek <davidwronek@gmail.com>
-To:     Rob Herring <robh+dt@kernel.org>,
+        Sat, 21 Oct 2023 07:31:14 -0700 (PDT)
+From:   Lukas Walter <lukas.walter@aceart.de>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        devicetree@vger.kernel.org, Joe Mason <buddyjojo06@outlook.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        David Wronek <davidwronek@gmail.com>
-Subject: [PATCH] dt-bindings: arm: cpus: Add Qualcomm Kryo 465
-Date:   Sat, 21 Oct 2023 09:16:19 +0200
-Message-ID: <20231021071619.187374-1-davidwronek@gmail.com>
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Lukas Walter <lukas.walter@aceart.de>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 1/2] dt-bindings: arm: qcom: Add Huawei Honor 5X / GR5 (2016)
+Date:   Sat, 21 Oct 2023 16:30:24 +0200
+Message-ID: <20231021143025.77088-1-lukas.walter@aceart.de>
 X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -68,25 +71,26 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add a compatible for the Qualcomm Kryo 465 found in SM7125.
+Add a compatible for Huawei Honor 5X / GR5 (2016).
 
-Signed-off-by: David Wronek <davidwronek@gmail.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Lukas Walter <lukas.walter@aceart.de>
 ---
- Documentation/devicetree/bindings/arm/cpus.yaml | 1 +
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/arm/cpus.yaml b/Documentation/devicetree/bindings/arm/cpus.yaml
-index ad7fee0245fa..ffd526363fda 100644
---- a/Documentation/devicetree/bindings/arm/cpus.yaml
-+++ b/Documentation/devicetree/bindings/arm/cpus.yaml
-@@ -190,6 +190,7 @@ properties:
-       - qcom,kryo280
-       - qcom,kryo360
-       - qcom,kryo385
-+      - qcom,kryo465
-       - qcom,kryo468
-       - qcom,kryo485
-       - qcom,kryo560
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index 7f80f48a0954..20d914b21847 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -191,6 +191,7 @@ properties:
+ 
+       - items:
+           - enum:
++              - huawei,kiwi
+               - longcheer,l9100
+               - samsung,a7
+               - sony,kanuti-tulip
 -- 
 2.42.0
 
