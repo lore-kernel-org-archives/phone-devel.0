@@ -2,363 +2,232 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5A59C004C0
-	for <phone-devel@archiver.kernel.org>; Sat, 21 Oct 2023 14:31:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 55998C25B41
+	for <phone-devel@archiver.kernel.org>; Sat, 21 Oct 2023 16:22:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231325AbjJUOb2 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 21 Oct 2023 10:31:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42784 "EHLO
+        id S231710AbjJUQWn (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 21 Oct 2023 12:22:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229588AbjJUOb0 (ORCPT
+        with ESMTP id S231805AbjJUQWm (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 21 Oct 2023 10:31:26 -0400
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ABD2D46
-        for <phone-devel@vger.kernel.org>; Sat, 21 Oct 2023 07:31:21 -0700 (PDT)
-Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-3226cc3e324so1395994f8f.3
-        for <phone-devel@vger.kernel.org>; Sat, 21 Oct 2023 07:31:21 -0700 (PDT)
+        Sat, 21 Oct 2023 12:22:42 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD92C10F0
+        for <phone-devel@vger.kernel.org>; Sat, 21 Oct 2023 09:22:26 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2b95d5ee18dso30214091fa.1
+        for <phone-devel@vger.kernel.org>; Sat, 21 Oct 2023 09:22:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=aceart.de; s=google; t=1697898680; x=1698503480; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vEdsvcnRCtzaJRF8/fcLniBSlcoD/EU26r1797EAi0g=;
-        b=UuOBPDWXRi5RdcbEmkl7pKjDLq/7Xpe5WV3to8O5lqNk7Yqekq0+kgQo4/pnSyrfV0
-         R8vSjZj88ilsuVYmDmlDmZNnu5wpbjSdEGii8sjVc8D2JlBgWH/F67bbl0gYSYDr2tou
-         iIpHzvWgvSgvE+MtOoEttd8+Hljjarw5xDou8sgMHP/cnkWMHezXoEdfLeiMRs3vGDUJ
-         GyEp/yRheTYyVK8+KwNMpTYbIxFBhtM5pTH/NVkvAnAwFyVmOWwT4d23ru3nXKL6Rfw1
-         Itj0h2V2u+v1wKb/In8D+pZwPASPDdJzZQzUcDzic1kMN8417T1BXqnSjCV3w1r6yi8m
-         Mx1w==
+        d=linaro.org; s=google; t=1697905345; x=1698510145; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bq4OEcwD40oryiY81T817LlNpOkk1oBYf6X08dXM5lM=;
+        b=HZc0/7LiCDpQAz3/J1MM0KFQ7YwQAmYjW00L7nzTWJ3UgqmXmXS8qbmOD+Cie6Xq+5
+         jLLdLgdntKRTKRFnN+qeYfYSUvSRyHOx9GptSJAf/UljTKJAMFGOosCosZ4XCbrAQcmA
+         CiGvAGhWJqCIdrtl43pOCZyPyoQHwZTTlX5qBS2/nG3on5uOEnfvYnpe0z3XYfnmfRmk
+         n09SD6aWmwvYy0wdItPnk5uyyIlnva+QCk1KtkfdPB3lyEHYdDWsfBOpQOP29WqZX+NE
+         NMyUxmn4X1PpOyj68Uc7Nr5JhnB7GPygEldsRhYXAzTvOwn7q12Skr1POjgp79jBnMT4
+         XrAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697898680; x=1698503480;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vEdsvcnRCtzaJRF8/fcLniBSlcoD/EU26r1797EAi0g=;
-        b=gcRpNfT0WuUJcOFkfqhWdAicgje4FP5tiICfCwYYRJ8SQQ6+8ONURi093NK8+jG5TX
-         IL+//bWMP+12WJeZ+jHKoH4KhDyUZEB1dmJFjNiMW3u1BXp1KhgywZOh3ixoJ/u+tW83
-         FXXSgRkwxaBOSuxMg0XCBBaBfycmxKAZHthzRpbAax/S8WhQsaB58gaJKgM8cr1sYY4q
-         iijRTP5SdIdYvP/PnPhpzGZLQcSwaihqOP6PAoe9xSdVlaXN4UfCNy36YbEH+y0gfHbu
-         Ut23dK1cSnzGNZq6yrfBV8iH2RB+njmJUwr7zSynPwU8F4WkwVkjpujeZtyYc8giTOtR
-         /EJw==
-X-Gm-Message-State: AOJu0YyDkRt6PTmJ4uOC5O8gqnxCQ8eHMqhC0UqLC5ZLr+AYsAfK3DFu
-        FWy1d7QULjiq8tlwnTknr/K08Q==
-X-Google-Smtp-Source: AGHT+IEXvFAzkZ7YvjWvEMB1Qn0ukiDRTVTG7SBdY0dCn1jAaGuuAayvcAUZkuUPg2AgXobK/sLQRw==
-X-Received: by 2002:a5d:670c:0:b0:32d:82b4:1957 with SMTP id o12-20020a5d670c000000b0032d82b41957mr3697249wru.40.1697898679753;
-        Sat, 21 Oct 2023 07:31:19 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:8070:d89:b820:87f5:4b33:b582:39f3])
-        by smtp.gmail.com with ESMTPSA id u3-20020a5d5143000000b003296b488961sm3793917wrt.31.2023.10.21.07.31.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Oct 2023 07:31:19 -0700 (PDT)
-From:   Lukas Walter <lukas.walter@aceart.de>
-To:     Andy Gross <agross@kernel.org>,
+        d=1e100.net; s=20230601; t=1697905345; x=1698510145;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bq4OEcwD40oryiY81T817LlNpOkk1oBYf6X08dXM5lM=;
+        b=r87tk3m1utON1kh8quhSI3Ot0rm9TYrg2/T13wLx9C2kGI3cMFknDJwsmM/9DFb8Sr
+         z9kuU1mVH1WI4GNyxbgOmcxM81zZme9uBxALeTbWtM645JVOo/5jLSTTbrvUzeWHvFNy
+         uXKKThBqyE6iwC+UJ+vwiQLO0YY035PvDmvU3NJGxDQyHAXR+vXu6/vZ0nwvNRkETe79
+         9/3WvkTav9Y1icG4xEtWdO/ivjzcoqbDqeXtlI5JHX2BzKJGAqyZYBg+izPB0r3YtLxt
+         78EVc1J5O44XYf9P1itZlwxkIEppWVBBCqtxoZz3UMRrTn7tuUGZyPEUSgz3y9w6mZg8
+         Zsiw==
+X-Gm-Message-State: AOJu0Yw3twf6KTWnHLltK/hOi/qUlHNA16WjBJShXrpvmhbZST60niYG
+        wT4WwTvjs3FqPZoQVBgtkhGOvg==
+X-Google-Smtp-Source: AGHT+IE4SQlDKL3C8DoT4QQEe8B1Xg/q1a1xGIoy+N5YYsQVIl2h3Ew9Mq7OT46yW7hK/1Y9L5ZQrw==
+X-Received: by 2002:a2e:a690:0:b0:2bf:f670:36dc with SMTP id q16-20020a2ea690000000b002bff67036dcmr2963289lje.49.1697905344949;
+        Sat, 21 Oct 2023 09:22:24 -0700 (PDT)
+Received: from [192.168.1.116] (abyl4.neoplus.adsl.tpnet.pl. [83.9.31.4])
+        by smtp.gmail.com with ESMTPSA id j10-20020a2e3c0a000000b002b657f10b78sm867290lja.58.2023.10.21.09.22.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Oct 2023 09:22:24 -0700 (PDT)
+Message-ID: <9a37d4a4-dcdf-4c39-8059-b640969f242a@linaro.org>
+Date:   Sat, 21 Oct 2023 18:22:22 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] arm64: dts: qcom: qcm6490-fairphone-fp5: Add PM7325
+ thermals
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>, Luca Weiss <luca@z3ntu.xyz>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Lukas Walter <lukas.walter@aceart.de>,
-        Raymond Hackley <raymondhackley@protonmail.com>
-Subject: [PATCH 2/2] arm64: dts: qcom: msm8939-huawei-kiwi: Add initial device tree
-Date:   Sat, 21 Oct 2023 16:30:25 +0200
-Message-ID: <20231021143025.77088-2-lukas.walter@aceart.de>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231021143025.77088-1-lukas.walter@aceart.de>
-References: <20231021143025.77088-1-lukas.walter@aceart.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        ~postmarketos/upstreaming@lists.sr.ht
+Cc:     phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        devicetree@vger.kernel.org
+References: <20231013-fp5-thermals-v1-0-f14df01922e6@fairphone.com>
+ <20231013-fp5-thermals-v1-4-f14df01922e6@fairphone.com>
+ <34da335e-cbcd-4dc2-8a86-f31369db1fcd@linaro.org>
+ <4958673.31r3eYUQgx@z3ntu.xyz>
+ <5ac0d16a-0303-46c7-a008-31280629cc11@linaro.org>
+ <CWD8E95B0W8L.1UMMGJXJF47D@fairphone.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <CWD8E95B0W8L.1UMMGJXJF47D@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This dts adds support for Huawei Honor 5X / GR5 (2016) smartphone
-released in 2015.
 
-Add device tree with initial support for:
 
-- GPIO keys
-- Hall sensor
-- SDHCI (internal and external storage)
-- WCNSS (BT/WIFI)
-- Sensors (accelerometer and proximity)
-- Vibrator
-- Touchscreen
+On 10/20/23 13:31, Luca Weiss wrote:
+> On Wed Oct 18, 2023 at 10:28 PM CEST, Konrad Dybcio wrote:
+>>
+>>
+>> On 10/14/23 19:52, Luca Weiss wrote:
+>>> On Samstag, 14. Oktober 2023 01:13:29 CEST Konrad Dybcio wrote:
+>>>> On 13.10.2023 10:09, Luca Weiss wrote:
+>>>>> Configure the thermals for the QUIET_THERM, CAM_FLASH_THERM, MSM_THERM
+>>>>> and RFC_CAM_THERM thermistors connected to PM7325.
+>>>>>
+>>>>> With this PMIC the software communication to the ADC is going through
+>>>>> PMK7325 (= PMK8350).
+>>>>>
+>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>>> ---
+>>>>>
+>>>>>    arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 117
+>>>>>    +++++++++++++++++++++ 1 file changed, 117 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+>>>>> b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts index
+>>>>> 2c01f799a6b2..d0b1e4e507ff 100644
+>>>>> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+>>>>> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+>>>>> @@ -9,6 +9,7 @@
+>>>>>
+>>>>>    #define PM7250B_SID 8
+>>>>>    #define PM7250B_SID1 9
+>>>>>
+>>>>> +#include <dt-bindings/iio/qcom,spmi-adc7-pm7325.h>
+>>>>>
+>>>>>    #include <dt-bindings/iio/qcom,spmi-adc7-pmk8350.h>
+>>>>>    #include <dt-bindings/leds/common.h>
+>>>>>    #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+>>>>>
+>>>>> @@ -137,6 +138,20 @@ afvdd_2p8: regulator-afvdd-2p8 {
+>>>>>
+>>>>>    	};
+>>>>>    	
+>>>>>    	thermal-zones {
+>>>>>
+>>>>> +		camera-thermal {
+>>>>> +			polling-delay-passive = <0>;
+>>>>> +			polling-delay = <0>;
+>>>>> +			thermal-sensors = <&pmk8350_adc_tm 2>;
+>>>>> +
+>>>>> +			trips {
+>>>>> +				active-config0 {
+>>>>> +					temperature = <125000>;
+>>>>
+>>>> are
+>>>>
+>>>>> +		rear-cam-thermal {
+>>>>>
+>>>>> +					temperature = <125000>;
+>>>>
+>>>> you
+>>>>
+>>>>> +		sdm-skin-thermal {
+>>>>>
+>>>>> +					temperature = <125000>;
+>>>>
+>>>> sure
+>>>>
+>>>> about these temps?
+>>>
+>>> (email from my other address, quicker right now)
+>>>
+>>> Well yes and no.
+>>>
+>>> Yes as in those are the temps specified in downstream dtb.
+>>> No as in I'm 99% sure there's user space with definitely lower threshold that
+>>> actually does something in response to the temps.
+>>>
+>>> I didn't look too much into this but does the kernel even do something when it
+>>> hits one of these trip points? I assume when there's a cooling device thing
+>>> specified then it can actually tell the driver to do something, but without
+>>> (and most drivers don't support this?) I'm assuming the kernel can't do much
+>>> anyways?
+>>>
+>>> So e.g. when the temperature for the flash led is reached I'm assuming
+>>> downstream (+Android) either dims the led or turns it off? But I'd have to dig
+>>> quite a bit into the thermal setup there to check what it's really doing.
+>> I think reaching "critical" shuts down the platform, unless something
+>> registering the thermal zone explicitly overrides the behavior.
+> 
+> Should probably be easy to test, especially the camera flash thermal
+> zone heats up *very* quickly when the flash is on, so should be trivial
+> to set the trip point down from 125degC to e.g. 45degC and see what
+> happens.
+> 
+> So I did this and... nothing happened.
+> I watched /sys/class/thermal/thermal_zone34/temp climb above 45degC and
+> nothing happened.
+> 
+> I guess trip type being "passive" and no cooling-device makes it not do
+> anything.
+> 
+>    ==> /sys/class/thermal/thermal_zone34/trip_point_0_hyst <==
+>    1000
+>    ==> /sys/class/thermal/thermal_zone34/trip_point_0_temp <==
+>    45000
+>    ==> /sys/class/thermal/thermal_zone34/trip_point_0_type <==
+>    passive
+> 
+>  From Documentation/devicetree/bindings/thermal/thermal-zones.yaml:
+> 
+>    - active   # enable active cooling e.g. fans
+>    - passive  # enable passive cooling e.g. throttling cpu
+>    - hot      # send notification to driver
+>    - critical # send notification to driver, trigger shutdown
+> 
+> So unless we want to just shut down the system (with "critical"), I
+> don't think thermal can't really do anything else right now, since e.g.
+> leds-qcom-flash.c driver doesn't have any cooling support to lower the
+> brightness or turn off the LED.
+> 
+> So.. in essence not much we can do right now.
+Yeah.. crashing the phone because the LED is too hot is sorta
+suboptimal! Though I mainly had the skin temp in mind..
 
-Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
-Signed-off-by: Lukas Walter <lukas.walter@aceart.de>
----
-Changes in v2:
-- Switch Signed-off-by order
-- Specify reserved-memory region usage
----
- arch/arm64/boot/dts/qcom/Makefile             |   1 +
- .../boot/dts/qcom/msm8939-huawei-kiwi.dts     | 242 ++++++++++++++++++
- 2 files changed, 243 insertions(+)
- create mode 100644 arch/arm64/boot/dts/qcom/msm8939-huawei-kiwi.dts
+> 
+> But seems we also cannot remove this (kinda useless) trip since we need
+> at least one trip point in the dts if I read the bindings yaml
+> correctly.
+Right
 
-diff --git a/arch/arm64/boot/dts/qcom/Makefile b/arch/arm64/boot/dts/qcom/Makefile
-index d6cb840b7050..1b3057c1a68d 100644
---- a/arch/arm64/boot/dts/qcom/Makefile
-+++ b/arch/arm64/boot/dts/qcom/Makefile
-@@ -45,6 +45,7 @@ dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-thwc-uf896.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-thwc-ufi001c.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-wingtech-wt88047.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8916-yiming-uz801v3.dtb
-+dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-huawei-kiwi.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-longcheer-l9100.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-samsung-a7.dtb
- dtb-$(CONFIG_ARCH_QCOM)	+= msm8939-sony-xperia-kanuti-tulip.dtb
-diff --git a/arch/arm64/boot/dts/qcom/msm8939-huawei-kiwi.dts b/arch/arm64/boot/dts/qcom/msm8939-huawei-kiwi.dts
-new file mode 100644
-index 000000000000..3cec51891aed
---- /dev/null
-+++ b/arch/arm64/boot/dts/qcom/msm8939-huawei-kiwi.dts
-@@ -0,0 +1,242 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+/dts-v1/;
-+
-+#include "msm8939-pm8916.dtsi"
-+#include <dt-bindings/gpio/gpio.h>
-+
-+/ {
-+	model = "Huawei Honor 5X / GR5 (2016)";
-+	compatible = "huawei,kiwi", "qcom,msm8939";
-+	chassis-type = "handset";
-+
-+	aliases {
-+		mmc0 = &sdhc_1; /* SDC1 eMMC slot */
-+		mmc1 = &sdhc_2; /* SDC2 SD card slot */
-+		serial0 = &blsp_uart2;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0";
-+	};
-+
-+	reserved-memory {
-+		qseecom_mem: qseecom@84a00000 {
-+			reg = <0x0 0x84a00000 0x0 0x1600000>;
-+			no-map;
-+		};
-+	};
-+
-+	gpio-hall-sensor {
-+		compatible = "gpio-keys";
-+
-+		pinctrl-0 = <&gpio_hall_sensor_default>;
-+		pinctrl-names = "default";
-+
-+		label = "GPIO Hall Effect Sensor";
-+
-+		event-hall-sensor {
-+			label = "Hall Effect Sensor";
-+			gpios = <&tlmm 69 GPIO_ACTIVE_LOW>;
-+			linux,input-type = <EV_SW>;
-+			linux,code = <SW_LID>;
-+			linux,can-disable;
-+		};
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+
-+		pinctrl-0 = <&gpio_keys_default>;
-+		pinctrl-names = "default";
-+
-+		label = "GPIO Buttons";
-+
-+		button-volume-up {
-+			label = "Volume Up";
-+			gpios = <&tlmm 107 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEUP>;
-+		};
-+	};
-+
-+	usb_id: usb-id {
-+		compatible = "linux,extcon-usb-gpio";
-+		id-gpios = <&tlmm 110 GPIO_ACTIVE_HIGH>;
-+		pinctrl-0 = <&usb_id_default>;
-+		pinctrl-names = "default";
-+	};
-+};
-+
-+&blsp_i2c2 {
-+	status = "okay";
-+
-+	accelerometer@1e {
-+		compatible = "kionix,kx023-1025";
-+		reg = <0x1e>;
-+
-+		vdd-supply = <&pm8916_l17>;
-+		vddio-supply = <&pm8916_l6>;
-+		pinctrl-0 = <&accel_int_default>;
-+		pinctrl-names = "default";
-+		mount-matrix = "-1", "0", "0",
-+			       "0", "1", "0",
-+			       "0", "0", "1";
-+	};
-+
-+	proximity@39 {
-+		compatible = "avago,apds9930";
-+		reg = <0x39>;
-+
-+		interrupt-parent = <&tlmm>;
-+		interrupts = <113 IRQ_TYPE_EDGE_FALLING>;
-+
-+		vdd-supply = <&pm8916_l17>;
-+		vddio-supply = <&pm8916_l6>;
-+
-+		led-max-microamp = <25000>;
-+		amstaos,proximity-diodes = <0>;
-+
-+		pinctrl-0 = <&prox_irq_default>;
-+		pinctrl-names = "default";
-+	};
-+};
-+
-+&blsp_i2c5 {
-+	status = "okay";
-+
-+	touchscreen@1c {
-+		compatible = "cypress,tt21000";
-+
-+		reg = <0x1c>;
-+		interrupt-parent = <&tlmm>;
-+		interrupts = <13 IRQ_TYPE_EDGE_FALLING>;
-+
-+		reset-gpios = <&tlmm 12 GPIO_ACTIVE_LOW>;
-+
-+		/*
-+		 * NOTE: vdd is not directly supplied by pm8916_l16, it seems to be a
-+		 * fixed regulator that is automatically enabled by pm8916_l16.
-+		 */
-+		vdd-supply = <&pm8916_l16>;
-+		vddio-supply = <&pm8916_l16>;
-+
-+		pinctrl-0 = <&touchscreen_default>;
-+		pinctrl-names = "default";
-+	};
-+};
-+
-+&blsp_uart2 {
-+	status = "okay";
-+};
-+
-+&pm8916_l8 {
-+	regulator-min-microvolt = <2950000>;
-+	regulator-max-microvolt = <2950000>;
-+};
-+
-+&pm8916_resin {
-+	linux,code = <KEY_VOLUMEDOWN>;
-+	status = "okay";
-+};
-+
-+&pm8916_rpm_regulators {
-+	pm8916_l16: l16 {
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
-+	pm8916_l17: l17 {
-+		regulator-min-microvolt = <2850000>;
-+		regulator-max-microvolt = <2850000>;
-+	};
-+};
-+
-+&pm8916_vib {
-+	status = "okay";
-+};
-+
-+&sdhc_1 {
-+	status = "okay";
-+};
-+
-+&sdhc_2 {
-+	pinctrl-0 = <&sdc2_default &sdc2_cd_default>;
-+	pinctrl-1 = <&sdc2_sleep &sdc2_cd_default>;
-+	pinctrl-names = "default", "sleep";
-+
-+	cd-gpios = <&tlmm 38 GPIO_ACTIVE_HIGH>;
-+
-+	status = "okay";
-+};
-+
-+&usb {
-+	extcon = <&usb_id>, <&usb_id>;
-+	status = "okay";
-+};
-+
-+&usb_hs_phy {
-+	extcon = <&usb_id>;
-+};
-+
-+&wcnss {
-+	status = "okay";
-+};
-+
-+&wcnss_iris {
-+	compatible = "qcom,wcn3620";
-+};
-+
-+&wcnss_mem {
-+	status = "okay";
-+};
-+
-+&tlmm {
-+	accel_int_default: accel-int-default-state {
-+		pins = "gpio115";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
-+		pins = "gpio69";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	gpio_keys_default: gpio-keys-default-state {
-+		pins = "gpio107";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-pull-up;
-+	};
-+
-+	prox_irq_default: prox-irq-default-state {
-+		pins = "gpio113";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	sdc2_cd_default: sdc2-cd-default-state {
-+		pins = "gpio38";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	touchscreen_default: touchscreen-default-state {
-+		pins = "gpio12", "gpio13";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
-+	usb_id_default: usb-id-default-state {
-+		pins = "gpio110";
-+		function = "gpio";
-+		drive-strength = <8>;
-+		bias-pull-up;
-+	};
-+};
--- 
-2.42.0
+> 
+>>
+>>>
+>>> But for now I think it's okay to put this current thermal config into dts and
+>>> we'll improve it later when 1. I understand more and 2. maybe some useful
+>>> drivers support the cooling bits?
+>> Yeah it's better than nothing, but ultimately we should probably move
+>> the values that userspace daemon operates on here in the dt..
+> 
+> For sure.. I spent a bit of time looking into the proprietary Qualcomm
+> thermal-daemon sources but didn't really see much interesting things
+> there for this platform, maybe some of this thermal handling is
+> somewhere else - or half of these thermal zones aren't even used with
+> Android.
+> 
+> So.. good to get the current patch upstream or not? :)
+Yep, just having the ability to read out thing is always good ;)
 
+Konrad
