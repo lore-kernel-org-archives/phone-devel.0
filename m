@@ -2,43 +2,46 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D299ECDB474
-	for <phone-devel@archiver.kernel.org>; Sun, 22 Oct 2023 16:22:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9972CDB474
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Oct 2023 16:23:54 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232588AbjJVQWD (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 Oct 2023 12:22:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56718 "EHLO
+        id S231903AbjJVQXx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 Oct 2023 12:23:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232711AbjJVQVf (ORCPT
+        with ESMTP id S232055AbjJVPqN (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 22 Oct 2023 12:21:35 -0400
+        Sun, 22 Oct 2023 11:46:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AA5B188;
-        Sun, 22 Oct 2023 09:21:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22584C433CA;
-        Sun, 22 Oct 2023 16:21:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70D22F4;
+        Sun, 22 Oct 2023 08:46:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B12C433C9;
+        Sun, 22 Oct 2023 15:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697991690;
-        bh=nbDc5cjQUnF9X99btn9OHL2gzyTJ84ZS3/J4fySDlmE=;
+        s=k20201202; t=1697989572;
+        bh=UFQMux8mJrhRG1jHtuMxgySyVsftohzaHt3B3BYT308=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NydAZHVspub/Jbmr5pimoNdQ2v84pj04Xs5m17M2ft5IX9WLJzd/0fhJHa4qF/14t
-         0DNGHE5RPLfTFXRg+MIAPVxH0OK9OlDJSfonlvwUd8JAYfUiXzRF4a6lgFRyQwx48P
-         mA3tCt6oGSg/gIQckpyv7KSIGZp21oumrUvJGoM6vLndL1XOe/zc6XVZxqvp1upkF9
-         QFBJqcNPzz6M5OXfdy08z5yqZVVC9uzigYwLjzIfiSEtjnF3uef6TfcLghH1PrmFjj
-         pM+JtLWkyYeLO5lwZeCOXYQotuJwK85rqonWnJTrJdkpAcCLbVSaEcPgbXM5RSrlCO
-         Nxn+nscE1IxwQ==
+        b=POeBEqAe91tjxitPUfPpIjYTGL6Y/vQ4chi1wcBZ/dL4mRbB/vfgRF3AzsDzCtm4x
+         3L33IgO+WFuU5nTahxy1thP5or6nykuTuryI3SS+1tBaDYS4t8JdYv3lC3EEVi8YyH
+         R2gueOxeKE096PVEMQ81ScQY3RsZfGFYBPw7N+BZXCQG+NdSM2pdB87wmai3MzIPuW
+         VN89KVnd7Ryf4bniqj1BFr2OmR8A5D/5vNPQQrYkA8tcv34Bmvwm1JufISLXSZV46s
+         lGq906v9GcTRbQTdMxLIqrr2cXmRYIcgUNkN6yOtNJs8BuTGqFVSwcMnLDv/CMW+yz
+         l8HTldCNOVc3g==
 From:   Bjorn Andersson <andersson@kernel.org>
-To:     Andy Gross <agross@kernel.org>,
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Andy Gross <agross@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Luca Weiss <luca.weiss@fairphone.com>
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] soc: qcom: pmic_glink_altmode: Print return value on error
-Date:   Sun, 22 Oct 2023 09:25:51 -0700
-Message-ID: <169799194925.679418.4138128502032758267.b4-ty@kernel.org>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, Luca Weiss <luca@z3ntu.xyz>
+Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: qcom: msm8226: provide dsi phy clocks to mmcc
+Date:   Sun, 22 Oct 2023 08:50:19 -0700
+Message-ID: <169798982357.271027.4496714712357504780.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231017-glink-altmode-ret-v2-1-921aa7cfc381@fairphone.com>
-References: <20231017-glink-altmode-ret-v2-1-921aa7cfc381@fairphone.com>
+In-Reply-To: <20230712-msm8226-dsi-clock-fixup-v1-1-71010b0b89ca@z3ntu.xyz>
+References: <20230712-msm8226-dsi-clock-fixup-v1-1-71010b0b89ca@z3ntu.xyz>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,17 +50,17 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-On Tue, 17 Oct 2023 10:00:23 +0200, Luca Weiss wrote:
-> It can be useful to know with which return value for example the
-> typec_retimer_set call failed, so include this info in the dev_err
-> prints.
+On Wed, 12 Jul 2023 09:52:07 +0200, Luca Weiss wrote:
+> Some mmcc clocks have dsi0pll & dsi0pllbyte as clock parents so we
+> should provide them in the dt, which I missed in the commit adding the
+> mdss nodes.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] soc: qcom: pmic_glink_altmode: Print return value on error
-      commit: 723d346173e748c4fdb145b84f572b871ab4011a
+[1/1] ARM: dts: qcom: msm8226: provide dsi phy clocks to mmcc
+      commit: 836d083524888069cd358776a4e6c4ceec04962e
 
 Best regards,
 -- 
