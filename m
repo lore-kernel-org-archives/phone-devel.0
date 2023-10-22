@@ -2,81 +2,74 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A46A2C001DF
-	for <phone-devel@archiver.kernel.org>; Sun, 22 Oct 2023 17:31:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 92C87CDB474
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Oct 2023 22:36:38 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232478AbjJVRbL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 Oct 2023 13:31:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48890 "EHLO
+        id S231569AbjJVWgi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 Oct 2023 18:36:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbjJVRbK (ORCPT
+        with ESMTP id S229500AbjJVWgh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 22 Oct 2023 13:31:10 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 771F5E5;
-        Sun, 22 Oct 2023 10:31:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B6BC433C8;
-        Sun, 22 Oct 2023 17:31:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697995868;
-        bh=xIa81NLUBml5MoS2Eb3kkSqN1ZIghfNeP9hiSlzUH1A=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hzAt1VabW6duveqB+z3dICSEWrqt9VsVnC0iGerJXDVutrrQ3RPrvRAb17u/S4miQ
-         AR0wwKAyW+F3mbb1M9COYxgh3b1h2pLza2D9VUc3LpW2edvGjMsw1F0fgwOnU4YExb
-         vQ8GKVmWOCcKGtGECvOb68yz+p+8HjHzXOdURqwjuFYnrfSUIUKqDs0e2VsDJ5XyAX
-         IElUICMjwaB3hrzS9SfdIV7hqHuR3Q1PbDXdfU2BIpKZYFomxCV07vgn7SRdAYxIIC
-         qi1tm0ffkcJ4BLKpKti+UqrL8srAGFS6d0kZ64b+sGuEih/DXeVP02rGaIrSF4KY1P
-         jC+1JkrxllYng==
-Date:   Sun, 22 Oct 2023 18:31:03 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     lukas walter <lukas.walter@aceart.de>
-Cc:     agross@kernel.org, andersson@kernel.org, conor+dt@kernel.org,
-        devicetree@vger.kernel.org, konrad.dybcio@linaro.org,
-        krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        phone-devel@vger.kernel.org, robh+dt@kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: Add Huawei Honor 5X / GR5
- (2016)
-Message-ID: <20231022-sequester-atypical-325eadda7a15@spud>
-References: <20231022-arousal-glowing-f72c8f2e44fa@spud>
- <fc5234cd33b78369f792479795abd02710dfcdbf.camel@aceart.de>
+        Sun, 22 Oct 2023 18:36:37 -0400
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EDDEFB;
+        Sun, 22 Oct 2023 15:36:35 -0700 (PDT)
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3b2f28caab9so1847762b6e.1;
+        Sun, 22 Oct 2023 15:36:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698014195; x=1698618995;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eUG0zzvE3BdCHGMLnrO+X8u9xWDPrHAeIu9Zvpq4LWU=;
+        b=PFdA106reqtfHaL6ja6psNFN3SL58dv4uGVZ+/A+ZqIHnwqIf6StwRurFG5xYUM48H
+         bg8T6M7jliHqHHfFCg3ZN2+0LCcRdMAn1+Fqu8IUfXpVsh8qllzixanQekJTKU7QZ7Qr
+         sDVGDTHHtnzXvAqzNv+tjeTyactzakFY5uEr8zAIFFNIsfJsfx73i4KilqPND7zH1HGA
+         dTiOYGHhl41S3jf//7lELB2q/egp5bvbKYZezAeRZFZmUDTPYhE5JXu9NjT3v4urbSbv
+         X/qVdIa1Pms7KQwPW38ABQ6BbGFaYfY8O9uf4D8wR+toRtVRJZA+JYcZFbSMFJxMBX8x
+         eKCg==
+X-Gm-Message-State: AOJu0YxF0ubWM8Afb/2Hwbt9QALLwLTPXA/y066IA9mPe1F/Z8SPzrPr
+        f23gpKGmSm7Dugbgb4m9oCUwUaZkCQ==
+X-Google-Smtp-Source: AGHT+IFY+qiVBiPRn9j2kB2XYAMPb0uPYWpULgYWZKqMS2K/szkPxcRRBvszYhPq2IQyYpfU7VVxHA==
+X-Received: by 2002:a54:4113:0:b0:3ab:8431:8037 with SMTP id l19-20020a544113000000b003ab84318037mr8967886oic.32.1698014194757;
+        Sun, 22 Oct 2023 15:36:34 -0700 (PDT)
+Received: from herring.priv ([2607:fb91:e6c1:8e5d:a109:ceb8:bec4:d970])
+        by smtp.gmail.com with ESMTPSA id e15-20020a056808148f00b003ae36d664a9sm1231552oiw.39.2023.10.22.15.36.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Oct 2023 15:36:34 -0700 (PDT)
+Received: (nullmailer pid 751471 invoked by uid 1000);
+        Sun, 22 Oct 2023 22:36:32 -0000
+Date:   Sun, 22 Oct 2023 17:36:32 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     David Wronek <davidwronek@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+        phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+        Joe Mason <buddyjojo06@outlook.com>
+Subject: Re: [PATCH] dt-bindings: arm: cpus: Add Qualcomm Kryo 465
+Message-ID: <169801418656.751336.13787960008617871479.robh@kernel.org>
+References: <20231021071619.187374-1-davidwronek@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="RN7U2wqAnTB6dxtW"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fc5234cd33b78369f792479795abd02710dfcdbf.camel@aceart.de>
+In-Reply-To: <20231021071619.187374-1-davidwronek@gmail.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
---RN7U2wqAnTB6dxtW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sat, 21 Oct 2023 09:16:19 +0200, David Wronek wrote:
+> Add a compatible for the Qualcomm Kryo 465 found in SM7125.
+> 
+> Signed-off-by: David Wronek <davidwronek@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/arm/cpus.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
-On Sun, Oct 22, 2023 at 01:40:41PM +0200, lukas walter wrote:
-> >> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> >
-> >How come this v1 has an ack?
->=20
-> This is supposed to be a v2, but I had problems sending it correctly,
-> sorry
-> https://patchwork.kernel.org/project/linux-arm-msm/patch/20230916134147.1=
-63764-1-lukas.walter@aceart.de/
+Applied, thanks!
 
-The joys of email, ehh
-
---RN7U2wqAnTB6dxtW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZTVcVwAKCRB4tDGHoIJi
-0jJvAP4+ghdIssWpblmMi9YkVOa7s1TtwnvzXBODtTruht2GyQD/ewbu+P/6wDqx
-0A0ZZrh0Z3J/IfGnZcwNsjK3VxxvCgI=
-=XBcM
------END PGP SIGNATURE-----
-
---RN7U2wqAnTB6dxtW--
