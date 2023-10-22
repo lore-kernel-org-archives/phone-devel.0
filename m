@@ -2,108 +2,101 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BEB79C001E0
-	for <phone-devel@archiver.kernel.org>; Sat, 21 Oct 2023 19:34:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B60FC001DF
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Oct 2023 09:51:15 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231552AbjJUTe4 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 21 Oct 2023 15:34:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58068 "EHLO
+        id S229500AbjJVJvP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 Oct 2023 05:51:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjJUTeu (ORCPT
+        with ESMTP id S229472AbjJVJvO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 21 Oct 2023 15:34:50 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27627197;
-        Sat, 21 Oct 2023 12:34:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1697916852; bh=z/PQtjKHGnFlr9gaVSJrAXB/j6VUiwPJtpZZinALBa0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References;
-        b=EZiTc8+EP4ALVVxqbCe/MQaaQ5wV6r5LnwqVpuKb66Y8qK3pzQPHI0ItxbVvvnzpl
-         v6Q0v1KYrUuSLthCBZ7PXs3mzLvWFclDa8uP8sXWkAUt142YU80NtbN98Nm1B3gFp5
-         jcP1xikBDIj+u1AuW6tIuevrRyZMr7OTHPyeitjQ=
-From:   Luca Weiss <luca@z3ntu.xyz>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        ~postmarketos/upstreaming@lists.sr.ht
-Cc:     Nia Espera <nespera@igalia.com>, Andy Gross <agross@kernel.org>,
+        Sun, 22 Oct 2023 05:51:14 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6B98DC;
+        Sun, 22 Oct 2023 02:51:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42D9C433C7;
+        Sun, 22 Oct 2023 09:51:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697968270;
+        bh=SnPBKRlsfd5P/wfHagINAEGKFI4VwNidkAz/OUfiJjQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Heywy3pxCdwGuB4G6fZc2xsKk63oiSgejJcss4Pify0k2gsl0XjIuBlE3KDn7ZYB7
+         qRbrotadqYbWlwi72jJx9+SS6DPUNdSIrkkwdQn3H/kfMF60rZ3mgeegVnIoo16gzt
+         tlIoba+2DL4aVB796Ri+CGZsLyjczpX8c0i/9aD8m1QbQMsw89Qk5+FU92WlwiSrRH
+         sQVa2QJWVAAxgaS0aU6eQtejVaUuTl0QeakLUmYbQWM2Fie70rZDwdXH6wTSig64Gj
+         5ajk79k9+K9PI+VHMU6i7HdGYBjSRyK6hCKnNFqaN1deiLUlz6ddWspujg5gm9jQXy
+         wGBGghA08+9mQ==
+Date:   Sun, 22 Oct 2023 10:51:05 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     Lukas Walter <lukas.walter@aceart.de>
+Cc:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        Rob <Me@orbit.sh>, Clayton Craft <clayton@igalia.com>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Subject: Re: [PATCH v2 4/6] arm64: dts: qcom: sm8350: Fix remoteproc interrupt type
-Date:   Sat, 21 Oct 2023 21:34:10 +0200
-Message-ID: <6985565.DvuYhMxLoT@z3ntu.xyz>
-In-Reply-To: <ca42af11-7b92-4d07-9b93-367f92c886fe@linaro.org>
-References: <20231018-nia-sm8350-for-upstream-v2-0-7b243126cb77@igalia.com>
- <20231019040623.GA5142@thinkpad>
- <ca42af11-7b92-4d07-9b93-367f92c886fe@linaro.org>
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: Add Huawei Honor 5X / GR5
+ (2016)
+Message-ID: <20231022-arousal-glowing-f72c8f2e44fa@spud>
+References: <20231021143025.77088-1-lukas.walter@aceart.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="PKpSqrrmkmWmTJ8Z"
+Content-Disposition: inline
+In-Reply-To: <20231021143025.77088-1-lukas.walter@aceart.de>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Samstag, 21. Oktober 2023 19:44:20 CEST Konrad Dybcio wrote:
-> On 10/19/23 06:06, Manivannan Sadhasivam wrote:
-> > On Wed, Oct 18, 2023 at 10:17:15PM +0200, Konrad Dybcio wrote:
-> >> On 10/18/23 16:25, Nia Espera wrote:
-> >>> In a similar vein to
-> >>> https://lore.kernel.org/lkml/20220530080842.37024-3-manivannan.sadhasiva
-> >>> m@linaro.org/, the remote processors on sm8350 fail to initialize with
-> >>> the 'correct' (i.e., specified in downstream) IRQ type. Change this to
-> >>> EDGE_RISING.
-> >>> 
-> >>> Signed-off-by: Nia Espera <nespera@igalia.com>
-> >>> ---
-> >> 
-> >> Hm, apparently 8250 and 7180 have the same thing.
-> >> 
-> >> Mani, could you elaborate on this?
-> > 
-> > So the remoteproc driver expects the wdog interrupts to be edge triggered
-> > as the rest of the interrupts, but DT specifies them as level triggered.
-> > This won't cause any issue during the first instance of the probe as the
-> > driver requested trigger will be given precedence. But if the probe
-> > defers for some reason and during the next try, request_irq() will fail
-> > with error similar to below:
-> > 
-> > irq: type mismatch, failed to map hwirq-x for interrupt-controller@xxxxxx!
-> > 
-> > This error is often confusing and I tried to fix it. But Maz didn't agree
-> > with me, so I just ended up fixing the DTs for some platform I have
-> > access to.
-> > 
-> > So ideally, DTs of all platforms should be fixed to pass correct trigger
-> > type.
-> So, this should be edge for all platforms, correct?
 
-I'd believe so, iirc when I looked at the driver it always requests that
-interrupt type.
+--PKpSqrrmkmWmTJ8Z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-For reference, these are my patches:
+On Sat, Oct 21, 2023 at 04:30:24PM +0200, Lukas Walter wrote:
+> Add a compatible for Huawei Honor 5X / GR5 (2016).
+>=20
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-sm6350:
-https://github.com/z3ntu/linux/commit/0522b7a1b981d80884a785c7e654bb5094ea1bc2
+How come this v1 has an ack?
 
-sc7280:
-https://github.com/z3ntu/linux/commit/ead1d7b8f5648535b857cfa9250aac2480f00ed3
+> Signed-off-by: Lukas Walter <lukas.walter@aceart.de>
+> ---
+>  Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentat=
+ion/devicetree/bindings/arm/qcom.yaml
+> index 7f80f48a0954..20d914b21847 100644
+> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
+> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+> @@ -191,6 +191,7 @@ properties:
+> =20
+>        - items:
+>            - enum:
+> +              - huawei,kiwi
+>                - longcheer,l9100
+>                - samsung,a7
+>                - sony,kanuti-tulip
+> --=20
+> 2.42.0
+>=20
 
-> 
-> Konrad
+--PKpSqrrmkmWmTJ8Z
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZTTwiQAKCRB4tDGHoIJi
+0uDbAQDPkpkGHrfnaWBKGDPIjx9YeDekGkDq8gIfVjGhqlKb/wEAlHJiAJ47rl/P
+ZiCq7bPFZkjtY2BLCX0kIlH068uGpgo=
+=iAHj
+-----END PGP SIGNATURE-----
 
-
+--PKpSqrrmkmWmTJ8Z--
