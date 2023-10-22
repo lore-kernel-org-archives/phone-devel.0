@@ -2,66 +2,81 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A9972CDB474
-	for <phone-devel@archiver.kernel.org>; Sun, 22 Oct 2023 16:23:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A46A2C001DF
+	for <phone-devel@archiver.kernel.org>; Sun, 22 Oct 2023 17:31:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231903AbjJVQXx (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 22 Oct 2023 12:23:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41466 "EHLO
+        id S232478AbjJVRbL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sun, 22 Oct 2023 13:31:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232055AbjJVPqN (ORCPT
+        with ESMTP id S229500AbjJVRbK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 22 Oct 2023 11:46:13 -0400
+        Sun, 22 Oct 2023 13:31:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70D22F4;
-        Sun, 22 Oct 2023 08:46:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B12C433C9;
-        Sun, 22 Oct 2023 15:46:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 771F5E5;
+        Sun, 22 Oct 2023 10:31:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B6BC433C8;
+        Sun, 22 Oct 2023 17:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697989572;
-        bh=UFQMux8mJrhRG1jHtuMxgySyVsftohzaHt3B3BYT308=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=POeBEqAe91tjxitPUfPpIjYTGL6Y/vQ4chi1wcBZ/dL4mRbB/vfgRF3AzsDzCtm4x
-         3L33IgO+WFuU5nTahxy1thP5or6nykuTuryI3SS+1tBaDYS4t8JdYv3lC3EEVi8YyH
-         R2gueOxeKE096PVEMQ81ScQY3RsZfGFYBPw7N+BZXCQG+NdSM2pdB87wmai3MzIPuW
-         VN89KVnd7Ryf4bniqj1BFr2OmR8A5D/5vNPQQrYkA8tcv34Bmvwm1JufISLXSZV46s
-         lGq906v9GcTRbQTdMxLIqrr2cXmRYIcgUNkN6yOtNJs8BuTGqFVSwcMnLDv/CMW+yz
-         l8HTldCNOVc3g==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, Luca Weiss <luca@z3ntu.xyz>
-Cc:     linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: qcom: msm8226: provide dsi phy clocks to mmcc
-Date:   Sun, 22 Oct 2023 08:50:19 -0700
-Message-ID: <169798982357.271027.4496714712357504780.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230712-msm8226-dsi-clock-fixup-v1-1-71010b0b89ca@z3ntu.xyz>
-References: <20230712-msm8226-dsi-clock-fixup-v1-1-71010b0b89ca@z3ntu.xyz>
+        s=k20201202; t=1697995868;
+        bh=xIa81NLUBml5MoS2Eb3kkSqN1ZIghfNeP9hiSlzUH1A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hzAt1VabW6duveqB+z3dICSEWrqt9VsVnC0iGerJXDVutrrQ3RPrvRAb17u/S4miQ
+         AR0wwKAyW+F3mbb1M9COYxgh3b1h2pLza2D9VUc3LpW2edvGjMsw1F0fgwOnU4YExb
+         vQ8GKVmWOCcKGtGECvOb68yz+p+8HjHzXOdURqwjuFYnrfSUIUKqDs0e2VsDJ5XyAX
+         IElUICMjwaB3hrzS9SfdIV7hqHuR3Q1PbDXdfU2BIpKZYFomxCV07vgn7SRdAYxIIC
+         qi1tm0ffkcJ4BLKpKti+UqrL8srAGFS6d0kZ64b+sGuEih/DXeVP02rGaIrSF4KY1P
+         jC+1JkrxllYng==
+Date:   Sun, 22 Oct 2023 18:31:03 +0100
+From:   Conor Dooley <conor@kernel.org>
+To:     lukas walter <lukas.walter@aceart.de>
+Cc:     agross@kernel.org, andersson@kernel.org, conor+dt@kernel.org,
+        devicetree@vger.kernel.org, konrad.dybcio@linaro.org,
+        krzysztof.kozlowski+dt@linaro.org, krzysztof.kozlowski@linaro.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        phone-devel@vger.kernel.org, robh+dt@kernel.org,
+        ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: Add Huawei Honor 5X / GR5
+ (2016)
+Message-ID: <20231022-sequester-atypical-325eadda7a15@spud>
+References: <20231022-arousal-glowing-f72c8f2e44fa@spud>
+ <fc5234cd33b78369f792479795abd02710dfcdbf.camel@aceart.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="RN7U2wqAnTB6dxtW"
+Content-Disposition: inline
+In-Reply-To: <fc5234cd33b78369f792479795abd02710dfcdbf.camel@aceart.de>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
-On Wed, 12 Jul 2023 09:52:07 +0200, Luca Weiss wrote:
-> Some mmcc clocks have dsi0pll & dsi0pllbyte as clock parents so we
-> should provide them in the dt, which I missed in the commit adding the
-> mdss nodes.
-> 
-> 
+--RN7U2wqAnTB6dxtW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied, thanks!
+On Sun, Oct 22, 2023 at 01:40:41PM +0200, lukas walter wrote:
+> >> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> >
+> >How come this v1 has an ack?
+>=20
+> This is supposed to be a v2, but I had problems sending it correctly,
+> sorry
+> https://patchwork.kernel.org/project/linux-arm-msm/patch/20230916134147.1=
+63764-1-lukas.walter@aceart.de/
 
-[1/1] ARM: dts: qcom: msm8226: provide dsi phy clocks to mmcc
-      commit: 836d083524888069cd358776a4e6c4ceec04962e
+The joys of email, ehh
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+--RN7U2wqAnTB6dxtW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZTVcVwAKCRB4tDGHoIJi
+0jJvAP4+ghdIssWpblmMi9YkVOa7s1TtwnvzXBODtTruht2GyQD/ewbu+P/6wDqx
+0A0ZZrh0Z3J/IfGnZcwNsjK3VxxvCgI=
+=XBcM
+-----END PGP SIGNATURE-----
+
+--RN7U2wqAnTB6dxtW--
