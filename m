@@ -2,84 +2,118 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DCFBAC07545
-	for <phone-devel@archiver.kernel.org>; Tue, 24 Oct 2023 19:34:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2820BC25B47
+	for <phone-devel@archiver.kernel.org>; Tue, 24 Oct 2023 20:55:24 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344046AbjJXTeL (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 24 Oct 2023 15:34:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42104 "EHLO
+        id S1344268AbjJXUzY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 24 Oct 2023 16:55:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344224AbjJXTeK (ORCPT
+        with ESMTP id S1343984AbjJXUzX (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 24 Oct 2023 15:34:10 -0400
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C53D10DA;
-        Tue, 24 Oct 2023 12:34:08 -0700 (PDT)
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6ce2c71c61fso2903003a34.1;
-        Tue, 24 Oct 2023 12:34:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698176047; x=1698780847;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eEvk4THNhAVnYNssVruy5oIOt2OcyG6oUAQ19IBkZyk=;
-        b=Vj4gLCxRMG5YYYtk6xXJ/+0UicdbrItqMMrYnxrhQ5JAQg8BlpaBabB8W7RXkTkgUR
-         UPfDXd+MP6FuAYVi3+S9efIO5pXdK82YQvKU/hW6AnOrN+fcWDjN0tTEkezp+Ta7MM8P
-         +ZU+1xSGa15a8bDWI+p/B3rlr1+FM09/4nY52ss7+EhMUA3Fdfxfd59UoRUlJz/OO5sT
-         adcsCNzweDdS9d7dy5/kecL9OxFp1OM2qRZoxzZsQdsSlobHv8i3MahNkscA2D2NiALr
-         3FbJmLNm2PVv5xgBbD+9oktNeRUMRU6OQRDuOa8GER17xC9DVzt1pPgPDNhsz5PRjNxx
-         ObCA==
-X-Gm-Message-State: AOJu0Yw9+YktdasYVkc5Bi5QSOQiOEaEVm0ipX1hkNgZ89KyU3tCMWgh
-        7Prifz/RImtZRZ3DYkjj2A==
-X-Google-Smtp-Source: AGHT+IE/D4pFNKTrDIzKXf08TJS0pbhvTukMC0upbfWG2caKaiSl0A3HnpKNq3MT/iuTQ5vyPB4u8Q==
-X-Received: by 2002:a05:6830:2058:b0:6b9:d224:1a1d with SMTP id f24-20020a056830205800b006b9d2241a1dmr11080588otp.19.1698176047284;
-        Tue, 24 Oct 2023 12:34:07 -0700 (PDT)
-Received: from herring.priv (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id s15-20020a056830124f00b006c4727812fdsm1964537otp.15.2023.10.24.12.34.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Oct 2023 12:34:06 -0700 (PDT)
-Received: (nullmailer pid 431352 invoked by uid 1000);
-        Tue, 24 Oct 2023 19:34:05 -0000
-Date:   Tue, 24 Oct 2023 14:34:05 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        ~postmarketos/upstreaming@lists.sr.ht,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        Tue, 24 Oct 2023 16:55:23 -0400
+X-Greylist: delayed 474 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 24 Oct 2023 13:55:20 PDT
+Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [213.239.216.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A3E2610CE;
+        Tue, 24 Oct 2023 13:55:20 -0700 (PDT)
+From:   Stefan Hansson <newbyte@postmarketos.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+        s=donut; t=1698180447;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=WftJlpZtFCnefMD8OenIbNEyH0eXljfkuOxB9Oej6aQ=;
+        b=Rxst1WnimFjLSG7P0Z5cFri2f6nwirDv/8oQIEVZoZwAWmOuIOpOewTuLowKs+hYZaBX/P
+        ZCkM44qUbboBg+e42niQ2x58EcVyb58TlMzLIsPs/kXKGOX3FZxGe14J5srceH5atIoyVz
+        zzL+4R9DSRuTR1L8vFVCbFQyGz/A/fc=
+To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        linux-usb@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] dt-bindings: usb: fsa4480: Add compatible for
- OCP96011
-Message-ID: <169817604506.431304.9280516039903751308.robh@kernel.org>
-References: <20231020-fsa4480-swap-v2-0-9a7f9bb59873@fairphone.com>
- <20231020-fsa4480-swap-v2-3-9a7f9bb59873@fairphone.com>
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Stefan Hansson <newbyte@postmarketos.org>
+Subject: [PATCH v2 3/4] ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 10.1 LTE (SM-T535)
+Date:   Tue, 24 Oct 2023 22:33:44 +0200
+Message-ID: <20231024204505.125813-4-newbyte@postmarketos.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231024204505.125813-1-newbyte@postmarketos.org>
+References: <20231024204505.125813-1-newbyte@postmarketos.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231020-fsa4480-swap-v2-3-9a7f9bb59873@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+Add a device tree for the Samsung Galaxy Tab 4 10.1 (SM-T535) LTE tablet
+based on the MSM8926 platform.
 
-On Fri, 20 Oct 2023 11:33:20 +0200, Luca Weiss wrote:
-> The Orient-Chip OCP96011 is generally compatible with the FSA4480, add a
-> compatible for it with the fallback on fsa4480.
-> 
-> However the AUX/SBU connections are expected to be swapped compared to
-> FSA4480, so document this in the data-lanes description.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  Documentation/devicetree/bindings/usb/fcs,fsa4480.yaml | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
-> 
+Signed-off-by: Stefan Hansson <newbyte@postmarketos.org>
+---
+ arch/arm/boot/dts/qcom/Makefile               |  1 +
+ .../qcom/qcom-msm8926-samsung-matisselte.dts  | 36 +++++++++++++++++++
+ 2 files changed, 37 insertions(+)
+ create mode 100644 arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+diff --git a/arch/arm/boot/dts/qcom/Makefile b/arch/arm/boot/dts/qcom/Makefile
+index a3d293e40820..cab35eeb30f6 100644
+--- a/arch/arm/boot/dts/qcom/Makefile
++++ b/arch/arm/boot/dts/qcom/Makefile
+@@ -34,6 +34,7 @@ dtb-$(CONFIG_ARCH_QCOM) += \
+ 	qcom-msm8916-samsung-serranove.dtb \
+ 	qcom-msm8926-microsoft-superman-lte.dtb \
+ 	qcom-msm8926-microsoft-tesla.dtb \
++	qcom-msm8926-samsung-matisselte.dtb \
+ 	qcom-msm8960-cdp.dtb \
+ 	qcom-msm8960-samsung-expressatt.dtb \
+ 	qcom-msm8974-lge-nexus5-hammerhead.dtb \
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts b/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
+new file mode 100644
+index 000000000000..6e25b1a74ce5
+--- /dev/null
++++ b/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2022, Matti Lehtimäki <matti.lehtimaki@gmail.com>
++ * Copyright (c) 2023, Stefan Hansson <newbyte@postmarketos.org>
++ */
++
++/dts-v1/;
++
++#include "qcom-msm8226-samsung-matisse-common.dtsi"
++
++/ {
++	model = "Samsung Galaxy Tab 4 10.1 LTE";
++	compatible = "samsung,matisselte", "qcom,msm8926", "qcom,msm8226";
++	chassis-type = "tablet";
++};
++
++&pm8226_l3 {
++	regulator-max-microvolt = <1350000>;
++};
++
++&pm8226_s4 {
++	regulator-max-microvolt = <2200000>;
++};
++
++&reg_tsp_3p3v {
++	gpio = <&tlmm 32 GPIO_ACTIVE_HIGH>;
++};
++
++&sdhc_2 {
++	/* SD card fails to probe with error -110 */
++	status = "disabled";
++};
++
++&tsp_en1_default_state {
++	pins = "gpio32";
++};
+-- 
+2.41.0
 
