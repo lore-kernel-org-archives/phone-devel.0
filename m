@@ -2,31 +2,29 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2820BC25B47
-	for <phone-devel@archiver.kernel.org>; Tue, 24 Oct 2023 20:55:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06C23C07545
+	for <phone-devel@archiver.kernel.org>; Tue, 24 Oct 2023 20:55:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344268AbjJXUzY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        id S1344312AbjJXUzY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
         Tue, 24 Oct 2023 16:55:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48980 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343984AbjJXUzX (ORCPT
+        with ESMTP id S1344067AbjJXUzX (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
         Tue, 24 Oct 2023 16:55:23 -0400
-X-Greylist: delayed 474 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 24 Oct 2023 13:55:20 PDT
 Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [213.239.216.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A3E2610CE;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D389210D7;
         Tue, 24 Oct 2023 13:55:20 -0700 (PDT)
 From:   Stefan Hansson <newbyte@postmarketos.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-        s=donut; t=1698180447;
+        s=donut; t=1698180445;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WftJlpZtFCnefMD8OenIbNEyH0eXljfkuOxB9Oej6aQ=;
-        b=Rxst1WnimFjLSG7P0Z5cFri2f6nwirDv/8oQIEVZoZwAWmOuIOpOewTuLowKs+hYZaBX/P
-        ZCkM44qUbboBg+e42niQ2x58EcVyb58TlMzLIsPs/kXKGOX3FZxGe14J5srceH5atIoyVz
-        zzL+4R9DSRuTR1L8vFVCbFQyGz/A/fc=
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=2OdQ5GqSAWQJfabwf32ex2Xwnux86T/w4ZDjxUpnHNM=;
+        b=WCoRWT4BmQ5zuWe7d8yPsitO6p2sIjAykwvCLhbv1KmyaBEHwBDrlgvHxG67cjkoPHUljW
+        D92qde9hN/oIv7g20w/jrUwnPYTCpqD4T6fe1GO7ajCkxsiCFmaGzGXgSKMHEj7Hn1Wj47
+        dQWnVz7RmeaK3tGoA93daZ+E5r4tgKA=
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
@@ -37,83 +35,49 @@ To:     Andy Gross <agross@kernel.org>,
         linux-kernel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Stefan Hansson <newbyte@postmarketos.org>
-Subject: [PATCH v2 3/4] ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 10.1 LTE (SM-T535)
-Date:   Tue, 24 Oct 2023 22:33:44 +0200
-Message-ID: <20231024204505.125813-4-newbyte@postmarketos.org>
+Subject: [PATCH v2 0/4] Add samsung-matisselte and common matisse dtsi
+Date:   Tue, 24 Oct 2023 22:33:41 +0200
+Message-ID: <20231024204505.125813-1-newbyte@postmarketos.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231024204505.125813-1-newbyte@postmarketos.org>
-References: <20231024204505.125813-1-newbyte@postmarketos.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add a device tree for the Samsung Galaxy Tab 4 10.1 (SM-T535) LTE tablet
-based on the MSM8926 platform.
+This series adds a common samsung-matisse dtsi and reworks
+samsung-matisse-wifi to use it, and introduces samsung-matisselte. I
+choose matisselte over matisse-lte as this is how most other devices
+(klte, s3ve3g) do it and it is the codename that Samsung gave the
+device. See individual commits for more information.
 
-Signed-off-by: Stefan Hansson <newbyte@postmarketos.org>
 ---
- arch/arm/boot/dts/qcom/Makefile               |  1 +
- .../qcom/qcom-msm8926-samsung-matisselte.dts  | 36 +++++++++++++++++++
- 2 files changed, 37 insertions(+)
+Changes since v1:
+
+ - Rebased on latest linux-next
+ - Added qcom,msm8226 compatible to matisselte inspired by recent Lumia
+   830 patch. This is done as in v1, the patch was rejected because I
+   included the msm8226 dtsi despite not marking matisselte as
+   compatible with msm8226, and I was not sure how to resolve that. As
+   such, I'm copying what was done in the Lumia 830 (microsoft-tesla)
+   patch given that it was accepted.
+
+Stefan Hansson (4):
+  ARM: dts: qcom: samsung-matisse-common: Add initial common device tree
+  dt-bindings: arm: qcom: Add Samsung Galaxy Tab 4 10.1 LTE
+  ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 10.1 LTE
+    (SM-T535)
+  ARM: dts: qcom: samsung-matisse-common: Add UART
+
+ .../devicetree/bindings/arm/qcom.yaml         |   1 +
+ arch/arm/boot/dts/qcom/Makefile               |   1 +
+ .../qcom-apq8026-samsung-matisse-wifi.dts     | 467 +----------------
+ .../qcom-msm8226-samsung-matisse-common.dtsi  | 478 ++++++++++++++++++
+ .../qcom/qcom-msm8926-samsung-matisselte.dts  |  36 ++
+ 5 files changed, 525 insertions(+), 458 deletions(-)
+ create mode 100644 arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi
  create mode 100644 arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
 
-diff --git a/arch/arm/boot/dts/qcom/Makefile b/arch/arm/boot/dts/qcom/Makefile
-index a3d293e40820..cab35eeb30f6 100644
---- a/arch/arm/boot/dts/qcom/Makefile
-+++ b/arch/arm/boot/dts/qcom/Makefile
-@@ -34,6 +34,7 @@ dtb-$(CONFIG_ARCH_QCOM) += \
- 	qcom-msm8916-samsung-serranove.dtb \
- 	qcom-msm8926-microsoft-superman-lte.dtb \
- 	qcom-msm8926-microsoft-tesla.dtb \
-+	qcom-msm8926-samsung-matisselte.dtb \
- 	qcom-msm8960-cdp.dtb \
- 	qcom-msm8960-samsung-expressatt.dtb \
- 	qcom-msm8974-lge-nexus5-hammerhead.dtb \
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts b/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
-new file mode 100644
-index 000000000000..6e25b1a74ce5
---- /dev/null
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
-@@ -0,0 +1,36 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) 2022, Matti Lehtimäki <matti.lehtimaki@gmail.com>
-+ * Copyright (c) 2023, Stefan Hansson <newbyte@postmarketos.org>
-+ */
-+
-+/dts-v1/;
-+
-+#include "qcom-msm8226-samsung-matisse-common.dtsi"
-+
-+/ {
-+	model = "Samsung Galaxy Tab 4 10.1 LTE";
-+	compatible = "samsung,matisselte", "qcom,msm8926", "qcom,msm8226";
-+	chassis-type = "tablet";
-+};
-+
-+&pm8226_l3 {
-+	regulator-max-microvolt = <1350000>;
-+};
-+
-+&pm8226_s4 {
-+	regulator-max-microvolt = <2200000>;
-+};
-+
-+&reg_tsp_3p3v {
-+	gpio = <&tlmm 32 GPIO_ACTIVE_HIGH>;
-+};
-+
-+&sdhc_2 {
-+	/* SD card fails to probe with error -110 */
-+	status = "disabled";
-+};
-+
-+&tsp_en1_default_state {
-+	pins = "gpio32";
-+};
 -- 
 2.41.0
 
