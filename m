@@ -2,74 +2,89 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF121C07545
-	for <phone-devel@archiver.kernel.org>; Tue, 24 Oct 2023 20:55:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE122C25B47
+	for <phone-devel@archiver.kernel.org>; Tue, 24 Oct 2023 20:58:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344380AbjJXUzk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 24 Oct 2023 16:55:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40762 "EHLO
+        id S234943AbjJXU6O (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 24 Oct 2023 16:58:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344341AbjJXUz2 (ORCPT
+        with ESMTP id S234934AbjJXU6I (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 24 Oct 2023 16:55:28 -0400
-Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [IPv6:2a01:4f8:a0:821d::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D359A10D5;
-        Tue, 24 Oct 2023 13:55:20 -0700 (PDT)
-From:   Stefan Hansson <newbyte@postmarketos.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-        s=donut; t=1698180448;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WyL/zzD9SEbdEVP0sS0d2jVD0oYU+zFu9fVpTgzQOmE=;
-        b=SOB6I4MEfwEiUdEZZlDPhXLfoW42dnJhtdjDII4/d6BwKVgSnhzcXTvN1J/KE9kXHot94B
-        lkkwp0eIo2G+RkZ/RPcdqkqjCX3bZ+rjRq/wnd4u3LMsV111AEty32B4KaRsQorYLo3Lxr
-        7P9C2J35wZRH121waAdu48qE4bgy0UA=
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Tue, 24 Oct 2023 16:58:08 -0400
+Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29C2010D5;
+        Tue, 24 Oct 2023 13:58:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
+        t=1698181080; bh=Xdweg3kGxC1585nKQgRroNBfyEYqynm2VFZ72xrmPLA=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc;
+        b=hYp5izHi4ujX1ztvCr0xZ/BjPFo/fd0EaPo4YAKX0xsezn3z7hBiRGk6hp7KC+aK1
+         slRsBBQ3gcjpbJZO6pOoG1HU+ACDp2OnXwIBO+OUmDMa7d87OXpebJUylRCtp2rQC5
+         d7w9S1iDvlxDMaQMQQ5RsLK1C14Bmth166P8dFDo=
+From:   Luca Weiss <luca@z3ntu.xyz>
+Date:   Tue, 24 Oct 2023 22:57:49 +0200
+Subject: [PATCH v2 1/3] dt-bindings: vendor-prefixes: document HTC
+ Corporation
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231024-htc-memul-v2-1-8912940b6f95@z3ntu.xyz>
+References: <20231024-htc-memul-v2-0-8912940b6f95@z3ntu.xyz>
+In-Reply-To: <20231024-htc-memul-v2-0-8912940b6f95@z3ntu.xyz>
+To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Stefan Hansson <newbyte@postmarketos.org>
-Subject: [PATCH v2 4/4] ARM: dts: qcom: samsung-matisse-common: Add UART
-Date:   Tue, 24 Oct 2023 22:33:45 +0200
-Message-ID: <20231024204505.125813-5-newbyte@postmarketos.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231024204505.125813-1-newbyte@postmarketos.org>
-References: <20231024204505.125813-1-newbyte@postmarketos.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Luca Weiss <luca@z3ntu.xyz>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=852; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=Xdweg3kGxC1585nKQgRroNBfyEYqynm2VFZ72xrmPLA=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlOC/VcVEOs4MRayqgzipS1p22TAjFNc08+z2CM
+ BiPVB1cdbOJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZTgv1QAKCRBy2EO4nU3X
+ VmHQEADAvXCyS2uGmETYPzbQyz9wM97cnTm7RdST+Ldi090oIHvJq+wvSGFf0M3dDB5++wAjHFp
+ Jd5Ck52K3WRSPGw9IrYbQTKGCf5zNb/XGltKI33i8KigS9v4cO9YMtBMy6F93T5pZS0kwKmyU/q
+ VhTLVpjL/DEp+OV7iZCrqUsDRbuqsP9NOvod3n97Bioelphyqj4jR+GL4RlTLB/Ilve8T5qDY04
+ +LivQVUXUhnk170XFoP5g9TktDNfaQDfrICZ8aqgd+Lxf7hze7kD6iJg7WRMd7gxWde74V1DoUG
+ xHHlc8IsHXga2RgLSupWPV6woDAz7pfw2RyrMTEkI4R5iXJddwMVA2G79uHhecvqlsGE6AlDkgW
+ 3Ad/YfF2ADzGoyNTXfsJyFN1g+ogVG+JfsJCJHw6Tm47wQ2S+LgxNj87IVjMzfEehOgzGt3jmUi
+ RfRmfEUc3ACytKmiUqci8NaFlNSGDfvBY5vp60M7E8BllQ0J0cFFjxP6liOQ07P6Vy7thdm4nb9
+ JZqh0goKj7FQnbhrzkn153ChjGyFurtIL1y29hKX/wlPjXT5zqHcuoYt9t6diehlyK+YUb27wEb
+ dqIHyWECcqu0BmWho2qJqASMxncfgwwXkQ1WqEFhLYtL/H7lqLOrV76quaD0WTUovdEnHFPrFbj
+ dZVajwdbKCDfSsw==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This was not enabled in the matisse-wifi tree.
+Add the vendor prefix for HTC (https://www.htc.com/).
 
-Signed-off-by: Stefan Hansson <newbyte@postmarketos.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- .../boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi    | 4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi
-index 11fec4e963b7..35290ce63b40 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi
-@@ -233,6 +233,10 @@ muic: usb-switch@25 {
- 	};
- };
- 
-+&blsp1_uart3 {
-+	status = "okay";
-+};
-+
- &rpm_requests {
- 	regulators {
- 		compatible = "qcom,rpm-pm8226-regulators";
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 309b94c328c8..b752f8902367 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -597,6 +597,8 @@ patternProperties:
+     description: Hewlett Packard Enterprise
+   "^hsg,.*":
+     description: HannStar Display Co.
++  "^htc,.*":
++    description: HTC Corporation
+   "^huawei,.*":
+     description: Huawei Technologies Co., Ltd.
+   "^hugsun,.*":
+
 -- 
-2.41.0
+2.42.0
 
