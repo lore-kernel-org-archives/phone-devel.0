@@ -2,31 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 817A5C25B72
-	for <phone-devel@archiver.kernel.org>; Wed, 25 Oct 2023 08:42:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B338C25B47
+	for <phone-devel@archiver.kernel.org>; Wed, 25 Oct 2023 08:48:26 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234166AbjJYImP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 25 Oct 2023 04:42:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58474 "EHLO
+        id S234354AbjJYIsZ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 25 Oct 2023 04:48:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234085AbjJYImM (ORCPT
+        with ESMTP id S234418AbjJYIsL (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 25 Oct 2023 04:42:12 -0400
-Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [213.239.216.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 315509C;
-        Wed, 25 Oct 2023 01:42:10 -0700 (PDT)
-From:   Stefan Hansson <newbyte@postmarketos.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-        s=donut; t=1698223328;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WftJlpZtFCnefMD8OenIbNEyH0eXljfkuOxB9Oej6aQ=;
-        b=K1zqzHfmdptWF/Rfl7wB1CPXx0r/Tly/RRJZkLWHBc0F+hhBYFEyVBF4q6Pbb3V74deAdV
-        EVSdN7h5W/uxgjl8j43qUyYS7DzXNDhFdGXbAjMzoHCjRJD6iNfdTssGNsA7iBjThd0B0g
-        JP12mOAm67hFicITjSviUOaeLXIubQ8=
-To:     Andy Gross <agross@kernel.org>,
+        Wed, 25 Oct 2023 04:48:11 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74881B0
+        for <phone-devel@vger.kernel.org>; Wed, 25 Oct 2023 01:48:08 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-32da7ac5c4fso3595172f8f.1
+        for <phone-devel@vger.kernel.org>; Wed, 25 Oct 2023 01:48:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1698223687; x=1698828487; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PmU0JSwBBTCbuAIvfPvlwQrKuSI376moyh5uECvCBNA=;
+        b=xE+0qqNuS86IseO+0dm7hKlbTzSHBIX3S+WFFdpJENnavkfvetlH6ESLIjr1ycPyle
+         9u7Etn1r5MU47n8CqlA9I13sr2FgE6naSZPKpcUuMywguwIhxDuNtSeax8LF8WH4nD+g
+         /zk/Z2YNl5qKZ1+aR/ZJe2ZVcfSEXS5GLR/ckw5qsDmGmQnm5M3lGejSA+HR0QG91Qug
+         6S5Pn+lQ7PBjQc1MPUp6e2KpzEeflEFCj+a4z+AHHmoZ1sITjnesqpSND/n+NhuRSs5M
+         ggVxHF53Qp7ce86fFDGoIN5Mctadg8Q5iraEiYH3+85bWVSwHg2EFsEgoTgjxiqTCHWH
+         TXVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698223687; x=1698828487;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PmU0JSwBBTCbuAIvfPvlwQrKuSI376moyh5uECvCBNA=;
+        b=qiq+9Y93XX6YdpdLUc3NT9t51sfGfOiS5YmWnicysy0Q0uDT42Vc0kPLZiFfRf+KDa
+         cOL6GbS1F4Hl6RSXNSl5oNL/5luYyOMxIMSJM8zUVaXN3CVVZ6LFxCWDG7mj6b/WrrmZ
+         dFYTMJUKaYDJjeFPjqpUOKGX4/2oGn3PBhCsnaWSp/AcsJkU4sHlxq/pDdjKXZpWFfO+
+         7t7H+6NtEb5yjXlVQcRBgbxYnMYSLfF4E3aCi5OXbptYnGx/aHyHPFuY/Z2npSEhC94v
+         O01dgEChizdFuAgdbE+arHH71ZyH+JK9CNe2b+4FttyECTmD0AWhQB+yjaJDxin4yhGy
+         7F2Q==
+X-Gm-Message-State: AOJu0YzWm85NXvGsYdAHsm/RCA/GO7KoAXRlvf9lfxUw5u1wG0qqMmLN
+        ZWd+XLJxhjDaf4a6F7ov66gMiA==
+X-Google-Smtp-Source: AGHT+IGuYPayor/rtxON3pA5qwyVcx7ZIFA44YA8KYUSvbFp5oFPl7FBWsszIKelwt9ulWA6cZ7Q1Q==
+X-Received: by 2002:a05:6000:1ce:b0:32d:96dd:704d with SMTP id t14-20020a05600001ce00b0032d96dd704dmr9457920wrx.18.1698223686859;
+        Wed, 25 Oct 2023 01:48:06 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.218.126])
+        by smtp.gmail.com with ESMTPSA id q11-20020a056000136b00b0032dc74c093dsm11622009wrz.103.2023.10.25.01.48.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Oct 2023 01:48:06 -0700 (PDT)
+Message-ID: <04fae330-0866-408a-8016-b6f897f9550e@linaro.org>
+Date:   Wed, 25 Oct 2023 10:48:04 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] Add samsung-matisselte and common matisse dtsi
+Content-Language: en-US
+To:     Stefan Hansson <newbyte@postmarketos.org>,
+        Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
@@ -34,85 +65,80 @@ To:     Andy Gross <agross@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>,
         linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Stefan Hansson <newbyte@postmarketos.org>
-Subject: [PATCH v3 3/4] ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 10.1 LTE (SM-T535)
-Date:   Wed, 25 Oct 2023 10:37:51 +0200
-Message-ID: <20231025083952.12367-4-newbyte@postmarketos.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231025083952.12367-1-newbyte@postmarketos.org>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
 References: <20231025083952.12367-1-newbyte@postmarketos.org>
-MIME-Version: 1.0
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20231025083952.12367-1-newbyte@postmarketos.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add a device tree for the Samsung Galaxy Tab 4 10.1 (SM-T535) LTE tablet
-based on the MSM8926 platform.
+On 25/10/2023 10:37, Stefan Hansson wrote:
+> This series adds a common samsung-matisse dtsi and reworks
+> samsung-matisse-wifi to use it, and introduces samsung-matisselte. I
+> choose matisselte over matisse-lte as this is how most other devices
+> (klte, s3ve3g) do it and it is the codename that Samsung gave the
+> device. See individual commits for more information.
+> 
+> ---
+> Changes since v1:
+> 
+>  - Rebased on latest linux-next
+>  - Added qcom,msm8226 compatible to matisselte inspired by recent Lumia
+>    830 patch. This is done as in v1, the patch was rejected because I
+>    included the msm8226 dtsi despite not marking matisselte as
+>    compatible with msm8226, and I was not sure how to resolve that. As
+>    such, I'm copying what was done in the Lumia 830 (microsoft-tesla)
+>    patch given that it was accepted.
 
-Signed-off-by: Stefan Hansson <newbyte@postmarketos.org>
----
- arch/arm/boot/dts/qcom/Makefile               |  1 +
- .../qcom/qcom-msm8926-samsung-matisselte.dts  | 36 +++++++++++++++++++
- 2 files changed, 37 insertions(+)
- create mode 100644 arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
+One version per day, so you won't ignore tags.
 
-diff --git a/arch/arm/boot/dts/qcom/Makefile b/arch/arm/boot/dts/qcom/Makefile
-index a3d293e40820..cab35eeb30f6 100644
---- a/arch/arm/boot/dts/qcom/Makefile
-+++ b/arch/arm/boot/dts/qcom/Makefile
-@@ -34,6 +34,7 @@ dtb-$(CONFIG_ARCH_QCOM) += \
- 	qcom-msm8916-samsung-serranove.dtb \
- 	qcom-msm8926-microsoft-superman-lte.dtb \
- 	qcom-msm8926-microsoft-tesla.dtb \
-+	qcom-msm8926-samsung-matisselte.dtb \
- 	qcom-msm8960-cdp.dtb \
- 	qcom-msm8960-samsung-expressatt.dtb \
- 	qcom-msm8974-lge-nexus5-hammerhead.dtb \
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts b/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
-new file mode 100644
-index 000000000000..6e25b1a74ce5
---- /dev/null
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
-@@ -0,0 +1,36 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+/*
-+ * Copyright (c) 2022, Matti Lehtimäki <matti.lehtimaki@gmail.com>
-+ * Copyright (c) 2023, Stefan Hansson <newbyte@postmarketos.org>
-+ */
-+
-+/dts-v1/;
-+
-+#include "qcom-msm8226-samsung-matisse-common.dtsi"
-+
-+/ {
-+	model = "Samsung Galaxy Tab 4 10.1 LTE";
-+	compatible = "samsung,matisselte", "qcom,msm8926", "qcom,msm8226";
-+	chassis-type = "tablet";
-+};
-+
-+&pm8226_l3 {
-+	regulator-max-microvolt = <1350000>;
-+};
-+
-+&pm8226_s4 {
-+	regulator-max-microvolt = <2200000>;
-+};
-+
-+&reg_tsp_3p3v {
-+	gpio = <&tlmm 32 GPIO_ACTIVE_HIGH>;
-+};
-+
-+&sdhc_2 {
-+	/* SD card fails to probe with error -110 */
-+	status = "disabled";
-+};
-+
-+&tsp_en1_default_state {
-+	pins = "gpio32";
-+};
--- 
-2.41.0
+Best regards,
+Krzysztof
 
