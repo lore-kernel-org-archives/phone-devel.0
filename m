@@ -2,109 +2,88 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E923C0032E
-	for <phone-devel@archiver.kernel.org>; Wed, 25 Oct 2023 08:31:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C1C5C25B47
+	for <phone-devel@archiver.kernel.org>; Wed, 25 Oct 2023 08:42:10 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232897AbjJYIbS (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 25 Oct 2023 04:31:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45628 "EHLO
+        id S233814AbjJYImJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 25 Oct 2023 04:42:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233925AbjJYIbR (ORCPT
+        with ESMTP id S233766AbjJYImI (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 25 Oct 2023 04:31:17 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C698812A;
-        Wed, 25 Oct 2023 01:31:14 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id D06001C0079; Wed, 25 Oct 2023 10:31:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1698222672;
+        Wed, 25 Oct 2023 04:42:08 -0400
+Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [213.239.216.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9D52D9C;
+        Wed, 25 Oct 2023 01:42:06 -0700 (PDT)
+From:   Stefan Hansson <newbyte@postmarketos.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+        s=donut; t=1698223325;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=K5b8VxAJIn+dbIaaMO3Y3bs3x2LTJPKWvzi8/c5oplg=;
-        b=eWpWdySy0HTFCZvH2BYvZXLv/Ha8APYid6FXcU+BrdCmlWfjuTVVdAStgAcBhk/vQTVCoA
-        pP1qIeBnfpkhxdUaqJ7XDwqoN9PYrFZnaez1sIj7d36FwRvbydIgOyQ4mwpwaXOPsM73g9
-        YkcK9hbB5LPrzgofczc+IzZm9+fLp8o=
-Date:   Wed, 25 Oct 2023 10:31:12 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Caleb Connolly <caleb.connolly@linaro.org>
-Cc:     Piotr =?utf-8?Q?Mas=C5=82owski?= <piotr@maslowski.xyz>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=PlCQ+ZrJ2KnIONYyu5EKJVJa1cceO7WNfqL1V47Gmf4=;
+        b=NklrLQe9I0Kvv7+9iWAoz5vtIZrj/VVrLj+pgLMnVoj599XDPUFG30OY2OjB2IsPMw+hUl
+        8XTtPsg/JVODiBQy0SaIbcPeoIE2fhBendngHOLcOv6+pIEuJlHhPSpFl+5bk9dy6krdF3
+        6Z/0kiJOC2xd3IPTZHK8hm/nx9zV+zE=
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Robert Mader <robert.mader@posteo.de>,
-        Guido Gunther <agx@sigxcpu.org>,
-        dri-devel@lists.freedesktop.org, Hector Martin <marcan@marcan.st>,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        asahi@lists.linux.dev, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH RFC] dt-bindings: display: document display panel
- occlusions
-Message-ID: <ZTjSUPUKxsuIYPkC@duo.ucw.cz>
-References: <20231009-caleb-notch-example-v1-1-9e0a43ae233c@linaro.org>
- <CW4UT45DZ5C6.3NIT2IFNSKD4O@andrad>
- <4ce2c3a6-6f66-4fe7-8616-a787a88dd250@linaro.org>
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Stefan Hansson <newbyte@postmarketos.org>
+Subject: [PATCH v3 0/4] Add samsung-matisselte and common matisse dtsi
+Date:   Wed, 25 Oct 2023 10:37:48 +0200
+Message-ID: <20231025083952.12367-1-newbyte@postmarketos.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="BKsHCK/XSjafsKFw"
-Content-Disposition: inline
-In-Reply-To: <4ce2c3a6-6f66-4fe7-8616-a787a88dd250@linaro.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+This series adds a common samsung-matisse dtsi and reworks
+samsung-matisse-wifi to use it, and introduces samsung-matisselte. I
+choose matisselte over matisse-lte as this is how most other devices
+(klte, s3ve3g) do it and it is the codename that Samsung gave the
+device. See individual commits for more information.
 
---BKsHCK/XSjafsKFw
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+---
+Changes since v1:
 
-Hi!
+ - Rebased on latest linux-next
+ - Added qcom,msm8226 compatible to matisselte inspired by recent Lumia
+   830 patch. This is done as in v1, the patch was rejected because I
+   included the msm8226 dtsi despite not marking matisselte as
+   compatible with msm8226, and I was not sure how to resolve that. As
+   such, I'm copying what was done in the Lumia 830 (microsoft-tesla)
+   patch given that it was accepted.
 
-> > An orthogonal issue is labeling all of those regions. I think we should
-> > start with fully obscured areas and maybe less readable ones like the
-> > waterfall edges. Still, different features should live on different
-> > masks =E2=80=93 even if we don't attach meaningfull labels (like 'notch=
-' or
-> > 'camera cutout') to them right away.
-> >=20
-> >=20
-> > What do you all think of that? I didn't see this approach considered in
-> > any of the earlier discussions, yet it seems so elegant to me. Am I
-> > missing something?
->=20
-> I think the unfortunate truth is that approximating notches and rounded
-> corners exclusively with regular arcs at the cost of pixel accuracy is
-> just such a no-brainer. Pixel masks would be pixel accurate, but there
-> is no benefit compared to a slightly underfit curve.
+Changes since v2:
 
-Pixel accuracy may be important for low-resolution displays.
+ - Updated commit message for UART patch to explain why it was added.
+ - Gave more flags to git to provide a hopefully more readable patch.
 
-And... I have certain low-resolution displays in mind. There are
-keyboards with individual backlights below each key.
+Stefan Hansson (4):
+  ARM: dts: qcom: samsung-matisse-common: Add initial common device tree
+  dt-bindings: arm: qcom: Add Samsung Galaxy Tab 4 10.1 LTE
+  ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 10.1 LTE
+    (SM-T535)
+  ARM: dts: qcom: samsung-matisse-common: Add UART
 
-Maybe they could/should be treated similarily to displays with
-occlusions? But we'll really need to be pixel-perfect for that.
+ .../devicetree/bindings/arm/qcom.yaml         |   1 +
+ arch/arm/boot/dts/qcom/Makefile               |   1 +
+ .../qcom-apq8026-samsung-matisse-wifi.dts     | 589 +++---------------
+ ... qcom-msm8226-samsung-matisse-common.dtsi} |  59 +-
+ .../qcom/qcom-msm8926-samsung-matisselte.dts  |  36 ++
+ 5 files changed, 117 insertions(+), 569 deletions(-)
+ rewrite arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts (89%)
+ copy arch/arm/boot/dts/qcom/{qcom-apq8026-samsung-matisse-wifi.dts => qcom-msm8226-samsung-matisse-common.dtsi} (90%)
+ create mode 100644 arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
 
-Best regards,
-								Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
+-- 
+2.41.0
 
---BKsHCK/XSjafsKFw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZTjSUAAKCRAw5/Bqldv6
-8oFPAJ95or5A0GJeZajBk7IYau7VzJLw2QCeJzrKL+rZIklUforgWph0lEF6FCA=
-=wIrJ
------END PGP SIGNATURE-----
-
---BKsHCK/XSjafsKFw--
