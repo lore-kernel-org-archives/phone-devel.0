@@ -2,29 +2,30 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0C1C5C25B47
-	for <phone-devel@archiver.kernel.org>; Wed, 25 Oct 2023 08:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E844BC25B6B
+	for <phone-devel@archiver.kernel.org>; Wed, 25 Oct 2023 08:42:13 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233814AbjJYImJ (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 25 Oct 2023 04:42:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58424 "EHLO
+        id S233766AbjJYImN (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 25 Oct 2023 04:42:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233766AbjJYImI (ORCPT
+        with ESMTP id S230217AbjJYImK (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 25 Oct 2023 04:42:08 -0400
-Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [213.239.216.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9D52D9C;
-        Wed, 25 Oct 2023 01:42:06 -0700 (PDT)
+        Wed, 25 Oct 2023 04:42:10 -0400
+Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [IPv6:2a01:4f8:a0:821d::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A920312D;
+        Wed, 25 Oct 2023 01:42:08 -0700 (PDT)
 From:   Stefan Hansson <newbyte@postmarketos.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-        s=donut; t=1698223325;
+        s=donut; t=1698223327;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=PlCQ+ZrJ2KnIONYyu5EKJVJa1cceO7WNfqL1V47Gmf4=;
-        b=NklrLQe9I0Kvv7+9iWAoz5vtIZrj/VVrLj+pgLMnVoj599XDPUFG30OY2OjB2IsPMw+hUl
-        8XTtPsg/JVODiBQy0SaIbcPeoIE2fhBendngHOLcOv6+pIEuJlHhPSpFl+5bk9dy6krdF3
-        6Z/0kiJOC2xd3IPTZHK8hm/nx9zV+zE=
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=nCEfQhvJFpQP4wGwWs4rZwAtN4BGZznylrcgbwf2GdY=;
+        b=G+JFbdvGIZWkFTVpd+9UD14aXMcg9FtKCnfk6mmgF4mjC76jZZ2pubd441hcz36it1eQoy
+        kl+6vX+5S4C/Wzy3UWz4pjjZi58l/b5SlWeDhWTP+gD6eisJV758j/kv3mVBlZEe0uhh5O
+        1Jc4WUcva3rqls31oN512pDDfvkt8tA=
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
@@ -35,55 +36,38 @@ To:     Andy Gross <agross@kernel.org>,
         linux-kernel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Stefan Hansson <newbyte@postmarketos.org>
-Subject: [PATCH v3 0/4] Add samsung-matisselte and common matisse dtsi
-Date:   Wed, 25 Oct 2023 10:37:48 +0200
-Message-ID: <20231025083952.12367-1-newbyte@postmarketos.org>
+Subject: [PATCH v3 2/4] dt-bindings: arm: qcom: Add Samsung Galaxy Tab 4 10.1 LTE
+Date:   Wed, 25 Oct 2023 10:37:50 +0200
+Message-ID: <20231025083952.12367-3-newbyte@postmarketos.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231025083952.12367-1-newbyte@postmarketos.org>
+References: <20231025083952.12367-1-newbyte@postmarketos.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This series adds a common samsung-matisse dtsi and reworks
-samsung-matisse-wifi to use it, and introduces samsung-matisselte. I
-choose matisselte over matisse-lte as this is how most other devices
-(klte, s3ve3g) do it and it is the codename that Samsung gave the
-device. See individual commits for more information.
+This documents Samsung Galaxy Tab 4 10.1 LTE (samsung,matisselte)
+which is a tablet by Samsung based on the MSM8926 SoC.
 
+Signed-off-by: Stefan Hansson <newbyte@postmarketos.org>
 ---
-Changes since v1:
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
- - Rebased on latest linux-next
- - Added qcom,msm8226 compatible to matisselte inspired by recent Lumia
-   830 patch. This is done as in v1, the patch was rejected because I
-   included the msm8226 dtsi despite not marking matisselte as
-   compatible with msm8226, and I was not sure how to resolve that. As
-   such, I'm copying what was done in the Lumia 830 (microsoft-tesla)
-   patch given that it was accepted.
-
-Changes since v2:
-
- - Updated commit message for UART patch to explain why it was added.
- - Gave more flags to git to provide a hopefully more readable patch.
-
-Stefan Hansson (4):
-  ARM: dts: qcom: samsung-matisse-common: Add initial common device tree
-  dt-bindings: arm: qcom: Add Samsung Galaxy Tab 4 10.1 LTE
-  ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 10.1 LTE
-    (SM-T535)
-  ARM: dts: qcom: samsung-matisse-common: Add UART
-
- .../devicetree/bindings/arm/qcom.yaml         |   1 +
- arch/arm/boot/dts/qcom/Makefile               |   1 +
- .../qcom-apq8026-samsung-matisse-wifi.dts     | 589 +++---------------
- ... qcom-msm8226-samsung-matisse-common.dtsi} |  59 +-
- .../qcom/qcom-msm8926-samsung-matisselte.dts  |  36 ++
- 5 files changed, 117 insertions(+), 569 deletions(-)
- rewrite arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts (89%)
- copy arch/arm/boot/dts/qcom/{qcom-apq8026-samsung-matisse-wifi.dts => qcom-msm8226-samsung-matisse-common.dtsi} (90%)
- create mode 100644 arch/arm/boot/dts/qcom/qcom-msm8926-samsung-matisselte.dts
-
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index 88b84035e7b1..242ffe89c6c6 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -196,6 +196,7 @@ properties:
+           - enum:
+               - microsoft,superman-lte
+               - microsoft,tesla
++              - samsung,matisselte
+           - const: qcom,msm8926
+           - const: qcom,msm8226
+ 
 -- 
 2.41.0
 
