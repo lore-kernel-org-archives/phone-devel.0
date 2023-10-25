@@ -2,87 +2,145 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5444DC25B6B
-	for <phone-devel@archiver.kernel.org>; Tue, 24 Oct 2023 20:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB67EC25B47
+	for <phone-devel@archiver.kernel.org>; Wed, 25 Oct 2023 07:12:36 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344423AbjJXU6q (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 24 Oct 2023 16:58:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40468 "EHLO
+        id S232469AbjJYHMh (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 25 Oct 2023 03:12:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344352AbjJXU6g (ORCPT
+        with ESMTP id S231648AbjJYHMg (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 24 Oct 2023 16:58:36 -0400
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 055C710FA;
-        Tue, 24 Oct 2023 13:58:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-        t=1698181080; bh=KK22/PFKiW+cdv+uyafrjwn6iM6Voz742G5RcEr3vVg=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc;
-        b=dzzxvIbA/FXuQdq5LGOymTPMYewK2604GPtCyPzp+/Zoztx7nD0vawm95ZZMQnMbC
-         EI+VWKVJvfhKq+XnjNF7A+sxdLkfGixJYr/ldSWveTUU2rCYd5myid0gUIAWlIX8N1
-         n1YCjjz2gDJn/cUbkwewXvmgK1IgskifHeDwHFxM=
-From:   Luca Weiss <luca@z3ntu.xyz>
-Date:   Tue, 24 Oct 2023 22:57:50 +0200
-Subject: [PATCH v2 2/3] dt-bindings: arm: qcom: Add HTC One Mini 2
+        Wed, 25 Oct 2023 03:12:36 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2416FA6
+        for <phone-devel@vger.kernel.org>; Wed, 25 Oct 2023 00:12:33 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-5401bab7525so6270843a12.2
+        for <phone-devel@vger.kernel.org>; Wed, 25 Oct 2023 00:12:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1698217951; x=1698822751; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1p4mtYTUYkpBX6TFWvld0/O9WF1Uls0Opf9jIGP8ioA=;
+        b=P1K3cQ+sTpj58tbJYk8iEppvZJesxtXMJBZ4FC1N76NeaBjTntW0ecgXYLjnx4kJJn
+         9FTE6HPzFY3UVM9Wou9aMJaaB+y2Xfiu5Q2cmlRTp29vlJRK6heG4tl0c3NKIR766ITh
+         mnbYTqZp4kUxZ6V2AABM8l1KjpIMPqtGQ5fZKjF/VE6XvqTc/jXb4cUBztwoy1t1M1Ud
+         d9tPigsZyogyLOu6T220EHWiFW3kC/USlzozA1BmJxb56ulNKKSM4KWUJyoxYLLhW+O2
+         C1ouvoTQqzV6s/EJkNXktFP3SvsTZhshwVlW84BghyNYJiki2SZXd95XHwVE7uTiX5Zx
+         i2oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698217951; x=1698822751;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1p4mtYTUYkpBX6TFWvld0/O9WF1Uls0Opf9jIGP8ioA=;
+        b=VKBZh8mndxxBrdKDbZ9OZc+L/aTjsiNcDH7EV5M4jkMXMucNv6zJdEAS/El1d85nB9
+         YGX39P+26DOEFDUmOHfy1L/abRBvL5QUfcMae0xg/s9+JKozFskdDjY0c1+FtCZaMosS
+         RHhs0jCQEg0NfN732Pfcfgunn7bqj1TcoOUQw3ir1s/MbFN2T8UYH8avgC/gk5cvOueK
+         0Z/9ZwOZCydPApbT8jlX5gV2KlKd/CfubMlNWv7nkk/h3DZCV1RquDVi6lWtS6K9gdsa
+         hDtUOfSFrWpI+2sDFsHcj9dadyDiyl/86L2vpd1oZzgJEs+ceCUfWIxqCIAKEcRHJnlc
+         nXCw==
+X-Gm-Message-State: AOJu0Yx4Zf7SgtjLuWuwCmOOo/6PByev4A2bqDiLIwbO3frvjnTyxCXC
+        tVggyay+S+JJVAWhSZXwVTm5lQ==
+X-Google-Smtp-Source: AGHT+IEwFELPzNhVlT3XtcM3enGieNWkBACDFcRfSO+8l+duJ22xAitnA3psupareITnbhPs3/ULjQ==
+X-Received: by 2002:a50:d593:0:b0:53d:a0c9:dbd4 with SMTP id v19-20020a50d593000000b0053da0c9dbd4mr8980318edi.21.1698217951579;
+        Wed, 25 Oct 2023 00:12:31 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.218.126])
+        by smtp.gmail.com with ESMTPSA id dm28-20020a05640222dc00b0053def18ee8bsm8943831edb.20.2023.10.25.00.12.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Oct 2023 00:12:31 -0700 (PDT)
+Message-ID: <e51bcca4-6664-4103-8109-3f2a7fc63fe7@linaro.org>
+Date:   Wed, 25 Oct 2023 09:12:29 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231024-htc-memul-v2-2-8912940b6f95@z3ntu.xyz>
-References: <20231024-htc-memul-v2-0-8912940b6f95@z3ntu.xyz>
-In-Reply-To: <20231024-htc-memul-v2-0-8912940b6f95@z3ntu.xyz>
-To:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/4] ARM: dts: qcom: samsung-matisse-common: Add
+ initial common device tree
+Content-Language: en-US
+To:     Stefan Hansson <newbyte@postmarketos.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=768; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=KK22/PFKiW+cdv+uyafrjwn6iM6Voz742G5RcEr3vVg=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlOC/VTLLV5aRTe4d2Wbhl6v+xh9BSamJwXOSy3
- YNQTt49oMaJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZTgv1QAKCRBy2EO4nU3X
- VqY2EADXm7ru3JRpMhGxOfSeKBgIgIvldXqzQiPwJ1+ArWJgtwS4VwlanCsMH2BqES/BwqdguHd
- lR60tZQ3SzpCE/YwSaAHbTKV2hiNgowEo5bTuaMjCCH2MugFBXZqMYppugmPFPOrmX5gZH2r4Ee
- LLdAZHzKNmE3nJSBW/DJNny04INRSy8VMvPsV1Q6Q93/fCeHswA8YGkzh2vpef5BIFu3l6sKBSu
- 9mUYRuENxVwyJLryeStnlIlhspHHJ/YT4VKxt17KINv9nT8BmzKlSZanTtkr5faKqws06qhqnw2
- W0/OO9+wGyG3H6h81aAma52ZbtwsrTq01E/68iHrCNf25Kr/qaH1mtHTRR7xYqGajoR1hdVUYKx
- PdVj1fPFZTSmi5iGcLkCbMa4CKQrLj7ZwRQHbyh9vYFDcKVX6pHeaLzKkFDqcVMjt6bD6bwm8JY
- O+F8ehFkQEikgz0xog4Rlw0JNOYuSHxMaQkH3hcezsiEoKMU5mHsRS5ObTf4/aA08P68xqcnOXe
- O7jsUkFQqwfpcl9s6trwxSEhI2L2LeMAL26sAvNsAPTRMDznu3XPBb86nKjDGo40na1b1I5of37
- OOTVrxduclqdxRkq9UqqpD8Woh3jJASDbHe/8wieTwWeKzbzkChhsQsLe+WMcoGCsRdgO/N4U8K
- qSt0rE9EZCAfrdg==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20231024204505.125813-1-newbyte@postmarketos.org>
+ <20231024204505.125813-2-newbyte@postmarketos.org>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20231024204505.125813-2-newbyte@postmarketos.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Document the compatible for the MSM8926-based HTC One Mini 2 smartphone.
+On 24/10/2023 22:33, Stefan Hansson wrote:
+> According to the dts from the kernel source code released by Samsung,
+> matissewifi and matisselte only have minor differences in hardware, so
+> use a shared dtsi to reduce duplicated code. Additionally, this should
+> make adding support for matisse3g easier should someone want to do that
+> at a later point.
+> 
+> As such, add a common device tree for all matisse devices by Samsung
+> based on the matissewifi dts. Support for matisselte will be introduced
+> in a later patch in this series and will use the common dtsi as well.
+> 
+> Signed-off-by: Stefan Hansson <newbyte@postmarketos.org>
+> ---
+>  .../qcom-apq8026-samsung-matisse-wifi.dts     | 467 +----------------
+>  .../qcom-msm8226-samsung-matisse-common.dtsi  | 474 ++++++++++++++++++
+>  2 files changed, 483 insertions(+), 458 deletions(-)
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
- 1 file changed, 1 insertion(+)
+It's impossible to review this change. Please use proper -B/-M/-C
+arguments to format-patch to detect code move.
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
-index 88b84035e7b1..60605f2d237b 100644
---- a/Documentation/devicetree/bindings/arm/qcom.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-@@ -194,6 +194,7 @@ properties:
- 
-       - items:
-           - enum:
-+              - htc,memul
-               - microsoft,superman-lte
-               - microsoft,tesla
-           - const: qcom,msm8926
-
--- 
-2.42.0
+Best regards,
+Krzysztof
 
