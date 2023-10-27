@@ -2,81 +2,131 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AFFD2C25B47
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Oct 2023 08:25:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09BA6C25B70
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Oct 2023 10:07:16 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235080AbjJ0IZf (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Oct 2023 04:25:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44872 "EHLO
+        id S231464AbjJ0KHP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Oct 2023 06:07:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235073AbjJ0IZe (ORCPT
+        with ESMTP id S231484AbjJ0KHO (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Oct 2023 04:25:34 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B57511B1;
-        Fri, 27 Oct 2023 01:25:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3D5C433C7;
-        Fri, 27 Oct 2023 08:25:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698395132;
-        bh=QfeOWdwE/IqoYB+mqr3chG0yS+T71+Nm/ssIY25qlkk=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=iHzGHUBYp8J5jK0eJJXhQwe2tROaFdXhyaE9WXpL2QJaeNYhqGWrVX/Wuov+RF7Yz
-         jtasbTiM94yhN0ZwLm9vSB0XMYB01AiFWbi77ecTU98zIsIPsH3tuw1XQCczwHec74
-         VLg8Hq/oow8+z7plFR88BHej0Btb9VGwUaS4FxaVzKvSkWtluXiAql/7sjQzlzLhTD
-         EkMgPWxkjqPLWlipA+KLtEUxV/m2D+NlZ0bBCOvLG14G0z0tCxkbFKFxMNLRuHIndZ
-         30tlzT8KETaxluOYytLD0Xe9gn0y/7f/cmyOumwVOLNX4UDKJgp+jPZYiH/7EK42Ec
-         E/ovnyIHnxUdw==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Luca Weiss <luca.weiss@fairphone.com>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+        Fri, 27 Oct 2023 06:07:14 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79F18111
+        for <phone-devel@vger.kernel.org>; Fri, 27 Oct 2023 03:07:11 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9ba1eb73c27so296954066b.3
+        for <phone-devel@vger.kernel.org>; Fri, 27 Oct 2023 03:07:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1698401230; x=1699006030; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W2ttGxsEpCovYo5WGBI/2wLRWRua0I9N3WCMj8o9qdk=;
+        b=lBmY1PeYgZfGZHhF2ipQeifDPJfHLIZueGkvb1MqXm55J+e6PLu5WRwxrfCYj4Z+WT
+         R8Z8LTQm7nmaHSF+TF7NPXQW/xsOKL/cJSN7sjj+l2mOWeI3Zn9xcET+a6f9E605Uq45
+         wY9ivoR9cFfTvJvD58GDUMCi9/d8X4QqxG7wN2YlmzYo3F66oO/rvNZ2vmsH9E/egQz7
+         9U1I0fP0VVequ70rYdnKpTuUg0gWctPjqKUP4yrf3abfWu8XKIhSNWXkve2cQFtccv1g
+         BCZNWRQ1TG6J3sJvYj8Gk/FZiz1sn5fpx3hdIohc/gg1A2NGR3y9K435/Bwq4V+QbiOo
+         V0+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698401230; x=1699006030;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=W2ttGxsEpCovYo5WGBI/2wLRWRua0I9N3WCMj8o9qdk=;
+        b=hY/GkrO4JVJ7w6/BGHCFM0/p0WlnPpZgwI73dAvhb93yQUjmffRrPakMd0F/96zpiZ
+         4rUGi4wN6DuFYzv5Nx7qrLgY3xX/o7DesStxTev6OOmzmNzc/LWpVgwtZID9WKfp0JDH
+         3CETbYSk4f5UWIN7oDZftzZhCFT8J2P7LaCAikIJNifv2mvVN04KfxOdIM2pexQC1uQt
+         S/Xu6gnR0WXmEDgJX72a88Qzv6D+VLpHXT8TiyVNr5Uf7FvPYY9w0XUcIig4lHUTVUBx
+         dABFgD3qX9Kde5fLNX+kLSBi8gFMaSk3YmxVWGYYtbpF/hps7imd7kFyxK2cYkOHPsm0
+         Or7A==
+X-Gm-Message-State: AOJu0YzN9UnJpIhLSbZeQPUxyA+JxDuCzjQLufihcdFNTiJzreA3kYi1
+        ieZy97Xuz/ZcbQ4DsUAIm3pn9Q==
+X-Google-Smtp-Source: AGHT+IHwXW32IKOGavGwueMqyskdd7p7jS6bw8H7bAFEFW4DJTD6sjtVirXz5fvBiW1yOPC8GSFVTQ==
+X-Received: by 2002:a17:906:fe4c:b0:9be:2991:81fa with SMTP id wz12-20020a170906fe4c00b009be299181famr1956326ejb.39.1698401229965;
+        Fri, 27 Oct 2023 03:07:09 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id c16-20020a1709060fd000b0099cb349d570sm949317ejk.185.2023.10.27.03.07.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Oct 2023 03:07:09 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 27 Oct 2023 12:07:09 +0200
+Message-Id: <CWJ4ZLEZCKQC.2STOBNUU06B2P@fairphone.com>
+Cc:     "Jeff Johnson" <quic_jjohnson@quicinc.com>,
+        <~postmarketos/upstreaming@lists.sr.ht>,
+        <phone-devel@vger.kernel.org>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>
 Subject: Re: [PATCH] wifi: ath11k: Defer on rproc_get failure
+From:   "Luca Weiss" <luca.weiss@fairphone.com>
+To:     "Kalle Valo" <kvalo@kernel.org>
+X-Mailer: aerc 0.15.2
 References: <20231027-ath11k-rproc-defer-v1-1-f6b6a812cd18@fairphone.com>
-Date:   Fri, 27 Oct 2023 11:25:28 +0300
-In-Reply-To: <20231027-ath11k-rproc-defer-v1-1-f6b6a812cd18@fairphone.com>
-        (Luca Weiss's message of "Fri, 27 Oct 2023 08:57:18 +0200")
-Message-ID: <87lebowjyf.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
+ <87lebowjyf.fsf@kernel.org>
+In-Reply-To: <87lebowjyf.fsf@kernel.org>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Luca Weiss <luca.weiss@fairphone.com> writes:
-
-> If we already have gotten the rproc_handle (meaning the "qcom,rproc"
-> property is defined in the devicetree), it's a valid state that the
-> remoteproc module hasn't probed yet so we should defer probing instead
-> of just failing to probe.
+On Fri Oct 27, 2023 at 10:25 AM CEST, Kalle Valo wrote:
+> Luca Weiss <luca.weiss@fairphone.com> writes:
 >
-> This resolves a race condition when the ath11k driver probes and fails
-> before the wpss remoteproc driver has probed, like the following:
+> > If we already have gotten the rproc_handle (meaning the "qcom,rproc"
+> > property is defined in the devicetree), it's a valid state that the
+> > remoteproc module hasn't probed yet so we should defer probing instead
+> > of just failing to probe.
+> >
+> > This resolves a race condition when the ath11k driver probes and fails
+> > before the wpss remoteproc driver has probed, like the following:
+> >
+> >   [    6.232360] ath11k 17a10040.wifi: failed to get rproc
+> >   [    6.232366] ath11k 17a10040.wifi: failed to get rproc: -22
+> >   [    6.232478] ath11k: probe of 17a10040.wifi failed with error -22
+> >        ...
+> >   [    6.252415] remoteproc remoteproc2: 8a00000.remoteproc is availabl=
+e
+> >   [    6.252776] remoteproc remoteproc2: powering up 8a00000.remoteproc
+> >   [    6.252781] remoteproc remoteproc2: Booting fw image qcom/qcm6490/=
+fairphone5/wpss.mdt, size 7188
+> >
+> > So, defer the probe if we hit that so we can retry later once the wpss
+> > remoteproc is available.
+> >
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 >
->   [    6.232360] ath11k 17a10040.wifi: failed to get rproc
->   [    6.232366] ath11k 17a10040.wifi: failed to get rproc: -22
->   [    6.232478] ath11k: probe of 17a10040.wifi failed with error -22
->        ...
->   [    6.252415] remoteproc remoteproc2: 8a00000.remoteproc is available
->   [    6.252776] remoteproc remoteproc2: powering up 8a00000.remoteproc
->   [    6.252781] remoteproc remoteproc2: Booting fw image qcom/qcm6490/fairphone5/wpss.mdt, size 7188
+> Did you test this on a real device? If yes, what ath11k hardware and firm=
+ware
+> did you use? We use Tested-on tag to document that:
 >
-> So, defer the probe if we hit that so we can retry later once the wpss
-> remoteproc is available.
+> https://wireless.wiki.kernel.org/en/users/drivers/ath11k/submittingpatche=
+s#tested-on_tag
+
+Hi,
+
+Yes I tested this on qcm6490-fairphone-fp5 including some extra patches
+for wpss-pas remoteproc support (nothing special, just adding it to the
+existing PAS driver) and wifi enablement in dts.
+
+I built this line from info from the dmesg, hope it's okay:
+
+Tested-on: wcn6750 hw1.0 AHB WLAN.MSL.1.0.1-01264-QCAMSLSWPLZ-1.37886.3
+
+
+And thinking about it, a Fixes tag would also be appropriate for this
+patch.
+The code was moved to a different file in commit ba929d6fe31a ("ath11k:
+Remove rproc references from common core layer") but I think this tag
+should be correct.
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+
 >
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> I can add that in the pending branch if you provide the info.
 
-Did you test this on a real device? If yes, what ath11k hardware and firmware
-did you use? We use Tested-on tag to document that:
+Thanks!
 
-https://wireless.wiki.kernel.org/en/users/drivers/ath11k/submittingpatches#tested-on_tag
-
-I can add that in the pending branch if you provide the info.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Regards
+Luca
