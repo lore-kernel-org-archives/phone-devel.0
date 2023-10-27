@@ -2,60 +2,60 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0852FC25B67
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Oct 2023 07:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3B73C25B47
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Oct 2023 07:44:37 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345404AbjJ0Hmo (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Oct 2023 03:42:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49200 "EHLO
+        id S1345481AbjJ0Hoi (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Oct 2023 03:44:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232306AbjJ0Hmn (ORCPT
+        with ESMTP id S1345488AbjJ0Hoh (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Oct 2023 03:42:43 -0400
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F788116
-        for <phone-devel@vger.kernel.org>; Fri, 27 Oct 2023 00:42:40 -0700 (PDT)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-2c4fe37f166so24681721fa.1
-        for <phone-devel@vger.kernel.org>; Fri, 27 Oct 2023 00:42:40 -0700 (PDT)
+        Fri, 27 Oct 2023 03:44:37 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8EDF1AC
+        for <phone-devel@vger.kernel.org>; Fri, 27 Oct 2023 00:44:34 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-507e85ebf50so2403571e87.1
+        for <phone-devel@vger.kernel.org>; Fri, 27 Oct 2023 00:44:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698392559; x=1698997359; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1698392673; x=1698997473; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=WW64DPkgTkjFEjw8jrydz5ulxa4DGHMCtbXHY4Hhj+0=;
-        b=wrJHXP7BT2Uk9IPwBykbN81iLfpiH1psQpNwQZzGaITE9jl7fqeWSq7TZcPGKe1A+Q
-         NyjDizFJ5jeWvrbxzbMOpMqV3OHmF6H+n4S2Sm8nUiWrwTH5vh1zk+P8GFQzgSHP/uQa
-         XvPl+3G6+s+765bJUB55om7rdDsdHm75/xAIIDhoBF8WEBjXTvAS9LCIoonqApYoZumc
-         I+O5q6PfgSegrW3A5hOMNFZZx2RO8yLdA8IyKarMo5jGDb2J4Fgpjl+iI4SyhibKabHW
-         pNONrLwN0sLhHYZHVujq5z/Wo7XC9E8EoAMsERawkZ1Pz25b1YLTPrEPp838fhyO2CK8
-         6rCQ==
+        bh=myIb8mcfy12Cmp9LVacHQIAiB4bmSRpr7qDvT42VUVY=;
+        b=X0EtPsM8NCTR1KPrbUU+UZN6GoF9WkE8l3SGqDQnvP8uEqsp1AaPKiXHtdBaNP1Z1k
+         kfd5h/Wn+ix+fBjeHur8QK5t2f+m7wR7C9ko3fD/YL1tXMgYB4L79kZwEt0TZAENGiEC
+         RsByEqo4sFViTOGT/9+TPCDs2nFGmzJKwVgAZ7PaqMcX6u+ZbkVHZsQqbH/CDu1sJKEQ
+         oFqIocHxEtM5wOdr3EcJovc4ln4xvJGjO/NLh+gEGqjnI/uFSvtByvN9NbAwUXVxUEjj
+         oPHUAs2rjFw+ed8JwTqlfiI3X364fBNopbBvBjkMXRSVdoT6IFjybxsF6uSxppjrAfS9
+         6hVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698392559; x=1698997359;
+        d=1e100.net; s=20230601; t=1698392673; x=1698997473;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WW64DPkgTkjFEjw8jrydz5ulxa4DGHMCtbXHY4Hhj+0=;
-        b=tB/C1GULcVg3IYo/I7NGHN3sLcOqPWvl42N+woRTtXy6ym33OLfmUHRYpxTLc/IAUk
-         4b2IGf2wNQmGp7yEn3qdl5OVEFUkpPmkj7UNrnOAG5Ver2UaVXTYVAX553DZamqURY6I
-         FOA/GOoEAoALU4Om7sYN3ggDWA2zF4Qm2cur9Y4LkR3U8R4a8U+k1ca5QS16a6hduIlo
-         zYl8tVVHM/or1Aa1HHFoo9v1n8mMPo+5oxejzy9KuRFvsuEJ7FgHtsa04kV2tg7w8nen
-         WuZO3DhWymoiprInmxmratMR8ALSPllJwx6ZyyGQqvfGZOQb/UveUGmrr56mI44d6hb3
-         S9mA==
-X-Gm-Message-State: AOJu0Ywk0wdTo0iwx+xYK+II80PrqXA5Nq4YeubFYSe2+tn7L1W7QIsf
-        jWllKwm7lE5PRdyZS9Te8RY1BQ==
-X-Google-Smtp-Source: AGHT+IECvkNYMJBY6p1b9PDa1mwZ4XRfcJNngJ41xQkl8dyZUJqnpSAKqZNM2f4BlDRV+AzPPraGpQ==
-X-Received: by 2002:a2e:8895:0:b0:2b9:f13b:6139 with SMTP id k21-20020a2e8895000000b002b9f13b6139mr1497359lji.20.1698392558767;
-        Fri, 27 Oct 2023 00:42:38 -0700 (PDT)
+        bh=myIb8mcfy12Cmp9LVacHQIAiB4bmSRpr7qDvT42VUVY=;
+        b=lqb04wla6ZsDAeWbggy0xzBoSz9zVEKyVoFf3wCy+/hAVBWTp48Te2yVcZikxxRaYN
+         q+Rm9ELLzShxBR9L/eWKweMqb5CIxtqnQj/t2N28mujbdG11JNrY4ytq3Ci48Z+cdlaY
+         ufLXiUeUIiuin5jLLJtmfvYSIeUtn2n/0Rw4Bx0kkOjwE7iSazk+CQXd1vwgss9vrFjG
+         VSBE01iYBRRBYk3ZkRwNKNVfd3obZSOEWsFsdB9sDHKdkW+//x5Hc8sGIYKfDqDKegP0
+         3XN42xMANNersTgx0/CEXMsDaz+9bbgCDvQBRVvpPAkHKdRgLm7t8+jh9I+igy+YMO2m
+         W4IA==
+X-Gm-Message-State: AOJu0YwMVL759uRtn5HG6t0N6huIiujcWtB/avxSCAvkk0IrFW5I+5L8
+        ITfoLSxiaTFP5VXTZWYTOf1Okg==
+X-Google-Smtp-Source: AGHT+IGCYId0CxnR428nNEmbh95z3BteRIJnVDWSn5XGA8FHzPKDSLVNI5go/Z4s2kmlCxTJKIUaxA==
+X-Received: by 2002:ac2:4103:0:b0:503:f:1343 with SMTP id b3-20020ac24103000000b00503000f1343mr1098859lfi.19.1698392673048;
+        Fri, 27 Oct 2023 00:44:33 -0700 (PDT)
 Received: from [192.168.0.22] ([78.10.206.168])
-        by smtp.gmail.com with ESMTPSA id u12-20020a05651c130c00b002c3c60e86a6sm177656lja.124.2023.10.27.00.42.37
+        by smtp.gmail.com with ESMTPSA id u28-20020a19791c000000b005079fd88326sm170716lfc.45.2023.10.27.00.44.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Oct 2023 00:42:38 -0700 (PDT)
-Message-ID: <17185ae7-b1ab-4c23-b9ab-96e62efdbf5f@linaro.org>
-Date:   Fri, 27 Oct 2023 09:42:37 +0200
+        Fri, 27 Oct 2023 00:44:32 -0700 (PDT)
+Message-ID: <71a9ee55-1730-431b-80a8-f6d5ef624e92@linaro.org>
+Date:   Fri, 27 Oct 2023 09:44:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] ARM: dts: qcom: Add support for Samsung Galaxy Tab
- 4 10.1 LTE (SM-T535)
+Subject: Re: [PATCH v4 1/4] ARM: dts: qcom: samsung-matisse-common: Add
+ initial common device tree
 Content-Language: en-US
 To:     Stefan Hansson <newbyte@postmarketos.org>,
         Andy Gross <agross@kernel.org>,
@@ -68,7 +68,7 @@ To:     Stefan Hansson <newbyte@postmarketos.org>,
         linux-kernel@vger.kernel.org
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
 References: <20231026132521.38575-1-newbyte@postmarketos.org>
- <20231026132521.38575-4-newbyte@postmarketos.org>
+ <20231026132521.38575-2-newbyte@postmarketos.org>
 From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -114,7 +114,7 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231026132521.38575-4-newbyte@postmarketos.org>
+In-Reply-To: <20231026132521.38575-2-newbyte@postmarketos.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -122,13 +122,27 @@ List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 On 26/10/2023 15:24, Stefan Hansson wrote:
-> Add a device tree for the Samsung Galaxy Tab 4 10.1 (SM-T535) LTE tablet
-> based on the MSM8926 platform.
+> According to the dts from the kernel source code released by Samsung,
+> matissewifi and matisselte only have minor differences in hardware, so
+> use a shared dtsi to reduce duplicated code. Additionally, this should
+> make adding support for matisse3g easier should someone want to do that
+> at a later point.
 > 
-> The common dtsi is also modified to describe the widest constraints,
-> which required modifications to the matisse-wifi dts.
+> As such, add a common device tree for all matisse devices by Samsung
+> based on the matissewifi dts. Support for matisselte will be introduced
+> in a later patch in this series and will use the common dtsi as well.
 > 
 > Signed-off-by: Stefan Hansson <newbyte@postmarketos.org>
+> ---
+>  .../qcom-apq8026-samsung-matisse-wifi.dts     | 595 +++---------------
+>  ... qcom-msm8226-samsung-matisse-common.dtsi} |  66 --
+>  2 files changed, 76 insertions(+), 585 deletions(-)
+>  rewrite arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts (85%)
+>  copy arch/arm/boot/dts/qcom/{qcom-apq8026-samsung-matisse-wifi.dts => qcom-msm8226-samsung-matisse-common.dtsi} (86%)
+
+Thanks. For me this diff is much more readable - I clearly see what was
+removed from final DTSI file thus what I should expect in DTS file.
+
 
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
