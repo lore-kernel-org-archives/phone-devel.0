@@ -2,101 +2,119 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B947AC25B6B
-	for <phone-devel@archiver.kernel.org>; Thu, 26 Oct 2023 19:36:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E2A67C25B47
+	for <phone-devel@archiver.kernel.org>; Fri, 27 Oct 2023 06:57:25 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231397AbjJZTgb (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Thu, 26 Oct 2023 15:36:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54362 "EHLO
+        id S235010AbjJ0G50 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 27 Oct 2023 02:57:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230143AbjJZTgb (ORCPT
+        with ESMTP id S234993AbjJ0G5Z (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Thu, 26 Oct 2023 15:36:31 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149D61A6
-        for <phone-devel@vger.kernel.org>; Thu, 26 Oct 2023 12:36:29 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2c59a4dcdacso21585251fa.1
-        for <phone-devel@vger.kernel.org>; Thu, 26 Oct 2023 12:36:28 -0700 (PDT)
+        Fri, 27 Oct 2023 02:57:25 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 760091AA
+        for <phone-devel@vger.kernel.org>; Thu, 26 Oct 2023 23:57:22 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-9a6190af24aso271933266b.0
+        for <phone-devel@vger.kernel.org>; Thu, 26 Oct 2023 23:57:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698348987; x=1698953787; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OTgf2Dvow9ZuXFPqFfbC0fdxBZgN8QcR7Q24NuIsbkQ=;
-        b=oCsUUWNf40nDNxPhrbehQjJH3/sMUd6nty7cLyO9bQyEiopL6LnZcGj/BaMrtQcc1i
-         VVYfzS1tY2XxR46oByRBoxpukYsHpqX2xCnVepJEc8oUQe5hAJ4Nk72PI3/WOjZdWR3q
-         IVGA+rSxklLeUZWB3v643KL1pmgDIkr2hkDZfTQGUu9xG6LIj93Ri0e1+lbu1gSGABWI
-         3DtiecyqAw/naTc4o3kdenCOBK1I04kZ9KF9nkwn10/4h5/hitq0HxwT/PRtEospTz1p
-         PCdEulzEqqYRT1DXaObr16E44tzoRLXQ7N9Hq6UH+yz0V3lUsElRlV2+uogjGQzIGU6C
-         n7yw==
+        d=fairphone.com; s=fair; t=1698389841; x=1698994641; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kj3Zu6WMlpxQr17sM16EXcoz5cOx2Zq8aggknXeJGWY=;
+        b=JN948EZBExUcOWDWNBCyXB7eXJTLvHeQgvMLPe7NICB1+aIqkhHu6x1TNOtsCaOnLB
+         Mk1VsZcik65aIEirET+Dbu2FICYmMvkPeZqiEkZgRaxEGeBsRqPSrCe207P31kxxqPDr
+         7tA2Zc+dMs1FEQ6LuvYR5p02u6yUeWxFRLEGNnpMC51HEU3VcWuqnZGibuHpUpUlf4L9
+         dSfWQa2ccNjJHwSud8X4e/qTjYhdy6W1spdy1aCj/bzoeR7cr2AIez7kg3BsXz7xQy8j
+         9Z+ixaXR4OtTAwn9GFgFacH/terwG40qJs7DUWIM5HDHLSVkV1faUiZ8sUw18cWoQ66c
+         PRGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698348987; x=1698953787;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OTgf2Dvow9ZuXFPqFfbC0fdxBZgN8QcR7Q24NuIsbkQ=;
-        b=TNV7Vk05B96M6q06Xd0eOh2ZNBGjqHkVEqT/Xg0U/JlRNfRcJHhLJKrF6pXvRZmAf0
-         UXZnEhNVxsaa07UzU/wZvGnyIFwK3X7NNFbXQmztqsUaq6u37Q2CqCLTbwViHJzaGr0j
-         9k2NyzGdvVOt4F2b6gfAD9bVQ6nGr6hiK9mxE5KcahFOfkmu7dFV/7Olo3BWFCL3nHhJ
-         jAo218MnCBunyAjiXD+D2cOn1nBQtnwVLX0b0nzP9Rc0M/eCK+PR6KPFGzRCNtjxJSgq
-         nZchPZtUiVzxxsKB/kAdISeRkHacAAyxUGE3BxsaNpFk55kIPieuUhHYLZBTkrXYgYpe
-         tgtw==
-X-Gm-Message-State: AOJu0YwY5T0Y5LQV6YkELF4VlAMoaB44cinKkASXMalJlwwpyhp2VH7J
-        b3q9ibWxH7SiaEeHZmO6Q3TbHw==
-X-Google-Smtp-Source: AGHT+IFOlZ4mUTLecLw/FO20DFaae9bB4NAnizYV3Y4IKYS/iIm9yXm0Ntj2T8hWdq/pC8rojnFjgw==
-X-Received: by 2002:a19:a411:0:b0:507:a089:caf8 with SMTP id q17-20020a19a411000000b00507a089caf8mr233719lfc.67.1698348987253;
-        Thu, 26 Oct 2023 12:36:27 -0700 (PDT)
-Received: from [172.30.204.84] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id n30-20020ac2491e000000b00507a0bb04efsm3086919lfi.195.2023.10.26.12.36.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Oct 2023 12:36:26 -0700 (PDT)
-Message-ID: <2d191492-7fee-44f9-9de2-92821afa30d4@linaro.org>
-Date:   Thu, 26 Oct 2023 21:36:24 +0200
+        d=1e100.net; s=20230601; t=1698389841; x=1698994641;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kj3Zu6WMlpxQr17sM16EXcoz5cOx2Zq8aggknXeJGWY=;
+        b=ZO5rFhZEh1ozxyIQNrFyNXsjKBEiidhzatFgoq4tySXR0VKv9T5PystiaAEXqjRiwK
+         K7tYkxG5mMz2iWLGsgbI3txoafn4s7CRcYbAN4yWavSkbmOa8gW0ogG6jcFpy+m1xu83
+         /11E4aaHelNIQGNwuP1qAGJWglCgkISmzJ7ZBew8JsERXT1B+Uqs1yQHRPe2EYDji9nf
+         r/OhSyZMYFiXDm45uyKrieTfrwq3QMd/+N9jc9J771x6dT3o+WHpk2Yvv5E7Cq4i6XP1
+         MwRCd+lpq2mww/ClRI2KRQguwpH7O2L7l+O7efPtM8l4FKLC4o68LONqpHvQ1ypUGqgt
+         5+Sw==
+X-Gm-Message-State: AOJu0YxEH8RZnGboqSYz628pNOfqhe1oK3t7GBfhEa3U9Y3D6H2dl6Bh
+        eEY0o4NpURQpcq2Rrk3+tvKUpA==
+X-Google-Smtp-Source: AGHT+IHq5doa0BQX+kMaVEeO5/zwweZM2r10RQCthE0JiUtVHXqbkVYblKtKbVO/w75KYeXdp21e6Q==
+X-Received: by 2002:a17:907:9718:b0:9be:6395:6b0f with SMTP id jg24-20020a170907971800b009be63956b0fmr1436632ejc.29.1698389840852;
+        Thu, 26 Oct 2023 23:57:20 -0700 (PDT)
+Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id rp28-20020a170906d97c00b009b296ce13a3sm731381ejb.18.2023.10.26.23.57.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Oct 2023 23:57:20 -0700 (PDT)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Date:   Fri, 27 Oct 2023 08:57:18 +0200
+Subject: [PATCH] wifi: ath11k: Defer on rproc_get failure
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] ARM: dts: qcom: Add support for HTC One Mini 2
-Content-Language: en-US
-To:     Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
-        phone-devel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Cc:     Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20231024-htc-memul-v2-0-8912940b6f95@z3ntu.xyz>
- <20231024-htc-memul-v2-3-8912940b6f95@z3ntu.xyz>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20231024-htc-memul-v2-3-8912940b6f95@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20231027-ath11k-rproc-defer-v1-1-f6b6a812cd18@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAE1fO2UC/x3MMQqAMAxA0atIZgNNBYteRRxKm2oQVFIRQXp3i
+ +Mb/n8hswpnGJsXlG/JcuwV1DYQVr8vjBKrwRrbkbEO/bUSbainHgEjJ1aM1PfODckTdVDDUzn
+ J80+nuZQPzjDaZmQAAAA=
+To:     Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.12.3
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
+If we already have gotten the rproc_handle (meaning the "qcom,rproc"
+property is defined in the devicetree), it's a valid state that the
+remoteproc module hasn't probed yet so we should defer probing instead
+of just failing to probe.
 
+This resolves a race condition when the ath11k driver probes and fails
+before the wpss remoteproc driver has probed, like the following:
 
-On 10/24/23 22:57, Luca Weiss wrote:
-> Add support for this smartphone based on the MSM8926 SoC, codenamed
-> "memul".
-> 
-> Supported functionality:
-> * Power & volume buttons
-> * ADSP
-> * Magnetometer
-> * Accelerometer
-> * Touchscreen
-> * Vibrator
-> * SD card
-> * Charger
-> * USB
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-sdhci vddio should have regulator-allow-set-load
+  [    6.232360] ath11k 17a10040.wifi: failed to get rproc
+  [    6.232366] ath11k 17a10040.wifi: failed to get rproc: -22
+  [    6.232478] ath11k: probe of 17a10040.wifi failed with error -22
+       ...
+  [    6.252415] remoteproc remoteproc2: 8a00000.remoteproc is available
+  [    6.252776] remoteproc remoteproc2: powering up 8a00000.remoteproc
+  [    6.252781] remoteproc remoteproc2: Booting fw image qcom/qcm6490/fairphone5/wpss.mdt, size 7188
 
-otherwise:
+So, defer the probe if we hit that so we can retry later once the wpss
+remoteproc is available.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ drivers/net/wireless/ath/ath11k/ahb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Konrad
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 235336ef2a7a..f8f5e653cd03 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -803,8 +803,8 @@ static int ath11k_core_get_rproc(struct ath11k_base *ab)
+ 
+ 	prproc = rproc_get_by_phandle(rproc_phandle);
+ 	if (!prproc) {
+-		ath11k_err(ab, "failed to get rproc\n");
+-		return -EINVAL;
++		ath11k_dbg(ab, ATH11K_DBG_AHB, "failed to get rproc, deferring\n");
++		return -EPROBE_DEFER;
+ 	}
+ 	ab_ahb->tgt_rproc = prproc;
+ 
+
+---
+base-commit: 2ef7141596eed0b4b45ef18b3626f428a6b0a822
+change-id: 20231027-ath11k-rproc-defer-d166779fa113
+
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
+
