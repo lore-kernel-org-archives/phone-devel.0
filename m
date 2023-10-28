@@ -2,131 +2,144 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09BA6C25B70
-	for <phone-devel@archiver.kernel.org>; Fri, 27 Oct 2023 10:07:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DD9D9C0032E
+	for <phone-devel@archiver.kernel.org>; Sat, 28 Oct 2023 08:01:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231464AbjJ0KHP (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 27 Oct 2023 06:07:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34832 "EHLO
+        id S233045AbjJ1IBj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 28 Oct 2023 04:01:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231484AbjJ0KHO (ORCPT
+        with ESMTP id S229458AbjJ1IBi (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 27 Oct 2023 06:07:14 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79F18111
-        for <phone-devel@vger.kernel.org>; Fri, 27 Oct 2023 03:07:11 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9ba1eb73c27so296954066b.3
-        for <phone-devel@vger.kernel.org>; Fri, 27 Oct 2023 03:07:11 -0700 (PDT)
+        Sat, 28 Oct 2023 04:01:38 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3B83F2
+        for <phone-devel@vger.kernel.org>; Sat, 28 Oct 2023 01:01:35 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-507be298d2aso4087693e87.1
+        for <phone-devel@vger.kernel.org>; Sat, 28 Oct 2023 01:01:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1698401230; x=1699006030; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W2ttGxsEpCovYo5WGBI/2wLRWRua0I9N3WCMj8o9qdk=;
-        b=lBmY1PeYgZfGZHhF2ipQeifDPJfHLIZueGkvb1MqXm55J+e6PLu5WRwxrfCYj4Z+WT
-         R8Z8LTQm7nmaHSF+TF7NPXQW/xsOKL/cJSN7sjj+l2mOWeI3Zn9xcET+a6f9E605Uq45
-         wY9ivoR9cFfTvJvD58GDUMCi9/d8X4QqxG7wN2YlmzYo3F66oO/rvNZ2vmsH9E/egQz7
-         9U1I0fP0VVequ70rYdnKpTuUg0gWctPjqKUP4yrf3abfWu8XKIhSNWXkve2cQFtccv1g
-         BCZNWRQ1TG6J3sJvYj8Gk/FZiz1sn5fpx3hdIohc/gg1A2NGR3y9K435/Bwq4V+QbiOo
-         V0+A==
+        d=linaro.org; s=google; t=1698480094; x=1699084894; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fKMQucF/uLZCGIr/BFMo7BXVL6Ys3Ai9lA63eq4X32E=;
+        b=QfIeN1AZUwtZvPEJnoQmAIGLRB9/cc2oIlMgGg71mCWMOT9rwaaxv2Of0gpn4r9o1L
+         RAK/WJNUiNDwyF2VkfpcMXlJEcgkPa6Tqq4AgiVNC2J2g1z5vX/alkRpmbRYZ1XrLWlO
+         tCTI2OzK1xk47UAr7YFO/dnGjuoo5EvuTbsDz1nBS4HqUI1ocs2efAbKY+Qv+awvLUec
+         zTJPnrGfAtXtpnXR1sHdBWXoMjlBgmbsrYnAtD/wK7P05MmdajWtx+bPiQa5SHkTQDa8
+         0UoBno9YdA5l2A8AkFRjjKJDTGp1d3pnJuHso1lC5Z1Sx3cdp3ZgZUrrj4vK7s/9YqQU
+         u/aQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698401230; x=1699006030;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=W2ttGxsEpCovYo5WGBI/2wLRWRua0I9N3WCMj8o9qdk=;
-        b=hY/GkrO4JVJ7w6/BGHCFM0/p0WlnPpZgwI73dAvhb93yQUjmffRrPakMd0F/96zpiZ
-         4rUGi4wN6DuFYzv5Nx7qrLgY3xX/o7DesStxTev6OOmzmNzc/LWpVgwtZID9WKfp0JDH
-         3CETbYSk4f5UWIN7oDZftzZhCFT8J2P7LaCAikIJNifv2mvVN04KfxOdIM2pexQC1uQt
-         S/Xu6gnR0WXmEDgJX72a88Qzv6D+VLpHXT8TiyVNr5Uf7FvPYY9w0XUcIig4lHUTVUBx
-         dABFgD3qX9Kde5fLNX+kLSBi8gFMaSk3YmxVWGYYtbpF/hps7imd7kFyxK2cYkOHPsm0
-         Or7A==
-X-Gm-Message-State: AOJu0YzN9UnJpIhLSbZeQPUxyA+JxDuCzjQLufihcdFNTiJzreA3kYi1
-        ieZy97Xuz/ZcbQ4DsUAIm3pn9Q==
-X-Google-Smtp-Source: AGHT+IHwXW32IKOGavGwueMqyskdd7p7jS6bw8H7bAFEFW4DJTD6sjtVirXz5fvBiW1yOPC8GSFVTQ==
-X-Received: by 2002:a17:906:fe4c:b0:9be:2991:81fa with SMTP id wz12-20020a170906fe4c00b009be299181famr1956326ejb.39.1698401229965;
-        Fri, 27 Oct 2023 03:07:09 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id c16-20020a1709060fd000b0099cb349d570sm949317ejk.185.2023.10.27.03.07.09
+        d=1e100.net; s=20230601; t=1698480094; x=1699084894;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fKMQucF/uLZCGIr/BFMo7BXVL6Ys3Ai9lA63eq4X32E=;
+        b=cUL70I7DWW1hhVySIgcn41D0c45qHbGzbUWHlNWA3zX28of1TnhubNfrdRG8MPGKHj
+         mqAFL9/t+6PaeBsEQmEBsuI7e1NP0Xxs+f5JewcAZPJRP6+UoRlq8QGCyJmhgeDB81i5
+         nS2IzhpdGAsVnXuohVSnEeu7QVEYtHJ+Q2LX+VHyJIQVT12D6yDzUB4s8pUFFZVnxG0E
+         rP4Pvrkg0t7BdSxWmxfQzvwhnm0RsQbpvpNOozO1u9BIT77mmUTOmwwFQjUMhkvmYRZ1
+         YiG6ZWMVX6Q8ARyFT8JW+zvD0m2zYH8n2Z5ifHW5T3FQUxmI0yXYCFIJRGj2pgRaRJTj
+         O0Tg==
+X-Gm-Message-State: AOJu0YywNdP0cFO9duuSlBg12kn2y8ntQRvgACl1kU1i90ayNQ9z50oV
+        XbQe8FiDT0n040EC9To2WBERjcJdbM5d0cJiW8c=
+X-Google-Smtp-Source: AGHT+IEgVcEcjNrcWyZn1TIa7/8oqWiy8EQyZr4FifWxeAVPZLegawcvYu73ChfKtaUICj+kGYnzNQ==
+X-Received: by 2002:a19:4f42:0:b0:507:a40e:d8bf with SMTP id a2-20020a194f42000000b00507a40ed8bfmr3365332lfk.7.1698480093991;
+        Sat, 28 Oct 2023 01:01:33 -0700 (PDT)
+Received: from [192.168.0.22] ([78.10.206.168])
+        by smtp.gmail.com with ESMTPSA id l3-20020ac24a83000000b0050804a97f01sm570067lfp.160.2023.10.28.01.01.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Oct 2023 03:07:09 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+        Sat, 28 Oct 2023 01:01:33 -0700 (PDT)
+Message-ID: <b00177e6-9b2b-4bdf-9774-bdaefab50d02@linaro.org>
+Date:   Sat, 28 Oct 2023 10:01:32 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/9] dt-bindings: remoteproc: qcom: sc7180-pas: Fix SC7280
+ MPSS PD-names
+Content-Language: en-US
+To:     Luca Weiss <luca.weiss@fairphone.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        cros-qcom-dts-watchers@chromium.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Rob Herring <robh@kernel.org>,
+        =?UTF-8?Q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20231027-sc7280-remoteprocs-v1-0-05ce95d9315a@fairphone.com>
+ <20231027-sc7280-remoteprocs-v1-1-05ce95d9315a@fairphone.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
+ m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
+ HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
+ XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
+ mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
+ v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
+ cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
+ rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
+ qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
+ aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
+ gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
+ dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
+ NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
+ hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
+ oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
+ H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
+ yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
+ 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
+ 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
+ +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
+ FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
+ 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
+ DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
+ oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
+ 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
+ Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
+ qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
+ /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
+ qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
+ EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
+ KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
+ fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20231027-sc7280-remoteprocs-v1-1-05ce95d9315a@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
-Date:   Fri, 27 Oct 2023 12:07:09 +0200
-Message-Id: <CWJ4ZLEZCKQC.2STOBNUU06B2P@fairphone.com>
-Cc:     "Jeff Johnson" <quic_jjohnson@quicinc.com>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, <ath11k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>
-Subject: Re: [PATCH] wifi: ath11k: Defer on rproc_get failure
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Kalle Valo" <kvalo@kernel.org>
-X-Mailer: aerc 0.15.2
-References: <20231027-ath11k-rproc-defer-v1-1-f6b6a812cd18@fairphone.com>
- <87lebowjyf.fsf@kernel.org>
-In-Reply-To: <87lebowjyf.fsf@kernel.org>
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Fri Oct 27, 2023 at 10:25 AM CEST, Kalle Valo wrote:
-> Luca Weiss <luca.weiss@fairphone.com> writes:
->
-> > If we already have gotten the rproc_handle (meaning the "qcom,rproc"
-> > property is defined in the devicetree), it's a valid state that the
-> > remoteproc module hasn't probed yet so we should defer probing instead
-> > of just failing to probe.
-> >
-> > This resolves a race condition when the ath11k driver probes and fails
-> > before the wpss remoteproc driver has probed, like the following:
-> >
-> >   [    6.232360] ath11k 17a10040.wifi: failed to get rproc
-> >   [    6.232366] ath11k 17a10040.wifi: failed to get rproc: -22
-> >   [    6.232478] ath11k: probe of 17a10040.wifi failed with error -22
-> >        ...
-> >   [    6.252415] remoteproc remoteproc2: 8a00000.remoteproc is availabl=
-e
-> >   [    6.252776] remoteproc remoteproc2: powering up 8a00000.remoteproc
-> >   [    6.252781] remoteproc remoteproc2: Booting fw image qcom/qcm6490/=
-fairphone5/wpss.mdt, size 7188
-> >
-> > So, defer the probe if we hit that so we can retry later once the wpss
-> > remoteproc is available.
-> >
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->
-> Did you test this on a real device? If yes, what ath11k hardware and firm=
-ware
-> did you use? We use Tested-on tag to document that:
->
-> https://wireless.wiki.kernel.org/en/users/drivers/ath11k/submittingpatche=
-s#tested-on_tag
+On 27/10/2023 16:20, Luca Weiss wrote:
+> The power domains for MPSS on SC7280 are actually named CX and MSS, and
+> not CX and MX. Adjust the name which also aligns the bindings with the
+> dts and fixes validation.
+> 
+> Fixes: 8bb92d6fd0b3 ("dt-bindings: remoteproc: qcom,sc7180-pas: split into separate file")
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  Documentation/devicetree/bindings/remoteproc/qcom,sc7180-pas.yaml | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
 
-Hi,
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Yes I tested this on qcm6490-fairphone-fp5 including some extra patches
-for wpss-pas remoteproc support (nothing special, just adding it to the
-existing PAS driver) and wifi enablement in dts.
+Best regards,
+Krzysztof
 
-I built this line from info from the dmesg, hope it's okay:
-
-Tested-on: wcn6750 hw1.0 AHB WLAN.MSL.1.0.1-01264-QCAMSLSWPLZ-1.37886.3
-
-
-And thinking about it, a Fixes tag would also be appropriate for this
-patch.
-The code was moved to a different file in commit ba929d6fe31a ("ath11k:
-Remove rproc references from common core layer") but I think this tag
-should be correct.
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-
->
-> I can add that in the pending branch if you provide the info.
-
-Thanks!
-
-Regards
-Luca
