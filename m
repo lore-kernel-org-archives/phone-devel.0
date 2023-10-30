@@ -2,107 +2,209 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE617C4332F
-	for <phone-devel@archiver.kernel.org>; Sun, 29 Oct 2023 19:56:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 88781C4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 30 Oct 2023 09:02:31 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230169AbjJ2T4d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 29 Oct 2023 15:56:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40022 "EHLO
+        id S232261AbjJ3JCc (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 30 Oct 2023 05:02:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbjJ2T4c (ORCPT
+        with ESMTP id S230477AbjJ3JCb (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 29 Oct 2023 15:56:32 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE4BDBD
-        for <phone-devel@vger.kernel.org>; Sun, 29 Oct 2023 12:56:29 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-4084de32db5so31701655e9.0
-        for <phone-devel@vger.kernel.org>; Sun, 29 Oct 2023 12:56:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698609388; x=1699214188; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MBjaEDFH2L20pCiIDxvatCP6Y3N/isgm8vU1EI+Cv9k=;
-        b=mZMy5FL7v4eWKOG7xM+D1+YMg8qx3cN4t9c2DV7n2W0YFN2jyg7KOJp61ZzyZR6OfG
-         XMD15AVBEXELLKSDBYK43x2uZocQOZSswHgFdl2GHPqi0wesU/ZVlzVDYqsg3NEuqrRQ
-         Je9PwRlPwcTiuVZKuu3ZQT+eXEVqcir+AFINJxy/+B5K9ANAqqbtTKYu+BVfU7pFo+SA
-         lPjs8JD79BqU2Myj0exYjuwVxmMocB98uhkW6WdNCj9AAJ91sHcoG2xa2FWf9DE7q1pK
-         6jJhnP4p/BzIlE+iSLPx5G+2jQHZKxVWFxz/WpalKEwnfjesS/Mvg+BaUI0dr4WkHGgE
-         +/Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698609388; x=1699214188;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MBjaEDFH2L20pCiIDxvatCP6Y3N/isgm8vU1EI+Cv9k=;
-        b=cHLqgv4OoOnJC1dsb812IgN59DcXxhjq3Wa8uWJE1pwIFMl46MmZiMBb8zF2I4/5z+
-         c2s9I/O2qvo+T//pCY+UhGDiFEPMAfFiw8JpqSqlCYOEWDaQT6RT3fFVUpeo7kQNLpTp
-         4ND7qNUkzwestaT3eib5cehNxJRGlYZZX8WpG1e5DPY0UcfoRYWqtMgimgIpRMuVQ+sc
-         mtOFnWDM/hiI9h9jt+78uTQ/a5ybmXYmOAvYGknv+7g4BOgJe+kR0s5ps8arzo61zUcW
-         9Y4St97+92dZ2azuy1VrwK9LodgLfU2XsyrVWU7ES7SC+o2fBU4mgAAmzvbJqhsKjYTs
-         l0wg==
-X-Gm-Message-State: AOJu0YzrZWrgFK54G/Dtj/RNlBlreP8zl1jmjUlHmOOeu6LG+Qful0Tj
-        Llqfo2bNc//biYmavQlHp615Fg==
-X-Google-Smtp-Source: AGHT+IEi1Yyfb3UFTgrRlCELfvUo+XrKxRvz3CPs1ECtt3zmTkP2oaRcalosIGlPQTA3Htg7mSge+Q==
-X-Received: by 2002:a05:600c:4f81:b0:401:23fc:1f92 with SMTP id n1-20020a05600c4f8100b0040123fc1f92mr6929891wmq.25.1698609387737;
-        Sun, 29 Oct 2023 12:56:27 -0700 (PDT)
-Received: from [192.168.1.15] (host-2-99-112-229.as13285.net. [2.99.112.229])
-        by smtp.gmail.com with ESMTPSA id u7-20020a05600c138700b003feea62440bsm7385225wmf.43.2023.10.29.12.56.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 29 Oct 2023 12:56:27 -0700 (PDT)
-Message-ID: <298df163-c4f2-4075-a33f-661276b2e657@linaro.org>
-Date:   Sun, 29 Oct 2023 19:56:26 +0000
+        Mon, 30 Oct 2023 05:02:31 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3140B4;
+        Mon, 30 Oct 2023 02:02:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698656548; x=1730192548;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=i8w9x7dxltFrnpCuSRUPcPt133FkZLGMti/aX/HuhEE=;
+  b=WqbSJhz3R3Jxap63rcMr+CHjmZZADHuKPFujS0W4Aqwxar1ApZSQzJjf
+   8MC5f0SeYmz5/TCmQ6asAWlaHZAFY9wSJkE5oVQHEWNZM0OXzHkp8qrz+
+   /vvICiC1UmkGIDNeGlDrIEScZNaDJ0JlumNVbkstkd66nL3TLMlBfKu2I
+   PmdJkh/cFshwfEdspml7qLEDp3rcrIrnENucfva1m9LeGV6oS8kvkr0p6
+   lhPRRyEvsTtrhLLriOja/Y3T7LCdtYaGMlgSu14prM/W+ynlim78SBoVf
+   qtXIevgrBbgLY1IaNPCdEBmH6mV5VNXd4hfmUejYsAy1v6KzD+QG4di85
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10878"; a="367383147"
+X-IronPort-AV: E=Sophos;i="6.03,263,1694761200"; 
+   d="scan'208";a="367383147"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2023 02:02:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10878"; a="795210656"
+X-IronPort-AV: E=Sophos;i="6.03,263,1694761200"; 
+   d="scan'208";a="795210656"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by orsmga001.jf.intel.com with SMTP; 30 Oct 2023 02:02:24 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 30 Oct 2023 11:02:23 +0200
+Date:   Mon, 30 Oct 2023 11:02:23 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Luca Weiss <luca.weiss@fairphone.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] usb: typec: fsa4480: Add support to swap SBU
+ orientation
+Message-ID: <ZT9xH7Rz1+oScLKW@kuha.fi.intel.com>
+References: <20231020-fsa4480-swap-v2-0-9a7f9bb59873@fairphone.com>
+ <20231020-fsa4480-swap-v2-2-9a7f9bb59873@fairphone.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/7] Input: synaptics-rmi4 - f12: use hardcoded values for
- aftermarket touch ICs
-To:     Pavel Machek <pavel@ucw.cz>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Vincent Huang <vincent.huang@tw.synaptics.com>,
-        methanal <baclofen@tuta.io>, linux-input@vger.kernel.org,
-        devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-        ~postmarketos/upstreaming@lists.sr.ht
-References: <20230929-caleb-rmi4-quirks-v1-0-cc3c703f022d@linaro.org>
- <20230929-caleb-rmi4-quirks-v1-3-cc3c703f022d@linaro.org>
- <ZTzlChOS0OR95Ykp@localhost>
-Content-Language: en-US
-From:   Caleb Connolly <caleb.connolly@linaro.org>
-In-Reply-To: <ZTzlChOS0OR95Ykp@localhost>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231020-fsa4480-swap-v2-2-9a7f9bb59873@fairphone.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-
-
-On 28/10/2023 11:40, Pavel Machek wrote:
-> Hi!
+On Fri, Oct 20, 2023 at 11:33:19AM +0200, Luca Weiss wrote:
+> On some hardware designs the AUX+/- lanes are connected reversed to
+> SBU1/2 compared to the expected design by FSA4480.
 > 
->> Some replacement displays include third-party touch ICs which are
->> devoid of register descriptors. Create a fake data register descriptor
->> for such ICs and provide hardcoded default values.
->>
->> It isn't possible to reliably determine if the touch IC is original or
->> not, so these fallback values are offered as an alternative to the error
->> path when register descriptors aren't available.
->>
->> Signed-off-by: methanal <baclofen@tuta.io>
+> Made more complicated, the otherwise compatible Orient-Chip OCP96011
+> expects the lanes to be connected reversed compared to FSA4480.
 > 
-> I guess we should have full/real name here.
-
-I must disagree [1] [2]. These patches have my SoB and are being sent by
-me on behalf of the author, who has no interest in contributing upstream.
-
-[1]:
-https://lore.kernel.org/lkml/c1bf62a2-e381-c796-2219-17a578987a76@marcan.st/T/
-
-[2]:
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=d4563201f33a022fc0353033d9dfeb1606a88330
+> * FSA4480 block diagram shows AUX+ connected to SBU2 and AUX- to SBU1.
+> * OCP96011 block diagram shows AUX+ connected to SBU1 and AUX- to SBU2.
 > 
-> Best regards,
-> 							Pavel
-> 							
+> So if OCP96011 is used as drop-in for FSA4480 then the orientation
+> handling in the driver needs to be reversed to match the expectation of
+> the OCP96011 hardware.
+> 
+> Support parsing the data-lanes parameter in the endpoint node to swap
+> this in the driver.
+> 
+> The parse_data_lanes_mapping function is mostly taken from nb7vpq904m.c.
+> 
+> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
+> ---
+>  drivers/usb/typec/mux/fsa4480.c | 71 +++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 71 insertions(+)
+> 
+> diff --git a/drivers/usb/typec/mux/fsa4480.c b/drivers/usb/typec/mux/fsa4480.c
+> index e0ee1f621abb..cb7cdf90cb0a 100644
+> --- a/drivers/usb/typec/mux/fsa4480.c
+> +++ b/drivers/usb/typec/mux/fsa4480.c
+> @@ -60,6 +60,7 @@ struct fsa4480 {
+>  	unsigned int svid;
+>  
+>  	u8 cur_enable;
+> +	bool swap_sbu_lanes;
+>  };
+>  
+>  static const struct regmap_config fsa4480_regmap_config = {
+> @@ -76,6 +77,9 @@ static int fsa4480_set(struct fsa4480 *fsa)
+>  	u8 enable = FSA4480_ENABLE_DEVICE;
+>  	u8 sel = 0;
+>  
+> +	if (fsa->swap_sbu_lanes)
+> +		reverse = !reverse;
+> +
+>  	/* USB Mode */
+>  	if (fsa->mode < TYPEC_STATE_MODAL ||
+>  	    (!fsa->svid && (fsa->mode == TYPEC_MODE_USB2 ||
+> @@ -179,12 +183,75 @@ static int fsa4480_mux_set(struct typec_mux_dev *mux, struct typec_mux_state *st
+>  	return ret;
+>  }
+>  
+> +enum {
+> +	NORMAL_LANE_MAPPING,
+> +	INVERT_LANE_MAPPING,
+> +};
+> +
+> +#define DATA_LANES_COUNT	2
+> +
+> +static const int supported_data_lane_mapping[][DATA_LANES_COUNT] = {
+> +	[NORMAL_LANE_MAPPING] = { 0, 1 },
+> +	[INVERT_LANE_MAPPING] = { 1, 0 },
+> +};
+> +
+> +static int fsa4480_parse_data_lanes_mapping(struct fsa4480 *fsa)
+> +{
+> +	struct fwnode_handle *ep;
+> +	u32 data_lanes[DATA_LANES_COUNT];
+> +	int ret, i, j;
+> +
+> +	ep = fwnode_graph_get_next_endpoint(dev_fwnode(&fsa->client->dev), NULL);
+> +	if (!ep)
+> +		return 0;
+> +
+> +	ret = fwnode_property_read_u32_array(ep, "data-lanes", data_lanes, DATA_LANES_COUNT);
+> +	if (ret == -EINVAL)
+> +		/* Property isn't here, consider default mapping */
+> +		goto out_done;
+> +	if (ret) {
+> +		dev_err(&fsa->client->dev, "invalid data-lanes property: %d\n", ret);
+> +		goto out_error;
+> +	}
+> +
+> +	for (i = 0; i < ARRAY_SIZE(supported_data_lane_mapping); i++) {
+> +		for (j = 0; j < DATA_LANES_COUNT; j++) {
+> +			if (data_lanes[j] != supported_data_lane_mapping[i][j])
+> +				break;
+> +		}
+> +
+> +		if (j == DATA_LANES_COUNT)
+> +			break;
+> +	}
+> +
+> +	switch (i) {
+> +	case NORMAL_LANE_MAPPING:
+> +		break;
+> +	case INVERT_LANE_MAPPING:
+> +		fsa->swap_sbu_lanes = true;
+> +		break;
+> +	default:
+> +		dev_err(&fsa->client->dev, "invalid data-lanes mapping\n");
+> +		ret = -EINVAL;
+> +		goto out_error;
+> +	}
+> +
+> +out_done:
+> +	ret = 0;
+> +
+> +out_error:
+> +	fwnode_handle_put(ep);
+> +
+> +	return ret;
+> +}
+> +
+>  static int fsa4480_probe(struct i2c_client *client)
+>  {
+>  	struct device *dev = &client->dev;
+>  	struct typec_switch_desc sw_desc = { };
+>  	struct typec_mux_desc mux_desc = { };
+>  	struct fsa4480 *fsa;
+> +	int ret;
+>  
+>  	fsa = devm_kzalloc(dev, sizeof(*fsa), GFP_KERNEL);
+>  	if (!fsa)
+> @@ -193,6 +260,10 @@ static int fsa4480_probe(struct i2c_client *client)
+>  	fsa->client = client;
+>  	mutex_init(&fsa->lock);
+>  
+> +	ret = fsa4480_parse_data_lanes_mapping(fsa);
+> +	if (ret)
+> +		return ret;
+> +
+>  	fsa->regmap = devm_regmap_init_i2c(client, &fsa4480_regmap_config);
+>  	if (IS_ERR(fsa->regmap))
+>  		return dev_err_probe(dev, PTR_ERR(fsa->regmap), "failed to initialize regmap\n");
+> 
+> -- 
+> 2.42.0
 
 -- 
-// Caleb (they/them)
+heikki
