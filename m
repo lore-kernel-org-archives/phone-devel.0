@@ -2,30 +2,30 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3AACAC00142
-	for <phone-devel@archiver.kernel.org>; Tue, 31 Oct 2023 14:05:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15CF9C4167B
+	for <phone-devel@archiver.kernel.org>; Tue, 31 Oct 2023 14:06:02 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230295AbjJaOF5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Tue, 31 Oct 2023 10:05:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35674 "EHLO
+        id S234980AbjJaOF7 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Tue, 31 Oct 2023 10:05:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231799AbjJaOFu (ORCPT
+        with ESMTP id S233460AbjJaOFw (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Tue, 31 Oct 2023 10:05:50 -0400
-Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [213.239.216.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 323D810A;
-        Tue, 31 Oct 2023 07:05:46 -0700 (PDT)
+        Tue, 31 Oct 2023 10:05:52 -0400
+Received: from proxmox1.postmarketos.org (proxmox1.postmarketos.org [IPv6:2a01:4f8:a0:821d::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 474DDF5;
+        Tue, 31 Oct 2023 07:05:49 -0700 (PDT)
 From:   Stefan Hansson <newbyte@postmarketos.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
-        s=donut; t=1698761145;
+        s=donut; t=1698761147;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=c1btB39q0ZWpHBHZxox88cIZoUkExDUtRXOiLjkTtAM=;
-        b=YTn1OMRqPxNvIcl3r2hFh4bss7UuE5eDZf2B9FgauhvvS934U+bCoCSyymwiJ6ppHee4pm
-        J9TzFtDkOJ5GPr8n7Ht0mC/MriYkIGIfUicNkD5W6eMU7faJAuWtfNyRVWjgzz686i2RuE
-        eGYsFRRl2xebS6F3zj8NBy0c29prVQY=
+        bh=vDWGSIc45GvSDLT9Cc9je0UWt/417+l6mhFdREd2cfs=;
+        b=mYLYy4aC3xSn7F5w5DOyW9hb6Pj+ZC741hWrKmEPWxxzIxI9OMOBYBalsBP/X3R7zoj8ul
+        IgjB5j4xW2whROw8EQV8T8YrxWQ2l3iaYQjQ353V5KicYwv9wRs0aZIwfB/z+rtMNhFGyL
+        0QTQmPWs2LQfpofN9Mf7kEPflKFreyg=
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
@@ -37,9 +37,9 @@ To:     Andy Gross <agross@kernel.org>,
 Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
         Stefan Hansson <newbyte@postmarketos.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v5 2/4] dt-bindings: arm: qcom: Add Samsung Galaxy Tab 4 10.1 LTE
-Date:   Tue, 31 Oct 2023 15:00:56 +0100
-Message-ID: <20231031140337.49291-3-newbyte@postmarketos.org>
+Subject: [PATCH v5 4/4] ARM: dts: qcom: samsung-matisse-common: Add UART
+Date:   Tue, 31 Oct 2023 15:00:58 +0100
+Message-ID: <20231031140337.49291-5-newbyte@postmarketos.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231031140337.49291-1-newbyte@postmarketos.org>
 References: <20231031140337.49291-1-newbyte@postmarketos.org>
@@ -49,27 +49,32 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-This documents Samsung Galaxy Tab 4 10.1 LTE (samsung,matisselte)
-which is a tablet by Samsung based on the MSM8926 SoC.
+This was not enabled in the matisse-wifi tree. Without this, it is not
+possible to use the USB port for serial debugging via a "Carkit debug
+cable".
 
 Signed-off-by: Stefan Hansson <newbyte@postmarketos.org>
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 ---
- Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ .../boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi    | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
-index 88b84035e7b1..242ffe89c6c6 100644
---- a/Documentation/devicetree/bindings/arm/qcom.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom.yaml
-@@ -196,6 +196,7 @@ properties:
-           - enum:
-               - microsoft,superman-lte
-               - microsoft,tesla
-+              - samsung,matisselte
-           - const: qcom,msm8926
-           - const: qcom,msm8226
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi
+index 28317ce79e97..dc63b91f94bc 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-matisse-common.dtsi
+@@ -219,6 +219,10 @@ muic: usb-switch@25 {
+ 	};
+ };
  
++&blsp1_uart3 {
++	status = "okay";
++};
++
+ &rpm_requests {
+ 	regulators {
+ 		compatible = "qcom,rpm-pm8226-regulators";
 -- 
 2.41.0
 
