@@ -2,123 +2,112 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3949C4332F
-	for <phone-devel@archiver.kernel.org>; Sat,  4 Nov 2023 13:23:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A283BC4167D
+	for <phone-devel@archiver.kernel.org>; Mon,  6 Nov 2023 10:58:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232003AbjKDNX5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 4 Nov 2023 09:23:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55074 "EHLO
+        id S231435AbjKFK64 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 6 Nov 2023 05:58:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231764AbjKDNX4 (ORCPT
-        <rfc822;phone-devel@vger.kernel.org>); Sat, 4 Nov 2023 09:23:56 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36EBD1BF
-        for <phone-devel@vger.kernel.org>; Sat,  4 Nov 2023 06:23:51 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-d9b9adaf291so2749117276.1
-        for <phone-devel@vger.kernel.org>; Sat, 04 Nov 2023 06:23:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699104230; x=1699709030; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ihpTO3F03JzgacnLk5uBUsxe1t+WyOgXLtjj9fTyAZY=;
-        b=c/cnOsccQ/fIrrcu/GNkooemVtQ1f2i7DGtv8dQQV+NN9/XTL0G5H7Z/byj7AtAGTg
-         Nh5tNYpfeGxJl85qM9Ys5nybvZr7KA12IazlA2UDDOCvIVw/HMSskEQMDZXoQgy5JIUk
-         A/R+AMFDzknrYWqSJF10Pk5FomwgdopsorBLidqxKi/puBx5zAD7wmGqJniXHBgq3Tvg
-         XdoXng5jXbgwjWjd/0Uv7gHyXaRbTdhABSt6p/eyC2trhkHROlKBR4DydXN+YBdbBl+g
-         tvei06BmxZslptmqnhc3kBqvNuQ9qnJsOdbBo+009iefbA2KhfmYXOhAI38niKyqnOnP
-         MXWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699104230; x=1699709030;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ihpTO3F03JzgacnLk5uBUsxe1t+WyOgXLtjj9fTyAZY=;
-        b=FGrriqtB6FE9qVndDJWBvAKp08YO9Se724YeO/wsHQaw180Ys+KLPhB1+0MoUnXmvT
-         YEIOxujchxyIgtuNpyh2IvUPKIG4Ty+X9AHCdfeiFRj2/o38yJAHGSt6LrFGAckYGfEu
-         WXIbP35M6PrYQ691Ij120Kw68f9KBBjAL1ZWNXVHe10auKk80Sf9iuNLcw6HNpeUhGr+
-         xNNsxw3Rlqcqlb4Y3llxnDHLnpB81WNQLt0doa9doBAIMMH2AgMxCTBuoLWDmyqyNaPs
-         3ZdxxXempMWbbAYGYtrc49jPrwVWDIZQpmlmcIM4XhSO9NuK2QCxt40EU+0uhz89czWx
-         bW+A==
-X-Gm-Message-State: AOJu0YwHV+bO3eHXeV6oUDwbsd+2qT1+6p7ygje1yD+rXyNs/rj9Zy4H
-        IyrEiwxshrELO2ZEEar2JVKcInoBSmwg9BmnGIfXKmOcvSOux987
-X-Google-Smtp-Source: AGHT+IGVlWdeV8B/RVB/c5DH0WUIogCLxoudcchmyfPsPK9fAim8y9X901ML2K7hubgLTE5ct4OanZhXxd+HhodgcZg=
-X-Received: by 2002:a25:dfc7:0:b0:d0f:846c:ef7b with SMTP id
- w190-20020a25dfc7000000b00d0f846cef7bmr21101785ybg.17.1699104230336; Sat, 04
- Nov 2023 06:23:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231027-sc7280-remoteprocs-v1-0-05ce95d9315a@fairphone.com>
- <20231027-sc7280-remoteprocs-v1-9-05ce95d9315a@fairphone.com>
- <12ea48bd-5022-4820-815a-89ef23ec9385@linaro.org> <CWMK0AQRL87L.1F9MIDVQ4J439@fairphone.com>
-In-Reply-To: <CWMK0AQRL87L.1F9MIDVQ4J439@fairphone.com>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Sat, 4 Nov 2023 15:23:38 +0200
-Message-ID: <CAA8EJpqCeW8NVcrpwo6JVn0kE2W-QMELB1YH7i7pgOH6qiPbCQ@mail.gmail.com>
-Subject: Re: [PATCH 9/9] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable WiFi
-To:     Luca Weiss <luca.weiss@fairphone.com>,
-        Kalle Valo <kvalo@kernel.org>
-Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        with ESMTP id S229799AbjKFK6w (ORCPT
+        <rfc822;phone-devel@vger.kernel.org>); Mon, 6 Nov 2023 05:58:52 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BB8DB0;
+        Mon,  6 Nov 2023 02:58:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD3EC433C7;
+        Mon,  6 Nov 2023 10:58:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699268329;
+        bh=Sg8f81K8kk3/SHGG8dWL3FhrCJtkIiWJ0jEsgKtTGhg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Th/nT6VeS2zk1OlULtw+APVIYXcTssnx5cdpxe9RWD0rBicD+1gbBEBPHnoIJ2JxS
+         y0BaJK13gBKtKqEq76LNJbcJooPSje3Rwa686by63MpTCvKZ9nW0vsP+ImT+OBHxlT
+         /nq79xJlOCrCMBfTp/K2hw05nNLWY9683dIA1GR968Irjlhm1oNjc/Q7Rh5/ujtfpE
+         EJyXp/JtyEqTP9GYp16IRj+3RmdFZfOV5og+MqYW5QDIk7bLhEYHgjdSpFJKPghEE1
+         8DyuRWRhuQF5tpNI71knoBGV9foel4lRcP/XoizdI/dUMengOwxo81jAxXZMKfiSbY
+         cDmyD6XWbes/Q==
+Date:   Mon, 6 Nov 2023 10:58:46 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc:     Robin Murphy <robin.murphy@arm.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Rob Herring <robh@kernel.org>,
-        =?UTF-8?Q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Tony Lindgren <tony@atomide.com>,
+        Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Leo Yan <leoy@marvell.com>,
+        Zhangfei Gao <zhangfei.gao@marvell.com>,
+        Lubomir Rintel <lkundrak@v3.sk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Tony Luck <tony.luck@intel.com>,
+        "Guilherme G . Piccoli" <gpiccoli@igalia.com>,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        alsa-devel@alsa-project.org, linux-hardening@vger.kernel.org,
+        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        Karel Balej <balejk@matfyz.cz>,
+        kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v7 06/10] ASoC: pxa: Suppress SSPA on ARM64
+Message-ID: <ZUjG5tUrBvm6PDvB@finisterre.sirena.org.uk>
+References: <20231102152033.5511-1-duje.mihanovic@skole.hr>
+ <dc7aaff0-f767-494e-9a3a-40fcacc1674e@sirena.org.uk>
+ <3b4ac48b-e29d-415f-89f1-6d354f18c4a4@arm.com>
+ <4855402.GXAFRqVoOG@radijator>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="cDAfE28G8f8xdnBg"
+Content-Disposition: inline
+In-Reply-To: <4855402.GXAFRqVoOG@radijator>
+X-Cookie: Save energy:  Drive a smaller shell.
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-[Added Kalle to the CC list]
 
-On Tue, 31 Oct 2023 at 12:31, Luca Weiss <luca.weiss@fairphone.com> wrote:
->
-> On Mon Oct 30, 2023 at 8:26 PM CET, Konrad Dybcio wrote:
-> > On 27.10.2023 16:20, Luca Weiss wrote:
-> > > Now that the WPSS remoteproc is enabled, enable wifi so we can use it.
-> > >
-> > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > > ---
-> > >  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > >
-> > > diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> > > index d65eef30091b..e7e20f73cbe6 100644
-> > > --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> > > +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> > > @@ -713,3 +713,7 @@ &venus {
-> > >     firmware-name = "qcom/qcm6490/fairphone5/venus.mbn";
-> > >     status = "okay";
-> > >  };
-> > > +
-> > > +&wifi {
-> > > +   status = "okay";
-> > qcom,ath11k-calibration-variant?
->
-> What value would I put there for my device? Based on existing usages
-> (mostly for ath10k) I'd say "Fairphone_5"?
+--cDAfE28G8f8xdnBg
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I think this is fine.
+On Fri, Nov 03, 2023 at 05:58:05PM +0100, Duje Mihanovi=C4=87 wrote:
 
-> And you mean I should add this property in dts before even looking into
-> the firmware/calibration side of it?
+> I just looked at it again and it looks like no code in sound/soc/pxa/* or=
+=20
+> sound/arm/pxa* depends on AACI in any way. Therefore, I believe that to f=
+ix=20
+> this correctly, I would have to remove "select SND_ARM" from sound/soc/px=
+a/
+> Kconfig and optionally move the PXA2xx code out of sound/arm/ and into so=
+und/
+> soc/pxa/. Is this correct? If so, I'd also split that fix into a separate=
+=20
+> series.
 
-From my experience some (most?) of the device manufacturers do the
-wrong thing here. They do not program a sensible board_id, leaving it
-as 0xff or some other semi-random value. The calibration variant is
-the only way for the kernel to distinguish between such poor devices.
+There's the pxa-ac97 driver to consider...
 
-The kernel will do a smart thing though. If the device-specific
-calibration data is not present, it will try to fall back to the
-generic data.
+--cDAfE28G8f8xdnBg
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-With best wishes
-Dmitry
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVIxuUACgkQJNaLcl1U
+h9AeGAf/c2+d+tcgxFoSAkZXFPkCaz/eMgb8h+BgUpxjiuIheHzsxvbKE0zqEpob
+LLb77Y8RJuFjRED+1HDwewAzExBafqDv6jOitYbrJDCL+ERlb72HhaWK7jrSvo9y
+OjupBMTVvmLY0W64K7Vb2NM0T2/OIxrKApBbEMUxxpEagmmM1I09erf7m1Gi0Sfl
+31oZwOnmH810ZaG0mtQuZijawmCMSuEnpl0vjhrQe0D8mSieZRdlT8IdpMVN7sm+
+IZ6qvIh644bG7uf1E9a0QV6eM9ziLMDdId1h4W3hCTssoFesy9wWw6dV2mZiKrat
+/yjpAz05qMaAFLHi45RxQYjqwdAKQw==
+=jjeN
+-----END PGP SIGNATURE-----
+
+--cDAfE28G8f8xdnBg--
