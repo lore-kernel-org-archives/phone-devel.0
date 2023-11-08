@@ -2,17 +2,17 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39C71C4167B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF76BC0018C
 	for <phone-devel@archiver.kernel.org>; Wed,  8 Nov 2023 17:50:39 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232035AbjKHRuk (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 8 Nov 2023 12:50:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60424 "EHLO
+        id S232143AbjKHRul (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 8 Nov 2023 12:50:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230118AbjKHRui (ORCPT
+        with ESMTP id S230133AbjKHRui (ORCPT
         <rfc822;phone-devel@vger.kernel.org>); Wed, 8 Nov 2023 12:50:38 -0500
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BFE51FFC;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BE3B1FF9;
         Wed,  8 Nov 2023 09:50:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
         s=20170329; h=Cc:To:In-Reply-To:References:Message-Id:
@@ -20,23 +20,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
         Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
         :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
         List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=gxLhFOfaf1pBt6EdevdiTRtiTB0fk8enVXm+fNYd8XY=; b=pFqoV2q/qAeNzl3DENifMTZMOR
-        Rxg2m7xChyMn1ARE4cociyUxlYuYciPlItI2QH53PHMwLXMV+Dvr9k2bHA5VLNsqqwNl5C9dDVxUp
-        HhzUfToTw109omrwRjUV9HkAQf7Rk6iH3u7KPONZgu+ukEar9qhHJsNKMTDoYuPhZ3F153o/9D65K
-        sA3G4ua7fJAi7e9lnEftJiVBCFoS/PcYqKl+c81FvF45bQ39LSmAhYH8qaPMrFLlENAheH4okzldZ
-        a+zPNqzkn7AjSO4nb5sv6A/y7048p6XZL93IlBSkfNdEQ+ai3L6JA//eFQh40LsxH1MQocP7AGXhr
-        WXdIyo/Q==;
+        bh=2CnUQaTGxqUvfFdrUxE6AYsi+03ONnUHcjpsmARcoik=; b=cbdcb6A0LgGbNuTHg5tioFn0ou
+        O1goK9pUJoJelWf+WKFfm71/r9WUsSki7Wt/iOAdn5ZBFlym7uaI6ff9LGA7li0OSjb9CjFtdEK+f
+        JgT3U1dIhXIjCimR9f3rq1KHsCHRDCye0++3l0UKK8zk2BHf1tNHwTfO1SUjlqixd/a9XYbLLX4Zm
+        FbOw7EaXyCvT0U0WMC5qIKZcMsU/MfdDk7WezRNgssFvbd6P5M6xqRvRu6dS931tFeNYLR6GD/Jxn
+        jxw5hIpijBsQIn0VEbMO9hxXg1Xo3FzTkiS4yFy215MuXnIcffG0lrJU7kvGuxfqgvtc1bHxrXiLh
+        VoEAMuCA==;
 Received: from i73190.upc-i.chello.nl ([62.195.73.190] helo=[192.168.68.111])
         by fanzine2.igalia.com with esmtpsa 
         (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-        id 1r0mhC-000vX4-Or; Wed, 08 Nov 2023 18:50:30 +0100
+        id 1r0mhF-000vX4-8p; Wed, 08 Nov 2023 18:50:33 +0100
 From:   Nia Espera <nespera@igalia.com>
-Date:   Wed, 08 Nov 2023 18:50:25 +0100
-Subject: [PATCH v3 1/6] dt-bindings: iio: adc: add smb139x
+Date:   Wed, 08 Nov 2023 18:50:27 +0100
+Subject: [PATCH v3 3/6] arm64: dts: qcom: pm8350k: Remove hanging
+ whitespace
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231108-nia-sm8350-for-upstream-v3-1-18a024b5c74c@igalia.com>
+Message-Id: <20231108-nia-sm8350-for-upstream-v3-3-18a024b5c74c@igalia.com>
 References: <20231108-nia-sm8350-for-upstream-v3-0-18a024b5c74c@igalia.com>
 In-Reply-To: <20231108-nia-sm8350-for-upstream-v3-0-18a024b5c74c@igalia.com>
 To:     Andy Gross <agross@kernel.org>,
@@ -60,76 +61,44 @@ Cc:     linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
         ~postmarketos/upstreaming@lists.sr.ht,
         Nia Espera <nespera@igalia.com>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1969; i=nespera@igalia.com;
- h=from:subject:message-id; bh=Un/OwvHNh/M32hgzpr9ovGZiU8KNqRoeKJIliCD2flE=;
- b=owEB7QES/pANAwAIAfIkzsI3VuKtAcsmYgBlS8pk6cbPCmRUyR1JW9CmswvDwQTXLUq/j8Vlo
- Yt8x4r5pjiJAbMEAAEIAB0WIQSBPDomug3slDJEnubyJM7CN1birQUCZUvKZAAKCRDyJM7CN1bi
- rbbwC/0Q+bU1A8fLUjD9Rr7foTm6LKHC0EijfuyB/swRuplTAbweHHSgHDJ4xtB1jenwGSACzsR
- bOYoyWSirWlzItnuemKixi8Zdxh9kJJwVtBXDF3U+bWsyMccAdHcLErnihPM5E5FsgTk7KI9I6A
- AmA6NTYdoj9Za07Akltv2f/Fn87kdL7BUD6xBQ7gUhWE5sBtcZD73Kb/0dVE8P5CUCro54O/1YF
- i+2j6kG9h9eMKWQiQAR1N75kCgjB5pdkldTYXP1tiy+WO5O+QK6Zgwv7Smb5tN+SdpQF7pA+PI6
- A1UOJAv6MaWcBnm853UVJolxoPbMgO1O1AFiCr74wN/P2mX253seswz0LTYSCbSQewr9O4gd8tK
- 4qKdMYeI175oCeb3vr+ytXR9hJf1w+tmDZ6XfjpITUbqOek5mEsZScd4S6jQYG3NEdC7lX1oKsK
- g6n3s3pqEc1khxggcu7TDr42rcJonf+xBa2rC5TK1cTCEvtavxqfXVYFRUM2CEtehRBoQ=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=682; i=nespera@igalia.com;
+ h=from:subject:message-id; bh=0RUB7KOCa+Dyd4ytet9GLCvRq0z08dzAK+GEyion9dw=;
+ b=owEB7QES/pANAwAIAfIkzsI3VuKtAcsmYgBlS8pkSa+LkTVCCp7ia3T4NAXd2TvwQr8n1w3g6
+ lhcPdEdjcGJAbMEAAEIAB0WIQSBPDomug3slDJEnubyJM7CN1birQUCZUvKZAAKCRDyJM7CN1bi
+ rbQAC/0bU9DMocAQJ485pS6Cgu3+vWo8Bv9BjANYYfMSFSoVyF0UjfT41SDmxrp2lwTHdzdUvb5
+ jxE3AU5S4RVFIrwdJkUsmyBu2fmdp3SkAq/Qg4TUXR6uB2dioi7QTIMQeYBkIEBwjJQIHQgVpoy
+ +3dMVHPED3NbFnHzDvcP/lfI4c7K0qJtfJSiuLu1Y0LXQdePBNTZtw5a4SBbxi8QvI9f+wNdbNg
+ xR/HuuOEvyMbqqjv1jtJ+4r50tv/XABnA0nwtorZECJu0rxOy9seWOraIgnLF4BB3Hl78KvISGl
+ /zm4MGsFwvB4pGS4xThCuEY8UW3gxzEiwHZn1bBt5I9nWPZKhaLywA9oeIiP+ObFocfZiB8cY+H
+ a26RuPZkerUQRoM2yAEGnpLsJ5EALRqVwqdPliE8NPAEAu73Zzp7Wv7NTWAgAGIPQC+bCaJnu95
+ Ha1VMXM9JaFwJAfkYAZCfG1CaCV/ri44j4KpzHHMo92iXXBpRS4dq7Kc4gb9VcSl4rZ7w=
 X-Developer-Key: i=nespera@igalia.com; a=openpgp;
  fpr=813C3A26BA0DEC9432449EE6F224CEC23756E2AD
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Bindings for a charger controller chip found on sm8350
+pmk8350 has a random tab character inserted, so remove it.
 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Nia Espera <nespera@igalia.com>
 ---
- include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h | 19 +++++++++++++++++++
- include/dt-bindings/iio/qcom,spmi-vadc.h         |  3 +++
- 2 files changed, 22 insertions(+)
+ arch/arm64/boot/dts/qcom/pmk8350.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-new file mode 100644
-index 000000000000..c0680d1285cf
---- /dev/null
-+++ b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause */
-+/*
-+ * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-+ */
+diff --git a/arch/arm64/boot/dts/qcom/pmk8350.dtsi b/arch/arm64/boot/dts/qcom/pmk8350.dtsi
+index 1eb74017062d..f0ed15458dd7 100644
+--- a/arch/arm64/boot/dts/qcom/pmk8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmk8350.dtsi
+@@ -22,7 +22,7 @@ reboot-mode {
+ 		mode-bootloader = <0x02>;
+ 	};
+ };
+-	
 +
-+#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-+#define _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-+
-+#include <dt-bindings/iio/qcom,spmi-vadc.h>
-+
-+#define SMB139x_1_ADC7_SMB_TEMP			(SMB139x_1_SID << 8 | ADC7_SMB_TEMP)
-+#define SMB139x_1_ADC7_ICHG_SMB			(SMB139x_1_SID << 8 | ADC7_ICHG_SMB)
-+#define SMB139x_1_ADC7_IIN_SMB			(SMB139x_1_SID << 8 | ADC7_IIN_SMB)
-+
-+#define SMB139x_2_ADC7_SMB_TEMP			(SMB139x_2_SID << 8 | ADC7_SMB_TEMP)
-+#define SMB139x_2_ADC7_ICHG_SMB			(SMB139x_2_SID << 8 | ADC7_ICHG_SMB)
-+#define SMB139x_2_ADC7_IIN_SMB			(SMB139x_2_SID << 8 | ADC7_IIN_SMB)
-+
-+#endif
-diff --git a/include/dt-bindings/iio/qcom,spmi-vadc.h b/include/dt-bindings/iio/qcom,spmi-vadc.h
-index 08adfe25964c..ef07ecd4d585 100644
---- a/include/dt-bindings/iio/qcom,spmi-vadc.h
-+++ b/include/dt-bindings/iio/qcom,spmi-vadc.h
-@@ -239,12 +239,15 @@
- #define ADC7_GPIO3				0x0c
- #define ADC7_GPIO4				0x0d
- 
-+#define ADC7_SMB_TEMP				0x06
- #define ADC7_CHG_TEMP				0x10
- #define ADC7_USB_IN_V_16			0x11
- #define ADC7_VDC_16				0x12
- #define ADC7_CC1_ID				0x13
- #define ADC7_VREF_BAT_THERM			0x15
- #define ADC7_IIN_FB				0x17
-+#define ADC7_ICHG_SMB				0x18
-+#define ADC7_IIN_SMB				0x19
- 
- /* 30k pull-up1 */
- #define ADC7_AMUX_THM1_30K_PU			0x24
+ &spmi_bus {
+ 	pmk8350: pmic@PMK8350_SID {
+ 		compatible = "qcom,pmk8350", "qcom,spmi-pmic";
 
 -- 
 2.42.1
