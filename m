@@ -2,119 +2,85 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 829A1C4332F
-	for <phone-devel@archiver.kernel.org>; Sat, 11 Nov 2023 11:39:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7EA5C4332F
+	for <phone-devel@archiver.kernel.org>; Sat, 11 Nov 2023 19:06:33 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230151AbjKKLjY (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sat, 11 Nov 2023 06:39:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37352 "EHLO
+        id S229437AbjKKTGe (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Sat, 11 Nov 2023 14:06:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229972AbjKKLjY (ORCPT
+        with ESMTP id S229567AbjKKTGc (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sat, 11 Nov 2023 06:39:24 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 825173A9C;
-        Sat, 11 Nov 2023 03:39:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59854C433C7;
-        Sat, 11 Nov 2023 11:39:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699702761;
-        bh=rTPhRXHcBu3FdnF5esG7WBKJ0Idng7F9RzrodK0bdSk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fWixJ4xzkM5iuRIeqOxmh8hZZoNu2GuNqAdD7KRNB1cCvDvGjyUZe/TMewqJGtPuB
-         eBgUD7cHlRFhd5JqBwwSOLW6sBipH5fr6+5nHGyKdoNKMzmVOvbBRmL/W8TkO9ygpp
-         +sfHhxlFVwRqzIPFthrU9HLS93/y/1Z5YTsJ+COUfLVLqQtVpq7Mu7Pk9pE1Fir5Ho
-         2DRS8hEEwlcdF88YHtZ3U/XrpvkgmlBWqPzeOpUpLFxr36Z3wRoVvTQ8JByWEl/Ow6
-         AsDqNaqDviV3LswdZooMJdd1W3rDftp/act6vMBVu/+eXuTxKu5rl9qCjU7/wfNtJl
-         aH88akbQpAz2A==
-Date:   Sat, 11 Nov 2023 11:39:17 +0000
-From:   Mark Brown <broonie@kernel.org>
-To:     Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc:     Robin Murphy <robin.murphy@arm.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        Sat, 11 Nov 2023 14:06:32 -0500
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF5883A98;
+        Sat, 11 Nov 2023 11:06:28 -0800 (PST)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 7FB041C0071; Sat, 11 Nov 2023 20:06:27 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+        t=1699729587;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=zgR/3lTA5jyugRu1Bfxz5TwrBkC6vi/F9zTWmWvKmoM=;
+        b=J+jL/ot+2rUterTlYljEl2M0RnhbihneFjlS2rA0qwdfMIvPSuSwUd4nUkROlN4+tMrGT+
+        Oms8A47F76x4jE8DX1R3l/koopTSuFkyBZroEb+/2yjnfCuKrntosk76mT7UdXhsIL627x
+        KVRt0suN7lm61UPLrnYoFFuOZzfPYdk=
+Date:   Sat, 11 Nov 2023 20:06:27 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Alain Volmat <alain.volmat@foss.st.com>, icenowy@aosc.xyz,
+        megous@megous.com, phone-devel@vger.kernel.org
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
         Rob Herring <robh+dt@kernel.org>,
         Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
         Conor Dooley <conor+dt@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        Robert Jarzmik <robert.jarzmik@free.fr>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Leo Yan <leoy@marvell.com>,
-        Zhangfei Gao <zhangfei.gao@marvell.com>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G . Piccoli" <gpiccoli@igalia.com>,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
-        alsa-devel@alsa-project.org, linux-hardening@vger.kernel.org,
-        phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-        Karel Balej <balejk@matfyz.cz>
-Subject: Re: [PATCH v7 06/10] ASoC: pxa: Suppress SSPA on ARM64
-Message-ID: <ZU9n5Y8DxZt4QYRO@finisterre.sirena.org.uk>
-References: <20231102152033.5511-1-duje.mihanovic@skole.hr>
- <4855402.GXAFRqVoOG@radijator>
- <ZUjG5tUrBvm6PDvB@finisterre.sirena.org.uk>
- <1880732.tdWV9SEqCh@radijator>
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham@ideasonboard.com>,
+        Rob Herring <robh@kernel.org>, linux-media@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/3] media: i2c: gc2145: GC2145 sensor support
+Message-ID: <ZU/Qswj7anG6aux/@duo.ucw.cz>
+References: <20231107081345.3172392-1-alain.volmat@foss.st.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="NMCFkAyahKpkrrIE"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="c99IJSi2TNNS+dvo"
 Content-Disposition: inline
-In-Reply-To: <1880732.tdWV9SEqCh@radijator>
-X-Cookie: Slow day.  Practice crawling.
+In-Reply-To: <20231107081345.3172392-1-alain.volmat@foss.st.com>
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
 
---NMCFkAyahKpkrrIE
-Content-Type: text/plain; charset=utf-8
+--c99IJSi2TNNS+dvo
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 10, 2023 at 08:28:56PM +0100, Duje Mihanovi=C4=87 wrote:
-> On Monday, November 6, 2023 11:58:46 AM CET Mark Brown wrote:
-> > On Fri, Nov 03, 2023 at 05:58:05PM +0100, Duje Mihanovi=C4=87 wrote:
+Hi!
 
-> > > this correctly, I would have to remove "select SND_ARM" from sound/so=
-c/
-> pxa/
-> > > Kconfig and optionally move the PXA2xx code out of sound/arm/ and into
-> > > sound/
-> > > soc/pxa/. Is this correct? If so, I'd also split that fix into a sepa=
-rate
-> > > series.
+> This serie adds support for the GalaxyCore GC2145 sensor.
+> Initialization is based on scripts provided by GalaxyCore,
+> allowing 3 fixed configurations supported for the time being.
 
-> > There's the pxa-ac97 driver to consider...
+There is another version of the driver, from Ondrej Jirman, floating
+around. See mail "gc2145 camera driver (front camera on
+PinePhone)". I've added some cc-s in case people wanted to comment on
+it.
 
-> Can you elaborate? As far as I can tell there are 2 drivers named pxa2xx-=
-ac97=20
-> in sound/{arm,soc/pxa} and neither one has any dependency on AACI.=20
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
 
-They do both share a lot of library code and the one in sound/arm has no
-dependency on ASoC so I don't understand why you're suggesting moving it
-to sound/soc.
-
---NMCFkAyahKpkrrIE
+--c99IJSi2TNNS+dvo
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVPZ+AACgkQJNaLcl1U
-h9BwEAf+OEf6qc1xLpzXXgYfgJtHBjpbdnuByW2eet0HjenII7+fsKy2Hh/cvZD+
-EQ4z1dzENCL67nkzK2YyQTegLduY02qVEIe4CYN18yU/g1SbwcDATwcVbWRoNS5S
-yXwGUsBY0Lahsyeuop+P+K4e7z2EDqo9UZyUJi/sUHC4VHzj/ZA+o66k62U/FPxO
-0WAdhTto7vXB4fmHB2zZEVNfihwp3YjFEId17tnp6DfHlldgQTd8Vs7LuANofRuK
-dx3t66n6gWek0MvGYPeCzBCHdTzN2P4iqTHxFRmLUARkA2txeM+uwahng+/XI4SZ
-rpaHK38Iu4+CzjK0b41iz68AEoAzLQ==
-=9Bkd
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZU/QswAKCRAw5/Bqldv6
+8gZ/AJ0VmOePHLmVMeiAn8wUhOJNzmbGpQCgo5PNc2t4ip+Y4u4a1wGrJsj0GfY=
+=tfn/
 -----END PGP SIGNATURE-----
 
---NMCFkAyahKpkrrIE--
+--c99IJSi2TNNS+dvo--
