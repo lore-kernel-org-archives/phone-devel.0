@@ -2,62 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22B77C07548
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Nov 2023 08:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A18B8C4167D
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Nov 2023 08:56:35 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232633AbjKMI4f (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Nov 2023 03:56:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36672 "EHLO
+        id S233274AbjKMI4g (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Nov 2023 03:56:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233258AbjKMI42 (ORCPT
+        with ESMTP id S233285AbjKMI4d (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Nov 2023 03:56:28 -0500
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B54310EC
-        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:24 -0800 (PST)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-9e1fb7faa9dso632731166b.2
-        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:24 -0800 (PST)
+        Mon, 13 Nov 2023 03:56:33 -0500
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8146C10C9
+        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:30 -0800 (PST)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-9e61e969b1aso405125566b.0
+        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1699865782; x=1700470582; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1699865788; x=1700470588; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=8Yy2i2F+9pJywYxY6AKw4sbn/DiDdL44GgjGmpRdRoA=;
-        b=3asjtuz7sgt8quCwhI1cdHSBLmVtwRjEFYRU9UTkuX8DFtQYc5UuI85sxenC1MLo+S
-         LI/bwueDq3LNbZD7UNwel4436vXjg/oDoiIy/fClR3dU34uY1NAZ+ad+/TY8AfKaQokm
-         b11EN04wMukjV8kBpF6U77vmAG9jcMef8eBrgcVAOh13xtS405t3a1AZSbzny8YyiRKq
-         gQSdWmxyE9QsSHummEALpZcQWon7pQKPHhH/IlGYKSreghHBjekbsMoyGDu3f7rA+yNS
-         dpOcIwsp0ROzqnfqu1ye6gvG5UTUkPRoiF5JMQ8Qt+hDnlE+YQZ2enVFh+IcpKQCsUnT
-         +Qjg==
+        bh=tcn0Z6SH1iEGlywsG8bbVDvChWKOwTZ/D1g5QR3UiaQ=;
+        b=REgad8FK6EdeLoY0lzZQ14XlgojkpyS8NYZbEz+wO28oJT6wVrHZQe25y63MWeLQ5u
+         NjGK1P+kgcRv8Re67jDW6Hh+aEa95JCfeKumN7qgvt1tUoONwTBgdKLsvjIL+svTa37x
+         W9Uh9fbXm5CpXZTRkPT0pQOIuuSLgct/KCw0N9a9/Txp/Rw0u0fLcVEYCyAz3oZaPtIK
+         nnJT/65POHpfP72TFcnqeDU5CRlTr4Y5Dqo/nSij6njyw5KyEirtto6CfHWv1vOVha7N
+         G/7I2/AjrzqUQhfSUWp9k/VpZ64GlUKmVuSeah3wvo8FLAiGw4iDWfnqEkIkcUupek5S
+         S76g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699865782; x=1700470582;
+        d=1e100.net; s=20230601; t=1699865788; x=1700470588;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8Yy2i2F+9pJywYxY6AKw4sbn/DiDdL44GgjGmpRdRoA=;
-        b=d7M+LjkmV92vvbWOGqeqgW67DXUQ0p6qRaJ5gcoQAuY17d0erzRm8b14AtUpqBNmkZ
-         iNZagMCZjV9X0RrrMHu2rxCLnLEn8BEkBy6dMIVemRNooUNkb21ZWzD77yHITOdSA1lP
-         egvX4JBqMLhB2p27wvPWmDbP4c+zjzkUr4YpaYzgG/07gseb+P4w/VhoP9IgA3xJzvu0
-         4Oz+8quh7lvbKncQSXLi6FRNj0ThQg/MNqSo0yOpbY6HdqK7/cWBH81p2eG7J8+Bgskx
-         zKWUMDKBDxZJRG469yebyIAiQNmW+HExTJOyyVzIi0TzdOXj0LZRd833fAb0MtGPkX2f
-         1W/Q==
-X-Gm-Message-State: AOJu0YwSVStv1q+18kkyaWFRWUPRtvSCm9qS++ensg+gV4IEdlnbzH8u
-        5TX4PqpxQuj9YgUQRh59X1QAMSuKQZTkHpZj3F1AIA==
-X-Google-Smtp-Source: AGHT+IFM/lpqUyVAhbMPMKL5aNIUU8Y2d2td7/wT/Q4RZpTSCZABxHEPsS/89HX+GaB730z6a+XDOg==
-X-Received: by 2002:a17:906:4708:b0:9e5:2e15:35c6 with SMTP id y8-20020a170906470800b009e52e1535c6mr4195362ejq.44.1699865782434;
-        Mon, 13 Nov 2023 00:56:22 -0800 (PST)
+        bh=tcn0Z6SH1iEGlywsG8bbVDvChWKOwTZ/D1g5QR3UiaQ=;
+        b=BDDhiCbguJhH17TX5yFkrYQmCvmNOhF5BgtCgdW6bStvb6TtBnpMwZqsGrJmkOhXtE
+         NmINYVwZbp5F+QefZgSJf8VdPvLY6GW/szqk4dTc2Ba+UYV8fjTdag/2oNjuViw9FiqJ
+         SjFIsNa5SCSLHY3CCFUzls5/WEMS040sBhKIFI+AgS8L57Fz64jArWM3LmMhL8E59YKc
+         StyHEJ3yD4f14XyirD8bYKVffoBowLgfOSvelfxwb5HQY/FrIjRSSZkdcElXqeHUyNNL
+         F4oC4AcOy/FbiM60YqpD0FM3sLutREDvX9PewKpZKUfjN+3x9sWi/uNcQHABm1qtjfTn
+         Wwcw==
+X-Gm-Message-State: AOJu0YwxLnzxrEkvBrpfolyxVT4Q5zNx70o5mXmi8Mz4MjCk1bGgaW6Z
+        0tRnLyyeQMlQJPh+w03FvuMe6G8oeDjIYzBUgl1PkQ==
+X-Google-Smtp-Source: AGHT+IEhwVmqmIghdLy6T66Sz8mKhhL8os7HgBaLdZtnted47FjN4Yy7mcFJOKOeCFn6gDahu9TjHQ==
+X-Received: by 2002:a17:906:4098:b0:9d3:608d:cdf6 with SMTP id u24-20020a170906409800b009d3608dcdf6mr4359583ejj.19.1699865788306;
+        Mon, 13 Nov 2023 00:56:28 -0800 (PST)
 Received: from otso.luca.vpn.lucaweiss.eu (k10064.upc-k.chello.nl. [62.108.10.64])
-        by smtp.gmail.com with ESMTPSA id kk22-20020a170907767600b009c758b6cdefsm3673538ejc.128.2023.11.13.00.56.21
+        by smtp.gmail.com with ESMTPSA id kk22-20020a170907767600b009c758b6cdefsm3673538ejc.128.2023.11.13.00.56.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Nov 2023 00:56:21 -0800 (PST)
+        Mon, 13 Nov 2023 00:56:28 -0800 (PST)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Mon, 13 Nov 2023 09:56:12 +0100
-Subject: [PATCH v2 01/11] dt-bindings: remoteproc: qcom: sc7180-pas: Fix
- SC7280 MPSS PD-names
+Date:   Mon, 13 Nov 2023 09:56:17 +0100
+Subject: [PATCH v2 06/11] remoteproc: qcom_q6v5_pas: Add SC7280 ADSP, CDSP
+ & WPSS
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231113-sc7280-remoteprocs-v2-1-e5c5fd5268a7@fairphone.com>
+Message-Id: <20231113-sc7280-remoteprocs-v2-6-e5c5fd5268a7@fairphone.com>
 References: <20231113-sc7280-remoteprocs-v2-0-e5c5fd5268a7@fairphone.com>
 In-Reply-To: <20231113-sc7280-remoteprocs-v2-0-e5c5fd5268a7@fairphone.com>
 To:     Andy Gross <agross@kernel.org>,
@@ -81,35 +81,56 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-The power domains for MPSS on SC7280 are actually named CX and MSS, and
-not CX and MX. Adjust the name which also aligns the bindings with the
-dts and fixes validation.
+Add support for the ADSP, CDSP and WPSS remoteprocs found on the SC7280
+SoC using the q6v5-pas driver.
 
-Fixes: 8bb92d6fd0b3 ("dt-bindings: remoteproc: qcom,sc7180-pas: split into separate file")
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+This driver can be used on regular LA ("Linux Android") based releases,
+however the SC7280 ChromeOS devices need different driver support due to
+firmware differences.
+
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- Documentation/devicetree/bindings/remoteproc/qcom,sc7180-pas.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/remoteproc/qcom_q6v5_pas.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,sc7180-pas.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,sc7180-pas.yaml
-index f10f329677d8..6f0bd6fa5d26 100644
---- a/Documentation/devicetree/bindings/remoteproc/qcom,sc7180-pas.yaml
-+++ b/Documentation/devicetree/bindings/remoteproc/qcom,sc7180-pas.yaml
-@@ -114,11 +114,11 @@ allOf:
-         power-domains:
-           items:
-             - description: CX power domain
--            - description: MX power domain
-+            - description: MSS power domain
-         power-domain-names:
-           items:
-             - const: cx
--            - const: mx
-+            - const: mss
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index 913a5d2068e8..a9dd58608052 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -1165,6 +1165,22 @@ static const struct adsp_data sm8550_mpss_resource = {
+ 	.region_assign_idx = 2,
+ };
  
- unevaluatedProperties: false
- 
++static const struct adsp_data sc7280_wpss_resource = {
++	.crash_reason_smem = 626,
++	.firmware_name = "wpss.mdt",
++	.pas_id = 6,
++	.auto_boot = true,
++	.proxy_pd_names = (char*[]){
++		"cx",
++		"mx",
++		NULL
++	},
++	.load_state = "wpss",
++	.ssr_name = "wpss",
++	.sysmon_name = "wpss",
++	.ssctl_id = 0x19,
++};
++
+ static const struct of_device_id adsp_of_match[] = {
+ 	{ .compatible = "qcom,msm8226-adsp-pil", .data = &adsp_resource_init},
+ 	{ .compatible = "qcom,msm8953-adsp-pil", .data = &msm8996_adsp_resource},
+@@ -1178,7 +1194,10 @@ static const struct of_device_id adsp_of_match[] = {
+ 	{ .compatible = "qcom,qcs404-wcss-pas", .data = &wcss_resource_init },
+ 	{ .compatible = "qcom,sc7180-adsp-pas", .data = &sm8250_adsp_resource},
+ 	{ .compatible = "qcom,sc7180-mpss-pas", .data = &mpss_resource_init},
++	{ .compatible = "qcom,sc7280-adsp-pas", .data = &sm8350_adsp_resource},
++	{ .compatible = "qcom,sc7280-cdsp-pas", .data = &sm6350_cdsp_resource},
+ 	{ .compatible = "qcom,sc7280-mpss-pas", .data = &mpss_resource_init},
++	{ .compatible = "qcom,sc7280-wpss-pas", .data = &sc7280_wpss_resource},
+ 	{ .compatible = "qcom,sc8180x-adsp-pas", .data = &sm8150_adsp_resource},
+ 	{ .compatible = "qcom,sc8180x-cdsp-pas", .data = &sm8150_cdsp_resource},
+ 	{ .compatible = "qcom,sc8180x-mpss-pas", .data = &sc8180x_mpss_resource},
 
 -- 
 2.42.1
