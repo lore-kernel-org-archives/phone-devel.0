@@ -2,258 +2,152 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E8B4C4332F
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Nov 2023 01:00:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5419C4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Nov 2023 08:56:29 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232679AbjKMBAj (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Sun, 12 Nov 2023 20:00:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53018 "EHLO
+        id S229988AbjKMI43 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Nov 2023 03:56:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230394AbjKMBAi (ORCPT
+        with ESMTP id S233233AbjKMI42 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Sun, 12 Nov 2023 20:00:38 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E720E19B4;
-        Sun, 12 Nov 2023 17:00:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699837234; x=1731373234;
-  h=date:from:to:cc:subject:message-id:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=pZQrNGVMQSFe7JEaVi+nvFQQXtuD4VF1WZAcymOmwUs=;
-  b=SkX5gikw3NmUDREOcy+0VTdu0mLP2W/cX8Aw3nSkIBZVnInIKnG/v8uA
-   k2MSDo1eJRYiwBaGz2YJPJuKD1W1YmhgKaOqxbczucCYpW2ij2cNb5giH
-   9EKKL13dEXBxA77BgI3jealFr3RHf5vfbx9oN45hC8wO/pgZgQOe3iYdw
-   DdQYIOAtj1a6Bh52Ggt91unb9Gp1RkaIEjoNK0v8S6wP6JkvKNvhyemmU
-   oYV3BTzPCP5FWqW5R1mSeyJhE0gh3nHjFIyKJbedGF2/ax91+/SkXKHOm
-   dIzaWj7zhAwfb09WEDDe/t90cR+uZ/6wQ4PG3vaWuRiN3mSsd0KM9MxlQ
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10892"; a="369691447"
-X-IronPort-AV: E=Sophos;i="6.03,298,1694761200"; 
-   d="scan'208";a="369691447"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2023 17:00:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10892"; a="834596490"
-X-IronPort-AV: E=Sophos;i="6.03,298,1694761200"; 
-   d="scan'208";a="834596490"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmsmga004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 12 Nov 2023 17:00:34 -0800
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Sun, 12 Nov 2023 17:00:34 -0800
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Sun, 12 Nov 2023 17:00:34 -0800
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Sun, 12 Nov 2023 17:00:33 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YnuhEsz3rC+V68swB+hepskkV1KakUmoF9zLKiL/HKENhVDusiB69YCvkPQNkI7yj8Nb/D2NsX3yvcyTaYLcAYPQBdfPdCyVSWIyVJXHyvd7yjcyUdgRoLeZZ6e+t215KNA/oDJqTg99jNblnoTKfZYGx8Giy9xhawd1Vc/0U9pb+lqbgP115q44w/2ow7UaLzU2OeMocDVHMMaUFHiDXjMbiwvs2U03IUM5kV8OPrb6DWJLnsix65Nickvl7D05y0TE3l2eoowYH1c9DRl9oeGDP2RHFe5nd/gGf27X08B1KHFQpYTVhP070srMFYAQDrsB3yM8X7Lk9xEW7kmWqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Uy5gayhkWBzRT6605Q/BD/ka6au+1CQ8ly6LfatJPbM=;
- b=QgSkVHKAJODrsSNCTrd1Mhk0E16jojGhsvuYlG1l22AVEIJWk7/0Lwvz6otY/W48fpMkSmR4RyeVMxMXOorXZ+S8e9y3gqBR2IQgHz065GJsueJp0qqUXpCkbF4uueK3K3q6fDXFQ1NCiN+FT2I00H8GXklvocBBpoJz3FlY9yvvRqHdk46npH3YiEzqeugx80r4pEHietWlNWJmIbsn7BUf0108TkZSOVYkfO74gdj3hUC4DsSnJkfnzPFRFs8AixfkrYoZy08Eyc/4ty+YXT5JPiOH0eytm+PPSF6UCR6hw7+rQLHn0l4WI0UT6HjeGRfQJ+fTAIw/gsm0h1AStg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6392.namprd11.prod.outlook.com (2603:10b6:930:37::15)
- by SA3PR11MB7415.namprd11.prod.outlook.com (2603:10b6:806:318::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.26; Mon, 13 Nov
- 2023 01:00:31 +0000
-Received: from CY5PR11MB6392.namprd11.prod.outlook.com
- ([fe80::15d3:7425:a09e:1c86]) by CY5PR11MB6392.namprd11.prod.outlook.com
- ([fe80::15d3:7425:a09e:1c86%4]) with mapi id 15.20.6933.028; Mon, 13 Nov 2023
- 01:00:31 +0000
-Date:   Mon, 13 Nov 2023 08:55:48 +0800
-From:   kernel test robot <yujie.liu@intel.com>
-To:     Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-        Markuss Broks <markuss.broks@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-CC:     <oe-kbuild-all@lists.linux.dev>,
-        <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, Karel Balej <balejk@matfyz.cz>,
-        Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-        <linux-input@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] input: touchscreen: imagis: Add touch key support
-Message-ID: <202311130533.EStBdAmT-lkp@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231112194124.24916-1-duje.mihanovic@skole.hr>
-X-ClientProxiedBy: SI1PR02CA0001.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::15) To CY5PR11MB6392.namprd11.prod.outlook.com
- (2603:10b6:930:37::15)
+        Mon, 13 Nov 2023 03:56:28 -0500
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EA3210D2
+        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:23 -0800 (PST)
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-9bf86b77a2aso617098566b.0
+        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1699865781; x=1700470581; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BsrM2PDilSjaMLE5U2fdt5pzgmWoxeOH6PNobCuBiz0=;
+        b=FSpMhuH/3Zfeac8j1BJ2eRmh5UChmU3h0O/1f0MZpcATECPV6lY0p1pHAceVNycu+7
+         8wVZKydkdXK4wgmlTTPwL5RaIJSBj2+XmGWsBf4U21LKX1v2Y3k5IrDsWtu5FDY9mHi5
+         H+1F7/vgoBhlszOfihRvjH7XVIwr624IJWMPUgz1VAuTDuCHk5cd41VKipdd1mey2WL9
+         J8JuZRXQW6zI3d7s+3fzS0IGOZQLWMVajmE98Oqe2vLZjYVS3nb07ZpF8ub5SORII57Q
+         /5wFGaqytQ6f5rhYwxy0BhQSOVql8/0/faWNlWzdP+VLBX536IouUkgXb5E7S+vYDTpF
+         8SmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699865781; x=1700470581;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BsrM2PDilSjaMLE5U2fdt5pzgmWoxeOH6PNobCuBiz0=;
+        b=Gs+QyenJl6a/+NXSw5lNzkZ3RtVjnIEwmQ44g7vhPjKOLxjhakS/rmFcrfjt46gXUR
+         HSXMSOis5Fi1CAgcukauklptL/jfJz8wFLbu0/JECy152D4JrSZUWlECwd2HG0kLwmsB
+         Bxxo1tJbkU2QmddzFxFjhdqeZkMq0jSf24+jM6gGPB8hOqaIoO4PQ1y47TSPEev6n4V6
+         s2x4DayxqiaM46x5roctTjVfyurEF1Y2hvwofXSAK3SnxpBMbkMt9j7oOEuhEba4EYp3
+         76F+WpEJqU6qZxL58CKIjeU++laJpcyvm3YUETLXy3reTVPetknRxcc93ljEPU60/HFQ
+         EQQw==
+X-Gm-Message-State: AOJu0YwNWElYmt/gHWEDsQInq2dY+OABdNpuhiXh/khZ1R9WM2fIsXQW
+        I2DXByu7rj4teE3a65Y2HBeh1qV7llwFc3pktDTcag==
+X-Google-Smtp-Source: AGHT+IHlTp66zVzK76fU9FdGoO9JFmDj4DyrwLiTq46FFbsxHQAjsaN6E5t9RqrwzKCvGBZ5oYhhAw==
+X-Received: by 2002:a17:906:3458:b0:9dd:dc2a:eb8b with SMTP id d24-20020a170906345800b009dddc2aeb8bmr3641569ejb.41.1699865780941;
+        Mon, 13 Nov 2023 00:56:20 -0800 (PST)
+Received: from otso.luca.vpn.lucaweiss.eu (k10064.upc-k.chello.nl. [62.108.10.64])
+        by smtp.gmail.com with ESMTPSA id kk22-20020a170907767600b009c758b6cdefsm3673538ejc.128.2023.11.13.00.56.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Nov 2023 00:56:20 -0800 (PST)
+From:   Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH v2 00/11] Remoteprocs (ADSP, CDSP, WPSS) for SC7280
+Date:   Mon, 13 Nov 2023 09:56:11 +0100
+Message-Id: <20231113-sc7280-remoteprocs-v2-0-e5c5fd5268a7@fairphone.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6392:EE_|SA3PR11MB7415:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1df8021d-f636-4e9e-2277-08dbe3e3eecf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: f3LqTtDxBIFWmNMjnpRZ03UwNJH79Q4u+DG8pKDGizQ3hKQ2kohw0bbUmIj/UPxj6TLjGkAilcSl2WiYRgoY8Zt84v6MsYT2JcjLGjsKXZrnrzA5Q/BMUoq7rdoDIzEaddus1jn+G22jwvK8qsBT9xV7KjcvQA5GstMLiCoB6ej0KTCMKj5as4Ou07zMmmgNtkk/ruAo3ThYlqogtIvOocM7t50g6akxArjzjmIrLe+RDQf5Eb1J54avxbY6MZbMhWLzdJh+X249tiqzL9VgjNfYeigGdniRxIrZmfT95vzU7r1rmz7U4kf982L0At9mGqi9ZpMXMOQ44U4ZYW2TrpsCqK/fa1ypYCGxZHFPRsJl+bBCHyrRA5fKufVXWjzt9MEO52xKxjAB4Sxdl6BaZwtqNc2pdJTkMG8zRCwlnKloHe1WLihZBC5fpaWZfeGWO5LzYXNlalnmbMzcEedspDzcC8Tyn+xgkE9ML3j/fRUF/Yv5igwX5kDJz5O35ISiCc5EM0hjQamOdIE/ZHlk3aIAgzOc1gmKK5zXbNjSRhPJU9Po+pp8a7Pd8JZjIK4jx7vi/N+hiY4jEzCpOGsO/f20ihG82AZsfGjqFbfoktrr0gjJ20SnD/Mcm+z9c3xtS0jJ6ZT40RcfCkO1/HLFoQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6392.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(136003)(346002)(376002)(39860400002)(230173577357003)(230922051799003)(230273577357003)(451199024)(64100799003)(186009)(1800799009)(4326008)(8676002)(8936002)(1076003)(26005)(2906002)(4001150100001)(5660300002)(2616005)(86362001)(82960400001)(6506007)(966005)(6486002)(6666004)(36756003)(478600001)(41300700001)(38100700002)(83380400001)(316002)(6512007)(66946007)(66556008)(54906003)(66476007)(110136005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UDRZbmRQUDdBZ25IbUE2OXBzU0xXZGh3NXorS3FIR0laZ1dDdEF5ZE1iOERZ?=
- =?utf-8?B?R0VBMnpKOWx1a1lrazZ5WmF5c2ZFSGFadmtWRXpnYUhIbDFsbXpEdXBENjJZ?=
- =?utf-8?B?MGVlVmxJRmJPWkQ1dzM5T1NjaUdTbXRNWmNWYm1hNGtCQUxoMmRHK0Q2OGlY?=
- =?utf-8?B?a0FBbkV1SURzck1oZ3lITUp3Sk9tT2FYOXpoTUJ4TWFUTnVjMzk5UGg1Znpj?=
- =?utf-8?B?bVFXVUp0bVhwOTVGeUNWYlRRSDlrWm10MkpNekJ6RlFuZGcvcGZiYlpJV2VD?=
- =?utf-8?B?ZXJxVnBHc2J3ejIveXI0em93NktJQ0RoWXozSVorNEJDQ3Z6NDM4SzBDbjlV?=
- =?utf-8?B?aUt5N3RDS1JSYThkaTY2emNJVlhNVnVzdVhSV1hSdU1ML3VFNG5XTnVOTmRP?=
- =?utf-8?B?Tk40cHRkQzUwR1N1NWY4RlErd3ZjSCtMdFdhckdsSXRPaS81WmRwalMzcWdi?=
- =?utf-8?B?OWRsaHg0VWJTb2xsSGcxQ216TjZQbHJyVGFKcGIwMzR6S3lRWUh6WkpOdUtv?=
- =?utf-8?B?UXZDN29wdlV5YXJwelEzQVNjZW5qYWpCOW15aXVRNzJVblhEMTh6WTVpSyt6?=
- =?utf-8?B?R1V1WGRWNE9wVzlWdEtmYTUyUjZzT2FKcjFVUkc5QTBKZGx5dUtYdDJNTDFu?=
- =?utf-8?B?aU4yYVhCeFlneEtaS0hTSmtGVWdQMXo4QkFGWFFUUVlJSzhHc09BTFVaYVZj?=
- =?utf-8?B?dDJuM252ekdIa0tWdE1wZHJuM0d4b1VveFBWZitNa0ZhSFMyTFN6NzlIbXNr?=
- =?utf-8?B?NUd4aHZzOFF4TlF1UWFrWEtuYjUxajhBOWUxY3NTYy9UM1lSSWtWWkxnNTJ3?=
- =?utf-8?B?YVBWVVgrK1JlL0FsU3VMUlRuWG1yUFNRR1AyNFpjS2JNTzgrQXkwS0F4Z3No?=
- =?utf-8?B?TTdjT21EUWJ4bUx5akRpVCtWWnBNV2pOMGptUlA2ZUI3dklIQnpoRXMwWlVM?=
- =?utf-8?B?cGZ2NTkvWG9lNWVzZFNTRjRSdHVYQS8rbU14T2lheEc1Vi95VndqaGRVc1pK?=
- =?utf-8?B?dUtKWlluVVpGL3IxWmpZUlVaREVVbjhBRUpxQXV3T2Qwc0x2ZUF2V0Z3YUw1?=
- =?utf-8?B?QWdZMm9FQXoxSnlib3Y1Z3h2MXdVdWVmRGpxZitmUTNTVXltK3Y4RDQ3Z05E?=
- =?utf-8?B?ZkFyeFJwRXdYSmw0dEpnaHh6MWFISEpNRFZweUxEL2htNEI4K1l2c3hpUys5?=
- =?utf-8?B?VlhDRk40Z3VMYjNKR0tva0dhNGN4WmlZaklKVm1QSEJSM0VBbU5wM0xVQ2FX?=
- =?utf-8?B?Y1lTYnNvczZ3WDdWN2lRSFdFMWNhMHVIY21vVkQ0R3B6S29ud0xPRyt0UFkw?=
- =?utf-8?B?b2ZqQ0JnNENqYzZPRWVMNGJETWtoNUpZQ1R3bE93WXJUc3QzSFFKV3hmVDlM?=
- =?utf-8?B?UXBxSUFLb21RYWlpU3luWnpVVDBmVyt1bGZFSmVVSllOMTFEL0RUYkpuMlNH?=
- =?utf-8?B?MnNKbzJ4MjlkWlNjM2FmSDc5UlFoREVlVVo1UXFBNmZjYzlFZmx5MnR1Y1pK?=
- =?utf-8?B?MGtaODdES29HdWgwdHgzSXNoam1rS0o3amxCMW02SDgvZGRsRks1WmFJclkw?=
- =?utf-8?B?NWxleTlldWo0MWJGbEZKZjU4eXJXdXl2YjVnMTRlWXdWQkhPQ3YzVDVqdzVB?=
- =?utf-8?B?Q3lZdmFvNnprblF3Z29FdnAwUEt4TkF5WW8yYXhwRXBmWVFOVUZsT1A2WWlM?=
- =?utf-8?B?T1pVN0VSUkdMZjF5anEwWkc1NEFCRFVZSmEzc3pjVXdHSTFtNDNhc1A1SmZI?=
- =?utf-8?B?MnVBOWtld3FaWmFycEw1bW9xTWttSjYya0FzNDR1aHhYQWRFcFAxSlVVZnJ1?=
- =?utf-8?B?M2RlVk9nTFh3UnU2OVg4bGFueVlNT2JJWUQ5VEFPUldzL3pVREtNa2NaL3dr?=
- =?utf-8?B?YzFwSTdtSXd1cUcwRkJGbysvRS9ZWWZSL0lqMVhMS1pKZXVJNUVzYzlpSDN5?=
- =?utf-8?B?dXd4TFVIUTE3K1Nyb1BoS0swVXUwbUJtWldTWmdJaTN3U2FaZEU4Z3NyTElR?=
- =?utf-8?B?VFd1VXFIU0VCdnVMZ2FFSWhQeHlwYTVTb2VvR0JYVVBMcnBNWXlaM292M3p2?=
- =?utf-8?B?bmMzQ2oxVnViRUFJWTA3V295Nms3Tityd09zcDBwVVV5TkoxM0tjdHBLeVk1?=
- =?utf-8?Q?NGoiEOLKrIgjUt1EmTcIMvuRD?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1df8021d-f636-4e9e-2277-08dbe3e3eecf
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6392.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Nov 2023 01:00:30.9751
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: k0DiHrYCVWEkitWOOt6yteUXOVgAo8CPsb1CQILAzK2xnf5on0HKZsKNqgLn3UOHkOgxld54LJxrLHhsWK7kuw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7415
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKvkUWUC/32NQQ6CMBBFr0Jmbc202ACuvIdh0QyDzAJKpoRoS
+ O9u5QAu30v++wckVuEE9+oA5V2SxKWAu1RAU1hebGQoDA5dbdE1JlHjWjTKc9x41UjJ4K112BJ
+ ZtjWU4ao8yvuMPvvCk6Qt6uf82O3P/s3t1qBBT9z5oautD48xiK5TXPhKcYY+5/wFIsfscLgAA
+ AA=
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        cros-qcom-dts-watchers@chromium.org
+Cc:     ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring <robh@kernel.org>,
+        =?utf-8?q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
+        linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.12.4
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Hi Duje,
+This series adds support for the ADSP, CDSP and WPSS remoteprocs found
+on SC7280. And finally enable them and WiFi on the QCM6490-based
+Fairphone 5 smartphone.
 
-kernel test robot noticed the following build errors:
+The first two patches are fixes for the MPSS to fix some dt validation
+issues. They're included in this series to avoid conflicts with the
+later patches and keep it simpler.
 
-[auto build test ERROR on dtor-input/next]
-[also build test ERROR on dtor-input/for-linus linus/master v6.6 next-20231110]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Then there's two patches reorganizing the reserved-memory setup for
+sc7280 in preparations for the new remoteprocs.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Duje-Mihanovi/input-touchscreen-imagis-Add-touch-key-support/20231113-034453
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
-patch link:    https://lore.kernel.org/r/20231112194124.24916-1-duje.mihanovic%40skole.hr
-patch subject: [PATCH] input: touchscreen: imagis: Add touch key support
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20231113/202311130533.EStBdAmT-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231113/202311130533.EStBdAmT-lkp@intel.com/reproduce)
+Please note, that the ChromeOS-based devices using SC7280 need different
+driver and dts support, similar to how there's already
+qcom,sc7280-mpss-pas for "standard" firmware and there's
+qcom,sc7280-mss-pil for ChromeOS firmware.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <yujie.liu@intel.com>
-| Closes: https://lore.kernel.org/r/202311130533.EStBdAmT-lkp@intel.com/
+I'm aware of the series also adding SC7280 ADSP support with the last
+revision sent in June this year.
 
-All errors (new ones prefixed by >>):
+https://lore.kernel.org/linux-arm-msm/20230616103534.4031331-1-quic_mohs@quicinc.com/
 
-   drivers/input/touchscreen/imagis.c: In function 'imagis_interrupt':
->> drivers/input/touchscreen/imagis.c:149:23: error: implicit declaration of function 'FIELD_GET' [-Werror=implicit-function-declaration]
-     149 |         key_pressed = FIELD_GET(IST3032C_KEY_STATUS_MASK, intr_message);
-         |                       ^~~~~~~~~
-   cc1: some warnings being treated as errors
+However there's some differences since that series added the "pil"
+variant for ChromeOS, not "pas" for standard firmware. Also it seems on
+ChromeOS devices gpr+q6apm+q6prm is used. On my device it appears to be
+instead apr+q6afe+q6asm+q6adm but I don't add either in this series to
+keep it a bit simpler, and I couldn't test much of that yet.
 
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Changes in v2:
+- Add patch renaming memory@ reserved-memory nodes (preparation for
+  next)
+- Add patch moving mpss_mem and wpss_mem to sc7280.dtsi
+- Follow *_mem node being in sc7280.dtsi also for ADSP & CDSP patches
+- Use (squashed) .mbn instead of (split) .mdt for FP5
+- Set qcom,ath11k-calibration-variant for FP5
+- Pick up tags (except for Krzysztof's R-b for ADSP & CDSP since there
+  were changes)
+- Link to v1: https://lore.kernel.org/r/20231027-sc7280-remoteprocs-v1-0-05ce95d9315a@fairphone.com
 
-vim +/FIELD_GET +149 drivers/input/touchscreen/imagis.c
+---
+Luca Weiss (11):
+      dt-bindings: remoteproc: qcom: sc7180-pas: Fix SC7280 MPSS PD-names
+      arm64: dts: qcom: sc7280: Remove unused second MPSS reg
+      arm64: dts: qcom: sc7280: Rename reserved-memory nodes
+      arm64: dts: qcom: sc7280*: move MPSS and WPSS memory to dtsi
+      dt-bindings: remoteproc: qcom: sc7180-pas: Add SC7280 compatibles
+      remoteproc: qcom_q6v5_pas: Add SC7280 ADSP, CDSP & WPSS
+      arm64: dts: qcom: sc7280: Use WPSS PAS instead of PIL
+      arm64: dts: qcom: sc7280: Add ADSP node
+      arm64: dts: qcom: sc7280: Add CDSP node
+      arm64: dts: qcom: qcm6490-fairphone-fp5: Enable various remoteprocs
+      arm64: dts: qcom: qcm6490-fairphone-fp5: Enable WiFi
 
-a23ba3c043db9a Markuss Broks  2022-03-14   95  
-a23ba3c043db9a Markuss Broks  2022-03-14   96  static irqreturn_t imagis_interrupt(int irq, void *dev_id)
-a23ba3c043db9a Markuss Broks  2022-03-14   97  {
-a23ba3c043db9a Markuss Broks  2022-03-14   98  	struct imagis_ts *ts = dev_id;
-a23ba3c043db9a Markuss Broks  2022-03-14   99  	u32 intr_message, finger_status;
-7371770ece2db7 Duje Mihanović 2023-11-12  100  	unsigned int finger_count, finger_pressed, key_pressed;
-a23ba3c043db9a Markuss Broks  2022-03-14  101  	int i;
-a23ba3c043db9a Markuss Broks  2022-03-14  102  	int error;
-a23ba3c043db9a Markuss Broks  2022-03-14  103  
-8eb834ae8a9b34 Markuss Broks  2023-10-03  104  	error = imagis_i2c_read_reg(ts, ts->tdata->interrupt_msg_cmd, &intr_message);
-a23ba3c043db9a Markuss Broks  2022-03-14  105  	if (error) {
-a23ba3c043db9a Markuss Broks  2022-03-14  106  		dev_err(&ts->client->dev,
-a23ba3c043db9a Markuss Broks  2022-03-14  107  			"failed to read the interrupt message: %d\n", error);
-a23ba3c043db9a Markuss Broks  2022-03-14  108  		goto out;
-a23ba3c043db9a Markuss Broks  2022-03-14  109  	}
-a23ba3c043db9a Markuss Broks  2022-03-14  110  
-a23ba3c043db9a Markuss Broks  2022-03-14  111  	finger_count = (intr_message & IST3038C_FINGER_COUNT_MASK) >>
-a23ba3c043db9a Markuss Broks  2022-03-14  112  				IST3038C_FINGER_COUNT_SHIFT;
-a23ba3c043db9a Markuss Broks  2022-03-14  113  	if (finger_count > IST3038C_MAX_FINGER_NUM) {
-a23ba3c043db9a Markuss Broks  2022-03-14  114  		dev_err(&ts->client->dev,
-a23ba3c043db9a Markuss Broks  2022-03-14  115  			"finger count %d is more than maximum supported\n",
-a23ba3c043db9a Markuss Broks  2022-03-14  116  			finger_count);
-a23ba3c043db9a Markuss Broks  2022-03-14  117  		goto out;
-a23ba3c043db9a Markuss Broks  2022-03-14  118  	}
-a23ba3c043db9a Markuss Broks  2022-03-14  119  
-a23ba3c043db9a Markuss Broks  2022-03-14  120  	finger_pressed = intr_message & IST3038C_FINGER_STATUS_MASK;
-a23ba3c043db9a Markuss Broks  2022-03-14  121  
-a23ba3c043db9a Markuss Broks  2022-03-14  122  	for (i = 0; i < finger_count; i++) {
-8eb834ae8a9b34 Markuss Broks  2023-10-03  123  		if (ts->tdata->protocol_b)
-a23ba3c043db9a Markuss Broks  2022-03-14  124  			error = imagis_i2c_read_reg(ts,
-8eb834ae8a9b34 Markuss Broks  2023-10-03  125  						    ts->tdata->touch_coord_cmd, &finger_status);
-8eb834ae8a9b34 Markuss Broks  2023-10-03  126  		else
-8eb834ae8a9b34 Markuss Broks  2023-10-03  127  			error = imagis_i2c_read_reg(ts,
-8eb834ae8a9b34 Markuss Broks  2023-10-03  128  						    ts->tdata->touch_coord_cmd + (i * 4),
-a23ba3c043db9a Markuss Broks  2022-03-14  129  						    &finger_status);
-a23ba3c043db9a Markuss Broks  2022-03-14  130  		if (error) {
-a23ba3c043db9a Markuss Broks  2022-03-14  131  			dev_err(&ts->client->dev,
-a23ba3c043db9a Markuss Broks  2022-03-14  132  				"failed to read coordinates for finger %d: %d\n",
-a23ba3c043db9a Markuss Broks  2022-03-14  133  				i, error);
-a23ba3c043db9a Markuss Broks  2022-03-14  134  			goto out;
-a23ba3c043db9a Markuss Broks  2022-03-14  135  		}
-a23ba3c043db9a Markuss Broks  2022-03-14  136  
-a23ba3c043db9a Markuss Broks  2022-03-14  137  		input_mt_slot(ts->input_dev, i);
-a23ba3c043db9a Markuss Broks  2022-03-14  138  		input_mt_report_slot_state(ts->input_dev, MT_TOOL_FINGER,
-a23ba3c043db9a Markuss Broks  2022-03-14  139  					   finger_pressed & BIT(i));
-a23ba3c043db9a Markuss Broks  2022-03-14  140  		touchscreen_report_pos(ts->input_dev, &ts->prop,
-a23ba3c043db9a Markuss Broks  2022-03-14  141  				       (finger_status & IST3038C_X_MASK) >>
-a23ba3c043db9a Markuss Broks  2022-03-14  142  						IST3038C_X_SHIFT,
-a23ba3c043db9a Markuss Broks  2022-03-14  143  				       finger_status & IST3038C_Y_MASK, 1);
-a23ba3c043db9a Markuss Broks  2022-03-14  144  		input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR,
-a23ba3c043db9a Markuss Broks  2022-03-14  145  				 (finger_status & IST3038C_AREA_MASK) >>
-a23ba3c043db9a Markuss Broks  2022-03-14  146  					IST3038C_AREA_SHIFT);
-a23ba3c043db9a Markuss Broks  2022-03-14  147  	}
-a23ba3c043db9a Markuss Broks  2022-03-14  148  
-7371770ece2db7 Duje Mihanović 2023-11-12 @149  	key_pressed = FIELD_GET(IST3032C_KEY_STATUS_MASK, intr_message);
-7371770ece2db7 Duje Mihanović 2023-11-12  150  
-7371770ece2db7 Duje Mihanović 2023-11-12  151  	input_report_key(ts->input_dev, KEY_APPSELECT, (key_pressed & BIT(0)));
-7371770ece2db7 Duje Mihanović 2023-11-12  152  	input_report_key(ts->input_dev, KEY_BACK, (key_pressed & BIT(1)));
-7371770ece2db7 Duje Mihanović 2023-11-12  153  
-a23ba3c043db9a Markuss Broks  2022-03-14  154  	input_mt_sync_frame(ts->input_dev);
-a23ba3c043db9a Markuss Broks  2022-03-14  155  	input_sync(ts->input_dev);
-a23ba3c043db9a Markuss Broks  2022-03-14  156  
-a23ba3c043db9a Markuss Broks  2022-03-14  157  out:
-a23ba3c043db9a Markuss Broks  2022-03-14  158  	return IRQ_HANDLED;
-a23ba3c043db9a Markuss Broks  2022-03-14  159  }
-a23ba3c043db9a Markuss Broks  2022-03-14  160  
+ .../bindings/remoteproc/qcom,sc7180-pas.yaml       |  21 ++
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts |  45 ++--
+ arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi |  35 ++-
+ .../boot/dts/qcom/sc7280-herobrine-lte-sku.dtsi    |   7 +-
+ .../boot/dts/qcom/sc7280-herobrine-wifi-sku.dtsi   |   1 +
+ arch/arm64/boot/dts/qcom/sc7280.dtsi               | 271 +++++++++++++++++++--
+ drivers/remoteproc/qcom_q6v5_pas.c                 |  19 ++
+ 7 files changed, 336 insertions(+), 63 deletions(-)
+---
+base-commit: 9046efc22ed7a73cb888a8c5660a21f99c89af03
+change-id: 20231027-sc7280-remoteprocs-048208cc1e13
 
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Luca Weiss <luca.weiss@fairphone.com>
 
