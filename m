@@ -2,62 +2,45 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DC98C4332F
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Nov 2023 14:11:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E37CBC4167B
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Nov 2023 15:38:03 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230337AbjKMOLC (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Nov 2023 09:11:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48926 "EHLO
+        id S230268AbjKMPiE (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Nov 2023 10:38:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbjKMOLA (ORCPT
+        with ESMTP id S229644AbjKMPiE (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Nov 2023 09:11:00 -0500
+        Mon, 13 Nov 2023 10:38:04 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C96BD4C;
-        Mon, 13 Nov 2023 06:10:58 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B90C433C8;
-        Mon, 13 Nov 2023 14:10:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2310FD71;
+        Mon, 13 Nov 2023 07:38:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E4CC433C7;
+        Mon, 13 Nov 2023 15:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699884657;
-        bh=2vpy58rQTHTP9krRVNgcAQrv/Q/+avRu6pax/Biruds=;
+        s=k20201202; t=1699889880;
+        bh=nodC5p6ug9A05wH2ElfMtDXiy9l8bsxSv4FLIQhdg+8=;
         h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=J3ay90WHC4ALuWZzRA6IAYlybdjApZS9p2RVDXtuXHnkWS7x0DOZEkfn/uXDp1IaA
-         WKiPqVM1DJvqdJejm4ZO6tnPrJqw8ph6QyrtjW28Eq1bIzm31leY/dGKFXYYWHqYBg
-         y4VAgNZtktIzHV0GYWAuc05wxFSClKCWiwIG1puKsf6fT95+mEDV1F8PJLUgOpzpCb
-         B8BJO0bcBD1XK821yKbKpCc1kInm6+ae4p8lWG++1F9rXd4OwuakoWh+YekOWxi9/m
-         a2CnN0GSmBUE+1nNZ1B68QZDp9mnQKs+PnOVIYmYyHH8fjQraIzZIjG4zR0lMfkvN0
-         GjZqHE6whIX9g==
+        b=OVppq6+u/PyTFjBKZoEW1bZQdrZdfALGvpZuIevND49++UtW0H1PQBT8OCcDyj7bq
+         6T5Y+bxzkoh05KHmQJ9K+YPcnS5HwNo/MkXw/19RPzalc1SsXBa55IFnnS6utSwk4T
+         LWx1zxUxsF0cBMcy4y6XyFZhbTV54zaEZ0rHdSR3wwzcGF0qkYK7PLJVjRIQc58rGc
+         HBmGLRVyXR6LL7h0P4WKnCtSOsuf3xfPbR4Gyn34y4olTQX1rEXeDO4qpMxSHYJIJQ
+         4HbEF/CEXFjktmfTAOwNIada18f7cLpOQFSxkOuHmFoo6AMffAEDGJ3e2l51Ne9K7k
+         /GwrwlYSkmdLA==
 From:   Kalle Valo <kvalo@kernel.org>
 To:     "Luca Weiss" <luca.weiss@fairphone.com>
-Cc:     "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>,
-        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
-        "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        "Mathieu Poirier" <mathieu.poirier@linaro.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>,
-        "Manivannan Sadhasivam" <mani@kernel.org>,
-        <cros-qcom-dts-watchers@chromium.org>,
+Cc:     "Jeff Johnson" <quic_jjohnson@quicinc.com>,
         <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
-        "Rob Herring" <robh@kernel.org>,
-        Matti =?utf-8?Q?Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-        <linux-arm-msm@vger.kernel.org>,
-        <linux-remoteproc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <ath11k@lists.infradead.org>
-Subject: Re: [PATCH 9/9] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable WiFi
-References: <20231027-sc7280-remoteprocs-v1-0-05ce95d9315a@fairphone.com>
-        <20231027-sc7280-remoteprocs-v1-9-05ce95d9315a@fairphone.com>
-        <12ea48bd-5022-4820-815a-89ef23ec9385@linaro.org>
-        <CWMK0AQRL87L.1F9MIDVQ4J439@fairphone.com>
-        <CAA8EJpqCeW8NVcrpwo6JVn0kE2W-QMELB1YH7i7pgOH6qiPbCQ@mail.gmail.com>
-        <87zfzhu9kx.fsf@kernel.org> <CWXP3TCW3A1G.2ME0JJT3S540G@fairphone.com>
-Date:   Mon, 13 Nov 2023 16:10:51 +0200
-In-Reply-To: <CWXP3TCW3A1G.2ME0JJT3S540G@fairphone.com> (Luca Weiss's message
-        of "Mon, 13 Nov 2023 13:50:21 +0100")
-Message-ID: <87r0ktu4k4.fsf@kernel.org>
+        <phone-devel@vger.kernel.org>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH] wifi: ath11k: Defer on rproc_get failure
+References: <20231027-ath11k-rproc-defer-v1-1-f6b6a812cd18@fairphone.com>
+        <87lebowjyf.fsf@kernel.org> <CWJ4ZLEZCKQC.2STOBNUU06B2P@fairphone.com>
+Date:   Mon, 13 Nov 2023 17:37:57 +0200
+In-Reply-To: <CWJ4ZLEZCKQC.2STOBNUU06B2P@fairphone.com> (Luca Weiss's message
+        of "Fri, 27 Oct 2023 12:07:09 +0200")
+Message-ID: <87a5rhu0iy.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -67,33 +50,64 @@ X-Mailing-List: phone-devel@vger.kernel.org
 
 "Luca Weiss" <luca.weiss@fairphone.com> writes:
 
->> >> > > --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
->> >> > > +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
->> >> > > @@ -713,3 +713,7 @@ &venus {
->> >> > >     firmware-name = "qcom/qcm6490/fairphone5/venus.mbn";
->> >> > >     status = "okay";
->> >> > >  };
->> >> > > +
->> >> > > +&wifi {
->> >> > > +   status = "okay";
->> >> > qcom,ath11k-calibration-variant?
->> >>
->> >> What value would I put there for my device? Based on existing usages
->> >> (mostly for ath10k) I'd say "Fairphone_5"?
->> >
->> > I think this is fine.
->>
->> From style point of view I would prefer lower case and dashes, for
->> example "fairphone-5" but I'm just nitpicking, uppercase and underscores
->> work fine as well.
+> On Fri Oct 27, 2023 at 10:25 AM CEST, Kalle Valo wrote:
 >
-> I really don't mind, but I used "Fairphone_5" in v2 now, but I can
-> change it for v3 if that happens if you wish.
+>> Luca Weiss <luca.weiss@fairphone.com> writes:
+>>
+>> > If we already have gotten the rproc_handle (meaning the "qcom,rproc"
+>> > property is defined in the devicetree), it's a valid state that the
+>> > remoteproc module hasn't probed yet so we should defer probing instead
+>> > of just failing to probe.
+>> >
+>> > This resolves a race condition when the ath11k driver probes and fails
+>> > before the wpss remoteproc driver has probed, like the following:
+>> >
+>> >   [    6.232360] ath11k 17a10040.wifi: failed to get rproc
+>> >   [    6.232366] ath11k 17a10040.wifi: failed to get rproc: -22
+>> >   [    6.232478] ath11k: probe of 17a10040.wifi failed with error -22
+>> >        ...
+>> >   [    6.252415] remoteproc remoteproc2: 8a00000.remoteproc is available
+>> >   [    6.252776] remoteproc remoteproc2: powering up 8a00000.remoteproc
+>> >   [    6.252781] remoteproc remoteproc2: Booting fw image qcom/qcm6490/fairphone5/wpss.mdt, size 7188
+>> >
+>> > So, defer the probe if we hit that so we can retry later once the wpss
+>> > remoteproc is available.
+>> >
+>> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>
+>> Did you test this on a real device? If yes, what ath11k hardware and firmware
+>> did you use? We use Tested-on tag to document that:
+>>
+>> https://wireless.wiki.kernel.org/en/users/drivers/ath11k/submittingpatches#tested-on_tag
+>
+> Hi,
+>
+> Yes I tested this on qcm6490-fairphone-fp5 including some extra patches
+> for wpss-pas remoteproc support (nothing special, just adding it to the
+> existing PAS driver) and wifi enablement in dts.
 
-Nah, no need to resend. That's fine.
+Nice, do you have a link to the patches or a git tree which has
+everything? And how difficult would it be for me to run vanilla
+kernel.org kernel (no vendor kernels or anything like that) on Fairphone
+5? Any documentation available for that?
 
-But in the future please try to CC the ath11k list for patches like
-this, easier to follow what's happening.
+I'm asking because I don't have a test setup for WCN6750 right now. It
+would be awesome if I could use Fairphone for testing :)
+
+> I built this line from info from the dmesg, hope it's okay:
+>
+> Tested-on: wcn6750 hw1.0 AHB WLAN.MSL.1.0.1-01264-QCAMSLSWPLZ-1.37886.3
+
+Thanks, I added that to the commit message.
+
+> And thinking about it, a Fixes tag would also be appropriate for this
+> patch. The code was moved to a different file in commit ba929d6fe31a
+> ("ath11k: Remove rproc references from common core layer") but I think
+> this tag should be correct.
+>
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+
+Ok, I added that as well.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
