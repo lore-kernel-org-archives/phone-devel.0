@@ -2,61 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EBE4C07352
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Nov 2023 08:56:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9FD74C4332F
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Nov 2023 08:57:17 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233288AbjKMI4x (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Nov 2023 03:56:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58738 "EHLO
+        id S233318AbjKMI5R (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Nov 2023 03:57:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233320AbjKMI4l (ORCPT
+        with ESMTP id S233360AbjKMI4q (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Nov 2023 03:56:41 -0500
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C0D10D2
-        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:32 -0800 (PST)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-9c603e2354fso843457466b.1
-        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:32 -0800 (PST)
+        Mon, 13 Nov 2023 03:56:46 -0500
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE1C810F6
+        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:35 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-5409bc907edso6474495a12.0
+        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1699865791; x=1700470591; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1699865793; x=1700470593; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tTZ4Jv1zdCihXH8N7DKF5MknE/I83u0rI4dws1dftsM=;
-        b=Bmn9WL+/Mm7B0Q5UdRZgXyXwp00f5pyQAb6K+/vCCRyE6c4Shi5/3+NV1zfd1Du+F1
-         a7O9dhdN8lTZdgAz6vW7GJVC1036poyZ+hlNHgTib4TWsmQfv7Wfg0phCUAcaFjwxwH/
-         MZ23PiRbBUnmM9qHQ5lA+jN5b4oMUN7+P2WFr9wbXreDA2u8T3sFEXkqLbMRV0F1FUaa
-         PieTzXzD5Zw9kpYm6MNdZtYaoZBrGe50Uff0NqyeedZ4XOe8grt2YLdyuW3CcPIuKV8e
-         CYuA34ph/lLW6zMo9aQlKmQ4DBIGcJ3PIFUoy8phT2CEiXJ+Kmk0UEv6axkdJ5neWuVG
-         ASlQ==
+        bh=IHFRmzvU5T3tlzyLJ6u+L9D1svx2JsEEqR5zHg9JW1s=;
+        b=qUwO+ta1ElsepjclimtwfnWbQX16Z+Q7FjTwuVNuPDBAhAk1VhXGKqUVy/HgJgBtYw
+         90VbKbOA2H3fPTMWutCMGwEoooBYSkz618InRSpGLoRDc7emjltlnMlCzsr8rjIeF5Z0
+         PcRCY2m3ssO5/tEbAwHIGQLHobetEqPS110Odj5c1lNdwnoml8bhoBt8O4Lyxc+tCh8K
+         7O4FFfts/Nix3cmEhIm0j+lyWu0xkaIwcuJO3kz4Ikadozxi/xePv/MmCh9hmzRlEV3E
+         IPnjiJoz51Kqfx+w6UWHUjne2xCzEzixfvJnRDDpte9qQEoqn72LtSMA+RYR7EYWKtrl
+         tFpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699865791; x=1700470591;
+        d=1e100.net; s=20230601; t=1699865793; x=1700470593;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tTZ4Jv1zdCihXH8N7DKF5MknE/I83u0rI4dws1dftsM=;
-        b=mcWHu3jvjcSxAxAwXT/sLguWZmLQov4prRaRMilVjZy4k6ZYByL56FNENdHU/8e7vV
-         ju6BT3bgogkdYZTiD4dAOcSXqdPToysgB4UGsb8hez8YUrGnA5+JL+1UZn3ezuq3Mesv
-         UNKbD/epP2ydq6gYZmx+Jgv3Ad1kOa/aNzNPKw17U/h+aWpDVM8pxJUlRedSSLT4waxF
-         SO6jxlu+w8bbI5Q/vL0nWBhJN5j3SvLTVeJBeFhj9Eub7s8DUI9SBoIsIBFJ6c/Lr9nN
-         q8ZsGFbbJcWz7hfrbssNAh/f++myCctyGkZ/DZedbHJN4e9jB/MBp3EREQuJP7JG3jgE
-         Hbbg==
-X-Gm-Message-State: AOJu0YzzUax6OgvmnTy1Q772Dpa6eCsVqj1uA5FtEDqvcz86OKY528oa
-        nPRBxzabZE3hNvkq8hpf0oTBYo4UnkGh2sviuekH+Q==
-X-Google-Smtp-Source: AGHT+IFKyrrfrE3KVe/m+TupE0FuZYr86cdnYjqZ06CDcn1JVPFRKBIeld+mQx1mJeVr+gaZ3iroUQ==
-X-Received: by 2002:a17:906:f215:b0:9e8:1ba0:18fb with SMTP id gt21-20020a170906f21500b009e81ba018fbmr4288808ejb.29.1699865790754;
-        Mon, 13 Nov 2023 00:56:30 -0800 (PST)
+        bh=IHFRmzvU5T3tlzyLJ6u+L9D1svx2JsEEqR5zHg9JW1s=;
+        b=WU3ATL3S6OERgEDWkauj0TDxWJlqqN71xDSSxgSV3NEteUiJka1Becvujr9ymP7tss
+         r6WTBasY7s5Z005CAc4R9u5ODGRYNBqQeXbs9PKJImD8tIkzGKMUF3ZMNT7SMOdX0EWf
+         WQD/K6M7Sd1TTA70iUkjimplt5RLvY3I221M1VTnyCVoRyiUoOdLBH5rsDz10nBgmqHD
+         MSBvvMEFmVWgevfBNlu2jEPNUDEuKu5AMG1J1ONE7OWMzeS07UuMR+XsawywzXXL6AtA
+         K4WixY7JEgcV2Y7s6C7yUCh6fzIiLJZO6sZoKGsp/EQUER7tALlT7y4NH9+HhR9eDTqR
+         a2Vg==
+X-Gm-Message-State: AOJu0Yz3omE4btvi+5b9CW5GOyJ8QJ+Dr2h5h/eFoCvKr7WJQ6y81iKq
+        Zml2Pj37c9/ak2Y8LyiKexQQ2/7S5tR3Pkaw65rpLQ==
+X-Google-Smtp-Source: AGHT+IHa8Pb31leGcq/BfLuDTezKdtxG/yoxKfwEJl9LGFiOL4LSbWDBIt1ehToQWQGdY76XglA3OA==
+X-Received: by 2002:a17:906:7fd7:b0:9de:b20c:be5e with SMTP id r23-20020a1709067fd700b009deb20cbe5emr4170846ejs.53.1699865793553;
+        Mon, 13 Nov 2023 00:56:33 -0800 (PST)
 Received: from otso.luca.vpn.lucaweiss.eu (k10064.upc-k.chello.nl. [62.108.10.64])
-        by smtp.gmail.com with ESMTPSA id kk22-20020a170907767600b009c758b6cdefsm3673538ejc.128.2023.11.13.00.56.29
+        by smtp.gmail.com with ESMTPSA id kk22-20020a170907767600b009c758b6cdefsm3673538ejc.128.2023.11.13.00.56.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Nov 2023 00:56:30 -0800 (PST)
+        Mon, 13 Nov 2023 00:56:32 -0800 (PST)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Mon, 13 Nov 2023 09:56:19 +0100
-Subject: [PATCH v2 08/11] arm64: dts: qcom: sc7280: Add ADSP node
+Date:   Mon, 13 Nov 2023 09:56:22 +0100
+Subject: [PATCH v2 11/11] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable
+ WiFi
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231113-sc7280-remoteprocs-v2-8-e5c5fd5268a7@fairphone.com>
+Message-Id: <20231113-sc7280-remoteprocs-v2-11-e5c5fd5268a7@fairphone.com>
 References: <20231113-sc7280-remoteprocs-v2-0-e5c5fd5268a7@fairphone.com>
 In-Reply-To: <20231113-sc7280-remoteprocs-v2-0-e5c5fd5268a7@fairphone.com>
 To:     Andy Gross <agross@kernel.org>,
@@ -80,140 +81,30 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Add the node for the ADSP found on the SC7280 SoC, using standard
-Qualcomm firmware.
+Now that the WPSS remoteproc is enabled, enable wifi so we can use it.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts |  5 --
- arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi |  5 --
- arch/arm64/boot/dts/qcom/sc7280.dtsi               | 74 ++++++++++++++++++++++
- 3 files changed, 74 insertions(+), 10 deletions(-)
+Depends on (just to resolve merge conflicts, could also rebase without
+that):
+https://lore.kernel.org/linux-arm-msm/20231002-sc7280-venus-pas-v2-3-bd2408891317@fairphone.com/
+---
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index cb78b03bd831..92be951fc0e4 100644
+index 307062c1a0cb..c0287d8f4ed6 100644
 --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
 +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -75,11 +75,6 @@ cont_splash_mem: cont-splash@e1000000 {
- 			no-map;
- 		};
- 
--		adsp_mem: adsp@86700000 {
--			reg = <0x0 0x86700000 0x0 0x2800000>;
--			no-map;
--		};
--
- 		cdsp_mem: cdsp@88f00000 {
- 			reg = <0x0 0x88f00000 0x0 0x1e00000>;
- 			no-map;
-diff --git a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-index 14511a69658c..9cbe0fe64420 100644
---- a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-@@ -24,11 +24,6 @@
- 
- / {
- 	reserved-memory {
--		adsp_mem: memory@86700000 {
--			reg = <0x0 0x86700000 0x0 0x2800000>;
--			no-map;
--		};
--
- 		camera_mem: memory@8ad00000 {
- 			reg = <0x0 0x8ad00000 0x0 0x500000>;
- 			no-map;
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 8c21695646c6..2b11ccc9a6b8 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -142,6 +142,11 @@ wlan_fw_mem: wlan-fw@80c00000 {
- 			no-map;
- 		};
- 
-+		adsp_mem: adsp@86700000 {
-+			reg = <0x0 0x86700000 0x0 0x2800000>;
-+			no-map;
-+		};
+@@ -693,3 +693,8 @@ &venus {
+ 	firmware-name = "qcom/qcm6490/fairphone5/venus.mbn";
+ 	status = "okay";
+ };
 +
- 		video_mem: video@8b200000 {
- 			reg = <0x0 0x8b200000 0x0 0x500000>;
- 			no-map;
-@@ -3588,6 +3593,75 @@ qspi: spi@88dc000 {
- 			status = "disabled";
- 		};
- 
-+		remoteproc_adsp: remoteproc@3700000 {
-+			compatible = "qcom,sc7280-adsp-pas";
-+			reg = <0 0x03700000 0 0x100>;
-+
-+			interrupts-extended = <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&adsp_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
-+					      <&adsp_smp2p_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&adsp_smp2p_in 2 IRQ_TYPE_EDGE_RISING>,
-+					      <&adsp_smp2p_in 3 IRQ_TYPE_EDGE_RISING>,
-+					      <&adsp_smp2p_in 7 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "wdog", "fatal", "ready", "handover",
-+					  "stop-ack", "shutdown-ack";
-+
-+			clocks = <&rpmhcc RPMH_CXO_CLK>;
-+			clock-names = "xo";
-+
-+			power-domains = <&rpmhpd SC7280_LCX>,
-+					<&rpmhpd SC7280_LMX>;
-+			power-domain-names = "lcx", "lmx";
-+
-+			memory-region = <&adsp_mem>;
-+
-+			qcom,qmp = <&aoss_qmp>;
-+
-+			qcom,smem-states = <&adsp_smp2p_out 0>;
-+			qcom,smem-state-names = "stop";
-+
-+			status = "disabled";
-+
-+			glink-edge {
-+				interrupts-extended = <&ipcc IPCC_CLIENT_LPASS
-+							     IPCC_MPROC_SIGNAL_GLINK_QMP
-+							     IRQ_TYPE_EDGE_RISING>;
-+
-+				mboxes = <&ipcc IPCC_CLIENT_LPASS
-+						IPCC_MPROC_SIGNAL_GLINK_QMP>;
-+
-+				label = "lpass";
-+				qcom,remote-pid = <2>;
-+
-+				fastrpc {
-+					compatible = "qcom,fastrpc";
-+					qcom,glink-channels = "fastrpcglink-apps-dsp";
-+					label = "adsp";
-+					qcom,non-secure-domain;
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					compute-cb@3 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <3>;
-+						iommus = <&apps_smmu 0x1803 0x0>;
-+					};
-+
-+					compute-cb@4 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <4>;
-+						iommus = <&apps_smmu 0x1804 0x0>;
-+					};
-+
-+					compute-cb@5 {
-+						compatible = "qcom,fastrpc-compute-cb";
-+						reg = <5>;
-+						iommus = <&apps_smmu 0x1805 0x0>;
-+					};
-+				};
-+			};
-+		};
-+
- 		remoteproc_wpss: remoteproc@8a00000 {
- 			compatible = "qcom,sc7280-wpss-pas";
- 			reg = <0 0x08a00000 0 0x10000>;
++&wifi {
++	qcom,ath11k-calibration-variant = "Fairphone_5";
++	status = "okay";
++};
 
 -- 
 2.42.1
