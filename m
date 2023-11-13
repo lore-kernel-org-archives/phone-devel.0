@@ -2,62 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 214D9C41535
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Nov 2023 08:56:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D4EDC4167D
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Nov 2023 08:56:30 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233278AbjKMI4c (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Nov 2023 03:56:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36686 "EHLO
+        id S233255AbjKMI4b (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Nov 2023 03:56:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233274AbjKMI4a (ORCPT
+        with ESMTP id S233271AbjKMI43 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Nov 2023 03:56:30 -0500
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 336D410D7
-        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:27 -0800 (PST)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-545ed16b137so5752262a12.1
-        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:27 -0800 (PST)
+        Mon, 13 Nov 2023 03:56:29 -0500
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E839B10CF
+        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:25 -0800 (PST)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-9dd6dc9c00cso637215766b.3
+        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1699865785; x=1700470585; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1699865783; x=1700470583; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mASKoKAO36kXxxMIcfJoCKkWeIfM9SAibAagzp3xhpQ=;
-        b=xzR8CkdFZFvjC5RM4klrN0DKCXoipWjgczpVUZDYiP74iCSmWvARruR7QKQd81Q8pe
-         5JebVBXSwjgrgt+F68SUaySd+L/UnKxrUuSN69H+iBikOi8Q3DlBGWaddWMGLneO6C/f
-         XUKnTz5N3XPGbcrg8gVXDHGSeWDPV1303y0IQRJzJVmtmS9aTxCHow/Tno5cfkQsWJMa
-         RR4diMZNQgwzO1hoKnSZTYoG3+NlPbRKj1Q9onB9FPJhc6ARo1WQIrSVnx+kenk4ziXQ
-         ZMT0G7qc/Jg1LDiRq5SgX70P8KsAdYC3hbDZOdR7jspAzk0YBOwVpZPyG1BBQ+diWQOT
-         eg6Q==
+        bh=u7LwuWo/xQR19drDlZX7ccinmtAJFTBRZl3P7VkhCjE=;
+        b=HMvEqzIm3huRRk/LvVMyldJayReJUcIvxGNx6551nf/ecvuReoVKyPJYDRc90kO5D0
+         4ti8Svgmr4NyuuVql0OtmxNYh53osg0cNqB2uul+sNjsv34Sr5Z2XD+5y+/S724wU5Zu
+         RzPFWBIXQ90vubdusccSXjhLxWlkNCANazc4OuTRcQCiLB7qXPCHb3bao3gWWBAYkFdC
+         eltMxQm3y4ZZR5h9nBL9sAQnoiERgaqI9h9Vpg2Ahio80+z1ekgGNQ1Kq5htWmebkfj1
+         ICnGXKUe5DvTm4iO0bE36ELYdJ7bh1RA1CY52h2vSIEmyQWDO7c9W0GZZhdt1OEUXp/k
+         XkoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699865785; x=1700470585;
+        d=1e100.net; s=20230601; t=1699865783; x=1700470583;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mASKoKAO36kXxxMIcfJoCKkWeIfM9SAibAagzp3xhpQ=;
-        b=UnoBoHMgdMfqNIJ3Vc3io5Ydo7Kiw8Fh4EPj9m/YB85BQGbbtbbl7HpwOxrprPdJwr
-         pIUQbPi7rV7IwaqJttbuoDCnQ9924pXS9MglbzPsLHJZPFMh0/3f9/Fq6YawZLpElt2u
-         TBmuEBW12U7sWiRdhI8TQqlGc4/PSjwyACazfcE1++0pjlNcaWYONSPJ6litSIhJP91y
-         5znn+PCc8c5l4dv1vwSNFJ5H6+6XlAxCwJr8zLZgsys1J4Q9lDI+lW3gcp8uhhRfCiBI
-         tKc+BcbNWMxXizH1js4e4jIBykY6WdOZ+bRB+cl7Dc1UepF0mjKFiTgsOv1e81IOy7RM
-         Fcdw==
-X-Gm-Message-State: AOJu0YzybA0SjfA4Y9nX8enXdIEedwzQt0vg+Y5Y673SKiTRicB/0Knj
-        29TButp8td4aMkBHj5pQWX5tPy5oU/qqjOb3yiPO+A==
-X-Google-Smtp-Source: AGHT+IE7Xh4bAVV7Uk5gawxmAUg/+51LSmrF3fXwuOSPA/6+9It+cRS8vElyhWnE9YuoVEbsjK+vcQ==
-X-Received: by 2002:a17:906:2a91:b0:9be:85c9:43ef with SMTP id l17-20020a1709062a9100b009be85c943efmr4563373eje.62.1699865784972;
-        Mon, 13 Nov 2023 00:56:24 -0800 (PST)
+        bh=u7LwuWo/xQR19drDlZX7ccinmtAJFTBRZl3P7VkhCjE=;
+        b=pcuzGoN8/qeDxKh3QAXrAZuT++IM/kBH59jMFwx0HK1sMSKAX3na/RtTchg1xle7BD
+         fG93UZArEJDGfCLOOjWuHAm65Utjud2M++zXTc6STa1BNYdPfKM/WiMxHNqChkhCiCub
+         7nBIC1UbtaegD0Z1y5mPCE72KIcO3OaDQTgTt8T3PcGgH+a7nTEXW4gls37yUk99k243
+         GR75S277l4VMUfgvChIhldFnnhoc25dWEjNiSAa5rxNgYreeiPrBQyRLSQa/ve85ZASh
+         TW74nnsiH0FGIeljyIxNRvIkEz/IcvOBMIGRyAmjb6M1PoekNfEB9Knot1bwxRDOMXRP
+         WPEg==
+X-Gm-Message-State: AOJu0YyhAk85CRyxVSA27RVsgFSHtD8FdxacCrIDiOOe7A/Mlc799c6+
+        A4HOQE2zco115R7UKQ11w0ZHzXgQxKjyZ/J8aMGxZw==
+X-Google-Smtp-Source: AGHT+IG2SPX6L+vKzqIsrr5ZRHSaYCS1SjrAy3heGkk0fWSk/LQ6Ns4+4rDVY1OcAqIObc2tESSX3w==
+X-Received: by 2002:a17:906:44e:b0:9e6:c845:dba6 with SMTP id e14-20020a170906044e00b009e6c845dba6mr3579811eja.66.1699865783665;
+        Mon, 13 Nov 2023 00:56:23 -0800 (PST)
 Received: from otso.luca.vpn.lucaweiss.eu (k10064.upc-k.chello.nl. [62.108.10.64])
-        by smtp.gmail.com with ESMTPSA id kk22-20020a170907767600b009c758b6cdefsm3673538ejc.128.2023.11.13.00.56.23
+        by smtp.gmail.com with ESMTPSA id kk22-20020a170907767600b009c758b6cdefsm3673538ejc.128.2023.11.13.00.56.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Nov 2023 00:56:24 -0800 (PST)
+        Mon, 13 Nov 2023 00:56:23 -0800 (PST)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Mon, 13 Nov 2023 09:56:14 +0100
-Subject: [PATCH v2 03/11] arm64: dts: qcom: sc7280: Rename reserved-memory
- nodes
+Date:   Mon, 13 Nov 2023 09:56:13 +0100
+Subject: [PATCH v2 02/11] arm64: dts: qcom: sc7280: Remove unused second
+ MPSS reg
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231113-sc7280-remoteprocs-v2-3-e5c5fd5268a7@fairphone.com>
+Message-Id: <20231113-sc7280-remoteprocs-v2-2-e5c5fd5268a7@fairphone.com>
 References: <20231113-sc7280-remoteprocs-v2-0-e5c5fd5268a7@fairphone.com>
 In-Reply-To: <20231113-sc7280-remoteprocs-v2-0-e5c5fd5268a7@fairphone.com>
 To:     Andy Gross <agross@kernel.org>,
@@ -81,101 +81,47 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-It was clarified a while ago that reserved-memory nodes shouldn't be
-called memory@ but should have a descriptive name. Update sc7280.dtsi to
-follow that.
+The bindings for sc7280-mpss-pas neither expects a second reg nor a
+reg-names property, which is only required by the sc7280-mss-pil
+bindings.
 
+Move it to sc7280-herobrine-lte-sku.dtsi, the only place where that
+other compatible is used.
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7280-herobrine-lte-sku.dtsi | 2 ++
+ arch/arm64/boot/dts/qcom/sc7280.dtsi                   | 3 +--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
+diff --git a/arch/arm64/boot/dts/qcom/sc7280-herobrine-lte-sku.dtsi b/arch/arm64/boot/dts/qcom/sc7280-herobrine-lte-sku.dtsi
+index 95505549adcc..203274c10532 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280-herobrine-lte-sku.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280-herobrine-lte-sku.dtsi
+@@ -33,6 +33,8 @@ &ipa {
+ 
+ &remoteproc_mpss {
+ 	compatible = "qcom,sc7280-mss-pil";
++	reg = <0 0x04080000 0 0x10000>, <0 0x04180000 0 0x48>;
++	reg-names = "qdsp6", "rmb";
+ 
+ 	clocks = <&gcc GCC_MSS_CFG_AHB_CLK>,
+ 		 <&gcc GCC_MSS_OFFLINE_AXI_CLK>,
 diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 0d9cc44066ce..7bfe93713eb6 100644
+index 5db468d1a06e..0d9cc44066ce 100644
 --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
 +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -91,68 +91,68 @@ reserved-memory {
- 		#size-cells = <2>;
- 		ranges;
+@@ -2848,8 +2848,7 @@ adreno_smmu: iommu@3da0000 {
  
--		wlan_ce_mem: memory@4cd000 {
-+		wlan_ce_mem: wlan-ce@4cd000 {
- 			no-map;
- 			reg = <0x0 0x004cd000 0x0 0x1000>;
- 		};
+ 		remoteproc_mpss: remoteproc@4080000 {
+ 			compatible = "qcom,sc7280-mpss-pas";
+-			reg = <0 0x04080000 0 0x10000>, <0 0x04180000 0 0x48>;
+-			reg-names = "qdsp6", "rmb";
++			reg = <0 0x04080000 0 0x10000>;
  
--		hyp_mem: memory@80000000 {
-+		hyp_mem: hyp@80000000 {
- 			reg = <0x0 0x80000000 0x0 0x600000>;
- 			no-map;
- 		};
- 
--		xbl_mem: memory@80600000 {
-+		xbl_mem: xbl@80600000 {
- 			reg = <0x0 0x80600000 0x0 0x200000>;
- 			no-map;
- 		};
- 
--		aop_mem: memory@80800000 {
-+		aop_mem: aop@80800000 {
- 			reg = <0x0 0x80800000 0x0 0x60000>;
- 			no-map;
- 		};
- 
--		aop_cmd_db_mem: memory@80860000 {
-+		aop_cmd_db_mem: aop-cmd-db@80860000 {
- 			reg = <0x0 0x80860000 0x0 0x20000>;
- 			compatible = "qcom,cmd-db";
- 			no-map;
- 		};
- 
--		reserved_xbl_uefi_log: memory@80880000 {
-+		reserved_xbl_uefi_log: xbl-uefi-res@80880000 {
- 			reg = <0x0 0x80884000 0x0 0x10000>;
- 			no-map;
- 		};
- 
--		sec_apps_mem: memory@808ff000 {
-+		sec_apps_mem: sec-apps@808ff000 {
- 			reg = <0x0 0x808ff000 0x0 0x1000>;
- 			no-map;
- 		};
- 
--		smem_mem: memory@80900000 {
-+		smem_mem: smem@80900000 {
- 			reg = <0x0 0x80900000 0x0 0x200000>;
- 			no-map;
- 		};
- 
--		cpucp_mem: memory@80b00000 {
-+		cpucp_mem: cpucp@80b00000 {
- 			no-map;
- 			reg = <0x0 0x80b00000 0x0 0x100000>;
- 		};
- 
--		wlan_fw_mem: memory@80c00000 {
-+		wlan_fw_mem: wlan-fw@80c00000 {
- 			reg = <0x0 0x80c00000 0x0 0xc00000>;
- 			no-map;
- 		};
- 
--		video_mem: memory@8b200000 {
-+		video_mem: video@8b200000 {
- 			reg = <0x0 0x8b200000 0x0 0x500000>;
- 			no-map;
- 		};
- 
--		ipa_fw_mem: memory@8b700000 {
-+		ipa_fw_mem: ipa-fw@8b700000 {
- 			reg = <0 0x8b700000 0 0x10000>;
- 			no-map;
- 		};
- 
--		rmtfs_mem: memory@9c900000 {
-+		rmtfs_mem: rmtfs@9c900000 {
- 			compatible = "qcom,rmtfs-mem";
- 			reg = <0x0 0x9c900000 0x0 0x280000>;
- 			no-map;
+ 			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&modem_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
 
 -- 
 2.42.1
