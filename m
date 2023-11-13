@@ -2,62 +2,62 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 795DAC4332F
-	for <phone-devel@archiver.kernel.org>; Mon, 13 Nov 2023 08:56:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22B77C07548
+	for <phone-devel@archiver.kernel.org>; Mon, 13 Nov 2023 08:56:34 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233250AbjKMI4d (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Mon, 13 Nov 2023 03:56:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58532 "EHLO
+        id S232633AbjKMI4f (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Mon, 13 Nov 2023 03:56:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233271AbjKMI4c (ORCPT
+        with ESMTP id S233258AbjKMI42 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Mon, 13 Nov 2023 03:56:32 -0500
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 666F5D79
-        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:28 -0800 (PST)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9d0b4dfd60dso629017366b.1
-        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:28 -0800 (PST)
+        Mon, 13 Nov 2023 03:56:28 -0500
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B54310EC
+        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:24 -0800 (PST)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-9e1fb7faa9dso632731166b.2
+        for <phone-devel@vger.kernel.org>; Mon, 13 Nov 2023 00:56:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1699865786; x=1700470586; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1699865782; x=1700470582; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=c/hNm4O9kcVsvOqtUmdrdc/s5ca+FA6jP0qMvQxdFYY=;
-        b=Yq+xSWfh0Mky7/oPSXdYDHkxhQft7aCWa2ARVtJcPOc0PkzfTJCNT1UxeES0DdAiBw
-         rQw5LT9RfB0EKafwgtaF7roKMPb5MuFohpLAS261R8F8cDunZcMpPEWoulwUqWiCsYm4
-         EuZrzeukcDrqJNpvwxVwb3OqMyIEi6QuhO4Yu4KwcntYEpJHTaS/A8u5PeKkIzTgt9hQ
-         3UrMBelWR8AlPvhOBBFLOdtHEL82rFob9CWwSmJMeYFIL/CdXiFyz6PmS5nqTQpM8R5d
-         2PPgH2/OhI4eB5ZJqpQCyJnJIpFO2LiTKIksH41FgH+O2d5nHbyDdZi/C4NkgQ/onpiP
-         Q62g==
+        bh=8Yy2i2F+9pJywYxY6AKw4sbn/DiDdL44GgjGmpRdRoA=;
+        b=3asjtuz7sgt8quCwhI1cdHSBLmVtwRjEFYRU9UTkuX8DFtQYc5UuI85sxenC1MLo+S
+         LI/bwueDq3LNbZD7UNwel4436vXjg/oDoiIy/fClR3dU34uY1NAZ+ad+/TY8AfKaQokm
+         b11EN04wMukjV8kBpF6U77vmAG9jcMef8eBrgcVAOh13xtS405t3a1AZSbzny8YyiRKq
+         gQSdWmxyE9QsSHummEALpZcQWon7pQKPHhH/IlGYKSreghHBjekbsMoyGDu3f7rA+yNS
+         dpOcIwsp0ROzqnfqu1ye6gvG5UTUkPRoiF5JMQ8Qt+hDnlE+YQZ2enVFh+IcpKQCsUnT
+         +Qjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699865786; x=1700470586;
+        d=1e100.net; s=20230601; t=1699865782; x=1700470582;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=c/hNm4O9kcVsvOqtUmdrdc/s5ca+FA6jP0qMvQxdFYY=;
-        b=a6FZ6vbtZwfvJ5VRQtFMrogLFvsAPNpxWZ5sQZzrdtTW5FFjFTtqZP2M/fwAXni0YO
-         +t4LKPC6KNgm2v6VRBG5IjwX0wyrkL6jPKixTN16aD1HCPA5JTclGOw5OTJ/Y7BvOy9S
-         y9OQ0usmP8Tok201rJKiV4dvG40b3+g9N95UNExlZ4fSajGmMtCqGiZWb7N9ZQ7uDcoA
-         WePPaQwDewsW2slLTchELIiEwPPhm2eyi999OI8sqDHb+BSMFvTZuREnuPyhStfbCbj7
-         otfjrhTDS/cypHGFvWKivAVwbEMnp5M/U7CwDKgd0m4qeLXXsPuEN8h4vKA7Rv0E0pED
-         SllA==
-X-Gm-Message-State: AOJu0YwmIh2bIP2/7Z2h00BeC5DS+4cnksbH8nsSxcphhK6yEJwszJ42
-        8uN4xWgBhqFYDGIcMHHhgTGdKxVvwccLK99bSBuN/w==
-X-Google-Smtp-Source: AGHT+IHokc2IGjiccAW8Etk8Ejn4Otdsg5e1wKFTt0MuaHU7H32lrJAywc+4Egxj6Qj29749qjsPlQ==
-X-Received: by 2002:a17:907:6d07:b0:9e8:de5e:911a with SMTP id sa7-20020a1709076d0700b009e8de5e911amr2802953ejc.73.1699865786243;
-        Mon, 13 Nov 2023 00:56:26 -0800 (PST)
+        bh=8Yy2i2F+9pJywYxY6AKw4sbn/DiDdL44GgjGmpRdRoA=;
+        b=d7M+LjkmV92vvbWOGqeqgW67DXUQ0p6qRaJ5gcoQAuY17d0erzRm8b14AtUpqBNmkZ
+         iNZagMCZjV9X0RrrMHu2rxCLnLEn8BEkBy6dMIVemRNooUNkb21ZWzD77yHITOdSA1lP
+         egvX4JBqMLhB2p27wvPWmDbP4c+zjzkUr4YpaYzgG/07gseb+P4w/VhoP9IgA3xJzvu0
+         4Oz+8quh7lvbKncQSXLi6FRNj0ThQg/MNqSo0yOpbY6HdqK7/cWBH81p2eG7J8+Bgskx
+         zKWUMDKBDxZJRG469yebyIAiQNmW+HExTJOyyVzIi0TzdOXj0LZRd833fAb0MtGPkX2f
+         1W/Q==
+X-Gm-Message-State: AOJu0YwSVStv1q+18kkyaWFRWUPRtvSCm9qS++ensg+gV4IEdlnbzH8u
+        5TX4PqpxQuj9YgUQRh59X1QAMSuKQZTkHpZj3F1AIA==
+X-Google-Smtp-Source: AGHT+IFM/lpqUyVAhbMPMKL5aNIUU8Y2d2td7/wT/Q4RZpTSCZABxHEPsS/89HX+GaB730z6a+XDOg==
+X-Received: by 2002:a17:906:4708:b0:9e5:2e15:35c6 with SMTP id y8-20020a170906470800b009e52e1535c6mr4195362ejq.44.1699865782434;
+        Mon, 13 Nov 2023 00:56:22 -0800 (PST)
 Received: from otso.luca.vpn.lucaweiss.eu (k10064.upc-k.chello.nl. [62.108.10.64])
-        by smtp.gmail.com with ESMTPSA id kk22-20020a170907767600b009c758b6cdefsm3673538ejc.128.2023.11.13.00.56.25
+        by smtp.gmail.com with ESMTPSA id kk22-20020a170907767600b009c758b6cdefsm3673538ejc.128.2023.11.13.00.56.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Nov 2023 00:56:25 -0800 (PST)
+        Mon, 13 Nov 2023 00:56:21 -0800 (PST)
 From:   Luca Weiss <luca.weiss@fairphone.com>
-Date:   Mon, 13 Nov 2023 09:56:15 +0100
-Subject: [PATCH v2 04/11] arm64: dts: qcom: sc7280*: move MPSS and WPSS
- memory to dtsi
+Date:   Mon, 13 Nov 2023 09:56:12 +0100
+Subject: [PATCH v2 01/11] dt-bindings: remoteproc: qcom: sc7180-pas: Fix
+ SC7280 MPSS PD-names
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231113-sc7280-remoteprocs-v2-4-e5c5fd5268a7@fairphone.com>
+Message-Id: <20231113-sc7280-remoteprocs-v2-1-e5c5fd5268a7@fairphone.com>
 References: <20231113-sc7280-remoteprocs-v2-0-e5c5fd5268a7@fairphone.com>
 In-Reply-To: <20231113-sc7280-remoteprocs-v2-0-e5c5fd5268a7@fairphone.com>
 To:     Andy Gross <agross@kernel.org>,
@@ -81,106 +81,35 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-It appears that all SC7280-based devices so far have mpss_mem and
-wpss_mem on the same reg with the same size.
+The power domains for MPSS on SC7280 are actually named CX and MSS, and
+not CX and MX. Adjust the name which also aligns the bindings with the
+dts and fixes validation.
 
-Also these memory regions are referenced already in sc7280.dtsi so
-that's where they should also be defined.
-
+Fixes: 8bb92d6fd0b3 ("dt-bindings: remoteproc: qcom,sc7180-pas: split into separate file")
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts      | 10 ----------
- arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi      |  5 -----
- arch/arm64/boot/dts/qcom/sc7280-herobrine-lte-sku.dtsi  |  5 -----
- arch/arm64/boot/dts/qcom/sc7280-herobrine-wifi-sku.dtsi |  1 +
- arch/arm64/boot/dts/qcom/sc7280.dtsi                    | 10 ++++++++++
- 5 files changed, 11 insertions(+), 20 deletions(-)
+ Documentation/devicetree/bindings/remoteproc/qcom,sc7180-pas.yaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index cc092735ce17..cb78b03bd831 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -85,16 +85,6 @@ cdsp_mem: cdsp@88f00000 {
- 			no-map;
- 		};
+diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,sc7180-pas.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,sc7180-pas.yaml
+index f10f329677d8..6f0bd6fa5d26 100644
+--- a/Documentation/devicetree/bindings/remoteproc/qcom,sc7180-pas.yaml
++++ b/Documentation/devicetree/bindings/remoteproc/qcom,sc7180-pas.yaml
+@@ -114,11 +114,11 @@ allOf:
+         power-domains:
+           items:
+             - description: CX power domain
+-            - description: MX power domain
++            - description: MSS power domain
+         power-domain-names:
+           items:
+             - const: cx
+-            - const: mx
++            - const: mss
  
--		mpss_mem: mpss@8b800000 {
--			reg = <0x0 0x8b800000 0x0 0xf600000>;
--			no-map;
--		};
--
--		wpss_mem: wpss@9ae00000 {
--			reg = <0x0 0x9ae00000 0x0 0x1900000>;
--			no-map;
--		};
--
- 		rmtfs_mem: memory@f8500000 {
- 			compatible = "qcom,rmtfs-mem";
- 			reg = <0x0 0xf8500000 0x0 0x600000>;
-diff --git a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-index cd491e46666d..69e30d539dc6 100644
---- a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-@@ -38,11 +38,6 @@ venus_mem: memory@8b200000 {
- 			reg = <0x0 0x8b200000 0x0 0x500000>;
- 			no-map;
- 		};
--
--		wpss_mem: memory@9ae00000 {
--			reg = <0x0 0x9ae00000 0x0 0x1900000>;
--			no-map;
--		};
- 	};
- };
+ unevaluatedProperties: false
  
-diff --git a/arch/arm64/boot/dts/qcom/sc7280-herobrine-lte-sku.dtsi b/arch/arm64/boot/dts/qcom/sc7280-herobrine-lte-sku.dtsi
-index 203274c10532..b721a8546800 100644
---- a/arch/arm64/boot/dts/qcom/sc7280-herobrine-lte-sku.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280-herobrine-lte-sku.dtsi
-@@ -8,11 +8,6 @@
- 
- / {
- 	reserved-memory {
--		mpss_mem: memory@8b800000 {
--			reg = <0x0 0x8b800000 0x0 0xf600000>;
--			no-map;
--		};
--
- 		mba_mem: memory@9c700000 {
- 			reg = <0x0 0x9c700000 0x0 0x200000>;
- 			no-map;
-diff --git a/arch/arm64/boot/dts/qcom/sc7280-herobrine-wifi-sku.dtsi b/arch/arm64/boot/dts/qcom/sc7280-herobrine-wifi-sku.dtsi
-index 2febd6126d4c..3ebc915f0dc2 100644
---- a/arch/arm64/boot/dts/qcom/sc7280-herobrine-wifi-sku.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280-herobrine-wifi-sku.dtsi
-@@ -7,5 +7,6 @@
- 
- /* WIFI SKUs save 256M by not having modem/mba/rmtfs memory regions defined. */
- 
-+/delete-node/ &mpss_mem;
- /delete-node/ &remoteproc_mpss;
- /delete-node/ &rmtfs_mem;
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 7bfe93713eb6..e41200bd7bed 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -152,6 +152,16 @@ ipa_fw_mem: ipa-fw@8b700000 {
- 			no-map;
- 		};
- 
-+		mpss_mem: mpss@8b800000 {
-+			reg = <0x0 0x8b800000 0x0 0xf600000>;
-+			no-map;
-+		};
-+
-+		wpss_mem: wpss@9ae00000 {
-+			reg = <0x0 0x9ae00000 0x0 0x1900000>;
-+			no-map;
-+		};
-+
- 		rmtfs_mem: rmtfs@9c900000 {
- 			compatible = "qcom,rmtfs-mem";
- 			reg = <0x0 0x9c900000 0x0 0x280000>;
 
 -- 
 2.42.1
