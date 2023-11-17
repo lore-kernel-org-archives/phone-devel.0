@@ -2,92 +2,119 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43CE1C197A0
-	for <phone-devel@archiver.kernel.org>; Fri, 17 Nov 2023 08:49:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 608CDC54FB9
+	for <phone-devel@archiver.kernel.org>; Fri, 17 Nov 2023 20:17:44 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345736AbjKQItl (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 17 Nov 2023 03:49:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34672 "EHLO
+        id S231947AbjKQURq (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 17 Nov 2023 15:17:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345723AbjKQItj (ORCPT
+        with ESMTP id S231533AbjKQURp (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 17 Nov 2023 03:49:39 -0500
-Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1346D4F
-        for <phone-devel@vger.kernel.org>; Fri, 17 Nov 2023 00:49:35 -0800 (PST)
-Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-da041ffef81so1809728276.0
-        for <phone-devel@vger.kernel.org>; Fri, 17 Nov 2023 00:49:35 -0800 (PST)
+        Fri, 17 Nov 2023 15:17:45 -0500
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF0EDA8;
+        Fri, 17 Nov 2023 12:17:41 -0800 (PST)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-9e2838bcb5eso341210766b.0;
+        Fri, 17 Nov 2023 12:17:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700210975; x=1700815775; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5fg3YPX5Dy+CQX12ys+Q6QMbQjdpnTP0C/HigltSDFY=;
-        b=Tz3UWd6EkA+MEpNFaYoudS/WKE+j/ZaFOD6egZQAR2qnkVg6M1AVuYEic578SmtuNK
-         g5QBXr3Gh4Xz2OnaeYJkCKHdaSIAFatAqfvtJAbnsa3qFkSMdV7VsaJDm8OiyoFish6F
-         cJF7oY2W+gmkBa+NlKJUNGsG37XJTOAkazxJjqZvwaGqDTLsngAgScFWKIY8z7dIo37D
-         E3X0YAazMijX7YnZXd4u0Yqs9Gg2ak6QRLBHvPx+pSVp/J27CUZS3ucxcCsaynWWU5Hl
-         8zmNB+ac91rY/SHtXecsJNSqor5ErZnktpTkEZC2lCE27eOESFqIfrDJMzZbyGYhZWr1
-         fobQ==
+        d=gmail.com; s=20230601; t=1700252260; x=1700857060; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jO4FinG60TptnJlL0I/aBKs5ITFw+rqL2aoAvZdWzlg=;
+        b=URIXmqwFFm/Oasuc+0e1EMPjIVCgLSKKLCl/Z+60Z7FQnrDS+hkG3zQ1kdn7RJVWCb
+         kAcHXoxGoB7bIaTsuGvw7TBH9x+5uY6aCmqi57+HdIgsj2f9KSPq7heuSt9sAaHRZV8y
+         Tx+hsBUagf3PpgDNtEiMSjWisdFmxWNt+bLjKZnM0JY3//eGTlDow9YOi3UuNBDoUPYP
+         VEmLsi2uqaq8MDtbKVvU5j17G/x8XwWyAAV+yIi2mDRN6dt7Jn6XMC9xNKn3A8fHOVKc
+         2eBWb/gUQTkec9jIU7+3zRlVk05Mi5aS8IdRhqeKHDkpfHaO2ap2eWd26nRJP45mlRoC
+         1J6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700210975; x=1700815775;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5fg3YPX5Dy+CQX12ys+Q6QMbQjdpnTP0C/HigltSDFY=;
-        b=aDLXIOYwJ6ilkiubxhcpfAHgXl5YMw7Lp8868OcvfnXKKk020J11oSnzJg0+f/OnJ+
-         Q4jbpYk3a97V9LQ7LRODXGixZvVrj54pqVR1haWxmjnujJiFW0HbJhqUhDhHogDq42i2
-         vL9fl0kZvOeaeQPyt5+dtu/+om6gNZ7mrv/bBtc/GHmy/LVuhjVZDU38k9yXHRMhegqY
-         yg8nSydHEcXNkADE4gtbDby4Ou9NvyMpW5XuYf1LTKzbAQTGRctCctecUFJRob4zkN6/
-         aDPDfH8eU7FBkV3maFycgGyKiv2Q+644jpMCOnNXqeMpagOsFvAUr/a49Ho97lVxaYuO
-         Wkyw==
-X-Gm-Message-State: AOJu0Yxw2Kk83/l9dRFQB2b3v+nuLhW8DBdf6uLs3/Av09Il/LFCH45D
-        1skNqdFPGx2bmp1vtbub+adILBOkfr5Xh+F86t5CkA==
-X-Google-Smtp-Source: AGHT+IFYhDoHCjgQK3p6R3RwwqaeYz2G8wdxXKbFS2D8YfO3O8hqxeedYpiMAEMMfvXeYoSosyPEdusuHlhtcdD01WQ=
-X-Received: by 2002:a25:74c9:0:b0:da0:447a:e9d8 with SMTP id
- p192-20020a2574c9000000b00da0447ae9d8mr19574769ybc.10.1700210974960; Fri, 17
- Nov 2023 00:49:34 -0800 (PST)
+        d=1e100.net; s=20230601; t=1700252260; x=1700857060;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jO4FinG60TptnJlL0I/aBKs5ITFw+rqL2aoAvZdWzlg=;
+        b=G8queFXYj+aGW/GKqq3hys340D2hC2fgwz4eJwgvSzrjc2eZJngc5pBDWYeFzoL/Bd
+         JJbNAHLiDtpXrZ9hPUcAPm5oTeggi2VG/nX94ropNy8VgyVu/7Yq2fI4631CKeFp1TWf
+         mN2vKDvWwOTM8K5z27Mrj452PYA/vXfva27maBwnQMW/ip7GckvwPnmm8OAduaHDBF5J
+         T99vMnzVizAwT4NiB0HT9BP/VY/WwnCeSoJU+W3BLtoFXtuh1AAoIOkSyv3t5sYDaQog
+         odfn0PfWC86y5vnSJSWzxf3pScnGX0l3QnLdl5lyDZj4Zp8W0fOMJ57KBnH7GUpBS+g9
+         WZZA==
+X-Gm-Message-State: AOJu0Yw0dTNRs1raqY0oltWdf168JgeUVxaLgtF7DELEfjh62hNFfjS0
+        7fogxN3wsXMyyKFupnHtUj0=
+X-Google-Smtp-Source: AGHT+IGBtBUbtAsV/vAYb+ntpU2hrBW9x5wudUtgIOuOFs8V1oWXMInP7DvsvQycY/b65fJ4JKgGWQ==
+X-Received: by 2002:a17:906:2ce:b0:9e4:716:4e32 with SMTP id 14-20020a17090602ce00b009e407164e32mr147592ejk.11.1700252259887;
+        Fri, 17 Nov 2023 12:17:39 -0800 (PST)
+Received: from david-ryuzu.fritz.box ([188.195.169.6])
+        by smtp.googlemail.com with ESMTPSA id e7-20020a1709062c0700b0099d804da2e9sm1130630ejh.225.2023.11.17.12.17.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Nov 2023 12:17:39 -0800 (PST)
+From:   David Wronek <davidwronek@gmail.com>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Joe Mason <buddyjojo06@outlook.com>, hexdump0815@googlemail.com
+Cc:     cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-scsi@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org, David Wronek <davidwronek@gmail.com>
+Subject: [PATCH v2 0/8] Add UFS support for SC7180/SM7125
+Date:   Fri, 17 Nov 2023 21:08:32 +0100
+Message-ID: <20231117201720.298422-1-davidwronek@gmail.com>
+X-Mailer: git-send-email 2.42.1
 MIME-Version: 1.0
-References: <20231105102944.1974512-1-avri.altman@wdc.com>
-In-Reply-To: <20231105102944.1974512-1-avri.altman@wdc.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 17 Nov 2023 09:49:22 +0100
-Message-ID: <CACRpkdZB_auHQan5Jq5FbO0wqnC6ns5Y_SzqPN7t2gGkhq9jHg@mail.gmail.com>
-Subject: Re: [PATCH] mmc: core: Remove obsolete quirk for Sandisk cards
-To:     Avri Altman <avri.altman@wdc.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Sun, Nov 5, 2023 at 11:30=E2=80=AFAM Avri Altman <avri.altman@wdc.com> w=
-rote:
+This patchset introduces UFS support for SC7180 and SM7125, as well as
+support for the Xiaomi Redmi Note 9S.
 
-> This quirk applies to an old set of Sandisk cards that are no longer
-> being sold for many years now, and it is vanishingly unlikely that will
-> ever meet a V6.7 kernel.
->
-> I came across those old cards when I tried to decide what to do with
-> Sandisk cards that their quirk is designated by OEM id. For many years
-> we read wrong oemid, reading 16 bits instead of 8. Fixing it however,
-> turned out to be impractical, and it's better that each eMMC vendor will
-> handle its own devices.
->
-> Signed-off-by: Avri Altman <avri.altman@wdc.com>
+Signed-off-by: David Wronek <davidwronek@gmail.com>
+---
+Changes in v2:
+ - Fix device tree binding for QMP PHY
+ - Separate ICE into its own node
+ - Fix style problems in sc7180.dtsi
 
-NAK why are you assuming these are not in use with v6.7?
+--
+David Wronek (7):
+  dt-bindings: crypto: ice: Document SC7180 inline crypto engine
+  dt-bindings: ufs: qcom: Add SC7180 compatible string
+  dt-bindings: phy: Add QMP UFS PHY compatible for SC7180
+  dt-bindings: arm: qcom: Add Xiaomi Redmi Note 9S
+  phy: qcom: qmp-ufs: Add SC7180 support
+  arm64: dts: qcom: sc7180: Add UFS nodes
+  arm64: dts: qcom: sm7125-xiaomi-common: Add UFS nodes
 
-One of these eMMC cards is in use on Nokia n900 which has an
-active user community:
-https://wiki.postmarketos.org/wiki/Nokia_N900_(nokia-n900)
+Joe Mason (1):
+  arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S
 
-I am using several of them on different ST-Ericsson U8500-based
-systems, including the HREF reference design that even Ulf is
-using now and then.
+ .../devicetree/bindings/arm/qcom.yaml         |  1 +
+ .../crypto/qcom,inline-crypto-engine.yaml     |  1 +
+ .../phy/qcom,sc8280xp-qmp-ufs-phy.yaml        |  2 +
+ .../devicetree/bindings/ufs/qcom,ufs.yaml     |  2 +
+ arch/arm64/boot/dts/qcom/Makefile             |  1 +
+ arch/arm64/boot/dts/qcom/sc7180.dtsi          | 69 +++++++++++++++++++
+ .../boot/dts/qcom/sm7125-xiaomi-common.dtsi   | 16 +++++
+ .../boot/dts/qcom/sm7125-xiaomi-curtana.dts   | 16 +++++
+ drivers/phy/qualcomm/phy-qcom-qmp-ufs.c       |  3 +
+ 9 files changed, 111 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/sm7125-xiaomi-curtana.dts
 
-Yours,
-Linus Walleij
+-- 
+2.42.1
+
