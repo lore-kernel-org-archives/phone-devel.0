@@ -2,54 +2,54 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12A78C5AE4B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E707C5B55F
 	for <phone-devel@archiver.kernel.org>; Fri, 17 Nov 2023 20:17:55 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346234AbjKQURz (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Fri, 17 Nov 2023 15:17:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54232 "EHLO
+        id S1346249AbjKQUR5 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Fri, 17 Nov 2023 15:17:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346185AbjKQURs (ORCPT
+        with ESMTP id S1346194AbjKQURu (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Fri, 17 Nov 2023 15:17:48 -0500
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25772D6D;
-        Fri, 17 Nov 2023 12:17:45 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9e1021dbd28so334449766b.3;
-        Fri, 17 Nov 2023 12:17:45 -0800 (PST)
+        Fri, 17 Nov 2023 15:17:50 -0500
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 064A3A8;
+        Fri, 17 Nov 2023 12:17:47 -0800 (PST)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9e62f903e88so314584866b.2;
+        Fri, 17 Nov 2023 12:17:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700252263; x=1700857063; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1700252265; x=1700857065; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kGuQp1NGPuXoUiEpdYzJcjnNBJsSPeD9FSB3a1HAj1M=;
-        b=d5ANkJoPQtJXml+tCrqkDVTOtXSSgaKrvS9T6jS1/BQPrRgk8+XDXYth2JqZKjlk7r
-         1eUVTzBGVctIsI0fbebBg/7Xb4ROVAEyalK9lUKjkJ4RCReshq3Wjc7nKTwieNHkqAyE
-         UIf14xDfRPphhMAQ+DfCu2IEy/Pf0DCA52nPvhY9Cz6vN1sH2iFurP4WFAym2O3tuXgL
-         S/tXWanmbhSTq5r8VHHGh4qa5KuD8TMq6rsMb6bFL1Gvwj4lUWqQLfetkI9uBkI2NwFT
-         MpQGYXFpSxDa9Hp89wqxSg6qhS1qmZIvzracuynqOFMr2H5femB7UMc5vRn64rffENVi
-         ixaA==
+        bh=AwQ5/SyDH1GtZNxQjHNPZv7NfjgdWC/XscIu7KZavV8=;
+        b=mgjnvzlXQri4Ie1cYahn8Si392nxUE0VPxYsbVzUe/7B7GSR0gBiXDaX7oz0myDChv
+         xAUJaXI0wHIz15iJl03BXjH6DvdX9zpzffJgZpWg58vQ5dh7oC/FAkbdu7NTzVKOQC6H
+         i3cllcS8RkG5ZjIlQgkydh0MGu3EbieUGZ5a0Hj/fMW9WoaTi+FHXNME3B2TKonUUi9i
+         RKQhhjewPh7klTBNnMcjGedcKf0jOfAvhrKmkqfYlf1q5mUbkqOafNBd2SEM20Ogn4Zs
+         ikwH+Ij+Fb0hTt2Kyu0SiQT1XUqeb1xcDHbl19RPzgNVnXU5GwJ0giuD3w+Lh3WsIx2u
+         sifA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700252263; x=1700857063;
+        d=1e100.net; s=20230601; t=1700252265; x=1700857065;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kGuQp1NGPuXoUiEpdYzJcjnNBJsSPeD9FSB3a1HAj1M=;
-        b=ZswDmvQBVE/KcPISkxz8BnuIURLQr2tjepRTStl+ckvVbJ+P0iFyVSC8tQRwO9Uw6X
-         RV9dAOR5FpFwxp0Jlutgd421i5qFIsMiZULbtM0o4tnFVSfM4uurE5kVgmUVI9f7e3eR
-         YtCtusx6ezhMwrd/MOxmwkxH/gWxq/SZEoJKaXQr/Uphn2iVm0BPdJMl5dZhacSXVnZu
-         4GzqhYt5Hl1Me5Z/GyG2swpcp6PGeP/+2V7Ls5w0CuQi91xnByO9QaRADdpA8Rs3D3CK
-         zZ9HiDZ5cFNkzxjHqo7LARM0f2csODsmGNPSvNk9zvBxL1H0VVbDVSP4rzwLspmYPboH
-         Fyng==
-X-Gm-Message-State: AOJu0YxsG3Kq9s/PADVft6qcdQt4IbL3VBR8ovHTetNUxc0l1BH1Kg97
-        G5opZ2iicClLOdi+yjCcOTk=
-X-Google-Smtp-Source: AGHT+IE3rA8zaqiNTqTRHOawRQfjIKcBn8sQ+QJjTatFpE5dBQnss7wIZFSXu/flSG5JfdkY4fA+LA==
-X-Received: by 2002:a17:907:a781:b0:9ae:5fe1:ef01 with SMTP id vx1-20020a170907a78100b009ae5fe1ef01mr207293ejc.37.1700252263223;
-        Fri, 17 Nov 2023 12:17:43 -0800 (PST)
+        bh=AwQ5/SyDH1GtZNxQjHNPZv7NfjgdWC/XscIu7KZavV8=;
+        b=pfXhTfVhvUuH+ONZav6Elh4GwfdoptuRCBiqwmKkl+xsmRUsPCYqbUVMInhz6KptaD
+         soU2sXZSscJQJc4Zx+Yalabk7F7wfiLmjj69yMoiMCuOufn5wHIHNVbzPl4RZbEFvvnt
+         9Iqj4DBHUkbIAcNu4Qrmj2jHBGIxQ4w9G+QJOkPdqnIYy6NBR8fhSIKqeL+R5ixJKhhm
+         I84/2h6k7NyNNpCA8tcjbiEt4/PASJDus80c26r7+9+R27VV0B73yQE4uW8PA0kwJ61r
+         e5Cw2/Eufsc5MK+0JBfxQSmJzKDYe9mqnXG9rm2VWPgJTup9A5MZDsc6c1uxoP1ivlsb
+         SfDw==
+X-Gm-Message-State: AOJu0YyQ2rk/SHDaR7nYA51W+UsSXaKLtvoDCF0QhmRvRi3uGnnDzGtD
+        P/sqFtzGmp/C7aD+U5yoZD3LuRBW77G7nA==
+X-Google-Smtp-Source: AGHT+IHFAfP6OfNo7QloA+j9CMWL4Ji1GKo+VCAC3R+zjElUahqMCLXDXvEROjygi2X0j2Hq5EGNOA==
+X-Received: by 2002:a17:907:7f28:b0:9e4:67d9:438 with SMTP id qf40-20020a1709077f2800b009e467d90438mr192022ejc.56.1700252265458;
+        Fri, 17 Nov 2023 12:17:45 -0800 (PST)
 Received: from david-ryuzu.fritz.box ([188.195.169.6])
-        by smtp.googlemail.com with ESMTPSA id e7-20020a1709062c0700b0099d804da2e9sm1130630ejh.225.2023.11.17.12.17.42
+        by smtp.googlemail.com with ESMTPSA id e7-20020a1709062c0700b0099d804da2e9sm1130630ejh.225.2023.11.17.12.17.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Nov 2023 12:17:42 -0800 (PST)
+        Fri, 17 Nov 2023 12:17:45 -0800 (PST)
 From:   David Wronek <davidwronek@gmail.com>
 To:     Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
@@ -71,9 +71,9 @@ Cc:     cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-phy@lists.infradead.org,
         linux-scsi@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
         phone-devel@vger.kernel.org, David Wronek <davidwronek@gmail.com>
-Subject: [PATCH v2 3/8] dt-bindings: phy: Add QMP UFS PHY compatible for SC7180
-Date:   Fri, 17 Nov 2023 21:08:35 +0100
-Message-ID: <20231117201720.298422-4-davidwronek@gmail.com>
+Subject: [PATCH v2 5/8] phy: qcom: qmp-ufs: Add SC7180 support
+Date:   Fri, 17 Nov 2023 21:08:37 +0100
+Message-ID: <20231117201720.298422-6-davidwronek@gmail.com>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231117201720.298422-1-davidwronek@gmail.com>
 References: <20231117201720.298422-1-davidwronek@gmail.com>
@@ -83,33 +83,28 @@ Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-Document the QMP UFS PHY compatible for SC7180
+The SC7180 UFS PHY is identical to the one found on SM7150. Add a
+compatible for it.
 
 Signed-off-by: David Wronek <davidwronek@gmail.com>
 ---
- .../devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml      | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/phy/qualcomm/phy-qcom-qmp-ufs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml
-index 8474eef8d0ff..5faa1cb3a12e 100644
---- a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml
-+++ b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-ufs-phy.yaml
-@@ -19,6 +19,7 @@ properties:
-       - qcom,msm8996-qmp-ufs-phy
-       - qcom,msm8998-qmp-ufs-phy
-       - qcom,sa8775p-qmp-ufs-phy
-+      - qcom,sc7180-qmp-ufs-phy
-       - qcom,sc7280-qmp-ufs-phy
-       - qcom,sc8180x-qmp-ufs-phy
-       - qcom,sc8280xp-qmp-ufs-phy
-@@ -102,6 +103,7 @@ allOf:
-           contains:
-             enum:
-               - qcom,msm8998-qmp-ufs-phy
-+              - qcom,sc7180-qmp-ufs-phy
-               - qcom,sc8180x-qmp-ufs-phy
-               - qcom,sc8280xp-qmp-ufs-phy
-               - qcom,sdm845-qmp-ufs-phy
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
+index 5f79d188b435..be7c21858d69 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
+@@ -1870,6 +1870,9 @@ static const struct of_device_id qmp_ufs_of_match_table[] = {
+ 	}, {
+ 		.compatible = "qcom,sa8775p-qmp-ufs-phy",
+ 		.data = &sa8775p_ufsphy_cfg,
++	}, {
++		.compatible = "qcom,sc7180-qmp-ufs-phy",
++		.data = &sm7150_ufsphy_cfg,
+ 	}, {
+ 		.compatible = "qcom,sc7280-qmp-ufs-phy",
+ 		.data = &sc7280_ufsphy_cfg,
 -- 
 2.42.1
 
