@@ -2,333 +2,98 @@ Return-Path: <phone-devel-owner@vger.kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D90D2C61D97
-	for <phone-devel@archiver.kernel.org>; Wed, 22 Nov 2023 14:20:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86DDBC27C40
+	for <phone-devel@archiver.kernel.org>; Wed, 22 Nov 2023 20:03:56 +0000 (UTC)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230195AbjKVOUa (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
-        Wed, 22 Nov 2023 09:20:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41226 "EHLO
+        id S231952AbjKVUD6 (ORCPT <rfc822;phone-devel@archiver.kernel.org>);
+        Wed, 22 Nov 2023 15:03:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235204AbjKVOU3 (ORCPT
+        with ESMTP id S231693AbjKVUD5 (ORCPT
         <rfc822;phone-devel@vger.kernel.org>);
-        Wed, 22 Nov 2023 09:20:29 -0500
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0752D78
-        for <phone-devel@vger.kernel.org>; Wed, 22 Nov 2023 06:20:23 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-32dc9ff4a8fso4277671f8f.1
-        for <phone-devel@vger.kernel.org>; Wed, 22 Nov 2023 06:20:23 -0800 (PST)
+        Wed, 22 Nov 2023 15:03:57 -0500
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7632418E
+        for <phone-devel@vger.kernel.org>; Wed, 22 Nov 2023 12:03:53 -0800 (PST)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-507bd19eac8so140413e87.0
+        for <phone-devel@vger.kernel.org>; Wed, 22 Nov 2023 12:03:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1700662822; x=1701267622; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BUL3snhs+2QhvhLNvgibL9M8zm24NWKdJWHQAuI96sA=;
-        b=FqGHF8MeUSPhjE53ovM2vWI+h1/ojTHJ41LEoTPiLHlNhY9usIdKxnvaNjPaOVNSsD
-         Hfxp8Y7xp2/7218o0zJR9NJtF8v7AuNlMiwk3SLWjmnM1S0WTeTGmdlE7szoDQ5M7/v1
-         PuK3q+3kp4VPROx1/emqVDdstHI9hNlJEzPc6pjOMOzipMJ7hut9z3FpF0pIa/2vbW0B
-         nolSoM04VmupYpUb4Gm7xBaPkkNWNztqzT24zpEJMrTmHyF6A5jtgmNYWUUC8Ot/G6p8
-         N5euCSMnK1Rlp+KguvQ9jQ3Yi8/f8pNc1a5TsuORjhq+lBFsVppu52HudVJBtkAm5Ly0
-         Mqww==
+        d=linaro.org; s=google; t=1700683432; x=1701288232; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Io/gjQ08AuDbFAY0fMf9d/V1TR/FZrGyaBoM54Wv8Dg=;
+        b=zWD4RCs5NskLi+UE+EVMUMu5jlQmQP6K7m3XpDfIQRP9NeqpUhu6viK9B+ISp5I+tU
+         Qa1WQeqaUAW7jUnw0MF2UtFseCh7VuYGVg1aRtRCth91d89TMmBFqk5KpLbkI150Vhaj
+         Dp2uTS8UTXKcbXboZTj76d0rlpKT9qwQEp4VNNJHhpQOHSBN2yjqiJQQu+6DEg+pCPdb
+         gfGKJTX+a/FugNyewoqDHBmORDQVT0El7r2ESZg3e5LaEFHPRnS4lsarmXRNlQDFWFA/
+         n68REdwg91HJ7lZl+xNtnSBe0+9Pis5CUan4qyiKUOy2TsdHnrEzA7Am/zsPP5SxihmL
+         7O0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700662822; x=1701267622;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=BUL3snhs+2QhvhLNvgibL9M8zm24NWKdJWHQAuI96sA=;
-        b=mbY2xVV1RDqWUhyT9jlkj1ecDCgfoZwcox7CBOKsj6nJDh3nskOpKr1zl3BLptjzFa
-         pDu4eFOHt0C8dre90UYU3poFonYf3RbQyWXdUAuvBRGcQorAdLt3SNDQEo3lMSwABQ48
-         lrXH2MXquK6QMtzSX2kvY4ieC3msOIrNbmUeL1uRTwdNORUmw1K92GuoepTykMmX1tIc
-         PG2+kCoKf7ol3hMTapB8OITphfq/opSDsLBSNhCgjkBWXpNVMzfgFGgG00oLwbGIvtnv
-         qAK5Ypt1PT/rtvkKyRh3N3PIrAKlaXvjXeapTp2iIjsL72p7wSi6s/BRHwu79qQ48NXC
-         7vPg==
-X-Gm-Message-State: AOJu0Ywxpoai2UuVAxTEQo6ehtzXtPW6Han5WbftsuqTZscZrxjTOjhx
-        F+z5CLjV643aMuQvVn0Q3wsnvrHq67kEIrqL7le1/A==
-X-Google-Smtp-Source: AGHT+IG1LUHC5pGpTQElp6wOJmfzPipsCJxpTr7DDhvGvDgQMALXyyWyVUbANh48VSHPNBPYRpwyZQ==
-X-Received: by 2002:a5d:45c1:0:b0:32d:701b:a585 with SMTP id b1-20020a5d45c1000000b0032d701ba585mr1308275wrs.69.1700662822099;
-        Wed, 22 Nov 2023 06:20:22 -0800 (PST)
-Received: from localhost ([194.206.60.209])
-        by smtp.gmail.com with ESMTPSA id d12-20020a5d4f8c000000b0032da87e32e2sm17362636wru.4.2023.11.22.06.20.20
+        d=1e100.net; s=20230601; t=1700683432; x=1701288232;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Io/gjQ08AuDbFAY0fMf9d/V1TR/FZrGyaBoM54Wv8Dg=;
+        b=QD/Wi6CKedneg53PXtj9Lcp3v8KKNuUJxoa3XL/23FVmeAgRGdcJBPoszraM9IibBv
+         RPq30Gb2nuOa/YldUfWNN3jPUFc6HQQIj6InE8WtRzXzaf1EfNV8U1h7e8dTRP4/AJca
+         BBi4BX66N8nA0LYDX7nSnaoNaUB/nVVNLeiR3myZJf/WVBU+hjkfTjbzwFoDV7mgzbh5
+         VnsKEWYcqQru1vpA7PYXF57SMHiCbalzTJtza8tQMN1VhKOs7BkwH1Sf/EMzXsCeH4tl
+         BQioZRDM+kZF/Kd30ndRzB6+BMjOpeIpK+wKN3Uzfo0XV6eKiSo/DKLrv+ma3Fs9Qg9q
+         e0ng==
+X-Gm-Message-State: AOJu0Ywh+HhZsyTpNatgpejcaPjCJgQeVJssd9iOod8F9gz9k+5xORZr
+        ws8oTceq7eBtmO7Y1NlcauPQhw==
+X-Google-Smtp-Source: AGHT+IHz/4Br/9+seo/Lrak4kInlCaTk0gNCYlhXMZj9w9gtMMfU7nZufobL54nVG+7FpfSZWSIVJg==
+X-Received: by 2002:a19:c511:0:b0:509:e5a4:2af2 with SMTP id w17-20020a19c511000000b00509e5a42af2mr2294279lfe.49.1700683431515;
+        Wed, 22 Nov 2023 12:03:51 -0800 (PST)
+Received: from [172.30.204.74] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
+        by smtp.gmail.com with ESMTPSA id z15-20020ac2418f000000b005079ff02b36sm1932808lfh.131.2023.11.22.12.03.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Nov 2023 06:20:21 -0800 (PST)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 22 Nov 2023 15:20:17 +0100
-Message-Id: <CX5ENKY70B5J.2D6DXKGI4EGX3@fairphone.com>
-Cc:     <~postmarketos/upstreaming@lists.sr.ht>,
-        <phone-devel@vger.kernel.org>, <linux-media@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2 2/3] arm64: dts: qcom: sc7280: Move video-firmware to
- chrome-common
-From:   "Luca Weiss" <luca.weiss@fairphone.com>
-To:     "Vikash Garodia" <quic_vgarodia@quicinc.com>,
-        "Stanimir Varbanov" <stanimir.k.varbanov@gmail.com>,
-        "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>,
-        "Andy Gross" <agross@kernel.org>,
-        "Bjorn Andersson" <andersson@kernel.org>,
-        "Konrad Dybcio" <konrad.dybcio@linaro.org>,
-        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
-        <cros-qcom-dts-watchers@chromium.org>,
-        "Rob Herring" <robh+dt@kernel.org>,
-        "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        "Conor Dooley" <conor+dt@kernel.org>
-X-Mailer: aerc 0.15.2
-References: <20231002-sc7280-venus-pas-v2-0-bd2408891317@fairphone.com>
- <20231002-sc7280-venus-pas-v2-2-bd2408891317@fairphone.com>
- <4cfad910-1821-3a31-c372-3f6b199e8f71@quicinc.com>
-In-Reply-To: <4cfad910-1821-3a31-c372-3f6b199e8f71@quicinc.com>
+        Wed, 22 Nov 2023 12:03:51 -0800 (PST)
+Message-ID: <1bb81371-e829-4e02-a234-02f84433f4bf@linaro.org>
+Date:   Wed, 22 Nov 2023 21:03:47 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/8] phy: qcom: qmp-ufs: Add SC7180 support
+Content-Language: en-US
+To:     David Wronek <davidwronek@gmail.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Joe Mason <buddyjojo06@outlook.com>, hexdump0815@googlemail.com
+Cc:     cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-scsi@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+        phone-devel@vger.kernel.org
+References: <20231117201720.298422-1-davidwronek@gmail.com>
+ <20231117201720.298422-6-davidwronek@gmail.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20231117201720.298422-6-davidwronek@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <phone-devel.vger.kernel.org>
 X-Mailing-List: phone-devel@vger.kernel.org
 
-On Wed Nov 22, 2023 at 2:17 PM CET, Vikash Garodia wrote:
->
-> On 10/2/2023 7:50 PM, Luca Weiss wrote:
-> > If the video-firmware node is present, the venus driver assumes we're o=
-n
-> > a system that doesn't use TZ for starting venus, like on ChromeOS
-> > devices.
-> >=20
-> > Move the video-firmware node to chrome-common.dtsi so we can use venus
-> > on a non-ChromeOS devices.
-> >=20
-> > At the same time also disable the venus node by default in the dtsi,
-> > like it's done on other SoCs.
-> >=20
-> > Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> >  arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi | 8 ++++++++
-> >  arch/arm64/boot/dts/qcom/sc7280.dtsi               | 6 ++----
-> >  2 files changed, 10 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi b/arch/=
-arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-> > index 5d462ae14ba1..cd491e46666d 100644
-> > --- a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-> > +++ b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-> > @@ -104,6 +104,14 @@ &scm {
-> >  	dma-coherent;
-> >  };
-> > =20
-> > +&venus {
-> > +	status =3D "okay";
-> > +
-> > +	video-firmware {
-> > +		iommus =3D <&apps_smmu 0x21a2 0x0>;
-> > +	};
-> > +};
-> > +
-> >  &watchdog {
-> >  	status =3D "okay";
-> >  };
-> > diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts=
-/qcom/sc7280.dtsi
-> > index 66f1eb83cca7..fa53f54d4675 100644
-> > --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> > +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> > @@ -3740,6 +3740,8 @@ venus: video-codec@aa00000 {
-> >  				 <&apps_smmu 0x2184 0x20>;
-> >  			memory-region =3D <&video_mem>;
-> > =20
-> > +			status =3D "disabled";
-> > +
-> >  			video-decoder {
-> >  				compatible =3D "venus-decoder";
-> >  			};
-> > @@ -3748,10 +3750,6 @@ video-encoder {
-> >  				compatible =3D "venus-encoder";
-> >  			};
-> > =20
-> > -			video-firmware {
-> > -				iommus =3D <&apps_smmu 0x21a2 0x0>;
-> > -			};
-> > -
-> >  			venus_opp_table: opp-table {
-> >  				compatible =3D "operating-points-v2";
-> > =20
-> >=20
-> Changes look good. Is this tested on SC7280 ?
-
-Hi Vikash,
-
-I didn't test it myself on sc7280 (just qcm6490-fp5) but dtx_diff
-reports no differences except for status =3D okay property being added, so
-there should be no change on those boards. See below.
-
-Regards
-Luca
 
 
---- test-pre/sc7280-crd-r3.dtb
-+++ test-post/sc7280-crd-r3.dtb
-@@ -5744,6 +5744,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x13b 0x01 0x13b 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-herobrine-crd.dtb
-+++ test-post/sc7280-herobrine-crd.dtb
-@@ -6117,6 +6117,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x147 0x01 0x147 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-herobrine-crd-pro.dtb
-+++ test-post/sc7280-herobrine-crd-pro.dtb
-@@ -6112,6 +6112,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x147 0x01 0x147 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-herobrine-evoker.dtb
-+++ test-post/sc7280-herobrine-evoker.dtb
-@@ -6058,6 +6058,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x14b 0x01 0x14b 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-herobrine-evoker-lte.dtb
-+++ test-post/sc7280-herobrine-evoker-lte.dtb
-@@ -6121,6 +6121,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x151 0x01 0x151 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-herobrine-herobrine-r1.dtb
-+++ test-post/sc7280-herobrine-herobrine-r1.dtb
-@@ -6108,6 +6108,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x14f 0x01 0x14f 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-herobrine-villager-r0.dtb
-+++ test-post/sc7280-herobrine-villager-r0.dtb
-@@ -6049,6 +6049,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x145 0x01 0x145 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-herobrine-villager-r1.dtb
-+++ test-post/sc7280-herobrine-villager-r1.dtb
-@@ -6037,6 +6037,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x142 0x01 0x142 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-herobrine-villager-r1-lte.dtb
-+++ test-post/sc7280-herobrine-villager-r1-lte.dtb
-@@ -6100,6 +6100,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x148 0x01 0x148 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-herobrine-zombie.dtb
-+++ test-post/sc7280-herobrine-zombie.dtb
-@@ -6031,6 +6031,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x146 0x01 0x146 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-herobrine-zombie-lte.dtb
-+++ test-post/sc7280-herobrine-zombie-lte.dtb
-@@ -6094,6 +6094,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x14c 0x01 0x14c 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-herobrine-zombie-nvme.dtb
-+++ test-post/sc7280-herobrine-zombie-nvme.dtb
-@@ -6031,6 +6031,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x146 0x01 0x146 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-herobrine-zombie-nvme-lte.dtb
-+++ test-post/sc7280-herobrine-zombie-nvme-lte.dtb
-@@ -6094,6 +6094,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x14c 0x01 0x14c 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-idp2.dtb
-+++ test-post/sc7280-idp2.dtb
-@@ -5677,6 +5677,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x138 0x01 0x138 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
---- test-pre/sc7280-idp.dtb
-+++ test-post/sc7280-idp.dtb
-@@ -5642,6 +5642,7 @@
-                        power-domain-names =3D "venus\0vcodec0\0cx";
-                        power-domains =3D <0x133 0x01 0x133 0x00 0x34 0x00>=
-;
-                        reg =3D <0x00 0xaa00000 0x00 0xd0600>;
-+                       status =3D "okay";
-=20
-                        opp-table {
-                                compatible =3D "operating-points-v2";
+On 11/17/23 21:08, David Wronek wrote:
+> The SC7180 UFS PHY is identical to the one found on SM7150. Add a
+> compatible for it.
+> 
+> Signed-off-by: David Wronek <davidwronek@gmail.com>
+> ---
+Should it not reuse the 7150 compatible as a fallback then?
 
-
->
-> Regards,
-> Vikash
-
+Konrad
