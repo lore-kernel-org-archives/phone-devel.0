@@ -1,154 +1,181 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="J4i8Mhui"
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62B9E1B3;
-	Thu, 23 Nov 2023 09:06:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=vr+lIUE48EiaMmm3K/kGj77WRtOkOjRn/VOxNXh3gYI=; b=J4i8Mhui6IKuHMj/fdwD8XkeCm
-	Oz6ziuQPmUlTWllIWSox2ftFTTZnVqdxZJUskAlpFQnBj3bNgD/o+OSzZwTh0WmRyCuOEYdVnBjFp
-	57GRV5fVZoSU0iXIS+qH01sDAzL0d6sm48F8mi62S4eFMkalBwKHphA3CCWSZ1nblOR3o1MM1tUsr
-	1WF7FALHxXv5gZtJ+wDV9ubJb/yQghTX3dE0KI4MyRI9QbiARQJ6ILeVgq+YjhfKoIbG75YQuS2j6
-	jrNXp2rfZD42jIuSBmi4q0Xa/N9wYeOFwHWDOYw6mht6EqCnwemtHWSXPQwOvm4Ea/y+DLDSpKukB
-	kA3l00Qw==;
-Received: from i73190.upc-i.chello.nl ([62.195.73.190] helo=[192.168.68.110])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1r6D9J-006Tcm-7x; Thu, 23 Nov 2023 18:05:57 +0100
-Message-ID: <1e45a031-080d-4cbe-9741-182524227124@igalia.com>
-Date: Thu, 23 Nov 2023 18:05:54 +0100
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="h0fdekOx"
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1935FD46;
+	Thu, 23 Nov 2023 22:39:15 -0800 (PST)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AO5IuF2010656;
+	Fri, 24 Nov 2023 06:39:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=XJfK9r4difAVXV2U8xd6TIUL/J9MDrHGpJaRZDcJCwI=;
+ b=h0fdekOxqWrWsryVRzqxaaHAQbLQjrwxHHlkirtJc59pqArq9WjoC4Vou5OLdRI3tJnX
+ eWXLumG5capce5VZlagy3M0IH5VNCr8I7Ld+ukz8Zw7BlTWobW7viWs7jI2DFkIkBADu
+ OUytbTh+kL0U/pT7UvJaB8u9SU2oTTb4HGZYKOSwova8fLkdjfQVDe+qyoeQ3iYsMPly
+ pBgMEiGFFgrNOxzYvxCOA+ub3GNDBwJKzL6f/3xIrJ15Th5bkVq/QIVP5xEuVsoXsagr
+ BfAveWxBo+FbBHsoWzZq3W/GETbe3tqrsw58UP/2dbI9NH69QFU21VqUETG5GMf5c4VM XQ== 
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uj4hwhw4x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Nov 2023 06:39:09 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AO6d8Su006461
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Nov 2023 06:39:08 GMT
+Received: from [10.216.35.253] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 23 Nov
+ 2023 22:39:02 -0800
+Message-ID: <ff021f49-f81b-0fd1-bd2c-895dbbb03d56@quicinc.com>
+Date: Fri, 24 Nov 2023 12:08:59 +0530
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [PATCH v4 6/6] arm64: dts: qcom: sm8350-lemonade(p): New devices
-To: Konrad Dybcio <konrad.dybcio@linaro.org>, Andy Gross <agross@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Kees Cook <keescook@chromium.org>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
- <gpiccoli@igalia.com>, Vinod Koul <vkoul@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org, Rob <Me@orbit.sh>,
- Clayton Craft <clayton@igalia.com>,
- Caleb Connolly <caleb.connolly@linaro.org>,
- Luca Weiss <luca.weiss@fairphone.com>, ~postmarketos/upstreaming@lists.sr.ht
-References: <20231111-nia-sm8350-for-upstream-v4-0-3a638b02eea5@igalia.com>
- <20231111-nia-sm8350-for-upstream-v4-6-3a638b02eea5@igalia.com>
- <d35b9250-eddb-4436-8daf-066ec84cf55f@linaro.org>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 2/3] arm64: dts: qcom: sc7280: Move video-firmware to
+ chrome-common
 Content-Language: en-US
-From: Nia Espera <nespera@igalia.com>
-Autocrypt: addr=nespera@igalia.com; keydata=
- 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
- T+I7o407lOB8a/PJA2YXM4VVC/iyMBM=
-In-Reply-To: <d35b9250-eddb-4436-8daf-066ec84cf55f@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: Luca Weiss <luca.weiss@fairphone.com>,
+        Stanimir Varbanov
+	<stanimir.k.varbanov@gmail.com>,
+        Bryan O'Donoghue
+	<bryan.odonoghue@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Mauro
+ Carvalho Chehab <mchehab@kernel.org>,
+        <cros-qcom-dts-watchers@chromium.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+CC: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
+References: <20231002-sc7280-venus-pas-v2-0-bd2408891317@fairphone.com>
+ <20231002-sc7280-venus-pas-v2-2-bd2408891317@fairphone.com>
+ <4cfad910-1821-3a31-c372-3f6b199e8f71@quicinc.com>
+ <CX5ENKY70B5J.2D6DXKGI4EGX3@fairphone.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <CX5ENKY70B5J.2D6DXKGI4EGX3@fairphone.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: _2PehKUl5y5-OQPPRjcBhX25pqjQpTVO
+X-Proofpoint-ORIG-GUID: _2PehKUl5y5-OQPPRjcBhX25pqjQpTVO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-23_15,2023-11-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 priorityscore=1501 bulkscore=0 mlxscore=0 mlxlogscore=999
+ suspectscore=0 phishscore=0 spamscore=0 lowpriorityscore=0 clxscore=1015
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311240049
 
 
-
-On 11/22/23 21:17, Konrad Dybcio wrote:
-> 
-> 
-> On 11/11/23 23:07, Nia Espera wrote:
->> Device tree files for OnePlus 9 and 9 Pro. Details of supported features
->> mentioned in the cover letter for this patch series, but for
->> accessibility also repeated here:
+On 11/22/2023 7:50 PM, Luca Weiss wrote:
+> On Wed Nov 22, 2023 at 2:17 PM CET, Vikash Garodia wrote:
 >>
->> - USB OTG
->> - UFS
->> - Framebuffer display
->> - Touchscreen (for lemonade)
->> - Power & volume down keys
->> - Battery reading
->> - Modem, IPA, and remoteproc bringup
->>
->> Steps to get booting:
->>
->> - Wipe dtbo partition
->> - Flash vbmeta with disabled verity bit
->> - Flash kernel and initfs to boot partition with CLI args 
->> pd_ignore_unused
->> and clk_ignore_unused as v1 bootimg
->> - Flash rootfs to some other partition (probably super or userdata)
-> Thanks for including this info here
-> 
->> +&pmk8350_vadc {
->> +    pinctrl-names = "default";
->> +    pinctrl-0 = <&gpio1_adc_default>, <&gpio3_adc_default>;
->> +
->> +    /* pmk8350-ref-gnd */
-> I fail to see the benefit in having this both here and in the label
+>> On 10/2/2023 7:50 PM, Luca Weiss wrote:
+>>> If the video-firmware node is present, the venus driver assumes we're on
+>>> a system that doesn't use TZ for starting venus, like on ChromeOS
+>>> devices.
+>>>
+>>> Move the video-firmware node to chrome-common.dtsi so we can use venus
+>>> on a non-ChromeOS devices.
+>>>
+>>> At the same time also disable the venus node by default in the dtsi,
+>>> like it's done on other SoCs.
+>>>
+>>> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>> ---
+>>>  arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi | 8 ++++++++
+>>>  arch/arm64/boot/dts/qcom/sc7280.dtsi               | 6 ++----
+>>>  2 files changed, 10 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+>>> index 5d462ae14ba1..cd491e46666d 100644
+>>> --- a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+>>> +++ b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+>>> @@ -104,6 +104,14 @@ &scm {
+>>>  	dma-coherent;
+>>>  };
+>>>  
+>>> +&venus {
+>>> +	status = "okay";
+>>> +
+>>> +	video-firmware {
+>>> +		iommus = <&apps_smmu 0x21a2 0x0>;
+>>> +	};
+>>> +};
+>>> +
+>>>  &watchdog {
+>>>  	status = "okay";
+>>>  };
+>>> diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+>>> index 66f1eb83cca7..fa53f54d4675 100644
+>>> --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
+>>> +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+>>> @@ -3740,6 +3740,8 @@ venus: video-codec@aa00000 {
+>>>  				 <&apps_smmu 0x2184 0x20>;
+0x2184 is a secure SID. I think qcm6490-fairphone-fp5.dts needs to override the
+iommus property as well to retain only the non secure SID i.e 0x2180 ? I am
+seeing below crash
 
-Oops, removed.
+Call trace:
+[   47.663593]  qcom_smmu_write_s2cr+0x64/0xa4
+[   47.663616]  arm_smmu_attach_dev+0x120/0x284
+[   47.663647]  __iommu_attach_device+0x24/0xf8
+[   47.676845]  __iommu_device_set_domain+0x70/0xd0
+[   47.681632]  __iommu_group_set_domain_internal+0x60/0x1b4
+[   47.687218]  iommu_setup_default_domain+0x358/0x418
+[   47.692258]  __iommu_probe_device+0x3e4/0x404
 
->> +    channel@0 {
->> +        reg = <0x00>;
->> +        qcom,pre-scaling = <1 1>;
->> +        label = "pmk8350_ref_gnd";
->> +    };
->> +
-> [...]
-> 
->> +&tlmm {
->> +    gpio-reserved-ranges = <52 8>;
-> Would you know what these are connected to?
-> 
+Could you please reconfirm if Video SID 0x2184 (and mask) is allowed by the
+qcm6490-fairphone-fp5 hardware having TZ ?
 
-Judging from the line names on the hdk dtsi, 4 seem to be connected to 
-the fingerprint (FP_SPI_*) and the other 4 are NFC-related 
-(NFC_ESE_SPI_*). I can clarify this with a comment if necessary.
+>>>  			memory-region = <&video_mem>;
+>>>  
+>>> +			status = "disabled";
+>>> +
+>>>  			video-decoder {
+>>>  				compatible = "venus-decoder";
+>>>  			};
+>>> @@ -3748,10 +3750,6 @@ video-encoder {
+>>>  				compatible = "venus-encoder";
+>>>  			};
+>>>  
+>>> -			video-firmware {
+>>> -				iommus = <&apps_smmu 0x21a2 0x0>;
+>>> -			};
+>>> -
+>>>  			venus_opp_table: opp-table {
+>>>  				compatible = "operating-points-v2";
+>>>  
+>>>
+>> Changes look good. Is this tested on SC7280 ?
+> 
+> Hi Vikash,
+> 
+> I didn't test it myself on sc7280 (just qcm6490-fp5) but dtx_diff
+> reports no differences except for status = okay property being added, so
+> there should be no change on those boards. See below.
+> 
+> Regards
+> Luca
 
-> [...]
-> 
->> +&mpss {
->> +    pinctrl-names = "default";
->> +    pinctrl-0 = <&rf_cable_ant0_active>;
-> patch-wide:
-> 
-> property-n
-> property-names
-> 
-> Konrad
+I tested on SC7280 (herobrine) and all good.
 
-Many thanks!
+Regards,
+Vikash
