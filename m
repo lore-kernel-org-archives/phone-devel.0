@@ -1,99 +1,162 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EAYKzt7w"
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38D1E19AE;
-	Fri, 24 Nov 2023 18:34:05 -0800 (PST)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-6b709048d8eso2219468b3a.2;
-        Fri, 24 Nov 2023 18:34:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VeaiDQGV"
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 121C910F4
+	for <phone-devel@vger.kernel.org>; Sat, 25 Nov 2023 03:44:06 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-54af2498e85so1976260a12.0
+        for <phone-devel@vger.kernel.org>; Sat, 25 Nov 2023 03:44:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700879644; x=1701484444; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cwDxPrBV1gye210dmGOK3P4MxuKjaUxc9oeTylrdKVk=;
-        b=EAYKzt7wa84nfObW8UuTipq3DpXKs8tuLvZDkbA6GBeToyOwNpjqXHKQON/P2lMiw9
-         muPNCPj7ZBj+u2lDdzJoQwRvlXdyP+jaslkPsJWIZAULh38Jgt6hi4b+y8ZIoUlcTa/7
-         GR9QfR0Fl6r/UJcKKzuq4RGAMTlI0t5iAQ/YrkJlxJEEHF7WLo9Me5uWkiIrS4cxbXC0
-         DYzf0oWWEQIQST43R7PL4mxxF203gU2UIT5cJiJPFpJ6Mg4O9Rj6oJYiOER0rKlLKJ2o
-         ICStOfFy9VqIGFeeoWkbfGi72n4woAJ9yWBPlCVZLOZU8dh8uzlX6p3UAiRzNL60pHQJ
-         0prg==
+        d=linaro.org; s=google; t=1700912644; x=1701517444; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SdNAHltyzZi3QxE+f9JHuh2c+iylf1qVw4CyLT75QG4=;
+        b=VeaiDQGV4YEKXn5e99F9Bmaq1sQjWIE0CUDJ8ag0+zYSsHNRiVUhIEXASu2XEFsYYj
+         iGUkIVqf7cBK+B2oRB0lr6KPG5K+/5Q+B/8uIzvwA+EMrBkXiwNHv7h3NkWRiLSVPkZp
+         5TdXFzp9sDdehi0OUQtn2aKnT3l2VVdkxN1GtqBqlkd9Z+gKaxCwfeXcSs0Xu4F1LLCK
+         Kg6su6fzInDZfr8jjgb3nvAygdIKRx18OV24gcog2OuUBhJZHwdN42uoJi8Kq0yuvP+M
+         DAiTIQQheOktcoeUgW2ZcSRNNEiWpxDU9AxqP8Var/a+kqeOoHcBd2G/pCS5pBntFTp5
+         vfUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700879644; x=1701484444;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cwDxPrBV1gye210dmGOK3P4MxuKjaUxc9oeTylrdKVk=;
-        b=XJQbYMDVKsRPm1b0hk1/7ogs5M8T8ahGS8AF+UzchAYWQqn6jQUd9H1ZX4cy49UY1e
-         BGwuCwNNgu78aIuC2uYQ6zkb+FEHAIEfvCr8cVLpVmnXDDr3RBGIBx+eeqeSuRC9zPWy
-         upjJgnXpjxQCqqcU2XJUZHYMWXkjVS9wjm1enOjw2cFQSfEygW3z0quiGmnBywN+Q+8V
-         tb6Gm4jPcGGDlNqEfd9OoADCNDw+VMMmM5+ZTKGxPzZbQxGCL0aI0FALvwL0atusT8tF
-         2Z8b0oZVOsOJh3MsjSaCSP837/tEtReJpeaydvEdGdqqOisJnAD8mAevD3mYKeXcMI1B
-         rQ1g==
-X-Gm-Message-State: AOJu0Yws8zpzpwWHEdQCW+KQJPWbNVKv9Qt/jyYZ56yxouqKWNL87KV8
-	RJz0rEMgQaG+hpW/innAlDY=
-X-Google-Smtp-Source: AGHT+IGn+LcE04+sPvS0bUrNhEsTVIrXUWbqE3J0aelwrU/x6umTcfKFPBvWITjK+TMsFaXQp+nbJQ==
-X-Received: by 2002:a05:6a20:94c3:b0:18b:8b4:2de6 with SMTP id ht3-20020a056a2094c300b0018b08b42de6mr6582236pzb.37.1700879644585;
-        Fri, 24 Nov 2023 18:34:04 -0800 (PST)
-Received: from localhost.localdomain ([192.166.114.90])
-        by smtp.gmail.com with ESMTPSA id mz22-20020a17090b379600b002839a4f65c5sm3611353pjb.30.2023.11.24.18.33.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Nov 2023 18:34:04 -0800 (PST)
-From: Jianhua Lu <lujianhua000@gmail.com>
-To: Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Jianhua Lu <lujianhua000@gmail.com>
-Subject: [PATCH v2 3/3] arm64: dts: qcom: sm8250-xiaomi-elish: Enable usb_1 otg
-Date: Sat, 25 Nov 2023 10:33:43 +0800
-Message-ID: <20231125023343.10939-3-lujianhua000@gmail.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231125023343.10939-1-lujianhua000@gmail.com>
-References: <20231125023343.10939-1-lujianhua000@gmail.com>
+        d=1e100.net; s=20230601; t=1700912644; x=1701517444;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SdNAHltyzZi3QxE+f9JHuh2c+iylf1qVw4CyLT75QG4=;
+        b=OD4pPfcgJok06aEe8qFmJaezJ3fcHnzMbJRiAVxvGWfb14lZ1yr92glzhuJRkImrtB
+         +OUYB+cz1XaoNOiBmIbi4y2o4efzzfj+CwVRkgWCxChkshKajWY2kEDVWkWVCobPvooD
+         42LfJFp5S6d798QMF6SOOfdO5JPMTDBRFux8pb6xNCVl0ESUV0rH27/GZIF3FgecvATC
+         5TTF58swLl80yuRFEkY5RGw3NQqZwRnNttKf0OGX9WaHFe8RYHQqR8fhDKx2zbpMftbF
+         xMPGH6LDNGunxftgR8Lqc6kirSYg7USElVu8TiBSh8bbmdl2+RNaq6eP5DbMQxaNRlyg
+         T7ZA==
+X-Gm-Message-State: AOJu0Yx5QcOLxHW+z8aHqVoJvCLK/bAcdamZE48b4SoCd86C/0LOSQpr
+	T7CXrHpxcRBpBvd850gkhmkQmA==
+X-Google-Smtp-Source: AGHT+IGRoDr3JREkINLbE9HNbwdlPj1+NpZu2jqzyjmPzQQL01nxEYHIZx0D5Y7x//5w+SZr3YrOAA==
+X-Received: by 2002:a50:d0d6:0:b0:54b:5a6:d06d with SMTP id g22-20020a50d0d6000000b0054b05a6d06dmr3820138edf.5.1700912644518;
+        Sat, 25 Nov 2023 03:44:04 -0800 (PST)
+Received: from [192.168.201.100] (178235187180.dynamic-4-waw-k-2-3-0.vectranet.pl. [178.235.187.180])
+        by smtp.gmail.com with ESMTPSA id er21-20020a056402449500b0054b2040ea46sm663412edb.61.2023.11.25.03.44.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 25 Nov 2023 03:44:04 -0800 (PST)
+Message-ID: <943431f4-6d68-4635-a8f9-710a0d535526@linaro.org>
+Date: Sat, 25 Nov 2023 12:44:01 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 6/6] arm64: dts: qcom: sm8350-lemonade(p): New devices
+Content-Language: en-US
+To: Nia Espera <nespera@igalia.com>, Andy Gross <agross@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Kees Cook <keescook@chromium.org>,
+ Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
+ <gpiccoli@igalia.com>, Vinod Koul <vkoul@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org, Rob <Me@orbit.sh>,
+ Clayton Craft <clayton@igalia.com>,
+ Caleb Connolly <caleb.connolly@linaro.org>,
+ Luca Weiss <luca.weiss@fairphone.com>, ~postmarketos/upstreaming@lists.sr.ht
+References: <20231111-nia-sm8350-for-upstream-v4-0-3a638b02eea5@igalia.com>
+ <20231111-nia-sm8350-for-upstream-v4-6-3a638b02eea5@igalia.com>
+ <d35b9250-eddb-4436-8daf-066ec84cf55f@linaro.org>
+ <1e45a031-080d-4cbe-9741-182524227124@igalia.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <1e45a031-080d-4cbe-9741-182524227124@igalia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Change dr_mode to otg and set usb_role_swith property to enable
-usb otg.
+On 23.11.2023 18:05, Nia Espera wrote:
+> 
+> 
+> On 11/22/23 21:17, Konrad Dybcio wrote:
+>>
+>>
+>> On 11/11/23 23:07, Nia Espera wrote:
+>>> Device tree files for OnePlus 9 and 9 Pro. Details of supported features
+>>> mentioned in the cover letter for this patch series, but for
+>>> accessibility also repeated here:
+>>>
+>>> - USB OTG
+>>> - UFS
+>>> - Framebuffer display
+>>> - Touchscreen (for lemonade)
+>>> - Power & volume down keys
+>>> - Battery reading
+>>> - Modem, IPA, and remoteproc bringup
+>>>
+>>> Steps to get booting:
+>>>
+>>> - Wipe dtbo partition
+>>> - Flash vbmeta with disabled verity bit
+>>> - Flash kernel and initfs to boot partition with CLI args pd_ignore_unused
+>>> and clk_ignore_unused as v1 bootimg
+>>> - Flash rootfs to some other partition (probably super or userdata)
+>> Thanks for including this info here
+>>
+>>> +&pmk8350_vadc {
+>>> +    pinctrl-names = "default";
+>>> +    pinctrl-0 = <&gpio1_adc_default>, <&gpio3_adc_default>;
+>>> +
+>>> +    /* pmk8350-ref-gnd */
+>> I fail to see the benefit in having this both here and in the label
+> 
+> Oops, removed.
+> 
+>>> +    channel@0 {
+>>> +        reg = <0x00>;
+>>> +        qcom,pre-scaling = <1 1>;
+>>> +        label = "pmk8350_ref_gnd";
+>>> +    };
+>>> +
+>> [...]
+>>
+>>> +&tlmm {
+>>> +    gpio-reserved-ranges = <52 8>;
+>> Would you know what these are connected to?
+>>
+> 
+> Judging from the line names on the hdk dtsi, 4 seem to be connected to the fingerprint (FP_SPI_*) and the other 4 are NFC-related (NFC_ESE_SPI_*). I can clarify this with a comment if necessary.
+Sounds very plausible, thanks!
 
-Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
----
-Changes in v2:
-  1. a new patch that I missed to generate.
-
- arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
-index ba2119da1979..6abca574398d 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
-@@ -696,11 +696,12 @@ &usb_1 {
- };
- 
- &usb_1_dwc3 {
--	dr_mode = "peripheral";
-+	dr_mode = "otg";
- 	maximum-speed = "high-speed";
- 	/* Remove USB3 phy */
- 	phys = <&usb_1_hsphy>;
- 	phy-names = "usb2-phy";
-+	usb-role-switch;
- };
- 
- &usb_1_hsphy {
--- 
-2.41.0
-
+Konrad
