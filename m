@@ -1,239 +1,77 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="NYuGxzqA"
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 083AAD53
-	for <phone-devel@vger.kernel.org>; Fri, 24 Nov 2023 07:56:11 -0800 (PST)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-9ffef4b2741so285217266b.3
-        for <phone-devel@vger.kernel.org>; Fri, 24 Nov 2023 07:56:10 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kCVqAdFI"
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D073B1990;
+	Fri, 24 Nov 2023 18:22:19 -0800 (PST)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6cbd24d9557so1737301b3a.1;
+        Fri, 24 Nov 2023 18:22:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1700841369; x=1701446169; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nw3Uf93v4iSEa/tdYMiQyvWyR4Di+Wg4uCLDclNVmg0=;
-        b=NYuGxzqABuzAmy6p/kptBJtRuMvWkMfsoJSnoYeqfe9MFUh4mKd6b/bEJZ5udax3tH
-         xzFWyA7g5o65v9079Tg0tYVMCAa4lfJarcKH3WeNSdycwiz9e2WbTKJV1UOjg16T/en1
-         7Ki9iYsLxkTjD/f+NPFb588cbentamfYG+dIdQ8ZLcW5Pnseoy4X4tfbNgqE48X45FrH
-         LfppJMWeSCpQT2MF7i752EHV8JOiLi9fnd0CRwaVRc991riZEoLhijudpYHv/DewCZ4P
-         u3TTcSZQvFDG1Q1JCdclHRTqon7Rh+YBUlnjnE53cA3h5d3DDEeF+7LpUtTJzIHtZ8MZ
-         g5/A==
+        d=gmail.com; s=20230601; t=1700878939; x=1701483739; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z6Q4Y5ag6mftLRcpA4lmiIuMEEPG5geq0zF11PaWQAk=;
+        b=kCVqAdFIdyJgcpCu+YYbJu/KkUmNhUcqlOzpJd5TtpQirZJPDzOhEgKbjggsIgu/Ek
+         vjeE+IrA5CkCfj6rvcjLnvKII95jZQEcxiNytxpALK6rWiPAATJqUL0z7SDzG0zUXUsz
+         yg1K0+69+733DGac2f8lQ+3UsGULk2/mnS0rEIyXFYbq8ZRrvvCWtH3AkfFrrW4mVuKm
+         VuB5vSPP49N6OGQn8rMzC0qLGvZASKSIS4sQOOL9Y0Wg8kUkGJUwKyFXFBZ2e/y/eguw
+         jj8bD3a/yYJZbG4/TKItVGqH0axu/4zLbd+tjhDZ+4pCFPbnTg8CCVMbjbaww4B1QVNg
+         s3cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700841369; x=1701446169;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=nw3Uf93v4iSEa/tdYMiQyvWyR4Di+Wg4uCLDclNVmg0=;
-        b=rkm1D3vgXq7syZhdYtsG3lI3lq2PpuzghJJgEWZGas1eJja9+s8jVJbdfhAJhx4AH/
-         0VRgWrvUeF9qbBQndzB5R+QLAodLwZcKZN2zKtICaB6NburSIY0m5QkZgusnjqFbyHvh
-         rkiJwfdbCeqPC0uClynkNWmkQwp9gOSt7yehwPi11nYcmt5NfK0slkviFK8y9m0khN6S
-         jN46CHks2ZbXLJolygQUuYY1093VjwwYiWs1C7vzxPuAQdiqNUNH2kJEXBWAXvTOfe3D
-         spo+Evy96H6v6G7hgtv5HXGjNDN8K0VV/DF1LA+WwU5/m+3L+/Z3K+3Kzx6Dn2HButTj
-         dUMw==
-X-Gm-Message-State: AOJu0Yyd4A3TUoq8eFFynfW7GIjgyJoHLDgbGvkT9gY7pCeoNqJXQbku
-	tpi2CQeghqcm+G6g4YL2NuKLYg==
-X-Google-Smtp-Source: AGHT+IHdYT+wamtbURTY6Lg3vipmmatxHpZyDbbDEqCD+868icucZy3YUAsomjQh8KBK3Ob6gLqU1Q==
-X-Received: by 2002:a17:906:747:b0:9e2:af47:54c9 with SMTP id z7-20020a170906074700b009e2af4754c9mr2612285ejb.19.1700841369481;
-        Fri, 24 Nov 2023 07:56:09 -0800 (PST)
-Received: from localhost (dhcp-089-099-055-216.chello.nl. [89.99.55.216])
-        by smtp.gmail.com with ESMTPSA id k18-20020a17090646d200b009f826f1238esm2205215ejs.100.2023.11.24.07.56.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Nov 2023 07:56:09 -0800 (PST)
+        d=1e100.net; s=20230601; t=1700878939; x=1701483739;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z6Q4Y5ag6mftLRcpA4lmiIuMEEPG5geq0zF11PaWQAk=;
+        b=LT+D9S42VftD+ZUIzz8vIrJyLSlrd+t6IFRtrmxlRv6LYFwGj3oQAVj9jBvy9GTe9K
+         AdYwIGmEkSgVdAFQ17Y5MTMnRT5snKpBBJ3TTXMiHjPt93htNj439qLFjja46zsXgzZd
+         FbxQLfQRoVEAXZuV4fJe1p/ownVTeD0ITEMrFrASTrRmLBX70X/IpAkMKgxKutRBQyCM
+         1rbeSMa6CMI/j3X2afakr054727uhg9wnaYxq0Devvygl7j7WrhXat97SDoyAKyELepN
+         l/MKO1D7NaOuGAkr1k1v/JHaLcj+1r1RKTzFdPykSg2P590Mo1ju4AVmBn601xLep56P
+         Dp7w==
+X-Gm-Message-State: AOJu0YwHId2OmpeefL9XBJMbYttr73u59UCjDQw1TTloeEDUoJ0+aovR
+	zeMLp+uoOKeLG7LdkHShvDo=
+X-Google-Smtp-Source: AGHT+IFw3AHG628m5HywZLxtNMTjqHWbU8fcdFIOECJm/eKO6oDt8sg1CVps2oc0Zl/kTYivurKFFQ==
+X-Received: by 2002:a05:6a20:a11d:b0:18a:da90:68ec with SMTP id q29-20020a056a20a11d00b0018ada9068ecmr6094966pzk.2.1700878939207;
+        Fri, 24 Nov 2023 18:22:19 -0800 (PST)
+Received: from Gentoo ([192.166.114.90])
+        by smtp.gmail.com with ESMTPSA id b12-20020aa7810c000000b006cac1688153sm3436852pfi.69.2023.11.24.18.22.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Nov 2023 18:22:18 -0800 (PST)
+Date: Sat, 25 Nov 2023 10:22:11 +0800
+From: Jianhua Lu <lujianhua000@gmail.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH 2/3] arm64: dts: qcom: sm8250-xiaomi-elish: Sort ufs node
+Message-ID: <ZWFaUxn46ymXDZz4@Gentoo>
+References: <20231124135713.5610-1-lujianhua000@gmail.com>
+ <20231124135713.5610-2-lujianhua000@gmail.com>
+ <4011c83f-6f3f-426b-9bfc-d0d8f6b01ac0@linaro.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 24 Nov 2023 16:56:08 +0100
-Message-Id: <CX75Y1X2QIN7.1GRH1YI56MMZ@fairphone.com>
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Vikash Garodia" <quic_vgarodia@quicinc.com>, "Dmitry Baryshkov"
- <dmitry.baryshkov@linaro.org>
-Cc: "Stanimir Varbanov" <stanimir.k.varbanov@gmail.com>, "Bryan O'Donoghue"
- <bryan.odonoghue@linaro.org>, "Andy Gross" <agross@kernel.org>, "Bjorn
- Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konrad.dybcio@linaro.org>, "Mauro Carvalho Chehab" <mchehab@kernel.org>,
- <cros-qcom-dts-watchers@chromium.org>, "Rob Herring" <robh+dt@kernel.org>,
- "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
- <conor+dt@kernel.org>, <~postmarketos/upstreaming@lists.sr.ht>,
- <phone-devel@vger.kernel.org>, <linux-media@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>
-Subject: Re: [PATCH v2 2/3] arm64: dts: qcom: sc7280: Move video-firmware to
- chrome-common
-X-Mailer: aerc 0.15.2
-References: <20231002-sc7280-venus-pas-v2-0-bd2408891317@fairphone.com>
- <20231002-sc7280-venus-pas-v2-2-bd2408891317@fairphone.com>
- <4cfad910-1821-3a31-c372-3f6b199e8f71@quicinc.com>
- <CX5ENKY70B5J.2D6DXKGI4EGX3@fairphone.com>
- <ff021f49-f81b-0fd1-bd2c-895dbbb03d56@quicinc.com>
- <CX70EBXCOB66.3998C482R86CN@fairphone.com>
- <a29123a3-afe1-8f92-ff6c-835926d411af@quicinc.com>
- <CAA8EJppkjpMmcHCvxomgUMPxGpf77iN9roRvb=NEcxdk237-UA@mail.gmail.com>
- <e6d80982-1674-d0c4-9dbe-94d77079f6ba@quicinc.com>
-In-Reply-To: <e6d80982-1674-d0c4-9dbe-94d77079f6ba@quicinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4011c83f-6f3f-426b-9bfc-d0d8f6b01ac0@linaro.org>
 
-On Fri Nov 24, 2023 at 2:35 PM CET, Vikash Garodia wrote:
->
->
-> On 11/24/2023 6:23 PM, Dmitry Baryshkov wrote:
-> > On Fri, 24 Nov 2023 at 14:30, Vikash Garodia <quic_vgarodia@quicinc.com=
-> wrote:
-> >>
-> >> On 11/24/2023 5:05 PM, Luca Weiss wrote:
-> >>> On Fri Nov 24, 2023 at 7:38 AM CET, Vikash Garodia wrote:
-> >>>>
-> >>>> On 11/22/2023 7:50 PM, Luca Weiss wrote:
-> >>>>> On Wed Nov 22, 2023 at 2:17 PM CET, Vikash Garodia wrote:
-> >>>>>>
-> >>>>>> On 10/2/2023 7:50 PM, Luca Weiss wrote:
-> >>>>>>> If the video-firmware node is present, the venus driver assumes w=
-e're on
-> >>>>>>> a system that doesn't use TZ for starting venus, like on ChromeOS
-> >>>>>>> devices.
-> >>>>>>>
-> >>>>>>> Move the video-firmware node to chrome-common.dtsi so we can use =
-venus
-> >>>>>>> on a non-ChromeOS devices.
-> >>>>>>>
-> >>>>>>> At the same time also disable the venus node by default in the dt=
-si,
-> >>>>>>> like it's done on other SoCs.
-> >>>>>>>
-> >>>>>>> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> >>>>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> >>>>>>> ---
-> >>>>>>>  arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi | 8 ++++++++
-> >>>>>>>  arch/arm64/boot/dts/qcom/sc7280.dtsi               | 6 ++----
-> >>>>>>>  2 files changed, 10 insertions(+), 4 deletions(-)
-> >>>>>>>
-> >>>>>>> diff --git a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi b=
-/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-> >>>>>>> index 5d462ae14ba1..cd491e46666d 100644
-> >>>>>>> --- a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-> >>>>>>> +++ b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-> >>>>>>> @@ -104,6 +104,14 @@ &scm {
-> >>>>>>>   dma-coherent;
-> >>>>>>>  };
-> >>>>>>>
-> >>>>>>> +&venus {
-> >>>>>>> + status =3D "okay";
-> >>>>>>> +
-> >>>>>>> + video-firmware {
-> >>>>>>> +         iommus =3D <&apps_smmu 0x21a2 0x0>;
-> >>>>>>> + };
-> >>>>>>> +};
-> >>>>>>> +
-> >>>>>>>  &watchdog {
-> >>>>>>>   status =3D "okay";
-> >>>>>>>  };
-> >>>>>>> diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/bo=
-ot/dts/qcom/sc7280.dtsi
-> >>>>>>> index 66f1eb83cca7..fa53f54d4675 100644
-> >>>>>>> --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> >>>>>>> +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> >>>>>>> @@ -3740,6 +3740,8 @@ venus: video-codec@aa00000 {
-> >>>>>>>                            <&apps_smmu 0x2184 0x20>;
-> >>>> 0x2184 is a secure SID. I think qcm6490-fairphone-fp5.dts needs to o=
-verride the
-> >>>> iommus property as well to retain only the non secure SID i.e 0x2180=
- ? I am
-> >>>> seeing below crash
-> >>>>
-> >>>> Call trace:
-> >>>> [   47.663593]  qcom_smmu_write_s2cr+0x64/0xa4
-> >>>> [   47.663616]  arm_smmu_attach_dev+0x120/0x284
-> >>>> [   47.663647]  __iommu_attach_device+0x24/0xf8
-> >>>> [   47.676845]  __iommu_device_set_domain+0x70/0xd0
-> >>>> [   47.681632]  __iommu_group_set_domain_internal+0x60/0x1b4
-> >>>> [   47.687218]  iommu_setup_default_domain+0x358/0x418
-> >>>> [   47.692258]  __iommu_probe_device+0x3e4/0x404
-> >>>>
-> >>>> Could you please reconfirm if Video SID 0x2184 (and mask) is allowed=
- by the
-> >>>> qcm6490-fairphone-fp5 hardware having TZ ?
-> >>>
-> >>> Hi,
-> >>>
-> >>> On FP5 it seems it's no problem to have both SIDs in there, probe and
-> >>> using venus appears to work fine.
-> >>>
-> >>> Are you using different firmware than QCM6490.LA.3.0 on the device wh=
-ere
-> >>> you tested this?
-> >> I was testing this on RB3 board which uses firmware [1].
-> >=20
-> > There is something wrong here.
-> >=20
-> > RB3 board uses venus-5.2
-> > RB5 board uses vpu-1.0
-> > Only sc7280 uses vpu-2.0
->
-> Tested on QCM6490 IDP board, which is QCOM internal board similar to RB3 =
-gen2.
-
-In any case, I don't know much about the venus & iommu setup here. I can
-try removing the 0x2184 SID and test if venus still works on FP5.
-Also should the chromebooks keep that iommu entry or not?
-
-Regards
-Luca
-
->
-> >>
-> >> Regards,
-> >> Vikash
-> >>
-> >> [1]
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmwar=
-e.git/tree/qcom/vpu-2.0
-> >>
-> >>>>
-> >>>>>>>                   memory-region =3D <&video_mem>;
-> >>>>>>>
-> >>>>>>> +                 status =3D "disabled";
-> >>>>>>> +
-> >>>>>>>                   video-decoder {
-> >>>>>>>                           compatible =3D "venus-decoder";
-> >>>>>>>                   };
-> >>>>>>> @@ -3748,10 +3750,6 @@ video-encoder {
-> >>>>>>>                           compatible =3D "venus-encoder";
-> >>>>>>>                   };
-> >>>>>>>
-> >>>>>>> -                 video-firmware {
-> >>>>>>> -                         iommus =3D <&apps_smmu 0x21a2 0x0>;
-> >>>>>>> -                 };
-> >>>>>>> -
-> >>>>>>>                   venus_opp_table: opp-table {
-> >>>>>>>                           compatible =3D "operating-points-v2";
-> >>>>>>>
-> >>>>>>>
-> >>>>>> Changes look good. Is this tested on SC7280 ?
-> >>>>>
-> >>>>> Hi Vikash,
-> >>>>>
-> >>>>> I didn't test it myself on sc7280 (just qcm6490-fp5) but dtx_diff
-> >>>>> reports no differences except for status =3D okay property being ad=
-ded, so
-> >>>>> there should be no change on those boards. See below.
-> >>>>>
-> >>>>> Regards
-> >>>>> Luca
-> >>>>
-> >>>> I tested on SC7280 (herobrine) and all good.
-> >>>
-> >>> Great, thanks!
-> >>>
-> >>> Regards
-> >>> Luca
-> >>>
-> >>>>
-> >>>> Regards,
-> >>>> Vikash
-> >>>
-> >>
-> >=20
-> >=20
-
+On Fri, Nov 24, 2023 at 04:54:20PM +0100, Krzysztof Kozlowski wrote:
+> On 24/11/2023 14:57, Jianhua Lu wrote:
+> > ufs node isn't in a right place, 'f' is front of 's', so move it to
+> > above usb node.
+> 
+> Please not.
+> 
+> If we change the order to match DTSI, then this patch would be wrong.
+> 
+Acked. I will drop this patch.
+> Best regards,
+> Krzysztof
+> 
