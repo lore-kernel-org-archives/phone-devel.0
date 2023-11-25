@@ -1,23 +1,23 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF372D05C;
-	Sat, 25 Nov 2023 20:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0F53066C;
+	Sat, 25 Nov 2023 20:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KfzQ0yMX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136ADC433C8;
-	Sat, 25 Nov 2023 20:42:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMg7kcfx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82379C433C7;
+	Sat, 25 Nov 2023 20:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700944953;
-	bh=RCKh7CEgJRbwjF1zTzXL3b/DGu8rKyfQhOkRrFXfuJY=;
+	s=k20201202; t=1700945343;
+	bh=By6S2NY0eBp0qntAaH6BVeBEX9Zm0qYIHhQZPhrXhuk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KfzQ0yMXPgS4CXPIk8vyu2sIjBxAQ36NwuJHkH/Qu0B9I2cFvJJlJnhgdfmLlesW5
-	 BGzRIas3XxFvxmdAVeVGimG0sGI3QoQrZxQYsz5EStOjHx8EEiakKT3MZtsSFQcy6h
-	 0BQlh32UikOQI6tW3N4nSCDz9jjo1W8NI3d+rsMu9ACTtluIJ2Me8HKMI1lQpifNC9
-	 z+SRoat++kI6RAYq8GT3+Pho9FD+v0UgHrkosIyNX9ofXTgH40tJ93exW9kK2PN8qQ
-	 X+LpmCURjRrjx9zcc6QALkeUTVqfyq/EEqCOz8DcYf86cwLpnPNxWwJlxvpQF0x8gq
-	 VbBp5SyZYqpmQ==
-Date: Sat, 25 Nov 2023 20:42:20 +0000
+	b=QMg7kcfxfWqw0cPWEjfDtDjDsnhH6xqQ/g74kyPwOf65WczUoktH8rf7UC1s9rwx1
+	 2BoQBvtaLmDmWwMq4xudZVfUd452/AddQ1o7k/+BieHAJ/RysG5CXslSROe0vseCCN
+	 ztCjymuiTqk2XOtABhYotw1v7Ly7Dp0r7rU/h/QDVABPyQ7r4I8XjWdMKKthjl4FBY
+	 31cKdJ7r2zjqXDrhExCCEvIasXcUaG3/KR3XeFXi2aYucmiXrJay1F3RdkGHmLJ3ZH
+	 6pMJY64+aQGQgTOVXLgJIZVruVAmXalCXX/zndiSsjyiuqE+iGI95OWhIhXJVJzGnt
+	 PR0iSxBWy+04A==
+Date: Sat, 25 Nov 2023 20:48:50 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nia Espera <nespera@igalia.com>
 Cc: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
@@ -34,7 +34,7 @@ Cc: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
  Weiss <luca.weiss@fairphone.com>, ~postmarketos/upstreaming@lists.sr.ht
 Subject: Re: [PATCH v4 1/6] dt-bindings: iio: adc: qcom: Add Qualcomm
  smb139x
-Message-ID: <20231125204220.2e7621f9@jic23-huawei>
+Message-ID: <20231125204850.02e0b9a0@jic23-huawei>
 In-Reply-To: <20231111-nia-sm8350-for-upstream-v4-1-3a638b02eea5@igalia.com>
 References: <20231111-nia-sm8350-for-upstream-v4-0-3a638b02eea5@igalia.com>
 	<20231111-nia-sm8350-for-upstream-v4-1-3a638b02eea5@igalia.com>
@@ -55,12 +55,7 @@ Nia Espera <nespera@igalia.com> wrote:
 > 
 > Signed-off-by: Nia Espera <nespera@igalia.com>
 > Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Hmm. this is going to clash badly with the header moves. I'll assume they
-will both eventually go through the qcom tree unless someone tells me otherwise.
-
 Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
 > ---
 >  include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h | 19 +++++++++++++++++++
 >  include/dt-bindings/iio/qcom,spmi-vadc.h         |  3 +++
