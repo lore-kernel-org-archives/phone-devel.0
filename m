@@ -1,110 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0F53066C;
-	Sat, 25 Nov 2023 20:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QMg7kcfx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82379C433C7;
-	Sat, 25 Nov 2023 20:48:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700945343;
-	bh=By6S2NY0eBp0qntAaH6BVeBEX9Zm0qYIHhQZPhrXhuk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QMg7kcfxfWqw0cPWEjfDtDjDsnhH6xqQ/g74kyPwOf65WczUoktH8rf7UC1s9rwx1
-	 2BoQBvtaLmDmWwMq4xudZVfUd452/AddQ1o7k/+BieHAJ/RysG5CXslSROe0vseCCN
-	 ztCjymuiTqk2XOtABhYotw1v7Ly7Dp0r7rU/h/QDVABPyQ7r4I8XjWdMKKthjl4FBY
-	 31cKdJ7r2zjqXDrhExCCEvIasXcUaG3/KR3XeFXi2aYucmiXrJay1F3RdkGHmLJ3ZH
-	 6pMJY64+aQGQgTOVXLgJIZVruVAmXalCXX/zndiSsjyiuqE+iGI95OWhIhXJVJzGnt
-	 PR0iSxBWy+04A==
-Date: Sat, 25 Nov 2023 20:48:50 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Nia Espera <nespera@igalia.com>
-Cc: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Kees Cook <keescook@chromium.org>, Tony Luck
- <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, Vinod
- Koul <vkoul@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski@linaro.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, linux-arm-msm@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- phone-devel@vger.kernel.org, Rob <Me@orbit.sh>, Clayton Craft
- <clayton@igalia.com>, Caleb Connolly <caleb.connolly@linaro.org>, Luca
- Weiss <luca.weiss@fairphone.com>, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v4 1/6] dt-bindings: iio: adc: qcom: Add Qualcomm
- smb139x
-Message-ID: <20231125204850.02e0b9a0@jic23-huawei>
-In-Reply-To: <20231111-nia-sm8350-for-upstream-v4-1-3a638b02eea5@igalia.com>
-References: <20231111-nia-sm8350-for-upstream-v4-0-3a638b02eea5@igalia.com>
-	<20231111-nia-sm8350-for-upstream-v4-1-3a638b02eea5@igalia.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UyPRp5Rd"
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49A18FE;
+	Sat, 25 Nov 2023 18:29:00 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6cb66fbc63dso2139339b3a.0;
+        Sat, 25 Nov 2023 18:29:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700965740; x=1701570540; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hG3ipdLv3/wO1bTYNyUfdq//qPItjs43V53NHywBAQ8=;
+        b=UyPRp5Rdp75ikpmdRdG1CawhfArNkj3B/ETWBSNXR3fEgTad9d1XPDcqs/ZrEiWbmN
+         Sz9kKlqRV79u/GDi1bJaTP/KvGoIybbb4a4om4f5q4/5XfhebXcLa+vhWvFw7bxamZI8
+         oh7Tj0lEwCN5MqKvYYZtBS1uRIlJPDysDmDrkTX2j4k4ET4ugvKwXcj2CWRp+pIWI3WC
+         YV2KmQPXiWUmyqAD77oEMzQOG6KYa4xse+c6uUV2iKQBGG69sulPjXdFpossTxpF1Wvz
+         SkVmcUiw7Wm3lYMv6EtjedpVoJhdUxS2D71jO77vYZlz39kMS141mbbBOq/oncnOtEcI
+         3NHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700965740; x=1701570540;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hG3ipdLv3/wO1bTYNyUfdq//qPItjs43V53NHywBAQ8=;
+        b=J2fbWIZEyixmkqM8vUi7wLZQmHNJulTuRAcTz7gF2KADzkvjxGjDIPshvzjPEFl3Vl
+         8O9NVA/YYeLqBgXNTjFMuarNcJqO+KHrlIa3qA0EfA4ZciWfcrfopqsXjuKLKFoB05/E
+         T0Pr+xxXSaQeMFQT8Y6SkcMq2fZriDc2zAn2StE6WzdjAgB6au7HwILoCtah1MC1wUvB
+         WuxHL7nf7aRvjvnURQALWFRo92inTlJVdrI60rDBDescbKQtf/UQs2BgW1hGtSgicSk2
+         4moaWzelF3yeUW5vAt2OcIpV9bHT+neZ/d9l1Au8t+8E7iBIeNJIeYogiO/q7lOR497o
+         D/SA==
+X-Gm-Message-State: AOJu0YxArkVcX8w+dLXoamEVvAETM96ugxfVXLG2hstcIAMgzCGRpCNc
+	nUG1wUIiEwiwW0cHTLvCjIM=
+X-Google-Smtp-Source: AGHT+IH2DY6zKNFVPQuWjOOZ1g52/xBEPT/okDXOij5i1dggz1QYAjb9c1rJKtoP32Yj3jzLO1IqIQ==
+X-Received: by 2002:a05:6a00:14c8:b0:68f:c078:b0c9 with SMTP id w8-20020a056a0014c800b0068fc078b0c9mr10404207pfu.11.1700965739582;
+        Sat, 25 Nov 2023 18:28:59 -0800 (PST)
+Received: from localhost.localdomain ([192.166.114.90])
+        by smtp.gmail.com with ESMTPSA id x18-20020aa793b2000000b00688435a9915sm4961821pff.189.2023.11.25.18.28.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Nov 2023 18:28:58 -0800 (PST)
+From: Jianhua Lu <lujianhua000@gmail.com>
+To: Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	Jianhua Lu <lujianhua000@gmail.com>
+Subject: [PATCH v3 1/2] arm64: dts: qcom: sm8250-xiaomi-elish: Fix typos
+Date: Sun, 26 Nov 2023 10:28:48 +0800
+Message-ID: <20231126022849.14273-1-lujianhua000@gmail.com>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat, 11 Nov 2023 23:07:39 +0100
-Nia Espera <nespera@igalia.com> wrote:
+There are two typos in this dtsi, so fix it.
+  classis -> chassis.
+  80700000 -> 80600000
 
-> Bindings for a charger controller chip found on sm8350
-> 
-> Signed-off-by: Nia Espera <nespera@igalia.com>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h | 19 +++++++++++++++++++
->  include/dt-bindings/iio/qcom,spmi-vadc.h         |  3 +++
->  2 files changed, 22 insertions(+)
-> 
-> diff --git a/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-> new file mode 100644
-> index 000000000000..c0680d1285cf
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/qcom,spmi-adc7-smb139x.h
-> @@ -0,0 +1,19 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause */
-> +/*
-> + * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-> + */
-> +
-> +#ifndef _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-> +#define _DT_BINDINGS_QCOM_SPMI_VADC_SMB139X_H
-> +
-> +#include <dt-bindings/iio/qcom,spmi-vadc.h>
-> +
-> +#define SMB139x_1_ADC7_SMB_TEMP			(SMB139x_1_SID << 8 | ADC7_SMB_TEMP)
-> +#define SMB139x_1_ADC7_ICHG_SMB			(SMB139x_1_SID << 8 | ADC7_ICHG_SMB)
-> +#define SMB139x_1_ADC7_IIN_SMB			(SMB139x_1_SID << 8 | ADC7_IIN_SMB)
-> +
-> +#define SMB139x_2_ADC7_SMB_TEMP			(SMB139x_2_SID << 8 | ADC7_SMB_TEMP)
-> +#define SMB139x_2_ADC7_ICHG_SMB			(SMB139x_2_SID << 8 | ADC7_ICHG_SMB)
-> +#define SMB139x_2_ADC7_IIN_SMB			(SMB139x_2_SID << 8 | ADC7_IIN_SMB)
-> +
-> +#endif
-> diff --git a/include/dt-bindings/iio/qcom,spmi-vadc.h b/include/dt-bindings/iio/qcom,spmi-vadc.h
-> index 08adfe25964c..ef07ecd4d585 100644
-> --- a/include/dt-bindings/iio/qcom,spmi-vadc.h
-> +++ b/include/dt-bindings/iio/qcom,spmi-vadc.h
-> @@ -239,12 +239,15 @@
->  #define ADC7_GPIO3				0x0c
->  #define ADC7_GPIO4				0x0d
->  
-> +#define ADC7_SMB_TEMP				0x06
->  #define ADC7_CHG_TEMP				0x10
->  #define ADC7_USB_IN_V_16			0x11
->  #define ADC7_VDC_16				0x12
->  #define ADC7_CC1_ID				0x13
->  #define ADC7_VREF_BAT_THERM			0x15
->  #define ADC7_IIN_FB				0x17
-> +#define ADC7_ICHG_SMB				0x18
-> +#define ADC7_IIN_SMB				0x19
->  
->  /* 30k pull-up1 */
->  #define ADC7_AMUX_THM1_30K_PU			0x24
-> 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
+---
+No Changes in v3.
+
+No Changes in v2.
+
+ arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
+index 85e5cf3dc91e..3d4ea428e4cb 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
+@@ -23,7 +23,7 @@
+ /delete-node/ &xbl_aop_mem;
+ 
+ / {
+-	classis-type = "tablet";
++	chassis-type = "tablet";
+ 
+ 	/* required for bootloader to select correct board */
+ 	qcom,msm-id = <QCOM_ID_SM8250 0x20001>; /* SM8250 v2.1 */
+@@ -114,7 +114,7 @@ vreg_s6c_0p88: smpc6-regulator {
+ 	};
+ 
+ 	reserved-memory {
+-		xbl_aop_mem: xbl-aop@80700000 {
++		xbl_aop_mem: xbl-aop@80600000 {
+ 			reg = <0x0 0x80600000 0x0 0x260000>;
+ 			no-map;
+ 		};
+-- 
+2.41.0
 
