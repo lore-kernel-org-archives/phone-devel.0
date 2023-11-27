@@ -1,93 +1,182 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZiW1iVnQ"
-Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D311518B
-	for <phone-devel@vger.kernel.org>; Mon, 27 Nov 2023 02:14:42 -0800 (PST)
-Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2c5087d19a6so44669731fa.0
-        for <phone-devel@vger.kernel.org>; Mon, 27 Nov 2023 02:14:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701080081; x=1701684881; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CNHHiLpeR2Ce67c7aTqgpQJDINa9GFsM154ew5MCzfw=;
-        b=ZiW1iVnQBf6sLUnq7bdjd9OajnObpl1WlsqKeXpFS5yWjQudUTsb7O72Zplc6IxAP4
-         MMg6uxGbrIELfZZ7IYYEkpYMM0xhIJ8oK3zPF04gykx2ODWe7F5MNdzFlV9uI1zIkyqB
-         LABDws6uGAecjBaiBqKnJ8aDbuvGGkEvkWBsS2dkSzngBMgheQDabE6fM/MuWK/n4XkW
-         dtS5M7vsvC22SDHYXyGoM/1wzztKYJwgDC+9d93mAZgCOfgBsZx0sJ7wRD3XvPOfmfFu
-         keDwJF4EvUdP2vseRwDe6ay6VjKp54Ad/HyNhsBdXLQRBNqi2EdAQDDssDIJQnF6By4M
-         yijA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701080081; x=1701684881;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CNHHiLpeR2Ce67c7aTqgpQJDINa9GFsM154ew5MCzfw=;
-        b=g+ubGb525P7S+eIIgcP9R3wFq69AaveicN7MInam/IiCfjPL46YAGbVgb2GELk31qN
-         o49NNje9bSO5+m2+RjQkNnGFZmGpKGS5srYri7n56uKD5n2lRmAwO/WyS9msRtHTP8WI
-         IlB214CHH265ptBpFkcXcQNRYo4EA2g6cX0Q4b8LJ56Cc8hP8sU6HqpJX2BkJl0CFQyt
-         YbVTDNSHloRod/icV8KVHQoLWrWY2C3L3uOc2TGMMnuIfZyud8MK6t27DYuSolVAMZlI
-         GVl5vucC0AH9Sr9QJ6rt4gNxh6m7RIzE0D4IDNsSjr+O8eyjG04O/FzUJnUyW65SutNC
-         czAg==
-X-Gm-Message-State: AOJu0YzRMpXmHKlQI8fq8IM34cxZgYSbxj4JKAfs7t4+axx+8a0Ai07A
-	DtYq25f/s16t4vqESO5H2QZyeA==
-X-Google-Smtp-Source: AGHT+IGZZYfB3M3w67wDWKNxuZZ/I8T9o4pe5ERsw+U2o/eGYk7sBQ/Ca2iXcUuYEFwHhDVFGdC32A==
-X-Received: by 2002:a2e:9e8a:0:b0:2b9:412a:111d with SMTP id f10-20020a2e9e8a000000b002b9412a111dmr7268289ljk.42.1701080081083;
-        Mon, 27 Nov 2023 02:14:41 -0800 (PST)
-Received: from [192.168.100.102] ([37.228.218.3])
-        by smtp.gmail.com with ESMTPSA id b5-20020a05600c4e0500b003feae747ff2sm14185211wmq.35.2023.11.27.02.14.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Nov 2023 02:14:40 -0800 (PST)
-Message-ID: <37422200-7954-4f0d-92ad-37da3a98b36d@linaro.org>
-Date: Mon, 27 Nov 2023 10:14:39 +0000
+	dkim=pass (2048-bit key) header.d=gerhold.net header.i=@gerhold.net header.b="dRxXjHWO";
+	dkim=permerror (0-bit key) header.d=gerhold.net header.i=@gerhold.net header.b="wMD+7x0V"
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.80])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0E191B4;
+	Mon, 27 Nov 2023 12:10:37 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1701115655; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=j9Dnl2feQikME50AveMe2VIAx+6WIxyk5Llq+7xwrjbq9aMuX3z7kdJAXfMxwW1KtC
+    CAVylr5ngDTnNNO2xjhpt79kSn6boZ/0dUHzRMWC31behifoXmSJyjGgoLtyQ0gCyvcs
+    Vv+5Bn2ealkVw+E9A121ocxqwwsOYPI0at8y+S26ookxj5w1WHW3wCQv+iKgdi/I7rF4
+    fNH2loc48rcDq2gM9wv7TDO/GqGCsQcZqBCzTztGZC+mPPHg/NbD8oM/slg6hTGGd9Pe
+    QXuaLTsjdAFi2jxtd/+gRAjcIKYBB7tfTl8X1hkNFVjVK6FLLCtUw9BTxOJHUqruwyhd
+    j91w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1701115655;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=v/YEJb75BXKWSsirkyffSVuJJ2grcB36hXol/hZ9KLk=;
+    b=ZUgtJtWVyz1PjQtKX6lm0GUT9hBwESh1E5gah98jsmbEc7ehf0xhPVP1G19nLczlBF
+    3jPVGJYJJF1NDEizh8WNKW06potRqC4tw1XH4UzPs28c709Ed9DO8RBdlypTtWP+e4yP
+    X8oeacDrZoiZ0hZWRpJIG54WuKI7/M3wUirPstf4s1m5K9j3R7E5gRRjjUd/QfXzoSMO
+    At7X/39SC+s9mVikv39qV7LmILmvqpZRi46brLanKwlc0BYh25SszAjD8pD5ma1MYI67
+    2BbnTl0m1TfTEn4HTXn2LT18a9rwqvFU3KyH3X7CWWZCmPRAD6oeA9s14roqpOU0quJQ
+    IR2A==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1701115655;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=v/YEJb75BXKWSsirkyffSVuJJ2grcB36hXol/hZ9KLk=;
+    b=dRxXjHWOUI2KreqKJg9Mf2I/iqUZv7koheEFKJpWNrOs7lAldQgkxmEXgXLSJBlJbL
+    cYsWaSoPlQpU4yQl0adBeOr7TcaKFL3qUjJ7LTw7LX80tr4o0ak3HBUtJIr/JDKpTAM2
+    a0oCh563ChFQHR+f/yV8iUrYBen9q/2DPbIUwtRUrT0j8aQT6WLjsJINGtOr35Y4NwtR
+    0843PRDOC9GGb4brb4XmP0NkbNAGgXqBP6j8fWh/clczSOhNLGxdioh4tu44NSRCI4Bv
+    h7+YHuHM73gsEt+HToEejFcWMx7a1hpBNxYhxDiCaxJWxKSj3oAGzz79TjFZ8aU2HV55
+    8Xqg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1701115655;
+    s=strato-dkim-0003; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=v/YEJb75BXKWSsirkyffSVuJJ2grcB36hXol/hZ9KLk=;
+    b=wMD+7x0VImS6FeN3bgL/Mo5n0Z4sHlIqS2YxbdSBRy6fgGL2ul2mfpAM10fSiQvVGr
+    6mQoRDwJA0e0TXX+TgDw==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA8paF1A=="
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 49.9.1 DYNA|AUTH)
+    with ESMTPSA id t3efe7zARK7XjVD
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 27 Nov 2023 21:07:33 +0100 (CET)
+Date: Mon, 27 Nov 2023 21:07:28 +0100
+From: Stephan Gerhold <stephan@gerhold.net>
+To: Luca Weiss <luca@z3ntu.xyz>
+Cc: Loic Poulain <loic.poulain@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 1/4] dt-bindings: remoteproc: qcom: wcnss: Add WCN3680B
+ compatible
+Message-ID: <ZWT3APJlNQaKVyJU@gerhold.net>
+References: <20231015-fp3-wcnss-v1-0-1b311335e931@z3ntu.xyz>
+ <CAMZdPi-S2_UQO-rD38-thwta-YgH3W78Ecd1Du7Q_US=J7k0ew@mail.gmail.com>
+ <ZS1MTAHq6GLW6RAK@gerhold.net>
+ <1868698.tdWV9SEqCh@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] arm64: dts: qcom: sm8250-xiaomi-elish: Add pm8150b
- type-c node and enable usb otg
-Content-Language: en-US
-To: Jianhua Lu <lujianhua000@gmail.com>, Andy Gross <agross@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org
-References: <20231126022849.14273-1-lujianhua000@gmail.com>
- <20231126022849.14273-2-lujianhua000@gmail.com>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20231126022849.14273-2-lujianhua000@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1868698.tdWV9SEqCh@z3ntu.xyz>
 Content-Transfer-Encoding: 7bit
 
-On 26/11/2023 02:28, Jianhua Lu wrote:
-> Add type-c node to feature otg function and set usb-role-switch property
-> for usb_1_dwc3 to enable usb otg.
+On Sat, Nov 25, 2023 at 01:25:22PM +0100, Luca Weiss wrote:
+> On Montag, 16. Oktober 2023 16:44:28 CET Stephan Gerhold wrote:
+> > On Mon, Oct 16, 2023 at 03:16:14PM +0200, Loic Poulain wrote:
+> > > On Mon, 16 Oct 2023 at 07:35, Krzysztof Kozlowski
+> > > 
+> > > <krzysztof.kozlowski@linaro.org> wrote:
+> > > > On 15/10/2023 22:03, Luca Weiss wrote:
+> > > > > Add a compatible for the iris subnode in the WCNSS PIL.
+> > > > > 
+> > > > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > > > > ---
+> > > > > 
+> > > > >  Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml | 1
+> > > > >  +
+> > > > >  1 file changed, 1 insertion(+)
+> > > > > 
+> > > > > diff --git
+> > > > > a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+> > > > > b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+> > > > > index 45eb42bd3c2c..0e5e0b7a0610 100644
+> > > > > --- a/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+> > > > > +++ b/Documentation/devicetree/bindings/remoteproc/qcom,wcnss-pil.yaml
+> > > > > 
+> > > > > @@ -111,6 +111,7 @@ properties:
+> > > > >            - qcom,wcn3660
+> > > > >            - qcom,wcn3660b
+> > > > >            - qcom,wcn3680
+> > > > > 
+> > > > > +          - qcom,wcn3680b
+> > > > 
+> > > > Looks like this should be made as compatible with qcom,wcn3680 (so with
+> > > > fallback).
+> > > 
+> > > Yes, agree, let's do a regular fallback as there is nothing 'b'
+> > > specific in the driver:
+> > > `compatible = "qcom,wcn3680b", "qcom,wcn3680";`
+> > > 
+> > > And yes, we should also have done that for qcom,wcn3660b...
+> > 
+> > I don't think this would have worked properly for qcom,wcn3660b:
+> > 
+> >  - It's not compatible with "qcom,wcn3660", because they have different
+> >    regulator voltage requirements. wcn3660(a?) needs vddpa with
+> >    2.9-3.0V, but wcn3660b needs 3.3V. That's why wcn3660b uses the
+> >    wcn3680_data in qcom_wcnss.iris.c. Otherwise if you would run an
+> >    older kernel that knows "qcom,wcn3660" but not "qcom,wcn3660b" it
+> >    would apply the wrong voltage.
+> > 
+> >  - It's not compatible with "qcom,wcn3680" either because that is used
+> >    as indication if 802.11ac is supported (wcn3660b doesn't).
+> > 
+> > The main question here is: What does the current "qcom,wcn3680"
+> > compatible actually represent? It's defined with vddpa = 3.3V in the
+> > driver, which would suggest that:
+> > 
+> >  1. It's actually meant to represent WCN3680B, which needs 3.3V vddpa
+> >     like WCN3660B, or
+> > 
+> >  2. WCN3680(A?) has different requirements than WCN3660(A?) and also
+> >     needs 3.3V vddpa. But then what is the difference between
+> >     WCN3680(A?) and WCN3680B? Is there even a variant without ...B?
+> > 
+> > There is public documentation for WCN3660B and WCN3680B but the non-B
+> > variants are shrouded in mystery.
 > 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> Signed-off-by: Jianhua Lu <lujianhua000@gmail.com>
-> ---
-> Changes in v3:
->    1. squash patch[3/3].
->    2. update commit message.
->    3. add pm8150b_vbus node.
+> Hi Stephan (and everyone),
 > 
-> No changes in v2:
+> Do you have a suggestion how to move this patchset forward? Is the fallback 
+> compatible that was suggested okay for the wcn3680b situation?
 > 
->   .../dts/qcom/sm8250-xiaomi-elish-common.dtsi  | 43 ++++++++++++++++++-
->   1 file changed, 42 insertions(+), 1 deletion(-)
+>   compatible = "qcom,wcn3680b", "qcom,wcn3680";
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
-> index 3d4ea428e4cb..946365f15a59 100644
-> --- a/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sm8250-xiaomi-elish-common.dtsi
+> If so, I'll make v2 with that implemented.
+> 
 
-lgtm
+Personally, I would just go with what exists already and use the
+existing "qcom,wcn3680" compatible as-is. No one has provided evidence
+that there is actually something like a WCN3680(A), without a 'B' at the
+end. Also, all existing users of the "qcom,wcn3680" compatible upstream
+actually seem to refer to WCN3680B (I'm quite sure apq8039-t2 has
+WCN3680B, MSM8974 isn't entirely clear but iirc you mentioned there was
+some schematic of a MSM8974 device which says WCN3680B as well).
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+It would be nice to have the compatible perfectly correct and complete,
+but I see no point to extend it with additional information that we
+can't properly verify.
 
+Or do you actually need a different compatible to customize something in
+the driver?
+
+Thanks,
+Stephan
