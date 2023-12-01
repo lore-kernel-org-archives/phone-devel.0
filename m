@@ -1,166 +1,131 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="cOpvtJKu"
-Received: from mail.z3ntu.xyz (mail.z3ntu.xyz [128.199.32.197])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C2BD10FF;
-	Thu, 30 Nov 2023 12:36:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=z3ntu;
-	t=1701376552; bh=WseaproAPlHcyZYH4LuAiRPthwckItsf2rlGuhoBAh8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=cOpvtJKuilyla47tGgvTTWgfpd0VCC+MIMo9DAl/plG1RVcsxd4vHcfSVGsxB9+mj
-	 RllPTYEwkI+A3aF1OjOu4JlVJZsvIt7zlIwMXLqYyCM1N/SugtUh/V3nYUq+YxisdK
-	 WQBqDJRvLyad5tHm3acbVhDN/4Yy4sxoSeZLCMGI=
-From: Luca Weiss <luca@z3ntu.xyz>
-Date: Thu, 30 Nov 2023 21:35:19 +0100
-Subject: [PATCH 2/3] drm/msm/adreno: Add A305B support
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I6Wc+9LB"
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66C7E1712
+	for <phone-devel@vger.kernel.org>; Fri,  1 Dec 2023 00:18:51 -0800 (PST)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-54bfd4546fbso2068066a12.1
+        for <phone-devel@vger.kernel.org>; Fri, 01 Dec 2023 00:18:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701418730; x=1702023530; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+HhNZrtG9hsY/ugvNneqcYie0/5RzKtNLPewvDyCT5g=;
+        b=I6Wc+9LBmEROPoEat63civhVfYBQj4R5WZVqU9vy5h+cpQ8FpT6QgiY6atH+yC93xn
+         z9TD1GHI5m1vC+Nkyt3HKUFS8qSHVFuCE4qbb4JElYnsz7jPzZY5utdMh7ZBLQc53cJQ
+         QOZQFaPa0iVIimZoFxiDTJV+yKycaJUmpgApzurdnk/XvMue90/YPQa0DmFnDJtUGK+C
+         rPP4AUc5ZEvZMBnd+EzN+i6mLAVJlLLunHrXal4xOK0oGfpYa+2hQ9dkxTWxep6l3HXb
+         t+GlXpbtBTVig85gDnjOECs4vF1zcRST+DJ/eTo6ooAlQ0EYjaQOp5o8Zea28YpjbGNM
+         Iz+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701418730; x=1702023530;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+HhNZrtG9hsY/ugvNneqcYie0/5RzKtNLPewvDyCT5g=;
+        b=fyCUOlRjfemgeP2NyAm1zGZWhydaJG2Ye247jEQZZXM8smP2IEIyfuKL9FCruO+Rbs
+         mCiHwwlNowIpOVZRl1SC2UD+8nplYXzYp5/l7X3TW5S6nW5dIQeHyEhY+WShqvNfyMCE
+         /n0nW0CWYGzjf8lpskJlkhi61SkJJAzwEN3be6zIfrI7PIUSmbGRZsh6+HQLvC4D8eH6
+         ZC7fACCK9fMptcj9laxYP1S2i1q2Tb1ejecgzfQa4AsoLvKfJF3T/bl04SAY2Z60aWRw
+         QvElbjwBmRdv9qkGyUwYvHkFVlNV8ZaMm1cKvU2ZJYtUT+9uM/SCGFCbVq8wECu38fie
+         9AOA==
+X-Gm-Message-State: AOJu0YzPUdnvUqZ/ghctNml89Hvqi6jMznyGNw5S8aEmuvAyObnCVKVH
+	3r0xkL83923n19rrKnMl7h0RKw==
+X-Google-Smtp-Source: AGHT+IHQeGmxVOhsc8Rty5Ko7YGzv+HnZ7kPmLQGlX08d7/IR0OspYjP2l4nOPiU5eRR8y+BDntqWg==
+X-Received: by 2002:a17:907:119e:b0:a19:a19b:7897 with SMTP id uz30-20020a170907119e00b00a19a19b7897mr483319ejb.90.1701418729839;
+        Fri, 01 Dec 2023 00:18:49 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.223.109])
+        by smtp.gmail.com with ESMTPSA id qb18-20020a1709077e9200b009f8af454d0dsm1601120ejc.112.2023.12.01.00.18.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 Dec 2023 00:18:49 -0800 (PST)
+Message-ID: <41a177c9-c319-4c48-bcc6-4705e7de2a2c@linaro.org>
+Date: Fri, 1 Dec 2023 09:18:47 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231130-msm8226-gpu-v1-2-6bb2f1b29e49@z3ntu.xyz>
-References: <20231130-msm8226-gpu-v1-0-6bb2f1b29e49@z3ntu.xyz>
-In-Reply-To: <20231130-msm8226-gpu-v1-0-6bb2f1b29e49@z3ntu.xyz>
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Sean Paul <sean@poorly.run>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] dt-bindings: display/msm: gpu: Allow multiple digits
+ for patchid
+Content-Language: en-US
+To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Rob Clark <robdclark@gmail.com>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Sean Paul <sean@poorly.run>,
+ Marijn Suijten <marijn.suijten@somainline.org>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
  Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- freedreno@lists.freedesktop.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4468; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=WseaproAPlHcyZYH4LuAiRPthwckItsf2rlGuhoBAh8=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlaPIkxK4kOIZXeKxvYESMbmponpLhfG0XOxOuS
- f9QheSROLCJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZWjyJAAKCRBy2EO4nU3X
- Von4EAC25Q0VcH3QjuMCivMXLTNFnrhN96a2vx+oqUCbN7/zF9InDFWexqp1j6KNjymyzDaPn1u
- TH/pPQYdPomSWvfQf0PifhbuMpFIv5lLz4/S+zRuXlp9h761AaZPJAH8rd9LJ0Ap1cDbYQ6Ra68
- 10qWUxhCUb8o/0uWdK9O8SSj6bJPEKgE0y82mnDBtm3w5cXCQLarZ8ykOa/vV6LRHhXNqSQBhtJ
- okGnrxbTxkoEsiGQTx9BTE/ih3ozm8rrdE+NuLfP2aU+RAySf0VFeka1iikvbFF4caVR6zduTWD
- AprMyCx79y7asW01ReTs5TqB/qg7B0m8ERLbDbCQX8quHiEKJBZ2zKwg3J2O4YBPvENbyH/lW6v
- zYA2PFu/Xpd+pXcJJ6r6Sc41ZPKyjcIWLjpg5V/luLEvwFscRNCnr+ejIXnazy7d0jv+k5oJOLw
- gAuepPv+bf0ZC0rYqOGC46L7xhlcuE14/bRdVP8znEB6SC3MmwWlTi5i7jm1JsYP5h34IMkmYKE
- HVR4y4/mte9ZwZwHO/z9z9m2IXguI6u3lOqjY31hjNq0n55Oq/xETklMaG+5V2OEyxyFzyOmHGs
- BjBqtZuhGw42ZGeUrDgm1nMFnsjm43aM24Ui742aSRj/Ck6clTfT8rlliikr4Yl7z8I22Iw9x/X
- j7BGDmGW4nDx/IA==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20231130-msm8226-gpu-v1-0-6bb2f1b29e49@z3ntu.xyz>
+ <20231130-msm8226-gpu-v1-1-6bb2f1b29e49@z3ntu.xyz>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
+ m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
+ HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
+ XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
+ mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
+ v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
+ cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
+ rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
+ qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
+ aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
+ gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
+ dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
+ NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
+ hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
+ oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
+ H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
+ yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
+ 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
+ 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
+ +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
+ FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
+ 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
+ DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
+ oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
+ 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
+ Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
+ qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
+ /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
+ qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
+ EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
+ KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
+ fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20231130-msm8226-gpu-v1-1-6bb2f1b29e49@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add support for the Adreno 305B GPU that is found in MSM8226(v2) SoC.
-Previously this was mistakenly claimed to be supported but using wrong
-a configuration.
+On 30/11/2023 21:35, Luca Weiss wrote:
+> Some GPUs like the Adreno A305B has a patchid higher than 9, in this
+> case 18. Make sure the regexes can account for that.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
 
-In MSM8226v1 there's also a A305B but with chipid 0x03000510 which
-should work with the same configuration but due to lack of hardware for
-testing this is not added.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- drivers/gpu/drm/msm/adreno/a3xx_gpu.c      | 15 ++++++++++++---
- drivers/gpu/drm/msm/adreno/adreno_device.c | 15 +++++++++++----
- drivers/gpu/drm/msm/adreno/adreno_gpu.h    |  5 +++++
- 3 files changed, 28 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/gpu/drm/msm/adreno/a3xx_gpu.c b/drivers/gpu/drm/msm/adreno/a3xx_gpu.c
-index c86b377f6f0d..5fc29801c4c7 100644
---- a/drivers/gpu/drm/msm/adreno/a3xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a3xx_gpu.c
-@@ -134,6 +134,13 @@ static int a3xx_hw_init(struct msm_gpu *gpu)
- 		/* Set up AOOO: */
- 		gpu_write(gpu, REG_A3XX_VBIF_OUT_AXI_AOOO_EN, 0x0000003c);
- 		gpu_write(gpu, REG_A3XX_VBIF_OUT_AXI_AOOO, 0x003c003c);
-+	} else if (adreno_is_a305b(adreno_gpu)) {
-+		gpu_write(gpu, REG_A3XX_VBIF_IN_RD_LIM_CONF0, 0x00181818);
-+		gpu_write(gpu, REG_A3XX_VBIF_IN_WR_LIM_CONF0, 0x00181818);
-+		gpu_write(gpu, REG_A3XX_VBIF_OUT_RD_LIM_CONF0, 0x00000018);
-+		gpu_write(gpu, REG_A3XX_VBIF_OUT_WR_LIM_CONF0, 0x00000018);
-+		gpu_write(gpu, REG_A3XX_VBIF_DDR_OUT_MAX_BURST, 0x00000303);
-+		gpu_write(gpu, REG_A3XX_VBIF_ROUND_ROBIN_QOS_ARB, 0x0003);
- 	} else if (adreno_is_a306(adreno_gpu)) {
- 		gpu_write(gpu, REG_A3XX_VBIF_ROUND_ROBIN_QOS_ARB, 0x0003);
- 		gpu_write(gpu, REG_A3XX_VBIF_OUT_RD_LIM_CONF0, 0x0000000a);
-@@ -230,7 +237,9 @@ static int a3xx_hw_init(struct msm_gpu *gpu)
- 	gpu_write(gpu, REG_A3XX_UCHE_CACHE_MODE_CONTROL_REG, 0x00000001);
- 
- 	/* Enable Clock gating: */
--	if (adreno_is_a306(adreno_gpu))
-+	if (adreno_is_a305b(adreno_gpu))
-+		gpu_write(gpu, REG_A3XX_RBBM_CLOCK_CTL, 0xaaaaaaaa);
-+	else if (adreno_is_a306(adreno_gpu))
- 		gpu_write(gpu, REG_A3XX_RBBM_CLOCK_CTL, 0xaaaaaaaa);
- 	else if (adreno_is_a320(adreno_gpu))
- 		gpu_write(gpu, REG_A3XX_RBBM_CLOCK_CTL, 0xbfffffff);
-@@ -333,7 +342,7 @@ static int a3xx_hw_init(struct msm_gpu *gpu)
- 				AXXX_CP_QUEUE_THRESHOLDS_CSQ_IB1_START(2) |
- 				AXXX_CP_QUEUE_THRESHOLDS_CSQ_IB2_START(6) |
- 				AXXX_CP_QUEUE_THRESHOLDS_CSQ_ST_START(14));
--	} else if (adreno_is_a330(adreno_gpu)) {
-+	} else if (adreno_is_a330(adreno_gpu) || adreno_is_a305b(adreno_gpu)) {
- 		/* NOTE: this (value take from downstream android driver)
- 		 * includes some bits outside of the known bitfields.  But
- 		 * A330 has this "MERCIU queue" thing too, which might
-@@ -559,7 +568,7 @@ struct msm_gpu *a3xx_gpu_init(struct drm_device *dev)
- 		goto fail;
- 
- 	/* if needed, allocate gmem: */
--	if (adreno_is_a330(adreno_gpu)) {
-+	if (adreno_is_a330(adreno_gpu) || adreno_is_a305b(adreno_gpu)) {
- 		ret = adreno_gpu_ocmem_init(&adreno_gpu->base.pdev->dev,
- 					    adreno_gpu, &a3xx_gpu->ocmem);
- 		if (ret)
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c b/drivers/gpu/drm/msm/adreno/adreno_device.c
-index f62ab5257e66..7028d5449956 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_device.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
-@@ -55,10 +55,17 @@ static const struct adreno_info gpulist[] = {
- 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
- 		.init  = a2xx_gpu_init,
- 	}, {
--		.chip_ids = ADRENO_CHIP_IDS(
--			0x03000512,
--			0x03000520
--		),
-+		.chip_ids = ADRENO_CHIP_IDS(0x03000512),
-+		.family = ADRENO_3XX,
-+		.fw = {
-+			[ADRENO_FW_PM4] = "a330_pm4.fw",
-+			[ADRENO_FW_PFP] = "a330_pfp.fw",
-+		},
-+		.gmem  = SZ_128K,
-+		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
-+		.init  = a3xx_gpu_init,
-+	}, {
-+		.chip_ids = ADRENO_CHIP_IDS(0x03000520),
- 		.family = ADRENO_3XX,
- 		.revn  = 305,
- 		.fw = {
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-index 80b3f6312116..c654f21499bb 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
-@@ -247,6 +247,11 @@ static inline bool adreno_is_a305(const struct adreno_gpu *gpu)
- 	return adreno_is_revn(gpu, 305);
- }
- 
-+static inline bool adreno_is_a305b(const struct adreno_gpu *gpu)
-+{
-+	return gpu->info->chip_ids[0] == 0x03000512;
-+}
-+
- static inline bool adreno_is_a306(const struct adreno_gpu *gpu)
- {
- 	/* yes, 307, because a305c is 306 */
-
--- 
-2.43.0
+Best regards,
+Krzysztof
 
