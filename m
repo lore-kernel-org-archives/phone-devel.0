@@ -1,62 +1,61 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786D439E;
-	Sun,  3 Dec 2023 04:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858F1138E;
+	Sun,  3 Dec 2023 04:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D7aICsSM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DA1C433C9;
-	Sun,  3 Dec 2023 04:37:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfmrlXWl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73C80C433CD;
+	Sun,  3 Dec 2023 04:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701578267;
-	bh=efSYakHRaNQ1HmzcXaErAE3GqG/WjaPldXZV31BdrcU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D7aICsSMqliUYyoJB0YbhECQt/0vJdaUvo4Gw9DoqvJfMURFazIoPSSH7pylHfmgM
-	 igKRHYrW8qbRMylp5GSXv6s1KT6BcqyAMEASBqU8Dph5uRuMBvX7kTlQxqNAIa3atB
-	 vUAnUzCjdXgiadkOIcehCupDZ0J/rz8Ws+NvyGr05Cxjo62GTHSDArE0cDnN+6UB6P
-	 KxOkpJtyrQziSvUGabIV2APcP4ICMIWOC5+0uw846pZRJVk5USx0KMDniFN08ZxW0I
-	 KzjrKAUgJLm6Q5MCVeM9BK3ds+4hWQkmMeePw/E9QH7mpnnnO9UNZXUv3Ntf39uIxS
-	 gvM7W7dNYaXhA==
-Date: Sat, 2 Dec 2023 20:41:12 -0800
+	s=k20201202; t=1701579100;
+	bh=ryt2h7SkbYQcn12xnCcjVqqS+Lbdhr5WerU/Zo8DJWY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OfmrlXWlhbIE7h6iKf2cASBdiB80r7n697VPkclNShPdg/V9W7MCrF86RpO8cy3en
+	 sof730zloJV/UmoDUtxDSGQ/nTon0w+LgiWxCpG4y1qn5W/dS0icFU5EbSTDJWuSlJ
+	 jtKKDyC9EIK/INYJx+13z7evbfw67J/LQFDPUsZAQaZ4SST1IWIwlhjj+Q3FKXNCLo
+	 56oj4/EXlAZ8qnVfMwzjXpBhlSsVhtBWPB4ZxsBz6SgJP8Rl0PPlSQqgrcoxBH+k/C
+	 gOAduZNCwFotwCQu6W0BVlJzFjMwSXiYmpANvxucu9qfG1QFuc8yBsIlHuP8w6Pq6+
+	 lMCOJU9LKxN/g==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Andy Gross <agross@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Nitin Rawat <quic_nitirawa@quicinc.com>, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable UFS
-Message-ID: <dutd7zn5avelyujiyb6k64luzu2pqccy6ywhfj52i4g2m6ld47@2aqstxoekqrq>
-References: <20231002-fp5-ufs-v2-1-e2d7de522134@fairphone.com>
+To: Andy Gross <agross@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: dts: qcom: msm8939-longcheer-l9100: Add proximity-near-level
+Date: Sat,  2 Dec 2023 20:54:31 -0800
+Message-ID: <170157925819.1717511.9438209599308488014.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231126-bqm5_prox-v2-1-b7defc3979ac@apitzsch.eu>
+References: <20231126-bqm5_prox-v2-1-b7defc3979ac@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231002-fp5-ufs-v2-1-e2d7de522134@fairphone.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 02, 2023 at 02:30:41PM +0200, Luca Weiss wrote:
-> Enable the UFS phy and controller so that we can access the internal
-> storage of the phone.
-> 
-> At the same time we need to bump the minimum voltage used for UFS VCC,
-> otherwise it doesn't initialize properly. The 2.952V is taken from the
-> vcc-voltage-level property downstream.
-> 
-> See also the following link for more information about the VCCQ/VCCQ2:
-> https://gerrit-public.fairphone.software/plugins/gitiles/kernel/msm-extra/devicetree/+/1590a3739e7dc29d2597307881553236d492f188/fp5/yupik-idp-pm7250b.dtsi#207
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> Depends on: https://lore.kernel.org/linux-arm-msm/20230927081858.15961-1-quic_nitirawa@quicinc.com/
 
-I'd love to merge this patch, but this dependency doesn't seem to make
-progress, please consider fixing up the outstanding feedback and posting
-v5.
+On Sun, 26 Nov 2023 22:46:20 +0100, André Apitzsch wrote:
+> Consider an object near to the sensor when their distance is about 4 cm
+> or below.
+> 
+> 
 
-Regards,
-Bjorn
+Applied, thanks!
+
+[1/1] arm64: dts: qcom: msm8939-longcheer-l9100: Add proximity-near-level
+      commit: fbe0870c48ac84f117860096048055a4f078a976
+
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
