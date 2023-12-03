@@ -1,104 +1,105 @@
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A245A8833;
+	Sun,  3 Dec 2023 11:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="SPC77Gh4"
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C207F2;
-	Sun,  3 Dec 2023 02:38:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1701599894; bh=gfTmLjG+RDZIzwKoJm7kepCtpzSofJnZrPO/EdJCflY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SPC77Gh4dVLSLqgmBDzjfjEiCH0YAYA72E5Uqz01zs41j1FGhhKKokrq96cyY4lji
-	 23C9vqjw9wUbaYKrvtMzXhLF2Q69T5gboN8coWA9Flf4LDIL8ueqoJbDpjiVyvavU2
-	 +FSNkHc+iqOBM29PPUEG3J38MXZaMDG5i1s9EqWc=
-From: Luca Weiss <luca@z3ntu.xyz>
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Andy Gross <agross@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH v2 1/2] arm64: dts: qcom: msm8953: Set initial address for memory
-Date: Sun, 03 Dec 2023 11:38:13 +0100
-Message-ID: <2575326.iZASKD2KPV@z3ntu.xyz>
-In-Reply-To: <t6ckvr7bcpoc3z4cam7bilp67nn6qyvrmnqch6tlkwug7n2neq@32f5mso75fvu>
-References:
- <20231125-msm8953-misc-fixes-v2-0-df86655841d9@z3ntu.xyz>
- <20231125-msm8953-misc-fixes-v2-1-df86655841d9@z3ntu.xyz>
- <t6ckvr7bcpoc3z4cam7bilp67nn6qyvrmnqch6tlkwug7n2neq@32f5mso75fvu>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jNmBJZNv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A2DC433C8;
+	Sun,  3 Dec 2023 11:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701602375;
+	bh=khbZlB+CudlpWOtcypC7aIzJI1JQViaEerLoXBkjgWQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jNmBJZNvjRJCnN+ObC8oLMUvyhaVt+0R8AseNwAN+iRBv99qvZeOI5D3CLwYyBTeh
+	 cyPIuheJ9y1AxJv2ArZyfzVggoM+ipgiEP/QW82jYbzQJQ0qnLEs7uEAEnqoEk8lRb
+	 V24AlYKPLAwcmAiQadAxTNx3wQvxfK3PDCz2uLyBiXA1krhcWSkc1+YBpUEIFs0Qcm
+	 XRKOmTVe+rePAA/R/yQd/W49W94uF2BRpaF6G8yYh/tagnNCPf711ENN8oJWVyUklk
+	 av0Y3/sDQjZyCRs1hn4AL9VNio5GtZ5R0bGo9R53BPMEI9NY0Ba+huHD+H7OIjRz7A
+	 MkuYtYlpPmi/A==
+Date: Sun, 3 Dec 2023 11:19:30 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
+Cc: Markuss Broks <markuss.broks@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Henrik Rydberg <rydberg@bitmath.org>, linux-input@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	Karel Balej <balejk@matfyz.cz>
+Subject: Re: [PATCH v3 4/5] dt-bindings: input/touchscreen: imagis: add
+ compatible for IST3032C
+Message-ID: <20231203-mundane-riches-b6e4ef157384@spud>
+References: <20231202125948.10345-1-karelb@gimli.ms.mff.cuni.cz>
+ <20231202125948.10345-5-karelb@gimli.ms.mff.cuni.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-
-On Sonntag, 3. Dezember 2023 05:20:23 CET Bjorn Andersson wrote:
-> On Sat, Nov 25, 2023 at 01:19:27PM +0100, Luca Weiss wrote:
-> > The dtbs_check really doesn't like having memory without reg set.
-> > 
-> > The base address depends on the amount of RAM you have:
-> >   <= 2.00 GiB RAM: 0x80000000
-> >   
-> >    = 3.00 GiB RAM: 0x40000000
-> >    = 3.75 GiB RAM: 0x10000000
-> >  
-> >  (more does not fit into the 32-bit physical address space)
-> > 
-> > So, let's pick one of the values, 0x10000000 which is used on devices
-> > with 3.75 GiB RAM. Since the bootloader will update it to what's present
-> > on the device it doesn't matter too much.
-> > 
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> > 
-> >  arch/arm64/boot/dts/qcom/msm8953.dtsi | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> > b/arch/arm64/boot/dts/qcom/msm8953.dtsi index e7de7632669a..a3ba24ca599b
-> > 100644
-> > --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> > +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> > @@ -174,10 +174,10 @@ scm: scm {
-> > 
-> >  		};
-> >  	
-> >  	};
-> > 
-> > -	memory {
-> 
-> Wouldn't it be sufficient to add @0 here, to please dtbs_check?
-
-The checker itself also seems to be okay with memory@0 and no other change,
-but there's this warning with W=1
-
-arch/arm64/boot/dts/qcom/msm8953.dtsi:177.11-181.4: Warning (unique_unit_address_if_enabled): /memory@0: duplicate unit-address (also used in node /soc@0)
-
-So probably we should still try to put it at a reasonable address like
-0x10000000?
-
-Regards
-Luca
-
-> 
-> Regards,
-> Bjorn
-> 
-> > +	memory@10000000 {
-> > 
-> >  		device_type = "memory";
-> >  		/* We expect the bootloader to fill in the reg */
-> > 
-> > -		reg = <0 0 0 0>;
-> > +		reg = <0 0x10000000 0 0>;
-> > 
-> >  	};
-> >  	
-> >  	pmu {
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="BTVe8SmajlARbciW"
+Content-Disposition: inline
+In-Reply-To: <20231202125948.10345-5-karelb@gimli.ms.mff.cuni.cz>
 
 
+--BTVe8SmajlARbciW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, Dec 02, 2023 at 01:48:35PM +0100, Karel Balej wrote:
+> From: Karel Balej <balejk@matfyz.cz>
+>=20
+> Document possible usage of the Imagis driver with the IST3032C
+> touchscreen.
 
+Please leave mention of the driver out of the binding patch (we deal
+only with the hardware here) and instead describe what is incompatibly
+different between these two devices.
+
+Thanks,
+Conor.
+
+>=20
+> Signed-off-by: Karel Balej <balejk@matfyz.cz>
+> ---
+>  .../devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml   | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/imagis,i=
+st3038c.yaml b/Documentation/devicetree/bindings/input/touchscreen/imagis,i=
+st3038c.yaml
+> index b5372c4eae56..2af71cbcc97d 100644
+> --- a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c=
+=2Eyaml
+> +++ b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c=
+=2Eyaml
+> @@ -18,6 +18,7 @@ properties:
+> =20
+>    compatible:
+>      enum:
+> +      - imagis,ist3032c
+>        - imagis,ist3038b
+>        - imagis,ist3038c
+> =20
+> --=20
+> 2.43.0
+>=20
+
+--BTVe8SmajlARbciW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZWxkQQAKCRB4tDGHoIJi
+0uU4AQDTvFOKjE2bh6MzjfwEJnPy0DVF+pBxGiHPa9Xd1r4gMwEAyprc91Hn2MfG
+eWzTwFa8NMflUIYdHWmrAXPq84fGVA8=
+=7rqZ
+-----END PGP SIGNATURE-----
+
+--BTVe8SmajlARbciW--
