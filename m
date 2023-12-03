@@ -1,63 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44471258C;
-	Sun,  3 Dec 2023 04:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iWQUQqql"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D63BC433CB;
-	Sun,  3 Dec 2023 04:51:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701579118;
-	bh=tpslFBFUdoUYnmtU0ha+7cWVGnpRVis8xcl35eJNYRg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iWQUQqqlFuCzGgB4OUGFfZcsAXxVe3bpeoLJjZ9UVjzfUBjgUgDE+Q5AirQDIhCRA
-	 8vC6N9fYnWV8z5qe33y71O+/AIHIxXGJNLP9zsbDWjKHpeLFxItst3HovbqBD8yzXM
-	 oIoZTvPuEScw4CvRmN6RzfOnARv0/KSh8q5iVn89DZyqyJWBnODLMSWconIjaLpwWO
-	 cUq1T25ntgxwKs9NrB3LlunsYbtOESTW0QN/nDvRBd+k6KAQrVPRN0ntfdurx5Wo04
-	 42kI5pMbq8ERjdV1Pe0oTIW85o2BNshKdTm0q5i2zsFEzHeEO4B0nanONrKBo3IsRQ
-	 mu34Lga2xkqIA==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Andy Gross <agross@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Lukas Walter <lukas.walter@aceart.de>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: (subset) [PATCH 1/2] dt-bindings: arm: qcom: Add Huawei Honor 5X / GR5 (2016)
-Date: Sat,  2 Dec 2023 20:54:45 -0800
-Message-ID: <170157925830.1717511.2933416466366395463.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231021143025.77088-1-lukas.walter@aceart.de>
-References: <20231021143025.77088-1-lukas.walter@aceart.de>
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="YVpST0YX"
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFEC1F3;
+	Sun,  3 Dec 2023 02:12:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1701598336; bh=D98OLD1PzU0av069+SEqgQFkN/5n2xG9ugwljKPGRv4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=YVpST0YXbsjwdBdARgyDVsq31Bsq3mJCmHCXc43oKUXYpvhJymXCPUSHgVxUoSSS7
+	 MwmEdqKh5KpfwnKvd9+51+IoQdn7H+ERRpBUQZrRYvtEtT0A+EbWfo8r49po5ZQENi
+	 2zGTEIj0lViDIFGbCY4dlpMpozKltr4ik5wieMYw=
+From: Luca Weiss <luca@z3ntu.xyz>
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Andy Gross <agross@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Wim Van Sebroeck <wim@linux-watchdog.org>,
+ Guenter Roeck <linux@roeck-us.net>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Sai Prakash Ranjan <quic_saipraka@quicinc.com>,
+ Bjorn Andersson <andersson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-watchdog@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Matti =?ISO-8859-1?Q?Lehtim=E4ki?= <matti.lehtimaki@gmail.com>
+Subject: Re: (subset) [PATCH 0/3] Add watchdog nodes to msm8226 & msm8974
+Date: Sun, 03 Dec 2023 11:12:15 +0100
+Message-ID: <8630951.T7Z3S40VBb@z3ntu.xyz>
+In-Reply-To: <170157925797.1717511.7301998654173050568.b4-ty@kernel.org>
+References:
+ <20231011-msm8226-msm8974-watchdog-v1-0-2c472818fbce@z3ntu.xyz>
+ <170157925797.1717511.7301998654173050568.b4-ty@kernel.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-
-On Sat, 21 Oct 2023 16:30:24 +0200, Lukas Walter wrote:
-> Add a compatible for Huawei Honor 5X / GR5 (2016).
+On Sonntag, 3. Dezember 2023 05:54:39 CET Bjorn Andersson wrote:
+> On Wed, 11 Oct 2023 18:33:12 +0200, Luca Weiss wrote:
+> > Document the compatible for the watchdog found on both SoCs, and add
+> > them to the SoC dtsi file. And especially for the case where the
+> > bootloader has already enabled the watchdog we need to start petting it
+> > on time, otherwise the system gets rebooted.
+> > 
+> > It's worth noting that the watchdog behaves a bit unexpectedly.
+> > It appears the watchdog counts down significantly slower when there's no
+> > load on the system and can last far longer than 30 seconds until they
+> > bark. Only when putting load on the system, e.g. with stress-ng does the
+> > watchdog interrupt fire and kill the system within an expected amount of
+> > time.
+> > 
+> > [...]
 > 
+> Applied, thanks!
 > 
+> [3/3] ARM: dts: qcom: msm8974: Add watchdog node
+>       commit: 95053f6bc8ffca438a261400d7c06bd74e3f106e
 
-Applied, thanks!
+Hi Bjorn,
 
-[1/2] dt-bindings: arm: qcom: Add Huawei Honor 5X / GR5 (2016)
-      commit: 01a3c3739183003640f8468ecf75d7eeb15f808a
-[2/2] arm64: dts: qcom: msm8939-huawei-kiwi: Add initial device tree
-      commit: cff9a76f306bfb6262153c0da2029071036b9a04
+Any reason you didn't pick up the msm8226 patch? Doesn't seem to be just your
+ty email, I only see the msm8974 patch in 
+https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/log/?h=arm32-for-6.8
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+Regards
+Luca
+
+> 
+> Best regards,
+
+
+
+
