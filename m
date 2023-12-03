@@ -1,105 +1,232 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A22C8833;
-	Sun,  3 Dec 2023 11:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hsqL7lj5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7427C433C8;
-	Sun,  3 Dec 2023 11:20:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701602443;
-	bh=/NTGULGpy2g2ovireCjJM0D09EDli3mHSEMJDzchZ64=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hsqL7lj5zCq6kpuOWvbc80hbFe2R9R4Eew4D7sxnfIoGDGpHUBk+SVFQMhPktTBq0
-	 Zfz4bujycpGVLHNkQQRYfY2COEFAiSRF+EP/FztuNZwZs5/F5/mCyyqQiY024MiwZg
-	 7iEjgR9d+cYiGKC8hbwUKXMEGJNFZ7jg865hM1VPdt4gPuMuRnHBpKOaIIcD8qv2D1
-	 ZGCEWjbe8Ef7l7+0qhnIZPq8PIXJud4H4LdLMKAZZbLDoWHdznXkB9Vlf6xQdZX7Vc
-	 aoTDiGLFEEBrEkLhVbbIZ4osX3p2Iq0NN4uugJ3JQ8OpshZ2DLWDG7heLNxzyFB/wW
-	 O4mKXKLUfFzRA==
-Date: Sun, 3 Dec 2023 11:20:37 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-Cc: Markuss Broks <markuss.broks@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Henrik Rydberg <rydberg@bitmath.org>, linux-input@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	Karel Balej <balejk@matfyz.cz>
-Subject: Re: [PATCH v3 2/5] dt-bindings: input/touchscreen: Add compatible
- for IST3038B
-Message-ID: <20231203-outskirts-reformat-e0a833903841@spud>
-References: <20231202125948.10345-1-karelb@gimli.ms.mff.cuni.cz>
- <20231202125948.10345-3-karelb@gimli.ms.mff.cuni.cz>
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="Da6LsnHK"
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 313B5FA;
+	Sun,  3 Dec 2023 06:19:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1701613175; bh=zG1QlBY918k0cqDNZJiK3uWxGAzr0xCzGr1cWRkdLA4=;
+	h=From:Date:Subject:To:Cc;
+	b=Da6LsnHK7v6Halu26lJ10J8D8lS3Zq0vlMO3ScFXGj8U4ObKw8+3xfDM25rMy7Tfh
+	 hmadtT5G/lEfzbiXUqkn3WkuBaDSIPRpiJYDyCW22qTwgrp29b4e/lAwnYm1KD1sZf
+	 KFgN+MhZ4eiDEjWxT2ZX6/Myb4XcuAKnJkhZA2iM=
+From: Luca Weiss <luca@z3ntu.xyz>
+Date: Sun, 03 Dec 2023 15:19:18 +0100
+Subject: [PATCH] ARM: dts: qcom: Disable pm8941 & pm8226 smbb charger by
+ default
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="6caWOJCI2vW+9aPg"
-Content-Disposition: inline
-In-Reply-To: <20231202125948.10345-3-karelb@gimli.ms.mff.cuni.cz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231203-smbb-pm8941-pm8226-v1-1-9ad75909604b@z3ntu.xyz>
+X-B4-Tracking: v=1; b=H4sIAGWObGUC/x2MQQqAIBAAvxJ7TtA1TPtKdLDaag9aKEQQ/T3rN
+ Mxh5oZMiSlDV92Q6OTMeyyi6gqmzceVBM/FASVqhVKLHMZRHMG6Rn1ANMJN5OdWaYPWQwmPRAt
+ f/7QfnucFwEEPImQAAAA=
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Bryant Mairs <bryant@mai.rs>, 
+ Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6633; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=Jjda69uIJewreP8b7act6A6XqbWWoTpW68t9pfVJZuI=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlbI5qzJPA1+NyNWogHqHuPmQC+gcn6l916Wga9
+ 6IQHoDf/QyJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZWyOagAKCRBy2EO4nU3X
+ VqOJD/9f1qNhZAEwfInHziEJpqmZX2q5EB50sTwcvUr1N7i4u01q8VqrJGuu6jXQm6zIFyjFOHu
+ vg4kUJp1r2gJkg50iZU0uDpdmUJpxQ/opmUPpHlYvPw/BZ9s1PY9F/M+l8CNon/rMOREPHA/Kzj
+ zpwrZ7wA5baoAtRWkSOImrbmEd/IPaBq+iaH2Celcar9G0X4sDUIgavJD0qA8jsBxyo82csZFs5
+ bKZtDkHT6/vhZ3EclV79bqFSAeXBuW6V3FwaqMpFIBnoJ7JDzPHcxpzjVeAX451wTtKPJxGq+7A
+ ZDiSaShCFZDq2kxPinJxdwhRcacIAPhClU9hECOS0UyuwDYQ6mkQ/euz48tOHBW5Quo0q81nyJK
+ BHauowsRak5NHvghPAyLHKgykzsGIQqu3NLYSk820NrOcSOZf4P1U88b+hipb38+Jk3yYjDmUr9
+ dyRUaR6VGlm3ZNxuit7l5EOBxUCGX5jY102aZksudfau9NkyhkK0URftSGvJd3yKBsyYgi3V6FH
+ KmK8O9Gjw9uJV7w/dFfh+kGZjgECwWCpR+b+HnV6la3rLr3rXKkTuZ6YyRv0q06RLatZYX6Qaut
+ 0HQr5JEOx/+YEQbAf0PHHd+dha46wdI0Jcm15ozmkrYZXQIR6+toDTDTuGl8JBruNvIEqIS0/bV
+ 1rAUHJOKsIf8Q1Q==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
+From: Bryant Mairs <bryant@mai.rs>
 
---6caWOJCI2vW+9aPg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Some platforms don't use the built-in charging hardware (e.g. milletwifi).
+As this is an optional peripheral, default it to off.
 
-On Sat, Dec 02, 2023 at 01:48:33PM +0100, Karel Balej wrote:
-> From: Markuss Broks <markuss.broks@gmail.com>
->=20
-> Imagis IST3038B is a variant (firmware?) of Imagis IST3038 IC,
-> add the compatible for it to the IST3038C bindings.
+Keep it enabled for all other boards that use smbb.
 
-This one is better, but would be well served by mentioning what
-specifically is different (register addresses or firmware commands?)
+Signed-off-by: Bryant Mairs <bryant@mai.rs>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ arch/arm/boot/dts/qcom/pm8226.dtsi                                    | 2 ++
+ arch/arm/boot/dts/qcom/pm8941.dtsi                                    | 2 ++
+ arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts                  | 2 ++
+ arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts               | 2 ++
+ arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts                      | 2 ++
+ arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts                   | 4 ++++
+ arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts                     | 2 ++
+ arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi            | 2 ++
+ arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts              | 2 ++
+ arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts              | 4 ++++
+ arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts | 2 ++
+ 11 files changed, 26 insertions(+)
 
-Cheers,
-Conor.
+diff --git a/arch/arm/boot/dts/qcom/pm8226.dtsi b/arch/arm/boot/dts/qcom/pm8226.dtsi
+index 2413778f3715..2fd4f135ed84 100644
+--- a/arch/arm/boot/dts/qcom/pm8226.dtsi
++++ b/arch/arm/boot/dts/qcom/pm8226.dtsi
+@@ -82,6 +82,8 @@ smbb: charger@1000 {
+ 					  "usb-valid",
+ 					  "dc-valid";
+ 
++			status = "disabled";
++
+ 			chg_otg: otg-vbus { };
+ 		};
+ 
+diff --git a/arch/arm/boot/dts/qcom/pm8941.dtsi b/arch/arm/boot/dts/qcom/pm8941.dtsi
+index ed0ba591c755..aca0052a02b7 100644
+--- a/arch/arm/boot/dts/qcom/pm8941.dtsi
++++ b/arch/arm/boot/dts/qcom/pm8941.dtsi
+@@ -99,6 +99,8 @@ smbb: charger@1000 {
+ 
+ 			usb-otg-in-supply = <&pm8941_5vs1>;
+ 
++			status = "disabled";
++
+ 			chg_otg: otg-vbus { };
+ 		};
+ 
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts b/arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts
+index a39f5a161b03..a2ca456012f1 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts
+@@ -253,6 +253,8 @@ &smbb {
+ 	qcom,fast-charge-high-threshold-voltage = <4400000>;
+ 	qcom,auto-recharge-threshold-voltage = <4300000>;
+ 	qcom,minimum-input-voltage = <4400000>;
++
++	status = "okay";
+ };
+ 
+ &tlmm {
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts b/arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts
+index 59b218042d32..ac228965a485 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts
+@@ -335,6 +335,8 @@ &smbb {
+ 	qcom,fast-charge-current-limit = <300000>;
+ 	qcom,fast-charge-safe-current = <600000>;
+ 	qcom,auto-recharge-threshold-voltage = <4240000>;
++
++	status = "okay";
+ };
+ 
+ &tlmm {
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts b/arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts
+index feb78afef3a6..0a1fd5eb3c6d 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts
+@@ -292,6 +292,8 @@ &smbb {
+ 	qcom,fast-charge-high-threshold-voltage = <4350000>;
+ 	qcom,auto-recharge-threshold-voltage = <4240000>;
+ 	qcom,minimum-input-voltage = <4450000>;
++
++	status = "okay";
+ };
+ 
+ &tlmm {
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts b/arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts
+index d7fb3e0e8886..6fce0112361f 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts
+@@ -430,6 +430,10 @@ &sdhc_2 {
+ 	pinctrl-1 = <&sdc2_off>;
+ };
+ 
++&smbb {
++	status = "okay";
++};
++
+ &tlmm {
+ 	sdc1_on: sdc1-on-state {
+ 		clk-pins {
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts b/arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts
+index 9e90330a6231..ed328b24335f 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts
+@@ -355,6 +355,8 @@ &smbb {
+ 	qcom,fast-charge-high-threshold-voltage = <4350000>;
+ 	qcom,auto-recharge-threshold-voltage = <4300000>;
+ 	qcom,minimum-input-voltage = <4300000>;
++
++	status = "okay";
+ };
+ 
+ &usb {
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi
+index a43341ae4495..94cbad81379f 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi
+@@ -452,6 +452,8 @@ &smbb {
+ 	qcom,fast-charge-low-threshold-voltage = <3400000>;
+ 	qcom,auto-recharge-threshold-voltage = <4200000>;
+ 	qcom,minimum-input-voltage = <4300000>;
++
++	status = "okay";
+ };
+ 
+ &tlmm {
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts
+index 66c422004dcd..fe227fd3f908 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts
+@@ -408,6 +408,8 @@ &smbb {
+ 	qcom,fast-charge-high-threshold-voltage = <4350000>;
+ 	qcom,auto-recharge-threshold-voltage = <4240000>;
+ 	qcom,minimum-input-voltage = <4450000>;
++
++	status = "okay";
+ };
+ 
+ &tlmm {
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
+index 6d1412aec45a..4c8edadea0ac 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
+@@ -460,6 +460,10 @@ &sdhc_1 {
+ 	status = "okay";
+ };
+ 
++&smbb {
++	status = "okay";
++};
++
+ &tlmm {
+ 	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
+ 		pins = "gpio68";
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+index 818ff5835031..7c6fe442b559 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+@@ -585,6 +585,8 @@ &smbb {
+ 	qcom,fast-charge-low-threshold-voltage = <3400000>;
+ 	qcom,auto-recharge-threshold-voltage = <4200000>;
+ 	qcom,minimum-input-voltage = <4300000>;
++
++	status = "okay";
+ };
+ 
+ &tlmm {
 
->=20
-> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
-> Signed-off-by: Karel Balej <balejk@matfyz.cz>
-> ---
->  .../devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml   | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/input/touchscreen/imagis,i=
-st3038c.yaml b/Documentation/devicetree/bindings/input/touchscreen/imagis,i=
-st3038c.yaml
-> index 0d6b033fd5fb..b5372c4eae56 100644
-> --- a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c=
-=2Eyaml
-> +++ b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c=
-=2Eyaml
-> @@ -18,6 +18,7 @@ properties:
-> =20
->    compatible:
->      enum:
-> +      - imagis,ist3038b
->        - imagis,ist3038c
-> =20
->    reg:
-> --=20
-> 2.43.0
->=20
+---
+base-commit: fe14587be497254eb07c5c8aa1c799bde2abce39
+change-id: 20231203-smbb-pm8941-pm8226-9cead713628a
 
---6caWOJCI2vW+9aPg
-Content-Type: application/pgp-signature; name="signature.asc"
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZWxkhQAKCRB4tDGHoIJi
-0lSaAQCCXeTJp1KVWGirHD7j+2SSQbVzgYBH/OCml23PLQVLxgD/bg9V/Fb+ZhuK
-eozhGuWxjThmtH5+WdaZmg3pMw6SXwg=
-=RYnA
------END PGP SIGNATURE-----
-
---6caWOJCI2vW+9aPg--
