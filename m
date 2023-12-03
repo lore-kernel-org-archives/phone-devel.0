@@ -1,18 +1,17 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="Da6LsnHK"
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="fgQGzSbl"
 Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 313B5FA;
-	Sun,  3 Dec 2023 06:19:38 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A11C3C8;
+	Sun,  3 Dec 2023 14:38:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1701613175; bh=zG1QlBY918k0cqDNZJiK3uWxGAzr0xCzGr1cWRkdLA4=;
-	h=From:Date:Subject:To:Cc;
-	b=Da6LsnHK7v6Halu26lJ10J8D8lS3Zq0vlMO3ScFXGj8U4ObKw8+3xfDM25rMy7Tfh
-	 hmadtT5G/lEfzbiXUqkn3WkuBaDSIPRpiJYDyCW22qTwgrp29b4e/lAwnYm1KD1sZf
-	 KFgN+MhZ4eiDEjWxT2ZX6/Myb4XcuAKnJkhZA2iM=
+	t=1701643113; bh=ZXImSee1040m6vOmaaU/BKx1+hi5aIqaEquWy17f6DE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=fgQGzSblF9Yb28DXySBw5+lW01uS1JddYjg3NjXgZExpzYly9v1P1qF2ZecgwRe6a
+	 CcgZifnA+pFs2Qb9blRcZ+HcUScZOhngBvWLq6l7S/WbNoYHQJvaOC7A0GaYPaADjY
+	 2noswpiIFwY6fRmcZ3nD75dRJYKmCI/qV7T4uwFA=
 From: Luca Weiss <luca@z3ntu.xyz>
-Date: Sun, 03 Dec 2023 15:19:18 +0100
-Subject: [PATCH] ARM: dts: qcom: Disable pm8941 & pm8226 smbb charger by
- default
+Date: Sun, 03 Dec 2023 23:38:18 +0100
+Subject: [PATCH 2/2] ARM: dts: qcom: msm8226: Add CPU and SAW/ACC nodes
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -21,212 +20,156 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231203-smbb-pm8941-pm8226-v1-1-9ad75909604b@z3ntu.xyz>
-X-B4-Tracking: v=1; b=H4sIAGWObGUC/x2MQQqAIBAAvxJ7TtA1TPtKdLDaag9aKEQQ/T3rN
- Mxh5oZMiSlDV92Q6OTMeyyi6gqmzceVBM/FASVqhVKLHMZRHMG6Rn1ANMJN5OdWaYPWQwmPRAt
- f/7QfnucFwEEPImQAAAA=
+Message-Id: <20231203-msm8226-cpu-v1-2-d18e83340b32@z3ntu.xyz>
+References: <20231203-msm8226-cpu-v1-0-d18e83340b32@z3ntu.xyz>
+In-Reply-To: <20231203-msm8226-cpu-v1-0-d18e83340b32@z3ntu.xyz>
 To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
  Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
  Conor Dooley <conor+dt@kernel.org>
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Bryant Mairs <bryant@mai.rs>, 
- Luca Weiss <luca@z3ntu.xyz>
+ linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>, 
+ Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6633; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=Jjda69uIJewreP8b7act6A6XqbWWoTpW68t9pfVJZuI=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlbI5qzJPA1+NyNWogHqHuPmQC+gcn6l916Wga9
- 6IQHoDf/QyJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZWyOagAKCRBy2EO4nU3X
- VqOJD/9f1qNhZAEwfInHziEJpqmZX2q5EB50sTwcvUr1N7i4u01q8VqrJGuu6jXQm6zIFyjFOHu
- vg4kUJp1r2gJkg50iZU0uDpdmUJpxQ/opmUPpHlYvPw/BZ9s1PY9F/M+l8CNon/rMOREPHA/Kzj
- zpwrZ7wA5baoAtRWkSOImrbmEd/IPaBq+iaH2Celcar9G0X4sDUIgavJD0qA8jsBxyo82csZFs5
- bKZtDkHT6/vhZ3EclV79bqFSAeXBuW6V3FwaqMpFIBnoJ7JDzPHcxpzjVeAX451wTtKPJxGq+7A
- ZDiSaShCFZDq2kxPinJxdwhRcacIAPhClU9hECOS0UyuwDYQ6mkQ/euz48tOHBW5Quo0q81nyJK
- BHauowsRak5NHvghPAyLHKgykzsGIQqu3NLYSk820NrOcSOZf4P1U88b+hipb38+Jk3yYjDmUr9
- dyRUaR6VGlm3ZNxuit7l5EOBxUCGX5jY102aZksudfau9NkyhkK0URftSGvJd3yKBsyYgi3V6FH
- KmK8O9Gjw9uJV7w/dFfh+kGZjgECwWCpR+b+HnV6la3rLr3rXKkTuZ6YyRv0q06RLatZYX6Qaut
- 0HQr5JEOx/+YEQbAf0PHHd+dha46wdI0Jcm15ozmkrYZXQIR6+toDTDTuGl8JBruNvIEqIS0/bV
- 1rAUHJOKsIf8Q1Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3104; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=K8oNPyYoh95lxlCaNrRZ4BbJh5I78RzGRE/djtKa5AE=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlbQNnlpGEDrhxMsLcfteE5SsQznX/CWXv4W+z4
+ Kxn9WjE4aCJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZW0DZwAKCRBy2EO4nU3X
+ VnfaD/95qJ9lWfmpkoNQ/PGuXOAVO2/jRkaARw3B7LxXIeYlP2Slc59CoYNMo/Ap4RvEqZz3Hkc
+ 0N2vUzic/X43TVrePWBKR8elWrMBAAhNgvOBBqVfoOJSdghFSwA47cVPelLrp2XDecjmdBZfPjJ
+ HIgrg9gIe41ObPIp0U3LZyxbPC72kMY5fT5FipUzJzEkG/MEi88zVoru0v74hmoZAl8RICuQRiU
+ 4kQQku31VXdgiBFJzpep4jqEMEFlV5qpA/jPzkgOoBuISdrHIVc6RqHMzP5M5XPuVrksJKFJB/j
+ CTuoWC14K7xLpRgY2oTIRgk1sk9uh9AvNdJLP2IMhpkFrRzrVtEEbrBXyEQgPbGZszINs8uMyn8
+ DGq9ZxdBlI9SQrZnMR3grIS95nX4AloWOaWIlrGNcABfNMCH927JMSx/LKIQooPVVVEI0MnWO9w
+ 8WNDKi09zgR0llHr9uxnGSpFrdhaGffE93aqIW1gJB8uedq6WtXYz5ThFy7Ldf1GRCnEN7+IeCn
+ Vgk0Kj5w5t9JEdDMeLJH8UDtVxr6CyF3vNMteYKdrJ7BEtlbLHlvVZn6D4Nv3BTCkF+/RY3huvk
+ 6oMVKUjLLn8y0uOiS1V3phnfTfWuithGVlLTbt4D+ND45i3o8EkGU5PrAzx1Rrcwdg0QX0wTU2z
+ Ft/t2yUUY/StDNQ==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-From: Bryant Mairs <bryant@mai.rs>
+From: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
 
-Some platforms don't use the built-in charging hardware (e.g. milletwifi).
-As this is an optional peripheral, default it to off.
+Add CPU and SAW/ACC nodes to enable SMP on MSM8226.
 
-Keep it enabled for all other boards that use smbb.
-
-Signed-off-by: Bryant Mairs <bryant@mai.rs>
+Signed-off-by: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
+[luca: update some nodes to fix dtbs_check errors, reorder, cleanup]
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- arch/arm/boot/dts/qcom/pm8226.dtsi                                    | 2 ++
- arch/arm/boot/dts/qcom/pm8941.dtsi                                    | 2 ++
- arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts                  | 2 ++
- arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts               | 2 ++
- arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts                      | 2 ++
- arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts                   | 4 ++++
- arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts                     | 2 ++
- arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi            | 2 ++
- arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts              | 2 ++
- arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts              | 4 ++++
- arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts | 2 ++
- 11 files changed, 26 insertions(+)
+ arch/arm/boot/dts/qcom/qcom-msm8226.dtsi | 91 ++++++++++++++++++++++++++++++++
+ 1 file changed, 91 insertions(+)
 
-diff --git a/arch/arm/boot/dts/qcom/pm8226.dtsi b/arch/arm/boot/dts/qcom/pm8226.dtsi
-index 2413778f3715..2fd4f135ed84 100644
---- a/arch/arm/boot/dts/qcom/pm8226.dtsi
-+++ b/arch/arm/boot/dts/qcom/pm8226.dtsi
-@@ -82,6 +82,8 @@ smbb: charger@1000 {
- 					  "usb-valid",
- 					  "dc-valid";
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
+index 8757bc0c8a0f..28abaed4dd08 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
+@@ -34,6 +34,57 @@ sleep_clk: sleep_clk {
+ 		};
+ 	};
  
-+			status = "disabled";
++	cpus {
++		#address-cells = <1>;
++		#size-cells = <0>;
 +
- 			chg_otg: otg-vbus { };
++		CPU0: cpu@0 {
++			compatible = "arm,cortex-a7";
++			enable-method = "qcom,msm8226-smp";
++			device_type = "cpu";
++			reg = <0>;
++			next-level-cache = <&L2>;
++			qcom,acc = <&acc0>;
++			qcom,saw = <&saw0>;
++		};
++
++		CPU1: cpu@1 {
++			compatible = "arm,cortex-a7";
++			enable-method = "qcom,msm8226-smp";
++			device_type = "cpu";
++			reg = <1>;
++			next-level-cache = <&L2>;
++			qcom,acc = <&acc1>;
++			qcom,saw = <&saw1>;
++		};
++
++		CPU2: cpu@2 {
++			compatible = "arm,cortex-a7";
++			enable-method = "qcom,msm8226-smp";
++			device_type = "cpu";
++			reg = <2>;
++			next-level-cache = <&L2>;
++			qcom,acc = <&acc2>;
++			qcom,saw = <&saw2>;
++		};
++
++		CPU3: cpu@3 {
++			compatible = "arm,cortex-a7";
++			enable-method = "qcom,msm8226-smp";
++			device_type = "cpu";
++			reg = <3>;
++			next-level-cache = <&L2>;
++			qcom,acc = <&acc3>;
++			qcom,saw = <&saw3>;
++		};
++
++		L2: l2-cache {
++			compatible = "cache";
++			cache-level = <2>;
++			cache-unified;
++		};
++	};
++
+ 	firmware {
+ 		scm {
+ 			compatible = "qcom,scm-msm8226", "qcom,scm";
+@@ -243,6 +294,46 @@ frame@f9028000 {
+ 			};
  		};
  
-diff --git a/arch/arm/boot/dts/qcom/pm8941.dtsi b/arch/arm/boot/dts/qcom/pm8941.dtsi
-index ed0ba591c755..aca0052a02b7 100644
---- a/arch/arm/boot/dts/qcom/pm8941.dtsi
-+++ b/arch/arm/boot/dts/qcom/pm8941.dtsi
-@@ -99,6 +99,8 @@ smbb: charger@1000 {
- 
- 			usb-otg-in-supply = <&pm8941_5vs1>;
- 
-+			status = "disabled";
++		acc0: power-manager@f9088000 {
++			compatible = "qcom,kpss-acc-v2";
++			reg = <0xf9088000 0x1000>, <0xf9008000 0x1000>;
++		};
 +
- 			chg_otg: otg-vbus { };
- 		};
- 
-diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts b/arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts
-index a39f5a161b03..a2ca456012f1 100644
---- a/arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts
-@@ -253,6 +253,8 @@ &smbb {
- 	qcom,fast-charge-high-threshold-voltage = <4400000>;
- 	qcom,auto-recharge-threshold-voltage = <4300000>;
- 	qcom,minimum-input-voltage = <4400000>;
++		saw0: power-manager@f9089000 {
++			compatible = "qcom,msm8226-saw2-v2.1-cpu", "qcom,saw2";
++			reg = <0xf9089000 0x1000>;
++		};
 +
-+	status = "okay";
- };
- 
- &tlmm {
-diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts b/arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts
-index 59b218042d32..ac228965a485 100644
---- a/arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts
-@@ -335,6 +335,8 @@ &smbb {
- 	qcom,fast-charge-current-limit = <300000>;
- 	qcom,fast-charge-safe-current = <600000>;
- 	qcom,auto-recharge-threshold-voltage = <4240000>;
++		acc1: power-manager@f9098000 {
++			compatible = "qcom,kpss-acc-v2";
++			reg = <0xf9098000 0x1000>, <0xf9008000 0x1000>;
++		};
 +
-+	status = "okay";
- };
- 
- &tlmm {
-diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts b/arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts
-index feb78afef3a6..0a1fd5eb3c6d 100644
---- a/arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts
-@@ -292,6 +292,8 @@ &smbb {
- 	qcom,fast-charge-high-threshold-voltage = <4350000>;
- 	qcom,auto-recharge-threshold-voltage = <4240000>;
- 	qcom,minimum-input-voltage = <4450000>;
++		saw1: power-manager@f9099000 {
++			compatible = "qcom,msm8226-saw2-v2.1-cpu", "qcom,saw2";
++			reg = <0xf9099000 0x1000>;
++		};
 +
-+	status = "okay";
- };
- 
- &tlmm {
-diff --git a/arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts b/arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts
-index d7fb3e0e8886..6fce0112361f 100644
---- a/arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts
-@@ -430,6 +430,10 @@ &sdhc_2 {
- 	pinctrl-1 = <&sdc2_off>;
- };
- 
-+&smbb {
-+	status = "okay";
-+};
++		acc2: power-manager@f90a8000 {
++			compatible = "qcom,kpss-acc-v2";
++			reg = <0xf90a8000 0x1000>, <0xf9008000 0x1000>;
++		};
 +
- &tlmm {
- 	sdc1_on: sdc1-on-state {
- 		clk-pins {
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts b/arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts
-index 9e90330a6231..ed328b24335f 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8926-htc-memul.dts
-@@ -355,6 +355,8 @@ &smbb {
- 	qcom,fast-charge-high-threshold-voltage = <4350000>;
- 	qcom,auto-recharge-threshold-voltage = <4300000>;
- 	qcom,minimum-input-voltage = <4300000>;
++		saw2: power-manager@f90a9000 {
++			compatible = "qcom,msm8226-saw2-v2.1-cpu", "qcom,saw2";
++			reg = <0xf90a9000 0x1000>;
++		};
 +
-+	status = "okay";
- };
- 
- &usb {
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi
-index a43341ae4495..94cbad81379f 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi
-@@ -452,6 +452,8 @@ &smbb {
- 	qcom,fast-charge-low-threshold-voltage = <3400000>;
- 	qcom,auto-recharge-threshold-voltage = <4200000>;
- 	qcom,minimum-input-voltage = <4300000>;
++		acc3: power-manager@f90b8000 {
++			compatible = "qcom,kpss-acc-v2";
++			reg = <0xf90b8000 0x1000>, <0xf9008000 0x1000>;
++		};
 +
-+	status = "okay";
- };
- 
- &tlmm {
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts
-index 66c422004dcd..fe227fd3f908 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts
-@@ -408,6 +408,8 @@ &smbb {
- 	qcom,fast-charge-high-threshold-voltage = <4350000>;
- 	qcom,auto-recharge-threshold-voltage = <4240000>;
- 	qcom,minimum-input-voltage = <4450000>;
++		saw3: power-manager@f90b9000 {
++			compatible = "qcom,msm8226-saw2-v2.1-cpu", "qcom,saw2";
++			reg = <0xf90b9000 0x1000>;
++		};
 +
-+	status = "okay";
- };
- 
- &tlmm {
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
-index 6d1412aec45a..4c8edadea0ac 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
-@@ -460,6 +460,10 @@ &sdhc_1 {
- 	status = "okay";
- };
- 
-+&smbb {
-+	status = "okay";
-+};
-+
- &tlmm {
- 	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
- 		pins = "gpio68";
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-index 818ff5835031..7c6fe442b559 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-@@ -585,6 +585,8 @@ &smbb {
- 	qcom,fast-charge-low-threshold-voltage = <3400000>;
- 	qcom,auto-recharge-threshold-voltage = <4200000>;
- 	qcom,minimum-input-voltage = <4300000>;
-+
-+	status = "okay";
- };
- 
- &tlmm {
+ 		sdhc_1: mmc@f9824900 {
+ 			compatible = "qcom,msm8226-sdhci", "qcom,sdhci-msm-v4";
+ 			reg = <0xf9824900 0x11c>, <0xf9824000 0x800>;
 
----
-base-commit: fe14587be497254eb07c5c8aa1c799bde2abce39
-change-id: 20231203-smbb-pm8941-pm8226-9cead713628a
-
-Best regards,
 -- 
-Luca Weiss <luca@z3ntu.xyz>
+2.43.0
 
