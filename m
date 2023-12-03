@@ -1,17 +1,18 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="fgQGzSbl"
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="3jRWZPOB"
 Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A11C3C8;
-	Sun,  3 Dec 2023 14:38:35 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6DA5C8;
+	Sun,  3 Dec 2023 14:39:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1701643113; bh=ZXImSee1040m6vOmaaU/BKx1+hi5aIqaEquWy17f6DE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=fgQGzSblF9Yb28DXySBw5+lW01uS1JddYjg3NjXgZExpzYly9v1P1qF2ZecgwRe6a
-	 CcgZifnA+pFs2Qb9blRcZ+HcUScZOhngBvWLq6l7S/WbNoYHQJvaOC7A0GaYPaADjY
-	 2noswpiIFwY6fRmcZ3nD75dRJYKmCI/qV7T4uwFA=
+	t=1701643112; bh=AesBkNxA252D4AbyjH4t7j7mkstu5vSTutkNPCSMK78=;
+	h=From:Subject:Date:To:Cc;
+	b=3jRWZPOBQ37sHriz6gJx599YjztV6LFvoSQ0pTXrIhS46EGq7gtibm4g8vUEbRIp6
+	 VkLNDF04yENFofs7e5viAMajLAqrBBnuy/vraP4zqq0gI4XrFBgRv2JG5MpChKPjJu
+	 07wm5kRHgOuEWpPXkaUiHoS/L/7giHo4xVjRp8HM=
 From: Luca Weiss <luca@z3ntu.xyz>
-Date: Sun, 03 Dec 2023 23:38:18 +0100
-Subject: [PATCH 2/2] ARM: dts: qcom: msm8226: Add CPU and SAW/ACC nodes
+Subject: [PATCH 0/2] Bring up more CPU cores on MSM8226
+Date: Sun, 03 Dec 2023 23:38:16 +0100
+Message-Id: <20231203-msm8226-cpu-v1-0-d18e83340b32@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -19,10 +20,10 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231203-msm8226-cpu-v1-2-d18e83340b32@z3ntu.xyz>
-References: <20231203-msm8226-cpu-v1-0-d18e83340b32@z3ntu.xyz>
-In-Reply-To: <20231203-msm8226-cpu-v1-0-d18e83340b32@z3ntu.xyz>
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAFgDbWUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDIwNj3dziXAsjIzPd5IJSXQsDw6TUpKTUFAsLMyWgjoKi1LTMCrBp0bG
+ 1tQCaFWvOXQAAAA==
 To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
  Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
@@ -30,146 +31,45 @@ To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  Conor Dooley <conor+dt@kernel.org>
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>, 
+ =?utf-8?q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>, 
  Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3104; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=K8oNPyYoh95lxlCaNrRZ4BbJh5I78RzGRE/djtKa5AE=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlbQNnlpGEDrhxMsLcfteE5SsQznX/CWXv4W+z4
- Kxn9WjE4aCJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZW0DZwAKCRBy2EO4nU3X
- VnfaD/95qJ9lWfmpkoNQ/PGuXOAVO2/jRkaARw3B7LxXIeYlP2Slc59CoYNMo/Ap4RvEqZz3Hkc
- 0N2vUzic/X43TVrePWBKR8elWrMBAAhNgvOBBqVfoOJSdghFSwA47cVPelLrp2XDecjmdBZfPjJ
- HIgrg9gIe41ObPIp0U3LZyxbPC72kMY5fT5FipUzJzEkG/MEi88zVoru0v74hmoZAl8RICuQRiU
- 4kQQku31VXdgiBFJzpep4jqEMEFlV5qpA/jPzkgOoBuISdrHIVc6RqHMzP5M5XPuVrksJKFJB/j
- CTuoWC14K7xLpRgY2oTIRgk1sk9uh9AvNdJLP2IMhpkFrRzrVtEEbrBXyEQgPbGZszINs8uMyn8
- DGq9ZxdBlI9SQrZnMR3grIS95nX4AloWOaWIlrGNcABfNMCH927JMSx/LKIQooPVVVEI0MnWO9w
- 8WNDKi09zgR0llHr9uxnGSpFrdhaGffE93aqIW1gJB8uedq6WtXYz5ThFy7Ldf1GRCnEN7+IeCn
- Vgk0Kj5w5t9JEdDMeLJH8UDtVxr6CyF3vNMteYKdrJ7BEtlbLHlvVZn6D4Nv3BTCkF+/RY3huvk
- 6oMVKUjLLn8y0uOiS1V3phnfTfWuithGVlLTbt4D+ND45i3o8EkGU5PrAzx1Rrcwdg0QX0wTU2z
- Ft/t2yUUY/StDNQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=676; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=AesBkNxA252D4AbyjH4t7j7mkstu5vSTutkNPCSMK78=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlbQNet1Qkqw9icqh7x2TvysX/TZVC/88Bqf31s
+ /lVyLhq3H+JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZW0DXgAKCRBy2EO4nU3X
+ VmSFD/0e+mfQbG/JfIugUj5C5g3aoUlvE2k2qSJIqwdVUZs2s94HVcpvzmdGMebPy3rGV5PhjYv
+ S5+mzX/0+9rJvZvGByZ4C8g4zdjSpYI/X4KlqHn0TBCJudMwaUOSuHJkvpfxXGQfSuIaga37lJ/
+ StIhoXuj2PddYFI5RRQkkJnoU5sNTVzPJ3TxizFc/B4nKkiZC7eAAN+shaxQuYRFnW6RT7/ZLMH
+ 6gUrEkiu6zs356DZWQaWWOTyybJlNlFsrA+H6rWsCFi8PLivi7LFrox3fsvIQWoROlTXTGGOkn1
+ TTL+1cpqrL0/3ybgVtJHdej9B4McYAG+A0xFij91pSbT5914T7OBEF4zr1tl+XaYNX6b3EJj3bV
+ jryo686MpC8IBz6A35osCKmF/ENzxPJ1PHyqWepgt2RSA0Jqe08MzRORzs5RFhaMhO3U7biiyO4
+ bMx8xxQyWscNUzyZ6DqvuAPomv0gAAzHFwRwNoeVA609R1WLGRgxCIZ8DCG85m+BrdwghlKeU6e
+ Loep7pnWqWRH+ntLyhjs/mWuJjh88BznsBHdAyu5KIi8gQXW3m6gYulIOsZibFWUxEdqfnr6NMj
+ Xx/GHdlyzvt852f+y4WfiNhVLq4sDvEkvVLn0P6BfRJXhDDiqJYSE8RnfeQisI5Uz0nEh17K9rS
+ 7UJYr3cZtY0hgBQ==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-From: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
+Add some nodes to bring up SMP on msm8226 SoC. Another commit to fix the
+sorting of the nodes is also included since the ordering is currently a
+bit all over the place.
 
-Add CPU and SAW/ACC nodes to enable SMP on MSM8226.
-
-Signed-off-by: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
-[luca: update some nodes to fix dtbs_check errors, reorder, cleanup]
 Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- arch/arm/boot/dts/qcom/qcom-msm8226.dtsi | 91 ++++++++++++++++++++++++++++++++
- 1 file changed, 91 insertions(+)
+Ivaylo Ivanov (1):
+      ARM: dts: qcom: msm8226: Add CPU and SAW/ACC nodes
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
-index 8757bc0c8a0f..28abaed4dd08 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
-@@ -34,6 +34,57 @@ sleep_clk: sleep_clk {
- 		};
- 	};
- 
-+	cpus {
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		CPU0: cpu@0 {
-+			compatible = "arm,cortex-a7";
-+			enable-method = "qcom,msm8226-smp";
-+			device_type = "cpu";
-+			reg = <0>;
-+			next-level-cache = <&L2>;
-+			qcom,acc = <&acc0>;
-+			qcom,saw = <&saw0>;
-+		};
-+
-+		CPU1: cpu@1 {
-+			compatible = "arm,cortex-a7";
-+			enable-method = "qcom,msm8226-smp";
-+			device_type = "cpu";
-+			reg = <1>;
-+			next-level-cache = <&L2>;
-+			qcom,acc = <&acc1>;
-+			qcom,saw = <&saw1>;
-+		};
-+
-+		CPU2: cpu@2 {
-+			compatible = "arm,cortex-a7";
-+			enable-method = "qcom,msm8226-smp";
-+			device_type = "cpu";
-+			reg = <2>;
-+			next-level-cache = <&L2>;
-+			qcom,acc = <&acc2>;
-+			qcom,saw = <&saw2>;
-+		};
-+
-+		CPU3: cpu@3 {
-+			compatible = "arm,cortex-a7";
-+			enable-method = "qcom,msm8226-smp";
-+			device_type = "cpu";
-+			reg = <3>;
-+			next-level-cache = <&L2>;
-+			qcom,acc = <&acc3>;
-+			qcom,saw = <&saw3>;
-+		};
-+
-+		L2: l2-cache {
-+			compatible = "cache";
-+			cache-level = <2>;
-+			cache-unified;
-+		};
-+	};
-+
- 	firmware {
- 		scm {
- 			compatible = "qcom,scm-msm8226", "qcom,scm";
-@@ -243,6 +294,46 @@ frame@f9028000 {
- 			};
- 		};
- 
-+		acc0: power-manager@f9088000 {
-+			compatible = "qcom,kpss-acc-v2";
-+			reg = <0xf9088000 0x1000>, <0xf9008000 0x1000>;
-+		};
-+
-+		saw0: power-manager@f9089000 {
-+			compatible = "qcom,msm8226-saw2-v2.1-cpu", "qcom,saw2";
-+			reg = <0xf9089000 0x1000>;
-+		};
-+
-+		acc1: power-manager@f9098000 {
-+			compatible = "qcom,kpss-acc-v2";
-+			reg = <0xf9098000 0x1000>, <0xf9008000 0x1000>;
-+		};
-+
-+		saw1: power-manager@f9099000 {
-+			compatible = "qcom,msm8226-saw2-v2.1-cpu", "qcom,saw2";
-+			reg = <0xf9099000 0x1000>;
-+		};
-+
-+		acc2: power-manager@f90a8000 {
-+			compatible = "qcom,kpss-acc-v2";
-+			reg = <0xf90a8000 0x1000>, <0xf9008000 0x1000>;
-+		};
-+
-+		saw2: power-manager@f90a9000 {
-+			compatible = "qcom,msm8226-saw2-v2.1-cpu", "qcom,saw2";
-+			reg = <0xf90a9000 0x1000>;
-+		};
-+
-+		acc3: power-manager@f90b8000 {
-+			compatible = "qcom,kpss-acc-v2";
-+			reg = <0xf90b8000 0x1000>, <0xf9008000 0x1000>;
-+		};
-+
-+		saw3: power-manager@f90b9000 {
-+			compatible = "qcom,msm8226-saw2-v2.1-cpu", "qcom,saw2";
-+			reg = <0xf90b9000 0x1000>;
-+		};
-+
- 		sdhc_1: mmc@f9824900 {
- 			compatible = "qcom,msm8226-sdhci", "qcom,sdhci-msm-v4";
- 			reg = <0xf9824900 0x11c>, <0xf9824000 0x800>;
+Matti Lehtimäki (1):
+      ARM: dts: qcom: msm8226: Sort and clean up nodes
 
+ arch/arm/boot/dts/qcom/qcom-msm8226.dtsi | 751 +++++++++++++++++--------------
+ 1 file changed, 421 insertions(+), 330 deletions(-)
+---
+base-commit: 63b325612c1e996a107fc156db8ea9b756a9f65c
+change-id: 20231203-msm8226-cpu-801bebbed886
+
+Best regards,
 -- 
-2.43.0
+Luca Weiss <luca@z3ntu.xyz>
 
