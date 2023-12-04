@@ -1,100 +1,116 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="v7gGEBmE"
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 931A2138
-	for <phone-devel@vger.kernel.org>; Mon,  4 Dec 2023 02:25:20 -0800 (PST)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-a1a52aecc67so267450566b.2
-        for <phone-devel@vger.kernel.org>; Mon, 04 Dec 2023 02:25:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="M9c4Wvwj"
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41B42D5
+	for <phone-devel@vger.kernel.org>; Mon,  4 Dec 2023 02:41:41 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-54cb4fa667bso1259298a12.3
+        for <phone-devel@vger.kernel.org>; Mon, 04 Dec 2023 02:41:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1701685519; x=1702290319; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aq+xirBYpOKkgca1eZSuL+2A1j9+CgouYiCwrjD1giM=;
-        b=v7gGEBmE+kCZFnoVPEa45r2ReOx+/1p2IILLp95HhqJ5wcVZBJ3tJfB0yqTEjU7tOM
-         DCZFTZJsQM6dWbHwltdAPTFM/OzVH09HZfF9JhZpReE+H1ZGRu7sze3tbREPpcvxy5oB
-         U2LxVkzgF9aHcDXRmBa06YUYGvx1JuA8rgDAYL+vaE7CNzStC5fUNpcwOungj/NLMkc8
-         3dj+JC/AfDMZbbR8YU3X3FRRnm+lb0966bAlcLofXMJtB3OsqpTsRVb9pEkbuK529nbF
-         1Gq49X0Sp+v/3su+dXdG2wlVa3Mkpft6dYynt9LRNf62nIk5cMIIQ5cEQU0hgeqfKIy5
-         gcUQ==
+        d=linaro.org; s=google; t=1701686499; x=1702291299; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=28XgFmjfh625VXQFy6sZqO8571DU9BRuNNIufn2+gPU=;
+        b=M9c4WvwjCH2GqMt457VU8JRuEfaBSNczcs4PhswAg6o8QgoKYxvY3PYYf1B5vbP8fD
+         bIpAnjVToe8GuQBsiS77jMdP2uabrNa3DluyBFGSbueItcVG60lYt3sKJmrVtHfNv9L6
+         yOAgfmhN6IiVtgL2qzRK56Ou16cEE9jk0McC3uveUC1XTOTE3zZ58LNXhRVP5ADGlgGk
+         nxJCwAC6JqycKE0sJJvlQnx/O9OZD8mDUvEhWvS9sptpmVwbC96aJddBMxzqibYbeJ4c
+         jYGhWleV7p7CbK0oRH5pVYYZcanaPgVOUSE/xMUMxdb3303gM4DfNuEaYcAG4Hww1nKw
+         Xl6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701685519; x=1702290319;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aq+xirBYpOKkgca1eZSuL+2A1j9+CgouYiCwrjD1giM=;
-        b=MkQDSrgtm1xYGqRXW8viCAEbS4Kd4Tq5XZk0AYDriYLjzDutPrqm+0yRNT4zQICshO
-         vlxhrtm1OBqwXm8aAwg7pKjO5Twx1jRazAqMQOubWpvLPSoj35R730RKoqYP/V7qNF12
-         WUc2RFQPrblSgZlOKInx0ipKqPc3nyw5twT+mnk9GXCA2XRqwN9L+6o0YeL0kWbY8uWz
-         rJek6sGQjeNxlbnksDi61nlZFLPF4JQvELSm5ER/IXMtjsE84Qhze9ezYrWREpu3ZKvr
-         LeVi7anMmV97Dfo9v+0LkIAdbVJKh2DIIMJ4HAAmT3v1C2wMX6ZDKgnINtPafXiEITHg
-         FpBw==
-X-Gm-Message-State: AOJu0YxUlMYq7T3zVarpp6ONRc4sytcnPD0ydHfbceU6tP6OWrdpneHR
-	qE83Yxg/np7XlPu7YH1qwnVilQ==
-X-Google-Smtp-Source: AGHT+IGXQXao7rNTBZHQgJuB0+45+KeoiPwj8lhmQ5FXfr08n7j/ar6GYkc4R2qZf+xv/FEM23ln4w==
-X-Received: by 2002:a17:906:3f58:b0:a1a:60e6:a1a3 with SMTP id f24-20020a1709063f5800b00a1a60e6a1a3mr1963513ejj.24.1701685519006;
-        Mon, 04 Dec 2023 02:25:19 -0800 (PST)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id ef10-20020a17090697ca00b00a1b6ec7a88asm1291759ejb.113.2023.12.04.02.25.18
+        d=1e100.net; s=20230601; t=1701686499; x=1702291299;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=28XgFmjfh625VXQFy6sZqO8571DU9BRuNNIufn2+gPU=;
+        b=RrtInqlBNsUY/EtPqEAkPrGdNVNn0FySdHmIJy/bXKIZrHQSVnDRZB9ZVuXUW5Y5gW
+         EqtcfAXtl6+rJdf4B7MaZIwBsamhOVxk5yftdtZPrMIjaoJKcr459G6tsBtcVtaM6P6p
+         S2OuZksi4eliIckxqhgEYlKFR61C7HiR1Aju37g/PeTQamPgQ/Dt3cqN+9ZrXZ+7INUC
+         CxCkahTj63hwigTGM1JwTKJ/RrsduWVfbuAPerInKlm6/FCdONn5n3KEu+TH8ogMisUZ
+         JyQt7c3MHQrnI5LiJ7SqbPjUD9UJtMfcNjD55v3j1fSBUJ9q8sXMvlLVvVR2uKDbAVMM
+         2uPg==
+X-Gm-Message-State: AOJu0YyN2UZU5kBfhuUvo8oMHgvEjqfQb5/w4KR9DHPlmPH4X6J5X8zA
+	Ze76SYtGuRqmtU8OObGDSG88pw==
+X-Google-Smtp-Source: AGHT+IGV3c16x1plImWbu4nV2P7vZFQzLSzQQ0a4wo2sFM+k39x6r32KdecP4qbMSe6wnKvfQetgfA==
+X-Received: by 2002:a05:6402:22eb:b0:54c:d33a:5ea4 with SMTP id dn11-20020a05640222eb00b0054cd33a5ea4mr532856edb.65.1701686499621;
+        Mon, 04 Dec 2023 02:41:39 -0800 (PST)
+Received: from [192.168.209.83] (178235179097.dynamic-4-waw-k-1-3-0.vectranet.pl. [178.235.179.97])
+        by smtp.gmail.com with ESMTPSA id f10-20020a056402354a00b0054ca1d90410sm1985488edd.85.2023.12.04.02.41.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Dec 2023 02:25:18 -0800 (PST)
+        Mon, 04 Dec 2023 02:41:39 -0800 (PST)
+Message-ID: <d1f1ee82-7997-4e36-a21a-7b70d2db9746@linaro.org>
+Date: Mon, 4 Dec 2023 11:41:36 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] ARM: dts: qcom: msm8226: Add CPU and SAW/ACC nodes
+To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
+References: <20231203-msm8226-cpu-v1-0-d18e83340b32@z3ntu.xyz>
+ <20231203-msm8226-cpu-v1-2-d18e83340b32@z3ntu.xyz>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20231203-msm8226-cpu-v1-2-d18e83340b32@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 04 Dec 2023 11:25:18 +0100
-Message-Id: <CXFH66Y6MBZE.1YDXWOFV4MY7Z@fairphone.com>
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Bjorn Andersson" <andersson@kernel.org>
-Cc: "Andy Gross" <agross@kernel.org>, "Konrad Dybcio"
- <konrad.dybcio@linaro.org>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof
- Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
- <conor+dt@kernel.org>, "Nitin Rawat" <quic_nitirawa@quicinc.com>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] arm64: dts: qcom: qcm6490-fairphone-fp5: Enable UFS
-X-Mailer: aerc 0.15.2
-References: <20231002-fp5-ufs-v2-1-e2d7de522134@fairphone.com>
- <dutd7zn5avelyujiyb6k64luzu2pqccy6ywhfj52i4g2m6ld47@2aqstxoekqrq>
-In-Reply-To: <dutd7zn5avelyujiyb6k64luzu2pqccy6ywhfj52i4g2m6ld47@2aqstxoekqrq>
+Content-Transfer-Encoding: 7bit
 
-On Sun Dec 3, 2023 at 5:41 AM CET, Bjorn Andersson wrote:
-> On Mon, Oct 02, 2023 at 02:30:41PM +0200, Luca Weiss wrote:
-> > Enable the UFS phy and controller so that we can access the internal
-> > storage of the phone.
-> >=20
-> > At the same time we need to bump the minimum voltage used for UFS VCC,
-> > otherwise it doesn't initialize properly. The 2.952V is taken from the
-> > vcc-voltage-level property downstream.
-> >=20
-> > See also the following link for more information about the VCCQ/VCCQ2:
-> > https://gerrit-public.fairphone.software/plugins/gitiles/kernel/msm-ext=
-ra/devicetree/+/1590a3739e7dc29d2597307881553236d492f188/fp5/yupik-idp-pm72=
-50b.dtsi#207
-> >=20
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> > Depends on: https://lore.kernel.org/linux-arm-msm/20230927081858.15961-=
-1-quic_nitirawa@quicinc.com/
->
-> I'd love to merge this patch, but this dependency doesn't seem to make
-> progress, please consider fixing up the outstanding feedback and posting
-> v5.
+On 3.12.2023 23:38, Luca Weiss wrote:
+> From: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
+> 
+> Add CPU and SAW/ACC nodes to enable SMP on MSM8226.
+> 
+> Signed-off-by: Ivaylo Ivanov <ivo.ivanov.ivanov1@gmail.com>
+> [luca: update some nodes to fix dtbs_check errors, reorder, cleanup]
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+Looks like L2 SAW (@ 0xf9012000) is missing.. but then it's present
+on 8974.. but it's not bound by any driver :)
 
-Right, it's been a while since the last revision there.
+The nodes you added here look correct FWIW
 
-I've just sent v5, hopefully the various feedbacks should be addressed
-there :)
-
-Regards
-Luca
-
->
-> Regards,
-> Bjorn
-
+Konrad
