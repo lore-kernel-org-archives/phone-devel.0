@@ -1,210 +1,117 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="zTrCvs2e"
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36AA0F3
-	for <phone-devel@vger.kernel.org>; Mon,  4 Dec 2023 04:21:45 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-54bf9a54fe3so5624087a12.3
-        for <phone-devel@vger.kernel.org>; Mon, 04 Dec 2023 04:21:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fjf1Kq7/"
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B14E1C0;
+	Mon,  4 Dec 2023 04:40:49 -0800 (PST)
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-50bfe99b6edso255009e87.1;
+        Mon, 04 Dec 2023 04:40:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1701692503; x=1702297303; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q8RFfNckjuKt1jz+rzrb9C96eRyO85w6LaaTlbGWMzo=;
-        b=zTrCvs2eCip52po00dOtx2DzzrpJtMPOcRbQDM41h23Lx7hyqZxquQ69VS47qcYEMu
-         yG2brI5VZgUBHkfUJXTbD0K+qWqlZ/1GC/ZOHB8LD9LLFHTcfaDmXObrOoxtFjl2R3Gj
-         mQtUppBX715VHQdSeTPR4z8hQovq8amq899U2XrnbiFWqxXwwAM5gqJgnMBwOwf19Ngs
-         Kx5hWG5VOXcISr2x1YXfknjL/hHYkMMmOd3P2Gb09YWolz2PnH34nWfNQUDW0hRTRcVf
-         /njPrbJORv8hDzE0T6SPXaXnAKEs3AZatCrws3M3WGs9Ln5eF7zRQAZhGaZnDGbWSJFw
-         BoXw==
+        d=gmail.com; s=20230601; t=1701693648; x=1702298448; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vsvgyciOFfSmw/EJbODu9yWaFL86QzDmPatwDo6fAHA=;
+        b=Fjf1Kq7/tv9oz7JTqV64win0IKsNL3NWQEfjpZuPkkNen0d5gINb3pV8wOq+e+5mE9
+         DZrBIuu2sLrpbCtMNZRKTZJhqd37XsAO231t7gp9DTIKZmRj9937fS8h+631sirpirG7
+         nIwiKrP6My4OMqzSeG+tUfUZYYR5j5+5veVnKFBvLeKaE4Ljdx/FGw+iMyRxevOauZhB
+         peCYbW5pSDAALcqCr65/XJt9+5LouX8tlrVSHnSmGavqnVYUO2cTblRdnZ1q6fQYzNqF
+         DewAQTP00qjTAM9t6Muq8v7DiwzvkmJzW19dJgXHwuJFCiP97fQ6eZZhUOtGBvhXZEOX
+         qj1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701692503; x=1702297303;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=q8RFfNckjuKt1jz+rzrb9C96eRyO85w6LaaTlbGWMzo=;
-        b=ilMa22OrbNtKQme5/ttsQP5O+CU0AW0nYNMalzTmVJQvOAUybnOSj6Ofh2It5FAftH
-         DPKcXTPQDQ3QzQQU/JSvLdHZvaankn6jS2Jyj6Hv6F+LwNuC4GEBDPlw3saMA0sktCUp
-         WdATJN80NoTOwxL+h9yyGeoLQ2/PVFjFTy7vCRUawUHz3t4iaYcb3a17tukF1lRrH7IY
-         yKhA/Kcz6g/F7aW1F8f/IEoP5aGjLiVtDbQtIlxy1WAcEVkL1l5b30qn4tUcVsFKj7y6
-         ZVIjPI8t+VqvGstKweUJTtMhDFLwp4tT9Nx9cGw4XMwgKOT4SmFd+W1YqNMAvU1ZUCg5
-         zHvw==
-X-Gm-Message-State: AOJu0Yza8qUb3WtBhgwiaNiUFxz9VGIO9kr4JHE73uNmqOKd4sWmTnP+
-	8vnX7hjaFRF9xZmPQX20tN+okw==
-X-Google-Smtp-Source: AGHT+IHKWbMqC/XghMiDqUXODnV4kB7sqmvxFiPQqj9C/x1YwTXvnOVPdhytEdl0d5XSJ62zUJ7Hsw==
-X-Received: by 2002:a50:9b50:0:b0:54c:4837:9a9b with SMTP id a16-20020a509b50000000b0054c48379a9bmr2873330edj.66.1701692503652;
-        Mon, 04 Dec 2023 04:21:43 -0800 (PST)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id dg28-20020a0564021d1c00b0054c9177d18esm2522554edb.2.2023.12.04.04.21.42
+        d=1e100.net; s=20230601; t=1701693648; x=1702298448;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vsvgyciOFfSmw/EJbODu9yWaFL86QzDmPatwDo6fAHA=;
+        b=pjC29NF12R9rzw1BLisL6whKAz0JhBEtsgznK9Sci1O0OnZo+yHRh8iKPuFUMZyoXt
+         J6Dyhae9VixBzH0jjTbB1e7JD+XB2Bw2VLFoU9woCqlt97R4ljUfKO5pVVGL4BfGg+1V
+         3ZbmAGtg4AOubYxQhEAs6JlZ0tDLS9H14jqXu+HhQior/kA0QUbHQNbP0xeJAq51EfAt
+         XWt6RXqeKXj5hmJOLk+HTjAiK5l/iai9p3K9TukuSNU5NLPDeTCZnljA+I6RjCOijReu
+         lymXOTKEk/59FTLSEu8dxODzFWfoxrGOciWCSs8GIcIrkC/zNhjokXIHmw5UqYEPv2fS
+         3ZsA==
+X-Gm-Message-State: AOJu0YyEHL7/NCeg9dgr8UQ0eQq65Ey47lgDDe+rQMYqQOHzul2EU/PU
+	u/wYyjW/S60S6X8x4qFfchE=
+X-Google-Smtp-Source: AGHT+IGt7rvUqmjUimncGXW2IXVdDHVFAV2T7wKaPCUQGmJMe3Y29H7WiKNl0nj1VyY+oyfMrbTxdA==
+X-Received: by 2002:ac2:560a:0:b0:50b:f041:e434 with SMTP id v10-20020ac2560a000000b0050bf041e434mr1055315lfd.70.1701693647568;
+        Mon, 04 Dec 2023 04:40:47 -0800 (PST)
+Received: from ?IPV6:2a02:2378:120d:1a46:8f76:bf32:c739:eb6e? ([2a02:2378:120d:1a46:8f76:bf32:c739:eb6e])
+        by smtp.gmail.com with ESMTPSA id q3-20020ac246e3000000b004fb7848bacbsm1250826lfo.46.2023.12.04.04.40.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Dec 2023 04:21:43 -0800 (PST)
+        Mon, 04 Dec 2023 04:40:47 -0800 (PST)
+Message-ID: <0a035c62-9d35-4f85-b1f3-bcb7dea17d52@gmail.com>
+Date: Mon, 4 Dec 2023 14:40:44 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 04 Dec 2023 13:21:42 +0100
-Message-Id: <CXFJNBNKTRHH.2CS6TO2MEGJWL@fairphone.com>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 2/3] arm64: dts: qcom: sc7280: Add UFS nodes for
- sc7280 soc
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Nitin Rawat" <quic_nitirawa@quicinc.com>, "Andy Gross"
- <agross@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
- Dybcio" <konrad.dybcio@linaro.org>, "Manivannan Sadhasivam"
- <mani@kernel.org>, "Alim Akhtar" <alim.akhtar@samsung.com>, "Avri Altman"
- <avri.altman@wdc.com>, "Bart Van Assche" <bvanassche@acm.org>, "Rob
- Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
- <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
- <cros-qcom-dts-watchers@chromium.org>
-X-Mailer: aerc 0.15.2
-References: <20231204-sc7280-ufs-v5-0-926ceed550da@fairphone.com>
- <20231204-sc7280-ufs-v5-2-926ceed550da@fairphone.com>
- <621388b9-dcee-4af2-9763-e5d623d722b7@quicinc.com>
-In-Reply-To: <621388b9-dcee-4af2-9763-e5d623d722b7@quicinc.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/5] dt-bindings: input/touchscreen: Add compatible for
+ IST3038B
+Content-Language: en-US
+To: Conor Dooley <conor@kernel.org>, Karel Balej <karelb@gimli.ms.mff.cuni.cz>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Henrik Rydberg <rydberg@bitmath.org>,
+ linux-input@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, =?UTF-8?Q?Duje_Mihanovi=C4=87?=
+ <duje.mihanovic@skole.hr>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Karel Balej <balejk@matfyz.cz>
+References: <20231202125948.10345-1-karelb@gimli.ms.mff.cuni.cz>
+ <20231202125948.10345-3-karelb@gimli.ms.mff.cuni.cz>
+ <20231203-outskirts-reformat-e0a833903841@spud>
+From: Markuss Broks <markuss.broks@gmail.com>
+In-Reply-To: <20231203-outskirts-reformat-e0a833903841@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon Dec 4, 2023 at 1:15 PM CET, Nitin Rawat wrote:
->
->
-> On 12/4/2023 3:54 PM, Luca Weiss wrote:
-> > From: Nitin Rawat <quic_nitirawa@quicinc.com>
-> >=20
-> > Add UFS host controller and PHY nodes for sc7280 soc.
-> >=20
-> > Signed-off-by: Nitin Rawat <quic_nitirawa@quicinc.com>
-> > Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> > Tested-by: Konrad Dybcio <konrad.dybcio@linaro.org> # QCM6490 FP5
-> > [luca: various cleanups and additions as written in the cover letter]
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> >   arch/arm64/boot/dts/qcom/sc7280.dtsi | 74 +++++++++++++++++++++++++++=
-++++++++-
-> >   1 file changed, 73 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts=
-/qcom/sc7280.dtsi
-> > index 04bf85b0399a..8b08569f2191 100644
-> > --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> > +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> > @@ -15,6 +15,7 @@
-> >   #include <dt-bindings/dma/qcom-gpi.h>
-> >   #include <dt-bindings/firmware/qcom,scm.h>
-> >   #include <dt-bindings/gpio/gpio.h>
-> > +#include <dt-bindings/interconnect/qcom,icc.h>
-> >   #include <dt-bindings/interconnect/qcom,osm-l3.h>
-> >   #include <dt-bindings/interconnect/qcom,sc7280.h>
-> >   #include <dt-bindings/interrupt-controller/arm-gic.h>
-> > @@ -906,7 +907,7 @@ gcc: clock-controller@100000 {
-> >   			clocks =3D <&rpmhcc RPMH_CXO_CLK>,
-> >   				 <&rpmhcc RPMH_CXO_CLK_A>, <&sleep_clk>,
-> >   				 <0>, <&pcie1_phy>,
-> > -				 <0>, <0>, <0>,
-> > +				 <&ufs_mem_phy 0>, <&ufs_mem_phy 1>, <&ufs_mem_phy 2>,
-> >   				 <&usb_1_qmpphy QMP_USB43DP_USB3_PIPE_CLK>;
-> >   			clock-names =3D "bi_tcxo", "bi_tcxo_ao", "sleep_clk",
-> >   				      "pcie_0_pipe_clk", "pcie_1_pipe_clk",
-> > @@ -2238,6 +2239,77 @@ pcie1_phy: phy@1c0e000 {
-> >   			status =3D "disabled";
-> >   		};
-> >  =20
-> > +		ufs_mem_hc: ufs@1d84000 {
-> > +			compatible =3D "qcom,sc7280-ufshc", "qcom,ufshc",
-> > +				     "jedec,ufs-2.0";
-> > +			reg =3D <0x0 0x01d84000 0x0 0x3000>;
-> > +			interrupts =3D <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
-> > +			phys =3D <&ufs_mem_phy>;
-> > +			phy-names =3D "ufsphy";
-> > +			lanes-per-direction =3D <2>;
-> > +			#reset-cells =3D <1>;
-> > +			resets =3D <&gcc GCC_UFS_PHY_BCR>;
-> > +			reset-names =3D "rst";
-> > +
-> > +			power-domains =3D <&gcc GCC_UFS_PHY_GDSC>;
-> > +			required-opps =3D <&rpmhpd_opp_nom>;
-> > +
-> > +			iommus =3D <&apps_smmu 0x80 0x0>;
-> > +			dma-coherent;
-> > +
-> > +			interconnects =3D <&aggre1_noc MASTER_UFS_MEM QCOM_ICC_TAG_ALWAYS
-> > +					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
-> > +					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
-> > +					 &cnoc2 SLAVE_UFS_MEM_CFG QCOM_ICC_TAG_ALWAYS>;
-> > +			interconnect-names =3D "ufs-ddr", "cpu-ufs";
-> > +
-> > +			clocks =3D <&gcc GCC_UFS_PHY_AXI_CLK>,
-> > +				 <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
-> > +				 <&gcc GCC_UFS_PHY_AHB_CLK>,
-> > +				 <&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
-> > +				 <&rpmhcc RPMH_CXO_CLK>,
-> > +				 <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
-> > +				 <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
-> > +				 <&gcc GCC_UFS_PHY_RX_SYMBOL_1_CLK>;
-> > +			clock-names =3D "core_clk",
-> > +				      "bus_aggr_clk",
-> > +				      "iface_clk",
-> > +				      "core_clk_unipro",
-> > +				      "ref_clk",
-> > +				      "tx_lane0_sync_clk",
-> > +				      "rx_lane0_sync_clk",
-> > +				      "rx_lane1_sync_clk";
-> > +			freq-table-hz =3D
-> > +				<75000000 300000000>,
-> > +				<0 0>,
-> > +				<0 0>,
-> > +				<75000000 300000000>,
-> > +				<0 0>,
-> > +				<0 0>,
-> > +				<0 0>,
-> > +				<0 0>;
-> > +			status =3D "disabled";
-> > +		};
-> > +
-> > +		ufs_mem_phy: phy@1d87000 {
-> > +			compatible =3D "qcom,sc7280-qmp-ufs-phy";
-> > +			reg =3D <0x0 0x01d87000 0x0 0xe00>;
-> > +			clocks =3D <&rpmhcc RPMH_CXO_CLK>,
-> > +				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>,
-> > +				 <&gcc GCC_UFS_1_CLKREF_EN>;
-> > +			clock-names =3D "ref", "ref_aux", "qref";
-> > +
-> > +			power-domains =3D <&gcc GCC_UFS_PHY_GDSC>;
+Hi Conor,
 
-Hi Nitin,
+On 12/3/23 13:20, Conor Dooley wrote:
+> On Sat, Dec 02, 2023 at 01:48:33PM +0100, Karel Balej wrote:
+>> From: Markuss Broks <markuss.broks@gmail.com>
+>>
+>> Imagis IST3038B is a variant (firmware?) of Imagis IST3038 IC,
+>> add the compatible for it to the IST3038C bindings.
+> This one is better, but would be well served by mentioning what
+> specifically is different (register addresses or firmware commands?)
+
+I don't think anyone knows this other than Imagis itself. I would guess 
+it's different hardware, since register addresses are indeed different, 
+but on the other hand, there is a possibility that firmware on the MCU 
+could be responding to those commands. I suppose "... IST3038B is a 
+hardware variant of ... IST3038" would be more correct.
+
+The reason why I think it could be firmware-defined is because we have a 
+lot of variants (30xxA, 30xxB, 30xxC, plain 30xx), and the numbers 
+usually mean feature level/completeness, e.g. some don't support the 
+touch pressure or touchkeys, and we don't know what A/B/C/none means.
 
 >
-> GCC_UFS_PHY_GDSC is UFS controller GDSC. For sc7280 Phy we don't need thi=
-s.
-
-In the current dt-bindings the power-domains property is required.
-
-Is there another power-domain for the PHY to use, or do we need to
-adjust the bindings to not require power-domains property for ufs phy on
-sc7280?
-
-Also, with "PHY" in the name, it's interesting that this is not for the
-phy ;)
-
-Regards
-Luca
-
+> Cheers,
+> Conor.
 >
-> > +
-> > +			resets =3D <&ufs_mem_hc 0>;
-> > +			reset-names =3D "ufsphy";
-> > +
-> > +			#clock-cells =3D <1>;
-> > +			#phy-cells =3D <0>;
-> > +
-> > +			status =3D "disabled";
-> > +		};
-> > +
-> >   		ipa: ipa@1e40000 {
-> >   			compatible =3D "qcom,sc7280-ipa";
-> >  =20
-> >=20
-
+>> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+>> Signed-off-by: Karel Balej <balejk@matfyz.cz>
+>> ---
+>>   .../devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml   | 1 +
+>>   1 file changed, 1 insertion(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+>> index 0d6b033fd5fb..b5372c4eae56 100644
+>> --- a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+>> +++ b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+>> @@ -18,6 +18,7 @@ properties:
+>>   
+>>     compatible:
+>>       enum:
+>> +      - imagis,ist3038b
+>>         - imagis,ist3038c
+>>   
+>>     reg:
+>> -- 
+>> 2.43.0
+>>
+- Markuss
