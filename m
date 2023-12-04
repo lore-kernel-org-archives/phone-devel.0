@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nFdbUWfv"
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF268C3
-	for <phone-devel@vger.kernel.org>; Mon,  4 Dec 2023 02:45:21 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-54b545ec229so5433852a12.0
-        for <phone-devel@vger.kernel.org>; Mon, 04 Dec 2023 02:45:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o5mV7AdT"
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D07BAD2
+	for <phone-devel@vger.kernel.org>; Mon,  4 Dec 2023 03:35:48 -0800 (PST)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-a00191363c1so599959566b.0
+        for <phone-devel@vger.kernel.org>; Mon, 04 Dec 2023 03:35:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701686720; x=1702291520; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1701689747; x=1702294547; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=6YyztTu0COTbmlcMD4L0hygA8BtaTvI3nN75TEHzfHI=;
-        b=nFdbUWfv31zyu3vMX72F0iYgWtFejs9xIpHQM49PojNhylZMJ1dfLJjmK+SSWI0RHH
-         LcYFQtgQ0wO8aD4cJwwwzFAMQHz2o5mAHxeb1h8BahlK3v9CnVAOtVlQERVOeCbkEKMF
-         xK5xbJlX8H6M6TKdQLUC0XrcnJVt168qajP2oCJSQ/6UAgU70jUo7GS59N/hhK8uiZTf
-         j8a6n79y3/t05Q0s+UOoDtl8AanUPDQFBQzTXHlbx3OXQUhBk5Uobt/jDsnqQJxq10Lp
-         mlFR7vQ9BAZl/ZRYKYFW3iYK4GMnyeyHRbypJmjg2bmqB8DY7j97I78s++eNZCy7qOzT
-         mtBA==
+        bh=lKw30wabV9RDC1M3FU7Q361J3G01Sj0GwWGP1s2QAhg=;
+        b=o5mV7AdTy4o3BOaoFeXIlLwqKZu9F85PZhrtIOY18/qPajH46yXvyRPYlk9GMt7Qpm
+         NeYMb1/C932JjCZeuHxGG+YjAJ1yVzS6xQWB9q7Yfp+lvhcofatRpotHbtaa3tU6G2R9
+         i4ecfaU5cK7hPFJaQtgGDv2WPmvnkn3y2Dj4u6fUnd5bD4OMKHNP2Pyklg6AWNNjGVXH
+         BPMeFRYt/mO9Ej4K/ianRWBk+9pH4S48vDGYtndfr2R/avI+ngRjHCmbUliwgICyaTfA
+         OvoZ1CaPUZ74rMe0/QBb/bCbrRfSKC8657AFO2gARCFhBwuy931lUK6UHd35kYfNNZnj
+         /ifw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701686720; x=1702291520;
+        d=1e100.net; s=20230601; t=1701689747; x=1702294547;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6YyztTu0COTbmlcMD4L0hygA8BtaTvI3nN75TEHzfHI=;
-        b=GY43YyY7PtsVc3Z5rYw+R8p7xz7U5/B0njddeSfjaMHYV5ikv4I/gowRkBY6crvd3S
-         ku0RJhMV+XeKy4N02Md4JKaPHXtWEriUecXut/lKiy7xkzvM4Vu6w8lQWMuRpJOUlgYS
-         KUX+d0QMsKda8JrRUmCYXt8BUA921iI97I6uQ1uBDGXe3dPKU1cvhAZIUuN4hx7SZfJd
-         duBcChCabFG8QhP4E4TP1suzC0Z06f+oNbUg8PFfePdjLDaLlgp7ter86pLYlw8koO9e
-         tKvR/UVK/HRkhebFENz/cMl7z1J5kMVc/kbXDg/TjS4L+XZgKRDsFHOTtbJzu7T1obED
-         Ywvg==
-X-Gm-Message-State: AOJu0YyJeZF1tTU2XT5IfEzMcFQYhvW5yMXNjGZjComeETqUTPp+DLRy
-	uKDyGFsB7CtXzeGDfE13DsrCag==
-X-Google-Smtp-Source: AGHT+IFSjGkSVgh5Xs2KkgKSiERG0P1FSH0235jUWEfNRfdAVN5fzTc3kFuiSWxzA0Gbdyj2qJ4F1Q==
-X-Received: by 2002:a50:ab0d:0:b0:54a:fe10:dede with SMTP id s13-20020a50ab0d000000b0054afe10dedemr2966994edc.36.1701686720300;
-        Mon, 04 Dec 2023 02:45:20 -0800 (PST)
+        bh=lKw30wabV9RDC1M3FU7Q361J3G01Sj0GwWGP1s2QAhg=;
+        b=OPsxJrVdCArGGNl02dpxDcZYw+TB7bLoUzpAKqSF3cIi3jV8KfOn/f9j48bU26slJz
+         o/0knRuvAsnRfgsX+C0ilrv5QgrYAdy9BL0Npfz3gH7f24czLMP3KMkAAVpnjMoeIC+m
+         zeZ2VpA8DWxZsvOP0/WZauQGwV2QIuz33IrhFmSjN7PRhFzkEW/7xXSFU1C5f+R0g4dj
+         AxTLZHbCZyxlVvIZZio18rcqQE5S0VHoi/eHpc05MbHv1Y6z+A+LfAehP9TRnCXeMTIk
+         6w6MgMUsmMVYOm/yTrraNP6jpi4gq+D54fJUFJBhhfydFPAdeNHirpNmnouHZM72FixX
+         gNsA==
+X-Gm-Message-State: AOJu0YzK5tMSR7nqeXQyUY4gro+86Kyp4h6nbhopH+svXYZi3VvzFBnC
+	PHjyqaK8Z6//tX77MPjlODj4NQ==
+X-Google-Smtp-Source: AGHT+IE+DwtiyYhlL+cy0lkib4e4DN8vfBr16OgFrPelrdOA7LaOAr9wJh3ZY6/2f33WN/s+MmBbFA==
+X-Received: by 2002:a17:906:1096:b0:a19:d40a:d20c with SMTP id u22-20020a170906109600b00a19d40ad20cmr1402481eju.216.1701689747343;
+        Mon, 04 Dec 2023 03:35:47 -0800 (PST)
 Received: from [192.168.209.83] (178235179097.dynamic-4-waw-k-1-3-0.vectranet.pl. [178.235.179.97])
-        by smtp.gmail.com with ESMTPSA id q9-20020a056402040900b0054c0264a7fasm4618484edv.64.2023.12.04.02.45.18
+        by smtp.gmail.com with ESMTPSA id gs20-20020a170906f19400b00a18374ade6bsm5190690ejb.67.2023.12.04.03.35.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Dec 2023 02:45:20 -0800 (PST)
-Message-ID: <3678b052-d812-439f-89b3-6d816d8f35f8@linaro.org>
-Date: Mon, 4 Dec 2023 11:45:16 +0100
+        Mon, 04 Dec 2023 03:35:47 -0800 (PST)
+Message-ID: <31914a93-27ea-456e-b502-903ca806bbbf@linaro.org>
+Date: Mon, 4 Dec 2023 12:35:45 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -47,8 +47,7 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ARM: dts: qcom: Disable pm8941 & pm8226 smbb charger by
- default
+Subject: Re: [PATCH 1/2] ARM: dts: qcom: msm8226: Sort and clean up nodes
 Content-Language: en-US
 To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
  phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
@@ -56,8 +55,10 @@ To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Bryant Mairs <bryant@mai.rs>
-References: <20231203-smbb-pm8941-pm8226-v1-1-9ad75909604b@z3ntu.xyz>
+ linux-kernel@vger.kernel.org, =?UTF-8?Q?Matti_Lehtim=C3=A4ki?=
+ <matti.lehtimaki@gmail.com>
+References: <20231203-msm8226-cpu-v1-0-d18e83340b32@z3ntu.xyz>
+ <20231203-msm8226-cpu-v1-1-d18e83340b32@z3ntu.xyz>
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -94,19 +95,22 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20231203-smbb-pm8941-pm8226-v1-1-9ad75909604b@z3ntu.xyz>
+In-Reply-To: <20231203-msm8226-cpu-v1-1-d18e83340b32@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 3.12.2023 15:19, Luca Weiss wrote:
-> From: Bryant Mairs <bryant@mai.rs>
+On 3.12.2023 23:38, Luca Weiss wrote:
+> From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
 > 
-> Some platforms don't use the built-in charging hardware (e.g. milletwifi).
-> As this is an optional peripheral, default it to off.
+> Quite a few nodes haven't been sorted correctly by reg, so let's do this
+> now so that future nodes can be added at the correct place.
 > 
-> Keep it enabled for all other boards that use smbb.
+> Also at the same time, move the status property last.
 > 
-> Signed-off-by: Bryant Mairs <bryant@mai.rs>
+> No functional change intended.
+> 
+> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+> [luca: add more text to commit message]
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
 Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
