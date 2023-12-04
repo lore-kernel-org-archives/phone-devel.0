@@ -1,95 +1,106 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lfilP1x5"
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70B86E6;
-	Mon,  4 Dec 2023 01:47:02 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-50be3611794so2344365e87.0;
-        Mon, 04 Dec 2023 01:47:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="25+2DmbH"
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09E611BC
+	for <phone-devel@vger.kernel.org>; Mon,  4 Dec 2023 02:24:14 -0800 (PST)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-a196f84d217so416804666b.3
+        for <phone-devel@vger.kernel.org>; Mon, 04 Dec 2023 02:24:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701683221; x=1702288021; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6V8QqKWWTE8K+zwNUZJ+bcoYIRF8fZi/ENlPiKMrff8=;
-        b=lfilP1x5S+R0uNXyNrJ2bcRUN6ChJVwL6RSdxX+D0ZZ0neu6hkc0ZWQ22tqHvIFXfL
-         Ta9UJkwGXjwjAQk9Zz9t0gPuyy9iLeGySIjxVkl7pxNU2igwFkzLui/vDapXeNMm6ysr
-         Q16ALpRMgXop9V19Y/Idd92ZGxxmVsIJ3JKF8DvoEVTZgYNYq8TOE3NG/p0yKYaKfvu5
-         KVIYEjDGNlDs02D6a45kV6LcLINEiDxLnBbXb4Ez8HrOen53gcDYD7Y4dpocJCpVOcKr
-         sYqdkK2SULtzGN94wGFhlZ5nNLvz0hfjZfL2CrlS9Np9lMBpAUrLZPf/lLNC4vWlgwuG
-         sNbw==
+        d=fairphone.com; s=fair; t=1701685452; x=1702290252; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d+/UUK0tjiTbrYrWq+ZnEpTiWe5a1pluZVFLk6AmF9c=;
+        b=25+2DmbHuqMHRgfnJnrtDiwtqhqI7co39OL04t86nWhS9eW5Tzp6RsffFux3oF6gM5
+         Q0yigNgvCuMGYnZX8YiSRTbKvPgp1LJoJNZAByozfWR1eL1x6Lq2X6x/wa/tBMbw8PTG
+         yxMJs/yN4tQ9ESI7/jivditAn3sUqCOk2m/mPQUam5e/+2up6O5GjfPWZ54KXFBxENgQ
+         WnBBWdBC1z1z1hdPMQ+2bWgYukBWFMa553K6r5/6Ijj7BOmG/bp7vMFIewGDejkCSU53
+         XAwdrYrNSGfJsxHktKoaylnS6V4kPbYb0ad0thgbCsJ5fzqSHqMCC2DER0m8ueevFsj1
+         vRvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701683221; x=1702288021;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1701685452; x=1702290252;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=6V8QqKWWTE8K+zwNUZJ+bcoYIRF8fZi/ENlPiKMrff8=;
-        b=Kz6TS8qK8bDtbxGvNbIzGRvPAS1RgTG79CgaQovO8lVrnxO1YV9YrugnN7tKe8jBC0
-         dTlFLFHiERrOCiznZ+Gl1AeerTtMEp3igPDiUr2OxmKs+tfypCee/yue25F/FUsPCALp
-         StiVvcQOaW4ad9J4NgENs5+vEYFh9+RihUunQhdaXoHKDgOpgyXRNQPlKtuS2iMSmNLC
-         4vDx8cujv0OWI9P8EtzgS8qEPSMxTUZhuKYMkFGceOR/WF9YOXMKe0tsfk1pk1hyzdiZ
-         4/GoABPcLQiXJFxCGC33NoZjeYH+t3RKPBaTfMq9QMcNYgw1Tes4qJzdnodRSU7cvJ7M
-         F5hg==
-X-Gm-Message-State: AOJu0YyuPzOUtYe6HDhFHYlwY6Kca/e2xfVudxg6gRdQderNC9Da1HGk
-	MteHyB46tnegZHfwM5IGEmJRPPBwOv5iQQ==
-X-Google-Smtp-Source: AGHT+IEV0oVbT+JADWLD0RMW/EjAkdfa0Z2SYd97EXh9pcrjvDJpPM2Ud/fkLc8st6HLCk98K5bscA==
-X-Received: by 2002:a05:6512:1381:b0:50b:fa1d:aecc with SMTP id fc1-20020a056512138100b0050bfa1daeccmr531819lfb.29.1701683220468;
-        Mon, 04 Dec 2023 01:47:00 -0800 (PST)
-Received: from i-vetokaappi.home.lan (dsl-hkibng42-56733b-36.dhcp.inet.fi. [86.115.59.36])
-        by smtp.gmail.com with ESMTPSA id dw5-20020a0565122c8500b0050bfe28cd8fsm41506lfb.43.2023.12.04.01.46.59
+        bh=d+/UUK0tjiTbrYrWq+ZnEpTiWe5a1pluZVFLk6AmF9c=;
+        b=uAkbq8gksq4EdruS7LykE/s2s0fuIapalYEJJ0pKz/geeAPxRh49iH3EZTFsIPhC4M
+         7AO79wFSX2CxrBxWhhwoaJl37aWP8RLf0sGkqe8lfuHmUuV/VPzWb6j0NL5Me04D1NJ3
+         EsptS8ikyac0w80krrlFtNOZ9J7RnCp6mfK6uRHJRAGFQ68KHCZ9rCvJfqHBnlRzAN7Z
+         5FWW0vUyVcS9Ld6/QLqwTmp22z4DjVWvmwvX9L96RUiF31qwEy32DhfPtOhol9FjDjo1
+         rVMleeqdiQPqRF7GduenVoGsSUG3uD3gkvGz0kKVd9+KW3moXns7VxcM/sSQz2oPOSnm
+         IrNw==
+X-Gm-Message-State: AOJu0YxR/gJqAOFH1gVk291o0EYm2NBT+t0HdC7JcOx5wH/q+9q7Idfc
+	BfPwufOp4XuvkgkJw3k7D8MkGw==
+X-Google-Smtp-Source: AGHT+IHqro09Ko7X2V1DD4rgCax4G8WDgquQW3myh5xd0r5oyG9Hr2vgMNE9sZB0D3NOqxQZv3Bx/A==
+X-Received: by 2002:a17:906:103:b0:a0f:42da:1715 with SMTP id 3-20020a170906010300b00a0f42da1715mr3012340eje.50.1701685452409;
+        Mon, 04 Dec 2023 02:24:12 -0800 (PST)
+Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id t15-20020a1709066bcf00b00a0bdfab0f02sm5121551ejs.77.2023.12.04.02.24.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Dec 2023 01:46:59 -0800 (PST)
-From: =?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-To: linux-arm-msm@vger.kernel.org
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>,
-	Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: qcom: apq8026-samsung-matissewifi: Configure touch keys
-Date: Mon,  4 Dec 2023 11:46:49 +0200
-Message-Id: <20231204094649.10094-1-matti.lehtimaki@gmail.com>
-X-Mailer: git-send-email 2.40.1
+        Mon, 04 Dec 2023 02:24:11 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH v5 0/3] Add UFS host controller and Phy nodes for sc7280
+Date: Mon, 04 Dec 2023 11:24:03 +0100
+Message-Id: <20231204-sc7280-ufs-v5-0-926ceed550da@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMOobWUC/z3MQQ6CMBBA0auQWTukHSpYV97DGFPLILOgYAtqQ
+ ri71YXLt/h/hcRROMGxWCHyU5KMIWO/K8D3LtwZpc0GUlRpUgaTb+igcOkS3jQ3pmZXK24hB1P
+ kTt6/2fmS3cVxwLmP7P4LZcnqStuqLska0qjxsYi/Bpklupc7fSXBl34cYNs+K/ULnZ8AAAA=
+To: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
+ Bart Van Assche <bvanassche@acm.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, cros-qcom-dts-watchers@chromium.org
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nitin Rawat <quic_nitirawa@quicinc.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ "Bao D. Nguyen" <quic_nguyenb@quicinc.com>, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ Manivannan Sadhasivam <mani@kernel.org>
+X-Mailer: b4 0.12.4
 
-Add touch keys which are handled in touchscreen driver.
-Use KEY_APPSELECT for the left button because other devices use that
-even though downstream kernel uses KEY_RECENT.
+This patch adds UFS host controller and Phy nodes for Qualcomm sc7280
+SoC and enable it on some sc7280-based boards.
 
-Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
+Pick up the patchset from Nitin since the last revision (v4) has been
+sent end of September and is blocking qcm6490-fairphone-fp5 UFS.
+
 ---
- .../boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts    | 7 +++++++
- 1 file changed, 7 insertions(+)
+Changes in v5:
+- Try to get patch tags in order
+- Drop patch reordering clocks/clock-names in dt-bindings example (Rob)
+- Use QCOM_ICC_TAG_ALWAYS for interconnect (Konrad)
+- Add missing interconnect-names (Luca)
+- Fix sorting of ufs nodes, place at correct location (Luca)
+- Provide ufs_mem_phy clock to gcc node (Luca)
+- Add missing power-domain to ufs_mem_phy (Luca)
+- Link to v4: https://lore.kernel.org/linux-arm-msm/20230929131936.29421-1-quic_nitirawa@quicinc.com/
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts b/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts
-index f516e0426bb9..8a2ba2aadf23 100644
---- a/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts
-@@ -268,6 +268,13 @@ touchscreen@4a {
- 		interrupt-parent = <&tlmm>;
- 		interrupts = <17 IRQ_TYPE_LEVEL_LOW>;
- 
-+		linux,keycodes = <KEY_RESERVED
-+				  KEY_RESERVED
-+				  KEY_RESERVED
-+				  KEY_RESERVED
-+				  KEY_APPSELECT
-+				  KEY_BACK>;
-+
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&tsp_int_rst_default_state>;
- 
+---
+Nitin Rawat (3):
+      scsi: ufs: qcom: dt-bindings: Add SC7280 compatible string
+      arm64: dts: qcom: sc7280: Add UFS nodes for sc7280 soc
+      arm64: dts: qcom: sc7280: Add UFS nodes for sc7280 IDP board
+
+ .../devicetree/bindings/ufs/qcom,ufs.yaml          |  2 +
+ arch/arm64/boot/dts/qcom/sc7280-idp.dtsi           | 19 ++++++
+ arch/arm64/boot/dts/qcom/sc7280.dtsi               | 74 +++++++++++++++++++++-
+ 3 files changed, 94 insertions(+), 1 deletion(-)
+---
+base-commit: ce733604ab13d907655fd76ef5be55d16bbd0f8c
+change-id: 20231204-sc7280-ufs-b1e746ea60ed
+
+Best regards,
 -- 
-2.40.1
+Luca Weiss <luca.weiss@fairphone.com>
 
