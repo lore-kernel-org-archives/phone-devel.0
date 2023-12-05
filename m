@@ -1,235 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1727F4CDF7;
-	Tue,  5 Dec 2023 12:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dslG6bDO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31E0C433C8;
-	Tue,  5 Dec 2023 12:52:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701780752;
-	bh=6OBtOvpyrx0wR/KfCMCttoDVEX6P49xuNZ+3YdQODp8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dslG6bDOrwrTyl6vp44aPHWUHLlJ/2JZtiQINypEYJ7wyuFWkCCmtiHLH1AgFPoJf
-	 5PKDllxff8XfWof763DKBaWf50/QUTpxD0HO+Vc4LiFZTIX5BMlJ8MBAdIxfQSZXnZ
-	 YrMUEg+VcD7BOujNZwCHN0Og2q+lddUC7mHiX56hoh/yxuPxTD33C/5JPdVrYjvrL4
-	 /2zKIez1jDnH6aWIzkOWPiAj/w6xCgoBMon/+6lcHkvdRHoLZnuAn8BtTXLE4Ji2xf
-	 sRegasgnca3c/1e38Awrn028ADeyKbMAKYQkTGmw7oa+Zruvse270rL7BgSH2dHEup
-	 vT6aTXveaUrsw==
-Date: Tue, 5 Dec 2023 18:22:16 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Nitin Rawat <quic_nitirawa@quicinc.com>, Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	cros-qcom-dts-watchers@chromium.org,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] arm64: dts: qcom: sc7280: Add UFS nodes for
- sc7280 soc
-Message-ID: <20231205125216.GA3208@thinkpad>
-References: <20231204-sc7280-ufs-v5-0-926ceed550da@fairphone.com>
- <20231204-sc7280-ufs-v5-2-926ceed550da@fairphone.com>
- <621388b9-dcee-4af2-9763-e5d623d722b7@quicinc.com>
- <CXFJNBNKTRHH.2CS6TO2MEGJWL@fairphone.com>
- <20231204172829.GA69580@thinkpad>
- <CXG8INYXCEXN.C6TF6FALDP6D@fairphone.com>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="n/cLmLnB"
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE32194
+	for <phone-devel@vger.kernel.org>; Tue,  5 Dec 2023 06:39:06 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-548f0b7ab11so7408078a12.1
+        for <phone-devel@vger.kernel.org>; Tue, 05 Dec 2023 06:39:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1701787145; x=1702391945; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VTsU0tLdMfpk3k+17/uFzQeio4Ea0FMF0dlG83ANcS0=;
+        b=n/cLmLnBvPll7b6FvlUsMrCkFyCN3gHnhH7hpLmlc3K+f8rXYlezeiZL/k5SADMznt
+         vrSRCqgiZT51vg/HqxxLRiJLlG3oBQwppislsi5k040HmUXwl8VV5RMK9v8LlQKeiuzY
+         M+yg1Ma4NDg2LSE/YA2NXM21VBVHUvKfBCm7w90Y0PmmzFnQKZo8Ns44gFw6Lbg9FmDV
+         8wBQDVGdIKBeVXCsVDlC/iKAwHo/qeFOtDjrnep7ciJxtMBLFn+vRBnqJ+sxq51o2ko6
+         RA0Wyv3RKgr0XTlYb7lq5q6KxcFyIiSHGiCrcs84+hIGa00R8AM/uZxonH/p2Gne0gzX
+         ovAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701787145; x=1702391945;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VTsU0tLdMfpk3k+17/uFzQeio4Ea0FMF0dlG83ANcS0=;
+        b=hPGURJIPkwLZy1NTsSp/9zodD0aUJryzy2SuiRuOiqJuogpsaUJaKVW0RHtOo7dH68
+         TMfxAv1AILtG5kak65UKLljJTCbzBrNg4uGkI7umVyweKvkBOlpKUqKJjLDaqD29/hBB
+         URy6gOUOq1QyZ99rRC43s85iQsgE/br3LBEuASHD3S79THmSsNxHOb7G1Snu93BEzbUO
+         WRm7hPoBWvZQ09dJ+AkYkk/wp/a2MFqLUH2mEhfhrPiP7V1ntawSKZ7vAoY77Ep0D72W
+         WsQlXB6W1E2V8DVhe96+GSgDKbsW84jbZagAySCVamaUpZpT3Jw880AoondJgAPZcEyD
+         +msg==
+X-Gm-Message-State: AOJu0YwfXcfybB26E4JRggoejfBTjJHubIlTQ7zkMPa/2sB+txfL4aBp
+	y31GwtU4n5nzkJ0dnz9kU3ZKzQ==
+X-Google-Smtp-Source: AGHT+IFQuWQQqywH3CVl2hKn71xrka+HXiv9ID0fLEcgLwb4Eomjby4eFCI/jt81Jh5Pl1fWcnCPSA==
+X-Received: by 2002:a17:906:1011:b0:a19:f69e:1d3f with SMTP id 17-20020a170906101100b00a19f69e1d3fmr3812202ejm.71.1701787144906;
+        Tue, 05 Dec 2023 06:39:04 -0800 (PST)
+Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id gq18-20020a170906e25200b00a0a8b2b74ddsm6795404ejb.154.2023.12.05.06.39.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Dec 2023 06:39:04 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH v6 0/3] Add UFS host controller and Phy nodes for sc7280
+Date: Tue, 05 Dec 2023 15:38:53 +0100
+Message-Id: <20231205-sc7280-ufs-v6-0-ad6ca7796de7@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CXG8INYXCEXN.C6TF6FALDP6D@fairphone.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP01b2UC/23OsQ6CMBSF4Vchnb2kLVCsE+9hiKnlInegxRZQQ
+ 3h3gcHJ8R/Ol7OwiIEwskuysIAzRfJuC3VKmO2MeyBQszWTXGZC8hyiLeWZw9RGuAssc4VGcWz
+ YNhgCtvQ+sGu9dRt8D2MX0PwIrqUWmdCZSqXOpQABz4nszdFIwbxMtRc5m1rf72RHcfThc9ybi
+ x3++2QugIOWyiI2RcEbU7WGwtB5h4dUr+v6BSbnrvrrAAAA
+To: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
+ Bart Van Assche <bvanassche@acm.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, cros-qcom-dts-watchers@chromium.org
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nitin Rawat <quic_nitirawa@quicinc.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ "Bao D. Nguyen" <quic_nguyenb@quicinc.com>, 
+ Luca Weiss <luca.weiss@fairphone.com>, 
+ Manivannan Sadhasivam <mani@kernel.org>
+X-Mailer: b4 0.12.4
 
-On Tue, Dec 05, 2023 at 08:51:05AM +0100, Luca Weiss wrote:
-> On Mon Dec 4, 2023 at 6:28 PM CET, Manivannan Sadhasivam wrote:
-> > On Mon, Dec 04, 2023 at 01:21:42PM +0100, Luca Weiss wrote:
-> > > On Mon Dec 4, 2023 at 1:15 PM CET, Nitin Rawat wrote:
-> > > >
-> > > >
-> > > > On 12/4/2023 3:54 PM, Luca Weiss wrote:
-> > > > > From: Nitin Rawat <quic_nitirawa@quicinc.com>
-> > > > > 
-> > > > > Add UFS host controller and PHY nodes for sc7280 soc.
-> > > > > 
-> > > > > Signed-off-by: Nitin Rawat <quic_nitirawa@quicinc.com>
-> > > > > Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> > > > > Tested-by: Konrad Dybcio <konrad.dybcio@linaro.org> # QCM6490 FP5
-> > > > > [luca: various cleanups and additions as written in the cover letter]
-> > > > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > > > > ---
-> > > > >   arch/arm64/boot/dts/qcom/sc7280.dtsi | 74 +++++++++++++++++++++++++++++++++++-
-> > > > >   1 file changed, 73 insertions(+), 1 deletion(-)
-> > > > > 
-> > > > > diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> > > > > index 04bf85b0399a..8b08569f2191 100644
-> > > > > --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> > > > > +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> > > > > @@ -15,6 +15,7 @@
-> > > > >   #include <dt-bindings/dma/qcom-gpi.h>
-> > > > >   #include <dt-bindings/firmware/qcom,scm.h>
-> > > > >   #include <dt-bindings/gpio/gpio.h>
-> > > > > +#include <dt-bindings/interconnect/qcom,icc.h>
-> > > > >   #include <dt-bindings/interconnect/qcom,osm-l3.h>
-> > > > >   #include <dt-bindings/interconnect/qcom,sc7280.h>
-> > > > >   #include <dt-bindings/interrupt-controller/arm-gic.h>
-> > > > > @@ -906,7 +907,7 @@ gcc: clock-controller@100000 {
-> > > > >   			clocks = <&rpmhcc RPMH_CXO_CLK>,
-> > > > >   				 <&rpmhcc RPMH_CXO_CLK_A>, <&sleep_clk>,
-> > > > >   				 <0>, <&pcie1_phy>,
-> > > > > -				 <0>, <0>, <0>,
-> > > > > +				 <&ufs_mem_phy 0>, <&ufs_mem_phy 1>, <&ufs_mem_phy 2>,
-> > > > >   				 <&usb_1_qmpphy QMP_USB43DP_USB3_PIPE_CLK>;
-> > > > >   			clock-names = "bi_tcxo", "bi_tcxo_ao", "sleep_clk",
-> > > > >   				      "pcie_0_pipe_clk", "pcie_1_pipe_clk",
-> > > > > @@ -2238,6 +2239,77 @@ pcie1_phy: phy@1c0e000 {
-> > > > >   			status = "disabled";
-> > > > >   		};
-> > > > >   
-> > > > > +		ufs_mem_hc: ufs@1d84000 {
-> > > > > +			compatible = "qcom,sc7280-ufshc", "qcom,ufshc",
-> > > > > +				     "jedec,ufs-2.0";
-> > > > > +			reg = <0x0 0x01d84000 0x0 0x3000>;
-> > > > > +			interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
-> > > > > +			phys = <&ufs_mem_phy>;
-> > > > > +			phy-names = "ufsphy";
-> > > > > +			lanes-per-direction = <2>;
-> > > > > +			#reset-cells = <1>;
-> > > > > +			resets = <&gcc GCC_UFS_PHY_BCR>;
-> > > > > +			reset-names = "rst";
-> > > > > +
-> > > > > +			power-domains = <&gcc GCC_UFS_PHY_GDSC>;
-> > > > > +			required-opps = <&rpmhpd_opp_nom>;
-> > > > > +
-> > > > > +			iommus = <&apps_smmu 0x80 0x0>;
-> > > > > +			dma-coherent;
-> > > > > +
-> > > > > +			interconnects = <&aggre1_noc MASTER_UFS_MEM QCOM_ICC_TAG_ALWAYS
-> > > > > +					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
-> > > > > +					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
-> > > > > +					 &cnoc2 SLAVE_UFS_MEM_CFG QCOM_ICC_TAG_ALWAYS>;
-> > > > > +			interconnect-names = "ufs-ddr", "cpu-ufs";
-> > > > > +
-> > > > > +			clocks = <&gcc GCC_UFS_PHY_AXI_CLK>,
-> > > > > +				 <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
-> > > > > +				 <&gcc GCC_UFS_PHY_AHB_CLK>,
-> > > > > +				 <&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
-> > > > > +				 <&rpmhcc RPMH_CXO_CLK>,
-> > > > > +				 <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
-> > > > > +				 <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
-> > > > > +				 <&gcc GCC_UFS_PHY_RX_SYMBOL_1_CLK>;
-> > > > > +			clock-names = "core_clk",
-> > > > > +				      "bus_aggr_clk",
-> > > > > +				      "iface_clk",
-> > > > > +				      "core_clk_unipro",
-> > > > > +				      "ref_clk",
-> > > > > +				      "tx_lane0_sync_clk",
-> > > > > +				      "rx_lane0_sync_clk",
-> > > > > +				      "rx_lane1_sync_clk";
-> > > > > +			freq-table-hz =
-> > > > > +				<75000000 300000000>,
-> > > > > +				<0 0>,
-> > > > > +				<0 0>,
-> > > > > +				<75000000 300000000>,
-> > > > > +				<0 0>,
-> > > > > +				<0 0>,
-> > > > > +				<0 0>,
-> > > > > +				<0 0>;
-> > > > > +			status = "disabled";
-> > > > > +		};
-> > > > > +
-> > > > > +		ufs_mem_phy: phy@1d87000 {
-> > > > > +			compatible = "qcom,sc7280-qmp-ufs-phy";
-> > > > > +			reg = <0x0 0x01d87000 0x0 0xe00>;
-> > > > > +			clocks = <&rpmhcc RPMH_CXO_CLK>,
-> > > > > +				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>,
-> > > > > +				 <&gcc GCC_UFS_1_CLKREF_EN>;
-> > > > > +			clock-names = "ref", "ref_aux", "qref";
-> > > > > +
-> > > > > +			power-domains = <&gcc GCC_UFS_PHY_GDSC>;
-> > > 
-> > > Hi Nitin,
-> > > 
-> > > >
-> > > > GCC_UFS_PHY_GDSC is UFS controller GDSC. For sc7280 Phy we don't need this.
-> > > 
-> > > In the current dt-bindings the power-domains property is required.
-> > > 
-> > > Is there another power-domain for the PHY to use, or do we need to
-> > > adjust the bindings to not require power-domains property for ufs phy on
-> > > sc7280?
-> > > 
-> >
-> > PHYs are backed by MX power domain. So you should use that.
-> 
-> Sounds reasonable (though I understand little how the SoC is wired up
-> internally).
-> 
+This patch adds UFS host controller and Phy nodes for Qualcomm sc7280
+SoC and enable it on some sc7280-based boards.
 
-I digged a bit more and found that the new SoCs (SM8550, etc,...) has
-separate GDSC for PHY and UFS HC. So for those SoCs, we should use the
-respective GDSC as the power domain.
+Pick up the patchset from Nitin since the last revision (v4) has been
+sent end of September and is blocking qcm6490-fairphone-fp5 UFS.
 
-But for old SoCs like this one, we should use MX as the power domain.
+---
+Changes in v6:
+- Use MX power domain for phy, UFS_PHY_GDSC is only used for the
+  controller (Mani)
+- Link to v5: https://lore.kernel.org/r/20231204-sc7280-ufs-v5-0-926ceed550da@fairphone.com
 
-> >
-> > > Also, with "PHY" in the name, it's interesting that this is not for the
-> > > phy ;)
-> > > 
-> >
-> > Yes, confusing indeed. But the controllers (PCIe, UFS, USB etc...) are backed by
-> > GDSCs and all the analog components (PHYs) belong to MX domain since it is kind
-> > of always ON.
-> >
-> > I'll submit a series to fix this for the rest of the SoCs.
-> 
-> Great!
-> 
-> So I'll send v6 with power-domains = <&rpmhpd SC7280_MX>; for the phy.
-> 
+Changes in v5:
+- Try to get patch tags in order
+- Drop patch reordering clocks/clock-names in dt-bindings example (Rob)
+- Use QCOM_ICC_TAG_ALWAYS for interconnect (Konrad)
+- Add missing interconnect-names (Luca)
+- Fix sorting of ufs nodes, place at correct location (Luca)
+- Provide ufs_mem_phy clock to gcc node (Luca)
+- Add missing power-domain to ufs_mem_phy (Luca)
+- Link to v4: https://lore.kernel.org/linux-arm-msm/20230929131936.29421-1-quic_nitirawa@quicinc.com/
 
-Sounds good.
+---
+Nitin Rawat (3):
+      scsi: ufs: qcom: dt-bindings: Add SC7280 compatible string
+      arm64: dts: qcom: sc7280: Add UFS nodes for sc7280 soc
+      arm64: dts: qcom: sc7280: Add UFS nodes for sc7280 IDP board
 
-- Mani
+ .../devicetree/bindings/ufs/qcom,ufs.yaml          |  2 +
+ arch/arm64/boot/dts/qcom/sc7280-idp.dtsi           | 19 ++++++
+ arch/arm64/boot/dts/qcom/sc7280.dtsi               | 74 +++++++++++++++++++++-
+ 3 files changed, 94 insertions(+), 1 deletion(-)
+---
+base-commit: ce733604ab13d907655fd76ef5be55d16bbd0f8c
+change-id: 20231204-sc7280-ufs-b1e746ea60ed
 
-> Regards
-> Luca
-> 
-> >
-> > - Mani
-> >
-> > > Regards
-> > > Luca
-> > > 
-> > > >
-> > > > > +
-> > > > > +			resets = <&ufs_mem_hc 0>;
-> > > > > +			reset-names = "ufsphy";
-> > > > > +
-> > > > > +			#clock-cells = <1>;
-> > > > > +			#phy-cells = <0>;
-> > > > > +
-> > > > > +			status = "disabled";
-> > > > > +		};
-> > > > > +
-> > > > >   		ipa: ipa@1e40000 {
-> > > > >   			compatible = "qcom,sc7280-ipa";
-> > > > >   
-> > > > > 
-> > > 
-> 
-
+Best regards,
 -- 
-மணிவண்ணன் சதாசிவம்
+Luca Weiss <luca.weiss@fairphone.com>
+
