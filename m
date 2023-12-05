@@ -1,259 +1,186 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IJLJiK0x"
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFDF3C0;
-	Tue,  5 Dec 2023 00:46:03 -0800 (PST)
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B55Nx1U023771;
-	Tue, 5 Dec 2023 08:45:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=AkRfUrfNG0Yc35NEBBPXHy7JmBwfiCTeSJJylk1FaZg=;
- b=IJLJiK0xFbNEywOuGqkegwjpb5QWIfY5IGnOz4lGqE2/xifcxkojaEoYytfxWOfqlgd0
- QlFo77XSMLUPGUZ914AwPkycwr+FbCpgOLFPdxuyq0NTXIPJo0J9UJ2jtlRg0bK6zS+K
- km5Wesyb9CK4e/zoF8/2YzcIDCADOqFpy4rPbGAc83MWKZeAZohzuhHfKe9vlRFp5JSV
- AIgqyVbsnrT5VcXOyJqmtbvkvC0DcDd3wFn/IjqKo978TyiqI/mu61nFs1TbXcriPeSk
- EYUqKwUDUizXUnDemA10E3Q/liqw+munrGbYJY499lBFnIQpsiW9PynOvcqL1Mq6WJ9W vQ== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3usdbnapxh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Dec 2023 08:45:53 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3B58jQHs008228
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 5 Dec 2023 08:45:26 GMT
-Received: from [10.50.1.19] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 5 Dec
- 2023 00:45:19 -0800
-Message-ID: <2c996304-f82f-5311-3d88-d459c07ef741@quicinc.com>
-Date: Tue, 5 Dec 2023 14:15:14 +0530
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jhD0w/8B"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10D0190;
+	Tue,  5 Dec 2023 02:21:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701771717; x=1733307717;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZPly1fDdJeFUhMI/JCcMzF45VB6Ez+ThdnRYcJTIAnk=;
+  b=jhD0w/8B0eLqsVGJw1InuxY0Mw7HEOdDWhPcm0G2dgEr0tBmKg4DCpeB
+   6Gq/pSRVbMJupZAxxemEo+Nd3JrhG9pfyLGDvBp7RbQMJfWyVE8dpg/xO
+   qATMXx+FywVPNHuchpKdqbn4FjspxUtQtFYOjER5P5e1n7sXIH+Ez3imx
+   iDJDSAeO9J1sI/iD7+LPbXfmcEha8pgETX4nRjFA2YOtvD1oW+K3ZvcUS
+   2GsXFqy129dy6SGvUiuaruXHw7i/Utgqem0s+wtO2R+v4Fc2pMfnyiZZS
+   XC228+LCcSfUzmCIYmGHD0aJSHXm7Y6BpW4LOx3baf9+KaZDS9kTIINrE
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="716139"
+X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
+   d="scan'208";a="716139"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 02:21:56 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="1018174042"
+X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
+   d="scan'208";a="1018174042"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by fmsmga006.fm.intel.com with ESMTP; 05 Dec 2023 02:21:52 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rASYo-0008kI-0p;
+	Tue, 05 Dec 2023 10:21:50 +0000
+Date: Tue, 5 Dec 2023 18:21:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>,
+	Markuss Broks <markuss.broks@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Henrik Rydberg <rydberg@bitmath.org>, linux-input@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	Karel Balej <balejk@matfyz.cz>
+Subject: Re: [PATCH v3 3/5] input/touchscreen: imagis: Add support for Imagis
+ IST3038B
+Message-ID: <202312051823.19Cxz3sZ-lkp@intel.com>
+References: <20231202125948.10345-4-karelb@gimli.ms.mff.cuni.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.3.2
-Subject: Re: [PATCH v5 2/3] arm64: dts: qcom: sc7280: Add UFS nodes for sc7280
- soc
-Content-Language: en-US
-To: Manivannan Sadhasivam <mani@kernel.org>,
-        Luca Weiss
-	<luca.weiss@fairphone.com>
-CC: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Alim Akhtar
-	<alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Bart Van Assche
-	<bvanassche@acm.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        <cros-qcom-dts-watchers@chromium.org>,
-        <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20231204-sc7280-ufs-v5-0-926ceed550da@fairphone.com>
- <20231204-sc7280-ufs-v5-2-926ceed550da@fairphone.com>
- <621388b9-dcee-4af2-9763-e5d623d722b7@quicinc.com>
- <CXFJNBNKTRHH.2CS6TO2MEGJWL@fairphone.com> <20231204172829.GA69580@thinkpad>
-From: Nitin Rawat <quic_nitirawa@quicinc.com>
-In-Reply-To: <20231204172829.GA69580@thinkpad>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: B3LvmleG2ex5vrOzMouqnGdZjfmUaGPf
-X-Proofpoint-GUID: B3LvmleG2ex5vrOzMouqnGdZjfmUaGPf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-05_03,2023-12-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=999 phishscore=0
- lowpriorityscore=0 mlxscore=0 impostorscore=0 clxscore=1015 spamscore=0
- malwarescore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2312050071
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231202125948.10345-4-karelb@gimli.ms.mff.cuni.cz>
+
+Hi Karel,
+
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on dtor-input/next]
+[also build test WARNING on dtor-input/for-linus robh/for-next linus/master v6.7-rc4 next-20231205]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Karel-Balej/dt-bindings-input-touchscreen-Add-compatible-for-IST3038B/20231202-215030
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
+patch link:    https://lore.kernel.org/r/20231202125948.10345-4-karelb%40gimli.ms.mff.cuni.cz
+patch subject: [PATCH v3 3/5] input/touchscreen: imagis: Add support for Imagis IST3038B
+config: hexagon-randconfig-r111-20231204 (https://download.01.org/0day-ci/archive/20231205/202312051823.19Cxz3sZ-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
+reproduce: (https://download.01.org/0day-ci/archive/20231205/202312051823.19Cxz3sZ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202312051823.19Cxz3sZ-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from drivers/input/touchscreen/imagis.c:5:
+   In file included from include/linux/i2c.h:19:
+   In file included from include/linux/regulator/consumer.h:35:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:13:
+   In file included from include/linux/cgroup.h:26:
+   In file included from include/linux/kernel_stat.h:9:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/hexagon/include/asm/io.h:334:
+   include/asm-generic/io.h:547:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     547 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:560:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     560 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+         |                                                   ^
+   In file included from drivers/input/touchscreen/imagis.c:5:
+   In file included from include/linux/i2c.h:19:
+   In file included from include/linux/regulator/consumer.h:35:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:13:
+   In file included from include/linux/cgroup.h:26:
+   In file included from include/linux/kernel_stat.h:9:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/hexagon/include/asm/io.h:334:
+   include/asm-generic/io.h:573:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     573 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+         |                                                   ^
+   In file included from drivers/input/touchscreen/imagis.c:5:
+   In file included from include/linux/i2c.h:19:
+   In file included from include/linux/regulator/consumer.h:35:
+   In file included from include/linux/suspend.h:5:
+   In file included from include/linux/swap.h:9:
+   In file included from include/linux/memcontrol.h:13:
+   In file included from include/linux/cgroup.h:26:
+   In file included from include/linux/kernel_stat.h:9:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/hexagon/include/asm/io.h:334:
+   include/asm-generic/io.h:584:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     584 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:594:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     594 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:604:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     604 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+>> drivers/input/touchscreen/imagis.c:366:39: warning: unused variable 'imagis_3038b_data' [-Wunused-const-variable]
+     366 | static const struct imagis_properties imagis_3038b_data = {
+         |                                       ^
+>> drivers/input/touchscreen/imagis.c:374:39: warning: unused variable 'imagis_3038c_data' [-Wunused-const-variable]
+     374 | static const struct imagis_properties imagis_3038c_data = {
+         |                                       ^
+   8 warnings generated.
 
 
+vim +/imagis_3038b_data +366 drivers/input/touchscreen/imagis.c
 
-On 12/4/2023 10:58 PM, Manivannan Sadhasivam wrote:
-> On Mon, Dec 04, 2023 at 01:21:42PM +0100, Luca Weiss wrote:
->> On Mon Dec 4, 2023 at 1:15 PM CET, Nitin Rawat wrote:
->>>
->>>
->>> On 12/4/2023 3:54 PM, Luca Weiss wrote:
->>>> From: Nitin Rawat <quic_nitirawa@quicinc.com>
->>>>
->>>> Add UFS host controller and PHY nodes for sc7280 soc.
->>>>
->>>> Signed-off-by: Nitin Rawat <quic_nitirawa@quicinc.com>
->>>> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
->>>> Tested-by: Konrad Dybcio <konrad.dybcio@linaro.org> # QCM6490 FP5
->>>> [luca: various cleanups and additions as written in the cover letter]
->>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>>> ---
->>>>    arch/arm64/boot/dts/qcom/sc7280.dtsi | 74 +++++++++++++++++++++++++++++++++++-
->>>>    1 file changed, 73 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
->>>> index 04bf85b0399a..8b08569f2191 100644
->>>> --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
->>>> +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
->>>> @@ -15,6 +15,7 @@
->>>>    #include <dt-bindings/dma/qcom-gpi.h>
->>>>    #include <dt-bindings/firmware/qcom,scm.h>
->>>>    #include <dt-bindings/gpio/gpio.h>
->>>> +#include <dt-bindings/interconnect/qcom,icc.h>
->>>>    #include <dt-bindings/interconnect/qcom,osm-l3.h>
->>>>    #include <dt-bindings/interconnect/qcom,sc7280.h>
->>>>    #include <dt-bindings/interrupt-controller/arm-gic.h>
->>>> @@ -906,7 +907,7 @@ gcc: clock-controller@100000 {
->>>>    			clocks = <&rpmhcc RPMH_CXO_CLK>,
->>>>    				 <&rpmhcc RPMH_CXO_CLK_A>, <&sleep_clk>,
->>>>    				 <0>, <&pcie1_phy>,
->>>> -				 <0>, <0>, <0>,
->>>> +				 <&ufs_mem_phy 0>, <&ufs_mem_phy 1>, <&ufs_mem_phy 2>,
->>>>    				 <&usb_1_qmpphy QMP_USB43DP_USB3_PIPE_CLK>;
->>>>    			clock-names = "bi_tcxo", "bi_tcxo_ao", "sleep_clk",
->>>>    				      "pcie_0_pipe_clk", "pcie_1_pipe_clk",
->>>> @@ -2238,6 +2239,77 @@ pcie1_phy: phy@1c0e000 {
->>>>    			status = "disabled";
->>>>    		};
->>>>    
->>>> +		ufs_mem_hc: ufs@1d84000 {
->>>> +			compatible = "qcom,sc7280-ufshc", "qcom,ufshc",
->>>> +				     "jedec,ufs-2.0";
->>>> +			reg = <0x0 0x01d84000 0x0 0x3000>;
->>>> +			interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
->>>> +			phys = <&ufs_mem_phy>;
->>>> +			phy-names = "ufsphy";
->>>> +			lanes-per-direction = <2>;
->>>> +			#reset-cells = <1>;
->>>> +			resets = <&gcc GCC_UFS_PHY_BCR>;
->>>> +			reset-names = "rst";
->>>> +
->>>> +			power-domains = <&gcc GCC_UFS_PHY_GDSC>;
->>>> +			required-opps = <&rpmhpd_opp_nom>;
->>>> +
->>>> +			iommus = <&apps_smmu 0x80 0x0>;
->>>> +			dma-coherent;
->>>> +
->>>> +			interconnects = <&aggre1_noc MASTER_UFS_MEM QCOM_ICC_TAG_ALWAYS
->>>> +					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
->>>> +					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
->>>> +					 &cnoc2 SLAVE_UFS_MEM_CFG QCOM_ICC_TAG_ALWAYS>;
->>>> +			interconnect-names = "ufs-ddr", "cpu-ufs";
->>>> +
->>>> +			clocks = <&gcc GCC_UFS_PHY_AXI_CLK>,
->>>> +				 <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
->>>> +				 <&gcc GCC_UFS_PHY_AHB_CLK>,
->>>> +				 <&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
->>>> +				 <&rpmhcc RPMH_CXO_CLK>,
->>>> +				 <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
->>>> +				 <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
->>>> +				 <&gcc GCC_UFS_PHY_RX_SYMBOL_1_CLK>;
->>>> +			clock-names = "core_clk",
->>>> +				      "bus_aggr_clk",
->>>> +				      "iface_clk",
->>>> +				      "core_clk_unipro",
->>>> +				      "ref_clk",
->>>> +				      "tx_lane0_sync_clk",
->>>> +				      "rx_lane0_sync_clk",
->>>> +				      "rx_lane1_sync_clk";
->>>> +			freq-table-hz =
->>>> +				<75000000 300000000>,
->>>> +				<0 0>,
->>>> +				<0 0>,
->>>> +				<75000000 300000000>,
->>>> +				<0 0>,
->>>> +				<0 0>,
->>>> +				<0 0>,
->>>> +				<0 0>;
->>>> +			status = "disabled";
->>>> +		};
->>>> +
->>>> +		ufs_mem_phy: phy@1d87000 {
->>>> +			compatible = "qcom,sc7280-qmp-ufs-phy";
->>>> +			reg = <0x0 0x01d87000 0x0 0xe00>;
->>>> +			clocks = <&rpmhcc RPMH_CXO_CLK>,
->>>> +				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>,
->>>> +				 <&gcc GCC_UFS_1_CLKREF_EN>;
->>>> +			clock-names = "ref", "ref_aux", "qref";
->>>> +
->>>> +			power-domains = <&gcc GCC_UFS_PHY_GDSC>;
->>
->> Hi Nitin,
->>
->>>
->>> GCC_UFS_PHY_GDSC is UFS controller GDSC. For sc7280 Phy we don't need this.
->>
->> In the current dt-bindings the power-domains property is required.
->>
->> Is there another power-domain for the PHY to use, or do we need to
->> adjust the bindings to not require power-domains property for ufs phy on
->> sc7280?
->>
-> 
-> PHYs are backed by MX power domain. So you should use that.
-> 
->> Also, with "PHY" in the name, it's interesting that this is not for the
->> phy ;)
->>
-> 
-> Yes, confusing indeed. But the controllers (PCIe, UFS, USB etc...) are backed by
-> GDSCs and all the analog components (PHYs) belong to MX domain since it is kind
-> of always ON.
-> 
-> I'll submit a series to fix this for the rest of the SoCs.
-> 
-> - Mani
-> 
+   365	
+ > 366	static const struct imagis_properties imagis_3038b_data = {
+   367		.interrupt_msg_cmd = IST3038B_REG_STATUS,
+   368		.touch_coord_cmd = IST3038B_REG_STATUS,
+   369		.whoami_cmd = IST3038B_REG_CHIPID,
+   370		.whoami_val = IST3038B_WHOAMI,
+   371		.protocol_b = true,
+   372	};
+   373	
+ > 374	static const struct imagis_properties imagis_3038c_data = {
+   375		.interrupt_msg_cmd = IST3038C_REG_INTR_MESSAGE,
+   376		.touch_coord_cmd = IST3038C_REG_TOUCH_COORD,
+   377		.whoami_cmd = IST3038C_REG_CHIPID,
+   378		.whoami_val = IST3038C_WHOAMI,
+   379	};
+   380	
 
-Hi Mani,
-
-UFS Phy is a passive driver and its resource enable/disable is 
-controlled by UFS controller driver.
-
-Since PHY belongs to MX domain which is always on. IMO, there is no need 
-for explicitly voting for MX domain for sc7280 and older targets.
-
-Only starting SM8550, we have a separate UFS PHY GDSC which needs to be 
-voted for enabling or disabling and hence we need to have power-domain 
-property for SM8550.
-
-Hence, I feel updating the binding to reflect that power-domains is not 
-a required field would be more correct.
-
-
-Regards,
-Nitin
-
-
-
->> Regards
->> Luca
->>
->>>
->>>> +
->>>> +			resets = <&ufs_mem_hc 0>;
->>>> +			reset-names = "ufsphy";
->>>> +
->>>> +			#clock-cells = <1>;
->>>> +			#phy-cells = <0>;
->>>> +
->>>> +			status = "disabled";
->>>> +		};
->>>> +
->>>>    		ipa: ipa@1e40000 {
->>>>    			compatible = "qcom,sc7280-ipa";
->>>>    
->>>>
->>
-> 
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
