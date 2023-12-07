@@ -1,43 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9FB58101;
-	Tue,  5 Dec 2023 15:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72B741847;
+	Thu,  7 Dec 2023 14:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bu7k/46z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73FEEC433C7;
-	Tue,  5 Dec 2023 15:01:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TUmhWBrH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362E2C433C8;
+	Thu,  7 Dec 2023 14:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701788477;
-	bh=kYRwODFbLu0AAQRqnx93sSXNYsrdMTvxC35fEtnlADI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bu7k/46zMNkwk9yLv5gCLuP2gbZ1VDWR/jKO8pjqj2ofoMUg7WHpPW8NJG3hIYjMS
-	 UVKx47KoiAdKzX1PvRK1IfLnS0vXpS0IwzKtvADJjcnIP/2wquEyaZ72DL8Gdm2E6J
-	 N1iDYq5i8BwFTk4G1SjJirzk49ku6ccbHuOKJohmKUZMXdiuOidWsMaI++2Xhxn080
-	 RNxBmWf/b/JfP2nG9g69+HFA+a1tcsHUvcL5GTeq7IENNmqMY9/3Bt6athRgjPVoiB
-	 f8jo8ucsEuY87yrvbq+ATLzfjos+qZD4Ly2ygaNH4ATshdnpU2lU1US5mcWE359xa9
-	 08Vl9Vfd/Bggg==
-Date: Tue, 5 Dec 2023 20:31:01 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	cros-qcom-dts-watchers@chromium.org,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Nitin Rawat <quic_nitirawa@quicinc.com>
-Subject: Re: [PATCH v6 2/3] arm64: dts: qcom: sc7280: Add UFS nodes for
- sc7280 soc
-Message-ID: <20231205150101.GB3208@thinkpad>
-References: <20231205-sc7280-ufs-v6-0-ad6ca7796de7@fairphone.com>
- <20231205-sc7280-ufs-v6-2-ad6ca7796de7@fairphone.com>
+	s=k20201202; t=1701960923;
+	bh=Uhqwn4e8NYkWS0QZNCGhJ/sVj57HJ9Z86Fu38hB/5RM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=TUmhWBrHpl4gV1UNoTpIh1wlYwXheV8g8XsWmzWdgZ+x5/2uIMzA0vtLkw5w2m0kd
+	 y9C+SkdlgYy+Gewa4i0kAwCuQPMV/4dZImgV9rWnm+lgg3SY7PCCIyQ1qbeOm9RJ6M
+	 kLr98MabDMhrlaZ5rT18K+20uDGx4YeDykTLGPAebhaSfi+v62dHl/Y0axU2uhD7Bs
+	 +dLsc5RiOcIF2rdcdAXZVmMrwXML4VcA8tkyZ7bKFhkvlYTYX7zm55oAbXceR6tiR0
+	 88LzhWUInMjv5KCgDZCQrC4soOdmmFKb0zqzrSS997hya41VvgW9OBW1PkNIHDHS2E
+	 mL/Xx3kHfC30A==
+From: Kalle Valo <kvalo@kernel.org>
+To: Dylan Van Assche <me@dylanvanassche.be>
+Cc: ath10k@lists.infradead.org,  linux-arm-msm@vger.kernel.org,
+  ~postmarketos/upstreaming@lists.sr.ht,  phone-devel@vger.kernel.org
+Subject: Re: ath10k-firmware: WCN3990: Add board file for Oneplus 6/6T
+References: <b71aa947-4644-e1a3-40e1-99d11d0ab8d7@dylanvanassche.be>
+Date: Thu, 07 Dec 2023 16:55:20 +0200
+In-Reply-To: <b71aa947-4644-e1a3-40e1-99d11d0ab8d7@dylanvanassche.be> (Dylan
+	Van Assche's message of "Fri, 25 Aug 2023 17:16:10 +0200")
+Message-ID: <87fs0enjtz.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -45,132 +35,60 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231205-sc7280-ufs-v6-2-ad6ca7796de7@fairphone.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 05, 2023 at 03:38:55PM +0100, Luca Weiss wrote:
-> From: Nitin Rawat <quic_nitirawa@quicinc.com>
-> 
-> Add UFS host controller and PHY nodes for sc7280 soc.
-> 
-> Signed-off-by: Nitin Rawat <quic_nitirawa@quicinc.com>
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> Tested-by: Konrad Dybcio <konrad.dybcio@linaro.org> # QCM6490 FP5
-> [luca: various cleanups and additions as written in the cover letter]
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Dylan Van Assche <me@dylanvanassche.be> writes:
 
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> I would like to include the board file for the Oneplus 6/6T smartphone.
+> This smartphone is manufactured by Oneplus and uses the Snapdragon
+> SDM845 SoC.
+> At postmarketOS, we run the mainline kernel on this phone so shipping
+> this board file
+> from upstream would be a great addition. Below, the questions from the wi=
+ki:
+>
+> * description for what hardware this is:
+>
+> Smartphone with a SDM845 chip and a WCN3990 Bluetooth/WiFi chip.
+> The WCN3990 chip is connected to 2 QM488xx radios, one is used
+> for 2.4Ghz and the other one for 5Ghz radio.
+>
+> * origin of the board file (did you create it yourself or where you
+> =C2=A0 downloaded)
+>
+> Extracted from the stock firmware.
+>
+> * ids to be used with the board file (ATH10K_BD_IE_BOARD_NAME in ath10k)
+>
+> - WCN3990 hw1.0
+> =C2=A0 + bus=3Dsnoc,qmi-board-id=3Dff,qmi-chip-id=3D30214,variant=3Donepl=
+us_sdm845
+> =C2=A0=C2=A0=C2=A0 sha256sum:
+> a46790bc201026e8f38a19f3acd749640b54b73d14e09287659a647b9cc3ee8e
+> =C2=A0=C2=A0=C2=A0 md5sum: f744a3402e260d7fd330cbc964972a5c
+>
+> * attach the actual board file (board.bin)
+>
+> The name of the files are equal to the id string in the board-2.bin
+> (minus the ".bin")
 
-- Mani
+Thanks, added to WCN3990/hw1.0/board-2.bin:
 
-> ---
->  arch/arm64/boot/dts/qcom/sc7280.dtsi | 74 +++++++++++++++++++++++++++++++++++-
->  1 file changed, 73 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> index 04bf85b0399a..dcb6c2004f87 100644
-> --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-> @@ -15,6 +15,7 @@
->  #include <dt-bindings/dma/qcom-gpi.h>
->  #include <dt-bindings/firmware/qcom,scm.h>
->  #include <dt-bindings/gpio/gpio.h>
-> +#include <dt-bindings/interconnect/qcom,icc.h>
->  #include <dt-bindings/interconnect/qcom,osm-l3.h>
->  #include <dt-bindings/interconnect/qcom,sc7280.h>
->  #include <dt-bindings/interrupt-controller/arm-gic.h>
-> @@ -906,7 +907,7 @@ gcc: clock-controller@100000 {
->  			clocks = <&rpmhcc RPMH_CXO_CLK>,
->  				 <&rpmhcc RPMH_CXO_CLK_A>, <&sleep_clk>,
->  				 <0>, <&pcie1_phy>,
-> -				 <0>, <0>, <0>,
-> +				 <&ufs_mem_phy 0>, <&ufs_mem_phy 1>, <&ufs_mem_phy 2>,
->  				 <&usb_1_qmpphy QMP_USB43DP_USB3_PIPE_CLK>;
->  			clock-names = "bi_tcxo", "bi_tcxo_ao", "sleep_clk",
->  				      "pcie_0_pipe_clk", "pcie_1_pipe_clk",
-> @@ -2238,6 +2239,77 @@ pcie1_phy: phy@1c0e000 {
->  			status = "disabled";
->  		};
->  
-> +		ufs_mem_hc: ufs@1d84000 {
-> +			compatible = "qcom,sc7280-ufshc", "qcom,ufshc",
-> +				     "jedec,ufs-2.0";
-> +			reg = <0x0 0x01d84000 0x0 0x3000>;
-> +			interrupts = <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
-> +			phys = <&ufs_mem_phy>;
-> +			phy-names = "ufsphy";
-> +			lanes-per-direction = <2>;
-> +			#reset-cells = <1>;
-> +			resets = <&gcc GCC_UFS_PHY_BCR>;
-> +			reset-names = "rst";
-> +
-> +			power-domains = <&gcc GCC_UFS_PHY_GDSC>;
-> +			required-opps = <&rpmhpd_opp_nom>;
-> +
-> +			iommus = <&apps_smmu 0x80 0x0>;
-> +			dma-coherent;
-> +
-> +			interconnects = <&aggre1_noc MASTER_UFS_MEM QCOM_ICC_TAG_ALWAYS
-> +					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
-> +					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
-> +					 &cnoc2 SLAVE_UFS_MEM_CFG QCOM_ICC_TAG_ALWAYS>;
-> +			interconnect-names = "ufs-ddr", "cpu-ufs";
-> +
-> +			clocks = <&gcc GCC_UFS_PHY_AXI_CLK>,
-> +				 <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
-> +				 <&gcc GCC_UFS_PHY_AHB_CLK>,
-> +				 <&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
-> +				 <&rpmhcc RPMH_CXO_CLK>,
-> +				 <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
-> +				 <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
-> +				 <&gcc GCC_UFS_PHY_RX_SYMBOL_1_CLK>;
-> +			clock-names = "core_clk",
-> +				      "bus_aggr_clk",
-> +				      "iface_clk",
-> +				      "core_clk_unipro",
-> +				      "ref_clk",
-> +				      "tx_lane0_sync_clk",
-> +				      "rx_lane0_sync_clk",
-> +				      "rx_lane1_sync_clk";
-> +			freq-table-hz =
-> +				<75000000 300000000>,
-> +				<0 0>,
-> +				<0 0>,
-> +				<75000000 300000000>,
-> +				<0 0>,
-> +				<0 0>,
-> +				<0 0>,
-> +				<0 0>;
-> +			status = "disabled";
-> +		};
-> +
-> +		ufs_mem_phy: phy@1d87000 {
-> +			compatible = "qcom,sc7280-qmp-ufs-phy";
-> +			reg = <0x0 0x01d87000 0x0 0xe00>;
-> +			clocks = <&rpmhcc RPMH_CXO_CLK>,
-> +				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>,
-> +				 <&gcc GCC_UFS_1_CLKREF_EN>;
-> +			clock-names = "ref", "ref_aux", "qref";
-> +
-> +			power-domains = <&rpmhpd SC7280_MX>;
-> +
-> +			resets = <&ufs_mem_hc 0>;
-> +			reset-names = "ufsphy";
-> +
-> +			#clock-cells = <1>;
-> +			#phy-cells = <0>;
-> +
-> +			status = "disabled";
-> +		};
-> +
->  		ipa: ipa@1e40000 {
->  			compatible = "qcom,sc7280-ipa";
->  
-> 
-> -- 
-> 2.43.0
-> 
+New:
+bus=3Dsnoc,qmi-board-id=3Dff,qmi-chip-id=3D30214,variant=3Doneplus_sdm845
 
--- 
-மணிவண்ணன் சதாசிவம்
+Changed:
+
+
+Deleted:
+
+1 board image(s) added, 0 changed, 0 deleted, 24 in total
+
+https://github.com/kvalo/ath10k-firmware/commit/328aea229a35920e3f54fc7b7ff=
+0070a95ef421f
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
