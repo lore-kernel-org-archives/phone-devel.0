@@ -1,51 +1,46 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1EB566A;
-	Fri,  8 Dec 2023 02:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLgN6X10"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18D69C433AD;
-	Fri,  8 Dec 2023 02:53:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702004020;
-	bh=T9R9DEy6CjQhMtIY2Sx77MVq9hPTMMtAPfSMWQzuT1g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLgN6X10ITy7yj61Wp2W+N7Bc0uXH0RzEzpJwrpA+2bWJ+MzONdYO+0T4ngPPyeaC
-	 hILpyTRsDdjrSd4K/QsCSKLVy+2Vt5Wd9FQlbP0fKdMIuwIi7kAc97wwha6Bu2pHVj
-	 6H5IwMkZDMOQEDBTLfCFVhlgspnGIYE2ni39Haq2DXinWNzWYfp+vLY20gh22+T4f3
-	 9caLsT8PTCZHDCjzuBMm4xwkMOVGO4gUj4MFCJ79dcaD2zojCErAb/mELJ0L09Sc8B
-	 gu0tl3W4cOHgeQehpv/V/5IYcVeSXU/kgfQhYmKqDPtSUD3rma4EwSxM+gezHW3lzd
-	 oC4BPnp7WSfzQ==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Andy Gross <agross@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Nia Espera <nespera@igalia.com>
-Cc: linux-arm-msm@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	Rob <Me@orbit.sh>,
-	Clayton Craft <clayton@igalia.com>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: (subset) [PATCH v4 0/6] support oneplus-lemonade(p) devices
-Date: Thu,  7 Dec 2023 18:57:44 -0800
-Message-ID: <170200426924.2871025.17125977730040809387.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231111-nia-sm8350-for-upstream-v4-0-3a638b02eea5@igalia.com>
-References: <20231111-nia-sm8350-for-upstream-v4-0-3a638b02eea5@igalia.com>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="zRp9uEjb"
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32AD51BC6
+	for <phone-devel@vger.kernel.org>; Fri,  8 Dec 2023 07:08:46 -0800 (PST)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-40c2c65e6aaso18337375e9.2
+        for <phone-devel@vger.kernel.org>; Fri, 08 Dec 2023 07:08:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1702048124; x=1702652924; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WDlnmNszOgddS8dBFWx/WoEU+LfvOrqv92GavQrCmjw=;
+        b=zRp9uEjbqqXuiLz/ZNVOa6qRlTO/koyXsJma9ZCscz6W7BtH8tlZbBTpCwuilzqnsI
+         +AMej+rHAey0IOAiwEUKrUVXZIijSLwrWxPBeq1thtNSoLWv0golFVWfYjG8DYduz1u0
+         ThrVUXoRPeAfj1QWHDivYjkEwEVWOoPyqFz6rJIVsFg1RYoMOGkA0HtCJli0g49tAb4P
+         aimzGlAeZAOGsxpQ0KklYGuPJvho9GfsogWxPV53f+0D8oAhJd3O1C958J6xJ2kQkD8T
+         +0WHABUStMk/ao8a1jYSgsIaoOb+nMNdJ/Mq2YZlmy3EXLS9DCnsGhLCr/n5WaejOPsv
+         Odtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702048124; x=1702652924;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WDlnmNszOgddS8dBFWx/WoEU+LfvOrqv92GavQrCmjw=;
+        b=GhnXHC1nyukOoanFgzfPegBFMi2R9tnSQ9eVcVCDLRnJHtbRrqyy+aKwHvn0KcXrre
+         r6AD/1CNPtsU3D/p9XGbscPhZ6BTOYRsO6h0dlDb8zGYgjlZcD1M1e8aiZWeFY9qCy0r
+         tQwsC7z74/Uo/gj9NDHC4ztx8/HOcMCoFYC/dPgIEyF5oAvPsLe1yOF/BKCanAq7BHgl
+         yujs6p9FFjPcQX6Mrba6oybgXDQ527d6LVH3IqvebZ100VnHnLnU/Rf3BXV6NuY14nt2
+         Nm4jtw6WBZCvkOqSwEhMePCr8+2e15kq0PzxGrwAQYjmyWPRnjwKGoBHWmY+c2q4o9La
+         CsOA==
+X-Gm-Message-State: AOJu0Yz3lGeyFcMVFs+G0RVplDG+ZCRgqHCmF2kHVcN2LWQ+JjamCjeM
+	8FE+dEuC8n1/s2Mt0sOl3u1GwQ==
+X-Google-Smtp-Source: AGHT+IGgoEvGG4TIXnrkvEhDL9ohUy/9JK0zZnX9KJnrl/fd4U4EFWyMkK02TZuT4Dr/S7cum/F7PQ==
+X-Received: by 2002:a05:600c:22d9:b0:40c:24dc:1166 with SMTP id 25-20020a05600c22d900b0040c24dc1166mr48233wmg.189.1702048124640;
+        Fri, 08 Dec 2023 07:08:44 -0800 (PST)
+Received: from [192.168.55.221] (tmo-113-102.customers.d1-online.com. [80.187.113.102])
+        by smtp.gmail.com with ESMTPSA id r25-20020a170906351900b00a1cc1be1146sm1096114eja.217.2023.12.08.07.08.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Dec 2023 07:08:44 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH v3 00/11] Remoteprocs (ADSP, CDSP, WPSS) for SC7280
+Date: Fri, 08 Dec 2023 16:07:56 +0100
+Message-Id: <20231208-sc7280-remoteprocs-v3-0-6aa394d33edf@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -53,35 +48,99 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAE0xc2UC/33NQQrCMBCF4auUrI1kJsamrryHuAjTqc2iTUlKU
+ ErvbtqNIOLyfzDfLCJx9JzEpVpE5OyTD2MJfagE9W58sPRtaYEKNSisZaIarZKRhzDzFAMlqU4
+ WlSUCBi3K4RS5888dvd1L9z7NIb72Hxm29S+XQSqpDHFj2kaDcdfO+Tj1YeQjhUFsZMYPA6B/M
+ lgYNmS61uDZuvqbWdf1Da3UZwv/AAAA
+To: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>, 
+ cros-qcom-dts-watchers@chromium.org
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Rob Herring <robh@kernel.org>, 
+ =?utf-8?q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>, 
+ linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.12.4
 
+This series adds support for the ADSP, CDSP and WPSS remoteprocs found
+on SC7280. And finally enable them and WiFi on the QCM6490-based
+Fairphone 5 smartphone.
 
-On Sat, 11 Nov 2023 23:07:38 +0100, Nia Espera wrote:
-> Patch series adding support for oneplus-lemonade and oneplus-lemonadep
-> devices (OnePlus 9 & 9 Pro), along with a few needed fixups. Currently
-> working as of this series:
-> 
-> - USB OTG
-> - UFS
-> - Framebuffer display
-> - Touchscreen (for lemonade)
-> - Power & volume down keys
-> - Battery reading
-> - Modem, IPA, and remoteproc bringup
-> 
-> [...]
+The first two patches are fixes for the MPSS to fix some dt validation
+issues. They're included in this series to avoid conflicts with the
+later patches and keep it simpler.
 
-Applied, thanks!
+Then there's two patches reorganizing the reserved-memory setup for
+sc7280 in preparations for the new remoteprocs.
 
-[1/6] dt-bindings: iio: adc: qcom: Add Qualcomm smb139x
-      commit: 7bf421f44549cd0bca32bd0b4cf6e4cfe5b4f865
-[2/6] arm64: dts: qcom: sm8350: Fix DMA0 address
-      commit: 01a9e9eb6cdbce175ddea3cbe1163daed6d54344
-[3/6] arm64: dts: qcom: pm8350k: Remove hanging whitespace
-      commit: e70537717146b380e18f0c92669d968af4acb8a7
-[4/6] arm64: dts: qcom: sm8350: Fix remoteproc interrupt type
-      commit: 54ee322f845c7f25fbf6e43e11147b6cae8eff56
+Please note, that the ChromeOS-based devices using SC7280 need different
+driver and dts support, similar to how there's already
+qcom,sc7280-mpss-pas for "standard" firmware and there's
+qcom,sc7280-mss-pil for ChromeOS firmware.
+
+I'm aware of the series also adding SC7280 ADSP support with the last
+revision sent in June this year.
+
+https://lore.kernel.org/linux-arm-msm/20230616103534.4031331-1-quic_mohs@quicinc.com/
+
+However there's some differences since that series added the "pil"
+variant for ChromeOS, not "pas" for standard firmware. Also it seems on
+ChromeOS devices gpr+q6apm+q6prm is used. On my device it appears to be
+instead apr+q6afe+q6asm+q6adm but I don't add either in this series to
+keep it a bit simpler, and I couldn't test much of that yet.
+
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Changes in v3:
+- Rebase on qcom for-next and resolve conflicts
+- Pick up tags
+- Link to v2: https://lore.kernel.org/r/20231113-sc7280-remoteprocs-v2-0-e5c5fd5268a7@fairphone.com
+
+Changes in v2:
+- Add patch renaming memory@ reserved-memory nodes (preparation for
+  next)
+- Add patch moving mpss_mem and wpss_mem to sc7280.dtsi
+- Follow *_mem node being in sc7280.dtsi also for ADSP & CDSP patches
+- Use (squashed) .mbn instead of (split) .mdt for FP5
+- Set qcom,ath11k-calibration-variant for FP5
+- Pick up tags (except for Krzysztof's R-b for ADSP & CDSP since there
+  were changes)
+- Link to v1: https://lore.kernel.org/r/20231027-sc7280-remoteprocs-v1-0-05ce95d9315a@fairphone.com
+
+---
+Luca Weiss (11):
+      dt-bindings: remoteproc: qcom: sc7180-pas: Fix SC7280 MPSS PD-names
+      arm64: dts: qcom: sc7280: Remove unused second MPSS reg
+      arm64: dts: qcom: sc7280: Rename reserved-memory nodes
+      arm64: dts: qcom: sc7280*: move MPSS and WPSS memory to dtsi
+      dt-bindings: remoteproc: qcom: sc7180-pas: Add SC7280 compatibles
+      remoteproc: qcom_q6v5_pas: Add SC7280 ADSP, CDSP & WPSS
+      arm64: dts: qcom: sc7280: Use WPSS PAS instead of PIL
+      arm64: dts: qcom: sc7280: Add ADSP node
+      arm64: dts: qcom: sc7280: Add CDSP node
+      arm64: dts: qcom: qcm6490-fairphone-fp5: Enable various remoteprocs
+      arm64: dts: qcom: qcm6490-fairphone-fp5: Enable WiFi
+
+ .../bindings/remoteproc/qcom,sc7180-pas.yaml       |  21 ++
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts |  45 ++--
+ arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi |  35 ++-
+ .../boot/dts/qcom/sc7280-herobrine-lte-sku.dtsi    |   7 +-
+ .../boot/dts/qcom/sc7280-herobrine-wifi-sku.dtsi   |   1 +
+ arch/arm64/boot/dts/qcom/sc7280.dtsi               | 271 +++++++++++++++++++--
+ drivers/remoteproc/qcom_q6v5_pas.c                 |  19 ++
+ 7 files changed, 336 insertions(+), 63 deletions(-)
+---
+base-commit: e7f403a575a315ecf79ee4f411cc76bb60bae2f6
+change-id: 20231027-sc7280-remoteprocs-048208cc1e13
 
 Best regards,
 -- 
-Bjorn Andersson <andersson@kernel.org>
+Luca Weiss <luca.weiss@fairphone.com>
+
