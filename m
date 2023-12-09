@@ -1,129 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAA05671;
-	Sat,  9 Dec 2023 10:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OEqb5mZY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE68C433C8;
-	Sat,  9 Dec 2023 10:58:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702119507;
-	bh=shMP58WBd4mK4VRt80ZFFRHtI8Ye/dBzaRFSsMTjqDw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OEqb5mZYrDLrOdAlPG2lCYwcYIMg8S6cPlRrWy/l/8nK7b/8GHcmYKieiichGGNXS
-	 aFi8TqjM8GFWA2USvCryR45vGpiJEOeZ5PhD1VoHyWrvQB3jctuxQ3DswAeu10owhI
-	 wvu/GfzVkllpGtzi5FC86agD+1tMKlVBmnNKPX82vTAkPfdHUkQNCaEAbp8yJ+1BiY
-	 wwFomvcW8DUqOXIXuekQi8A6NlqRr/3fKVingsgR0w9My/Ih7n1zTEIOITaRg4wdeE
-	 lb/XNdQ2aHGeBdhTsyAWcZu5ve6Gmku3Xzo7VMjDiQsthR/fKl55f2GYY1ieZpU260
-	 LwRKLN0r8ASZg==
-Date: Sat, 9 Dec 2023 10:58:22 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	Markuss Broks <markuss.broks@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Henrik Rydberg <rydberg@bitmath.org>, linux-input@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	Karel Balej <balejk@matfyz.cz>
-Subject: Re: [PATCH v3 2/5] dt-bindings: input/touchscreen: Add compatible
- for IST3038B
-Message-ID: <20231209-casing-music-bded1c7b5475@spud>
-References: <20231202125948.10345-1-karelb@gimli.ms.mff.cuni.cz>
- <20231202125948.10345-3-karelb@gimli.ms.mff.cuni.cz>
- <20231203-outskirts-reformat-e0a833903841@spud>
- <0a035c62-9d35-4f85-b1f3-bcb7dea17d52@gmail.com>
- <20231204-stooge-impotent-fe8d2d9177e4@wendy>
- <CXJOLS2I8WH7.1IMVJGPUNG4VB@gimli.ms.mff.cuni.cz>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XWHaz69E"
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD68C10E;
+	Sat,  9 Dec 2023 12:50:57 -0800 (PST)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-40c2308faedso34858275e9.1;
+        Sat, 09 Dec 2023 12:50:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702155056; x=1702759856; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pMJPi3iIzMIlCjs861+CyhhSUrX7bsn8d7c7Kriq3JY=;
+        b=XWHaz69EJ4RlcPfmlKhwbAH2RtOoNXIy37Pb77HAycSS5Dti/TdQBCBN7mbiw1iYXC
+         tfDbhG5PhgS/VYdj6by1qdPK0cRiLcgcAvy516db5075zh88DBg5hzS34zMeuCLrKG9S
+         u8jZvFNMDaHZkXovf1UVNEBWHb1AfYFtaW4rFwsNzmRzjqjscaku82ED656iTOob9i83
+         RlYgostLjLVkRqgqr5gasMk+XjCx0keOhRJFSfWWttDYe5bj01tqePj4XfTyiCuQbvu5
+         xPG+AszawNVyO6TiBKR+tTXVFGNmHLr9/yHUZKkGULdlmT4rIBupwpRHY6sESSOwzjot
+         2nVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702155056; x=1702759856;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pMJPi3iIzMIlCjs861+CyhhSUrX7bsn8d7c7Kriq3JY=;
+        b=E+yuQgASaM2wKui5saCuDiQb8OHCC/GG2dVmBg5iFGvthiqwhKZf34+r+ttEcDQ9wc
+         nNGep3HkbLWBSjjMmgZW9UIsHny7cMQgqqHjDyYpihgg6KfkGtcskv82n/6JPT8eP5w6
+         VtQp7zltuZ0LRq/cQ74LOD/MsW4HPCVuBMtpTIo//yMeCmzVY+uMx7n0cv5b/i69SRvg
+         VNo9UEDHcEWcvbFMrKu/tLhGVQ/urMVgVDjAp+w9FivUD+2+qHu9XxUuYJbR3DZ6xQ0H
+         7+MMQwvbDFavnVcpnSet2ulE5YxyHoc3ebNYiAlRAvUAhgZrSNLh4EjL5/hJDiqGV4ct
+         78bQ==
+X-Gm-Message-State: AOJu0YxMf4/Hvq1e40isMPpGUvXHNocaWgOKKQQ8XC2+0oxTaUAiNgsX
+	Qo7WmksNBHUOEEtZSEbvIfA=
+X-Google-Smtp-Source: AGHT+IE3XEEBii+B9JkJKs6o8ET+jTzHybvoiVXKO2G9EClU8u3uG0zRe1zismiE6cerLl60ogNGrA==
+X-Received: by 2002:a05:600c:3107:b0:40c:32fa:4f41 with SMTP id g7-20020a05600c310700b0040c32fa4f41mr1048497wmo.142.1702155055686;
+        Sat, 09 Dec 2023 12:50:55 -0800 (PST)
+Received: from [192.168.1.7] ([95.133.122.84])
+        by smtp.gmail.com with ESMTPSA id fa7-20020a05600c518700b0040648217f4fsm9686079wmb.39.2023.12.09.12.50.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 09 Dec 2023 12:50:55 -0800 (PST)
+Message-ID: <da6d2828-41db-4c29-a1aa-024b1fbcc43a@gmail.com>
+Date: Sat, 9 Dec 2023 22:50:52 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="CZZDMln35Xfb6FgC"
-Content-Disposition: inline
-In-Reply-To: <CXJOLS2I8WH7.1IMVJGPUNG4VB@gimli.ms.mff.cuni.cz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/5] input/touchscreen: imagis: add support for
+ IST3032C
+To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring
+ <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ Henrik Rydberg <rydberg@bitmath.org>, linux-input@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Karel Balej <balejk@matfyz.cz>
+References: <20231202125948.10345-1-karelb@gimli.ms.mff.cuni.cz>
+ <20231202125948.10345-6-karelb@gimli.ms.mff.cuni.cz>
+ <89f7e7de-c574-49ab-885d-c6d4427fe64f@gmail.com>
+ <CXJAG826ZTNA.2F8WOGVNYADKP@gimli.ms.mff.cuni.cz>
+Content-Language: en-US
+From: Markuss Broks <markuss.broks@gmail.com>
+In-Reply-To: <CXJAG826ZTNA.2F8WOGVNYADKP@gimli.ms.mff.cuni.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+Hi Karel,
 
---CZZDMln35Xfb6FgC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 12/8/23 23:59, Karel Balej wrote:
+> Markuss,
+>
+> thank you for the review.
+>
+>>> diff --git a/drivers/input/touchscreen/imagis.c b/drivers/input/touchscreen/imagis.c
+>>> index 84a02672ac47..41f28e6e9cb1 100644
+>>> --- a/drivers/input/touchscreen/imagis.c
+>>> +++ b/drivers/input/touchscreen/imagis.c
+>>> @@ -35,6 +35,8 @@
+>>>    #define IST3038B_REG_CHIPID		0x30
+>>>    #define IST3038B_WHOAMI			0x30380b
+>>>    
+>>> +#define IST3032C_WHOAMI			0x32c
+>>> +
+>> Perhaps it should be ordered in alphabetic/alphanumeric order,
+>> alternatively, the chip ID values could be grouped.
+> Here I followed suit and just started a new section for the new chip,
+> except there is only one entry. I do agree that it would be better to
+> sort the chips alphanumerically and I am actually surprised that I
+> didn't do that - but now I see that the chips that you added are not
+> sorted either, so it might be because of that.
+>
+> I propose to definitely swap the order of the sections, putting 32C
+> first, then 38B and 38C at the end (from top to bottom). The chip ID
+> values could then still be grouped in a new section, but I think I would
+> actually prefer to keep them as parts of the respective sections as it
+> is now, although it is in no way a strong preference.
+We could do that, yeah. It is not a problem right now since there's only 
+3 models supported, but it would maker sense and set some order for when 
+we'd have more supported devices.
+>
+> Please let me know whether you agree with this or have a different
+> preference. And if the former, please confirm that I can add your
+> Reviewed-by trailer to the patch modified in such a way.
+Yeah, it's fine.
+>
+> Best regards,
+> K. B.
 
-On Sat, Dec 09, 2023 at 10:05:27AM +0100, Karel Balej wrote:
-> On Mon Dec 4, 2023 at 1:52 PM CET, Conor Dooley wrote:
-> > On Mon, Dec 04, 2023 at 02:40:44PM +0200, Markuss Broks wrote:
-> > > On 12/3/23 13:20, Conor Dooley wrote:
-> > > > On Sat, Dec 02, 2023 at 01:48:33PM +0100, Karel Balej wrote:
-> > > > > From: Markuss Broks <markuss.broks@gmail.com>
-> > > > >=20
-> > > > > Imagis IST3038B is a variant (firmware?) of Imagis IST3038 IC,
-> > > > > add the compatible for it to the IST3038C bindings.
-> > > > This one is better, but would be well served by mentioning what
-> > > > specifically is different (register addresses or firmware commands?)
-> > >=20
-> > > I don't think anyone knows this other than Imagis itself. I would gue=
-ss it's
-> > > different hardware, since register addresses are indeed different, bu=
-t on
-> > > the other hand, there is a possibility that firmware on the MCU could=
- be
-> > > responding to those commands. I suppose "... IST3038B is a hardware v=
-ariant
-> > > of ... IST3038" would be more correct.
-> >
-> > Only Imagis might know the specifics, but you (plural) have made driver
-> > changes so you know what is different in terms of the programming model.
-> > I'm just asking for you to mention how the programming model varies in
-> > the commit message. Otherwise I can't know whether you should have added
-> > a fallback compatible, without going and reading your driver change. The
-> > commit message for the bindings should stand on its own merit in that
-> > regard.
-> > "Variant" alone does not suffice, as many variants of devices have a
-> > compatible programming model, be that for a subset of features or
-> > complete compatibility.
-> >
-> > > The reason why I think it could be firmware-defined is because we hav=
-e a lot
-> > > of variants (30xxA, 30xxB, 30xxC, plain 30xx), and the numbers usuall=
-y mean
-> > > feature level/completeness, e.g. some don't support the touch pressur=
-e or
-> > > touchkeys, and we don't know what A/B/C/none means.
-> >
-> > Ultimately whether it is due to firmware or the hardware isn't
-> > particular important, just mention what is incompatibly different.
->=20
-> I propose to update the commit description as such:
->=20
-> 	Imagis IST3038B is a variant (firmware?) of Imagis IST3038 IC
-> 	differing from IST3038C in its register interface. Add the
-> 	compatible for it to the IST3038C bindings.
+- Markuss
 
-
-SGTM. You can add
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-with that commit message update.
-
-Thanks,
-Conor.
-
---CZZDMln35Xfb6FgC
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZXRITgAKCRB4tDGHoIJi
-0mKTAP0RiHYmJl2KkMmHaJTsYwSOJtsQ2l0qxVgrHUXBtSYHCAD/eA8UQ6V5QmRy
-ZRugsrwMlJ2vJ8azdUm9Anq90NWd7wE=
-=g/yN
------END PGP SIGNATURE-----
-
---CZZDMln35Xfb6FgC--
