@@ -1,45 +1,45 @@
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="beTI7OUX"
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E91CB121
-	for <phone-devel@vger.kernel.org>; Wed, 13 Dec 2023 23:32:28 -0800 (PST)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c9ea37ac87so107843601fa.3
-        for <phone-devel@vger.kernel.org>; Wed, 13 Dec 2023 23:32:28 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fz3lXTFa"
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF88C189
+	for <phone-devel@vger.kernel.org>; Wed, 13 Dec 2023 23:33:56 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-54c70c70952so10553692a12.3
+        for <phone-devel@vger.kernel.org>; Wed, 13 Dec 2023 23:33:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702539147; x=1703143947; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1702539235; x=1703144035; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=k/PAmxKTt/vlKZJUmu2M1PwUYlBOKUz4q+UdfunK0I0=;
-        b=beTI7OUXRgiHhtX71jY/QZmQtiFgre9NtTBXxpnCjRr07DvRqqQOV2qGvHa8lVgWnl
-         UNUq1//HttPbTe+O8s0A3DOe/M0QGmoYs8HcJ162zrCj5IIQ6D0nBKuYG8DaPmeGjuBI
-         6l1Btfb515SKtmsL9NYSMH00W2y2dw9nsLiJ8NrTiQJe5KUqM/jKYsaV19uFLU8xG2vJ
-         R3QBlATMCAeJN+agf5USANk4BBz7jkmRZldUZvI8jLSTyLgiYYJMZ6zM4u2tlcQYYXJx
-         AGEhbeYq2i6fAHWov9uCZN4lOg1NsTsUeldb0nCchLevwhpGVWwJ41x3lY6V31ER9qEc
-         OieA==
+        bh=wcv7sGgcNTnRT1bBWy6u9QOHZXNv+hQLmOYd4/d0PoQ=;
+        b=fz3lXTFaTFLONBQg6yXFDZkqqUX6TesePAk7qOeP26LER0oIgqJeO+rMtH1XKdflji
+         hXSMRT2C5Z771LmvtHjefGPg9R74SJolK2/pLdHTOMcXjBh2N0rsXrCe0xCPN6Iiru4s
+         Zxg7+afdf1tDvD5ahcRDoQ5Db1TSPfzrRLUlBxvP+tWZwKJ8bX+Sn7ha/2dLY1PPweg6
+         KLfqLR+EMduHIkqChJ7k1zATPGJn+dmFsD/eBqylWIQPEhpBMgUFtvbOcnNAzBFmhysP
+         I1mZjCrmJA5JxTd3tL1tCVlmrS0ZF+S9kKsKGSGZ3/f+SO4QMqJzOdVJFnVQAEbDHfcd
+         Cyqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702539147; x=1703143947;
+        d=1e100.net; s=20230601; t=1702539235; x=1703144035;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=k/PAmxKTt/vlKZJUmu2M1PwUYlBOKUz4q+UdfunK0I0=;
-        b=sfxZYMsuWioe8Gj/bvgaktVjm9aFrOQsH79wc0s82xygtlD2L8/U/v70+k47ClGU38
-         r0LgCEWaUWGpX6u8hUv/eeDojjdgLuwLDKzfZkZ9GOexut8vcmkJ/spjTDp2HjdyWWq2
-         WH3STUXm9uSL1eOhqmCFuYOd+xAsE9iUPxNAiBhHB7v9TWEsVspSXCBXIsLTnnAHqvxl
-         7R4nCHNfAiw6uT96K+ypHdVvPTyZ0PEDaQ1GIwcAQwIKdYYqn69Gp0md6YGCSo0Z5OUp
-         oCxfEgbVfk7WLvuOuwQQxt2K9hYNMqtjYD/wO0dxYTqDNwOXilzEKl2iDSZqKnUcxM+R
-         XYLQ==
-X-Gm-Message-State: AOJu0YzXPcSyomOLU2rwRIcqt8Gn7eKTUHsUq5bdDwsjJ6WREjIHKKLF
-	jb3Ua2rKDtHnygJ2ZabNzuEmxQ==
-X-Google-Smtp-Source: AGHT+IHYh58b0nXjYfmT3kG3MmD8bgAUQ+eiy/kh0CKTjn9yx9k9zV9SL+/7ggt2S7m15i0XKJl49g==
-X-Received: by 2002:a2e:a103:0:b0:2cc:1c8a:466a with SMTP id s3-20020a2ea103000000b002cc1c8a466amr5656478ljl.13.1702539147129;
-        Wed, 13 Dec 2023 23:32:27 -0800 (PST)
+        bh=wcv7sGgcNTnRT1bBWy6u9QOHZXNv+hQLmOYd4/d0PoQ=;
+        b=mgVNYIMZHvC1Q+oc4VmPkfizRI56s6JSM5+urqOyPE9cj5g+9QsumS76FjwvlBP6Rc
+         4kJkKQp9z/zEgA6zWY6rl0PcEPOzBe0ZkBmCAARxAVBc61Z0PKYDqr29+xPJDeYGJtIN
+         6PC58nSg+EVN10H4bo6fglTrJDSfFlvTUbutVRHSt+Y0zDK3C1XV7H+SfW3bDwlgUkgw
+         oAG6BT3Uxv3D4VNZ1Ek+5AWLQJ6G1wwcW0WY5LF7kCoB5YV6f03B92F9DCGz0f69kNmW
+         w2t+Hp+2eONIrR+pM7MPumvCGPxPfz/pohdvO7OXW97vhtUpqPE5sM/sxu2fkrKYzcv9
+         HiUQ==
+X-Gm-Message-State: AOJu0Yw5Mfe8wFcxnVhfjwSQSP1RskX4vQZB/ITjSnQ/gKbloTGKU/25
+	AtDkdEBWMa3/bRO/11xzioQWVA==
+X-Google-Smtp-Source: AGHT+IHGEVebgVIc7poq1NDQSzshE/fnhw0BckYI+SIiFGDxAtHqp+Z8O+dGXQIENOcUlIoKkOebrA==
+X-Received: by 2002:a50:cd81:0:b0:552:5c38:5d59 with SMTP id p1-20020a50cd81000000b005525c385d59mr430628edi.48.1702539235155;
+        Wed, 13 Dec 2023 23:33:55 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.218.27])
-        by smtp.gmail.com with ESMTPSA id bd18-20020a056402207200b00542db304680sm6440491edb.63.2023.12.13.23.32.25
+        by smtp.gmail.com with ESMTPSA id bd18-20020a056402207200b00542db304680sm6440491edb.63.2023.12.13.23.33.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Dec 2023 23:32:26 -0800 (PST)
-Message-ID: <45ef5560-3013-4c63-8bb2-92969504b70e@linaro.org>
-Date: Thu, 14 Dec 2023 08:32:25 +0100
+        Wed, 13 Dec 2023 23:33:54 -0800 (PST)
+Message-ID: <a1563e29-2f20-4b1e-acbf-2b6d77dc7831@linaro.org>
+Date: Thu, 14 Dec 2023 08:33:53 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -47,7 +47,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: Add Motorola Moto G 4G
+Subject: Re: [PATCH 2/2] ARM: dts: qcom: msm8926-motorola-peregrine: Add
+ initial device tree
 Content-Language: en-US
 To: =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
  Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
@@ -58,7 +59,7 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
  ~postmarketos/upstreaming@lists.sr.ht
 References: <20231213-peregrine-v1-0-5229e21bca3f@apitzsch.eu>
- <20231213-peregrine-v1-1-5229e21bca3f@apitzsch.eu>
+ <20231213-peregrine-v1-2-5229e21bca3f@apitzsch.eu>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -104,17 +105,102 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231213-peregrine-v1-1-5229e21bca3f@apitzsch.eu>
+In-Reply-To: <20231213-peregrine-v1-2-5229e21bca3f@apitzsch.eu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 On 13/12/2023 21:33, André Apitzsch wrote:
-> Document the compatible for the MSM8926-based Motorola Moto G 4G smartphone.
+> This dts adds support for Motorola Moto G 4G released in 2013.
+> 
+> Add a device tree with initial support for:
+> 
+> - GPIO keys
+> - Hall sensor
+> - SDHCI
+> - Vibrator
 > 
 > Signed-off-by: André Apitzsch <git@apitzsch.eu>
 > ---
+>  arch/arm/boot/dts/qcom/Makefile                    |   1 +
+>  .../dts/qcom/qcom-msm8926-motorola-peregrine.dts   | 297 +++++++++++++++++++++
+>  2 files changed, 298 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/qcom/Makefile b/arch/arm/boot/dts/qcom/Makefile
+> index 0cb272f4fa45..9cc1e14e6cd0 100644
+> --- a/arch/arm/boot/dts/qcom/Makefile
+> +++ b/arch/arm/boot/dts/qcom/Makefile
+> @@ -35,6 +35,7 @@ dtb-$(CONFIG_ARCH_QCOM) += \
+>  	qcom-msm8926-htc-memul.dtb \
+>  	qcom-msm8926-microsoft-superman-lte.dtb \
+>  	qcom-msm8926-microsoft-tesla.dtb \
+> +	qcom-msm8926-motorola-peregrine.dtb \
+>  	qcom-msm8960-cdp.dtb \
+>  	qcom-msm8960-samsung-expressatt.dtb \
+>  	qcom-msm8974-lge-nexus5-hammerhead.dtb \
+> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts b/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts
+> new file mode 100644
+> index 000000000000..3c5256120502
+> --- /dev/null
+> +++ b/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts
+> @@ -0,0 +1,297 @@
+> +// SPDX-License-Identifier: BSD-3-Clause
+> +
+> +/dts-v1/;
+> +
+> +#include "qcom-msm8226.dtsi"
+> +#include "pm8226.dtsi"
+> +
+> +/delete-node/ &smem_region;
+> +
+> +/ {
+> +	model = "Motorola Moto G 4G";
+> +	compatible = "motorola,peregrine", "qcom,msm8926", "qcom,msm8226";
+> +	chassis-type = "handset";
+> +
+> +	aliases {
+> +		mmc0 = &sdhc_1; /* SDC1 eMMC slot */
+> +		mmc1 = &sdhc_2; /* SDC2 SD card slot */
+> +	};
+> +
+> +	chosen {
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		ranges;
+> +
+> +		framebuffer0: framebuffer@3200000 {
+> +			compatible = "simple-framebuffer";
+> +			reg = <0x03200000 0x800000>;
+> +			width = <720>;
+> +			height = <1280>;
+> +			stride = <(720 * 3)>;
+> +			format = "r8g8b8";
+> +		};
+> +	};
+> +
+> +	gpio-hall-sensor {
+> +		compatible = "gpio-keys";
+> +
+> +		label = "GPIO Hall Effect Sensor";
+> +
+> +		event-hall-sensor {
+> +			label = "Hall Effect Sensor";
+> +			gpios = <&tlmm 51 GPIO_ACTIVE_LOW>;
+> +			linux,input-type = <EV_SW>;
+> +			linux,code = <SW_LID>;
+> +			linux,can-disable;
+> +		};
+> +	};
+> +
+> +	gpio-keys {
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+No need to have two nodes for gpio-keys. Combine them.
+
+> +		compatible = "gpio-keys";
+> +
+> +		key-volume-up {
+> +			label = "Volume Up";
+
+
 
 Best regards,
 Krzysztof
