@@ -1,60 +1,96 @@
-Received: from smtprelay01.ispgateway.de (smtprelay01.ispgateway.de [80.67.31.35])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C242FB9;
-	Thu, 14 Dec 2023 00:18:46 -0800 (PST)
-Received: from [92.206.191.209] (helo=note-book.lan)
-	by smtprelay01.ispgateway.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.1)
-	(envelope-from <git@apitzsch.eu>)
-	id 1rDgvb-00033X-0C;
-	Thu, 14 Dec 2023 09:18:43 +0100
-Message-ID: <1d5de5547d5980da6040bf1c9bfc7fc3c32de88c.camel@apitzsch.eu>
-Subject: Re: [PATCH 0/2] ARM: dts: qcom: msm8926-motorola-peregrine: Add
- initial device tree
-From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>, Andy Gross
- <agross@kernel.org>,  Bjorn Andersson <andersson@kernel.org>, Rob Herring
- <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
-	~postmarketos/upstreaming@lists.sr.ht
-Date: Thu, 14 Dec 2023 09:18:41 +0100
-In-Reply-To: <e7f8e4bf-080d-4bb4-99ca-727d2d00f55d@linaro.org>
-References: <20231213-peregrine-v1-0-5229e21bca3f@apitzsch.eu>
-	 <e7f8e4bf-080d-4bb4-99ca-727d2d00f55d@linaro.org>
-Autocrypt: addr=git@apitzsch.eu; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.2 
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WPtXTk3P"
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69F2F120
+	for <phone-devel@vger.kernel.org>; Thu, 14 Dec 2023 10:28:08 -0800 (PST)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2c9f099cf3aso126575021fa.1
+        for <phone-devel@vger.kernel.org>; Thu, 14 Dec 2023 10:28:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1702578486; x=1703183286; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3dQ/bNphB3A9w3rMAHBZdgKti0js2ncdlw9oeKElMsk=;
+        b=WPtXTk3P+HDrs3uQJk2aSLb/i2+JPz583dRblms8MojCBhue6IkkQ4hi1ZiAzlr1oN
+         Sd1wZwilY9O0V0HYHvkqSHWu09cZ40aw2R+83whdMrMqTVY3RzIehv1XFDFoD6DjBHw/
+         7A5g+W/y8F5jS7tUOZ0xgGB0cxCl9jBsJXMRjJDnqx0rGM0GM2it64NoPUTRXJeUZ9xf
+         4rc137P9ZT/+/YZ0F9Ee27xLZqP7i5rI9c2KPR4z0VFe9OuQ0pLuf+E7mmc7SAhNMBfA
+         4vF6HRfOfMz0D40dRaxOtMYR74qi1mjJed/oyUTZ4NzxsMhI6W+ZaEITUi65tqKydfEt
+         cHBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702578486; x=1703183286;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3dQ/bNphB3A9w3rMAHBZdgKti0js2ncdlw9oeKElMsk=;
+        b=CtSXt+n107zDHFd7/UDxkQbU27kEw/8wzr0QlJ02Sr4i1XWLrLKSw1eIwsq9bIae6T
+         39Bew3hZSFoGVSihMlHQSkGeJO31KVeFkjAM3BuweUy8MrdjU7jzts6kiVeI2V2d2kve
+         karKnQ+weasptmzkpzsr48m4qgCJZ/WycDezHQBZzKomt3VSTX1Vyy1weAdjPj9xKrMS
+         5JjRwqVNkn7Y3ZPrqNyDXsiFFm2KUUBvTrhuGPqjC7vW3Xqp/wT4kGnyuG7qAAQ7B1AK
+         zX5spaGor/Nru2+w2ORzyASNdqL3cO/wSJ2PwrFupz//F8/wOzvnL1EmeNP6So+SkWka
+         gT5g==
+X-Gm-Message-State: AOJu0YxtnUyx4EGV3kTKAc2reAmErY3xQH+UiQVGDe4mdakuww0J7HAF
+	fB18CegfJdyuScr4S7rYpQhWzw==
+X-Google-Smtp-Source: AGHT+IGlrjmnV9pxVjOkym/WuJNu96Q2GiosakZnW0q0/cRNqUnsQz5lvmib3MqI4Be8NJa/p3hYSw==
+X-Received: by 2002:a2e:a4b6:0:b0:2cc:1d8f:b372 with SMTP id g22-20020a2ea4b6000000b002cc1d8fb372mr3691692ljm.53.1702578486607;
+        Thu, 14 Dec 2023 10:28:06 -0800 (PST)
+Received: from [172.30.205.72] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
+        by smtp.gmail.com with ESMTPSA id z6-20020a2e7e06000000b002ca25f11f56sm2084008ljc.103.2023.12.14.10.28.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Dec 2023 10:28:06 -0800 (PST)
+Message-ID: <65c551e7-25f2-48d2-97b6-af609807b7d0@linaro.org>
+Date: Thu, 14 Dec 2023 19:28:04 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Df-Sender: YW5kcmVAYXBpdHpzY2guZXU=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] ARM: dts: qcom: msm8926-motorola-peregrine: Add
+ initial device tree
+Content-Language: en-US
+To: =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
+ Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+References: <20231213-peregrine-v1-0-5229e21bca3f@apitzsch.eu>
+ <e7f8e4bf-080d-4bb4-99ca-727d2d00f55d@linaro.org>
+ <1d5de5547d5980da6040bf1c9bfc7fc3c32de88c.camel@apitzsch.eu>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <1d5de5547d5980da6040bf1c9bfc7fc3c32de88c.camel@apitzsch.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Level: *
 
-Am Mittwoch, dem 13.12.2023 um 21:44 +0100 schrieb Konrad Dybcio:
->=20
->=20
-> On 12/13/23 21:33, Andr=C3=A9 Apitzsch wrote:
-> > This dts adds support for Motorola Moto G 4G released in 2013.
-> I have a similar one in my drawer.. not the 4g kind, titan IIRC?
-> Wasn't this one codenamed thea?
->=20
-> Konrad
 
-Yes, thea is the 2nd generation of Moto G 4G, released in 2014.
-pregrine is the first generation, from 2013.
 
-Should
-> model =3D "Motorola Moto G 4G";
-be updated, to reflect that it is 1st gen or should only "thea" (if it
-is added at all) have an addition in the model name?
+On 12/14/23 09:18, André Apitzsch wrote:
+> Am Mittwoch, dem 13.12.2023 um 21:44 +0100 schrieb Konrad Dybcio:
+>>
+>>
+>> On 12/13/23 21:33, André Apitzsch wrote:
+>>> This dts adds support for Motorola Moto G 4G released in 2013.
+>> I have a similar one in my drawer.. not the 4g kind, titan IIRC?
+>> Wasn't this one codenamed thea?
+>>
+>> Konrad
+> 
+> Yes, thea is the 2nd generation of Moto G 4G, released in 2014.
+> pregrine is the first generation, from 2013.
+> 
+> Should
+>> model = "Motorola Moto G 4G";
+> be updated, to reflect that it is 1st gen or should only "thea" (if it
+> is added at all) have an addition in the model name?
+I *think* it'd be good to make it
 
-Andr=C3=A9
+"Motorola Moto G 4G (2014)"
+
+as I think it's what it was called anyway
+
+Konrad
