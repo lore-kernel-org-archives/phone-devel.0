@@ -1,79 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FDB44C7F;
-	Sun, 17 Dec 2023 14:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95AF328D8;
+	Sun, 17 Dec 2023 15:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="diz4mBbC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2300C433D9;
-	Sun, 17 Dec 2023 14:24:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702823087;
-	bh=a6KCBlRCq77OBBZrD6RVrWWZcrS/mslm0GyS8oEwpgI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=diz4mBbCkP2tZr/hEvAQp07lg+0CPNS5O+rmuMf5OouNEbD6yA5UetsFEvAp+LmVV
-	 hITL4YUH179nMRsdlDOUJPLwflLin7ewrrFc7hqNJS296lfTa/EL6RtyXcm9mHGPYi
-	 ZjjJUlza99jeavqnqv7POvf4vC2kj/Wah1ObO8gfb+/aGU3xnQSG4Nr2RQfgiNypov
-	 dGyly3cJeaTH5ApGBVNKteC0rxsqz+FUHzg2m+wv2KkTUwAtLmr1OsHCr+Xij9kLCI
-	 eNBnU7X9Nl9oFRuRKzdbKFaBAN0WX17Elt+B/OYn4vHyMeuNXYFEScA/BgUsAUS4BF
-	 Wwo6WWKBWVhig==
-Received: (nullmailer pid 876441 invoked by uid 1000);
-	Sun, 17 Dec 2023 14:24:42 -0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="eC+oae7O"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1702826610; bh=1qTrHHazQEMLaXCU3zsLP84Kqg9GTIgZYgOj0bYFXjU=;
+	h=From:Subject:Date:To:Cc;
+	b=eC+oae7Oso2GlL+oecm+gIgcB2vCRN02VcvtOkToxRJpAYvBhUnjuL+G5n+xQQIiN
+	 3dRanNUMFS7CzJKj9x/x79CIV5nWtmmAN/HTvsbh57NWnVjhq68Zkz6pHRvH1JYpb3
+	 WMY+eePaLFCMjUO1tRcjF+ZBXcTmogLktgACRk9s=
+From: Luca Weiss <luca@z3ntu.xyz>
+Subject: [PATCH 0/3] Several smaller msm8974 fixes
+Date: Sun, 17 Dec 2023 16:22:52 +0100
+Message-Id: <20231217-msm8974-misc-v1-0-bece1ba2667d@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-Cc: Conor Dooley <conor+dt@kernel.org>, =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, linux-input@vger.kernel.org, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, ~postmarketos/upstreaming@lists.sr.ht, Karel Balej <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>
-In-Reply-To: <20231217131838.7569-4-karelb@gimli.ms.mff.cuni.cz>
-References: <20231217131838.7569-1-karelb@gimli.ms.mff.cuni.cz>
- <20231217131838.7569-4-karelb@gimli.ms.mff.cuni.cz>
-Message-Id: <170282308207.876381.2939454348396043606.robh@kernel.org>
-Subject: Re: [RFC PATCH 3/5] dt-bindings: input: add entry for
- 88pm88x-onkey
-Date: Sun, 17 Dec 2023 08:24:42 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEwSf2UC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDI0Nz3dziXAtLcxPd3MziZF3TFFMLM0NTI6PEFEMloJaCotS0zAqwcdG
+ xtbUAWmiQGF4AAAA=
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Samuel Pascua <pascua.samuel.14@gmail.com>, Iskren Chernev <me@iskren.info>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@somainline.org>, 
+ Alexey Minnekhanov <alexeymin@postmarketos.org>, 
+ Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=966; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=1qTrHHazQEMLaXCU3zsLP84Kqg9GTIgZYgOj0bYFXjU=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlfxJZPyTALCN1nMz9iyBgmUAkIu92eM21O94CS
+ v3Jf0f01zaJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZX8SWQAKCRBy2EO4nU3X
+ VssHEAC4sSQ0hKcSTbUGjLzrtQJzPakIUCghs0yH9aEz2FoI2qp3r659M71tAsQYYqdesuVoHM5
+ jugA7KBzuyYpCUHyjt4SHR88Pp6slI7x/8PLlWO1WCJHLN0Q9odxddYAyoUUlwOs8k+GQbmG6md
+ O+F7oaeXCrebPA7yrR+NhRfy8YUskr1vvtlq50/opk/59yplQcs4bY3rpa3Psxb/82d1IHmo4+R
+ 0ctgm+pjpIYLw32LNf1bQNte47A5XhWej4meGw6wbRcVQbJ8I02m+LFrfzS/mbqCk6c+CblxhFv
+ RE34NlOwlMapZRO4iYKxooPd5Ib7uHABC6OO6x/U0oYMpz+17c0AE39dHMN0mA5ga0DCMJ4hJge
+ gdPFhOXBoPR1Vv6XlThpRAWxh21FK7urATxtfmKlLwTWDDetSiIXlwdGjDjQgF90rTHp87KkG1h
+ NhEHU4Mh98ZVe43Ke8U9neiCJYjVauJXdpObd2n6PpRk3fsSlwe7XPyLorUunb3sUYv8gEHPS8Q
+ cv17i66uL7oCofwJysTK+agraMF63iM5lktAl5mKaznNYmNusH0zM0cG+SyDsc8jT6soZJovBej
+ kEf4PqNcD2xd/eCSka8IPPyh5RPfWW1OQFQU2k2GJw+gBDAmV+koKWnYY5815ahj5DInyo5o1jo
+ zbq4LGVdMbTsZmg==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
+Send some smaller fixes that have been sitting around in my tree for
+some time.
 
-On Sun, 17 Dec 2023 14:17:01 +0100, Karel Balej wrote:
-> From: Karel Balej <balejk@matfyz.cz>
-> 
-> Marvell 88PM88X PMICs provide onkey functionality. Document it.
-> 
-> Signed-off-by: Karel Balej <balejk@matfyz.cz>
-> ---
->  .../bindings/input/marvell,88pm88x-onkey.yaml | 30 +++++++++++++++++++
->  .../bindings/mfd/marvell,88pm88x.yaml         |  4 +++
->  2 files changed, 34 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/marvell,88pm88x-onkey.yaml
-> 
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Alexey Minnekhanov (1):
+      ARM: dts: qcom: msm8974-klte: Remove unused property
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Luca Weiss (2):
+      ARM: dts: qcom: msm8974: Remove bogus cd-gpio pinctrl
+      ARM: dts: qcom: msm8974*: Re-enable remoteprocs on various boards
 
-yamllint warnings/errors:
+ arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts      | 2 ++
+ arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi         | 2 ++
+ arch/arm/boot/dts/qcom/qcom-msm8974.dtsi                           | 7 -------
+ arch/arm/boot/dts/qcom/qcom-msm8974pro-samsung-klte.dts            | 1 -
+ .../boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts   | 2 ++
+ 5 files changed, 6 insertions(+), 8 deletions(-)
+---
+base-commit: de06a4144d8e2c0923d08cab7c24958c28ddf17f
+change-id: 20231217-msm8974-misc-5d5861522ad1
 
-dtschema/dtc warnings/errors:
-
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20231217131838.7569-4-karelb@gimli.ms.mff.cuni.cz
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
