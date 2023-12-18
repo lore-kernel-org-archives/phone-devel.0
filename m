@@ -1,69 +1,144 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583C1481C9;
-	Sun, 17 Dec 2023 20:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD15229411;
+	Mon, 18 Dec 2023 15:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gaRx8pR7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F7EC433CD;
-	Sun, 17 Dec 2023 20:24:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uH+hX3bx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49290C433C8;
+	Mon, 18 Dec 2023 15:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702844669;
-	bh=MrG/J4jSnITze5df+wa+7cDGeZH6SCd5BYEjWk2JkVI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gaRx8pR7D28+3jAmOCeJBJwlsWAaASm4yiy2dshGHR8hWNw/d+U4QzI8ksagI4I9h
-	 rUyJOSL6twEuv4QJp2uYsNfqYbojPpLfmYl/qboU3aAfH2m5QUM4LY/i7fqJSePf38
-	 2jAq87zRjscdNH8fzpZ0A9Bh2nNbdaYCrW6nXOKVbiZAlKtmX7sHBlz9055KIAtaFg
-	 FXKlJRyFUsRxktrhDI7tTb92yKdz7RjFIzimOjOdhceZn3qDpsTPm2vdW2n+reI2mQ
-	 bdOqIFXrPHcfRcSIkcWsmauiklKH4K628PbH3J9sq3rijdHoaisuDlZg/7Bmc57psk
-	 z558be2sNbn4g==
-From: Bjorn Andersson <andersson@kernel.org>
-To: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Andy Gross <agross@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Samuel Pascua <pascua.samuel.14@gmail.com>,
-	Iskren Chernev <me@iskren.info>,
-	Luca Weiss <luca@z3ntu.xyz>
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@somainline.org>,
-	Alexey Minnekhanov <alexeymin@postmarketos.org>
-Subject: Re: [PATCH 0/3] Several smaller msm8974 fixes
-Date: Sun, 17 Dec 2023 14:24:24 -0600
-Message-ID: <170284466202.74678.52820815256260449.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231217-msm8974-misc-v1-0-bece1ba2667d@z3ntu.xyz>
-References: <20231217-msm8974-misc-v1-0-bece1ba2667d@z3ntu.xyz>
+	s=k20201202; t=1702912640;
+	bh=Y2AbD1zR1eP2E6YbgGaYlyb+Rv+NoXGbIguzY9TYF+M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uH+hX3bxsibP2IzdFAFraViSj2c3EKBA+vg98LMVTaanUWvaeDExoG7X8q6kCnBUm
+	 Dv1V29e4Ka1B8X2rf5pLY0zonx2asWLO2PoKzMi+80CKPSUEcc/GaX/F1A7bPESnM6
+	 A5TY6NDjHI0Zls6dip8zSZVCSs24lelmKL1D5zX1uJCEDBNroPdon06u5jRsmiIHhX
+	 Q0+ZSSs62ZBCtzKLQU7PumZc6OJp0U2VLiSqFXB1tl9wxE8u/K/X1uyKPaK4dNEd/H
+	 Mv8I9VEJI6gaV656NOSWtLlN/JKtGmaStqEm3y3muWyjTL3G0fiuJCNwDOwxVmoBth
+	 X8+hsU5pRBVJA==
+Received: (nullmailer pid 3834100 invoked by uid 1000);
+	Mon, 18 Dec 2023 15:17:18 -0000
+Date: Mon, 18 Dec 2023 09:17:18 -0600
+From: Rob Herring <robh@kernel.org>
+To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
+Cc: Karel Balej <balejk@matfyz.cz>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>, linux-input@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [RFC PATCH 1/5] dt-bindings: mfd: add entry for the Marvell
+ 88PM88X PMICs
+Message-ID: <20231218151718.GA3827526-robh@kernel.org>
+References: <20231217131838.7569-1-karelb@gimli.ms.mff.cuni.cz>
+ <20231217131838.7569-2-karelb@gimli.ms.mff.cuni.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231217131838.7569-2-karelb@gimli.ms.mff.cuni.cz>
 
-
-On Sun, 17 Dec 2023 16:22:52 +0100, Luca Weiss wrote:
-> Send some smaller fixes that have been sitting around in my tree for
-> some time.
+On Sun, Dec 17, 2023 at 02:16:59PM +0100, Karel Balej wrote:
+> From: Karel Balej <balejk@matfyz.cz>
 > 
+> Marvell 88PM880 and 88PM886 are two similar PMICs with mostly matching
+> register mapping and subdevices such as onkey, regulators or battery and
+> charger. Both seem to come in two revisions which seem to be handled
+> slightly differently in some subdevice drivers.
 > 
+> Signed-off-by: Karel Balej <balejk@matfyz.cz>
+> ---
+>  .../bindings/mfd/marvell,88pm88x.yaml         | 55 +++++++++++++++++++
+>  1 file changed, 55 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml b/Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml
+> new file mode 100644
+> index 000000000000..e075729c360f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml
+> @@ -0,0 +1,55 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/mfd/marvell,88pm88x.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Marvell 88PM88X PMIC core MFD
 
-Applied, thanks!
+Drop 'MFD'.
 
-[1/3] ARM: dts: qcom: msm8974-klte: Remove unused property
-      commit: 32b075f8a2d4fefb8d791431606930883a5d5f15
-[2/3] ARM: dts: qcom: msm8974: Remove bogus cd-gpio pinctrl
-      commit: 1522b3bb306986e2f3923152a05939176b2a8a0c
-[3/3] ARM: dts: qcom: msm8974*: Re-enable remoteprocs on various boards
-      commit: 648002a27c6b3ae293cc415e1fbf20aaa6af8bd3
+> +
+> +maintainers:
+> +  - Karel Balej <balejk@matfyz.cz>
+> +
+> +description: |
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+Don't need '|' as there is no formatting to preserve.
+
+> +  Marvell 88PM880 and 88PM886 are two similar PMICs providing
+> +  several functions such as onkey, regulators or battery and
+> +  charger. Both seem to come in two revisions -- A0 and A1.
+> +
+> +properties:
+> +  compatible:
+> +    const: marvell,88pm886-a1
+
+The description talks about 4 different devices, but only 1 here. 
+
+Do you expect to need A0 support? Devices with these PMICs should be 
+known and few, right? 
+
+> +
+> +  reg:
+> +    description: I2C device address
+
+Drop.
+
+> +    maxItems: 1
+> +
+> +  interrupt-controller: true
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  "#interrupt-cells":
+> +    const: 2
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupt-controller
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      pmic0: 88pm886@30 {
+
+pmic@30
+
+Drop the unused label.
+
+> +        compatible = "marvell,88pm886-a1";
+> +        reg = <0x30>;
+> +        interrupts = <0 4 IRQ_TYPE_LEVEL_HIGH>;
+
+You need the header for this.
+
+You'll find the input binding fails too. Please test your bindings 
+before sending.
+
+> +        interrupt-parent = <&gic>;
+> +        interrupt-controller;
+> +        #interrupt-cells = <1>;
+> +      };
+> +    };
+> +...
+> -- 
+> 2.43.0
+> 
