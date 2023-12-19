@@ -1,104 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3822742378;
-	Mon, 18 Dec 2023 15:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F65468F;
+	Tue, 19 Dec 2023 02:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8UASN/a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83396C433C8;
-	Mon, 18 Dec 2023 15:18:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702912720;
-	bh=nQ9cMEOKFUeBWhJYdZZdQBOfkz4zr/KEjmxp1uEKoe4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N8UASN/awVVlAUG5eueaP46sORsYTxNftgVTRDCZ7ZBnWcfHG+UcRGzHd00cgHpcg
-	 4bZy3nb7WZml9lTJTEKD81WsVLC26jrNQaF3wqG0rST+45rxNlNX8Cm/OssNfQ2vDd
-	 +VL0nlA0o1srk/3Qzm3Kyx4ErxR57bfP9zJqOmFkbVpTC29jsccnfAdPl76fj1TwKw
-	 tTaI6Fdk/IoBILuOEKWVz0+VAGKMNP5MxJ2UwNe8ByNVTJa2638dbS29gVaVSKszbP
-	 rfRn7KE/Mli2Xjv2qvfSUIgSeZhE7SOOFBhGeDYBds7GlxWQcSaHUvg/8tZXeaIA4B
-	 Zh06W4yNEK3NQ==
-Received: (nullmailer pid 3835867 invoked by uid 1000);
-	Mon, 18 Dec 2023 15:18:38 -0000
-Date: Mon, 18 Dec 2023 09:18:38 -0600
-From: Rob Herring <robh@kernel.org>
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-Cc: Karel Balej <balejk@matfyz.cz>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>, linux-input@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [RFC PATCH 3/5] dt-bindings: input: add entry for 88pm88x-onkey
-Message-ID: <20231218151838.GB3827526-robh@kernel.org>
-References: <20231217131838.7569-1-karelb@gimli.ms.mff.cuni.cz>
- <20231217131838.7569-4-karelb@gimli.ms.mff.cuni.cz>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="eZgqs9I+"
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BJ0JPom031537;
+	Tue, 19 Dec 2023 02:19:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2023-11-20;
+ bh=ACFm5EgYGz2CeeqLh3teFmTxx+lzmuxagAN+Hbo1eac=;
+ b=eZgqs9I+L6CuQX6Y3cRNcegjcsW2EfxwHy80nheNBzOWy8bj+AIURwXPkiqau7MWwUvZ
+ 4qxrDr0pQ5tNA29GI9tK4ldiaUo44sdhFuIsj7BspnwF3yL5SyIa0M7HzgdINI/f2RPF
+ NTiBic+GcRlOV8hzKTXsO+eQzGXvuobs+DVImst5vApsQ4l8GjaULFzpGZQrgxbFY3FE
+ 6a74iwb+VPSywemAsAnldDB5UQ5chuwYlrG0y/K5uGrEFsMdTUaAG2bwUmLXRb14eTGa
+ CBaQ4X49zv2hLcz0mlleGbvRM2GlfRemJbCs1vhY4XInWdy57Cgw2sJ46J8I3KlaiC0/ Sg== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3v12aecs5m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 19 Dec 2023 02:19:17 +0000
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3BJ0HcRx020893;
+	Tue, 19 Dec 2023 02:19:16 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3v12b69t9u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 19 Dec 2023 02:19:16 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BJ2J7ZF012682;
+	Tue, 19 Dec 2023 02:19:16 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3v12b69t3t-7;
+	Tue, 19 Dec 2023 02:19:15 +0000
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>, Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        cros-qcom-dts-watchers@chromium.org,
+        Luca Weiss <luca.weiss@fairphone.com>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Nitin Rawat <quic_nitirawa@quicinc.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        "Bao D. Nguyen" <quic_nguyenb@quicinc.com>
+Subject: Re: [PATCH v6 0/3] Add UFS host controller and Phy nodes for sc7280
+Date: Mon, 18 Dec 2023 21:18:51 -0500
+Message-ID: <170294822179.2675590.13100554882735833514.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.42.1
+In-Reply-To: <20231205-sc7280-ufs-v6-0-ad6ca7796de7@fairphone.com>
+References: <20231205-sc7280-ufs-v6-0-ad6ca7796de7@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231217131838.7569-4-karelb@gimli.ms.mff.cuni.cz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-18_15,2023-12-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 mlxscore=0
+ mlxlogscore=999 bulkscore=0 adultscore=0 suspectscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2312190017
+X-Proofpoint-ORIG-GUID: T4moszaKCu7FmN_m49Eai3-Qu-lx8eVF
+X-Proofpoint-GUID: T4moszaKCu7FmN_m49Eai3-Qu-lx8eVF
 
-On Sun, Dec 17, 2023 at 02:17:01PM +0100, Karel Balej wrote:
-> From: Karel Balej <balejk@matfyz.cz>
-> 
-> Marvell 88PM88X PMICs provide onkey functionality. Document it.
-> 
-> Signed-off-by: Karel Balej <balejk@matfyz.cz>
-> ---
->  .../bindings/input/marvell,88pm88x-onkey.yaml | 30 +++++++++++++++++++
->  .../bindings/mfd/marvell,88pm88x.yaml         |  4 +++
->  2 files changed, 34 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/marvell,88pm88x-onkey.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/input/marvell,88pm88x-onkey.yaml b/Documentation/devicetree/bindings/input/marvell,88pm88x-onkey.yaml
-> new file mode 100644
-> index 000000000000..aeb7673189f8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/input/marvell,88pm88x-onkey.yaml
-> @@ -0,0 +1,30 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/input/marvell,88pm88x-onkey.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Onkey driver for Marvell 88PM88X PMICs.
-> +
-> +maintainers:
-> +  - Karel Balej <balejk@matfyz.cz>
-> +
-> +description: |
-> +  This module is part of the 88PM88X MFD device. For more details
-> +  see Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml.
-> +
-> +  The onkey controller is represented as a sub-node of the PMIC node in
-> +  the device tree.
-> +
-> +allOf:
-> +  - $ref: input.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    const: marvell,88pm88x-onkey
-> +
-> +required:
-> +  - compatible
-> +
-> +additionalProperties: false
-> +...
-> diff --git a/Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml b/Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml
-> index e075729c360f..115b41c9f22c 100644
-> --- a/Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml
-> +++ b/Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml
-> @@ -50,6 +50,10 @@ examples:
->          interrupt-parent = <&gic>;
->          interrupt-controller;
->          #interrupt-cells = <1>;
-> +
-> +        onkey {
-> +          compatible = "marvell,88pm88x-onkey";
-> +        };
+On Tue, 05 Dec 2023 15:38:53 +0100, Luca Weiss wrote:
 
-Why do you need this? You have no properties for it. The parent driver 
-can instantiate child drivers. You don't need a DT node for that.
+> This patch adds UFS host controller and Phy nodes for Qualcomm sc7280
+> SoC and enable it on some sc7280-based boards.
+> 
+> Pick up the patchset from Nitin since the last revision (v4) has been
+> sent end of September and is blocking qcm6490-fairphone-fp5 UFS.
+> 
 
-Rob
+Applied to 6.8/scsi-queue, thanks!
+
+[1/3] scsi: ufs: qcom: dt-bindings: Add SC7280 compatible string
+      https://git.kernel.org/mkp/scsi/c/98bfeda31969
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
