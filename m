@@ -1,36 +1,52 @@
-Received: from relay03.th.seeweb.it (relay03.th.seeweb.it [5.144.164.164])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B01D14270
-	for <phone-devel@vger.kernel.org>; Tue, 19 Dec 2023 10:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=somainline.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=somainline.org
-Received: from SoMainline.org (82-72-63-87.cable.dynamic.v4.ziggo.nl [82.72.63.87])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by m-r1.th.seeweb.it (Postfix) with ESMTPSA id 6D30420091;
-	Tue, 19 Dec 2023 11:06:10 +0100 (CET)
-Date: Tue, 19 Dec 2023 11:06:08 +0100
-From: Marijn Suijten <marijn.suijten@somainline.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, phone-devel@vger.kernel.org, 
-	Pavel Machek <pavel@ucw.cz>, Bjorn Andersson <bjorn.andersson@linaro.org>, 
-	~postmarketos/upstreaming@lists.sr.ht, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, Konrad Dybcio <konrad.dybcio@somainline.org>, 
-	Martin Botka <martin.botka@somainline.org>, Jami Kettunen <jami.kettunen@somainline.org>, 
-	linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Stephen Boyd <swboyd@chromium.org>, 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324F81C69D;
+	Wed, 20 Dec 2023 08:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JCwELj+1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F31DC433C8;
+	Wed, 20 Dec 2023 08:10:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703059801;
+	bh=C/bmxBnTXGzZ1vjtmSYYuEX2ZVG/w7ytPsXTwf5j/S0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JCwELj+19lZxVgrIZLX+EQptxFmWECHHiOXtNEShl+yXmtQ0b+WmPOTg9wtRPwbOs
+	 sYowz0It0lgncI0jceH2ZJCij97kt/JqQyqOFH8kQSX82rLEL7Xg9vGHPZ7FqD4xA4
+	 JZ5/DVFeDCU3wPBXTxWrM6VsJhCZYHxi6I8BLrjnLPISs6EKWkUfLKsJyGbRYH80Oo
+	 NDiJKGc4ppCPsCaXRtF1n0+Aje9IeaOwTmka7hp4BzeH601/DOyRbcIjj211Yy2ebO
+	 M0JJigKSK3z0FdXnsb5Owp9WprZQ8nCgFpbt/Hc113k+Y4STJPeZS7RhzvggCJPTIz
+	 AzzyCX0HU0knw==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan@kernel.org>)
+	id 1rFreQ-0000nD-1l;
+	Wed, 20 Dec 2023 09:09:59 +0100
+Date: Wed, 20 Dec 2023 09:09:58 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Marijn Suijten <marijn.suijten@somainline.org>
+Cc: Lee Jones <lee@kernel.org>, phone-devel@vger.kernel.org,
+	Pavel Machek <pavel@ucw.cz>,
+	Bjorn Andersson <bjorn.andersson@linaro.org>,
+	~postmarketos/upstreaming@lists.sr.ht,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>,
+	Konrad Dybcio <konrad.dybcio@somainline.org>,
+	Martin Botka <martin.botka@somainline.org>,
+	Jami Kettunen <jami.kettunen@somainline.org>,
+	linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org,
+	Rob Herring <robh@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Stephen Boyd <swboyd@chromium.org>,
 	Satya Priya <quic_c_skakit@quicinc.com>
 Subject: Re: [PATCH v4 2/2] leds: qcom-lpg: Add PM660L configuration and
  compatible
-Message-ID: <xkmmbgbg2japfunuure2kktbxdkotteawwgzsjq6giafmwuosz@3no7qov5nzei>
+Message-ID: <ZYKhVlgrlvq3HbFt@hovoldconsulting.com>
 References: <20220719211848.1653920-1-marijn.suijten@somainline.org>
  <20220719211848.1653920-2-marijn.suijten@somainline.org>
  <ZYFS04cznE5bhOeV@hovoldconsulting.com>
  <3lsapoxlqijes5m4nqcbhdfhhs4chq3mcq3jaty7v2zihsqnwu@nn67a4h6425k>
  <ZYFjZefdJej_vgwD@hovoldconsulting.com>
+ <xkmmbgbg2japfunuure2kktbxdkotteawwgzsjq6giafmwuosz@3no7qov5nzei>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -39,22 +55,26 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZYFjZefdJej_vgwD@hovoldconsulting.com>
+In-Reply-To: <xkmmbgbg2japfunuure2kktbxdkotteawwgzsjq6giafmwuosz@3no7qov5nzei>
 
-On 2023-12-19 10:33:25, Johan Hovold wrote:
-> On Tue, Dec 19, 2023 at 10:17:16AM +0100, Marijn Suijten wrote:
-> 
-> > Note that I have one more unmerged leds patch around, that hasn't been looked
-> > at either.  Would it help to send this once again, perhaps with more reviewers/
-> > testing (Johan, would you mind taking a look too)?
+On Tue, Dec 19, 2023 at 11:06:08AM +0100, Marijn Suijten wrote:
+> On 2023-12-19 10:33:25, Johan Hovold wrote:
+> > On Tue, Dec 19, 2023 at 10:17:16AM +0100, Marijn Suijten wrote:
 > > 
-> > https://lore.kernel.org/linux-leds/20220719213034.1664056-1-marijn.suijten@somainline.org/
+> > > Note that I have one more unmerged leds patch around, that hasn't been looked
+> > > at either.  Would it help to send this once again, perhaps with more reviewers/
+> > > testing (Johan, would you mind taking a look too)?
+> > > 
+> > > https://lore.kernel.org/linux-leds/20220719213034.1664056-1-marijn.suijten@somainline.org/
+> > 
+> > Yes, I suggest you resend that one too so that it ends up in Lee's
+> > inbox.
 > 
-> Yes, I suggest you resend that one too so that it ends up in Lee's
-> inbox.
+> I will rebase, test and resend it too.  Just asking if you notice any glaring
+> issues with this patch, as it won't be the first time it has been resent after
+> not being looked at for some time.
 
-I will rebase, test and resend it too.  Just asking if you notice any glaring
-issues with this patch, as it won't be the first time it has been resent after
-not being looked at for some time.
+I haven't look at this code before and only skimmed it now, but your
+patch looks correct to me.
 
-- Marijn
+Johan
