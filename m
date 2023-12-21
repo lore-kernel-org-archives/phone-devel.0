@@ -1,150 +1,125 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67696F602
-	for <phone-devel@vger.kernel.org>; Thu, 21 Dec 2023 12:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF8453A0D
+	for <phone-devel@vger.kernel.org>; Thu, 21 Dec 2023 13:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eUKQgpcS"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-9fa45e75ed9so81885566b.1
-        for <phone-devel@vger.kernel.org>; Thu, 21 Dec 2023 04:53:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="I6x0h0NA"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a234dc0984fso88415466b.0
+        for <phone-devel@vger.kernel.org>; Thu, 21 Dec 2023 05:45:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1703163214; x=1703768014; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=g+z6IBb57Ppqbid95erAGh0Pwx17723I4teCRYnelRI=;
-        b=eUKQgpcSqYKRPfadBuzXvHodNmBODVtGliW0mBFAqcotP0tfLt/6CfhcpgNLk1tL1S
-         flN+OpyNPwXsz07OrP3J7QyJJXSP5asVcNru3DMZHEorN0Yf0Zgk3EQ79Jj6xGM7903Z
-         WxUBA3FEj1wPrKqIsyGsdUNXRfHgzXv4AA6etL32U5mRkFeE39IKd7OzeBQ0exWNYf87
-         v3jGLDE4TS0BMzYX1cSB1D52l+1F791phEuwwvNN2kgxuj6PDb/YArdqBsF3v1/CV16P
-         dzYbV1Sy88jMoxPSPVITO2xLjziWDlhXzyULvpx3cC5aZEb1H0KbhlBknts5HfSEcvPW
-         mJeQ==
+        d=fairphone.com; s=fair; t=1703166328; x=1703771128; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+G4IpIXZDkNfAYijfdIEK2DiPVk5MoCvUYEoHZOpo58=;
+        b=I6x0h0NA4VQ7j/UCkYIZLUEn2Duij5YT6h0yMS9xnMoqNIeM01XvH1vNuhD52A2AeF
+         9XXHpqHQIbLqh9myfDmaCdU2gyzDQonXswnDBMWR59w4gIosmhfvn2rdnS5mbE+CyBdG
+         KHo/LE99RzxcGPxbn1rzP4lK23uvEo713ErsjztVVg5CPbzmd/cQb2vF+SDNZiiiLKhi
+         +ZWJ5qpNEgJlaqNt/+gjbMCE0erazwV8CCV7AbiIC3wHb5tDIkYUo0XMA/WnNSscXVOY
+         XSkVLrEUTKRO3K9bqlpvZFQvkNAJ2fujUGb9Ond49g+R+NBEJ8Q0WW6YSXVjps1BiDXb
+         EwEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703163214; x=1703768014;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g+z6IBb57Ppqbid95erAGh0Pwx17723I4teCRYnelRI=;
-        b=k+EEFFnp7EZIjUKI15b3B2vbdRgjtZjay/q+EvaSu0zX2iEUi87PVxOlwZy6ioPjRI
-         QvrQzVn+3XytYnlykpH9MiOOvrDkHBfKC62dzj8edyHfbTtVxv57eKQwIPY5bDMwRtS5
-         CU/Fkyk9hyyPvwERE43TRPkfzkdf2TrH+oyX28eTy017zmDIjaX9Xhb5Y4AjxXDo1geR
-         8OpcGPpmu2caQKZMGNCoYIprcdzJeuYlt1GhPUwr8Q3H2ER/j2At/B9sJM+7bv2IxOhi
-         LFC9X7JivatIX8qZy37N2HwhJN7jtOTG+npLj3yn7v+i1awWoBm1Q9aDellR6v3dpPzE
-         dAPQ==
-X-Gm-Message-State: AOJu0YzFz4B4KwIdc+W2JvWeriFpHErG9cx+v8EZLTxI56cC/bYgru98
-	3FS2QjcCS/2DU2pytM3TzUL3eg==
-X-Google-Smtp-Source: AGHT+IH8WuhcvcvvMLjvCJ3CAdXqw5omFoQd3Z1bMT/YRAxPAgWjh4hH/toJSYDqjXr7zZJ7Xno8uQ==
-X-Received: by 2002:a17:906:dc:b0:a23:5d5d:783 with SMTP id 28-20020a17090600dc00b00a235d5d0783mr2423146eji.151.1703163214030;
-        Thu, 21 Dec 2023 04:53:34 -0800 (PST)
-Received: from [192.168.199.125] (178235179206.dynamic-4-waw-k-1-3-0.vectranet.pl. [178.235.179.206])
-        by smtp.gmail.com with ESMTPSA id e3-20020a17090681c300b00a1f7ae3dfbcsm935159ejx.174.2023.12.21.04.53.32
+        d=1e100.net; s=20230601; t=1703166328; x=1703771128;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+G4IpIXZDkNfAYijfdIEK2DiPVk5MoCvUYEoHZOpo58=;
+        b=T159au+B4aFd7Vypq6wZUL8dGgcRDS8NWUvm+/WTYcPq9cbxMNLBoA8rTS0xLjEsRO
+         CsE9j7i+dPGGy4IPYoJoWdic8S4+7Rzxtii1DSRuL1iaQpm3lLq9CrvZ4Ie1oXP2oN60
+         9LZK4Qz6VQYQ2yfeTnQ3kSV1HPnF+XC2MLGXrA/dzbEIDWYHO3XmBrfIj/dORWWMt/VK
+         2mEGdpYM+cj/zIQZHK7ifvU1FjUu6yX6vWgag6XGKJEHI7hSdeP5GKWOdjvhbbCYIUg0
+         9y9giQkr4h+lj1Z7Lk3WCAnXpzikm/YKyIONcJnY9VQe6KeHRNzaGqd13tNCbP6XUzW1
+         J43A==
+X-Gm-Message-State: AOJu0YwrkOikhJPjgI8vwtWp6VMpCKxLvhyConx/oI2sYeuQ+3221lQG
+	6/pI7z7iHWKfTJSXg5s9ZsZVYg==
+X-Google-Smtp-Source: AGHT+IF1TcSpVDLsYPf8/142epHuA4cop9nrJVeB7PlkoBnM74MGiYYVSrMXXjB9nFz1R9UGMaRlmg==
+X-Received: by 2002:a17:906:4116:b0:a26:8aeb:c363 with SMTP id j22-20020a170906411600b00a268aebc363mr1742055ejk.60.1703166328044;
+        Thu, 21 Dec 2023 05:45:28 -0800 (PST)
+Received: from localhost (2a02-8388-6584-6400-d322-7350-96d2-429d.cable.dynamic.v6.surfer.at. [2a02:8388:6584:6400:d322:7350:96d2:429d])
+        by smtp.gmail.com with ESMTPSA id kx26-20020a170907775a00b00a1f65433d08sm982553ejc.172.2023.12.21.05.45.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Dec 2023 04:53:33 -0800 (PST)
-Message-ID: <d2007240-2779-4881-8e9d-1c4f5daa55e5@linaro.org>
-Date: Thu, 21 Dec 2023 13:53:32 +0100
+        Thu, 21 Dec 2023 05:45:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] Fairphone 5 PMIC-GLINK support (USB-C, charger, fuel
- gauge)
-Content-Language: en-US
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- cros-qcom-dts-watchers@chromium.org, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-usb@vger.kernel.org
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 21 Dec 2023 14:45:26 +0100
+Message-Id: <CXU22OZNAH2H.24YIQWBA4KE3C@fairphone.com>
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Konrad Dybcio" <konrad.dybcio@linaro.org>, "Dmitry Baryshkov"
+ <dmitry.baryshkov@linaro.org>
+Cc: "Bjorn Andersson" <andersson@kernel.org>, "Rob Herring"
+ <robh+dt@kernel.org>, "Krzysztof Kozlowski"
+ <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Heikki Krogerus" <heikki.krogerus@linux.intel.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, <cros-qcom-dts-watchers@chromium.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>
+Subject: Re: [PATCH 0/3] Fairphone 5 PMIC-GLINK support (USB-C, charger,
+ fuel gauge)
+X-Mailer: aerc 0.15.2
 References: <20231220-fp5-pmic-glink-v1-0-2a1f8e3c661c@fairphone.com>
  <8d042095-1e09-45cc-9762-909fe8d663a9@linaro.org>
  <CXTU5MLN0YDS.29PPV8KZF8G9R@fairphone.com>
  <CAA8EJpoD3x=kVLu4x2yLtAqCp=wmGSU4ssq5Oj_SD5VQ=GyAYQ@mail.gmail.com>
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
- BB/OmIWU6X+LZW6P88ZmHe+KeyABLMP5s1tJNK1j4ntT7mECcWZDzafPWF4F6m4WJOG27kTJ
- HGWdmtO+RvadOVi6CoUDqALsmfS3MUG5Pj2Ne9+0jRg4hEnB92AyF9rW2G3qisFcwPgvatt7
- TXD5E38mLyOPOUyXNj9XpDbt1hNwKQfiidmPh5e7VNAWRnW1iCMMoKqzM1Anzq7e5Afyeifz
- zRcQPLaqrPjnKqZGL2BKQSZDh6NkI5ZLRhhHQf61fkWcUpTp1oDC6jWVfT7hwRVIQLrrNj9G
- MpPzrlN4YuAqKeIer1FMt8cq64ifgTzxHzXsMcUdclzq2LTk2RXaPl6Jg/IXWqUClJHbamSk
- t1bfif3SnmhA6TiNvEpDKPiT3IDs42THU6ygslrBxyROQPWLI9IL1y8S6RtEh8H+NZQWZNzm
- UQ3imZirlPjxZtvz1BtnnBWS06e7x/UEAguj7VHCuymVgpl2Za17d1jj81YN5Rp5L9GXxkV1
- aUEwONM3eCI3qcYm5JNc5X+JthZOWsbIPSC1Rhxz3JmWIwP1udr5E3oNRe9u2LIEq+wH/toH
- kpPDhTeMkvt4KfE5m5ercid9+ZXAqoaYLUL4HCEw+HW0DXcKDwARAQABzShLb25yYWQgRHli
- Y2lvIDxrb25yYWQuZHliY2lvQGxpbmFyby5vcmc+wsGOBBMBCAA4FiEEU24if9oCL2zdAAQV
- R4cBcg5dfFgFAmQ5bqwCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQR4cBcg5dfFjO
- BQ//YQV6fkbqQCceYebGg6TiisWCy8LG77zV7DB0VMIWJv7Km7Sz0QQrHQVzhEr3trNenZrf
- yy+o2tQOF2biICzbLM8oyQPY8B///KJTWI2khoB8IJSJq3kNG68NjPg2vkP6CMltC/X3ohAo
- xL2UgwN5vj74QnlNneOjc0vGbtA7zURNhTz5P/YuTudCqcAbxJkbqZM4WymjQhe0XgwHLkiH
- 5LHSZ31MRKp/+4Kqs4DTXMctc7vFhtUdmatAExDKw8oEz5NbskKbW+qHjW1XUcUIrxRr667V
- GWH6MkVceT9ZBrtLoSzMLYaQXvi3sSAup0qiJiBYszc/VOu3RbIpNLRcXN3KYuxdQAptacTE
- mA+5+4Y4DfC3rUSun+hWLDeac9z9jjHm5rE998OqZnOU9aztbd6zQG5VL6EKgsVXAZD4D3RP
- x1NaAjdA3MD06eyvbOWiA5NSzIcC8UIQvgx09xm7dThCuQYJR4Yxjd+9JPJHI6apzNZpDGvQ
- BBZzvwxV6L1CojUEpnilmMG1ZOTstktWpNzw3G2Gis0XihDUef0MWVsQYJAl0wfiv/0By+XK
- mm2zRR+l/dnzxnlbgJ5pO0imC2w0TVxLkAp0eo0LHw619finad2u6UPQAkZ4oj++iIGrJkt5
- Lkn2XgB+IW8ESflz6nDY3b5KQRF8Z6XLP0+IEdLOOARkOW7yEgorBgEEAZdVAQUBAQdAwmUx
- xrbSCx2ksDxz7rFFGX1KmTkdRtcgC6F3NfuNYkYDAQgHwsF2BBgBCAAgFiEEU24if9oCL2zd
- AAQVR4cBcg5dfFgFAmQ5bvICGwwACgkQR4cBcg5dfFju1Q//Xta1ShwL0MLSC1KL1lXGXeRM
- 8arzfyiB5wJ9tb9U/nZvhhdfilEDLe0jKJY0RJErbdRHsalwQCrtq/1ewQpMpsRxXzAjgfRN
- jc4tgxRWmI+aVTzSRpywNahzZBT695hMz81cVZJoZzaV0KaMTlSnBkrviPz1nIGHYCHJxF9r
- cIu0GSIyUjZ/7xslxdvjpLth16H27JCWDzDqIQMtg61063gNyEyWgt1qRSaK14JIH/DoYRfn
- jfFQSC8bffFjat7BQGFz4ZpRavkMUFuDirn5Tf28oc5ebe2cIHp4/kajTx/7JOxWZ80U70mA
- cBgEeYSrYYnX+UJsSxpzLc/0sT1eRJDEhI4XIQM4ClIzpsCIN5HnVF76UQXh3a9zpwh3dk8i
- bhN/URmCOTH+LHNJYN/MxY8wuukq877DWB7k86pBs5IDLAXmW8v3gIDWyIcgYqb2v8QO2Mqx
- YMqL7UZxVLul4/JbllsQB8F/fNI8AfttmAQL9cwo6C8yDTXKdho920W4WUR9k8NT/OBqWSyk
- bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
- nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
- izWDgYvmBE8=
-In-Reply-To: <CAA8EJpoD3x=kVLu4x2yLtAqCp=wmGSU4ssq5Oj_SD5VQ=GyAYQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <d2007240-2779-4881-8e9d-1c4f5daa55e5@linaro.org>
+In-Reply-To: <d2007240-2779-4881-8e9d-1c4f5daa55e5@linaro.org>
 
-On 21.12.2023 11:34, Dmitry Baryshkov wrote:
-> On Thu, 21 Dec 2023 at 09:33, Luca Weiss <luca.weiss@fairphone.com> wrote:
->>
->> On Wed Dec 20, 2023 at 1:32 PM CET, Konrad Dybcio wrote:
->>> On 20.12.2023 11:02, Luca Weiss wrote:
->>>> This series adds all the necessary bits to enable USB-C role switching,
->>>> charger and fuel gauge (all via pmic-glink) on Fairphone 5.
->>>>
->>>> One thing that could be made different is the pmic-glink compatible.
->>>> I've chosen to use qcm6490 compatible for it and not sc7280 since
->>>> there's plenty of firmware variety on sc7280-based platforms and they
->>>> might require different quirks in the future, so limit this PDOS quirk
->>>> to just qcm6490 for now.
->>>>
->>>> If someone thinks it should be qcom,sc7280-pmic-glink, please let me
->>>> know :)
->>> IMO it's best to continue using the "base soc" (which just so happened
->>> to fall onto sc7280 this time around) for all compatibles, unless the
->>> derivatives actually had changes
->>
->> Hi Konrad,
->>
->> I think at some point I asked Dmitry what he thought and he mentioned
->> qcm6490. Even found the message again:
->>
->>> well, since it is a firmware thing, you might want to emphasise that.
->>> So from my POV qcm6490 makes more sense
->>
->> But yeah since it's likely that sc7280 firmware behaves the same as
->> qcm6490 firmware it's probably okay to use sc7280 compatible, worst case
->> we change it later :) I'll send a v2 with those changes.
-> 
-> Worst case we end up with sc7280 which has yet another slightly
-> different UCSI / PMIC GLINK implementation, but the compatible string
-> is already taken.
-> I still suppose that this should be a qcm6490-related string.
-Right, let's keep qcm then
+On Thu Dec 21, 2023 at 1:53 PM CET, Konrad Dybcio wrote:
+> On 21.12.2023 11:34, Dmitry Baryshkov wrote:
+> > On Thu, 21 Dec 2023 at 09:33, Luca Weiss <luca.weiss@fairphone.com> wro=
+te:
+> >>
+> >> On Wed Dec 20, 2023 at 1:32 PM CET, Konrad Dybcio wrote:
+> >>> On 20.12.2023 11:02, Luca Weiss wrote:
+> >>>> This series adds all the necessary bits to enable USB-C role switchi=
+ng,
+> >>>> charger and fuel gauge (all via pmic-glink) on Fairphone 5.
+> >>>>
+> >>>> One thing that could be made different is the pmic-glink compatible.
+> >>>> I've chosen to use qcm6490 compatible for it and not sc7280 since
+> >>>> there's plenty of firmware variety on sc7280-based platforms and the=
+y
+> >>>> might require different quirks in the future, so limit this PDOS qui=
+rk
+> >>>> to just qcm6490 for now.
+> >>>>
+> >>>> If someone thinks it should be qcom,sc7280-pmic-glink, please let me
+> >>>> know :)
+> >>> IMO it's best to continue using the "base soc" (which just so happene=
+d
+> >>> to fall onto sc7280 this time around) for all compatibles, unless the
+> >>> derivatives actually had changes
+> >>
+> >> Hi Konrad,
+> >>
+> >> I think at some point I asked Dmitry what he thought and he mentioned
+> >> qcm6490. Even found the message again:
+> >>
+> >>> well, since it is a firmware thing, you might want to emphasise that.
+> >>> So from my POV qcm6490 makes more sense
+> >>
+> >> But yeah since it's likely that sc7280 firmware behaves the same as
+> >> qcm6490 firmware it's probably okay to use sc7280 compatible, worst ca=
+se
+> >> we change it later :) I'll send a v2 with those changes.
+> >=20
+> > Worst case we end up with sc7280 which has yet another slightly
+> > different UCSI / PMIC GLINK implementation, but the compatible string
+> > is already taken.
+> > I still suppose that this should be a qcm6490-related string.
+> Right, let's keep qcm then
 
-Konrad
+Ack from my side also. Thanks for the feedback!
+
+>
+> Konrad
+
