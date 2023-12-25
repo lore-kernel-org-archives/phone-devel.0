@@ -1,83 +1,126 @@
-Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EF525763;
-	Fri, 22 Dec 2023 17:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066CB5102F;
+	Mon, 25 Dec 2023 12:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="ZNZmAtXS"
-Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id D8F7B28C52C;
-	Fri, 22 Dec 2023 18:25:17 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
-	s=gen1; t=1703265917;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o11YE5j79FN8PAmtNGUeQ/O6aLa108mHrEVJebvZVkA=;
-	b=ZNZmAtXS6ynEkqeZFfs1vx18Bm+f+bAqFuYywlmaEqdrOSPLxrCeoVuj8TxtJxkkHQyPwA
-	9uHFWxRcqi0HnHV7gVTvGDEV1UogKoEk5TvY1qgbgptZJNcmYvYvCbNC8FOHKLSN/FIP/t
-	Q1yR253z3c8GzhRICrHMIyFmNaceLE8=
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: karelb)
-	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id A9B2D447BF5;
-	Fri, 22 Dec 2023 18:25:17 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jhdOYgJF"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-40d4d9d9b77so20855325e9.2;
+        Mon, 25 Dec 2023 04:03:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703505815; x=1704110615; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=M9FH57aGkJw13IKFppWR0d0ExXBNDN8V4v9B+/Ni+Oo=;
+        b=jhdOYgJFul0zsAMk/6d2TXC2T85GIcPOBnpTOnMq/k4Bo/9q3mx4xxUSqF1R05ovXk
+         tA2+5W2HMdw9xjx3sqneqvl2eLai+WmLLtBAgSWdD2hH5QQriTPplFbyKQzDq0czwZel
+         2lCQVTGsP5dEi9AcXtVOvempYDiGRm/66Rdq62KAizcTVMRzvrTkf9imFTWdbVlBLFPj
+         yKDg/f8+lLCyF+fHkdvooJB98C2gWm6cxt+pzFhReUtHmJqY/oyMl1lhs19wL+FLvckC
+         fdpQ1ALd4w3B/yutQTElysEIB61JDGweLmfjXLnRrAjPnjhOEJDiu7FMwL8fvhEPPN1+
+         IBWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703505815; x=1704110615;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=M9FH57aGkJw13IKFppWR0d0ExXBNDN8V4v9B+/Ni+Oo=;
+        b=E3/iCgiZ6gLHrBWLxcF8HW/tyQpxMFcaKRYYUT5ObpRhUVV9GThOoBAhyEWvN7TD6V
+         i+D0Yp/dBx83nBfAD4gZeVZovCzHmRBig8D8BazS5FlCJEilk7pf0VHE7GgYvMnVxD4Y
+         bPzsM9KKoSM1Vt03bahkHosx6YCcwCVkFOipJRemHXcsFADm1jWImKr+u5YNoecw3yCI
+         5NamBHkWqsoWxz6pHyzWZYJH5cNVcPo6jXFkb0sOBdviCAEX1azOx0VJQBxG5Gj54/gS
+         tR+ZKj81koZU+7Lg72nXWcaWiORmp6w79P4ux5Z5gh7GmkDNJpO73EQoKpC2d0EsUjRn
+         JlFQ==
+X-Gm-Message-State: AOJu0YzM1Z2PbpWKYq43kSzNPllpl77n3DtAvBr1i7e9UzQwm0f+oNlp
+	FOyTP8HZqmnCN2Zv5A8nQgY=
+X-Google-Smtp-Source: AGHT+IG/Vs2hMcBk9dE1QNzxQyPaPfS892cgWA78VxcazBgLVeHJwXbFGn9Y6zC2d9xt6CMKPtcfRQ==
+X-Received: by 2002:a05:600c:1c2a:b0:40c:5971:6162 with SMTP id j42-20020a05600c1c2a00b0040c59716162mr4046285wms.81.1703505814885;
+        Mon, 25 Dec 2023 04:03:34 -0800 (PST)
+Received: from david-ryuzu.fritz.box ([178.26.111.208])
+        by smtp.googlemail.com with ESMTPSA id 14-20020a05600c020e00b0040d23cea7bcsm6349456wmi.1.2023.12.25.04.03.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Dec 2023 04:03:34 -0800 (PST)
+From: David Wronek <davidwronek@gmail.com>
+To: Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>,
+	Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Joe Mason <buddyjojo06@outlook.com>,
+	hexdump0815@googlemail.com
+Cc: cros-qcom-dts-watchers@chromium.org,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-scsi@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	David Wronek <davidwronek@gmail.com>
+Subject: [PATCH v3 0/8] Add UFS support for SC7180/SM7125
+Date: Mon, 25 Dec 2023 12:59:53 +0100
+Message-ID: <20231225120327.166160-1-davidwronek@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 22 Dec 2023 18:25:17 +0100
-Message-Id: <CXV1DK9TRFFE.2XFOC3C4K4N52@gimli.ms.mff.cuni.cz>
-Cc: "Karel Balej" <balejk@matfyz.cz>, "Dmitry Torokhov"
- <dmitry.torokhov@gmail.com>, "Krzysztof Kozlowski"
- <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Lee Jones" <lee@kernel.org>, <linux-input@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
-Subject: Re: [RFC PATCH 1/5] dt-bindings: mfd: add entry for the Marvell
- 88PM88X PMICs
-To: "Rob Herring" <robh@kernel.org>
-From: "Karel Balej" <karelb@gimli.ms.mff.cuni.cz>
-References: <20231217131838.7569-1-karelb@gimli.ms.mff.cuni.cz>
- <20231217131838.7569-2-karelb@gimli.ms.mff.cuni.cz>
- <20231218151718.GA3827526-robh@kernel.org>
-In-Reply-To: <20231218151718.GA3827526-robh@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Rob,
+This patchset introduces UFS support for SC7180 and SM7125, as well as
+support for the Xiaomi Redmi Note 9S.
 
-thank you very much for your feedback.
+Signed-off-by: David Wronek <davidwronek@gmail.com>
 
-On Mon Dec 18, 2023 at 4:17 PM CET, Rob Herring wrote:
-> > +  Marvell 88PM880 and 88PM886 are two similar PMICs providing
-> > +  several functions such as onkey, regulators or battery and
-> > +  charger. Both seem to come in two revisions -- A0 and A1.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: marvell,88pm886-a1
->
-> The description talks about 4 different devices, but only 1 here.=20
->
-> Do you expect to need A0 support? Devices with these PMICs should be=20
-> known and few, right?=20
+---
+Changes in v3:
+ - Use SM7150 UFS PHY compatible as a fallback
+ - Fix dts style issues
+ - Add regulator-allow-set-load and allowed-modes to UFS regulators
 
-I know of three smartphones which have 88PM886 and all of them (at least
-the revisions that have been tested) seem to use A1. So no, I don't know
-of any device that would need A0, but I wanted have the driver ready in
-case somebody needed to add it later. What change do you then suggest?
+Changes in v2:
+ - Fix device tree binding for QMP PHY
+ - Separate ICE into its own node
+ - Fix style problems in sc7180.dtsi
 
-Thank you and kind regards,
-K. B.
+---
+David Wronek (7):
+  dt-bindings: crypto: ice: Document SC7180 inline crypto engine
+  dt-bindings: ufs: qcom: Add SC7180 compatible string
+  dt-bindings: phy: Add QMP UFS PHY compatible for SC7180
+  dt-bindings: arm: qcom: Add Xiaomi Redmi Note 9S
+  phy: qcom: qmp-ufs: Add SC7180 support
+  arm64: dts: qcom: sc7180: Add UFS nodes
+  arm64: dts: qcom: sm7125-xiaomi-common: Add UFS nodes
+
+Joe Mason (1):
+  arm64: dts: qcom: Add support for Xiaomi Redmi Note 9S
+
+ .../devicetree/bindings/arm/qcom.yaml         |  1 +
+ .../crypto/qcom,inline-crypto-engine.yaml     |  1 +
+ .../phy/qcom,sc8280xp-qmp-ufs-phy.yaml        |  2 +
+ .../devicetree/bindings/ufs/qcom,ufs.yaml     |  2 +
+ arch/arm64/boot/dts/qcom/Makefile             |  1 +
+ arch/arm64/boot/dts/qcom/sc7180.dtsi          | 70 +++++++++++++++++++
+ .../boot/dts/qcom/sm7125-xiaomi-common.dtsi   | 28 ++++++++
+ .../boot/dts/qcom/sm7125-xiaomi-curtana.dts   | 16 +++++
+ drivers/phy/qualcomm/phy-qcom-qmp-ufs.c       |  3 +
+ 9 files changed, 124 insertions(+)
+ create mode 100644 arch/arm64/boot/dts/qcom/sm7125-xiaomi-curtana.dts
+
+-- 
+2.43.0
+
