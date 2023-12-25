@@ -1,136 +1,177 @@
-Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C134446AC;
-	Wed, 27 Dec 2023 11:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBE846B81;
+	Wed, 27 Dec 2023 17:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="g8fPewqr"
-Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id 3CA2D28C548;
-	Wed, 27 Dec 2023 12:55:58 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
-	s=gen1; t=1703678158;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LdH2yBNiK/xMMpgPKeteq1/bIi2Aa4FzaW/rE8c1K0A=;
-	b=g8fPewqrOpd0ltQq7evxQAYLjxvt6JHIvnXsqPHpz7Uk+5zDvmL3colK6SKofAJqmqV+cF
-	gpOUX6gosI9DIGESXkflAyZ/B94h31STzpdC1hCFRZ7KT1ymPt5xnnMK2UQIFwJILmE2d5
-	MXfkxO2/jRLRIU4M8HR4Lnn145yQ5C0=
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: karelb)
-	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id 1FA3544D1F0;
-	Wed, 27 Dec 2023 12:55:58 +0100 (CET)
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="ntejb9aF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1703697016; bh=EzO2Os7VBSDtEWCulDHnrYefncJjDEnsfBW7sIfrJgM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ntejb9aFOsla7Wbzu3LBmdgowdkG2XjS3H4uZiDm0ZAv5bAuKExQ3Oo5YL/wLjGHt
+	 LQDd6GiV4fNyK+zQb4ZkcFBC+ZsK7/sSCc0LtNzv5bT41/cwsX7aPkitfMzAc1vgiU
+	 BsLufPnd9g16HjnIiahMMLSIt79Ig9nBohB+D7Lk=
+From: Luca Weiss <luca@z3ntu.xyz>
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Sean Paul <sean@poorly.run>,
+ Marijn Suijten <marijn.suijten@somainline.org>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] drm/msm/adreno: Add A305B support
+Date: Mon, 25 Dec 2023 22:12:56 +0100
+Message-ID: <2709745.mvXUDI8C0e@z3ntu.xyz>
+In-Reply-To: <20231130-msm8226-gpu-v1-2-6bb2f1b29e49@z3ntu.xyz>
+References:
+ <20231130-msm8226-gpu-v1-0-6bb2f1b29e49@z3ntu.xyz>
+ <20231130-msm8226-gpu-v1-2-6bb2f1b29e49@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 27 Dec 2023 12:55:57 +0100
-Message-Id: <CXZ3I4X6XODY.1PMT2LS10M50M@gimli.ms.mff.cuni.cz>
-From: "Karel Balej" <karelb@gimli.ms.mff.cuni.cz>
-Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Dmitry Torokhov"
- <dmitry.torokhov@gmail.com>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof
- Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
- <conor+dt@kernel.org>, "Henrik Rydberg" <rydberg@bitmath.org>,
- <linux-input@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, =?utf-8?q?Duje_Mihanovi=C4=87?=
- <duje.mihanovic@skole.hr>, <~postmarketos/upstreaming@lists.sr.ht>,
- <phone-devel@vger.kernel.org>, "Karel Balej" <balejk@matfyz.cz>, "Conor
- Dooley" <conor@kernel.org>
-Subject: Re: [PATCH v3 2/5] dt-bindings: input/touchscreen: Add compatible
- for IST3038B
-To: "Markuss Broks" <markuss.broks@gmail.com>
-References: <20231202125948.10345-1-karelb@gimli.ms.mff.cuni.cz>
- <20231202125948.10345-3-karelb@gimli.ms.mff.cuni.cz>
- <20231203-outskirts-reformat-e0a833903841@spud>
- <0a035c62-9d35-4f85-b1f3-bcb7dea17d52@gmail.com>
- <20231204-stooge-impotent-fe8d2d9177e4@wendy>
- <CXJOLS2I8WH7.1IMVJGPUNG4VB@gimli.ms.mff.cuni.cz>
- <20231209-casing-music-bded1c7b5475@spud>
-In-Reply-To: <20231209-casing-music-bded1c7b5475@spud>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Markuss,
+On Donnerstag, 30. November 2023 21:35:19 CET Luca Weiss wrote:
+> Add support for the Adreno 305B GPU that is found in MSM8226(v2) SoC.
+> Previously this was mistakenly claimed to be supported but using wrong
+> a configuration.
+> 
+> In MSM8226v1 there's also a A305B but with chipid 0x03000510 which
+> should work with the same configuration but due to lack of hardware for
+> testing this is not added.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
-On Sat Dec 9, 2023 at 11:58 AM CET, Conor Dooley wrote:
-> On Sat, Dec 09, 2023 at 10:05:27AM +0100, Karel Balej wrote:
-> > On Mon Dec 4, 2023 at 1:52 PM CET, Conor Dooley wrote:
-> > > On Mon, Dec 04, 2023 at 02:40:44PM +0200, Markuss Broks wrote:
-> > > > On 12/3/23 13:20, Conor Dooley wrote:
-> > > > > On Sat, Dec 02, 2023 at 01:48:33PM +0100, Karel Balej wrote:
-> > > > > > From: Markuss Broks <markuss.broks@gmail.com>
-> > > > > >=20
-> > > > > > Imagis IST3038B is a variant (firmware?) of Imagis IST3038 IC,
-> > > > > > add the compatible for it to the IST3038C bindings.
-> > > > > This one is better, but would be well served by mentioning what
-> > > > > specifically is different (register addresses or firmware command=
-s?)
-> > > >=20
-> > > > I don't think anyone knows this other than Imagis itself. I would g=
-uess it's
-> > > > different hardware, since register addresses are indeed different, =
-but on
-> > > > the other hand, there is a possibility that firmware on the MCU cou=
-ld be
-> > > > responding to those commands. I suppose "... IST3038B is a hardware=
- variant
-> > > > of ... IST3038" would be more correct.
-> > >
-> > > Only Imagis might know the specifics, but you (plural) have made driv=
-er
-> > > changes so you know what is different in terms of the programming mod=
-el.
-> > > I'm just asking for you to mention how the programming model varies i=
-n
-> > > the commit message. Otherwise I can't know whether you should have ad=
-ded
-> > > a fallback compatible, without going and reading your driver change. =
-The
-> > > commit message for the bindings should stand on its own merit in that
-> > > regard.
-> > > "Variant" alone does not suffice, as many variants of devices have a
-> > > compatible programming model, be that for a subset of features or
-> > > complete compatibility.
-> > >
-> > > > The reason why I think it could be firmware-defined is because we h=
-ave a lot
-> > > > of variants (30xxA, 30xxB, 30xxC, plain 30xx), and the numbers usua=
-lly mean
-> > > > feature level/completeness, e.g. some don't support the touch press=
-ure or
-> > > > touchkeys, and we don't know what A/B/C/none means.
-> > >
-> > > Ultimately whether it is due to firmware or the hardware isn't
-> > > particular important, just mention what is incompatibly different.
-> >=20
-> > I propose to update the commit description as such:
-> >=20
-> > 	Imagis IST3038B is a variant (firmware?) of Imagis IST3038 IC
-> > 	differing from IST3038C in its register interface. Add the
-> > 	compatible for it to the IST3038C bindings.
+Hi all,
 
-is this change OK with you?
+Any chance this can be picked up for v6.8? The dts patch has already been 
+picked up :)
 
->
->
-> SGTM. You can add
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> with that commit message update.
->
-> Thanks,
-> Conor.
+Regards
+Luca
 
-Kind regards,
-K. B.
+> ---
+>  drivers/gpu/drm/msm/adreno/a3xx_gpu.c      | 15 ++++++++++++---
+>  drivers/gpu/drm/msm/adreno/adreno_device.c | 15 +++++++++++----
+>  drivers/gpu/drm/msm/adreno/adreno_gpu.h    |  5 +++++
+>  3 files changed, 28 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/msm/adreno/a3xx_gpu.c
+> b/drivers/gpu/drm/msm/adreno/a3xx_gpu.c index c86b377f6f0d..5fc29801c4c7
+> 100644
+> --- a/drivers/gpu/drm/msm/adreno/a3xx_gpu.c
+> +++ b/drivers/gpu/drm/msm/adreno/a3xx_gpu.c
+> @@ -134,6 +134,13 @@ static int a3xx_hw_init(struct msm_gpu *gpu)
+>  		/* Set up AOOO: */
+>  		gpu_write(gpu, REG_A3XX_VBIF_OUT_AXI_AOOO_EN, 0x0000003c);
+>  		gpu_write(gpu, REG_A3XX_VBIF_OUT_AXI_AOOO, 0x003c003c);
+> +	} else if (adreno_is_a305b(adreno_gpu)) {
+> +		gpu_write(gpu, REG_A3XX_VBIF_IN_RD_LIM_CONF0, 0x00181818);
+> +		gpu_write(gpu, REG_A3XX_VBIF_IN_WR_LIM_CONF0, 0x00181818);
+> +		gpu_write(gpu, REG_A3XX_VBIF_OUT_RD_LIM_CONF0, 
+0x00000018);
+> +		gpu_write(gpu, REG_A3XX_VBIF_OUT_WR_LIM_CONF0, 
+0x00000018);
+> +		gpu_write(gpu, REG_A3XX_VBIF_DDR_OUT_MAX_BURST, 
+0x00000303);
+> +		gpu_write(gpu, REG_A3XX_VBIF_ROUND_ROBIN_QOS_ARB, 0x0003);
+>  	} else if (adreno_is_a306(adreno_gpu)) {
+>  		gpu_write(gpu, REG_A3XX_VBIF_ROUND_ROBIN_QOS_ARB, 0x0003);
+>  		gpu_write(gpu, REG_A3XX_VBIF_OUT_RD_LIM_CONF0, 
+0x0000000a);
+> @@ -230,7 +237,9 @@ static int a3xx_hw_init(struct msm_gpu *gpu)
+>  	gpu_write(gpu, REG_A3XX_UCHE_CACHE_MODE_CONTROL_REG, 0x00000001);
+> 
+>  	/* Enable Clock gating: */
+> -	if (adreno_is_a306(adreno_gpu))
+> +	if (adreno_is_a305b(adreno_gpu))
+> +		gpu_write(gpu, REG_A3XX_RBBM_CLOCK_CTL, 0xaaaaaaaa);
+> +	else if (adreno_is_a306(adreno_gpu))
+>  		gpu_write(gpu, REG_A3XX_RBBM_CLOCK_CTL, 0xaaaaaaaa);
+>  	else if (adreno_is_a320(adreno_gpu))
+>  		gpu_write(gpu, REG_A3XX_RBBM_CLOCK_CTL, 0xbfffffff);
+> @@ -333,7 +342,7 @@ static int a3xx_hw_init(struct msm_gpu *gpu)
+>  				
+AXXX_CP_QUEUE_THRESHOLDS_CSQ_IB1_START(2) |
+>  				
+AXXX_CP_QUEUE_THRESHOLDS_CSQ_IB2_START(6) |
+>  				
+AXXX_CP_QUEUE_THRESHOLDS_CSQ_ST_START(14));
+> -	} else if (adreno_is_a330(adreno_gpu)) {
+> +	} else if (adreno_is_a330(adreno_gpu) || 
+adreno_is_a305b(adreno_gpu)) {
+>  		/* NOTE: this (value take from downstream android driver)
+>  		 * includes some bits outside of the known bitfields.  But
+>  		 * A330 has this "MERCIU queue" thing too, which might
+> @@ -559,7 +568,7 @@ struct msm_gpu *a3xx_gpu_init(struct drm_device *dev)
+>  		goto fail;
+> 
+>  	/* if needed, allocate gmem: */
+> -	if (adreno_is_a330(adreno_gpu)) {
+> +	if (adreno_is_a330(adreno_gpu) || adreno_is_a305b(adreno_gpu)) {
+>  		ret = adreno_gpu_ocmem_init(&adreno_gpu->base.pdev->dev,
+>  					    adreno_gpu, &a3xx_gpu-
+>ocmem);
+>  		if (ret)
+> diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c
+> b/drivers/gpu/drm/msm/adreno/adreno_device.c index
+> f62ab5257e66..7028d5449956 100644
+> --- a/drivers/gpu/drm/msm/adreno/adreno_device.c
+> +++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
+> @@ -55,10 +55,17 @@ static const struct adreno_info gpulist[] = {
+>  		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
+>  		.init  = a2xx_gpu_init,
+>  	}, {
+> -		.chip_ids = ADRENO_CHIP_IDS(
+> -			0x03000512,
+> -			0x03000520
+> -		),
+> +		.chip_ids = ADRENO_CHIP_IDS(0x03000512),
+> +		.family = ADRENO_3XX,
+> +		.fw = {
+> +			[ADRENO_FW_PM4] = "a330_pm4.fw",
+> +			[ADRENO_FW_PFP] = "a330_pfp.fw",
+> +		},
+> +		.gmem  = SZ_128K,
+> +		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
+> +		.init  = a3xx_gpu_init,
+> +	}, {
+> +		.chip_ids = ADRENO_CHIP_IDS(0x03000520),
+>  		.family = ADRENO_3XX,
+>  		.revn  = 305,
+>  		.fw = {
+> diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+> b/drivers/gpu/drm/msm/adreno/adreno_gpu.h index 80b3f6312116..c654f21499bb
+> 100644
+> --- a/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+> +++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.h
+> @@ -247,6 +247,11 @@ static inline bool adreno_is_a305(const struct
+> adreno_gpu *gpu) return adreno_is_revn(gpu, 305);
+>  }
+> 
+> +static inline bool adreno_is_a305b(const struct adreno_gpu *gpu)
+> +{
+> +	return gpu->info->chip_ids[0] == 0x03000512;
+> +}
+> +
+>  static inline bool adreno_is_a306(const struct adreno_gpu *gpu)
+>  {
+>  	/* yes, 307, because a305c is 306 */
+
+
+
+
