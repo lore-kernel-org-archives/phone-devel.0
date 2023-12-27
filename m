@@ -1,83 +1,136 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9DB1EB35
-	for <phone-devel@vger.kernel.org>; Mon, 25 Dec 2023 18:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C134446AC;
+	Wed, 27 Dec 2023 11:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kKBA7FUQ"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-781161d18ecso315028585a.3
-        for <phone-devel@vger.kernel.org>; Mon, 25 Dec 2023 10:36:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1703529416; x=1704134216; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rhuoQDM0PcQ1Hf0mmTK6WXCkbN9R/6E9/xIlxdvn19s=;
-        b=kKBA7FUQaPGX6KlbzlOyg4i2+nwrWRKTnygk7QexAStGWqQeG5nCrxxd5grru9MWTo
-         fObF5EJbNQVjmM3GIV8Vd5buSku+nl5lQJkFR2Xa3x4sYVkWKH8QcXTNbVbCfgpWiNbm
-         bfEUgAZwY6egp+LWdcA8TTp4AzD7q2BQpTus0F0OtUdJT5/bZyWTR9W6NdPx6tXunKzj
-         fmX1h/eVojq88H+fV2PuQHBVEPxCAGFqGaDoVN7L88MI4Q5rENyA9GYWPl+MfoGi/r7v
-         FM98UDKcVsparyCGWNxdUpXMsrv026vtcd1SCo1QpuQVKxsgc+zSWDD0Ay5lYCuu2fD8
-         MeIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703529416; x=1704134216;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rhuoQDM0PcQ1Hf0mmTK6WXCkbN9R/6E9/xIlxdvn19s=;
-        b=S6/8HxzQJ/vP+Kv9qagsXv9Sph1doWkuJ0MGzI9moyAalOesAZzKnvGr6HA4QtFpPr
-         +1dzWGVHUNIeeF1JypOQ0YdK5Y3oAw0A29YDM6iA2JnPZEaQtNEjioRe7IGsqXDfjGt3
-         i4IyXKAXbpD00YWT2GSFdQlY1S7wAmpx+gYUAEBTl/s3NMXj/oOj5zKTZbcRkgkUxJXo
-         KWJ9mL8rrNHXyOqoSz0Tt8osyGXo8Z8KoazyOb0vgNnua/D3h2ufsmR6BL8tXQZkro+m
-         +HA58AmXZ+rEIfgHmC41Zo3o7eZEKt9LOiFwliaINVB5tnWRir/N4w5Hz5bodq7iOiar
-         LXOQ==
-X-Gm-Message-State: AOJu0YwYPXbt/F0bj82DxnQnmYHizcLXlAL9fRzEkxmLEnDUDcK0aDex
-	9WbV/vjzY0IntLSaGH33sZQVYLWZyFGa4pJSxH0p1w1X4686Iw==
-X-Google-Smtp-Source: AGHT+IE8CS08JUcDq3WI+3+8WI11iUmJs6u/1qSNRmsQnNIvWnx6Y9KlEVMPs7h/FyiJgfivx9Js3Ldg5moOhBHrYkY=
-X-Received: by 2002:ae9:c012:0:b0:77f:b722:50c4 with SMTP id
- u18-20020ae9c012000000b0077fb72250c4mr7269847qkk.83.1703529415782; Mon, 25
- Dec 2023 10:36:55 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="g8fPewqr"
+Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id 3CA2D28C548;
+	Wed, 27 Dec 2023 12:55:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
+	s=gen1; t=1703678158;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LdH2yBNiK/xMMpgPKeteq1/bIi2Aa4FzaW/rE8c1K0A=;
+	b=g8fPewqrOpd0ltQq7evxQAYLjxvt6JHIvnXsqPHpz7Uk+5zDvmL3colK6SKofAJqmqV+cF
+	gpOUX6gosI9DIGESXkflAyZ/B94h31STzpdC1hCFRZ7KT1ymPt5xnnMK2UQIFwJILmE2d5
+	MXfkxO2/jRLRIU4M8HR4Lnn145yQ5C0=
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: karelb)
+	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id 1FA3544D1F0;
+	Wed, 27 Dec 2023 12:55:58 +0100 (CET)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231225120327.166160-1-davidwronek@gmail.com> <20231225120327.166160-6-davidwronek@gmail.com>
-In-Reply-To: <20231225120327.166160-6-davidwronek@gmail.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Mon, 25 Dec 2023 20:36:44 +0200
-Message-ID: <CAA8EJpq1QiWwJ1dk9xtaY=0pXr0y-QfoibXyX4SZR=YbxjRBVg@mail.gmail.com>
-Subject: Re: [PATCH v3 5/8] phy: qcom: qmp-ufs: Add SC7180 support
-To: David Wronek <davidwronek@gmail.com>
-Cc: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>, 
-	Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Avri Altman <avri.altman@wdc.com>, Bart Van Assche <bvanassche@acm.org>, 
-	Joe Mason <buddyjojo06@outlook.com>, hexdump0815@googlemail.com, 
-	cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-phy@lists.infradead.org, 
-	linux-scsi@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 27 Dec 2023 12:55:57 +0100
+Message-Id: <CXZ3I4X6XODY.1PMT2LS10M50M@gimli.ms.mff.cuni.cz>
+From: "Karel Balej" <karelb@gimli.ms.mff.cuni.cz>
+Cc: "Conor Dooley" <conor.dooley@microchip.com>, "Dmitry Torokhov"
+ <dmitry.torokhov@gmail.com>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Henrik Rydberg" <rydberg@bitmath.org>,
+ <linux-input@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, =?utf-8?q?Duje_Mihanovi=C4=87?=
+ <duje.mihanovic@skole.hr>, <~postmarketos/upstreaming@lists.sr.ht>,
+ <phone-devel@vger.kernel.org>, "Karel Balej" <balejk@matfyz.cz>, "Conor
+ Dooley" <conor@kernel.org>
+Subject: Re: [PATCH v3 2/5] dt-bindings: input/touchscreen: Add compatible
+ for IST3038B
+To: "Markuss Broks" <markuss.broks@gmail.com>
+References: <20231202125948.10345-1-karelb@gimli.ms.mff.cuni.cz>
+ <20231202125948.10345-3-karelb@gimli.ms.mff.cuni.cz>
+ <20231203-outskirts-reformat-e0a833903841@spud>
+ <0a035c62-9d35-4f85-b1f3-bcb7dea17d52@gmail.com>
+ <20231204-stooge-impotent-fe8d2d9177e4@wendy>
+ <CXJOLS2I8WH7.1IMVJGPUNG4VB@gimli.ms.mff.cuni.cz>
+ <20231209-casing-music-bded1c7b5475@spud>
+In-Reply-To: <20231209-casing-music-bded1c7b5475@spud>
 
-On Mon, 25 Dec 2023 at 14:05, David Wronek <davidwronek@gmail.com> wrote:
+Markuss,
+
+On Sat Dec 9, 2023 at 11:58 AM CET, Conor Dooley wrote:
+> On Sat, Dec 09, 2023 at 10:05:27AM +0100, Karel Balej wrote:
+> > On Mon Dec 4, 2023 at 1:52 PM CET, Conor Dooley wrote:
+> > > On Mon, Dec 04, 2023 at 02:40:44PM +0200, Markuss Broks wrote:
+> > > > On 12/3/23 13:20, Conor Dooley wrote:
+> > > > > On Sat, Dec 02, 2023 at 01:48:33PM +0100, Karel Balej wrote:
+> > > > > > From: Markuss Broks <markuss.broks@gmail.com>
+> > > > > >=20
+> > > > > > Imagis IST3038B is a variant (firmware?) of Imagis IST3038 IC,
+> > > > > > add the compatible for it to the IST3038C bindings.
+> > > > > This one is better, but would be well served by mentioning what
+> > > > > specifically is different (register addresses or firmware command=
+s?)
+> > > >=20
+> > > > I don't think anyone knows this other than Imagis itself. I would g=
+uess it's
+> > > > different hardware, since register addresses are indeed different, =
+but on
+> > > > the other hand, there is a possibility that firmware on the MCU cou=
+ld be
+> > > > responding to those commands. I suppose "... IST3038B is a hardware=
+ variant
+> > > > of ... IST3038" would be more correct.
+> > >
+> > > Only Imagis might know the specifics, but you (plural) have made driv=
+er
+> > > changes so you know what is different in terms of the programming mod=
+el.
+> > > I'm just asking for you to mention how the programming model varies i=
+n
+> > > the commit message. Otherwise I can't know whether you should have ad=
+ded
+> > > a fallback compatible, without going and reading your driver change. =
+The
+> > > commit message for the bindings should stand on its own merit in that
+> > > regard.
+> > > "Variant" alone does not suffice, as many variants of devices have a
+> > > compatible programming model, be that for a subset of features or
+> > > complete compatibility.
+> > >
+> > > > The reason why I think it could be firmware-defined is because we h=
+ave a lot
+> > > > of variants (30xxA, 30xxB, 30xxC, plain 30xx), and the numbers usua=
+lly mean
+> > > > feature level/completeness, e.g. some don't support the touch press=
+ure or
+> > > > touchkeys, and we don't know what A/B/C/none means.
+> > >
+> > > Ultimately whether it is due to firmware or the hardware isn't
+> > > particular important, just mention what is incompatibly different.
+> >=20
+> > I propose to update the commit description as such:
+> >=20
+> > 	Imagis IST3038B is a variant (firmware?) of Imagis IST3038 IC
+> > 	differing from IST3038C in its register interface. Add the
+> > 	compatible for it to the IST3038C bindings.
+
+is this change OK with you?
+
 >
-> The SC7180 UFS PHY is identical to the one found on SM7150. Add a
-> compatible for it.
 >
-> Signed-off-by: David Wronek <davidwronek@gmail.com>
-> ---
->  drivers/phy/qualcomm/phy-qcom-qmp-ufs.c | 3 +++
->  1 file changed, 3 insertions(+)
+> SGTM. You can add
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> with that commit message update.
+>
+> Thanks,
+> Conor.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
--- 
-With best wishes
-Dmitry
+Kind regards,
+K. B.
