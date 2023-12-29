@@ -1,50 +1,50 @@
-Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com [209.85.218.67])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C63F79DE
-	for <phone-devel@vger.kernel.org>; Fri, 29 Dec 2023 08:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC1B111A9
+	for <phone-devel@vger.kernel.org>; Fri, 29 Dec 2023 12:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="mAp70h98"
-Received: by mail-ej1-f67.google.com with SMTP id a640c23a62f3a-a26f5e937b5so347286566b.0
-        for <phone-devel@vger.kernel.org>; Fri, 29 Dec 2023 00:51:49 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="xvWXhzq8"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-55539cac143so3240377a12.0
+        for <phone-devel@vger.kernel.org>; Fri, 29 Dec 2023 04:53:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1703839908; x=1704444708; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1703854403; x=1704459203; darn=vger.kernel.org;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6vxxjHljzHw79UeoeShimfw5lVgwMA49xYVwTmdi+Fs=;
-        b=mAp70h98qaQOIBdvqkBTMryWcMePgk/++AsPLI5tsFf2a2W4HVXz0ugojC4MJuOaxh
-         HkipEWsPNZIDZvM3+p6bG78RbIFfaOGlmSLrSlgnOgIsnnoIjfZQsazyRtst7fZt+PS4
-         wNWycxuIbfHNGq48niTJVdpMtycP0+Joegio2IMueVqxrjxsgllIevCKEYVCvRKF9rNa
-         GD+F3CF9CTB4LCoZ/R8uRSQ+B3Xh15RXukvLgZk7URRw3241vOMjAZb0IPe0kBZJ/Z56
-         fqDN+xJoS2FNeqeUBCO8d6pAB37QhnuvCahN9kCWisAADpj9+mGiHjoDXgLA4/6MGxwv
-         vBRg==
+        bh=9yisl/qxCJgxl4RARL8Z9GuuogERTl8/KSkOCVJhCvE=;
+        b=xvWXhzq8BPIM8wrsxHiZjzme62E/yuCmAN5oHx6e5eNGNX+r35CV/bl7lWugfpPlmA
+         PoGgSuerqmYXuxfERpE28FZvShH1rGVdlfOA9NiSQ7JDf9g40RWi9NDJyB+93v9gaLY7
+         JY6C3mi0ZphmLSLUuQ/zADkMxfFQY2RW/Dk55psTaA0QezEHEXyHvb/ewpo5uFzJQrA4
+         0hqp276mqLg9zSZBndIhXbzk9SNua1BF2lkSI3hJKJ1lHJVrBemQsBYzXxZM5xCaUXPZ
+         OfpvsNFld1/A54YhRaO2kqH67dJW/cPF5HuVz7na1Dg9BT5zugsZS7m1PMC2TZ5HVluA
+         bKJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703839908; x=1704444708;
+        d=1e100.net; s=20230601; t=1703854403; x=1704459203;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=6vxxjHljzHw79UeoeShimfw5lVgwMA49xYVwTmdi+Fs=;
-        b=Wsew3L9j87shrytNp5g12J1Aua1CZhkfmCOBEMhpTjxYM7XgMOJQNG/7sTE8uZrZ/v
-         8goNgCtGDvpYjU29hfXPzZP6FtJwS7+8aZjoecKtVjQhDXwkcItOQsck8tsasvSJI46Q
-         ygNcunpzvVRjTLIi7d2iPmnzWI0Y9lHuFQNxJmzWvj1wW1F4J5jd6tMQe8NXVUp4h5ov
-         7BV2udJIv6BSQjtgkds++/QOA4QBey4hcBIsRwAgSnWdLrEVZhP6L+N+T2H8JbtrWhV4
-         3OTiL35s2TM4UjaAYXTPmtuL4jYM0Iu9ZaAxKiPi6g3Z2G8xk6Hjyt70GH76vatzeXx9
-         hUpw==
-X-Gm-Message-State: AOJu0Yw06Vr4Iut8hDjS6yNw/SHKk0S6PQn6GmbcGMi+9MkzJTk+0eNI
-	S2jgi9hJK/GDLFKQY39mXps7FBAWYOVz9A==
-X-Google-Smtp-Source: AGHT+IGdxVGc+QRqdXHlhORbQSpn/f89OXkU2cgZzotKb7JtqTFfrXmYf0Qh6gocv58KX+ewgvloUg==
-X-Received: by 2002:a17:907:b9c4:b0:a27:97bb:4ecd with SMTP id xa4-20020a170907b9c400b00a2797bb4ecdmr257290ejc.59.1703839908507;
-        Fri, 29 Dec 2023 00:51:48 -0800 (PST)
+        bh=9yisl/qxCJgxl4RARL8Z9GuuogERTl8/KSkOCVJhCvE=;
+        b=aDYHhuAYZZfGE+tZjW2SDEBOxAY0gwd2x6zHplgDlGzQp12XT1uhiCy1Z5x9zRu/d2
+         y+4s5KKSROw/+JWOrz8Buhd4mPMnTSM4Yn4HoO3QXRkoI5gL9miAOatTrTcGMo04JhOy
+         3RhZ0mwzT2007P2hmlVD8lG/CHY11wvdIe1jFnJdw+XTKJlxkE9fE8UlCGcGcyVjoaAF
+         rL/nQFaITeVPWjmMhjvBxkJ9oZQuZH9z1aUGHcqS9hjGaS7HV2L2ttDLfYT7l0k9zj1X
+         VWtG2NjXQ+9T2sTpxKc79Kvlob2JagWx/orCWINSEp+F9olhZkGxNToQ852tVbPLLLnR
+         8QmQ==
+X-Gm-Message-State: AOJu0YwfZmX1bSfl3xjRhj/WNx3Xfgb7lLL+WVjU36eCC5BjpLm415qn
+	QOrO0xusXUmTF/WEFcqdJlJBFqN6Ho2BdA==
+X-Google-Smtp-Source: AGHT+IGM12hQGxJrBT1b1jnlmiR9J9LvfpNlKO63uE/B4ep/qHZeEbX4mvQR5FNcuN+Oboaq43X/JA==
+X-Received: by 2002:a17:907:928b:b0:a27:6648:cc3e with SMTP id bw11-20020a170907928b00b00a276648cc3emr1885631ejc.74.1703854403273;
+        Fri, 29 Dec 2023 04:53:23 -0800 (PST)
 Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id kb6-20020a170907924600b00a27a32e6502sm112774ejb.117.2023.12.29.00.51.47
+        by smtp.gmail.com with ESMTPSA id ef5-20020a17090697c500b00a269597d173sm8345175ejb.135.2023.12.29.04.53.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Dec 2023 00:51:47 -0800 (PST)
+        Fri, 29 Dec 2023 04:53:22 -0800 (PST)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 29 Dec 2023 09:51:37 +0100
-Subject: [PATCH] arm64: dts: qcom: sc7280: Add static properties to
- cryptobam
+Date: Fri, 29 Dec 2023 13:53:17 +0100
+Subject: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Add missing
+ reserved-memory
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -53,61 +53,51 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231229-sc7280-cryptobam-fixup-v1-1-bd8f68589b80@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAJiIjmUC/x2Myw5AMBAAf0X2bBOWxuNXxKFqyx7QtAgR/65xn
- ExmHgjshQO0yQOeTwmyrRHyNAEz63VilDEyUEZFTtRgMBXVGRp/u30b9IJWrsOhHZRtSq1URRZ
- i7DxH8Y+7/n0//c9Cl2gAAAA=
-To: cros-qcom-dts-watchers@chromium.org, 
- Bjorn Andersson <andersson@kernel.org>, 
+Message-Id: <20231229-fp5-reserved-mem-v1-1-87bb818f1397@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIADzBjmUC/x3MOwqAMBBF0a2EqR0wI2J0K2Lh56lT+CGBIAT3b
+ rC8xbmJArwiUGcSeUQNep05bGFo3sdzA+uSm6SUyoq0vN41e2QVsfCBgyfn4EQma6WhzG6PVZ9
+ /2Q/v+wEs+PRHYgAAAA==
+To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Om Prakash Singh <quic_omprsing@quicinc.com>, 
- Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+ Conor Dooley <conor+dt@kernel.org>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.12.4
 
-When the properties num-channels & qcom,num-ees are not specified, the
-driver tries to read the values from registers, but this read fails and
-resets the device if the interconnect from the qcom,qce node is not
-already active when that happens.
+It seems we also need to reserve a region of 81 MiB called "removed_mem"
+otherwise we can easily hit the following error with higher RAM usage:
 
-Add the static properties to not touch any registers during probe, the
-rest of the time when the BAM is used by QCE then the interconnect will
-be active already.
+  [ 1467.809274] Internal error: synchronous external abort: 0000000096000010 [#2] SMP
 
-Fixes: d488f903a860 ("arm64: dts: qcom: sc7280: add QCrypto nodes")
+Fixes: eee9602ad649 ("arm64: dts: qcom: qcm6490: Add device-tree for Fairphone 5")
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-See also:
-https://lore.kernel.org/linux-arm-msm/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Alternatively you could add interconnect property (copied from &crypto)
-and add interconnect support to the BAM driver, then during probe we can
-read the registers without crashing the device.
----
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 83b5b76ba179..ce0d24ee7eed 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -2345,6 +2345,8 @@ cryptobam: dma-controller@1dc4000 {
- 				 <&apps_smmu 0x4e6 0x0011>;
- 			qcom,ee = <0>;
- 			qcom,controlled-remotely;
-+			num-channels = <16>;
-+			qcom,num-ees = <4>;
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+index 176898c9dbbd..1e85c43a6fd1 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+@@ -82,6 +82,11 @@ cdsp_mem: cdsp@88f00000 {
+ 			no-map;
  		};
  
- 		crypto: crypto@1dfa000 {
++		removed_mem: removed@c0000000 {
++			reg = <0x0 0xc0000000 0x0 0x5100000>;
++			no-map;
++		};
++
+ 		rmtfs_mem: memory@f8500000 {
+ 			compatible = "qcom,rmtfs-mem";
+ 			reg = <0x0 0xf8500000 0x0 0x600000>;
 
 ---
 base-commit: 39676dfe52331dba909c617f213fdb21015c8d10
-change-id: 20231229-sc7280-cryptobam-fixup-fb5f94a5572f
+change-id: 20231229-fp5-reserved-mem-b88e822b1127
 
 Best regards,
 -- 
