@@ -1,86 +1,115 @@
-Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f67.google.com (mail-ej1-f67.google.com [209.85.218.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF16C881E;
-	Thu, 28 Dec 2023 10:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C63F79DE
+	for <phone-devel@vger.kernel.org>; Fri, 29 Dec 2023 08:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="f8X8Mcbw"
-Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id 5103428C556;
-	Thu, 28 Dec 2023 11:02:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
-	s=gen1; t=1703757762;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YVSEF+bVjS3Qq3ykpL6+CxTXTvvWWKuDoro8ix+FW6c=;
-	b=f8X8McbwyJtNecPhdNm9LZB1pqb0LQLcr2EBJa68rO9Chd0wgZXYopNteKeOQYuIJ7ODx3
-	3KfU4eMXG9S/DibeXat59cY9sExUuAO6mhTfvRZQHK1XjtmpFujXcC4FUeKTgtmkzgzwqk
-	O7kp1z591a8xmLPOtnqBMMEaFNc8k+M=
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: karelb)
-	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id 2CFAF4423CE;
-	Thu, 28 Dec 2023 11:02:42 +0100 (CET)
-From: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-To: Karel Balej <balejk@matfyz.cz>,
-	Lee Jones <lee@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org
-Subject: [RFC PATCH 5/5] MAINTAINERS: add entries for the 88pm88x regulators driver
-Date: Thu, 28 Dec 2023 10:39:14 +0100
-Message-ID: <20231228100208.2932-6-karelb@gimli.ms.mff.cuni.cz>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
-References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="mAp70h98"
+Received: by mail-ej1-f67.google.com with SMTP id a640c23a62f3a-a26f5e937b5so347286566b.0
+        for <phone-devel@vger.kernel.org>; Fri, 29 Dec 2023 00:51:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1703839908; x=1704444708; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6vxxjHljzHw79UeoeShimfw5lVgwMA49xYVwTmdi+Fs=;
+        b=mAp70h98qaQOIBdvqkBTMryWcMePgk/++AsPLI5tsFf2a2W4HVXz0ugojC4MJuOaxh
+         HkipEWsPNZIDZvM3+p6bG78RbIFfaOGlmSLrSlgnOgIsnnoIjfZQsazyRtst7fZt+PS4
+         wNWycxuIbfHNGq48niTJVdpMtycP0+Joegio2IMueVqxrjxsgllIevCKEYVCvRKF9rNa
+         GD+F3CF9CTB4LCoZ/R8uRSQ+B3Xh15RXukvLgZk7URRw3241vOMjAZb0IPe0kBZJ/Z56
+         fqDN+xJoS2FNeqeUBCO8d6pAB37QhnuvCahN9kCWisAADpj9+mGiHjoDXgLA4/6MGxwv
+         vBRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703839908; x=1704444708;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6vxxjHljzHw79UeoeShimfw5lVgwMA49xYVwTmdi+Fs=;
+        b=Wsew3L9j87shrytNp5g12J1Aua1CZhkfmCOBEMhpTjxYM7XgMOJQNG/7sTE8uZrZ/v
+         8goNgCtGDvpYjU29hfXPzZP6FtJwS7+8aZjoecKtVjQhDXwkcItOQsck8tsasvSJI46Q
+         ygNcunpzvVRjTLIi7d2iPmnzWI0Y9lHuFQNxJmzWvj1wW1F4J5jd6tMQe8NXVUp4h5ov
+         7BV2udJIv6BSQjtgkds++/QOA4QBey4hcBIsRwAgSnWdLrEVZhP6L+N+T2H8JbtrWhV4
+         3OTiL35s2TM4UjaAYXTPmtuL4jYM0Iu9ZaAxKiPi6g3Z2G8xk6Hjyt70GH76vatzeXx9
+         hUpw==
+X-Gm-Message-State: AOJu0Yw06Vr4Iut8hDjS6yNw/SHKk0S6PQn6GmbcGMi+9MkzJTk+0eNI
+	S2jgi9hJK/GDLFKQY39mXps7FBAWYOVz9A==
+X-Google-Smtp-Source: AGHT+IGdxVGc+QRqdXHlhORbQSpn/f89OXkU2cgZzotKb7JtqTFfrXmYf0Qh6gocv58KX+ewgvloUg==
+X-Received: by 2002:a17:907:b9c4:b0:a27:97bb:4ecd with SMTP id xa4-20020a170907b9c400b00a2797bb4ecdmr257290ejc.59.1703839908507;
+        Fri, 29 Dec 2023 00:51:48 -0800 (PST)
+Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id kb6-20020a170907924600b00a27a32e6502sm112774ejb.117.2023.12.29.00.51.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Dec 2023 00:51:47 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Fri, 29 Dec 2023 09:51:37 +0100
+Subject: [PATCH] arm64: dts: qcom: sc7280: Add static properties to
+ cryptobam
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231229-sc7280-cryptobam-fixup-v1-1-bd8f68589b80@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAJiIjmUC/x2Myw5AMBAAf0X2bBOWxuNXxKFqyx7QtAgR/65xn
+ ExmHgjshQO0yQOeTwmyrRHyNAEz63VilDEyUEZFTtRgMBXVGRp/u30b9IJWrsOhHZRtSq1URRZ
+ i7DxH8Y+7/n0//c9Cl2gAAAA=
+To: cros-qcom-dts-watchers@chromium.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Om Prakash Singh <quic_omprsing@quicinc.com>, 
+ Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.12.4
 
-From: Karel Balej <balejk@matfyz.cz>
+When the properties num-channels & qcom,num-ees are not specified, the
+driver tries to read the values from registers, but this read fails and
+resets the device if the interconnect from the qcom,qce node is not
+already active when that happens.
 
-List the related files under the Marvell 88PM88X PMICs entry.
+Add the static properties to not touch any registers during probe, the
+rest of the time when the BAM is used by QCE then the interconnect will
+be active already.
 
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
+Fixes: d488f903a860 ("arm64: dts: qcom: sc7280: add QCrypto nodes")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- MAINTAINERS | 2 ++
+See also:
+https://lore.kernel.org/linux-arm-msm/CY01EKQVWE36.B9X5TDXAREPF@fairphone.com/
+
+Alternatively you could add interconnect property (copied from &crypto)
+and add interconnect support to the BAM driver, then during probe we can
+read the registers without crashing the device.
+---
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index f35ec0f186a9..f9676aec7397 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12743,8 +12743,10 @@ M:	Karel Balej <balejk@matfyz.cz>
- S:	Maintained
- F:	Documentation/devicetree/bindings/input/marvell,88pm88x-onkey.yaml
- F:	Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml
-+F:	Documentation/devicetree/bindings/regulator/marvell,88pm88x-regulator.yaml
- F:	drivers/input/misc/88pm88x-onkey.c
- F:	drivers/mfd/88pm88x.c
-+F:	drivers/regulators/88pm88x-regulator.c
- F:	include/linux/mfd/88pm88x.h
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 83b5b76ba179..ce0d24ee7eed 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -2345,6 +2345,8 @@ cryptobam: dma-controller@1dc4000 {
+ 				 <&apps_smmu 0x4e6 0x0011>;
+ 			qcom,ee = <0>;
+ 			qcom,controlled-remotely;
++			num-channels = <16>;
++			qcom,num-ees = <4>;
+ 		};
  
- MARVELL ARMADA 3700 PHY DRIVERS
+ 		crypto: crypto@1dfa000 {
+
+---
+base-commit: 39676dfe52331dba909c617f213fdb21015c8d10
+change-id: 20231229-sc7280-cryptobam-fixup-fb5f94a5572f
+
+Best regards,
 -- 
-2.43.0
+Luca Weiss <luca.weiss@fairphone.com>
 
