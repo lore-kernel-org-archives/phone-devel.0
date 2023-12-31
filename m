@@ -1,118 +1,82 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97378111AB
-	for <phone-devel@vger.kernel.org>; Fri, 29 Dec 2023 13:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCD45665;
+	Sun, 31 Dec 2023 14:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IOWT/RXd"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a26f3e98619so386727466b.1
-        for <phone-devel@vger.kernel.org>; Fri, 29 Dec 2023 05:02:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1703854954; x=1704459754; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=kBb9J4FLVr3c7zCjdLWSWFc3YEv2PP10mRTZA5K1t3A=;
-        b=IOWT/RXd596ZOC58+KLduDW1y0KMKchwCD8TpaL3iKDhpCh8/cFcmqAF7T6iPH01wG
-         doVbrrLrj1jRRyml43zzlAflOgO9ZnmgTldLtPlNX/BFFOm5a2cFexQivjjXjH5EuaIB
-         LD4omV2xwtMGXs1Lf+l+55o07FINivTuDgNj57wzk1ibZoJu724EqR5QHvjOtaIhR1T0
-         7cvd4NBWOkiYQOqvRoSp0ANZ5E3g6ysOPRq3aXh935lgj3B70+OS1leGhFJZfisrWdgP
-         4Ha7f1CAJmQn2bnjIv8ALzkXSKDD5sNg6rarK8sMClcn5rw5DQmlOxhVAIH3+5EofLfh
-         8/aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703854954; x=1704459754;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kBb9J4FLVr3c7zCjdLWSWFc3YEv2PP10mRTZA5K1t3A=;
-        b=uGHFKymVPqzYdEFelIch3520tzjCTp4ERYYKu8qBesecDl3zk7BNKucmmd+j0ZKRcc
-         OST2AujhVb13/F6Xu0mbaQhuaKZIlET3jpA4ydQeZkG9cNjjPBLFh8eRfEi3H0UeWlmI
-         pqb/VXs1vmcBWiCZvFBCnQPw93AvMhHWQbsuUJnmzJ2KAP63l6mlGm/a3O2f3D016/FR
-         4frlsVQ6T8YlegA7VCIKm31wBSkWL47BN5QsHIMaDKKki8RFuMULP+YeRYso57UEwlJj
-         6qGCHeGR+Gr9Wzu7yLGAPZuWxWBIFsPWqoDBfOmi1naFoVU1z514Cez69Owsh/tNyVHF
-         MMFw==
-X-Gm-Message-State: AOJu0YystJ/q2ng85avSiEzSyX8RQz57HHZZZPaAxlFwxsFX8iPIPKox
-	X0HgkaLNszexChY2t+ySPcvvUIbxWfeuxA==
-X-Google-Smtp-Source: AGHT+IGgYvYa38LRx0qUWUoijJrf/2agW1BUl2edx6ysDrhxh1li5Z0/oDbsurR/p1egoD4s76YeIA==
-X-Received: by 2002:a17:906:188:b0:a23:6fd9:b088 with SMTP id 8-20020a170906018800b00a236fd9b088mr5449826ejb.102.1703854953914;
-        Fri, 29 Dec 2023 05:02:33 -0800 (PST)
-Received: from [192.168.199.125] (178235179036.dynamic-4-waw-k-1-3-0.vectranet.pl. [178.235.179.36])
-        by smtp.gmail.com with ESMTPSA id f21-20020a170906739500b00a26aa045e82sm6800939ejl.21.2023.12.29.05.02.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Dec 2023 05:02:33 -0800 (PST)
-Message-ID: <03fb2c01-053b-42c9-aa8a-7469cbd344d8@linaro.org>
-Date: Fri, 29 Dec 2023 14:02:31 +0100
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="rpeCS7dt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1704034143; bh=0N0OPAmBa1NtYEUHpBUQN1JVNKCFx25fN/ki65Os83I=;
+	h=From:Subject:Date:To:Cc;
+	b=rpeCS7dtFMdvIVZK97zguzX+LjeIgxq3WqGgUFvNhrngM4eS0Uuuo+AjOaUr3xg7Z
+	 mM3t+yUfv7QdDssBzUyFTrs2iaxKOg0tkrlnQK4PIJcKruQzPNrrZTZh1dfqVDof5U
+	 AeWiC1K1q0sjEz6VjhzekF/P97C84BIg4pE9TrSY=
+From: Luca Weiss <luca@z3ntu.xyz>
+Subject: [PATCH 0/3] Convert qcom,hfpll documentation to yaml + related
+ changes
+Date: Sun, 31 Dec 2023 15:48:42 +0100
+Message-Id: <20231231-hfpll-yaml-v1-0-359d44a4e194@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Add missing
- reserved-memory
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20231229-fp5-reserved-mem-v1-1-87bb818f1397@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20231229-fp5-reserved-mem-v1-1-87bb818f1397@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEt/kWUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDINLNSCvIydGtTMzN0bU0MjNLMwCKmpkmKwE1FBSlpmVWgA2Ljq2tBQD
+ dcCxAXAAAAA==
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=833; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=0N0OPAmBa1NtYEUHpBUQN1JVNKCFx25fN/ki65Os83I=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlkX9RN3K/kYMXLHdIC4SvTq8UfhtScKacU2QAB
+ i0PfNIPbweJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZZF/UQAKCRBy2EO4nU3X
+ VpypEAC/64eLJdySn/HHH593Y+IvuWI+iuA0f3BT6BJlXMO3RFDkzy5J3ARrs6760vrZDpRU6bI
+ lJBitKpY+PW308HB/z5Di1R/CZXs2u/OC9OX321u8FrnhjwCFx0j0mUr6Dd7gEAiUEW06pyvOEc
+ RTc6ddUxseb/xHgSBfJokoROPMHCudd45uZMWo9+kysgg+TKET1aRpTxdDtA9ZI6g+WIA6ToeB8
+ ow3z814bWYYEb/zSRFnd4HDwn5lAu3Sf6bNYKOGbO5ampOegDxXK3e4TXkiOuBWArVykOd5f7xD
+ KxvX64vA9c4soYyzZrTVGcWRcHWsjwi5YRClRUeVqxlirModMTSPoozewW/DDhHc/qmz9haWtmZ
+ 3alBwxjw2TvqVgpMnK/uTpy+t8C3ASfLubzeT70ymLcS8gUZXfZzBiJAhk/ZeSqN69UPqcP/jnA
+ tqOb4c7WfyoJ3PBABY294XFkaRlP3WlQ894ukbQnQxsvuWXGcUI0g0f/ca37yPfirwAWUfJOQKX
+ KYCsuG497Krt+vKFHkxMRTzJ6mn6e0kbNDSx92+MmCEFbJRXHoAhc8D4YPZPscSlDOXPcxzLZ8A
+ CEYFg18uIM4wNUMMjQHGwWWJDYVQcgBvGxCxAK0il2LHZP3/4JS/BGDd2DGLxQt4VGEGTuVQMUv
+ usNqzBGeGlIun0g==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On 29.12.2023 13:53, Luca Weiss wrote:
-> It seems we also need to reserve a region of 81 MiB called "removed_mem"
-> otherwise we can easily hit the following error with higher RAM usage:
-> 
->   [ 1467.809274] Internal error: synchronous external abort: 0000000096000010 [#2] SMP
-> 
-> Fixes: eee9602ad649 ("arm64: dts: qcom: qcm6490: Add device-tree for Fairphone 5")
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Finally touch the hfpll doc and convert it to yaml, and do some related
+changes along the way.
 
-Konrad
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Luca Weiss (3):
+      dt-bindings: clock: qcom,hfpll: Convert to YAML
+      clk: qcom: hfpll: Add QCS404-specific compatible
+      arm64: dts: qcom: qcs404: Use specific compatible for hfpll
+
+ .../devicetree/bindings/clock/qcom,hfpll.txt       | 63 -----------------
+ .../devicetree/bindings/clock/qcom,hfpll.yaml      | 82 ++++++++++++++++++++++
+ arch/arm64/boot/dts/qcom/qcs404.dtsi               |  2 +-
+ drivers/clk/qcom/hfpll.c                           |  6 +-
+ 4 files changed, 87 insertions(+), 66 deletions(-)
+---
+base-commit: 39676dfe52331dba909c617f213fdb21015c8d10
+change-id: 20231231-hfpll-yaml-9266f012365c
+
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
+
