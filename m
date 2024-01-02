@@ -1,257 +1,95 @@
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C54DF9C3
-	for <phone-devel@vger.kernel.org>; Tue,  2 Jan 2024 12:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7978D15484;
+	Tue,  2 Jan 2024 13:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iRzhq4E5"
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dbdbe917d39so7513708276.2
-        for <phone-devel@vger.kernel.org>; Tue, 02 Jan 2024 04:05:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704197120; x=1704801920; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=r7dyv4CcIU9mcvBuepSVkLmk0uNvBhGYSbHRwghn+UA=;
-        b=iRzhq4E5qXsvFK2f52/mzrj8tkI/EnoNYTeVhNIs2CEZObhBI5z0Ep0NLleuFSHh30
-         M2ILvdX3fnKw79aZm0v9owhF/a7Fr1qOhdTPGqfCuoYP6NfEZcTOWxxQew4pZno5+2U+
-         cnNk2PdYqDAAEIURo9v00MdVJVuli8nHntMF9qT0nrhHEXvB0cXguAbacxudBnC7cyR7
-         gv+/I5+6qtFS4JiMF7YRyqpiI/C9/o3MLCikM+uvEjaKXGs3SHH5kM4ApUf+OG2JnOND
-         iSR2HIeEw+dXG6NFXCE8MgRbV3VH50O/JDX4EYQOlBAtZBXvwk1gQjKkbNI32dpPsTOa
-         JLZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704197120; x=1704801920;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r7dyv4CcIU9mcvBuepSVkLmk0uNvBhGYSbHRwghn+UA=;
-        b=IdPPq0HHE90RrpjXWDXsYACn4DSmJ4u6l9SAUXkxuyFR12dUcdyP50CDf17Zi+rAXk
-         fKIxWG3qUF689O6WHEFd4kLXQrewQE0COAko8EfMUDXLWczWUDrZQ0a4t6CftfOeHSgl
-         7uvBE+GcSl/n2u2UkmOOQlm4jkoC1wH+29CLRq1JDnOHRhSjqy4fJOhrS4eMxfjAnF6t
-         NhZ6dR60xaIjAL3Oh6BAGf2znZaU6gUn6IfcndbdxBaEFkh4lIpL8qCyQKpFOhu7yw7t
-         2ZfXmaJxtZbuSYivSsaPNlHdXj+v9UKEhVD/eRRhKf2vL+uDc1OdSNQ7aJV6IJtVGFYm
-         t5qg==
-X-Gm-Message-State: AOJu0YykZ7XtT9CQfObzPUIaBOS6Gz5/SFswubDLPgFU3Jq6yI2VYxRW
-	g02qlQC1ZHNwUMBD+8pvOVg+zXqCaf59tZyQPsRi51ffWWrSDw==
-X-Google-Smtp-Source: AGHT+IEeXcgSMZejIaCJRLPq2x5vR0P7iAZihrqFzc//NjqYOvq4btaXpo77KUSX72yNiNFkRjmDTr0E4xzqSgpOy28=
-X-Received: by 2002:a25:b310:0:b0:dbd:986e:2e9f with SMTP id
- l16-20020a25b310000000b00dbd986e2e9fmr8149442ybj.91.1704197120329; Tue, 02
- Jan 2024 04:05:20 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbYiPl8f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C823C433C7;
+	Tue,  2 Jan 2024 13:36:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704202602;
+	bh=FSztAPSp18hRIvcIXlZbHuCTeEbkrO6MtZYrXTy2w7A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TbYiPl8ftIQ6Nco6sWfs9j9B+kbUTfCEUknrXaIVoBI4LYsYcwF3sjQF6z7tanGfZ
+	 0M2dye7EDRX2MGH7ztZw6/Bi2teOKKE+S94PoHJ6NdLdsPHdSaTwIOF/uezyLTxJ6G
+	 uMYEeQDFicu6t4Njyv03e6qfIORVYUFrS/3v5Phg=
+Date: Tue, 2 Jan 2024 14:36:39 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	cros-qcom-dts-watchers@chromium.org,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH 0/3] Fairphone 5 PMIC-GLINK support (USB-C, charger, fuel
+ gauge)
+Message-ID: <2024010227-darn-litmus-4ddf@gregkh>
+References: <20231220-fp5-pmic-glink-v1-0-2a1f8e3c661c@fairphone.com>
+ <8d042095-1e09-45cc-9762-909fe8d663a9@linaro.org>
+ <CXTU5MLN0YDS.29PPV8KZF8G9R@fairphone.com>
+ <CAA8EJpoD3x=kVLu4x2yLtAqCp=wmGSU4ssq5Oj_SD5VQ=GyAYQ@mail.gmail.com>
+ <d2007240-2779-4881-8e9d-1c4f5daa55e5@linaro.org>
+ <CXU22OZNAH2H.24YIQWBA4KE3C@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231231-hfpll-yaml-v1-0-359d44a4e194@z3ntu.xyz> <20231231-hfpll-yaml-v1-1-359d44a4e194@z3ntu.xyz>
-In-Reply-To: <20231231-hfpll-yaml-v1-1-359d44a4e194@z3ntu.xyz>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Tue, 2 Jan 2024 14:05:09 +0200
-Message-ID: <CAA8EJpqF=3n8vUrEzrGGLc4JtQ-s4EcOOr_NKC0rknwE0tuShw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] dt-bindings: clock: qcom,hfpll: Convert to YAML
-To: Luca Weiss <luca@z3ntu.xyz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CXU22OZNAH2H.24YIQWBA4KE3C@fairphone.com>
 
-On Sun, 31 Dec 2023 at 16:49, Luca Weiss <luca@z3ntu.xyz> wrote:
->
-> Convert the .txt documentation to .yaml.
->
-> Take the liberty to change the compatibles for ipq8064, apq8064, msm8974
-> and msm8960 to follow the updated naming schema. These compatibles are
-> not used upstream yet.
->
-> Also add a compatible for QCS404 since that SoC upstream already uses
-> qcom,hfpll compatible but without an SoC-specific string.
->
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  .../devicetree/bindings/clock/qcom,hfpll.txt       | 63 -----------------
->  .../devicetree/bindings/clock/qcom,hfpll.yaml      | 82 ++++++++++++++++++++++
->  2 files changed, 82 insertions(+), 63 deletions(-)
->
-> diff --git a/Documentation/devicetree/bindings/clock/qcom,hfpll.txt b/Documentation/devicetree/bindings/clock/qcom,hfpll.txt
-> deleted file mode 100644
-> index 5769cbbe76be..000000000000
-> --- a/Documentation/devicetree/bindings/clock/qcom,hfpll.txt
-> +++ /dev/null
-> @@ -1,63 +0,0 @@
-> -High-Frequency PLL (HFPLL)
-> -
-> -PROPERTIES
-> -
-> -- compatible:
-> -       Usage: required
-> -       Value type: <string>:
-> -               shall contain only one of the following. The generic
-> -               compatible "qcom,hfpll" should be also included.
-> -
-> -                        "qcom,hfpll-ipq8064", "qcom,hfpll"
-> -                        "qcom,hfpll-apq8064", "qcom,hfpll"
-> -                        "qcom,hfpll-msm8974", "qcom,hfpll"
-> -                        "qcom,hfpll-msm8960", "qcom,hfpll"
-> -                        "qcom,msm8976-hfpll-a53", "qcom,hfpll"
-> -                        "qcom,msm8976-hfpll-a72", "qcom,hfpll"
-> -                        "qcom,msm8976-hfpll-cci", "qcom,hfpll"
-> -
-> -- reg:
-> -       Usage: required
-> -       Value type: <prop-encoded-array>
-> -       Definition: address and size of HPLL registers. An optional second
-> -                   element specifies the address and size of the alias
-> -                   register region.
-> -
-> -- clocks:
-> -       Usage: required
-> -       Value type: <prop-encoded-array>
-> -       Definition: reference to the xo clock.
-> -
-> -- clock-names:
-> -       Usage: required
-> -       Value type: <stringlist>
-> -       Definition: must be "xo".
-> -
-> -- clock-output-names:
-> -       Usage: required
-> -       Value type: <string>
-> -       Definition: Name of the PLL. Typically hfpllX where X is a CPU number
-> -                   starting at 0. Otherwise hfpll_Y where Y is more specific
-> -                   such as "l2".
-> -
-> -Example:
-> -
-> -1) An HFPLL for the L2 cache.
-> -
-> -       clock-controller@f9016000 {
-> -               compatible = "qcom,hfpll-ipq8064", "qcom,hfpll";
-> -               reg = <0xf9016000 0x30>;
-> -               clocks = <&xo_board>;
-> -               clock-names = "xo";
-> -               clock-output-names = "hfpll_l2";
-> -       };
-> -
-> -2) An HFPLL for CPU0. This HFPLL has the alias register region.
-> -
-> -       clock-controller@f908a000 {
-> -               compatible = "qcom,hfpll-ipq8064", "qcom,hfpll";
-> -               reg = <0xf908a000 0x30>, <0xf900a000 0x30>;
-> -               clocks = <&xo_board>;
-> -               clock-names = "xo";
-> -               clock-output-names = "hfpll0";
-> -       };
-> diff --git a/Documentation/devicetree/bindings/clock/qcom,hfpll.yaml b/Documentation/devicetree/bindings/clock/qcom,hfpll.yaml
-> new file mode 100644
-> index 000000000000..2cb4098012bc
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/clock/qcom,hfpll.yaml
-> @@ -0,0 +1,82 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/clock/qcom,hfpll.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm High-Frequency PLL
-> +
-> +maintainers:
-> +  - Bjorn Andersson <andersson@kernel.org>
-> +
-> +description:
-> +  The HFPLL is used as CPU PLL on various Qualcomm SoCs.
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - qcom,apq8064-hfpll
-> +          - qcom,ipq8064-hfpll
-> +          - qcom,msm8960-hfpll
+On Thu, Dec 21, 2023 at 02:45:26PM +0100, Luca Weiss wrote:
+> On Thu Dec 21, 2023 at 1:53 PM CET, Konrad Dybcio wrote:
+> > On 21.12.2023 11:34, Dmitry Baryshkov wrote:
+> > > On Thu, 21 Dec 2023 at 09:33, Luca Weiss <luca.weiss@fairphone.com> wrote:
+> > >>
+> > >> On Wed Dec 20, 2023 at 1:32 PM CET, Konrad Dybcio wrote:
+> > >>> On 20.12.2023 11:02, Luca Weiss wrote:
+> > >>>> This series adds all the necessary bits to enable USB-C role switching,
+> > >>>> charger and fuel gauge (all via pmic-glink) on Fairphone 5.
+> > >>>>
+> > >>>> One thing that could be made different is the pmic-glink compatible.
+> > >>>> I've chosen to use qcm6490 compatible for it and not sc7280 since
+> > >>>> there's plenty of firmware variety on sc7280-based platforms and they
+> > >>>> might require different quirks in the future, so limit this PDOS quirk
+> > >>>> to just qcm6490 for now.
+> > >>>>
+> > >>>> If someone thinks it should be qcom,sc7280-pmic-glink, please let me
+> > >>>> know :)
+> > >>> IMO it's best to continue using the "base soc" (which just so happened
+> > >>> to fall onto sc7280 this time around) for all compatibles, unless the
+> > >>> derivatives actually had changes
+> > >>
+> > >> Hi Konrad,
+> > >>
+> > >> I think at some point I asked Dmitry what he thought and he mentioned
+> > >> qcm6490. Even found the message again:
+> > >>
+> > >>> well, since it is a firmware thing, you might want to emphasise that.
+> > >>> So from my POV qcm6490 makes more sense
+> > >>
+> > >> But yeah since it's likely that sc7280 firmware behaves the same as
+> > >> qcm6490 firmware it's probably okay to use sc7280 compatible, worst case
+> > >> we change it later :) I'll send a v2 with those changes.
+> > > 
+> > > Worst case we end up with sc7280 which has yet another slightly
+> > > different UCSI / PMIC GLINK implementation, but the compatible string
+> > > is already taken.
+> > > I still suppose that this should be a qcm6490-related string.
+> > Right, let's keep qcm then
+> 
+> Ack from my side also. Thanks for the feedback!
 
-I think we should drop these entries. On msm8960 / apq8064 / ipq8064
-the HFPLLs are a part of GCC, so there is no need for a separate
-compat entry.
+This doesn't apply to my tree, where should it be going through?
 
-> +          - qcom,msm8974-hfpll
-
-This one is good, the HFPLL is separate, next to the acc / saw
-
-> +          - qcom,msm8976-hfpll-a53
-> +          - qcom,msm8976-hfpll-a72
-> +          - qcom,msm8976-hfpll-cci
-
-Ok.
-
-> +          - qcom,qcs404-hfpll
-> +      - const: qcom,hfpll
-> +
-> +  reg:
-> +    items:
-> +      - description: Base address and size of the register region
-> +      - description: Optional base address and size of the alias register region
-> +    minItems: 1
-> +
-> +  '#clock-cells':
-> +    const: 0
-> +
-> +  clocks:
-> +    items:
-> +      - description: board XO clock
-> +
-> +  clock-names:
-> +    items:
-> +      - const: xo
-> +
-> +  clock-output-names:
-> +    description:
-> +      Name of the PLL. Typically hfpllX where X is a CPU number starting at 0.
-> +      Otherwise hfpll_Y where Y is more specific such as "l2".
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - '#clock-cells'
-> +  - clocks
-> +  - clock-names
-> +  - clock-output-names
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  # Example 1 - HFPLL for L2 cache
-> +  - |
-> +    clock-controller@f9016000 {
-> +        compatible = "qcom,ipq8064-hfpll", "qcom,hfpll";
-> +        reg = <0xf9016000 0x30>;
-> +        clocks = <&xo_board>;
-> +        clock-names = "xo";
-> +        clock-output-names = "hfpll_l2";
-> +        #clock-cells = <0>;
-> +    };
-> +  # Example 2 - HFPLL for CPU0
-> +  - |
-> +    clock-controller@f908a000 {
-> +        compatible = "qcom,ipq8064-hfpll", "qcom,hfpll";
-> +        reg = <0xf908a000 0x30>, <0xf900a000 0x30>;
-> +        clocks = <&xo_board>;
-> +        clock-names = "xo";
-> +        clock-output-names = "hfpll0";
-> +        #clock-cells = <0>;
-> +    };
->
-> --
-> 2.43.0
->
->
-
-
--- 
-With best wishes
-Dmitry
+thanks,
+greg k-h
