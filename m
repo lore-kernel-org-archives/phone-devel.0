@@ -1,49 +1,50 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7481A208B7
-	for <phone-devel@vger.kernel.org>; Thu,  4 Jan 2024 09:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F140320320
+	for <phone-devel@vger.kernel.org>; Thu,  4 Jan 2024 09:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DEZWq1mA"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-50e7abe4be4so357825e87.2
-        for <phone-devel@vger.kernel.org>; Thu, 04 Jan 2024 01:25:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zUv8ytWS"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-50e7e55c0f6so313774e87.0
+        for <phone-devel@vger.kernel.org>; Thu, 04 Jan 2024 01:26:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704360311; x=1704965111; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=f5UeSk+rYU6U1fSddtaMrbcYWqgT9+CuQL8j56T6xbs=;
-        b=DEZWq1mAWQTUG/j0wxNDzgmhiovZ0ujUiXUAP1ExYZkr+xzIjiNAGGJMOl0ORhpEUk
-         0Pn952519NBn3iG9yT3nv640wmjcg1N96JdRkF5rDsHjoHlNVpbTRp7SxoyerVpuwTVU
-         jC+JZ8AZSrjrvGrDk+Onu8qE5UEUMkfAAT3KEVmVAaeFFYkxgeN5hV/bkFdH+QD+VOBo
-         dV/FDEOOyIL3buNlxEFLe+Vt3jsZ7dLIOHO2VgBCSlqUy8B+8rYqFY+x7qw1Gmi7q9v8
-         njHuTmZ99fSQcBRscg1tS3/Na+bo/XetEQffkwDB7QLj72Iv/MtPHCvnSiWWO5yaLOpL
-         zXGg==
+        d=linaro.org; s=google; t=1704360372; x=1704965172; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=K7timCPrPqKl3rRrOBEL9iWDGzrgWG9WSZP/IFSGCCE=;
+        b=zUv8ytWSNUQANwPPdBYyZV0HDz0Dw5q5qt2t2fKutNkAyV7uJW5646x1h17EbiXani
+         sJxrd21ffu4Jskh0zYX8QgtRUh38uFNbvNadObZxDwkizGgvnpXUkShv/GHG03SVh+fg
+         xceoPTmx8A4jchySEPKXoz6qHhBhuQl4GK4RZb03WAhDxX1/2tGLWJy7nN3zG5MGbQWD
+         8DM0v4ZVYqOQVWeWP8Q0Lz+Jwt0uDWINiYBO9TvjWETtg6W96RPRygvG9AqojCPB24Wk
+         eC8NYnMgKR+uGmu6GlWsd0zj0Tm/ugmvG7W7ipd1vGVS6Wjg6u1p0MbQ6dqtd0qTRr8S
+         pb7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704360311; x=1704965111;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f5UeSk+rYU6U1fSddtaMrbcYWqgT9+CuQL8j56T6xbs=;
-        b=tcjCdvBwEIpX1BjnMYbMWbckiQYq72qzugtv74QRvhAgB8cHMiQgvOoW29q9l5ROhg
-         K83xbaOeXHmLYjOUnjBh2IztG5FiOcN5oaghDFrqafK8LNHvLcZ/+qQUacVJn1slEwiu
-         EhbjoZg3TlknN4+LtXpaDvhEfi+BIugEj0mhcC/9snApnxfwpVJPk47YCVFc7yXl9/Mj
-         mydmbUSvB40DXQTNWNpTj8tnxmFUewsRmd9a7coYkodDcr1jQAC0I3EfhyTcsvCOWNSk
-         rPqTlifk4C7Ataxpq70c0wkDvE5bRpkYN7iZyX9bvoNE451AjbK8trYSe0+Mp33YOEba
-         XOVw==
-X-Gm-Message-State: AOJu0YxcF28WPOba073eO/xr8sgLQI94htGDETbtJmknIYQBEC7kVDd5
-	fFP0ooAh/KTV9Qzz6shdCuD7+Fc763MKng==
-X-Google-Smtp-Source: AGHT+IGOmKUJHCtEr2ZzdVpiHkMD9NCcF3RO9C/xpRphhwj+uGI82OBiGM8cnTdVitN6ax0sg7G3Xg==
-X-Received: by 2002:a05:6512:2026:b0:50e:a6f8:aace with SMTP id s6-20020a056512202600b0050ea6f8aacemr173198lfs.35.1704360311316;
-        Thu, 04 Jan 2024 01:25:11 -0800 (PST)
+        d=1e100.net; s=20230601; t=1704360372; x=1704965172;
+        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+         :from:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=K7timCPrPqKl3rRrOBEL9iWDGzrgWG9WSZP/IFSGCCE=;
+        b=PTZlUq+tBIJj+AOp8Ns+uV7GA09e1qmhnpPGBEwBp2o9HvNJD66/NinfcM1D69gFaV
+         6Omel5/nJWjga6gYGqQPRqmCOz+n0+HUcSgM9AqEeLyNYa5kILJx350AR4ae+/pPVYcG
+         0dI9ySKPvQ4Vc6H6JpAKBD7GWafei7L+qSb6D9Ckc5KccZHn6QpwnL1fiy3zRgJoSYXa
+         tP2MOIMJxOdsuKrnxRN2P7b7PSjH6Sz+F+mJpxxBhttkzus5n4h7MBcSO0fQQnvyyxSC
+         fE3xnLaVFXeiQJ5WLqhKJ0QhKMTBfjUyo5ymYRKnQSwNIjKPIHHtvdHRFNBsYNeK9DGW
+         ZSoA==
+X-Gm-Message-State: AOJu0Yy9p/yvSHPYA7n8wclqe3bW3EgiRgSSd+3YcAfeUYlLMbHxirCt
+	y8oSu2XtkrLMVplw+ph32tp5fQFprGprTIrxt9RZ4cXtl4I=
+X-Google-Smtp-Source: AGHT+IEkueM11S/RN3xrkNJlLdwzrkSBIPCLZB0bySc3Jk4Tw7wtu2RNJxho0r2AsS/zZrYUvOA8iw==
+X-Received: by 2002:ac2:58d3:0:b0:50b:feaa:b94 with SMTP id u19-20020ac258d3000000b0050bfeaa0b94mr96085lfo.253.1704360372062;
+        Thu, 04 Jan 2024 01:26:12 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.218.27])
-        by smtp.gmail.com with ESMTPSA id i3-20020a1709061cc300b00a26a9593a68sm12981693ejh.76.2024.01.04.01.25.09
+        by smtp.gmail.com with ESMTPSA id i3-20020a1709061cc300b00a26a9593a68sm12981693ejh.76.2024.01.04.01.26.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jan 2024 01:25:10 -0800 (PST)
-Message-ID: <9cecc4bd-34ec-4b34-b0c8-de02473f038a@linaro.org>
-Date: Thu, 4 Jan 2024 10:25:08 +0100
+        Thu, 04 Jan 2024 01:26:11 -0800 (PST)
+Message-ID: <596216f2-d6c7-4432-938f-e73a969ec2da@linaro.org>
+Date: Thu, 4 Jan 2024 10:26:10 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -54,6 +55,7 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH 3/5] dt-bindings: regulator: add documentation entry
  for 88pm88x-regulator
 Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>, Karel Balej
  <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>,
  Rob Herring <robh+dt@kernel.org>,
@@ -65,7 +67,7 @@ Cc: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
  ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
 References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
  <20231228100208.2932-4-karelb@gimli.ms.mff.cuni.cz>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+ <9cecc4bd-34ec-4b34-b0c8-de02473f038a@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
  cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
@@ -110,107 +112,28 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231228100208.2932-4-karelb@gimli.ms.mff.cuni.cz>
+In-Reply-To: <9cecc4bd-34ec-4b34-b0c8-de02473f038a@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/12/2023 10:39, Karel Balej wrote:
-> From: Karel Balej <balejk@matfyz.cz>
+On 04/01/2024 10:25, Krzysztof Kozlowski wrote:
+> On 28/12/2023 10:39, Karel Balej wrote:
+>> From: Karel Balej <balejk@matfyz.cz>
+>>
 > 
-
-A nit, subject: drop second/last, redundant "documentation entry". The
-"dt-bindings" prefix is already stating that these are bindings.
-
-> The Marvell 88PM88X PMICs provide regulators among other things.
-> Document how to use them.
-
-
-You did not document them in the bindings. You just added example to
-make it complete. Where is the binding change?
-
-What's more, I have doubts that you tested it.
-
-
+> A nit, subject: drop second/last, redundant "documentation entry". The
+> "dt-bindings" prefix is already stating that these are bindings.
 > 
-> Signed-off-by: Karel Balej <balejk@matfyz.cz>
-> ---
->  .../bindings/mfd/marvell,88pm88x.yaml         | 17 +++++++++++
->  .../regulator/marvell,88pm88x-regulator.yaml  | 28 +++++++++++++++++++
->  2 files changed, 45 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/regulator/marvell,88pm88x-regulator.yaml
+>> The Marvell 88PM88X PMICs provide regulators among other things.
+>> Document how to use them.
 > 
-> diff --git a/Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml b/Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml
-> index 115b41c9f22c..e6944369fc5c 100644
-> --- a/Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml
-> +++ b/Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml
-> @@ -54,6 +54,23 @@ examples:
->          onkey {
->            compatible = "marvell,88pm88x-onkey";
->          };
-> +
-> +        regulators {
-> +          ldo2: ldo2 {
-> +            regulator-min-microvolt = <3100000>;
-> +            regulator-max-microvolt = <3300000>;
-> +            };
-> +
-> +          ldo15: ldo15 {
-> +            regulator-min-microvolt = <3300000>;
-> +            regulator-max-microvolt = <3300000>;
-> +            };
-> +
-> +          buck2: buck2 {
-> +            regulator-min-microvolt = <1800000>;
-> +            regulator-max-microvolt = <1800000>;
-> +            };
-> +        };
->        };
->      };
->  ...
-> diff --git a/Documentation/devicetree/bindings/regulator/marvell,88pm88x-regulator.yaml b/Documentation/devicetree/bindings/regulator/marvell,88pm88x-regulator.yaml
-> new file mode 100644
-> index 000000000000..c6ac17b113e7
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/regulator/marvell,88pm88x-regulator.yaml
-> @@ -0,0 +1,28 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/regulator/marvell,88pm88x-regulator.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Marvell 88PM88X PMICs regulators
-> +
-> +maintainers:
-> +  - Karel Balej <balejk@matfyz.cz>
-> +
-> +description: |
-> +  This module is part of the Marvell 88PM88X MFD device. For more details
-> +  see Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml.
-> +
-> +  The regulator controller is represented as a sub-node of the PMIC node
-> +  in the device tree.
-> +
-> +  The valid names for 88PM886 regulator nodes are ldo[1-9], ldo1[0-6], buck[1-5].
+> 
+> You did not document them in the bindings. You just added example to
+> make it complete. Where is the binding change?
+> 
+> What's more, I have doubts that you tested it.
 
-Don't repeat constraints in free form text.
-
-> +
-> +patternProperties:
-> +  "^(ldo|buck)[0-9]+$":
-
-You need to fix the pattern to be narrow. buck0 and buck6 are not correct.
-
-
-> +    type: object
-> +    description:
-> +      Properties for single regulator.
-> +    $ref: regulator.yaml#
-
-Not many benefits of this being in its own schema.
-
-> +
-> +additionalProperties: false
+I found your other patchset - now I am 100% sure you did not test it.
 
 Best regards,
 Krzysztof
