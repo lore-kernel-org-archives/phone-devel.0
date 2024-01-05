@@ -1,83 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E1D2E3FF;
-	Fri,  5 Jan 2024 15:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35622E832
+	for <phone-devel@vger.kernel.org>; Fri,  5 Jan 2024 16:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TV5ZLP4G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D59C433C8;
-	Fri,  5 Jan 2024 15:18:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704467930;
-	bh=J7uVfB9FRbKLIHfheAJC7XP3EW7xV+y/495rmPm4z+E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TV5ZLP4GVMasYAqO06Km5GN46e4tOMkjbfl6MsSkSFd58HtYzrmrGzwnIPrdS4bDJ
-	 hntw+SjIhGjTwFgxrLahdP1Hha3G4aFKjGy5gKlrEzUihLQhvKudPHcH4tGLiA4qR8
-	 Yvi2y7qSCMGD7+gs7MjJc6683oTWwMrF5NTo/flJ/xI39sfGW1//Noa6gCq6NToP2/
-	 ko44QZOTUK+1PSgrwrVvNELkWetjCvssQroRp0iAvLftZz+CusWTkd78KYZUaJo0pX
-	 Aw5ZAu6OZs/94Rt8w1lmrT6pOeb49iMWfplhGf2OBjmPKpWzmLKeyDk19S/mHN1aQB
-	 QFxNcCPtgE80A==
-Date: Fri, 5 Jan 2024 15:18:44 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-Cc: Karel Balej <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [RFC PATCH 4/5] regulator: add 88pm88x regulators driver
-Message-ID: <008ee9d6-6259-43df-9af3-2dc9877cfe94@sirena.org.uk>
-References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
- <20231228100208.2932-5-karelb@gimli.ms.mff.cuni.cz>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="0Qd0YOWt"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a293f2280c7so79734066b.1
+        for <phone-devel@vger.kernel.org>; Fri, 05 Jan 2024 08:15:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1704471346; x=1705076146; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9XSaiyQmm79NWYYZKXvu1jjvp4q3CpLJczn8LJj/R3M=;
+        b=0Qd0YOWtUCwI3IwfBQhRUUV3z50CnbU4jorPRmyQ/t878DbzAz7r5qzuDiYIXfbob/
+         NVpdLMdVSJ1qRdKbknZERqagYDp3cKWCjwnbLaZmDFdvvWQZHE4WkGAkUOGrXz3VWKD6
+         gc3UpO70038BHxzMKPo93CZ3/CRuxfkgxEuuoQUVcRNiTK3uvCvUfSsTCpXQWI+G13xT
+         ZXsvc0KoiRFKba5ZJolHz4nYmYQ8oPuWL3ZTdcf94dBIZivqTJ6geGX3Eir8SwKS0T/i
+         Zdp8BnJP/ymBB8EQk5ozLLHQ/zcpMLQyn8y6SicvYR3hlM7pG3WrHUNpvmtL+XRdUSze
+         Oxcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704471346; x=1705076146;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9XSaiyQmm79NWYYZKXvu1jjvp4q3CpLJczn8LJj/R3M=;
+        b=Hw7v4EHWaNPOVmGZ1u21fQ5K8wtAYzyA7+PxHN9yLxgwjYfg5ARx6KvLIbSvEnLxXD
+         ml4uEC1GfN3k64TUTK3Y6R2soNYkDDdrbbRs1XR5Qps751o29aQ2XNsiGcOyzSwO/Uoy
+         OZd7Kbn4LdaYcRaAOYXywPp389bB5/O9KwEG4fgsAwIysjmKHz65UuMY06aoZ/sOy7Hi
+         eQnZcKpsKrRYqYYA3sQkcTmnef7KPLrI91ujhSR3B5l0peC8T1cF5opez0cdO/Aphh7i
+         WJXzOLekK352Vf1/7W11zPr4NoNaz5c0W14Za3jNXnWHDErJlENxyw2QmWBvLGjb4EHe
+         2AyA==
+X-Gm-Message-State: AOJu0YyDeStBjqFcEo5AoBALai8iK0rEGwHDqOfvt/V9YCr7P/JTEJmf
+	CiUbzuVSl34Q2P74XNf4uj9PiRkg9q3kDg==
+X-Google-Smtp-Source: AGHT+IFM6ysmp2Xr9DCU3Vuei4JMO0dEao78HnyRDX+jACWcpbdpi/2nDdNYBR7DbrmN5GkY4BhKSw==
+X-Received: by 2002:a17:906:7483:b0:a28:fc8a:5da5 with SMTP id e3-20020a170906748300b00a28fc8a5da5mr461903ejl.121.1704471346155;
+        Fri, 05 Jan 2024 08:15:46 -0800 (PST)
+Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id ft33-20020a170907802100b00a26a5632d8fsm1031726ejc.13.2024.01.05.08.15.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jan 2024 08:15:45 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/2] Add Crypto Engine support for SM6350
+Date: Fri, 05 Jan 2024 17:15:42 +0100
+Message-Id: <20240105-sm6350-qce-v1-0-416e5c7319ac@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Z19JQyAf+moSHib9"
-Content-Disposition: inline
-In-Reply-To: <20231228100208.2932-5-karelb@gimli.ms.mff.cuni.cz>
-X-Cookie: Your step will soil many countries.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAC4rmGUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDQwNT3eJcM2NTA93C5FTdZDMjY+PEpKQ0U5M0JaCGgqLUtMwKsGHRsbW
+ 1AP+rrvZcAAAA
+To: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Thara Gopinath <thara.gopinath@gmail.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ "David S. Miller" <davem@davemloft.net>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Bhupesh Sharma <bhupesh.sharma@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-crypto@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.12.4
 
+Add the compatible and nodes for the QCE found on SM6350 SoC.
 
---Z19JQyAf+moSHib9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Not completely sure how to fully test it but "kcapi-speed --all" shows
+no issues. Let me know if I can/should test this more.
 
-On Thu, Dec 28, 2023 at 10:39:13AM +0100, Karel Balej wrote:
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Luca Weiss (2):
+      dt-bindings: qcom-qce: Add compatible for SM6350
+      arm64: dts: qcom: sm6350: Add Crypto Engine
 
-> @@ -68,6 +68,21 @@ static struct mfd_cell pm886_devs[] = {
->  		.num_resources = ARRAY_SIZE(pm88x_onkey_resources),
->  		.resources = pm88x_onkey_resources,
->  	},
-> +	{
-> +		.name = "88pm88x-regulator",
-> +		.id = PM88X_REGULATOR_ID_LDO2,
-> +		.of_compatible = "marvell,88pm88x-regulator",
-> +	},
+ .../devicetree/bindings/crypto/qcom-qce.yaml       |  1 +
+ arch/arm64/boot/dts/qcom/sm6350.dtsi               | 31 ++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
+---
+base-commit: 610a9b8f49fbcf1100716370d3b5f6f884a2835a
+change-id: 20240105-sm6350-qce-c6233abbf54f
 
-Why are we adding an of_compatible here?  It's redundant, the MFD split
-is a feature of Linux internals not of the hardware, and the existing
-88pm8xx MFD doesn't use them.
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
---Z19JQyAf+moSHib9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWYHdMACgkQJNaLcl1U
-h9CmhQf/XJh7ujIuJ4+E3GvWjXwe7MGXOtALsEaqIGC4T2BCAber0xlL7cukDmYc
-n7d+xRKRyBKt1w7xZTl9ZJ3q8Y9B2tlf9Gh+GcvcTk9q8xv+7r65NfMzbCJJ8l+l
-jr9XfSVl3MXYCJ8Fp4/cuZdz3uifzyUHKSc2zVsETYihrnzPeMPuVBE3RBI4PgZ2
-I4fqKaDwEDWmAUcvzIhZuo6+3Hl92xFNlaH7U45m5Y2KloMxzkzUp5lKx7T1Ztgn
-xG1VOKREcO8UqksDJz5uig+sgR1CbjxDmf1f/2uTbdWWIz/i6+9FKZ5FbcHNaoms
-jSL2gBg5Ou/JXADNybSPGKueWHLZ8g==
-=O4ep
------END PGP SIGNATURE-----
-
---Z19JQyAf+moSHib9--
