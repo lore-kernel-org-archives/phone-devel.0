@@ -1,50 +1,50 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F542E821
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCDD2F50A
 	for <phone-devel@vger.kernel.org>; Fri,  5 Jan 2024 16:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="lcavnpIs"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-40e3ab65709so4613825e9.3
-        for <phone-devel@vger.kernel.org>; Fri, 05 Jan 2024 08:15:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="U0SY9mNR"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a28d25253d2so187199166b.0
+        for <phone-devel@vger.kernel.org>; Fri, 05 Jan 2024 08:15:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1704471347; x=1705076147; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1704471348; x=1705076148; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Tvm4bk4zvXvYax8LPthnn9a0G5r7SnfVCgZt22fDHnM=;
-        b=lcavnpIsqY8kgi4yqX1J9otwANqC9EOrDITi2LH6ULm9P0H2LGuytzeu/IlKplvwcu
-         Y8+MkBnKwDgd6lLhYqWWPSTlBxOdDkgP7V4crljK8c/93EcEETqBx3pYXhTsnHXiy1EJ
-         y4AOjnUQF3BhR3AfF9m4W3WJFTUbtc/gPvpxp+4rKl2hc4xNxRyq0HmUtNbIPmIIop7O
-         09Lj8FSzMzvgvP9nc5VOc3DKfqKwyfk+dfN5jTp8T6JSgl/EwgP3hQfcWliHACL3ZXNA
-         tXJPX1IY35KnnKzQJtmoqfCqBM9urjDu4y/ONqIKtsrh5D3+z4Czm29NQxHgO6an9aK4
-         ka3Q==
+        bh=2EkrLPpfX68IA8d/5CPpZuMAmVCLu73Yzxl8t1E6w2M=;
+        b=U0SY9mNRzOHLg2oAJuki4XzHlnHxFPPVkogg4Bsg9gAjcixsZ7XWE9nydc3ZOuiHsT
+         Wl9VlAwNnK/OWl7qMZjd+yvuhS2ocl+0uMDZNcEUzlpXGhJqIXLqeyKlO2HHJFxH3Jvz
+         77AacKA9ADY95/ZLd/pWxo6ykcbUfYNIcs4aoRfNLXlQ6RLfYH0K6QSMP7GHRGac2F3R
+         zfL5LlJoZvzwwzSTDfsW9ZH5UPidQ1miL0/CKzbsLHItD4HBf6+ztuMFZBGpd2HaNXbG
+         ZFGykocPpCUUM4yo+esWqko0/GuA+BGj3SJpgSEbFWRtAXryW6aVv2bC3g/bQRDhfCcp
+         rnOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704471347; x=1705076147;
+        d=1e100.net; s=20230601; t=1704471348; x=1705076148;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Tvm4bk4zvXvYax8LPthnn9a0G5r7SnfVCgZt22fDHnM=;
-        b=Y3OCuafWHxDKObrXeH+YXOI94IbPozq7Sxe3bff9b0l2/f8dQc0Rpavw66ZWtr4zQY
-         CxXLjMG3Be0ZRj8N+vebdng2wexXnZxhr7Z+WevWXTEV99yjVcvuhPTb9qZrJ4AKXwQs
-         2laaOusaoX44/mcKcWXQ11ktMbkzUhoqBdpFNppdbKH9Kaw1BNhSNn5YRW4vxFlZ8pIi
-         se4JI1W2qpgCLDr+0juB4fc/ZfZL4esp7uFIzNoVhiWttHBfGYrTlkHao6mtkSoWdh2a
-         O8UsKKaBfUD4ZpjBBDB7ezWrsW31UYOPmVZGWe8MOkSxFP0NlpifM9u7xL7tC/ZE0OH8
-         rVAQ==
-X-Gm-Message-State: AOJu0YxW+QMC/8rhgyOa5d3JYrKSFnOPOAoKMkkI+X9paZxG7namCzMg
-	22yRnFBPrYuf47gXhbG4ywxmvjnFB2+MbQ==
-X-Google-Smtp-Source: AGHT+IHOgeINfv1O+QR+hZzvKTZ3i98YPhATnJ6JDdEdWrWLx+pcVf9NnfkVjetwBxQY61jolWaYrQ==
-X-Received: by 2002:a7b:c407:0:b0:40d:806b:1bdf with SMTP id k7-20020a7bc407000000b0040d806b1bdfmr1504405wmi.154.1704471347438;
-        Fri, 05 Jan 2024 08:15:47 -0800 (PST)
+        bh=2EkrLPpfX68IA8d/5CPpZuMAmVCLu73Yzxl8t1E6w2M=;
+        b=XD+GN7woeGbx0Ttazd9nSWuUflXeJGogbsTO0DGoOgBA0tuhd7BDc3OXdOorU1K3Q9
+         X81hzsKseJ2/36U5dCCi0yodlz/kYDboeCtFO/GE66NEkGezTvTT6jjSCi49hz8Y4mFo
+         bpaadtz9deN6UINB9ISPcpEXKaXbQDLOtooN0HHtZiY4jhGJTpgNNna5WyS6X0YerbCh
+         1Jnl9stR6aCWigFXWI2EGGbHuxuKitNSOWb+o/60GyYOS9JYGCa9PvqEjIexU8iL+opS
+         LVNEgRPt5qPeQJwuv1rwhV+L/oXv2TDzs+iSTGwGPMkrf3F2cac+g3GkE16pBvamgIvX
+         96ZA==
+X-Gm-Message-State: AOJu0YxvKGlRQ8cvHldVZIYCtfABCd5G8K+8wBS6L4TD10SrzNYuyG7N
+	LybThxQPUooEI0vPhuuFRpq3H1KDnQModw==
+X-Google-Smtp-Source: AGHT+IF0F4kBNIMfJY2WeUh31uZD8/I9CGX4aE/9HYT9YMdxaniTBXNbap7APj6H4vgi4j2E/4Gi1w==
+X-Received: by 2002:a17:906:261a:b0:a26:d20e:35a7 with SMTP id h26-20020a170906261a00b00a26d20e35a7mr1259647ejc.127.1704471348452;
+        Fri, 05 Jan 2024 08:15:48 -0800 (PST)
 Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id ft33-20020a170907802100b00a26a5632d8fsm1031726ejc.13.2024.01.05.08.15.46
+        by smtp.gmail.com with ESMTPSA id ft33-20020a170907802100b00a26a5632d8fsm1031726ejc.13.2024.01.05.08.15.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jan 2024 08:15:46 -0800 (PST)
+        Fri, 05 Jan 2024 08:15:47 -0800 (PST)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 05 Jan 2024 17:15:43 +0100
-Subject: [PATCH 1/2] dt-bindings: qcom-qce: Add compatible for SM6350
+Date: Fri, 05 Jan 2024 17:15:44 +0100
+Subject: [PATCH 2/2] arm64: dts: qcom: sm6350: Add Crypto Engine
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240105-sm6350-qce-v1-1-416e5c7319ac@fairphone.com>
+Message-Id: <20240105-sm6350-qce-v1-2-416e5c7319ac@fairphone.com>
 References: <20240105-sm6350-qce-v1-0-416e5c7319ac@fairphone.com>
 In-Reply-To: <20240105-sm6350-qce-v1-0-416e5c7319ac@fairphone.com>
 To: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
@@ -70,25 +70,60 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.12.4
 
-Add a compatible for the crypto block found on the SM6350 SoC.
+Add crypto engine (CE) and CE BAM related nodes and definitions for this
+SoC.
+
+For reference:
+
+  [    2.297419] qcrypto 1dfa000.crypto: Crypto device found, version 5.5.1
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- Documentation/devicetree/bindings/crypto/qcom-qce.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/crypto/qcom-qce.yaml b/Documentation/devicetree/bindings/crypto/qcom-qce.yaml
-index 8e665d910e6e..69d1c4929935 100644
---- a/Documentation/devicetree/bindings/crypto/qcom-qce.yaml
-+++ b/Documentation/devicetree/bindings/crypto/qcom-qce.yaml
-@@ -44,6 +44,7 @@ properties:
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index 8fd6f4d03490..516aadbb16bb 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -1212,6 +1212,37 @@ ufs_mem_phy_lanes: phy@1d87400 {
+ 			};
+ 		};
  
-       - items:
-           - enum:
-+              - qcom,sm6350-qce
-               - qcom,sm8250-qce
-               - qcom,sm8350-qce
-               - qcom,sm8450-qce
++		cryptobam: dma-controller@1dc4000 {
++			compatible = "qcom,bam-v1.7.4", "qcom,bam-v1.7.0";
++			reg = <0 0x01dc4000 0 0x24000>;
++			interrupts = <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
++			#dma-cells = <1>;
++			qcom,ee = <0>;
++			qcom,controlled-remotely;
++			num-channels = <16>;
++			qcom,num-ees = <4>;
++			iommus = <&apps_smmu 0x432 0x0000>,
++				 <&apps_smmu 0x438 0x0001>,
++				 <&apps_smmu 0x43f 0x0000>,
++				 <&apps_smmu 0x426 0x0011>,
++				 <&apps_smmu 0x436 0x0011>;
++		};
++
++		crypto: crypto@1dfa000 {
++			compatible = "qcom,sm6350-qce", "qcom,sm8150-qce", "qcom,qce";
++			reg = <0 0x01dfa000 0 0x6000>;
++			dmas = <&cryptobam 4>, <&cryptobam 5>;
++			dma-names = "rx", "tx";
++			iommus = <&apps_smmu 0x432 0x0000>,
++				 <&apps_smmu 0x438 0x0001>,
++				 <&apps_smmu 0x43f 0x0000>,
++				 <&apps_smmu 0x426 0x0011>,
++				 <&apps_smmu 0x436 0x0011>;
++			interconnects = <&aggre2_noc MASTER_CRYPTO_CORE_0 QCOM_ICC_TAG_ALWAYS
++					 &clk_virt SLAVE_EBI_CH0 QCOM_ICC_TAG_ALWAYS>;
++			interconnect-names = "memory";
++		};
++
+ 		ipa: ipa@1e40000 {
+ 			compatible = "qcom,sm6350-ipa";
+ 
 
 -- 
 2.43.0
