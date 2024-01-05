@@ -1,140 +1,166 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-ej1-f66.google.com (mail-ej1-f66.google.com [209.85.218.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F140320320
-	for <phone-devel@vger.kernel.org>; Thu,  4 Jan 2024 09:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F542E826
+	for <phone-devel@vger.kernel.org>; Fri,  5 Jan 2024 14:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zUv8ytWS"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-50e7e55c0f6so313774e87.0
-        for <phone-devel@vger.kernel.org>; Thu, 04 Jan 2024 01:26:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="zON5z75+"
+Received: by mail-ej1-f66.google.com with SMTP id a640c23a62f3a-a26ed1e05c7so193475466b.2
+        for <phone-devel@vger.kernel.org>; Fri, 05 Jan 2024 06:29:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704360372; x=1704965172; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=K7timCPrPqKl3rRrOBEL9iWDGzrgWG9WSZP/IFSGCCE=;
-        b=zUv8ytWSNUQANwPPdBYyZV0HDz0Dw5q5qt2t2fKutNkAyV7uJW5646x1h17EbiXani
-         sJxrd21ffu4Jskh0zYX8QgtRUh38uFNbvNadObZxDwkizGgvnpXUkShv/GHG03SVh+fg
-         xceoPTmx8A4jchySEPKXoz6qHhBhuQl4GK4RZb03WAhDxX1/2tGLWJy7nN3zG5MGbQWD
-         8DM0v4ZVYqOQVWeWP8Q0Lz+Jwt0uDWINiYBO9TvjWETtg6W96RPRygvG9AqojCPB24Wk
-         eC8NYnMgKR+uGmu6GlWsd0zj0Tm/ugmvG7W7ipd1vGVS6Wjg6u1p0MbQ6dqtd0qTRr8S
-         pb7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704360372; x=1704965172;
-        h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
-         :from:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=fairphone.com; s=fair; t=1704464962; x=1705069762; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=K7timCPrPqKl3rRrOBEL9iWDGzrgWG9WSZP/IFSGCCE=;
-        b=PTZlUq+tBIJj+AOp8Ns+uV7GA09e1qmhnpPGBEwBp2o9HvNJD66/NinfcM1D69gFaV
-         6Omel5/nJWjga6gYGqQPRqmCOz+n0+HUcSgM9AqEeLyNYa5kILJx350AR4ae+/pPVYcG
-         0dI9ySKPvQ4Vc6H6JpAKBD7GWafei7L+qSb6D9Ckc5KccZHn6QpwnL1fiy3zRgJoSYXa
-         tP2MOIMJxOdsuKrnxRN2P7b7PSjH6Sz+F+mJpxxBhttkzus5n4h7MBcSO0fQQnvyyxSC
-         fE3xnLaVFXeiQJ5WLqhKJ0QhKMTBfjUyo5ymYRKnQSwNIjKPIHHtvdHRFNBsYNeK9DGW
-         ZSoA==
-X-Gm-Message-State: AOJu0Yy9p/yvSHPYA7n8wclqe3bW3EgiRgSSd+3YcAfeUYlLMbHxirCt
-	y8oSu2XtkrLMVplw+ph32tp5fQFprGprTIrxt9RZ4cXtl4I=
-X-Google-Smtp-Source: AGHT+IEkueM11S/RN3xrkNJlLdwzrkSBIPCLZB0bySc3Jk4Tw7wtu2RNJxho0r2AsS/zZrYUvOA8iw==
-X-Received: by 2002:ac2:58d3:0:b0:50b:feaa:b94 with SMTP id u19-20020ac258d3000000b0050bfeaa0b94mr96085lfo.253.1704360372062;
-        Thu, 04 Jan 2024 01:26:12 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.218.27])
-        by smtp.gmail.com with ESMTPSA id i3-20020a1709061cc300b00a26a9593a68sm12981693ejh.76.2024.01.04.01.26.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jan 2024 01:26:11 -0800 (PST)
-Message-ID: <596216f2-d6c7-4432-938f-e73a969ec2da@linaro.org>
-Date: Thu, 4 Jan 2024 10:26:10 +0100
+        bh=gwwLXzrNZmjdF/D81WsC3dKKL+3yys6UXvKoANltjZw=;
+        b=zON5z75+efj/6rlkahpjmfMhD6XkUh5D0SLZfA+qU8CgMt32AIaYzpeB+VAhgMBkGU
+         mk+8q2jC26Lk/fvLDdtvSowk+jmcDWkWdyNiOqm95gts6Xrqa7GbcCL2T+4+KLr+wGm4
+         dBgMUABPsvkK34z8oFgpdg1Wd1bZH6rc0GA4ZWvnyAAX+P4Nipm9hVy3uKZbI4VMeETa
+         /EyVjjiAkoYK3JDV5Pd217X53EBYlSrvTXpQcPtrbXazPqj/SCYiJu/Mybw/KHd8aAPS
+         uNOsPu0ycZ3IrQ+n6A3SSbhUHxL+My/cBPJlEfvq6m2C+5gQUmYSaaDyB7mX/oxN8EKr
+         JfhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704464962; x=1705069762;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gwwLXzrNZmjdF/D81WsC3dKKL+3yys6UXvKoANltjZw=;
+        b=viUa5n9nY+a4QcPyMxb8Wbj7s1TFs3COllKJJBO0xHzuIlmNF9XQiMW2oSSmyH6/2w
+         LYZUVO9eGe7KZea55w63qKCN5Y8TZkfotraGfhAYE7Axxqez/QnosnrUlbtjVQBJTkkR
+         0BtKyzL8sbYrgKlz5l+R/mFPe22btdDaincdjXMbN6KwbsV7xdzu/K8OYSjgdTclLnat
+         RCbiQ3FROqvU4XPDtze15Y3TAxG1qU4CDNcmqrxtO1FqDCUDuwIbQKxGpPL0jmIBwXVw
+         OIX/t1T0nt9UjGMK/sscBFQC6wh3pwhy/VJk4fyRlnmb35UMxKdaqpWYzyG/u2mAx3lN
+         VbCg==
+X-Gm-Message-State: AOJu0Yz+xXi/mbN5llsXTT2iQhYUqyzEJO4W0RqhMLNrcUi08wCu1M2m
+	BZyoNCRza7iakwPZGQxXaxFsBZdu/4rOuw==
+X-Google-Smtp-Source: AGHT+IF6LEHSC+BNS1qSMu0hu5MCEzCXahNkFna7P6c4dqYpMqVyE2mE2qiqtGe673b+qnnk5M4/2w==
+X-Received: by 2002:a17:906:2418:b0:a26:f301:6b52 with SMTP id z24-20020a170906241800b00a26f3016b52mr783285eja.49.1704464961874;
+        Fri, 05 Jan 2024 06:29:21 -0800 (PST)
+Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id u7-20020a1709067d0700b00a26b057df46sm927006ejo.126.2024.01.05.06.29.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jan 2024 06:29:20 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Fri, 05 Jan 2024 15:29:12 +0100
+Subject: [PATCH 1/3] dt-bindings: display: panel: Add Himax HX83112A
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/5] dt-bindings: regulator: add documentation entry
- for 88pm88x-regulator
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>, Karel Balej
- <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
- <20231228100208.2932-4-karelb@gimli.ms.mff.cuni.cz>
- <9cecc4bd-34ec-4b34-b0c8-de02473f038a@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <9cecc4bd-34ec-4b34-b0c8-de02473f038a@linaro.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20240105-fp4-panel-v1-1-1afbabc55276@fairphone.com>
+References: <20240105-fp4-panel-v1-0-1afbabc55276@fairphone.com>
+In-Reply-To: <20240105-fp4-panel-v1-0-1afbabc55276@fairphone.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>, 
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.12.4
 
-On 04/01/2024 10:25, Krzysztof Kozlowski wrote:
-> On 28/12/2023 10:39, Karel Balej wrote:
->> From: Karel Balej <balejk@matfyz.cz>
->>
-> 
-> A nit, subject: drop second/last, redundant "documentation entry". The
-> "dt-bindings" prefix is already stating that these are bindings.
-> 
->> The Marvell 88PM88X PMICs provide regulators among other things.
->> Document how to use them.
-> 
-> 
-> You did not document them in the bindings. You just added example to
-> make it complete. Where is the binding change?
-> 
-> What's more, I have doubts that you tested it.
+Himax HX83112A is a display driver IC used to drive LCD DSI panels.
+Describe it.
 
-I found your other patchset - now I am 100% sure you did not test it.
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ .../bindings/display/panel/himax,hx83112a.yaml     | 75 ++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
 
-Best regards,
-Krzysztof
+diff --git a/Documentation/devicetree/bindings/display/panel/himax,hx83112a.yaml b/Documentation/devicetree/bindings/display/panel/himax,hx83112a.yaml
+new file mode 100644
+index 000000000000..22f58f1da9fd
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/himax,hx83112a.yaml
+@@ -0,0 +1,75 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/himax,hx83112a.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Himax HX83112A-based DSI display panels
++
++maintainers:
++  - Luca Weiss <luca.weiss@fairphone.com>
++
++description:
++  The Himax HX83112A is a generic DSI Panel IC used to control
++  LCD panels.
++
++allOf:
++  - $ref: panel-common.yaml#
++
++properties:
++  compatible:
++    items:
++      - const: fairphone,fp4-hx83112a-djn
++      - const: himax,hx83112a
++
++  vdd1-supply:
++    description: Digital voltage rail
++
++  vsn-supply:
++    description: Positive source voltage rail
++
++  vsp-supply:
++    description: Negative source voltage rail
++
++  reg: true
++  port: true
++
++required:
++  - compatible
++  - reg
++  - reset-gpios
++  - vdd1-supply
++  - vsn-supply
++  - vsp-supply
++  - port
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "fairphone,fp4-hx83112a-djn", "himax,hx83112a";
++            reg = <0>;
++
++            backlight = <&pm6150l_wled>;
++            reset-gpios = <&pm6150l_gpios 9 GPIO_ACTIVE_LOW>;
++
++            vdd1-supply = <&vreg_l1e>;
++            vsn-supply = <&pm6150l_lcdb_ncp>;
++            vsp-supply = <&pm6150l_lcdb_ldo>;
++
++            port {
++                panel_in_0: endpoint {
++                    remote-endpoint = <&dsi0_out>;
++                };
++            };
++        };
++    };
++
++...
+
+-- 
+2.43.0
 
