@@ -1,50 +1,49 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678018474
-	for <phone-devel@vger.kernel.org>; Sat,  6 Jan 2024 15:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0054ED521
+	for <phone-devel@vger.kernel.org>; Sat,  6 Jan 2024 17:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DdDSQofk"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a2a17f3217aso20259566b.2
-        for <phone-devel@vger.kernel.org>; Sat, 06 Jan 2024 07:25:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="agZqhKGa"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a27733ae1dfso55294966b.3
+        for <phone-devel@vger.kernel.org>; Sat, 06 Jan 2024 09:12:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704554750; x=1705159550; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=OcjHfgODRNt+KFLJZW+qt8wg+xFuzUGbD/7t6KtlsPc=;
-        b=DdDSQofknDd7UUpCZ5h7u7Gyfdc416oilOljBG1Z5TYPCdDdcAMcvMH0WkK/dDUwLs
-         74Coa15Dg0+2ITbL5NS8wvjeKDm1YCt1YNNURI2Qb4qmlfm1+McEDxf6aDi5TaRcfXxl
-         Yt/1GfR2JsPKiX4pIbig+41swWO80EuG+d/epcOMutUhG2Ig4HYSi4j9oeKsJM0vn+qi
-         glgoVmc68Xa3qKvFIkiR0FPBuubWvaP8tgpv8K+0TuG5FtJmoHKcDOawYZMkOaCTsBER
-         PNyRIkeiT7z83P46um0ktGBKOu7/umW7aaThTfIEBEBb/M/5pQ4p1KUxCOhh1jXLfhyf
-         /Rnw==
+        d=linaro.org; s=google; t=1704561177; x=1705165977; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QKDh++QbukXh77ggABgzqR8S9DLOOEeKI7ydD3buRJk=;
+        b=agZqhKGaSGPeHPy+enHbMpY2oh3x+qGi+/CNAZt3B5vEu2GliVf0LKCszQOX+HsqXf
+         8hj1ekrEX7nIhdixQTcj0JH4STJaj5ravyvzn7wuWDj7WydOrA3255ag/TM+TtV2C/Xl
+         QB+lceqU/BLEQqENdeOhiOAwqhKy0JVXHUJBN6mdoNehPUrCLOJoq7ukfld/5s/32eze
+         TY6Y1vmbJ5BINONdslpgKaAGTSfUY7PAzm5P7t4491ih6r9KETwHUL8nsTle9MFkrSfp
+         9zfxln9voJwnt082qVjSTYan0jvCE2vShYVsf32JXmwhNGODQwaklxhuYiT0JIq9CqU+
+         0UUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704554750; x=1705159550;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OcjHfgODRNt+KFLJZW+qt8wg+xFuzUGbD/7t6KtlsPc=;
-        b=bacSOem3sWnEUWvwoLQSLnoVlBgT2w5zwvbD13ttaqprf035LAeEu8yDXPxt0p+8z1
-         HxWmQpBJM5jE4p89vSrLbiBXD4B5Enih3cBkxntMjO54LFaV2g60FFxlrCQ4hdMKIhMA
-         jEOISTX77ejPcFGzCL9rQfr1fppTJ7GotRaOTPkjA8ym5MoBKsc61SFXcGOxNmqQxOvY
-         HAOwcRISOR69mTiXmCDs2NOATco+YrVhrtH+Rzl6wRHqTJ7n0A4dW2Ur+Hu4Z00QKcf1
-         0ygmVs7FPVnioMVshWU3h13RgamfhclxS6OU5r+TGE2stGBaySX/fMdKZeXZB8lhnyv6
-         mvLA==
-X-Gm-Message-State: AOJu0YzdpQTycq5xPufAytOqSKWpxUs8M4RzGBXASM1gvh7XdIBCJYZY
-	1GUiDswS1ZWBSaOzzMs3LFkBLIxD6wWhBA==
-X-Google-Smtp-Source: AGHT+IFB0zGz9gSAgm1ISn8yYjF8oEreli2U1lqQx7WM65GroIfSdMClbQh9kAKJ7fNVREJ/zVWMwQ==
-X-Received: by 2002:a17:906:80ca:b0:a28:ad2c:f0e4 with SMTP id a10-20020a17090680ca00b00a28ad2cf0e4mr476053ejx.42.1704554749609;
-        Sat, 06 Jan 2024 07:25:49 -0800 (PST)
+        d=1e100.net; s=20230601; t=1704561177; x=1705165977;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QKDh++QbukXh77ggABgzqR8S9DLOOEeKI7ydD3buRJk=;
+        b=QBfz4ar0TJ9VEbh/ZmubmQuI0HYvkKzEiDAf4MkP06Sfs95MShl6gJI1XALdyTkFox
+         exFUZu4CYw+wp4U8IuEuK9R7U0GwceYeBR6k3VGBoYsG6/D+7bnEm2ZhjdQl0wUJyftX
+         ICGxeAEewJajgwgEpUhcBX0Y+4LRawko1Fq/5bo78z3kLSWK9i6nF8PtyAKQr9+AZbHG
+         bZ0Q931jsF5ZyXqqnsXjid6jnTBffXaHvy9iC0m1KLqdq+GhuQQ4NGPeGRgjjwaxYp3a
+         BWTJV0QqrPqv9+1iX0tBLomAPDCQC3hlO+8tt069IK4bvScVYlvsmOEStcgXzNatRM56
+         SpFA==
+X-Gm-Message-State: AOJu0YzBqRaCEtrHJn5/svwH64AQkytPfgnDsKsOC6hFPgT9NoAlTdXA
+	W0XSyHyLFsiUR8qJs6WAGsDirMDbj89efg==
+X-Google-Smtp-Source: AGHT+IHJPDM7j3bE50yBH1fdHGXaEQhySVFvYij4neZfPDV0DxDO1HRJsR7SH/XL41BdLS85NppCtA==
+X-Received: by 2002:a17:906:2b55:b0:a27:cc46:d2c0 with SMTP id b21-20020a1709062b5500b00a27cc46d2c0mr214619ejg.209.1704561177406;
+        Sat, 06 Jan 2024 09:12:57 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.223.112])
-        by smtp.gmail.com with ESMTPSA id jo21-20020a170906f6d500b00a275637e699sm2050304ejb.166.2024.01.06.07.25.48
+        by smtp.gmail.com with ESMTPSA id am19-20020a170906569300b00a26ac57b951sm2138535ejc.23.2024.01.06.09.12.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 06 Jan 2024 07:25:49 -0800 (PST)
-Message-ID: <bbe3bc57-1d5e-42d4-b860-15a27c7c57bd@linaro.org>
-Date: Sat, 6 Jan 2024 16:25:46 +0100
+        Sat, 06 Jan 2024 09:12:56 -0800 (PST)
+Message-ID: <ddad4bb2-1525-4842-b220-edcef7ce0299@linaro.org>
+Date: Sat, 6 Jan 2024 18:12:54 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -52,21 +51,22 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] clk: qcom: hfpll: Add QCS404-specific compatible
-To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231231-hfpll-yaml-v1-0-359d44a4e194@z3ntu.xyz>
- <20231231-hfpll-yaml-v1-2-359d44a4e194@z3ntu.xyz>
- <588dd6c3-7d2b-48db-b5ea-48a07077dc5d@linaro.org>
- <6706261.DvuYhMxLoT@z3ntu.xyz>
+Subject: Re: [PATCH 1/2] dt-bindings: qcom-qce: Add compatible for SM6350
 Content-Language: en-US
+To: Luca Weiss <luca.weiss@fairphone.com>, Andy Gross <agross@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Thara Gopinath <thara.gopinath@gmail.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Bhupesh Sharma <bhupesh.sharma@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240105-sm6350-qce-v1-0-416e5c7319ac@fairphone.com>
+ <20240105-sm6350-qce-v1-1-416e5c7319ac@fairphone.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -112,93 +112,17 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <6706261.DvuYhMxLoT@z3ntu.xyz>
+In-Reply-To: <20240105-sm6350-qce-v1-1-416e5c7319ac@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 06/01/2024 11:19, Luca Weiss wrote:
-> On Dienstag, 2. Jänner 2024 11:41:26 CET Krzysztof Kozlowski wrote:
->> On 31/12/2023 15:48, Luca Weiss wrote:
->>> It doesn't appear that the configuration is for the HFPLL is generic, so
->>
->> That's ok...
->>
->>> add a qcs404-specific compatible and rename the existing struct to
->>
->> but why this is the solution? If the qcom,hfpll compatible was
->> deprecated, but it is not. This commit is contradictory to the bindings.
->>
->>> qcs404.
->>>
->>> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
->>> ---
->>>
->>>  drivers/clk/qcom/hfpll.c | 6 ++++--
->>>  1 file changed, 4 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/clk/qcom/hfpll.c b/drivers/clk/qcom/hfpll.c
->>> index dac27e31ef60..5b12982519be 100644
->>> --- a/drivers/clk/qcom/hfpll.c
->>> +++ b/drivers/clk/qcom/hfpll.c
->>> @@ -14,7 +14,7 @@
->>>
->>>  #include "clk-regmap.h"
->>>  #include "clk-hfpll.h"
->>>
->>> -static const struct hfpll_data hdata = {
->>> +static const struct hfpll_data qcs404 = {
->>>
->>>  	.mode_reg = 0x00,
->>>  	.l_reg = 0x04,
->>>  	.m_reg = 0x08,
->>>
->>> @@ -84,10 +84,12 @@ static const struct hfpll_data msm8976_cci = {
->>>
->>>  };
->>>  
->>>  static const struct of_device_id qcom_hfpll_match_table[] = {
->>>
->>> -	{ .compatible = "qcom,hfpll", .data = &hdata },
->>>
->>>  	{ .compatible = "qcom,msm8976-hfpll-a53", .data = &msm8976_a53 },
->>>  	{ .compatible = "qcom,msm8976-hfpll-a72", .data = &msm8976_a72 },
->>>  	{ .compatible = "qcom,msm8976-hfpll-cci", .data = &msm8976_cci },
->>>
->>> +	{ .compatible = "qcom,qcs404-hfpll", .data = &qcs404 },
->>> +	/* deprecated, use SoC-specific compatible */
->>
->> Why? That's not a deprecated compatible. You now expect to create many
->> unnecessary entries, which is not really needed. This is opposite of
->> what we try to achieve with compatibility lists.
+On 05/01/2024 17:15, Luca Weiss wrote:
+> Add a compatible for the crypto block found on the SM6350 SoC.
 > 
-> Just "qcom,hfpll" is not allowed by the bindings.
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
-Okay... sentence is correct but how is it related to the driver?
-
-> The problem is that it's actually unclear to me what "qcom,hfpll" was supposed 
-> to be currently. It was added originally for MSM8974 and friends (see git log) 
-> but then is currently only used by QCS404 while in QCS404 downstream msm-4.4 
-> (I think it was 4.4) I see different driver data than what's here.
-
-I discourage from using generic compatibles, because their meaning is
-too often fluid, but if we already have it then: it is supposed to be
-whatever driver and bindings defined it when they were added.
-
-> 
-> So I wanted to just move what's used here to be qcs404-specific and then in an 
-> upcoming patch add a msm8974-specific compatible with different driver data.
-> 
-> Also wouldn't the "don't extend driver lists when not neccessary" mean using 
-> something like "qcom,msm1234-hfpll", "qcom,qcs404-hfpll", "qcom,hfpll" then?
-
-qcs404 and hfpll are the same aren't they? Then why would third
-compatible appear?
-
-> That was kind of my idea if some other SoC can reuse e.g. qcs404 data?
-
-If any other SoC wants to reuse qcs404, why that SoC cannot use hfpll?
-If hfpll compatible is not correct, it should be deprecated, which is
-not happening in this patchset.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
