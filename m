@@ -1,49 +1,49 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908C312B83
-	for <phone-devel@vger.kernel.org>; Sun,  7 Jan 2024 10:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E5012E48
+	for <phone-devel@vger.kernel.org>; Sun,  7 Jan 2024 11:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WXZrki91"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-40e43e4890cso4336465e9.1
-        for <phone-devel@vger.kernel.org>; Sun, 07 Jan 2024 02:35:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="y7kQ+YdX"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-557535489d0so1006689a12.2
+        for <phone-devel@vger.kernel.org>; Sun, 07 Jan 2024 03:08:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704623715; x=1705228515; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1704625701; x=1705230501; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=kxDyb8bH5aiyYSse1Op29PEaCrCqKvgBEwfeUtur/O0=;
-        b=WXZrki91pc39sKBlL69CfFyRM9y8rrkTogITTPUAt2gVVCdbDmjJInKJUUa4YWVCqX
-         7fDmLfM4l6kBL+MNJ0vomDyUvu5cLGf9BI/GDqQ9od2cidzcy72uUy+xLlMowVfMY5UQ
-         HEKeEWRGMlsSg1WDsNK8jzsDuQXiAsoN+YuZX6NdtG/Q05llqmim6T7uiTcbTK6+kp6M
-         cZZKLI9kGgvuE9mah/2VHFllpOSV8DLASM/Rr6qmxVNvLgIaSWDRx9kWllEBsOAGpt7M
-         JprUNEToQ4YDuxN6+f5WYkCbFKQgqBVJbWdDLNRrh4WqLOOn5/Ljdbi0qtU14jA6BtJe
-         S4EA==
+        bh=st1+8bhIrSIgmjya+Y1Yx6Q0DetFGsUb9xjG84ScjLI=;
+        b=y7kQ+YdXYo9WuemkHtI+nYO2L/pt7Zi7WCcJOTodPbWmSx2kNuRLHYCp9bvsu7V7ic
+         Zw0bizivRyBEAQ38+S7br8oWw/vG+wOC+58cgXh1BsO3M8FXPoWnzRbzIdvmpBStJ6Ha
+         HxQXTrlKQvyLQ2qQ2+QL+YhD8/N07ECOcegdOUpLYBtI2ScVB+AXk52InQI1e/p3XBgQ
+         0n5d6teNLd8UicjR9y2jnSBH0lKtx6+fBUHeMyysjIinWjJtpO4k4LPXKVKcD/qYX2rM
+         +aWuQvqBubH2NEhwqdeOo/L7TWJgH80ARaLltVTQSn8LhrE79OXfpGm7T/Hh5niYroSd
+         F27A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704623715; x=1705228515;
+        d=1e100.net; s=20230601; t=1704625701; x=1705230501;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kxDyb8bH5aiyYSse1Op29PEaCrCqKvgBEwfeUtur/O0=;
-        b=DzJEbpA1i7a4sqkKYpW5Co0n1h9RYDr400if3nwSQEPn69eSByh108L7rVap/XydcF
-         yC2EUk3urdoJu2zANBRK03R7BgoeC8d7jWLK9SugfkSIug3alQhBjPZJg0r9GUXDcx5d
-         TIeNHq04qPH6Z/vUzIWTpLa3HEiVp0PbzrW/QMKVxNkkKlDilMwlJHXVAkFGqbmFGZOb
-         gXAM1aGAhyjudnFI1Fl9nIDeUJ8KzqbqLyZtWvLLCqffcjhkarKPz23e+CAe5gSY1KGi
-         I4gTyJafZpe3JDvSynttuZd5fb778ScfdxPe/OhNVmezwCexnU2c2IblUR0AvcbbYq5c
-         uAOg==
-X-Gm-Message-State: AOJu0YywzYd3aeF7J+oK2YCObjxuu0FiD73MVt7Uocvj8llpy2WkxaFg
-	Gcbz1ND1UsULw3rV8HogRqf9wuZuypLIwg==
-X-Google-Smtp-Source: AGHT+IE08eZqRiZv7pnx+fWR+ZyMeL1kIlMBakHSrvbNG1nsNJguPN5HVDE8A8im8+2iglCpD4edig==
-X-Received: by 2002:a1c:770a:0:b0:40c:2417:3b51 with SMTP id t10-20020a1c770a000000b0040c24173b51mr728144wmi.74.1704623714775;
-        Sun, 07 Jan 2024 02:35:14 -0800 (PST)
+        bh=st1+8bhIrSIgmjya+Y1Yx6Q0DetFGsUb9xjG84ScjLI=;
+        b=u86xja8ORCQ/OamvfJ6wZT4hUfcMrkvSraqrUPk5EP6koY3osHAXlY3ny4TdY4Km2K
+         TPNmrAcUCnJQ2d8JUUZIQRWh1apSB4ij2UwmvqPLNyYWMZurw3Gla8e+OoDOlwdvFOYK
+         yC2ler77zvLriEkkw2JRuhETW43ft68h8sR3ryClm6LfNjIR3cI5PPdqVfAIsxQQ8BZ7
+         sA1HCLrgPRWCnCDp2xiIGT68zsHTU5jG+uRFy7CleJvnb9vE+bsUv6APQcVips5Hn7nY
+         V1c/wFFnm8LSg7Le0ZHb168BG63SX210Z9EQ2UNZ6bYeo6KL+foggePk9OtRvkKLdfSa
+         ZLNw==
+X-Gm-Message-State: AOJu0YyYmmAoEYh91inLNWNCyUwSgzkfNQo0psKHk2P7+fgAvKccqrvh
+	FrGVWQxfDyWZCJc7yzVKyNAZA7Jh/bf+ig==
+X-Google-Smtp-Source: AGHT+IEdZgz61Nfqx4oHm1CeCLo6aMj+uMfhDW02HyruB6m8lCsdbNdz/l1+Ofra5LFRV6h3br21SA==
+X-Received: by 2002:a50:a459:0:b0:553:73c4:87db with SMTP id v25-20020a50a459000000b0055373c487dbmr944634edb.15.1704625700636;
+        Sun, 07 Jan 2024 03:08:20 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.223.112])
-        by smtp.gmail.com with ESMTPSA id o18-20020a1709064f9200b00a28ace8fb17sm2870616eju.206.2024.01.07.02.35.13
+        by smtp.gmail.com with ESMTPSA id m14-20020a50ef0e000000b00554930be765sm3137154eds.97.2024.01.07.03.08.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Jan 2024 02:35:14 -0800 (PST)
-Message-ID: <e5e2ff07-fe29-4ff1-abc8-7250c756154e@linaro.org>
-Date: Sun, 7 Jan 2024 11:35:13 +0100
+        Sun, 07 Jan 2024 03:08:20 -0800 (PST)
+Message-ID: <e30051ae-ddb0-447e-9874-ebbc8f37898b@linaro.org>
+Date: Sun, 7 Jan 2024 12:08:17 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -51,19 +51,23 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 4/5] regulator: add 88pm88x regulators driver
+Subject: Re: [PATCH 1/3] dt-bindings: display: panel: Add Himax HX83112A
 Content-Language: en-US
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>, Karel Balej
- <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>,
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
  Rob Herring <robh+dt@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
- <20231228100208.2932-5-karelb@gimli.ms.mff.cuni.cz>
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20240105-fp4-panel-v1-0-1afbabc55276@fairphone.com>
+ <20240105-fp4-panel-v1-1-1afbabc55276@fairphone.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -109,36 +113,21 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231228100208.2932-5-karelb@gimli.ms.mff.cuni.cz>
+In-Reply-To: <20240105-fp4-panel-v1-1-1afbabc55276@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/12/2023 10:39, Karel Balej wrote:
-> diff --git a/drivers/mfd/88pm88x.c b/drivers/mfd/88pm88x.c
-> index 69a8e39d43b3..999d0539b720 100644
-> --- a/drivers/mfd/88pm88x.c
-> +++ b/drivers/mfd/88pm88x.c
-> @@ -68,6 +68,21 @@ static struct mfd_cell pm886_devs[] = {
->  		.num_resources = ARRAY_SIZE(pm88x_onkey_resources),
->  		.resources = pm88x_onkey_resources,
->  	},
-> +	{
-> +		.name = "88pm88x-regulator",
-> +		.id = PM88X_REGULATOR_ID_LDO2,
-> +		.of_compatible = "marvell,88pm88x-regulator",
-> +	},
-> +	{
-> +		.name = "88pm88x-regulator",
-> +		.id = PM88X_REGULATOR_ID_LDO15,
-> +		.of_compatible = "marvell,88pm88x-regulator",
-> +	},
-> +	{
-> +		.name = "88pm88x-regulator",
-> +		.id = PM886_REGULATOR_ID_BUCK2,
-> +		.of_compatible = "marvell,88pm88x-regulator",
+On 05/01/2024 15:29, Luca Weiss wrote:
+> Himax HX83112A is a display driver IC used to drive LCD DSI panels.
+> Describe it.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  .../bindings/display/panel/himax,hx83112a.yaml     | 75 ++++++++++++++++++++++
+>  1 file changed, 75 insertions(+)
+> 
 
-Same compatible per each regulator looks suspicious, if not even wrong.
-What are these?
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
