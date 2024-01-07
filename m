@@ -1,49 +1,49 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D729B12B92
-	for <phone-devel@vger.kernel.org>; Sun,  7 Jan 2024 10:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908C312B83
+	for <phone-devel@vger.kernel.org>; Sun,  7 Jan 2024 10:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BfUhE9NC"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a28cc85e6b5so91945566b.1
-        for <phone-devel@vger.kernel.org>; Sun, 07 Jan 2024 02:34:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WXZrki91"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-40e43e4890cso4336465e9.1
+        for <phone-devel@vger.kernel.org>; Sun, 07 Jan 2024 02:35:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704623650; x=1705228450; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1704623715; x=1705228515; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=WIe1BBB7vFKwCN3Qcq4fcZ44bbCcrLCDMm9KDGSJ3OU=;
-        b=BfUhE9NCUoahvynofj5kE5ChtXxL5U0Jyqwu4brpTXuMxknMmtHcdHpnY1q5/N9Xib
-         yvTgjlH6G4HQKnL+z8do40rUP0whfOhLm+7b2NcopfKzhF3m6SGx9o4w1ma05RAd0nNF
-         NOHD10nJSU4S9SFhaJVXqLDajWwkuSUQC+/yepm+0qJz4nrCJR/WG5hNlLveWWDbISug
-         QxPVmXhZjzJ2SoHFb2sxuARC3u0J5FnkpaeuuqLeqEzXWALTb0ck4dP4m9sSn2TOVNoT
-         xNeZyale1CY7U/OuqLN5zaqkp2yAaRNuOnkt8rgJhaF2tDV5HGA1gwB5I0p52JLHjbC3
-         l4GQ==
+        bh=kxDyb8bH5aiyYSse1Op29PEaCrCqKvgBEwfeUtur/O0=;
+        b=WXZrki91pc39sKBlL69CfFyRM9y8rrkTogITTPUAt2gVVCdbDmjJInKJUUa4YWVCqX
+         7fDmLfM4l6kBL+MNJ0vomDyUvu5cLGf9BI/GDqQ9od2cidzcy72uUy+xLlMowVfMY5UQ
+         HEKeEWRGMlsSg1WDsNK8jzsDuQXiAsoN+YuZX6NdtG/Q05llqmim6T7uiTcbTK6+kp6M
+         cZZKLI9kGgvuE9mah/2VHFllpOSV8DLASM/Rr6qmxVNvLgIaSWDRx9kWllEBsOAGpt7M
+         JprUNEToQ4YDuxN6+f5WYkCbFKQgqBVJbWdDLNRrh4WqLOOn5/Ljdbi0qtU14jA6BtJe
+         S4EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704623650; x=1705228450;
+        d=1e100.net; s=20230601; t=1704623715; x=1705228515;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WIe1BBB7vFKwCN3Qcq4fcZ44bbCcrLCDMm9KDGSJ3OU=;
-        b=OUweEmClCsWhrkrbyn4GMzMb5L+Xn0O0ExdevAttTbEb2/s+plTy6vyZ9ZVFhLFAY6
-         VhykXssZH+grGPFyzNpJlET0utegfVvrjS/D981XTH366mnhNEV9XBpEPP4ix2SvLUxD
-         XYEwzNQYDQkEnbTNWoWzwYb+J2DkLYuQdD45YAFlQEvZXxjjmNIFmid9/AcJjkE6gO35
-         fYzGWoQIsWwdraIA//rN+ms4SGbFbHl3XUluubxWByJgwegF95x4olIATkFkcWOxiM3N
-         pYC0r1fZKN/5HPSjkgPVErq+Cg2WK/Y2YZOPXv0IaoR/OVb2MNa60MZH9NCSZ5CyGjIC
-         z4hg==
-X-Gm-Message-State: AOJu0YxMyuixks3vXvOoy1/r+S3dxk20MuA8Yxf1Mj03Yth6AMDiq1M4
-	b9QfM70Cpn4p/EEmTR7W+RV7JPTKzcOccg==
-X-Google-Smtp-Source: AGHT+IGDlGObzuh3cJV9HUAqXOkFaaZXK3J+pWxIMpIyeM0BXWBHLH6ilRBIHL6FqEdg/buvd2/Pqw==
-X-Received: by 2002:a17:906:1746:b0:a27:91fc:19a7 with SMTP id d6-20020a170906174600b00a2791fc19a7mr634202eje.161.1704623650166;
-        Sun, 07 Jan 2024 02:34:10 -0800 (PST)
+        bh=kxDyb8bH5aiyYSse1Op29PEaCrCqKvgBEwfeUtur/O0=;
+        b=DzJEbpA1i7a4sqkKYpW5Co0n1h9RYDr400if3nwSQEPn69eSByh108L7rVap/XydcF
+         yC2EUk3urdoJu2zANBRK03R7BgoeC8d7jWLK9SugfkSIug3alQhBjPZJg0r9GUXDcx5d
+         TIeNHq04qPH6Z/vUzIWTpLa3HEiVp0PbzrW/QMKVxNkkKlDilMwlJHXVAkFGqbmFGZOb
+         gXAM1aGAhyjudnFI1Fl9nIDeUJ8KzqbqLyZtWvLLCqffcjhkarKPz23e+CAe5gSY1KGi
+         I4gTyJafZpe3JDvSynttuZd5fb778ScfdxPe/OhNVmezwCexnU2c2IblUR0AvcbbYq5c
+         uAOg==
+X-Gm-Message-State: AOJu0YywzYd3aeF7J+oK2YCObjxuu0FiD73MVt7Uocvj8llpy2WkxaFg
+	Gcbz1ND1UsULw3rV8HogRqf9wuZuypLIwg==
+X-Google-Smtp-Source: AGHT+IE08eZqRiZv7pnx+fWR+ZyMeL1kIlMBakHSrvbNG1nsNJguPN5HVDE8A8im8+2iglCpD4edig==
+X-Received: by 2002:a1c:770a:0:b0:40c:2417:3b51 with SMTP id t10-20020a1c770a000000b0040c24173b51mr728144wmi.74.1704623714775;
+        Sun, 07 Jan 2024 02:35:14 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.223.112])
-        by smtp.gmail.com with ESMTPSA id o18-20020a1709064f9200b00a28ace8fb17sm2870616eju.206.2024.01.07.02.34.08
+        by smtp.gmail.com with ESMTPSA id o18-20020a1709064f9200b00a28ace8fb17sm2870616eju.206.2024.01.07.02.35.13
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Jan 2024 02:34:09 -0800 (PST)
-Message-ID: <89fab5fd-34ce-4196-b246-b5c3e4c7e201@linaro.org>
-Date: Sun, 7 Jan 2024 11:34:07 +0100
+        Sun, 07 Jan 2024 02:35:14 -0800 (PST)
+Message-ID: <e5e2ff07-fe29-4ff1-abc8-7250c756154e@linaro.org>
+Date: Sun, 7 Jan 2024 11:35:13 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -53,18 +53,17 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH 4/5] regulator: add 88pm88x regulators driver
 Content-Language: en-US
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>, Mark Brown <broonie@kernel.org>
-Cc: Karel Balej <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>,
+To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>, Karel Balej
+ <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>,
  Rob Herring <robh+dt@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+ Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
  ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
 References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
  <20231228100208.2932-5-karelb@gimli.ms.mff.cuni.cz>
- <008ee9d6-6259-43df-9af3-2dc9877cfe94@sirena.org.uk>
- <CY8DP6O8C72H.2XTJT3P7XZAKE@gimli.ms.mff.cuni.cz>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -110,41 +109,36 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <CY8DP6O8C72H.2XTJT3P7XZAKE@gimli.ms.mff.cuni.cz>
+In-Reply-To: <20231228100208.2932-5-karelb@gimli.ms.mff.cuni.cz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 07/01/2024 10:49, Karel Balej wrote:
-> Mark,
-> 
-> On Fri Jan 5, 2024 at 4:18 PM CET, Mark Brown wrote:
->> On Thu, Dec 28, 2023 at 10:39:13AM +0100, Karel Balej wrote:
->>
->>> @@ -68,6 +68,21 @@ static struct mfd_cell pm886_devs[] = {
->>>  		.num_resources = ARRAY_SIZE(pm88x_onkey_resources),
->>>  		.resources = pm88x_onkey_resources,
->>>  	},
->>> +	{
->>> +		.name = "88pm88x-regulator",
->>> +		.id = PM88X_REGULATOR_ID_LDO2,
->>> +		.of_compatible = "marvell,88pm88x-regulator",
->>> +	},
->>
->> Why are we adding an of_compatible here?  It's redundant, the MFD split
->> is a feature of Linux internals not of the hardware, and the existing
->> 88pm8xx MFD doesn't use them.
-> 
-> in a feedback to my MFD series, Rob Herring pointed out that there is no
-> need to have a devicetree node for a subdevice if it only contains
-> "compatible" as the MFD driver can instantiate subdevices itself. I
-> understood that this is what he was referring to, but now I suspect that
-> it is sufficient for the mfd_cell.name to be set to the subdevice driver
-> name for this - is that correct?
+On 28/12/2023 10:39, Karel Balej wrote:
+> diff --git a/drivers/mfd/88pm88x.c b/drivers/mfd/88pm88x.c
+> index 69a8e39d43b3..999d0539b720 100644
+> --- a/drivers/mfd/88pm88x.c
+> +++ b/drivers/mfd/88pm88x.c
+> @@ -68,6 +68,21 @@ static struct mfd_cell pm886_devs[] = {
+>  		.num_resources = ARRAY_SIZE(pm88x_onkey_resources),
+>  		.resources = pm88x_onkey_resources,
+>  	},
+> +	{
+> +		.name = "88pm88x-regulator",
+> +		.id = PM88X_REGULATOR_ID_LDO2,
+> +		.of_compatible = "marvell,88pm88x-regulator",
+> +	},
+> +	{
+> +		.name = "88pm88x-regulator",
+> +		.id = PM88X_REGULATOR_ID_LDO15,
+> +		.of_compatible = "marvell,88pm88x-regulator",
+> +	},
+> +	{
+> +		.name = "88pm88x-regulator",
+> +		.id = PM886_REGULATOR_ID_BUCK2,
+> +		.of_compatible = "marvell,88pm88x-regulator",
 
-I think Rob was only referring to "no need to have a devicetree node".
-But you added here a devicetree node, plus probably undocumented compatible.
-
-Does it even pass the checkpatch?
+Same compatible per each regulator looks suspicious, if not even wrong.
+What are these?
 
 Best regards,
 Krzysztof
