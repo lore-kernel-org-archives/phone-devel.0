@@ -1,35 +1,35 @@
 Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF00134AB;
-	Sun,  7 Jan 2024 12:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3E1134A5;
+	Sun,  7 Jan 2024 13:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="BPe5Ef5/"
+	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="OZLNm4bn"
 Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id 056C9282960;
-	Sun,  7 Jan 2024 13:45:49 +0100 (CET)
+	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id B25DA2807E5;
+	Sun,  7 Jan 2024 14:02:09 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
-	s=gen1; t=1704631549;
+	s=gen1; t=1704632529;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cZzauvuVedlYhrFCUEuZZ+mKSrUZ8PO0lnWXkiCMvpk=;
-	b=BPe5Ef5/0TNjCh8vlr5rqqqcOWXv9T4W2TTadVW/c7t0eUeFg12K1uoScTXwyWETCA9IYS
-	83KQigLAupLt1AFfGfafm9+q8ZmKOZu+7sB31CeUUT1mReBB1l0UtRzfWPDDA0JxI5yvsG
-	HqplXYTeo4OMOP4pmwmO3GmUW3TmaSo=
+	bh=p9vUeDmoQ6ArSFOj4UH5MFCzRsfwDhilZfFeJMCpNBU=;
+	b=OZLNm4bn42sIpotvh4BiK6wETj6k8k7b1ArKiDkvWdGgKZ/woikVHHc163NG5YYqE2CI5W
+	P9GuKmTZE1rZ4hWAZVLpkt0PulLIzAFh78YEeGr8/rhxZpLp1MSB4IEKSBRI+mlh4ByKu1
+	kQYLRdatIC1brvMVZNVho1KnwLwFvYs=
 Received: from localhost (koleje-wifi-0044.koleje.cuni.cz [78.128.191.44])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: karelb)
-	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id D55E4457862;
-	Sun,  7 Jan 2024 13:45:48 +0100 (CET)
+	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id 588C14578AF;
+	Sun,  7 Jan 2024 14:02:09 +0100 (CET)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -38,83 +38,63 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 07 Jan 2024 13:46:15 +0100
-Message-Id: <CY8HGN83FGPB.28AJ0GPM9P0BO@gimli.ms.mff.cuni.cz>
-Cc: "Karel Balej" <balejk@matfyz.cz>, "Lee Jones" <lee@kernel.org>, "Rob
- Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
- <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Liam Girdwood" <lgirdwood@gmail.com>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, =?utf-8?q?Duje_Mihanovi=C4=87?=
- <duje.mihanovic@skole.hr>, <~postmarketos/upstreaming@lists.sr.ht>,
- <phone-devel@vger.kernel.org>
+Date: Sun, 07 Jan 2024 14:02:36 +0100
+Message-Id: <CY8HT5NHUF4D.X59U8LV1BCFW@gimli.ms.mff.cuni.cz>
+Cc: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
 Subject: Re: [RFC PATCH 4/5] regulator: add 88pm88x regulators driver
-To: "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>, "Mark Brown"
- <broonie@kernel.org>
+To: "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>, "Karel Balej"
+ <balejk@matfyz.cz>, "Lee Jones" <lee@kernel.org>, "Rob Herring"
+ <robh+dt@kernel.org>, "Krzysztof Kozlowski"
+ <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Liam Girdwood" <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 From: "Karel Balej" <karelb@gimli.ms.mff.cuni.cz>
 References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
  <20231228100208.2932-5-karelb@gimli.ms.mff.cuni.cz>
- <008ee9d6-6259-43df-9af3-2dc9877cfe94@sirena.org.uk>
- <CY8DP6O8C72H.2XTJT3P7XZAKE@gimli.ms.mff.cuni.cz>
- <89fab5fd-34ce-4196-b246-b5c3e4c7e201@linaro.org>
-In-Reply-To: <89fab5fd-34ce-4196-b246-b5c3e4c7e201@linaro.org>
+ <e5e2ff07-fe29-4ff1-abc8-7250c756154e@linaro.org>
+In-Reply-To: <e5e2ff07-fe29-4ff1-abc8-7250c756154e@linaro.org>
 
-Krzysztof,
-
-On Sun Jan 7, 2024 at 11:34 AM CET, Krzysztof Kozlowski wrote:
-> On 07/01/2024 10:49, Karel Balej wrote:
-> > Mark,
-> >=20
-> > On Fri Jan 5, 2024 at 4:18 PM CET, Mark Brown wrote:
-> >> On Thu, Dec 28, 2023 at 10:39:13AM +0100, Karel Balej wrote:
-> >>
-> >>> @@ -68,6 +68,21 @@ static struct mfd_cell pm886_devs[] =3D {
-> >>>  		.num_resources =3D ARRAY_SIZE(pm88x_onkey_resources),
-> >>>  		.resources =3D pm88x_onkey_resources,
-> >>>  	},
-> >>> +	{
-> >>> +		.name =3D "88pm88x-regulator",
-> >>> +		.id =3D PM88X_REGULATOR_ID_LDO2,
-> >>> +		.of_compatible =3D "marvell,88pm88x-regulator",
-> >>> +	},
-> >>
-> >> Why are we adding an of_compatible here?  It's redundant, the MFD spli=
-t
-> >> is a feature of Linux internals not of the hardware, and the existing
-> >> 88pm8xx MFD doesn't use them.
-> >=20
-> > in a feedback to my MFD series, Rob Herring pointed out that there is n=
-o
-> > need to have a devicetree node for a subdevice if it only contains
-> > "compatible" as the MFD driver can instantiate subdevices itself. I
-> > understood that this is what he was referring to, but now I suspect tha=
-t
-> > it is sufficient for the mfd_cell.name to be set to the subdevice drive=
-r
-> > name for this - is that correct?
+On Sun Jan 7, 2024 at 11:35 AM CET, Krzysztof Kozlowski wrote:
+> On 28/12/2023 10:39, Karel Balej wrote:
+> > diff --git a/drivers/mfd/88pm88x.c b/drivers/mfd/88pm88x.c
+> > index 69a8e39d43b3..999d0539b720 100644
+> > --- a/drivers/mfd/88pm88x.c
+> > +++ b/drivers/mfd/88pm88x.c
+> > @@ -68,6 +68,21 @@ static struct mfd_cell pm886_devs[] =3D {
+> >  		.num_resources =3D ARRAY_SIZE(pm88x_onkey_resources),
+> >  		.resources =3D pm88x_onkey_resources,
+> >  	},
+> > +	{
+> > +		.name =3D "88pm88x-regulator",
+> > +		.id =3D PM88X_REGULATOR_ID_LDO2,
+> > +		.of_compatible =3D "marvell,88pm88x-regulator",
+> > +	},
+> > +	{
+> > +		.name =3D "88pm88x-regulator",
+> > +		.id =3D PM88X_REGULATOR_ID_LDO15,
+> > +		.of_compatible =3D "marvell,88pm88x-regulator",
+> > +	},
+> > +	{
+> > +		.name =3D "88pm88x-regulator",
+> > +		.id =3D PM886_REGULATOR_ID_BUCK2,
+> > +		.of_compatible =3D "marvell,88pm88x-regulator",
 >
-> I think Rob was only referring to "no need to have a devicetree node".
+> Same compatible per each regulator looks suspicious, if not even wrong.
+> What are these?
 
-yes, but I thought the presence of the compatible in the node is what
-triggers instantiation of the driver and that adding it here instead was
-necessary for that to happen if the node was to be removed. But like I
-said, now I think only the .name property is relevant for that.
+The original attempt for upstreaming this MFD had a different compatible
+for each regulator which was not correct according to the reviewers at
+the time. I have thus used the same compatible for all regulators and
+make the distinction in the regulator driver (using the .id property).
+But I think that the problem here is again that I have confused the
+purpose of .name and .of_compatible properties of struct mfd_cell - if a
+driver is probed due to the .name property then I indeed should not need
+compatible for the regulator driver at all.
 
-> But you added here a devicetree node, plus probably undocumented compatib=
-le.
->
-> Does it even pass the checkpatch?
-
-It does, but you were correct in your previous messages that I have not
-run `make dt_binding_check` for this (or I assume that was what you
-meant when you said that I did not test this) because I was not aware of
-it when sending the MFD series and because this one would fail with the
-same problems as Rob pointed out for that one, which is the main reason
-why I only asked for feedback on the new parts. Sorry about that, next
-time I will be sure to first fix all already known problems before
-building on something.
 >
 > Best regards,
 > Krzysztof
 
-Thank you,
+Best regards,
 K. B.
