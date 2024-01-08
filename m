@@ -1,126 +1,120 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE33B4642C
-	for <phone-devel@vger.kernel.org>; Mon,  8 Jan 2024 13:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D4547776
+	for <phone-devel@vger.kernel.org>; Mon,  8 Jan 2024 14:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="MdOVdgNC"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a29058bb2ceso193765266b.0
-        for <phone-devel@vger.kernel.org>; Mon, 08 Jan 2024 05:50:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tM7WFjmo"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-40d858c56cbso24983185e9.2
+        for <phone-devel@vger.kernel.org>; Mon, 08 Jan 2024 06:18:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1704721814; x=1705326614; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=N7LXM3KgfbgyguER3OfUGbhzrMJWhuXRU6uPC0haymU=;
-        b=MdOVdgNCBMnZDVPiTA0fmGyibHCz6I7zC7igsHiAw8LZSYQuTCPduz6lWQ2Csx9G2G
-         LMciZ2wfRMwop/K8klJ4yZZMRrQRsJRHR49WCGI5ajcUROYx9pGKQOJsKCVRZuMapAqL
-         O80iZXdooDYJsga72TYmpSoUBTli1UVwCLtqDta6hxDYGDW6eh6bXXo27nBWrNcOwS1Q
-         sstxOj04eLxnYCqtZ2qzTrHlbG7MZ4eu89JklhCBHbVHL7S1HBMQZ4qevJ30BMI+jIX4
-         7bIb/ffNRXMeQKBkNNQGE/0VKwLVttCHdlINwQR8Wt8/0KSx5murK022GaT3InpBBs+/
-         0OMw==
+        d=linaro.org; s=google; t=1704723495; x=1705328295; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P3kcA+8gd/ihreT+PW6mSK4aXzHl6uwlNcvHHeH5WiU=;
+        b=tM7WFjmoIQ88teh6wPNt1c9d2g4CYW2funJNrdxfbYBwDF91tlVfil1HLLH8A6UEjQ
+         sgwsEGf1BzasLD9+j9JqEgPgoymXL8kjf2uJE3vkLUWIODV/dKwnpZ+KxM+5E3PI5hRM
+         Err3qb5WRqn4Udgm6VyN7kF1pbkLJJSuVz57ZRavkbxBsa46HhYJ2wrqowX5D53RLmiJ
+         P6uvx3vLFXyMayRO1PwTDHIoewtKfRbi1ffx3wPVIRdMdiTbsZw+UdhQTfm7hVK5B84m
+         xnMmdHS1uzenJynVUvUooHWoBIkYTg25oScGIggIGmURq3gFi4bpG7JGKgYbO+ddeA7s
+         N+lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704721814; x=1705326614;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=N7LXM3KgfbgyguER3OfUGbhzrMJWhuXRU6uPC0haymU=;
-        b=jHf+Cq9deaWRbM13Kot73Y5vyZ/ML7xD4Q/v0RS1L2F5V4VsbC6CqEtI+yyXBV5XN7
-         2bj3k4blPgjgLPVhm+YYE79NCDQmSIKG5MHSGQtq/FstA+8hcuZkHx8YpiYxLas+68l8
-         wfJvc/d+SYYpLDPj0JkL89YCFBPbkaGlVYkTlRBupi4/7CAs3ABKHd5EJULQ98Y8TL2r
-         XAaFZMvSq8f19uyFjEaliMgB5rbSlzDeiDIGjwLP/pZsXoDbShpUqENgvRH3LiuJdSAC
-         AeRakEdTt4yTuabkrgWb5zxFWSxaziELMxVma/qugRx7JWuTzcH1Us/WB9CBo8OOHYBN
-         nVjA==
-X-Gm-Message-State: AOJu0Yw/1ItYEz2MnXIkbSWjFtoIt7h7IUIX1jt3aTqHpGcTINB6OSSQ
-	C/r7bRnyjJbkBFinMtAQTEC/zIjOKznufg==
-X-Google-Smtp-Source: AGHT+IGM5+CmWIg9M/4CszE6SvRMtGuh7gRrlse6pdfdbou4+pHKIRI/SPkLVIYVE8jFlP9FC8RDHw==
-X-Received: by 2002:a17:906:f587:b0:a28:aab8:c4e7 with SMTP id cm7-20020a170906f58700b00a28aab8c4e7mr1281438ejd.34.1704721813712;
-        Mon, 08 Jan 2024 05:50:13 -0800 (PST)
-Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id fx19-20020a170906b75300b00a2362c5e3dbsm3930173ejb.151.2024.01.08.05.50.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jan 2024 05:50:12 -0800 (PST)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Mon, 08 Jan 2024 14:49:57 +0100
-Subject: [PATCH RFT] arm64: dts: qcom: sm8350: Reenable crypto & cryptobam
+        d=1e100.net; s=20230601; t=1704723495; x=1705328295;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P3kcA+8gd/ihreT+PW6mSK4aXzHl6uwlNcvHHeH5WiU=;
+        b=Cs5tjq8VHiBBvBX+W6e8AREmi1m+L6i/Vw5qTaUGBGyjSH95Q1MBpUOgd/9BsPebOo
+         JGeDlDfh2bB4GGBgGryhwodmi2c5ff3GeCdYFr7KUYza8g8vGMC+b4VS+8mTuLHB05kG
+         TjG0ckjgSEWKsUXJbK3kjkiwOdBlnf3WHWZkzcPsP79r8UBwtSCMh6QIQgp26SQd1zv7
+         Jb7CxDAm7tGUHDcGx9t/ZhswICPXV5+vkD5iv4eiKP8G8eKIBUeisPgLDx0WXV43Ibj0
+         yrkudtj1iM5iGTxvSykr6IHsebi41ddRh/0MYe9EkZDuzZU1xbrflLgw5pVJ0sNnJ+p6
+         yiKA==
+X-Gm-Message-State: AOJu0Yy40enJXEhQzET6KKlnTFTcoaENNpp2Dy7SLrzDj1yfb6XAd1yr
+	+mHUTPSDKgEQW3oYjgeuQzW3qlv5AYxbEg==
+X-Google-Smtp-Source: AGHT+IEN4VGbGmk3ve6F4+vOxvCSRMWlfVOCUolGlty5MqdDNcoSKMdHoVhYxoXIxYndwVFW2nTKDg==
+X-Received: by 2002:a05:600c:4595:b0:40d:2df0:ba12 with SMTP id r21-20020a05600c459500b0040d2df0ba12mr2037004wmo.83.1704723495272;
+        Mon, 08 Jan 2024 06:18:15 -0800 (PST)
+Received: from [192.168.199.125] (178235179081.dynamic-4-waw-k-1-3-0.vectranet.pl. [178.235.179.81])
+        by smtp.gmail.com with ESMTPSA id ha17-20020a170906a89100b00a2b1db54f7asm46705ejb.70.2024.01.08.06.18.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Jan 2024 06:18:14 -0800 (PST)
+Message-ID: <a5923bf7-0a05-43bd-b282-b45e5653ac4d@linaro.org>
+Date: Mon, 8 Jan 2024 15:18:12 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFT] arm64: dts: qcom: sm8350: Reenable crypto & cryptobam
+Content-Language: en-US
+To: Luca Weiss <luca.weiss@fairphone.com>, Andy Gross <agross@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bhupesh Sharma
+ <bhupesh.linux@gmail.com>, David Heidelberg <david@ixit.cz>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240108-sm8350-qce-v1-1-b7d586ff38af@fairphone.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20240108-sm8350-qce-v1-1-b7d586ff38af@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240108-sm8350-qce-v1-1-b7d586ff38af@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAIT9m2UC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDQwML3eJcC2NTA93C5FRds8SURBPLNEsDM1NzJaCGgqLUtMwKsGHRSkF
- uIUqxtbUA3+epsGEAAAA=
-To: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Bhupesh Sharma <bhupesh.linux@gmail.com>, David Heidelberg <david@ixit.cz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.12.4
 
-When num-channels and qcom,num-ees is not provided in devicetree, the
-driver will try to read these values from the registers during probe but
-this fails if the interconnect is not on and then crashes the system.
+On 8.01.2024 14:49, Luca Weiss wrote:
+> When num-channels and qcom,num-ees is not provided in devicetree, the
+> driver will try to read these values from the registers during probe but
+> this fails if the interconnect is not on and then crashes the system.
+> 
+> So we can provide these properties in devicetree (queried after patching
+> BAM driver to enable the necessary interconnect) so we can probe
+> cryptobam without reading registers and then also use the QCE as
+> expected.
 
-So we can provide these properties in devicetree (queried after patching
-BAM driver to enable the necessary interconnect) so we can probe
-cryptobam without reading registers and then also use the QCE as
-expected.
+This really feels a bit backwards.. Enable the resource to query the
+hardware for numbers, so that said resource can be enabled, but
+slightly later :/
 
-Fixes: 4d29db204361 ("arm64: dts: qcom: sm8350: fix BAM DMA crash and reboot")
-Fixes: f1040a7fe8f0 ("arm64: dts: qcom: sm8350: Add Crypto Engine support")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
-Not tested myself, but David Heidelberg was so nice and ran it on a
-SM8350 board in a test farm and it seems to be working as expected.
-
-But still please test it on some other boards so make sure it actually
-works as expected there also.
----
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index b46236235b7f..3cd75ab552c5 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -1754,10 +1754,10 @@ cryptobam: dma-controller@1dc4000 {
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
- 			qcom,controlled-remotely;
-+			num-channels = <16>;
-+			qcom,num-ees = <4>;
- 			iommus = <&apps_smmu 0x594 0x0011>,
- 				 <&apps_smmu 0x596 0x0011>;
--			/* FIXME: Probing BAM DMA causes some abort and system hang */
--			status = "fail";
- 		};
- 
- 		crypto: crypto@1dfa000 {
-@@ -1769,8 +1769,6 @@ crypto: crypto@1dfa000 {
- 				 <&apps_smmu 0x596 0x0011>;
- 			interconnects = <&aggre2_noc MASTER_CRYPTO 0 &mc_virt SLAVE_EBI1 0>;
- 			interconnect-names = "memory";
--			/* FIXME: dependency BAM DMA is disabled */
--			status = "disabled";
- 		};
- 
- 		ipa: ipa@1e40000 {
-
----
-base-commit: 0dd3ee31125508cd67f7e7172247f05b7fd1753a
-change-id: 20240108-sm8350-qce-6ada49f90657
-
-Best regards,
--- 
-Luca Weiss <luca.weiss@fairphone.com>
-
+Konrad
