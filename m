@@ -1,120 +1,163 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com [209.85.208.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D4547776
-	for <phone-devel@vger.kernel.org>; Mon,  8 Jan 2024 14:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD1E4643F
+	for <phone-devel@vger.kernel.org>; Mon,  8 Jan 2024 14:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tM7WFjmo"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-40d858c56cbso24983185e9.2
-        for <phone-devel@vger.kernel.org>; Mon, 08 Jan 2024 06:18:16 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Z8T0L5q4"
+Received: by mail-ed1-f66.google.com with SMTP id 4fb4d7f45d1cf-555bd21f9fdso2081443a12.0
+        for <phone-devel@vger.kernel.org>; Mon, 08 Jan 2024 06:22:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704723495; x=1705328295; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=P3kcA+8gd/ihreT+PW6mSK4aXzHl6uwlNcvHHeH5WiU=;
-        b=tM7WFjmoIQ88teh6wPNt1c9d2g4CYW2funJNrdxfbYBwDF91tlVfil1HLLH8A6UEjQ
-         sgwsEGf1BzasLD9+j9JqEgPgoymXL8kjf2uJE3vkLUWIODV/dKwnpZ+KxM+5E3PI5hRM
-         Err3qb5WRqn4Udgm6VyN7kF1pbkLJJSuVz57ZRavkbxBsa46HhYJ2wrqowX5D53RLmiJ
-         P6uvx3vLFXyMayRO1PwTDHIoewtKfRbi1ffx3wPVIRdMdiTbsZw+UdhQTfm7hVK5B84m
-         xnMmdHS1uzenJynVUvUooHWoBIkYTg25oScGIggIGmURq3gFi4bpG7JGKgYbO+ddeA7s
-         N+lA==
+        d=fairphone.com; s=fair; t=1704723759; x=1705328559; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OMMgLl4XRQ9TLf0vUhTzomvNdXTeUOyP7FWSiUcr6oQ=;
+        b=Z8T0L5q4j5AqzRGryoPzRdRWGrL2nOridhnSiCHpPzMRMjY576uZ1tqfG3KUiMcRSX
+         gGmc0sB2rTI47mzYSeUJs0I0A4ItLpL2OvIWf7Fub3I0EGbtRFyTPwMq7pKp+43l1XxV
+         Ob1Ck8xLVwX0Dnv95ZsUQ1AmShw8+6yYlBOHyQQLtgf8fkI8qT+S9akIfp7HD46ztOPd
+         wkk+tB1WzGIY/pRrdXOvAhM+/bp3b8RHXve/Gc77x9HbuZxR5W67e1UVN9mFTpmtXeOq
+         rHMasYauoH9JbGIvgEziHufqa16BhwFQoD8dZnfodWu8n2trFYxnd7YL7+I806ikjmkF
+         R4iQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704723495; x=1705328295;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P3kcA+8gd/ihreT+PW6mSK4aXzHl6uwlNcvHHeH5WiU=;
-        b=Cs5tjq8VHiBBvBX+W6e8AREmi1m+L6i/Vw5qTaUGBGyjSH95Q1MBpUOgd/9BsPebOo
-         JGeDlDfh2bB4GGBgGryhwodmi2c5ff3GeCdYFr7KUYza8g8vGMC+b4VS+8mTuLHB05kG
-         TjG0ckjgSEWKsUXJbK3kjkiwOdBlnf3WHWZkzcPsP79r8UBwtSCMh6QIQgp26SQd1zv7
-         Jb7CxDAm7tGUHDcGx9t/ZhswICPXV5+vkD5iv4eiKP8G8eKIBUeisPgLDx0WXV43Ibj0
-         yrkudtj1iM5iGTxvSykr6IHsebi41ddRh/0MYe9EkZDuzZU1xbrflLgw5pVJ0sNnJ+p6
-         yiKA==
-X-Gm-Message-State: AOJu0Yy40enJXEhQzET6KKlnTFTcoaENNpp2Dy7SLrzDj1yfb6XAd1yr
-	+mHUTPSDKgEQW3oYjgeuQzW3qlv5AYxbEg==
-X-Google-Smtp-Source: AGHT+IEN4VGbGmk3ve6F4+vOxvCSRMWlfVOCUolGlty5MqdDNcoSKMdHoVhYxoXIxYndwVFW2nTKDg==
-X-Received: by 2002:a05:600c:4595:b0:40d:2df0:ba12 with SMTP id r21-20020a05600c459500b0040d2df0ba12mr2037004wmo.83.1704723495272;
-        Mon, 08 Jan 2024 06:18:15 -0800 (PST)
-Received: from [192.168.199.125] (178235179081.dynamic-4-waw-k-1-3-0.vectranet.pl. [178.235.179.81])
-        by smtp.gmail.com with ESMTPSA id ha17-20020a170906a89100b00a2b1db54f7asm46705ejb.70.2024.01.08.06.18.13
+        d=1e100.net; s=20230601; t=1704723759; x=1705328559;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=OMMgLl4XRQ9TLf0vUhTzomvNdXTeUOyP7FWSiUcr6oQ=;
+        b=X4tEQvPsVy0OCEy0RLtbwhsqyR0F8u5h4rAUiZ29Uur9yTfN9U1H+7U5JgB+TjXKeB
+         RJA1xOT/6YfYPSdCpYVaj+36cC3izsAUlXGE955wK8GJaE8HfqqoI7VTP5ZmAqEV9wFs
+         krVpFTBXNYFmHFJ6JDXXGidKQHiHnlQM2wJynvHObsmI08BppRPwdmYagRM1idG/BSjJ
+         zUfOi9+uQ5DuAvRkPLl3QtruBk/kJZDfD6ptbpgGVZ+ZuYxNtsvOBXG5m5/KjVCfk/h9
+         7Zw4zU4g11v9j8nxAGetVB1j866QwLT/K9bpEdVo+ercsjToNJg5e5sF4tHk64LTqqqE
+         /yCw==
+X-Gm-Message-State: AOJu0YyJtXhVfRxoO5NIXglnINSz2eIAG7KOjz/mDunGIvEs8PnRarl4
+	Igm4XleuADyKW1dRIvqaZlEogPE8R1LgzA==
+X-Google-Smtp-Source: AGHT+IHemUG5qaZGoETj95zldC92QIk78YaPkA4snM+h6XObqyWR81gB9QZGYvlmTpVCVXCM/O+zLQ==
+X-Received: by 2002:a50:c29a:0:b0:557:aba8:631 with SMTP id o26-20020a50c29a000000b00557aba80631mr1026886edf.19.1704723759382;
+        Mon, 08 Jan 2024 06:22:39 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id t8-20020a056402020800b0055712dec5a6sm4367215edv.2.2024.01.08.06.22.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jan 2024 06:18:14 -0800 (PST)
-Message-ID: <a5923bf7-0a05-43bd-b282-b45e5653ac4d@linaro.org>
-Date: Mon, 8 Jan 2024 15:18:12 +0100
+        Mon, 08 Jan 2024 06:22:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT] arm64: dts: qcom: sm8350: Reenable crypto & cryptobam
-Content-Language: en-US
-To: Luca Weiss <luca.weiss@fairphone.com>, Andy Gross <agross@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Bhupesh Sharma
- <bhupesh.linux@gmail.com>, David Heidelberg <david@ixit.cz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240108-sm8350-qce-v1-1-b7d586ff38af@fairphone.com>
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20240108-sm8350-qce-v1-1-b7d586ff38af@fairphone.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Mon, 08 Jan 2024 15:22:38 +0100
+Message-Id: <CY9E4ZCHOMWU.C18NR0H7V1QX@fairphone.com>
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Konrad Dybcio" <konrad.dybcio@linaro.org>, "Andy Gross"
+ <agross@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>, "Rob
+ Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
+ <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Bhupesh Sharma" <bhupesh.linux@gmail.com>, "David Heidelberg"
+ <david@ixit.cz>, "Stephan Gerhold" <stephan@gerhold.net>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
+ <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH RFT] arm64: dts: qcom: sm8350: Reenable crypto &
+ cryptobam
+X-Mailer: aerc 0.15.2
+References: <20240108-sm8350-qce-v1-1-b7d586ff38af@fairphone.com>
+ <a5923bf7-0a05-43bd-b282-b45e5653ac4d@linaro.org>
+In-Reply-To: <a5923bf7-0a05-43bd-b282-b45e5653ac4d@linaro.org>
 
-On 8.01.2024 14:49, Luca Weiss wrote:
-> When num-channels and qcom,num-ees is not provided in devicetree, the
-> driver will try to read these values from the registers during probe but
-> this fails if the interconnect is not on and then crashes the system.
-> 
-> So we can provide these properties in devicetree (queried after patching
-> BAM driver to enable the necessary interconnect) so we can probe
-> cryptobam without reading registers and then also use the QCE as
-> expected.
+On Mon Jan 8, 2024 at 3:18 PM CET, Konrad Dybcio wrote:
+> On 8.01.2024 14:49, Luca Weiss wrote:
+> > When num-channels and qcom,num-ees is not provided in devicetree, the
+> > driver will try to read these values from the registers during probe bu=
+t
+> > this fails if the interconnect is not on and then crashes the system.
+> >=20
+> > So we can provide these properties in devicetree (queried after patchin=
+g
+> > BAM driver to enable the necessary interconnect) so we can probe
+> > cryptobam without reading registers and then also use the QCE as
+> > expected.
+>
+> This really feels a bit backwards.. Enable the resource to query the
+> hardware for numbers, so that said resource can be enabled, but
+> slightly later :/
 
-This really feels a bit backwards.. Enable the resource to query the
-hardware for numbers, so that said resource can be enabled, but
-slightly later :/
+If you think adding interconnect support to driver and dtsi is better,
+let me know.
 
-Konrad
+Stephan (+CC) mentioned it should be okay like this *shrug*
+
+For the record, this is the same way I got the values for sc7280[0] and
+sm6350[1].
+
+[0] https://lore.kernel.org/linux-arm-msm/20231229-sc7280-cryptobam-fixup-v=
+1-1-bd8f68589b80@fairphone.com/
+[1] https://lore.kernel.org/linux-arm-msm/20240105-sm6350-qce-v1-0-416e5c73=
+19ac@fairphone.com/
+
+diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qco=
+m/sm8350.dtsi
+index b46236235b7f..cd4dd9852d9e 100644
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -1756,8 +1756,8 @@ cryptobam: dma-controller@1dc4000 {
+ 			qcom,controlled-remotely;
+ 			iommus =3D <&apps_smmu 0x594 0x0011>,
+ 				 <&apps_smmu 0x596 0x0011>;
+-			/* FIXME: Probing BAM DMA causes some abort and system hang */
+-			status =3D "fail";
++			interconnects =3D <&aggre2_noc MASTER_CRYPTO 0 &mc_virt SLAVE_EBI1 0>;
++			interconnect-names =3D "memory";
+ 		};
+=20
+ 		crypto: crypto@1dfa000 {
+diff --git a/drivers/dma/qcom/bam_dma.c b/drivers/dma/qcom/bam_dma.c
+index 5e7d332731e0..9de28f615639 100644
+--- a/drivers/dma/qcom/bam_dma.c
++++ b/drivers/dma/qcom/bam_dma.c
+@@ -40,6 +40,7 @@
+ #include <linux/circ_buf.h>
+ #include <linux/clk.h>
+ #include <linux/dmaengine.h>
++#include <linux/interconnect.h>
+ #include <linux/pm_runtime.h>
+=20
+ #include "../dmaengine.h"
+@@ -394,6 +395,7 @@ struct bam_device {
+ 	const struct reg_offset_data *layout;
+=20
+ 	struct clk *bamclk;
++	struct icc_path *mem_path;
+ 	int irq;
+=20
+ 	/* dma start transaction tasklet */
+@@ -1206,6 +1208,7 @@ static int bam_init(struct bam_device *bdev)
+ 		bdev->num_channels =3D val & BAM_NUM_PIPES_MASK;
+ 	}
+=20
++	printk(KERN_ERR "%s:%d DBG num_ees=3D%u num_channels=3D%u\n", __func__, _=
+_LINE__, bdev->num_ees, bdev->num_channels);
+ 	/* Reset BAM now if fully controlled locally */
+ 	if (!bdev->controlled_remotely && !bdev->powered_remotely)
+ 		bam_reset(bdev);
+@@ -1298,6 +1301,14 @@ static int bam_dma_probe(struct platform_device *pde=
+v)
+ 		return ret;
+ 	}
+=20
++	bdev->mem_path =3D devm_of_icc_get(bdev->dev, "memory");
++	if (IS_ERR(bdev->mem_path))
++		return PTR_ERR(bdev->mem_path);
++
++	ret =3D icc_set_bw(bdev->mem_path, 1, 1);
++	if (ret)
++		return ret;
++
+ 	ret =3D bam_init(bdev);
+ 	if (ret)
+ 		goto err_disable_clk;
