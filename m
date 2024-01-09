@@ -1,109 +1,112 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C976F3608F
-	for <phone-devel@vger.kernel.org>; Tue,  9 Jan 2024 10:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FFD3609D
+	for <phone-devel@vger.kernel.org>; Tue,  9 Jan 2024 10:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sKTj27SB"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-50ea226bda8so2921517e87.2
-        for <phone-devel@vger.kernel.org>; Tue, 09 Jan 2024 02:09:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gR8WJl1J"
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-db3fa47c2f7so1998903276.0
+        for <phone-devel@vger.kernel.org>; Tue, 09 Jan 2024 02:26:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704794984; x=1705399784; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vrSBay0Xit0RBIWL7ygXxBZNSKXups8cFyOtms9TolI=;
-        b=sKTj27SB35IptV5vzoPsRaNo9dx+Qy+tbuqgXkXk3WW9ESk9HZ6NzQuapEBk6X/aym
-         mDBZAop+d2sG8rhUjzF8TePmzdKOkVl62IOJGaK7MtzGGRiW3w6a8QZ4OJRTsHTAAPug
-         EWeCdOlTma6ks3jU7R6YvMKUlTDOTaiVllJXtDVnRRk/A0NzLjGEb5xxFv6r6BZlbEdT
-         KSrnHHiNRVJJBDPiRozWmREVOCDbBfw+C9XAxmgAP3V1/hGduqAv4FR2YvEam55+zs29
-         AHYFhAKtp83+mScTps1oOXGB2l78fTdcFioSpVfJn6FKTvr6b3UdI0oSRWV79gFwCgcU
-         SVmw==
+        d=linaro.org; s=google; t=1704796015; x=1705400815; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kgqGlkcMY7u56Ey8Ssan/W4yPE2JFQtM3N3GgOR/j04=;
+        b=gR8WJl1J//qv9if6koihIbit0Zd7NxTDX7R0irdnFoqdnSsM5W4AYuMSN/Q1P+Lq9k
+         vc/6hEtrPhFqo9ZNhdcH2Zm/QJ1vQFQOiOU87J6V14C2vYYdc53AZt2Q7JXBnrBUC5Cm
+         FtbqfYYhpdiRIioTF7l2TbUMNd0uz3azs+u7705vmcZ8wqCAcE5DlMTzMZ1FVH8PBtPV
+         nf6oN/wvRmysmK+WpdAgfi2AdzAx1SFcz+WA46hi5WCMIz3JsYjGXCQyc44AkhJsoMLH
+         1k1VKlpdkFSer1fVr9XSWFbLjya6Hjux4gYI28JqoQzhLn1gtFsuLRS1ZpsFcbBoHt9D
+         HCQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704794984; x=1705399784;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vrSBay0Xit0RBIWL7ygXxBZNSKXups8cFyOtms9TolI=;
-        b=Z9Qx7fTk1SAWOS7uJVLc80OzTSdJ1JHI9605MPNMQANpxlR/O4WSz/1fkf3uYnahP9
-         32Yj3a/7NpO4ElEWy9F1+LdULdUKIOAJrlzDM1UmxNCsx5hmwuo4g9MHPybhMUpP2Pml
-         b61523KtjRhjAx7bOQSREgPJ/Z8phWOJVkNmWfKa3qLQWKsL4RN9xc/NKWUIHuTYjDaf
-         7VIDoJQQIDszmw/WJlhKPxvwdbI8r16IgoclUrRIBkSVQRPNLwOQifiNO7mGQL2PmqEW
-         umq6oegxHp8FgPCOHXz1a6DXa4ZphVRgF0onIwAhjjuuU4xNX4du2pkAkWHEiF2LCkPe
-         WmTw==
-X-Gm-Message-State: AOJu0YzZ8g0iLTEi+lwDIvLv0lv88UWMUemKtlC4qjzWxoBWKXJZvDHL
-	2s9muSK4d4dSczwr3uK8yKYihHbfN2Lj4NzrwDrCJ88oQJJbPw==
-X-Google-Smtp-Source: AGHT+IGshVVbd90za93mKT7jUyObm7s+VHYZngj6eFDEebwOncx2yihx0l0bIbFxJhGXDhoVN+uSHg==
-X-Received: by 2002:a05:6512:398b:b0:50e:69e9:373e with SMTP id j11-20020a056512398b00b0050e69e9373emr2597112lfu.4.1704794983770;
-        Tue, 09 Jan 2024 02:09:43 -0800 (PST)
-Received: from [172.30.205.119] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id u18-20020a196a12000000b0050e7e409500sm268070lfu.244.2024.01.09.02.09.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jan 2024 02:09:43 -0800 (PST)
-Message-ID: <18dc5f88-6590-4e2d-948f-fd77f4713f8b@linaro.org>
-Date: Tue, 9 Jan 2024 11:09:42 +0100
+        d=1e100.net; s=20230601; t=1704796015; x=1705400815;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kgqGlkcMY7u56Ey8Ssan/W4yPE2JFQtM3N3GgOR/j04=;
+        b=hN1tkbmlC1hJqy01v6eKg/df9r0SJDCvPEXZAf2bl/4/d0UTdy3jY2XlUgIUf+u86y
+         io8vU8TQlfc4jrE1TXPA4Fzo2JV3MVAVn0b+asZVWkb4X27JYKMqjtO9IgkxBNoB9Kh2
+         9T08WnYq+EYGwfrdNVvO3IrnfpAS3cwGZw0DJoYGoWnE0kI/LkeHxm5ZgD19gGCIRJ20
+         yZ+FVafl8ZPLp0s6UYpxecNoNToL47aH43b9VdMsGbGV26vORIcAh2TlB/mo3FBe0KhS
+         fRDL4C72D9fDoDD5PqQ7npzkg5icPWIw/dbmh9mMRfxInDyCTfWpc40qaAMnbyzsw2WS
+         PzMw==
+X-Gm-Message-State: AOJu0YyLsMA6Erh+4d6expQ+NZqxqG4svwYHuG/mJ7/vnZLFI7YpYpFc
+	pppiAfK6h1cUy/5dL+34Ur8YJYBcdSGnuZQXrzI0GhD2c7ejMFurOtze91zA+Vg=
+X-Google-Smtp-Source: AGHT+IEQcZ6P9lXrBSBQ98idjcrgG87Zex/N/4zJ2/Drg8bOifKzxnfvcNAyWLYxJMhEyMuLNyRozZ9WLgS7M5DCWzc=
+X-Received: by 2002:a25:fe10:0:b0:dbe:ab5b:c659 with SMTP id
+ k16-20020a25fe10000000b00dbeab5bc659mr2117007ybe.37.1704796014777; Tue, 09
+ Jan 2024 02:26:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: sm7225-fairphone-fp4: Add PM6150L
- thermals
-Content-Language: en-US
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
 References: <20240105-fp4-thermals-v1-0-f95875a536b7@fairphone.com>
- <20240105-fp4-thermals-v1-2-f95875a536b7@fairphone.com>
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20240105-fp4-thermals-v1-2-f95875a536b7@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <20240105-fp4-thermals-v1-2-f95875a536b7@fairphone.com> <18dc5f88-6590-4e2d-948f-fd77f4713f8b@linaro.org>
+In-Reply-To: <18dc5f88-6590-4e2d-948f-fd77f4713f8b@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Tue, 9 Jan 2024 12:26:43 +0200
+Message-ID: <CAA8EJpp5ZwJUJbbt7YG=1aAdGoScA+PTEf==7gJk3RUP2yu8uw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: sm7225-fairphone-fp4: Add PM6150L thermals
+To: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Luca Weiss <luca.weiss@fairphone.com>, Bjorn Andersson <andersson@kernel.org>, 
+	Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+
+On Tue, 9 Jan 2024 at 12:10, Konrad Dybcio <konrad.dybcio@linaro.org> wrote:
+>
+>
+>
+> On 1/5/24 15:54, Luca Weiss wrote:
+> > Configure the thermals for the PA_THERM1, MSM_THERM, PA_THERM0,
+> > RFC_CAM_THERM, CAM_FLASH_THERM and QUIET_THERM thermistors connected to
+> > PM6150L.
+> >
+> > Due to hardware constraints we can only register 4 zones with
+> > pm6150l_adc_tm, the other 2 we can register via generic-adc-thermal.
+>
+> Ugh.. so the ADC can support more inputs than the ADC_TM that was
+> designed to ship alongside it can?
+
+Yes. ADC_TM can support monitoring of 8 channels in total.
+
+>
+> And that's why the "generic-adc-thermal"-provided zones need to
+> be polled?
+>
+> >
+> > The trip points can really only be considered as placeholders, more
+> > configuration with cooling etc. can be added later.
+> >
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> [...]
+>
+> I've read the sentence above, but..
+> > +             sdm-skin-thermal {
+> > +                     polling-delay-passive = <1000>;
+> > +                     polling-delay = <5000>;
+> > +                     thermal-sensors = <&msm_therm_sensor>;
+> > +
+> > +                     trips {
+> > +                             active-config0 {
+> > +                                     temperature = <125000>;
+> > +                                     hysteresis = <1000>;
+> > +                                     type = "passive";
+>
+> I don't fancy burnt fingers for dinner!
+>
+> Konrad
+>
 
 
-
-On 1/5/24 15:54, Luca Weiss wrote:
-> Configure the thermals for the PA_THERM1, MSM_THERM, PA_THERM0,
-> RFC_CAM_THERM, CAM_FLASH_THERM and QUIET_THERM thermistors connected to
-> PM6150L.
-> 
-> Due to hardware constraints we can only register 4 zones with
-> pm6150l_adc_tm, the other 2 we can register via generic-adc-thermal.
-
-Ugh.. so the ADC can support more inputs than the ADC_TM that was
-designed to ship alongside it can?
-
-And that's why the "generic-adc-thermal"-provided zones need to
-be polled?
-
-> 
-> The trip points can really only be considered as placeholders, more
-> configuration with cooling etc. can be added later.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-[...]
-
-I've read the sentence above, but..
-> +		sdm-skin-thermal {
-> +			polling-delay-passive = <1000>;
-> +			polling-delay = <5000>;
-> +			thermal-sensors = <&msm_therm_sensor>;
-> +
-> +			trips {
-> +				active-config0 {
-> +					temperature = <125000>;
-> +					hysteresis = <1000>;
-> +					type = "passive";
-
-I don't fancy burnt fingers for dinner!
-
-Konrad
+-- 
+With best wishes
+Dmitry
