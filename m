@@ -1,94 +1,61 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40140.protonmail.ch (mail-40140.protonmail.ch [185.70.40.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8B736B17
-	for <phone-devel@vger.kernel.org>; Tue,  9 Jan 2024 11:27:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0286538F83
+	for <phone-devel@vger.kernel.org>; Tue,  9 Jan 2024 13:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="jRE56T1L"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5542a7f1f3cso3201590a12.2
-        for <phone-devel@vger.kernel.org>; Tue, 09 Jan 2024 03:27:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1704799675; x=1705404475; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oKel/uL1tajPej7Kr+Y3gD2pm0Q/5wlP7q9l4+pRLR8=;
-        b=jRE56T1LeQJAkA6mhHCrJJdZN4io3r5Q1w3lsA3Q5ln52EOtCaCvigxk9b1bKXV0Uc
-         l02SqWOBEwm2aDRxLaY9990nhiSA5bCCcG82N5iXrasCHFLvI//xbMgDEnSApTFTwaIz
-         MSl0tgwuDXnJQAxEyB5RBX4efzT5xCnxG+Eq5WBttWGmroJWSwIZBIRj7t2TRe0e0ToY
-         Qpf93VqfghWjBWrSvIfCg6iHEtX9UAjbvMz4htxGj8R9rgG+Sj0OWoQT1E2nnwbujJxN
-         hFnH3jAgeYx3+0Tlt26MUmgT40Lr3b2vukLkIF832pMOPF7wvUB2JSeGSCXx++3SEnj/
-         0xgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704799675; x=1705404475;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=oKel/uL1tajPej7Kr+Y3gD2pm0Q/5wlP7q9l4+pRLR8=;
-        b=Y7VdTaUU5VoOzizAtMmUFR8wE48YnxW3myawFlJ4KhH+zpUZtYSKac/VbZjkAjeBuP
-         rR5fPK3SZmSLlClBteGG74AyafhOcXK3bM1cW7SA/Wg7/53SmgyePFSpJu5HfgQemBPq
-         JmyBps+4kXPJe9nGQlkCCVZIxI30pOL00A0ptGVBTQl319cBw/lqeFSXj/bAna5Il/Es
-         ANzpZMfbGWMrCP4xDRYDoAP7L5301j3If+vk0YH0NjRWwygsbIsEb/5ATWSKYQ3G/ztB
-         NANVAosdJraNQ0VYBiQf/SY0YCLlRCJMD8K+uBBZ6h2VDFrEIjBQ2Cxis0UUVJ83HWxI
-         AdKw==
-X-Gm-Message-State: AOJu0YzVbRCqCyIwlW0aN27fjbwBTwYRkhxG930JlHxnhtprKP34ojJ4
-	LSV6ieUMM6rh53EXkB6+94gBzaIs5ml3mg==
-X-Google-Smtp-Source: AGHT+IFLDOEYrnaFAb1pvyYayLgZLIaQwOsuzV7aIZuufvzjoaHL+sD2wiqnSgjHvZSMG2kvOL3hGg==
-X-Received: by 2002:a50:bb2f:0:b0:557:188b:eccb with SMTP id y44-20020a50bb2f000000b00557188beccbmr2752722ede.84.1704799675115;
-        Tue, 09 Jan 2024 03:27:55 -0800 (PST)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id b6-20020a0564021f0600b0055678085e27sm847587edb.20.2024.01.09.03.27.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jan 2024 03:27:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="xLfk3UDC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1704807065; x=1705066265;
+	bh=mSQO6PqIVRIuS2kYwokoVuN6OHb1orUnS2L5niiKQWc=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=xLfk3UDC1BwiThJx7igaPFoqX2FDakkQoqiZEOG0TFVdB2L0CrnYuOhwP58H/qN+1
+	 A5IENcRSWINH80dkrgzW3/RP01EjRDBOmCHaNVvRQY7Q/KiHgjxZls60GOPvBl5ggy
+	 bcBiuQ5rpzskTTcq5g3r7bD1bj5tdL4MB1mgW8maVqUftWIsW3qMkWsBk5v8+JmCu4
+	 kATBm76TjXYZTWdC07x3NdIJcS/zSk+rHnP28B92G7//FCVES9y7mdPOXeGbZvreXL
+	 oF76p9QeD9IEw+Qv7qeKKscZyA9QXiEtSqw8Q5f7jtrR84FBFyA40huSuMZTDoWIBk
+	 xnw0wWyKvJ1DA==
+Date: Tue, 09 Jan 2024 13:31:02 +0000
+To: "phone-devel@vger.kernel.org" <phone-devel@vger.kernel.org>
+From: Turritopsis Dohrnii Teo En Ming <teo.en.ming@protonmail.com>
+Cc: "ceo@teo-en-ming-corp.com" <ceo@teo-en-ming-corp.com>
+Subject: Regarding phone-devel mailing list
+Message-ID: <JHwCUqiZnFCqLqb8_cilO-r4elgKbmPmHQY9GULTDpgiyBCgjA4qy2NhgkZIOgR37wtNDiAnrlok73ZElDguZujWLb3RvpmCPNaUEcy-q9c=@protonmail.com>
+Feedback-ID: 39510961:user:proton
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 09 Jan 2024 12:27:54 +0100
-Message-Id: <CYA51QMVFQZF.3NEPC3R2QY2VM@fairphone.com>
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@linaro.org>, "Andy Gross"
- <agross@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>, "Thara
- Gopinath" <thara.gopinath@gmail.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
- "Rob Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
- <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Bhupesh Sharma" <bhupesh.sharma@linaro.org>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-crypto@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/2] Add Crypto Engine support for SM6350
-X-Mailer: aerc 0.15.2
-References: <20240105-sm6350-qce-v1-0-416e5c7319ac@fairphone.com>
- <c3e82c7a-fc03-44c6-bf83-97dffaf22dba@linaro.org>
-In-Reply-To: <c3e82c7a-fc03-44c6-bf83-97dffaf22dba@linaro.org>
 
-On Mon Jan 8, 2024 at 1:40 PM CET, Konrad Dybcio wrote:
-> On 5.01.2024 17:15, Luca Weiss wrote:
-> > Add the compatible and nodes for the QCE found on SM6350 SoC.
-> >=20
-> > Not completely sure how to fully test it but "kcapi-speed --all" shows
-> > no issues. Let me know if I can/should test this more.
->
-> I think I used `cryptsetup benchmark` with and without the ICE enabled
-> a couple years back. IIRC the CPU should be faaar faster but also chug
-> power while at it.
+Subject: Regarding phone-devel mailing list
 
-Are you sure you mean QCE here (which this patch is about) and not ICE?
+Good day from Singapore,
 
-I'm not aware of them working together somehow but I wouldn't be
-surprised if there's something since I don't know much of this area at
-all.
+May I know if phone-devel mailing list is for discussion of Android phones =
+or mobile phones based on pure Linux distros like Ubuntu and Fedora?
 
-Regards
-Luca
+Thank you.
 
->
-> Konrad
+Regards,
 
+Mr. Turritopsis Dohrnii Teo En Ming
+Targeted Individual in Singapore
+Blogs:
+https://tdtemcerts.blogspot.com
+https://tdtemcerts.wordpress.com
+GIMP also stands for Government-Induced Medical Problems.
+9 Jan 2024 Tuesday 9.30 PM
+
+
+
+
+
+
+Sent with Proton Mail secure email.
