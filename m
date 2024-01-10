@@ -1,90 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3949747F46;
-	Wed, 10 Jan 2024 11:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5D047A57
+	for <phone-devel@vger.kernel.org>; Wed, 10 Jan 2024 11:29:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fFbdmt5J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C84AC433F1;
-	Wed, 10 Jan 2024 11:23:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704885804;
-	bh=RCE2y0eor3dKdkA/sjI7c35eXtYn52uyvFYjl/ELECE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fFbdmt5JAETnqcBpMj304al9iIy+OKopuhuAL8TSGKC17wOLB3U0RnSvhLpcQhvOV
-	 h38dNnVcUhYxNo+DMqTDLF/dhvo7rHfjz31dEGPUzs+/Vg102gdxl3dUOLPha3LEsq
-	 8EYdNAiLk3uL/OqKann72I2YA9wS3jMA2echwuEDJFsk0bUktIhhg1rrLTckS9yx9H
-	 DiVZZdFLcWb7t5qNNugp0MRoLjJcu3B/T3SHnkcQs/TOWdNOD5U4q+/yHcki1VwEsY
-	 htIA2SwfsDx8kktKtv6xIZelEmNchGn0sJLkR0H4eDdXu259z40QNc1TZyAllcEqDY
-	 yAUWl+yCsKUVw==
-Date: Wed, 10 Jan 2024 12:23:21 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
-	Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@gmail.com>, 
-	Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 3/3] arm64: dts: qcom: sm7225-fairphone-fp4: Enable
- display and GPU
-Message-ID: <2zkiop7xg7w4vkpjpol25qna5wwbq4ja5o6iwuqh25m34k6mgd@aemrbzqgx2oe>
-References: <20240105-fp4-panel-v1-0-1afbabc55276@fairphone.com>
- <20240105-fp4-panel-v1-3-1afbabc55276@fairphone.com>
- <3fdc6e74-d817-4341-bf64-9096608990d6@linaro.org>
- <CYAZ37LBKG4E.2096GKVUXN8Y2@fairphone.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Uw3d5qUD"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-50e8ca6c76dso4458985e87.3
+        for <phone-devel@vger.kernel.org>; Wed, 10 Jan 2024 03:29:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704886188; x=1705490988; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HAkF12kWNFoMruhw1tXFopfrZD7wBVUFQgsn7muBhX8=;
+        b=Uw3d5qUDuqpbjoKUyOJbCGl8R1ZmhTGzqWWEJ2adYLgKNmWphj8Go5t/kxof9ZM3iE
+         W4wbSJ3S4uW94wu/MiVjDxeb5GAVkdPhLMpldSk98WkStWoXYTki69leXKMQOzgzvV5c
+         d3xrV7mJWv9byb723R4OFOXCwEYK5H2yNW7vUSfESisJPJifpKi6joyPYzoleMXu2Gqr
+         Sgj+YBSzkoxqe0oFXx5AStGD2OARC9TtBy1kc7Ya5Pb/4o4c8VjyiudfF2/V5iWvroiG
+         xuFEbwd0O8klkLABG8nAAdkdtlRrVCIMzCPgWzlzIOsaLI42EGis1gUFC4zDckPZp2je
+         3Wbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704886188; x=1705490988;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HAkF12kWNFoMruhw1tXFopfrZD7wBVUFQgsn7muBhX8=;
+        b=cnx+xWP8SZ1du7mkRuk0EvYAzO1NEkO5iAwYrEhFyVvMlTl0TuN8JDvjj4bHnOu3p7
+         GAe6PzIMWbhI9dTDieFAExvBzZHX4jzEhyG7x6/WWZCX744DMCT3hYw/xZ6iaj3cKsaM
+         RN89iLvjFbEjuISJ2lkizOxmOT5QWkmCqgCW7lzxz6m/vkliZReYYUY+lLgldDtnQrDd
+         BQwxpfWyzOISf3Ni1BnPK9zqo17ZmeDKin6m6iytcDvckRiUGQWGeAYBZn9w7rlyjGj7
+         aUcl0MgipvR9FdeUwMrJ95w9I3UaQvlnWA+IWPmcBYGDNC9qkRU07XAC/0gtQGP3ZtXB
+         d3Ag==
+X-Gm-Message-State: AOJu0YwebSBGWMUu0+IP7finn3jtIog3aQbK/bPPrPd7y5UChTW908C+
+	E0MzeSKdX9g+Wo14ckfKujic5cb1pGyJ8A==
+X-Google-Smtp-Source: AGHT+IEeyrVbvmxHPlptn1HDzewfBjNsVi4jhGnvJVBqvIurtb0y+etCYo4xX4fGB6JzAXSi8Ds8mA==
+X-Received: by 2002:ac2:490e:0:b0:50e:5448:3316 with SMTP id n14-20020ac2490e000000b0050e54483316mr280029lfi.137.1704886188452;
+        Wed, 10 Jan 2024 03:29:48 -0800 (PST)
+Received: from [172.30.205.119] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
+        by smtp.gmail.com with ESMTPSA id f15-20020a19380f000000b0050ea902d191sm640405lfa.153.2024.01.10.03.29.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jan 2024 03:29:48 -0800 (PST)
+Message-ID: <9ba86081-1484-4d1d-9555-317d10e1617f@linaro.org>
+Date: Wed, 10 Jan 2024 12:29:46 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rxtk5satlzcpouxq"
-Content-Disposition: inline
-In-Reply-To: <CYAZ37LBKG4E.2096GKVUXN8Y2@fairphone.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] arm64: dts: qcom: sm7225-fairphone-fp4: Enable
+ display and GPU
+Content-Language: en-US
+To: Maxime Ripard <mripard@kernel.org>, Luca Weiss <luca.weiss@fairphone.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20240105-fp4-panel-v1-0-1afbabc55276@fairphone.com>
+ <20240105-fp4-panel-v1-3-1afbabc55276@fairphone.com>
+ <3fdc6e74-d817-4341-bf64-9096608990d6@linaro.org>
+ <CYAZ37LBKG4E.2096GKVUXN8Y2@fairphone.com>
+ <2zkiop7xg7w4vkpjpol25qna5wwbq4ja5o6iwuqh25m34k6mgd@aemrbzqgx2oe>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <2zkiop7xg7w4vkpjpol25qna5wwbq4ja5o6iwuqh25m34k6mgd@aemrbzqgx2oe>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
---rxtk5satlzcpouxq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 10, 2024 at 12:00:23PM +0100, Luca Weiss wrote:
-> On Wed Jan 10, 2024 at 11:58 AM CET, Konrad Dybcio wrote:
-> >
-> >
-> > On 1/5/24 15:29, Luca Weiss wrote:
-> > > Add the description for the display panel found on this phone and rem=
-ove
-> > > the simple-framebuffer that was in place until now
-> >
-> > Why? They should be able to coexist with a smooth-ish handoff
->=20
-> Does that work upstream? I'm aware that downstream can do this but
-> thought this was still missing upstream.
+On 1/10/24 12:23, Maxime Ripard wrote:
+> On Wed, Jan 10, 2024 at 12:00:23PM +0100, Luca Weiss wrote:
+>> On Wed Jan 10, 2024 at 11:58 AM CET, Konrad Dybcio wrote:
+>>>
+>>>
+>>> On 1/5/24 15:29, Luca Weiss wrote:
+>>>> Add the description for the display panel found on this phone and remove
+>>>> the simple-framebuffer that was in place until now
+>>>
+>>> Why? They should be able to coexist with a smooth-ish handoff
+>>
+>> Does that work upstream? I'm aware that downstream can do this but
+>> thought this was still missing upstream.
+> 
+> It depends what you call smooth-ish I guess, but KMS handles the
+> handover just fine. You're likely to get a flicker during the transition
+> though.
 
-It depends what you call smooth-ish I guess, but KMS handles the
-handover just fine. You're likely to get a flicker during the transition
-though.
+Yes, the panel driver will assert the reset pin to get the hw
+into a predictable state, so there will likely be a split
+second of black or black+garbage.
 
-Either way, the DT isn't the right place to choose, you should enable
-both, and the distro will choose its policy through configuration.
-
-Maxime
-
---rxtk5satlzcpouxq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZZ5+KQAKCRDj7w1vZxhR
-xVOLAQDvZ9TCy7oTZ8R3ORWkJYRiOzes6hRevRhddXAk7aj6JAD5ARIiiJFNSXvY
-jIoRZnBI9TvNc0CDDCeZEGZ2XFkj2AI=
-=AWk3
------END PGP SIGNATURE-----
-
---rxtk5satlzcpouxq--
+Konrad
