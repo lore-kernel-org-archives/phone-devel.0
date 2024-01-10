@@ -1,123 +1,84 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AEC4BA9F
-	for <phone-devel@vger.kernel.org>; Wed, 10 Jan 2024 15:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690F11375
+	for <phone-devel@vger.kernel.org>; Wed, 10 Jan 2024 17:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="SiMoqZ3k"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a28ab7ae504so408385966b.3
-        for <phone-devel@vger.kernel.org>; Wed, 10 Jan 2024 07:21:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nqkkL4Rc"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-50eabfac2b7so4912369e87.0
+        for <phone-devel@vger.kernel.org>; Wed, 10 Jan 2024 09:40:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1704900083; x=1705504883; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sofCmMz+PfMbXOmyDNafy7xizRaFnMwusuGn4gaRgT8=;
-        b=SiMoqZ3k3UEcdKYs6HWfD0qIoiSfbEmdIoYdCOn825Z8KgR+IFdT+XsQW4hNPhtDf9
-         4gaxueQi/SKuTVZZlTppAshIlHkPO2gaHJOG6wTMCg9kOtBwBq291cnwX0VlLlNU4XpP
-         PQ90UYsVuPg8eSdgh1UFaDxr/yiaFgm9fQnXJc7IaNF6lFgUIp7SQZbKs/9utTAZoYcZ
-         J/gWvax4o0MF7602pu2Is157pl45Iige8+hZWiRr/PFX4DVk50HQ3MJ2sZuoyBrOBHUA
-         +SVbmgIwKZgNtrf/iDk9ZL5LkywQMYvhdSURjPMAuMq5YsEUwgetifzQiV5g/R08S+bd
-         LfJw==
+        d=linaro.org; s=google; t=1704908444; x=1705513244; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Hh6Goy7NRtSRzQyxaJrI0RtgCTicSCtruZk0IoQJBRY=;
+        b=nqkkL4RcRCH5ufNXbHWGnxSoi46EXvz3Jq65MvlJ1rvX3fliG5y/SWj7ez4mPYLGfH
+         DDzG8KohbBUkqdX2KH+KSVYUSWV8rPUbS6gISFAuul7d7fuzHWiQUwkMSJ/OrUUCJVc2
+         yivCWneWJQM1jWYM+34g+ijczbZcn9u8S5mXShHS6pmuaVqXB3xFyWU/Lmva11LuhIn5
+         Q8c2jbT60eSc31nQa1pwqzgERbFr7e+Q8MN35+3iL5jBdKmVln5dNuSQE35KXRN/u7p9
+         u8Yfzr4moganbFSKFIIGwHzpJkzdzeNnoVGjL+1Pk4aLT2oLGpqKkS8E2aDsEN4sctzL
+         V+rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704900083; x=1705504883;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sofCmMz+PfMbXOmyDNafy7xizRaFnMwusuGn4gaRgT8=;
-        b=NQVcdUYdwi3OOkY/ANVfpx7B8phynw8q4Fq47Pc2td+500rzSCDGrkZDAr8bsBkee9
-         lQTX68mFjiLNZZjCNkFrg31MfGkzbXjxdu4/l9N/W/K+Ug0B7JwRFN5a2A18Hk+v8NRf
-         PN6xqCU3ILBs8506AcVmoFcOpIvj/hHPnwhq/Y2ehM4EObKIF9UEkB1gtdaabOAPvwhH
-         ody31yuzpQnUxSvcimvkRAqsiYTC4bU+B3lXlPG6JEzjVoyx2xHoaAsz9wqwMlT6JCqV
-         cNrp3nWRWBAEbIhO2uT7dB3gvCzj/2Vy7aCwVYLPwyT5g/8mnzXjAjJ6EH5tLbBPNYJJ
-         8q7g==
-X-Gm-Message-State: AOJu0Yz7antXTdr3Qt1Gu80XCgBRQwqgAUpZJeS3CfSCJUZQZRZcMudi
-	AGG4YqNzXBg06+nzac1jtnHQV5V2OUkrKA==
-X-Google-Smtp-Source: AGHT+IFoxW8ODeKqVvPsrrto75ezjwGrqmF+sKXQuupMA/y3doioxC0tAqO/cD9zud+OqZpjyXtaGg==
-X-Received: by 2002:a17:907:7816:b0:a27:c453:8706 with SMTP id la22-20020a170907781600b00a27c4538706mr689934ejc.125.1704900082844;
-        Wed, 10 Jan 2024 07:21:22 -0800 (PST)
-Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id l9-20020a1709063d2900b00a2bd8953af2sm639342ejf.55.2024.01.10.07.21.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jan 2024 07:21:22 -0800 (PST)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Wed, 10 Jan 2024 16:21:19 +0100
-Subject: [PATCH] arm64: dts: qcom: sm7225-fairphone-fp4: Switch firmware
- ext to .mbn
+        d=1e100.net; s=20230601; t=1704908444; x=1705513244;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hh6Goy7NRtSRzQyxaJrI0RtgCTicSCtruZk0IoQJBRY=;
+        b=I56vxRQGRs8V91wEC2tf3VubXLzeaqwLJi9GbUIX+W+O+C+xPp5QzNYKYDD3/TgXyj
+         3C2kEpZHBkMEapKouxVaI3mFQuYMbUlcaxKtG8UmVg/8JmsxpRq5oZpraD1vhvS/K4LN
+         e0EJFCFU7slpNHY1Isz+4nSZg6beE7EAB3up+MaDbDpCO4gHIKTDIH0IYFBPMGFmS0hJ
+         DqWGtqC1f/XqH/VeJU+uPKw3WXqWTVi0K9gl0VK0tJaKoXjuRNqjJHFuu5UChVccD9k4
+         NQ4qmaM1jktBGz8hbaag/Hztt60qWdAVKlS5+S4P/HXrOtqLY3cpQIlmPPFGf1YP2rL1
+         fORQ==
+X-Gm-Message-State: AOJu0YzXyS1BFdU9ylvPUTdkmfrM5MoQMwp9JwPEkrUdJeCilkiRj55q
+	1j+xaiJoD5Wt9IJeRoxslm6hLhYWNZdQgw==
+X-Google-Smtp-Source: AGHT+IEYAF/qKxWaXqzKRy2E22Nw/2yDlQi3jF92SjU+pffbCOmE6KDgmi6npRBp4cYRZGyr+gEJkQ==
+X-Received: by 2002:a05:6512:124b:b0:50e:7410:d5b0 with SMTP id fb11-20020a056512124b00b0050e7410d5b0mr731181lfb.28.1704908444428;
+        Wed, 10 Jan 2024 09:40:44 -0800 (PST)
+Received: from [172.30.205.123] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
+        by smtp.gmail.com with ESMTPSA id a27-20020a195f5b000000b0050e8cd014d7sm741726lfj.16.2024.01.10.09.40.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jan 2024 09:40:44 -0800 (PST)
+Message-ID: <dd06a04a-ba02-40a8-b5f5-0457085c202b@linaro.org>
+Date: Wed, 10 Jan 2024 18:40:42 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240110-fp4-mbn-v1-1-45e7e33b1834@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAO61nmUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDQ0MD3bQCE93cpDxdc5Mkw0RzUxNzYxMjJaDqgqLUtMwKsEnRsbW1ACD
- ubBZZAAAA
-To: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: qcom: sm7225-fairphone-fp4: Switch firmware
+ ext to .mbn
+To: Luca Weiss <luca.weiss@fairphone.com>, Andy Gross <agross@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.12.4
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240110-fp4-mbn-v1-1-45e7e33b1834@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240110-fp4-mbn-v1-1-45e7e33b1834@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Specify the file name for the squashed/non-split firmware with the .mbn
-extension instead of the split .mdt. The kernel can load both but the
-squashed version is preferred in dts nowadays.
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-index ade619805519..9ed349ec076a 100644
---- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-+++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
-@@ -116,7 +116,7 @@ active-config0 {
- };
- 
- &adsp {
--	firmware-name = "qcom/sm7225/fairphone4/adsp.mdt";
-+	firmware-name = "qcom/sm7225/fairphone4/adsp.mbn";
- 	status = "okay";
- };
- 
-@@ -361,7 +361,7 @@ &cci1_i2c0 {
- };
- 
- &cdsp {
--	firmware-name = "qcom/sm7225/fairphone4/cdsp.mdt";
-+	firmware-name = "qcom/sm7225/fairphone4/cdsp.mbn";
- 	status = "okay";
- };
- 
-@@ -400,12 +400,12 @@ &i2c10 {
- &ipa {
- 	qcom,gsi-loader = "self";
- 	memory-region = <&pil_ipa_fw_mem>;
--	firmware-name = "qcom/sm7225/fairphone4/ipa_fws.mdt";
-+	firmware-name = "qcom/sm7225/fairphone4/ipa_fws.mbn";
- 	status = "okay";
- };
- 
- &mpss {
--	firmware-name = "qcom/sm7225/fairphone4/modem.mdt";
-+	firmware-name = "qcom/sm7225/fairphone4/modem.mbn";
- 	status = "okay";
- };
- 
+On 1/10/24 16:21, Luca Weiss wrote:
+> Specify the file name for the squashed/non-split firmware with the .mbn
+> extension instead of the split .mdt. The kernel can load both but the
+> squashed version is preferred in dts nowadays.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
----
-base-commit: 0dd3ee31125508cd67f7e7172247f05b7fd1753a
-change-id: 20240110-fp4-mbn-74b1a7547342
+Thanks!
 
-Best regards,
--- 
-Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
+Konrad
