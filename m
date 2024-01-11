@@ -1,126 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180C31773B;
-	Thu, 11 Jan 2024 10:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798EF15AC2;
+	Thu, 11 Jan 2024 12:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tq7X+Qxj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1867BC433C7;
-	Thu, 11 Jan 2024 10:54:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704970471;
-	bh=F45rGXqUG2uAkO0sp6Ly0dJuN2iXFQzvSxj7Y6KeR94=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tq7X+QxjA7bK4hgFg/yRiSGes3CiIQLvTBm4H5I9KTPtRbxND+zNAKYU0PLj7Ap1R
-	 CvRC6cKJRCwHqizTqFnswDwJVOcF/aAkT4AHOM9uGrTaUNqYiY7B5X5RfTmZKyyqFh
-	 i7iOvGxQDyaOHxClroicbwMDQ9bKSqjsaieL++1zqqvk6zHIHCP7t8WlIVbT7nU224
-	 usYwsP/+8yu7cqzB940YwaMlKyYIF1XsLSz3YbrCkVwJKH4tlMBSztbMW65Sh33bES
-	 fQ9UOyYqCeaHtc/zShPXFtojLHtL2oBy9drYTpgquaNAZPU2QhQk7F0WZFzn3zxrVa
-	 hacLHu73nSflg==
-Date: Thu, 11 Jan 2024 10:54:26 +0000
-From: Lee Jones <lee@kernel.org>
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-Cc: Karel Balej <balejk@matfyz.cz>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/5] mfd: 88pm88x: differences with respect to the
- PMIC RFC series
-Message-ID: <20240111105426.GA1678981@google.com>
-References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
- <20231228100208.2932-2-karelb@gimli.ms.mff.cuni.cz>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="q4WNmi89"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1704976278;
+	bh=UUJgjJ0RgrkopwyiH7EhfQcUXFSjaBg0zxcp09P632c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=q4WNmi89YstZXiLPgOt1dwpk1nC+RqlIiraEbHug2sZN/WZv1iufJk2WCqLRpXyYi
+	 B81nVXtd3/nzdec2qroxhgcV+EJqtWUonK6E6foQttzg2pBk9B6BW0JaRBBCqrDgYm
+	 X0vyI5RPEaWF3GiJN469g6HspI/+mY+Mp98wrokyxjhuoLPHYUgnCcCx8CmPnc9inO
+	 YXz5FzclwA5pXybeydIGo5EtCtuTHJt1RYTYNphK8+3EIs+Q4009Ym/if2fnYEaYZ9
+	 DYe47T0wwXrD70xruhhxEk8BKp2t9z9U9SL5itgunBQIBgQaUO4fmCYBVnJqrWCs9t
+	 UT6C+VfDSBB2A==
+Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 0CC873780F7F;
+	Thu, 11 Jan 2024 12:31:17 +0000 (UTC)
+Message-ID: <ef5c443e-461f-49d6-b88d-63076cd2f903@collabora.com>
+Date: Thu, 11 Jan 2024 13:31:17 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: sm7225-fairphone-fp4: Add PM6150L
+ thermals
+Content-Language: en-US
+To: Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Luca Weiss <luca.weiss@fairphone.com>, Bjorn Andersson
+ <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240105-fp4-thermals-v1-0-f95875a536b7@fairphone.com>
+ <20240105-fp4-thermals-v1-2-f95875a536b7@fairphone.com>
+ <18dc5f88-6590-4e2d-948f-fd77f4713f8b@linaro.org>
+ <CYA4ZGOQOJXY.2RO98RBCDKK5J@fairphone.com>
+ <f78ce9e6-0a25-4e08-b972-db055b7afd71@linaro.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <f78ce9e6-0a25-4e08-b972-db055b7afd71@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231228100208.2932-2-karelb@gimli.ms.mff.cuni.cz>
 
-The subject needs work.  Please tell us what the patches is doing.
-
-On Thu, 28 Dec 2023, Karel Balej wrote:
-
-> From: Karel Balej <balejk@matfyz.cz>
-
-A full an complete commit message is a must.
-
-> Signed-off-by: Karel Balej <balejk@matfyz.cz>
-> ---
->  drivers/mfd/88pm88x.c       | 14 ++++++++------
->  include/linux/mfd/88pm88x.h |  2 ++
->  2 files changed, 10 insertions(+), 6 deletions(-)
+Il 10/01/24 20:16, Konrad Dybcio ha scritto:
 > 
-> diff --git a/drivers/mfd/88pm88x.c b/drivers/mfd/88pm88x.c
-> index 5db6c65b667d..3424d88a58f6 100644
-> --- a/drivers/mfd/88pm88x.c
-> +++ b/drivers/mfd/88pm88x.c
-> @@ -57,16 +57,16 @@ static struct reg_sequence pm886_presets[] = {
->  	REG_SEQ0(PM88X_REG_BK_OSC_CTRL3, 0xc0),
->  };
->  
-> -static struct resource onkey_resources[] = {
-> +static struct resource pm88x_onkey_resources[] = {
->  	DEFINE_RES_IRQ_NAMED(PM88X_IRQ_ONKEY, "88pm88x-onkey"),
->  };
->  
-> -static struct mfd_cell pm88x_devs[] = {
-> +static struct mfd_cell pm886_devs[] = {
->  	{
->  		.name = "88pm88x-onkey",
-> -		.num_resources = ARRAY_SIZE(onkey_resources),
-> -		.resources = onkey_resources,
-> -		.id = -1,
-> +		.of_compatible = "marvell,88pm88x-onkey",
-> +		.num_resources = ARRAY_SIZE(pm88x_onkey_resources),
-> +		.resources = pm88x_onkey_resources,
->  	},
->  };
->  
-> @@ -74,6 +74,8 @@ static struct pm88x_data pm886_a1_data = {
->  	.whoami = PM886_A1_WHOAMI,
->  	.presets = pm886_presets,
->  	.num_presets = ARRAY_SIZE(pm886_presets),
-> +	.devs = pm886_devs,
-> +	.num_devs = ARRAY_SIZE(pm886_devs),
->  };
->  
->  static const struct regmap_config pm88x_i2c_regmap = {
-> @@ -157,7 +159,7 @@ static int pm88x_probe(struct i2c_client *client)
->  	if (ret)
->  		return ret;
->  
-> -	ret = devm_mfd_add_devices(&client->dev, 0, pm88x_devs, ARRAY_SIZE(pm88x_devs),
-> +	ret = devm_mfd_add_devices(&client->dev, 0, chip->data->devs, chip->data->num_devs,
->  			NULL, 0, regmap_irq_get_domain(chip->irq_data));
->  	if (ret) {
->  		dev_err(&client->dev, "Failed to add devices: %d\n", ret);
-> diff --git a/include/linux/mfd/88pm88x.h b/include/linux/mfd/88pm88x.h
-> index a34c57447827..9a335f6b9c07 100644
-> --- a/include/linux/mfd/88pm88x.h
-> +++ b/include/linux/mfd/88pm88x.h
-> @@ -49,6 +49,8 @@ struct pm88x_data {
->  	unsigned int whoami;
->  	struct reg_sequence *presets;
->  	unsigned int num_presets;
-> +	struct mfd_cell *devs;
-> +	unsigned int num_devs;
-
-Why are you adding extra abstraction?
-
->  };
->  
->  struct pm88x_chip {
-> -- 
-> 2.43.0
 > 
+> On 1/9/24 12:24, Luca Weiss wrote:
+>> On Tue Jan 9, 2024 at 11:09 AM CET, Konrad Dybcio wrote:
+>>>
+>>>
+>>> On 1/5/24 15:54, Luca Weiss wrote:
+>>>> Configure the thermals for the PA_THERM1, MSM_THERM, PA_THERM0,
+>>>> RFC_CAM_THERM, CAM_FLASH_THERM and QUIET_THERM thermistors connected to
+>>>> PM6150L.
+>>>>
+>>>> Due to hardware constraints we can only register 4 zones with
+>>>> pm6150l_adc_tm, the other 2 we can register via generic-adc-thermal.
+>>>
+>>> Ugh.. so the ADC can support more inputs than the ADC_TM that was
+>>> designed to ship alongside it can?
+>>>
+>>> And that's why the "generic-adc-thermal"-provided zones need to
+>>> be polled?
+>>
+>> This part of the code from qcom-spmi-adc-tm5.c was trigerring if I
+>> define more than 4 channels, and looking at downstream I can also see
+>> that only 4 zones are registered properly with adc_tm, the rest is
+>> registered with "qcom,adc-tm5-iio" which skips from what I could tell
+>> basically all the HW bits and only registering the thermal zone.
+>>
+>>
+>>     ret = adc_tm5_read(chip, ADC_TM5_NUM_BTM,
+>>                &channels_available, sizeof(channels_available));
+>>     if (ret) {
+>>         dev_err(chip->dev, "read failed for BTM channels\n");
+>>         return ret;
+>>     }
+>>
+>>     for (i = 0; i < chip->nchannels; i++) {
+>>         if (chip->channels[i].channel >= channels_available) {
+>>             dev_err(chip->dev, "Invalid channel %d\n", chip->channels[i].channel);
+>>             return -EINVAL;
+>>         }
+>>     }
+>>
+>>
+>>>
+>>>>
+>>>> The trip points can really only be considered as placeholders, more
+>>>> configuration with cooling etc. can be added later.
+>>>>
+>>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>>> ---
+>>> [...]
+>>>
+>>> I've read the sentence above, but..
+>>>> +        sdm-skin-thermal {
+>>>> +            polling-delay-passive = <1000>;
+>>>> +            polling-delay = <5000>;
+>>>> +            thermal-sensors = <&msm_therm_sensor>;
+>>>> +
+>>>> +            trips {
+>>>> +                active-config0 {
+>>>> +                    temperature = <125000>;
+>>>> +                    hysteresis = <1000>;
+>>>> +                    type = "passive";
+>>>
+>>> I don't fancy burnt fingers for dinner!
+>>
+>> With passive trip point it wouldn't even do anything now, but at what
+>> temp do you think it should do what? I'd definitely need more time to
+>> understand more of how the thermal setup works in downstream Android,
+>> and then replicate a sane configuration for mainline with proper
+>> temperatures, cooling, etc.
+> If "skin therm" means "the temperature of some part of the phone's
+> body that can be felt with a human hand", then definitely some
+> throttling should happen at 40ish with heavy throttling at 50
+> and crit at 55 or so..
+> 
+> We should probably make this a broader topic and keep a single
+> policy for all supported phones.
+> 
+> + CC AGdR, may be interested in where this leads
+> 
+> Konrad
 
--- 
-Lee Jones [李琼斯]
+A thermal trip at 125°C for *skin temperature* is useless... if a device's skin
+temperature (be it a smartphone, a SBC, a Chromebook, a non-specially-identified
+laptop, a car head unit, or whatever else you can imagine) reaches that kind of
+temperature, this means that something inside likely reached something along the
+lines of 150°C for a prolonged period of time.
+
+You will definitely agree with me that if something reached that temperature for
+a certain period of time, it is *highly unlikely* (not to say impossible) that
+Linux is even still running and that the green smoke that is naturally trapped in
+any chip didn't get released :-)
+
+Besides, keep in mind that if the SKIN temperature is 55°C, if your device has
+a -> lithium <- battery (li-ion/lifepo/others), your hands are "probably" in a
+kind of danger that I wouldn't be comfortable with (and neither you I'm sure).
+
+Strictly related to the trip temperature setting for "SKIN", for me this is a
+strong NAK.
+
+I'd go for stricter ranges too, something like...
+- critical: ~52/53
+- heavy throttling: 49/50
+- throttle: ~45
+NOTE: this would be valid only if there are other throttling points for CPU/GPU/etc
+
+
+---- Anyway, something else I have in my mind: ----
+
+Konrad: "standardizing" skin temperature is too big of a bet, and will be wrong,
+because industrial-grade devices are permitted to reach higher skin temperatures.
+Some industrial grade smartphones (example: rugged stuff) may have sensors in
+the underside of the ruggedized shell... so in that case you want to set the skin
+temperature limit with delta-T ideally...
+
+Though!
+
+Making this easier for everyone: we can somehow dictate (unofficially, because
+of more of the many reasons I already explained) an acceptable temperature range
+for "skin" temperature, outside of which, reviews should follow manual testing.
+
+As for the concept of "skin temperature", and for some thermal framework work
+(sorry for the word game) that I'm bringing on the table, in this case we can
+imagine it as:
+
+Thermal zone type: SKIN
+Thermal zone name: shell-upper/shell-rightmost/shell....something
+
+Type SKIN would be defined as
+"a zone defining the temperature of the outer shell of a device"...
+
+...and for example differently from type PCB, which fits different temperature
+probe points.
+
+
+Feel free to keep me in the loop, btw.
+
+Cheers,
+Angelo
