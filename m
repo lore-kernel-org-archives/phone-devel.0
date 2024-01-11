@@ -1,47 +1,35 @@
-Received: from mail-ed1-f67.google.com (mail-ed1-f67.google.com [209.85.208.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CED34CB25
-	for <phone-devel@vger.kernel.org>; Thu, 11 Jan 2024 15:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90AD4D128;
+	Thu, 11 Jan 2024 15:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="3UJA2fLt"
-Received: by mail-ed1-f67.google.com with SMTP id 4fb4d7f45d1cf-557a3ce9942so5749598a12.1
-        for <phone-devel@vger.kernel.org>; Thu, 11 Jan 2024 07:28:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1704986906; x=1705591706; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B7mE+52tIHuQGxlPUuwMMzBM9GxGpHPAmvjX828iiAI=;
-        b=3UJA2fLt8ao7qa7PJpFFX89y4/NzY91dQdlWmuu2JcDf2fGp7WD6d/HJ5V3VxagBBg
-         jSlhJFDWGqNp55VCfjzI7ftJJjYgV2zfT/G+SULL18+ycirnZKHaUsZgCSk5XMERIQB5
-         3ctP07jkt2i+IboO8vrkCVlt8Q7xTRQHo4onn6YeFLKxweN6Y5MtS+lbrp15zC67uCkk
-         a4uc5DHKZL2YBgXhcC6lgk4/AbbWmT5T+6oXFr/Pq1p8hOu3pu0DaxVUso6v66kdaoEr
-         MSX5Q5vmiEYjZYpkhdspCA7kyVGaZol2IMtLaQwEJQDmrFnpK1PkL/HxomPc+UCGFrqi
-         4XKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704986906; x=1705591706;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=B7mE+52tIHuQGxlPUuwMMzBM9GxGpHPAmvjX828iiAI=;
-        b=omK2F8moruZofy3Ufw48piGdAOEAP/Yd1JEW34dCOGoy1/Vu4VTHlkVNh9W94EwUbr
-         1aMnvTWwLyx33lkkEgw6Kd7Ie+8Ie5c1OsGdmIRe+lZyrTl227MC5/zcBgh/aEv7Vnds
-         kVjQbANB+8txHR7TXbA1YSJwzS5WoHkWDxt2+J2rIii/fwdF5PUov8+Iba3lhldbuUo0
-         YiY9RzTItEZ7+YmpIb3UV+hH98HZ7FLnOxVK/o2XP/H4AI8CsFeGC4m+tYc5UgJsn6u4
-         yLk4mtbxOEbUIM/Ajdlw1d4cgp/U6g89UkfuqRBm5+O+9EKI7UxxGSyLjK33/go0L0uy
-         661A==
-X-Gm-Message-State: AOJu0Yyq5rnbmM5ZpT5kTthnlbMCHD5/5g/EFk/YGUP+9zu+8q1ClkoP
-	2Ufvkw0yud8xPrTQNZUU0rS6Cgb2SzMkzvHCC0tdKYBzK02VNdts
-X-Google-Smtp-Source: AGHT+IFrvzkgvZxDk2Qj4HTlNXeH9Cg5K5scTvQ7rSicpxuLzRPig/wdkeNZZxH3cj4lmdNGi3b+9Q==
-X-Received: by 2002:aa7:d403:0:b0:558:b988:b8dc with SMTP id z3-20020aa7d403000000b00558b988b8dcmr33261edq.84.1704986906349;
-        Thu, 11 Jan 2024 07:28:26 -0800 (PST)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id m23-20020a50ef17000000b0055751515a84sm717753eds.51.2024.01.11.07.28.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jan 2024 07:28:26 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="euRKmxl7"
+Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id 1BAE0283938;
+	Thu, 11 Jan 2024 16:35:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
+	s=gen1; t=1704987344;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zQEFJd7qOY7eaCBdTz2QW/9jwDFHfyYVMR1DPX1JG0M=;
+	b=euRKmxl7MEjoUgD4vi4EhlK/9Jjqa0t8Gyywnwfzm5293nX+pIWE3JcLMxFuW5AZdLuYOE
+	xWBjbs01inGk2WZX9i14PmGXHMgsp3Yjd3sYnw39ZKU1eyAQZ+TT9eG1eQnZFoSEhEBwVO
+	zCX9/DN3NAF7JxIdANqjFwkZ7NqOHVw=
+Received: from localhost (unknown [213.235.133.110])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: karelb)
+	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id DBEE4456760;
+	Thu, 11 Jan 2024 16:35:43 +0100 (CET)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -50,74 +38,57 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 11 Jan 2024 16:28:24 +0100
-Message-Id: <CYBZEZ4IM6IL.VR04W7933VI@fairphone.com>
-Cc: "Neil Armstrong" <neil.armstrong@linaro.org>, "Jessica Zhang"
- <quic_jesszhan@quicinc.com>, "Sam Ravnborg" <sam@ravnborg.org>, "David
- Airlie" <airlied@gmail.com>, "Daniel Vetter" <daniel@ffwll.ch>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Rob
- Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
- <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konrad.dybcio@linaro.org>, "Andy Gross" <agross@kernel.org>,
- <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/4] drm/panel: Add driver for DJN HX83112A LCD panel
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Linus Walleij" <linus.walleij@linaro.org>
-X-Mailer: aerc 0.15.2
-References: <20240110-fp4-panel-v2-0-8ad11174f65b@fairphone.com>
- <20240110-fp4-panel-v2-2-8ad11174f65b@fairphone.com>
- <CACRpkdaWTfPDCin_L6pefHsokjNyO8Mo6hWPdzPLLi1EUkKUuA@mail.gmail.com>
-In-Reply-To: <CACRpkdaWTfPDCin_L6pefHsokjNyO8Mo6hWPdzPLLi1EUkKUuA@mail.gmail.com>
+Date: Thu, 11 Jan 2024 16:36:12 +0100
+Message-Id: <CYBZKXR1F4QP.197Y9Y09Z1CLP@gimli.ms.mff.cuni.cz>
+Cc: "Karel Balej" <balejk@matfyz.cz>, "Rob Herring" <robh+dt@kernel.org>,
+ "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Liam Girdwood" <lgirdwood@gmail.com>, "Mark Brown"
+ <broonie@kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, =?utf-8?q?Duje_Mihanovi=C4=87?=
+ <duje.mihanovic@skole.hr>, <~postmarketos/upstreaming@lists.sr.ht>,
+ <phone-devel@vger.kernel.org>
+Subject: Re: [RFC PATCH 1/5] mfd: 88pm88x: differences with respect to the
+ PMIC RFC series
+To: "Lee Jones" <lee@kernel.org>
+From: "Karel Balej" <karelb@gimli.ms.mff.cuni.cz>
+References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
+ <20231228100208.2932-2-karelb@gimli.ms.mff.cuni.cz>
+ <20240111105426.GA1678981@google.com>
+ <CYBYXXCP3O1O.2M5YMCRW3SIMY@gimli.ms.mff.cuni.cz>
+ <20240111152549.GL1678981@google.com>
+In-Reply-To: <20240111152549.GL1678981@google.com>
 
-On Thu Jan 11, 2024 at 3:57 PM CET, Linus Walleij wrote:
-> On Wed, Jan 10, 2024 at 4:14=E2=80=AFPM Luca Weiss <luca.weiss@fairphone.=
-com> wrote:
+On Thu Jan 11, 2024 at 4:25 PM CET, Lee Jones wrote:
+
+[...]
+
+> > > > diff --git a/include/linux/mfd/88pm88x.h b/include/linux/mfd/88pm88=
+x.h
+> > > > index a34c57447827..9a335f6b9c07 100644
+> > > > --- a/include/linux/mfd/88pm88x.h
+> > > > +++ b/include/linux/mfd/88pm88x.h
+> > > > @@ -49,6 +49,8 @@ struct pm88x_data {
+> > > >  	unsigned int whoami;
+> > > >  	struct reg_sequence *presets;
+> > > >  	unsigned int num_presets;
+> > > > +	struct mfd_cell *devs;
+> > > > +	unsigned int num_devs;
+> > >
+> > > Why are you adding extra abstraction?
+> >=20
+> > Right, this is probably not necessary now since I'm only implementing
+> > support for one of the chips - it's just that I keep thinking about it
+> > as a driver for both of them and thus tend to write it a bit more
+> > abstractly. Shall I then drop this and also the `presets` member which
+> > is also chip-specific?
 >
-> > Add support for the 2340x1080 LCD DJN panel bundled with a HX83112A
-> > driver IC, as found on the Fairphone 4 smartphone.
-> >
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->
-> This makes it sound like the Himax HX83112A is the driver IC.
->
-> This does not seem to be the case:
-> https://github.com/HimaxSoftware/HX83112_Android_Driver
->
-> The driver IC seems to be a truly 5p65.
+> Even if you were to support multiple devices, this strategy is unusual
+> and isn't likely to be accepted.
 
-Hi Linus,
+May I please ask what the recommended strategy is then? `switch`ing on
+the chip ID? I have taken this approach because it seemed to produce a
+cleaner/more straightforward code in comparison to that. Or are you only
+talking about the chip cells/subdevices in particular?
 
-In some internal documentation it says "LCD Driver IC" "HX83112A" and I
-don't see any reference to Truly 5P65 anywhere.
-
-On their website they have this sentence:
-
-  Himax offers display drivers for mobile handset displays that combine
-  source driver, gate driver, timing controller, frame buffer, and DC to
-  DC circuits into a single chip in various display technologies, such
-  as TFT-LCD, LTPS, In-Cell Touch and AMOLED.
-
-https://www.himax.com.tw/products/display-drivers/mobile-handset-applicatio=
-ns/
-
-While I'm not super well versed in panel driver ICs, this sounds like it
-should be the one to take the name from?
-
-Regards
-Luca
-
->
-> If this is right, could you rename the driver file to truly-5p65.c
-> and all symbols containing hx83112 to truly_5965 or something
-> that indicate the driver IC instead of the panel?
->
-> My main concern is that the next display using the same IC
-> need to find the right file to patch.
->
-> Yours,
-> Linus Walleij
-
+Thank you,
+K. B.
