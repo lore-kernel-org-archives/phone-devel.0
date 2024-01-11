@@ -1,94 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f67.google.com (mail-ed1-f67.google.com [209.85.208.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50E04D127;
-	Thu, 11 Jan 2024 15:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CED34CB25
+	for <phone-devel@vger.kernel.org>; Thu, 11 Jan 2024 15:28:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GGYvglm5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927C8C433C7;
-	Thu, 11 Jan 2024 15:25:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704986755;
-	bh=ZxKTB6mPR4ix+a5ENOF86x5FJJZQzDK6U+BnWyQUhHA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GGYvglm5SvsGaIX8jj41feRKiWaLnkbslwd+C0Nj0jUfukuNGaUYasmp5QmGDe7y0
-	 ewHud30NKqW9DIIgYVLfQWx98OM9QIyR8rr0FPAH4iQ5utMdS5VD1Y7EOKfgEsF3f3
-	 aiqUs+f7+G/vf2N1HVpuWiRh3y8JbnsYrVGtUSV4Ug/xrDdoQXPqevdrfDVI99cyd1
-	 9S7DXiiv/TcjrgWCln5PaMpd2yxhKAMr/foS1v7d/cokr1aA+QRIm9KiT0lVEo+gpL
-	 WjG1TiVboaTKXVwwTCR3ix5HZYaUTblwvXGt/pynPCEh73h81sdyF/kiysLc6kTzJs
-	 Xozzz7bgZ8bng==
-Date: Thu, 11 Jan 2024 15:25:49 +0000
-From: Lee Jones <lee@kernel.org>
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-Cc: Karel Balej <balejk@matfyz.cz>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/5] mfd: 88pm88x: differences with respect to the
- PMIC RFC series
-Message-ID: <20240111152549.GL1678981@google.com>
-References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
- <20231228100208.2932-2-karelb@gimli.ms.mff.cuni.cz>
- <20240111105426.GA1678981@google.com>
- <CYBYXXCP3O1O.2M5YMCRW3SIMY@gimli.ms.mff.cuni.cz>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="3UJA2fLt"
+Received: by mail-ed1-f67.google.com with SMTP id 4fb4d7f45d1cf-557a3ce9942so5749598a12.1
+        for <phone-devel@vger.kernel.org>; Thu, 11 Jan 2024 07:28:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1704986906; x=1705591706; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B7mE+52tIHuQGxlPUuwMMzBM9GxGpHPAmvjX828iiAI=;
+        b=3UJA2fLt8ao7qa7PJpFFX89y4/NzY91dQdlWmuu2JcDf2fGp7WD6d/HJ5V3VxagBBg
+         jSlhJFDWGqNp55VCfjzI7ftJJjYgV2zfT/G+SULL18+ycirnZKHaUsZgCSk5XMERIQB5
+         3ctP07jkt2i+IboO8vrkCVlt8Q7xTRQHo4onn6YeFLKxweN6Y5MtS+lbrp15zC67uCkk
+         a4uc5DHKZL2YBgXhcC6lgk4/AbbWmT5T+6oXFr/Pq1p8hOu3pu0DaxVUso6v66kdaoEr
+         MSX5Q5vmiEYjZYpkhdspCA7kyVGaZol2IMtLaQwEJQDmrFnpK1PkL/HxomPc+UCGFrqi
+         4XKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704986906; x=1705591706;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=B7mE+52tIHuQGxlPUuwMMzBM9GxGpHPAmvjX828iiAI=;
+        b=omK2F8moruZofy3Ufw48piGdAOEAP/Yd1JEW34dCOGoy1/Vu4VTHlkVNh9W94EwUbr
+         1aMnvTWwLyx33lkkEgw6Kd7Ie+8Ie5c1OsGdmIRe+lZyrTl227MC5/zcBgh/aEv7Vnds
+         kVjQbANB+8txHR7TXbA1YSJwzS5WoHkWDxt2+J2rIii/fwdF5PUov8+Iba3lhldbuUo0
+         YiY9RzTItEZ7+YmpIb3UV+hH98HZ7FLnOxVK/o2XP/H4AI8CsFeGC4m+tYc5UgJsn6u4
+         yLk4mtbxOEbUIM/Ajdlw1d4cgp/U6g89UkfuqRBm5+O+9EKI7UxxGSyLjK33/go0L0uy
+         661A==
+X-Gm-Message-State: AOJu0Yyq5rnbmM5ZpT5kTthnlbMCHD5/5g/EFk/YGUP+9zu+8q1ClkoP
+	2Ufvkw0yud8xPrTQNZUU0rS6Cgb2SzMkzvHCC0tdKYBzK02VNdts
+X-Google-Smtp-Source: AGHT+IFrvzkgvZxDk2Qj4HTlNXeH9Cg5K5scTvQ7rSicpxuLzRPig/wdkeNZZxH3cj4lmdNGi3b+9Q==
+X-Received: by 2002:aa7:d403:0:b0:558:b988:b8dc with SMTP id z3-20020aa7d403000000b00558b988b8dcmr33261edq.84.1704986906349;
+        Thu, 11 Jan 2024 07:28:26 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id m23-20020a50ef17000000b0055751515a84sm717753eds.51.2024.01.11.07.28.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Jan 2024 07:28:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CYBYXXCP3O1O.2M5YMCRW3SIMY@gimli.ms.mff.cuni.cz>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 11 Jan 2024 16:28:24 +0100
+Message-Id: <CYBZEZ4IM6IL.VR04W7933VI@fairphone.com>
+Cc: "Neil Armstrong" <neil.armstrong@linaro.org>, "Jessica Zhang"
+ <quic_jesszhan@quicinc.com>, "Sam Ravnborg" <sam@ravnborg.org>, "David
+ Airlie" <airlied@gmail.com>, "Daniel Vetter" <daniel@ffwll.ch>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Rob
+ Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
+ <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konrad.dybcio@linaro.org>, "Andy Gross" <agross@kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/4] drm/panel: Add driver for DJN HX83112A LCD panel
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Linus Walleij" <linus.walleij@linaro.org>
+X-Mailer: aerc 0.15.2
+References: <20240110-fp4-panel-v2-0-8ad11174f65b@fairphone.com>
+ <20240110-fp4-panel-v2-2-8ad11174f65b@fairphone.com>
+ <CACRpkdaWTfPDCin_L6pefHsokjNyO8Mo6hWPdzPLLi1EUkKUuA@mail.gmail.com>
+In-Reply-To: <CACRpkdaWTfPDCin_L6pefHsokjNyO8Mo6hWPdzPLLi1EUkKUuA@mail.gmail.com>
 
-On Thu, 11 Jan 2024, Karel Balej wrote:
-
-> Lee,
-> 
-> On Thu Jan 11, 2024 at 11:54 AM CET, Lee Jones wrote:
-> > The subject needs work.  Please tell us what the patches is doing.
+On Thu Jan 11, 2024 at 3:57 PM CET, Linus Walleij wrote:
+> On Wed, Jan 10, 2024 at 4:14=E2=80=AFPM Luca Weiss <luca.weiss@fairphone.=
+com> wrote:
+>
+> > Add support for the 2340x1080 LCD DJN panel bundled with a HX83112A
+> > driver IC, as found on the Fairphone 4 smartphone.
 > >
-> > On Thu, 28 Dec 2023, Karel Balej wrote:
-> >
-> > > From: Karel Balej <balejk@matfyz.cz>
-> >
-> > A full an complete commit message is a must.
-> 
-> I have not provided a detailed description here because as I have noted
-> in the cover letter, this patch will be squashed into the MFD series. I
-> sent it only as a bridge between the two series, sorry for the
-> confusion.
-> 
-> > > diff --git a/include/linux/mfd/88pm88x.h b/include/linux/mfd/88pm88x.h
-> > > index a34c57447827..9a335f6b9c07 100644
-> > > --- a/include/linux/mfd/88pm88x.h
-> > > +++ b/include/linux/mfd/88pm88x.h
-> > > @@ -49,6 +49,8 @@ struct pm88x_data {
-> > >  	unsigned int whoami;
-> > >  	struct reg_sequence *presets;
-> > >  	unsigned int num_presets;
-> > > +	struct mfd_cell *devs;
-> > > +	unsigned int num_devs;
-> >
-> > Why are you adding extra abstraction?
-> 
-> Right, this is probably not necessary now since I'm only implementing
-> support for one of the chips - it's just that I keep thinking about it
-> as a driver for both of them and thus tend to write it a bit more
-> abstractly. Shall I then drop this and also the `presets` member which
-> is also chip-specific?
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>
+> This makes it sound like the Himax HX83112A is the driver IC.
+>
+> This does not seem to be the case:
+> https://github.com/HimaxSoftware/HX83112_Android_Driver
+>
+> The driver IC seems to be a truly 5p65.
 
-Even if you were to support multiple devices, this strategy is unusual
-and isn't likely to be accepted.
+Hi Linus,
 
-With respect to the other variables, you are in a better position to
-know if they are still required.  By the sounds of it, I'd suggest it
-might be better to remove them.
+In some internal documentation it says "LCD Driver IC" "HX83112A" and I
+don't see any reference to Truly 5P65 anywhere.
 
--- 
-Lee Jones [李琼斯]
+On their website they have this sentence:
+
+  Himax offers display drivers for mobile handset displays that combine
+  source driver, gate driver, timing controller, frame buffer, and DC to
+  DC circuits into a single chip in various display technologies, such
+  as TFT-LCD, LTPS, In-Cell Touch and AMOLED.
+
+https://www.himax.com.tw/products/display-drivers/mobile-handset-applicatio=
+ns/
+
+While I'm not super well versed in panel driver ICs, this sounds like it
+should be the one to take the name from?
+
+Regards
+Luca
+
+>
+> If this is right, could you rename the driver file to truly-5p65.c
+> and all symbols containing hx83112 to truly_5965 or something
+> that indicate the driver IC instead of the panel?
+>
+> My main concern is that the next display using the same IC
+> need to find the right file to patch.
+>
+> Yours,
+> Linus Walleij
+
