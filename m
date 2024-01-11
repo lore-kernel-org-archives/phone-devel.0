@@ -1,183 +1,126 @@
-Received: from mail-ed1-f67.google.com (mail-ed1-f67.google.com [209.85.208.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE129FC01
-	for <phone-devel@vger.kernel.org>; Thu, 11 Jan 2024 08:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180C31773B;
+	Thu, 11 Jan 2024 10:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="hyWHgQPf"
-Received: by mail-ed1-f67.google.com with SMTP id 4fb4d7f45d1cf-55753dc5cf0so5997434a12.0
-        for <phone-devel@vger.kernel.org>; Thu, 11 Jan 2024 00:55:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1704963334; x=1705568134; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f+urHVCxXYj39IE1pxye+SFmnhznkKtnAt7Qr2ngkeI=;
-        b=hyWHgQPfOCt59gKs95hRuIAfcQjgJoRv/jS+nrBuh7bVX3BEAGbf31AsYf46ZJG/z0
-         K2pnpVocK8miiZ611d21CB5wzF/pr7zd9fp1s9DG5HQs8E2OygkfopLBvKFHxvqzBelX
-         o6fC7B+tcD2d+Sw+yyz3RHcANPOWuhLYQGe1Zc4CujyTL06U6bNas11k26iez4Se31mt
-         cXa8WwSOnQ/nPb/F0yye6z6mk+eBRDVDvD9LPGy9jlZcONXGPPmPQY1Cb21Fl3kGYqZ8
-         rING12D1uNxf61XQntoxcYlKcHNXqaGfYwGw8ItUJ5edI7mkP/HT/x5qWJ7iRg7Hcpdb
-         1sQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704963334; x=1705568134;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=f+urHVCxXYj39IE1pxye+SFmnhznkKtnAt7Qr2ngkeI=;
-        b=fX5/RBpRblr6L8rqoazRs+wrN1lOmQGUuOD4wT7gLtgKrbaVsHXppqRIUKs6dAR/bU
-         31TcaaulFIDxf6MuVaMVMcJD7GiJ/RimsF+NIPxGzWrYGfAfcEN/EUTEJF+X4bXqET9a
-         sHJpdfPSCRhQJcPz5rph5NZsojZ2mA5XS/qzqF2rcwff9NCTf2V99wbYCXNtJXEDhky1
-         +syxQKERaR42OsfQ/o6Y8Xh40BXk4OelhOgxXPqXDI1WPsOxPUHlZeb30o1j4iGbMfA5
-         J8tykBbe3IwbnRuzITU6dvjpLJpVw7ZbjE4g0X5DL78b8ivA8OXh3CJMGjEKhKa7CHYW
-         71Yw==
-X-Gm-Message-State: AOJu0YzlRpYdNbPwfkyAU7iYoGOvrPzpW2YwM6JC9mnWGyIYII3wt/eB
-	S69DbdozayN9HXIQFYUtfnhs9YcyRDd+CA==
-X-Google-Smtp-Source: AGHT+IFkOaiX1Qj7iGZDGLUwqNZiH0n8d9X2CJnd6YUgczb+xRKH3UmnXd4YgHnjN2v+RKH3pQQJPg==
-X-Received: by 2002:aa7:c69a:0:b0:558:80c7:5e8f with SMTP id n26-20020aa7c69a000000b0055880c75e8fmr372546edq.9.1704963334132;
-        Thu, 11 Jan 2024 00:55:34 -0800 (PST)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id c10-20020a0564021f8a00b00557d29be289sm362971edc.11.2024.01.11.00.55.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jan 2024 00:55:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tq7X+Qxj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1867BC433C7;
+	Thu, 11 Jan 2024 10:54:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704970471;
+	bh=F45rGXqUG2uAkO0sp6Ly0dJuN2iXFQzvSxj7Y6KeR94=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tq7X+QxjA7bK4hgFg/yRiSGes3CiIQLvTBm4H5I9KTPtRbxND+zNAKYU0PLj7Ap1R
+	 CvRC6cKJRCwHqizTqFnswDwJVOcF/aAkT4AHOM9uGrTaUNqYiY7B5X5RfTmZKyyqFh
+	 i7iOvGxQDyaOHxClroicbwMDQ9bKSqjsaieL++1zqqvk6zHIHCP7t8WlIVbT7nU224
+	 usYwsP/+8yu7cqzB940YwaMlKyYIF1XsLSz3YbrCkVwJKH4tlMBSztbMW65Sh33bES
+	 fQ9UOyYqCeaHtc/zShPXFtojLHtL2oBy9drYTpgquaNAZPU2QhQk7F0WZFzn3zxrVa
+	 hacLHu73nSflg==
+Date: Thu, 11 Jan 2024 10:54:26 +0000
+From: Lee Jones <lee@kernel.org>
+To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
+Cc: Karel Balej <balejk@matfyz.cz>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [RFC PATCH 1/5] mfd: 88pm88x: differences with respect to the
+ PMIC RFC series
+Message-ID: <20240111105426.GA1678981@google.com>
+References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
+ <20231228100208.2932-2-karelb@gimli.ms.mff.cuni.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 11 Jan 2024 09:55:33 +0100
-Message-Id: <CYBR26JQ2SD4.33ELRAVYZW1PY@fairphone.com>
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: sm7225-fairphone-fp4: Add PM6150L
- thermals
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@linaro.org>, "Bjorn Andersson"
- <andersson@kernel.org>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof
- Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
- <conor+dt@kernel.org>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "AngeloGioacchino Del Regno"
- <angelogioacchino.delregno@collabora.com>
-X-Mailer: aerc 0.15.2
-References: <20240105-fp4-thermals-v1-0-f95875a536b7@fairphone.com>
- <20240105-fp4-thermals-v1-2-f95875a536b7@fairphone.com>
- <18dc5f88-6590-4e2d-948f-fd77f4713f8b@linaro.org>
- <CYA4ZGOQOJXY.2RO98RBCDKK5J@fairphone.com>
- <f78ce9e6-0a25-4e08-b972-db055b7afd71@linaro.org>
-In-Reply-To: <f78ce9e6-0a25-4e08-b972-db055b7afd71@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231228100208.2932-2-karelb@gimli.ms.mff.cuni.cz>
 
-On Wed Jan 10, 2024 at 8:16 PM CET, Konrad Dybcio wrote:
->
->
-> On 1/9/24 12:24, Luca Weiss wrote:
-> > On Tue Jan 9, 2024 at 11:09 AM CET, Konrad Dybcio wrote:
-> >>
-> >>
-> >> On 1/5/24 15:54, Luca Weiss wrote:
-> >>> Configure the thermals for the PA_THERM1, MSM_THERM, PA_THERM0,
-> >>> RFC_CAM_THERM, CAM_FLASH_THERM and QUIET_THERM thermistors connected =
-to
-> >>> PM6150L.
-> >>>
-> >>> Due to hardware constraints we can only register 4 zones with
-> >>> pm6150l_adc_tm, the other 2 we can register via generic-adc-thermal.
-> >>
-> >> Ugh.. so the ADC can support more inputs than the ADC_TM that was
-> >> designed to ship alongside it can?
-> >>
-> >> And that's why the "generic-adc-thermal"-provided zones need to
-> >> be polled?
-> >=20
-> > This part of the code from qcom-spmi-adc-tm5.c was trigerring if I
-> > define more than 4 channels, and looking at downstream I can also see
-> > that only 4 zones are registered properly with adc_tm, the rest is
-> > registered with "qcom,adc-tm5-iio" which skips from what I could tell
-> > basically all the HW bits and only registering the thermal zone.
-> >=20
-> >=20
-> > 	ret =3D adc_tm5_read(chip, ADC_TM5_NUM_BTM,
-> > 			   &channels_available, sizeof(channels_available));
-> > 	if (ret) {
-> > 		dev_err(chip->dev, "read failed for BTM channels\n");
-> > 		return ret;
-> > 	}
-> >=20
-> > 	for (i =3D 0; i < chip->nchannels; i++) {
-> > 		if (chip->channels[i].channel >=3D channels_available) {
-> > 			dev_err(chip->dev, "Invalid channel %d\n", chip->channels[i].channel=
-);
-> > 			return -EINVAL;
-> > 		}
-> > 	}
-> >=20
-> >=20
-> >>
-> >>>
-> >>> The trip points can really only be considered as placeholders, more
-> >>> configuration with cooling etc. can be added later.
-> >>>
-> >>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> >>> ---
-> >> [...]
-> >>
-> >> I've read the sentence above, but..
-> >>> +		sdm-skin-thermal {
-> >>> +			polling-delay-passive =3D <1000>;
-> >>> +			polling-delay =3D <5000>;
-> >>> +			thermal-sensors =3D <&msm_therm_sensor>;
-> >>> +
-> >>> +			trips {
-> >>> +				active-config0 {
-> >>> +					temperature =3D <125000>;
-> >>> +					hysteresis =3D <1000>;
-> >>> +					type =3D "passive";
-> >>
-> >> I don't fancy burnt fingers for dinner!
-> >=20
-> > With passive trip point it wouldn't even do anything now, but at what
-> > temp do you think it should do what? I'd definitely need more time to
-> > understand more of how the thermal setup works in downstream Android,
-> > and then replicate a sane configuration for mainline with proper
-> > temperatures, cooling, etc.
-> If "skin therm" means "the temperature of some part of the phone's
-> body that can be felt with a human hand", then definitely some
-> throttling should happen at 40ish with heavy throttling at 50
-> and crit at 55 or so..
->
-> We should probably make this a broader topic and keep a single
-> policy for all supported phones.
+The subject needs work.  Please tell us what the patches is doing.
 
-I agree that this shouldn't be implemented differently per device since
-it's really more a question "what should Linux do" that's quite a
-general question and not device-specific. Of course some device-specific
-tweaks could be here and there, like if the phone has metal back or
-plastic back but it's only minor.
+On Thu, 28 Dec 2023, Karel Balej wrote:
 
-Based on the config here
-https://gerrit-public.fairphone.software/plugins/gitiles/platform/hardware/=
-qcom/thermal/+/refs/heads/odm/dev/target/13/fp5/thermalConfig.cpp#946
-it looks like throtteling starts for internal components at 95degC with
-a shutdown threshold of 115degC.
-The skin sensor here has a throttling threshold of 40degC and shutdown
-threshold of 95degC.
+> From: Karel Balej <balejk@matfyz.cz>
 
-But actually I'm not even sure this config gets active for QCM6490 with
-socid=3D497. So yeah I need more time digging into the thermal code to see
-what it's actually doing.. Not that it would/should be much different
-for socid=3D497 I guess though.
+A full an complete commit message is a must.
 
-There's also plenty of thermal code in qcom proprietary.
+> Signed-off-by: Karel Balej <balejk@matfyz.cz>
+> ---
+>  drivers/mfd/88pm88x.c       | 14 ++++++++------
+>  include/linux/mfd/88pm88x.h |  2 ++
+>  2 files changed, 10 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/mfd/88pm88x.c b/drivers/mfd/88pm88x.c
+> index 5db6c65b667d..3424d88a58f6 100644
+> --- a/drivers/mfd/88pm88x.c
+> +++ b/drivers/mfd/88pm88x.c
+> @@ -57,16 +57,16 @@ static struct reg_sequence pm886_presets[] = {
+>  	REG_SEQ0(PM88X_REG_BK_OSC_CTRL3, 0xc0),
+>  };
+>  
+> -static struct resource onkey_resources[] = {
+> +static struct resource pm88x_onkey_resources[] = {
+>  	DEFINE_RES_IRQ_NAMED(PM88X_IRQ_ONKEY, "88pm88x-onkey"),
+>  };
+>  
+> -static struct mfd_cell pm88x_devs[] = {
+> +static struct mfd_cell pm886_devs[] = {
+>  	{
+>  		.name = "88pm88x-onkey",
+> -		.num_resources = ARRAY_SIZE(onkey_resources),
+> -		.resources = onkey_resources,
+> -		.id = -1,
+> +		.of_compatible = "marvell,88pm88x-onkey",
+> +		.num_resources = ARRAY_SIZE(pm88x_onkey_resources),
+> +		.resources = pm88x_onkey_resources,
+>  	},
+>  };
+>  
+> @@ -74,6 +74,8 @@ static struct pm88x_data pm886_a1_data = {
+>  	.whoami = PM886_A1_WHOAMI,
+>  	.presets = pm886_presets,
+>  	.num_presets = ARRAY_SIZE(pm886_presets),
+> +	.devs = pm886_devs,
+> +	.num_devs = ARRAY_SIZE(pm886_devs),
+>  };
+>  
+>  static const struct regmap_config pm88x_i2c_regmap = {
+> @@ -157,7 +159,7 @@ static int pm88x_probe(struct i2c_client *client)
+>  	if (ret)
+>  		return ret;
+>  
+> -	ret = devm_mfd_add_devices(&client->dev, 0, pm88x_devs, ARRAY_SIZE(pm88x_devs),
+> +	ret = devm_mfd_add_devices(&client->dev, 0, chip->data->devs, chip->data->num_devs,
+>  			NULL, 0, regmap_irq_get_domain(chip->irq_data));
+>  	if (ret) {
+>  		dev_err(&client->dev, "Failed to add devices: %d\n", ret);
+> diff --git a/include/linux/mfd/88pm88x.h b/include/linux/mfd/88pm88x.h
+> index a34c57447827..9a335f6b9c07 100644
+> --- a/include/linux/mfd/88pm88x.h
+> +++ b/include/linux/mfd/88pm88x.h
+> @@ -49,6 +49,8 @@ struct pm88x_data {
+>  	unsigned int whoami;
+>  	struct reg_sequence *presets;
+>  	unsigned int num_presets;
+> +	struct mfd_cell *devs;
+> +	unsigned int num_devs;
 
-Regards
-Luca
+Why are you adding extra abstraction?
 
->
-> + CC AGdR, may be interested in where this leads
->
-> Konrad
+>  };
+>  
+>  struct pm88x_chip {
+> -- 
+> 2.43.0
+> 
 
+-- 
+Lee Jones [李琼斯]
