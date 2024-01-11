@@ -1,91 +1,95 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2E74B5B4
-	for <phone-devel@vger.kernel.org>; Thu, 11 Jan 2024 14:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE611F191;
+	Thu, 11 Jan 2024 15:05:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LtwipY78"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-5f2aab1c0c5so49592667b3.0
-        for <phone-devel@vger.kernel.org>; Thu, 11 Jan 2024 06:57:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704985033; x=1705589833; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y4QJ/Zk/UxhefO+/Ds686chTEmns6pEsPp66wCH/Tr8=;
-        b=LtwipY78GtVt3Y6uFrZXrDiJiH551VQ/8DFSI1guS+otC8ZssAtguJ1jEXgXnmDaDv
-         pue7uidnE6Zzhty2K5sNdSQ1x+oz+bc3+kJ/m+DdkQPPB34IxUesvLmnGlbqgi52FfpY
-         Qj+UqAfLAPoaetCNTINOVtII+ZOpWPLJsU3sthyo3Co3HSDIqGEvNmp9VIeZZlm7TC8O
-         S9gUu+1V16ITU9K5KT1XnI155I/OHMgwtJv4kcct4wK771Hb97GeOEMJoT1djPqFSNyH
-         ECzVsQxERBCpfPhhiiPUq8jwhedDQhIaclKbuclo4nUTJHN+gzdO7062nHzPqcGDp5OA
-         Iq3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704985033; x=1705589833;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y4QJ/Zk/UxhefO+/Ds686chTEmns6pEsPp66wCH/Tr8=;
-        b=oQp8+3VC4t9cRfRluMJCX9cfdR1/MfQyzb/LhB1ivoFnm6jEO7UDwGja0aS+gvdFA6
-         uigOQRfACyhARq0dPAZ3B2zHXq2A0mLBPamD2DMGedkN9Qq+wIAPD9iecnL1T7fuJzjI
-         ySwW3WiN/6yqj7x/2yZA1oFKh6GGzqPLE89hkQqqaSi1gpq58rllsuOkbCtv00qO/62S
-         JOctQu6eWFxwraSuE320FD/HZvsPYbSjit5xGf2wcNGw5VJS6e5yuAm9m+AgoCkq1Dy/
-         nIyAhXEA25mCJ95c1JZH6BHm1drP4JEZqiafjMAR5hE3ppzo0pAhpZU3mH7IJPpb/Cfp
-         6iqA==
-X-Gm-Message-State: AOJu0Yw3T+wig4pFoW7HZf3m0haRt2MP89iujrD2grjAtQl/Tx219Jy2
-	OrhW9k8UzqlFZp2pf8z0XWjgGGG0JUw8JthixQpsJumuoFCiiQ==
-X-Google-Smtp-Source: AGHT+IGlqFbVsocwq/Ya8t4EI0KodBoh1TFUMaOyVVs9af4K5210a84z1fodh56RrT3NSO1DP38JsInOPARS+62cxkU=
-X-Received: by 2002:a81:aa11:0:b0:5e7:9454:6a2a with SMTP id
- i17-20020a81aa11000000b005e794546a2amr407663ywh.42.1704985032557; Thu, 11 Jan
- 2024 06:57:12 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="LSfLUfNV"
+Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id EAEEE28392C;
+	Thu, 11 Jan 2024 16:05:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
+	s=gen1; t=1704985540;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZJ3MP6ATmvee28CObuFouN18d3lCLkbJd16SrYyeonk=;
+	b=LSfLUfNV6FS3rNsONNFy0FXSj3mOj2FBxr/EgsZ+iudAxmjFiq4Utko0tJmeXez/fWMtM0
+	NJokRw/VcfHfibWYXOoakmWD0Tz3yYUaxulozEj3SqD2DuNUSsfZzBnCcdIuwBrqrOw26h
+	jnW022+Yha8CbbFCL2nbtwGDRMX2Kys=
+Received: from localhost (185-58-42-206.static.masterinter.net [185.58.42.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: karelb)
+	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id A3EB8454CF6;
+	Thu, 11 Jan 2024 16:05:40 +0100 (CET)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240110-fp4-panel-v2-0-8ad11174f65b@fairphone.com> <20240110-fp4-panel-v2-2-8ad11174f65b@fairphone.com>
-In-Reply-To: <20240110-fp4-panel-v2-2-8ad11174f65b@fairphone.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 11 Jan 2024 15:57:01 +0100
-Message-ID: <CACRpkdaWTfPDCin_L6pefHsokjNyO8Mo6hWPdzPLLi1EUkKUuA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] drm/panel: Add driver for DJN HX83112A LCD panel
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
-	Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Andy Gross <agross@kernel.org>, devicetree@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, ~postmarketos/upstreaming@lists.sr.ht, 
-	phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 11 Jan 2024 16:06:08 +0100
+Message-Id: <CYBYXXCP3O1O.2M5YMCRW3SIMY@gimli.ms.mff.cuni.cz>
+Cc: "Karel Balej" <balejk@matfyz.cz>, "Rob Herring" <robh+dt@kernel.org>,
+ "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Liam Girdwood" <lgirdwood@gmail.com>, "Mark Brown"
+ <broonie@kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, =?utf-8?q?Duje_Mihanovi=C4=87?=
+ <duje.mihanovic@skole.hr>, <~postmarketos/upstreaming@lists.sr.ht>,
+ <phone-devel@vger.kernel.org>
+Subject: Re: [RFC PATCH 1/5] mfd: 88pm88x: differences with respect to the
+ PMIC RFC series
+To: "Lee Jones" <lee@kernel.org>
+From: "Karel Balej" <karelb@gimli.ms.mff.cuni.cz>
+References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
+ <20231228100208.2932-2-karelb@gimli.ms.mff.cuni.cz>
+ <20240111105426.GA1678981@google.com>
+In-Reply-To: <20240111105426.GA1678981@google.com>
 
-On Wed, Jan 10, 2024 at 4:14=E2=80=AFPM Luca Weiss <luca.weiss@fairphone.co=
-m> wrote:
+Lee,
 
-> Add support for the 2340x1080 LCD DJN panel bundled with a HX83112A
-> driver IC, as found on the Fairphone 4 smartphone.
+On Thu Jan 11, 2024 at 11:54 AM CET, Lee Jones wrote:
+> The subject needs work.  Please tell us what the patches is doing.
 >
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> On Thu, 28 Dec 2023, Karel Balej wrote:
+>
+> > From: Karel Balej <balejk@matfyz.cz>
+>
+> A full an complete commit message is a must.
 
-This makes it sound like the Himax HX83112A is the driver IC.
+I have not provided a detailed description here because as I have noted
+in the cover letter, this patch will be squashed into the MFD series. I
+sent it only as a bridge between the two series, sorry for the
+confusion.
 
-This does not seem to be the case:
-https://github.com/HimaxSoftware/HX83112_Android_Driver
+> > diff --git a/include/linux/mfd/88pm88x.h b/include/linux/mfd/88pm88x.h
+> > index a34c57447827..9a335f6b9c07 100644
+> > --- a/include/linux/mfd/88pm88x.h
+> > +++ b/include/linux/mfd/88pm88x.h
+> > @@ -49,6 +49,8 @@ struct pm88x_data {
+> >  	unsigned int whoami;
+> >  	struct reg_sequence *presets;
+> >  	unsigned int num_presets;
+> > +	struct mfd_cell *devs;
+> > +	unsigned int num_devs;
+>
+> Why are you adding extra abstraction?
 
-The driver IC seems to be a truly 5p65.
+Right, this is probably not necessary now since I'm only implementing
+support for one of the chips - it's just that I keep thinking about it
+as a driver for both of them and thus tend to write it a bit more
+abstractly. Shall I then drop this and also the `presets` member which
+is also chip-specific?
 
-If this is right, could you rename the driver file to truly-5p65.c
-and all symbols containing hx83112 to truly_5965 or something
-that indicate the driver IC instead of the panel?
-
-My main concern is that the next display using the same IC
-need to find the right file to patch.
-
-Yours,
-Linus Walleij
+Thank you, best regards,
+K. B.
