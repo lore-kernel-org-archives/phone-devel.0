@@ -1,199 +1,88 @@
-Received: from mail-ed1-f68.google.com (mail-ed1-f68.google.com [209.85.208.68])
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B018E60ED8
-	for <phone-devel@vger.kernel.org>; Fri, 12 Jan 2024 09:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948135D90D
+	for <phone-devel@vger.kernel.org>; Fri, 12 Jan 2024 10:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="ok5R+uLD"
-Received: by mail-ed1-f68.google.com with SMTP id 4fb4d7f45d1cf-557dcb0f870so5312734a12.2
-        for <phone-devel@vger.kernel.org>; Fri, 12 Jan 2024 01:52:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="spC2baQ/"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-5f2d4aaa2fdso66047057b3.1
+        for <phone-devel@vger.kernel.org>; Fri, 12 Jan 2024 02:23:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1705053120; x=1705657920; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1705054991; x=1705659791; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HlNYofu3r8i2ZCiashKW8Im9PXJC4O/VU7zX1cqDADg=;
-        b=ok5R+uLD6ZTnei0DVPWInfSJ85n49ghZCKD3glCaQMa+f//WmrikyFRrLtuYKf724v
-         x4F8ajGuLYjagd++ZzM2jU808PNxVdVE1yty5NEh/d+JJzE13S7JgptnV7E8Z2SyETg8
-         Y4LnyvFBnsrx9bVwEEYjN385B0e7TSkxuje0S6nd6YtFjGEmNPSrPEoU+/DmCM3fwtns
-         Y0f6jBK8kUxRgn7pCTYWaGdiGszKtB6MCGhhTA8M0dlYRYrcBRM9eExzqPN2+Ru9p2s2
-         nb9Cdo3LKOc/b4KjCYy+9rpcCxE6Xv8vwwyDeMdK5XfCEpaSNmWS4+knq+gun2J4XWYu
-         h7jA==
+        bh=uoixCIvUaJI+Ikw8bVxT8gSbu0EfclZZOnaz2syKKYw=;
+        b=spC2baQ/D8jPu7CEJOU1UPOIN16iZNlCsr3QXetR7rqP/O6ARnnDL1eTkw/s90ZqKc
+         etq4/kbAXij7fdiNlkjfxpMp/ePmC7Jo3Ukdt+rp/aVLZiXQRJezlSxGNczMGfjq3pzf
+         C/9qyekg1pRk7UDFY2CVvMyNCYxhA8Kxgw2w/vGKF+vSebD3LYsUyApejvOfKXWjYf+i
+         8yXXBoHbnWy2L4c7PnlGeOU0pWmnVC8sQvYQV4pKV8YPs9Ze3EDOVX16ueew3M9rBbEK
+         0aj2F9dx5PYbmTmHxT8qMKJZXejVHszUCn+MFlZQVZ7vmnKGeEBOVRTRJJHKzVbTY1lw
+         VB0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705053120; x=1705657920;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HlNYofu3r8i2ZCiashKW8Im9PXJC4O/VU7zX1cqDADg=;
-        b=K6mOgAMgM4NXbesceeMVNQyWWz7Qx4AFwFHFZdPnpjBhxWFJm3hHIyxgtD4UJg9zEf
-         +GaCyv28Acu2ouB8RVSKaLqUS9eaC4PTOIop8dnJazWy45J9/v9mPVulTRKKeHM7bGP9
-         eSteO8PQCIxXBBiWKUWAbVoANIk3fMTCn1V3TRGbza/hAQakVGmoshrOYVdIQTuUTuh6
-         mK5F96XMne4Q9eOqZvj8nYsR0lxU6RS5cg3Udsgm59bOsGdTOr0YEziMf2M2c5OPeOV0
-         nJrD5AIriIJOhMo9yN3l0tWw30Bg0EzMkfqPscmWc/IxO3sYOyy+d5uElCPKCUbhNWr5
-         AgNw==
-X-Gm-Message-State: AOJu0YywQ26zPk49eAeUj4+kN+60a6myf/KrkpDHM7kfhdjM1dRJYULx
-	Y6XrcmEll1M4SGutAjyC0eNoqn2EkMsH4A==
-X-Google-Smtp-Source: AGHT+IH6D9hm2y3kaGCs5RwJQn2m/6/TZIAhrZDDw5invkLKwXZ/IILZ+DDyExfQK5cF5FyfT3lihA==
-X-Received: by 2002:a05:6402:1d1c:b0:557:aa16:1e44 with SMTP id dg28-20020a0564021d1c00b00557aa161e44mr489041edb.79.1705053119939;
-        Fri, 12 Jan 2024 01:51:59 -0800 (PST)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id eg7-20020a056402288700b0055515b40464sm1616621edb.81.2024.01.12.01.51.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jan 2024 01:51:59 -0800 (PST)
+        d=1e100.net; s=20230601; t=1705054991; x=1705659791;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uoixCIvUaJI+Ikw8bVxT8gSbu0EfclZZOnaz2syKKYw=;
+        b=TjpR/6FUagzDCN+ZldI3Lm6vJuO8yPeVK7xNXFSCoCfZ36PPq4FASgJNGa9h3hsESn
+         dt2a6pge7YnQbep7o1XCcBKImqSJJgZXsTruq7myCGgCJa7xikb/bUhGNUko8ZDA5Ane
+         +cwqm/hg1ZvjcOOZBLd3RBkjVsmCAh08RtKxB2ApExQY7QmRn+2QTPSU4e+wvnJbxmwX
+         yuXnUH4+vaq4Kw/fe933iEjPVy6EdG1N2PD1rWarGMdyFm3BazAf1fB32rxMVOieVpLY
+         iAe1SW6r1UbRG004YWpHHrOXGzZ0kyVWKOjAncAbApjye73yugYjBdpZ6A2MzsOdNRDi
+         Hh7A==
+X-Gm-Message-State: AOJu0YwM+ctQnyK+L2LrT1kbSd7K9gAVtpa4xVYGir2wlB+Vz4xEtnr/
+	9m8ZtXWCuXM+SXslmvjdWwnwapxJSVEXjTJsLXUGNdRAYHUd5w==
+X-Google-Smtp-Source: AGHT+IHmVOQtBdyVCbejqekjIZT/Rhkl+4ZWZHIRmIXNgIVih5i3KRfprEy8VQeiPbDlnOubwhyA1NG9t/mgb8i6gp4=
+X-Received: by 2002:a81:ed0b:0:b0:5ee:6491:c2e5 with SMTP id
+ k11-20020a81ed0b000000b005ee6491c2e5mr1005535ywm.10.1705054991639; Fri, 12
+ Jan 2024 02:23:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 12 Jan 2024 10:51:59 +0100
-Message-Id: <CYCMVXHYVDCI.HVH1TR8MWEUK@fairphone.com>
-Subject: Re: [PATCH v2 2/4] drm/panel: Add driver for DJN HX83112A LCD panel
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: <neil.armstrong@linaro.org>, "Linus Walleij" <linus.walleij@linaro.org>
-Cc: "Jessica Zhang" <quic_jesszhan@quicinc.com>, "Sam Ravnborg"
- <sam@ravnborg.org>, "David Airlie" <airlied@gmail.com>, "Daniel Vetter"
- <daniel@ffwll.ch>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
- "Maxime Ripard" <mripard@kernel.org>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof
- Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
- <conor+dt@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
- Dybcio" <konrad.dybcio@linaro.org>, "Andy Gross" <agross@kernel.org>,
- <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
-X-Mailer: aerc 0.15.2
+MIME-Version: 1.0
 References: <20240110-fp4-panel-v2-0-8ad11174f65b@fairphone.com>
- <20240110-fp4-panel-v2-2-8ad11174f65b@fairphone.com>
- <CACRpkdaWTfPDCin_L6pefHsokjNyO8Mo6hWPdzPLLi1EUkKUuA@mail.gmail.com>
- <CYBZEZ4IM6IL.VR04W7933VI@fairphone.com>
- <CACRpkdZQbVXfBa70nhDOqfWPbsh-6DgX-uvZOxr19pzMmF2giQ@mail.gmail.com>
- <CYCLSCKPPBOC.1B1MP3VOOC0Q8@fairphone.com>
- <cdc18e2a-b7eb-4b54-a513-481148fb3b0d@linaro.org>
-In-Reply-To: <cdc18e2a-b7eb-4b54-a513-481148fb3b0d@linaro.org>
+ <20240110-fp4-panel-v2-2-8ad11174f65b@fairphone.com> <CACRpkdaWTfPDCin_L6pefHsokjNyO8Mo6hWPdzPLLi1EUkKUuA@mail.gmail.com>
+ <CYBZEZ4IM6IL.VR04W7933VI@fairphone.com> <CACRpkdZQbVXfBa70nhDOqfWPbsh-6DgX-uvZOxr19pzMmF2giQ@mail.gmail.com>
+ <CYCLSCKPPBOC.1B1MP3VOOC0Q8@fairphone.com> <cdc18e2a-b7eb-4b54-a513-481148fb3b0d@linaro.org>
+ <CYCMVXHYVDCI.HVH1TR8MWEUK@fairphone.com>
+In-Reply-To: <CYCMVXHYVDCI.HVH1TR8MWEUK@fairphone.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Fri, 12 Jan 2024 11:23:00 +0100
+Message-ID: <CACRpkdacS9ojXUuogygkz6xxCf3mMq6GG_75sze8ukUu=rxVyw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] drm/panel: Add driver for DJN HX83112A LCD panel
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: neil.armstrong@linaro.org, Jessica Zhang <quic_jesszhan@quicinc.com>, 
+	Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Andy Gross <agross@kernel.org>, devicetree@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri Jan 12, 2024 at 10:14 AM CET, Neil Armstrong wrote:
-> On 12/01/2024 10:00, Luca Weiss wrote:
-> > On Thu Jan 11, 2024 at 8:05 PM CET, Linus Walleij wrote:
-> >> On Thu, Jan 11, 2024 at 4:28=E2=80=AFPM Luca Weiss <luca.weiss@fairpho=
-ne.com> wrote:
-> >>
-> >>> In some internal documentation it says "LCD Driver IC" "HX83112A" and=
- I
-> >>> don't see any reference to Truly 5P65 anywhere.
-> >>
-> >> In the Android directory I pointed to I see this file:
-> >> HX83112_Android_Driver/Truly_5p65_module_fw/UpdateFW.bat
-> >>
-> >> (Notice the 5p65 fw dir is *inside* the HX82112 dir)
-> >>
-> >> And in that file:
-> >> adb push TRULY_5P65_1080_2160_HX83112A_D01C01.bin
-> >> /system/etc/firmware/Himax_firmware.bin
-> >>
-> >> Clearly indicating that they are pushing a Truly 5P65 firmware into
-> >> the Himax display firmware directory.
-> >>
-> >> To be fair, that is the driver for the touchscreen part of HX83112A,
-> >> but ... Truly is a well known manufacturer of display controllers?
-> >>
-> >> But... given that you have a @fairphone.com mal address and
-> >> a working relationship with them, can't you just ask?
-> >>
-> >>> On their website they have this sentence:
-> >>
-> >> All OEMs want to look like everything is their own product. It is
-> >> business as usual.
-> >=20
-> > I can't tell you anything there that I don't know, sorry.
-> >=20
-> >>
-> >> Further on the same note since I guess you have a datasheet)
-> >> please bring in #defines for the commands (the first byte in the
-> >> write sequences, for examples:
-> >>
-> >> +       mipi_dsi_dcs_write_seq(dsi, 0xbd, 0x02);
-> >> +       mipi_dsi_dcs_write_seq(dsi, 0xd8,
-> >> +                              0xaa, 0xff, 0xff, 0xff, 0xff, 0xff, 0xa=
-a, 0xff,
-> >> +                              0xff, 0xff, 0xff, 0xff);
-> >> +       mipi_dsi_dcs_write_seq(dsi, 0xbd, 0x03);
-> >>
-> >> Clearly 0xbd is HX83112_CMD_SETREGBANK?
-> >> (This is easily spotted from the similar structure in the
-> >> existing panel-himax-hx8394.c.) So please add #defines
-> >> for all commands you know, especially if you have a datasheet
-> >> because we reviewers don't have them and "it's just magic
-> >> bytes" isn't very compelling. It adds a lot to understanding.
-> >=20
-> > Right, the register names seem to match more or less the ones from that
-> > driver, plus some new ones and some differently named ones. Will send a
-> > v3 with that.
-> >=20
-> >>
-> >> I strongly suspect other Himax displays such as HX8394 to
-> >> be using a Truly controller as well, hence the similarities.
-> >>
-> >> In a datasheet for their TFT800480-84-V1-E display controller
-> >> Truly kept the init sequence name of void LCD_INIT_HX8290(void)
-> >> for example.
-> >=20
-> > In that datasheet (assuming I'm looking at the same one?) it says
-> > "Driver IC" "HX8290-A[...]" so there the display driver is manufactured
-> > by Himax and not Truly to my understanding. Truly is assembling togethe=
-r
-> > Driver + all the other parts that go into an LCD.
-> >=20
-> > For the panel used on Fairphone 4 that part is done by the company DJN.
->
-> Looking at the discussion, this seems to confirm the Display+Touch IC is =
-HX83112A,
-> and Truly is the panel manufacturer and all assembled by DJN, so IMHO the=
- initial driver is right.
->
-> Perhaps the compatible should be djn,hx83112a-truly-5p65 to reflect that =
-?
+On Fri, Jan 12, 2024 at 10:52=E2=80=AFAM Luca Weiss <luca.weiss@fairphone.c=
+om> wrote:
 
-Since there's zero indication Truly is involved in this panel in my
-documentation - much less the number 5P65 - I'm not going to add that.
+> Since there's zero indication Truly is involved in this panel in my
+> documentation - much less the number 5P65 - I'm not going to add that.
 
-One other number I'm certain of is from DJN's side the model number of
-this panel is 9A-3R063-1102B, which I assume is the specific combination
-of components + frame and everything for Fairphone 4 device.
+OK then, I fold, thanks for looking into it.
+Keep the Himax hx83112a file name and symbols.
 
-That one you can also find in this document (Ctrl-F for DJN)
-https://www.fairphone.com/wp-content/uploads/2022/09/FP4_Information-for-re=
-pairers-and-recyclers.pdf
-.. or on this picture:
-https://guide-images.cdn.ifixit.com/igi/HgTquQPABg1mAMHD.huge
+> So in short this panel is the model 9A-3R063-1102B from DJN, which uses
+> a Himax HX83112A driver IC.
 
-So something like djn,9a-3r063-1102b would also be somewhat valid I
-guess?
+So compatible =3D "djn,9a-3r063-1102b" since the setup sequences for
+hx83112a are clearly for this one display?
 
-So in short this panel is the model 9A-3R063-1102B from DJN, which uses
-a Himax HX83112A driver IC.
-
-And there's also AU Optronics listed as =E7=8E=BB=E7=92=83=E5=8E=82=E5=AE=
-=B6 ("glass manufacturer"?)
-fwiw, though the display also uses Corning Gorilla Glass 5 so not sure
-who's supplying what.
-
-Regards
-Luca
-
->
-> Neil
->
-> >=20
-> > Regards
-> > Luca
-> >=20
-> >>
-> >> Yours,
-> >> Linus Walleij
-> >=20
-
+Yours,
+Linus Walleij
