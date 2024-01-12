@@ -1,90 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f67.google.com (mail-ed1-f67.google.com [209.85.208.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67732812;
-	Fri, 12 Jan 2024 07:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A15852F6A
+	for <phone-devel@vger.kernel.org>; Fri, 12 Jan 2024 09:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwvZmfdc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722DFC433F1;
-	Fri, 12 Jan 2024 07:58:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705046313;
-	bh=fZ2vS676hdgJy+L7T0B/4nKQXB3hkTnrLtIFZBx9/60=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dwvZmfdcQJlvGab9ateNjc7FT47yJduv7igApmUMISm37PVKZgbPj1wCQhEDAVDoQ
-	 1Unmbv/9wgNTiVzfHxRyz7ANRUdnHIJH7P3mONG02RYFr7w1X3OwWLTV7LBr0In0v6
-	 P90t13blzz88t1F3i8Nk9ZO5JdM2A5hLzzOlSm/vawlOVsmA4J4CDrpmBsNv450cuF
-	 m/D39KJye/CbX3eJQygnIIwnAQaPkuvfG1UXhpP8rHTSgIJoQiv+f4zFV/eRwVD/Qa
-	 /YvRmaM72dkdwQKSIfROObtq3/JAuF89Va4a0e0WtxymirWZ72AMPaleWsmnzYHwNS
-	 eQqLmqxbABUJw==
-Date: Fri, 12 Jan 2024 07:58:28 +0000
-From: Lee Jones <lee@kernel.org>
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-Cc: Karel Balej <balejk@matfyz.cz>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [RFC PATCH 1/5] mfd: 88pm88x: differences with respect to the
- PMIC RFC series
-Message-ID: <20240112075828.GI1920897@google.com>
-References: <20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz>
- <20231228100208.2932-2-karelb@gimli.ms.mff.cuni.cz>
- <20240111105426.GA1678981@google.com>
- <CYBYXXCP3O1O.2M5YMCRW3SIMY@gimli.ms.mff.cuni.cz>
- <20240111152549.GL1678981@google.com>
- <CYBZKXR1F4QP.197Y9Y09Z1CLP@gimli.ms.mff.cuni.cz>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="HO4cMldz"
+Received: by mail-ed1-f67.google.com with SMTP id 4fb4d7f45d1cf-557dcb0f870so5259821a12.2
+        for <phone-devel@vger.kernel.org>; Fri, 12 Jan 2024 01:00:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1705050018; x=1705654818; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9SkiM1CyhiqOdeyM++a6lT4rbKePEx/F9YY5NzKazuE=;
+        b=HO4cMldzwLhwY7Oms8X7gJSko/PvJ4uHJdPKmtax1Jjav3mLLFbpii/sscAzPnEuKf
+         SxrSCAJgKZxNvWyBYvuZlvp7hldHlp9bjk0b8CZZmCbjsddlY0tu/qgs5sLrmlK7Ykra
+         DNUzHWjemDfbcUraqpRr3EXuMOC3jwIJRF3nuTGySMB5/ETg7U3JwTjXLoSbfzeKAso1
+         EQJH9gVgZTTXF6mafvs9ahBeXu9MFUQ9w7BEprftFUTGHr92iY+BmX/xTrzLfmlnfnDr
+         AmebHBYnJgEw8mFLRJOHk1jR6572g3U+z01gL7Uqm+ZiT/5LQIEERvehH7VhvmX+6rcI
+         Sp9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705050018; x=1705654818;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9SkiM1CyhiqOdeyM++a6lT4rbKePEx/F9YY5NzKazuE=;
+        b=kgDrqdtWej2uvuNPYdvxXVL0+KyQIafggEgONgQcdRCJR29f8wBgeNY6y84QemPG0i
+         d/tcE3Wid4A+b0RDDB1ou0mONnr0Rxx2yh47lBln7SbuxVNtMdKrfYUggrzOJdy9jfxg
+         qDRN+h9NEPa957Wv3JO/tsh13dtOy9Qnwd+iR8M4PDhHiL157yDB1hjHMN62lQjf12fh
+         td8aermROPDGunsLU/tE2ktULA90KyYcQKaloC+n/9eNtWNvQXrPa5db3LckqBvKrCKP
+         p1mhGi0bLnv+CtSEDpMG2kJFP3F6bJK2A1nv7v1OODdik+LlwHg+EAOUgjpa+jeAkdS3
+         zHLw==
+X-Gm-Message-State: AOJu0YwnybOBVczQ1pb2y53HCyoYXyQSN7ZfsEqV0honI+B3sWJbyRVk
+	8wTWLWPpBNE6IgzdlppkyNEDYs3ewzk54g==
+X-Google-Smtp-Source: AGHT+IE4lqCuCcBKUQKcGYBXm2hn5tLGot0ekhVA4EDWlovNg76g03laNX/Vn5Sk4TgseAUkA74dQQ==
+X-Received: by 2002:a50:fa94:0:b0:54c:60f0:7511 with SMTP id w20-20020a50fa94000000b0054c60f07511mr480176edr.35.1705050018310;
+        Fri, 12 Jan 2024 01:00:18 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id j14-20020a50ed0e000000b005550192159bsm1555191eds.62.2024.01.12.01.00.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Jan 2024 01:00:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CYBZKXR1F4QP.197Y9Y09Z1CLP@gimli.ms.mff.cuni.cz>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 12 Jan 2024 10:00:17 +0100
+Message-Id: <CYCLSCKPPBOC.1B1MP3VOOC0Q8@fairphone.com>
+Cc: "Neil Armstrong" <neil.armstrong@linaro.org>, "Jessica Zhang"
+ <quic_jesszhan@quicinc.com>, "Sam Ravnborg" <sam@ravnborg.org>, "David
+ Airlie" <airlied@gmail.com>, "Daniel Vetter" <daniel@ffwll.ch>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Rob
+ Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
+ <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konrad.dybcio@linaro.org>, "Andy Gross" <agross@kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/4] drm/panel: Add driver for DJN HX83112A LCD panel
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Linus Walleij" <linus.walleij@linaro.org>
+X-Mailer: aerc 0.15.2
+References: <20240110-fp4-panel-v2-0-8ad11174f65b@fairphone.com>
+ <20240110-fp4-panel-v2-2-8ad11174f65b@fairphone.com>
+ <CACRpkdaWTfPDCin_L6pefHsokjNyO8Mo6hWPdzPLLi1EUkKUuA@mail.gmail.com>
+ <CYBZEZ4IM6IL.VR04W7933VI@fairphone.com>
+ <CACRpkdZQbVXfBa70nhDOqfWPbsh-6DgX-uvZOxr19pzMmF2giQ@mail.gmail.com>
+In-Reply-To: <CACRpkdZQbVXfBa70nhDOqfWPbsh-6DgX-uvZOxr19pzMmF2giQ@mail.gmail.com>
 
-On Thu, 11 Jan 2024, Karel Balej wrote:
+On Thu Jan 11, 2024 at 8:05 PM CET, Linus Walleij wrote:
+> On Thu, Jan 11, 2024 at 4:28=E2=80=AFPM Luca Weiss <luca.weiss@fairphone.=
+com> wrote:
+>
+> > In some internal documentation it says "LCD Driver IC" "HX83112A" and I
+> > don't see any reference to Truly 5P65 anywhere.
+>
+> In the Android directory I pointed to I see this file:
+> HX83112_Android_Driver/Truly_5p65_module_fw/UpdateFW.bat
+>
+> (Notice the 5p65 fw dir is *inside* the HX82112 dir)
+>
+> And in that file:
+> adb push TRULY_5P65_1080_2160_HX83112A_D01C01.bin
+> /system/etc/firmware/Himax_firmware.bin
+>
+> Clearly indicating that they are pushing a Truly 5P65 firmware into
+> the Himax display firmware directory.
+>
+> To be fair, that is the driver for the touchscreen part of HX83112A,
+> but ... Truly is a well known manufacturer of display controllers?
+>
+> But... given that you have a @fairphone.com mal address and
+> a working relationship with them, can't you just ask?
+>
+> > On their website they have this sentence:
+>
+> All OEMs want to look like everything is their own product. It is
+> business as usual.
 
-> On Thu Jan 11, 2024 at 4:25 PM CET, Lee Jones wrote:
-> 
-> [...]
-> 
-> > > > > diff --git a/include/linux/mfd/88pm88x.h b/include/linux/mfd/88pm88x.h
-> > > > > index a34c57447827..9a335f6b9c07 100644
-> > > > > --- a/include/linux/mfd/88pm88x.h
-> > > > > +++ b/include/linux/mfd/88pm88x.h
-> > > > > @@ -49,6 +49,8 @@ struct pm88x_data {
-> > > > >  	unsigned int whoami;
-> > > > >  	struct reg_sequence *presets;
-> > > > >  	unsigned int num_presets;
-> > > > > +	struct mfd_cell *devs;
-> > > > > +	unsigned int num_devs;
-> > > >
-> > > > Why are you adding extra abstraction?
-> > > 
-> > > Right, this is probably not necessary now since I'm only implementing
-> > > support for one of the chips - it's just that I keep thinking about it
-> > > as a driver for both of them and thus tend to write it a bit more
-> > > abstractly. Shall I then drop this and also the `presets` member which
-> > > is also chip-specific?
-> >
-> > Even if you were to support multiple devices, this strategy is unusual
-> > and isn't likely to be accepted.
-> 
-> May I please ask what the recommended strategy is then? `switch`ing on
-> the chip ID? I have taken this approach because it seemed to produce a
-> cleaner/more straightforward code in comparison to that. Or are you only
-> talking about the chip cells/subdevices in particular?
+I can't tell you anything there that I don't know, sorry.
 
-I'd have to see the implementation, but the general exception I'm taking
-here is storing the use-once MFD cell data inside a data structure.  If
-you were to match on device ID it's *sometimes* acceptable to store the
-pointers in local variables.
+>
+> Further on the same note since I guess you have a datasheet)
+> please bring in #defines for the commands (the first byte in the
+> write sequences, for examples:
+>
+> +       mipi_dsi_dcs_write_seq(dsi, 0xbd, 0x02);
+> +       mipi_dsi_dcs_write_seq(dsi, 0xd8,
+> +                              0xaa, 0xff, 0xff, 0xff, 0xff, 0xff, 0xaa, =
+0xff,
+> +                              0xff, 0xff, 0xff, 0xff);
+> +       mipi_dsi_dcs_write_seq(dsi, 0xbd, 0x03);
+>
+> Clearly 0xbd is HX83112_CMD_SETREGBANK?
+> (This is easily spotted from the similar structure in the
+> existing panel-himax-hx8394.c.) So please add #defines
+> for all commands you know, especially if you have a datasheet
+> because we reviewers don't have them and "it's just magic
+> bytes" isn't very compelling. It adds a lot to understanding.
 
--- 
-Lee Jones [李琼斯]
+Right, the register names seem to match more or less the ones from that
+driver, plus some new ones and some differently named ones. Will send a
+v3 with that.
+
+>
+> I strongly suspect other Himax displays such as HX8394 to
+> be using a Truly controller as well, hence the similarities.
+>
+> In a datasheet for their TFT800480-84-V1-E display controller
+> Truly kept the init sequence name of void LCD_INIT_HX8290(void)
+> for example.
+
+In that datasheet (assuming I'm looking at the same one?) it says
+"Driver IC" "HX8290-A[...]" so there the display driver is manufactured
+by Himax and not Truly to my understanding. Truly is assembling together
+Driver + all the other parts that go into an LCD.
+
+For the panel used on Fairphone 4 that part is done by the company DJN.
+
+Regards
+Luca
+
+>
+> Yours,
+> Linus Walleij
+
