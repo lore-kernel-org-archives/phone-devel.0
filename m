@@ -1,51 +1,51 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A60B5EE81
-	for <phone-devel@vger.kernel.org>; Fri, 12 Jan 2024 10:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50B27491
+	for <phone-devel@vger.kernel.org>; Mon, 15 Jan 2024 08:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BBDwWL8f"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3377d45c178so1752089f8f.2
-        for <phone-devel@vger.kernel.org>; Fri, 12 Jan 2024 02:26:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D1mUXrTz"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-40e779f0253so6134875e9.1
+        for <phone-devel@vger.kernel.org>; Mon, 15 Jan 2024 00:43:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705055206; x=1705660006; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1705308214; x=1705913014; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :references:cc:to:content-language:subject:reply-to:from:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=C0Lc99ilQ42af+xslRM658d3mAj5DW98oVamnjTJWVg=;
-        b=BBDwWL8fwf0FXzb5aWIR41mlLwN2QymHN50Yx6Q0GhNCxqmT531Sy6NRE+N1IeCjpM
-         jRZTn+IcIxTfIV0YUJRqot7mbg1uLXw8jPgDwknrxZ5OzeY2gtTYfoFN2KepN1LaQLEV
-         S56MISWhGUYf2vEz6QyE4zvnfPd5L44lKXlHzxWiXOzifurL1KRof86bF/SxJMCzUbJl
-         tAWjDPTv18qrzHUPTbJp4tI3RqS7tuZNuUihp25xUCgxBi7CUVCcr1l2d428PxJK4V3E
-         R3tklHqFVA6OPrqk6cZQm8MlXp0SVXPsFmA/p8xBktGxMdQc/DYoCvURFUXbkoyHziRD
-         M53w==
+        bh=v7trEMMexp/L0cRP5nniRYAU6VEcRUVKr6Xlvoj7OOQ=;
+        b=D1mUXrTznnAT3I+8WnSLMfUyx1LE06Z95H/i1gzzQYNZ34fcEjVHbu0Muig0NOlbl3
+         MNLC6Ons+17FepZpsCBl+qFhBXQ9rOvtsw0Y7qR39jXAKwvsNLfJr6ycT5axJmA/tWvU
+         vCSahCw6p87lRwsCCh+tFOGEAeC43NDaWS2eNDJSLVs50mTX7v/teKgxyUhX0yAV50B4
+         WHzyawQCfxKWRmk5CcEGDR7YmWPJQfQ2xJo655v0olO8ELVglEN0fwxYHo+t6ZOxLVBj
+         zqo3BJ6sAsu9NdDu12D5nEs8zkxzdCbYTYqisP1YqzBfoYwOyLFWZywppWLe5E/vmTPV
+         yJOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705055206; x=1705660006;
+        d=1e100.net; s=20230601; t=1705308214; x=1705913014;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :references:cc:to:content-language:subject:reply-to:from:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=C0Lc99ilQ42af+xslRM658d3mAj5DW98oVamnjTJWVg=;
-        b=THd9w8i2MW1WQGswrgYc+qTOhcVbviSbgsjRRHVMAAt4ONlLYNKg9r1bVEdIJ2VwRG
-         5FHtmuDnU+sbMIltPef2BE0TuxBwXbOKsUmMCm9dMJaMgbJoYZBRTNm66Fy17nL4MsuY
-         yE3Iot/mtBiMLC/PZdsc98fRX93TRi36SKg1uqq5NHuzSoPimonvgBXIwjqHL5rS/k5W
-         vZ+Ut0v9GKy0PwSaROqMq1ePAaHxb91ELsT1JA/AwRjdD11k/a0UoClLkUifaYue68Lx
-         1J4X02JT/Dkh0nR++JbYLgVXCrT/aEEbUyDsfRiTJOv02u2R2xBgHNvZXdRtZ/tDhudz
-         M79w==
-X-Gm-Message-State: AOJu0YwipIEZ45vIQSrGlXAhHw4wNkf/1eGoyV1Ujn0Q63Tz6Una7CKz
-	8YyGD19jPFLQwXd0ld1SN2fE1OUl+kGcYg==
-X-Google-Smtp-Source: AGHT+IEJ0X+IfLsBVCPTmjzGkvUhKKx4wLj7tOWDMjhPq6GtB3+I1Fs/2fvJMVmiCPfL0g/HihfoHw==
-X-Received: by 2002:a05:6000:184f:b0:336:5e6c:a1f8 with SMTP id c15-20020a056000184f00b003365e6ca1f8mr684134wri.92.1705055206508;
-        Fri, 12 Jan 2024 02:26:46 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:982:cbb0:59d5:231:f1ee:77f? ([2a01:e0a:982:cbb0:59d5:231:f1ee:77f])
-        by smtp.gmail.com with ESMTPSA id h18-20020adf9cd2000000b00336a1f6ce7csm3456348wre.19.2024.01.12.02.26.45
+        bh=v7trEMMexp/L0cRP5nniRYAU6VEcRUVKr6Xlvoj7OOQ=;
+        b=a6nyZWnSAG8dCGiE12Tjgz0LbD59hqg8OGIzv0DDReJSPe0guAH5lVKcdCT53X9v5f
+         KNRG74yrvXw/OZOqeoNj/fYESRMG7DOg+U14+y289jlEnqlAPNs3CHX8IwFip6GNZfFz
+         exjPFyHlU8lVUAqBkuUBFQXNMpdUocxcgoTyXeEzqKC+XXpiili4OpcAZOXiTUV7CGAU
+         f1UXKnJfs8XjYxYyGPKr6M62MNSQd1qA/3o0wE1/U4OAckoa4pjiDEg6AH25KETKiap1
+         xqlarbQQOYCo4cAQbseSVICtmKjrll/pkajwcd0V0lRBvrSna9IVXysqKZceQwYeIpvg
+         R+Zg==
+X-Gm-Message-State: AOJu0YxieWbhTxqcI4G0gUbEHRb+TMmHyWxIjmmqXCWYbp3uH8ml+PwS
+	YPsGkgD6V1uQTfk9Bw4qHgE6KTSbjFIeew==
+X-Google-Smtp-Source: AGHT+IH3YQraSdCl5E7fmni/nnmbQn6D7xvQbHJ4xwymZ9rctQpsSlaYCsbqYXIp3W6UjPUKaCNQtg==
+X-Received: by 2002:a05:600c:314b:b0:40e:6ee6:6fb with SMTP id h11-20020a05600c314b00b0040e6ee606fbmr1864869wmo.120.1705308213780;
+        Mon, 15 Jan 2024 00:43:33 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:982:cbb0:af6f:bcbb:3c88:33c2? ([2a01:e0a:982:cbb0:af6f:bcbb:3c88:33c2])
+        by smtp.gmail.com with ESMTPSA id m26-20020a7bca5a000000b0040e54381a85sm14669897wml.26.2024.01.15.00.43.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Jan 2024 02:26:46 -0800 (PST)
-Message-ID: <f99d363c-d4a6-44b3-8057-3925f8dac1d5@linaro.org>
-Date: Fri, 12 Jan 2024 11:26:44 +0100
+        Mon, 15 Jan 2024 00:43:33 -0800 (PST)
+Message-ID: <b1da07f9-7e15-4d83-bef3-d0ce157654bc@linaro.org>
+Date: Mon, 15 Jan 2024 09:43:32 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -53,33 +53,20 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: neil.armstrong@linaro.org
+From: Neil Armstrong <neil.armstrong@linaro.org>
 Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH v2 2/4] drm/panel: Add driver for DJN HX83112A LCD panel
+Subject: Re: [PATCH] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
 Content-Language: en-US, fr
-To: Linus Walleij <linus.walleij@linaro.org>,
- Luca Weiss <luca.weiss@fairphone.com>
-Cc: Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg
- <sam@ravnborg.org>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>,
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Andy Gross <agross@kernel.org>,
- devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-References: <20240110-fp4-panel-v2-0-8ad11174f65b@fairphone.com>
- <20240110-fp4-panel-v2-2-8ad11174f65b@fairphone.com>
- <CACRpkdaWTfPDCin_L6pefHsokjNyO8Mo6hWPdzPLLi1EUkKUuA@mail.gmail.com>
- <CYBZEZ4IM6IL.VR04W7933VI@fairphone.com>
- <CACRpkdZQbVXfBa70nhDOqfWPbsh-6DgX-uvZOxr19pzMmF2giQ@mail.gmail.com>
- <CYCLSCKPPBOC.1B1MP3VOOC0Q8@fairphone.com>
- <cdc18e2a-b7eb-4b54-a513-481148fb3b0d@linaro.org>
- <CYCMVXHYVDCI.HVH1TR8MWEUK@fairphone.com>
- <CACRpkdacS9ojXUuogygkz6xxCf3mMq6GG_75sze8ukUu=rxVyw@mail.gmail.com>
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20240111-drm-panel-bridge-fixup-v1-1-e06292f6f500@fairphone.com>
 Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
  GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
@@ -105,34 +92,73 @@ Autocrypt: addr=neil.armstrong@linaro.org; keydata=
  4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
  QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
 Organization: Linaro Developer Services
-In-Reply-To: <CACRpkdacS9ojXUuogygkz6xxCf3mMq6GG_75sze8ukUu=rxVyw@mail.gmail.com>
+In-Reply-To: <20240111-drm-panel-bridge-fixup-v1-1-e06292f6f500@fairphone.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 12/01/2024 11:23, Linus Walleij wrote:
-> On Fri, Jan 12, 2024 at 10:52 AM Luca Weiss <luca.weiss@fairphone.com> wrote:
+Hi Luca,
+
+On 11/01/2024 13:38, Luca Weiss wrote:
+> Since the kconfig symbol of DRM_PANEL_BRIDGE is only adding
+> bridge/panel.o to drm_kms_helper object, we need to select
+> DRM_KMS_HELPER to make sure the file is actually getting built.
 > 
->> Since there's zero indication Truly is involved in this panel in my
->> documentation - much less the number 5P65 - I'm not going to add that.
-
-Ack
-
+> Otherwise with certain defconfigs e.g. devm_drm_of_get_bridge will not
+> be properly available:
 > 
-> OK then, I fold, thanks for looking into it.
-> Keep the Himax hx83112a file name and symbols.
+>    aarch64-linux-gnu-ld: drivers/phy/qualcomm/phy-qcom-qmp-combo.o: in function `qmp_combo_bridge_attach':
+>    drivers/phy/qualcomm/phy-qcom-qmp-combo.c:3204:(.text+0x8f4): undefined reference to `devm_drm_of_get_bridge'
 > 
->> So in short this panel is the model 9A-3R063-1102B from DJN, which uses
->> a Himax HX83112A driver IC.
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+> I can see "depends on DRM_KMS_HELPER" was removed with commit
+> 3c3384050d68 ("drm: Don't make DRM_PANEL_BRIDGE dependent on DRM_KMS_HELPERS")
 > 
-> So compatible = "djn,9a-3r063-1102b" since the setup sequences for
-> hx83112a are clearly for this one display?
+> I'm not too familiar with Kconfig but it feels more correct if
+> PHY_QCOM_QMP_COMBO selects DRM_PANEL_BRIDGE that that's enough; and it
+> doesn't also has to explicitly select DRM_KMS_HELPER because of how the
+> objects are built in the Makefile.
+> 
+> Alternatively solution to this patch could be adjusting this line in
+> include/drm/drm_bridge.h:
+> 
+>    -#if defined(CONFIG_OF) && defined(CONFIG_DRM_PANEL_BRIDGE)
+>    +#if defined(CONFIG_OF) && defined(CONFIG_DRM_PANEL_BRIDGE) && defined(CONFIG_DRM_KMS_HELPER)
+>     struct drm_bridge *devm_drm_of_get_bridge(struct device *dev, struct device_node *node,
+>                                              u32 port, u32 endpoint);
+> 
+> .. and then selecting DRM_KMS_HELPER for PHY_QCOM_QMP_COMBO.
+> 
+> But I think the solution in this patch is better. Let me know what you
+> think.
 
-Yep let's settle on that!
+I think this is no more the case after on linux-next:
+35921910bbd0 phy: qcom: qmp-combo: switch to DRM_AUX_BRIDGE
 
-Thanks,
+But could you still check ?
+
 Neil
 
+> ---
+>   drivers/gpu/drm/bridge/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> Yours,
-> Linus Walleij
+> diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
+> index ac9ec5073619..ae782b427829 100644
+> --- a/drivers/gpu/drm/bridge/Kconfig
+> +++ b/drivers/gpu/drm/bridge/Kconfig
+> @@ -8,6 +8,7 @@ config DRM_BRIDGE
+>   config DRM_PANEL_BRIDGE
+>   	def_bool y
+>   	depends on DRM_BRIDGE
+> +	select DRM_KMS_HELPER
+>   	select DRM_PANEL
+>   	help
+>   	  DRM bridge wrapper of DRM panels
+> 
+> ---
+> base-commit: b9c3a1fa6fb324e691a03cf124b79f4842e65d76
+> change-id: 20240111-drm-panel-bridge-fixup-5c2977fb969f
+> 
+> Best regards,
 
