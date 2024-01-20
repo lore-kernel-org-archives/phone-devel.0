@@ -1,125 +1,95 @@
-Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
+Received: from mx.skole.hr (mx2.hosting.skole.hr [161.53.165.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25576156F9;
-	Sat, 20 Jan 2024 19:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F2CEC9;
+	Sat, 20 Jan 2024 21:17:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705778441; cv=none; b=i1IMt5xXMJ4VMFru8ujl5pD2IkeRZAx/xRgj1hOR1VnpBTkIeC+HASwlVkKn28vX/qjp4vvosyxDNmEQCJQDktQl2F1XEXqT03tXo7U+utLXlC2pqjW7025xZXmBHpnJcKwHuZA/OL+CoHBc1YgsXRoZP+kxvk45AMeIGxyEIPE=
+	t=1705785450; cv=none; b=HX8DpIrQ+I2o1hzxDbINID27/R/J+et1sQ/PQA4Jxdl62zstg6EXvuGunazXOM0NDjv+dmAMwJuiuS6HgQsjD5VN8oBUnoZKjQjA+3zuFTdR3qwEUhtJzCjJ2HSrTTdtjEMrmfPlrJpCcm2N+aSTpGXSK1IiIfm/vxaZJAMVJLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705778441; c=relaxed/simple;
-	bh=rotx75+PNUiB1nrwnnm5GeKEE0xMiosHZsyowbNUlYQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6hIiGbV7KIUPhUnLZtn53iCp7SnVn52NJw+E3Mfwjqny9afFcbk67ZiigGxavi/gLYg+NPuJlNEwgcwTlHHHgjDZNj2U8yQwCgtqZt0QYBcktlxRN02Xk1UoZC8c/7IcwY1M4odJKlxnPtqhHleObkwiUHPNIkK26u4SOwR6Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz; dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b=fVQbIPe8; arc=none smtp.client-ip=195.113.20.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="fVQbIPe8"
-Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id 6ADAD283BD2;
-	Sat, 20 Jan 2024 20:20:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
-	s=gen1; t=1705778438;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6nlJhh70C00O21KEiXe3q4atmWqeoTlQakU5+W4UbXg=;
-	b=fVQbIPe8bBa3vFCKFSFM+y8Xcfnt7UrQgKqhGyFF0gokt6IBGpoy/LZDfil+n9BQdewzD2
-	p7cwh3g8MEwH58XYXbb3/UBGc9TZE4rTXJhc0iaFHaV2wJZo5bqTcwLwkkd2oKSOARsI92
-	KGk16wYfZLQ1dr/2qHXXnUi5ShsQRI4=
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: karelb)
-	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id 43DE34577A2;
-	Sat, 20 Jan 2024 20:20:38 +0100 (CET)
-From: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-To: Markuss Broks <markuss.broks@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Henrik Rydberg <rydberg@bitmath.org>,
-	linux-input@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org
-Subject: [PATCH v4 5/5] input/touchscreen: imagis: add support for IST3032C
-Date: Sat, 20 Jan 2024 20:11:16 +0100
-Message-ID: <20240120191940.3631-6-karelb@gimli.ms.mff.cuni.cz>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240120191940.3631-1-karelb@gimli.ms.mff.cuni.cz>
-References: <20240120191940.3631-1-karelb@gimli.ms.mff.cuni.cz>
+	s=arc-20240116; t=1705785450; c=relaxed/simple;
+	bh=TQbvdedocH+ZVWb2kPtn6fq1z3XkIwKlGuuer4LHqsM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=jTLFbx8orpwX/w2jsPdFSysoK6/61NF4U7nNVfJUX4CI64YNKarNmvLIvd4LlbdRuFfAobmaDoyj0ktZTHvUsiqLWky0c3mwH98R/eOnukAZ2lDrWnxeK/Aj6xAEHhry7a67wR4rZcnZNLlMaMDd3R5f6hbHPUw44Xgwo5+vTi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
+Received: from mx2.hosting.skole.hr (localhost.localdomain [127.0.0.1])
+	by mx.skole.hr (mx.skole.hr) with ESMTP id 620FA86C66;
+	Sat, 20 Jan 2024 22:17:19 +0100 (CET)
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Date: Sat, 20 Jan 2024 22:16:13 +0100
+Subject: [PATCH v2 2/3] dt-bindings: input: imagis: Document touch keys
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Message-Id: <20240120-b4-imagis-keys-v2-2-d7fc16f2e106@skole.hr>
+References: <20240120-b4-imagis-keys-v2-0-d7fc16f2e106@skole.hr>
+In-Reply-To: <20240120-b4-imagis-keys-v2-0-d7fc16f2e106@skole.hr>
+To: Markuss Broks <markuss.broks@gmail.com>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Karel Balej <balejk@matfyz.cz>, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=991;
+ i=duje.mihanovic@skole.hr; h=from:subject:message-id;
+ bh=TQbvdedocH+ZVWb2kPtn6fq1z3XkIwKlGuuer4LHqsM=;
+ b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlrDg698+s1stUHo6E4hlj8Bs2/NjFik9nJaD4F
+ TZyGdtFaWSJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZaw4OgAKCRCaEZ6wQi2W
+ 4Q2VD/9fBmq7wp16hYjZFFEYFLh4ZSsLjHfJOQZihoNJ4t6awI+4cdp9OdagsufIiEHoUGasHeo
+ sXibTy/3xflg0npikVBiuwUdGP8kuO/ZJfPML2DcZNpA0TCnueBD2+/Obd1B8RmPTsTKGeX1cX8
+ VnpsTzYISm7+JPOY/q2TrmkAi28cgMFPYfQlgpAtQw4rT3v2ouhGbCtw9PqfFdJ4geEpBkxx5eA
+ DYRtLJgg2ZyOzpu679VJWxB5DTUd44rnAMChwO3Q63LYrjW7hlXywNVaNX5qxwQ7jzIIicIudtv
+ mEWBcMs3997tJyE1KGuAYFOPfrdqRRPCD370YYa4TQyqCjHPNw56dBl9nfFE5Td8SUT5afpIvzk
+ mDef9BCtlq+PK5ktnnPtQqsrC7VeDl4GFfXPfxOjaa3kGHB70CiWFQiSTWd7hOEnxhSMgWesS6T
+ GHOx25VdTkNG5y160x7DHvRo/bATOTovsWjJDgZadIb2Z57/Nkg5R4OZszMFte03eKw6efu594s
+ u6mZqDuN1/hZBhhdsxPv52kTxG60/vPblkZj8s57mu65gLEHvV3jtg9aZsGDqS+AZVbSd+T53GP
+ mK97pxt8SbNOgp74BYJVmLR3ER8RE2xAZ4QzElDyXJivbDi9Xr7VVN57J/TOfjyq25Xv9gJ3/Bo
+ +z+czi7YqJrAusw==
+X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
+ fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
 
-From: Karel Balej <balejk@matfyz.cz>
+IST3032C (and possibly some other models) has touch keys. Document this.
 
-IST3032C is a touchscreen chip used for instance in the
-samsung,coreprimevelte smartphone, with which this was tested. Add the
-chip specific information to the driver.
-
-Reviewed-by: Markuss Broks <markuss.broks@gmail.com>
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 ---
+ .../bindings/input/touchscreen/imagis,ist3038c.yaml           | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Notes:
-    v4:
-    * Change the WHOAMI definition position to preserve alphanumerical order
-      of the definitions.
-    * Add Markuss' Reviewed-by trailer.
-
- drivers/input/touchscreen/imagis.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/drivers/input/touchscreen/imagis.c b/drivers/input/touchscreen/imagis.c
-index 9af8a6332ae6..e1fafa561ee3 100644
---- a/drivers/input/touchscreen/imagis.c
-+++ b/drivers/input/touchscreen/imagis.c
-@@ -11,6 +11,8 @@
- #include <linux/property.h>
- #include <linux/regulator/consumer.h>
+diff --git a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+index 2af71cbcc97d..960e5436642f 100644
+--- a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
++++ b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+@@ -42,6 +42,17 @@ properties:
+   touchscreen-inverted-y: true
+   touchscreen-swapped-x-y: true
  
-+#define IST3032C_WHOAMI			0x32c
++if:
++  properties:
++    compatible:
++      contains:
++        const: imagis,ist3032c
++then:
++  properties:
++    linux,keycodes:
++      description: Keycodes for the touch keys
++      maxItems: 2
 +
- #define IST3038B_REG_STATUS		0x20
- #define IST3038B_REG_CHIPID		0x30
- #define IST3038B_WHOAMI			0x30380b
-@@ -363,6 +365,13 @@ static int imagis_resume(struct device *dev)
+ additionalProperties: false
  
- static DEFINE_SIMPLE_DEV_PM_OPS(imagis_pm_ops, imagis_suspend, imagis_resume);
- 
-+static const struct imagis_properties imagis_3032c_data = {
-+	.interrupt_msg_cmd = IST3038C_REG_INTR_MESSAGE,
-+	.touch_coord_cmd = IST3038C_REG_TOUCH_COORD,
-+	.whoami_cmd = IST3038C_REG_CHIPID,
-+	.whoami_val = IST3032C_WHOAMI,
-+};
-+
- static const struct imagis_properties imagis_3038b_data = {
- 	.interrupt_msg_cmd = IST3038B_REG_STATUS,
- 	.touch_coord_cmd = IST3038B_REG_STATUS,
-@@ -380,6 +389,7 @@ static const struct imagis_properties imagis_3038c_data = {
- 
- #ifdef CONFIG_OF
- static const struct of_device_id imagis_of_match[] = {
-+	{ .compatible = "imagis,ist3032c", .data = &imagis_3032c_data },
- 	{ .compatible = "imagis,ist3038b", .data = &imagis_3038b_data },
- 	{ .compatible = "imagis,ist3038c", .data = &imagis_3038c_data },
- 	{ },
+ required:
+
 -- 
 2.43.0
+
 
