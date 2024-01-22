@@ -1,145 +1,121 @@
-Received: from mx.skole.hr (mx2.hosting.skole.hr [161.53.165.186])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7109866B32;
-	Mon, 22 Jan 2024 16:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D995A799
+	for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 16:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705940750; cv=none; b=hASaNhi9NI1bRkk7n/+8PJVvM0Z0kb+WxfmLJRP2ZaQDDBYSYEO8AuU2oM46HNXDPbMD94Co4Ol4Q7qP9PDgOCRvJ3kCGraLi24SApFdniAzb3LR4gz/Wcr6+GhGd/y0cEk7ehW/RGZV15EOmnjiPaxldvi//7LjfVyjTNOB/zk=
+	t=1705942216; cv=none; b=D/a8z3OJ/1sF4wtRPKGdaLSjAO3tq5y3My+xancEjOLd+pGwXV93UiFSWMvwlLjJdqR2hRNCPtvMi7aFliFrhS2rmMWpTY52dHJ52qNzK9y15SMgR1hx8X2Rv1hfd9p5A+8ZyHNA7CgDhAus3bqFltpnNS5SsgW9Xg69X9BbOX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705940750; c=relaxed/simple;
-	bh=3KIIMU33SRO6H67ttCBjEAKna/VsCPIYEYrPma543Qo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Imv09RismJ5raIVARvxWbzMdG3Hl+P/JA1YtqgMCMXLGTLZVWxT6uegQtA4WPq0WxmpX7lIaGlgunfPW8Xaw0wWN/seYUKMsl+sQLz5Q5gjPiS4yxHW5iSP26ryDdh4ebFdyCTxXZBDt318QOQgmIJGhcs8FMbuMTsPKIo/NvHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
-Received: from mx2.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-	by mx.skole.hr (mx.skole.hr) with ESMTP id D9A9D851FA;
-	Mon, 22 Jan 2024 17:25:43 +0100 (CET)
-From: Duje =?utf-8?B?TWloYW5vdmnEhw==?= <duje.mihanovic@skole.hr>
-To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Markuss Broks <markuss.broks@gmail.com>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>,
- Rob Herring <robh+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Karel Balej <balejk@matfyz.cz>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] dt-bindings: input: imagis: Document touch keys
-Date: Mon, 22 Jan 2024 17:25:05 +0100
-Message-ID: <8366736.NyiUUSuA9g@radijator>
-In-Reply-To: <acd64ed2-c36b-45e5-a71e-98c98ff1cb74@linaro.org>
-References:
- <20240120-b4-imagis-keys-v2-0-d7fc16f2e106@skole.hr>
- <20240120-b4-imagis-keys-v2-2-d7fc16f2e106@skole.hr>
- <acd64ed2-c36b-45e5-a71e-98c98ff1cb74@linaro.org>
+	s=arc-20240116; t=1705942216; c=relaxed/simple;
+	bh=0ruM/gNibJeJfXSYwhoWuQgAeyRU3c7XqXfVEhgtTGE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mxc9pVun6yhMoz37Sa8B64aD63TAEcOpfUFe0MVlTiG4XMv3f43CxaOUoTEYN/MG4z1aTGpaYL0gQ9cg13QLTH+Rhmn5KhSu1dI5MIG9Bc1D1wG+TCPShWAe+0edE/1/PoR2Ku+XBpoeEPje+TcE1vtcyq3I/nmNp2k6uwjwCnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wKiw9W9B; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wKiw9W9B"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-40d6b4e2945so40978385e9.0
+        for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 08:50:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1705942213; x=1706547013; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=U2u02dHyzXh8Z7GhixGdPG0+iHyMzaUZy8vA0Gln640=;
+        b=wKiw9W9B+puVyaMaPiGE8nyIDzniCMcSewRBP5z/d00eWzqCz4fprSuzR0Bj4Iw3q+
+         4Cn8EjXyJUi1OYdqQE8IfBkKF1GuISf9LS9IRpZnETdjt2NvmPu1GxSCbsFCeGGhtUew
+         XXQqzuqcyDyZy4jja6A8GTVHmevgSmNs9ruLS33mGFpCjdk5DHoPGEpFz1DrYwrLayUC
+         wnp5I1LYEN07hr42G2LtMUGNkPwKLhm27Sm/6DxC1tFkiNasyj++oTABjdsVtef6n5VZ
+         5dIUtpYXmwDuCdFG0HiebbiVg8gkuilRLhQo5b9hWGadBRdCjJcsya0E5YuqyaNahjTK
+         fG2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705942213; x=1706547013;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U2u02dHyzXh8Z7GhixGdPG0+iHyMzaUZy8vA0Gln640=;
+        b=FlP3Ir7aptg9pxOG7RmvWDF/spdzopWXKmzZN9FQZVfhYc31TwKgtFCoGmzoa+sVS9
+         Qt753nJsogSvh6soJ+Kr+izZekbrDhLr79iv2igcYGWWQX1P2j6XLSPOeuScFH9E5o3Z
+         GXnc9Nh0jceuFE2YptWqdS4pjuGL5aFvADuktpXPlxVXHC0mUWxp5lgNCa0IFJERlYF7
+         /u4gsRzFGamrB0ziIdZCQkSgTpcng71cu17l2J5xEWjXQuDMc/SSI320JSYeJFAkvLkh
+         1sk6njKEN6s4SlgGe3+bqWTeCBkJFOlD8EEjRHD7FXCALI6zK9HZmLOnZpY6VZuyS5Az
+         XVkg==
+X-Gm-Message-State: AOJu0YzSUB7mg6MFkglplg96y08wmhLXXMXVyY0SyVtc+BsEx+zjaCdC
+	FklRfxB4Tqr1uPf+28rDQ0cYg9SFn0X7FzUE954dcJ0XSzIkr+3/+a2bC+kjAGM=
+X-Google-Smtp-Source: AGHT+IH9kUc+oTorubUMxmQGsHzNDlOEembJL7z3hBRj9dGgCGiiPfSpDD3ONpdmGFYg9O2W5PgfHw==
+X-Received: by 2002:a05:600c:310e:b0:40e:5186:7ed1 with SMTP id g14-20020a05600c310e00b0040e51867ed1mr1744941wmo.25.1705942213558;
+        Mon, 22 Jan 2024 08:50:13 -0800 (PST)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id g7-20020a7bc4c7000000b0040d5c58c41dsm38655169wmk.24.2024.01.22.08.50.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jan 2024 08:50:13 -0800 (PST)
+Date: Mon, 22 Jan 2024 16:50:11 +0000
+From: Daniel Thompson <daniel.thompson@linaro.org>
+To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+	Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Karel Balej <balejk@matfyz.cz>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] leds: ktd2692: move ExpressWire code to library
+Message-ID: <20240122165011.GA8815@aspen.lan>
+References: <20240120-ktd2801-v3-0-fe2cbafffb21@skole.hr>
+ <20240120-ktd2801-v3-1-fe2cbafffb21@skole.hr>
+ <20240122101926.GA8596@aspen.lan>
+ <5907190.MhkbZ0Pkbq@radijator>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Autocrypt: addr=duje.mihanovic@skole.hr;
- keydata=
- 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
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5907190.MhkbZ0Pkbq@radijator>
 
-On Monday, January 22, 2024 11:27:09 AM CET Krzysztof Kozlowski wrote:
-> On 20/01/2024 22:16, Duje Mihanovi=C4=87 wrote:
-> > diff --git
-> > a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.y=
-aml
-> > b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.y=
-aml
-> > index 2af71cbcc97d..960e5436642f 100644
-> > ---
-> > a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.y=
-aml
-> > +++
-> > b/Documentation/devicetree/bindings/input/touchscreen/
-imagis,ist3038c.yaml>=20
-> > @@ -42,6 +42,17 @@ properties:
-> >    touchscreen-inverted-y: true
-> >    touchscreen-swapped-x-y: true
-> >=20
-> > +if:
-> Move allOf here and keep it under allOf.
->=20
-> > +  properties:
-> > +    compatible:
-> > +      contains:
-> > +        const: imagis,ist3032c
-> > +then:
-> > +  properties:
->=20
-> > +    linux,keycodes:
-> No, this property is not allowed by your binding. I doubt this was
-> really tested.
->=20
-> Anyway, even if it works, it's not what we expect. Where is the property
-> defined?
+On Mon, Jan 22, 2024 at 05:24:51PM +0100, Duje Mihanović wrote:
+> On Monday, January 22, 2024 11:19:26 AM CET Daniel Thompson wrote:
+> > On Sat, Jan 20, 2024 at 10:26:43PM +0100, Duje Mihanović wrote:
+> > > diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
+> > > index 6292fddcc55c..d29b6823e7d1 100644
+> > > --- a/drivers/leds/Kconfig
+> > > +++ b/drivers/leds/Kconfig
+> > > @@ -181,6 +181,9 @@ config LEDS_EL15203000
+> > >
+> > >  	  To compile this driver as a module, choose M here: the module
+> > >  	  will be called leds-el15203000.
+> > >
+> > > +config LEDS_EXPRESSWIRE
+> > > +	bool
+> > > +
+> >
+> > Shouldn't there be a "select GPIOLIB" here? It seems odd to make the
+> > clients responsible for the dependencies.
+> >
+> > BTW there seems to be very little consistency across the kernel between
+> > "depends on GPIOLIB" and "select GPIOLIB".. but select is marginally
+> > more popular (283 vs. 219 in the kernel I checked).
+>
+> I believe a "select" would be more appropriate here unless these backlights
+> should be hidden if GPIOLIB is disabled. The catch with "select" is that there
+> seems to be no way to throw in the "|| COMPILE_TEST" other GPIO-based
+> backlights have and I'm not sure what to do about that.
 
-I was under the impression that it can be defined inside the if statement=20
-since "make dt_binding_check" ran without any errors. If that's wrong, I'm =
-not=20
-sure how else to make the property valid only for ist3032c (the two devices=
-=20
-using ist3038c, samsung-j5 and j5x seem to have tm2-touchkey instead).
+I think the "|| COMPILE_TEST" might just be a copy 'n paste'ism (in fact I
+may even have been guilty off propagating it in reviews when checking
+for inconsistencies).
 
-Regards,
-=2D-
-Duje
+AFAICT nothing will inhibit setting GPIOLIB so allyes- and allmodconfig
+builds will always end up with GPIOLIB enabled. If we are happy to
+select it then I think that is enough!
 
 
-
+Daniel.
