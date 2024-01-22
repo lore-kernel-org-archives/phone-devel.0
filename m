@@ -1,124 +1,139 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EBB3AC26
-	for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 10:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87273B2A1
+	for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 11:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705920819; cv=none; b=uStAP6vLXWROKTjm094XHmIXASJS232sToKjHuYNlxhlj7M/oSVvMFazL6qGNN+Idgcp8pFcEHXNPLGKMH55GHso47b4oZcMlf44/A3gabUlQxKrBhDg4aCqzRjx42vN/s8S6AQ/QDC5oUcWLHgDqVYje08ps/gIchkdodFRauk=
+	t=1705922862; cv=none; b=atLvlngmOx5724F0hcIBw7uQwmtGPPn1x9Ay0YjhqullSIDKgrMg2eG45XFlOe4iqErq6B5mIz+9UFXZG3E3RsySiqvq7ppy2FZ6bUUeTTSF+rlDpmdMzc1lgsxJSQ/HzTKGHeHGESFtH5kS0ybdMM/1u2bhGLUBiokUGcu2h8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705920819; c=relaxed/simple;
-	bh=HvqtdsUNHvvysDTN07Znf26i8cKDghYMJxajcRlaWck=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eRoMdzyzGI4UzfVp3Izee0XLkfHIiygI4BWLqQWmQS+u/230D4GAKRuHd7WwLyinsiJe5wsXJObHz/8hQ4H6OqL+Fh+3v4OGvtLlpxluypp2/fpMT09J9VIZWOclVC65gZcefHRZjcsrY2bR8zBHmKJxRM+8kmkNyLqrqycI+yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=feMF+B0k; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1705922862; c=relaxed/simple;
+	bh=1/YALr6F0ESKpBAGOERlcLO4YyaHn1XV7HKiN2JojMQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=GLk3S0QtPeoG7XX2aAZw8OmfKwBs2yMAh4+1IZT4TLe5RUvU2mVHLbcL/B7tnyQ+ulMKIZ3MMq+o0d5tHvEZyAMAPi1IpjyIrc5S8j5ufZHLQcrw5+7F2ebzryPvscpxXrJjGtEBPy13am1K8URPz/4lzplS3ygbkeOxFZEx4+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=vlCUKnsh; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="feMF+B0k"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a2f0cb62068so301538566b.2
-        for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 02:53:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="vlCUKnsh"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a2f0cb62068so305250866b.2
+        for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 03:27:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705920816; x=1706525616; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+PzbzDTvNuVALaQbY0SrUthp/gsyxFLfouvwcaglfa0=;
-        b=feMF+B0kR7RoHRvVJ8mp/PAkzWu0JRf8c5yqvNyQgRR0FTxdRhxdrQJJCa/+AdHERr
-         lYRFUzTPKxUWHUfqg824fAfScNiWpTL3xKTZ9mT7GeCiUq4pJxW3vNX28HkeL8N8R+ZN
-         imimCMeZM7KeFCorNAD4L72umVKRj63SUGLlodevoSq2t0kU9aHsO5jVT2W7uJlzPXEe
-         i5EHw6TQx+McZ5VOZjp4q5UmyoJuw4TcSEhfAuCjjOjqZGeIstCT76pU1Xw8HkAgai0P
-         L1kltpiMoyTCXXHBOtdrYQISn7Ajt7BijVvSSUSj9OBIlfiHJyGmf9D4bZwDL2tPh1S0
-         Ld6g==
+        d=fairphone.com; s=fair; t=1705922859; x=1706527659; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WIgV/QMkOZJ0bf7IGnZFc3jEnAkXvM5i+7Bl0Lz57H0=;
+        b=vlCUKnshZ6oqYxu+ZjhrB1+/WDo+nslor1Aw1PRTzc0KP+tU4hufZmPe0RSl7/vh1S
+         lFumDICxwtcqJLUf0lieaIULeKNRmN8JHltw54m6AQjUXlPuO617aJLV+6XzeyLLLAAM
+         8vhkGL7c+/ag4k19yeDSjqyGzXXH+QKXhEa+9e6xM5FwqzCV8HlfBJsEDdI0oJIQwTah
+         MG2kh+zMZdGbRVa+VoX0rfZLG9B8TW4BC7xcHt9/GxvS5dzabYCU9NCTFimbTZmC7jLD
+         v13ghABKakH5Fwri/sSgfiafKtwZIxDaqfaW+8Q7U71zfKgYAV7TdQfJU7g3fWVd2AuJ
+         TL2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705920816; x=1706525616;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+PzbzDTvNuVALaQbY0SrUthp/gsyxFLfouvwcaglfa0=;
-        b=k9TgM6HM48aH4eYl8wMCCZNnIok1EgwywwvyySAbspPVtID5AY5mMyDm5bqg/B03d3
-         6l61Z735V7yrCM2AdpHVQ2AlRuYVHpk1MGaSXkDXBXovN4ArhWwRtZ48XaxLeNmxUw0w
-         E/P6M1+Niz1vEkMktW7jqCkE/Wow2LiaNwW68QM7n+Ns92frp/BWoWd0NvSFWbEJ7In4
-         F2OADPgEqOZihwNLkm+/MEpxirJFAfJ0PwkqnkZWKuiE5AN3RMXT8sBJTPAz3rZcvRA+
-         FeUkOHhdpB9xL7C3QMTEeoDQLTbo5vD3smgBnWSQzQpJig78XsoZvGWELoYm8yLjJgw7
-         P+cA==
-X-Gm-Message-State: AOJu0YwGj+Ky8GTCKfQZVRqVHcnZ4BQNMp3eQUCIhN2nhhdeoeKPQFyZ
-	RmJo7EubBNnWhd4OJw8QaS+0TD7kpmRkcRxhLFecfVM5pBSQexCEw3SMfEpxRq8=
-X-Google-Smtp-Source: AGHT+IGVVH6NZaZvBaWo+ZsNgMlULvxvy3TRd9ITIzY70Q9BIggeGYLQaVF7dW/aNORMtZRoldadNA==
-X-Received: by 2002:a17:907:3a45:b0:a2c:cda6:e73a with SMTP id fc5-20020a1709073a4500b00a2ccda6e73amr1025140ejc.98.1705920815747;
-        Mon, 22 Jan 2024 02:53:35 -0800 (PST)
-Received: from [192.168.231.132] (178235179218.dynamic-4-waw-k-1-3-0.vectranet.pl. [178.235.179.218])
-        by smtp.gmail.com with ESMTPSA id q5-20020a170906388500b00a28a297d47esm13243272ejd.73.2024.01.22.02.53.34
+        d=1e100.net; s=20230601; t=1705922859; x=1706527659;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=WIgV/QMkOZJ0bf7IGnZFc3jEnAkXvM5i+7Bl0Lz57H0=;
+        b=OzFjGoAikm7YaLhRlxHZWkNabUU1+htBxfOwVeGQGKOOSARzwIN4mtxvTcfmt3QIuP
+         X2EOZ8APmhwqJBj7EypIMitafMrgbex66vJ8sprz/cEGUOkn0T1NqW+JnAy8k+EKzOum
+         JRKvwnM0hyfkW8GTXydTbr+h+PtoMwusNfIWj0r4eLXQmEamhbIqGGYGaMr3HH6hFqYf
+         15jdaGp2UyimOSXlxO7HRxRluSodcZqob41rsvmUvILL6ua4QyuMc618RJJzxwSG6PgC
+         GszVR46ASrIZpZ21L3BF+o5I0bvpPS16ed2TyDmbj0ultTj+n+2WGEa9BUm+RUVOImQa
+         KOiA==
+X-Gm-Message-State: AOJu0Yw+wX6/lEm1TEAv+jNmerngqqwl9yYdppOs2BJk+LrfDCO7WCPP
+	fTVFmV2mybGUaLojFC/+cJ+F8ecbAt5QJFzghpARpsTOJpCq4ksR8PFg1DJDVic=
+X-Google-Smtp-Source: AGHT+IFNlq6X29oAt8M85jJiLwH2VUAOWjj165S6OihyHQSXyUfaN5CoDfj1ih9bZ1mSWEGWyb48sg==
+X-Received: by 2002:a17:906:6c85:b0:a2a:35fd:d48b with SMTP id s5-20020a1709066c8500b00a2a35fdd48bmr1037397ejr.266.1705922859113;
+        Mon, 22 Jan 2024 03:27:39 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id d14-20020a170906c20e00b00a298e2f6b3csm13247972ejz.213.2024.01.22.03.27.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jan 2024 02:53:35 -0800 (PST)
-Message-ID: <e57f3274-46a8-4c42-af29-ff2009127886@linaro.org>
-Date: Mon, 22 Jan 2024 11:53:33 +0100
+        Mon, 22 Jan 2024 03:27:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ARM: dts: qcom: msm8926-htc-memul: Add rmtfs memory node
-Content-Language: en-US
-To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240121-memul-rmtfs-v1-1-e9da29b1f856@z3ntu.xyz>
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20240121-memul-rmtfs-v1-1-e9da29b1f856@z3ntu.xyz>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Mon, 22 Jan 2024 12:27:38 +0100
+Message-Id: <CYL76M5KT424.G3BC6JX74XVN@fairphone.com>
+Cc: "Jessica Zhang" <quic_jesszhan@quicinc.com>, "Sam Ravnborg"
+ <sam@ravnborg.org>, "David Airlie" <airlied@gmail.com>, "Daniel Vetter"
+ <daniel@ffwll.ch>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+ "Maxime Ripard" <mripard@kernel.org>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
+ Dybcio" <konrad.dybcio@linaro.org>, "Andy Gross" <agross@kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/4] drm/panel: Add driver for DJN HX83112A LCD panel
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: <neil.armstrong@linaro.org>, "Linus Walleij" <linus.walleij@linaro.org>
+X-Mailer: aerc 0.15.2
+References: <20240110-fp4-panel-v2-0-8ad11174f65b@fairphone.com>
+ <20240110-fp4-panel-v2-2-8ad11174f65b@fairphone.com>
+ <CACRpkdaWTfPDCin_L6pefHsokjNyO8Mo6hWPdzPLLi1EUkKUuA@mail.gmail.com>
+ <CYBZEZ4IM6IL.VR04W7933VI@fairphone.com>
+ <CACRpkdZQbVXfBa70nhDOqfWPbsh-6DgX-uvZOxr19pzMmF2giQ@mail.gmail.com>
+ <CYCLSCKPPBOC.1B1MP3VOOC0Q8@fairphone.com>
+ <cdc18e2a-b7eb-4b54-a513-481148fb3b0d@linaro.org>
+ <CYCMVXHYVDCI.HVH1TR8MWEUK@fairphone.com>
+ <CACRpkdacS9ojXUuogygkz6xxCf3mMq6GG_75sze8ukUu=rxVyw@mail.gmail.com>
+ <f99d363c-d4a6-44b3-8057-3925f8dac1d5@linaro.org>
+In-Reply-To: <f99d363c-d4a6-44b3-8057-3925f8dac1d5@linaro.org>
 
-On 21.01.2024 11:21, Luca Weiss wrote:
-> Add the rmtfs-mem node which was part of one of the "unknown" memory
-> reservation. Split that one, make sure the reserved-memory in total
-> still covers the same space.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
+On Fri Jan 12, 2024 at 11:26 AM CET,  wrote:
+> On 12/01/2024 11:23, Linus Walleij wrote:
+> > On Fri, Jan 12, 2024 at 10:52=E2=80=AFAM Luca Weiss <luca.weiss@fairpho=
+ne.com> wrote:
+> >=20
+> >> Since there's zero indication Truly is involved in this panel in my
+> >> documentation - much less the number 5P65 - I'm not going to add that.
+>
+> Ack
+>
+> >=20
+> > OK then, I fold, thanks for looking into it.
+> > Keep the Himax hx83112a file name and symbols.
+> >=20
+> >> So in short this panel is the model 9A-3R063-1102B from DJN, which use=
+s
+> >> a Himax HX83112A driver IC.
+> >=20
+> > So compatible =3D "djn,9a-3r063-1102b" since the setup sequences for
+> > hx83112a are clearly for this one display?
+>
+> Yep let's settle on that!
 
-Could you please test dynamic rmtfs alloc, which should be possible
-on some (most?) boards after 9265bc6bce6919c771970e5a425a66551a1c78a0?
+It's clear to me to use "djn,9a-3r063-1102b" in the driver now but what
+about dts?
 
-Konrad
+Currently here in v2 we have this:
+compatible =3D "fairphone,fp4-hx83112a-djn", "himax,hx83112a";
+
+Should this just become this?
+compatible =3D "djn,9a-3r063-1102b";
+
+Or e.g. this?
+compatible =3D "djn,9a-3r063-1102b", "himax,hx83112a";
+
+Or something else completely? Do we have some documentation / best
+practises around this maybe?
+
+Regards
+Luca
+
+>
+> Thanks,
+> Neil
+>
+> >=20
+> > Yours,
+> > Linus Walleij
+
