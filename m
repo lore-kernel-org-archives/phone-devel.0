@@ -1,161 +1,162 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2F639848
-	for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 08:52:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6BF3A8E5
+	for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 10:19:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705913525; cv=none; b=HbKF0W9byjjuP74PlEDgbgtcWK+Z3LlplCfPZCJTjy7MVOl/+PD7LubhJ7FTUhAZS50ZehbbumRMKDzcT7rE/MmlqzIjSB53UFZXpM8Jd2IFfow2QnrTTvuW5MtjZuPSGQ/YW78dJq9AvzunJHPtZph3b3tH1QPFIciZlt3RpcU=
+	t=1705918773; cv=none; b=CpabvwW9bgtPSnnKviez4w3iIsUNo+7wFO7YFlx99KY78N57A88vCrSFqzk1VgMU5Y9i7XUnKMLOXkyK46RHk+xD7gdIcq0A/iUnYIpxV+EUXYBwbFmn0TuQmbBNpeTbFwuLhizl/hAzWxaNOwv0GkMpEU046QUH2iNSjw0gaPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705913525; c=relaxed/simple;
-	bh=rL4rLqPPzSFTzI23IA2inUGxR9ttBRKMOrjCtYIgKYw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZmdTU4blqFxuLjK30GZnz3n/3fPhBkc4SAk2kG6WjfyLb1q9hU9q2nQ8XuDE/ohN3N06lmoQdYC9lnCV/dJsNLk1q3J9QDtZc3u7yZfl5GE9+tpKKeyyI+sYYxcEEMpuSYePAPxpqk8CEsVHVvoXO//0KfY/DV72rHlkkNJMWiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NCAyIOLi; arc=none smtp.client-ip=209.85.208.49
+	s=arc-20240116; t=1705918773; c=relaxed/simple;
+	bh=/SNLHHN7xOHjhgf5Ka2VMBrDa6pANZCIGYnQJH8RKpA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bMQ9Tqr1PA88a1o2UqVmbWyETUQzQm6tt/OIzV0os2OlnwoPOwrLRdA3sCZsRoXGivaiOT1OTrCy5YYetCOExAJqdJqcVVih31VVlSls1usICFqcmlczKSi94C7MZ55JBxQYbCEsJ7k2vzfRkjqic9A1sdFOuyUoc14+lKKf4WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WtQICkc8; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NCAyIOLi"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-55c33773c0aso666010a12.1
-        for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 00:52:03 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WtQICkc8"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-337cc8e72f5so2751129f8f.1
+        for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 02:19:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705913522; x=1706518322; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Mjyqz17NUKW0ng+M4oXEfxh1ZW48S74Lc+QWc2EPCFI=;
-        b=NCAyIOLicjhWsupaxCD9xQpw4HzQd8F5z7RaoH2IJUKWxcIk0qXXhnYGdEk3PH9CRN
-         8p7rX2uevNXFHQUgIGyDDU6aZjFyvvZl5DNGWoguZhEPC67+l9e548Re2W/85iujVXEI
-         XNg5YSkfRyfQDcwlLUL4tXphfTPqXEtR7JUHGMQBmXjj6GbaIxWtm6pfMz/doCXKs4qY
-         y4df8/4ZLUb1L84H7Rn/WQoyWC2aLDZPwAomzm7uIS3wxeprBr0OWbY8Q+eNZ88zTg3s
-         aiqjznOZKX+B/Tp0jk+JM2NEyv289i552r9C//dz694qJwx2QFHYNJXh5NQSrKqQCFGC
-         eD6Q==
+        d=linaro.org; s=google; t=1705918769; x=1706523569; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6CUlLsOEJCO3o0htEYr8Lbj/bayNpoeF4Yah4if4kLc=;
+        b=WtQICkc8gaYMT3ZMfWqXR1v+0Gf5KtlFeiUD0rSgSx1nNdGnGlNSiQoENFBZDtuSYq
+         Vh4ac5BIzGlq+mCzcF5KE8sMLXnrc7ELMooSqig/dh8wzf6GNTJs4QmwFvegB37gEJv2
+         fInxTyv3cuKkKkYhS4+wJHJeSZqYaTzhJQfoyReb4l6VQpSJNrmbor2NWKf5vzXT61ER
+         oky1p/zXf5u8pkjGH23oAg33Yd3/gwThAjN7XAZWKSkb40qIEHJxY6aF/Jz43P83fX4k
+         N9an9FzAJFBiXe0MOsKBR8DQ6jJXWm2gT5pEcEn0m8zDPBHsXGbZLv1FMXqmiqk9GrwA
+         QRPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705913522; x=1706518322;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1705918769; x=1706523569;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mjyqz17NUKW0ng+M4oXEfxh1ZW48S74Lc+QWc2EPCFI=;
-        b=OC8c/UvLeww3VhN2OOzHivaq9qVCEp25U0XJNwxx3zsxy5yVRQmBhVZhrY6E1PRR32
-         QgkGGVwyNGOHApGLVfQuTtBwmtyaPlxRPVYKECf0EqM5eMI2Ukq9YISEEsLpnQrw5OeA
-         t7IMjZb6hxeNIlVfO6gzRheKwvQ7hwmicgxEv2qax+BD9fkOtWTnstcaGalV8TH5koAf
-         tscz2lguDktay5SgD8I8bsChqvQZwvczGw7SCXh/v80WiFkNJXBWVQGdJT9j5+WIPWqe
-         b4R+X/Kv2NqTrfusDY77HUG8PI6nnyKDDzgG7Vd9ePLl5q6+UtLoVyILPpTAggiteTW+
-         Ybdw==
-X-Gm-Message-State: AOJu0YzjNkOposbmpPeHkQR/gXoxg8v4gvvzZm31/ZYqGl+I3zaJcG6h
-	Q2X3QQQYsbUuUY+xtJkf+qbWd1oTMjx3qt7cTaTY7u1STY28V26DkPsk1P5AHOc=
-X-Google-Smtp-Source: AGHT+IG7wRv2A0NANM8rwgQYVuT5+t9wpgA1CK4/00koFThqPUZYnC7I4jh8cJtaYPY24vte/KMZMQ==
-X-Received: by 2002:aa7:d3ce:0:b0:55c:168:a4a4 with SMTP id o14-20020aa7d3ce000000b0055c0168a4a4mr1636549edr.29.1705913522061;
-        Mon, 22 Jan 2024 00:52:02 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.215.66])
-        by smtp.gmail.com with ESMTPSA id fj9-20020a0564022b8900b00559cb738c1bsm7028819edb.4.2024.01.22.00.51.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jan 2024 00:52:01 -0800 (PST)
-Message-ID: <f525b63f-a32c-41cf-b80f-5d85b6eb50c8@linaro.org>
-Date: Mon, 22 Jan 2024 09:51:59 +0100
+        bh=6CUlLsOEJCO3o0htEYr8Lbj/bayNpoeF4Yah4if4kLc=;
+        b=Lq6SEBDytsz2aHpDuEJ51OI4PfZnZ2l4qdzTCZH/0yO61JduzQaD0pP8kh31ppfmYh
+         sikUsUyMzMKlgWgfwXtVZ8rXAcmEa3almjKHaDBtedSbvAdXg6Is3NnfFZt67POMyYCl
+         F1TFTYTq8qYGIxN4ZWLd2JBCI7iAs2YHvPZgamNBTRLtqo8q2hiARbk3810HLTZ/roCU
+         JkPSmqbxzDM8Mr25UV6Tlz7ucdqcJHwLxaxM0zLQ+85W25otY3MBDVvyD2rGmIxCXig5
+         /dyHkIbMIJ/a82URU76VxO0iUR0CZmY1FVWh0a21FH1BeXbb3vGuBJpa8HgWc7lLkFIz
+         SruA==
+X-Gm-Message-State: AOJu0Yx8fw69ZZircJA+S0PQBg5I9B5IZMQZb7ueK8S/MNw0E438/KlT
+	8CIBwBig3KgQ/inKvt+i9W2ChKztwuervc/FXviyRMKtlBhWWcx6flq1PUYK6w0=
+X-Google-Smtp-Source: AGHT+IGiXCkeFT62mIizDAGCPWlt7/MMpjwMRYs+WW2Kwg136ect9locc0HoNUSbJlXRnS59IcBghQ==
+X-Received: by 2002:a05:600c:5486:b0:40e:7c23:898d with SMTP id iv6-20020a05600c548600b0040e7c23898dmr2156961wmb.102.1705918769050;
+        Mon, 22 Jan 2024 02:19:29 -0800 (PST)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id iv11-20020a05600c548b00b0040d8ff79fd8sm38663573wmb.7.2024.01.22.02.19.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jan 2024 02:19:28 -0800 (PST)
+Date: Mon, 22 Jan 2024 10:19:26 +0000
+From: Daniel Thompson <daniel.thompson@linaro.org>
+To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+	Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Karel Balej <balejk@matfyz.cz>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] leds: ktd2692: move ExpressWire code to library
+Message-ID: <20240122101926.GA8596@aspen.lan>
+References: <20240120-ktd2801-v3-0-fe2cbafffb21@skole.hr>
+ <20240120-ktd2801-v3-1-fe2cbafffb21@skole.hr>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/8] dt-bindings: drm/msm/gpu: Document AON clock for
- A506/A510
-Content-Language: en-US
-To: Adam Skladowski <a39.skl@gmail.com>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Sean Paul <sean@poorly.run>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krishna Manikandan <quic_mkrishn@quicinc.com>,
- linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240121194221.13513-1-a39.skl@gmail.com>
- <20240121194221.13513-6-a39.skl@gmail.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240121194221.13513-6-a39.skl@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240120-ktd2801-v3-1-fe2cbafffb21@skole.hr>
 
-On 21/01/2024 20:41, Adam Skladowski wrote:
-> Adreno 506(MSM8953) and Adreno 510(MSM8976) require
-> Always-on branch clock to be enabled, describe it.
-> 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+On Sat, Jan 20, 2024 at 10:26:43PM +0100, Duje Mihanović wrote:
+> The ExpressWire protocol is shared between at least KTD2692 and KTD2801
+> with slight differences such as timings and the former not having a
+> defined set of pulses for enabling the protocol (possibly because it
+> does not support PWM unlike KTD2801). Despite these differences the
+> ExpressWire handling code can be shared between the two, so move it into
+> a library in preparation for adding KTD2801 support.
+>
+> Suggested-by: Daniel Thompson <daniel.thompson@linaro.org>
+> Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 > ---
->  Documentation/devicetree/bindings/display/msm/gpu.yaml | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/display/msm/gpu.yaml b/Documentation/devicetree/bindings/display/msm/gpu.yaml
-> index b019db954793..9e36f54a5caf 100644
-> --- a/Documentation/devicetree/bindings/display/msm/gpu.yaml
-> +++ b/Documentation/devicetree/bindings/display/msm/gpu.yaml
-> @@ -133,7 +133,7 @@ allOf:
->        properties:
->          clocks:
->            minItems: 2
-> -          maxItems: 7
-> +          maxItems: 8
+>  MAINTAINERS                       |  7 +++
+>  drivers/leds/Kconfig              |  3 ++
+>  drivers/leds/Makefile             |  3 ++
+>  drivers/leds/flash/Kconfig        |  1 +
+>  drivers/leds/flash/leds-ktd2692.c | 91 +++++++++++----------------------------
+>  drivers/leds/leds-expresswire.c   | 59 +++++++++++++++++++++++++
+>  include/linux/leds-expresswire.h  | 35 +++++++++++++++
+>  7 files changed, 132 insertions(+), 67 deletions(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index a7c4cf8201e0..87b12d2448a0 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -7902,6 +7902,13 @@ S:	Maintained
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/linkinjeon/exfat.git
+>  F:	fs/exfat/
+>
+> +EXPRESSWIRE PROTOCOL LIBRARY
+> +M:	Duje Mihanović <duje.mihanovic@skole.hr>
+> +L:	linux-leds@vger.kernel.org
+> +S:	Maintained
+> +F:	drivers/leds/leds-expresswire.c
+> +F:	include/linux/leds-expresswire.h
+> +
+>  EXT2 FILE SYSTEM
+>  M:	Jan Kara <jack@suse.com>
+>  L:	linux-ext4@vger.kernel.org
+> diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
+> index 6292fddcc55c..d29b6823e7d1 100644
+> --- a/drivers/leds/Kconfig
+> +++ b/drivers/leds/Kconfig
+> @@ -181,6 +181,9 @@ config LEDS_EL15203000
+>  	  To compile this driver as a module, choose M here: the module
+>  	  will be called leds-el15203000.
+>
+> +config LEDS_EXPRESSWIRE
+> +	bool
+> +
 
-I would prefer we start enforcing the order. The initial flexibility was
-because of conversion from the old bindings and dealing with some
-technical debt, AFAIU.
+Shouldn't there be a "select GPIOLIB" here? It seems odd to make the
+clients responsible for the dependencies.
 
-This is requirement of new clock, so maybe better add dedicated if:then
-case which will be enforcing the order with always-on at the end.
+BTW there seems to be very little consistency across the kernel between
+"depends on GPIOLIB" and "select GPIOLIB".. but select is marginally
+more popular (283 vs. 219 in the kernel I checked).
 
-Best regards,
-Krzysztof
 
+> diff --git a/drivers/leds/flash/leds-ktd2692.c b/drivers/leds/flash/leds-ktd2692.c
+> index 598eee5daa52..8c17de3d621f 100644
+> --- a/drivers/leds/flash/leds-ktd2692.c
+> +++ b/drivers/leds/flash/leds-ktd2692.c
+>  <snip>
+>  static void ktd2692_expresswire_write(struct ktd2692_context *led, u8 value)
+>  {
+>  	int i;
+>
+> -	ktd2692_expresswire_start(led);
+> +	expresswire_start(&led->props);
+>  	for (i = 7; i >= 0; i--)
+> -		ktd2692_expresswire_set_bit(led, value & BIT(i));
+> -	ktd2692_expresswire_end(led);
+> +		expresswire_set_bit(&led->props, value & BIT(i));
+> +	expresswire_end(&led->props);
+>  }
+
+Is there any reason not to have an expresswire_write_u8() method in the
+library code? It is a concept that appears in both drivers.
+
+
+Daniel.
