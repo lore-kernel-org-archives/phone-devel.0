@@ -1,210 +1,124 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CADC3B786
-	for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 10:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75EBB3AC26
+	for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 10:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705919290; cv=none; b=kVEXWYzg8/xU8YzBcxGyLZda52C2UgeVyCfSUlFj1M2hPZOjgmW2mrF5HUMLqVoK5GIHmZp+yFxcdBiVftpSqVCp55YcwQvI+jAz0eDc8mPBfvXJJB1fly7YnZM9VCIfdH8tQyCMRtcfiSFgVOrU+OLU7fXEtQZ3E5PABbWCqCc=
+	t=1705920819; cv=none; b=uStAP6vLXWROKTjm094XHmIXASJS232sToKjHuYNlxhlj7M/oSVvMFazL6qGNN+Idgcp8pFcEHXNPLGKMH55GHso47b4oZcMlf44/A3gabUlQxKrBhDg4aCqzRjx42vN/s8S6AQ/QDC5oUcWLHgDqVYje08ps/gIchkdodFRauk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705919290; c=relaxed/simple;
-	bh=vBIE41DUABMzuSycmktCw+6jZ56ZuxnAcG4FIrlwI+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ol5kzkzEMOdWyvdsZ160zJQ30pfi0D/F2phP43bQmjKx3pHmaeHEX+dlwZdwjTnUkvkeun4KufJksMc94iMm4fdP1RaE8hUgSbhwNhY9/zw7rDcSiG5akh2cnZxJ4NyqBnfSEzNlhJCenss5PkS7nBo3+C4sdeYl8v37zsPrjEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zzImZ57Q; arc=none smtp.client-ip=209.85.221.48
+	s=arc-20240116; t=1705920819; c=relaxed/simple;
+	bh=HvqtdsUNHvvysDTN07Znf26i8cKDghYMJxajcRlaWck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eRoMdzyzGI4UzfVp3Izee0XLkfHIiygI4BWLqQWmQS+u/230D4GAKRuHd7WwLyinsiJe5wsXJObHz/8hQ4H6OqL+Fh+3v4OGvtLlpxluypp2/fpMT09J9VIZWOclVC65gZcefHRZjcsrY2bR8zBHmKJxRM+8kmkNyLqrqycI+yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=feMF+B0k; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zzImZ57Q"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-338aca547d9so2338622f8f.0
-        for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 02:28:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="feMF+B0k"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a2f0cb62068so301538566b.2
+        for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 02:53:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705919287; x=1706524087; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=cTCtw5roejauRZb1rW/DubsmSIQ5L20XK+iYbkTVegQ=;
-        b=zzImZ57QX/bpTF/L4To311Ve/zqhohbDwdNcjW+APzzlug+Si3r1pwvmakgRr8Wt3p
-         PZClsgEw0IG6A679xyaGI9Thb6mSd9XTAUD2CGN0tFdU5Jz5dl/SZlqN1zgj4XxC5yVS
-         RrpGWr+JrQdvRrtk4KkDejKz6TbMYqKTNomaP09V2bd3mJIHanK0FpXJZ+Oy+I0M4Uxn
-         AsS5YMQSVSJEt2YTf1v9G6O4Thoc5ecedAmgnN2scx/cyY0SI27E4bfFRvrsmLTGvHEV
-         RgfrpHKJAIXbvaXUz4Zaq8RcaziE9JRM1KNFOx9RT+guvP58EQnVGX+PYzOa+jqoQIKf
-         Sk8g==
+        d=linaro.org; s=google; t=1705920816; x=1706525616; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+PzbzDTvNuVALaQbY0SrUthp/gsyxFLfouvwcaglfa0=;
+        b=feMF+B0kR7RoHRvVJ8mp/PAkzWu0JRf8c5yqvNyQgRR0FTxdRhxdrQJJCa/+AdHERr
+         lYRFUzTPKxUWHUfqg824fAfScNiWpTL3xKTZ9mT7GeCiUq4pJxW3vNX28HkeL8N8R+ZN
+         imimCMeZM7KeFCorNAD4L72umVKRj63SUGLlodevoSq2t0kU9aHsO5jVT2W7uJlzPXEe
+         i5EHw6TQx+McZ5VOZjp4q5UmyoJuw4TcSEhfAuCjjOjqZGeIstCT76pU1Xw8HkAgai0P
+         L1kltpiMoyTCXXHBOtdrYQISn7Ajt7BijVvSSUSj9OBIlfiHJyGmf9D4bZwDL2tPh1S0
+         Ld6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705919287; x=1706524087;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1705920816; x=1706525616;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cTCtw5roejauRZb1rW/DubsmSIQ5L20XK+iYbkTVegQ=;
-        b=S43ChQiZbNuDaReP8N5zW52PZhtQYvVg4Oe8urX7L8O1g/OBPAWApu9DIhpaGUHMUl
-         7uHaQ4fQAfNROI5ldtbbo1yLu5gp+fmmNGBCuRbp6l8aOE0HH7QTI4QJAeyRZzo2BNRh
-         SGBb1pFmveQd9YdnCLHyK9KA+mUjUJGHajaetr9sMP8VUj2dPgOxAPvrSCTTFJN8YY0s
-         u9eC1S1RyG36b3102qRuH5PCgeQ+lHskiOHQVgabvoFr1SLTmTi3JqnBaPeG4rM9EeTE
-         n1c2AX+DJGCT2Ry7qexVDqSN2Sz19CW2/FC6ppE+GSSKjupwbxG6jwZ+fY9H5m1Ht20q
-         w6Qw==
-X-Gm-Message-State: AOJu0YyhgbdaioLOI9FRy0rCwthoaqFYcS0UtrqsWKn3uCMGbD5uvIKd
-	LdwGPKHqcrbZmpyIYwIJuBPVk9b8Bz7J9X+0sbo5os/2D4jQsC2xBikIREVt3sI=
-X-Google-Smtp-Source: AGHT+IFJN44C0XBmIhDGOu0CvPL9d8S5H/kcyzcz9lspP4Nm5ugoGJW4ka/39Dgy0iB6yMbk94G+Nw==
-X-Received: by 2002:a05:6000:104:b0:337:ac2c:cfd9 with SMTP id o4-20020a056000010400b00337ac2ccfd9mr1170855wrx.196.1705919287545;
-        Mon, 22 Jan 2024 02:28:07 -0800 (PST)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id n17-20020a5d67d1000000b003392f229b60sm3819885wrw.40.2024.01.22.02.28.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jan 2024 02:28:07 -0800 (PST)
-Date: Mon, 22 Jan 2024 10:28:05 +0000
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-	Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Karel Balej <balejk@matfyz.cz>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] backlight: Add Kinetic KTD2801 backlight support
-Message-ID: <20240122102805.GB8596@aspen.lan>
-References: <20240120-ktd2801-v3-0-fe2cbafffb21@skole.hr>
- <20240120-ktd2801-v3-3-fe2cbafffb21@skole.hr>
+        bh=+PzbzDTvNuVALaQbY0SrUthp/gsyxFLfouvwcaglfa0=;
+        b=k9TgM6HM48aH4eYl8wMCCZNnIok1EgwywwvyySAbspPVtID5AY5mMyDm5bqg/B03d3
+         6l61Z735V7yrCM2AdpHVQ2AlRuYVHpk1MGaSXkDXBXovN4ArhWwRtZ48XaxLeNmxUw0w
+         E/P6M1+Niz1vEkMktW7jqCkE/Wow2LiaNwW68QM7n+Ns92frp/BWoWd0NvSFWbEJ7In4
+         F2OADPgEqOZihwNLkm+/MEpxirJFAfJ0PwkqnkZWKuiE5AN3RMXT8sBJTPAz3rZcvRA+
+         FeUkOHhdpB9xL7C3QMTEeoDQLTbo5vD3smgBnWSQzQpJig78XsoZvGWELoYm8yLjJgw7
+         P+cA==
+X-Gm-Message-State: AOJu0YwGj+Ky8GTCKfQZVRqVHcnZ4BQNMp3eQUCIhN2nhhdeoeKPQFyZ
+	RmJo7EubBNnWhd4OJw8QaS+0TD7kpmRkcRxhLFecfVM5pBSQexCEw3SMfEpxRq8=
+X-Google-Smtp-Source: AGHT+IGVVH6NZaZvBaWo+ZsNgMlULvxvy3TRd9ITIzY70Q9BIggeGYLQaVF7dW/aNORMtZRoldadNA==
+X-Received: by 2002:a17:907:3a45:b0:a2c:cda6:e73a with SMTP id fc5-20020a1709073a4500b00a2ccda6e73amr1025140ejc.98.1705920815747;
+        Mon, 22 Jan 2024 02:53:35 -0800 (PST)
+Received: from [192.168.231.132] (178235179218.dynamic-4-waw-k-1-3-0.vectranet.pl. [178.235.179.218])
+        by smtp.gmail.com with ESMTPSA id q5-20020a170906388500b00a28a297d47esm13243272ejd.73.2024.01.22.02.53.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Jan 2024 02:53:35 -0800 (PST)
+Message-ID: <e57f3274-46a8-4c42-af29-ff2009127886@linaro.org>
+Date: Mon, 22 Jan 2024 11:53:33 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240120-ktd2801-v3-3-fe2cbafffb21@skole.hr>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: dts: qcom: msm8926-htc-memul: Add rmtfs memory node
+Content-Language: en-US
+To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240121-memul-rmtfs-v1-1-e9da29b1f856@z3ntu.xyz>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20240121-memul-rmtfs-v1-1-e9da29b1f856@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jan 20, 2024 at 10:26:45PM +0100, Duje Mihanović wrote:
-> KTD2801 is a LED backlight driver IC found in samsung,coreprimevelte.
-> The brightness can be set using PWM or the ExpressWire protocol. Add
-> support for the KTD2801.
->
-> Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+On 21.01.2024 11:21, Luca Weiss wrote:
+> Add the rmtfs-mem node which was part of one of the "unknown" memory
+> reservation. Split that one, make sure the reserved-memory in total
+> still covers the same space.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
 
-As Linus W. said, this is looking really nice now. Thanks!
+Could you please test dynamic rmtfs alloc, which should be possible
+on some (most?) boards after 9265bc6bce6919c771970e5a425a66551a1c78a0?
 
-Just a couple of nits below.
-
-
-> diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
-> index 51387b1ef012..585a5a713759 100644
-> --- a/drivers/video/backlight/Kconfig
-> +++ b/drivers/video/backlight/Kconfig
-> @@ -183,6 +183,14 @@ config BACKLIGHT_KTD253
->  	  which is a 1-wire GPIO-controlled backlight found in some mobile
->  	  phones.
->
-> +config BACKLIGHT_KTD2801
-> +	tristate "Backlight Driver for Kinetic KTD2801"
-> +	depends on GPIOLIB || COMPILE_TEST
-
-As patch 1 feedback, seems odd for the client to be responsible for
-this. It should be managed in LEDS_EXPRESSWIRE.
-
-
-> +	select LEDS_EXPRESSWIRE
-> +	help
-> +	  Say Y to enable the backlight driver for the Kinetic KTD2801 1-wire
-> +	  GPIO-controlled backlight found in Samsung Galaxy Core Prime VE LTE.
-> +
->  config BACKLIGHT_KTZ8866
->  	tristate "Backlight Driver for Kinetic KTZ8866"
->  	depends on I2C
-> diff --git a/drivers/video/backlight/ktd2801-backlight.c b/drivers/video/backlight/ktd2801-backlight.c
-> new file mode 100644
-> index 000000000000..7b9d1a93aa71
-> --- /dev/null
-> +++ b/drivers/video/backlight/ktd2801-backlight.c
-> @@ -0,0 +1,143 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Datasheet:
-> + * https://www.kinet-ic.com/uploads/web/KTD2801/KTD2801-04b.pdf
-> + */
-> +#include <linux/backlight.h>
-> +#include <linux/bits.h>
-> +#include <linux/delay.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/leds-expresswire.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/property.h>
-> +
-> +/* These values have been extracted from Samsung's driver. */
-> +#define KTD2801_EXPRESSWIRE_DETECT_DELAY_US	150
-> +#define KTD2801_EXPRESSWIRE_DETECT_US		270
-> +#define KTD2801_SHORT_BITSET_US			5
-> +#define KTD2801_LONG_BITSET_US			(3 * KTD2801_SHORT_BITSET_US)
-> +#define KTD2801_DATA_START_US			5
-> +#define KTD2801_END_OF_DATA_LOW_US		10
-> +#define KTD2801_END_OF_DATA_HIGH_US		350
-> +#define KTD2801_PWR_DOWN_DELAY_US		2600
-
-These are a little pointless now. They are all single use constants
-and have little documentary value.
-
-The lack of documentary value is because, for example,
-KTD2801_EXPRESSWIRE_DETECT_DELAY_US, is assigned to a structure
-field called detect_delay_us.
-
-Likewise I doubt that explicitly stating that long_bitset_us is 3x
-bigger than short_bitset_us is important for future driver maintainance.
-
-
-> +
-> +#define KTD2801_DEFAULT_BRIGHTNESS	100
-> +#define KTD2801_MAX_BRIGHTNESS		255
-> +
-> +const struct expresswire_timing ktd2801_timing = {
-> +	.poweroff_us = KTD2801_PWR_DOWN_DELAY_US,
-> +	.detect_delay_us = KTD2801_EXPRESSWIRE_DETECT_DELAY_US,
-> +	.detect_us = KTD2801_EXPRESSWIRE_DETECT_US,
-> +	.data_start_us = KTD2801_DATA_START_US,
-> +	.short_bitset_us = KTD2801_SHORT_BITSET_US,
-> +	.long_bitset_us = KTD2801_LONG_BITSET_US,
-> +	.end_of_data_low_us = KTD2801_END_OF_DATA_LOW_US,
-> +	.end_of_data_high_us = KTD2801_END_OF_DATA_HIGH_US
-> +};
-> +
-> +struct ktd2801_backlight {
-> +	struct expresswire_common_props props;
-> +	struct backlight_device *bd;
-> +	bool was_on;
-> +};
-> +
-> +static int ktd2801_update_status(struct backlight_device *bd)
-> +{
-> +	struct ktd2801_backlight *ktd2801 = bl_get_data(bd);
-> +	u8 brightness = (u8) backlight_get_brightness(bd);
-> +
-> +	if (backlight_is_blank(bd)) {
-> +		expresswire_power_off(&ktd2801->props);
-> +		ktd2801->was_on = false;
-> +		return 0;
-> +	}
-> +
-> +	if (!ktd2801->was_on) {
-> +		expresswire_enable(&ktd2801->props);
-> +		ktd2801->was_on = true;
-> +	}
-> +
-> +	expresswire_start(&ktd2801->props);
-> +
-> +	for (int i = 7; i >= 0; i--)
-> +		expresswire_set_bit(&ktd2801->props, !!(brightness & BIT(i)));
-
-The !! is redundant... but, as previous feedback, I think writing a u8
-should be in the library code anyway.
-
-> +	expresswire_end(&ktd2801->props);
-> +	return 0;
-> +}
-> +
-> <snip>
-
-
-Daniel.
+Konrad
