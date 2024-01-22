@@ -1,162 +1,166 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6BF3A8E5
-	for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 10:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCFC3A1DE
+	for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 10:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705918773; cv=none; b=CpabvwW9bgtPSnnKviez4w3iIsUNo+7wFO7YFlx99KY78N57A88vCrSFqzk1VgMU5Y9i7XUnKMLOXkyK46RHk+xD7gdIcq0A/iUnYIpxV+EUXYBwbFmn0TuQmbBNpeTbFwuLhizl/hAzWxaNOwv0GkMpEU046QUH2iNSjw0gaPg=
+	t=1705919236; cv=none; b=D60FIaVzLIkU1Lw2JBOfUjObJhOUmMaHgvmPezSzulP1CJTEHfz/NgCz0YH+wuqsRiRbSEBQcYeMOupEIFyngvMOyt7Cbdz8KTMXHmqzYZzHvhBccLRAFdy65QDrWOP9SWcG/3dnDz9ebWL3kjvXYWCN8Rq0DuLhM3Yp3Qmqk2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705918773; c=relaxed/simple;
-	bh=/SNLHHN7xOHjhgf5Ka2VMBrDa6pANZCIGYnQJH8RKpA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bMQ9Tqr1PA88a1o2UqVmbWyETUQzQm6tt/OIzV0os2OlnwoPOwrLRdA3sCZsRoXGivaiOT1OTrCy5YYetCOExAJqdJqcVVih31VVlSls1usICFqcmlczKSi94C7MZ55JBxQYbCEsJ7k2vzfRkjqic9A1sdFOuyUoc14+lKKf4WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WtQICkc8; arc=none smtp.client-ip=209.85.221.44
+	s=arc-20240116; t=1705919236; c=relaxed/simple;
+	bh=mrUHy4smwQZ2a6SuapZ0Z4G7hpB6AWKYvF4yDVQ6gyI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VmsC5CCgHdQ9b4nP5tqDOyu6OQOyaoUm2HpNLGz0Faj1ULKeh47ffTxs+L0q/Wb1fbjMlviNdWzmc7liNL0UkR4EegPmo62hzaH4McPg9AZX4B0YJqzzT5/Bmr6QNLyTEWrJ0xBwlX+mtEQpbahLl5qr3G5SKzNsHJGetBnp+vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wapznbKh; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WtQICkc8"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-337cc8e72f5so2751129f8f.1
-        for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 02:19:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wapznbKh"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-55c1ac8d2f2so1231829a12.2
+        for <phone-devel@vger.kernel.org>; Mon, 22 Jan 2024 02:27:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705918769; x=1706523569; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6CUlLsOEJCO3o0htEYr8Lbj/bayNpoeF4Yah4if4kLc=;
-        b=WtQICkc8gaYMT3ZMfWqXR1v+0Gf5KtlFeiUD0rSgSx1nNdGnGlNSiQoENFBZDtuSYq
-         Vh4ac5BIzGlq+mCzcF5KE8sMLXnrc7ELMooSqig/dh8wzf6GNTJs4QmwFvegB37gEJv2
-         fInxTyv3cuKkKkYhS4+wJHJeSZqYaTzhJQfoyReb4l6VQpSJNrmbor2NWKf5vzXT61ER
-         oky1p/zXf5u8pkjGH23oAg33Yd3/gwThAjN7XAZWKSkb40qIEHJxY6aF/Jz43P83fX4k
-         N9an9FzAJFBiXe0MOsKBR8DQ6jJXWm2gT5pEcEn0m8zDPBHsXGbZLv1FMXqmiqk9GrwA
-         QRPQ==
+        d=linaro.org; s=google; t=1705919231; x=1706524031; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xswNyoPTx9kg9SARAx0XALvTM7whm+/HbTxHad1ULag=;
+        b=wapznbKhrJGbYwM5jRFQ1e64KrLt7qkh1z7Gj/xJPfjOe9moR1ni5NFw8zhCZj+neT
+         Fe+CgHDVR4G4o4PZ67aP61o1/x3Q+pgzme5Y85Dn8SbmC3BWXZoayzVyzXKUlNwM5odR
+         YRD0O3r8ANsTceqcqgU+zOd0WOdj7hMROUZ2pZa7O15gmbqjwCj2asAkD4LeBkKhsB99
+         rR0ZL5EY8QH5G3seC5l0rtLTaEL/3M49VSpeDumDhMSFtyMfShAQrbj2tnJpGtncqaVH
+         sQo1bp0duchLxqcZvq8L6dmjwS4/XHl183kpUvuGmb/YiJ6+dT7Gjim8CshYoBJCf44G
+         2XbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705918769; x=1706523569;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1705919231; x=1706524031;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6CUlLsOEJCO3o0htEYr8Lbj/bayNpoeF4Yah4if4kLc=;
-        b=Lq6SEBDytsz2aHpDuEJ51OI4PfZnZ2l4qdzTCZH/0yO61JduzQaD0pP8kh31ppfmYh
-         sikUsUyMzMKlgWgfwXtVZ8rXAcmEa3almjKHaDBtedSbvAdXg6Is3NnfFZt67POMyYCl
-         F1TFTYTq8qYGIxN4ZWLd2JBCI7iAs2YHvPZgamNBTRLtqo8q2hiARbk3810HLTZ/roCU
-         JkPSmqbxzDM8Mr25UV6Tlz7ucdqcJHwLxaxM0zLQ+85W25otY3MBDVvyD2rGmIxCXig5
-         /dyHkIbMIJ/a82URU76VxO0iUR0CZmY1FVWh0a21FH1BeXbb3vGuBJpa8HgWc7lLkFIz
-         SruA==
-X-Gm-Message-State: AOJu0Yx8fw69ZZircJA+S0PQBg5I9B5IZMQZb7ueK8S/MNw0E438/KlT
-	8CIBwBig3KgQ/inKvt+i9W2ChKztwuervc/FXviyRMKtlBhWWcx6flq1PUYK6w0=
-X-Google-Smtp-Source: AGHT+IGiXCkeFT62mIizDAGCPWlt7/MMpjwMRYs+WW2Kwg136ect9locc0HoNUSbJlXRnS59IcBghQ==
-X-Received: by 2002:a05:600c:5486:b0:40e:7c23:898d with SMTP id iv6-20020a05600c548600b0040e7c23898dmr2156961wmb.102.1705918769050;
-        Mon, 22 Jan 2024 02:19:29 -0800 (PST)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id iv11-20020a05600c548b00b0040d8ff79fd8sm38663573wmb.7.2024.01.22.02.19.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jan 2024 02:19:28 -0800 (PST)
-Date: Mon, 22 Jan 2024 10:19:26 +0000
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-	Pavel Machek <pavel@ucw.cz>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Karel Balej <balejk@matfyz.cz>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-leds@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] leds: ktd2692: move ExpressWire code to library
-Message-ID: <20240122101926.GA8596@aspen.lan>
-References: <20240120-ktd2801-v3-0-fe2cbafffb21@skole.hr>
- <20240120-ktd2801-v3-1-fe2cbafffb21@skole.hr>
+        bh=xswNyoPTx9kg9SARAx0XALvTM7whm+/HbTxHad1ULag=;
+        b=gpgbTSi6IBG0j+XP/AwLR6bGS1b6Qf1EjQ/dY0JcxMRf2tTUJSNLq/Kl0BOWEn6lxI
+         GPwIvw7s2qEvoCntithrztNFaw/59phrLcXNALLnceE41LySOCCysIKx000ORG2/nEzS
+         9K4glPEJRHdnZIXI/NnlJqGnACBoq8/yoTR0FMPuSzOYnCiQ/7ssLxo2mV0XKd+Jgfms
+         9Nfdxx5WqXhKKzRKd+9KDtdLn4BFhCJ3Xpy/mGJGNq0CXOWQa6TvAtr4uw8+y/Wrh6Dw
+         /TLCbjgaBbV5ZBR7I0fGpVgqbl+UyL4e400ByJ4Oa9MECLshc5z73uy3CZaV1o5WDoNT
+         zUSw==
+X-Gm-Message-State: AOJu0Yz+vzsdzAEvHvixRf+jr6HnBXTqyaiuRB3b25uPrK3If3PBMuaD
+	E13vxAhDHBGL4lIcFVhmA3UAIQngsnhvaV7+V1bEVNfZMX2+mnGdIjVE+wWEhdA=
+X-Google-Smtp-Source: AGHT+IFEEL5I2v97pbpEot1HvLfLgC9RFx8FCiDd/TRtDZKoFfifF/gYFXoi4OjcMT/bct5+jQmh/w==
+X-Received: by 2002:a17:906:f593:b0:a2d:d8df:49fb with SMTP id cm19-20020a170906f59300b00a2dd8df49fbmr2464050ejd.82.1705919231575;
+        Mon, 22 Jan 2024 02:27:11 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.215.66])
+        by smtp.gmail.com with ESMTPSA id i3-20020a1709064fc300b00a2e33a6cbecsm8198701ejw.18.2024.01.22.02.27.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Jan 2024 02:27:11 -0800 (PST)
+Message-ID: <acd64ed2-c36b-45e5-a71e-98c98ff1cb74@linaro.org>
+Date: Mon, 22 Jan 2024 11:27:09 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] dt-bindings: input: imagis: Document touch keys
+Content-Language: en-US
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+ Markuss Broks <markuss.broks@gmail.com>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Rob Herring
+ <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: Karel Balej <balejk@matfyz.cz>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240120-b4-imagis-keys-v2-0-d7fc16f2e106@skole.hr>
+ <20240120-b4-imagis-keys-v2-2-d7fc16f2e106@skole.hr>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240120-b4-imagis-keys-v2-2-d7fc16f2e106@skole.hr>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240120-ktd2801-v3-1-fe2cbafffb21@skole.hr>
 
-On Sat, Jan 20, 2024 at 10:26:43PM +0100, Duje Mihanović wrote:
-> The ExpressWire protocol is shared between at least KTD2692 and KTD2801
-> with slight differences such as timings and the former not having a
-> defined set of pulses for enabling the protocol (possibly because it
-> does not support PWM unlike KTD2801). Despite these differences the
-> ExpressWire handling code can be shared between the two, so move it into
-> a library in preparation for adding KTD2801 support.
->
-> Suggested-by: Daniel Thompson <daniel.thompson@linaro.org>
+On 20/01/2024 22:16, Duje Mihanović wrote:
+> IST3032C (and possibly some other models) has touch keys. Document this.
+> 
 > Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 > ---
->  MAINTAINERS                       |  7 +++
->  drivers/leds/Kconfig              |  3 ++
->  drivers/leds/Makefile             |  3 ++
->  drivers/leds/flash/Kconfig        |  1 +
->  drivers/leds/flash/leds-ktd2692.c | 91 +++++++++++----------------------------
->  drivers/leds/leds-expresswire.c   | 59 +++++++++++++++++++++++++
->  include/linux/leds-expresswire.h  | 35 +++++++++++++++
->  7 files changed, 132 insertions(+), 67 deletions(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index a7c4cf8201e0..87b12d2448a0 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -7902,6 +7902,13 @@ S:	Maintained
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/linkinjeon/exfat.git
->  F:	fs/exfat/
->
-> +EXPRESSWIRE PROTOCOL LIBRARY
-> +M:	Duje Mihanović <duje.mihanovic@skole.hr>
-> +L:	linux-leds@vger.kernel.org
-> +S:	Maintained
-> +F:	drivers/leds/leds-expresswire.c
-> +F:	include/linux/leds-expresswire.h
-> +
->  EXT2 FILE SYSTEM
->  M:	Jan Kara <jack@suse.com>
->  L:	linux-ext4@vger.kernel.org
-> diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
-> index 6292fddcc55c..d29b6823e7d1 100644
-> --- a/drivers/leds/Kconfig
-> +++ b/drivers/leds/Kconfig
-> @@ -181,6 +181,9 @@ config LEDS_EL15203000
->  	  To compile this driver as a module, choose M here: the module
->  	  will be called leds-el15203000.
->
-> +config LEDS_EXPRESSWIRE
-> +	bool
-> +
 
-Shouldn't there be a "select GPIOLIB" here? It seems odd to make the
-clients responsible for the dependencies.
-
-BTW there seems to be very little consistency across the kernel between
-"depends on GPIOLIB" and "select GPIOLIB".. but select is marginally
-more popular (283 vs. 219 in the kernel I checked).
+Please provide changelog describing what changed against v1. Cover
+letter has something but it is not accurate. It says nothing about this
+patch.
 
 
-> diff --git a/drivers/leds/flash/leds-ktd2692.c b/drivers/leds/flash/leds-ktd2692.c
-> index 598eee5daa52..8c17de3d621f 100644
-> --- a/drivers/leds/flash/leds-ktd2692.c
-> +++ b/drivers/leds/flash/leds-ktd2692.c
->  <snip>
->  static void ktd2692_expresswire_write(struct ktd2692_context *led, u8 value)
->  {
->  	int i;
->
-> -	ktd2692_expresswire_start(led);
-> +	expresswire_start(&led->props);
->  	for (i = 7; i >= 0; i--)
-> -		ktd2692_expresswire_set_bit(led, value & BIT(i));
-> -	ktd2692_expresswire_end(led);
-> +		expresswire_set_bit(&led->props, value & BIT(i));
-> +	expresswire_end(&led->props);
->  }
+>  .../bindings/input/touchscreen/imagis,ist3038c.yaml           | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+> index 2af71cbcc97d..960e5436642f 100644
+> --- a/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+> +++ b/Documentation/devicetree/bindings/input/touchscreen/imagis,ist3038c.yaml
+> @@ -42,6 +42,17 @@ properties:
+>    touchscreen-inverted-y: true
+>    touchscreen-swapped-x-y: true
+>  
+> +if:
 
-Is there any reason not to have an expresswire_write_u8() method in the
-library code? It is a concept that appears in both drivers.
+Move allOf here and keep it under allOf.
 
+> +  properties:
+> +    compatible:
+> +      contains:
+> +        const: imagis,ist3032c
+> +then:
+> +  properties:
+> +    linux,keycodes:
 
-Daniel.
+No, this property is not allowed by your binding. I doubt this was
+really tested.
+
+Anyway, even if it works, it's not what we expect. Where is the property
+defined?
+
+Best regards,
+Krzysztof
+
