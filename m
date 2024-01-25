@@ -1,31 +1,30 @@
 Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A5D1386DF;
-	Thu, 25 Jan 2024 21:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B2A13A256;
+	Thu, 25 Jan 2024 21:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706218542; cv=none; b=Hb1Z6f7qoRG7jru+4VPp9lNL1vEKJe9LEfVdyvBomX+z3EYjsM6Tm8rs2NA/4ohqBqUnfEOy+R1T2oG2lgWPf/Nazo55gclwxlD1YRNIeNXjFkF8NZzCtVoar1lt/0Nx0j/XgaJb1qLiDjg+CoDDp5CVwdFFD1hL5NuUonabszI=
+	t=1706219792; cv=none; b=EJkP39tHJICqdcIb89NHensw7MKg50Dp71Fbnauc+pAw/EFn/ePN3g0TWs5VnJW0OxpuHYopGBJBgZprJ7E/iWJ/ifyd7qJpKWF6sznQ8xnd/q/ezMw80OVQHYBybn1KTr9jl6pS1L0g4clQtdBGc3knvE1SXgJOx9m84iVOg/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706218542; c=relaxed/simple;
-	bh=yU5QrcQggwQQZ+kfNFxdDHxu5MXwpTUge718BD6qWsA=;
+	s=arc-20240116; t=1706219792; c=relaxed/simple;
+	bh=iVJuRxgL5kv4O2Iy1LSObxXiPhy/9uSVuR7pRJgvKG0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hhjek9Z/1EUyKOBo4i1B8wCOn+XwkVthPCHdY6wGruLNEStK8lSIcd+CRYD0slVyi2RoTjgy58whKGfCX8nyR+PzreD/Zoa1prdVNTHJXT9LYUTU+zTk+5xYeXKgMc82x+w7XSSI2WrFxrKl1Oe/fR4zjJn8JU0kfb6eeaD1ARc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=8HxHjOLF; arc=none smtp.client-ip=128.199.32.197
+	 In-Reply-To:To:Cc; b=Txa33zAdfAS0cDW3hNxoAP+gLIGWLa2gqLhdfgeinZCQwPyvYX/zp+rwFcVSgsCK0VlWggY3nR8NUtNYO572FOXDFautxd6/e3WXaCwA537X/xS3paSNFmGCAQzsqT1W9/g2pEoPbHG9TzlaCXFbJCgUywJYpk4E78AGicCFiR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=RODS774o; arc=none smtp.client-ip=128.199.32.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="8HxHjOLF"
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="RODS774o"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1706218539; bh=yU5QrcQggwQQZ+kfNFxdDHxu5MXwpTUge718BD6qWsA=;
+	t=1706219789; bh=iVJuRxgL5kv4O2Iy1LSObxXiPhy/9uSVuR7pRJgvKG0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=8HxHjOLF+iUIlmdJpb+yOEnAOc73gJ70iQl3IEieRVCRQBRZkpfENOBnc0vIdKrhm
-	 FXYR2/mVAIz9uHQs/owmqJQqFdW/Q3u04NI46mXKpRkOGBketnm3BFgs9ULiC8rIzI
-	 N8fsDFDKGquBYwTD6euXWUiGU/qgo+JkkF/k+CBY=
+	b=RODS774onD7Q2Ed1k0w52jLNPH5kgjmsAPo8dyaXPmtrgNXB0MT+kRc8oP3pC3de9
+	 vOvaU3gjzTMCU/ihlARbPVQoE8j1bZ4B4lbtPYMuBhEaYBTdQ3B2vH2sI67f3yf40w
+	 FD+ZpieSyTQiRs8meTzZimPgi63lKq/35lZrHDD0=
 From: Luca Weiss <luca@z3ntu.xyz>
-Date: Thu, 25 Jan 2024 22:35:14 +0100
-Subject: [PATCH v2 3/3] arm64: dts: qcom: msm8953: add reset for display
- subsystem
+Date: Thu, 25 Jan 2024 22:56:25 +0100
+Subject: [PATCH RFC 1/2] arm64: dts: qcom: msm8953: Add GPU IOMMU
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -34,62 +33,86 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240125-msm8953-mdss-reset-v2-3-fd7824559426@z3ntu.xyz>
-References: <20240125-msm8953-mdss-reset-v2-0-fd7824559426@z3ntu.xyz>
-In-Reply-To: <20240125-msm8953-mdss-reset-v2-0-fd7824559426@z3ntu.xyz>
+Message-Id: <20240125-msm8953-gpu-v1-1-f6493a5951f3@z3ntu.xyz>
+References: <20240125-msm8953-gpu-v1-0-f6493a5951f3@z3ntu.xyz>
+In-Reply-To: <20240125-msm8953-gpu-v1-0-f6493a5951f3@z3ntu.xyz>
 To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
  Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luca Weiss <luca@z3ntu.xyz>, Vladimir Lypak <vladimir.lypak@gmail.com>
+ Conor Dooley <conor+dt@kernel.org>, 
+ Vladimir Lypak <vladimir.lypak@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=829; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=PzUs+5/iYFOXD5TPEPyAZhq1wFpo0mlo1sKi+auOvx0=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlstQoUguZBfVZalKZvT/s2F/nZ2v3tWppxGDNu
- tWud5Pl8XGJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZbLUKAAKCRBy2EO4nU3X
- VoMYEACbrmNAcNRKzZvwmfCgVFNyTCg1I1Z2ILz9rZou8AdDvxucvfn6vRdhtimmK9FrTm2PETT
- sioLaWn6Z4sQyHTqQzlypeWR45Ip/9rc4DCGob51xftVJQU0RGaNdiyDMq4m0IQXgIZVK9Er6bm
- +C1FdGzc9+Tzx8NpNX7hFViGOiqhwxSLeCyYQSCDda73uQbntRtqtOMggHyQinLEXx4HJOJsiod
- cJeUcq/7F6vb0SbQI64bddmjwUbq9cu3m+FcgSgabmCEYqenq8jhjJ/hIf26195ons2CcPxFQWF
- spj+75YQBK2NFdISJnjdg6OpJyB60gJnghou8p23Vd2rU8kIZib9X1tzG7BUxLgcNq/pTqzbFCm
- yVf7KHFfABIkx3PqccOVNVGUPfNekEpz2Bv7yVvXkRWavxTN0gYF7InjuiXWmpII2JKnhbdoLIo
- OMjOe2g4IC7+P6FobM7aVW7WyeRPV1HpIhR2Lp6Y+dk2lYitHIqStFUUle6H0iyD+Y6kwBEcT0f
- QvrhfBkX2TT4lPbs7+InXcFstxgmu6GQyLSe00atj5+mjIhpcLTD2eI0nrnEqiAZUPnFQ+XGMNc
- ynjS38vRZm+saU8xa0MEgUro0MWpGiTtdZ7+2jq9oyKtfAKFGfgt8a6Tct6nYSVYCyTMSobnFLu
- +RAuiMrvgrw2epg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1436; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=83PN5aUeRY5s9kLZimJpYkdeYsnG6XOaZnR2lKrM23o=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlstkKsY20NOQhBoGTOoVsRqfQlTkjRCUrQIEq4
+ U383JLKFYeJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZbLZCgAKCRBy2EO4nU3X
+ VrXYEACkjZWciMksryIKVAtyt0jvUPgZIYSQpLKi4gVk8qhDi1cN0OHbIWyvjjYtlwCEue3IlDc
+ 5K4Fb1Y0tqpmfwhzYaSNv0FCIME0SjvE+badDBP6U92mdLvIavqIm5Eu41PuGiipYchgo2AnQm5
+ apANVErzBIvldi0g5Whm3LVaJUNukjusGZQK+2wyrH1VmSyrDID49nB2DUEgfxQeoD4DMi/jWW+
+ 7W3zjYJoFcW0HMZANgRn1GoVcRyiOUaicxrkDuYuAUAE5GLiBIbKiRGXtCQbgJ/Dfo313sRSbG1
+ fxicXg8oXzyvsYAmiPTOwBFKLjA4iRDrwdp2Q//xc1d6KIILIKqVbc1iCxy0Ss6ibCyg/1+u2Qt
+ keDhkRaVhbL9m5aIc7TRSSahL07U1SatRnWOLVG3Ic1NUVItCLMy2OkX6OpslkddeD3EsXy7x3k
+ zjL8o6ACgbQQIYl8BHEggqgew8fbWzJs77pvM7N+CgqywwZfZzKMbF8pPzgSrEzy5Tpvj1xrKwt
+ TTf/ryqKLbZe6Aib238naxwwxUq6OritW6xvtRIWuQiWhO337RIFf825HrcBSPX9ijmTkYb/Okn
+ bvWdO+3tNjtN2sXacfn2uE60DEZQPcT6UDbhwm2aVJ01ZsuR1PLkOi9WxFlV1XLqRmxz7qt0S1A
+ aVFJ2z/em6bx17A==
 X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
  fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
 From: Vladimir Lypak <vladimir.lypak@gmail.com>
 
-With this reset we can avoid situations like IRQ storms from DSI host
-before it even started probing (because boot-loader left DSI IRQs on).
+Add the IOMMU used for the GPU on MSM8953.
 
 Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 ---
- arch/arm64/boot/dts/qcom/msm8953.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/msm8953.dtsi | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
 diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-index ad2f8cf9c966..dcb5c98b793c 100644
+index dcb5c98b793c..91d083871ab0 100644
 --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
 +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-@@ -859,6 +859,8 @@ mdss: display-subsystem@1a00000 {
- 				      "vsync",
- 				      "core";
+@@ -1046,6 +1046,37 @@ mdss_dsi1_phy: phy@1a96400 {
+ 			};
+ 		};
  
-+			resets = <&gcc GCC_MDSS_BCR>;
++		gpu_iommu: iommu@1c48000 {
++			compatible = "qcom,msm8953-iommu", "qcom,msm-iommu-v2";
++			ranges = <0 0x01c48000 0x8000>;
 +
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges;
++			clocks = <&gcc GCC_OXILI_AHB_CLK>,
++				 <&gcc GCC_BIMC_GFX_CLK>;
++			clock-names = "iface", "bus";
++
++			power-domains = <&gcc OXILI_CX_GDSC>;
++
++			qcom,iommu-secure-id = <18>;
++
++			#address-cells = <1>;
++			#iommu-cells = <1>;
++			#size-cells = <1>;
++
++			/* gfx3d_user */
++			iommu-ctx@0 {
++				compatible = "qcom,msm-iommu-v2-ns";
++				reg = <0x0000 0x1000>;
++				interrupts = <GIC_SPI 225 IRQ_TYPE_LEVEL_HIGH>;
++			};
++
++			/* gfx3d_secure */
++			iommu-ctx@2000 {
++				compatible = "qcom,msm-iommu-v2-sec";
++				reg = <0x2000 0x1000>;
++				interrupts = <GIC_SPI 233 IRQ_TYPE_LEVEL_HIGH>;
++			};
++		};
++
+ 		apps_iommu: iommu@1e20000 {
+ 			compatible = "qcom,msm8953-iommu", "qcom,msm-iommu-v1";
+ 			ranges = <0 0x01e20000 0x20000>;
 
 -- 
 2.43.0
