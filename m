@@ -1,122 +1,92 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AF4131E4F;
-	Thu, 25 Jan 2024 21:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AF613AA34
+	for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 22:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706219793; cv=none; b=IJKtUxhSAQNYBnpM3mQJhvMo9YjcKge17AIZkl4pLz93nisxxIO/GRl4TH+AgOIlDYf7TsmIdbnH/9JbbK5IlPLP6S0Gkr9VFO4Rhe0xArpP8zDrxOfVvx1ZtntCAU720Ghj5KwCu1xNMZyYuG4/L+JJq7zmiJw2aKEmdXY/rAI=
+	t=1706220703; cv=none; b=VyDgCvLWK1sex9ucHxFHQgP3l4HFgrGazk0i+8VfMiF5y3tJYfwCBDlqcu4IWSD/iXxcEZ4f9AlEdmBBO2JzTK48I+cEqGt0T+qab+wbi8I+PdG8R/osA8LTEkSuBM+ZeBMWxVFvm+3xWABnqa+S3Fg401VwcNf4G/tohBHlChE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706219793; c=relaxed/simple;
-	bh=b7Y6SDBxaY7d2ufdRgw40VrIGg/JPSikCPGoPt4otcU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cZknTNSD1uopJqvhqSWanTBX52zvcXqXCT7iN9RJwXoHlIuCP59+fhRxavaKnjAAZdKYZ2/74P5Dy5YmKt5OnAkdQBtzxBukMpDFTcFt4lmPRxqVXY9321n/O8uu0Hk6t4akxfM4PuwurvJJ4gW2Ly7VVdtCw1Wcl6jKBp8kjlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=gLTXPjoG; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
+	s=arc-20240116; t=1706220703; c=relaxed/simple;
+	bh=DbrULba5JMpUHoRfF0b2ZW/wUZBr+NdaB81g1Az+ZwY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VQz0yGY6osSvXqgNMk1DQbMJgLYy74b2r7HozaXibl5Y2pySCPGQtjnP3+Q4URSeNQkJ7Rkh2Zp9g27jstUSFq8X+0Mq9a+dasAoe79ieBvIUq85j7AF8QFTPyUkx7EU6s5xGtBQKNOgj+Myq8R5joRzr81yhV43STWLWcNHlyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=W/LggRvS; arc=none smtp.client-ip=209.85.219.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="gLTXPjoG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1706219789; bh=b7Y6SDBxaY7d2ufdRgw40VrIGg/JPSikCPGoPt4otcU=;
-	h=From:Subject:Date:To:Cc;
-	b=gLTXPjoG2oB1f5FyD097277HHw1LhrAzecH/DRwqdnznSFUYLB/jWXlCs+9tyFxP6
-	 c8KLTyK0Em76VnvEOCHMF9VPQ505ynf9hHHUIu3X5zp4tyZtVN44o5mpTWZRUIGRcc
-	 SXeJY70LFYKXJRMOnsqo/KrAd87ySr6+82+zxVns=
-From: Luca Weiss <luca@z3ntu.xyz>
-Subject: [PATCH RFC 0/2] Add GPU support to MSM8953 SoC
-Date: Thu, 25 Jan 2024 22:56:24 +0100
-Message-Id: <20240125-msm8953-gpu-v1-0-f6493a5951f3@z3ntu.xyz>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="W/LggRvS"
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-dc226dca91aso6901730276.2
+        for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 14:11:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706220701; x=1706825501; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=xLMcToKhdmiwb+Vgm0ASzJXUITbFWiE3/ITy5z4WO+Y=;
+        b=W/LggRvSCWuXdK9eWrjp3B7WDHlvdrpo8hU+xMznLtEIyxmcbJ2x5eqB2uyncxAHt5
+         kIO+xZfYPWClzevogWGF8FY2OObj9b+T7WOvQdhtSyrSj5BmwvtBTB0U0yDwc7o7488S
+         RO9VAHWs9KreOkYP7nnAZSe5ySVe1gValr97KdrUqZF+lXOhcg6hR0J7UD1WV5ovReO7
+         xvlsg1oA8kHDSdTZPAhF44qGbpGe7CFQRxxWRfGhlB6zAXzp/XmkH6jkSX4WIl1IAkLm
+         2ju2HbMAYK+u7+dr8NfeWXUnv63rUxo6Rq2AW7QeoXSKBLRfVzUJz5cPxgMFvEbRrJNM
+         fF/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706220701; x=1706825501;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xLMcToKhdmiwb+Vgm0ASzJXUITbFWiE3/ITy5z4WO+Y=;
+        b=aLKe4wKvjKEJuuTwrM3YWdMWX1jk9d43/rX8QMslmbprl4HpNqyF9N1r+MfxOm+QOw
+         IlwkBAYYPt+gw5tFDO/z6ytj7L5KzT8m8vEvBFq8V/slPI+nA5N30Xf6SQEbkPEm0ad9
+         H7dTszVGjGQdx6EGX1TFiT2dixs684i4tn6nIq5Lh/AEEAeIJstCSgOM7YduTyLCJzXU
+         bkkX8jiHcZlMbTxr2yRSHyL2C4SOgx96jnolYimz0fpawqaT9vKSO0RAxlAMiVB6kNqi
+         MLzVh5o8LUpYwhta1HW+OdrwQRj6h5HtE+vYBkF73Whk659eyR9OSwydtIFV4M6wf0Qb
+         yMGA==
+X-Gm-Message-State: AOJu0YzdgdUJi2y2Thl3oKmtRg3SaYi1u4/ThZlD4cLDPAKYlvCzbfND
+	gg4zky5RZuEAjKtJo8ivHP+fxL0FMvfviFSZ8he8EA10IR9LtWz96NwIpDCL0HSpxj3M0+gtbwT
+	J3wUdBWI6JK5MJVuYwJTGNgucJSANwO+LhR3Jqsnv/7cZQ8gUPj0=
+X-Google-Smtp-Source: AGHT+IGyhYkUs57iPAfgqwjJQmmq3Qlba1EBKrI7ojK1xvRb2h7JC3m/aWADVmXJGmcqgLz60U06quUiTM0G9gFNWJw=
+X-Received: by 2002:a25:2e07:0:b0:dbd:5be1:1768 with SMTP id
+ u7-20020a252e07000000b00dbd5be11768mr471772ybu.73.1706220701308; Thu, 25 Jan
+ 2024 14:11:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAjZsmUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI2NDI0Mj3dziXAtLU2Pd9IJSXZNkAwtTYzPTNFNLEyWgjoKi1LTMCrBp0Up
- Bbs5KsbW1AFPUyvJiAAAA
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Vladimir Lypak <vladimir.lypak@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2377; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=b7Y6SDBxaY7d2ufdRgw40VrIGg/JPSikCPGoPt4otcU=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlstkJfc3l2laEi7sRN3lqVds6XpkA0MzjRBHOf
- nwFNvAq0lmJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZbLZCQAKCRBy2EO4nU3X
- VhAsEADDLcuQHxd9v+Kxexh0y3s9hvictSjNkBDZ5R/NiVYX6qa9VHKiAGjVfPKAyvipzhz1N5e
- pbko36jzoRLC4VFPzxVZLxidssu8v40pxBK37fqPph5SVAyNQKKelKoTl8ZKYk+P3drW1TJzc/y
- BjOg3TGhC5JIXrOUTHuwSrxb7NODZ+l+lUxc0+JC//VwbU8hCXCQAFrDRidFROPUlCwhZ+MKzEs
- cjJcnc/483dv3e8wgTHL8zgwZXKs62tmvKH68ptkw5iIZC2rwsDTjh+OU7+EjArzJwPZ84O5l54
- A5ZOLTCy6qXqKT6TdGe1f1LzTw+7DEoFcZa7aOJpWBM5LbduUvyWQIwN1AXWbwEPigNaLcj/QsX
- IQS/6RS/tkoCzoGwzQl5w5aA1EyHq+pETY/46nx71sY0tagjDG5dbyeIkzJcItPwDTTFCExptmC
- 9w/q2Y1vRBUcphG8OpdRtZ94g/h2R6n+W2l+MRxmCYat0diWxN/ty4o6ttA4sctEBVf7euz1key
- Kvq+8pS6sUWIXqQTqpnDdCFfpWPaiavbbECTbXKTVk4xkZan9E9bcON4hVaS0x7tW2rBy39Rvj9
- fX0mXT1NHsZLE/hqP/TTt14vU86R6QPgTsbuzX2HlNc06dcPXDQdA4afgqP+61MXILJs/nHH9Qk
- B8q1CsiS9LtX9iA==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+References: <20240125-msm8953-mdss-reset-v2-0-fd7824559426@z3ntu.xyz> <20240125-msm8953-mdss-reset-v2-3-fd7824559426@z3ntu.xyz>
+In-Reply-To: <20240125-msm8953-mdss-reset-v2-3-fd7824559426@z3ntu.xyz>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Fri, 26 Jan 2024 00:11:30 +0200
+Message-ID: <CAA8EJpoVxyX-cVggL2RJvM1eG+XzF_kkgAsKdS8ybv7u_MAyXA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: msm8953: add reset for display subsystem
+To: Luca Weiss <luca@z3ntu.xyz>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Vladimir Lypak <vladimir.lypak@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Add the GPU IOMMU and GPU nodes to the msm8953 dtsi so GPU can work.
+On Thu, 25 Jan 2024 at 23:36, Luca Weiss <luca@z3ntu.xyz> wrote:
+>
+> From: Vladimir Lypak <vladimir.lypak@gmail.com>
+>
+> With this reset we can avoid situations like IRQ storms from DSI host
+> before it even started probing (because boot-loader left DSI IRQs on).
+>
+> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  arch/arm64/boot/dts/qcom/msm8953.dtsi | 2 ++
+>  1 file changed, 2 insertions(+)
 
-First of all, functionally this series looks fine, tested on
-sdm632-fairphone-fp3.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-Secondly and the reason this is marked RFC for now is basically just dt
-bindings check fail, and some questions regarding IOMMU compatible.
-
-Basically I'm unsure what compatible (or even driver) IOMMU should use.
-qcom,msm-iommu-v2 is now in the patchset which seems to be okay, and
-also should handle the gfx3d_secure secure context correctly. Apart from
-some special handling there qcom,msm-iommu-v1 compatible is equivalent
-on the driver side.
-
-Currently the dt bindings say qcom,msm8953-iommu should be followed by
-qcom,msm-iommu-v1 which is the case for apps_iommu. But if we use
-qcom,msm-iommu-v2 for gpu_iommu then we can't re-use the same
-qcom,msm8953-iommu I think.
-
-Possible solutions:
-1. Switch apps_iommu to use qcom,msm-iommu-v2 in dts & bindings? Since
-   there's basically no special handling for either in the driver I
-   don't forsee any problems. Then we can also use -v2 for gpu_iommu no
-   problem.
-2. Use qcom,msm-iommu-v1 for gpu_iommu? From some testing it also seems
-   to work, I guess because the secure context is never used?
-3. Use arm_smmu driver for gpu_iommu? Vladimir Lypak has suggested that,
-   but that would at least need some more patching to work on msm8953.
-   I probably don't have the motivation to take this on myself. Also
-   what benefit would it bring?
-
-Hope I haven't rambled too long here and it's somewhat understandable.
-
-Please let me know what you think, which direction we can take to
-resolve this.
-
-(Also GPU clock-names dt-schema check fails but that seems to be the
- case on more a5xx GPUs also)
-
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
-Vladimir Lypak (2):
-      arm64: dts: qcom: msm8953: Add GPU IOMMU
-      arm64: dts: qcom: msm8953: Add GPU
-
- arch/arm64/boot/dts/qcom/msm8953.dtsi            | 146 +++++++++++++++++++++++
- arch/arm64/boot/dts/qcom/sdm450-motorola-ali.dts |   2 +-
- arch/arm64/boot/dts/qcom/sdm450.dtsi             |  14 +++
- arch/arm64/boot/dts/qcom/sdm632.dtsi             |   8 ++
- 4 files changed, 169 insertions(+), 1 deletion(-)
----
-base-commit: 0e21aa976976d5fba8cd1f8f64bcce49beb5f895
-change-id: 20231212-msm8953-gpu-4c085365f594
-
-Best regards,
 -- 
-Luca Weiss <luca@z3ntu.xyz>
-
+With best wishes
+Dmitry
