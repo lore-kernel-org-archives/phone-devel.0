@@ -1,59 +1,58 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D52212E75
-	for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 23:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40AD125CF
+	for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 23:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706226603; cv=none; b=U4cvzf01IwhxTa89IP0YZgbFKML6giBL3WBeHAUrlwoYkjOSWC3O2Lb/YIZc5jVe4vdgrTMq5Glp8Tg5wx9gf+0ZhA+dbQN17tE/z4q3r9ZYhlISWLdWzlOeOaXUKgcmGMsNwGRN+pTZd3EU5hMEMgp6k8tpG3oqEkuQcqBY00c=
+	t=1706226649; cv=none; b=ZEQJHYcRmx4wMnfNIXbFBPnOnJ8OoWKwOf9teW3kTsgEL8s8tIph/0ZA0koKt5MGhcSb3n9Q56ukobCBmLoYcyS/74v0KipcvzmK7K+DX2OPnUGgBCU3KA7tVAU0U8C0ChPnFj+8wE8q9ajUYeBZXA2onWZSYMokstfkRrDioto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706226603; c=relaxed/simple;
-	bh=zuALxgKBNdz+cz2IZmkcUCnj/b8C1xkO0iZjdzgUinY=;
+	s=arc-20240116; t=1706226649; c=relaxed/simple;
+	bh=m477urVRSMnVXboBy6oeu+74ms/xBqBmLsiSC0JOrfo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ozYxMD7apD4Ug8Ucb/aXWIM5ot7iWByiQ2hBG1jZsqhXxHVgtzWEa4Ty6ymJKNQLbGPzDPIRwWrfdymTxw1IZdHKkpMc1a9/vd5dn/yZ5kODIxuYuaohch+5jPAfPzhrzAIMLnJresUMgO7itdGzIyg1cQRFY+wk35XEnljbWi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tIsiumNM; arc=none smtp.client-ip=209.85.167.48
+	 In-Reply-To:Content-Type; b=ujKA1YgWs/OSdxkiMAQo3SQEA8mPG/YQ0u9VOXIblWSlxxZVntdv9tkTdV0NBrZH2/EEdoj+jdmT8ukZtGoC4JOpVNFFu2uEfdCQdL74Qm9MGGFpv4j5yI5MyQ36zjIorvC0n8ZegREBNVpwERCT/81mtkgYzKKVzxGvpAHRscY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rQn3qD5O; arc=none smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tIsiumNM"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-51025cafb51so133925e87.2
-        for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 15:50:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rQn3qD5O"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-50eab4bf47aso1381563e87.0
+        for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 15:50:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706226598; x=1706831398; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1706226646; x=1706831446; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=84suYuoX3RAYz2xiQa2wUmKN0Xu6H16i6mQrUX9bctU=;
-        b=tIsiumNMfL0iUN8MvtCecFqU5qtshFGq0vlfx7W/OQ1xSpR/SYygjYTngiITZ5I7Vt
-         Uokmv0T4uNOACKHf433uGzWy8k49sQB1avUmrJCmEBnadsrc/rmxPiUGJEwZw5d5v2c5
-         Zlda83u4cRSXOx14AsXz5V5CZWTVZyziN9WsYV7Abn1Dy4zsoLAqeEgAlz9uFw6TXbu9
-         V2OOHv0Hc0d6tcPTjhT3b2isGqBAdd1VZBYVUHjYtw/Tsf9Vq7Y4frJ7lwGBngV79ByW
-         nWq97FBai64sQxiA0XMCss7I9sWikDtQmbv6TTMS1ygfjyqyXimtLOAVbgC78YHZhwkl
-         Q66w==
+        bh=HMqF6kcGxv/o+d+Qb4jJWsBekLD4OHlxxe3556Hw09Y=;
+        b=rQn3qD5OH3OaKTpt4lt/v/w29U++HO9htvqXyh6zuIeu3A8IImlaOIwdBgm9GK1EY6
+         xbjdfNZsCtgeod2tyKtG0u2L98WZVsYNkxaBVj7NEJ1upAHsses4/q6grgtugVIog8g1
+         wduKQauOce2mE4oEncqGpaTsxBh4InKVqwD2fGNtF8rkrXl85ZMOD72LK3mddgUb4Tpv
+         UTuQuI9cbl+AbHrWX7MT5tJo24KXXhFS/S5dwSisXg/tuZPZyvsUG+uGsyi3blZ36rUu
+         W22PN7HmrMLfP0uqZwt+cdUKwSkvqHJwn3oTBa8FHrm+eQFZDIR+3OIesp7zmbnI6bNS
+         T56g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706226598; x=1706831398;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1706226646; x=1706831446;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=84suYuoX3RAYz2xiQa2wUmKN0Xu6H16i6mQrUX9bctU=;
-        b=PtEIGeziJEWY39hJIrqCAVtHWraWLcHyj+KpCvpFm/WzvSb2Jw2WEehQFlsNCrRi3q
-         OopMmzZERcF0U9WhS1K43DHT3z0wKIKSuD8loX03iKXNkZZdmQxWowmYy/5LS1qLBBpr
-         /YdUGO9wAx2hkxCVI8YU2XF9mzRIBYCV3oo+717/hN4yIA9TtDc9yPr98ieZ4OZOWhQx
-         UHk3lx0Tl1kOLjF3sM3PBwiUK/OXAgrVzZZchoTLWcVlbriPzyqrfpdryd+k0LtjYyDa
-         q3L9v6r47Fujgp2kkiTJ6L+SmBXGGrGxbAElqXutC25IFDlFvvJ8EwWub/6uL4sh2y7l
-         geRA==
-X-Gm-Message-State: AOJu0YxkwTOHdJAmVjWU8xo00vCvH2cKiKuimUuGlcU5zJlskRF7vNY8
-	XEkAFTbzWQ5X5NPgNNdSKMGqq/b7GKyt9D0GF2DDTi7p3T5sSUJqn2piqnrPOsMS5YSPQGSXUZA
-	MqBI=
-X-Google-Smtp-Source: AGHT+IGlZCfDWZKPWMU55TCy+VJ2zTqmY3SNUSR/poAl1Jl1Szh+xGqeR9Bx7VhdXjmN9sTmz8nYAg==
-X-Received: by 2002:a05:6512:70:b0:50e:74e2:af58 with SMTP id i16-20020a056512007000b0050e74e2af58mr288823lfo.52.1706226598453;
-        Thu, 25 Jan 2024 15:49:58 -0800 (PST)
+        bh=HMqF6kcGxv/o+d+Qb4jJWsBekLD4OHlxxe3556Hw09Y=;
+        b=xBZshCQwiWUjwgL9q+UbgP3mdxkNdjKRinf6BuBPDv3lyWzk/Mq+kPwO1ykWWtbn9O
+         3T694VwJEggLBqQL+o9zd46j6tSLPNTPbo0wBXY68HgzGnlUi+H+otTRdF4dthQr8zbI
+         9swMtwsAvyH3ZBAvQTk4cMeL7/FAIVdubOdHHk3tAAvwRaOdMGAEbyMwn9qKzvU8rZOq
+         uwA6uwRHIFNf31wdsuEOFfzWAbGVOv0ykrlwpvLV4FfWiI9d3Tt52qehtIDe2q5v55Ba
+         +mVLuJ87agqQlDw5TKuAYNAoJOuMsEjjO1WHq180N/uQMK+Ou9O/2/utvCBacucur309
+         mV3A==
+X-Gm-Message-State: AOJu0YxGIHmC9KNnPHVI0u4rjCu/8UQgBNRB9Oje1tZEhbH34T7o+zn/
+	DbAO2GHTb+n4kNHrxn0J+xZajiqBZGMSC1m7yO0ovQwuzeqXVmriisxSM9nElLQ=
+X-Google-Smtp-Source: AGHT+IEGY/hr16dwZ5IcNgx/CmauHPsaJLzWX/B57eF+lGPF5KPQ1FqoEPCzGGqVJ/TlkmMwP9I3yQ==
+X-Received: by 2002:ac2:5632:0:b0:510:15b3:4f84 with SMTP id b18-20020ac25632000000b0051015b34f84mr26892lff.12.1706226645702;
+        Thu, 25 Jan 2024 15:50:45 -0800 (PST)
 Received: from [172.30.205.155] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id a21-20020a195f55000000b005100af37fbcsm10614lfj.166.2024.01.25.15.49.56
+        by smtp.gmail.com with ESMTPSA id a21-20020a195f55000000b005100af37fbcsm10614lfj.166.2024.01.25.15.50.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jan 2024 15:49:57 -0800 (PST)
-Message-ID: <a75d8b2f-a55a-4087-b039-60769678a480@linaro.org>
-Date: Fri, 26 Jan 2024 00:49:55 +0100
+        Thu, 25 Jan 2024 15:50:45 -0800 (PST)
+Message-ID: <c58c5897-b3f0-4449-a5b1-df10b117733c@linaro.org>
+Date: Fri, 26 Jan 2024 00:50:43 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -61,9 +60,9 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 1/2] arm64: dts: qcom: msm8953: Add GPU IOMMU
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+Subject: Re: [PATCH RFC 2/2] arm64: dts: qcom: msm8953: Add GPU
+Content-Language: en-US
+To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
  phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
  Rob Herring <robh+dt@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
@@ -71,52 +70,83 @@ To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20240125-msm8953-gpu-v1-0-f6493a5951f3@z3ntu.xyz>
- <20240125-msm8953-gpu-v1-1-f6493a5951f3@z3ntu.xyz>
- <d576e655-5d00-44ff-9405-0fceaa2d3935@linaro.org>
-Content-Language: en-US
+ <20240125-msm8953-gpu-v1-2-f6493a5951f3@z3ntu.xyz>
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <d576e655-5d00-44ff-9405-0fceaa2d3935@linaro.org>
+In-Reply-To: <20240125-msm8953-gpu-v1-2-f6493a5951f3@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 
 
-On 1/25/24 23:24, Dmitry Baryshkov wrote:
-> On 25/01/2024 23:56, Luca Weiss wrote:
->> From: Vladimir Lypak <vladimir.lypak@gmail.com>
->>
->> Add the IOMMU used for the GPU on MSM8953.
->>
->> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
->> ---
->>   arch/arm64/boot/dts/qcom/msm8953.dtsi | 31 +++++++++++++++++++++++++++++++
->>   1 file changed, 31 insertions(+)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
->> index dcb5c98b793c..91d083871ab0 100644
->> --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
->> @@ -1046,6 +1046,37 @@ mdss_dsi1_phy: phy@1a96400 {
->>               };
->>           };
->> +        gpu_iommu: iommu@1c48000 {
+On 1/25/24 22:56, Luca Weiss wrote:
+> From: Vladimir Lypak <vladimir.lypak@gmail.com>
 > 
-> Nit: most of the platforms use the adreno_smmu label. But maybe the msm-iommu vs arm-smmu makes difference here.
-
-Not really :)
-
-Please keep the labels unified
+> Add the GPU node for the Adreno 506 found on this family of SoCs. The
+> clock speeds are a bit different per SoC variant, SDM450 maxes out at
+> 600MHz while MSM8953 (= SDM625) goes up to 650MHz and SDM632 goes up to
+> 725MHz.
 > 
-> Nevertheless:
+> To achieve this, create a new sdm450.dtsi to hold the 600MHz OPP and
+> use the new dtsi for sdm450-motorola-ali.
 > 
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+> Co-developed-by: Luca Weiss <luca@z3ntu.xyz>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>   arch/arm64/boot/dts/qcom/msm8953.dtsi            | 115 +++++++++++++++++++++++
+>   arch/arm64/boot/dts/qcom/sdm450-motorola-ali.dts |   2 +-
+>   arch/arm64/boot/dts/qcom/sdm450.dtsi             |  14 +++
+>   arch/arm64/boot/dts/qcom/sdm632.dtsi             |   8 ++
+>   4 files changed, 138 insertions(+), 1 deletion(-)
 > 
->> +            compatible = "qcom,msm8953-iommu", "qcom,msm-iommu-v2";
->> +            ranges = <0 0x01c48000 0x8000>;
->> +
->> +            clocks = <&gcc GCC_OXILI_AHB_CLK>,
->> +                 <&gcc GCC_BIMC_GFX_CLK>;
+> diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> index 91d083871ab0..1fe0c0c4fd15 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> @@ -1046,6 +1046,94 @@ mdss_dsi1_phy: phy@1a96400 {
+>   			};
+>   		};
+>   
+> +		gpu: gpu@1c00000 {
+> +			compatible = "qcom,adreno-506.0", "qcom,adreno";
+> +			reg = <0x01c00000 0x40000>;
+> +			reg-names = "kgsl_3d0_reg_memory";
+> +			interrupts = <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
+> +
+> +			clocks = <&gcc GCC_OXILI_GFX3D_CLK>,
+> +				 <&gcc GCC_OXILI_AHB_CLK>,
+> +				 <&gcc GCC_BIMC_GFX_CLK>,
+> +				 <&gcc GCC_BIMC_GPU_CLK>,
+> +				 <&gcc GCC_OXILI_TIMER_CLK>,
+> +				 <&gcc GCC_OXILI_AON_CLK>;
+> +			clock-names = "core",
+> +				      "iface",
+> +				      "mem_iface",
+> +				      "alt_mem_iface",
+> +				      "rbbmtimer",
+> +				      "alwayson";
+> +			power-domains = <&gcc OXILI_GX_GDSC>;
+> +
+> +			iommus = <&gpu_iommu 0>;
+> +			operating-points-v2 = <&gpu_opp_table>;
+> +
+> +			#cooling-cells = <2>;
+> +
+> +			status = "disabled";
+> +
+> +			zap-shader {
+> +				memory-region = <&zap_shader_region>;
+> +			};
+> +
+> +			gpu_opp_table: opp-table {
+> +				compatible = "operating-points-v2";
+> +
+> +				opp-19200000 {
+> +					opp-hz = /bits/ 64 <19200000>;
+> +					opp-supported-hw = <0xff>;
+> +					required-opps = <&rpmpd_opp_min_svs>;
+> +				};
 
-And align these
+If you remove all OPPs but this one, can the GPU still spit out pixels?
 
 Konrad
