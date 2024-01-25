@@ -1,91 +1,144 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A72B13AA3A
-	for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 22:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BE8130E3C
+	for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 22:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706220824; cv=none; b=Pc0RamxS0JQbm+E2aCw8xm0K7O8NOXOfKKJJJjPDR7K3Te6TfszthpJ5mscpocnkfsM0/JMO59qw/E71mVosouWHXiHXexQOzGRo9K8Qol+p2ejsXdLi7p+fCI4DbEBYZagXOy2Fp+4BR0UKTcxaDPiouJbjhdW0+hNiXglsftE=
+	t=1706221504; cv=none; b=VVhYGAnk45EYgahL3ODvVNb3UP3wEZ9zpHPjzBZebvyGk42CFn6SDyvLWUCp83T+3IHBHaSio5rZy6Ra1DPOoq+zMMqPUeU9lebin0CFUEIXO9RTNvD4O2jTBc164WHwsmHepjxunC2W8wA/kW712SFqxXYxWok/etK4f9T/57M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706220824; c=relaxed/simple;
-	bh=/q+OKPTvjfhtwgZQ3LtD4ypTdtx/UFBmU0i1AagUJwU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=du94KN9pexieoVFfRqz2tA6rf71efLOb6IgZEL1aLsVJUORY0khRNf1Nmt8uWpn2sWMaHlyGIpwL/tFA8fcpz0hue9B+54FrsQLCwHVrgpGHFjgRu0odENjdSrUn0QXXNOuiHN/Ts2oqyGekgXeSef/O0Zj8UHHz+iSc02cSKdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bW2gQW2s; arc=none smtp.client-ip=209.85.128.173
+	s=arc-20240116; t=1706221504; c=relaxed/simple;
+	bh=ZG1tB5kx8b26egBLx0eNurCR3uXvicaFKUPIGtwPFFM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iksvpNlpbyFM+l/fGRMOCoe4obiwmB5qtWYmeOSEB8oQ/bqywogKTR7Db65Gs8BioTPSCnsFp/J3XggaI0VoSzXV03ltdstB9tWmIwgPEA3QxlA1ReSvvTU6s6Ikkk24g6dM90x419RX8zglhKpedsqlRzy4wu62PRhovhw2IXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OzAIjlk7; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bW2gQW2s"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-5f2d4aaa2fdso74978577b3.1
-        for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 14:13:42 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OzAIjlk7"
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-50eac018059so9987023e87.0
+        for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 14:25:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706220821; x=1706825621; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=slwtZcSfd5oU0OLpt8FDjn7MWT/cYH2TJp6qwy9HSCY=;
-        b=bW2gQW2sQmAslc3/bpTtAV5QqH6TAAxFQ7V9JEk58Cq7AkNeKTYBKSir+YX4kZvBfL
-         JICtdNL2fOWOOe43hSPVvdmWUjPzsHfuXp08B+scFUSFVk/p9Q41rvQHt7GoTTgfk8kS
-         XtVDn8RZ5tbcQsqmZK2/HLNXVhib5iEpvoArs85b/PC407wLmc2QmOPMllWxzqgkHrAZ
-         SnoIVQXKpw4KUtAEJP1sEjtPa4+LjnxKltA2WvH9MIqae7ytMawnFPt2olm/H0Giz+2X
-         PMH1u87jn0KiQWKtpXmp7jXnrrwYINDo+RDJVUQMi4Xb5fx1INXPKEgWvASiEPRpSKI+
-         6mfQ==
+        d=linaro.org; s=google; t=1706221501; x=1706826301; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PnHxRA6UeYz2yws2MprKM/M5YmL3to/A8lLiCFE7s+Q=;
+        b=OzAIjlk7jfjD6FRi/YJ4ePwplGe/0TWSyYhMER5ux8oOt6G/fmlWk+0mVHQx1FAxOS
+         P/sa91gCQYc88VGuvDMewTgcFWtLT4TZqyOAvZGo/1OOgQhVy94RHa9s2oxC4MYR8pLt
+         IdPw3Qmnqh3ts3jWSKOV6fP3AqgVHTz0TGY4g6ZFoh9qLvBJBhcCV99xfUT7Hl5RiYxv
+         1YALPrLfPnz5yr2vzlNTRnW16TYzYk4i9OL72KaGaLNIqS2+cIMUR0qCB8RYiZplGNTp
+         7Y6NfyujYAM7c1MuUINZbVBWYbimTdZtKJrNjpZJmKE461uacss0gLtdhmKcLKsDIRKz
+         eYyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706220821; x=1706825621;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=slwtZcSfd5oU0OLpt8FDjn7MWT/cYH2TJp6qwy9HSCY=;
-        b=fUpFIZZwKmC0BlS0aVtsY5dQxK2w3V+EiS8CGJt3WbjX68bHIxpxTUZCr5FWfL4Tf9
-         s4oEO7ycqF9vhtAXPJNQomcjrdl3DN/xbveDM2I6IjjRr30CqUtfZ+fElAmMP0JRdbUf
-         /2dR1c9SB9I3zr29x2LKyHVAnHIOJSAa6gUDv2s8noOrAyTtxbgkW8KLnBqr1+2tv50R
-         k4b3wuof6dHo3PQ8gIDGjHcFaiTz4ic8C9hqeTISuaICs1kyTdOe5zAiqzRqK1HKbtoQ
-         T9XO7/SSLHSVBy4y0dgOzuiP1Yz5VG5Wm8+0alQuIFns2hE5YtJKFmjUFb5voXGrHxKa
-         GCqw==
-X-Gm-Message-State: AOJu0Yx+ccY0KxThN1uuoOpV9oWXLFU/pCp7237ZaewK7ePDJbo6GKUf
-	5AvqAhVSz3+cbV1c1XLXbdzEIna4+TZDztd3HmvW27Cs1D3PZldWrTEKiHfc0RzvAYN/n8ikgOM
-	Kzj5uHFe9+wkst7SUuvUcVOv+woVoy7hs9P0l/A==
-X-Google-Smtp-Source: AGHT+IE3TWyGHNGHsG2xqF2JXCIF6aVnGmnqe4/3CyA3myFBwqZCxjCHe2OS/OaFjyPxVBpRCKQb3m3/ij+f63iLZtk=
-X-Received: by 2002:a81:c441:0:b0:5ff:7cc9:1691 with SMTP id
- s1-20020a81c441000000b005ff7cc91691mr475647ywj.70.1706220821421; Thu, 25 Jan
- 2024 14:13:41 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706221501; x=1706826301;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PnHxRA6UeYz2yws2MprKM/M5YmL3to/A8lLiCFE7s+Q=;
+        b=DrmaYFVvvE0LfYl6O7EUl4vD+yZBfxpHiOfp8U60DHFgoZgP3d990DQSXic29Pn7uz
+         twLI77kb/0WB+gYUFG1jgClFH3R/CCj1j/rHZqu2zxdsTpSFo7ixmh/DPyVkiZLRsqK3
+         1Lq3To3i3KLTrStpTdr7mLwV/R5IqGImaQzCRNU6RsQs0Qf71vfAl/95xCuJX4+YW3Sk
+         NSZWYsWx5r+UwIwhPEbtAQ3zZzaKugJ231pITuBKGroxFH3vHbNdulyzGSr9lPwCJAyd
+         2Gjt7RcW9vImB1fxL7B4liODnDoF1gjU/eEKwJB2erystTJdnnJb/LKtL+KRkRJygFcE
+         d5ug==
+X-Gm-Message-State: AOJu0Yzv9wXZzB/C4DFZ5ZULkfmdqAtBRrHXu3q9gDynnWs1BwDc7pna
+	GWNZJaiK1jRH6IYnc5rczk2OpShA57VWu4M5fe8tnlEiYM2vOe1wE06SpBPJOUs=
+X-Google-Smtp-Source: AGHT+IHFHx1hqcIW+TTLcRLrBkrqSvADlhOQQRVbxmAJZZ0FiUTvCtUwZug1+XEzJ3XZFOgWAvpNrQ==
+X-Received: by 2002:ac2:5ded:0:b0:510:171a:40c4 with SMTP id z13-20020ac25ded000000b00510171a40c4mr306346lfq.6.1706221500675;
+        Thu, 25 Jan 2024 14:25:00 -0800 (PST)
+Received: from [10.10.15.130] ([192.130.178.91])
+        by smtp.gmail.com with ESMTPSA id bi28-20020a0565120e9c00b00510220e251csm111794lfb.47.2024.01.25.14.24.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Jan 2024 14:25:00 -0800 (PST)
+Message-ID: <d576e655-5d00-44ff-9405-0fceaa2d3935@linaro.org>
+Date: Fri, 26 Jan 2024 00:24:59 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240125-msm8953-mdss-reset-v2-0-fd7824559426@z3ntu.xyz> <20240125-msm8953-mdss-reset-v2-2-fd7824559426@z3ntu.xyz>
-In-Reply-To: <20240125-msm8953-mdss-reset-v2-2-fd7824559426@z3ntu.xyz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 1/2] arm64: dts: qcom: msm8953: Add GPU IOMMU
+Content-Language: en-GB
+To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Vladimir Lypak <vladimir.lypak@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240125-msm8953-gpu-v1-0-f6493a5951f3@z3ntu.xyz>
+ <20240125-msm8953-gpu-v1-1-f6493a5951f3@z3ntu.xyz>
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Fri, 26 Jan 2024 00:13:30 +0200
-Message-ID: <CAA8EJpqb_FFUzyGR2SYH7wwrDCrC8Wy7QcUFyJgHqAvx42Vgfw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] clk: qcom: gcc-msm8953: add more resets
-To: Luca Weiss <luca@z3ntu.xyz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Vladimir Lypak <vladimir.lypak@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20240125-msm8953-gpu-v1-1-f6493a5951f3@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, 25 Jan 2024 at 23:36, Luca Weiss <luca@z3ntu.xyz> wrote:
->
+On 25/01/2024 23:56, Luca Weiss wrote:
 > From: Vladimir Lypak <vladimir.lypak@gmail.com>
->
-> Add new entries in the gcc driver for some more resets found on MSM8953.
->
+> 
+> Add the IOMMU used for the GPU on MSM8953.
+> 
 > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-> [luca: expand commit message, move entry, add more entries]
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
->  drivers/clk/qcom/gcc-msm8953.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>   arch/arm64/boot/dts/qcom/msm8953.dtsi | 31 +++++++++++++++++++++++++++++++
+>   1 file changed, 31 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> index dcb5c98b793c..91d083871ab0 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
+> @@ -1046,6 +1046,37 @@ mdss_dsi1_phy: phy@1a96400 {
+>   			};
+>   		};
+>   
+> +		gpu_iommu: iommu@1c48000 {
+
+Nit: most of the platforms use the adreno_smmu label. But maybe the 
+msm-iommu vs arm-smmu makes difference here.
+
+Nevertheless:
 
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
+> +			compatible = "qcom,msm8953-iommu", "qcom,msm-iommu-v2";
+> +			ranges = <0 0x01c48000 0x8000>;
+> +
+> +			clocks = <&gcc GCC_OXILI_AHB_CLK>,
+> +				 <&gcc GCC_BIMC_GFX_CLK>;
+> +			clock-names = "iface", "bus";
+> +
+> +			power-domains = <&gcc OXILI_CX_GDSC>;
+> +
+> +			qcom,iommu-secure-id = <18>;
+> +
+> +			#address-cells = <1>;
+> +			#iommu-cells = <1>;
+> +			#size-cells = <1>;
+> +
+> +			/* gfx3d_user */
+> +			iommu-ctx@0 {
+> +				compatible = "qcom,msm-iommu-v2-ns";
+> +				reg = <0x0000 0x1000>;
+> +				interrupts = <GIC_SPI 225 IRQ_TYPE_LEVEL_HIGH>;
+> +			};
+> +
+> +			/* gfx3d_secure */
+> +			iommu-ctx@2000 {
+> +				compatible = "qcom,msm-iommu-v2-sec";
+> +				reg = <0x2000 0x1000>;
+> +				interrupts = <GIC_SPI 233 IRQ_TYPE_LEVEL_HIGH>;
+> +			};
+> +		};
+> +
+>   		apps_iommu: iommu@1e20000 {
+>   			compatible = "qcom,msm8953-iommu", "qcom,msm-iommu-v1";
+>   			ranges = <0 0x01e20000 0x20000>;
+> 
 
 -- 
 With best wishes
 Dmitry
+
