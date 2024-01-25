@@ -1,134 +1,108 @@
-Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D42745DD;
-	Thu, 25 Jan 2024 15:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DB6129A89
+	for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 16:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706196730; cv=none; b=d1gRvW6A0MliNVNyp9K9QNkaMiAJa+pqc0zNUOu7GPbyS0UMxepqqx5J7AqI3na/SP5uHUKipXpL4DMck8HFukH8K/N3HPB2aJh20/eJD5Jbj6ptQee9CkDrvW7f1J0N+HFuEuthztXW/5FbWckdDO6LTwRuKkSTdmDMScHldL8=
+	t=1706200214; cv=none; b=gdv/vjKavqZiD9HSTV8eXd+eVQ4ZOh/e2whWFHp4+lQxbgCRlh25SX+FcxI8fM2Xq1E5SmS9ilywHqDjY6MY/WRa1+iFWTbydDLp3lQcAvUcfGEij9PWSZkDqfZyWqc6lNr+0Qn4LONBjFs28W2RW2I8Jm++B4txQ97MzkVTmKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706196730; c=relaxed/simple;
-	bh=LJvKeqWnmJS9YgQYzDhJWoFRmXHdCPe0hkHgpXGDTkE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kFEQ1NvQBaRiLxGfhjnQPV4fUhO9DtlGOlnP03noCydS9WsA7B6WG7lkSEeuaM/1tFf0jMF0SsCoMQYQLTAuuaY6nI/AqUUfWgNSJpobfkG+uq2FqYxpzYG9bualf7apwIYe6Dvh6DvayyroIfYdEUMPWJ/wwXgZpiwPkPKuunI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
-Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-	by mx.skole.hr (mx.skole.hr) with ESMTP id A4F1084FE8;
-	Thu, 25 Jan 2024 16:31:59 +0100 (CET)
-From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Date: Thu, 25 Jan 2024 16:30:55 +0100
-Subject: [PATCH v5 3/4] dt-bindings: backlight: add Kinetic KTD2801 binding
+	s=arc-20240116; t=1706200214; c=relaxed/simple;
+	bh=TR6aGTPM9t5wwOjuYIaOf09pZ339d/Sdvarehyw+RI4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MJU0bVHNV//CxsZC8XKMwfs9YApraFcll5fwATxct3H9SHnbnRHW/yYAwUSIbe6xaFnJPsXSDbwCChoAG2wZp+2FgD7Ali0loeHT4u2vRQyLSkohKJthmayGEgduwNNQYXn/gJBbOEQ+43hVU6gZVHv9axAiTEA/6xKw4uWdbWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hELJsJsC; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hELJsJsC"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5100cb64e7dso3416970e87.0
+        for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 08:30:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706200211; x=1706805011; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=L9ORfXvOUXdfPDPAdOO8WW7EHE91PZVtFj2Y6hJfxfM=;
+        b=hELJsJsC4b2TK7Ce2bWZTJ59anlKiW4dm8aRfyASmVbDHvs1g4WrdzRGo5UYrdTMTg
+         9wbSAIxiaqAGoxtm5NL5vmFvMEedMAsVmv70go6vgU/W7+EPtpkxU4xC/A0mGCCYHXIy
+         cZVpPy4QzAqHlpdm3DhOC57j2DW6JEcqz94bpjYH43M8Ms4Luzel4dLKzKcwAaAFRs6Z
+         IBdYdTxcBIptdGWnIOJ6+cmiZ/cQBKnpnR9IyCGXh4NHNpZk5zHdjHw/cVXr4U3eSi+B
+         aBhC/8Cbyu2VZnvM6tB+riRyplmIaTw7qgRgNnC3QKjrpFH7Fmd0AutixRMwz3uTlcPg
+         RpTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706200211; x=1706805011;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=L9ORfXvOUXdfPDPAdOO8WW7EHE91PZVtFj2Y6hJfxfM=;
+        b=QTxIXIbeoQSQnssWdBu0JqZmmumClFsIvNIx9LBe5TDB3Xz/ajF/m0v+3zdYHEiCND
+         ZKvymjC0aIYQz/XXSoJ9UeRHQ6ckuJhvdtN05kUFQ/GkJ81dbWAEcKnYTMXAUBCte7mv
+         9GCAPXrplSmJNu4QCoS9IjDMfLUK6BCATemaMg9WHGsCqYamB/tzNND1CRlOR8k2llZu
+         B2rCHgcix/+PhGqRHgF/hOlcQSrCGA+HBdvVPO/3gfErgVOiZAqSymrlcHtwM5qfBKVw
+         hKIoDaBWSowMMtyqx3D8YFGcddRmfQxV1hQUDJnxoT4S3npoq/nazTP3oGZRQaxCstQV
+         tGDw==
+X-Gm-Message-State: AOJu0YyYF8OCMf/auT8dQr+b/eh3Zk53lgJrVkT9G+DYmXJbd6IkHIQJ
+	pocyGvo+OUEcvsKX9ZlEH1MrztU4ZnvOB41fM8W2Wr1ObsRZ8uT8GRvSwxM08is=
+X-Google-Smtp-Source: AGHT+IGab5rWCzYSyVXGFlz/nGkyGkJHUkwn1MhWbiuyzkrOOqOp2GzA20uUEh9GMufP45z0IUFQ9A==
+X-Received: by 2002:ac2:428a:0:b0:510:c8a:d496 with SMTP id m10-20020ac2428a000000b005100c8ad496mr18520lfh.41.1706200210713;
+        Thu, 25 Jan 2024 08:30:10 -0800 (PST)
+Received: from [172.30.205.155] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
+        by smtp.gmail.com with ESMTPSA id h4-20020a056512350400b0050eebe0b7d2sm2931938lfs.183.2024.01.25.08.30.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Jan 2024 08:30:10 -0800 (PST)
+Message-ID: <da281c50-9dcb-46d6-8cb1-ef4662e24a9e@linaro.org>
+Date: Thu, 25 Jan 2024 17:30:08 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: qcom: sm6350: Add tsens thermal zones
+Content-Language: en-US
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240124-sm6350-tsens-v1-1-d37ec82140af@fairphone.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240124-sm6350-tsens-v1-1-d37ec82140af@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240125-ktd2801-v5-3-e22da232a825@skole.hr>
-References: <20240125-ktd2801-v5-0-e22da232a825@skole.hr>
-In-Reply-To: <20240125-ktd2801-v5-0-e22da232a825@skole.hr>
-To: Lee Jones <lee@kernel.org>, 
- Daniel Thompson <daniel.thompson@linaro.org>, 
- Jingoo Han <jingoohan1@gmail.com>, Pavel Machek <pavel@ucw.cz>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Helge Deller <deller@gmx.de>, 
- Linus Walleij <linus.walleij@linaro.org>
-Cc: Karel Balej <balejk@matfyz.cz>, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2000;
- i=duje.mihanovic@skole.hr; h=from:subject:message-id;
- bh=LJvKeqWnmJS9YgQYzDhJWoFRmXHdCPe0hkHgpXGDTkE=;
- b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlsn7DgswBUZqnKT+8/fcnn9Hru+hah1ioow/Af
- vXnD4GbKIyJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZbJ+wwAKCRCaEZ6wQi2W
- 4R0BD/kB/1Eg1ozHsKPtWBSWi3LiCM+qxnj2ZuVCT6/OhEONtnJGsnXjTe5GRZFMElbjnKU5bUK
- 0Bvew1WXJ2SPqoef0wAmJhXuSVbOVKMWVjaeLDDv8lWY3saxQW6c3spevVPoSDh2devRw3Oa6tC
- o/3JKl6L634njze/H8v+qsMth8jD54PnN9MekSfP0Mf4YmIaeilDxgRqcd5nL5narH0J76+EONz
- Y4eYXGyItA2v09zBCe0SURu+zci/Cga/yw1/OdIzRPm4EKNc8hy7g9xfxDuTjMAHmk98arzFOdu
- KGbzB5FPhpCYPZjmEbQQEYKVH3iaOckm/P6AzFqaDcu/P5khVBCeq5jcY/LH99vaVEs0EcW4W4m
- XxCkQB6hLLns3wqKaeqdHB7ORHYsMai1ppkTki1AFQWoS+WKkD0TE7SBYb9SMobDimgK3Hi0uZw
- xuMteBoc7ImL6F5aVB2ZUHVXdOIfsav9JlPS9jmNMW11P0ZrilAa3jbTNhCNVM7PqwudogIVLpz
- TtoufeERwAsfbxVUj6MskA041zUuwdfn8xat2aJe01vop6ItZ6G+KoXcWxe26++jXIHD3lwIPQ6
- h8ztWDgrcVG4zq+m6lDYEOdKUpwRXtRxaR9McbnpA6r28wNl8BldfgJy342B08zvwQ7FgQ5xTig
- 3cAbMMec7AzUZ6w==
-X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
- fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
-
-KTD2801 is a LED backlight driver IC found in samsung,coreprimevelte.
-The brightness can be set using PWM or the ExpressWire protocol. Add
-a DT binding for the KTD2801.
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
----
- .../bindings/leds/backlight/kinetic,ktd2801.yaml   | 46 ++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/leds/backlight/kinetic,ktd2801.yaml b/Documentation/devicetree/bindings/leds/backlight/kinetic,ktd2801.yaml
-new file mode 100644
-index 000000000000..b005065e0f48
---- /dev/null
-+++ b/Documentation/devicetree/bindings/leds/backlight/kinetic,ktd2801.yaml
-@@ -0,0 +1,46 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/leds/backlight/kinetic,ktd2801.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Kinetic Technologies KTD2801 one-wire backlight
-+
-+maintainers:
-+  - Duje Mihanović <duje.mihanovic@skole.hr>
-+
-+description: |
-+  The Kinetic Technologies KTD2801 is a LED backlight driver controlled
-+  by a single GPIO line. The driver can be controlled with a PWM signal
-+  or by pulsing the GPIO line to set the backlight level. This is called
-+  "ExpressWire".
-+
-+allOf:
-+  - $ref: common.yaml#
-+
-+properties:
-+  compatible:
-+    const: kinetic,ktd2801
-+
-+  ctrl-gpios:
-+    maxItems: 1
-+
-+  default-brightness: true
-+  max-brightness: true
-+
-+required:
-+  - compatible
-+  - ctrl-gpios
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+
-+    backlight {
-+        compatible = "kinetic,ktd2801";
-+        ctrl-gpios = <&gpio 97 GPIO_ACTIVE_HIGH>;
-+        max-brightness = <210>;
-+        default-brightness = <100>;
-+    };
-
--- 
-2.43.0
 
 
+
+On 1/24/24 16:31, Luca Weiss wrote:
+> Add the definitions for the various thermal zones found on the SM6350
+> SoC. Hooking up GPU and CPU cooling can limit the clock speeds there to
+> reduce the temperature again to good levels.
+> 
+> Most thermal zones only have one critical temperature configured at
+> 125°C which can be mostly considered a placeholder until those zones can
+> be hooked up to cooling.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+
+[...]
+
+> +		cpuss0-thermal {
+> +			polling-delay-passive = <0>;
+> +			polling-delay = <0>;
+> +
+> +			thermal-sensors = <&tsens0 7>;
+
+cpuss0-thermal and cpuss1-thermal are very likely the sensors for
+cluster0/1, can you test that out, perhaps with corepinning+stress?
+
+You can then assign multiple cpu cooling devices.
+
+LGTM otherwise!
+
+
+Konrad
