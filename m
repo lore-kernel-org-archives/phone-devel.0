@@ -1,122 +1,61 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0EC11CB9
-	for <phone-devel@vger.kernel.org>; Fri, 26 Jan 2024 07:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2362C1534F3;
+	Fri, 26 Jan 2024 08:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706255368; cv=none; b=lfKHidGHdWkQXpq5o7xAWsuQOXUdg61t/vHE9Spqh+JgEQ/Wl21+2TCCgYt2jrWPMr+JVUaW++h4b3GZvUSXPl5sX4s88H2b00SlL8N3Z6G5gVyxAW0ByQ7wjLM5K9sbLSa+mCUMj88XWkoLy2hHq1hDc7si9Q+pDK4gxFfOzNU=
+	t=1706259557; cv=none; b=nUpsdBc5Sd9D06245Hv7Cv/pclsYQKG/B1PsqctuG74U9jQS60DVOMwo2ZztKy6NToHFXdRUOy1jwlTMgED/KEVLG1a5XtfE7gHO9uMdis0cGwsaDo2HH3lPWi5oPv+bpCGtrLwvUxulxQALrpFZvpqMfT/PyXL27YRvQMyfdiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706255368; c=relaxed/simple;
-	bh=X2bIO9XhEirZtwD9+aodGW5ANv8mY0gQ8ZSBilmbmQw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=LKogRIKvyZwYCt8/5H0+yr4aD0/FvpRYUZafktjaYhyhcJTcMJXQWWd6c//uVQHuYbrALZu2I2ioVDEtnBCeWXgV0fGmFv9bdXXVRlk0m1KYocnYmUrLWijhXm5tULm2DKgHcxc/522rFeMgV+0YYtcwO1pAN0+V69Rieqh/LIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Xg8LrfSr; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Xg8LrfSr"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-40eac352733so4090095e9.0
-        for <phone-devel@vger.kernel.org>; Thu, 25 Jan 2024 23:49:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1706255364; x=1706860164; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kMLN7Rz7MGbuTKXXFDmPa4TaxPrxTUAEjlgxCmYMMqE=;
-        b=Xg8LrfSrTfG+6F9AcL2BEdD+PT6M/m6/NLrgDsrXNzieaZdMEoh28ikO6laScNDyTU
-         JpIa+sq5l4WtC+5bcJLahUy2bJgc50mPzlEuJ60cxFujbqVXN3DWn7WBSVvicN7dlbsV
-         c6zTl3b47JYmnLt3zDz6T2mhCPtlmyzkCvghJzmUWMxkdsKQ6LcBOJeWXp33+6c222BC
-         TV4IMvL15PNDHAlstro6zZDMm1iRxrwFYB4X+2NzmaJIowsYcFz0tHSfbvQ7Pwi00ZYd
-         SYCQykrjxNHNfbfRUQW5+bKGvE2GypDHmfxkLjIyJKcwC9C5iNoHhk3eTk5lGISDKXsR
-         fvig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706255364; x=1706860164;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=kMLN7Rz7MGbuTKXXFDmPa4TaxPrxTUAEjlgxCmYMMqE=;
-        b=E2lvEXPIdEkzowjbZ6mG8g7NvqiqbKZ4LbzyyfWHhWu9O0tRSa/DJFplBO3qA4IOgb
-         wtKQRoAiNwhFBqRHcqoBM9bYwS141UXN4x45aqzpnUGCAHvoYThvK32POMI3XR+dRlx6
-         X0trYZkEtcVAfLRoq47xOd56zgSE8rl6oJBmdJTDO1pwlnqjf+iS6O3PEnnd7wtoapjA
-         JZKx1trSW06UXcLG+7Q3yHFdEL6cOOwiIBtJpzTnPjjzfVV9YqrNqhjfo/JZTEAtluAd
-         XbNmBFnAch4z/7aeBnv11w+ZbCpa4DvLSvP61px3rlOBFXyP+hR469zS9I3bfJXdwAtx
-         nqXA==
-X-Gm-Message-State: AOJu0Yyhw/rUP50mBy3L6Z0K1TEJHkJ6bxVn3l+6QzdBZ8O+yJBGwi4d
-	Kg1Wmp6sYcYm1PunUm9zMbRcuIWQUD8Icpg8DVp5vfGZu8Jx6JzWjDfNGlnzsVkBU1766PmVOKd
-	E
-X-Google-Smtp-Source: AGHT+IFY+1BBYpedT+Me5GvLK2bkjb5tnsE8ri1rpr97wJTETbTwBLEoVpQ9JMBcAskBjVDXMlocoA==
-X-Received: by 2002:a05:600c:1913:b0:40e:b0e8:ee96 with SMTP id j19-20020a05600c191300b0040eb0e8ee96mr547389wmq.122.1706255364640;
-        Thu, 25 Jan 2024 23:49:24 -0800 (PST)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id tb21-20020a1709078b9500b00a3025e05665sm350745ejc.14.2024.01.25.23.49.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jan 2024 23:49:24 -0800 (PST)
+	s=arc-20240116; t=1706259557; c=relaxed/simple;
+	bh=D8VbU5mjeZe3vkqTBVXQtA/B1a+u/vrIoT2ylxQ8Vn0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dFzkhtsODpLPDqbtJBeKwFDcFqZkUc/Zttt+OUAJk26xGDlGxeDm+oZZRvOiSLVMHwJoueJa2vDufu9M/w6aVpUsDcRwEN+gNplBsW/MXNR45F2sKqKMsXXRgp3vwof3t83ES8qWlG0zKeZfI68c8tviwBi0tP0GGWpcsKH7oSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+	id 1rTI3D-006Eay-LZ; Fri, 26 Jan 2024 16:59:04 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 26 Jan 2024 16:59:16 +0800
+Date: Fri, 26 Jan 2024 16:59:16 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Thara Gopinath <thara.gopinath@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: qcom-qce: Add compatible for SM6350
+Message-ID: <ZbN0ZBggHzdM12BD@gondor.apana.org.au>
+References: <20240105-sm6350-qce-v1-0-416e5c7319ac@fairphone.com>
+ <20240105-sm6350-qce-v1-1-416e5c7319ac@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 26 Jan 2024 08:49:24 +0100
-Message-Id: <CYOH1P74EWQ0.5TZX1F88C8XZ@fairphone.com>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] arm64: dts: qcom: sm6350: Add tsens thermal zones
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@linaro.org>, "Bjorn Andersson"
- <andersson@kernel.org>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof
- Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
- <conor+dt@kernel.org>
-X-Mailer: aerc 0.15.2
-References: <20240124-sm6350-tsens-v1-1-d37ec82140af@fairphone.com>
- <da281c50-9dcb-46d6-8cb1-ef4662e24a9e@linaro.org>
-In-Reply-To: <da281c50-9dcb-46d6-8cb1-ef4662e24a9e@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240105-sm6350-qce-v1-1-416e5c7319ac@fairphone.com>
 
-On Thu Jan 25, 2024 at 5:30 PM CET, Konrad Dybcio wrote:
->
->
-> On 1/24/24 16:31, Luca Weiss wrote:
-> > Add the definitions for the various thermal zones found on the SM6350
-> > SoC. Hooking up GPU and CPU cooling can limit the clock speeds there to
-> > reduce the temperature again to good levels.
-> >=20
-> > Most thermal zones only have one critical temperature configured at
-> > 125=C2=B0C which can be mostly considered a placeholder until those zon=
-es can
-> > be hooked up to cooling.
-> >=20
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
->
-> [...]
->
-> > +		cpuss0-thermal {
-> > +			polling-delay-passive =3D <0>;
-> > +			polling-delay =3D <0>;
-> > +
-> > +			thermal-sensors =3D <&tsens0 7>;
->
-> cpuss0-thermal and cpuss1-thermal are very likely the sensors for
-> cluster0/1, can you test that out, perhaps with corepinning+stress?
+On Fri, Jan 05, 2024 at 05:15:43PM +0100, Luca Weiss wrote:
+> Add a compatible for the crypto block found on the SM6350 SoC.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  Documentation/devicetree/bindings/crypto/qcom-qce.yaml | 1 +
+>  1 file changed, 1 insertion(+)
 
-Not really, according to my docs the CPUs aren't placed symmetrically on
-the SoC and cpuss0 and cpuss1 are just somewhere inbetween all of the 6x
-LITTLE cores, the 2x big cores are a little bit further away. So apart
-from hooking up all of the cores for cooling for cpuss0 & cpuss1 I don't
-have a great idea what to do here. Shall I do that?
-
-Regards
-Luca
-
-
-> You can then assign multiple cpu cooling devices.
->
-> LGTM otherwise!
->
->
-> Konrad
-
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
