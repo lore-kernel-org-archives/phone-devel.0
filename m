@@ -1,149 +1,135 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50E692D022;
-	Sat, 27 Jan 2024 17:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28871E86B;
+	Sat, 27 Jan 2024 22:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706376768; cv=none; b=UDDnmtkuP9vXfrTm9lT6jrZqsIXHe6Pb5e6KJJ4vPDkhh99t5tFOAFHbI9ThVtLZNtEFRlkUhpPVQopSD4wwa8psq6LKIeR0qoBDY9QlrWhPgXE/YxwOT8fxfcHHzbVss7GMqYg5NiT2NtVloT93AP/sQMsEP1aJw8XuEgfbYhc=
+	t=1706394592; cv=none; b=NaboI4jESvHhSIRGX96R34KE7Ako2jYQdc8NK3jZQbQlCgnKiWjdolfydG9Sjjjb1wBFLFrCI1PdZnNOh9HUhVOb6DgJpuvV+FUD/bbvMpzNj6sgVej1GR8W3uZMiPll4uO9MVzJ2PJ1H1UlyTI5r0fA1J+G205j8HnSX7TUr9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706376768; c=relaxed/simple;
-	bh=p7QvBnitX24maA169i0Q3vHfx6Dzrw5UMf1h0W8pJdQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rcYHpJydKEpVqunJQRZseGyU+fslGt1nQg9fUktGFniFdPNVVXzkg0Zm0395H4UXwJSP7gbtIGv/5wUE+MPHLx007PaUMutq/rSGRIYbPRlwPSoeAIDrXZtWjMDpnc4R1h7BvJWKA6ViVkddgHcSHYPgy8zAx9WhgESJVRckPhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=cJ25gUiG; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
+	s=arc-20240116; t=1706394592; c=relaxed/simple;
+	bh=iDQONVVSXY8ByWGgcnbg8EXM8f5kTgTJCLvawcFZRb8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uECBEcoVeiPIY1bJAg30L+8+PlMO+orcFwcplqDGXn9rQIN+CuBV9Fw6slfKoHWZXR0vW2JCz1BvTMHQ1rc/QL2tuxewOAoyAHW2OOOWotupHbymuoim1xgW4B6k/wjSdLaZrD3bSbtf0JY2b/WlQlacq7CSBbF3CkM2DbK/4fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f/q8Np7f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="cJ25gUiG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1706376764; bh=p7QvBnitX24maA169i0Q3vHfx6Dzrw5UMf1h0W8pJdQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cJ25gUiGIpLu6oj/VaeYRe1P1HnzHdSTbOYG+kjdv23WniqBSHs+HlPi1tZ4UTDlQ
-	 L/Xw0qZa4Ljb6CZgXw/nnPG4VEGDoUF09Lm9PzcfT999S4jXgQ72oHxeJXyKP1m1bM
-	 zSTQF6ZRs3pWtSzHnxgDC1rGk8+5iY9QuYjByLiA=
-From: Luca Weiss <luca@z3ntu.xyz>
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Vladimir Lypak <vladimir.lypak@gmail.com>,
- Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC 2/2] arm64: dts: qcom: msm8953: Add GPU
-Date: Sat, 27 Jan 2024 18:32:43 +0100
-Message-ID: <4539846.LvFx2qVVIh@z3ntu.xyz>
-In-Reply-To: <c58c5897-b3f0-4449-a5b1-df10b117733c@linaro.org>
-References:
- <20240125-msm8953-gpu-v1-0-f6493a5951f3@z3ntu.xyz>
- <20240125-msm8953-gpu-v1-2-f6493a5951f3@z3ntu.xyz>
- <c58c5897-b3f0-4449-a5b1-df10b117733c@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f/q8Np7f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E2EC433F1;
+	Sat, 27 Jan 2024 22:29:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706394591;
+	bh=iDQONVVSXY8ByWGgcnbg8EXM8f5kTgTJCLvawcFZRb8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f/q8Np7ft1P3qO701VRObNR8yiMxVnlqiRdWhxvLOe3vmLkdqxCoefwtKW4bm4S07
+	 6Xz4wdajP7Dpb1A9ZFY3/iaWOi5rBrIxjuZSLOdy6kJTG8/EyE/p1Ue65NemRIvJoS
+	 Y7VPyy2FMFQsiv1fee3uJxdVGSGvNV2BcYn5eJYEvyMNHm80TOy5h9j4deHnLWku6E
+	 a97nhwDgXCq2uk6/fqk6IyPElK0LGJ3uKLiwOsIK+kgBjNut7YVSyWjz3H7f9GS3Nm
+	 z7YEaiP+q10CiRwtUozEoisu04hmc7vCjvVXiK4Nxf37seUbtQyz00kwTwpzqovjYd
+	 2RhbiDz4Gp/aw==
+Date: Sat, 27 Jan 2024 16:29:48 -0600
+From: Bjorn Andersson <andersson@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, 
+	Vikash Garodia <quic_vgarodia@quicinc.com>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+	Andy Gross <agross@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, cros-qcom-dts-watchers@chromium.org, 
+	Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Conor Dooley <conor+dt@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org, linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] arm64: dts: qcom: sc7280: Move video-firmware to
+ chrome-common
+Message-ID: <en2tmgles5xhtffxul7oiqxsut5xkn5w7w7u4h34ygkqrqnksy@sjfkp4tbi55e>
+References: <20231201-sc7280-venus-pas-v3-0-bc132dc5fc30@fairphone.com>
+ <20231201-sc7280-venus-pas-v3-2-bc132dc5fc30@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231201-sc7280-venus-pas-v3-2-bc132dc5fc30@fairphone.com>
 
-On Freitag, 26. J=E4nner 2024 00:50:43 CET Konrad Dybcio wrote:
-> On 1/25/24 22:56, Luca Weiss wrote:
-> > From: Vladimir Lypak <vladimir.lypak@gmail.com>
-> >=20
-> > Add the GPU node for the Adreno 506 found on this family of SoCs. The
-> > clock speeds are a bit different per SoC variant, SDM450 maxes out at
-> > 600MHz while MSM8953 (=3D SDM625) goes up to 650MHz and SDM632 goes up =
-to
-> > 725MHz.
-> >=20
-> > To achieve this, create a new sdm450.dtsi to hold the 600MHz OPP and
-> > use the new dtsi for sdm450-motorola-ali.
-> >=20
-> > Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-> > Co-developed-by: Luca Weiss <luca@z3ntu.xyz>
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> >=20
-> >   arch/arm64/boot/dts/qcom/msm8953.dtsi            | 115
-> >   +++++++++++++++++++++++
-> >   arch/arm64/boot/dts/qcom/sdm450-motorola-ali.dts |   2 +-
-> >   arch/arm64/boot/dts/qcom/sdm450.dtsi             |  14 +++
-> >   arch/arm64/boot/dts/qcom/sdm632.dtsi             |   8 ++
-> >   4 files changed, 138 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> > b/arch/arm64/boot/dts/qcom/msm8953.dtsi index 91d083871ab0..1fe0c0c4fd15
-> > 100644
-> > --- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> > +++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-> > @@ -1046,6 +1046,94 @@ mdss_dsi1_phy: phy@1a96400 {
-> >=20
-> >   			};
-> >   	=09
-> >   		};
-> >=20
-> > +		gpu: gpu@1c00000 {
-> > +			compatible =3D "qcom,adreno-506.0", "qcom,adreno";
-> > +			reg =3D <0x01c00000 0x40000>;
-> > +			reg-names =3D "kgsl_3d0_reg_memory";
-> > +			interrupts =3D <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
-> > +
-> > +			clocks =3D <&gcc GCC_OXILI_GFX3D_CLK>,
-> > +				 <&gcc GCC_OXILI_AHB_CLK>,
-> > +				 <&gcc GCC_BIMC_GFX_CLK>,
-> > +				 <&gcc GCC_BIMC_GPU_CLK>,
-> > +				 <&gcc GCC_OXILI_TIMER_CLK>,
-> > +				 <&gcc GCC_OXILI_AON_CLK>;
-> > +			clock-names =3D "core",
-> > +				      "iface",
-> > +				      "mem_iface",
-> > +				      "alt_mem_iface",
-> > +				      "rbbmtimer",
-> > +				      "alwayson";
-> > +			power-domains =3D <&gcc OXILI_GX_GDSC>;
-> > +
-> > +			iommus =3D <&gpu_iommu 0>;
-> > +			operating-points-v2 =3D <&gpu_opp_table>;
-> > +
-> > +			#cooling-cells =3D <2>;
-> > +
-> > +			status =3D "disabled";
-> > +
-> > +			zap-shader {
-> > +				memory-region =3D <&zap_shader_region>;
-> > +			};
-> > +
-> > +			gpu_opp_table: opp-table {
-> > +				compatible =3D "operating-points-v2";
-> > +
-> > +				opp-19200000 {
-> > +					opp-hz =3D /bits/ 64 <19200000>;
-> > +					opp-supported-hw =3D <0xff>;
-> > +					required-opps =3D <&rpmpd_opp_min_svs>;
-> > +				};
->=20
-> If you remove all OPPs but this one, can the GPU still spit out pixels?
+On Fri, Dec 01, 2023 at 10:33:19AM +0100, Luca Weiss wrote:
+> If the video-firmware node is present, the venus driver assumes we're on
+> a system that doesn't use TZ for starting venus, like on ChromeOS
+> devices.
+> 
+> Move the video-firmware node to chrome-common.dtsi so we can use venus
+> on a non-ChromeOS devices. We also need to move the secure SID 0x2184
+> for iommu since (on some boards) we cannot touch that.
+> 
+> At the same time also disable the venus node by default in the dtsi,
+> like it's done on other SoCs.
+> 
+> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+>  arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi | 11 +++++++++++
+>  arch/arm64/boot/dts/qcom/sc7280.dtsi               |  9 +++------
+>  2 files changed, 14 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+> index 5d462ae14ba1..459ff877df54 100644
+> --- a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+> @@ -104,6 +104,17 @@ &scm {
+>  	dma-coherent;
+>  };
+>  
+> +&venus {
+> +	iommus = <&apps_smmu 0x2180 0x20>,
+> +		 <&apps_smmu 0x2184 0x20>;
+> +
+> +	status = "okay";
+> +
+> +	video-firmware {
+> +		iommus = <&apps_smmu 0x21a2 0x0>;
+> +	};
+> +};
+> +
+>  &watchdog {
+>  	status = "okay";
+>  };
+> diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+> index 326897af117a..0ff9a2484096 100644
+> --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+> @@ -3836,10 +3836,11 @@ venus: video-codec@aa00000 {
+>  					<&mmss_noc MASTER_VIDEO_P0 0 &mc_virt SLAVE_EBI1 0>;
+>  			interconnect-names = "cpu-cfg", "video-mem";
+>  
+> -			iommus = <&apps_smmu 0x2180 0x20>,
+> -				 <&apps_smmu 0x2184 0x20>;
+> +			iommus = <&apps_smmu 0x2180 0x20>;
 
-Yep, phosh is starting and is rendering at a few fps.
+qcom,sc7280-venus expects 2 items here. Please follow up with a patch to
+the binding, if you haven't send one already.
 
-fairphone-fp3:~$ cat /sys/devices/platform/soc@0/1c00000.gpu/devfreq/1c0000=
-0.gpu/min_freq
-19200000
-fairphone-fp3:~$ cat /sys/devices/platform/soc@0/1c00000.gpu/devfreq/1c0000=
-0.gpu/max_freq=20
-19200000
-fairphone-fp3:~$ cat /sys/devices/platform/soc@0/1c00000.gpu/devfreq/1c0000=
-0.gpu/cur_freq=20
-19200000
+Thanks,
+Bjorn
 
-Regards
-Luca
-
->=20
-> Konrad
-
-
-
-
+>  			memory-region = <&video_mem>;
+>  
+> +			status = "disabled";
+> +
+>  			video-decoder {
+>  				compatible = "venus-decoder";
+>  			};
+> @@ -3848,10 +3849,6 @@ video-encoder {
+>  				compatible = "venus-encoder";
+>  			};
+>  
+> -			video-firmware {
+> -				iommus = <&apps_smmu 0x21a2 0x0>;
+> -			};
+> -
+>  			venus_opp_table: opp-table {
+>  				compatible = "operating-points-v2";
+>  
+> 
+> -- 
+> 2.43.0
+> 
