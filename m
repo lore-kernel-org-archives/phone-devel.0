@@ -1,71 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54EB62E84D;
-	Sat, 27 Jan 2024 22:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BF520DC6
+	for <phone-devel@vger.kernel.org>; Sat, 27 Jan 2024 23:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706394895; cv=none; b=tA+HJcGNRyOxkzgSpKLW38JUepiuD9XWlbMfINJSskZON1q2zbYaM+xZ8GS+sIbA/bxbsas3UH8b6J+SAxWCQG4WYnrrkq7ClyVI7ynzmH3ys7FBck2tmFxwJbWMJszTKVcVMjF2xoO9PtzWZMzQVfvsI4SNTqwstKJsu5YN6u8=
+	t=1706398520; cv=none; b=KO5x2mNwwxNoyXzyqbDN49nucL9OgGSxjYhtzTlyhELLVWXStNNLGSX2bgwRw9OAGAYel/XhG5BdUg4z1I5ZKh3vAKO2sPibUHnLB6dOK0kDlXRTEu4BLxsdIwi3ELVLv2EGVT1lffqsDW9/Qsn4zJinePk5uQyumQm/fFp0BVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706394895; c=relaxed/simple;
-	bh=Va2pyw6+6WNloVAgpJk8uSDFDAUvFlJuLNNsaAhpssE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZnMVU2o7/83TtPaxLcqnu4fcy/35Csx3D2HPERVZ8hOYHOsntmE82HwQ6IMFiLGcORKotOopOs0eEzERWRuXV9/XWqiu38V9OnhtuqR4v2KuRp9AWWZN11t3SF6fd8d1dTwl8GC5arXNJxKFCpesxKkKzKqy2adgM9Lzyw5DwLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hg/fdJtq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706398520; c=relaxed/simple;
+	bh=8dcs2TTkHifbaPOo0/++EzaKXk8QckqprO0d5UdvmNM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gd5qCvBILtdTXrdCL1arI0XT0aXnJAmio9ORqXC60TpRjtxB9jFq0r+tu8/H+D57J5/I2hl8tlcJiBQArFKqqHlATYfA/g8QmClJJKYpfUEuwPFuoAoGqk7dQCqDQw6YNs/ourjvhb6vOfFLfygB9O3hVEDbp8gy03Bz43LvhvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cdQGcePf; arc=none smtp.client-ip=209.85.219.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hg/fdJtq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24676C43394;
-	Sat, 27 Jan 2024 22:34:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706394895;
-	bh=Va2pyw6+6WNloVAgpJk8uSDFDAUvFlJuLNNsaAhpssE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hg/fdJtqFaHaVFhksuHUdQDpT7ag7F1mkvjHYq5acVh2Oc2s5jAgoE0pUX7+UWJK3
-	 tjfAOSEAkbPMIZ3Vzls1X+Rf1cPvZ/BozzgOjljOffFyk7ItmP9Y0hrQa8OmNYuMlo
-	 NhX3I942trFhDL9Dnuy1BM2iXUgO92UK1xruo+IAJAALeuBpYXOORLTYbg+TW3sctY
-	 2HAqs/ReadDkT0ZeFa96R3Cptd7B42mU7UnKXxEectXX74Pl/Bn+gLL9FooWStI/8o
-	 iwOS3bbKGwOAFTfKEOMFaHUNYwSleHa2eRYdgWQAo/eSxCKgJhRQgh7UNV4NElyqfv
-	 Rgt8ggO2F4JWQ==
-From: Bjorn Andersson <andersson@kernel.org>
-To: linux-arm-msm@vger.kernel.org,
-	=?UTF-8?q?Matti=20Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Andy Gross <agross@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: qcom: apq8026-samsung-matissewifi: Configure touch keys
-Date: Sat, 27 Jan 2024 16:34:46 -0600
-Message-ID: <170639487716.21016.1561283701156536116.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231204094649.10094-1-matti.lehtimaki@gmail.com>
-References: <20231204094649.10094-1-matti.lehtimaki@gmail.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cdQGcePf"
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-dc6431e6cc5so1086947276.1
+        for <phone-devel@vger.kernel.org>; Sat, 27 Jan 2024 15:35:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706398517; x=1707003317; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8dcs2TTkHifbaPOo0/++EzaKXk8QckqprO0d5UdvmNM=;
+        b=cdQGcePfn+hWNuLbjso96g32qo8/g2TeSlD6FwjRe2t4wKn30YYAr8TA+t7sdi2h6h
+         rt1dmwhPWR7FJWmyBlGgnHgCzDY5RJBuAKgbJQjSv/5Tnhk2JaEY2/5M6SBuPVkiZax5
+         frvV24EabdjJZYpVIr3aR1pVC2NUurehT77c4U+iTyq5AFlG9LB6DiKsVVTo+8Dg/qYs
+         hCm3Ei3Nx9vT/y+2gAVKJMR73CCiRR9snspWLrQudQ+9IX4WGFjZQDg9VaHN4XhgBuMI
+         yQ8cXYx5+RmH+ig3geK6pJRoqq5WXNTYT6ymKi3o4ga6imFCtZovEKis2F/hu2L4u7rj
+         yr0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706398517; x=1707003317;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8dcs2TTkHifbaPOo0/++EzaKXk8QckqprO0d5UdvmNM=;
+        b=rHDROiZo5xHBaw8p2kuR8s6AJYkp8ea18iOJgegbJsgUROKJfd/dLGt3oLiCMgy1Kw
+         JVDfV2BU6b9QcPeHEU95SyxdEu7u/OEcTtfAKif1nq+ZE5peUI8ZUXmeExzv8ntVyPcG
+         dVOhyI/M+ET2KXGqzyYeU/Axm25x/sgmwf58FwkR3ukcpw0GXitjszdPZrLKbxfOhgxD
+         qOjFwUsu0aibDiuQSnGYX/8ZZha/3UO2gZvIMvZOIuEnSvW4QTwZD8fL8RD7bsvLm2Hj
+         dHn1cp2sNcJtr5EJkVr6US3yG/RVAcRClZYygLD9onYr3ey7Hgqjw4pU5RYqyav333w9
+         lwmw==
+X-Gm-Message-State: AOJu0YwZ8If6X/YvT3spA6Cifsr8eqOge9SfdVNR/+ru/SBn1Zkb14Vh
+	Z2HRLKohHropJrrmtWvYyLf1EN+LY6bcllKRuX1A9G9Q6svqMlGfjdeYweJ13VaOS3hgP9gB4Ol
+	ORg8glcajSUUy0EH6xGJA8/a8jAM56v7TZOXRBA==
+X-Google-Smtp-Source: AGHT+IG+6hWb0s/foSEZLTCcN7SlXEPPPDIG9Ie8b6zG/DvFbXAnoRbb9i8W1JXuHzPD5xc+sCGWgYH3mLKI3aCinio=
+X-Received: by 2002:a81:d80b:0:b0:600:2a65:cad2 with SMTP id
+ d11-20020a81d80b000000b006002a65cad2mr2081570ywj.26.1706398517251; Sat, 27
+ Jan 2024 15:35:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20240110-pxa1908-lkml-v8-0-fea768a59474@skole.hr> <20240110-pxa1908-lkml-v8-2-fea768a59474@skole.hr>
+In-Reply-To: <20240110-pxa1908-lkml-v8-2-fea768a59474@skole.hr>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Sun, 28 Jan 2024 00:35:06 +0100
+Message-ID: <CACRpkdbSSH6mBYVyk2u3G60vmbED7WhEdYnXoc3TwovOo3oJhA@mail.gmail.com>
+Subject: Re: [PATCH v8 2/9] dt-bindings: pinctrl: pinctrl-single: add
+ marvell,pxa1908-padconf compatible
+To: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Tony Lindgren <tony@atomide.com>, Haojian Zhuang <haojian.zhuang@linaro.org>, 
+	Lubomir Rintel <lkundrak@v3.sk>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Kees Cook <keescook@chromium.org>, Tony Luck <tony.luck@intel.com>, 
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, phone-devel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, Karel Balej <balejk@matfyz.cz>, 
+	David Wronek <david@mainlining.org>, linux-clk@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Jan 10, 2024 at 8:04=E2=80=AFPM Duje Mihanovi=C4=87 <duje.mihanovic=
+@skole.hr> wrote:
 
-On Mon, 04 Dec 2023 11:46:49 +0200, Matti Lehtimäki wrote:
-> Add touch keys which are handled in touchscreen driver.
-> Use KEY_APPSELECT for the left button because other devices use that
-> even though downstream kernel uses KEY_RECENT.
-> 
-> 
+> Add the "marvell,pxa1908-padconf" compatible to allow migrating to a
+> separate pinctrl driver later.
+>
+> Reviewed-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
 
-Applied, thanks!
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
-[1/1] ARM: dts: qcom: apq8026-samsung-matissewifi: Configure touch keys
-      commit: ffb05e91b68bc58484b94b5d3d1aa8e559278fd6
-
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+Yours,
+Linus Walleij
