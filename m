@@ -1,115 +1,122 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B474EB3D
-	for <phone-devel@vger.kernel.org>; Mon, 29 Jan 2024 07:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE2976C6E;
+	Mon, 29 Jan 2024 17:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706514543; cv=none; b=fuksSmXlDO94CaXL1/XpuebsqCt/SPNTHyrZuV+V60GELb/8xyd2QOi395t79RzTVDqwGec+/vLhZHAUKCa+0AUlIQzoTOo2Ce/AE939Fi0oqMyq/kdMXZYxmD50MmJ18+aZbAxBN2H/J7W/tvStV4B3Dy7QtT1H9xADdaEoFno=
+	t=1706549860; cv=none; b=OyWXc4OboMcdHYelInvnvSuJKDcFmdASiS98pI98v53KhJoBlK32C6kb8x5deNpAmxyWEU1+fFSBSjjoY8iLoY7PGc+YxUPRKWFMGGZanFGgBnwbUEXi0GBBBRhoSsx2CEj4lxIsBtP2vrmuOIeyNxZfAXGoPPEV/bZz+MMS3QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706514543; c=relaxed/simple;
-	bh=BKP83D9yJgO7dHlibnyMa09vHevxppr0G+06k+2XFWc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jF7eEBpU6ZpHQkEgUg2NhMbDQi5DBvytOarDXZOFc/xo4yDOO5urRM9NILn5aySm+UTBvKfI8B0VTFNrrjZV00yZ5XBaPHOcmUHC2VHiGZv+dc/tnBu0dkgIeivR/SpylD4jq+FC03fs5ljvTZST89TviqMyzLuhYm8dgY1FPx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=zD0JfOPJ; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1706549860; c=relaxed/simple;
+	bh=wWhOLdLXWR1J1NWYiGZwNuJQrSw+KC0GWCJmCtB76nM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rZR/EwD3J07wRxU9RDH7QaN2Q5rI1ubOOj8QiWGk3VX1bcKYYui1hjGc8FL0QnnNjlaNkXQH/uyUwTzZiTBiqQH/6t1bu9DDVJ5bF/LPB3Z47YFpdUX0M9FBHS7ceggZleDaC6WGY43hF5PAulFTL74Y5FRF98uuwZazAyhbhOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HCfLqCvL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="zD0JfOPJ"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a357cba4a32so117271766b.2
-        for <phone-devel@vger.kernel.org>; Sun, 28 Jan 2024 23:49:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1706514539; x=1707119339; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hi3wdBPHy9dOJfUItOIZktdrEsNa9te/nL1WfaDI3y0=;
-        b=zD0JfOPJHHPGaXfIawDeUuiT7Jl4xsIl3OqLLbJjuY0pY0GjUKidfiElXlN8PB/2tj
-         eSvjXBE/bHQEHKrpvrjTC4OkUif2mFkmV2t/t6xwwedWejM0f8Cfu+TuUHzuPRKr9/9n
-         uOC3185PWvH0pPa8z4NyTF/x1SRhc9e8Ayad204t8CfbvKl/9aSz9rynbDiBsOn6gl+X
-         9UP3kMwoTrXzFZcPUAu5GH1cxN7ZrbfQHy0N+2j5rx27q5VtrXQokpXf3uCWA0O3I3Xg
-         I3Bi5K1Bm7gF/K5muQ2K5tne61BftSTAqGyJQ+VTCBz9WGduSNkH7XqGXb1w73rsXUb7
-         x/ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706514539; x=1707119339;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hi3wdBPHy9dOJfUItOIZktdrEsNa9te/nL1WfaDI3y0=;
-        b=fkPxzNK96YUKgI5xW/hpiAExOUZL6gyG32WjPCOltd5k9Nv4kBtTBEtSVxfJoxuNh3
-         YvKSYFFLFcP3mQ7DYgGNpAyJXDSObACK+bWAHEa+Ab2X/Ed1qawlR09+bk0b9ap1i1V0
-         N4mVdikC85ZYEFcaZskw1W3HQCg/MlnYAyU42RuxJgrO3UAap0xMr+4aSVDKk6HA+HQe
-         qAxujgTDpakSJOKWU+yo2+IODaELCW0CDpNqCk9D3LDk/O1O0KKxAHvRtl2CegflURsk
-         dr/zW51SZSUH+6WC7fUiBVgRC7nIeK1LHECnKOO2BzwRW7oPOXQE/Q21mPJ8lTG43RU2
-         u/ag==
-X-Gm-Message-State: AOJu0Yy31BGCHIwmPTyBYhVQIs4E/+x9jYCO+k2yKKNwO73L8Rid/EsW
-	06nMOz8aLKQSoUZ9Utpi4ba/zzBNjxN1p10gVMgmiIdF3V4NSAhwRpEDO3Z53B8=
-X-Google-Smtp-Source: AGHT+IHk+mC/fG7pO9q79H3dEN8aAlJyGvqAHmPJhChitf/sDZtgl4y8tPnRH+IhsiPE5Sa2TKqS2g==
-X-Received: by 2002:a17:906:a14c:b0:a35:d2f8:4927 with SMTP id bu12-20020a170906a14c00b00a35d2f84927mr590202ejb.70.1706514539677;
-        Sun, 28 Jan 2024 23:48:59 -0800 (PST)
-Received: from otso.luca.vpn.lucaweiss.eu (dhcp-089-099-055-216.chello.nl. [89.99.55.216])
-        by smtp.gmail.com with ESMTPSA id l13-20020a1709066b8d00b00a32429e455asm3679881ejr.175.2024.01.28.23.48.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Jan 2024 23:48:59 -0800 (PST)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Mon, 29 Jan 2024 08:48:54 +0100
-Subject: [PATCH] media: dt-bindings: qcom,sc7280-venus: Allow one IOMMU
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HCfLqCvL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0385BC433C7;
+	Mon, 29 Jan 2024 17:37:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706549859;
+	bh=wWhOLdLXWR1J1NWYiGZwNuJQrSw+KC0GWCJmCtB76nM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HCfLqCvLEn2f/rHk1ypJKgFsAPd5jmBc2bDnCVeJR1lxgrjULX/wI5r4ZUBE3kusZ
+	 /ZjBWLjTpVzK12QvQaRnSiqKSQs41szRviG17dOAvJ2S/JpXODaMyzLbeXYFJ7G/qo
+	 QZLUqntvH2OX9vLeXqUOFGMC9xZ2wdLd5YC2r8nYdMpnLFhBZzkW2f4Fm69HuqXYoO
+	 2WWH4WaBUz6qkkJWa4rpwTfLxiW5yv0cWOK02mnJT28FsU5Ag6G3AHRzQS4TwgG/4I
+	 rhUy/OXX5aQIB0rxZjUQL6xToHDrug8kK9Eej7Ghfa0H/wwyYCSGNlNLgwCPQ3o9+d
+	 h7IlwIac7LuGw==
+Date: Mon, 29 Jan 2024 17:37:33 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+	linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] media: dt-bindings: qcom,sc7280-venus: Allow one IOMMU
  entry
+Message-ID: <20240129-numerate-brought-4660c2a89719@spud>
+References: <20240129-sc7280-venus-bindings-v1-1-20a9ba194c60@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240129-sc7280-venus-bindings-v1-1-20a9ba194c60@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAGVYt2UC/x3MMQqAMAxA0atIZgM1SLVeRRzURs0SpUERxLtbH
- N/w/wPGSdigKx5IfInJrhlVWcC8jboySswGclS7igLa3FDr8GI9DSfRKLoaevY0huDJRYbcHok
- Xuf9vP7zvBwnbDmZnAAAA
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, 
- Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, 
- Vikash Garodia <quic_vgarodia@quicinc.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Stanimir Varbanov <stanimir.varbanov@linaro.org>, 
- linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.12.4
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="uIfXiQKiceuPgh4l"
+Content-Disposition: inline
+In-Reply-To: <20240129-sc7280-venus-bindings-v1-1-20a9ba194c60@fairphone.com>
 
-Some SC7280-based boards crash when providing the "secure_non_pixel"
-context bank, so allow only one iommu in the bindings also.
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
-Reference:
-https://lore.kernel.org/linux-arm-msm/20231201-sc7280-venus-pas-v3-2-bc132dc5fc30@fairphone.com/
----
- Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml | 1 +
- 1 file changed, 1 insertion(+)
+--uIfXiQKiceuPgh4l
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml b/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
-index 8f9b6433aeb8..10c334e6b3dc 100644
---- a/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
-+++ b/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
-@@ -43,6 +43,7 @@ properties:
-       - const: vcodec_bus
- 
-   iommus:
-+    minItems: 1
-     maxItems: 2
- 
-   interconnects:
+On Mon, Jan 29, 2024 at 08:48:54AM +0100, Luca Weiss wrote:
+> Some SC7280-based boards crash when providing the "secure_non_pixel"
+> context bank, so allow only one iommu in the bindings also.
+>=20
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
----
-base-commit: 596764183be8ebb13352b281a442a1f1151c9b06
-change-id: 20240129-sc7280-venus-bindings-6e62a99620de
+Do we have any idea why this happens? How is someone supposed to know
+whether or not their system requires you to only provide one iommu?
+Yes, a crash might be the obvious answer, but is there a way of knowing
+without the crashes?
 
-Best regards,
--- 
-Luca Weiss <luca.weiss@fairphone.com>
+Cheers,
+Conor.
 
+> ---
+> Reference:
+> https://lore.kernel.org/linux-arm-msm/20231201-sc7280-venus-pas-v3-2-bc13=
+2dc5fc30@fairphone.com/
+> ---
+>  Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/media/qcom,sc7280-venus.ya=
+ml b/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
+> index 8f9b6433aeb8..10c334e6b3dc 100644
+> --- a/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
+> +++ b/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
+> @@ -43,6 +43,7 @@ properties:
+>        - const: vcodec_bus
+> =20
+>    iommus:
+> +    minItems: 1
+>      maxItems: 2
+> =20
+>    interconnects:
+>=20
+> ---
+> base-commit: 596764183be8ebb13352b281a442a1f1151c9b06
+> change-id: 20240129-sc7280-venus-bindings-6e62a99620de
+>=20
+> Best regards,
+> --=20
+> Luca Weiss <luca.weiss@fairphone.com>
+>=20
+
+--uIfXiQKiceuPgh4l
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZbfiXQAKCRB4tDGHoIJi
+0u+kAQD6hQJxEFZGeDrdCSNz807MgW2B9L9wp4d7nPT8zipYcQD+PHraEQhlwbax
+l6JDJfuJlD+YZfuAGqEETe5slN7CuA8=
+=uaeV
+-----END PGP SIGNATURE-----
+
+--uIfXiQKiceuPgh4l--
