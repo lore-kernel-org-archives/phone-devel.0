@@ -1,148 +1,130 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADA553811
-	for <phone-devel@vger.kernel.org>; Tue, 30 Jan 2024 07:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC3855E52;
+	Tue, 30 Jan 2024 08:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706600825; cv=none; b=EdBHUWJAhYrjj8JEXj59oVx9tuLKrpQMIZ9Fyqmbk89vq9vtYd3mujlikm6NXPvozwoeHFSuJe3c4vhHH2YJAhkX/9yqX476yTBIW9+WrvM/1N4Hzh5pbRjrDVNN4UTKCUNH4E9lq9ab+Yyq5jprO33Kxnl6Lm140tKivwPyg0c=
+	t=1706603239; cv=none; b=UtijZQzgtxO8yk/T1wYeY9xzNsLzXFk+xUcwJ8/3iQHAw6IbSCrG2mgvYj9A120qSooOHqpdoHAAPd8gaoOamYlAvCZ2u7lSEcYZyldQYAKl2Da6JzympO+y//io41h2TtT40Poe8jQSv2VbIHlc25dH1I4UWEHsy1LpIBpsErM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706600825; c=relaxed/simple;
-	bh=6wF3pjl+xGSbuQROF2HwbVRfOfePnmBeqT9YPU+Cd88=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=hl3Qqw+PPkj0O7mb5zc9au4hQ4dlktscK22N/49BVcLXKR4Wra8HSuAkOq2ZGv6l1EQoktgByYUpdFccVWa590TQwVVz3RVJNHW4TWwRrMM5yZvahlRfagQjFkXrJ7CrgwbjYKyvKCRJm9kj0j9Iq66F2jHYmVnaYVAqof8h/jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=HiGPYP4d; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1706603239; c=relaxed/simple;
+	bh=y/tOK4kKubOxMCb3R8YpgrR6A+4VGvjHaSVjdAE5tOo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=gWu+xYRceLbTkgE5NenXaUdkBlxQZdXMAqb9Djz2/86E3cbYcodD6fYlYnxZ7dkvNgHvdxhNtscMajdBirowNAk3OEwC5tMmisU2EzCS3t4rBoek3WWexy+TScvgX8VIkRwaszMXafUmZD0ROIuQeCggd4yzxapisXKcvzkN2VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LQs2gxg3; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="HiGPYP4d"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-55ef0465507so2569690a12.3
-        for <phone-devel@vger.kernel.org>; Mon, 29 Jan 2024 23:47:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1706600821; x=1707205621; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QlGtGfNm9kPhTsKQ1zfGwKYIV+yyIvsTE/Mjc0NVPIk=;
-        b=HiGPYP4dYhUZByAnXCCfDyML/k5Tvd6nNZeKOF1+AtmmNXus/UUnslfILqa8rUm2gJ
-         9HBwMHR8Zcrj3Jidevt7zIlYx4IqEC20W8ys7x1PWXZc8BiZLfqmP8RpF0px0ytZQWko
-         I+FkP2gEYOyHXLrRqAV16brvLen0EWVDspuM1j+RdoedCPtTagGBCXKIc7ymagE410bC
-         C13k39T3q33FXUvZrEwyzUmM98bmvllEzzg2HN/RccxvNRWz9G5aBadfgBa3hgcpMCco
-         IIkUJc2qWddJXXBRnYcuFhDo0MdGaTj455hVkVa8mbINkt6Z1IMVGlfAB7bvJVNU6iCF
-         N3ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706600821; x=1707205621;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QlGtGfNm9kPhTsKQ1zfGwKYIV+yyIvsTE/Mjc0NVPIk=;
-        b=srRkJDSkaP8SQgxzQMtd6+M9F07EdNhLIm79wQ1K+UjHsgBInJEe/dxmQ7l/2cdcLI
-         G8/hv1+oICiwZpXKyVHk0Fpk2w7s3vQ3ci4t3X1m5cm1BFhuAUI0kx+Sz3WqWkXABO5v
-         6uqpRB3NqCZChjwQyf3OCPvWIzWbg+XVkEtCagj13Zwx1iIc+BeMWTZCJp0rGDbA4Z7L
-         FxSxPubndsuvYVhh1tI6cg14Ze2VOy+kJxdqV2DZ9B2B3KCKnbtGaDB/SoYqDJpJWBhx
-         MLpaNQwYKaHB4mACn7+Z9A6/EZJQ303aj/ixYx0hbonrsqU8WEjTH8haeviMMzJHDCJm
-         VBCw==
-X-Gm-Message-State: AOJu0Yw12wgJbC9nojH9z8D6vNxx75lJ38nYaYC64hwz8CWsBOxABPv9
-	yCHVtZ6pQH3kCIpPosmDkYbAjBEtJQ23x8Y+vpieczhL0FWrCgh86fS6orTL2i0=
-X-Google-Smtp-Source: AGHT+IE7X9hDipYR0YX/csSCqzOnet8vdLtg+tkdmtHjx4F4Cc1elveRWT2+rBnQl0qvijzggQV9ow==
-X-Received: by 2002:a50:ed90:0:b0:55f:43af:4a29 with SMTP id h16-20020a50ed90000000b0055f43af4a29mr420603edr.18.1706600821066;
-        Mon, 29 Jan 2024 23:47:01 -0800 (PST)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id q10-20020aa7cc0a000000b0055ef56f4575sm2182091edt.39.2024.01.29.23.47.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jan 2024 23:47:00 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LQs2gxg3"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40U6dSR2012565;
+	Tue, 30 Jan 2024 08:27:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=BgZ1iZOYhcZCeI2JkhX8IJ0qmAvDNFqA67+unrC01Nk=; b=LQ
+	s2gxg3bbO9/7q9JDD9CAiWu6zJfsZCiG30wtIjFGzBH74UT26Bd4Konx/b+wSjBl
+	7gXhuE/Wop1vSN4EZi0fpCxcMWkQpanMviGYk5xumX03Z+khz7SvoqgIKXs4N4zb
+	Ljal4xa/AADiIzC1WyipokPdtxgWezQOta5fvGRDYZiAUt1bNYJdXmzuOhpV77LO
+	0g+P4NMnwESb3HXoVwbyws+73X5FNPW7rk7xMHjDhLR4I+zrPIr413DJqz9T7/6Y
+	Wlk5TXv3k421yiiP6JdEjf/+ZxBltWUey7aoJL3DUKy9qgh9Az2ojni5nhe/muW0
+	i33/QE7XBlIxRTcKVcEA==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vxsc40fng-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jan 2024 08:27:09 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40U8R8Sl025543
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jan 2024 08:27:08 GMT
+Received: from [10.206.101.41] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 30 Jan
+ 2024 00:27:03 -0800
+Message-ID: <ecd2ffa0-b2b2-3b09-5799-6f7d4d4054c9@quicinc.com>
+Date: Tue, 30 Jan 2024 13:56:59 +0530
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 30 Jan 2024 08:47:00 +0100
-Message-Id: <CYRVI1IQ2UKE.15ZGCYLRT3ND3@fairphone.com>
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Conor Dooley" <conor@kernel.org>, "Vikash Garodia"
- <quic_vgarodia@quicinc.com>
-Cc: "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
- <konrad.dybcio@linaro.org>, "Stanimir Varbanov"
- <stanimir.k.varbanov@gmail.com>, "Vikash Garodia"
- <quic_vgarodia@quicinc.com>, "Bryan O'Donoghue"
- <bryan.odonoghue@linaro.org>, "Mauro Carvalho Chehab" <mchehab@kernel.org>,
- "Rob Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
- <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- "Stanimir Varbanov" <stanimir.varbanov@linaro.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
 Subject: Re: [PATCH] media: dt-bindings: qcom,sc7280-venus: Allow one IOMMU
  entry
-X-Mailer: aerc 0.15.2
+Content-Language: en-US
+To: Luca Weiss <luca.weiss@fairphone.com>, Conor Dooley <conor@kernel.org>
+CC: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio
+	<konrad.dybcio@linaro.org>,
+        Stanimir Varbanov
+	<stanimir.k.varbanov@gmail.com>,
+        Bryan O'Donoghue
+	<bryan.odonoghue@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Rob
+ Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 References: <20240129-sc7280-venus-bindings-v1-1-20a9ba194c60@fairphone.com>
  <20240129-numerate-brought-4660c2a89719@spud>
-In-Reply-To: <20240129-numerate-brought-4660c2a89719@spud>
+ <CYRVI1IQ2UKE.15ZGCYLRT3ND3@fairphone.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <CYRVI1IQ2UKE.15ZGCYLRT3ND3@fairphone.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Xv8y1pP61jrbaPJVNBCBn_IPG2vNeojm
+X-Proofpoint-ORIG-GUID: Xv8y1pP61jrbaPJVNBCBn_IPG2vNeojm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-30_02,2024-01-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=805 spamscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 mlxscore=0 priorityscore=1501 clxscore=1011
+ adultscore=0 phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2401190000 definitions=main-2401300060
 
-On Mon Jan 29, 2024 at 6:37 PM CET, Conor Dooley wrote:
-> On Mon, Jan 29, 2024 at 08:48:54AM +0100, Luca Weiss wrote:
-> > Some SC7280-based boards crash when providing the "secure_non_pixel"
-> > context bank, so allow only one iommu in the bindings also.
-> >=20
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->
-> Do we have any idea why this happens? How is someone supposed to know
-> whether or not their system requires you to only provide one iommu?
-> Yes, a crash might be the obvious answer, but is there a way of knowing
-> without the crashes?
+Hello,
 
-+CC Vikash Garodia
+On 1/30/2024 1:17 PM, Luca Weiss wrote:
+> On Mon Jan 29, 2024 at 6:37 PM CET, Conor Dooley wrote:
+>> On Mon, Jan 29, 2024 at 08:48:54AM +0100, Luca Weiss wrote:
+>>> Some SC7280-based boards crash when providing the "secure_non_pixel"
+>>> context bank, so allow only one iommu in the bindings also.
+>>>
+>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>
+>> Do we have any idea why this happens? How is someone supposed to know
+>> whether or not their system requires you to only provide one iommu?
+>> Yes, a crash might be the obvious answer, but is there a way of knowing
+>> without the crashes?
+> 
+> +CC Vikash Garodia
+> 
+> Unfortunately I don't really have much more information than this
+> message here:
+> https://lore.kernel.org/linux-arm-msm/ff021f49-f81b-0fd1-bd2c-895dbbb03d56@quicinc.com/
+> 
+> And see also the following replies for a bit more context, like this
+> one:
+> https://lore.kernel.org/linux-arm-msm/a4e8b531-49f9-f4a1-51cb-e422c56281cc@quicinc.com/
+> 
+> Maybe Vikash can add some more info regarding this.
 
-Unfortunately I don't really have much more information than this
-message here:
-https://lore.kernel.org/linux-arm-msm/ff021f49-f81b-0fd1-bd2c-895dbbb03d56@=
-quicinc.com/
+0x2184 is a secure SID i.e any transactions with that ID would be access
+controlled by trustzone (TZ). SC7280 (chromebook) was designed without TZ, while
+some other DT deriving from SC7280 (like qcm6490) might have TZ. Hence it is
+good to move the iommu entry from SC7280 to chrome-common.
 
-And see also the following replies for a bit more context, like this
-one:
-https://lore.kernel.org/linux-arm-msm/a4e8b531-49f9-f4a1-51cb-e422c56281cc@=
-quicinc.com/
-
-Maybe Vikash can add some more info regarding this.
-
-Regards
-Luca
-
->
-> Cheers,
-> Conor.
->
-> > ---
-> > Reference:
-> > https://lore.kernel.org/linux-arm-msm/20231201-sc7280-venus-pas-v3-2-bc=
-132dc5fc30@fairphone.com/
-> > ---
-> >  Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml | 1 +
-> >  1 file changed, 1 insertion(+)
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/media/qcom,sc7280-venus.=
-yaml b/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
-> > index 8f9b6433aeb8..10c334e6b3dc 100644
-> > --- a/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
-> > +++ b/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
-> > @@ -43,6 +43,7 @@ properties:
-> >        - const: vcodec_bus
-> > =20
-> >    iommus:
-> > +    minItems: 1
-> >      maxItems: 2
-> > =20
-> >    interconnects:
-> >=20
-> > ---
-> > base-commit: 596764183be8ebb13352b281a442a1f1151c9b06
-> > change-id: 20240129-sc7280-venus-bindings-6e62a99620de
-> >=20
-> > Best regards,
-> > --=20
-> > Luca Weiss <luca.weiss@fairphone.com>
-> >=20
-
+Regards,
+Vikash
