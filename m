@@ -1,87 +1,69 @@
-Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56266626C9;
-	Thu,  1 Feb 2024 15:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF4645016;
+	Thu,  1 Feb 2024 21:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706801878; cv=none; b=OL0obQgzvUpgg/SEvvMWgD0WreGTH6hZeI5rD7u5wYISLsLmOli3QGhe0fng6N0ZBpVJ2jN+DcnxngC3kZWDdamaBuQcieRuUZNnTfAIqeOssOsSEmZYeGyweaCgVvynorEA4SD1QpHUNvqFYWyljsdMkpLRs7pRAk1STiimvu4=
+	t=1706824440; cv=none; b=naZFSPsl27DUX/s+wiK1N3/kW2+o9zx4KwlaT5RFfNLlG5q2Gmvd3lIu8/J7lJaAu334HUnx+l3LytjN0riKFJBv+N5dWlXx4cKkRkUATjc4eqPZkwsE0upAO5FJmbNNx8I+IVxoCLvX+UGlC1Si2uZnDIlz5Cn1RNAZeNqGxXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706801878; c=relaxed/simple;
-	bh=mlFdx8q/qv+OqqycJ0U0WzY9CEGgq+9/dfyQ3o9wzOY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
-	 References:In-Reply-To; b=pCSBkCZos4zkmUKYMFdj7ybv1YsXWdFxa1nllEY+Hh+Wpp/dfM9urGtz3YWICc1gkQlgPOQo/BVjbhWYr3ynf1noorCS+ZXu6fzK56Y1KYs8o3eQIsS1Q+nV6kfnFOH7uZ2Zp5r1ddToAkiOh4P8+GR9dqpGNnnZozXdm/8/hZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz; dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b=ZXb+Iga+; arc=none smtp.client-ip=195.113.20.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
+	s=arc-20240116; t=1706824440; c=relaxed/simple;
+	bh=UCVnGGP6dgSIA1bb1c3Zby+Z9IKSgvYCCBuMXuk74NY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k8RVoH4FbXdXxjbEQ1ZdOCre0SKQEPo/HFMdHqk9YAZM2sZAx8TMrL+rcHpXdGeCaiF2LtY8V+at5ybWOvWm1LaGD2EymTKMu+Udp74N4bO1jhE6Osd8PDOcgX4FMKuhtJYNroYdPohZwW/eEMHdDsSfIF118TlfHT1maxEZkpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fAlKm5uw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="ZXb+Iga+"
-Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id DA4F6283D4C;
-	Thu,  1 Feb 2024 16:37:39 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
-	s=gen1; t=1706801859;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MrwVT/WNDACr7m8GmvCDFAAxCBNQxViS+p8tHUq04XY=;
-	b=ZXb+Iga+zgEpxQtmV4KbAtVjpkIqGkOmCVbzHldgvGXUHA8KWzR6UHH4luWzNylkNzXqfw
-	6eKWPwViOX7KiMtgw4i94fHUwCtE2uoSB/SPVcsiBwf+Hl8sSIHhAGUlBb9MXaDfOZCM6q
-	q2fyvc+E/xzwtwHswjxasn26hQlQJCk=
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: karelb)
-	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id B97A8457CB8;
-	Thu,  1 Feb 2024 16:37:39 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fAlKm5uw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACCEC43394;
+	Thu,  1 Feb 2024 21:53:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706824440;
+	bh=UCVnGGP6dgSIA1bb1c3Zby+Z9IKSgvYCCBuMXuk74NY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fAlKm5uwXM0goNtWqUUDx8JPMIEPb0crscbi5pwT/zMXrVzhfefxZ67WuruRJztVo
+	 p5GbWbT6W3l+bpIF2ChXGaVTARPY1D1BT9Shs0MfB+PHEfwFyaatBxZ14eBCi2YXlN
+	 NYHG+G12Gs0Z+SPs+rjCTG1QdySg0hRYhUsAeUNLogJBPA5HndLmLygt2G/ELIkwS/
+	 ZErIlilQAGcp/2Hsz2eZXlu+C6HGRVSSOUDRogbXMCFi/JQGjSc8tdEBgecuGjn/KV
+	 JPodJ2HXGjN167xvwrCqJxzp+YcVQqkj0jKmF0Zj1PVQa2gtUAVYeMYyoVaYpwGFFm
+	 kGdcoKWqpaKVg==
+From: Bjorn Andersson <andersson@kernel.org>
+To: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Luca Weiss <luca@z3ntu.xyz>
+Cc: linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: qcom: apq8026-lg-lenok: Add vibrator support
+Date: Thu,  1 Feb 2024 15:53:50 -0600
+Message-ID: <170682442873.248329.16640760772830725680.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240121-lenok-vibrator-v1-1-d4703ff92021@z3ntu.xyz>
+References: <20240121-lenok-vibrator-v1-1-d4703ff92021@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 01 Feb 2024 16:37:39 +0100
-Message-Id: <CYTURHOW0WMR.2UMOT0D1GFZ2W@gimli.ms.mff.cuni.cz>
-Cc: "Karel Balej" <balejk@matfyz.cz>, "Dmitry Torokhov"
- <dmitry.torokhov@gmail.com>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof
- Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
- <conor+dt@kernel.org>, <linux-input@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
-Subject: Re: [RFC PATCH 2/5] mfd: add 88pm88x driver
-To: "Lee Jones" <lee@kernel.org>
-From: "Karel Balej" <karelb@gimli.ms.mff.cuni.cz>
-References: <20231217131838.7569-1-karelb@gimli.ms.mff.cuni.cz>
- <20231217131838.7569-3-karelb@gimli.ms.mff.cuni.cz>
- <20240125122634.GE74950@google.com>
- <CYQ8MEQRJELE.2GB9316NZA998@gimli.ms.mff.cuni.cz>
- <20240131110311.GI8551@google.com>
-In-Reply-To: <20240131110311.GI8551@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Lee Jones, 2024-01-31T11:03:11+00:00:
-> On Sun, 28 Jan 2024, Karel Balej wrote:
-> > > > +	/* GPIO1: DVC, GPIO0: input */
-> > > > +	REG_SEQ0(PM88X_REG_GPIO_CTRL1, 0x40),
-> > >
-> > > Shouldn't you set these up using Pintrl?
-> >=20
-> > You mean to add a new MFD cell for the pins and write the respective
-> > driver? The downstream implementation has no such thing so I'm not sure
-> > if I would be able to do that from scratch.
->
-> This is not a Pinctrl driver.
->
-> Isn't there a generic API you can use?
 
-I'm sorry, I don't think I understand what you mean.
+On Sun, 21 Jan 2024 11:09:57 +0100, Luca Weiss wrote:
+> This device has a vibrator attached to the CAMSS_GP0_CLK, use clk-pwm
+> and pwm-vibrator to make the vibrator work.
+> 
+> 
 
-Thank you,
-K. B.
+Applied, thanks!
+
+[1/1] ARM: dts: qcom: apq8026-lg-lenok: Add vibrator support
+      commit: 4d679e3c29e3609962de43edddd51c8c1abda34e
+
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
