@@ -1,128 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272D05CDF8;
-	Thu,  1 Feb 2024 15:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56266626C9;
+	Thu,  1 Feb 2024 15:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706799647; cv=none; b=ICxsMxP40S97C7Dmf6VD3RJYq9xZ8vwnIyBAawfg6ZKxv6xxhP3w1p7j6kbvo1Rxz0EF/Ok2UN2RescOoNBNVHeBJp9qvyQI/6jFBv+654QSwMR2mI3bUhXztLAbRXQIjSdI3YBZjOlhzxNHnTIRyRE3IVwnasNuX5+6egpgZ48=
+	t=1706801878; cv=none; b=OL0obQgzvUpgg/SEvvMWgD0WreGTH6hZeI5rD7u5wYISLsLmOli3QGhe0fng6N0ZBpVJ2jN+DcnxngC3kZWDdamaBuQcieRuUZNnTfAIqeOssOsSEmZYeGyweaCgVvynorEA4SD1QpHUNvqFYWyljsdMkpLRs7pRAk1STiimvu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706799647; c=relaxed/simple;
-	bh=XHfskHspmfYJuhvD8hh+5pmEbJ+2xIhYyQSuomUDNtU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eO/ZIfxYu+RzXNVoXzJJnJllX7mekqtG00D2omKXQCW8PWx1i8hCzPiM/BaBknaw+yFEO/ZoXpbFq/KiimxB65YmoKC9wFsOix+IV/O31T4t5U2aJAduQEDkngsca+Zyl3PtZseyNaE/CRA6PO1yBaDbVqHBmShLPl1iWcIIDgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2ajoABc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1706801878; c=relaxed/simple;
+	bh=mlFdx8q/qv+OqqycJ0U0WzY9CEGgq+9/dfyQ3o9wzOY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=pCSBkCZos4zkmUKYMFdj7ybv1YsXWdFxa1nllEY+Hh+Wpp/dfM9urGtz3YWICc1gkQlgPOQo/BVjbhWYr3ynf1noorCS+ZXu6fzK56Y1KYs8o3eQIsS1Q+nV6kfnFOH7uZ2Zp5r1ddToAkiOh4P8+GR9dqpGNnnZozXdm/8/hZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz; dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b=ZXb+Iga+; arc=none smtp.client-ip=195.113.20.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2ajoABc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946D0C433C7;
-	Thu,  1 Feb 2024 15:00:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706799646;
-	bh=XHfskHspmfYJuhvD8hh+5pmEbJ+2xIhYyQSuomUDNtU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H2ajoABcYubKrIdEleS5/7jOZk4Loau492H6Swd6yTqTTQsKC7RzraOlr1H3+fqMw
-	 kW/Z56aCWlTxkQj/rH3tErFw833VrC+RnDLKIMGZsMpCt7iYQuz7GaiOdDfhyP+t4T
-	 1t3/was8W0cBOJiUrZRv4dq/z/Va9Bf+1ebYbRUc=
-Date: Thu, 1 Feb 2024 07:00:45 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Pavel Machek <pavel@ucw.cz>
-Cc: phone-devel@vger.kernel.org, kernel list <linux-kernel@vger.kernel.org>,
-	fiona.klute@gmx.de, martijn@brixit.nl, megi@xff.cz,
-	samuel@sholland.org, heikki.krogerus@linux.intel.com,
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCH] usb: typec: anx7688: Add driver for ANX7688 USB-C HDMI
- bridge
-Message-ID: <2024020118-zesty-enticing-b7b3@gregkh>
-References: <Zbt1dIByBZ2stzjm@mobian>
+	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="ZXb+Iga+"
+Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id DA4F6283D4C;
+	Thu,  1 Feb 2024 16:37:39 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
+	s=gen1; t=1706801859;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MrwVT/WNDACr7m8GmvCDFAAxCBNQxViS+p8tHUq04XY=;
+	b=ZXb+Iga+zgEpxQtmV4KbAtVjpkIqGkOmCVbzHldgvGXUHA8KWzR6UHH4luWzNylkNzXqfw
+	6eKWPwViOX7KiMtgw4i94fHUwCtE2uoSB/SPVcsiBwf+Hl8sSIHhAGUlBb9MXaDfOZCM6q
+	q2fyvc+E/xzwtwHswjxasn26hQlQJCk=
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: karelb)
+	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id B97A8457CB8;
+	Thu,  1 Feb 2024 16:37:39 +0100 (CET)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zbt1dIByBZ2stzjm@mobian>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 01 Feb 2024 16:37:39 +0100
+Message-Id: <CYTURHOW0WMR.2UMOT0D1GFZ2W@gimli.ms.mff.cuni.cz>
+Cc: "Karel Balej" <balejk@matfyz.cz>, "Dmitry Torokhov"
+ <dmitry.torokhov@gmail.com>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, <linux-input@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
+Subject: Re: [RFC PATCH 2/5] mfd: add 88pm88x driver
+To: "Lee Jones" <lee@kernel.org>
+From: "Karel Balej" <karelb@gimli.ms.mff.cuni.cz>
+References: <20231217131838.7569-1-karelb@gimli.ms.mff.cuni.cz>
+ <20231217131838.7569-3-karelb@gimli.ms.mff.cuni.cz>
+ <20240125122634.GE74950@google.com>
+ <CYQ8MEQRJELE.2GB9316NZA998@gimli.ms.mff.cuni.cz>
+ <20240131110311.GI8551@google.com>
+In-Reply-To: <20240131110311.GI8551@google.com>
 
-On Thu, Feb 01, 2024 at 11:41:56AM +0100, Pavel Machek wrote:
-> +#define DEBUG
+Lee Jones, 2024-01-31T11:03:11+00:00:
+> On Sun, 28 Jan 2024, Karel Balej wrote:
+> > > > +	/* GPIO1: DVC, GPIO0: input */
+> > > > +	REG_SEQ0(PM88X_REG_GPIO_CTRL1, 0x40),
+> > >
+> > > Shouldn't you set these up using Pintrl?
+> >=20
+> > You mean to add a new MFD cell for the pins and write the respective
+> > driver? The downstream implementation has no such thing so I'm not sure
+> > if I would be able to do that from scratch.
+>
+> This is not a Pinctrl driver.
+>
+> Isn't there a generic API you can use?
 
-Please don't.  This is dynamic, use the dynamic debugging and set it
-from userspace if you want to debug the driver.
+I'm sorry, I don't think I understand what you mean.
 
-> +
-> +#include <linux/debugfs.h>
-> +#include <linux/delay.h>
-> +#include <linux/extcon-provider.h>
-> +#include <linux/firmware.h>
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/i2c.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/irqreturn.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/of_irq.h>
-> +#include <linux/power_supply.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/usb/pd.h>
-> +#include <linux/usb/role.h>
-> +#include <linux/usb/typec.h>
-> +
-> +/* firmware regs */
-> +
-> +#define ANX7688_REG_VBUS_OFF_DELAY_TIME 0x22
-> +#define ANX7688_REG_FEATURE_CTRL        0x27
-> +#define ANX7688_REG_EEPROM_LOAD_STATUS1 0x11
-> +#define ANX7688_REG_EEPROM_LOAD_STATUS0 0x12
-> +#define ANX7688_REG_FW_VERSION1         0x15
-> +#define ANX7688_REG_FW_VERSION0         0x16
-> +
-> +#define ANX7688_EEPROM_FW_LOADED	0x01
-
-Mix of tabs and spaces, please just use tabs.
-
-> +static const char * const anx7688_supply_names[] = {
-> +        "avdd33",
-> +        "avdd18",
-> +        "dvdd18",
-> +        "avdd10",
-> +        "dvdd10",
-> +	"i2c",
-> +        "hdmi_vt",
-> +
-> +        "vconn", // power for VCONN1/VCONN2 switches
-> +        "vbus", // vbus power
-> +};
-
-Again, tabs vs. spaces, please use checkpatch.
-
-> +#define ANX7688_NUM_SUPPLIES ARRAY_SIZE(anx7688_supply_names)
-> +#define ANX7688_NUM_ALWAYS_ON_SUPPLIES (ANX7688_NUM_SUPPLIES - 1)
-> +
-> +#define ANX7688_I2C_INDEX (ANX7688_NUM_SUPPLIES - 4)
-> +#define ANX7688_VCONN_INDEX (ANX7688_NUM_SUPPLIES - 2)
-> +#define ANX7688_VBUS_INDEX (ANX7688_NUM_SUPPLIES - 1)
-> +
-> +enum {
-> +	ANX7688_F_POWERED,
-> +	ANX7688_F_CONNECTED,
-> +	ANX7688_F_FW_FAILED,
-> +	ANX7688_F_PWRSUPPLY_CHANGE,
-> +	ANX7688_F_CURRENT_UPDATE,
-> +};
-> +
-> +struct anx7688 {
-> +        struct device *dev;
-> +        struct i2c_client *client;
-> +        struct i2c_client *client_tcpc;
-> +        struct regulator_bulk_data supplies[ANX7688_NUM_SUPPLIES];
-> +	struct power_supply *vbus_in_supply;
-> +	struct notifier_block vbus_in_nb;
-> +	int input_current_limit; // mA
-> +        struct gpio_desc *gpio_enable;
-> +        struct gpio_desc *gpio_reset;
-> +        struct gpio_desc *gpio_cabledet;
-
-I'm stopping here, again, tabs, you know this :(
-
-greg k-h
+Thank you,
+K. B.
