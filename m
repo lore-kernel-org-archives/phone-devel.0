@@ -1,102 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7ED54643A;
-	Fri,  2 Feb 2024 13:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFA514AD35;
+	Fri,  2 Feb 2024 18:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706880586; cv=none; b=BwvgTz6z/D7vNGC8NjoGcH9u91PyKCxoTU9BMlgLohDkBu4TJKBckwmDJQWZNjmcHdkzWBG29IDZs89Ir+IA60vyHD6NaBlR98DB5mrRV3u2MEl81Uz3FHpt39V3GWTs7VQlyU23/O7P1h5rZATYu7qSCAtcI/UhjGjZ53JpU+Y=
+	t=1706897375; cv=none; b=LJaiZem5+NWI7y0xCTVmGIx+dr1BiQijHtWGkw4V9bLIpJxBnkeum/353ZVpSqdQJF3kYjfxo0KxCxTpiVQEzQG+uoluMzz0++uC1rpNGz0v6h/VGQWGVtgzEIk/u+OAzzulw/HN8SGYBmNHVp1ArE/kyy2V4rkY+NvSbAJia7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706880586; c=relaxed/simple;
-	bh=emWHbtbKmHt44W1EEZpZpoNIQ47i7QfIYpdTdG9/FUA=;
+	s=arc-20240116; t=1706897375; c=relaxed/simple;
+	bh=x43XPOL1PbPilaYQ6MD0cbRYlkVgvCNk7kgF8R7Px9c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mNs1m1BhFO2AyGYbfE6ZARxI2K7b8yXitZaDgaOUmJCivnVAV92p3qndFckbcfRvihSNaoBTR9taV2I4L1JILFQ6AnmDg+4v9PmAfcLWQ90fjjGxiGUpvRMgsyao46d5Df184LFv89/+Va8FEH5I5tFz3tXkNtDrjIaaj6LcbbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IezIkzd0; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=LMAC1i64Q8ura8tEuWAGwN3iSMvOsj4VF2r5rDDrxN1KpcFtDjFH8tr3JmPYZ5n89rSPTPipHXIdo/ouj0ReDsogRZohcJzu4xaKjc4oxMKHjafrwdevhYvNKZ0BWL/ep+OzsUK3HeQqvMp3rr6EQC3PUu79uX1VfFnOT6Pj7CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=jhdQSz7C; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IezIkzd0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13CEEC433F1;
-	Fri,  2 Feb 2024 13:29:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706880585;
-	bh=emWHbtbKmHt44W1EEZpZpoNIQ47i7QfIYpdTdG9/FUA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IezIkzd0Uc+tG7hy/lyHyY7q+70ph0LArTYnWrdSZB/soOCU74p82GOqyzzZ3IspI
-	 P9kuaKt8RC9Pmg8Ga9ETLt8LtAXwxTp8lvwbQPVD15lHJp20ymArkNM3epDmSVwG5P
-	 D8xnQLyCodAAy5pXpS8pLk8Rh4IZw9yydGpfDQ00ot6PbMwatR7pccRGdEUiYYeoHV
-	 XbN7wXgQyj1tc4eejDh7ZHC4KRQEbT21umWIvKAmMqBnjm07DU7hjTGh2E+rtIJ+yl
-	 PRQTsvj264iIPI0o4IWVce/N3prRs8Hw5dSaYZZ2NldH24jwjFpzhjKVQIDupQU8RD
-	 rgwg88YkFkmmg==
-Date: Fri, 2 Feb 2024 13:29:40 +0000
-From: Lee Jones <lee@kernel.org>
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>,
-	Linus Walleij <linus.walleij@linaro.org>
-Cc: Karel Balej <balejk@matfyz.cz>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-input@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [RFC PATCH 2/5] mfd: add 88pm88x driver
-Message-ID: <20240202132940.GG1379817@google.com>
-References: <20231217131838.7569-1-karelb@gimli.ms.mff.cuni.cz>
- <20231217131838.7569-3-karelb@gimli.ms.mff.cuni.cz>
- <20240125122634.GE74950@google.com>
- <CYQ8MEQRJELE.2GB9316NZA998@gimli.ms.mff.cuni.cz>
- <20240131110311.GI8551@google.com>
- <CYTURHOW0WMR.2UMOT0D1GFZ2W@gimli.ms.mff.cuni.cz>
- <20240202124550.GE1379817@google.com>
- <CYULY1BYVCYK.1EGSBSVNRSTLQ@gimli.ms.mff.cuni.cz>
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="jhdQSz7C"
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id BFAD41C0075; Fri,  2 Feb 2024 19:09:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1706897363;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GhXuiOTbJ28fQ5AS5PmmoNrqYc/K8PF6YpD9vw+3YLI=;
+	b=jhdQSz7CrPhbI1Q3kJM2xE0wt1pW/KbasLXyc4hQcWpktvyuuQBKxWGFTBEWFhgH70WnNW
+	xl0kwT7Cf7qI8aiibGrSamtxdfsQhULo/VTv6AQEvNc6r+8uJlftWk30oTPy9ZBm4fEuNy
+	CEygw9YRd96RzVAH3rug0y2SIaortao=
+Date: Fri, 2 Feb 2024 19:09:22 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: phone-devel@vger.kernel.org, kernel list <linux-kernel@vger.kernel.org>,
+	fiona.klute@gmx.de, martijn@brixit.nl, megi@xff.cz,
+	samuel@sholland.org, heikki.krogerus@linux.intel.com,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH] usb: typec: anx7688: Add driver for ANX7688 USB-C HDMI
+ bridge
+Message-ID: <Zb0v0va1A4SvlgCh@mobian>
+References: <Zbt1dIByBZ2stzjm@mobian>
+ <2024020126-emote-unsubtly-3394@gregkh>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CYULY1BYVCYK.1EGSBSVNRSTLQ@gimli.ms.mff.cuni.cz>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <2024020126-emote-unsubtly-3394@gregkh>
 
-Linus,
+Hi!
 
-On Fri, 02 Feb 2024, Karel Balej wrote:
+> > --- /dev/null
+> > +++ b/drivers/usb/typec/anx7688.c
+> > @@ -0,0 +1,1866 @@
+> > +/*
+> > + * ANX7688 USB-C HDMI bridge/PD driver
+> > + *
+>=20
+> <snip>
+>=20
+> Did this pass checkpatch?  I need a spdx line for new files please,
+> don't force us to go back and guess in the future, that isn't nice.
 
-> Lee Jones, 2024-02-02T12:45:50+00:00:
-> > On Thu, 01 Feb 2024, Karel Balej wrote:
-> >
-> > > Lee Jones, 2024-01-31T11:03:11+00:00:
-> > > > On Sun, 28 Jan 2024, Karel Balej wrote:
-> > > > > > > +	/* GPIO1: DVC, GPIO0: input */
-> > > > > > > +	REG_SEQ0(PM88X_REG_GPIO_CTRL1, 0x40),
+Thanks for the review. Fixing checkpatch issues is easy, but it looks
+like closer look will be needed at the devicetree probing.
 
-Do we have a precedent for drivers setting up their own pins like this?
+Also, what are the authors preferences about the license? I'd prefer
+GPLv2+.
 
-> > > > > > Shouldn't you set these up using Pintrl?
-> > > > > 
-> > > > > You mean to add a new MFD cell for the pins and write the respective
-> > > > > driver? The downstream implementation has no such thing so I'm not sure
-> > > > > if I would be able to do that from scratch.
-> > > >
-> > > > This is not a Pinctrl driver.
-> > > >
-> > > > Isn't there a generic API you can use?
-> > > 
-> > > I'm sorry, I don't think I understand what you mean.
-> >
-> > Perhaps I misunderstand the code.  It looks like this regmap patch hack
-> > is configuring pins and a bunch of other things.  Would that be a
-> > correct assessment?
-> 
-> Yes, that sounds correct.
-> 
-> > If so, where do we draw the line here?  Do we accept a 1000 line driver
-> > which configures a large SoC with a bunch of bespoke register writes?
-> 
-> I understand, I just don't know what you mean by "a generic API". I'm
-> also not clear on whether what you have in mind is simply adding a
-> dedicated driver for the pins as a new subdevice of this MFD.
-
--- 
-Lee Jones [李琼斯]
+Best regards,
+								Pavel
