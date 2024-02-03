@@ -1,45 +1,43 @@
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFA514AD35;
-	Fri,  2 Feb 2024 18:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CC85FB8D;
+	Sat,  3 Feb 2024 18:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706897375; cv=none; b=LJaiZem5+NWI7y0xCTVmGIx+dr1BiQijHtWGkw4V9bLIpJxBnkeum/353ZVpSqdQJF3kYjfxo0KxCxTpiVQEzQG+uoluMzz0++uC1rpNGz0v6h/VGQWGVtgzEIk/u+OAzzulw/HN8SGYBmNHVp1ArE/kyy2V4rkY+NvSbAJia7c=
+	t=1706984307; cv=none; b=oIkYgNwWXzhBcjzyMQHu3pX3ZC0z6qOWEKDm+6yfqqthyBQA2ByH/BIxuy6t05WOWjHQn4DlXvy0DWY0M/SknHvXGKIMFKpzy8K9XpFWU0S29njGlh0x/8ST61grZ0WeiabPJUXrioJgrJMngaFFTh5YRHDTklxCoPYlMjgB7y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706897375; c=relaxed/simple;
-	bh=x43XPOL1PbPilaYQ6MD0cbRYlkVgvCNk7kgF8R7Px9c=;
+	s=arc-20240116; t=1706984307; c=relaxed/simple;
+	bh=v18Uq25xFd0lAYlqmeeW1rPPUfvDN/gZuKrB7cBLNgk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LMAC1i64Q8ura8tEuWAGwN3iSMvOsj4VF2r5rDDrxN1KpcFtDjFH8tr3JmPYZ5n89rSPTPipHXIdo/ouj0ReDsogRZohcJzu4xaKjc4oxMKHjafrwdevhYvNKZ0BWL/ep+OzsUK3HeQqvMp3rr6EQC3PUu79uX1VfFnOT6Pj7CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=jhdQSz7C; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+	 Content-Type:Content-Disposition:In-Reply-To; b=J1lXNUUiL4aBXovL0VKGeNnz6qBWk57l8p4euQSWSq4Qlhg4Nu1MyfcVtParGCXDGcZgx9yj1hLL21djHbhjdmW1NDgg/XBrU8yAwuzfAolwFB0LCGIm2n6oQ4oLQWP7sMk6XZVieeNmbWTfL+tQxCE/krPQT+CTjFwTce4bpok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=y3ZNKGcF; arc=none smtp.client-ip=195.181.215.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="jhdQSz7C"
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id BFAD41C0075; Fri,  2 Feb 2024 19:09:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1706897363;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GhXuiOTbJ28fQ5AS5PmmoNrqYc/K8PF6YpD9vw+3YLI=;
-	b=jhdQSz7CrPhbI1Q3kJM2xE0wt1pW/KbasLXyc4hQcWpktvyuuQBKxWGFTBEWFhgH70WnNW
-	xl0kwT7Cf7qI8aiibGrSamtxdfsQhULo/VTv6AQEvNc6r+8uJlftWk30oTPy9ZBm4fEuNy
-	CEygw9YRd96RzVAH3rug0y2SIaortao=
-Date: Fri, 2 Feb 2024 19:09:22 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: phone-devel@vger.kernel.org, kernel list <linux-kernel@vger.kernel.org>,
-	fiona.klute@gmx.de, martijn@brixit.nl, megi@xff.cz,
-	samuel@sholland.org, heikki.krogerus@linux.intel.com,
-	linux-usb@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="y3ZNKGcF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+	t=1706984294; bh=v18Uq25xFd0lAYlqmeeW1rPPUfvDN/gZuKrB7cBLNgk=;
+	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
+	b=y3ZNKGcFub4QSs9xq0iVNFE7+KJSaXXYyWbxvggkDoGYxo6ADvmOOyh3q97eGngaY
+	 7NqT787d2NhDpOozFjmHwAAiNLLNbVsbNOK/8+dYHxKsKZ8if65gNuI2FO5qbw8JSd
+	 8NRQYdjVNQAUC89HwrkKZJAbGcCaiysmIsGTVWWE=
+Date: Sat, 3 Feb 2024 19:18:13 +0100
+From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+To: Pavel Machek <pavel@ucw.cz>
+Cc: phone-devel@vger.kernel.org, 
+	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
+	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org
 Subject: Re: [PATCH] usb: typec: anx7688: Add driver for ANX7688 USB-C HDMI
  bridge
-Message-ID: <Zb0v0va1A4SvlgCh@mobian>
+Message-ID: <iikhv7e2z3pk7nr6bvtuepwyrmukym5fjtc2xspsmhxzz5jlwe@5vfs4i3w66kc>
+Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
+	Pavel Machek <pavel@ucw.cz>, phone-devel@vger.kernel.org, 
+	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
+	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org
+X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
+ <https://xff.cz/key.txt>
 References: <Zbt1dIByBZ2stzjm@mobian>
- <2024020126-emote-unsubtly-3394@gregkh>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -48,28 +46,84 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <2024020126-emote-unsubtly-3394@gregkh>
+In-Reply-To: <Zbt1dIByBZ2stzjm@mobian>
 
-Hi!
+Hi Pavel,
 
-> > --- /dev/null
-> > +++ b/drivers/usb/typec/anx7688.c
-> > @@ -0,0 +1,1866 @@
-> > +/*
-> > + * ANX7688 USB-C HDMI bridge/PD driver
-> > + *
->=20
-> <snip>
->=20
-> Did this pass checkpatch?  I need a spdx line for new files please,
-> don't force us to go back and guess in the future, that isn't nice.
+On Thu, Feb 01, 2024 at 11:41:56AM +0100, Pavel Machek wrote:
+> From: Ondrej Jirman <megi@xff.cz>
+> 
+> This is driver for ANX7688 USB-C HDMI, with flashing and debugging
+> features removed. ANX7688 is rather criticial piece on PinePhone,
+> there's no display and no battery charging without it.
 
-Thanks for the review. Fixing checkpatch issues is easy, but it looks
-like closer look will be needed at the devicetree probing.
+Don't remove the flashing part. Some Pinephones come without the firmware
+in the past. Even recently, I've seen some people in the Pine chat
+asking how to flash the firmware on some old PinePhone.
 
-Also, what are the authors preferences about the license? I'd prefer
-GPLv2+.
+It's a safe operation that can be done at any time and can only be done
+from the kernel driver.
 
-Best regards,
-								Pavel
+> There's likely more work to be done here, but having basic support
+> in mainline is needed to be able to work on the other stuff
+> (networking, cameras, power management).
+> 
+> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+
+I should be second in order of sign-offs. Martijn wrote a non-working skeleton
+https://megous.com/git/linux/commit/?h=pp-5.7&id=30e33cefd7956a2b49fb27008b4af9d868974e58
+driver. Then I picked it up and developed it over years to a working thing.
+Almost none of the skeleton remains.
+
+License is GPLv2.
+
+> Signed-off-by: Martijn Braam <martijn@brixit.nl>
+> Signed-off-by: Samuel Holland <samuel@sholland.org>
+> Signed-off-by: Pavel Machek <pavel@ucw.cz>
+> 
+> [...]
+>
+> +static int anx7688_i2c_probe(struct i2c_client *client)
+> +{
+> +        struct anx7688 *anx7688;
+> +        struct device *dev = &client->dev;
+> +        struct typec_capability typec_cap = { };
+> +        int i, vid_h, vid_l;
+> +        int irq_cabledet;
+> +        int ret = 0;
+> +
+> +        anx7688 = devm_kzalloc(dev, sizeof(*anx7688), GFP_KERNEL);
+> +        if (!anx7688)
+> +                return -ENOMEM;
+> +
+> +        i2c_set_clientdata(client, anx7688);
+> +        anx7688->client = client;
+> +        anx7688->dev = &client->dev;
+> +        mutex_init(&anx7688->lock);
+> +        INIT_DELAYED_WORK(&anx7688->work, anx7688_work);
+> +	anx7688->last_extcon_state = -1;
+> +
+> +	ret = of_property_read_variable_u32_array(dev->of_node, "source-caps",
+> +						  anx7688->src_caps,
+> +						  1, ARRAY_SIZE(anx7688->src_caps));
+> +	if (ret < 0) {
+> +		dev_err(dev, "failed to get source-caps from DT\n");
+> +		return ret;
+> +	}
+> +	anx7688->n_src_caps = ret;
+> +
+> +	ret = of_property_read_variable_u32_array(dev->of_node, "sink-caps",
+> +						  anx7688->snk_caps,
+> +						  1, ARRAY_SIZE(anx7688->snk_caps));
+> +	if (ret < 0) {
+> +		dev_err(dev, "failed to get sink-caps from DT\n");
+> +		return ret;
+> +	}
+
+^^^ The driver will need to follow usb-c-connector bindings and it will need
+a bindings documentation for itself.
+
+That's one of the missing things that I did not implement, yet.
+
+Kind regards,
+	o.
