@@ -1,43 +1,44 @@
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay06.th.seeweb.it (relay06.th.seeweb.it [5.144.164.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CC85FB8D;
-	Sat,  3 Feb 2024 18:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699F024215;
+	Sun,  4 Feb 2024 17:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.144.164.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706984307; cv=none; b=oIkYgNwWXzhBcjzyMQHu3pX3ZC0z6qOWEKDm+6yfqqthyBQA2ByH/BIxuy6t05WOWjHQn4DlXvy0DWY0M/SknHvXGKIMFKpzy8K9XpFWU0S29njGlh0x/8ST61grZ0WeiabPJUXrioJgrJMngaFFTh5YRHDTklxCoPYlMjgB7y4=
+	t=1707067791; cv=none; b=pPObmJ/CFFIgb14FKGI0HYJfi5rIbWlho9RFVoaaiKnOhVrnqVR1saTTMOCJddULJggVk1U1bPMtn7nqyIdov1nuTkeiNci/akaRss27BvyEaW38jY5QkGU2MUEqNurIsqyVvZaKexWuXilAP1h2iohB2eNlHIT1KqFVxQRhKkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706984307; c=relaxed/simple;
-	bh=v18Uq25xFd0lAYlqmeeW1rPPUfvDN/gZuKrB7cBLNgk=;
+	s=arc-20240116; t=1707067791; c=relaxed/simple;
+	bh=lzSrv4+0HNUHwkpIOl2xT9ERzLM/rHgR5h5G3ipP+LI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J1lXNUUiL4aBXovL0VKGeNnz6qBWk57l8p4euQSWSq4Qlhg4Nu1MyfcVtParGCXDGcZgx9yj1hLL21djHbhjdmW1NDgg/XBrU8yAwuzfAolwFB0LCGIm2n6oQ4oLQWP7sMk6XZVieeNmbWTfL+tQxCE/krPQT+CTjFwTce4bpok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=y3ZNKGcF; arc=none smtp.client-ip=195.181.215.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="y3ZNKGcF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-	t=1706984294; bh=v18Uq25xFd0lAYlqmeeW1rPPUfvDN/gZuKrB7cBLNgk=;
-	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
-	b=y3ZNKGcFub4QSs9xq0iVNFE7+KJSaXXYyWbxvggkDoGYxo6ADvmOOyh3q97eGngaY
-	 7NqT787d2NhDpOozFjmHwAAiNLLNbVsbNOK/8+dYHxKsKZ8if65gNuI2FO5qbw8JSd
-	 8NRQYdjVNQAUC89HwrkKZJAbGcCaiysmIsGTVWWE=
-Date: Sat, 3 Feb 2024 19:18:13 +0100
-From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-To: Pavel Machek <pavel@ucw.cz>
-Cc: phone-devel@vger.kernel.org, 
-	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
-	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH] usb: typec: anx7688: Add driver for ANX7688 USB-C HDMI
- bridge
-Message-ID: <iikhv7e2z3pk7nr6bvtuepwyrmukym5fjtc2xspsmhxzz5jlwe@5vfs4i3w66kc>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
-	Pavel Machek <pavel@ucw.cz>, phone-devel@vger.kernel.org, 
-	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
-	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
-References: <Zbt1dIByBZ2stzjm@mobian>
+	 Content-Type:Content-Disposition:In-Reply-To; b=bS9rL3cDifsINtczbr74/ejSK0f4xzMUuO7m3bgVWM1Ws8qya95Xg2tYliOiT/4yDi0X4fA/uUz4YQuvpRCiopc8kF1HftfvqkCdTaIWp7txHHeRUJaFbbRNSE2nFliN8B55p/QTMTttRM+ycmbJI4R9VlT+bNDrVvTu3r4qQ+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=somainline.org; spf=pass smtp.mailfrom=somainline.org; arc=none smtp.client-ip=5.144.164.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=somainline.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=somainline.org
+Received: from SoMainline.org (2a02-a420-67-c93f-164f-8aff-fee4-5930.mobile6.kpn.net [IPv6:2a02:a420:67:c93f:164f:8aff:fee4:5930])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 348BA3EF26;
+	Sun,  4 Feb 2024 18:29:45 +0100 (CET)
+Date: Sun, 4 Feb 2024 18:29:43 +0100
+From: Marijn Suijten <marijn.suijten@somainline.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Lee Jones <lee@kernel.org>, phone-devel@vger.kernel.org, 
+	Pavel Machek <pavel@ucw.cz>, Bjorn Andersson <bjorn.andersson@linaro.org>, 
+	~postmarketos/upstreaming@lists.sr.ht, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, Konrad Dybcio <konrad.dybcio@somainline.org>, 
+	Martin Botka <martin.botka@somainline.org>, Jami Kettunen <jami.kettunen@somainline.org>, 
+	linux-arm-msm@vger.kernel.org, linux-leds@vger.kernel.org, Rob Herring <robh@kernel.org>, 
+	Bhupesh Sharma <bhupesh.sharma@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Stephen Boyd <swboyd@chromium.org>, Satya Priya <quic_c_skakit@quicinc.com>
+Subject: Re: [PATCH v4 2/2] leds: qcom-lpg: Add PM660L configuration and
+ compatible
+Message-ID: <vj7mlrrvn7y45fpavdy37eqfxrz3anq43qh4n2flktckuaoeo7@ynlw5rexyi27>
+References: <20220719211848.1653920-1-marijn.suijten@somainline.org>
+ <20220719211848.1653920-2-marijn.suijten@somainline.org>
+ <ZYFS04cznE5bhOeV@hovoldconsulting.com>
+ <3lsapoxlqijes5m4nqcbhdfhhs4chq3mcq3jaty7v2zihsqnwu@nn67a4h6425k>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -46,84 +47,97 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zbt1dIByBZ2stzjm@mobian>
+In-Reply-To: <3lsapoxlqijes5m4nqcbhdfhhs4chq3mcq3jaty7v2zihsqnwu@nn67a4h6425k>
 
-Hi Pavel,
-
-On Thu, Feb 01, 2024 at 11:41:56AM +0100, Pavel Machek wrote:
-> From: Ondrej Jirman <megi@xff.cz>
+On 2023-12-19 10:17:21, Marijn Suijten wrote:
+> Hi Johan and Lee,
 > 
-> This is driver for ANX7688 USB-C HDMI, with flashing and debugging
-> features removed. ANX7688 is rather criticial piece on PinePhone,
-> there's no display and no battery charging without it.
-
-Don't remove the flashing part. Some Pinephones come without the firmware
-in the past. Even recently, I've seen some people in the Pine chat
-asking how to flash the firmware on some old PinePhone.
-
-It's a safe operation that can be done at any time and can only be done
-from the kernel driver.
-
-> There's likely more work to be done here, but having basic support
-> in mainline is needed to be able to work on the other stuff
-> (networking, cameras, power management).
+> On 2023-12-19 09:22:43, Johan Hovold wrote:
+> > Hi Marijn and Lee,
+> > 
+> > On Tue, Jul 19, 2022 at 11:18:48PM +0200, Marijn Suijten wrote:
+> > > Inherit PM660L PMIC LPG/triled block configuration from downstream
+> > > drivers and DT sources, consisting of a triled block with automatic
+> > > trickle charge control and source selection, three colored led channels
+> > > belonging to the synchronized triled block and one loose PWM channel.
+> > > 
+> > > Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+> > > Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+> > > ---
+> > > 
+> > > Changes since v3:
+> > > - Rebased on -next;
+> > > - (series) dropped DTS patches that have been applied through the
+> > >   Qualcomm DTS tree, leaving only leds changes (driver and
+> > >   accompanying dt-bindings).
+> > 
+> > > diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
+> > > index 02f51cc61837..102ab0c33887 100644
+> > > --- a/drivers/leds/rgb/leds-qcom-lpg.c
+> > > +++ b/drivers/leds/rgb/leds-qcom-lpg.c
+> > > @@ -1304,6 +1304,23 @@ static int lpg_remove(struct platform_device *pdev)
+> > >  	return 0;
+> > >  }
+> > >  
+> > > +static const struct lpg_data pm660l_lpg_data = {
+> > > +	.lut_base = 0xb000,
+> > > +	.lut_size = 49,
+> > > +
+> > > +	.triled_base = 0xd000,
+> > > +	.triled_has_atc_ctl = true,
+> > > +	.triled_has_src_sel = true,
+> > > +
+> > > +	.num_channels = 4,
+> > > +	.channels = (const struct lpg_channel_data[]) {
+> > > +		{ .base = 0xb100, .triled_mask = BIT(5) },
+> > > +		{ .base = 0xb200, .triled_mask = BIT(6) },
+> > > +		{ .base = 0xb300, .triled_mask = BIT(7) },
+> > > +		{ .base = 0xb400 },
+> > > +	},
+> > > +};
+> > > +
+> > >  static const struct lpg_data pm8916_pwm_data = {
+> > >  	.num_channels = 1,
+> > >  	.channels = (const struct lpg_channel_data[]) {
+> > > @@ -1424,6 +1441,7 @@ static const struct lpg_data pm8350c_pwm_data = {
+> > >  };
+> > >  
+> > >  static const struct of_device_id lpg_of_table[] = {
+> > > +	{ .compatible = "qcom,pm660l-lpg", .data = &pm660l_lpg_data },
+> > >  	{ .compatible = "qcom,pm8150b-lpg", .data = &pm8150b_lpg_data },
+> > >  	{ .compatible = "qcom,pm8150l-lpg", .data = &pm8150l_lpg_data },
+> > >  	{ .compatible = "qcom,pm8350c-pwm", .data = &pm8350c_pwm_data },
+> > 
+> > When reviewing the Qualcomm SPMI PMIC bindings I noticed that this patch
+> > was never picked up by the LEDs maintainer, while the binding and dtsi
+> > changes made it in:
+> > 
+> > 	https://lore.kernel.org/r/20220719211848.1653920-2-marijn.suijten@somainline.org
+> > 
+> > Looks like it may still apply cleanly, but otherwise, would you mind
+> > rebasing and resending so that Lee can pick this one up?
+> > 
+> > Johan
 > 
-> Signed-off-by: Ondrej Jirman <megi@xff.cz>
-
-I should be second in order of sign-offs. Martijn wrote a non-working skeleton
-https://megous.com/git/linux/commit/?h=pp-5.7&id=30e33cefd7956a2b49fb27008b4af9d868974e58
-driver. Then I picked it up and developed it over years to a working thing.
-Almost none of the skeleton remains.
-
-License is GPLv2.
-
-> Signed-off-by: Martijn Braam <martijn@brixit.nl>
-> Signed-off-by: Samuel Holland <samuel@sholland.org>
-> Signed-off-by: Pavel Machek <pavel@ucw.cz>
+> Coincidentally I haven't touched this device/platform for months... until last
+> weekend where I noticed the same.  It does not apply cleanly and I had to solve
+> some conflicts:
 > 
-> [...]
->
-> +static int anx7688_i2c_probe(struct i2c_client *client)
-> +{
-> +        struct anx7688 *anx7688;
-> +        struct device *dev = &client->dev;
-> +        struct typec_capability typec_cap = { };
-> +        int i, vid_h, vid_l;
-> +        int irq_cabledet;
-> +        int ret = 0;
-> +
-> +        anx7688 = devm_kzalloc(dev, sizeof(*anx7688), GFP_KERNEL);
-> +        if (!anx7688)
-> +                return -ENOMEM;
-> +
-> +        i2c_set_clientdata(client, anx7688);
-> +        anx7688->client = client;
-> +        anx7688->dev = &client->dev;
-> +        mutex_init(&anx7688->lock);
-> +        INIT_DELAYED_WORK(&anx7688->work, anx7688_work);
-> +	anx7688->last_extcon_state = -1;
-> +
-> +	ret = of_property_read_variable_u32_array(dev->of_node, "source-caps",
-> +						  anx7688->src_caps,
-> +						  1, ARRAY_SIZE(anx7688->src_caps));
-> +	if (ret < 0) {
-> +		dev_err(dev, "failed to get source-caps from DT\n");
-> +		return ret;
-> +	}
-> +	anx7688->n_src_caps = ret;
-> +
-> +	ret = of_property_read_variable_u32_array(dev->of_node, "sink-caps",
-> +						  anx7688->snk_caps,
-> +						  1, ARRAY_SIZE(anx7688->snk_caps));
-> +	if (ret < 0) {
-> +		dev_err(dev, "failed to get sink-caps from DT\n");
-> +		return ret;
-> +	}
+> https://github.com/SoMainline/linux/commit/8ec5d02eaffcec24fcab6a989ab117a5b72b96b6
+> 
+> I'll gladly resend this!
 
-^^^ The driver will need to follow usb-c-connector bindings and it will need
-a bindings documentation for itself.
+Apologies for taking more time than necessary.  According to b4 the patch should
+become available at:
 
-That's one of the missing things that I did not implement, yet.
+https://lore.kernel.org/r/20240204-pm660l-lpg-v5-1-2f54d1a0894b@somainline.org
 
-Kind regards,
-	o.
+> Note that I have one more unmerged leds patch around, that hasn't been looked
+> at either.  Would it help to send this once again, perhaps with more reviewers/
+> testing (Johan, would you mind taking a look too)?
+> 
+> https://lore.kernel.org/linux-leds/20220719213034.1664056-1-marijn.suijten@somainline.org/
+
+I'll continue looking into clarifying this patch before resending it.
+
+- Marijn
