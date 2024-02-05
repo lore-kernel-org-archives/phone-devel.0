@@ -1,27 +1,59 @@
-Received: from relay05.th.seeweb.it (relay05.th.seeweb.it [5.144.164.166])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94DD2C68E
-	for <phone-devel@vger.kernel.org>; Sun,  4 Feb 2024 17:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.144.164.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B2912E51
+	for <phone-devel@vger.kernel.org>; Mon,  5 Feb 2024 09:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707067928; cv=none; b=QsWWU/Gjtclvpj1fK6zBmDfoQx2QXJCWqzHmptp9Cnz0/R1PWuC7LvnURrb52ODJaVojDuRAxgtUhFP6Phn8k3shRIbrwVoCA1tWOnFnusDXTqzoWN3OpZC2kXvwxo0qkGP0MVkEtcH3qgheqhbZu4q1AGOfIK/ltDAQzLo6rys=
+	t=1707126705; cv=none; b=HigKqJKvxgxd4mraPEudC+2uveKwol+fIISqWWVxygkCXwCPIRT5QfWvASAozdfF5PN/UlPW/C9sVlJfLiScsTnHaUnK4MwVrgDl6hGojCqhzOGNFQKdwwoj/I+AGSVzWZLNLFVrig+KrnVQkvIZPwOab37wpnpPjqdd7JqmkKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707067928; c=relaxed/simple;
-	bh=bcNFXOXgVZBEkNCwZd1X9XvtwNPnxgf0ip+0KH9NcyE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ARC+aa8hwNZb+Uw5SDNCLkBB3TKMoSMu81kTwvBtunIMrNLql8XVe5y2/XmeYTrO7oiogMJsSrmlOGExShDyMGlEFZUBjojBvggMxE8NpE6e/DLS+jfgAPoj+B12nENl0X7CKQpuHsBlGuy0cccV6a4UGG7mztgNPWolMCNzUQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=somainline.org; spf=pass smtp.mailfrom=somainline.org; arc=none smtp.client-ip=5.144.164.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=somainline.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=somainline.org
-Received: from Marijn-Arch-Book.localdomain (2a02-a420-67-c93f-164f-8aff-fee4-5930.mobile6.kpn.net [IPv6:2a02:a420:67:c93f:164f:8aff:fee4:5930])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by m-r2.th.seeweb.it (Postfix) with ESMTPSA id D639D3E74E;
-	Sun,  4 Feb 2024 18:24:31 +0100 (CET)
-From: Marijn Suijten <marijn.suijten@somainline.org>
-Date: Sun, 04 Feb 2024 18:24:20 +0100
-Subject: [PATCH v5] leds: qcom-lpg: Add PM660L configuration and compatible
+	s=arc-20240116; t=1707126705; c=relaxed/simple;
+	bh=lhqnaM4mv85+e6ISI7d0OhPBJrI3dKxaikVHcrxkSBk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MJmCz3ghQGlhuI05LkwDz5p/TGesKRdqN+rYuAdyfkaw0pREU9hrqJQtD+DFI+xArW7ag0mq4BZRNj89Ep9inm6NsxkOOdXnvVvSp3Dcy/+2v5Nr5i2hWkDyUA4ZuuE29iTHDSFbOS7Iq+WbruHWHRLWytNFq2YBDrsD6BLPo4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Tl7VOTlo; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Tl7VOTlo"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-40fb3b5893eso34563605e9.0
+        for <phone-devel@vger.kernel.org>; Mon, 05 Feb 2024 01:51:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1707126701; x=1707731501; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7MqLMnIRBYQd7R/nZwH9ZxqSodjOOLBq1/JAXOO+J5Y=;
+        b=Tl7VOTloh3JhtrFEBJETDI6W07KyA0WwbgNDjKbmKrSs8S3L2sILx07tCjDqHlhdHn
+         e0685Sw6Aeh5YyIbAQsXeolQfgz61ubyAiTMXTi2KzE7ttdjJy4fNmORSBJA9RHgGUDC
+         LzCChhOJxba/+zBIDHcZYOZdfXfCXrIAM2qaB43XzkUoYPqEtYP+tDek5cegUSqSWPPL
+         n0Veq7TPhDTmXxWHoAf5hkb8Knr9LIYlPhwqZAqbkK01CkyIGZcYlh0I2RMHvSAV31fW
+         dTHX+3nvxgOPVcXvOvjBAMeQmaV8bvSKBqgtZZ4g8kCBq9vHF4TEv2KqmH6mdmCjn2uN
+         Hrcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707126701; x=1707731501;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7MqLMnIRBYQd7R/nZwH9ZxqSodjOOLBq1/JAXOO+J5Y=;
+        b=b+3sMSdTJ3mtOATu3LR5TAUMK6LO5jIRHO478lMY6ixTMrFV5lqGDECQOX/9ICufFP
+         VkCLKdKut00A9F4JiH+ozCMOyXbuiOYiEFtLv8FTq/IJ+r2e/3MuunOlUx5oyTM8nKlX
+         sB5i5YJHLBKDNOS3Iss9myoo6b+VJuk/EMxjvU+m/RXXpN+xmAIUFIbxDFGWmjZlG6Em
+         Q1k74Ybn+0Yv9G6JGQSsNx+rHY2ES5oEPbzeSzGeWTx+JOoUYngxR7boTjl2uQz88tB0
+         OPkWeRo8NE71e71pvOnz5Lnc4LKX1u26GysqV8hnKJiW0QDF2FZHUzgLJQ9fTnj27wRM
+         E8/g==
+X-Gm-Message-State: AOJu0YzWYnp228DvJjzIZdH0IeVY779W39n7QQYwBCYeRaVjo0lFFkXA
+	aVl0Epr8N03kGaywh2WtAvBFDchH8GprSvrCA2zGGj4QNaj2VMBVxgtqDCplIu0=
+X-Google-Smtp-Source: AGHT+IHVD0GAMkuebfAaiFcSXDgdm9NOHodL49BEWfhNzmxnZGq4r1vny0RMFxJaL2ikqWklU2NBzQ==
+X-Received: by 2002:a05:600c:468c:b0:40f:dc4e:69e8 with SMTP id p12-20020a05600c468c00b0040fdc4e69e8mr1108853wmo.27.1707126701483;
+        Mon, 05 Feb 2024 01:51:41 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCVFzdq9qdEjY7bS1DpVfFS5j4lS08duBC0ToDwYGWb0m8l6H1OAxmT3bU8o+GH2FJl/IHjcdiRzQf9Kw+PEB4N0+MVs6gDZ1tlDICAf36vkDoZb7taKNRAxmYb1Hr272GwwQLxTEpR/rKCpx0qKDRhRkHVbOOCpnBPFq5k6nZf39gPp4EVWWpWmjlvC0qj3tq69U3wjcG2Camsmhg+juSOOpfbIByfgJRHXypHOpo4qCd/QiXnIReAaEqfxXsPII+lSS0vx0ZQwhxastha4n6c0Alj0lQKK8rg60hnZh+rQgmb7MCdPlYTRAYmuo4/8DQJQ3Ptms2PY6OuszDcH8YUlcnAx2MyVjyQp9Vi9xGiTPlNwuEuQTZhP6LQyLdRIi8V+hgQEzBJl0ZJde52DCGxXtreU+IpnFG6Enk17cQfNdWG1oRTAFcJJ4BbGzMDAVmoGzzFIylHEP/8YQT5/uPcohXztejIdZ2TW8drvuSuvabWbuy7bh4hP1PoZbVAfZTLU3Z8wwD5kIj5jWSBZFHqmrgAH
+Received: from otso.luca.vpn.lucaweiss.eu ([2a02:a03f:6aef:6800:2f37:ce90:b91c:e85a])
+        by smtp.gmail.com with ESMTPSA id n12-20020a5d400c000000b0033b3c2e73e2sm2278283wrp.113.2024.02.05.01.51.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Feb 2024 01:51:41 -0800 (PST)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/3] Add PPG support for PMI632 LPG dtsi
+Date: Mon, 05 Feb 2024 10:51:37 +0100
+Message-Id: <20240205-pmi632-ppg-v1-0-e236c95a2099@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -30,82 +62,40 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240204-pm660l-lpg-v5-1-2f54d1a0894b@somainline.org>
-X-B4-Tracking: v=1; b=H4sIAEPIv2UC/zXMTQ6CMBBA4auQWVsy/QELK+9hXFQdYAhtSYvGh
- HB3GxOX3+K9HTIlpgx9tUOiN2eOoaA5VfCYXBhJ8LMYFCqDCo1YfdviIpZ1FINu7tZpp61BKMG
- aaODPb3a9FQ8perFNidx/ofAsOyWlNbaWbaM7hUIK7xLPoc4vnjcKlxy947BwoDqmEY7jC0BOA
- K6lAAAA
-To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>
-Cc: linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
- Bjorn Andersson <andersson@kernel.org>, Johan Hovold <johan@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@somainline.org>, 
- Martin Botka <martin.botka@somainline.org>, 
- Jami Kettunen <jami.kettunen@somainline.org>, 
- ~postmarketos/upstreaming@lists.sr.ht, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- Bjorn Andersson <andersson@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAKmvwGUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDQ0Nz3YLcTDNjI92CgnTdNMPUtCQTY0MLcyMjJaCGgqLUtMwKsGHRsbW
+ 1AB+PYgNcAAAA
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Lee Jones <lee@kernel.org>, 
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.12.4
 
-Inherit PM660L PMIC LPG/triled block configuration from downstream
-drivers and DT sources, consisting of a triled block with automatic
-trickle charge control and source selection, three colored led channels
-belonging to the synchronized triled block and one loose PWM channel.
+Hook up the PBS & SDAM to the PMI632 LPG so that we can use the
+hw_pattern for the LEDs.
 
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Changes since v4:
+Luca Weiss (3):
+      dt-bindings: mfd: qcom,spmi-pmic: Add pbs to SPMI device types
+      arm64: dts: qcom: pmi632: Add PBS client and use in LPG node
+      arm64: defconfig: Enable QCOM PBS
 
-- Rebased on -next and resolve conflict with removed lpg_remove();
-- v4: https://lore.kernel.org/linux-leds/20220719211848.1653920-2-marijn.suijten@somainline.org/
+ Documentation/devicetree/bindings/mfd/qcom,spmi-pmic.yaml | 4 ++++
+ arch/arm64/boot/dts/qcom/pmi632.dtsi                      | 9 +++++++++
+ arch/arm64/configs/defconfig                              | 1 +
+ 3 files changed, 14 insertions(+)
 ---
- drivers/leds/rgb/leds-qcom-lpg.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
-index 156b73d1f4a2..ab298391f9e0 100644
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -1360,6 +1360,23 @@ static int lpg_probe(struct platform_device *pdev)
- 	return lpg_add_pwm(lpg);
- }
- 
-+static const struct lpg_data pm660l_lpg_data = {
-+	.lut_base = 0xb000,
-+	.lut_size = 49,
-+
-+	.triled_base = 0xd000,
-+	.triled_has_atc_ctl = true,
-+	.triled_has_src_sel = true,
-+
-+	.num_channels = 4,
-+	.channels = (const struct lpg_channel_data[]) {
-+		{ .base = 0xb100, .triled_mask = BIT(5) },
-+		{ .base = 0xb200, .triled_mask = BIT(6) },
-+		{ .base = 0xb300, .triled_mask = BIT(7) },
-+		{ .base = 0xb400 },
-+	},
-+};
-+
- static const struct lpg_data pm8916_pwm_data = {
- 	.num_channels = 1,
- 	.channels = (const struct lpg_channel_data[]) {
-@@ -1502,6 +1519,7 @@ static const struct lpg_data pmk8550_pwm_data = {
- };
- 
- static const struct of_device_id lpg_of_table[] = {
-+	{ .compatible = "qcom,pm660l-lpg", .data = &pm660l_lpg_data },
- 	{ .compatible = "qcom,pm8150b-lpg", .data = &pm8150b_lpg_data },
- 	{ .compatible = "qcom,pm8150l-lpg", .data = &pm8150l_lpg_data },
- 	{ .compatible = "qcom,pm8350c-pwm", .data = &pm8350c_pwm_data },
-
----
-base-commit: 01af33cc9894b4489fb68fa35c40e9fe85df63dc
-change-id: 20240204-pm660l-lpg-f35b8a3a3840
+base-commit: 1f790ac9c84028d89ef4dbb28ecc5771fc352e25
+change-id: 20240117-pmi632-ppg-f1efb4318722
 
 Best regards,
 -- 
-Marijn Suijten <marijn.suijten@somainline.org>
+Luca Weiss <luca.weiss@fairphone.com>
 
