@@ -1,61 +1,60 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F5B12B96
-	for <phone-devel@vger.kernel.org>; Mon,  5 Feb 2024 09:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686D112E46
+	for <phone-devel@vger.kernel.org>; Mon,  5 Feb 2024 09:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707126707; cv=none; b=KOhmUcewwwBjyUTbb9LEhBsJeQC8JN4jXIqp7+mGbwx1vzT2bfAYmmCbMc7VHqb+grQ9YmiTQsfxPmTnE5fL/Pxdij5Jt5TWmFIJ64yIGr9UIZcaUeutRmB4Yxu2dm0Qu9oHHNsZ/FUl2UkNkVdSQCZRmTeeKMDUADsX0pADyXY=
+	t=1707126708; cv=none; b=CpZKsPgyLECrBFx+IQeMyQOXfGXrAZzNCAoBSk+fdeQzs90O/xf2DPfCZcZ/4UKTQTVx/wi850NLijeNzausZ77nwM3qEFMRJz/YmnfpOzRHdUCA9nRx36e6FsFUa2X+CySC4TdZrGgLCAgCIUXFPzIviRAOOSiyZIUqJTPaCjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707126707; c=relaxed/simple;
-	bh=9bGVx9AV/PBRbHF4o3RcG6Ql1qXpfJutE075Jdi21Jg=;
+	s=arc-20240116; t=1707126708; c=relaxed/simple;
+	bh=ty8WN63mt50YPdGFaXjaf2SluhPVzZf3WFRAX94nEFI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ptr9+tekCxA7nxlN6eREdrQ9eb8Ull8N9EEHG/PXE0N5VqCB6j58ygYbuAyu9lUckQYvZULmRQBvKTmHzNOPCenm0SUpF2JvB1Vf0DH22NHPyA38vwgj5bMZpdFhhF8GmWdPuBxWgYIquoCBVRGtyceJgsAx6dkw0ZI0qkdpllk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=EED3qQBk; arc=none smtp.client-ip=209.85.128.52
+	 In-Reply-To:To:Cc; b=qrG1eFUaNqzdccv1UBxvn7fuPD7CpiSjdqPApcdO3lhxSOVp1/sDKi3dgzzxZ+zDs2tSCl3kl97rb4oS1Eg0fufoAiemY1+Qwnd9VWp6c8SjKKGsp9BRZrdBLKMcMlLU12NyOAoJ5NVrMPAYi6OKmtH15xOmIxYO3G0y50GiprU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=SP27NyN1; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="EED3qQBk"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-40fb94d42e4so33636595e9.2
-        for <phone-devel@vger.kernel.org>; Mon, 05 Feb 2024 01:51:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="SP27NyN1"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-33b35323341so921304f8f.3
+        for <phone-devel@vger.kernel.org>; Mon, 05 Feb 2024 01:51:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1707126704; x=1707731504; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1707126705; x=1707731505; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hHaHZotC246BZzqrce6ngZLliQyoyTygfMXxTOkSCN4=;
-        b=EED3qQBkFDhjaHlZjm2D8ZJXfBRWMBpBUqdsxX6CV5ZjiS9lYZxhIo8vKxNR9E8fC7
-         kNBcpUIFBPOtWD2oQpXb5vslUNFlNYbGVxuOJ7wIC7bsBqjWvOGyz5KZhRWjoVuV1jHL
-         Ku+BNXDmmSJGTM6ygD4v2JNen0Npts04anQCptktkyn0i0n5uYIerfXruo1mSFFkv8hM
-         rpwIVhoAccTQaxTaat+YWYIwDF61dh4AjukNzfpM9lDm+oMD975eocFsZiyhj4CxAG4V
-         Ri9dxG+HfOAiWOP6w0mVnVnyMvv7xGSaM73cgQ8/44fWp/HzMZyap6NeYXzajdNUV6sY
-         42Jg==
+        bh=IbKVC/6rW/A9zlEdDawOO5GD/uHrSUeNWUBFrySamCY=;
+        b=SP27NyN1dQ2HZM+rjdr8ZIPweBroYzQKwsLZwBdQrtLKyjsW5LeIdQ6z07XCOCPk7N
+         Blq6CQ2IEN3h5QD0G8NYLHVuhcfDGoiAsnYtWv0pX3IALAbICHdqKVz4O0bZEjkVTt/6
+         1gjZbo4FNd8DwNXKrrTry7bLoX9eb+o5FK0bJdHab6RfVRWMfdrtng2it0ZnlXI1SGA5
+         jweALgOUqp8X/3Sl/jJm6PcplNmsL7b+SdyQi8IMBkH6JAWhlNFE71OI+8si6uf4H/aZ
+         lpf9Vzs7lxoDSV8La9gHjsNzn6fa3X3xBrkw+cHBJ/68k9fUhAjw29qJwwiVhfAl6lTy
+         NVgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707126704; x=1707731504;
+        d=1e100.net; s=20230601; t=1707126705; x=1707731505;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hHaHZotC246BZzqrce6ngZLliQyoyTygfMXxTOkSCN4=;
-        b=UTNLCHKxVoIJ+iU8QOxNPiRi4+GeE3RWYzW3EQHjt5Jsxfut5kYdrv+x2nvouQIzm+
-         12RB2vR7mle15V/84wAWVF8slhd48jbYaiw5OK10kDAW8d6m44Jcdr9Z074zJffvSEok
-         4Ma0HxjLXO3+dX80nCeYbdmj8dEC4hDRr4gaZb5utfIVuvkOcVFUkbndCUNPQ22SOprS
-         NMT/CGFo8Ez4y5hJTH0kC69zBItTfbBusYVlw04rVZ2gM2j+v0YVd2jxyPxXNkbudin4
-         JbuZ4TbJmupDM/TNTKU3N/Mg4dA3YxHEHKuaiRDXCEqAhY1DK7AC1LNGJIb6+3peVKHd
-         uDKw==
-X-Gm-Message-State: AOJu0YyhckhbI5CLPSONzOjiMV5EchOm764uNt1LE/Sszdw4IwO+7SDa
-	echb7MQpw23GNl0LwxE/kZA0AjHDK+bbnoUuAa5pIU5Xr4LCn2+g2BCamKzpoyc=
-X-Google-Smtp-Source: AGHT+IFpI9sY4oNvXm/hdgb7/0YwVV+MxYnIVZtcbqsvQB5pF8WoUoY/Brppzfu2fxPpfKuSpgl+5Q==
-X-Received: by 2002:adf:db47:0:b0:33b:216d:70bc with SMTP id f7-20020adfdb47000000b0033b216d70bcmr5276935wrj.42.1707126704029;
+        bh=IbKVC/6rW/A9zlEdDawOO5GD/uHrSUeNWUBFrySamCY=;
+        b=duqGsUiwhhRWjQ1dgnZNUxN9yyZBnjXtuOBdtPRGJYuHUoY7ppdKdXMtSY395AAJ6H
+         r8u7gs0zEzCSQuqgr0uUSFBFLiA7eDHSkAJmA9o1badnCHaE8xSygsP1T/yPW1yTWiRQ
+         gmD7gWJL+PbIJkfK2p+Ci5azmx0FQFf4MGvAJP94Jl/rezYAND+NvZvH/beuSafhZCCK
+         zRlww+82/JIYDn1jisCLholN9JqVagHNdMbZnrMMAU9xt/f2Cbv06ybZjpfYCPPt27hh
+         x5cpRnV74rWduzcx7AP1i+zdN2AmkxNA4YvfCT0fwHOFk9+tFq+XMfxvK+ETAhII7J4r
+         eqaQ==
+X-Gm-Message-State: AOJu0YxQ3rMqEhVsLhfo7fqHJlpcN4S+Sj0coTys3mBwLHVd42Rn2XWP
+	Qi2FzYLQyQmE5Ow26lDFluPHeUGhL06qFLJ5WXtW+cACAgJW7QLpgx39Zhuzzmo=
+X-Google-Smtp-Source: AGHT+IGOJAjSI9lJ9RvQfrOq3TJ6cBHRlKsbr9Liz22glAu688BuPiBQxvbdov4vb5zD8a8NuOMByg==
+X-Received: by 2002:a5d:6308:0:b0:33b:37f4:f42 with SMTP id i8-20020a5d6308000000b0033b37f40f42mr2781964wru.2.1707126704768;
         Mon, 05 Feb 2024 01:51:44 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCVaac0Yl5gzH95FpnSRi+ll8mWpP8bKka43VgBuw3wvCBJzVlRN9fABjAwClnEvSy1kia1G3FnFbuvR4IrCMXCyukl4q/JobVe3RsQhmZHErU1JVspINy4F9DpPuYdjdpmymzC3hvG3Ontwa+nmPpYkKd/KtMsvV9gnjVQZ9mHh6zVTQ2WkDWbIY2B9NQrgIIarj5XMnDD9JsAF5PSkd0k7IDEsPv9t9nQCYcDFr4TpnoMyjf7w0Nb6eqqwEZBruRiYzZBiVZ+XBSFiLsvA+CaWaB5/DzYrTyGvSnEfyaYKCSFdU7oJNEhMa7hVr3QB7bdH7cvk1syvqGHtdCWidMddBC1qnQYyMsHXGrqWilY1bfxVYQv6EQhwQuWTYkDcdRHqDBgJVmItRztKlTClUKALsv2Jz+zu7mbU9ir/21hOnTkIgbQyvuCnNsS8ru3ls+akLwiJNTNa3Ct7ofkhq3uGQ6eDTQ0iQutUwPeuj3srXbtS0EulMjWW8MtZRbnWMGd4qAum7EtjXxeT34VeCOCMiUW+
+X-Forwarded-Encrypted: i=0; AJvYcCX9WYLA8nfuZrQJNOxBrP9FW8e+9J4Lc9IoeFPDHvP7OeMiwgKTf7t8ZJw0ugDnAU1diPxGgTEbXoiqJu9VdGquxBrJY28ivS+rr2o5/5aLIuoY1Yu02ghzX0Rkted2SIHHYlkDbnkB0BBkj6aLLZKEpHgDHS6GRfI610IBjDu8HZh92oQiGvVhs1Z+sX+xRSme1yzFN/7J7xcBUq/L+LF3Neng6xtiMSdhOdfUi8dbBBEy3wQg2NhJWLH6o/33GuSfr2AiHPxVCcbXikOGFlT1PJPP9FimV67AJbfDVuLJ/vFs9WSHntX06M7YBGQ0Q1aqBIQrIgLdpcX93l+olI/aOlgpGg1zme+/cdiMUJal/hSyiG34jwf/gPscsm+dnyfjDuWqenC8RkIAvPiu1FA2NY2dj+e43g1bFQYKlU02OhvgGslqrLAqJ53N0CRu5eAuEl8REvl1tCKyFnVVts07Jx57kvkWRtQLbsMliacwGBpoAne25XG2mL0X0mrQB2d84bsBiOSue3+ZJtwFtjly4z4x
 Received: from otso.luca.vpn.lucaweiss.eu ([2a02:a03f:6aef:6800:2f37:ce90:b91c:e85a])
-        by smtp.gmail.com with ESMTPSA id n12-20020a5d400c000000b0033b3c2e73e2sm2278283wrp.113.2024.02.05.01.51.42
+        by smtp.gmail.com with ESMTPSA id n12-20020a5d400c000000b0033b3c2e73e2sm2278283wrp.113.2024.02.05.01.51.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Feb 2024 01:51:43 -0800 (PST)
+        Mon, 05 Feb 2024 01:51:44 -0800 (PST)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Mon, 05 Feb 2024 10:51:39 +0100
-Subject: [PATCH 2/3] arm64: dts: qcom: pmi632: Add PBS client and use in
- LPG node
+Date: Mon, 05 Feb 2024 10:51:40 +0100
+Subject: [PATCH 3/3] arm64: defconfig: Enable QCOM PBS
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -64,7 +63,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240205-pmi632-ppg-v1-2-e236c95a2099@fairphone.com>
+Message-Id: <20240205-pmi632-ppg-v1-3-e236c95a2099@fairphone.com>
 References: <20240205-pmi632-ppg-v1-0-e236c95a2099@fairphone.com>
 In-Reply-To: <20240205-pmi632-ppg-v1-0-e236c95a2099@fairphone.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
@@ -79,41 +78,25 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.12.4
 
-With SDAM + PBS the LPG driver can configure the LED pattern in
-hardware.
+Enable the PBS driver used on e.g. PMI632.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm64/boot/dts/qcom/pmi632.dtsi | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/pmi632.dtsi b/arch/arm64/boot/dts/qcom/pmi632.dtsi
-index 4eb79e0ce40a..d2bb49a619d7 100644
---- a/arch/arm64/boot/dts/qcom/pmi632.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pmi632.dtsi
-@@ -127,6 +127,11 @@ pmi632_adc_tm: adc-tm@3500 {
- 			status = "disabled";
- 		};
- 
-+		pmi632_pbs_client3: pbs@7400 {
-+			compatible = "qcom,pmi632-pbs", "qcom,pbs";
-+			reg = <0x7400>;
-+		};
-+
- 		pmi632_sdam_7: nvram@b600 {
- 			compatible = "qcom,spmi-sdam";
- 			reg = <0xb600>;
-@@ -155,6 +160,10 @@ pmic@3 {
- 		pmi632_lpg: pwm {
- 			compatible = "qcom,pmi632-lpg";
- 
-+			nvmem = <&pmi632_sdam_7>;
-+			nvmem-names = "lpg_chan_sdam";
-+			qcom,pbs = <&pmi632_pbs_client3>;
-+
- 			#address-cells = <1>;
- 			#size-cells = <0>;
- 			#pwm-cells = <2>;
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index cfa3e00def09..e92a5fd9f660 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -1375,6 +1375,7 @@ CONFIG_QCOM_STATS=m
+ CONFIG_QCOM_WCNSS_CTRL=m
+ CONFIG_QCOM_APR=m
+ CONFIG_QCOM_ICC_BWMON=m
++CONFIG_QCOM_PBS=m
+ CONFIG_ARCH_R8A77995=y
+ CONFIG_ARCH_R8A77990=y
+ CONFIG_ARCH_R8A77951=y
 
 -- 
 2.43.0
