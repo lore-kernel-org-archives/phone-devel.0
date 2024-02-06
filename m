@@ -1,146 +1,183 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02E314A8E
-	for <phone-devel@vger.kernel.org>; Tue,  6 Feb 2024 19:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EBB1CF9A
+	for <phone-devel@vger.kernel.org>; Tue,  6 Feb 2024 23:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707246513; cv=none; b=EtBZ/nM/YNjOyHN0cW3tu3fTjJJAqKX/P00ynt1eLRiBpQ5Pktj1+Wvek4AFT1Xrc4+3qTOLsOQhGjh47uNBR/unkn+ZnneiBvgbgUSLf5KkCA6zzHG+uMVykURfGIUIrPAoilRoDQQN6TxNDcjtVPcat0tokJ+MaToSIBNzFKg=
+	t=1707261605; cv=none; b=cPZ01TJ8xHhPV6NZEPKG+fxVewJAjoEmtgQ2itHCrWXeiJSKx9hFLIzT144wQf/MbKwP7rHrito4vxukMBRYaD6v5L9dk4kSPteYlc110bWn1LMKjx4pTmdqt1AH/XZJ6yWsueuX/vfiF4GG959f6YUrV3NwTrNbPOTMnKoBbuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707246513; c=relaxed/simple;
-	bh=UZTJjPcb2MjuJk4X9agIJ4O2gWUdi3IX7M8uOAzP3So=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KfArEz6AUVZ9Msveqea+Pm03zBSUEGb872H6IgznYNBX2WUdF65P5BLlajBj//w8Cg5uDiJYzVqZI5CFiJ7/TGtXTfEO+WQK9bkt3EfalD5NLHK6GOW+HUt/+uLWRE662V5TYA2T1cLEOgF3fgjBPFkBfX2cD7oTC4xuE0eKpis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lABHGyib; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1707261605; c=relaxed/simple;
+	bh=m+y3HMZaCJPRB55/Kjusqw16ffP7mgbzzM/LpvoQeJI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=R5L/DfyjTdLHgHPfNV3ObjkX73pGJlVYLK1rq6xJGUba/39TpPhsCCv/Tykqn8t+kW3RbMHNc+5L574I65ahS7VP7fIxeZ3P9/H0ryZ7GQu6yla3sWWDaJla+AT/TFDtLAtw+VQvKvfPrR9Ez7HptM+j9dvZQFjfGplYDfSJmXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=vHnXIfK6; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lABHGyib"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d0b4ea773eso25263351fa.0
-        for <phone-devel@vger.kernel.org>; Tue, 06 Feb 2024 11:08:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="vHnXIfK6"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3394ca0c874so46879f8f.2
+        for <phone-devel@vger.kernel.org>; Tue, 06 Feb 2024 15:20:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707246509; x=1707851309; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MdMobT+8h7P/ZBNgynDgzGAaw5f0RjP4kU2V9E4+mMM=;
-        b=lABHGyib9M3NYjj7cXYk/RIaG2/zHk4rYrNZMI365x1Ol0zFqBB2OTMlwoDwtqAUv2
-         XgzzOWl48pVuU4xIQNLTTewaagQu3yOSe8h4TJoD/5QrI1j3JSmdc8qyutYO46qtYJ+L
-         LaTWWnyk7MxJklDOu2nr5eGSsabjKt3EuCt+y+ed3Cxjwl/BHypLOB4hxtxkjYgnLIfS
-         kfKp3l4EDVBxV/7mHEbic8dkdZMgUW7Hm8xixANQuDg+bD2Q1BZFLy8rZaOj57NxHjWC
-         TOuM28Wl+pjp3NK4woQ2xBc1OKcb65/RkQ/ct9dbxVt2Iw53dXaFTPSNb4SreSyzZyk+
-         wl0A==
+        d=fairphone.com; s=fair; t=1707261601; x=1707866401; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m+y3HMZaCJPRB55/Kjusqw16ffP7mgbzzM/LpvoQeJI=;
+        b=vHnXIfK6P4iQ7iPcy+7IpycNZg7dLVdr0ew0To/mKZBzYuGjPsjKCUEpM5YD1sjgHt
+         /RaG8dTJRUf0etD/2x0Q/14QP1+Tp1+isboMEHWZb3569PInWqye9GqaQVvIluNb2rPo
+         XmcPlxXAIBrDieI24RiDbCwsq96O76a+0uq/FMn0XfTBpxHXgX2b4DOsloCHlWJTYITB
+         iQyvXcUd7CWX1sqlf8c1J9lmRmdvTrENpPvE5lGUYjKr4D2iXquFOEeDm0Nd2Gxl9MiT
+         Ynh55NqzjegdY+oOGTKIQ576noGsom5wCjCvn81Th2Z6HUvgZ1wjnWCwSgZGmVj72Npk
+         3Tvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707246509; x=1707851309;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MdMobT+8h7P/ZBNgynDgzGAaw5f0RjP4kU2V9E4+mMM=;
-        b=dIgJOEPZdCmOWHnVO7mhlL1fxM15MqHHgGscy4AjjSSG9EA4rt8ohWaJHUjYRqHM/+
-         48PuS4r+rsBYvHuN/hVopAbyiD40WL93kLK8D1qSpfZPgtwASxo8hgy0OLMtPaYZZb++
-         yqao9b0ummBP3sSX3jBYoSOANM0FZyHhoboquPha6/+dl7D7JUDbR5IseRUcsW5K6+I9
-         M9PS3DY5yYoUWh0EEmYXAWlj4Idzqg0nSVLdBkai00BqyNEoTWhuzKTZepifiIkRK3mm
-         S8SJLefX/H1PiFhaxogjL2xlLAUa999G7anGC4gfdg4wItKWrM7qsA50GPvd+N53Bqee
-         biHQ==
-X-Gm-Message-State: AOJu0YwQ6aSrBQsNHWW1J34NlbkaHE4fCmCU5JQ7xmVKteGGCFQp23nB
-	PvN3wMdDo56+QQz2GRv9dcnzzQXPnoA4X7NTsTLlLQ2tyiyHEQdnk0hrcuWhl9M=
-X-Google-Smtp-Source: AGHT+IGJZ+Q4CCq7NP1967q508pkF3nV6233Sdm5IY2dxAmf/nEDmmh8+oenKnnPLSfC9YMB/Rb93g==
-X-Received: by 2002:a05:651c:1713:b0:2d0:9c30:e1af with SMTP id be19-20020a05651c171300b002d09c30e1afmr1936187ljb.53.1707246508808;
-        Tue, 06 Feb 2024 11:08:28 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCWwv1KQlgQ/Y+PE04tvRgGVtPexYwA2ALlogWGTpP+H1isFU41OBdCM+51YfUdAwynKJ9cx5y6GQLuuXdl68pQotMwBIzaP63RERBsPE+Jth8pkvqnJtWrcmfZka/loSHbdhaoG07lmJn6ihYkb1paKcC5moSWInVErUjW97QpmX6zDzyP6I71m5RQHgwx5nsqA2oKnfjQpuCB8NC5jldq4aF8oV5qXkzwiEFotOoM4j6Z1FQA7MCdsH7FD13pdTbDOHzUqUoJ5EuWeNtxw2D58TLt8coNS/p+1aCssYP+TNv+WV/xGcmdDWxZTnRLGtbMZD9W9UH1niLzdw6JtwQ9OX45zakNIZK69Eqsxd2naXydi8WPbDfByyAW1fcoKt4inEC92a8KY5nB7VGa2hd1ClPwIYv4339UotBvprXKNhLZ5kTQ18GHkxdfcsPAUHA83+ah7Phc+7ecE9rDN2yNpB7nNXOnAxrkBieaq8WeqTOvxI+09rP6DvseCjKZWq0RkGPYlCJR27VR+vsOo2P+YzchmvmETsm4mU2eNcBIrIdxJ2sMnJYXdSv1Y54WrrPmNN8p2MHKpJxTsV6WdxaOwObab/BaapzqdxQfJU0WZlZW863YCYsvHqSI9HMqeFgMi4QYw8QwmQMy1hoJTXhwUNtx3uBe+96mxE+Jgpu+Mj2AJoRPVBPdl1aKbpKLuOB7byIPK/o/sjniuI2w/dSh8
-Received: from [192.168.192.207] (037008245233.garwolin.vectranet.pl. [37.8.245.233])
-        by smtp.gmail.com with ESMTPSA id q24-20020a056402041800b0055ff68cce5asm1325939edv.27.2024.02.06.11.08.27
+        d=1e100.net; s=20230601; t=1707261601; x=1707866401;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=m+y3HMZaCJPRB55/Kjusqw16ffP7mgbzzM/LpvoQeJI=;
+        b=NO5MkIzn5/FqxgWAhuoEny0ocjoKRzAmym3ML+vpzXPgpI2RUDb0eUQTmIRWVwe62x
+         S4iDp7suN42IheblNzXUgWwVqz/5I7T3RbU0ixVxBYUwA2NWdBJP/kgTzLZ4ImZHzl/a
+         kn0I+UpWgKTFt4ToPkc3XvMquLYUVufcTrOtgWR2c5VmBOz00GUM9/zyTVAo+PregOJX
+         68ltuDb++pc+tpLRHdn5/sZue4ZN3Xq4643oEhaTYgw7GPlgfpxDK5/zaJwIFncVGPNA
+         qV+QmTopTIAHmVR63VxkZwha2sGT5kkaKha0s3Zi+agD8IqyWN5p67jB17BZTrZ88tQN
+         4V9A==
+X-Gm-Message-State: AOJu0Yzo5hzViKU/7ykgdUzxB+QTy8t1GPauQN8Kc1LyQyTiKxDHwl3B
+	7gzpJ45Mq1f3LibpLA2UgixP1/BxUmQRzQVTrR/v41miY4LACpiSQxJmroB3cR4=
+X-Google-Smtp-Source: AGHT+IENEbuIMFynxRe+Wi8NPp/CqyeM5LxIUwCMDFcU8gLj2jdJ1ytLAYX5dqEHv+2zydbn5noB1w==
+X-Received: by 2002:a5d:598a:0:b0:33b:47cf:323b with SMTP id n10-20020a5d598a000000b0033b47cf323bmr2925394wri.9.1707261601525;
+        Tue, 06 Feb 2024 15:20:01 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW349EHlkXDDbsZmbwaYsfxA2vIENiEKgFzpRZaaftD9z0CCD4Zj8CiKAkYwXT1IoZ/auwb1D3EOpPzDwkAwWoyEta0RG4Pgjj3v7Vq9gGhdJHj2CCAsKFymL3j0xZwEb84+sfzsCauHMExyFe5W0jyk94yJE9x+Ia/8xAcXJHc6qyzQ9XDzt0nj1DzUSfX9gs8F4RZmnPVGJ4PL3/s7JL4PR2aRSDawhmX52F86ewDGMsKzJyzY+0YIb2KURSNWnZw7jj1DOdi1okWBR9gISm6SY64ScpgvRBqiykC07EP5W+fxDCxZGCTdGNxz5oz+Q5FtE7hjKnHsTZBePmi1fN7Q1OpzI9tHngZ6BROJos4ITKTf/51HOCGzqTyIjSzhD5U8cnmYsXAlfRImTy5Q61h6Duxwf8ujHtcvpCyLfxyH3x0c2mI+3MQEftZd4nSgFAz0GrUG+mrYyZRch2IIc6cVaPyqX1tOQmDt9WlLY8nvJTDDBzcmagBoR5xgYAdQkPhb2jNrzdtNVb5w7LzgLAee7sTGO62aJANQW9TxJ/Czejd1nsKzhNelRV1
+Received: from localhost ([2a02:a03f:6aef:6800:2f37:ce90:b91c:e85a])
+        by smtp.gmail.com with ESMTPSA id s17-20020a5d4ed1000000b0033b17880eacsm94734wrv.56.2024.02.06.15.20.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Feb 2024 11:08:28 -0800 (PST)
-Message-ID: <a2f8b2f0-0673-4939-8843-200ccf2c7807@linaro.org>
-Date: Tue, 6 Feb 2024 20:08:26 +0100
+        Tue, 06 Feb 2024 15:20:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] arm64: dts: qcom: msm8976: Add IOMMU nodes
-Content-Language: en-US
-To: Adam Skladowski <a39.skl@gmail.com>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Sean Paul <sean@poorly.run>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Krishna Manikandan <quic_mkrishn@quicinc.com>,
- linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240121194221.13513-1-a39.skl@gmail.com>
- <20240121194221.13513-2-a39.skl@gmail.com>
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20240121194221.13513-2-a39.skl@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Wed, 07 Feb 2024 00:20:00 +0100
+Message-Id: <CYYDQ7RF0HB7.G7R6KHP1Z42U@fairphone.com>
+Cc: "Konrad Dybcio" <konrad.dybcio@linaro.org>, "Dmitry Baryshkov"
+ <dmitry.baryshkov@linaro.org>, "Bjorn Andersson" <andersson@kernel.org>,
+ "Rob Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
+ <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Heikki Krogerus" <heikki.krogerus@linux.intel.com>,
+ <cros-qcom-dts-watchers@chromium.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>
+Subject: Re: [PATCH 0/3] Fairphone 5 PMIC-GLINK support (USB-C, charger,
+ fuel gauge)
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+X-Mailer: aerc 0.15.2
+References: <20231220-fp5-pmic-glink-v1-0-2a1f8e3c661c@fairphone.com>
+ <8d042095-1e09-45cc-9762-909fe8d663a9@linaro.org>
+ <CXTU5MLN0YDS.29PPV8KZF8G9R@fairphone.com>
+ <CAA8EJpoD3x=kVLu4x2yLtAqCp=wmGSU4ssq5Oj_SD5VQ=GyAYQ@mail.gmail.com>
+ <d2007240-2779-4881-8e9d-1c4f5daa55e5@linaro.org>
+ <CXU22OZNAH2H.24YIQWBA4KE3C@fairphone.com>
+ <2024010227-darn-litmus-4ddf@gregkh>
+ <CY49JOEDOEZX.1KNYT91GHL3MX@fairphone.com>
+ <2024010205-placidly-expire-221c@gregkh>
+In-Reply-To: <2024010205-placidly-expire-221c@gregkh>
 
-On 21.01.2024 20:40, Adam Skladowski wrote:
-> Add the nodes describing the apps and gpu iommu and its context banks
-> that are found on msm8976 SoCs.
-> 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-> ---
->  arch/arm64/boot/dts/qcom/msm8976.dtsi | 80 +++++++++++++++++++++++++++
->  1 file changed, 80 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-> index d2bb1ada361a..118174cfd4d3 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-> @@ -808,6 +808,86 @@ tcsr: syscon@1937000 {
->  			reg = <0x01937000 0x30000>;
->  		};
->  
-> +		apps_iommu: iommu@1e20000 {
-> +			compatible = "qcom,msm8976-iommu", "qcom,msm-iommu-v2";
-> +			ranges  = <0 0x01e20000 0x20000>;
+On Tue Jan 2, 2024 at 2:53 PM CET, Greg Kroah-Hartman wrote:
+> On Tue, Jan 02, 2024 at 02:43:24PM +0100, Luca Weiss wrote:
+> > On Tue Jan 2, 2024 at 2:36 PM CET, Greg Kroah-Hartman wrote:
+> > > On Thu, Dec 21, 2023 at 02:45:26PM +0100, Luca Weiss wrote:
+> > > > On Thu Dec 21, 2023 at 1:53 PM CET, Konrad Dybcio wrote:
+> > > > > On 21.12.2023 11:34, Dmitry Baryshkov wrote:
+> > > > > > On Thu, 21 Dec 2023 at 09:33, Luca Weiss <luca.weiss@fairphone.=
+com> wrote:
+> > > > > >>
+> > > > > >> On Wed Dec 20, 2023 at 1:32 PM CET, Konrad Dybcio wrote:
+> > > > > >>> On 20.12.2023 11:02, Luca Weiss wrote:
+> > > > > >>>> This series adds all the necessary bits to enable USB-C role=
+ switching,
+> > > > > >>>> charger and fuel gauge (all via pmic-glink) on Fairphone 5.
+> > > > > >>>>
+> > > > > >>>> One thing that could be made different is the pmic-glink com=
+patible.
+> > > > > >>>> I've chosen to use qcm6490 compatible for it and not sc7280 =
+since
+> > > > > >>>> there's plenty of firmware variety on sc7280-based platforms=
+ and they
+> > > > > >>>> might require different quirks in the future, so limit this =
+PDOS quirk
+> > > > > >>>> to just qcm6490 for now.
+> > > > > >>>>
+> > > > > >>>> If someone thinks it should be qcom,sc7280-pmic-glink, pleas=
+e let me
+> > > > > >>>> know :)
+> > > > > >>> IMO it's best to continue using the "base soc" (which just so=
+ happened
+> > > > > >>> to fall onto sc7280 this time around) for all compatibles, un=
+less the
+> > > > > >>> derivatives actually had changes
+> > > > > >>
+> > > > > >> Hi Konrad,
+> > > > > >>
+> > > > > >> I think at some point I asked Dmitry what he thought and he me=
+ntioned
+> > > > > >> qcm6490. Even found the message again:
+> > > > > >>
+> > > > > >>> well, since it is a firmware thing, you might want to emphasi=
+se that.
+> > > > > >>> So from my POV qcm6490 makes more sense
+> > > > > >>
+> > > > > >> But yeah since it's likely that sc7280 firmware behaves the sa=
+me as
+> > > > > >> qcm6490 firmware it's probably okay to use sc7280 compatible, =
+worst case
+> > > > > >> we change it later :) I'll send a v2 with those changes.
+> > > > > >=20
+> > > > > > Worst case we end up with sc7280 which has yet another slightly
+> > > > > > different UCSI / PMIC GLINK implementation, but the compatible =
+string
+> > > > > > is already taken.
+> > > > > > I still suppose that this should be a qcm6490-related string.
+> > > > > Right, let's keep qcm then
+> > > >=20
+> > > > Ack from my side also. Thanks for the feedback!
+> > >
+> > > This doesn't apply to my tree, where should it be going through?
+> >=20
+> > As far as I can see the dependency for the driver commit 1d103d6af241
+> > ("usb: typec: ucsi: fix UCSI on buggy Qualcomm devices") was applied to
+> > Bjorn's qcom tree, so 2/3 should also go there then.
+> >=20
+> > Patch 3/3 (arm64 dts) definitely also Bjorn's qcom tree.
+> >=20
+> > So that leaves patch 1/3 which Bjorn can probably pick up as well but
+> > looking at git log you also picked up some for that file in the past,
+> > dunno.
+>
+> Ok, for any remaining ones that want to be merged before 6.8-rc1 is out,
+> feel free to add my:
+>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>
+> If they don't get picked up by 6.8-rc1, feel free to rebase and send it
+> for me to take through my tree.
 
-So.. there's no 'reg', does devm_platform_ioremap_resource() pick up
-the corresponding reg space?
+Hi Greg,
 
-Konrad
+This applies cleanly on -next as of next-20240206 still.
+
+Could you please pick it up for v6.9? I can also send a v2 with only
+the two remaining patches (dts was applied to qcom by Bjorn already).
+
+Regards
+Luca
+
+>
+> thanks,
+>
+> greg k-h
+
