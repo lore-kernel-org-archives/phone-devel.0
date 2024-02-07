@@ -1,183 +1,74 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EBB1CF9A
-	for <phone-devel@vger.kernel.org>; Tue,  6 Feb 2024 23:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00987208BB;
+	Wed,  7 Feb 2024 04:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707261605; cv=none; b=cPZ01TJ8xHhPV6NZEPKG+fxVewJAjoEmtgQ2itHCrWXeiJSKx9hFLIzT144wQf/MbKwP7rHrito4vxukMBRYaD6v5L9dk4kSPteYlc110bWn1LMKjx4pTmdqt1AH/XZJ6yWsueuX/vfiF4GG959f6YUrV3NwTrNbPOTMnKoBbuw=
+	t=1707281223; cv=none; b=fsWaW5vZf3tlLhJAXsvi2Fq8vIetbJsFSX4fYKAQsvvLx6TAoKpVdekDWY9CsGGnDa7MJPpXdixZUMjX0L/w068t4zGR1Nw7WIE6wIEUGFnzqHDtMEkbq36DhGewelV8E2S29R87B6+ZUCWRdzvb9d6n5gNwJfNJXXXqnwLeu+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707261605; c=relaxed/simple;
-	bh=m+y3HMZaCJPRB55/Kjusqw16ffP7mgbzzM/LpvoQeJI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=R5L/DfyjTdLHgHPfNV3ObjkX73pGJlVYLK1rq6xJGUba/39TpPhsCCv/Tykqn8t+kW3RbMHNc+5L574I65ahS7VP7fIxeZ3P9/H0ryZ7GQu6yla3sWWDaJla+AT/TFDtLAtw+VQvKvfPrR9Ez7HptM+j9dvZQFjfGplYDfSJmXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=vHnXIfK6; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1707281223; c=relaxed/simple;
+	bh=NoUP9csxhzAbNgBFl7PuU8elps19U3hBA388tPsmTOA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I052bPD5lZ7G0QHxVCeqdR7f8DNX6vntZypa49zv8DRGjcfx/vDE7UtPq6bzzaRGkdXVkAIeijYMfgKb09T8ivKKdVZ8vbI8r7lPFVDAahE4EnK2ciDky8LemPvGtWTS9bLMTN7YYF8qQSqOYGnIfJ2ytsuB27qyJ3Mrho7gFNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tp/xK/+P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="vHnXIfK6"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3394ca0c874so46879f8f.2
-        for <phone-devel@vger.kernel.org>; Tue, 06 Feb 2024 15:20:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1707261601; x=1707866401; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m+y3HMZaCJPRB55/Kjusqw16ffP7mgbzzM/LpvoQeJI=;
-        b=vHnXIfK6P4iQ7iPcy+7IpycNZg7dLVdr0ew0To/mKZBzYuGjPsjKCUEpM5YD1sjgHt
-         /RaG8dTJRUf0etD/2x0Q/14QP1+Tp1+isboMEHWZb3569PInWqye9GqaQVvIluNb2rPo
-         XmcPlxXAIBrDieI24RiDbCwsq96O76a+0uq/FMn0XfTBpxHXgX2b4DOsloCHlWJTYITB
-         iQyvXcUd7CWX1sqlf8c1J9lmRmdvTrENpPvE5lGUYjKr4D2iXquFOEeDm0Nd2Gxl9MiT
-         Ynh55NqzjegdY+oOGTKIQ576noGsom5wCjCvn81Th2Z6HUvgZ1wjnWCwSgZGmVj72Npk
-         3Tvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707261601; x=1707866401;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=m+y3HMZaCJPRB55/Kjusqw16ffP7mgbzzM/LpvoQeJI=;
-        b=NO5MkIzn5/FqxgWAhuoEny0ocjoKRzAmym3ML+vpzXPgpI2RUDb0eUQTmIRWVwe62x
-         S4iDp7suN42IheblNzXUgWwVqz/5I7T3RbU0ixVxBYUwA2NWdBJP/kgTzLZ4ImZHzl/a
-         kn0I+UpWgKTFt4ToPkc3XvMquLYUVufcTrOtgWR2c5VmBOz00GUM9/zyTVAo+PregOJX
-         68ltuDb++pc+tpLRHdn5/sZue4ZN3Xq4643oEhaTYgw7GPlgfpxDK5/zaJwIFncVGPNA
-         qV+QmTopTIAHmVR63VxkZwha2sGT5kkaKha0s3Zi+agD8IqyWN5p67jB17BZTrZ88tQN
-         4V9A==
-X-Gm-Message-State: AOJu0Yzo5hzViKU/7ykgdUzxB+QTy8t1GPauQN8Kc1LyQyTiKxDHwl3B
-	7gzpJ45Mq1f3LibpLA2UgixP1/BxUmQRzQVTrR/v41miY4LACpiSQxJmroB3cR4=
-X-Google-Smtp-Source: AGHT+IENEbuIMFynxRe+Wi8NPp/CqyeM5LxIUwCMDFcU8gLj2jdJ1ytLAYX5dqEHv+2zydbn5noB1w==
-X-Received: by 2002:a5d:598a:0:b0:33b:47cf:323b with SMTP id n10-20020a5d598a000000b0033b47cf323bmr2925394wri.9.1707261601525;
-        Tue, 06 Feb 2024 15:20:01 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW349EHlkXDDbsZmbwaYsfxA2vIENiEKgFzpRZaaftD9z0CCD4Zj8CiKAkYwXT1IoZ/auwb1D3EOpPzDwkAwWoyEta0RG4Pgjj3v7Vq9gGhdJHj2CCAsKFymL3j0xZwEb84+sfzsCauHMExyFe5W0jyk94yJE9x+Ia/8xAcXJHc6qyzQ9XDzt0nj1DzUSfX9gs8F4RZmnPVGJ4PL3/s7JL4PR2aRSDawhmX52F86ewDGMsKzJyzY+0YIb2KURSNWnZw7jj1DOdi1okWBR9gISm6SY64ScpgvRBqiykC07EP5W+fxDCxZGCTdGNxz5oz+Q5FtE7hjKnHsTZBePmi1fN7Q1OpzI9tHngZ6BROJos4ITKTf/51HOCGzqTyIjSzhD5U8cnmYsXAlfRImTy5Q61h6Duxwf8ujHtcvpCyLfxyH3x0c2mI+3MQEftZd4nSgFAz0GrUG+mrYyZRch2IIc6cVaPyqX1tOQmDt9WlLY8nvJTDDBzcmagBoR5xgYAdQkPhb2jNrzdtNVb5w7LzgLAee7sTGO62aJANQW9TxJ/Czejd1nsKzhNelRV1
-Received: from localhost ([2a02:a03f:6aef:6800:2f37:ce90:b91c:e85a])
-        by smtp.gmail.com with ESMTPSA id s17-20020a5d4ed1000000b0033b17880eacsm94734wrv.56.2024.02.06.15.20.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Feb 2024 15:20:01 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tp/xK/+P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB56C433B2;
+	Wed,  7 Feb 2024 04:47:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707281222;
+	bh=NoUP9csxhzAbNgBFl7PuU8elps19U3hBA388tPsmTOA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Tp/xK/+PalmVOKhoo+PyLgALLy0R0/iziYBPL+C9JS4sgdT4A9IpQu7u5kaYUseRu
+	 cMGvoX/v6kxNzCRMER2hcrQvcxtDY+n1NNaXjqAcpCvt6YlAjJmw/bebkeCDLZk7SZ
+	 WeczHvp6CSqvteM+MhVDj3wilDzQ15zKm1yu6Nlh1zgx9UOxB2zcE6NHCQzYwiY6Qa
+	 jpqcPc8+gMR7J/pPhDXgZ2+b58rCDLGoTV0hCK7Kfdyiv2PGYHRppgIaWgIKxF7HEA
+	 XWvxgVmIM09vl2mkDq5PP76+yyo/eR/Ys5VMtXw+v04iYMVVjgNDte1XXGUQpzFwIn
+	 HbDEf1LbiOScQ==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: sm6350: Add tsens thermal zones
+Date: Tue,  6 Feb 2024 22:46:25 -0600
+Message-ID: <170728117680.479358.4264274273106317400.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240124-sm6350-tsens-v1-1-d37ec82140af@fairphone.com>
+References: <20240124-sm6350-tsens-v1-1-d37ec82140af@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 07 Feb 2024 00:20:00 +0100
-Message-Id: <CYYDQ7RF0HB7.G7R6KHP1Z42U@fairphone.com>
-Cc: "Konrad Dybcio" <konrad.dybcio@linaro.org>, "Dmitry Baryshkov"
- <dmitry.baryshkov@linaro.org>, "Bjorn Andersson" <andersson@kernel.org>,
- "Rob Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
- <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Heikki Krogerus" <heikki.krogerus@linux.intel.com>,
- <cros-qcom-dts-watchers@chromium.org>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>
-Subject: Re: [PATCH 0/3] Fairphone 5 PMIC-GLINK support (USB-C, charger,
- fuel gauge)
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-X-Mailer: aerc 0.15.2
-References: <20231220-fp5-pmic-glink-v1-0-2a1f8e3c661c@fairphone.com>
- <8d042095-1e09-45cc-9762-909fe8d663a9@linaro.org>
- <CXTU5MLN0YDS.29PPV8KZF8G9R@fairphone.com>
- <CAA8EJpoD3x=kVLu4x2yLtAqCp=wmGSU4ssq5Oj_SD5VQ=GyAYQ@mail.gmail.com>
- <d2007240-2779-4881-8e9d-1c4f5daa55e5@linaro.org>
- <CXU22OZNAH2H.24YIQWBA4KE3C@fairphone.com>
- <2024010227-darn-litmus-4ddf@gregkh>
- <CY49JOEDOEZX.1KNYT91GHL3MX@fairphone.com>
- <2024010205-placidly-expire-221c@gregkh>
-In-Reply-To: <2024010205-placidly-expire-221c@gregkh>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Tue Jan 2, 2024 at 2:53 PM CET, Greg Kroah-Hartman wrote:
-> On Tue, Jan 02, 2024 at 02:43:24PM +0100, Luca Weiss wrote:
-> > On Tue Jan 2, 2024 at 2:36 PM CET, Greg Kroah-Hartman wrote:
-> > > On Thu, Dec 21, 2023 at 02:45:26PM +0100, Luca Weiss wrote:
-> > > > On Thu Dec 21, 2023 at 1:53 PM CET, Konrad Dybcio wrote:
-> > > > > On 21.12.2023 11:34, Dmitry Baryshkov wrote:
-> > > > > > On Thu, 21 Dec 2023 at 09:33, Luca Weiss <luca.weiss@fairphone.=
-com> wrote:
-> > > > > >>
-> > > > > >> On Wed Dec 20, 2023 at 1:32 PM CET, Konrad Dybcio wrote:
-> > > > > >>> On 20.12.2023 11:02, Luca Weiss wrote:
-> > > > > >>>> This series adds all the necessary bits to enable USB-C role=
- switching,
-> > > > > >>>> charger and fuel gauge (all via pmic-glink) on Fairphone 5.
-> > > > > >>>>
-> > > > > >>>> One thing that could be made different is the pmic-glink com=
-patible.
-> > > > > >>>> I've chosen to use qcm6490 compatible for it and not sc7280 =
-since
-> > > > > >>>> there's plenty of firmware variety on sc7280-based platforms=
- and they
-> > > > > >>>> might require different quirks in the future, so limit this =
-PDOS quirk
-> > > > > >>>> to just qcm6490 for now.
-> > > > > >>>>
-> > > > > >>>> If someone thinks it should be qcom,sc7280-pmic-glink, pleas=
-e let me
-> > > > > >>>> know :)
-> > > > > >>> IMO it's best to continue using the "base soc" (which just so=
- happened
-> > > > > >>> to fall onto sc7280 this time around) for all compatibles, un=
-less the
-> > > > > >>> derivatives actually had changes
-> > > > > >>
-> > > > > >> Hi Konrad,
-> > > > > >>
-> > > > > >> I think at some point I asked Dmitry what he thought and he me=
-ntioned
-> > > > > >> qcm6490. Even found the message again:
-> > > > > >>
-> > > > > >>> well, since it is a firmware thing, you might want to emphasi=
-se that.
-> > > > > >>> So from my POV qcm6490 makes more sense
-> > > > > >>
-> > > > > >> But yeah since it's likely that sc7280 firmware behaves the sa=
-me as
-> > > > > >> qcm6490 firmware it's probably okay to use sc7280 compatible, =
-worst case
-> > > > > >> we change it later :) I'll send a v2 with those changes.
-> > > > > >=20
-> > > > > > Worst case we end up with sc7280 which has yet another slightly
-> > > > > > different UCSI / PMIC GLINK implementation, but the compatible =
-string
-> > > > > > is already taken.
-> > > > > > I still suppose that this should be a qcm6490-related string.
-> > > > > Right, let's keep qcm then
-> > > >=20
-> > > > Ack from my side also. Thanks for the feedback!
-> > >
-> > > This doesn't apply to my tree, where should it be going through?
-> >=20
-> > As far as I can see the dependency for the driver commit 1d103d6af241
-> > ("usb: typec: ucsi: fix UCSI on buggy Qualcomm devices") was applied to
-> > Bjorn's qcom tree, so 2/3 should also go there then.
-> >=20
-> > Patch 3/3 (arm64 dts) definitely also Bjorn's qcom tree.
-> >=20
-> > So that leaves patch 1/3 which Bjorn can probably pick up as well but
-> > looking at git log you also picked up some for that file in the past,
-> > dunno.
->
-> Ok, for any remaining ones that want to be merged before 6.8-rc1 is out,
-> feel free to add my:
->
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->
-> If they don't get picked up by 6.8-rc1, feel free to rebase and send it
-> for me to take through my tree.
 
-Hi Greg,
+On Wed, 24 Jan 2024 16:31:43 +0100, Luca Weiss wrote:
+> Add the definitions for the various thermal zones found on the SM6350
+> SoC. Hooking up GPU and CPU cooling can limit the clock speeds there to
+> reduce the temperature again to good levels.
+> 
+> Most thermal zones only have one critical temperature configured at
+> 125°C which can be mostly considered a placeholder until those zones can
+> be hooked up to cooling.
+> 
+> [...]
 
-This applies cleanly on -next as of next-20240206 still.
+Applied, thanks!
 
-Could you please pick it up for v6.9? I can also send a v2 with only
-the two remaining patches (dts was applied to qcom by Bjorn already).
+[1/1] arm64: dts: qcom: sm6350: Add tsens thermal zones
+      commit: 646287950b165b8396a697f7e18e2267b9466149
 
-Regards
-Luca
-
->
-> thanks,
->
-> greg k-h
-
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
