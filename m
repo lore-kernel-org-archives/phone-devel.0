@@ -1,61 +1,49 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392526D1B7
-	for <phone-devel@vger.kernel.org>; Thu,  8 Feb 2024 09:53:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022E171B30;
+	Thu,  8 Feb 2024 12:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707386029; cv=none; b=T1XZaqw6RxNpqRiB/WyQpjCLgWSfrMZnFTXIwoetV92GiAd3NM58o8BgUnjDLQhIf3FBcwm0sVM5osaCxkWLqcvj0MRjtQpRNO2Zc/Hui7PAP3Z58DHlTzim3iLBzPTsuxUHgnUPzCVvpazCli00EIlyLDHYnHmYjGhTgPKtWWU=
+	t=1707394436; cv=none; b=tZtZYyjy9u1r5jdkM8+Sv8d0yFawwAkMUiMSZB4OeM37w2dtwyJ2st7e1DUN2yNQDgf45d1l8BsKLD/Kr9aWMKnTGEA/wE/1GX7SIhgFZzpsDyVLPBLfFogwyne+WSXznSc7gh1NpKJtWlLUg/5LhHnaKksBbv3s6peHRd4n/D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707386029; c=relaxed/simple;
-	bh=nneSNwEDwWC5ZCN/Y9jDymQQYLA3++FvlbPfJ9Qdtsw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eY1jZmCAXkkMWk2TudVWsK3MJoTrcVRotRbLkdTOwuq7xxWRCKGGk9ia2nw4eXJyXCbQUvhEuErm4Ovt+pWx935oQFH2SkTaE7sY0AgAaynrXOy66H5ZoM2QrJ2/5/LSfXqJr1q/KiqC/dtJ6AHWSbmz+HTfA8bG4zv6OXLMg8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Y27UAvjK; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1707394436; c=relaxed/simple;
+	bh=MvlH4ndOdSzFUwm8GqHry7TYNDj279G1o15aCH4zOkA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Djr/dd1jwSwWVrAdb//mnYsTeP97yZ1dztaUsLb8xpRIwHEhkvDEmPoZxcGny9mT59Rve5JG241sRBlmh+fiftEXxF8EG8bUToGnEyGViybzilL0tVAEEBlhX+QJy+/adV7/ES+26HtpmKjrbH6ri5JZnh/fb7mxqwRq8IAw4Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kvxcGrGP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Y27UAvjK"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d09b21a8bbso17445311fa.3
-        for <phone-devel@vger.kernel.org>; Thu, 08 Feb 2024 01:53:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1707386025; x=1707990825; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ksTPGKy9XnG6Wf0pky3mdloJMv6LFXQiqMfviW2zv8Q=;
-        b=Y27UAvjK2nq8JFezrj1T07iClK5t7YuquF5M8hAob80we0qr2nfglbBBgGGlcLdRak
-         FjNCrlHEArcOBM5KuiSvp1+y91iTaXLu4t22IIwieI9MWi0ESxqT/dAP9OLbJv7ltsC7
-         Yo1zvFPAUXol6PABrough19n9ZFWOa/LkECe7Ndfdg3xNK8JMxHKIRJQZJp1hW1KdacO
-         35/Y4+TnTTFv7oYkI9Y/NP0rAbcW41PVaXLgNladI2DA1EKeZweXnzZDTAXTZI3xG4+e
-         KuCRFWiTxWwAvFkE8zWisZP10AD/IP3xcZC/PKyGGz/1YcL33OUPH1AQskt7LL1MA5+O
-         36Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707386025; x=1707990825;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ksTPGKy9XnG6Wf0pky3mdloJMv6LFXQiqMfviW2zv8Q=;
-        b=lTyt6jbriOr+2HSbiQUVkGcz8L44YAPT3sgJIBzoR/CV7z/iKYUI6X1Q/g6Qst6BIB
-         CrD7Pvfgv7ZfL+I2+S3Hl2bGaN2vjIhEbCL60TW3rE61ARU9QD/9JgTBWAbPfURXCAUd
-         XEqQ4cwREW4JcpKmJ4CKJKRbwZBsqX4rrqxCtdGkuhBY/t44RxNiaEIuxmypnfuaOHzE
-         5QTdwbDxxVpjTJXH6L1jRhiUno9ZWfL69G0Sf+702Qc2UBQl4dDqfDfB7iA9kLpHxcoa
-         GPlqpGSMTOXm/K6pbxIjCunHZ94ZTll7J8CX9IE1lZl8sW4umHBDku3naFl1HC2dySrk
-         Tb0A==
-X-Gm-Message-State: AOJu0Yxqk5fBmGY/y7zgJaunMKBBUloNopIJHSpP5VU7QXUxMtHBTLWI
-	+lXwYKFI5tT+cYFMCuttya7+kctQEMUxQ2kRMydc9kay099gQAR51i0BxXdU3T4=
-X-Google-Smtp-Source: AGHT+IFWvGSfzcJsgH0NmS0q30//h4o1bz4oK1DzwknC/88mXTmK4arnj3DuccwMH7306W/1IHttSA==
-X-Received: by 2002:a05:651c:1548:b0:2d0:d802:8592 with SMTP id y8-20020a05651c154800b002d0d8028592mr171156ljp.25.1707386025257;
-        Thu, 08 Feb 2024 01:53:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUWQclMxhiDbdB5v3FN884PUDZ7Ixl0M3bttKHmdqzUAJuoh81Z0AwC8Rwa9vYCr6y2Ru8eLuFyOT+nteP0uPfPDo/6xBitevVKGm/UkHx9CNlowPwnl46u/x85hK31T8PMWaJRtFKp6pj20vZOrPklHesxZxIFwdcbGPnDVTRo+o1Lx1krfBlqlvfG9l1Rs+eu8YGHYmsoxeux8jdMJ2/DguJiQStBVxg9kkMxHhJ1xn2DsgJFab4gUolVwmFDA+yWHaI/aPGLB7PfvUV4tMNnjK46FCsWP3e213CNAaD9+7G2VGxOUG87hTPCV/MdLJQC3RHJU28+/qeK374iyuypQ1/EDiNVG77vKZktAJNGZ9QjjhNxZxQ8uo0lIHaFMrbm1K++Kzd04Dqf/m2FihtK88LD/05zwRVamisEFCpJIWl1NIzlo0W6hfp+J8J4fyATOaAvvx+RSoqzmpwjYkXroTZaZJ2asu4FOIBTv+J4vHX0n5rRMPgZ3EI2XQS7MT6ODFoabudQhexQAATiz+btCGAat4EsPARk13p5Sd+pKjqrcG/YPOSUrDz2NQTlGE3BpQsXVhgPWpAECMINpFh3stPW30TqUR4rvZbO2i0B
-Received: from otso.luca.vpn.lucaweiss.eu (ip-185-104-137-32.ptr.icomera.net. [185.104.137.32])
-        by smtp.gmail.com with ESMTPSA id d20-20020a170903209400b001d8f111804asm2956685plc.113.2024.02.08.01.53.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Feb 2024 01:53:44 -0800 (PST)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Thu, 08 Feb 2024 10:52:33 +0100
-Subject: [PATCH v2 2/2] usb: typec: ucsi: Add qcm6490-pmic-glink as needing
- PDOS quirk
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvxcGrGP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFCBCC433C7;
+	Thu,  8 Feb 2024 12:13:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707394435;
+	bh=MvlH4ndOdSzFUwm8GqHry7TYNDj279G1o15aCH4zOkA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=kvxcGrGPAHDxiZe0WrrziSYopGe/0VsWAgEupIYMX7sLnATKYvGNzjPxxJVJz8rE7
+	 pjT2bHgHcIe9y7iHY3SerQzs2qBTx4iw/C81t0nuAEWIcZUC+XnE0BI2F391CO//mf
+	 g0e9iKQJkMImxQ94APAbY0Ml4kSbTgQIDeU4kRi8chMtVkpaKUNZ0qMQb1xbXWihhe
+	 RkDHhYNDGd1EuAp2hbDjXifLkvw69KhCAyGbFTdx1BRu9WnNesr2s6ssgx+lh8p12z
+	 UXiMsbxViyQbcRkBBES+AXuOyCwS1Hc0KOrH1OVEy/C4K7SDSp4nFwbDy9rJ86oloj
+	 vkgccAmOSvixw==
+From: Lee Jones <lee@kernel.org>
+To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
+ Marijn Suijten <marijn.suijten@somainline.org>
+Cc: linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, Johan Hovold <johan@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@somainline.org>, 
+ Martin Botka <martin.botka@somainline.org>, 
+ Jami Kettunen <jami.kettunen@somainline.org>, 
+ ~postmarketos/upstreaming@lists.sr.ht, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>, 
+ Bjorn Andersson <andersson@kernel.org>
+In-Reply-To: <20240204-pm660l-lpg-v5-1-2f54d1a0894b@somainline.org>
+References: <20240204-pm660l-lpg-v5-1-2f54d1a0894b@somainline.org>
+Subject: Re: (subset) [PATCH v5] leds: qcom-lpg: Add PM660L configuration
+ and compatible
+Message-Id: <170739443256.968294.11874564929033098601.b4-ty@kernel.org>
+Date: Thu, 08 Feb 2024 12:13:52 +0000
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -63,47 +51,22 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240208-fp5-pmic-glink-v2-2-4837d4abd5a4@fairphone.com>
-References: <20240208-fp5-pmic-glink-v2-0-4837d4abd5a4@fairphone.com>
-In-Reply-To: <20240208-fp5-pmic-glink-v2-0-4837d4abd5a4@fairphone.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- cros-qcom-dts-watchers@chromium.org, Rob Herring <robh@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.12.3
 
-The QCM6490 Linux Android firmware needs this workaround as well. Add it
-to the list.
+On Sun, 04 Feb 2024 18:24:20 +0100, Marijn Suijten wrote:
+> Inherit PM660L PMIC LPG/triled block configuration from downstream
+> drivers and DT sources, consisting of a triled block with automatic
+> trickle charge control and source selection, three colored led channels
+> belonging to the synchronized triled block and one loose PWM channel.
+> 
+> 
 
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/usb/typec/ucsi/ucsi_glink.c | 1 +
- 1 file changed, 1 insertion(+)
+Applied, thanks!
 
-diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
-index 53a7ede8556d..0bd3f6dee678 100644
---- a/drivers/usb/typec/ucsi/ucsi_glink.c
-+++ b/drivers/usb/typec/ucsi/ucsi_glink.c
-@@ -298,6 +298,7 @@ static void pmic_glink_ucsi_destroy(void *data)
- }
- 
- static const struct of_device_id pmic_glink_ucsi_of_quirks[] = {
-+	{ .compatible = "qcom,qcm6490-pmic-glink", .data = (void *)UCSI_NO_PARTNER_PDOS, },
- 	{ .compatible = "qcom,sc8180x-pmic-glink", .data = (void *)UCSI_NO_PARTNER_PDOS, },
- 	{ .compatible = "qcom,sc8280xp-pmic-glink", .data = (void *)UCSI_NO_PARTNER_PDOS, },
- 	{ .compatible = "qcom,sm8350-pmic-glink", .data = (void *)UCSI_NO_PARTNER_PDOS, },
+[1/1] leds: qcom-lpg: Add PM660L configuration and compatible
+      commit: 0e848bb4630e12099636fde050cadad33221045f
 
--- 
-2.43.0
+--
+Lee Jones [李琼斯]
 
