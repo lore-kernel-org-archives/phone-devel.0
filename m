@@ -1,210 +1,95 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C64149DFA
-	for <phone-devel@vger.kernel.org>; Fri,  9 Feb 2024 21:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADD753E03;
+	Sat, 10 Feb 2024 14:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707514516; cv=none; b=F8n9tCYvbztkYVGVLAcbxw1/dr7Ex8p+bgCTwXdVVxrbvuipnVDaABDEknQldO+vnAqCtGppSAG7Nh6+v6jWBTIp+rhGoNtTwfzYTv5eAOwmW+e6ExGV8eEg4t2lw51zukzdaRWtXpyvQPM/58/aB5zy00JjDL452BuYtJayj8s=
+	t=1707574408; cv=none; b=a3Ltp+T+vvzWLeRIqVvDznObLynDKu8+CrMxz762fqnRvlv1b7GCF3kJzN6tybHBarMX9Ibv+SrSEDMkGybVgwUDAg9Ya6u6wy0fytZ/wzCu3EcB8UOcLZ9zF2djS08MM0aYfn/0xW5Fmqoz15f3qR8ozbE/aAN6FNj74jBpYU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707514516; c=relaxed/simple;
-	bh=idgggaJrz7FBh61yrBEcRGTKUzjFSjzTEE9ymk86Qsk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Apt/w9CRnu+rxBp82VoMSgvmEnDn+qH8mol5p16+Y1DSwv+HqG9sxcEo8Q86vLTEdhCe8X6M3y35blUpbSUDmxWCjGEd61JNPOgA9/n6KaAPFvSw9HUnajJZdNXu4xLszY1fPIavFs8AWYkzDEMAFC3xnuERHDDtmgyShHwIcD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PCUiHT+P; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1707574408; c=relaxed/simple;
+	bh=k0BTFLmUwPs99wnDROHreAYsJESy48xS/LYqqLEr4a0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=f0MTfX8G/AbtQ1Cx7UNqQlpJULgaoqAe9S4dyqVSO6fBz3xqekAoLpifdnC/Px438zRqCNpkeh1HBaQB+8uUHT8eE2tKiEsYmBv/bgANGDZKHR0UMYyXJn8z6TFxaZXxtvTB+FfTKHb6mBCKLvLk4lEqGNdfqNKrkJzbG4UG1p8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=rjd1A5Yw; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PCUiHT+P"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-51171c9f4c0so1697071e87.3
-        for <phone-devel@vger.kernel.org>; Fri, 09 Feb 2024 13:35:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707514512; x=1708119312; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yfHe8mbNDA8s5cfdUox3lpQULmJ6ZmrxM53dDWhPDSw=;
-        b=PCUiHT+PjROQk4Zu6rtU4AQmA0ahOTR/YfvQiAbfXmFhO1oZ8BGsuspofDhJSWH9hA
-         x6H/gizQu5P2tpxy7GMYFuKya4S2M93EzYd9ATPAsAM+dbJdtNz40fy+mqWqehyVYJYJ
-         znlDNzhwG/GBNLPE9MUI47dNtEjQk4CUGJ0wR7pR10jjAIxY5D858P2RHmtO4fQWTJVL
-         mMtGaKe/ksU3gH+VrVSy+QYtPqCnsOdJAF2xFmLBvz0NGfRDmekdD1RuOyN86KpyTUqN
-         kA3J1M2Gmvmb+qOGgRGUS95+8N4McpG+A2u1rZ+eiHmY+aIqy75OxMTOJTPb1ZebvsYe
-         H5wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707514512; x=1708119312;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yfHe8mbNDA8s5cfdUox3lpQULmJ6ZmrxM53dDWhPDSw=;
-        b=kpCPTRnBRfnH/T6qZAuFNeEGulwuWjofeAVFssSQIwmGIb2l9qGuP8as4x3vC3j8MR
-         lEUwAs3+6SCDN2Fv3oLxsfIEtRcY0k8s5pzEFrFdTtZ0YImhU8zVCm87kaPWcvYN7ULN
-         l2UpBaatzbTXsPuFMx9GQPaTyxMxEB+VQrHe/7gRnEXuwwZkTSd74Xd/LUOpcNvZUojh
-         bRfCSmr2LSSw2j0e0iIYBxUYwmghS94M9fyI7HQN462ossVB0kl5ME6I02tqLSp6B2Os
-         QfSx/oTVtMiX9OPdgmwsxbC3YXXQ13tUBb25tThTH7x5FKepwlV9TP4YKalUs9lPa9xi
-         JDbw==
-X-Gm-Message-State: AOJu0YzvoElqAOs7OqASo/I9gdIt2hrykZja/VSAeytUAL99ZCF9fbw5
-	gybCZ1nWBza2rRejJhhk9ww/9KKkP2opPDh/Yp4eIulm5xSJPOvoX8dS+Ag7CrM=
-X-Google-Smtp-Source: AGHT+IFoLT3SfKBWP8DyRy9ygf90NUq3shRSmJFHWLt+ApMVgCHxdRF8plbApwaQxguTqvJl75K9ag==
-X-Received: by 2002:a19:ca15:0:b0:511:76ea:78f2 with SMTP id a21-20020a19ca15000000b0051176ea78f2mr120461lfg.34.1707514512396;
-        Fri, 09 Feb 2024 13:35:12 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXPYW8gPmD+ywhowQ/XytPbE4fBCdWa/I6pv+TgnsO1QFWmAWleRFdI6/MRWrhcHgpebUP5bjJXSTOQa25XdL1vB4i9ByCBx+1AtEMRZl5TkDLTmdEaOFDj39hgDY8GOccqHPNHD4zCRTE+Oqo3kWla0JJtUQTaPYm4J2opikuZRMyse7XgbTNQk3JrGg/vxy766Z/zDgOk+d8oRyA4F51npNu7JPlTE1oJCyQsa48YhArwZ+/DID8Ohq8w0mIbgs9M27CycxC2G1wOkSbO57idbMChrmAF0ArxO5xk33g1KhVyCCHg+qk9o43FB76pGcYpdLIbNUPpFWxg3kF7HTtzbl2ifWCsDv5oiYLoEytp8/POrpekFZWZw+O3vx7QPI/uN01VKRUFFQtBakAFkWxVI1dEzPgOeLQVYp5LjXQ7XPRlSFoDZeqk+3i/W2LskbMvszjt7o4MwebUqXWjRtr2X2PNACq+80PC5yz0v4RpJBGL/JxpSucXzS4RhEorsjd4QdK8MsqemvkWfN1pJEoyQRmNCvkGi6VAOaWc8KM3rov/4oaVYzniNuy+q/XoBIe1i+rxRgaRSVaapfE1VefSAJmWSnUu0plMaFZVLYLmuRuGoEI5TEoPjP8yp6U8l1/GUviJNNJIEeyDpI514zCekt/mJZM3+R2JHxy3/v2y7TXcsLyEXFh4BFpJLi95fGc69/iAOwfDJ70fyAS0GHzx
-Received: from [192.168.192.207] (037008245233.garwolin.vectranet.pl. [37.8.245.233])
-        by smtp.gmail.com with ESMTPSA id fj7-20020a1709069c8700b00a3875804883sm1123512ejc.124.2024.02.09.13.35.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Feb 2024 13:35:11 -0800 (PST)
-Message-ID: <0b8921f0-e4da-4b41-a032-1df54750fd9d@linaro.org>
-Date: Fri, 9 Feb 2024 22:35:08 +0100
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="rjd1A5Yw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1707574398; bh=k0BTFLmUwPs99wnDROHreAYsJESy48xS/LYqqLEr4a0=;
+	h=From:Subject:Date:To:Cc;
+	b=rjd1A5Ywu7n7HM2uIpGlOd2FuSo1hIcY+at2qg9wwmb97ARaCTRuJvX4bVOtXgvD/
+	 x0g7dWFSVPL07Qzxc8oMgswMk84AzKnMY/czwoHX4Jwnaz5wvgRYMX/6n4CDSAGs4m
+	 srb1pRa5fxcSGgVf2Rcxu0AhJBUzdUayJsOLLVHY=
+From: Luca Weiss <luca@z3ntu.xyz>
+Subject: [PATCH 0/3] Add RPMPD support for MSM8974
+Date: Sat, 10 Feb 2024 15:12:54 +0100
+Message-Id: <20240210-msm8974-rpmpd-v1-0-de9355e6842a@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/8] arm64: dts: qcom: msm8976: Add WCNSS node
-Content-Language: en-US
-To: Adam Skladowski <a39.skl@gmail.com>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Sean Paul <sean@poorly.run>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Krishna Manikandan <quic_mkrishn@quicinc.com>,
- linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
- freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240121194221.13513-1-a39.skl@gmail.com>
- <20240121194221.13513-9-a39.skl@gmail.com>
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20240121194221.13513-9-a39.skl@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGaEx2UC/x3MQQqAIBBA0avErBPULK2rRIvIsWahiUIE4t2Tl
+ m/xf4GMiTDD0hVI+FCmOzSIvoPj2sOJjGwzSC4Vl4Izn72ZtWIp+mjZhMo4HLSSeoTWxISO3v+
+ 3brV+DaNGL18AAAA=
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+ Stephan Gerhold <stephan@gerhold.net>, 
+ =?utf-8?q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+ Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1021; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=k0BTFLmUwPs99wnDROHreAYsJESy48xS/LYqqLEr4a0=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlx4RpGyQjD6B2c76jO4pelr2m8P6IQkQZtJdLu
+ kvN5P3NSJaJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZceEaQAKCRBy2EO4nU3X
+ VjF2D/wO52RLi/5TYtuH1Zdr8fA7quTFv0SyiHlxH3UNVddW5sIJArMzGUokxqtQEwF2Yrcu+JA
+ 8Fl5+bRyONjbzvdUvfAIAQPrZrrWSDD5VZoE/XOdI4+/QuQikfr8VQItU1nYpPMG8Bx/N/MdEQj
+ sG8LIP4W/mGWoTpl/OnRKtBeia9zoOKPYFtSwqmtTFV/I47HOdoY+5m1XwM7vRAMqpLVgRnuXbV
+ 0Mfi8GDM6zpgOU73Zk/XmdX2TTP3ozB2rOQO5mDO7m904+BNA6RmqUm8tfLLdXaCYZLlZpKHOTM
+ XX9WA2r+Kdcm8U1c+sFZHQnK2qTZ/Vx0mNN923FUmTicXOQ5d/ipoX56s13N8+ri/3tffj3HwFV
+ cnqnM4dQUZ3uNjPUuDRD0TuA76o61vNp+x17muC4dpXLgHwzKi7E067uWaeBk8S21bJxzLKZA+z
+ 0dlQ6x+wpEG4xR/9F98xUGY9fJSvEqwlaWOd7HyTeTN1mWLPevOr15ObG296x+7Rqhv+Cm28Tmq
+ 8HiiBXxR/fl/bQV39YdzVv49u/STVbfM/n+5ku0EfOkuEehOgPCzOfekVe2c/aedPBiXod1ukSV
+ nyo9NTMNt4oLt0K0xdx3LDfreg4nyz+ttJcSIBqQ7hIThtIpVeqn8GbWmU5D1bts+8mm/XzHwuH
+ UVJMCyP4oOnwqGQ==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On 21.01.2024 20:41, Adam Skladowski wrote:
-> Add node describing wireless connectivity subsystem.
-> 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-> ---
->  arch/arm64/boot/dts/qcom/msm8976.dtsi | 96 +++++++++++++++++++++++++++
->  1 file changed, 96 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-> index 5a7be93a0115..73ddfaecd3ad 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-> @@ -861,6 +861,36 @@ data-pins {
->  					bias-pull-up;
->  				};
->  			};
-> +
-> +			wcss_wlan_default: wcss-wlan-default-state  {
-> +				wcss_wlan2-pins {
+Add driver support for the RPM power domains found on the different
+MSM8974 devices.
 
-No underscores in node names
+Devicetree integration will come at a later point since also some
+mostly remoteproc drivers need to be adjusted.
 
-> +					pins = "gpio40";
-> +					function = "wcss_wlan2";
-> +					drive-strength = <6>;
-> +					bias-pull-up;
-> +				};
-> +
-> +				wcss_wlan1-pins {
-> +					pins = "gpio41";
-> +					function = "wcss_wlan1";
-> +					drive-strength = <6>;
-> +					bias-pull-up;
-> +				};
-> +
-> +				wcss_wlan0-pins {
-> +					pins = "gpio42";
-> +					function = "wcss_wlan0";
-> +					drive-strength = <6>;
-> +					bias-pull-up;
-> +				};
-> +
-> +				wcss_wlan-pins {
-> +					pins = "gpio43", "gpio44";
-> +					function = "wcss_wlan";
-> +					drive-strength = <6>;
-> +					bias-pull-up;
-> +				};
-> +			};
->  		};
->  
->  		gcc: clock-controller@1800000 {
-> @@ -1540,6 +1570,72 @@ blsp2_i2c4: i2c@7af8000 {
->  			status = "disabled";
->  		};
->  
-> +		wcnss: remoteproc@a204000 {
-> +			compatible = "qcom,pronto-v3-pil", "qcom,pronto";
-> +			reg = <0xa204000 0x2000>, <0xa202000 0x1000>, <0xa21b000 0x3000>;
-> +			reg-names = "ccu", "dxe", "pmu";
+Also the MX power domains on this SoC seems to work quite a bit
+differently, we'd need to send raw voltages to it, so these are ignored
+in this series.
 
-One a line, please
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Luca Weiss (3):
+      dt-bindings: power: rpmpd: Add MSM8974 power domains
+      pmdomain: qcom: rpmpd: Add MSM8974+PM8841 power domains
+      pmdomain: qcom: rpmpd: Add MSM8974PRO+PMA8084 power domains
 
-> +
-> +			memory-region = <&wcnss_fw_mem>;
-> +
-> +			interrupts-extended = <&intc GIC_SPI 149 IRQ_TYPE_EDGE_RISING>,
-> +					      <&wcnss_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
-> +					      <&wcnss_smp2p_in 1 IRQ_TYPE_EDGE_RISING>,
-> +					      <&wcnss_smp2p_in 2 IRQ_TYPE_EDGE_RISING>,
-> +					      <&wcnss_smp2p_in 3 IRQ_TYPE_EDGE_RISING>;
-> +			interrupt-names = "wdog", "fatal", "ready", "handover", "stop-ack";
+ .../devicetree/bindings/power/qcom,rpmpd.yaml      |   2 +
+ drivers/pmdomain/qcom/rpmpd.c                      | 107 +++++++++++++++++++++
+ include/dt-bindings/power/qcom-rpmpd.h             |   8 ++
+ 3 files changed, 117 insertions(+)
+---
+base-commit: 6e3fa474051f3d276ea708bdb8e8e1f66d1d3ee5
+change-id: 20240210-msm8974-rpmpd-6e48fe374275
 
-And here too
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
-> +
-> +			power-domains = <&rpmpd MSM8976_VDDCX>,
-> +					<&rpmpd MSM8976_VDDMX>;
-> +			power-domain-names = "cx", "mx";
-> +
-> +			qcom,smem-states = <&wcnss_smp2p_out 0>;
-> +			qcom,smem-state-names = "stop";
-> +
-> +			pinctrl-names = "default";
-> +			pinctrl-0 = <&wcss_wlan_default>;
-
-rev order
-
-Konrad
