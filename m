@@ -1,116 +1,107 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ixit.cz (ip-89-177-23-149.bb.vodafone.cz [89.177.23.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D7E53815;
-	Sat, 10 Feb 2024 16:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198CE5CDD3;
+	Sat, 10 Feb 2024 17:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.177.23.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707583546; cv=none; b=WepdmjkIsIIpkcN2ZJUIGXCu1gqOMqGbVTEk4yo5iVVK0LpAC4MTj8TicQZztFnit+Hh342dYd4U+zZshdcXzAffzXvyv279vbJ5XJOPPWxM46qQX2PpqTj8hNcJCIx6Hao6xqGrOGLuG7CrtLI9M+0VO4AMMnRJKCSygNtAAUg=
+	t=1707584805; cv=none; b=EBa+G26s36PObFN5/vuQr8/DHdWbnhS0ws3xXSoTrgVWI95K3mi84NHDxyBUGLha4Moodim14NLtfE2AS0p3VLWOLw7F6yw0Q64scGehnBpYfGAxCYMyPtsAlYr+FVczmiH9YcId430507L0usll6ZQi4mqN0L2wVVI4lKL/KXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707583546; c=relaxed/simple;
-	bh=4LyuSFtAH8dWWrZ0TdSmOR1VTioRfo0NSD7Xn7VGFGg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=c9u7atVSIp9bCXIaeStX69x+PxXnsABsN5/mSGd4bnunCrnNMFwbqLN7coMjnDUpG9UjTjN1S1Jqm9l5yD2Y7DXqC0Xd6h4RhVVjYsuMSBR19C4LUQsd8UmddMnpTdpi4RXmBg4gTSZ/hljQN7vCkt7fUVWfGjWUYwFq/Fj4Cl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=J5wKH7Gs; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
+	s=arc-20240116; t=1707584805; c=relaxed/simple;
+	bh=Iegw3uSU/jDrRw1wO36FWEmxyFeRwPHeaAd3poNxct8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=uaVgf+BsU15eXPlBdXoZK/ER//S1FGeBTVDfNls0uM/8cpr3JmoshnBJG5PqjJR1edgO0c0hck2HHO/GWIofn7kboJ29ie67bkPJZf7IGd9KauY6edpV07/AplKDYJa+OwN50WhYrHTZD6MPslJhmweVH1ECvCvi5h85jC1O30U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=gOgtqA84; arc=none smtp.client-ip=89.177.23.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ixit.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="J5wKH7Gs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1707583542; bh=4LyuSFtAH8dWWrZ0TdSmOR1VTioRfo0NSD7Xn7VGFGg=;
-	h=From:Date:Subject:To:Cc;
-	b=J5wKH7GsmmoA90iPoUjYjckXz+rIS0s3lrsdeo8Z6oaRchZovUxG/dMvuS8OhRhE9
-	 gkTN/BtHgNwjfBTlVJNkIFWyryS7Wa0LemsmUgCXvS9Ht9ozBZVScLbY1CX6hZ4NPc
-	 K8+ZOMSwTm9etD/mLV3O+4PSAqyopqhMiWAJfdtA=
-From: Luca Weiss <luca@z3ntu.xyz>
-Date: Sat, 10 Feb 2024 17:45:40 +0100
-Subject: [PATCH v3] ARM: dts: qcom: msm8974: correct qfprom node size
+	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="gOgtqA84"
+Received: from [10.0.0.200] (unknown [10.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ixit.cz (Postfix) with ESMTPSA id CB70D165072;
+	Sat, 10 Feb 2024 18:06:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
+	t=1707584800; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Iegw3uSU/jDrRw1wO36FWEmxyFeRwPHeaAd3poNxct8=;
+	b=gOgtqA84MbPtxjevQeqA35TmvVVl/iGM6Fi6Zq3tGgohl4g82DC4Sfmu7dkVwp5goDPO3S
+	mlM7TK0hmOFnhTqUwiroChzdccnT+jITdjMPxm4OIGOO1hJkn0y9cHoDYDYxXKonlGM/Xm
+	KksLfm620h9I3VwPVc6RDVg09QpZVDA=
+Message-ID: <6d15ee60-bd77-413d-be14-0e538f10b649@ixit.cz>
+Date: Sat, 10 Feb 2024 18:06:40 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird Beta
+To: luca@z3ntu.xyz
+Cc: agross@kernel.org, airlied@gmail.com, andersson@kernel.org,
+ conor+dt@kernel.org, daniel@ffwll.ch, devicetree@vger.kernel.org,
+ dmitry.baryshkov@linaro.org, dri-devel@lists.freedesktop.org,
+ freedreno@lists.freedesktop.org, konrad.dybcio@linaro.org,
+ krzysztof.kozlowski+dt@linaro.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, maarten.lankhorst@linux.intel.com,
+ marijn.suijten@somainline.org, mripard@kernel.org,
+ phone-devel@vger.kernel.org, quic_abhinavk@quicinc.com, robdclark@gmail.com,
+ robh+dt@kernel.org, sean@poorly.run, tzimmermann@suse.de,
+ ~postmarketos/upstreaming@lists.sr.ht
+References: <20240121-msm8226-gpu-v2-2-77f4a6fbbca4@z3ntu.xyz>
+Subject: Re: [PATCH v2 2/2] drm/msm/adreno: Add A305B support
+Content-Language: en-US
+Reply-To: 20240121-msm8226-gpu-v2-2-77f4a6fbbca4@z3ntu.xyz
+From: David Heidelberg <david@ixit.cz>
+Autocrypt: addr=david@ixit.cz; keydata=
+ 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
+In-Reply-To: <20240121-msm8226-gpu-v2-2-77f4a6fbbca4@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240210-msm8974-qfprom-v3-1-26c424160334@z3ntu.xyz>
-X-B4-Tracking: v=1; b=H4sIADOox2UC/32Oyw6DIBBFf8WwLoaHWuiq/9F0gThUFqKCGh/x3
- 4smTbppl2dyz72zoQDeQkC3ZEMeJhts6yLwS4J0rdwLsK0iI0YYJ5QT3IRGyGuGe9P5tsEFlZq
- AMKyAEkWpVAFw6ZXT9aH1OmY+SpHSdMG6G42H/gh3Hoydz/XHM3Jtw9D65Xxmosf15+5EMcXym
- itFIAci+H3lbhjTeVnRUTWx/zqLOhdcapPRSgJ86/u+vwHuonN8GAEAAA==
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Eduardo Valentin <edubezval@gmail.com>, Conor Dooley <conor+dt@kernel.org>, 
- Rajendra Nayak <quic_rjendra@quicinc.com>
-Cc: Rob Herring <robh@kernel.org>, Andy Gross <andy.gross@linaro.org>, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Craig Tatlor <ctatlor97@gmail.com>, 
- Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1645; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=peTVay4s/vEFP1xuIof2gqhA52otBBr/es0IRRtLLgo=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBlx6g1kxsk59DftR8bHzdIk0OfLUVwAx4GIsCB8
- m880mDOfleJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZceoNQAKCRBy2EO4nU3X
- VjoQEACHSyPAgR37KKm8sMLAWsYLyK+wcIPisBND9Kx6T+78GNNPMf/ZvJj6D7DEk8TjXYE2Nuw
- xWevyDHF6/Z0JjT/FoqXa+dMQ+VXOCm+xTZYPqcHsEmdGd9RPrZHujHSDod5tOeO3hTVYUWmO7v
- 3GEdu4cH4GEgv3DlbnQJewDKdJtTYcCVmh/yKzDomSuFN7X5Sm0w11/6yjZwKbsoQ55aWhe1pos
- 0RbN6iRHB3lkYTkYq1qHBVZaKBSBhAY/Bz+IA/Ro9WvpLbzZajxZeyVTlm/4F9vFSmf+/twe+bz
- qtiORq+j3KrCj6fMRAWYya5DcFluczRRN8Y5+pgkHopc/RqBvOSUJ03VRAMULLTbFSMIKrpiJHP
- v21f/CKSGN3GWHTOyoCnGcG7BvZOQZxJKEY66dgn0Zyh1GvDk2bdp4YjhAi1pCQ8J2Q9Uq1+ohC
- lOj0hK9SkK9iOr6gx99YGeSvTdXEsuYlCU0M9UWxb1Bn4NiQf0ElcBlCViATPMVYmOPxiRXGFw/
- FeZ2dLb2bapkxMa7ju+JyyHMM7aZlnh1z+gMIeVyw3fXB629CVogf27r/9uGl/GjWu7aypknLbZ
- Q6psbh8lS8KIRIPWaUptx27EbXHMJzE3IihcldaJ8fT5hpXLrK3NzMxTFhmRTCthA8G+lfAiYkv
- 3layf8Pxk0qirOw==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-From: Craig Tatlor <ctatlor97@gmail.com>
-
-The qfprom actually is bigger than 0x1000, so adjust the reg.
-
-Note that the non-ECC-corrected qfprom can be found at 0xfc4b8000
-(-0x4000). The current reg points to the ECC-corrected qfprom block
-which should have equivalent values at all offsets compared to the
-non-corrected version.
-
-[luca@z3ntu.xyz: extract to standalone patch and adjust for review
-comments]
-
-Fixes: c59ffb519357 ("arm: dts: msm8974: Add thermal zones, tsens and qfprom nodes")
-Signed-off-by: Craig Tatlor <ctatlor97@gmail.com>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
-Changes in v3:
-- Update size from 0x3000 to 0x2100 (Dmitry)
-- Link to v2: https://lore.kernel.org/r/20230130-msm8974-qfprom-v2-1-3839cf41d9ee@z3ntu.xyz
-
-Changes in v2:
-- Keep base offset but expand reg from 0x1000 to 0x3000 (Konrad)
-- Link to v1: https://lore.kernel.org/r/20230130-msm8974-qfprom-v1-1-975aa0e5e083@z3ntu.xyz
----
- arch/arm/boot/dts/qcom/qcom-msm8974.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi
-index b1413983787c..083ab780ab7e 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi
-@@ -1234,7 +1234,7 @@ restart@fc4ab000 {
- 
- 		qfprom: qfprom@fc4bc000 {
- 			compatible = "qcom,msm8974-qfprom", "qcom,qfprom";
--			reg = <0xfc4bc000 0x1000>;
-+			reg = <0xfc4bc000 0x2100>;
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 
-
----
-base-commit: 54be6c6c5ae8e0d93a6c4641cb7528eb0b6ba478
-change-id: 20230130-msm8974-qfprom-619c0e8f26eb
-
-Best regards,
--- 
-Luca Weiss <luca@z3ntu.xyz>
-
+Reviewed-by: David Heidelberg <david@ixit.cz>
