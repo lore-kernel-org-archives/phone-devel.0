@@ -1,95 +1,95 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF31654646
-	for <phone-devel@vger.kernel.org>; Sat, 10 Feb 2024 14:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1190C2B9C2;
+	Sat, 10 Feb 2024 16:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707574998; cv=none; b=gHTMJ0D9oTVfNXNZJJ9BqCMV2F3NTvyMz5v9qsaN/VEp0BaoCdxktVWA/ch3aZmUeJsViupWhIaYBLKHT849jUUK9x30nb/4ABkKE6pY+L5dfC1sqQ1XcuU30SrkVMzh685WfImQFPMfolxdcDiSrYUndlYvkwH5bSeuprbmmJM=
+	t=1707582207; cv=none; b=uOG4JE6kB6veB780fyA3xzI0Wa0A09whi8YTHpzzk40KQbAW3X+t51G2y/nOJ4f/nuNXidinun9UWVzc+qgA0ZXkwGHNu0HO8/oL/OZG5D0+KsLcfLgyeYzlcZez1LqtpDbCl33plcb4iN7qPGUwxGguIcR4LyQYbxyP/U8XzRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707574998; c=relaxed/simple;
-	bh=DaI34cmoQ2TTjezX6O9uXpwQhRxq41aFstLGILeGAGA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pFWJAIJjEaLUdSzdTVut5X8hCe2SxL0iwu2qewy+UtYU9jY2wqHFMzxGwYvqJscs83O03EHAmgpGxDkJudiaHbKwzvf/m6eNrZA8B7h6vKGJb7CPmBeLpSFIr/9NSzA1p4FjvcRmBzi1NOn7ehtoh8VfaQf/OaXEBprSG9unNCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wrpaDEIo; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wrpaDEIo"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a26ed1e05c7so248965266b.2
-        for <phone-devel@vger.kernel.org>; Sat, 10 Feb 2024 06:23:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707574995; x=1708179795; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=E4HO4hLAzbgJmOVEY8MO0LN738x8Cz2lxnox/JBlwZw=;
-        b=wrpaDEIoEfZ6CvTreW7HMqeGmUiT+lNGKLlkeSu6zeFbdVZXXCdSLbO9zj37qc4aZF
-         iqGi4Lh0iP98qA/13t25XNM3LKius6SP+9x4eBBCkDt4fvc8aX+OupO7v2ay1p5bzyTQ
-         Ez8lOM82ntvl2ozKNYQHsb/jTLjdfnwLqXNBLIOuyb+GW9IB0uAgcHvAnE82OhF60fL/
-         tLiXaVFhQygaZrxokbYPjGJp1CUYlw/S01ImyA3vic50aWYv4qm2JM4D0DXoU1qOPXbX
-         1ev0Rc6+9yrt+G/CF4BHbo6iSzxJz3M6vys6VxdDnTpyxyxEu48k6Y2fUjvqvnEMpZAq
-         DMlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707574995; x=1708179795;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=E4HO4hLAzbgJmOVEY8MO0LN738x8Cz2lxnox/JBlwZw=;
-        b=hIObBwQZXh1sn3oY8cRcPDgrQhoy0o0bTEDPJt+eeC2+cN5to8Oi0aSBJvCLbGEdAW
-         APxzvPaagqmyvqMMfZVFznw6fE1fgVZ4YEz0tWzn3z4bTsRaygHYigx0oJVEYRJ8iAVY
-         P4UFhPbjbBjU0x++uw7mHhm8esekss+heL26ND4KXXn9bPJrDP+aN6GU3PPAvfSD6GfT
-         PekkPGzqs3MQPffQTNOBZBlbQyFlf2A/yYsMiKU54FEOoxQ1z7bprwMFfWIV88+SX2WO
-         rURZUf3x/yyIMvt/YoRNN3qh+S2fkBVxWZGQ0I5xRUjb0do7MoA3JFwPkeudr8eI70ny
-         yeZA==
-X-Gm-Message-State: AOJu0YxluU3TFqPtGP+3kWQBA4droiRdrGvsGS/j+dwVHxD3TVTp8CsM
-	y2OloyIWwY95gRf7DCVWG5cWq5+c5gpjJ7ROTf629AoCD+8W0XAHIy/JxiSs8YU=
-X-Google-Smtp-Source: AGHT+IEJZtlhHoDZ5lAeCtmu7+okxoXyvoQMZqadchssc7Ffm8NwFqahbNXqLhMwFKdEQU7UwQkTSA==
-X-Received: by 2002:a17:906:2789:b0:a3c:4503:f72e with SMTP id j9-20020a170906278900b00a3c4503f72emr620585ejc.22.1707574995136;
-        Sat, 10 Feb 2024 06:23:15 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW+CqreWMjIfkQHM7lVlY9oTvW1YpdcnimBkIIejPItqBzmLjSfvYQEj6mBODYLt8dPX2VmVbmRbWe8DYKIb9R6CbpHVV98CYSpcZPxncrMTyAf2t7hOOZ8qTtNX0syvlT/xq2EyLX5Op92EGljvqQ+cucSsaulV7BUJZOOIfKCVDEuf+eydSe03EkjNY4Mf5LtZvhdDmaQpR8a/ecLZ+HLikQ+wKJw6nv/WtoOYdkUzi/7sg3PhWhQD8ugQe0FB1ZZHaUCaX1eCd9Ab7gMjSVHA8RcVq+8ELQouZ8DTpqgvIfhFyNOyssY5q0516SX+lCmCDOflEtY5+u25QIbiNy4fLwLm7MuyYnFKgfvNuDdYbyxeyn5xHbFRCtsmpMZrGxrw+Q2Xa4ihNnNKU0fjWtDdTY9JHfeEW4aoiEElvMb7QnHGQUMa0V4HoZFijsqkViY83SygbPRIfkRfSKh8ohuXR/s7OBo9SvzeZ2O3uwBMg==
-Received: from [192.168.1.116] (abyl12.neoplus.adsl.tpnet.pl. [83.9.31.12])
-        by smtp.gmail.com with ESMTPSA id k6-20020a1709061c0600b00a387d9d6dc5sm1858412ejg.174.2024.02.10.06.23.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 10 Feb 2024 06:23:14 -0800 (PST)
-Message-ID: <38722fc3-b340-4ba0-9573-21eae476d2b3@linaro.org>
-Date: Sat, 10 Feb 2024 15:23:08 +0100
+	s=arc-20240116; t=1707582207; c=relaxed/simple;
+	bh=TFGgvTM2PG0fbMk9Rl9Qb2vgbRJiET6Rp+y64OYoGI4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mdZwAqRP/9nSQQ7zKjwk/7n3daOCs9WZm10nmHEArysHhuy0D7IuIwutYjas7vw89tHspLeWpFKSWsMdA559vnJORTgBuUSIXqsS8+z6p7k9xik8IcW6Hl3lWGuZx26P2zqQfbGRIX+A7l7wcHqgAS+5Tp8UjN7AovIWXhsCVAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
+Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
+	by mx.skole.hr (mx.skole.hr) with ESMTP id 59EDD8431B;
+	Sat, 10 Feb 2024 17:17:59 +0100 (CET)
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Date: Sat, 10 Feb 2024 17:16:17 +0100
+Subject: [PATCH] backlight: ktd2801: make timing struct static
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] pmdomain: qcom: rpmpd: Add MSM8974PRO+PMA8084 power
- domains
-Content-Language: en-US
-To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Stephan Gerhold <stephan@gerhold.net>,
- =?UTF-8?Q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-References: <20240210-msm8974-rpmpd-v1-0-de9355e6842a@z3ntu.xyz>
- <20240210-msm8974-rpmpd-v1-3-de9355e6842a@z3ntu.xyz>
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20240210-msm8974-rpmpd-v1-3-de9355e6842a@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240210-ktd2801-static-v1-1-90ad2e2e8483@skole.hr>
+X-B4-Tracking: v=1; b=H4sIAFChx2UC/x3MMQqAMAxA0atIZgtJFFGvIg7SRg1ClbaIIL27x
+ fEN/78QJahEGKsXgtwa9fQFVFdg98VvYtQVAyO3yITmSI57JBPTktQaIcuNo6FDtFCiK8iqzz+
+ c5pw/xW2pM2AAAAA=
+To: Lee Jones <lee@kernel.org>, 
+ Daniel Thompson <daniel.thompson@linaro.org>, 
+ Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>
+Cc: Karel Balej <balejk@matfyz.cz>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1184;
+ i=duje.mihanovic@skole.hr; h=from:subject:message-id;
+ bh=TFGgvTM2PG0fbMk9Rl9Qb2vgbRJiET6Rp+y64OYoGI4=;
+ b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlx6GE2aYXO7i6H7ygEfSoqrSV4LJWg+nPqiTWX
+ De1P3tytdqJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZcehhAAKCRCaEZ6wQi2W
+ 4Qc2EACLTotP/+lxPbA4aYMKka8lirI9jsEY2lS37VZxUyOV4vV5MRUFJmJ5DPU11k/c+0NbwX0
+ xZ2gMntp/sR/9A6jYFVOfU50N6SaymZRo+vnDQr+CmFj2bnX9NXH7huoyhPWmKXHKB2pxiDCSSy
+ 9ZvgazMDi1O078oYI07txn6Mv5yv3+Vru1/UDjZvMTGleuwTsSbPmwYPZ459X7jUZjRE1tbNM0A
+ kOkG3pN4qhh1BJ5fA5joSqFkeFHoo/eSZVUX2ZOKUC5UDiSwOXWpmzAWikvVhaCf1HYSCqudBWA
+ LYK2von+UkIct5WSYjsC/rcQPaCltcc9M44ZhuQDrTHe0qNwIvz1IX+ErId8ALX8p5/DOsc7Ajx
+ Iem5xm1FDD5/OS3lFqZGKnzRV5sniXWzxwwbNxUHTj5exuiu+cfGbHwvi/x6N5K/VOaMrff6oss
+ 4m4TtJy71Xz0BfGLE0Gw/uvXVSRSBHm9HJwxAY4NSh//+uSM2TCNH2XPqcELV8wEjT2DDNTO+Im
+ CG7zehjHRrhDrwwCp3rp/4AjnQ+lJnDV/ffNTZ8uL9nvs54WEnR4UXw7zH9bRRLLNHBq7WAmXJ4
+ gRmj4lX1oCohNrKeIbQ7VHRUkWB1fRldwcfx+3wr+9+jC0gkE6AIbW22R6UJkxa0vV8/+7LuuSO
+ EQWdKESlbf/OSrg==
+X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
+ fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
+
+The struct containing the KTD2801 timing can be made static as it's not
+referenced outside the KTD2801 driver. Do this to prevent sparse
+complaints.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202402100625.M0RkJhMh-lkp@intel.com/
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+---
+ drivers/video/backlight/ktd2801-backlight.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/video/backlight/ktd2801-backlight.c b/drivers/video/backlight/ktd2801-backlight.c
+index c020acff40f1..d295c2766025 100644
+--- a/drivers/video/backlight/ktd2801-backlight.c
++++ b/drivers/video/backlight/ktd2801-backlight.c
+@@ -13,7 +13,7 @@
+ #define KTD2801_MAX_BRIGHTNESS		255
+ 
+ /* These values have been extracted from Samsung's driver. */
+-const struct expresswire_timing ktd2801_timing = {
++static const struct expresswire_timing ktd2801_timing = {
+ 	.poweroff_us = 2600,
+ 	.detect_delay_us = 150,
+ 	.detect_us = 270,
+
+---
+base-commit: 66c76c1cd984c14660453dfa2118014817924375
+change-id: 20240210-ktd2801-static-e1c23d19600c
+
+Best regards,
+-- 
+Duje Mihanović <duje.mihanovic@skole.hr>
 
 
-
-On 2/10/24 15:12, Luca Weiss wrote:
-> Add the power domains CX & GFX found on MSM8974 devices that use PMA8084
-> instead of the standard PM8841+PM8941 combo.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-
-Same comment as p2, gfx_ao may not make much sense on this
-platform
-
-Konrad
