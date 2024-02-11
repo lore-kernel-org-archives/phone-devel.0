@@ -1,105 +1,127 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01D05F545
-	for <phone-devel@vger.kernel.org>; Sat, 10 Feb 2024 19:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565FA168B7;
+	Sun, 11 Feb 2024 09:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707592294; cv=none; b=lYGCqzRd7iuHh96m9G6t5b9GjUQUTnuNpVqNQWUgwg/J41d6rN+jK6PJijduPgKpaGWRNmEmuSzFE7HU6NhSzJRrXS5IbudzsozgNAyKD3293EVPFWG70dtjqAvMUuRUxboQ2jFWhywIvR137KRw5e+Ee9PWz1fkoo+lQa5qfI0=
+	t=1707644829; cv=none; b=eEJ4KjgNT5BbQAa1TQUmweImMJLkz8xo3lpnn0fviRn68qJYuwcvQjRsl2QJwHye4HDaw5DjFNLVOcUoFnF7F0iR1tSSTcJlFjVZo9tUQJ0u9kjcPWzymC37b0PG4vqvdOPNJAplbgS8AbDYnteQr9ILnPCGUMv88YAdr91YIlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707592294; c=relaxed/simple;
-	bh=x1GVwGorkcxO3IafmVnsCPl7EfeQZAKgg116i67uWXI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sr/DZ6ABcIj/PUJQSxkrosbMiUlGCWx26kKN8fJ+ED5wLjek2UBDvTKlu/cbfFdfrdT2DxGW6H5fDYqVVBPPZf+4OX+Hp3sLCOQztaKkMP6E3NjU7QfUuWKJmK6MZbQt2o+sHZ0NLgwBaqS5IQi0ovSASL3PFwqFg/mZQ3nsE70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Md2XEQjR; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1707644829; c=relaxed/simple;
+	bh=gofBdZ13iHj3dO08IZKMEUeaH7TfVhVD1JVNFZuvo/s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XrhuWM0Ja5SgoP+iJ3+vpy6D7qph5YV6NW5jwIV9w0NaXuRlT8cptX2xI1ZpPaXvtSVM6z8igoGuEjkQ2hNdv0AqsAg701DxXpGPxj+Z+VOkseTW868ojBFfV2q/GKmz2fP16o3AkVYcgeOvwIYOcoO1lAwJBQmDYpg7qnDtZmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz; dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b=iwmkOnKM; arc=none smtp.client-ip=195.113.20.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Md2XEQjR"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a38a1a9e2c0so238553166b.3
-        for <phone-devel@vger.kernel.org>; Sat, 10 Feb 2024 11:11:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707592290; x=1708197090; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LEw2EnFXzQVU2p0mkCDlT1t0pyChlA/M+u/ewTeLVg8=;
-        b=Md2XEQjRapgSam1RkndwtnhBIv3IzIxZbgnC0YMxB+jcEEFtTgf5TE0OMNTSI2JuJo
-         racZVqE0L8xlygRZp24y7jq//YWoPoBPRaYJ+f5z5IxexF80XGsw221ofW335/mn03gU
-         cXuzf4/pFgkZ+0MpKmW4Srtm/0VJgk6HEG+TQQEK+nthppjoEsczu+0xpoOvV7fea6I7
-         VE795PiSP6a2tO/v+Cz9OvDcLlM8LEycyvnJW/phATcQhSIweORRYivp7ZiR/XCTTUnt
-         NbkcRLzWO/pTRYo4WS7eHXUasK9bjnUsAukIMYE5BPa9z+9FRl+vcYAzThqt62a9Gqk2
-         tOgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707592290; x=1708197090;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LEw2EnFXzQVU2p0mkCDlT1t0pyChlA/M+u/ewTeLVg8=;
-        b=VbWDjQu51ET1jMexY2VOANKG6fg1v24EEaeCBl/TRx48U2zsup6XkaMrQlg/s86/gB
-         fJtZ4TZguSow+IYGkS2iX7YeTkm7lAAH99X/Akl70Jf37NbkKNhrltSLQ+O6Vo4/yhU5
-         FmwQRfAPoURcJkx/yDnSt9OPz9GhmeOmh15l7GJWJJOww7J995Ffk9MQ+4YMGqARnV8D
-         cbD33sTJmLomW/4FcF2rzp/YYHJ9xDiNSkNFZGWMJ5vpzeqgKIoOAYJqEpMKePzQ4Sdj
-         PfQ+jSeSwblqP25mIPmyd0zSenBrzfECLgZJe6CxtH6D0fyvr0qG1TN6ejg93HvaHcuE
-         VLYA==
-X-Forwarded-Encrypted: i=1; AJvYcCXnPxNbXMKUCYtGZigMeL+0Cr4AkESH38XLmOjKfMTrnGe9athdImEmL1a5kryd/Vdct7gwAdiHrjSrvQa90G+IVPatPpWzBm7dwCM=
-X-Gm-Message-State: AOJu0Yzn/Dq3NVORqmGNYLeNjzMetOVclsT7vqjmJpsyKynrNFkeIAOD
-	1tdNicA6ZeSfp6IUMPfjQmNWZBvtmIPGzMVzscoxV810+A/s825HTCsf66v5JIY=
-X-Google-Smtp-Source: AGHT+IFQ1p9zAgzQOUSwl5Ea/XO5538HhUhx2MIaN+c3CTo0bUpLvWYiCGb3EOZeubpmv7KdMb4Lpw==
-X-Received: by 2002:a17:906:552:b0:a38:a174:1316 with SMTP id k18-20020a170906055200b00a38a1741316mr1910684eja.72.1707592289981;
-        Sat, 10 Feb 2024 11:11:29 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWiJrRAZbBqUDXJFWpkO0i+fsugtySrXkHVf/nkA66ymTNKN+pAUOFFjIqOwqSQrW4Oo/XrD4oJrk57DYMRjQC+gnbAQEvqZjIIveR9HzZw0qPE8I3EPPVIa2TT+7Di84fhT15I3NWIyknWFqblVVNW213nWW9x4j/KrKlhmx4QHbsMa+cYuiSnJB5MzR49nEC89AC1sIdBOROAko1SAoyG8tJdKkbW3njeLWpbPKKlAGYVsO0oesYed7a16kvV7/FPvplr8xO9Y+ud97ZONsUCfPNRnRcjpcfYiUi4QiDiKennm/kYxlyVZrPue9azFrCtZyn9pa9OsDe+oiu6TUf2nplRKErDDzCFzIKTUWCQJ6vl0vYg95nNyX3Sqb42puIfs6Kw6V6VQPFbf/wd11a54EwCpMGlM6dLQvxx
-Received: from [192.168.1.116] (abyl12.neoplus.adsl.tpnet.pl. [83.9.31.12])
-        by smtp.gmail.com with ESMTPSA id sf5-20020a1709078a8500b00a3bf0ab3f2bsm1789963ejc.21.2024.02.10.11.11.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 10 Feb 2024 11:11:29 -0800 (PST)
-Message-ID: <9e1d7e08-ed17-4876-91df-f05529184e58@linaro.org>
-Date: Sat, 10 Feb 2024 20:11:25 +0100
+	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="iwmkOnKM"
+Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id 3F1C52811B8;
+	Sun, 11 Feb 2024 10:46:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
+	s=gen1; t=1707644817;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=js79tpGeOwdjmy7kNEGOcRh7dlNGXI2Hu08nML2wVQU=;
+	b=iwmkOnKM1VkVuFcfldLGCycvw6PoDVgAYTljFLpBOjyoLczIV0iyAwSjNGcqs0VXonbSfT
+	tH7mvL/CBOid+nIfr+srxlvLFgOj2MXS1GilpvBUvEIF6pkwBSWbyS5x1ddfBeA/t3Hpzf
+	nNIoB/R+4lFXTEmGoTC8Ph2odvQf1+Q=
+Received: from localhost (internet5.mraknet.com [185.200.108.250])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: karelb)
+	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id 1327F457D27;
+	Sun, 11 Feb 2024 10:46:57 +0100 (CET)
+From: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
+To: Karel Balej <balejk@matfyz.cz>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	linux-input@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+	~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org
+Subject: [RFC PATCH v2 0/6] support for Marvell 88PM886 PMIC
+Date: Sun, 11 Feb 2024 10:35:50 +0100
+Message-ID: <20240211094609.2223-1-karelb@gimli.ms.mff.cuni.cz>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] ARM: dts: qcom: msm8226: Sort and clean up nodes
-To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, =?UTF-8?Q?Matti_Lehtim=C3=A4ki?=
- <matti.lehtimaki@gmail.com>
-References: <20240210-msm8226-cpu-v2-0-5d9cb4c35204@z3ntu.xyz>
- <20240210-msm8226-cpu-v2-2-5d9cb4c35204@z3ntu.xyz>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20240210-msm8226-cpu-v2-2-5d9cb4c35204@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+From: Karel Balej <balejk@matfyz.cz>
 
+Hello,
 
-On 2/10/24 17:28, Luca Weiss wrote:
-> From: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-> 
-> Quite a few nodes haven't been sorted correctly by reg, so let's do this
-> now so that future nodes can be added at the correct place.
-> 
-> Also at the same time, move the status property last.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Matti Lehtimäki <matti.lehtimaki@gmail.com>
-> [luca: add more text to commit message]
-> Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
+the following implements basic support for Marvell's 88PM886 PMIC which
+is found for instance as a component of the samsung,coreprimevelte
+smartphone which inspired this and also serves as a testing platform.
 
-Due to the nature of this change, it's hard to thoroughly review,
-but nothing screams nuclear breakage, so:
+The code for the MFD is based primarily on this old series [1] with the
+addition of poweroff based on the smartphone's downstream kernel tree
+[2]. The onkey and regulators drivers are based on the latter. I am not
+in possesion of the datasheet.
 
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+[1] https://lore.kernel.org/all/1434098601-3498-1-git-send-email-yizhang@marvell.com/
+[2] https://github.com/CoderCharmander/g361f-kernel
 
-Konrad
+Thank you and kind regards,
+K. B.
+---
+RFC v2:
+- Merge with the regulators series to have multiple devices and thus
+  justify the use of the MFD framework.
+- Rebase on v6.8-rc3.
+- Reorder patches.
+- MFD RFC v1: https://lore.kernel.org/all/20231217131838.7569-1-karelb@gimli.ms.mff.cuni.cz/
+- regulators RFC v1: https://lore.kernel.org/all/20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz/
+
+Karel Balej (6):
+  dt-bindings: mfd: add entry for Marvell 88PM886 PMIC
+  mfd: add driver for Marvell 88PM886 PMIC
+  regulator: add regulators driver for Marvell 88PM886 PMIC
+  dt-bindings: input: add entry for Marvell 88PM88X PMICs onkey
+  input: add onkey driver for Marvell 88PM88X PMICs
+  MAINTAINERS: add myself for Marvell 88PM886 PMIC
+
+ .../bindings/input/marvell,88pm88x-onkey.yaml |  32 +++
+ .../bindings/mfd/marvell,88pm88x.yaml         |  82 +++++++
+ .../regulator/marvell,88pm88x-regulator.yaml  |  28 +++
+ MAINTAINERS                                   |  11 +
+ drivers/input/misc/88pm88x-onkey.c            |  95 ++++++++
+ drivers/input/misc/Kconfig                    |   7 +
+ drivers/input/misc/Makefile                   |   1 +
+ drivers/mfd/88pm88x.c                         | 211 ++++++++++++++++++
+ drivers/mfd/Kconfig                           |  12 +
+ drivers/mfd/Makefile                          |   1 +
+ drivers/regulator/88pm88x-regulator.c         | 206 +++++++++++++++++
+ drivers/regulator/Kconfig                     |   6 +
+ drivers/regulator/Makefile                    |   1 +
+ include/linux/mfd/88pm88x.h                   |  46 ++++
+ 14 files changed, 739 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/input/marvell,88pm88x-onkey.yaml
+ create mode 100644 Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml
+ create mode 100644 Documentation/devicetree/bindings/regulator/marvell,88pm88x-regulator.yaml
+ create mode 100644 drivers/input/misc/88pm88x-onkey.c
+ create mode 100644 drivers/mfd/88pm88x.c
+ create mode 100644 drivers/regulator/88pm88x-regulator.c
+ create mode 100644 include/linux/mfd/88pm88x.h
+
+-- 
+2.43.0
+
