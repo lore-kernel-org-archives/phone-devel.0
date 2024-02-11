@@ -1,60 +1,60 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C125A7A1
-	for <phone-devel@vger.kernel.org>; Sun, 11 Feb 2024 12:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013F25B5BA
+	for <phone-devel@vger.kernel.org>; Sun, 11 Feb 2024 13:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707654367; cv=none; b=j+FZDKPh7mQpDbd43JTXomxEOEPtdG/MilCBawMjd0gx4oZjfEBy21sAATc9WsRHMpKWbd8m3V3SmPXlqCagoFcBQvLQSOjeB5h+VDz3ds+xqrbD5iu83vINgmqFAdoWZsd+jmrIaxpo6GdPM/6owu++9HyLIdcxPlRSmgFHsV0=
+	t=1707659766; cv=none; b=gph285PLQAJo76GxkCMBZabr7SQIim2Pe4iewxAKrtDrv2c1oN/r5+muwp8eUqB2q2oq7YFrfHFb7pN0WbyD5dT7ZJ78PAHkgyPhdRlAZGJQ27YGhhixBK4HYrgQQUiDoZ+O2YeH1ysKF2TbOouxL2n0s8Goq9TeAMTdJKmlKqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707654367; c=relaxed/simple;
-	bh=qdn9MQpOhl+Nuf6F+VlkgC1kABe+Kd22BxjdRuYBvcs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OkMvpkSWw2h3kbxxVzDAYzlk6IcwUZqc9rN/eiu/OjjR2xo230b0INmTZFq1mA0htl2DHtfVXLxM3VwOiuABVfQVDnn6MHn485i9QYlAUNwS4SPg6tc5hd5NqyxvsR7crWPX8XCBfsjA0W/40v6qhS5efyCfeRLXnZHz9NkbkiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ddj5zgkd; arc=none smtp.client-ip=209.85.221.48
+	s=arc-20240116; t=1707659766; c=relaxed/simple;
+	bh=pXvsImowq0i/i575K7kHTSMoxVErfBTiVGiGOnNGGyQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ZzRyDIlqLee+TnqLlYZS0jQt1kZklAux9o4Z8OJAHtUe+mL4O+ymlcB4pN4VzNCm4/vGMwYABL4rdgLcZGaVvayY1YvzPxMPtiQlQt09oqvVxx6ZO/gOO6s45hMJSAO3fohCpXaWQyZRtudQtDp67lv/Cj0fvaQONJeq7tmGqzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Nqq/187p; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ddj5zgkd"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-337d05b8942so1920695f8f.3
-        for <phone-devel@vger.kernel.org>; Sun, 11 Feb 2024 04:26:05 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Nqq/187p"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-33b81c7ecffso35095f8f.3
+        for <phone-devel@vger.kernel.org>; Sun, 11 Feb 2024 05:56:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707654364; x=1708259164; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1707659763; x=1708264563; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=P70/flCA4j9pIAfUZf5I0mKryf3NlizBRilGJs1ZF6Y=;
-        b=Ddj5zgkdTvOWkfyD1e1lxsIenkuQlo7ZjOqIZJu9Q+eK0jKaH7NeYEMIOSQ1DiTQjC
-         cFaCD5hHs3aiE3R/3LiSE7a1O/2hQPWF0snNhRsVaRgKfnkmVL+eJEM2/1RhIGmujRJ2
-         Kz9iObNLEdK8ESI2ggaJwfobY9SFkPg8pUvEG0wUaObhurxWV0Ngb0e8u3fK5ThnzwYd
-         /mXakcJlHl+EdvZ0uUKnz+mvycmRmVsjiIX+C0r/DcB7Bl04d3eznIFkMZT52t02qsY5
-         FaqbBmthtAAp6JePgYmuzfxOSN1s+W6gav6mxzcyxJLSYuHII8T02atTbPCb8yyYoK/j
-         Yq2A==
+        bh=QQbDMuCf8echH2vXmVfP4WtPzr419Vx4QeYzyXyHPfc=;
+        b=Nqq/187pFvUaUG1/jex3/Y0+oToKc491sJ6qDwnxlhcm5WwpnZJsMQnf/qTTUjqA7L
+         LhG6+yCVMdMJxXckCGAlana+qACZWDjkJKxlo+YsvW6fX4Yw+amuTDfkUb1E1sy6Owv/
+         JcPmnw0QJxLRt6+kKtjVTW2nCkumTykJdjJgQi40gmHb8K9d41WjwgNBlx8xwuH+YjDo
+         SzoZ5pfZfUCxrFcWbJOfgJRwh2JkYQB3C6pcAkDa+1myL16JeEw3MuBLzdRG13TzZZA6
+         yUEnj5WskH7H+LQPJvNX+xtAe/qE9KaWSYM9rNouW1X7EKXzTgM5piMcf3OpJ4XObfjt
+         iVyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707654364; x=1708259164;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1707659763; x=1708264563;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P70/flCA4j9pIAfUZf5I0mKryf3NlizBRilGJs1ZF6Y=;
-        b=c/M/Ck1CeZP7Jz4wi/fjdk+7UDCu3vM1uDgsNqHlz6quKONrkQkeKOII1u4NDetczS
-         DscAvbEIskLH3jBy434D5dKLU90JNtYPK7Ry0D6BoQfouiindV37UAtQEcWiaFfy6RNK
-         2Y+xzV6iKmiBRoyqCcRL2hdLfWi0ctUgLRUhDkIp2ZxTxhQ6p1niU7Z72X2LoLe8YVzB
-         STJmjyEqpuEDvdltL4GG9L2Le0nfzhhU0tu3bS0c7dd8Z/VaGbYILMfSLSRjXQ44PxBJ
-         Ou+7jliFx1JC06gX9X1NJbOnHVXTSSV4YSm5AogbHBBVzRbTyozK0nicTswcwqdDrhG7
-         WStA==
-X-Gm-Message-State: AOJu0YxqvlHQ8DD0Fwtdxy3Q9qnTJtbqafuGHY2YiKU1kmxXRn/gOqsG
-	7AheR5tiDXrH7Tg/mRkO8QU3uhyM2hmHMlwenHWTMI8X0UR9QRSutCV0JBBeTXPKpWi94BU9rbM
-	E
-X-Google-Smtp-Source: AGHT+IGmAw/ckiNAHqUe4mlELga9sHgYOJg5qIAtPJP3hgW+Uj+1/zi9VZULFhY6+/ZVeVUWi/w+jA==
-X-Received: by 2002:a05:600c:198d:b0:410:72e0:d391 with SMTP id t13-20020a05600c198d00b0041072e0d391mr3959420wmq.6.1707654364049;
-        Sun, 11 Feb 2024 04:26:04 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXRuiM6CsHuEG3tqu4xUTvGAsbvinkhjs3ySLWAbwd6jM43+sWlTY9iOAypKLkMmtc+0Hw3qwXYlI9zA9OL8VIZLQBZvTgyNG0Gzx79spoEUi71vszNVT+ZHmL5D2oE7Gvm8q9iHN4gSQyY79922IEURJFTXL7EodqOs67U/nI63vMVnvonQdE3MtKxFi+LEsP8zpQNg1GXOkiOPNc3zVLky3Fj8hvQ5XbpkgCmPTG2hWg1vUyPzTj7CR1SI15n2m0MAOwnu3pwQH6UUFxwiwBWva7PYMUUvZ4x+Nh3RQAkuo8qyRW/axStfbHJU2qFIU7V4uyvBuEgqPRIxJppBtCQ6BWYY0OZxIhj36Z747zTDAsptj0wFnqFYyQMt5Oljom5pseS7tC2Gr/IAWPpDrE1kIbflB67dRJMJZU=
+        bh=QQbDMuCf8echH2vXmVfP4WtPzr419Vx4QeYzyXyHPfc=;
+        b=l7QQmCGJkZBNaR6Fnlk+NCS6alUt5vMWR1PrmSJOfrcmJJVM7MX6IH9BQ0MJ3c9smd
+         ZuRMZml0D1u801b01xhdioiAsgsV45G2nhVi6nBhXs7Jxgy7qHHYE6BbU+pKB9I2jTzC
+         OOqF2dwgqyuDqh+aIwZ73zglbPKXQ2EajrWuNIuopoBSUZRYPOV1UkuhIByupaDBN6uv
+         gWPrqMAUBtOKRBnBDKrjCT2seHZymCbxIUm0MJbmQVbHmyN3lusfRVuopWpohjBerqXr
+         N9lH7znkvXby0pcxnbEPFdW8PWy3PNnn2iAyoQKg8LMm1ect0msJgt4PLI/WJRkhI060
+         2unA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQwuKnEfUicIYVvOvXbubTjFsgqmjsjvP5MIWkICv3/WtZbF83XPl8HMcfr0O50jH/q5ub6RMrGZTv3UjXVEx3bAuQvL+JbPqrpww=
+X-Gm-Message-State: AOJu0Yx+RfQDE+sjBAeyl3dStck6DNgNvIqM7CDBndV2F0g2USgsfY3G
+	Nzj6RE7M8ju8ZbbzCGRV1SfILH4C6x++LGcmjUqOLUZO9Jikzhl+Qku7J61/ey8=
+X-Google-Smtp-Source: AGHT+IEcqc+r1s7VzO31zVMQiEdZhbAY1dcw4wyYDP5pGtpMY4RnCkIYujTW1p+Ero6RkbKNTFkCng==
+X-Received: by 2002:a5d:58f0:0:b0:33b:279a:5c99 with SMTP id f16-20020a5d58f0000000b0033b279a5c99mr3049176wrd.18.1707659763180;
+        Sun, 11 Feb 2024 05:56:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWHIMkAK5n7prPrl8eptYlgnUtosbcSd6JRdRnczhvvfF3dJn6EAwAkw4KVb5DEmbXam5CGGX0f5xPPTb4hvTJXfrEgUSMexnB7V/rYjbracuZxeknQvRMkx3Gqxxecame8dMAmMj5Fo+F3O9fr5ao1zLvba/trgFKkljXv5efpVMLhtrVc2qrQ91xMHxGxWWQ++PJuuzrc87mop3LJCCq1KEhn6/8e7KiulRSmeYhbHq2hrnASRjT1hOUylaUzwMqByJp94VcCBM+So+WPwjp5JdJ5SoD35b0y3KPE3iTV3fcu+kMV+vzhVl/wkw8Ty8wZPTwuxMpGSxGOX6vaEd97QPi+t+HUPHjYCnMEcFtazjjvwGPSGj763TzNDbMGHfuWh1TGfXblRhp5BvGzADqnBROHMBwoj5UY6ZtJA/biEq6BHEqwhJmQYlY8wXg4sajVoWps8e9z205MGQfY
 Received: from [192.168.1.20] ([178.197.223.6])
-        by smtp.gmail.com with ESMTPSA id p15-20020a05600c204f00b0041044e130bfsm5650185wmg.33.2024.02.11.04.26.02
+        by smtp.gmail.com with ESMTPSA id dv5-20020a0560000d8500b0033b483d1abcsm4297527wrb.53.2024.02.11.05.56.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Feb 2024 04:26:03 -0800 (PST)
-Message-ID: <cfd81e2f-886f-4e86-ac88-f6a62a8de324@linaro.org>
-Date: Sun, 11 Feb 2024 13:26:01 +0100
+        Sun, 11 Feb 2024 05:56:02 -0800 (PST)
+Message-ID: <3a662ef2-1888-4f24-bebe-3ce32da9d277@linaro.org>
+Date: Sun, 11 Feb 2024 14:56:01 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -62,19 +62,15 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] dt-bindings: soc: qcom: qcom,saw2: add msm8226 l2
- compatible
+Subject: Re: [PATCH] dt-bindings: usb: typec: anx7688: start a binding
+ document
 Content-Language: en-US
-To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Andy Gross <agross@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240210-msm8226-cpu-v2-0-5d9cb4c35204@z3ntu.xyz>
- <20240210-msm8226-cpu-v2-1-5d9cb4c35204@z3ntu.xyz>
+To: Pavel Machek <pavel@ucw.cz>, phone-devel@vger.kernel.org,
+ kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de,
+ martijn@brixit.nl, samuel@sholland.org, heikki.krogerus@linux.intel.com,
+ gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org, megi@xff.cz
+References: <ZcaCXYOf6o4VNneu@duo.ucw.cz>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -120,18 +116,153 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240210-msm8226-cpu-v2-1-5d9cb4c35204@z3ntu.xyz>
+In-Reply-To: <ZcaCXYOf6o4VNneu@duo.ucw.cz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/02/2024 17:28, Luca Weiss wrote:
-> Add the compatible for the SAW2 for L2 cache found on MSM8226.
+On 09/02/2024 20:51, Pavel Machek wrote:
+> Add binding for anx7688 usb type-c bridge. I don't have a datasheet,
+> but I did best I could.
 > 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  Documentation/devicetree/bindings/soc/qcom/qcom,saw2.yaml | 1 +
+> Signed-off-by: Pavel Machek <pavel@ucw.cz>
+> 
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+You miss proper diffstat which makes reviewing difficult.
+
+Actually entire patch is corrupted and impossible to apply.
+
+Anyway, where is any user of this? Nothing in commit msg explains this.
+
+
+> diff --git a/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml b/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml
+> new file mode 100644
+> index 000000000000..b9d60586937f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml
+> @@ -0,0 +1,140 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/usb/analogix,anx7688.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analogix ANX7688 Type-C controller
+> +
+> +maintainers:
+> +  - Pavel Machek <pavel@ucw.cz>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - analogix,anx7688
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+
+blank line
+
+> +  enable-gpios:
+> +    maxItems: 1
+> +  cabledet-gpios:
+> +    maxItems: 1
+> +
+> +  avdd10-supply:
+> +    description:
+> +      1.0V power supply
+
+Keep description in one line and add a blank line. This code is not that
+readable.
+
+> +  dvdd10-supply:
+> +    description:
+> +      1.0V power supply
+> +  avdd18-supply:
+> +    description:
+> +      1.8V power supply
+> +  dvdd18-supply:
+> +    description:
+> +      1.8V power supply
+> +  avdd33-supply:
+> +    description:
+> +      3.3V power supply
+> +  i2c-supply:
+> +    description:
+> +      Power supply
+
+Drop all useless descriptions (so : true)
+
+> +  vconn-supply:
+> +    description:
+> +      Power supply
+> +  hdmi_vt-supply:
+> +    description:
+> +      Power supply
+> +
+> +  vbus-supply:
+> +    description:
+> +      Power supply
+> +  vbus_in-supply:
+
+No underscores in property names.
+
+> +    description:
+> +      Power supply
+> +
+> +  connector:
+> +    type: object
+> +    $ref: ../connector/usb-connector.yaml
+
+Full path, so /schemas/connector/......
+
+> +    unevaluatedProperties: false
+
+Drop
+
+> +
+> +    description:
+> +      Properties for usb c connector.
+
+> +
+> +    properties:
+> +      compatible:
+> +        const: usb-c-connector
+> +
+> +      power-role: true
+> +
+> +      data-role: true
+> +
+> +      try-power-role: true
+
+I don't understand why do you have here properties. Do you see any
+binding like this?
+
+> +
+> +    required:
+> +      - compatible
+
+Drop, why is it needed?
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - connector
+> +
+> +additionalProperti
+
+I don't know what's further but this patch is not a patch... Please read
+submitting-patches, organize your patchset correctly into manageable
+logical chunks and send them as proper patchset, not one junk.
+
+b4 helps here a lot...
+
+> 
 
 Best regards,
 Krzysztof
