@@ -1,269 +1,90 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013F25B5BA
-	for <phone-devel@vger.kernel.org>; Sun, 11 Feb 2024 13:56:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5361838DE3
+	for <phone-devel@vger.kernel.org>; Mon, 12 Feb 2024 10:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707659766; cv=none; b=gph285PLQAJo76GxkCMBZabr7SQIim2Pe4iewxAKrtDrv2c1oN/r5+muwp8eUqB2q2oq7YFrfHFb7pN0WbyD5dT7ZJ78PAHkgyPhdRlAZGJQ27YGhhixBK4HYrgQQUiDoZ+O2YeH1ysKF2TbOouxL2n0s8Goq9TeAMTdJKmlKqI=
+	t=1707735283; cv=none; b=dch3sfBmyKYIKf8/2z/1FM9hT8N0CobumMbgQUhRA6W6PUxn2OTDXBr6Kh0SIZHhUzPvsOEGgQnWz2qEEcpyeN1Sw6DkF9jXPKqkFCUPzP1YoOxJpkD7hkLLGSJ3dVbZV/l/e4lh+EzRsud6xLbFVOzrK3EkI28w7DzR5HBGYMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707659766; c=relaxed/simple;
-	bh=pXvsImowq0i/i575K7kHTSMoxVErfBTiVGiGOnNGGyQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ZzRyDIlqLee+TnqLlYZS0jQt1kZklAux9o4Z8OJAHtUe+mL4O+ymlcB4pN4VzNCm4/vGMwYABL4rdgLcZGaVvayY1YvzPxMPtiQlQt09oqvVxx6ZO/gOO6s45hMJSAO3fohCpXaWQyZRtudQtDp67lv/Cj0fvaQONJeq7tmGqzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Nqq/187p; arc=none smtp.client-ip=209.85.221.46
+	s=arc-20240116; t=1707735283; c=relaxed/simple;
+	bh=AN73LICug5VW++U499t0Wayh8Nvzz5HHvSHgzNyjW2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ckk8h+v6z2BVOiZsWLeO1od6Sv1Kg9eGf80jLHyktjdoA7uv8SP9QCOzBaunEtlqeD1XfYNUy+gIZzWELwQAkHAcqV1gQyL71gh7aFwWzxbXXwu2eVMgYLp0G4AqcbTHiAGWLrnFhkhh7xeCLyYT7hEUvTHuPKLeUyqqH4mk3qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=euifF5nB; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Nqq/187p"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-33b81c7ecffso35095f8f.3
-        for <phone-devel@vger.kernel.org>; Sun, 11 Feb 2024 05:56:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="euifF5nB"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-33aea66a31cso1677144f8f.1
+        for <phone-devel@vger.kernel.org>; Mon, 12 Feb 2024 02:54:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707659763; x=1708264563; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QQbDMuCf8echH2vXmVfP4WtPzr419Vx4QeYzyXyHPfc=;
-        b=Nqq/187pFvUaUG1/jex3/Y0+oToKc491sJ6qDwnxlhcm5WwpnZJsMQnf/qTTUjqA7L
-         LhG6+yCVMdMJxXckCGAlana+qACZWDjkJKxlo+YsvW6fX4Yw+amuTDfkUb1E1sy6Owv/
-         JcPmnw0QJxLRt6+kKtjVTW2nCkumTykJdjJgQi40gmHb8K9d41WjwgNBlx8xwuH+YjDo
-         SzoZ5pfZfUCxrFcWbJOfgJRwh2JkYQB3C6pcAkDa+1myL16JeEw3MuBLzdRG13TzZZA6
-         yUEnj5WskH7H+LQPJvNX+xtAe/qE9KaWSYM9rNouW1X7EKXzTgM5piMcf3OpJ4XObfjt
-         iVyQ==
+        d=linaro.org; s=google; t=1707735279; x=1708340079; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AN73LICug5VW++U499t0Wayh8Nvzz5HHvSHgzNyjW2E=;
+        b=euifF5nB+ifEOc5Qes2Z7UsNMzAiMQ0zgymIJCJBqilR26t166cteBvFmEW8CT22OI
+         4oVWHgrcQpyKefyRenUF3EwaA8Q/Vef/sq//7LJcUQJ7uPuquv7qcZe1ZvTLFRbUcr8T
+         /ETqMAM0ilXg8WW3SH1XOOnvRxDc4SZVHBb0fIRBTj/irpzjC+rxGNW1MgcPPLsrceqS
+         CVeuhG/gBWyBVYkV0AVTQKs2lwfQiLphFa5ZSjJu/9C9jgC7YPQkaF+ymwgkmS8uZ3oe
+         1ln9FaMsqMaonTvyRDTQYKOqv93YqXCxSgJOP/+sKU9kdMlIHufTMJDXplC0M4BLfDIO
+         W0zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707659763; x=1708264563;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1707735279; x=1708340079;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QQbDMuCf8echH2vXmVfP4WtPzr419Vx4QeYzyXyHPfc=;
-        b=l7QQmCGJkZBNaR6Fnlk+NCS6alUt5vMWR1PrmSJOfrcmJJVM7MX6IH9BQ0MJ3c9smd
-         ZuRMZml0D1u801b01xhdioiAsgsV45G2nhVi6nBhXs7Jxgy7qHHYE6BbU+pKB9I2jTzC
-         OOqF2dwgqyuDqh+aIwZ73zglbPKXQ2EajrWuNIuopoBSUZRYPOV1UkuhIByupaDBN6uv
-         gWPrqMAUBtOKRBnBDKrjCT2seHZymCbxIUm0MJbmQVbHmyN3lusfRVuopWpohjBerqXr
-         N9lH7znkvXby0pcxnbEPFdW8PWy3PNnn2iAyoQKg8LMm1ect0msJgt4PLI/WJRkhI060
-         2unA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQwuKnEfUicIYVvOvXbubTjFsgqmjsjvP5MIWkICv3/WtZbF83XPl8HMcfr0O50jH/q5ub6RMrGZTv3UjXVEx3bAuQvL+JbPqrpww=
-X-Gm-Message-State: AOJu0Yx+RfQDE+sjBAeyl3dStck6DNgNvIqM7CDBndV2F0g2USgsfY3G
-	Nzj6RE7M8ju8ZbbzCGRV1SfILH4C6x++LGcmjUqOLUZO9Jikzhl+Qku7J61/ey8=
-X-Google-Smtp-Source: AGHT+IEcqc+r1s7VzO31zVMQiEdZhbAY1dcw4wyYDP5pGtpMY4RnCkIYujTW1p+Ero6RkbKNTFkCng==
-X-Received: by 2002:a5d:58f0:0:b0:33b:279a:5c99 with SMTP id f16-20020a5d58f0000000b0033b279a5c99mr3049176wrd.18.1707659763180;
-        Sun, 11 Feb 2024 05:56:03 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWHIMkAK5n7prPrl8eptYlgnUtosbcSd6JRdRnczhvvfF3dJn6EAwAkw4KVb5DEmbXam5CGGX0f5xPPTb4hvTJXfrEgUSMexnB7V/rYjbracuZxeknQvRMkx3Gqxxecame8dMAmMj5Fo+F3O9fr5ao1zLvba/trgFKkljXv5efpVMLhtrVc2qrQ91xMHxGxWWQ++PJuuzrc87mop3LJCCq1KEhn6/8e7KiulRSmeYhbHq2hrnASRjT1hOUylaUzwMqByJp94VcCBM+So+WPwjp5JdJ5SoD35b0y3KPE3iTV3fcu+kMV+vzhVl/wkw8Ty8wZPTwuxMpGSxGOX6vaEd97QPi+t+HUPHjYCnMEcFtazjjvwGPSGj763TzNDbMGHfuWh1TGfXblRhp5BvGzADqnBROHMBwoj5UY6ZtJA/biEq6BHEqwhJmQYlY8wXg4sajVoWps8e9z205MGQfY
-Received: from [192.168.1.20] ([178.197.223.6])
-        by smtp.gmail.com with ESMTPSA id dv5-20020a0560000d8500b0033b483d1abcsm4297527wrb.53.2024.02.11.05.56.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Feb 2024 05:56:02 -0800 (PST)
-Message-ID: <3a662ef2-1888-4f24-bebe-3ce32da9d277@linaro.org>
-Date: Sun, 11 Feb 2024 14:56:01 +0100
+        bh=AN73LICug5VW++U499t0Wayh8Nvzz5HHvSHgzNyjW2E=;
+        b=CgN/tZaDcpfw3Cf6u6PhXZeqHZZoC2ZJYqDxF4eqkYdlYmqfI8FjjLroFgBT1Infrp
+         ONMAYbbgkWxcpWTB50TBkJeU7UU/j749YB8NEQtPRsl9j7aBIvj4tD9RxizCwg+aMyuo
+         CBpVKVb4bPWZGtClyK5wwW5mXLKS3CI8LGvb0NYECFQtRPBFa29KRwF2WevjC23UdLDY
+         EBX/TksTrHzLs3gmen56IgbgOt0eM9Uizt7xQndGraKEa7nNEuAUMQCRJn6ImHU7MHuF
+         VCr1BqY8iL9gZv76EvXLjBLfytyGUyXPyzYV9pzSPuXXQx3NXiOKaQPANAVRHKN1T8Fs
+         nABg==
+X-Gm-Message-State: AOJu0Yx8z7RMV/Coxyegapls56bzYJQ9dYV6BSx6JoFJiziRr4e7zGyk
+	a+DN86fh9SlZKnpzT0rd5Y9AMaAs74i2Me29FDmaGqdNCT8uXYSqoo5m6hF3EFk=
+X-Google-Smtp-Source: AGHT+IHSe4H9vS5lPNXIEa7nwJk3bFBhiBabiLH5VYY4Y79eetaSZxnzvF+amgrzd0Ufd1oi5wt6wA==
+X-Received: by 2002:adf:e441:0:b0:33b:60ba:d990 with SMTP id t1-20020adfe441000000b0033b60bad990mr4371624wrm.19.1707735279570;
+        Mon, 12 Feb 2024 02:54:39 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUCe2LrvntnsOtdZ25erDPdrpNU0Pkuuo26fivdkvy0LpaVzwmyVxiMipi/TjvBVoLO9tSja2KfIgxo39/LF8ZZKy971lfFj0uGuYDx+hXduyixJ7m2zvDCJR/CL1bBaj8wgx/MRAFx2GIMdmJUngscf1naw/2ab1L4SA3TlW4AYI50IWqiD8Dwevo2r9ZpxFwEK06jBUUgvpUYco1fjh4E8XHGQw0wG4Uc5htxi5gHOiMbfn97Vf7CFenQPkqsbhnXGzl94bt/1nOrN79/8R9pKwF0ylax7jpvsveEFSqBUnP3QQTI606SpqMNvOxY5A409mHcK3fPyNqjMz6y/+ZqbgkbGOZyhfP8ZRnp0APrGaqE/Af8ocgj6OdGI0ucQJxZYdVYAt4rA4EpzdRxug==
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id ce9-20020a5d5e09000000b0033b8808355fsm592374wrb.28.2024.02.12.02.54.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Feb 2024 02:54:38 -0800 (PST)
+Date: Mon, 12 Feb 2024 10:54:37 +0000
+From: Daniel Thompson <daniel.thompson@linaro.org>
+To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc: Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+	Helge Deller <deller@gmx.de>, Karel Balej <balejk@matfyz.cz>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] backlight: ktd2801: make timing struct static
+Message-ID: <20240212105437.GA4593@aspen.lan>
+References: <20240210-ktd2801-static-v1-1-90ad2e2e8483@skole.hr>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: usb: typec: anx7688: start a binding
- document
-Content-Language: en-US
-To: Pavel Machek <pavel@ucw.cz>, phone-devel@vger.kernel.org,
- kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de,
- martijn@brixit.nl, samuel@sholland.org, heikki.krogerus@linux.intel.com,
- gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org, megi@xff.cz
-References: <ZcaCXYOf6o4VNneu@duo.ucw.cz>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ZcaCXYOf6o4VNneu@duo.ucw.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240210-ktd2801-static-v1-1-90ad2e2e8483@skole.hr>
 
-On 09/02/2024 20:51, Pavel Machek wrote:
-> Add binding for anx7688 usb type-c bridge. I don't have a datasheet,
-> but I did best I could.
-> 
-> Signed-off-by: Pavel Machek <pavel@ucw.cz>
-> 
+On Sat, Feb 10, 2024 at 05:16:17PM +0100, Duje Mihanović wrote:
+> The struct containing the KTD2801 timing can be made static as it's not
+> referenced outside the KTD2801 driver. Do this to prevent sparse
+> complaints.
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202402100625.M0RkJhMh-lkp@intel.com/
+> Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 
-You miss proper diffstat which makes reviewing difficult.
-
-Actually entire patch is corrupted and impossible to apply.
-
-Anyway, where is any user of this? Nothing in commit msg explains this.
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 
 
-> diff --git a/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml b/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml
-> new file mode 100644
-> index 000000000000..b9d60586937f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml
-> @@ -0,0 +1,140 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/usb/analogix,anx7688.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analogix ANX7688 Type-C controller
-> +
-> +maintainers:
-> +  - Pavel Machek <pavel@ucw.cz>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - analogix,anx7688
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-
-blank line
-
-> +  enable-gpios:
-> +    maxItems: 1
-> +  cabledet-gpios:
-> +    maxItems: 1
-> +
-> +  avdd10-supply:
-> +    description:
-> +      1.0V power supply
-
-Keep description in one line and add a blank line. This code is not that
-readable.
-
-> +  dvdd10-supply:
-> +    description:
-> +      1.0V power supply
-> +  avdd18-supply:
-> +    description:
-> +      1.8V power supply
-> +  dvdd18-supply:
-> +    description:
-> +      1.8V power supply
-> +  avdd33-supply:
-> +    description:
-> +      3.3V power supply
-> +  i2c-supply:
-> +    description:
-> +      Power supply
-
-Drop all useless descriptions (so : true)
-
-> +  vconn-supply:
-> +    description:
-> +      Power supply
-> +  hdmi_vt-supply:
-> +    description:
-> +      Power supply
-> +
-> +  vbus-supply:
-> +    description:
-> +      Power supply
-> +  vbus_in-supply:
-
-No underscores in property names.
-
-> +    description:
-> +      Power supply
-> +
-> +  connector:
-> +    type: object
-> +    $ref: ../connector/usb-connector.yaml
-
-Full path, so /schemas/connector/......
-
-> +    unevaluatedProperties: false
-
-Drop
-
-> +
-> +    description:
-> +      Properties for usb c connector.
-
-> +
-> +    properties:
-> +      compatible:
-> +        const: usb-c-connector
-> +
-> +      power-role: true
-> +
-> +      data-role: true
-> +
-> +      try-power-role: true
-
-I don't understand why do you have here properties. Do you see any
-binding like this?
-
-> +
-> +    required:
-> +      - compatible
-
-Drop, why is it needed?
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - connector
-> +
-> +additionalProperti
-
-I don't know what's further but this patch is not a patch... Please read
-submitting-patches, organize your patchset correctly into manageable
-logical chunks and send them as proper patchset, not one junk.
-
-b4 helps here a lot...
-
-> 
-
-Best regards,
-Krzysztof
-
+Daniel.
