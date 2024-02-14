@@ -1,119 +1,153 @@
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE253D99C
-	for <phone-devel@vger.kernel.org>; Tue, 13 Feb 2024 12:33:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF0312B74
+	for <phone-devel@vger.kernel.org>; Wed, 14 Feb 2024 09:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707827630; cv=none; b=rktOsQq1hQGjPf2AqqvRsWN4BRqnhcKOYJt/z7If75uyatovcg8jcqq9/2zRUsfjS2+U3huqsoxLFWS3uakZ0a3uAZ11/G1+/eGN16ztg7C09yLkKcIPHu+ZGi0iIDgzdfoXvP7+vNeC8IuoCHj7foQ+76EDQgI1fjXXrV4KMis=
+	t=1707903212; cv=none; b=OilstMZFZhtqDTgyRKcgj1U+ohJ0Kz6cu7rBHnfGyQs0bDA43fPoSd8AcnpIGd8ru4RFnj9RLH7bzq/R6bCy/LqrNytGaj1l1VPNPW1WssmK37GTueloTWK1xKIpUtB9TihkqQWqS0PPmsN7Vadj55O0/OkTLtig3PTTUV+vnGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707827630; c=relaxed/simple;
-	bh=GMDHwwXkzcxHkwk+TqIPYewSVvBe87yCpMtxMdQ82Qg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tbYAWvCKNNRNSdVlVPoll8MbtZMA3WRuUnkH6EphzkJ5egLPP2aUsFQaXQHibmJv2lSJifp2TyKT2XdploChg+7V5DXQZUWo5hDOFYNIO6+hEv72aG/MZEexvKK7mp7XCi1Pbg493bLqRyYMZqHxM/zLf3aNFkLYoiF1dL9BnfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lXNUwAjI; arc=none smtp.client-ip=209.85.219.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1707903212; c=relaxed/simple;
+	bh=rParxD7MSmTIPuF9yhnH2con+bob1Z/ZNYunjoILQDA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=GFif5uYHZKdI0Wfl5NB7j6qliJjzzd3Ou30HN+AZ7JNQI1niaZzwYN3D/bosX4fAi5AmX8836E+sJVXRESptln6Uh70pFvqtEwoeedPAip3V2UiY/DqluRg0LzA3Qoaba4fcKyFWbCmlGZG+oFzXUR0VSa6Ov2iHtb5vCyuCy5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=CdWzJOE0; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lXNUwAjI"
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-dcbcea9c261so1358035276.3
-        for <phone-devel@vger.kernel.org>; Tue, 13 Feb 2024 04:33:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="CdWzJOE0"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-561f78f1ba1so1711298a12.0
+        for <phone-devel@vger.kernel.org>; Wed, 14 Feb 2024 01:33:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1707827627; x=1708432427; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fWEmkv1wRlTjtIudMGgJCDXVUaDjTH42e1ec42CHDu4=;
-        b=lXNUwAjIdgDd3xRJB/sX8ZfMQ9rdCD3XDM1LoQE1uWszAIDUX1OYMB/DXyCBRcRnI+
-         KJNxOIJrVX4PbdJ4su/9pCLbCYaB/CrkQYRu5SR6WA/ea9xPXHWj1GQaKGcO+2ONvLTB
-         37pyGYKaKpA66wPxNO5JhrFMqxah6fYySowDNGofkM7/veU8eLXnsj5X9GT/gbvsy1ZQ
-         0bjWxnyrEnba8ZuC+frdkdPiKI0/9M+cayMGqRqTRZ9FWsduxX+G1NYG1Xpq8xRhzUhT
-         onF1nIabwRHunU8WTMFH6tVVo2ygMTbK+FHhPHamyGtPEMCO9kXKj7IGEA8rMbx33Y4z
-         y2lg==
+        d=fairphone.com; s=fair; t=1707903208; x=1708508008; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p1H+RbnkYc3zoaPoYaNe9aVZ44yhL+DMNkqp98qfzc4=;
+        b=CdWzJOE0bXqjIF409/80iw0r/HxApUfU3iBWltdsI3GrxSvIT6a7RA/zeuVNRbrBQy
+         QB47L4NL7B1tsA1iDZLs6scb5llK9fu655QrosrD0lVf/Aa8nF+GUWcisBaUBs+VMtA/
+         SSEBwQRZ89KF3XFhDtUP6vmW41op6LxafOLNDwtzkgBQm6XpwWE6ALz+VQOBC56xkYXL
+         vdcBEjNrHVXpmba9WMH7i7UBJqI/BaCwe/8nYGxviAWlGe8rYwAunrLNoBB2rqAD6F7/
+         7cgkiz7bzz1zog2vPSH02An2pMJXTrz8Xl2wNijFFfMCmLg/yAtsVWpdnKxa7m/TqYOs
+         MIKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707827627; x=1708432427;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fWEmkv1wRlTjtIudMGgJCDXVUaDjTH42e1ec42CHDu4=;
-        b=hRvrEAM3ADpxMjcyMeUDxvT/ARod+0dxnYD8AllzM3flMyXI+0Cd5/pgZuj1GTx0S6
-         g0hgdCC2h/jJ7AhBk4Dzes3Gm8t+Bj4yg8uqRjjcf1nrtZ4mTeu9F0ywSvBNQObj6y1A
-         U2o9D51t9ho915gC+ngRyJtjwnAZTldbINHWDhPyx0oU7scfzZuhIUGwrezBNlgUWzkt
-         lU947jeLsZb+NXEb34MkkOBbZe2Py7ENFCbKUFkLo7R2gNBQ33sf3K8USMaXEh6efwNY
-         DZhUpQ9jNCrivv3Yd08Bp7DATRM0oawRdue9IeOofbdxtgNMxNe94nJgdjZVGmEI4XbS
-         oJRg==
-X-Forwarded-Encrypted: i=1; AJvYcCXWUCbbIZqMY7oDB0aVHGG2HYDgeJ1ZHgSHMFy83G2R/VPeRoGyYG1wODEoOH1elYxovbAt0cHyOezSVqyCN5OESb777Bm0YuhksLw=
-X-Gm-Message-State: AOJu0YzyIkrrYgHEdt8nO0ctAECSWzmUoykPb0jc5ownSiVfmU4+l1Md
-	h56P0oko19OETqVVMTMqhZX0orC/3Wn6cRBFnbILgEe0qNMP4udjNxYLWfFgNxLvvCDSSg7HCW3
-	HzaLYbr1VSMyoiz9Sp6pvSWa25BMCvXN0tTtrKg==
-X-Google-Smtp-Source: AGHT+IHvc9k2oWattriqGHpx3El0OYm+dm99rljLfk88Y7yk69L1blCIMgpRIFKSInBvds7wzUxGvswVs2vA6NerpMI=
-X-Received: by 2002:a25:7108:0:b0:dcb:f7a0:b031 with SMTP id
- m8-20020a257108000000b00dcbf7a0b031mr2275869ybc.50.1707827627415; Tue, 13 Feb
- 2024 04:33:47 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707903208; x=1708508008;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=p1H+RbnkYc3zoaPoYaNe9aVZ44yhL+DMNkqp98qfzc4=;
+        b=WdWJCTAuHYoaok55KlAnmyNz2iZj0zhE1UeUvfjAmh74xtNMFAqyYdM2k7GWX1QHhY
+         UogIrZQGfxNI5wtwAWQizGOVMaqsmIg2se4O/miEUR8PbwiZrGxJXpen3K8rOR0I0lj7
+         VPCEgjNQs8nPd1R6iOwq6i36qRZ/UszAIqfpeAxcBgy7MnX1bl1zPaZfCXiAS3rK6pwY
+         XeE1CuPmybR71BCCOaMQBRxTXXpSN/Wly+OQ0hhMFGNSKNPtH/0rqLhj5WE+JSZgEtVZ
+         NnKe2B5b4zcIxeR981ZY+FOncLUeXIwjbpCaCdDWVfQjC0Gp7L200Cy/qo++9jeXNTx/
+         cNqw==
+X-Forwarded-Encrypted: i=1; AJvYcCVUGdfOHPvTnK5VlWKHDptgtTsbZ55kBpWcAj7D1lIE94Iew2h3vMUiBwlf3BqAtqR9FFGHx6EXz3eP0y64puFIyuxwYFdPyxW1ku4=
+X-Gm-Message-State: AOJu0YwnkL8UO1Yvle4yocIfFE9TcHRgDyymE1FiVue2E811zbspB713
+	JGBVx853AqpXIhM6dGuhYjo07kVBA9s+Wf69IMqwtllyKJEkOaYo64U7X69xnhA=
+X-Google-Smtp-Source: AGHT+IE5RliiqJKbx9DWE91a06gP6Z6BpTtnEhp0spNaqevUBISwb6Co5h0JMWGdSNBnVoGj3hQ8Lg==
+X-Received: by 2002:a05:6402:2034:b0:560:5e65:c0cc with SMTP id ay20-20020a056402203400b005605e65c0ccmr1809735edb.11.1707903208504;
+        Wed, 14 Feb 2024 01:33:28 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWqnResp9fHEq+XlncB3w71pHFrU5kun5X1hoiWzf5VrgsXxTYZhJunSapt4u/QPXHDwWFN14FhD/abHg6kkTvDR78EO8aMghQdqwEHuUSdQ4KcBszD5Pann374nViCOjyfID7BNfC2zQLsZrrgHhduf5HYVMvO4vOQCwDWwHX/hWdWU+A2dYgnGeSIbbp3Tlioz4ZyX8JB7Fy36L9L+cRdsp2CEvoe9v6oafXXc/l1I0gEcQxH7kLYY1fyzi0vdog3GCD8B2grIa7PmYUv75Zl4glfmRrwSVxqmZEv+NiZLeSjZqCLhZ4YR3fw4Uj+NdQY47rEdsDx1PIMtG7C87sosKe83Vb0CfpNegFtsbOiAwDeML5vrn17E9AXMJIytZveh/1KltxRC5FWnAqaxXTzfsb3rkklqr8yf3dej8n6r8o9XHHwc7CzSU0px72WCNJfDPTsYYVhBOhcBuzYOEGCLQHW8XTkdWplxy1SnrXahPbnBb6dN1+IMd7C+1TfFrVfhW3CSydBLZtezYnjPtroHv7dxGfkx36IF4HgNmuVweXZaJ1p7LH8txiwtIfjm1vEy9gayy9KGTKAO8dUVyJUDULpLf+A0W+beNI1cI3WOymFFGfMwXwEZED+OZ7nneg1/VTYqpei06LPNQPIm+60ldBwn5tS//RTG649ObIeeTIPzFTODRjtl1h4rXDyOe4EZ8dk26N3qWRPI5NsMMVeGR51gV/YVUR6ko4QUL/6735o
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id fe9-20020a056402390900b00561ffe7adb2sm1155036edb.1.2024.02.14.01.33.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Feb 2024 01:33:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240210-msm8974-rpmpd-v2-0-595e2ff80ea1@z3ntu.xyz>
-In-Reply-To: <20240210-msm8974-rpmpd-v2-0-595e2ff80ea1@z3ntu.xyz>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 13 Feb 2024 13:33:11 +0100
-Message-ID: <CAPDyKFrmq4nq2JPQs17z6AyRKY3e6VrMJgjUJJVEhzsf7Off2Q@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Add RPMPD support for MSM8974
-To: Luca Weiss <luca@z3ntu.xyz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Stephan Gerhold <stephan@gerhold.net>, =?UTF-8?Q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 14 Feb 2024 10:33:27 +0100
+Message-Id: <CZ4P5PWJTODV.3UJ89H6M8W07H@fairphone.com>
+Cc: "Jessica Zhang" <quic_jesszhan@quicinc.com>, "Sam Ravnborg"
+ <sam@ravnborg.org>, "David Airlie" <airlied@gmail.com>, "Daniel Vetter"
+ <daniel@ffwll.ch>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
+ "Maxime Ripard" <mripard@kernel.org>, "Thomas Zimmermann"
+ <tzimmermann@suse.de>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
+ Dybcio" <konrad.dybcio@linaro.org>, "Andy Gross" <agross@kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
+Subject: Re: [PATCH v2 2/4] drm/panel: Add driver for DJN HX83112A LCD panel
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Luca Weiss" <luca.weiss@fairphone.com>, <neil.armstrong@linaro.org>,
+ "Linus Walleij" <linus.walleij@linaro.org>
+X-Mailer: aerc 0.15.2
+References: <20240110-fp4-panel-v2-0-8ad11174f65b@fairphone.com>
+ <20240110-fp4-panel-v2-2-8ad11174f65b@fairphone.com>
+ <CACRpkdaWTfPDCin_L6pefHsokjNyO8Mo6hWPdzPLLi1EUkKUuA@mail.gmail.com>
+ <CYBZEZ4IM6IL.VR04W7933VI@fairphone.com>
+ <CACRpkdZQbVXfBa70nhDOqfWPbsh-6DgX-uvZOxr19pzMmF2giQ@mail.gmail.com>
+ <CYCLSCKPPBOC.1B1MP3VOOC0Q8@fairphone.com>
+ <cdc18e2a-b7eb-4b54-a513-481148fb3b0d@linaro.org>
+ <CYCMVXHYVDCI.HVH1TR8MWEUK@fairphone.com>
+ <CACRpkdacS9ojXUuogygkz6xxCf3mMq6GG_75sze8ukUu=rxVyw@mail.gmail.com>
+ <f99d363c-d4a6-44b3-8057-3925f8dac1d5@linaro.org>
+ <CYL76M5KT424.G3BC6JX74XVN@fairphone.com>
+In-Reply-To: <CYL76M5KT424.G3BC6JX74XVN@fairphone.com>
 
-On Sat, 10 Feb 2024 at 17:39, Luca Weiss <luca@z3ntu.xyz> wrote:
+On Mon Jan 22, 2024 at 12:27 PM CET, Luca Weiss wrote:
+> On Fri Jan 12, 2024 at 11:26 AM CET,  wrote:
+> > On 12/01/2024 11:23, Linus Walleij wrote:
+> > > On Fri, Jan 12, 2024 at 10:52=E2=80=AFAM Luca Weiss <luca.weiss@fairp=
+hone.com> wrote:
+> > >=20
+> > >> Since there's zero indication Truly is involved in this panel in my
+> > >> documentation - much less the number 5P65 - I'm not going to add tha=
+t.
+> >
+> > Ack
+> >
+> > >=20
+> > > OK then, I fold, thanks for looking into it.
+> > > Keep the Himax hx83112a file name and symbols.
+> > >=20
+> > >> So in short this panel is the model 9A-3R063-1102B from DJN, which u=
+ses
+> > >> a Himax HX83112A driver IC.
+> > >=20
+> > > So compatible =3D "djn,9a-3r063-1102b" since the setup sequences for
+> > > hx83112a are clearly for this one display?
+> >
+> > Yep let's settle on that!
 >
-> Add driver support for the RPM power domains found on the different
-> MSM8974 devices.
->
-> Devicetree integration will come at a later point since also some
-> mostly remoteproc drivers need to be adjusted.
->
-> Also the MX power domains on this SoC seems to work quite a bit
-> differently, we'd need to send raw voltages to it, so these are ignored
-> in this series.
->
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
-Applied for next, thanks!
+Hi Neil and Linus,
 
-Note that patch1 is also available at the immutable dt branch, if soc
-maintainers need to pull it in too.
+Any feedback about the below question?
 
-Kind regards
-Uffe
+Regards
+Luca
 
+> It's clear to me to use "djn,9a-3r063-1102b" in the driver now but what
+> about dts?
+>
+> Currently here in v2 we have this:
+> compatible =3D "fairphone,fp4-hx83112a-djn", "himax,hx83112a";
+>
+> Should this just become this?
+> compatible =3D "djn,9a-3r063-1102b";
+>
+> Or e.g. this?
+> compatible =3D "djn,9a-3r063-1102b", "himax,hx83112a";
+>
+> Or something else completely? Do we have some documentation / best
+> practises around this maybe?
+>
+> Regards
+> Luca
+>
+> >
+> > Thanks,
+> > Neil
+> >
+> > >=20
+> > > Yours,
+> > > Linus Walleij
 
-> ---
-> Changes in v2:
-> - Drop MSM8974_VDDGFX_AO in all patches
-> - Link to v1: https://lore.kernel.org/r/20240210-msm8974-rpmpd-v1-0-de9355e6842a@z3ntu.xyz
->
-> ---
-> Luca Weiss (3):
->       dt-bindings: power: rpmpd: Add MSM8974 power domains
->       pmdomain: qcom: rpmpd: Add MSM8974+PM8841 power domains
->       pmdomain: qcom: rpmpd: Add MSM8974PRO+PMA8084 power domains
->
->  .../devicetree/bindings/power/qcom,rpmpd.yaml      |  2 +
->  drivers/pmdomain/qcom/rpmpd.c                      | 83 ++++++++++++++++++++++
->  include/dt-bindings/power/qcom-rpmpd.h             |  7 ++
->  3 files changed, 92 insertions(+)
-> ---
-> base-commit: 6e3fa474051f3d276ea708bdb8e8e1f66d1d3ee5
-> change-id: 20240210-msm8974-rpmpd-6e48fe374275
->
-> Best regards,
-> --
-> Luca Weiss <luca@z3ntu.xyz>
->
