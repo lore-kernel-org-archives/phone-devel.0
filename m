@@ -1,118 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout3-smtp.messagingengine.com (fout3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F72131E39;
-	Thu, 15 Feb 2024 14:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C23E1369A2;
+	Thu, 15 Feb 2024 17:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708006960; cv=none; b=F80wWb4bYIdTAK0XZTmiywVRDRFbOhdAFcsVhRdO138KOMkS5nuk5IMFkoDBs0kQWfQ7XuCr3RYrnNnsHfIGcYZDIgJDkJYkvaTnddA1VZxPiaw5QhmySaXqLxJAjvOpO5/r3ue80wb0qiqebogN+ZVLMjGwgy5hyL6dV/xs2xo=
+	t=1708017984; cv=none; b=iR46PKukd6Y5GvAbIoTY3xvLirrijkNmn6LNaBMxfYelPb287VixMc1F5afwItapF/BbpDkLRWRkYWlbR/uVtVwQHc3lreoeUVWzjUxj80qPIguvEJDQ5VewBb5KmE7+7ADDhyOlajjXKbjn2b9fh7HpVzMrNNJ1G6CgrRd+4ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708006960; c=relaxed/simple;
-	bh=l+336At4EwqzrdcdtaMKIg1sTlgNtKukVt4yUFiWdig=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pjO0NJDW8klVo2T0MjaAioQxOJIuaFdn0vCrBHXvJv29RefncXKiGt8epWNVSeuMGnV6ycSy6EC6N5qIPmjreOoxIC7cdsBPxG48MvrDiWLIkGdbg4QOFmp2B6pOzpznXZas7JC35JA+ncpzzt1TWedZV20Bd0SYJPTv0n/8ao0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n2K+w9sh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1708017984; c=relaxed/simple;
+	bh=jLfDGBorgsnjXYJBTWI/GaiSFQdK44fYLGCUNXbjhw0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iEiSiNlttARtbXUb03+ADfS/oT4fOjBKA+wDPP6SMlLf36OCLeeR4toud7QFEiTXpomlU/FYZZWZohbX0FmE76z+y/klC5LdVYT4GLUCMLroH3RNEOeFhiorusiNUOxFA3mrnU69GGd1UV5F++xn5j4nrFbV+a2BoHCUFKAajMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mai.rs; spf=pass smtp.mailfrom=mai.rs; dkim=pass (2048-bit key) header.d=mai.rs header.i=@mai.rs header.b=PbRbU7JB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PY7XrJJr; arc=none smtp.client-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mai.rs
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mai.rs
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n2K+w9sh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328B5C433F1;
-	Thu, 15 Feb 2024 14:22:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708006959;
-	bh=l+336At4EwqzrdcdtaMKIg1sTlgNtKukVt4yUFiWdig=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=n2K+w9shzEaitONTGUeCocxPOP1zzDQSHX26JgvUh/DbAXiaNnkqYhCpWOXm1bnP3
-	 Fz6gU/S2fcFEpc9AESrAj+4CKeSJgXooy5uKMuaklGcyqtb9s99WiyblIRC5qtcCi6
-	 DNMAf3qdvRU3677x0a4NCHXwwZoVvrbH/yODwJM1Qmdk9v/zgBjF52tN+bhD0iFtDM
-	 14Djci5CTr20jjpDSMu38CMVQwGOCi2i1m2lZ7JjlSVHXI//qHdXR9xPeSQnGMSHP+
-	 qQ1fjE9c3IhfZpl7034NzaUSI3IojPw2ndqaghu4CuVEkpw/Bttj94BLUCHf+TXZEM
-	 Z/0wlmpha2KcA==
-Date: Thu, 15 Feb 2024 08:22:35 -0600
-From: Rob Herring <robh@kernel.org>
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-Cc: Karel Balej <balejk@matfyz.cz>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	dkim=pass (2048-bit key) header.d=mai.rs header.i=@mai.rs header.b="PbRbU7JB";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PY7XrJJr"
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 17B15138009A;
+	Thu, 15 Feb 2024 12:26:21 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Thu, 15 Feb 2024 12:26:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mai.rs; h=cc:cc
+	:content-transfer-encoding:content-type:date:date:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=fm3; t=1708017981; x=1708104381; bh=fQZdaVp4DDsm5XDmrXzzI
+	iRsQ41MBd8wovYL0HPc63k=; b=PbRbU7JB9U4NCPjt2uga/82YJjkB9rvuViuCR
+	f9RGmF9OA2aQKk7SuXaL9ZHh7JxFPwukq7ICbFiPTFHxI5E/c85RLcykU8dbUOZq
+	uBaLUMjJRIAPs1biuOe7gDUGryVKx7NuOYVh8U0Dlckw8803qAeuhSw7j2iaVWrY
+	O6yIVD7j3FBb7biDTLqOFXaTxtI1T1CdQSL4BFOF8nfXqASpoRw3rhgLs3juE5vT
+	NhYdpqPheAn/ZCFsx0I2VOqFx4ZgfsW8TM2KBxKbD5eFS5e699+Cjs+Qk1XwT2w1
+	Nqwv/Sh2tFZAg/kjq5vnecswiDNcotWJIb52XweD8Th6TbHgg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1708017981; x=1708104381; bh=fQZdaVp4DDsm5XDmrXzzIiRsQ41M
+	Bd8wovYL0HPc63k=; b=PY7XrJJrsXfRNtrLiP+y8AzLq8UWJDh0hWYCAPbylrKO
+	ZhD/EfDHC6DO8DlH74E5tWO+FA5dABCri20eXBPVufCyeQqeIb8ueGbOzOPP8NNo
+	0U0ObciyKH769UNd2BCS3b5DrAh0CoNGDWHbWfA6ZDNyiF3qbQMjHmh8Tdr7Vc4a
+	G62ft1ZfyRATFHfXJIsDQGhFPZCGsP5oYcmgB9aEuN4O+2DbvnEUaCJ28f/IfYlQ
+	v68gR1jPPlJOY1xm2d8Zg6XmuOM1g0fRomu0s5TXyH7uiRJ2e0Z2y3G8E++P28Kg
+	5m46aJzlNLucOe0Vl1M7xqOVehC/9IxdTPh1sg2X4A==
+X-ME-Sender: <xms:PEnOZWy4dtjYb9d4UjzhMR_4YNvtHPoLV5N2cg3pqjoWXZfdkS-z6Q>
+    <xme:PEnOZSSqw8clnXMTGbF9nf7B7Od3dW_Z3t7eAgaebaMs7bcz7hLXZ4XC6nUK05aHC
+    d_7786oOPrljpVV2Q>
+X-ME-Received: <xmr:PEnOZYUhvOF-93tzwp-TZEDXX9EVhsj5kn88aPnuKcVIM6gVzREfl9Qk2mgfCa4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvddtgddutdduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepuehrhigrnhht
+    ucforghirhhsuceosghrhigrnhhtsehmrghirdhrsheqnecuggftrfgrthhtvghrnhepge
+    eiteekgfeihfeggedtgeejgfelieffkeeivdduvddugeffteefleehheeiiedunecuffho
+    mhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpegsrhihrghnthesmhgrihdrrhhs
+X-ME-Proxy: <xmx:PEnOZcgvt6RMXe-88_UaLxrd1GQIcVXg3JNzra9OcCAZYQ1hO6dIDQ>
+    <xmx:PEnOZYDMkG_rvOkdFwFmyhYJXNW9Uan2dUGIMusCnfZUNy9MUJtphQ>
+    <xmx:PEnOZdKuSJ-QOKAQL-G97vRUc266nyFo0FzD1nWMT9zSNZr60HYg0g>
+    <xmx:PUnOZU7JKRoa3RCYnwzZhT9rW83puDlToT2AjYxOziGqNjRcsDycrg>
+Feedback-ID: i891b436e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 Feb 2024 12:26:19 -0500 (EST)
+From: Bryant Mairs <bryant@mai.rs>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, linux-input@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [RFC PATCH v2 4/6] dt-bindings: input: add entry for Marvell
- 88PM88X PMICs onkey
-Message-ID: <20240215142235.GB4180777-robh@kernel.org>
-References: <20240211094609.2223-1-karelb@gimli.ms.mff.cuni.cz>
- <20240211094609.2223-5-karelb@gimli.ms.mff.cuni.cz>
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	luca@z3ntu.xyz
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH v2 0/2] Add samsung-milletwifi
+Date: Thu, 15 Feb 2024 18:19:47 +0100
+Message-ID: <20240215172617.115307-1-bryant@mai.rs>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240211094609.2223-5-karelb@gimli.ms.mff.cuni.cz>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Feb 11, 2024 at 10:35:54AM +0100, Karel Balej wrote:
-> From: Karel Balej <balejk@matfyz.cz>
-> 
-> Marvell 88PM88X PMICs provide onkey functionality -- add the bindings.
-> 
-> Signed-off-by: Karel Balej <balejk@matfyz.cz>
-> ---
-> 
-> Notes:
->     RFC v2:
->     - Add wakeup-source property and reference onkey schema from MFD.
->     - Reword commit message.
-> 
->  .../bindings/input/marvell,88pm88x-onkey.yaml | 32 +++++++++++++++++++
->  .../bindings/mfd/marvell,88pm88x.yaml         |  8 +++++
->  2 files changed, 40 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/input/marvell,88pm88x-onkey.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/input/marvell,88pm88x-onkey.yaml b/Documentation/devicetree/bindings/input/marvell,88pm88x-onkey.yaml
-> new file mode 100644
-> index 000000000000..5d3d451d0e1f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/input/marvell,88pm88x-onkey.yaml
-> @@ -0,0 +1,32 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/input/marvell,88pm88x-onkey.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Onkey driver for Marvell 88PM88X PMICs.
-> +
-> +maintainers:
-> +  - Karel Balej <balejk@matfyz.cz>
-> +
-> +description: |
-> +  This module is part of the 88PM88X MFD device. For more details
-> +  see Documentation/devicetree/bindings/mfd/marvell,88pm88x.yaml.
-> +
-> +  The onkey controller is represented as a sub-node of the PMIC node in
-> +  the device tree.
+This series adds support for samsung-milletwifi, the smaller cousin
+to samsung-matisselte. I've used the manufacturer's naming convention
+for consistency.
 
-Why do you need a child node? You don't. Just add 'wakeup-source' to the 
-parent.
+Hardware currently supported:
+- GPS
+- Display
+- Wi-Fi
+- Bluetooth
+- Cover detection
+- Physical buttons
+- Touchscreen and touchkeys
+- Accelerometer
 
-> +
-> +allOf:
-> +  - $ref: input.yaml#
+Signed-off-by: Bryant Mairs <bryant@mai.rs>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+---
+Changes in v2:
+- Squashed DTS work into a single commit
+- Add touchkeys to the DTS
+- Link to v1: https://lore.kernel.org/all/20231105204759.37107-1-bryant@mai.rs/
+---
 
-Doesn't look like you are using any properties from this?
+Bryant Mairs (2):
+  dt-bindings: arm: qcom: Document samsung,milletwifi device
+  ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 8.0 Wi-Fi
 
-> +
-> +properties:
-> +  compatible:
-> +    const: marvell,88pm88x-onkey
-> +
-> +  wakeup-source: true
-> +
-> +required:
-> +  - compatible
-> +
-> +additionalProperties: false
-> +...
+ .../devicetree/bindings/arm/qcom.yaml         |   1 +
+ arch/arm/boot/dts/qcom/Makefile               |   1 +
+ .../qcom/qcom-apq8026-samsung-milletwifi.dts  | 568 ++++++++++++++++++
+ 3 files changed, 570 insertions(+)
+ create mode 100644 arch/arm/boot/dts/qcom/qcom-apq8026-samsung-milletwifi.dts
+
+-- 
+2.43.0
+
