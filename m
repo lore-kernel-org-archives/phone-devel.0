@@ -1,150 +1,106 @@
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DFE53801
-	for <phone-devel@vger.kernel.org>; Fri, 16 Feb 2024 10:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9972258AD7
+	for <phone-devel@vger.kernel.org>; Fri, 16 Feb 2024 11:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708080414; cv=none; b=b5co8YYd54NcpFFjVMpN5+E3/BMF9oEVZopCbiBhRneOtcfExRh1zyERCUjBo2KMM1V/ELmv5FgY2mH83HAfkQm34hMemSrXBwkv6skGynTMKr5Wf3Bx+k7hzFVYacblPE5K9QcK6SIF/wZRGZ15CcG5s4dZQkuitsFIBkT8Lmg=
+	t=1708082089; cv=none; b=oKEzleEwGSKhuKVdgP1iZ73h3VVbxqxAftQfXd02DzdZ5GMtLN96knm3/Cjmjjy7rDgrcb6DlG0AfaMd/helZsqyTRxn38nulmQGsgDS/HNEWNJjhUEOrjA8NNIwbTvUBps+LPdX/wh4QJYEIeFybwU9/iZxNKhJpZ/ggvOhDcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708080414; c=relaxed/simple;
-	bh=/Fv7pZduc9Bvxjs3c+I5eHvPrfvb1kDFVxbm5FfqWTc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=TXzhE/sCsc7uRiZiJnEpkh2Frodvbahdf9Ki2MDZHZgvZbop1MDHEJrxGMHAcDbhDTLA0luDjAGqzHSDwVG+3H8fkyaBJDCGKqzDvh/3ndShuAO1xOnDlNvGnv960dhkszggFEScCOHJVnQ4JgEMAoYGJmfsHNK+KwVEZrhvNa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=paic9VLj; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1708082089; c=relaxed/simple;
+	bh=Mb3O0r/ZDgnL5SsOM5Kxo3u/DkpD2rGMsl6RgDvEUvs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=WpWo0puoKm7q4j7/VR6wPfFMNmS6SGqhPv9X3reTtq6GWeCk4FfYLZENY5cnvIobWA9bou+19Y7PbPYSFGXbpAIJCDJJCrwYKZVgWNdDY9z4IgKU65oPf4mmKYkuFIBhNXe96Y5CiIWHcgKlFlBja9e+ew7BVbhZrGRvyTrQCJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ny1bGW5B; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="paic9VLj"
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a2a17f3217aso238816166b.2
-        for <phone-devel@vger.kernel.org>; Fri, 16 Feb 2024 02:46:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ny1bGW5B"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-410e820a4feso16773685e9.1
+        for <phone-devel@vger.kernel.org>; Fri, 16 Feb 2024 03:14:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1708080410; x=1708685210; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1708082086; x=1708686886; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZN902PZ33RtjgjeWH2GYWtC877xiVrHyazftcFvMCYA=;
-        b=paic9VLj5iB9jqOQ7uUKubylKN1a13uNYqBxMszXFySy6AwDGoraMfpiKIdSn/tJbx
-         AtFXy2km0WaFV+IGqjfMCFzgiGCH9fLImFZ53UPYkitkoayNT+DYjRp5QUP2CZZqK4vM
-         HfkobiS62CI/VmoeUimZCJW7yfKnwmhntyyWcHrFZ9Nz2c3ASXEXiiCAC2kdRNA/0EZJ
-         cj60P7QOFkr2TjNct+EnZaox2mw9Q5zUiqRSPZsnB3uUFYdbxEPnIwlzI4gaR/msZ1nE
-         NLqgixfq4ACI2xAFLTHsRgeqZJYM8xcZvInGgDOk6gRwgX3SaGgrcO6zSw5YC6RUGwG3
-         dHpw==
+        bh=B4ZT8wxOTMEaNAlp2WhGQd6HjKItKsveZMf5lqO1FcA=;
+        b=ny1bGW5BU6N2a5c+Q+vWBaQsQdxN6KsbAKEHYh2VkcJEDmmeGLy31y2Oc+uGF+sDfa
+         7PQLg2OnyGr/BGjlFNgkDMYEMAQqDC+PWd3gpiymaUPI1LmSKZZvfpz7YGz6SgGmwq4z
+         R33noZhMton1+2zI9ojT3H3U3GOY0qRjXA564OvNzXb27/zGmxOaPAr6D1rcocnsKAgW
+         4P8nhHmFCc3DYTQBCfr3fw6MRhug/j7dF/WH42UQDBWvT1p7gtPYUxi1c3fe8XlRxlyP
+         2qBBoa7qiYtm1Uq6hPASxeMdAoehYnv1nO2hXdB6+D+Xn2ldZH+Ob9TugAdIJM5oMVO1
+         ABug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708080410; x=1708685210;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZN902PZ33RtjgjeWH2GYWtC877xiVrHyazftcFvMCYA=;
-        b=YxQ868BDBYs07w+GOZNLZXkXFuFI+GzSQFERcqbCfksGJsYCJkcjIdVmpKaW/op6qO
-         EK/3Xfut2LLaTVqGbHVfEeauH4VSI2dxOmzHPWPFvOtJIcHaQAcieQvnIxl7yQj6WWTh
-         ovPgrN5ftNtC77qXE9JTI9j7ZMUi8YKzr7T5jJ1YDhHKol02uxcnW2sRAjBCXPp3Cvv0
-         MoP6bzr+fitGSHS4ZKtoWAa1hssCYzaW/txFUGj7SW3Vwvjxxoh/Fz139xnjIZwUNNib
-         BvpTcixaVYnk/6GblJKWRghwgzBzXCGbC7GXH2PeegoIqkh7SuFcG+l+gESaOb6p03CT
-         UoQg==
-X-Forwarded-Encrypted: i=1; AJvYcCUpWl29tMXsVwBFtTy0ugrx88ugZc/x4/B7tE4e8Ike8i1nnNXMNvP3xmjlnEklCutHgeOiiZH+GZXXR1mRpn8OGN2TYeLDWoMUX/M=
-X-Gm-Message-State: AOJu0Yyu8p/48Ev2jDzkJCru1l8NKxCVLQ7jvO/9jPBeWk08amHOEyG/
-	Jp94N3yjK2UpwecV2mbyh8g38OwkXseOvc1IkUOLCsX+QOKaaQVsMGlokahKgkQ=
-X-Google-Smtp-Source: AGHT+IG5rkARmaWUictA1Ft2Xt9RaqG2EvVFtFJRmC7NNAJ+R9vH+8s1KCC+Eq70YL/6ULgKJ1LJ7w==
-X-Received: by 2002:a17:906:3757:b0:a3d:9e6b:2776 with SMTP id e23-20020a170906375700b00a3d9e6b2776mr2966222ejc.17.1708080410468;
-        Fri, 16 Feb 2024 02:46:50 -0800 (PST)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id p17-20020a1709060e9100b00a3d11feb32esm1429131ejf.186.2024.02.16.02.46.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 16 Feb 2024 02:46:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708082086; x=1708686886;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B4ZT8wxOTMEaNAlp2WhGQd6HjKItKsveZMf5lqO1FcA=;
+        b=IlqXhXRPv1MUh7YmzjHPDeKn8G3iNcJt5fGjrnPteDmUSUqXH6toCDck9gaCTjsCza
+         eCrsRgObMjwBqXnAsqxZr39oAdXl3fT6zEESfu8jMNjGwBwqEVoUQlMqBIi9Z+4bSQms
+         gf7/daW8224Uq0WW3Fl0o0ript19GPafF2nrWre4hiRmWfEtMFWPBphU8waIAXh6Rc78
+         0yyKoEWgrk6l9KW/zfgNvAExkWlg4RFEuxdWOnfUL/rKWbKxuoSBG6w6m1GbFSQHNj4j
+         ScM/CbnZtRbHf9C/cIjogBYp9zyWHUXqzJjCsM3z7mrQQEzpLGAp1+ZS0bVe+pv8m5qM
+         AH2A==
+X-Forwarded-Encrypted: i=1; AJvYcCXhtRT7/QPGePc3+3ZWUc5o1RuJfjOquehKTKnpyXs6E74MFuZ+ITz5fgF1OKEujHJKaPr61KgTS8dLzQCKb5zeFMaKMG6WJ3ZfzPA=
+X-Gm-Message-State: AOJu0YyHaJaw+KQbtDVxb5WPR1hemyDq/86TzB//wugphVDoIUKDQzg6
+	S8DiKUBjRzLECsceJEgM1EImVihTG9t2t5PskGTYGcLpZnzjfvqQ/YcEqFBj8RM=
+X-Google-Smtp-Source: AGHT+IHMW9EOiDBogGRBEw6/c9KN9vSHehtmGG0Sqpr8h98BQtKaE9M8TzBhHR4IQo9aOa3UMDmQKA==
+X-Received: by 2002:a05:600c:4f8a:b0:412:4731:a5e9 with SMTP id n10-20020a05600c4f8a00b004124731a5e9mr1055108wmq.4.1708082085778;
+        Fri, 16 Feb 2024 03:14:45 -0800 (PST)
+Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:52eb:f6ff:feb3:451a])
+        by smtp.gmail.com with ESMTPSA id fc13-20020a05600c524d00b00412157dc70bsm2050270wmb.30.2024.02.16.03.14.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Feb 2024 03:14:45 -0800 (PST)
+From: Neil Armstrong <neil.armstrong@linaro.org>
+To: Jessica Zhang <quic_jesszhan@quicinc.com>, 
+ Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@gmail.com>, 
+ Daniel Vetter <daniel@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Andy Gross <agross@kernel.org>, 
+ Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20240216-fp4-panel-v3-0-a556e4b79640@fairphone.com>
+References: <20240216-fp4-panel-v3-0-a556e4b79640@fairphone.com>
+Subject: Re: (subset) [PATCH v3 0/4] Add display support for Fairphone 4
+Message-Id: <170808208477.3157813.2988071781833358555.b4-ty@linaro.org>
+Date: Fri, 16 Feb 2024 12:14:44 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 16 Feb 2024 11:46:49 +0100
-Message-Id: <CZ6FYZLGWT3K.ZBHYDQ7TDN4B@fairphone.com>
-Cc: "Andy Gross" <agross@kernel.org>, "Bjorn Andersson"
- <andersson@kernel.org>, "Konrad Dybcio" <konrad.dybcio@linaro.org>, "Thara
- Gopinath" <thara.gopinath@gmail.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
- "Rob Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
- <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Bhupesh Sharma" <bhupesh.sharma@linaro.org>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-crypto@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: sm6350: Add Crypto Engine
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Stephan Gerhold" <stephan@gerhold.net>
-X-Mailer: aerc 0.15.2
-References: <20240105-sm6350-qce-v1-0-416e5c7319ac@fairphone.com>
- <20240105-sm6350-qce-v1-2-416e5c7319ac@fairphone.com>
- <ZZguvdJTyVgfxm4D@gerhold.net>
-In-Reply-To: <ZZguvdJTyVgfxm4D@gerhold.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.4
 
-On Fri Jan 5, 2024 at 5:30 PM CET, Stephan Gerhold wrote:
-> On Fri, Jan 05, 2024 at 05:15:44PM +0100, Luca Weiss wrote:
-> > Add crypto engine (CE) and CE BAM related nodes and definitions for thi=
-s
-> > SoC.
-> >=20
-> > For reference:
-> >=20
-> >   [    2.297419] qcrypto 1dfa000.crypto: Crypto device found, version 5=
-.5.1
-> >=20
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> >  arch/arm64/boot/dts/qcom/sm6350.dtsi | 31 ++++++++++++++++++++++++++++=
-+++
-> >  1 file changed, 31 insertions(+)
-> >=20
-> > diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts=
-/qcom/sm6350.dtsi
-> > index 8fd6f4d03490..516aadbb16bb 100644
-> > --- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-> > +++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-> > @@ -1212,6 +1212,37 @@ ufs_mem_phy_lanes: phy@1d87400 {
-> >  			};
-> >  		};
-> > =20
-> > +		cryptobam: dma-controller@1dc4000 {
-> > +			compatible =3D "qcom,bam-v1.7.4", "qcom,bam-v1.7.0";
-> > +			reg =3D <0 0x01dc4000 0 0x24000>;
-> > +			interrupts =3D <GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
-> > +			#dma-cells =3D <1>;
-> > +			qcom,ee =3D <0>;
-> > +			qcom,controlled-remotely;
-> > +			num-channels =3D <16>;
-> > +			qcom,num-ees =3D <4>;
-> > +			iommus =3D <&apps_smmu 0x432 0x0000>,
-> > +				 <&apps_smmu 0x438 0x0001>,
-> > +				 <&apps_smmu 0x43f 0x0000>,
-> > +				 <&apps_smmu 0x426 0x0011>,
-> > +				 <&apps_smmu 0x436 0x0011>;
->
-> The last two lines look equivalent to me: 0x436 & ~0x0011 =3D 0x426.
+Hi,
 
-I don't understand the IOMMU SID + mask really, but I think I've seen
-somewhere before like here that TZ can be a bit picky with the SIDs?
+On Fri, 16 Feb 2024 11:10:47 +0100, Luca Weiss wrote:
+> Introduce the bindings and panel driver for the LCD panel with the model
+> number 9A-3R063-1102B from DJN which is using the HX83112A driver IC. It
+> is used on the Fairphone 4 smartphone.
+> 
+> Then we can add the panel to the device dts and also enable the GPU.
+> 
+> 
+> [...]
 
-https://lore.kernel.org/linux-arm-msm/opqdrmyj3y64nqqqmakjydn5rkspizufyeavm=
-7ec7c7ufqz4wk@ey2a7bq3shfj/
-https://lore.kernel.org/linux-arm-msm/11b5db69-49f5-4d7b-81c9-687d66a5cb0d@=
-linaro.org/
+Thanks, Applied to https://anongit.freedesktop.org/git/drm/drm-misc.git (drm-misc-next)
 
-I don't quite want to risk having some obscure use case breaking because
-we cleaned up the dts ;)
+[1/4] dt-bindings: display: panel: Add Himax HX83112A
+      https://cgit.freedesktop.org/drm/drm-misc/commit/?id=3b59787a5170e12beb636cf1a66e481526f293cc
+[2/4] drm/panel: Add driver for DJN HX83112A LCD panel
+      https://cgit.freedesktop.org/drm/drm-misc/commit/?id=654f26a0f43cfd35a5ebd19e008b6f065f2a1f92
 
-But if you're more sure than me that it won't break, let me know!
-
->
-> It's also a bit weird that the mask has one more digit than the stream
-> ID. And ordered numerically (by stream ID, first number) it would be a
-> bit easier to read. :-)
-
-Sorting them is no problem, can do that for v2.
-
->
-> Thanks,
-> Stephan
+-- 
+Neil
 
