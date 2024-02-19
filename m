@@ -1,59 +1,59 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C8720B22
-	for <phone-devel@vger.kernel.org>; Mon, 19 Feb 2024 07:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C917208D7
+	for <phone-devel@vger.kernel.org>; Mon, 19 Feb 2024 07:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708327550; cv=none; b=SdyEtSqEdo0LP/gfeX3JZVI0aHTfwGu0vzZCYnWf9860IvyO1tGBmHSFMOFMoNwsb8VYtDpMGRK2fqOQCs6M3C35an6txKDj7+3DtJh5gPRXpTtJEanGzXiGRvlLzvj2hB/mS3tXOQbbAQNjkzAnZkS+tM77k9HkhfhKs+e3MQA=
+	t=1708327606; cv=none; b=W2egx6rhrBXq0jgD7sJQFKOfchZbBKdsMk6UtychWGjUpkj8xZSpjbaTRyEGSSpb3Z6IRMYelHYpeLdpSl0JZiX8UXu6gnkgkf8P3Cmdkyd4NBhuXYkMx8xzq7yW7d5Ex+q26AJpw8CxTMgRtENEHQo92tyy12DLuepk5TQKw5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708327550; c=relaxed/simple;
-	bh=aAlNSmkbf1Sfy7Lsp6k5xIRxtrQSRKifsjuwsMzbR4g=;
+	s=arc-20240116; t=1708327606; c=relaxed/simple;
+	bh=2jNDVNtxpnr23mxlBl++oU7uytvPfnBt2mj3AIwx7Es=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i0jK73VGmALvm8O2xi+LtUSFj0IKOzbgzVvtFIoCsiickL+klWN522ZtXhiko0Jeyo1PjRj1uqfev9d1C5rhaZxcSEnGYJRNwBHGO+Wqi703JJE0bnIRWHQ+QhA+Sew20eB9pC7Qy0N92poheuRzaRBzdq8rQQU+3ZEyv10QBgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cvGp0G3W; arc=none smtp.client-ip=209.85.221.52
+	 In-Reply-To:Content-Type; b=kw2muhQjb7SoKoC4RuCHeYZ+Cuj8ligm6zFjgHDdxHLJ/xU9K/YYYLrQDHmpSg8L6xrrfbfWDEG/Xxedoy7/VpDa0IbsPWE9ElICqQ98ugtsyvGAq27PUKXS1agfxoquovmWx8dIrILxHoPluPSaLZwQPHh4OKC0mJ6B96xcPcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=LJmbDarl; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cvGp0G3W"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-33d28468666so1007264f8f.0
-        for <phone-devel@vger.kernel.org>; Sun, 18 Feb 2024 23:25:46 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="LJmbDarl"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-33adec41b55so1883444f8f.0
+        for <phone-devel@vger.kernel.org>; Sun, 18 Feb 2024 23:26:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708327545; x=1708932345; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1708327603; x=1708932403; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=JyWlHIVo/uKNCevCda65piUBa1jGH4C0NasP4jXhaSQ=;
-        b=cvGp0G3WIWPhJNBnfcICxzGj5Zb7CJW3i8/tCFx+e0PJuojA/mdItmsLoWGMtlbMON
-         BruuYU39Bl2X+1rgKaB3m5Rnv4Zw8W6d2e/KT/2JgRjXhPIfH2H9RxH4DgAJ9BklA6Ma
-         Lin0NUEsVwOWFNHOONl8AdnblvlOS+B/Ebn5gyNmvc/Q2t4nN67g/e0tVQQZGpqReqyi
-         39805a1+kW7ssVBKJfuyjFPSmxH9KpwhRadUs5tND9RTxnZASLTa8AwtaRfY5il7N8+L
-         njxoU36Uw/93KOPf+K2a3c9bCRGxAKoZkPU0UArd8/9Mn1XS1mE698gbdSO4N0W7niIs
-         rPgg==
+        bh=sL9+2TDOoPibAJnrSNC/TusiaP0M/evPfBq/C5fCeIE=;
+        b=LJmbDarlj//B/nz20YXd/NPQHTD8UXvBeyzV+TPwoX0e0RKH5HJVLJFsrq6XykIHjq
+         DakhPF1MLr7Qo/LPJe2l6GplsON3j1XFBDzrLLNfHEzEkZh/knURE//0t1GghjSLe9Hu
+         P9o40Glf/KuZgO7GOlhEzcQxrJOxU3Yx/fQG3uktSk1MXeSiuLKGUgmFBXOrGLfOU1JS
+         M7UhGIbugUr35qnVHBTaTxlCesM+aAnVTeDlV0ggE8zAnrHOd0eEcXbfbJ9V3bNXCfWy
+         Bp8XonZ8JKdRkRGptodb93y6kb8SmnV5Ob2pzlR9TZmtkRQ245x+w93ms0Yb1thsb0au
+         F6lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708327545; x=1708932345;
+        d=1e100.net; s=20230601; t=1708327603; x=1708932403;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JyWlHIVo/uKNCevCda65piUBa1jGH4C0NasP4jXhaSQ=;
-        b=LmUKT8+2R9V7Xs5qHO7aUSNJTjXH/kHB1s1Fy86DHyk0G6eRr1+xu1Vnd63OwjT0tJ
-         WfVBV0Boz/XBcnnnWa+J51EvQ9rExQ1W3kezr5yLnBKhsZx0986dJ2ieNnVNTchMOezD
-         /1FXVEpuldZtm3N+Y6M91oFRnAHG1oh7+qyt9JcDt2qrD25FogCJ/mNSVoDzSe92jUXC
-         7DufFOBgKGRAQqbzYLfuzbTgHp69OKATs0ml1Fkk1FwDJZMu6QfYEF0LOAW0Y+mYYoDS
-         ggs2hvLPCrZHvhEc+MmXxh4Rgy7Arwg4/gHZOt5NY2V4nLZ2NUPGy+VEo0EkzcKQtwrD
-         SjzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUyCYv18+KqOEJ6fef+GLHLt7+jqisRQpQZAiyyi7DTUN6V06OUTRbdEzM+HKIa/jezwB0nOgQgan2KqOh/UIUZ2G9Eq+FdSGlVEUw=
-X-Gm-Message-State: AOJu0Yxwe0QICivw+J+p2FAEXw/q66A3idOYU0dMUhOmcM0mvYWqHvcB
-	ZlxKSA3U/zcSh3VyepbcZPzWR7F8du4mNR3G2Vw/PSkT0T+IVWsF+sjgCwwV7AA=
-X-Google-Smtp-Source: AGHT+IGiV+l4iUJ16bnvbIkxiPu+LfP0YB49TrqZfcIRUhSoVLZ/q7ojDT7tQELF+3Q9V+tEk+Eczg==
-X-Received: by 2002:a5d:6a4f:0:b0:33d:1efb:8f13 with SMTP id t15-20020a5d6a4f000000b0033d1efb8f13mr5102948wrw.14.1708327545388;
-        Sun, 18 Feb 2024 23:25:45 -0800 (PST)
+        bh=sL9+2TDOoPibAJnrSNC/TusiaP0M/evPfBq/C5fCeIE=;
+        b=EgO7wLCnVL2IZy1lubmM5RAUO7nNwSsZaIM+re0KV9PuzIDGuBSpCOXZcJtMj9ynNf
+         ceuxvv7lGy1UYJOY7m2PNljgNo5nGz0YA+QK+rFjmZ2QYV/h1DH3UMhJbaiMwIg0oeN1
+         sg7XN0BVxJSjt5+03vbHMlDKS/saAiX2MQW9MFNPY1QGq/x3GC5bOjuhT1/dLbAVTZsb
+         UZXpOHMz50ffc9QWn1HjIdPgB+y0HjjGCeGYedrpN7ytFbgLqAtDXJgk/MATPbgqRiWx
+         kK2zA5a93YgMHST/yRjATZ6/Jpv06NC7wVawqahOIje6QuhllTdWwxEdSQmgZsL9IQ+M
+         okgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUa3Z6woQBw2SAR2RIHEqz3N1cbeU4Gz0wqcjIT6CAezNJcyUTk8Hyoy5VFVcqPbj9yPqqC3sKYXjhN2V+xWRVR3KyMylUbp9kPEu4=
+X-Gm-Message-State: AOJu0Yzq0V1pNTrQ7qj2OOmMgUbRlIBkNE5vbqvutex9yvwNwdE+HpSp
+	EZnh3yrn6SMLElKNIR25nDkOKfWOchxEIvplULXL3sgmRmCTNlsYos//sncJDhg=
+X-Google-Smtp-Source: AGHT+IFwDf1r6oLLsD6hWrnVz+u861ddr6iI3blGBEpgBGAJgoOWx2Nth87XL+BMlmR16NLkjstA7Q==
+X-Received: by 2002:a05:6000:1244:b0:33d:5f6a:60e9 with SMTP id j4-20020a056000124400b0033d5f6a60e9mr170934wrx.45.1708327602987;
+        Sun, 18 Feb 2024 23:26:42 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.222.116])
-        by smtp.gmail.com with ESMTPSA id c5-20020adfe745000000b0033b46b1b6adsm9446076wrn.21.2024.02.18.23.25.44
+        by smtp.gmail.com with ESMTPSA id c5-20020adfe745000000b0033b46b1b6adsm9446076wrn.21.2024.02.18.23.26.41
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Feb 2024 23:25:45 -0800 (PST)
-Message-ID: <27e14ec8-3fd9-4e36-ba34-423fe1f3dfa2@linaro.org>
-Date: Mon, 19 Feb 2024 08:25:43 +0100
+        Sun, 18 Feb 2024 23:26:42 -0800 (PST)
+Message-ID: <fb74ad9c-b5f3-4e98-bf43-27f80cc66263@linaro.org>
+Date: Mon, 19 Feb 2024 08:26:41 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -61,7 +61,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] dt-bindings: clock: qcom,hfpll: Convert to YAML
+Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: qcs404: Use qcs404-hfpll
+ compatible for hfpll
 Content-Language: en-US
 To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
  phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
@@ -73,7 +74,7 @@ To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
 Cc: linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20240218-hfpll-yaml-v2-0-31543e0d6261@z3ntu.xyz>
- <20240218-hfpll-yaml-v2-1-31543e0d6261@z3ntu.xyz>
+ <20240218-hfpll-yaml-v2-3-31543e0d6261@z3ntu.xyz>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -119,26 +120,22 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240218-hfpll-yaml-v2-1-31543e0d6261@z3ntu.xyz>
+In-Reply-To: <20240218-hfpll-yaml-v2-3-31543e0d6261@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 18/02/2024 21:57, Luca Weiss wrote:
-> Convert the .txt documentation to .yaml with some adjustments.
-> 
-> * APQ8064/IPQ8064/MSM8960 compatibles are dropped since their HFPLLs are
->   a part of GCC so there is no need for a separate compat entry.
-> * Change the MSM8974 compatible to follow the updated naming schema.
->   Theis compatible is not used upstream yet.
-> * Add qcs404-hfpll. QCS404 currently uses qcom,hfpll. Mark that as
->   deprecated since every SoC appears to need different driver data so
->   "qcom,hfpll" makes no sense to keep
+> Follow the updated bindings and use a QCS404-specific compatible for the
+> HFPLL on this SoC.
 > 
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
+> Please note that this patch should only land after the patch for the
+> clock driver.
+> ---
 
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+This patch should go in the next cycle, after clock driver is merged to
+mainline, to preserve bisectability.
 
 Best regards,
 Krzysztof
