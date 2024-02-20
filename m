@@ -1,122 +1,78 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66CB7763C
-	for <phone-devel@vger.kernel.org>; Tue, 20 Feb 2024 17:07:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650FA79946;
+	Tue, 20 Feb 2024 17:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708448865; cv=none; b=nRGDufWpdsOOFoG3IL+3ABRZRDVRGq8GV5Fbl/eNqNs7OgG/kd4p1Nbot+bKTnF2WpFyx7gI4eMw0s7JiJ4ji0pU2sC6bw2uwf2Hw0U2nCjM2b2JS6uTDdOfdNMrerWG2uF3zgIc45RqQ3/lfDCoXs4Eo81aOgeGL5ycUaoqhcs=
+	t=1708451875; cv=none; b=p3YR6UNBhq2AbWs2OgpFOLXW7zzwCY++arKUnwxXqTe6OkB5mX+rtDeHnTJWuN/vVklo1N2YZVHYMLkqIx8fphSnMXbafs8cBRccoHBLpeb4R+KIY3T40KF9ZKKmRqhrNzqKANWMP2OYVQvL0rOVNVWhwwV1y6Lj8xhVDDTdT9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708448865; c=relaxed/simple;
-	bh=5/bi1QgRjF6knCi0qXssJ/goXm/3I+MJaDD3TiEGDHI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E1GP23OpCGbt4M0nLPKwQp6AL6CBu6PsRFdmUntVilF/k+dfEq9+vvw32Y4gNiGffEmltMPr4HnLnrRC3t/IjimX0S42Yo2L/+jaOzgB5za/7ezgJvVm2CekvLFYbktI1CgoM5CWkxqlX88giVqYFQdHjACHNHWcZRo/2Oup/xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=I6+n8kWE; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1708451875; c=relaxed/simple;
+	bh=uKy3sTr5g9ci0vwBtcTYLrTdctL2mlAjDUwRWGepWO4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=meN1b6mGEoWokLnVg3VdhIYk3mhfOoYGyW0Y8bISPGL+Am7mtq++DzULffwXCsTyBmFtOClMIzTOBWlsFcNg3exDkSNbMzUAjZAPLcFfWhsHWvaLpiXk6TjtTsyu92Cl9SPKPaaDUj9J6w9LacqAZaKMVztEudzBxYvvcVUKFds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uGVobPUq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="I6+n8kWE"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-512bce554a5so2479009e87.3
-        for <phone-devel@vger.kernel.org>; Tue, 20 Feb 2024 09:07:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708448861; x=1709053661; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mShveTDs8o2HzJ7EXJAElPOAOERFmO61toHHqLsbnwI=;
-        b=I6+n8kWEWB3rLVaVyyiUFGyFJWQEAc6wf/NLMbg8JyW7gFjFkl5HR1yTWDFlzKCTdR
-         K7qsF/+uxTkqWRbmkEFlYtU25tGY3cT7mNe/4iSW4Sc+TxrPAcv6KP4sOpNDvyi0YEr+
-         apyOGy0MP58u93fImfmfDR/xwC8mocuBUdIwfe5bVHLFTgDXNX9uihooy29dH4kEHm8P
-         L0x3axKKbQ10rb9v8D6K95Th38GAyGrST7dLlCmIP/DZ+eYnbmED5Ovcnykf9vfJwt07
-         1MHly4Kw6zB9NvjvQv802LNgyTv6TQhJ2Js1xF1Tfxf7mMhanU9GSvFzowxz9UbcV+wx
-         M1fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708448861; x=1709053661;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mShveTDs8o2HzJ7EXJAElPOAOERFmO61toHHqLsbnwI=;
-        b=CehqJDxFBG4bnPj4ppP8pYUyWlkXrHR3jM5t4GkrecmyYPr1hA/9+I+1yyCPbEx2fX
-         DvZtR/NhpvGv+2heK1n5HChCv0N+nicnbPJ+uFi9Ygipz/rbxMRd5QnFzETpSji+Lmwh
-         /optbPhJIT7BlJhfZQAFAx+VBOYTyV+jNmwCJnJ4FmKSaOrGJybZvGn59txvs2vUQ1H+
-         XXELW43/ml/dqQgcHhbZUNBV7DPOUUafnZbqd/Qy1QAyl6DLo5efoIfs8ay5Q4XJwx2k
-         wzE4y9fAcZq7ZUMbGwbdZMHDI9mU2RdiryP7wqzYw8J5XZT+eav7hEoBw+mOrK3xINhR
-         dIvA==
-X-Forwarded-Encrypted: i=1; AJvYcCXp0VAEe0sQuScTYV0DRrI+T744uZhgEitgnhyZ5fMYhUqMEok7fgZAO/EPXxzYXM4QyM8KEeAsrF0fB/ERsaEviv/VQil8cPXBKAE=
-X-Gm-Message-State: AOJu0YyB3HGZMMFtrKW+wkzwzNGb5ChPDAWszDgdfwweCCvVL40qCe7u
-	d55ZjWI3xlo46PFdbR0KUcuoGssU4vovXWir8M6AsRAwbqeUKRiijLnEhMRY0ao=
-X-Google-Smtp-Source: AGHT+IGSj4UFEzJ2QdkqJnyaxs4ii6FgzfPObw02jZbt679agm5/qstPtdmgxKLIT0ezZ9Hr8LkbUQ==
-X-Received: by 2002:a05:6512:102f:b0:512:96f3:413b with SMTP id r15-20020a056512102f00b0051296f3413bmr7991228lfr.26.1708448860804;
-        Tue, 20 Feb 2024 09:07:40 -0800 (PST)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id z20-20020a05600c221400b0040fddaf9ff4sm15131450wml.40.2024.02.20.09.07.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 09:07:40 -0800 (PST)
-Date: Tue, 20 Feb 2024 17:07:38 +0000
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Luca Weiss <luca@z3ntu.xyz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-	Helge Deller <deller@gmx.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"G.Shark Jeong" <gshark.jeong@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uGVobPUq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EA4C43142;
+	Tue, 20 Feb 2024 17:57:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708451874;
+	bh=uKy3sTr5g9ci0vwBtcTYLrTdctL2mlAjDUwRWGepWO4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uGVobPUqpbH/UKS/B93+yIQwYG8jwEyF+fbuguNEJPZMBYoHeJxubmbolOhHIKEAL
+	 K126ElOemlEzJjfGeZaE0xIgu3TtJzk9e12yFqJiWyKdvBFKv/3w8ek+t4MiOtcRyL
+	 SD1jO8gyStEDlb/Wct5ckqYNIHUE5eP/NEoqq7O4iEGtlUxHueAD67XznYcNRnGB3X
+	 mQOjzG9U9dMq5DO6U6y66jp7R8YctzgCIsCGgDEr1BPZKZ7NM+r7ny7Vxf4nZtuP0q
+	 LmuAs8GCPvc5HNDJ1P8J9Q68apm6HO4jOfwsgDK/RsrQFAEgjxyeOdEjU4ftDEYAIC
+	 hlshxB54dqOxA==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Andy Gross <agross@kernel.org>,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Maximilian Weigand <mweigand@mweigand.net>,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH 4/4] ARM: dts: qcom: msm8974-hammerhead: Hook up backlight
-Message-ID: <20240220170738.GI6716@aspen.lan>
-References: <20240220-lm3630a-fixups-v1-0-9ca62f7e4a33@z3ntu.xyz>
- <20240220-lm3630a-fixups-v1-4-9ca62f7e4a33@z3ntu.xyz>
- <20240220141210.GG6716@aspen.lan>
- <2444202.ElGaqSPkdT@g550jk>
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Stefan Hansson <newbyte@postmarketos.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v5 0/4] Add samsung-matisselte and common matisse dtsi
+Date: Tue, 20 Feb 2024 11:57:43 -0600
+Message-ID: <170845186082.159943.18098881377160683439.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231031140337.49291-1-newbyte@postmarketos.org>
+References: <20231031140337.49291-1-newbyte@postmarketos.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2444202.ElGaqSPkdT@g550jk>
-
-On Tue, Feb 20, 2024 at 05:45:32PM +0100, Luca Weiss wrote:
-> On Dienstag, 20. Februar 2024 15:12:10 CET Daniel Thompson wrote:
-> > On Tue, Feb 20, 2024 at 12:11:22AM +0100, Luca Weiss wrote:
-> > > Connect the panel with the backlight nodes so that the backlight can be
-> > > turned off when the display is blanked.
-> > >
-> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> >
-> > Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-> >
-> >
-> > > ---
-> > >  arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts | 4 +++-
-> > >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts b/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts
-> > > index 4aaae8537a3f..8eaa5b162815 100644
-> > > --- a/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts
-> > > +++ b/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts
-> > > @@ -182,7 +182,7 @@ &blsp2_i2c5 {
-> > >  	status = "okay";
-> > >  	clock-frequency = <355000>;
-> > >
-> > > -	led-controller@38 {
-> > > +	backlight: led-controller@38 {
-> >
-> > Again... a minor nit regarding existing problems but this node doesn't
-> > follow the generic naming recommendations:
-> > https://devicetree-specification.readthedocs.io/en/stable/devicetree-basics.html#generic-names-recommendation
->
-> "led-controller" is listed on that page, or do you mean something else?
-
-That's the point ;-). It is supposed to be called backlight@38!
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
 
-Daniel.
+On Tue, 31 Oct 2023 15:00:54 +0100, Stefan Hansson wrote:
+> This series adds a common samsung-matisse dtsi and reworks
+> samsung-matisse-wifi to use it, and introduces samsung-matisselte. I
+> choose matisselte over matisse-lte as this is how most other devices
+> (klte, s3ve3g) do it and it is the codename that Samsung gave the
+> device. See individual commits for more information.
+> 
+
+Applied, thanks!
+
+[1/4] ARM: dts: qcom: samsung-matisse-common: Add initial common device tree
+      (no commit info)
+[2/4] dt-bindings: arm: qcom: Add Samsung Galaxy Tab 4 10.1 LTE
+      commit: 2a478a521876d9daea016be3e9513a67871169b5
+[3/4] ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 10.1 LTE (SM-T535)
+      (no commit info)
+[4/4] ARM: dts: qcom: samsung-matisse-common: Add UART
+      (no commit info)
+
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
