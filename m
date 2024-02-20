@@ -1,66 +1,65 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2C969D0D
-	for <phone-devel@vger.kernel.org>; Tue, 20 Feb 2024 14:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F370276042
+	for <phone-devel@vger.kernel.org>; Tue, 20 Feb 2024 15:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708438335; cv=none; b=sI3FIDmFwnEopr01GNx1dJUwEN4V0y9uJObm3wzyo0tTwPp9kmu/w/+sRrWgOfl9RTEf5zQdqBoEAZXqAn/W5VjSsNbPa6NXT0WraRP4ZhS6eBWpZNVRTxdWRfbYUwYVYqt/i1/AXVp6CPKrPBL5kNPh2m4OQKhSvqPZTG305X8=
+	t=1708443711; cv=none; b=XadTOJ17CHiayAUKT8X4L7kMC48d3LzCrjufL9OU/jkYy/AUZ6/4AbLIACuzUWSkBRQcL6EUR0dUZTUDVsL7C51HhVx0bFnLsfDQ6iM/Gq0gVrCRv9DrbsiDWccySE1qnAif40El1rOKNRyU4ae5kwoOmeBYj3mZKRDTk5m/lBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708438335; c=relaxed/simple;
-	bh=ZUd/4SIGCstdqfJUTd63+Gsgaaki8fxiSzh0mr3PVCU=;
+	s=arc-20240116; t=1708443711; c=relaxed/simple;
+	bh=T78uSbL/6vBHmFMUx533JSz7i0LSC2jc2pTuwaqbKDg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gsqh7jNJASbfBfyeXQ/RVY3XS91FLVee9/WwAssW0ygbCLbk86Wni21ZVE1DRWTn3xso+tlzTquLL3XEMbEsL9GCbuXHv0BTgUa1QJGa96nTZl3RjMv6B4EqxTK0b6vQ8qkVV8v5my+IUdyoa9x+DOF8dq2c9nAytWGtNDOZYk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jwGeAk+R; arc=none smtp.client-ip=209.85.221.48
+	 Content-Type:Content-Disposition:In-Reply-To; b=ncL39iQJHIp8Y+/w3LJZwPs5vHuKYe6A7NajQAThhJztV403kDN9kRvj3h1Hd9m/8IFXrufKiLS+9a8xHxdde/6vuc6hnwGq869gMnaPahoyWS64dpx1mYL5nZB2dB/PdynEDkwHWXK7qR5Cdrvsr/pW0Bo30DaAOpy7x4sK1R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=u8AruOfv; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jwGeAk+R"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-33d3b72f710so1598076f8f.2
-        for <phone-devel@vger.kernel.org>; Tue, 20 Feb 2024 06:12:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="u8AruOfv"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4127109699dso3488965e9.2
+        for <phone-devel@vger.kernel.org>; Tue, 20 Feb 2024 07:41:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708438332; x=1709043132; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1708443708; x=1709048508; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VlCI9F854lrsWDUIN6PG7zZ3hJeSzAbz00+8LmilWc8=;
-        b=jwGeAk+R6VThW+JUlY4uPM1hbUFeOFHIh7TvNpyFy8lqUbVkMmMSUZO+mies2RHt8S
-         DMQIo0B7bwaXIxYNYV66GyXKgq6tKRjMSAt87kA/IstD/uW8sxlz3I/+D8GRstrYaHap
-         ReGFQhe+o49yE8gcedT1MZIovD2u7U9aODQZ60x3OS+B13BTcBm+g1G+C0N7+GYvbwv9
-         909FFIGpJJptV230JtxKxaLcWuhLSLlUowxFIjvv9YD71qcp3ipAF1dNqaxOPBsK2GC4
-         VUmKNrSNddMrBuKNX9UIZtPTajQFSz6X0AzdrTNo2XCQgplAJ2frDxP0OyEW9uHAJA9q
-         wc5Q==
+        bh=+cFEpv5w2TPD8QTkYd4ABg1XTB4+ZdG1BlQCAicZJSg=;
+        b=u8AruOfvTwBPWA7XghfXJbpi2X46ibm7crtvQrHa4h8DFP4DXhsFAxfWzjxEdukdhd
+         56u8LAD24ALHAIdlo0lDhxLnLc2P6dF8uZbs5ZJfC6uoVBeTmjf226sAjJsCwrv2A+14
+         5w8DG0SUA455m6WWlTElUuJMVprKkb5CbuV5Fo4byZZSorI/De+kNWXvuNSjKxhmjgeB
+         7Sjr5HB1rVlavn/GxgFklk4qSnns8NJ0w2irmN4W6IqShxtAmgAnPDMaKkTHfYIAwCu/
+         vGa70WLJFVo9beWRtBXvmdJ0knZlOtH84JB9LnnmhOxMgZexT+UhLI6VHFvcva0F/YC/
+         rlzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708438332; x=1709043132;
+        d=1e100.net; s=20230601; t=1708443708; x=1709048508;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VlCI9F854lrsWDUIN6PG7zZ3hJeSzAbz00+8LmilWc8=;
-        b=HDTAVwF2RBqKPUKG6GfxT0TfijZEc0pvT/qtgc65XTc9taP7RIg9Cu5DKCgC2Fo76d
-         +G2Rzb25XD36OAgSEQm7+2hrbyCzHpFXQFg+JKc14g+LVStewlSHM8z11jb/xKEHu3mj
-         CzCd/GxYHU8TZJHGXXp5IUBl/gcGoyFh03vQfBU3FSdjK23w8VrhPdVVnERJZ7mfGu8H
-         J0fyur/rnfwzZ87NbyHdz5w+eQB/m2lD7WM0knwkKA7XC+rSb4nb9SrC0/RU5GAhEO+q
-         wRVbth9AVSavJjdCfsthjWApm8JdCBp8289WZvxtGB6oMBzpKMYYMnjehUe+Nsh8Rp+o
-         3tJA==
-X-Forwarded-Encrypted: i=1; AJvYcCXKA8pYxGPEHYlYfzYwva71vmZrN33mGhJ8TfkY6DHbIiZno5gOak9zhy7JRUWITd4Az7eFbaUuQ2QI/lHyq+1mtAkI825HGywY3eU=
-X-Gm-Message-State: AOJu0Yz8gmvYTOuQycUMtSsJ1KyT33VJs9VV2vIEmbhjYM4jJn7I20bM
-	TemvSrJNLIGc32ntA1blCIWqJqylDnJ75l8DSqXo3ARY4f6zN1pI8ueYuIjr6x4=
-X-Google-Smtp-Source: AGHT+IHoWaPYXgMjU6PeB2yk8TgKT2tZQUeUz9ykPdB+ZXJLtJWkH3ETMuOSkIOY4HbiE/fpQppbBg==
-X-Received: by 2002:adf:ec44:0:b0:33d:3ceb:5308 with SMTP id w4-20020adfec44000000b0033d3ceb5308mr4607368wrn.42.1708438332431;
-        Tue, 20 Feb 2024 06:12:12 -0800 (PST)
+        bh=+cFEpv5w2TPD8QTkYd4ABg1XTB4+ZdG1BlQCAicZJSg=;
+        b=UhUGq02GZUcDfP4aCKDSxzx/bVsGosbaooh9SAXJE4sVveWTI1ZT8CUzfwng08fkxj
+         7evRMXiWXfu12/A6e69jRTg34IfGGjmcK8yVkaO+QPHSzrNXfO8En+zKSB6h14jcwzkA
+         de5R0t53mBR5ntX2uw66v9SmghBtRQeSTlLO7JNHzC30uV30z1YmqPACaLGgTODEJRWv
+         vvCaE2kuS5Rv9syu3UBYjmXeYuZrsH19/sS37h+EBY9yQVHs5tz4q1Na+BqHT/vnDvdM
+         j1fudfE/RwIjcRLSSW9zcoMYJRrWf5/9pqBO5eagngWgmS2PTg5va+PUxIWLs//J11B3
+         IGTg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWfbX3gHX1zu9m2AXVNY/7W4iEE1IsiAvrjaWVtP5bxAFPVNsYIvf/N9vycNZhzG+7pjgk4zWHJyqzONBkSV0slt3iULTPCoLoZ0E=
+X-Gm-Message-State: AOJu0YwayIXe6dZQPujusS1N5WGxOA84DP5mkvFISTX9GDLggX5s89Gj
+	+Qk7f1eDgcXQm7FY9S7naeruUZsicAB3K1B7QBGFZ06RR3UeqYhYQ7Q2AqNCHVA=
+X-Google-Smtp-Source: AGHT+IFI6EilanMRwVS5/UaPI4MAn95lhdZbLUWfuY0Pbto/1QNDPs2PRzsV8tlz9b+wn0au2Xix+A==
+X-Received: by 2002:adf:f2c3:0:b0:33c:deed:6745 with SMTP id d3-20020adff2c3000000b0033cdeed6745mr11302397wrp.13.1708443708405;
+        Tue, 20 Feb 2024 07:41:48 -0800 (PST)
 Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id bq5-20020a5d5a05000000b0033d60ab6bc8sm4662665wrb.50.2024.02.20.06.12.11
+        by smtp.gmail.com with ESMTPSA id jl22-20020a05600c6a9600b0041069adbd87sm14775650wmb.21.2024.02.20.07.41.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 06:12:12 -0800 (PST)
-Date: Tue, 20 Feb 2024 14:12:10 +0000
+        Tue, 20 Feb 2024 07:41:48 -0800 (PST)
+Date: Tue, 20 Feb 2024 15:41:46 +0000
 From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Luca Weiss <luca@z3ntu.xyz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
-	Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+To: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org, Lee Jones <lee@kernel.org>,
+	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	"G.Shark Jeong" <gshark.jeong@gmail.com>,
 	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>,
@@ -68,10 +67,12 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH 4/4] ARM: dts: qcom: msm8974-hammerhead: Hook up backlight
-Message-ID: <20240220141210.GG6716@aspen.lan>
+Subject: Re: [PATCH 1/4] backlight: lm3630a: Initialize backlight_properties
+ on init
+Message-ID: <20240220154146.GH6716@aspen.lan>
 References: <20240220-lm3630a-fixups-v1-0-9ca62f7e4a33@z3ntu.xyz>
- <20240220-lm3630a-fixups-v1-4-9ca62f7e4a33@z3ntu.xyz>
+ <20240220-lm3630a-fixups-v1-1-9ca62f7e4a33@z3ntu.xyz>
+ <738dcf0e-57fe-4123-af83-be91d8166420@linaro.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -80,35 +81,33 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240220-lm3630a-fixups-v1-4-9ca62f7e4a33@z3ntu.xyz>
+In-Reply-To: <738dcf0e-57fe-4123-af83-be91d8166420@linaro.org>
 
-On Tue, Feb 20, 2024 at 12:11:22AM +0100, Luca Weiss wrote:
-> Connect the panel with the backlight nodes so that the backlight can be
-> turned off when the display is blanked.
+On Tue, Feb 20, 2024 at 03:07:54PM +0100, Konrad Dybcio wrote:
+> On 20.02.2024 00:11, Luca Weiss wrote:
+> > The backlight_properties struct should be initialized to zero before
+> > using, otherwise there will be some random values in the struct.
+> >
+> > Fixes: 0c2a665a648e ("backlight: add Backlight driver for lm3630 chip")
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> > ---
+> >  drivers/video/backlight/lm3630a_bl.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/video/backlight/lm3630a_bl.c b/drivers/video/backlight/lm3630a_bl.c
+> > index a3412c936ca2..8e275275b808 100644
+> > --- a/drivers/video/backlight/lm3630a_bl.c
+> > +++ b/drivers/video/backlight/lm3630a_bl.c
+> > @@ -343,6 +343,7 @@ static int lm3630a_backlight_register(struct lm3630a_chip *pchip)
+> >  	struct backlight_properties props;
+> >  	const char *label;
+> >
+> > +	memset(&props, 0, sizeof(struct backlight_properties));
 >
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> You can zero-initialize it instead
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-
-
-> ---
->  arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts b/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts
-> index 4aaae8537a3f..8eaa5b162815 100644
-> --- a/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts
-> +++ b/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts
-> @@ -182,7 +182,7 @@ &blsp2_i2c5 {
->  	status = "okay";
->  	clock-frequency = <355000>;
->
-> -	led-controller@38 {
-> +	backlight: led-controller@38 {
-
-Again... a minor nit regarding existing problems but this node doesn't
-follow the generic naming recommendations:
-https://devicetree-specification.readthedocs.io/en/stable/devicetree-basics.html#generic-names-recommendation
+I don't object to either approach but memset() dominates backlight
+implementations currently.
 
 
 Daniel.
