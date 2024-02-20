@@ -1,169 +1,97 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3D667C59
-	for <phone-devel@vger.kernel.org>; Tue, 20 Feb 2024 12:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A072A69963
+	for <phone-devel@vger.kernel.org>; Tue, 20 Feb 2024 14:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708430493; cv=none; b=iuDvWq+yD1YDPW+qrmuRV740lPSY33+Rb2vkNJWyGIJcs7LOidqiBmdzka+mVUscgfSaDHBDKzt8eAIr9gmPJxJHpJqZNjYc4YANUxWDL/2ld2LzYj3c9k/iXVNjTdF0c/Ez7tN1CAdhMgxBJ6KzUPHtkz1+EaD15RC7DfTkFIM=
+	t=1708437654; cv=none; b=SMqrRyMWmoGjNbJ2CUqna5N2kvubc7GgVhALXNHCjIHQcfSYIdnN8QCCabXYlJ8WWt8NnHPp/pgl1MvnlV0OAmftgZitP1xpUI1o0ZnXezChjEBB2DaIQFjW5+GML+YQkJMWnwZkapYRFnqi47lx6idGzsjFbJH7yPKMHM/aR5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708430493; c=relaxed/simple;
-	bh=zdk9pHgeIf+vy1xOp68tOmpMdlxlg0ob4eyiTJjQnX0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LVStb8ANlBeomhjSQdFiVPh2+hJA3GAmiz0Pn5XyohMgYFMvmaXOJ7Z9E7WgVRNibmsar91YHeqR0S/F5Tpn8sVxgWlzwVdnpWogQ1aFJiI4WSerq8ko35aVXBB3ewbivowcIbj/jRzxnosmpNRIg1War9spRK9MJpZyW7DxE4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=OZuoTCqf; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1708437654; c=relaxed/simple;
+	bh=yIavGtyBVHQhwYxocbKlHQfDHDHgZOv5J9ExqtIQ0og=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=py389+KId6VBUU2aNP3BSzPaYx01h+wU5ZSyytqU45SVNiJF8W7LCDvU1Cof4nJ2n8WVGdar/PFARTdlcSZGJUpuuYje8vxuoYjxLMFMC/Fq+6ckrT9ed/4/WiiUoWLaIq5CuNSB7egEP73+T4jt+iIMtXE/QCQhybQi5k5F1Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mRZoJifw; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="OZuoTCqf"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-55a8fd60af0so7953831a12.1
-        for <phone-devel@vger.kernel.org>; Tue, 20 Feb 2024 04:01:31 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mRZoJifw"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d21a68dd3bso52571341fa.1
+        for <phone-devel@vger.kernel.org>; Tue, 20 Feb 2024 06:00:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1708430490; x=1709035290; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ytrm2oW4ptH/7uybnHyI6uTA6YC3C6Xvq0aCxo12xgI=;
-        b=OZuoTCqf9FWDpWhY7Q1ZQYl9lQZ9xkrwih7n4lmTxClX7TzWZ6+2caG9iPWBE8RbFK
-         BuR2Kiy5Z1dEYbRJr1YlziRhNrE6/mEJcmOgtlnZD91k70lnCnyE77bwW6+nyUuz2WCG
-         iuVfzxDIVPu0t0qtqnTugaY/AGxUX4id1SGtyxgtuw4fsl6uKalePlRx6SQwHdfCuafn
-         8EM3MxOPpnWQgSALXZ8moiH+n6guSqlFgG5SE70qzj57uvC9TdnvFA4xdHf/l8QVTINF
-         skIu0tNTBT7ns6AJ/kJBh5AOskhY3MLlwt0C1Lu6MpoilWWspwEdiWFNd9IoGANGtbmR
-         gcYw==
+        d=linaro.org; s=google; t=1708437651; x=1709042451; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yIavGtyBVHQhwYxocbKlHQfDHDHgZOv5J9ExqtIQ0og=;
+        b=mRZoJifwVwTGd+0ntdKE33Zb9jzmcWjeV/lxBsfPyFWZYqtytI7rZ16bFKVibTJQe2
+         hNE5QqSj8R30rVki/7gV6YWl1fh+RDRrsMIv8D77cTRzDGtXw+DF6EahyiqHVPLcYpwX
+         Wg0H4Am93nmtABmrW2Kkp+PuQ12BbjleE9oKAdua39x9RLD931SWs+Umr7N4Jws06332
+         e7Sd1tgCJbkxr/32up3Y4/BviJk5FkWxre1b7AUEDeB8lngX4RCNB33w/ChXZmVcxbG3
+         irNS2JFykSbkwC33y+hF3TyXeOzCxabIFhyuJ96KFYU2ogInpvpQALB9CN6Wrk1WffPU
+         9UFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708430490; x=1709035290;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ytrm2oW4ptH/7uybnHyI6uTA6YC3C6Xvq0aCxo12xgI=;
-        b=X7pdGURCI+zDfaocTq91eyno8yURw5oXblBjqFlVmvgV8uM1UN+905+2wlDD8IKscP
-         7IlbUKwMYtzFt39KV+Y64XWzPvHXMd9ruBnKoQ9JBEPHMvJd5VblQlywr8GKEkRCtkPy
-         WR5A035SDIxbNcbaEw1ga6gh/XR4VWLtVg/6C4we5aWPfyv/ZUlIltpuq49azxqXCdCy
-         7tR/ejb2NhPXxpdvZlbEbD9ZETThF3wfHL2VoxzGQeF2sb8Frc7JVTii+VTbMAIA3k4o
-         gV9YZPCqe8dz9AZ7J7UZ/ftKqJnTyNSV2pq9+kvgqH5TUz+HcdahIibNOjBVQnIc69fT
-         yX+g==
-X-Forwarded-Encrypted: i=1; AJvYcCVJOmdE61MQoqmyUt+5uS/teusLjmPja2GyIsSKLi1Ryn45x72g6JkgBs8W5exM5bkHV9nms6uQPqQx0Hd2Jb2NWRjO50v86FK9Wto=
-X-Gm-Message-State: AOJu0YwB8a5OrtxTe23AAtPArJ9cQ0EFMEcDtZYqqHxN0KV6GPLG9iC5
-	mlY4kVvpbXK2R67ApgL7hWrR+ud2IKpba98mp0IvQqT1SyJnwe0VBJjn2GnzSxE=
-X-Google-Smtp-Source: AGHT+IFp2Yu3ANmh54NfdxWJ8vQF/gDzeVzhnmR5cIaO7hWVgacqSCyf7tw5qBm82qp+D+d9Ork8xw==
-X-Received: by 2002:a17:906:7f18:b0:a3e:7ef1:8c91 with SMTP id d24-20020a1709067f1800b00a3e7ef18c91mr3178896ejr.77.1708430489348;
-        Tue, 20 Feb 2024 04:01:29 -0800 (PST)
-Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id q12-20020a170906770c00b00a3df13a4fe0sm3966448ejm.15.2024.02.20.04.01.28
+        d=1e100.net; s=20230601; t=1708437651; x=1709042451;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yIavGtyBVHQhwYxocbKlHQfDHDHgZOv5J9ExqtIQ0og=;
+        b=nhWwE7ZMbZ7MCc9u0bB/NA/wsuI/UhMipDN+fMRkDksqqZGofCqutXt9tnGi/wHx/k
+         UtRQ4YSRkWpQzeB6o0yh/C3Hcyj9A3kNcYtYvuQ8q0G6PTNQt/Ykj3gg9irDvS9vmnJi
+         9bQWjLaiMNafsQudDLQge/IVzirxGmTzb+UjGzGCWa8rvjqILs1dZ1IaIq+gQMNXFoaH
+         VTYT613JVV9utl2LKVPBCqaeW9iw03LCC0GZNvxVdGciS7Xk3TcQhDURMoUmX0xvM3fp
+         6igjYigeMyDHzRY/o7GNHMQwjuJ7rXnYbvE0t7svXM+l+hbmxFCQXPauCLBXOxv4hhWM
+         ohEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCURkMg1Kwfvs98WoJ3HfXsRJ8jPl3P62vIq1hMemSjLi2iLAzGJVqLdEKdRsgXR6YTMW/JRC2nNNnlz1HYjDmbB4kH+dM+4CSNVxZU=
+X-Gm-Message-State: AOJu0Yy6BcuEOapT9uG8/K9YPiRG+WCw9NZN34BKbSTU0odep1hJNAXf
+	LbN7CjetBjIwx55Ug51XuooZYNKGbYb9Y9ymJlvrcnO84AsYkBDkFCa/y2zhiBzngXBxfVznMWW
+	FB6I=
+X-Google-Smtp-Source: AGHT+IFnMr7pgPZVpX97ZGZLJplTKGBJmAizHUWbgJVoD43o8CV/7GPFehR+pR53bgpnnhwAyZG3rQ==
+X-Received: by 2002:a2e:b0fa:0:b0:2d2:3028:2bcc with SMTP id h26-20020a2eb0fa000000b002d230282bccmr5159754ljl.47.1708437650764;
+        Tue, 20 Feb 2024 06:00:50 -0800 (PST)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id o8-20020a05600c510800b004105528c61fsm15006473wms.35.2024.02.20.06.00.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Feb 2024 04:01:29 -0800 (PST)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Tue, 20 Feb 2024 13:01:22 +0100
-Subject: [PATCH] arm64: dts: qcom: sdm632-fairphone-fp3: enable USB-C port
- handling
+        Tue, 20 Feb 2024 06:00:50 -0800 (PST)
+Date: Tue, 20 Feb 2024 14:00:47 +0000
+From: Daniel Thompson <daniel.thompson@linaro.org>
+To: Luca Weiss <luca@z3ntu.xyz>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	Lee Jones <lee@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"G.Shark Jeong" <gshark.jeong@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Maximilian Weigand <mweigand@mweigand.net>,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/4] backlight: lm3630a: Initialize backlight_properties
+ on init
+Message-ID: <20240220140047.GD6716@aspen.lan>
+References: <20240220-lm3630a-fixups-v1-0-9ca62f7e4a33@z3ntu.xyz>
+ <20240220-lm3630a-fixups-v1-1-9ca62f7e4a33@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240220-fp3-typec-v1-1-1930cad81139@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAJGU1GUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDIyMD3bQCY92SyoLUZF0j09QkAwOjlCSLJFMloPqCotS0zAqwWdGxtbU
- AazWh2lsAAAA=
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240220-lm3630a-fixups-v1-1-9ca62f7e4a33@z3ntu.xyz>
 
-Add the definition for the USB-C connector found on this phone and hook
-up the relevant bits. This enables USB role switching.
+On Tue, Feb 20, 2024 at 12:11:19AM +0100, Luca Weiss wrote:
+> The backlight_properties struct should be initialized to zero before
+> using, otherwise there will be some random values in the struct.
+>
+> Fixes: 0c2a665a648e ("backlight: add Backlight driver for lm3630 chip")
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/msm8953.dtsi             | 14 ++++++++++
- arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 31 +++++++++++++++++++++--
- 2 files changed, 43 insertions(+), 2 deletions(-)
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8953.dtsi b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-index 383657407c6f..6726d15c38c3 100644
---- a/arch/arm64/boot/dts/qcom/msm8953.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8953.dtsi
-@@ -1330,6 +1330,20 @@ usb3_dwc3: usb@7000000 {
- 				snps,hird-threshold = /bits/ 8 <0x00>;
- 
- 				maximum-speed = "high-speed";
-+
-+				usb-role-switch;
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+
-+						usb_dwc3_hs: endpoint {
-+						};
-+					};
-+				};
- 			};
- 		};
- 
-diff --git a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-index c49a196189e3..2a65849f0da2 100644
---- a/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts
-@@ -162,6 +162,33 @@ led@3 {
- 	};
- };
- 
-+&pmi632_typec {
-+	status = "okay";
-+
-+	connector {
-+		compatible = "usb-c-connector";
-+
-+		power-role = "dual";
-+		data-role = "dual";
-+		self-powered;
-+
-+		typec-power-opmode = "default";
-+		pd-disable;
-+
-+		port {
-+			pmi632_hs_in: endpoint {
-+				remote-endpoint = <&usb_dwc3_hs>;
-+			};
-+		};
-+	};
-+};
-+
-+&pmi632_vbus {
-+	regulator-min-microamp = <500000>;
-+	regulator-max-microamp = <1000000>;
-+	status = "okay";
-+};
-+
- &sdhc_1 {
- 	status = "okay";
- 	vmmc-supply = <&pm8953_l8>;
-@@ -286,8 +313,8 @@ &usb3 {
- 	status = "okay";
- };
- 
--&usb3_dwc3 {
--	dr_mode = "peripheral";
-+&usb_dwc3_hs {
-+	remote-endpoint = <&pmi632_hs_in>;
- };
- 
- &wcnss {
 
----
-base-commit: 103eb8e019aefd616735200ce46833bc74cfe132
-change-id: 20240220-fp3-typec-25eb002db8b5
-
-Best regards,
--- 
-Luca Weiss <luca.weiss@fairphone.com>
-
+Daniel.
