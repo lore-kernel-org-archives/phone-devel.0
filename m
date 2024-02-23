@@ -1,80 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64DD7128815;
-	Fri, 23 Feb 2024 17:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4E3149388;
+	Fri, 23 Feb 2024 21:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708707745; cv=none; b=NljWXrqEg53VKSaaGHf9e/mbxzd95o/tJOn1SgXOynHSnuYRRZ0TEt20TPM/fC0FZqB6fJx+PKJa3ysjRStUquMUpQxr14HguutUfY+g6D9oHBKV8tgX7Y1LJEPXdcB1vCPvyGC+eo0UiL1MRNpmsmVdtfqjW6l0WAaKqkCJOuE=
+	t=1708723727; cv=none; b=V+PFmri9mGObCWEYRDDOUGbfaQhhe3aZCFHvKDrJz6A4Jm48YhfrcFa4t+LxdLrCI/QBeaPyGp9pB6VR13jTGmGJ8BaAh3sGhcEBVuI4VzxlXQJJsInC2cHhUgNUn2daVGK5gh5leEWG3Oi9FWLNG6KB6O192edYToJdtGik1uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708707745; c=relaxed/simple;
-	bh=2o5JTRd3DSLZEMCMjL2aEPBU20fNxBNrc7mjVBw+7kc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=tg+QMNmlMSb8G2DhJiHuWUU68XP6j9rUGlcGSyIdc+HaznXyFPIK9h4LGgbQpwVSo9TrWgeiHbv2EnHc1alkExjPdf19uhgFZJwbNwtcLxqOmKwuRckXUctwSl88PGqPsm9+CggLaW0yB6+yRw9HJMq4GwG30UrhHRAtQKvheNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o+1xBZ+4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1708723727; c=relaxed/simple;
+	bh=DxNJF2HfobJndwwGNuoV3A/j+HNdIf1M2fN5HyV89UU=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition; b=ktrIol+xmth1KnhlDqhwXgHLs5yVNAwK3Elbnvu5pb+Ym6LUtvE9cEWu0wBNKNRpKfOnOIs9KABVowsA+pgnKset7DNd3Jl1MiMNdGITz9if639+HfeIlPa+EoIvrCQIIntsi9Exlg01w1bHQSPzCSaOSQQQ8gRnnPwdhRCeFcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=DMcfwQ1r; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o+1xBZ+4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6338FC433F1;
-	Fri, 23 Feb 2024 17:02:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708707745;
-	bh=2o5JTRd3DSLZEMCMjL2aEPBU20fNxBNrc7mjVBw+7kc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=o+1xBZ+4fsS6hVxXlzE4Esjcw5DWE+4AqLCXAV/E6hescN5VFBzaVp5Ml59UVr1Vj
-	 NzMDNV2UJfA3il+FBx6bweSe4q5iNn+Y/+Okyy8D9oxMiQJFZ7ov+9NLXfrATx7QB+
-	 XvZXB3wXhotzo91inun1fUnroamTPKzvz5IwEWq5UPGOpRldJMjPJc9i8upC/fq++8
-	 FQlwge+dM5xQ14mVJVPiJ0s3ILgC5sJg1czRw6U13HxhT74bm8j+UbSL+41i/95ral
-	 vu/+41W8+SF6cvkjkAKA2HG8euWXKsu98br8kgE2I8D8kcRd5Xk5bIIG9HoQYnHKY6
-	 SlXDMhmaJSzog==
-From: Lee Jones <lee@kernel.org>
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Lee Jones <lee@kernel.org>, Daniel Thompson <daniel.thompson@linaro.org>, 
- Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "G.Shark Jeong" <gshark.jeong@gmail.com>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Maximilian Weigand <mweigand@mweigand.net>, Luca Weiss <luca@z3ntu.xyz>
-Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org
-In-Reply-To: <20240220-lm3630a-fixups-v1-0-9ca62f7e4a33@z3ntu.xyz>
-References: <20240220-lm3630a-fixups-v1-0-9ca62f7e4a33@z3ntu.xyz>
-Subject: Re: (subset) [PATCH 0/4] Various fixes for the lm3630a backlight
- driver
-Message-Id: <170870774114.1756675.11800657479764151316.b4-ty@kernel.org>
-Date: Fri, 23 Feb 2024 17:02:21 +0000
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="DMcfwQ1r"
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 9A52A1C006B; Fri, 23 Feb 2024 22:28:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1708723722;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 references:references; bh=6xEIm2edK68HPN0TzWfyCgFMgXaReyr4GncU+XTIWD8=;
+	b=DMcfwQ1r+t1JybfpFlCJHuyYBt6MEIzKeb2mkpYJ2QO6ipE6xUsGnF/bU5KyGUOJ3NGprB
+	u5/Il0c/+l/OODRyjhQERLN/Nzr3u1wrYJBbF0GtYxWE50lyQDIaIPISAvcUOic1ynAYAF
+	fcBBlUUoVOof1v5ET6HQjXQx0ao9GMo=
+Date: Fri, 23 Feb 2024 22:28:42 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: phone-devel@vger.kernel.org, kernel list <linux-kernel@vger.kernel.org>,
+	fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org,
+	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org,
+	megi@xff.cz
+Subject: [PATCHv2 1/2] dt-bindings: usb: typec: anx7688: start a binding
+ document
+Message-ID: <ZdkOCqPKqa/u9Ftb@duo.ucw.cz>
+References: <ZcaCXYOf6o4VNneu@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.4
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="jCLN6xU/n9iIU9zP"
+Content-Disposition: inline
 
-On Tue, 20 Feb 2024 00:11:18 +0100, Luca Weiss wrote:
-> On the MSM8974 Nexus 5 and OnePlus One phones (latter doesn't have
-> display upstream) the display backlight was turning off whenever you
-> would write a brightness to sysfs since a recent commit to the driver
-> (kernel v6.5).
-> 
->   backlight: lm3630a: Turn off both led strings when display is blank
-> 
-> [...]
 
-Applied, thanks!
+--jCLN6xU/n9iIU9zP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[1/4] backlight: lm3630a: Initialize backlight_properties on init
-      commit: 4602c7615989e6e7052e317995a66014eb318082
-[2/4] backlight: lm3630a: Don't set bl->props.brightness in get_brightness
-      commit: ebb3b9a65b56e9b21841ab9a15b946407cd6b104
-[3/4] backlight: lm3630a: Use backlight_get_brightness helper in update_status
-      commit: 3c40590fafd4cc2447fb482a640c450e1a58ffa1
+Add binding for anx7688 usb type-c bridge. I don't have a datasheet,
+but I did best I could.
 
---
-Lee Jones [李琼斯]
+Signed-off-by: Pavel Machek <pavel@ucw.cz>
 
+---
+
+v2: implement review feedback
+
+diff --git a/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml b/=
+Documentation/devicetree/bindings/usb/analogix,anx7688.yaml
+new file mode 100644
+index 000000000000..9e887eafb5fc
+--- /dev/null
++++ b/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml
+@@ -0,0 +1,127 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/usb/analogix,anx7688.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++# Pin names can be deduced from
++# https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Sc=
+hematic.pdf
++
++title: Analogix ANX7688 Type-C controller
++
++maintainers:
++  - Pavel Machek <pavel@ucw.cz>
++
++properties:
++  compatible:
++    enum:
++      - analogix,anx7688
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  reset-gpios:
++    maxItems: 1
++    description: GPIO controlling RESET_N (B7) pin.
++
++  enable-gpios:
++    maxItems: 1
++    description: GPIO controlling POWER_EN (D2) pin.
++
++  cabledet-gpios:
++    maxItems: 1
++    description: GPIO controlling CABLE_DET (C3) pin.
++
++  avdd10-supply:
++    description: 1.0V power supply going to AVDD10 (A4, ...) pins
++
++  dvdd10-supply:
++    description: 1.0V power supply going to DVDD10 (D6, ...) pins
++
++  avdd18-supply:
++    description: 1.8V power supply going to AVDD18 (E3, ...) pins
++
++  dvdd18-supply:
++    description: 1.8V power supply going to DVDD18 (G4, ...) pins
++
++  avdd33-supply:
++    description: 3.3V power supply going to AVDD33 (C4, ...) pins
++
++  i2c-supply: true
++  vconn-supply: true
++  hdmi-vt-supply: true
++  vbus-supply: true
++  vbus-in-supply: true
++
++  connector:
++    type: object
++    $ref: /schemas/connector/usb-connector.yaml
++
++    description:
++      Properties for usb c connector.
++
++    properties:
++      compatible:
++        const: usb-c-connector
++
++required:
++  - compatible
++  - reg
++  - connector
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/gpio/gpio.h>
++
++    i2c {
++        #address-cells =3D <1>;
++        #size-cells =3D <0>;
++
++        typec@2c {
++            compatible =3D "analogix,anx7688";
++            reg =3D <0x2c>;
++            interrupts =3D <8 IRQ_TYPE_EDGE_FALLING>;
++            interrupt-parent =3D <&gpio0>;
++
++            enable-gpios =3D <&pio 3 10 GPIO_ACTIVE_LOW>; /* PD10 */
++            reset-gpios =3D <&pio 3 6 GPIO_ACTIVE_HIGH>; /* PD6 */
++            cabledet-gpios =3D <&r_pio 0 8 GPIO_ACTIVE_HIGH>; /* PL8 */
++
++            avdd10-supply =3D <&reg_anx1v0>;
++            dvdd10-supply =3D <&reg_anx1v0>;
++            avdd18-supply =3D <&reg_ldo_io1>;
++            dvdd18-supply =3D <&reg_ldo_io1>;
++            avdd33-supply =3D <&reg_dcdc1>;
++            i2c-supply =3D <&reg_ldo_io0>;
++            vconn-supply =3D <&reg_vconn5v0>;
++            hdmi_vt-supply =3D <&reg_dldo1>;
++
++            vbus-supply =3D <&reg_usb_5v>;
++            vbus-in-supply =3D <&usb_power_supply>;
++
++            typec_con: connector {
++                compatible =3D "usb-c-connector";
++                power-role =3D "dual";
++                data-role =3D "dual";
++                try-power-role =3D "source";
++
++                ports {
++                    #address-cells =3D <1>;
++                    #size-cells =3D <0>;
++                    port@0 {
++                        reg =3D <0>;
++                        typec_con_ep: endpoint {
++                            remote-endpoint =3D <&usbotg_hs_ep>;
++                        };
++                    };
++                };
++            };
++        };
++    };
++...
+
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--jCLN6xU/n9iIU9zP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZdkOCgAKCRAw5/Bqldv6
+8k4ZAKCyacCwwDMiQJfpB92pVwG7Ep6PFwCglGOsVgCKKM15n+AZgQHGOn/a+1I=
+=AcFn
+-----END PGP SIGNATURE-----
+
+--jCLN6xU/n9iIU9zP--
