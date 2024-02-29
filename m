@@ -1,88 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEBB2208E;
-	Fri, 23 Feb 2024 22:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798525B697
+	for <phone-devel@vger.kernel.org>; Thu, 29 Feb 2024 09:27:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708729179; cv=none; b=aL8s4PIHeCLmALWs9b9nx3K5sQ9xM+PaJbtrdH6oNGCFdPjaJX65i/ZbYHrolodnwVaXLqpLmw/R7zH999FsdLsu5TvxPByCEf+G10HHloCUMPXDNswmIMEDLKnPd/fi6V426oNCUeSOsHEmjApB/NKb5Z9+/enE8PMSL/JVytM=
+	t=1709198859; cv=none; b=XKaT/DzRFvNPsk5pFzJZZdMdjXXJ6F3Sn17liJBvzGOBnNWOmVXvI2Uz9A+NeZ/KS8MMwvC+eqlKp8JfCHM5v+Ip20v/Auu2Hxdx51VH0MBwn7XB1eXkKIX/CO5Mjg72N2+o4FotYdyFednF5ICctVgkdpBCdsaQGh6ISHGz4Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708729179; c=relaxed/simple;
-	bh=ABNxFgpazlkmbRu59cIx6k/+C9n5WoumwUscE+x+nWA=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=I/KFaoolF6TZXFzvqedssSL7KA4YVlP3pkv5NRjmWob9OSkO3xrDpUZvINPmY8mhJuRgBNM1DG8s4cr4/f2WPFJDv3/EnDmvpxZaDbpNBBCKZ1wVg2aYxvX8pySvu6NeJ7mzFSb2FSsiEQl6NYM+1Xpa9l7oACyI7gaW6KIte2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+rE1DEL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1709198859; c=relaxed/simple;
+	bh=Bt+6HUNU4JLltfZpincMFjh+g0KSkoZR27N1mCOMTAo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=a0kMdbr6O2SJwgzH25oplooblwAFnmAGnwVZu7WkLiFh4ZRI207sToSWJPDMgWaVbYv3vyu8WhNqi78q9fe85M3FZnCho+unROLeKB6X029z0ve/XtwHCjOPQrF75Ee/hMrNO3lvFtEjDkL98uyNEVzbUCbudkKzzTUIXhJfB9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=0ABp3sjm; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+rE1DEL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F69C433F1;
-	Fri, 23 Feb 2024 22:59:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708729179;
-	bh=ABNxFgpazlkmbRu59cIx6k/+C9n5WoumwUscE+x+nWA=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=X+rE1DELraXQncx8Rs4qZ7vS29+oLUV4cCZpA3Jiah+JveniKtnjYIodYB5nGI9FM
-	 b4xaMM5Vqtc7R54h5C325uj1U/5gwY6QuPv1yJRa6xDootqjmKVQjZ4g0krHiGGkeX
-	 VYyS/3aklZ0lWeemzioOIDlKy7fCn+vqHWb72QUjP+/Io0F7OIUDPT2yloY3tE0Cd4
-	 XIurpmx2Sn7ZA1JGB0jG/I2RnJUF+Ggu5crVNpjR3GM/onVbsV+45Pt0Uy/jpoW8SV
-	 Uv9OZ+pTStyxrjXRiiixeZGndgdq7UgELAhDGBe7NwFhRrpYnIQqPY50sTakEkBBHT
-	 hFYjZ8aLawaCQ==
-Date: Fri, 23 Feb 2024 15:59:38 -0700
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="0ABp3sjm"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-563c403719cso985375a12.2
+        for <phone-devel@vger.kernel.org>; Thu, 29 Feb 2024 01:27:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1709198854; x=1709803654; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1n6ZCV67cur8e5mAju//0gzCRgXTlxNt1OqrWENqIVs=;
+        b=0ABp3sjm5vzBfsOuhTPARKgb2GE8mw/9VtWUqPSGEMPHGlKHzx/pjscvcHWJzfjONH
+         DIwCKPUjfKasi9JjrTJ//n+BJBLFT/GEEfXgox0I1J91iUDNTtIOkqJZDcorZW9zcWK1
+         JfNGtXPLyPzrGHcg5oPPL4lZ6rW8ExHwzLy6TUf0GE24Shd6kNYcCEqsmgnw6+DUdAnX
+         QVS98YmFQHxwzOwhJjjyThw4ac29/I1rURzv0tp4CVRIJvTUWNm6WNgkAqZQqyf8rZ0v
+         sO32jQsM3zpg68DBey53lPGGMxvFxmZjUk9/MLcpqxDx1zTo31fO0F7tBah1q5d4H+uL
+         uw9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709198854; x=1709803654;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1n6ZCV67cur8e5mAju//0gzCRgXTlxNt1OqrWENqIVs=;
+        b=uFoHzjomax1nev9T3WuJImnEKMaOg4prRaVF/UgtRxIjoFZql5RiIqwUqitBP5GEVg
+         skM/WA57EzjLTMiF4WFOsZzuV7auFeWWm3QZXSlMFsjznKhYmSQ3XCuN79SgAocmDows
+         zpGy928rQTvMYP5qguyZrWzBIYAamf1jCYAvPHRDNSdzGYnxVpy7BGZe68G/nAxYzlwS
+         9h91dFgFXO03kbQlfBOuS1EIk9hcMGbQxeRJfACI4OAhZUa4UW8rYwYdaAXiLb0eES6V
+         olcGRZs5Nmy1828tuh7TuEelFvTc7quecwRPJsu6ySwn+SPaaRl7QZQ1kmyR2x1q6LNJ
+         kgjg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFzp2JoifcEuhFBgqZPNgl6T81ZoK7ToYF/iAPwglXpxdt1ZmM6cY7HbARV9bT6K7aKdBxRtNgGCDVsUEV2P/nyZRt4v761K2J5Ac=
+X-Gm-Message-State: AOJu0Yyed4M1N/lHp0/+yuAqmQbDFgZD4Y0mxTWtXAmnMJ5ofR816XN/
+	6ylKI8LOad//hTOQQC1ECwK1g2MAiLZhrDfCi2+GXYHecj8ERp1WKxwCdXUQA4FgIiMsG3IHsD6
+	r
+X-Google-Smtp-Source: AGHT+IHQg7Xq8XAUxZCM3b/8E8wHu/qSRHC8mHdsKWekvtDdWPMBzGdgTylK0ht1WUfnSdjcGfBQAQ==
+X-Received: by 2002:a05:6402:520c:b0:565:b4ca:72f3 with SMTP id s12-20020a056402520c00b00565b4ca72f3mr1476269edd.35.1709198853784;
+        Thu, 29 Feb 2024 01:27:33 -0800 (PST)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id c6-20020a056402100600b0056536eed484sm436406edu.35.2024.02.29.01.27.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Feb 2024 01:27:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Pavel Machek <pavel@ucw.cz>
-Cc: martijn@brixit.nl, phone-devel@vger.kernel.org, megi@xff.cz, 
- devicetree@vger.kernel.org, heikki.krogerus@linux.intel.com, 
- krzysztof.kozlowski+dt@linaro.org, gregkh@linuxfoundation.org, 
- kernel list <linux-kernel@vger.kernel.org>, linux-usb@vger.kernel.org, 
- fiona.klute@gmx.de, robh+dt@kernel.org, samuel@sholland.org
-In-Reply-To: <ZdkOCqPKqa/u9Ftb@duo.ucw.cz>
-References: <ZcaCXYOf6o4VNneu@duo.ucw.cz> <ZdkOCqPKqa/u9Ftb@duo.ucw.cz>
-Message-Id: <170872917769.3727020.1891053113007354566.robh@kernel.org>
-Subject: Re: [PATCHv2 1/2] dt-bindings: usb: typec: anx7688: start a
- binding document
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 29 Feb 2024 10:27:32 +0100
+Message-Id: <CZHGFD9QYM82.371U2DPG1AEGQ@fairphone.com>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Luca Weiss" <luca.weiss@fairphone.com>, <neil.armstrong@linaro.org>,
+ "Andrzej Hajda" <andrzej.hajda@intel.com>, "Robert Foss"
+ <rfoss@kernel.org>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>,
+ "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
+ <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Daniel Vetter" <daniel@ffwll.ch>
+X-Mailer: aerc 0.15.2
+References: <20240111-drm-panel-bridge-fixup-v1-1-e06292f6f500@fairphone.com> <b1da07f9-7e15-4d83-bef3-d0ce157654bc@linaro.org> <CYGUWBAM3D62.35CPP5HGEYJ3Y@fairphone.com>
+In-Reply-To: <CYGUWBAM3D62.35CPP5HGEYJ3Y@fairphone.com>
 
+On Wed Jan 17, 2024 at 9:59 AM CET, Luca Weiss wrote:
+> On Mon Jan 15, 2024 at 9:43 AM CET, Neil Armstrong wrote:
+> > Hi Luca,
+> >
+> > On 11/01/2024 13:38, Luca Weiss wrote:
+> > > Since the kconfig symbol of DRM_PANEL_BRIDGE is only adding
+> > > bridge/panel.o to drm_kms_helper object, we need to select
+> > > DRM_KMS_HELPER to make sure the file is actually getting built.
+> > >=20
+> > > Otherwise with certain defconfigs e.g. devm_drm_of_get_bridge will no=
+t
+> > > be properly available:
+> > >=20
+> > >    aarch64-linux-gnu-ld: drivers/phy/qualcomm/phy-qcom-qmp-combo.o: i=
+n function `qmp_combo_bridge_attach':
+> > >    drivers/phy/qualcomm/phy-qcom-qmp-combo.c:3204:(.text+0x8f4): unde=
+fined reference to `devm_drm_of_get_bridge'
+> > >=20
+> > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > > ---
+> > > I can see "depends on DRM_KMS_HELPER" was removed with commit
+> > > 3c3384050d68 ("drm: Don't make DRM_PANEL_BRIDGE dependent on DRM_KMS_=
+HELPERS")
+> > >=20
+> > > I'm not too familiar with Kconfig but it feels more correct if
+> > > PHY_QCOM_QMP_COMBO selects DRM_PANEL_BRIDGE that that's enough; and i=
+t
+> > > doesn't also has to explicitly select DRM_KMS_HELPER because of how t=
+he
+> > > objects are built in the Makefile.
+> > >=20
+> > > Alternatively solution to this patch could be adjusting this line in
+> > > include/drm/drm_bridge.h:
+> > >=20
+> > >    -#if defined(CONFIG_OF) && defined(CONFIG_DRM_PANEL_BRIDGE)
+> > >    +#if defined(CONFIG_OF) && defined(CONFIG_DRM_PANEL_BRIDGE) && def=
+ined(CONFIG_DRM_KMS_HELPER)
+> > >     struct drm_bridge *devm_drm_of_get_bridge(struct device *dev, str=
+uct device_node *node,
+> > >                                              u32 port, u32 endpoint);
+> > >=20
+> > > .. and then selecting DRM_KMS_HELPER for PHY_QCOM_QMP_COMBO.
+> > >=20
+> > > But I think the solution in this patch is better. Let me know what yo=
+u
+> > > think.
+> >
+> > I think this is no more the case after on linux-next:
+> > 35921910bbd0 phy: qcom: qmp-combo: switch to DRM_AUX_BRIDGE
+> >
+> > But could you still check ?
+>
+> On next-20240117 the error happens in the aux-bridge file instead then.
+>
+> aarch64-linux-gnu-ld: drivers/gpu/drm/bridge/aux-bridge.o: in function `d=
+rm_aux_bridge_probe':
+> drivers/gpu/drm/bridge/aux-bridge.c:115:(.text+0xe0): undefined reference=
+ to `devm_drm_of_get_bridge'
+>
+> I'm attaching the defconfig with which I can reproduce this but it's
+> really just DRM_KMS_HELPER=3Dn and PHY_QCOM_QMP_COMBO=3Dy I believe.
 
-On Fri, 23 Feb 2024 22:28:42 +0100, Pavel Machek wrote:
-> Add binding for anx7688 usb type-c bridge. I don't have a datasheet,
-> but I did best I could.
-> 
-> Signed-off-by: Pavel Machek <pavel@ucw.cz>
-> 
-> ---
-> 
-> v2: implement review feedback
-> 
+Hi Neil,
 
-My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
-on your patch (DT_CHECKER_FLAGS is new in v5.13):
+Ping on this patch
 
-yamllint warnings/errors:
+Regards
+Luca
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/usb/analogix,anx7688.example.dtb: typec@2c: 'hdmi_vt-supply' does not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/usb/analogix,anx7688.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/ZdkOCqPKqa/u9Ftb@duo.ucw.cz
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+>
+> Regards
+> Luca
+>
+>
+> >
+> > Neil
+> >
+> > > ---
+> > >   drivers/gpu/drm/bridge/Kconfig | 1 +
+> > >   1 file changed, 1 insertion(+)
+> > >=20
+> > > diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/=
+Kconfig
+> > > index ac9ec5073619..ae782b427829 100644
+> > > --- a/drivers/gpu/drm/bridge/Kconfig
+> > > +++ b/drivers/gpu/drm/bridge/Kconfig
+> > > @@ -8,6 +8,7 @@ config DRM_BRIDGE
+> > >   config DRM_PANEL_BRIDGE
+> > >   	def_bool y
+> > >   	depends on DRM_BRIDGE
+> > > +	select DRM_KMS_HELPER
+> > >   	select DRM_PANEL
+> > >   	help
+> > >   	  DRM bridge wrapper of DRM panels
+> > >=20
+> > > ---
+> > > base-commit: b9c3a1fa6fb324e691a03cf124b79f4842e65d76
+> > > change-id: 20240111-drm-panel-bridge-fixup-5c2977fb969f
+> > >=20
+> > > Best regards,
 
