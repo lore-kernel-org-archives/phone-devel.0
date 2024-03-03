@@ -1,64 +1,61 @@
 Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90111947E;
-	Fri,  1 Mar 2024 16:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C585EB642;
+	Sun,  3 Mar 2024 10:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709311669; cv=none; b=e0YK5ISZKFaV4fmjcx39suf7fPdyrVs4xt1W9cPXxUAi7TP9MjE7hX5OtVVKK0LxTcc54J+gsBv0KtFvXlf0ylvePHyn++844j/0TqK6Jvy0S38G1JRat3fWtbhLlq4305FyS70wdwBwUpzIQZ8n57C3gSacu8TbX4Ro1M7K75k=
+	t=1709460935; cv=none; b=gZcw27mNfJusZnYT4v67IVeo4iovN6D83HbdPiv/OFVG6fueyYzVD4MbFLPqC/ZQcoIcKMkxUdeq3fPBks8WmSCwTY/FaS5ybn+0N8pJW718/u/Rz60fI6xnMCStQ/21LkOeElhrigyOLd8sQnlk9zpm/SoV5Kt2Set6XMzo5s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709311669; c=relaxed/simple;
-	bh=TwO38cA3UyCr2W+EpuHHLQjPXPcd10Pe64Cu4R4UPC0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pwSa8p/m9dkTnbqnYijT/Ak1bt2eeqAw46qZR0wZb+WsAWTTj1xgmY+dj1RaPutVmxPp9w0fnyUWXG0i/L0tFXg1VQJxZ00f9C/qfrGGQLWibJe9OyrrCy4gOx/SEisrGU3F7i3dMQKks0fzfW4TRnQxENCWqTB7tUPMJ842M2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz; dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b=i4f7gS//; arc=none smtp.client-ip=195.113.20.16
+	s=arc-20240116; t=1709460935; c=relaxed/simple;
+	bh=y4upltIYbr5815lbbJcq3QZupeGcFF1aeW5dMLuiP8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dt2oKd4Q9fs2dxrQKalNhwvJV4dHQnQzTQawczIrp/hUiu+Ib49KOPyl5U3SUlJw+2VigPpe+acsNdQArCYQIWumnBeflDUgTfZXTu06A6RexFQmFSL+ILpQ9tiF+QtM0ZqcKPPk/lW4TLV2emJ0MIGttI/5lrd2LphSFIFUsSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz; dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b=GjUcTofE; arc=none smtp.client-ip=195.113.20.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="i4f7gS//"
+	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="GjUcTofE"
 Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id 8239C284258;
-	Fri,  1 Mar 2024 17:47:38 +0100 (CET)
+	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id F2C5328428C;
+	Sun,  3 Mar 2024 11:15:23 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
-	s=gen1; t=1709311658;
+	s=gen1; t=1709460924;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O7DmL1iFyPuL+YAdM6p9eG7fp01uB00uvAhrDZTooCM=;
-	b=i4f7gS//gRybv9G91n4rfHD3U3QiMVHe+6kQ6HKg543tZlwYFWSeirBz1b8NB7+jZNC3fu
-	0cgiuBMh8OKMRcDzFqXxgij0z4/gESuUIQX74rEZ3UGjt2StU43OCyqvDc06G+bNm8lhZX
-	cOgXDxbXnoUy23vLudtQ1KKBxuNJIiE=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=lZvjtksvf4qK4UfszmybD7ivOvG0abGJuHgkrZ/Ur8E=;
+	b=GjUcTofEQJxcRwBtKVE1oi06Oetf0EvQXf90RKJyGa9n817Mr+dCjUHO5HxDMnINtIbUKg
+	kVi1QN4POB05+nF+3vfbjsoqnmdibc3YUqEIGH0so2j7LjSlXlGF3ji0O2kmiqFWsVfULv
+	6+ouhuW9+uqkzuGAmM5e5zG5iLMPj70=
 Received: from localhost (internet5.mraknet.com [185.200.108.250])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: karelb)
-	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id 4CF374587C6;
-	Fri,  1 Mar 2024 17:47:38 +0100 (CET)
+	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id CEED2456F3E;
+	Sun,  3 Mar 2024 11:15:23 +0100 (CET)
 From: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-To: Markuss Broks <markuss.broks@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+To: Karel Balej <balejk@matfyz.cz>,
+	Lee Jones <lee@kernel.org>,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Henrik Rydberg <rydberg@bitmath.org>,
-	linux-input@vger.kernel.org,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+	linux-kernel@vger.kernel.org,
+	linux-input@vger.kernel.org
 Cc: =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
 	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	karelb@gimli.ms.mff.cuni.cz
-Subject: [RESEND PATCH v5 5/5] input/touchscreen: imagis: add support for IST3032C
-Date: Fri,  1 Mar 2024 17:41:04 +0100
-Message-ID: <20240301164659.13240-6-karelb@gimli.ms.mff.cuni.cz>
+	phone-devel@vger.kernel.org
+Subject: [RFC PATCH v3 0/5] initial support for Marvell 88PM886 PMIC
+Date: Sun,  3 Mar 2024 11:04:21 +0100
+Message-ID: <20240303101506.4187-1-karelb@gimli.ms.mff.cuni.cz>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240301164659.13240-1-karelb@gimli.ms.mff.cuni.cz>
-References: <20240301164659.13240-1-karelb@gimli.ms.mff.cuni.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -69,58 +66,62 @@ Content-Transfer-Encoding: 8bit
 
 From: Karel Balej <balejk@matfyz.cz>
 
-IST3032C is a touchscreen chip used for instance in the
-samsung,coreprimevelte smartphone, with which this was tested. Add the
-chip specific information to the driver.
+Hello,
 
-Reviewed-by: Markuss Broks <markuss.broks@gmail.com>
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
+the following implements basic support for Marvell's 88PM886 PMIC which
+is found for instance as a component of the samsung,coreprimevelte
+smartphone which inspired this and also serves as a testing platform.
+
+The code for the MFD is based primarily on this old series [1] with the
+addition of poweroff based on the smartphone's downstream kernel tree
+[2]. The onkey and regulators drivers are based on the latter. I am not
+in possesion of the datasheet.
+
+[1] https://lore.kernel.org/all/1434098601-3498-1-git-send-email-yizhang@marvell.com/
+[2] https://github.com/CoderCharmander/g361f-kernel
+
+Thank you and kind regards,
+K. B.
 ---
+RFC v3:
+- Address Rob's feedback:
+  - Drop onkey bindings patch.
+- Rename PM88X -> PM886 everywhere.
+- RFC v2: https://lore.kernel.org/all/20240211094609.2223-1-karelb@gimli.ms.mff.cuni.cz/
+RFC v2:
+- Merge with the regulators series to have multiple devices and thus
+  justify the use of the MFD framework.
+- Rebase on v6.8-rc3.
+- Reorder patches.
+- MFD RFC v1: https://lore.kernel.org/all/20231217131838.7569-1-karelb@gimli.ms.mff.cuni.cz/
+- regulators RFC v1: https://lore.kernel.org/all/20231228100208.2932-1-karelb@gimli.ms.mff.cuni.cz/
 
-Notes:
-    v4:
-    * Change the WHOAMI definition position to preserve alphanumerical order
-      of the definitions.
-    * Add Markuss' Reviewed-by trailer.
+Karel Balej (5):
+  dt-bindings: mfd: add entry for Marvell 88PM886 PMIC
+  mfd: add driver for Marvell 88PM886 PMIC
+  regulator: add regulators driver for Marvell 88PM886 PMIC
+  input: add onkey driver for Marvell 88PM886 PMIC
+  MAINTAINERS: add myself for Marvell 88PM886 PMIC
 
- drivers/input/touchscreen/imagis.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../bindings/mfd/marvell,88pm886-a1.yaml      |  76 +++++++
+ MAINTAINERS                                   |   9 +
+ drivers/input/misc/88pm886-onkey.c            |  92 ++++++++
+ drivers/input/misc/Kconfig                    |   7 +
+ drivers/input/misc/Makefile                   |   1 +
+ drivers/mfd/88pm886.c                         | 210 ++++++++++++++++++
+ drivers/mfd/Kconfig                           |  12 +
+ drivers/mfd/Makefile                          |   1 +
+ drivers/regulator/88pm886-regulator.c         | 195 ++++++++++++++++
+ drivers/regulator/Kconfig                     |   6 +
+ drivers/regulator/Makefile                    |   1 +
+ include/linux/mfd/88pm886.h                   |  46 ++++
+ 12 files changed, 656 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml
+ create mode 100644 drivers/input/misc/88pm886-onkey.c
+ create mode 100644 drivers/mfd/88pm886.c
+ create mode 100644 drivers/regulator/88pm886-regulator.c
+ create mode 100644 include/linux/mfd/88pm886.h
 
-diff --git a/drivers/input/touchscreen/imagis.c b/drivers/input/touchscreen/imagis.c
-index 9af8a6332ae6..e1fafa561ee3 100644
---- a/drivers/input/touchscreen/imagis.c
-+++ b/drivers/input/touchscreen/imagis.c
-@@ -11,6 +11,8 @@
- #include <linux/property.h>
- #include <linux/regulator/consumer.h>
- 
-+#define IST3032C_WHOAMI			0x32c
-+
- #define IST3038B_REG_STATUS		0x20
- #define IST3038B_REG_CHIPID		0x30
- #define IST3038B_WHOAMI			0x30380b
-@@ -363,6 +365,13 @@ static int imagis_resume(struct device *dev)
- 
- static DEFINE_SIMPLE_DEV_PM_OPS(imagis_pm_ops, imagis_suspend, imagis_resume);
- 
-+static const struct imagis_properties imagis_3032c_data = {
-+	.interrupt_msg_cmd = IST3038C_REG_INTR_MESSAGE,
-+	.touch_coord_cmd = IST3038C_REG_TOUCH_COORD,
-+	.whoami_cmd = IST3038C_REG_CHIPID,
-+	.whoami_val = IST3032C_WHOAMI,
-+};
-+
- static const struct imagis_properties imagis_3038b_data = {
- 	.interrupt_msg_cmd = IST3038B_REG_STATUS,
- 	.touch_coord_cmd = IST3038B_REG_STATUS,
-@@ -380,6 +389,7 @@ static const struct imagis_properties imagis_3038c_data = {
- 
- #ifdef CONFIG_OF
- static const struct of_device_id imagis_of_match[] = {
-+	{ .compatible = "imagis,ist3032c", .data = &imagis_3032c_data },
- 	{ .compatible = "imagis,ist3038b", .data = &imagis_3038b_data },
- 	{ .compatible = "imagis,ist3038c", .data = &imagis_3038c_data },
- 	{ },
 -- 
 2.44.0
 
