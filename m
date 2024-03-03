@@ -1,112 +1,175 @@
-Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC73511188;
-	Sun,  3 Mar 2024 10:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260F11CA8F
+	for <phone-devel@vger.kernel.org>; Sun,  3 Mar 2024 20:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709460941; cv=none; b=QIaDjvOKVg5gkwj0EXvNTEuioe6mQYppH/7DtfYtzoUKS5RujIQjzECBh3U2SFw+JmeD58SJCpgxE+NHNidjsemMebi2g1LAc5IQVYCKMd8M8c4qhT3I+Id23u7sHUcwVkI1ZJoVWDRsKMphm5ryrJ0OiE5h5KGRQN7lUUzfFfg=
+	t=1709498286; cv=none; b=E0Ed/s9/I+8b3iIf6M52o3UUzQS4atGA8f6QQO6S/N3M1iJgJ6JafHkBTPAQsMmcV8sFPRxCToJ5kREEjl4iJah7GUBz09cRmWx9lnG0GTFVqdUCTzfo/2NN/xDQTVTdwd4dEdgEcX1FQ0zi5uk6WrNl6WByQgHdewmQOQ/jbBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709460941; c=relaxed/simple;
-	bh=X8u1uSp8PSGBxfTjwO9Jh3/p2urwTYeubgK79OdVU/E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=esWy7olqSSVjb9wv2H5e53O5amnH28Vm1YMgwmW8KvY5RYaz8sdBxN9QNGxUsj1HRynMaF+Ahf9n1wQ2B6jpmM0Psll/0gvLQKVpinr6mn5pzI62ofE4UqkvbiLD3tAdj3d9dgIfucp4CVPVx2eG2IqLLeCvo5hfdUJ0zCZNupU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz; dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b=CvoH8IKr; arc=none smtp.client-ip=195.113.20.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
+	s=arc-20240116; t=1709498286; c=relaxed/simple;
+	bh=Wvylty1eh+1a44Idstu2nddKPTGw6bCzsFT5HOlscmA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Aws3hmxdHS4h6jrU3/Zy9fCHoZ7VMH02Co+NZioSooWYbLw9FDRpHYl71GeidjdAt0V5tsbRw79417385jiArp2K3uXx8eeatD1MpucjJr//syxzyqFis//70MoPcTE0E8+wb4igSPL44vM28dCFFc2iOf4ML0vNEhrKneLv4kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uSMFmx5B; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="CvoH8IKr"
-Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id 2578628428C;
-	Sun,  3 Mar 2024 11:15:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
-	s=gen1; t=1709460938;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L8AQ4xgfMvMsXIMfpwAjFqhheRmmqGTQDMpqDvceVgs=;
-	b=CvoH8IKrHNt16qFEKIgD+LeIQF2An8FpTMMtyevmadTwAcgVHFlayLzjnwmKNTGwIDOqVV
-	q6W6AVjSLvMO1IH/9BJcyg4V1juL2En5eI3btM/oTsHWGMabRlNoEW50yCZKi7IdybkZCv
-	e0GfCAhxoKH084aTM0/g+khnMOdOU5k=
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: karelb)
-	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id 01C8F456F3E;
-	Sun,  3 Mar 2024 11:15:37 +0100 (CET)
-From: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-To: Karel Balej <balejk@matfyz.cz>,
-	Lee Jones <lee@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-input@vger.kernel.org
-Cc: =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org
-Subject: [RFC PATCH v3 5/5] MAINTAINERS: add myself for Marvell 88PM886 PMIC
-Date: Sun,  3 Mar 2024 11:04:26 +0100
-Message-ID: <20240303101506.4187-6-karelb@gimli.ms.mff.cuni.cz>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240303101506.4187-1-karelb@gimli.ms.mff.cuni.cz>
-References: <20240303101506.4187-1-karelb@gimli.ms.mff.cuni.cz>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uSMFmx5B"
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-607e54b6cf5so24978167b3.0
+        for <phone-devel@vger.kernel.org>; Sun, 03 Mar 2024 12:38:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709498283; x=1710103083; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=dTEJxntvNcBZ56iY+D/YvQDXi/WrmMk0Lilb5w4ab2I=;
+        b=uSMFmx5BBgDsLB5jCPVGkpAcBos83RaPq+dAfZUn4YJKqsFmzBWSX4o+kbXROGDE3S
+         oj7+5Ci/yQb+1lKEMQVTCNjuOnI4jCyXUkfjKyGnPNlCpDhrFFbKUXBCLMOg/gOxKmX2
+         C/4qQWieQF4Jb7uoXXq4RJmNLaG96/Ew/aC830yM3rBbMJee8plZSXhDA5aWlpgWS5jN
+         zP1stKVdf6E8B+ThAKbDL4IP1o5UnzAktKIAR28fuTfP8NYR51wsbqt2omDvtaF+yN6Z
+         agAXndU9wqtcZnD1R4AMU7zopgSgxGrRxiGHPTcKLWt2DJHp+/KEWoby7+qSCGB34xEr
+         9SeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709498283; x=1710103083;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dTEJxntvNcBZ56iY+D/YvQDXi/WrmMk0Lilb5w4ab2I=;
+        b=LCs6eXuLTCBI1XVHGHS1B4g15u2tNayjUY5ixXzp8tH2vOPlC1vqmGq9UQdw3YDGqI
+         Qzn/FNKLwv5pS+a+wpXz9FgSFlpANUIzdTI8GYeD2CjTP05EgvDSiIcGvSL1H2wp7g8s
+         WXnJEk8xM8wyDUM8skYblhF2BFuLNR+30wmRE4wKAiMOMtvrkTbfQBZY7tmE5PVjDfB1
+         KNG6+ZKIzWXeIyjxz36/EZRS4qM1dEIwSOBYoLNlR8mE9SjWQTl6Dbf4uYypGqjhUpaH
+         hgSWNWnTtG69KzNfSWVdlIBvp9L6VwG9kRjBTNYYnmWPMdc3kT4MglVyz6aC9sbcPvuM
+         srMg==
+X-Forwarded-Encrypted: i=1; AJvYcCWwD6sSBsuyZTIuD0Kn3swLKOPwWzug/wuVVg81MmbY5eiaA/l+AzzVpE1PS4S+5wfEs0rJIplkFGwq/6R++DuS59Mxw29e7G8EFgU=
+X-Gm-Message-State: AOJu0Yz85eArYGW9oRqDVP5379QY/iVl5kOQUrktTaE6/t2WBOW7Hhbs
+	1eCbehp1hE/nofm8ChbmfNiPRBJZpEE8fnWUXzwxewbafDtdpAi4OzK6dkmE8G9U+1vEDvt1Xev
+	q5/9DAsWPq2R3UWqbC9m/HxVn1GHXRxklAxGlcQ==
+X-Google-Smtp-Source: AGHT+IFBO5gSa9X30AT+NFRPbWSXLFEUtICo9UN0O47OM1rGMJBVkS/RT7uCPfNYDTSDuVQFKmwjyXClyQjTFs/3AYQ=
+X-Received: by 2002:a81:b34a:0:b0:609:456e:683b with SMTP id
+ r71-20020a81b34a000000b00609456e683bmr5138328ywh.14.1709498283167; Sun, 03
+ Mar 2024 12:38:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240111-drm-panel-bridge-fixup-v1-1-e06292f6f500@fairphone.com>
+ <b1da07f9-7e15-4d83-bef3-d0ce157654bc@linaro.org> <CYGUWBAM3D62.35CPP5HGEYJ3Y@fairphone.com>
+ <CZHGFD9QYM82.371U2DPG1AEGQ@fairphone.com>
+In-Reply-To: <CZHGFD9QYM82.371U2DPG1AEGQ@fairphone.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Sun, 3 Mar 2024 22:37:52 +0200
+Message-ID: <CAA8EJppZRABYGuoDc-6e6VMwtAo3LvEyDpsHdkHFckrR=q+0ig@mail.gmail.com>
+Subject: Re: [PATCH] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: neil.armstrong@linaro.org, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+	Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Karel Balej <balejk@matfyz.cz>
+On Thu, 29 Feb 2024 at 11:27, Luca Weiss <luca.weiss@fairphone.com> wrote:
+>
+> On Wed Jan 17, 2024 at 9:59 AM CET, Luca Weiss wrote:
+> > On Mon Jan 15, 2024 at 9:43 AM CET, Neil Armstrong wrote:
+> > > Hi Luca,
+> > >
+> > > On 11/01/2024 13:38, Luca Weiss wrote:
+> > > > Since the kconfig symbol of DRM_PANEL_BRIDGE is only adding
+> > > > bridge/panel.o to drm_kms_helper object, we need to select
+> > > > DRM_KMS_HELPER to make sure the file is actually getting built.
+> > > >
+> > > > Otherwise with certain defconfigs e.g. devm_drm_of_get_bridge will not
+> > > > be properly available:
+> > > >
+> > > >    aarch64-linux-gnu-ld: drivers/phy/qualcomm/phy-qcom-qmp-combo.o: in function `qmp_combo_bridge_attach':
+> > > >    drivers/phy/qualcomm/phy-qcom-qmp-combo.c:3204:(.text+0x8f4): undefined reference to `devm_drm_of_get_bridge'
+> > > >
+> > > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > > > ---
+> > > > I can see "depends on DRM_KMS_HELPER" was removed with commit
+> > > > 3c3384050d68 ("drm: Don't make DRM_PANEL_BRIDGE dependent on DRM_KMS_HELPERS")
 
-Add an entry to MAINTAINERS for the Marvell 88PM886 PMIC MFD, onkey and
-regulator drivers.
+Could you please make sure that the usecase described in the mentioned
+commit message doesn't get broken by your change?
 
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
----
+> > > >
+> > > > I'm not too familiar with Kconfig but it feels more correct if
+> > > > PHY_QCOM_QMP_COMBO selects DRM_PANEL_BRIDGE that that's enough; and it
+> > > > doesn't also has to explicitly select DRM_KMS_HELPER because of how the
+> > > > objects are built in the Makefile.
+> > > >
+> > > > Alternatively solution to this patch could be adjusting this line in
+> > > > include/drm/drm_bridge.h:
+> > > >
+> > > >    -#if defined(CONFIG_OF) && defined(CONFIG_DRM_PANEL_BRIDGE)
+> > > >    +#if defined(CONFIG_OF) && defined(CONFIG_DRM_PANEL_BRIDGE) && defined(CONFIG_DRM_KMS_HELPER)
+> > > >     struct drm_bridge *devm_drm_of_get_bridge(struct device *dev, struct device_node *node,
+> > > >                                              u32 port, u32 endpoint);
+> > > >
+> > > > .. and then selecting DRM_KMS_HELPER for PHY_QCOM_QMP_COMBO.
+> > > >
+> > > > But I think the solution in this patch is better. Let me know what you
+> > > > think.
+> > >
+> > > I think this is no more the case after on linux-next:
+> > > 35921910bbd0 phy: qcom: qmp-combo: switch to DRM_AUX_BRIDGE
+> > >
+> > > But could you still check ?
+> >
+> > On next-20240117 the error happens in the aux-bridge file instead then.
+> >
+> > aarch64-linux-gnu-ld: drivers/gpu/drm/bridge/aux-bridge.o: in function `drm_aux_bridge_probe':
+> > drivers/gpu/drm/bridge/aux-bridge.c:115:(.text+0xe0): undefined reference to `devm_drm_of_get_bridge'
+> >
+> > I'm attaching the defconfig with which I can reproduce this but it's
+> > really just DRM_KMS_HELPER=n and PHY_QCOM_QMP_COMBO=y I believe.
+>
+> Hi Neil,
+>
+> Ping on this patch
+>
+> Regards
+> Luca
+>
+> >
+> > Regards
+> > Luca
+> >
+> >
+> > >
+> > > Neil
+> > >
+> > > > ---
+> > > >   drivers/gpu/drm/bridge/Kconfig | 1 +
+> > > >   1 file changed, 1 insertion(+)
+> > > >
+> > > > diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
+> > > > index ac9ec5073619..ae782b427829 100644
+> > > > --- a/drivers/gpu/drm/bridge/Kconfig
+> > > > +++ b/drivers/gpu/drm/bridge/Kconfig
+> > > > @@ -8,6 +8,7 @@ config DRM_BRIDGE
+> > > >   config DRM_PANEL_BRIDGE
+> > > >           def_bool y
+> > > >           depends on DRM_BRIDGE
+> > > > + select DRM_KMS_HELPER
+> > > >           select DRM_PANEL
+> > > >           help
+> > > >             DRM bridge wrapper of DRM panels
+> > > >
+> > > > ---
+> > > > base-commit: b9c3a1fa6fb324e691a03cf124b79f4842e65d76
+> > > > change-id: 20240111-drm-panel-bridge-fixup-5c2977fb969f
+> > > >
+> > > > Best regards,
+>
 
-Notes:
-    RFC v3:
-    - Remove onkey bindings file.
-    RFC v2:
-    - Only mention 88PM886 in the commit message.
-    - Add regulator driver.
-    - Rename the entry.
 
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 960512bec428..944f88c92df6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12949,6 +12949,15 @@ F:	drivers/net/dsa/mv88e6xxx/
- F:	include/linux/dsa/mv88e6xxx.h
- F:	include/linux/platform_data/mv88e6xxx.h
- 
-+MARVELL 88PM886 PMIC DRIVER
-+M:	Karel Balej <balejk@matfyz.cz>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml
-+F:	drivers/input/misc/88pm886-onkey.c
-+F:	drivers/mfd/88pm886.c
-+F:	drivers/regulators/88pm886-regulator.c
-+F:	include/linux/mfd/88pm886.h
-+
- MARVELL ARMADA 3700 PHY DRIVERS
- M:	Miquel Raynal <miquel.raynal@bootlin.com>
- S:	Maintained
 -- 
-2.44.0
-
+With best wishes
+Dmitry
