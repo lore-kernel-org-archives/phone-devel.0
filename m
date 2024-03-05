@@ -1,114 +1,88 @@
-Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16A51C2BD;
-	Tue,  5 Mar 2024 18:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7880F1426F;
+	Tue,  5 Mar 2024 23:18:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709664802; cv=none; b=I5eR6pFkAcJXxAJxPUvktu+75rSE9Cr6G6zr6af2KE8tV+rwq/96V3GjzTlG9NXd5GYGM7q/XoAe1iaBGz9UYYEb4uoMEPpmDTSELLQ35HcGcdbB4+vvP0T9XoHclhRKWnEy8zERsU+VF6MUslgVpgGMDX9l0yqaiQOjdF0K38I=
+	t=1709680716; cv=none; b=AE9uGflt4Tj1w9J8d10Y7SRgqm0nFBQB7xdy68BV27PRQfIL+fPkwR04kqV9yskJIbHm523F6e5RRrGmzFt5jzNzHv6cI5l7H5Om0RnRBfSRj95HdW+WXcO90h//hOOAjvaKsglIgMLhp90wPZGOb5s1E4nISFMW+tNy3GB++Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709664802; c=relaxed/simple;
-	bh=PAjYBfjUZfOfVYAYGp67ZjY5YssOIvuLWF/KNxrjNVI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
-	 References:In-Reply-To; b=JdnYBIV7Aw+NHWoP7hdqiTWZRYCcV45PjZ5SWRiLJijAZSoILJ27IhEjy9+/uJk/K8z7yU9zbVfa2VKBthmvhCwZp6p1HkF23v9Y0XhYN8PJKI3wB0qwMGWPI4sEtay8LVSaiNr5aIlPYmwdAg6/sbq4p/EMqf25x8ebwTkx2hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz; dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b=kIhUI8Fr; arc=none smtp.client-ip=195.113.20.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
+	s=arc-20240116; t=1709680716; c=relaxed/simple;
+	bh=/C52Li910U/Xv4kbIe7X14ZNBKEUjlNpqKLVWNOvhnc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=bbzIiXqrxVKe5G/8qtvR8TPKrbSsockKZaRzhyTB/Zk2dh88r19JrKOiQ+GcnyPnq3tXiglFmmby82cT2owqLWihHHoC5cJFui+wet6K5EUiYt6Yrh6llNEZ2adwYYmaS1RsG6Ir28NbpGfCaK+0wmwralCjccd0R53VStLT9Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=ObgII6FR; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="kIhUI8Fr"
-Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id 5195128443D;
-	Tue,  5 Mar 2024 19:53:16 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
-	s=gen1; t=1709664796;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dks2OPoqszY4gtl403k8F6gGmC1uZy/jgxeo+Bx8K40=;
-	b=kIhUI8FrDeRNhFpoEApUP5Tyzna549ZwD7ewVoB7kE9J9TrvfSDh9hdtq390wgkyjbumjt
-	MalmDgC6PilHQZ8HG4SSYL7Ddcndbr0FJjLIeakLO4trHcbP/wRvuMX0FAb/H4Xdv17dci
-	P15t6/clg2eCRrI/o3dQ4hRxvSkxnSg=
-Received: from localhost (koleje-wifi-0023.koleje.cuni.cz [78.128.191.23])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: karelb)
-	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id 26124458158;
-	Tue,  5 Mar 2024 19:53:16 +0100 (CET)
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="ObgII6FR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1709680706; bh=/C52Li910U/Xv4kbIe7X14ZNBKEUjlNpqKLVWNOvhnc=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=ObgII6FRsRxQKfJWCEZIZI2sbkhAWko8Tyc8SUiqkDB9JODY7wksWDtANJdktTJBM
+	 LpiKRyhUaPaUuDIuhxwBsc7UfABMwcP3cHg8VZHQpTykGAXR6ROh4jGMSOT2ft42ER
+	 0QmChD4CVLjt7dW/UHbSDgzqTkXdbsMhZ1Wvdpvk=
+From: Luca Weiss <luca@z3ntu.xyz>
+Date: Wed, 06 Mar 2024 00:18:08 +0100
+Subject: [PATCH 5/5] ARM: dts: qcom: msm8974pro-castor: Rename wifi node
+ name
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 05 Mar 2024 19:53:52 +0100
-Message-Id: <CZM1LPDLQXLP.VVOVCCQPGBOL@gimli.ms.mff.cuni.cz>
-Cc: "Rob Herring" <robh+dt@kernel.org>, "Krzysztof Kozlowski"
- <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Dmitry Torokhov" <dmitry.torokhov@gmail.com>, "Liam Girdwood"
- <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-input@vger.kernel.org>, =?utf-8?q?Duje_Mihanovi=C4=87?=
- <duje.mihanovic@skole.hr>, <~postmarketos/upstreaming@lists.sr.ht>,
- <phone-devel@vger.kernel.org>
-Subject: Re: [RFC PATCH v3 2/5] mfd: add driver for Marvell 88PM886 PMIC
-To: "Lee Jones" <lee@kernel.org>
-From: "Karel Balej" <karelb@gimli.ms.mff.cuni.cz>
-References: <20240303101506.4187-1-karelb@gimli.ms.mff.cuni.cz>
- <20240303101506.4187-3-karelb@gimli.ms.mff.cuni.cz>
- <20240305114418.GB86322@google.com>
-In-Reply-To: <20240305114418.GB86322@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240306-castor-changes-v1-5-2286eaf85fff@z3ntu.xyz>
+References: <20240306-castor-changes-v1-0-2286eaf85fff@z3ntu.xyz>
+In-Reply-To: <20240306-castor-changes-v1-0-2286eaf85fff@z3ntu.xyz>
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Andy Gross <andy.gross@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=753; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=/C52Li910U/Xv4kbIe7X14ZNBKEUjlNpqKLVWNOvhnc=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBl56g/3eUrJtBMR8VCVrRvCl1GSrxTDzhsfdlPP
+ gqBPHO/R06JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZeeoPwAKCRBy2EO4nU3X
+ VtK9EACTRjjDnqwPDz+cWdlPlvDgsujpyQZ3JoVP4JpuuewjzZ29hsMUMVs2HX5J5gwdLXHJpok
+ NJRpPFaMODJKDPy+9XsNM/e8wDke150Ka4lz1LBgL2TmFsIui1/pAyf1LtV3arZ7ApLkvd/LtA0
+ 2xm8dAjB6X72IVYPwhSLqwe3QKxMFM+ALK7pQ9HU/8hPOtLYke50fW3JeAKh0ZeJtBBfUGc6TGh
+ TUMQp0BBjNYKaXJmYuR/R8hcJ7xnkAYA1wtNGmj4eVHdvDrOOn8l6AaHJ/1MV4LrAcnkoRJFN3q
+ jsdnyVmghdvJztv5I13cVNhmUmkGWgjy/lPMKw3SEMHXjxXV3YSgcpsx0mJ8sSiNyTDPsEUlgp1
+ X1wG6Z39UPscRglJETlkfRtXPY/gda0/JkRZTyrqWVZFNx2O/h14QpbPn5E4bUo3Ho9edl++1kz
+ ypiuqHKspfXUg9Kgo9JTiwxnBXzq60Fdx6Rv5mD9Gl8u25Eez10UtZb+FIw2s1/MYV1msWUdj/r
+ Z0wqrqxnc/2b6YgnYVbmXbdeagRILe9j1zfi5oGvvqIJzeXkcfnbTwEQnKfXP/iXBeBNUBH9gLr
+ 7Ump4bs/pPOERsRIK5/PuPIGFW3GPlROE9a+9cNPrwepQPLetPv4qrlDRHOS01+5KzgXtqj0ZmV
+ NxTaWzEzpSJi7WQ==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-Lee Jones, 2024-03-05T11:44:18+00:00:
-> > +static struct mfd_cell pm886_devs[] =3D {
-> > +	{
-> > +		.name =3D "88pm886-onkey",
-> > +		.num_resources =3D ARRAY_SIZE(pm886_onkey_resources),
-> > +		.resources =3D pm886_onkey_resources,
-> > +	},
-> > +	{
-> > +		.name =3D "88pm886-regulator",
-> > +		.id =3D PM886_REGULATOR_ID_LDO2,
->
-> Why doesn't PLATFORM_DEVID_AUTO work for this device?
+Give the wifi node a generic node name 'wifi'.
 
-Because I am using the IDs in the regulator driver to determine which
-regulator data to use/which regulator to register.
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > +static int pm886_initialize_subregmaps(struct pm886_chip *chip)
-> > +{
-> > +	struct device *dev =3D &chip->client->dev;
-> > +	struct i2c_client *page;
-> > +	struct regmap *regmap;
-> > +	int err;
-> > +
-> > +	/* regulators page */
-> > +	page =3D devm_i2c_new_dummy_device(dev, chip->client->adapter,
-> > +				chip->client->addr + PM886_PAGE_OFFSET_REGULATORS);
-> > +	if (IS_ERR(page)) {
-> > +		err =3D PTR_ERR(page);
-> > +		dev_err(dev, "Failed to initialize regulators client: %d\n", err);
-> > +		return err;
-> > +	}
-> > +	regmap =3D devm_regmap_init_i2c(page, &pm886_i2c_regmap);
-> > +	if (IS_ERR(regmap)) {
-> > +		err =3D PTR_ERR(regmap);
-> > +		dev_err(dev, "Failed to initialize regulators regmap: %d\n", err);
-> > +		return err;
-> > +	}
-> > +	chip->regmaps[PM886_REGMAP_REGULATORS] =3D regmap;
->
-> Except for the regulator driver, where else is the regulators regmap used=
-?
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+index c9f74bf2f8bd..20f98a9e49ea 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+@@ -547,7 +547,7 @@ &sdhc_3 {
+ 
+ 	status = "okay";
+ 
+-	bcrmf@1 {
++	wifi@1 {
+ 		compatible = "brcm,bcm4339-fmac", "brcm,bcm4329-fmac";
+ 		reg = <1>;
+ 
 
-Nowhere, at least as of now. So you are saying that I should initialize
-the regmap in the regulator driver?
+-- 
+2.44.0
 
-Thank you,
-K. B.
