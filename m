@@ -1,66 +1,67 @@
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9005CDE8
-	for <phone-devel@vger.kernel.org>; Wed,  6 Mar 2024 08:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600625C057
+	for <phone-devel@vger.kernel.org>; Wed,  6 Mar 2024 08:20:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709713169; cv=none; b=c6kS6kEmbSIErhw5MX8b4yMEy3yebcuthUEjc4bGHp59v+skuWir2JECUAPqhm6s4QZFkSvAlTp/UrY3wAOB+8VCPAaIDW0JaSbzF2hFE87aT+w4RVIaCZde3zhc2avR/cevP4JEu8xnQy98oCLV72f/Lyf2Z5UI+f2xMAbG1qQ=
+	t=1709713206; cv=none; b=g2dkcT4+8PkeMbgfx1z/BdFbE5pFNNp9/tcQXq8xPy5M7APhsRJo4+9inDgZyWetDRYL8MjM8M7c6yjrVKDmEc1icSU12dLbeXnE50jmch2LlInh9Jvukc5KKKc42SrrOmbzyGSXLwz25TNaNW16rsk4K0dv4AIcjCBQbtMbx1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709713169; c=relaxed/simple;
-	bh=dnIZwZqxXCXcBxKA9fSsUTi+xcmsYC0FICFHX3lYD/U=;
+	s=arc-20240116; t=1709713206; c=relaxed/simple;
+	bh=eOXVyxGTQKrr0a/9S0g0Hrk5vw/Jn0sNrPViExOVtVI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m+CAGKMUjIM8padAsdw0Yg++qRIT4gQsM5m8PF6bQnEt/bm6Wn2eiz0m+1CrIwW0PiQeAkqR0OfIlFKKewT3zZmCSF21t2jI2pJOrQ482ofdySjrKo+cR6i/MeP9CXMA/anRL4OFYyWUONnQfk6/4OCy+Br6/zzpPIpLvb9yuTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wlieIIjx; arc=none smtp.client-ip=209.85.219.169
+	 To:Cc:Content-Type; b=uXFdRk6zbInIEJFhrlcpXcpqYzDJqh/G4+on5x7YQc0vaqKpBEBN+3NlOMvpCES/w2ZGEBjkzCcUm6OWL4qXX0n1GsvDNkWQQvJB1nGdqVGgYnxpy17ll21bWpCLQP1URbQXZaYaXHir5bg6Hr8AKl/TKTychEsyVHPt/29pc24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qZMxQRxZ; arc=none smtp.client-ip=209.85.128.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wlieIIjx"
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-dcd7c526cc0so6975206276.1
-        for <phone-devel@vger.kernel.org>; Wed, 06 Mar 2024 00:19:26 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qZMxQRxZ"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-609d3cca399so9857777b3.2
+        for <phone-devel@vger.kernel.org>; Wed, 06 Mar 2024 00:20:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709713166; x=1710317966; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1709713203; x=1710318003; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=EoKuwXMEvsZ8GzqAgZzSLOfu2yUWrCyM8WtXmP98Z6I=;
-        b=wlieIIjxYtJE4k0vhWD9b2MWzWqtDs5YXzKp7XHDH0wDOcWM6tqzrIY6NlGUqd2pyQ
-         AKmc3Yqz+WNCGCIfMDpla/AwZ83X9j4/MYEQTgOQlQwHfpIH3FvFDXpu9985EvGQbOnp
-         wXLDezXFYoh2r2TIeM8GUKmkRDkERQIjnTHRooXH20G4oNZd2JNAuBuutr69L4A37teG
-         Fxl+c/3a26ICJKHV1ofK7h5JIiKcTBD9TN1rX2yZMAX+8ri3fE4Abmar1953ZzIIT9g7
-         4ZuL01auyQyVeO68Bwmep5xgxGm2RmDIT44fW0Y7XezxSQGi0lGg2AKSpii8FyJEMyNV
-         oPFA==
+        bh=uZBC76fSENwy+KneqSdW8FRSfPWe31aQehHnjGJ1/Zs=;
+        b=qZMxQRxZVf5ajm3d9RwRzJ8sZwVHluZ+yFozJFYQdC56hQHzVU7AMsVvtjvMd1Y3IN
+         wFXGy6porYIm+B3F6dTvUDElq/L0vcz+sezeYH+d1To01FPxc/EjHuPmxJQwPZFzvZAb
+         KPFbHh1+DRs6m2Z2Yo2c+z7aK3sh/ztMu9cUvCBzauRo40scXhn2IM3g1D3U5PmMjSQ0
+         SPlSmQ2pAXGGw3u8aHUsmx28n502LUb9sjzmhHj6z0VP/moNZPt84OvGeXtUhAEZk/i7
+         NRMCN147gUVlljMpqAE6NaMpJ1mn5oWVBdnLwTtZs/oXBUcSXGoo+zkFp3PNMkKK+ZMt
+         kiRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709713166; x=1710317966;
+        d=1e100.net; s=20230601; t=1709713203; x=1710318003;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EoKuwXMEvsZ8GzqAgZzSLOfu2yUWrCyM8WtXmP98Z6I=;
-        b=dowM0Qsmie9Yg0U5s8ZTZ9woqygE5XwCHSld8xjBoX8F8GMlQx/Js8VKAI280xJgiA
-         tx828KDPUDwHksi2acKree4gmhL9x+5E7+U10CFS8X4U5+GOBG5mst3jrfRQDkTLP9Ji
-         spCkL7Hil9fAkzcmE6mqVzoKpSCOl/k7Z2LMrsVPqm8ILhJ6Gg+V8PoTP7mNso165iwq
-         GNyJT7YPLjjBEJ2wWHcQidQF8TtIxxUndwXs5re+ys3L1/7XwGvehpGpzYnXTwXhOWaH
-         Heh3xY+5/5h5DZ6z2w9/QH0dMFX5s4Y3rWBEO7t8ApAuSHWNhszD11njcj92l6MmKF5k
-         EtZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXqaWB5PXwwVKfYLq1LdFomWf/ljaImCmOeLNGdfEzH2u3reYzT2a5Cs7m3eJUpuUIIjJ4UL7HQ53IzG28w4VQWEUIdvegrkE9gvLc=
-X-Gm-Message-State: AOJu0Yzn38t+bXkLTOIiICwL1n4hFVsp8ZO/E646C5MXpbLcuqYI3Pwq
-	VDGXRBvEjVgAwn50s3vhAUBc2h3nDL1ODg/OXz/xpwVqPsW3TnEuacJBjOP6FzuES6IZEYd55Sz
-	SjIayR5KJyD7gHlsKXiyl0MHbvaZtbxjG7Y+zLw==
-X-Google-Smtp-Source: AGHT+IElFEojtdTOEWHxvLU4AlUsAf4idoItp77LksSXRcXLDan78ssF5m3Ud++5mk9YINDXssdh1ZVmthJv/1gjt0Q=
-X-Received: by 2002:a25:bccc:0:b0:dc7:4776:e31 with SMTP id
- l12-20020a25bccc000000b00dc747760e31mr11485475ybm.24.1709713165691; Wed, 06
- Mar 2024 00:19:25 -0800 (PST)
+        bh=uZBC76fSENwy+KneqSdW8FRSfPWe31aQehHnjGJ1/Zs=;
+        b=AybIKvkhyBHM+BCmJGzXFX8gby5vQ3BxDerYisVoEXItY9v7x6n4DIe/gjYR3aaP2S
+         y4SS+aWA9C6wjbKdHfNLqCp5ONZLyCAq0kteH3B5kpcGuVTR1keI5O/0JsWiY6jX0Jeb
+         QuUL+4DjCKZ6eRzNxe6suLFtAj8mMJndQv1mXwFd4+3i8Ka8W6VICyAyQ1tC2DIlrHfb
+         yIku7eKy7MT9sIxWCXczxK60gA8VjHiAeCspM2FztD+iePGm7wvQvzU0ymnn9VEMDezp
+         6q1J+CVwKsSciFQdGtOJMPb9GikumAcoDfYMBtwTTX3djo7VEZUp308YvwwDDXSbbkkg
+         sCYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWK5GtofsdC6hXPvFY5CDb3xkC8Rlr3j0bFfmZarYRVWeVuAQfmpcVd1Xs0xYys7L4AekbIbzXKRoDtDjAIgOfOnQ6HpbX4xB/PREU=
+X-Gm-Message-State: AOJu0Yw3Vj/bq8xm/+M6rs7t3f4y7i/4j+X9rIPMZW2rle8F3Xi32fG2
+	ucBut0peuIJOjiFcneg1lC/g7UyzS9GD24mLUdmJvFKsKqlIGHZs1hNGDpBLYE7t0fKlZkdYPCD
+	gibMEVd2etOcKmFJSWfO5eRWQ2f3IBYqBELh49g==
+X-Google-Smtp-Source: AGHT+IHmSEq4j6J3wCtEWvd0nDZ+HJhTa6lo6OjGsJL8RlcpCjZPLN6kBAKWI2pyqgguTpS58xSFj4shg2VyfA6Y9G8=
+X-Received: by 2002:a25:9d88:0:b0:dcb:aa26:50fe with SMTP id
+ v8-20020a259d88000000b00dcbaa2650femr11041610ybp.15.1709713203375; Wed, 06
+ Mar 2024 00:20:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240306-castor-changes-v1-0-2286eaf85fff@z3ntu.xyz> <20240306-castor-changes-v1-5-2286eaf85fff@z3ntu.xyz>
-In-Reply-To: <20240306-castor-changes-v1-5-2286eaf85fff@z3ntu.xyz>
+References: <20240306-castor-changes-v1-0-2286eaf85fff@z3ntu.xyz> <20240306-castor-changes-v1-4-2286eaf85fff@z3ntu.xyz>
+In-Reply-To: <20240306-castor-changes-v1-4-2286eaf85fff@z3ntu.xyz>
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Wed, 6 Mar 2024 10:19:14 +0200
-Message-ID: <CAA8EJprMWbfYuXPi_6e2HjM0W5y7BocLsCUDDu40=xG7eDwK1g@mail.gmail.com>
-Subject: Re: [PATCH 5/5] ARM: dts: qcom: msm8974pro-castor: Rename wifi node name
+Date: Wed, 6 Mar 2024 10:19:52 +0200
+Message-ID: <CAA8EJpqBHoGj0Brfiu8GQbxBKfB=v0-x=udMTE8wqVbO-rRjXQ@mail.gmail.com>
+Subject: Re: [PATCH 4/5] ARM: dts: qcom: msm8974pro-castor: Add
+ debounce-interval for keys
 To: Luca Weiss <luca@z3ntu.xyz>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
 	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
@@ -70,19 +71,17 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 6 Mar 2024 at 01:18, Luca Weiss <luca@z3ntu.xyz> wrote:
+On Wed, 6 Mar 2024 at 01:26, Luca Weiss <luca@z3ntu.xyz> wrote:
 >
-> Give the wifi node a generic node name 'wifi'.
+> Set the debounce-interval for the GPIO keys.
 >
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
->  arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts | 2 ++
+>  1 file changed, 2 insertions(+)
+
 
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
-
-
 
 -- 
 With best wishes
