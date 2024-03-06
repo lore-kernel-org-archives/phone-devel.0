@@ -1,87 +1,135 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2935CDC2
-	for <phone-devel@vger.kernel.org>; Wed,  6 Mar 2024 08:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FB9BA55;
+	Wed,  6 Mar 2024 14:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709713224; cv=none; b=MJU+snzIMCRWiuadGA3dgB66ymlnignuXX1H7Hp9eWHj9eNVbZyVIe99PNoYff3uIKoaoyFADH5vdToyuNjCqXkkGOVazZVThoUiaf+gi7S7mZPxXPY+egLaeEjvqEjhIAxEMaIB9vw0S392gQ/QNq9jmql5pDL3KgLhDy/u0tc=
+	t=1709736506; cv=none; b=ZGS0rqGXgvAgL++wQZYRXe33vNMgTWCZNW130mTKoWbbXs7Rry2U8YAJRNmZ56vepfd5LK8W3Ia4eh34DgmGZDIsqYGeSLBridwv2Tumc/c1oIbzqnUPCo6wTRr3z3KK6zDN6ajxGQxI67mcRKvnpQbehyA4c7+BVHMMXbBcPno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709713224; c=relaxed/simple;
-	bh=KTDdaS8pSZ7S0Ht19FItkyULUTjJ5smibVaca3J25K8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rJt62sX80QZq31EX+Tquj7BDJGzpasytRYGjGZteeUmvBRGhF00A5e51QgeRq7xWp0+c0rU7sqja9uvrqS5C+im90V8ASIfKlEDHIFrua4WvVCN7nLlEXSD469Ca7v9ZSscnBQiOhITsmEUdklR9Yhl9Mx34vNEe8WIxBWIXIWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tde68+9o; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tde68+9o"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dc74435c428so7231850276.2
-        for <phone-devel@vger.kernel.org>; Wed, 06 Mar 2024 00:20:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709713222; x=1710318022; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=yEWYz4fTnrwGdwxrJSxUI6WQLItdsaHDpjBckmCjGBo=;
-        b=tde68+9opuhIpNESgV9JR6CIHmR9Q5DxzeGIr3OLv70vUifj60N03baL6rd5Gy/dI1
-         G2Gci1+52t4ASyDJVTGbaBnWe8Db936k9cZBRQUDyHEuA+PTmywNeellsWp9ORYW0v9H
-         zd1YDmis8FeR5bFtkxb4SBHWZSLLzjuyhVN62ypqLzL3u4A9W/VngXa8w52LD4ICLgO/
-         /8yWrDZC/Ma1wGeiwJofnetjwAP8/CgIF3riltJ4TIb0KWRA6Ufrc42X4/MZoGVOA3w2
-         6z3O5Hnpx5ciPxJBmyNHwnQ3OSBpNTVs4EP50lSSP8PGANuD1t0dU94hpKppSR0VVbZE
-         NEkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709713222; x=1710318022;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yEWYz4fTnrwGdwxrJSxUI6WQLItdsaHDpjBckmCjGBo=;
-        b=gKIJQVLz/I2zR3Bdjil0+/gEW1eu088YiVoYaqbKjaWcdY3KdLgWdnK11Om4IW/G0K
-         /24Qts6tqxJEHLbbPFSYjGNGS1lv0Dw9ssN0ewOMRDBr6/UQ5Q3ZvqKP/+y5gfH5qncm
-         CHTwntDwwzYJ7LvQ9zI80K2JIABn7OkkrD/Bj/S7qMzJCchaP/yYrFOKItNI1u3jV7yF
-         FPCCAL6MO7+k5IJ3w2OGG5fYqCLIQCdwRpqw4BdExyzAhczEBUYoP+j9TXd9MUdr0yxY
-         cQvfXWsOVJAJqFfaPet/keotJHC/hEd0WWqxnEB1HynYYtXsH3J46y1qZzXI2hb7iyv4
-         uKfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUL9z3qKsNSfpWMnsHt/rRfkrrp3YWFZrOrnS78jl7ertFjohaAdiWvIPUl5LaLaOOzdn8gxejIbhNmdkFBiehZRpfh8+bQCG5F050=
-X-Gm-Message-State: AOJu0YyWZ3Pc/NYT1R17DU/hQkqbDxx+Awd+kPIY/ZwlxnjORls6rdp5
-	ONuoQ4QnobKxpNZfQpGyMYSI/itQUc6nip8P0UMfcvLomyXDZCUmeRrZ7oMlew3kBP4t1rEHtGk
-	g0WtofO0PDXTdBxxcxgNGt8O3OtokcP6xhGFPVQ==
-X-Google-Smtp-Source: AGHT+IHqaAUVnMg7KxPdK8tkDPA3uORN9IoePxYNCC3cqO9e5WJNI2KZdPGog1tQCvSwi7LWQ6nGEb52GA0R7WzgoEw=
-X-Received: by 2002:a05:6902:2513:b0:dc7:8c3a:4e42 with SMTP id
- dt19-20020a056902251300b00dc78c3a4e42mr14807411ybb.30.1709713222025; Wed, 06
- Mar 2024 00:20:22 -0800 (PST)
+	s=arc-20240116; t=1709736506; c=relaxed/simple;
+	bh=wPwFHxl685tH7blzlSHwK4TFwVDG8koIWrtaYuGT7t0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=e17NNAiS41h4XLxebqiWYb6uPw8eRBUh73QET2MfH+0xCCOwiVf5S3R6pmxQ7gSRrs52w20cQlptOXaJjc2MbPE9pQB+YVuH0kVkdH/Kl3Yi0qlUzdm1OSiwadiklb23HY/I/aUd9jpTVlI1Ms2KApgVUdTFwSPzNxt7NG4g8Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
+Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
+	by mx.skole.hr (mx.skole.hr) with ESMTP id 917F28446D;
+	Wed,  6 Mar 2024 15:40:22 +0100 (CET)
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Date: Wed, 06 Mar 2024 15:40:06 +0100
+Subject: [PATCH v3 1/3] input: touchscreen: imagis: use FIELD_GET where
+ applicable
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240306-castor-changes-v1-0-2286eaf85fff@z3ntu.xyz> <20240306-castor-changes-v1-2-2286eaf85fff@z3ntu.xyz>
-In-Reply-To: <20240306-castor-changes-v1-2-2286eaf85fff@z3ntu.xyz>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Wed, 6 Mar 2024 10:20:10 +0200
-Message-ID: <CAA8EJpoYmdfB30byfAW3ngUTw_11-uD+emfdFevVd7kqqFWt6Q@mail.gmail.com>
-Subject: Re: [PATCH 2/5] ARM: dts: qcom: msm8974pro-castor: Add mmc aliases
-To: Luca Weiss <luca@z3ntu.xyz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Andy Gross <andy.gross@linaro.org>, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240306-b4-imagis-keys-v3-1-2c429afa8420@skole.hr>
+References: <20240306-b4-imagis-keys-v3-0-2c429afa8420@skole.hr>
+In-Reply-To: <20240306-b4-imagis-keys-v3-0-2c429afa8420@skole.hr>
+To: Markuss Broks <markuss.broks@gmail.com>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Karel Balej <balejk@matfyz.cz>, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2661;
+ i=duje.mihanovic@skole.hr; h=from:subject:message-id;
+ bh=wPwFHxl685tH7blzlSHwK4TFwVDG8koIWrtaYuGT7t0=;
+ b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBl6IBODyfcfG498TupsW/xJOdjgBHrqwUj9lBtq
+ gns2lXASfWJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZeiATgAKCRCaEZ6wQi2W
+ 4dDyD/9cqrj5jZHJ35g2PAZ5viUdLLBuYfpfTpIXlqg+NZSVCEvtlb4Jh0yjhqterXk/RRuFU3O
+ qsS4AcXRRQ+MWBjtntHUXS5VVzg57JVHuxXrJtAiZrH96i+qWtzWvWlgaEm9Sd7l8N5ydVEWDWi
+ ndokDa/z67MiuzFmkmTjeRExDnVxX7eh6WaXba0KZf3ie8Dzm5o4hJ1erHKWcXFVkxxhO+o8XQe
+ GUcIxj0V7ypSemQ/PLraqcXvgdED7Vg7Ct1janq1m+OFkcXKR3ACbhzOIwwKr0fIb9y4RUOWBd0
+ 8sWb4wSm+XVyVqd+h6Px0WwGfUDiOzfAoLvFboyb3CHN0cICTG7QUNJa+F79MYK3fFqjMIG5NSv
+ 9wVImcG+6ql2W8uKnpjvFBaNpjGWEpQgshz0G1y/byaYYVaBfTa5flbuNOp/2T5ZvsGV3d2mcnF
+ k8ZyCxTtcwcMx6JJC/eizXE2fNZC//1xtQ8kGNmlHQzqK21XzCK6jgoIqaa2puD2ulLeg+LmOWl
+ iSj03TyVBlrt3XZLVNQ6HBwdP174hUVHb3RDJi9huulPmV7RomEo70ySAj/hdfzfui25zE8ln7q
+ Yx8CUB9INMRMTi/lf7k89n9avKPM1PSraE6gbOlDzgGZ7g9V3V9jI1XDOLgMwBhpDfOv2Xw23/0
+ 6JU5CCEDaJoBWHQ==
+X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
+ fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
 
-On Wed, 6 Mar 2024 at 01:26, Luca Weiss <luca@z3ntu.xyz> wrote:
->
-> Add the mmc0 & mmc1 aliases to make sure internal storage always becomes
-> /dev/mmcblk0 and SD card becomes /dev/mmcblk1
->
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts | 2 ++
->  1 file changed, 2 insertions(+)
+Instead of manually extracting certain bits from registers with binary
+ANDs and shifts, the FIELD_GET macro can be used. With this in mind, the
+*_SHIFT macros can be dropped.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+---
+ drivers/input/touchscreen/imagis.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/input/touchscreen/imagis.c b/drivers/input/touchscreen/imagis.c
+index e1fafa561ee3..4eae98771bd2 100644
+--- a/drivers/input/touchscreen/imagis.c
++++ b/drivers/input/touchscreen/imagis.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
++#include <linux/bitfield.h>
+ #include <linux/bits.h>
+ #include <linux/delay.h>
+ #include <linux/i2c.h>
+@@ -29,12 +30,9 @@
+ #define IST3038C_I2C_RETRY_COUNT	3
+ #define IST3038C_MAX_FINGER_NUM		10
+ #define IST3038C_X_MASK			GENMASK(23, 12)
+-#define IST3038C_X_SHIFT		12
+ #define IST3038C_Y_MASK			GENMASK(11, 0)
+ #define IST3038C_AREA_MASK		GENMASK(27, 24)
+-#define IST3038C_AREA_SHIFT		24
+ #define IST3038C_FINGER_COUNT_MASK	GENMASK(15, 12)
+-#define IST3038C_FINGER_COUNT_SHIFT	12
+ #define IST3038C_FINGER_STATUS_MASK	GENMASK(9, 0)
+ 
+ struct imagis_properties {
+@@ -106,8 +104,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
+ 		goto out;
+ 	}
+ 
+-	finger_count = (intr_message & IST3038C_FINGER_COUNT_MASK) >>
+-				IST3038C_FINGER_COUNT_SHIFT;
++	finger_count = FIELD_GET(IST3038C_FINGER_COUNT_MASK, intr_message);
+ 	if (finger_count > IST3038C_MAX_FINGER_NUM) {
+ 		dev_err(&ts->client->dev,
+ 			"finger count %d is more than maximum supported\n",
+@@ -115,7 +112,7 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
+ 		goto out;
+ 	}
+ 
+-	finger_pressed = intr_message & IST3038C_FINGER_STATUS_MASK;
++	finger_pressed = FIELD_GET(IST3038C_FINGER_STATUS_MASK, intr_message);
+ 
+ 	for (i = 0; i < finger_count; i++) {
+ 		if (ts->tdata->protocol_b)
+@@ -136,12 +133,10 @@ static irqreturn_t imagis_interrupt(int irq, void *dev_id)
+ 		input_mt_report_slot_state(ts->input_dev, MT_TOOL_FINGER,
+ 					   finger_pressed & BIT(i));
+ 		touchscreen_report_pos(ts->input_dev, &ts->prop,
+-				       (finger_status & IST3038C_X_MASK) >>
+-						IST3038C_X_SHIFT,
+-				       finger_status & IST3038C_Y_MASK, 1);
++				       FIELD_GET(IST3038C_X_MASK, finger_status),
++				       FIELD_GET(IST3038C_Y_MASK, finger_status), 1);
+ 		input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR,
+-				 (finger_status & IST3038C_AREA_MASK) >>
+-					IST3038C_AREA_SHIFT);
++				       FIELD_GET(IST3038C_AREA_MASK, finger_status));
+ 	}
+ 
+ 	input_mt_sync_frame(ts->input_dev);
 
 -- 
-With best wishes
-Dmitry
+2.44.0
+
+
