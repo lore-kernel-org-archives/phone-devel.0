@@ -1,100 +1,89 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E05C12CDB5;
-	Tue,  5 Mar 2024 23:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9005CDE8
+	for <phone-devel@vger.kernel.org>; Wed,  6 Mar 2024 08:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709681209; cv=none; b=JzHT6AmkiN9hwWwFdh1wa/vT5AZ797RZhn++ml6qQpNVluA0sOshQJxPyllFQAD0o3XKAxSbHPRpbOWP+IXELzaTjwVBaamW+cUIY/vfB/WU6q+LYtR3VukhZsp2wj0xI17geCIj0X9vSZmFzT0tN/pHms1b4tTZHxcwXG6EUNQ=
+	t=1709713169; cv=none; b=c6kS6kEmbSIErhw5MX8b4yMEy3yebcuthUEjc4bGHp59v+skuWir2JECUAPqhm6s4QZFkSvAlTp/UrY3wAOB+8VCPAaIDW0JaSbzF2hFE87aT+w4RVIaCZde3zhc2avR/cevP4JEu8xnQy98oCLV72f/Lyf2Z5UI+f2xMAbG1qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709681209; c=relaxed/simple;
-	bh=x9Y9xwhGkS+LUjC9Tovi4kF2u2FKvyUY6KkNZLsfsDk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SXknNmGhyt6A4ZY5baqUPxgak0SjO4GF/gryA9KEUc+r0CscHtEn/GSOzm0Dup522173fAGtd4JiUbF7Zs7dlch7Szfurmn81wYFy3Kd34EjbeGF/bev39vXWDjpLJm7Mxy2NKlwBmQKru0XEGv25qtfjEM4YoE97aQycMRtNN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=74jOMO84; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
+	s=arc-20240116; t=1709713169; c=relaxed/simple;
+	bh=dnIZwZqxXCXcBxKA9fSsUTi+xcmsYC0FICFHX3lYD/U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m+CAGKMUjIM8padAsdw0Yg++qRIT4gQsM5m8PF6bQnEt/bm6Wn2eiz0m+1CrIwW0PiQeAkqR0OfIlFKKewT3zZmCSF21t2jI2pJOrQ482ofdySjrKo+cR6i/MeP9CXMA/anRL4OFYyWUONnQfk6/4OCy+Br6/zzpPIpLvb9yuTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wlieIIjx; arc=none smtp.client-ip=209.85.219.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="74jOMO84"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1709680706; bh=x9Y9xwhGkS+LUjC9Tovi4kF2u2FKvyUY6KkNZLsfsDk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=74jOMO84QrDCSHxsak6DHbDY/ThEHp6Hr2HMdcDEmgW5BQ3FALinfCpD+qciY030i
-	 I6H5KeofgfA6R2rJ49uF+ibX0uhDmS/GsAdFI2hJUNPVakuARLzAI7YEgF6k3vZpfn
-	 ovJePfVKzY/K+fNExCkkJZ+1XrZC9fKlal5g7z2c=
-From: Luca Weiss <luca@z3ntu.xyz>
-Date: Wed, 06 Mar 2024 00:18:06 +0100
-Subject: [PATCH 3/5] ARM: dts: qcom: msm8974pro-castor: Remove camera
- button definitions
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wlieIIjx"
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-dcd7c526cc0so6975206276.1
+        for <phone-devel@vger.kernel.org>; Wed, 06 Mar 2024 00:19:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709713166; x=1710317966; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=EoKuwXMEvsZ8GzqAgZzSLOfu2yUWrCyM8WtXmP98Z6I=;
+        b=wlieIIjxYtJE4k0vhWD9b2MWzWqtDs5YXzKp7XHDH0wDOcWM6tqzrIY6NlGUqd2pyQ
+         AKmc3Yqz+WNCGCIfMDpla/AwZ83X9j4/MYEQTgOQlQwHfpIH3FvFDXpu9985EvGQbOnp
+         wXLDezXFYoh2r2TIeM8GUKmkRDkERQIjnTHRooXH20G4oNZd2JNAuBuutr69L4A37teG
+         Fxl+c/3a26ICJKHV1ofK7h5JIiKcTBD9TN1rX2yZMAX+8ri3fE4Abmar1953ZzIIT9g7
+         4ZuL01auyQyVeO68Bwmep5xgxGm2RmDIT44fW0Y7XezxSQGi0lGg2AKSpii8FyJEMyNV
+         oPFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709713166; x=1710317966;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EoKuwXMEvsZ8GzqAgZzSLOfu2yUWrCyM8WtXmP98Z6I=;
+        b=dowM0Qsmie9Yg0U5s8ZTZ9woqygE5XwCHSld8xjBoX8F8GMlQx/Js8VKAI280xJgiA
+         tx828KDPUDwHksi2acKree4gmhL9x+5E7+U10CFS8X4U5+GOBG5mst3jrfRQDkTLP9Ji
+         spCkL7Hil9fAkzcmE6mqVzoKpSCOl/k7Z2LMrsVPqm8ILhJ6Gg+V8PoTP7mNso165iwq
+         GNyJT7YPLjjBEJ2wWHcQidQF8TtIxxUndwXs5re+ys3L1/7XwGvehpGpzYnXTwXhOWaH
+         Heh3xY+5/5h5DZ6z2w9/QH0dMFX5s4Y3rWBEO7t8ApAuSHWNhszD11njcj92l6MmKF5k
+         EtZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqaWB5PXwwVKfYLq1LdFomWf/ljaImCmOeLNGdfEzH2u3reYzT2a5Cs7m3eJUpuUIIjJ4UL7HQ53IzG28w4VQWEUIdvegrkE9gvLc=
+X-Gm-Message-State: AOJu0Yzn38t+bXkLTOIiICwL1n4hFVsp8ZO/E646C5MXpbLcuqYI3Pwq
+	VDGXRBvEjVgAwn50s3vhAUBc2h3nDL1ODg/OXz/xpwVqPsW3TnEuacJBjOP6FzuES6IZEYd55Sz
+	SjIayR5KJyD7gHlsKXiyl0MHbvaZtbxjG7Y+zLw==
+X-Google-Smtp-Source: AGHT+IElFEojtdTOEWHxvLU4AlUsAf4idoItp77LksSXRcXLDan78ssF5m3Ud++5mk9YINDXssdh1ZVmthJv/1gjt0Q=
+X-Received: by 2002:a25:bccc:0:b0:dc7:4776:e31 with SMTP id
+ l12-20020a25bccc000000b00dc747760e31mr11485475ybm.24.1709713165691; Wed, 06
+ Mar 2024 00:19:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240306-castor-changes-v1-3-2286eaf85fff@z3ntu.xyz>
-References: <20240306-castor-changes-v1-0-2286eaf85fff@z3ntu.xyz>
-In-Reply-To: <20240306-castor-changes-v1-0-2286eaf85fff@z3ntu.xyz>
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Andy Gross <andy.gross@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1221; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=x9Y9xwhGkS+LUjC9Tovi4kF2u2FKvyUY6KkNZLsfsDk=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBl56g9PrxAuZFa4AyvTXxOy25WvQjQY/lFQieDE
- R956vCcXTyJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZeeoPQAKCRBy2EO4nU3X
- VrOTEAC/YZwp8VNwuXdews+YsEVRSc5aXsmDiryjUvjAvepWBCa31qutCZbgI1S4JyHROjvVnwd
- ahjm1Omo9emOenigrezRSbUCUr0l+eWNNyHCs1kyNHjNqCgH8KVxQpGQ69SAc1ieRCSfKYaaoW8
- ymYf/HK866XmRuceBDSMjhxRy8d7vS8ybL1uWJACzveirCyPM77JgBT20KR0m2T9LwsZBsLBHN1
- fJ+OsqdBtyky3tuY55Mz3jnUd21n1MyTSpleGUHhaw2GtNjVfePV4olXiUUYTUcJEV2qDwSXz0x
- /n4wJOCSSuMuvn39GF+7Zv/qvYuEPJPl9w+TCqezBhnjSZ031gm6sTkFBBb+BZoUC1cr8pHyb4I
- aRYftiEuX45kGeD+kiUVxluA1D5W9ZLUyqHznI9dY5z2Kp8tCXvxyOAUuzl/zwzcVsO1Jxrrv3u
- ZzYWeulVsRADrTit2zRk6UwNJi9nueFL3H3c6ZwkXIo9PEtoIAv81tzQHLDzw4Xp30uY8W+h/Vp
- RgH4xrcl4FYWgJKPYGojZSQDk91/XPxRljVb+yOu/9DQcV0PAfHOgqLw0eyj9uy3oMmLiFl8NUH
- oQUgNqfq7VQobQzjyu1zFZtkKowlXKK5HPpvh9k5lEG3y837SIS0W8GlwDwtbLk1ZDqMzzSSpkA
- POIXc7cawmHmH8g==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+References: <20240306-castor-changes-v1-0-2286eaf85fff@z3ntu.xyz> <20240306-castor-changes-v1-5-2286eaf85fff@z3ntu.xyz>
+In-Reply-To: <20240306-castor-changes-v1-5-2286eaf85fff@z3ntu.xyz>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Wed, 6 Mar 2024 10:19:14 +0200
+Message-ID: <CAA8EJprMWbfYuXPi_6e2HjM0W5y7BocLsCUDDu40=xG7eDwK1g@mail.gmail.com>
+Subject: Re: [PATCH 5/5] ARM: dts: qcom: msm8974pro-castor: Rename wifi node name
+To: Luca Weiss <luca@z3ntu.xyz>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Andy Gross <andy.gross@linaro.org>, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From what I can tell, the camera buttons are not part of Z2 Tablet
-hardware even though other devices based on 'shinano' do have them.
+On Wed, 6 Mar 2024 at 01:18, Luca Weiss <luca@z3ntu.xyz> wrote:
+>
+> Give the wifi node a generic node name 'wifi'.
+>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Fixes: ab80661883de ("ARM: dts: qcom: msm8974: Add Sony Xperia Z2 Tablet")
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- .../dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts  | 12 ------------
- 1 file changed, 12 deletions(-)
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-index da554f72528a..97b55bda9189 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
-@@ -34,18 +34,6 @@ key-volume-down {
- 			linux,code = <KEY_VOLUMEDOWN>;
- 		};
- 
--		key-camera-snapshot {
--			label = "camera_snapshot";
--			gpios = <&pm8941_gpios 3 GPIO_ACTIVE_LOW>;
--			linux,code = <KEY_CAMERA>;
--		};
--
--		key-camera-focus {
--			label = "camera_focus";
--			gpios = <&pm8941_gpios 4 GPIO_ACTIVE_LOW>;
--			linux,code = <KEY_CAMERA_FOCUS>;
--		};
--
- 		key-volume-up {
- 			label = "volume_up";
- 			gpios = <&pm8941_gpios 5 GPIO_ACTIVE_LOW>;
+
+
 
 -- 
-2.44.0
-
+With best wishes
+Dmitry
