@@ -1,212 +1,127 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585095338C
-	for <phone-devel@vger.kernel.org>; Fri,  8 Mar 2024 09:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51ABB1CA8A
+	for <phone-devel@vger.kernel.org>; Fri,  8 Mar 2024 22:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709890187; cv=none; b=cYXfE2pvrn9VOjb6ZkQ7qj2/2gIEZ6JoCDBZO/3242ZaCOYeC3WLUdpAL58vGE5GG2mEDZ0uWpomuNQUOhaNFd/MX9RV9F00us+QfqLB5nczs3oEiCFQG5ecmkWELtTV+CuHEo8XtwluqAjRrhMnm2sxE9QVAbpPG9AnexiYi7c=
+	t=1709936206; cv=none; b=P4xM32JWqO7HI3+j8HRAA5RwwZCF02pTnGT5ehJqT04V3f0VPyo7uVlmwfW7sE40DO98ygOuCC8iyvINAQn0jBt0qln3p+Zdz5M3AD0SHQqQR9yaAdvURKqUiNNPQsH/Pg1ufT9PXjysqsISaiQd5rkiNe+6NNUpkqJQv6cAijo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709890187; c=relaxed/simple;
-	bh=/610z7NeZF3AbbrUp5Ct8IK+na88MeCP5euuoex7my0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=bgIG8xdev4L7tOUTdTIWvxm6k8ENqsx5u78z2meEE164jTQ/rRFmACtMOG+Jr3xhMwX6OeUIiXZ617dwAk3r4Szx5tweGZM03KzIppgk4YaTrTJs/x+9ldzirNRntiX1qqlSQnKKhlXK9I4XV6N/W6wQjIw/1WMtW4ZfN2PDBAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Hk5w+bKc; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1709936206; c=relaxed/simple;
+	bh=3WW0T20esXbPOV4mKyfxQZFN7v0CB7rUWIid/qvBbzA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nQJ0iECmNiRsFWtsxoLTEzs7lMlne23vt9XSdA/f3OPYYzV7ruwOxNIN2AQ4jDeaSvlW2w4H6eEOquTQ42NLVyDxWHMfnZTMITP/jON6i6wA545UwLnb8+ftkmW2pVR0tvI/XHuZKZXxXSMAtHdkrYEUn0cKtk8RYp8UvRmizjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pEvl+ZDc; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Hk5w+bKc"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a45aa7cb2b3so77484066b.3
-        for <phone-devel@vger.kernel.org>; Fri, 08 Mar 2024 01:29:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pEvl+ZDc"
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2d3f962a9dfso13585001fa.1
+        for <phone-devel@vger.kernel.org>; Fri, 08 Mar 2024 14:16:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1709890183; x=1710494983; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xTJ56TsgHxx+ey5O16dDKClnhRLxsOWJSpToCms/BRE=;
-        b=Hk5w+bKcsI4DKVXfVrgQUXpGnLBv56bBr9AVwMSQbl3JAhwEOXcIJSCPlGJ+BZtXNH
-         FhoOV3EkGZMBa7SC+0BgrssnMCQprx8E4T/tG5L8+PGvke6uScjxMpb/mcwA6vmeFwlT
-         273vgYYA1isLu/vaCASpIxkBrfv8HHVN7HkifH3jqFCaM6PCzqUSuYshOU9Wk52mEoEq
-         5pWrlyo6aPh51az5yr4vZnmZ1tQjwiW/XkN4I42VmnHx/y+0kbSCPd63tjLTyftpaeja
-         WTdEv/M1Ol8Zo2UA6a7EfqZ0alMRMlh/iVqRqRrH0j16OD0MVZDm5Ibv1lXwuojb5t8A
-         ShNw==
+        d=linaro.org; s=google; t=1709936203; x=1710541003; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M6WGaze6LMAlVEXi3gns02EuthFsVIHKV8ef7UH1OcY=;
+        b=pEvl+ZDcfl3XdByzsZ8XmwzPIVGLwyuxM4NTxIyyefgOVfpfyyiavbhExyeaZl4cPt
+         eY8sJSgKKQSg6RXhlS+glClSqouinLjOPx1o8IDqXwMqT63pNYoQUH4iH4JawB5grFfv
+         WQVaRQGGLUi0rKMa7tKZOk1gQXuEmOcMeO7yXoCwnEv4bcMl5DD8DjL3d8VIvBok1m7J
+         L7pK8Un2gpw0/vI4ii4C4nhgc2ol9bwkr/dSvz5dbYmonMPJHImirBXc3zYcZHjxVILb
+         VcUF2CwZVgTlhnB3tVbsoLk6L6WpE4FpqQbbqPCBjisRjB8P0twULjn7wO/FdpjGQd80
+         0TEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709890183; x=1710494983;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=xTJ56TsgHxx+ey5O16dDKClnhRLxsOWJSpToCms/BRE=;
-        b=MGoCHu65OK3S2Or7IP2uxwVtTlXMKlIGwxzxWRq/Tb5eMA/m09XIQxuKtkT4hAFhvW
-         I6sXnjkBaCIBzN5Yw6QhvtvYCPL77WO7iLeGt2kgxFv//rBkHtdOWSR+T+hpqSEf25Wv
-         pNrVeIsc+hY3Re+vKfMz3i1mwzBEcXcImTFGE1qt4cvgkdNfghcDdMGNWNzKF7oOqseV
-         yPHgOqcmADJuXrMLT8KD/4DP54K/VzXn0nABuB9gyyjOw1LAC1n1aJveuHZY1WZSLOCO
-         3xrhJppu2d6NoL2IM08UUzasZQzn0yRZ+awKZYUdSzKObhTtVOkemUYgkHwVRNKg3pcM
-         SVDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUNnVHe/X1mMjhzailPN/iT9bP8I11uR3hfXRAFixN1db7Wpvc7BoolfQZPGypB1T6tblL4YVLQAvCjKf1FyaGux+hRBfuSGo6CwMo=
-X-Gm-Message-State: AOJu0YwCEGsugUpwJU+QVbkkOJXIoS0RR0BwWKXZwY4rA37E9Kl5J3qp
-	7PjSVNMpdMhXSCkzsGry5xlyUSJW0a50OaOmYENsH+3ogF67bKIUgySHuOpptnk=
-X-Google-Smtp-Source: AGHT+IEVEG7pI97UFUoSKdm0T77oCm/IjNnF2X00bMMaoqhxQZtaQiQDnkm1z665OJP8Smo71pGd9A==
-X-Received: by 2002:a17:906:b78c:b0:a44:44e0:868f with SMTP id dt12-20020a170906b78c00b00a4444e0868fmr12636544ejb.11.1709890183560;
-        Fri, 08 Mar 2024 01:29:43 -0800 (PST)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id p5-20020a1709060dc500b00a4537466591sm5611025eji.32.2024.03.08.01.29.42
+        d=1e100.net; s=20230601; t=1709936203; x=1710541003;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M6WGaze6LMAlVEXi3gns02EuthFsVIHKV8ef7UH1OcY=;
+        b=r0aR40BxRpKfFiU9WChljLtNiln2uYWr7dzbgC7EOUlamLvtY3QCZrVCFW7oh5r97X
+         1oq0Zq+HdDSOCAKGLsIG1SSmM2iXkcqHKmhgVzN9gWChKJoEMFQ5r9+3/nJopiRZvfhm
+         euJwgVZ4tFH84g3+9m6qPz0+POFUrRDipsxHN9Xj24VuIbn+uiCnJSENdDxI7WWYqqu9
+         zrkoMkW/CjGfrGA2nPbBLLo5vop3Oz6waVKXJRwR8h/6TMrAFPV1oaVEPyE7oB5qFFiE
+         Y5HZlA7nqrm46SkGmUSwtXwiKnGq4nc8HnwecH1OaSQtvq8g2zizCA09KNVeNRB5rCr5
+         8I9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUN4tJbmG5jMMpBdvpLRtwA8xsAZyntJpRAZ4SbHGWcWTkoYB+JBhFiVrK1AArusXAVwt3X2nL8ydtM4VVFif2sveMxLltgoFPJMoE=
+X-Gm-Message-State: AOJu0YyvXmGGCfmSQ9dzH2X+Fbn7J7pmcWwLkP/8hQV0yjXBhtmVE6H+
+	CaIvaUWJ5qiy1J97Eiy4SsC2h8VUcqgavyLM4gE1keWyKm9Z9xNQJjR7aFEmlWI=
+X-Google-Smtp-Source: AGHT+IG8oIdUaWDUUl+189MyLSxZd0dF1RBIwDfYyW6xHy+HlRtY9C6YLdmMrDpxClx/wBzmhEFyFA==
+X-Received: by 2002:a2e:a383:0:b0:2d4:d50:2358 with SMTP id r3-20020a2ea383000000b002d40d502358mr325274lje.18.1709936203563;
+        Fri, 08 Mar 2024 14:16:43 -0800 (PST)
+Received: from [192.168.16.246] (078088045141.garwolin.vectranet.pl. [78.88.45.141])
+        by smtp.gmail.com with ESMTPSA id a16-20020a2e8610000000b002d2904e959csm73954lji.5.2024.03.08.14.16.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Mar 2024 01:29:43 -0800 (PST)
+        Fri, 08 Mar 2024 14:16:43 -0800 (PST)
+Message-ID: <83ab8945-5c57-48a8-9dd3-cc525a92c973@linaro.org>
+Date: Fri, 8 Mar 2024 23:16:41 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] ARM: dts: qcom: Add support for Samsung Galaxy Tab
+ 4 8.0 Wi-Fi
+Content-Language: en-US
+To: Bryant Mairs <bryant@mai.rs>, Bjorn Andersson <andersson@kernel.org>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, luca@z3ntu.xyz
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Linus Walleij <linus.walleij@linaro.org>
+References: <20240219214643.197116-1-bryant@mai.rs>
+ <20240219214643.197116-3-bryant@mai.rs>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20240219214643.197116-3-bryant@mai.rs>
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 08 Mar 2024 10:29:42 +0100
-Message-Id: <CZO9HDL1N45S.1JIXM2QUFTQCS@fairphone.com>
-Cc: <neil.armstrong@linaro.org>, "Andrzej Hajda" <andrzej.hajda@intel.com>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Daniel Vetter" <daniel@ffwll.ch>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>
-X-Mailer: aerc 0.15.2
-References: <20240111-drm-panel-bridge-fixup-v1-1-e06292f6f500@fairphone.com> <b1da07f9-7e15-4d83-bef3-d0ce157654bc@linaro.org> <CYGUWBAM3D62.35CPP5HGEYJ3Y@fairphone.com> <CZHGFD9QYM82.371U2DPG1AEGQ@fairphone.com> <CAA8EJppZRABYGuoDc-6e6VMwtAo3LvEyDpsHdkHFckrR=q+0ig@mail.gmail.com>
-In-Reply-To: <CAA8EJppZRABYGuoDc-6e6VMwtAo3LvEyDpsHdkHFckrR=q+0ig@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
 
-On Sun Mar 3, 2024 at 9:37 PM CET, Dmitry Baryshkov wrote:
-> On Thu, 29 Feb 2024 at 11:27, Luca Weiss <luca.weiss@fairphone.com> wrote=
-:
-> >
-> > On Wed Jan 17, 2024 at 9:59 AM CET, Luca Weiss wrote:
-> > > On Mon Jan 15, 2024 at 9:43 AM CET, Neil Armstrong wrote:
-> > > > Hi Luca,
-> > > >
-> > > > On 11/01/2024 13:38, Luca Weiss wrote:
-> > > > > Since the kconfig symbol of DRM_PANEL_BRIDGE is only adding
-> > > > > bridge/panel.o to drm_kms_helper object, we need to select
-> > > > > DRM_KMS_HELPER to make sure the file is actually getting built.
-> > > > >
-> > > > > Otherwise with certain defconfigs e.g. devm_drm_of_get_bridge wil=
-l not
-> > > > > be properly available:
-> > > > >
-> > > > >    aarch64-linux-gnu-ld: drivers/phy/qualcomm/phy-qcom-qmp-combo.=
-o: in function `qmp_combo_bridge_attach':
-> > > > >    drivers/phy/qualcomm/phy-qcom-qmp-combo.c:3204:(.text+0x8f4): =
-undefined reference to `devm_drm_of_get_bridge'
-> > > > >
-> > > > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > > > > ---
-> > > > > I can see "depends on DRM_KMS_HELPER" was removed with commit
-> > > > > 3c3384050d68 ("drm: Don't make DRM_PANEL_BRIDGE dependent on DRM_=
-KMS_HELPERS")
->
-> Could you please make sure that the usecase described in the mentioned
-> commit message doesn't get broken by your change?
+On 19.02.2024 22:43, Bryant Mairs wrote:
+> Add support for this tablet based on the MSM8226 SoC, codenamed
+> "milletwifi".
+> 
+> Acked-by: Linus Walleij <linus.walleij@linaro.org>
+> Reviewed-by: Luca Weiss <luca@z3ntu.xyz>
+> Signed-off-by: Bryant Mairs <bryant@mai.rs>
+> ---
 
-Hi Neil,
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-The problem fixed in that linked patch (3c3384050d68) is about fixing
-undefined reference errors with specific .config setups - similar to
-this patch.
-
-Since we're only adding a 'select' and not removing anything I don't see
-how it could cause new errors like that, and it does fix the one I'm
-describing.
-
-And also I checked again and I don't see any circular dependencies
-(something that was also mentioned in the linked patch), so apart from
-what I mentioned with that I'm not too familiar when 'select' should be
-used and when 'depend' should be used, it's good from my perspective.
-
-Regards
-Luca
-
->
-> > > > >
-> > > > > I'm not too familiar with Kconfig but it feels more correct if
-> > > > > PHY_QCOM_QMP_COMBO selects DRM_PANEL_BRIDGE that that's enough; a=
-nd it
-> > > > > doesn't also has to explicitly select DRM_KMS_HELPER because of h=
-ow the
-> > > > > objects are built in the Makefile.
-> > > > >
-> > > > > Alternatively solution to this patch could be adjusting this line=
- in
-> > > > > include/drm/drm_bridge.h:
-> > > > >
-> > > > >    -#if defined(CONFIG_OF) && defined(CONFIG_DRM_PANEL_BRIDGE)
-> > > > >    +#if defined(CONFIG_OF) && defined(CONFIG_DRM_PANEL_BRIDGE) &&=
- defined(CONFIG_DRM_KMS_HELPER)
-> > > > >     struct drm_bridge *devm_drm_of_get_bridge(struct device *dev,=
- struct device_node *node,
-> > > > >                                              u32 port, u32 endpoi=
-nt);
-> > > > >
-> > > > > .. and then selecting DRM_KMS_HELPER for PHY_QCOM_QMP_COMBO.
-> > > > >
-> > > > > But I think the solution in this patch is better. Let me know wha=
-t you
-> > > > > think.
-> > > >
-> > > > I think this is no more the case after on linux-next:
-> > > > 35921910bbd0 phy: qcom: qmp-combo: switch to DRM_AUX_BRIDGE
-> > > >
-> > > > But could you still check ?
-> > >
-> > > On next-20240117 the error happens in the aux-bridge file instead the=
-n.
-> > >
-> > > aarch64-linux-gnu-ld: drivers/gpu/drm/bridge/aux-bridge.o: in functio=
-n `drm_aux_bridge_probe':
-> > > drivers/gpu/drm/bridge/aux-bridge.c:115:(.text+0xe0): undefined refer=
-ence to `devm_drm_of_get_bridge'
-> > >
-> > > I'm attaching the defconfig with which I can reproduce this but it's
-> > > really just DRM_KMS_HELPER=3Dn and PHY_QCOM_QMP_COMBO=3Dy I believe.
-> >
-> > Hi Neil,
-> >
-> > Ping on this patch
-> >
-> > Regards
-> > Luca
-> >
-> > >
-> > > Regards
-> > > Luca
-> > >
-> > >
-> > > >
-> > > > Neil
-> > > >
-> > > > > ---
-> > > > >   drivers/gpu/drm/bridge/Kconfig | 1 +
-> > > > >   1 file changed, 1 insertion(+)
-> > > > >
-> > > > > diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bri=
-dge/Kconfig
-> > > > > index ac9ec5073619..ae782b427829 100644
-> > > > > --- a/drivers/gpu/drm/bridge/Kconfig
-> > > > > +++ b/drivers/gpu/drm/bridge/Kconfig
-> > > > > @@ -8,6 +8,7 @@ config DRM_BRIDGE
-> > > > >   config DRM_PANEL_BRIDGE
-> > > > >           def_bool y
-> > > > >           depends on DRM_BRIDGE
-> > > > > + select DRM_KMS_HELPER
-> > > > >           select DRM_PANEL
-> > > > >           help
-> > > > >             DRM bridge wrapper of DRM panels
-> > > > >
-> > > > > ---
-> > > > > base-commit: b9c3a1fa6fb324e691a03cf124b79f4842e65d76
-> > > > > change-id: 20240111-drm-panel-bridge-fixup-5c2977fb969f
-> > > > >
-> > > > > Best regards,
-> >
-
+Konrad
