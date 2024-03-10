@@ -1,137 +1,92 @@
-Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6353C16423;
-	Sun, 10 Mar 2024 11:35:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7DB1DDDB;
+	Sun, 10 Mar 2024 11:41:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710070538; cv=none; b=FkiKJoeQRL2UJ6GsfOJIvuJbwZb8ewreubUAzSPJNdPbhrj9Vpo2lVLSa209hGHZWwVKoSixm/l3Kj17XlckOKhUlzpDRzSe1rQFoxAVrDpD2vtCJZndrv8gnESEqACRqqJJqDgbBfXRwHt+yMF599RcMk1BEqSXbrOniiENsis=
+	t=1710070920; cv=none; b=VLO/P3EVatuPp5m1VG61GNVBRfAekveRfzr5RRKYvvJQk1IlLOfAAJqx/DNXhSooTcl+SGTQ0YC7arQkuKA/WT6sNbQ0VX9TWR0boStjRjEKJxEgB4l4vrdQT7c8+vfiSCWD06nFCrhkcHOKJWLah9jjlvhJI1+L9jJZ9maQT3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710070538; c=relaxed/simple;
-	bh=n5EDnnjn/8WbiExR8CbSSHP7vZizmbIbqamwg/8cr5g=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
-	 References:In-Reply-To; b=KstjSHOMXjh5oTCQqg4ZNZvuvkY4QSRIENajKi31HbIZ2G23teRjwGBEF1pvu+WntOng06BkZYLHG+2ppw6NkfBr+KKzs+4ikT5/yLiYFfksZk2I/Dc0HAhxbEmH+dX8gXbC5nmce9csgD+K/hnXwlhC7Ry3eUshqcBV6L3P/D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz; dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b=OJhxHYsv; arc=none smtp.client-ip=195.113.20.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
+	s=arc-20240116; t=1710070920; c=relaxed/simple;
+	bh=AgJRUGq8reZPMsQEkwJy5L1RC2vqHFoXplg91ZNU2Z4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=L42BW1hAbiqehrhdrAadrHJcon4kp1pwtxLpE+O4R/scwt2ueC2gOxj06xxRnV1L8jIzsWZy3hIDax75SbC6Um39Umag93/9y64Fta57k60elD5iSIpou8hcQFo5rEj3Bm+UxNDkP3gGzEJSnkIaeJ4MfLrETYL/lfH12O13FW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=xLljj0e1; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="OJhxHYsv"
-Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id E12C6284659;
-	Sun, 10 Mar 2024 12:35:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
-	s=gen1; t=1710070523;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2dcNviD5ZgwDoMqQvTqENMO5BtBuBgMmAr1iRCy6QkE=;
-	b=OJhxHYsvOjwYHaN9j1okey1j0J6ZGm+TIaOrxSZbkm7tneHUB0S4cqvnGC1CHJrYwuWt9Q
-	nDSlGJrs09LgAI/qUcwCp0E8lI+x/cB0p+a2AygG1N5DP8jfHR6Y928ZtiNxytGH8ohXgt
-	mmokrLc+s2hH5TE/tvVRD3hBEyf6GK0=
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: karelb)
-	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id B6C034526FB;
-	Sun, 10 Mar 2024 12:35:23 +0100 (CET)
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="xLljj0e1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1710070912; bh=AgJRUGq8reZPMsQEkwJy5L1RC2vqHFoXplg91ZNU2Z4=;
+	h=From:Subject:Date:To:Cc;
+	b=xLljj0e1OF20LrLSz8RgYDMqcp0J7Kc4WQu2MWnreF26V/ZHh8Lwk7RhSTGAnZIdi
+	 b5rFuVylVbMYEh39F3MQictrlcvh15JqCfj5aNm/+8tN/g6h9nYpEGEQqCV4bZj6UO
+	 jvAb25DWWCNedSiRe0eIFY4CGqhdIPsQHgGXC/D4=
+From: Luca Weiss <luca@z3ntu.xyz>
+Subject: [PATCH 0/3] Split sony-castor into shinano-common and add Sony
+ Xperia Z3
+Date: Sun, 10 Mar 2024 12:41:06 +0100
+Message-Id: <20240310-shinano-common-v1-0-d64cd322ebca@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 10 Mar 2024 12:35:23 +0100
-Message-Id: <CZQ1EP61IDOC.1PPYGMIOINGND@gimli.ms.mff.cuni.cz>
-Cc: "Lee Jones" <lee@kernel.org>, "Rob Herring" <robh+dt@kernel.org>,
- "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
- <conor+dt@kernel.org>, "Liam Girdwood" <lgirdwood@gmail.com>, "Mark Brown"
- <broonie@kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-input@vger.kernel.org>,
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
-Subject: Re: [RFC PATCH v3 4/5] input: add onkey driver for Marvell 88PM886
- PMIC
-To: "Dmitry Torokhov" <dmitry.torokhov@gmail.com>
-From: "Karel Balej" <karelb@gimli.ms.mff.cuni.cz>
-References: <20240303101506.4187-1-karelb@gimli.ms.mff.cuni.cz>
- <20240303101506.4187-5-karelb@gimli.ms.mff.cuni.cz>
- <ZeTgEmjJc_VhYpLm@google.com>
- <CZL8ZSZAVEBI.349BV2Y6AKIPN@gimli.ms.mff.cuni.cz>
- <ZeZxI_spu4vwxrs7@google.com>
-In-Reply-To: <ZeZxI_spu4vwxrs7@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFKc7WUC/x3MTQqAIBBA4avIrBP8qUVdJVqIjTkLx1CIQLx70
+ vJbvNegYiGssIkGBR+qlHlATwJ8dHyhpHMYjDKzslrJGokdZ+lzSpmlWm1AswS0TsOI7oKB3n+
+ 4H71/zX+Mj2AAAAA=
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=978; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=AgJRUGq8reZPMsQEkwJy5L1RC2vqHFoXplg91ZNU2Z4=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBl7ZxnJ8I/hSb+nyOF1cGR2dpGm477ofrx4YSbR
+ 9OQYJbOfPKJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZe2cZwAKCRBy2EO4nU3X
+ VgtID/4jJXu27eWPRSTuiMeYeCsOxmsF8Eu+BqP6uWADJTl27/BerWlAdC8d5Nn607ZqUFTmmuc
+ 7F42asa9VD82H5KrpdSwDfE6+mwpnLOjH1VLwDzkhit4VM42zVbVaBvGpewc7iru4AgSBn+PXNS
+ CLd4Ja6Rii99rYRdUioNR2QRfO2Dl9VSaemHwvlnGuDF1+tdFbPKlzLYgebigHNPF5XBQSvFFcE
+ K3eUwpJskRH8xpeIP6R0aSQ+VrZefldd0fiM46tUAUEeM1FoOzSELJzAY3HGyyTNb1WTPnnwE9G
+ TW9Hp9zT1j3tHne0xawbSnfdA+vokn7TPHDoALfipaSaZIRSLDFnqvUk1W+6TYS72yceJMPGYuK
+ w/ot/fuJil+zhgN3YLNQrqELKeUusg4qKgErHKF7y9T2VUJP0mEU0bu2Hq+zFnyp6w9K2lZiyJ7
+ PXvSbJ+9+D9GGn0ih7cmG0McJsSL+b1vcSny+EcyiORoxDfvyxtQsYk4QopmvtPZCTz8MD4zV0m
+ VZ40GKhWIafqyKU6zKFDx9FMmAFGx9kIvCSG0+IkwpjTiMAKSGTeYj66muwmKgwpwohkoQjcoQ6
+ y4U6aF3wLtcY/5ZO3kba8MwrgJjm1Y9IkS5Bw1ffHTzpOOaj5Vf3Y8IltHrg6sT1DbpQqVbtq22
+ VIJSbwRnGKDOaOw==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-Dmitry Torokhov, 2024-03-04T17:10:59-08:00:
-> On Mon, Mar 04, 2024 at 09:28:45PM +0100, Karel Balej wrote:
-> > Dmitry,
-> >=20
-> > Dmitry Torokhov, 2024-03-03T12:39:46-08:00:
-> > > On Sun, Mar 03, 2024 at 11:04:25AM +0100, Karel Balej wrote:
-> > > > From: Karel Balej <balejk@matfyz.cz>
-> > > >=20
-> > > > Marvell 88PM886 PMIC provides onkey among other things. Add client
-> > > > driver to handle it. The driver currently only provides a basic sup=
-port
-> > > > omitting additional functions found in the vendor version, such as =
-long
-> > > > onkey and GPIO integration.
-> > > >=20
-> > > > Signed-off-by: Karel Balej <balejk@matfyz.cz>
-> > > > ---
-> > > >=20
-> > > > Notes:
-> > > >     RFC v3:
-> > > >     - Drop wakeup-source.
-> > > >     RFC v2:
-> > > >     - Address Dmitry's feedback:
-> > > >       - Sort includes alphabetically.
-> > > >       - Drop onkey->irq.
-> > > >       - ret -> err in irq_handler and no initialization.
-> > > >       - Break long lines and other formatting.
-> > > >       - Do not clobber platform_get_irq error.
-> > > >       - Do not set device parent manually.
-> > > >       - Use input_set_capability.
-> > > >       - Use the wakeup-source DT property.
-> > > >       - Drop of_match_table.
-> > >
-> > > I only said that you should not be using of_match_ptr(), but you stil=
-l
-> > > need to have of_match_table set and have MODULE_DEVICE_TABLE() for th=
-e
-> > > proper module loading support.
-> >=20
-> > I removed of_match_table because I no longer need compatible for this -=
--
-> > there are no device tree properties and the driver is being instantiate=
-d
-> > by the MFD driver.
-> >=20
-> > Is the MODULE_DEVICE_TABLE() entry needed for the driver to probe when
-> > compiled as module? If that is the case, given what I write above, am I
-> > correct that MODULE_DEVICE_TABLE(platform,...) would be the right thing
-> > to use here?
->
-> Yes, if uevent generated for the device is "platform:<name>" then
-> MODULE_DEVICE_TABLE(platform,...) will suffice. I am not sure how MFD
-> sets it up (OF modalias or platform), but you should be able to check
-> the format looking at the "uevent" attribute for your device in sysfs
-> (/sys/devices/bus/platform/...).=20
+Prepare for adding sony-leo dts by splitting common parts into a
+separate dtsi file.
 
-The uevent is indeed platform.
+Then add the dts for Sony Xperia Z3.
 
-But since there is only one device, perhaps having a device table is
-superfluous and using `MODULE_ALIAS("platform:88pm886-onkey")` is more
-fitting?
+Depends on:
+https://lore.kernel.org/linux-arm-msm/20240306-castor-changes-v1-0-2286eaf85fff@z3ntu.xyz/T/
 
-Although I don't understand why this is even necessary when the driver
-name is such and the module is registered using
-`module_platform_driver`...
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Luca Weiss (3):
+      ARM: dts: qcom: msm8974-sony-castor: Split into shinano-common
+      dt-bindings: arm: qcom: Add Sony Xperia Z3
+      ARM: dts: qcom: Add Sony Xperia Z3 smartphone
 
-Thank you, best regards,
-K. B.
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+ .../qcom-msm8974pro-sony-xperia-shinano-castor.dts | 541 +--------------------
+ ...qcom-msm8974pro-sony-xperia-shinano-common.dtsi | 535 ++++++++++++++++++++
+ .../qcom-msm8974pro-sony-xperia-shinano-leo.dts    |  44 ++
+ 4 files changed, 591 insertions(+), 530 deletions(-)
+---
+base-commit: bee52eeb37d8124a07711657d1650bf3b467e7dd
+change-id: 20240310-shinano-common-093fe25fe3a1
+
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
+
