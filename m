@@ -1,127 +1,113 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51ABB1CA8A
-	for <phone-devel@vger.kernel.org>; Fri,  8 Mar 2024 22:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5721FC11;
+	Sun, 10 Mar 2024 05:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709936206; cv=none; b=P4xM32JWqO7HI3+j8HRAA5RwwZCF02pTnGT5ehJqT04V3f0VPyo7uVlmwfW7sE40DO98ygOuCC8iyvINAQn0jBt0qln3p+Zdz5M3AD0SHQqQR9yaAdvURKqUiNNPQsH/Pg1ufT9PXjysqsISaiQd5rkiNe+6NNUpkqJQv6cAijo=
+	t=1710048740; cv=none; b=h/fUpUpnNGQNwN8nYeyrhJWfxYM4D84010Ni6MkURkynGf69Snog6P/lS1l+JDBhbgr/L4vVBoZgHwTc5l76lPSTmWZN+HeK/dat6vWPUEheErv6oe3wZBj9fZf4teHUGnJshk0kwnR5o9n42cYdwZK92DJRH4HFiHWWVvyPW3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709936206; c=relaxed/simple;
-	bh=3WW0T20esXbPOV4mKyfxQZFN7v0CB7rUWIid/qvBbzA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nQJ0iECmNiRsFWtsxoLTEzs7lMlne23vt9XSdA/f3OPYYzV7ruwOxNIN2AQ4jDeaSvlW2w4H6eEOquTQ42NLVyDxWHMfnZTMITP/jON6i6wA545UwLnb8+ftkmW2pVR0tvI/XHuZKZXxXSMAtHdkrYEUn0cKtk8RYp8UvRmizjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pEvl+ZDc; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1710048740; c=relaxed/simple;
+	bh=zmi2D5cawauZYLgSbivDNleJgobeHKxH/asJarlpOzE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pQ7RWER5qZEuXfo5y/sKHbRWV8E/qyImwq4OKi2SE79RbZaYEo/trGTE2HTOhhkJYeScA2Y/VjahYbNkwMBgfJCjnhUsMjVE3BbcdsvvqvxAJHklPCMYoZvTbe0gfZVGFyXD6wnyqOiierRxX5muVH6iKLWuDy0GkQcXzQUEsD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i/y4et7W; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pEvl+ZDc"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2d3f962a9dfso13585001fa.1
-        for <phone-devel@vger.kernel.org>; Fri, 08 Mar 2024 14:16:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i/y4et7W"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6e56787e691so2957233b3a.0;
+        Sat, 09 Mar 2024 21:32:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709936203; x=1710541003; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=M6WGaze6LMAlVEXi3gns02EuthFsVIHKV8ef7UH1OcY=;
-        b=pEvl+ZDcfl3XdByzsZ8XmwzPIVGLwyuxM4NTxIyyefgOVfpfyyiavbhExyeaZl4cPt
-         eY8sJSgKKQSg6RXhlS+glClSqouinLjOPx1o8IDqXwMqT63pNYoQUH4iH4JawB5grFfv
-         WQVaRQGGLUi0rKMa7tKZOk1gQXuEmOcMeO7yXoCwnEv4bcMl5DD8DjL3d8VIvBok1m7J
-         L7pK8Un2gpw0/vI4ii4C4nhgc2ol9bwkr/dSvz5dbYmonMPJHImirBXc3zYcZHjxVILb
-         VcUF2CwZVgTlhnB3tVbsoLk6L6WpE4FpqQbbqPCBjisRjB8P0twULjn7wO/FdpjGQd80
-         0TEA==
+        d=gmail.com; s=20230601; t=1710048738; x=1710653538; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=WIkNRMUcRUKUqluKRZ47NqsfWnL9WVvH9ruTYaADPyU=;
+        b=i/y4et7WYSG/utM5eeFCDhWZYBy4F2sErYbzt7uNGggNyxSL6pcdGvETCJzs5BdoGT
+         wR/LCP55+3L1FJXS5S3eAV/CKsHJTL61VvGuRTljoZwNzYZN7j31O9LQMUPwMiWwfgCR
+         Lij+kM9fGyQSYZ0sWFabzpQHzgypjBdEnMpVhcDgjobtTe1tZTe+J36pkuN6DCNXJh36
+         uTEVH/D/n3A9tZ/1PO0Zep5029vBcDHv9IQEj8+XU4j2FoXY0srLnHLXj6FNMuVQSTKH
+         pbNeX9uT31FPTvunYE2wKveVeJg01fyTtigxUYgBBh9G2SQSQSKg8KcZmJWWWeyIm2Fo
+         7Qcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709936203; x=1710541003;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1710048738; x=1710653538;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M6WGaze6LMAlVEXi3gns02EuthFsVIHKV8ef7UH1OcY=;
-        b=r0aR40BxRpKfFiU9WChljLtNiln2uYWr7dzbgC7EOUlamLvtY3QCZrVCFW7oh5r97X
-         1oq0Zq+HdDSOCAKGLsIG1SSmM2iXkcqHKmhgVzN9gWChKJoEMFQ5r9+3/nJopiRZvfhm
-         euJwgVZ4tFH84g3+9m6qPz0+POFUrRDipsxHN9Xj24VuIbn+uiCnJSENdDxI7WWYqqu9
-         zrkoMkW/CjGfrGA2nPbBLLo5vop3Oz6waVKXJRwR8h/6TMrAFPV1oaVEPyE7oB5qFFiE
-         Y5HZlA7nqrm46SkGmUSwtXwiKnGq4nc8HnwecH1OaSQtvq8g2zizCA09KNVeNRB5rCr5
-         8I9A==
-X-Forwarded-Encrypted: i=1; AJvYcCUN4tJbmG5jMMpBdvpLRtwA8xsAZyntJpRAZ4SbHGWcWTkoYB+JBhFiVrK1AArusXAVwt3X2nL8ydtM4VVFif2sveMxLltgoFPJMoE=
-X-Gm-Message-State: AOJu0YyvXmGGCfmSQ9dzH2X+Fbn7J7pmcWwLkP/8hQV0yjXBhtmVE6H+
-	CaIvaUWJ5qiy1J97Eiy4SsC2h8VUcqgavyLM4gE1keWyKm9Z9xNQJjR7aFEmlWI=
-X-Google-Smtp-Source: AGHT+IG8oIdUaWDUUl+189MyLSxZd0dF1RBIwDfYyW6xHy+HlRtY9C6YLdmMrDpxClx/wBzmhEFyFA==
-X-Received: by 2002:a2e:a383:0:b0:2d4:d50:2358 with SMTP id r3-20020a2ea383000000b002d40d502358mr325274lje.18.1709936203563;
-        Fri, 08 Mar 2024 14:16:43 -0800 (PST)
-Received: from [192.168.16.246] (078088045141.garwolin.vectranet.pl. [78.88.45.141])
-        by smtp.gmail.com with ESMTPSA id a16-20020a2e8610000000b002d2904e959csm73954lji.5.2024.03.08.14.16.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Mar 2024 14:16:43 -0800 (PST)
-Message-ID: <83ab8945-5c57-48a8-9dd3-cc525a92c973@linaro.org>
-Date: Fri, 8 Mar 2024 23:16:41 +0100
+        bh=WIkNRMUcRUKUqluKRZ47NqsfWnL9WVvH9ruTYaADPyU=;
+        b=tg7fJaFMuA+ZrIDSAR5OVcLGs8yb2Hc5l8nyUTj5YcrHPWWqo6dGS/caK41/PtUyb4
+         Ip4lH4Kcd1M1fYJRmUrXcNMMw/IfvZBW+y2+e18xu0e8ztJgzJU21+4ZAtY9KOzjh/zb
+         VHW+eqjGPCi5mafleNrvqJiDOdtrXF+zXcDR2aNhwFQImuMPTc4Da61n428niTMIwUs6
+         D/sJiPphtuB7ask+z72kwRDSrtQsRTdZgAvD4WlxXbyYs0xceyRqWVNXjKF3oOzGR0lj
+         ksHsj4YXqg/3OMg+/QD7YBKEJWsi0jki1axqYbvB8qu55rVA0UgSp4qTOEHRLdDpzBin
+         0TDg==
+X-Forwarded-Encrypted: i=1; AJvYcCW1Xsdysps0iQOym411cKqmQdZrgK4MS6CB9oW3rFPx5DDvly7N/OQXWJH7ZvvyPzprZXZmRpFL7XwhwNd/aQfXd/u2U64a/qjUrY6emcjSSIDvW8ZyyLGLPTHykbA5uT+s+86GuSEzGpVOj+Q6uz3WjPs8lxMl6Gbo2E0vNj1UXL13Od4CaDOkNzWgN/Lnp9EbDWaC0fnuLY6SZ0e2litBzqA=
+X-Gm-Message-State: AOJu0YzGyX9kUgrFTS5W24lSc4XBB26V8QA5WBXTLgO6RWjvHY9Zueqz
+	EIISoWaUebOTtoIwlXOJ3P8FJj9Yb20kwMeQlAw0T7rw+jVBe6Gy
+X-Google-Smtp-Source: AGHT+IG6RwDREDzdw3AVjCnkI7AYw/YgDcFcnpDQiW9jhdit1cMv90bLpXVl2caK/PHl2lrTkrWPQg==
+X-Received: by 2002:a05:6a20:1454:b0:1a0:8897:85f1 with SMTP id a20-20020a056a20145400b001a0889785f1mr3767726pzi.6.1710048738115;
+        Sat, 09 Mar 2024 21:32:18 -0800 (PST)
+Received: from google.com ([2620:15c:9d:2:5296:fec3:1fa8:a601])
+        by smtp.gmail.com with ESMTPSA id o2-20020a629a02000000b006e5736e9e46sm2106973pfe.42.2024.03.09.21.32.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 Mar 2024 21:32:17 -0800 (PST)
+Date: Sat, 9 Mar 2024 21:32:15 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc: Markuss Broks <markuss.broks@gmail.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Karel Balej <balejk@matfyz.cz>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/3] Imagis touch keys and FIELD_GET cleanup
+Message-ID: <Ze1F3wVBFeVYB-AG@google.com>
+References: <20240306-b4-imagis-keys-v3-0-2c429afa8420@skole.hr>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] ARM: dts: qcom: Add support for Samsung Galaxy Tab
- 4 8.0 Wi-Fi
-Content-Language: en-US
-To: Bryant Mairs <bryant@mai.rs>, Bjorn Andersson <andersson@kernel.org>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, luca@z3ntu.xyz
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Linus Walleij <linus.walleij@linaro.org>
-References: <20240219214643.197116-1-bryant@mai.rs>
- <20240219214643.197116-3-bryant@mai.rs>
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
- BB/OmIWU6X+LZW6P88ZmHe+KeyABLMP5s1tJNK1j4ntT7mECcWZDzafPWF4F6m4WJOG27kTJ
- HGWdmtO+RvadOVi6CoUDqALsmfS3MUG5Pj2Ne9+0jRg4hEnB92AyF9rW2G3qisFcwPgvatt7
- TXD5E38mLyOPOUyXNj9XpDbt1hNwKQfiidmPh5e7VNAWRnW1iCMMoKqzM1Anzq7e5Afyeifz
- zRcQPLaqrPjnKqZGL2BKQSZDh6NkI5ZLRhhHQf61fkWcUpTp1oDC6jWVfT7hwRVIQLrrNj9G
- MpPzrlN4YuAqKeIer1FMt8cq64ifgTzxHzXsMcUdclzq2LTk2RXaPl6Jg/IXWqUClJHbamSk
- t1bfif3SnmhA6TiNvEpDKPiT3IDs42THU6ygslrBxyROQPWLI9IL1y8S6RtEh8H+NZQWZNzm
- UQ3imZirlPjxZtvz1BtnnBWS06e7x/UEAguj7VHCuymVgpl2Za17d1jj81YN5Rp5L9GXxkV1
- aUEwONM3eCI3qcYm5JNc5X+JthZOWsbIPSC1Rhxz3JmWIwP1udr5E3oNRe9u2LIEq+wH/toH
- kpPDhTeMkvt4KfE5m5ercid9+ZXAqoaYLUL4HCEw+HW0DXcKDwARAQABzShLb25yYWQgRHli
- Y2lvIDxrb25yYWQuZHliY2lvQGxpbmFyby5vcmc+wsGOBBMBCAA4FiEEU24if9oCL2zdAAQV
- R4cBcg5dfFgFAmQ5bqwCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQR4cBcg5dfFjO
- BQ//YQV6fkbqQCceYebGg6TiisWCy8LG77zV7DB0VMIWJv7Km7Sz0QQrHQVzhEr3trNenZrf
- yy+o2tQOF2biICzbLM8oyQPY8B///KJTWI2khoB8IJSJq3kNG68NjPg2vkP6CMltC/X3ohAo
- xL2UgwN5vj74QnlNneOjc0vGbtA7zURNhTz5P/YuTudCqcAbxJkbqZM4WymjQhe0XgwHLkiH
- 5LHSZ31MRKp/+4Kqs4DTXMctc7vFhtUdmatAExDKw8oEz5NbskKbW+qHjW1XUcUIrxRr667V
- GWH6MkVceT9ZBrtLoSzMLYaQXvi3sSAup0qiJiBYszc/VOu3RbIpNLRcXN3KYuxdQAptacTE
- mA+5+4Y4DfC3rUSun+hWLDeac9z9jjHm5rE998OqZnOU9aztbd6zQG5VL6EKgsVXAZD4D3RP
- x1NaAjdA3MD06eyvbOWiA5NSzIcC8UIQvgx09xm7dThCuQYJR4Yxjd+9JPJHI6apzNZpDGvQ
- BBZzvwxV6L1CojUEpnilmMG1ZOTstktWpNzw3G2Gis0XihDUef0MWVsQYJAl0wfiv/0By+XK
- mm2zRR+l/dnzxnlbgJ5pO0imC2w0TVxLkAp0eo0LHw619finad2u6UPQAkZ4oj++iIGrJkt5
- Lkn2XgB+IW8ESflz6nDY3b5KQRF8Z6XLP0+IEdLOOARkOW7yEgorBgEEAZdVAQUBAQdAwmUx
- xrbSCx2ksDxz7rFFGX1KmTkdRtcgC6F3NfuNYkYDAQgHwsF2BBgBCAAgFiEEU24if9oCL2zd
- AAQVR4cBcg5dfFgFAmQ5bvICGwwACgkQR4cBcg5dfFju1Q//Xta1ShwL0MLSC1KL1lXGXeRM
- 8arzfyiB5wJ9tb9U/nZvhhdfilEDLe0jKJY0RJErbdRHsalwQCrtq/1ewQpMpsRxXzAjgfRN
- jc4tgxRWmI+aVTzSRpywNahzZBT695hMz81cVZJoZzaV0KaMTlSnBkrviPz1nIGHYCHJxF9r
- cIu0GSIyUjZ/7xslxdvjpLth16H27JCWDzDqIQMtg61063gNyEyWgt1qRSaK14JIH/DoYRfn
- jfFQSC8bffFjat7BQGFz4ZpRavkMUFuDirn5Tf28oc5ebe2cIHp4/kajTx/7JOxWZ80U70mA
- cBgEeYSrYYnX+UJsSxpzLc/0sT1eRJDEhI4XIQM4ClIzpsCIN5HnVF76UQXh3a9zpwh3dk8i
- bhN/URmCOTH+LHNJYN/MxY8wuukq877DWB7k86pBs5IDLAXmW8v3gIDWyIcgYqb2v8QO2Mqx
- YMqL7UZxVLul4/JbllsQB8F/fNI8AfttmAQL9cwo6C8yDTXKdho920W4WUR9k8NT/OBqWSyk
- bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
- nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
- izWDgYvmBE8=
-In-Reply-To: <20240219214643.197116-3-bryant@mai.rs>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240306-b4-imagis-keys-v3-0-2c429afa8420@skole.hr>
 
-On 19.02.2024 22:43, Bryant Mairs wrote:
-> Add support for this tablet based on the MSM8226 SoC, codenamed
-> "milletwifi".
+On Wed, Mar 06, 2024 at 03:40:05PM +0100, Duje Mihanović wrote:
+> Tiny series to clean up the field extraction and add touch key support.
+> This version is based on the next branch of Dmitry's input tree.
 > 
-> Acked-by: Linus Walleij <linus.walleij@linaro.org>
-> Reviewed-by: Luca Weiss <luca@z3ntu.xyz>
-> Signed-off-by: Bryant Mairs <bryant@mai.rs>
+> Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
 > ---
+> Changes in v3:
+> - Rebase on input/next
+> - Add changelog to binding patch
+> - Fix binding constraint
+> - Allow changing keycodes in userspace as in 872e57abd171 ("Input:
+>   tm2-touchkey - allow changing keycodes from userspace")
+> - Allow up to 5 keycodes (the key status field has 5 bits)
+> - Link to v2: https://lore.kernel.org/r/20240120-b4-imagis-keys-v2-0-d7fc16f2e106@skole.hr
+> 
+> Changes in v2:
+> - Fix compile error
+> - Add FIELD_GET patch
+> - Allow specifying custom keycodes
+> - Link to v1: https://lore.kernel.org/20231112194124.24916-1-duje.mihanovic@skole.hr
+> 
+> ---
+> Duje Mihanović (3):
+>       input: touchscreen: imagis: use FIELD_GET where applicable
+>       dt-bindings: input: imagis: Document touch keys
+>       input: touchscreen: imagis: Add touch key support
+> 
+>  .../input/touchscreen/imagis,ist3038c.yaml         | 19 +++++++--
+>  drivers/input/touchscreen/imagis.c                 | 46 ++++++++++++++++------
+>  2 files changed, 50 insertions(+), 15 deletions(-)
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Applied the lot, thank you.
 
-Konrad
+-- 
+Dmitry
