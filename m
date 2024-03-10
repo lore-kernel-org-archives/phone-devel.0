@@ -1,131 +1,85 @@
 Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A993B1EB42;
-	Sun, 10 Mar 2024 11:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EEE42C6B8;
+	Sun, 10 Mar 2024 14:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710071579; cv=none; b=JoWhB9oG9kzh3aI3qi6HcGR6a4KeCrHHjgvzbDKqos4IyCfXflyWF9OHm+r7jKj//3cgAncwx07cKsg9OsvnIVaFQthdUN+UirH2JNRMQ8DDF/xcnq8uAK6jq9+cUFF2TEnPKh7BsCHUdJbhhT6IlaVlungIwKP+8IG0pj0u4EI=
+	t=1710080055; cv=none; b=fnsTqDskdJwOW5pjU+hxij2kAGYaTQLtZjykicJztlsjXXFQwEagxpLN+41ukfgssrHEOQXizPz2xtjDcxQjQgbv5gzm8ZdJIlCLtjTC3rKFWds+EEFDJdzOkQniXaT+OWAEkSQ1kv7L+hIoDR/9CF+sEoEsZEyIaMDJedxC7zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710071579; c=relaxed/simple;
-	bh=giPghFoQJnhBMzSSFaHrY0+Uapgo7d3tzYcduldTdj0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pEkW0s+Fn5l0yVugtH7hS5M8uGVKG0ejUZsqP8ivzSPNtQqxJsF4Pog6Dum9ArbCJGo98wkLLB1cEbs+F4H/5w3uptRqqgPAJbY7/RojVZ8g3NG+9wS9kH+ZjaOcplGdC5ZAsaRrtER7r+ArN+O7KOAE0hAoeSJWPdqKknYgCNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=UHWFaz3X; arc=none smtp.client-ip=128.199.32.197
+	s=arc-20240116; t=1710080055; c=relaxed/simple;
+	bh=VT9me4U8T0mG14wxZ1V0il48moXnWd38XMi/P90Ej6g=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DNDmeQZr/wEbxszKe8Qy3Kg9y6V6y47Xa58CL3hrwTT0P5VV1qZK8yRBLAPqptqhwwpDdj8w9YDPwZU+KRAzgFY9NYBvD5tL5QyO8t8C2TkU0zvZsW1tAlrzNon0qbautEnhLWKC76Hg8ybwYJi2QVqtULKzWRi9CdU4qQKZ5iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=4UJqHlKh; arc=none smtp.client-ip=128.199.32.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="UHWFaz3X"
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="4UJqHlKh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1710071576; bh=giPghFoQJnhBMzSSFaHrY0+Uapgo7d3tzYcduldTdj0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UHWFaz3X69ki7mPyDg3cc7owB6qAGkU5uoz/FO3eES/nfQZWl0OT2yokhx8ptFp4Y
-	 I0oHDmLUbgksmq3PlJkCixI6wVRTQKtdmAkU13pe4yWGkDmM45R9QHviUKeAJejqk+
-	 Jh9Xbdo0v1Y92Y+FoWgEh91Rp6FGP0Bl95KWp2TU=
+	t=1710080051; bh=VT9me4U8T0mG14wxZ1V0il48moXnWd38XMi/P90Ej6g=;
+	h=From:Subject:Date:To:Cc;
+	b=4UJqHlKhr+H80i/JeqDqWVmleiuKO5aqBWrvKxhFv92MO3TEoQRBBWJSQ2nV6ZTZG
+	 Ob/w0JLOVd2Ph8vk+TUpY9WeEepVO7xSOUaUtB49/2q95D62todkJEKn/9+T6Drn1c
+	 iz/vUgKRjVHidUxmfccr8Ob3gtfu2i7DM7fIkYkk=
 From: Luca Weiss <luca@z3ntu.xyz>
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] ARM: dts: qcom: Add Sony Xperia Z3 smartphone
-Date: Sun, 10 Mar 2024 12:52:55 +0100
-Message-ID: <6022941.lOV4Wx5bFT@g550jk>
-In-Reply-To: <20240310-shinano-common-v1-3-d64cd322ebca@z3ntu.xyz>
-References:
- <20240310-shinano-common-v1-0-d64cd322ebca@z3ntu.xyz>
- <20240310-shinano-common-v1-3-d64cd322ebca@z3ntu.xyz>
+Subject: [PATCH 0/2] Add Samsung Galaxy Note 3 support
+Date: Sun, 10 Mar 2024 15:13:35 +0100
+Message-Id: <20240310-samsung-hlte-v1-0-e9b55bf98a48@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA/A7WUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDY0MD3eLE3OLSvHTdjJySVF1zixTDRCML8ySDRAsloJaCotS0zAqwcdG
+ xtbUAZhzRIl4AAAA=
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Adam Honse <calcprogrammer1@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=656; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=VT9me4U8T0mG14wxZ1V0il48moXnWd38XMi/P90Ej6g=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBl7cAZc+SJOXy9NaYjlz2Zq3gHTMNEp8eslZ7j3
+ Qa2e6VXlTWJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZe3AGQAKCRBy2EO4nU3X
+ VtmWD/9gTPIcCe6KEPgfMKOMooo7oKMhHuy3sEWpf1xKunLLgWxu75yhGCyz6rZGLHrsrk7FmUs
+ IPArj0ObjgqK8XdPXOebI7QMHSJbwXUZb6SWz5pQaJpyeDB5Z35wvWLEwxg130oI4ks/Z4mDwro
+ F0JskvvbbSUs3WtdAAkT0C/QDqqKRP2BKNE1NNx0Hd/F35scyiUMgmO/0/SGYibkhhlMr6niuIr
+ pX/jiObtR3UICt0qPV1RK0eIEG6NJ+2JQw4V+pJxGWV0zpi1dspbipVn9pH5TTj4OUT7EgJvB+J
+ ubbEhQBMnD8nJzRgabIbmolsloIFFVPiFWq9zyQ65CuCpWeaKu52BmTDe+QW8DGrBIoyX5HEtxW
+ raQXD1Pl2Vn71NlCcU3QSHKkTXmKW5wVk/I1k67NCB87DHGbt9jf6KyxV7sLXCJ0fygSu89YLq+
+ FGHdkl2rgvf/GVSwn4f6HrfFTgJEZ3lGfXWT1C7kQN/jFMEDwDUm+2QZmaF/sWEJR/plG1+08p6
+ ragJl+ByiALZGFCqghbw7h8Hhp+VzC4swSLYiKRw0J/Vn5amYr0Tlew1j4Y6uOe4O+3Tk1j6d+t
+ F/lrYXiluamjIN7Pcm1yHIrx4kluUMOuBsqLaUBa4D7uQ/jScYwbUgTw5BYt/nrcJKj9yAPkPys
+ UJo87FdUiRC7YEA==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On Sonntag, 10. M=C3=A4rz 2024 12:41:09 CET Luca Weiss wrote:
-> Add the dts for the Xperia Z3 smartphone which is based on Sony's
-> shinano platform, so at the moment there's little device-specific dts to
-> add on top of the common parts.
->=20
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  .../qcom-msm8974pro-sony-xperia-shinano-leo.dts    | 44 ++++++++++++++++=
-+++
-+++
->  1 file changed, 44 insertions(+)
+Add the dts for "hlte" which is a phablet from 2013.
 
-Of course I forgot to add the dtb to the Makefile...
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Adam Honse (1):
+      ARM: dts: qcom: msm8974: Add Samsung Galaxy Note 3
 
-Apparently "make qcom/qcom-msm8974pro-sony-xperia-shinano-leo.dtb" doesn't=
-=20
-care about whether the dtb is in the Makefile so I didn't notice.
+Luca Weiss (1):
+      dt-bindings: arm: qcom: Add Samsung Galaxy Note 3
 
-Will fix in v2 but I'm going to wait for any comments on this or the other=
-=20
-patches for at least a day or so.
+ Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
+ arch/arm/boot/dts/qcom/Makefile                    |   1 +
+ .../boot/dts/qcom/qcom-msm8974-samsung-hlte.dts    | 403 +++++++++++++++++++++
+ 3 files changed, 405 insertions(+)
+---
+base-commit: 90d35da658da8cff0d4ecbb5113f5fac9d00eb72
+change-id: 20240310-samsung-hlte-78d1a287b0a8
 
-Regards
-Luca
-
->=20
-> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-
-leo.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-leo.dts
-> new file mode 100644
-> index 000000000000..1ed6e1cc21d5
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-leo.dts
-> @@ -0,0 +1,44 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +#include "qcom-msm8974pro-sony-xperia-shinano-common.dtsi"
-> +
-> +/ {
-> +	model =3D "Sony Xperia Z3";
-> +	compatible =3D "sony,xperia-leo", "qcom,msm8974pro", "qcom,msm8974";
-> +	chassis-type =3D "handset";
-> +
-> +	gpio-keys {
-> +		key-camera-snapshot {
-> +			label =3D "camera_snapshot";
-> +			gpios =3D <&pm8941_gpios 3 GPIO_ACTIVE_LOW>;
-> +			linux,code =3D <KEY_CAMERA>;
-> +			debounce-interval =3D <15>;
-> +		};
-> +
-> +		key-camera-focus {
-> +			label =3D "camera_focus";
-> +			gpios =3D <&pm8941_gpios 4 GPIO_ACTIVE_LOW>;
-> +			linux,code =3D <KEY_CAMERA_FOCUS>;
-> +			debounce-interval =3D <15>;
-> +		};
-> +	};
-> +};
-> +
-> +&gpio_keys_pin_a {
-> +	pins =3D "gpio2", "gpio3", "gpio4", "gpio5";
-> +};
-> +
-> +&smbb {
-> +	usb-charge-current-limit =3D <1500000>;
-> +	qcom,fast-charge-safe-current =3D <3000000>;
-> +	qcom,fast-charge-current-limit =3D <2150000>;
-> +	qcom,fast-charge-safe-voltage =3D <4400000>;
-> +	qcom,fast-charge-high-threshold-voltage =3D <4350000>;
-> +	qcom,auto-recharge-threshold-voltage =3D <4280000>;
-> +	qcom,minimum-input-voltage =3D <4200000>;
-> +
-> +	status =3D "okay";
-> +};
-> +
-> +&synaptics_touchscreen {
-> +	vio-supply =3D <&pm8941_s3>;
-> +};
->=20
->=20
-
-
-
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
