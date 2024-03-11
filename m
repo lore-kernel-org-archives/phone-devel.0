@@ -1,71 +1,66 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nikam.ms.mff.cuni.cz (nikam.ms.mff.cuni.cz [195.113.20.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E354200A6;
-	Sun, 10 Mar 2024 21:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D372617577;
+	Mon, 11 Mar 2024 10:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710107341; cv=none; b=oDnGNrpkdnEHiv1mRDfKCojnRq/gzf7QkyFo4EyGeEuMPIoE6Twc+AZH42n/fOF2qPhshSlkGrbodMXiGA1U3481lcSYFpzwveL1+8GbLp4DlMFq0mlr4BLgCyd8r4MPCkiwirJ2kE4x4BrIs1REDkl9LDzcw3npB4G8BJHSmZs=
+	t=1710152747; cv=none; b=GdKRtljvJ9Ds5vPAggOc/tLUadJrgqjkFKQtgoSgjoApKsBJesuNCMqj9haH4RnbqzA68pRxblNFY8ag42X8fZHDMBGuw6nShxsSTC/PsT9ELDOJCMgQT8EIM49PQIqIioRMBxtkYMSlJvuZlbkr234U4xyYNBT2agLa1rcfLgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710107341; c=relaxed/simple;
-	bh=uiNUIQwX6BYiGbEKIo6u+t0/etIbRR33V5TSPTk94m0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SYKIs5ydFn0rpQMuIsp6Ux3M+sHgfeQwo1asr74tpf4NaM+jsUdFmcG7Jsb/WVkayvpBQM8HVlGdU3IIYeXzA5aO/xS7/Efa5e1JJNiGXBzHG4+G4OvyFbTDTO2YKGhdUCROTRMrw4O80A53TIT0q9z6gO/SP1DnUZmX2vOOpaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EGQVc6i2; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1710152747; c=relaxed/simple;
+	bh=Z7zEDmtLcGezCOC/ZaSnA49BYLacuUO+5ZVKZot6wSQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=Sef7hXX8KS0HhwiqJyaMY2ChHAWIXs0cE4qb3TfJZp5HQBIOwfBU/Be4ST2tBgS61F+8h4TjwxDSZG8QNrFjm4S3argLZobePO1LGzwdDjEWNGTaudMzXkKL5KdjqmEciGMk3HHvYY/AHjvmkc/ds4BlGTWU8y4qntSmxAcGDQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz; dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b=fZEQPrZM; arc=none smtp.client-ip=195.113.20.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gimli.ms.mff.cuni.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gimli.ms.mff.cuni.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EGQVc6i2"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1dd68d4cff1so16395875ad.2;
-        Sun, 10 Mar 2024 14:48:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710107338; x=1710712138; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=peiS13bUuIETlTVlJrUnJS9cAypcX9YXgZEjm2ZHlXk=;
-        b=EGQVc6i2U7tItUa2Prnhd0di4K5hx19ZKfAM4A95LRb5bllQziS8Yv5sA6SaDJ+cZB
-         fJCc3O5K4GO1Qc3/SeP79oKt96JKvrqkaNOHUBkADrQYFtcCrVS/E9JKp6npfTcc55Y0
-         m/WuhA6asZpOO2Mc05Uf/5ARtNdH5Oy1rew/JukU98Eaz35W+GA9Zsab8W1aAu+THtJ5
-         DP+/GxSHb9a5vquYivEvwU2iM/oq57sdWSPpi0GteTPPHe2ob0ovffxsKEd5QsYYfSUO
-         zwMJk4Qx5n9sLbF/1qz6avXyIIN+VvBJ0Cv7j/53ya7tpUIq3CRdAVcT+kr3jTzfpyZe
-         6u8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710107338; x=1710712138;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=peiS13bUuIETlTVlJrUnJS9cAypcX9YXgZEjm2ZHlXk=;
-        b=hMJqZYJ+rokbgt02arEW39IiC17ArDzGno2UNWUeqdwl1uss8aQSVr95Wy3o51lhER
-         VETRrkyhBa/6dux+zXIHBW/NkHww7WK/Z8DFerB0stzpD/tcdCnoE5E+J8/q9Vd0ysXd
-         AfZCPiFt4EMo6gNP+jt7Qkwhnc9kZALTET+SEZVQM1Ap4JiZsGybDxKl7ZMCdNlk8tnc
-         RZnYVcGeeIpe4kLaEeUkSvZnw7ZLfVCZRi0GSBmCpAwKc2STZWzEoP4jLZjYg+muGpMl
-         vvC50EWqiCrdh4lHIyPEgvxkiDzxrhuNirdHAwf0Q3MNTZ9LzU0i/AG27sFsBUwyhQry
-         hGAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVy1e/no/CCS/nnyCa3GSliKamgxdZN4oaNnHXqVpgqMBGhkj+T6XCB3AqzSyky4smZIs4/ymjArE3E1phNjbLGFuPUqPwR2ulLvDgIk4VIUdoN441fahY6w57qKTLCEVhwqtiFeTJ57z46ndviH4A2nHGzabjvvXm/enezBkotq1KCugUAMpYRMlxExZ/rYVRFP9WIEvLBDDKijL8WVzQq9x8=
-X-Gm-Message-State: AOJu0Ywoj0EvC7WuJ4d6x8+/jVPbyAns8T6ZdUyN3+w9OTGkAdFUYdf2
-	yCc7MApmopr377EhrSD3AqNQ+f9M3T0lRSVBn49p2++Kq2MM67enkkghRCeI
-X-Google-Smtp-Source: AGHT+IEWxxer7+GvZpSyC+KpPXhxra7vrWGJ3a2rsApHjdYvzkJ+rmWD+x1uxlAnk84alJSOjVn32w==
-X-Received: by 2002:a17:902:e5ca:b0:1dd:a36e:3204 with SMTP id u10-20020a170902e5ca00b001dda36e3204mr47580plf.67.1710107338535;
-        Sun, 10 Mar 2024 14:48:58 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:fa9b:d52c:840:abd4])
-        by smtp.gmail.com with ESMTPSA id n9-20020a170902e54900b001d949393c50sm3120067plf.187.2024.03.10.14.48.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Mar 2024 14:48:58 -0700 (PDT)
-Date: Sun, 10 Mar 2024 14:48:55 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Karel Balej <karelb@gimli.ms.mff.cuni.cz>, Lee Jones <lee@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=gimli.ms.mff.cuni.cz header.i=@gimli.ms.mff.cuni.cz header.b="fZEQPrZM"
+Received: from gimli.ms.mff.cuni.cz (gimli.ms.mff.cuni.cz [195.113.20.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by nikam.ms.mff.cuni.cz (Postfix) with ESMTPS id 9CE062846D9;
+	Mon, 11 Mar 2024 11:25:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gimli.ms.mff.cuni.cz;
+	s=gen1; t=1710152740;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H//5iIeYe7oQRy/0AyjUfWh+gF2wOrcp5xlLc4v3Q74=;
+	b=fZEQPrZMk4AgF+2d7bv0M/4Uyp/cv8UvfL7w2ytblEIuziBl5U9idaSh+7WVs+zUka3q67
+	IPh9PjeXSPww1ZF3qlW929xPMl6uW3s0haBQ02NuCFngt5VLAyDpViSpiuzhjVKn6tqANh
+	zt1j6r7ji8bV6rvH0lecqrF7BWf6nEc=
+Received: from localhost (unknown [213.235.133.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: karelb)
+	by gimli.ms.mff.cuni.cz (Postfix) with ESMTPSA id 5B8F5457B68;
+	Mon, 11 Mar 2024 11:25:40 +0100 (CET)
+Precedence: bulk
+X-Mailing-List: phone-devel@vger.kernel.org
+List-Id: <phone-devel.vger.kernel.org>
+List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 11 Mar 2024 11:26:16 +0100
+Message-Id: <CZQUKBQF1GZ9.3RSNW5WQBU9L6@gimli.ms.mff.cuni.cz>
+Cc: "Lee Jones" <lee@kernel.org>, "Rob Herring" <robh+dt@kernel.org>,
+ "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, "Liam Girdwood" <lgirdwood@gmail.com>, "Mark Brown"
+ <broonie@kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-input@vger.kernel.org>,
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
 Subject: Re: [RFC PATCH v3 4/5] input: add onkey driver for Marvell 88PM886
  PMIC
-Message-ID: <Ze4qx9KQEPU9U8JN@google.com>
+To: "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>, "Dmitry
+ Torokhov" <dmitry.torokhov@gmail.com>
+From: "Karel Balej" <karelb@gimli.ms.mff.cuni.cz>
 References: <20240303101506.4187-1-karelb@gimli.ms.mff.cuni.cz>
  <20240303101506.4187-5-karelb@gimli.ms.mff.cuni.cz>
  <ZeTgEmjJc_VhYpLm@google.com>
@@ -73,17 +68,9 @@ References: <20240303101506.4187-1-karelb@gimli.ms.mff.cuni.cz>
  <ZeZxI_spu4vwxrs7@google.com>
  <CZQ1EP61IDOC.1PPYGMIOINGND@gimli.ms.mff.cuni.cz>
  <3601a374-4161-40e1-8a80-9bbfdae5bd8a@linaro.org>
-Precedence: bulk
-X-Mailing-List: phone-devel@vger.kernel.org
-List-Id: <phone-devel.vger.kernel.org>
-List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <3601a374-4161-40e1-8a80-9bbfdae5bd8a@linaro.org>
 
-On Sun, Mar 10, 2024 at 09:35:36PM +0100, Krzysztof Kozlowski wrote:
+Krzysztof Kozlowski, 2024-03-10T21:35:36+01:00:
 > On 10/03/2024 12:35, Karel Balej wrote:
 > > Dmitry Torokhov, 2024-03-04T17:10:59-08:00:
 > >> On Mon, Mar 04, 2024 at 09:28:45PM +0100, Karel Balej wrote:
@@ -94,8 +81,10 @@ On Sun, Mar 10, 2024 at 09:35:36PM +0100, Krzysztof Kozlowski wrote:
 > >>>>> From: Karel Balej <balejk@matfyz.cz>
 > >>>>>
 > >>>>> Marvell 88PM886 PMIC provides onkey among other things. Add client
-> >>>>> driver to handle it. The driver currently only provides a basic support
-> >>>>> omitting additional functions found in the vendor version, such as long
+> >>>>> driver to handle it. The driver currently only provides a basic sup=
+port
+> >>>>> omitting additional functions found in the vendor version, such as =
+long
 > >>>>> onkey and GPIO integration.
 > >>>>>
 > >>>>> Signed-off-by: Karel Balej <balejk@matfyz.cz>
@@ -116,48 +105,65 @@ On Sun, Mar 10, 2024 at 09:35:36PM +0100, Krzysztof Kozlowski wrote:
 > >>>>>       - Use the wakeup-source DT property.
 > >>>>>       - Drop of_match_table.
 > >>>>
-> >>>> I only said that you should not be using of_match_ptr(), but you still
-> >>>> need to have of_match_table set and have MODULE_DEVICE_TABLE() for the
+> >>>> I only said that you should not be using of_match_ptr(), but you sti=
+ll
+> >>>> need to have of_match_table set and have MODULE_DEVICE_TABLE() for t=
+he
 > >>>> proper module loading support.
 > >>>
-> >>> I removed of_match_table because I no longer need compatible for this --
-> >>> there are no device tree properties and the driver is being instantiated
+> >>> I removed of_match_table because I no longer need compatible for this=
+ --
+> >>> there are no device tree properties and the driver is being instantia=
+ted
 > >>> by the MFD driver.
 > >>>
-> >>> Is the MODULE_DEVICE_TABLE() entry needed for the driver to probe when
-> >>> compiled as module? If that is the case, given what I write above, am I
-> >>> correct that MODULE_DEVICE_TABLE(platform,...) would be the right thing
+> >>> Is the MODULE_DEVICE_TABLE() entry needed for the driver to probe whe=
+n
+> >>> compiled as module? If that is the case, given what I write above, am=
+ I
+> >>> correct that MODULE_DEVICE_TABLE(platform,...) would be the right thi=
+ng
 > >>> to use here?
 > >>
 > >> Yes, if uevent generated for the device is "platform:<name>" then
 > >> MODULE_DEVICE_TABLE(platform,...) will suffice. I am not sure how MFD
 > >> sets it up (OF modalias or platform), but you should be able to check
 > >> the format looking at the "uevent" attribute for your device in sysfs
-> >> (/sys/devices/bus/platform/...). 
-> > 
+> >> (/sys/devices/bus/platform/...).=20
+> >=20
 > > The uevent is indeed platform.
-> > 
+> >=20
 > > But since there is only one device, perhaps having a device table is
 > > superfluous and using `MODULE_ALIAS("platform:88pm886-onkey")` is more
 > > fitting?
-> 
+>
 > Adding aliases for standard IDs and standard cases is almost never
 > correct. If you need module alias, it means your ID table is wrong (or
 > missing, which is usually wrong).
-> 
-> > 
+>
+> >=20
 > > Although I don't understand why this is even necessary when the driver
 > > name is such and the module is registered using
 > > `module_platform_driver`...
-> 
+>
 > ID table and MODULE_DEVICE_TABLE() are necessary for modprobe to work.
+
+I think I understand the practical reasons. My point was that I would
+expect the alias to be added automatically even in the case that the
+device table is absent based solely on the driver name and the
+registration method (*module*_*platform*_driver). Why is that not the
+case? Obviously the driver name matching the mfd_cell name is sufficient
+for the driver to probe when it is built in so the name does seem to
+serve as some identification for the device just as a device table entry
+would.
+
+Furthermore, drivers/input/serio/ioc3kbd.c does not seem to have an ID
+table either, nor a MODULE_ALIAS -- is that a mistake? If not, what
+mechanism causes the driver to probe when compiled as a module? It seems
+to me to effectively be the same setup as with my driver and that does
+not load automatically (because of the missing alias).
+
 > Just run `modinfo`.
 
-MODULE_DEVICE_TABLE() and MODULE_ALIAS() reduce to the same thing, but I
-agree that we should not try to be too clever and simply use the ID
-table.
-
-Thanks.
-
--- 
-Dmitry
+Thank you very much,
+K. B.
