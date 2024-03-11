@@ -1,115 +1,229 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A2638F87;
-	Mon, 11 Mar 2024 16:53:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3DB40C14;
+	Mon, 11 Mar 2024 21:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710176007; cv=none; b=QGPRZsFYWv3NvZ24ziMG6UMG3YYGDrojTb+MijWjiDmtNGS5u7XomtbRVuKtYzPOp72FNE6+Wu0BUqhCYzMaSF/7FPu6HnoLsGZ4zwcXgWQxccjRPSmA59u9SOWln6Qnhojyrod6k3cZWOe5joSEEYF86kdnf1Lxjro6jHv+TeQ=
+	t=1710192142; cv=none; b=SjFVhJTLmgCpb4s12j3U/uxXGflG7v+LMSAtJ6sl2rrtTrY+z2fot9wb7XeCC6yN24Qo5ZMd7pdLKrWrmzAjX6+0LpVh/vU2mAjOxbOXgdneLUUHa7RYJM7sjUAyaX5GcNjTmgYXvXKaURqOpUYsjAgE+Ictb8QyH7zQdMoNsRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710176007; c=relaxed/simple;
-	bh=o47Vto4njf9GW8bxbC7snCn0lPZuwOrA7a5y8GBvXjA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JueDl03soOgRR3GELqYG5ARCS9hbDaDtzG3Lu97jMN9dePvOEacYiZP6txog0BqarZaXo8yr1dZM/HRJSsjsrDTBOA5a4qU4k8NvXll6bUNWu+QNyzu1wzbyrsaTVWXytHSqbaQoUE7I3Nr1cY590agK9guQztspgIAvBHPUNvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=uC0i47A1; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
+	s=arc-20240116; t=1710192142; c=relaxed/simple;
+	bh=Rx2+YO6jyAKxn60rtDIUH7IDzur4cfX30j4BXchzphI=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JjxyC0mqwYqgXp5dHKPazwewzor7/aaVkP+BLZjrPqHV1JeGYwNmKWHdfIkjNX7XBAZ0keKOYsEkUNa+ZYdq6gV879Srj/FIRlZ3StpN2PaZEBIa2To3onXAKUvtNkzT50HQ3VcxlXybfhckj04Sj7pPWsydsMgANJtS9pF+xnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=TiDyHdC3; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="uC0i47A1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1710175998; bh=o47Vto4njf9GW8bxbC7snCn0lPZuwOrA7a5y8GBvXjA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=uC0i47A14Bo9xf+y4xVJ9VBDBN8K2ICsBVPY1gIin5m90D22USZiZKYioPuToQiQS
-	 SnNxIByKufL8I0Jxn2QYp3zKttBPCigO/SnFFP1Hh+mj7Cu6XbP6xp8Delq//7u/t/
-	 B0rpcaqOQriErtDfFli0yL8iD26h/R00y2DQ+Tbo=
-From: Luca Weiss <luca@z3ntu.xyz>
-To: Rob Herring <robh@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@linaro.org>,
- phone-devel@vger.kernel.org, Adam Honse <calcprogrammer1@gmail.com>
-Subject: Re: [PATCH 0/2] Add Samsung Galaxy Note 3 support
-Date: Mon, 11 Mar 2024 17:53:17 +0100
-Message-ID: <2720455.mvXUDI8C0e@g550jk>
-In-Reply-To: <171016679093.1126634.17115825771533066372.robh@kernel.org>
-References:
- <20240310-samsung-hlte-v1-0-e9b55bf98a48@z3ntu.xyz>
- <171016679093.1126634.17115825771533066372.robh@kernel.org>
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="TiDyHdC3"
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 200F51C006B; Mon, 11 Mar 2024 22:22:16 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1710192136;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=md2snj7A4S22aqUPKaG++WNd0k0SHBog0xFZQxJIuOM=;
+	b=TiDyHdC3kR2YLPRwYiyBvRPU1QDeFgbwL8pLKSaUIdoBngDrTffmKnJyFk1Zj5PNYiPz+i
+	HDDL6cjrEi6fHeFdNKSdxdsH/JV+WKeIjt6S+qeE33GL3lui/fwxsiIovKICAusLIlcocP
+	SOzVKTaFeR3DfW9HMGhZeQfLJ4ssEh4=
+Date: Mon, 11 Mar 2024 22:22:15 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: phone-devel@vger.kernel.org, kernel list <linux-kernel@vger.kernel.org>,
+	fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org,
+	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org,
+	megi@xff.cz
+Subject: Re: [PATCHv2 1/2] dt-bindings: usb: typec: anx7688: start a binding
+ document
+Message-ID: <Ze92B/PPOvvrtnkA@duo.ucw.cz>
+References: <ZcaCXYOf6o4VNneu@duo.ucw.cz>
+ <ZdkOCqPKqa/u9Ftb@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"
-
-T24gTW9udGFnLCAxMS4gTcOkcnogMjAyNCAxNToyMzozMCBDRVQgUm9iIEhlcnJpbmcgd3JvdGU6
-Cj4gCj4gT24gU3VuLCAxMCBNYXIgMjAyNCAxNToxMzozNSArMDEwMCwgTHVjYSBXZWlzcyB3cm90
-ZToKPiA+IEFkZCB0aGUgZHRzIGZvciAiaGx0ZSIgd2hpY2ggaXMgYSBwaGFibGV0IGZyb20gMjAx
-My4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogTHVjYSBXZWlzcyA8bHVjYUB6M250dS54eXo+Cj4g
-PiAtLS0KPiA+IEFkYW0gSG9uc2UgKDEpOgo+ID4gICAgICAgQVJNOiBkdHM6IHFjb206IG1zbTg5
-NzQ6IEFkZCBTYW1zdW5nIEdhbGF4eSBOb3RlIDMKPiA+IAo+ID4gTHVjYSBXZWlzcyAoMSk6Cj4g
-PiAgICAgICBkdC1iaW5kaW5nczogYXJtOiBxY29tOiBBZGQgU2Ftc3VuZyBHYWxheHkgTm90ZSAz
-Cj4gPiAKPiA+ICBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvYXJtL3Fjb20ueWFt
-bCAgICB8ICAgMSArCj4gPiAgYXJjaC9hcm0vYm9vdC9kdHMvcWNvbS9NYWtlZmlsZSAgICAgICAg
-ICAgICAgICAgICAgfCAgIDEgKwo+ID4gIC4uLi9ib290L2R0cy9xY29tL3Fjb20tbXNtODk3NC1z
-YW1zdW5nLWhsdGUuZHRzICAgIHwgNDAzICsrKysrKysrKysrKysrKysrKysrKwo+ID4gIDMgZmls
-ZXMgY2hhbmdlZCwgNDA1IGluc2VydGlvbnMoKykKPiA+IC0tLQo+ID4gYmFzZS1jb21taXQ6IDkw
-ZDM1ZGE2NThkYThjZmYwZDRlY2JiNTExM2Y1ZmFjOWQwMGViNzIKPiA+IGNoYW5nZS1pZDogMjAy
-NDAzMTAtc2Ftc3VuZy1obHRlLTc4ZDFhMjg3YjBhOAo+ID4gCj4gPiBCZXN0IHJlZ2FyZHMsCj4g
-PiAtLQo+ID4gTHVjYSBXZWlzcyA8bHVjYUB6M250dS54eXo+Cj4gPiAKPiA+IAo+ID4gCj4gCj4g
-Cj4gTXkgYm90IGZvdW5kIG5ldyBEVEIgd2FybmluZ3Mgb24gdGhlIC5kdHMgZmlsZXMgYWRkZWQg
-b3IgY2hhbmdlZCBpbiB0aGlzCj4gc2VyaWVzLgo+IAo+IFNvbWUgd2FybmluZ3MgbWF5IGJlIGZy
-b20gYW4gZXhpc3RpbmcgU29DIC5kdHNpLiBPciBwZXJoYXBzIHRoZSB3YXJuaW5ncwo+IGFyZSBm
-aXhlZCBieSBhbm90aGVyIHNlcmllcy4gVWx0aW1hdGVseSwgaXQgaXMgdXAgdG8gdGhlIHBsYXRm
-b3JtCj4gbWFpbnRhaW5lciB3aGV0aGVyIHRoZXNlIHdhcm5pbmdzIGFyZSBhY2NlcHRhYmxlIG9y
-IG5vdC4gTm8gbmVlZCB0byByZXBseQo+IHVubGVzcyB0aGUgcGxhdGZvcm0gbWFpbnRhaW5lciBo
-YXMgY29tbWVudHMuCj4gCj4gSWYgeW91IGFscmVhZHkgcmFuIERUIGNoZWNrcyBhbmQgZGlkbid0
-IHNlZSB0aGVzZSBlcnJvcihzKSwgdGhlbgo+IG1ha2Ugc3VyZSBkdC1zY2hlbWEgaXMgdXAgdG8g
-ZGF0ZToKPiAKPiAgIHBpcDMgaW5zdGFsbCBkdHNjaGVtYSAtLXVwZ3JhZGUKPiAKPiAKPiBOZXcg
-d2FybmluZ3MgcnVubmluZyAnbWFrZSBDSEVDS19EVEJTPXkgcWNvbS9xY29tLW1zbTg5NzQtc2Ft
-c3VuZy1obHRlLmR0YicgZm9yIDIwMjQwMzEwLXNhbXN1bmctaGx0ZS12MS0wLWU5YjU1YmY5OGE0
-OEB6M250dS54eXo6Cj4gCj4gYXJjaC9hcm0vYm9vdC9kdHMvcWNvbS9xY29tLW1zbTg5NzQtc2Ft
-c3VuZy1obHRlLmR0YjogLzogbWVtb3J5OiBGYWxzZSBzY2hlbWEgZG9lcyBub3QgYWxsb3cgeydk
-ZXZpY2VfdHlwZSc6IFsnbWVtb3J5J10sICdyZWcnOiBbWzAsIDBdXX0KPiAJZnJvbSBzY2hlbWEg
-JGlkOiBodHRwOi8vZGV2aWNldHJlZS5vcmcvc2NoZW1hcy9yb290LW5vZGUueWFtbCMKPiBhcmNo
-L2FybS9ib290L2R0cy9xY29tL3Fjb20tbXNtODk3NC1zYW1zdW5nLWhsdGUuZHRiOiBsMi1jYWNo
-ZTogVW5ldmFsdWF0ZWQgcHJvcGVydGllcyBhcmUgbm90IGFsbG93ZWQgKCdxY29tLHNhdycgd2Fz
-IHVuZXhwZWN0ZWQpCj4gCWZyb20gc2NoZW1hICRpZDogaHR0cDovL2RldmljZXRyZWUub3JnL3Nj
-aGVtYXMvY2FjaGUueWFtbCMKPiBhcmNoL2FybS9ib290L2R0cy9xY29tL3Fjb20tbXNtODk3NC1z
-YW1zdW5nLWhsdGUuZHRiOiBpZGxlLXN0YXRlczogJ3NwYycgZG9lcyBub3QgbWF0Y2ggYW55IG9m
-IHRoZSByZWdleGVzOiAnXihjcHV8Y2x1c3RlciktJywgJ3BpbmN0cmwtWzAtOV0rJwo+IAlmcm9t
-IHNjaGVtYSAkaWQ6IGh0dHA6Ly9kZXZpY2V0cmVlLm9yZy9zY2hlbWFzL2NwdS9pZGxlLXN0YXRl
-cy55YW1sIwo+IGFyY2gvYXJtL2Jvb3QvZHRzL3Fjb20vcWNvbS1tc204OTc0LXNhbXN1bmctaGx0
-ZS5kdGI6IHN5c2NvbkBmOTAxMTAwMDogY29tcGF0aWJsZTogJ2FueU9mJyBjb25kaXRpb25hbCBm
-YWlsZWQsIG9uZSBtdXN0IGJlIGZpeGVkOgo+IAlbJ3N5c2NvbiddIGlzIHRvbyBzaG9ydAo+IAkn
-c3lzY29uJyBpcyBub3Qgb25lIG9mIFsnYWxsd2lubmVyLHN1bjhpLWE4M3Qtc3lzdGVtLWNvbnRy
-b2xsZXInLCAnYWxsd2lubmVyLHN1bjhpLWgzLXN5c3RlbS1jb250cm9sbGVyJywgJ2FsbHdpbm5l
-cixzdW44aS12M3Mtc3lzdGVtLWNvbnRyb2xsZXInLCAnYWxsd2lubmVyLHN1bjUwaS1hNjQtc3lz
-dGVtLWNvbnRyb2xsZXInLCAnYW1kLHBlbnNhbmRvLWVsYmEtc3lzY29uJywgJ2JyY20sY3J1LWNs
-a3NldCcsICdmcmVlY29tLGZzZy1jczItc3lzdGVtLWNvbnRyb2xsZXInLCAnZnNsLGlteDkzLWFv
-bm1peC1ucy1zeXNjZmcnLCAnZnNsLGlteDkzLXdha2V1cG1peC1zeXNjZmcnLCAnaGlzaWxpY29u
-LGRzYS1zdWJjdHJsJywgJ2hpc2lsaWNvbixoaTYyMjAtc3JhbWN0cmwnLCAnaGlzaWxpY29uLHBj
-aWUtc2FzLXN1YmN0cmwnLCAnaGlzaWxpY29uLHBlcmktc3ViY3RybCcsICdocGUsZ3hwLXN5c3Jl
-ZycsICdpbnRlbCxsZ20tc3lzY29uJywgJ2xvb25nc29uLGxzMWItc3lzY29uJywgJ2xvb25nc29u
-LGxzMWMtc3lzY29uJywgJ21hcnZlbGwsYXJtYWRhLTM3MDAtdXNiMi1ob3N0LW1pc2MnLCAnbWVk
-aWF0ZWssbXQ4MTM1LXBjdGwtYS1zeXNjZmcnLCAnbWVkaWF0ZWssbXQ4MTM1LXBjdGwtYi1zeXNj
-ZmcnLCAnbWVkaWF0ZWssbXQ4MzY1LXN5c2NmZycsICdtaWNyb2NoaXAsbGFuOTY2eC1jcHUtc3lz
-Y29uJywgJ21pY3JvY2hpcCxzcGFyeDUtY3B1LXN5c2NvbicsICdtc3Rhcixtc2MzMTMtcG1zbGVl
-cCcsICdudXZvdG9uLG1hMzVkMS1zeXMnLCAnbnV2b3Rvbix3cGNtNDUwLXNobScsICdyb2NrY2hp
-cCxweDMwLXFvcycsICdyb2NrY2hpcCxyazMwMzYtcW9zJywgJ3JvY2tjaGlwLHJrMzA2Ni1xb3Mn
-LCAncm9ja2NoaXAscmszMTI4LXFvcycsICdyb2NrY2hpcCxyazMyMjgtcW9zJywgJ3JvY2tjaGlw
-LHJrMzI4OC1xb3MnLCAncm9ja2NoaXAscmszMzY4LXFvcycsICdyb2NrY2hpcCxyazMzOTktcW9z
-JywgJ3JvY2tjaGlwLHJrMzU2OC1xb3MnLCAnCj4gIHJvY2tjaGlwLHJrMzU4OC1xb3MnLCAncm9j
-a2NoaXAscnYxMTI2LXFvcycsICdzdGFyZml2ZSxqaDcxMDAtc3lzbWFpbicsICd0aSxhbTYyLXVz
-Yi1waHktY3RybCcsICd0aSxhbTY1NC1kc3Mtb2xkaS1pby1jdHJsJywgJ3RpLGFtNjU0LXNlcmRl
-cy1jdHJsJywgJ3RpLGo3ODRzNC1wY2llLWN0cmwnXQo+IAlmcm9tIHNjaGVtYSAkaWQ6IGh0dHA6
-Ly9kZXZpY2V0cmVlLm9yZy9zY2hlbWFzL21mZC9zeXNjb24ueWFtbCMKClVuZm9ydHVuYXRlbHkg
-YWxsIGV4aXN0aW5nIHdhcm5pbmdzIGZyb20gdGhlIC5kdHNpLgoKUmVnYXJkcwpMdWNh
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="q8eGSsGslPe2s3J1"
+Content-Disposition: inline
+In-Reply-To: <ZdkOCqPKqa/u9Ftb@duo.ucw.cz>
 
 
+--q8eGSsGslPe2s3J1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+> Add binding for anx7688 usb type-c bridge. I don't have a datasheet,
+> but I did best I could.
+>=20
+> Signed-off-by: Pavel Machek <pavel@ucw.cz>
+
+Any more comments here? Automatic system told me I need to replace one
+character...
+
+Best regards,
+								Pavel
+
+> ---
+>=20
+> v2: implement review feedback
+>=20
+> diff --git a/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml =
+b/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml
+> new file mode 100644
+> index 000000000000..9e887eafb5fc
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml
+> @@ -0,0 +1,127 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/usb/analogix,anx7688.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +# Pin names can be deduced from
+> +# https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20=
+Schematic.pdf
+> +
+> +title: Analogix ANX7688 Type-C controller
+> +
+> +maintainers:
+> +  - Pavel Machek <pavel@ucw.cz>
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - analogix,anx7688
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +    description: GPIO controlling RESET_N (B7) pin.
+> +
+> +  enable-gpios:
+> +    maxItems: 1
+> +    description: GPIO controlling POWER_EN (D2) pin.
+> +
+> +  cabledet-gpios:
+> +    maxItems: 1
+> +    description: GPIO controlling CABLE_DET (C3) pin.
+> +
+> +  avdd10-supply:
+> +    description: 1.0V power supply going to AVDD10 (A4, ...) pins
+> +
+> +  dvdd10-supply:
+> +    description: 1.0V power supply going to DVDD10 (D6, ...) pins
+> +
+> +  avdd18-supply:
+> +    description: 1.8V power supply going to AVDD18 (E3, ...) pins
+> +
+> +  dvdd18-supply:
+> +    description: 1.8V power supply going to DVDD18 (G4, ...) pins
+> +
+> +  avdd33-supply:
+> +    description: 3.3V power supply going to AVDD33 (C4, ...) pins
+> +
+> +  i2c-supply: true
+> +  vconn-supply: true
+> +  hdmi-vt-supply: true
+> +  vbus-supply: true
+> +  vbus-in-supply: true
+> +
+> +  connector:
+> +    type: object
+> +    $ref: /schemas/connector/usb-connector.yaml
+> +
+> +    description:
+> +      Properties for usb c connector.
+> +
+> +    properties:
+> +      compatible:
+> +        const: usb-c-connector
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - connector
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    i2c {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        typec@2c {
+> +            compatible =3D "analogix,anx7688";
+> +            reg =3D <0x2c>;
+> +            interrupts =3D <8 IRQ_TYPE_EDGE_FALLING>;
+> +            interrupt-parent =3D <&gpio0>;
+> +
+> +            enable-gpios =3D <&pio 3 10 GPIO_ACTIVE_LOW>; /* PD10 */
+> +            reset-gpios =3D <&pio 3 6 GPIO_ACTIVE_HIGH>; /* PD6 */
+> +            cabledet-gpios =3D <&r_pio 0 8 GPIO_ACTIVE_HIGH>; /* PL8 */
+> +
+> +            avdd10-supply =3D <&reg_anx1v0>;
+> +            dvdd10-supply =3D <&reg_anx1v0>;
+> +            avdd18-supply =3D <&reg_ldo_io1>;
+> +            dvdd18-supply =3D <&reg_ldo_io1>;
+> +            avdd33-supply =3D <&reg_dcdc1>;
+> +            i2c-supply =3D <&reg_ldo_io0>;
+> +            vconn-supply =3D <&reg_vconn5v0>;
+> +            hdmi_vt-supply =3D <&reg_dldo1>;
+> +
+> +            vbus-supply =3D <&reg_usb_5v>;
+> +            vbus-in-supply =3D <&usb_power_supply>;
+> +
+> +            typec_con: connector {
+> +                compatible =3D "usb-c-connector";
+> +                power-role =3D "dual";
+> +                data-role =3D "dual";
+> +                try-power-role =3D "source";
+> +
+> +                ports {
+> +                    #address-cells =3D <1>;
+> +                    #size-cells =3D <0>;
+> +                    port@0 {
+> +                        reg =3D <0>;
+> +                        typec_con_ep: endpoint {
+> +                            remote-endpoint =3D <&usbotg_hs_ep>;
+> +                        };
+> +                    };
+> +                };
+> +            };
+> +        };
+> +    };
+> +...
+>=20
 
 
+
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--q8eGSsGslPe2s3J1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZe92BwAKCRAw5/Bqldv6
+8r0JAKCQLcQ/WTPPf8NKZJBGCA3qQ9qBagCdFHUEScx9GkhXmqTyhY7DbnUqITs=
+=/QMg
+-----END PGP SIGNATURE-----
+
+--q8eGSsGslPe2s3J1--
