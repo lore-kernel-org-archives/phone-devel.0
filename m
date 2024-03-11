@@ -1,181 +1,115 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4ACA52F7A;
-	Mon, 11 Mar 2024 16:18:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A2638F87;
+	Mon, 11 Mar 2024 16:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710173900; cv=none; b=kTcUJcSjhUR6k0u8aTsSGf2uwcMwJ3iznY9uLmwbT1Hy/YI9zeF8zVNltPiJ4xovo62ScrNLl0RllxINmHdwCUGrVw7hHMS+Fix6GpcCmb+7YWzxxP2789t6JYsgfyh2mFeEvq8m2BiOL7XAdxqb9Myw6z5l1yxq7v04M6wbQzQ=
+	t=1710176007; cv=none; b=QGPRZsFYWv3NvZ24ziMG6UMG3YYGDrojTb+MijWjiDmtNGS5u7XomtbRVuKtYzPOp72FNE6+Wu0BUqhCYzMaSF/7FPu6HnoLsGZ4zwcXgWQxccjRPSmA59u9SOWln6Qnhojyrod6k3cZWOe5joSEEYF86kdnf1Lxjro6jHv+TeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710173900; c=relaxed/simple;
-	bh=Z63M2qtRmsoORDDGsiHituFolPHyUqRANRs99zv7Bj4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O0noNFOgfcu5uALVKRan+Xm/U2plVyfpZ7Zsd/mR6g11MlGm1ZqaUY+6OLaZNRZC0I66akn9XiNY6TXpdogAW3lc8xUUWCCYi/eB5PYyOguBtGmxOo12gkedy+4pUmgcjOYcCPD1l14Q7N1pCPN/jAvokqkwCRBnU+ofa5wBA9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X1RFx7E1; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1710176007; c=relaxed/simple;
+	bh=o47Vto4njf9GW8bxbC7snCn0lPZuwOrA7a5y8GBvXjA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JueDl03soOgRR3GELqYG5ARCS9hbDaDtzG3Lu97jMN9dePvOEacYiZP6txog0BqarZaXo8yr1dZM/HRJSsjsrDTBOA5a4qU4k8NvXll6bUNWu+QNyzu1wzbyrsaTVWXytHSqbaQoUE7I3Nr1cY590agK9guQztspgIAvBHPUNvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=uC0i47A1; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X1RFx7E1"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1dc75972f25so31834435ad.1;
-        Mon, 11 Mar 2024 09:18:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710173898; x=1710778698; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nLrBGhe7wsl5ZpaEorBAyyM3bioG1G+HFT1P3PMx4Ps=;
-        b=X1RFx7E1cdDmMvReL936edOnYONjUGAI2afktyXMmMtiaIIYffdrnYf7qXKVlltB78
-         kAiTu6hmmqy4sKmOB9wJPs/WYw5iBpcmDLZwFi9x29cr9Zi2uJxtJ8GZ06yX8ZwPiYtm
-         V7W9Tnxl3Ne7oXaqtWkhzVpaonhVX0xTfsUYH7FL7xQDE3k6FAXdtKU0bj5Pqi/tJBDP
-         2jaQF5sjd8onUPwn8tc1cf6U5uXPxD+v1KX8+5d0h0yb4/jMv3ssN1kcuML/GKMibYX2
-         z6DhjTyRVwqZdlMlctdbKhobJXqQLoB/H94eIO8zRcD1JkQBPC865o45lXGKndPpngQI
-         xdUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710173898; x=1710778698;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nLrBGhe7wsl5ZpaEorBAyyM3bioG1G+HFT1P3PMx4Ps=;
-        b=l1y2GBZPefCggRpZG5kd3IW0Qie9mOUG8K4Pv99xxB06LjP1Px/nprMFgi/A1cPjNT
-         o0CZxNdan73n74JR9xkClLI/YoUHFZQgFQBgHMBYj4PjmU1azjECeOPvoPemGv7Hvla0
-         JYCPvn5VwIQPvLi6PckiQrOK/L4YBRmfAIr3E7l57q1EGKXQ952Lq6Duykx0j0Z+EH++
-         eOP7ENK5pX6WN7hj2CE34zIk55Ax/KY7y9WcbNNOzffB1rOSrvVL2gtLTq3bQj1W9ZNT
-         5YQk2EFq8cRVujCebwEDxm4BxYzslTmf3tsIIMTcCF2anyhEAsI7B7AjMvhcI31pSf23
-         E2Ew==
-X-Forwarded-Encrypted: i=1; AJvYcCX/AXqircO6cRiQEk3JCBIjRxDS2kIfjxg04yMcVhwTUdY8OWWbS95Q0CNPS3+BiMRUXBRkSBAPtEFT92hDh46XkJN5zSM7O4qfHVcLxsJmzFbvf05vxot2AW8adUvFkphy2Y/2ed8lI/bW1Uyft2AG5PomIgHUVzATC/XCQvdXxru25u/pgKZw5BoBFBVM9ipgDDKW93efC072//RIH9c5ptw=
-X-Gm-Message-State: AOJu0Yw9oYA1uBAnMP09EJ6Cu0iHSYhUKjJBDeJTMiHeOc2Y2nwgcnrX
-	Jel/ODZWH1vy+yhTOiGBTos8qbiHz7n6yXF95n/rYO2mErjuKbyX
-X-Google-Smtp-Source: AGHT+IErPlfMx5poCq+SnT9bISYfhyWkor5ZX2Itne7IbaQhePms5OCJ5PU9oKePxgFanDc4araU4w==
-X-Received: by 2002:a17:903:124c:b0:1db:fc02:f96e with SMTP id u12-20020a170903124c00b001dbfc02f96emr1084198plh.24.1710173897743;
-        Mon, 11 Mar 2024 09:18:17 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:fa9b:d52c:840:abd4])
-        by smtp.gmail.com with ESMTPSA id u5-20020a170902e5c500b001db8f7720e2sm4012491plf.288.2024.03.11.09.18.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Mar 2024 09:18:17 -0700 (PDT)
-Date: Mon, 11 Mar 2024 09:18:14 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Karel Balej <karelb@gimli.ms.mff.cuni.cz>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [RFC PATCH v3 4/5] input: add onkey driver for Marvell 88PM886
- PMIC
-Message-ID: <Ze8uxmKoK3baQ5Ah@google.com>
-References: <20240303101506.4187-1-karelb@gimli.ms.mff.cuni.cz>
- <20240303101506.4187-5-karelb@gimli.ms.mff.cuni.cz>
- <ZeTgEmjJc_VhYpLm@google.com>
- <CZL8ZSZAVEBI.349BV2Y6AKIPN@gimli.ms.mff.cuni.cz>
- <ZeZxI_spu4vwxrs7@google.com>
- <CZQ1EP61IDOC.1PPYGMIOINGND@gimli.ms.mff.cuni.cz>
- <3601a374-4161-40e1-8a80-9bbfdae5bd8a@linaro.org>
- <CZQUKBQF1GZ9.3RSNW5WQBU9L6@gimli.ms.mff.cuni.cz>
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="uC0i47A1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1710175998; bh=o47Vto4njf9GW8bxbC7snCn0lPZuwOrA7a5y8GBvXjA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=uC0i47A14Bo9xf+y4xVJ9VBDBN8K2ICsBVPY1gIin5m90D22USZiZKYioPuToQiQS
+	 SnNxIByKufL8I0Jxn2QYp3zKttBPCigO/SnFFP1Hh+mj7Cu6XbP6xp8Delq//7u/t/
+	 B0rpcaqOQriErtDfFli0yL8iD26h/R00y2DQ+Tbo=
+From: Luca Weiss <luca@z3ntu.xyz>
+To: Rob Herring <robh@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ ~postmarketos/upstreaming@lists.sr.ht, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@linaro.org>,
+ phone-devel@vger.kernel.org, Adam Honse <calcprogrammer1@gmail.com>
+Subject: Re: [PATCH 0/2] Add Samsung Galaxy Note 3 support
+Date: Mon, 11 Mar 2024 17:53:17 +0100
+Message-ID: <2720455.mvXUDI8C0e@g550jk>
+In-Reply-To: <171016679093.1126634.17115825771533066372.robh@kernel.org>
+References:
+ <20240310-samsung-hlte-v1-0-e9b55bf98a48@z3ntu.xyz>
+ <171016679093.1126634.17115825771533066372.robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CZQUKBQF1GZ9.3RSNW5WQBU9L6@gimli.ms.mff.cuni.cz>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Mar 11, 2024 at 11:26:16AM +0100, Karel Balej wrote:
-> Krzysztof Kozlowski, 2024-03-10T21:35:36+01:00:
-> > On 10/03/2024 12:35, Karel Balej wrote:
-> > > Dmitry Torokhov, 2024-03-04T17:10:59-08:00:
-> > >> On Mon, Mar 04, 2024 at 09:28:45PM +0100, Karel Balej wrote:
-> > >>> Dmitry,
-> > >>>
-> > >>> Dmitry Torokhov, 2024-03-03T12:39:46-08:00:
-> > >>>> On Sun, Mar 03, 2024 at 11:04:25AM +0100, Karel Balej wrote:
-> > >>>>> From: Karel Balej <balejk@matfyz.cz>
-> > >>>>>
-> > >>>>> Marvell 88PM886 PMIC provides onkey among other things. Add client
-> > >>>>> driver to handle it. The driver currently only provides a basic support
-> > >>>>> omitting additional functions found in the vendor version, such as long
-> > >>>>> onkey and GPIO integration.
-> > >>>>>
-> > >>>>> Signed-off-by: Karel Balej <balejk@matfyz.cz>
-> > >>>>> ---
-> > >>>>>
-> > >>>>> Notes:
-> > >>>>>     RFC v3:
-> > >>>>>     - Drop wakeup-source.
-> > >>>>>     RFC v2:
-> > >>>>>     - Address Dmitry's feedback:
-> > >>>>>       - Sort includes alphabetically.
-> > >>>>>       - Drop onkey->irq.
-> > >>>>>       - ret -> err in irq_handler and no initialization.
-> > >>>>>       - Break long lines and other formatting.
-> > >>>>>       - Do not clobber platform_get_irq error.
-> > >>>>>       - Do not set device parent manually.
-> > >>>>>       - Use input_set_capability.
-> > >>>>>       - Use the wakeup-source DT property.
-> > >>>>>       - Drop of_match_table.
-> > >>>>
-> > >>>> I only said that you should not be using of_match_ptr(), but you still
-> > >>>> need to have of_match_table set and have MODULE_DEVICE_TABLE() for the
-> > >>>> proper module loading support.
-> > >>>
-> > >>> I removed of_match_table because I no longer need compatible for this --
-> > >>> there are no device tree properties and the driver is being instantiated
-> > >>> by the MFD driver.
-> > >>>
-> > >>> Is the MODULE_DEVICE_TABLE() entry needed for the driver to probe when
-> > >>> compiled as module? If that is the case, given what I write above, am I
-> > >>> correct that MODULE_DEVICE_TABLE(platform,...) would be the right thing
-> > >>> to use here?
-> > >>
-> > >> Yes, if uevent generated for the device is "platform:<name>" then
-> > >> MODULE_DEVICE_TABLE(platform,...) will suffice. I am not sure how MFD
-> > >> sets it up (OF modalias or platform), but you should be able to check
-> > >> the format looking at the "uevent" attribute for your device in sysfs
-> > >> (/sys/devices/bus/platform/...). 
-> > > 
-> > > The uevent is indeed platform.
-> > > 
-> > > But since there is only one device, perhaps having a device table is
-> > > superfluous and using `MODULE_ALIAS("platform:88pm886-onkey")` is more
-> > > fitting?
-> >
-> > Adding aliases for standard IDs and standard cases is almost never
-> > correct. If you need module alias, it means your ID table is wrong (or
-> > missing, which is usually wrong).
-> >
-> > > 
-> > > Although I don't understand why this is even necessary when the driver
-> > > name is such and the module is registered using
-> > > `module_platform_driver`...
-> >
-> > ID table and MODULE_DEVICE_TABLE() are necessary for modprobe to work.
-> 
-> I think I understand the practical reasons. My point was that I would
-> expect the alias to be added automatically even in the case that the
-> device table is absent based solely on the driver name and the
-> registration method (*module*_*platform*_driver). Why is that not the
-> case? Obviously the driver name matching the mfd_cell name is sufficient
-> for the driver to probe when it is built in so the name does seem to
-> serve as some identification for the device just as a device table entry
-> would.
-> 
-> Furthermore, drivers/input/serio/ioc3kbd.c does not seem to have an ID
-> table either, nor a MODULE_ALIAS -- is that a mistake? If not, what
-> mechanism causes the driver to probe when compiled as a module? It seems
-> to me to effectively be the same setup as with my driver and that does
-> not load automatically (because of the missing alias).
+T24gTW9udGFnLCAxMS4gTcOkcnogMjAyNCAxNToyMzozMCBDRVQgUm9iIEhlcnJpbmcgd3JvdGU6
+Cj4gCj4gT24gU3VuLCAxMCBNYXIgMjAyNCAxNToxMzozNSArMDEwMCwgTHVjYSBXZWlzcyB3cm90
+ZToKPiA+IEFkZCB0aGUgZHRzIGZvciAiaGx0ZSIgd2hpY2ggaXMgYSBwaGFibGV0IGZyb20gMjAx
+My4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogTHVjYSBXZWlzcyA8bHVjYUB6M250dS54eXo+Cj4g
+PiAtLS0KPiA+IEFkYW0gSG9uc2UgKDEpOgo+ID4gICAgICAgQVJNOiBkdHM6IHFjb206IG1zbTg5
+NzQ6IEFkZCBTYW1zdW5nIEdhbGF4eSBOb3RlIDMKPiA+IAo+ID4gTHVjYSBXZWlzcyAoMSk6Cj4g
+PiAgICAgICBkdC1iaW5kaW5nczogYXJtOiBxY29tOiBBZGQgU2Ftc3VuZyBHYWxheHkgTm90ZSAz
+Cj4gPiAKPiA+ICBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvYXJtL3Fjb20ueWFt
+bCAgICB8ICAgMSArCj4gPiAgYXJjaC9hcm0vYm9vdC9kdHMvcWNvbS9NYWtlZmlsZSAgICAgICAg
+ICAgICAgICAgICAgfCAgIDEgKwo+ID4gIC4uLi9ib290L2R0cy9xY29tL3Fjb20tbXNtODk3NC1z
+YW1zdW5nLWhsdGUuZHRzICAgIHwgNDAzICsrKysrKysrKysrKysrKysrKysrKwo+ID4gIDMgZmls
+ZXMgY2hhbmdlZCwgNDA1IGluc2VydGlvbnMoKykKPiA+IC0tLQo+ID4gYmFzZS1jb21taXQ6IDkw
+ZDM1ZGE2NThkYThjZmYwZDRlY2JiNTExM2Y1ZmFjOWQwMGViNzIKPiA+IGNoYW5nZS1pZDogMjAy
+NDAzMTAtc2Ftc3VuZy1obHRlLTc4ZDFhMjg3YjBhOAo+ID4gCj4gPiBCZXN0IHJlZ2FyZHMsCj4g
+PiAtLQo+ID4gTHVjYSBXZWlzcyA8bHVjYUB6M250dS54eXo+Cj4gPiAKPiA+IAo+ID4gCj4gCj4g
+Cj4gTXkgYm90IGZvdW5kIG5ldyBEVEIgd2FybmluZ3Mgb24gdGhlIC5kdHMgZmlsZXMgYWRkZWQg
+b3IgY2hhbmdlZCBpbiB0aGlzCj4gc2VyaWVzLgo+IAo+IFNvbWUgd2FybmluZ3MgbWF5IGJlIGZy
+b20gYW4gZXhpc3RpbmcgU29DIC5kdHNpLiBPciBwZXJoYXBzIHRoZSB3YXJuaW5ncwo+IGFyZSBm
+aXhlZCBieSBhbm90aGVyIHNlcmllcy4gVWx0aW1hdGVseSwgaXQgaXMgdXAgdG8gdGhlIHBsYXRm
+b3JtCj4gbWFpbnRhaW5lciB3aGV0aGVyIHRoZXNlIHdhcm5pbmdzIGFyZSBhY2NlcHRhYmxlIG9y
+IG5vdC4gTm8gbmVlZCB0byByZXBseQo+IHVubGVzcyB0aGUgcGxhdGZvcm0gbWFpbnRhaW5lciBo
+YXMgY29tbWVudHMuCj4gCj4gSWYgeW91IGFscmVhZHkgcmFuIERUIGNoZWNrcyBhbmQgZGlkbid0
+IHNlZSB0aGVzZSBlcnJvcihzKSwgdGhlbgo+IG1ha2Ugc3VyZSBkdC1zY2hlbWEgaXMgdXAgdG8g
+ZGF0ZToKPiAKPiAgIHBpcDMgaW5zdGFsbCBkdHNjaGVtYSAtLXVwZ3JhZGUKPiAKPiAKPiBOZXcg
+d2FybmluZ3MgcnVubmluZyAnbWFrZSBDSEVDS19EVEJTPXkgcWNvbS9xY29tLW1zbTg5NzQtc2Ft
+c3VuZy1obHRlLmR0YicgZm9yIDIwMjQwMzEwLXNhbXN1bmctaGx0ZS12MS0wLWU5YjU1YmY5OGE0
+OEB6M250dS54eXo6Cj4gCj4gYXJjaC9hcm0vYm9vdC9kdHMvcWNvbS9xY29tLW1zbTg5NzQtc2Ft
+c3VuZy1obHRlLmR0YjogLzogbWVtb3J5OiBGYWxzZSBzY2hlbWEgZG9lcyBub3QgYWxsb3cgeydk
+ZXZpY2VfdHlwZSc6IFsnbWVtb3J5J10sICdyZWcnOiBbWzAsIDBdXX0KPiAJZnJvbSBzY2hlbWEg
+JGlkOiBodHRwOi8vZGV2aWNldHJlZS5vcmcvc2NoZW1hcy9yb290LW5vZGUueWFtbCMKPiBhcmNo
+L2FybS9ib290L2R0cy9xY29tL3Fjb20tbXNtODk3NC1zYW1zdW5nLWhsdGUuZHRiOiBsMi1jYWNo
+ZTogVW5ldmFsdWF0ZWQgcHJvcGVydGllcyBhcmUgbm90IGFsbG93ZWQgKCdxY29tLHNhdycgd2Fz
+IHVuZXhwZWN0ZWQpCj4gCWZyb20gc2NoZW1hICRpZDogaHR0cDovL2RldmljZXRyZWUub3JnL3Nj
+aGVtYXMvY2FjaGUueWFtbCMKPiBhcmNoL2FybS9ib290L2R0cy9xY29tL3Fjb20tbXNtODk3NC1z
+YW1zdW5nLWhsdGUuZHRiOiBpZGxlLXN0YXRlczogJ3NwYycgZG9lcyBub3QgbWF0Y2ggYW55IG9m
+IHRoZSByZWdleGVzOiAnXihjcHV8Y2x1c3RlciktJywgJ3BpbmN0cmwtWzAtOV0rJwo+IAlmcm9t
+IHNjaGVtYSAkaWQ6IGh0dHA6Ly9kZXZpY2V0cmVlLm9yZy9zY2hlbWFzL2NwdS9pZGxlLXN0YXRl
+cy55YW1sIwo+IGFyY2gvYXJtL2Jvb3QvZHRzL3Fjb20vcWNvbS1tc204OTc0LXNhbXN1bmctaGx0
+ZS5kdGI6IHN5c2NvbkBmOTAxMTAwMDogY29tcGF0aWJsZTogJ2FueU9mJyBjb25kaXRpb25hbCBm
+YWlsZWQsIG9uZSBtdXN0IGJlIGZpeGVkOgo+IAlbJ3N5c2NvbiddIGlzIHRvbyBzaG9ydAo+IAkn
+c3lzY29uJyBpcyBub3Qgb25lIG9mIFsnYWxsd2lubmVyLHN1bjhpLWE4M3Qtc3lzdGVtLWNvbnRy
+b2xsZXInLCAnYWxsd2lubmVyLHN1bjhpLWgzLXN5c3RlbS1jb250cm9sbGVyJywgJ2FsbHdpbm5l
+cixzdW44aS12M3Mtc3lzdGVtLWNvbnRyb2xsZXInLCAnYWxsd2lubmVyLHN1bjUwaS1hNjQtc3lz
+dGVtLWNvbnRyb2xsZXInLCAnYW1kLHBlbnNhbmRvLWVsYmEtc3lzY29uJywgJ2JyY20sY3J1LWNs
+a3NldCcsICdmcmVlY29tLGZzZy1jczItc3lzdGVtLWNvbnRyb2xsZXInLCAnZnNsLGlteDkzLWFv
+bm1peC1ucy1zeXNjZmcnLCAnZnNsLGlteDkzLXdha2V1cG1peC1zeXNjZmcnLCAnaGlzaWxpY29u
+LGRzYS1zdWJjdHJsJywgJ2hpc2lsaWNvbixoaTYyMjAtc3JhbWN0cmwnLCAnaGlzaWxpY29uLHBj
+aWUtc2FzLXN1YmN0cmwnLCAnaGlzaWxpY29uLHBlcmktc3ViY3RybCcsICdocGUsZ3hwLXN5c3Jl
+ZycsICdpbnRlbCxsZ20tc3lzY29uJywgJ2xvb25nc29uLGxzMWItc3lzY29uJywgJ2xvb25nc29u
+LGxzMWMtc3lzY29uJywgJ21hcnZlbGwsYXJtYWRhLTM3MDAtdXNiMi1ob3N0LW1pc2MnLCAnbWVk
+aWF0ZWssbXQ4MTM1LXBjdGwtYS1zeXNjZmcnLCAnbWVkaWF0ZWssbXQ4MTM1LXBjdGwtYi1zeXNj
+ZmcnLCAnbWVkaWF0ZWssbXQ4MzY1LXN5c2NmZycsICdtaWNyb2NoaXAsbGFuOTY2eC1jcHUtc3lz
+Y29uJywgJ21pY3JvY2hpcCxzcGFyeDUtY3B1LXN5c2NvbicsICdtc3Rhcixtc2MzMTMtcG1zbGVl
+cCcsICdudXZvdG9uLG1hMzVkMS1zeXMnLCAnbnV2b3Rvbix3cGNtNDUwLXNobScsICdyb2NrY2hp
+cCxweDMwLXFvcycsICdyb2NrY2hpcCxyazMwMzYtcW9zJywgJ3JvY2tjaGlwLHJrMzA2Ni1xb3Mn
+LCAncm9ja2NoaXAscmszMTI4LXFvcycsICdyb2NrY2hpcCxyazMyMjgtcW9zJywgJ3JvY2tjaGlw
+LHJrMzI4OC1xb3MnLCAncm9ja2NoaXAscmszMzY4LXFvcycsICdyb2NrY2hpcCxyazMzOTktcW9z
+JywgJ3JvY2tjaGlwLHJrMzU2OC1xb3MnLCAnCj4gIHJvY2tjaGlwLHJrMzU4OC1xb3MnLCAncm9j
+a2NoaXAscnYxMTI2LXFvcycsICdzdGFyZml2ZSxqaDcxMDAtc3lzbWFpbicsICd0aSxhbTYyLXVz
+Yi1waHktY3RybCcsICd0aSxhbTY1NC1kc3Mtb2xkaS1pby1jdHJsJywgJ3RpLGFtNjU0LXNlcmRl
+cy1jdHJsJywgJ3RpLGo3ODRzNC1wY2llLWN0cmwnXQo+IAlmcm9tIHNjaGVtYSAkaWQ6IGh0dHA6
+Ly9kZXZpY2V0cmVlLm9yZy9zY2hlbWFzL21mZC9zeXNjb24ueWFtbCMKClVuZm9ydHVuYXRlbHkg
+YWxsIGV4aXN0aW5nIHdhcm5pbmdzIGZyb20gdGhlIC5kdHNpLgoKUmVnYXJkcwpMdWNh
 
-Yes, ioc3kbd is broken as far as module auto-loading goes. It probably
-did not get noticed before because the driver is likely to be built-in
-on the target architecture.
 
-I'll take patches.
 
-Thanks.
 
--- 
-Dmitry
