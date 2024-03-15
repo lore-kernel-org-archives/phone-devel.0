@@ -1,117 +1,185 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B5C487A9;
-	Fri, 15 Mar 2024 15:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFABB405FC
+	for <phone-devel@vger.kernel.org>; Fri, 15 Mar 2024 16:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710517847; cv=none; b=K2WFxrG5lHYj312ixNywaQtPESZc3IFE6Xi/6j0kNJEiVoENY2pOHBkG0ltYP2wefFlNxf6oQpC0BYobh2InUITNzd4knCCac5ZRw26IvfPrajWA7uwRNCQvxx5SYxX2Kj6EPjrwxfxn5SNX/4H1/iu1nh0ch3N0aC0nEYoUYW4=
+	t=1710518673; cv=none; b=jVsfsfk7nBVSm3X1kmv1kagNLWNiwC3oWxqo/6didqZ46jywSGJJuv+8E2RNuqk4jSiv8vhM4aWcEppyGimEiNahA/gozkfJkz0zWMOcIfzAVy3tSu+n1CNT+xg1cSmCEjMZAAsI2BmvQCy1RnRPXC7zw/wBl7XSXGxVYzcDsXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710517847; c=relaxed/simple;
-	bh=GNo8DvOCyNH+fBflb4vOPG62jKEW0NN1t2gGBuQJWQY=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=G5G37ZdfjC0UbzvHX3SDF0+uwBlLEtJSU1PJ8oEH477ZuLWEgC+uQkusaX8BOzG9s2eFvYlbP0piaVz7QD7lTRyWcE/+6LnCcd87f990DTRugptMlQnI2lHXzyVFkEaCONQsQlJvWHe9IqSfMy+J2ciQ1qoPj/HAZ6yuvQYHlbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nGz9uQSj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1710518673; c=relaxed/simple;
+	bh=Y2vBhougN5jQh8rv8uN/2CT0672Y43Pi3tSh1ogMX2U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qDAICiNWdIn3C7hu9NXUben6LUCqsXcd7c29zDqDnkWxZp71BHQlrFLwnMgvvcmnx/EZL8rLZjR0zZMQoWMy02lxaan+ybVQqqZctOMZCqovOt3lxyCNyguLPh5RLFMjyPd2YCOs7Z1ysUo8oPIPCR4zdMEq2lJga9bDfallDso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=uZzgZR3g; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nGz9uQSj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DFBC433F1;
-	Fri, 15 Mar 2024 15:50:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710517847;
-	bh=GNo8DvOCyNH+fBflb4vOPG62jKEW0NN1t2gGBuQJWQY=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=nGz9uQSjqCeI70vG3Y6NOHsrruye8xQqCKIYD8s+56YzteM1h905tBBYtEMxtrfZx
-	 0vtUvfIncQzhd9bL0ZXevhROxhyzMReAfTL6I+O6UKAKsJTFbAfNYudrRWOxDHSO/q
-	 paKhDUYMysjEYcXnh9E3pqSW225lReplFB9TjD8tus09j9yuvYaa1tWfc0+LuqZZRN
-	 jrZZEgRjiYAxsCDNPugkBfex8Stk6m1URdxfITb4c3lzvMU9xrRzGa35Yz3wW/Vs89
-	 4if6+Tz5N8z6eLXcwdXCG09183vQ7t9yDZ9f/3byR3uZ9Jh0amb2n+k+VtRJQhoDcH
-	 7zXHOfsY3GIYw==
-Date: Fri, 15 Mar 2024 09:50:45 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="uZzgZR3g"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a2f22bfb4e6so305942866b.0
+        for <phone-devel@vger.kernel.org>; Fri, 15 Mar 2024 09:04:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1710518667; x=1711123467; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oEkvKZn2d1cHdZ6UttH48shh7x+tm1u4UGnsox8Pajk=;
+        b=uZzgZR3gWzYUgt/PZJlVxTY2ZE2sDeoc5K7567+HJU0/fuVvB1Qu1upq5mz/GYXa+S
+         /+pR2KiSopkUproiZseMX08QLYr43IAgaxpize6zSSEUV5joTjN5IO5MGmGYavvNRDuZ
+         Bz49D/MnZ/fTjqGcPhepTE/mZHZ+/BeC05R42AaiFzm1unsNLSab4C2/kYu7FjsCqHaL
+         0ni3qj1R9yCOdXKqfTLvZ3aB7EIoXvB5SV4x+zck489dCIDC4Tn25BIi1Nu8Etq9QhiX
+         5DRs2baCbK4ezNzNPFKMFivdhhOBC+W58ipuaaY+6ZPYAoEm4mMlisyQFfDRNrE5Reqb
+         FKcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710518667; x=1711123467;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oEkvKZn2d1cHdZ6UttH48shh7x+tm1u4UGnsox8Pajk=;
+        b=Y+OHhTazGyXOdjDzS/hpVpVF62eajcua8uGuO2DVs9IDql5stUScbZYih4dkAUxZrH
+         2cLFkzkKHeLYymbNB3b7C6/yBWmn/v6KPmtAkpEPrnc644MmtlFcnA57KHwL3L4+nYWR
+         NiKV7gED5qmwKe+oaOYjWWglH5cYbxCbg0u01gUvwzNDvAhJLD8RjF5c+j6U8Yan4DAy
+         qceYKQYXQRP5co9Lyy7sihzw1BCQ+Br8VGUS1yUrG1zZu7Op68uzJGVyKfcSojUwteKq
+         72zZ4EV1d5A0lWUSQNjG52xS9wvHmiPs1i7JXEhkMUyNV6W78h5ObCRtXJJn47chdGEX
+         U/bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWB0TPRvOLMk0ElM0vLPXHOk95l9bzRhLrlCKjYvWPv+KKr1cyV70xX2MYMGQ985G9OkzijoeZ92oJW1Rr6HPErBcT09R3t9MfhP04=
+X-Gm-Message-State: AOJu0YxxlCanBtcfdmPxbRAIfjw7q7ydWD4a1fs2vBToV/yYq/YUUY1A
+	z7+VH7jFA0YuJvzNnOEbq4EBlEvxLqBeJATjJ5Rihbtr7yaqpu8OWHiXSHA4pow=
+X-Google-Smtp-Source: AGHT+IHsdRPSLjh2pfnZbg/sjdZRuqxBUf7OCP9LULpsybl02qKzFwkUtJvej+Qmg2MWXFSq72Y/Xg==
+X-Received: by 2002:a17:906:c245:b0:a43:f22e:57a6 with SMTP id bl5-20020a170906c24500b00a43f22e57a6mr3672338ejb.67.1710518667125;
+        Fri, 15 Mar 2024 09:04:27 -0700 (PDT)
+Received: from otso.luca.vpn.lucaweiss.eu (213142096067.public.telering.at. [213.142.96.67])
+        by smtp.gmail.com with ESMTPSA id kt6-20020a170906aac600b00a4673706b4dsm1648047ejb.78.2024.03.15.09.04.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Mar 2024 09:04:26 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Fri, 15 Mar 2024 17:04:22 +0100
+Subject: [PATCH] usb: typec: ptn36502: switch to DRM_AUX_BRIDGE
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Luca Weiss <luca@z3ntu.xyz>
-Cc: Bjorn Andersson <andersson@kernel.org>, linux-kernel@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, devicetree@vger.kernel.org, 
- Conor Dooley <conor+dt@kernel.org>, Adam Honse <calcprogrammer1@gmail.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Rob Herring <robh+dt@kernel.org>, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org
-In-Reply-To: <20240314-samsung-hlte-v2-0-84094b41c033@z3ntu.xyz>
-References: <20240314-samsung-hlte-v2-0-84094b41c033@z3ntu.xyz>
-Message-Id: <171051664251.1380101.17946022685245274327.robh@kernel.org>
-Subject: Re: [PATCH v2 0/2] Add Samsung Galaxy Note 3 support
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240315-ptn36502-aux-v1-1-c9d3c828ff2e@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAIVx9GUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDY0NT3YKSPGMzUwMj3cTSCl1D05QUszQjC8vEtDQloJaCotS0zAqwcdG
+ xtbUADC3eFF4AAAA=
+To: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.13.0
 
+Switch to using the new DRM_AUX_BRIDGE helper to create the transparent
+DRM bridge device instead of handcoding corresponding functionality.
 
-On Thu, 14 Mar 2024 20:00:13 +0100, Luca Weiss wrote:
-> Add the dts for "hlte" which is a phablet from 2013.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-> Changes in v2:
-> - Correct property order (Konrad)
-> - Pick up tags
-> - Link to v1: https://lore.kernel.org/r/20240310-samsung-hlte-v1-0-e9b55bf98a48@z3ntu.xyz
-> 
-> ---
-> Adam Honse (1):
->       ARM: dts: qcom: msm8974: Add Samsung Galaxy Note 3
-> 
-> Luca Weiss (1):
->       dt-bindings: arm: qcom: Add Samsung Galaxy Note 3
-> 
->  Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
->  arch/arm/boot/dts/qcom/Makefile                    |   1 +
->  .../boot/dts/qcom/qcom-msm8974-samsung-hlte.dts    | 401 +++++++++++++++++++++
->  3 files changed, 403 insertions(+)
-> ---
-> base-commit: 90d35da658da8cff0d4ecbb5113f5fac9d00eb72
-> change-id: 20240310-samsung-hlte-78d1a287b0a8
-> 
-> Best regards,
-> --
-> Luca Weiss <luca@z3ntu.xyz>
-> 
-> 
-> 
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Very similar to this patch:
+c5d296bad640 ("usb: typec: nb7vpq904m: switch to DRM_AUX_BRIDGE")
+---
+ drivers/usb/typec/mux/Kconfig    |  2 +-
+ drivers/usb/typec/mux/ptn36502.c | 44 ++--------------------------------------
+ 2 files changed, 3 insertions(+), 43 deletions(-)
 
+diff --git a/drivers/usb/typec/mux/Kconfig b/drivers/usb/typec/mux/Kconfig
+index 399c7b0983df..4827e86fed6d 100644
+--- a/drivers/usb/typec/mux/Kconfig
++++ b/drivers/usb/typec/mux/Kconfig
+@@ -60,7 +60,7 @@ config TYPEC_MUX_PTN36502
+ 	tristate "NXP PTN36502 Type-C redriver driver"
+ 	depends on I2C
+ 	depends on DRM || DRM=n
+-	select DRM_PANEL_BRIDGE if DRM
++	select DRM_AUX_BRIDGE if DRM_BRIDGE
+ 	select REGMAP_I2C
+ 	help
+ 	  Say Y or M if your system has a NXP PTN36502 Type-C redriver chip
+diff --git a/drivers/usb/typec/mux/ptn36502.c b/drivers/usb/typec/mux/ptn36502.c
+index 72ae38a1b2be..0ec86ef32a87 100644
+--- a/drivers/usb/typec/mux/ptn36502.c
++++ b/drivers/usb/typec/mux/ptn36502.c
+@@ -8,7 +8,7 @@
+  * Copyright (C) 2023 Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+  */
+ 
+-#include <drm/drm_bridge.h>
++#include <drm/bridge/aux-bridge.h>
+ #include <linux/bitfield.h>
+ #include <linux/i2c.h>
+ #include <linux/kernel.h>
+@@ -68,8 +68,6 @@ struct ptn36502 {
+ 
+ 	struct typec_switch *typec_switch;
+ 
+-	struct drm_bridge bridge;
+-
+ 	struct mutex lock; /* protect non-concurrent retimer & switch */
+ 
+ 	enum typec_orientation orientation;
+@@ -283,44 +281,6 @@ static int ptn36502_detect(struct ptn36502 *ptn)
+ 	return 0;
+ }
+ 
+-#if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
+-static int ptn36502_bridge_attach(struct drm_bridge *bridge,
+-				  enum drm_bridge_attach_flags flags)
+-{
+-	struct ptn36502 *ptn = container_of(bridge, struct ptn36502, bridge);
+-	struct drm_bridge *next_bridge;
+-
+-	if (!(flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR))
+-		return -EINVAL;
+-
+-	next_bridge = devm_drm_of_get_bridge(&ptn->client->dev, ptn->client->dev.of_node, 0, 0);
+-	if (IS_ERR(next_bridge)) {
+-		dev_err(&ptn->client->dev, "failed to acquire drm_bridge: %pe\n", next_bridge);
+-		return PTR_ERR(next_bridge);
+-	}
+-
+-	return drm_bridge_attach(bridge->encoder, next_bridge, bridge,
+-				 DRM_BRIDGE_ATTACH_NO_CONNECTOR);
+-}
+-
+-static const struct drm_bridge_funcs ptn36502_bridge_funcs = {
+-	.attach	= ptn36502_bridge_attach,
+-};
+-
+-static int ptn36502_register_bridge(struct ptn36502 *ptn)
+-{
+-	ptn->bridge.funcs = &ptn36502_bridge_funcs;
+-	ptn->bridge.of_node = ptn->client->dev.of_node;
+-
+-	return devm_drm_bridge_add(&ptn->client->dev, &ptn->bridge);
+-}
+-#else
+-static int ptn36502_register_bridge(struct ptn36502 *ptn)
+-{
+-	return 0;
+-}
+-#endif
+-
+ static const struct regmap_config ptn36502_regmap = {
+ 	.max_register = 0x0d,
+ 	.reg_bits = 8,
+@@ -369,7 +329,7 @@ static int ptn36502_probe(struct i2c_client *client)
+ 	if (ret)
+ 		goto err_disable_regulator;
+ 
+-	ret = ptn36502_register_bridge(ptn);
++	ret = drm_aux_bridge_register(dev);
+ 	if (ret)
+ 		goto err_disable_regulator;
+ 
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+---
+base-commit: 9bb9b28d0568991b1d63e66fe75afa5f97ad1156
+change-id: 20240315-ptn36502-aux-15dd6f289aff
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y qcom/qcom-msm8974-samsung-hlte.dtb' for 20240314-samsung-hlte-v2-0-84094b41c033@z3ntu.xyz:
-
-arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dtb: /: memory: False schema does not allow {'device_type': ['memory'], 'reg': [[0, 0]]}
-	from schema $id: http://devicetree.org/schemas/root-node.yaml#
-arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dtb: l2-cache: Unevaluated properties are not allowed ('qcom,saw' was unexpected)
-	from schema $id: http://devicetree.org/schemas/cache.yaml#
-arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dtb: idle-states: 'spc' does not match any of the regexes: '^(cpu|cluster)-', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/cpu/idle-states.yaml#
-arch/arm/boot/dts/qcom/qcom-msm8974-samsung-hlte.dtb: syscon@f9011000: compatible: 'anyOf' conditional failed, one must be fixed:
-	['syscon'] is too short
-	'syscon' is not one of ['allwinner,sun8i-a83t-system-controller', 'allwinner,sun8i-h3-system-controller', 'allwinner,sun8i-v3s-system-controller', 'allwinner,sun50i-a64-system-controller', 'amd,pensando-elba-syscon', 'brcm,cru-clkset', 'freecom,fsg-cs2-system-controller', 'fsl,imx93-aonmix-ns-syscfg', 'fsl,imx93-wakeupmix-syscfg', 'hisilicon,dsa-subctrl', 'hisilicon,hi6220-sramctrl', 'hisilicon,pcie-sas-subctrl', 'hisilicon,peri-subctrl', 'hpe,gxp-sysreg', 'intel,lgm-syscon', 'loongson,ls1b-syscon', 'loongson,ls1c-syscon', 'marvell,armada-3700-usb2-host-misc', 'mediatek,mt8135-pctl-a-syscfg', 'mediatek,mt8135-pctl-b-syscfg', 'mediatek,mt8365-syscfg', 'microchip,lan966x-cpu-syscon', 'microchip,sparx5-cpu-syscon', 'mstar,msc313-pmsleep', 'nuvoton,ma35d1-sys', 'nuvoton,wpcm450-shm', 'rockchip,px30-qos', 'rockchip,rk3036-qos', 'rockchip,rk3066-qos', 'rockchip,rk3128-qos', 'rockchip,rk3228-qos', 'rockchip,rk3288-qos', 'rockchip,rk3368-qos', 'rockchip,rk3399-qos', 'rockchip,rk3568-qos', 'rockchip,rk3588-qos', 'rockchip,rv1126-qos', 'starfive,jh7100-sysmain', 'ti,am62-usb-phy-ctrl', 'ti,am654-dss-oldi-io-ctrl', 'ti,am654-serdes-ctrl', 'ti,j784s4-pcie-ctrl']
-	from schema $id: http://devicetree.org/schemas/mfd/syscon.yaml#
-
-
-
-
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
 
