@@ -1,59 +1,59 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988D453381
-	for <phone-devel@vger.kernel.org>; Fri, 15 Mar 2024 19:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF86E5337A
+	for <phone-devel@vger.kernel.org>; Fri, 15 Mar 2024 19:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710531673; cv=none; b=hi0SzrehM92QfCWUxy67w3l0B2zcDq+faes+D+Ab9bskbLFhKfVNYV5JxF3r0xe1RgcmrX2UxFUo7FFCK6LL4qOFdu79QdOA/O8sovdr+HoTLK2ybkBE6I1Z+EIFWCOhcMmovOIoMCJVWJEJKo8dCAV+0nmQTNAClQimEFSC+EM=
+	t=1710532337; cv=none; b=GsZQzuH+sbMKpPgZRQ0FDBlorZZnJEyq2gYrOxGwFQF8ZcJPQ8bA5TJOb922uX/liWCXJ6n1YcDXKdTx7xoDvJkTHIZqJdgOA/49JD0kyGFeFSLF+JfDTY+7q5IkpluIr7ZsowJgcuS+63qT0k51Fe7apgBgsbxDMVTc5DuEdeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710531673; c=relaxed/simple;
-	bh=GbYotQmMgtQybIND8prbE3WwO9krdH1I+QYEaEGp084=;
+	s=arc-20240116; t=1710532337; c=relaxed/simple;
+	bh=Oa9QWweedRF6jpfo/nRk+i60JCiExm98a5CdcH2Mr+0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IX8M5jTWcPV5oRo6UtbVAMe5KgeGwVsu8KYAlMe/t6X9pvHUXaadRSUIXw6SQL3wUN8P4U1uphrj1vxMBwxQJTwtuzCkfOJOwGdsgRQtkRPG5NbZnhRejBUKlDEIQliuxIjhJFXDoXXOPVc9QQ3QylgZ4xQtwEJlRuR5rOP1bDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sXF9z5oT; arc=none smtp.client-ip=209.85.167.42
+	 In-Reply-To:Content-Type; b=lApA2+7VOtl5YsmEIrOzlQXwBJxJD6MdWbYyvpezOO8m6of/WjmC3+y2Na/y0deOXJhFm5zVPQa7BfFKXsOCKRg75Wc6Ithd9quwhRyh4v53OWtldO4CHcRTmycFW8Gb/D3lJh9ltwGySrrONX4/GaBuLXZ8m2mpccKb9lU9hdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=B5As7fuD; arc=none smtp.client-ip=209.85.167.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sXF9z5oT"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-513c982a619so3359906e87.2
-        for <phone-devel@vger.kernel.org>; Fri, 15 Mar 2024 12:41:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="B5As7fuD"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-51325c38d10so3237965e87.1
+        for <phone-devel@vger.kernel.org>; Fri, 15 Mar 2024 12:52:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710531668; x=1711136468; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1710532332; x=1711137132; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=2Op3WUS+HnQ1MSTuo6IlmQI7jlDL7WBXudDOfV1bwFw=;
-        b=sXF9z5oTUKoA1KXFTxJhV/idf46lK+oZ9uuVEOguSBHckG7/rJtC4EatX6VcZpomew
-         sWQTqmmWB0FGFiVLF1WDqeSbHdk8RTnblXZQPsuwJ7O0CrqEWC5F7ii0N5FB9AiR7vj9
-         Od89eiDtSe2U2WYaKyFxLFWqPcMTUpepL0LQGFmUSYyPN/+rxq9af85XgffEOqoi2ftt
-         i5r4DfhNGkCNcztmBTvzjkKtpnnpThc54dX+tbvYgsnvzC1uyVk3XtLc/Fmb9w1nFAXa
-         /IY8x8rTfAYFax52T3ERzk8NWqpJNj5A54D6xOR1PUaR9UiZhoHaAIzXG7KWsFqq9qdi
-         4x1g==
+        bh=LvSepV5Zd+55lgwXRxtPp7+i7xc6kKJVG1QWydHr3/0=;
+        b=B5As7fuDJ6/8iT852LsiNE5jsCyNggMIsyJrKV0+WANOtPaO1cX7/J0jsD21xRiYtu
+         m2XGH/UdlCCwrQ6U2t1Xl2qA+VCjekq9T63QNh6HFb11CHRDyNgOcTx0nG2htCe+lD3c
+         oymJ2H9aVECqy7T+XnMoXtG57JN879R1YJ/hGyROMP5nmHseVFcLxKCM6cGGzNoIhzli
+         AIO3hex1cCpB3n16Frs5hXleHiwC/8I2PPq0hExJiHfNVB+5WijdGf94vf5wy84mTUGb
+         p9y+4pU3ru8WRrgTDt7YIj/GyPgrvtsklnjQz/UCM9cZeYBlrYpCyoWmMF4nbTPhUDJA
+         Hf/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710531668; x=1711136468;
+        d=1e100.net; s=20230601; t=1710532332; x=1711137132;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Op3WUS+HnQ1MSTuo6IlmQI7jlDL7WBXudDOfV1bwFw=;
-        b=V9FU4F057Xfub6CqMBTp+nacwcIMIqVyL4KaQhx8BRCT71aDx6UfyFykqEOQjUFYLV
-         U3gk2zNzQ4tMgEKChgYqORXZsWbrXSGhNIIQwXaFm10hpfKZtH0F6Jq7N+qSyxnw7PGZ
-         b2NUcg++k9oLwydNPu+Sjki9+SFFHNtGdSUSd/uBI1lRh759IMs3Bzb12tZMdEJnIh6h
-         fAZJNztmgdXCWAz4QlYxn/QecUH+oyE4V46TPLsBtQhj7YaEqdGZykR0r9YHjLsQCjcQ
-         uHl/OC3QIw/ERXDWLTWuh0U09JnwEWFrMTUnaAuQ6XIKy5MXwfFdvrXq0ebMvNEG866D
-         COjw==
-X-Forwarded-Encrypted: i=1; AJvYcCUfIRp4t5Ke7HuzrKKvjEOTtkS3a0PQj57BywICli4UK2d3JEr0lVlKqcildfKZeL/FQmK5RJflduB05UaXfoHb9p+Gm6ofy9gozn4=
-X-Gm-Message-State: AOJu0YymXExD3hCIcZzvHQLWvPGcTybKL1SCXazfLylX00ujizoQGWIN
-	2U6BBbDwGCSXYV1Rqy9eiH+rnGNRsMYd/gsIReeO8acLsf3ooMzcghhEr3qL6Dc=
-X-Google-Smtp-Source: AGHT+IG8F5j08AHnY1FsONK9wX0FrYuPZ7XzzUiVzJWITW1cZIO2jaPr7G7Bp//tKasb0z3bjvuh0w==
-X-Received: by 2002:a19:2d4b:0:b0:513:ca4c:db6 with SMTP id t11-20020a192d4b000000b00513ca4c0db6mr948245lft.9.1710531667853;
-        Fri, 15 Mar 2024 12:41:07 -0700 (PDT)
+        bh=LvSepV5Zd+55lgwXRxtPp7+i7xc6kKJVG1QWydHr3/0=;
+        b=sQ3mf/jpc2O+3iBNq0lWZpa31o2j6fLPKGryXMtUn9bFaTum0USaa/+9Z6aRLIqF8W
+         GxyJxF7VbOdpY/CnqISihCmHLLXdxYbU4Ou8+oizbDX304uNCnqDSIaLl0IZ110QF6LH
+         zj0qO5tIukCc0hQOjOVlryXPXzAwfF61da3zyjrDntrZAPkqknaAGoOSzEh/5NSJCYWa
+         17Wl7D1c/vP7001lx3jQuAe9U4T2+P7b5SkSDjPg4TU0gX8XDh12VuG2n1dfpHiD6Gao
+         pzslGlGd5z5O3DuYYBDuPRpmplZIQ0qNjlEEtJdVBNkCM/qSuqPBINdGge+WbLNNtLjT
+         8RnA==
+X-Forwarded-Encrypted: i=1; AJvYcCX01J4x9SmKqeJVPRw/6FfLn3rp0HChuS/NZTxP/5Y4eJ62s2JqgGftpa73ZaIXcjtcutzdMe8+UzM/K3UsabWaptuU3qNzB6vXORk=
+X-Gm-Message-State: AOJu0YwZBf5JZPpzSYmrh7tYLOfnCpB+qS7oatphW9P1bDPoljO0RGdr
+	XysoThV0w9EN+b9FFve8MxLO7XCMPoyERZCmWRrrl/lKQ6Ar5Iv5MCPetlqRnmg=
+X-Google-Smtp-Source: AGHT+IE+9ZShxgEICTEsvSGunqK7oZPfU2+fKgKDLr/Z88m6fSC8xKsuOyAOJBFcl64gaHm6wxt0Uw==
+X-Received: by 2002:a19:2d02:0:b0:513:dfac:b29e with SMTP id k2-20020a192d02000000b00513dfacb29emr86198lfj.26.1710532332046;
+        Fri, 15 Mar 2024 12:52:12 -0700 (PDT)
 Received: from [192.168.223.169] (078088045141.garwolin.vectranet.pl. [78.88.45.141])
-        by smtp.gmail.com with ESMTPSA id v9-20020a197409000000b00513d021afd1sm723212lfe.103.2024.03.15.12.41.06
+        by smtp.gmail.com with ESMTPSA id v27-20020a05651203bb00b00513d595f775sm477121lfp.101.2024.03.15.12.52.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Mar 2024 12:41:07 -0700 (PDT)
-Message-ID: <306e44cc-1b44-47d8-a475-b34cfcc7e8c9@linaro.org>
-Date: Fri, 15 Mar 2024 20:41:06 +0100
+        Fri, 15 Mar 2024 12:52:11 -0700 (PDT)
+Message-ID: <82d2249a-2854-46e3-ac86-7b5415ce3590@linaro.org>
+Date: Fri, 15 Mar 2024 20:52:10 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -61,17 +61,17 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] ARM: dts: qcom: msm8974: Add Samsung Galaxy Note 3
+Subject: Re: [PATCH v2 3/3] ARM: dts: qcom: Add Sony Xperia Z3 smartphone
 Content-Language: en-US
 To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
  phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
  Rob Herring <robh+dt@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Adam Honse <calcprogrammer1@gmail.com>
+ Conor Dooley <conor+dt@kernel.org>
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-References: <20240314-samsung-hlte-v2-0-84094b41c033@z3ntu.xyz>
- <20240314-samsung-hlte-v2-2-84094b41c033@z3ntu.xyz>
+References: <20240314-shinano-common-v2-0-a0fce1c72c74@z3ntu.xyz>
+ <20240314-shinano-common-v2-3-a0fce1c72c74@z3ntu.xyz>
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -108,19 +108,32 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20240314-samsung-hlte-v2-2-84094b41c033@z3ntu.xyz>
+In-Reply-To: <20240314-shinano-common-v2-3-a0fce1c72c74@z3ntu.xyz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 14.03.2024 20:00, Luca Weiss wrote:
-> From: Adam Honse <calcprogrammer1@gmail.com>
+On 14.03.2024 19:56, Luca Weiss wrote:
+> Add the dts for the Xperia Z3 smartphone which is based on Sony's
+> shinano platform, so at the moment there's little device-specific dts to
+> add on top of the common parts.
 > 
-> Add the devicetree for this "phablet" using the Snapdragon 800 SoC.
-> 
-> Signed-off-by: Adam Honse <calcprogrammer1@gmail.com>
-> [luca@z3ntu.xyz: clean up, prepare for upstream]
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > ---
+
+[...]
+
+> +
+> +&smbb {
+> +	usb-charge-current-limit = <1500000>;
+> +	qcom,fast-charge-safe-current = <3000000>;
+> +	qcom,fast-charge-current-limit = <2150000>;
+> +	qcom,fast-charge-safe-voltage = <4400000>;
+> +	qcom,fast-charge-high-threshold-voltage = <4350000>;
+> +	qcom,auto-recharge-threshold-voltage = <4280000>;
+> +	qcom,minimum-input-voltage = <4200000>;
+
+I took a quick look and without going deep into downstream code,
+these values look sane, so
 
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
