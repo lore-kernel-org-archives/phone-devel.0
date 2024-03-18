@@ -1,93 +1,132 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744122C19E;
-	Mon, 18 Mar 2024 09:25:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C8B2C1B9
+	for <phone-devel@vger.kernel.org>; Mon, 18 Mar 2024 09:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710753954; cv=none; b=sMg982V56rpVKEgXoOxIS9uVdZDo2RGygmy5gxd3BUYbII/bDmKCFwQl52wEtoNwDHrBOZl+JrIHHjnL1I5GEkq/NfBfGEvZCR+YML6QjVHHpDEDS9fi9wpkHvU4381GBSTVqvpHC3PrJKGluNJWgfsCZzPPXaiiTBMwVZJTSCU=
+	t=1710754810; cv=none; b=k2wy9lxAJ755+s0KElAGljpqSAUCEREc9V8vGTOr7QfIQzZJ4sctZ3e/MhpJ5p2c+748VR8yBaffYUpnrdEqelT2+OBsXwDrOlQwWB/7CpONA8eBFO4OblGucecWvkcOGb9b+cEu9rVMk7H6Fmdpjl27Rk1rBQCE5VBX8TNPTrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710753954; c=relaxed/simple;
-	bh=L1UpTSN7UXeC2nV0xnPO/HYkkugB3NgHeKuHDXy2qTY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mYboqvOD9cFA006eMcTsk5ZRUwCSFxoyhfrLuM+Ws5QA9s0di8MY8cChWUYUtOch/XuJFmRgGIa8XbV+scexO0GSasZCBnrPZFTaOUpf0NYS2E10ADz3RRpTEV8lIS011FE12itw5CzDOIHd/gMyeRpIJhmxAjcTsyTEuu9Su1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=F5R/vzhE; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
+	s=arc-20240116; t=1710754810; c=relaxed/simple;
+	bh=+nTuf6loIWe5gL+9EwbER9eFj0ZkcLrpngj3c6sLprg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=spPTu+qnWHAG2w1/E42ps1pPmWwbp/MRa2C+oSsxf8W7PnRrDjJ2hfgAOyjnNFv47TfDKNeGYkVoe3Qr+v16YAYKBr+UEpwZj6Z8utoBkdF+xCjGFDsbthsO56UDhHfVt+OP1nuJk/lmnquMW4wVoXHp2V59LYUjHM6Qb45jTsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MiaLcLVf; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="F5R/vzhE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1710753943; bh=L1UpTSN7UXeC2nV0xnPO/HYkkugB3NgHeKuHDXy2qTY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=F5R/vzhEu7Gp6WsBWPWDLJRagnVPpcd1ud3t/hz3CzR9sSSIrZpcLaIhIfl8c2c1J
-	 WNqlu90/dQ2iaxSA3IR6nKEWLI8zx7iCpf9c05zcPsQQ/bAt6aGq0vuroJLuvIFZNC
-	 zmVZKsFKylakyF3RpQ2+g6y/oBZIdo3FDxRK0T9A=
-From: Luca Weiss <luca@z3ntu.xyz>
-Date: Mon, 18 Mar 2024 10:24:41 +0100
-Subject: [PATCH 1/2] ARM: dts: qcom: msm8974: Add @0 to memory node name
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MiaLcLVf"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-513dc9d6938so2950620e87.2
+        for <phone-devel@vger.kernel.org>; Mon, 18 Mar 2024 02:40:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1710754807; x=1711359607; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=LqU6kOAU8rpeqlL+Vm6Vf2O79xdvQvsZszAfDGgY1mg=;
+        b=MiaLcLVfDcd/1DWlVew3srVBFFZX2gAWkf2Zyl1OkswCmCVpD7dJlxnZevnkuw5oBA
+         46k8L7CKpjIez4i9LEXed5nIV0S2CUX7+knfDhxLLeK+xZ7vf8Ib0t8tV792QxDxlXNg
+         GvMF5PLIQVeJcxrN2v9Y2LNAweoPi320s6KeJ6JVuDHhg4geaLu0CyFSqzonSgzUu6aW
+         VBXqxzHEizXWXc8eKNpaTlfuybniowsnNu3a0Vylb5hKOxiBeXhsHaXCsffzuQU28fNL
+         F+uycPUElVADVTm8yn3O9RJEK6xwZC+jiWmSma2NGGDJrF8SIhb3BdxtBzHypbLkBRjQ
+         w8FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710754807; x=1711359607;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LqU6kOAU8rpeqlL+Vm6Vf2O79xdvQvsZszAfDGgY1mg=;
+        b=erRIVogG1xjQ73Oig7eewkWp3vohdobCQjGuR5Qf8+KBPbfmSLQaJsLMbHkTqOT07n
+         FAz3dud7TO4Z53e54lKd6CB7S2PlB93ApfLpveoQru5QDqFaXGeoAEDv/Sr1FQP0MEIR
+         C6bm/mlL6o0KRTfX2Kn7ATJ63lAVEbsDeye5L1IU9z7GH/lBDqsDOGBuTpCyAlsEKvNZ
+         5jGzaccZM99gWGAxMuOFYquUio8f7YnVdZTkjbnCZ5WNhMYoorYCCOF2yDIWM4DMIdtn
+         FVXY6kckr5fGJjGz7BomkiTJMFabU5tx1qaPtSj/bqpw9uLgxARO9pJ4d1U1KVlHpkvT
+         Eq7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXBxTuNzbYIq6cAuhrX0uV33BPUQHLVuOL8SukQfiIyA9Sgj1joFPUxi2fz8TzURezCWgCsI1VOdopk95iD9EQcaKI5ZSYhcT+rldk=
+X-Gm-Message-State: AOJu0Yx7ibNNHPYTcrpY8dc4/qsbSmSS2WRAbW6z+ZAepWeY/SyQdmp0
+	oG+STmTLMhQTjF0yfHk4xI2IkWVDkZDPvEAyNmKU4wkUiTdHWduKq+lLOgSvMaQ=
+X-Google-Smtp-Source: AGHT+IFKR1OSClPjI0WaNCRV9G/nPbNvHy9E4vtWCGHbi8o45TYlAayXdAfA56lZQhMn0HWoHSbOjg==
+X-Received: by 2002:ac2:4acd:0:b0:513:cf5a:f872 with SMTP id m13-20020ac24acd000000b00513cf5af872mr7197314lfp.69.1710754807180;
+        Mon, 18 Mar 2024 02:40:07 -0700 (PDT)
+Received: from [192.168.52.106] (078088045141.garwolin.vectranet.pl. [78.88.45.141])
+        by smtp.gmail.com with ESMTPSA id q11-20020ac2514b000000b00513e3190eeesm642816lfd.171.2024.03.18.02.40.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Mar 2024 02:40:06 -0700 (PDT)
+Message-ID: <5e5a7792-d7a6-4a60-8431-175fa23b1d6d@linaro.org>
+Date: Mon, 18 Mar 2024 10:40:03 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240318-msm8974-misc2-v1-1-f71668a2b8cd@z3ntu.xyz>
-References: <20240318-msm8974-misc2-v1-0-f71668a2b8cd@z3ntu.xyz>
-In-Reply-To: <20240318-msm8974-misc2-v1-0-f71668a2b8cd@z3ntu.xyz>
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] ARM: dts: qcom: msm8974: Add @0 to memory node name
+To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1007; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=L1UpTSN7UXeC2nV0xnPO/HYkkugB3NgHeKuHDXy2qTY=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBl+AiTj8QN5MFTgHjuwUeQxDim5gVwoAn0Em6sH
- jNQPSdBRfaJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZfgIkwAKCRBy2EO4nU3X
- VlaYD/wNa6uxkbCok+eZOEKA3UFTsmdHqKiDR3jSgtXT8zZBuhKVRDMUAqEgEpKQlk9R5HfKJMl
- gKbOm+Fsx4GUzL4+aCPe7/P8OPVJpYosLRGD6pN3H0mtbyKgZo2HGBvhzWhV5NFFnkKhKp8pYPW
- zqkIkJXw/WTB865ldOzBH8JX7izDhjzUj7CjqcA0wNTHy1zA+2Qgm/rkDkYxBMQA8Lpyca8u3Xb
- mO7qlEBuHvzOWFHaOkaIyV2/AuBmPrgYYTwyUBcH4yJkANpqURn70uYbgtakX3mKntrB7vgbpZF
- rqfcEeh5/9tD5i7kolgvjkwfZPgU7rqvUlNwDfY6mnTRamxM3A0ww2nBqu2q1YIQUacmTK06Nwf
- jQ9v+AxJld8piVs8VWxNO71K+oYOGqOK1Yr0p73+PFAOqLaAbZlVSVv2mw4AP/Nz9+i8M3w4sXU
- cfr8O/wE4CWbW8Edg9+vyzrHb/UhqB5EbQOPgCdT++4rGmSzSfk1Vhn3fwfh7f+pRmbQIEM9ra+
- lJnHqMmAr14hByZHkk50lzQImGj1dsns8cfzUl4/DSUkX+CG6vK/0eBDsSbdIDPDtnTxqFNJkXK
- Vp4BIg41DBivbDIDerlgjLgO4UyKGaQtlxZtVohhPgR6aherx7KerYw8ICFsSoqBt/JxcKZKg56
- VLgzP9gtfWZ4uEg==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240318-msm8974-misc2-v1-0-f71668a2b8cd@z3ntu.xyz>
+ <20240318-msm8974-misc2-v1-1-f71668a2b8cd@z3ntu.xyz>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20240318-msm8974-misc2-v1-1-f71668a2b8cd@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add the @0 from reg to the node name, so that both dtc warning and dt
-validation failure get resolved.
+On 18.03.2024 10:24, Luca Weiss wrote:
+> Add the @0 from reg to the node name, so that both dtc warning and dt
+> validation failure get resolved.
+> 
+>   arch/arm/boot/dts/qcom/qcom-msm8974.dtsi:106.9-109.4: Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
+> 
+>   [..]/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dtb: /: memory: False schema does not allow {'device_type': ['memory'], 'reg': [[0, 0]]}
+>           from schema $id: http://devicetree.org/schemas/root-node.yaml#
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
 
-  arch/arm/boot/dts/qcom/qcom-msm8974.dtsi:106.9-109.4: Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
+Looks like it's indeed the start of RAM
 
-  [..]/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dtb: /: memory: False schema does not allow {'device_type': ['memory'], 'reg': [[0, 0]]}
-          from schema $id: http://devicetree.org/schemas/root-node.yaml#
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- arch/arm/boot/dts/qcom/qcom-msm8974.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi
-index 5efc38d712cc..00c6526a525d 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974.dtsi
-@@ -103,7 +103,7 @@ scm {
- 		};
- 	};
- 
--	memory {
-+	memory@0 {
- 		device_type = "memory";
- 		reg = <0x0 0x0>;
- 	};
-
--- 
-2.44.0
-
+Konrad
