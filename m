@@ -1,48 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78601210EC;
-	Mon, 18 Mar 2024 12:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D7F249EB;
+	Mon, 18 Mar 2024 13:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710766171; cv=none; b=lEmA4837qk2S167/GBOqcQNTz0rj3Rf314wGbUxpE7zUcDQ8jZHRTmpPiK3A9C5mkqvxWUJfCQWMV3fHpD1E170ZnxzSiOPNIWStCmWOVTs//LM8xRRMKlBQMBzmK1IVYF4aPpxdVD+cuSj0+Hd3XN8iB8UNJi0guunFyA7C08c=
+	t=1710769325; cv=none; b=D8MgFhMSjiHMtFXHHznRk5UHVVGPCUrha5X1LjSkvJTwlExMOcSGqpeQ/sjHSn1y6GW1Hiw+tz9p+CUuH+72gm08O0Pvos9MvB/ewpiWMqFYxn0cePv0mMnt/+f2ZycTs34bYRfHLxS4tdZOj+9XI3Y5GtJRvPR7UrmuARtjzYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710766171; c=relaxed/simple;
-	bh=GG08uu/7PRYcHnUSeAcc70mgP29OlkALxz8qX43lSQs=;
+	s=arc-20240116; t=1710769325; c=relaxed/simple;
+	bh=QwXw278uS5af1/QLWBfT+3opLUTGo1Iotai2VsBacwA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WZKYMhmEM48uF3Ttf8oZct5RfI3Pp/pTq3yrAhL1D2Pj/1o9ags2R0aDwn99I+3o1gz6DDHznMdowZEg+1uKbDX7Zv3inMYOLL/5rMXrzwewrifNvp8nHst3ljfahWUpE6Ys4r4gkxqJu5gtA7rEyRrRsB4G3G5bFYBo7A57tcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ijW2ZALP; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=LZISPGT8NWMXj6EKwwOKkAsTbRv3/Fm5AdFIgUnJbT4RBPneYWNS3MTTW9XVJMQRMNZikTSbveO28r6f9ESOTSP089gMVtrqnQDpRWcS1oRiM4b8HMN+EqKcUSNGAf/Mbd2xxUvcVv81+mOXunxMsuYgk+ARVykIbS7sYRc2h8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OzCR2FHY; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ijW2ZALP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OzCR2FHY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710766169; x=1742302169;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   mime-version:in-reply-to;
-  bh=GG08uu/7PRYcHnUSeAcc70mgP29OlkALxz8qX43lSQs=;
-  b=ijW2ZALPYTDspEVzFEGEi4Bp4PFYBaozUcE88qB7aXEdGvucQcHnipLa
-   UC+5XaAfnW8M/iVQKyC0JShQAizlDSOkb0LWFbL3TW8YIvt/IzZYzWCaa
-   nPMZ/HrZuSZ0BprSDCqrau7SxKjDymUuR6X3/G5lKo4tGDYRGOkEG5VYa
-   VGmC6sov/q2xkYE7okdLIjJBxbx8aWepzldBNCzMvjZO3Bj8zPSSmLWev
-   dT4DPEp6Dd6oeMA0gcPyEYNw4VdY75g6JjaTi/gZSwrp74fCfVw2bUr9H
-   AX11pVMbTqaxPIyjoUiQ2GPyYrppmyeg/sHnoJTNI0QAHP5k0y2F7vAFa
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="16212989"
+  t=1710769324; x=1742305324;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=QwXw278uS5af1/QLWBfT+3opLUTGo1Iotai2VsBacwA=;
+  b=OzCR2FHYckU2tSO9qoqZtSa7vkYMCNTAQV/VzLCSUfB59XX0PO2QwqVd
+   b8zZEssZqQrjgkLsYNK8p20sRfU+fuJYyTB86BjJLL94o/8mjswIl9Bbi
+   2/4ojK56Jb8pX+VwOmHn15xRJ7nwiK9sE0hb4Sve9LGGx5W3Xq4YYZlGy
+   IOB7ePQn7Jd23ID9L9JgDgc3NTFkbCFX6XQHp71tXhX1m6QW9vNeQsqOQ
+   uC3il0l8gFOJNxCpn6F6nAwgH+oZdiqh9QiDZGatjVL2vCM+vCUBcPBYU
+   Ed4zpx0/KX6unhRWbjbmQ4P8yL+9+8YI3oa9f7zvnObAQ9nUuSfC4SOt0
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="5765572"
 X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="16212989"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 05:49:29 -0700
+   d="scan'208";a="5765572"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 06:42:02 -0700
 X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="827781790"
 X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="18152352"
-Received: from ideak-desk.fi.intel.com ([10.237.72.78])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 05:49:24 -0700
-Date: Mon, 18 Mar 2024 14:49:51 +0200
-From: Imre Deak <imre.deak@intel.com>
-To: Jani Nikula <jani.nikula@linux.intel.com>,
-	Luca Weiss <luca.weiss@fairphone.com>
+   d="scan'208";a="827781790"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by orsmga001.jf.intel.com with SMTP; 18 Mar 2024 06:41:57 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Mon, 18 Mar 2024 15:41:56 +0200
+Date: Mon, 18 Mar 2024 15:41:56 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Jani Nikula <jani.nikula@linux.intel.com>
 Cc: Neil Armstrong <neil.armstrong@linaro.org>,
 	Andrzej Hajda <andrzej.hajda@intel.com>,
 	Robert Foss <rfoss@kernel.org>,
@@ -53,125 +54,61 @@ Cc: Neil Armstrong <neil.armstrong@linaro.org>,
 	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Luca Weiss <luca.weiss@fairphone.com>,
 	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
-Message-ID: <Zfg4b44TJ+bSADqJ@ideak-desk.fi.intel.com>
-Reply-To: imre.deak@intel.com
+Message-ID: <ZfhEpBLfAHk3JdlM@intel.com>
 References: <20240111-drm-panel-bridge-fixup-v1-1-e06292f6f500@fairphone.com>
  <171075294759.1615603.8073986785380285265.b4-ty@linaro.org>
  <87wmpzq0bp.fsf@intel.com>
- <87ttl3pzzi.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <87ttl3pzzi.fsf@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87wmpzq0bp.fsf@intel.com>
+X-Patchwork-Hint: comment
 
-On Mon, Mar 18, 2024 at 12:59:29PM +0200, Jani Nikula wrote:
-> On Mon, 18 Mar 2024, Jani Nikula <jani.nikula@linux.intel.com> wrote:
-> > On Mon, 18 Mar 2024, Neil Armstrong <neil.armstrong@linaro.org> wrote:
-> >> Hi,
-> >>
-> >> On Thu, 11 Jan 2024 13:38:04 +0100, Luca Weiss wrote:
-> >>> Since the kconfig symbol of DRM_PANEL_BRIDGE is only adding
-> >>> bridge/panel.o to drm_kms_helper object, we need to select
-> >>> DRM_KMS_HELPER to make sure the file is actually getting built.
-> >>> 
-> >>> Otherwise with certain defconfigs e.g. devm_drm_of_get_bridge will not
-> >>> be properly available:
-> >>> 
-> >>> [...]
-> >>
-> >> Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-fixes)
-> >>
-> >> [1/1] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
-> >>       https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/e3f18b0dd1db242791afbc3bd173026163ce0ccc
+On Mon, Mar 18, 2024 at 12:52:10PM +0200, Jani Nikula wrote:
+> On Mon, 18 Mar 2024, Neil Armstrong <neil.armstrong@linaro.org> wrote:
+> > Hi,
 > >
-> > With my kernel config, e3f18b0dd1db ("drm/bridge: Select DRM_KMS_HELPER
-> > for DRM_PANEL_BRIDGE") leads to:
+> > On Thu, 11 Jan 2024 13:38:04 +0100, Luca Weiss wrote:
+> >> Since the kconfig symbol of DRM_PANEL_BRIDGE is only adding
+> >> bridge/panel.o to drm_kms_helper object, we need to select
+> >> DRM_KMS_HELPER to make sure the file is actually getting built.
+> >> 
+> >> Otherwise with certain defconfigs e.g. devm_drm_of_get_bridge will not
+> >> be properly available:
+> >> 
+> >> [...]
 > >
-> > WARNING: unmet direct dependencies detected for DRM_KMS_HELPER
-> >   Depends on [m]: HAS_IOMEM [=y] && DRM [=m]
-> >   Selected by [y]:
-> >   - DRM_PANEL_BRIDGE [=y] && HAS_IOMEM [=y] && DRM_BRIDGE [=y]
-> >   Selected by [m]:
-> >   - DRM [=m] && HAS_IOMEM [=y] && (AGP [=y] || AGP [=y]=n) && !EMULATED_CMPXCHG && HAS_DMA [=y] && DRM_FBDEV_EMULATION [=y]
-> >   - DRM_MIPI_DBI [=m] && HAS_IOMEM [=y] && DRM [=m]
-> >   - DRM_KUNIT_TEST [=m] && HAS_IOMEM [=y] && DRM [=m] && KUNIT [=y] && MMU [=y]
-> >   - DRM_RADEON [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y] && (AGP [=y] || !AGP [=y])
-> >   - DRM_AMDGPU [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y] && !UML
-> >   - DRM_NOUVEAU [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y]
-> >   - DRM_I915 [=m] && HAS_IOMEM [=y] && DRM [=m] && X86 [=y] && PCI [=y] && !PREEMPT_RT [=n]
-> >   - DRM_XE [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y] && (m && MODULES [=y] || y && KUNIT [=y]=y) && 64BIT [=y]
-> >   - DRM_VKMS [=m] && HAS_IOMEM [=y] && DRM [=m] && MMU [=y]
-> >   - DRM_VMWGFX [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y] && (X86 [=y] || ARM64)
-> >   - DRM_GMA500 [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && X86 [=y] && MMU [=y]
-> >   - DRM_UDL [=m] && HAS_IOMEM [=y] && DRM [=m] && USB [=m] && USB_ARCH_HAS_HCD [=y] && MMU [=y]
-> >   - DRM_AST [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y]
-> >   - DRM_MGAG200 [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y]
-> >   - DRM_QXL [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y]
-> >   - DRM_VIRTIO_GPU [=m] && HAS_IOMEM [=y] && DRM [=m] && VIRTIO_MENU [=y] && MMU [=y]
-> >   - DRM_BOCHS [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y]
-> >   - DRM_CIRRUS_QEMU [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y]
-> >   - DRM_GM12U320 [=m] && HAS_IOMEM [=y] && DRM [=m] && USB [=m] && MMU [=y]
-> >   - DRM_PANEL_MIPI_DBI [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
-> >   - DRM_SIMPLEDRM [=m] && HAS_IOMEM [=y] && DRM [=m] && MMU [=y]
-> >   - TINYDRM_HX8357D [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
-> >   - TINYDRM_ILI9163 [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
-> >   - TINYDRM_ILI9225 [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
-> >   - TINYDRM_ILI9341 [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
-> >   - TINYDRM_ILI9486 [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
-> >   - TINYDRM_MI0283QT [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
-> >   - TINYDRM_REPAPER [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
-> >   - TINYDRM_ST7586 [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
-> >   - TINYDRM_ST7735R [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
-> >   - DRM_XEN_FRONTEND [=m] && HAS_IOMEM [=y] && XEN [=y] && DRM [=m]
-> >   - DRM_VBOXVIDEO [=m] && HAS_IOMEM [=y] && DRM [=m] && X86 [=y] && PCI [=y]
-> >   - DRM_GUD [=m] && HAS_IOMEM [=y] && DRM [=m] && USB [=m] && MMU [=y]
-> >   - DRM_SSD130X [=m] && HAS_IOMEM [=y] && DRM [=m] && MMU [=y]
-> >   - DRM_ANALOGIX_ANX78XX [=m] && HAS_IOMEM [=y] && DRM [=m] && DRM_BRIDGE [=y]
+> > Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-fixes)
+> >
+> > [1/1] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
+> >       https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/e3f18b0dd1db242791afbc3bd173026163ce0ccc
 > 
-> Please read Documentation/kbuild/kconfig-language.rst.
+> With my kernel config, e3f18b0dd1db ("drm/bridge: Select DRM_KMS_HELPER
+> for DRM_PANEL_BRIDGE") leads to:
 > 
-> Basically boolean DRM_PANEL_BRIDGE selecting tristate DRM_KMS_HELPER
-> forces it to y while it should remain m.
-> 
-> Please revert.
-
-I can also see the above issue with the latest drm-tip, in particular a
-CONFIG_DRM=m build will fail with the above kconfig warns and then
-multiple linker errors:
-
-ld: drivers/gpu/drm/drm_atomic_helper.o: in function `drm_atomic_helper_check_wb_connector_state':
-/home/imre/intel-gfx/drm-misc-fixes/drivers/gpu/drm/drm_atomic_helper.c:832: undefined reference to `__drm_dev_dbg'
-ld: drivers/gpu/drm/drm_atomic_helper.o: in function `drm_atomic_helper_async_check':
-/home/imre/intel-gfx/drm-misc-fixes/drivers/gpu/drm/drm_atomic_helper.c:1932: undefined reference to `__drm_dev_dbg'
-ld: /home/imre/intel-gfx/drm-misc-fixes/drivers/gpu/drm/drm_atomic_helper.c:1924: undefined reference to `__drm_dev_dbg'
-ld: /home/imre/intel-gfx/drm-misc-fixes/drivers/gpu/drm/drm_atomic_helper.c:1896: undefined reference to `__drm_dev_dbg'
-ld: /home/imre/intel-gfx/drm-misc-fixes/drivers/gpu/drm/drm_atomic_helper.c:1911: undefined reference to `__drm_dev_dbg'
-ld: drivers/gpu/drm/drm_atomic_helper.o:/home/imre/intel-gfx/drm-misc-fixes/drivers/gpu/drm/drm_atomic_helper.c:1889: more undefined references to `__drm_dev_dbg' follow
-ld: drivers/gpu/drm/drm_atomic_helper.o: in function `drm_atomic_helper_wait_for_dependencies':
-/home/imre/intel-gfx/drm-misc-fixes/drivers/gpu/drm/drm_atomic_helper.c:2410: undefined reference to `drm_crtc_commit_wait'
-ld: /home/imre/intel-gfx/drm-misc-fixes/drivers/gpu/drm/drm_atomic_helper.c:2418: undefined reference to `drm_crtc_commit_wait'
-ld: /home/imre/intel-gfx/drm-misc-fixes/drivers/gpu/drm/drm_atomic_helper.c:2426: undefined reference to `drm_crtc_commit_wait'
-ld: drivers/gpu/drm/drm_atomic_helper.o: in function `drm_atomic_helper_fake_vblank':
-/home/imre/intel-gfx/drm-misc-fixes/drivers/gpu/drm/drm_atomic_helper.c:2467: undefined reference to `drm_crtc_send_vblank_event'
-ld: drivers/gpu/drm/drm_atomic_helper.o: in function `drm_atomic_helper_prepare_planes':
-/home/imre/intel-gfx/drm-misc-fixes/drivers/gpu/drm/drm_atomic_helper.c:2589: undefined reference to `drm_writeback_prepare_job'
-ld: drivers/gpu/drm/drm_atomic_helper.o: in function `drm_atomic_helper_commit_duplicated_state':
-
+> WARNING: unmet direct dependencies detected for DRM_KMS_HELPER
+>   Depends on [m]: HAS_IOMEM [=y] && DRM [=m]
 ...
 
-CONFIG_DRM=y still builds ok.
+All the defconfigs in drm-rerere also seem to fail here.
 
-> BR,
-> Jani.
-> 
-> 
-> -- 
-> Jani Nikula, Intel
+Neil, are you using some weird .config, or did you not actually
+build test this before pushing?
+
+PS. the drm-rerere defconfigs seem pretty outdated (eg. missing
+    tons of panel drivers). Would be good if someone could update
+    those to provide better coverage
+
+-- 
+Ville Syrjälä
+Intel
