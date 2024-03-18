@@ -1,128 +1,135 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977E22D03C
-	for <phone-devel@vger.kernel.org>; Mon, 18 Mar 2024 09:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C28A2DF92;
+	Mon, 18 Mar 2024 10:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710754853; cv=none; b=jl+nm9F1Gh6yZjyu9Atxn/AcaiK/V5Snnn3PYkIX1bhxqBpWoMP9hU2TWFT8IlIJMzBscg381AceNE3iefwe7avGgCB+HOZxKK2HyTUDH1LaC7Jo1hqMG71iL63Cxu9EOPwypbtrrfwP99oecL0M4THhtS4JrzQhgKEHBKl0OFg=
+	t=1710759142; cv=none; b=QgU3QDxvj7wttnCeDpezTo+HxHqoLyaC9XzcPptKzLhcdOZnjiP3DwiDGPbH8KaMDV1GNrsjwkBcQPrvik5UX8186mMqKq1zWUmX7796FisOIZuTq21CKudOEsWMXxnk9l9OHCOTH4V/TXywopVEaUU3Wl+w1gbx0O3yZGiwANQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710754853; c=relaxed/simple;
-	bh=7RRzsd940VesbdljysukgA3ppk4C5jd/NTCqUia9jTY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rQ/bJPVybsJNuwb8XUhFr52K3fyuF8jL1aNPWRMcmh1dOR3Fzm4uoWXQbgz776E/QnH5fvONKZRV9eFbSP3+kwjJSCC7cSw5iCdaGmandT5i/nHO5qjWmCBNPU7vr/Fzr7dCMXf0gqcQAH4uWKKTjlaVomJc6XMDabWNB40YXTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WAU34mNF; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1710759142; c=relaxed/simple;
+	bh=kGc4kRCh8K/u7JQbGUUELXchD0hHGvGrWcrArfa4cP0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=nesgm071j9C4hHUv1cSxN2EIyR19kuxskfatVqdkKgL9f1OYDbd2hgHDV+lwmAaQHEEyDJqTjprqLCfijzDVGrk8no+hBy1gr9w5MNDZwxPF91IyK0ihZ0IH3LiO9Hjps/jx4LOh+Cs4BBfxpsrmSL6cT2D6NJ3n2Y51bFo03SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ehMsiZyV; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WAU34mNF"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-513e134f73aso1385563e87.2
-        for <phone-devel@vger.kernel.org>; Mon, 18 Mar 2024 02:40:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710754849; x=1711359649; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KbPc2grsn8ubyCfu19TPDk39rt7ZtyWx1KZ6ztW2BUA=;
-        b=WAU34mNFEzexvwQKjVy6+JM+RSZQl8KmnMQliNIbc01Ne54/k6g0+AU4dmbGSUwy/6
-         CDwoNKM+KxZXS/mY3nNSrBtu9q630lgrr1CtvRRYcCzB9DB9W5XqR/Pa8r0vUY6HXPsP
-         uyKgnSPv0tb20U7j59BIf8/g/Y8t0x1P0TGc4soPlxCp9WGjMiDKMn6mBdAEcaT6yTAC
-         Hk3yD8U/F8dJR04XUdOoF+L77LdFz33GkCdsvnKDRTY2sT0rUGmNJQcWovDrCPRBWAgC
-         A4cQowiWJ/lqyMir9irAXJiG80+rsY9WPXyiBat10XQGMB3QEevF7acYdGL3MRUx13lm
-         ylIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710754849; x=1711359649;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KbPc2grsn8ubyCfu19TPDk39rt7ZtyWx1KZ6ztW2BUA=;
-        b=iIYAKyLGwyd7j1kKgyb5jeFDCTtYsiBPB6cA2ICwsjpGPjU2YrA/KwJQ5ZbnCP/kAY
-         srPNs3tiW/tvwofCTjjxOVH0wQTILSHlECvi/FAPrPbkRdLeFUPVCEXl5cpmwcQ6xUcc
-         bX1sY69vrsByeUlx5jiBvJVdybKgsC3sQhte6CJFJfT9D0IysFGZPOF0veetdZJF2jn7
-         jQZZeA61iLou7fjcJj6uVwm4L/Rt+SXmk4u9FepaWS7LFZwwVwNcOzd9lYnV0lsrR1L0
-         yARt+5up5q1IwyIGh6Knq5kRdvxfzHH5fOoEkzuy5XystZo6PQMMIwPFBSc2QO0HujX3
-         1VRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXi2DiQ9/DVuKoqPJ5h7ht7EpiqTIgg7Ex60UIgPnkZyKM8GK2x3Z8wrxyz2Q/7gTxmEhShazppUtS/fc106L6olZgG9InZ2n99tw4=
-X-Gm-Message-State: AOJu0Yy6G5VMmRW9IS/i5Gy4vMx4wovivxhZTIy6FXBWlYsARV0L926A
-	ZJMqC9+eAvJOeILFD3sn+KFkvzy5xegF5J4ut4kyMKWzhwn/b9G1gpCKCk7lKE4=
-X-Google-Smtp-Source: AGHT+IEKP6RKoAYAEi3GRca/Mh+uZFVCwMvaxiJvWpR5WEyyJhT1ayzgEkhi83oDMj7FRlI97lfNtQ==
-X-Received: by 2002:ac2:5983:0:b0:513:c54d:7bd1 with SMTP id w3-20020ac25983000000b00513c54d7bd1mr7677187lfn.35.1710754848789;
-        Mon, 18 Mar 2024 02:40:48 -0700 (PDT)
-Received: from [192.168.52.106] (078088045141.garwolin.vectranet.pl. [78.88.45.141])
-        by smtp.gmail.com with ESMTPSA id q11-20020ac2514b000000b00513e3190eeesm642816lfd.171.2024.03.18.02.40.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Mar 2024 02:40:48 -0700 (PDT)
-Message-ID: <fcd36435-ccee-4467-b61f-2733da5a9cda@linaro.org>
-Date: Mon, 18 Mar 2024 10:40:47 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ehMsiZyV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710759140; x=1742295140;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=kGc4kRCh8K/u7JQbGUUELXchD0hHGvGrWcrArfa4cP0=;
+  b=ehMsiZyVMN+Knlxbbqq8/LQ4qF0jodZibQLWR8sigrUWA7ZcNnUJLglB
+   w6m01gDoUi12J+3xx1zDdVA6dUMYzAnCZ6V8+ToqxSYtpdsbG4tGDNBLl
+   KgTrCDZ2rVXQpC1tkwowtLNN3WuIlIZMYXDM24iHHS8/0H0Ak6x3AK1X0
+   o0rZ7fXzpnDVoN07UD2SoAM7JdvtXX39MIrVZCvbSXxFbqxTxz3FnQxDj
+   Clewhloz2nAX/8Ph9YvgyRDqlrLgp/C/ZMEvKR67hBzGMKAStMAG4ykXD
+   4dC9TJgapZkQw3L7io3uONm7SpylU0+oB1pAVQHUA0AxhlwUvI2/HS36o
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="23023571"
+X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
+   d="scan'208";a="23023571"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 03:52:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
+   d="scan'208";a="18039699"
+Received: from ahmedess-mobl.ger.corp.intel.com (HELO localhost) ([10.252.53.133])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 03:52:13 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>, Andrzej Hajda
+ <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>, Laurent
+ Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David
+ Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Luca Weiss
+ <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
+In-Reply-To: <171075294759.1615603.8073986785380285265.b4-ty@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240111-drm-panel-bridge-fixup-v1-1-e06292f6f500@fairphone.com>
+ <171075294759.1615603.8073986785380285265.b4-ty@linaro.org>
+Date: Mon, 18 Mar 2024 12:52:10 +0200
+Message-ID: <87wmpzq0bp.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] ARM: dts: qcom: msm8974: Add empty chosen node
-Content-Language: en-US
-To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240318-msm8974-misc2-v1-0-f71668a2b8cd@z3ntu.xyz>
- <20240318-msm8974-misc2-v1-2-f71668a2b8cd@z3ntu.xyz>
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20240318-msm8974-misc2-v1-2-f71668a2b8cd@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 18.03.2024 10:24, Luca Weiss wrote:
-> Add an empty /chosen node to the dtsi like is common on most other
-> Qualcomm SoC files, so that various pieces of software expecting this
-> node to exist don't complain.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
+On Mon, 18 Mar 2024, Neil Armstrong <neil.armstrong@linaro.org> wrote:
+> Hi,
+>
+> On Thu, 11 Jan 2024 13:38:04 +0100, Luca Weiss wrote:
+>> Since the kconfig symbol of DRM_PANEL_BRIDGE is only adding
+>> bridge/panel.o to drm_kms_helper object, we need to select
+>> DRM_KMS_HELPER to make sure the file is actually getting built.
+>> 
+>> Otherwise with certain defconfigs e.g. devm_drm_of_get_bridge will not
+>> be properly available:
+>> 
+>> [...]
+>
+> Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-fixes)
+>
+> [1/1] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
+>       https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/e3f18b0dd1db242791afbc3bd173026163ce0ccc
 
-Kinda weird dtc doesn't add it automatically or complain about its
-absence at this point.. perhaps it could be taught about the latter
+With my kernel config, e3f18b0dd1db ("drm/bridge: Select DRM_KMS_HELPER
+for DRM_PANEL_BRIDGE") leads to:
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+WARNING: unmet direct dependencies detected for DRM_KMS_HELPER
+  Depends on [m]: HAS_IOMEM [=y] && DRM [=m]
+  Selected by [y]:
+  - DRM_PANEL_BRIDGE [=y] && HAS_IOMEM [=y] && DRM_BRIDGE [=y]
+  Selected by [m]:
+  - DRM [=m] && HAS_IOMEM [=y] && (AGP [=y] || AGP [=y]=n) && !EMULATED_CMPXCHG && HAS_DMA [=y] && DRM_FBDEV_EMULATION [=y]
+  - DRM_MIPI_DBI [=m] && HAS_IOMEM [=y] && DRM [=m]
+  - DRM_KUNIT_TEST [=m] && HAS_IOMEM [=y] && DRM [=m] && KUNIT [=y] && MMU [=y]
+  - DRM_RADEON [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y] && (AGP [=y] || !AGP [=y])
+  - DRM_AMDGPU [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y] && !UML
+  - DRM_NOUVEAU [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y]
+  - DRM_I915 [=m] && HAS_IOMEM [=y] && DRM [=m] && X86 [=y] && PCI [=y] && !PREEMPT_RT [=n]
+  - DRM_XE [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y] && (m && MODULES [=y] || y && KUNIT [=y]=y) && 64BIT [=y]
+  - DRM_VKMS [=m] && HAS_IOMEM [=y] && DRM [=m] && MMU [=y]
+  - DRM_VMWGFX [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y] && (X86 [=y] || ARM64)
+  - DRM_GMA500 [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && X86 [=y] && MMU [=y]
+  - DRM_UDL [=m] && HAS_IOMEM [=y] && DRM [=m] && USB [=m] && USB_ARCH_HAS_HCD [=y] && MMU [=y]
+  - DRM_AST [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y]
+  - DRM_MGAG200 [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y]
+  - DRM_QXL [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y]
+  - DRM_VIRTIO_GPU [=m] && HAS_IOMEM [=y] && DRM [=m] && VIRTIO_MENU [=y] && MMU [=y]
+  - DRM_BOCHS [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y]
+  - DRM_CIRRUS_QEMU [=m] && HAS_IOMEM [=y] && DRM [=m] && PCI [=y] && MMU [=y]
+  - DRM_GM12U320 [=m] && HAS_IOMEM [=y] && DRM [=m] && USB [=m] && MMU [=y]
+  - DRM_PANEL_MIPI_DBI [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
+  - DRM_SIMPLEDRM [=m] && HAS_IOMEM [=y] && DRM [=m] && MMU [=y]
+  - TINYDRM_HX8357D [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
+  - TINYDRM_ILI9163 [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
+  - TINYDRM_ILI9225 [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
+  - TINYDRM_ILI9341 [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
+  - TINYDRM_ILI9486 [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
+  - TINYDRM_MI0283QT [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
+  - TINYDRM_REPAPER [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
+  - TINYDRM_ST7586 [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
+  - TINYDRM_ST7735R [=m] && HAS_IOMEM [=y] && DRM [=m] && SPI [=y]
+  - DRM_XEN_FRONTEND [=m] && HAS_IOMEM [=y] && XEN [=y] && DRM [=m]
+  - DRM_VBOXVIDEO [=m] && HAS_IOMEM [=y] && DRM [=m] && X86 [=y] && PCI [=y]
+  - DRM_GUD [=m] && HAS_IOMEM [=y] && DRM [=m] && USB [=m] && MMU [=y]
+  - DRM_SSD130X [=m] && HAS_IOMEM [=y] && DRM [=m] && MMU [=y]
+  - DRM_ANALOGIX_ANX78XX [=m] && HAS_IOMEM [=y] && DRM [=m] && DRM_BRIDGE [=y]
 
-Konrad
+
+BR,
+Jani.
+
+-- 
+Jani Nikula, Intel
