@@ -1,198 +1,156 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0932D605
-	for <phone-devel@vger.kernel.org>; Mon, 18 Mar 2024 13:48:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE444DA0D
+	for <phone-devel@vger.kernel.org>; Mon, 18 Mar 2024 14:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710769699; cv=none; b=cmm/U9qgf8M/t8Ry4/Wi/6r/rVvuplSSMcyosxBCRdijfLIVj7k/bpFAgMXa3CMkRvBJ60vRsJWtc5h5DG8KmOT9ErHTM5CfCOZedqa88Ec2BKUJAXmW+cpxqqBc/Y/vvIiPtzM5tfrDAYftWCx7zJZ4CsXH2Px1Bfd6AqoGAU0=
+	t=1710770890; cv=none; b=ZGAuRRCoy01KuxYO8vpItMCRHEuGcU3k/XHFwYNdHDqDKz2sFWrdi9oYQrBxJgaPzE4ZxdG1TcLt4yDp4uTiec9eqvvmVbqW8N7bsrtlu5/UMEJXM89o9+ayUfTIqbI6NB55FmgDzNn7Emc/7jXopvS+2ZyVBfJYOXVH/kWR82M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710769699; c=relaxed/simple;
-	bh=05UYUGs2h/AbwbeXjSI4LIhGc28nhT5XwrdjPXeSHKw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=oRCIVAGSl965zaRSr/dV9vSq1g5fwRVxuwWBl0yhSxno+Ulfz6qMBaFnu9fwra0kYuY8f6a8GDFjNk1NZHiicouPVAxNqpbVlFqfW9rL7JYqjYKJe+MzUb2R/5J1IQGj+F7rKNp34s31NsvnNN2q6pYzqxtKXVzyc1nwHSfOVo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=vkaHhyxm; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1710770890; c=relaxed/simple;
+	bh=ZdkctpSHjq02scICiJ0GQd5huYHivaMgmDGgrZraAaY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=CPUmUhT/MC2eitkar0qnQGlj5upBAU8nR+wEltUS1TvqMbg64MH1rbAtwBe9ERMpNpXJo2qTJBYvhAGAGCSEEPl8YBc1fMZLcYyScdx6s54u6Caeubd2HWMBOJRMM2D17Lbq1YiYQ9qAXnJnjtaLBrE8oF9RB1N1EySXseBoKoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fBcpQ4cs; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="vkaHhyxm"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2d49f7e5d65so16559101fa.2
-        for <phone-devel@vger.kernel.org>; Mon, 18 Mar 2024 06:48:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fBcpQ4cs"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4140edd58c9so8729085e9.2
+        for <phone-devel@vger.kernel.org>; Mon, 18 Mar 2024 07:08:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1710769695; x=1711374495; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U0AQrSb2a+lzMoRPNmdl1WH+tKIo050nITB8DgR+osk=;
-        b=vkaHhyxmFWnAxE7kZqWY12zec2xgBm57t7jXLs2/UajxiQKpc3Qsiz/EgY5zN3h+Bk
-         NekIwjDJnWbozEciOpuIFlJjdM3GBt87T/nMz1j8+pA0VzJOuPZGctdPJFpu2Sc0pPlZ
-         a1k/tkn1kWs4X3D9ij9HxZEWhYPIpCsLWKCks3ryKm6GIVZ13zEWgCKNyWUlfORxxNml
-         iY8xQ+WTCtksNBDHB9dv8KQBW3i5SSh2PwtojU1+/bfk+FrwFs8GzH843i4QBPuuL7Me
-         5P9Z5iEuggeZdH7sCvVfAJxR2PaLsIJtALLgPCQkz7uPKSVGisPvmNGHdViBzkI+yyVC
-         oWvg==
+        d=linaro.org; s=google; t=1710770886; x=1711375686; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3nPK3ysxs1xx6fjG3/EoRSQ40WVHya8WPq6yF/INz0c=;
+        b=fBcpQ4csvQnzJKEoNaHMOIOSCUQvHMAYOuf0HiZ2L4ygZl4XWm7aYQoFAqMLhQZ0R5
+         QyH5HPKBkKlpVSQGQNtzN4GBXfjqeCKyongIvGtDm1GJdEPPJnxsnWR/DovXdIYNPLdP
+         ciUY+hGeiI7gJXmRpbxU8uWdFut5qy0zxnlnyreDU0+PL2EuhxOoEyzhhpUc9KLUXlJG
+         cIDdlEx3Vrz6WDpPKJEPWoDoRSfuDiPucDNxoA3lGlrlm8kMlAxeSHL/hhxs4hlFskDT
+         C8GBu80pNCU2r/xUIwIagGBCJVOqPLA0vLB4iY/aLas1gtS85tOUWMyUPRmEs7fy5T7+
+         5ESg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710769695; x=1711374495;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=U0AQrSb2a+lzMoRPNmdl1WH+tKIo050nITB8DgR+osk=;
-        b=TtElItW2E0ZMR/kaEilmtNjobcpr/odz5HNIecjVZ5fxGhgO4I8eS8OD4wfAk7FbT/
-         vYRvCNsbWolZzUXw8HtDAew8/Qw5p7ZMvMjdXyCfWfn1p8d+l9yDfSGlw8zkXG6hx1ri
-         mzqhbe/uc6bsDWyX1VgXyjdqvoZn1JEafHBtYVPBZJMSXukCZZnatTfz3FCu/CKEbBx8
-         Kj6BLEpfqPZ3pD+ObuOqIyapRv15qMQzFK1NFqaYB1qiivlnp7YBN08ky9bG+RYcdzie
-         k8t731w/if1sWLWCf7pZgvBTLgq6h7Tct1UysNnU27tW7LVwUKQFXplcqNFnlSrdc208
-         dIJA==
-X-Forwarded-Encrypted: i=1; AJvYcCVTSsgWSkq0elHOQH1hFGROY6z9gvgxpxIbSfok55NfbgKNmVksQeaDUauL5E5z0xuBfZLqx8f1e2LUr7Cj7m1zO8xiLJItYFQqt4s=
-X-Gm-Message-State: AOJu0Yx6f5bskitfBX9YKhsETAvULLAxy4m5YrYzPkFGE0BajSuZnf84
-	ZPW7gi+cA77AEunNdoxeRxeECxi0xFMQfUJus55vIGHDpXirkYCNuffwC/DCYwA=
-X-Google-Smtp-Source: AGHT+IFaxpl58hma4pvlO2gkQlFKb6UCdUfMVcmqVrqrduWOm/5xCqq0bUd5UNzGpakdAwXRnuRWVw==
-X-Received: by 2002:a2e:8949:0:b0:2d2:a3c4:4f with SMTP id b9-20020a2e8949000000b002d2a3c4004fmr8596189ljk.35.1710769695247;
-        Mon, 18 Mar 2024 06:48:15 -0700 (PDT)
-Received: from localhost (046125249120.public.t-mobile.at. [46.125.249.120])
-        by smtp.gmail.com with ESMTPSA id az12-20020a05620a170c00b0078a0d65e968sm98832qkb.52.2024.03.18.06.48.11
+        d=1e100.net; s=20230601; t=1710770886; x=1711375686;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3nPK3ysxs1xx6fjG3/EoRSQ40WVHya8WPq6yF/INz0c=;
+        b=MzACM565HzdL5h5Co8UJF7tribpdQUrOlZsWgvnDkKbiGcupqfz3lRuqHrd5K3XRra
+         kD256ZUvpTqiURw85RCEZFyGUNGU6Au2taXf6w3GPwNF13+luEBY8gs1oiB2kpQvhgtf
+         mcp+BkbZnM0gQ2wjfLWvDuJlA+ZVGFzkPw0yEyj2rkZYHe4kfkuKqh3rT33KliyF2c/m
+         sAH9iPKgKursKRnsOgNah3TkWkEr9w5RmN6//J9axd8n1eBEV1qwUCA7JOXSGkYjcsbP
+         X2Jmvfc2OPIdgW8ioxNbD1BHbz3gzZeT+t0XHhKSd6ehTFcmDSXUdfVdPaed+UHxAlFe
+         8uaw==
+X-Forwarded-Encrypted: i=1; AJvYcCVe07qFUk6dwNx8GfgwNy0IGARm0mJkhZ6mvqv90TUQG/HWn8Gw+5VkTQ+IvK+/mh8U+TzAqbmEKT/+K/3JJcu4VdkiaJb+mPXPVD4=
+X-Gm-Message-State: AOJu0YzQi33Nlk2SiEj4jApOnHXQmEIjbngTw65CGqZ82qjg4etrNHs0
+	j3gO78AxL0NrcbnrZ9Huf7EF3FKoXN5t2VJF4wLsC/65NgofslCti6e7TeoyFzQ=
+X-Google-Smtp-Source: AGHT+IHJPw11WaGYzy6KPpwU+OfAbIYVcsWo8Tev5a9gx3VLenR9TukZSv3QrHRWrps+Zw7pT00Rkg==
+X-Received: by 2002:a05:6000:4021:b0:33e:7a42:68e2 with SMTP id cp33-20020a056000402100b0033e7a4268e2mr10505839wrb.21.1710770885373;
+        Mon, 18 Mar 2024 07:08:05 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:982:cbb0:ad2b:a316:59d9:3dbc? ([2a01:e0a:982:cbb0:ad2b:a316:59d9:3dbc])
+        by smtp.gmail.com with ESMTPSA id bu27-20020a056000079b00b0033ecbfc6941sm9630900wrb.110.2024.03.18.07.08.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Mar 2024 06:48:14 -0700 (PDT)
+        Mon, 18 Mar 2024 07:08:04 -0700 (PDT)
+Message-ID: <c2d86017-7523-4f4e-ace3-980689b7a881@linaro.org>
+Date: Mon, 18 Mar 2024 15:08:03 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 18 Mar 2024 14:48:09 +0100
-Message-Id: <CZWX8POMMGS3.1YJ0MLS9HO90L@fairphone.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
 Subject: Re: [PATCH] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Jani Nikula" <jani.nikula@linux.intel.com>, "Neil Armstrong"
- <neil.armstrong@linaro.org>, "Andrzej Hajda" <andrzej.hajda@intel.com>,
- "Robert Foss" <rfoss@kernel.org>, "Laurent Pinchart"
- <Laurent.pinchart@ideasonboard.com>, "Jonas Karlman" <jonas@kwiboo.se>,
- "Jernej Skrabec" <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Daniel Vetter" <daniel@ffwll.ch>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.15.2
-References: <20240111-drm-panel-bridge-fixup-v1-1-e06292f6f500@fairphone.com> <171075294759.1615603.8073986785380285265.b4-ty@linaro.org> <87wmpzq0bp.fsf@intel.com> <87ttl3pzzi.fsf@intel.com>
-In-Reply-To: <87ttl3pzzi.fsf@intel.com>
+To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Luca Weiss <luca.weiss@fairphone.com>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20240111-drm-panel-bridge-fixup-v1-1-e06292f6f500@fairphone.com>
+ <171075294759.1615603.8073986785380285265.b4-ty@linaro.org>
+ <87wmpzq0bp.fsf@intel.com> <ZfhEpBLfAHk3JdlM@intel.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro Developer Services
+In-Reply-To: <ZfhEpBLfAHk3JdlM@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon Mar 18, 2024 at 11:59 AM CET, Jani Nikula wrote:
-> On Mon, 18 Mar 2024, Jani Nikula <jani.nikula@linux.intel.com> wrote:
-> > On Mon, 18 Mar 2024, Neil Armstrong <neil.armstrong@linaro.org> wrote:
-> >> Hi,
-> >>
-> >> On Thu, 11 Jan 2024 13:38:04 +0100, Luca Weiss wrote:
-> >>> Since the kconfig symbol of DRM_PANEL_BRIDGE is only adding
-> >>> bridge/panel.o to drm_kms_helper object, we need to select
-> >>> DRM_KMS_HELPER to make sure the file is actually getting built.
-> >>>=20
-> >>> Otherwise with certain defconfigs e.g. devm_drm_of_get_bridge will no=
-t
-> >>> be properly available:
-> >>>=20
-> >>> [...]
-> >>
-> >> Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git =
-(drm-misc-fixes)
-> >>
-> >> [1/1] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
-> >>       https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/e3f18b0d=
-d1db242791afbc3bd173026163ce0ccc
-> >
-> > With my kernel config, e3f18b0dd1db ("drm/bridge: Select DRM_KMS_HELPER
-> > for DRM_PANEL_BRIDGE") leads to:
-> >
-> > WARNING: unmet direct dependencies detected for DRM_KMS_HELPER
-> >   Depends on [m]: HAS_IOMEM [=3Dy] && DRM [=3Dm]
-> >   Selected by [y]:
-> >   - DRM_PANEL_BRIDGE [=3Dy] && HAS_IOMEM [=3Dy] && DRM_BRIDGE [=3Dy]
-> >   Selected by [m]:
-> >   - DRM [=3Dm] && HAS_IOMEM [=3Dy] && (AGP [=3Dy] || AGP [=3Dy]=3Dn) &&=
- !EMULATED_CMPXCHG && HAS_DMA [=3Dy] && DRM_FBDEV_EMULATION [=3Dy]
-> >   - DRM_MIPI_DBI [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm]
-> >   - DRM_KUNIT_TEST [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && KUNIT [=
-=3Dy] && MMU [=3Dy]
-> >   - DRM_RADEON [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && PCI [=3Dy] &=
-& MMU [=3Dy] && (AGP [=3Dy] || !AGP [=3Dy])
-> >   - DRM_AMDGPU [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && PCI [=3Dy] &=
-& MMU [=3Dy] && !UML
-> >   - DRM_NOUVEAU [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && PCI [=3Dy] =
-&& MMU [=3Dy]
-> >   - DRM_I915 [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && X86 [=3Dy] && =
-PCI [=3Dy] && !PREEMPT_RT [=3Dn]
-> >   - DRM_XE [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && PCI [=3Dy] && MM=
-U [=3Dy] && (m && MODULES [=3Dy] || y && KUNIT [=3Dy]=3Dy) && 64BIT [=3Dy]
-> >   - DRM_VKMS [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && MMU [=3Dy]
-> >   - DRM_VMWGFX [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && PCI [=3Dy] &=
-& MMU [=3Dy] && (X86 [=3Dy] || ARM64)
-> >   - DRM_GMA500 [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && PCI [=3Dy] &=
-& X86 [=3Dy] && MMU [=3Dy]
-> >   - DRM_UDL [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && USB [=3Dm] && U=
-SB_ARCH_HAS_HCD [=3Dy] && MMU [=3Dy]
-> >   - DRM_AST [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && PCI [=3Dy] && M=
-MU [=3Dy]
-> >   - DRM_MGAG200 [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && PCI [=3Dy] =
-&& MMU [=3Dy]
-> >   - DRM_QXL [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && PCI [=3Dy] && M=
-MU [=3Dy]
-> >   - DRM_VIRTIO_GPU [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && VIRTIO_M=
-ENU [=3Dy] && MMU [=3Dy]
-> >   - DRM_BOCHS [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && PCI [=3Dy] &&=
- MMU [=3Dy]
-> >   - DRM_CIRRUS_QEMU [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && PCI [=
-=3Dy] && MMU [=3Dy]
-> >   - DRM_GM12U320 [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && USB [=3Dm]=
- && MMU [=3Dy]
-> >   - DRM_PANEL_MIPI_DBI [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && SPI =
-[=3Dy]
-> >   - DRM_SIMPLEDRM [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && MMU [=3Dy=
-]
-> >   - TINYDRM_HX8357D [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && SPI [=
-=3Dy]
-> >   - TINYDRM_ILI9163 [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && SPI [=
-=3Dy]
-> >   - TINYDRM_ILI9225 [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && SPI [=
-=3Dy]
-> >   - TINYDRM_ILI9341 [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && SPI [=
-=3Dy]
-> >   - TINYDRM_ILI9486 [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && SPI [=
-=3Dy]
-> >   - TINYDRM_MI0283QT [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && SPI [=
-=3Dy]
-> >   - TINYDRM_REPAPER [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && SPI [=
-=3Dy]
-> >   - TINYDRM_ST7586 [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && SPI [=3D=
-y]
-> >   - TINYDRM_ST7735R [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && SPI [=
-=3Dy]
-> >   - DRM_XEN_FRONTEND [=3Dm] && HAS_IOMEM [=3Dy] && XEN [=3Dy] && DRM [=
-=3Dm]
-> >   - DRM_VBOXVIDEO [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && X86 [=3Dy=
-] && PCI [=3Dy]
-> >   - DRM_GUD [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && USB [=3Dm] && M=
-MU [=3Dy]
-> >   - DRM_SSD130X [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && MMU [=3Dy]
-> >   - DRM_ANALOGIX_ANX78XX [=3Dm] && HAS_IOMEM [=3Dy] && DRM [=3Dm] && DR=
-M_BRIDGE [=3Dy]
->
-> Please read Documentation/kbuild/kconfig-language.rst.
->
-> Basically boolean DRM_PANEL_BRIDGE selecting tristate DRM_KMS_HELPER
-> forces it to y while it should remain m.
+On 18/03/2024 14:41, Ville Syrjälä wrote:
+> On Mon, Mar 18, 2024 at 12:52:10PM +0200, Jani Nikula wrote:
+>> On Mon, 18 Mar 2024, Neil Armstrong <neil.armstrong@linaro.org> wrote:
+>>> Hi,
+>>>
+>>> On Thu, 11 Jan 2024 13:38:04 +0100, Luca Weiss wrote:
+>>>> Since the kconfig symbol of DRM_PANEL_BRIDGE is only adding
+>>>> bridge/panel.o to drm_kms_helper object, we need to select
+>>>> DRM_KMS_HELPER to make sure the file is actually getting built.
+>>>>
+>>>> Otherwise with certain defconfigs e.g. devm_drm_of_get_bridge will not
+>>>> be properly available:
+>>>>
+>>>> [...]
+>>>
+>>> Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-fixes)
+>>>
+>>> [1/1] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
+>>>        https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/e3f18b0dd1db242791afbc3bd173026163ce0ccc
+>>
+>> With my kernel config, e3f18b0dd1db ("drm/bridge: Select DRM_KMS_HELPER
+>> for DRM_PANEL_BRIDGE") leads to:
+>>
+>> WARNING: unmet direct dependencies detected for DRM_KMS_HELPER
+>>    Depends on [m]: HAS_IOMEM [=y] && DRM [=m]
+> ...
+> 
+> All the defconfigs in drm-rerere also seem to fail here.
+> 
+> Neil, are you using some weird .config, or did you not actually
+> build test this before pushing?
 
-Would you know the correct fix for this? I'm aware of the pattern
-"select FOO || !FOO" but I guess it's also not applicable here?
 
-In any case building DRM_PANEL_BRIDGE also needs to build
-DRM_KMS_HELPER, otherwise the object files just don't get used.
+It definitely built fine, but my config test is not extensive and went through it,
+I'll send a revert patch ASAP.
 
-Unfortunately I'm not versed well enough at all in Kconfig :/
+Neil
 
->
-> Please revert.
->
-> BR,
-> Jani.
+> 
+> PS. the drm-rerere defconfigs seem pretty outdated (eg. missing
+>      tons of panel drivers). Would be good if someone could update
+>      those to provide better coverage
+> 
 
