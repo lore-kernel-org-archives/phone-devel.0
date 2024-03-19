@@ -1,112 +1,74 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CC9524A0;
-	Mon, 18 Mar 2024 15:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2A57E787;
+	Tue, 19 Mar 2024 02:49:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710775461; cv=none; b=J1GqHXRML9F9kRFfuH5dgcWyQJpRAENP9z80p+M9/1QLCMO+hiEhPqjAT0lZlmCVeWJ7x7EzZY5yFidggRilSB+8dtfibOJ3HRIJDhTxpggBwWenjxBmA07lNXnMvBHrTcYqZ0jSl2qHpcujZJObOvKAWO0v0Q9emNgx+a0yhCg=
+	t=1710816544; cv=none; b=QHWga5WWRBhtYYODgGzoA+9W6aFpRkTjkrFAi//p0hO/LGL9KI1JxrtMpHK4NxHzDf/temxGKycoziXykNVwSc5PXIW2wae2ysu/OMNL+mCoyQrV8bbKbptfflVszERi/nCiMhOIQjgSSP3HnggDYpB8BxSJAWeruiLNEOsceLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710775461; c=relaxed/simple;
-	bh=H5Yl2+KH5clpDAidnyUJS6JZKwl1txrmCW3WlkQErtY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=nXSskP7x02RtEG6KJ3yAQMR6gmfN0RCpEFMZ0z+2B+7rub+DmdsPvcEWjrpPjYrwXPYj8C3B/8SBL+7i5ef9g9b3UNx2dOANCgb56USRtLoYk9rQIE+7FdOjk5ZQGmTp3Ap6gWV2TXmRZokRUDe76q0KEBXhgtLTcj7NV4nTA+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CUYs6qZd; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1710816544; c=relaxed/simple;
+	bh=gpRF+lJdfbTnPjeClOUxk7+YW9eJwo4yAdza7kXiIl8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lo10LwUB+JEwI6148leW0fskZFpTbVI6AGXg/qiM5E7yKIHwqcBWbe2yznGecvaiQEvRzAVD6b3DTFDBa3Ctel52cT6goBb/Bmo5Sde0w34hL5QMSmOZpm5ry9XH0TYnKDkJLzx65s5wguHZWLvtXFpb4ny0v7K/U2angIJfGRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUqfCbee; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CUYs6qZd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710775460; x=1742311460;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=H5Yl2+KH5clpDAidnyUJS6JZKwl1txrmCW3WlkQErtY=;
-  b=CUYs6qZdtfdoS5y8xzNSgNbD+RchsJQE1vINYs1OLw+kpJ1vtAZFF7MV
-   GtZuKt3JSop+VcqZGLNxd+d95UGRMn0hAN3KrJ7Se005Eqquh0TwRoWPC
-   QmvDJY/lbx9G4lxa3dd/PXdBpx3J8DC/WZEngtKu7Y5o+PyHZdwcyorDz
-   JcPReHQsdS5sZm/jJ2aeujDzshLBjU0RBT1CUFo7Z/lzKsY6Pm2b7ce/K
-   UVU2wUcyhJqQntF6FlT0TgIREB6PbxX4+J55f66lg2HRlE8v7G/8PzeDy
-   HJqAAdATQLGGxP9+q0o8IwjDWpenWyGRsZKC1rCTQrcsOc/wxqFuECWxQ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="5456392"
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="5456392"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 08:24:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="13398989"
-Received: from ahmedess-mobl.ger.corp.intel.com (HELO localhost) ([10.252.53.133])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 08:24:13 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Luca Weiss <luca.weiss@fairphone.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Andrzej Hajda <andrzej.hajda@intel.com>,
- Robert Foss <rfoss@kernel.org>, Laurent Pinchart
- <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, Masahiro
- Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH] drm/bridge: Select DRM_KMS_HELPER for DRM_PANEL_BRIDGE
-In-Reply-To: <CZWX8POMMGS3.1YJ0MLS9HO90L@fairphone.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20240111-drm-panel-bridge-fixup-v1-1-e06292f6f500@fairphone.com>
- <171075294759.1615603.8073986785380285265.b4-ty@linaro.org>
- <87wmpzq0bp.fsf@intel.com> <87ttl3pzzi.fsf@intel.com>
- <CZWX8POMMGS3.1YJ0MLS9HO90L@fairphone.com>
-Date: Mon, 18 Mar 2024 17:24:10 +0200
-Message-ID: <8734snpnqd.fsf@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUqfCbee"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DA1C43390;
+	Tue, 19 Mar 2024 02:49:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710816544;
+	bh=gpRF+lJdfbTnPjeClOUxk7+YW9eJwo4yAdza7kXiIl8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gUqfCbeeblMxHRtmeMjrvgx+Ig8cEOSSNFIEr19h0gEWCEu0YqFeD18ElzXwz/Off
+	 x75VOVi6kF/uQan03bAb3z/ZacI/TMV7DJO3Vh7utAWDcXDIk0nytx12gD5ZbfAMYJ
+	 5j/tEwxcoUpK0vn3JpFuMyC1m6h49WPnliFkKfY2waJcgO/xdDOYDoY5G8m6r9pgD1
+	 HWHZvyzPSGW8/HwvckwRIz40wVLOvx7SjmIk5zjCV0YUy97p3o8W8yu5buvypqZ5p0
+	 wPImEzfuM5xodoZ+CnpXmZBu7hT4bbIWFRCL4UZUpf4stkOmtfEn9rmBfRIZLWNbYu
+	 6BCpRU3XeOPhA==
+From: Bjorn Andersson <andersson@kernel.org>
+To: cros-qcom-dts-watchers@chromium.org,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: Fix type of "wdog" IRQs for remoteprocs
+Date: Mon, 18 Mar 2024 21:48:35 -0500
+Message-ID: <171081652634.198276.15349436224492922065.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240219-remoteproc-irqs-v1-1-c5aeb02334bd@fairphone.com>
+References: <20240219-remoteproc-irqs-v1-1-c5aeb02334bd@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-
-On Mon, 18 Mar 2024, "Luca Weiss" <luca.weiss@fairphone.com> wrote:
-> Would you know the correct fix for this? I'm aware of the pattern
-> "select FOO || !FOO" but I guess it's also not applicable here?
-
-I don't think that pattern works for select, only for depends on.
-
-And I think the problem, again, is the abuse of select for symbols with
-dependencies.
-
-$ git grep "select DRM_KMS_HELPER" | wc -l
-122
-
-I'm guessing these only work because a) they are tristates, and b) they
-directly or indirectly already "depends on DRM", which satisfies
-DRM_KMS_HELPER's "depends on DRM".
-
-I think the correct fix for this, and a plethora of other kconfig
-problems, is adhering to the note in
-Documentation/kbuild/kconfig-language.rst:
-
-  Note:
-	select should be used with care. select will force
-	a symbol to a value without visiting the dependencies.
-	By abusing select you are able to select a symbol FOO even
-	if FOO depends on BAR that is not set.
-	In general use select only for non-visible symbols
-	(no prompts anywhere) and for symbols with no dependencies.
-	That will limit the usefulness but on the other hand avoid
-	the illegal configurations all over.
-
-The downsides are that it's a lot of churn to fix them, they'll creep
-back in, and kconfig doesn't warn about these cases up front while it
-could, and menuconfig etc. aren't helpful in enabling dependencies for
-you recursively. So here we are, adding bandaid year after year. :(
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
 
-BR,
-Jani.
+On Mon, 19 Feb 2024 15:33:27 +0100, Luca Weiss wrote:
+> The code in qcom_q6v5_init() requests the "wdog" IRQ as
+> IRQF_TRIGGER_RISING. If dt defines the interrupt type as LEVEL_HIGH then
+> the driver will have issues getting the IRQ again after probe deferral
+> with an error like:
+> 
+>   irq: type mismatch, failed to map hwirq-14 for interrupt-controller@b220000!
+> 
+> [...]
 
+Applied, thanks!
 
+[1/1] arm64: dts: qcom: Fix type of "wdog" IRQs for remoteprocs
+      commit: dd6943ef8edde3c6b8aee06cb142c9a41086e3b3
+
+Best regards,
 -- 
-Jani Nikula, Intel
+Bjorn Andersson <andersson@kernel.org>
