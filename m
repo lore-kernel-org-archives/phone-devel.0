@@ -1,59 +1,61 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33FD17564
-	for <phone-devel@vger.kernel.org>; Fri, 22 Mar 2024 08:01:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3E715EB0
+	for <phone-devel@vger.kernel.org>; Fri, 22 Mar 2024 08:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711094510; cv=none; b=kbkqzufpR82LI6f//S8M0MkO38rFbbgxJf6HOvZPpAVxHwGg1eBI98bs+N4ZutKrvJustW6qPfvNZ3JzX+xrGrG7eiHw03jr4JGmvKQPWCCvx5vdfMNRcfIE860aIr0ViEg8NntQScAJBV04UyazkbWPCEGKeP+vTBH+3qOhSM0=
+	t=1711094512; cv=none; b=qZHS37DAUaRFxp4nYpY4NQnvqPeMjjuU+CWiB5ydCr95VFrw5VdKnznD/BNQoYOoWI1ExM/eWWqaaG2H3chlCNLQewSJUcG+Z3kEH9Dm58OKJcEPYZMrqxXjeA9c6xmhJbPOR6M/Ipgjt1U4vG8qvr2X+dX1DFFI28tsnf8GXls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711094510; c=relaxed/simple;
-	bh=OcCTfSnKi/6290AehwO9HrZ6nco3Bexct5Xndhm7ZeA=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pk9LFHhcn6TpYzXYwNW9FSLxWSl2Z3Q+n47uUHyqz4SDpP7VgBNT2Wyk5l/C6YBSCbu+tDNEQXBjaVQTWLGEMR18/1BXB9Qy7Q5zfdqDE2E3rMUeMIm2VpzxnRnQmEctOD8aya1S1H5EhDsBbVtfAu8u0dB8wEpk70BMM5wkEUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=M2NDnUwS; arc=none smtp.client-ip=209.85.208.41
+	s=arc-20240116; t=1711094512; c=relaxed/simple;
+	bh=wL0JlF8eq0Z9HHcp26zCmP4nMmGV6x98g3GPHG5/rXc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=KHYxiN8lSqlbKeTOFtRhbaTIasXr/VJcPoWxvok/p2mZjmLJgOLx48KCasX+rfNxtVjBGC68gPcv0pS7D1Q+Cioedy+IX0jcIN/37Wl4VKQ42JAHWlSqIv6NK/8LlM9/rS0DwMCn7K6ePaBXEFpf8RyI1q0MYMWJ32yPHV8qZqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=L2sYvMkb; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="M2NDnUwS"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-56be32b9775so360687a12.1
-        for <phone-devel@vger.kernel.org>; Fri, 22 Mar 2024 01:01:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="L2sYvMkb"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-512e4f4e463so2084257e87.1
+        for <phone-devel@vger.kernel.org>; Fri, 22 Mar 2024 01:01:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1711094507; x=1711699307; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Nw51Hyw1DS3v/omudVbOcyBSsqWjCMOpfA2RADZ1/mI=;
-        b=M2NDnUwSPkyR9bkG/CCnZ77cvLXk4Jk2vN0vVkzxolYAvB5j9hFd3CH6EwtcxnI2F+
-         4HKRFYsduxMCJ3jyyXZRfjyQlnZOPoMtXYvG4I4RZPPs4l2doQ4IQrjKveFARbtSeD8d
-         fws6+qE90ryS/z4Plrch3GyhEaag8SPXBnBKHE+gbSsTKPQEh6f+2xC5LmKcONbWcF/E
-         410hw+Vh0pTbPBnJugrrmEMFjn9iDMOWu2K2VdUnprVxrkj5jaSmEvm+CE7BqS12cRhq
-         YZr+o2a438QtBWEi+nLXhXWTwansYS/+kCNLhpUdmSBeL5uc3pHJEw1btLlMLT1+M7Ak
-         UeyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711094507; x=1711699307;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=fairphone.com; s=fair; t=1711094508; x=1711699308; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Nw51Hyw1DS3v/omudVbOcyBSsqWjCMOpfA2RADZ1/mI=;
-        b=Kq7T5IjJJM6+XYVwu5dV4J8gyXCIkahiXxNiiAFQgbyNsZNYJdenL4xrqrsYc5cUsV
-         v6p/Yv5m37ssBbNH+uzao1+/6mFS5pjR3hdQOr1j3hhHcl3IuhT/Cv87DVYrJtPrcZM+
-         MPszUkGSq4XhgSlFXmqOoADnqgsBcIU9UE0S++MwtzS6bmjTH0xe/zOce34G3JzxUFW7
-         SJRjIpxInP8R1pEfTE8gSCy65PYTiBvCoCetsJy/CsCHTDb88z9BgZaaqZXzlZ5b6/Np
-         xtWoi9++bcvrAHfOd8yFYJoCKTjRYlXEvMXkUXYd0urQ/0ge3sG3UW/Rfd1cVPE7NM3b
-         yf8w==
-X-Forwarded-Encrypted: i=1; AJvYcCVZ1ko9qOVBgWnD1/LLdyjS5Y6Ep/PMQ15RDGGRkOU0XF5KKPtwJDhKokRHBG4b15XPQ4Ow4zNthvguLuvuLOw2RJggkH9BPa5s+GA=
-X-Gm-Message-State: AOJu0YzHlI95r9HM/irLcZe4LY3+rqj+bs9WU+brKuz6xoblNCHJGoTc
-	WnvfRnsnZ/tyEB3nVU9SDY7tmHDqCw0l8t3k/B+VPWpbv3k2Cx2vhu1PMdUx+tU=
-X-Google-Smtp-Source: AGHT+IGAZ3waKKPaYy2xxvyD7WhqjmG11BTbAkT6qM9SrttDMCln6Si+o3oo7ZhzrW9z0K1FdtPldw==
-X-Received: by 2002:a50:d598:0:b0:567:4694:159 with SMTP id v24-20020a50d598000000b0056746940159mr899375edi.26.1711094507002;
-        Fri, 22 Mar 2024 01:01:47 -0700 (PDT)
+        bh=bAOZ7K61fLCIDdZx+aVvexoe0zzZnMrZfxPNoh4sO1o=;
+        b=L2sYvMkbwy9ZIRErfMudHK3guTLz0uR0YcEFrkhJuexLJza6ZvOfIqE5t775MLoHBt
+         k4Gxjr0hKX13qfGKFPMd+V6i78WAItoK2Xy52Y9ZgE9l9+MuAcJwy5qAoIGT2NoSdf+w
+         8//y9WUziRsnds10+7vcEFG97hHP4swCC3ULE3z3IsHjoC/JspwoQEKJuXzQ++oiBEan
+         pnGjqypgC0tsPbGsDTkguXtTAXLmrTZBPXZLl0ZSTu7bvnW3jACzweNcCGFSI0II0iuE
+         zNAb23NLOaQSQmI0mOkTI4trf4kKaLVCnTZTCLzkmqjDpQ+xoM4IFdNj3XvaJwTnksVo
+         WL1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711094508; x=1711699308;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bAOZ7K61fLCIDdZx+aVvexoe0zzZnMrZfxPNoh4sO1o=;
+        b=S52h0c7WgJLAGQ5MJKJT+qNXYgfZM2cS/dhraa4skhFbLnt4xAxkwxu0uKzMuQxltA
+         zlIbDC77GgqazP9g6Lvh//L6Mu1E9+lB2PLnXT1QMmAYTCNoCmedtfV96sH6lDeU6+fo
+         6aH21YcIIA/MOo03kiE4Fyupdzk0WePr8P2vl96l4uA4rogdnuYm4qM8uZ4ON+oLz/7r
+         ay6kiPhT67OfvAzpxIwh79jeQasHVAUghmpcLs46TzQL9qYUzo0454Hi6+SuJ+KCvIO2
+         r777DagV8IJLtlRpxzM3A1Grar7/W68WQsCLVpYL/vYOtEmXUel2jMabtJBipHU5yOmg
+         JNCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUQGiGx5mU6RQza0CBwAv2jiQQYAkZ54hRwJ+0GUUWxvCEYFqyaic324PJfVdqx5pTWWytrVDSPgZL4GezNxMiGjEFXz2TdgVSMA30=
+X-Gm-Message-State: AOJu0YztwJvbgF4XaaV9Btyf+IcZEm7gW6KS+h9LptxMsSCKe7okF2uB
+	SvFWwgjJuc63QfgmaCPBzkxuw/ZKU1s6VotxcWsuA8B7lRl2n+5krvpdI3SeTKI=
+X-Google-Smtp-Source: AGHT+IEtUnHCgXspvWzyBcI4Iu6FD4FhY7l2vPYZlKwtFxOzaUWi05T9h5nexKq5DDxYU/NPaxZq9w==
+X-Received: by 2002:ac2:5395:0:b0:513:dd59:bb3d with SMTP id g21-20020ac25395000000b00513dd59bb3dmr1104924lfh.20.1711094508372;
+        Fri, 22 Mar 2024 01:01:48 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (046125249120.public.t-mobile.at. [46.125.249.120])
-        by smtp.gmail.com with ESMTPSA id p29-20020a056402501d00b00568c613570dsm739889eda.79.2024.03.22.01.01.45
+        by smtp.gmail.com with ESMTPSA id p29-20020a056402501d00b00568c613570dsm739889eda.79.2024.03.22.01.01.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Mar 2024 01:01:46 -0700 (PDT)
+        Fri, 22 Mar 2024 01:01:48 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 0/5] Add TCPM support for PM7250B and Fairphone 4
-Date: Fri, 22 Mar 2024 09:01:31 +0100
-Message-Id: <20240322-fp4-tcpm-v1-0-c5644099d57b@fairphone.com>
+Date: Fri, 22 Mar 2024 09:01:32 +0100
+Subject: [PATCH 1/5] dt-bindings: regulator: qcom,usb-vbus-regulator: Add
+ PM7250B compatible
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -62,9 +64,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANs6/WUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDYyMj3bQCE92S5IJcXaPEFDOL1DRTU2MTMyWg8oKi1LTMCrBR0bG1tQD
- FEownWgAAAA==
+Message-Id: <20240322-fp4-tcpm-v1-1-c5644099d57b@fairphone.com>
+References: <20240322-fp4-tcpm-v1-0-c5644099d57b@fairphone.com>
+In-Reply-To: <20240322-fp4-tcpm-v1-0-c5644099d57b@fairphone.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konrad.dybcio@linaro.org>, 
  Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
@@ -79,32 +81,28 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.13.0
 
-This series adds support for Type-C Port Management on the Fairphone 4
-which enables USB role switching and orientation switching.
-
-This enables a user for example to plug in a USB stick or a USB keyboard
-to the Type-C port.
+The VBUS register block on the PM6150 PMIC shares the design with the
+PM8150B one. Define corresponding compatible string, having the
+qcom,pm8150b-vbus-reg as a fallback.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Luca Weiss (5):
-      dt-bindings: regulator: qcom,usb-vbus-regulator: Add PM7250B compatible
-      dt-bindings: usb: qcom,pmic-typec: Add support for the PM7250B PMIC
-      arm64: dts: qcom: pm7250b: Add node for PMIC VBUS booster
-      arm64: dts: qcom: pm7250b: Add a TCPM description
-      arm64: dts: qcom: sm7225-fairphone-fp4: Enable USB role switching
+ Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
- .../regulator/qcom,usb-vbus-regulator.yaml         |  1 +
- .../devicetree/bindings/usb/qcom,pmic-typec.yaml   |  1 +
- arch/arm64/boot/dts/qcom/pm7250b.dtsi              | 45 +++++++++++++++++
- arch/arm64/boot/dts/qcom/sm6350.dtsi               | 25 ++++++++++
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts  | 57 +++++++++++++++++++++-
- 5 files changed, 128 insertions(+), 1 deletion(-)
----
-base-commit: fa564eb0e6faf40ceea92b2e5ba7a08d0a79594c
-change-id: 20240322-fp4-tcpm-2ad68ef55346
+diff --git a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
+index 33ae1f786802..fcefc722ee2a 100644
+--- a/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
++++ b/Documentation/devicetree/bindings/regulator/qcom,usb-vbus-regulator.yaml
+@@ -26,6 +26,7 @@ properties:
+           - enum:
+               - qcom,pm4125-vbus-reg
+               - qcom,pm6150-vbus-reg
++              - qcom,pm7250b-vbus-reg
+               - qcom,pmi632-vbus-reg
+           - const: qcom,pm8150b-vbus-reg
+ 
 
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.44.0
 
