@@ -1,148 +1,250 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5163FE2D
-	for <phone-devel@vger.kernel.org>; Fri, 22 Mar 2024 10:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C398A3D3A4
+	for <phone-devel@vger.kernel.org>; Fri, 22 Mar 2024 10:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711103570; cv=none; b=UEADirBj86gBjdRdDb9M2Opq93jpeXe4vZE+FacgUKy2avtABMl+rH2WCQFfaCvtEPSFe4LifqElaDFcj9V6/WSRA3J7QS2EuCDSN9/ytnj1vYO5lV1+yXUkAKesJZhXzp3YtKD46ylY/UKaDWYJSzRIMweqg40vlp84P5mvbvU=
+	t=1711104893; cv=none; b=epmaxFIRaJF5eEfp5slugjuYb5d64Pev8T/esxtKBSO+/ISPYkZiAAh0lMTMJseJsFQcyglskEwIk5APjwpMACLO7MT0qfOZbe0UfHJ4ILe0+koL/0QZFJBJv/IRQc2fX2E6gD8W/7euhtIrdc7q6c33gtsJ05w/jfcpPL55G+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711103570; c=relaxed/simple;
-	bh=IeeeFvZPihvjkO9rkI+cnfWH8mStNkDQXAroPXkgklQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DlAMhGGhDMpjxeo1cPV8sdjnPxoUeDdJ+wUxxVccQBPsJW1AbPqiwNVpAr0sNsqW0bm1JI/N+T7vU7+Z+ngklVWJMOmHP6VTk4DJYhwJOZHOyu5IxiRutGOgewALhEI5Y6jLStBtzCbWTVr225koSMV1csw/TLvVT3YJpou8zZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zNxkBRAk; arc=none smtp.client-ip=209.85.128.46
+	s=arc-20240116; t=1711104893; c=relaxed/simple;
+	bh=lqlF6LC2lHEkheQ1iOMwalBqlnrXpZNihZvbCgN/AP8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=arIOAtAsrS/4yoeO0Ydg58OgYzBcTEsgPdJgTcvxRppbrno19ftkxQLEMfbHvXjTtHZCD3VXNg/DiS4paWPLPyshI1y1hY5NsJhjcn1SHTIhUF2LUuqKHOE8A59OO+TQb90oqvWGBTAIZl8O8a+nfSP0xDZ9GqYEtSKK6lgoXBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lrCUysCT; arc=none smtp.client-ip=209.85.128.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zNxkBRAk"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4147e135f4dso1309765e9.2
-        for <phone-devel@vger.kernel.org>; Fri, 22 Mar 2024 03:32:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lrCUysCT"
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-60a0579a955so23488147b3.3
+        for <phone-devel@vger.kernel.org>; Fri, 22 Mar 2024 03:54:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711103566; x=1711708366; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4cLlbtwhTjL1jxvTL4CgsNlJM2USa8MoHtGm1QbNL5M=;
-        b=zNxkBRAkF6ZaYFjq9jedqze7FNApSHYuISz3kR1vMgmawlNaBZMvEEE2YfaTY5rYM6
-         j+U5mZPWFouQqgS7cHAPyDH7zi34LeOoepuIKXBe5GkW+cgOofyPoRCjFTDBdC1iISuy
-         bwjx/Pid3sNlFd/D1Vg7K4y/Yz2QMPAVQIOPQMVxEDH9+xgrkFZ3ex+HWZtEIAfbZ5NQ
-         +a7xcb6fyITm1xfvoBhtRZqLMnDdOwkCI+0exqz0xd3uQ1TMF6sEGfpUvdBqOpRIvwT+
-         gnuqRy4HFQLsfzFthNncY5fWI94satFJ34wyohvAL/SuI+7DdVT3e7Qr/rUkH3ZysXvQ
-         DXAA==
+        d=linaro.org; s=google; t=1711104891; x=1711709691; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=3yLTyJy7JcrovLWujJX3AA6N2qSzZlAvcXrRMfhN/Lk=;
+        b=lrCUysCTxiIcVxILMqEGFBATl4JZBjmnrzIBw7gjsu2YpkQ17dRvE+4uutEjSSHeFZ
+         9+4C/C93lLUqqc4LPij+Vmj80Vz76PeZJJimWMHK69W7jc78Lgz8UVRkiUtWF8Xw5zeN
+         WXg/A8/hEakxKIhTwf2z63n0205mPT/aFt985myrah9K1+eKs9qPbl5T5Da5MZIYNPxN
+         Cys+313sqGiXPASl2SdsF7mz2ViGA5HmqRCHCxATr17enjX36TxvV+2rYOcSocjOtBWx
+         0I4evCeOWeWBXhnVEQb4hXERXmdD+1IH85q1G7BoBXhjmUS1X9YtgBoO5x7+aJCrT08R
+         ztxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711103566; x=1711708366;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4cLlbtwhTjL1jxvTL4CgsNlJM2USa8MoHtGm1QbNL5M=;
-        b=DZOzui5o2JU7xh5csYPUWH3qG7VLWKAAgNrFYkTTcKRIqDP8f03J6HjXeAOQTItbZm
-         wlrABo8yRxhZrbYLcKBX3ZyPOGAJ8tc2pxvR/qZwhWq7HId3+3il7fTG4G+PDQiETZM/
-         uxc27UrEQoBnuETZqJR+b83sQbe+agalf7ERlN0I0CYLzjKlMTlj3wIM9HAks37ZcW/m
-         dR52lr0sM1o619FNj0x7KfW3eCxL6xd3IkZOjn8Ujm/Zwj7t9CVttFjBJcrwx9j2wScp
-         /27MXs4TU4+sP7X/aeakS8bdhDib5QzlvLJRifenFcJ1C1UhOd+73sUT15BL4icgRuEy
-         IbyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXR09ozXIy2wJcjrqId7paMgDJMCrM3/qzHB7ZXmdu2PoL4XqT86rvG9l0vZZshJtIqu3N7RUtVWZL7zcmDVbrRWQk1XgdOOwv8Nkk=
-X-Gm-Message-State: AOJu0YylkA0E5O4rDH4jxY44VUp4X2kfKamYCfZKrPcgZ+LGzRgeE94+
-	1a9pJSY6PYe+KBoLQl5DpbsMNxSxTBLUpCOI/73Tc1p/5URZNd/d+cUfmB0VOqM=
-X-Google-Smtp-Source: AGHT+IG2NsJwJn4mQZLhTfufZL9LbdScYyZRHQheGp2Pdz05wMVc2kyw7Og64VHUf6sgmyIEwndVRQ==
-X-Received: by 2002:a05:6000:1243:b0:33e:4d34:f40f with SMTP id j3-20020a056000124300b0033e4d34f40fmr1103056wrx.46.1711103566118;
-        Fri, 22 Mar 2024 03:32:46 -0700 (PDT)
-Received: from [192.168.0.102] ([176.61.106.68])
-        by smtp.gmail.com with ESMTPSA id x15-20020a5d60cf000000b0033cf4e47496sm1759496wrt.51.2024.03.22.03.32.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Mar 2024 03:32:45 -0700 (PDT)
-Message-ID: <a4ff04e9-794b-4afd-920e-a2b2d5bf687e@linaro.org>
-Date: Fri, 22 Mar 2024 10:32:45 +0000
+        d=1e100.net; s=20230601; t=1711104891; x=1711709691;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3yLTyJy7JcrovLWujJX3AA6N2qSzZlAvcXrRMfhN/Lk=;
+        b=vGinb5SezqSOcklKLFreKUsVFw7edSWnnVwWp/c4dIfB84YaAtkG/ZWnK09aCLqzY2
+         4mmJ9/ESCH9inT4eRrHEK2OgtgjIToayBW+CY0X/UNhxq9Fo1p5n03ybIrQ+/fywrGHC
+         cds1aELSfq57/PdwMTU6e7+8QIlsKsdrmUnJ8CHqSDUe5RrUM3uxMnfxDAtjNDSl+crl
+         Yw0NET5jK8v+o6NI05uXfo3S30CxNOSHfWiFP4ZWsgfBmcy5D8cP5wtRmE4ALUD0Fyi5
+         wVniQJHSB4i77m6fK/qkgS8i1FL8LAOCxYHdp0JOIc4rCIoDUcsyw2WST3TWGt6mVz2O
+         c1mg==
+X-Forwarded-Encrypted: i=1; AJvYcCWl0vj6gdVOQJI16Sk+ZPJPS9xx8uegU2PJ7Rrh3GvR1O3CULRRyUkqqr6jJZwtdfcEHenfUuWfOb4v6JjN+7MuE6Xhnfbbi8k3XuE=
+X-Gm-Message-State: AOJu0Yysl8eASc6GAsMKkz+ePIx0Tn0vvSV3JBZs00QWujNTTs7kHcxc
+	CEn3QOrxrfqlCEB3LNCehQXshAFrBRkIe8OdyRZZaNtJRg5JBKtPmuofn26GW07gURSOD1srlKS
+	25b2WHCNIvh2+3bxtIfK0Ege1BV2cR9GbyjfpiQ==
+X-Google-Smtp-Source: AGHT+IGz+x7tVfFIboyUBVIztTiYvPl61n17Jr2i8etPqEnpA+dZPRoFyPRs7c3I1/knQbb/932ar1JaVW/dsRUSqng=
+X-Received: by 2002:a25:dbd0:0:b0:dc2:1f53:3a4f with SMTP id
+ g199-20020a25dbd0000000b00dc21f533a4fmr1686940ybf.5.1711104890696; Fri, 22
+ Mar 2024 03:54:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] arm64: dts: qcom: pm7250b: Add a TCPM description
-Content-Language: en-US
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Wesley Cheng <quic_wcheng@quicinc.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-usb@vger.kernel.org
-References: <20240322-fp4-tcpm-v1-0-c5644099d57b@fairphone.com>
- <20240322-fp4-tcpm-v1-4-c5644099d57b@fairphone.com>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20240322-fp4-tcpm-v1-4-c5644099d57b@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240322-fp4-tcpm-v1-0-c5644099d57b@fairphone.com> <20240322-fp4-tcpm-v1-5-c5644099d57b@fairphone.com>
+In-Reply-To: <20240322-fp4-tcpm-v1-5-c5644099d57b@fairphone.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Fri, 22 Mar 2024 12:54:39 +0200
+Message-ID: <CAA8EJpq3eKFYhBbnggzRy2acE6uSyWGqCMcLxfkqx1Hot50gRw@mail.gmail.com>
+Subject: Re: [PATCH 5/5] arm64: dts: qcom: sm7225-fairphone-fp4: Enable USB
+ role switching
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Wesley Cheng <quic_wcheng@quicinc.com>, "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, ~postmarketos/upstreaming@lists.sr.ht, 
+	phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-usb@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 22/03/2024 08:01, Luca Weiss wrote:
-> Type-C port management functionality lives inside of the PMIC block on
-> pm7250b.
-> 
-> The Type-C port management logic controls orientation detection,
-> vbus/vconn sense and to send/receive Type-C Power Domain messages.
-> 
+On Fri, 22 Mar 2024 at 10:03, Luca Weiss <luca.weiss@fairphone.com> wrote:
+>
+> Configure the Type-C and VBUS regulator on PM7250B and wire it up to the
+> USB PHY, so that USB role and orientation switching works.
+>
 > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->   arch/arm64/boot/dts/qcom/pm7250b.dtsi | 39 +++++++++++++++++++++++++++++++++++
->   1 file changed, 39 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-> index 91a046b3529c..d9abac052afe 100644
-> --- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-> @@ -51,6 +51,45 @@ pm7250b_vbus: usb-vbus-regulator@1100 {
->   			reg = <0x1100>;
->   		};
->   
-> +		pm7250b_typec: typec@1500 {
-> +			compatible = "qcom,pm7250b-typec", "qcom,pm8150b-typec";
-> +			reg = <0x1500>,
-> +			      <0x1700>;
-> +			interrupts = <PM7250B_SID 0x15 0x00 IRQ_TYPE_EDGE_RISING>,
-> +				     <PM7250B_SID 0x15 0x01 IRQ_TYPE_EDGE_BOTH>,
-> +				     <PM7250B_SID 0x15 0x02 IRQ_TYPE_EDGE_RISING>,
-> +				     <PM7250B_SID 0x15 0x03 IRQ_TYPE_EDGE_BOTH>,
-> +				     <PM7250B_SID 0x15 0x04 IRQ_TYPE_EDGE_RISING>,
-> +				     <PM7250B_SID 0x15 0x05 IRQ_TYPE_EDGE_RISING>,
-> +				     <PM7250B_SID 0x15 0x06 IRQ_TYPE_EDGE_BOTH>,
-> +				     <PM7250B_SID 0x15 0x07 IRQ_TYPE_EDGE_RISING>,
-> +				     <PM7250B_SID 0x17 0x00 IRQ_TYPE_EDGE_RISING>,
-> +				     <PM7250B_SID 0x17 0x01 IRQ_TYPE_EDGE_RISING>,
-> +				     <PM7250B_SID 0x17 0x02 IRQ_TYPE_EDGE_RISING>,
-> +				     <PM7250B_SID 0x17 0x03 IRQ_TYPE_EDGE_RISING>,
-> +				     <PM7250B_SID 0x17 0x04 IRQ_TYPE_EDGE_RISING>,
-> +				     <PM7250B_SID 0x17 0x05 IRQ_TYPE_EDGE_RISING>,
-> +				     <PM7250B_SID 0x17 0x06 IRQ_TYPE_EDGE_RISING>,
-> +				     <PM7250B_SID 0x17 0x07 IRQ_TYPE_EDGE_RISING>;
-> +			interrupt-names = "or-rid-detect-change",
-> +					  "vpd-detect",
-> +					  "cc-state-change",
-> +					  "vconn-oc",
-> +					  "vbus-change",
-> +					  "attach-detach",
-> +					  "legacy-cable-detect",
-> +					  "try-snk-src-detect",
-> +					  "sig-tx",
-> +					  "sig-rx",
-> +					  "msg-tx",
-> +					  "msg-rx",
-> +					  "msg-tx-failed",
-> +					  "msg-tx-discarded",
-> +					  "msg-rx-discarded",
-> +					  "fr-swap";
-> +			vdd-vbus-supply = <&pm7250b_vbus>;
-> +		};
-> +
->   		pm7250b_temp: temp-alarm@2400 {
->   			compatible = "qcom,spmi-temp-alarm";
->   			reg = <0x2400>;
-> 
+> With this patch I'm not quite sure if the 'ports' are connected
+> correctly, though functionally everything appears to work fine.
+>
+> On some other SoCs port@1 in qmpphy and a second port in dwc3 are
+> connected together also - one port of USB 2.0 HS, one for USB 3.0 SS.
+>
+> Here I'm following sm8250's solution. Also checking the binding doc
+> doesn't reveal anything useful.
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Thanks for pointing it out. The SM8250 / RB5 predated final DP
+bindings / graphs. As such it didn't fully describe the signal chain
+(the signals go from DWC3 and from DP controllers to the QMP PHY,
+where they are muxed to the 4 output lanes).
+I'll post an update for sm8250 / bindings doc.
+
+I'd kindly ask to connect qmp / port@1 and dwc / port@1
+
+> ---
+>  arch/arm64/boot/dts/qcom/sm6350.dtsi              | 25 ++++++++++
+>  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 57 ++++++++++++++++++++++-
+>  2 files changed, 81 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+> index 24bcec3366ef..b267500467f0 100644
+> --- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+> @@ -1686,6 +1686,27 @@ usb_1_qmpphy: phy@88e8000 {
+>                         #phy-cells = <1>;
+>
+>                         status = "disabled";
+> +
+> +                       ports {
+> +                               #address-cells = <1>;
+> +                               #size-cells = <0>;
+> +
+> +                               port@0 {
+> +                                       reg = <0>;
+> +
+> +                                       usb_1_qmpphy_out: endpoint {};
+> +                               };
+> +
+> +                               port@1 {
+> +                                       reg = <1>;
+> +                               };
+> +
+> +                               port@2 {
+> +                                       reg = <2>;
+> +
+> +                                       usb_1_qmpphy_dp_in: endpoint {};
+> +                               };
+> +                       };
+>                 };
+>
+>                 dc_noc: interconnect@9160000 {
+> @@ -1861,6 +1882,10 @@ usb_1_dwc3: usb@a600000 {
+>                                 snps,hird-threshold = /bits/ 8 <0x10>;
+>                                 phys = <&usb_1_hsphy>, <&usb_1_qmpphy QMP_USB43DP_USB3_PHY>;
+>                                 phy-names = "usb2-phy", "usb3-phy";
+> +
+> +                               port {
+> +                                       usb_1_role_switch_out: endpoint {};
+> +                               };
+>                         };
+>                 };
+>
+> diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+> index bc67e8c1fe4d..104f23ec322d 100644
+> --- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+> +++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+> @@ -19,6 +19,7 @@
+>  #include <dt-bindings/leds/common.h>
+>  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+>  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+> +#include <dt-bindings/usb/pd.h>
+>  #include "sm7225.dtsi"
+>  #include "pm6150l.dtsi"
+>  #include "pm6350.dtsi"
+> @@ -543,6 +544,50 @@ conn-therm@1 {
+>         };
+>  };
+>
+> +&pm7250b_typec {
+> +       vdd-pdphy-supply = <&vreg_l3a>;
+> +
+> +       status = "okay";
+> +
+> +       connector {
+> +               compatible = "usb-c-connector";
+> +
+> +               power-role = "source";
+> +               data-role = "dual";
+> +               self-powered;
+> +
+> +               source-pdos = <PDO_FIXED(5000, 1500,
+> +                                        PDO_FIXED_DUAL_ROLE |
+> +                                        PDO_FIXED_USB_COMM |
+> +                                        PDO_FIXED_DATA_SWAP)>;
+> +
+> +               ports {
+> +                       #address-cells = <1>;
+> +                       #size-cells = <0>;
+> +
+> +                       port@0 {
+> +                               reg = <0>;
+> +                               pm7250b_role_switch_in: endpoint {
+> +                                       remote-endpoint = <&usb_1_role_switch_out>;
+> +                               };
+> +                       };
+> +
+> +                       port@1 {
+> +                               reg = <1>;
+> +                               pm7250b_typec_mux_in: endpoint {
+> +                                       remote-endpoint = <&usb_1_qmpphy_out>;
+> +                               };
+> +                       };
+> +               };
+> +       };
+> +};
+> +
+> +&pm7250b_vbus {
+> +       regulator-min-microamp = <500000>;
+> +       regulator-max-microamp = <1500000>;
+> +       status = "okay";
+> +};
+> +
+>  &pmk8350_rtc {
+>         status = "okay";
+>  };
+> @@ -726,7 +771,12 @@ &usb_1 {
+>
+>  &usb_1_dwc3 {
+>         maximum-speed = "super-speed";
+> -       dr_mode = "peripheral";
+> +       dr_mode = "otg";
+> +       usb-role-switch;
+> +};
+> +
+> +&usb_1_role_switch_out {
+> +       remote-endpoint = <&pm7250b_role_switch_in>;
+>  };
+>
+>  &usb_1_hsphy {
+> @@ -740,10 +790,15 @@ &usb_1_hsphy {
+>  &usb_1_qmpphy {
+>         vdda-phy-supply = <&vreg_l22a>;
+>         vdda-pll-supply = <&vreg_l16a>;
+> +       orientation-switch;
+>
+>         status = "okay";
+>  };
+>
+> +&usb_1_qmpphy_out {
+> +       remote-endpoint = <&pm7250b_typec_mux_in>;
+> +};
+> +
+>  &wifi {
+>         vdd-0.8-cx-mx-supply = <&vreg_l4a>;
+>         vdd-1.8-xo-supply = <&vreg_l7a>;
+>
+> --
+> 2.44.0
+>
+>
+
+
+-- 
+With best wishes
+Dmitry
