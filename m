@@ -1,248 +1,262 @@
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8346136653;
-	Thu, 21 Mar 2024 22:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D5818EC3
+	for <phone-devel@vger.kernel.org>; Fri, 22 Mar 2024 07:59:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711059017; cv=none; b=AqSRBH5lczcFPj3AWAOTj/9iWw/bcic8lBWcWRbqy0sgF6uzDkTSDVl3M/miB7LtA5YO6OSgTYF035ui/l7MJb+0Vm/3vDD1sJHw17HrT1VFBDcDMVxr3G9gJK77RZqvIUizP1WhgJHiyRHkTgixGz46uhsChvIKUatJ2runD9w=
+	t=1711094358; cv=none; b=DAaJzGznUHh5O0lMmltR+teR6OJByt3KqznC5HPHNNWhroFidEgP1eyEV1lYeWw4BLLdtcKA0MINVizMyPJnwY/QP1l/x9CTFEA5QcOOQGFQ2kPoPDzS5xDJooOrNGi+boZKCR8DVIfy0v2SVBbeZP0sxnn9HSVwSCmu0W1fvtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711059017; c=relaxed/simple;
-	bh=mLjZrpzWrUzujXyXA53GWcvzFQctkeVPVbWC5+9omdg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e+XHCVoumYKkMhTkrHi5oAj2Ev0o64gOraJKGvrjHs5yOFgqFCdA3m/6VxX3JAdai0BRkkKs/lBC7YnVFT7pLJt+dMDz85F2oOclQHurni7jhHSvhBIbJUuiy+0WxLzcp7ivjfZEWvdur4nYbe3HWPN20Ny3N8nyYNAMhMSA6aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=O6H+EuOa; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+	s=arc-20240116; t=1711094358; c=relaxed/simple;
+	bh=8oNeA1R+uaPm6qmNmNCiQoHzDfg9lMR1N0jwijC+qtM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=kGnW356JInP5IzGCxtdBOPQ/l5OWgKol9Wv2xo/B1VXlHZJ9+MJ0FyHTaIrIJfpr5NdTVEBMkKWXyWZAXn5txqxPflMMQ+s6+lPc97bmpQDV6VQYR09Z49njoaSf4105Sbe6jgbZX3kDoweHkw7dcdeYfxpjK8sxscOyxDTWOcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=DpqNeicN; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="O6H+EuOa"
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 3CDA21C0071; Thu, 21 Mar 2024 23:10:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1711059005;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=baJbHNFesYdsQGg2SHQydVd7GbUwkJqAdso+SdWMIW8=;
-	b=O6H+EuOa6C8ysSVKamAtuty2XopZZvSdNxX7G1mSZMSdFwCmjmeN+CKSn1EvM22C7DYB4/
-	IzHlN1+TeE1D3/byZlth+MxyZ0QWb9+lYBqwiaSZ69APScpTKmANDmIAmjD4tRL4Oat6jB
-	RpRfuI7QqRrOCcCjJEEkuqARxq0t7wY=
-Date: Thu, 21 Mar 2024 23:10:04 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: phone-devel@vger.kernel.org, kernel list <linux-kernel@vger.kernel.org>,
-	fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org,
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, megi@xff.cz
-Subject: Re: [PATCHv2 2/2] usb: typec: anx7688: Add driver for ANX7688 USB-C
- HDMI bridge
-Message-ID: <ZfywPHEgYEhFSkGS@duo.ucw.cz>
-References: <ZcaCXYOf6o4VNneu@duo.ucw.cz>
- <ZdkOESbty6iMfyhj@duo.ucw.cz>
- <ZfBi5Qj3zV9ffkwQ@kuha.fi.intel.com>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="DpqNeicN"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a4734ae95b3so18151866b.0
+        for <phone-devel@vger.kernel.org>; Fri, 22 Mar 2024 00:59:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1711094355; x=1711699155; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KS7w40gQLpj4JwebvWp26JX7Uxo13WZZkGHnC6K49Ow=;
+        b=DpqNeicN6x0yz0BWdbxBsr27s38PDKt92ZWdfruIg5sdJ+jYtiWJSzx9mDcmSuZqj4
+         HH66YTl5FiEyuu+ay/nr1X+dFe4NPlCnqUhCrezmrsG968m+Vrs9NcNCQvsAuyhi2+La
+         4quvFAZoifWwlJ5cWOjPuOHCU0rckcUg4OlSuK1TwOSX9qvcuXwO4dpWVTXhIGMisQYj
+         xVwBIUrMWSwqvmaUm35EVvrSlvTzMjYp+wBEAS4q1USANa2u8+l8XWAB90h2A1Aggv1M
+         +NrUEcMExrtGRLJ6GOaSIWaaVHhNGN2PEdEiukYkFWbPIpnX5PBrhi1PA4Vi4kJyEKZD
+         JICA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711094355; x=1711699155;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=KS7w40gQLpj4JwebvWp26JX7Uxo13WZZkGHnC6K49Ow=;
+        b=cRH5Z3YI8m+zwbcIdY6gZoVZ9sh/uFmIBqEUM1fSqS9TY2pEdKhyLz6qISWgBwerwr
+         Xnd/fydE/oqKXh629lhxgRygnX5iMB6fcELzFbgMUoGVwLlKoy+FHpKv2Z06dJMVL5NB
+         RGsfgzhcdRnhG7BAh27XBy5drHz0wLOQ2u6mpjA2waT7LNEjjAcw8n7eGtzm2E1iaPmJ
+         q3Qs81VqN6q0vOR5k01yHS7frsUkm7d88h9Kwg7An9403Rq0x0bF8Wfobe3HBQkDeo9P
+         6Zeu6dAfAWerhjjRzEeAPAwwm376vRGkdbtmLTeGcrDs9yA97HRg96zU1F9BYTWf7yQx
+         P1fA==
+X-Forwarded-Encrypted: i=1; AJvYcCUnZQAB0DBbl6kornNZz1ksrg0X1Cf7sxviW94w8SYjeelOQo6APK57YUPfl4nkKri6IfBcqMxOuwMDBVaYBuY4mW1JU4KVeBO+tbQ=
+X-Gm-Message-State: AOJu0YygGTSyf/9Er2LLVyh44kiNYcr9GSEwbN8cwVfHNdUfCoIHShwr
+	TO5Uxpq5Sj4JRAKrW4a81GMbAD8r8DwKv0go3abQZynu3pQDkqq48Eal9fyasAI=
+X-Google-Smtp-Source: AGHT+IFscmFzR59tvnQPVG1KyfSwq3bup2AKubi8RDQJUccob6bzs5EDHOm1AZDCss3DP/15OGmO1Q==
+X-Received: by 2002:a17:907:a4e:b0:a46:ac55:8e69 with SMTP id be14-20020a1709070a4e00b00a46ac558e69mr1453125ejc.14.1711094354759;
+        Fri, 22 Mar 2024 00:59:14 -0700 (PDT)
+Received: from localhost (046125249120.public.t-mobile.at. [46.125.249.120])
+        by smtp.gmail.com with ESMTPSA id f13-20020a1709067f8d00b00a46a4a14555sm737912ejr.86.2024.03.22.00.59.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Mar 2024 00:59:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="lrV6wORQT5PAs+bk"
-Content-Disposition: inline
-In-Reply-To: <ZfBi5Qj3zV9ffkwQ@kuha.fi.intel.com>
-
-
---lrV6wORQT5PAs+bk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 22 Mar 2024 08:59:12 +0100
+Message-Id: <D004BPW9N0FS.376F67CINO459@fairphone.com>
+Cc: "Nitin Rawat" <quic_nitirawa@quicinc.com>, "Andy Gross"
+ <agross@kernel.org>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
+ Dybcio" <konrad.dybcio@linaro.org>, "Alim Akhtar"
+ <alim.akhtar@samsung.com>, "Avri Altman" <avri.altman@wdc.com>, "Bart Van
+ Assche" <bvanassche@acm.org>, "Rob Herring" <robh+dt@kernel.org>,
+ "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, <cros-qcom-dts-watchers@chromium.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 2/3] arm64: dts: qcom: sc7280: Add UFS nodes for
+ sc7280 soc
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Manivannan Sadhasivam" <mani@kernel.org>
+X-Mailer: aerc 0.15.2
+References: <20231204-sc7280-ufs-v5-0-926ceed550da@fairphone.com>
+ <20231204-sc7280-ufs-v5-2-926ceed550da@fairphone.com>
+ <621388b9-dcee-4af2-9763-e5d623d722b7@quicinc.com>
+ <CXFJNBNKTRHH.2CS6TO2MEGJWL@fairphone.com>
+ <20231204172829.GA69580@thinkpad>
+In-Reply-To: <20231204172829.GA69580@thinkpad>
 
-Hi!
+On Mon Dec 4, 2023 at 6:28 PM CET, Manivannan Sadhasivam wrote:
+> On Mon, Dec 04, 2023 at 01:21:42PM +0100, Luca Weiss wrote:
+> > On Mon Dec 4, 2023 at 1:15 PM CET, Nitin Rawat wrote:
+> > >
+> > >
+> > > On 12/4/2023 3:54 PM, Luca Weiss wrote:
+> > > > From: Nitin Rawat <quic_nitirawa@quicinc.com>
+> > > >=20
+> > > > Add UFS host controller and PHY nodes for sc7280 soc.
+> > > >=20
+> > > > Signed-off-by: Nitin Rawat <quic_nitirawa@quicinc.com>
+> > > > Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> > > > Tested-by: Konrad Dybcio <konrad.dybcio@linaro.org> # QCM6490 FP5
+> > > > [luca: various cleanups and additions as written in the cover lette=
+r]
+> > > > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > > > ---
+> > > >   arch/arm64/boot/dts/qcom/sc7280.dtsi | 74 +++++++++++++++++++++++=
+++++++++++++-
+> > > >   1 file changed, 73 insertions(+), 1 deletion(-)
+> > > >=20
+> > > > diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot=
+/dts/qcom/sc7280.dtsi
+> > > > index 04bf85b0399a..8b08569f2191 100644
+> > > > --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
+> > > > +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+> > > > @@ -15,6 +15,7 @@
+> > > >   #include <dt-bindings/dma/qcom-gpi.h>
+> > > >   #include <dt-bindings/firmware/qcom,scm.h>
+> > > >   #include <dt-bindings/gpio/gpio.h>
+> > > > +#include <dt-bindings/interconnect/qcom,icc.h>
+> > > >   #include <dt-bindings/interconnect/qcom,osm-l3.h>
+> > > >   #include <dt-bindings/interconnect/qcom,sc7280.h>
+> > > >   #include <dt-bindings/interrupt-controller/arm-gic.h>
+> > > > @@ -906,7 +907,7 @@ gcc: clock-controller@100000 {
+> > > >   			clocks =3D <&rpmhcc RPMH_CXO_CLK>,
+> > > >   				 <&rpmhcc RPMH_CXO_CLK_A>, <&sleep_clk>,
+> > > >   				 <0>, <&pcie1_phy>,
+> > > > -				 <0>, <0>, <0>,
+> > > > +				 <&ufs_mem_phy 0>, <&ufs_mem_phy 1>, <&ufs_mem_phy 2>,
+> > > >   				 <&usb_1_qmpphy QMP_USB43DP_USB3_PIPE_CLK>;
+> > > >   			clock-names =3D "bi_tcxo", "bi_tcxo_ao", "sleep_clk",
+> > > >   				      "pcie_0_pipe_clk", "pcie_1_pipe_clk",
+> > > > @@ -2238,6 +2239,77 @@ pcie1_phy: phy@1c0e000 {
+> > > >   			status =3D "disabled";
+> > > >   		};
+> > > >  =20
+> > > > +		ufs_mem_hc: ufs@1d84000 {
+> > > > +			compatible =3D "qcom,sc7280-ufshc", "qcom,ufshc",
+> > > > +				     "jedec,ufs-2.0";
+> > > > +			reg =3D <0x0 0x01d84000 0x0 0x3000>;
+> > > > +			interrupts =3D <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH>;
+> > > > +			phys =3D <&ufs_mem_phy>;
+> > > > +			phy-names =3D "ufsphy";
+> > > > +			lanes-per-direction =3D <2>;
+> > > > +			#reset-cells =3D <1>;
+> > > > +			resets =3D <&gcc GCC_UFS_PHY_BCR>;
+> > > > +			reset-names =3D "rst";
+> > > > +
+> > > > +			power-domains =3D <&gcc GCC_UFS_PHY_GDSC>;
+> > > > +			required-opps =3D <&rpmhpd_opp_nom>;
+> > > > +
+> > > > +			iommus =3D <&apps_smmu 0x80 0x0>;
+> > > > +			dma-coherent;
+> > > > +
+> > > > +			interconnects =3D <&aggre1_noc MASTER_UFS_MEM QCOM_ICC_TAG_ALWA=
+YS
+> > > > +					 &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
+> > > > +					<&gem_noc MASTER_APPSS_PROC QCOM_ICC_TAG_ALWAYS
+> > > > +					 &cnoc2 SLAVE_UFS_MEM_CFG QCOM_ICC_TAG_ALWAYS>;
+> > > > +			interconnect-names =3D "ufs-ddr", "cpu-ufs";
+> > > > +
+> > > > +			clocks =3D <&gcc GCC_UFS_PHY_AXI_CLK>,
+> > > > +				 <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
+> > > > +				 <&gcc GCC_UFS_PHY_AHB_CLK>,
+> > > > +				 <&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
+> > > > +				 <&rpmhcc RPMH_CXO_CLK>,
+> > > > +				 <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
+> > > > +				 <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
+> > > > +				 <&gcc GCC_UFS_PHY_RX_SYMBOL_1_CLK>;
+> > > > +			clock-names =3D "core_clk",
+> > > > +				      "bus_aggr_clk",
+> > > > +				      "iface_clk",
+> > > > +				      "core_clk_unipro",
+> > > > +				      "ref_clk",
+> > > > +				      "tx_lane0_sync_clk",
+> > > > +				      "rx_lane0_sync_clk",
+> > > > +				      "rx_lane1_sync_clk";
+> > > > +			freq-table-hz =3D
+> > > > +				<75000000 300000000>,
+> > > > +				<0 0>,
+> > > > +				<0 0>,
+> > > > +				<75000000 300000000>,
+> > > > +				<0 0>,
+> > > > +				<0 0>,
+> > > > +				<0 0>,
+> > > > +				<0 0>;
+> > > > +			status =3D "disabled";
+> > > > +		};
+> > > > +
+> > > > +		ufs_mem_phy: phy@1d87000 {
+> > > > +			compatible =3D "qcom,sc7280-qmp-ufs-phy";
+> > > > +			reg =3D <0x0 0x01d87000 0x0 0xe00>;
+> > > > +			clocks =3D <&rpmhcc RPMH_CXO_CLK>,
+> > > > +				 <&gcc GCC_UFS_PHY_PHY_AUX_CLK>,
+> > > > +				 <&gcc GCC_UFS_1_CLKREF_EN>;
+> > > > +			clock-names =3D "ref", "ref_aux", "qref";
+> > > > +
+> > > > +			power-domains =3D <&gcc GCC_UFS_PHY_GDSC>;
+> >=20
+> > Hi Nitin,
+> >=20
+> > >
+> > > GCC_UFS_PHY_GDSC is UFS controller GDSC. For sc7280 Phy we don't need=
+ this.
+> >=20
+> > In the current dt-bindings the power-domains property is required.
+> >=20
+> > Is there another power-domain for the PHY to use, or do we need to
+> > adjust the bindings to not require power-domains property for ufs phy o=
+n
+> > sc7280?
+> >=20
+>
+> PHYs are backed by MX power domain. So you should use that.
+>
+> > Also, with "PHY" in the name, it's interesting that this is not for the
+> > phy ;)
+> >=20
+>
+> Yes, confusing indeed. But the controllers (PCIe, UFS, USB etc...) are ba=
+cked by
+> GDSCs and all the analog components (PHYs) belong to MX domain since it i=
+s kind
+> of always ON.
+>
+> I'll submit a series to fix this for the rest of the SoCs.
 
-> I'm sorry to keep you waiting.
+Hi Mani,
 
-Thanks for comments.
+Did you get around to sending such series?
 
-> > +	struct gpio_desc *gpio_reset;
-> > +	struct gpio_desc *gpio_cabledet;
-> > +
-> > +	uint32_t src_caps[8];
->=20
-> Use u32 instead of uint32_t.
+This would also fix some binding warnings, e.g. on SM6350.
 
-Will replace globally.
+  arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dtb: phy@1d87000: 'power-do=
+mains' is a required property
+          from schema $id: http://devicetree.org/schemas/phy/qcom,sc8280xp-=
+qmp-ufs-phy.yaml#
 
-> > +static int anx7688_reg_read(struct anx7688 *anx7688, u8 reg_addr)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret =3D i2c_smbus_read_byte_data(anx7688->client, reg_addr);
-> > +	if (ret < 0)
-> > +		dev_err(anx7688->dev, "i2c read failed at 0x%x (%d)\n",
-> > +			reg_addr, ret);
->=20
-> dev_dbg instead.
+Regards
+Luca
 
-I'd prefer not to. i2c functions should not really fail, and if they
-do, we want the error log. This is not debugging, this is i2c failing.
 
-> > +static void anx7688_power_enable(struct anx7688 *anx7688)
-> > +{
-> > +	gpiod_set_value(anx7688->gpio_reset, 1);
-> > +	gpiod_set_value(anx7688->gpio_enable, 1);
-> > +
-> > +	/* wait for power to stabilize and release reset */
-> > +	msleep(10);
->=20
-> So is it okay that the sleep may take up to 20ms?
+>
+> - Mani
+>
+> > Regards
+> > Luca
+> >=20
+> > >
+> > > > +
+> > > > +			resets =3D <&ufs_mem_hc 0>;
+> > > > +			reset-names =3D "ufsphy";
+> > > > +
+> > > > +			#clock-cells =3D <1>;
+> > > > +			#phy-cells =3D <0>;
+> > > > +
+> > > > +			status =3D "disabled";
+> > > > +		};
+> > > > +
+> > > >   		ipa: ipa@1e40000 {
+> > > >   			compatible =3D "qcom,sc7280-ipa";
+> > > >  =20
+> > > >=20
+> >=20
 
-I don't see how that would be a problem.
-
-> > +	gpiod_set_value(anx7688->gpio_reset, 0);
-> > +	udelay(2);
->=20
-> Use usleep_range() instead.
-
-Can do, but it makes no difference.
-
-> > +	gpiod_set_value(anx7688->gpio_reset, 1);
-> > +	msleep(5);
->=20
-> The same question here, is it a problem if the sleep ends up taking
-> 20ms?
-
-Again, I expect that to be ok.
-
-> > +	ret =3D anx7688_tcpc_reg_read(anx7688, ANX7688_TCPC_REG_INTERFACE_SEN=
-D);
-> > +	if (ret) {
-> > +		dev_err(anx7688->dev,
-> > +			"failed to send pd packet (tx buffer full)\n");
->=20
-> One line should be enought for that one.
-
-That makes it go over 80 columns, but yes, can be one line.
-
-> > +	// wait until the message is processed (30ms max)
-> > +	for (i =3D 0; i < 300; i++) {
-> > +		ret =3D anx7688_tcpc_reg_read(anx7688, ANX7688_TCPC_REG_INTERFACE_SE=
-ND);
-> > +		if (ret <=3D 0)
-> > +			return ret;
-> > +
-> > +		udelay(100);
-> > +	}
-> > +
-> > +	dev_err(anx7688->dev, "timeout waiting for the message queue flush\n"=
-);
->=20
-> Maybe dev_dbg for this too.
-
-Let's not hide these. If they happen, we can downgrade them, but they
-should not.
-
-> > +	/* wait till the firmware is loaded (typically ~30ms) */
-> > +	for (i =3D 0; i < 100; i++) {
-> > +		ret =3D anx7688_reg_read(anx7688, ANX7688_REG_EEPROM_LOAD_STATUS0);
-> > +
-> > +		if (ret >=3D 0 && (ret & ANX7688_EEPROM_FW_LOADED) =3D=3D ANX7688_EE=
-PROM_FW_LOADED) {
-> > +			dev_dbg(anx7688->dev, "eeprom0 =3D 0x%02x\n", ret);
-> > +			dev_info(anx7688->dev, "fw loaded after %d ms\n", i * 10);
->=20
-> Debugging information. Use dev_dbg.
-
-Ok.
-
-> > +	set_bit(ANX7688_F_FW_FAILED, anx7688->flags);
-> > +	dev_err(anx7688->dev, "boot firmware load failed (you may need to fla=
-sh FW to anx7688 first)\n");
-> > +	ret =3D -ETIMEDOUT;
-> > +	goto err_vconoff;
-> > +
-> > +fw_loaded:
->=20
-> This label looks a bit messy to me. You could also move that firmware
-> loading wait to its own function.
-
-Ok, let me try to refactor this.
-
-> > +static int anx7688_handle_pd_message_response(struct anx7688 *anx7688,
-> > +					      u8 to_cmd, u8 resp)
-> > +{
-=2E..
-> > +	return 0;
-> > +}
->=20
-> Noise. Drop this whole function. If you need this kind of information,
-> then please consider trace points, or just use some debugfs trick like
-> what we have in drivers/usb/typec/tcpm/tcpm.c and few other drivers.
-
-Ok.
-
-> > +	switch (cmd) {
-> > +	case ANX7688_OCM_MSG_PWR_SRC_CAP:
-> > +		dev_info(anx7688->dev, "received SRC_CAP\n");
->=20
-> Noise.
-
-Ok, let me convert these to dev_dbg.
-
-> > +
-> > +		if (len % 4 !=3D 0) {
-> > +			dev_warn(anx7688->dev, "received invalid sized PDO array\n");
-> > +			break;
-> > +		}
-> > +
-> > +		/* the partner is PD capable */
-> > +		anx7688->pd_capable =3D true;
-> > +
-> > +		for (i =3D 0; i < len / 4; i++) {
-> > +			pdo =3D le32_to_cpu(pdos[i]);
-> > +
-> > +			if (pdo_type(pdo) =3D=3D PDO_TYPE_FIXED) {
-> > +				unsigned int voltage =3D pdo_fixed_voltage(pdo);
-> > +				unsigned int max_curr =3D pdo_max_current(pdo);
-> > +
-> > +				dev_info(anx7688->dev, "SRC_CAP PDO_FIXED (%umV %umA)\n", voltage,=
- max_curr);
->=20
-> Noise.
->=20
-> > +			} else if (pdo_type(pdo) =3D=3D PDO_TYPE_BATT) {
-> > +				unsigned int min_volt =3D pdo_min_voltage(pdo);
-> > +				unsigned int max_volt =3D pdo_max_voltage(pdo);
-> > +				unsigned int max_pow =3D pdo_max_power(pdo);
-> > +
-> > +				dev_info(anx7688->dev, "SRC_CAP PDO_BATT (%umV-%umV %umW)\n", min_=
-volt, max_volt, max_pow);
->=20
-> Noise. That line also really should be split in two.
->=20
-> I'm stopping my review here. This driver is too noisy. All dev_info
-> calls need to be dropped. If the driver is working correctly then it
-> needs to quiet.
->=20
-> Most of those prints are useful for debugging only, so I think similar
-> debugfs log like the one tcpm.c uses could be a good idea for them
-> since you already use debugfs in this driver in any case.
-
-Ok, let me convert the non-error ones to dev_dbg() and split the long
-lines. Debug needs to be enabled, so it should not bother anyone, and
-it is easier than refactoring driver to use debugfs.
-
-Best regards,
-								Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---lrV6wORQT5PAs+bk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZfywPAAKCRAw5/Bqldv6
-8gIQAKC/C1qVjFitBa1yebJvld78j9IKrQCfU01Nel525hI5ZTDxawgxmllFMlo=
-=RPal
------END PGP SIGNATURE-----
-
---lrV6wORQT5PAs+bk--
