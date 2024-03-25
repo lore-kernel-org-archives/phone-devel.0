@@ -1,87 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401AD13A88B;
-	Mon, 25 Mar 2024 13:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9D42F37;
+	Mon, 25 Mar 2024 17:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711374939; cv=none; b=cIBAJqinW+jeaXyfwStePRqFVdDdpPGre+BCbJy6+fn8dOgbIRLBSHhXAtNCzlAJJesGnHHVnZ9zB3HfiGAx4/P19l1UXonfAEdgizcOA9ioV+s8cKXlfDXMU1VFR1qM+bkSTuCVWJxqW2+gx5Ps0VyZ5DalZeZVgpCSkw6rR9o=
+	t=1711388687; cv=none; b=lkttYXWoL+EYu5uTy9Q/NkrHf6ssQrX/EddInwSXf1Xbzp8YGNiVz+9pE/v1T7KIiusge0pNtyAF2sAFBZ8ocjIaHGx3VVDYPFMfWGnzFrcxpQwGwEswCzzzMZfPut1YWl5aOP7bAJf2LNorMrTL0kk9Fqj+W7I4FSoPjSwvtzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711374939; c=relaxed/simple;
-	bh=D61EWznHl1PQPwhFhPh0ucTPJDZRKnDy5Hwth2zSCVY=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=cVLR+Ypp6kgSmtSSVH3D73qK7nV/q/XNeW4bfbhCXLjOX/pIq6TZ6cJBIFv8yt3IIavPbvEQ7rQZzp7W/CvicXmuiGn6VDFA+FuSojFKcdPnQkO0zOPfMYX9CVPApxZY0D/7a9epOiF7Lwo0LWIR1uC9Ten21FT+1HqPSDUbCCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZ8vvA8w; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1711388687; c=relaxed/simple;
+	bh=sGxgdgp8IdZweLfej/ZPALfocbt++oorzgjstiDxN2g=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=pnjVkdzfIwECXgDd4Wb2jo83E8JRIg9HDiMkYL3XdPYLRbMdsWpnzpdrBcFk5oYMqtd9swSAGo2c1BQZ09/JkbNF8DJmac7+Qv2kCK9SpcnpI/ZG8EvGKS0O0BEX29LYIEUZ1XI4BgGxRLWXoy0nBlLEyEJaVRCJtp6EK+ysv0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yz8AQU2p; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZ8vvA8w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94501C433A6;
-	Mon, 25 Mar 2024 13:55:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yz8AQU2p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BF7C43394;
+	Mon, 25 Mar 2024 17:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711374938;
-	bh=D61EWznHl1PQPwhFhPh0ucTPJDZRKnDy5Hwth2zSCVY=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=VZ8vvA8wSXhcmeM+jmsTEVCXzgT2/HxOjFjwK9wHTB6h/18eB1gp3WPDfshnmCa9P
-	 pGERQU89hgEqh73EZYpDO7zOssf3xCCYQTevM6ZdDxYIozYt6tnTEjR9orQeyJ00m/
-	 N4/d66k10ro7sXvp0qEe94wceFwKui/EaKSzD6vpghskeQznG6bk6Mix1En9sP6Ow+
-	 yGywbgFdW+6wI8eV2DvAt48eXvtRhxn1g1bnv3nlUDECrn1TG9FEbij2lKHEcPLGT5
-	 H0l8bog0s4BOwEb+UR3SkMCppef+Cn1eVbhvs1m+/UZFXSjlbQyzvDfdnuu30Xvac7
-	 XUnra2SUZNsBA==
-Date: Mon, 25 Mar 2024 08:55:37 -0500
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1711388686;
+	bh=sGxgdgp8IdZweLfej/ZPALfocbt++oorzgjstiDxN2g=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Yz8AQU2pf0m8iCdqgpUDqgULidA/gav9A6k8kAFVuOmJpP4CsOW98If+/vkoh05yM
+	 fXhNkOkr2v2lY3vyrYiV6e6RjYGmpbWteHnaJNxqO9WKpyXFfEEJnPK7GuHU0OakQM
+	 jG1La1JOKMR/YS5hZkOfPfJMSkchrTwUFY1/nq9YBHy5m5xMWcTJPbzVzeQyutDfDt
+	 /Kuz9bdAXkt70jMbd/JpGOgzaDvtAqo1X5cdNoRRPOg0IKEWdTOccn4PL5OkOOGcWX
+	 OmxUTE6wLwzfnZ+sUtsSqZbhBdEsePVrp5HVzeYQASol3Gpg7yjb6ZReH7Ql7v3i5K
+	 kW7fhrLJxzkFg==
+From: Mark Brown <broonie@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Wesley Cheng <quic_wcheng@quicinc.com>, 
+ Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-usb@vger.kernel.org
+In-Reply-To: <20240322-fp4-tcpm-v1-0-c5644099d57b@fairphone.com>
+References: <20240322-fp4-tcpm-v1-0-c5644099d57b@fairphone.com>
+Subject: Re: (subset) [PATCH 0/5] Add TCPM support for PM7250B and
+ Fairphone 4
+Message-Id: <171138868340.327260.16162463727167389208.b4-ty@kernel.org>
+Date: Mon, 25 Mar 2024 17:44:43 +0000
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: Stanislav Jakubek <stano.jakubek@gmail.com>
-Cc: Conor Dooley <conor+dt@kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, devicetree@vger.kernel.org
-In-Reply-To: <f5d4d71cd59f25b80889ef88fa044aa3a4268d46.1711288736.git.stano.jakubek@gmail.com>
-References: <f5d4d71cd59f25b80889ef88fa044aa3a4268d46.1711288736.git.stano.jakubek@gmail.com>
-Message-Id: <171137470670.3264858.14092936502635914730.robh@kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: Add Motorola Moto G (2013)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev
 
-
-On Sun, 24 Mar 2024 15:03:59 +0100, Stanislav Jakubek wrote:
-> Document the Motorola Moto G (2013), which is a smartphone based
-> on the Qualcomm MSM8226 SoC.
+On Fri, 22 Mar 2024 09:01:31 +0100, Luca Weiss wrote:
+> This series adds support for Type-C Port Management on the Fairphone 4
+> which enables USB role switching and orientation switching.
 > 
-> Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
-> ---
->  Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
->  1 file changed, 1 insertion(+)
+> This enables a user for example to plug in a USB stick or a USB keyboard
+> to the Type-C port.
 > 
+> 
+> [...]
 
+Applied to
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+Thanks!
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+[1/5] dt-bindings: regulator: qcom,usb-vbus-regulator: Add PM7250B compatible
+      commit: 0c5f77f4eaef8ed9fe752d21f40ac471dd511cfc
 
-  pip3 install dtschema --upgrade
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-New warnings running 'make CHECK_DTBS=y qcom/msm8226-motorola-falcon.dtb' for f5d4d71cd59f25b80889ef88fa044aa3a4268d46.1711288736.git.stano.jakubek@gmail.com:
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dtb: syscon@f9011000: compatible: 'anyOf' conditional failed, one must be fixed:
-	['syscon'] is too short
-	'syscon' is not one of ['allwinner,sun8i-a83t-system-controller', 'allwinner,sun8i-h3-system-controller', 'allwinner,sun8i-v3s-system-controller', 'allwinner,sun50i-a64-system-controller', 'amd,pensando-elba-syscon', 'brcm,cru-clkset', 'freecom,fsg-cs2-system-controller', 'fsl,imx93-aonmix-ns-syscfg', 'fsl,imx93-wakeupmix-syscfg', 'hisilicon,dsa-subctrl', 'hisilicon,hi6220-sramctrl', 'hisilicon,pcie-sas-subctrl', 'hisilicon,peri-subctrl', 'hpe,gxp-sysreg', 'intel,lgm-syscon', 'loongson,ls1b-syscon', 'loongson,ls1c-syscon', 'marvell,armada-3700-usb2-host-misc', 'mediatek,mt8135-pctl-a-syscfg', 'mediatek,mt8135-pctl-b-syscfg', 'mediatek,mt8365-syscfg', 'microchip,lan966x-cpu-syscon', 'microchip,sparx5-cpu-syscon', 'mstar,msc313-pmsleep', 'nuvoton,ma35d1-sys', 'nuvoton,wpcm450-shm', 'rockchip,px30-qos', 'rockchip,rk3036-qos', 'rockchip,rk3066-qos', 'rockchip,rk3128-qos', 'rockchip,rk3228-qos', 'rockchip,rk3288-qos', 'rockchip,rk3368-qos', 'rockchip,rk3399-qos', 'rockchip,rk3568-qos', 'rockchip,rk3588-qos', 'rockchip,rv1126-qos', 'starfive,jh7100-sysmain', 'ti,am62-usb-phy-ctrl', 'ti,am654-dss-oldi-io-ctrl', 'ti,am654-serdes-ctrl', 'ti,j784s4-pcie-ctrl']
-	from schema $id: http://devicetree.org/schemas/mfd/syscon.yaml#
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-
-
-
+Thanks,
+Mark
 
