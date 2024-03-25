@@ -1,469 +1,137 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88A217BB6;
-	Sun, 24 Mar 2024 14:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FC0185229
+	for <phone-devel@vger.kernel.org>; Mon, 25 Mar 2024 12:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711289082; cv=none; b=UmR+uZyFNRiuulodXgkZmxVr/SzqfvNkf8VhwvYTd5i6GzrZWKABKFKx4qbzxegHzh/H+DCJVeah3WAgv7aWbmexAvc6Ze5KvIWJSjgrZNnuILtzfVvosjSTdfM8mGmtXVAOAKRTiVI5vBBSO1HmtJg5S4blZmtzTaerxK42mmA=
+	t=1711369123; cv=none; b=s/pmQhSOxhXU0PMV5GH5v0wypgTD8teoCPKa6XV0O280dVxezorbQQ4PliPVF3En7180j/B9Qr9I+G0QHJvy5jpR/zLqYOapCiXtCuy27ET5YD1KNHIRLBlPrG1IdPKRu7X9+lagO61ug7JxcUJ1yLZQGagtMjP7L3vaDGn/GFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711289082; c=relaxed/simple;
-	bh=boWikopk1TyShk7fkCi/w3GUKx5T1lbgyUjFLRrxTXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nXlrZoSRHUKeiHN9Z5Qx+ehqIlJlo61Rk3NuLw1qzZ3UnxyCaH3qtP9IH7yIWsQEJWdsP8QZLPSC5yFOL4tP5KwjppvH9voCaN76fDv+KJNPJvnUH8kia6WeVm/GpQ2GNGr8ekPsB8Bj5y7e8S1OvyRn2CEBkhQYI/9if0ESda8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ATq4QVmQ; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1711369123; c=relaxed/simple;
+	bh=rO5219Pj6j4ZSRkxMdCRnPmmnWZM0k+HYHdJIkbS3hk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YH1Gv9jH+7XZ1CE0mKqxQjmT9o/ZQ8kl87gPKnQX224Vg4wIFPMCvHzs8A0u7wVdmA+2yy2DaQJYM8AOv2PzbbVoU64qnSxg5Kb4OVDYgcpSNBkgnd+gT7AGBW0ogtDre1f18K4pwi06ir7LppXDG+27KWCQTGTIsEWJmjSSr/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ThJn+H66; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ATq4QVmQ"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-563cb3ba9daso3672332a12.3;
-        Sun, 24 Mar 2024 07:04:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ThJn+H66"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a4715991c32so504484866b.1
+        for <phone-devel@vger.kernel.org>; Mon, 25 Mar 2024 05:18:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711289079; x=1711893879; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pjdVUh/gFEoTJmG4PZRG6ftSHp4lJRJSdpsQqhAC/cg=;
-        b=ATq4QVmQpdz9Yq6waS/pJq/Q/i8Q3bewNDjjadx0Jwyl+7sfTCSPLyoYJvfwtX2sxg
-         /IEB2kxWXywQ0FyFBVxh+oAIXVupCaXtJlaxKiMmrx0Wm64sNgD9W3Uz/qkj0NRBR77L
-         kwtENoopiIhD4vk+EqFB0ZCpxBJjMNSQPjLBm2UZ2o8kjxP7hftgXLRIN0hhRo3Kek/U
-         Oq0INjopcAjjq6Ir5KKj2c+gBRKGDELnLxk+yhAPzagfpCq9FZrP3x1aQTGRSsxLNmrk
-         4duCaIUOXweGmgkYHH8B89WQ7+l28M7zZcDtFb/bQsO7Rupc6GL/CkJ2DtI5eJpXy17f
-         p+Vg==
+        d=linaro.org; s=google; t=1711369118; x=1711973918; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=G2y9i2COvcri6xE7JejirEaovfB+5tn5pFGkRVkFTOc=;
+        b=ThJn+H66r85bbsCCXAmIcAkyBH/b0LSD+1Hk86dpD0qxasaqSo5h30++iGCH1pgIFD
+         QOncpqZYWRDNcxbloh4E/CUmCm+RLm1x81ca5EBl+eA3f2IDsCP2OQms6gxADJ8nR8W2
+         XBjtqbNsyLWLbU7N5ZWEgq8Ngkgi6dAtl2OhgaE/00uLs77j6OxWySWuDrKb0zlAfWY7
+         BzXaKDyhs7Uq725tHGGE0+y+zOkCV7Dn1mhupl1v4S6H1NU4osI8JmmcKA3aUlcwlTyr
+         Qzi5NTaukVy9wIe6U6wWfiKBMdRLTMCxBB5y5O4kcYByRleXx1zExrrMlqCYSKb434wT
+         iIrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711289079; x=1711893879;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1711369118; x=1711973918;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pjdVUh/gFEoTJmG4PZRG6ftSHp4lJRJSdpsQqhAC/cg=;
-        b=avhupMaI/AP09AOJHyMvivsRzruKy2YLY+FgogIDH5jEoAPDip+IThSrJZqlXgXbER
-         JuqT2/j4s8EeB9s0pLjSRx96SdB0KuR3Y+aK6Ltrzvt8hQjU/PV2abN/rE0K4yRN/6O2
-         K8VzrV806yRXlXRXSiPRbVhHLgs2414UP3c9GQBjR2ozVULP3WVsmxg0mipC7fe8nKBT
-         LYyRZH8YOc42FYS1YPHfJkXn11xOrhzXhcbit7RkNrc/d5r/iuvyA+To8Ea2gTvCKi09
-         uJ8ldFDPkuRLyX4PpB8YoXXpHvFm8iArS4miJJNSDTg8RFAzXBWGXOGfc1A86VIDXt6a
-         qlHw==
-X-Forwarded-Encrypted: i=1; AJvYcCUDAJIHk3FedgGWWpUKwHmTGmbI7LGU19sMe4ugy+4T9+KdjH+1s6/f88VpCVhF3AlrMUhyBhrri1dKJkf518LelpsGobtL9q3K20TOxHJuK8cc/B82olGvMsRiKyp4GQ59IHSowgxKnzWuEfNMNDZ99AnSVcCUp9zgO2Sw8AHUPgkWJl0T
-X-Gm-Message-State: AOJu0YxPQDT3Pw69b9E2J7EnWU2UjixqpEMFcNYTuNwlZ1h5Uk5kHX+s
-	gFp3DJg0seF6TR6LFB+J44PhmZaE3AzeKRyvMn4goz6gq0yHag1M
-X-Google-Smtp-Source: AGHT+IEOuY5deeY+bKm3vAcSVZoazGb1m47EbsNipl/FnaBXs9VYrs1inJHPGulS4hSKQwoT6HLFBg==
-X-Received: by 2002:a50:ab1e:0:b0:56a:e8e4:9aef with SMTP id s30-20020a50ab1e000000b0056ae8e49aefmr3598924edc.7.1711289079137;
-        Sun, 24 Mar 2024 07:04:39 -0700 (PDT)
-Received: from standask-GA-A55M-S2HP (lu-nat-113-247.ehs.sk. [188.123.113.247])
-        by smtp.gmail.com with ESMTPSA id e8-20020aa7d7c8000000b005689c2c6508sm1950948eds.70.2024.03.24.07.04.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 Mar 2024 07:04:38 -0700 (PDT)
-Date: Sun, 24 Mar 2024 15:04:37 +0100
-From: Stanislav Jakubek <stano.jakubek@gmail.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, phone-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] ARM: dts: qcom: Add support for Motorola Moto G (2013)
-Message-ID: <b35ad5ff8a13f9df415b6e6700b3b5d3f13bfce8.1711288736.git.stano.jakubek@gmail.com>
-References: <f5d4d71cd59f25b80889ef88fa044aa3a4268d46.1711288736.git.stano.jakubek@gmail.com>
+        bh=G2y9i2COvcri6xE7JejirEaovfB+5tn5pFGkRVkFTOc=;
+        b=gi5NYCbecAZQm1Pvf7X7FWZouQKlrNBJ3FN8xekiPmdoDtFlTstRzTsrDlxVd95SOk
+         EZ1GEV1fFzsW4//+i850uIGB06luvqUfTa0Mon8KTyAXoKL+4dNyulSjZltl7Fu0zeLD
+         Z/llZcbvry99Muy4F7lJ+QnL4cW/uHc4eNIx8kGNMcvXm4INu7FU4NvDmdYhx1xywWub
+         tTQJNCtI9MeM0RaOtYaxFr+ByoxVYgrDTLGxx2cNkgBuCJFYKfIZ98t3OVEeNmXvB02A
+         tiRYTQpUaevAlWtIjtGbCO1IsQf7h6jpZ9cppCZHXDW99A5vgHFZBVNlykxaaZZsked1
+         sg/g==
+X-Forwarded-Encrypted: i=1; AJvYcCViyF1NSxvV5ZdZZdMMrm+3sFTAuh9eQkbkANbkEPFzs6m0Gr11KA4YBhRf80FQf+Dj0PA+QqK8+ysNiKxL+41M7xc251uVVMGF6+8=
+X-Gm-Message-State: AOJu0YwX42UY/7pxwKKHwxHwgIKg/pcs8MYz7R1IPTMCBmeN1L+b6c2H
+	NMaTSmtgEEIJeCHpoAEc5zZpyxDvdyJOkBDImri+UFnT6WJbx57CPcqUcIObjHA=
+X-Google-Smtp-Source: AGHT+IF8f94ASiXNXvJp0Qs6hi9PEbwojy4JDu18Vx1rBLUliAvkY1z54cyxgPVzdcQh+6/VI9b95w==
+X-Received: by 2002:a17:906:1416:b0:a46:b76d:dc30 with SMTP id p22-20020a170906141600b00a46b76ddc30mr4257990ejc.44.1711369118060;
+        Mon, 25 Mar 2024 05:18:38 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.222.44])
+        by smtp.gmail.com with ESMTPSA id l11-20020a170906414b00b00a46c39e6a47sm3023803ejk.148.2024.03.25.05.18.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Mar 2024 05:18:36 -0700 (PDT)
+Message-ID: <b53c36f6-c3e2-4763-adae-5db8b4faeff6@linaro.org>
+Date: Mon, 25 Mar 2024 13:18:35 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: Add Motorola Moto G (2013)
+To: Stanislav Jakubek <stano.jakubek@gmail.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, phone-devel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <f5d4d71cd59f25b80889ef88fa044aa3a4268d46.1711288736.git.stano.jakubek@gmail.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
 In-Reply-To: <f5d4d71cd59f25b80889ef88fa044aa3a4268d46.1711288736.git.stano.jakubek@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add a device tree for the Motorola Moto G (2013) smartphone based
-on the Qualcomm MSM8226 SoC.
+On 24/03/2024 15:03, Stanislav Jakubek wrote:
+> Document the Motorola Moto G (2013), which is a smartphone based
+> on the Qualcomm MSM8226 SoC.
+> 
+> Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
 
-Initially supported features:
-  - Buttons (Volume Down/Up, Power)
-  - eMMC
-  - Hall Effect Sensor
-  - SimpleFB display
-  - TMP108 temperature sensor
-  - Vibrator
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
----
- arch/arm/boot/dts/qcom/Makefile               |   1 +
- .../boot/dts/qcom/msm8226-motorola-falcon.dts | 355 ++++++++++++++++++
- 2 files changed, 356 insertions(+)
- create mode 100644 arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dts
-
-diff --git a/arch/arm/boot/dts/qcom/Makefile b/arch/arm/boot/dts/qcom/Makefile
-index 6478a39b3be5..3eacbf5c0785 100644
---- a/arch/arm/boot/dts/qcom/Makefile
-+++ b/arch/arm/boot/dts/qcom/Makefile
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- dtb-$(CONFIG_ARCH_QCOM) += \
-+	msm8226-motorola-falcon.dtb \
- 	qcom-apq8016-sbc.dtb \
- 	qcom-apq8026-asus-sparrow.dtb \
- 	qcom-apq8026-huawei-sturgeon.dtb \
-diff --git a/arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dts b/arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dts
-new file mode 100644
-index 000000000000..acf0e3fee481
---- /dev/null
-+++ b/arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dts
-@@ -0,0 +1,355 @@
-+// SPDX-License-Identifier: BSD-3-Clause
-+
-+/dts-v1/;
-+
-+#include "qcom-msm8226.dtsi"
-+#include "pm8226.dtsi"
-+
-+/delete-node/ &smem_region;
-+
-+/ {
-+	model = "Motorola Moto G (2013)";
-+	compatible = "motorola,falcon", "qcom,msm8226";
-+	chassis-type = "handset";
-+
-+	aliases {
-+		mmc0 = &sdhc_1;
-+	};
-+
-+	chosen {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+
-+		framebuffer@3200000 {
-+			compatible = "simple-framebuffer";
-+			reg = <0x03200000 0x800000>;
-+			width = <720>;
-+			height = <1280>;
-+			stride = <(720 * 3)>;
-+			format = "r8g8b8";
-+			vsp-supply = <&reg_lcd_pos>;
-+			vsn-supply = <&reg_lcd_neg>;
-+			vddio-supply = <&vddio_disp_vreg>;
-+		};
-+	};
-+
-+	gpio-keys {
-+		compatible = "gpio-keys";
-+
-+		event-hall-sensor {
-+			label = "Hall Effect Sensor";
-+			gpios = <&tlmm 51 GPIO_ACTIVE_LOW>;
-+			linux,input-type = <EV_SW>;
-+			linux,code = <SW_LID>;
-+			linux,can-disable;
-+		};
-+
-+		key-volume-up {
-+			label = "Volume Up";
-+			gpios = <&tlmm 106 GPIO_ACTIVE_LOW>;
-+			linux,code = <KEY_VOLUMEUP>;
-+			debounce-interval = <15>;
-+		};
-+	};
-+
-+	vddio_disp_vreg: regulator-vddio-disp {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vddio_disp";
-+		gpio = <&tlmm 34 GPIO_ACTIVE_HIGH>;
-+		vin-supply = <&pm8226_l8>;
-+		startup-delay-us = <300>;
-+		enable-active-high;
-+		regulator-boot-on;
-+	};
-+
-+	reserved-memory {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		ranges;
-+
-+		framebuffer@3200000 {
-+			reg = <0x03200000 0x800000>;
-+			no-map;
-+		};
-+
-+		hob-ram@f500000 {
-+			reg = <0x0f500000 0x40000>,
-+			      <0x0f540000 0x2000>;
-+			no-map;
-+		};
-+
-+		smem_region: smem@fa00000 {
-+			reg = <0x0fa00000 0x100000>;
-+			no-map;
-+		};
-+
-+		/* Actually <0x0fa00000 0x500000>, but first 100000 is smem */
-+		reserved@fb00000 {
-+			reg = <0x0fb00000 0x400000>;
-+			no-map;
-+		};
-+	};
-+};
-+
-+&blsp1_i2c3 {
-+	status = "okay";
-+
-+	regulator@3e {
-+		compatible = "ti,tps65132";
-+		reg = <0x3e>;
-+		pinctrl-0 = <&reg_lcd_default>;
-+		pinctrl-names = "default";
-+
-+		reg_lcd_pos: outp {
-+			regulator-name = "outp";
-+			regulator-min-microvolt = <4000000>;
-+			regulator-max-microvolt = <6000000>;
-+			regulator-active-discharge = <1>;
-+			regulator-boot-on;
-+			enable-gpios = <&tlmm 31 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		reg_lcd_neg: outn {
-+			regulator-name = "outn";
-+			regulator-min-microvolt = <4000000>;
-+			regulator-max-microvolt = <6000000>;
-+			regulator-active-discharge = <1>;
-+			regulator-boot-on;
-+			enable-gpios = <&tlmm 33 GPIO_ACTIVE_HIGH>;
-+		};
-+	};
-+
-+	temperature-sensor@48 {
-+		compatible = "ti,tmp108";
-+		reg = <0x48>;
-+		interrupts-extended = <&tlmm 13 IRQ_TYPE_LEVEL_LOW>;
-+		pinctrl-0 = <&temp_alert_default>;
-+		pinctrl-names = "default";
-+		#thermal-sensor-cells = <0>;
-+	};
-+};
-+
-+&pm8226_resin {
-+	linux,code = <KEY_VOLUMEDOWN>;
-+	status = "okay";
-+};
-+
-+&pm8226_vib {
-+	status = "okay";
-+};
-+
-+&rpm_requests {
-+	regulators {
-+		compatible = "qcom,rpm-pm8226-regulators";
-+
-+		pm8226_s3: s3 {
-+			regulator-min-microvolt = <1200000>;
-+			regulator-max-microvolt = <1300000>;
-+		};
-+
-+		pm8226_s4: s4 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <2200000>;
-+		};
-+
-+		pm8226_s5: s5 {
-+			regulator-min-microvolt = <1150000>;
-+			regulator-max-microvolt = <1150000>;
-+		};
-+
-+		pm8226_l1: l1 {
-+			regulator-min-microvolt = <1225000>;
-+			regulator-max-microvolt = <1225000>;
-+		};
-+
-+		pm8226_l2: l2 {
-+			regulator-min-microvolt = <1200000>;
-+			regulator-max-microvolt = <1200000>;
-+		};
-+
-+		pm8226_l3: l3 {
-+			regulator-min-microvolt = <750000>;
-+			regulator-max-microvolt = <1337500>;
-+		};
-+
-+		pm8226_l4: l4 {
-+			regulator-min-microvolt = <1200000>;
-+			regulator-max-microvolt = <1200000>;
-+		};
-+
-+		pm8226_l5: l5 {
-+			regulator-min-microvolt = <1200000>;
-+			regulator-max-microvolt = <1200000>;
-+		};
-+
-+		pm8226_l6: l6 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+			regulator-allow-set-load;
-+		};
-+
-+		pm8226_l7: l7 {
-+			regulator-min-microvolt = <1850000>;
-+			regulator-max-microvolt = <1850000>;
-+		};
-+
-+		pm8226_l8: l8 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+		};
-+
-+		pm8226_l9: l9 {
-+			regulator-min-microvolt = <2050000>;
-+			regulator-max-microvolt = <2050000>;
-+		};
-+
-+		pm8226_l10: l10 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+		};
-+
-+		pm8226_l12: l12 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <1800000>;
-+		};
-+
-+		pm8226_l14: l14 {
-+			regulator-min-microvolt = <2750000>;
-+			regulator-max-microvolt = <2750000>;
-+		};
-+
-+		pm8226_l15: l15 {
-+			regulator-min-microvolt = <2800000>;
-+			regulator-max-microvolt = <2800000>;
-+		};
-+
-+		pm8226_l16: l16 {
-+			regulator-min-microvolt = <3000000>;
-+			regulator-max-microvolt = <3350000>;
-+		};
-+
-+		pm8226_l17: l17 {
-+			regulator-min-microvolt = <2950000>;
-+			regulator-max-microvolt = <2950000>;
-+		};
-+
-+		pm8226_l18: l18 {
-+			regulator-min-microvolt = <2950000>;
-+			regulator-max-microvolt = <2950000>;
-+		};
-+
-+		pm8226_l19: l19 {
-+			regulator-min-microvolt = <2850000>;
-+			regulator-max-microvolt = <2850000>;
-+		};
-+
-+		pm8226_l20: l20 {
-+			regulator-min-microvolt = <3075000>;
-+			regulator-max-microvolt = <3075000>;
-+		};
-+
-+		pm8226_l21: l21 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <2950000>;
-+			regulator-allow-set-load;
-+		};
-+
-+		pm8226_l22: l22 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <2950000>;
-+		};
-+
-+		pm8226_l23: l23 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <2950000>;
-+		};
-+
-+		pm8226_l24: l24 {
-+			regulator-min-microvolt = <1300000>;
-+			regulator-max-microvolt = <1350000>;
-+		};
-+
-+		pm8226_l25: l25 {
-+			regulator-min-microvolt = <1775000>;
-+			regulator-max-microvolt = <2125000>;
-+		};
-+
-+		pm8226_l26: l26 {
-+			regulator-min-microvolt = <1225000>;
-+			regulator-max-microvolt = <1225000>;
-+		};
-+
-+		pm8226_l27: l27 {
-+			regulator-min-microvolt = <2050000>;
-+			regulator-max-microvolt = <2050000>;
-+		};
-+
-+		pm8226_l28: l28 {
-+			regulator-min-microvolt = <1800000>;
-+			regulator-max-microvolt = <3400000>;
-+			regulator-boot-on;
-+		};
-+
-+		pm8226_lvs1: lvs1 {
-+			regulator-always-on;
-+		};
-+	};
-+};
-+
-+&sdhc_1 {
-+	vmmc-supply = <&pm8226_l17>;
-+	vqmmc-supply = <&pm8226_l6>;
-+
-+	bus-width = <8>;
-+	non-removable;
-+
-+	status = "okay";
-+};
-+
-+&smbb {
-+	qcom,fast-charge-safe-current = <2000000>;
-+	qcom,fast-charge-current-limit = <1900000>;
-+	qcom,fast-charge-safe-voltage = <4400000>;
-+	qcom,minimum-input-voltage = <4300000>;
-+
-+	status = "okay";
-+};
-+
-+&tlmm {
-+	reg_lcd_default: reg-lcd-default-state {
-+		pins = "gpio31", "gpio33";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-high;
-+	};
-+
-+	reg_vddio_disp_default: reg-vddio-disp-default-state {
-+		pins = "gpio34";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-high;
-+	};
-+
-+	temp_alert_default: temp-alert-default-state {
-+		pins = "gpio13";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-disable;
-+	};
-+};
-+
-+&usb {
-+	extcon = <&smbb>;
-+	dr_mode = "peripheral";
-+	status = "okay";
-+};
-+
-+&usb_hs_phy {
-+	extcon = <&smbb>;
-+	v1p8-supply = <&pm8226_l10>;
-+	v3p3-supply = <&pm8226_l20>;
-+};
--- 
-2.34.1
+Best regards,
+Krzysztof
 
