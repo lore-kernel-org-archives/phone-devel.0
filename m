@@ -1,241 +1,123 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19F1138487
-	for <phone-devel@vger.kernel.org>; Wed, 27 Mar 2024 21:34:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1534C54676
+	for <phone-devel@vger.kernel.org>; Thu, 28 Mar 2024 08:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711575254; cv=none; b=EMmt2/QjEeMRzOcPq2PkxZlbKZuwIFdT7bUpCUQT2G6kijHm1BUshpDHeK3cvvmyQNT0ksgtLNKARFs0X5cpMZHTJxPqDW3mMIgfNZb7vLbX83i/xVx9vvLHv8h1IWaKAQZbColofO0x6dHrB7h6ThBUoHyHy0BOERMInrlmVls=
+	t=1711612974; cv=none; b=cUzb5uRfBTNd4U6HcPplDlNcvqX6Y8uPay7w9tZJsgcJgxNxtdOukp78vqxp1rsSUtTsiJi1OFnhtCM0Vfr6MLcK7KPf5VOSYhjiDaBhtIsqVRDUiYm+PgXtOigfb3dsZxhdIDAMupF7vQfNWK3BP566Yvyk9qg3LdXEdsMS2ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711575254; c=relaxed/simple;
-	bh=uNmhgt+DPkbrA1TAlnzDHSWQFJYNFD30M1MPoNpmNWk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ltt4LrD/E6ZVf0YVIuudCGyy3mDVU9lo3fJyVfOGHS//YrsnAi1h7iEZVDIBCIiF/cnBgmZPHXIljpgy7lTA5ov6/bAjElR9gF71PiKH4851Auprp6rl1CqL5LeB+WCyfBDoGAdEakFw9NHBaCjAaJ/Q0bOo0SOB7GeqYE+8l5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=de5rGAFx; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1711612974; c=relaxed/simple;
+	bh=nGY94ctV99RKSBmKBzu+ogs72YCJk1Ocz9yUA3kt8vQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Pjmjy3IEC3EVCuzkHP8zxjuH0TSjCI7waB6pJMnSggkrecig56g3kScCRfK112+lFJo3VQw1DVHwd9iMDK3PoU6K9cnb4u0MD8h1be/6NUVVHB+UtTEZYnUB5S/SG43DrJFH/0z1alez1XBENnO+SuU/RRsdtv3FYrW+qhyPbjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=NGK7V3cu; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="de5rGAFx"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a4a387ff7acso31933466b.2
-        for <phone-devel@vger.kernel.org>; Wed, 27 Mar 2024 14:34:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="NGK7V3cu"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-56c50e8f578so601242a12.1
+        for <phone-devel@vger.kernel.org>; Thu, 28 Mar 2024 01:02:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711575249; x=1712180049; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=5Z+UzAYrVvdJAWKN2jU1pBtV2WcylIKnFACHwU9dAWU=;
-        b=de5rGAFxA+89hYgRZwiSA3s1ovJ0lWYATid1MaJPsLaiRzU7NIp2kkSy4hJMbnGqYI
-         0aTk7DLNq2eRPeQRhMpSwM8yhwvjDZTZD8t6aJ8FmNYbuzroVwTdSeJ3jsTm+HVLiJmI
-         mdYCU5McYMv4E+vcUzXx8YrmAdD5qitFUzDEUVQBLIqYKc/m/DbwKT9mlPnZhrp3FxVo
-         vpq4qfeVC0T6xkPDzFvwRvrPcj6RgF5DtW2EVMprqExlEIsBOnhP6JEdvuCuOJ5s0ypo
-         eeIl55MRzDYSAW1evS00/TQxxJIywvFRFyOq/EfzuZURYgWEQbCWPJNxuJ/4IGY/+TMF
-         A2VQ==
+        d=fairphone.com; s=fair; t=1711612969; x=1712217769; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5mODnViOF43Qf7BlbaL1yV7bCzvxW2J00s0tf+KV++c=;
+        b=NGK7V3cu1N3eCHO7pKGFeXE2/+iBgqPFGDgdQHHmx9BOhZz7y41ZMJIJEPQhTZYbRH
+         aGU9jhn4IYYGh/5fR2hkxRweWs03Qk0gRc97LwvRbYaAOpdqsb8lkM2q4N3bqxd/WVPf
+         JuRBPRxS7R2dptVwHCjhBTskzfOI3+W6csCnal4lfGGGgzcON7vjP6rzcq8utYFcKSwD
+         x9BezZo0owHo9f37QG+wlMIz9RAP0Ls7jslqr3xgwxBXVq8lr5b/0cJyJMrx4DcngDgh
+         j9HXbxo0L+PuJCbv31raxkLLQd8m7/ZQbUadMdWxMW5qvkFcTvBr2kjJ3GuP26fFpIni
+         ZspA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711575249; x=1712180049;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5Z+UzAYrVvdJAWKN2jU1pBtV2WcylIKnFACHwU9dAWU=;
-        b=fiAtuJns2UA2TzUAo4vC1fN621hJE7yfgKeaM+5P9utbY9PRaAYHNG0LK2k0tBo6ju
-         IkoXcChl2u/PkVwElHNuBNcd+O7UXG9A3KMRQVna4mzfxEXjNgWME40jRJd12mr5Bk+L
-         uj3A+ntYs6xzEvEwxtsBG6OK3gQF8TQIpP3DGCwNCvsOl31NyHzGyAEOPLF8AHWOo5Pb
-         godvBpDwAK2ss03ZSbu3371DsnkM/Bn2TTXiNA8tICxU+F5Td0Fs82uADAZDP7tmUOdp
-         0fBg2loX+d7aHo/zwHoixSeZbjyleZLPs3JZZf8veaZQqegCOCcjDv3bI9L+wCQJvEv4
-         Bqfg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHSgOEslJ/nPFQc+S1y2K6YQUmK5uOd41VPbzTLTJN17utXoaXHNFkMGa7rhCktGt5y3fvA4fJtO7+MvO00LyjCCXnHsbYPW8AMUM=
-X-Gm-Message-State: AOJu0YxfpjAD1VYl9Ocutk0MVUwM6SQaDIWogu+30ZrP/hPFmUaww0EG
-	GJX7x522pSHbqwQObL8ZFz8XJQsrydJl/meUxYoSU1XSZLI4A6AapSUpBTGN3N0=
-X-Google-Smtp-Source: AGHT+IFNa+gOgt0M4HZIlSz3Nu+an+rSzVrU5NorBMJZZdaN0POvqtdPbYOHzxoyFu//ZGEG4381HA==
-X-Received: by 2002:a17:907:9689:b0:a47:1d3f:b2ac with SMTP id hd9-20020a170907968900b00a471d3fb2acmr569978ejc.76.1711575248851;
-        Wed, 27 Mar 2024 14:34:08 -0700 (PDT)
-Received: from [192.168.92.47] (078088045141.garwolin.vectranet.pl. [78.88.45.141])
-        by smtp.gmail.com with ESMTPSA id d9-20020a1709063ec900b00a4737dbff13sm5865811ejj.3.2024.03.27.14.34.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Mar 2024 14:34:08 -0700 (PDT)
-Message-ID: <8eb45771-096a-443f-b017-3ec8bc4940ba@linaro.org>
-Date: Wed, 27 Mar 2024 22:34:05 +0100
+        d=1e100.net; s=20230601; t=1711612969; x=1712217769;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5mODnViOF43Qf7BlbaL1yV7bCzvxW2J00s0tf+KV++c=;
+        b=Nx4opu4bh9HNOfDfYAJf87boqyQOW/DkEypplnacSKhHvq+X/bPV/Nfa6LGF0u7jrt
+         6fFE2r6L1opksV4UUtaM2mG4lSH9Gd8yZT73IVl73D7z8d4rfiBxAu/V6q/oJYyKcAlF
+         qH6mjQcxcEqeCe6TZG09EtDMe8MhJ5abE3zFHl9oTkfjBHkP0Jw3sBTCEMC2PNkrl58T
+         O/amYUSCT3+tetzZH6zgYCafWggiPeW6RjI34dKw9a0fVQr/vW5kmonZZrJfswEwJDem
+         S6crQ71BxMucvlqyo3w+LIY3ozwOMGLgw69yIVeBlqketxnyGK6JnqN/EAIGaY4lfE/L
+         a6dQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUS4CWqYKJQ4+xjkbyrnwpDtBeH4uzRbMaj+DCNcpiNlfy8gnxPNqWZ3KfE22fwVtyNV/edoSr49BFHY86lTFcuegNCIOJSPxL3+RE=
+X-Gm-Message-State: AOJu0Yzm7T8Jf8uNfv90mNc3mdhj0GQ895jR7IE8y0dtmDoQ8yscV7EC
+	mIwiSfU+PFhXr3lCtbF7IupbSjrt6jX+2cUoaimx/2iOzksnvVwayLqEIBVdiwZ+rMNNQB2TFwZ
+	k
+X-Google-Smtp-Source: AGHT+IGvGtijoBb4YavjO3REnAE+9JEFT1LLiQTDvEwJxSta1iXIKu06X+xRwMugSsM6ImuZbjFbHw==
+X-Received: by 2002:a50:9519:0:b0:568:a226:6685 with SMTP id u25-20020a509519000000b00568a2266685mr1455890eda.8.1711612968600;
+        Thu, 28 Mar 2024 01:02:48 -0700 (PDT)
+Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id k7-20020aa7c047000000b0056c443ce781sm522618edo.85.2024.03.28.01.02.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Mar 2024 01:02:48 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Thu, 28 Mar 2024 09:02:45 +0100
+Subject: [PATCH] drm/msm/adreno: Set highest_bank_bit for A619
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT] arm64: dts: qcom: sm8350: Reenable crypto & cryptobam
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Bhupesh Sharma
- <bhupesh.linux@gmail.com>, David Heidelberg <david@ixit.cz>,
- Stephan Gerhold <stephan@gerhold.net>,
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240108-sm8350-qce-v1-1-b7d586ff38af@fairphone.com>
- <a5923bf7-0a05-43bd-b282-b45e5653ac4d@linaro.org>
- <CY9E4ZCHOMWU.C18NR0H7V1QX@fairphone.com>
- <CAA8EJppCAMXds5F4bgeb9VJSwph-+4ekVsJ=rGib5=RR5m0DPg@mail.gmail.com>
- <CZ6FR855VPP7.3GHX4EO9WEZIH@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <CZ6FR855VPP7.3GHX4EO9WEZIH@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20240328-a619-hbb-v1-1-cd135e2d22a7@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIACUkBWYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDYyML3UQzQ0vdjKQk3UTjJLOklETLVJNEcyWg8oKi1LTMCrBR0bG1tQC
+ NjGDnWgAAAA==
+To: Rob Clark <robdclark@gmail.com>, 
+ Abhinav Kumar <quic_abhinavk@quicinc.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Sean Paul <sean@poorly.run>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+ Akhil P Oommen <quic_akhilpo@quicinc.com>, 
+ Konrad Dybcio <konrad.dybcio@somainline.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Rob Clark <robdclark@chromium.org>, linux-arm-msm@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.13.0
 
-On 16.02.2024 11:36 AM, Luca Weiss wrote:
-> On Mon Jan 8, 2024 at 11:45 PM CET, Dmitry Baryshkov wrote:
->> On Mon, 8 Jan 2024 at 16:23, Luca Weiss <luca.weiss@fairphone.com> wrote:
->>>
->>> On Mon Jan 8, 2024 at 3:18 PM CET, Konrad Dybcio wrote:
->>>> On 8.01.2024 14:49, Luca Weiss wrote:
->>>>> When num-channels and qcom,num-ees is not provided in devicetree, the
->>>>> driver will try to read these values from the registers during probe but
->>>>> this fails if the interconnect is not on and then crashes the system.
->>>>>
->>>>> So we can provide these properties in devicetree (queried after patching
->>>>> BAM driver to enable the necessary interconnect) so we can probe
->>>>> cryptobam without reading registers and then also use the QCE as
->>>>> expected.
->>>>
->>>> This really feels a bit backwards.. Enable the resource to query the
->>>> hardware for numbers, so that said resource can be enabled, but
->>>> slightly later :/
->>>
->>> If you think adding interconnect support to driver and dtsi is better,
->>> let me know.
->>
->> I'd say, adding the proper interconnect is a better option. Otherwise
->> we just depend on the QCE itself to set up the vote for us.
-> 
-> Yes, currently we depend on that.
-> 
->>
->>>
->>> Stephan (+CC) mentioned it should be okay like this *shrug*
->>>
->>> For the record, this is the same way I got the values for sc7280[0] and
->>> sm6350[1].
->>>
->>> [0] https://lore.kernel.org/linux-arm-msm/20231229-sc7280-cryptobam-fixup-v1-1-bd8f68589b80@fairphone.com/
->>> [1] https://lore.kernel.org/linux-arm-msm/20240105-sm6350-qce-v1-0-416e5c7319ac@fairphone.com/
->>>
->>> diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
->>> index b46236235b7f..cd4dd9852d9e 100644
->>> --- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
->>> +++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
->>> @@ -1756,8 +1756,8 @@ cryptobam: dma-controller@1dc4000 {
->>>                         qcom,controlled-remotely;
->>>                         iommus = <&apps_smmu 0x594 0x0011>,
->>>                                  <&apps_smmu 0x596 0x0011>;
->>> -                       /* FIXME: Probing BAM DMA causes some abort and system hang */
->>> -                       status = "fail";
->>> +                       interconnects = <&aggre2_noc MASTER_CRYPTO 0 &mc_virt SLAVE_EBI1 0>;
->>> +                       interconnect-names = "memory";
->>>                 };
->>>
->>>                 crypto: crypto@1dfa000 {
->>> diff --git a/drivers/dma/qcom/bam_dma.c b/drivers/dma/qcom/bam_dma.c
->>> index 5e7d332731e0..9de28f615639 100644
->>> --- a/drivers/dma/qcom/bam_dma.c
->>> +++ b/drivers/dma/qcom/bam_dma.c
->>> @@ -40,6 +40,7 @@
->>>  #include <linux/circ_buf.h>
->>>  #include <linux/clk.h>
->>>  #include <linux/dmaengine.h>
->>> +#include <linux/interconnect.h>
->>>  #include <linux/pm_runtime.h>
->>>
->>>  #include "../dmaengine.h"
->>> @@ -394,6 +395,7 @@ struct bam_device {
->>>         const struct reg_offset_data *layout;
->>>
->>>         struct clk *bamclk;
->>> +       struct icc_path *mem_path;
->>>         int irq;
->>>
->>>         /* dma start transaction tasklet */
->>> @@ -1206,6 +1208,7 @@ static int bam_init(struct bam_device *bdev)
->>>                 bdev->num_channels = val & BAM_NUM_PIPES_MASK;
->>>         }
->>>
->>> +       printk(KERN_ERR "%s:%d DBG num_ees=%u num_channels=%u\n", __func__, __LINE__, bdev->num_ees, bdev->num_channels);
->>>         /* Reset BAM now if fully controlled locally */
->>>         if (!bdev->controlled_remotely && !bdev->powered_remotely)
->>>                 bam_reset(bdev);
->>> @@ -1298,6 +1301,14 @@ static int bam_dma_probe(struct platform_device *pdev)
->>>                 return ret;
->>>         }
->>>
->>> +       bdev->mem_path = devm_of_icc_get(bdev->dev, "memory");
->>> +       if (IS_ERR(bdev->mem_path))
->>> +               return PTR_ERR(bdev->mem_path);
->>> +
->>> +       ret = icc_set_bw(bdev->mem_path, 1, 1);
->>
->> Probably this needs some more sensible value.
-> 
-> So downstream qcedev driver uses 384 for the interconnect. But this is
-> crypto-specific and probably different BAMs have different minimum
-> requirements?
-> 
-> #define CRYPTO_AVG_BW			384
-> #define CRYPTO_PEAK_BW			384
-> https://github.com/xiaomi-sm8450-kernel/android_kernel_platform_msm-kernel/blob/lineage-20/drivers/crypto/msm/qce.h#L57
-> 
-> Do you have any suggestion what to use here?
+The default highest_bank_bit of 15 didn't seem to cause issues so far
+but downstream defines it to be 14. But similar to [0] leaving it on 14
+(or 15 for that matter) causes some corruption issues with some
+resolutions with DisplayPort, like 1920x1200.
 
-I'dve expected this to mean anything, but apparently not.
+So set it to 13 for now so that there's no screen corruption.
 
-My immediate guess is that the 384 was the lowest magic value that didn't
-result in the bus getting kicked offline.. 1 should be fine upstream due
-to commit 91e045b93db7 ("interconnect: qcom: Fix small BW votes being
-truncated to zero").
+[0] commit 6a0dbcd20ef2 ("drm/msm/a6xx: set highest_bank_bit to 13 for a610")
 
-> 
-> Also I'd assume that with pm_runtime suspended we'd need to clear the
-> votes in the driver so we don't keep the interconnect alive
-> unnecessarily?
+Fixes: b7616b5c69e6 ("drm/msm/adreno: Add A619 support")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+@Akhil: Dmitry & Abhinav said I should ping you specifically to take a
+look if you have an idea why HBB=13 works but HBB=14 causes issues.
+---
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-My naive understanding is that the power should only be necessary when
-the thing is in use, so early probe and pm-active sounds about sane..
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 0674aca0f8a3..cf0b1de1c071 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -1377,6 +1377,10 @@ static void a6xx_calc_ubwc_config(struct adreno_gpu *gpu)
+ 	if (adreno_is_a618(gpu))
+ 		gpu->ubwc_config.highest_bank_bit = 14;
+ 
++	if (adreno_is_a619(gpu))
++		/* TODO: Should be 14 but causes corruption at e.g. 1920x1200 on DP */
++		gpu->ubwc_config.highest_bank_bit = 13;
++
+ 	if (adreno_is_a619_holi(gpu))
+ 		gpu->ubwc_config.highest_bank_bit = 13;
+ 
 
-Konrad
+---
+base-commit: d5a436a7b5958caa6fc0dcda6c842f9d951be73b
+change-id: 20240328-a619-hbb-a3b6bda9e4a7
+
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
+
