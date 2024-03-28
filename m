@@ -1,59 +1,59 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1534C54676
-	for <phone-devel@vger.kernel.org>; Thu, 28 Mar 2024 08:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72587535C2
+	for <phone-devel@vger.kernel.org>; Thu, 28 Mar 2024 09:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711612974; cv=none; b=cUzb5uRfBTNd4U6HcPplDlNcvqX6Y8uPay7w9tZJsgcJgxNxtdOukp78vqxp1rsSUtTsiJi1OFnhtCM0Vfr6MLcK7KPf5VOSYhjiDaBhtIsqVRDUiYm+PgXtOigfb3dsZxhdIDAMupF7vQfNWK3BP566Yvyk9qg3LdXEdsMS2ck=
+	t=1711618984; cv=none; b=ReA+nYHzzp9fnZISGGqTOwbBxN+qmSUJUv1+IbgnH2N8wEJCqX7qLMavobXWUvPzsBCCUVD3fGKmQCKaECox7jf0PF2kjpmKnUaZcbmCSscv0Sdu7q3qbm5VNiwn16OxwmOhEd9jAm5dBgRrDDiAlQFhpXxLbMcC9KEDK4ZMVwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711612974; c=relaxed/simple;
-	bh=nGY94ctV99RKSBmKBzu+ogs72YCJk1Ocz9yUA3kt8vQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Pjmjy3IEC3EVCuzkHP8zxjuH0TSjCI7waB6pJMnSggkrecig56g3kScCRfK112+lFJo3VQw1DVHwd9iMDK3PoU6K9cnb4u0MD8h1be/6NUVVHB+UtTEZYnUB5S/SG43DrJFH/0z1alez1XBENnO+SuU/RRsdtv3FYrW+qhyPbjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=NGK7V3cu; arc=none smtp.client-ip=209.85.208.48
+	s=arc-20240116; t=1711618984; c=relaxed/simple;
+	bh=LGEkUHOJ/ZabB/vOZCvlgo1ZTv4zJQZ2hEQTHroQ8lw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=US0zSPQ7h6xKgLJxv0ddWJ+4/9+ff36oom1aDwRNEXfliQmSmMgBreZ20qHMcJrlU9XpnFlZZGMG7KY+yRosivdbbPzuYkUUNNlhwQAcabFg0mZvQ0nMz8CqnatYiiVLLTij4KCW1fPP63q27F2nB752hEoG/FPur4QJtvE2aA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=A517Hecg; arc=none smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="NGK7V3cu"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-56c50e8f578so601242a12.1
-        for <phone-devel@vger.kernel.org>; Thu, 28 Mar 2024 01:02:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="A517Hecg"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-56bdf81706aso890416a12.2
+        for <phone-devel@vger.kernel.org>; Thu, 28 Mar 2024 02:43:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1711612969; x=1712217769; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5mODnViOF43Qf7BlbaL1yV7bCzvxW2J00s0tf+KV++c=;
-        b=NGK7V3cu1N3eCHO7pKGFeXE2/+iBgqPFGDgdQHHmx9BOhZz7y41ZMJIJEPQhTZYbRH
-         aGU9jhn4IYYGh/5fR2hkxRweWs03Qk0gRc97LwvRbYaAOpdqsb8lkM2q4N3bqxd/WVPf
-         JuRBPRxS7R2dptVwHCjhBTskzfOI3+W6csCnal4lfGGGgzcON7vjP6rzcq8utYFcKSwD
-         x9BezZo0owHo9f37QG+wlMIz9RAP0Ls7jslqr3xgwxBXVq8lr5b/0cJyJMrx4DcngDgh
-         j9HXbxo0L+PuJCbv31raxkLLQd8m7/ZQbUadMdWxMW5qvkFcTvBr2kjJ3GuP26fFpIni
-         ZspA==
+        d=fairphone.com; s=fair; t=1711618981; x=1712223781; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=E8hsC6NRPdxLP7lp60lSArweYtIzuit1meomkaj/K1Q=;
+        b=A517Hecg8ITw0yfx99kApqt+m7/6d4suTbkNYg8e5J4q+tW5b1UPuFPxLIBNRXrfdT
+         nrSBaNC2eH5arcETlpqVfyqxOmR66VR2jVIcL3nQ70NFYvkSOu7SOjWkRYt6THH/EE41
+         TFVOyDwRdZ0qRsIba0gv4vuinG4trJ2o3TnHXkJYRSY6aC21wg25Fho6+q8KqeXgd7UJ
+         A4ne8I/YwysPf1SivN6+7AXC8H78U9PQ2rsd5rUtrFz5cdm6ybfLSVlcvxBw9zONkpji
+         o33prPxXjkFaCwOkNtA/f/OLve7Qqn6OmkefHR1qpxUdixQVz3/yFDjj6c75UdmYflka
+         DDrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711612969; x=1712217769;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1711618981; x=1712223781;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5mODnViOF43Qf7BlbaL1yV7bCzvxW2J00s0tf+KV++c=;
-        b=Nx4opu4bh9HNOfDfYAJf87boqyQOW/DkEypplnacSKhHvq+X/bPV/Nfa6LGF0u7jrt
-         6fFE2r6L1opksV4UUtaM2mG4lSH9Gd8yZT73IVl73D7z8d4rfiBxAu/V6q/oJYyKcAlF
-         qH6mjQcxcEqeCe6TZG09EtDMe8MhJ5abE3zFHl9oTkfjBHkP0Jw3sBTCEMC2PNkrl58T
-         O/amYUSCT3+tetzZH6zgYCafWggiPeW6RjI34dKw9a0fVQr/vW5kmonZZrJfswEwJDem
-         S6crQ71BxMucvlqyo3w+LIY3ozwOMGLgw69yIVeBlqketxnyGK6JnqN/EAIGaY4lfE/L
-         a6dQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUS4CWqYKJQ4+xjkbyrnwpDtBeH4uzRbMaj+DCNcpiNlfy8gnxPNqWZ3KfE22fwVtyNV/edoSr49BFHY86lTFcuegNCIOJSPxL3+RE=
-X-Gm-Message-State: AOJu0Yzm7T8Jf8uNfv90mNc3mdhj0GQ895jR7IE8y0dtmDoQ8yscV7EC
-	mIwiSfU+PFhXr3lCtbF7IupbSjrt6jX+2cUoaimx/2iOzksnvVwayLqEIBVdiwZ+rMNNQB2TFwZ
-	k
-X-Google-Smtp-Source: AGHT+IGvGtijoBb4YavjO3REnAE+9JEFT1LLiQTDvEwJxSta1iXIKu06X+xRwMugSsM6ImuZbjFbHw==
-X-Received: by 2002:a50:9519:0:b0:568:a226:6685 with SMTP id u25-20020a509519000000b00568a2266685mr1455890eda.8.1711612968600;
-        Thu, 28 Mar 2024 01:02:48 -0700 (PDT)
+        bh=E8hsC6NRPdxLP7lp60lSArweYtIzuit1meomkaj/K1Q=;
+        b=NFTSK8LLGpaKgBX/h8DmPPoyAlHz1qrDhKJ3vGicD1+S12SUbJc5f/CXJMBv711ZIp
+         Et0Jn5w4k5DKKj7WX0XvDVdqfZ32pD8BGdMYPB86hoVEsvcI9A9M5CyJJfaUoKhp5sOp
+         ifGBuFzFAW6tj95xZXfrlS+n6Ot8wI9WBAj6yxX9C/FZoJndahw/55+MwOo5FOLGEOW9
+         w529J7ankOY+zpMj3FV2dHia8e/Yr+bDClP13Jxi2SpnM9N5PWHuOB6Bf2FgEhbSpFqh
+         UwR/3J6mhOqJeCLvYlEisHMk3jpFPIKPiDi0C73OieoedFLn1IkgsuXnJDmVArFC+uHm
+         B7PA==
+X-Forwarded-Encrypted: i=1; AJvYcCX2K/qrGR0KM664DHadZkY/q2jmbi4P1ae1K9JgPsCIOHZnr8OGH0bnryWHcpV6+ZZl/u7uzB0IzS7bbdFsRYU/O9thd9OtVmjKYYA=
+X-Gm-Message-State: AOJu0YyWrZwZeN9F8EV6joZFuzIg/OXPR0YioLsb2M81JHnxlB4ZDdkK
+	+KwBk1DWbp8xSE9jtf50oNcDnBinMd0EeVkMcFxIPFZgWPEmp8RRdmbPZryZDic=
+X-Google-Smtp-Source: AGHT+IGZx9AnkUFMackC9AU36r/cR4Kcv7nBXW0BJa3Ktjw3YvY08GtNzCtirWitkr3VymvIRKiZQA==
+X-Received: by 2002:a05:6402:348d:b0:56c:26aa:f786 with SMTP id v13-20020a056402348d00b0056c26aaf786mr40326edc.10.1711618980811;
+        Thu, 28 Mar 2024 02:43:00 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id k7-20020aa7c047000000b0056c443ce781sm522618edo.85.2024.03.28.01.02.47
+        by smtp.gmail.com with ESMTPSA id l2-20020aa7c302000000b005645961ad39sm631362edq.47.2024.03.28.02.42.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Mar 2024 01:02:48 -0700 (PDT)
+        Thu, 28 Mar 2024 02:43:00 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Thu, 28 Mar 2024 09:02:45 +0100
-Subject: [PATCH] drm/msm/adreno: Set highest_bank_bit for A619
+Subject: [PATCH 0/3] DisplayPort support for SM6350/SM7225
+Date: Thu, 28 Mar 2024 10:42:43 +0100
+Message-Id: <20240328-sm6350-dp-v1-0-215ca2b81c35@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -62,60 +62,49 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240328-a619-hbb-v1-1-cd135e2d22a7@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIACUkBWYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDYyML3UQzQ0vdjKQk3UTjJLOklETLVJNEcyWg8oKi1LTMCrBR0bG1tQC
- NjGDnWgAAAA==
+X-B4-Tracking: v=1; b=H4sIAJM7BWYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDYyML3eJcM2NTA92UAl0TQyNjC0NT4yQTEwsloPqCotS0zAqwWdGxtbU
+ AQBFn8VsAAAA=
 To: Rob Clark <robdclark@gmail.com>, 
  Abhinav Kumar <quic_abhinavk@quicinc.com>, 
  Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Sean Paul <sean@poorly.run>, 
  Marijn Suijten <marijn.suijten@somainline.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
  David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
- Akhil P Oommen <quic_akhilpo@quicinc.com>, 
- Konrad Dybcio <konrad.dybcio@somainline.org>
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Kuogee Hsieh <quic_khsieh@quicinc.com>, 
+ Krishna Manikandan <quic_mkrishn@quicinc.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Rob Clark <robdclark@chromium.org>, linux-arm-msm@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
+ linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ freedreno@lists.freedesktop.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.13.0
 
-The default highest_bank_bit of 15 didn't seem to cause issues so far
-but downstream defines it to be 14. But similar to [0] leaving it on 14
-(or 15 for that matter) causes some corruption issues with some
-resolutions with DisplayPort, like 1920x1200.
+Add the required changes to support DisplayPort (normally(?) available
+via the USB-C connector) on the SM6350/SM7225 SoC.
 
-So set it to 13 for now so that there's no screen corruption.
+This has been tested on a Fairphone 4 smartphone with additional changes
+not included in this series (mostly just wiring up TCPM and the SBU
+mux).
 
-[0] commit 6a0dbcd20ef2 ("drm/msm/a6xx: set highest_bank_bit to 13 for a610")
-
-Fixes: b7616b5c69e6 ("drm/msm/adreno: Add A619 support")
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-@Akhil: Dmitry & Abhinav said I should ping you specifically to take a
-look if you have an idea why HBB=13 works but HBB=14 causes issues.
----
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Luca Weiss (3):
+      dt-bindings: display: msm: dp-controller: document SM8250 compatible
+      dt-bindings: display: msm: sm6350-mdss: document DP controller subnode
+      arm64: dts: qcom: sm6350: Add DisplayPort controller
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 0674aca0f8a3..cf0b1de1c071 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -1377,6 +1377,10 @@ static void a6xx_calc_ubwc_config(struct adreno_gpu *gpu)
- 	if (adreno_is_a618(gpu))
- 		gpu->ubwc_config.highest_bank_bit = 14;
- 
-+	if (adreno_is_a619(gpu))
-+		/* TODO: Should be 14 but causes corruption at e.g. 1920x1200 on DP */
-+		gpu->ubwc_config.highest_bank_bit = 13;
-+
- 	if (adreno_is_a619_holi(gpu))
- 		gpu->ubwc_config.highest_bank_bit = 13;
- 
-
+ .../bindings/display/msm/dp-controller.yaml        |  1 +
+ .../bindings/display/msm/qcom,sm6350-mdss.yaml     | 10 +++
+ arch/arm64/boot/dts/qcom/sm6350.dtsi               | 88 ++++++++++++++++++++++
+ 3 files changed, 99 insertions(+)
 ---
-base-commit: d5a436a7b5958caa6fc0dcda6c842f9d951be73b
-change-id: 20240328-a619-hbb-a3b6bda9e4a7
+base-commit: 871760455183dc66b3e185f8d3ed2184cc9fac25
+change-id: 20240328-sm6350-dp-41238153b448
 
 Best regards,
 -- 
