@@ -1,62 +1,62 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B294086C
-	for <phone-devel@vger.kernel.org>; Fri, 29 Mar 2024 07:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C8940BFA
+	for <phone-devel@vger.kernel.org>; Fri, 29 Mar 2024 07:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711698361; cv=none; b=otOyCul8xjzyorhuyS/SgBm5+LyxL7O90wbwYHkNME21h7UE9Ol0XV6tsqOPwCXQxjzPRzts+3vdhE7LEGGHpeS6pA/kvoxBxG2/45qsYMsi2FYDvgOCEEhwSAPbyNyUuQ/FE0nxd7mGeTlXZMMDzf9Y7NXWcYveb251nzO8nE8=
+	t=1711698362; cv=none; b=iYO6QadjNc49QwpC5eujd00DVPy2oj4/Vlv/aIxV/OhWpg9ipti3xXH2yQiw6ZaNJ0yW37a58lc1zQcJcIY5q+x1SPVdsQoPLPwuIT6wogY4lDWoo6TJ92Y26nYj1mYT44U9IuurENPM2L70gnlBusuU5YFQ/XbrqqM+iZ81T7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711698361; c=relaxed/simple;
-	bh=QTZb3SliXj7z8d9Aptik0u48ClR998kWst6mXqAlvu0=;
+	s=arc-20240116; t=1711698362; c=relaxed/simple;
+	bh=25Qs8m6volBcpFuS55c6sWHasm9Na16Ss/X8GJM+fYI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dn2fa1xyRIKSWlBDRD+BslbIUfqB4yBQUotHe8IFXIcMHECcCNXykHWPq+49hvSYDOwlQNoSSU4827kCG6u9gJohdMQl4+Vxbe6qqvs4xG2gYDrYIL1W5Dw/Y5aUUhu6QdWSq6YFq10Hfgh2MOSWvzoCxwbiqIY4TPoQhYfn7/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=V3bWzeR9; arc=none smtp.client-ip=209.85.218.45
+	 In-Reply-To:To:Cc; b=q/NeLdCjN6VTUdo0DlnF2jqV3mtS72f+fuwRuaCx8Zyw+/9g3ckRhfr8mXg20PbKe3y0xP2CkKXROMs0EzlloXdk4mBWAX/hIRfFmpCb4e+qH3oumKTdgDz5WjQpdCnJfwk7mzahtjzh9XV9YYjSRg+5g43/v2O4EhFDD4zdWvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=fcPsTL2u; arc=none smtp.client-ip=209.85.167.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="V3bWzeR9"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a4751063318so219743566b.0
-        for <phone-devel@vger.kernel.org>; Fri, 29 Mar 2024 00:45:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="fcPsTL2u"
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-513e10a4083so1984514e87.1
+        for <phone-devel@vger.kernel.org>; Fri, 29 Mar 2024 00:46:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1711698357; x=1712303157; darn=vger.kernel.org;
+        d=fairphone.com; s=fair; t=1711698358; x=1712303158; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ktUevP6u8w4KHYW86f+K8GcdXFfL/uIUgZtZWzBIQhc=;
-        b=V3bWzeR9f0eGWA21t3UsW59agntbPiPpdv8LziYG5lDgDALT2m+yjZzIF3OyUSzJYI
-         Gv7nCWrXjkGfebsH5A2YZEZajGcDWidzYD0492Qi27yNfIDWwsmD0IiNs7ZUOacstv5/
-         LHRMDjxEjckZC0ZDPq+2SmHNX/RwbSYx8z2UtuuPcX3twpPpzaP1IxjAvuYNrIjUPvd4
-         VawCNcLIhVzHWAhythuHDavCP1xlvQ7mxzJ9lZXaMES0n2ACm9G9eDgyeqMI+5S1qm7C
-         1f8IqtOpi5WD1728lwHQa5lpfaRWFNDn9OrTqT/j3Ssow1e74dGK7qNimPA+SIjYOzWJ
-         8fcw==
+        bh=4McqOYY3UTRJyQ2CjaqCL8nyfMiP9YKrs8lnA2q8yiE=;
+        b=fcPsTL2uKOBwHe5Qt1Q3CRLPsaY+jd4DOQC2CZIUK/52r0E78rkCH1FsonjFNj0a8s
+         LeTTx9CifDc7ndQRbR8F3Di6st1w3RUYUZzMz3HL7Iaf3cbQNn9KHF3AuZ7bVCCTHa8O
+         QeygeGBxeroImGDK9g+YHPLuSMrAcGblmiZeHd5y0I4C5Sp14CRVtFdcZw18c0n32fSX
+         CjdQTGBKWZKA78gOLoYnTDA2xCkmn2HF5BQQq1rjd8cQyHOUh73wnoTzHqErD/pzK512
+         6BvES/m7wS//9RSsRb0ZxiLz0f+2/D+gmncGPDd/qZLMUx6YIrZGIU9Owv05UHx+STdm
+         YjKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711698357; x=1712303157;
+        d=1e100.net; s=20230601; t=1711698358; x=1712303158;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ktUevP6u8w4KHYW86f+K8GcdXFfL/uIUgZtZWzBIQhc=;
-        b=qP2c9DnYB2Bk+5EbY8YmjjnaI3HZcRY9jzIIDQ+kz0yOcuGXuZ4cNSiy2W/PBVRQ1o
-         UAcipv32nf0ptkf2CKarMbqYawLa9lMG37jRRf655DhivWhkf13jYp7BIjGQa5nPFvww
-         WhEQfgqLmThSLvk/GS75RjMAugiQBrqcZ4/C3HkFBxvJR4c9uMTpkCrSerZSo395+UTi
-         VPvE0wcgOIkwZ0QIQhV0UzgJcXc98ITuhe0Zc5dE3AFsVKuv+dN51c6/cCsSiCMYUY0I
-         VLH/SdhAJ5HN7jqS8IlP6vLfVR1DCp8MbkniqTRzOq12RqOos7FtJELkuEw2m/GauVzS
-         R6xw==
-X-Forwarded-Encrypted: i=1; AJvYcCV3+X3Ag+zLxKAo47SpvfU+25zHIouXeBhIwWgP7cQPypO/h8N7H6lOPG6GPJdcSNUmtDU2a6YRulyD8tuRvYG9xrVbq2WQZtynH60=
-X-Gm-Message-State: AOJu0YzJ16soAb64Mioqw51nP+lx4JwT2HWhSYN9pGeoT2QunXhJs5mV
-	9U/JykqTHeLfER3soXBt3SW/0XJYgI7f3cdKILqhoSyt4Ca0I136a+7zt7JK2na9zdOZVZuAqc6
-	y
-X-Google-Smtp-Source: AGHT+IFa6363X6GOmkR4BsEQwG0xCUHGlbVBpxaeQsPeMOww1hYOuly/ejvvRwJqZ9obHOITNtL4iQ==
-X-Received: by 2002:a17:906:5053:b0:a4e:2a62:7eb6 with SMTP id e19-20020a170906505300b00a4e2a627eb6mr863656ejk.51.1711698357114;
-        Fri, 29 Mar 2024 00:45:57 -0700 (PDT)
+        bh=4McqOYY3UTRJyQ2CjaqCL8nyfMiP9YKrs8lnA2q8yiE=;
+        b=USr/AIakzF6Xh2Mqi/8+yC5Yd6jkgiYF2yL/bYrLTzRm/Cn8i2+Hww1kRyBk7eWtAv
+         0A2BjVD7HJSDUVizbXfKMDxkmp4us3tXISsc1wKVfxF6dQw5fcm5NRUwMlEAGENXs4zp
+         POAS2XoiOidMFBQKXnllJGwmg3pLH5Bxw9OSJcQhqHnbFKk40X9d0qAV+WQyOLqdzRt9
+         gj1T9lj1ocPG3ilfkg//rWeFrDXQNZtbsVpq2QAXyKKaC11PFTnZeaPzzFIinSZxdXZI
+         54i/gHQlk1/Z9pRzUzqQout71789NrVmfgwhWOf4Q8ZlMKYc6sZJI/wAW62nQzJ7tFV1
+         v8vw==
+X-Forwarded-Encrypted: i=1; AJvYcCX5MYNkuvVLAN4C4z3y30g0lYrMwm9hwWlu9sat78RXwxIjjVCpoJGYzZyP08NQYJ5rxDe5JJDDb/uozvsriOhSjR5pORmb5cVDG8M=
+X-Gm-Message-State: AOJu0YwdAmzymEy/kN7PNmpOOp2u84KQmVp0WS61EuZ3cuwuZ2+FS0/U
+	dU6iCLu8gJFr1cfwlWzSrtBsZgBbE05WhVkGyQ094Tw+QAcFFpBzs/lnPqIbxUB3T5jRa6nBT+i
+	R
+X-Google-Smtp-Source: AGHT+IGr9SjS2/x9Bg3Cg9sAk0T6zHFzcOeMV4fzLJHUxJzzp46Etz1DP0Mivc1g9nSdBVgZiLJLTg==
+X-Received: by 2002:a19:2d06:0:b0:513:d8e3:fe3d with SMTP id k6-20020a192d06000000b00513d8e3fe3dmr976784lfj.26.1711698358274;
+        Fri, 29 Mar 2024 00:45:58 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id l9-20020a1709060cc900b00a4e24d259edsm1382737ejh.167.2024.03.29.00.45.56
+        by smtp.gmail.com with ESMTPSA id l9-20020a1709060cc900b00a4e24d259edsm1382737ejh.167.2024.03.29.00.45.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Mar 2024 00:45:56 -0700 (PDT)
+        Fri, 29 Mar 2024 00:45:57 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 29 Mar 2024 08:45:54 +0100
-Subject: [PATCH v2 1/3] dt-bindings: display: msm: dp-controller: document
- SM6350 compatible
+Date: Fri, 29 Mar 2024 08:45:55 +0100
+Subject: [PATCH v2 2/3] dt-bindings: display: msm: sm6350-mdss: document DP
+ controller subnode
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240329-sm6350-dp-v2-1-e46dceb32ef5@fairphone.com>
+Message-Id: <20240329-sm6350-dp-v2-2-e46dceb32ef5@fairphone.com>
 References: <20240329-sm6350-dp-v2-0-e46dceb32ef5@fairphone.com>
 In-Reply-To: <20240329-sm6350-dp-v2-0-e46dceb32ef5@fairphone.com>
 To: Rob Clark <robdclark@gmail.com>, 
@@ -87,27 +87,33 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.13.0
 
-Add the compatible string for the DisplayPort controller on SM6350 which
-is compatible with the one on SM8350.
+Document the displayport controller subnode of the SM6350 MDSS.
 
-Acked-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- Documentation/devicetree/bindings/display/msm/dp-controller.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ .../devicetree/bindings/display/msm/qcom,sm6350-mdss.yaml        | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/display/msm/dp-controller.yaml b/Documentation/devicetree/bindings/display/msm/dp-controller.yaml
-index ae53cbfb2193..97993feda193 100644
---- a/Documentation/devicetree/bindings/display/msm/dp-controller.yaml
-+++ b/Documentation/devicetree/bindings/display/msm/dp-controller.yaml
-@@ -29,6 +29,7 @@ properties:
-           - qcom,sm8650-dp
-       - items:
-           - enum:
-+              - qcom,sm6350-dp
-               - qcom,sm8150-dp
-               - qcom,sm8250-dp
-               - qcom,sm8450-dp
+diff --git a/Documentation/devicetree/bindings/display/msm/qcom,sm6350-mdss.yaml b/Documentation/devicetree/bindings/display/msm/qcom,sm6350-mdss.yaml
+index c9ba1fae8042..bba666bdffe5 100644
+--- a/Documentation/devicetree/bindings/display/msm/qcom,sm6350-mdss.yaml
++++ b/Documentation/devicetree/bindings/display/msm/qcom,sm6350-mdss.yaml
+@@ -53,6 +53,15 @@ patternProperties:
+       compatible:
+         const: qcom,sm6350-dpu
+ 
++  "^displayport-controller@[0-9a-f]+$":
++    type: object
++    additionalProperties: true
++
++    properties:
++      compatible:
++        contains:
++          const: qcom,sm6350-dp
++
+   "^dsi@[0-9a-f]+$":
+     type: object
+     additionalProperties: true
 
 -- 
 2.44.0
