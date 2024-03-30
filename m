@@ -1,145 +1,146 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2E58172E
-	for <phone-devel@vger.kernel.org>; Fri, 29 Mar 2024 12:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4C738DF1
+	for <phone-devel@vger.kernel.org>; Sat, 30 Mar 2024 11:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711715188; cv=none; b=ij4qeDTegFVCTrlOeL1SLrKYAfnYStoOOJZEngI1GSTzYkGWT35TqqdaFkQP2cX112IMHhyQaShW+ots7Uzk7Rl0EBEzfM0np1w7uDp3EHY8KQKPpbtW7rRhZ4qyXz0+ljn4oxnpIYJakFe2THwFGHJwyJI9fpMemccFAmMWuxA=
+	t=1711799386; cv=none; b=sCDdMj735ZtqCHO+mf8gcdPUP5t0Jzem3eveXjwLHiqxtfKxM/gQNY6bjm2x6Z+EOXLoQyaWiUrXZwz5XSo9vXRqw1bKBfVbmmn9TwWN2SrFJ9DjOfYewo9rlUaX4uQoKpXev92DI4+4w5A4DwcQroRjq8YzCxEvIcQXjUwjnr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711715188; c=relaxed/simple;
-	bh=CO7iFRLXuNJN0ODjWE1Sca9kd08SmHPibAbkSnnLPTQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dYNuyY6woWVhsP2vKTkDXjCs4vusyOawIh/wCUDuoFAFj+bjCKfDJYcWftevFPZjtTIusCbGrwE9etzoE9ILGXiSXOdBqifWomwwdfL8cwNqbfkFJdctyRrtx+qztzt5elUtPHhjzpXvhesUlITFVdG6KQwUh4TCyvmoMBjQkG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Rh/5OMKY; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1711799386; c=relaxed/simple;
+	bh=xbuoScj4pssG5EXKLugy7LSe0tT28kpGntRZ2m7QEvI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KNXJGr4Ima3wuCeHeDgHZpipkCNU8aaABpuhKGFjma+8okqXjLxamUg7o8EZpGKeOsCvbdPb+C5qNVCcBlWoaUzvDffiGePtc0O0I1QCVLzC1vPs9YFsjlVnF7idOsukQkJlfgO+nOEwsHyS04R5eHx7Gfl2A7RGiL501Wts1+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GpGRAOsD; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Rh/5OMKY"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5684db9147dso2193223a12.2
-        for <phone-devel@vger.kernel.org>; Fri, 29 Mar 2024 05:26:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GpGRAOsD"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2d52e65d4a8so36456741fa.0
+        for <phone-devel@vger.kernel.org>; Sat, 30 Mar 2024 04:49:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1711715183; x=1712319983; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hGKBeVO2nyh3+Ap/hXwBhTTxhIwQlZ0U8hKP2bY+0Ow=;
-        b=Rh/5OMKYCskGZ5bgNV8TMBntxJ2mdjdnuSMqJnZZduPj7mPJCoVeDA0SKHI4q0LCol
-         FSxcGXoM/OqQhu22clDxUXdCI0NeTfaAov83DPKZjdVU191NIX27J9+1wv6oihFu6WNd
-         EMPoe7tECok+YsI0Cm7EVwdvDdKGYWONSEPbMnO2Y2RQviAbF5o/As4JvDmMvh+YHKWh
-         /ex/qxegFIPoy065J+PVKCgJHjF0t/P1b96M/jSV5IBKP3QB7TpuVZ4dKmttQP6qgSC3
-         5qPbdMhdXeIz4kPwriU5T1NgGgGFrFoG62/1UM96fxpwGtsRfwyQROi3LKjGQ6sQjetC
-         oWNw==
+        d=linaro.org; s=google; t=1711799383; x=1712404183; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=7bPfp/nDK6inXePvhC4ekcgpIMLABB4RRjLFkj75U+4=;
+        b=GpGRAOsDYSFBdGYo/M8zFBKfW3qYjbrc/GSnAftKPkJ7gC8Npl/q8faJQc1GC1PjhE
+         462OVRjPEyxYQLiiWr9/hit4/YEI7eJFVimyeVOIHs1my3rJJkudZxoQqLcAYblssWo5
+         I+fqQ6Gy0DepYtOq3ZnBW1NyJ209ICOqtDNRgyICkAeVSNFg3G+1BSGBKKbg3OndifHf
+         Z2mC+uyj6E3W9LR+tHpbuJGuOFNRNvSAlhRvFkAesgmv4DYxRUX90QO8T8xlSbdHN3xQ
+         Gqs1BD3uw1KbjGzeINtlwoMAFXCfTlM1l8051Uu3P+uUo/JG4iFzXOZsYYh9W8t/KhG5
+         gxpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711715183; x=1712319983;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hGKBeVO2nyh3+Ap/hXwBhTTxhIwQlZ0U8hKP2bY+0Ow=;
-        b=X4F3aheE2gFiqw/CWXeQ9fFEUyiY08nBnrHWVijkx7WL+HnOL5Wrzhm1uuIZkUeWzJ
-         vM3eJo6m3FyeRFIE+rpojILVB6+1RPE0KJS1evKyAQtErXjZ3cZ6P3csjSR+QUzjsUvV
-         r0AIr7tf/q33XXSVrBx6kG5cNzJnd/VpmFNGZh9n2TbViNFmoVRy8BCuP+QnvGvxTQ/7
-         i/LAfnh5V13lvZmJYhPguZl67qnJDfbb6ltRtvPXMc3Vb9LVUyLUJ0rpbU5G+VMtmon/
-         mxd0Yaa/GCZTKNC3ruOxdOWO2dyU5Ro/OjZrHWB9Ew02MoQFpN1HEKIe0HFaXQQcCmT0
-         WAww==
-X-Forwarded-Encrypted: i=1; AJvYcCWpZ/clp3AZAeCONJmE2kaJKzzTAyP6u7xAAp+BLc5ToKacyaalDJNnbtvZz+K5ekhT/FjZ54hN6lCoQtW2cFGKh+BX3BgRIlzMQas=
-X-Gm-Message-State: AOJu0YzcZ/zUeH5caC856BTGltEE8B6FgThXzVKlqYKPHbrS87Dkha8i
-	8inWVTRWkzTunEgTYK5OOHnPb8TYoLIh2RI7o87tgLsDVEWxmD55uZkLjQaWlfw=
-X-Google-Smtp-Source: AGHT+IFEE27q4B+XksSVFszccNQd8JRIrW5x9djah1vWi9Ji9S0Z8DWEa5cQ8ikzTPzRPEXvnAmFTA==
-X-Received: by 2002:a05:6402:2349:b0:56b:ee71:9660 with SMTP id r9-20020a056402234900b0056bee719660mr1501118eda.27.1711715183177;
-        Fri, 29 Mar 2024 05:26:23 -0700 (PDT)
-Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id m7-20020aa7c487000000b0056bf2e2c898sm1961925edq.1.2024.03.29.05.26.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Mar 2024 05:26:22 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 29 Mar 2024 13:26:20 +0100
-Subject: [PATCH v2 2/3] arm64: dts: qcom: pm7250b: Add a TCPM description
+        d=1e100.net; s=20230601; t=1711799383; x=1712404183;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7bPfp/nDK6inXePvhC4ekcgpIMLABB4RRjLFkj75U+4=;
+        b=jGKkPVRzwbei6UvBH/7gxQO7/c9oItslkiO84GvigrcLvc0Q7vc76mlf1KVROz7zGH
+         lJh68Lq5GTCq15+1g5rEeNHwkh3/OL/S6lsqCC63187GqIj30XDOUeIimsz+JUA0ZQfH
+         ucYx9jswY39QStFNjDoB/vAjrb9rWMc394Td9yqUkQ1a/K1747hPDAwvU25HIw7FZyeH
+         3zwHL/+/E2pzZ6igpmH9YZtW/cBTCVl8AcX7+bMSxZK9qNu54eelKTYyTtyR6ex32U2X
+         ns3Z8g86nGw5QcPrnAl0ST4cUTCorZnS9c+LmYfpsdKHIP8RFJlqsOPoeJcmuWn3nffr
+         g4Sw==
+X-Forwarded-Encrypted: i=1; AJvYcCV/amNP2mup4BjtB/oNyrB3VtocOKq7JjhasM664ONBRU8Qbf6M1zesdr+GH2LIb3vrkGtIqo5z8EXXupElfzLrSQ6I6XYKDvKtF68=
+X-Gm-Message-State: AOJu0YzcmVfW6AJrACRVCpsAKesOTUyMzm1pVVofz1CmltyaI9QMVB/C
+	0aVAmReCk0KhPPShQT6ZU1Kxt4BOCPXf+j0CmUXql+gNs9uQuZGUzfShl8FVm4E=
+X-Google-Smtp-Source: AGHT+IFv2IplabyjySpygRi2+gjjwUtTVD/mUgEhhJDPBn1cO9Tz+kQP6v0mFvLt+Xm4Z3Q+sHRstg==
+X-Received: by 2002:a2e:9c82:0:b0:2d2:b840:1c78 with SMTP id x2-20020a2e9c82000000b002d2b8401c78mr2935006lji.48.1711799382607;
+        Sat, 30 Mar 2024 04:49:42 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id g11-20020a05600c4ecb00b004154f05f023sm4635594wmq.11.2024.03.30.04.49.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 30 Mar 2024 04:49:42 -0700 (PDT)
+Message-ID: <efc43bb4-51ca-4706-9748-dba3b4b3209c@linaro.org>
+Date: Sat, 30 Mar 2024 12:49:39 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] dt-bindings: display: msm: sm6350-mdss: document
+ DP controller subnode
+To: Luca Weiss <luca.weiss@fairphone.com>, Rob Clark <robdclark@gmail.com>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Sean Paul <sean@poorly.run>,
+ Marijn Suijten <marijn.suijten@somainline.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Kuogee Hsieh <quic_khsieh@quicinc.com>,
+ Krishna Manikandan <quic_mkrishn@quicinc.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ freedreno@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240329-sm6350-dp-v2-0-e46dceb32ef5@fairphone.com>
+ <20240329-sm6350-dp-v2-2-e46dceb32ef5@fairphone.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240329-sm6350-dp-v2-2-e46dceb32ef5@fairphone.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240329-fp4-tcpm-v2-2-d7f8cd165355@fairphone.com>
-References: <20240329-fp4-tcpm-v2-0-d7f8cd165355@fairphone.com>
-In-Reply-To: <20240329-fp4-tcpm-v2-0-d7f8cd165355@fairphone.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-X-Mailer: b4 0.13.0
 
-Type-C port management functionality lives inside of the PMIC block on
-pm7250b.
+On 29/03/2024 08:45, Luca Weiss wrote:
+> Document the displayport controller subnode of the SM6350 MDSS.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
-The Type-C port management logic controls orientation detection,
-vbus/vconn sense and to send/receive Type-C Power Domain messages.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/pm7250b.dtsi | 39 +++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-index 4faed25a787f..0205c2669093 100644
---- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-@@ -51,6 +51,45 @@ pm7250b_vbus: usb-vbus-regulator@1100 {
- 			status = "disabled";
- 		};
- 
-+		pm7250b_typec: typec@1500 {
-+			compatible = "qcom,pm7250b-typec", "qcom,pm8150b-typec";
-+			reg = <0x1500>,
-+			      <0x1700>;
-+			interrupts = <PM7250B_SID 0x15 0x00 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x15 0x01 IRQ_TYPE_EDGE_BOTH>,
-+				     <PM7250B_SID 0x15 0x02 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x15 0x03 IRQ_TYPE_EDGE_BOTH>,
-+				     <PM7250B_SID 0x15 0x04 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x15 0x05 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x15 0x06 IRQ_TYPE_EDGE_BOTH>,
-+				     <PM7250B_SID 0x15 0x07 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x00 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x01 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x02 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x03 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x04 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x05 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x06 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x07 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "or-rid-detect-change",
-+					  "vpd-detect",
-+					  "cc-state-change",
-+					  "vconn-oc",
-+					  "vbus-change",
-+					  "attach-detach",
-+					  "legacy-cable-detect",
-+					  "try-snk-src-detect",
-+					  "sig-tx",
-+					  "sig-rx",
-+					  "msg-tx",
-+					  "msg-rx",
-+					  "msg-tx-failed",
-+					  "msg-tx-discarded",
-+					  "msg-rx-discarded",
-+					  "fr-swap";
-+			vdd-vbus-supply = <&pm7250b_vbus>;
-+		};
-+
- 		pm7250b_temp: temp-alarm@2400 {
- 			compatible = "qcom,spmi-temp-alarm";
- 			reg = <0x2400>;
-
--- 
-2.44.0
+Best regards,
+Krzysztof
 
