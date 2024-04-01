@@ -1,57 +1,73 @@
-Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA63240C1F
-	for <phone-devel@vger.kernel.org>; Sun, 31 Mar 2024 10:58:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CE08F5C;
+	Mon,  1 Apr 2024 17:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711882712; cv=none; b=p03teyQS9G/fECliqi77CfH21WFtKtm9ZX90hn/FuOitxZ5wJhQR98kR7E/awW7bhaqkcb2dkNkCflZrvmHadCDp5iLksdsQLDQ75EgoGOr4LkokqCabQonQXBOchsQVZh1xxsZf7vyqKm/eFxDHmT8TBYq1U3RXup3/Ia44U/A=
+	t=1711991838; cv=none; b=TtcTU822aySpSxZS/V73OdKLOJX1yWZ7gs3JBPAgtKIu72hRofnJJcHyj3tEk+lI11d+a9hdLlbt0lZNBI4vynH61RRN0mIZq8EwmHzuIV/yF6TW7CoOVkLKRazX5o72EMjPvkEPU/l8X6AFfxIgCUOxycNkmgFHHgrhhmPB+yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711882712; c=relaxed/simple;
-	bh=BnENT5VmFur1MN1/Wf3VPddAYXMMlqbqiihjspougus=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBjn9WWX9mbTOkcy48/tsl40mWW8pdXGLCbIyOfi95Bx8g2EjuGC0LcNyshmoysDqLA8/B0B70d/3rYz9LzQl8MUIYk3ZHvfpkL8IyqwGOEL6R1kK9uvBsQoEnPTTUf3p8YPx4ZBBw9krkLJ8y4rd5TzRQWHnWGEtIRvW78lBKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=HnrrSMPc; arc=none smtp.client-ip=195.113.20.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+	s=arc-20240116; t=1711991838; c=relaxed/simple;
+	bh=Xs8Q6CDyDIOEE03oPZLb/he7FAlRg+HMWx+Axg6xlnY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F1Cu+EKCJruAr4u69LDSvLvEnIy9h8ES5MTBhemsItS9v7T+37KD+QgmNYkrt1HySAKQUuPOypVNGYY/8JX1w7TEYVLCC60SbCnYVfaZOOGD1CTIdhWMrgBTvqr4gEwPRQBHsLKpri5QOITl2sD9uiMjK+BYVoY6Q6a8QaTt+HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WvUwOOqr; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="HnrrSMPc"
-X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
-	serial F5FD910E8FE2121B897F7E55B84E351D
-	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
-	auth type TLS.CUNI
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
-	s=submission; t=1711882708; x=1713182708;
-	bh=MBCZGUR/JpS2Y8PwCRlC22Q+rst7VT9yNoCBV75WlPQ=;
-	h=From:MIME-Version;
-	b=HnrrSMPcIQTNtPgiwRNKk6ReKKJNSsQ/5Jpr+5nlJdytD3V/KuuUtK1IsP5xFyJk3
-	 pKZeAqOnQjW5pISluhwzXOPB4IgNF90g3tnbyA/GsDCakyOVcWUgzILyKaLn+azFWt
-	 5qgJEQsXybp14cR2JziLh59GS1IXUL/U05QegQYm/qJFJRvHPW+bE7C6LgKqFUo0SS
-	 fJMKtxR/0VYnMhUoqkGBMHRiydfcZNm44JcneXD3KbW9KK54SjjWN3hTcBnrjDbH6S
-	 Bh34T9qMlkst5wcA8o9I/C7mm/dETYGJaDyMf36mqXvtYfG6bgfGiyQHSJZ5mAf9ha
-	 iWD/3l4v7wReA==
-Received: from localhost (internet5.mraknet.com [185.200.108.250])
-	(authenticated)
-	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 42VAwRn9095416
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Sun, 31 Mar 2024 12:58:28 +0200 (CEST)
-	(envelope-from balejk@matfyz.cz)
-From: Karel Balej <balejk@matfyz.cz>
-To: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-input@vger.kernel.org
-Cc: =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-        ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: [PATCH 5/5] MAINTAINERS: add myself for Marvell 88PM886 PMIC
-Date: Sun, 31 Mar 2024 12:46:58 +0200
-Message-ID: <20240331105608.7338-7-balejk@matfyz.cz>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240331105608.7338-2-balejk@matfyz.cz>
-References: <20240331105608.7338-2-balejk@matfyz.cz>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WvUwOOqr"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-516a97b3139so1109840e87.2;
+        Mon, 01 Apr 2024 10:17:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711991834; x=1712596634; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lNGvPCSXiECHoP3UreuKKK40O4Mox4jdXXntNPnjoX4=;
+        b=WvUwOOqrk/iHUMPp61B5LbXc1HoKyPkur0bFy93qvaCz46PmMajb4tiK4iVEzx7vpf
+         LZiX55+3ur4e15Zcc1v6efwnSJDo3gbAPXk+lQRbruGwYiuKYqtfnbuoh0uBZ+tYaU4B
+         eLfDY8N3Kfhcymdes4EZiuV8p8r3Iz+R9KYs1rZwvDaYMuJX2l+lmmXS/FDxERIaDRqm
+         nKSmGmSWH1mOqMTXMr3OJWHmL2AbeBVAG95lFsLuNiDDmNFoEZafsJabKP2cnNEg2HX7
+         XOC3g3bieecVF3+mqU4S+SkCk6j39NTPMYc9fEJJD755GnG45WflIX6h6VuFkwTiGfOv
+         877A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711991834; x=1712596634;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lNGvPCSXiECHoP3UreuKKK40O4Mox4jdXXntNPnjoX4=;
+        b=hEb8cSC96q3RJqbnzjw89KMbQSHMBnXvCo8UPgb5Bm7IsLAd5XCFMv9tVig5S8sHZ5
+         OKXWdfL+aP463YXv9PAmoZ7s6ET/Tb+MNykekrLKp33arrh/LsWP+QNIfEGNGUFiI33z
+         4gBG1GZXhigYOMrNtOn4JNgNCTJueoRYGKgnCoXSR9bEQWBe/zI/c1IFwhW4tPHK9eOp
+         YvVwRaaLbsRgE96njYuihqg1XfzwCEOjHa64S8PYcv0KCdvLhQzHM20Inz0aVDRzIMPn
+         uytnn58vdudhLzIopyNyB9s1E1qbvHFWMYL+P6O0wxuc5icEUwACnQ4RI1CpNwFZjocr
+         RJ1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWggMF9Dgai4aaeQI8RC366hYqv74JOdlc3KUSFoFKkYz2Az6tIsB612zrHJyPTDa22PSmAIVGnJTrOQrvp3+JO65TXj+Po97fCGwMbOtnP6+hpYBjSzsHOfsrfSRqevb7MGxT/2JVml3yYN5l4m7vmO8PXnOiRh/UvjPNuDAByzsCPCesakw==
+X-Gm-Message-State: AOJu0YzX9Ekvirk/cgTYrbHxoJ0JK/mCI3A3PszO/2IMJtJEeFazPmm4
+	yQ/y27LMFfkZf702dbl/bqwATLG+Ns2Tgz8i0l8qjzENS465xkyYou2L7bLyG0Y=
+X-Google-Smtp-Source: AGHT+IFE1cBOnyqgKEuUC+S8xM0ABqAsAE+UMb9sHziXV/4h3sU6jqH0t2nkLVVigWdzn188zOSSTQ==
+X-Received: by 2002:a05:6512:3711:b0:513:172d:5b46 with SMTP id z17-20020a056512371100b00513172d5b46mr6264509lfr.39.1711991833982;
+        Mon, 01 Apr 2024 10:17:13 -0700 (PDT)
+Received: from localhost.localdomain (ccu40.neoplus.adsl.tpnet.pl. [83.30.144.40])
+        by smtp.gmail.com with ESMTPSA id g4-20020a17090669c400b00a4673706b4dsm5505600ejs.78.2024.04.01.10.17.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Apr 2024 10:17:13 -0700 (PDT)
+From: Adam Skladowski <a39.skl@gmail.com>
+To: 
+Cc: phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Adam Skladowski <a39.skl@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Andy Gross <agross@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Georgi Djakov <djakov@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/1] clk: qcom: smd-rpm: Restore msm8976 num_clk
+Date: Mon,  1 Apr 2024 19:16:39 +0200
+Message-Id: <20240401171641.8979-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -60,43 +76,26 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add an entry to MAINTAINERS for the Marvell 88PM886 PMIC MFD, onkey and
-regulator drivers.
+During rework somehow msm8976 num_clk got removed, restore it.
 
-Signed-off-by: Karel Balej <balejk@matfyz.cz>
+Fixes: d6edc31f3a68 ("clk: qcom: smd-rpm: Separate out interconnect bus clocks")
+Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 ---
+ drivers/clk/qcom/clk-smd-rpm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Notes:
-    RFC v3:
-    - Remove onkey bindings file.
-    RFC v2:
-    - Only mention 88PM886 in the commit message.
-    - Add regulator driver.
-    - Rename the entry.
-
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index aa3b947fb080..c6bdf93ea3a7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13048,6 +13048,15 @@ F:	drivers/net/dsa/mv88e6xxx/
- F:	include/linux/dsa/mv88e6xxx.h
- F:	include/linux/platform_data/mv88e6xxx.h
+diff --git a/drivers/clk/qcom/clk-smd-rpm.c b/drivers/clk/qcom/clk-smd-rpm.c
+index 8602c02047d0..45c5255bcd11 100644
+--- a/drivers/clk/qcom/clk-smd-rpm.c
++++ b/drivers/clk/qcom/clk-smd-rpm.c
+@@ -768,6 +768,7 @@ static struct clk_smd_rpm *msm8976_clks[] = {
  
-+MARVELL 88PM886 PMIC DRIVER
-+M:	Karel Balej <balejk@matfyz.cz>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/mfd/marvell,88pm886-a1.yaml
-+F:	drivers/input/misc/88pm886-onkey.c
-+F:	drivers/mfd/88pm886.c
-+F:	drivers/regulators/88pm886-regulator.c
-+F:	include/linux/mfd/88pm886.h
-+
- MARVELL ARMADA 3700 PHY DRIVERS
- M:	Miquel Raynal <miquel.raynal@bootlin.com>
- S:	Maintained
+ static const struct rpm_smd_clk_desc rpm_clk_msm8976 = {
+ 	.clks = msm8976_clks,
++	.num_clks = ARRAY_SIZE(msm8976_clks),
+ 	.icc_clks = bimc_pcnoc_snoc_smmnoc_icc_clks,
+ 	.num_icc_clks = ARRAY_SIZE(bimc_pcnoc_snoc_smmnoc_icc_clks),
+ };
 -- 
 2.44.0
 
