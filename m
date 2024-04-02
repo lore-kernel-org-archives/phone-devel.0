@@ -1,58 +1,59 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1625F870
-	for <phone-devel@vger.kernel.org>; Tue,  2 Apr 2024 10:27:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13B9C13340D
+	for <phone-devel@vger.kernel.org>; Tue,  2 Apr 2024 16:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712053624; cv=none; b=VLXyVlQ0Ps69dwAQIavxLn57JrlO1WwQ0jfffM2FdYLrOv4KPegwCKHDkHl6kxKMrFBuslb/716ex2ySS5m4fWl0NbzsdcOHxwqVdVCZVDUlKAvK8oayNhoS58EKbRCSkd4TskZtR7Ut2omV0K5ihk2AwoGkXj+tzGBfKs9IF2A=
+	t=1712073821; cv=none; b=Zs2n0fem5gGuwaf7/cY38xQ0Rc9sobbW11dR1VnfLXsoyzCEFVL5qFx22HOhRNOZ1g1pb36N/Bg6Kx2B5BOePTG8pHy4Tc3UDH2xvvwowSf+tfecoII/6CrevM40AEkQD1VceY1kpQ78vOF7o8sEhM5QCMPynQSdru1Xen5gC70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712053624; c=relaxed/simple;
-	bh=2lcDfu4xW0bculdHZpac3g3St6ttxpCAMyiLiPfvz8Y=;
+	s=arc-20240116; t=1712073821; c=relaxed/simple;
+	bh=iGyly8WCikfxHr1JxXFl8+5sYdwyod5Ao8oCvYmT9nI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K7JKY5nZbN9oHr7HHj1+XcAFwuIYjmczG+2eIb70nid9pYPUXBn0eyVqsGU37g2kJA/ME6562vYJbuEza18TpzhmAHtdChgalwFU3+KjudwCetRopCN3pJtPpXvs/OOgB8MC+Zgo8d0xKl4Os7k+g8dzNx4RrnZO3pBjfJOV0B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uVsEhz5X; arc=none smtp.client-ip=209.85.128.41
+	 In-Reply-To:Content-Type; b=OlIc+1/SruueVQE/TgLjGz6d+iXaSk4hyiDxLlcd/5fA42BjjuHuSPJEDSDNFUBrHZq+olyz76R8bpNdBSekn8Ym5M6rLvZu2z8S5n6mYoWtdwBR2FHh+O/EZxpfr+tbNvyOv2df/nlYAVIJHZtCV5VpYcrDI7njCL55YdUr20s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CQEbs14U; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uVsEhz5X"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-41551639550so21760245e9.2
-        for <phone-devel@vger.kernel.org>; Tue, 02 Apr 2024 03:27:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CQEbs14U"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-56c0a249bacso6559852a12.1
+        for <phone-devel@vger.kernel.org>; Tue, 02 Apr 2024 09:03:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712053620; x=1712658420; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eOBZ55ixLA4dTfJhYr54OdUB1MaemoFEDKwq8GCXVLI=;
-        b=uVsEhz5XacY3RYea9PvmYx/oTz3KUTCz8u7FvA7LXnsaRHtGxCUsLSYCitbHlM9EHp
-         gSgAuZ5m1UG1TMdaS6XUjIE4gcBIp3aqdIu5w2qACLTn59b4V8rcU/NzSzPp448KOAsh
-         UOjVNOPSUc08797K7jucOhxsboprQzqzv1SU3tTgklixn2Hj05ajsLP+whD2jArOuBOE
-         GIyTsMkeGC1h4bvMm/EYcWMc0m+m7IUEwEfFOo7GK3aYy/9WDzFnJlUPrs1RCKy1gCSC
-         Zsg5qL9RJBK+Q7STrxNh64Cz40pfnSAIKTdLKUccO1N/ioMLtQ9HRkD8MZeU31XQMPCp
-         57iQ==
+        d=linaro.org; s=google; t=1712073818; x=1712678618; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=OomU9lhSpCio47MouV5ctgMxvXJu/MI+HjwUO0FQl5c=;
+        b=CQEbs14U26gZ9swCMHq2MrhuBJ9rsB4kKwc/36WjrPjoHwjzmF4OJQMxIbRXaMxSfB
+         SdgN3ndYBWN5UM8gdyF0mZYS/8z15/NPZqui2mKCm0DqV4YKYYbvwUfSKvXpDfdIzVzR
+         qssqbGAOz1DRmI7gsjpC0m9YWEHyigbJBCla2AcR4LHM4jk7I7b4ykdO9jFu2ba3gbOF
+         fy+mo2bwHpjub/EIug+qNr7Nhc0DnkLCPEx3YpyvJcR2xPhJc0TtWk4UpRkkBr+sH8F1
+         Z5GusT/2RcPQYMeZ8e5omhVFxj8beuwyVTrsjpttuDe0TsbQ636KX/bBPqoHOaOsVYE/
+         xQXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712053620; x=1712658420;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eOBZ55ixLA4dTfJhYr54OdUB1MaemoFEDKwq8GCXVLI=;
-        b=d+bBbWs9SAgC0WU+fv5flQ8Rdq5uvIGwG/FKUMBu2mYLBBX3GuNBA1sbvsDZD3eFdH
-         i5+garm67o2nVJANaOyy04pv0p1P3wtqohcaywSXAnWzaFQAAFIxGe5Yg/66nXzwM7qi
-         h+oRg/ghu9LReDlbdEEEuzKWnLLFS2G/Vj2V02xJHY3Ry7bWxOjZpsvJtqeKz5Nsk5gn
-         LNWqMcBJfFGzl6qPaH9Zy7EPnZXj0LA5puca6KA5OX3cAGc8VLu8Zg/cPcdaW77zXykw
-         ur18RhecwiJ/zpQNko4BJeY2shPdQZDNo2dRTIQG6CgzqvsluyGVaxVfooN7IsNIzSs0
-         liQw==
-X-Gm-Message-State: AOJu0Ywtk+puvMe0YQtCItdhhKnQvL5QkfzbxDMWO95nrz2GXCRkUz7c
-	xraoE6JQlfSjEtIr935tL2Csg1+Yt1ZFCeCsuqgpubynQlG/GykD3p25dcg+370=
-X-Google-Smtp-Source: AGHT+IFfOeEwE73Mr8ZZizbJEWLfCXdGOlKeaDZvpcz6sDnmAoZebGN8m3vt0uWalY87R2DUD/pxoA==
-X-Received: by 2002:a05:600c:3549:b0:414:113b:36a6 with SMTP id i9-20020a05600c354900b00414113b36a6mr9267396wmq.25.1712053620231;
-        Tue, 02 Apr 2024 03:27:00 -0700 (PDT)
-Received: from [192.168.0.102] ([176.61.106.68])
-        by smtp.gmail.com with ESMTPSA id v28-20020a5d591c000000b00341d4722a9asm13734949wrd.21.2024.04.02.03.26.59
+        d=1e100.net; s=20230601; t=1712073818; x=1712678618;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OomU9lhSpCio47MouV5ctgMxvXJu/MI+HjwUO0FQl5c=;
+        b=knnN56zMOZU2fNlEs/kyrPIIAPwpgbc9v643ONXg4Yrg+r2VEkXgTl171g9h+PKxcj
+         ztPA01CnaqYeESe3T35SGs1p9dfJOM35kgB9uhTfjWe9Jw7OJbhAJk091RtaCVXtkEdr
+         NV3hh04pR/scW+EZ8ileMPcPoCyZNhGpB1Lasxj6jLqsdTxZTTe7gxT0Xgw49QcK1OHS
+         0xjmWU6ZV0kOTd10f3xf8PIuwkWPwaYFN3/A8p71VgkgzUZC9Y/5hgZKcbLHpbS4GJc5
+         2kWXdrNvlNtvm8X/rqzMd9IG3qKGRtzIKoLZ1ar1stmxfmGP0hy5WaJdyZ4WE5NWDcHa
+         KWcA==
+X-Gm-Message-State: AOJu0YzViaoECjFKQZ0Osd3ay9QhxMJaZZLb1S7dOQhS287Iz8arIFgH
+	telqRS21Msja4KNL+rhUDmDr5wJF78ycl7dZMTjDUMs+V8udsnNIsrf1BS3jYZc=
+X-Google-Smtp-Source: AGHT+IFfwB0NEpsXCg8oKHt7+sfNoq0F1vkpQXHgdbcLB4Z2FlNzO/Ru3f/hztZaLLKPnQ8gc4scfQ==
+X-Received: by 2002:a50:d55c:0:b0:56b:f352:d379 with SMTP id f28-20020a50d55c000000b0056bf352d379mr8550036edj.2.1712073818290;
+        Tue, 02 Apr 2024 09:03:38 -0700 (PDT)
+Received: from [192.168.92.47] (078088045141.garwolin.vectranet.pl. [78.88.45.141])
+        by smtp.gmail.com with ESMTPSA id h3-20020a0564020e8300b0056c1cee7a37sm6890000eda.67.2024.04.02.09.03.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Apr 2024 03:26:59 -0700 (PDT)
-Message-ID: <c4b34be0-ac1a-4816-8ad9-7091b2834762@linaro.org>
-Date: Tue, 2 Apr 2024 11:26:58 +0100
+        Tue, 02 Apr 2024 09:03:37 -0700 (PDT)
+Message-ID: <fb8ae622-29e1-4281-8a53-3d9590363528@linaro.org>
+Date: Tue, 2 Apr 2024 18:03:35 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -60,111 +61,63 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] arm64: dts: qcom: msm8976: Add WCNSS node
-Content-Language: en-US
+Subject: Re: [PATCH 1/1] clk: qcom: smd-rpm: Restore msm8976 num_clk
 To: Adam Skladowski <a39.skl@gmail.com>
 Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240401172153.9231-1-a39.skl@gmail.com>
- <20240401172153.9231-5-a39.skl@gmail.com>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20240401172153.9231-5-a39.skl@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Bjorn Andersson <andersson@kernel.org>, Andy Gross <agross@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Georgi Djakov <djakov@kernel.org>,
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240401171641.8979-1-a39.skl@gmail.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20240401171641.8979-1-a39.skl@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 01/04/2024 18:21, Adam Skladowski wrote:
-> Add node describing wireless connectivity subsystem.
+On 1.04.2024 7:16 PM, Adam Skladowski wrote:
+> During rework somehow msm8976 num_clk got removed, restore it.
 > 
+> Fixes: d6edc31f3a68 ("clk: qcom: smd-rpm: Separate out interconnect bus clocks")
 > Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 > ---
->   arch/arm64/boot/dts/qcom/msm8976.dtsi | 104 ++++++++++++++++++++++++++
->   1 file changed, 104 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-> index 77670fce9b8f..41c748c78347 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-> @@ -771,6 +771,36 @@ blsp2_i2c4_sleep: blsp2-i2c4-sleep-state {
->   				drive-strength = <2>;
->   				bias-disable;
->   			};
-> +
-> +			wcss_wlan_default: wcss-wlan-default-state  {
-> +				wcss-wlan2-pins {
-> +					pins = "gpio40";
-> +					function = "wcss_wlan2";
-> +					drive-strength = <6>;
-> +					bias-pull-up;
-> +				};
-> +
-> +				wcss-wlan1-pins {
-> +					pins = "gpio41";
-> +					function = "wcss_wlan1";
-> +					drive-strength = <6>;
-> +					bias-pull-up;
-> +				};
-> +
-> +				wcss-wlan0-pins {
-> +					pins = "gpio42";
-> +					function = "wcss_wlan0";
-> +					drive-strength = <6>;
-> +					bias-pull-up;
-> +				};
-> +
-> +				wcss-wlan-pins {
-> +					pins = "gpio43", "gpio44";
-> +					function = "wcss_wlan";
-> +					drive-strength = <6>;
-> +					bias-pull-up;
-> +				};
-> +			};
->   		};
 
-Doesn't look right
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-arch/arm64/boot/dts/qcom/msm8916.dtsi
-arch/arm64/boot/dts/qcom/msm8939.dtsi
-
-wcss_wlan_default: wcss-wlan-default-state {
-	pins = "gpio40", "gpio41", "gpio42", "gpio43", "gpio44";
-	function = "wcss_wlan";
-	drive-strength = <6>;
-	bias-pull-up;
-};
-
-
->   
->   		gcc: clock-controller@1800000 {
-> @@ -1446,6 +1476,80 @@ blsp2_i2c4: i2c@7af8000 {
->   			status = "disabled";
->   		};
->   
-> +		wcnss: remoteproc@a204000 {
-> +			compatible = "qcom,pronto-v3-pil", "qcom,pronto";
-> +			reg = <0x0a204000 0x2000>,
-> +			      <0x0a202000 0x1000>,
-> +			      <0x0a21b000 0x3000>;
-> +			reg-names = "ccu",
-> +				    "dxe",
-> +				    "pmu";
-> +
-> +			memory-region = <&wcnss_fw_mem>;
-
-For preference and consistency "wcnss_fw_mem" should be "wcnss_mem"
-
-The ordering of the compatible/reg/interrupt is different to 8916/8939 too.
-
-I'm not sure which is currently the preferred order of declaration but 
-for V3 of this series would appreciate if you could find out and add the 
-comment to your cover letter.
-
-Otherwise LGTM.
-
-Please CC me on V3.
-
----
-bod
+Konrad
