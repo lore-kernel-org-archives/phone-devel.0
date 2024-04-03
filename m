@@ -1,40 +1,40 @@
-Received: from mail-108-mta41.mxroute.com (mail-108-mta41.mxroute.com [136.175.108.41])
+Received: from mail-108-mta53.mxroute.com (mail-108-mta53.mxroute.com [136.175.108.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F75149E18
-	for <phone-devel@vger.kernel.org>; Wed,  3 Apr 2024 15:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2CC149DFB
+	for <phone-devel@vger.kernel.org>; Wed,  3 Apr 2024 15:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712157213; cv=none; b=SmQ2HlLRSQKw1ZKhKvXzc+iJOOsjGZ/UmYFbCeMrYKdQAQaVqYDk2tyOXF9jDKVdM3kLIjeYT/4Bds1ahiL25qdISv8bVLMwB2YAOYHWuWbk7XyMPgTx3svHIjVkea9jbStSURkVAK9hbSm150kp/5D8uKoTJalHPqY+/BuHf6A=
+	t=1712157223; cv=none; b=Ie8o5kfu7MJzPLiGXdpc7z0IXw2R3pInQt17Mkvj5ee0bqZQ+aulk1o//QTTvDoS9RHTX4pm8m+IpZ1/Kp2qdimrxpiVnBiojeYM0o3WejdqMVsx6PfkGiy8y7JfU1iJCQDwWpZFcmzootL3Q9H59fPy81UzUpDnuw7XihL0FzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712157213; c=relaxed/simple;
-	bh=wgUfPDIer7AQ37jo80J/dyoU1vBDqQa6Etcv/8WWMyA=;
+	s=arc-20240116; t=1712157223; c=relaxed/simple;
+	bh=wrzkbVNaXYA07Wg3kgUuW7YQeJx9QRp29yiGRDIbHo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fDggZon6u9dpzuCVPjbgBSdFVM/tt2a+7AJxyfYCLbrjxehU2OUSUsXFjqEfc2/izcvVgHfAP5lYGgN0QRFfDPIj1XEqe6GzPzL3c6VUwmK8l76coNvX6dytctNRQ3xXN3bPTlaZ7D4YWNs49cTycuhJwrRlKRU09woWcilbi2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=c64wUaeF; arc=none smtp.client-ip=136.175.108.41
+	 MIME-Version; b=PcHBgCN7am0mv/hMZ0Z/MEu3hZCuyDCKLzP0lcAIwih34TfPkMxZVPdsCYP0FLYOdVmxSn76v2+m2iYfY7zCJVCcajpXzm0d0t9yfCDE8AfhVUoc+0x1nNV/jhac9EL8zOiHnVyjCbs/aLFyqZKMmUXxQP/cTLvGvfghP/0V30w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=shB8bQi/; arc=none smtp.client-ip=136.175.108.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="c64wUaeF"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="shB8bQi/"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta41.mxroute.com (ZoneMTA) with ESMTPSA id 18ea48054c90003bea.012
+ by mail-108-mta53.mxroute.com (ZoneMTA) with ESMTPSA id 18ea48064e10003bea.012
  for <phone-devel@vger.kernel.org>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 03 Apr 2024 15:07:37 +0000
-X-Zone-Loop: 45c3981a372fbe907411053249c1bce3973ec9067646
+ Wed, 03 Apr 2024 15:07:41 +0000
+X-Zone-Loop: dbc3d951c1968547e2b77001de34852ad8ec21d2a321
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=y+VeEU5f+LeGJ8HV2ZAWs/R6ixOD7sSWebXM6B8M/iY=; b=c64wUaeF3gqp4Yo/TbEETxoUF7
-	eIP101qUT8Hr6POQ62/2bo+Q/Cqvt5+QuDtXOgfqZKps1hOxF7MEf8ruDA/WxMKVDp9nVLK9/Nax9
-	BDypkk8WOqCao6pZOcYRsiN9wGGZKZraKT7yoa1J547qv9u5L4/yBjWr8AYhsVtwtA/1gpV+HGFby
-	ef+nBcUjnVXHGRGw6LeudOJhzg4xJQFdlBpk2kYeAmdI/9F/wkCXTXtbgP+XPYF0Pq0F70nc8/xj8
-	OoWkqIKYpyV9uueLAub5pBFanAGEMgMPalkYpWwBVfBaPT103yMPwDQ7kZKaQKUqTwvIBjWVR7UB6
-	D51J9QsA==;
+	bh=pC8KcMEQ+O1uzY5if8H7MdwgFAggRiFzSTYlToHsqnw=; b=shB8bQi/7DQsYVkCRg9q98H1sY
+	xy/Z0vQZlChDBgmnHmf388CjFgUuXFo3ytiZCxuWaY1w2/84Moqf07VpQrIstr0QiNTv/Y9LTHFym
+	/+yspnPUbegvXojQ4XPeJj85yWrcEOWRjiDNanvu7xgkLY1hUu3F3rHFxp6AnJBrZPnZZL9AKCGEr
+	ifZmAhffPC1xbM28rzAbiYP9yaSvx81ENZDYRsJAg+Ln7ftHB4aWh8Pp9DrMNo7uFPvFzseE6Ib0l
+	HN9g1pSkqthtewvULPp2iIqcC9AYO/u76G/3i29unvJry8ZAllD+w1KioY+CNyxcf9MMEpLiBsdrx
+	rl2HvIRg==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -55,9 +55,9 @@ Cc: dave.stevenson@raspberrypi.com,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
 	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v3 10/25] media: i2c: imx258: Follow normal V4L2 behaviours for clipping exposure
-Date: Wed,  3 Apr 2024 09:03:39 -0600
-Message-ID: <20240403150355.189229-11-git@luigi311.com>
+Subject: [PATCH v3 12/25] media: i2c: imx258: Allow configuration of clock lane behaviour
+Date: Wed,  3 Apr 2024 09:03:41 -0600
+Message-ID: <20240403150355.189229-13-git@luigi311.com>
 In-Reply-To: <20240403150355.189229-1-git@luigi311.com>
 References: <20240403150355.189229-1-git@luigi311.com>
 Precedence: bulk
@@ -71,81 +71,64 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-V4L2 sensor drivers are expected are expected to clip the supported
-exposure range based on the VBLANK configured.
-IMX258 wasn't doing that as register 0x350 (FRM_LENGTH_CTL)
-switches it to a mode where frame length tracks coarse exposure time.
+The sensor supports the clock lane either remaining in HS mode
+during frame blanking, or dropping to LP11.
 
-Disable this mode and clip the range for V4L2_CID_EXPOSURE appropriately
-based on V4L2_CID_VBLANK.
+Add configuration of the mode via V4L2_MBUS_CSI2_NONCONTINUOUS_CLOCK.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
 ---
- drivers/media/i2c/imx258.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ drivers/media/i2c/imx258.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 8f792f0e0738..ebc404b548b3 100644
+index 805308b4a4c6..692a5aeb7941 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -37,10 +37,11 @@
+@@ -72,6 +72,8 @@
+ /* Test Pattern Control */
+ #define IMX258_REG_TEST_PATTERN		0x0600
  
- /* Exposure control */
- #define IMX258_REG_EXPOSURE		0x0202
-+#define IMX258_EXPOSURE_OFFSET		10
- #define IMX258_EXPOSURE_MIN		4
- #define IMX258_EXPOSURE_STEP		1
- #define IMX258_EXPOSURE_DEFAULT		0x640
--#define IMX258_EXPOSURE_MAX		65535
-+#define IMX258_EXPOSURE_MAX		(IMX258_VTS_MAX - IMX258_EXPOSURE_OFFSET)
- 
- /* Analog gain control */
- #define IMX258_REG_ANALOG_GAIN		0x0204
-@@ -371,7 +372,7 @@ static const struct imx258_reg mode_common_regs[] = {
- 	{ 0x303A, 0x00 },
- 	{ 0x303B, 0x10 },
- 	{ 0x300D, 0x00 },
--	{ 0x0350, 0x01 },
-+	{ 0x0350, 0x00 },
- 	{ 0x0204, 0x00 },
- 	{ 0x0205, 0x00 },
- 	{ 0x020E, 0x01 },
-@@ -734,6 +735,19 @@ static int imx258_update_digital_gain(struct imx258 *imx258, u32 len, u32 val)
- 	return 0;
- }
- 
-+static void imx258_adjust_exposure_range(struct imx258 *imx258)
-+{
-+	int exposure_max, exposure_def;
++#define IMX258_CLK_BLANK_STOP		0x4040
 +
-+	/* Honour the VBLANK limits when setting exposure. */
-+	exposure_max = imx258->cur_mode->height + imx258->vblank->val -
-+		       IMX258_EXPOSURE_OFFSET;
-+	exposure_def = min(exposure_max, imx258->exposure->val);
-+	__v4l2_ctrl_modify_range(imx258->exposure, imx258->exposure->minimum,
-+				 exposure_max, imx258->exposure->step,
-+				 exposure_def);
-+}
-+
- static int imx258_set_ctrl(struct v4l2_ctrl *ctrl)
- {
- 	struct imx258 *imx258 =
-@@ -741,6 +755,13 @@ static int imx258_set_ctrl(struct v4l2_ctrl *ctrl)
- 	struct i2c_client *client = v4l2_get_subdevdata(&imx258->sd);
- 	int ret = 0;
+ /* Orientation */
+ #define REG_MIRROR_FLIP_CONTROL		0x0101
+ #define REG_CONFIG_MIRROR_FLIP		0x03
+@@ -632,6 +634,7 @@ struct imx258 {
+ 	const struct imx258_link_freq_config *link_freq_configs;
+ 	const s64 *link_freq_menu_items;
+ 	unsigned int nlanes;
++	unsigned int csi2_flags;
  
-+	/*
-+	 * The VBLANK control may change the limits of usable exposure, so check
-+	 * and adjust if necessary.
-+	 */
-+	if (ctrl->id == V4L2_CID_VBLANK)
-+		imx258_adjust_exposure_range(imx258);
-+
  	/*
- 	 * Applying V4L2 control value only happens
- 	 * when power is up for streaming
+ 	 * Mutex for serialized access:
+@@ -1066,6 +1069,15 @@ static int imx258_start_streaming(struct imx258 *imx258)
+ 		return ret;
+ 	}
+ 
++	ret = imx258_write_reg(imx258, IMX258_CLK_BLANK_STOP,
++			       IMX258_REG_VALUE_08BIT,
++			       imx258->csi2_flags & V4L2_MBUS_CSI2_NONCONTINUOUS_CLOCK ?
++			       1 : 0);
++	if (ret) {
++		dev_err(&client->dev, "%s failed to set clock lane mode\n", __func__);
++		return ret;
++	}
++
+ 	/* Apply default values of current mode */
+ 	reg_list = &imx258->cur_mode->reg_list;
+ 	ret = imx258_write_regs(imx258, reg_list->regs, reg_list->num_of_regs);
+@@ -1438,6 +1450,8 @@ static int imx258_probe(struct i2c_client *client)
+ 		goto error_endpoint_free;
+ 	}
+ 
++	imx258->csi2_flags = ep.bus.mipi_csi2.flags;
++
+ 	/* Initialize subdev */
+ 	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
+ 
 -- 
 2.42.0
 
