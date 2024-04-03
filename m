@@ -1,250 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta247.mxroute.com (mail-108-mta247.mxroute.com [136.175.108.247])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019551494A4;
-	Wed,  3 Apr 2024 14:15:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2AB73506
+	for <phone-devel@vger.kernel.org>; Wed,  3 Apr 2024 15:07:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.247
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712153751; cv=none; b=I4kHHHfziLAvObBw50tS0+rq6zAJ0CzirFk5/AgZqDwLaC3q4/U76xuluXADyiVhuLpyWAMVhJaDYSCYDiz7dFoIOfgJMJVBYHbhJBiMybqXNAc9u48vj62ie5fQJsizbWNUAvwyoNv+7Hnfq00OHe/vtVARj5ZKbQUx+4SLddI=
+	t=1712156849; cv=none; b=Xsb+wpOA2YFhRt0mq1g8QizsiHf0BDidTj1JvYERoqt4l3PwvRGeAlW+APsSIGypY2Rs0R/b+8FynDZW2rUKH5mo6J2Na6/zC8XUuBOPN/hSD9N+TX/ViQnAJNA09NafHWX2oatwsSkvrKMO9njnNzDgq2Ua/wFqX7fx2vfe9jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712153751; c=relaxed/simple;
-	bh=fhWJwSS6WUV/rQ1vsqKn3NpS8O4ZJ7RWPCIyi0ILAjg=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=s7R1aBASuwesollcxBaLp5qXgl68t/YXfpx7zdm4ElVw+dt9KNNe33s0+EDl4kSXJNXmyO0DKuWaB/ZMLZBva2We9+zZzp6aZceATZ7dOuXb7JgN0C1sPTYgw7gL/f0vzIsr9TrdTDzaCrj8aBJCh7t6g9Pqd6HogNzzo98SOHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qVMeXyim; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712156849; c=relaxed/simple;
+	bh=S3kpHO0g2xg+kIl0Dx1H7DWyFi2/EytItBP5x0iTg40=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=suB+KNw/CF98gx7KAtdILLRzOzXvZiAk+EF37h7kijDEgaQ6RBvTIOwtkDdEAit3fbQoX70XmM3JyauxSUmx/ShakZxfvCcK8nWltKWCqq6XzrLqs62BtXkeOql6gZ/BfsTu70iI31KT8TZUiX/Ms80tEuetJLus+zVA2eX9tqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=xOPStgyr; arc=none smtp.client-ip=136.175.108.247
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qVMeXyim"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB8EC433A6;
-	Wed,  3 Apr 2024 14:15:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712153750;
-	bh=fhWJwSS6WUV/rQ1vsqKn3NpS8O4ZJ7RWPCIyi0ILAjg=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=qVMeXyimG4WyeARwYMaux29uT2VipP+ejvreMeuSgGiscGgrKQEvS5oHXOig66ADg
-	 jhlHyt69Ezu3ZeCqEBieUe+3deKg6DBvCcoPThTcpMqm+c2GHHEFyCr0Ur40UaBn88
-	 l/zzbjq1jO16rDFUJ7O2vhbaVhwa1//BJZ55CV0Ih9ywWGWaU9oKNDlaMxBsPhKEBP
-	 pMxQV75XCMu1Z+4Z5+VAqeximZ9da+yMgzXuoFU9drDuMqlAIBPgVV+wowpJF7oAJv
-	 bEErCovXIf6jU++9VxTrUoTKVbhFmPtD9n7P+PcwXA5s2c3/rLd1680Sses3eywqQx
-	 S4t5Ge6o9HPcQ==
-Date: Wed, 03 Apr 2024 09:15:49 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="xOPStgyr"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta247.mxroute.com (ZoneMTA) with ESMTPSA id 18ea48004f60003bea.012
+ for <phone-devel@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Wed, 03 Apr 2024 15:07:17 +0000
+X-Zone-Loop: ad178a5095772540db4ed78980c78f30763aceb31233
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=WRuA32YXbuD3ex7baB9NU/bUpw7+cDp5UcFgRIWbhkg=; b=xOPStgyrtsjcNC5TcLXSPoSDvy
+	naIw8uAfgqJCMXYuZvG+DpnXTblU1bvntuIoRvU41p7ocpqhaLaApSBwlBUKE7/SrahoCc9+xkBQ4
+	QbEma0uhAiwiJiZGU1HijPzrzicIz6OI8NQ532VsBRYM10VoMwekxPdUxOL6rPpmpQa3tlZAEGKI9
+	zn4g+uijgAdsr7p4QvyZBcE0eijJQA0/OWnwW/VhpwqFr8ex1IO6z1t7jSwyJP+h15zAxNuTdvwlv
+	VVhGk5wrfQtjkqW1pWoU6X8d21s3LP8PfdmuO8THfTcuPvlc9I0q++ilsA4qzGunJEa7KiY3wsW4x
+	5tbKBmbQ==;
+From: git@luigi311.com
+To: linux-media@vger.kernel.org
+Cc: dave.stevenson@raspberrypi.com,
+	jacopo.mondi@ideasonboard.com,
+	mchehab@kernel.org,
+	robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	sakari.ailus@linux.intel.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	pavel@ucw.cz,
+	phone-devel@vger.kernel.org,
+	Luis Garcia <git@luigi311.com>
+Subject: [PATCH v3 00/25] imx258 improvement series 
+Date: Wed,  3 Apr 2024 09:03:29 -0600
+Message-ID: <20240403150355.189229-1-git@luigi311.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc: phone-devel@vger.kernel.org, linux-gpio@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>, linux-kernel@vger.kernel.org, 
- Catalin Marinas <catalin.marinas@arm.com>, 
- ~postmarketos/upstreaming@lists.sr.ht, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Linus Walleij <linus.walleij@linaro.org>, Kees Cook <keescook@chromium.org>, 
- Rob Herring <robh+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
- Lubomir Rintel <lkundrak@v3.sk>, Will Deacon <will@kernel.org>, 
- Karel Balej <balejk@matfyz.cz>, linux-clk@vger.kernel.org, 
- Conor Dooley <conor.dooley@microchip.com>, Tony Lindgren <tony@atomide.com>, 
- David Wronek <david@mainlining.org>, 
- Haojian Zhuang <haojian.zhuang@linaro.org>, Tony Luck <tony.luck@intel.com>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Michael Turquette <mturquette@baylibre.com>
-In-Reply-To: <20240402-pxa1908-lkml-v9-0-25a003e83c6f@skole.hr>
-References: <20240402-pxa1908-lkml-v9-0-25a003e83c6f@skole.hr>
-Message-Id: <171215356225.3499035.10345778780745596314.robh@kernel.org>
-Subject: Re: [PATCH v9 0/9] Initial Marvell PXA1908 support
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: personal@luigi311.com
 
+From: Luis Garcia <git@luigi311.com>
 
-On Tue, 02 Apr 2024 22:55:36 +0200, Duje Mihanović wrote:
-> Hello,
-> 
-> This series adds initial support for the Marvell PXA1908 SoC and
-> "samsung,coreprimevelte", a smartphone using the SoC.
-> 
-> USB works and the phone can boot a rootfs from an SD card, but there are
-> some warnings in the dmesg:
-> 
-> During SMP initialization:
-> [    0.006519] CPU features: SANITY CHECK: Unexpected variation in SYS_CNTFRQ_EL0. Boot CPU: 0x000000018cba80, CPU1: 0x00000000000000
-> [    0.006542] CPU features: Unsupported CPU feature variation detected.
-> [    0.006589] CPU1: Booted secondary processor 0x0000000001 [0x410fd032]
-> [    0.010710] Detected VIPT I-cache on CPU2
-> [    0.010716] CPU features: SANITY CHECK: Unexpected variation in SYS_CNTFRQ_EL0. Boot CPU: 0x000000018cba80, CPU2: 0x00000000000000
-> [    0.010758] CPU2: Booted secondary processor 0x0000000002 [0x410fd032]
-> [    0.014849] Detected VIPT I-cache on CPU3
-> [    0.014855] CPU features: SANITY CHECK: Unexpected variation in SYS_CNTFRQ_EL0. Boot CPU: 0x000000018cba80, CPU3: 0x00000000000000
-> [    0.014895] CPU3: Booted secondary processor 0x0000000003 [0x410fd032]
-> 
-> SMMU probing fails:
-> [    0.101798] arm-smmu c0010000.iommu: probing hardware configuration...
-> [    0.101809] arm-smmu c0010000.iommu: SMMUv1 with:
-> [    0.101816] arm-smmu c0010000.iommu:         no translation support!
-> 
-> A 3.14 based Marvell tree is available on GitHub
-> acorn-marvell/brillo_pxa_kernel, and a Samsung one on GitHub
-> CoderCharmander/g361f-kernel.
-> 
-> Andreas Färber attempted to upstream support for this SoC in 2017:
-> https://lore.kernel.org/lkml/20170222022929.10540-1-afaerber@suse.de/
-> 
-> Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
-> 
-> Changes in v9:
-> - Update trailers and rebase on v6.9-rc2, no changes
-> - Link to v8: https://lore.kernel.org/20240110-pxa1908-lkml-v8-0-fea768a59474@skole.hr
-> 
-> Changes in v8:
-> - Drop SSPA patch
-> - Drop broken-cd from eMMC node
-> - Specify S-Boot hardcoded initramfs location in device tree
-> - Add ARM PMU node
-> - Correct inverted modem memory base and size
-> - Update trailers
-> - Rebase on next-20240110
-> - Link to v7: https://lore.kernel.org/20231102-pxa1908-lkml-v7-0-cabb1a0cb52b@skole.hr
->   and https://lore.kernel.org/20231102152033.5511-1-duje.mihanovic@skole.hr
-> 
-> Changes in v7:
-> - Suppress SND_MMP_SOC_SSPA on ARM64
-> - Update trailers
-> - Rebase on v6.6-rc7
-> - Link to v6: https://lore.kernel.org/r/20231010-pxa1908-lkml-v6-0-b2fe09240cf8@skole.hr
-> 
-> Changes in v6:
-> - Address maintainer comments:
->   - Add "marvell,pxa1908-padconf" binding to pinctrl-single driver
-> - Drop GPIO patch as it's been pulled
-> - Update trailers
-> - Rebase on v6.6-rc5
-> - Link to v5: https://lore.kernel.org/r/20230812-pxa1908-lkml-v5-0-a5d51937ee34@skole.hr
-> 
-> Changes in v5:
-> - Address maintainer comments:
->   - Move *_NR_CLKS to clock driver from dt binding file
-> - Allocate correct number of clocks for each block instead of blindly
->   allocating 50 for each
-> - Link to v4: https://lore.kernel.org/r/20230807-pxa1908-lkml-v4-0-cb387d73b452@skole.hr
-> 
-> Changes in v4:
-> - Address maintainer comments:
->   - Relicense clock binding file to BSD-2
-> - Add pinctrl-names to SD card node
-> - Add vgic registers to GIC node
-> - Rebase on v6.5-rc5
-> - Link to v3: https://lore.kernel.org/r/20230804-pxa1908-lkml-v3-0-8e48fca37099@skole.hr
-> 
-> Changes in v3:
-> - Address maintainer comments:
->   - Drop GPIO dynamic allocation patch
->   - Move clock register offsets into driver (instead of bindings file)
->   - Add missing Tested-by trailer to u32_fract patch
->   - Move SoC binding to arm/mrvl/mrvl.yaml
-> - Add serial0 alias and stdout-path to board dts to enable UART
->   debugging
-> - Rebase on v6.5-rc4
-> - Link to v2: https://lore.kernel.org/r/20230727162909.6031-1-duje.mihanovic@skole.hr
-> 
-> Changes in v2:
-> - Remove earlycon patch as it's been merged into tty-next
-> - Address maintainer comments:
->   - Clarify GPIO regressions on older PXA platforms
->   - Add Fixes tag to commit disabling GPIO pinctrl calls for this SoC
->   - Add missing includes to clock driver
->   - Clock driver uses HZ_PER_MHZ, u32_fract and GENMASK
->   - Dual license clock bindings
->   - Change clock IDs to decimal
->   - Fix underscores in dt node names
->   - Move chosen node to top of board dts
->   - Clean up documentation
->   - Reorder commits
->   - Drop pxa,rev-id
-> - Rename muic-i2c to i2c-muic
-> - Reword some commits
-> - Move framebuffer node to chosen
-> - Add aliases for mmc nodes
-> - Rebase on v6.5-rc3
-> - Link to v1: https://lore.kernel.org/r/20230721210042.21535-1-duje.mihanovic@skole.hr
-> 
-> ---
-> Andy Shevchenko (1):
->       clk: mmp: Switch to use struct u32_fract instead of custom one
-> 
-> Duje Mihanović (8):
->       dt-bindings: pinctrl: pinctrl-single: add marvell,pxa1908-padconf compatible
->       pinctrl: single: add marvell,pxa1908-padconf compatible
->       dt-bindings: clock: Add Marvell PXA1908 clock bindings
->       clk: mmp: Add Marvell PXA1908 clock driver
->       dt-bindings: marvell: Document PXA1908 SoC
->       arm64: Kconfig.platforms: Add config for Marvell PXA1908 platform
->       arm64: dts: Add DTS for Marvell PXA1908 and samsung,coreprimevelte
->       MAINTAINERS: add myself as Marvell PXA1908 maintainer
-> 
->  .../devicetree/bindings/arm/mrvl/mrvl.yaml         |   5 +
->  .../devicetree/bindings/clock/marvell,pxa1908.yaml |  48 +++
->  .../bindings/pinctrl/pinctrl-single.yaml           |   4 +
->  MAINTAINERS                                        |   9 +
->  arch/arm64/Kconfig.platforms                       |   8 +
->  arch/arm64/boot/dts/marvell/Makefile               |   3 +
->  .../dts/marvell/pxa1908-samsung-coreprimevelte.dts | 336 +++++++++++++++++++++
->  arch/arm64/boot/dts/marvell/pxa1908.dtsi           | 304 +++++++++++++++++++
->  drivers/clk/mmp/Makefile                           |   2 +-
->  drivers/clk/mmp/clk-frac.c                         |  57 ++--
->  drivers/clk/mmp/clk-of-mmp2.c                      |  26 +-
->  drivers/clk/mmp/clk-of-pxa168.c                    |   4 +-
->  drivers/clk/mmp/clk-of-pxa1908.c                   | 328 ++++++++++++++++++++
->  drivers/clk/mmp/clk-of-pxa1928.c                   |   6 +-
->  drivers/clk/mmp/clk-of-pxa910.c                    |   4 +-
->  drivers/clk/mmp/clk.h                              |  10 +-
->  drivers/pinctrl/pinctrl-single.c                   |   1 +
->  include/dt-bindings/clock/marvell,pxa1908.h        |  88 ++++++
->  18 files changed, 1186 insertions(+), 57 deletions(-)
-> ---
-> base-commit: 39cd87c4eb2b893354f3b850f916353f2658ae6f
-> change-id: 20230803-pxa1908-lkml-6830e8da45c7
-> 
-> Best regards,
-> --
-> Duje Mihanović <duje.mihanovic@skole.hr>
-> 
-> 
-> 
+v3 Luis Garcia
 
+- Add Use v4l2_link_freq_to_bitmap helper patch per Sakari Ailus
+- Separate dt-bindings for powerdown per Rob Herring
+- Fix dt-bindings for imx258.yaml
+- Fix sign offs per Dang Huynh 
+- Fix versioning per Conor Dooley and Kieran Bingham
+- Use scripts to validate and fix patches
+- Implemented feedback from Sakari Ailus
+  - media: i2c: imx258: Add support for 24MHz clock
+  - media: i2c: imx258: Add support for running on 2 CSI data lanes
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y marvell/pxa1908-samsung-coreprimevelte.dtb' for 20240402-pxa1908-lkml-v9-0-25a003e83c6f@skole.hr:
-
-arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dtb: /: memory: False schema does not allow {'device_type': ['memory'], 'reg': [[0, 0, 0, 0]]}
-	from schema $id: http://devicetree.org/schemas/root-node.yaml#
-arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dtb: pinmux@1e000: #size-cells: 0 was expected
-	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-single.yaml#
-arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dtb: pinmux@1e000: pinctrl-single,gpio-range: [[8, 55, 55, 0], [8, 110, 32, 0], [8, 52, 1, 0]] is too long
-	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-single.yaml#
-arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dtb: pinmux@1e000: 'pinmux-board-1', 'pinmux-board-2', 'pinmux-board-3', 'pinmux-gpio-keys', 'pinmux-i2c-muic', 'pinmux-sdh0-1', 'pinmux-sdh0-2', 'pinmux-sdh0-3', 'pinmux-uart0', 'ranges' do not match any of the regexes: '-pins(-[0-9]+)?$|-pin$', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-single.yaml#
-arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dtb: mmc@80000: pinctrl-names: ['default'] is too short
-	from schema $id: http://devicetree.org/schemas/mmc/sdhci-pxa.yaml#
-arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dtb: mmc@80000: Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
-	from schema $id: http://devicetree.org/schemas/mmc/sdhci-pxa.yaml#
+- Implemented feedback from Rob Herring
+  - dt-bindings: media: imx258: Add alternate compatible strings
 
 
 
+v2 Luis Garcia
 
+- Add use macros patch 
+- Add support for powerdown gpio patch
+- Add support for reset gpio patch
+- Dropped Add support for long exposure modes patch
+- Implemented feedback from Jacopo Mondi
+  - media: i2c: imx258: Add regulator control
+  - media: i2c: imx258: Add support for 24MHz clock
+  - media: i2c: imx258: Add support for running on 2 CSI data lanes
+  - media: i2c: imx258: Add get_selection for pixel array information
+  - media: i2c: imx258: Issue reset before starting streaming
+  - media: i2c: imx258: Set pixel_rate range to the same as the value
+  - dt-bindings: media: imx258: Add alternate compatible strings
+  - media: i2c: imx258: Change register settings for variants of the sensor
+  - media: i2c: imx258: Make HFLIP and VFLIP controls writable
+
+This adds a few more patches and drops one. The long exposure mode patch
+was dropped due to the bug that Jacopo found. The powerdown and reset gpio
+patches were added as that fixes support for the Pinephone Pro, without
+them the sensor doesn't initialize correctly.
+
+Tested on a Pinephone Pro by forcing 24 mhz clock and was able to access 
+all 3 resolutions. The two lower resolutions had some artifacts but that
+is expected as more changes are required to fix them for the
+Pinephone Pro specifically, kept all registers the same as Dave's original
+patch since that works on dedicated imx258 hardware and the artifacts are
+PPP specific so it shouldn't be a regression.
+
+
+
+v1 Dave Stevenson
+
+This is a set of patches for imx258 that allow it to work with alternate
+clock frequencies, over either 2 or 4 lanes, and generally adding
+flexibility to the driver.
+
+Tested with an IMX258 module from Soho Enterprises that has a 24MHz
+oscillator. Both 2 and 4 lane configurations work with correct link
+frequencies and pixel rates.
+
+Jacopo has tested on a PinePhone Pro which has an ~19.2MHz clock fed from
+the SoC, He confirms that the two lower resolution modes work, but not the
+full res mode. Comparing to the BSP it looks like they have some weird
+clock configuration in the 4208x3120 mode (nominally 1224Mb/s/lane instead
+of 1267). As it has never previously worked directly with the mainline
+driver this isn't a regression but may indicate that there is a need for
+support of additional link frequencies in the future.
+
+The last patch that makes HFLIP and VFLIP configurable may be contentious
+as I've retained the default configuration of inverted from the original
+driver. I know this was discussed recently, but I can't recall the final
+outcome.
+
+I am relying on someone from Intel testing this out, as correcting the
+cropping and supporting flips has changed the Bayer order. Seeing as this
+is all above board in V4L2 terms I really hope that the layers above it
+behave themselves.
+
+Cheers
+  Dave
+
+Dave Stevenson (20):
+  media: i2c: imx258: Remove unused defines
+  media: i2c: imx258: Make image geometry meet sensor requirements
+  media: i2c: imx258: Disable digital cropping on binned modes
+  media: i2c: imx258: Remove redundant I2C writes.
+  media: i2c: imx258: Add regulator control
+  media: i2c: imx258: Make V4L2_CID_VBLANK configurable.
+  media: i2c: imx258: Split out common registers from the mode based
+    ones
+  media: i2c: imx258: Add support for 24MHz clock
+  media: i2c: imx258: Add support for running on 2 CSI data lanes
+  media: i2c: imx258: Follow normal V4L2 behaviours for clipping
+    exposure
+  media: i2c: imx258: Add get_selection for pixel array information
+  media: i2c: imx258: Allow configuration of clock lane behaviour
+  media: i2c: imx258: Correct max FRM_LENGTH_LINES value
+  media: i2c: imx258: Issue reset before starting streaming
+  media: i2c: imx258: Set pixel_rate range to the same as the value
+  media: i2c: imx258: Support faster pixel rate on binned modes
+  dt-bindings: media: imx258: Rename to include vendor prefix
+  dt-bindings: media: imx258: Add alternate compatible strings
+  media: i2c: imx258: Change register settings for variants of the
+    sensor
+  media: i2c: imx258: Make HFLIP and VFLIP controls writable
+
+Luis Garcia (5):
+  drivers: media: i2c: imx258: Use macros
+  dt-bindings: media: imx258: Add binding for powerdown-gpio
+  drivers: media: i2c: imx258: Add support for powerdown gpio
+  drivers: media: i2c: imx258: Add support for reset gpio
+  media:i2c: imx258: Use v4l2_link_freq_to_bitmap helper
+
+ .../i2c/{imx258.yaml => sony,imx258.yaml}     |   15 +-
+ MAINTAINERS                                   |    2 +-
+ drivers/media/i2c/imx258.c                    | 1156 +++++++++++------
+ 3 files changed, 753 insertions(+), 420 deletions(-)
+ rename Documentation/devicetree/bindings/media/i2c/{imx258.yaml => sony,imx258.yaml} (86%)
+
+-- 
+2.42.0
 
