@@ -1,114 +1,117 @@
-Received: from mail-108-mta77.mxroute.com (mail-108-mta77.mxroute.com [136.175.108.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A24149DE5
-	for <phone-devel@vger.kernel.org>; Wed,  3 Apr 2024 15:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795A914D433;
+	Wed,  3 Apr 2024 16:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712157551; cv=none; b=EUbmCwgUwQlGlN4KKSSKR9zEUzxrZ74VVCrivQzIr8f4Y/nUb62IFRqid5F3ukPW+qhpUe0VEP+sLCvdr+Nxbh5Ml4iPb9nM6/pTyw9G2QlSbgRnE7ThoDYYxOWY5xllcdio4Xb2IeqIH2QtUZDVDqpZIns1Dr/FtFK2Ru83VS4=
+	t=1712160895; cv=none; b=CMeKmWubor/TFTUeyQPhTTTlSupRw9TRY9ns68CLg/Lh6yAB7+buTFaqfld1N9Gj7deCLCMNMLjQq4UoWm5T8QQlEJCjMHgOeit1u9DDEqq35HW/p1tG5H0BbXnlqOJPUDvDtXP36f24AWRsPcXU25cQKfgUAyyOg5wxNCb4pIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712157551; c=relaxed/simple;
-	bh=P6sFYE2RFyMP+jyTKPG/NPzsohsjE50jpPWJbVR2FnQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNljJUMfD5ifSC6xjFBmARq/4FxZwlow3E+Osar5S4jZFX837uR5A3Wzlh40oamjkYP+FaXzjL7vMtLV5eEy+/mPEg4iIeQCRtirIhrz3oC6TUbzG4s3FDxNbqAFXzicGa12zqwkRnoCWmPdBUJhmZs5L+xBQiDPyf+eDSG0udU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=QvPdXUFu; arc=none smtp.client-ip=136.175.108.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+	s=arc-20240116; t=1712160895; c=relaxed/simple;
+	bh=Dw4TMcgMCYmhY8DkUmtF9XK+klTwM7RxE/GPJ5ycJF0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t2ku/qIfqaKY1E6dMhrNgD/EYFks25O20WFI1dIAPUWL4D4/hidTC5E4m2fsYTbxcnngYG/qeerJQ0vh2J5pmbBRCfAeAx9uSCtqP8uXvL0APVvfaTCGzjN3ceFq98313xahJazfYI61xgfcbC7DvLc17sIcXTeOjzU5BpD3DjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q+LnZsIa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="QvPdXUFu"
-Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta77.mxroute.com (ZoneMTA) with ESMTPSA id 18ea48ace6d0003bea.012
- for <phone-devel@vger.kernel.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 03 Apr 2024 15:19:04 +0000
-X-Zone-Loop: ce118a783efd8c5ef80719dc12bc4b041de97e5bdf76
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tn3xRU5mtzTvJZghODMqRw0ULnXG09wTsVZrMIwsFGY=; b=QvPdXUFuy1A7P9ydQKgHJhheqt
-	WkdvfyKXwUD+FqZFlZUYxyspghJF4mEzHneCx7CQ6m4BnYfkMAOF8aZy6D9gArVw5WT09Bhsu8Hlu
-	qrsgyHQrHFvHG20wAUvM88NEktefZ5yqJ8SUgXzlSzCIAaYAEiw0v2z8Lvayn8eNswCrf+7PxdxXp
-	MXgwgvnct48JPZExsc1lGu/vywnnys5hasjdYaO8pXtzcUMya65yu0Yr+JDTuIbE8gKKqJysT6eOe
-	9zW9Amw9H0cCF8OGSzZaMRIYWRMEDTyUAPMcL+EAJ62tC87t+xl5ANGN5r9XDpxSDqpAAzKh4Uhps
-	G0NUIlrA==;
-From: git@luigi311.com
-To: linux-media@vger.kernel.org
-Cc: dave.stevenson@raspberrypi.com,
-	jacopo.mondi@ideasonboard.com,
-	mchehab@kernel.org,
-	robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	sakari.ailus@linux.intel.com,
-	devicetree@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	pavel@ucw.cz,
-	phone-devel@vger.kernel.org,
-	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v3 25/25] media:i2c: imx258: Use v4l2_link_freq_to_bitmap helper
-Date: Wed,  3 Apr 2024 09:03:54 -0600
-Message-ID: <20240403150355.189229-26-git@luigi311.com>
-In-Reply-To: <20240403150355.189229-1-git@luigi311.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q+LnZsIa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B015DC433F1;
+	Wed,  3 Apr 2024 16:14:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712160895;
+	bh=Dw4TMcgMCYmhY8DkUmtF9XK+klTwM7RxE/GPJ5ycJF0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q+LnZsIa2JGGoV12cX3ZMFQhd29l75NesZeX4wzM5ZgtWKEXLDNztOOzWr/GFhev1
+	 tE1H+SaIbAdpnugrYIgh6WzbcOp6E++9hG5TeVmT08B589T+ncsXxX68JxxZ80XJIT
+	 qAym+sr7rBOxZWGcWmPQPZXd1+F+lodeNob5iXBbn2aLh3XHAY/Mc6nLnnN9RSmFWD
+	 dSocGzn7mou1RMW/gV5GCp3DPFDxCi4EO5Y9QU50YdMEu4XHD4Lll9+xBJBA4jurGO
+	 ocpL8tD168CUWyUqz7acBtK5wIm2oe/mOcVoypANl6/J4V6Fk0Q6RJpl0wVl8HiSA+
+	 fdh54vM0/5inA==
+Date: Wed, 3 Apr 2024 17:14:49 +0100
+From: Conor Dooley <conor@kernel.org>
+To: git@luigi311.com
+Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
+	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, sakari.ailus@linux.intel.com,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	pavel@ucw.cz, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 18/25] dt-bindings: media: imx258: Add alternate
+ compatible strings
+Message-ID: <20240403-vista-defendant-ebadbaa52059@spud>
 References: <20240403150355.189229-1-git@luigi311.com>
+ <20240403150355.189229-19-git@luigi311.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Id: personal@luigi311.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="dTboEyzG/5e2UTpE"
+Content-Disposition: inline
+In-Reply-To: <20240403150355.189229-19-git@luigi311.com>
 
-From: Luis Garcia <git@luigi311.com>
 
-Use the v4l2_link_freq_to_bitmap() helper to figure out which
-driver-supported link freq can be used on a given system.
+--dTboEyzG/5e2UTpE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Luis Garcia <git@luigi311.com>
----
- drivers/media/i2c/imx258.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+On Wed, Apr 03, 2024 at 09:03:47AM -0600, git@luigi311.com wrote:
+> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+>=20
+> There are a number of variants of the imx258 modules that can not
+> be differentiated at runtime, so add compatible strings for the
+> PDAF variant.
+>=20
+> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> Signed-off-by: Luis Garcia <git@luigi311.com>
+> ---
+>  .../devicetree/bindings/media/i2c/sony,imx258.yaml       | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml=
+ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+> index bee61a443b23..c978abc0cdb3 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+> @@ -13,11 +13,16 @@ description: |-
+>    IMX258 is a diagonal 5.867mm (Type 1/3.06) 13 Mega-pixel CMOS active p=
+ixel
+>    type stacked image sensor with a square pixel array of size 4208 x 312=
+0. It
+>    is programmable through I2C interface.  Image data is sent through MIPI
+> -  CSI-2.
+> +  CSI-2. The sensor exists in two different models, a standard variant
+> +  (IMX258) and a variant with phase detection autofocus (IMX258-PDAF).
+> +  The camera module does not expose the model through registers, so the
+> +  exact model needs to be specified.
+> =20
+>  properties:
+>    compatible:
+> -    const: sony,imx258
+> +    enum:
+> +      - sony,imx258
+> +      - sony,imx258-pdaf
 
-diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 4c117c4829f1..038f40a1f800 100644
---- a/drivers/media/i2c/imx258.c
-+++ b/drivers/media/i2c/imx258.c
-@@ -674,6 +674,7 @@ struct imx258 {
- 	/* Current mode */
- 	const struct imx258_mode *cur_mode;
- 
-+	unsigned long link_freq_bitmap;
- 	const struct imx258_link_freq_config *link_freq_configs;
- 	const s64 *link_freq_menu_items;
- 	unsigned int lane_mode_idx;
-@@ -1533,6 +1534,17 @@ static int imx258_probe(struct i2c_client *client)
- 		return ret;
- 	}
- 
-+	ret = v4l2_link_freq_to_bitmap(&client->dev,
-+				ep.link_frequencies,
-+				ep.nr_of_link_frequencies,
-+				imx258->link_freq_menu_items,
-+				ARRAY_SIZE(link_freq_menu_items_19_2),
-+				&imx258->link_freq_bitmap);
-+	if (ret) {
-+		dev_err(&client->dev, "Link frequency not supported\n");
-+		goto error_endpoint_free;
-+	}
-+
- 	/* Get number of data lanes */
- 	switch (ep.bus.mipi_csi2.num_data_lanes) {
- 	case 2:
--- 
-2.42.0
+Does the pdaf variant support all of the features/is it register
+compatible with the regular variant? If it is, the regular variant
+should be a fallback compatible.
 
+Cheers,
+Conor.
+
+--dTboEyzG/5e2UTpE
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZg2AeQAKCRB4tDGHoIJi
+0g9GAP9MN2G2glo0Nhr4UByr3u4eG2VrUcxCMe2B4Uzd1ErwTQEA7j5t7hgUL0mU
+pr1/uez8k5GMNQNEpwMErPYIlusOjw8=
+=KKOZ
+-----END PGP SIGNATURE-----
+
+--dTboEyzG/5e2UTpE--
