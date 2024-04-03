@@ -1,40 +1,40 @@
-Received: from mail-108-mta35.mxroute.com (mail-108-mta35.mxroute.com [136.175.108.35])
+Received: from mail-108-mta128.mxroute.com (mail-108-mta128.mxroute.com [136.175.108.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BE814A088
-	for <phone-devel@vger.kernel.org>; Wed,  3 Apr 2024 15:07:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A963514A637
+	for <phone-devel@vger.kernel.org>; Wed,  3 Apr 2024 15:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712156849; cv=none; b=dQrmLmZGdvmU2bSCIxw4xScz0kYRhIJN3SoZ0L4WpWW/13DXvH+WhcE9k4X5hyVdMo/aIB+UwkkA84hXmOFNMk69ibDMkBPXuqvFZn5hU05fSGQwTCwcsGenPrBmqQ/DjoY4tXOyuHJp5NzuAD+/4FjQb6e9c8dUcBXmjhJUMF0=
+	t=1712156870; cv=none; b=DapNm1ESMlxVO+qRa7tEgKJYllcYO2z5In4GvQXaoG/jtiQK9Mp1OS0SZuIG8beDV9MNy5eK4BUEma3FfkUMEDx5eipLt++1rY3XOl/lbJWRUt8J+C6Wjxoy6KyFPbZkWGZIuFjrL2YQmC+lPZ6zd2HWYAz9FY4UF8GoRN01f8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712156849; c=relaxed/simple;
-	bh=3Laptewi9idxYAPvCcw03AREMUZKkgAIxYIhuwWtPu0=;
+	s=arc-20240116; t=1712156870; c=relaxed/simple;
+	bh=bRAYH9QE/cuXAqF5e9BZTvXHCvtrXC8TfkxqG8fmEiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnahe8CEHRYluLCanePPuSUKrRDe1q5xqAODhno66Tpr/juSFVXsN6x3DhrO0o7q8hyqeVCHL+hllmKiENdfXCHcd0cTcSn8xG/b2FgyLBPKTuI09QI2fYgRM/btbjIHy/2OxoYQNbpyXy9dMJMLFg5v96lLQ20UsS3elR4k50U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=PIxmbL3D; arc=none smtp.client-ip=136.175.108.35
+	 MIME-Version; b=rJdO0YIkhChMygkUznivn0zt7vMJpWKadA1LE2Cqc6nbLQCAIe6+HvXq4KMi2lkknVzNot0jHu+R8xiQzLAjURvCkUTq05ViFQQO04wDmDlBOQFBeDZvWfEhwMdRMeo4R4yRJyBZwK5EG3QlqmDEMfMDgV0gT7WeyLJ8rGXWnHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=QNffR63+; arc=none smtp.client-ip=136.175.108.128
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="PIxmbL3D"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="QNffR63+"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta35.mxroute.com (ZoneMTA) with ESMTPSA id 18ea4800b1a0003bea.012
+ by mail-108-mta128.mxroute.com (ZoneMTA) with ESMTPSA id 18ea48023580003bea.012
  for <phone-devel@vger.kernel.org>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 03 Apr 2024 15:07:18 +0000
-X-Zone-Loop: f963a248e571e256eb335524d5d221ba8f7182bbbf1a
+ Wed, 03 Apr 2024 15:07:24 +0000
+X-Zone-Loop: e0394d8cc5fb1e6552e9262d1fa11273a3adde934536
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=OQd9ziTB3dSRjnJwf4kFBkxYgfp1dPLFgv0kI44LNjs=; b=PIxmbL3DJYG3DZ5zY61t55Hna6
-	3XyBgAtLjMvXuC4dPrLLTfbidR0eDGehPJ09CyohkU3/RGeKLI6jYbsS0koQACOFUF9wR+YrqHkBA
-	NKHFfCfyAtLo+UCz11lU0cuieftmGJwJnIZiqAZjO7Q+xo7KNW8K5acHp6dMT+NWGVqQKw4rpudP0
-	o7H/jlP1eDK9rClRel/7Cc6vhChiDowxCr5wDdSqzJrBkNCa8hwuOiALWjlh4wUPfY+3IiLMhN/9u
-	VK+fxTDLclC7l1YUwsnYPU5EkSx98GBNYRozVm/IA4QRmSG5w1fYJ60CpVzw17/w1LjPrvPLmnaFF
-	d2HtUckQ==;
+	bh=jcEy6JTsTNcC5WMNVRo7tFLU+IzlSrhTpLw2CHMaeGs=; b=QNffR63+U9KV4Bp06mhYIBBMoU
+	etwMwn66lpT+pXdj1Lr9Wyf3gLYdoHTjB3s1oKEGNFUsUBSc9DFEx0X+niq34BMZ+wX9rilbhcU56
+	IKDtjlFja0E+uOoZbZsNXjFB8gNxy7D5VGbRBlajxT1gbkqU/dA2cZAmP+ooKUIY8jn3MaH7E3R6N
+	LduoEiXAFT8jXUd02x6vI2PuR9FPNl6t+3hCr/L9Byy1cPTNHnwdIUABLhjx00y3EGobv7sgOfVw+
+	eiZqwus+B2+gJbnbqiz0e4yRjQaxlA40K2ssOLbvUzxOlb7obxFpWaeKzwr3Kfv7Ac4FNZXkbMoD2
+	/kY13xWQ==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -55,9 +55,9 @@ Cc: dave.stevenson@raspberrypi.com,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
 	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v3 01/25] media: i2c: imx258: Remove unused defines
-Date: Wed,  3 Apr 2024 09:03:30 -0600
-Message-ID: <20240403150355.189229-2-git@luigi311.com>
+Subject: [PATCH v3 04/25] media: i2c: imx258: Remove redundant I2C writes.
+Date: Wed,  3 Apr 2024 09:03:33 -0600
+Message-ID: <20240403150355.189229-5-git@luigi311.com>
 In-Reply-To: <20240403150355.189229-1-git@luigi311.com>
 References: <20240403150355.189229-1-git@luigi311.com>
 Precedence: bulk
@@ -71,7 +71,8 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-The IMX258_FLL_* defines are unused. Remove them.
+Registers 0x0202 and 0x0203 are written via the control handler
+for V4L2_CID_EXPOSURE, so are not needed from the mode lists.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
@@ -81,22 +82,36 @@ Signed-off-by: Luis Garcia <git@luigi311.com>
  1 file changed, 6 deletions(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index a577afb530b7..2dbafd21dd70 100644
+index 0ae4371940ca..df7ed4716762 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -29,12 +29,6 @@
- #define IMX258_VTS_30FPS_VGA		0x034c
- #define IMX258_VTS_MAX			0xffff
- 
--/*Frame Length Line*/
--#define IMX258_FLL_MIN			0x08a6
--#define IMX258_FLL_MAX			0xffff
--#define IMX258_FLL_STEP			1
--#define IMX258_FLL_DEFAULT		0x0c98
--
- /* HBLANK control - read only */
- #define IMX258_PPL_DEFAULT		5352
- 
+@@ -237,8 +237,6 @@ static const struct imx258_reg mode_4208x3120_regs[] = {
+ 	{ 0x034E, 0x0C },
+ 	{ 0x034F, 0x30 },
+ 	{ 0x0350, 0x01 },
+-	{ 0x0202, 0x0C },
+-	{ 0x0203, 0x46 },
+ 	{ 0x0204, 0x00 },
+ 	{ 0x0205, 0x00 },
+ 	{ 0x020E, 0x01 },
+@@ -356,8 +354,6 @@ static const struct imx258_reg mode_2104_1560_regs[] = {
+ 	{ 0x034E, 0x06 },
+ 	{ 0x034F, 0x18 },
+ 	{ 0x0350, 0x01 },
+-	{ 0x0202, 0x06 },
+-	{ 0x0203, 0x2E },
+ 	{ 0x0204, 0x00 },
+ 	{ 0x0205, 0x00 },
+ 	{ 0x020E, 0x01 },
+@@ -475,8 +471,6 @@ static const struct imx258_reg mode_1048_780_regs[] = {
+ 	{ 0x034E, 0x03 },
+ 	{ 0x034F, 0x0C },
+ 	{ 0x0350, 0x01 },
+-	{ 0x0202, 0x03 },
+-	{ 0x0203, 0x42 },
+ 	{ 0x0204, 0x00 },
+ 	{ 0x0205, 0x00 },
+ 	{ 0x020E, 0x01 },
 -- 
 2.42.0
 
