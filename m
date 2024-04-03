@@ -1,40 +1,40 @@
-Received: from mail-108-mta62.mxroute.com (mail-108-mta62.mxroute.com [136.175.108.62])
+Received: from mail-108-mta107.mxroute.com (mail-108-mta107.mxroute.com [136.175.108.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FC4152E15
-	for <phone-devel@vger.kernel.org>; Wed,  3 Apr 2024 15:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD6F14A62E
+	for <phone-devel@vger.kernel.org>; Wed,  3 Apr 2024 15:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712156966; cv=none; b=R0pv2Tilu9g9YbKs7OySO+VnaTg7ffnzbyOloLE1oAye43UoRyb3Bar4IMe8C8STc+S58pWUGeGr9gfdFpyVcjRwbACjYGVAXe3hBxhO4tBgRQJRjAokz0aSFvXSmEGgCbCQnm7yvMRxJHykVFUNHYAb1aMxkTIHWkCpJxH6+hs=
+	t=1712157163; cv=none; b=swMA0L+xRKBroqY6+nGoaLW0rsX3mx3t2knEYXDjlOp/Ecp/uGmrVYIou2SzWbQRMk7uNmSRJ7JlxRBVtygv5iFnqv/PmMurEvty5MLz5pJpgHj/vZeujDajRUjACCpvhMgC3gwpUd5/3SbE3w0WNXqNydl86V4J7uQLWJFy7Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712156966; c=relaxed/simple;
-	bh=X8l0Qu5ct8EeMly/eTF0Crxww6UHAs2wZ0Q0VRWgXwg=;
+	s=arc-20240116; t=1712157163; c=relaxed/simple;
+	bh=p/2CjxpgGSHmngntZ4G3Mf8HbIeSWUTf08sZ3fpDyaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mn9AAvmXJkfSeeKXZR88VZ0dbG+rX6vLkwiV+T7EMFzXwFexi2lUkVWsuCJqMS7bJp5q1Mx0X/l0EAJwrT19UX61VNQTRH6YjDA2IwmbaGjZIGMbPcDyvpO6y//6OeI94vc6drNfQ0pXFCPnSDI0fNrM7sCXv9bDuEgGxgRa9EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=Mx8JedB6; arc=none smtp.client-ip=136.175.108.62
+	 MIME-Version:Content-Type; b=HMt0OhGB4FHkngRE1cYcKsUpX/feEC3PasAryiSh6tb5l8TA5j9IyKDLLRWBbqNBpz9wumW8fDC9rTVhceDSPupO5yvxczMwIqDXwyL3eDbbRFnwcfBOXFi1Cwte10obSQVuqcdOFEAZ7mt3e5I8jwi5CQxLZS42IbxuamSXU+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=nriGqUvR; arc=none smtp.client-ip=136.175.108.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="Mx8JedB6"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="nriGqUvR"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta62.mxroute.com (ZoneMTA) with ESMTPSA id 18ea480c0610003bea.012
+ by mail-108-mta107.mxroute.com (ZoneMTA) with ESMTPSA id 18ea48019f50003bea.012
  for <phone-devel@vger.kernel.org>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 03 Apr 2024 15:08:05 +0000
-X-Zone-Loop: ecd3a19bef56d2a2f73691e0d45ea6dfbca78f65bac1
+ Wed, 03 Apr 2024 15:07:22 +0000
+X-Zone-Loop: 2e5266e378b72c8ad9f2d2b1380def589fecd5653068
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=MUtTZIUft2Qwd/Ss8DLnay+tIu1VwSFMmHTaDB0Zatw=; b=Mx8JedB6wozdYbTdvWIQzPOy0e
-	w6Plus8ggU9/koj1uwXYIszoXv64qrgqvk15H0r5BAj68b2y9h8r7PKgGwN49Uwh/5s/BBDlRLma8
-	KcbV3u6V0bVVYd3wDdorlrd+51wNDg0LSKIknwqv70jgmpm9mj9Zih9E588IoQZLVADJS5dxd3C+W
-	//o2aCL84V2i2etbv2S/PSG9dFlr/y4qKsnwKj3OV7tfSjm2b3VXkFGfQAN/qkzwXu35ITEvkOArA
-	jAZgVg2H08N+AxO1s8jk/trOSANpG4aJecgwm1Ia1b6jzOUHvbo3JxHOhoFjg+HeFsjAqEDxkZqCS
-	VQtQv09g==;
+	bh=oq7lZ8HrTywGSq7kzULa57nC/5tfOLJ5od2jKoW3WyA=; b=nriGqUvR9LYv5q30AgYiAgjDt6
+	WBe4xF4oMnA5j02acCzFf1Le0JHnN9VAhVAeB5vZ66+yvz5Nm3jQAXwk7M1PjWv8O4dL2L6U3ELiG
+	xr5y312IO1ET62knHT9jiLnJf4Gyfi6vG/LiwXXzd6rBz+agfsGed6GJfMMdC+nBRiQG2qPkuPUgg
+	YFIsH3XOy3852hlPvXB9j8GoVuM/k90SmvMwPLY7dRWNr/m/wuqk7HU8/wHhfHHZrQVscL+8L0gv2
+	uKLtnSltZoBt8O0mS+VIl9tIoo+4+52gSxYPrgq086cvik/gqh7VpsJSPs7DN1M/jSl5jY881m0cR
+	4+v0Er4Q==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -54,11 +54,10 @@ Cc: dave.stevenson@raspberrypi.com,
 	linux-kernel@vger.kernel.org,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
-	Luis Garcia <git@luigi311.com>,
-	Ondrej Jirman <megi@xff.cz>
-Subject: [PATCH v3 23/25] drivers: media: i2c: imx258: Add support for powerdown gpio
-Date: Wed,  3 Apr 2024 09:03:52 -0600
-Message-ID: <20240403150355.189229-24-git@luigi311.com>
+	Luis Garcia <git@luigi311.com>
+Subject: [PATCH v3 02/25] media: i2c: imx258: Make image geometry meet sensor requirements
+Date: Wed,  3 Apr 2024 09:03:31 -0600
+Message-ID: <20240403150355.189229-3-git@luigi311.com>
 In-Reply-To: <20240403150355.189229-1-git@luigi311.com>
 References: <20240403150355.189229-1-git@luigi311.com>
 Precedence: bulk
@@ -67,72 +66,154 @@ List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Authenticated-Id: personal@luigi311.com
 
-From: Luis Garcia <git@luigi311.com>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-On some boards powerdown signal needs to be deasserted for this
-sensor to be enabled.
+The output image is defined as being 4208x3118 pixels in size.
+Y_ADD_STA register was set to 0, and Y_ADD_END to 3118, giving
+3119 lines total.
 
-Signed-off-by: Ondrej Jirman <megi@xff.cz>
+The datasheet lists a requirement for Y_ADD_STA to be a multiple
+of a power of 2 depending on binning/scaling mode (2 for full pixel,
+4 for x2-bin/scale, 8 for (x2-bin)+(x2-subsample) or x4-bin, or 16
+for (x4-bin)+(x2-subsample)).
+(Y_ADD_END – Y_ADD_STA + 1) also has to be a similar power of 2.
+
+The current configuration for the full res modes breaks that second
+requirement, and we can't increase Y_ADD_STA to 1 to retain exactly
+the same field of view as that then breaks the first requirement.
+For the binned modes, they are worse off as 3118 is not a multiple of
+4.
+
+Increase the main mode to 4208x3120 so that it is the same FOV as the
+binned modes, with Y_ADD_STA at 0.
+Fix Y_ADD_STA and Y_ADD_END for the binned modes so that they meet the
+sensor requirements.
+
+This does change the Bayer order as the default configuration is for
+H&V flips to be enabled, so readout is from Y_STA_END to Y_ADD_STA,
+and this patch has changed Y_STA_END.
+
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
 ---
- drivers/media/i2c/imx258.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/media/i2c/imx258.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 30352c33f63c..163f04f6f954 100644
+index 2dbafd21dd70..4a7048d834c6 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -679,6 +679,8 @@ struct imx258 {
- 	unsigned int lane_mode_idx;
- 	unsigned int csi2_flags;
+@@ -111,7 +111,7 @@ struct imx258_mode {
+ 	struct imx258_reg_list reg_list;
+ };
  
-+	struct gpio_desc *powerdown_gpio;
-+
- 	/*
- 	 * Mutex for serialized access:
- 	 * Protect sensor module set pad format and start/stop streaming safely.
-@@ -1213,6 +1215,8 @@ static int imx258_power_on(struct device *dev)
- 	struct imx258 *imx258 = to_imx258(sd);
- 	int ret;
+-/* 4208x3118 needs 1267Mbps/lane, 4 lanes */
++/* 4208x3120 needs 1267Mbps/lane, 4 lanes */
+ static const struct imx258_reg mipi_data_rate_1267mbps[] = {
+ 	{ 0x0301, 0x05 },
+ 	{ 0x0303, 0x02 },
+@@ -148,7 +148,7 @@ static const struct imx258_reg mipi_data_rate_640mbps[] = {
+ 	{ 0x0823, 0x00 },
+ };
  
-+	gpiod_set_value_cansleep(imx258->powerdown_gpio, 0);
-+
- 	ret = regulator_bulk_enable(IMX258_NUM_SUPPLIES,
- 				    imx258->supplies);
- 	if (ret) {
-@@ -1224,6 +1228,7 @@ static int imx258_power_on(struct device *dev)
- 	ret = clk_prepare_enable(imx258->clk);
- 	if (ret) {
- 		dev_err(dev, "failed to enable clock\n");
-+		gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
- 		regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
- 	}
+-static const struct imx258_reg mode_4208x3118_regs[] = {
++static const struct imx258_reg mode_4208x3120_regs[] = {
+ 	{ 0x0136, 0x13 },
+ 	{ 0x0137, 0x33 },
+ 	{ 0x3051, 0x00 },
+@@ -210,7 +210,7 @@ static const struct imx258_reg mode_4208x3118_regs[] = {
+ 	{ 0x0348, 0x10 },
+ 	{ 0x0349, 0x6F },
+ 	{ 0x034A, 0x0C },
+-	{ 0x034B, 0x2E },
++	{ 0x034B, 0x2F },
+ 	{ 0x0381, 0x01 },
+ 	{ 0x0383, 0x01 },
+ 	{ 0x0385, 0x01 },
+@@ -329,7 +329,7 @@ static const struct imx258_reg mode_2104_1560_regs[] = {
+ 	{ 0x0348, 0x10 },
+ 	{ 0x0349, 0x6F },
+ 	{ 0x034A, 0x0C },
+-	{ 0x034B, 0x2E },
++	{ 0x034B, 0x2F },
+ 	{ 0x0381, 0x01 },
+ 	{ 0x0383, 0x01 },
+ 	{ 0x0385, 0x01 },
+@@ -448,7 +448,7 @@ static const struct imx258_reg mode_1048_780_regs[] = {
+ 	{ 0x0348, 0x10 },
+ 	{ 0x0349, 0x6F },
+ 	{ 0x034A, 0x0C },
+-	{ 0x034B, 0x2E },
++	{ 0x034B, 0x2F },
+ 	{ 0x0381, 0x01 },
+ 	{ 0x0383, 0x01 },
+ 	{ 0x0385, 0x01 },
+@@ -562,12 +562,12 @@ static const struct imx258_link_freq_config link_freq_configs[] = {
+ static const struct imx258_mode supported_modes[] = {
+ 	{
+ 		.width = 4208,
+-		.height = 3118,
++		.height = 3120,
+ 		.vts_def = IMX258_VTS_30FPS,
+ 		.vts_min = IMX258_VTS_30FPS,
+ 		.reg_list = {
+-			.num_of_regs = ARRAY_SIZE(mode_4208x3118_regs),
+-			.regs = mode_4208x3118_regs,
++			.num_of_regs = ARRAY_SIZE(mode_4208x3120_regs),
++			.regs = mode_4208x3120_regs,
+ 		},
+ 		.link_freq_index = IMX258_LINK_FREQ_1267MBPS,
+ 	},
+@@ -707,7 +707,7 @@ static int imx258_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+ 	/* Initialize try_fmt */
+ 	try_fmt->width = supported_modes[0].width;
+ 	try_fmt->height = supported_modes[0].height;
+-	try_fmt->code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	try_fmt->code = MEDIA_BUS_FMT_SBGGR10_1X10;
+ 	try_fmt->field = V4L2_FIELD_NONE;
  
-@@ -1238,6 +1243,8 @@ static int imx258_power_off(struct device *dev)
- 	clk_disable_unprepare(imx258->clk);
- 	regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
+ 	return 0;
+@@ -819,7 +819,7 @@ static int imx258_enum_mbus_code(struct v4l2_subdev *sd,
+ 	if (code->index > 0)
+ 		return -EINVAL;
  
-+	gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
-+
+-	code->code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	code->code = MEDIA_BUS_FMT_SBGGR10_1X10;
+ 
  	return 0;
  }
+@@ -831,7 +831,7 @@ static int imx258_enum_frame_size(struct v4l2_subdev *sd,
+ 	if (fse->index >= ARRAY_SIZE(supported_modes))
+ 		return -EINVAL;
  
-@@ -1541,6 +1548,12 @@ static int imx258_probe(struct i2c_client *client)
- 	if (!imx258->variant_cfg)
- 		imx258->variant_cfg = &imx258_cfg;
+-	if (fse->code != MEDIA_BUS_FMT_SGRBG10_1X10)
++	if (fse->code != MEDIA_BUS_FMT_SBGGR10_1X10)
+ 		return -EINVAL;
  
-+	/* request optional power down pin */
-+	imx258->powerdown_gpio = devm_gpiod_get_optional(&client->dev, "powerdown",
-+						    GPIOD_OUT_HIGH);
-+	if (IS_ERR(imx258->powerdown_gpio))
-+		return PTR_ERR(imx258->powerdown_gpio);
-+
- 	/* Initialize subdev */
- 	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
+ 	fse->min_width = supported_modes[fse->index].width;
+@@ -847,7 +847,7 @@ static void imx258_update_pad_format(const struct imx258_mode *mode,
+ {
+ 	fmt->format.width = mode->width;
+ 	fmt->format.height = mode->height;
+-	fmt->format.code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	fmt->format.code = MEDIA_BUS_FMT_SBGGR10_1X10;
+ 	fmt->format.field = V4L2_FIELD_NONE;
+ }
  
+@@ -894,7 +894,7 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
+ 	mutex_lock(&imx258->mutex);
+ 
+ 	/* Only one raw bayer(GBRG) order is supported */
+-	fmt->format.code = MEDIA_BUS_FMT_SGRBG10_1X10;
++	fmt->format.code = MEDIA_BUS_FMT_SBGGR10_1X10;
+ 
+ 	mode = v4l2_find_nearest_size(supported_modes,
+ 		ARRAY_SIZE(supported_modes), width, height,
 -- 
 2.42.0
 
