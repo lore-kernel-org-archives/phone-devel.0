@@ -1,40 +1,40 @@
-Received: from mail-108-mta22.mxroute.com (mail-108-mta22.mxroute.com [136.175.108.22])
+Received: from mail-108-mta216.mxroute.com (mail-108-mta216.mxroute.com [136.175.108.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F7B73506
-	for <phone-devel@vger.kernel.org>; Wed,  3 Apr 2024 15:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BA814A0A4
+	for <phone-devel@vger.kernel.org>; Wed,  3 Apr 2024 15:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712157238; cv=none; b=PS709eXvBme4WKgGd7qtLetzYaBiRFmtlQFKuKMoVz0d4PtIU+u91Z0Eg3YgB+qTl+04/DVLfwRDsoLY+x6832xf6xhw8qoIypZkKuWC1Z3gO6/pR70swM6EAiATROzAkmyOBPO36/EaTXEWH0RCt9pYAYOBwdD8QUwXzdejaQk=
+	t=1712157248; cv=none; b=fKkCGpCcRYtd4vTumcb6eT/Cxm/FB7cLmZquei7D02qL1EXB52BD2zHVz2f4ZzpAtKSyToLX9iwOcTVXTYOWzZp/a8kGH41eeudyMk+mlOx8VtiJ0eE2kl/5QpjOYmNuOb0uP2mtfSCnBpB0wtfEvQ2DcT/rYiXMQoeLKDd8pvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712157238; c=relaxed/simple;
-	bh=YP2YU+q50j+CbuHVFQ7Q2sHtBliifq6fjUJyisehTWE=;
+	s=arc-20240116; t=1712157248; c=relaxed/simple;
+	bh=orKRL9k3h4MQbuG4dRP6H2viAfkBXdURmtZNsy+EARg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S7dV/sk/cREQsQQ7gPQWMO2aCvK/9pl+zxUdYMyPvvoLk309CdQ1Et9MUIlJqJe4lxm1HMXNiYIEa048O7xcqjsVkbT4Qd6D9sa9yOsFNFGnaq8cdU7WPjdfnSdF0ookjIjF5wHpuiwl1Td+uSiQqp8X0oqCgUN5KdwQ6c1qK6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=nSDBw2o8; arc=none smtp.client-ip=136.175.108.22
+	 MIME-Version; b=BmkREsps4x5mwTgtUIF6PDQF3TJKqAi57owN5h3PEbH0oJYGBubKHwLbrweRo5pAwrhPqG3Rs5ud4RYHaVop/HHKHp+O35Ksl51CT7b6hyRXv/Z7YKqybIa5EkqU11VRhUChPJwr7qvuWehQwFvqsQd9C/14Vf7/4F8hRXXKrEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=yhQ0Igzq; arc=none smtp.client-ip=136.175.108.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="nSDBw2o8"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="yhQ0Igzq"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta22.mxroute.com (ZoneMTA) with ESMTPSA id 18ea48075bf0003bea.012
+ by mail-108-mta216.mxroute.com (ZoneMTA) with ESMTPSA id 18ea4807e200003bea.012
  for <phone-devel@vger.kernel.org>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 03 Apr 2024 15:07:45 +0000
-X-Zone-Loop: 05702a810475c28a8e865240e39e1b498a1b3ae70703
+ Wed, 03 Apr 2024 15:07:48 +0000
+X-Zone-Loop: 4f0db57897fc60b08a48e0cfd10ff25d3429dc3a0e48
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=vV24gh/XiUknGj+/6PBHcigmW60OQcUrTVgV2ZFCgAA=; b=nSDBw2o8qZiHtzGttu4lhL+mzm
-	xUg7GS6gF74J/O4inDzLvqSZVcHM+gS6RUDioKpvYL9KIpzjVOUrPr/ovLyfhAeFNNgmR/0JcBtK0
-	WAny9B81Z4k38CuAbcmgyIzNKyu3qskRQIGLCkjYWq39VydY6qUrSczzo8JWAYX0VcB1soPBgLgY5
-	cVXc7Kqe01oRfNH1RuBKt3wJDWhpz1tQh1CJPhijbnf9ou6KPZE7R3tMjIsb76sf6fvgNqrNhnUgk
-	uOMN7iFhB+/2UaZ3dXglEGLlwiXIz0ATaljweq/FU247lCLZqFWKlN3eHTnCvUHb2llEJ5q2HNqGl
-	ebP4VDYA==;
+	bh=um6Hj3+66bt6kjL5BKukA1fuuXmDo6jHd9WAJeM/FZM=; b=yhQ0IgzqM+a20jFZcASsvQ5ncx
+	EMiRWEP5cGixlUh+70Z6ymKyvMOMtTlpsNHm+OQ3DSSKkvCbsKbP2JnmUvXeAQkiMf2TlesAkd6/h
+	mZdcpPDFWE5Jh67T8CoeNe5WB4/jVIPNa1VgLtUHmZt48pVB3WDMntqgH/Q99lFzOrZXTwAZ6cbqH
+	+U0q18W+/c04ecmR8UnwHr2Lrq1IH3NDTcTWbEzsf1v0ugvxYUf6TJxzas9wfClobp9mwQqFbjzmY
+	HlOld8pueeoRTacIuXL10sIwK7AEk0WpjaDYYPqrdmQjIZZQSCi+aCJqaXmxC6vXq5u6ZhEPSAvl5
+	nPKQwLMQ==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -55,9 +55,9 @@ Cc: dave.stevenson@raspberrypi.com,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
 	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v3 14/25] media: i2c: imx258: Issue reset before starting streaming
-Date: Wed,  3 Apr 2024 09:03:43 -0600
-Message-ID: <20240403150355.189229-15-git@luigi311.com>
+Subject: [PATCH v3 15/25] media: i2c: imx258: Set pixel_rate range to the same as the value
+Date: Wed,  3 Apr 2024 09:03:44 -0600
+Message-ID: <20240403150355.189229-16-git@luigi311.com>
 In-Reply-To: <20240403150355.189229-1-git@luigi311.com>
 References: <20240403150355.189229-1-git@luigi311.com>
 Precedence: bulk
@@ -71,46 +71,64 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-Whilst not documented, register 0x0103 bit 0 is the soft
-reset for the sensor, so send it before trying to configure
-the sensor.
+With a read only control there is limited point in advertising
+a minimum and maximum for the control, so change to set the
+value, min, and max all to the selected pixel rate.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
 ---
- drivers/media/i2c/imx258.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/media/i2c/imx258.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 5a5bf2b25bdf..c242e318be11 100644
+index c242e318be11..7d434bc12c6a 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -20,6 +20,8 @@
- #define IMX258_MODE_STANDBY		0x00
- #define IMX258_MODE_STREAMING		0x01
+@@ -971,7 +971,8 @@ static int imx258_set_pad_format(struct v4l2_subdev *sd,
  
-+#define IMX258_REG_RESET		0x0103
-+
- /* Chip ID */
- #define IMX258_REG_CHIP_ID		0x0016
- #define IMX258_CHIP_ID			0x0258
-@@ -1052,6 +1054,16 @@ static int imx258_start_streaming(struct imx258 *imx258)
- 	const struct imx258_link_freq_config *link_freq_cfg;
- 	int ret, link_freq_index;
+ 		link_freq = imx258->link_freq_menu_items[mode->link_freq_index];
+ 		pixel_rate = link_freq_to_pixel_rate(link_freq, imx258->nlanes);
+-		__v4l2_ctrl_s_ctrl_int64(imx258->pixel_rate, pixel_rate);
++		__v4l2_ctrl_modify_range(imx258->pixel_rate, pixel_rate,
++					 pixel_rate, 1, pixel_rate);
+ 		/* Update limits and set FPS to default */
+ 		vblank_def = imx258->cur_mode->vts_def -
+ 			     imx258->cur_mode->height;
+@@ -1262,8 +1263,7 @@ static int imx258_init_controls(struct imx258 *imx258)
+ 	struct v4l2_ctrl *vflip, *hflip;
+ 	s64 vblank_def;
+ 	s64 vblank_min;
+-	s64 pixel_rate_min;
+-	s64 pixel_rate_max;
++	s64 pixel_rate;
+ 	int ret;
  
-+	ret = imx258_write_reg(imx258, IMX258_REG_RESET, IMX258_REG_VALUE_08BIT,
-+			       0x01);
-+	if (ret) {
-+		dev_err(&client->dev, "%s failed to reset sensor\n", __func__);
-+		return ret;
-+	}
-+
-+	/* 12ms is required from poweron to standby */
-+	fsleep(12000);
-+
- 	/* Setup PLL */
- 	link_freq_index = imx258->cur_mode->link_freq_index;
- 	link_freq_cfg = &imx258->link_freq_configs[link_freq_index];
+ 	ctrl_hdlr = &imx258->ctrl_handler;
+@@ -1294,18 +1294,13 @@ static int imx258_init_controls(struct imx258 *imx258)
+ 	if (vflip)
+ 		vflip->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+ 
+-	pixel_rate_max =
+-		link_freq_to_pixel_rate(imx258->link_freq_menu_items[0],
+-					imx258->nlanes);
+-	pixel_rate_min =
+-		link_freq_to_pixel_rate(imx258->link_freq_menu_items[1],
+-					imx258->nlanes);
++	pixel_rate = link_freq_to_pixel_rate(imx258->link_freq_menu_items[0],
++					     imx258->nlanes);
+ 	/* By default, PIXEL_RATE is read only */
+ 	imx258->pixel_rate = v4l2_ctrl_new_std(ctrl_hdlr, &imx258_ctrl_ops,
+ 				V4L2_CID_PIXEL_RATE,
+-				pixel_rate_min, pixel_rate_max,
+-				1, pixel_rate_max);
+-
++				pixel_rate, pixel_rate,
++				1, pixel_rate);
+ 
+ 	vblank_def = imx258->cur_mode->vts_def - imx258->cur_mode->height;
+ 	vblank_min = imx258->cur_mode->vts_min - imx258->cur_mode->height;
 -- 
 2.42.0
 
