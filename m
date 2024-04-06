@@ -1,94 +1,92 @@
-Received: from mail-108-mta224.mxroute.com (mail-108-mta224.mxroute.com [136.175.108.224])
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A429922618
-	for <phone-devel@vger.kernel.org>; Sat,  6 Apr 2024 06:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56B139AF3;
+	Sat,  6 Apr 2024 15:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712385423; cv=none; b=eAZaUK4jG4NgLBV6uzIDfkKMVl8ujPcPXrNGgynUYnP3N5Tb0mRKw1WWV2zO7flO6oUYqeV1obQqxaCfoGwBooB47FRR5dTTBNpQrJnLv9QmSUJno6b63M1Ax+cb9r82CXh38TOmllQ3KOTLXZMPt399BioUYKsL/+2zanApvXo=
+	t=1712417471; cv=none; b=jStI8CYCHH4F570s0din47eDzr9bJ/NN13syg3UMmtG8CP4/Az4vRMFAjZkF8GwJTB+B6Ga+F5tPXiRIr2EIrpv6XgnO/HJdzgeK7/OYr8fpVMXBVOsAQnFi7bc/oz17ixlw9qs6K3IAooPIaOCPany4XpRyVFxBl9Gke+OIclw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712385423; c=relaxed/simple;
-	bh=OxraREhf6GRED2LQephjdnm0ObJkCkvoK147D6T36ys=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f6UMe6G8yODOUM9Xx7cpLTLJ1xyQi3OVE1AZZHg4EmxKR6ezIdb/CTvsbeTgDEETGD5ITtIfpVxYlYd+kLH7PUJcp1EaBAHqsvGnlas61iVz2XP+wk1V9EJJOiPjT+wDBShOLxJjyxVDaYjhsrLTxMXDzZdm4hjsXQdZjccj6Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=WPhbq6ZE; arc=none smtp.client-ip=136.175.108.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+	s=arc-20240116; t=1712417471; c=relaxed/simple;
+	bh=wIE3eE1Fk9/n0HCYeNICyeELqzEI99x9rlfFVkFZ/Uo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AuiTBFsll/cSM+UENPf/zTAKWVzddbbwVWUxvxP8G6pa3CGxrNi745eSHHMMm5sMWz34HOncoQx+NS9Kg7BGqpEvwdumTzZKBLTjXjjApnjYjW11TMiaN/sNgYpJ1ldJyaujeTM98fg6Sfo4rnQPG4VyO3Gf943krDFGfhC2NrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=jgLHFDZ0; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="WPhbq6ZE"
-Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta224.mxroute.com (ZoneMTA) with ESMTPSA id 18eb21fcaf10003bea.012
- for <phone-devel@vger.kernel.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sat, 06 Apr 2024 06:36:51 +0000
-X-Zone-Loop: 8c7aa9c7a965e2901847e5ffdae07e9a131466c395c5
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=P6oz8jLcfNyvGaOUeOoCwlqC8Ij6mtZ6/gKuz1gexug=; b=WPhbq6ZEa+mQTnijWaBY6xxs/H
-	cfHYUnpSRs8fOhOb/O4yJffkApW8GbdCsZ9fgpCJBUMa3pysrcREVULO1R/UkyRqIiPc9mObnfXPv
-	YmP7o/tAqB0ayOqkRLxs5fQtXrUia6yJroEUCCB+ckUFpQp8RHDB0YyE7tXXD9rJenqQZDa30Cqkj
-	soLpFl0b5rnHDmjMNbaU+mvK6HOXuMsdAhCIuIT3xhAYVnT6i+9TrIfSP7p+3tjqrOm0eD3oFmOvb
-	FE0z2dqpWXi9w++3zacDwlhzLX9akXx4T0C5yl6+Qkahp/SWJ/+9Q9RvAIcOuf71zbchDNERWMcas
-	kIvWVcdg==;
-Message-ID: <91621b30-dc6f-49cb-878c-96d39e38d994@luigi311.com>
-Date: Sat, 6 Apr 2024 00:36:47 -0600
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="jgLHFDZ0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1712417466; bh=wIE3eE1Fk9/n0HCYeNICyeELqzEI99x9rlfFVkFZ/Uo=;
+	h=From:Date:Subject:To:Cc;
+	b=jgLHFDZ0v/h6G39RDRJsMzEVQudSsxR8pzQlS1+/etx8Svs4qX3bhvQg/Q+Mgbb31
+	 A+DRe9fpKJaujR2nm53kB5UMkx6NaCYFIX+I7nRao0U8XEHpd08EYOtqgB0ZloaUc6
+	 e2pXiUse6B+ssfwBntVZ2vEtaGM+AI9RUCxEXaZU=
+From: Luca Weiss <luca@z3ntu.xyz>
+Date: Sat, 06 Apr 2024 17:31:04 +0200
+Subject: [PATCH] Documentation: ABI: document in_temp_input file
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/25] media: i2c: imx258: Add get_selection for pixel
- array information
-To: Pavel Machek <pavel@ucw.cz>
-Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
- jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- sakari.ailus@linux.intel.com, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-12-git@luigi311.com> <Zg2kHYc6kdiZEAFD@duo.ucw.cz>
-Content-Language: en-US
-From: Luis Garcia <git@luigi311.com>
-In-Reply-To: <Zg2kHYc6kdiZEAFD@duo.ucw.cz>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Id: git@luigi311.com
+Message-Id: <20240406-in_temp_input-v1-1-a1744a4a49e3@z3ntu.xyz>
+X-B4-Tracking: v=1; b=H4sIALdqEWYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDEwMz3cy8+JLU3IL4zLyC0hJdE1MD0xTztMS0tDQLJaCegqLUtMwKsHn
+ RsbW1APcBjG1fAAAA
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1064; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=wIE3eE1Fk9/n0HCYeNICyeELqzEI99x9rlfFVkFZ/Uo=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBmEWq5M6qweSr8YOc7WiqtuxAwWzXGkmwq7EjB7
+ ArF7h8R1/6JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZhFquQAKCRBy2EO4nU3X
+ VjCRD/0aH7atBXrXYNuylYVENhupz6+EmKz6ucP8OLOQneEOq0X4tewrrxZUeD2XWgtJvFC1eqb
+ b5zA+jWtVhYWwJnpLemQqS/+WOsjokfbKV+x3xVPo+0zqrblL+T+a9oaJSQSWZHIMscH3W//Mv2
+ BqT/Olg3nBy9yDYAEC2spY4JSR8DiHJ7S20V/vN/TZkS7zFZiWdWBv46V8Y9v5tujK7u6M6Isb5
+ QdfxmTqYK1RkZ9dI9WPyrnGKIMK7W9Y4RjZMG29U7ga2ackLq5WW2DDqXQkaDE6dwEyRshGIDH/
+ cqa63acMVOT/NmlKaoET/WNwouTf0ieHaJBYe8UHlpngTJcRKOin1O6O/gSgAknYs0LUFcHEYKT
+ I7vaQZa1jYxFKos+F9pYZn4pnidMh2fx4RcjN2eIK8QAaYB/kvY4MbkLvrk+zrYtx++vYSPA3rL
+ YkqdcVKXp1TyIftH1ebdrf1NNcvL3wjnuZH+09y1vYTk2lBn38NZoDHdjWxwfSWtulb3Ml828Br
+ D/v5klIqP7eza6OPLIaQL9Q58XuNnS4HWWTOwpEubYzKcYa62IKQ44dUBKyjN+I8O3guuWtKHDM
+ EEJOJsPbhFcryQRTzUnHjlFKU2GMvNk20gY1da3Lrt8YwtXhmnFlTt3nqYyitRaYOIROU22+jls
+ FzWcS5qMFxnCY7A==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On 4/3/24 12:46, Pavel Machek wrote:
-> Hi!
-> 
->> Libcamera requires the cropping information for each mode, so
->> add this information to the driver.
-> 
->> @@ -116,6 +124,9 @@ struct imx258_mode {
->>  	u32 link_freq_index;
->>  	/* Default register values */
->>  	struct imx258_reg_list reg_list;
->> +
->> +	/* Analog crop rectangle. */
-> 
-> No need for "." at the end, as it is not above.
-> 
+For example the BMP280 barometric pressure sensor on Qualcomm
+MSM8974-based Nexus 5 smartphone exposes such file in sysfs.
+Document it.
 
-Done
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+ Documentation/ABI/testing/sysfs-bus-iio | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
->> +	struct v4l2_rect crop;
->>  };
-> 
-> If the crop is same in all modes, should we have it in common place?
-> 
-> Best regards,
-> 								Pavel
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+index 2e6d5ebfd3c7..7cee78ad4108 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio
++++ b/Documentation/ABI/testing/sysfs-bus-iio
+@@ -243,7 +243,8 @@ Description:
+ 		less measurements. Units after application of scale and offset
+ 		are milli degrees Celsius.
+ 
+-What:		/sys/bus/iio/devices/iio:deviceX/in_tempX_input
++What:		/sys/bus/iio/devices/iio:deviceX/in_tempY_input
++What:		/sys/bus/iio/devices/iio:deviceX/in_temp_input
+ KernelVersion:	2.6.38
+ Contact:	linux-iio@vger.kernel.org
+ Description:
 
-I see the imx219 made a similar change where it was changed from using
-that .crop format to just setting it in the set_pad_format function
-so we can do something similar here.
+---
+base-commit: 8568bb2ccc278f344e6ac44af6ed010a90aa88dc
+change-id: 20240406-in_temp_input-4505d7fafff8
+
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
+
