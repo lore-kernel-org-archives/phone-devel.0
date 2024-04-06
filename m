@@ -1,42 +1,42 @@
-Received: from mail-108-mta175.mxroute.com (mail-108-mta175.mxroute.com [136.175.108.175])
+Received: from mail-108-mta224.mxroute.com (mail-108-mta224.mxroute.com [136.175.108.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C121A50
-	for <phone-devel@vger.kernel.org>; Sat,  6 Apr 2024 05:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A429922618
+	for <phone-devel@vger.kernel.org>; Sat,  6 Apr 2024 06:37:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712381461; cv=none; b=EJjtVVt6wzsYc5r6eqlT6Vw41GVtnxKzx0zdR2PmGCwczVz6ceV/Kf/TOMCHh54zxFCoDlZbPeMktv9sXvgKEH2c2pKdSP+slzCXLANDMUzVfVQohgEfL/QCsACS/e/jojYSheqHqzCVassNQktmXQzTqDU3qDNOd7IEpdcAQ0M=
+	t=1712385423; cv=none; b=eAZaUK4jG4NgLBV6uzIDfkKMVl8ujPcPXrNGgynUYnP3N5Tb0mRKw1WWV2zO7flO6oUYqeV1obQqxaCfoGwBooB47FRR5dTTBNpQrJnLv9QmSUJno6b63M1Ax+cb9r82CXh38TOmllQ3KOTLXZMPt399BioUYKsL/+2zanApvXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712381461; c=relaxed/simple;
-	bh=PcVc0enR4j7Fu4qIcJTJAGfb9eIbRBk+MbR+x31n5Z4=;
+	s=arc-20240116; t=1712385423; c=relaxed/simple;
+	bh=OxraREhf6GRED2LQephjdnm0ObJkCkvoK147D6T36ys=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ezJdg1dSDOMcL3e7YPFXbg3woAmd7KXIU5VHGoMNCE6BKhYsVjCbX2cEtQZnYfdV3CNj/vbLNlWxi+j9fsN5GCj7cC7P5zfFTZGXubV6FCmCWdpb3gnqsrLv5XcOuRzh8huR3iJflxe6oGnNSWdixsFfXJVX+9TI2E6xnFOFN7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=yRxZ3zyb; arc=none smtp.client-ip=136.175.108.175
+	 In-Reply-To:Content-Type; b=f6UMe6G8yODOUM9Xx7cpLTLJ1xyQi3OVE1AZZHg4EmxKR6ezIdb/CTvsbeTgDEETGD5ITtIfpVxYlYd+kLH7PUJcp1EaBAHqsvGnlas61iVz2XP+wk1V9EJJOiPjT+wDBShOLxJjyxVDaYjhsrLTxMXDzZdm4hjsXQdZjccj6Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=WPhbq6ZE; arc=none smtp.client-ip=136.175.108.224
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="yRxZ3zyb"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="WPhbq6ZE"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta175.mxroute.com (ZoneMTA) with ESMTPSA id 18eb1deb1d70003bea.012
+ by mail-108-mta224.mxroute.com (ZoneMTA) with ESMTPSA id 18eb21fcaf10003bea.012
  for <phone-devel@vger.kernel.org>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sat, 06 Apr 2024 05:25:45 +0000
-X-Zone-Loop: 38d8f76337bda8a219e1cbb348b6cf9110d1ff03ceb7
+ Sat, 06 Apr 2024 06:36:51 +0000
+X-Zone-Loop: 8c7aa9c7a965e2901847e5ffdae07e9a131466c395c5
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
 	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=sz1o3+H/QzcFhJgMgxzNEIq38+fbX0fuDgjyR3Z3QQc=; b=yRxZ3zybwPCDOXYc6dTeGjFcrD
-	oJ/ez3YSCH/U3R+W7HZ+fcllfTNo6nDrKK/J6LtIS+6pGlvAFrg1BKy+05tElSeHU+XVi9lLN7Jjq
-	N9wWf/YR2FfU3yz4kxdskDLVFCSxd7zRrbZErNyZKiZ8MEh3oScdzDZhatOoB/q3+riVjlqTrkRy7
-	Hqeh+nMcad2X60AuJoWOblCKmKuwLSR4xq2i1LF1f++LiJf/cQxwpQUlP0h1QbgLNhKUUez/MFVEI
-	p5YxnOGH1HDkg3IQGhGvjSPxDKypqt8FcRQbW50njJ2QApLlk+PAT2yoMCtocDpSVBdl4iJWE7/by
-	Vyq36ttA==;
-Message-ID: <803b0bd3-e615-41c1-888e-69b6ecca0b8a@luigi311.com>
-Date: Fri, 5 Apr 2024 23:25:41 -0600
+	bh=P6oz8jLcfNyvGaOUeOoCwlqC8Ij6mtZ6/gKuz1gexug=; b=WPhbq6ZEa+mQTnijWaBY6xxs/H
+	cfHYUnpSRs8fOhOb/O4yJffkApW8GbdCsZ9fgpCJBUMa3pysrcREVULO1R/UkyRqIiPc9mObnfXPv
+	YmP7o/tAqB0ayOqkRLxs5fQtXrUia6yJroEUCCB+ckUFpQp8RHDB0YyE7tXXD9rJenqQZDa30Cqkj
+	soLpFl0b5rnHDmjMNbaU+mvK6HOXuMsdAhCIuIT3xhAYVnT6i+9TrIfSP7p+3tjqrOm0eD3oFmOvb
+	FE0z2dqpWXi9w++3zacDwlhzLX9akXx4T0C5yl6+Qkahp/SWJ/+9Q9RvAIcOuf71zbchDNERWMcas
+	kIvWVcdg==;
+Message-ID: <91621b30-dc6f-49cb-878c-96d39e38d994@luigi311.com>
+Date: Sat, 6 Apr 2024 00:36:47 -0600
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -44,8 +44,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/25] media: i2c: imx258: Add support for running on 2
- CSI data lanes
+Subject: Re: [PATCH v3 11/25] media: i2c: imx258: Add get_selection for pixel
+ array information
 To: Pavel Machek <pavel@ucw.cz>
 Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
  jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
@@ -55,56 +55,40 @@ Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
  imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
 References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-10-git@luigi311.com> <Zg2jvUDFnY83drlg@duo.ucw.cz>
+ <20240403150355.189229-12-git@luigi311.com> <Zg2kHYc6kdiZEAFD@duo.ucw.cz>
 Content-Language: en-US
 From: Luis Garcia <git@luigi311.com>
-In-Reply-To: <Zg2jvUDFnY83drlg@duo.ucw.cz>
+In-Reply-To: <Zg2kHYc6kdiZEAFD@duo.ucw.cz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Authenticated-Id: git@luigi311.com
 
-On 4/3/24 12:45, Pavel Machek wrote:
+On 4/3/24 12:46, Pavel Machek wrote:
 > Hi!
 > 
->> +/*
->> + * 4208x3120 @ 30 fps needs 1267Mbps/lane, 4 lanes.
->> + * To avoid further computation of clock settings, adopt the same per
->> + * lane data rate when using 2 lanes, thus allowing a maximum of 15fps.
->> + */
->> +static const struct imx258_reg mipi_1267mbps_19_2mhz_2l[] = {
->> +	{ 0x0136, 0x13 },
->> +	{ 0x0137, 0x33 },
->> +	{ 0x0301, 0x0A },
->> +	{ 0x0303, 0x02 },
->> +	{ 0x0305, 0x03 },
->> +	{ 0x0306, 0x00 },
->> +	{ 0x0307, 0xC6 },
->> +	{ 0x0309, 0x0A },
->> +	{ 0x030B, 0x01 },
->> +	{ 0x030D, 0x02 },
->> +	{ 0x030E, 0x00 },
->> +	{ 0x030F, 0xD8 },
->> +	{ 0x0310, 0x00 },
->> +
->> +	{ 0x0114, 0x01 },
->> +	{ 0x0820, 0x09 },
->> +	{ 0x0821, 0xa6 },
->> +	{ 0x0822, 0x66 },
->> +	{ 0x0823, 0x66 },
->> +};
->> +
->> +static const struct imx258_reg mipi_1267mbps_19_2mhz_4l[] = {
->>  	{ 0x0136, 0x13 },
->>  	{ 0x0137, 0x33 },
->>  	{ 0x0301, 0x05 },
+>> Libcamera requires the cropping information for each mode, so
+>> add this information to the driver.
 > 
-> I wish we did not have to copy all the magic values like this.
+>> @@ -116,6 +124,9 @@ struct imx258_mode {
+>>  	u32 link_freq_index;
+>>  	/* Default register values */
+>>  	struct imx258_reg_list reg_list;
+>> +
+>> +	/* Analog crop rectangle. */
+> 
+> No need for "." at the end, as it is not above.
+> 
+
+Done
+
+>> +	struct v4l2_rect crop;
+>>  };
+> 
+> If the crop is same in all modes, should we have it in common place?
 > 
 > Best regards,
 > 								Pavel
-> 								
 
-no kidding, magic values everywhere.... it makes it annoying
-for me to move things around because they all start to look
-similar. Down the line we added in more defined names so its
-not as bad but still its bad lol.
+I see the imx219 made a similar change where it was changed from using
+that .crop format to just setting it in the set_pad_format function
+so we can do something similar here.
