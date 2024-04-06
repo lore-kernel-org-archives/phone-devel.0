@@ -1,87 +1,91 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409523FB99
-	for <phone-devel@vger.kernel.org>; Sat,  6 Apr 2024 16:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B963839D;
+	Sat,  6 Apr 2024 16:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712419680; cv=none; b=cKNy+IbO3aA5NsayHvInTonIYTl/ao0kgS2rxpM65Xi1RmLwPRgeqjl+oUr4i/hM9Rp7aWNnBQ8xauborE986U4t1c9HwhuMv3DODSUXl7ER6kx+guTAFz30CVWw9TB2YcWiPclwvKz3Vr/S7KCm47Lx4y3tVyoxN3oDUWW+ZjM=
+	t=1712421935; cv=none; b=MUGXx0CpOrWn5JMuzyVp4g5C+fNzkff4oKxXHH7SY9PQrUTtTVa4XSEgyX3nSZD59EzgFCV7nKsZhEJWCZSuUnifTwt/Z/SMTzGRTnEfXrsOOwH58IGiAo5SP0GG/C2mkY8UtQdSJv+2ZvLUh1Se5tIMnbwfwOuhy85yqckJ+jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712419680; c=relaxed/simple;
-	bh=Re9aog4YI0eZKksmQyEgqtuyaTCf0OysxZQoXoVWlyI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z48YItUei0tzO49GLTDXDamJhzcSd1rK9LlGruFtt0KnEQAtuJg9I3WlHhknC9IZgzJfrrBXgKxY3zk6fiPaCDM7v09rIWWNTFvJ9hccKfQ4GOFYBv+RLVObza1MQc3mnCQxd0fvCpkSzf9knzIp5ciuVEfN1TXccw8OfCaQUTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pVaYGjZN; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1712421935; c=relaxed/simple;
+	bh=Tnp1inQU7Buh6+yx2ER0/mIIwxvWAJA8D3UAlLEh2uc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Dfr/wCeNUduxAHOnUjLa13zoiixDMrKbFMx/c3x1ia1ZlTBxNC/5bVwTsSEfYq8A4r+79Xgn09tLiPkct57gtU1RG+YXYnPPymS78WF8/5ivSQr892S96Y37CM/6a1eZFKl+TU7RCjHQmqK8t6tveS9tOMZ+guwzYQ5N1rz6e5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eY2lnDp/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pVaYGjZN"
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dc6d8bd618eso3063350276.3
-        for <phone-devel@vger.kernel.org>; Sat, 06 Apr 2024 09:07:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712419678; x=1713024478; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xxhiT4mz7EkwRe7mA3Y1GYf1RmoX1+AQ0pJ6CUbqHqM=;
-        b=pVaYGjZNljmYK5haX5Hk9nYOp6BhsAH3mdQgdq+OqJyWFba0DR+R9VqzxnFXSdNclr
-         d4P5/y466v75glXTyZK7fS69xlZyWkVb+Tl525LxKAJ8w7dwXijXva/CWI41ndNHwj+U
-         qkj2yhQbRvZdxWFhO2Wgta9gaoWqkX31cdxhBA77XboKgU0xzLd8OqVYgTXEJN1M0Hn7
-         KObLOcVso2E9XEcJUsdTazCSdr3EzTKdjWgK/D3mPuJsu8e4KMe/VemUM28yChFKQ8Hv
-         5ApA/eeqDanfOr0JAroOuWl0/QxP4eCJHfdFH+ppepNL21sUscTrU9R3ZV/eomiLkuOh
-         uD/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712419678; x=1713024478;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xxhiT4mz7EkwRe7mA3Y1GYf1RmoX1+AQ0pJ6CUbqHqM=;
-        b=s1R1FWs5hchNqYkrxlobztQhssiYE4MMqiSnuyPEMxjXE14ap29glsbS0cqgdBvUh5
-         Am1PAJ5Y1rtaQTpWEK546N+drFz2MmGkOscTtdtRE2m0cchpToR2mcn4wEX+WX7shKoV
-         4ZxUJcOBEam/pCpnufYRaB2lg3VtCC+Ky+Bn9lrgwHK2hwdBSEUICZhPn1OHZBt5sOMy
-         c3fg3vmsXfiVxElBRlBg0ZITw1DtBAJc8OixCAenMooJ8dFx+RVv5KqfGH2po8Om6Eiz
-         5FzMbs5bOv8sH6ahJjCMrJfwg7EVlsI4PJT7kSMMMeAEALw4ZZfzAjC5nWRybpghnG56
-         yRgA==
-X-Forwarded-Encrypted: i=1; AJvYcCVwnVBxngYtZPLsi01g9mYiN7Wlkauc96WCssKHEaZocfvH42D3DBOnFyTPEFeTMGbEkEXJ2lVi7/LjAqX3OGwmATYw+F6m/XWvljA=
-X-Gm-Message-State: AOJu0YxowKmIpQ4pQJ3pzXPJYJH9S7oRVEX+JasotfZTq/wcaUdh0mz4
-	4P/iTeuMa52xgcLWtsS57cQ9VgUiob3bc4mK38cN7PwpcvdVbBv7AvqHjtIkkwpaxcDf5He484F
-	+cZetb7lhKaoHPMWy3XdyX978Z+I5wk0qUYj14Q==
-X-Google-Smtp-Source: AGHT+IHggO+6U20SEYFId9dF+T2+hCDTSyO2Vax1gDweglAaFNbjoPCJbiYC8M6TObeewBzJ5GyPc4eC7fPDozv2hHQ=
-X-Received: by 2002:a25:6a46:0:b0:dc6:2e29:4262 with SMTP id
- f67-20020a256a46000000b00dc62e294262mr3611046ybc.58.1712419678311; Sat, 06
- Apr 2024 09:07:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eY2lnDp/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE5DC433C7;
+	Sat,  6 Apr 2024 16:45:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712421934;
+	bh=Tnp1inQU7Buh6+yx2ER0/mIIwxvWAJA8D3UAlLEh2uc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=eY2lnDp/Mbw2PeO85q5zSgscHcXApqQ/elAgRadwl2Zb57xKdzKzQ5eIl5Xp67DyF
+	 sZnsSSVAvsWtiMPzEvGZh3PxVoBbOkt2rP7NodV9EXvDHp/rdYcRp/O3veROdnAsju
+	 o7hqhNTn+kPtEuXZZtBriQ4qgK6hoLbaSHjH7cMyI5zicU9Dmb8hFyGmPW8qrwZyVZ
+	 lMQub1IBE/WU1q779r4ZDE/vFg21NOdPkVELuf5M62JROC2WXG53GjnCDRW8dOYWcq
+	 7JXEqutQTHp40q2ovn3wxX9F1RbKQAKTdUOEti4YuFOslhepjtoGoFuuA1dyPPwqZI
+	 HIU4L7x9S+12g==
+Date: Sat, 6 Apr 2024 17:45:21 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Luca Weiss <luca@z3ntu.xyz>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Documentation: ABI: document in_temp_input file
+Message-ID: <20240406174513.13b4e9e4@jic23-huawei>
+In-Reply-To: <20240406-in_temp_input-v1-1-a1744a4a49e3@z3ntu.xyz>
+References: <20240406-in_temp_input-v1-1-a1744a4a49e3@z3ntu.xyz>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240406-shinano-vib-v1-1-fdd02af39d56@z3ntu.xyz>
-In-Reply-To: <20240406-shinano-vib-v1-1-fdd02af39d56@z3ntu.xyz>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Sat, 6 Apr 2024 19:07:47 +0300
-Message-ID: <CAA8EJprxuhE5BNw4LMUkjF8WPi-oBzY5t6LrnN8yvjfguFPoig@mail.gmail.com>
-Subject: Re: [PATCH] ARM: dts: qcom: msm8974-sony-shinano: Enable vibrator
-To: Luca Weiss <luca@z3ntu.xyz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, 6 Apr 2024 at 18:36, Luca Weiss <luca@z3ntu.xyz> wrote:
->
-> Enable the vibrator connected to PM8941 found on the Sony shinano
-> platform.
->
+On Sat, 06 Apr 2024 17:31:04 +0200
+Luca Weiss <luca@z3ntu.xyz> wrote:
+
+> For example the BMP280 barometric pressure sensor on Qualcomm
+> MSM8974-based Nexus 5 smartphone exposes such file in sysfs.
+> Document it.
+> 
 > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+
+Hi Luca,
+
+Applied with a note added on fixing the line above to not reuse X.
+A good additional thing but needs mentioning in the commit message.
+
+Thanks,
+
+Jonathan
+
 > ---
->  .../arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi | 4 ++++
->  1 file changed, 4 insertions(+)
+>  Documentation/ABI/testing/sysfs-bus-iio | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index 2e6d5ebfd3c7..7cee78ad4108 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -243,7 +243,8 @@ Description:
+>  		less measurements. Units after application of scale and offset
+>  		are milli degrees Celsius.
+>  
+> -What:		/sys/bus/iio/devices/iio:deviceX/in_tempX_input
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_tempY_input
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_temp_input
+>  KernelVersion:	2.6.38
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+> 
+> ---
+> base-commit: 8568bb2ccc278f344e6ac44af6ed010a90aa88dc
+> change-id: 20240406-in_temp_input-4505d7fafff8
+> 
+> Best regards,
 
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
--- 
-With best wishes
-Dmitry
