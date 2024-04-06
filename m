@@ -1,142 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta228.mxroute.com (mail-108-mta228.mxroute.com [136.175.108.228])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3F016FF5D;
-	Fri,  5 Apr 2024 16:25:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D551CD13
+	for <phone-devel@vger.kernel.org>; Sat,  6 Apr 2024 05:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712334302; cv=none; b=AxLZqr3XVVLLhVNfApvFY3/1nj10rTs9Oep70blvJxbr9ANP9FxCdZsAW4mXNCXJnFIR51iPGwrorkEgJqtvQ6z7F5isT+MUT78R1j1MpEJ49kveUZ8z1gF6/lBfJLZm3E9Nz/N4EbRIJt5JckujHaTIYLJpnZ7dxDCExt2aVnM=
+	t=1712381036; cv=none; b=tu+L0h88ClgFE89bkQEUOyz50KUPW3ERXl79ksOkKJjuse3nAFEYo8Z2PaoAFH1ZNp254ifbQcuwoX5Kz8WdbKUj4Bdf6oUx+fuXbRxi7h38QiOLImklQ/sp2QSKNOuZTx6ky9H/ih0EfTy/+nfl5SrgApPVOj9nWhvpk2h2aW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712334302; c=relaxed/simple;
-	bh=e631Y6MEiUM4bdY0i8+RqUnFcYHrbYvYh4AY3c2OKqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MVrxTCX+tX/B9ibu9opIwh0uV9hzcPholw7mXzxyRVvPWMXOFe/yyFPdFbAx5ujnK8Z08+5YJywaiIQmERJoiZiacIOTzqgiIphNHV7PXGMjoMQ7/KL9f4Za9ywtCUrr6y8hhUY0kHQjeJAWp/eZ10PK1Gerd/mCH40S+OMvy28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hcsClS20; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712381036; c=relaxed/simple;
+	bh=XvGGiaKjAp46vAegdWKN0fVnxmrfC1H1J6zN0QKFTrw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sTp2ZC4U1o0BqXJIV1eb6RFNK2vlmtQgcdaX43Iqja4Vs6o4cKj+4scmxe2FRiW7U6l2mkbstlN/PFgqTvauaOMI/ocNGiUVjaWA7IPvh8K0NNrZjMSAoZqOUQeLL+6lV9OLixscSBjBp/dJKfK3zNHCxfqaFh0tV4waw5pVNiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=RU30JmeZ; arc=none smtp.client-ip=136.175.108.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hcsClS20"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E052C433F1;
-	Fri,  5 Apr 2024 16:24:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712334301;
-	bh=e631Y6MEiUM4bdY0i8+RqUnFcYHrbYvYh4AY3c2OKqs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hcsClS20Fq4SLI/FbUZXI/30MEJwCw0mPfLZrr/R0EkMRetSPyJ5iYwp1vzcFPnTQ
-	 3UfE9PH7aWXRdPKCpMlC36hJ2kQCuN4x6MzeGumMdjC0VsDAd3F6duoKVW+rSNrAfZ
-	 +0HA8OL2NfF/FCSaULcSPyMmeRTMwuBJOcfpwaQw83HmXIJ2GmQROXqP0I8bdntGM5
-	 YbxT4k39KnYQwO8QadL/IFPXiVgcc06YtlbIYY5ImjqSKvXgnQMi7YwHaMmA94jJln
-	 9lFAWQ1KpmN5HlwVEOqF+1b/prbhr/0cAHdjnhCF2E8gP9x72z2l9XpeBwpuUzC0bH
-	 A3LaECE2Q8gig==
-Date: Fri, 5 Apr 2024 17:24:55 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: git@luigi311.com, linux-media@vger.kernel.org,
-	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, sakari.ailus@linux.intel.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	pavel@ucw.cz, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 18/25] dt-bindings: media: imx258: Add alternate
- compatible strings
-Message-ID: <20240405-citizen-rendering-a8345fc96fb0@spud>
-References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-19-git@luigi311.com>
- <20240403-vista-defendant-ebadbaa52059@spud>
- <CAPY8ntC9SHJ6Ma17s0Vf2coB-0NUk-xgCLK9KCkxFMuXKHXNwg@mail.gmail.com>
- <20240405-affair-cruelly-a7e9d23b597c@spud>
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="RU30JmeZ"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta228.mxroute.com (ZoneMTA) with ESMTPSA id 18eb1dce0660003bea.012
+ for <phone-devel@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Sat, 06 Apr 2024 05:23:46 +0000
+X-Zone-Loop: 3bd5648233e01f09233ffbe42f06fd08bdb038ae828c
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ZmuhkTALxM8lf0cfAvP+7dJ0PJ20DaBe8z1ii1wZ960=; b=RU30JmeZw8NfKZujRbkVuhHZc7
+	Wdnson/TB15EBa0BLASqHxyQNxUo4sK/fpaxMJHvihEmZLBTATxOJV2BXo3NfWsttfvLKNJJWHRsE
+	CeKtDYAyQP6Ppj2blTGdGqOtuua7XHqeODzZls2nZUb2ZPnnyrjg5+IiMbLf1veOem4ZcIE6FulIa
+	cFzdxpC9SCQ77SbyAmHMfGhhZKRZBLnK2b3qt+pu5WL3NOdQhoD4Sx3PAD7JyD1tpsiBRFs/Iw5M2
+	WYtRtpD/Nl5uPmjzU7acJ0j6ti7PD2GE0ijqjph2h/9H2Iu3mWHFgIpfSZoj8eNzC+j+RW3r4jlbG
+	IjfS1GLw==;
+Message-ID: <bbf7c8c3-ca67-43a1-88d0-199cc9299c6d@luigi311.com>
+Date: Fri, 5 Apr 2024 23:23:42 -0600
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="J+r6cgI5MeerLX5y"
-Content-Disposition: inline
-In-Reply-To: <20240405-affair-cruelly-a7e9d23b597c@spud>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 05/25] media: i2c: imx258: Add regulator control
+To: Pavel Machek <pavel@ucw.cz>
+Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
+ jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ sakari.ailus@linux.intel.com, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20240403150355.189229-1-git@luigi311.com>
+ <20240403150355.189229-6-git@luigi311.com> <Zg2jgmmqw0nXDYcF@duo.ucw.cz>
+Content-Language: en-US
+From: Luis Garcia <git@luigi311.com>
+In-Reply-To: <Zg2jgmmqw0nXDYcF@duo.ucw.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Id: git@luigi311.com
 
+On 4/3/24 12:44, Pavel Machek wrote:
+> Hi!
+> 
+>> The device tree bindings define the relevant regulators for the
+>> sensor, so update the driver to request the regulators and control
+>> them at the appropriate times.
+> 
+>> @@ -995,9 +1007,19 @@ static int imx258_power_on(struct device *dev)
+>>  	struct imx258 *imx258 = to_imx258(sd);
+>>  	int ret;
+>>  
+>> +	ret = regulator_bulk_enable(IMX258_NUM_SUPPLIES,
+>> +				    imx258->supplies);
+>> +	if (ret) {
+> 
+> Will this make it fail for all current users?
+> 
+> Best regards,
+> 								Pavel
+> 								
 
---J+r6cgI5MeerLX5y
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Apr 05, 2024 at 05:24:11PM +0100, Conor Dooley wrote:
-> On Fri, Apr 05, 2024 at 11:25:50AM +0100, Dave Stevenson wrote:
-> > Hi Conor
-> >=20
-> > On Wed, 3 Apr 2024 at 17:14, Conor Dooley <conor@kernel.org> wrote:
-> > >
-> > > On Wed, Apr 03, 2024 at 09:03:47AM -0600, git@luigi311.com wrote:
-> > > > From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> > > >
-> > > > There are a number of variants of the imx258 modules that can not
-> > > > be differentiated at runtime, so add compatible strings for the
-> > > > PDAF variant.
-> > > >
-> > > > Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> > > > Signed-off-by: Luis Garcia <git@luigi311.com>
-> > > > ---
-> > > >  .../devicetree/bindings/media/i2c/sony,imx258.yaml       | 9 +++++=
-++--
-> > > >  1 file changed, 7 insertions(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx25=
-8.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-> > > > index bee61a443b23..c978abc0cdb3 100644
-> > > > --- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-> > > > +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-> > > > @@ -13,11 +13,16 @@ description: |-
-> > > >    IMX258 is a diagonal 5.867mm (Type 1/3.06) 13 Mega-pixel CMOS ac=
-tive pixel
-> > > >    type stacked image sensor with a square pixel array of size 4208=
- x 3120. It
-> > > >    is programmable through I2C interface.  Image data is sent throu=
-gh MIPI
-> > > > -  CSI-2.
-> > > > +  CSI-2. The sensor exists in two different models, a standard var=
-iant
-> > > > +  (IMX258) and a variant with phase detection autofocus (IMX258-PD=
-AF).
-> > > > +  The camera module does not expose the model through registers, s=
-o the
-> > > > +  exact model needs to be specified.
-> > > >
-> > > >  properties:
-> > > >    compatible:
-> > > > -    const: sony,imx258
-> > > > +    enum:
-> > > > +      - sony,imx258
-> > > > +      - sony,imx258-pdaf
-> > >
-> > > Does the pdaf variant support all of the features/is it register
-> > > compatible with the regular variant? If it is, the regular variant
-> > > should be a fallback compatible.
-> >=20
-> > It has the same register set, but certain registers have to be
-> > programmed differently so that the image is corrected for the
-> > partially shielded pixels used for phase detect auto focus (PDAF).
-> > Either compatible will "work" on either variant of the module, but
-> > you'll get weird image artifacts when using the wrong one.
->=20
-> To paraphase, a fallback compatible is not suitable.
-
-Whoops, I forgot this:
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
-Cheers,
-Conor.
-
---J+r6cgI5MeerLX5y
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZhAl1wAKCRB4tDGHoIJi
-0kUVAPsHQcxSj1YlxmEykZ2pdEnrRssajk9+59xTX2aSDtjvjgD/QiU/zXLjFTnh
-wmmKk8lfqMokfNL4ZXerYYFKC/oSUAY=
-=wHSR
------END PGP SIGNATURE-----
-
---J+r6cgI5MeerLX5y--
+It shouldn't affect current users as this was added in by dave for
+a completely different sensor and it still works on my ppp. Looking
+at the dmesg for imx258 it does reference the regulators that the
+ppp doesnt have but it still works.
