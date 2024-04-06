@@ -1,95 +1,87 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DC4E546;
-	Sat,  6 Apr 2024 15:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409523FB99
+	for <phone-devel@vger.kernel.org>; Sat,  6 Apr 2024 16:07:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712417782; cv=none; b=At671IaoY6ieu5AyWegTfK/79RPpDfzLDT6xpTTlWuNEcWoNKLTxotkmegoDAqSdEKxbDG+mhGMV7T2Esca0DQBZuHrc9cj8X4tUeNiiu5/L8muDRXrN/bnm3/XRCL1ZWofq0qdKMGUTI3id3z8RGDUbehZzFkYHfTXmyFjI9cY=
+	t=1712419680; cv=none; b=cKNy+IbO3aA5NsayHvInTonIYTl/ao0kgS2rxpM65Xi1RmLwPRgeqjl+oUr4i/hM9Rp7aWNnBQ8xauborE986U4t1c9HwhuMv3DODSUXl7ER6kx+guTAFz30CVWw9TB2YcWiPclwvKz3Vr/S7KCm47Lx4y3tVyoxN3oDUWW+ZjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712417782; c=relaxed/simple;
-	bh=FiIAzc8smXeDB0uMdDOcov99hXTLdRr90r37SjHtqig=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Of5l2ZMICgfpK/FY8NG4D5nevAkzKKf2vryZKjH3/8dEaeBfCJ1Ad2wR1Yao7g91mEpxokxQVUHG9LhjtTcXhpXSQdeFUPMesPKehgbETyCJSs59T9BeTKGmubywfzjxBVe3p5SMftxre9Bty5NHLPrft3zaKPTU5UYMNR/yqAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=Cbk3VbJJ; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
+	s=arc-20240116; t=1712419680; c=relaxed/simple;
+	bh=Re9aog4YI0eZKksmQyEgqtuyaTCf0OysxZQoXoVWlyI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z48YItUei0tzO49GLTDXDamJhzcSd1rK9LlGruFtt0KnEQAtuJg9I3WlHhknC9IZgzJfrrBXgKxY3zk6fiPaCDM7v09rIWWNTFvJ9hccKfQ4GOFYBv+RLVObza1MQc3mnCQxd0fvCpkSzf9knzIp5ciuVEfN1TXccw8OfCaQUTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pVaYGjZN; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="Cbk3VbJJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1712417248; bh=FiIAzc8smXeDB0uMdDOcov99hXTLdRr90r37SjHtqig=;
-	h=From:Date:Subject:To:Cc;
-	b=Cbk3VbJJb9c1v9GY9J6bL9kWRnlMKC/68N5PwjGszKVOAKwaAiLAO28mHo+mONfSt
-	 08PIRBwpp/faY7FsHEgnH0BESlxo8aOlqJu/YhAlZx4qXdHIC5V7RYO4p64ba+kZ1Q
-	 sRYai9VKSO6tVUtTbXZj8hgZ5mlzjh2BgQLcrwmg=
-From: Luca Weiss <luca@z3ntu.xyz>
-Date: Sat, 06 Apr 2024 17:27:20 +0200
-Subject: [PATCH] ARM: dts: qcom: msm8974-sony-shinano: Enable vibrator
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pVaYGjZN"
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dc6d8bd618eso3063350276.3
+        for <phone-devel@vger.kernel.org>; Sat, 06 Apr 2024 09:07:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712419678; x=1713024478; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=xxhiT4mz7EkwRe7mA3Y1GYf1RmoX1+AQ0pJ6CUbqHqM=;
+        b=pVaYGjZNljmYK5haX5Hk9nYOp6BhsAH3mdQgdq+OqJyWFba0DR+R9VqzxnFXSdNclr
+         d4P5/y466v75glXTyZK7fS69xlZyWkVb+Tl525LxKAJ8w7dwXijXva/CWI41ndNHwj+U
+         qkj2yhQbRvZdxWFhO2Wgta9gaoWqkX31cdxhBA77XboKgU0xzLd8OqVYgTXEJN1M0Hn7
+         KObLOcVso2E9XEcJUsdTazCSdr3EzTKdjWgK/D3mPuJsu8e4KMe/VemUM28yChFKQ8Hv
+         5ApA/eeqDanfOr0JAroOuWl0/QxP4eCJHfdFH+ppepNL21sUscTrU9R3ZV/eomiLkuOh
+         uD/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712419678; x=1713024478;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xxhiT4mz7EkwRe7mA3Y1GYf1RmoX1+AQ0pJ6CUbqHqM=;
+        b=s1R1FWs5hchNqYkrxlobztQhssiYE4MMqiSnuyPEMxjXE14ap29glsbS0cqgdBvUh5
+         Am1PAJ5Y1rtaQTpWEK546N+drFz2MmGkOscTtdtRE2m0cchpToR2mcn4wEX+WX7shKoV
+         4ZxUJcOBEam/pCpnufYRaB2lg3VtCC+Ky+Bn9lrgwHK2hwdBSEUICZhPn1OHZBt5sOMy
+         c3fg3vmsXfiVxElBRlBg0ZITw1DtBAJc8OixCAenMooJ8dFx+RVv5KqfGH2po8Om6Eiz
+         5FzMbs5bOv8sH6ahJjCMrJfwg7EVlsI4PJT7kSMMMeAEALw4ZZfzAjC5nWRybpghnG56
+         yRgA==
+X-Forwarded-Encrypted: i=1; AJvYcCVwnVBxngYtZPLsi01g9mYiN7Wlkauc96WCssKHEaZocfvH42D3DBOnFyTPEFeTMGbEkEXJ2lVi7/LjAqX3OGwmATYw+F6m/XWvljA=
+X-Gm-Message-State: AOJu0YxowKmIpQ4pQJ3pzXPJYJH9S7oRVEX+JasotfZTq/wcaUdh0mz4
+	4P/iTeuMa52xgcLWtsS57cQ9VgUiob3bc4mK38cN7PwpcvdVbBv7AvqHjtIkkwpaxcDf5He484F
+	+cZetb7lhKaoHPMWy3XdyX978Z+I5wk0qUYj14Q==
+X-Google-Smtp-Source: AGHT+IHggO+6U20SEYFId9dF+T2+hCDTSyO2Vax1gDweglAaFNbjoPCJbiYC8M6TObeewBzJ5GyPc4eC7fPDozv2hHQ=
+X-Received: by 2002:a25:6a46:0:b0:dc6:2e29:4262 with SMTP id
+ f67-20020a256a46000000b00dc62e294262mr3611046ybc.58.1712419678311; Sat, 06
+ Apr 2024 09:07:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240406-shinano-vib-v1-1-fdd02af39d56@z3ntu.xyz>
-X-B4-Tracking: v=1; b=H4sIANdpEWYC/x3MTQqAIBBA4avIrBswkf6uEi3UppyNhoIE4t2Tl
- t/ivQqZElOGTVRIVDhzDB3jIMB5E25CPrtBSaWllhNmz8GEiIUtLpLUTKs1VjnoxZPo4ve/7Ud
- rH3OqLf5dAAAA
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=918; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=FiIAzc8smXeDB0uMdDOcov99hXTLdRr90r37SjHtqig=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBmEWncUxbgDQW6FpzEsC0Wmm6DPek0lWq9RIyML
- p+PMUVtaeqJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZhFp3AAKCRBy2EO4nU3X
- VjHGEACBBilB9K3nFDtiKW50oKDhrFQ962KPQJwaLlT8/cWcuKF/80FlD0LbzBxerZEuG97XFMX
- 9PxMRQYpofEEYsNXtG/1KwXYx9U8faogyHVpuI3W3xeKUtby5YjW8fOYew480ON6aqtoeYlL84k
- +XZu2EaC5mhemCh+JKl/kGQGvknJ6toyy+zSU3WUAunhV/oQ6Ph2Pe3MDCygJVQSQBY8U0oNjyL
- cS29rfpIk000i6vD5yxeonDLrm5sVXYv5qlbjJwbzX8MydPkbS+53B4ls/UhUCqgzysiO19ZM2H
- Vr943Wkn6Al2V6mmQuXlwd/h8sE6lLUVpdpOTFLzIyjqU1/umvVd7jSLB3+P+Rjik95mO36/HvB
- sNHuvDXk+RGJln44gpq362/FWeK1dqQqDQ5NLxB14x0tM8rWHVO1Ju4Bpnjz7WJKIa5Y0WXtPGI
- +God+6f2IMgV39zfwPJcQaLW9JQsRFYlM+HJ5ABokky2Qp6NuccDj0DTYPcXBU4s/ZNi6qmmalL
- xqPMJ7kEVRfE15LKRBgSXAyiJ/Za2zYquhzDWiBd2Jt2xaNDiiPpvJDhgA1j8AOW5Hr/r10Y1++
- e3jOarTcKf7ciRQnOxGlnDq0s4q9fi6gIpR93D4gFaO8UPgTRemrPXQiC01lmORXJdI9AoeQYM+
- 1VwtWICIApt1SjA==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+References: <20240406-shinano-vib-v1-1-fdd02af39d56@z3ntu.xyz>
+In-Reply-To: <20240406-shinano-vib-v1-1-fdd02af39d56@z3ntu.xyz>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Sat, 6 Apr 2024 19:07:47 +0300
+Message-ID: <CAA8EJprxuhE5BNw4LMUkjF8WPi-oBzY5t6LrnN8yvjfguFPoig@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dts: qcom: msm8974-sony-shinano: Enable vibrator
+To: Luca Weiss <luca@z3ntu.xyz>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Enable the vibrator connected to PM8941 found on the Sony shinano
-platform.
+On Sat, 6 Apr 2024 at 18:36, Luca Weiss <luca@z3ntu.xyz> wrote:
+>
+> Enable the vibrator connected to PM8941 found on the Sony shinano
+> platform.
+>
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  .../arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- .../arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi
-index 3a0c0035de09..e129bb1bd6ec 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi
-@@ -202,6 +202,10 @@ led@7 {
- 	};
- };
- 
-+&pm8941_vib {
-+	status = "okay";
-+};
-+
- &remoteproc_adsp {
- 	cx-supply = <&pm8841_s2>;
- 	status = "okay";
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
----
-base-commit: 956abeb75f90eac3d5ba1f4cff7c048f7c079502
-change-id: 20240406-shinano-vib-80e27e9bab2c
-
-Best regards,
 -- 
-Luca Weiss <luca@z3ntu.xyz>
-
+With best wishes
+Dmitry
