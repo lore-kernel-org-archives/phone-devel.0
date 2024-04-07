@@ -1,111 +1,103 @@
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BAE107B3;
-	Sun,  7 Apr 2024 08:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3DA25605;
+	Sun,  7 Apr 2024 09:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712479927; cv=none; b=LGPOnuTZvcsttPClF3qSfe9CHbX2+rS9mh8ZNaDznJ07/W4ZiaLiTOEkOs9aBXi9mj/pTMu/LQUWHatmzoEZQHFSlpdheoPsOLwXY4EBUHYUh+kyDelDRdqS1CIsCu+pOj0oj59Grtr0F52cxbqZrgZ9H1zGA2jnmfJ7jTJ61To=
+	t=1712480716; cv=none; b=ML8/AqvmZlmCNKUBQ6+lRcbEbjhMPuMCJr8E3SByrXxYuCm08qeP4WDE/tOyvBV1V3BsmigtVj0Y5R8vNsBhDWYSpeuNeutMZly0BkIV4laUOPv3NAaTms3iHbyvgQuLIoxnXNZE9Kn/kJQfzigNRagIu8vjrQHDCy7JygWdfqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712479927; c=relaxed/simple;
-	bh=r7Qjy3TPkvWrgNpaqwL72EEpzX38+OfnnzqNs/akTiI=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=MNOxBta7VAIsw7RxWWIaVxRyyfRkKoZJobsTACkPzld9Ho14KRjrXoCmT3MJ501xjQ4DEPRhs8kW3SElj9WEMJDDTIewAiQ2hNu1DM6sD7dF96mH6tHAHkV5eI/kV1s/pJjx6prAkPjxBxdUDa1mQGTtjClKbCr4qLa7u7857Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=cKvqVD4f; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+	s=arc-20240116; t=1712480716; c=relaxed/simple;
+	bh=T/t51JGXpD0fuvl8+chSNW3C31fIsTrLP6DTVv85bPY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=SHqZ5oVZmQQw5AkVPvWf7sufpp2lls/7B3SQ2sPjxa8whwcmzSMmx+XYfpm8HVqzrmmLk5QwgEN2b0k19uDzKOaf5wSMieU1FvZ2kgVke/lU0+E4Hbw/ApdA92nipZYNMr5J57DId7ASeNyLj17jxrya0TYM+hxYNrK63BqCxP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FGyLIzZX; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="cKvqVD4f"
-Received: from pendragon.ideasonboard.com (aztw-30-b2-v4wan-166917-cust845.vm26.cable.virginm.net [82.37.23.78])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id AD23F667;
-	Sun,  7 Apr 2024 10:51:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1712479877;
-	bh=r7Qjy3TPkvWrgNpaqwL72EEpzX38+OfnnzqNs/akTiI=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=cKvqVD4fP55q72BRHq73KArX6IoaIGtlakDzokDVlDNmdXEA/g0No7pvDzmnkBTXT
-	 gII3jKfmZQlwvbwuy0uAS0Q89j6l2qiHdAfr2kRzrRSBhORCgiAZWLhNZjmpO+7RmH
-	 ZRbt2rl1oera26jQbpR2dpxI5fx6gMnHl9Y9Gsjg=
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FGyLIzZX"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d82713f473so59857981fa.3;
+        Sun, 07 Apr 2024 02:05:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712480712; x=1713085512; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=T8G+rV0x749m2N6zouKipiE4KRePdWsDRuNApiIyhjU=;
+        b=FGyLIzZXSCgN3Crmxnu+DNLZv4EeaJo+ZUNzCMD6petUiijbfLbXgyMH+9RV7g2CYW
+         r4U2xFlg17qK25bOlzte9ONo4Tuhm4/sTPrCuVIG5A0w4TidhQH+FdaOmfQOgGuusv6i
+         0r5H0P4mwqtVPIv3F6X7dOSYnAvqqsIbQBSjTOPXhmqaN0RMWW6AJ8SdmxJwgp7uc9of
+         IxNp8JSVTJRYMof2bKl8Q2UKVSCnonVNKPEsM39eUyWZhEaMUnS5v2WqqQc406AFvdIB
+         dR+mDYOX6QSbEIdP7ZQcJrQ+Xsq4AVhyEcwc2cy18OEDpHs75VjsGLFBUoeuYJBEbhEG
+         qPcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712480712; x=1713085512;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=T8G+rV0x749m2N6zouKipiE4KRePdWsDRuNApiIyhjU=;
+        b=RhFyW/Ka8ypQ9ZHPAPy3TgSPaYjePR7+NfYM/gnPWs8QXeG3qqk74uW3Wc1LeHG+BT
+         7QW71cmyucpF8oxwDEyjUIoAO3aD0tSEcpb7rNRYwFchoS56vAPBsL+z//WVYv4SzkdP
+         YvZBRQV7YLerDNSkU0iJlXJFdHo3HM92bpTph7H8jqoyjL2pPvJ5/JbzluRSvII3q8lp
+         udIw/pXpFWRX/ztboE/eLbpwp3iZ0NccJ+RM9EaReKw53BxWj75huca5Lk+W55LAZysz
+         pXYaMxf4QDEuXZzELZxT26bWYYMezwg7DjHdiJ/pxtIEtigeGdOciVlh3jdHRB59HT/1
+         nxow==
+X-Forwarded-Encrypted: i=1; AJvYcCW07HqqLqVUI/EVuQTUmIULUpMfcpjhJCJHxzshDX2nVmx5Otr4FG1IOVFhyEnMPVBxc7gNamMt7PemzRAXaAYBE6Q8uk87i/JqnZ7lW2YXhj/WDz/0cUXuiDd36FIG9GbDIwYBDdnrgZ7ALD+05DoKtn2Z18v7X8Hw+jlgohFQJEvmRy7a
+X-Gm-Message-State: AOJu0YwRfWqMsjveqUjfMfKSSEZXbAFuBoRNFJDRhXKdvnHFaRbK4/xw
+	uob+adwynAN8rHGUSou891IOqi9NdRMu2nA0q9Wz10OQPG3ABbjkXB/Ddfo/
+X-Google-Smtp-Source: AGHT+IEfkrFmkI3a8ZU8PI/MDIccfCLffQW0RgcK9+kZmYle7tpvm+I9PWStlGfZwx3/2SojeD9itQ==
+X-Received: by 2002:a2e:b0ca:0:b0:2d8:6fc4:d0b5 with SMTP id g10-20020a2eb0ca000000b002d86fc4d0b5mr4311433ljl.8.1712480712262;
+        Sun, 07 Apr 2024 02:05:12 -0700 (PDT)
+Received: from standask-GA-A55M-S2HP (lu-nat-113-247.ehs.sk. [188.123.113.247])
+        by smtp.gmail.com with ESMTPSA id el4-20020a170907284400b00a51b3410e46sm1924565ejc.7.2024.04.07.02.05.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 07 Apr 2024 02:05:12 -0700 (PDT)
+Date: Sun, 7 Apr 2024 11:05:10 +0200
+From: Stanislav Jakubek <stano.jakubek@gmail.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, phone-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/2] dt-bindings: arm: qcom: Add Motorola Moto G (2013)
+Message-ID: <32c507337ab80c550fb1df08f7014d1e31eb4c32.1712480582.git.stano.jakubek@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <803b0bd3-e615-41c1-888e-69b6ecca0b8a@luigi311.com>
-References: <20240403150355.189229-1-git@luigi311.com> <20240403150355.189229-10-git@luigi311.com> <Zg2jvUDFnY83drlg@duo.ucw.cz> <803b0bd3-e615-41c1-888e-69b6ecca0b8a@luigi311.com>
-Subject: Re: [PATCH v3 09/25] media: i2c: imx258: Add support for running on 2 CSI data lanes
-From: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, sakari.ailus@linux.intel.com, devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-To: Luis Garcia <git@luigi311.com>, Pavel Machek <pavel@ucw.cz>
-Date: Sun, 07 Apr 2024 09:51:54 +0100
-Message-ID: <171247991454.2374960.14379287208228554950@ping.linuxembedded.co.uk>
-User-Agent: alot/0.10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Quoting Luis Garcia (2024-04-06 06:25:41)
-> On 4/3/24 12:45, Pavel Machek wrote:
-> > Hi!
-> >=20
-> >> +/*
-> >> + * 4208x3120 @ 30 fps needs 1267Mbps/lane, 4 lanes.
-> >> + * To avoid further computation of clock settings, adopt the same per
-> >> + * lane data rate when using 2 lanes, thus allowing a maximum of 15fp=
-s.
-> >> + */
-> >> +static const struct imx258_reg mipi_1267mbps_19_2mhz_2l[] =3D {
-> >> +    { 0x0136, 0x13 },
-> >> +    { 0x0137, 0x33 },
-> >> +    { 0x0301, 0x0A },
-> >> +    { 0x0303, 0x02 },
-> >> +    { 0x0305, 0x03 },
-> >> +    { 0x0306, 0x00 },
-> >> +    { 0x0307, 0xC6 },
-> >> +    { 0x0309, 0x0A },
-> >> +    { 0x030B, 0x01 },
-> >> +    { 0x030D, 0x02 },
-> >> +    { 0x030E, 0x00 },
-> >> +    { 0x030F, 0xD8 },
-> >> +    { 0x0310, 0x00 },
-> >> +
-> >> +    { 0x0114, 0x01 },
-> >> +    { 0x0820, 0x09 },
-> >> +    { 0x0821, 0xa6 },
-> >> +    { 0x0822, 0x66 },
-> >> +    { 0x0823, 0x66 },
-> >> +};
-> >> +
-> >> +static const struct imx258_reg mipi_1267mbps_19_2mhz_4l[] =3D {
-> >>      { 0x0136, 0x13 },
-> >>      { 0x0137, 0x33 },
-> >>      { 0x0301, 0x05 },
-> >=20
-> > I wish we did not have to copy all the magic values like this.
-> >=20
-> > Best regards,
-> >                                                               Pavel
-> >                                                              =20
->=20
-> no kidding, magic values everywhere.... it makes it annoying
-> for me to move things around because they all start to look
-> similar. Down the line we added in more defined names so its
-> not as bad but still its bad lol.
+Document the Motorola Moto G (2013), which is a smartphone based
+on the Qualcomm MSM8226 SoC.
 
-This series converts the defines to names, which is great. It would have
-been nicer if the series converted first, but I know the history here
-means you have done the register naming on top of existing patches - so
-I don't think there's a requirement to change the ordering now.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
+---
+Changes in V3:
+  - no changes
 
-But I see new drivers coming in with register tables. I hope we can
-start to apply more pressure to driver submitters to use higher quality
-named register sets in the future, now that we have a greater precendent
-of sensor drivers 'doing the right thing'.
+Changes in V2:
+  - collect Krzysztof's A-b
 
-Sets of tables like we have are basically a binary blob stored as ascii
-and make maintainance far more difficult IMO.
+ Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-Maybe I should hit send on my comments on the latest GalaxyCore driver
-coming in that I hesitated on ...
---
-Kieran
+diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+index 66beaac60e1d..d2910982ae86 100644
+--- a/Documentation/devicetree/bindings/arm/qcom.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+@@ -137,6 +137,7 @@ properties:
+               - microsoft,dempsey
+               - microsoft,makepeace
+               - microsoft,moneypenny
++              - motorola,falcon
+               - samsung,s3ve3g
+           - const: qcom,msm8226
+ 
+-- 
+2.34.1
+
