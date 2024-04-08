@@ -1,238 +1,208 @@
-Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C58146007;
-	Mon,  8 Apr 2024 19:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712605799; cv=fail; b=iQFQ0AE/1VaRKQfCe0BsVzdnOEz9+ZOysYbv48RIRKwaJgItk833jfvVcbDfsG9RISt3xWWxhG7/eOGZOBCedSbObURj2Z10GJvwpFza4Nu+HFifMj/a8ks6okMuUulILIZF+8qgSApY3UFNNgQSNiTKcYQPnQBIvO7CDPQUu3U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712605799; c=relaxed/simple;
-	bh=y0r9UOxg6uGMHjf/xHT+2BOYd+BoCODUVubesVY7QPM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=QAlpe5iOpfuM2cK3RQpKlA15ZcKIes57x5/szB1PW5d2Qr9R0NbHlvGS/qAB+tTOHcbPv761m0ZLBNa/HHNBi0n8CNC9zy+T7c+wDmAciFt6Y7Nu5yDBP8FgbHjPshgrPfDr2UyajyEyXv/jpD3776E8g3iV5tNvMIu9PPuzSgo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=tE9zmm+u; arc=fail smtp.client-ip=205.220.166.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7FF146A60
+	for <phone-devel@vger.kernel.org>; Mon,  8 Apr 2024 20:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712607157; cv=none; b=TM39pCutG5gPvQ+TL/fMWHEaXhGHb4uwHGONNoLtGFffqGbjdgSqDAR6cr/bsKvQ/Pgt+HB6kPD0Wp2mkc91P/PY2skdUm8mRqzpZqVJ7NhYcCMFRwz4HKO0dpFfAy8nKtONIQ7m3pRO+45kl2XsJaE7HwvKjjCLWZ1AY9fUhvQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712607157; c=relaxed/simple;
+	bh=NVQtYSBEG2pxUndGJuSJkOztjdgw9ulw7xh2JSYD0pw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=s+eRnaXvNCHs+1F54QJXYfO+nSzGcYKXSQLA8Sv9tl3U04ys2X0ogtKy07Hk4bCd/j/XlQZBIujhoNnaccjRg29Z5+t22dzY3IcgcIXMME2A9zONYy2hiDe05C0gef1uZa+IE/gNxDYPxkb0wGAXkeeE/MhVdBFJ94G+JmOkis4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ps5hVdF8; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="tE9zmm+u"
-Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 438JNvrK002304;
-	Mon, 8 Apr 2024 19:49:38 GMT
-Received: from deu01-be0-obe.outbound.protection.outlook.com (mail-be0deu01lp2168.outbound.protection.outlook.com [104.47.7.168])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3xavryhgxr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Apr 2024 19:49:38 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MyxovdsUr00fRfSiZud+5nsUtsWk3ctOIxyB9PFYTkdohniqMumQQnYVSL3AVnkflAsCiFIG2jwuSzzzeZW64xeqEpOLemyqWeSRaJTiqOrKWHywcoUek5mcZ/CjnlvH/c22DY4H1Iv3ab32yT03VCjoaqJcv0ULyCGgdZ3BxD1H8xRjWtWaDG5PdsoJ2UkQ12WLMyzqkvXSID0cc3sBAjHu9c5BHp9KDSK1s4nji+N5Lpq2BIOvmj16cFr4j0taX3vFTQy1cwGzrG4NOeR+xDQbzEJHxo8LsniUbobQaECy+22i5xqLK9x2U0iTaY9P+fR5KEzPm/LKYQ3c83houg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GMj48TlTOWN8cOqjDJAZPzW6/UaDwb2y/jO/gQVIKHw=;
- b=UhDiZgMI5eL0Gg06mcJc89auyMLnlBUe7DpWk4UOSzSDAoYE/gRtt+e5aczKCK5D5mOETx2yLFLarPloqN9AbmxLybwMuSvxlukzlF7Pp9PCk8MmzaG+BEsSZvQ+HVv9/TO5J8Uvwz/ZC6bZAHKAhv8quuz01mrc8cShBXpGSXbv6qudlibX9HAGNrCwyF6oHNl7oV4IhAEBqY7TZ2ONH+cnfvDK2yi+sdIzikzo26O/1siRSQuqSzYHFdyVVuG0Qc6NjegcpVUEMkqCikfm5v3gsMExqv2X/x6fV5MWS0u3++E1kWM0zkWflUsMoFoSb6lseajE8BBgwJMkjj+npA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
- header.d=tdk.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GMj48TlTOWN8cOqjDJAZPzW6/UaDwb2y/jO/gQVIKHw=;
- b=tE9zmm+uybNZWhR9ld4SQr74Gll9xapVf+4H/d/H+VOHSqiitMdjYyqxLa5jKMkQ6S6WUYi8Eq9cVzx6m4SwbYiRti/tPMpinVUZU4q0FQIOKAeZET/hg8ajmh4BRjk8WBatN3wYx/wR5EV5D5TcEEPaDRBsjEXmSGLjZKgurYrA8SElcmzthpPj2swLWsvNQd73pGNYxm44/XGcBT+Ow3R8qALnqHHh2Hy1r/z3wKPdxdKP7c3jg0pr1TwyklcHMaW8PI/kn3ZqKLkiF1+BnKOYaby0KrMlqBxOwm2EuZpIsSTLoeY54gIDjOBYZvxpjtgGgXxJ1kUy9WJ0Mp9LzA==
-Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:7c::11)
- by FR6P281MB3724.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:c3::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Mon, 8 Apr
- 2024 19:49:32 +0000
-Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
- ([fe80::ed6d:53c2:7987:ea18]) by FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
- ([fe80::ed6d:53c2:7987:ea18%4]) with mapi id 15.20.7409.042; Mon, 8 Apr 2024
- 19:49:31 +0000
-From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-To: Luca Weiss <luca@z3ntu.xyz>,
-        "~postmarketos/upstreaming@lists.sr.ht"
-	<~postmarketos/upstreaming@lists.sr.ht>,
-        "phone-devel@vger.kernel.org"
-	<phone-devel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-CC: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] dt-bindings: iio: imu: mpu6050: Improve i2c-gate disallow
- list
-Thread-Topic: [PATCH] dt-bindings: iio: imu: mpu6050: Improve i2c-gate
- disallow list
-Thread-Index: AQHaidKwc1spTU+Cy0SOvLRms3HCILFexeuR
-Date: Mon, 8 Apr 2024 19:49:31 +0000
-Message-ID: 
- <FR3P281MB17571BB638E31DC630C3F78CCE002@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <20240408-mpu6050-i2c-gate-v1-1-621f051ce7de@z3ntu.xyz>
-In-Reply-To: <20240408-mpu6050-i2c-gate-v1-1-621f051ce7de@z3ntu.xyz>
-Accept-Language: en-US, fr-FR
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: FR3P281MB1757:EE_|FR6P281MB3724:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 
- 8shUAhs4uTFnvTSc1T4FYnxnDJQP33TzlUDVNcc/2V/dmamFaHX1DqJgHQcr5usLJg3HnXHasexbbr6lGueBBxPtvPAk6cmjUAtNVvKPhQI2Miie+bRbrLTEQ2YR14ipUy1RFDgoR/QNAmR4QXlCUOByHv2pDRn+PUmWLLOiBxpbpGjSewss7qyL5X0ZxD6YS5zl8dtkgaKK2359mVkAKbc12Dn1o8iFgfB+j2vnOgIGr3pjA0aQjszOTjF/M5yOWEARnzivyn6m+RUlGUMmkNQ7nnPCekbryD4hhh7iIvzW/KGk6Al1mPSGZGNHmJN+R//15VNyReuwQRnlSM17t7d5j0GpYX0K9Jy8Qso1+DHXIdP56GKf2OVqZmEhAWsEqit4Hs4z4yWniRA8w0hEzadWG3rRdCrre6mcPRgMDV7rbjYxn7+Ay62LSzeGFjqsYW7BKtoXFN0qUzDGB0wpKJn/rbVkul/UTdXzC1WiL1hdxHEs3W1xscbbyS7m8578dzt+emxYZ6IP5Ko1d3Czk5j19yEfjOI4KxEmA3OYAursP37alKxHz5TirTdwkDxSjjMnSrAx87SOKEGF1FtckMMqJhefPcov0fZYCfvKi50=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(7416005)(376005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?iso-8859-1?Q?Q8VG1Eo93AoK4J4iGwMHk3TpJFR2Coetj0bb1LCe/JhMEy9ZjnpyL3Ex4J?=
- =?iso-8859-1?Q?OZmAUFijyqkeds91MQan2guWrWa40qXSZk515ExRH07OFypSFBZSPhR3V0?=
- =?iso-8859-1?Q?93a/2SxCIfnId9fODbokjEEeHbBK5cm/uLaixxUuNa4OKk7bTxQhGHhRkr?=
- =?iso-8859-1?Q?u/5hwUBo7dj2ZxqcXKhAQAuerjOEWNw95mMYjAQGH5A/Rqgp+cg4ENNaqu?=
- =?iso-8859-1?Q?nB05CENkf2Oh3CndpHfRRB169X1Bbvqg+TxI2eqejtqgcntfdM95LsLus2?=
- =?iso-8859-1?Q?cirTNPH4/BO1W+j4lNv1RwuDUjc5+5e0KYbH2hzMw+wDUhsluFU5orqY8t?=
- =?iso-8859-1?Q?csLExi5rZgjc4XjHZ0cXju2IacETvFaTcRP29+afqRx9HKP2qjV/zhfk67?=
- =?iso-8859-1?Q?Z/Zbxd4+/1BsUciF9qzIF7j9EuzKEKvNi4nxmZUb0sbiqvwCypaX7WhzIg?=
- =?iso-8859-1?Q?4g1C/swjHJrDhPJLMqf0gqwORCtdJ005AFiDrTro8FN0yMSWiiuROgRG7/?=
- =?iso-8859-1?Q?Dp1bKdDIH430GcNoGY7vSYH/OEmzcLlPmk576F47YZnaYgz/phHQpDUTfb?=
- =?iso-8859-1?Q?3/D+0UaiJ/FZv92AM4u9pQa3LFTyPtwf+fI0T6mdNM0Dqi2XJCyZTvZRuW?=
- =?iso-8859-1?Q?gr51CwsuCp4vxTYrisuWfFqpytpiJCXTZ2Dgy9ljNYDrktK9mnXrXyvJ6b?=
- =?iso-8859-1?Q?ol2XOwCMfChOxJGX5Bnozbb7PyHd1sO0gafmjEYug4/a+lEfqDi2xe3gVD?=
- =?iso-8859-1?Q?gag1gYM23TUek2l0CB3Ak4uTieZq/TQbFYOSVBzb4heoSva10Tp8Suq/ju?=
- =?iso-8859-1?Q?Rxrk+ehRQJGzHKtuha3lLLbn1rS/U9wtBYpc4Du8BqRvWNc42FcdIAFcAM?=
- =?iso-8859-1?Q?WsZgEFXeKsT+zPfeSf6aSUX0sgPlsaRYR5QSNDrP131S3ulaCmfzjFar1X?=
- =?iso-8859-1?Q?GIjaMPuKme/nitCSGl2qfZMS2/CsP5Yz5uzn/1XeCR7nz4FnLBrI/Vf/Tl?=
- =?iso-8859-1?Q?Up06kV3qdX2BalVy1seXL7XqN4OlGaPRRiZU8dPMLBtuYg16zMJnXoGpb+?=
- =?iso-8859-1?Q?4RmrKWJOyXvEbWI47xZdPTDx84vCqNkmRe/bWyErE68Xz8QbS8NInTWlGI?=
- =?iso-8859-1?Q?9jHPtSHqP3Dkq0d9e73OcZIyVmuh8FdAAh7rLDop1I24j53Z44i1OlBS/P?=
- =?iso-8859-1?Q?Pzj7InsWWbnjD+AisU6IPR9ZmHPIIhnOjVv3v0iMaTZ+WXiRYUpHtOvWIn?=
- =?iso-8859-1?Q?oVAy82abOfJMddahpiyzjhYZc0qYtSKZ3nB8uNxPGfPqTPL2bANyTv1HP3?=
- =?iso-8859-1?Q?fKHxp9J/JnUbJydvuf6boShbBlpLad5hevz+5Y7VOnMbif85XgqAK0ciX6?=
- =?iso-8859-1?Q?6Ch+x/3ElPQuHtqSR0M4mRGR9fF1R08fu2lUaXP+T5SsbpiOG0k9unUHbP?=
- =?iso-8859-1?Q?+UEnJiEGBjZ00FhFGnpjIir3Eef4m2ooBxl8ME9H/GWTpcFoMjwK2vxhzE?=
- =?iso-8859-1?Q?DFBniPiq02Uhk7Rkd8znsOuI8OJrqRC9gGuamGKlAnRLfMB1dPIMTEsvBA?=
- =?iso-8859-1?Q?RdAFsceTbCjYj0Ux72jhpcdf2I7JRglwlGRKV7Pt/a0Lr5CTfx5YxQerLE?=
- =?iso-8859-1?Q?OlMZB5Rgg8gsQEohrE4sF3/dh6Nwwl7MiObzZt9Ejp5VN6Sai+yUQVzwRw?=
- =?iso-8859-1?Q?SFdb6EPHTS2lxeFmONAHBGaB0GxyXV7+Ndyp5zxnoQtf0iKwIYfeT/bjTX?=
- =?iso-8859-1?Q?J6lA=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ps5hVdF8"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-516f2e0edb7so2060740e87.1
+        for <phone-devel@vger.kernel.org>; Mon, 08 Apr 2024 13:12:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712607153; x=1713211953; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=D3WZGoA5s1Cdk73nMnJCKpNMxCWu21VuKqBPTiSrXo4=;
+        b=Ps5hVdF8YL6UnvMHMNVBaJYZR4tHhh/q51Fk92jJAZYUqA2Dm8h9Aa95oFleIZM/vV
+         B49DXzYKL7Vhks468kNPZxQFVBLXtMXC5pBythHDQyFGJme6zi2KknPLaKfuf4hF2U6W
+         ZyP/5MXEDhymltmM/vYSlA2TT05XsMzTTcCBRzjJFyK6Q1cI8JzMsZJ3VovIx8Jx3Bd6
+         WiyTxhN9jenFl9O9jwOYl2MKCwzMLNMowQ0EV8kitXEoXaN1IJojNhpqOplnZk79uMQ9
+         ubJkZnJoqQYbkJUfRzC3e/0FDZxG3a5U69lKF5bOb/wkMXphHnNrZIhPAtg5GkyN4mvU
+         wBGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712607153; x=1713211953;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=D3WZGoA5s1Cdk73nMnJCKpNMxCWu21VuKqBPTiSrXo4=;
+        b=LDXF8yewWsg6Oh97n6iazUXi+dNBskoszUdsCyZuZVMw2gMi7gVqoLBxOqaYu4BY22
+         iZCuyEn/MvVIVm3fLGCfEogUNK6o0QNGdOQ5mVrwG6lKkPjmgSMwzS3Zg3H9r1E1L8T+
+         77fLTeqIybxHOJPvgOcuYEMq5DEVjmglApSRKS0CeLjjThZwqlQh8GdFj6p4+uiPk9sg
+         5uDtVSR0H+fEDmmuG8U+ZOQ8uhU3FBsV0s9l8sWinzAYpRkOotMcE5R6opkRo77xF2li
+         04j4DENMhdV5AYrikr+K3uASeMATPljqewqgiYp6N6FAmfBDrgjnlf/un1XDbTc8miXx
+         qAHg==
+X-Forwarded-Encrypted: i=1; AJvYcCWsOQ/Ab6sacVLbav865bbtOoUM+i94SaG6LxBgVNMoh/ZXbkGMdD6T2yV6ab0sweFrqKBTGeoieFQYa8rv3Z8SzNZtNVwZMTxp4p0=
+X-Gm-Message-State: AOJu0YxjvbwQBOguPm33a2lP/SVcSyUiEJ0ulln6pgRpopsKsICVVcgp
+	UEK9GDg3j+uzeFfkpz18Gt7ksaDpmaidgmkpS6FYfilxt6ovU8sp/gfis1zFzNM=
+X-Google-Smtp-Source: AGHT+IG2W2zaknbzAY47gOd5Azp1rY1fNswZewy/6JZJGK07p5lhNS0K5dfBr87ujo/gmLS3TlT9Bg==
+X-Received: by 2002:ac2:46e9:0:b0:516:bfd7:de92 with SMTP id q9-20020ac246e9000000b00516bfd7de92mr6862950lfo.43.1712607152799;
+        Mon, 08 Apr 2024 13:12:32 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id jw20-20020a170906e95400b00a51c5940247sm2834929ejb.213.2024.04.08.13.12.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Apr 2024 13:12:32 -0700 (PDT)
+Message-ID: <97f2d38d-c863-4c76-91f1-52cd250759d7@linaro.org>
+Date: Mon, 8 Apr 2024 22:12:30 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1c8c2d0-04bc-4a69-5caf-08dc58050260
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Apr 2024 19:49:31.7439
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7e452255-946f-4f17-800a-a0fb6835dc6c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0NG+U03mHawk3DLMLRRt/YiQJJjJdkUpw9YS7R4bkaPuS5Cy/cRI5NEGwyJ+UdKRQD6dZpPPgcPfQK582ucHupfUuEv+OtUsWGVQs5aR/aA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR6P281MB3724
-X-Proofpoint-GUID: mmUdzb40YsE5V-LVT2AXjG1wuqZW_jCD
-X-Proofpoint-ORIG-GUID: mmUdzb40YsE5V-LVT2AXjG1wuqZW_jCD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-08_17,2024-04-05_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 malwarescore=0
- clxscore=1011 mlxscore=0 priorityscore=1501 phishscore=0 mlxlogscore=999
- impostorscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
- definitions=main-2404080153
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv3 1/2] dt-bindings: usb: typec: anx7688: start a binding
+ document
+To: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>, Pavel Machek
+ <pavel@ucw.cz>, phone-devel@vger.kernel.org,
+ kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de,
+ martijn@brixit.nl, samuel@sholland.org, heikki.krogerus@linux.intel.com,
+ gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org
+References: <ZhPMHdt6r/4D99Zg@duo.ucw.cz>
+ <ab9affc8-de68-4ec9-bdfc-02131191bc3a@linaro.org>
+ <ZhPTTxI4oTF3pgrk@duo.ucw.cz>
+ <e7841ad2-fa3d-442d-804d-51f12e05c234@linaro.org>
+ <e6vvuttix5k5fioy7q44ick5wj6u5gleh7mht36s4zjjcym7vy@bziejyohtc4b>
+ <7976e254-ed1e-406d-870b-1ecdc4b1e23c@linaro.org>
+ <uoo7xltbfx7u6iai7urj3wez7cwotokxt6lwjhff57xbljusqn@fr2xejnrlak7>
+ <1502383c-9caf-4362-8bd6-ed719a304f08@linaro.org>
+ <vbo7bacecuagu4qzrr6tsdh4qlejrv7ia67yylf6ay4u7qnwge@kqj27bun2m7d>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <vbo7bacecuagu4qzrr6tsdh4qlejrv7ia67yylf6ay4u7qnwge@kqj27bun2m7d>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello Luca,=0A=
-=0A=
-good catch, thanks for the patch!=0A=
-=0A=
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>=0A=
-=0A=
-=0A=
-From:=A0Luca Weiss <luca@z3ntu.xyz>=0A=
-Sent:=A0Monday, April 8, 2024 18:34=0A=
-To:=A0~postmarketos/upstreaming@lists.sr.ht <~postmarketos/upstreaming@list=
-s.sr.ht>; phone-devel@vger.kernel.org <phone-devel@vger.kernel.org>; Jonath=
-an Cameron <jic23@kernel.org>; Lars-Peter Clausen <lars@metafoo.de>; Rob He=
-rring <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Do=
-oley <conor+dt@kernel.org>; Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@=
-tdk.com>=0A=
-Cc:=A0linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; devicetree@vge=
-r.kernel.org <devicetree@vger.kernel.org>; linux-kernel@vger.kernel.org <li=
-nux-kernel@vger.kernel.org>; Luca Weiss <luca@z3ntu.xyz>=0A=
-Subject:=A0[PATCH] dt-bindings: iio: imu: mpu6050: Improve i2c-gate disallo=
-w list=0A=
-=A0=0A=
-This Message Is From an Untrusted Sender=0A=
-You have not previously corresponded with this sender.=0A=
-=A0=0A=
-Before all supported sensors except for MPU{9150,9250,9255} were not=0A=
-allowed to use i2c-gate in the bindings which excluded quite a few=0A=
-supported sensors where this functionality is supported.=0A=
-=0A=
-Switch the list of sensors to ones where the Linux driver explicitly=0A=
-disallows support for the auxiliary bus ("inv_mpu_i2c_aux_bus"). Since=0A=
-the driver is also based on "default: return true" this should scale=0A=
-better into the future.=0A=
-=0A=
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>=0A=
----=0A=
-This fixes dt validation error on qcom-msm8974-lge-nexus5-hammerhead=0A=
-which uses mpu6515=0A=
-=0A=
-arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dtb: mpu6515@68: =
-i2c-gate: False schema does not allow {'#address-cells': [[1]], '#size-cell=
-s': [[0]], 'ak8963@f': {'compatible': ['asahi-kasei,ak8963'], 'reg': [[15]]=
-, 'gpios': [[40, 67, 0]], 'vid-supply': [[50]], 'vdd-supply': [[49]]}, 'bmp=
-280@76': {'compatible': ['bosch,bmp280'], 'reg': [[118]], 'vdda-supply': [[=
-50]], 'vddd-supply': [[49]]}}=0A=
-        from schema $id: https://urldefense.com/v3/__http://devicetree.org/=
-schemas/iio/imu/invensense,mpu6050.yaml*__;Iw!!FtrhtPsWDhZ6tw!Athn1pwCL_LPp=
-Z97exHEFSkirApIqFF2ISY01IuyHtFBxpbPkcPWh_FmzB_TiCzb8uv1HO0AHY4IeIlv1-o$[dev=
-icetree[.]org]=0A=
----=0A=
- .../devicetree/bindings/iio/imu/invensense,mpu6050.yaml | 17 +++++++++----=
-----=0A=
- 1 file changed, 9 insertions(+), 8 deletions(-)=0A=
-=0A=
-diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.y=
-aml b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml=0A=
-index 297b8a1a7ffb..587ff2bced2d 100644=0A=
---- a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml=0A=
-+++ b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml=0A=
-@@ -62,14 +62,15 @@ properties:=0A=
- allOf:=0A=
-   - $ref: /schemas/spi/spi-peripheral-props.yaml#=0A=
-   - if:=0A=
--      not:=0A=
--        properties:=0A=
--          compatible:=0A=
--            contains:=0A=
--              enum:=0A=
--                - invensense,mpu9150=0A=
--                - invensense,mpu9250=0A=
--                - invensense,mpu9255=0A=
-+      properties:=0A=
-+        compatible:=0A=
-+          contains:=0A=
-+            enum:=0A=
-+              - invensense,iam20680=0A=
-+              - invensense,icm20602=0A=
-+              - invensense,icm20608=0A=
-+              - invensense,icm20609=0A=
-+              - invensense,icm20689=0A=
-     then:=0A=
-       properties:=0A=
-         i2c-gate: false=0A=
-=0A=
----=0A=
-base-commit: 8568bb2ccc278f344e6ac44af6ed010a90aa88dc=0A=
-change-id: 20240408-mpu6050-i2c-gate-4ea473e492f4=0A=
-=0A=
-Best regards,=0A=
--- =0A=
-Luca Weiss <luca@z3ntu.xyz>=0A=
-=0A=
+On 08/04/2024 17:17, Ondřej Jirman wrote:
+> On Mon, Apr 08, 2024 at 03:27:00PM GMT, Krzysztof Kozlowski wrote:
+>> On 08/04/2024 14:48, Ondřej Jirman wrote:
+>>> Yeah, I understand where the confusion is. The driver is not for anx7688 chip
+>>> really. The driver is named anx7688, but that's mostly a historical accident at
+>>> this point.
+>>>
+>>> I guess there can be a driver for anx7688 chip that can directly use the chip's
+>>> resources from the host by directly manipulating its registers and implementing
+>>> type-c functionality via eg. Linux's TCPM or TCPCI stack, etc. (eg. like
+>>> fusb302 driver, or various tcpci subdrivers).
+>>>
+>>> But in this case the chip is driven by an optional on-chip microcontroller's
+>>> firmware and *this driver* is specifically for *the Type-C port on Pinephone*
+>>
+>> We do not talk here about the driver, but bindings, so hardware.
+> 
+> Got it. Bindings should be the same regardless of what driver would be used,
+> whether this OCM based one, or some future one based on the above mentioned
+> TCPCI in-kernel implementation. Hardware is the same in both cases.
+> 
+> Just trying to imagine how to actually solve the issues...
+> 
+> Basic thing with the I2C regulator thing is that needs to be enabled as long
+> as anx7688 needs to communicate over I2C. Other user of this power rail is
+> touchscreen controller for its normal power supply, and it needs to be able
+> to disable it during system suspend.
+
+This does not look like anything specific to this particular device...
+but even without this, please think how you want it to be solved. Same
+supply which has to be on always, because your anx7688 can talk over
+I2C, and in the same time sometimes off, so touchscreen can be shutdown.
+
+If this is regulator for the I2C bus, then I think we already had this
+discussion some time ago. I think it is not a property of the I2C
+device, but the controller.
+
+> 
+> Now for things to not fail during suspend/resume based on PM callbacks
+> invocation order, anx7688 driver needs to enable this regulator too, as long
+> as it needs it.
+
+No, the I2C bus driver needs to manage it. Not one individual I2C
+device. Again, why anx7688 is specific? If you next phone has anx8867,
+using different driver, you also add there i2c-supply? And if it is
+nxp,ptn5100 as well?
+
+> 
+> I can put bus-supply to I2C controller node, and read it from the ANX7688 driver
+> I guess, by going up a DT node. Whether that's going to be acceptable, I don't
+> know. 
+> 
+> 
+> VCONN regulator I don't know where else to put either. It doesn't seem to belong
+> anywhere. It's not something directly connected to Type-C connector, so
+> not part of connector bindings, and there's nothing else I can see, other
+> than anx7688 device which needs it for core functionality.
+
+That sounds like a GPIO, not regulator. anx7688 has GPIOs, right? On
+Pinephone they go to regulator, but on FooPhone also using anx7688 they
+go somewhere else, so why this anx7688 assumes this is a regulator?
+
+You need to properly represent the hardware, not bend it to your one
+use-case for one hardware.
+
+
+> 
+> ANX7688 chip desing doesn't have integrated VCONN mosfet switches so it always
+> needs external supply + switches that are controlled by the chip itself. There's
+> no sensible design where someone would not want this and the driver needs
+> to get this regulator reference from somewhere. The switches are sort of an
+> extension of the chip.
+
+
+Best regards,
+Krzysztof
+
