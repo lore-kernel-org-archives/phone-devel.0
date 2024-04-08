@@ -1,111 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E117470;
-	Mon,  8 Apr 2024 06:00:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92915FB8B;
+	Mon,  8 Apr 2024 10:51:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712556011; cv=none; b=Nirj1aDXUnHBhNYJgVB+ohvUzRce6HK8tGTEs89cfTLYh1Q0MVMIebQcstl7XkFS09A4vOuTcauH+k+XVF6g5t7FsZa48fQG+i7GxVinCI/shkvJ1kSNST4ykq+gY68kon8Oln4b2ZoKCforydD0QVx/A1HA8hoUu/xZhwNr5Mg=
+	t=1712573481; cv=none; b=iJnlUzjNwLvbJlkt4hvnioXvivA93Vmi/KKsnH9M6p3oCoC8F3w2ayc1jJNv4qvBvq2HROzlMdGGSmBcOUWW/5Np8uIHMwOEXBxdZkLucNdR4FHa9RkXFmRwIjoNxC6ffk2s7HDS5IbUfa7nD4obWcbbiQtgHzfoYjFn8Ql6xlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712556011; c=relaxed/simple;
-	bh=j9uvs+9f8xh+cg+3sTpoShgeccdOhjZsmAXr4AUaKL0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JjAlpb+eZyBtXwhClpsvE69M+Q1NbQlJjlyciayAZfaUOCM8smBGbhPKRYxCBngGWwLBGIkRbsU3/hh17BRhrpXrGCZ76hdJhW8UFIPuveH81TXDFfxvwRB96CKkv46ItjybitBc6oy6OJ4Kc3pmzR1rlAw6tM5v7n4ZtqBV0z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EwjMqRSo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712573481; c=relaxed/simple;
+	bh=WCt2au2ZHY2lqv9a2qevWMjPXZlFwu+U1pZdrhlWZ/4=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=P2IkxXuVClvxglx+kobLBPsJYagMMmeEwA2lFS6cQVLnWYMPGgmTuTEHpvgUlm2CICBQFj7upBN3IK5Zdn08NpmtpL7RsjocOAMtVvc1m14mqfSabggZzjLzeDwbeV5yWecB0Jl01epsP2YiV3qWiPAT/MWpXjBMTRp1q+KXtCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=VBdEizzH; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EwjMqRSo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBD6C433C7;
-	Mon,  8 Apr 2024 06:00:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712556011;
-	bh=j9uvs+9f8xh+cg+3sTpoShgeccdOhjZsmAXr4AUaKL0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EwjMqRSoOEy16fWn51FE5VAieqkDlB3aHwR5OMEmOsk7Y+ctxWinw73hRoGWQ3kHR
-	 qzwELMqPGgvQGo+T00mtlPdqmIWOYYdid8JGpd7w5OqumRYFSlgI2uh9cvbuzG1Oyd
-	 AikBGAJEMVAYB59TaBWlumpqL4tCGVl1vBzC+ENJzdHg2MNkAjlEcNdWm9J65aMHqb
-	 dm1MuljDr9CPPdEpGrzBdbMRF6Zn9Cf6+NG3gliinj2oriB1z+Vf40Si0B9uuuTZuS
-	 /L7oens58Z+9hqrDCVr8LpZvNt21roy8Q1P7TQuxmq0A0F4er5NqAsOYYxQTuZ5Pze
-	 AA7dZ7iwkllzA==
-Message-ID: <6b1f4602-a6d1-41dc-9dfd-8af738612680@kernel.org>
-Date: Mon, 8 Apr 2024 08:00:04 +0200
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="VBdEizzH"
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id C83911C006B; Mon,  8 Apr 2024 12:51:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1712573469;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type;
+	bh=XBw/jDn4s4DjiSKc+Ep3ZJbj4oQ2UwIt92I3I0JXo18=;
+	b=VBdEizzHot8G11ote0krnF1J/1eA1pWrJwgzLkjhBqkkeEp4a0gqrQcYGAFJDK4hCxVmgm
+	hJnkLZEJEC3tEONpdsX1LnLSDlnnvttVYdsMyt9oVm/QT00Bb46b/UxYq1JMZc+Yd9TUQC
+	FNVLJgNRKZykJmykyEfL0zEmexmrXVk=
+Date: Mon, 8 Apr 2024 12:51:09 +0200
+From: Pavel Machek <pavel@ucw.cz>
+To: phone-devel@vger.kernel.org, kernel list <linux-kernel@vger.kernel.org>,
+	fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org,
+	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org,
+	megi@xff.cz
+Subject: [PATCHv3 1/2] dt-bindings: usb: typec: anx7688: start a binding
+ document
+Message-ID: <ZhPMHdt6r/4D99Zg@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] dt-bindings: remoteproc: qcom,sdm845-adsp-pil: Fix
- qcom,halt-regs definition
-To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240407-qcom-halt-regs-fixup-v1-0-a0ea4e2c178e@z3ntu.xyz>
- <20240407-qcom-halt-regs-fixup-v1-3-a0ea4e2c178e@z3ntu.xyz>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240407-qcom-halt-regs-fixup-v1-3-a0ea4e2c178e@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 07/04/2024 11:58, Luca Weiss wrote:
-> Set the 'items' correctly for the qcom,halt-regs property and update the
-> description to match what it should be.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
->  .../devicetree/bindings/remoteproc/qcom,sdm845-adsp-pil.yaml        | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="xcc0rfiKI+Y+ldks"
+Content-Disposition: inline
 
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+--xcc0rfiKI+Y+ldks
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Best regards,
-Krzysztof
+Add binding for anx7688 usb type-c bridge. I don't have a datasheet,
+but I did best I could.
 
+Signed-off-by: Pavel Machek <pavel@ucw.cz>
+
+---
+
+v2: implement review feedback
+v3: fix single character pointed by robot
+
+diff --git a/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml b/=
+Documentation/devicetree/bindings/usb/analogix,anx7688.yaml
+new file mode 100644
+index 000000000000..48b9ae936cb5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/usb/analogix,anx7688.yaml
+@@ -0,0 +1,127 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/usb/analogix,anx7688.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++# Pin names can be deduced from
++# https://files.pine64.org/doc/PinePhone/PinePhone%20v1.2b%20Released%20Sc=
+hematic.pdf
++
++title: Analogix ANX7688 Type-C controller
++
++maintainers:
++  - Pavel Machek <pavel@ucw.cz>
++
++properties:
++  compatible:
++    enum:
++      - analogix,anx7688
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  reset-gpios:
++    maxItems: 1
++    description: GPIO controlling RESET_N (B7) pin.
++
++  enable-gpios:
++    maxItems: 1
++    description: GPIO controlling POWER_EN (D2) pin.
++
++  cabledet-gpios:
++    maxItems: 1
++    description: GPIO controlling CABLE_DET (C3) pin.
++
++  avdd10-supply:
++    description: 1.0V power supply going to AVDD10 (A4, ...) pins
++
++  dvdd10-supply:
++    description: 1.0V power supply going to DVDD10 (D6, ...) pins
++
++  avdd18-supply:
++    description: 1.8V power supply going to AVDD18 (E3, ...) pins
++
++  dvdd18-supply:
++    description: 1.8V power supply going to DVDD18 (G4, ...) pins
++
++  avdd33-supply:
++    description: 3.3V power supply going to AVDD33 (C4, ...) pins
++
++  i2c-supply: true
++  vconn-supply: true
++  hdmi-vt-supply: true
++  vbus-supply: true
++  vbus-in-supply: true
++
++  connector:
++    type: object
++    $ref: /schemas/connector/usb-connector.yaml
++
++    description:
++      Properties for usb c connector.
++
++    properties:
++      compatible:
++        const: usb-c-connector
++
++required:
++  - compatible
++  - reg
++  - connector
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/gpio/gpio.h>
++
++    i2c {
++        #address-cells =3D <1>;
++        #size-cells =3D <0>;
++
++        typec@2c {
++            compatible =3D "analogix,anx7688";
++            reg =3D <0x2c>;
++            interrupts =3D <8 IRQ_TYPE_EDGE_FALLING>;
++            interrupt-parent =3D <&gpio0>;
++
++            enable-gpios =3D <&pio 3 10 GPIO_ACTIVE_LOW>; /* PD10 */
++            reset-gpios =3D <&pio 3 6 GPIO_ACTIVE_HIGH>; /* PD6 */
++            cabledet-gpios =3D <&r_pio 0 8 GPIO_ACTIVE_HIGH>; /* PL8 */
++
++            avdd10-supply =3D <&reg_anx1v0>;
++            dvdd10-supply =3D <&reg_anx1v0>;
++            avdd18-supply =3D <&reg_ldo_io1>;
++            dvdd18-supply =3D <&reg_ldo_io1>;
++            avdd33-supply =3D <&reg_dcdc1>;
++            i2c-supply =3D <&reg_ldo_io0>;
++            vconn-supply =3D <&reg_vconn5v0>;
++            hdmi-vt-supply =3D <&reg_dldo1>;
++
++            vbus-supply =3D <&reg_usb_5v>;
++            vbus-in-supply =3D <&usb_power_supply>;
++
++            typec_con: connector {
++                compatible =3D "usb-c-connector";
++                power-role =3D "dual";
++                data-role =3D "dual";
++                try-power-role =3D "source";
++
++                ports {
++                    #address-cells =3D <1>;
++                    #size-cells =3D <0>;
++                    port@0 {
++                        reg =3D <0>;
++                        typec_con_ep: endpoint {
++                            remote-endpoint =3D <&usbotg_hs_ep>;
++                        };
++                    };
++                };
++            };
++        };
++    };
++...
+
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--xcc0rfiKI+Y+ldks
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZhPMHQAKCRAw5/Bqldv6
+8mgEAKCH0WaaYBpVAsICPL+hNTVY03fJUQCeJnxEc/yyn0UbqcQhtLbCTmOMLPw=
+=jiaK
+-----END PGP SIGNATURE-----
+
+--xcc0rfiKI+Y+ldks--
