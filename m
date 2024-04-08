@@ -1,141 +1,121 @@
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46EC13F44B;
-	Mon,  8 Apr 2024 15:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75CB145B0C;
+	Mon,  8 Apr 2024 16:34:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712589469; cv=none; b=EHNe68mN/miWFr0EXBgEnhbsiq6u2XZlj2kyy8oEiVnjo3NdIkLHf7XCWG4VRNdnCDPPc4T8T0LDAwIflgtVNKasoGavgRGaxHIrDagi8tXtb5q9WcqspwHfK62cGl1Kb+ir4PgY8nugNb+dcCw7AXW0utBqYfCRKBbIhM3Stq0=
+	t=1712594090; cv=none; b=oaI7SKe83bCFQuNIERxAvnN/gzqFTU5u39o4iZDpm29JReDr8XPklNnSjUwQh+UXd7VyW5LiWj78Gl1KPIpD9G2HB1J3PwzJ5Ff39U+iaz1vpJYoxrqCcwwkD9BZXANagH/xbremmIicjcDeE3efSuguBcgA1v5qm8lH7EsaoRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712589469; c=relaxed/simple;
-	bh=AYeVrQdvosASyC+HQOVAheJr5WOqO6RSDW3nYM7LFCE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hSY3ld3ZBMDkHWcsEF1Fp3tcdYoJ3+DOzEyX72qV3XrKwM7IUfH1I3jG+zasQNySQT7gKDD6G4+dp+Psk0U7Qpdl5qoqaGpJqQcE/q6hAgucyjUMvctwHyyy4Zg5KsJIxP5Ab9RkLUjxmfasOKXhpQIV/34VSx3uZgt/M5m9HGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=CRh4jbsE; arc=none smtp.client-ip=195.181.215.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
+	s=arc-20240116; t=1712594090; c=relaxed/simple;
+	bh=qvnGOQ4wjXBKzINryA0Oef5MwTy2fQxVBq/S+8Agw2Y=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=adus7K+JDy+7tTjTvxVqV4ICM1zqyaaOqvc0PTgOQpiL7dHdqxy+hhiQMebOvAmt1+KR9rAUNWKUJl1cx2WyfbidgEVMKskoTdWUqOE6BBnEglbMYGvhitf7pUEF2t5AHHTZAuqAFkAXJW9hXw8noHY81w3WM75RViCQGLH1AEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=h4AmvDjp; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="CRh4jbsE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-	t=1712589461; bh=AYeVrQdvosASyC+HQOVAheJr5WOqO6RSDW3nYM7LFCE=;
-	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
-	b=CRh4jbsEXcrgqQwEusZ/7VrROvaujjQWLV+K0GrAG2YCVAUi2atlgp+xU9FW0szyN
-	 GLZeUxyRCXIpjE9By0ZS0jffpIuTmdVlRP6lb4aBaMLosJXInjVvUA9z60RyxoJswh
-	 8VBmcbLNQP5sd8/yVlTxNlYkJcZUZlatizw47KUY=
-Date: Mon, 8 Apr 2024 17:17:41 +0200
-From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Pavel Machek <pavel@ucw.cz>, phone-devel@vger.kernel.org, 
-	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
-	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org
-Subject: Re: [PATCHv3 1/2] dt-bindings: usb: typec: anx7688: start a binding
- document
-Message-ID: <vbo7bacecuagu4qzrr6tsdh4qlejrv7ia67yylf6ay4u7qnwge@kqj27bun2m7d>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Pavel Machek <pavel@ucw.cz>, phone-devel@vger.kernel.org, 
-	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
-	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
-References: <ZhPMHdt6r/4D99Zg@duo.ucw.cz>
- <ab9affc8-de68-4ec9-bdfc-02131191bc3a@linaro.org>
- <ZhPTTxI4oTF3pgrk@duo.ucw.cz>
- <e7841ad2-fa3d-442d-804d-51f12e05c234@linaro.org>
- <e6vvuttix5k5fioy7q44ick5wj6u5gleh7mht36s4zjjcym7vy@bziejyohtc4b>
- <7976e254-ed1e-406d-870b-1ecdc4b1e23c@linaro.org>
- <uoo7xltbfx7u6iai7urj3wez7cwotokxt6lwjhff57xbljusqn@fr2xejnrlak7>
- <1502383c-9caf-4362-8bd6-ed719a304f08@linaro.org>
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="h4AmvDjp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1712594080; bh=qvnGOQ4wjXBKzINryA0Oef5MwTy2fQxVBq/S+8Agw2Y=;
+	h=From:Date:Subject:To:Cc;
+	b=h4AmvDjprPpaCHFC3VFnqEHkF7s0Izxi6UkKUa8nRGM76eTH2Zvp/mdeOiiGBPWnI
+	 ki6MUrN+CLCDX05zi7cK0Lutay3A3kuVdCH/Ih9JLxPWIZR3P7yT/1bilyOO1SIc8Z
+	 Gpa81Itt+BzcId5pj/mhNvuqm4ATMxiUuRHX4s5s=
+From: Luca Weiss <luca@z3ntu.xyz>
+Date: Mon, 08 Apr 2024 18:34:33 +0200
+Subject: [PATCH] dt-bindings: iio: imu: mpu6050: Improve i2c-gate disallow
+ list
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1502383c-9caf-4362-8bd6-ed719a304f08@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240408-mpu6050-i2c-gate-v1-1-621f051ce7de@z3ntu.xyz>
+X-B4-Tracking: v=1; b=H4sIAJgcFGYC/x3MSQqAMAxA0atI1gZijeNVxEXRqFk40KoI0rtbX
+ L7F/y94cSoe2uQFJ7d63beILE1gWOw2C+oYDYYME1ON63GVVBCqGXC2pyCL5SoXbszEELPDyaT
+ Pv+z6ED62G1XZYgAAAA==
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2368; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=qvnGOQ4wjXBKzINryA0Oef5MwTy2fQxVBq/S+8Agw2Y=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBmFBycxBKS0t7+PhZbuZ4QPqgAnd1HaVGlCHuGC
+ oHmew1B+IqJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZhQcnAAKCRBy2EO4nU3X
+ Vv0ZD/9JNUtWSrR42AK5CKQoOxnEa2zSvCXJu2h3oOeeXjg1UFx7CSH7gG5jm4vd0vHzngHqpYH
+ 0nRKJ4IyQSLcEIVZjugNvHsSha7qhhoFLPX9iHEVD9RNf+aWrERd1qDVsEfUWhtKkDYVnKkamA2
+ ZniDBuGMfnB53mqSG7gUfqqmArP06/lOI2cjC3qfINdz9IOLdZaKy7I7G4cHPEM3Avy29n6GZ+V
+ Yg38AdMkwBXvEPEwWsLRq+AwARZWlti9GHuISrEijRD9GOjS3MP5WgoYv620Q25T3ry71BmnfZ3
+ PUNHjod7CpUxGHgmwDJyBPepbmK8TbTgly3anKaxWwmKkwDY4bWZwRqevu6KulBGoUbHAqZRc9b
+ Vh7Tz7Ku9yo+vABOI2T5umZFj3dsl2QzDpiKEPUJuGawHEqhVkgKo4Lt3b6FxwTJYwk7B1MV2VE
+ 842q0AJXfmDBY2Y4PtpuIYhBt5NpqIWzKcLt2dP2qyziCywwQI6PTqlWkyT6tSBA+e6GKgfZhef
+ d2kb+KaSnm6aKqMiFIpQGS11Z4HkbQQCJhwegvF04EWNwBYSwj49V3lqJi6OGK74XR3M0UqMUlV
+ x2686vNZLejkPcVbpHfFvTVKiZRmDuoZHMMjl0SR5/SRBSdWiM7q/X8u6imN1Jy/B4fMthhexSH
+ 35oIqKaQ69TEaRg==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On Mon, Apr 08, 2024 at 03:27:00PM GMT, Krzysztof Kozlowski wrote:
-> On 08/04/2024 14:48, Ondřej Jirman wrote:
-> > Yeah, I understand where the confusion is. The driver is not for anx7688 chip
-> > really. The driver is named anx7688, but that's mostly a historical accident at
-> > this point.
-> > 
-> > I guess there can be a driver for anx7688 chip that can directly use the chip's
-> > resources from the host by directly manipulating its registers and implementing
-> > type-c functionality via eg. Linux's TCPM or TCPCI stack, etc. (eg. like
-> > fusb302 driver, or various tcpci subdrivers).
-> > 
-> > But in this case the chip is driven by an optional on-chip microcontroller's
-> > firmware and *this driver* is specifically for *the Type-C port on Pinephone*
-> 
-> We do not talk here about the driver, but bindings, so hardware.
+Before all supported sensors except for MPU{9150,9250,9255} were not
+allowed to use i2c-gate in the bindings which excluded quite a few
+supported sensors where this functionality is supported.
 
-Got it. Bindings should be the same regardless of what driver would be used,
-whether this OCM based one, or some future one based on the above mentioned
-TCPCI in-kernel implementation. Hardware is the same in both cases.
+Switch the list of sensors to ones where the Linux driver explicitly
+disallows support for the auxiliary bus ("inv_mpu_i2c_aux_bus"). Since
+the driver is also based on "default: return true" this should scale
+better into the future.
 
-Just trying to imagine how to actually solve the issues...
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+This fixes dt validation error on qcom-msm8974-lge-nexus5-hammerhead
+which uses mpu6515
 
-Basic thing with the I2C regulator thing is that needs to be enabled as long
-as anx7688 needs to communicate over I2C. Other user of this power rail is
-touchscreen controller for its normal power supply, and it needs to be able
-to disable it during system suspend.
+arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dtb: mpu6515@68: i2c-gate: False schema does not allow {'#address-cells': [[1]], '#size-cells': [[0]], 'ak8963@f': {'compatible': ['asahi-kasei,ak8963'], 'reg': [[15]], 'gpios': [[40, 67, 0]], 'vid-supply': [[50]], 'vdd-supply': [[49]]}, 'bmp280@76': {'compatible': ['bosch,bmp280'], 'reg': [[118]], 'vdda-supply': [[50]], 'vddd-supply': [[49]]}}
+        from schema $id: http://devicetree.org/schemas/iio/imu/invensense,mpu6050.yaml#
+---
+ .../devicetree/bindings/iio/imu/invensense,mpu6050.yaml | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-Now for things to not fail during suspend/resume based on PM callbacks
-invocation order, anx7688 driver needs to enable this regulator too, as long
-as it needs it.
+diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+index 297b8a1a7ffb..587ff2bced2d 100644
+--- a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
++++ b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
+@@ -62,14 +62,15 @@ properties:
+ allOf:
+   - $ref: /schemas/spi/spi-peripheral-props.yaml#
+   - if:
+-      not:
+-        properties:
+-          compatible:
+-            contains:
+-              enum:
+-                - invensense,mpu9150
+-                - invensense,mpu9250
+-                - invensense,mpu9255
++      properties:
++        compatible:
++          contains:
++            enum:
++              - invensense,iam20680
++              - invensense,icm20602
++              - invensense,icm20608
++              - invensense,icm20609
++              - invensense,icm20689
+     then:
+       properties:
+         i2c-gate: false
 
-I can put bus-supply to I2C controller node, and read it from the ANX7688 driver
-I guess, by going up a DT node. Whether that's going to be acceptable, I don't
-know. 
+---
+base-commit: 8568bb2ccc278f344e6ac44af6ed010a90aa88dc
+change-id: 20240408-mpu6050-i2c-gate-4ea473e492f4
 
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
-VCONN regulator I don't know where else to put either. It doesn't seem to belong
-anywhere. It's not something directly connected to Type-C connector, so
-not part of connector bindings, and there's nothing else I can see, other
-than anx7688 device which needs it for core functionality.
-
-ANX7688 chip desing doesn't have integrated VCONN mosfet switches so it always
-needs external supply + switches that are controlled by the chip itself. There's
-no sensible design where someone would not want this and the driver needs
-to get this regulator reference from somewhere. The switches are sort of an
-extension of the chip.
-
-kind regards,
-	o.
-
-
-> > and serves as an integration driver for quite a bunch of things that need to
-> > work together on Pinephone for all of the Type-C port's features to operate
-> > reasonably well (and one of those is some communication with anx7688 firmware
-> > that we use, and enabling power to this chip and other things as appropriate,
-> > based on the communication from the firmware).
-> 
-> That's still looking like putting board design into particular device
-> binding.
-> 
-> > 
-> > It handles the specific needs of the Pinephone's Type-C implementation, all of
-> > its quirks (of which there are many over several HW revisions) that can't be
-> > handled by the particular implementation of on-chip microcontroller firmware
-> > directly and need host side interaction.
-> > 
-> > In an ideal world, many of the things this driver handles would be handled by
-> > embedded microcontroller on the board (like it is with some RK3399 based Google
-> > devices), but Pinephone has no such thing and this glue needs to be implemented
-> > somewhere in the kernel.
-> 
-> You might need multiple schemas, because this is for anx7688, not for
-> Pinephone type-c implementation.
-> 
-> However I still do not see yet a limitation of DTS requiring stuffing
-> some other properties into anx7688 or creating some other, virtual entity.
-> 
-> 
-> Best regards,
-> Krzysztof
-> 
