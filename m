@@ -1,87 +1,87 @@
 Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C401119A;
-	Mon,  8 Apr 2024 18:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E7B14387F;
+	Mon,  8 Apr 2024 19:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712601370; cv=none; b=jNH3S32uEEvGd5xPiclZdJOotJcXatX/uKd1qF0EDI4uybVXVEz3PKk00CaE3kJcBG/ycAQeMRduLYUDtWTggKs339HXrA2rDtruF0XpofmVkVYQS/mgpCv/ggnijPEw0aBqVJ/RDVFVm6n0gfRHrumoMCnhLw4uLsyhomL/IMU=
+	t=1712604743; cv=none; b=ENjuruHk9sjKnzkEB97NRO+h7BQwEh9iTlaSe9RR7hym6ouTIMaAoR/UUxsMg0YtodBWwHa4WjmULyvaW71wk3YdxFYUkPEul0KGYUmSp+51FjNIB9+qY4JvLVH4DhX58WqtP5Ym3uGu27pYZzcqpK7ME9mZsB+O1DrK96fV/ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712601370; c=relaxed/simple;
-	bh=PG1o3L91lYgh8vv/DGFGkaxqiPASzURvCwbdexZwJXE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RyJbz6HS+wvRRsMYkFPXVgNs5eEytnY0Byv4/YIEdYxHqeu2cvhZohZxqu3LbYBA18iFUp9bvvcYmN2RrYTq0BNTobEqg4TKBUCy4IHn7fpDFAsa2xfjaLiX8AqORQO44p8Klx0XfQZQabrDKohqHwGBAyd4rboQ9fCKRl7ktfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=KWaMjJX/; arc=none smtp.client-ip=128.199.32.197
+	s=arc-20240116; t=1712604743; c=relaxed/simple;
+	bh=zudAXqpn9mf3HFPDC+kTT1cgsGZk40aZNFOEPMKKCdQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oaT/f7yMBDh4fP6nlTqIzL0Jg32c4UTaSgqABZhlv8IdsUFxogkKzOs00xsfy3pnonaP7UabBkcWryEMWYvHWy6SCMu7f5jSeoOmlhK3K1LEDL1BWASKQ8s0iHvHQc1CDx8O058IhcUrtrM4p7eglTSs8ixs7luBzgIdZ5QUSqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=m4J8Ei+2; arc=none smtp.client-ip=128.199.32.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="KWaMjJX/"
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="m4J8Ei+2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1712601366; bh=PG1o3L91lYgh8vv/DGFGkaxqiPASzURvCwbdexZwJXE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KWaMjJX/Twh+ifm5VlUNa7OhDTmR63O5NKwhUeqQtZjpgsa6nLTLsrRYu6fRTW00k
-	 p7EWYmG0idPNOAmLcUVWDoC7xVrBu6GZWbeTlEmhEiYl8Vkwq5ASEh9yf+tE+mhf/x
-	 j2PrTUkC/MbaKy5GPwTo/yPtm9VHepbf+5ZClz/g=
+	t=1712604739; bh=zudAXqpn9mf3HFPDC+kTT1cgsGZk40aZNFOEPMKKCdQ=;
+	h=From:Subject:Date:To:Cc;
+	b=m4J8Ei+2+YMhlAzpnX3J616asokoPkpL7aBW6ieKHhjSLpFtokP3SR6nSwO6qD1MI
+	 HrpTU6uraXs87OzuxZTVq9syQX06ffYGRIcjrXOkMR98ljYg5i3wZpAwsbo05fjj84
+	 ZFRnRz92DhDV1dMMiRvxPCMRLUP3Du3RjnMzNxGw=
 From: Luca Weiss <luca@z3ntu.xyz>
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Bjorn Andersson <andersson@kernel.org>,
- Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH 1/2] dt-bindings: pinctrl: qcom,pmic-gpio: Allow gpio-hog nodes
-Date: Mon, 08 Apr 2024 20:36:04 +0200
-Message-ID: <5894182.DvuYhMxLoT@g550jk>
-In-Reply-To: <794f7e3c-6467-4da1-bc9f-3853459bbd78@linaro.org>
-References:
- <20240408-qcom-pmic-gpio-hog-v1-0-f61fc5323110@z3ntu.xyz>
- <20240408-qcom-pmic-gpio-hog-v1-1-f61fc5323110@z3ntu.xyz>
- <794f7e3c-6467-4da1-bc9f-3853459bbd78@linaro.org>
+Subject: [PATCH 0/2] Fix msm8974 apcs syscon compatible
+Date: Mon, 08 Apr 2024 21:32:02 +0200
+Message-Id: <20240408-msm8974-apcs-v1-0-90cb7368836e@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADJGFGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDEwML3dziXAtLcxPdxILkYt0kc3Mz0zSzpMQkS0sloJaCotS0zAqwcdG
+ xtbUA/bOByF4AAAA=
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Jassi Brar <jassisinghbrar@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=668; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=zudAXqpn9mf3HFPDC+kTT1cgsGZk40aZNFOEPMKKCdQ=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBmFEY5QnYa4UqJ3YQ50ncYaHeLlY7gISmJKDML+
+ HxP5t4P97WJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZhRGOQAKCRBy2EO4nU3X
+ VjGSEAC02drA53tQrn15NIkINyAsUiqu0R1lDucjuNd6OXkwSM8+DNRZR0kh6Cvu4vKpfBpM8F9
+ 6De0HGyqRYIV2beakDYuVkIvh5PJxJIM0mfrdECDsYb2oIVtbNgbMfllLJOWM0i7keP6JYeyZya
+ JBq3qDjb4DHu1Bj1YWqVrgVgbGRQSoH08F79PXW3Db9IZcmWoN87zv2dX2uQ+k5RBVELvWSZaBn
+ oCwtBZ+J06ifvTixxDFuk118PgXuz7E9/076UqQl9r8K9CkseUJl83rnw5ThM0Prfp/M5N+2R+m
+ 98CUl5Uhcvv9VkueBpMvPp7YgLWOCBn/+E4PzPKuBReVY/X5kvFuaLqSf3NIA0BlE6qbJyCiX5D
+ X2r02xFjvfNxbw00qVZ8c2+uKWrLgRs4PJtHniNzjhEeOVFfdrlEJ92+EzClO0rIQuRG06n9/Dd
+ AU/7oK25DQqepqC/mmdGHGIrT4UGXUVqxAZTyehFfkRVH3Iix7GYHQznxLVB0p/EvLBVweFL10I
+ bTWfWda1bbE4Kui9RTkCV1TSTyLP5yUterrNPvqsfBSbeI8h3WDm+kc6URm8wb33R71MHUUNctw
+ jBtYJ/nMl8XEieSE9mWgz7c4Z9X/OSZSJBs5alIdI4Na31gqmqAm558g3Rq/TlYsmFdhLIk7Xu+
+ p0Bp1JlWWHth+Ig==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On Montag, 8. April 2024 19:26:49 CEST Konrad Dybcio wrote:
-> 
-> On 4/8/24 18:39, Luca Weiss wrote:
-> > Allow specifying a GPIO hog, as already used on
-> > qcom-msm8974-lge-nexus5-hammerhead.dts.
-> > 
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> >   .../devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml          | 12 ++++++++++++
-> >   1 file changed, 12 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
-> > index a786357ed1af..510a05369dbb 100644
-> > --- a/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
-> > +++ b/Documentation/devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml
-> > @@ -424,6 +424,10 @@ patternProperties:
-> >               $ref: "#/$defs/qcom-pmic-gpio-state"
-> >           additionalProperties: false
-> >   
-> > +  "^(hog-[0-9]+|.+-hog(-[0-9]+)?)$":
-> 
-> I see a couple bindings do this, but I'm not sure if we want two
-> allow two styles for no reason.. Rob?
+Finally fix a warning about the apcs-global syscon used on msm8974 that
+has been around forever.
 
-This regex is actually from the gpio-hog.yaml base
-https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schemas/gpio/gpio-hog.yaml#L23
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Luca Weiss (2):
+      dt-bindings: mailbox: qcom: Add MSM8974 APCS compatible
+      ARM: dts: qcom: msm8974: Use proper compatible for APCS syscon
 
-Why it's made this way I cannot tell you, but I didn't want to 'artifically'
-restrict the pattern for qcom,pmic-gpio.
+ .../devicetree/bindings/mailbox/qcom,apcs-kpss-global.yaml          | 1 +
+ arch/arm/boot/dts/qcom/qcom-msm8974.dtsi                            | 6 ++++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+---
+base-commit: 8568bb2ccc278f344e6ac44af6ed010a90aa88dc
+change-id: 20240408-msm8974-apcs-b7765f6bab99
 
-> 
-> Konrad
-> 
-
-
-
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
