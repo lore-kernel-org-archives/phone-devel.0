@@ -1,206 +1,140 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726E56A328
-	for <phone-devel@vger.kernel.org>; Mon,  8 Apr 2024 12:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA9666CDDC;
+	Mon,  8 Apr 2024 12:48:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712577676; cv=none; b=YIeAO6Igrw95HZ6jS4/e4PrTxEc9b4TO6eBWAb//mIOqoRvZB0rhFpvquuReA6U9+BXuKXg5/5VmQuUWbabUr8xnnrvkr1Xb+00DbFZtUrDJHEDKof3NuAW3cGHHWAxDioGeWUyO6qcrc1IXer0nQNXEe3KFMQFxMZSqPeM9GbY=
+	t=1712580525; cv=none; b=hUfOW4HlxtFmD5vn/XxWE30Tr/cBoVcgPBGZ8ztv9bOe1onJp0cSZ2QN8rp33HgeuelYuDCGgMtKcZjh4q9nTe0ugzQn0bisZ99K8aihNyjGThHQ0Ph20AQThkX6GK7Qmc2ZYfvNcfKilxderPci5q2FUd3qQmbO00rDthow6DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712577676; c=relaxed/simple;
-	bh=Jp1lqU+Ps4+pwsRUu4Ay0uXR+ZlujK7vY3phzerhDlA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=aDa8mhsIAbIscaz9xKR2DlgkiiSN0AvVdbuKGhVzk8kKrgi/a8RzOD7+qXwSS1FFkNMtlwufddhgvNqm9viDKYC8d3lpBw0RFCh14cyF5LfnDAYbjvF6teqNt7xZfrl8Smq1lCS/sQo6ykIzjuGeQ/VKfqkOF0GFxN+DvrbosTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q2lVjeFS; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1712580525; c=relaxed/simple;
+	bh=mpZN8yjoALuYbnUIvl1Jzyjr8C6Q7zr6LsHovN0NC9o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pg/1sNDCftqUSG4xz2HvJYG8T6kem8NsZznnfoGyfS6DMxcNohJLRE0z3TsO984j+37MdYsxXtPBhNZQRMOZjlKNFv/mbekEQjcgPi4PiKqzvZhb0+PLWX8/hBrOGG1sUP/e34a+p07MWNhlIXymo37X9ErjNByi068xEQmzwvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=LJCAULDv; arc=none smtp.client-ip=195.181.215.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q2lVjeFS"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a4644bde1d4so610230966b.3
-        for <phone-devel@vger.kernel.org>; Mon, 08 Apr 2024 05:01:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712577673; x=1713182473; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=deF3TVXhftcnwVqJvcDn53aPCb4xZ8Uu1FNRBk9s6Cc=;
-        b=q2lVjeFSFBY5e86JEJ8RbGAgjjbXFeKF2gkYeT30O+oqroovQuF0JmFkhaXxVDTfQZ
-         LLTzspWgV3LjJJkRDf5E8IIE4Ns/6xqOSjdkH+Dm2ib30WgDny4OeW1Ydu4kHfNVorxX
-         LvNFRaFDB+a+R6KTBffgdaC8VFMRBZmH8yk+CS5sdaP1wBLE6rV1LPwzHPcfgcBs/gBc
-         8nkYccUpFdLcsAaiuR8dmlP0RfDxCvWSCUI1ElDVaqKtbmxgG+xuEZf65AeedMD5dHfo
-         szAdDcMFq28LuZ1jjBW1Ix/0Zbfy6pjDGEWlLNUBLvf8zHh6sr1oCjN25T8JdoJs0nTC
-         jc2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712577673; x=1713182473;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=deF3TVXhftcnwVqJvcDn53aPCb4xZ8Uu1FNRBk9s6Cc=;
-        b=QikGY149qjt+Xw+fLbLFMrFc1Ebon/iQJBh68CgFsAmdE5dIjNDpZ49M83lfVHZZs9
-         YR4/LhdTo0Ae0pNHQNFyvQoNkrJ6MHiTyeTPbgqC1EPTa8uWZ/cv3U/5l6DxWVWxF9Of
-         3lIF+huuXmridlh8cpl6J9cRzE/9+qmZbRIZ6j6yT8hc1JuKtgwuPwOZTtz8pobjfHI+
-         JAEsRArGR3hMAnqzr2g8OtWWkvFlvkVrxRWy3f65tPlHytcgpEfVHS9/vIy7KYgiislr
-         bpBhyef/2TsyBLomUKpsM/A4Ie7+SwV2i7Xpfhn4WZs8LVedkID5KbEkKMR2tzBD2inh
-         LMXA==
-X-Forwarded-Encrypted: i=1; AJvYcCU7n1mnWLIQcRRhbluZKU6yZ1R/smshb5hHo/FcRi7DwSeA7w4W5E94lSHhl8qryofNTeUOmTwNu5tDZX1YgT4ZcU1sQXYdLBoOBp4=
-X-Gm-Message-State: AOJu0Yx3F4Ncz86YID7XZJwNJOqp3+z4wnWYyYlCEJAYRl2lGf5pTBWD
-	y/zFIxwXKMMovu51zCmeJFE1z8Z+ekbJ/bYZHegOuuPKKE+qEl6VY0WkbSPzFAo=
-X-Google-Smtp-Source: AGHT+IHyhxp5xxrUMAsHrBGLaoPNqXCnKRkGYBpRJOGi20ZJoFezwFTy3W2h0vLDKdQ5ImJ2Q2oXcA==
-X-Received: by 2002:a17:906:bf47:b0:a51:cc20:9116 with SMTP id ps7-20020a170906bf4700b00a51cc209116mr2774047ejb.68.1712577672724;
-        Mon, 08 Apr 2024 05:01:12 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id fw14-20020a170906c94e00b00a51def4861bsm564112ejb.91.2024.04.08.05.01.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Apr 2024 05:01:12 -0700 (PDT)
-Message-ID: <0dd237e4-70e7-4dd4-8173-2e7290ddfbac@linaro.org>
-Date: Mon, 8 Apr 2024 14:01:10 +0200
+	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="LJCAULDv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+	t=1712580519; bh=mpZN8yjoALuYbnUIvl1Jzyjr8C6Q7zr6LsHovN0NC9o=;
+	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
+	b=LJCAULDvuMRsyIafPbaNQo3zkuo+WIc3xesyh+5O/DMXTH821QOZoCFUWMhY56ryb
+	 bdQrZ4Gd/lD/OfSRlQI4uE3EQ+4UKfom3efaJSgRAX7bq7X7M3aFOVBPxgCUAcc6Dd
+	 evsI4KdJmuuktBmlLXiO7nv/NLo+xIJ2MS8MHbMg=
+Date: Mon, 8 Apr 2024 14:48:38 +0200
+From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Pavel Machek <pavel@ucw.cz>, phone-devel@vger.kernel.org, 
+	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
+	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org
+Subject: Re: [PATCHv3 1/2] dt-bindings: usb: typec: anx7688: start a binding
+ document
+Message-ID: <uoo7xltbfx7u6iai7urj3wez7cwotokxt6lwjhff57xbljusqn@fr2xejnrlak7>
+Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Pavel Machek <pavel@ucw.cz>, phone-devel@vger.kernel.org, 
+	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
+	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org
+X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
+ <https://xff.cz/key.txt>
+References: <ZhPMHdt6r/4D99Zg@duo.ucw.cz>
+ <ab9affc8-de68-4ec9-bdfc-02131191bc3a@linaro.org>
+ <ZhPTTxI4oTF3pgrk@duo.ucw.cz>
+ <e7841ad2-fa3d-442d-804d-51f12e05c234@linaro.org>
+ <e6vvuttix5k5fioy7q44ick5wj6u5gleh7mht36s4zjjcym7vy@bziejyohtc4b>
+ <7976e254-ed1e-406d-870b-1ecdc4b1e23c@linaro.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv3 1/2] dt-bindings: usb: typec: anx7688: start a binding
- document
-To: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>, Pavel Machek
- <pavel@ucw.cz>, phone-devel@vger.kernel.org,
- kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de,
- martijn@brixit.nl, samuel@sholland.org, heikki.krogerus@linux.intel.com,
- gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org
-References: <ZhPMHdt6r/4D99Zg@duo.ucw.cz>
- <ab9affc8-de68-4ec9-bdfc-02131191bc3a@linaro.org>
- <35tqaktf533qtpaquvzb7p5juupjyakktstlqgr2hqretnt7lv@chubnabkyqjz>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <35tqaktf533qtpaquvzb7p5juupjyakktstlqgr2hqretnt7lv@chubnabkyqjz>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <7976e254-ed1e-406d-870b-1ecdc4b1e23c@linaro.org>
 
-On 08/04/2024 13:51, Ondřej Jirman wrote:
-> Hi Krzysztof,
+On Mon, Apr 08, 2024 at 01:59:12PM GMT, Krzysztof Kozlowski wrote:
+> On 08/04/2024 13:52, Ondřej Jirman wrote:
+> > On Mon, Apr 08, 2024 at 01:24:03PM GMT, Krzysztof Kozlowski wrote:
+> >> On 08/04/2024 13:21, Pavel Machek wrote:
+> >>> Hi!
+> >>>
+> >>>>> Add binding for anx7688 usb type-c bridge. I don't have a datasheet,
+> >>>>> but I did best I could.
+> >>>>>
+> >>>>> Signed-off-by: Pavel Machek <pavel@ucw.cz>
+> >>>>
+> >>>> ...
+> >>>>
+> >>>>> +  cabledet-gpios:
+> >>>>> +    maxItems: 1
+> >>>>> +    description: GPIO controlling CABLE_DET (C3) pin.
+> >>>>> +
+> >>>>> +  avdd10-supply:
+> >>>>> +    description: 1.0V power supply going to AVDD10 (A4, ...) pins
+> >>>>> +
+> >>>>> +  dvdd10-supply:
+> >>>>> +    description: 1.0V power supply going to DVDD10 (D6, ...) pins
+> >>>>> +
+> >>>>> +  avdd18-supply:
+> >>>>> +    description: 1.8V power supply going to AVDD18 (E3, ...) pins
+> >>>>> +
+> >>>>> +  dvdd18-supply:
+> >>>>> +    description: 1.8V power supply going to DVDD18 (G4, ...) pins
+> >>>>> +
+> >>>>> +  avdd33-supply:
+> >>>>> +    description: 3.3V power supply going to AVDD33 (C4, ...) pins
+> >>>>> +
+> >>>>> +  i2c-supply: true
+> >>>>> +  vconn-supply: true
+> >>>>
+> >>>> There are no such supplies like i2c and vconn on the schematics.
+> >>>>
+> >>>> I think this represents some other part of component which was added
+> >>>> here only for convenience.
+> >>>
+> >>> Can you give me pointer to documentation you are looking at?
+> >>
+> >> The schematics you linked in the document at the beginning. Page 13. Do
+> >> you see these pins there? I saw only VCONN1_EN, but that's not a supply.
+> > 
+> > The supply is U1308.
 > 
-> On Mon, Apr 08, 2024 at 01:17:32PM GMT, Krzysztof Kozlowski wrote:
->> On 08/04/2024 12:51, Pavel Machek wrote:
->>> Add binding for anx7688 usb type-c bridge. I don't have a datasheet,
->>> but I did best I could.
->>>
->>> Signed-off-by: Pavel Machek <pavel@ucw.cz>
->>
->> ...
->>
->>> +  cabledet-gpios:
->>> +    maxItems: 1
->>> +    description: GPIO controlling CABLE_DET (C3) pin.
->>> +
->>> +  avdd10-supply:
->>> +    description: 1.0V power supply going to AVDD10 (A4, ...) pins
->>> +
->>> +  dvdd10-supply:
->>> +    description: 1.0V power supply going to DVDD10 (D6, ...) pins
->>> +
->>> +  avdd18-supply:
->>> +    description: 1.8V power supply going to AVDD18 (E3, ...) pins
->>> +
->>> +  dvdd18-supply:
->>> +    description: 1.8V power supply going to DVDD18 (G4, ...) pins
->>> +
->>> +  avdd33-supply:
->>> +    description: 3.3V power supply going to AVDD33 (C4, ...) pins
->>> +
->>> +  i2c-supply: true
->>> +  vconn-supply: true
->>
->> There are no such supplies like i2c and vconn on the schematics.
+> That's not a supply to anx7688.
+
+Yeah, I understand where the confusion is. The driver is not for anx7688 chip
+really. The driver is named anx7688, but that's mostly a historical accident at
+this point.
+
+I guess there can be a driver for anx7688 chip that can directly use the chip's
+resources from the host by directly manipulating its registers and implementing
+type-c functionality via eg. Linux's TCPM or TCPCI stack, etc. (eg. like
+fusb302 driver, or various tcpci subdrivers).
+
+But in this case the chip is driven by an optional on-chip microcontroller's
+firmware and *this driver* is specifically for *the Type-C port on Pinephone*
+and serves as an integration driver for quite a bunch of things that need to
+work together on Pinephone for all of the Type-C port's features to operate
+reasonably well (and one of those is some communication with anx7688 firmware
+that we use, and enabling power to this chip and other things as appropriate,
+based on the communication from the firmware).
+
+It handles the specific needs of the Pinephone's Type-C implementation, all of
+its quirks (of which there are many over several HW revisions) that can't be
+handled by the particular implementation of on-chip microcontroller firmware
+directly and need host side interaction.
+
+In an ideal world, many of the things this driver handles would be handled by
+embedded microcontroller on the board (like it is with some RK3399 based Google
+devices), but Pinephone has no such thing and this glue needs to be implemented
+somewhere in the kernel.
+
+Kind regards,
+	o.
+
+> Best regards,
+> Krzysztof
 > 
-> Which schematics?
-> 
-> ANX7688 has VCONN1/2_EN GPIOs that control a switching of VCONN power supply
-> to resective CCx pins. That's just a switch signal. Power for VCONN needs
-> to come from somewhere and the driver needs to enable the regulator at
-> the appropriate time only.
-> 
-> On Pinephone it can't be an always on power supply and needs to be enabled
-> only when used due to HW design of the circuit. (default without ANX driver
-> initialized would be to shove 5V to both CC pins, which breaks Type-C spec)
-> 
-> I2C supply is needed for I2C bus to work, apparently. There's nothing
-> that says that I2C pull-ups supply has to come from supplies powering the
-> chip. I2C I/O is open drain and the device needs to enable a bus supply
-> in order to communicate.
-
-No, that's misunderstanding of DT. These are not supplies to anx7688.
-
-Bus supply is not related to anx7688.
-
-> 
-> You can say that bus master should be managing the bus supply, but you'd still
-> have a problem that each device may be behind a voltage translator, and
-> logically, bus master driver should care only about its side of the bus then.
-> Both side of level shifter need the pull-up power enabled.
-
-Again, that's nothing related to anx7688. If you want to add it here,
-why not to every device everywhere?
-
-> 
-> You can also make an argument that bus supply can be always on, but that
-> causes several other issues on Pinephone due to shared nature of most
-> resources like these. There are other devices on shared power rails, that
-> need to be turned off during sleep, etc.
-> 
-
-No, do not add non-existing properties on this device as workaround for
-other issues.
-
-Please drop these two supplies *and all other which do not exist* on
-anx7688.
-
-Best regards,
-Krzysztof
-
