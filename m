@@ -1,48 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA59F75809;
-	Tue,  9 Apr 2024 14:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297BE130E2A;
+	Tue,  9 Apr 2024 15:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712671966; cv=none; b=k8kBrYNkVUohi4ZzxIWrSDP25KwEL5/gvCLsOx49LV3oyKXPU1NG40oLe33oSzk4Zc5YnAtn6+JGedeZlVHw/QNGV/F8+dUdYaJxBXy5iplqI70dkszvQ7wJW8sQwrSMcJ3nZIVHUHRNnJ4sjrGUAYy1M8JwQTGQ9vvgRbMMHxg=
+	t=1712675444; cv=none; b=JoB+cI70xlD1Unilhr1fPBiXt9Zxj7/Xy1Vkt5W1fYKqKSaGXj4dWVmKsXGYAFYdp0/DuFKcLj+vYMrgh+SvRGjVRXmf66xBqc/+FqSrlF/VFP7cYraatz85o81Gp5Ha6/8rUrisH+Rh7x79pNBbwsO+sGdCZOstkT0K9IHbCpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712671966; c=relaxed/simple;
-	bh=xBaTzncPkClWKcZ+0gQSXyy6lR2MO8ejKBgQTVMKrdc=;
+	s=arc-20240116; t=1712675444; c=relaxed/simple;
+	bh=ekT0sGSo3AMhRcIQz//3SzF8DW+WDol7YcBnxFf/pyw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tgoExPM3NH99V/Mh9qIbWoG2KqjAuvCt/xgbyevctMpnSZ1FhwdWgk2GqsRJH21Khsgy7YSnbRtJRI6L6x8aBUqkrDyurO4LiIYi0pfRoBoSPjxTnvZ1C+REaerGwjMLXeauwBUTpYLYu8qA/dJRI2O9n8KG77GYGCay0Ipuo84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XLgNLTwO; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=GZixKs45pttdz8MR/gONRleyFNbJ94NjQxndxLnZeKKrTW2LrKfn4ejMdZlmhMhJtKGGbWZp9eRrMpc6FbKMieFrAp3JO8eofEtzWEhtsxywbw1lFIxgUFykP7h5jc1lMJtxNEd7+/YYSY+ZQCvIjX5mlRuD+SJm82eq/1obrsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NTTAoRT8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XLgNLTwO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61AE1C433F1;
-	Tue,  9 Apr 2024 14:12:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NTTAoRT8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF39C433F1;
+	Tue,  9 Apr 2024 15:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712671965;
-	bh=xBaTzncPkClWKcZ+0gQSXyy6lR2MO8ejKBgQTVMKrdc=;
+	s=k20201202; t=1712675443;
+	bh=ekT0sGSo3AMhRcIQz//3SzF8DW+WDol7YcBnxFf/pyw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XLgNLTwOIsjL7F9gQSD2PD33d5tjOWWzin3psRbAe8fyNJ1v0N6zrkEtWx1TUTB2T
-	 TLlsFwJY2mAAD1z0AQ/2sIudZjbeNsSV6wLVUUyps3YuIsU0T2SH3Mtd5k9pfgGsd2
-	 hvJHqsjqL/RXnrytvDItq6INGePuqTDYVcGeL9bqFH9rphZCDxQ0h5Ic2n4GENhitH
-	 LMZmN0dV1QoBNHv65HgiONuhDqg+x4+UmpmlPZDmHgZ3SK5PKkMd4xxd5XEhD3ZHdB
-	 X9PqZhMVd3kGgR5rcSB6N89JJRegDdV3gefwEV4aJ4kA7Faxyy9zNarYpmydrQmewe
-	 hxs8v0Xp5Bf0g==
-Date: Tue, 9 Apr 2024 09:12:43 -0500
+	b=NTTAoRT8ckbyRuB/D0RFBxU90uJcw1DMXxt/9IhiBNPPMktexx0h677k+lTha1VrB
+	 I6rDY7fDKpiZ5tyu2jX9HWONXvOXfRPyWc87nxGrBjBR/XyavKJlEZrIB/23c9PZWL
+	 NmGoJ8I8GpyN5oteLMBIFvz7LjV1v01NVeDYBYbJz/3+Mhpu2qwOuJx1mlaLRyH5ZN
+	 1XaWKHlXCx8g9CMZ6H84ZPTc1/YQVpqKXtoYhzfyipDyCaPiOwAYiqy+fqzRz1GOFz
+	 HlqiJ23+wJm61+Yb/oXZmIUZwvefPoxv4zUGr8FK4GB92yC7+Cxd1aDnhQL72u5Yqr
+	 pK0GAkPtqfN9A==
+Date: Tue, 9 Apr 2024 10:10:41 -0500
 From: Rob Herring <robh@kernel.org>
-To: git@luigi311.com
-Cc: mchehab@kernel.org, devicetree@vger.kernel.org,
-	linux-media@vger.kernel.org, shawnguo@kernel.org,
-	jacopo.mondi@ideasonboard.com, phone-devel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	krzysztof.kozlowski+dt@linaro.org, festevam@gmail.com,
-	sakari.ailus@linux.intel.com, conor+dt@kernel.org,
-	imx@lists.linux.dev, pavel@ucw.cz, dave.stevenson@raspberrypi.com,
-	s.hauer@pengutronix.de, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: Re: [PATCH v3 18/25] dt-bindings: media: imx258: Add alternate
- compatible strings
-Message-ID: <171267196134.1104703.16459951254766815081.robh@kernel.org>
-References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-19-git@luigi311.com>
+To: Luca Weiss <luca@z3ntu.xyz>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	Bjorn Andersson <andersson@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] Fix up qcom,halt-regs definition in various schemas
+Message-ID: <20240409151041.GA1141635-robh@kernel.org>
+References: <20240407-qcom-halt-regs-fixup-v1-0-a0ea4e2c178e@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -51,22 +47,26 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240403150355.189229-19-git@luigi311.com>
+In-Reply-To: <20240407-qcom-halt-regs-fixup-v1-0-a0ea4e2c178e@z3ntu.xyz>
 
-
-On Wed, 03 Apr 2024 09:03:47 -0600, git@luigi311.com wrote:
-> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+On Sun, Apr 07, 2024 at 11:58:29AM +0200, Luca Weiss wrote:
+> The original motivation is that a bunch of other schemas fail to
+> validate qcom,halt-regs, for example like in the following examples:
 > 
-> There are a number of variants of the imx258 modules that can not
-> be differentiated at runtime, so add compatible strings for the
-> PDAF variant.
+> arch/arm64/boot/dts/qcom/apq8016-sbc.dtb: remoteproc@4080000: qcom,halt-regs:0: [20] is too short
+>         from schema $id: http://devicetree.org/schemas/remoteproc/qcom,msm8916-mss-pil.yaml#
+> arch/arm64/boot/dts/qcom/apq8096-ifc6640.dtb: remoteproc@2080000: qcom,halt-regs:0: [82] is too short
+>         from schema $id: http://devicetree.org/schemas/remoteproc/qcom,msm8996-mss-pil.yaml#
+> arch/arm64/boot/dts/qcom/apq8039-t2.dtb: remoteproc@4080000: qcom,halt-regs:0: [32] is too short
+>         from schema $id: http://devicetree.org/schemas/remoteproc/qcom,msm8916-mss-pil.yaml#
 > 
-> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> Signed-off-by: Luis Garcia <git@luigi311.com>
-> ---
->  .../devicetree/bindings/media/i2c/sony,imx258.yaml       | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
+> While I'm actually not quite sure why these patches fix this in
+> the other schemas - feels like a bug/limitation in dt-schema maybe? -
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+Was this with v2024.02? It should be a bit better there. Though it 
+may just have different errors. The limitation is that property 
+types and in the case of matrix's (which phandle-array actually is) 
+range for dimensions are global. So if there's not correct dimensions 
+for a property, the tools aren't going to decode it properly.
 
+Rob
