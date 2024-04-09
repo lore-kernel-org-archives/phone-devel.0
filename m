@@ -1,140 +1,85 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C83E13D622
-	for <phone-devel@vger.kernel.org>; Tue,  9 Apr 2024 15:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADABE156C59;
+	Tue,  9 Apr 2024 18:32:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712676956; cv=none; b=l+Vo3sLe2U996oztOoW/2296KU9v8V1dJBXxF5u/aVSqmdlUMZS44Z1TuJ5D9z+J3cBUVklYdL9ZbyIskoS7ISxlM6zT2dgFtq1t+1jzA7TGfNFJypZgnwpIm1os0RJjSMMKH6KNxhWglaYqFr5Z7Dk0mewYeS1fKZ7fm/7BzQM=
+	t=1712687557; cv=none; b=DL48WSAWHRkwuIGhI8ZqCXabM+6A01wU3G+Iz4xvyi9xkJnSK99awSkd6QhDGEyeou0j5PbSNmIexbYpV2yGT+0/xioizY8cQxCsABgv+1QOcqKVH+/AUXSI2rnxpLDzu9pUSfDdpy0K9w66C/PR6j0UWbORm7yvNGsH4LY/Nuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712676956; c=relaxed/simple;
-	bh=P04LBfkaeW2XuO46xw0RoQrDoyCOfrzCkGumelNfjDk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qUfx0k+BrLRkvA39WeqO7JmlGmJFiV20ohQ6UVyIoh1ibfISBzDmMeJ2on/+SFu8gQPDh5CZMCSPH3wABct1Y5w6TilsLpuHugBzlauIEnwmDlMIcx/NuJNslRwPdr2GJXwdc889NZ237Rz31PlBhkJ04tmqRVboIWYTEhdDKLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ifzo3XZ0; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1712687557; c=relaxed/simple;
+	bh=pHkJ+0C4c6a26Bb5wDFsH4ryFH7WrAuqh4ZAgrgWB+A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XSEMGSa9CxNXTfT0TzQpIO3+oUGo20Z4NdlRsjVvY+FG3FMqlyZ3hN7Yn2sFJ8wMCGavYyP4VW7UNBqOvfKPVH4XesKenrGcHWuKA1o3hVRu7NYeVbtI2z5zYZDG4k9BhmPVxwOqCCkk+tb3OnAl6qc4bfbFeBMQT1Ofz3BABxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=2qc9t3i7; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ifzo3XZ0"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2d4979cd8c8so53788921fa.0
-        for <phone-devel@vger.kernel.org>; Tue, 09 Apr 2024 08:35:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712676953; x=1713281753; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BRsd3hpzzr4WHD3K4LXpLnFX04nl95mWHv7i9FXsiIo=;
-        b=Ifzo3XZ0knqheuQUy5YJ25SbTbC+2x+t6hBB9lkdL0R/ZGHelTE41TUNcl/2VBLLJv
-         ZqFqWGbhrUW8g/QchdBkBBeSZJ+/OirjmC+EyL1RR5IwfPq+L2bVDHXgaLIqBvhAJmZ/
-         SL4fKCGd7XVJBo3oNR3W6MjIXdzCjzeJeziR+Y9+hYdtfSHtVw2iT9CRLr5lYUTPd6Rk
-         I8+l0aUfqC6hMxogPlb9itjA7REQBUY+fH121jd/r/GRWYV86JQzhUGij5LX387nytbb
-         NgyI5PyUrXDbwDx5mD0ix9MK+KIpYOsgdZYR7I6uRUyeW7h6DCBLeyF2ykzpZPXjNqUT
-         1cZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712676953; x=1713281753;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BRsd3hpzzr4WHD3K4LXpLnFX04nl95mWHv7i9FXsiIo=;
-        b=w18AKonuXRcdInf9X3WX2sk8Y9t1e/1vXUHqyqIGUIsFrUHC6lmJPn647equ/UuoAv
-         gg5EYuQLWMvSaIwNhQYs0aNlg86eWzZnMLrrHyAmOn6EdiZ5bnVDy/NMxNPiagFDB4ho
-         Qy5QgsI0obF98jU3SrLKkuo+Yftgr9CB4f9TkSYuWVY3zpgEEuJEOGWv1ZzZAPdheQdB
-         tBIf94raAMiSrIwuJQF1oUHl7Byy93tBnuVmGnjPuAhKyd/9xpdc2TwSgj3ja4QYFHhK
-         hGt5af60KfKqhcR7X6WUWDRH+96QgrNkJ98WiDHO+2E0DXJa1RxAIAEO+tvLjnEGZa9P
-         s2yw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5k764/aXvp6Vx7dFwLAd85kKNb6q1x9wrA4ATVnQbYYY0M9H26/h8n14isrQCjVPe8YzZH71dWl2NlEE6YmVT046mElVtq0fG4hQ=
-X-Gm-Message-State: AOJu0YwVlH0/C8DCNxxOmB8WVsydzrwqLo6PYF3V7eK39bHjLa+VJU+8
-	Hfyh2wNcPjNIg5CWjGCmxDn7Xk6rENCorI8nu6rTs8eEVtqDKI72dCnFG6tuuw8=
-X-Google-Smtp-Source: AGHT+IHJYOHXxN+KPaWlA8Ai6GNsv61R44Zkfg2lEX23bMYFoBeClEaCKCd8pkT/YOsSHwvrrH2xYQ==
-X-Received: by 2002:a2e:9259:0:b0:2d8:a1b3:d4ba with SMTP id v25-20020a2e9259000000b002d8a1b3d4bamr4385ljg.11.1712676952665;
-        Tue, 09 Apr 2024 08:35:52 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzyjmhyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a00e:a300::227])
-        by smtp.gmail.com with ESMTPSA id m15-20020a2e910f000000b002d808b86073sm1571238ljg.78.2024.04.09.08.35.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Apr 2024 08:35:52 -0700 (PDT)
-Date: Tue, 9 Apr 2024 18:35:50 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Pavel Machek <pavel@ucw.cz>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	phone-devel@vger.kernel.org, kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, 
-	martijn@brixit.nl, samuel@sholland.org, gregkh@linuxfoundation.org, 
-	linux-usb@vger.kernel.org, megi@xff.cz
-Subject: Re: [PATCHv3 2/2] usb: typec: anx7688: Add driver for ANX7688 USB-C
- HDMI bridge
-Message-ID: <4q7o5vb26ibkbvqal5nn4kdnc32rrajhtszrf4fnuisnlfcsg5@6322saeu7qoe>
-References: <ZhPMHdt6r/4D99Zg@duo.ucw.cz>
- <ZhPM4XU8ttsFftBd@duo.ucw.cz>
- <ZhUQ6kzV5ARlkfPC@kuha.fi.intel.com>
- <ZhUgrNwRYoaV1AIJ@duo.ucw.cz>
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="2qc9t3i7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1712687547; bh=pHkJ+0C4c6a26Bb5wDFsH4ryFH7WrAuqh4ZAgrgWB+A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=2qc9t3i7xCFfSB/OiHDIneSLqpOOBDt/X4sfKwNVz3oPA5Ikj7EMOpYSU/ncbwMC1
+	 RG8MGX3rJW8vY3PhjKQVl2ULqxy8C2Xxv9QQwjlrk/vHp7qWfRH/T/PxABAGNypwH5
+	 exUUk2PANrB/9NVouoM+Z00LPNqRYakTj7ztiUjM=
+From: Luca Weiss <luca@z3ntu.xyz>
+To: Rob Herring <robh@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ Bjorn Andersson <andersson@kernel.org>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] Fix up qcom,halt-regs definition in various schemas
+Date: Tue, 09 Apr 2024 20:32:26 +0200
+Message-ID: <2724472.mvXUDI8C0e@g550jk>
+In-Reply-To: <20240409151041.GA1141635-robh@kernel.org>
+References:
+ <20240407-qcom-halt-regs-fixup-v1-0-a0ea4e2c178e@z3ntu.xyz>
+ <20240409151041.GA1141635-robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZhUgrNwRYoaV1AIJ@duo.ucw.cz>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Apr 09, 2024 at 01:04:12PM +0200, Pavel Machek wrote:
-> Hi!
-> 
-> > > This is driver for ANX7688 USB-C HDMI, with flashing and debugging
-> > > features removed. ANX7688 is rather criticial piece on PinePhone,
-> > > there's no display and no battery charging without it.
-> > > 
-> > > There's likely more work to be done here, but having basic support
-> > > in mainline is needed to be able to work on the other stuff
-> > > (networking, cameras, power management).
-> > > 
-> > > Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> > > Co-developed-by: Martijn Braam <martijn@brixit.nl>
-> > > Co-developed-by: Samuel Holland <samuel@sholland.org>
-> > > Signed-off-by: Pavel Machek <pavel@ucw.cz>
+On Dienstag, 9. April 2024 17:10:41 CEST Rob Herring wrote:
+> On Sun, Apr 07, 2024 at 11:58:29AM +0200, Luca Weiss wrote:
+> > The original motivation is that a bunch of other schemas fail to
+> > validate qcom,halt-regs, for example like in the following examples:
 > > 
-> > Just couple of quick comments below - I did not have time to go over
-> > this very thoroughly, but I think you need to make a new version in
-> > any case because of comments in 1/2.
-> 
-
-[skipped]
-
-> 
-> > > +static int anx7688_connect(struct anx7688 *anx7688)
-> > > +{
-> > > +	struct typec_partner_desc desc = {};
-> > > +	int ret, i;
-> > > +	u8 fw[2];
-> > > +	const u8 dp_snk_identity[16] = {
-> > > +		0x00, 0x00, 0x00, 0xec,	/* id header */
-> > > +		0x00, 0x00, 0x00, 0x00,	/* cert stat */
-> > > +		0x00, 0x00, 0x00, 0x00,	/* product type */
-> > > +		0x39, 0x00, 0x00, 0x51	/* alt mode adapter */
-> > > +	};
-> > > +	const u8 svid[4] = {
-> > > +		0x00, 0x00, 0x01, 0xff,
-> > > +	};
+> > arch/arm64/boot/dts/qcom/apq8016-sbc.dtb: remoteproc@4080000: qcom,halt-regs:0: [20] is too short
+> >         from schema $id: http://devicetree.org/schemas/remoteproc/qcom,msm8916-mss-pil.yaml#
+> > arch/arm64/boot/dts/qcom/apq8096-ifc6640.dtb: remoteproc@2080000: qcom,halt-regs:0: [82] is too short
+> >         from schema $id: http://devicetree.org/schemas/remoteproc/qcom,msm8996-mss-pil.yaml#
+> > arch/arm64/boot/dts/qcom/apq8039-t2.dtb: remoteproc@4080000: qcom,halt-regs:0: [32] is too short
+> >         from schema $id: http://devicetree.org/schemas/remoteproc/qcom,msm8916-mss-pil.yaml#
 > > 
-> > Why not get those from DT?
+> > While I'm actually not quite sure why these patches fix this in
+> > the other schemas - feels like a bug/limitation in dt-schema maybe? -
 > 
-> Are you sure it belongs to the DT (and that DT people will agree)?
+> Was this with v2024.02? It should be a bit better there. Though it 
+> may just have different errors. The limitation is that property 
+> types and in the case of matrix's (which phandle-array actually is) 
+> range for dimensions are global. So if there's not correct dimensions 
+> for a property, the tools aren't going to decode it properly.
 
-From Documentation/devicetree/bindings/connector/usb-connector.yaml:
+You're right, I doesn't look like I can reproduce this with the latest
+dtschema installed.
 
-            altmodes {
-                displayport {
-                    svid = /bits/ 16 <0xff01>;
-                    vdo = <0x00001c46>;
-                };
-            };
+Anyways these patches should be good to actually validate qcom,halt-regs for
+the schemas I'm touching here.
 
-BTW, I don't see the VDO for the DP altmode in your code. Maybe I missed
-it at a quick glance.
+Regards
+Luca
 
 > 
-> > > +	u32 caps[8];
-> > > +
+> Rob
+> 
 
 
--- 
-With best wishes
-Dmitry
+
+
