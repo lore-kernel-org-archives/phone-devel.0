@@ -1,113 +1,94 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCFE12DDAF;
-	Tue,  9 Apr 2024 12:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D826136990;
+	Tue,  9 Apr 2024 13:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712665273; cv=none; b=ovu96pdgclrdax8vwcqsvmu7q2c7aA3pUylvb+YPzCjp6f7ZzO9/aLrrcjIyY0s/8mb/aE+VjlLmovP8A1Izfk36vZHrjimqzdYWFAaHP+/g0KjboG6/Kx0jxDV7z1EO0H8G5HJ427qpH3oDNd56/MhfPfE/T0bcNwqOyKA7frs=
+	t=1712669948; cv=none; b=bSFeqA8sSNU/odBO10PjsuROGA1MIbnnLCqg81rs9499umAboZerkg22XsjfWr9UhSQpUJWYz9pyXxMCths5TdzkwuAF4+JfNy3ApKujT97lIu2IVuxVPk17+I7+K6SqRg9S9SGKuEKk7ioIVKaAtDSYFDwnUA6B305o04ZdJPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712665273; c=relaxed/simple;
-	bh=MgxcztGT1ua4xy6Vw6FKSF7WrOC9Pr1td6Va0VORPNc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gzvN8PX5DqPuOzKN/2iV8vAheosEmDmDh9DsYqDNmkwJqIjyU1e+2gAN9L6bifvJmVgqseI84ab51KBKj/i87TXfhNwR7AW/wl+5LG1FO9EFPUQljdwY+/EbbxBjR4cX8brIAfpEKXxZBdxZ4XsaUE23wLp7HFoIIOMXpSZgY5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uClhXOda; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712669948; c=relaxed/simple;
+	bh=ufZjj/dqW11/Dx5bguBYdYOpNmt61BYctGvVnxZcsHw=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=MSj2Dn/bQo5NXlT0ZXDXooitcXYpj+G1ItIsgIcasJAASgC1JKIL7T+NFzro5knNV4M65OISWimAhdZpwkXvFESVKcvP4UGs4+TdP9DAKFtc+zbhH0dFJxcOIWnkusqGEPI11lnkNkKjATV9ICjCcFh4rFlPN2og5HMhHuqu7fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=st9BVkrg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uClhXOda"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7FCCC433C7;
-	Tue,  9 Apr 2024 12:21:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="st9BVkrg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A745EC43394;
+	Tue,  9 Apr 2024 13:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712665272;
-	bh=MgxcztGT1ua4xy6Vw6FKSF7WrOC9Pr1td6Va0VORPNc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uClhXOda7JLRiZ4W1sTPS8hV3sZINTjANv1boJSmY3wzoZ8OhG4VQCnoTVVpmvtCT
-	 KFAo0O81FIStRXxBz710ZkYVtWqdeDkSCLkPRWeLzNw0JS2ZSodxnzFURwcV8vbT9N
-	 5O6byorQwWmKPw+4+tgLI6KTW2uC1d+NDuInNwKTmlYP2i5o8xwONmW0usKkzqxAwg
-	 yaqjKsyIlzV5magmJNpidSLJSSeX1F1LCgyEJBKroLZZ7z5Efu2ZX53Jj1YJoA3ok9
-	 oZ8P7VJfJB3RM3pQTHBBvESJ1tglSPT8ro2o70yq2H9pKHmcpOFQOR+P9Ibm4dtyNm
-	 1d+mh0WsOOGhA==
-Message-ID: <b34cd491-a536-4b06-91d2-4de105eae922@kernel.org>
-Date: Tue, 9 Apr 2024 14:21:04 +0200
+	s=k20201202; t=1712669947;
+	bh=ufZjj/dqW11/Dx5bguBYdYOpNmt61BYctGvVnxZcsHw=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=st9BVkrgDrkpcnic8fOcBW+Vg9I3hqLNdirHD9+YhwHbm0T++ftajcdwnair3fnpY
+	 Upo6at1S+pU0SOIPDI/FZJZXdmr8bZSpStTpMaL955GzhdNilcKZIvH4cJO0WJDGhd
+	 gNthcdjh3hq1Kk8Tmqugr/S9J2/FlbhxGKmMHJj3dgyVKV1qtl59JMByzxmWVwOdib
+	 COGO7eoUJ064h843DKb22WjLmdmIBLshUXyzKccQuRXoRzaeBYSvp5fbdtDP7dPJ6d
+	 SMU0oPESBVyDP0dY6OeDtzZ2L/tWqEOPNJWO7ip4o5yVLTdf2Qisc2dS9J3QHlxvCG
+	 TpPIxINNTvNJQ==
+Date: Tue, 09 Apr 2024 08:39:06 -0500
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] ARM: dts: qcom: msm8974: Use proper compatible for
- APCS syscon
-To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Jassi Brar <jassisinghbrar@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org
-References: <20240408-msm8974-apcs-v1-0-90cb7368836e@z3ntu.xyz>
- <20240408-msm8974-apcs-v1-2-90cb7368836e@z3ntu.xyz>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240408-msm8974-apcs-v1-2-90cb7368836e@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Rob Herring <robh@kernel.org>
+To: Stanislav Jakubek <stano.jakubek@gmail.com>
+Cc: Conor Dooley <conor+dt@kernel.org>, phone-devel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ linux-arm-msm@vger.kernel.org, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ devicetree@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>
+In-Reply-To: <32c507337ab80c550fb1df08f7014d1e31eb4c32.1712480582.git.stano.jakubek@gmail.com>
+References: <32c507337ab80c550fb1df08f7014d1e31eb4c32.1712480582.git.stano.jakubek@gmail.com>
+Message-Id: <171266958581.1032688.14946054886230163874.robh@kernel.org>
+Subject: Re: [PATCH v3 1/2] dt-bindings: arm: qcom: Add Motorola Moto G
+ (2013)
 
-On 08/04/2024 21:32, Luca Weiss wrote:
-> Use the apcs-kpss-global compatible for the APCS global mailbox block
-> found on this SoC.
+
+On Sun, 07 Apr 2024 11:05:10 +0200, Stanislav Jakubek wrote:
+> Document the Motorola Moto G (2013), which is a smartphone based
+> on the Qualcomm MSM8226 SoC.
 > 
-> This also resolves a dt-binding checker warning:
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
+> ---
+> Changes in V3:
+>   - no changes
+> 
+> Changes in V2:
+>   - collect Krzysztof's A-b
+> 
+>  Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
 
 
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-Best regards,
-Krzysztof
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y qcom/msm8226-motorola-falcon.dtb' for 32c507337ab80c550fb1df08f7014d1e31eb4c32.1712480582.git.stano.jakubek@gmail.com:
+
+arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dtb: syscon@f9011000: compatible: 'anyOf' conditional failed, one must be fixed:
+	['syscon'] is too short
+	'syscon' is not one of ['allwinner,sun8i-a83t-system-controller', 'allwinner,sun8i-h3-system-controller', 'allwinner,sun8i-v3s-system-controller', 'allwinner,sun50i-a64-system-controller', 'amd,pensando-elba-syscon', 'brcm,cru-clkset', 'freecom,fsg-cs2-system-controller', 'fsl,imx93-aonmix-ns-syscfg', 'fsl,imx93-wakeupmix-syscfg', 'hisilicon,dsa-subctrl', 'hisilicon,hi6220-sramctrl', 'hisilicon,pcie-sas-subctrl', 'hisilicon,peri-subctrl', 'hpe,gxp-sysreg', 'intel,lgm-syscon', 'loongson,ls1b-syscon', 'loongson,ls1c-syscon', 'marvell,armada-3700-usb2-host-misc', 'mediatek,mt8135-pctl-a-syscfg', 'mediatek,mt8135-pctl-b-syscfg', 'mediatek,mt8365-syscfg', 'microchip,lan966x-cpu-syscon', 'microchip,sparx5-cpu-syscon', 'mstar,msc313-pmsleep', 'nuvoton,ma35d1-sys', 'nuvoton,wpcm450-shm', 'rockchip,px30-qos', 'rockchip,rk3036-qos', 'rockchip,rk3066-qos', 'rockchip,rk3128-qos', 'rockchip,rk3228-qos', 'rockchip,rk3288-qos', 'rockchip,rk3368-qos', 'rockchip,rk3399-qos', 'rockchip,rk3568-qos', 'rockchip,rk3588-qos', 'rockchip,rv1126-qos', 'starfive,jh7100-sysmain', 'ti,am62-usb-phy-ctrl', 'ti,am654-dss-oldi-io-ctrl', 'ti,am654-serdes-ctrl', 'ti,j784s4-pcie-ctrl']
+	from schema $id: http://devicetree.org/schemas/mfd/syscon.yaml#
+
+
+
+
 
