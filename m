@@ -1,153 +1,112 @@
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E97510E3;
-	Wed, 10 Apr 2024 02:26:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCF520DDB;
+	Wed, 10 Apr 2024 06:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712715974; cv=none; b=B6P31dAMTghbiC9UFrJ/uGQ5J/KAO6K5MZ4CQUfvpVTg9wEZVJqCyl7MC8hVighUigs+CnHXfawVJ+Ph9RmRc3bQ9FQQXuMFVt0P8DyhNx9GVlWxzY4WNIOrxAUDZAqaZt4GfLezev18da5cuQKzeD1f0hiWPDrl7s+OQ7z/4lA=
+	t=1712729706; cv=none; b=glXJm9rxwZzCmKLBVldr5F6s3hlOcm0z9U3HbRdYK6VTlmGPmL3G614AVBw8+b+BDVTuCVrfipeg0fZsoPtXPfVTCF14A6dZzhVqUzlRdkIIUOYICqoAUZz3I/6rgj7XlEA3t/S2B3+D4lgBVJ8fYZvLivppWwmYgL8+WHeMMOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712715974; c=relaxed/simple;
-	bh=J7vXo8gnzotGaAOZGaEFsf6LKD7BLcr3tjED66ZNRx4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nM5n12/wfQa9oo/flFW/uk2ViVC6GLpf9PHovQiZn+Y7mEzWiyPbS1RqYSQFQp36Ok52qOlrL1IVUkrIToX5aNlRjqwVNxxkfLWuuxGJFqg3FVb010BVhIOxRsxjlY4i9jh49bAsvWvozXSryz3Wh0q3eBieFc7ezgKmIq+SVRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=pAq+m9yk; arc=none smtp.client-ip=195.181.215.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
+	s=arc-20240116; t=1712729706; c=relaxed/simple;
+	bh=tTAftMVMvBA8yzjiiDq4ZAl9e9obVzYJO2XCJ0Tz5Ro=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DcapOfEYd/vN5LPNEmvNF9oSYQxqYb1ogHs/TOHCAaYyknzUiN31yHyBoP+VfbsU+7dnO5UWbDdhwYQfJv9qhcSAtVzbjENGWdm5pssZn8c9rO4H+f7PrgPy5ue4yjRRLHDx6mfVl9WhE2XnmDA8vUAkcqTt3JfQnfjKFD06h8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oO4MybI3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="pAq+m9yk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-	t=1712715645; bh=J7vXo8gnzotGaAOZGaEFsf6LKD7BLcr3tjED66ZNRx4=;
-	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
-	b=pAq+m9ykq3MBG8HAZqb5dhlh+bkT/EAkF76/uquZ0HDh4Lsh/kM8MVI+u0ZZbX9vl
-	 mVNwgt3Bza4HRAYznNQ2l3Rf/mybYp1gjdllrS0BWbrL8NUP/ALM76OKZaIyWY1aPl
-	 NVc0Woczth0IrK95PL/s8qaMFne2NEXykKreSVm4=
-Date: Wed, 10 Apr 2024 04:20:44 +0200
-From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Pavel Machek <pavel@ucw.cz>, phone-devel@vger.kernel.org, 
-	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
-	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org
-Subject: Re: [PATCHv3 1/2] dt-bindings: usb: typec: anx7688: start a binding
- document
-Message-ID: <ounfv3vgg2esvxk2cxckeqyy52mghiyps2rszh7sf5poryyjzs@ftumsalmthza>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Pavel Machek <pavel@ucw.cz>, phone-devel@vger.kernel.org, 
-	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
-	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
-References: <ZhPMHdt6r/4D99Zg@duo.ucw.cz>
- <ab9affc8-de68-4ec9-bdfc-02131191bc3a@linaro.org>
- <ZhPTTxI4oTF3pgrk@duo.ucw.cz>
- <e7841ad2-fa3d-442d-804d-51f12e05c234@linaro.org>
- <e6vvuttix5k5fioy7q44ick5wj6u5gleh7mht36s4zjjcym7vy@bziejyohtc4b>
- <7976e254-ed1e-406d-870b-1ecdc4b1e23c@linaro.org>
- <uoo7xltbfx7u6iai7urj3wez7cwotokxt6lwjhff57xbljusqn@fr2xejnrlak7>
- <1502383c-9caf-4362-8bd6-ed719a304f08@linaro.org>
- <vbo7bacecuagu4qzrr6tsdh4qlejrv7ia67yylf6ay4u7qnwge@kqj27bun2m7d>
- <97f2d38d-c863-4c76-91f1-52cd250759d7@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oO4MybI3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C1DC433F1;
+	Wed, 10 Apr 2024 06:15:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712729705;
+	bh=tTAftMVMvBA8yzjiiDq4ZAl9e9obVzYJO2XCJ0Tz5Ro=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oO4MybI3nRypXQ84W3QrqSPHa/ATSg4G1c40Go8Ub7rffrDDphO2GrgYs9OsCHSe0
+	 ZutJTeoSMq1l35YilkbVijUn/C2zesLjKvnT4AiSGebr9LofouRXjowjPjAOgO9onf
+	 PP44U+mTBRzuIY2iRIU/LP8+9PUMbYIa5dDDeQ0g6rnm1CD38TNbCojyI30azvb/S5
+	 ir8XFm+YTZ/sGil20hD87ilLUhAQV227INXYYcySzR+FB7HWMAlspr0ETHaUapWxgM
+	 VnLoC739VJxeurIdGQcj2ZenQiQH25ZxtxUDf4ldQnXdNSwbx/410dHHerDkhXfsYR
+	 cSnTqrZvIL3WA==
+Message-ID: <868bb545-4b87-4437-bfce-18c43f431b51@kernel.org>
+Date: Wed, 10 Apr 2024 08:14:59 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <97f2d38d-c863-4c76-91f1-52cd250759d7@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] dt-bindings: pinctrl: qcom,pmic-gpio: Allow
+ gpio-hog nodes
+To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240409-qcom-pmic-gpio-hog-v2-0-5ff812d2baed@z3ntu.xyz>
+ <20240409-qcom-pmic-gpio-hog-v2-1-5ff812d2baed@z3ntu.xyz>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240409-qcom-pmic-gpio-hog-v2-1-5ff812d2baed@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 08, 2024 at 10:12:30PM GMT, Krzysztof Kozlowski wrote:
-> On 08/04/2024 17:17, Ondřej Jirman wrote:
-> > 
-> > Now for things to not fail during suspend/resume based on PM callbacks
-> > invocation order, anx7688 driver needs to enable this regulator too, as long
-> > as it needs it.
+On 09/04/2024 20:36, Luca Weiss wrote:
+> Allow specifying a GPIO hog, as already used on
+> qcom-msm8974-lge-nexus5-hammerhead.dts.
 > 
-> No, the I2C bus driver needs to manage it. Not one individual I2C
-> device. Again, why anx7688 is specific? If you next phone has anx8867,
-> using different driver, you also add there i2c-supply? And if it is
-> nxp,ptn5100 as well?
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
+>  .../devicetree/bindings/pinctrl/qcom,pmic-gpio.yaml          | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 
-Yes, that could work, if I2C core would manage this.
 
-> > 
-> > I can put bus-supply to I2C controller node, and read it from the ANX7688 driver
-> > I guess, by going up a DT node. Whether that's going to be acceptable, I don't
-> > know. 
-> > 
-> > 
-> > VCONN regulator I don't know where else to put either. It doesn't seem to belong
-> > anywhere. It's not something directly connected to Type-C connector, so
-> > not part of connector bindings, and there's nothing else I can see, other
-> > than anx7688 device which needs it for core functionality.
-> 
-> That sounds like a GPIO, not regulator. anx7688 has GPIOs, right? On
-> Pinephone they go to regulator, but on FooPhone also using anx7688 they
-> go somewhere else, so why this anx7688 assumes this is a regulator?
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-CC1/CC2_VCONN control pins are "GPIO" of anx7688, sort of. They have fixed
-purpose of switching external 5V regulator output to one of the CC pins
-on type-c port. I don't care what other purpose with some other firmware
-someone puts to those pins. It's irrelevant to the use case of anx7688
-as a type-c controller/HDMI bridge, which we're describing here.
+Best regards,
+Krzysztof
 
-VCONN regulator is an actual GPIO controlled regulator on the board, and
-needs to be controlled by the anx7688 driver. So that CC1/CC2_VCONN control
-pins driven by the firmware actually do what they're supposed to do.
-
-Not sure why it would be a business of anything else but anx7688 driver
-enabling this regulator, because only this driver knows and cares about this.
-If some other board doesn't have the need to manually enable the regulator, or
-doesn't have the regulator, it can simply be optional.
-
-There are also some other funky supplies in the bindings, that are not connected
-to the chip in any way, but need to be controlled by the driver:
-
-+  vbus-supply: true
-+  vbus-in-supply: true
-
-First one can be on the connector node instead, where the driver can fetch
-it from.
-
-The purpose of the second one is to link the Phone's PMIC's USB power input with
-the type-c controller (anx7688), to make sure the PMIC has information about how
-much power it can draw from external PSU.
-
-The second one can be replaced by rewriting the anx7688 driver so that it
-creates a power supply representing the USB PSU connected to the phone, and by
-linking to anx7688 DT node from x-powers,axp813-usb-power-supply via
-a power-supplies property, which would mean that USB input of the phone is
-supplied by the external USB PSU. PMIC driver can be modified to watch
-the power supply provided by anx7688 driver for information it detected
-via USB-PD and update its input current limit via a standard helper function.
-
-This is how eg. fusb302 works. Not sure if that's any better from the PoV of
-DT bindings, though. Because power-supplies = <&anx7688>; will not look any
-greater in DT bindings, IMO. It will just link the same nodes in the other
-direction.
-
-Anyway, the HW is that there's an external PSU (detected by type c controller)
-and internal USB power input, and they are connected and one has to respect the
-limits of the other. I guess I shouldn't be adding a device node for external PSU,
-since it's not part of the phone. But that's what's trully being linked on
-HW level.
-
-Kind regards,
-	o.
-
-> 
-> > 
-> > ANX7688 chip desing doesn't have integrated VCONN mosfet switches so it always
-> > needs external supply + switches that are controlled by the chip itself. There's
-> > no sensible design where someone would not want this and the driver needs
-> > to get this regulator reference from somewhere. The switches are sort of an
-> > extension of the chip.
-> 
-> 
-> Best regards,
-> Krzysztof
-> 
