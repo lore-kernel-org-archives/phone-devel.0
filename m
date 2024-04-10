@@ -1,70 +1,49 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1669156C78;
-	Wed, 10 Apr 2024 08:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2031598EB;
+	Wed, 10 Apr 2024 11:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712738662; cv=none; b=fnif9628rL466dgqhWWSQqikxVK0UlVcSVZ9FgErq0v99QVT3Cp8iND6LoWeLVnB4UX5AYgjBZ9FHhL3aM7peQPlEylgBjEczUU17sUGaL1hGknbF9wyhZC//2MDwcsQkDDzbIeXjdiXr0vsF+Boi4c9lUJdTZqnds2/CziypXE=
+	t=1712748753; cv=none; b=CK6bwO0hX3okxx9ovTN56kj4Bs2HdHysQamAKWF6ysdAifmfWJGz4WRIvXcE/5WwoOEv9bpz6Azs6e0VCTs7xRPpTMd4C/XGuwI5aQZiWFXuUhLwa0viRg22jIf+AIOU32QLyhT4JUO4Oasf+qcGJKq1cls8Dwutk/1LESERW14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712738662; c=relaxed/simple;
-	bh=22j8uEO0liUSIyAblZj5xYhfKJtbo1A0yPEkeRp6MxQ=;
+	s=arc-20240116; t=1712748753; c=relaxed/simple;
+	bh=VG85eirFHChd1svVi0CFPjLxBM2ZZf5eSOZGPm4+ZWk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Swl1K7D4DIVDA0mUx3IpZVQuUEglrulPJxFx+6uOz0tvjpPBNpxhqpXfJRslOhQn8cYsDJizVC3F74v3vFE49U/ht7i19xMz2EPQHDWD3+ok0klGUDdz68ACsnZaHa+te3K7Ey1HIIiahBPrrotboT7BdMdCBHAIQfT7kQaZD7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jhQttSN+; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=OrNXOVm4KuKCRYfC6AD5jBdsv/xMX5cyk5k4UNIS1chwuyTF5yxZTu3M4p6ciWw3ZBpuyI5BWvGsX3Nt6XaL8IKNRx9JxCFifdg+Gtz6chxTgenk0vlEnfgGtbWyQsQUILwfxdazFQZIRnQs5wGd/gdkD2RJg6hJLQCmbVtngME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=gwayz7mQ; arc=none smtp.client-ip=195.181.215.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jhQttSN+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712738661; x=1744274661;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=22j8uEO0liUSIyAblZj5xYhfKJtbo1A0yPEkeRp6MxQ=;
-  b=jhQttSN+qicqKS+HkmFN7qwua8QD9IwonMgJuZs4HMB2Ej8ap+U28IvU
-   yg6nTkgsv76ldOaeCwvty8xs0Wptgh5EZNuuhisJFRasHGvEvEBBVfkAq
-   Oc4nvLXYzR4d7Cchr5FICbmLbotqhuOpNPi04hF6G8wBzkwxREgJdxo6p
-   ocqrbSeO1ljJkKzC6dE5+GAprToL9teRNG2STEa9jzF94OaJxnkhi/xyy
-   d2fabcCd4dFjbhxJqwhOTfnCcGI4/3BkR0q+1fLnyPOtfsQjT5IFz5unI
-   X2k1rjeuhv5Nxlxg4TQL58C1vDShEw/fBDZTb5H0Tm/2CopIHnZj1NtIW
-   A==;
-X-CSE-ConnectionGUID: N8PKfO9xQ1KyWPgiMXnbmg==
-X-CSE-MsgGUID: v8lD+EJSQt+Xrdwe6JeeBg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8312387"
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
-   d="scan'208";a="8312387"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 01:44:20 -0700
-X-CSE-ConnectionGUID: ZCEpQddvRGO1fCBVA3e7SA==
-X-CSE-MsgGUID: +JF+LgLfSBCF7PIBaR62nw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,190,1708416000"; 
-   d="scan'208";a="20442869"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 01:44:16 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id 3DE6711FC46;
-	Wed, 10 Apr 2024 11:44:13 +0300 (EEST)
-Date: Wed, 10 Apr 2024 08:44:13 +0000
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-To: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: Luigi311 <git@luigi311.com>, linux-media@vger.kernel.org,
-	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	pavel@ucw.cz, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 19/25] media: i2c: imx258: Change register settings
- for variants of the sensor
-Message-ID: <ZhZRXbkovF7XpsSr@kekkonen.localdomain>
-References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-20-git@luigi311.com>
- <Zg2BZXQpzsm7jMnc@kekkonen.localdomain>
- <998efafa-699b-4226-91d4-2ebba85d63ec@luigi311.com>
- <Zg_Zl0Q2kEDJoQoe@kekkonen.localdomain>
- <CAPY8ntDP-EPQK_d=5NeVM-ZTjfhtpYRq_y6PVSn9dRzxD5b1_A@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="gwayz7mQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+	t=1712748747; bh=VG85eirFHChd1svVi0CFPjLxBM2ZZf5eSOZGPm4+ZWk=;
+	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
+	b=gwayz7mQmP3mruRQtN/CjRosweQBlw/ZKVLEFtWkVFZxOiaYBVAaZwxx+DalbBqIb
+	 gW9N2yjfhAc8hgZoee13SS65u2oyBAVCmaEk2l9OryW2AmPpRL555w2BFMNPksFSe9
+	 hQMvb3Y2R7vsku4+jJ5aPM+v92fmULPsSpwP9GWM=
+Date: Wed, 10 Apr 2024 13:32:26 +0200
+From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Pavel Machek <pavel@ucw.cz>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, phone-devel@vger.kernel.org, 
+	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
+	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCHv3 2/2] usb: typec: anx7688: Add driver for ANX7688 USB-C
+ HDMI bridge
+Message-ID: <2panrf3dgpwkwywf4vv676tjlbdqpzjb75vpfhiohabhrxc6h2@tmouy7prgikm>
+Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Pavel Machek <pavel@ucw.cz>, 
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>, phone-devel@vger.kernel.org, 
+	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
+	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org
+X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
+ <https://xff.cz/key.txt>
+References: <ZhPMHdt6r/4D99Zg@duo.ucw.cz>
+ <ZhPM4XU8ttsFftBd@duo.ucw.cz>
+ <ZhUQ6kzV5ARlkfPC@kuha.fi.intel.com>
+ <ZhUgrNwRYoaV1AIJ@duo.ucw.cz>
+ <4q7o5vb26ibkbvqal5nn4kdnc32rrajhtszrf4fnuisnlfcsg5@6322saeu7qoe>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -73,218 +52,83 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAPY8ntDP-EPQK_d=5NeVM-ZTjfhtpYRq_y6PVSn9dRzxD5b1_A@mail.gmail.com>
+In-Reply-To: <4q7o5vb26ibkbvqal5nn4kdnc32rrajhtszrf4fnuisnlfcsg5@6322saeu7qoe>
 
-Hi Dave,
+On Tue, Apr 09, 2024 at 06:35:50PM GMT, Dmitry Baryshkov wrote:
+> On Tue, Apr 09, 2024 at 01:04:12PM +0200, Pavel Machek wrote:
+> > Hi!
+> > 
+> > > > This is driver for ANX7688 USB-C HDMI, with flashing and debugging
+> > > > features removed. ANX7688 is rather criticial piece on PinePhone,
+> > > > there's no display and no battery charging without it.
+> > > > 
+> > > > There's likely more work to be done here, but having basic support
+> > > > in mainline is needed to be able to work on the other stuff
+> > > > (networking, cameras, power management).
+> > > > 
+> > > > Signed-off-by: Ondrej Jirman <megi@xff.cz>
+> > > > Co-developed-by: Martijn Braam <martijn@brixit.nl>
+> > > > Co-developed-by: Samuel Holland <samuel@sholland.org>
+> > > > Signed-off-by: Pavel Machek <pavel@ucw.cz>
+> > > 
+> > > Just couple of quick comments below - I did not have time to go over
+> > > this very thoroughly, but I think you need to make a new version in
+> > > any case because of comments in 1/2.
+> > 
+> 
+> [skipped]
+> 
+> > 
+> > > > +static int anx7688_connect(struct anx7688 *anx7688)
+> > > > +{
+> > > > +	struct typec_partner_desc desc = {};
+> > > > +	int ret, i;
+> > > > +	u8 fw[2];
+> > > > +	const u8 dp_snk_identity[16] = {
+> > > > +		0x00, 0x00, 0x00, 0xec,	/* id header */
+> > > > +		0x00, 0x00, 0x00, 0x00,	/* cert stat */
+> > > > +		0x00, 0x00, 0x00, 0x00,	/* product type */
+> > > > +		0x39, 0x00, 0x00, 0x51	/* alt mode adapter */
+> > > > +	};
+> > > > +	const u8 svid[4] = {
+> > > > +		0x00, 0x00, 0x01, 0xff,
+> > > > +	};
+> > > 
+> > > Why not get those from DT?
+> > 
+> > Are you sure it belongs to the DT (and that DT people will agree)?
+> 
+> From Documentation/devicetree/bindings/connector/usb-connector.yaml:
+> 
+>             altmodes {
+>                 displayport {
+>                     svid = /bits/ 16 <0xff01>;
+>                     vdo = <0x00001c46>;
+>                 };
+>             };
+> 
+> BTW, I don't see the VDO for the DP altmode in your code. Maybe I missed
+> it at a quick glance.
 
-On Fri, Apr 05, 2024 at 02:16:31PM +0100, Dave Stevenson wrote:
-> Hi Sakari
-> 
-> On Fri, 5 Apr 2024 at 11:59, Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
-> >
-> > Hi Luis, Dave,
-> >
-> > On Thu, Apr 04, 2024 at 04:44:05PM -0600, Luigi311 wrote:
-> > > On 4/3/24 10:18, Sakari Ailus wrote:
-> > > > Hi Luis, Dave,
-> > > >
-> > > > On Wed, Apr 03, 2024 at 09:03:48AM -0600, git@luigi311.com wrote:
-> > > >> From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> > > >>
-> > > >> Sony have advised that there are variants of the IMX258 sensor which
-> > > >> require slightly different register configuration to the mainline
-> > > >> imx258 driver defaults.
-> > > >>
-> > > >> There is no available run-time detection for the variant, so add
-> > > >> configuration via the DT compatible string.
-> > > >>
-> > > >> The Vision Components imx258 module supports PDAF, so add the
-> > > >> register differences for that variant
-> > > >>
-> > > >> Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> > > >> Signed-off-by: Luis Garcia <git@luigi311.com>
-> > > >> ---
-> > > >>  drivers/media/i2c/imx258.c | 48 ++++++++++++++++++++++++++++++++++----
-> > > >>  1 file changed, 44 insertions(+), 4 deletions(-)
-> > > >>
-> > > >> diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-> > > >> index 775d957c9b87..fa48da212037 100644
-> > > >> --- a/drivers/media/i2c/imx258.c
-> > > >> +++ b/drivers/media/i2c/imx258.c
-> > > >> @@ -6,6 +6,7 @@
-> > > >>  #include <linux/delay.h>
-> > > >>  #include <linux/i2c.h>
-> > > >>  #include <linux/module.h>
-> > > >> +#include <linux/of_device.h>
-> > > >>  #include <linux/pm_runtime.h>
-> > > >>  #include <linux/regulator/consumer.h>
-> > > >>  #include <media/v4l2-ctrls.h>
-> > > >> @@ -321,8 +322,6 @@ static const struct imx258_reg mipi_642mbps_24mhz_4l[] = {
-> > > >>
-> > > >>  static const struct imx258_reg mode_common_regs[] = {
-> > > >>    { 0x3051, 0x00 },
-> > > >> -  { 0x3052, 0x00 },
-> > > >> -  { 0x4E21, 0x14 },
-> > > >>    { 0x6B11, 0xCF },
-> > > >>    { 0x7FF0, 0x08 },
-> > > >>    { 0x7FF1, 0x0F },
-> > > >> @@ -345,7 +344,6 @@ static const struct imx258_reg mode_common_regs[] = {
-> > > >>    { 0x7FA8, 0x03 },
-> > > >>    { 0x7FA9, 0xFE },
-> > > >>    { 0x7B24, 0x81 },
-> > > >> -  { 0x7B25, 0x00 },
-> > > >>    { 0x6564, 0x07 },
-> > > >>    { 0x6B0D, 0x41 },
-> > > >>    { 0x653D, 0x04 },
-> > > >> @@ -460,6 +458,33 @@ static const struct imx258_reg mode_1048_780_regs[] = {
-> > > >>    { 0x034F, 0x0C },
-> > > >>  };
-> > > >>
-> > > >> +struct imx258_variant_cfg {
-> > > >> +  const struct imx258_reg *regs;
-> > > >> +  unsigned int num_regs;
-> > > >> +};
-> > > >> +
-> > > >> +static const struct imx258_reg imx258_cfg_regs[] = {
-> > > >> +  { 0x3052, 0x00 },
-> > > >> +  { 0x4E21, 0x14 },
-> > > >> +  { 0x7B25, 0x00 },
-> > > >> +};
-> > > >> +
-> > > >> +static const struct imx258_variant_cfg imx258_cfg = {
-> > > >> +  .regs = imx258_cfg_regs,
-> > > >> +  .num_regs = ARRAY_SIZE(imx258_cfg_regs),
-> > > >> +};
-> > > >> +
-> > > >> +static const struct imx258_reg imx258_pdaf_cfg_regs[] = {
-> > > >> +  { 0x3052, 0x01 },
-> > > >> +  { 0x4E21, 0x10 },
-> > > >> +  { 0x7B25, 0x01 },
-> > > >> +};
-> > > >> +
-> > > >> +static const struct imx258_variant_cfg imx258_pdaf_cfg = {
-> > > >> +  .regs = imx258_pdaf_cfg_regs,
-> > > >> +  .num_regs = ARRAY_SIZE(imx258_pdaf_cfg_regs),
-> > > >> +};
-> > > >> +
-> > > >>  static const char * const imx258_test_pattern_menu[] = {
-> > > >>    "Disabled",
-> > > >>    "Solid Colour",
-> > > >> @@ -637,6 +662,8 @@ struct imx258 {
-> > > >>    struct v4l2_subdev sd;
-> > > >>    struct media_pad pad;
-> > > >>
-> > > >> +  const struct imx258_variant_cfg *variant_cfg;
-> > > >> +
-> > > >>    struct v4l2_ctrl_handler ctrl_handler;
-> > > >>    /* V4L2 Controls */
-> > > >>    struct v4l2_ctrl *link_freq;
-> > > >> @@ -1104,6 +1131,14 @@ static int imx258_start_streaming(struct imx258 *imx258)
-> > > >>            return ret;
-> > > >>    }
-> > > >>
-> > > >> +  ret = imx258_write_regs(imx258, imx258->variant_cfg->regs,
-> > > >> +                          imx258->variant_cfg->num_regs);
-> > > >> +  if (ret) {
-> > > >> +          dev_err(&client->dev, "%s failed to set variant config\n",
-> > > >> +                  __func__);
-> > > >> +          return ret;
-> > > >> +  }
-> > > >> +
-> > > >>    ret = imx258_write_reg(imx258, IMX258_CLK_BLANK_STOP,
-> > > >>                           IMX258_REG_VALUE_08BIT,
-> > > >>                           imx258->csi2_flags & V4L2_MBUS_CSI2_NONCONTINUOUS_CLOCK ?
-> > > >> @@ -1492,6 +1527,10 @@ static int imx258_probe(struct i2c_client *client)
-> > > >>
-> > > >>    imx258->csi2_flags = ep.bus.mipi_csi2.flags;
-> > > >>
-> > > >> +  imx258->variant_cfg = of_device_get_match_data(&client->dev);
-> > > >
-> > > > You'll also need to keep this working for ACPI based systems. I.e. in
-> > > > practice remove "of_" prefix here and add the non-PDAF variant data to the
-> > > > relevant ACPI ID list.
-> > > >
-> > >
-> > > Removing of_ is easy enough and looking at all the other commits that make
-> > > this change in other drivers I dont see anything else being done besides
-> > > adding in the .data section that is down below for both imx258 and pdaf
-> > > versions. Is that what you are referencing or is there some other place
-> > > to add variant data to ACPI ID list?
-> >
-> > Speaking of which---are you absolutely certain there are two variants of
-> > this sensor? Many sensors that have a different pixel pattern (PDAF pixels
-> > or a non-Bayer pattern) can produce Bayer data when condigured so. The fact
-> > that you have differing register configuration for the PDAF and non-PDAF
-> > cases suggests this may well be the case.
-> 
-> I had a discussion with our contact at Sony over the configuration,
-> and Soho Enterprises who made the module I have also consulted with
-> Sony (their main person is ex Sony himself).
-> 
-> There is a spec version field in the OTP which reflects the pixel
-> pattern. It has defined options of:
-> - HDR pattern
-> - Binning pattern
-> - mono
-> - non-PDAF
-> - HDR HDD
-> 
-> Sony can't release information on how to read that information from
-> the sensor OTP as it is contractually locked by contracts with Intel.
-> Whilst information obtained via other routes means I have checked it
-> on my module as HDR pattern whilst the Nautilus platform has the
-> non-PDAF variant, I'm not going to spoil our relationship with Sony by
-> releasing that.
-> 
-> It's possible that the Nautilus sensor will work happily with the
-> settings required for the PDAF variant, but I have no way of testing
-> that, and the registers in question are undocumented. Changing them
-> blindly isn't going to make any friends, and I doubt existing platform
-> users wish to rerun all their image quality tests on the sensor to
-> validate the change.
-> 
-> Unless Intel wish to release the information on reading the OTP, we
-> have no way of telling the variants apart but need different register
-> configurations. If there is a better way of handling that situation
-> than compatible strings, then I'm open to suggestions.
-> 
-> There's a short thread on libcamera-devel from back in 2022 where I
-> was looking into this [1]
+VDO is set via TYPE_DP_SNK_CFG message to the firmware. There may be some
+default in the firmware which matches Pinephone receptacle configuration.
 
-Oops! I guess we'll need these two for now at least.
+I guess the driver can send the VDO value from DT after firmware is
+initialized. Other values can be set in DT too, but extreme care needs to
+ne take, because firmware has some bugs, which cause it to request
+high voltage from PD PSU when it's in fact not part of PDO, potentially
+destroying the device. So I'd rather not expose at least PDOs in DT to random
+unsuspecting DT users who just copy paste and edit DT without reading the driver
+code or some obscure notes somewhere.
 
-We don't really have support for PDAF anyway (I'd expect this to be
-documented for a driver, for instance) so I presume currently for
-PDAF-variants the configuration is about "correcting" the PDAF pixels?
+kind regards,
+	o.
 
-The problem seems to be worse on ACPI systems as there's a single HID only.
-
+> > 
+> > > > +	u32 caps[8];
+> > > > +
 > 
->   Dave
 > 
-> [1] https://lists.libcamera.org/pipermail/libcamera-devel/2022-June/031449.html
-> 
-> > >
-> > > >> +  if (!imx258->variant_cfg)
-> > > >> +          imx258->variant_cfg = &imx258_cfg;
-> > > >> +
-> > > >>    /* Initialize subdev */
-> > > >>    v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
-> > > >>
-> > > >> @@ -1579,7 +1618,8 @@ MODULE_DEVICE_TABLE(acpi, imx258_acpi_ids);
-> > > >>  #endif
-> > > >>
-> > > >>  static const struct of_device_id imx258_dt_ids[] = {
-> > > >> -  { .compatible = "sony,imx258" },
-> > > >> +  { .compatible = "sony,imx258", .data = &imx258_cfg },
-> > > >> +  { .compatible = "sony,imx258-pdaf", .data = &imx258_pdaf_cfg },
-> > > >>    { /* sentinel */ }
-> > > >>  };
-> > > >>  MODULE_DEVICE_TABLE(of, imx258_dt_ids);
-> > > >
-> > >
-
--- 
-Kind regards,
-
-Sakari Ailus
+> -- 
+> With best wishes
+> Dmitry
