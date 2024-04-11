@@ -1,78 +1,69 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F387717BCF
-	for <phone-devel@vger.kernel.org>; Thu, 11 Apr 2024 19:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C9A17BCC
+	for <phone-devel@vger.kernel.org>; Thu, 11 Apr 2024 20:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712865581; cv=none; b=FUPg4yDUWMnzhEoC9akFAyDZDofpbVebva3xRK6Kgt/m6Na6xMo709qNYEWG3PReZfkTk8dBe6xFrctAq2GLhaYf1+cNdbNt6rf6T0Vdf4SJQNPaEpKwkpJa91R0HXRILlEkEtqYqIAZBj8yzs9esiPE5kQzPkmFetJTfmZJMuU=
+	t=1712866659; cv=none; b=MY1jhPvNztum4w0HB9q486za8InLqcUnoYj1fkWJlAy/mHJIeMXwJkkYKQMDMzsZNA4Ey/7zQ72cAvDgTT9aNmDR7FMzZL7jaix3iZqhSMgeG058jBtrLjIBXLAwH9n5otLQpcifJ3jbKrON60MY2qQ8blpymKE4y+UHUzdeVdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712865581; c=relaxed/simple;
-	bh=uhtySGVK5A6+vHp5UrGYLuo5kUbyFoALPVif91nqwuc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=IZUFjyEhHyZONL5yJGtHBa2KAz/ZrZ2HYCICUbO28VJ6gDSmuga5fHHBuctHKN4CNs7pPnnzTbix+HRUGZsFgtoPLp+CzXG5pWWopNDCKIt3hqIuz5j5fTDMLtvfAUpz1TUtHnhXcxLug/HKVn3fizM005Oy6s7SnxKGhsF/HMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=e61DVOrd; arc=none smtp.client-ip=209.85.221.44
+	s=arc-20240116; t=1712866659; c=relaxed/simple;
+	bh=CCSNMZUxTrpa3dpyGwuD+xpGXVDYKUY8cALIjx+vkrw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WU48gJOunlCmbkZyZutgX3iAImVazyOQ0jiVjl6kwLwhD4CgzWsNb97800GzFVTNhNa189dAR4GRz14/ryIAmOeWsO6XpwYNCEU7II8wG+imN/1wMt8EQzSyi+gVh3bW8q7mblhE0hMhz4t17lWu1GaXN8PsOaMrSLTRVhbhNAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Knz3FE+h; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="e61DVOrd"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-343e096965bso83089f8f.3
-        for <phone-devel@vger.kernel.org>; Thu, 11 Apr 2024 12:59:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Knz3FE+h"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-516dbc36918so298101e87.0
+        for <phone-devel@vger.kernel.org>; Thu, 11 Apr 2024 13:17:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712865578; x=1713470378; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Iwn+JX8xlhjGnXsfpBzohHUIfjRXih/t5ZCgll+Ab1M=;
-        b=e61DVOrdec3IWMoxUsnQnjS5QMpThRxoM+v64JmlGAFOfRoT2F1fR5LLq7pla4ADVd
-         db2alSNCnHesNyQNKn1n+0dmuHQOi94shYRx5ufIuCSnMhWUcapVm3QK0RgiDZGTVa1u
-         36MufoUf6p8UwVabZMLRDqxoJGZxD++hVJksFuFWI4SyTplQwKxvKAt6pMJxcjU7grW6
-         xXI2m0j1I4nfioxKi9ji0tL4b1sa1+SxLPIZa/EKkOteVqDkPgyV9CMGkb4m5WLYVrP5
-         6Ugq70imZCsSbD0gZ/oQAii57w0QVT8CtSBhDlt9sKif8jGQKpIbkpMJNC8c5Ttzy6vs
-         534w==
+        d=linaro.org; s=google; t=1712866656; x=1713471456; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jnVkVi9PCVLQ2a4WdlMXHYl3KUjY5EPaBz9jWbvlviA=;
+        b=Knz3FE+h116Jw56r8DRB5MhfbTQPpKuJ3aOu/rh9BozCqCRQbUtZhiG0aJvWulQNYI
+         tDL1PrY0SS9nWsENFLzkiEIlIxEEA80z8l/MP/SJVGmPpokKywCpyEbikGjPo/DBTHxl
+         UsG0yIF+0YDRdrjA9/P1zMEElLADiOX3WerCML/Cyf5XUsV4hY9NSS4jAB/lMItID6+j
+         8cAMzSbJrQBGWZkATr//ZvJZiN3FbDkR9gK15Sqq+sSk0Dyy4MfJUQOnurLq68bf+tdY
+         jRt3fL71IhTf+h8YRn2/kBNYRwfAXYzyek6A8XzVDEDsAkK/joo5oYx00Ze+qNgd2y+n
+         D7Sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712865578; x=1713470378;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Iwn+JX8xlhjGnXsfpBzohHUIfjRXih/t5ZCgll+Ab1M=;
-        b=UcOb/WmfABP1/fdwqX+eq9QrtSgc4JlRuQ9ygpKcUKGgBfy/fDdDZImC/QC1Ctm4BM
-         AMrjt8MGbDqcF+yTLIoVLEiqWsMGistdrrvEBFEIq9kaNqQjZVGI5lGE/o/Fln5HcqGD
-         6hRK1vpBn9XfENFyqwJYiHalap4+w1QE6jR1hMP/EsnlJMJ2GYWhUSt5oyuI0bryfGhE
-         U29cjk38enpQNYAt/0KW2KSTGx3Ax84pn2cRArWz98KWIOcW1yFypnuvDEb/KJtbiXgK
-         gL0k3gR+eBFizEuxBoWrxeaJ45bJvv2g4RY6Dyp8phy31c3aJ5oV+Sb76WKma0TIAYim
-         eUkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUXT0wkj9YEVPTjH54umMAS3NgImTUIO1bHL1Ko2eDBQN9fsMMkQbju8cor7V4/GJgqs6blwDbIh1Pnd6w5G5INy9mr8h5tF7LJPYE=
-X-Gm-Message-State: AOJu0YyMei9gwuYUvsuydDWNkO4Zb4N7y+8R499wIMufR1pxkfZ3mEoq
-	EOb3wLPJJc2YjS1d426Hz7xpB9j0sgnoRQPF7TAa0XsMoQ3AllbRDr7z13S/QG8=
-X-Google-Smtp-Source: AGHT+IE299GS0PEcChuZMfJ6a0ihE/WSAW/jfcW48vAeQ5Mexi1AiT8WGDQD65/ia01rcTRpzoiqkg==
-X-Received: by 2002:a5d:4743:0:b0:33e:8b93:87c6 with SMTP id o3-20020a5d4743000000b0033e8b9387c6mr420612wrs.42.1712865578120;
-        Thu, 11 Apr 2024 12:59:38 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id c12-20020a5d4ccc000000b00343f662327bsm2496475wrt.77.2024.04.11.12.59.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Apr 2024 12:59:37 -0700 (PDT)
-Message-ID: <025d268f-96d0-49fa-9a67-f80ab81ed102@linaro.org>
-Date: Thu, 11 Apr 2024 21:59:35 +0200
-Precedence: bulk
-X-Mailing-List: phone-devel@vger.kernel.org
-List-Id: <phone-devel.vger.kernel.org>
-List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+        d=1e100.net; s=20230601; t=1712866656; x=1713471456;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jnVkVi9PCVLQ2a4WdlMXHYl3KUjY5EPaBz9jWbvlviA=;
+        b=TdO3BTYl96o2MhN8XpiuSmrgqBTtPfo41xak35Igih8484Z+7hAmRJ2Fqu6sw2TjKl
+         R3tIEdcgJ2OUn+YCtWt3u4BeekVkjWmOsoWnKvDlrOCr2WDQQqqsbrpdWVuSI7I/Qd1j
+         Rq4o3Xq/yZADYDODvKQubosk2QsiDLnK3QTPdN05mVjzQnXfMv0O39jpHkixBwxMuR2d
+         CcNfwDWzX2tpZvfzyaUnQeJ7n/vTTLgPMrAx9lnWAODC09/WjI0THJAAG+IfJ/e/1vyN
+         VW6Tsbl3BDb+/wbd2JVXN2/EBAjp5mEikM9r3/I5+3/KZ6CBGOylBVaneppM/gHBjWGO
+         7LnA==
+X-Forwarded-Encrypted: i=1; AJvYcCVrzKHSwMGy68OYgf/Xs6I8fdElrnRW6nzjaRqVAJ8dhizsCtIIaBsgi1Iwt15OEi7IwUHTNcMltESMHnkgOrFWtUWCHtttawm7M18=
+X-Gm-Message-State: AOJu0Yy260PLNm9KaG83zUilK3b4InGzDk2nFugsWyAM9i2p8f+SEoHn
+	L6vGUnF2qMFxL37dYnWPLy5gxMMEaHuopMRR24iIJ7tkQ0zcmy8rOsLyA48kjHk=
+X-Google-Smtp-Source: AGHT+IHA4u0Jp+6NhFXOfmsl2KdwlH94xIcKS3tE0NrfLh8isx/EqVT2vR5geDzP5kQ0Wsmf9+Nzzg==
+X-Received: by 2002:ac2:5982:0:b0:516:d692:5e0b with SMTP id w2-20020ac25982000000b00516d6925e0bmr374592lfn.54.1712866656444;
+        Thu, 11 Apr 2024 13:17:36 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::227])
+        by smtp.gmail.com with ESMTPSA id u23-20020a196a17000000b00515a52e362fsm293917lfu.189.2024.04.11.13.17.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Apr 2024 13:17:36 -0700 (PDT)
+Date: Thu, 11 Apr 2024 23:17:34 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
+	Pavel Machek <pavel@ucw.cz>, phone-devel@vger.kernel.org, 
+	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
+	heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org
 Subject: Re: [PATCHv3 1/2] dt-bindings: usb: typec: anx7688: start a binding
  document
-To: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>, Pavel Machek
- <pavel@ucw.cz>, phone-devel@vger.kernel.org,
- kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de,
- martijn@brixit.nl, samuel@sholland.org, heikki.krogerus@linux.intel.com,
- gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, devicetree@vger.kernel.org
-References: <ZhPMHdt6r/4D99Zg@duo.ucw.cz>
- <ab9affc8-de68-4ec9-bdfc-02131191bc3a@linaro.org>
- <ZhPTTxI4oTF3pgrk@duo.ucw.cz>
+Message-ID: <cogegnmniilyhjfvptdws4sybmoyuovo6p37tofdinxxbml4ua@hq43tv4dzr7e>
+References: <ZhPTTxI4oTF3pgrk@duo.ucw.cz>
  <e7841ad2-fa3d-442d-804d-51f12e05c234@linaro.org>
  <e6vvuttix5k5fioy7q44ick5wj6u5gleh7mht36s4zjjcym7vy@bziejyohtc4b>
  <7976e254-ed1e-406d-870b-1ecdc4b1e23c@linaro.org>
@@ -81,120 +72,43 @@ References: <ZhPMHdt6r/4D99Zg@duo.ucw.cz>
  <vbo7bacecuagu4qzrr6tsdh4qlejrv7ia67yylf6ay4u7qnwge@kqj27bun2m7d>
  <97f2d38d-c863-4c76-91f1-52cd250759d7@linaro.org>
  <ounfv3vgg2esvxk2cxckeqyy52mghiyps2rszh7sf5poryyjzs@ftumsalmthza>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <ounfv3vgg2esvxk2cxckeqyy52mghiyps2rszh7sf5poryyjzs@ftumsalmthza>
-Content-Type: text/plain; charset=UTF-8
+ <025d268f-96d0-49fa-9a67-f80ab81ed102@linaro.org>
+Precedence: bulk
+X-Mailing-List: phone-devel@vger.kernel.org
+List-Id: <phone-devel.vger.kernel.org>
+List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <025d268f-96d0-49fa-9a67-f80ab81ed102@linaro.org>
 
-On 10/04/2024 04:20, Ondřej Jirman wrote:
-> On Mon, Apr 08, 2024 at 10:12:30PM GMT, Krzysztof Kozlowski wrote:
->> On 08/04/2024 17:17, Ondřej Jirman wrote:
->>>
->>> Now for things to not fail during suspend/resume based on PM callbacks
->>> invocation order, anx7688 driver needs to enable this regulator too, as long
->>> as it needs it.
->>
->> No, the I2C bus driver needs to manage it. Not one individual I2C
->> device. Again, why anx7688 is specific? If you next phone has anx8867,
->> using different driver, you also add there i2c-supply? And if it is
->> nxp,ptn5100 as well?
+On Thu, Apr 11, 2024 at 09:59:35PM +0200, Krzysztof Kozlowski wrote:
+> On 10/04/2024 04:20, Ondřej Jirman wrote:
+> > On Mon, Apr 08, 2024 at 10:12:30PM GMT, Krzysztof Kozlowski wrote:
+> >> On 08/04/2024 17:17, Ondřej Jirman wrote:
+> >>>
+> >>> Now for things to not fail during suspend/resume based on PM callbacks
+> >>> invocation order, anx7688 driver needs to enable this regulator too, as long
+> >>> as it needs it.
+> >>
+> >> No, the I2C bus driver needs to manage it. Not one individual I2C
+> >> device. Again, why anx7688 is specific? If you next phone has anx8867,
+> >> using different driver, you also add there i2c-supply? And if it is
+> >> nxp,ptn5100 as well?
+> > 
+> > Yes, that could work, if I2C core would manage this.
 > 
-> Yes, that could work, if I2C core would manage this.
+> Either I don't understand about which I2C regulator you speak or this is
+> not I2C core regulator. This is a regulator to be managed by the I2C
+> controller, not by I2C core.
 
-Either I don't understand about which I2C regulator you speak or this is
-not I2C core regulator. This is a regulator to be managed by the I2C
-controller, not by I2C core.
-
-
-> 
->>>
->>> I can put bus-supply to I2C controller node, and read it from the ANX7688 driver
->>> I guess, by going up a DT node. Whether that's going to be acceptable, I don't
->>> know. 
->>>
->>>
->>> VCONN regulator I don't know where else to put either. It doesn't seem to belong
->>> anywhere. It's not something directly connected to Type-C connector, so
->>> not part of connector bindings, and there's nothing else I can see, other
->>> than anx7688 device which needs it for core functionality.
->>
->> That sounds like a GPIO, not regulator. anx7688 has GPIOs, right? On
->> Pinephone they go to regulator, but on FooPhone also using anx7688 they
->> go somewhere else, so why this anx7688 assumes this is a regulator?
-> 
-> CC1/CC2_VCONN control pins are "GPIO" of anx7688, sort of. They have fixed
-> purpose of switching external 5V regulator output to one of the CC pins
-> on type-c port. I don't care what other purpose with some other firmware
-> someone puts to those pins. It's irrelevant to the use case of anx7688
-> as a type-c controller/HDMI bridge, which we're describing here.
-> 
-> VCONN regulator is an actual GPIO controlled regulator on the board, and
-> needs to be controlled by the anx7688 driver. So that CC1/CC2_VCONN control
-> pins driven by the firmware actually do what they're supposed to do.
-> 
-> Not sure why it would be a business of anything else but anx7688 driver
-> enabling this regulator, because only this driver knows and cares about this.
-> If some other board doesn't have the need to manually enable the regulator, or
-> doesn't have the regulator, it can simply be optional.
-> 
-> There are also some other funky supplies in the bindings, that are not connected
-> to the chip in any way, but need to be controlled by the driver:
-> 
-> +  vbus-supply: true
-> +  vbus-in-supply: true
-
-Yeah, the vconn looks reasonable. Just provide description of the
-supply, so it will be obvious.
-
-> 
+If it is a supply that pulls up the SDA/SCL lines, then it is generic
+enough to be handled by the core. For example, on Qualcomm platforms CCI
+lines also usually have external supply as a pull-up.
 
 
-
-Best regards,
-Krzysztof
-
+-- 
+With best wishes
+Dmitry
