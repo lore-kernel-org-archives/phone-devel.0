@@ -1,113 +1,75 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D606213DDD9
-	for <phone-devel@vger.kernel.org>; Thu, 11 Apr 2024 07:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BCE13E88A;
+	Thu, 11 Apr 2024 07:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712819178; cv=none; b=i0VAKhIRwEhsAPQ08667Y/LZH8U6ggH5gQeAdU1LjIJuA8/NCVKHpV+5hW/4Bhf6h4XOIJU9Q27o3B+VSxk9TJ9hjq1ZllZqHVNOD+Ej328na6dGV7jySNSOMTet2ssCboDsTiEnZF38BUrqQmgm4wywzuplKvjLbyV8HMCpPrg=
+	t=1712822217; cv=none; b=eY97hySy6LkROfBpz7n2u8h+LJ63IqmeoZIjI7zJUB2G6mrQBGaVft19XsvgwsMM+DF2bcEOCP1nWZMdZhKYmi9BNwAqw51i/pKs7VPU0vLU/GiEBzP3yEjxJ4OmEGfICghjW/N02OZy06xd6a7nVQ2fTpM6JDHUEi7AZve3sZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712819178; c=relaxed/simple;
-	bh=+o7I+daoENcP8Ct9wXBNksspsxmRSv7JiVNJMZWs3cQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nGaqTeSr/g1i7YP+67RlDcEzHirikXpA/b9/zVrxAmf6ITd1qJYxLW7UjkVc3kH+5d5jluYVlPfZNeyR5Xnz84GG64ua5kZWBYRm1nFRvWOZoodpCYwxW5+CRYsppK4JX4JGBOf/zHIrhPSK4yKgaxgOcavDhoZ5TZmXcEALRp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=vfw7bfqh; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1712822217; c=relaxed/simple;
+	bh=r82yVd6RGSCubhydxrcg4A9/P/oMhvzUKISskBjsB1M=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=Qt+777W9oce5BSFfl5rA5k9QKGdRmjrnig6C/Kh09bETCRIyxp/ajf7/t8HmIY2apOudUo+BiLrhkfJo9O5Y5Dc9DxrRsv9BzyNuJmDnXPMyEaRa+n1QY0gYsF+8KcOaNCopOrKwITx4FF0n9RUbIftWTq/qmeIbTevWrBub+m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ofl8sOom; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="vfw7bfqh"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a522715519bso12360366b.3
-        for <phone-devel@vger.kernel.org>; Thu, 11 Apr 2024 00:06:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1712819174; x=1713423974; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IPHgQp5i5ObZBE7aupcoMPs0PyMl+eJyHyekbE5zlXs=;
-        b=vfw7bfqhq2me01f9pYWrujssM0ZpdqY2OyNMTHWnZ0602bCm7OXPJKfa+i9quNpHx+
-         ndSMFzW9qXDgd9oBU7FO+WWBsRfv8uVr8Pdrq9/R61rPf7sa61iH3hon1qeKA93U6i8W
-         UstI8UQvbLAQUu34OrBWYDi8Djs2CU06MHVTfODGEPa6YsjZ9W6c5ydDX3n2SxHqH29E
-         Pz1SO2Uurev7cyiNbtqGeGXWGCBS83l53y0WDfLZfU+9CkcETX1W8nBll8pz+WqbRh4i
-         NAeidYSVWmgXy3kx6EHugal5bU7TXZO47mbZDsjv/RNVAA0G383+vabVEdrGFfpPZmFM
-         VAMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712819174; x=1713423974;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IPHgQp5i5ObZBE7aupcoMPs0PyMl+eJyHyekbE5zlXs=;
-        b=iv6Po4emSYbPmRx3MW1hg0XlnNLnDDnJHYAglfJPZrICeJQHcms3U20uy5ZP05iO+2
-         3rlrgbmHmaq2kGaHoLX9oKsMeB+O3iAFNkl/u4yNqHj+yT6cg6DcxsZywtuVKCnQD5wP
-         R8CA1AqxOF7dxhea08pRNT/B/IPSmwaVgvZFla+aJyGTQgk48mOjteZDdAJ4u8QDEHvB
-         XC3lqUJjv/dVuXUC3scFRxgnWEXjhTYkrp0Dd+pH6639C6e50ALXsNtm8rcvU1/F2e5K
-         SBiq5lhhNuVpJ/ZcLB66ejaHLDOfef2wEHjeekZwJQY2VdFzHuPU2x0/whUQiptbZd0i
-         iPBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU9QWBI/3HhbN0gnvCDOiusWhGQ4iAVcP7YT3jKh1ErBN9MhodVTJHX0Yo39EK+3NDkjDQ8CvrlLjJFxBVA7cnBZC0GXEzVJzx8FNQ=
-X-Gm-Message-State: AOJu0YzD8UN500uKx/oU2I3gnNkq/aVouHWRPGb61LJJaJuGsQmjJVI3
-	TYM0s9LZhO01sEzPebec50mOQQazUshZ7E7Aw3UqZ2MoJvCVIyqLLF3fx15Edds=
-X-Google-Smtp-Source: AGHT+IFwO1V0PB5oOIQfGSzjLElMTnZJSoZTIjXmfOa0FvKysbniFvJxcp6z+3c0bN4piGw2hz2Bbw==
-X-Received: by 2002:a17:906:ee87:b0:a51:962d:cf0d with SMTP id wt7-20020a170906ee8700b00a51962dcf0dmr3622218ejb.12.1712819174137;
-        Thu, 11 Apr 2024 00:06:14 -0700 (PDT)
-Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id dk5-20020a170907940500b00a518b14d6cesm461397ejc.172.2024.04.11.00.06.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Apr 2024 00:06:13 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Thu, 11 Apr 2024 09:06:11 +0200
-Subject: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Add USB-C
- orientation GPIO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ofl8sOom"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDF3C43394;
+	Thu, 11 Apr 2024 07:56:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712822216;
+	bh=r82yVd6RGSCubhydxrcg4A9/P/oMhvzUKISskBjsB1M=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=ofl8sOomwMpWVFOnh5zoHRVILDniytHECrRA2JVpnG7JZjD3Enamxs0ZFb+PqnKa2
+	 WpqmwtqNtDq+cSsUqUCX36vBt3Z5jT5wb1Xb/uDrzv6Na62jOWRySCDwYVeGcxfqiO
+	 slVhlm+SAVlwAoX+2Dj30TaNqPUyI3Jzo99W2422SSmH6a/b7IZNxnv/ZGYSGNKB/b
+	 qHrPkdFyOGjtH7U+q2SpRlRSjdHOHqM259sHLHAUpta3V20jEwz7qz2V0YaiqHg6I/
+	 Yc3tfuZXbTcVukHnC9Q5XjWBvDpNK1GXQ9vBAFDQ/G8Ic4wQkYQAsooS8Ysn1qXgwX
+	 uuydngVahj46Q==
+Message-ID: <a6e75820e5b6a96d3b1161c9dbf5a8d8.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240411-fp5-usb-c-gpio-v1-1-78f11deb940a@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAOKLF2YC/x3MQQqAIBBA0avErBtQMYKuEi1MR5uNilIE4t2Tl
- m/xf4NKhanCNjUo9HDlFAfkPIG9TAyE7IZBCaWFlhJ9XvCuJ1oMmRMa75RatTTOOhhRLuT5/Yf
- 70fsHiFICB2AAAAA=
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240402-pxa1908-lkml-v9-1-25a003e83c6f@skole.hr>
+References: <20240402-pxa1908-lkml-v9-0-25a003e83c6f@skole.hr> <20240402-pxa1908-lkml-v9-1-25a003e83c6f@skole.hr>
+Subject: Re: [PATCH v9 1/9] clk: mmp: Switch to use struct u32_fract instead of custom one
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Catalin Marinas <catalin.marinas@arm.com>, Conor Dooley <conor+dt@kernel.org>, Duje =?utf-8?q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, Guilherme G. Piccoli <gpiccoli@igalia.com>, Haojian Zhuang <haojian.zhuang@linaro.org>, Kees Cook <keescook@chromium.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Linus Walleij <linus.walleij@linaro.org>, Lubomir Rintel <lkundrak@v3.sk>, Michael Turquette <mturquette@baylibre.com>, Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>, Tony Lindgren <tony@atomide.com>, Tony Luck <tony.luck@intel.com>, Will Deacon <will@kernel.org>
+Date: Thu, 11 Apr 2024 00:56:54 -0700
+User-Agent: alot/0.10
 
-Define the USB-C orientation GPIOs so that the USB-C ports orientation
-is known without having to resort to the altmode notifications.
+Quoting Duje Mihanovi=C4=87 (2024-04-02 13:55:37)
+> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>=20
+> The struct mmp_clk_factor_tbl repeats the generic struct u32_fract.
+> Kill the custom one and use the generic one instead.
+>=20
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Tested-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: Duje Mihanovi=C4=87 <duje.mihanovic@skole.hr>
+> ---
 
-On PCB level this is the signal from PM7250B (pin CC_OUT) which is
-called USB_PHY_PS.
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
-Depends on (for bindings): https://lore.kernel.org/linux-arm-msm/20240409-hdk-orientation-gpios-v2-0-658efd993987@linaro.org/
----
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 2 ++
- 1 file changed, 2 insertions(+)
+>=20
+> diff --git a/drivers/clk/mmp/clk.h b/drivers/clk/mmp/clk.h
+> index 55ac05379781..c83cec169ddc 100644
+> --- a/drivers/clk/mmp/clk.h
+> +++ b/drivers/clk/mmp/clk.h
+> @@ -3,6 +3,7 @@
+>  #define __MACH_MMP_CLK_H
+> =20
+>  #include <linux/clk-provider.h>
+> +#include <linux/math.h>
+>  #include <linux/pm_domain.h>
+>  #include <linux/clkdev.h>
+>=20
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index 4ff9fc24e50e..f3432701945f 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -77,6 +77,8 @@ pmic-glink {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 
-+		orientation-gpios = <&tlmm 140 GPIO_ACTIVE_HIGH>;
-+
- 		connector@0 {
- 			compatible = "usb-c-connector";
- 			reg = <0>;
-
----
-base-commit: 65b0418f6e86eef0f62fc053fb3622fbaa3e506e
-change-id: 20240411-fp5-usb-c-gpio-afd22741adcd
-
-Best regards,
--- 
-Luca Weiss <luca.weiss@fairphone.com>
-
+This clkdev include should be dropped in another patch.
