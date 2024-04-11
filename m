@@ -1,381 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7988613D258;
-	Thu, 11 Apr 2024 11:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C046114A4D4
+	for <phone-devel@vger.kernel.org>; Thu, 11 Apr 2024 12:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712835452; cv=none; b=hg7XyKSCxrfbqSN4qjf0YXUGZAghWoKEXXcH+ktPJ6tiNMOECWm8OmGnFZeTlGEnxw6IijCQotccVMWocTH8SF/HhrLZ5yNCcsiUMLsGKFXNCIaDdVNUZubvGUrWegw07lATcPXNH6hdir/uoV0ubOHXJgZRNATqOv0NF+K0d4M=
+	t=1712837334; cv=none; b=eQmsVuACt4GSl1sHRTvi+nA1f07HWuB1cOqyxR1JVoG+SDRz+mAqI5YIN3U12KIjGr5vTQSmz2fguWVESygykj3ZwWQX2AHnlbXBGFdFwvQSu9ZnAWTRCJZP6vSUPIbQf5IKWEZ7m4zvgefWN5sPtbf33yg/TF2WqlZBqke29BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712835452; c=relaxed/simple;
-	bh=R9Qx7TxMcEwjqshW3m2D1I/bGjxEyy5r1jfF0S/heEE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RMRf8rHanO1Hqtw9PMyIhO9coiwZS1imst9bi0pE09eIn2apE+m23NOz/4eZzyKogi+1w0tu4aaAE4sQ406dk5yJ1SoQ34kMChb4cNXfOoIrEGZfz4zKTZQz4PhPr28/GO5Pek1n0+rgxzQ0oT/TMxEhZ+dWG43C32YyWL4U4/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G1+kv548; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1712837334; c=relaxed/simple;
+	bh=yGFd6lIJ5ybbSpCFl+dN5BwS093+BfmMFMHcNxTssNI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a888O8lJHVpYYcH9vLJs1ugGFRinDdztM66Bz4cE9lFRm5SW3/OXD+EmvEkMJRL+4gADjkBQn6z4/n6O/950eK9zEA4+bVVaVQoXEHzyAfGNl1hVYpO2yI/lzRBUI9Vk/HL9/YanisOj1lrOuDaOgs2qExrUcLjtU0RSWRU18uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BLKx+vWi; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G1+kv548"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657DDC433F1;
-	Thu, 11 Apr 2024 11:37:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712835452;
-	bh=R9Qx7TxMcEwjqshW3m2D1I/bGjxEyy5r1jfF0S/heEE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G1+kv548oYh5IRv4b3xAUPi4JLn+yXPPEYwqEZNqqcQE2rdg1jHJe5mXcQM55zu67
-	 S56WSK/YeYZtO5hJ4G4Bbu0TKGgTunrPs0UibRvsDipJXh7Pxdsuo6W+BRCznivmDI
-	 6fleGN5OPX3YgTU5n5WPR6jQxEyC5/RE7nhTGGJ4iSEbfeqsUxNVqyQHXWTE55r9TD
-	 jpAMECaS+sdnuEwwIXTeVVWsEO0c0zBKwgHJJQ64ASH1JVa5Cy6D1koQdYZ+jgr5tC
-	 U9JaUMcNd531cy4cbj1A09qQ64hGTsz2QoHUn8KjFTZ5dmwlxBgCsdafM+eACBmlaA
-	 4M/6bquJIlatw==
-Date: Thu, 11 Apr 2024 12:37:26 +0100
-From: Lee Jones <lee@kernel.org>
-To: Karel Balej <balejk@matfyz.cz>
-Cc: Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH 2/5] mfd: add driver for Marvell 88PM886 PMIC
-Message-ID: <20240411113726.GH1980182@google.com>
-References: <20240331105608.7338-2-balejk@matfyz.cz>
- <20240331105608.7338-4-balejk@matfyz.cz>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BLKx+vWi"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-516d487659bso8350449e87.2
+        for <phone-devel@vger.kernel.org>; Thu, 11 Apr 2024 05:08:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712837331; x=1713442131; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kw2S5j6qMOjXm7u3CIwYmKS25bCLC2CIVQvhzxqTwig=;
+        b=BLKx+vWi7Muw0nvs9vr9yEp2bnStA9kkOyvPFXiQmBmZghICBXIwf64Mqdf2kiD8Lt
+         752hFP6UFIOkU4aAws1qhA41hMVyuS+TlN6ZyKHXzeZa6bg0aOOlPP6GUiGYoTMoMZeK
+         KLwuDdKyH+v+PF3fgFfW0SQDiuSvyv1K3ChWq8OB/LNWa6SKiq3H1BrU1q9QG9jN4h3X
+         6xqhjPoLPtmoRvFf/DXf/57/O0ctf99Ecg8pDWYdzEqXp0qNu6ueh2GzyGzsHv2Fbtxr
+         ipMYrnjnKaDa/f/QPwdnwLmgujGVu6GXK7yYdr1azoYvmnG8ww6d9zwTyTDXiAorYFtA
+         mZ/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712837331; x=1713442131;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kw2S5j6qMOjXm7u3CIwYmKS25bCLC2CIVQvhzxqTwig=;
+        b=MAiojN13vu63hoWjYC4WD1Pn9IWLZjiPr2dHRn5UzTWHOhGgsEMjnFiqAwBpzrUpwW
+         x5VlRyo0E08Icf//8oASBsHjPQo2sMbRFvYIML9tA5SSqqxGswwDPUTNKwVnHzf3uEaS
+         Kr1g96CARbT8tfc9DXQF57yrvIsfC7EYshyt3cMx9WTHgVEokGa3Fp+9OGjFER4JSlrZ
+         enEKG4xen071782r8xcICWXoJsj967nPhnKtOwk8AdI9HN/57a3pqHEXh/Pd93iuIull
+         z44xj1jSxDjFi9veq9Pnv18++2+DAX45CZ21ItLS4h6eiOZn5bzc61qe4YibUQe5wLAa
+         CsiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWqXOhL4CkyJobhg1zm7nnwcFn1mCjsjpq8N6lkZbuQvQZMetJWxoDWp9xClgwctceyg+tb53U3BGgY9g4HjkaQZ3vwLuxC1Xxx9yM=
+X-Gm-Message-State: AOJu0YyTFTPM0Hq9PWmQa8DyWspId6CeQ4Hx8q5s9MS45qyP8uRhdrZ0
+	Hu3YSQoEW4AblDdeQPzBbvpEC7Yq0LgyW9/pHZyvQKgYikDf4hh2h1/Bhcyg7MM=
+X-Google-Smtp-Source: AGHT+IGJAeU8v1utdjxFH/870lwgUJ7wBvkSyABNCwBPfho2G4MxQ2CMvJf6kpBwhMwGM8rXsaNOrw==
+X-Received: by 2002:a05:6512:4025:b0:516:c766:5b4f with SMTP id br37-20020a056512402500b00516c7665b4fmr4046959lfb.67.1712837330815;
+        Thu, 11 Apr 2024 05:08:50 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id n20-20020a05600c4f9400b004166a8ad81bsm5348924wmq.43.2024.04.11.05.08.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Apr 2024 05:08:50 -0700 (PDT)
+Message-ID: <040f7e9a-ac2e-4006-8e78-189ef590cfde@linaro.org>
+Date: Thu, 11 Apr 2024 14:08:48 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240331105608.7338-4-balejk@matfyz.cz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] dt-bindings: mfd: add entry for Marvell 88PM886 PMIC
+To: Karel Balej <balejk@matfyz.cz>, Lee Jones <lee@kernel.org>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-input@vger.kernel.org
+Cc: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20240331105608.7338-2-balejk@matfyz.cz>
+ <20240331105608.7338-3-balejk@matfyz.cz>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
+ m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
+ HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
+ XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
+ mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
+ v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
+ cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
+ rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
+ qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
+ aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
+ gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
+ dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
+ NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
+ hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
+ oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
+ H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
+ yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
+ 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
+ 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
+ +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
+ FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
+ 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
+ DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
+ oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
+ 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
+ Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
+ qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
+ /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
+ qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
+ EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
+ KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
+ fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240331105608.7338-3-balejk@matfyz.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, 31 Mar 2024, Karel Balej wrote:
-
-> Marvell 88PM886 is a PMIC which provides various functions such as
-> onkey, battery, charger and regulators. It is found for instance in the
-> samsung,coreprimevelte smartphone with which this was tested. Implement
-> basic support to allow for the use of regulators and onkey.
+On 31/03/2024 12:46, Karel Balej wrote:
+> Marvell 88PM886 is a PMIC with several subdevices such as onkey,
+> regulators or battery and charger. It comes in at least two revisions,
+> A0 and A1 -- only A1 is described here at the moment.
 > 
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > Signed-off-by: Karel Balej <balejk@matfyz.cz>
 > ---
 > 
 > Notes:
->     v1:
->     - Address Mark's feedback:
->       - Move regmap config back out of the header and rename it. Also lower
->         its maximum register based on what's actually used in the downstream
->         code.
 >     RFC v4:
->     - Use MFD_CELL_* macros.
->     - Address Lee's feedback:
->       - Do not define regmap_config.val_bits and .reg_bits.
->       - Drop everything regulator related except mfd_cell (regmap
->         initialization, IDs enum etc.). Drop pm886_initialize_subregmaps.
->       - Do not store regmap pointers as an array as there is now only one
->         regmap. Also drop the corresponding enum.
->       - Move regmap_config to the header as it is needed in the regulators
->         driver.
->       - pm886_chip.whoami -> chip_id
->       - Reword chip ID mismatch error message and print the ID as
->         hexadecimal.
->       - Fix includes in include/linux/88pm886.h.
->       - Drop the pm886_irq_number enum and define the (for the moment) only
->         IRQ explicitly.
->     - Have only one MFD cell for all regulators as they are now registered
->       all at once in the regulators driver.
->     - Reword commit message.
->     - Make device table static and remove comma after the sentinel to signal
->       that nothing should come after it.
->     RFC v3:
->     - Drop onkey cell .of_compatible.
->     - Rename LDO page offset and regmap to REGULATORS.
->     RFC v2:
->     - Remove some abstraction.
->     - Sort includes alphabetically and add linux/of.h.
->     - Depend on OF, remove of_match_ptr and add MODULE_DEVICE_TABLE.
->     - Use more temporaries and break long lines.
->     - Do not initialize ret in probe.
->     - Use the wakeup-source DT property.
->     - Rename ret to err.
->     - Address Lee's comments:
->       - Drop patched in presets for base regmap and related defines.
->       - Use full sentences in comments.
->       - Remove IRQ comment.
->       - Define regmap_config member values.
->       - Rename data to sys_off_data.
->       - Add _PMIC suffix to Kconfig.
->       - Use dev_err_probe.
->       - Do not store irq_data.
->       - s/WHOAMI/CHIP_ID
->       - Drop LINUX part of include guard name.
->       - Merge in the regulator series modifications in order to have more
->         devices and modify the commit message accordingly. Changes with
->         respect to the original regulator series patches:
->         - ret -> err
->         - Add temporary for dev in pm88x_initialize_subregmaps.
->         - Drop of_compatible for the regulators.
->         - Do not duplicate LDO regmap for bucks.
->     - Rewrite commit message.
-> 
->  drivers/mfd/88pm886.c       | 157 ++++++++++++++++++++++++++++++++++++
->  drivers/mfd/Kconfig         |  12 +++
->  drivers/mfd/Makefile        |   1 +
->  include/linux/mfd/88pm886.h |  30 +++++++
->  4 files changed, 200 insertions(+)
->  create mode 100644 drivers/mfd/88pm886.c
->  create mode 100644 include/linux/mfd/88pm886.h
-> 
-> diff --git a/drivers/mfd/88pm886.c b/drivers/mfd/88pm886.c
-> new file mode 100644
-> index 000000000000..e06d418a5da9
-> --- /dev/null
-> +++ b/drivers/mfd/88pm886.c
-> @@ -0,0 +1,157 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +#include <linux/i2c.h>
-> +#include <linux/mfd/core.h>
-> +#include <linux/module.h>
-> +#include <linux/notifier.h>
-> +#include <linux/of.h>
-> +#include <linux/reboot.h>
-> +#include <linux/regmap.h>
-> +
-> +#include <linux/mfd/88pm886.h>
-> +
-> +#define PM886_REG_INT_STATUS1			0x05
-> +
-> +#define PM886_REG_INT_ENA_1			0x0a
-> +#define PM886_INT_ENA1_ONKEY			BIT(0)
-> +
-> +#define PM886_IRQ_ONKEY				0
-> +
-> +#define PM886_REGMAP_CONF_MAX_REG		0xef
+>     - Address Krzysztof's comments:
+>       - Fix regulators indentation.
+>       - Add Krzysztof's trailer.
 
-Why have you split the defines up between here and the header?
+So you have four versions and suddenly it became v1? No, keep proper
+versioning. This is v5. RFC is not a version, but state of patchset that
+it is not ready.
 
-Please place them all in the header.
+Best regards,
+Krzysztof
 
-> +static const struct regmap_config pm886_regmap_config = {
-> +	.reg_bits = 8,
-> +	.val_bits = 8,
-> +	.max_register = PM886_REGMAP_CONF_MAX_REG,
-> +};
-> +
-> +static struct regmap_irq pm886_regmap_irqs[] = {
-> +	REGMAP_IRQ_REG(PM886_IRQ_ONKEY, 0, PM886_INT_ENA1_ONKEY),
-> +};
-> +
-> +static struct regmap_irq_chip pm886_regmap_irq_chip = {
-> +	.name = "88pm886",
-> +	.irqs = pm886_regmap_irqs,
-> +	.num_irqs = ARRAY_SIZE(pm886_regmap_irqs),
-> +	.num_regs = 4,
-> +	.status_base = PM886_REG_INT_STATUS1,
-> +	.ack_base = PM886_REG_INT_STATUS1,
-> +	.unmask_base = PM886_REG_INT_ENA_1,
-> +};
-> +
-> +static struct resource pm886_onkey_resources[] = {
-> +	DEFINE_RES_IRQ_NAMED(PM886_IRQ_ONKEY, "88pm886-onkey"),
-> +};
-> +
-> +static struct mfd_cell pm886_devs[] = {
-> +	MFD_CELL_RES("88pm886-onkey", pm886_onkey_resources),
-> +	MFD_CELL_NAME("88pm886-regulator"),
-> +};
-> +
-> +static int pm886_power_off_handler(struct sys_off_data *sys_off_data)
-> +{
-> +	struct pm886_chip *chip = sys_off_data->cb_data;
-> +	struct regmap *regmap = chip->regmap;
-> +	struct device *dev = &chip->client->dev;
-> +	int err;
-> +
-> +	err = regmap_update_bits(regmap, PM886_REG_MISC_CONFIG1, PM886_SW_PDOWN,
-> +				PM886_SW_PDOWN);
-
-Use 100-chars to avoid the '\n'.
-
-> +	if (err) {
-> +		dev_err(dev, "Failed to power off the device: %d\n", err);
-> +		return NOTIFY_BAD;
-> +	}
-> +	return NOTIFY_DONE;
-> +}
-> +
-> +static int pm886_setup_irq(struct pm886_chip *chip,
-> +		struct regmap_irq_chip_data **irq_data)
-> +{
-> +	struct regmap *regmap = chip->regmap;
-> +	struct device *dev = &chip->client->dev;
-> +	int err;
-> +
-> +	/* Set interrupt clearing mode to clear on write. */
-> +	err = regmap_update_bits(regmap, PM886_REG_MISC_CONFIG2,
-> +			PM886_INT_INV | PM886_INT_CLEAR | PM886_INT_MASK_MODE,
-> +			PM886_INT_WC);
-> +	if (err) {
-> +		dev_err(dev, "Failed to set interrupt clearing mode: %d\n", err);
-> +		return err;
-> +	}
-> +
-> +	err = devm_regmap_add_irq_chip(dev, regmap, chip->client->irq,
-> +					IRQF_ONESHOT, -1, &pm886_regmap_irq_chip,
-> +					irq_data);
-> +	if (err) {
-> +		dev_err(dev, "Failed to request IRQ: %d\n", err);
-> +		return err;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int pm886_probe(struct i2c_client *client)
-> +{
-> +	struct regmap_irq_chip_data *irq_data;
-> +	struct device *dev = &client->dev;
-> +	struct pm886_chip *chip;
-> +	struct regmap *regmap;
-> +	unsigned int chip_id;
-> +	int err;
-> +
-> +	chip = devm_kzalloc(dev, sizeof(*chip), GFP_KERNEL);
-> +	if (!chip)
-> +		return -ENOMEM;
-> +
-> +	chip->client = client;
-> +	chip->chip_id = (uintptr_t)device_get_match_data(dev);
-> +	i2c_set_clientdata(client, chip);
-> +
-> +	regmap = devm_regmap_init_i2c(client, &pm886_regmap_config);
-> +	if (IS_ERR(regmap))
-> +		return dev_err_probe(dev, PTR_ERR(regmap), "Failed to initialize regmap\n");
-> +	chip->regmap = regmap;
-> +
-> +	err = regmap_read(regmap, PM886_REG_ID, &chip_id);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "Failed to read chip ID\n");
-> +
-> +	if (chip->chip_id != chip_id)
-> +		return dev_err_probe(dev, -EINVAL, "Unsupported chip: 0x%x\n", chip_id);
-> +
-> +	err = pm886_setup_irq(chip, &irq_data);
-> +	if (err)
-> +		return err;
-> +
-> +	err = devm_mfd_add_devices(dev, 0, pm886_devs, ARRAY_SIZE(pm886_devs),
-
-Why 0?
-
-> +				NULL, 0, regmap_irq_get_domain(irq_data));
-> +	if (err)
-> +		return dev_err_probe(dev, err, "Failed to add devices\n");
-> +
-> +	err = devm_register_power_off_handler(dev, pm886_power_off_handler, chip);
-> +	if (err)
-> +		return dev_err_probe(dev, err, "Failed to register power off handler\n");
-> +
-> +	device_init_wakeup(dev, device_property_read_bool(dev, "wakeup-source"));
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id pm886_of_match[] = {
-> +	{ .compatible = "marvell,88pm886-a1", .data = (void *)PM886_A1_CHIP_ID },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, pm886_of_match);
-> +
-> +static struct i2c_driver pm886_i2c_driver = {
-> +	.driver = {
-> +		.name = "88pm886",
-> +		.of_match_table = pm886_of_match,
-> +	},
-> +	.probe = pm886_probe,
-> +};
-> +module_i2c_driver(pm886_i2c_driver);
-> +
-> +MODULE_DESCRIPTION("Marvell 88PM886 PMIC driver");
-> +MODULE_AUTHOR("Karel Balej <balejk@matfyz.cz>");
-> +MODULE_LICENSE("GPL");
-> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> index 4b023ee229cf..d6a762b2bd47 100644
-> --- a/drivers/mfd/Kconfig
-> +++ b/drivers/mfd/Kconfig
-> @@ -794,6 +794,18 @@ config MFD_88PM860X
->  	  select individual components like voltage regulators, RTC and
->  	  battery-charger under the corresponding menus.
->  
-> +config MFD_88PM886_PMIC
-> +	bool "Marvell 88PM886 PMIC"
-> +	depends on I2C=y
-> +	depends on OF
-> +	select REGMAP_I2C
-> +	select REGMAP_IRQ
-> +	select MFD_CORE
-> +	help
-> +	  This enables support for Marvell 88PM886 Power Management IC.
-> +	  This includes the I2C driver and the core APIs _only_, you have to
-> +	  select individual components like onkey under the corresponding menus.
-> +
->  config MFD_MAX14577
->  	tristate "Maxim Semiconductor MAX14577/77836 MUIC + Charger Support"
->  	depends on I2C
-> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-> index c66f07edcd0e..d016b7fed354 100644
-> --- a/drivers/mfd/Makefile
-> +++ b/drivers/mfd/Makefile
-> @@ -7,6 +7,7 @@
->  obj-$(CONFIG_MFD_88PM860X)	+= 88pm860x.o
->  obj-$(CONFIG_MFD_88PM800)	+= 88pm800.o 88pm80x.o
->  obj-$(CONFIG_MFD_88PM805)	+= 88pm805.o 88pm80x.o
-> +obj-$(CONFIG_MFD_88PM886_PMIC)	+= 88pm886.o
->  obj-$(CONFIG_MFD_ACT8945A)	+= act8945a.o
->  obj-$(CONFIG_MFD_SM501)		+= sm501.o
->  obj-$(CONFIG_ARCH_BCM2835)	+= bcm2835-pm.o
-> diff --git a/include/linux/mfd/88pm886.h b/include/linux/mfd/88pm886.h
-> new file mode 100644
-> index 000000000000..5ce30a3b85aa
-> --- /dev/null
-> +++ b/include/linux/mfd/88pm886.h
-> @@ -0,0 +1,30 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef __MFD_88PM886_H
-> +#define __MFD_88PM886_H
-> +
-> +#include <linux/i2c.h>
-> +#include <linux/regmap.h>
-> +
-> +#define PM886_A1_CHIP_ID		0xa1
-> +
-> +#define PM886_REG_ID			0x00
-> +
-> +#define PM886_REG_STATUS1		0x01
-> +#define PM886_ONKEY_STS1		BIT(0)
-> +
-> +#define PM886_REG_MISC_CONFIG1		0x14
-> +#define PM886_SW_PDOWN			BIT(5)
-> +
-> +#define PM886_REG_MISC_CONFIG2		0x15
-> +#define PM886_INT_INV			BIT(0)
-> +#define PM886_INT_CLEAR			BIT(1)
-> +#define PM886_INT_RC			0x00
-> +#define PM886_INT_WC			BIT(1)
-> +#define PM886_INT_MASK_MODE		BIT(2)
-> +
-> +struct pm886_chip {
-> +	struct i2c_client *client;
-> +	unsigned int chip_id;
-> +	struct regmap *regmap;
-> +};
-> +#endif /* __MFD_88PM886_H */
-> -- 
-> 2.44.0
-> 
-
--- 
-Lee Jones [李琼斯]
