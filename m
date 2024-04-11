@@ -1,143 +1,113 @@
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AE8159218;
-	Wed, 10 Apr 2024 11:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D606213DDD9
+	for <phone-devel@vger.kernel.org>; Thu, 11 Apr 2024 07:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712748965; cv=none; b=RsoX0jHLtuivZ0XOTH7Puyf/GIxsfyTQ5sdYUwYhlEjB3caXUwGdGkFur6MLrY+FLpT9UUanZrdYj/PYjtUnyhHYpnD1GZNOeaf9dSfsIbxltfl/JISPCs3ZOhB5SfAJb40G6bD3jqDYydNdDqNjw5sNdXrcJPh8ZpnQUOidyQw=
+	t=1712819178; cv=none; b=i0VAKhIRwEhsAPQ08667Y/LZH8U6ggH5gQeAdU1LjIJuA8/NCVKHpV+5hW/4Bhf6h4XOIJU9Q27o3B+VSxk9TJ9hjq1ZllZqHVNOD+Ej328na6dGV7jySNSOMTet2ssCboDsTiEnZF38BUrqQmgm4wywzuplKvjLbyV8HMCpPrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712748965; c=relaxed/simple;
-	bh=Ic80lKxXlrfuGtHeTwfTiU1jBSV+pwad7wWYK2F09mg=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CMQTi7Wl18dRURzwEcC1mPDThkjSgoOEWcIqF1VYu6dWU1K8abGoJcyBw3o/mlF9p3Tr2CW0Zer7A9iZHY0NFgE2MiMx0nB94m5UJRNRgJW92h2MTGP/52cGiJSKIpHqXpWVFJseXgpzH9qghENmPtXzLVwx/xTk53wk2bbS0zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=yXwHNfQW; arc=none smtp.client-ip=195.181.215.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
+	s=arc-20240116; t=1712819178; c=relaxed/simple;
+	bh=+o7I+daoENcP8Ct9wXBNksspsxmRSv7JiVNJMZWs3cQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=nGaqTeSr/g1i7YP+67RlDcEzHirikXpA/b9/zVrxAmf6ITd1qJYxLW7UjkVc3kH+5d5jluYVlPfZNeyR5Xnz84GG64ua5kZWBYRm1nFRvWOZoodpCYwxW5+CRYsppK4JX4JGBOf/zHIrhPSK4yKgaxgOcavDhoZ5TZmXcEALRp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=vfw7bfqh; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="yXwHNfQW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-	t=1712748958; bh=Ic80lKxXlrfuGtHeTwfTiU1jBSV+pwad7wWYK2F09mg=;
-	h=Date:From:To:Subject:X-My-GPG-KeyId:References:From;
-	b=yXwHNfQWWvkoTi57EHqzuVcxUcyITpCFZzlkPxdhM0v2Lq7MNftqiLF5AdS9vl0Lm
-	 cuXoqMPEuLU3VY33qn2jqCfZ0ALIDnKvGbMNr1aoG6JDzl+R/yncrm+dWij7quUdma
-	 wg+BBryoHCFgsAYdGGFpNCcTngEC7bCixXWsWw0o=
-Date: Wed, 10 Apr 2024 13:35:57 +0200
-From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
-	Pavel Machek <pavel@ucw.cz>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	phone-devel@vger.kernel.org, kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, 
-	martijn@brixit.nl, samuel@sholland.org, gregkh@linuxfoundation.org, 
-	linux-usb@vger.kernel.org
-Subject: Re: [PATCHv3 2/2] usb: typec: anx7688: Add driver for ANX7688 USB-C
- HDMI bridge
-Message-ID: <dm3zqvl45u2pfeje5ztmhjvflazztpd2xnagle2wztrebilggy@ie24awwsh6sl>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Pavel Machek <pavel@ucw.cz>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, phone-devel@vger.kernel.org, 
-	kernel list <linux-kernel@vger.kernel.org>, fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org, 
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
-References: <ZhPMHdt6r/4D99Zg@duo.ucw.cz>
- <ZhPM4XU8ttsFftBd@duo.ucw.cz>
- <ZhUQ6kzV5ARlkfPC@kuha.fi.intel.com>
- <ZhUgrNwRYoaV1AIJ@duo.ucw.cz>
- <4q7o5vb26ibkbvqal5nn4kdnc32rrajhtszrf4fnuisnlfcsg5@6322saeu7qoe>
- <2panrf3dgpwkwywf4vv676tjlbdqpzjb75vpfhiohabhrxc6h2@tmouy7prgikm>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="vfw7bfqh"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a522715519bso12360366b.3
+        for <phone-devel@vger.kernel.org>; Thu, 11 Apr 2024 00:06:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1712819174; x=1713423974; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IPHgQp5i5ObZBE7aupcoMPs0PyMl+eJyHyekbE5zlXs=;
+        b=vfw7bfqhq2me01f9pYWrujssM0ZpdqY2OyNMTHWnZ0602bCm7OXPJKfa+i9quNpHx+
+         ndSMFzW9qXDgd9oBU7FO+WWBsRfv8uVr8Pdrq9/R61rPf7sa61iH3hon1qeKA93U6i8W
+         UstI8UQvbLAQUu34OrBWYDi8Djs2CU06MHVTfODGEPa6YsjZ9W6c5ydDX3n2SxHqH29E
+         Pz1SO2Uurev7cyiNbtqGeGXWGCBS83l53y0WDfLZfU+9CkcETX1W8nBll8pz+WqbRh4i
+         NAeidYSVWmgXy3kx6EHugal5bU7TXZO47mbZDsjv/RNVAA0G383+vabVEdrGFfpPZmFM
+         VAMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712819174; x=1713423974;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IPHgQp5i5ObZBE7aupcoMPs0PyMl+eJyHyekbE5zlXs=;
+        b=iv6Po4emSYbPmRx3MW1hg0XlnNLnDDnJHYAglfJPZrICeJQHcms3U20uy5ZP05iO+2
+         3rlrgbmHmaq2kGaHoLX9oKsMeB+O3iAFNkl/u4yNqHj+yT6cg6DcxsZywtuVKCnQD5wP
+         R8CA1AqxOF7dxhea08pRNT/B/IPSmwaVgvZFla+aJyGTQgk48mOjteZDdAJ4u8QDEHvB
+         XC3lqUJjv/dVuXUC3scFRxgnWEXjhTYkrp0Dd+pH6639C6e50ALXsNtm8rcvU1/F2e5K
+         SBiq5lhhNuVpJ/ZcLB66ejaHLDOfef2wEHjeekZwJQY2VdFzHuPU2x0/whUQiptbZd0i
+         iPBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU9QWBI/3HhbN0gnvCDOiusWhGQ4iAVcP7YT3jKh1ErBN9MhodVTJHX0Yo39EK+3NDkjDQ8CvrlLjJFxBVA7cnBZC0GXEzVJzx8FNQ=
+X-Gm-Message-State: AOJu0YzD8UN500uKx/oU2I3gnNkq/aVouHWRPGb61LJJaJuGsQmjJVI3
+	TYM0s9LZhO01sEzPebec50mOQQazUshZ7E7Aw3UqZ2MoJvCVIyqLLF3fx15Edds=
+X-Google-Smtp-Source: AGHT+IFwO1V0PB5oOIQfGSzjLElMTnZJSoZTIjXmfOa0FvKysbniFvJxcp6z+3c0bN4piGw2hz2Bbw==
+X-Received: by 2002:a17:906:ee87:b0:a51:962d:cf0d with SMTP id wt7-20020a170906ee8700b00a51962dcf0dmr3622218ejb.12.1712819174137;
+        Thu, 11 Apr 2024 00:06:14 -0700 (PDT)
+Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id dk5-20020a170907940500b00a518b14d6cesm461397ejc.172.2024.04.11.00.06.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Apr 2024 00:06:13 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Thu, 11 Apr 2024 09:06:11 +0200
+Subject: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Add USB-C
+ orientation GPIO
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2panrf3dgpwkwywf4vv676tjlbdqpzjb75vpfhiohabhrxc6h2@tmouy7prgikm>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240411-fp5-usb-c-gpio-v1-1-78f11deb940a@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAOKLF2YC/x3MQQqAIBBA0avErBtQMYKuEi1MR5uNilIE4t2Tl
+ m/xf4NKhanCNjUo9HDlFAfkPIG9TAyE7IZBCaWFlhJ9XvCuJ1oMmRMa75RatTTOOhhRLuT5/Yf
+ 70fsHiFICB2AAAAA=
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.13.0
 
-On Wed, Apr 10, 2024 at 01:32:27PM GMT, megi xff wrote:
-> On Tue, Apr 09, 2024 at 06:35:50PM GMT, Dmitry Baryshkov wrote:
-> > On Tue, Apr 09, 2024 at 01:04:12PM +0200, Pavel Machek wrote:
-> > > Hi!
-> > > 
-> > > > > This is driver for ANX7688 USB-C HDMI, with flashing and debugging
-> > > > > features removed. ANX7688 is rather criticial piece on PinePhone,
-> > > > > there's no display and no battery charging without it.
-> > > > > 
-> > > > > There's likely more work to be done here, but having basic support
-> > > > > in mainline is needed to be able to work on the other stuff
-> > > > > (networking, cameras, power management).
-> > > > > 
-> > > > > Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> > > > > Co-developed-by: Martijn Braam <martijn@brixit.nl>
-> > > > > Co-developed-by: Samuel Holland <samuel@sholland.org>
-> > > > > Signed-off-by: Pavel Machek <pavel@ucw.cz>
-> > > > 
-> > > > Just couple of quick comments below - I did not have time to go over
-> > > > this very thoroughly, but I think you need to make a new version in
-> > > > any case because of comments in 1/2.
-> > > 
-> > 
-> > [skipped]
-> > 
-> > > 
-> > > > > +static int anx7688_connect(struct anx7688 *anx7688)
-> > > > > +{
-> > > > > +	struct typec_partner_desc desc = {};
-> > > > > +	int ret, i;
-> > > > > +	u8 fw[2];
-> > > > > +	const u8 dp_snk_identity[16] = {
-> > > > > +		0x00, 0x00, 0x00, 0xec,	/* id header */
-> > > > > +		0x00, 0x00, 0x00, 0x00,	/* cert stat */
-> > > > > +		0x00, 0x00, 0x00, 0x00,	/* product type */
-> > > > > +		0x39, 0x00, 0x00, 0x51	/* alt mode adapter */
-> > > > > +	};
-> > > > > +	const u8 svid[4] = {
-> > > > > +		0x00, 0x00, 0x01, 0xff,
-> > > > > +	};
-> > > > 
-> > > > Why not get those from DT?
-> > > 
-> > > Are you sure it belongs to the DT (and that DT people will agree)?
-> > 
-> > From Documentation/devicetree/bindings/connector/usb-connector.yaml:
-> > 
-> >             altmodes {
-> >                 displayport {
-> >                     svid = /bits/ 16 <0xff01>;
-> >                     vdo = <0x00001c46>;
-> >                 };
-> >             };
-> > 
-> > BTW, I don't see the VDO for the DP altmode in your code. Maybe I missed
-> > it at a quick glance.
-> 
-> VDO is set via TYPE_DP_SNK_CFG message to the firmware. There may be some
-> default in the firmware which matches Pinephone receptacle configuration.
-> 
-> I guess the driver can send the VDO value from DT after firmware is
-> initialized. Other values can be set in DT too, but extreme care needs to
-> ne take, because firmware has some bugs, which cause it to request
-> high voltage from PD PSU when it's in fact not part of PDO, potentially
-> destroying the device. So I'd rather not expose at least PDOs in DT to random
-> unsuspecting DT users who just copy paste and edit DT without reading the driver
-> code or some obscure notes somewhere.
+Define the USB-C orientation GPIOs so that the USB-C ports orientation
+is known without having to resort to the altmode notifications.
 
-Or at least have strong warnings everywhere this is used in DT, not just in DT
-bindings documentation, because requesting 21V when PDO in DT says 5V is pretty
-unpleasant.
+On PCB level this is the signal from PM7250B (pin CC_OUT) which is
+called USB_PHY_PS.
 
-kind regards,
-	o.
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+Depends on (for bindings): https://lore.kernel.org/linux-arm-msm/20240409-hdk-orientation-gpios-v2-0-658efd993987@linaro.org/
+---
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> kind regards,
-> 	o.
-> 
-> > > 
-> > > > > +	u32 caps[8];
-> > > > > +
-> > 
-> > 
-> > -- 
-> > With best wishes
-> > Dmitry
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+index 4ff9fc24e50e..f3432701945f 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+@@ -77,6 +77,8 @@ pmic-glink {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 
++		orientation-gpios = <&tlmm 140 GPIO_ACTIVE_HIGH>;
++
+ 		connector@0 {
+ 			compatible = "usb-c-connector";
+ 			reg = <0>;
+
+---
+base-commit: 65b0418f6e86eef0f62fc053fb3622fbaa3e506e
+change-id: 20240411-fp5-usb-c-gpio-afd22741adcd
+
+Best regards,
+-- 
+Luca Weiss <luca.weiss@fairphone.com>
+
