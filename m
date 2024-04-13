@@ -1,140 +1,75 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910C3147C90
-	for <phone-devel@vger.kernel.org>; Fri, 12 Apr 2024 15:23:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34573D977;
+	Sat, 13 Apr 2024 11:02:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712935392; cv=none; b=lgvC+P3V7VGEJ34DfNOkOpNNHFrm36FWd74NtHjNew7/wEGpKyFixfv8X3iepfTX8G67XSq72tqzsZKA92eqftid3+TlF+KcpVcc0L6FeCvsSEVn3D1lRrGfFdxRTsUfNaYLFzE9Bp0M+yK++RfsDI0RURlV7Kw7njmKdwCdfpI=
+	t=1713006126; cv=none; b=WBICCcd2Jj1bcC0/g+kIc9yzbWrN5XCNGSjQ0Dsi+Y5ymMeQvimcHfCCyC2i6u2JwKFU3tOWr1BwoykKdl4EcSBuh6GQJpn7ijZ3O87hOaHKyrH/m9TlFBoI6rYO6eEybildd2SI9XJjVj4SoE/6/ae+Phz+8RZSDR0BdZ0krWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712935392; c=relaxed/simple;
-	bh=tYdbQHuWaeDgYGEpVnJFDxngCjS8l6C1canhCfQ0Cms=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JQHgqDdOIkFI+usRsFIE4breUfOHbVMQg8EFfVyXq4euQWhiURxq6qNOy9XU1D541D8flyUIuJMxJ3B7ohUkWmaFHq7rC0wLP2X2P20fvIim8QrLAgAtByGpEOWcxOmNtVanfStt85PQD1Cp2Oy8RQsH0JvXyD3gbchcqQ7CHoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EwlkRM0C; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1713006126; c=relaxed/simple;
+	bh=tM71ukHSCkRXKEj2erXIhUkB2JuKjCWaxGcrvDZckYg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HmyoqF6IS/mZJs/JbrGuh2zW3vkc6nWyTt1QoidbQ9SjxiBGoHhxSNsyC3u12P/Ux6mLEhwveEaCJGvOmI7Ahq2Qq5Zd4Ld4NGjGy5mWez/GXH4p03AZ2MEMeAyk+vEzzPLaTv0QjNgyLkDjJHMydEbN3l5MQVhbZjUhOUhujWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BanwFe05; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EwlkRM0C"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-56e6646d78bso1142213a12.1
-        for <phone-devel@vger.kernel.org>; Fri, 12 Apr 2024 08:23:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712935388; x=1713540188; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=dMjTSfSfGRkXpiU5gWnVdXpEg8tcWTYVZsG9FSy+vrY=;
-        b=EwlkRM0Cs+zt1p4Bm47nMKI9yGah8S6Gylr+mK3vZ9IQ9oS8BceWyhcV5zqY3C7Mxy
-         YADoNibCCAS1DZiOUg/pgicfapnTpR2hNKlnj2DMrhWTu4RnwoOgdeyQ6vDfrxUoaJeo
-         Fr1WsgkeaT/Fi10Wn9MOkD+XH+ma8HkW2DFL1wPgz0Kro+APCP6E3jahWOYgJChVyZxD
-         EfiP8MdVBdyabdfEha3BGGw8XgnctLNbbJXXpPW0XS+P6KvIfXE90eIdICSxSU2dJpgi
-         aZO//EwNEfwBQvY3BelUQCd/AGIJta5u1HiOCYB0J/KLL1zxzvu4j7nmAYXXON/890qN
-         3SjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712935388; x=1713540188;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dMjTSfSfGRkXpiU5gWnVdXpEg8tcWTYVZsG9FSy+vrY=;
-        b=Q7b2EEUTFMQQYNmYbhFDr/Q6+4mj8R3vZXL6jQTRHBS/8HnMFwnp6Bw0BSqoJiPcKt
-         A7TeVO3Wjq3RTaSEACnuCd8L3N24tKxLoiY98cOua/+GWydc/nUWAjJWnzs6JGeIztiv
-         RBHXQLOqM/LemdBuj80+xrQFCAjFRErTDVlETbjH58J/ytD46Sg4QqFIJHLEXfFElWfK
-         J+sM/KS3ZNFkmi4xMKA4ZHVy2qKvSxk0sPjGHDoLfjLoHSYA62/YNQwcudyjKFHl/Opl
-         Y/hQUC+EISms2dx0SQe8tRtRxbGDDfQ2QnhB/KVGvsXZdOBuswvoz0ASnLTTCnke+O45
-         k3FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXoWxrAvVPccS5j6WzME9cxygHcy7qxOeD2WhIQkQDX1RDz0WT/E7uRD6uhosb7z9PRKE4koy5bD0qz2ft1rvyFu+czn3McsQYhyrQ=
-X-Gm-Message-State: AOJu0Yz1XMgXXmsCnCskGXb6JP0k0iLFdSi3p9Qa5/UQPzFTRsV85LMv
-	SjnmS6I851N/Ppbm7WTpGW8fHBQHxr1/5JzPXlobiOv1Z+yD/BWw/grx+qY63QQ=
-X-Google-Smtp-Source: AGHT+IGB7l/5YB/IO7O3KUuqMWTWl5XDUHC+ou2bA3QoOIDrse6fmBz3yL+Zt5PXGL1tAxJ42OgVWw==
-X-Received: by 2002:a50:d59e:0:b0:56c:5a7b:5dbd with SMTP id v30-20020a50d59e000000b0056c5a7b5dbdmr1943944edi.15.1712935387916;
-        Fri, 12 Apr 2024 08:23:07 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id s24-20020a056402165800b0056e45917d09sm1755921edx.44.2024.04.12.08.23.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Apr 2024 08:23:07 -0700 (PDT)
-Message-ID: <65df3a1d-e7fc-453b-8b96-a461b8322113@linaro.org>
-Date: Fri, 12 Apr 2024 17:23:05 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BanwFe05"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3519C2BBFC;
+	Sat, 13 Apr 2024 11:02:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713006126;
+	bh=tM71ukHSCkRXKEj2erXIhUkB2JuKjCWaxGcrvDZckYg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BanwFe05mFBZeoKqQGae8f56ZyX/w78VID8Gu0d9G8S/8/6s/ZZucbTuA8rO5BoDM
+	 UvYfWoLYXCvQrXYnCnpf/1Viuk8sOgN2IFjlXTbmWnn7juUmAYmsTUQgJ0c9+3xlew
+	 +3dFK3xZh0QFG+ihtjTNn/t+ZNAoODl3D0Yn9giiyZg++N8sIaPTbrmollMEMyaTOX
+	 LW97mjiI1DPHCrLruglogidkNbYRhnBEUtcN3bGlz7IjF9bmw5nJPjtUWciAzmCrXT
+	 o9C641PDuLnolW2CzcFiP2xOOxRlOttLkaH+gmjoWgDMR3JSu/oh3nDf8KHGvbIvEs
+	 ASsnvHuFaZ23Q==
+Date: Sat, 13 Apr 2024 12:01:52 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Jean-Baptiste Maneyrol
+ <jmaneyrol@invensense.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: imu: mpu6050: Improve i2c-gate
+ disallow list
+Message-ID: <20240413120152.476efa76@jic23-huawei>
+In-Reply-To: <b0055143-96bf-45c6-ae9b-78b60fd02d6c@kernel.org>
+References: <20240408-mpu6050-i2c-gate-v1-1-621f051ce7de@z3ntu.xyz>
+	<b0055143-96bf-45c6-ae9b-78b60fd02d6c@kernel.org>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] dt-bindings: mfd: qcom,spmi-pmic: Add pbs to SPMI
- device types
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Lee Jones <lee@kernel.org>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <20240412-pmi632-ppg-v2-1-8ac892b1bb61@fairphone.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240412-pmi632-ppg-v2-1-8ac892b1bb61@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 12/04/2024 16:22, Luca Weiss wrote:
-> Add the PBS (Programmable Boot Sequencer) to the list of devices.
+On Tue, 9 Apr 2024 08:36:08 +0200
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
+
+> On 08/04/2024 18:34, Luca Weiss wrote:
+> > Before all supported sensors except for MPU{9150,9250,9255} were not
+> > allowed to use i2c-gate in the bindings which excluded quite a few
+> > supported sensors where this functionality is supported.
+> > 
+> > Switch the list of sensors to ones where the Linux driver explicitly
+> > disallows support for the auxiliary bus ("inv_mpu_i2c_aux_bus"). Since
+> > the driver is also based on "default: return true" this should scale
+> > better into the future.
+> > 
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>  
 > 
-> Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> Changes in v2:
+> Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+> 
+> Best regards,
+> Krzysztof
+> 
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
-
+Applied, thanks
