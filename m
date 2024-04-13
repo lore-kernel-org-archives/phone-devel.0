@@ -1,75 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34573D977;
-	Sat, 13 Apr 2024 11:02:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6A33398A;
+	Sat, 13 Apr 2024 17:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713006126; cv=none; b=WBICCcd2Jj1bcC0/g+kIc9yzbWrN5XCNGSjQ0Dsi+Y5ymMeQvimcHfCCyC2i6u2JwKFU3tOWr1BwoykKdl4EcSBuh6GQJpn7ijZ3O87hOaHKyrH/m9TlFBoI6rYO6eEybildd2SI9XJjVj4SoE/6/ae+Phz+8RZSDR0BdZ0krWk=
+	t=1713027809; cv=none; b=BZ6wlo208IGO5ZPnnhrjSSHWyQMAnoJ0WetlJEvQxvDDPWYFI89NqFkXd/mbkv6IPOM4HvaFWlwe0qCuZ9KaW3WWkjkaZXkyeVOevIR5m2FRKnnCLbnE1xq9AHf9kOA6IRVARFgysWuuAaDjJZ+SymD25fwqci8YOSGFXBxZRHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713006126; c=relaxed/simple;
-	bh=tM71ukHSCkRXKEj2erXIhUkB2JuKjCWaxGcrvDZckYg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HmyoqF6IS/mZJs/JbrGuh2zW3vkc6nWyTt1QoidbQ9SjxiBGoHhxSNsyC3u12P/Ux6mLEhwveEaCJGvOmI7Ahq2Qq5Zd4Ld4NGjGy5mWez/GXH4p03AZ2MEMeAyk+vEzzPLaTv0QjNgyLkDjJHMydEbN3l5MQVhbZjUhOUhujWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BanwFe05; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713027809; c=relaxed/simple;
+	bh=xJnCgDxI+t/mAuXlIJ5e4YYBLmb1s1Mgp3OKUhHtndo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VYFpmVqjpik4E1JLB9HhhDdqb1lobycIf5lg/B5q4AIOcq915yY7pelg1Wa/hExYpn1WlEPqGhGe4whTwiHMS2WvJmSmX1wEaX5WLb4kmxpA04UbRpQgpUBf6tT7W4SVnpfyObBAThEkEA0eAaXEmE+XG6p+gGwAsExfczigQWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=foKWkAp9; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BanwFe05"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3519C2BBFC;
-	Sat, 13 Apr 2024 11:02:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713006126;
-	bh=tM71ukHSCkRXKEj2erXIhUkB2JuKjCWaxGcrvDZckYg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BanwFe05mFBZeoKqQGae8f56ZyX/w78VID8Gu0d9G8S/8/6s/ZZucbTuA8rO5BoDM
-	 UvYfWoLYXCvQrXYnCnpf/1Viuk8sOgN2IFjlXTbmWnn7juUmAYmsTUQgJ0c9+3xlew
-	 +3dFK3xZh0QFG+ihtjTNn/t+ZNAoODl3D0Yn9giiyZg++N8sIaPTbrmollMEMyaTOX
-	 LW97mjiI1DPHCrLruglogidkNbYRhnBEUtcN3bGlz7IjF9bmw5nJPjtUWciAzmCrXT
-	 o9C641PDuLnolW2CzcFiP2xOOxRlOttLkaH+gmjoWgDMR3JSu/oh3nDf8KHGvbIvEs
-	 ASsnvHuFaZ23Q==
-Date: Sat, 13 Apr 2024 12:01:52 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Jean-Baptiste Maneyrol
- <jmaneyrol@invensense.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: imu: mpu6050: Improve i2c-gate
- disallow list
-Message-ID: <20240413120152.476efa76@jic23-huawei>
-In-Reply-To: <b0055143-96bf-45c6-ae9b-78b60fd02d6c@kernel.org>
-References: <20240408-mpu6050-i2c-gate-v1-1-621f051ce7de@z3ntu.xyz>
-	<b0055143-96bf-45c6-ae9b-78b60fd02d6c@kernel.org>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="foKWkAp9"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-516d3776334so2421365e87.1;
+        Sat, 13 Apr 2024 10:03:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713027806; x=1713632606; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WYudEi4m3GDodeZTDFABc4O454UL/a8BInZ5mbut0to=;
+        b=foKWkAp9Sy4DesY94KJNB6XFW5TThPRX8Bl8fo7h+/QT2/00M7j7Ivh60RBm6X4A99
+         ufkS0EyPmuzlNT/1rK7fuMv118ctOZ3jHynyHIHwzKfuMHOgTANDetXiXOzJ/WRmqCon
+         fzBSsJt6J4ECFrvvoV2fGPoF6A/krPVrXQUnWRjf7AovWN9fOMcMZlWOIBjooF+XI369
+         42rcCyFIzOdzEdQ18cI5g2UhNflN6l5c7etoqvBOK0dFVqSPHOD6Z0cDodxUW/BEdcBK
+         bnTDis3KRWrfOyVhrjBl4vPs1wSZVLLy1tsfHBAtsEHSPMiugV4kcaKyDrwtjq0GsOPf
+         o2XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713027806; x=1713632606;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WYudEi4m3GDodeZTDFABc4O454UL/a8BInZ5mbut0to=;
+        b=VChZds6Mo3HbGWsDpVT4nqVtTEsPQA9/QUuCPskEDTVPLk8s/Yiimh93MZgNPDtT3e
+         dpOmNZ70XnxkxIpUMasBse/TGcdHrhJ5UNCB4q8XPBk+JykTci6lBdo/RRyVBlOSxsQ3
+         ri8wljHosPGy9pzk84UMvPWA6qfe0svnh3wuOB5sVUdT9bXON9VuCcamOWjYF40m5Mvl
+         ruigUzP02StiRIza8tMq6k6cAD8aAUowFxvqWzo4QKtesNTeDSsLgjrrDPQ1HAcgNEhY
+         93BJ/zcUqf7vl96EGmw/655rtpgqp4E1U7vzqhYD2/tJ6cLRU8MVNkl0x5oyVfptNmI1
+         B2kg==
+X-Forwarded-Encrypted: i=1; AJvYcCWQelCK7CxMvnP0s0ElUUwG8Qxj2PoYTzIVhbkvBcQlOnTZ4ixUIKHti/MJGujLVL3E7faXaGyZo44HgR0sY+jp5tfE5fOlG1IarzMwxyvwMfUjETHUzUpp+8/lgC96q89t5dQBxthPqhoBxcVXO3wrg5labZMXec5qnfEyfdk/PPedrnW3d14=
+X-Gm-Message-State: AOJu0YxlLNhOnLo4ltp9ZJllw0V52ZRDLQB1CuKbx22o0sZb9zVZzOZu
+	ZYNFlA0bYAzM/hE5RYQp/LUdzayPNFpsVLQkJAb8/5ZuvSwuPV20LF97Qg==
+X-Google-Smtp-Source: AGHT+IFuH6iZysVfgWgasNq+l/TJeRAjXgj9P63jaiVMVdfE1g2DQzDZefgLgNlWc4z5EDje5Gh4/g==
+X-Received: by 2002:ac2:555c:0:b0:518:6adc:346c with SMTP id l28-20020ac2555c000000b005186adc346cmr4361845lfk.43.1713027805525;
+        Sat, 13 Apr 2024 10:03:25 -0700 (PDT)
+Received: from localhost.localdomain (ccu225.neoplus.adsl.tpnet.pl. [83.30.144.225])
+        by smtp.gmail.com with ESMTPSA id kj15-20020a170907764f00b00a51a60bf400sm3195967ejc.76.2024.04.13.10.03.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Apr 2024 10:03:24 -0700 (PDT)
+From: Adam Skladowski <a39.skl@gmail.com>
+To: 
+Cc: phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Adam Skladowski <a39.skl@gmail.com>,
+	Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/4] MSM8976 MDSS/GPU/WCNSS support
+Date: Sat, 13 Apr 2024 19:03:13 +0200
+Message-Id: <20240413170317.34553-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, 9 Apr 2024 08:36:08 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+This patch series provide support for display subsystem, gpu
+and also adds wireless connectivity subsystem support.
 
-> On 08/04/2024 18:34, Luca Weiss wrote:
-> > Before all supported sensors except for MPU{9150,9250,9255} were not
-> > allowed to use i2c-gate in the bindings which excluded quite a few
-> > supported sensors where this functionality is supported.
-> > 
-> > Switch the list of sensors to ones where the Linux driver explicitly
-> > disallows support for the auxiliary bus ("inv_mpu_i2c_aux_bus"). Since
-> > the driver is also based on "default: return true" this should scale
-> > better into the future.
-> > 
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>  
-> 
-> Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
-> 
-> Best regards,
-> Krzysztof
-> 
+Changes since v2
+================
+1. Disabled mdss_dsi nodes by default
+2. Changed reg size of mdss_dsi0 to be equal on both
+3. Added operating points to second mdss_dsi
+4. Brought back required opp-supported-hw on adreno
+5. Moved status under operating points on adreno
 
-Applied, thanks
+Changes since v1
+================
+1. Addressed feedback
+2. Dropped already applied dt-bindings patches
+3. Dropped sdc patch as it was submitted as part of other series
+4. Dropped dt-bindings patch for Adreno, also separate now
+
+Adam Skladowski (4):
+  arm64: dts: qcom: msm8976: Add IOMMU nodes
+  arm64: dts: qcom: msm8976: Add MDSS nodes
+  arm64: dts: qcom: msm8976: Add Adreno GPU
+  arm64: dts: qcom: msm8976: Add WCNSS node
+
+ arch/arm64/boot/dts/qcom/msm8976.dtsi | 536 +++++++++++++++++++++++++-
+ 1 file changed, 532 insertions(+), 4 deletions(-)
+
+-- 
+2.44.0
+
