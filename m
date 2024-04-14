@@ -1,40 +1,40 @@
-Received: from mail-108-mta10.mxroute.com (mail-108-mta10.mxroute.com [136.175.108.10])
+Received: from mail-108-mta138.mxroute.com (mail-108-mta138.mxroute.com [136.175.108.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5F33E47F
-	for <phone-devel@vger.kernel.org>; Sun, 14 Apr 2024 20:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD95F136E39
+	for <phone-devel@vger.kernel.org>; Sun, 14 Apr 2024 20:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713126962; cv=none; b=IlF4j8J7M8OXWPp9Irt8LNV9E8UkxGDS4i/xH9B/UoIcbnHrTSowdGEUwIpbSSWLNHPdQzrHj3BF7Ci8CmRBkm4Kt9R/Nb9WlROjthGrd+OuZUtgkSCPXcAjHp9AM8aZInecTOdnLMaL/5EHIMsLInu1l9L+wmwSm7vkYpNVOpA=
+	t=1713126976; cv=none; b=k7lBaQRVJ1pgFQLhKx5yI06tL3ifFZSfDwyr1PwpKt/3lbU6Y/344upGN6Y/PUYArl9LBoXHWckkbZ9TAE+9t/1T1kU/SBcHajzOk5FCJKoOH88mp3cMx07cq1Fkey2DsIt9wdK7yQt52w95ZYimD0N8URggQIoPX/VzC0VIth8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713126962; c=relaxed/simple;
-	bh=jrpDrwXWTfqruvVHzDUB/w0E8OgbIFxAqsRUJkK/6Tk=;
+	s=arc-20240116; t=1713126976; c=relaxed/simple;
+	bh=4KQV0NHOt7hQp4p/mm19QOVdO1e0l84pdOZTBhUWfug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obKI0HasDyaPIU+rBJV5beV+H+2rAFHtxKb9Jv9vxuLRWhw4+oUdj9fk0LusK7BHabchcWzvOppVKvz9Pd6YGDK68M1zcTZXtNsxSsvLeYmsPMptq3q0MNheJgfbCxWw/9mjZMTnKaDXC3UNUZ5HdbJfpnDHf56oc+21/4UJvWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=vbvrXe2K; arc=none smtp.client-ip=136.175.108.10
+	 MIME-Version; b=HDp52W8Usr4OUVBxNPOUGZPzEkHh8Ru8pEmhiB4Hw5w0IvrTysrZzZ3+9baTB4XQjGCFVYJKOJB91jW6FZ6c3VVWIJ9XqPTzcZuk5Fcceh9voqzpEueOpy0E8Me47PaOBVIaIYEfDaPI2K7f4/uIhSxEKC0cp0npO9kkygf21kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=s7HZwJSs; arc=none smtp.client-ip=136.175.108.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="vbvrXe2K"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="s7HZwJSs"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta10.mxroute.com (ZoneMTA) with ESMTPSA id 18ede5256640003bea.012
+ by mail-108-mta138.mxroute.com (ZoneMTA) with ESMTPSA id 18ede527fd90003bea.012
  for <phone-devel@vger.kernel.org>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Sun, 14 Apr 2024 20:35:21 +0000
-X-Zone-Loop: 570c815ef657c02c4e85fdec1531da1c252ad4b9c69e
+ Sun, 14 Apr 2024 20:35:32 +0000
+X-Zone-Loop: d5e1f10f4cc09ddde485722c3b5ff5ca7c7809072c34
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Rfud00GhiUoBsKNNr1PLv8b+cenFrKxczN1IEfbbCGA=; b=vbvrXe2Kxhp+3S9foOfHA1GkuY
-	D6jLb6dkqrh+FTRz/W8EzdMqxFac1SsHH+v0ZN0vtEYF8Bn2ZnfKAPjrqmhwYJrCcQR1GvdkAku3t
-	y1qyZGKYeW62+VQkdvCEWVQvMfpbt3cZBXj0VoHGVd88GLALePYCU39I4DzW5doBiKB8m/arybVp+
-	vchNnMj9HrNMmnFSVzzZtCm/8NNwAABJj8r8QbvR8zdmyvyiVQjz1K7NSaHMdiDaNF3d1T2lZVp8R
-	Qjzu58E8yZr8w6K9Kz0k3ZKXjQKeXOC02VraOqPPWZr8pN0AEY7WKZpG8/QoQmGmL6HfcqLLOSTiX
-	twOe2apg==;
+	bh=TqJSDNIcYAg5c5AK2hjAXrI8p2YMYTt9oVpXL5nQoOw=; b=s7HZwJSsIS0Iad2h5B8qEZkFEz
+	NKsC89b3a+eV0yfT5vmndI6FkINsnFCrWjnjbx4CayODdVP+0BGEAzs+qCrHw4WYqk7VlFQ91Pjcr
+	Y89WsOSgB7klnxNJfLiCqVQThw8a2LXPfpMxQmhKFCwcoA2CIsHxQkFzJBcLVuARoZd6yIRZffDo8
+	kuqI6XjYmAbTqHAsyx1J0aVp4rZuk4iN3c5JThMGlXfqPFX4ufGokjqlMFD/i+ofjPHhYWiu1MG3R
+	4AP+z7HBeEd/Z8Mh2n9jtYE4XymcfJfTeZifZG6wB5wfGiU21Pa/RliPbu48206GJD37XHwEUNZqr
+	YSQ7qiEg==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -55,9 +55,9 @@ Cc: dave.stevenson@raspberrypi.com,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
 	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v4 05/25] media: i2c: imx258: Add regulator control
-Date: Sun, 14 Apr 2024 14:34:43 -0600
-Message-ID: <20240414203503.18402-6-git@luigi311.com>
+Subject: [PATCH v4 10/25] media: i2c: imx258: Follow normal V4L2 behaviours for clipping exposure
+Date: Sun, 14 Apr 2024 14:34:48 -0600
+Message-ID: <20240414203503.18402-11-git@luigi311.com>
 In-Reply-To: <20240414203503.18402-1-git@luigi311.com>
 References: <20240414203503.18402-1-git@luigi311.com>
 Precedence: bulk
@@ -71,113 +71,81 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-The device tree bindings define the relevant regulators for the
-sensor, so update the driver to request the regulators and control
-them at the appropriate times.
+V4L2 sensor drivers are expected to clip the supported exposure
+range based on the VBLANK configured.
+IMX258 wasn't doing that as register 0x350 (FRM_LENGTH_CTL)
+switches it to a mode where frame length tracks coarse exposure time.
+
+Disable this mode and clip the range for V4L2_CID_EXPOSURE appropriately
+based on V4L2_CID_VBLANK.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
 ---
- drivers/media/i2c/imx258.c | 42 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 41 insertions(+), 1 deletion(-)
+ drivers/media/i2c/imx258.c | 25 +++++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index df7ed4716762..495eaada2945 100644
+index 8f792f0e0738..ebc404b548b3 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -7,6 +7,7 @@
- #include <linux/i2c.h>
- #include <linux/module.h>
- #include <linux/pm_runtime.h>
-+#include <linux/regulator/consumer.h>
- #include <media/v4l2-ctrls.h>
- #include <media/v4l2-device.h>
- #include <media/v4l2-fwnode.h>
-@@ -507,6 +508,16 @@ static const char * const imx258_test_pattern_menu[] = {
- 	"Pseudorandom Sequence (PN9)",
- };
+@@ -37,10 +37,11 @@
  
-+/* regulator supplies */
-+static const char * const imx258_supply_name[] = {
-+	/* Supplies can be enabled in any order */
-+	"vana",  /* Analog (2.8V) supply */
-+	"vdig",  /* Digital Core (1.2V) supply */
-+	"vif",  /* IF (1.8V) supply */
-+};
-+
-+#define IMX258_NUM_SUPPLIES ARRAY_SIZE(imx258_supply_name)
-+
- /* Configurations for supported link frequencies */
- #define IMX258_LINK_FREQ_634MHZ	633600000ULL
- #define IMX258_LINK_FREQ_320MHZ	320000000ULL
-@@ -611,6 +622,7 @@ struct imx258 {
- 	struct mutex mutex;
+ /* Exposure control */
+ #define IMX258_REG_EXPOSURE		0x0202
++#define IMX258_EXPOSURE_OFFSET		10
+ #define IMX258_EXPOSURE_MIN		4
+ #define IMX258_EXPOSURE_STEP		1
+ #define IMX258_EXPOSURE_DEFAULT		0x640
+-#define IMX258_EXPOSURE_MAX		65535
++#define IMX258_EXPOSURE_MAX		(IMX258_VTS_MAX - IMX258_EXPOSURE_OFFSET)
  
- 	struct clk *clk;
-+	struct regulator_bulk_data supplies[IMX258_NUM_SUPPLIES];
- };
- 
- static inline struct imx258 *to_imx258(struct v4l2_subdev *_sd)
-@@ -995,9 +1007,19 @@ static int imx258_power_on(struct device *dev)
- 	struct imx258 *imx258 = to_imx258(sd);
- 	int ret;
- 
-+	ret = regulator_bulk_enable(IMX258_NUM_SUPPLIES,
-+				    imx258->supplies);
-+	if (ret) {
-+		dev_err(dev, "%s: failed to enable regulators\n",
-+			__func__);
-+		return ret;
-+	}
-+
- 	ret = clk_prepare_enable(imx258->clk);
--	if (ret)
-+	if (ret) {
- 		dev_err(dev, "failed to enable clock\n");
-+		regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
-+	}
- 
- 	return ret;
- }
-@@ -1008,6 +1030,7 @@ static int imx258_power_off(struct device *dev)
- 	struct imx258 *imx258 = to_imx258(sd);
- 
- 	clk_disable_unprepare(imx258->clk);
-+	regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
- 
+ /* Analog gain control */
+ #define IMX258_REG_ANALOG_GAIN		0x0204
+@@ -371,7 +372,7 @@ static const struct imx258_reg mode_common_regs[] = {
+ 	{ 0x303A, 0x00 },
+ 	{ 0x303B, 0x10 },
+ 	{ 0x300D, 0x00 },
+-	{ 0x0350, 0x01 },
++	{ 0x0350, 0x00 },
+ 	{ 0x0204, 0x00 },
+ 	{ 0x0205, 0x00 },
+ 	{ 0x020E, 0x01 },
+@@ -734,6 +735,19 @@ static int imx258_update_digital_gain(struct imx258 *imx258, u32 len, u32 val)
  	return 0;
  }
-@@ -1220,6 +1243,18 @@ static void imx258_free_controls(struct imx258 *imx258)
- 	mutex_destroy(&imx258->mutex);
- }
  
-+static int imx258_get_regulators(struct imx258 *imx258,
-+				 struct i2c_client *client)
++static void imx258_adjust_exposure_range(struct imx258 *imx258)
 +{
-+	unsigned int i;
++	int exposure_max, exposure_def;
 +
-+	for (i = 0; i < IMX258_NUM_SUPPLIES; i++)
-+		imx258->supplies[i].supply = imx258_supply_name[i];
-+
-+	return devm_regulator_bulk_get(&client->dev,
-+				    IMX258_NUM_SUPPLIES, imx258->supplies);
++	/* Honour the VBLANK limits when setting exposure. */
++	exposure_max = imx258->cur_mode->height + imx258->vblank->val -
++		       IMX258_EXPOSURE_OFFSET;
++	exposure_def = min(exposure_max, imx258->exposure->val);
++	__v4l2_ctrl_modify_range(imx258->exposure, imx258->exposure->minimum,
++				 exposure_max, imx258->exposure->step,
++				 exposure_def);
 +}
 +
- static int imx258_probe(struct i2c_client *client)
+ static int imx258_set_ctrl(struct v4l2_ctrl *ctrl)
  {
- 	struct imx258 *imx258;
-@@ -1230,6 +1265,11 @@ static int imx258_probe(struct i2c_client *client)
- 	if (!imx258)
- 		return -ENOMEM;
+ 	struct imx258 *imx258 =
+@@ -741,6 +755,13 @@ static int imx258_set_ctrl(struct v4l2_ctrl *ctrl)
+ 	struct i2c_client *client = v4l2_get_subdevdata(&imx258->sd);
+ 	int ret = 0;
  
-+	ret = imx258_get_regulators(imx258, client);
-+	if (ret)
-+		return dev_err_probe(&client->dev, ret,
-+				     "failed to get regulators\n");
++	/*
++	 * The VBLANK control may change the limits of usable exposure, so check
++	 * and adjust if necessary.
++	 */
++	if (ctrl->id == V4L2_CID_VBLANK)
++		imx258_adjust_exposure_range(imx258);
 +
- 	imx258->clk = devm_clk_get_optional(&client->dev, NULL);
- 	if (IS_ERR(imx258->clk))
- 		return dev_err_probe(&client->dev, PTR_ERR(imx258->clk),
+ 	/*
+ 	 * Applying V4L2 control value only happens
+ 	 * when power is up for streaming
 -- 
 2.44.0
 
