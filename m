@@ -1,146 +1,205 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-108-mta60.mxroute.com (mail-108-mta60.mxroute.com [136.175.108.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D025134CE8
-	for <phone-devel@vger.kernel.org>; Sun, 14 Apr 2024 18:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF6A33987
+	for <phone-devel@vger.kernel.org>; Sun, 14 Apr 2024 20:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.60
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713119975; cv=none; b=qc8UlJVd1CI/e5I9PhoqMw5CjUnwW7Qb5id3C5ZDpR0Zi00T6JBPw8m/FvAXI0KA5/thEgF7ySwsKGbTxpguR1oOnNA/CqPLX0YVJLwdfj4KnZKHa2Ceu4xJ80j/iFBSD/X5hJeYyLqs2LfjEWS3d8vpOZgCMmB0E2s10VRxFRg=
+	t=1713126923; cv=none; b=a8HxGfK29hZFn3d/feTCO3lsZ6xxqxXNxxgLbOqZINzinwAPrHvn6ycYeJVvoXEez+DY1PWmRYw199deXgFp87XZPIjotl5Fj+2I71Sh3bKjgZUkXwMdbTwg5GDS/CuDJCnyPPc4zc+Rbfmapmt7EDjdskZ4jlf/UqVkqpYYjNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713119975; c=relaxed/simple;
-	bh=T+lOO0H/dwaxfERd74WfBr8H7WEqFJ7KUcuBKFolGBY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MsRUWn4xKaN7GYS4icf8pyJjW0A+uD1CbrSOavbE6g7vpwSKJ7eEBhS/tSBkqmAvDs4B4+/ikFgZlj141XO5fyJcX89edomqqTXomzlRgFB+9rj3noDL/r5AOBOtOFspHGl6JYRBjC8jaAs57wHtbkxeZ5tncfUy1RZ8CCf20j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lZFeGY8N; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1713126923; c=relaxed/simple;
+	bh=VavDGKWSNy8j0H6V4AyMT//lgYexExvzph0BfMKV5A8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FXzd/RsTdOKpQ2zq92k07G8v3/PA/jvHPb1S/DG338xCg8f9xrkkR9rUFde/rvBMZDuccYYoyqSTryFJ/qMEuXKuQN6XZO+Jqc3J7nFooFTqD50BgFRKRrYq9ipS9vgPj8vwOpktFO9O+QqA3xuR2Sesho6lR370vHllPl6bZiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=vRkf9aeT; arc=none smtp.client-ip=136.175.108.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lZFeGY8N"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-56e6a1edecfso3907538a12.1
-        for <phone-devel@vger.kernel.org>; Sun, 14 Apr 2024 11:39:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713119972; x=1713724772; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=T+lOO0H/dwaxfERd74WfBr8H7WEqFJ7KUcuBKFolGBY=;
-        b=lZFeGY8NcC7mWaXZ0oAIxb+jt3GFCCVmnpMhKYHKbI+3xvq/u71RBZyhDlP2FW9LZE
-         htdcQWJXEMr33wb2SEvcNM+DfPb7e8ltWTD1JBwOUEOejKi+mg2L9cylTDeb+vnhgDXf
-         oyQ//HJ+fzGATFBAD0H3/JwmzMJ4gk87aXEbm+DN+mihV+uubY9l5CZfr1bQ67MLj1LK
-         5C/WLT/DgDhSwU9onAE1r+SlxvlXli76u9JtqBkX/gnbriXnCuaiBt2i7Sj+AU888a9+
-         txObrN/ILMhRYvp/gbhzPlT7fkWiBdqgnMpngDdS0DEHo00uPHcosxR172K3bSz72oXB
-         R5Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713119972; x=1713724772;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T+lOO0H/dwaxfERd74WfBr8H7WEqFJ7KUcuBKFolGBY=;
-        b=m/GB1+NAlvQ0YcxU0KnC7t5tacIN4Fbwc8RJNNVjSJUQ5NG5dxFxLt00x//RGZ6PbN
-         bmDuaozRrwpvuCkrpTA5N0Rk5L7JsrwHGtF/YV9QFdZ/r3oQafjvf25DVf9b3bjweR21
-         4isUYMzPdPVrB+gDti1oVruWXo0kVDoonZj6MThjbkujZJyyCw4xJa4TWGzOUE6FN/wu
-         aMqWGYypLwfx4Dh42jM6N2cAqlVDjAcGKsLhM1K/DuiUKNwHCSS0+AmLA4NU1jen5cd7
-         C+/DZj8xXLAdbYfXao7MgwKUEYPsiCUZ+XnC2G0Zic4Nbyr59aZDsbPsBZtg6NbO+j/6
-         7Fyg==
-X-Forwarded-Encrypted: i=1; AJvYcCVUtCwODupvoiMpNVS/Zgpxz5AFMrlJnVcpKuL91QkFe9UgOz0KtakEniSLBYmuqeEH/RAic09JqD0e0V5yFP8pl6pDnNRBskRlQ8g=
-X-Gm-Message-State: AOJu0YxA8Y4Jkadgnf174VhH4nTUfy08VQgLUvJ1cCJ8Wsmxe9aTi/x3
-	TPUMeP9Gb7u6T3X1K+NO8+2LroK9Wk5XtVsYmYePO/TbACtOE4q4LF5+6pqLyDs=
-X-Google-Smtp-Source: AGHT+IHWOC0Sp3tJXDzOLy9TuelxAYCMR8/ZXLwTrrHy0SrmBvBWJlKoFi+FBoWYdGl7bSgZzZCRtw==
-X-Received: by 2002:a17:906:e288:b0:a52:6d1e:a2a3 with SMTP id gg8-20020a170906e28800b00a526d1ea2a3mr126665ejb.45.1713119972570;
-        Sun, 14 Apr 2024 11:39:32 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id c19-20020a170906529300b00a4da28f42f1sm4532538ejm.177.2024.04.14.11.39.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 Apr 2024 11:39:32 -0700 (PDT)
-Message-ID: <2f317b2b-3d74-4493-9492-91435f3cc209@linaro.org>
-Date: Sun, 14 Apr 2024 20:39:29 +0200
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="vRkf9aeT"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta60.mxroute.com (ZoneMTA) with ESMTPSA id 18ede522e540003bea.012
+ for <phone-devel@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Sun, 14 Apr 2024 20:35:11 +0000
+X-Zone-Loop: 1c3c9f2e4ef541da33022fa5025beb83d58792c6e1a3
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=eP7ba4MG9I/x9pHxrTh4yLTHg0biLr0j/s9u962DdSs=; b=vRkf9aeTPGOwsFaBv01kTdtyPD
+	/VT+LC1QPodsoGjkPhOCMbJyVNOpBO9J2/jga3dluFQ2F+oFxqMxqlQwWalleCHSD4ZEe/jCW5B3m
+	jkzJjzUWPrepc0xtfNFUbIefo36/9AQtVFH7/3Eic8wnTNQhnNmOCXentLIiO0JnZkyZWECQK8+vI
+	SKYTune7/bTqC84pB/pGEevetqTu7TG1ofPqkWxYheRvOfh67JaRhbF8f/YzTWXiN8dVUWWVc627q
+	ixdg3TC6aqzixKG9LbUwF122sRHfuOR1mgipD8jtlxXgaldyz6j5STrp6xMTInAngONdiFwhmx5Hq
+	3sYWI1Tg==;
+From: git@luigi311.com
+To: linux-media@vger.kernel.org
+Cc: dave.stevenson@raspberrypi.com,
+	jacopo.mondi@ideasonboard.com,
+	mchehab@kernel.org,
+	robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	sakari.ailus@linux.intel.com,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	pavel@ucw.cz,
+	phone-devel@vger.kernel.org,
+	Luis Garcia <git@luigi311.com>
+Subject: [PATCH v4 00/25] imx258 improvement series
+Date: Sun, 14 Apr 2024 14:34:38 -0600
+Message-ID: <20240414203503.18402-1-git@luigi311.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: iio: light: stk33xx: add regulator for
- vdd supply
-To: Aren Moynihan <aren@peacevolution.org>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Ondrej Jirman <megi@xff.cz>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- linux-iio@vger.kernel.org, phone-devel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- Willow Barraco <contact@willowbarraco.fr>
-References: <20240414175300.956243-1-aren@peacevolution.org>
- <20240414175716.958831-1-aren@peacevolution.org>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240414175716.958831-1-aren@peacevolution.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: personal@luigi311.com
 
-On 14/04/2024 19:57, Aren Moynihan wrote:
-> Signed-off-by: Aren Moynihan <aren@peacevolution.org>
-> ---
+From: Luis Garcia <git@luigi311.com>
 
-Why? Please provide proper commit msg which will explain why you are
-doing it (e.g. say about hardware).
+v4:
+  - Swapped out the use macro patch for a patch that uses the new
+    CCI register access helpers per Sakari Ailus
+  - Fix order of reset and powerdown gpio before disable regulators
+  - Fix formating of all patches
+  
+  - Implemented feedback from Pavel Machek
+    - media: i2c: imx258: Follow normal V4L2 behaviours
+    - media: i2c: imx258: Allow configuration of clock
+  - Implemented feedback from Sakari Ailus
+    - media: i2c: imx258: Add support for powerdown gpio
 
-Anyway empty commit msgs cannot be accepted.
+
+v3 Luis Garcia
+
+- Add Use v4l2_link_freq_to_bitmap helper patch per Sakari Ailus
+- Separate dt-bindings for powerdown per Rob Herring
+- Fix dt-bindings for imx258.yaml
+- Fix sign offs per Dang Huynh 
+- Fix versioning per Conor Dooley and Kieran Bingham
+- Use scripts to validate and fix patches
+- Implemented feedback from Sakari Ailus
+  - media: i2c: imx258: Add support for 24MHz clock
+  - media: i2c: imx258: Add support for running on 2 CSI data lanes
+
+- Implemented feedback from Rob Herring
+  - dt-bindings: media: imx258: Add alternate compatible strings
 
 
 
-Best regards,
-Krzysztof
+v2 Luis Garcia
+
+- Add use macros patch 
+- Add support for powerdown gpio patch
+- Add support for reset gpio patch
+- Dropped Add support for long exposure modes patch
+- Implemented feedback from Jacopo Mondi
+  - media: i2c: imx258: Add regulator control
+  - media: i2c: imx258: Add support for 24MHz clock
+  - media: i2c: imx258: Add support for running on 2 CSI data lanes
+  - media: i2c: imx258: Add get_selection for pixel array information
+  - media: i2c: imx258: Issue reset before starting streaming
+  - media: i2c: imx258: Set pixel_rate range to the same as the value
+  - dt-bindings: media: imx258: Add alternate compatible strings
+  - media: i2c: imx258: Change register settings for variants of the sensor
+  - media: i2c: imx258: Make HFLIP and VFLIP controls writable
+
+This adds a few more patches and drops one. The long exposure mode patch
+was dropped due to the bug that Jacopo found. The powerdown and reset gpio
+patches were added as that fixes support for the Pinephone Pro, without
+them the sensor doesn't initialize correctly.
+
+Tested on a Pinephone Pro by forcing 24 mhz clock and was able to access 
+all 3 resolutions. The two lower resolutions had some artifacts but that
+is expected as more changes are required to fix them for the
+Pinephone Pro specifically, kept all registers the same as Dave's original
+patch since that works on dedicated imx258 hardware and the artifacts are
+PPP specific so it shouldn't be a regression.
+
+
+
+v1 Dave Stevenson
+
+This is a set of patches for imx258 that allow it to work with alternate
+clock frequencies, over either 2 or 4 lanes, and generally adding
+flexibility to the driver.
+
+Tested with an IMX258 module from Soho Enterprises that has a 24MHz
+oscillator. Both 2 and 4 lane configurations work with correct link
+frequencies and pixel rates.
+
+Jacopo has tested on a PinePhone Pro which has an ~19.2MHz clock fed from
+the SoC, He confirms that the two lower resolution modes work, but not the
+full res mode. Comparing to the BSP it looks like they have some weird
+clock configuration in the 4208x3120 mode (nominally 1224Mb/s/lane instead
+of 1267). As it has never previously worked directly with the mainline
+driver this isn't a regression but may indicate that there is a need for
+support of additional link frequencies in the future.
+
+The last patch that makes HFLIP and VFLIP configurable may be contentious
+as I've retained the default configuration of inverted from the original
+driver. I know this was discussed recently, but I can't recall the final
+outcome.
+
+I am relying on someone from Intel testing this out, as correcting the
+cropping and supporting flips has changed the Bayer order. Seeing as this
+is all above board in V4L2 terms I really hope that the layers above it
+behave themselves.
+
+Cheers
+  Dave
+
+Dave Stevenson (20):
+  media: i2c: imx258: Remove unused defines
+  media: i2c: imx258: Make image geometry meet sensor requirements
+  media: i2c: imx258: Disable digital cropping on binned modes
+  media: i2c: imx258: Remove redundant I2C writes.
+  media: i2c: imx258: Add regulator control
+  media: i2c: imx258: Make V4L2_CID_VBLANK configurable.
+  media: i2c: imx258: Split out common registers from the mode based
+    ones
+  media: i2c: imx258: Add support for 24MHz clock
+  media: i2c: imx258: Add support for running on 2 CSI data lanes
+  media: i2c: imx258: Follow normal V4L2 behaviours for clipping
+    exposure
+  media: i2c: imx258: Add get_selection for pixel array information
+  media: i2c: imx258: Allow configuration of clock lane behaviour
+  media: i2c: imx258: Correct max FRM_LENGTH_LINES value
+  media: i2c: imx258: Issue reset before starting streaming
+  media: i2c: imx258: Set pixel_rate range to the same as the value
+  media: i2c: imx258: Support faster pixel rate on binned modes
+  dt-bindings: media: imx258: Rename to include vendor prefix
+  dt-bindings: media: imx258: Add alternate compatible strings
+  media: i2c: imx258: Change register settings for variants of the
+    sensor
+  media: i2c: imx258: Make HFLIP and VFLIP controls writable
+
+Luis Garcia (5):
+  dt-bindings: media: imx258: Add binding for powerdown-gpio
+  media: i2c: imx258: Add support for powerdown gpio
+  media: i2c: imx258: Add support for reset gpio
+  media:i2c: imx258: Use v4l2_link_freq_to_bitmap helper
+  media: i2c: imx258: Convert to new CCI register access helpers
+
+ .../i2c/{imx258.yaml => sony,imx258.yaml}     |   15 +-
+ MAINTAINERS                                   |    2 +-
+ drivers/media/i2c/Kconfig                     |    1 +
+ drivers/media/i2c/imx258.c                    | 1439 ++++++++++-------
+ 4 files changed, 848 insertions(+), 609 deletions(-)
+ rename Documentation/devicetree/bindings/media/i2c/{imx258.yaml => sony,imx258.yaml} (86%)
+
+-- 
+2.44.0
 
