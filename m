@@ -1,202 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta196.mxroute.com (mail-108-mta196.mxroute.com [136.175.108.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10ED82D91;
-	Mon, 15 Apr 2024 17:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C286B2231F
+	for <phone-devel@vger.kernel.org>; Mon, 15 Apr 2024 17:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713200829; cv=none; b=XWrbjG1nO6nwYdo27dNtZOXM+4Ktuv3+WCKbE0nJRNnX4canxRK/ZIAMIqVF+f4ZZITRJeE6ceJZgBIjoddzAqVYVfyQ5AKA63RvcOfmt5RV+G4LVZeaqGhpOk4Tc/12N+Odg7VYw0Fw7GWmHqMTvj0J4MWHE80740cfqtskNRE=
+	t=1713201629; cv=none; b=J8SK9LRmnq0qWXf8UKEEP7P1DwvLikDG5SsPRjBNaXV4P3SFdPjx0snaUGIl0yEeQ0jMtJ6zK/Es25n4Ihp3GsolKt1TW5OQLfwFAcLe5FzJwCHWqkUFPhQA7Pbj3YQfe9qYRgvUXtTfHofLSiRxrzs18oCprRX2p+N46VqdVZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713200829; c=relaxed/simple;
-	bh=FOsS3Rqk88ldzlT96VMVnmS+dPPkpqirhwk6Fw5Yn5Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mLVz4P0d6ypwGYVneKcRgjDAgL2B03DvV3Yu696oUArVK9QAmdxLyR8LeLjnJwRZtyrhRDGLRi6sDIjMU8eToy5elvLQMx6cbZRQlZj2v/Zi0nv90QcM/5lLT84z7M9hWVPv6j1EHJ5W4FtWLa4voxkwGMCQA7l3mQIHgij4WbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C753SYye; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713201629; c=relaxed/simple;
+	bh=jReH0gjQfi3jqUjUN7a8QPlR9o04IUhbNwjdpet1ZNs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bnIX6UYL6/s37RBVn11L8GgjQ1WEJDMBhLvsvr9cttePEI2PpRbuWnbkY/00h5v3FeJLxtQce21xhTU5BFHdR57L9xsQWDn2qIB4Np4avURRvXduKE0bGOGSVD+uGA4BGshjVY+pZ5SQhyMLAYvTUZrfYey5rzuQCgOo0b+0K7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=x9ISdxzx; arc=none smtp.client-ip=136.175.108.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C753SYye"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4F68C113CC;
-	Mon, 15 Apr 2024 17:07:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713200829;
-	bh=FOsS3Rqk88ldzlT96VMVnmS+dPPkpqirhwk6Fw5Yn5Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C753SYyeQDwc2ojdR7attJ5/xEhfc/W0AV1zpqzVThMMxtq+s8KsfpxtWH91J7f/A
-	 IAr/sVVCi45hOea7W1ial9TQqus6DBfOMp1MlCd/EGq7hbNA3HW0BVKdSCgGWB4kHC
-	 4x0oJmrj9sBIDM+FWUvV8/SApcFGPGEu7b9jOXYMexasX0IU3JwaIEIOGWe9Ud8+U/
-	 Z3zyWTNdIp3FV2gY9+n7w4Srns+ZQjdi3QE/hE7B+yHP4sa6uLAdr/1qukeBSmVHeu
-	 k1dLL0vdM+3Wy/pCkb99SH9/VwmiXl4q81VB1WAFjdCfTSsvgs+FsAsv3HKgsm5Qq4
-	 piio5Ei5FEScg==
-Date: Mon, 15 Apr 2024 18:07:03 +0100
-From: Conor Dooley <conor@kernel.org>
-To: David Wronek <david@mainlining.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: display: panel: Add Raydium RM69380
-Message-ID: <20240415-basically-laboring-3a5fde2027ef@spud>
-References: <20240415-raydium-rm69380-driver-v2-0-524216461306@mainlining.org>
- <20240415-raydium-rm69380-driver-v2-1-524216461306@mainlining.org>
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="x9ISdxzx"
+Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta196.mxroute.com (ZoneMTA) with ESMTPSA id 18ee2c62c560003bea.012
+ for <phone-devel@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Mon, 15 Apr 2024 17:20:22 +0000
+X-Zone-Loop: da4d54ff0d0418c5edab50f76ebbf661866383e361cb
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
+	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=MrkMLSqeYoxQaLeqLd7FGAd8dfapbsuwWEhhKVbCiyA=; b=x9ISdxzxA+VX+pUaAb/YyVrN/I
+	PDRGE29wQIOTE4K0H9J0GqjrLk/wRi31jdEDUQsg+HwMd1lyJellzwJcF8/XwL8bLZPdC5/1i32qO
+	NlixLlqM//ltkxCajb0JKF7O7AXA93omkAY7xvFPsKwKLNbAeHMfEP9hrJw9aKNgZcLE7kgkpROnp
+	uXyZat782B9Rj6/G2O3iNfov6CVEuoba6rnvdF1lhWVLGM0/8bMX7wjhPsQtOalQTaXWvpF37+Pt2
+	qDwwVJR40Dy8V7TTpk+37fMwcFuSBHFaFHyxba61QpeJmSS1vKxe0NofMMnKRbaHt2bPOWGOj4JhU
+	5j7sZWBA==;
+Message-ID: <6c87d95a-817e-4ead-bff1-89e6639103e0@luigi311.com>
+Date: Mon, 15 Apr 2024 11:20:17 -0600
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="0GLNjRxLWL3JBgc2"
-Content-Disposition: inline
-In-Reply-To: <20240415-raydium-rm69380-driver-v2-1-524216461306@mainlining.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 22/25] dt-bindings: media: imx258: Add binding for
+ powerdown-gpio
+To: Pavel Machek <pavel@ucw.cz>
+Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
+ jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ sakari.ailus@linux.intel.com, devicetree@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+ Ondrej Jirman <megi@xff.cz>
+References: <20240403150355.189229-1-git@luigi311.com>
+ <20240403150355.189229-23-git@luigi311.com> <Zg2kn5/5T9ukP4nd@duo.ucw.cz>
+Content-Language: en-US
+From: Luis Garcia <git@luigi311.com>
+In-Reply-To: <Zg2kn5/5T9ukP4nd@duo.ucw.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Id: git@luigi311.com
 
+On 4/3/24 12:49, Pavel Machek wrote:
+> Hi!
+> 
+>> From: Luis Garcia <git@luigi311.com>
+>>
+>> Add powerdown-gpio binding as it is required for some boards
+> 
+> "." at end of sentence.
+> 
+>> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+>> Signed-off-by: Luis Garcia <git@luigi311.com>
+> 
+> If the patch is from Ondrej, he should be in From:, I believe.
+> 
+> Best regards,
+> 							Pavel
 
---0GLNjRxLWL3JBgc2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Apr 15, 2024 at 06:10:41PM +0200, David Wronek wrote:
-> Raydium RM69380 is a display driver IC used to drive OLED DSI panels.
-> Add a dt-binding for it.
->=20
-> Signed-off-by: David Wronek <david@mainlining.org>
-> ---
->  .../bindings/display/panel/raydium,rm69380.yaml    | 91 ++++++++++++++++=
-++++++
->  1 file changed, 91 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/display/panel/raydium,rm69=
-380.yaml b/Documentation/devicetree/bindings/display/panel/raydium,rm69380.=
-yaml
-> new file mode 100644
-> index 000000000000..0ac7d033cbe0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/display/panel/raydium,rm69380.yaml
-> @@ -0,0 +1,91 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/display/panel/raydium,rm69380.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Raydium RM6380-based DSI display panels
-> +
-> +maintainers:
-> +  - David Wronek <david@mainlining.org>
-> +
-> +description:
-> +  The Raydium RM69380 is a generic DSI panel IC used to control
-> +  OLED panels.
-> +
-> +allOf:
-> +  - $ref: panel-common-dual.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - lenovo,j716f-edo-rm69380
-> +      - const: raydium,rm69380
-> +    description: This indicates the panel manufacturer of the panel
-> +      that is in turn using the RM69380 panel driver. The compatible
-> +      string determines how the RM69380 panel driver shall be configured
-> +      to work with the indicated panel. The raydium,rm69380 compatible s=
-hall
-> +      always be provided as a fallback.
-> +
-> +  avdd-supply:
-> +    description: Analog voltage rail
-> +
-> +  vddio-supply:
-> +    description: I/O voltage rail
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +    description: phandle of gpio for reset line - This should be active =
-low
-> +
-> +  ports: true
-> +  reg: true
-
-Where is reg defined? I briefly checked the two panel-common bindings
-and didn't see it.
-
-Cheers,
-Conor.
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - avdd-supply
-> +  - vddio-supply
-> +  - reset-gpios
-> +  - ports
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +
-> +    dsi {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        panel@0 {
-> +            compatible =3D "lenovo,j716f-edo-rm69380", "raydium,rm69380";
-> +            reg =3D <0>;
-> +
-> +            avdd-supply =3D <&panel_avdd_regulator>;
-> +            vddio-supply =3D <&vreg_l14a>;
-> +            reset-gpios =3D <&tlmm 75 GPIO_ACTIVE_LOW>;
-> +
-> +            ports {
-> +                #address-cells =3D <1>;
-> +                #size-cells =3D <0>;
-> +
-> +                port@0 {
-> +                    reg =3D <0>;
-> +                    panel_in_0: endpoint {
-> +                        remote-endpoint =3D <&mdss_dsi0_out>;
-> +                    };
-> +                };
-> +
-> +                port@1 {
-> +                    reg =3D <1>;
-> +                    panel_in_1: endpoint {
-> +                        remote-endpoint =3D <&mdss_dsi1_out>;
-> +                    };
-> +                };
-> +            };
-> +        };
-> +    };
-> +
-> +...
->=20
-> --=20
-> 2.44.0
->=20
-
---0GLNjRxLWL3JBgc2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZh1etwAKCRB4tDGHoIJi
-0mHkAQDH2xKYkE4R7Ku+Y0Z6OrwT1OLZWwQTMHQ67JzNr6FllgD/W2C7opnNMcD7
-rf8AECa0OELVhjuuAVTl3UtDPCqW0gE=
-=+guv
------END PGP SIGNATURE-----
-
---0GLNjRxLWL3JBgc2--
+Forgot to change the from in v4 but should be in v5
