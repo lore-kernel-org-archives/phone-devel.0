@@ -1,84 +1,95 @@
-Received: from mail-108-mta196.mxroute.com (mail-108-mta196.mxroute.com [136.175.108.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C286B2231F
-	for <phone-devel@vger.kernel.org>; Mon, 15 Apr 2024 17:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0235B79945;
+	Mon, 15 Apr 2024 17:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713201629; cv=none; b=J8SK9LRmnq0qWXf8UKEEP7P1DwvLikDG5SsPRjBNaXV4P3SFdPjx0snaUGIl0yEeQ0jMtJ6zK/Es25n4Ihp3GsolKt1TW5OQLfwFAcLe5FzJwCHWqkUFPhQA7Pbj3YQfe9qYRgvUXtTfHofLSiRxrzs18oCprRX2p+N46VqdVZ8=
+	t=1713202131; cv=none; b=bnDozMz8xsq/v4/wGomE3IZTYwTdBQ1aGf/X/JiefZWEYQy90fzL5QFrFOexW/oOKiAiZ3gv5sgJUm0GchN2tzrK8wEpLWyxfBAqQNPKSRtPqztN3Wfj4W0lsb1gzpbLJhC6tKhw82u+NxUqvgbK17m4NXrbZLSeCPcXd1Ij/lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713201629; c=relaxed/simple;
-	bh=jReH0gjQfi3jqUjUN7a8QPlR9o04IUhbNwjdpet1ZNs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bnIX6UYL6/s37RBVn11L8GgjQ1WEJDMBhLvsvr9cttePEI2PpRbuWnbkY/00h5v3FeJLxtQce21xhTU5BFHdR57L9xsQWDn2qIB4Np4avURRvXduKE0bGOGSVD+uGA4BGshjVY+pZ5SQhyMLAYvTUZrfYey5rzuQCgOo0b+0K7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=x9ISdxzx; arc=none smtp.client-ip=136.175.108.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+	s=arc-20240116; t=1713202131; c=relaxed/simple;
+	bh=a0HibWUnzie92ICHAhBye5rj+VFjkkx03juTDWDh/Ec=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=iYq/g/joDNQ+BrAhXOBbWAYRs6dQ1h/dsLZ0IKKNyPWw9wlYAVDb6CxOkYfMgT3j8Wl3tievF1601gXF2B7tUjCU2s6OAV8KbxK0NcurOFcjAY21mp6rh2IgBtcXrLYhWbLXayDKqKn/lj1nBt1Wu1J8+YQAamKrC1MejofWL2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sGIwbl9h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="x9ISdxzx"
-Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta196.mxroute.com (ZoneMTA) with ESMTPSA id 18ee2c62c560003bea.012
- for <phone-devel@vger.kernel.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Mon, 15 Apr 2024 17:20:22 +0000
-X-Zone-Loop: da4d54ff0d0418c5edab50f76ebbf661866383e361cb
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=MrkMLSqeYoxQaLeqLd7FGAd8dfapbsuwWEhhKVbCiyA=; b=x9ISdxzxA+VX+pUaAb/YyVrN/I
-	PDRGE29wQIOTE4K0H9J0GqjrLk/wRi31jdEDUQsg+HwMd1lyJellzwJcF8/XwL8bLZPdC5/1i32qO
-	NlixLlqM//ltkxCajb0JKF7O7AXA93omkAY7xvFPsKwKLNbAeHMfEP9hrJw9aKNgZcLE7kgkpROnp
-	uXyZat782B9Rj6/G2O3iNfov6CVEuoba6rnvdF1lhWVLGM0/8bMX7wjhPsQtOalQTaXWvpF37+Pt2
-	qDwwVJR40Dy8V7TTpk+37fMwcFuSBHFaFHyxba61QpeJmSS1vKxe0NofMMnKRbaHt2bPOWGOj4JhU
-	5j7sZWBA==;
-Message-ID: <6c87d95a-817e-4ead-bff1-89e6639103e0@luigi311.com>
-Date: Mon, 15 Apr 2024 11:20:17 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sGIwbl9h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A77C113CC;
+	Mon, 15 Apr 2024 17:28:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713202130;
+	bh=a0HibWUnzie92ICHAhBye5rj+VFjkkx03juTDWDh/Ec=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=sGIwbl9hpyaYtBQKxvJwQVyMA8NHskJJz4jxoakHv+SX3/ieldj+E3nJMETdR35Gu
+	 wKHloHIUuK06kFzSYekj1QctMLCGJ5DPuam0tWdsGXnGGva8OEUD6SZ6sewvvuOOca
+	 otFy0M/cu4zhxUDUgy1d24JXH3zmurfFkD5kjcG8ZXucCwSrJbhwotvSKkbhGbs4z5
+	 lh61ZKtVNkVKKePxpGjvxxVQbaw66TJkWYTqP4LJnTZjcUEct8gfdbevh/OhZsCOxN
+	 GpBWbjiBpNku2djAmLRaotKGb3Knq3ntCsFTD3NeoNk42nwpVvcMB/mPNAhVP72D2B
+	 iasWcXKynd/FQ==
+Date: Mon, 15 Apr 2024 12:28:49 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 22/25] dt-bindings: media: imx258: Add binding for
- powerdown-gpio
-To: Pavel Machek <pavel@ucw.cz>
-Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
- jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- sakari.ailus@linux.intel.com, devicetree@vger.kernel.org,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
- Ondrej Jirman <megi@xff.cz>
-References: <20240403150355.189229-1-git@luigi311.com>
- <20240403150355.189229-23-git@luigi311.com> <Zg2kn5/5T9ukP4nd@duo.ucw.cz>
-Content-Language: en-US
-From: Luis Garcia <git@luigi311.com>
-In-Reply-To: <Zg2kn5/5T9ukP4nd@duo.ucw.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Id: git@luigi311.com
+From: Rob Herring <robh@kernel.org>
+To: David Wronek <david@mainlining.org>
+Cc: Maxime Ripard <mripard@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Sam Ravnborg <sam@ravnborg.org>, phone-devel@vger.kernel.org, 
+ Daniel Vetter <daniel@ffwll.ch>, Neil Armstrong <neil.armstrong@linaro.org>, 
+ David Airlie <airlied@gmail.com>, Konrad Dybcio <konradybcio@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, linux-kernel@vger.kernel.org, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Jessica Zhang <quic_jesszhan@quicinc.com>, 
+ ~postmarketos/upstreaming@lists.sr.ht
+In-Reply-To: <20240415-raydium-rm69380-driver-v2-1-524216461306@mainlining.org>
+References: <20240415-raydium-rm69380-driver-v2-0-524216461306@mainlining.org>
+ <20240415-raydium-rm69380-driver-v2-1-524216461306@mainlining.org>
+Message-Id: <171320212822.3814448.5491461859724968091.robh@kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: display: panel: Add Raydium
+ RM69380
 
-On 4/3/24 12:49, Pavel Machek wrote:
-> Hi!
-> 
->> From: Luis Garcia <git@luigi311.com>
->>
->> Add powerdown-gpio binding as it is required for some boards
-> 
-> "." at end of sentence.
-> 
->> Signed-off-by: Ondrej Jirman <megi@xff.cz>
->> Signed-off-by: Luis Garcia <git@luigi311.com>
-> 
-> If the patch is from Ondrej, he should be in From:, I believe.
-> 
-> Best regards,
-> 							Pavel
 
-Forgot to change the from in v4 but should be in v5
+On Mon, 15 Apr 2024 18:10:41 +0200, David Wronek wrote:
+> Raydium RM69380 is a display driver IC used to drive OLED DSI panels.
+> Add a dt-binding for it.
+> 
+> Signed-off-by: David Wronek <david@mainlining.org>
+> ---
+>  .../bindings/display/panel/raydium,rm69380.yaml    | 91 ++++++++++++++++++++++
+>  1 file changed, 91 insertions(+)
+> 
+
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/panel/raydium,rm69380.yaml:
+Error in referenced schema matching $id: http://devicetree.org/schemas/display/panel/panel-common-dual.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/panel/raydium,rm69380.example.dtb: panel@0: False schema does not allow {'compatible': ['lenovo,j716f-edo-rm69380', 'raydium,rm69380'], 'reg': [[0]], 'avdd-supply': [[4294967295]], 'vddio-supply': [[4294967295]], 'reset-gpios': [[4294967295, 75, 1]], 'ports': {'#address-cells': [[1]], '#size-cells': [[0]], 'port@0': {'reg': [[0]], 'endpoint': {'remote-endpoint': [[4294967295]]}}, 'port@1': {'reg': [[1]], 'endpoint': {'remote-endpoint': [[4294967295]]}}}, '$nodename': ['panel@0']}
+	from schema $id: http://devicetree.org/schemas/display/panel/raydium,rm69380.yaml#
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240415-raydium-rm69380-driver-v2-1-524216461306@mainlining.org
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
