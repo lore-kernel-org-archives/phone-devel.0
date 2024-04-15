@@ -1,265 +1,115 @@
-Received: from smtp.smtpout.orange.fr (smtp-19.smtpout.orange.fr [80.12.242.19])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780731E877;
-	Mon, 15 Apr 2024 17:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FC06CDC2;
+	Mon, 15 Apr 2024 20:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713203835; cv=none; b=reCVqmogFsswj81gm+bptWNVnE+u7qKli4yW0UuTwHTTyJPhJopcnGK1/hUUl2ZvnL7othyU5j4oNl6+zvgJTCbZJwn1OYzRGuUFQ3+gdDL2iU5H42WKbmlV/owhDaSNPMCXayvWPd9SaRtnT3/IOrOsce3ikNAGYnWXfsWTFZo=
+	t=1713213993; cv=none; b=AMAqpr3hVu9Cx5tuUaNN91dtqSVWvNtYVCgMAGyJO0j2l5740fxB/R2ZmsKsGCuQINQR7Gy7Mo2MZwPFcHUjLEuDWO5bT755VH03KvEbgByP3I31lNOWjlu0Vcwpnvkqck+wiydMlDa7BL373IClHWjcAvKXPaXUiEn/U3zFPk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713203835; c=relaxed/simple;
-	bh=h60ENWhTd0WQWG/ElpVhgeuLSSZCgBiTUfF88pSPlLw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TgWq7Be+Qt1jFlmT8TwfAaDvHOo+DYAxN/1Ka5DGusQy/A7V5j41XsJBljwnBny8MsxUbBF2U++A9TnBBabZU8wZQ2XsyhcYSzPThPPaajOU336Sx6AA2JsfJZpC9qz5moqOmhj/fIE4XRbvqDA1P6qjIehNvh89skGBu2PrmFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=i7Xw5asM; arc=none smtp.client-ip=80.12.242.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+	s=arc-20240116; t=1713213993; c=relaxed/simple;
+	bh=DXWvgmZ3OBUiLaT3J5TtSgfTI4GViAYB4pLbra/t6SQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VtVpYB9mddgSkXoyip5B7/6M1y7bUyhIQoEGMgLGMQudORMngcdg+U8Z0+5askb2D4ASImTC8twI5an+Dz1P81TrFKvTrDEBwgGNoSq5nJakkC0/Q/sbOYf017ZcIFpDPMuYhiqsYyIwIqSdFsGaO/G1W61AwKMs6jTK9Prw8L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iOt0FiRv; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="i7Xw5asM"
-Received: from [192.168.1.18] ([86.243.17.157])
-	by smtp.orange.fr with ESMTPA
-	id wQYWrGoAULfMZwQYWrYCD1; Mon, 15 Apr 2024 19:55:52 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1713203752;
-	bh=dW3oL+k/ZeNgRT3UGBFK7vTFs88VdDG5H8DfUFlIPC4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=i7Xw5asM45SBeb0bSeXC8Fp4smRGc53cIohAynnLwvuUEaaSJNcszOriVjf9r8bE3
-	 qiDhxY5wjQbGahF3VxFjJuD5DS7jYDU6j8gfZoVkYpp637XhqZWmp2SXTs6qQb9TUG
-	 1EyrI4WDInrQMBN7KLyy6BxQ+GzDeeR5uQW+OLQKXLUu+PDD+DQnbTxmOn/5DxvqGw
-	 nUYfc+qiXrN0O3DQKcIUHggNWWm9QCd5ELDJzb2m3BIIQxbCUTkinUt8V1Kh1wQZV+
-	 e9xSjB04woj4hLr3lz5E3b1ozYIKVMFjGM7wsUFESWSOy2WMMcWGZsgbk5NhAJQn59
-	 eXkspoh3YeLlg==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 15 Apr 2024 19:55:52 +0200
-X-ME-IP: 86.243.17.157
-Message-ID: <97189d64-0db1-4663-8a2e-c1a7c06a241c@wanadoo.fr>
-Date: Mon, 15 Apr 2024 19:55:48 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iOt0FiRv"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-417f5268b12so32009635e9.1;
+        Mon, 15 Apr 2024 13:46:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713213990; x=1713818790; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JQH1fnHdxuhfyl8z9lLAyiPd+rF+Qf9RWJEuMIgG794=;
+        b=iOt0FiRvRjSCpc1AZp7qDi5IzJC71f6WzgNt0Rht4ZxeHHE0QOaVpjE5+RNClXDLqq
+         /8M6KBYRP0S/wv6SixaJ0sKL2+9ccZa2HDn6cjfCpTRiNRlb5NQAIgXCyTy1BrsZuRI/
+         U5N+4NL9c7IA02tJ9T+bpmVnWP5ynz9pQQ4H5/BKAE1wS3oXy43mBk4AJSa56QOncT6a
+         MpTpyQ0z1Bq2Glk7S1bnKSK2ypdgHrGKfi/1zwAZsvnIEGPdh0sUL6QKXiEAk6fWE0yA
+         7F79rC600GkqVGL8LxTP6IE1m6zbwTRF62Fo1COMiA0zA3ZZslhBjx5yizTFpqYt1cZT
+         CBUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713213990; x=1713818790;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JQH1fnHdxuhfyl8z9lLAyiPd+rF+Qf9RWJEuMIgG794=;
+        b=YPzKdYjUAoco9Fy5BzCVM5U5MBH70ls01xylfn/R0/weRg0mjQnP3Bg+1oSAwO4X7m
+         VOFyaiZdf6IeEEZukYhkSLnweNjnf1eM8QEk8NtVFlwO+kp0jf1MUgpETnu2NW9KbZ2g
+         OzD0PWqqahHBQ7Shswo6d35qSrjPeF0TL+VczlHW9fC7ouj+xfxwA4Y4XFnYPplzirZT
+         DNLGknjMI4bGCZ2EqsxxiiulDAIlBQ7KC3eqVv1DZs8IMobIDBCQXDLIAHOAToDGd/wK
+         XW7aWEpq22+vEIH84f3xgI+1YzmkABFJhkRYa2xwveOsS99oxLww5+/ROOWMhHItVSWG
+         A5Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCVOUI47TwyTWhrsff18GcgyEWzwNsUuqqTnLZg4Ce3hBIUqtLr2+qOgwcsiChE3rCxuc0oyvIx6nSKibZogfZ8JCI9SulGeWIg7gBULx35V3BlpUCs2Y0mWxCyZh/7VW0oHRYUhP63F+ATzvdniDS8fo2rxy5uvm36cnTavW0E1ilKutmrR5QMiS5fOUYEFD/Axh/D4lR9jiLrRIFQR4YMD
+X-Gm-Message-State: AOJu0YyagyNuW/9Bxxuf9DhWYghIqZG7T/GYaYaZfyAp32EQzf4OfUvO
+	QikVry3EO8i64FKrL2DKEUJDqUpx6CeCKdkk3hbnvDXnJvMDGFIg
+X-Google-Smtp-Source: AGHT+IHz0wOP7okRZmGKnlB9cgbQaWoJFhJdoBH0pyaqWvuNkIdpW8kz8KDqkPKRxlBdxvcDsLAroQ==
+X-Received: by 2002:a05:600c:4f87:b0:418:1e10:ab6f with SMTP id n7-20020a05600c4f8700b004181e10ab6fmr7029506wmq.35.1713213989864;
+        Mon, 15 Apr 2024 13:46:29 -0700 (PDT)
+Received: from jernej-laptop.localnet (86-58-6-171.dynamic.telemach.net. [86.58.6.171])
+        by smtp.gmail.com with ESMTPSA id j20-20020a5d4534000000b003434f526cb5sm12938715wra.95.2024.04.15.13.46.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Apr 2024 13:46:29 -0700 (PDT)
+From: Jernej =?utf-8?B?xaBrcmFiZWM=?= <jernej.skrabec@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
+ Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Aren Moynihan <aren@peacevolution.org>
+Cc: Aren Moynihan <aren@peacevolution.org>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, Ondrej Jirman <megi@xff.cz>,
+ Uwe =?ISO-8859-1?Q?Kleine=2DK=F6nig?= <u.kleine-koenig@pengutronix.de>,
+ linux-iio@vger.kernel.org, phone-devel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ Willow Barraco <contact@willowbarraco.fr>
+Subject:
+ Re: [PATCH 1/4] dt-bindings: iio: light: stk33xx: add regulator for vdd
+ supply
+Date: Mon, 15 Apr 2024 22:46:28 +0200
+Message-ID: <2319549.ElGaqSPkdT@jernej-laptop>
+In-Reply-To: <20240414175716.958831-1-aren@peacevolution.org>
+References:
+ <20240414175300.956243-1-aren@peacevolution.org>
+ <20240414175716.958831-1-aren@peacevolution.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] drm/panel: Add driver for EDO RM69380 OLED panel
-To: david@mainlining.org
-Cc: airlied@gmail.com, conor+dt@kernel.org, daniel@ffwll.ch,
- devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
- konradybcio@kernel.org, krzk+dt@kernel.org, linux-kernel@vger.kernel.org,
- maarten.lankhorst@linux.intel.com, marijn.suijten@somainline.org,
- mripard@kernel.org, neil.armstrong@linaro.org, phone-devel@vger.kernel.org,
- quic_jesszhan@quicinc.com, robh@kernel.org, sam@ravnborg.org,
- tzimmermann@suse.de, ~postmarketos/upstreaming@lists.sr.ht
-References: <20240415-raydium-rm69380-driver-v2-0-524216461306@mainlining.org>
- <20240415-raydium-rm69380-driver-v2-2-524216461306@mainlining.org>
-Content-Language: en-MW
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20240415-raydium-rm69380-driver-v2-2-524216461306@mainlining.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-Le 15/04/2024 à 18:10, David Wronek a écrit :
-> Add support for the 2560x1600@90Hz OLED panel by EDO bundled with a
-> Raydium RM69380 controller, as found on the Lenovo Xiaoxin Pad Pro 2021.
-> 
-> Signed-off-by: David Wronek <david-vu3DzTD92ROXwddmVfQv5g@public.gmane.org>
+Dne nedelja, 14. april 2024 ob 19:57:13 GMT +2 je Aren Moynihan napisal(a):
+> Signed-off-by: Aren Moynihan <aren@peacevolution.org>
+
+Commit message cannot be empty.
+
+Best regards,
+Jernej
+
 > ---
->   drivers/gpu/drm/panel/Kconfig                 |  14 +
->   drivers/gpu/drm/panel/Makefile                |   1 +
->   drivers/gpu/drm/panel/panel-raydium-rm69380.c | 366 ++++++++++++++++++++++++++
->   3 files changed, 381 insertions(+)
+>  Documentation/devicetree/bindings/iio/light/stk33xx.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+> index f6e22dc9814a..db35e239d4a8 100644
+> --- a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+> +++ b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+> @@ -29,6 +29,7 @@ properties:
+>    interrupts:
+>      maxItems: 1
+>  
+> +  vdd-supply: true
+>    proximity-near-level: true
+>  
+>  required:
 > 
 
-...
 
-> +static int rm69380_on(struct rm69380_panel *ctx)
-> +{
-> +	struct mipi_dsi_device *dsi = ctx->dsi[0];
-> +	struct device *dev = &dsi->dev;
-> +	int ret;
-> +
-> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-> +	if (ctx->dsi[1])
-> +		ctx->dsi[1]->mode_flags |= MIPI_DSI_MODE_LPM;
-> +
-> +	mipi_dsi_dcs_write_seq(dsi, 0xfe, 0xd4);
-> +	mipi_dsi_dcs_write_seq(dsi, 0x00, 0x80);
-> +	mipi_dsi_dcs_write_seq(dsi, 0xfe, 0xd0);
-> +	mipi_dsi_dcs_write_seq(dsi, 0x48, 0x00);
-> +	mipi_dsi_dcs_write_seq(dsi, 0xfe, 0x26);
-> +	mipi_dsi_dcs_write_seq(dsi, 0x75, 0x3f);
-> +	mipi_dsi_dcs_write_seq(dsi, 0x1d, 0x1a);
-> +	mipi_dsi_dcs_write_seq(dsi, 0xfe, 0x00);
-> +	mipi_dsi_dcs_write_seq(dsi, 0x53, 0x28);
-> +	mipi_dsi_dcs_write_seq(dsi, 0xc2, 0x08);
-> +	mipi_dsi_dcs_write_seq(dsi, 0x35, 0x00);
-> +	mipi_dsi_dcs_write_seq(dsi, 0x51, 0x07, 0xff);
-> +
-> +	ret = mipi_dsi_dcs_exit_sleep_mode(dsi);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Failed to exit sleep mode: %d\n", ret);
-> +		return ret;
-> +	}
-> +	msleep(20);
-> +
-> +	ret = mipi_dsi_dcs_set_display_on(dsi);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Failed to set display on: %d\n", ret);
-> +		return ret;
-> +	}
-> +	msleep(36);
 
-36 and 35 below are un-usual values for msleep.
-
-Why 2 different values?
-Would using a #define for this(these) value(s) make sense here?
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int rm69380_off(struct rm69380_panel *ctx)
-> +{
-> +	struct mipi_dsi_device *dsi = ctx->dsi[0];
-> +	struct device *dev = &dsi->dev;
-> +	int ret;
-> +
-> +	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
-> +	if (ctx->dsi[1])
-> +		ctx->dsi[1]->mode_flags &= ~MIPI_DSI_MODE_LPM;
-> +
-> +	ret = mipi_dsi_dcs_set_display_off(dsi);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Failed to set display off: %d\n", ret);
-> +		return ret;
-> +	}
-> +	msleep(35);
-
-(here)
-
-> +
-> +	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
-> +	if (ret < 0) {
-> +		dev_err(dev, "Failed to enter sleep mode: %d\n", ret);
-> +		return ret;
-> +	}
-> +	msleep(20);
-> +
-> +	return 0;
-> +}
-
-...
-
-> +static int rm69380_probe(struct mipi_dsi_device *dsi)
-> +{
-> +	struct mipi_dsi_host *dsi_sec_host;
-> +	struct rm69380_panel *ctx;
-> +	struct device *dev = &dsi->dev;
-> +	struct device_node *dsi_sec;
-> +	int ret, i;
-> +
-> +	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
-> +	if (!ctx)
-> +		return -ENOMEM;
-> +
-> +	ctx->supplies[0].supply = "vddio";
-> +	ctx->supplies[1].supply = "avdd";
-> +	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(ctx->supplies),
-> +				      ctx->supplies);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "Failed to get regulators\n");
-> +
-> +	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-> +	if (IS_ERR(ctx->reset_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
-> +				     "Failed to get reset-gpios\n");
-> +
-> +	dsi_sec = of_graph_get_remote_node(dsi->dev.of_node, 1, -1);
-> +
-> +	if (dsi_sec) {
-> +		dev_dbg(dev, "Using Dual-DSI\n");
-
-This should be after de 'info' variable below, so...
-
-> +
-> +		const struct mipi_dsi_device_info info = { "RM69380", 0,
-> +							   dsi_sec };
-> +
-> +		dev_dbg(dev, "Found second DSI `%s`\n", dsi_sec->name);
-
-... maybe merge the 2 messages into something like:
-       dev_dbg(dev, "Using Dual-DSI: found `%s`\n", dsi_sec->name);
-
-> +
-> +		dsi_sec_host = of_find_mipi_dsi_host_by_node(dsi_sec);
-> +		of_node_put(dsi_sec);
-> +		if (!dsi_sec_host) {
-> +			return dev_err_probe(dev, -EPROBE_DEFER,
-> +					     "Cannot get secondary DSI host\n");
-> +		}
-> +
-
-Nit: unneeded { }
-
-> +		ctx->dsi[1] =
-> +			mipi_dsi_device_register_full(dsi_sec_host, &info);
-> +		if (IS_ERR(ctx->dsi[1])) {
-> +			return dev_err_probe(dev, PTR_ERR(ctx->dsi[1]),
-> +					     "Cannot get secondary DSI node\n");
-> +		}
-
-Nit: unneeded { }
-
-> +
-> +		dev_dbg(dev, "Second DSI name `%s`\n", ctx->dsi[1]->name);
-> +		mipi_dsi_set_drvdata(ctx->dsi[1], ctx);
-> +	} else {
-> +		dev_dbg(dev, "Using Single-DSI\n");
-> +	}
-> +
-> +	ctx->dsi[0] = dsi;
-> +	mipi_dsi_set_drvdata(dsi, ctx);
-> +
-> +	drm_panel_init(&ctx->panel, dev, &rm69380_panel_funcs,
-> +		       DRM_MODE_CONNECTOR_DSI);
-> +	ctx->panel.prepare_prev_first = true;
-> +
-> +	ctx->panel.backlight = rm69380_create_backlight(dsi);
-> +	if (IS_ERR(ctx->panel.backlight))
-> +		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),
-> +				     "Failed to create backlight\n");
-> +
-> +	drm_panel_add(&ctx->panel);
-> +
-> +	for (i = 0; i < ARRAY_SIZE(ctx->dsi); i++) {
-> +		if (!ctx->dsi[i])
-> +			continue;
-> +
-> +		dev_dbg(&ctx->dsi[i]->dev, "Binding DSI %d\n", i);
-> +
-> +		ctx->dsi[i]->lanes = 4;
-> +		ctx->dsi[i]->format = MIPI_DSI_FMT_RGB888;
-> +		ctx->dsi[i]->mode_flags = MIPI_DSI_MODE_VIDEO_BURST |
-> +					  MIPI_DSI_CLOCK_NON_CONTINUOUS;
-> +
-> +		ret = mipi_dsi_attach(ctx->dsi[i]);
-> +		if (ret < 0) {
-> +			drm_panel_remove(&ctx->panel);
-> +			return dev_err_probe(dev, ret,
-> +					     "Failed to attach to DSI%d\n", i);
-
-The error handling looks incomplete.
-Previous mipi_dsi_attach() should be undone by a mipi_dsi_detach() as 
-done in the remove function.
-
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-
-...
-
-CJ
 
