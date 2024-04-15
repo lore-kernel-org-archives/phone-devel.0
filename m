@@ -1,152 +1,177 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.mainlining.org (mainlining.org [94.241.141.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED3D2837D;
-	Mon, 15 Apr 2024 16:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C57A7FBA6;
+	Mon, 15 Apr 2024 16:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.241.141.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713196834; cv=none; b=nZMyIL1cKxW9MM3r8RlneDiX0VZvQu/3OgcxgaPEuo3Ryw13JMUtRkhZJGfN6YWztk1X6bR3ibP81myuqwsoddUCdRxp+uw8Kk60S6XdXfxYHhao6Y0drUms3/Zv6EUG/+6VaeZPdxVOHslPKgUP4/5csZc64AD75o5olQYjYBY=
+	t=1713197479; cv=none; b=fZnci/HK4qf3L1DH5dVXDznMaVdXboZEtFZdtloNWAqkJTcKVw0l8C1BXCh2ke3wE0dIb58cVU/pMQDekqnJbi9ZLAN/fsg4DxGHFkfSSdSXblxKrV12t2saZ82OwBas6OuK87N66ILoXSJGu8W9droNNwQdizRwho8GtVxq+jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713196834; c=relaxed/simple;
-	bh=AIurx8M7UROIIHeLqraX05WDHOH/h7A8uObPQDPI2ng=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BP+wJzznuJihIcfA93AFlvinMyml+89RrE9SXZ87a5xHiC/JRXKDvXIKOpFgByJqGUWmyeNi0coiDVF+VhXSIkQaAFaY5s7/QZPlgYNAITNMpOirR23Is79qZ41SA/V7t0OVsmEqYJS6YCRIxc0qNu6Jz5KSFY4yFAEE3RrbzS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iR5RKTz/; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1713197479; c=relaxed/simple;
+	bh=CBDbfaw1bQFqtDrtwKojlcf8PInrM02KOlK7NoLMrso=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ipKpudc/SrpyXomYR5V2srhGThzf6fI+k55dfITmY58rt3k4uQwLXJ2ifTmWPX6pHXbvolo1vrzNOS3yVvrGRG6N9l9N5WvfyRsKjqX1klYC/1oeOxU9ScCegoDamdy9LzMw0ppGxZ0MmriARNFtu2sxCQyvdIry/LCxnmIjLu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=KJ4Vk7g0; arc=none smtp.client-ip=94.241.141.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iR5RKTz/"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2da01cb187cso61665341fa.0;
-        Mon, 15 Apr 2024 09:00:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713196830; x=1713801630; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WonYqSzvWT83jIX0IgNtkReYkS7CHkadpcuSarICRPQ=;
-        b=iR5RKTz/yrvZ9nCboAo1nWXktPhapgHwq0JWB5kPflUer7S2Z7FbX/d3BxqZPV6Cmt
-         Msyz1SIsXwgG4Y/0GMFxFX1OZXIrOgsCMZuG02PGvnGLQtML11+9yhopk7vaQEzyQuF+
-         iML4sO0SUkhgv/2S5mf191ce6u+gyS6E/2AqVoOUlns3jhqiOGKl7Y3FowQlUr5LDiGt
-         YKbTC9wvuBu+ibflf6cTlR0Xmr+DNkzEbzd9So0xC+xlcyZ1g39ovDk07OYmef5OImGr
-         MI6K2uXOBEoz8++cpEmZuTX9SUfbCtPZSEkn48K8Jnl6GgZ9gmi2tSwjaTXY1NRS3mvR
-         7S3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713196830; x=1713801630;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WonYqSzvWT83jIX0IgNtkReYkS7CHkadpcuSarICRPQ=;
-        b=Tk+e8xcTORGpYEffGGxiIv++pOGbQs2BPIdN1yDeMdGDO+0Gn2yPXLTJhPJ8P23vVc
-         7lYW7+NYWzqo5Tazm4WQ3nVMY35YHG8IvZSekeaCRYbvs7yXKPk04bP9Fcd50zENfxj8
-         CxL7njXzMNdmsd30WmbilXIOd3ec3fN7pGN+DFe+u/2wRcddDCoiofuwrV+RVnnMvlMh
-         Al6kKuCM7sMXZ1y+uAsfP7G0JZUJ5GovOkrXdTJt2t3N7W+aTUi5HJSLvf3k5ROfNwHQ
-         3LN6DjgqgjwQBI86vwYsN6ImfC1fI8x/cnwoaRJudOheO72N32um4eacFzE1/coBWl9P
-         k0RA==
-X-Forwarded-Encrypted: i=1; AJvYcCUYWsDqROxSpRv//vZncK4w+sGCDLl7ShqwgU685pUFJq8M7gUPHt5MOixMaM6xPIoFa5vnWARtWZk2g+W+INBLEtU/6W9xBMVt+4d9BW4qI7rw0fq93bTYSXgZdCkjAMNY2t2HazRFBZfg9ARR9Z+5TR3gydRiP31X/+Aaq+3zlkLhgp1P
-X-Gm-Message-State: AOJu0YxlqHjGBBo1ha1PNAz7x9uGnTKQ5MO+PLCiYJVrvMNUfpAaGuQJ
-	p59W2HTKi58A/z9Bpt/bSQFQQPLNpTR7XauRcToizHDppIwtUWMD
-X-Google-Smtp-Source: AGHT+IFOUuLN0irhPLHYXZ6mYv7PuyHiv+G70JXmObZzyVsigzU8qLZr9NJrU7yz6GsEcOBavXFeVg==
-X-Received: by 2002:a05:651c:b0b:b0:2d4:7455:89f6 with SMTP id b11-20020a05651c0b0b00b002d4745589f6mr9666567ljr.40.1713196829400;
-        Mon, 15 Apr 2024 09:00:29 -0700 (PDT)
-Received: from tom-HP-ZBook-Fury-15-G7-Mobile-Workstation (net-188-217-57-233.cust.vodafonedsl.it. [188.217.57.233])
-        by smtp.gmail.com with ESMTPSA id n21-20020a170906701500b00a53d6b895ddsm783830ejj.200.2024.04.15.09.00.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 09:00:29 -0700 (PDT)
-Date: Mon, 15 Apr 2024 18:00:26 +0200
-From: Tommaso Merciai <tomm.merciai@gmail.com>
-To: git@luigi311.com
-Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
-	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
-	festevam@gmail.com, sakari.ailus@linux.intel.com,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	pavel@ucw.cz, phone-devel@vger.kernel.org,
-	Ondrej Jirman <megous@megous.com>
-Subject: Re: [PATCH v4 23/25] media: i2c: imx258: Add support for reset gpio
-Message-ID: <Zh1PGuTjFlttNnLX@tom-HP-ZBook-Fury-15-G7-Mobile-Workstation>
-References: <20240414203503.18402-1-git@luigi311.com>
- <20240414203503.18402-24-git@luigi311.com>
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="KJ4Vk7g0"
+Received: from david-ryuzu.localdomain (ipbcc3a836.dynamic.kabel-deutschland.de [188.195.168.54])
+	by mail.mainlining.org (Postfix) with ESMTPSA id 22498E20B1;
+	Mon, 15 Apr 2024 16:11:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
+	s=psm; t=1713197470;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6VYQhhD2wbjbQiZRixP3ePAg/EmEMxo1zpO0oJAxY/Y=;
+	b=KJ4Vk7g0dcIYyOfrJWqX3owpvSbFPaY8TpnKI6BykuXh3UvOwbFqD1szN6aZgw7/7u9WDv
+	+O27UJRRQSiq+oJWEsFU5V8eCS7m75OKL/Jc+xi818QN0EDjr/4M7/86Mpx3RnrcZ/j1Ha
+	IIvrwi5DZuswnbVxeDylk9Sk6znhx1QAJCRmMIWfhq7SsqfJSZu/KEfxqR/bhbjIHsUvLs
+	irWjuvFm9jQ4ZuPm65VwjuRyPKG5B6OK0MGzi+ipoVTFG3IuZKa7xeuk2bF9QErcycJAbC
+	6y1YAHyhGNp1eaXgQ6MhKFFozFIyoeRZlCczZvpGtV+fGo0JazUp9iV+mA9uRw==
+From: David Wronek <david@mainlining.org>
+Date: Mon, 15 Apr 2024 18:10:41 +0200
+Subject: [PATCH v2 1/2] dt-bindings: display: panel: Add Raydium RM69380
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240414203503.18402-24-git@luigi311.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240415-raydium-rm69380-driver-v2-1-524216461306@mainlining.org>
+References: <20240415-raydium-rm69380-driver-v2-0-524216461306@mainlining.org>
+In-Reply-To: <20240415-raydium-rm69380-driver-v2-0-524216461306@mainlining.org>
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>, 
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, David Wronek <david@mainlining.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1713197467; l=2952;
+ i=david@mainlining.org; s=20240121; h=from:subject:message-id;
+ bh=CBDbfaw1bQFqtDrtwKojlcf8PInrM02KOlK7NoLMrso=;
+ b=kK7TaB4wXGFsvGU4WlAVjoC3cK3LbPsUJTOHNP8VyvCR7ToGMcJqk6hPx/m5BHuqFY3pKQom9
+ vkOkLaVrUXOD1n7NewYbfVV2KipTUFht2Wo7aT8hyx+lT0xQ5ESsgBX
+X-Developer-Key: i=david@mainlining.org; a=ed25519;
+ pk=PJIYyFK3VrK6x+9W6ih8IGSJ5dxRXHiYay+gG1qQzqs=
 
-Hi Luis,
+Raydium RM69380 is a display driver IC used to drive OLED DSI panels.
+Add a dt-binding for it.
 
-On Sun, Apr 14, 2024 at 02:35:01PM -0600, git@luigi311.com wrote:
-> From: Luis Garcia <git@luigi311.com>
-> 
-> It was documented in DT, but not implemented.
+Signed-off-by: David Wronek <david@mainlining.org>
+---
+ .../bindings/display/panel/raydium,rm69380.yaml    | 91 ++++++++++++++++++++++
+ 1 file changed, 91 insertions(+)
 
-Good catch :-)
+diff --git a/Documentation/devicetree/bindings/display/panel/raydium,rm69380.yaml b/Documentation/devicetree/bindings/display/panel/raydium,rm69380.yaml
+new file mode 100644
+index 000000000000..0ac7d033cbe0
+--- /dev/null
++++ b/Documentation/devicetree/bindings/display/panel/raydium,rm69380.yaml
+@@ -0,0 +1,91 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/display/panel/raydium,rm69380.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Raydium RM6380-based DSI display panels
++
++maintainers:
++  - David Wronek <david@mainlining.org>
++
++description:
++  The Raydium RM69380 is a generic DSI panel IC used to control
++  OLED panels.
++
++allOf:
++  - $ref: panel-common-dual.yaml#
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - lenovo,j716f-edo-rm69380
++      - const: raydium,rm69380
++    description: This indicates the panel manufacturer of the panel
++      that is in turn using the RM69380 panel driver. The compatible
++      string determines how the RM69380 panel driver shall be configured
++      to work with the indicated panel. The raydium,rm69380 compatible shall
++      always be provided as a fallback.
++
++  avdd-supply:
++    description: Analog voltage rail
++
++  vddio-supply:
++    description: I/O voltage rail
++
++  reset-gpios:
++    maxItems: 1
++    description: phandle of gpio for reset line - This should be active low
++
++  ports: true
++  reg: true
++
++required:
++  - compatible
++  - reg
++  - avdd-supply
++  - vddio-supply
++  - reset-gpios
++  - ports
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    dsi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        panel@0 {
++            compatible = "lenovo,j716f-edo-rm69380", "raydium,rm69380";
++            reg = <0>;
++
++            avdd-supply = <&panel_avdd_regulator>;
++            vddio-supply = <&vreg_l14a>;
++            reset-gpios = <&tlmm 75 GPIO_ACTIVE_LOW>;
++
++            ports {
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                port@0 {
++                    reg = <0>;
++                    panel_in_0: endpoint {
++                        remote-endpoint = <&mdss_dsi0_out>;
++                    };
++                };
++
++                port@1 {
++                    reg = <1>;
++                    panel_in_1: endpoint {
++                        remote-endpoint = <&mdss_dsi1_out>;
++                    };
++                };
++            };
++        };
++    };
++
++...
 
-> 
-> Signed-off-by: Ondrej Jirman <megous@megous.com>
-> Signed-off-by: Luis Garcia <git@luigi311.com>
-> ---
->  drivers/media/i2c/imx258.c | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-> index f0bd72f241e4..5de71cb7c1ae 100644
-> --- a/drivers/media/i2c/imx258.c
-> +++ b/drivers/media/i2c/imx258.c
-> @@ -699,6 +699,7 @@ struct imx258 {
->  	unsigned int csi2_flags;
->  
->  	struct gpio_desc *powerdown_gpio;
-> +	struct gpio_desc *reset_gpio;
->  
->  	/*
->  	 * Mutex for serialized access:
-> @@ -1250,7 +1251,11 @@ static int imx258_power_on(struct device *dev)
->  		regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
->  	}
->  
-> -	return ret;
-> +	gpiod_set_value_cansleep(imx258->reset_gpio, 0);
-> +
+-- 
+2.44.0
 
-I think you can remove this new line here.
-
-> +	usleep_range(400, 500);
-> +
-> +	return 0;
->  }
->  
->  static int imx258_power_off(struct device *dev)
-> @@ -1260,6 +1265,7 @@ static int imx258_power_off(struct device *dev)
->  
->  	clk_disable_unprepare(imx258->clk);
->  
-> +	gpiod_set_value_cansleep(imx258->reset_gpio, 1);
->  	gpiod_set_value_cansleep(imx258->powerdown_gpio, 1);
->  
->  	regulator_bulk_disable(IMX258_NUM_SUPPLIES, imx258->supplies);
-> @@ -1573,6 +1579,12 @@ static int imx258_probe(struct i2c_client *client)
->  	if (IS_ERR(imx258->powerdown_gpio))
->  		return PTR_ERR(imx258->powerdown_gpio);
->  
-> +	/* request optional reset pin */
-> +	imx258->reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
-> +						     GPIOD_OUT_HIGH);
-> +	if (IS_ERR(imx258->reset_gpio))
-> +		return PTR_ERR(imx258->reset_gpio);
-> +
->  	/* Initialize subdev */
->  	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
->  
-
-Looks good to me.
-Reviewed-by: Tommaso Merciai <tomm.merciai@gmail.com>
-
-> -- 
-> 2.44.0
-> 
-> 
