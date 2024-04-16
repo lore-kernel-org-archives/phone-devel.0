@@ -1,277 +1,114 @@
 Received: from mail.mainlining.org (mainlining.org [94.241.141.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E85133284;
-	Tue, 16 Apr 2024 17:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAE21C06;
+	Tue, 16 Apr 2024 18:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.241.141.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713288266; cv=none; b=AXeulYOiPyMu8A7w8x77/wH+x+kEoDUMI7Kp0ayBgIFMKq15CKM2FPXOOg285xB2dC+3Qr/E+gny5sn++HgG4iqXCZX/6XOwnlMbWC3TsSLRSDhr7aNOpAa9kBIk2tcLEUnIJf+tYZiWaBXmNEE/HDI69Q79nNLThN3kuC8g+so=
+	t=1713292275; cv=none; b=q6/CgW0B5wWSvutx505HAPdoK0j7D65X8h/6ocY5HbWpiBG1h1oYHTTsIwTpBu+w+Bn+BO4qfvtHXKUKEywB9txMhqgSfgksG2uCdr8GqL5B5iUmFozoJY9OefzlP7i24uAeWtw1WlFWHZ3pwyTZProrWcT2MisIFNdBJiBC3rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713288266; c=relaxed/simple;
-	bh=0/KYCUdInxUjEwD51RraRlf2GRvArVKF/9wENzLof70=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=GPkci0e9WG2aBfnD/Pne+JPWJqnwaMBiXVBhZPXSGr3rBtaTis4lFzETmev+b8KQJVHaDE5eJI+WydnKJ1wrJd+ytXdrBbgxPNdMz9mG5aQ9ZeEvjX9w5BIVVyupGQpYbDEnnG70TqgBur/6NCy1EbtOMG2DDaLPHg1NwjMrRno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=fDtTofg4; arc=none smtp.client-ip=94.241.141.152
+	s=arc-20240116; t=1713292275; c=relaxed/simple;
+	bh=rzC5W1TaCb9OYzxdOKGyAXPykw9cGXSoLeHQch7h958=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ghSHvqigmNB1hHExPRuQo170LxmfsQhVkbhAZ4aompv8Z2vSNYXasEzh1u/ZYGZSFiaUyuUCmIXnlpLeFsTOkw4krUI8sAStxdEuw/udNcDnFcBRv1odPglGaqvVFgN0YAE3fka+1gNR1q3gzfngpZaxTtKXrRKK+Z7EZDBgN6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=kqKrEHo1; arc=none smtp.client-ip=94.241.141.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="fDtTofg4"
-Received: from localhost (docker-mailserver-web-1.docker-mailserver_default [172.18.0.7])
-	by mail.mainlining.org (Postfix) with ESMTPSA id 1F16FE2251;
-	Tue, 16 Apr 2024 17:24:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="kqKrEHo1"
+Received: from david-ryuzu.localdomain (ipbcc3a836.dynamic.kabel-deutschland.de [188.195.168.54])
+	by mail.mainlining.org (Postfix) with ESMTPSA id 4063BE20E0;
+	Tue, 16 Apr 2024 18:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
-	s=psm; t=1713288255;
+	s=psm; t=1713292269;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TBd4zsLEBvuus5xMkBd2zhnEZ3ZqG69cxDy5FsjdcvU=;
-	b=fDtTofg4zZJMwwMvB/E8tobfS9uvjjO6VrhdlmO7Ig9A/ho3ob+1+oRjrCyWCCBT66V3Zo
-	yaeephDeo7gjWqSYTgNFfWKSZZP9UtJtJYhLSkGx/BWrXwFkJxNg96pKoE1cwgAtjpH0Rd
-	UkighS8KdKe4gjCionjSZC7yT9cczmN7lHaSiG8pkqtE/4GgtNRmsMFnUiV9rzL0NiMlR2
-	c3BvXaZgQJu6LuHqLk8Xye0GBFv+AoWKFXxHtHcVw3f/PSp2yxjDLS6Oxm3e2A/ZrwfnWB
-	dH8AmuhImiW0Ss70Uvmgy9GOPZ6JEN3wvIaCt2p/s/TygH0nlg5xFpZYAuljLw==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CDEkPdtKTNgd1iLFlJr4m5I7DfTRIEGCJhDqsto7S8E=;
+	b=kqKrEHo1pbhQ4q90yt5ppV/kDqBM412ZH23DtnlWM5son7smI/mtbCocuiEd0jAxVkyYtj
+	MG2QMeINp4283CTadR7wg6IRgNIUe15YuN/fS9ppYJu2bzC7xLfnDvO9SHJAuisk9hOhPf
+	8onesEvjlU4SdYqak1qoGPECcD8U0HPKZ0eaJTAMlMvnYfA4jl55YoOLQNyFyCkaNaDQKj
+	AFe5TedYsPVvuEaqInUnymlUjCCJsVL4FD0R0iA1bvQphbp818XopUUW5A0qHDajygaBkT
+	fRs8iIevRiT2fo+noUX5xIbof9Q2oEPbDk1f2fvy+WxETp+iEAryLZAEtcGaug==
+From: David Wronek <david@mainlining.org>
+Subject: [PATCH v3 0/2] Add driver for Raydium RM69380-based DSI panels
+Date: Tue, 16 Apr 2024 20:30:47 +0200
+Message-Id: <20240416-raydium-rm69380-driver-v3-0-21600ac4ce5f@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 16 Apr 2024 19:24:14 +0200
-From: David Wronek <david@mainlining.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: airlied@gmail.com, conor+dt@kernel.org, daniel@ffwll.ch,
- devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
- konradybcio@kernel.org, krzk+dt@kernel.org, linux-kernel@vger.kernel.org,
- maarten.lankhorst@linux.intel.com, marijn.suijten@somainline.org,
- mripard@kernel.org, neil.armstrong@linaro.org, phone-devel@vger.kernel.org,
- quic_jesszhan@quicinc.com, robh@kernel.org, sam@ravnborg.org,
- tzimmermann@suse.de, ~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v2 2/2] drm/panel: Add driver for EDO RM69380 OLED panel
-In-Reply-To: <97189d64-0db1-4663-8a2e-c1a7c06a241c@wanadoo.fr>
-References: <20240415-raydium-rm69380-driver-v2-0-524216461306@mainlining.org>
- <20240415-raydium-rm69380-driver-v2-2-524216461306@mainlining.org>
- <97189d64-0db1-4663-8a2e-c1a7c06a241c@wanadoo.fr>
-Message-ID: <8fc2f44637dfbb641366a7eb8e71bf1c@mainlining.org>
-X-Sender: david@mainlining.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANfDHmYC/4XNQQ6CMBCF4auQrq1ph1LBlfcwLkCmMIkUM9VGQ
+ ri7hZWJMS7/l8w3swjIhEEcs1kwRgo0+hT5LhPXvvYdSmpTC1BglNFGcj219BwkD7bKSyVbpog
+ szcEBNNaBcSjS8Z3R0WuDz5fUPYXHyNP2J+p1/UtGLZUssLRNDaZSTXEaavI38uS7/cidWN0In
+ 1bx04LVAgPaGqtzZb+sZVne/26T/g0BAAA=
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>, 
+ Daniel Vetter <daniel@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, David Wronek <david@mainlining.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1713292268; l=1909;
+ i=david@mainlining.org; s=20240121; h=from:subject:message-id;
+ bh=rzC5W1TaCb9OYzxdOKGyAXPykw9cGXSoLeHQch7h958=;
+ b=fHVKKYgh2Xauj1zzwwZfD7fVDUSHyQbzzy8cMaSXyu45ThbcnMq9DmCxgd6s4bzXCnISa63oG
+ n0+jqf0FGN8D9RP9FYhxxXnkRX8e3/bUqdDQoey/lSkQOotsVK/2sF/
+X-Developer-Key: i=david@mainlining.org; a=ed25519;
+ pk=PJIYyFK3VrK6x+9W6ih8IGSJ5dxRXHiYay+gG1qQzqs=
 
-W dniu 2024-04-15 19:55, Christophe JAILLET napisał(a):
-> Le 15/04/2024 à 18:10, David Wronek a écrit :
->> Add support for the 2560x1600@90Hz OLED panel by EDO bundled with a
->> Raydium RM69380 controller, as found on the Lenovo Xiaoxin Pad Pro 
->> 2021.
->> 
->> Signed-off-by: David Wronek 
->> <david-vu3DzTD92ROXwddmVfQv5g@public.gmane.org>
->> ---
->>   drivers/gpu/drm/panel/Kconfig                 |  14 +
->>   drivers/gpu/drm/panel/Makefile                |   1 +
->>   drivers/gpu/drm/panel/panel-raydium-rm69380.c | 366 
->> ++++++++++++++++++++++++++
->>   3 files changed, 381 insertions(+)
->> 
-> 
-> ...
-> 
->> +static int rm69380_on(struct rm69380_panel *ctx)
->> +{
->> +	struct mipi_dsi_device *dsi = ctx->dsi[0];
->> +	struct device *dev = &dsi->dev;
->> +	int ret;
->> +
->> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
->> +	if (ctx->dsi[1])
->> +		ctx->dsi[1]->mode_flags |= MIPI_DSI_MODE_LPM;
->> +
->> +	mipi_dsi_dcs_write_seq(dsi, 0xfe, 0xd4);
->> +	mipi_dsi_dcs_write_seq(dsi, 0x00, 0x80);
->> +	mipi_dsi_dcs_write_seq(dsi, 0xfe, 0xd0);
->> +	mipi_dsi_dcs_write_seq(dsi, 0x48, 0x00);
->> +	mipi_dsi_dcs_write_seq(dsi, 0xfe, 0x26);
->> +	mipi_dsi_dcs_write_seq(dsi, 0x75, 0x3f);
->> +	mipi_dsi_dcs_write_seq(dsi, 0x1d, 0x1a);
->> +	mipi_dsi_dcs_write_seq(dsi, 0xfe, 0x00);
->> +	mipi_dsi_dcs_write_seq(dsi, 0x53, 0x28);
->> +	mipi_dsi_dcs_write_seq(dsi, 0xc2, 0x08);
->> +	mipi_dsi_dcs_write_seq(dsi, 0x35, 0x00);
->> +	mipi_dsi_dcs_write_seq(dsi, 0x51, 0x07, 0xff);
->> +
->> +	ret = mipi_dsi_dcs_exit_sleep_mode(dsi);
->> +	if (ret < 0) {
->> +		dev_err(dev, "Failed to exit sleep mode: %d\n", ret);
->> +		return ret;
->> +	}
->> +	msleep(20);
->> +
->> +	ret = mipi_dsi_dcs_set_display_on(dsi);
->> +	if (ret < 0) {
->> +		dev_err(dev, "Failed to set display on: %d\n", ret);
->> +		return ret;
->> +	}
->> +	msleep(36);
-> 
-> 36 and 35 below are un-usual values for msleep.
-> 
-> Why 2 different values?
-> Would using a #define for this(these) value(s) make sense here?
-> 
+This patch adds support the 2560x1600@90Hz dual DSI command mode panel by
+EDO in combination with a Raydium RM69380 driver IC.
 
-I am not sure of that either. This is how the panel is being set up in 
-Android, as well as the bootloader.
-See lines 67 and 92 here: 
-https://github.com/ungeskriptet/QcomXblBinaries/blob/master/J716F/BOOT.XF.3.2-00354-SM8250-1/RawFiles/Panel_rm69380_amoled_2k_cmd.xml
+This driver IC can be found in the following devices:
+ * Lenovo Xiaoxin Pad Pro 2021 (TB-J716F) with EDO panel
+ * Lenovo Tab P11 Pro (TB-J706F) with EDO panel
+ * Robo & Kala 2-in-1 Laptop with Sharp panel
 
->> +
->> +	return 0;
->> +}
->> +
->> +static int rm69380_off(struct rm69380_panel *ctx)
->> +{
->> +	struct mipi_dsi_device *dsi = ctx->dsi[0];
->> +	struct device *dev = &dsi->dev;
->> +	int ret;
->> +
->> +	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
->> +	if (ctx->dsi[1])
->> +		ctx->dsi[1]->mode_flags &= ~MIPI_DSI_MODE_LPM;
->> +
->> +	ret = mipi_dsi_dcs_set_display_off(dsi);
->> +	if (ret < 0) {
->> +		dev_err(dev, "Failed to set display off: %d\n", ret);
->> +		return ret;
->> +	}
->> +	msleep(35);
-> 
-> (here)
-> 
->> +
->> +	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
->> +	if (ret < 0) {
->> +		dev_err(dev, "Failed to enter sleep mode: %d\n", ret);
->> +		return ret;
->> +	}
->> +	msleep(20);
->> +
->> +	return 0;
->> +}
-> 
-> ...
-> 
->> +static int rm69380_probe(struct mipi_dsi_device *dsi)
->> +{
->> +	struct mipi_dsi_host *dsi_sec_host;
->> +	struct rm69380_panel *ctx;
->> +	struct device *dev = &dsi->dev;
->> +	struct device_node *dsi_sec;
->> +	int ret, i;
->> +
->> +	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
->> +	if (!ctx)
->> +		return -ENOMEM;
->> +
->> +	ctx->supplies[0].supply = "vddio";
->> +	ctx->supplies[1].supply = "avdd";
->> +	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(ctx->supplies),
->> +				      ctx->supplies);
->> +	if (ret < 0)
->> +		return dev_err_probe(dev, ret, "Failed to get regulators\n");
->> +
->> +	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
->> +	if (IS_ERR(ctx->reset_gpio))
->> +		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
->> +				     "Failed to get reset-gpios\n");
->> +
->> +	dsi_sec = of_graph_get_remote_node(dsi->dev.of_node, 1, -1);
->> +
->> +	if (dsi_sec) {
->> +		dev_dbg(dev, "Using Dual-DSI\n");
-> 
-> This should be after de 'info' variable below, so...
-> 
->> +
->> +		const struct mipi_dsi_device_info info = { "RM69380", 0,
->> +							   dsi_sec };
->> +
->> +		dev_dbg(dev, "Found second DSI `%s`\n", dsi_sec->name);
-> 
-> ... maybe merge the 2 messages into something like:
->       dev_dbg(dev, "Using Dual-DSI: found `%s`\n", dsi_sec->name);
-> 
->> +
->> +		dsi_sec_host = of_find_mipi_dsi_host_by_node(dsi_sec);
->> +		of_node_put(dsi_sec);
->> +		if (!dsi_sec_host) {
->> +			return dev_err_probe(dev, -EPROBE_DEFER,
->> +					     "Cannot get secondary DSI host\n");
->> +		}
->> +
-> 
-> Nit: unneeded { }
-> 
->> +		ctx->dsi[1] =
->> +			mipi_dsi_device_register_full(dsi_sec_host, &info);
->> +		if (IS_ERR(ctx->dsi[1])) {
->> +			return dev_err_probe(dev, PTR_ERR(ctx->dsi[1]),
->> +					     "Cannot get secondary DSI node\n");
->> +		}
-> 
-> Nit: unneeded { }
-> 
->> +
->> +		dev_dbg(dev, "Second DSI name `%s`\n", ctx->dsi[1]->name);
->> +		mipi_dsi_set_drvdata(ctx->dsi[1], ctx);
->> +	} else {
->> +		dev_dbg(dev, "Using Single-DSI\n");
->> +	}
->> +
->> +	ctx->dsi[0] = dsi;
->> +	mipi_dsi_set_drvdata(dsi, ctx);
->> +
->> +	drm_panel_init(&ctx->panel, dev, &rm69380_panel_funcs,
->> +		       DRM_MODE_CONNECTOR_DSI);
->> +	ctx->panel.prepare_prev_first = true;
->> +
->> +	ctx->panel.backlight = rm69380_create_backlight(dsi);
->> +	if (IS_ERR(ctx->panel.backlight))
->> +		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),
->> +				     "Failed to create backlight\n");
->> +
->> +	drm_panel_add(&ctx->panel);
->> +
->> +	for (i = 0; i < ARRAY_SIZE(ctx->dsi); i++) {
->> +		if (!ctx->dsi[i])
->> +			continue;
->> +
->> +		dev_dbg(&ctx->dsi[i]->dev, "Binding DSI %d\n", i);
->> +
->> +		ctx->dsi[i]->lanes = 4;
->> +		ctx->dsi[i]->format = MIPI_DSI_FMT_RGB888;
->> +		ctx->dsi[i]->mode_flags = MIPI_DSI_MODE_VIDEO_BURST |
->> +					  MIPI_DSI_CLOCK_NON_CONTINUOUS;
->> +
->> +		ret = mipi_dsi_attach(ctx->dsi[i]);
->> +		if (ret < 0) {
->> +			drm_panel_remove(&ctx->panel);
->> +			return dev_err_probe(dev, ret,
->> +					     "Failed to attach to DSI%d\n", i);
-> 
-> The error handling looks incomplete.
-> Previous mipi_dsi_attach() should be undone by a mipi_dsi_detach() as 
-> done in the remove function.
-> 
->> +		}
->> +	}
->> +
->> +	return 0;
->> +}
-> 
-> ...
-> 
-> CJ
+Signed-off-by: David Wronek <david@mainlining.org>
+---
+Changes in v3:
+- Removed unneeded curly brackets from some if statments
+- Fix error handling code in probe function
+- Include video/mipi_display.h and make use of MIPI command definitions
+- Removed DRM_MODE_TYPE_PREFERRED
+- Dropped 'prepared' bool entirely
+- Register second DSI host using mipi_dsi_device_register_full()
+- Link to v2: https://lore.kernel.org/r/20240415-raydium-rm69380-driver-v2-0-524216461306@mainlining.org
 
--- 
+Changes in v2:
+- Fixed typo in Kconfig
+- Removed ctx->prepared = true; in prepare function
+- Switched to drm_connector_helper_get_modes_fixed in get_modes function
+- Changed dev_notice() to dev_dbg()
+- Add description for compatible and reset-gpio in the dt-binding
+- Always require 'ports' node in the dt-binding regardless of compatible
+- Link to v1: https://lore.kernel.org/r/20240414-raydium-rm69380-driver-v1-0-5e86ba2490b5@mainlining.org
+
+---
+David Wronek (2):
+      dt-bindings: display: panel: Add Raydium RM69380
+      drm/panel: Add driver for EDO RM69380 OLED panel
+
+ .../bindings/display/panel/raydium,rm69380.yaml    |  91 +++++
+ drivers/gpu/drm/panel/Kconfig                      |  14 +
+ drivers/gpu/drm/panel/Makefile                     |   1 +
+ drivers/gpu/drm/panel/panel-raydium-rm69380.c      | 367 +++++++++++++++++++++
+ 4 files changed, 473 insertions(+)
+---
+base-commit: 66e4190e92ce0e4a50b2f6be0e5f5b2e47e072f4
+change-id: 20240414-raydium-rm69380-driver-47f22b6f24fe
+
 Best regards,
+-- 
 David Wronek <david@mainlining.org>
+
