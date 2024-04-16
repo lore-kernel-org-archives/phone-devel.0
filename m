@@ -1,323 +1,209 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984FC6DCE8;
-	Tue, 16 Apr 2024 07:29:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBE6130A79
+	for <phone-devel@vger.kernel.org>; Tue, 16 Apr 2024 15:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713252589; cv=none; b=GiGOSBceEyLsDkGgfexgyo85pcYshzM05tvGzhrqdkWmsbP3AYaZK4hnQ0BQyeHLyT0N01Cfsx2OrBzReJ6eavLVjdvgMKd6Iq+3V1sRdF4X8H9Y53IBwqDtYsTpHyQbhwNSyWuLZn39VFHBaMXtXSXwgXxIOF1GXN+bWx/TA88=
+	t=1713280735; cv=none; b=IyrkgDJ21oV7BY/9Jo/9D6S07HUKZ2umN+j70+GtEJAB+6FbAD6RxqeC/lQwvofl8peR7J7PS6SYpoERhFuMzekjqneYC0JnWt2e1oe44IVCcK/BnZF0F0b0siUMd73kMgOopbLBQ7ZuAtm9inDJDk9A7n/5ezDQMvxUty09X3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713252589; c=relaxed/simple;
-	bh=YapcNKnRk49jVL0actAR4zPHO6NfkhFMbWWbyu3okcE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j+y2fzeShenRT4PdrchNyhN8cLo4ZKlhhAp0sKNh3klSwT5UCGjP5JgvpNzipXcIH+lewKYOMRxwHEdoqAGBope76MOv9baM8Qa8DvD102/yS+56096Fdl6Y3Kq7zdinM2Jcu78/KOO7iFP3BBmID/wNCTco0NDXU2o1eofZSTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AeHNntX5; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1713280735; c=relaxed/simple;
+	bh=UMePqEyCmVfk7ZgwfylWZhfwuZ/2Cp18577seBEfpOI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=k2RqeLHswJ9xy8t/ODeuVYD0pnjqpNB3D+VV6raa0uWjzmmxVLZoTHiuwB0SLBelJyfmv9mCadTHU5SJ8zb2XUEcOFhj7lwFTuKXGG4rdM10GEq3bFamb0UyYo6lrzCugkJnX1XNkWcI5hTzmxNMO3qyPXpT4PCFsjl23r7PI/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=gPZKpztb; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raspberrypi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AeHNntX5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713252587; x=1744788587;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YapcNKnRk49jVL0actAR4zPHO6NfkhFMbWWbyu3okcE=;
-  b=AeHNntX5SsfhChXjmMYNfuZ6yHTHymJ3fXILhq/6ysPgGpCTWWcqSlhM
-   wu+moRxUuSlxZWwrJ49m4qxSLHtLqWsZRm5AXyLvrW5eHBIK6UT/ADV0F
-   0m7zb6fAnU48K6z8Ksz5bMYic6mL4qzkyDAm7xZDDdDZrZnAm5QTLDtsr
-   VYcVadeoGcRvhVjC0S/EAJAQ1ardGmrFzd/5aokklOvfhn875zv1w0Jor
-   exwYGc8tMq/DD+q+JHx6HEt8KoqoFMzg9MxBq2Vmo/NsD3MCqD1sjgWAq
-   HtijDvVrPgasWkjW3U2qcLVupBfsXDcY79cVPpNvWF9X38HJjhmpG1zN8
-   w==;
-X-CSE-ConnectionGUID: SAD8miaoTSC8rnM9zgTpwA==
-X-CSE-MsgGUID: mEAhFsfEREeYLV2MjaqO/g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="8802602"
-X-IronPort-AV: E=Sophos;i="6.07,205,1708416000"; 
-   d="scan'208";a="8802602"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 00:29:46 -0700
-X-CSE-ConnectionGUID: xOYer0VFR4Ke7i/hFh4pMQ==
-X-CSE-MsgGUID: cTtra31eQsGHpvbDx/r+1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,205,1708416000"; 
-   d="scan'208";a="22238467"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmviesa009.fm.intel.com with SMTP; 16 Apr 2024 00:29:42 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 16 Apr 2024 10:29:41 +0300
-Date: Tue, 16 Apr 2024 10:29:41 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Pavel Machek <pavel@ucw.cz>
-Cc: phone-devel@vger.kernel.org, kernel list <linux-kernel@vger.kernel.org>,
-	fiona.klute@gmx.de, martijn@brixit.nl, samuel@sholland.org,
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, megi@xff.cz
-Subject: Re: [PATCHv3 2/2] usb: typec: anx7688: Add driver for ANX7688 USB-C
- HDMI bridge
-Message-ID: <Zh4o5Rw+tP9TSIVQ@kuha.fi.intel.com>
-References: <ZhPMHdt6r/4D99Zg@duo.ucw.cz>
- <ZhPM4XU8ttsFftBd@duo.ucw.cz>
- <ZhUQ6kzV5ARlkfPC@kuha.fi.intel.com>
- <ZhUgrNwRYoaV1AIJ@duo.ucw.cz>
+	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="gPZKpztb"
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-dcd7c526cc0so4290010276.1
+        for <phone-devel@vger.kernel.org>; Tue, 16 Apr 2024 08:18:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=raspberrypi.com; s=google; t=1713280732; x=1713885532; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6LXwJvrpu5XtyICEE51W/asLOgN0+jOQgk8lgWBDIns=;
+        b=gPZKpztbTn/s11r81qqt2tyTphMvT+T2e0koU+F/1VPCYu6tmjhex1Sa8EUEbBPCDj
+         BKsOQKz/pdVrM9eQiDeW7yQAHg0oiXM7mAdS7OrrE2WDoswdGlv5Ma03WPCm+xu2r0ya
+         A0hJ1JdF2GoU58oVvcYP3hhPLex0FtS0lPp7zNvvj4ogW5kcs49bqfKd+K459sTiQW47
+         2lD6LVS5vSUNd8BDrqmNmmWApovKGB0x6gcgSGWLOcve3hBehAhufPeryBrlGZTxmRL3
+         T1yKG7n7idMYWjFY3NyzcOCPZXT8kytDD5iG48282QxbQbOEBiV8KnB4hRUfGJyT4a71
+         c0Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713280732; x=1713885532;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6LXwJvrpu5XtyICEE51W/asLOgN0+jOQgk8lgWBDIns=;
+        b=MikihYngbJKBKO2fPNZbOy7f4MsATQp21pE32VuSkEfhPwYw8s91qd/zhamUpLNJEs
+         l30fmfKQmaUBmHqYQ7iEy0RgAFzSUaq0rej19IoJw4ffXwNKjmO6jBx5GIUc5Q/uMtL8
+         PhSnU+GYUwqcBgf37hCNWWaRCFLce8nC8HuRSt/B2eWXUTpzzf5jKSQirV5/G+2k0blk
+         rE/U6EM2Mr6SpLE+xszmngXJv+IXPBzRiKoB6lpHWac4tJL86ri/vmCadD8wCQTR74QH
+         jR3jZtzC9+SbpZ8nrKokwWU3mQVF5bjBIh3mG1jZbiSPZv7j91SXXKiTFetrEa8Ug6pQ
+         Orzg==
+X-Forwarded-Encrypted: i=1; AJvYcCX3FvO9HT75ApmVjFuzeL1V4S+csgYbI9yJT3BHJ9e+VfXY9atHbT8HIrXLPVylPIkwrbY/T85F79fNDZqdLq+8bEv1OgL/fOW8qAI=
+X-Gm-Message-State: AOJu0Yw7ZB+m1h7E6Y0L590rdv8+AELkAa8IrBY/TB6lvEikQhA5gnXd
+	FBXGBzKvjPw+YtdZMikV9HWW3Dr4+8RO2InzpowF5kTvw9c2kOV1GbouPY8JSkAedYAglPbtfGm
+	cK7doAQ4oWOdHT2dikWG67FM28ogZ3GdJYdg/Kg==
+X-Google-Smtp-Source: AGHT+IEM14BkgGATsXF6uCE5qYqegVtX765FkUZTIdAjRLYK8ynA4eYAf4JOqjfc0TInKcWDrTkiujQ4lABhn5Zwxug=
+X-Received: by 2002:a05:6902:18c5:b0:dc6:d2d3:a57c with SMTP id
+ ck5-20020a05690218c500b00dc6d2d3a57cmr14225747ybb.59.1713280732051; Tue, 16
+ Apr 2024 08:18:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZhUgrNwRYoaV1AIJ@duo.ucw.cz>
+References: <20240414203503.18402-1-git@luigi311.com> <20240414203503.18402-3-git@luigi311.com>
+ <6041186.lOV4Wx5bFT@steina-w>
+In-Reply-To: <6041186.lOV4Wx5bFT@steina-w>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Date: Tue, 16 Apr 2024 16:18:35 +0100
+Message-ID: <CAPY8ntDMFcNN_kcAd_VWDfPbJ2GAua-TbpyOqLJA-kYJPWz-6A@mail.gmail.com>
+Subject: Re: [PATCH v4 02/25] media: i2c: imx258: Make image geometry meet
+ sensor requirements
+To: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: linux-media@vger.kernel.org, git@luigi311.com, 
+	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org, 
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
+	sakari.ailus@linux.intel.com, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	pavel@ucw.cz, phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 09, 2024 at 01:04:12PM +0200, Pavel Machek wrote:
-> Hi!
-> 
-> > > This is driver for ANX7688 USB-C HDMI, with flashing and debugging
-> > > features removed. ANX7688 is rather criticial piece on PinePhone,
-> > > there's no display and no battery charging without it.
-> > > 
-> > > There's likely more work to be done here, but having basic support
-> > > in mainline is needed to be able to work on the other stuff
-> > > (networking, cameras, power management).
-> > > 
-> > > Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> > > Co-developed-by: Martijn Braam <martijn@brixit.nl>
-> > > Co-developed-by: Samuel Holland <samuel@sholland.org>
-> > > Signed-off-by: Pavel Machek <pavel@ucw.cz>
-> > 
-> > Just couple of quick comments below - I did not have time to go over
-> > this very thoroughly, but I think you need to make a new version in
-> > any case because of comments in 1/2.
-> 
-> Yes, there will be new version.
-> 
-> There is ton of sleep primitives, and existing ones are okay. I can
-> change everything to fdelay or whatever primitive-of-the-day is, but
-> I'd rather not do pointless changes.
-> 
-> You can ask for major changes, or complain about extra newlines, but
-> doing both in the same email does not make sense.
+Hi Alexander
 
-I'm not telling you to do any major changes, yet. Right now I'm trying
-to understand why you are doing thing the way you are doing them.
+On Mon, 15 Apr 2024 at 07:25, Alexander Stein
+<alexander.stein@ew.tq-group.com> wrote:
+>
+> Hi,
+>
+> Am Sonntag, 14. April 2024, 22:34:40 CEST schrieb git@luigi311.com:
+> > From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> >
+> > The output image is defined as being 4208x3118 pixels in size.
+> > Y_ADD_STA register was set to 0, and Y_ADD_END to 3118, giving
+> > 3119 lines total.
+> >
+> > The datasheet lists a requirement for Y_ADD_STA to be a multiple
+> > of a power of 2 depending on binning/scaling mode (2 for full pixel,
+> > 4 for x2-bin/scale, 8 for (x2-bin)+(x2-subsample) or x4-bin, or 16
+> > for (x4-bin)+(x2-subsample)).
+> > (Y_ADD_END =E2=80=93 Y_ADD_STA + 1) also has to be a similar power of 2=
+.
+> >
+> > The current configuration for the full res modes breaks that second
+> > requirement, and we can't increase Y_ADD_STA to 1 to retain exactly
+> > the same field of view as that then breaks the first requirement.
+> > For the binned modes, they are worse off as 3118 is not a multiple of
+> > 4.
+> >
+> > Increase the main mode to 4208x3120 so that it is the same FOV as the
+> > binned modes, with Y_ADD_STA at 0.
+> > Fix Y_ADD_STA and Y_ADD_END for the binned modes so that they meet the
+> > sensor requirements.
+> >
+> > This does change the Bayer order as the default configuration is for
+> > H&V flips to be enabled, so readout is from Y_STA_END to Y_ADD_STA,
+> > and this patch has changed Y_STA_END.
+> >
+> > Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+> > Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+> > Signed-off-by: Luis Garcia <git@luigi311.com>
+> > Reviewed-by: Pavel Machek <pavel@ucw.cz>
+> > ---
+> >  drivers/media/i2c/imx258.c | 26 +++++++++++++-------------
+> >  1 file changed, 13 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
+> > index 2dbafd21dd70..4a7048d834c6 100644
+> > --- a/drivers/media/i2c/imx258.c
+> > +++ b/drivers/media/i2c/imx258.c
+> > [snip]
+> > @@ -707,7 +707,7 @@ static int imx258_open(struct v4l2_subdev *sd, stru=
+ct v4l2_subdev_fh *fh)
+> >       /* Initialize try_fmt */
+> >       try_fmt->width =3D supported_modes[0].width;
+> >       try_fmt->height =3D supported_modes[0].height;
+> > -     try_fmt->code =3D MEDIA_BUS_FMT_SGRBG10_1X10;
+> > +     try_fmt->code =3D MEDIA_BUS_FMT_SBGGR10_1X10;
+>
+> Does someone have access to the data sheet? I am wondering how the
+> arrangement of the pixel array is shown. I've the following (identical)
+> array for these sensors:
+> * imx290/imx327
+> * imx219
+> * imx415
+>
+> G B G B
+> R G R G
+> G B G B
+> R G R G
 
-> > Btw, Co-developed-by comes before Signed-off-by I think.
-> 
-> I believe this order is fine, too.
-> 
-> > > +++ b/drivers/usb/typec/anx7688.c
-> > > @@ -0,0 +1,1830 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +/*
-> > > + * ANX7688 USB-C HDMI bridge/PD driver
-> > > + *
-> > > + * Warning, this driver is somewhat PinePhone specific.
-> > 
-> > So why not split this into core part and PinePhone specific glue
-> > part?
-> 
-> Potentially a lot of work I can't really test and would rather not do.
+Check the other 3 corners of your diagrams - they are not identical.
 
-Glue layer is usually an easy way to organise your driver into smaller
-more manageable chunks, and most importantly, keep the core parts
-generic. But just to be clear here, it is not always necessary - maybe
-that's the case here.
+> Yet each driver configures a different bus format:
+>
+> * imx290.c: MEDIA_BUS_FMT_SRGGB10_1X10
+> * imx415.c: MEDIA_BUS_FMT_SGBRG10_1X10
+> * imx219.c: MEDIA_BUS_FMT_SRGGB10_1X10 (no flip)
+>
+> imx219 actually defines all 4 10 Bit Bayer patterns and the comment
+> indicates this depends on how v or h flip is configured.
+> Reading the commit message apparently the same is true for this driver.
 
-> > > +	struct delayed_work work;
-> > > +	struct timer_list work_timer;
-> > > +
-> > > +	struct mutex lock;
-> > 
-> > Undocumented lock.
-> 
-> This is simple driver. How do you expect me to document it? Protects
-> this data structure, not exactly uncommon.
+Correct.
 
-You use a comment to describe what the lock protects. You can use
-"scripts/checkpatch.pl --strict" to spot this kind of stuff for you.
+> Still this is confusing as I would have expected flipping to be disabled =
+by
+> default, expecting the same Bayer pattern order for all drivers. Can some=
+one
+> shed some light?
 
-> > > +
-> > > +	/* wait for power to stabilize and release reset */
-> > > +	msleep(10);
-> > > +	gpiod_set_value(anx7688->gpio_reset, 0);
-> > > +	usleep_range(2, 4);
-> > 
-> > Why not just use usleep_range() in both cases.
-> 
-> It does not really make code any better. Can do if you insist.
+Comparing different families of sensors isn't really valid, and
+manufacturers vary too.
 
-Consistency makes any code better.
+imx290 is a Starvis sensor, and has an array of 1945x1109, so all 4
+corners are red pixels. It crops an even number of pixels off the
+array in the direction of readout, therefore always producing RGGB.
 
-> > > +static int anx7688_connect(struct anx7688 *anx7688)
-> > > +{
-> > > +	struct typec_partner_desc desc = {};
-> > > +	int ret, i;
-> > > +	u8 fw[2];
-> > > +	const u8 dp_snk_identity[16] = {
-> > > +		0x00, 0x00, 0x00, 0xec,	/* id header */
-> > > +		0x00, 0x00, 0x00, 0x00,	/* cert stat */
-> > > +		0x00, 0x00, 0x00, 0x00,	/* product type */
-> > > +		0x39, 0x00, 0x00, 0x51	/* alt mode adapter */
-> > > +	};
-> > > +	const u8 svid[4] = {
-> > > +		0x00, 0x00, 0x01, 0xff,
-> > > +	};
-> > 
-> > Why not get those from DT?
-> 
-> Are you sure it belongs to the DT (and that DT people will agree)?
+I don't have a datasheet for imx415. Whilst it is also a Starvis
+sensor the product brief [1] says it is an array of 3864 x 2228, with
+3864 x 2192 effective pixels, which implies it isn't doing the same as
+imx290. However the current driver isn't changing the Bayer order
+based on flip which contradicts that. Pass as to which is correct.
+I can't answer why the default order is GBRG. Presumably the default
+window mode used (it doesn't use X_START / Y_START registers) crops an
+odd number of lines off the raw array, therefore starting on a GB row.
 
-Yes, they belong to the DT, and there are already bindings. Dmitry
-gave you the link to the bindings I think (thanks for that Dmitry).
+imx219 (Exmor R) and imx258 (Exmor RS) datasheets have an even number
+of pixels in each direction in the array, and whilst the first pixel
+read out in the default direction is red, the colours in the opposite
+corner is blue, with green in the remaining corners. This is why the
+Bayer order changes with flips.
 
-> > > +	u32 caps[8];
-> > > +
-> > > +	dev_dbg(anx7688->dev, "cable inserted\n");
-> > > +
-> > > +	anx7688->last_status = -1;
-> > > +	anx7688->last_cc_status = -1;
-> > > +	anx7688->last_dp_state = -1;
-> > > +
-> > > +	msleep(10);
-> > 
-> > Please make a comment here why you have to wait, and use
-> > usleep_range().
-> 
-> /* Dunno because working code does that and waiting for hardware to
-> settle down after cable insertion kind of looks like a good thing */
-> 
-> I did not write the driver, and there's no good documentation for this
-> chip. I can try to invent something, but...
-> 
-> > > +	i = 0;
-> > > +	while (1) {
-> > > +		ret = anx7688_reg_read(anx7688, ANX7688_REG_EEPROM_LOAD_STATUS0);
-> > > +
-> > > +		if (ret >= 0 && (ret & ANX7688_EEPROM_FW_LOADED) == ANX7688_EEPROM_FW_LOADED) {
-> > > +			dev_dbg(anx7688->dev, "eeprom0 = 0x%02x\n", ret);
-> > > +			dev_dbg(anx7688->dev, "fw loaded after %d ms\n", i * 10);
-> > > +			break;
-> > > +		}
-> > > +
-> > > +		if (i > 99) {
-> > > +			set_bit(ANX7688_F_FW_FAILED, anx7688->flags);
-> > > +			dev_err(anx7688->dev,
-> > > +				"boot firmware load failed (you may need to flash FW to anx7688 first)\n");
-> > > +			ret = -ETIMEDOUT;
-> > > +			goto err_vconoff;
-> > > +		}
-> > > +		msleep(5);
-> > > +		i++;
-> > > +	}
-> > 
-> > You need to use something like time_is_after_jiffies() here instead of
-> > a counter.
-> 
-> Well, this works as well, but yes, I agree here.
-> 
-> > > +	ret = i2c_smbus_read_i2c_block_data(anx7688->client,
-> > > +					    ANX7688_REG_FW_VERSION1, 2, fw);
-> > > +	if (ret < 0) {
-> > > +		dev_err(anx7688->dev, "failed to read firmware version\n");
-> > > +		goto err_vconoff;
-> > > +	}
-> > > +
-> > > +	dev_dbg(anx7688->dev, "OCM firmware loaded (version 0x%04x)\n",
-> > > +		 fw[1] | fw[0] << 8);
-> > > +
-> > > +	/* Unmask interrupts */
-> > > +	ret = anx7688_reg_write(anx7688, ANX7688_REG_STATUS_INT, 0);
-> > > +	if (ret)
-> > > +		goto err_vconoff;
-> > > +
-> > > +	ret = anx7688_reg_write(anx7688, ANX7688_REG_STATUS_INT_MASK, ~ANX7688_SOFT_INT_MASK);
-> > > +	if (ret)
-> > > +		goto err_vconoff;
-> > > +
-> > > +	ret = anx7688_reg_write(anx7688, ANX7688_REG_IRQ_EXT_SOURCE2, 0xff);
-> > > +	if (ret)
-> > > +		goto err_vconoff;
-> > > +
-> > > +	ret = anx7688_reg_write(anx7688, ANX7688_REG_IRQ_EXT_MASK2, (u8)~ANX7688_IRQ2_SOFT_INT);
-> > > +	if (ret)
-> > > +		goto err_vconoff;
-> > > +
-> > > +	/* time to turn off vbus after cc disconnect (unit is 4 ms) */
-> > > +	ret = anx7688_reg_write(anx7688, ANX7688_REG_VBUS_OFF_DELAY_TIME, 100 / 4);
-> > > +	if (ret)
-> > > +		goto err_vconoff;
-> > > +
-> > > +	/* 300ms (unit is 2 ms) */
-> > > +	ret = anx7688_reg_write(anx7688, ANX7688_REG_TRY_UFP_TIMER, 300 / 2);
-> > > +	if (ret)
-> > > +		goto err_vconoff;
-> > > +
-> > > +	/* maximum voltage in 100 mV units */
-> > > +	ret = anx7688_reg_write(anx7688, ANX7688_REG_MAX_VOLTAGE, 50); /* 5 V */
-> > > +	if (ret)
-> > > +		goto err_vconoff;
-> > > +
-> > > +	/* min/max power in 500 mW units */
-> > > +	ret = anx7688_reg_write(anx7688, ANX7688_REG_MAX_POWER, 15 * 2); /* 15 W */
-> > > +	if (ret)
-> > > +		goto err_vconoff;
-> > > +
-> > > +	ret = anx7688_reg_write(anx7688, ANX7688_REG_MIN_POWER, 1);  /* 0.5 W */
-> > > +	if (ret)
-> > > +		goto err_vconoff;
-> > > +
-> > > +	/* auto_pd, try.src, try.sink, goto safe 5V */
-> > > +	ret = anx7688_reg_write(anx7688, ANX7688_REG_FEATURE_CTRL, 0x1e & ~BIT(2)); // disable try_src
-> > 
-> > Those two comments are obscure.
+Most Omnivision sensors I've encountered do the same as imx219/258,
+whilst OnSemi sensors are the same as imx290. Drivers obviously have
+to match whatever the hardware does.
 
-I'm making a note about the comments only because right now I have to
-rely on things like them to get an idea about what's going on. I don't
-know anything about this chip.
+  Dave
 
-> I hoped they make sense to someone familiar with the area. Can't do
-> much better than remove them.
-> 
-> > This function seems to have lot of hard coded information above.
-> > Shouldn't much of that come from DT?
-> 
-> You tell me, I suppose you seen some similar drivers.
-> 
-> > Please note that if you have that PinePhone specific glue driver, you
-> > can get much of the hard coded information from there, if getting the
-> > information from DT is not an option for what ever reason.
-> 
-> Thanks for review.
-> 
-> Could you trim the parts of email you are not replying to?
-> 
-> Do you see any other major problems?
-> 
-> Do you have any idea if this chip is used elsewhere? I do not have any
-> other hardware with anx7688, so I won't be able to test it elsewhere,
-> and if there are no other users, having specific driver should not be
-> a problem for anyone. If there's other user, well, there's chance they
-> have docs and can help.
+[1] https://www.sony-semicon.com/files/62/pdf/p-12_IMX415-AAQR_AAMR_Flyer.p=
+df
 
-I don't know anything about this chip.
-
-> How would you envision the split? Do you have any other driver that
-> could be used as an example?
-
-Check drivers/usb/dwc3/. It is a nice example how to decouple the glue
-layer from the core completely - there is no API, not even driver data
-is passed beteen the two.
-
-For library like solutions, check:
-drivers/usb/typec/tcpm/
-drivers/usb/typec/ucsi/
-drivers/usb/host/xhci*
-drivers/tty/serial/8250/
-
-But again, glue layer is just a suggestion. It would be one way to rid
-of most of the hardcoded stuff by moving it there. But if much of
-the hard coded parts can be moved to DT instead, then there is most
-likely no need for the glue layers in this case.
-
-thanks,
-
--- 
-heikki
+> Best regards,
+> Alexander
+>
+> --
+> TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Ge=
+rmany
+> Amtsgericht M=C3=BCnchen, HRB 105018
+> Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan S=
+chneider
+> http://www.tq-group.com/
+>
+>
