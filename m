@@ -1,209 +1,277 @@
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.mainlining.org (mainlining.org [94.241.141.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBE6130A79
-	for <phone-devel@vger.kernel.org>; Tue, 16 Apr 2024 15:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E85133284;
+	Tue, 16 Apr 2024 17:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.241.141.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713280735; cv=none; b=IyrkgDJ21oV7BY/9Jo/9D6S07HUKZ2umN+j70+GtEJAB+6FbAD6RxqeC/lQwvofl8peR7J7PS6SYpoERhFuMzekjqneYC0JnWt2e1oe44IVCcK/BnZF0F0b0siUMd73kMgOopbLBQ7ZuAtm9inDJDk9A7n/5ezDQMvxUty09X3w=
+	t=1713288266; cv=none; b=AXeulYOiPyMu8A7w8x77/wH+x+kEoDUMI7Kp0ayBgIFMKq15CKM2FPXOOg285xB2dC+3Qr/E+gny5sn++HgG4iqXCZX/6XOwnlMbWC3TsSLRSDhr7aNOpAa9kBIk2tcLEUnIJf+tYZiWaBXmNEE/HDI69Q79nNLThN3kuC8g+so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713280735; c=relaxed/simple;
-	bh=UMePqEyCmVfk7ZgwfylWZhfwuZ/2Cp18577seBEfpOI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k2RqeLHswJ9xy8t/ODeuVYD0pnjqpNB3D+VV6raa0uWjzmmxVLZoTHiuwB0SLBelJyfmv9mCadTHU5SJ8zb2XUEcOFhj7lwFTuKXGG4rdM10GEq3bFamb0UyYo6lrzCugkJnX1XNkWcI5hTzmxNMO3qyPXpT4PCFsjl23r7PI/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=gPZKpztb; arc=none smtp.client-ip=209.85.219.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=raspberrypi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
+	s=arc-20240116; t=1713288266; c=relaxed/simple;
+	bh=0/KYCUdInxUjEwD51RraRlf2GRvArVKF/9wENzLof70=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=GPkci0e9WG2aBfnD/Pne+JPWJqnwaMBiXVBhZPXSGr3rBtaTis4lFzETmev+b8KQJVHaDE5eJI+WydnKJ1wrJd+ytXdrBbgxPNdMz9mG5aQ9ZeEvjX9w5BIVVyupGQpYbDEnnG70TqgBur/6NCy1EbtOMG2DDaLPHg1NwjMrRno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=fDtTofg4; arc=none smtp.client-ip=94.241.141.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="gPZKpztb"
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-dcd7c526cc0so4290010276.1
-        for <phone-devel@vger.kernel.org>; Tue, 16 Apr 2024 08:18:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1713280732; x=1713885532; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6LXwJvrpu5XtyICEE51W/asLOgN0+jOQgk8lgWBDIns=;
-        b=gPZKpztbTn/s11r81qqt2tyTphMvT+T2e0koU+F/1VPCYu6tmjhex1Sa8EUEbBPCDj
-         BKsOQKz/pdVrM9eQiDeW7yQAHg0oiXM7mAdS7OrrE2WDoswdGlv5Ma03WPCm+xu2r0ya
-         A0hJ1JdF2GoU58oVvcYP3hhPLex0FtS0lPp7zNvvj4ogW5kcs49bqfKd+K459sTiQW47
-         2lD6LVS5vSUNd8BDrqmNmmWApovKGB0x6gcgSGWLOcve3hBehAhufPeryBrlGZTxmRL3
-         T1yKG7n7idMYWjFY3NyzcOCPZXT8kytDD5iG48282QxbQbOEBiV8KnB4hRUfGJyT4a71
-         c0Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713280732; x=1713885532;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6LXwJvrpu5XtyICEE51W/asLOgN0+jOQgk8lgWBDIns=;
-        b=MikihYngbJKBKO2fPNZbOy7f4MsATQp21pE32VuSkEfhPwYw8s91qd/zhamUpLNJEs
-         l30fmfKQmaUBmHqYQ7iEy0RgAFzSUaq0rej19IoJw4ffXwNKjmO6jBx5GIUc5Q/uMtL8
-         PhSnU+GYUwqcBgf37hCNWWaRCFLce8nC8HuRSt/B2eWXUTpzzf5jKSQirV5/G+2k0blk
-         rE/U6EM2Mr6SpLE+xszmngXJv+IXPBzRiKoB6lpHWac4tJL86ri/vmCadD8wCQTR74QH
-         jR3jZtzC9+SbpZ8nrKokwWU3mQVF5bjBIh3mG1jZbiSPZv7j91SXXKiTFetrEa8Ug6pQ
-         Orzg==
-X-Forwarded-Encrypted: i=1; AJvYcCX3FvO9HT75ApmVjFuzeL1V4S+csgYbI9yJT3BHJ9e+VfXY9atHbT8HIrXLPVylPIkwrbY/T85F79fNDZqdLq+8bEv1OgL/fOW8qAI=
-X-Gm-Message-State: AOJu0Yw7ZB+m1h7E6Y0L590rdv8+AELkAa8IrBY/TB6lvEikQhA5gnXd
-	FBXGBzKvjPw+YtdZMikV9HWW3Dr4+8RO2InzpowF5kTvw9c2kOV1GbouPY8JSkAedYAglPbtfGm
-	cK7doAQ4oWOdHT2dikWG67FM28ogZ3GdJYdg/Kg==
-X-Google-Smtp-Source: AGHT+IEM14BkgGATsXF6uCE5qYqegVtX765FkUZTIdAjRLYK8ynA4eYAf4JOqjfc0TInKcWDrTkiujQ4lABhn5Zwxug=
-X-Received: by 2002:a05:6902:18c5:b0:dc6:d2d3:a57c with SMTP id
- ck5-20020a05690218c500b00dc6d2d3a57cmr14225747ybb.59.1713280732051; Tue, 16
- Apr 2024 08:18:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="fDtTofg4"
+Received: from localhost (docker-mailserver-web-1.docker-mailserver_default [172.18.0.7])
+	by mail.mainlining.org (Postfix) with ESMTPSA id 1F16FE2251;
+	Tue, 16 Apr 2024 17:24:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mainlining.org;
+	s=psm; t=1713288255;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TBd4zsLEBvuus5xMkBd2zhnEZ3ZqG69cxDy5FsjdcvU=;
+	b=fDtTofg4zZJMwwMvB/E8tobfS9uvjjO6VrhdlmO7Ig9A/ho3ob+1+oRjrCyWCCBT66V3Zo
+	yaeephDeo7gjWqSYTgNFfWKSZZP9UtJtJYhLSkGx/BWrXwFkJxNg96pKoE1cwgAtjpH0Rd
+	UkighS8KdKe4gjCionjSZC7yT9cczmN7lHaSiG8pkqtE/4GgtNRmsMFnUiV9rzL0NiMlR2
+	c3BvXaZgQJu6LuHqLk8Xye0GBFv+AoWKFXxHtHcVw3f/PSp2yxjDLS6Oxm3e2A/ZrwfnWB
+	dH8AmuhImiW0Ss70Uvmgy9GOPZ6JEN3wvIaCt2p/s/TygH0nlg5xFpZYAuljLw==
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240414203503.18402-1-git@luigi311.com> <20240414203503.18402-3-git@luigi311.com>
- <6041186.lOV4Wx5bFT@steina-w>
-In-Reply-To: <6041186.lOV4Wx5bFT@steina-w>
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Date: Tue, 16 Apr 2024 16:18:35 +0100
-Message-ID: <CAPY8ntDMFcNN_kcAd_VWDfPbJ2GAua-TbpyOqLJA-kYJPWz-6A@mail.gmail.com>
-Subject: Re: [PATCH v4 02/25] media: i2c: imx258: Make image geometry meet
- sensor requirements
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: linux-media@vger.kernel.org, git@luigi311.com, 
-	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org, 
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, shawnguo@kernel.org, 
-	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com, 
-	sakari.ailus@linux.intel.com, devicetree@vger.kernel.org, imx@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	pavel@ucw.cz, phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Tue, 16 Apr 2024 19:24:14 +0200
+From: David Wronek <david@mainlining.org>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: airlied@gmail.com, conor+dt@kernel.org, daniel@ffwll.ch,
+ devicetree@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ konradybcio@kernel.org, krzk+dt@kernel.org, linux-kernel@vger.kernel.org,
+ maarten.lankhorst@linux.intel.com, marijn.suijten@somainline.org,
+ mripard@kernel.org, neil.armstrong@linaro.org, phone-devel@vger.kernel.org,
+ quic_jesszhan@quicinc.com, robh@kernel.org, sam@ravnborg.org,
+ tzimmermann@suse.de, ~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: [PATCH v2 2/2] drm/panel: Add driver for EDO RM69380 OLED panel
+In-Reply-To: <97189d64-0db1-4663-8a2e-c1a7c06a241c@wanadoo.fr>
+References: <20240415-raydium-rm69380-driver-v2-0-524216461306@mainlining.org>
+ <20240415-raydium-rm69380-driver-v2-2-524216461306@mainlining.org>
+ <97189d64-0db1-4663-8a2e-c1a7c06a241c@wanadoo.fr>
+Message-ID: <8fc2f44637dfbb641366a7eb8e71bf1c@mainlining.org>
+X-Sender: david@mainlining.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Alexander
+W dniu 2024-04-15 19:55, Christophe JAILLET napisał(a):
+> Le 15/04/2024 à 18:10, David Wronek a écrit :
+>> Add support for the 2560x1600@90Hz OLED panel by EDO bundled with a
+>> Raydium RM69380 controller, as found on the Lenovo Xiaoxin Pad Pro 
+>> 2021.
+>> 
+>> Signed-off-by: David Wronek 
+>> <david-vu3DzTD92ROXwddmVfQv5g@public.gmane.org>
+>> ---
+>>   drivers/gpu/drm/panel/Kconfig                 |  14 +
+>>   drivers/gpu/drm/panel/Makefile                |   1 +
+>>   drivers/gpu/drm/panel/panel-raydium-rm69380.c | 366 
+>> ++++++++++++++++++++++++++
+>>   3 files changed, 381 insertions(+)
+>> 
+> 
+> ...
+> 
+>> +static int rm69380_on(struct rm69380_panel *ctx)
+>> +{
+>> +	struct mipi_dsi_device *dsi = ctx->dsi[0];
+>> +	struct device *dev = &dsi->dev;
+>> +	int ret;
+>> +
+>> +	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
+>> +	if (ctx->dsi[1])
+>> +		ctx->dsi[1]->mode_flags |= MIPI_DSI_MODE_LPM;
+>> +
+>> +	mipi_dsi_dcs_write_seq(dsi, 0xfe, 0xd4);
+>> +	mipi_dsi_dcs_write_seq(dsi, 0x00, 0x80);
+>> +	mipi_dsi_dcs_write_seq(dsi, 0xfe, 0xd0);
+>> +	mipi_dsi_dcs_write_seq(dsi, 0x48, 0x00);
+>> +	mipi_dsi_dcs_write_seq(dsi, 0xfe, 0x26);
+>> +	mipi_dsi_dcs_write_seq(dsi, 0x75, 0x3f);
+>> +	mipi_dsi_dcs_write_seq(dsi, 0x1d, 0x1a);
+>> +	mipi_dsi_dcs_write_seq(dsi, 0xfe, 0x00);
+>> +	mipi_dsi_dcs_write_seq(dsi, 0x53, 0x28);
+>> +	mipi_dsi_dcs_write_seq(dsi, 0xc2, 0x08);
+>> +	mipi_dsi_dcs_write_seq(dsi, 0x35, 0x00);
+>> +	mipi_dsi_dcs_write_seq(dsi, 0x51, 0x07, 0xff);
+>> +
+>> +	ret = mipi_dsi_dcs_exit_sleep_mode(dsi);
+>> +	if (ret < 0) {
+>> +		dev_err(dev, "Failed to exit sleep mode: %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +	msleep(20);
+>> +
+>> +	ret = mipi_dsi_dcs_set_display_on(dsi);
+>> +	if (ret < 0) {
+>> +		dev_err(dev, "Failed to set display on: %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +	msleep(36);
+> 
+> 36 and 35 below are un-usual values for msleep.
+> 
+> Why 2 different values?
+> Would using a #define for this(these) value(s) make sense here?
+> 
 
-On Mon, 15 Apr 2024 at 07:25, Alexander Stein
-<alexander.stein@ew.tq-group.com> wrote:
->
-> Hi,
->
-> Am Sonntag, 14. April 2024, 22:34:40 CEST schrieb git@luigi311.com:
-> > From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> >
-> > The output image is defined as being 4208x3118 pixels in size.
-> > Y_ADD_STA register was set to 0, and Y_ADD_END to 3118, giving
-> > 3119 lines total.
-> >
-> > The datasheet lists a requirement for Y_ADD_STA to be a multiple
-> > of a power of 2 depending on binning/scaling mode (2 for full pixel,
-> > 4 for x2-bin/scale, 8 for (x2-bin)+(x2-subsample) or x4-bin, or 16
-> > for (x4-bin)+(x2-subsample)).
-> > (Y_ADD_END =E2=80=93 Y_ADD_STA + 1) also has to be a similar power of 2=
-.
-> >
-> > The current configuration for the full res modes breaks that second
-> > requirement, and we can't increase Y_ADD_STA to 1 to retain exactly
-> > the same field of view as that then breaks the first requirement.
-> > For the binned modes, they are worse off as 3118 is not a multiple of
-> > 4.
-> >
-> > Increase the main mode to 4208x3120 so that it is the same FOV as the
-> > binned modes, with Y_ADD_STA at 0.
-> > Fix Y_ADD_STA and Y_ADD_END for the binned modes so that they meet the
-> > sensor requirements.
-> >
-> > This does change the Bayer order as the default configuration is for
-> > H&V flips to be enabled, so readout is from Y_STA_END to Y_ADD_STA,
-> > and this patch has changed Y_STA_END.
-> >
-> > Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-> > Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-> > Signed-off-by: Luis Garcia <git@luigi311.com>
-> > Reviewed-by: Pavel Machek <pavel@ucw.cz>
-> > ---
-> >  drivers/media/i2c/imx258.c | 26 +++++++++++++-------------
-> >  1 file changed, 13 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-> > index 2dbafd21dd70..4a7048d834c6 100644
-> > --- a/drivers/media/i2c/imx258.c
-> > +++ b/drivers/media/i2c/imx258.c
-> > [snip]
-> > @@ -707,7 +707,7 @@ static int imx258_open(struct v4l2_subdev *sd, stru=
-ct v4l2_subdev_fh *fh)
-> >       /* Initialize try_fmt */
-> >       try_fmt->width =3D supported_modes[0].width;
-> >       try_fmt->height =3D supported_modes[0].height;
-> > -     try_fmt->code =3D MEDIA_BUS_FMT_SGRBG10_1X10;
-> > +     try_fmt->code =3D MEDIA_BUS_FMT_SBGGR10_1X10;
->
-> Does someone have access to the data sheet? I am wondering how the
-> arrangement of the pixel array is shown. I've the following (identical)
-> array for these sensors:
-> * imx290/imx327
-> * imx219
-> * imx415
->
-> G B G B
-> R G R G
-> G B G B
-> R G R G
+I am not sure of that either. This is how the panel is being set up in 
+Android, as well as the bootloader.
+See lines 67 and 92 here: 
+https://github.com/ungeskriptet/QcomXblBinaries/blob/master/J716F/BOOT.XF.3.2-00354-SM8250-1/RawFiles/Panel_rm69380_amoled_2k_cmd.xml
 
-Check the other 3 corners of your diagrams - they are not identical.
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int rm69380_off(struct rm69380_panel *ctx)
+>> +{
+>> +	struct mipi_dsi_device *dsi = ctx->dsi[0];
+>> +	struct device *dev = &dsi->dev;
+>> +	int ret;
+>> +
+>> +	dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
+>> +	if (ctx->dsi[1])
+>> +		ctx->dsi[1]->mode_flags &= ~MIPI_DSI_MODE_LPM;
+>> +
+>> +	ret = mipi_dsi_dcs_set_display_off(dsi);
+>> +	if (ret < 0) {
+>> +		dev_err(dev, "Failed to set display off: %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +	msleep(35);
+> 
+> (here)
+> 
+>> +
+>> +	ret = mipi_dsi_dcs_enter_sleep_mode(dsi);
+>> +	if (ret < 0) {
+>> +		dev_err(dev, "Failed to enter sleep mode: %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +	msleep(20);
+>> +
+>> +	return 0;
+>> +}
+> 
+> ...
+> 
+>> +static int rm69380_probe(struct mipi_dsi_device *dsi)
+>> +{
+>> +	struct mipi_dsi_host *dsi_sec_host;
+>> +	struct rm69380_panel *ctx;
+>> +	struct device *dev = &dsi->dev;
+>> +	struct device_node *dsi_sec;
+>> +	int ret, i;
+>> +
+>> +	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
+>> +	if (!ctx)
+>> +		return -ENOMEM;
+>> +
+>> +	ctx->supplies[0].supply = "vddio";
+>> +	ctx->supplies[1].supply = "avdd";
+>> +	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(ctx->supplies),
+>> +				      ctx->supplies);
+>> +	if (ret < 0)
+>> +		return dev_err_probe(dev, ret, "Failed to get regulators\n");
+>> +
+>> +	ctx->reset_gpio = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+>> +	if (IS_ERR(ctx->reset_gpio))
+>> +		return dev_err_probe(dev, PTR_ERR(ctx->reset_gpio),
+>> +				     "Failed to get reset-gpios\n");
+>> +
+>> +	dsi_sec = of_graph_get_remote_node(dsi->dev.of_node, 1, -1);
+>> +
+>> +	if (dsi_sec) {
+>> +		dev_dbg(dev, "Using Dual-DSI\n");
+> 
+> This should be after de 'info' variable below, so...
+> 
+>> +
+>> +		const struct mipi_dsi_device_info info = { "RM69380", 0,
+>> +							   dsi_sec };
+>> +
+>> +		dev_dbg(dev, "Found second DSI `%s`\n", dsi_sec->name);
+> 
+> ... maybe merge the 2 messages into something like:
+>       dev_dbg(dev, "Using Dual-DSI: found `%s`\n", dsi_sec->name);
+> 
+>> +
+>> +		dsi_sec_host = of_find_mipi_dsi_host_by_node(dsi_sec);
+>> +		of_node_put(dsi_sec);
+>> +		if (!dsi_sec_host) {
+>> +			return dev_err_probe(dev, -EPROBE_DEFER,
+>> +					     "Cannot get secondary DSI host\n");
+>> +		}
+>> +
+> 
+> Nit: unneeded { }
+> 
+>> +		ctx->dsi[1] =
+>> +			mipi_dsi_device_register_full(dsi_sec_host, &info);
+>> +		if (IS_ERR(ctx->dsi[1])) {
+>> +			return dev_err_probe(dev, PTR_ERR(ctx->dsi[1]),
+>> +					     "Cannot get secondary DSI node\n");
+>> +		}
+> 
+> Nit: unneeded { }
+> 
+>> +
+>> +		dev_dbg(dev, "Second DSI name `%s`\n", ctx->dsi[1]->name);
+>> +		mipi_dsi_set_drvdata(ctx->dsi[1], ctx);
+>> +	} else {
+>> +		dev_dbg(dev, "Using Single-DSI\n");
+>> +	}
+>> +
+>> +	ctx->dsi[0] = dsi;
+>> +	mipi_dsi_set_drvdata(dsi, ctx);
+>> +
+>> +	drm_panel_init(&ctx->panel, dev, &rm69380_panel_funcs,
+>> +		       DRM_MODE_CONNECTOR_DSI);
+>> +	ctx->panel.prepare_prev_first = true;
+>> +
+>> +	ctx->panel.backlight = rm69380_create_backlight(dsi);
+>> +	if (IS_ERR(ctx->panel.backlight))
+>> +		return dev_err_probe(dev, PTR_ERR(ctx->panel.backlight),
+>> +				     "Failed to create backlight\n");
+>> +
+>> +	drm_panel_add(&ctx->panel);
+>> +
+>> +	for (i = 0; i < ARRAY_SIZE(ctx->dsi); i++) {
+>> +		if (!ctx->dsi[i])
+>> +			continue;
+>> +
+>> +		dev_dbg(&ctx->dsi[i]->dev, "Binding DSI %d\n", i);
+>> +
+>> +		ctx->dsi[i]->lanes = 4;
+>> +		ctx->dsi[i]->format = MIPI_DSI_FMT_RGB888;
+>> +		ctx->dsi[i]->mode_flags = MIPI_DSI_MODE_VIDEO_BURST |
+>> +					  MIPI_DSI_CLOCK_NON_CONTINUOUS;
+>> +
+>> +		ret = mipi_dsi_attach(ctx->dsi[i]);
+>> +		if (ret < 0) {
+>> +			drm_panel_remove(&ctx->panel);
+>> +			return dev_err_probe(dev, ret,
+>> +					     "Failed to attach to DSI%d\n", i);
+> 
+> The error handling looks incomplete.
+> Previous mipi_dsi_attach() should be undone by a mipi_dsi_detach() as 
+> done in the remove function.
+> 
+>> +		}
+>> +	}
+>> +
+>> +	return 0;
+>> +}
+> 
+> ...
+> 
+> CJ
 
-> Yet each driver configures a different bus format:
->
-> * imx290.c: MEDIA_BUS_FMT_SRGGB10_1X10
-> * imx415.c: MEDIA_BUS_FMT_SGBRG10_1X10
-> * imx219.c: MEDIA_BUS_FMT_SRGGB10_1X10 (no flip)
->
-> imx219 actually defines all 4 10 Bit Bayer patterns and the comment
-> indicates this depends on how v or h flip is configured.
-> Reading the commit message apparently the same is true for this driver.
-
-Correct.
-
-> Still this is confusing as I would have expected flipping to be disabled =
-by
-> default, expecting the same Bayer pattern order for all drivers. Can some=
-one
-> shed some light?
-
-Comparing different families of sensors isn't really valid, and
-manufacturers vary too.
-
-imx290 is a Starvis sensor, and has an array of 1945x1109, so all 4
-corners are red pixels. It crops an even number of pixels off the
-array in the direction of readout, therefore always producing RGGB.
-
-I don't have a datasheet for imx415. Whilst it is also a Starvis
-sensor the product brief [1] says it is an array of 3864 x 2228, with
-3864 x 2192 effective pixels, which implies it isn't doing the same as
-imx290. However the current driver isn't changing the Bayer order
-based on flip which contradicts that. Pass as to which is correct.
-I can't answer why the default order is GBRG. Presumably the default
-window mode used (it doesn't use X_START / Y_START registers) crops an
-odd number of lines off the raw array, therefore starting on a GB row.
-
-imx219 (Exmor R) and imx258 (Exmor RS) datasheets have an even number
-of pixels in each direction in the array, and whilst the first pixel
-read out in the default direction is red, the colours in the opposite
-corner is blue, with green in the remaining corners. This is why the
-Bayer order changes with flips.
-
-Most Omnivision sensors I've encountered do the same as imx219/258,
-whilst OnSemi sensors are the same as imx290. Drivers obviously have
-to match whatever the hardware does.
-
-  Dave
-
-[1] https://www.sony-semicon.com/files/62/pdf/p-12_IMX415-AAQR_AAMR_Flyer.p=
-df
-
-> Best regards,
-> Alexander
->
-> --
-> TQ-Systems GmbH | M=C3=BChlstra=C3=9Fe 2, Gut Delling | 82229 Seefeld, Ge=
-rmany
-> Amtsgericht M=C3=BCnchen, HRB 105018
-> Gesch=C3=A4ftsf=C3=BChrer: Detlef Schneider, R=C3=BCdiger Stahl, Stefan S=
-chneider
-> http://www.tq-group.com/
->
->
+-- 
+Best regards,
+David Wronek <david@mainlining.org>
