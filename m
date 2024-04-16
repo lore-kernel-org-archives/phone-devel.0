@@ -1,98 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B0B139566;
-	Tue, 16 Apr 2024 19:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CE013957B
+	for <phone-devel@vger.kernel.org>; Tue, 16 Apr 2024 20:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713295245; cv=none; b=MUYbA87XYXH3ichnxCKwGka2x88fxj8l6NUymOdbuc9fcuWHgKtwEG2M1rEskEmQd8RgCGg2ZT41SJeUqK3cm1Y1UVRH1z1/QhREimssC/W/vAy1HeCeTUQsRgqRDa4iG7omokpe6POrF1zyuDfy5FWFVVvEGyKN5rRPGMAYcpI=
+	t=1713297994; cv=none; b=MIFrp2UmyGCTzIhrVXGGiTggnukFHEq5prYXz9+XQWRNILGQTnwXZCYel1SN8frgbsWLIZ63akf/qDRZ6RZ5EyWvq2rwGePbjz7/ScaZVa+b+0SGfWRySKcCo4MXwtSf4rxe5YLJsPKy9vS6Uk8GTQ7AYDc/CjWv0h7J708LE1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713295245; c=relaxed/simple;
-	bh=JPCYyaNQ5aLMEvbd/QgJU8hMpf/HQ03GExzcJL2Qv/A=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=IYTrzTMgs+Xi0R75r8DsTUfkx2pCV2Ht8PYXmIoNP5uLMZH6Lih6F2L0TkyMenBK/NCkmQlZGujLlr9/KP4F9cPr2ZcaxSc3q6XmjiBIq+X3rAmTcZUE6TI+ShdO4cCjGtObtkucPiBOFVBKCAqpm5gZw2+UnJeloJDHwMOBMfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X/uVauMK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713297994; c=relaxed/simple;
+	bh=WCfdox0lZ4JU2XxlbwtEtZyOeRf8pkyLJiEQQjBVp4k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TQSQoOikj6wpOj093lBzQqFSaNdEt3kqAxzT2tWu5hUn+LTMpDpMqxHDRe3UakzRPeVS1ylHPzXYbMriZV8CjzlZb4UaZgbk0mq3iIOWhQfMIgW5hVNk07fi26HcG/Rm9mTMfKMUGbOpWiacA1M7dulHLMTipDjRok5M9h0rRSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R5G8RGE9; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X/uVauMK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B805C4AF07;
-	Tue, 16 Apr 2024 19:20:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713295244;
-	bh=JPCYyaNQ5aLMEvbd/QgJU8hMpf/HQ03GExzcJL2Qv/A=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=X/uVauMKTrEJKeHSuimCQFH2qffGX5UJUXLGp1Lqc3Xd/2hDX3v0OBwGBl6m8PBmJ
-	 DJt3NYegAPxEIlk1Rbuzi190amVwRoVXW2W2DEdgFMHpGFbxq9ZgTBTtaWA2aX7QSq
-	 GU3xbx6+Ikyif5ExRKSpHxFKJ2wfDOGRkN4WtL/Gisu/3IY3+dDHj8gB+1v4gjoIUW
-	 KEfNA9D7tcxIyd1DtV2IHHCf2VeG50atxHUUxmYDW1XFQneVMwhCtYBmJ1GabzGVss
-	 XahY/K3DuAfbXRy7wT1+oBKfFxas8aEMBMAjK90vg7hvZqfssYTAN77R5i9m57VEfl
-	 stiZpF3I8DUyw==
-Date: Tue, 16 Apr 2024 14:20:43 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R5G8RGE9"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-516d6e23253so5371971e87.1
+        for <phone-devel@vger.kernel.org>; Tue, 16 Apr 2024 13:06:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713297991; x=1713902791; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5WM/kJl6/lgxNKvGcl2foDF49S8YDknOQYG0ZwPqeq4=;
+        b=R5G8RGE9Zwq+sTWKsv6YwvB24hLh7UgTloZgPLnG2QkKzTrVbmWkNuWLzdMm7U1ZBu
+         QMzbNVUkuKlyph0KM4c064Y1nPaxcMHzF7gwx44gyYjeaiUP0tDImL4M877MPtXZdP9a
+         +DZtwaUD+rvL4dZgB+Vgz/1mt/8EqpZn9RhJ3qiLKNq+Jk76vZenLyjcQGl3I9ZwE5SD
+         EHcGnSbbQ7Js1UvcsBSQxj40fF/C6pmtmI3n7luPp9KPJi6Blih6BwyD9IY89m/BJasY
+         FHycbwYXYw9HReUCOIbRzDXEkS8/Vj7Wit6g4VW/m9RaIFxSAt2bsBy3yvsu1kkwMVwA
+         LBnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713297991; x=1713902791;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5WM/kJl6/lgxNKvGcl2foDF49S8YDknOQYG0ZwPqeq4=;
+        b=QzkUpN2iw6lhcMUo8r1/IVWQ4nwfmHV/RVYnFJ2oiF3GG9b95w17TiWcg6oD9RxVrD
+         NFvwc7btkdlWfBipCS2sLpCeOvfCzkciHbCLe7dQ1EK0zlwWkQ2ONHSW1ZFm58lhs337
+         gWvbVbIBLiSKRpZcGVSqmo/L7xT7+pIO28aeCQp4Seux+Qhb5Du28HFJespMCu1cd7kF
+         o9ILFhTi5PLgvxLVs+M4Ev52w9EdF1VLHXYDS1vDmOavONoJjCredlguQSmpvJEyKsIs
+         Ylr5BnNWBq+Y1LOL3rddDOMXhJT8U62eOniIWubyZ7FW6Y+MPTmH8swHQyBwkqTh59Ns
+         6EEg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ941Btvn2KIoeybDtTvtgonm5vQxx30zL4qBRr2a2YMkRxhyETbCs/pseJ0kUagFkH0kIDrCuVb2uggsXbGu1253NlIWKQUgGotQ=
+X-Gm-Message-State: AOJu0YyASa5OwPZUjtcCsXw3L73EVhcNIr52KyCmgeMd59oufJ5Pqxjm
+	r1+ztPuPhxWQ30od8igtwM+YnRU6+2mhX4OUViIBEJvtIV/vJf8IQY8VeOPGNvU=
+X-Google-Smtp-Source: AGHT+IFmHOkNwWKSnm1HBfTZnquMULqoBRj7rBVPJKHrN8vOG01l/YisFvkz/QvNtFNORfqb4oKlMA==
+X-Received: by 2002:ac2:4ac8:0:b0:516:d1af:adc1 with SMTP id m8-20020ac24ac8000000b00516d1afadc1mr10003114lfp.9.1713297991264;
+        Tue, 16 Apr 2024 13:06:31 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::227])
+        by smtp.gmail.com with ESMTPSA id p27-20020ac246db000000b00518948d6910sm1254318lfo.205.2024.04.16.13.06.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Apr 2024 13:06:20 -0700 (PDT)
+Date: Tue, 16 Apr 2024 23:06:19 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: David Wronek <david@mainlining.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
+	Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>, Daniel Vetter <daniel@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Marijn Suijten <marijn.suijten@somainline.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] drm/panel: Add driver for EDO RM69380 OLED panel
+Message-ID: <ni6kkq6brpnlve2nkcbsi3j5zmcfwurh2wj2nlypwpp2vqxrpd@ktgncxudgeu6>
+References: <20240416-raydium-rm69380-driver-v3-0-21600ac4ce5f@mainlining.org>
+ <20240416-raydium-rm69380-driver-v3-2-21600ac4ce5f@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Rob Herring <robh@kernel.org>
-To: David Wronek <david@mainlining.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Maxime Ripard <mripard@kernel.org>, phone-devel@vger.kernel.org, 
- Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>, 
- devicetree@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Konrad Dybcio <konradybcio@kernel.org>, linux-kernel@vger.kernel.org, 
- Neil Armstrong <neil.armstrong@linaro.org>
-In-Reply-To: <20240416-raydium-rm69380-driver-v3-1-21600ac4ce5f@mainlining.org>
-References: <20240416-raydium-rm69380-driver-v3-0-21600ac4ce5f@mainlining.org>
- <20240416-raydium-rm69380-driver-v3-1-21600ac4ce5f@mainlining.org>
-Message-Id: <171329524217.3866491.17133323798824607275.robh@kernel.org>
-Subject: Re: [PATCH v3 1/2] dt-bindings: display: panel: Add Raydium
- RM69380
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240416-raydium-rm69380-driver-v3-2-21600ac4ce5f@mainlining.org>
 
-
-On Tue, 16 Apr 2024 20:30:48 +0200, David Wronek wrote:
-> Raydium RM69380 is a display driver IC used to drive OLED DSI panels.
-> Add a dt-binding for it.
+On Tue, Apr 16, 2024 at 08:30:49PM +0200, David Wronek wrote:
+> Add support for the 2560x1600@90Hz OLED panel by EDO bundled with a
+> Raydium RM69380 controller, as found on the Lenovo Xiaoxin Pad Pro 2021.
 > 
 > Signed-off-by: David Wronek <david@mainlining.org>
 > ---
-> Note:
-> Depends on commit 48a516363e29 ("dt-bindings: display: panel: add common dual-link schema")
-> ---
->  .../bindings/display/panel/raydium,rm69380.yaml    | 91 ++++++++++++++++++++++
->  1 file changed, 91 insertions(+)
-> 
+>  drivers/gpu/drm/panel/Kconfig                 |  14 +
+>  drivers/gpu/drm/panel/Makefile                |   1 +
+>  drivers/gpu/drm/panel/panel-raydium-rm69380.c | 367 ++++++++++++++++++++++++++
+>  3 files changed, 382 insertions(+)
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/panel/raydium,rm69380.yaml:
-Error in referenced schema matching $id: http://devicetree.org/schemas/display/panel/panel-common-dual.yaml
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/display/panel/raydium,rm69380.example.dtb: panel@0: False schema does not allow {'compatible': ['lenovo,j716f-edo-rm69380', 'raydium,rm69380'], 'reg': [[0]], 'avdd-supply': [[4294967295]], 'vddio-supply': [[4294967295]], 'reset-gpios': [[4294967295, 75, 1]], 'ports': {'#address-cells': [[1]], '#size-cells': [[0]], 'port@0': {'reg': [[0]], 'endpoint': {'remote-endpoint': [[4294967295]]}}, 'port@1': {'reg': [[1]], 'endpoint': {'remote-endpoint': [[4294967295]]}}}, '$nodename': ['panel@0']}
-	from schema $id: http://devicetree.org/schemas/display/panel/raydium,rm69380.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240416-raydium-rm69380-driver-v3-1-21600ac4ce5f@mainlining.org
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+-- 
+With best wishes
+Dmitry
