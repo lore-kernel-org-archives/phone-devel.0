@@ -1,71 +1,52 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay08.th.seeweb.it (relay08.th.seeweb.it [5.144.164.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CE013957B
-	for <phone-devel@vger.kernel.org>; Tue, 16 Apr 2024 20:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D04D13A245
+	for <phone-devel@vger.kernel.org>; Tue, 16 Apr 2024 20:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.144.164.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713297994; cv=none; b=MIFrp2UmyGCTzIhrVXGGiTggnukFHEq5prYXz9+XQWRNILGQTnwXZCYel1SN8frgbsWLIZ63akf/qDRZ6RZ5EyWvq2rwGePbjz7/ScaZVa+b+0SGfWRySKcCo4MXwtSf4rxe5YLJsPKy9vS6Uk8GTQ7AYDc/CjWv0h7J708LE1Y=
+	t=1713298961; cv=none; b=edH9+qw62vEIaKqWuq5uxrFMzMXCfRgMWvbMjcMhyjmDTCisHUEVbqTUnwXkPbYF3IS2nDSxUfUg86tjbzXNvRaSiAX2+n/68Vy62YUDf3H46ikpHE7ii4NKPNMPXE4ykOoHoWXzhznMEq1/k2L/NLqfHMWsaJuYRRg80qkRkto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713297994; c=relaxed/simple;
-	bh=WCfdox0lZ4JU2XxlbwtEtZyOeRf8pkyLJiEQQjBVp4k=;
+	s=arc-20240116; t=1713298961; c=relaxed/simple;
+	bh=Jf3GFSgQq8PdR/zavIuEzjphkugs0D4gKD2oJXptHhY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TQSQoOikj6wpOj093lBzQqFSaNdEt3kqAxzT2tWu5hUn+LTMpDpMqxHDRe3UakzRPeVS1ylHPzXYbMriZV8CjzlZb4UaZgbk0mq3iIOWhQfMIgW5hVNk07fi26HcG/Rm9mTMfKMUGbOpWiacA1M7dulHLMTipDjRok5M9h0rRSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R5G8RGE9; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R5G8RGE9"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-516d6e23253so5371971e87.1
-        for <phone-devel@vger.kernel.org>; Tue, 16 Apr 2024 13:06:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713297991; x=1713902791; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5WM/kJl6/lgxNKvGcl2foDF49S8YDknOQYG0ZwPqeq4=;
-        b=R5G8RGE9Zwq+sTWKsv6YwvB24hLh7UgTloZgPLnG2QkKzTrVbmWkNuWLzdMm7U1ZBu
-         QMzbNVUkuKlyph0KM4c064Y1nPaxcMHzF7gwx44gyYjeaiUP0tDImL4M877MPtXZdP9a
-         +DZtwaUD+rvL4dZgB+Vgz/1mt/8EqpZn9RhJ3qiLKNq+Jk76vZenLyjcQGl3I9ZwE5SD
-         EHcGnSbbQ7Js1UvcsBSQxj40fF/C6pmtmI3n7luPp9KPJi6Blih6BwyD9IY89m/BJasY
-         FHycbwYXYw9HReUCOIbRzDXEkS8/Vj7Wit6g4VW/m9RaIFxSAt2bsBy3yvsu1kkwMVwA
-         LBnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713297991; x=1713902791;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5WM/kJl6/lgxNKvGcl2foDF49S8YDknOQYG0ZwPqeq4=;
-        b=QzkUpN2iw6lhcMUo8r1/IVWQ4nwfmHV/RVYnFJ2oiF3GG9b95w17TiWcg6oD9RxVrD
-         NFvwc7btkdlWfBipCS2sLpCeOvfCzkciHbCLe7dQ1EK0zlwWkQ2ONHSW1ZFm58lhs337
-         gWvbVbIBLiSKRpZcGVSqmo/L7xT7+pIO28aeCQp4Seux+Qhb5Du28HFJespMCu1cd7kF
-         o9ILFhTi5PLgvxLVs+M4Ev52w9EdF1VLHXYDS1vDmOavONoJjCredlguQSmpvJEyKsIs
-         Ylr5BnNWBq+Y1LOL3rddDOMXhJT8U62eOniIWubyZ7FW6Y+MPTmH8swHQyBwkqTh59Ns
-         6EEg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ941Btvn2KIoeybDtTvtgonm5vQxx30zL4qBRr2a2YMkRxhyETbCs/pseJ0kUagFkH0kIDrCuVb2uggsXbGu1253NlIWKQUgGotQ=
-X-Gm-Message-State: AOJu0YyASa5OwPZUjtcCsXw3L73EVhcNIr52KyCmgeMd59oufJ5Pqxjm
-	r1+ztPuPhxWQ30od8igtwM+YnRU6+2mhX4OUViIBEJvtIV/vJf8IQY8VeOPGNvU=
-X-Google-Smtp-Source: AGHT+IFmHOkNwWKSnm1HBfTZnquMULqoBRj7rBVPJKHrN8vOG01l/YisFvkz/QvNtFNORfqb4oKlMA==
-X-Received: by 2002:ac2:4ac8:0:b0:516:d1af:adc1 with SMTP id m8-20020ac24ac8000000b00516d1afadc1mr10003114lfp.9.1713297991264;
-        Tue, 16 Apr 2024 13:06:31 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::227])
-        by smtp.gmail.com with ESMTPSA id p27-20020ac246db000000b00518948d6910sm1254318lfo.205.2024.04.16.13.06.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Apr 2024 13:06:20 -0700 (PDT)
-Date: Tue, 16 Apr 2024 23:06:19 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: David Wronek <david@mainlining.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
-	Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>, Daniel Vetter <daniel@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Marijn Suijten <marijn.suijten@somainline.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	 Content-Type:Content-Disposition:In-Reply-To; b=lXVQcm6rHxFhlr8Cnj1JsxcIbmJuqnPavjFh26meUpcJYYtqWctXFLTZKkgNNcnkLKjREisjwL7PExQtUnSuP0kgRDABAp78QNkA3XQEgMiJ+bpuzRmLebTU9VskZZl2wevCKXLt2v3q4GLN0ejllGmveFYXWZuriK/uRVBzhkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=somainline.org; spf=pass smtp.mailfrom=somainline.org; arc=none smtp.client-ip=5.144.164.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=somainline.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=somainline.org
+Received: from SoMainline.org (94-211-6-86.cable.dynamic.v4.ziggo.nl [94.211.6.86])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by m-r2.th.seeweb.it (Postfix) with ESMTPSA id 6CFBF3FC93;
+	Tue, 16 Apr 2024 22:22:35 +0200 (CEST)
+Date: Tue, 16 Apr 2024 22:22:34 +0200
+From: Marijn Suijten <marijn.suijten@somainline.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: David Wronek <david@mainlining.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
+	Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@gmail.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
 	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] drm/panel: Add driver for EDO RM69380 OLED panel
-Message-ID: <ni6kkq6brpnlve2nkcbsi3j5zmcfwurh2wj2nlypwpp2vqxrpd@ktgncxudgeu6>
-References: <20240416-raydium-rm69380-driver-v3-0-21600ac4ce5f@mainlining.org>
- <20240416-raydium-rm69380-driver-v3-2-21600ac4ce5f@mainlining.org>
+Subject: Re: [PATCH v2 2/2] drm/panel: Add driver for EDO RM69380 OLED panel
+Message-ID: <e2jkc4gs74pe365danyiq22f7s7wqxvj27jrjlzehgsgigf2dd@gai76zslxr7o>
+Mail-Followup-To: Marijn Suijten <marijn.suijten@somainline.org>, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, David Wronek <david@mainlining.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
+	Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@gmail.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+References: <20240415-raydium-rm69380-driver-v2-0-524216461306@mainlining.org>
+ <20240415-raydium-rm69380-driver-v2-2-524216461306@mainlining.org>
+ <yccnqb63gp5svx76rudfnphecpatkpwgp2wlfenojebulrigma@xfztf3ox6q7d>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -74,21 +55,65 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240416-raydium-rm69380-driver-v3-2-21600ac4ce5f@mainlining.org>
+In-Reply-To: <yccnqb63gp5svx76rudfnphecpatkpwgp2wlfenojebulrigma@xfztf3ox6q7d>
 
-On Tue, Apr 16, 2024 at 08:30:49PM +0200, David Wronek wrote:
-> Add support for the 2560x1600@90Hz OLED panel by EDO bundled with a
-> Raydium RM69380 controller, as found on the Lenovo Xiaoxin Pad Pro 2021.
+On 2024-04-15 19:50:49, Dmitry Baryshkov wrote:
+> On Mon, Apr 15, 20
+[...]
+> > +static int rm69380_on(struct rm69380_panel *ctx)
+[...]
+> ret = mipi_dsi_dcs_set_display_brightness_large(dsi, 0x7ff);
+
+Downstream may send this here, but why?  As far as I've observed, update_status
+also sets &backlight_properties.brightness which you configure below.
+
+Try removing this line and maybe also set the initial brightness lower to the
+benefit of users' eyes and OLED lifetime?
+
+[...]
+> > +
+> > +	if (dsi_sec) {
+> > +		dev_dbg(dev, "Using Dual-DSI\n");
+> > +
+> > +		const struct mipi_dsi_device_info info = { "RM69380", 0,
+
+Personally I'm never really sure what to put in the name here, maybe something
+that signifies the second DSI interface of the panel?
+
+> > +							   dsi_sec };
+> > +
+> > +		dev_dbg(dev, "Found second DSI `%s`\n", dsi_sec->name);
+> > +
+> > +		dsi_sec_host = of_find_mipi_dsi_host_by_node(dsi_sec);
+> > +		of_node_put(dsi_sec);
+> > +		if (!dsi_sec_host) {
+> > +			return dev_err_probe(dev, -EPROBE_DEFER,
+> > +					     "Cannot get secondary DSI host\n");
+> > +		}
+> > +
+> > +		ctx->dsi[1] =
+> > +			mipi_dsi_device_register_full(dsi_sec_host, &info);
 > 
-> Signed-off-by: David Wronek <david@mainlining.org>
-> ---
->  drivers/gpu/drm/panel/Kconfig                 |  14 +
->  drivers/gpu/drm/panel/Makefile                |   1 +
->  drivers/gpu/drm/panel/panel-raydium-rm69380.c | 367 ++++++++++++++++++++++++++
->  3 files changed, 382 insertions(+)
+> Either you should be using devm_mipi_dsi_device_register_full() here or
+> you should call mipi_dsi_device_unregister() in the error and remove
+> paths. I'd suggest the former.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+There is also devm_mipi_dsi_attach() which may solve inadequate cleanup handling
+in the error paths below, as pointed out by Christophe.
 
--- 
-With best wishes
-Dmitry
+> 
+> > +		if (IS_ERR(ctx->dsi[1])) {
+> > +			return dev_err_probe(dev, PTR_ERR(ctx->dsi[1]),
+> > +					     "Cannot get secondary DSI node\n");
+> > +		}
+> > +
+> > +		dev_dbg(dev, "Second DSI name `%s`\n", ctx->dsi[1]->name);
+
+It looks like you inerited /all/ my debug logging when copy-pasting this setup
+from my in-progress dual-DSI dual-DSC Samsung ANA6707 panel driver.  Since it's
+all working now, I suggest to remove mostly-useless debug lines like this.
+
+I'll continue the review on v3, as I mainly wanted to extend the initial devm_
+suggestion from Dmitry done on v2.
+
+- Marijn
