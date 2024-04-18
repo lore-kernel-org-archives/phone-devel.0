@@ -1,75 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA6937165;
-	Thu, 18 Apr 2024 12:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4947E16ABFA;
+	Thu, 18 Apr 2024 15:06:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713444567; cv=none; b=l41AdFTdwVQTVXVVdp2idOmR+C03RdriBMZ6kaVRuUJ2a1v+WtFYwBCI7wI02xfayYrC1fSeqsWwiE3Syh94e+OSzOOErmgrmQfqUpgh9wSZRq0RBkQ3XModZchYm7gdZO7fHFzjy4S7lbJ3gxjwg+ucnnKXpZlojrAEnp2dLcM=
+	t=1713452809; cv=none; b=lF0vhN1uF/y15BC/Q0BAqUs45o9B4xnMT95jy7lU1x6TwMt9nuWDIlrvHF2bhLOq09FKBNULqKpitaX4+zeWq0OhaZdhlAQhEecOq9yPbn/GfjbnkC/DaQSto+CrBXzahFbnnLEAQblV/eQnMEF1cqZMBrljKJTGL4MzFH9yJEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713444567; c=relaxed/simple;
-	bh=G8iIaDSoTzX8WwprmZzksy2cT8VoIMe2ObbDA5sfRks=;
+	s=arc-20240116; t=1713452809; c=relaxed/simple;
+	bh=oGcY+BupHlocn3xxw4/g576DsNISjK2nsy9HQ+Z9ZzE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l/GxTvu47HWIJ1FXqEtCPEiCIPvhm3ZzVIMe+0Sd+oR6CynWaxjv1pr16PuPmfCKJkqi5s3ADH+9iE5+dpb46sVXLkwK6CGm7jKnsOn0AbHw1YMWyPgZ1Mu8C3vRLEZ8N9THPMDpFfGXV6tINcAMg1iQH2vNmQXtkjTIg16CLGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BgVbWLpd; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bbq0bPi8qHN5Rokyzg9yawWN1O5mwHyfmcBT1nxIq1Bk+l01L7z+k5VvV4XlsZpoIv3uRMh+xx6lE0v+QdwSA1DVxvkg++8JAFxuehvPU+wMljkWacPBZNV8VEUjirqDZdHJZ0eHF9tunRozgIlkgiw4jI9MRpdJlLImNgSRK9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=p6RTzvLK; arc=none smtp.client-ip=206.189.193.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BgVbWLpd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA4AC113CC;
-	Thu, 18 Apr 2024 12:49:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713444566;
-	bh=G8iIaDSoTzX8WwprmZzksy2cT8VoIMe2ObbDA5sfRks=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BgVbWLpdSqyUhBogIz8YhMvuKkPpyMVD064SsnwwAWjiH81oDUoAKnL2bTdpYIj7D
-	 yjXVcw1l+dhS1QAwLtRs+Q3S9AekJoj7ymUKvL7wsh7mo2WVxMSJwGuIpvOsVz/nwW
-	 NNpU9W5T3WM5LNCf3Qn9J1G+YgLSND354UbUm4MqPvsB9Z03+pBIKHHNt6KoWCR5tC
-	 eZb/7PuULVOfnmgZLzEQWtaQdDB8bpIem3KkHKDsnKPadqeiFVZ6GtrM5qbJq2tB3n
-	 xeLQ8mwZD2ZP37MfBy7HtW728a4DhWHAdnpbVubVJF9oa9uHs6Ravx25tPFHi7g2Zn
-	 YGTuLDfsn9g+w==
-Date: Thu, 18 Apr 2024 07:49:23 -0500
-From: Rob Herring <robh@kernel.org>
-To: David Wronek <david@mainlining.org>
-Cc: Daniel Vetter <daniel@ffwll.ch>, ~postmarketos/upstreaming@lists.sr.ht,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	dri-devel@lists.freedesktop.org,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Maxime Ripard <mripard@kernel.org>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	phone-devel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH v4 1/2] dt-bindings: display: panel: Add Raydium RM69380
-Message-ID: <171344451492.997671.11196384805681693246.robh@kernel.org>
-References: <20240417-raydium-rm69380-driver-v4-0-e9c2337d0049@mainlining.org>
- <20240417-raydium-rm69380-driver-v4-1-e9c2337d0049@mainlining.org>
+	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="p6RTzvLK"
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+	by a.peacevolution.org (Postfix) with ESMTPA id 732C7479B3;
+	Thu, 18 Apr 2024 15:06:35 +0000 (UTC)
+Date: Thu, 18 Apr 2024 11:06:32 -0400
+From: Aren <aren@peacevolution.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Ondrej Jirman <megi@xff.cz>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	Willow Barraco <contact@willowbarraco.fr>
+Subject: Re: [PATCH 2/4] iio: light: stk3310: Implement vdd supply and power
+ it off during suspend
+Message-ID: <xxeg3as5m5vmmu6fbjujcnvchrerxs2rr42nloirwsktbv4r57@vpxtxblxmspl>
+References: <20240414175300.956243-1-aren@peacevolution.org>
+ <20240414175716.958831-1-aren@peacevolution.org>
+ <20240414175716.958831-2-aren@peacevolution.org>
+ <CAHp75VdZavToGYqLYnkKYt53HXoQxXnRER5Cn5b2==gWTvkAWQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240417-raydium-rm69380-driver-v4-1-e9c2337d0049@mainlining.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75VdZavToGYqLYnkKYt53HXoQxXnRER5Cn5b2==gWTvkAWQ@mail.gmail.com>
+X-Spamd-Bar: /
+Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
+	s=dkim; t=1713452796;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:content-transfer-encoding:in-reply-to:references;
+	bh=VCd0NHg7beAhJoKEm/QgbRTnUak2JYtg99vMXKxsa0M=;
+	b=p6RTzvLKnixYbPyShowQRtk19eTobmvfGZGGbbHynE1W98DtGm0Vh5jeKHhResC5i2ODzI
+	QmnANwv6xJ5A5/etHiIwvwPYQc8XhSBcelf2FJGftSilB6sfgJ4ltbihnMVY+IUz+N9HFF
+	voTKduELX/t3TDY4UpOiD+UwsPnkvag=
 
-
-On Wed, 17 Apr 2024 18:29:33 +0200, David Wronek wrote:
-> Raydium RM69380 is a display driver IC used to drive OLED DSI panels.
-> Add a dt-binding for it.
+On Mon, Apr 15, 2024 at 05:04:53PM +0300, Andy Shevchenko wrote:
+> On Sun, Apr 14, 2024 at 8:57 PM Aren Moynihan <aren@peacevolution.org> wrote:
+> >
+> > From: Ondrej Jirman <megi@xff.cz>
+> >
+> > VDD power input can be used to completely power off the chip during
+> > system suspend. Do so if available.
 > 
-> Signed-off-by: David Wronek <david@mainlining.org>
-> ---
-> Note:
-> Depends on commit 48a516363e29 ("dt-bindings: display: panel: add common dual-link schema")
-> ---
->  .../bindings/display/panel/raydium,rm69380.yaml    | 89 ++++++++++++++++++++++
->  1 file changed, 89 insertions(+)
+> ...
 > 
+> >  #include <linux/iio/events.h>
+> >  #include <linux/iio/iio.h>
+> >  #include <linux/iio/sysfs.h>
+> 
+> > +#include <linux/regulator/consumer.h>
+> 
+> Move it to be ordered and add a blank line to separate iio/*.h group.
+> 
+> ...
+> 
+> > +       data->vdd_reg = devm_regulator_get_optional(&client->dev, "vdd");
+> > +       if (IS_ERR(data->vdd_reg)) {
+> > +               ret = PTR_ERR(data->vdd_reg);
+> > +               if (ret == -ENODEV)
+> > +                       data->vdd_reg = NULL;
+> 
+> > +               else
+> 
+> Redundant 'else' when you follow the pattern "check for error condition first".
+> 
+> > +                       return dev_err_probe(&client->dev, ret,
+> > +                                            "get regulator vdd failed\n");
+> > +       }
+> 
+> ...
+> 
+> > +       if (data->vdd_reg) {
+> > +               ret = regulator_enable(data->vdd_reg);
+> > +               if (ret)
+> > +                       return dev_err_probe(&client->dev, ret,
+> > +                                            "regulator vdd enable failed\n");
+> > +
+> > +               usleep_range(1000, 2000);
+> 
+> fsleep()
+> 
+> > +       }
+> 
+> ...
+> 
+> >         stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
+> > +       if (data->vdd_reg)
+> > +               regulator_disable(data->vdd_reg);
+> 
+> I forgot to check the order of freeing resources, be sure you have no
+> devm_*() releases happening before this call.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+If I understand what you're saying, this should be fine. The driver just
+uses devm to clean up acquired resources after remove is called. Or am I
+missing something and resources could be freed before calling
+stk3310_remove?
 
+> ...
+> 
+> > +               usleep_range(1000, 2000);
+> 
+> fsleep()
+
+Everything else makes sense, I'll include those in v2 along with a patch
+to switch stk3310_init to dev_err_probe.
+
+Thanks for taking the time to review
+ - Aren
