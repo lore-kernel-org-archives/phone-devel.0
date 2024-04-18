@@ -1,130 +1,109 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600A715B544
-	for <phone-devel@vger.kernel.org>; Thu, 18 Apr 2024 10:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95B815B548
+	for <phone-devel@vger.kernel.org>; Thu, 18 Apr 2024 10:03:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713434487; cv=none; b=WKZuqyu4TG/85q1Gl2l7AVRSwrmHurANlAe0POsD/czqJTd+FShVDVnxo9RqXg0/zARfyjvLWmhaDqDD/VxCMXYvcpcvEEZrK70RVWkFWcv/8ymaAWwMkBlU5eYMdsAIkEMl2kIdktxUbBmzBuNoopcUoIJeH3XbK6p2MT3SR48=
+	t=1713434596; cv=none; b=ZnTJwlChkSQ3aTgJNk6kM2E6ahV7+9jfn/TnhaeYhUztkIlQ+iu6zVdjRyYeXlfjwc7KB1dkTPtnkSMGeKuPaD+GTc+KWLG1BjekjxFyPkUb4QkIdImdRUHCQMyg9+hLEwEsXwRsiUO2iSUAPn19yIvNwZqgzjy4N7itiG+7nDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713434487; c=relaxed/simple;
-	bh=a71/SiU5KJx7Ms0b+OJ/gEOzH6yCrAFm+lS0rqmxGAw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lnd1jfBm+4mCWOvla6b7F6e/xHDnHcXfn2bJOpy9klLrF0vcs06Z/Yr+b/a0shAr5K8USuW9TRs7QFCABW+D9iW1yS0VMbi/7up4zzqi8QtYxBY/2XRTtkqCFifhRghr9kJnesG37k6CLJsRClxBtRfX64wHQLoXchnxL9Zr9oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aw/8P9iq; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1713434596; c=relaxed/simple;
+	bh=zwzkYWr6U9C4zC2JlX3QMDroH3epi3ZSlaJuC9jmIvY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=TnbRtWALH/oXtdKt+qFEGjVmNX5GSdbwW3LlubNAZYXtH+IXoEuJlE/w2yC2UV3TSGBErSn8oTeH+MzEub/DJGyY6W3zIPFDdIsnGGlWYS/RSdz7qNN6lxmW8HcDC3Kn4qUoht4SwVZFE6vmZsBbdkEwHSEmpUkNCuLxS6ILNvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=32zD3y44; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aw/8P9iq"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a52582ecde4so58355966b.0
-        for <phone-devel@vger.kernel.org>; Thu, 18 Apr 2024 03:01:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="32zD3y44"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-57013379e17so547828a12.0
+        for <phone-devel@vger.kernel.org>; Thu, 18 Apr 2024 03:03:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713434481; x=1714039281; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1pf1mAA/6NMUQyAgFcZPxZ6nbHjAHUH3C0AGYT83PgE=;
-        b=aw/8P9iqQ2YP0sMzARpB035NIHOrZJr4As1zOiZ7y06YSCBDROxQWEeLdu4LN0redb
-         qRV+IFXf9rlL+BiTmfmIe39iLrQPvUr1zvYdqTg/FFTUBWP8tyo81d40iMMHS5ADWvZ4
-         GXIj2nr6zXTL3dQsMCZfddGO69EDJGXkIDl4NqqOXmLQ8FtRvq/PdwrjgdLYgHmuLyW1
-         hXnTuFhKeV0twdIOIz1WNsnT9q1vMNnfMFDGVN/vdUJ4Rd7xaXwxay1e6zukUxxj8WRA
-         7Jllin6leyRJKHGf6NGwMBGfdzk39cS3KPgWJhKj2RCR4oj2pEeypQuBnxqHbhZQlwvS
-         N94w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713434481; x=1714039281;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=fairphone.com; s=fair; t=1713434592; x=1714039392; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1pf1mAA/6NMUQyAgFcZPxZ6nbHjAHUH3C0AGYT83PgE=;
-        b=SRfzwlDPWhoazzKqrHgLFIMhqzPoqtlnHrxM7e1GBstrOAYS+Tw3GltaUV4p/pMZju
-         QgNp/JNEUa+EVaBJM3QCBwfjQCBonLf0Q9wiuc2trea4n2fdmRuNIUjTSd0To8pe+hLn
-         41h0h4XbcjqtpgivtbwVjFuevtBeq5H5YcRCgmpg9W1Wayf1PH6J3bLYVXZA8OhspFjp
-         XGDk6oX5ArLHCeitWrygydi7ZVbPNyJO+mncqZqMMybjc8ao0D+JCJlziKPNGpfsXXVD
-         dmDg07SEiUHnvqPe0R/zJeG3GMnllSDCpC9dThqAmhBFzdSGgFu0WoCjd1A6KSGwLHUq
-         W0Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCW+NHRMqj4YT6N+1VZk7toHAf2ZCQiw1YPre0gJGU3NVaxcpJ1CgDI0hORCsVuLQi2Kb2fYD+X/rVXUp2JgUV8kNaLbFvaF8lUxUMA=
-X-Gm-Message-State: AOJu0YxLgzNvTl15Fl0Zv0XEl80iOqbsFIayHlerM4HD/o2pJF/rSgzS
-	B+CRascVi/RWqsgHdlDPqQZMj2mB7zVg2iS+AhkaobSV4yRJWWOoT/XVT6RDCKQ=
-X-Google-Smtp-Source: AGHT+IFR9G7tUCBHZF0uqiUjDBLI1xxggsUPZAlg0f+UEA7J7e7NFdmBwEo2wI3dmDKOr/I3QPOp8w==
-X-Received: by 2002:a17:906:a14e:b0:a55:387b:ef07 with SMTP id bu14-20020a170906a14e00b00a55387bef07mr1433955ejb.13.1713434480707;
-        Thu, 18 Apr 2024 03:01:20 -0700 (PDT)
-Received: from [192.168.45.55] (078088045141.garwolin.vectranet.pl. [78.88.45.141])
-        by smtp.gmail.com with ESMTPSA id h20-20020a170906591400b00a51d3785c7bsm662615ejq.196.2024.04.18.03.01.18
+        bh=zwzkYWr6U9C4zC2JlX3QMDroH3epi3ZSlaJuC9jmIvY=;
+        b=32zD3y44hHaLIYej5hYS32GufwYGYRibPGW7H1540N4sCnx1Ra2aQ48QyYnbP/Rtkn
+         5LYrRWqRx4iqonM4En5tqQcLAdoaf+DywCMtNDgT07hPKKMY88DG0/1JovWPbJtLMwN3
+         6Q7it91+9KwtCPvpbDJKJ6UVUEdt211xAL2lxBBRVdI5AVxZD3Elx+2JNJiUOmhX/Flv
+         rmCCk8IttwWC70m9fJqMg5+f9p7fap040O8SJzDidRqbsvOFSl6s6/VKUhbkduwFJZjo
+         UFiagZ5L6S+F8R3QiitcE8gYdRxNB/VeRTPrKE28a53pAUXiRHDnWTMCsx+6RHPjBlQu
+         AIuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713434592; x=1714039392;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zwzkYWr6U9C4zC2JlX3QMDroH3epi3ZSlaJuC9jmIvY=;
+        b=fgHJLPTeroeWokNUQLgitzXpZBxoxhfjkmPkiKC10ybtly1jet/IQMAiYS5L8CXXDe
+         vZ1eLeyiABLx/6c5LWmHbLoumSmdrn3KmKAWz+uj5MaFbVGXXpNQQBaa4uQpyPWR/8tr
+         Po1BPAIFGS6ITvfDSFzuEs/K2qUCi0QkQYRm63gWZCI9oTrWZCHBhm2OF83vc5ag8FLS
+         afDAjJk/q1LIVTMiPv3ZlwggdglJasDvU2M6BQfNhq6+mJ56//plV/mS7vHlMvfHodmw
+         uLcZq8oCo6kUPBTrCrH5Vkse6tFyHVoqnNZdL2OBoDOgXuU9zpwF+zA7kFtJP+vc2zVj
+         lYSg==
+X-Forwarded-Encrypted: i=1; AJvYcCX3+Bj+QmMDFYis0q0+9frGDRDsy627oh+HRav31bcnRmnBsZx+howO5WFe5rZa/Gr4qpHySHWK1a4OO0mC87pntEAoVW3b3PPn3Ig=
+X-Gm-Message-State: AOJu0YxN/R/Z0c6fphnXy9yOEtv26/GC+wfUH/lQmPsTktEjTuFoAkuj
+	XbJQs6ayhBAUGpOTSjknB0RTjm9DI+p75I3vgY95CDN2zuLDQTKBnbM5F6wwTf8=
+X-Google-Smtp-Source: AGHT+IFwCe4772YEoD9aT9S4d9KsRvOdenXKwAQfIEqOG8jB0+onHAzI0XgYqm54xb5CuulaaJho7w==
+X-Received: by 2002:a17:906:6857:b0:a51:dd18:bd20 with SMTP id a23-20020a170906685700b00a51dd18bd20mr1763260ejs.14.1713434592068;
+        Thu, 18 Apr 2024 03:03:12 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id gh16-20020a170906e09000b00a5180d5b31asm672634ejb.32.2024.04.18.03.03.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Apr 2024 03:01:20 -0700 (PDT)
-Message-ID: <c1763d69-f0a4-4415-be7a-31b04153fbfb@linaro.org>
-Date: Thu, 18 Apr 2024 12:01:17 +0200
+        Thu, 18 Apr 2024 03:03:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 18 Apr 2024 12:03:10 +0200
+Message-Id: <D0N5VCESMRIX.3MY64A0MXKJGW@fairphone.com>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH 1/2] arm64: dts: qcom: pmi632: Add vibrator
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Fenglin Wu <quic_fenglinw@quicinc.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Konrad Dybcio" <konrad.dybcio@linaro.org>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ "Fenglin Wu" <quic_fenglinw@quicinc.com>
+X-Mailer: aerc 0.17.0
 References: <20240418-fp3-vibra-v1-0-b636b8b3ff32@fairphone.com>
  <20240418-fp3-vibra-v1-1-b636b8b3ff32@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20240418-fp3-vibra-v1-1-b636b8b3ff32@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <c1763d69-f0a4-4415-be7a-31b04153fbfb@linaro.org>
+In-Reply-To: <c1763d69-f0a4-4415-be7a-31b04153fbfb@linaro.org>
 
-On 18.04.2024 8:36 AM, Luca Weiss wrote:
-> Add a node for the vibrator module found inside the PMI632.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
+On Thu Apr 18, 2024 at 12:01 PM CEST, Konrad Dybcio wrote:
+> On 18.04.2024 8:36 AM, Luca Weiss wrote:
+> > Add a node for the vibrator module found inside the PMI632.
+> >=20
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+>
+> On a side note, this is a totally configuration-free peripheral that does=
+n't do
+> anything crazy until manually configured.
+>
+> In the slow quest to be (hopefully) more sane about the defaults, should =
+we keep
+> them enabled by default? Bjorn?
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+But many (most?) devices don't have a vibration motor connected to
+PMI632, some (like devboards) don't have anything, and other phones have
+a separate chip that controls the vibration motor.
 
-On a side note, this is a totally configuration-free peripheral that doesn't do
-anything crazy until manually configured.
+Enabling this by default would mean all devices with PMI632 would get an
+input device for the vibrator that probably doesn't work?
 
-In the slow quest to be (hopefully) more sane about the defaults, should we keep
-them enabled by default? Bjorn?
+Regards
+Luca
 
-Konrad
+>
+> Konrad
+
