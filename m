@@ -1,109 +1,75 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95B815B548
-	for <phone-devel@vger.kernel.org>; Thu, 18 Apr 2024 10:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA6937165;
+	Thu, 18 Apr 2024 12:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713434596; cv=none; b=ZnTJwlChkSQ3aTgJNk6kM2E6ahV7+9jfn/TnhaeYhUztkIlQ+iu6zVdjRyYeXlfjwc7KB1dkTPtnkSMGeKuPaD+GTc+KWLG1BjekjxFyPkUb4QkIdImdRUHCQMyg9+hLEwEsXwRsiUO2iSUAPn19yIvNwZqgzjy4N7itiG+7nDw=
+	t=1713444567; cv=none; b=l41AdFTdwVQTVXVVdp2idOmR+C03RdriBMZ6kaVRuUJ2a1v+WtFYwBCI7wI02xfayYrC1fSeqsWwiE3Syh94e+OSzOOErmgrmQfqUpgh9wSZRq0RBkQ3XModZchYm7gdZO7fHFzjy4S7lbJ3gxjwg+ucnnKXpZlojrAEnp2dLcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713434596; c=relaxed/simple;
-	bh=zwzkYWr6U9C4zC2JlX3QMDroH3epi3ZSlaJuC9jmIvY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=TnbRtWALH/oXtdKt+qFEGjVmNX5GSdbwW3LlubNAZYXtH+IXoEuJlE/w2yC2UV3TSGBErSn8oTeH+MzEub/DJGyY6W3zIPFDdIsnGGlWYS/RSdz7qNN6lxmW8HcDC3Kn4qUoht4SwVZFE6vmZsBbdkEwHSEmpUkNCuLxS6ILNvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=32zD3y44; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1713444567; c=relaxed/simple;
+	bh=G8iIaDSoTzX8WwprmZzksy2cT8VoIMe2ObbDA5sfRks=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l/GxTvu47HWIJ1FXqEtCPEiCIPvhm3ZzVIMe+0Sd+oR6CynWaxjv1pr16PuPmfCKJkqi5s3ADH+9iE5+dpb46sVXLkwK6CGm7jKnsOn0AbHw1YMWyPgZ1Mu8C3vRLEZ8N9THPMDpFfGXV6tINcAMg1iQH2vNmQXtkjTIg16CLGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BgVbWLpd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="32zD3y44"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-57013379e17so547828a12.0
-        for <phone-devel@vger.kernel.org>; Thu, 18 Apr 2024 03:03:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1713434592; x=1714039392; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zwzkYWr6U9C4zC2JlX3QMDroH3epi3ZSlaJuC9jmIvY=;
-        b=32zD3y44hHaLIYej5hYS32GufwYGYRibPGW7H1540N4sCnx1Ra2aQ48QyYnbP/Rtkn
-         5LYrRWqRx4iqonM4En5tqQcLAdoaf+DywCMtNDgT07hPKKMY88DG0/1JovWPbJtLMwN3
-         6Q7it91+9KwtCPvpbDJKJ6UVUEdt211xAL2lxBBRVdI5AVxZD3Elx+2JNJiUOmhX/Flv
-         rmCCk8IttwWC70m9fJqMg5+f9p7fap040O8SJzDidRqbsvOFSl6s6/VKUhbkduwFJZjo
-         UFiagZ5L6S+F8R3QiitcE8gYdRxNB/VeRTPrKE28a53pAUXiRHDnWTMCsx+6RHPjBlQu
-         AIuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713434592; x=1714039392;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=zwzkYWr6U9C4zC2JlX3QMDroH3epi3ZSlaJuC9jmIvY=;
-        b=fgHJLPTeroeWokNUQLgitzXpZBxoxhfjkmPkiKC10ybtly1jet/IQMAiYS5L8CXXDe
-         vZ1eLeyiABLx/6c5LWmHbLoumSmdrn3KmKAWz+uj5MaFbVGXXpNQQBaa4uQpyPWR/8tr
-         Po1BPAIFGS6ITvfDSFzuEs/K2qUCi0QkQYRm63gWZCI9oTrWZCHBhm2OF83vc5ag8FLS
-         afDAjJk/q1LIVTMiPv3ZlwggdglJasDvU2M6BQfNhq6+mJ56//plV/mS7vHlMvfHodmw
-         uLcZq8oCo6kUPBTrCrH5Vkse6tFyHVoqnNZdL2OBoDOgXuU9zpwF+zA7kFtJP+vc2zVj
-         lYSg==
-X-Forwarded-Encrypted: i=1; AJvYcCX3+Bj+QmMDFYis0q0+9frGDRDsy627oh+HRav31bcnRmnBsZx+howO5WFe5rZa/Gr4qpHySHWK1a4OO0mC87pntEAoVW3b3PPn3Ig=
-X-Gm-Message-State: AOJu0YxN/R/Z0c6fphnXy9yOEtv26/GC+wfUH/lQmPsTktEjTuFoAkuj
-	XbJQs6ayhBAUGpOTSjknB0RTjm9DI+p75I3vgY95CDN2zuLDQTKBnbM5F6wwTf8=
-X-Google-Smtp-Source: AGHT+IFwCe4772YEoD9aT9S4d9KsRvOdenXKwAQfIEqOG8jB0+onHAzI0XgYqm54xb5CuulaaJho7w==
-X-Received: by 2002:a17:906:6857:b0:a51:dd18:bd20 with SMTP id a23-20020a170906685700b00a51dd18bd20mr1763260ejs.14.1713434592068;
-        Thu, 18 Apr 2024 03:03:12 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id gh16-20020a170906e09000b00a5180d5b31asm672634ejb.32.2024.04.18.03.03.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Apr 2024 03:03:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BgVbWLpd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA4AC113CC;
+	Thu, 18 Apr 2024 12:49:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713444566;
+	bh=G8iIaDSoTzX8WwprmZzksy2cT8VoIMe2ObbDA5sfRks=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BgVbWLpdSqyUhBogIz8YhMvuKkPpyMVD064SsnwwAWjiH81oDUoAKnL2bTdpYIj7D
+	 yjXVcw1l+dhS1QAwLtRs+Q3S9AekJoj7ymUKvL7wsh7mo2WVxMSJwGuIpvOsVz/nwW
+	 NNpU9W5T3WM5LNCf3Qn9J1G+YgLSND354UbUm4MqPvsB9Z03+pBIKHHNt6KoWCR5tC
+	 eZb/7PuULVOfnmgZLzEQWtaQdDB8bpIem3KkHKDsnKPadqeiFVZ6GtrM5qbJq2tB3n
+	 xeLQ8mwZD2ZP37MfBy7HtW728a4DhWHAdnpbVubVJF9oa9uHs6Ravx25tPFHi7g2Zn
+	 YGTuLDfsn9g+w==
+Date: Thu, 18 Apr 2024 07:49:23 -0500
+From: Rob Herring <robh@kernel.org>
+To: David Wronek <david@mainlining.org>
+Cc: Daniel Vetter <daniel@ffwll.ch>, ~postmarketos/upstreaming@lists.sr.ht,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	dri-devel@lists.freedesktop.org,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Maxime Ripard <mripard@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	phone-devel@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH v4 1/2] dt-bindings: display: panel: Add Raydium RM69380
+Message-ID: <171344451492.997671.11196384805681693246.robh@kernel.org>
+References: <20240417-raydium-rm69380-driver-v4-0-e9c2337d0049@mainlining.org>
+ <20240417-raydium-rm69380-driver-v4-1-e9c2337d0049@mainlining.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 18 Apr 2024 12:03:10 +0200
-Message-Id: <D0N5VCESMRIX.3MY64A0MXKJGW@fairphone.com>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] arm64: dts: qcom: pmi632: Add vibrator
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@linaro.org>, "Bjorn Andersson"
- <andersson@kernel.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Fenglin Wu" <quic_fenglinw@quicinc.com>
-X-Mailer: aerc 0.17.0
-References: <20240418-fp3-vibra-v1-0-b636b8b3ff32@fairphone.com>
- <20240418-fp3-vibra-v1-1-b636b8b3ff32@fairphone.com>
- <c1763d69-f0a4-4415-be7a-31b04153fbfb@linaro.org>
-In-Reply-To: <c1763d69-f0a4-4415-be7a-31b04153fbfb@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240417-raydium-rm69380-driver-v4-1-e9c2337d0049@mainlining.org>
 
-On Thu Apr 18, 2024 at 12:01 PM CEST, Konrad Dybcio wrote:
-> On 18.04.2024 8:36 AM, Luca Weiss wrote:
-> > Add a node for the vibrator module found inside the PMI632.
-> >=20
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
->
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
->
-> On a side note, this is a totally configuration-free peripheral that does=
-n't do
-> anything crazy until manually configured.
->
-> In the slow quest to be (hopefully) more sane about the defaults, should =
-we keep
-> them enabled by default? Bjorn?
 
-But many (most?) devices don't have a vibration motor connected to
-PMI632, some (like devboards) don't have anything, and other phones have
-a separate chip that controls the vibration motor.
+On Wed, 17 Apr 2024 18:29:33 +0200, David Wronek wrote:
+> Raydium RM69380 is a display driver IC used to drive OLED DSI panels.
+> Add a dt-binding for it.
+> 
+> Signed-off-by: David Wronek <david@mainlining.org>
+> ---
+> Note:
+> Depends on commit 48a516363e29 ("dt-bindings: display: panel: add common dual-link schema")
+> ---
+>  .../bindings/display/panel/raydium,rm69380.yaml    | 89 ++++++++++++++++++++++
+>  1 file changed, 89 insertions(+)
+> 
 
-Enabling this by default would mean all devices with PMI632 would get an
-input device for the vibrator that probably doesn't work?
-
-Regards
-Luca
-
->
-> Konrad
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
