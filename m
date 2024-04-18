@@ -1,59 +1,60 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60431E48B
-	for <phone-devel@vger.kernel.org>; Thu, 18 Apr 2024 06:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC9F2375B
+	for <phone-devel@vger.kernel.org>; Thu, 18 Apr 2024 06:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713422239; cv=none; b=LSgeVMaAaOL2A2Ae/0RCoXsykB14Ojc6m71FHkdzUxeCafXdhlSmzsb1UeBuigWjZ4xfGxirbz5dNSMkrPNVIntqcUkz+BnEyWD50G2+mf2n4xf22xKQBGmGu4WcQbEZOwjmgmOKbQXdInvI5vrh1ynKmki7HvC3T4B3ZYc99+E=
+	t=1713422241; cv=none; b=ELHPo4KnnC8bZ3ND4cq0CRXO1tJNIBbd+rLcE0K7JIMHx1dupijhiTZRaxD8aH8FgJfkt9PQuQHwoZ220GZb18BAcLwqHzo04GKrOh+ZQbhw2ITgop2fNZevn1nUjZE2HN3G+x1vqflrjJA2/YN3VBnPwQWddLEidApVpXaRcQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713422239; c=relaxed/simple;
-	bh=AZORWu8R8zYeP/ZFHg4EUePNoeAt6LSIC3aOkhrqNuU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DRNqi7Cnv39hJeXVKtHWffXb3Vvx+Ogc3gZE6032hDsoHBA3EXnsBhnE1SKjVvXD8X7VMcID/GhCpnMkNTZFKVeXPUj4cabILjZgTvwwDo/g/pZMT4LrTHtCirAv3oozbb1I2G6O6r3xA48SQIxU6RtI7fcwNrQ5qivcSPACX18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=ZL4kamYD; arc=none smtp.client-ip=209.85.208.42
+	s=arc-20240116; t=1713422241; c=relaxed/simple;
+	bh=IgFSS0qtSnyg++H1olUTQAlmpttnmEZ7gZvh7AhbrdQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=EqT2TPalbG0CdRCRJ6UQwLAWT0pPHbYXlwmSaEdFrdAfSoFT38FdDhFg1WDL+mFr9k94hWTf5p487Y0lxLGWw3gS/CJMOfW78+B6DS3sqHn+c0Zkx8KOu1Y4fJBWJLpsKeLOqROyZI3zUZQnfu9fq0NqRMVKqdOerubTKy7otxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=wRzKGQMy; arc=none smtp.client-ip=209.85.208.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="ZL4kamYD"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5708d8beec6so567274a12.0
-        for <phone-devel@vger.kernel.org>; Wed, 17 Apr 2024 23:37:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="wRzKGQMy"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-563cb3ba9daso380254a12.3
+        for <phone-devel@vger.kernel.org>; Wed, 17 Apr 2024 23:37:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1713422236; x=1714027036; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=llTPKlZu+m+rPiTyn8KmBYZdyOU2ppQM2B/d4Fcas6w=;
-        b=ZL4kamYDnq4I/3sMTFRWPqRnenMQspeDCSZhKvoKuMzWRBpw2VAdwPRYk6btSq7z10
-         noUn2UqPQDQP7NcimdPyyoZQt45m93n1wBW+7D2kH8txQn38uuDCIfqwqJ0wom8oRoBG
-         DXS+c5cEKf9QGI0dLFSfnsjsyJ0WhhugUYT6kzI/4GCOxkimfyy7ifGgtRiAfYJu0V83
-         SqolXRS0glH1a0EVXhy6YTIrm4Y9r5rpwgALSqISGlqklEVTfCCE6RPnV6vWms91KkdT
-         Y5xRUVlhIZYi6CkXmShKsFJssd5pWkCxwlx97HMYGr46cluuew+duQRzfc44rbR2W5kn
-         Nb/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713422236; x=1714027036;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=fairphone.com; s=fair; t=1713422238; x=1714027038; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=llTPKlZu+m+rPiTyn8KmBYZdyOU2ppQM2B/d4Fcas6w=;
-        b=eWZec4LCQKWWq5KYoDo9cxn/11ow4tjZhgV9cLl/bv+0nb9A2xd5E2h6E29v69kH0d
-         DkvmTrW5GCccy9b3z+xQRyTxGi1B9KxJsJsResLa3XpWNqaA5z+G61VMfH9qthn6KTOJ
-         AkwdqPUI6h43PfAqDt05KIqKY9aQiywIfZ3KexKH1Rr1TLSh8dqg1sGAhSaIZF6lTry9
-         +eNXCYQEBYyktxjQdqGuMpIyUCsw87vfvV/nJDV9Ae5/GSmVfQwnV6xLDanj0ELbMnkv
-         Qn905B4SN0QhhtS6BeP6GRKuy/lFV0eGJOp2LlZ/9G91HGH77DTPMdRLIR+edDGEepab
-         3hyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUqd3HfTBr7id/gmcuJEzl+dfewg3PUDQQwnyqZxsW1Twhj4xswppXVOC1RGaIEjuGzZLtdEkHMRue9f7cI+wfBQwlahGhlbpiDZIo=
-X-Gm-Message-State: AOJu0YyFXzYu5hafwgHE2O1DYM0zvnSLMiRDzNRRMZHKeZ3lNe7Idocz
-	W9iuOqnkYVcfRHxEjLcCbmQW6dSPgwHOHUGXsw8npWrAR/F9G0Lg0U1SY3J7baM=
-X-Google-Smtp-Source: AGHT+IHqtCV++Wsw9wK28VHIK6gcb8fIo2SrGPjBtDGKkrvJzKQWMEY51hHoxq1zqO+rtWtMTTyGHw==
-X-Received: by 2002:a50:d514:0:b0:56f:e7b9:e67d with SMTP id u20-20020a50d514000000b0056fe7b9e67dmr1671298edi.12.1713422235845;
-        Wed, 17 Apr 2024 23:37:15 -0700 (PDT)
+        bh=39prjfdUZn68Ea0wBSxJWy7y6KU96R9Wr42vUXg8nHA=;
+        b=wRzKGQMyy7LZx/hWyIHPeJCSYHVjd85B/xXbyMhyL5ETecUcEI7Sax/1ErjNMouwPZ
+         kV2xitYzMf9GEdBwhRHY3ii5qSLtfYaLulHMKZHQ0qECdQs2V6p9g3xOFW5g2OIWKPQs
+         zJgl7dSGegGW8LqwpRM4plOcUqOWmz8J6aUUAwUiwzuUbqHUD6MbA0xKdCAuAovFlBM6
+         V84UhqThjyJULf6Dhbn/rvqfybrcIKIPqSF0Fl6At5zIQWSZhtKayTsq6hlqd5F9hDXx
+         MtS9UBbSSDcDqN+nV5i/FTbK9EwLTZcSse/Z6V7v65nFvD2jxLHV2OITD3dScm4VD30d
+         Bu5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713422238; x=1714027038;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=39prjfdUZn68Ea0wBSxJWy7y6KU96R9Wr42vUXg8nHA=;
+        b=Y1AdlCIeIZmvavEuYtRu8oYo6Q1z/eqbgE6kdjaZTcA3bQEK5cj00MY8JO2jwI5veF
+         DzRfL0Tj2L4Ia2x/NGvK40/ctuOGJbmNM/Lcnkg6wMvV89/mv0v5T9vkXLEKaeRUCKIp
+         IymBmHm/wj9cDTc4C2SWhMlaCcnzaY78+SHmqX8WTzpAAuLp9x5YiINieszf86NamC/u
+         lRtxi07fwQl9jj9wypEUi4g+znTHO/mRLF6AiJz8IntUEI078gUgYJlhAIKIMHJ/wX5p
+         R4rQ5ghsBfsgBacaMhz+N4zIDQXmt+mSfX7F6OSE7HkKW6jzvKkZvR18jScC2TH4KPFv
+         YXMw==
+X-Forwarded-Encrypted: i=1; AJvYcCUW3K0c+tHMPcgvPcdf9EsY9r7gQqvH6k1/paqPmwiKpB+dXwvy35qI0xWbEPK0Bewfcuo5a5obFmvJV7tMYMJqFzoky2rAh82bngQ=
+X-Gm-Message-State: AOJu0YyRI7C6L1cPIaTftWsY/96DCIiCscmzeKtI7wpijBNuCvYyf70y
+	auj+qPI/ZiTIRAXa+7C4fmBmdj6nYJxMqJgcUNZLoyeecsDnnESPA1W7xBv75uo=
+X-Google-Smtp-Source: AGHT+IFMMUtN5QDG0RL08DrlOyhBUpv/2mzTf2vAZ1XgVxE3n0VWHXu9Xd2BxaI1nvTV5u4aIeKVpw==
+X-Received: by 2002:a50:c057:0:b0:56c:1696:58a8 with SMTP id u23-20020a50c057000000b0056c169658a8mr1537498edd.0.1713422238001;
+        Wed, 17 Apr 2024 23:37:18 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id cf8-20020a0564020b8800b0056c24df7a78sm472277edb.5.2024.04.17.23.37.14
+        by smtp.gmail.com with ESMTPSA id cf8-20020a0564020b8800b0056c24df7a78sm472277edb.5.2024.04.17.23.37.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Apr 2024 23:37:15 -0700 (PDT)
+        Wed, 17 Apr 2024 23:37:16 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 0/2] Enable vibrator on PMI632 + Fairphone 3
-Date: Thu, 18 Apr 2024 08:36:53 +0200
-Message-Id: <20240418-fp3-vibra-v1-0-b636b8b3ff32@fairphone.com>
+Date: Thu, 18 Apr 2024 08:36:54 +0200
+Subject: [PATCH 1/2] arm64: dts: qcom: pmi632: Add vibrator
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -62,9 +63,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIW/IGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDE0ML3bQCY92yzKSiRF1Di2QTAwMLC0sLU2MloPqCotS0zAqwWdGxtbU
- A66ZMc1sAAAA=
+Message-Id: <20240418-fp3-vibra-v1-1-b636b8b3ff32@fairphone.com>
+References: <20240418-fp3-vibra-v1-0-b636b8b3ff32@fairphone.com>
+In-Reply-To: <20240418-fp3-vibra-v1-0-b636b8b3ff32@fairphone.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -74,28 +75,30 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.13.0
 
-With the patches to add vibration support for PMI632 finally applied,
-let's enable this for the PMI632 PMIC and Fairphone 3 smartphone.
-
-https://lore.kernel.org/linux-arm-msm/20240416-pm8xxx-vibrator-new-design-v11-0-7b1c951e1515@quicinc.com/
-
-Patches have landed in the input tree:
-https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git/
+Add a node for the vibrator module found inside the PMI632.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Luca Weiss (2):
-      arm64: dts: qcom: pmi632: Add vibrator
-      arm64: dts: qcom: sdm632-fairphone-fp3: Enable vibrator
+ arch/arm64/boot/dts/qcom/pmi632.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
- arch/arm64/boot/dts/qcom/pmi632.dtsi              | 6 ++++++
- arch/arm64/boot/dts/qcom/sdm632-fairphone-fp3.dts | 4 ++++
- 2 files changed, 10 insertions(+)
----
-base-commit: eecc5d90861b551d3b8fbd0d0e6f25c40496f3c0
-change-id: 20240418-fp3-vibra-18c400889853
+diff --git a/arch/arm64/boot/dts/qcom/pmi632.dtsi b/arch/arm64/boot/dts/qcom/pmi632.dtsi
+index 94d53b1cf6c8..b4313728f3e7 100644
+--- a/arch/arm64/boot/dts/qcom/pmi632.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmi632.dtsi
+@@ -200,5 +200,11 @@ pmi632_lpg: pwm {
+ 
+ 			status = "disabled";
+ 		};
++
++		pmi632_vib: vibrator@5700 {
++			compatible = "qcom,pmi632-vib";
++			reg = <0x5700>;
++			status = "disabled";
++		};
+ 	};
+ };
 
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.44.0
 
