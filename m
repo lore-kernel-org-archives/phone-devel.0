@@ -1,88 +1,224 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6378313D2A1;
-	Fri, 19 Apr 2024 22:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C3F1427B;
+	Sat, 20 Apr 2024 13:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713565485; cv=none; b=ucXaqSyNP+dyyq9EfNnB7goKP4jLvc2I28c5F6oZN3ANmYOgkvWFgm8r+u9Tp3VAQ6LpdzvDZSwUULPY78pzoR0RVOfd+AvJFEatmOCMdEHTi/UebD2cQde++O37LSL29rGkIaOpLne/SSqPUfoHZWTYu+rRJvswDKUeeMW3698=
+	t=1713618274; cv=none; b=Fo7uopP6FsffD7hvATaW11h8yp1Jrhc+VyZA6v7KY3Rxh9hDCZlaUNEwPjILBdXMtFszMIJpcL97TvmEcas+vVpalx57uhHp4qYVs/mWtDLf9sa4mip9zT/uGyCbNX0LLovK0Rtnj44QXLgnsr1bZ2gtqP8C4YMlosCNrlEtIP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713565485; c=relaxed/simple;
-	bh=0pD1drXQj39EFN70jQBI3yqld3d3RmDOuileOMRvtOA=;
-	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
-	 Subject:From:Cc:To:Date; b=n9rjERSm4DljifxfOpjS61yxfcWaUe1T1ck6yM8TfevGihERsJ4G7AZVjE41JQqWcrpnGHJFmVZQ7cKXalgQd4cUmHNahEob8T73lnSStX0Oz+3sOwAA8/G1gFfwjUHr0P4BfgqTr57ZmrxBArWGMz/hhugw7Uf0wMv0KQdNZxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJ+nSZZo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713618274; c=relaxed/simple;
+	bh=QamFW/4GCuEWWHNTHqdv7yga8qrR6HqDWk864yMcmsI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uxyYE/OcFF828wYRKA8Z9DPMvvZR7Jj7LmnKBEoKodoAxFoou8W28AzTNV4QswT/W7enV3mA0DBZDMGYNIRMjexZkZvl3pUxU0AM64cV1Epj8y/8jVATza0FdPtup39aIasAuy1M/y1UtNOO7FlYeIVaUkr+HkFHRnWGLXNGeWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GvXFrpqT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJ+nSZZo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25F0C116B1;
-	Fri, 19 Apr 2024 22:24:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GvXFrpqT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3140C072AA;
+	Sat, 20 Apr 2024 13:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713565484;
-	bh=0pD1drXQj39EFN70jQBI3yqld3d3RmDOuileOMRvtOA=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=rJ+nSZZoJx3f6EJuiigZuYRjPe0R+Glwm9i+QGpOqc7TGdsye5yFeaoD736tqv9He
-	 MCSyZ4VcJFcULkULRxpuZLMiivKub3KLxbSTZNIJrcHc1BYs/oWBqcIhQi7YhpCKrd
-	 bn8BQNsVc6iHexGOxLVjtppPRXvK1+F5a506CSPqpRJ5BtS86jg5DeArHC7L7b5XyP
-	 5gJTx93tQjPKjLCNLCHee/v4Y/bD9nRTpM+BpPOilpkJliu5tpDgsCZmWtywNNOyOU
-	 X1QN7XerODRFMluOIZto5hzj6Woeqhpcq/LNa2an4nDdBL95/yr8Qpxe8g9z55eZWS
-	 UJNmsj9flPzjA==
-Message-ID: <d7ff7dd609cd1b9a50e5ffa882d05b90.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1713618273;
+	bh=QamFW/4GCuEWWHNTHqdv7yga8qrR6HqDWk864yMcmsI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GvXFrpqTxvJU9pbwvOH+OWJN9vrBF+HIDsJyoxBlEjr7n5b9KRbBQ2gDNNY1hb9so
+	 QWSBXudL2KsSBVYN3shgXfLMtqxXDyt3mIRHdAJfOGmH6ME5KUAigMkLGXOwyibBVX
+	 k4iMGwES8g/Wyp+Jg29aifJzbysH55a7d0zb5w06fY1QB6v372uYO3ZWi1zz1Sp/yF
+	 SZCutEls/IQ+he8fuEawxOG2odfeufK+HFaJQF7GAgFebAot6WfaT9LoMpRtxK+DzH
+	 OLaE9pWjWpDQFKD6U6MQDcAmzhdi/zxybx/sapU7mG6UynmQQUEuWSomzjuvvLiVnZ
+	 oFSdCRVVkOxgg==
+Date: Sat, 20 Apr 2024 14:04:17 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Aren Moynihan <aren@peacevolution.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Liam
+ Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Andy
+ Shevchenko <andy.shevchenko@gmail.com>, Ondrej Jirman <megi@xff.cz>, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
+ linux-iio@vger.kernel.org, phone-devel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, Willow
+ Barraco <contact@willowbarraco.fr>
+Subject: Re: [PATCH 2/4] iio: light: stk3310: Implement vdd supply and power
+ it off during suspend
+Message-ID: <20240420140417.12b2bf8e@jic23-huawei>
+In-Reply-To: <20240414175716.958831-2-aren@peacevolution.org>
+References: <20240414175300.956243-1-aren@peacevolution.org>
+	<20240414175716.958831-1-aren@peacevolution.org>
+	<20240414175716.958831-2-aren@peacevolution.org>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <3287993.aeNJFYEL58@radijator>
-References: <20240402-pxa1908-lkml-v9-0-25a003e83c6f@skole.hr> <de4c56a8-488d-4cdb-9d6c-e9d6e63b22b9@skole.hr> <58b23157c088cb4774d579cc8700de85.sboyd@kernel.org> <3287993.aeNJFYEL58@radijator>
-Subject: Re: [PATCH v9 5/9] clk: mmp: Add Marvell PXA1908 clock driver
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Catalin Marinas <catalin.marinas@arm.com>, Conor Dooley <conor+dt@kernel.org>, Duje =?utf-8?q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, Guilherme G. Piccoli <gpiccoli@igalia.com>, Haojian Zhuang <haojian.zhuang@linaro.org>, Kees Cook <keescook@chromium.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Linus Walleij <linus.walleij@linaro.org>, Lubomir Rintel <lkundrak@v3.sk>, Michael Turquette <mturquette@baylibre.com>, Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>, Tony Lindgren <tony@atomide.com>, Tony Luck <tony.luck@intel.com>, Will Deacon <will@kernel.org>
-Date: Fri, 19 Apr 2024 15:24:42 -0700
-User-Agent: alot/0.10
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Quoting Duje Mihanovi=C4=87 (2024-04-19 07:31:14)
-> On Friday, April 12, 2024 4:57:09=E2=80=AFAM GMT+2 Stephen Boyd wrote:
-> > Quoting Duje Mihanovi=C4=87 (2024-04-11 03:15:34)
-> >=20
-> > > On 4/11/2024 10:00 AM, Stephen Boyd wrote:
-> > > > Is there a reason this file can't be a platform driver?
-> > >=20
-> > > Not that I know of, I did it like this only because the other in-tree
-> > > MMP clk drivers do so. I guess the initialization should look like any
-> > > of the qcom GCC drivers then?
-> >=20
-> > Yes.
->=20
-> With the entire clock driver code in one file this is quite messy as I al=
-so=20
-> needed to add module_init and module_exit functions to (un)register each =
+On Sun, 14 Apr 2024 13:57:14 -0400
+Aren Moynihan <aren@peacevolution.org> wrote:
 
-> platform driver, presumably because the module_platform_driver macro does=
-n't=20
-> work with multiple platform drivers in one module. If I split up the driv=
-er=20
-> code for each clock controller block into its own file (such as clk-of-
-> pxa1908-apbc.c) as I believe is the best option, should the commits be sp=
-lit=20
-> up accordingly as well?
+> From: Ondrej Jirman <megi@xff.cz>
+> 
+> VDD power input can be used to completely power off the chip during
+> system suspend. Do so if available.
+I'd make this non optional (relying on regulator framework providing
+us a stub for old DT etc) and pay the minor cost of potentially restoring
+registers when it was never powered down.
 
-Sure. Why is 'of' in the name? Maybe that is unnecessary?
+Simpler code and likely anyone who is doing suspend / resume will have
+power control anyway.
 
->=20
-> > > While at it, do you think the other MMP clk drivers could use a=20
-> conversion?
-> >=20
-> > I'm a little wary if the conversion cannot be tested though.
->=20
-> I'd rather leave it to someone with the hardware then, especially since t=
-he=20
-> only reason I found out about the above is that the board I'm working on =
+Jonathan
 
-> failed to boot completely without the module_init function.
->=20
+> 
+> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+> Signed-off-by: Aren Moynihan <aren@peacevolution.org>
+> ---
+>  drivers/iio/light/stk3310.c | 56 +++++++++++++++++++++++++++++++++++--
+>  1 file changed, 53 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+> index 7b71ad71d78d..bfa090538df7 100644
+> --- a/drivers/iio/light/stk3310.c
+> +++ b/drivers/iio/light/stk3310.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/iio/events.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> +#include <linux/regulator/consumer.h>
+>  
+>  #define STK3310_REG_STATE			0x00
+>  #define STK3310_REG_PSCTRL			0x01
+> @@ -117,6 +118,7 @@ struct stk3310_data {
+>  	struct regmap_field *reg_int_ps;
+>  	struct regmap_field *reg_flag_psint;
+>  	struct regmap_field *reg_flag_nf;
+> +	struct regulator *vdd_reg;
+>  };
+>  
+>  static const struct iio_event_spec stk3310_events[] = {
+> @@ -607,6 +609,16 @@ static int stk3310_probe(struct i2c_client *client)
+>  
+>  	mutex_init(&data->lock);
+>  
+> +	data->vdd_reg = devm_regulator_get_optional(&client->dev, "vdd");
 
-Ok, sounds fine.
+This needs a comment on why it is optional.
+Generally power supply regulators are not, but I think the point here
+is to avoid restoring the registers if the chip wasn't powered down?
+
+This feels like an interesting gap in the regulator framework.
+For most cases we can rely on  stub / fake regulator being created
+for always on supplies, but that doesn't let us elide the register writes.
+
+My gut feeling is do them unconditionally. Suspend / resume isn't
+that common that it will matter much.
+
+That would allow you to have this as devm_regulator_get() and
+drop handling of it not being provided.
+
+> +	if (IS_ERR(data->vdd_reg)) {
+> +		ret = PTR_ERR(data->vdd_reg);
+> +		if (ret == -ENODEV)
+> +			data->vdd_reg = NULL;
+> +		else
+> +			return dev_err_probe(&client->dev, ret,
+> +					     "get regulator vdd failed\n");
+> +	}
+> +
+>  	ret = stk3310_regmap_init(data);
+>  	if (ret < 0)
+>  		return ret;
+> @@ -617,9 +629,18 @@ static int stk3310_probe(struct i2c_client *client)
+>  	indio_dev->channels = stk3310_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(stk3310_channels);
+>  
+> +	if (data->vdd_reg) {
+> +		ret = regulator_enable(data->vdd_reg);
+> +		if (ret)
+> +			return dev_err_probe(&client->dev, ret,
+> +					     "regulator vdd enable failed\n");
+> +
+> +		usleep_range(1000, 2000);
+> +	}
+> +
+>  	ret = stk3310_init(indio_dev);
+>  	if (ret < 0)
+> -		return ret;
+> +		goto err_vdd_disable;
+>  
+>  	if (client->irq > 0) {
+>  		ret = devm_request_threaded_irq(&client->dev, client->irq,
+> @@ -645,32 +666,61 @@ static int stk3310_probe(struct i2c_client *client)
+>  
+>  err_standby:
+>  	stk3310_set_state(data, STK3310_STATE_STANDBY);
+> +err_vdd_disable:
+> +	if (data->vdd_reg)
+> +		regulator_disable(data->vdd_reg);
+>  	return ret;
+>  }
+>  
+>  static void stk3310_remove(struct i2c_client *client)
+>  {
+>  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> +	struct stk3310_data *data = iio_priv(indio_dev);
+>  
+>  	iio_device_unregister(indio_dev);
+>  	stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
+> +	if (data->vdd_reg)
+> +		regulator_disable(data->vdd_reg);
+>  }
+>  
+>  static int stk3310_suspend(struct device *dev)
+>  {
+>  	struct stk3310_data *data;
+> +	int ret;
+>  
+>  	data = iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
+>  
+> -	return stk3310_set_state(data, STK3310_STATE_STANDBY);
+> +	ret = stk3310_set_state(data, STK3310_STATE_STANDBY);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (data->vdd_reg) {
+
+As above, I don't think we care enough about overhead on
+boards where there isn't a vdd regulator.   Just do this
+unconditionally.
+
+> +		regcache_mark_dirty(data->regmap);
+> +		regulator_disable(data->vdd_reg);
+> +	}
+> +
+> +	return 0;
+>  }
+>  
+>  static int stk3310_resume(struct device *dev)
+>  {
+> -	u8 state = 0;
+>  	struct stk3310_data *data;
+> +	u8 state = 0;
+> +	int ret;
+>  
+>  	data = iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
+> +
+> +	if (data->vdd_reg) {
+> +		ret = regulator_enable(data->vdd_reg);
+> +		if (ret) {
+> +			dev_err(dev, "Failed to re-enable regulator vdd\n");
+> +			return ret;
+> +		}
+> +
+> +		usleep_range(1000, 2000);
+> +		regcache_sync(data->regmap);
+> +	}
+> +
+>  	if (data->ps_enabled)
+>  		state |= STK3310_STATE_EN_PS;
+>  	if (data->als_enabled)
+
