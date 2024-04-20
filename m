@@ -1,92 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7890A625;
-	Sat, 20 Apr 2024 13:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA6F20309;
+	Sat, 20 Apr 2024 13:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713618412; cv=none; b=I4ftQ8+xB2hojlZKW6bjRBQgmEKflof/hzTmIuE+7eLMYbOId7KfGFuKAyNX474MOpUsrgvFtd+8vWSqKj+ZAeB3q7h7hNXYyH768ZJaMhv1FaGRTqGPag8kCKEmGG0Obo6Th7yVXAXhvTA0m4oNVvcRzDYPhcCbaVKVueoGtuA=
+	t=1713619985; cv=none; b=dO1cd16IyLApROrVU6vOAaWA3FRk1dDMY/fhrnUlferAWtK+YUpb4266BJyV7N0uw/IOr2VTiXjpDMrQKT3ZkAeDAzy1E4DE1gCBUr+p+fCv/uXczxJjNHOLQaLMQhbI72hcU/7R7eo9P275Sdyt9hETPcfz5aSRrObKO+t8rGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713618412; c=relaxed/simple;
-	bh=N4vN3xcboLIjcxz6Bmykno3uW1Git1Vd/uH85dY0LS4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KhZRo4qIKXAZbo+hFdGUpig+LvKJh8BMmCp3qwGleuvjgPKbd5540vSpp3Vb+p2/9lG0oJZGFHptpvfRJf5R09ZoAh4fI/mkvjKf+YSpPx9P5LahHK6jkOcV9F2rNpZ21jN1yAUzK8q+xH79MuaT+1xpmdQMlkCPtQtw7+iIe4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QYK0GRP+; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QYK0GRP+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11066C072AA;
-	Sat, 20 Apr 2024 13:06:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713618412;
-	bh=N4vN3xcboLIjcxz6Bmykno3uW1Git1Vd/uH85dY0LS4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QYK0GRP+m4Cct/mfSzhcXZFYfRmR4F4A+nQncYRYOW4DLMxbJD1BE6SRBD5xV3Ofe
-	 2AjUjcCbiirX6iZYY4zEy4l2OUgWpnIsAUJlcPCpiHGaKycKG8VBDlILk9ayDo9A6A
-	 KDZWM8ASfUMcg0JPPReGhFT20Gsv2bjRw0Y2FAQbWO4ZAWuxirTDbncjL4DkBDEFDk
-	 IdLMFknMJUF1YYTiqY1nxHbmhbGEgFW5SzrbAenic1DgQizC4uHO+BO52ZIYKakqvD
-	 0rQeDLmpxu9cMQ5mF/SipssCiD86PA9pQBwYyAIabut3WzfHLti89sxmhG5GLM73FD
-	 AXo64nLedJ//A==
-Date: Sat, 20 Apr 2024 14:06:35 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Aren Moynihan <aren@peacevolution.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Ondrej Jirman <megi@xff.cz>, Uwe
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
- linux-iio@vger.kernel.org, phone-devel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, Willow
- Barraco <contact@willowbarraco.fr>
-Subject: Re: [PATCH 3/4] iio: light: stk3310: log error if reading the chip
- id fails
-Message-ID: <20240420140635.6dffa2fb@jic23-huawei>
-In-Reply-To: <CAHp75Vf_JX1Uv=_cvoiukzSaTVWbmQSW0P_nneP8C-kxX4fBXQ@mail.gmail.com>
-References: <20240414175300.956243-1-aren@peacevolution.org>
-	<20240414175716.958831-1-aren@peacevolution.org>
-	<20240414175716.958831-3-aren@peacevolution.org>
-	<CAHp75Vf_JX1Uv=_cvoiukzSaTVWbmQSW0P_nneP8C-kxX4fBXQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1713619985; c=relaxed/simple;
+	bh=PEcDp8I3M8Yr7iDTgjFDbNrl9L5ce/gSH/kcCCvROGw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EVjoi7r9RMkxDtx+JDPnGNfYMogiu4kqKXFt70Vst6m0knba6VLeSUfZaHOVvpuwMnIjr/pGI36LBn/AEUmxUFO+uMARNICCv1xQtQGMFhGSwAem8W66hGXfaZyk+bk+y7FOLfTCmcGQRrEgGUrvUGG0zmtWSuHPvAp7FJQ2fr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
+Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
+	by mx.skole.hr (mx.skole.hr) with ESMTP id CAECE8333C;
+	Sat, 20 Apr 2024 15:32:59 +0200 (CEST)
+Message-ID: <eb221864-0044-4ea5-bbee-7545d10cb130@skole.hr>
+Date: Sat, 20 Apr 2024 15:32:56 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 5/9] clk: mmp: Add Marvell PXA1908 clock driver
+To: Stephen Boyd <sboyd@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Conor Dooley <conor+dt@kernel.org>,
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+ Haojian Zhuang <haojian.zhuang@linaro.org>, Kees Cook
+ <keescook@chromium.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Linus Walleij <linus.walleij@linaro.org>, Lubomir Rintel <lkundrak@v3.sk>,
+ Michael Turquette <mturquette@baylibre.com>, Rob Herring
+ <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+ Tony Lindgren <tony@atomide.com>, Tony Luck <tony.luck@intel.com>,
+ Will Deacon <will@kernel.org>
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>,
+ linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20240402-pxa1908-lkml-v9-0-25a003e83c6f@skole.hr>
+ <de4c56a8-488d-4cdb-9d6c-e9d6e63b22b9@skole.hr>
+ <58b23157c088cb4774d579cc8700de85.sboyd@kernel.org>
+ <3287993.aeNJFYEL58@radijator>
+ <d7ff7dd609cd1b9a50e5ffa882d05b90.sboyd@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+In-Reply-To: <d7ff7dd609cd1b9a50e5ffa882d05b90.sboyd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 15 Apr 2024 18:05:54 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On 4/20/24 00:24, Stephen Boyd wrote:
+> Quoting Duje Mihanović (2024-04-19 07:31:14)
+>> On Friday, April 12, 2024 4:57:09 AM GMT+2 Stephen Boyd wrote:
+>>> Quoting Duje Mihanović (2024-04-11 03:15:34)
+>>>
+>>>> On 4/11/2024 10:00 AM, Stephen Boyd wrote:
+>>>>> Is there a reason this file can't be a platform driver?
+>>>>
+>>>> Not that I know of, I did it like this only because the other in-tree
+>>>> MMP clk drivers do so. I guess the initialization should look like any
+>>>> of the qcom GCC drivers then?
+>>>
+>>> Yes.
+>>
+>> With the entire clock driver code in one file this is quite messy as I also
+>> needed to add module_init and module_exit functions to (un)register each
+>> platform driver, presumably because the module_platform_driver macro doesn't
+>> work with multiple platform drivers in one module. If I split up the driver
+>> code for each clock controller block into its own file (such as clk-of-
+>> pxa1908-apbc.c) as I believe is the best option, should the commits be split
+>> up accordingly as well?
+> 
+> Sure. Why is 'of' in the name? Maybe that is unnecessary?
 
-> On Sun, Apr 14, 2024 at 8:57=E2=80=AFPM Aren Moynihan <aren@peacevolution=
-.org> wrote:
-> >
-> > If the chip isn't powered, this call is likely to return an error.
-> > Without a log here the driver will silently fail to probe. Common errors
-> > are ENXIO (when the chip isn't powered) and ETIMEDOUT (when the i2c bus
-> > isn't powered). =20
->=20
-> >         ret =3D regmap_read(data->regmap, STK3310_REG_ID, &chipid);
-> > -       if (ret < 0)
-> > +       if (ret < 0) {
-> > +               dev_err(&client->dev, "failed to read chip id: %d", ret=
-);
-> >                 return ret;
-> > +       } =20
->=20
-> Briefly looking at the code it seems that this one is strictly part of
-> the probe phase, which means we may use
->=20
->   return dev_err_probe(...);
->=20
-> pattern. Yet, you may add another patch to clean up all of them:
-> _probe(), _init(), _regmap_init() to use the same pattern everywhere.
->=20
+That seems to be a historical leftover from when Marvell was just adding 
+DT support to the ARM32 MMP SoCs which Rob followed along with in the 
+PXA1928 clk driver and so have I. Should I drop it then as Marvell has 
+in the PXA1908 vendor kernel?
 
-Yes, a precursor patch to use dev_err_probe() throughout the probe only
-functions in this driver would be excellent.
+Regards,
+--
+Duje
 
-Jonathan
