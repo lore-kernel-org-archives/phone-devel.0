@@ -1,49 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE0424A03;
-	Sun, 21 Apr 2024 16:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DDF5025E;
+	Sun, 21 Apr 2024 22:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713715633; cv=none; b=BlVfbNM8PJonUdlLcyGvzysDgkRdRlm0Gm2nc217b0nPRKy0SVIB7YeommoZXG9MzvSXu0NQ85S9HT8oRQe/CRlr+2xUvApbYdU3x9evxKHl4NzLLdm8F3dRh2zuesqM4nMW+a0mcmANaO6ChMRds94MiFQUMZXH9sEwMoWA2aM=
+	t=1713738584; cv=none; b=CKkC4cfXqTNNOmSCSVYgJOMhqL5JqkWkLNdbzsgrJC72f5kQMOJ1QQApKd14sdkgRi+RyHc6JNqTvTqQ+fU7e5fjEBHxdtXW4Sa+eBx+83rN9UnDerOdYBww4dHa5iPxU+Nob9m21oUHRW1wDFFrlpuze7JwIJKbfSpI5qfFsfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713715633; c=relaxed/simple;
-	bh=k8ouJEDnPjHW77IdXvL48XXyrgLgpjXfup/v/JZtYXY=;
+	s=arc-20240116; t=1713738584; c=relaxed/simple;
+	bh=pAMG5KWKT7pt63O48mYKDd15e3VnQ/Lf8St05kDp1TY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g3gcGAGJQkUZxwngmst1WUl8zkM/tMpT/0vOuZvMPBCYECHAlislMbVK1602w+oeI0L9BCjNNs3cQ4ybxc64wPGrSB1+VsGCScCVc0iITA41DhRs3YJ8JVaMRqCFB3+uysmbxOzrq/HhQTRnWS20/SrNSRenzYMTrBd8IJ/pCDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+Accpq3; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=rtW8ab+lwidp/U27x8DB1BKQlrsJAaQY34OIWF5dRoXTBekBKj3zAzj+eW6UMZmT0xrz39RrGMSoDtwu5syopO5EGlGLrloIqF2xHLPrdro16YjhTNZZgV8M2/Iz2vwy2yuRVmL8WZ5rqhEfzuvu34mzSKmZyL4lFqLxW6jcA4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i8JAMcn7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+Accpq3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997F8C32783;
-	Sun, 21 Apr 2024 16:07:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i8JAMcn7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0313C32782;
+	Sun, 21 Apr 2024 22:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713715632;
-	bh=k8ouJEDnPjHW77IdXvL48XXyrgLgpjXfup/v/JZtYXY=;
+	s=k20201202; t=1713738583;
+	bh=pAMG5KWKT7pt63O48mYKDd15e3VnQ/Lf8St05kDp1TY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+Accpq3xJNt4gM7EaOV6tEJbjf2V5S1VPNrPf4q5Qk7rCfVQuq+5DBFravH2mwZY
-	 rUW0u7Sh/u0hAkNaUiSFqfdGIX25mL1Z8PnWbU7Fv26HG2hno3cKENTfPB2dOU7p+y
-	 HNmQ9bZyADYzF+lSuGBr2/2rJsc73dKhXacx2xhdwWxiIIqzg4++a3qK6IKcIVymON
-	 6O48Eby7AOrbSYDkCU7B9LU5jjYBl8kg+VqqJ9OxYdwjWErFOv2Y5UNGXjhdkzESpD
-	 TqJ429sv1c7Egw7X3GNfHtQKAPLEp3nEnR3F93Ury5Jebnu/QvJPKIbppqvdW2YShp
-	 7nzi0yM9DL4Xw==
+	b=i8JAMcn7seJdgleCJhiekoejDhAOqEPqyXOk1N2payJSQm6DtGzsVEJ6nnmllv+Z/
+	 BiGywAKfeRchCapQ1foS8grMUVC9QFPnFTK1yDdVwlk9+vT7SrF0fAg0aotGYvpOQi
+	 pPKMt6SOADLfYRF2Kvi5BelVTjeNHsqKyz3lpp1YyJgwzB9Oh+ySzC33xT6MsV8OCq
+	 AJH0JzI8hf4P7DrEZ9LmFlkxtrT6XTFOxpmeQwUQ9pjOWu7a2MO63BtzgI9xW9x4hR
+	 zkWY6bO2SxmbSwlIGs/VsWUjKJIPWiOkPwuEYn/zizHdb6yBEHlepyB2kpfNLErFdf
+	 avoMLjQtTBuKw==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+To: Rob Clark <robdclark@gmail.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sean Paul <sean@poorly.run>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
+	Krishna Manikandan <quic_mkrishn@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Luca Weiss <luca.weiss@fairphone.com>
 Cc: ~postmarketos/upstreaming@lists.sr.ht,
 	phone-devel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Add USB-C orientation GPIO
-Date: Sun, 21 Apr 2024 11:07:05 -0500
-Message-ID: <171371562482.1174524.9194500934821003879.b4-ty@kernel.org>
+Subject: Re: (subset) [PATCH v2 0/3] DisplayPort support for SM6350/SM7225
+Date: Sun, 21 Apr 2024 17:29:17 -0500
+Message-ID: <171373856758.1196479.7387802929964223775.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240411-fp5-usb-c-gpio-v1-1-78f11deb940a@fairphone.com>
-References: <20240411-fp5-usb-c-gpio-v1-1-78f11deb940a@fairphone.com>
+In-Reply-To: <20240329-sm6350-dp-v2-0-e46dceb32ef5@fairphone.com>
+References: <20240329-sm6350-dp-v2-0-e46dceb32ef5@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -54,20 +67,20 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 11 Apr 2024 09:06:11 +0200, Luca Weiss wrote:
-> Define the USB-C orientation GPIOs so that the USB-C ports orientation
-> is known without having to resort to the altmode notifications.
+On Fri, 29 Mar 2024 08:45:53 +0100, Luca Weiss wrote:
+> Add the required changes to support DisplayPort (normally(?) available
+> via the USB-C connector) on the SM6350/SM7225 SoC.
 > 
-> On PCB level this is the signal from PM7250B (pin CC_OUT) which is
-> called USB_PHY_PS.
-> 
+> This has been tested on a Fairphone 4 smartphone with additional changes
+> not included in this series (mostly just wiring up TCPM and the SBU
+> mux).
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] arm64: dts: qcom: qcm6490-fairphone-fp5: Add USB-C orientation GPIO
-      commit: e788ef2bdac7fdbd61b626f65fdf7528a1c6fd3b
+[3/3] arm64: dts: qcom: sm6350: Add DisplayPort controller
+      commit: 62f87a3cac4e70fa916914a359d3f045a5ad8b9b
 
 Best regards,
 -- 
