@@ -1,89 +1,74 @@
-Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA6F20309;
-	Sat, 20 Apr 2024 13:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE0424A03;
+	Sun, 21 Apr 2024 16:07:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713619985; cv=none; b=dO1cd16IyLApROrVU6vOAaWA3FRk1dDMY/fhrnUlferAWtK+YUpb4266BJyV7N0uw/IOr2VTiXjpDMrQKT3ZkAeDAzy1E4DE1gCBUr+p+fCv/uXczxJjNHOLQaLMQhbI72hcU/7R7eo9P275Sdyt9hETPcfz5aSRrObKO+t8rGI=
+	t=1713715633; cv=none; b=BlVfbNM8PJonUdlLcyGvzysDgkRdRlm0Gm2nc217b0nPRKy0SVIB7YeommoZXG9MzvSXu0NQ85S9HT8oRQe/CRlr+2xUvApbYdU3x9evxKHl4NzLLdm8F3dRh2zuesqM4nMW+a0mcmANaO6ChMRds94MiFQUMZXH9sEwMoWA2aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713619985; c=relaxed/simple;
-	bh=PEcDp8I3M8Yr7iDTgjFDbNrl9L5ce/gSH/kcCCvROGw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EVjoi7r9RMkxDtx+JDPnGNfYMogiu4kqKXFt70Vst6m0knba6VLeSUfZaHOVvpuwMnIjr/pGI36LBn/AEUmxUFO+uMARNICCv1xQtQGMFhGSwAem8W66hGXfaZyk+bk+y7FOLfTCmcGQRrEgGUrvUGG0zmtWSuHPvAp7FJQ2fr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
-Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-	by mx.skole.hr (mx.skole.hr) with ESMTP id CAECE8333C;
-	Sat, 20 Apr 2024 15:32:59 +0200 (CEST)
-Message-ID: <eb221864-0044-4ea5-bbee-7545d10cb130@skole.hr>
-Date: Sat, 20 Apr 2024 15:32:56 +0200
+	s=arc-20240116; t=1713715633; c=relaxed/simple;
+	bh=k8ouJEDnPjHW77IdXvL48XXyrgLgpjXfup/v/JZtYXY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g3gcGAGJQkUZxwngmst1WUl8zkM/tMpT/0vOuZvMPBCYECHAlislMbVK1602w+oeI0L9BCjNNs3cQ4ybxc64wPGrSB1+VsGCScCVc0iITA41DhRs3YJ8JVaMRqCFB3+uysmbxOzrq/HhQTRnWS20/SrNSRenzYMTrBd8IJ/pCDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+Accpq3; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+Accpq3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 997F8C32783;
+	Sun, 21 Apr 2024 16:07:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713715632;
+	bh=k8ouJEDnPjHW77IdXvL48XXyrgLgpjXfup/v/JZtYXY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=R+Accpq3xJNt4gM7EaOV6tEJbjf2V5S1VPNrPf4q5Qk7rCfVQuq+5DBFravH2mwZY
+	 rUW0u7Sh/u0hAkNaUiSFqfdGIX25mL1Z8PnWbU7Fv26HG2hno3cKENTfPB2dOU7p+y
+	 HNmQ9bZyADYzF+lSuGBr2/2rJsc73dKhXacx2xhdwWxiIIqzg4++a3qK6IKcIVymON
+	 6O48Eby7AOrbSYDkCU7B9LU5jjYBl8kg+VqqJ9OxYdwjWErFOv2Y5UNGXjhdkzESpD
+	 TqJ429sv1c7Egw7X3GNfHtQKAPLEp3nEnR3F93Ury5Jebnu/QvJPKIbppqvdW2YShp
+	 7nzi0yM9DL4Xw==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Add USB-C orientation GPIO
+Date: Sun, 21 Apr 2024 11:07:05 -0500
+Message-ID: <171371562482.1174524.9194500934821003879.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240411-fp5-usb-c-gpio-v1-1-78f11deb940a@fairphone.com>
+References: <20240411-fp5-usb-c-gpio-v1-1-78f11deb940a@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 5/9] clk: mmp: Add Marvell PXA1908 clock driver
-To: Stephen Boyd <sboyd@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Conor Dooley <conor+dt@kernel.org>,
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
- Haojian Zhuang <haojian.zhuang@linaro.org>, Kees Cook
- <keescook@chromium.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Linus Walleij <linus.walleij@linaro.org>, Lubomir Rintel <lkundrak@v3.sk>,
- Michael Turquette <mturquette@baylibre.com>, Rob Herring
- <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Tony Lindgren <tony@atomide.com>, Tony Luck <tony.luck@intel.com>,
- Will Deacon <will@kernel.org>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>,
- linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-References: <20240402-pxa1908-lkml-v9-0-25a003e83c6f@skole.hr>
- <de4c56a8-488d-4cdb-9d6c-e9d6e63b22b9@skole.hr>
- <58b23157c088cb4774d579cc8700de85.sboyd@kernel.org>
- <3287993.aeNJFYEL58@radijator>
- <d7ff7dd609cd1b9a50e5ffa882d05b90.sboyd@kernel.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-In-Reply-To: <d7ff7dd609cd1b9a50e5ffa882d05b90.sboyd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On 4/20/24 00:24, Stephen Boyd wrote:
-> Quoting Duje Mihanović (2024-04-19 07:31:14)
->> On Friday, April 12, 2024 4:57:09 AM GMT+2 Stephen Boyd wrote:
->>> Quoting Duje Mihanović (2024-04-11 03:15:34)
->>>
->>>> On 4/11/2024 10:00 AM, Stephen Boyd wrote:
->>>>> Is there a reason this file can't be a platform driver?
->>>>
->>>> Not that I know of, I did it like this only because the other in-tree
->>>> MMP clk drivers do so. I guess the initialization should look like any
->>>> of the qcom GCC drivers then?
->>>
->>> Yes.
->>
->> With the entire clock driver code in one file this is quite messy as I also
->> needed to add module_init and module_exit functions to (un)register each
->> platform driver, presumably because the module_platform_driver macro doesn't
->> work with multiple platform drivers in one module. If I split up the driver
->> code for each clock controller block into its own file (such as clk-of-
->> pxa1908-apbc.c) as I believe is the best option, should the commits be split
->> up accordingly as well?
+
+On Thu, 11 Apr 2024 09:06:11 +0200, Luca Weiss wrote:
+> Define the USB-C orientation GPIOs so that the USB-C ports orientation
+> is known without having to resort to the altmode notifications.
 > 
-> Sure. Why is 'of' in the name? Maybe that is unnecessary?
+> On PCB level this is the signal from PM7250B (pin CC_OUT) which is
+> called USB_PHY_PS.
+> 
+> 
+> [...]
 
-That seems to be a historical leftover from when Marvell was just adding 
-DT support to the ARM32 MMP SoCs which Rob followed along with in the 
-PXA1928 clk driver and so have I. Should I drop it then as Marvell has 
-in the PXA1908 vendor kernel?
+Applied, thanks!
 
-Regards,
---
-Duje
+[1/1] arm64: dts: qcom: qcm6490-fairphone-fp5: Add USB-C orientation GPIO
+      commit: e788ef2bdac7fdbd61b626f65fdf7528a1c6fd3b
 
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
