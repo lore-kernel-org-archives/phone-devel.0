@@ -1,62 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DDF5025E;
-	Sun, 21 Apr 2024 22:29:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5934502BD
+	for <phone-devel@vger.kernel.org>; Mon, 22 Apr 2024 08:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713738584; cv=none; b=CKkC4cfXqTNNOmSCSVYgJOMhqL5JqkWkLNdbzsgrJC72f5kQMOJ1QQApKd14sdkgRi+RyHc6JNqTvTqQ+fU7e5fjEBHxdtXW4Sa+eBx+83rN9UnDerOdYBww4dHa5iPxU+Nob9m21oUHRW1wDFFrlpuze7JwIJKbfSpI5qfFsfw=
+	t=1713773948; cv=none; b=LCZvGLJoBCDSzTrtuKqX7UBFXWrVfESroc5Pg9q4I3duOYp+Ey0o0cMYDZeXGj9xRKkjB8ut36tyIikRMVq5H7aa55icMVr4jrMvJDBPpoekBQn8QDS4vsRYSVF1Cq87bBMm8/GzXY4acEAb5dMONtzKo++LoQ+ELqCFCllUtvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713738584; c=relaxed/simple;
-	bh=pAMG5KWKT7pt63O48mYKDd15e3VnQ/Lf8St05kDp1TY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rtW8ab+lwidp/U27x8DB1BKQlrsJAaQY34OIWF5dRoXTBekBKj3zAzj+eW6UMZmT0xrz39RrGMSoDtwu5syopO5EGlGLrloIqF2xHLPrdro16YjhTNZZgV8M2/Iz2vwy2yuRVmL8WZ5rqhEfzuvu34mzSKmZyL4lFqLxW6jcA4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i8JAMcn7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713773948; c=relaxed/simple;
+	bh=wG43oGVU6IR5Zc9pbzHI1xScR+FwszCEHsFm8LAKKlc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=VHMnG+8oriXYyyXvegRkkvCVfvGLvz9ayTsw81NNPbxpACKpNwLRGhMbtfoNJXWhJUv15Uy+nPk1FqQkTx4u60dKvp6We7wuuP6WyUax9KSWGYhIVEHrrglqQBba4ncpqimmxWz9Q2mhx6FJ3jX/7YkGAakihG3eJMqhs6GBOGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K763iNHf; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i8JAMcn7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0313C32782;
-	Sun, 21 Apr 2024 22:29:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713738583;
-	bh=pAMG5KWKT7pt63O48mYKDd15e3VnQ/Lf8St05kDp1TY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i8JAMcn7seJdgleCJhiekoejDhAOqEPqyXOk1N2payJSQm6DtGzsVEJ6nnmllv+Z/
-	 BiGywAKfeRchCapQ1foS8grMUVC9QFPnFTK1yDdVwlk9+vT7SrF0fAg0aotGYvpOQi
-	 pPKMt6SOADLfYRF2Kvi5BelVTjeNHsqKyz3lpp1YyJgwzB9Oh+ySzC33xT6MsV8OCq
-	 AJH0JzI8hf4P7DrEZ9LmFlkxtrT6XTFOxpmeQwUQ9pjOWu7a2MO63BtzgI9xW9x4hR
-	 zkWY6bO2SxmbSwlIGs/VsWUjKJIPWiOkPwuEYn/zizHdb6yBEHlepyB2kpfNLErFdf
-	 avoMLjQtTBuKw==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Rob Clark <robdclark@gmail.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sean Paul <sean@poorly.run>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Kuogee Hsieh <quic_khsieh@quicinc.com>,
-	Krishna Manikandan <quic_mkrishn@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH v2 0/3] DisplayPort support for SM6350/SM7225
-Date: Sun, 21 Apr 2024 17:29:17 -0500
-Message-ID: <171373856758.1196479.7387802929964223775.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240329-sm6350-dp-v2-0-e46dceb32ef5@fairphone.com>
-References: <20240329-sm6350-dp-v2-0-e46dceb32ef5@fairphone.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K763iNHf"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-41a442c9dcbso5695255e9.2
+        for <phone-devel@vger.kernel.org>; Mon, 22 Apr 2024 01:19:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713773945; x=1714378745; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lt2BkwQqXLpwxVqBhAGtLtKzSow+0YulByb/B8x8jm4=;
+        b=K763iNHfF4z3klCFzQ+J0fHcZIMhy7k1fQ70yRu4UV6+wgMcNZlG8azzpiVDEcz+VR
+         9c7T5q6QMWo4+O08pNEHKQJ1kGBQ0zIS9DGFLDZCNljWDbldrYsPlBeW3YBjY05Bw6/+
+         sQHsQqjAvC3j1HHTzHdlBBOYwFfgM/VDqaLsKlKi/Rqceexr+DGskbbJ3VKkaTkJ70lT
+         VPPRSIXai1a2dVxrkOumw1hMxQHuJFepJdCGdXdKVktB5Cc1pNRWWmf3hhaJ8oGzEgaX
+         wXvfPzhwrFQ1N+ee+JayAMIBLIF2kQxqHEGlGq7ld5tXMsq/2DlwhvCiQu/Lw+q6nU3l
+         vZww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713773945; x=1714378745;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lt2BkwQqXLpwxVqBhAGtLtKzSow+0YulByb/B8x8jm4=;
+        b=n9+v9IFKQ2gQb4VeQUO6oMdszq9GK9+O78XYeZHJR0l3P6onXHFlUbxbhoZLXVPLM4
+         4ZMv0lUNxDN9wxM9nRTPzSxu8PiNOWWYZzt+CkWyNlfgnS7rbeKMiJ0l72ArBVmPvGEg
+         3aZui1yVIKN6/QkFxLAOX/oJSBAEjrOa3JBphoMFWraWk2wkXxYiPgE7lIIQQQCHEj2w
+         cl1w+jM+M5xZwzj9EuQpMu1aBrLXwcv7qVxQU1EKKYwOKrKPE0Tgof1MsGosCEbXQ+zc
+         xN57eJCaCL0lqrLocGR/+F7HjR4Qy1oM37omHRDc+5aJac2zZj69PJTQ03LTJdDnFTHP
+         AQ0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWdbQ9f/abPMbAgnv54TADTaicGRl40m/pQH9TsgqQE9oryvZk+EFucmuB5mFgsC354WkD7SZTpcFvxGoSxRI8CB52V5N0A6vE1u3o=
+X-Gm-Message-State: AOJu0Yz9wgrwrrClPuHnRAdfYWHLoW5onriKeq0Zu/dA+4zI1r8nj8d4
+	gLEqA5iJpoy8M4jVA76L+REA9IWMkgZF002P/oQt7UTQQCRP22mihM636dPyu0w=
+X-Google-Smtp-Source: AGHT+IFXlMHZ14I8rBJcDUvo536bca1EkYW6D1umCUji+efGTdjaWTO0Ml/fnVCCeSCCFWgwLl8OkQ==
+X-Received: by 2002:a05:600c:510b:b0:418:f616:f087 with SMTP id o11-20020a05600c510b00b00418f616f087mr5098734wms.29.1713773944733;
+        Mon, 22 Apr 2024 01:19:04 -0700 (PDT)
+Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:52eb:f6ff:feb3:451a])
+        by smtp.gmail.com with ESMTPSA id j1-20020a05600c1c0100b00419ea5fb0cbsm7894927wms.42.2024.04.22.01.19.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Apr 2024 01:19:04 -0700 (PDT)
+From: Neil Armstrong <neil.armstrong@linaro.org>
+To: Jessica Zhang <quic_jesszhan@quicinc.com>, 
+ Sam Ravnborg <sam@ravnborg.org>, Daniel Vetter <daniel@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ David Wronek <david@mainlining.org>
+Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org
+In-Reply-To: <20240417-raydium-rm69380-driver-v4-0-e9c2337d0049@mainlining.org>
+References: <20240417-raydium-rm69380-driver-v4-0-e9c2337d0049@mainlining.org>
+Subject: Re: [PATCH v4 0/2] Add driver for Raydium RM69380-based DSI panels
+Message-Id: <171377394364.3456385.10710774432037845943.b4-ty@linaro.org>
+Date: Mon, 22 Apr 2024 10:19:03 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -64,24 +78,29 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.4
 
+Hi,
 
-On Fri, 29 Mar 2024 08:45:53 +0100, Luca Weiss wrote:
-> Add the required changes to support DisplayPort (normally(?) available
-> via the USB-C connector) on the SM6350/SM7225 SoC.
+On Wed, 17 Apr 2024 18:29:32 +0200, David Wronek wrote:
+> This patch adds support the 2560x1600@90Hz dual DSI command mode panel by
+> EDO in combination with a Raydium RM69380 driver IC.
 > 
-> This has been tested on a Fairphone 4 smartphone with additional changes
-> not included in this series (mostly just wiring up TCPM and the SBU
-> mux).
+> This driver IC can be found in the following devices:
+>  * Lenovo Xiaoxin Pad Pro 2021 (TB-J716F) with EDO panel
+>  * Lenovo Tab P11 Pro (TB-J706F) with EDO panel
+>  * Robo & Kala 2-in-1 Laptop with Sharp panel
 > 
 > [...]
 
-Applied, thanks!
+Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-next)
 
-[3/3] arm64: dts: qcom: sm6350: Add DisplayPort controller
-      commit: 62f87a3cac4e70fa916914a359d3f045a5ad8b9b
+[1/2] dt-bindings: display: panel: Add Raydium RM69380
+      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/4f888782d30276b08a32fa3d9b5c13b7dc123e28
+[2/2] drm/panel: Add driver for EDO RM69380 OLED panel
+      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/9a314ea512b7db9d38107ea0284b56f805b8fc9a
 
-Best regards,
 -- 
-Bjorn Andersson <andersson@kernel.org>
+Neil
+
