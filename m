@@ -1,106 +1,110 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5934502BD
-	for <phone-devel@vger.kernel.org>; Mon, 22 Apr 2024 08:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918D71F922
+	for <phone-devel@vger.kernel.org>; Mon, 22 Apr 2024 22:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713773948; cv=none; b=LCZvGLJoBCDSzTrtuKqX7UBFXWrVfESroc5Pg9q4I3duOYp+Ey0o0cMYDZeXGj9xRKkjB8ut36tyIikRMVq5H7aa55icMVr4jrMvJDBPpoekBQn8QDS4vsRYSVF1Cq87bBMm8/GzXY4acEAb5dMONtzKo++LoQ+ELqCFCllUtvk=
+	t=1713825842; cv=none; b=GbfhAGZYB5xvgWEKo9ISOuUZwYpWeWJKYlGbVbeCz9W+GbeP9x/FPh5R6W1z1HRkreq+upxg1yC9Aiq/MWRHZfTRzmBz8ltCoolBzv6vnGUd0cB5AbcxbjI0CZ3NbYOlsJp2U0yZiqFDE7HE1jiSMePqI0WN9EY+u9tsJd/sXVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713773948; c=relaxed/simple;
-	bh=wG43oGVU6IR5Zc9pbzHI1xScR+FwszCEHsFm8LAKKlc=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=VHMnG+8oriXYyyXvegRkkvCVfvGLvz9ayTsw81NNPbxpACKpNwLRGhMbtfoNJXWhJUv15Uy+nPk1FqQkTx4u60dKvp6We7wuuP6WyUax9KSWGYhIVEHrrglqQBba4ncpqimmxWz9Q2mhx6FJ3jX/7YkGAakihG3eJMqhs6GBOGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K763iNHf; arc=none smtp.client-ip=209.85.128.42
+	s=arc-20240116; t=1713825842; c=relaxed/simple;
+	bh=ElqV9w5egMCE1fLprf67vgUULGRpUkv5I3l3AQ4IKSk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sNIofSu2LNjyRZVadk5iH1FVieNwtbPJyaVPqLnUQoyQ05QNBupd0iMED3f+nVbvuYycBPKGzuRx0msFA6+c9rt/WDntIu8q1yrY0rkTRrOEusktOPCJM2T1nCz/8F6cUNMZnLzw9dZdmMK3dRMWqhr2eNGBr/97yC0oFAtGuu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Q3vVhk/X; arc=none smtp.client-ip=209.85.167.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K763iNHf"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-41a442c9dcbso5695255e9.2
-        for <phone-devel@vger.kernel.org>; Mon, 22 Apr 2024 01:19:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Q3vVhk/X"
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-51b526f0fc4so1647934e87.1
+        for <phone-devel@vger.kernel.org>; Mon, 22 Apr 2024 15:44:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713773945; x=1714378745; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lt2BkwQqXLpwxVqBhAGtLtKzSow+0YulByb/B8x8jm4=;
-        b=K763iNHfF4z3klCFzQ+J0fHcZIMhy7k1fQ70yRu4UV6+wgMcNZlG8azzpiVDEcz+VR
-         9c7T5q6QMWo4+O08pNEHKQJ1kGBQ0zIS9DGFLDZCNljWDbldrYsPlBeW3YBjY05Bw6/+
-         sQHsQqjAvC3j1HHTzHdlBBOYwFfgM/VDqaLsKlKi/Rqceexr+DGskbbJ3VKkaTkJ70lT
-         VPPRSIXai1a2dVxrkOumw1hMxQHuJFepJdCGdXdKVktB5Cc1pNRWWmf3hhaJ8oGzEgaX
-         wXvfPzhwrFQ1N+ee+JayAMIBLIF2kQxqHEGlGq7ld5tXMsq/2DlwhvCiQu/Lw+q6nU3l
-         vZww==
+        d=linaro.org; s=google; t=1713825839; x=1714430639; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oofEEwMcsUFGHCf9AB7GLQjS3HSrYP8XWX7NSP6yUuo=;
+        b=Q3vVhk/XIpb/nc7rFNSB35G2q1LVjx8Br2L+5m0HkikLZqUD5Nkr80oxo5n9DNTlgN
+         Om10dKKjSL7adi4WvD5q3elvUkPz8cxk6nZHTfcopnNNi7wmzesNCcMhT+DvNw3wyl29
+         ruejLgcbIszDW3Zq0KlrWTaGK1P3tNVARyRiD/L96sS/lI3IOYdgWTZZKKDSqsaSQCOJ
+         fdpQxebLNE1nJEzxYIJXLApLnGKviURwCFd4jG60XWGob0dSuHk3SedURqI8BuOnlPYY
+         oj8DEhHEBPZkS0vdCc6ZTvCX+GzZ+vdIzbdR8xy21TRXmQejhXeG2DcLMs37O8+aIbFX
+         wyeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713773945; x=1714378745;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lt2BkwQqXLpwxVqBhAGtLtKzSow+0YulByb/B8x8jm4=;
-        b=n9+v9IFKQ2gQb4VeQUO6oMdszq9GK9+O78XYeZHJR0l3P6onXHFlUbxbhoZLXVPLM4
-         4ZMv0lUNxDN9wxM9nRTPzSxu8PiNOWWYZzt+CkWyNlfgnS7rbeKMiJ0l72ArBVmPvGEg
-         3aZui1yVIKN6/QkFxLAOX/oJSBAEjrOa3JBphoMFWraWk2wkXxYiPgE7lIIQQQCHEj2w
-         cl1w+jM+M5xZwzj9EuQpMu1aBrLXwcv7qVxQU1EKKYwOKrKPE0Tgof1MsGosCEbXQ+zc
-         xN57eJCaCL0lqrLocGR/+F7HjR4Qy1oM37omHRDc+5aJac2zZj69PJTQ03LTJdDnFTHP
-         AQ0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWdbQ9f/abPMbAgnv54TADTaicGRl40m/pQH9TsgqQE9oryvZk+EFucmuB5mFgsC354WkD7SZTpcFvxGoSxRI8CB52V5N0A6vE1u3o=
-X-Gm-Message-State: AOJu0Yz9wgrwrrClPuHnRAdfYWHLoW5onriKeq0Zu/dA+4zI1r8nj8d4
-	gLEqA5iJpoy8M4jVA76L+REA9IWMkgZF002P/oQt7UTQQCRP22mihM636dPyu0w=
-X-Google-Smtp-Source: AGHT+IFXlMHZ14I8rBJcDUvo536bca1EkYW6D1umCUji+efGTdjaWTO0Ml/fnVCCeSCCFWgwLl8OkQ==
-X-Received: by 2002:a05:600c:510b:b0:418:f616:f087 with SMTP id o11-20020a05600c510b00b00418f616f087mr5098734wms.29.1713773944733;
-        Mon, 22 Apr 2024 01:19:04 -0700 (PDT)
-Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:52eb:f6ff:feb3:451a])
-        by smtp.gmail.com with ESMTPSA id j1-20020a05600c1c0100b00419ea5fb0cbsm7894927wms.42.2024.04.22.01.19.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Apr 2024 01:19:04 -0700 (PDT)
-From: Neil Armstrong <neil.armstrong@linaro.org>
-To: Jessica Zhang <quic_jesszhan@quicinc.com>, 
- Sam Ravnborg <sam@ravnborg.org>, Daniel Vetter <daniel@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Marijn Suijten <marijn.suijten@somainline.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
- David Wronek <david@mainlining.org>
-Cc: dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- phone-devel@vger.kernel.org
-In-Reply-To: <20240417-raydium-rm69380-driver-v4-0-e9c2337d0049@mainlining.org>
-References: <20240417-raydium-rm69380-driver-v4-0-e9c2337d0049@mainlining.org>
-Subject: Re: [PATCH v4 0/2] Add driver for Raydium RM69380-based DSI panels
-Message-Id: <171377394364.3456385.10710774432037845943.b4-ty@linaro.org>
-Date: Mon, 22 Apr 2024 10:19:03 +0200
+        d=1e100.net; s=20230601; t=1713825839; x=1714430639;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oofEEwMcsUFGHCf9AB7GLQjS3HSrYP8XWX7NSP6yUuo=;
+        b=GzermG+hx2gqi4zgWhSzUn6G/bs+nskDUJmYMYuOiilxr3871hsmMpY6delLF/2Wf8
+         hFy0o0lM+WSkM5Aufi37PlA/oVnfs0fNqqzjvao4pmBzvkVFOnWZ2gXvdmhInm6a1vCW
+         X8ndxpvsZkbbc1ey1Vk2gpyqWEEQqudhxIB2+OXblMXO72qyXUsMx3DOwLaWZqJodo1L
+         2+d4SvGGJykB4xYGsnlFn2HlaNFOuyTEgYiKpnymA0ngMcuvD2OIX8KF+CJH5BF2GsPr
+         8ZcFQg8RjGaOgDtEuVnDGiwCZ5FmsP/+5WVj4l9BK6kYmCaHIDncn4u1w6LYuOFrxq9R
+         my6g==
+X-Forwarded-Encrypted: i=1; AJvYcCXMpjrJWI24kP0MNGNCwp8CQL2GKEbdU/vFmLHDZ+CcdWivvN6oDrdj7oLUOxaaemF8WU1jOlH+MEPOBqX3ZGkSpBO86yA7J4S1x10=
+X-Gm-Message-State: AOJu0Yz7GN3ld8utByesZQawsqCVcNRQq1dSN7AJOHU0pzHY12bUOfXg
+	WWmjj+IpqLNFJxU3wLZfjLfmLVsrHQik8J80bzy3hZT+9mRobQ4qgaJPo5fvwV/DZmzMSgMfxPC
+	q
+X-Google-Smtp-Source: AGHT+IFzzCNXoiQoP0c4aV9kGALB2szkveofYw8qjvKgw34NGG2nJIGXaItXvP9QnYff9kIfwriZpQ==
+X-Received: by 2002:a05:6512:b8b:b0:515:bbe9:f208 with SMTP id b11-20020a0565120b8b00b00515bbe9f208mr8463038lfv.19.1713825838785;
+        Mon, 22 Apr 2024 15:43:58 -0700 (PDT)
+Received: from [172.30.204.103] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
+        by smtp.gmail.com with ESMTPSA id m7-20020a056512358700b005175dab1cfdsm1833414lfr.257.2024.04.22.15.43.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Apr 2024 15:43:58 -0700 (PDT)
+Message-ID: <36f33797-22d9-433c-9b5f-df8488191f3a@linaro.org>
+Date: Tue, 23 Apr 2024 00:43:55 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] arm64: dts: qcom: pmi632: Add vibrator
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Fenglin Wu <quic_fenglinw@quicinc.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240418-fp3-vibra-v1-0-b636b8b3ff32@fairphone.com>
+ <20240418-fp3-vibra-v1-1-b636b8b3ff32@fairphone.com>
+ <c1763d69-f0a4-4415-be7a-31b04153fbfb@linaro.org>
+ <D0N5VCESMRIX.3MY64A0MXKJGW@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <D0N5VCESMRIX.3MY64A0MXKJGW@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.4
 
-Hi,
 
-On Wed, 17 Apr 2024 18:29:32 +0200, David Wronek wrote:
-> This patch adds support the 2560x1600@90Hz dual DSI command mode panel by
-> EDO in combination with a Raydium RM69380 driver IC.
+
+On 4/18/24 12:03, Luca Weiss wrote:
+> On Thu Apr 18, 2024 at 12:01 PM CEST, Konrad Dybcio wrote:
+>> On 18.04.2024 8:36 AM, Luca Weiss wrote:
+>>> Add a node for the vibrator module found inside the PMI632.
+>>>
+>>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+>>> ---
+>>
+>> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+>>
+>> On a side note, this is a totally configuration-free peripheral that doesn't do
+>> anything crazy until manually configured.
+>>
+>> In the slow quest to be (hopefully) more sane about the defaults, should we keep
+>> them enabled by default? Bjorn?
 > 
-> This driver IC can be found in the following devices:
->  * Lenovo Xiaoxin Pad Pro 2021 (TB-J716F) with EDO panel
->  * Lenovo Tab P11 Pro (TB-J706F) with EDO panel
->  * Robo & Kala 2-in-1 Laptop with Sharp panel
+> But many (most?) devices don't have a vibration motor connected to
+> PMI632, some (like devboards) don't have anything, and other phones have
+> a separate chip that controls the vibration motor.
 > 
-> [...]
+> Enabling this by default would mean all devices with PMI632 would get an
+> input device for the vibrator that probably doesn't work?
 
-Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-next)
+Fair
 
-[1/2] dt-bindings: display: panel: Add Raydium RM69380
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/4f888782d30276b08a32fa3d9b5c13b7dc123e28
-[2/2] drm/panel: Add driver for EDO RM69380 OLED panel
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/9a314ea512b7db9d38107ea0284b56f805b8fc9a
-
--- 
-Neil
-
+Konrad
