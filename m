@@ -1,110 +1,85 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918D71F922
-	for <phone-devel@vger.kernel.org>; Mon, 22 Apr 2024 22:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78AB184;
+	Tue, 23 Apr 2024 00:38:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713825842; cv=none; b=GbfhAGZYB5xvgWEKo9ISOuUZwYpWeWJKYlGbVbeCz9W+GbeP9x/FPh5R6W1z1HRkreq+upxg1yC9Aiq/MWRHZfTRzmBz8ltCoolBzv6vnGUd0cB5AbcxbjI0CZ3NbYOlsJp2U0yZiqFDE7HE1jiSMePqI0WN9EY+u9tsJd/sXVI=
+	t=1713832720; cv=none; b=j4b8hipABbIK61kxk9DuthcyujGIdGAb5Zj7Mgjhyo7eMFsgeJD6CEMtnTUHKnVonA58+2U7kHwL8vQD9zR8BQFJcx398/xov/gfvE8JiNzVQwIX172YkwdbNT+6OpCptkzD0l6ix04O4PTYlan4I4BBXI0rStn/6+Z+Eitkyls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713825842; c=relaxed/simple;
-	bh=ElqV9w5egMCE1fLprf67vgUULGRpUkv5I3l3AQ4IKSk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sNIofSu2LNjyRZVadk5iH1FVieNwtbPJyaVPqLnUQoyQ05QNBupd0iMED3f+nVbvuYycBPKGzuRx0msFA6+c9rt/WDntIu8q1yrY0rkTRrOEusktOPCJM2T1nCz/8F6cUNMZnLzw9dZdmMK3dRMWqhr2eNGBr/97yC0oFAtGuu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Q3vVhk/X; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1713832720; c=relaxed/simple;
+	bh=Mu7unsryILuvM3Nf4rtyuH+NnGl/Ag6KmANbCK5/2A4=;
+	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
+	 Subject:From:Cc:To:Date; b=NimtZvSp4BY0FkYUHFLmKYB0TNNz3VTqyhyXUOy9rbNA13fHQpWy+m4LxeHEYpw6mVu4knaeUqrr/nl9RSQhE2I6mf4YXMC8y1fY26hgucNcXqURRzR8X/G8yklnBohLR9xA+ceq91BMDqxIjwimIvD3RWbiFJl8vbLHTuD3bEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JTll7Hu7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Q3vVhk/X"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-51b526f0fc4so1647934e87.1
-        for <phone-devel@vger.kernel.org>; Mon, 22 Apr 2024 15:44:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713825839; x=1714430639; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oofEEwMcsUFGHCf9AB7GLQjS3HSrYP8XWX7NSP6yUuo=;
-        b=Q3vVhk/XIpb/nc7rFNSB35G2q1LVjx8Br2L+5m0HkikLZqUD5Nkr80oxo5n9DNTlgN
-         Om10dKKjSL7adi4WvD5q3elvUkPz8cxk6nZHTfcopnNNi7wmzesNCcMhT+DvNw3wyl29
-         ruejLgcbIszDW3Zq0KlrWTaGK1P3tNVARyRiD/L96sS/lI3IOYdgWTZZKKDSqsaSQCOJ
-         fdpQxebLNE1nJEzxYIJXLApLnGKviURwCFd4jG60XWGob0dSuHk3SedURqI8BuOnlPYY
-         oj8DEhHEBPZkS0vdCc6ZTvCX+GzZ+vdIzbdR8xy21TRXmQejhXeG2DcLMs37O8+aIbFX
-         wyeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713825839; x=1714430639;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oofEEwMcsUFGHCf9AB7GLQjS3HSrYP8XWX7NSP6yUuo=;
-        b=GzermG+hx2gqi4zgWhSzUn6G/bs+nskDUJmYMYuOiilxr3871hsmMpY6delLF/2Wf8
-         hFy0o0lM+WSkM5Aufi37PlA/oVnfs0fNqqzjvao4pmBzvkVFOnWZ2gXvdmhInm6a1vCW
-         X8ndxpvsZkbbc1ey1Vk2gpyqWEEQqudhxIB2+OXblMXO72qyXUsMx3DOwLaWZqJodo1L
-         2+d4SvGGJykB4xYGsnlFn2HlaNFOuyTEgYiKpnymA0ngMcuvD2OIX8KF+CJH5BF2GsPr
-         8ZcFQg8RjGaOgDtEuVnDGiwCZ5FmsP/+5WVj4l9BK6kYmCaHIDncn4u1w6LYuOFrxq9R
-         my6g==
-X-Forwarded-Encrypted: i=1; AJvYcCXMpjrJWI24kP0MNGNCwp8CQL2GKEbdU/vFmLHDZ+CcdWivvN6oDrdj7oLUOxaaemF8WU1jOlH+MEPOBqX3ZGkSpBO86yA7J4S1x10=
-X-Gm-Message-State: AOJu0Yz7GN3ld8utByesZQawsqCVcNRQq1dSN7AJOHU0pzHY12bUOfXg
-	WWmjj+IpqLNFJxU3wLZfjLfmLVsrHQik8J80bzy3hZT+9mRobQ4qgaJPo5fvwV/DZmzMSgMfxPC
-	q
-X-Google-Smtp-Source: AGHT+IFzzCNXoiQoP0c4aV9kGALB2szkveofYw8qjvKgw34NGG2nJIGXaItXvP9QnYff9kIfwriZpQ==
-X-Received: by 2002:a05:6512:b8b:b0:515:bbe9:f208 with SMTP id b11-20020a0565120b8b00b00515bbe9f208mr8463038lfv.19.1713825838785;
-        Mon, 22 Apr 2024 15:43:58 -0700 (PDT)
-Received: from [172.30.204.103] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id m7-20020a056512358700b005175dab1cfdsm1833414lfr.257.2024.04.22.15.43.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Apr 2024 15:43:58 -0700 (PDT)
-Message-ID: <36f33797-22d9-433c-9b5f-df8488191f3a@linaro.org>
-Date: Tue, 23 Apr 2024 00:43:55 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JTll7Hu7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AC3C113CC;
+	Tue, 23 Apr 2024 00:38:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713832720;
+	bh=Mu7unsryILuvM3Nf4rtyuH+NnGl/Ag6KmANbCK5/2A4=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=JTll7Hu7wF1BKHSgU8lKwIEL8hfr25t3ek+6NP5oW5+ShsrBaqQxD7sfBZFQdPk+x
+	 L+2+LOIS3x3RAUoeIcsVM5+JZmlF5DkB8ezeM2plNruKpD3fqnng/RomOYEvnH7LBD
+	 0KmaMANR6rnRRIaD0S1XEYQOMGImnsWtw2hvxUa2ZiDcFdS2a7/IE3RN8rURKVcUpq
+	 OwSlcgK+tPnnj/3PiZH1FpL8GZy4kiZKEdT+KXRh1QeTkyzpfb0+oS7TKyGBHX6Eri
+	 PQY26zMwJRRA9RUcx12XelpDstx/304B41rFNc1pBSigH/+mYctSdN1ASRmUw8oMYk
+	 yfacwyHNuCAQQ==
+Message-ID: <2473d3ddeea21640b20735d660e48f98.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] arm64: dts: qcom: pmi632: Add vibrator
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Fenglin Wu <quic_fenglinw@quicinc.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240418-fp3-vibra-v1-0-b636b8b3ff32@fairphone.com>
- <20240418-fp3-vibra-v1-1-b636b8b3ff32@fairphone.com>
- <c1763d69-f0a4-4415-be7a-31b04153fbfb@linaro.org>
- <D0N5VCESMRIX.3MY64A0MXKJGW@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <D0N5VCESMRIX.3MY64A0MXKJGW@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <eb221864-0044-4ea5-bbee-7545d10cb130@skole.hr>
+References: <20240402-pxa1908-lkml-v9-0-25a003e83c6f@skole.hr> <de4c56a8-488d-4cdb-9d6c-e9d6e63b22b9@skole.hr> <58b23157c088cb4774d579cc8700de85.sboyd@kernel.org> <3287993.aeNJFYEL58@radijator> <d7ff7dd609cd1b9a50e5ffa882d05b90.sboyd@kernel.org> <eb221864-0044-4ea5-bbee-7545d10cb130@skole.hr>
+Subject: Re: [PATCH v9 5/9] clk: mmp: Add Marvell PXA1908 clock driver
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Catalin Marinas <catalin.marinas@arm.com>, Conor Dooley <conor+dt@kernel.org>, Duje =?utf-8?q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, Guilherme G. Piccoli <gpiccoli@igalia.com>, Haojian Zhuang <haojian.zhuang@linaro.org>, Kees Cook <keescook@chromium.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Linus Walleij <linus.walleij@linaro.org>, Lubomir Rintel <lkundrak@v3.sk>, Michael Turquette <mturquette@baylibre.com>, Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>, Tony Lindgren <tony@atomide.com>, Tony Luck <tony.luck@intel.com>, Will Deacon <will@kernel.org>
+Date: Mon, 22 Apr 2024 17:38:38 -0700
+User-Agent: alot/0.10
 
+Quoting Duje Mihanovi=C4=87 (2024-04-20 06:32:56)
+> On 4/20/24 00:24, Stephen Boyd wrote:
+> > Quoting Duje Mihanovi=C4=87 (2024-04-19 07:31:14)
+> >> On Friday, April 12, 2024 4:57:09=E2=80=AFAM GMT+2 Stephen Boyd wrote:
+> >>> Quoting Duje Mihanovi=C4=87 (2024-04-11 03:15:34)
+> >>>
+> >>>> On 4/11/2024 10:00 AM, Stephen Boyd wrote:
+> >>>>> Is there a reason this file can't be a platform driver?
+> >>>>
+> >>>> Not that I know of, I did it like this only because the other in-tree
+> >>>> MMP clk drivers do so. I guess the initialization should look like a=
+ny
+> >>>> of the qcom GCC drivers then?
+> >>>
+> >>> Yes.
+> >>
+> >> With the entire clock driver code in one file this is quite messy as I=
+ also
+> >> needed to add module_init and module_exit functions to (un)register ea=
+ch
+> >> platform driver, presumably because the module_platform_driver macro d=
+oesn't
+> >> work with multiple platform drivers in one module. If I split up the d=
+river
+> >> code for each clock controller block into its own file (such as clk-of-
+> >> pxa1908-apbc.c) as I believe is the best option, should the commits be=
+ split
+> >> up accordingly as well?
+> >=20
+> > Sure. Why is 'of' in the name? Maybe that is unnecessary?
+>=20
+> That seems to be a historical leftover from when Marvell was just adding =
 
+> DT support to the ARM32 MMP SoCs which Rob followed along with in the=20
+> PXA1928 clk driver and so have I. Should I drop it then as Marvell has=20
+> in the PXA1908 vendor kernel?
+>=20
 
-On 4/18/24 12:03, Luca Weiss wrote:
-> On Thu Apr 18, 2024 at 12:01 PM CEST, Konrad Dybcio wrote:
->> On 18.04.2024 8:36 AM, Luca Weiss wrote:
->>> Add a node for the vibrator module found inside the PMI632.
->>>
->>> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
->>> ---
->>
->> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
->>
->> On a side note, this is a totally configuration-free peripheral that doesn't do
->> anything crazy until manually configured.
->>
->> In the slow quest to be (hopefully) more sane about the defaults, should we keep
->> them enabled by default? Bjorn?
-> 
-> But many (most?) devices don't have a vibration motor connected to
-> PMI632, some (like devboards) don't have anything, and other phones have
-> a separate chip that controls the vibration motor.
-> 
-> Enabling this by default would mean all devices with PMI632 would get an
-> input device for the vibrator that probably doesn't work?
-
-Fair
-
-Konrad
+Sounds good to me.
