@@ -1,105 +1,178 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB4113D8BE
-	for <phone-devel@vger.kernel.org>; Tue, 23 Apr 2024 17:01:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD04518B04;
+	Tue, 23 Apr 2024 22:41:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713891719; cv=none; b=j0SpxTHgEBJ2MNc2LQcTCygh8M1sB5gg+CQE1qC/3EoqmPJxAOmjeTZnzOV9mDGYLu0X4Vy9GTDmLaIjdY1u8cSjVlkEBUR+Yk8bK68mfALA4oeIASquSr2H2s2V0caC8U6t20H890kjY39D/vSH0ppPjA3zvfegDMXERbCKuP4=
+	t=1713912077; cv=none; b=UwZ1b+WNurT5gKanqZLQljUs3qEplGG0zZXCRaSPfNqLiqgdbVlbyyv0Y5JDDaBmVh7BC0LIw8EuZDF+zET9DSRZzSLFauu7AOUdj9LhV5DggaaURID8Jfkhbd82VnS4Q9nshbUGoYaZFxxcGba9Fneyd4Uv9Ph7GKU0PqVZH4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713891719; c=relaxed/simple;
-	bh=cC+dErYbmnokudp3GhDMHIAy+gc8yV+HfdxgXByLeSo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fhOXEjLczjIUpG/kQraW1Yykvjdpn4P6EeVRwUTC+1PhkuM10f3/xz1AFYh3Cj9xNwGpZTBqqN0GRpk0RZJDkzekUbNO4WS72ym+hsGfM1/lpvx/aJInRChoS2/nxV8FuidVWRgWCg9ct7wwhnkhaBk4Xje53KKnvFwdOoVOj2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r3n6swNb; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1713912077; c=relaxed/simple;
+	bh=P1hW2nR8B6iOhbYwXhr0Keb/5gFXWkQwEOZrik5q2G8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Nf/zTjl1yptjtbXOGW0YOTFTeMCYwMnvwJ018tCFHZk3G/6OAJNo543ftM2OJIAOAMCA6yCTgWk+U0kwUeTE2zvtGkG+MRlgSJTzgU7RNEoyx5PXzq7NVq01776NbCo0vwugTNOCx3i7j6P33murF8kHyNg8zVHI8HBvESj2EIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=a4Lk9guU; arc=none smtp.client-ip=206.189.193.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r3n6swNb"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-51ae315bb20so4563898e87.1
-        for <phone-devel@vger.kernel.org>; Tue, 23 Apr 2024 10:01:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713891716; x=1714496516; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=z9xHbZYIG5Mw8Eh9K4eptlqfJVILD/D23wlU1wrlp58=;
-        b=r3n6swNbxTyErIdOJHqK7cJ7IVAu/yw2jzhLaKK6mIt8PBSgA2KJ2ahI4olOgv8oTd
-         DzVbBeAOfMvs6OXytFCyTdOsRfZg/WFhhtr+3R3RhhhUOh8bc5/0M5FiuZ0jw/VUc2+1
-         wKBk+LPTrfrRbq3KYBdwAqhHvNzlRYw2TJsflB191P6h4Z7fEyUmNn+GZRegXhNpXXs8
-         aNpFKKYPkVgfmj1hBHdH19fQKVo4bqcB33CRD1jPcBBCxuCL6t7fIllO0/tH1/qQByba
-         c5N9sBC5o3lhfUIlaALjFqbzW8c02QTWZRVa8aW5/Q8kT+Z4XIYet5lw6ptd6UdWNjTy
-         QZHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713891716; x=1714496516;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z9xHbZYIG5Mw8Eh9K4eptlqfJVILD/D23wlU1wrlp58=;
-        b=iIEb9KOffTzw5bqwQAEl1NEaZRmzdadUtXuOlv5G88tGOZnsphrBLR/Pc7JCOaTyC5
-         HlU1dCS/+Tbb/t8jMnNMMvEdVOngruRbpSB7xwtjI73wTwrMqHBo6NRrI6m06A8NJ4rr
-         QfDob66bYEOtuX9rqKD+rFd5L4zPyiMj5cILqEQOsd7gunI5CJocXt31T6IgKNg5sZAa
-         L/mmGS5eoDNW+EKuqcZUdZDo6u8AIEF1wTvGDh81fBhWRjVkOjjQxrpLlvVfueD9dV5j
-         3fBfhgZnz1R89Bxd+msC3czcO5f/OWy08C8do+Pb4L8idhbHVNyaGWQxBn2RZrcfLTms
-         4Ntw==
-X-Gm-Message-State: AOJu0YxO1xCwvs/q4acusRI32Hj4oR7mthImBq7bxyDm3t/eQg1kX+EH
-	iZehfBcxyqH4XWdrygQHJ9GAYbVl8GyXHVecF8Ql+eMbHVp72fd++ESIveFtVkk=
-X-Google-Smtp-Source: AGHT+IFFgAqRTu0OiAHoCmMWpJsWpTFKQENMZbvbVW68Tnv0kqgDei+xKSGXPHh9KPd5kq4AudXVJA==
-X-Received: by 2002:ac2:58cf:0:b0:516:7738:bd5c with SMTP id u15-20020ac258cf000000b005167738bd5cmr102879lfo.4.1713891715686;
-        Tue, 23 Apr 2024 10:01:55 -0700 (PDT)
-Received: from [172.30.205.0] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id e17-20020ac24e11000000b0051bbb1031dfsm150689lfr.182.2024.04.23.10.01.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Apr 2024 10:01:55 -0700 (PDT)
-Message-ID: <a6936f38-78d8-458b-8864-543a923ad1a1@linaro.org>
-Date: Tue, 23 Apr 2024 19:01:51 +0200
+	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="a4Lk9guU"
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+	by a.peacevolution.org (Postfix) with ESMTPA id A939547A5F;
+	Tue, 23 Apr 2024 22:41:13 +0000 (UTC)
+From: Aren Moynihan <aren@peacevolution.org>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: Aren Moynihan <aren@peacevolution.org>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Ondrej Jirman <megi@xff.cz>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-iio@vger.kernel.org,
+	phone-devel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev,
+	Willow Barraco <contact@willowbarraco.fr>
+Subject: [PATCH v2 4/6] iio: light: stk3310: use dev_err_probe where possible
+Date: Tue, 23 Apr 2024 18:33:07 -0400
+Message-ID: <20240423223309.1468198-6-aren@peacevolution.org>
+In-Reply-To: <20240423223309.1468198-2-aren@peacevolution.org>
+References: <20240423223309.1468198-2-aren@peacevolution.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] arm64: dts: qcom: msm8976: Add WCNSS node
-To: Adam Skladowski <a39.skl@gmail.com>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240413170317.34553-1-a39.skl@gmail.com>
- <20240413170317.34553-5-a39.skl@gmail.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20240413170317.34553-5-a39.skl@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
+X-Spam-Level: ***
+X-Spamd-Bar: +++
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
+	s=dkim; t=1713912074;
+	h=from:subject:date:message-id:to:cc:mime-version:content-transfer-encoding:in-reply-to:references;
+	bh=H5coa02/iaOjA9iqLxo1Oztbgi2cxOUrNasxJP7xbIE=;
+	b=a4Lk9guU0NEdyN6/998Mxl90hggHJaHblk9XS8qF2T7129mcpApydDwPe+0VXsjTlWJt96
+	Boedlc8cpdlMESLG7EeHzoycM2whNz/nKnNj9HlhQtaU7gomXRkM6GTCPvWVP8X6ZvXMXo
+	uuxj5Up77P48MW4o7v7RTlNWHasx9uc=
 
+Using dev_err_probe instead of dev_err and return makes the errors
+easier to understand by including the error name, and saves a little
+code.
 
+Signed-off-by: Aren Moynihan <aren@peacevolution.org>
+---
 
-On 4/13/24 19:03, Adam Skladowski wrote:
-> Add node describing wireless connectivity subsystem.
-> 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-> ---
+Notes:
+    Added in v2
 
-[...]
+ drivers/iio/light/stk3310.c | 44 +++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 24 deletions(-)
 
-> +					wcnss_wifi: wifi {
-> +						compatible = "qcom,wcnss-wlan";
-> +
-> +						interrupts = <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
-> +							     <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>;
-> +						interrupt-names = "tx", "rx";
-> +
-> +						qcom,smem-states = <&apps_smsm 10>, <&apps_smsm 9>;
-> +						qcom,smem-state-names = "tx-enable",
-> +									"tx-rings-empty";
+diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+index ee1ac95dbc0e..c56c6298d292 100644
+--- a/drivers/iio/light/stk3310.c
++++ b/drivers/iio/light/stk3310.c
+@@ -60,10 +60,10 @@
+ 		data->reg_##name =					    \
+ 			devm_regmap_field_alloc(&client->dev, regmap,	    \
+ 				stk3310_reg_field_##name);		    \
+-		if (IS_ERR(data->reg_##name)) {				    \
+-			dev_err(&client->dev, "reg field alloc failed.\n"); \
+-			return PTR_ERR(data->reg_##name);		    \
+-		}							    \
++		if (IS_ERR(data->reg_##name))				    \
++			return dev_err_probe(&client->dev,		    \
++				PTR_ERR(data->reg_##name),		    \
++				"reg field alloc failed.\n");		    \
+ 	} while (0)
+ 
+ static const struct reg_field stk3310_reg_field_state =
+@@ -480,22 +480,20 @@ static int stk3310_init(struct iio_dev *indio_dev)
+ 	if (chipid != STK3310_CHIP_ID_VAL &&
+ 	    chipid != STK3311_CHIP_ID_VAL &&
+ 	    chipid != STK3311X_CHIP_ID_VAL &&
+-	    chipid != STK3335_CHIP_ID_VAL) {
+-		dev_err(&client->dev, "invalid chip id: 0x%x\n", chipid);
+-		return -ENODEV;
+-	}
++	    chipid != STK3335_CHIP_ID_VAL)
++		return dev_err_probe(&client->dev, -ENODEV,
++				     "invalid chip id: 0x%x\n", chipid);
+ 
+ 	state = STK3310_STATE_EN_ALS | STK3310_STATE_EN_PS;
+ 	ret = stk3310_set_state(data, state);
+-	if (ret < 0) {
+-		dev_err(&client->dev, "failed to enable sensor");
+-		return ret;
+-	}
++	if (ret < 0)
++		return dev_err_probe(&client->dev, ret, "failed to enable sensor\n");
+ 
+ 	/* Enable PS interrupts */
+ 	ret = regmap_field_write(data->reg_int_ps, STK3310_PSINT_EN);
+ 	if (ret < 0)
+-		dev_err(&client->dev, "failed to enable interrupts!\n");
++		return dev_err_probe(&client->dev, ret,
++				     "failed to enable interrupts!\n");
+ 
+ 	return ret;
+ }
+@@ -530,10 +528,10 @@ static int stk3310_regmap_init(struct stk3310_data *data)
+ 
+ 	client = data->client;
+ 	regmap = devm_regmap_init_i2c(client, &stk3310_regmap_config);
+-	if (IS_ERR(regmap)) {
+-		dev_err(&client->dev, "regmap initialization failed.\n");
+-		return PTR_ERR(regmap);
+-	}
++	if (IS_ERR(regmap))
++		return dev_err_probe(&client->dev, PTR_ERR(regmap),
++				     "regmap initialization failed.\n");
++
+ 	data->regmap = regmap;
+ 
+ 	STK3310_REGFIELD(state);
+@@ -597,10 +595,8 @@ static int stk3310_probe(struct i2c_client *client)
+ 	struct stk3310_data *data;
+ 
+ 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+-	if (!indio_dev) {
+-		dev_err(&client->dev, "iio allocation failed!\n");
+-		return -ENOMEM;
+-	}
++	if (!indio_dev)
++		return dev_err_probe(&client->dev, -ENOMEM, "iio allocation failed!\n");
+ 
+ 	data = iio_priv(indio_dev);
+ 	data->client = client;
+@@ -655,15 +651,15 @@ static int stk3310_probe(struct i2c_client *client)
+ 						IRQF_ONESHOT,
+ 						STK3310_EVENT, indio_dev);
+ 		if (ret < 0) {
+-			dev_err(&client->dev, "request irq %d failed\n",
+-				client->irq);
++			dev_err_probe(&client->dev, ret, "request irq %d failed\n",
++				      client->irq);
+ 			goto err_standby;
+ 		}
+ 	}
+ 
+ 	ret = iio_device_register(indio_dev);
+ 	if (ret < 0) {
+-		dev_err(&client->dev, "device_register failed\n");
++		dev_err_probe(&client->dev, ret, "device_register failed\n");
+ 		goto err_standby;
+ 	}
+ 
+-- 
+2.44.0
 
-Since you're already going to resend, please keep one entry per line,
-this fragment is very inconsistent
-
-looks good otherwise
-
-Konrad
