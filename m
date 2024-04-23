@@ -1,85 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78AB184;
-	Tue, 23 Apr 2024 00:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60057130AF7
+	for <phone-devel@vger.kernel.org>; Tue, 23 Apr 2024 13:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713832720; cv=none; b=j4b8hipABbIK61kxk9DuthcyujGIdGAb5Zj7Mgjhyo7eMFsgeJD6CEMtnTUHKnVonA58+2U7kHwL8vQD9zR8BQFJcx398/xov/gfvE8JiNzVQwIX172YkwdbNT+6OpCptkzD0l6ix04O4PTYlan4I4BBXI0rStn/6+Z+Eitkyls=
+	t=1713877875; cv=none; b=GtyH+AmTAaLuZGGvHDe/mNkdGG7KCCXwupT4VG0lOcaJV8XxGtR68281/HtbkRay0vu77gbb9QWgMWMWrvgnh8nyDk3ifd3GAPHUVMlBgOSOKDut+YMUOONo1sO5EFoxbbI2MYbJn/njcYLVlPNt1wgcLqQ7OPnqnH+dXYksO2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713832720; c=relaxed/simple;
-	bh=Mu7unsryILuvM3Nf4rtyuH+NnGl/Ag6KmANbCK5/2A4=;
-	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
-	 Subject:From:Cc:To:Date; b=NimtZvSp4BY0FkYUHFLmKYB0TNNz3VTqyhyXUOy9rbNA13fHQpWy+m4LxeHEYpw6mVu4knaeUqrr/nl9RSQhE2I6mf4YXMC8y1fY26hgucNcXqURRzR8X/G8yklnBohLR9xA+ceq91BMDqxIjwimIvD3RWbiFJl8vbLHTuD3bEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JTll7Hu7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1713877875; c=relaxed/simple;
+	bh=EKiFUNWp2CVL7UdhgyBqmC8Xr2ctOjFiU0OMBH/KQs8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JjeMtUHR0mn9dk5oCMK5SKT7dfJ/yX+mXcBxyXUZG5gEvyKepDznBoiLzWVk92sd3hUgrcBplfun2u97BroQMF2k0OQRRmK6hDIk3HfvlGT0ZpgHJpQIKnRxYva+DxYJ4/mdSGgg2KbxgVBKe8lbAimKAZWhyo8Vubn/2Jo1EjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TgYB3Kad; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JTll7Hu7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AC3C113CC;
-	Tue, 23 Apr 2024 00:38:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713832720;
-	bh=Mu7unsryILuvM3Nf4rtyuH+NnGl/Ag6KmANbCK5/2A4=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=JTll7Hu7wF1BKHSgU8lKwIEL8hfr25t3ek+6NP5oW5+ShsrBaqQxD7sfBZFQdPk+x
-	 L+2+LOIS3x3RAUoeIcsVM5+JZmlF5DkB8ezeM2plNruKpD3fqnng/RomOYEvnH7LBD
-	 0KmaMANR6rnRRIaD0S1XEYQOMGImnsWtw2hvxUa2ZiDcFdS2a7/IE3RN8rURKVcUpq
-	 OwSlcgK+tPnnj/3PiZH1FpL8GZy4kiZKEdT+KXRh1QeTkyzpfb0+oS7TKyGBHX6Eri
-	 PQY26zMwJRRA9RUcx12XelpDstx/304B41rFNc1pBSigH/+mYctSdN1ASRmUw8oMYk
-	 yfacwyHNuCAQQ==
-Message-ID: <2473d3ddeea21640b20735d660e48f98.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TgYB3Kad"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2ddc2ea2091so17173251fa.1
+        for <phone-devel@vger.kernel.org>; Tue, 23 Apr 2024 06:11:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713877871; x=1714482671; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ljVofaMz5XK05sXcsxWO2zq54dDkOVWRiaigypPdLmw=;
+        b=TgYB3Kade/ZeRX24pgwtEgyFUiYPjqgVxorw6P9BaCZ4/m8ZoTCb8mQLzrG7cY5KcC
+         4AjDcN2I/IjPIir+AOPjP4bLAlmyHrAdpcZlmBY/hTn1+csCKFD+KiIIQLEyPS2Eomcv
+         8qgvA8yH3AVX+dEZUImgxgwW58S0V3JCMNHYDXhJo9/GjVdd250fVt7Z6aOTHpWUyuLZ
+         8cvgk2zsrCIO39iPSVgOuaHPfMOg1sH9Wh8hiz4jCPRGro3APlKflCiH1DQBeKLEE6zf
+         yzThZMy4QQdYOT5nDxEGPKcpiQ+Qk8uVFk6VGTWaxBV/AtRUFCBt5G5V2oeQzw/fhQmX
+         MXMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713877871; x=1714482671;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ljVofaMz5XK05sXcsxWO2zq54dDkOVWRiaigypPdLmw=;
+        b=NNzwi10QQZW6NhdmaYW3S1Y72pJxW42Q6fWLodQkimzOuAjH32uuLszysawLyyB6EA
+         EoJpZlYVZMJlBEpgnUOhUmDyD68mTb7JdU4lAG/voZyiGwjTPk43XPjgszklMcYb4KG4
+         PJnLq5UivoNBjVR2m+75t16x9Ddi789r7tPjlGu4mmN2l2VD7pNS+uPK55vVgL8s65xk
+         sJc0lYM3LosSQh2D3rMz4y+EyedcI2RP0zJNfX019Tc2JN6kyvpAkwqM4lcuRemfT7+W
+         uHY3tFJgHVRbmO4Cx7kW/Aji1EMB2VgcVZRdm3oG4Vw5kdVzxfEfJKBMBlG+AT5hLPwg
+         F4Xg==
+X-Forwarded-Encrypted: i=1; AJvYcCWa2gtCYBcObPVGdSC7vLSiJze3gLgl7POCD2mBofA14dp87BtA5qmYAn075h6SNrld0/UuTvxTXYVzuo7ZDHHQwcPcjOGV16jCYBA=
+X-Gm-Message-State: AOJu0YzxpvPTb9KwI27g4HBYtEWE0xJErAATf9gAuNoouGaxP1Y8wrnd
+	Z7d43MjOfZ/233nb1c/pHF36UDbjQnDn962bAFQvk2NtJ8qtkgRPdKeWfbmeFA0=
+X-Google-Smtp-Source: AGHT+IH6+a300iDdirczkNG89v3OWEFzlKL6UcHimIG4AYRQ19LBvrY3ZDkgjW/buxJ28WPKLxuKTg==
+X-Received: by 2002:a2e:9995:0:b0:2da:46ca:25ad with SMTP id w21-20020a2e9995000000b002da46ca25admr8218339lji.44.1713877871520;
+        Tue, 23 Apr 2024 06:11:11 -0700 (PDT)
+Received: from [172.30.205.0] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
+        by smtp.gmail.com with ESMTPSA id r28-20020a2e8e3c000000b002d28db9ce7bsm1741252ljk.20.2024.04.23.06.11.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Apr 2024 06:11:10 -0700 (PDT)
+Message-ID: <3054961d-251e-4e70-b907-4949cfacca96@linaro.org>
+Date: Tue, 23 Apr 2024 15:11:08 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <eb221864-0044-4ea5-bbee-7545d10cb130@skole.hr>
-References: <20240402-pxa1908-lkml-v9-0-25a003e83c6f@skole.hr> <de4c56a8-488d-4cdb-9d6c-e9d6e63b22b9@skole.hr> <58b23157c088cb4774d579cc8700de85.sboyd@kernel.org> <3287993.aeNJFYEL58@radijator> <d7ff7dd609cd1b9a50e5ffa882d05b90.sboyd@kernel.org> <eb221864-0044-4ea5-bbee-7545d10cb130@skole.hr>
-Subject: Re: [PATCH v9 5/9] clk: mmp: Add Marvell PXA1908 clock driver
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, Karel Balej <balejk@matfyz.cz>, David Wronek <david@mainlining.org>, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Catalin Marinas <catalin.marinas@arm.com>, Conor Dooley <conor+dt@kernel.org>, Duje =?utf-8?q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>, Guilherme G. Piccoli <gpiccoli@igalia.com>, Haojian Zhuang <haojian.zhuang@linaro.org>, Kees Cook <keescook@chromium.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Linus Walleij <linus.walleij@linaro.org>, Lubomir Rintel <lkundrak@v3.sk>, Michael Turquette <mturquette@baylibre.com>, Rob Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>, Tony Lindgren <tony@atomide.com>, Tony Luck <tony.luck@intel.com>, Will Deacon <will@kernel.org>
-Date: Mon, 22 Apr 2024 17:38:38 -0700
-User-Agent: alot/0.10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: sm7225-fairphone-fp4: Enable USB
+ role switching
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240329-fp4-tcpm-v2-0-d7f8cd165355@fairphone.com>
+ <20240329-fp4-tcpm-v2-3-d7f8cd165355@fairphone.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240329-fp4-tcpm-v2-3-d7f8cd165355@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Quoting Duje Mihanovi=C4=87 (2024-04-20 06:32:56)
-> On 4/20/24 00:24, Stephen Boyd wrote:
-> > Quoting Duje Mihanovi=C4=87 (2024-04-19 07:31:14)
-> >> On Friday, April 12, 2024 4:57:09=E2=80=AFAM GMT+2 Stephen Boyd wrote:
-> >>> Quoting Duje Mihanovi=C4=87 (2024-04-11 03:15:34)
-> >>>
-> >>>> On 4/11/2024 10:00 AM, Stephen Boyd wrote:
-> >>>>> Is there a reason this file can't be a platform driver?
-> >>>>
-> >>>> Not that I know of, I did it like this only because the other in-tree
-> >>>> MMP clk drivers do so. I guess the initialization should look like a=
-ny
-> >>>> of the qcom GCC drivers then?
-> >>>
-> >>> Yes.
-> >>
-> >> With the entire clock driver code in one file this is quite messy as I=
- also
-> >> needed to add module_init and module_exit functions to (un)register ea=
-ch
-> >> platform driver, presumably because the module_platform_driver macro d=
-oesn't
-> >> work with multiple platform drivers in one module. If I split up the d=
-river
-> >> code for each clock controller block into its own file (such as clk-of-
-> >> pxa1908-apbc.c) as I believe is the best option, should the commits be=
- split
-> >> up accordingly as well?
-> >=20
-> > Sure. Why is 'of' in the name? Maybe that is unnecessary?
->=20
-> That seems to be a historical leftover from when Marvell was just adding =
 
-> DT support to the ARM32 MMP SoCs which Rob followed along with in the=20
-> PXA1928 clk driver and so have I. Should I drop it then as Marvell has=20
-> in the PXA1908 vendor kernel?
->=20
 
-Sounds good to me.
+On 3/29/24 13:26, Luca Weiss wrote:
+> Configure the Type-C and VBUS regulator on PM7250B and wire it up to the
+> USB PHY, so that USB role and orientation switching works.
+> 
+> For now USB Power Delivery properties are skipped / disabled, so that
+> the (presumably) bootloader-configured charger doesn't get messed with
+> and we can charge the phone with at least some amount of power.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+
+nits:
+
+> +	usb-role-switch;
+
+this is a common property of the dwc3 host
+
+
+[...]
+
+>   	vdda-phy-supply = <&vreg_l22a>;
+>   	vdda-pll-supply = <&vreg_l16a>;
+> +	orientation-switch;
+
+and this is a common property of the QMPPHY
+
+Could you move them to the node definition?
+
+Konrad
