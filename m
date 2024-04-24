@@ -1,118 +1,114 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C140E15E5CC;
-	Wed, 24 Apr 2024 15:21:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6070161322;
+	Wed, 24 Apr 2024 16:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713972081; cv=none; b=XJVjvA7WVLJJLPVaVHZypejNvVrs5FEl9OqTnuZ6vm/6NmjGHr26QoXSKY6xoP4JinTQRufRjnImZnTsH1fZuPw9c7FhuBFbDe/z+jS39LVVpRiGh58xsDJawheQnXb6ncuuusd28bq4S72RAxSMeLZ80U5eXVnkgCwK1sMv2eA=
+	t=1713975256; cv=none; b=KsEvxqAJW52DRQKa4E7lD6iMbFCsy5cHW+wenSY1Nuomq3m3HyyW35uTFoO3ZEapoNaxf3u8I1TsdLhpkMzNcb/m9sRGXszQ13IBjWh89ItGz+YnLlZX0hVnDYgz6PgZANh349++pflSctQOdlsGsSqwt222qrgeHHsvwkbJg8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713972081; c=relaxed/simple;
-	bh=die5GEdR93SZJIrj+6mbvz6RS0d1bUoi/TXLw5RP8dI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=K5+nVxqiPT/AU8ow28gJ2Id69QLVwshDhULOHMhHfQnuexEENCDRAJX5V5EOF20PTOJwactcqZsqoD72p/W0UeO/gBK1P3Kc36Eu0TFG6YciTF1uUOQwvpjlTCyS5UeQliXiHEWyPoFYMJumAGJbL+zMKv+JWT7kqYUJdqEZIJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PzcVnCJQ; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1713975256; c=relaxed/simple;
+	bh=A6NNMZIxwRDoaqJP/sVaKEK1Sqp369lZtQwhGk7s/xk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sesQFRrhsg8bJ+BlkG+TDGvQNsEs7L6IjUusb92uC/Gge2qAhBiPX3EyGFyI/YdaW1UszR2+PZs5fJFZ/lWPgiyyJZL/ML+x/E+g38kdHOcTd3wFiBdHLUeZ7/BA/NYbdCAiM2xvnCXc9mM7vRFroZNWChp9OPi3WDlgU7B72EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=AV16uSg1; arc=none smtp.client-ip=195.181.215.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PzcVnCJQ"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a5544fd07easo68366b.0;
-        Wed, 24 Apr 2024 08:21:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713972078; x=1714576878; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xmbep3Wj2edBDGZAic+hg2xj7nE0C73pjSQNpMAXt4k=;
-        b=PzcVnCJQAvQA2+mMxauGIo/XWcsm2/lUw9jHxK04kGnPaFPao/T/FX3ABVeiSfuxfc
-         MHN1rl/bVzfvAbe4YcsatEpeHggf/ZlXEFW0jnNHu1ltvYApUUf+eSZV5N+gb28/rZAp
-         nRoyotu5LkjRvYj7fm/iDul68jbEaAKgVs1oYGrZKCbYkByvmDLnd0Q2lkfcyHeVrNdy
-         JMnR6BiL6Jj+Zgf071z1c5CGIrlboSFCTxFEDFmy5SivkDJC3rsojQJy+cCD+0OoBPdE
-         CtGrUHd+HijWBvaFcGbCV+CFFxS///qpFBgLmUykhLpkDNR7Z2DGbEdxHPdIyB/lZOvL
-         6KdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713972078; x=1714576878;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Xmbep3Wj2edBDGZAic+hg2xj7nE0C73pjSQNpMAXt4k=;
-        b=APm3X8J+xn9KNMRrot3OCMRniImNGxsMjQ6eVpwWPGrOWeJMERm5oIBS0BrTUy/wnC
-         iDVt56oIgPUv8R/Ne7XQCwGN+Yi9S7ZqkZfwu7lLJAz9/msU22sbSActxTeb+PfqBzjJ
-         Ya8knfcm5TK1+S1BFn8ORacv2iEEU9IdJ2pgqzc2igGUiBsmeZVrwEwTP4U2nCBDm4DF
-         DaDYL2G4MPC3vClOybFjbeBO1p3y1yQ6QVf09cbDR8h6F0CriKWM6JTNbvB9JSl69vlZ
-         QpfSoMV+5JRot6MUGi1tgmInsCQsA/kCJY7ACTuZklukcFPTtJXOfX2Jc48CAPGfph1R
-         PEnw==
-X-Forwarded-Encrypted: i=1; AJvYcCVD6nZuGLylKNp+Y+2beVV9s7YCIg+aFV2QPnQyAkUj1vh3LdVaTyh5uTZ1GUyS7EuoxtcVgJTOXizE7ANN1LOP6hYHa9hr9SRaDHdXOB12Ao/rsEkmG+x5tLooWvpeV0OZ3g7OEYrEFDJc85TdIBSm5Qd3tRCueVg+zcRQWtX9y4NJBd3IZtkGaO0Tn222wgsnce7rrQl5cVwNbfTZep/J
-X-Gm-Message-State: AOJu0YxPup5VvkeYN0hcwo/+K6Tb5uOdBS+f3aDa4uBBzYT/LDbWI3Y9
-	Vf9jGvcLhfS9L2R17iQoSq1Fad9Jrsi49Bq+loZnJQ5fPsyuZel/yQnFIKUDmjSkvlSA2wBhJLV
-	79G1Z1g+bU1KLDuNwOZhjqiyXhTQ=
-X-Google-Smtp-Source: AGHT+IGQUEPZE3TBNrB7jm9cFv207FSC0kpyhsF+3dnUvHUba9LKAV3qWkn9Wz5L3PgDviOeIm6K6r9u4HEv/wd6LO4=
-X-Received: by 2002:a17:906:308c:b0:a51:8d60:215a with SMTP id
- 12-20020a170906308c00b00a518d60215amr1836143ejv.27.1713972077907; Wed, 24 Apr
- 2024 08:21:17 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="AV16uSg1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+	t=1713975251; bh=A6NNMZIxwRDoaqJP/sVaKEK1Sqp369lZtQwhGk7s/xk=;
+	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
+	b=AV16uSg1wFnhhvZ4t52YPzs2VQRUqhd4lB5Bvib4MOLVgu2EzYQZUZbn+LF1IN4nm
+	 xqH7wwuUVHdQmNDONHXeErqKyB+ICIo3BA6DSSrQsHn0Xub7zsvxqEjCd8iKzKp1Ob
+	 ux/KQ/cWf9JiNaLdYggxsWhVALFmPpGN/r7Fl+js=
+Date: Wed, 24 Apr 2024 18:14:10 +0200
+From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Aren Moynihan <aren@peacevolution.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	Willow Barraco <contact@willowbarraco.fr>
+Subject: Re: [PATCH v2 2/6] iio: light: stk3310: Implement vdd supply and
+ power it off during suspend
+Message-ID: <xxbwdl6ebvut3u7qhzfy65e4eheixghqe7yn4qemyuowxyxj5a@r2wa2b7bhw2x>
+Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
+	Andy Shevchenko <andy.shevchenko@gmail.com>, Aren Moynihan <aren@peacevolution.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	Willow Barraco <contact@willowbarraco.fr>
+X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
+ <https://xff.cz/key.txt>
+References: <20240423223309.1468198-2-aren@peacevolution.org>
+ <20240423223309.1468198-4-aren@peacevolution.org>
+ <CAHp75VeRDSPvpmSbUyZPp0RMoTOE193U2ma18qxv_qZQKLCq8g@mail.gmail.com>
+ <5qqil7ltqhdeabml6toqpcy773uhjxgwaz3txpy4kv4sz55o2y@hmar674eey7s>
+ <CAHp75VdR9HtWbSif+j8QHX5zG9xPF1GzUFY2s-0OjD3RAWD9-Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240423223309.1468198-2-aren@peacevolution.org>
- <20240423223309.1468198-4-aren@peacevolution.org> <CAHp75VeRDSPvpmSbUyZPp0RMoTOE193U2ma18qxv_qZQKLCq8g@mail.gmail.com>
- <5qqil7ltqhdeabml6toqpcy773uhjxgwaz3txpy4kv4sz55o2y@hmar674eey7s>
-In-Reply-To: <5qqil7ltqhdeabml6toqpcy773uhjxgwaz3txpy4kv4sz55o2y@hmar674eey7s>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 24 Apr 2024 18:20:41 +0300
-Message-ID: <CAHp75VdR9HtWbSif+j8QHX5zG9xPF1GzUFY2s-0OjD3RAWD9-Q@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] iio: light: stk3310: Implement vdd supply and
- power it off during suspend
-To: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>, 
-	Andy Shevchenko <andy.shevchenko@gmail.com>, Aren Moynihan <aren@peacevolution.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	Willow Barraco <contact@willowbarraco.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75VdR9HtWbSif+j8QHX5zG9xPF1GzUFY2s-0OjD3RAWD9-Q@mail.gmail.com>
 
-On Wed, Apr 24, 2024 at 3:59=E2=80=AFPM Ond=C5=99ej Jirman <megi@xff.cz> wr=
-ote:
-> On Wed, Apr 24, 2024 at 02:16:06AM GMT, Andy Shevchenko wrote:
-> > On Wed, Apr 24, 2024 at 1:41=E2=80=AFAM Aren Moynihan <aren@peacevoluti=
-on.org> wrote:
-
-...
-
-> > >         ret =3D stk3310_init(indio_dev);
-> > >         if (ret < 0)
-> > > -               return ret;
-> > > +               goto err_vdd_disable;
+On Wed, Apr 24, 2024 at 06:20:41PM GMT, Andy Shevchenko wrote:
+> On Wed, Apr 24, 2024 at 3:59 PM Ondřej Jirman <megi@xff.cz> wrote:
+> > On Wed, Apr 24, 2024 at 02:16:06AM GMT, Andy Shevchenko wrote:
+> > > On Wed, Apr 24, 2024 at 1:41 AM Aren Moynihan <aren@peacevolution.org> wrote:
+> 
+> ...
+> 
+> > > >         ret = stk3310_init(indio_dev);
+> > > >         if (ret < 0)
+> > > > -               return ret;
+> > > > +               goto err_vdd_disable;
+> > >
+> > > This is wrong. You will have the regulator being disabled _before_
+> > > IRQ. Note, that the original code likely has a bug which sets states
+> > > before disabling IRQ and removing a handler.
 > >
-> > This is wrong. You will have the regulator being disabled _before_
-> > IRQ. Note, that the original code likely has a bug which sets states
-> > before disabling IRQ and removing a handler.
->
-> How so? stk3310_init is called before enabling the interrupt.
+> > How so? stk3310_init is called before enabling the interrupt.
+> 
+> Exactly, IRQ is registered with devm and hence the error path and
+> remove stages will got it in a wrong order.
 
-Exactly, IRQ is registered with devm and hence the error path and
-remove stages will got it in a wrong order.
+Makes no sense. IRQ is not enabled here, yet. So in error path, the code will
+just disable the regulator and devm will unref it later on. IRQ doesn't enter
+the picture here at all in the error path.
 
-> Original code has a bug that IRQ is enabled before registering the
-> IIO device,
+> > Original code has a bug that IRQ is enabled before registering the
+> > IIO device,
+> 
+> Indeed, but this is another bug.
+> 
+> > so if IRQ is triggered before registration, iio_push_event
+> > from IRQ handler may be called on a not yet registered IIO device.
+> >
+> > Never saw it happen, though. :)
+> 
+> Because nobody cares enough to enable DEBUG_SHIRQ.
 
-Indeed, but this is another bug.
+Nice debug tool. I bet it makes quite a mess when enabled. :)
 
-> so if IRQ is triggered before registration, iio_push_event
-> from IRQ handler may be called on a not yet registered IIO device.
->
-> Never saw it happen, though. :)
+Kind regards,
+	o.
 
-Because nobody cares enough to enable DEBUG_SHIRQ.
-
---=20
-With Best Regards,
-Andy Shevchenko
+> -- 
+> With Best Regards,
+> Andy Shevchenko
