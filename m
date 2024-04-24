@@ -1,131 +1,95 @@
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0EF13B59F;
-	Wed, 24 Apr 2024 20:00:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7004113C9C6
+	for <phone-devel@vger.kernel.org>; Wed, 24 Apr 2024 20:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713988851; cv=none; b=VmB3PbAbobBdzb/DcOMgHlLY9lrqNYuwZSvVtQ7bgKUNhbmlypIse1JSQgzOrY3jOFoivJsxjEyDb8bErcE7YyXRMTF7PTY+E3WPr14nh8qU7vBC9yGqSNhsi3aAzHb1aMR6RXXYyu5D9x/BmbYz1DVz06JYnShhSsbxeGPxRJs=
+	t=1713989612; cv=none; b=Z8BxK9n2Gt0cCucPd8aBNjKKLjbNQmk8FXVxGFwvXn9EBrwOe5PYjpBnnGzp+jMb/PLxg68X3WC6PwpmQq/bWDSHGFXAo5+UMcVbUaLkOT4oGG9Ozai7dfHPdVDoYAP1106Go72SiAVsSBTc5qktVFYFOSyfGBqiGayzzRrWvDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713988851; c=relaxed/simple;
-	bh=PDAVfIibszca/yt5F0VeGPq35/5g0qR5+vGvPxJ0lMo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MXXZsoc2mT9KwVvAb8Y4akihtsbSljFBfIRR0sayJmlYCUVdOlp1pg8mfW/hyO6SUCv9Fb8p6OKF4OgFz7ShfG0fn0Gkj38MAfDs0JoSiiSiBTpwf/I5Lb7VM52+QjSHY1lC1Pgti0+jwVqLJADDiGu+HE7kFKIhWL9ywdrdBbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=ymkNnORv; arc=none smtp.client-ip=195.181.215.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
+	s=arc-20240116; t=1713989612; c=relaxed/simple;
+	bh=sNqyq6y7H3czTBGecgPDxHefPtcbiiQFYk5mcfLGh6s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tNTujK+MJPDUE4+Z7z8RKaL8i9PMO7yzv55ScOyiDWoorZY0yzMV9HTBVyojB1emYBNjUMCwyYDh4KNytFwoTY58eSuEWEWsk9cMttWXTINdIh2sWIdn8Z5BG+j+NbAlg6LB+w55btvPqABmRzIF1McrPWeahIRXa9vKRJnogd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tEVGIFXW; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="ymkNnORv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-	t=1713988846; bh=PDAVfIibszca/yt5F0VeGPq35/5g0qR5+vGvPxJ0lMo=;
-	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
-	b=ymkNnORv5kDLrd8/rlrBZZrrDJyZnYn+T8AGN7ULKjl1Wmvh8aueVYmyyBN7p7ewp
-	 HN8PsOhzxULWUwjATSjr+cm8JwHSo8EQafnc1o53AkS2UWHDY9SwfzMdMzByio7hwl
-	 xN6e7C6J0BM25jsAMs6NjvdDcsMzFpn/R1ivHTdQ=
-Date: Wed, 24 Apr 2024 22:00:46 +0200
-From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Aren Moynihan <aren@peacevolution.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	Willow Barraco <contact@willowbarraco.fr>
-Subject: Re: [PATCH v2 2/6] iio: light: stk3310: Implement vdd supply and
- power it off during suspend
-Message-ID: <yl4b23gclij2jqyxlqkmfmct4vlz6gotwfgbpkisgz2fuuh7uv@rbynxmitzjog>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
-	Andy Shevchenko <andy.shevchenko@gmail.com>, Aren Moynihan <aren@peacevolution.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	Willow Barraco <contact@willowbarraco.fr>
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
-References: <20240423223309.1468198-2-aren@peacevolution.org>
- <20240423223309.1468198-4-aren@peacevolution.org>
- <CAHp75VeRDSPvpmSbUyZPp0RMoTOE193U2ma18qxv_qZQKLCq8g@mail.gmail.com>
- <5qqil7ltqhdeabml6toqpcy773uhjxgwaz3txpy4kv4sz55o2y@hmar674eey7s>
- <CAHp75VdR9HtWbSif+j8QHX5zG9xPF1GzUFY2s-0OjD3RAWD9-Q@mail.gmail.com>
- <xxbwdl6ebvut3u7qhzfy65e4eheixghqe7yn4qemyuowxyxj5a@r2wa2b7bhw2x>
- <CAHp75VejwJ7h5jaNL+VL7FE4UMbTEP3QA1E=_y-1PSrz99zBKQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tEVGIFXW"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2dd19c29c41so2767131fa.3
+        for <phone-devel@vger.kernel.org>; Wed, 24 Apr 2024 13:13:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713989608; x=1714594408; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=U1VIKcgsAHqC2f+MP6K6SFFkgVq/PwMZ7TgiEnmGAfw=;
+        b=tEVGIFXW4rpeeM6utr9fkF2W38s66a2dEIh0SHs+iJZSvYVggkLJRxpKh2GysqOGEE
+         Xz6BM859boB7giMq5RmzMl4XIzkaGijOFu4TyiiEQvpctXnMIf0i36q5mZjdvIfZBBA/
+         Xl4qeXhh5NSocA/oeOOLNRbAJY8B+bMajicI4p9HlC3uClnd/PQv1PYQTmeHzL0Ioz0H
+         NlGF5f7C8r9NcuH+XdPeLFN81JMQAIcMhoQd+zNSJulSgUyIKRCdyc4tFpUKs5O2zv4Q
+         fr02Skqt6q7JoLw1cD39930hJzO3Yq3e2+Y1dOleyQkJGgkrEB/KgXn/Y8WcchxcCg3l
+         9jug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713989608; x=1714594408;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U1VIKcgsAHqC2f+MP6K6SFFkgVq/PwMZ7TgiEnmGAfw=;
+        b=GwhcxoAcnAONcJmiFLWPkGqAKgGtnORFGSyAHf9RNTvvLJ5UjuNIG3eVaJWA5lT8Uq
+         K/FhyhTgG7ouOhiyUffwkKRl9BOD6mV639sTFxxq+2GCtQlmFoU32jS2u7/ln87zRDD/
+         eOBywsRc35tB3HrBgZH/JXkqjNKRyWFSeOkvpkL0A9zRCJVunx5g+4pMOQoAXDBv6HVG
+         lM1rwQoTcklyi1qgU0j/CEJpFC82ZvMP3RFDtjYQVjTf1iDPaCOsFDJedxiMLZg7gzIH
+         H9fThIRxbOjTCxCCDfB9lW5k5ZJOGS/0DPGmw/+3nYfX5bDc5fWzkdYxc29+NcyPLTiC
+         iUMw==
+X-Forwarded-Encrypted: i=1; AJvYcCVyvxsbDJRP1zeuUFBJKSD/7u20P/y6Yf03cowYX8Owu+9oJKbB3lCYKSzqKH37Iu+Kz0b9lYUxHUIFaCf/tCv0III2PQ0jbyAxFGA=
+X-Gm-Message-State: AOJu0YxvzuN53AA8qHnJsGe3LbjeGd3zGA2J6Pxa/pR5Wh7FsTULvFqJ
+	wzeXkyQFulEEbZbFHdIrNEsYt6vErlDKnNp8NzwOwBtWPynCh1UhF8eVmr8CerQ=
+X-Google-Smtp-Source: AGHT+IF0z5d2SuEtnxThz/DS8L2JAH1ZbLC/6QxjxTDIakRRLrQTokCWhknjfh/nR/NbFXdJxFtKDA==
+X-Received: by 2002:a05:651c:a07:b0:2d8:8b7:76e3 with SMTP id k7-20020a05651c0a0700b002d808b776e3mr2590960ljq.11.1713989608620;
+        Wed, 24 Apr 2024 13:13:28 -0700 (PDT)
+Received: from [172.30.204.223] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
+        by smtp.gmail.com with ESMTPSA id z21-20020a2e8415000000b002db98d0f2c8sm2061822ljg.85.2024.04.24.13.13.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Apr 2024 13:13:28 -0700 (PDT)
+Message-ID: <e74692c4-e027-4800-b80c-449fb3ef9bdb@linaro.org>
+Date: Wed, 24 Apr 2024 22:13:26 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75VejwJ7h5jaNL+VL7FE4UMbTEP3QA1E=_y-1PSrz99zBKQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 2/2] soc: qcom: smsm: Support using mailbox interface
+To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240424-smsm-mbox-v1-0-555f3f442841@z3ntu.xyz>
+ <20240424-smsm-mbox-v1-2-555f3f442841@z3ntu.xyz>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240424-smsm-mbox-v1-2-555f3f442841@z3ntu.xyz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 24, 2024 at 08:31:27PM GMT, Andy Shevchenko wrote:
-> On Wed, Apr 24, 2024 at 7:14 PM Ondřej Jirman <megi@xff.cz> wrote:
-> > On Wed, Apr 24, 2024 at 06:20:41PM GMT, Andy Shevchenko wrote:
-> > > On Wed, Apr 24, 2024 at 3:59 PM Ondřej Jirman <megi@xff.cz> wrote:
-> > > > On Wed, Apr 24, 2024 at 02:16:06AM GMT, Andy Shevchenko wrote:
-> > > > > On Wed, Apr 24, 2024 at 1:41 AM Aren Moynihan <aren@peacevolution.org> wrote:
-> 
-> ...
-> 
-> > > > > >         ret = stk3310_init(indio_dev);
-> > > > > >         if (ret < 0)
-> > > > > > -               return ret;
-> > > > > > +               goto err_vdd_disable;
-> > > > >
-> > > > > This is wrong. You will have the regulator being disabled _before_
-> > > > > IRQ. Note, that the original code likely has a bug which sets states
-> > > > > before disabling IRQ and removing a handler.
-> > > >
-> > > > How so? stk3310_init is called before enabling the interrupt.
-> > >
-> > > Exactly, IRQ is registered with devm and hence the error path and
-> > > remove stages will got it in a wrong order.
-> >
-> > Makes no sense.
-> 
-> Huh?!
-> 
-> > IRQ is not enabled here, yet. So in error path, the code will
-> > just disable the regulator and devm will unref it later on. IRQ doesn't enter
-> > the picture here at all in the error path.
-> 
-> Error path _after_ IRQ handler has been _successfully_ installed.
-> And complete ->remove() stage.
 
-Allright. So fixing the other issue I mentioned will fix this one too, because
-there will be no error path after IRQ enable, then.
 
-kind regards,
-	o.
+On 4/24/24 19:21, Luca Weiss wrote:
+> Add support for using the mbox interface instead of manually writing to
+> the syscon. With this change the driver will attempt to get the mailbox
+> first, and if that fails it will fall back to the existing way of using
+> qcom,ipc-* properties and converting to syscon.
+> 
+> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+> ---
 
-> > > > Original code has a bug that IRQ is enabled before registering the
-> > > > IIO device,
-> > >
-> > > Indeed, but this is another bug.
-> > >
-> > > > so if IRQ is triggered before registration, iio_push_event
-> > > > from IRQ handler may be called on a not yet registered IIO device.
-> > > >
-> > > > Never saw it happen, though. :)
-> > >
-> > > Because nobody cares enough to enable DEBUG_SHIRQ.
-> >
-> > Nice debug tool. I bet it makes quite a mess when enabled. :)
-> 
-> FWIW, I have had it enabled for ages, but I have only a few devices,
-> so I fixed a few cases in the past WRT shared IRQ issues.
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+Looks good!
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+
+Konrad
