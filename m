@@ -1,131 +1,109 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DAA16C450;
-	Wed, 24 Apr 2024 16:55:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C98915E7E9;
+	Wed, 24 Apr 2024 17:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713977739; cv=none; b=TlT/f3bI+RLgST/CBW25SUnWzZAO+5n2zhV4yVbe+urcZiJpsOx1VFxzVYUAURg+EKRdCuPjqtogAnajt6yjSlceQbDHXpZW3KaCmsGzQFkgbwB7fGDc9E9TMiHKzm68J0LgowBqB6cMVKYkN1pahUZhEfgB07xsEgz+3oL/3Qg=
+	t=1713979320; cv=none; b=BCu6jvFvaCb2brhJgaqeB09DRy/rFi5FYn55/np7z/s8vWGxTHPte/v8KuIDYhLfLJ8Fuj1cPtqa9jlQDWfDbV7K/a0Q/E7di6bWm61QMUiUrqni6NJEifrflw+J5Yl0U/cLIltDljRhTXr3HymBuVEb4++sxtsAqiBdwY4Xe+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713977739; c=relaxed/simple;
-	bh=ismdr1NH89EyqlRlfJMRiCPmKdo+TMgxDhu4SNwwFKM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=izHC4Cq7Tka0vxVSy0aVB3jM3+lVC5+/wDPw+O36JRzScB45yX3SPI3PhPtp32RVYTHJF05IMnu6UI6xJBdFTu0V6CLjEOUW8KSoI/xU9sn1ZqlrtZlc9cPPnVyY+76WmKYt8CqM7bpPCpmXAM7J8zkyscR7SEe8W+OlpjZisuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mMZVtqoB; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+	s=arc-20240116; t=1713979320; c=relaxed/simple;
+	bh=XpEmF5NrYHWlUdqf2Ekgejd6UqOWMp+Xvsdh90tMXtY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Idu2Nk/z/jU0ZVTbAKjuaJXt+1rOwwjbJP/42j3M3nhpn8bBvqM1msHs2BxqjjbEA/X5+W71XqKytUaTIX8DjRThMDJ/F7NCVWEa3AbQSXVsEz0sGEfbGZnTPpRc2T/YUxdOGRHYnxsy8Aei+KX7LwDb/fs1JgbRO+0aI31ePxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=ixctkXiQ; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mMZVtqoB"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43OGrFNG018626;
-	Wed, 24 Apr 2024 16:55:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=qcppdkim1; bh=S3QwG/gp7sGhYK+iMw8kH
-	vsDhub3gIJuqyRymC6Hyns=; b=mMZVtqoBq1oaB0lOfFqvvBc0fcWm9kvADGZWT
-	tGp19sacBYS0+2Vwq40/MdKK/pWfK93DUxOcEksATBJ/oEoJEDFk9e32d/ysQNMD
-	3eDHG51iVFZH7/ULg2RDWglFU5xGToV7rvN9WSn+4bnvYSvSbwpq6bpwrphe1ebE
-	kXaZMdIwL0/OZXI1fAu+7AukFa+xHvqwvQkSOd89W1pz3Dyi2ahDnKK4QB9d9qSm
-	QecIkmOYNyxx1AWcf7xm/jsoy8lTW+hjiNCUd722QKX2ak55hUdQFvGg1xbN6vMz
-	bjXq0VXGyW5zeH8iM6IG0aIdd6nKhhwDx4/F/7IF4lzyN/VGg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xpv9g9hqs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Apr 2024 16:55:32 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43OGtVgX031427
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Apr 2024 16:55:31 GMT
-Received: from hu-bjorande-lv.qualcomm.com (10.49.16.6) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 24 Apr 2024 09:55:31 -0700
-Date: Wed, 24 Apr 2024 09:55:30 -0700
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
-To: Luca Weiss <luca@z3ntu.xyz>
-CC: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Mathieu Poirier
-	<mathieu.poirier@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob
- Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor
- Dooley <conor+dt@kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-remoteproc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-Subject: Re: [PATCH 0/7] Use mboxes instead of syscon for APCS (arm32 & arm64)
-Message-ID: <Zik5gmTixGpk13qj@hu-bjorande-lv.qualcomm.com>
-References: <20240424-apcs-mboxes-v1-0-6556c47cb501@z3ntu.xyz>
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="ixctkXiQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1713979317; bh=XpEmF5NrYHWlUdqf2Ekgejd6UqOWMp+Xvsdh90tMXtY=;
+	h=From:Subject:Date:To:Cc;
+	b=ixctkXiQxNkfMGNL9M3kgzKjJD+ce868et17NWNH3W/vzzSDrsIsahWwUFwJOm06u
+	 KcOJB11QRiOwPDMbu9QDBXwJOcRhlyjJgF7aLEwhGO4xepIyPEKAZkHEDd30EFDDPM
+	 ogRHVFaNCTG7tS4mlzRgHt6/uOXU02qd+46XsqDo=
+From: Luca Weiss <luca@z3ntu.xyz>
+Subject: [PATCH RFC 0/2] Support mailbox interface in qcom,smsm driver
+Date: Wed, 24 Apr 2024 19:21:50 +0200
+Message-Id: <20240424-smsm-mbox-v1-0-555f3f442841@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240424-apcs-mboxes-v1-0-6556c47cb501@z3ntu.xyz>
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: hQv8mAhEPOsbXGPMhm9SQ19NB9rfqNBn
-X-Proofpoint-GUID: hQv8mAhEPOsbXGPMhm9SQ19NB9rfqNBn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-24_14,2024-04-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- suspectscore=0 clxscore=1015 mlxlogscore=922 malwarescore=0 adultscore=0
- mlxscore=0 phishscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
- definitions=main-2404240072
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAK4/KWYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDEyMT3eLc4lzd3KT8Cl0DMzOzNGPT1MRUExMloPqCotS0zAqwWdFKQW7
+ OSrG1tQA5HkRGYAAAAA==
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1515; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=XpEmF5NrYHWlUdqf2Ekgejd6UqOWMp+Xvsdh90tMXtY=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBmKT+yz2easagHF2UMvf0ae2B3KYiAfDUdFZAik
+ BFcnzKiTpqJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZik/sgAKCRBy2EO4nU3X
+ Vod1D/9zjpmXjqw4EPuOOo9qFWxej1vk2AhH38D5+5gKdreJLdaWnoxYJLV69oeqGJmDSmVPUu5
+ I+HLJVPrxH1BhA6bJF8Hraxx4PRKlmPDb56hK43NGff+QJmPhOiGZu7U8AQHSeXH4bu+m78OS2Z
+ 2eK1aJTephDNJBxejVmOZDb5cZnSepYF2ZsodxlxvpRNLwN0qEvnOm0eNqOnw8B/2JOOVaeMm7o
+ y4J7VMySvBHh4QMuYlG4RuH3ezNdGXS8T6y9AmYkqx2Invx4KD612sGVHcIOW/fiZsmq2LzIFp+
+ X4dmcrsLvZJ1Izn7yDBpy7Ma3lY4Nd3SWTk+I1cnyoWlezltg3xAsR6TrNODplL/kCZI8W5x904
+ puA4kHbYyeF1BR6951sRvQ8+jgKOGas+ZJB/5Yx8pX8HacXBEV5jHWi0BR+tzh2M6hF7eUuWwV4
+ dmo71zd5MdEoD0i0O4tVVJbAh3gVhftHqCI/k5332qe3eVpbPPOgfC2a6IIypK/ysAqCE+7fNhz
+ h2JXuyqvLdu5TtzYluUm7RvAmCRmjDp8D61w593M2ykfPMX0R52eJ3IsSDkBVhWVggHZagKTvfU
+ /yMEWy9LOFk0M0PtNL9DijwpsjxSeWJBWb/aYIegHcKOjk3KytNn9q+01U3AFuEaFnmDUNHESfw
+ Y6Dl+8SMpF5sFxQ==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On Wed, Apr 24, 2024 at 06:23:53PM +0200, Luca Weiss wrote:
-> The first patch is for removing a bogus error warning I've noticed while
-> developing this on msm8226 - there the patches are also coming later for
-> this SoC since apcs is getting hooked up to cpufreq there also.
-> 
-> Apart from usages from the qcom,smsm driver (patches coming!) all other
-> usages of the apcs mailbox now go via the mailbox driver - where one is
-> used, so some arm32 boards will continue using "qcom,ipc*" properties in
-> the short or long term.
-> 
+Take a shot at converting the last driver that requires direct
+"qcom,ipc*" syscon references in devicetree by allowing the smsm driver
+to use the mailbox interface to achieve the same effect.
 
-Very nice, thank you for cleaning this up.
+I'm not very happy about how the devicetree change looks in the end.
+Perhaps it's better to use mbox-names to not have <0> elements in dt,
+and reference the items by name from the driver?
 
-Regards,
-Bjorn
+e.g. this change for msm8226 could be represented differently.
 
-> Only compile-tested apart from msm8953 (tested on sdm632-fairphone-fp3)
-> and msm8974 (tested on msm8974pro-fairphone-fp2), but I don't expect any
-> complications with this.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-> Luca Weiss (7):
->       rpmsg: qcom_smd: Don't print error during probe deferral
->       ARM: dts: qcom: msm8974: Use mboxes properties for APCS
->       arm64: dts: qcom: msm8916: Use mboxes properties for APCS
->       arm64: dts: qcom: msm8939: Use mboxes properties for APCS
->       arm64: dts: qcom: msm8953: Use mboxes properties for APCS
->       arm64: dts: qcom: msm8976: Use mboxes properties for APCS
->       arm64: dts: qcom: msm8994: Use mboxes properties for APCS
-> 
->  arch/arm/boot/dts/qcom/qcom-msm8974.dtsi | 14 +++++++-------
->  arch/arm64/boot/dts/qcom/msm8916.dtsi    | 10 +++++-----
->  arch/arm64/boot/dts/qcom/msm8939.dtsi    |  4 ++--
->  arch/arm64/boot/dts/qcom/msm8953.dtsi    | 10 +++++-----
->  arch/arm64/boot/dts/qcom/msm8976.dtsi    |  8 ++++----
->  arch/arm64/boot/dts/qcom/msm8994.dtsi    |  6 +++---
->  drivers/rpmsg/qcom_smd.c                 |  3 ++-
->  7 files changed, 28 insertions(+), 27 deletions(-)
-> ---
-> base-commit: 43173e6dbaa227f3107310d4df4a3bacd5e0df33
-> change-id: 20240423-apcs-mboxes-12ee6c01a5b3
-> 
-> Best regards,
-> -- 
-> Luca Weiss <luca@z3ntu.xyz>
-> 
+-		qcom,ipc-1 = <&apcs 8 13>;
+-		qcom,ipc-2 = <&apcs 8 9>;
+-		qcom,ipc-3 = <&apcs 8 19>;
++		mboxes = <0>, <&apcs 13>, <&apcs 9>, <&apcs 19>;
+
+vs. for example:
+
+-		qcom,ipc-1 = <&apcs 8 13>;
+-		qcom,ipc-2 = <&apcs 8 9>;
+-		qcom,ipc-3 = <&apcs 8 19>;
++		mboxes = <&apcs 13>, <&apcs 9>, <&apcs 19>;
++		mbox-names = "ipc-1", "ipc-2", "ipc-3";
+
+But also here the name with 'ipc-N' is probably not particularly
+fitting?
+
+Please let me know your thoughts and any suggestions.
+
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Luca Weiss (2):
+      dt-bindings: soc: qcom,smsm: Allow specifying mboxes instead of qcom,ipc
+      soc: qcom: smsm: Support using mailbox interface
+
+ .../devicetree/bindings/soc/qcom/qcom,smsm.yaml    | 48 ++++++++++++++++----
+ drivers/soc/qcom/smsm.c                            | 51 +++++++++++++++++++++-
+ 2 files changed, 90 insertions(+), 9 deletions(-)
+---
+base-commit: ed30a4a51bb196781c8058073ea720133a65596f
+change-id: 20240424-smsm-mbox-0666f35eae44
+
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
+
