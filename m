@@ -1,91 +1,115 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473B2142E8A
-	for <phone-devel@vger.kernel.org>; Wed, 24 Apr 2024 20:15:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E93918D;
+	Thu, 25 Apr 2024 00:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713989710; cv=none; b=ER0FFbU3R9BTYV5X6uA4V005OSrJP/ELvAW3Yip9dY/xv+GFHiUoUcqj5muDcvT5NmWCi0ZJMzd0FUWoOcUA/3NkwXFFNnvueeZCTGOQ9ZR+v5OTW/6ZOnOzU7aeAbJS8tiZ+ThXYgdutzVyyVUw4M2jCxFO1KOU8CcYj5su62I=
+	t=1714003267; cv=none; b=m/JZKHfDQFKZuhavB+SBOYcYoEJGkJ9/jQEDtE5wPHR3b4LpkC0m8U3UVYZ8Xp0PmD0inhxVWLz4qVYzqIZmsAJTwDM92yr/HAcoTmnliX4AGjHdyHr0FpBJNIl1rd1GdV2W/LeIRqSLusVndEzH+rKm4PVuY6W4uf6BqffIh1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713989710; c=relaxed/simple;
-	bh=zEHff0kOsNqcnD34AolsEJqJZojJu0lF4ekytQFs+Js=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BAX9XznjDe++MWkSSu9KLmmH79RbJlH8DVQsAiWCTcBtIMu88+aqVUOIBdWX17MugToLXAEyuk8OaWDWm7Hydn561uEPlQbwXsveuInyv0zirhz4annkm1F4d4Lzlf6y4N61++AcJlc4Pk+SdkcsHFqxbq2RLjlV2J+8HaRyBzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lxbN6s5l; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1714003267; c=relaxed/simple;
+	bh=YK8ZVJPPSgK6IuSHNRED/Qsya04fG5N0aal1ljRlwDM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qL0tdAwaOcHGk2GrOPdpmx89YZlqIEPK19V/Zowb1pD7dFOkmIrjUDT02KPlLNWOMKo7NrNos6vB0oOIUwCuW6x2iN3jHt68PyuhGXw5ktxnBrf6+Osw/mzvbBx6f+DuvKU0Qd+QxWGoM9arwIEZinuJx5L583p0H2kCiqB+4xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=LiPBsvRd; arc=none smtp.client-ip=206.189.193.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lxbN6s5l"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-518a56cdbcfso322345e87.2
-        for <phone-devel@vger.kernel.org>; Wed, 24 Apr 2024 13:15:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713989707; x=1714594507; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QOIJtx4Ury2crgPtbLFjxKxDWX++kac+S04qd7LgELM=;
-        b=lxbN6s5ljSve1Ichjgoqi2LaG+dorhRe4KiloLTj7LVTOuPuQ3ZOAW3BniFTb0mLXw
-         0adCocSFLZZiBiWPQk8dfH1hQGIMPM4/pKBRgAt74422lWdpDXHkEn2rJmTXameaIyXI
-         qAi1v1eGGbsiVgJCL//wMbMrU189GbGEzFQ0lWhwmXMiayTtFpWHev79N8xvg4MMSZkE
-         yztxffG3PpQ+Yxel5wB/Ceh+899uRZ7+9gedzgXnUnG8zrmxI+4bEYwrPzoN44gsGUvL
-         fY4DzTNApuZHAX+CTv6FGVr/SRFjrg1Z5cOE5ZjoVfPA6ONRIr+DxWhGRSUNd3OWgNkk
-         HU4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713989707; x=1714594507;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QOIJtx4Ury2crgPtbLFjxKxDWX++kac+S04qd7LgELM=;
-        b=vKPj35HztKmWqfx+DacaQ/Di3LqCoMoBX+PDyqIPOjflv59u/p58+wDwdXzbtozu2l
-         P8X8OhNTvoqYgxm5I5oWQlD89mBWSdtLQkTuTRHSrsRfi7wqhZw2sOsqiqcfm97o/o60
-         FmXcjLkOjBNpYJYyINJj7ybfgmeEmnWQXraLHOU7vWw5nfGesBDFGw/cWgXfvkH6xUGO
-         jvu1mq4BiobS0hBgWToJCAkkOFGPTwIbZmfbJNl8tJ+f5H1jqoInsvmb9HWlmvpY5iaH
-         LfRIe3ogWPg9T3xyEKIwTAqEZBAcrTVCTWO/NaOlGrSk27TkNU5bcHdHgbt0JKqs+eER
-         v5Sw==
-X-Forwarded-Encrypted: i=1; AJvYcCXMP7odjOAGg/Ni14ZXOnBC9/vGIeZ92R5zM5uoOxPHpF1EG+OAzXkJmg7nbivRX9PVdmnR9txyEDh2Y/BH40en9XKv8EQQN/kBU1c=
-X-Gm-Message-State: AOJu0YycqaORbRxGC8Vpuclu5bn26HFD7jomH9EANhZA7F8nwYT4T2oi
-	u2K4UKYRP3N3+Tp17kwqjwG+ATfeziWTQRSKHSmRfiV45Isj0yJiMK3cy2mn99Y=
-X-Google-Smtp-Source: AGHT+IE4P39FwK1gddpY+oonY04hW8avKhbcxviyDOHns1JCsuXVHceDCisUKHEX6UzfzyJbNMg7vA==
-X-Received: by 2002:ac2:4e66:0:b0:519:3cbf:f734 with SMTP id y6-20020ac24e66000000b005193cbff734mr2943564lfs.49.1713989707645;
-        Wed, 24 Apr 2024 13:15:07 -0700 (PDT)
-Received: from [172.30.204.223] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id h24-20020a0565123c9800b0051b5efe5985sm155830lfv.255.2024.04.24.13.15.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Apr 2024 13:15:07 -0700 (PDT)
-Message-ID: <9e3eb1b4-fe3d-422e-9076-eaea6c78cb32@linaro.org>
-Date: Wed, 24 Apr 2024 22:15:05 +0200
+	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="LiPBsvRd"
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+	by a.peacevolution.org (Postfix) with ESMTPA id 7A2A247A38;
+	Thu, 25 Apr 2024 00:00:56 +0000 (UTC)
+Date: Wed, 24 Apr 2024 20:00:53 -0400
+From: Aren <aren@peacevolution.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Ondrej Jirman <megi@xff.cz>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	Willow Barraco <contact@willowbarraco.fr>
+Subject: Re: [PATCH v2 2/6] iio: light: stk3310: Implement vdd supply and
+ power it off during suspend
+Message-ID: <djxnxb6zcg7r4pl6gicjkcmqp6zodm24tq5cwejlwidzmtvf5x@3fqdvbc7whul>
+References: <20240423223309.1468198-2-aren@peacevolution.org>
+ <20240423223309.1468198-4-aren@peacevolution.org>
+ <CAHp75VeRDSPvpmSbUyZPp0RMoTOE193U2ma18qxv_qZQKLCq8g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] arm64: dts: qcom: msm8994: Use mboxes properties for
- APCS
-To: Luca Weiss <luca@z3ntu.xyz>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20240424-apcs-mboxes-v1-0-6556c47cb501@z3ntu.xyz>
- <20240424-apcs-mboxes-v1-7-6556c47cb501@z3ntu.xyz>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20240424-apcs-mboxes-v1-7-6556c47cb501@z3ntu.xyz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75VeRDSPvpmSbUyZPp0RMoTOE193U2ma18qxv_qZQKLCq8g@mail.gmail.com>
+X-Spamd-Bar: /
+Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
+	s=dkim; t=1714003257;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:content-transfer-encoding:in-reply-to:references;
+	bh=hsQaSgt/dWJwaX3rAci/jyhFbRrZYWXtUE6c6yp+e0s=;
+	b=LiPBsvRdEn3iltMiuPVD2b/4acdmis9HqCbFJnqStx+wTdODZwAd4Lc8uC1s/Sp2tXGvKv
+	7wqZf2bJET+q0VlHXBhd5fjgMm5rkaFCHTklFy8jpT968iftpUi7eM+9wKWaWirwDrKoPY
+	PT/UTF3sLvpEDML5Xhf39GimEbIT5qs=
 
-
-
-On 4/24/24 18:24, Luca Weiss wrote:
-> Instead of passing the syscon to the various nodes, use the mbox
-> interface using the mboxes property.
+On Wed, Apr 24, 2024 at 02:16:06AM +0300, Andy Shevchenko wrote:
+> On Wed, Apr 24, 2024 at 1:41 AM Aren Moynihan <aren@peacevolution.org> wrote:
+> >
+> > From: Ondrej Jirman <megi@xff.cz>
+> >
+> > VDD power input can be used to completely power off the chip during
+> > system suspend. Do so if available.
 > 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
+> ...
+> 
+> >         ret = stk3310_init(indio_dev);
+> >         if (ret < 0)
+> > -               return ret;
+> > +               goto err_vdd_disable;
+> 
+> This is wrong. You will have the regulator being disabled _before_
+> IRQ. Note, that the original code likely has a bug which sets states
+> before disabling IRQ and removing a handler.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Oh! now I see the issue you were talking about last time around. I
+expect that means the irq shouldn't be managed with devres, so it can be
+the first thing freed in the remove function (I haven't checked the docs
+to see if there's an easier way yet).
 
-Konrad
+I'll add a patch to fix the order of the handling of the irq (both this and
+the issue Ondřej brought up).
+
+> Side note, you may make the driver neater with help of
+> 
+>   struct device *dev = &client->dev;
+> 
+> defined in this patch.
+
+Good point, it's minor, but it should be a net improvement.
+
+> ...
+> 
+> >  static int stk3310_suspend(struct device *dev)
+> >  {
+> >         struct stk3310_data *data;
+> 
+> >         data = iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
+> 
+> Side note: This may be updated (in a separate change) to use
+> dev_get_drvdata() directly.
+> 
+> Jonathan, do we have something like iio_priv_from_drvdata(struct
+> device *dev)? Seems many drivers may utilise it.
+> 
+
+At this rate I'm going to need to split off a separate style / code
+cleanup series so I don't keep introducing dumb bugs while rebasing this
+one.
+
+Thank you for your time
+ - Aren
