@@ -1,195 +1,270 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24E53B78D
-	for <phone-devel@vger.kernel.org>; Thu, 25 Apr 2024 05:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BFB14A0A0;
+	Thu, 25 Apr 2024 14:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714023095; cv=none; b=WHr1FSRWTAZ1TvaQkX7lvbYzaVir1S9FjpOJ4GXm44pBWE/1OuUIlkjdZr+lRCus5QaqCc7/4rMLIAM5eQ7D9oCAm4mIAKk/SKhH31+JBkH0aFXdgcWyuvNlFAFQIPQit1wB1X01hYXxK2WYh8fACLNW3Hf8C+2Z8yC8fG0n/bU=
+	t=1714056683; cv=none; b=bwdtpjNxonCAnigTOdQSaFo3+Rzf8fai6tip6VICKEZiPYplysNDeoFeopFWs7OpF5qzL9eh7Ria6uwzu+H2RcY4ywA3+sPfzHi9C/Rw8M43ukvZw1c4SEOpnTCJ6JWQQskpLhVsrS7fWMqFdfK7SBSPYbp7dgVGCy/h+1Qz0U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714023095; c=relaxed/simple;
-	bh=nVBrL7YJuNzCkb+t0TQFbZ+nLpcpPgHNZvsiUTjW2s0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ER4+Ul4ggLd+I/gRPAuLrXbjMLcJYKmYFfh6hjmEoJdeoq5ErEw/x3slY1jrHlFwkIYz3g+TT9Au9vCyG0/LRbGu1PagcIHGXaKvWQTGKIkVUNChzcebPaZMHZp3jSF4hdkx3FU+1yfnFEc2U4SRIgfYCbqxwWFe7ON05RyzH6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ldFimn6V; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1714056683; c=relaxed/simple;
+	bh=o8Pwp1MZGLbsmzWgTZQD2ayx4dF5M3ZVcoIncXTsEvk=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=hTZTFhooG0Q6HZPTRURfbKB/SKZ6xct9DIgxUCV+zZMhZ4K1AZ33SBzgMOToXdmqiEFEA5BhukX19nwjekAHgWuhAxgUQqVEd3X6FTpbK1zKtb3iCHeYk6VU0RSOTgw2qB5BjfnM5Ua47p1s2Sn4ZZrdsThl2E8NJgqytKIXP9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mctKP4oF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ldFimn6V"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-418e4cd2196so4872565e9.1
-        for <phone-devel@vger.kernel.org>; Wed, 24 Apr 2024 22:31:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1714023091; x=1714627891; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cMmQUcIVgSzWuW2ZWEiFPzqJ+do6tt+UV73InjD+R7U=;
-        b=ldFimn6VYEKPYfJ9z5hDKati26skJB1gGPdBZe0X7eJRUsk+gtLG2+DlOgM8AOh/Fr
-         s7M+g4rwXfq+RQddUFeGF813CkiDWUYYiNXcWXR89Am46oIpkd3J9Oz6uyRnj/isW3Iw
-         Gr3Q02mQ9ApYrTrPkuN2djPeRkQIL/ztKS6ENrhxcFVrVO6wfUtLunCN1wQK4ovue/V5
-         X5vQ/bo+O8weL0PZR8gECG8aN9o9zSzn9e8bzh8OaB6re6N0Kf+ckxkEWI+Vr+VpqyiL
-         nEZoiB6OE4rurow5bx6imA7zSTxrE2Fd8Zuo+RtIMIo6LdEV+SD8xTsCgEHM9qHKT/zS
-         bMhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714023091; x=1714627891;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cMmQUcIVgSzWuW2ZWEiFPzqJ+do6tt+UV73InjD+R7U=;
-        b=GxCGEZtoYxo7SmlZj4zZb5KLdllTUBdxEl9OXHvSpyhQZJEgnrAUUcB4WUx+ebpYip
-         raUHEO2bN00mtvNstjtoIeG4xEg9eg3zIeUGpXD828zVR09K9EQXqBbfzmb2guZoQTVK
-         N/GND6gpL2BbiI+iPZigsMEwqoVffZinCwsZBZv+9yV1bCTYVDx6Rj61UEPm4VxG1XcQ
-         zXxdWlH3cqLVOGP4FUr6VgqKcvIdiZK7M06mRaDtVrWB8qW667mQj/aP5GLx2vrRIInS
-         z/dw3au3cn4iHjAiYN3rtTznB0nAtxJQ65vpcvOLcBLOHbQW+bv6Gbezk3T6ZFgUjknU
-         DvvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUV+wsVvokmVziMihc3Qjd0Ve/JlYKkubn1JAnqs/qXJnQm+ghrOfi8PYOSDkq1wZVTvyVN1sszULwfLb4U9ha7/tvwGqhwS28Zpsg=
-X-Gm-Message-State: AOJu0Yyp9Eoqa7dnTyMWyQsqq7CO0fnpTZhxpWxrDZdJsvwB+BAL6KNp
-	lZk26MNULIgvtisjcNTAXAvu04eKS3ZrAP2FbJxFwX8p+2J1S58h94d+HSzQzm0=
-X-Google-Smtp-Source: AGHT+IGnkVtA5Wtwo7q3DYXIHysN+Cu0EJxSPiMeca2h/hO/A4Gzv4GhNLke0XTi2A49j9T/1rc+tw==
-X-Received: by 2002:a05:600c:4f8f:b0:418:58ac:7477 with SMTP id n15-20020a05600c4f8f00b0041858ac7477mr3171421wmq.30.1714023090830;
-        Wed, 24 Apr 2024 22:31:30 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id fj3-20020a05600c0c8300b00416b2cbad06sm29941718wmb.41.2024.04.24.22.31.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Apr 2024 22:31:30 -0700 (PDT)
-Date: Thu, 25 Apr 2024 08:31:26 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Aren Moynihan <aren@peacevolution.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	Aren Moynihan <aren@peacevolution.org>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Ondrej Jirman <megi@xff.cz>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-	Willow Barraco <contact@willowbarraco.fr>
-Subject: Re: [PATCH v2 2/6] iio: light: stk3310: Implement vdd supply and
- power it off during suspend
-Message-ID: <b47ad9a6-2b17-497f-ac2d-33ffec1b2750@moroto.mountain>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mctKP4oF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B66C113CC;
+	Thu, 25 Apr 2024 14:51:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714056682;
+	bh=o8Pwp1MZGLbsmzWgTZQD2ayx4dF5M3ZVcoIncXTsEvk=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=mctKP4oFCAgStrgwKriN2CadcZcMD3lKZVHIQp2VbFiYUUuPl7AKRDoeeCQK06xIy
+	 +sucQB6AkeQRQUYT24oHkB6VZpgPEPVmz3GVb8qLiOtkOaVaJMFMj9X4GJDnwtwXKn
+	 WKX81BsMia3nl5QssVLSDmm1FpcG9XmxE4b7p1obdENy1QKly+hYxhEc1Zd1Zyvyly
+	 dyh0vEJmhahVcNhYySeAIKeyJHfADQMyHDd+24h3ztSDprb9vja6c0qzQV+0uLe96M
+	 I/pz4JnBlkyriA2CHw3eQV7Ecj1pMbOYq3u0MkSrlfqKbeRHGjsC8stQxneXEfaHmJ
+	 GSln53+WHO6lQ==
+Date: Thu, 25 Apr 2024 09:51:21 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240423223309.1468198-4-aren@peacevolution.org>
+From: Rob Herring <robh@kernel.org>
+To: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Cc: Will Deacon <will@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Haojian Zhuang <haojian.zhuang@linaro.org>, Tony Luck <tony.luck@intel.com>, 
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, linux-kernel@vger.kernel.org, 
+ Rob Herring <robh+dt@kernel.org>, Kees Cook <keescook@chromium.org>, 
+ linux-gpio@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, ~postmarketos/upstreaming@lists.sr.ht, 
+ Conor Dooley <conor.dooley@microchip.com>, devicetree@vger.kernel.org, 
+ Tony Lindgren <tony@atomide.com>, linux-arm-kernel@lists.infradead.org, 
+ Lubomir Rintel <lkundrak@v3.sk>, linux-clk@vger.kernel.org, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ phone-devel@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>, 
+ Stephen Boyd <sboyd@kernel.org>, Karel Balej <balejk@matfyz.cz>, 
+ David Wronek <david@mainlining.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>
+In-Reply-To: <20240424-pxa1908-lkml-v10-0-36cdfb5841f9@skole.hr>
+References: <20240424-pxa1908-lkml-v10-0-36cdfb5841f9@skole.hr>
+Message-Id: <171405653276.2527711.56458295308032188.robh@kernel.org>
+Subject: Re: [PATCH v10 00/12] Initial Marvell PXA1908 support
 
-Hi Aren,
 
-kernel test robot noticed the following build warnings:
+On Wed, 24 Apr 2024 20:42:27 +0200, Duje Mihanović wrote:
+> Hello,
+> 
+> This series adds initial support for the Marvell PXA1908 SoC and
+> "samsung,coreprimevelte", a smartphone using the SoC.
+> 
+> USB works and the phone can boot a rootfs from an SD card, but there are
+> some warnings in the dmesg:
+> 
+> During SMP initialization:
+> [    0.006519] CPU features: SANITY CHECK: Unexpected variation in SYS_CNTFRQ_EL0. Boot CPU: 0x000000018cba80, CPU1: 0x00000000000000
+> [    0.006542] CPU features: Unsupported CPU feature variation detected.
+> [    0.006589] CPU1: Booted secondary processor 0x0000000001 [0x410fd032]
+> [    0.010710] Detected VIPT I-cache on CPU2
+> [    0.010716] CPU features: SANITY CHECK: Unexpected variation in SYS_CNTFRQ_EL0. Boot CPU: 0x000000018cba80, CPU2: 0x00000000000000
+> [    0.010758] CPU2: Booted secondary processor 0x0000000002 [0x410fd032]
+> [    0.014849] Detected VIPT I-cache on CPU3
+> [    0.014855] CPU features: SANITY CHECK: Unexpected variation in SYS_CNTFRQ_EL0. Boot CPU: 0x000000018cba80, CPU3: 0x00000000000000
+> [    0.014895] CPU3: Booted secondary processor 0x0000000003 [0x410fd032]
+> 
+> SMMU probing fails:
+> [    0.101798] arm-smmu c0010000.iommu: probing hardware configuration...
+> [    0.101809] arm-smmu c0010000.iommu: SMMUv1 with:
+> [    0.101816] arm-smmu c0010000.iommu:         no translation support!
+> 
+> A 3.14 based Marvell tree is available on GitHub
+> acorn-marvell/brillo_pxa_kernel, and a Samsung one on GitHub
+> CoderCharmander/g361f-kernel.
+> 
+> Andreas Färber attempted to upstream support for this SoC in 2017:
+> https://lore.kernel.org/lkml/20170222022929.10540-1-afaerber@suse.de/
+> 
+> Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+> 
+> Changes in v10:
+> - Update trailers
+> - Rebase on v6.9-rc5
+> - Clock driver changes:
+>   - Add a couple of forgotten clocks in APBC
+>     - The clocks are thermal_clk, ipc_clk, ssp0_clk, ssp2_clk and swjtag
+>     - The IDs and register offsets were already present, but I forgot to
+>       actually register them
+>   - Split each controller block into own file
+>   - Drop unneeded -of in clock driver filenames
+>   - Simplify struct pxa1908_clk_unit
+>   - Convert to platform driver
+>   - Add module metadata
+> - DTS changes:
+>   - Properly name pinctrl nodes
+>   - Drop pinctrl #size-cells, #address-cells, ranges and #gpio-size-cells
+>   - Fix pinctrl input-schmitt configuration
+> - Link to v9: https://lore.kernel.org/20240402-pxa1908-lkml-v9-0-25a003e83c6f@skole.hr
+> 
+> Changes in v9:
+> - Update trailers and rebase on v6.9-rc2, no changes
+> - Link to v8: https://lore.kernel.org/20240110-pxa1908-lkml-v8-0-fea768a59474@skole.hr
+> 
+> Changes in v8:
+> - Drop SSPA patch
+> - Drop broken-cd from eMMC node
+> - Specify S-Boot hardcoded initramfs location in device tree
+> - Add ARM PMU node
+> - Correct inverted modem memory base and size
+> - Update trailers
+> - Rebase on next-20240110
+> - Link to v7: https://lore.kernel.org/20231102-pxa1908-lkml-v7-0-cabb1a0cb52b@skole.hr
+>   and https://lore.kernel.org/20231102152033.5511-1-duje.mihanovic@skole.hr
+> 
+> Changes in v7:
+> - Suppress SND_MMP_SOC_SSPA on ARM64
+> - Update trailers
+> - Rebase on v6.6-rc7
+> - Link to v6: https://lore.kernel.org/r/20231010-pxa1908-lkml-v6-0-b2fe09240cf8@skole.hr
+> 
+> Changes in v6:
+> - Address maintainer comments:
+>   - Add "marvell,pxa1908-padconf" binding to pinctrl-single driver
+> - Drop GPIO patch as it's been pulled
+> - Update trailers
+> - Rebase on v6.6-rc5
+> - Link to v5: https://lore.kernel.org/r/20230812-pxa1908-lkml-v5-0-a5d51937ee34@skole.hr
+> 
+> Changes in v5:
+> - Address maintainer comments:
+>   - Move *_NR_CLKS to clock driver from dt binding file
+> - Allocate correct number of clocks for each block instead of blindly
+>   allocating 50 for each
+> - Link to v4: https://lore.kernel.org/r/20230807-pxa1908-lkml-v4-0-cb387d73b452@skole.hr
+> 
+> Changes in v4:
+> - Address maintainer comments:
+>   - Relicense clock binding file to BSD-2
+> - Add pinctrl-names to SD card node
+> - Add vgic registers to GIC node
+> - Rebase on v6.5-rc5
+> - Link to v3: https://lore.kernel.org/r/20230804-pxa1908-lkml-v3-0-8e48fca37099@skole.hr
+> 
+> Changes in v3:
+> - Address maintainer comments:
+>   - Drop GPIO dynamic allocation patch
+>   - Move clock register offsets into driver (instead of bindings file)
+>   - Add missing Tested-by trailer to u32_fract patch
+>   - Move SoC binding to arm/mrvl/mrvl.yaml
+> - Add serial0 alias and stdout-path to board dts to enable UART
+>   debugging
+> - Rebase on v6.5-rc4
+> - Link to v2: https://lore.kernel.org/r/20230727162909.6031-1-duje.mihanovic@skole.hr
+> 
+> Changes in v2:
+> - Remove earlycon patch as it's been merged into tty-next
+> - Address maintainer comments:
+>   - Clarify GPIO regressions on older PXA platforms
+>   - Add Fixes tag to commit disabling GPIO pinctrl calls for this SoC
+>   - Add missing includes to clock driver
+>   - Clock driver uses HZ_PER_MHZ, u32_fract and GENMASK
+>   - Dual license clock bindings
+>   - Change clock IDs to decimal
+>   - Fix underscores in dt node names
+>   - Move chosen node to top of board dts
+>   - Clean up documentation
+>   - Reorder commits
+>   - Drop pxa,rev-id
+> - Rename muic-i2c to i2c-muic
+> - Reword some commits
+> - Move framebuffer node to chosen
+> - Add aliases for mmc nodes
+> - Rebase on v6.5-rc3
+> - Link to v1: https://lore.kernel.org/r/20230721210042.21535-1-duje.mihanovic@skole.hr
+> 
+> ---
+> Andy Shevchenko (1):
+>       clk: mmp: Switch to use struct u32_fract instead of custom one
+> 
+> Duje Mihanović (11):
+>       dt-bindings: pinctrl: pinctrl-single: add marvell,pxa1908-padconf compatible
+>       pinctrl: single: add marvell,pxa1908-padconf compatible
+>       dt-bindings: clock: Add Marvell PXA1908 clock bindings
+>       clk: mmp: Add Marvell PXA1908 APBC driver
+>       clk: mmp: Add Marvell PXA1908 APBCP driver
+>       clk: mmp: Add Marvell PXA1908 APMU driver
+>       clk: mmp: Add Marvell PXA1908 MPMU driver
+>       dt-bindings: marvell: Document PXA1908 SoC
+>       arm64: Kconfig.platforms: Add config for Marvell PXA1908 platform
+>       arm64: dts: Add DTS for Marvell PXA1908 and samsung,coreprimevelte
+>       MAINTAINERS: add myself as Marvell PXA1908 maintainer
+> 
+>  .../devicetree/bindings/arm/mrvl/mrvl.yaml         |   5 +
+>  .../devicetree/bindings/clock/marvell,pxa1908.yaml |  48 +++
+>  .../bindings/pinctrl/pinctrl-single.yaml           |   4 +
+>  MAINTAINERS                                        |   9 +
+>  arch/arm64/Kconfig.platforms                       |   8 +
+>  arch/arm64/boot/dts/marvell/Makefile               |   3 +
+>  .../dts/marvell/pxa1908-samsung-coreprimevelte.dts | 328 +++++++++++++++++++++
+>  arch/arm64/boot/dts/marvell/pxa1908.dtsi           | 300 +++++++++++++++++++
+>  drivers/clk/mmp/Makefile                           |   2 +-
+>  drivers/clk/mmp/clk-frac.c                         |  57 ++--
+>  drivers/clk/mmp/clk-of-mmp2.c                      |  26 +-
+>  drivers/clk/mmp/clk-of-pxa168.c                    |   4 +-
+>  drivers/clk/mmp/clk-of-pxa1928.c                   |   6 +-
+>  drivers/clk/mmp/clk-of-pxa910.c                    |   4 +-
+>  drivers/clk/mmp/clk-pxa1908-apbc.c                 | 131 ++++++++
+>  drivers/clk/mmp/clk-pxa1908-apbcp.c                |  84 ++++++
+>  drivers/clk/mmp/clk-pxa1908-apmu.c                 | 123 ++++++++
+>  drivers/clk/mmp/clk-pxa1908-mpmu.c                 | 112 +++++++
+>  drivers/clk/mmp/clk.h                              |  10 +-
+>  drivers/pinctrl/pinctrl-single.c                   |   1 +
+>  include/dt-bindings/clock/marvell,pxa1908.h        |  88 ++++++
+>  21 files changed, 1296 insertions(+), 57 deletions(-)
+> ---
+> base-commit: ed30a4a51bb196781c8058073ea720133a65596f
+> change-id: 20230803-pxa1908-lkml-6830e8da45c7
+> 
+> Best regards,
+> --
+> Duje Mihanović <duje.mihanovic@skole.hr>
+> 
+> 
 
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Aren-Moynihan/dt-bindings-iio-light-stk33xx-add-vdd-and-leda-regulators/20240424-064250
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240423223309.1468198-4-aren%40peacevolution.org
-patch subject: [PATCH v2 2/6] iio: light: stk3310: Implement vdd supply and power it off during suspend
-config: i386-randconfig-141-20240424 (https://download.01.org/0day-ci/archive/20240425/202404251021.4OPER3OS-lkp@intel.com/config)
-compiler: gcc-10 (Ubuntu 10.5.0-1ubuntu1) 10.5.0
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202404251021.4OPER3OS-lkp@intel.com/
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
-smatch warnings:
-drivers/iio/light/stk3310.c:615 stk3310_probe() error: uninitialized symbol 'ret'.
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
 
-vim +/ret +615 drivers/iio/light/stk3310.c
+  pip3 install dtschema --upgrade
 
-9046d80dce04c6 Uwe Kleine-K�nig 2022-11-18  592  static int stk3310_probe(struct i2c_client *client)
-be9e6229d67696 Tiberiu Breana   2015-04-27  593  {
-be9e6229d67696 Tiberiu Breana   2015-04-27  594  	int ret;
-be9e6229d67696 Tiberiu Breana   2015-04-27  595  	struct iio_dev *indio_dev;
-be9e6229d67696 Tiberiu Breana   2015-04-27  596  	struct stk3310_data *data;
-be9e6229d67696 Tiberiu Breana   2015-04-27  597  
-be9e6229d67696 Tiberiu Breana   2015-04-27  598  	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-be9e6229d67696 Tiberiu Breana   2015-04-27  599  	if (!indio_dev) {
-be9e6229d67696 Tiberiu Breana   2015-04-27  600  		dev_err(&client->dev, "iio allocation failed!\n");
-be9e6229d67696 Tiberiu Breana   2015-04-27  601  		return -ENOMEM;
-be9e6229d67696 Tiberiu Breana   2015-04-27  602  	}
-be9e6229d67696 Tiberiu Breana   2015-04-27  603  
-be9e6229d67696 Tiberiu Breana   2015-04-27  604  	data = iio_priv(indio_dev);
-be9e6229d67696 Tiberiu Breana   2015-04-27  605  	data->client = client;
-be9e6229d67696 Tiberiu Breana   2015-04-27  606  	i2c_set_clientdata(client, indio_dev);
-d6ecb01583d4e0 Arnaud Ferraris  2022-04-20  607  
-d6ecb01583d4e0 Arnaud Ferraris  2022-04-20  608  	device_property_read_u32(&client->dev, "proximity-near-level",
-d6ecb01583d4e0 Arnaud Ferraris  2022-04-20  609  				 &data->ps_near_level);
-d6ecb01583d4e0 Arnaud Ferraris  2022-04-20  610  
-be9e6229d67696 Tiberiu Breana   2015-04-27  611  	mutex_init(&data->lock);
-be9e6229d67696 Tiberiu Breana   2015-04-27  612  
-dd231c1d219f6b Ondrej Jirman    2024-04-23  613  	data->vdd_reg = devm_regulator_get(&client->dev, "vdd");
-dd231c1d219f6b Ondrej Jirman    2024-04-23  614  	if (IS_ERR(data->vdd_reg))
-dd231c1d219f6b Ondrej Jirman    2024-04-23 @615  		return dev_err_probe(&client->dev, ret, "get regulator vdd failed\n");
 
-s/ret/PTR_ERR(data->vdd_reg)/
+New warnings running 'make CHECK_DTBS=y marvell/pxa1908-samsung-coreprimevelte.dtb' for 20240424-pxa1908-lkml-v10-0-36cdfb5841f9@skole.hr:
 
-dd231c1d219f6b Ondrej Jirman    2024-04-23  616  
-be9e6229d67696 Tiberiu Breana   2015-04-27  617  	ret = stk3310_regmap_init(data);
-be9e6229d67696 Tiberiu Breana   2015-04-27  618  	if (ret < 0)
-be9e6229d67696 Tiberiu Breana   2015-04-27  619  		return ret;
-be9e6229d67696 Tiberiu Breana   2015-04-27  620  
-be9e6229d67696 Tiberiu Breana   2015-04-27  621  	indio_dev->info = &stk3310_info;
-be9e6229d67696 Tiberiu Breana   2015-04-27  622  	indio_dev->name = STK3310_DRIVER_NAME;
-be9e6229d67696 Tiberiu Breana   2015-04-27  623  	indio_dev->modes = INDIO_DIRECT_MODE;
-be9e6229d67696 Tiberiu Breana   2015-04-27  624  	indio_dev->channels = stk3310_channels;
-be9e6229d67696 Tiberiu Breana   2015-04-27  625  	indio_dev->num_channels = ARRAY_SIZE(stk3310_channels);
-be9e6229d67696 Tiberiu Breana   2015-04-27  626  
-dd231c1d219f6b Ondrej Jirman    2024-04-23  627  	ret = regulator_enable(data->vdd_reg);
-dd231c1d219f6b Ondrej Jirman    2024-04-23  628  	if (ret)
-dd231c1d219f6b Ondrej Jirman    2024-04-23  629  		return dev_err_probe(&client->dev, ret,
-dd231c1d219f6b Ondrej Jirman    2024-04-23  630  				     "regulator vdd enable failed\n");
-dd231c1d219f6b Ondrej Jirman    2024-04-23  631  
-dd231c1d219f6b Ondrej Jirman    2024-04-23  632  	/* we need a short delay to allow the chip time to power on */
-dd231c1d219f6b Ondrej Jirman    2024-04-23  633  	fsleep(1000);
-dd231c1d219f6b Ondrej Jirman    2024-04-23  634  
-be9e6229d67696 Tiberiu Breana   2015-04-27  635  	ret = stk3310_init(indio_dev);
-be9e6229d67696 Tiberiu Breana   2015-04-27  636  	if (ret < 0)
-dd231c1d219f6b Ondrej Jirman    2024-04-23  637  		goto err_vdd_disable;
-be9e6229d67696 Tiberiu Breana   2015-04-27  638  
-6839c1b0700a79 Octavian Purdila 2015-09-23  639  	if (client->irq > 0) {
-3dd477acbdd1f1 Tiberiu Breana   2015-04-27  640  		ret = devm_request_threaded_irq(&client->dev, client->irq,
-3dd477acbdd1f1 Tiberiu Breana   2015-04-27  641  						stk3310_irq_handler,
-3dd477acbdd1f1 Tiberiu Breana   2015-04-27  642  						stk3310_irq_event_handler,
-3dd477acbdd1f1 Tiberiu Breana   2015-04-27  643  						IRQF_TRIGGER_FALLING |
-3dd477acbdd1f1 Tiberiu Breana   2015-04-27  644  						IRQF_ONESHOT,
-3dd477acbdd1f1 Tiberiu Breana   2015-04-27  645  						STK3310_EVENT, indio_dev);
-7c7a9eeaa335df Hartmut Knaack   2015-07-09  646  		if (ret < 0) {
-3dd477acbdd1f1 Tiberiu Breana   2015-04-27  647  			dev_err(&client->dev, "request irq %d failed\n",
-3dd477acbdd1f1 Tiberiu Breana   2015-04-27  648  				client->irq);
-7c7a9eeaa335df Hartmut Knaack   2015-07-09  649  			goto err_standby;
-7c7a9eeaa335df Hartmut Knaack   2015-07-09  650  		}
-3dd477acbdd1f1 Tiberiu Breana   2015-04-27  651  	}
-3dd477acbdd1f1 Tiberiu Breana   2015-04-27  652  
-037e966f2d6389 Hartmut Knaack   2015-07-09  653  	ret = iio_device_register(indio_dev);
-037e966f2d6389 Hartmut Knaack   2015-07-09  654  	if (ret < 0) {
-037e966f2d6389 Hartmut Knaack   2015-07-09  655  		dev_err(&client->dev, "device_register failed\n");
-7c7a9eeaa335df Hartmut Knaack   2015-07-09  656  		goto err_standby;
-037e966f2d6389 Hartmut Knaack   2015-07-09  657  	}
-037e966f2d6389 Hartmut Knaack   2015-07-09  658  
-7c7a9eeaa335df Hartmut Knaack   2015-07-09  659  	return 0;
-7c7a9eeaa335df Hartmut Knaack   2015-07-09  660  
-7c7a9eeaa335df Hartmut Knaack   2015-07-09  661  err_standby:
-7c7a9eeaa335df Hartmut Knaack   2015-07-09  662  	stk3310_set_state(data, STK3310_STATE_STANDBY);
-dd231c1d219f6b Ondrej Jirman    2024-04-23  663  err_vdd_disable:
-dd231c1d219f6b Ondrej Jirman    2024-04-23  664  	regulator_disable(data->vdd_reg);
-be9e6229d67696 Tiberiu Breana   2015-04-27  665  	return ret;
-be9e6229d67696 Tiberiu Breana   2015-04-27  666  }
+arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dtb: /: memory: False schema does not allow {'device_type': ['memory'], 'reg': [[0, 0, 0, 0]]}
+	from schema $id: http://devicetree.org/schemas/root-node.yaml#
+arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dtb: pinmux@1e000: pinctrl-single,gpio-range: [[8, 55, 55, 0], [8, 110, 32, 0], [8, 52, 1, 0]] is too long
+	from schema $id: http://devicetree.org/schemas/pinctrl/pinctrl-single.yaml#
+arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dtb: mmc@80000: pinctrl-names: ['default'] is too short
+	from schema $id: http://devicetree.org/schemas/mmc/sdhci-pxa.yaml#
+arch/arm64/boot/dts/marvell/pxa1908-samsung-coreprimevelte.dtb: mmc@80000: Unevaluated properties are not allowed ('pinctrl-names' was unexpected)
+	from schema $id: http://devicetree.org/schemas/mmc/sdhci-pxa.yaml#
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+
+
 
