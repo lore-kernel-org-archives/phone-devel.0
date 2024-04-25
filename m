@@ -1,179 +1,90 @@
 Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A66149DFD;
-	Thu, 25 Apr 2024 18:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C202135A;
+	Thu, 25 Apr 2024 19:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714071292; cv=none; b=USwEjdpt1zfxxrydXRMro67Sc8dwVo98SE1KXqFrumm5y65bpi8jaZyXAOmRXIn+vCD0PJKONJOUaGFs53V+tR2SU5yg3rLkAabdnM76E0pUWsbmL0lgiDIYhgiUbc2PPIOQnpc3c6DJkLhoI3y1uWHZnfeIhNlStwvi8fEQVHs=
+	t=1714072504; cv=none; b=bY4qA8ktwou7iq03zYZ58ziE/1wYjgSz4BWAdlHNfoaCfMoaPkyyq8cV2T5CF6QouEI+pGGhUGcQtw9ySpaDrsIOPfPjLSTYDMZaeqZ8dKpHrnpgx6R85Ye98v11MDaDSE3XKRGXRg9Fs36SZNX5NvsBILsnQOy7nrd0/QH4fes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714071292; c=relaxed/simple;
-	bh=b0y26d8frlS0cfjGXw7FBAkrdyqVJAluEQvE7mbwPoI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hvbtGfeOgqdrQotyAQ9h6npcwtgs3eIdXivYML6cVTrWT9fVTy5ayBI60GLGW82d/x2R4vSfe/Q04mC4Rn0P7CDhJchU2lwcGt2bfCpS1VmAwyRHSlnGtq5mgJGchFWjqJppXkLwk4U/Dq8hRNArS9Okm0gNDgm36VDPRFkcFNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=q42dYI3c; arc=none smtp.client-ip=128.199.32.197
+	s=arc-20240116; t=1714072504; c=relaxed/simple;
+	bh=QvJQW5/tPo0PBeZh3lFDVxmj9QN7Tn9WNxdlpoVVeNY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TunpT3ntry9uzveQ+nclyBkjIo5yb+q5vjTxVJ+h2mE+QSV3hwYfHJZBtbfGoZ32kutTTy2tIryMQXyniIaXYgFsqZNDaH+psjg8XkU4gZG+OPD+cWZMlyHlpABOy8siuQppJxiPqwRfOZcNaXUVSlB4YhnkftQtUWIPSmpjnQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=GwFer7Rr; arc=none smtp.client-ip=128.199.32.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="q42dYI3c"
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="GwFer7Rr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1714071282; bh=b0y26d8frlS0cfjGXw7FBAkrdyqVJAluEQvE7mbwPoI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=q42dYI3cxAykpMzfZNfZfIHXxU8aybz95go4HuO3noXh3QW91bIqI6BA7RMj77EOB
-	 PvHTbRMOXghUdzQAfHVjOq6t0VthDuJnoiStpo6PqP45pUpoFsa6PzsJF3dgbpAYrK
-	 w0r2nr5rAWJFBI8nZ9HUi+zsLFtFtI8lIXxlVxOg=
+	t=1714072501; bh=QvJQW5/tPo0PBeZh3lFDVxmj9QN7Tn9WNxdlpoVVeNY=;
+	h=From:Subject:Date:To:Cc;
+	b=GwFer7RrH2IJE270lw3hm7pfGbT4mYC1lv8Z6Y/bAeIj3aE6z1KDckCMY9jpSkAB4
+	 zF/+bqHi2R0655+ZPwDvtVzGelgcjbjMjUsiogWXpwleOHhDOLsQxueagp69IQBuHb
+	 N9DXOUlq890EiyDYcDeovCsuJTM9OgIr8EaROius=
 From: Luca Weiss <luca@z3ntu.xyz>
-To: Rob Herring <robh@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Andy Gross <agross@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH RFC 1/2] dt-bindings: soc: qcom,smsm: Allow specifying mboxes
- instead of qcom,ipc
-Date: Thu, 25 Apr 2024 20:54:40 +0200
-Message-ID: <5087455.31r3eYUQgx@g550jk>
-In-Reply-To: <20240425161715.GA2759240-robh@kernel.org>
-References:
- <20240424-smsm-mbox-v1-0-555f3f442841@z3ntu.xyz>
- <20240424-smsm-mbox-v1-1-555f3f442841@z3ntu.xyz>
- <20240425161715.GA2759240-robh@kernel.org>
+Subject: [PATCH 0/2] Mark qcom,ipc as deprecated in two schemas
+Date: Thu, 25 Apr 2024 21:14:29 +0200
+Message-Id: <20240425-qcom-ipc-deprecate-v1-0-a8d8034253ea@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJWrKmYC/x2MQQqAIBAAvxJ7bsG0CPpKdLB1qz2kphFB9Pek4
+ wzMPJA5CWcYqgcSX5Il+AJNXQFt1q+M4gqDVrpVre7woLCjRELHMTHZk9H0dpnZGLKOoITFL3L
+ /03F63w+/XJkZZAAAAA==
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Andy Gross <agross@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=883; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=QvJQW5/tPo0PBeZh3lFDVxmj9QN7Tn9WNxdlpoVVeNY=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBmKqugrhDSHoYG60xXLK1PX+EXWogXQO/qABGhn
+ OJQRloOgpmJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZiqroAAKCRBy2EO4nU3X
+ VhazEADSzmJbKb1diAv9PI8AKWDeJtScDVudXGSs8YSkjoFRx6c+gZ4JtSYcktnXEVB2mPGS1e9
+ Z8pOgceZZf6k+oEvDFObS9y8Vtu+UUG23rmf19VSFy6GoT3PmYMUznceGQBjs4jJdhzDmS3VhFd
+ 3r5e7jLGBDderm7mbMxJXlWyxJ9Z7a/48c3WnBw7jSmpI8lxoFXNxBzwvyh4sWN0anKKr+66efe
+ SQcx8WQhq9QTwPOsxSOKdQ4uY/fkYoKUpP4ru9pdo4yxawFOLbBm/7Vz+VXOnRszY5P/mUpFEEv
+ 2TeBfgZSa0xQu8lCX1LkgijPFhCO1pHvSs1k4+CCW3A5FSOEuBTWLgqzJOorW4er3Mr4hOkEFrc
+ 7dLryo8M8D/hch//VeDO5E3LNajZBqkAX95HtQw3MlJvxvMTv54vNn4SFX9qHdNJ+amxe2d7LCa
+ 0AxRuhVdf5m4UW5/30RbqJYzlMYetWt0roVgj0uOFmWsS5hHVbSGWiDKyLP/Ry/cXWnA/n3uSO1
+ ZojTFgz+l/D3IzyF414qU2j3GtpALrB2FSVZjtEIFWc3RQCNadWz2Syzx+vasiH/p7idjaMcEDY
+ e02ZUo1yNELQq5O04zlAaDiOXF+vJYJAuNnbStfuhR/lCYNzaKiVwGZ+S6rnNf6ycQhUpWvHhDp
+ fucrWnFpcy0NNqQ==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On Donnerstag, 25. April 2024 18:17:15 MESZ Rob Herring wrote:
-> On Wed, Apr 24, 2024 at 07:21:51PM +0200, Luca Weiss wrote:
-> > The qcom,ipc-N properties are essentially providing a reference to a
-> > mailbox, so allow using the mboxes property to do the same in a more
-> > structured way.
-> 
-> Can we mark qcom,ipc-N as deprecated then?
+The mboxes property has been supported in those bindings since a while
+and was always meant to the replace qcom,ipc properties, so let's mark
+qcom,ipc as deprecated - and update the examples to use mboxes.
 
-Yes, that should be ok. Will also send a similar change to the other bindings
-that support both qcom,ipc and mboxes.
+Related:
+https://lore.kernel.org/linux-arm-msm/20240424-apcs-mboxes-v1-0-6556c47cb501@z3ntu.xyz/
 
->  
-> > Since multiple SMSM hosts are supported, we need to be able to provide
-> > the correct mailbox for each host. The old qcom,ipc-N properties map to
-> > the mboxes property by index, starting at 0 since that's a valid SMSM
-> > host also.
-> > 
-> > The new example shows how an smsm node with just qcom,ipc-3 should be
-> > specified with the mboxes property.
-> > 
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > ---
-> >  .../devicetree/bindings/soc/qcom/qcom,smsm.yaml    | 48 ++++++++++++++++++----
-> >  1 file changed, 40 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,smsm.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,smsm.yaml
-> > index db67cf043256..b12589171169 100644
-> > --- a/Documentation/devicetree/bindings/soc/qcom/qcom,smsm.yaml
-> > +++ b/Documentation/devicetree/bindings/soc/qcom/qcom,smsm.yaml
-> > @@ -33,6 +33,13 @@ properties:
-> >        specifier of the column in the subscription matrix representing the local
-> >        processor.
-> >  
-> > +  mboxes:
-> > +    minItems: 1
-> > +    maxItems: 5
-> 
-> Need to define what each entry is.
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Luca Weiss (2):
+      dt-bindings: remoteproc: qcom,smd-edge: Mark qcom,ipc as deprecated
+      dt-bindings: soc: qcom,smp2p: Mark qcom,ipc as deprecated
 
-The entry is (description from qcom,ipc-N)
+ Documentation/devicetree/bindings/remoteproc/qcom,smd-edge.yaml | 3 ++-
+ Documentation/devicetree/bindings/soc/qcom/qcom,smp2p.yaml      | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+---
+base-commit: a59668a9397e7245b26e9be85d23f242ff757ae8
+change-id: 20240425-qcom-ipc-deprecate-37afbe33cadc
 
-  "the outgoing ipc bit used for signaling the N:th remote processor."
-
-So you want me to add 5 times e.g.
-
-- the IPC mailbox used for signaling the 0th remote processor
-- the IPC mailbox used for signaling the 1st remote processor
-
-etc? I don't really have any extra knowledge on smsm to be able to write
-something better there..
-
-Also what are your thoughts on this binding vs the alternative I wrote
-in the cover letter? I'm not really happy about how the properties are
-represented.
-
-Regards
-Luca
-
-
-> 
-> > +    description:
-> > +      Reference to the mailbox representing the outgoing doorbell in APCS for
-> > +      this client.
-> > +
-> >    '#size-cells':
-> >      const: 0
-> >  
-> > @@ -98,15 +105,18 @@ required:
-> >    - '#address-cells'
-> >    - '#size-cells'
-> >  
-> > -anyOf:
-> > +oneOf:
-> >    - required:
-> > -      - qcom,ipc-1
-> > -  - required:
-> > -      - qcom,ipc-2
-> > -  - required:
-> > -      - qcom,ipc-3
-> > -  - required:
-> > -      - qcom,ipc-4
-> > +      - mboxes
-> > +  - anyOf:
-> > +      - required:
-> > +          - qcom,ipc-1
-> > +      - required:
-> > +          - qcom,ipc-2
-> > +      - required:
-> > +          - qcom,ipc-3
-> > +      - required:
-> > +          - qcom,ipc-4
-> >  
-> >  additionalProperties: false
-> >  
-> > @@ -136,3 +146,25 @@ examples:
-> >              #interrupt-cells = <2>;
-> >          };
-> >      };
-> > +  # Example using mboxes property
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> > +
-> > +    shared-memory {
-> > +        compatible = "qcom,smsm";
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +        mboxes = <0>, <0>, <0>, <&apcs 19>;
-> > +
-> > +        apps@0 {
-> > +            reg = <0>;
-> > +            #qcom,smem-state-cells = <1>;
-> > +        };
-> > +
-> > +        wcnss@7 {
-> > +            reg = <7>;
-> > +            interrupts = <GIC_SPI 144 IRQ_TYPE_EDGE_RISING>;
-> > +            interrupt-controller;
-> > +            #interrupt-cells = <2>;
-> > +        };
-> > +    };
-> > 
-> 
-
-
-
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
 
