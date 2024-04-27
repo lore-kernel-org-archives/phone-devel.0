@@ -1,31 +1,51 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7A614F9EA;
-	Thu, 25 Apr 2024 19:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97AC1586F6;
+	Sat, 27 Apr 2024 19:34:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714072505; cv=none; b=m2ZXfu5Cwwj5SMdz9JqKQlM+8q9j/KcME3Jk0D63bxzw3/uoYimKuLxNyQ//JuQgmMZZ51Fk9VMvYaLORdxtAE5d/AZeR9YwOsdm0KQ7LVPy1MIGtCLxG+KiJyFK+oz16An3cUGOHR3+WPK4TKV5zde6wjduKQYOUL7IgMqRl1Y=
+	t=1714246473; cv=none; b=hqrn0xEwO4EuNTRl79aoG/SAQthdqy1DhOOoXvdixS/hqnfCfHtPGj4O+bp8r/tx4zGk4kUGqM/muM7J4WCGHXJG9G2xGs6fVWZg47qNdU8YQDDbA621U3Jj2e03+Xj8NHDi5wVC/bKjkAGgJod56JzCzPgTKpRGUFl8ZhffLM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714072505; c=relaxed/simple;
-	bh=AQfbI7vOuFm8YP/Xkec/49RruMYlAkAUez61BlDr6HQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lFWcsOmyPJgdSjtAqVr0ZiW1V/+IV2sa6yorXouGs430PzTs7Z1Kp3Dp9qhoi5yrnrgXw6AG9FDhGmxmlY8uYnCgog5mASKC+E10Dt1zA8Y/TeYZCgVg+uXVWXxviCRqbNSwlQqJMnizQ5EbizYlnUi3OkYmfv0Th2tt6jmkbQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=YFYyARut; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
+	s=arc-20240116; t=1714246473; c=relaxed/simple;
+	bh=BFiPTRnM/ZfB8nTkKaHdiqWyaKB82M6Ojbe8Uut7t20=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h4SP1helVYyh2B0Sbc7oK/Bzgh0YNK0HRGsWyEkKhJ/lQ9xi4dCx2RLnprHgoPHabvBKfJSf22QbNA4URnudxNjMckCt/PT8K9Ii8bXyQErY+GqoQQ3iuMkHRAIO14lXwj6+OfnDzLuapu0BVyp3gpnF4U8j6cYvXrIUTwA4wJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/bCRnOu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="YFYyARut"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1714072502; bh=AQfbI7vOuFm8YP/Xkec/49RruMYlAkAUez61BlDr6HQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YFYyARutU8agXJa2F8fjT4vlV8GvAQZj8i237mYGywFyCEOkAOHmzNmeNHpSB6MT5
-	 piRR7jY+knRYcMgkwHFupGeajR7pKnpY4x2+KkD9xy4Z0YbF0wJoY1zTqoFhkBfj72
-	 1YbW1suYm7lF94KgnRPjLsDKXS+hHo7/dFgPfDJE=
-From: Luca Weiss <luca@z3ntu.xyz>
-Date: Thu, 25 Apr 2024 21:14:31 +0200
-Subject: [PATCH 2/2] dt-bindings: soc: qcom,smp2p: Mark qcom,ipc as
- deprecated
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/bCRnOu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C5BC4AF10;
+	Sat, 27 Apr 2024 19:34:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714246473;
+	bh=BFiPTRnM/ZfB8nTkKaHdiqWyaKB82M6Ojbe8Uut7t20=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=e/bCRnOu7OJfSV4pHHbeLVdefdNkT2mQe73oUGX2Db+RqN71AfCCqtRsnnlcs/nO/
+	 Tom6rhQeXnpTy1tzbVbWER3s/qBeSSvCw9C57HfWGZR5cBkFOz31Ds+lFWpd8q0b3p
+	 FCe01qhQr5NSOX1kIVDC9efAImpVrQDQ+53iX3DeEK4eomME0QoUsWiLWzw44dkxXW
+	 Gy9/Lm9/9mhJ2pjipbDapvNQyXhs8tBD6vyIFxcRvEpBsBm/jr8UYgSIqJPnBRB8zu
+	 FO3HdzD5SEOjEqy4Td/HJjSNYWTLBjAYVZGb3J1YU4TcOxZU8xXhac/0F43aVO4xbk
+	 j3Y0agE5yLSyQ==
+From: Bjorn Andersson <andersson@kernel.org>
+To: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Luca Weiss <luca@z3ntu.xyz>
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH v2 0/3] Convert qcom,hfpll documentation to yaml + related changes
+Date: Sat, 27 Apr 2024 14:34:22 -0500
+Message-ID: <171424646115.1448451.2799860165107688219.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240218-hfpll-yaml-v2-0-31543e0d6261@z3ntu.xyz>
+References: <20240218-hfpll-yaml-v2-0-31543e0d6261@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -33,70 +53,22 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240425-qcom-ipc-deprecate-v1-2-a8d8034253ea@z3ntu.xyz>
-References: <20240425-qcom-ipc-deprecate-v1-0-a8d8034253ea@z3ntu.xyz>
-In-Reply-To: <20240425-qcom-ipc-deprecate-v1-0-a8d8034253ea@z3ntu.xyz>
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Bjorn Andersson <andersson@kernel.org>, 
- Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Andy Gross <agross@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1179; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=AQfbI7vOuFm8YP/Xkec/49RruMYlAkAUez61BlDr6HQ=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBmKqu0A0raTWi5QiSyZMZPNUcsBx00rHW6j1Es1
- wsMpEQlTC2JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZiqrtAAKCRBy2EO4nU3X
- VtU9D/9+qWpTms/tpH8LMz8s6RPt7yhwX/HudrWqZdPNLIVhqzjbTjoSjFVFgwhv2jMMQrp78ps
- Vogq2hWhGvvKsuygor7Aa2BpqIABh1RzBB24sUhAH4Nxl3jv2Gt8BJ5y/9BTpwPnVMSB6DQPYKJ
- qKuTIK1t0yBAOx0jF3VMPi5STLwX9uAOj0NgR1Kz85m9kymTVbC8l2RUU/rq22acEihMFvvUUjS
- 1U1QMSU28MAFHJKTjLL7LwkBDaVckuKeA/pcMjb9i8pFwmZwWGT2rJHvL3wJkT0l0KV9w6eUhNb
- nEqGxaDmoKmxNOhHlOyRFq7+9ZCcbQsMHKl9tXG/ABh8FmLk3CxK5dP/ekz39n/rvTLRg+ca5I1
- pxTys4uLWVF33vZ6AvbB9xkqJoBluYLMyO4qFXzxANjPBAiOUrNr2ditDlr6tWKeQ1Z2ZTH7uXT
- vqI3JGQv4p3dfU/MzS9kt6DzJhXDPdR8EylUcbPo8WqVLoxLrSkjL39cENJ6KKcdJEcx/eSRZQP
- gWZQnsQYZyMjNclhY8gs8tQEcZHmTB3aXYybcSqOcPrFYxuvNQlIGzMfTME4ImgUvWp/BNuCLgj
- g8tKlcAoh9pd/YhOuU7Rkhv/HuVwHTo24Q9j5G0p6jQcAEU0537WmhNbcE50gEltBbSV3cHMWRs
- eov2tS+j/EhNQ2w==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+Content-Transfer-Encoding: 8bit
 
-Deprecate the qcom,ipc way of accessing the mailbox in favor of the
-'mboxes' property.
 
-Update the example to use mboxes.
+On Sun, 18 Feb 2024 21:57:24 +0100, Luca Weiss wrote:
+> Finally touch the hfpll doc and convert it to yaml, and do some related
+> changes along the way.
+> 
+> 
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
- Documentation/devicetree/bindings/soc/qcom/qcom,smp2p.yaml | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Applied, thanks!
 
-diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,smp2p.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,smp2p.yaml
-index 58500529b90f..141d666dc3f7 100644
---- a/Documentation/devicetree/bindings/soc/qcom/qcom,smp2p.yaml
-+++ b/Documentation/devicetree/bindings/soc/qcom/qcom,smp2p.yaml
-@@ -41,6 +41,7 @@ properties:
-     description:
-       Three entries specifying the outgoing ipc bit used for signaling the
-       remote end of the smp2p edge.
-+    deprecated: true
- 
-   qcom,local-pid:
-     $ref: /schemas/types.yaml#/definitions/uint32
-@@ -128,7 +129,7 @@ examples:
-         compatible = "qcom,smp2p";
-         qcom,smem = <431>, <451>;
-         interrupts = <GIC_SPI 143 IRQ_TYPE_EDGE_RISING>;
--        qcom,ipc = <&apcs 8 18>;
-+        mboxes = <&apcs 18>;
-         qcom,local-pid = <0>;
-         qcom,remote-pid = <4>;
- 
+[1/3] dt-bindings: clock: qcom,hfpll: Convert to YAML
+      commit: 849ed9d414d04e369bccc2278d75becde9e40e0f
+[2/3] clk: qcom: hfpll: Add QCS404-specific compatible
+      commit: 3db0f3b9ff5adb6a5e8564a32fadb2af1216810d
 
+Best regards,
 -- 
-2.44.0
-
+Bjorn Andersson <andersson@kernel.org>
