@@ -1,40 +1,40 @@
-Received: from mail-108-mta219.mxroute.com (mail-108-mta219.mxroute.com [136.175.108.219])
+Received: from mail-108-mta155.mxroute.com (mail-108-mta155.mxroute.com [136.175.108.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998A312FF8F
-	for <phone-devel@vger.kernel.org>; Wed,  1 May 2024 15:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A322E130A7D
+	for <phone-devel@vger.kernel.org>; Wed,  1 May 2024 15:31:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714577504; cv=none; b=rurUCjv8uhZHZPXKZt31v43eMeQMGVuLxF7rKEIti+DSdenHeG5Rz1tR9Mo56Vy5g7f51T1iyrg+6WdAQh3cCDdXGxCK0EnWPmh6GjyHDvEMMBTSxzg9LogUOZ/ZDU2P3FFCbpbjhLysUEwyWd3hcWr79asoEMwRie4TJuPmCjw=
+	t=1714577509; cv=none; b=N0rrXyRfvUCtFTtUCfk7hsUhqYeC4RIVH57GDzjuGTfgnGhM/+WdhtpJAIssdurvZ27NMv6BeP6lum+QL6RFBb2Oc23+N1ew3VpAR3eRu3rCYARvnALiSeAcRuXjt8SGkWy7eO0Ul0ZZjcCFTun/ZY9/R2GtVOmmueqDH0KWE78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714577504; c=relaxed/simple;
-	bh=3GOmMIRHsNVhxdy69UdU/N5ldgNF0c1SP/SadcWTgmA=;
+	s=arc-20240116; t=1714577509; c=relaxed/simple;
+	bh=liAeCOCis53oq3GtruCxMWUheY7cl+d70gOgO+0PYV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qvU6rIRnPXf3BkuJvHseEDu0u8ReNNLj3vWhVyn0ThyxR6oRmzbHYxKB84PmkV8tunRMx4Y2WiygHIa2rgf2rTVWe/gUpMdxHHb5V1fCxxx/JwW5DYY5qzEi14Ynt07ESQBPwhN9gsoDm9lfke3rOKp7aae4mUcT0b3Z9E8UYDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=WNh6HOqo; arc=none smtp.client-ip=136.175.108.219
+	 MIME-Version; b=doU2jpUH729ST0xe7q+AXj5dGaNbvQrxVEw8CTEDoXJtzm9dK0LxWbzLKZ1K23eQhuglafs5OLKG3zyDMPgcnvhBgpYvUPepmnPGT6QNmSFfP+s7mIfxqs8Fkle2w5bR2q8LE97XgRQw9GVOFEhVXOWO/S8ug3FBGT6eE0apbZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=izN5/8E+; arc=none smtp.client-ip=136.175.108.155
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="WNh6HOqo"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="izN5/8E+"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta219.mxroute.com (ZoneMTA) with ESMTPSA id 18f34c2bb0b0008ca2.013
+ by mail-108-mta155.mxroute.com (ZoneMTA) with ESMTPSA id 18f34c2c3b10008ca2.013
  for <phone-devel@vger.kernel.org>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 01 May 2024 15:25:28 +0000
-X-Zone-Loop: c8a43e4f00b9ea864e7918da96d332806c530872dd4f
+ Wed, 01 May 2024 15:25:30 +0000
+X-Zone-Loop: 2ec7f1ff2cf7a4ec5bf3cf34805ca7e6d813b930b895
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hBpjW4fXJ0RL8rfhZEBmzy5bT//pxdiec10L9b4NGpg=; b=WNh6HOqo38jOoemcC3cfTtjgHW
-	BHgLwKt9Sn1OEOQklBRInL48rDddHZgWAbsmmZjWxCAeewf9410D5d+Fq/xOHSHuqKVi6vw12I1jW
-	RUVf/TKFYDJhg5ulBaZcJU82U2c12F+JdlCISu1A/KwH62JFFQ0LaBicLlDQmRauVPqNXM6z/5UQY
-	NDDOeCNeI8e/yxXmysZQG+7PNY22Trh4jW/EbtRlbpmDPFWtNQ2dBouzcnH0A5oQCPwa4FjX83Juc
-	BhExO9gVzgkjkR2RBScEMH6LOTwSwpFkNwKCqNkLYcKdtMfZWuIOCxhyzNyQwLtwdzSLRKFgskcga
-	pHU0c5/g==;
+	bh=PzT4xTOEeVDL66kJK8reXjWQ9fp0oEJkeO2UsrLAT0g=; b=izN5/8E+EHY5iywXRGikzZ/FES
+	t/NYOc+jhjgS2/X0Fl1sr5Tfv5YThU1A4d89T0JiOcbyWMVTOy7NMlaCbjPid6Oji+jprVKwT6jKw
+	Nwt/lpKCbU7Av/592TCiMnL9QopQvSsuU6g27+pvS69cZ7shmbYOrAfQzhNmGKUuSA07R1UAp4dYZ
+	qDGnK/Nez1yLP+h0wvO1ck47+toWHgy8K1K6HfWHE+b06hBPzEaYD/vJRHDSDnl25rM4XQPzzO2gq
+	4JsEaCcMrnu/bzjUHG4VQVbIR79IszftuO+hKjLGZWWCfLThmfI069bl65PbGXCm2VzNItWsxyGt5
+	E8nf6MYA==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -54,11 +54,11 @@ Cc: dave.stevenson@raspberrypi.com,
 	linux-kernel@vger.kernel.org,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v5 17/25] dt-bindings: media: imx258: Rename to include vendor prefix
-Date: Wed,  1 May 2024 09:24:34 -0600
-Message-ID: <20240501152442.1072627-18-git@luigi311.com>
+	Luis Garcia <git@luigi311.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v5 18/25] dt-bindings: media: imx258: Add alternate compatible strings
+Date: Wed,  1 May 2024 09:24:35 -0600
+Message-ID: <20240501152442.1072627-19-git@luigi311.com>
 In-Reply-To: <20240501152442.1072627-1-git@luigi311.com>
 References: <20240501152442.1072627-1-git@luigi311.com>
 Precedence: bulk
@@ -72,49 +72,42 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-imx258.yaml doesn't include the vendor prefix of sony, so
-rename to add it.
-Update the id entry and MAINTAINERS to match.
+There are a number of variants of the imx258 modules that can not
+be differentiated at runtime, so add compatible strings for the
+PDAF variant.
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Reviewed-by: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- .../bindings/media/i2c/{imx258.yaml => sony,imx258.yaml}        | 2 +-
- MAINTAINERS                                                     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
- rename Documentation/devicetree/bindings/media/i2c/{imx258.yaml => sony,imx258.yaml} (97%)
+ .../devicetree/bindings/media/i2c/sony,imx258.yaml       | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/media/i2c/imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-similarity index 97%
-rename from Documentation/devicetree/bindings/media/i2c/imx258.yaml
-rename to Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-index 80d24220baa0..bee61a443b23 100644
---- a/Documentation/devicetree/bindings/media/i2c/imx258.yaml
+diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+index bee61a443b23..c978abc0cdb3 100644
+--- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
 +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
- %YAML 1.2
- ---
--$id: http://devicetree.org/schemas/media/i2c/imx258.yaml#
-+$id: http://devicetree.org/schemas/media/i2c/sony,imx258.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
+@@ -13,11 +13,16 @@ description: |-
+   IMX258 is a diagonal 5.867mm (Type 1/3.06) 13 Mega-pixel CMOS active pixel
+   type stacked image sensor with a square pixel array of size 4208 x 3120. It
+   is programmable through I2C interface.  Image data is sent through MIPI
+-  CSI-2.
++  CSI-2. The sensor exists in two different models, a standard variant
++  (IMX258) and a variant with phase detection autofocus (IMX258-PDAF).
++  The camera module does not expose the model through registers, so the
++  exact model needs to be specified.
  
- title: Sony IMX258 13 Mpixel CMOS Digital Image Sensor
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8ceb49f1b630..a8c3a531ad39 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20489,7 +20489,7 @@ M:	Sakari Ailus <sakari.ailus@linux.intel.com>
- L:	linux-media@vger.kernel.org
- S:	Maintained
- T:	git git://linuxtv.org/media_tree.git
--F:	Documentation/devicetree/bindings/media/i2c/imx258.yaml
-+F:	Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
- F:	drivers/media/i2c/imx258.c
+ properties:
+   compatible:
+-    const: sony,imx258
++    enum:
++      - sony,imx258
++      - sony,imx258-pdaf
  
- SONY IMX274 SENSOR DRIVER
+   assigned-clocks: true
+   assigned-clock-parents: true
 -- 
 2.44.0
 
