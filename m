@@ -1,40 +1,40 @@
-Received: from mail-108-mta13.mxroute.com (mail-108-mta13.mxroute.com [136.175.108.13])
+Received: from mail-108-mta91.mxroute.com (mail-108-mta91.mxroute.com [136.175.108.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB37E12FF77
-	for <phone-devel@vger.kernel.org>; Wed,  1 May 2024 15:26:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CE512F367
+	for <phone-devel@vger.kernel.org>; Wed,  1 May 2024 15:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714577207; cv=none; b=uLvGs/s73/b10Udby4kyZclzo2S3JfYLG9uy0iLjdAfQA50MyP44M7wd6gQYp1vmtFMgpB4QqTqxqVsS2ZdwTmKQ/SLPp/esGNNkgJvZ9e1HcBVNO9tc6CCG6KC6/7rHocM21AjUs6MMQW37N4sHRNr9DJZTMk/joJ8+yiugoKo=
+	t=1714577221; cv=none; b=dTLnRAvWEe0eskCR7Xk+qxGA7UdBrWpu4b04wECH7EBuntjAAeYWV4SCaALWQODjNgntzmK6p2o3zJ31rvnXv5PuCV+zyGjFlHVLHwBXV4yQUkH9X3bvUGCuw98pKVFBqVcarTtIOyMTZB7XdFP+DXXP3qOrv5giv4ToOIfQNQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714577207; c=relaxed/simple;
-	bh=/appuRh7QR4oppenmbepS6ozjwx24OFaCqI22tl7X/A=;
+	s=arc-20240116; t=1714577221; c=relaxed/simple;
+	bh=cy2aWmrWmWiUHsiEVhlHLdnMObXYvjQ2zBk5thr1UPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n84WoYl3sjDUKeKfrtYuNxeYPeWqkoA80PfWJRsh47KFOiSKA16L0JYZF3zvQ/99z9yV32D86yA4/50fG3FbH+XIYFRkIfxqmedA+4bhKyIGQ1V1v5IIaTEOg/shvNcT2A3wQzgYvhGNYlkE2iI0k/Yt1XWVTMnBqpi+mxtWIso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=mPgmfYbr; arc=none smtp.client-ip=136.175.108.13
+	 MIME-Version; b=Vj23h7N4UGzgr6NSIQ4qk3THnOUTSYZUnEeMI9XjQnj4FX/oy1qCyRyrd2UOVIpZLdVpkczjC+/+v6oz7Tzguebc4kDyfaRSqx0m962gCI9jUSHQREYCcHakb0DSSFmDlX5KskxWEWDpsWY8jfmBj2fHeO0MGcJy32U8sAFme0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=CnC+cnQl; arc=none smtp.client-ip=136.175.108.91
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="mPgmfYbr"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="CnC+cnQl"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta13.mxroute.com (ZoneMTA) with ESMTPSA id 18f34c2cc940008ca2.012
+ by mail-108-mta91.mxroute.com (ZoneMTA) with ESMTPSA id 18f34c2fda00008ca2.013
  for <phone-devel@vger.kernel.org>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 01 May 2024 15:25:32 +0000
-X-Zone-Loop: 95795cc8439aa95580a4262758151fcfccbc87b4ff68
+ Wed, 01 May 2024 15:25:45 +0000
+X-Zone-Loop: 7b3944d487e926d7fcc0b84785174d12f01dee3185ac
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=8JaICCDIbxfFQFB9p4l2NBR215uf+cJpoqKWqbp9IrI=; b=mPgmfYbrp87Alr0zNPW0cJ+0iP
-	pSVIFnqY0zdvvjTEa/BiTzSO/Txn4UNn7NtGcOQcv3Iu3dTWlF7vSe7MDj23Bv9XgFxe/ukrJUTix
-	KVYfR0tGkl5yFPFQ7OnCwir+OxTOtW+kFYsOP2jj9e+RpiGBMCpktvWa7KxH10E+xxlgIEytqgf0Y
-	6xizThomabA7D5b1e1hkeVUnMoCk1YPeXHjIAhndiAvEqz6p/VfxT4gHoH1D4Q6SIUmgP/1mYs4jF
-	asnepgegl2bZppJfhwaBSAvDtrjRpej9SGkWy/nShsBV3iJrwnXDDylCvO7BJvu0hRALHxp3jmyHh
-	BKcan2vA==;
+	bh=Qrzk3wtzTAL6vILXNad62uNrTzT00IUmuGyKQ40D23U=; b=CnC+cnQl5j2zYk5kiv4/HYytuq
+	0GKCkhCKHsLadAqx2Cso4NC+cRO6KpTmr3QsAviBgg//ghwYvIirI1elHtjDGEnJpcEqztKEYouaR
+	X0kAHRfUNlRZKce2K42aWo3qCJHRlgbC210yJGH+uv2vPKALwqYL4xHJV/TAElEW02ujYMghD9FHk
+	UP42HhhAGvoQLB5zREnuiFBPTteOybjPR+BaRi5BC5+YclO/abkUzcYtHeYmlgNcbgqlFscT01GC9
+	fSz6Z3vkznWx8xUZ6ziqo/v/80u9/LkhQmAy55raY8/VDIqbkbe+H1ZzkxegNPq30E9sAjmHQPhIn
+	v4u8+xWA==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -54,10 +54,12 @@ Cc: dave.stevenson@raspberrypi.com,
 	linux-kernel@vger.kernel.org,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
-	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v5 19/25] media: i2c: imx258: Change register settings for variants of the sensor
-Date: Wed,  1 May 2024 09:24:36 -0600
-Message-ID: <20240501152442.1072627-20-git@luigi311.com>
+	Ondrej Jirman <megi@xff.cz>,
+	Luis Garcia <git@luigi311.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v5 21/25] dt-bindings: media: imx258: Add binding for powerdown-gpio
+Date: Wed,  1 May 2024 09:24:38 -0600
+Message-ID: <20240501152442.1072627-22-git@luigi311.com>
 In-Reply-To: <20240501152442.1072627-1-git@luigi311.com>
 References: <20240501152442.1072627-1-git@luigi311.com>
 Precedence: bulk
@@ -69,125 +71,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Authenticated-Id: personal@luigi311.com
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Ondrej Jirman <megi@xff.cz>
 
-Sony have advised that there are variants of the IMX258 sensor which
-require slightly different register configuration to the mainline
-imx258 driver defaults.
+Add powerdown-gpio binding as it is required for some boards.
 
-There is no available run-time detection for the variant, so add
-configuration via the DT compatible string.
-
-The Vision Components imx258 module supports PDAF, so add the
-register differences for that variant
-
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
 Signed-off-by: Luis Garcia <git@luigi311.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Reviewed-by: Pavel Machek <pavel@ucw.cz>
 ---
- drivers/media/i2c/imx258.c | 47 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 43 insertions(+), 4 deletions(-)
+ Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index 32267d36b8f3..54f7625e60a3 100644
---- a/drivers/media/i2c/imx258.c
-+++ b/drivers/media/i2c/imx258.c
-@@ -321,8 +321,6 @@ static const struct imx258_reg mipi_642mbps_24mhz_4l[] = {
+diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+index c978abc0cdb3..33338139e6e8 100644
+--- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
++++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+@@ -36,6 +36,10 @@ properties:
+   reg:
+     maxItems: 1
  
- static const struct imx258_reg mode_common_regs[] = {
- 	{ 0x3051, 0x00 },
--	{ 0x3052, 0x00 },
--	{ 0x4E21, 0x14 },
- 	{ 0x6B11, 0xCF },
- 	{ 0x7FF0, 0x08 },
- 	{ 0x7FF1, 0x0F },
-@@ -345,7 +343,6 @@ static const struct imx258_reg mode_common_regs[] = {
- 	{ 0x7FA8, 0x03 },
- 	{ 0x7FA9, 0xFE },
- 	{ 0x7B24, 0x81 },
--	{ 0x7B25, 0x00 },
- 	{ 0x6564, 0x07 },
- 	{ 0x6B0D, 0x41 },
- 	{ 0x653D, 0x04 },
-@@ -460,6 +457,33 @@ static const struct imx258_reg mode_1048_780_regs[] = {
- 	{ 0x034F, 0x0C },
- };
- 
-+struct imx258_variant_cfg {
-+	const struct imx258_reg *regs;
-+	unsigned int num_regs;
-+};
++  powerdown-gpios:
++    description:
++      Reference to the GPIO connected to the PWDN pin, if any.
 +
-+static const struct imx258_reg imx258_cfg_regs[] = {
-+	{ 0x3052, 0x00 },
-+	{ 0x4E21, 0x14 },
-+	{ 0x7B25, 0x00 },
-+};
-+
-+static const struct imx258_variant_cfg imx258_cfg = {
-+	.regs = imx258_cfg_regs,
-+	.num_regs = ARRAY_SIZE(imx258_cfg_regs),
-+};
-+
-+static const struct imx258_reg imx258_pdaf_cfg_regs[] = {
-+	{ 0x3052, 0x01 },
-+	{ 0x4E21, 0x10 },
-+	{ 0x7B25, 0x01 },
-+};
-+
-+static const struct imx258_variant_cfg imx258_pdaf_cfg = {
-+	.regs = imx258_pdaf_cfg_regs,
-+	.num_regs = ARRAY_SIZE(imx258_pdaf_cfg_regs),
-+};
-+
- static const char * const imx258_test_pattern_menu[] = {
- 	"Disabled",
- 	"Solid Colour",
-@@ -637,6 +661,8 @@ struct imx258 {
- 	struct v4l2_subdev sd;
- 	struct media_pad pad;
- 
-+	const struct imx258_variant_cfg *variant_cfg;
-+
- 	struct v4l2_ctrl_handler ctrl_handler;
- 	/* V4L2 Controls */
- 	struct v4l2_ctrl *link_freq;
-@@ -1104,6 +1130,14 @@ static int imx258_start_streaming(struct imx258 *imx258)
- 		return ret;
- 	}
- 
-+	ret = imx258_write_regs(imx258, imx258->variant_cfg->regs,
-+				imx258->variant_cfg->num_regs);
-+	if (ret) {
-+		dev_err(&client->dev, "%s failed to set variant config\n",
-+			__func__);
-+		return ret;
-+	}
-+
- 	ret = imx258_write_reg(imx258, IMX258_CLK_BLANK_STOP,
- 			       IMX258_REG_VALUE_08BIT,
- 			       !!(imx258->csi2_flags & V4L2_MBUS_CSI2_NONCONTINUOUS_CLOCK));
-@@ -1491,6 +1525,10 @@ static int imx258_probe(struct i2c_client *client)
- 
- 	imx258->csi2_flags = ep.bus.mipi_csi2.flags;
- 
-+	imx258->variant_cfg = device_get_match_data(&client->dev);
-+	if (!imx258->variant_cfg)
-+		imx258->variant_cfg = &imx258_cfg;
-+
- 	/* Initialize subdev */
- 	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
- 
-@@ -1578,7 +1616,8 @@ MODULE_DEVICE_TABLE(acpi, imx258_acpi_ids);
- #endif
- 
- static const struct of_device_id imx258_dt_ids[] = {
--	{ .compatible = "sony,imx258" },
-+	{ .compatible = "sony,imx258", .data = &imx258_cfg },
-+	{ .compatible = "sony,imx258-pdaf", .data = &imx258_pdaf_cfg },
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, imx258_dt_ids);
+   reset-gpios:
+     description: |-
+       Reference to the GPIO connected to the XCLR pin, if any.
 -- 
 2.44.0
 
