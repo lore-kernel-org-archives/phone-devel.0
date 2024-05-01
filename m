@@ -1,40 +1,40 @@
-Received: from mail-108-mta217.mxroute.com (mail-108-mta217.mxroute.com [136.175.108.217])
+Received: from mail-108-mta13.mxroute.com (mail-108-mta13.mxroute.com [136.175.108.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C6112F38C
-	for <phone-devel@vger.kernel.org>; Wed,  1 May 2024 15:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB37E12FF77
+	for <phone-devel@vger.kernel.org>; Wed,  1 May 2024 15:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714577181; cv=none; b=WcHo0Db1yncZW3RlV7gaClxG6OqfLWnIiam5mkbrdgaMLIXRFWFrOzXOnPEUtGcTnG5zZ6e/nBgVxg0SCG4xIPcrx6/gqOfBody7MRCmUPp0Z/X1R57uTiP4PjCjY8L4HIAUbcNk7goSAXbKCncjatAzBRDARVpRfX6+UBx1SBo=
+	t=1714577207; cv=none; b=uLvGs/s73/b10Udby4kyZclzo2S3JfYLG9uy0iLjdAfQA50MyP44M7wd6gQYp1vmtFMgpB4QqTqxqVsS2ZdwTmKQ/SLPp/esGNNkgJvZ9e1HcBVNO9tc6CCG6KC6/7rHocM21AjUs6MMQW37N4sHRNr9DJZTMk/joJ8+yiugoKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714577181; c=relaxed/simple;
-	bh=t0DpAm14I63PD+zKjpelnQ5UomdKi3PfstUiSulsvmk=;
+	s=arc-20240116; t=1714577207; c=relaxed/simple;
+	bh=/appuRh7QR4oppenmbepS6ozjwx24OFaCqI22tl7X/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uOE6kOF6rPWWRnm6FirvYXkJaMo3v6qlVsLXh7Ft6oQsSL6HZk6I0yv0jOFpIQsn6LAPPikU2pIM2dusDjx70wVqfw41dALFPaGtWENHprdFj2CRXtA8o6Hwh1A5ygSPehjjwi7kqZm2xHbuf9KqLbpQBQId2bSUOPtLoh+I6kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=wNCVnChf; arc=none smtp.client-ip=136.175.108.217
+	 MIME-Version; b=n84WoYl3sjDUKeKfrtYuNxeYPeWqkoA80PfWJRsh47KFOiSKA16L0JYZF3zvQ/99z9yV32D86yA4/50fG3FbH+XIYFRkIfxqmedA+4bhKyIGQ1V1v5IIaTEOg/shvNcT2A3wQzgYvhGNYlkE2iI0k/Yt1XWVTMnBqpi+mxtWIso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=mPgmfYbr; arc=none smtp.client-ip=136.175.108.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="wNCVnChf"
+	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="mPgmfYbr"
 Received: from filter006.mxroute.com ([136.175.111.2] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta217.mxroute.com (ZoneMTA) with ESMTPSA id 18f34c29fd90008ca2.012
+ by mail-108-mta13.mxroute.com (ZoneMTA) with ESMTPSA id 18f34c2cc940008ca2.012
  for <phone-devel@vger.kernel.org>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 01 May 2024 15:25:21 +0000
-X-Zone-Loop: 61aa1018535731b2a42f3416686fcde4fa44a3e88603
+ Wed, 01 May 2024 15:25:32 +0000
+X-Zone-Loop: 95795cc8439aa95580a4262758151fcfccbc87b4ff68
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=luigi311.com; s=x; h=Content-Transfer-Encoding:MIME-Version:References:
 	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Mc+RbIL+DgqYcfe/mLvPif24eMzEBPY7cltm4NspsTE=; b=wNCVnChfe2otmVaHseoYGqbzL7
-	Q/hmaFEupoRZyANBI9aimeAex5qUTZfN+NCfgLQziYk4q19oJOdzLiWOalsk/MKlEYU79tWBzUGhB
-	zCRIQULz/fCikhXOwBlR0hOPV1tvNmAuxiQ3IPo42t5nRA2SSj8r/FoCT9m+QjU0SNW7HK0MRGpTV
-	/BR33OmcfnpC403MdSEpaoYibSAFoQb17q+O2jxk72vDEHIdQxTnerubzJn9CRX6J8QtIRnPYLAQ8
-	/Lr5y8I3O6wI2PdM31SeZWfXdovhyXOpiu268JHrPlngOAlnDn3NVs8ZiTcXbPDCcy3Bhv4CKQeA4
-	YtWTJkvQ==;
+	bh=8JaICCDIbxfFQFB9p4l2NBR215uf+cJpoqKWqbp9IrI=; b=mPgmfYbrp87Alr0zNPW0cJ+0iP
+	pSVIFnqY0zdvvjTEa/BiTzSO/Txn4UNn7NtGcOQcv3Iu3dTWlF7vSe7MDj23Bv9XgFxe/ukrJUTix
+	KVYfR0tGkl5yFPFQ7OnCwir+OxTOtW+kFYsOP2jj9e+RpiGBMCpktvWa7KxH10E+xxlgIEytqgf0Y
+	6xizThomabA7D5b1e1hkeVUnMoCk1YPeXHjIAhndiAvEqz6p/VfxT4gHoH1D4Q6SIUmgP/1mYs4jF
+	asnepgegl2bZppJfhwaBSAvDtrjRpej9SGkWy/nShsBV3iJrwnXDDylCvO7BJvu0hRALHxp3jmyHh
+	BKcan2vA==;
 From: git@luigi311.com
 To: linux-media@vger.kernel.org
 Cc: dave.stevenson@raspberrypi.com,
@@ -55,9 +55,9 @@ Cc: dave.stevenson@raspberrypi.com,
 	pavel@ucw.cz,
 	phone-devel@vger.kernel.org,
 	Luis Garcia <git@luigi311.com>
-Subject: [PATCH v5 14/25] media: i2c: imx258: Issue reset before starting streaming
-Date: Wed,  1 May 2024 09:24:31 -0600
-Message-ID: <20240501152442.1072627-15-git@luigi311.com>
+Subject: [PATCH v5 19/25] media: i2c: imx258: Change register settings for variants of the sensor
+Date: Wed,  1 May 2024 09:24:36 -0600
+Message-ID: <20240501152442.1072627-20-git@luigi311.com>
 In-Reply-To: <20240501152442.1072627-1-git@luigi311.com>
 References: <20240501152442.1072627-1-git@luigi311.com>
 Precedence: bulk
@@ -71,47 +71,123 @@ X-Authenticated-Id: personal@luigi311.com
 
 From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-Whilst not documented, register 0x0103 bit 0 is the soft
-reset for the sensor, so send it before trying to configure
-the sensor.
+Sony have advised that there are variants of the IMX258 sensor which
+require slightly different register configuration to the mainline
+imx258 driver defaults.
+
+There is no available run-time detection for the variant, so add
+configuration via the DT compatible string.
+
+The Vision Components imx258 module supports PDAF, so add the
+register differences for that variant
 
 Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Luis Garcia <git@luigi311.com>
 Reviewed-by: Pavel Machek <pavel@ucw.cz>
 ---
- drivers/media/i2c/imx258.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/media/i2c/imx258.c | 47 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 43 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/media/i2c/imx258.c b/drivers/media/i2c/imx258.c
-index c1a2c2406aaa..9c83ba1232fa 100644
+index 32267d36b8f3..54f7625e60a3 100644
 --- a/drivers/media/i2c/imx258.c
 +++ b/drivers/media/i2c/imx258.c
-@@ -20,6 +20,8 @@
- #define IMX258_MODE_STANDBY		0x00
- #define IMX258_MODE_STREAMING		0x01
+@@ -321,8 +321,6 @@ static const struct imx258_reg mipi_642mbps_24mhz_4l[] = {
  
-+#define IMX258_REG_RESET		0x0103
+ static const struct imx258_reg mode_common_regs[] = {
+ 	{ 0x3051, 0x00 },
+-	{ 0x3052, 0x00 },
+-	{ 0x4E21, 0x14 },
+ 	{ 0x6B11, 0xCF },
+ 	{ 0x7FF0, 0x08 },
+ 	{ 0x7FF1, 0x0F },
+@@ -345,7 +343,6 @@ static const struct imx258_reg mode_common_regs[] = {
+ 	{ 0x7FA8, 0x03 },
+ 	{ 0x7FA9, 0xFE },
+ 	{ 0x7B24, 0x81 },
+-	{ 0x7B25, 0x00 },
+ 	{ 0x6564, 0x07 },
+ 	{ 0x6B0D, 0x41 },
+ 	{ 0x653D, 0x04 },
+@@ -460,6 +457,33 @@ static const struct imx258_reg mode_1048_780_regs[] = {
+ 	{ 0x034F, 0x0C },
+ };
+ 
++struct imx258_variant_cfg {
++	const struct imx258_reg *regs;
++	unsigned int num_regs;
++};
 +
- /* Chip ID */
- #define IMX258_REG_CHIP_ID		0x0016
- #define IMX258_CHIP_ID			0x0258
-@@ -1052,6 +1054,16 @@ static int imx258_start_streaming(struct imx258 *imx258)
- 	const struct imx258_link_freq_config *link_freq_cfg;
- 	int ret, link_freq_index;
++static const struct imx258_reg imx258_cfg_regs[] = {
++	{ 0x3052, 0x00 },
++	{ 0x4E21, 0x14 },
++	{ 0x7B25, 0x00 },
++};
++
++static const struct imx258_variant_cfg imx258_cfg = {
++	.regs = imx258_cfg_regs,
++	.num_regs = ARRAY_SIZE(imx258_cfg_regs),
++};
++
++static const struct imx258_reg imx258_pdaf_cfg_regs[] = {
++	{ 0x3052, 0x01 },
++	{ 0x4E21, 0x10 },
++	{ 0x7B25, 0x01 },
++};
++
++static const struct imx258_variant_cfg imx258_pdaf_cfg = {
++	.regs = imx258_pdaf_cfg_regs,
++	.num_regs = ARRAY_SIZE(imx258_pdaf_cfg_regs),
++};
++
+ static const char * const imx258_test_pattern_menu[] = {
+ 	"Disabled",
+ 	"Solid Colour",
+@@ -637,6 +661,8 @@ struct imx258 {
+ 	struct v4l2_subdev sd;
+ 	struct media_pad pad;
  
-+	ret = imx258_write_reg(imx258, IMX258_REG_RESET, IMX258_REG_VALUE_08BIT,
-+			       0x01);
++	const struct imx258_variant_cfg *variant_cfg;
++
+ 	struct v4l2_ctrl_handler ctrl_handler;
+ 	/* V4L2 Controls */
+ 	struct v4l2_ctrl *link_freq;
+@@ -1104,6 +1130,14 @@ static int imx258_start_streaming(struct imx258 *imx258)
+ 		return ret;
+ 	}
+ 
++	ret = imx258_write_regs(imx258, imx258->variant_cfg->regs,
++				imx258->variant_cfg->num_regs);
 +	if (ret) {
-+		dev_err(&client->dev, "%s failed to reset sensor\n", __func__);
++		dev_err(&client->dev, "%s failed to set variant config\n",
++			__func__);
 +		return ret;
 +	}
 +
-+	/* 12ms is required from poweron to standby */
-+	fsleep(12000);
+ 	ret = imx258_write_reg(imx258, IMX258_CLK_BLANK_STOP,
+ 			       IMX258_REG_VALUE_08BIT,
+ 			       !!(imx258->csi2_flags & V4L2_MBUS_CSI2_NONCONTINUOUS_CLOCK));
+@@ -1491,6 +1525,10 @@ static int imx258_probe(struct i2c_client *client)
+ 
+ 	imx258->csi2_flags = ep.bus.mipi_csi2.flags;
+ 
++	imx258->variant_cfg = device_get_match_data(&client->dev);
++	if (!imx258->variant_cfg)
++		imx258->variant_cfg = &imx258_cfg;
 +
- 	/* Setup PLL */
- 	link_freq_index = imx258->cur_mode->link_freq_index;
- 	link_freq_cfg = &imx258->link_freq_configs[link_freq_index];
+ 	/* Initialize subdev */
+ 	v4l2_i2c_subdev_init(&imx258->sd, client, &imx258_subdev_ops);
+ 
+@@ -1578,7 +1616,8 @@ MODULE_DEVICE_TABLE(acpi, imx258_acpi_ids);
+ #endif
+ 
+ static const struct of_device_id imx258_dt_ids[] = {
+-	{ .compatible = "sony,imx258" },
++	{ .compatible = "sony,imx258", .data = &imx258_cfg },
++	{ .compatible = "sony,imx258-pdaf", .data = &imx258_pdaf_cfg },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, imx258_dt_ids);
 -- 
 2.44.0
 
