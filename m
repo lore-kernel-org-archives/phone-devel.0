@@ -1,68 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtprelay04.ispgateway.de (smtprelay04.ispgateway.de [80.67.31.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D1115B984;
-	Thu,  2 May 2024 16:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448341DDE9;
+	Thu,  2 May 2024 19:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.67.31.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714666334; cv=none; b=lW9n5x+7XOxBatbXViLI9DvFu7MkyEWXz7KMVNZb3IEyCXyVENI2Wglw4klaFu4BJr2OoyNuCFhvjVkmBxbLp+MQhJrCb+E2S5RUMT2by/2IJV5yEWgJIXAfjYaCJFLVOAq54WmD2YJWxvgywMJbEEmn1S8jSJLDNvEkSX6WGl8=
+	t=1714677594; cv=none; b=etXM6TLUux7ekR63Vc8oepAiibgfSjaEDjpBPEhiDPRmyc6/RZuwFSkY6It24hH/W5/BsaXQgifmMd3Szog/J4+jxp4n0nh0kSrdzaNgoAtX/xajnfbESY0M/2GexIL9/lgQmAwS3u6ZfUb3MeanjZXDLSQ6wuoN1Z1wXhXYQN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714666334; c=relaxed/simple;
-	bh=fTdWNLWguxqx1+6cG3H0uL6VLl/ZYaZcqOAQFQE5u7o=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=mky+Ry4Ua22/D+cxNE+WwHp/105yTE8JLB3ti5CebMtxV6+RHHiaOZmO4BYMp5HN8cJuEdtEhSwRWO6/EfEeGi3AgC+w89tgGGtz1SsTJIT476UhP6/w2pu+h82qAt45T7rouplzGxWskEoiGVi8kc8mx7mAPcmbgVh6CuaM9OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tt33j9UN; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tt33j9UN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157A9C113CC;
-	Thu,  2 May 2024 16:12:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714666334;
-	bh=fTdWNLWguxqx1+6cG3H0uL6VLl/ZYaZcqOAQFQE5u7o=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Tt33j9UNaytVc/IkZzKn3kqACrEeVzjLs30io9rzvQPbk7NHF2iUuhp1D6sK9s2dQ
-	 PJHi379tXC2+rnb6XdaiCX6CaVku1VJFTP9s9zN+3GZ2QizddZ6f7qn8pycw8GqbDt
-	 OZpUKxQSvVByXUr0LDCIdeenmI5s5in2dk+27+wAt4HeyDg9R6GLAat2q/zC8J5/z4
-	 EpyehNuKQm0cUyWu1wcMSQkLZvkKldcTPaxN9l0CsEoO+lvw/8kQWq4FvmMRb6qp1v
-	 ERSPScgOJ/dnaQ/WW3HvBxWcrf8QZS+6NmURyodPBij7r07ClhtZzo0/+7rCffBI9q
-	 bzIAWThw4wiag==
-From: Lee Jones <lee@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Lee Jones <lee@kernel.org>, 
- Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-In-Reply-To: <20240412-pmi632-ppg-v2-1-8ac892b1bb61@fairphone.com>
-References: <20240412-pmi632-ppg-v2-1-8ac892b1bb61@fairphone.com>
-Subject: Re: (subset) [PATCH v2] dt-bindings: mfd: qcom,spmi-pmic: Add pbs
- to SPMI device types
-Message-Id: <171466633082.1186272.3467645518364735829.b4-ty@kernel.org>
-Date: Thu, 02 May 2024 17:12:10 +0100
+	s=arc-20240116; t=1714677594; c=relaxed/simple;
+	bh=cMv9nLPugJbMDvj5g8lAQwCGg7iV1EJ33oheAeccbpA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=l4fzcCAdyEoENs2xo7PXsgSLqOFxfrU51/ZM+bOAkiZdsiy4rDN78pttx69bgpqL5sM+/qNcq6hvxlav9glhtld0ODUrIHTShpo+kAQ4oThpBHVDmi8zNbK2PhKB82X6TPBc0F4lwRQb2kvJyF1IEOk39H+ZdRO59rLTl5Tmqv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; arc=none smtp.client-ip=80.67.31.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+Received: from [92.206.191.65] (helo=framework.lan)
+	by smtprelay04.ispgateway.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <git@apitzsch.eu>)
+	id 1s2bxV-000000007N8-1Lcs;
+	Thu, 02 May 2024 21:19:09 +0200
+Message-ID: <9bb6ef63e19bf079fd881a3b78b71d7a00e4a3bb.camel@apitzsch.eu>
+Subject: Re: [PATCH v2 2/3] leds: sy7802: Add support for Silergy SY7802
+ flash LED controller
+From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+To: Lee Jones <lee@kernel.org>
+Cc: Pavel Machek <pavel@ucw.cz>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Kees Cook <keescook@chromium.org>, "Gustavo A. R.
+ Silva" <gustavoars@kernel.org>,  Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, linux-leds@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
+Date: Thu, 02 May 2024 21:19:13 +0200
+In-Reply-To: <20240502091017.GF5338@google.com>
+References: <20240401-sy7802-v2-0-1138190a7448@apitzsch.eu>
+	 <20240401-sy7802-v2-2-1138190a7448@apitzsch.eu>
+	 <20240411124855.GJ1980182@google.com>
+	 <c5e5f49295350ada2cdb280a77b1c877058d4d64.camel@apitzsch.eu>
+	 <20240502091017.GF5338@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.1 
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.4
+X-Df-Sender: YW5kcmVAYXBpdHpzY2guZXU=
 
-On Fri, 12 Apr 2024 16:22:53 +0200, Luca Weiss wrote:
-> Add the PBS (Programmable Boot Sequencer) to the list of devices.
-> 
-> 
+Am Donnerstag, dem 02.05.2024 um 10:10 +0100 schrieb Lee Jones:
+> On Wed, 01 May 2024, Andr=C3=A9 Apitzsch wrote:
+>=20
+> > > > +		ret =3D -EBUSY;
+> > > > +		goto unlock;
+> > > > +	}
+> > > > +
+> > > > +	if (level)
+> > > > +		curr =3D chip->fled_torch_used | BIT(led-
+> > > > >led_no);
+> > > > +	else
+> > > > +		curr =3D chip->fled_torch_used & ~BIT(led-
+> > > > >led_no);
+> > > > +
+> > > > +	if (curr)
+> > > > +		val |=3D SY7802_MODE_TORCH;
+> > > > +
+> > > > +	/* Torch needs to be disabled first to apply new
+> > > > brightness */
+> > >=20
+> > > "Disable touch to apply brightness"
+> > >=20
+> > > > +	ret =3D regmap_update_bits(chip->regmap,
+> > > > SY7802_REG_ENABLE,
+> > > > SY7802_MODE_MASK,
+> > > > +				 SY7802_MODE_OFF);
+> > > > +	if (ret)
+> > > > +		goto unlock;
+> > > > +
+> > > > +	mask =3D led->led_no =3D=3D SY7802_LED_JOINT ?
+> > > > SY7802_TORCH_CURRENT_MASK_ALL :
+> > >=20
+> > > Why not just use led->led_no in place of mask?
+> >=20
+> > I might be missing something, but I don't know how to use led-
+> > >led_no
+> > in place of mask, when
+> > led->led_no is in {0,1,2} and
+> > mask is in {0x07, 0x38, 0x3f}.
+>=20
+> This doesn't make much sense.
+>=20
+> I guess you mean that led_no is a u8 and mask is a u32.
+>=20
+> What happens if you cast led_no to u32 in the call to
+> regmap_update_bits()?
 
-Applied, thanks!
+Sorry, I'm still confused. Could you elaborate your original question?
 
-[1/1] dt-bindings: mfd: qcom,spmi-pmic: Add pbs to SPMI device types
-      commit: a1f3b5edaf18b1c71a537032c4a6537bde2ad5e9
-
---
-Lee Jones [李琼斯]
+>=20
+> > > Easier to read if you drop SY7802_TORCH_CURRENT_MASK_ALL to its
+> > > own
+> > > line.
+> > >=20
+> > > > +	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SY7802_TORCH_CURRENT_MASK(le=
+d->led_no);
+> > > > +
+> > > > [..]
+> > > >=20
+>=20
 
