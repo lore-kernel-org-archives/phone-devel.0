@@ -1,149 +1,113 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7B23DB97
-	for <phone-devel@vger.kernel.org>; Wed,  8 May 2024 08:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F2FDF59;
+	Wed,  8 May 2024 16:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715155984; cv=none; b=DOcIzW/tzWq4BbRJRf0z89NXm4XBgUqDlSwHZV1WxXntx3knKJkL5DlIXOq6Qz5RhWIH2Yevo8w9xrb/foUz9htOcyK7yDsS7CcmyL1+poIvQ6tCT+uVRyiFoumXyP8Ev+swSgJXpRiPZ8QAKexM4kQwNqOCBOO2tbgbZxBvowE=
+	t=1715186115; cv=none; b=RlhZMydz7+3DBAFPJIttjNBlQBpbMhH12MqfwRPudmLszDJxdEkjpttUcayNOMZITiOZyJNqCdopvNBSmaOFhzo4sMw2Jw1dZ/PZrlM90NqoogaMuLI5aQx1p+YoXc2NFBFMCfRipsTc5q7sAyBLX89vwwU+YmBxNdNhny4v8cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715155984; c=relaxed/simple;
-	bh=WCkwErRZyljeBlt1Jr4HGlQt0q1XbGKrsEZ1B7EBZFw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NF9bALSw1v/BENjZbwgD/u2xy6m7s2MI+q2qBDgesChTA/VN6PdhsEBuAYtkQRRqadCpDEBGYvEsps8oahtJqmRfGjVrmWtSKQcbYj05q3BDeZYIfrOFP9fMr81nVxTHzlNsoO+Y0KB8VPmd27l/FnoI/OjLRzY4vpneAUC5Vvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=cEA/h3vI; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1715186115; c=relaxed/simple;
+	bh=Q6TIkwRzzM31WdY1ZLK+qbjKG0jsm7ZjHFLqIxzE/Xo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oiG06DbdLlytO43WWVcyr/IjaBqP5sAnFWRlNUMqq4bH8501NnbNS3BvEuO+spIu1+lvK01yjWZgH/JeVmDnsPT+kiLGeL0pxF55H8psUGxXFJZY1He9BiZ0PrifxpKoFFZvNqSX1TgGY7V1sw8kbZ4jab4S0fkrVXFyit/3G6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JDipxYw7; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="cEA/h3vI"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a59b097b202so780284366b.0
-        for <phone-devel@vger.kernel.org>; Wed, 08 May 2024 01:13:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JDipxYw7"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a59cdf7cd78so955741366b.0;
+        Wed, 08 May 2024 09:35:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1715155980; x=1715760780; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zvfcVwr/mFxjXcj1cizgE4k3o6ft2+QQYHhXo8/rWmY=;
-        b=cEA/h3vI/hTTG+MzwkWlnu+8LYsW0nfm1/BYamUIDjWKHn2/pv8umAD7a4TIYre3i1
-         YMqxr+YQ5mNrgovv9YD+cGE8ggr8lSU/l1Dw00Ed2kdshNmfFNlDDUvkgzZQmFs0qiLJ
-         hsLmObwLW9C/pdM7wNkIkQlvqsXG/xzYPFTTn+lqk2XlG24DRXC3BQkM1JVqMp3U1HtJ
-         ya1lnxM1W3KcxbqYNUbjBizCh/2GVKhpiJcz0B5zsBIDrNsMdvJlNM63NWOmCtPb3VvC
-         Lw5Gaz1cKWr7CDJqDM8C4O6QTm0SVHnyagSZwKYFNho0Fnd8kj38nMkCjuzsrRPmrQdC
-         y5gA==
+        d=gmail.com; s=20230601; t=1715186112; x=1715790912; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zpNHSM3S3R1dbWtnGwbL7hqnWPLixps0QSnCzdWUuto=;
+        b=JDipxYw79ABSaEjXnqrvEMHQTLQ61oLAxOEUYnRsOEcmI+eQaggVLGize/5UL7a++m
+         d+1Fc+oDXeQM99BKiTu0FDit+03zBFzNI0H5GIJezJa4yMJnu98icr8d4vsGgTCH91Kd
+         a69HEQmQmhTs3HvIFGfRGvA906lcbanD9B+SE/w0UEXyaQBi7DC/Bh+fkkF+GTrsLrVD
+         4P5WZ0VNug0f7Ovcx6u7Wb2l7THJtvL1ytttmk9Gu/0s7E2rNWiHc+ltYLOzoiSY5Alb
+         eelXaAloMrTWIwykSKb5rtuIzaLDBBVi1646L669dSb2vZ0LLtIuFVvyOx4BdN7bP5n1
+         LG4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715155980; x=1715760780;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1715186112; x=1715790912;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=zvfcVwr/mFxjXcj1cizgE4k3o6ft2+QQYHhXo8/rWmY=;
-        b=A3mAXkHfGzdX8KHtE34KUXlmEFuvzmoR4/R0wpP4cmY6RZwyTCAjWein378b8oi4Gd
-         rO0GuKpbIOtNEJbJRhXXF1Ez2Fsxc0aaZzA6KTzkfQkDSKqMNFTzl/Q3e2mxsfbCwTxc
-         2t4AYmrzlqCucZtN/h5pPeWTxZ+V0yb6x/Pr3aHyiXfCfG7uiZv9NSdTigAxlSyy8o+4
-         2CKsKkUUtUz9Wbnm822yKVni80AEx3jPFI5zOWZVzzTHlXeWMUHlVpie/M/d3msUMWRm
-         5QIpdjpZJSb0SfVekuxhCSl/h8HqG0l0jDStm/r0D/RiCHwzJSRIMkhAnyQK4qjGMgaV
-         yAew==
-X-Forwarded-Encrypted: i=1; AJvYcCVWZmbrtZkhnMehPs75JPqstylyiiEJOAvpIEV67O10z4ULjH4BO0OPPyHpJ+T+YfUyW0kSKBI4mJ3q7sdn49IOSt1HmuHs/FzLbXQ=
-X-Gm-Message-State: AOJu0YyowSgDHeAvaNptmtJmMMvaEdkhjj9oktnAveLqxNFSmyUPMMqk
-	/on4nnJ17LImPzoQ818N9Ct9JSnCj1nDf5n59f0ufSdngCdlPTZHO8lrNaUuuFk=
-X-Google-Smtp-Source: AGHT+IH5ZChJ+ZUtI8nQH6jVQm9JoEHn3A4cazCjqHGPJIzlcyPwhNOYnmGRrzKtCq/qXBFOO8Pi4w==
-X-Received: by 2002:a17:906:e24c:b0:a59:c52b:993d with SMTP id a640c23a62f3a-a59fb94b612mr103226666b.20.1715155979987;
-        Wed, 08 May 2024 01:12:59 -0700 (PDT)
-Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id h8-20020a17090634c800b00a59b8e16ac7sm4507713ejb.36.2024.05.08.01.12.59
+        bh=zpNHSM3S3R1dbWtnGwbL7hqnWPLixps0QSnCzdWUuto=;
+        b=xNYsYxE0Y/m3GGjaj27rfjVtYqKpyVkJ2Lg/45TCE7lHOxkXXTbwLvjErJ/pVRtZdS
+         0AXUY4HWE8V212o7fNrA1oSutRlTeSJ5RRQEekDH000KTq6vD/uGH/5tRZAIbtw7phvE
+         8rtntckfWELQ9nRLbyjGdyMNwnxPqPHZpMN/3313VNyJnLXC2uOS942JsyZwROuymJ2x
+         0dTq22VRnqGf+poLiJc6ktMe0Du3I8lztH91BVhRqgqwSFui2WC8guRlNw3yW18dQWBs
+         4QeJRCk1XTCxjBud6Ay7nCvBgcqAD4AGB8mC7Z3iuP+laZuqFJsb+3DMR+EX9yawulUB
+         A9aw==
+X-Forwarded-Encrypted: i=1; AJvYcCV/VdeubvUF3mo8au/UKJrV9hujuaVZ24KhKDj1y0+4qCx+ukj00+FBomOW1ihYfiYVpH3l2eNnq8eHM8MMDI6TCJygGu/8yEC0fuOXkVwIEOqM5qVwQpnW0BwyczYVvBFdYPkEoeEDghXgBcpAJIPQi/A/Be3vpmTHBwww+lUwsGu0EPkuIZc=
+X-Gm-Message-State: AOJu0YyCmYbXZsljsnOdterm1ju9QaYsLB+irB/7CCxe0JDXKBWxI5Tk
+	AaS4JQcIZTr+R9A/SXyJYatD8JKlOK4XqEehtCtVj/MA1fTh+Kf43iBLww==
+X-Google-Smtp-Source: AGHT+IG8sJksLsgIw9a9mlc03pJcShkznrWX70Xz1bZ4vKiPwgKEZPM3f9WHAYSnmzM+cSnWmjM31g==
+X-Received: by 2002:a17:906:a3cc:b0:a58:e2b1:92c2 with SMTP id a640c23a62f3a-a59fb9dbc2cmr193575866b.57.1715186111984;
+        Wed, 08 May 2024 09:35:11 -0700 (PDT)
+Received: from localhost.localdomain (bzb212.neoplus.adsl.tpnet.pl. [83.30.47.212])
+        by smtp.gmail.com with ESMTPSA id kt1-20020a170906aac100b00a52295e014bsm7820894ejb.92.2024.05.08.09.35.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 May 2024 01:12:59 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Wed, 08 May 2024 10:12:53 +0200
-Subject: [PATCH] clk: qcom: gcc-sm6350: Fix gpll6* & gpll7 parents
+        Wed, 08 May 2024 09:35:11 -0700 (PDT)
+From: Adam Skladowski <a39.skl@gmail.com>
+To: 
+Cc: phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Adam Skladowski <a39.skl@gmail.com>,
+	Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/4] MSM8976 MDSS/GPU/WCNSS support
+Date: Wed,  8 May 2024 18:34:33 +0200
+Message-Id: <20240508163455.8757-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240508-sm6350-gpll-fix-v1-1-e4ea34284a6d@fairphone.com>
-X-B4-Tracking: v=1; b=H4sIAAQ0O2YC/x2MSQqAMAwAvyI5G4imSvUr4sEl1oAbLYhQ/LvF4
- wzMRAjiVQK0WQQvtwY9jwRFnsG0DocT1DkxlFQaqshi2GuuCN21bbjogwOTHUdu2LCBVF1ekv6
- PXf++H59gmuphAAAA
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Konrad Dybcio <konrad.dybcio@somainline.org>, linux-arm-msm@vger.kernel.org, 
- linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 8bit
 
-Both gpll6 and gpll7 are parented to CXO at 19.2 MHz and not to GPLL0
-which runs at 600 MHz. Also gpll6_out_even should have the parent gpll6
-and not gpll0.
+This patch series provide support for display subsystem, gpu
+and also adds wireless connectivity subsystem support.
 
-Adjust the parents of these clocks to make Linux report the correct rate
-and not absurd numbers like gpll7 at ~25 GHz or gpll6 at 24 GHz.
+Changes since v3
+================
+1. Minor styling fixes
+2. Converted qcom,ipc into mailbox on wcnss patch
 
-Corrected rates are the following:
+Changes since v2
+================
+1. Disabled mdss_dsi nodes by default
+2. Changed reg size of mdss_dsi0 to be equal on both
+3. Added operating points to second mdss_dsi
+4. Brought back required opp-supported-hw on adreno
+5. Moved status under operating points on adreno
 
-  gpll7              807999902 Hz
-  gpll6              768000000 Hz
-     gpll6_out_even  384000000 Hz
-  gpll0              600000000 Hz
-     gpll0_out_odd   200000000 Hz
-     gpll0_out_even  300000000 Hz
+Changes since v1
+================
+1. Addressed feedback
+2. Dropped already applied dt-bindings patches
+3. Dropped sdc patch as it was submitted as part of other series
+4. Dropped dt-bindings patch for Adreno, also separate now
 
-And because gpll6 is the parent of gcc_sdcc2_apps_clk_src (at 202 MHz)
-that clock also reports the correct rate now and avoids this warning:
+Adam Skladowski (4):
+  arm64: dts: qcom: msm8976: Add IOMMU nodes
+  arm64: dts: qcom: msm8976: Add MDSS nodes
+  arm64: dts: qcom: msm8976: Add Adreno GPU
+  arm64: dts: qcom: msm8976: Add WCNSS node
 
-  [    5.984062] mmc0: Card appears overclocked; req 202000000 Hz, actual 6312499237 Hz
+ arch/arm64/boot/dts/qcom/msm8976.dtsi | 537 +++++++++++++++++++++++++-
+ 1 file changed, 533 insertions(+), 4 deletions(-)
 
-Fixes: 131abae905df ("clk: qcom: Add SM6350 GCC driver")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- drivers/clk/qcom/gcc-sm6350.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
-index cf4a7b6e0b23..0559a33faf00 100644
---- a/drivers/clk/qcom/gcc-sm6350.c
-+++ b/drivers/clk/qcom/gcc-sm6350.c
-@@ -100,8 +100,8 @@ static struct clk_alpha_pll gpll6 = {
- 		.enable_mask = BIT(6),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gpll6",
--			.parent_hws = (const struct clk_hw*[]){
--				&gpll0.clkr.hw,
-+			.parent_data = &(const struct clk_parent_data){
-+				.fw_name = "bi_tcxo",
- 			},
- 			.num_parents = 1,
- 			.ops = &clk_alpha_pll_fixed_fabia_ops,
-@@ -124,7 +124,7 @@ static struct clk_alpha_pll_postdiv gpll6_out_even = {
- 	.clkr.hw.init = &(struct clk_init_data){
- 		.name = "gpll6_out_even",
- 		.parent_hws = (const struct clk_hw*[]){
--			&gpll0.clkr.hw,
-+			&gpll6.clkr.hw,
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_fabia_ops,
-@@ -139,8 +139,8 @@ static struct clk_alpha_pll gpll7 = {
- 		.enable_mask = BIT(7),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gpll7",
--			.parent_hws = (const struct clk_hw*[]){
--				&gpll0.clkr.hw,
-+			.parent_data = &(const struct clk_parent_data){
-+				.fw_name = "bi_tcxo",
- 			},
- 			.num_parents = 1,
- 			.ops = &clk_alpha_pll_fixed_fabia_ops,
-
----
-base-commit: dd5a440a31fae6e459c0d6271dddd62825505361
-change-id: 20240508-sm6350-gpll-fix-a308bb393434
-
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.44.0
 
