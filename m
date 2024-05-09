@@ -1,215 +1,151 @@
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5661CAA9;
-	Wed,  8 May 2024 16:35:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB34E18E0E;
+	Thu,  9 May 2024 12:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715186124; cv=none; b=ul+RHE1ttsIQwd9lL6e0cNq06OwJKq0VkP0La6ERmpyO+ejALk6O7cnwFZf5kOvSHWUYQr5CluGLnrrn7vBtAdvo0jX4bwuy6ImiMXQXvfxw7JVrg1AgbgTfnCA1V/di6YYi1ig8wdHss6rZ0Gz6Sy2GdhJcRrLpTvVi6zGwJBQ=
+	t=1715256511; cv=none; b=oAcLX8RZ59jYoTVOiejdWaORwnGzJhv+CKbx5C56DfdXdO7pgSmwqden2x7GB0YjsYIRSJtXyJqI1xVg+q44uks2iAe1j7dMujyfKhvTls9stEPbKfddC7keTNDsz31qh5HpNitpkY1YG5n7n6eDm6aFPJdVK+wOfT7jIZj+YcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715186124; c=relaxed/simple;
-	bh=kqR3e+G+FwxxvYQszYYBav4hMORDD8iu64I0EbyOkPw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YriKuzgkLNHAFeGQL9keqnsVwQBdtadggByNag7sEJydamflDFR2HrUOD7cOVlxPH+eUGYpGG4y0Z/W3cL7I8Bvxo8hZ7FrWGEK89FOi8i2wDKy7SxJCkVCAvKcS6okKLR3I6toVdlfzsXJDH4DH5iG/pIfxTpMgHx1BY5LjGPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W/Q6Emeq; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1715256511; c=relaxed/simple;
+	bh=k+8ktLJhujlCEcrtylMtNbUYtqQY1OvRPCIur+o7it0=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IUWbP2kQUVLS7vFZUCGN5GqUUMyMbqyccbLB5Qwse9IzwAwKd6RtNi0bC/ybCrb/g9IR1h/XMc7Q0K1T/QIyHlbkGenmrQ7XDIgaqSDBdit8JHmJkVkkBmVoiEomuuTB+tgdWnRf3wXWv2JZ4yAFu/OFUWeW5NZ3RG6Rxwtx+cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=Ph7A3Lic; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=Vkx+UJ/E; arc=none smtp.client-ip=24.134.29.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W/Q6Emeq"
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52192578b95so1117314e87.2;
-        Wed, 08 May 2024 09:35:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715186120; x=1715790920; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tp/T9XNsntI4CnM9P4PFtuq3ai3Ksp8Jmc/dAXOLMkw=;
-        b=W/Q6EmeqwT5LLMBGRdpitODkUtU0yhynge79P5Iw86VE0qxwtqaOfhop8uAiUNzlIv
-         cwjK/XitD2mA3+Cvua/+Xyn4zLoDcp4QiHqO1N8vS9XBBepf5NYfRLoc1j9k7RCypVEx
-         z1NtAdbj8wUOoEtm5naYXvEuFXJX8rnX5GiIBahMwkqobCo6tjmskqf260DgWvf0EMII
-         +bcMlUGZg9GW5+fGDG9ZPW9k3qx6UbyVU2G7QGcpfqgl1Z4CyntEnCgwHWvGS95Hb6b7
-         NNA0lQCKbg8AfoDXMCR3nJ1Ca614Y4+R5cKhTyyywfKNfQBBPvI+SF6uoFx5YWAR2CZ2
-         cuBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715186120; x=1715790920;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tp/T9XNsntI4CnM9P4PFtuq3ai3Ksp8Jmc/dAXOLMkw=;
-        b=W2t9Z2RA/XTLojW09BkNLk21N4XgSauPUMTvTWeyWUMldENBOKRz9P0qAkhYCIY44k
-         hKxbPJnTEY/Z+qfUkR02Ar/2echdLUYOz3x4anixvx5gbrKmzPKzTbaCiwJ3L97EjU9a
-         EJMBrObLd7Aa4rozKrnYU5+rZkUXEGSO5x2gdvmXi4X56NK1qL1DQB1PuEL4nssjim91
-         Cvtwuweo4Q4DMZ5pbV3ktimga0LgooS9XXgxX9m6l21B5TcL5IgdWGx07c1S1Nc+5/Tp
-         YEeIjhb8s8QL9185rWIdd3SG2/GDJEAGdGcWe99lEr5fFGTE9FNd7PYRyNXNkoucmYpP
-         poFg==
-X-Forwarded-Encrypted: i=1; AJvYcCVzDQ2wdXNx1Y1LOEogrEc1qOP5zrTv9aPhMi9ZM0zeq6oCrs3S0jEKsV5U/dCTQrNseAFFmBE2JGEMRJNPQCpvjGrocLeBKP7vu4TVAdd8qGcI8IKgCT2HwFzqaZM6EdHqwLEnbPWh3ljJeXSh0Pxzf+NVexeCoHh9VYu6NIWXZc0hC5ELhnM=
-X-Gm-Message-State: AOJu0Ywh/LKpgoolGNzjSXU/yWvxCpDv3/RjdWFUf/+GfubSzOH7Cimy
-	QNa7BHSlaeot4ZCgo4cI1GxJSpknmvcZDKPQXZQI+LVbL8rhXnAj8iVbON39
-X-Google-Smtp-Source: AGHT+IGb/kA0m/RM+i2RWmKA5BJJbiGGJvHAEA90gFGin0KEZGm0KxZCkzadxNK0gwFa4l8aSgGQUw==
-X-Received: by 2002:ac2:43c1:0:b0:51c:cd8d:2865 with SMTP id 2adb3069b0e04-5217cc4585bmr1708634e87.44.1715186120037;
-        Wed, 08 May 2024 09:35:20 -0700 (PDT)
-Received: from localhost.localdomain (bzb212.neoplus.adsl.tpnet.pl. [83.30.47.212])
-        by smtp.gmail.com with ESMTPSA id kt1-20020a170906aac100b00a52295e014bsm7820894ejb.92.2024.05.08.09.35.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 May 2024 09:35:19 -0700 (PDT)
-From: Adam Skladowski <a39.skl@gmail.com>
-To: 
-Cc: phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Adam Skladowski <a39.skl@gmail.com>,
-	Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 4/4] arm64: dts: qcom: msm8976: Add WCNSS node
-Date: Wed,  8 May 2024 18:34:37 +0200
-Message-Id: <20240508163455.8757-5-a39.skl@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240508163455.8757-1-a39.skl@gmail.com>
-References: <20240508163455.8757-1-a39.skl@gmail.com>
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="Ph7A3Lic";
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="Vkx+UJ/E"
+Received: from localhost (localhost [127.0.0.1])
+	by honk.sigxcpu.org (Postfix) with ESMTP id 1A27CFB03;
+	Thu,  9 May 2024 14:00:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
+	t=1715256051; bh=k+8ktLJhujlCEcrtylMtNbUYtqQY1OvRPCIur+o7it0=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=Ph7A3LicOVk/nBXEyXfAlunaorM4dMrLkzLXKHKotd8w56qjjUfdyYLEAx4QaGiA1
+	 9J+DiXMSDq3EhbUZbIQq/wT2Vq4EFR1r8p9GwhiBbPDAV8YnGQ575xFlGbtdq8Ekp0
+	 XoqLqgCOgzY5CiqnT1p+1ILJzwBkwmCJyVl6IR93Lxw8XiXdn4pt4TD2fUXCurSTK2
+	 jVF/IptTJNiow9Y7b9Sztr8oxMeDwEm2+b8bWK+CvWj7MElnSaLhrutknqAwyLR0Cu
+	 JtwCwNEWQ4hPGDykmaQndAApWvZhc4x2PHeH4yh9vjURDtPUJtRNsZN4FAl0RIgPau
+	 a4KxoPztoK9pg==
+Received: from honk.sigxcpu.org ([127.0.0.1])
+	by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 8-h3AaQ5H_a7; Thu,  9 May 2024 14:00:50 +0200 (CEST)
+From: =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
+	t=1715256049; bh=k+8ktLJhujlCEcrtylMtNbUYtqQY1OvRPCIur+o7it0=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=Vkx+UJ/Exq6tecjLez5mqSdHP7b7mwB+rJ5xt2OhMz5Mg6o72pQo8Ot7CZ2651eic
+	 Ltv/j8WEmkbEMf9xAemSyNXXcRrgDAbax5/TnwQCy8tYbXuzVplaTCmgSPe3h0Cbee
+	 9EeF9rFIt4coF6ZI3t/TXkEEMU6KO6/gfunLwoWO7Zh1GxH5U+9lhUQ2LpthR680PA
+	 9VKauEOqmgwbO+q1L2zVDUTXqatkhoznShsofquBU7uYXP0UBNjPN43Numg5yF86vX
+	 i6xinTWAMN7jktf70Unb7e/eVkV14yHyE753GZhztm/+aaAEv0+r2FsSxWmErPD0hf
+	 1xK8jEupLRqHw==
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Hermes Zhang <chenhuiz@axis.com>,
+	Tony Lindgren <tony@atomide.com>,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org
+Subject: [PATCH v1 1/1] Input: gpio-keys - expose wakeup keys in sysfs
+Date: Thu,  9 May 2024 14:00:28 +0200
+Message-ID: <2b6eb6c3f68509aa35cdf2e2a586689ae97681ab.1715255980.git.agx@sigxcpu.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1715255980.git.agx@sigxcpu.org>
+References: <cover.1715255980.git.agx@sigxcpu.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add node describing wireless connectivity subsystem.
+This helps user space to figure out which keys should be used to unidle a
+device. E.g on phones the volume rocker should usually not unblank the
+screen.
 
-Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
 ---
- arch/arm64/boot/dts/qcom/msm8976.dtsi | 105 ++++++++++++++++++++++++++
- 1 file changed, 105 insertions(+)
+ drivers/input/keyboard/gpio_keys.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8976.dtsi b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-index 22a6a09a904d..a7f772485bf5 100644
---- a/arch/arm64/boot/dts/qcom/msm8976.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8976.dtsi
-@@ -771,6 +771,36 @@ blsp2_i2c4_sleep: blsp2-i2c4-sleep-state {
- 				drive-strength = <2>;
- 				bias-disable;
- 			};
-+
-+			wcss_wlan_default: wcss-wlan-default-state  {
-+				wcss-wlan2-pins {
-+					pins = "gpio40";
-+					function = "wcss_wlan2";
-+					drive-strength = <6>;
-+					bias-pull-up;
-+				};
-+
-+				wcss-wlan1-pins {
-+					pins = "gpio41";
-+					function = "wcss_wlan1";
-+					drive-strength = <6>;
-+					bias-pull-up;
-+				};
-+
-+				wcss-wlan0-pins {
-+					pins = "gpio42";
-+					function = "wcss_wlan0";
-+					drive-strength = <6>;
-+					bias-pull-up;
-+				};
-+
-+				wcss-wlan-pins {
-+					pins = "gpio43", "gpio44";
-+					function = "wcss_wlan";
-+					drive-strength = <6>;
-+					bias-pull-up;
-+				};
-+			};
- 		};
+diff --git a/drivers/input/keyboard/gpio_keys.c b/drivers/input/keyboard/gpio_keys.c
+index 9f3bcd41cf67..84f43d1d4375 100644
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -198,7 +198,8 @@ static void gpio_keys_enable_button(struct gpio_button_data *bdata)
+  */
+ static ssize_t gpio_keys_attr_show_helper(struct gpio_keys_drvdata *ddata,
+ 					  char *buf, unsigned int type,
+-					  bool only_disabled)
++					  bool only_disabled,
++					  bool only_wakeup)
+ {
+ 	int n_events = get_n_events_by_type(type);
+ 	unsigned long *bits;
+@@ -218,6 +219,9 @@ static ssize_t gpio_keys_attr_show_helper(struct gpio_keys_drvdata *ddata,
+ 		if (only_disabled && !bdata->disabled)
+ 			continue;
  
- 		gcc: clock-controller@1800000 {
-@@ -1458,6 +1488,81 @@ blsp2_i2c4: i2c@7af8000 {
- 			status = "disabled";
- 		};
++		if (only_wakeup && !bdata->button->wakeup)
++			continue;
++
+ 		__set_bit(*bdata->code, bits);
+ 	}
  
-+		wcnss: remoteproc@a204000 {
-+			compatible = "qcom,pronto-v3-pil", "qcom,pronto";
-+			reg = <0x0a204000 0x2000>,
-+			      <0x0a202000 0x1000>,
-+			      <0x0a21b000 0x3000>;
-+			reg-names = "ccu",
-+				    "dxe",
-+				    "pmu";
-+
-+			memory-region = <&wcnss_fw_mem>;
-+
-+			interrupts-extended = <&intc GIC_SPI 149 IRQ_TYPE_EDGE_RISING>,
-+					      <&wcnss_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
-+					      <&wcnss_smp2p_in 1 IRQ_TYPE_EDGE_RISING>,
-+					      <&wcnss_smp2p_in 2 IRQ_TYPE_EDGE_RISING>,
-+					      <&wcnss_smp2p_in 3 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "wdog",
-+					  "fatal",
-+					  "ready",
-+					  "handover",
-+					  "stop-ack";
-+
-+			power-domains = <&rpmpd MSM8976_VDDCX>,
-+					<&rpmpd MSM8976_VDDMX>;
-+			power-domain-names = "cx", "mx";
-+
-+			qcom,smem-states = <&wcnss_smp2p_out 0>;
-+			qcom,smem-state-names = "stop";
-+
-+			pinctrl-0 = <&wcss_wlan_default>;
-+			pinctrl-names = "default";
-+
-+			status = "disabled";
-+
-+			wcnss_iris: iris {
-+				/* Separate chip, compatible is board-specific */
-+				clocks = <&rpmcc RPM_SMD_RF_CLK2>;
-+				clock-names = "xo";
-+			};
-+
-+			smd-edge {
-+				interrupts = <GIC_SPI 142 IRQ_TYPE_EDGE_RISING>;
-+
-+				mboxes = <&apcs 17>;
-+				qcom,smd-edge = <6>;
-+				qcom,remote-pid = <4>;
-+
-+				label = "pronto";
-+
-+				wcnss_ctrl: wcnss {
-+					compatible = "qcom,wcnss";
-+					qcom,smd-channels = "WCNSS_CTRL";
-+
-+					qcom,mmio = <&wcnss>;
-+
-+					wcnss_bt: bluetooth {
-+						compatible = "qcom,wcnss-bt";
-+					};
-+
-+					wcnss_wifi: wifi {
-+						compatible = "qcom,wcnss-wlan";
-+
-+						interrupts = <GIC_SPI 145 IRQ_TYPE_LEVEL_HIGH>,
-+							     <GIC_SPI 146 IRQ_TYPE_LEVEL_HIGH>;
-+						interrupt-names = "tx", "rx";
-+
-+						qcom,smem-states = <&apps_smsm 10>,
-+								   <&apps_smsm 9>;
-+						qcom,smem-state-names = "tx-enable",
-+									"tx-rings-empty";
-+					};
-+				};
-+			};
-+		};
-+
- 		intc: interrupt-controller@b000000 {
- 			compatible = "qcom,msm-qgic2";
- 			reg = <0x0b000000 0x1000>, <0x0b002000 0x1000>;
+@@ -297,7 +301,7 @@ static ssize_t gpio_keys_attr_store_helper(struct gpio_keys_drvdata *ddata,
+ 	return error;
+ }
+ 
+-#define ATTR_SHOW_FN(name, type, only_disabled)				\
++#define ATTR_SHOW_FN(name, type, only_disabled, only_wakeup)		\
+ static ssize_t gpio_keys_show_##name(struct device *dev,		\
+ 				     struct device_attribute *attr,	\
+ 				     char *buf)				\
+@@ -306,22 +310,26 @@ static ssize_t gpio_keys_show_##name(struct device *dev,		\
+ 	struct gpio_keys_drvdata *ddata = platform_get_drvdata(pdev);	\
+ 									\
+ 	return gpio_keys_attr_show_helper(ddata, buf,			\
+-					  type, only_disabled);		\
++					  type, only_disabled,		\
++					  only_wakeup);			\
+ }
+ 
+-ATTR_SHOW_FN(keys, EV_KEY, false);
+-ATTR_SHOW_FN(switches, EV_SW, false);
+-ATTR_SHOW_FN(disabled_keys, EV_KEY, true);
+-ATTR_SHOW_FN(disabled_switches, EV_SW, true);
++ATTR_SHOW_FN(keys, EV_KEY, false, false);
++ATTR_SHOW_FN(switches, EV_SW, false, false);
++ATTR_SHOW_FN(disabled_keys, EV_KEY, true, false);
++ATTR_SHOW_FN(disabled_switches, EV_SW, true, false);
++ATTR_SHOW_FN(wakeup_keys, EV_KEY, false, true);
+ 
+ /*
+  * ATTRIBUTES:
+  *
+  * /sys/devices/platform/gpio-keys/keys [ro]
+  * /sys/devices/platform/gpio-keys/switches [ro]
++ * /sys/devices/platform/gpio-keys/wakeup_keys [ro]
+  */
+ static DEVICE_ATTR(keys, S_IRUGO, gpio_keys_show_keys, NULL);
+ static DEVICE_ATTR(switches, S_IRUGO, gpio_keys_show_switches, NULL);
++static DEVICE_ATTR(wakeup_keys, S_IRUGO, gpio_keys_show_wakeup_keys, NULL);
+ 
+ #define ATTR_STORE_FN(name, type)					\
+ static ssize_t gpio_keys_store_##name(struct device *dev,		\
+@@ -361,6 +369,7 @@ static struct attribute *gpio_keys_attrs[] = {
+ 	&dev_attr_switches.attr,
+ 	&dev_attr_disabled_keys.attr,
+ 	&dev_attr_disabled_switches.attr,
++	&dev_attr_wakeup_keys.attr,
+ 	NULL,
+ };
+ ATTRIBUTE_GROUPS(gpio_keys);
 -- 
-2.44.0
+2.43.0
 
