@@ -1,95 +1,96 @@
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631812232B;
-	Mon, 13 May 2024 12:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE8B84A53;
+	Mon, 13 May 2024 22:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715603738; cv=none; b=qF3aQujScylxqhSOQFvsY6Z3s1ujuE5mNnMWm3QVfAQi7+CxwGxFtDtj5m6TbtAsDVFd51ip+y8cUeOqnbpYTEXuoN4sgO0L2ST6ViY+fECnVtp23SOEzE4yyD3xXRx5he5bpkEW0+2anqWb+0wnNlGba+Xb+BnwA3ZWNAr4Bxo=
+	t=1715638438; cv=none; b=PvzF0sThMnmKLSMzC7MXqqPAP/MjC4NO+zYIkR7ue5aAPO6MCuAAf3JZ8/wz26bPfHU2HdCubEb62U95yZCgCPaVTqyUVo2o+um62+7TfSIJald1hdMqb/gBxdW7y26/CS8V5bfv+f/jOPb63Ou1TwurPZ/zMq3d+6cJltD77ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715603738; c=relaxed/simple;
-	bh=y+KAEzXfNr4jXio0KovIqBG8UPmnP24zcxGApuX+oAQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VELc2v4RrpOWQk6Ofef7q87CRR0HrfmSoYnCYblauUe+fTgbD9AEoeKRCSRl1EbD6knQoN+DI3uwTjJR/Umk8r56AxyezoL2k3nTOgp2kWGYyjKodnpBu610nvP25qNbSEidzgPhTgwULfj96pSCV8kkUEp5QalQAZrFu5/jM5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	s=arc-20240116; t=1715638438; c=relaxed/simple;
+	bh=fszKNaErOVr89f2N7I10ugUM0eK51AgdD71W67kYmRc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X4gPLyK5W6ZZVf9LsLBzMJ1Hwm2u4ccMlZkWErRirhnxkcfiJ1bb1gv4JHodnMX/IiBUN8R+MdXW0ujIvINJVphskX1bVgIT1aC14VuWjjl4PX030CmnryVwUqLO9MIWtxaKmVVSQmbQsDA0diWxDGFMoS6PmJDHuE17gcwe9ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H83ZHn4t; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6114c9b4d83so37455107b3.3;
-        Mon, 13 May 2024 05:35:36 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H83ZHn4t"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6f4178aec15so4208551b3a.0;
+        Mon, 13 May 2024 15:13:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715638436; x=1716243236; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4j8RFdGC0VuedZniVwUhCiKK7Ds6d9wSnywXzZOXi1E=;
+        b=H83ZHn4tqxrDgyn9pJ/DzKCcQhEWa740x+wO7s+TsvTdp+0UHVlPeoRkW4OzPEXA0Q
+         yXfdTz/hLFbQdQmadz6u8ET+RlnW4ZDswI/CGoBZYrnaYOTjj+Z70Dxx7Z1tsZ7LI7k9
+         5q3sKbl12QZwtuVvBHkBvB2JtpggwYHFdtXZAsyWK1iLAsgYfpw1FJkXnUj2SSKTQnbM
+         yeP1QiGxoPMfdDM7NvfjDgUirQoLaVsAYRX7NRb0/zDCC7l1WywibaLCq5qfQU4ii315
+         Ga5eUdUcbBn55amk9Nw/u2LTY02iUJcTjNULLaUklodGyD/syxf5Lj/TknB2sB69C2Hj
+         HA3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715603735; x=1716208535;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h7SLg+Ot/rrBD3DiLLuTnFPyuvGA7Ha5PNLCiH/8q30=;
-        b=HPtUKq0RepV6HYI0r7T4WdXZ/c+kevewo5IStpZcKU45Kols+pqGZ7sKf5F+YsfPCb
-         aEsO7zVphC50HTFQd0RBotF/3Z2K9MFkIX+3sTAdE64ZYfP0ZH69usr+VEW6VXmD8EDY
-         6xP2TKsLZlOJDE/IjsbOH2BKvbo27jsumBQCmXJQYM42Xz1oICc1wDsyPQV2wiPHTl93
-         47/IKbd7RY9Fi4XvVNGY03lTpWPciEFO4zfOjhFb9lLyifIHa8WRoYkYPIROCtwaluAq
-         Eyc41VpO49u0mLSJjh3e0CL8lKGQ8yE/OLRADPqQwcGFkIdd+fEXBYUgILiJEHVvdx6s
-         fX4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU9yOCuxa5uTKhP/O8CQqhb1BS5FMs85b96lZY6ZDED5rvMOgrqiALMxKOLwmjcJX8fLIdlQgc1KbDWeY9L4jckoWcpYIU1/002bBiGZm9u0+y6mr0dm6XC141hYERfot+J5t9LemvOaV2rPcm5gA1zPy0Fx6PXiJsXqB4jzDD7fSbZuxeJ8Q==
-X-Gm-Message-State: AOJu0Yw7Gd+H0TW+Z8/JJ9WAgLfGqLnmH35ib+JR6htEuQGlr3+BiQwr
-	EzxWzIgUyduzoBEKGlU33GN2Ky0bTNAQrdNmDecU5tgA/uoi9ygzW2Looz0Y
-X-Google-Smtp-Source: AGHT+IEpBlnkSGP3hiyke/8RidOYNaW/gO4dOmz6kYuxM3I2gMCovhPDk/bGWNXYX4EeU29oOx7LWg==
-X-Received: by 2002:a81:ad04:0:b0:61d:fcde:5caf with SMTP id 00721157ae682-622b0148047mr84359887b3.37.1715603734679;
-        Mon, 13 May 2024 05:35:34 -0700 (PDT)
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6209e24680csm20760657b3.6.2024.05.13.05.35.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 May 2024 05:35:34 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-61816fc256dso41954497b3.0;
-        Mon, 13 May 2024 05:35:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUAcykK5SPutHnp1VH/1cZpQKEVx45Qh+ulsBM3nscsVXQz7OYUwZ3YqhnxaPPdz/Hs+9Uzm/qHKB01T0vjeb+gUhpmGuwX0ELADBzJfGHzk1Jv+FHqBb+6GixSTzgYUZUxLc+1BgliFAp5Tnip5Q9SeT8u8diVL9BHAOuvFXGf0Y/1M13yJA==
-X-Received: by 2002:a81:a1c3:0:b0:618:5b27:e12b with SMTP id
- 00721157ae682-622affc63a9mr90048837b3.7.1715603734016; Mon, 13 May 2024
- 05:35:34 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1715638436; x=1716243236;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4j8RFdGC0VuedZniVwUhCiKK7Ds6d9wSnywXzZOXi1E=;
+        b=PO2gHzX0bq9/uuYm/TBIK2ZAfWZ0Xae30DG+iTAGxSQ/Ea5oSnxMg1HNztkqth1Rs6
+         0PJqieZMvKGdcMxvXWYgYtuWBTl22EOS/6gjar/S/KwOPSaP/jnZZfzu7Kcyf5VUsAw5
+         tEOLK9GkeuyLG6w8klRf3y32ni5OmGnfFRFruyrSG/u9fY/gvhwYBw6eIm2FzduUcqLq
+         mEW8afzLeMSPHCw6fgHLr+x0h3KXV/yyvYKMksMp1+txBu5iMRxMvkAEk/I0XvxFBPnC
+         mrCNZupZpevReyWYIm5QfOxJimWOYLZv88iN3MxlSRdcfQ2BqrIWXFJhwDV9+/I8Nx5Q
+         HCFA==
+X-Forwarded-Encrypted: i=1; AJvYcCXw9UKG8BNqUv5zQoWhBsLB/cRIYTgsFarckQ3i4fjiLWOqGvlmBMeljYIAXdJ+gw75jLBZnZ7d25axZBIdjQPsaNaGHDM8PeEs0AjVoNjQdzWEDdn8DP+YZ3XKF0t9Dw2HHsO2hZhvUc/2OQfgbJ0YHJyyVDx/U7J24FpTvVRMu8rUkH5v6g==
+X-Gm-Message-State: AOJu0YyCom9GKUXxtZarnrKdy8Mui32I5qnzqrdmPFwz4FQCG6YuWUZd
+	kKMWNOS/5jWgLGz9ZtSMVwLyJGH35kDjNCoS1l3rtYFp/BjHgbrp
+X-Google-Smtp-Source: AGHT+IHyZ3Ykh/dzNACO+8VcemDzWxChD4oe7jk/x/UbNmdAuCsrQjAd4OLu7jpZ5LdPxkGgd+ZWAA==
+X-Received: by 2002:a05:6a00:4b56:b0:6ec:f84c:902c with SMTP id d2e1a72fcca58-6f4e0347697mr11790794b3a.24.1715638436162;
+        Mon, 13 May 2024 15:13:56 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:7704:86a9:2c56:6794])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2b39c1asm7881839b3a.220.2024.05.13.15.13.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 May 2024 15:13:55 -0700 (PDT)
+Date: Mon, 13 May 2024 15:13:53 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Hermes Zhang <chenhuiz@axis.com>, Tony Lindgren <tony@atomide.com>,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] Input: gpio-keys - expose wakeup keys in sysfs
+Message-ID: <ZkKQoTq2xyNvJlHE@google.com>
+References: <cover.1715255980.git.agx@sigxcpu.org>
+ <2b6eb6c3f68509aa35cdf2e2a586689ae97681ab.1715255980.git.agx@sigxcpu.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1715255980.git.agx@sigxcpu.org> <2b6eb6c3f68509aa35cdf2e2a586689ae97681ab.1715255980.git.agx@sigxcpu.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <2b6eb6c3f68509aa35cdf2e2a586689ae97681ab.1715255980.git.agx@sigxcpu.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 13 May 2024 14:35:22 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVcR_3HcQzQse+5-2dgC4iLzFyiFO=ifR0hxymWRjURLQ@mail.gmail.com>
-Message-ID: <CAMuHMdVcR_3HcQzQse+5-2dgC4iLzFyiFO=ifR0hxymWRjURLQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] Input: gpio-keys - expose wakeup keys in sysfs
-To: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, Hermes Zhang <chenhuiz@axis.com>, 
-	Tony Lindgren <tony@atomide.com>, linux-input@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
 Hi Guido,
 
-On Thu, May 9, 2024 at 2:00=E2=80=AFPM Guido G=C3=BCnther <agx@sigxcpu.org>=
- wrote:
+On Thu, May 09, 2024 at 02:00:28PM +0200, Guido Günther wrote:
 > This helps user space to figure out which keys should be used to unidle a
 > device. E.g on phones the volume rocker should usually not unblank the
 > screen.
->
-> Signed-off-by: Guido G=C3=BCnther <agx@sigxcpu.org>
 
-Thanks for your patch!
-This is indeed a useful feature.
+How exactly this is supposed to be used? We have "disabled" keys and
+switches attribute because this function can be controlled at runtime
+from userspace while wakeup control is a static device setting.
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Kernel also does not really know if the screen should be unblanked or
+not, if a button or switch is configured for wake up the kernel will go
+through wakeup process all the same and then userspace can decide if it
+should stay woken up or not.
 
-Gr{oetje,eeting}s,
+Thanks.
 
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+-- 
+Dmitry
