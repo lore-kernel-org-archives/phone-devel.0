@@ -1,111 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDDD12CD99;
-	Fri, 10 May 2024 13:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631812232B;
+	Mon, 13 May 2024 12:35:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715349190; cv=none; b=keGdLXgsPKEvbhwAusZ4RXInydE/l21fb8DgRPv9sQ/ZBL9fWDE8YXlAwsDQcYvDnNwYjNU7u1ASKGOP+YZ+mmMRGmA/A0mBC5BKlVbf4tJ8dw4qN4ZoqPQmcnLjAbCgIMjSr28ACxkTJ4qaMoQSJ+mqXgGNXPyxjxxxUUwnaKc=
+	t=1715603738; cv=none; b=qF3aQujScylxqhSOQFvsY6Z3s1ujuE5mNnMWm3QVfAQi7+CxwGxFtDtj5m6TbtAsDVFd51ip+y8cUeOqnbpYTEXuoN4sgO0L2ST6ViY+fECnVtp23SOEzE4yyD3xXRx5he5bpkEW0+2anqWb+0wnNlGba+Xb+BnwA3ZWNAr4Bxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715349190; c=relaxed/simple;
-	bh=98I2lvAbhwMpFBygf6Bolb8VFy2UDJUsMGNQmAfaKLY=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=pcsZL0lPdVJtBufkvpcy06QdKnT5Jzvs6KYoPV6dLSEeoBrNEildkx7UleFE/CvRPxhCpghe1AMVli/qKuQzc20+Dlk8K2/fyqSbcb+fCdtd6ar0S4i1djumSlB+zRbygGkRoAxteGq4nz+XiIUzhkuL9yG/Dxwm1hReACHn6fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J5C1O290; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J5C1O290"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D78C32786;
-	Fri, 10 May 2024 13:53:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715349190;
-	bh=98I2lvAbhwMpFBygf6Bolb8VFy2UDJUsMGNQmAfaKLY=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=J5C1O290PAZGnQFciGZvk+rneQkT466GtnjPvAI3pzVW3qp5loHy5p9s+gvOvbeSX
-	 3TjKGFRDKoUHtpv0WAMu5PCf/rVmuMFXJtoOi1LJAxINKTDiF0Dsftjlj3FsAWKNxu
-	 IYBX9PXwTKBeESTOlaSYgCVZmoBGTNQs8xnsM/6xAY+Vtul3Ydcpm6jtaY/J+TFIKP
-	 Bc95ee61kYLbd4Gwb7AYEi96z8rzDv8x814aYoT8L30s4G0YtAC7PLgmOAJQWWsMmY
-	 gQxxFah7BSYhuqN4LrFU0uXDtuJHIIQW3PdFImKZ5bknlKMWigVAoLUBZfBgGAJh+y
-	 XOdC2Af2QEF2Q==
-Date: Fri, 10 May 2024 08:53:08 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1715603738; c=relaxed/simple;
+	bh=y+KAEzXfNr4jXio0KovIqBG8UPmnP24zcxGApuX+oAQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VELc2v4RrpOWQk6Ofef7q87CRR0HrfmSoYnCYblauUe+fTgbD9AEoeKRCSRl1EbD6knQoN+DI3uwTjJR/Umk8r56AxyezoL2k3nTOgp2kWGYyjKodnpBu610nvP25qNbSEidzgPhTgwULfj96pSCV8kkUEp5QalQAZrFu5/jM5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6114c9b4d83so37455107b3.3;
+        Mon, 13 May 2024 05:35:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715603735; x=1716208535;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h7SLg+Ot/rrBD3DiLLuTnFPyuvGA7Ha5PNLCiH/8q30=;
+        b=HPtUKq0RepV6HYI0r7T4WdXZ/c+kevewo5IStpZcKU45Kols+pqGZ7sKf5F+YsfPCb
+         aEsO7zVphC50HTFQd0RBotF/3Z2K9MFkIX+3sTAdE64ZYfP0ZH69usr+VEW6VXmD8EDY
+         6xP2TKsLZlOJDE/IjsbOH2BKvbo27jsumBQCmXJQYM42Xz1oICc1wDsyPQV2wiPHTl93
+         47/IKbd7RY9Fi4XvVNGY03lTpWPciEFO4zfOjhFb9lLyifIHa8WRoYkYPIROCtwaluAq
+         Eyc41VpO49u0mLSJjh3e0CL8lKGQ8yE/OLRADPqQwcGFkIdd+fEXBYUgILiJEHVvdx6s
+         fX4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU9yOCuxa5uTKhP/O8CQqhb1BS5FMs85b96lZY6ZDED5rvMOgrqiALMxKOLwmjcJX8fLIdlQgc1KbDWeY9L4jckoWcpYIU1/002bBiGZm9u0+y6mr0dm6XC141hYERfot+J5t9LemvOaV2rPcm5gA1zPy0Fx6PXiJsXqB4jzDD7fSbZuxeJ8Q==
+X-Gm-Message-State: AOJu0Yw7Gd+H0TW+Z8/JJ9WAgLfGqLnmH35ib+JR6htEuQGlr3+BiQwr
+	EzxWzIgUyduzoBEKGlU33GN2Ky0bTNAQrdNmDecU5tgA/uoi9ygzW2Looz0Y
+X-Google-Smtp-Source: AGHT+IEpBlnkSGP3hiyke/8RidOYNaW/gO4dOmz6kYuxM3I2gMCovhPDk/bGWNXYX4EeU29oOx7LWg==
+X-Received: by 2002:a81:ad04:0:b0:61d:fcde:5caf with SMTP id 00721157ae682-622b0148047mr84359887b3.37.1715603734679;
+        Mon, 13 May 2024 05:35:34 -0700 (PDT)
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6209e24680csm20760657b3.6.2024.05.13.05.35.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 May 2024 05:35:34 -0700 (PDT)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-61816fc256dso41954497b3.0;
+        Mon, 13 May 2024 05:35:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUAcykK5SPutHnp1VH/1cZpQKEVx45Qh+ulsBM3nscsVXQz7OYUwZ3YqhnxaPPdz/Hs+9Uzm/qHKB01T0vjeb+gUhpmGuwX0ELADBzJfGHzk1Jv+FHqBb+6GixSTzgYUZUxLc+1BgliFAp5Tnip5Q9SeT8u8diVL9BHAOuvFXGf0Y/1M13yJA==
+X-Received: by 2002:a81:a1c3:0:b0:618:5b27:e12b with SMTP id
+ 00721157ae682-622affc63a9mr90048837b3.7.1715603734016; Mon, 13 May 2024
+ 05:35:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>, 
- devicetree@vger.kernel.org, Mohammad Rafi Shaik <quic_mohs@quicinc.com>, 
- linux-kernel@vger.kernel.org, cros-qcom-dts-watchers@chromium.org, 
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>
-In-Reply-To: <20240510-sc7280-apr-v1-0-e9eabda05f85@fairphone.com>
-References: <20240510-sc7280-apr-v1-0-e9eabda05f85@fairphone.com>
-Message-Id: <171534910860.4114812.2084039403374857519.robh@kernel.org>
-Subject: Re: [PATCH 0/2] Add basic APR sound support for SC7280 SoC
+References: <cover.1715255980.git.agx@sigxcpu.org> <2b6eb6c3f68509aa35cdf2e2a586689ae97681ab.1715255980.git.agx@sigxcpu.org>
+In-Reply-To: <2b6eb6c3f68509aa35cdf2e2a586689ae97681ab.1715255980.git.agx@sigxcpu.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 13 May 2024 14:35:22 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVcR_3HcQzQse+5-2dgC4iLzFyiFO=ifR0hxymWRjURLQ@mail.gmail.com>
+Message-ID: <CAMuHMdVcR_3HcQzQse+5-2dgC4iLzFyiFO=ifR0hxymWRjURLQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] Input: gpio-keys - expose wakeup keys in sysfs
+To: =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, Hermes Zhang <chenhuiz@axis.com>, 
+	Tony Lindgren <tony@atomide.com>, linux-input@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Guido,
 
-On Fri, 10 May 2024 14:27:07 +0200, Luca Weiss wrote:
-> Validated on Fairphone 5 (QCM6490) smartphone by using DisplayPort over
-> USB-C audio, connected to a TV, with a basic UCM to enable
-> 'DISPLAY_PORT_RX Audio Mixer MultiMedia1':
-> https://gitlab.com/postmarketOS/pmaports/-/tree/master/device/testing/device-fairphone-fp5/ucm
-> 
-> Unfortunately all the device-specific things can't be enabled yet
-> upstream as detailed in the second patch, but the SoC parts should be
-> good to go.
-> 
-> As an extra note, I'm not sure how this will behave on SC7280 devices
-> that seem to use GPR (q6apm + q6prm) / "audioreach" as added in this
-> series from mid 2023 which was never applied:
-> https://lore.kernel.org/linux-arm-msm/20230616103534.4031331-1-quic_mohs@quicinc.com/
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> Luca Weiss (2):
->       arm64: dts: qcom: sc7280: Add APR nodes for sound
->       [DNM] arm64: dts: qcom: qcm6490-fairphone-fp5: Add DisplayPort sound support
-> 
->  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 36 +++++++++++
->  arch/arm64/boot/dts/qcom/sc7280.dtsi               | 73 ++++++++++++++++++++++
->  2 files changed, 109 insertions(+)
-> ---
-> base-commit: 940d65ef852b4a58c9115eb82b07844c999b8356
-> change-id: 20240510-sc7280-apr-c6d10ac2c331
-> 
-> Best regards,
-> --
-> Luca Weiss <luca.weiss@fairphone.com>
-> 
-> 
-> 
+On Thu, May 9, 2024 at 2:00=E2=80=AFPM Guido G=C3=BCnther <agx@sigxcpu.org>=
+ wrote:
+> This helps user space to figure out which keys should be used to unidle a
+> device. E.g on phones the volume rocker should usually not unblank the
+> screen.
+>
+> Signed-off-by: Guido G=C3=BCnther <agx@sigxcpu.org>
 
+Thanks for your patch!
+This is indeed a useful feature.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
+Gr{oetje,eeting}s,
 
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
+                        Geert
 
-  pip3 install dtschema --upgrade
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
-
-New warnings running 'make CHECK_DTBS=y qcom/qcm6490-fairphone-fp5.dtb' for 20240510-sc7280-apr-v1-0-e9eabda05f85@fairphone.com:
-
-arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dtb: /sound: failed to match any schema with compatible: ['fairphone,fp5-sndcard']
-
-
-
-
-
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
