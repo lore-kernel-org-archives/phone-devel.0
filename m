@@ -1,188 +1,115 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9A2155A59;
-	Wed, 15 May 2024 15:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA117462;
+	Fri, 17 May 2024 08:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715786002; cv=none; b=eXsICKNpPYjPexfyvgI1DDMU1lgVIcU36WqXHARBsr7w9Lsm0ZIQiJrPnC1Sqaj44vUu5dxttlCcY7thS+FJYhrGiMsLVb4RWUGmurmTQwd1FxoiTkGBrs6mfpgSDpcmjK50kVUVn6JF/rLVTOQ+H6nQ9494kH5jccbDEvU+99s=
+	t=1715934705; cv=none; b=ZYg8lJX0Dw3W0J59SmOC5lVuyHkFWuMcya9aZsbWl2tjIEpoFLPZckrtEyEMHfMmFyLuwRJgWZl7loUt5ZGIEAMfUtAZ/xavGwUDtHwqYQlj/zCSvY2u7AFfNM05fsL3OrXcNxrERfObbPDwnvJfWG8aPzBY9M+blxX7VizqU54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715786002; c=relaxed/simple;
-	bh=XBZfuj02Zl9OrcMLaFsUectUl18cI/gGovODQu/ccCs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LmNtEI/9nsG1Edbp+Mv0520ehb7v+0NjVLsfyCEmlnNvinWcFOfQmCtFRFOrccalvOXPwgEdWep3PnkvCGwZ1JMqSxI97rnVVkBu0a2LGeBGiS9Z/84jpdON6RlMruLx+PgYRbEhsFtoQHe9b5IX3236++CO0UxFF7k8Gq+HCmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=IOeJVtlu; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
+	s=arc-20240116; t=1715934705; c=relaxed/simple;
+	bh=prBf8znSTTc5nFl7RT8skuny43hVLa6n01mcp7KkR9U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ID6BBh4AgHpCCqio0pCbMnbmc3GcgHXHg457AEBAr7PuORsOke812rRBSS3AtXPV9HqrWdTBEcblbE6rlIRCIRS24Gj7PLngeIDZ6CFyRZwHGK7KEPjrK5+TGUVTdSsQVllwPrV98GumAiGeUfe/h3z4GCyUAvj2rZGbYDSAswg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ue1P2tJJ; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="IOeJVtlu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1715785594; bh=XBZfuj02Zl9OrcMLaFsUectUl18cI/gGovODQu/ccCs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IOeJVtluz2V1StordWuTnwVe3CKDAMeIwkF+qLZ4MaxQFPOsQ63JQiMUzdXIrM+gz
-	 lYO2Gn6NUEfa5giuKWyoOtBBeDIxEG02TmMyn8pKxMNsG4bRff6yk6XOsVM5OFSBZB
-	 3xmQnvFLswmT2343I6mDd0EfPJgqqbO0MnsO0miE=
-From: Luca Weiss <luca@z3ntu.xyz>
-To: Rob Herring <robh@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Andy Gross <agross@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH RFC 1/2] dt-bindings: soc: qcom,smsm: Allow specifying mboxes
- instead of qcom,ipc
-Date: Wed, 15 May 2024 17:06:33 +0200
-Message-ID: <2729475.mvXUDI8C0e@g550jk>
-In-Reply-To: <5087455.31r3eYUQgx@g550jk>
-References:
- <20240424-smsm-mbox-v1-0-555f3f442841@z3ntu.xyz>
- <20240425161715.GA2759240-robh@kernel.org> <5087455.31r3eYUQgx@g550jk>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ue1P2tJJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715934704; x=1747470704;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=prBf8znSTTc5nFl7RT8skuny43hVLa6n01mcp7KkR9U=;
+  b=Ue1P2tJJ6tv7iN9QCIUGPMPWM3dcCytPc98QMgNbaj+yBDHQyvr0ZGUR
+   jDd4TCSmDHSUvZy+7D0KLH9qEIZdPdu2LOI/9BCGBW9yWr22x3jZ95VEu
+   TfAvigapfwEQV4wmpmhaAnM64t6ySIdHD9l2y45+YyJbNOTWqf0ZQ/3JM
+   o0AmU93/R/sJm9HFf8BHGTSv4e7bfGz+tkY6/tGahtbv8vdeZ7iPG4ujv
+   Z+sb/LU8qheTjSyrOe6Kg2hxhz5MqVFpyKzpzmlFXkSB5ulduve6jpRwr
+   QQXCcCyuyksbd6XEmzC0NjupRgvPRkimDdaKeB7X4L5AbR35zxOwc1NtC
+   A==;
+X-CSE-ConnectionGUID: rgbCTEznTFCnP0hkFvxykg==
+X-CSE-MsgGUID: tPkWu0kiRN6hYpKP+2NSCg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="12288398"
+X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; 
+   d="scan'208";a="12288398"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 01:31:43 -0700
+X-CSE-ConnectionGUID: x28zoPStSP6A+QH9cXVSTw==
+X-CSE-MsgGUID: ynVcaboxT9OjyDZ+LLrCzw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; 
+   d="scan'208";a="62545875"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 01:31:38 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 914DD11FA44;
+	Fri, 17 May 2024 11:31:35 +0300 (EEST)
+Date: Fri, 17 May 2024 08:31:35 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: git@luigi311.com
+Cc: linux-media@vger.kernel.org, dave.stevenson@raspberrypi.com,
+	jacopo.mondi@ideasonboard.com, mchehab@kernel.org, robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	pavel@ucw.cz, phone-devel@vger.kernel.org,
+	Ondrej Jirman <megi@xff.cz>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v5 21/25] dt-bindings: media: imx258: Add binding for
+ powerdown-gpio
+Message-ID: <ZkcV5xWZz2jCszxA@kekkonen.localdomain>
+References: <20240501152442.1072627-1-git@luigi311.com>
+ <20240501152442.1072627-22-git@luigi311.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240501152442.1072627-22-git@luigi311.com>
 
-Hi Rob,
+Hi Luis,
 
-Any feedback on the below topic?
+On Wed, May 01, 2024 at 09:24:38AM -0600, git@luigi311.com wrote:
+> From: Ondrej Jirman <megi@xff.cz>
+> 
+> Add powerdown-gpio binding as it is required for some boards.
 
-Regards
-Luca
+I thought the conclusion was that this wasn't a property of the sensor? If
+it needs to be controlled, then this should take place somewhere else than
+in the sensor driver.
 
-On Donnerstag, 25. April 2024 20:54:40 MESZ Luca Weiss wrote:
-> On Donnerstag, 25. April 2024 18:17:15 MESZ Rob Herring wrote:
-> > On Wed, Apr 24, 2024 at 07:21:51PM +0200, Luca Weiss wrote:
-> > > The qcom,ipc-N properties are essentially providing a reference to a
-> > > mailbox, so allow using the mboxes property to do the same in a more
-> > > structured way.
-> > 
-> > Can we mark qcom,ipc-N as deprecated then?
 > 
-> Yes, that should be ok. Will also send a similar change to the other bindings
-> that support both qcom,ipc and mboxes.
+> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+> Signed-off-by: Luis Garcia <git@luigi311.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Reviewed-by: Pavel Machek <pavel@ucw.cz>
+> ---
+>  Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> >  
-> > > Since multiple SMSM hosts are supported, we need to be able to provide
-> > > the correct mailbox for each host. The old qcom,ipc-N properties map to
-> > > the mboxes property by index, starting at 0 since that's a valid SMSM
-> > > host also.
-> > > 
-> > > The new example shows how an smsm node with just qcom,ipc-3 should be
-> > > specified with the mboxes property.
-> > > 
-> > > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> > > ---
-> > >  .../devicetree/bindings/soc/qcom/qcom,smsm.yaml    | 48 ++++++++++++++++++----
-> > >  1 file changed, 40 insertions(+), 8 deletions(-)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/soc/qcom/qcom,smsm.yaml b/Documentation/devicetree/bindings/soc/qcom/qcom,smsm.yaml
-> > > index db67cf043256..b12589171169 100644
-> > > --- a/Documentation/devicetree/bindings/soc/qcom/qcom,smsm.yaml
-> > > +++ b/Documentation/devicetree/bindings/soc/qcom/qcom,smsm.yaml
-> > > @@ -33,6 +33,13 @@ properties:
-> > >        specifier of the column in the subscription matrix representing the local
-> > >        processor.
-> > >  
-> > > +  mboxes:
-> > > +    minItems: 1
-> > > +    maxItems: 5
-> > 
-> > Need to define what each entry is.
-> 
-> The entry is (description from qcom,ipc-N)
-> 
->   "the outgoing ipc bit used for signaling the N:th remote processor."
-> 
-> So you want me to add 5 times e.g.
-> 
-> - the IPC mailbox used for signaling the 0th remote processor
-> - the IPC mailbox used for signaling the 1st remote processor
-> 
-> etc? I don't really have any extra knowledge on smsm to be able to write
-> something better there..
-> 
-> Also what are your thoughts on this binding vs the alternative I wrote
-> in the cover letter? I'm not really happy about how the properties are
-> represented.
-> 
-> Regards
-> Luca
-> 
-> 
-> > 
-> > > +    description:
-> > > +      Reference to the mailbox representing the outgoing doorbell in APCS for
-> > > +      this client.
-> > > +
-> > >    '#size-cells':
-> > >      const: 0
-> > >  
-> > > @@ -98,15 +105,18 @@ required:
-> > >    - '#address-cells'
-> > >    - '#size-cells'
-> > >  
-> > > -anyOf:
-> > > +oneOf:
-> > >    - required:
-> > > -      - qcom,ipc-1
-> > > -  - required:
-> > > -      - qcom,ipc-2
-> > > -  - required:
-> > > -      - qcom,ipc-3
-> > > -  - required:
-> > > -      - qcom,ipc-4
-> > > +      - mboxes
-> > > +  - anyOf:
-> > > +      - required:
-> > > +          - qcom,ipc-1
-> > > +      - required:
-> > > +          - qcom,ipc-2
-> > > +      - required:
-> > > +          - qcom,ipc-3
-> > > +      - required:
-> > > +          - qcom,ipc-4
-> > >  
-> > >  additionalProperties: false
-> > >  
-> > > @@ -136,3 +146,25 @@ examples:
-> > >              #interrupt-cells = <2>;
-> > >          };
-> > >      };
-> > > +  # Example using mboxes property
-> > > +  - |
-> > > +    #include <dt-bindings/interrupt-controller/arm-gic.h>
-> > > +
-> > > +    shared-memory {
-> > > +        compatible = "qcom,smsm";
-> > > +        #address-cells = <1>;
-> > > +        #size-cells = <0>;
-> > > +        mboxes = <0>, <0>, <0>, <&apcs 19>;
-> > > +
-> > > +        apps@0 {
-> > > +            reg = <0>;
-> > > +            #qcom,smem-state-cells = <1>;
-> > > +        };
-> > > +
-> > > +        wcnss@7 {
-> > > +            reg = <7>;
-> > > +            interrupts = <GIC_SPI 144 IRQ_TYPE_EDGE_RISING>;
-> > > +            interrupt-controller;
-> > > +            #interrupt-cells = <2>;
-> > > +        };
-> > > +    };
-> > > 
-> > 
-> 
-> 
+> diff --git a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+> index c978abc0cdb3..33338139e6e8 100644
+> --- a/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+> +++ b/Documentation/devicetree/bindings/media/i2c/sony,imx258.yaml
+> @@ -36,6 +36,10 @@ properties:
+>    reg:
+>      maxItems: 1
+>  
+> +  powerdown-gpios:
+> +    description:
+> +      Reference to the GPIO connected to the PWDN pin, if any.
+> +
+>    reset-gpios:
+>      description: |-
+>        Reference to the GPIO connected to the XCLR pin, if any.
 
+-- 
+Regards,
 
-
-
+Sakari Ailus
