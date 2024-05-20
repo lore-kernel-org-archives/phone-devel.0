@@ -1,99 +1,91 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C255A136E21;
-	Mon, 20 May 2024 15:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0F4137934;
+	Mon, 20 May 2024 19:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716217931; cv=none; b=j6TjjyBeSyK9nW0uo3+aTbfWfaLNyuL46Ac3dizsPX3c8/6WG4MJEreyECh3rWtBcYHPtarjCgweTevHHOgglJWDPYEH4T5+3tmE+gs9pR/EfoqzCtJzU6BKWhCZV9uaqrUBmkhxcptoCJGz1FSzXorkqEWlAwfRnGOLrByDxUA=
+	t=1716231904; cv=none; b=ALrLs41ra5FTESHzWIEnOipbIJ1tqbFctTiaksmMisrxFj06PNeCq8+HZJYCTh10F88Oj7JDVWYyDY5CYWby009VlAPfT+1DIeOmgVwN1dAugI8+yDRMx4Gf+QuAszRogDU1SmB0y2Gy+GdorZgh7oID8q87VWLr/svRSKM1goE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716217931; c=relaxed/simple;
-	bh=l4YKr8q4hSlSYnlmC8is7kKyo1psXqGg1nzwO8qkXlE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gAgz7XRGza/827sOaMKyoSsE4vSJ8P2j0LPET9S7SufeD9TNlu1U5Q/yJ5PDMJZsdPM+ozq+jcp48W9dNZ+QNxoSYvruHVadx6O2sxIepTP05HG0BMUXNVddc8hHTglSH3j5tnE0YZfaX9LiHDqd+wf3t/ocnoGq1bWNIJZl0zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=iG0uswZ8; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
+	s=arc-20240116; t=1716231904; c=relaxed/simple;
+	bh=Whkq+hKM/qmDNnBMj3dbzvPDG5j50Xp2GcuxKj7WaHI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hUZ+0yHUhkPA7BzqTVtJ8ioLK6Z0qcBsu4wcoO9oRFbDRNhC+75M8bw/i6cAZ45mdX3UgBYwC5H2tH7zTbmm+hnG/VJ5fEW5RIaQVrKcQz/NqWTtceVxdBP/6uDUyKaj1iQjcLA1JIKu+wIYyLU3vJAt7fm8AsG+tuOQQg1XkRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=pVacRy8l; arc=none smtp.client-ip=195.181.215.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="iG0uswZ8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1716217922; bh=l4YKr8q4hSlSYnlmC8is7kKyo1psXqGg1nzwO8qkXlE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iG0uswZ88y5tt8RR8Ak5aackUNDyrnZ25F5WfiBekmPKoJem+rMN4eLLQfnwcRz15
-	 DZDAKMBRaYH08cm32uki5G5LIx2r2UNnI7utFn9a9zKML5Hp2DqVRRnZG+cMWs/WE1
-	 aKV0IBzQ8gTcR2Y6rhwj2nQXmsL0lFC3+EC34kH4=
-From: Luca Weiss <luca@z3ntu.xyz>
-To: Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject:
- Re: [PATCH RFC 1/2] dt-bindings: soc: qcom,smsm: Allow specifying mboxes
- instead of qcom,ipc
-Date: Mon, 20 May 2024 17:11:59 +0200
-Message-ID: <12437992.O9o76ZdvQC@g550jk>
-In-Reply-To: <1ab150cd-68f0-4153-8d4e-5bd30bb01dfe@linaro.org>
-References:
- <20240424-smsm-mbox-v1-0-555f3f442841@z3ntu.xyz> <2729475.mvXUDI8C0e@g550jk>
- <1ab150cd-68f0-4153-8d4e-5bd30bb01dfe@linaro.org>
+	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="pVacRy8l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+	t=1716231898; bh=Whkq+hKM/qmDNnBMj3dbzvPDG5j50Xp2GcuxKj7WaHI=;
+	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
+	b=pVacRy8loO5jQ12YSQrnC47BXn66ePeAvKoHrFsTNZbUZuDE9I/8bc/37EdRZIQWN
+	 YJSS60cvLymNAglX+885beRZOfcbFcd8IxTR0nbDIJBtt2kVkGu2XfCUnR8pgUXis6
+	 ouo8co6qtt2wJAvS0kjSU1RuzrFrBuSb+cJmZbIE=
+Date: Mon, 20 May 2024 21:04:58 +0200
+From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+To: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, git@luigi311.com, 
+	linux-media@vger.kernel.org, jacopo.mondi@ideasonboard.com, mchehab@kernel.org, 
+	robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, pavel@ucw.cz, 
+	phone-devel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v5 21/25] dt-bindings: media: imx258: Add binding for
+ powerdown-gpio
+Message-ID: <6egxnvqjz4z57bwd7jeubikfiew2myjo74hw3x6dimcdm6nuq3@qnk2tliwfxps>
+Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
+	Dave Stevenson <dave.stevenson@raspberrypi.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, git@luigi311.com, 
+	linux-media@vger.kernel.org, jacopo.mondi@ideasonboard.com, mchehab@kernel.org, 
+	robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de, 
+	festevam@gmail.com, devicetree@vger.kernel.org, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, pavel@ucw.cz, 
+	phone-devel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
+ <https://xff.cz/key.txt>
+References: <20240501152442.1072627-1-git@luigi311.com>
+ <20240501152442.1072627-22-git@luigi311.com>
+ <ZkcV5xWZz2jCszxA@kekkonen.localdomain>
+ <q5nbk3qcxsjsqp4mdyx5nlrn4oie6oynunwodm7r2nwtywc2ey@kxsgcatwt5b2>
+ <CAPY8ntCfQvp9rCt=fqTFKYEOamLZwKmJDv9agxerQtDvsGKB0g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPY8ntCfQvp9rCt=fqTFKYEOamLZwKmJDv9agxerQtDvsGKB0g@mail.gmail.com>
 
-On Montag, 20. Mai 2024 08:46:39 MESZ Krzysztof Kozlowski wrote:
-> On 15/05/2024 17:06, Luca Weiss wrote:
-> > Hi Rob,
-> > 
-> > Any feedback on the below topic?
+Hi Dave,
+
+On Mon, May 20, 2024 at 02:20:28PM GMT, Dave Stevenson wrote:
+> Hi Ondřej
+>
+> [...]
 > 
-> Can be explained in description, like
-> mboxes:
->   description: Each entry corresponds to one remote processor
->   maxItems: 5
-
-Hi Krzysztof
-
-Ack, sounds good.
-
-Maybe also from you, any opinion between these two binding styles?
-
-So first using index of mboxes for the numbering, where for the known
-usages the first element (and sometimes the 3rd - ipc-2) are empty <>.
-
-The second variant is using mbox-names to get the correct channel-mbox
-mapping.
-
--               qcom,ipc-1 = <&apcs 8 13>;
--               qcom,ipc-2 = <&apcs 8 9>;
--               qcom,ipc-3 = <&apcs 8 19>;
-+               mboxes = <0>, <&apcs 13>, <&apcs 9>, <&apcs 19>;
-
-vs.
-
--               qcom,ipc-1 = <&apcs 8 13>;
--               qcom,ipc-2 = <&apcs 8 9>;
--               qcom,ipc-3 = <&apcs 8 19>;
-+               mboxes = <&apcs 13>, <&apcs 9>, <&apcs 19>;
-+               mbox-names = "ipc-1", "ipc-2", "ipc-3";
-
-Regards
-Luca
-
+> From v3 [1] Luis reported testing dropping the powerdown-gpio on a PPP
+> and it working fine.
 > 
-> Best regards,
-> Krzysztof
+> I linked to the IMX258 datasheet in the same thread[2], and that
+> datasheet does not include such a signal on the imx258 sensor itself.
 > 
+> If your module has a powerdown gpio, then you'll have to ask the
+> module vendor what it is actually connected to. Potentially it relates
+> to the VCM driver rather than the sensor.
+
+I've tested it in various ways (inverting the signal, etc.) and it doesn't
+seem to do anything. So these patches related to powerdown-gpio can
+be dropped.
+
+Kind regards,
+	o.
+
+>   Dave
 > 
-
-
-
-
+> [1] https://www.spinics.net/lists/linux-media/msg252519.html
+> [2] https://www.spinics.net/lists/linux-media/msg252496.html
