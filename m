@@ -1,70 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781AB173350;
-	Tue, 28 May 2024 17:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5BF17B4FA;
+	Tue, 28 May 2024 21:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716915778; cv=none; b=Yn8PVpVeD0SIATuNGXkZwgZHhNo/0jIziUeHvKloPs77tLfBddUsVXPIDOm0yLOrni1ON3yawS/RSJTwaRA27jZj9T1cM5Ubk0CXp84ihBaW4DbB1Xv5rbwhWkCw7rlraVPW9q/de714JX5YEcQP79YSryLeBBTMaNV7OLvp3GQ=
+	t=1716932119; cv=none; b=h3Y7+YmkgL3bOOA9kvM1/fR1etxkHuEeCxOkBrVjPvWjq19Z10vqnIV9TjrzdOXIcdgmBmmYTkvB8sfVBbCUK2hCbDbI+6XdlkVCcfYzuv2fkqxa5BbPJ0Ksm+7LW4+H5sWyLz7KYfpz+X6tHJq/ueMUQdpa9tf/SRF5jAdjKtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716915778; c=relaxed/simple;
-	bh=d7VPMGIdqNLF45j8kC0Fc7trVtC0v2eVektCXeN9Rb0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uTzmVKV/xSyqmJ9SQimxliUO9gad5ee4ZwKHY7OSgB2AdpZepZln8X80AsIlGZYM9QORQNHKJr0LH4ELaRVNBGZYMpuWjWKDE23GwPOgL102QG6Ghe1u1wY6zl88RrKzToxpfaZxQjvbO1A0ome8XoGYATyGPzagufoqCtIdyHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BeBmgUCb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1716932119; c=relaxed/simple;
+	bh=TTH6TAAHwNlQVXAyaogzfwBqkN2ZRzQ1G1pQrDnBJck=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aeXVN7Ij9eTczx8gKgJKkJhw9Bg4owjBXNNwT62ZXCO+81hSxxmVhy0zI61H5KSsz2owPW++lfM+me+ND92wJQ7cyTIyQA8P3CkOvamgVbCjgrqf659E8xCo9VrNGMfEQtFWf8b4pv/XLQcfbNtVZPa/7f6eus1vVS6Pz9uqWFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oeU4xdkR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BeBmgUCb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15FF2C32786;
-	Tue, 28 May 2024 17:02:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oeU4xdkR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 912C7C3277B;
+	Tue, 28 May 2024 21:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716915778;
-	bh=d7VPMGIdqNLF45j8kC0Fc7trVtC0v2eVektCXeN9Rb0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BeBmgUCb7WE5D4mdFdFd46CcKQtcuwFi5wCdofu3HfeLY2e5HwLGI/mA2qpG7NLkB
-	 nVY9E41e4GuS9oxEP2bknp8AjInRaGumYDy2eRwkcozmldoCnseT6VR3YLtq8Fhlfe
-	 pnaiidPFrxU24qBR1oRWyv0TF3tsPcqI/4tvQ/G17wkKPMdPmaMjiWDBtHiARUKLSp
-	 KaD8kH/jzdAlwOoN5ouuGBsgQw6E6uaz6Q+9yvfEuG+E3NIH6lluyESobG9Q/DDW1z
-	 KAjkHhWyA51n4s1Z+eOuJyTNoJ/TfMNN1HZZfQAdMFv+2BAZIR8a9kAPv1kNB2UeQV
-	 X7k+tzucWZ/og==
+	s=k20201202; t=1716932118;
+	bh=TTH6TAAHwNlQVXAyaogzfwBqkN2ZRzQ1G1pQrDnBJck=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oeU4xdkRJ3X0RbaYEe79r7B1TPu84xeNqYBWKsrZxaMGxOC4XE9s7C/4kRLbJ0Aj0
+	 XEchBORaoDtvvgb/RDIptSSPBfgAUX9UqhFd0E3frxQikLwi35DH0omy5OuCWh3TAH
+	 0AxyXUmioNEpY0e4njH2E969CC7mvkf7YrMRz95tLZcaFXhwbXHiR7zMbvzgeX27SE
+	 fB12XzBMONchtmgAdH5sX+VDItHOlyPPDiv+A3Xcwre/07lWvk5CoQ9Cy2ojvuTg8u
+	 dkHdk9P65p7TglO/ZnmRyItggxNKVv+eGGzavQ/HF3CKHFhc/2EZ1Fp/fqch2jBKqw
+	 su59ULvI41eOw==
+Date: Tue, 28 May 2024 16:35:15 -0500
 From: Bjorn Andersson <andersson@kernel.org>
-To: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Luca Weiss <luca@z3ntu.xyz>
-Cc: linux-arm-msm@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH v2 0/2] Allow gpio-hog nodes in qcom,pmic-gpio bindings (& dt fixup)
-Date: Tue, 28 May 2024 12:02:53 -0500
-Message-ID: <171691576752.544020.9360876610718267733.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240409-qcom-pmic-gpio-hog-v2-0-5ff812d2baed@z3ntu.xyz>
-References: <20240409-qcom-pmic-gpio-hog-v2-0-5ff812d2baed@z3ntu.xyz>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: cros-qcom-dts-watchers@chromium.org, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>, Mohammad Rafi Shaik <quic_mohs@quicinc.com>, 
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH DNM 2/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Add
+ DisplayPort sound support
+Message-ID: <hqwrfe2tcb6vlxybmn52k3j2xrxbt3vw5rqwudindbhj3s3nez@obkr3ayos6gm>
+References: <20240510-sc7280-apr-v1-0-e9eabda05f85@fairphone.com>
+ <20240510-sc7280-apr-v1-2-e9eabda05f85@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240510-sc7280-apr-v1-2-e9eabda05f85@fairphone.com>
 
-
-On Tue, 09 Apr 2024 20:36:35 +0200, Luca Weiss wrote:
-> Resolve the dt validation failure on Nexus 5.
+On Fri, May 10, 2024 at 02:27:09PM GMT, Luca Weiss wrote:
+> Add the required nodes for sound playback via a connected external
+> display (DisplayPort over USB-C).
 > 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
+> Depends on a bunch of patches upstream doing bringup of Display (DSI),
+> DisplayPort, GPU, and then finally audio could land. But we're blocked
+> on DPU 1:1:1 topology for all of that unfortunately.
 > 
+> And also machine driver for sound just exists a bit hackily.
 
-Applied, thanks!
+Thanks for sharing this, Luca. Can you please resubmit this once it's
+ready to be merged, so that I don't need to keep track of it?
 
-[2/2] ARM: dts: qcom: msm8974-hammerhead: Update gpio hog node name
-      commit: 92b9ce5b11d7ba281f5bf0029185d5c891b29344
+Regards,
+Bjorn
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+> ---
+>  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 36 ++++++++++++++++++++++
+>  1 file changed, 36 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> index 05bbf1da5cb8..2bbbcaeff95e 100644
+> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+> @@ -14,6 +14,8 @@
+>  #include <dt-bindings/leds/common.h>
+>  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+>  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+> +#include <dt-bindings/sound/qcom,q6afe.h>
+> +#include <dt-bindings/sound/qcom,q6asm.h>
+>  #include "sc7280.dtsi"
+>  #include "pm7250b.dtsi"
+>  #include "pm7325.dtsi"
+> @@ -774,6 +776,12 @@ &pon_resin {
+>  	status = "okay";
+>  };
+>  
+> +&q6afedai {
+> +	dai@104 {
+> +		reg = <DISPLAY_PORT_RX>;
+> +	};
+> +};
+> +
+>  &qup_spi13_cs {
+>  	drive-strength = <6>;
+>  	bias-disable;
+> @@ -847,6 +855,34 @@ &sdhc_2 {
+>  	status = "okay";
+>  };
+>  
+> +&sound {
+> +	compatible = "fairphone,fp5-sndcard";
+> +	model = "Fairphone 5";
+> +
+> +	mm1-dai-link {
+> +		link-name = "MultiMedia1";
+> +		cpu {
+> +			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA1>;
+> +		};
+> +	};
+> +
+> +	displayport-rx-dai-link {
+> +		link-name = "DisplayPort Playback";
+> +
+> +		cpu {
+> +			sound-dai = <&q6afedai DISPLAY_PORT_RX>;
+> +		};
+> +
+> +		platform {
+> +			sound-dai = <&q6routing>;
+> +		};
+> +
+> +		codec {
+> +			sound-dai = <&mdss_dp>;
+> +		};
+> +	};
+> +};
+> +
+>  &spi13 {
+>  	status = "okay";
+>  
+> 
+> -- 
+> 2.45.0
+> 
