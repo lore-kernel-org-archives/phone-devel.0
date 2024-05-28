@@ -1,50 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B4A2E64C;
-	Tue, 28 May 2024 03:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3037317C;
+	Tue, 28 May 2024 03:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716867164; cv=none; b=pxGZph+CsoGCcQRjdjLiT0g6kl4T6XeU4d5GJb8iDyuzIMdbGVBdL6OHXckgK8MNeD0RJgTmBWyA9SFLW+gbqd6pjb+Jk/C/W3FkV75Kq501U/oSyDJZUc560IBxuIkH22s0yaYfUn8cjXk8/aOBLQBkPG5ZlW8uWmtYbVXuinM=
+	t=1716867176; cv=none; b=lcYTkGoACfk6R4R5TC+vj4d/yIAtSwTfpTs2NxfKpo2RDNN+oxMYeiAJ3DAf1UNR+UuzBetVtCLIpg3EwBCNVcUkMpc0cOiFgpPzS+LyiAjpNrmUuMXjlotQOwmhuCyWdzFl3nwwYv8l/Ex2IY3d7+Jeru/kOTxCgqWvwUQ3254=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716867164; c=relaxed/simple;
-	bh=BNUfSENnQ3Xnu31LgNHC6atOJLd8mgwLZdHa7Nnqm+c=;
+	s=arc-20240116; t=1716867176; c=relaxed/simple;
+	bh=5nwP7OjLi2RGIh7MP14x2pmpSczG7BFG6j6QzJqIDdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IdhyFjcm4uoOFPyPcOcWqNrjKz9zo+ZqJgxyOEsjoMFMq6qW3HCKmgL6GOLVZCnO922esOwX5g6D96SSVuaohLNZIhwJ2IOibyEjAlHsy48Xbs3GYScAgVhVjIqMU04J8jA6eq0GkAianlokvAObDQhA2/2kf2ViRwY6YitCWp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CUDc8FG3; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=UyVhJevTNVqXZORbrf6AA561OW8L9JEJbgARgr+uWdy+upiuCKH8ii2aOAoagdhdJzHXuZ4Yeudmlb3kdqL9kp4Bv9ycClpcNz9QYJwBrDC/PVTvImunatF9ec/NR7KMQ1spNknSCnjG+7p/8rBCMjVnVNB4Dn6XJmK211br93k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uxvCwmkC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CUDc8FG3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9E6C32782;
-	Tue, 28 May 2024 03:32:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uxvCwmkC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A262C4AF0C;
+	Tue, 28 May 2024 03:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716867163;
-	bh=BNUfSENnQ3Xnu31LgNHC6atOJLd8mgwLZdHa7Nnqm+c=;
+	s=k20201202; t=1716867175;
+	bh=5nwP7OjLi2RGIh7MP14x2pmpSczG7BFG6j6QzJqIDdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CUDc8FG3Ys5ntlJxaUlHzTN0P01QD07feXHr6BfnuOz7n+sDDn1PLymcLoa5oKEH0
-	 fLLUZ5R/x3vh7aLrETM37RoX9Wbp54ZXbv6QymOxLbeDosZPjrcLPgkjfyVnUyYq6O
-	 956b86GTbXtEqqCWRgmSZOfyaPJ3oMsgDT8iSh59eD1YyNxkGsdlhJ343vYD3++3lB
-	 pI8Z7O6myx/qvNT7XNP6JyfGs1HtXMFpsXjvrJH6PnF7MEx6ONmO6iiDka4FKQdQqk
-	 3DZOgqXfJoYw/n+RQhrVicaE6scVoJ03UBPw64dM6CctOExIti1+/mR3QIm5VOJXBT
-	 pbh8rboP6ecpQ==
+	b=uxvCwmkCFo2NyRxHJol1M0tpIBphvwEJkTa6tX+5zlF7gC4OUNX4wBITUlmiAuugl
+	 M5lewK9+FqT1BZg7hYRyQsJsOYUNsbWyU8niNFTPs42Z3CZXPwkNWJZM1MYLU0Y204
+	 npCOGEIQ99NJKcl0KQJM+D3Z+iDtWMTtOPVxoFfsqyu36lF1mTL2wDm33mkh1DmNFF
+	 0IO/yQpj8FT5/rcoJoYmfebjDQJgl5KnboirxHkiQ1X2xsleT7b7H+niS9brXjAyxL
+	 tF/93VGrj+jZG6oHWvzMm2q7Kud3L46+0wxcXfA5r45J/XMoFOrGO3kPlWZVmfg7ff
+	 SLmpDKWd+XM/Q==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>,
+To: cros-qcom-dts-watchers@chromium.org,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	luca@z3ntu.xyz,
-	Bryant Mairs <bryant@mai.rs>
+	Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>,
+	Mohammad Rafi Shaik <quic_mohs@quicinc.com>,
+	Luca Weiss <luca.weiss@fairphone.com>
 Cc: ~postmarketos/upstreaming@lists.sr.ht,
 	phone-devel@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: (subset) [PATCH v3 0/2] Add samsung-milletwifi
-Date: Mon, 27 May 2024 22:32:10 -0500
-Message-ID: <171686715163.523693.4500878990759287138.b4-ty@kernel.org>
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: (subset) [PATCH 0/2] Add basic APR sound support for SC7280 SoC
+Date: Mon, 27 May 2024 22:32:18 -0500
+Message-ID: <171686715157.523693.15335950403059672023.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240219214643.197116-1-bryant@mai.rs>
-References: <20240219214643.197116-1-bryant@mai.rs>
+In-Reply-To: <20240510-sc7280-apr-v1-0-e9eabda05f85@fairphone.com>
+References: <20240510-sc7280-apr-v1-0-e9eabda05f85@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -55,24 +56,22 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Mon, 19 Feb 2024 22:43:15 +0100, Bryant Mairs wrote:
-> This series adds support for samsung-milletwifi, the smaller cousin
-> to samsung-matisselte. I've used the manufacturer's naming convention
-> for consistency.
+On Fri, 10 May 2024 14:27:07 +0200, Luca Weiss wrote:
+> Validated on Fairphone 5 (QCM6490) smartphone by using DisplayPort over
+> USB-C audio, connected to a TV, with a basic UCM to enable
+> 'DISPLAY_PORT_RX Audio Mixer MultiMedia1':
+> https://gitlab.com/postmarketOS/pmaports/-/tree/master/device/testing/device-fairphone-fp5/ucm
 > 
-> Hardware currently supported:
-> - Display
-> - Cover detection
-> - Physical buttons
-> - Touchscreen and touchkeys
-> - Accelerometer
+> Unfortunately all the device-specific things can't be enabled yet
+> upstream as detailed in the second patch, but the SoC parts should be
+> good to go.
 > 
 > [...]
 
 Applied, thanks!
 
-[2/2] ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 8.0 Wi-Fi
-      commit: 49b9981a0ecae2bbb298d8b0c2b8058220038691
+[1/2] arm64: dts: qcom: sc7280: Add APR nodes for sound
+      commit: f44da5d8722de348ff2eb8b206c69b52809c1772
 
 Best regards,
 -- 
