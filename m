@@ -1,49 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8955C17C68;
-	Tue, 28 May 2024 03:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B4A2E64C;
+	Tue, 28 May 2024 03:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716867162; cv=none; b=QlMrzAtnuAiLKVsBezJlMpzU9VXiKLywuLp9i2n/hedZ2+TozyErX9WzhkH6u5aBkcLFv4b3z2XBgJXJzDKFqDsI1BY1bD5ZmWN5tsiTYVxMx8ZLz8f8oAX+u9JayTloO0/RwYOSqU0oco253ngjl4hwuDjOkjzBCj2Rc3gB2yQ=
+	t=1716867164; cv=none; b=pxGZph+CsoGCcQRjdjLiT0g6kl4T6XeU4d5GJb8iDyuzIMdbGVBdL6OHXckgK8MNeD0RJgTmBWyA9SFLW+gbqd6pjb+Jk/C/W3FkV75Kq501U/oSyDJZUc560IBxuIkH22s0yaYfUn8cjXk8/aOBLQBkPG5ZlW8uWmtYbVXuinM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716867162; c=relaxed/simple;
-	bh=eiUm+kIZeIpJe6XRMZd8S8x0ZUBCyNpaGUwQxPNTbOg=;
+	s=arc-20240116; t=1716867164; c=relaxed/simple;
+	bh=BNUfSENnQ3Xnu31LgNHC6atOJLd8mgwLZdHa7Nnqm+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kitrKELcLWa+brzOcUVRFxC0tosewqgpHYxt6y1REqZcXUHI82LYxHuBrMpce/Z74nR3LdcI51MKwM+f2u+pvvEkyQoUlBvobHZiaBxEiVzaDWPkae6ZIzaUHxlNICAZMV5/cX2o7bVar8ZS7MROfMWU3RAfrdI4RzDK3oIBUwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o/A9t4sv; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=IdhyFjcm4uoOFPyPcOcWqNrjKz9zo+ZqJgxyOEsjoMFMq6qW3HCKmgL6GOLVZCnO922esOwX5g6D96SSVuaohLNZIhwJ2IOibyEjAlHsy48Xbs3GYScAgVhVjIqMU04J8jA6eq0GkAianlokvAObDQhA2/2kf2ViRwY6YitCWp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CUDc8FG3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o/A9t4sv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B547C4AF09;
-	Tue, 28 May 2024 03:32:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CUDc8FG3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9E6C32782;
+	Tue, 28 May 2024 03:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716867162;
-	bh=eiUm+kIZeIpJe6XRMZd8S8x0ZUBCyNpaGUwQxPNTbOg=;
+	s=k20201202; t=1716867163;
+	bh=BNUfSENnQ3Xnu31LgNHC6atOJLd8mgwLZdHa7Nnqm+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/A9t4svn7HMUBzrqezXGMU7V5XdM+fXtPVZS1VatCJLNg8bMXQlPLw3cuV5Hj4gA
-	 DXJfj7nl5T7RJLfMHIcIOaQb90cqRdVHLS5Ixp1N0QTkbt3zu/WIQRAE+XDdSt6+Fx
-	 q1IRKr+RUZl4bi42ZqZ0k0JaoagJE8i1TaJR0nidi99D7tt8BzofOCblR1qjxdzWq2
-	 fpW+cKV9DFKJ+5OIwR9J2RN4ZHFoOZE5eBX8HcsklIElgkiICEx3X+NU3KM910LSnf
-	 d1KHuKj68HhnfkE88Bak44qCAlyoVIjvQedKBdfYyp/euphXSyGTy8bNkCRCnuk44r
-	 g0n7QcEXiMO7Q==
+	b=CUDc8FG3Ys5ntlJxaUlHzTN0P01QD07feXHr6BfnuOz7n+sDDn1PLymcLoa5oKEH0
+	 fLLUZ5R/x3vh7aLrETM37RoX9Wbp54ZXbv6QymOxLbeDosZPjrcLPgkjfyVnUyYq6O
+	 956b86GTbXtEqqCWRgmSZOfyaPJ3oMsgDT8iSh59eD1YyNxkGsdlhJ343vYD3++3lB
+	 pI8Z7O6myx/qvNT7XNP6JyfGs1HtXMFpsXjvrJH6PnF7MEx6ONmO6iiDka4FKQdQqk
+	 3DZOgqXfJoYw/n+RQhrVicaE6scVoJ03UBPw64dM6CctOExIti1+/mR3QIm5VOJXBT
+	 pbh8rboP6ecpQ==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Adam Skladowski <a39.skl@gmail.com>
-Cc: phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Andy Gross <agross@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
+To: Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/4] MSM8976 MDSS/GPU/WCNSS support
-Date: Mon, 27 May 2024 22:32:08 -0500
-Message-ID: <171686715159.523693.17319173164690407157.b4-ty@kernel.org>
+	linux-kernel@vger.kernel.org,
+	luca@z3ntu.xyz,
+	Bryant Mairs <bryant@mai.rs>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: (subset) [PATCH v3 0/2] Add samsung-milletwifi
+Date: Mon, 27 May 2024 22:32:10 -0500
+Message-ID: <171686715163.523693.4500878990759287138.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240508163455.8757-1-a39.skl@gmail.com>
-References: <20240508163455.8757-1-a39.skl@gmail.com>
+In-Reply-To: <20240219214643.197116-1-bryant@mai.rs>
+References: <20240219214643.197116-1-bryant@mai.rs>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -54,27 +55,24 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Wed, 08 May 2024 18:34:33 +0200, Adam Skladowski wrote:
-> This patch series provide support for display subsystem, gpu
-> and also adds wireless connectivity subsystem support.
+On Mon, 19 Feb 2024 22:43:15 +0100, Bryant Mairs wrote:
+> This series adds support for samsung-milletwifi, the smaller cousin
+> to samsung-matisselte. I've used the manufacturer's naming convention
+> for consistency.
 > 
-> Changes since v3
-> ================
-> 1. Minor styling fixes
-> 2. Converted qcom,ipc into mailbox on wcnss patch
+> Hardware currently supported:
+> - Display
+> - Cover detection
+> - Physical buttons
+> - Touchscreen and touchkeys
+> - Accelerometer
 > 
 > [...]
 
 Applied, thanks!
 
-[1/4] arm64: dts: qcom: msm8976: Add IOMMU nodes
-      commit: 418c2ffd7df9bfc25c21172bd881b78d7569fb4d
-[2/4] arm64: dts: qcom: msm8976: Add MDSS nodes
-      commit: b0516dbf8e218dede2fd2837ca82dccd9cdcdafc
-[3/4] arm64: dts: qcom: msm8976: Add Adreno GPU
-      commit: 00e67d8e80f06bb848a3dd516d06e2f040b7d8f2
-[4/4] arm64: dts: qcom: msm8976: Add WCNSS node
-      commit: 45878973229a93f0f42aa048ac8c6223af010082
+[2/2] ARM: dts: qcom: Add support for Samsung Galaxy Tab 4 8.0 Wi-Fi
+      commit: 49b9981a0ecae2bbb298d8b0c2b8058220038691
 
 Best regards,
 -- 
