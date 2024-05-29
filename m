@@ -1,176 +1,177 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAA215EFB0
-	for <phone-devel@vger.kernel.org>; Wed, 29 May 2024 06:18:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D500B746E;
+	Wed, 29 May 2024 15:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716963525; cv=none; b=NJ7pgN2FqMlKkzR8UxCD91qPXw1iXP0BSdbJZLeitNjfgZu3OIn7ccBgCEKTPzf40yngvungkrU9aIJ/hFQCFia/Cxkc33+t0aySmrZl0MQz+jfcc2npHMK5DXOqbxVb1lqybNIH21+pS1GbEeBX0clupB7OdFYFxV67kSeJJbc=
+	t=1716996491; cv=none; b=o7Eoe06VOKtwUfx6Iybf4Q+wgeeGvJ4fLBzFQ28xf8a3kOHM8RQV/L6qrxGHwBSA3GwhOfKFpTDkyOLCipTYeW6+/PsrdkhAdtsSvf4ji+NuPOijcS08BA/msU3xxWzj0PYc3t+/yFF3WZ2ybIN6FqjsoXIZZcCUZtxbRXt7ays=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716963525; c=relaxed/simple;
-	bh=td+A5mMkrhdvg9ElSzQdaHWmnHQqfG3xEYFSntb3ivs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=pQUA+TMH1Oi5S/vROxax7gmOcFfj3AT+/Fkm1qpc5bwGj9Wpft1nK2kMme5qoJBQbSMpxF8TCIFeHpIhyvWNm76LqCwkrYW5vtsDJGNMWBlenYqcvvWbBrNw1zckMGzjOQyvQ86yhM7vHjqSKn9G+U9vGdbL1dMY+J6UckMOe/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=wvgLXS7p; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1716996491; c=relaxed/simple;
+	bh=pn2lr3RjvPC4Kc+5d659uK69HVfUPhe0KhyTp8Pn+kA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qCZk3efANyI7mNIDeG+AOJDrrf3C1wC/URFhia/Ccd9FdRY2flDpclFMJx9xl69BWox4GVeXK23Ns+TAcSSC+7OS7R5B/0T2+xRumjbsSCidlLzVFP/9QrjRhj9qfo6L92016hCQQ1uaO+4+GomskeXoCcoHzHvZccP9ylGdOeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=T5xOS7MP; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="wvgLXS7p"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a6302bdb54aso229264866b.0
-        for <phone-devel@vger.kernel.org>; Tue, 28 May 2024 23:18:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1716963522; x=1717568322; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b5o98irvL1PvcmMP2g/CoSXINiWvruSSImbYO4qwby8=;
-        b=wvgLXS7pAUfty21u7wWUO6QH5bSCBphX1OAVLcg+LHw3oEYmkTRWUcvpTOKvv/6Ha5
-         /Wdko+S9m3RL8dNKlZZdZc06Q6gaCoUr4YgRzvaNvMNQNUaXM6CxRqHJGKZe4H3Si9QK
-         LZvoSYoMhFMXAWxS4p8N+rpzhkLJqTHwG98ZQ21YFlnkehyYrgl2uXbtahhtULWrDz8J
-         msByiEUcM/14L1BN1zTyHvgNiPZgAvUY+TJfevs5rBLXPqIO/w8tyaGqNf5CK96kqfdH
-         lZpVn7tcDIcCTLampjsiahaw+ctxVdKotrcCjKki5Qt6OiRjGAXlzxM7rmYgY5NG+S8C
-         NayQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716963522; x=1717568322;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=b5o98irvL1PvcmMP2g/CoSXINiWvruSSImbYO4qwby8=;
-        b=KQdXIHAGe8wco1rtxA7WgFZ2QQaRyubNIdDQ97hIf7LVE1ewI+gec+z/uZv6JBdIXp
-         c9IWsUN0U8f+maD4ItJ5QzNqzmBTz7QnoZGY9Fvlpg9ch+c1MC70GVQLphkYddAvk05o
-         4SfXri03nnGWVrGb73rO9slpRYTAXn+b3xHug/XxiCsaOALVd56WzKCWnySaJ0j9B3WX
-         Cye3IoXx6G2h+XVJl6SrbJH4rb6oDCwKpSOEpJpEQ3yQsNZbdxSC9hpboJhOAKWXLmP6
-         Yn4bEn9TsmBlw8HwA3a8X8Sa7jvGcr8nkNm0DcJS6iIKjlljiQuwGDZct759EBPWPPUj
-         7eyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXl7UWrx+jLQAT+LY6c8ba6TWZQ/IPlzjwhdconGaEAeAYZxLIsIpFU3lAOnZUTxQVDlpJxw5P0vjKKc33O8w1tbCW1jsdzz6WKpqA=
-X-Gm-Message-State: AOJu0YwO40GGdN3XVGtBwp97D3FJUI8TwHSoTobe23OQbTF/0BufKyov
-	aRITSgE2nQqzTpekUiF76uPqgT+W4CJWRfu5BBATDS1I16O+9YCIPSYx5BCf7IQ=
-X-Google-Smtp-Source: AGHT+IG1oXccLJqlT99AbIl0tXdj+h1O8dL6G8y8/9eKbxzPQr8rGYbOgwG7VHPYBxA5kpGfbl/kHg==
-X-Received: by 2002:a17:906:314e:b0:a59:c319:f1dc with SMTP id a640c23a62f3a-a62642daa92mr969475866b.4.1716963522482;
-        Tue, 28 May 2024 23:18:42 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6555bc091asm7799266b.138.2024.05.28.23.18.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 May 2024 23:18:41 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="T5xOS7MP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1716996482; bh=pn2lr3RjvPC4Kc+5d659uK69HVfUPhe0KhyTp8Pn+kA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=T5xOS7MPDEL8D3/viSlPXTIMggw8ExSd5CQDGIYx55cFN5bl8G/VcS2W3XrtvhvJN
+	 xGpU2q6c4/TtRfFQASCzit+VccylNHUw/Tln+KFyj9LgfIIZdlalALcjm5nFTp7mUU
+	 aYjuuVhxNoJ0QD+kt0fbp/FvbE+Npk0Lw/l9Ns/Y=
+From: Luca Weiss <luca@z3ntu.xyz>
+To: Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ ~postmarketos/upstreaming@lists.sr.ht, Krzysztof Kozlowski <krzk@kernel.org>
+Cc: phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject:
+ Re: [PATCH RFC 1/2] dt-bindings: soc: qcom,smsm: Allow specifying mboxes
+ instead of qcom,ipc
+Date: Wed, 29 May 2024 17:28:01 +0200
+Message-ID: <5782729.DvuYhMxLoT@g550jk>
+In-Reply-To: <f8c48554-984f-48fd-aa12-87d39888b0f6@kernel.org>
+References:
+ <20240424-smsm-mbox-v1-0-555f3f442841@z3ntu.xyz> <4881282.LvFx2qVVIh@g550jk>
+ <f8c48554-984f-48fd-aa12-87d39888b0f6@kernel.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 May 2024 08:18:41 +0200
-Message-Id: <D1LWRSO8RFAI.1PQ450TISFN2D@fairphone.com>
-To: "Bjorn Andersson" <andersson@kernel.org>
-Cc: <cros-qcom-dts-watchers@chromium.org>, "Konrad Dybcio"
- <konrad.dybcio@linaro.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- "Srinivasa Rao Mandadapu" <quic_srivasam@quicinc.com>, "Mohammad Rafi
- Shaik" <quic_mohs@quicinc.com>, <~postmarketos/upstreaming@lists.sr.ht>,
- <phone-devel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH DNM 2/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Add
- DisplayPort sound support
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-X-Mailer: aerc 0.17.0
-References: <20240510-sc7280-apr-v1-0-e9eabda05f85@fairphone.com>
- <20240510-sc7280-apr-v1-2-e9eabda05f85@fairphone.com>
- <hqwrfe2tcb6vlxybmn52k3j2xrxbt3vw5rqwudindbhj3s3nez@obkr3ayos6gm>
-In-Reply-To: <hqwrfe2tcb6vlxybmn52k3j2xrxbt3vw5rqwudindbhj3s3nez@obkr3ayos6gm>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-On Tue May 28, 2024 at 11:35 PM CEST, Bjorn Andersson wrote:
-> On Fri, May 10, 2024 at 02:27:09PM GMT, Luca Weiss wrote:
-> > Add the required nodes for sound playback via a connected external
-> > display (DisplayPort over USB-C).
-> >=20
-> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> > ---
-> > Depends on a bunch of patches upstream doing bringup of Display (DSI),
-> > DisplayPort, GPU, and then finally audio could land. But we're blocked
-> > on DPU 1:1:1 topology for all of that unfortunately.
-> >=20
-> > And also machine driver for sound just exists a bit hackily.
->
-> Thanks for sharing this, Luca. Can you please resubmit this once it's
-> ready to be merged, so that I don't need to keep track of it?
+On Samstag, 25. Mai 2024 18:47:08 MESZ Krzysztof Kozlowski wrote:
+> On 24/05/2024 19:55, Luca Weiss wrote:
+> > On Donnerstag, 23. Mai 2024 08:19:11 MESZ Krzysztof Kozlowski wrote:
+> >> On 23/05/2024 08:16, Luca Weiss wrote:
+> >>> On Donnerstag, 23. Mai 2024 08:02:13 MESZ Krzysztof Kozlowski wrote:
+> >>>> On 22/05/2024 19:34, Luca Weiss wrote:
+> >>>>> On Mittwoch, 22. Mai 2024 08:49:43 MESZ Krzysztof Kozlowski wrote:
+> >>>>>> On 21/05/2024 22:35, Luca Weiss wrote:
+> >>>>>>> On Dienstag, 21. Mai 2024 10:58:07 MESZ Krzysztof Kozlowski wrote:
+> >>>>>>>> On 20/05/2024 17:11, Luca Weiss wrote:
+> >>>>>>>>> Hi Krzysztof
+> >>>>>>>>>
+> >>>>>>>>> Ack, sounds good.
+> >>>>>>>>>
+> >>>>>>>>> Maybe also from you, any opinion between these two binding styles?
+> >>>>>>>>>
+> >>>>>>>>> So first using index of mboxes for the numbering, where for the known
+> >>>>>>>>> usages the first element (and sometimes the 3rd - ipc-2) are empty <>.
+> >>>>>>>>>
+> >>>>>>>>> The second variant is using mbox-names to get the correct channel-mbox
+> >>>>>>>>> mapping.
+> >>>>>>>>>
+> >>>>>>>>> -               qcom,ipc-1 = <&apcs 8 13>;
+> >>>>>>>>> -               qcom,ipc-2 = <&apcs 8 9>;
+> >>>>>>>>> -               qcom,ipc-3 = <&apcs 8 19>;
+> >>>>>>>>> +               mboxes = <0>, <&apcs 13>, <&apcs 9>, <&apcs 19>;
+> >>>>>>>>>
+> >>>>>>>>> vs.
+> >>>>>>>>>
+> >>>>>>>>> -               qcom,ipc-1 = <&apcs 8 13>;
+> >>>>>>>>> -               qcom,ipc-2 = <&apcs 8 9>;
+> >>>>>>>>> -               qcom,ipc-3 = <&apcs 8 19>;
+> >>>>>>>>> +               mboxes = <&apcs 13>, <&apcs 9>, <&apcs 19>;
+> >>>>>>>>> +               mbox-names = "ipc-1", "ipc-2", "ipc-3";
+> >>>>>>>>
+> >>>>>>>> Sorry, don't get, ipc-1 is the first mailbox, so why would there be <0>
+> >>>>>>>> in first case?
+> >>>>>>>
+> >>>>>>> Actually not, ipc-0 would be permissible by the driver, used for the 0th host
+> >>>>>>>
+> >>>>>>> e.g. from:
+> >>>>>>>
+> >>>>>>> 	/* Iterate over all hosts to check whom wants a kick */
+> >>>>>>> 	for (host = 0; host < smsm->num_hosts; host++) {
+> >>>>>>> 		hostp = &smsm->hosts[host];
+> >>>>>>>
+> >>>>>>> Even though no mailbox is specified in any upstream dts for this 0th host I
+> >>>>>>> didn't want the bindings to restrict that, that's why in the first example
+> >>>>>>> there's an empty element (<0>) for the 0th smsm host
+> >>>>>>>
+> >>>>>>>> Anyway, the question is if you need to know that some
+> >>>>>>>> mailbox is missing. But then it is weird to name them "ipc-1" etc.
+> >>>>>>>
+> >>>>>>> In either case we'd just query the mbox (either by name or index) and then
+> >>>>>>> see if it's there? Not quite sure I understand the sentence..
+> >>>>>>> Pretty sure either binding would work the same way.
+> >>>>>>
+> >>>>>> The question is: does the driver care only about having some mailboxes
+> >>>>>> or the driver cares about each specific mailbox? IOW, is skipping ipc-0
+> >>>>>> important for the driver?
+> >>>>>
+> >>>>> There's nothing special from driver side about any mailbox. Some SoCs have
+> >>>>> a mailbox for e.g. hosts 1&2&3, some have only 1&3, and apq8064 even has
+> >>>>> 1&2&3&4.
+> >>>>>
+> >>>>> And if the driver doesn't find a mailbox for a host, it just ignores it
+> >>>>> but then of course it can't 'ring' the mailbox for that host when necessary.
+> >>>>>
+> >>>>> Not sure how much more I can add here, to be fair I barely understand what
+> >>>>> this driver is doing myself apart from the obvious.
+> >>>>
+> >>>> From what you said, it looks like it is enough to just list mailboxes,
+> >>>> e.g. for ipc-1, ipc-2 and ipc-4 (so no ipc-0 and ipc-3):
+> >>>
+> >>> No, for sure we need also the possibility to list ipc-3.
+> >>
+> >> ? You can list it, what's the problem>
+> > 
+> > Maybe we're talking past each other...
+> > 
+> > You asked why this wouldn't work:
+> > 
+> >   e.g. for ipc-1, ipc-2 and ipc-4 (so no ipc-0 and ipc-3):
+> >   mboxes = <&apcs 13>, <&apcs 9>, <&apcs 19>;
+> > 
+> > How would we know that the 3rd mailbox (&apcs 19) is for the 4th host
+> > (previous ipc-4)?
+> > 
+> > 1. If we use mboxes with indexes we'd need to have <0> values for
+> > "smsm hosts" where we don't have a mailbox for - this is at least
+> > for the 2nd smsm host (qcom,ipc-2) for a bunch of SoCs.
+> > 
+> > 2. If we use mboxes with mbox-names then we could skip that since we
+> > can directly specify which "smsm host" a given mailbox is for.
+> > 
+> > My only question really is whether 1. or 2. is a better idea.
+> > 
+> > Is this clearer now or still not?
+> 
+> 
+> So again, does the driver care about missing entry? If so, why?
 
-Definitely, though I don't expect it to be soon unfortunately, maybe you
-can ask your colleagues though to fix that DPU 1:1:1 topology ;)
+What do you mean with "care"?
 
->
-> Regards,
-> Bjorn
->
-> > ---
-> >  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 36 ++++++++++++++=
-++++++++
-> >  1 file changed, 36 insertions(+)
-> >=20
-> > diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/=
-arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> > index 05bbf1da5cb8..2bbbcaeff95e 100644
-> > --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> > +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> > @@ -14,6 +14,8 @@
-> >  #include <dt-bindings/leds/common.h>
-> >  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
-> >  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-> > +#include <dt-bindings/sound/qcom,q6afe.h>
-> > +#include <dt-bindings/sound/qcom,q6asm.h>
-> >  #include "sc7280.dtsi"
-> >  #include "pm7250b.dtsi"
-> >  #include "pm7325.dtsi"
-> > @@ -774,6 +776,12 @@ &pon_resin {
-> >  	status =3D "okay";
-> >  };
-> > =20
-> > +&q6afedai {
-> > +	dai@104 {
-> > +		reg =3D <DISPLAY_PORT_RX>;
-> > +	};
-> > +};
-> > +
-> >  &qup_spi13_cs {
-> >  	drive-strength =3D <6>;
-> >  	bias-disable;
-> > @@ -847,6 +855,34 @@ &sdhc_2 {
-> >  	status =3D "okay";
-> >  };
-> > =20
-> > +&sound {
-> > +	compatible =3D "fairphone,fp5-sndcard";
-> > +	model =3D "Fairphone 5";
-> > +
-> > +	mm1-dai-link {
-> > +		link-name =3D "MultiMedia1";
-> > +		cpu {
-> > +			sound-dai =3D <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA1>;
-> > +		};
-> > +	};
-> > +
-> > +	displayport-rx-dai-link {
-> > +		link-name =3D "DisplayPort Playback";
-> > +
-> > +		cpu {
-> > +			sound-dai =3D <&q6afedai DISPLAY_PORT_RX>;
-> > +		};
-> > +
-> > +		platform {
-> > +			sound-dai =3D <&q6routing>;
-> > +		};
-> > +
-> > +		codec {
-> > +			sound-dai =3D <&mdss_dp>;
-> > +		};
-> > +	};
-> > +};
-> > +
-> >  &spi13 {
-> >  	status =3D "okay";
-> > =20
-> >=20
-> > --=20
-> > 2.45.0
-> >=20
+I didn't change any behavior to what's happening now, if e.g. qcom,ipc-3
+is not set right now then the driver is okay with that and just won't
+ring the mailbox for that smsm host.
+
+The behavior will be the same with mbox, if a mbox for e.g. the 3rd smsm
+host is not set, the driver is okay with that but then of course won't do
+anything for that host.
+
+See the driver patch for details, or is something unclear there?
+
+Regards
+Luca
+
+> 
+> Best regards,
+> Krzysztof
+> 
+> 
+
+
+
 
