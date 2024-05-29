@@ -1,139 +1,77 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5BF17B4FA;
-	Tue, 28 May 2024 21:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC4415ADB4;
+	Wed, 29 May 2024 02:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716932119; cv=none; b=h3Y7+YmkgL3bOOA9kvM1/fR1etxkHuEeCxOkBrVjPvWjq19Z10vqnIV9TjrzdOXIcdgmBmmYTkvB8sfVBbCUK2hCbDbI+6XdlkVCcfYzuv2fkqxa5BbPJ0Ksm+7LW4+H5sWyLz7KYfpz+X6tHJq/ueMUQdpa9tf/SRF5jAdjKtw=
+	t=1716948131; cv=none; b=aPDotEmrXF4DpT0zlXkFeQJW5Y36+E5pAmxP9UlxfBB799Ssxq+tPoSsWvwFnalhIcVlkX7r39hOhcMBhmY9Qtao1FF2bbq2DnJkD3mIw3nL4pP1iabagoSYc0y9G/zlk5maYb2FaxBc5769oxM6sijBRAd+ihmd5JqpEq6pZ1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716932119; c=relaxed/simple;
-	bh=TTH6TAAHwNlQVXAyaogzfwBqkN2ZRzQ1G1pQrDnBJck=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aeXVN7Ij9eTczx8gKgJKkJhw9Bg4owjBXNNwT62ZXCO+81hSxxmVhy0zI61H5KSsz2owPW++lfM+me+ND92wJQ7cyTIyQA8P3CkOvamgVbCjgrqf659E8xCo9VrNGMfEQtFWf8b4pv/XLQcfbNtVZPa/7f6eus1vVS6Pz9uqWFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oeU4xdkR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1716948131; c=relaxed/simple;
+	bh=EqdTgYkceBoIQL8Pb8DuDRmlex5LCvLWvePTWZP5/DM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YD22yRniTsRzqlT9/I7FUwiAp7gDuy9/7fcTCl95wZ6rmQqQyEXuT72S4CRPsg27Cx6ul/hNzzml8TYeF3EY47kCctwcRfcgh0rLBA4+Bhn76/sB78SxiwpZxnpU4ed/4RM+bkAzK45pBeQzPofPICsBRTbd/iwsliNARyXSMaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TD0Tlbhk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oeU4xdkR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 912C7C3277B;
-	Tue, 28 May 2024 21:35:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TD0Tlbhk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A82C4AF07;
+	Wed, 29 May 2024 02:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716932118;
-	bh=TTH6TAAHwNlQVXAyaogzfwBqkN2ZRzQ1G1pQrDnBJck=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oeU4xdkRJ3X0RbaYEe79r7B1TPu84xeNqYBWKsrZxaMGxOC4XE9s7C/4kRLbJ0Aj0
-	 XEchBORaoDtvvgb/RDIptSSPBfgAUX9UqhFd0E3frxQikLwi35DH0omy5OuCWh3TAH
-	 0AxyXUmioNEpY0e4njH2E969CC7mvkf7YrMRz95tLZcaFXhwbXHiR7zMbvzgeX27SE
-	 fB12XzBMONchtmgAdH5sX+VDItHOlyPPDiv+A3Xcwre/07lWvk5CoQ9Cy2ojvuTg8u
-	 dkHdk9P65p7TglO/ZnmRyItggxNKVv+eGGzavQ/HF3CKHFhc/2EZ1Fp/fqch2jBKqw
-	 su59ULvI41eOw==
-Date: Tue, 28 May 2024 16:35:15 -0500
+	s=k20201202; t=1716948130;
+	bh=EqdTgYkceBoIQL8Pb8DuDRmlex5LCvLWvePTWZP5/DM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TD0Tlbhk5FytrvtuSlWWohyS/fHrlhr1FwdMSCT0mZ66Fhj6xNOHnefUMNqmQ4yDd
+	 DdKEZ/tzDgJqt+3PauhBV3TcRcLK+Hr3RHmxoY6XjHuI2fdtjuZitcFpzkrBmvleYS
+	 c1ZFE2ZlpPkJoLvc7D/wGlV7sQIhkznZff6GN7ugC40D1O5nXUxcp5NJC4ghBXmwaw
+	 90lKveNDDR1+2pGkZuWwuN3Lynw5M0GGEpcPdgcitE4ISfZng550n53GoGXdQa5VpD
+	 NOwEWkE1BZ8vdcVNuG5ZiKuEDiVemhGKpvJfR7qIPDJ8EfzEybnN5xqxCp0bwgFWUa
+	 LVzd8LaTFAkyQ==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: cros-qcom-dts-watchers@chromium.org, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Srinivasa Rao Mandadapu <quic_srivasam@quicinc.com>, Mohammad Rafi Shaik <quic_mohs@quicinc.com>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH DNM 2/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Add
- DisplayPort sound support
-Message-ID: <hqwrfe2tcb6vlxybmn52k3j2xrxbt3vw5rqwudindbhj3s3nez@obkr3ayos6gm>
-References: <20240510-sc7280-apr-v1-0-e9eabda05f85@fairphone.com>
- <20240510-sc7280-apr-v1-2-e9eabda05f85@fairphone.com>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Fenglin Wu <quic_fenglinw@quicinc.com>,
+	Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] Enable vibrator on PMI632 + Fairphone 3
+Date: Tue, 28 May 2024 21:01:50 -0500
+Message-ID: <171694812073.574781.12341406388416596795.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240418-fp3-vibra-v1-0-b636b8b3ff32@fairphone.com>
+References: <20240418-fp3-vibra-v1-0-b636b8b3ff32@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240510-sc7280-apr-v1-2-e9eabda05f85@fairphone.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 10, 2024 at 02:27:09PM GMT, Luca Weiss wrote:
-> Add the required nodes for sound playback via a connected external
-> display (DisplayPort over USB-C).
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
-> Depends on a bunch of patches upstream doing bringup of Display (DSI),
-> DisplayPort, GPU, and then finally audio could land. But we're blocked
-> on DPU 1:1:1 topology for all of that unfortunately.
-> 
-> And also machine driver for sound just exists a bit hackily.
 
-Thanks for sharing this, Luca. Can you please resubmit this once it's
-ready to be merged, so that I don't need to keep track of it?
+On Thu, 18 Apr 2024 08:36:53 +0200, Luca Weiss wrote:
+> With the patches to add vibration support for PMI632 finally applied,
+> let's enable this for the PMI632 PMIC and Fairphone 3 smartphone.
+> 
+> https://lore.kernel.org/linux-arm-msm/20240416-pm8xxx-vibrator-new-design-v11-0-7b1c951e1515@quicinc.com/
+> 
+> Patches have landed in the input tree:
+> https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git/
+> 
+> [...]
 
-Regards,
-Bjorn
+Applied, thanks!
 
-> ---
->  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 36 ++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> index 05bbf1da5cb8..2bbbcaeff95e 100644
-> --- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> +++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-> @@ -14,6 +14,8 @@
->  #include <dt-bindings/leds/common.h>
->  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
->  #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
-> +#include <dt-bindings/sound/qcom,q6afe.h>
-> +#include <dt-bindings/sound/qcom,q6asm.h>
->  #include "sc7280.dtsi"
->  #include "pm7250b.dtsi"
->  #include "pm7325.dtsi"
-> @@ -774,6 +776,12 @@ &pon_resin {
->  	status = "okay";
->  };
->  
-> +&q6afedai {
-> +	dai@104 {
-> +		reg = <DISPLAY_PORT_RX>;
-> +	};
-> +};
-> +
->  &qup_spi13_cs {
->  	drive-strength = <6>;
->  	bias-disable;
-> @@ -847,6 +855,34 @@ &sdhc_2 {
->  	status = "okay";
->  };
->  
-> +&sound {
-> +	compatible = "fairphone,fp5-sndcard";
-> +	model = "Fairphone 5";
-> +
-> +	mm1-dai-link {
-> +		link-name = "MultiMedia1";
-> +		cpu {
-> +			sound-dai = <&q6asmdai MSM_FRONTEND_DAI_MULTIMEDIA1>;
-> +		};
-> +	};
-> +
-> +	displayport-rx-dai-link {
-> +		link-name = "DisplayPort Playback";
-> +
-> +		cpu {
-> +			sound-dai = <&q6afedai DISPLAY_PORT_RX>;
-> +		};
-> +
-> +		platform {
-> +			sound-dai = <&q6routing>;
-> +		};
-> +
-> +		codec {
-> +			sound-dai = <&mdss_dp>;
-> +		};
-> +	};
-> +};
-> +
->  &spi13 {
->  	status = "okay";
->  
-> 
-> -- 
-> 2.45.0
-> 
+[1/2] arm64: dts: qcom: pmi632: Add vibrator
+      commit: bbb1dd6402f9c67ea00bc6bf0e2a01d71db4c7fd
+[2/2] arm64: dts: qcom: sdm632-fairphone-fp3: Enable vibrator
+      commit: ffaa4b5d5d07aed600d82929d8862263ce341a71
+
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
