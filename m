@@ -1,60 +1,59 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E81117D8B1
-	for <phone-devel@vger.kernel.org>; Thu, 30 May 2024 15:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160B417C214
+	for <phone-devel@vger.kernel.org>; Thu, 30 May 2024 15:06:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717081578; cv=none; b=gvrA9pwFgjitOA4qfyWcX3QknLtnJYlx/xDqIj/d52hLojRMiSLhPTfbIMvJ9uDo4bmUBw2PCZeHSO6eu9vbiKZqZT0h7Uzdrk1kCqlRc5RuVJp8fShtAL8wBrcu8qO+IPDhRES3Xs40P62JeLk5lU5Ol9Sg36B84RdRU1Lb+BI=
+	t=1717081578; cv=none; b=ZlkD7qKfHa2zNBvwFgsSrYXfCY140/n8uupD6OOy+kvwwKGSPoPkxG/mkLDv34L46Z0YYbixeIp1j9k3N4QmgJg4gk1kCAMn+eyEd+gGK6LxExTfE54c2E77zdAbjeI5WXDyJ6VYE7u6MovNCROtiMIitCPG1nN67HXRCIH1V9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717081578; c=relaxed/simple;
-	bh=GO53uI6GUbwjaW8cPhjYVSZiLvFTBXg7wMm8WUSxda8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CCPgkRZh6gJ0sizw0PaVmPoVQ0FjyRWofibweHZzNU0gerLstjRZ1kDlbfRsdhjBV8sQeqd9HEHz2Bhw60rc4awWRN6HW64N6QTSqya2P4WPj+mGZuorrPR4NFhpYmjZeky4fUXG06gLifp9xchzHnLfMzXHGub1d8R1MuXKwc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=aUwZM3OV; arc=none smtp.client-ip=209.85.208.50
+	bh=Bu3eUC4zXNscfdIOpLA9uD5yFC8DKBu6iITNVsT2m74=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Z0G9ruvFYkgHORFhg7oRlfYZGVEPV2498vT89Y7FTdxAg9DjPGcUu4zw5b3dJujY4P91AqYY+IZqyv2wMwmDOmadP2NiHf8VSDsas6q+jFVErdTRmSk6kcYol7xmx6wt6iJTjm0nWJHlYxwq/6e8CVAtJbJrAwEo7X9gKe7CGKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=AzT19l+8; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="aUwZM3OV"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-57a1fe639a5so868701a12.1
-        for <phone-devel@vger.kernel.org>; Thu, 30 May 2024 08:06:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="AzT19l+8"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a63036f2daaso106615366b.1
+        for <phone-devel@vger.kernel.org>; Thu, 30 May 2024 08:06:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1717081575; x=1717686375; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MnQFmGhNvzydRfpbiP3XVw/UozOoI6Olw9DBXg7NZ5A=;
-        b=aUwZM3OVIGiEOYv40kXCLtxUHPUG5cLuIG7KXEoUSjM1RmnRge/v5BhYuWRqZOPHUo
-         iXyS0dCblYzg1O59IL7QQZUY2iFdjM2r09uYGJPvepXFyIhuk8BxyEukr2dNTuYyWCic
-         bfTlVbsc4nBOA6m1/4FyAbJzANG/Pmk/ItdJRCPXQss9usHQvn63pDZ75aCUckNv6p9t
-         oEkdkMfMm7GFlP8a9zS4PbjT32Xzpy7r1rJnTTZd2EvSQ1riOYfAX3CE4hsCCsXokfEL
-         VwvY67TDf14uMVvNm9mCkc+a+tXgaEqrwhkAA3yfYdMSARqXyYcKTA7qbfldHML9fEhZ
-         rFxQ==
+        d=fairphone.com; s=fair; t=1717081573; x=1717686373; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JJnwAaQpjN82Mm77xT5tgcdbB47RO3jR/e4Zn+cYjI0=;
+        b=AzT19l+8ierwARZnUaIEf69F7kJdej2heAFi+vqc8p54WUHudOizBczffnFW++TyO8
+         Bkp+KY8OajyilnDa9WibzEXkm/y4qbBCJiDX9EveIJe66xcUpEiP/ng+wbPWoCBpIm3X
+         RJh0AP07Ni2TdJe4yEwM1vVdYhUy/Ut3fdI8y0LYp1qjnYkThvuGkMhC5jszHRf+2ixx
+         ZG/UpOq21GgWrXYtmcwAXSc26+l175zVO1Yd6mjplUYo5dWDFMwiBhS5Lvi9Wtc2YekS
+         7eCVAz667C28HwHU4ynFJvSqnXO2RT2PZb8QMddyaC9plEB2vlUS3449T3MWM1sS7K/B
+         jWtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717081575; x=1717686375;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MnQFmGhNvzydRfpbiP3XVw/UozOoI6Olw9DBXg7NZ5A=;
-        b=X1lK2yu+rkOBnAErPs2OozctY0HX7O10gFEZbsYYO18yWAH9zUM9SoSJE3SjHsGW1h
-         koUPVkuzo+sA90VCBeLVmXll92P7/853PHA8QmP+kCnRRhKqP8IhcqlMrYDUcoL1INe8
-         FtdyJgSQxenA0c08k62NpVKIOn0cX8pxkUdffCDAyZS/29ONqqm5uoF9Tn/4Fm6V69oj
-         arfXa+Dcgx1NUkS7uonI7JnFEuPW6R0nDlRLkxwmCWr0OtqXkVens+xuwA55V25dm86k
-         l1r0bTztOVDGhCJBlsjorrhMKSIajvHI85f7iiTExDdYIrmPisuhGgWZOFt9dytvi+xv
-         ZKAw==
-X-Forwarded-Encrypted: i=1; AJvYcCX3ukk7GD+XeANUQ1gCoTWy6nxVSnluwIEPWOm5SoQmPYoNwxyc/xXeLKEZ9oknXCbQ+/kULb4bd8IrrhAihjF+w0Uf/B5rAKvzvas=
-X-Gm-Message-State: AOJu0Yy5PFNAn4w6TC4+RFvvD+TyczSC0VJI4oMo17lywZOl80vfAkA3
-	stNdJr+dOcTp6k4Gn2zADwDXUsnwjVfh8V1ec088EPBiibYntDQGPaEZjRHJDuk=
-X-Google-Smtp-Source: AGHT+IHBv+u67ofhYHZYMyXJnaNkoyAVZQqwsp7v4/MrGjYuiauM2L/f+UvdpmMs40e+H+xC8NG6Gg==
-X-Received: by 2002:a17:906:4913:b0:a67:403a:4bf0 with SMTP id a640c23a62f3a-a67403a4d73mr30681166b.3.1717081574410;
-        Thu, 30 May 2024 08:06:14 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717081573; x=1717686373;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JJnwAaQpjN82Mm77xT5tgcdbB47RO3jR/e4Zn+cYjI0=;
+        b=YJJmv1aqwgd6usEZhgFs9CHECGP1itGaR5maus+b1PIcUvbDXO4XJRSgHbODdeekdh
+         Jb/7fvUe+Auk2ozqPRlLoOMtt4XtvjBGkoI1zhwj7tU/Z7YMUsBoi39WdjIDDTbwU/NH
+         veaW3dp8K9FkhxG2HkBA4fdEF3GMtsKD1BHS1dWBG29iLHbo726rNabB3nk/rjzI4wE5
+         YXWsfUaiSRPUP9X9l5KLt5Gu/Gqn+MBqdbnl6lRm1YPvNJfFcwg4my9imwHvQePd+GnD
+         h2PNxHg2uGFbArz8sdec6D8dzGmC73CWCccK2WQzLi3XxLcotVqQkROTzcx7Yi46Ov3g
+         g+fQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUIhATJ68SaGiTCVZB7OyzYO5uDO8NBdK3VkEyXVNTRxOb7SJZWxoY8uTWhfDqbcCrugLc8LPgo7NI2mUgHFzgFFFckYftZsxdplaU=
+X-Gm-Message-State: AOJu0Yz5d4XTnXpsZHGJpZUH0GHZ+8z7ntm3ua4qLq2Y6eQGTMf08SoZ
+	9wdc8vE9wIGV8s2ep3cy/oP0rCeYNJ6MHLl36w8josG5CoFWoZACOkHu8eKSnMI=
+X-Google-Smtp-Source: AGHT+IFwM84B436/a3wmQnrKDqwgfU8pKRsAVsHO3PtYHV7JTyw3SgobDAJDf7LdUwKjvwM6hBtLMA==
+X-Received: by 2002:a17:906:5694:b0:a5a:1b47:dab3 with SMTP id a640c23a62f3a-a65e8e5d4a5mr173703866b.25.1717081573409;
+        Thu, 30 May 2024 08:06:13 -0700 (PDT)
 Received: from otso.luca.vpn.lucaweiss.eu (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a67430f8457sm13531066b.122.2024.05.30.08.06.14
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a67430f8457sm13531066b.122.2024.05.30.08.06.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 May 2024 08:06:14 -0700 (PDT)
+        Thu, 30 May 2024 08:06:13 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Thu, 30 May 2024 17:05:48 +0200
-Subject: [PATCH v3 2/3] arm64: dts: qcom: pm7250b: Add a TCPM description
+Subject: [PATCH v3 0/3] Add TCPM support for PM7250B and Fairphone 4
+Date: Thu, 30 May 2024 17:05:46 +0200
+Message-Id: <20240530-fp4-tcpm-v3-0-612d4bbd5e09@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -63,9 +62,10 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240530-fp4-tcpm-v3-2-612d4bbd5e09@fairphone.com>
-References: <20240530-fp4-tcpm-v3-0-612d4bbd5e09@fairphone.com>
-In-Reply-To: <20240530-fp4-tcpm-v3-0-612d4bbd5e09@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIAMqVWGYC/22Myw6DIBQFf8WwLg0CFx+r/kfTheVR70IhYEgb4
+ 78XXZmmyzk5MytJNqJNpK9WEm3GhH4uIC4V0eMwvyxFU5hwxiUTnFMXJF10mCgfjGqtAxBSkXI
+ P0Tp8H6n7o/CIafHxc5Rzva9/IrmmjGpQUrKuM9A8b27AGEY/26v2E9lDmZ/l7iTzIpvGtdrUC
+ gTAr7xt2xcJ/CwE4QAAAA==
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
@@ -76,71 +76,56 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 X-Mailer: b4 0.13.0
 
-Type-C port management functionality lives inside of the PMIC block on
-pm7250b.
+This series adds support for Type-C Port Management on the Fairphone 4
+which enables USB role switching and orientation switching.
 
-The Type-C port management logic controls orientation detection,
-vbus/vconn sense and to send/receive Type-C Power Domain messages.
+This enables a user for example to plug in a USB stick or a USB keyboard
+to the Type-C port.
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+To: Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht
+Cc: phone-devel@vger.kernel.org
+Cc: linux-arm-msm@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+
+Changes in v3:
+- Disable pm7250b typec node by default since on some platforms the ADSP
+  firmware will manage it and not Linux (Bjorn)
+- Move usb-role-switch and orientation-switch to dtsi (Konrad) - update
+  sony-lena also as per https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/commit/?id=dad66630a083263b513448426523a3b52a959c79
+- Link to v2: https://lore.kernel.org/r/20240329-fp4-tcpm-v2-0-d7f8cd165355@fairphone.com
+
+Changes in v2:
+- Move disabled as last property for pm7250b_vbus
+- Update USB graph to newer version, connect both HS and SS signals
+- Update FP4 Type-C properties, try to keep phone charging intact by
+  disabling USB PD for now
+- Pick up tags
+- Drop patches that landed in linux-next already
+- Link to v1: https://lore.kernel.org/r/20240322-fp4-tcpm-v1-0-c5644099d57b@fairphone.com
+
 ---
- arch/arm64/boot/dts/qcom/pm7250b.dtsi | 40 +++++++++++++++++++++++++++++++++++
- 1 file changed, 40 insertions(+)
+Luca Weiss (3):
+      arm64: dts: qcom: pm7250b: Add node for PMIC VBUS booster
+      arm64: dts: qcom: pm7250b: Add a TCPM description
+      arm64: dts: qcom: sm7225-fairphone-fp4: Enable USB role switching
 
-diff --git a/arch/arm64/boot/dts/qcom/pm7250b.dtsi b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-index 4faed25a787f..7dc7262f1537 100644
---- a/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pm7250b.dtsi
-@@ -51,6 +51,46 @@ pm7250b_vbus: usb-vbus-regulator@1100 {
- 			status = "disabled";
- 		};
- 
-+		pm7250b_typec: typec@1500 {
-+			compatible = "qcom,pm7250b-typec", "qcom,pm8150b-typec";
-+			reg = <0x1500>,
-+			      <0x1700>;
-+			interrupts = <PM7250B_SID 0x15 0x00 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x15 0x01 IRQ_TYPE_EDGE_BOTH>,
-+				     <PM7250B_SID 0x15 0x02 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x15 0x03 IRQ_TYPE_EDGE_BOTH>,
-+				     <PM7250B_SID 0x15 0x04 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x15 0x05 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x15 0x06 IRQ_TYPE_EDGE_BOTH>,
-+				     <PM7250B_SID 0x15 0x07 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x00 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x01 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x02 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x03 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x04 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x05 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x06 IRQ_TYPE_EDGE_RISING>,
-+				     <PM7250B_SID 0x17 0x07 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "or-rid-detect-change",
-+					  "vpd-detect",
-+					  "cc-state-change",
-+					  "vconn-oc",
-+					  "vbus-change",
-+					  "attach-detach",
-+					  "legacy-cable-detect",
-+					  "try-snk-src-detect",
-+					  "sig-tx",
-+					  "sig-rx",
-+					  "msg-tx",
-+					  "msg-rx",
-+					  "msg-tx-failed",
-+					  "msg-tx-discarded",
-+					  "msg-rx-discarded",
-+					  "fr-swap";
-+			vdd-vbus-supply = <&pm7250b_vbus>;
-+			status = "disabled";
-+		};
-+
- 		pm7250b_temp: temp-alarm@2400 {
- 			compatible = "qcom,spmi-temp-alarm";
- 			reg = <0x2400>;
+ arch/arm64/boot/dts/qcom/pm7250b.dtsi              | 46 +++++++++++++++++
+ .../dts/qcom/sm6350-sony-xperia-lena-pdx213.dts    |  1 +
+ arch/arm64/boot/dts/qcom/sm6350.dtsi               | 50 +++++++++++++++++++
+ arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts  | 58 +++++++++++++++++++++-
+ 4 files changed, 154 insertions(+), 1 deletion(-)
+---
+base-commit: 4adcd8f0525c79f058c10e3ecaaba74932f6ffff
+change-id: 20240322-fp4-tcpm-2ad68ef55346
 
+Best regards,
 -- 
-2.45.1
+Luca Weiss <luca.weiss@fairphone.com>
 
