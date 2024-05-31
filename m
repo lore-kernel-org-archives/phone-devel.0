@@ -1,128 +1,70 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7F6158DB7
-	for <phone-devel@vger.kernel.org>; Fri, 31 May 2024 12:38:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462321E498
+	for <phone-devel@vger.kernel.org>; Fri, 31 May 2024 12:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717159091; cv=none; b=kORvuFt1JHd1wZC+oaNPLrf0N7TsVYSTUhLf8XPzOG3Dtgv90VfxI+0DjjqRLf6BLIHMQ5awOocnYN33GbAEuyBbBB9LY5Y1tlWctgXxXLUcHsyGwO2dXjlxbo6o47DQ0cv1T9E2v02u3/nsIEplSYDpWYDV/nAmh8ZV6pOSj/g=
+	t=1717159498; cv=none; b=hNb2NlM6GmbzRMhDXiHxTGxN8b6hZOPEUUcU8FeZIOX97MeCVVlrKDbU/Pgj60YOp3SseqH4GCTH0fVEcrsnpEPwec71kXkVcW2F0XUidbG8cYMHYR8Qn0yK4LFlbZRCz4LLLdkTsVIPGCksdVvkdt8EpuGxjG4wAHHlYkYyPYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717159091; c=relaxed/simple;
-	bh=4vLBGvVnHAnKmOa4OubUm5uxUfa+Q+USI+QFNvbihRU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sAGc1MomKyY+QnpLhsAl8WUkpxFCmN+ZA8MqgrYkBHRJ9hMecExptob1Lre6h9OQWjkEnz0zjq0pDZfE7rkT2Pwna5zWWYKQymaxJtvXTY61jDXBMxYLvZEtc5G4FPB8iljOBn1rY6RqFI8mATFHDFmdfv92jjWD+cmEQ57OdEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CZ74ppkH; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1717159498; c=relaxed/simple;
+	bh=j3zELr11wAr2T/LDeGR4AWOm8DUZXiiI/tAHtsZJGPY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Cc:Subject:To:
+	 References:In-Reply-To; b=HRpaNhePhIXoXAZ3tjH1I8VJsDa24ffMdwZkiSkUnvtJWWriqpRZ6ynUrPLNNJFY8ziQVw5eOIdT14Lyco0pl4/c/iwb1wosIYU9TA8RDLEsbsiHrroTnliNV3M+PJjsZsBK7B5VVn6AgjpWy1qbFcP0YVz39adj9RQm5dkOKp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=ZuTSZMJe; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CZ74ppkH"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a6265d47c61so88444166b.0
-        for <phone-devel@vger.kernel.org>; Fri, 31 May 2024 05:38:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717159088; x=1717763888; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=bKfOxPrq22Dykg9czPhtJUcNoZdQTkpeJKshafenJHk=;
-        b=CZ74ppkHcQGmkTxNWR8I0Gk/camysgG/HF9yvtzlpkaDgKqCqqnLUJ6n+2lXLX68mP
-         iE60xesSyjPsK+BVqIEb1nqx5nEEILVsuO8et9bcpOrRIMjhszD4YW4dcjiUmt8uODpk
-         74+hMtfFKGEt3Pj/Gx7e3LWCJqt5kjELKxMBosZ7OEabYKrp+DAe2vQVEXyLz1odBZ0C
-         JZCXcJN9kXNy7Ei68vXZwWRWFIPNItb9RUMC+/OwMMk4hf6Kf2Mi4VdVVjahXDRJSCEi
-         3/tgAR3Mzxl5PE55ht0fx7Q6QOUglqlSU4ButK6IKSNhR843TmYqz0202svXPJwgoWVB
-         /7Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717159088; x=1717763888;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bKfOxPrq22Dykg9czPhtJUcNoZdQTkpeJKshafenJHk=;
-        b=jL8coG4RcZnwh4TvwVvvUJX6dIo5LLeD586CTzpFFKxeq3QoQid7ZcjGzcP71piF4g
-         clhKqbmlRb/+o2zGC8wPrc2TKsLZUL7WRZGlYP/9fbNolhKSCiqm6908lIim+vBf8cpz
-         OtUOA34dCzroGDo8wf6hViNA6O+VLBJ4+52KaWYhycZMpj0buBf4VY6pxTw9TR/PER2V
-         DMf8J4rQPiyNzon8cuFcnobxAKCKMpUSrAlnVYGNexULyzaswTEfo+jTyBDGyhYXfWVq
-         MXt/utq7ItmVID8Ozj9dxiJoFSo4zAfbz7qad7TVXYkuFt8N1FiM//phmoNcyZDVbpxx
-         kMgg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPD6q/u8LPQHFKn9Dkefn592e6+e4zqJFEf2AZBZvWc9dW63J2K8YlrVG5ToBueDb4EaD65g4xnBA1b2V/K6JeVzDHw2K6qUCfTYc=
-X-Gm-Message-State: AOJu0YwEoY/oZED6k8xo9rACxan8LfrR0WcVgWZ562FhBbyxvgeH5KGP
-	wG0ey7VIgLgFq9MDtPFBg1gY5ud6lBHVm2aW35c1rnHxLjnn0L2deB3VFUfjQ+U=
-X-Google-Smtp-Source: AGHT+IHuwxxm+rWgogEQN0YtMEo9BZiQVwkTCW9oGhNmBCYwplNp5EbKHHR2d5KwoRmDCRzbM5FccA==
-X-Received: by 2002:a17:906:1e55:b0:a63:36c0:eaaf with SMTP id a640c23a62f3a-a682022c9f4mr127263466b.20.1717159088042;
-        Fri, 31 May 2024 05:38:08 -0700 (PDT)
-Received: from [192.168.128.139] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a67e73f9bacsm82754766b.59.2024.05.31.05.38.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 May 2024 05:38:07 -0700 (PDT)
-Message-ID: <eaa0c93a-ed28-421e-8302-c98f862d1149@linaro.org>
-Date: Fri, 31 May 2024 14:38:05 +0200
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="ZuTSZMJe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1717158298; x=1718458298;
+	bh=j3zELr11wAr2T/LDeGR4AWOm8DUZXiiI/tAHtsZJGPY=; h=From;
+	b=ZuTSZMJet4i9VeXGsgo6zjXsySY2GbUUibTJC7Ft3KWuulP+uEAjcRIVaR7yd0rWS
+	 pQZiAX0yX3t2C3tjqCVbpjVj9Sgj+CmTwmtrE4qai92Ft1BH9smPUNoxQjFj9NVfQ5
+	 cClmSeUjBJTEOfUUCJBkkFBrvjf1IB+hRpV5DHwInaGLREbDFNMjvLdb3IQuNJnjUy
+	 WA+sFZEZgggocfo044c45cOFkBnjadDcFtKkHthi3QDR+r3rMmv4oet2gA39RuBNjr
+	 Q/46nAXZ2whnqDJoo1RnF0cewzUE83si5m4xubDbf1tFChkiImtzQqlIdtn3Uu0q+4
+	 HbD8YLenRzV5g==
+Received: from localhost (koleje-wifi-0030.koleje.cuni.cz [78.128.191.30])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 44VCOusK091417
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Fri, 31 May 2024 14:24:58 +0200 (CEST)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] arm64: dts: qcom: pm7250b: Add node for PMIC VBUS
- booster
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-References: <20240530-fp4-tcpm-v3-0-612d4bbd5e09@fairphone.com>
- <20240530-fp4-tcpm-v3-1-612d4bbd5e09@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20240530-fp4-tcpm-v3-1-612d4bbd5e09@fairphone.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Fri, 31 May 2024 14:25:35 +0200
+Message-Id: <D1NTTT150IQO.CG5KVUTS4BU7@matfyz.cz>
+From: "Karel Balej" <balejk@matfyz.cz>
+Cc: "Rob Herring" <robh@kernel.org>,
+        "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>,
+        "Conor Dooley" <conor+dt@kernel.org>,
+        "Dmitry
+ Torokhov" <dmitry.torokhov@gmail.com>,
+        "Liam Girdwood"
+ <lgirdwood@gmail.com>,
+        "Mark Brown" <broonie@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-input@vger.kernel.org>,
+        =?utf-8?q?Duje_Mihanovi=C4=87?=
+ <duje.mihanovic@skole.hr>,
+        <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
+Subject: Re: [PATCH v6 2/5] mfd: add driver for Marvell 88PM886 PMIC
+To: "Lee Jones" <lee@kernel.org>
+References: <20240504194632.2456-1-balejk@matfyz.cz>
+ <20240504194632.2456-3-balejk@matfyz.cz>
+ <20240531102409.GB1005600@google.com>
+In-Reply-To: <20240531102409.GB1005600@google.com>
 
-On 30.05.2024 5:05 PM, Luca Weiss wrote:
-> Add the required DTS node for the USB VBUS output regulator, which is
-> available on PM7250B. This will provide the VBUS source to connected
-> peripherals.
-> 
-> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
+Lee Jones, 2024-05-31T11:24:52+01:00:
+> Are you planning on seeing to Mark's review comments?
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Indeed, I'm hoping that I will be able to send it over the weekend.
 
-Konrad
+K. B.
