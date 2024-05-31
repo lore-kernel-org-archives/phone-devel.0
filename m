@@ -1,33 +1,60 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD7B158204;
-	Fri, 31 May 2024 12:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7F6158DB7
+	for <phone-devel@vger.kernel.org>; Fri, 31 May 2024 12:38:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717158058; cv=none; b=vBYis+iTImvPHwB1aHmsjPub0tx+X8qyTQ4B/De3zRMPY6Q6JkSxslYNgKza/OOvkYS3NG5eAO/YnnEnHhSuU69UkSdmhtnM8KhGJ/ImsVHmJiQiRh05WQW0+evj29Kw2NS9NLivsiVtY6WcEMYNLUY2kprTjCTXSSH3kSmcb1w=
+	t=1717159091; cv=none; b=kORvuFt1JHd1wZC+oaNPLrf0N7TsVYSTUhLf8XPzOG3Dtgv90VfxI+0DjjqRLf6BLIHMQ5awOocnYN33GbAEuyBbBB9LY5Y1tlWctgXxXLUcHsyGwO2dXjlxbo6o47DQ0cv1T9E2v02u3/nsIEplSYDpWYDV/nAmh8ZV6pOSj/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717158058; c=relaxed/simple;
-	bh=CLb4nc7zHy/4lA+iIunEoR/yXcUjZMPWGPs38C1AKzw=;
+	s=arc-20240116; t=1717159091; c=relaxed/simple;
+	bh=4vLBGvVnHAnKmOa4OubUm5uxUfa+Q+USI+QFNvbihRU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dTXig1V1uXdDYL8lm5M0rTsr7cfWCbQWiSwft2EoZlaL7NX6pidIlt8ZU+KLF92V8W97F2h5HKw6Vxk38ydrCGwsSMjDy8lJo1Z64fcyYsoimeIPRJ5DzgjzW3us+a4Gpa/hYN0I6FGl0QYa5Zg3cIOVxqKxQSGJYz5RL7M8bVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ok60HvB3; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=sAGc1MomKyY+QnpLhsAl8WUkpxFCmN+ZA8MqgrYkBHRJ9hMecExptob1Lre6h9OQWjkEnz0zjq0pDZfE7rkT2Pwna5zWWYKQymaxJtvXTY61jDXBMxYLvZEtc5G4FPB8iljOBn1rY6RqFI8mATFHDFmdfv92jjWD+cmEQ57OdEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CZ74ppkH; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ok60HvB3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF54C116B1;
-	Fri, 31 May 2024 12:20:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717158058;
-	bh=CLb4nc7zHy/4lA+iIunEoR/yXcUjZMPWGPs38C1AKzw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Ok60HvB3ccfGBiUvGIXKfl0wl6tmGKLLF0HT0mcVsLNfKkj5GqpLJ8x6rkfCx3cog
-	 WtIEv7kHodTz/nQqQrhcsQvWbn4s3p+A0f1NRFEUuDJmLFsagp/S49cy/1GIREu8DQ
-	 dZKC+LsPQzAO23Umsic10EL2F6RvHOlbKCI+lvqBzhHuvQC8uwFfnrW/8Gc9Cf+3E+
-	 1IC6jzWy06tp/ePmYwWKFkS2aEuLxXiV6OYKFpGhIGw1MfEE5Lmd1JTypZp7yrkP9L
-	 CrLfdqOh7Z7/tm61SY9Vc1tOTTXGloRev74x5HMte+C7SE+dn1oP/17HyMsNy5b5Nq
-	 mLvNs1Nmsy1gA==
-Message-ID: <fb1f7539-d96c-4c66-8c7f-d232dd163e6f@kernel.org>
-Date: Fri, 31 May 2024 14:20:53 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CZ74ppkH"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a6265d47c61so88444166b.0
+        for <phone-devel@vger.kernel.org>; Fri, 31 May 2024 05:38:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1717159088; x=1717763888; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=bKfOxPrq22Dykg9czPhtJUcNoZdQTkpeJKshafenJHk=;
+        b=CZ74ppkHcQGmkTxNWR8I0Gk/camysgG/HF9yvtzlpkaDgKqCqqnLUJ6n+2lXLX68mP
+         iE60xesSyjPsK+BVqIEb1nqx5nEEILVsuO8et9bcpOrRIMjhszD4YW4dcjiUmt8uODpk
+         74+hMtfFKGEt3Pj/Gx7e3LWCJqt5kjELKxMBosZ7OEabYKrp+DAe2vQVEXyLz1odBZ0C
+         JZCXcJN9kXNy7Ei68vXZwWRWFIPNItb9RUMC+/OwMMk4hf6Kf2Mi4VdVVjahXDRJSCEi
+         3/tgAR3Mzxl5PE55ht0fx7Q6QOUglqlSU4ButK6IKSNhR843TmYqz0202svXPJwgoWVB
+         /7Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717159088; x=1717763888;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bKfOxPrq22Dykg9czPhtJUcNoZdQTkpeJKshafenJHk=;
+        b=jL8coG4RcZnwh4TvwVvvUJX6dIo5LLeD586CTzpFFKxeq3QoQid7ZcjGzcP71piF4g
+         clhKqbmlRb/+o2zGC8wPrc2TKsLZUL7WRZGlYP/9fbNolhKSCiqm6908lIim+vBf8cpz
+         OtUOA34dCzroGDo8wf6hViNA6O+VLBJ4+52KaWYhycZMpj0buBf4VY6pxTw9TR/PER2V
+         DMf8J4rQPiyNzon8cuFcnobxAKCKMpUSrAlnVYGNexULyzaswTEfo+jTyBDGyhYXfWVq
+         MXt/utq7ItmVID8Ozj9dxiJoFSo4zAfbz7qad7TVXYkuFt8N1FiM//phmoNcyZDVbpxx
+         kMgg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPD6q/u8LPQHFKn9Dkefn592e6+e4zqJFEf2AZBZvWc9dW63J2K8YlrVG5ToBueDb4EaD65g4xnBA1b2V/K6JeVzDHw2K6qUCfTYc=
+X-Gm-Message-State: AOJu0YwEoY/oZED6k8xo9rACxan8LfrR0WcVgWZ562FhBbyxvgeH5KGP
+	wG0ey7VIgLgFq9MDtPFBg1gY5ud6lBHVm2aW35c1rnHxLjnn0L2deB3VFUfjQ+U=
+X-Google-Smtp-Source: AGHT+IHuwxxm+rWgogEQN0YtMEo9BZiQVwkTCW9oGhNmBCYwplNp5EbKHHR2d5KwoRmDCRzbM5FccA==
+X-Received: by 2002:a17:906:1e55:b0:a63:36c0:eaaf with SMTP id a640c23a62f3a-a682022c9f4mr127263466b.20.1717159088042;
+        Fri, 31 May 2024 05:38:08 -0700 (PDT)
+Received: from [192.168.128.139] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a67e73f9bacsm82754766b.59.2024.05.31.05.38.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 31 May 2024 05:38:07 -0700 (PDT)
+Message-ID: <eaa0c93a-ed28-421e-8302-c98f862d1149@linaro.org>
+Date: Fri, 31 May 2024 14:38:05 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -35,77 +62,67 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: sm8550-samsung-q5q: fix typo
-To: David Wronek <david@mainlining.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Alexandru Marc Serdeliuc <serdeliuk@yahoo.com>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+Subject: Re: [PATCH v3 1/3] arm64: dts: qcom: pm7250b: Add node for PMIC VBUS
+ booster
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240531-fix-typo-q5q-v1-1-95f10a8eff9b@mainlining.org>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ linux-kernel@vger.kernel.org, Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+References: <20240530-fp4-tcpm-v3-0-612d4bbd5e09@fairphone.com>
+ <20240530-fp4-tcpm-v3-1-612d4bbd5e09@fairphone.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240531-fix-typo-q5q-v1-1-95f10a8eff9b@mainlining.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20240530-fp4-tcpm-v3-1-612d4bbd5e09@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 31/05/2024 14:05, David Wronek wrote:
-> It looks like "cdsp_mem" was pasted in the license header by accident.
-> Fix the typo by removing it.
+On 30.05.2024 5:05 PM, Luca Weiss wrote:
+> Add the required DTS node for the USB VBUS output regulator, which is
+> available on PM7250B. This will provide the VBUS source to connected
+> peripherals.
 > 
-> Signed-off-by: David Wronek <david@mainlining.org>
+> Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 > ---
->  arch/arm64/boot/dts/qcom/sm8550-samsung-q5q.dts | 2 +-
 
-Fixes: ba2c082a401f ("arm64: dts: qcom: sm8550: Add support for Samsung Galaxy Z Fold5")
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-
-Best regards,
-Krzysztof
-
+Konrad
