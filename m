@@ -1,49 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E6C134A8;
-	Sun,  2 Jun 2024 03:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6182C684;
+	Sun,  2 Jun 2024 03:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717300434; cv=none; b=eZGfiql8sYcJ0e2oGlLIwAq6ni4mvQKY37qtbCyXhFVyJmg1d08CClqIcG8Q6P9KJREUx7z/bmQrZhilsWYVS6N3X2Ya5eB3+un0YW0a/LPTYRkQQXymUAKRh5RS4I5yfW4TxeaQqlgepI+Z7SGhQozQ2HeG4XddOW57omLel3E=
+	t=1717300437; cv=none; b=Dk6NAPohOSOLFEZ3Ygx233W1eFyuzlWiHUI3n/X4pkdS5DxOduz3+OyKJx5BMvJS7VBon9JC1xWbhxNG2ZMCWq5tJpp4xklI93xaOxy+TWQkUcZ9eHXCYkfZKu+FcXtDEBDubQ6/dtcp1xvB5Z4Rm3r6kcUmpQGlQ4rS0mnk2Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717300434; c=relaxed/simple;
-	bh=uxGiLC94HoCcq12DaCtK5e2W7kOkXuvieOZLcz0FbeQ=;
+	s=arc-20240116; t=1717300437; c=relaxed/simple;
+	bh=0FO7HQk1B3IW1VhjRWBeL2++zaYULQjVh2dhKPf5UsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aYMoAw0wn/zyhx2+f/QYd5sLTBPoDu1I9iC9zDoaaZPyt2BlLoblE4VF0M37zCS42OUvhrEiaVPhYfTv38pyHtX6LJh7BadQEvLvdzsYW5F7+X0gal0sgtktidrAWEFW3h7XcgTovOJpRsv7MtDNvbXTLre6fsC/ElNBPOU4o0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PCKvZcFe; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=luQjHRfRQiRiVYSqzt6HUW7Uzok+KRyLhbtz0JbQHnZxuuVGQdqyWxDg86GVdrPXmayOduVQyHStuCptanwa+wDJNMWjgVgX7J8Jr3FxiwIA1oJhKtaMpIL/jZBEJbkksJmtDRZKreoRhc+oGhJYiji5drhHgy2YrHJdVMu9/Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YPpk3eGB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PCKvZcFe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3791EC4AF0B;
-	Sun,  2 Jun 2024 03:53:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YPpk3eGB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F04C4AF0B;
+	Sun,  2 Jun 2024 03:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717300434;
-	bh=uxGiLC94HoCcq12DaCtK5e2W7kOkXuvieOZLcz0FbeQ=;
+	s=k20201202; t=1717300437;
+	bh=0FO7HQk1B3IW1VhjRWBeL2++zaYULQjVh2dhKPf5UsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCKvZcFeBlYTge43DZccXu/HTSGuii9Hvxm/UbUzpDoNHrMZCeH3TsgiFAuUp5Sab
-	 Q9qUGpQkhfkdYSu2vLmnsVwY9wDm9jhAuN7ATRdVeYV1n4+GLezrzsCa0AE41a2LA2
-	 w3hQ1gizH8qA/vMq24UrbSGLleOt912SHb6xKyve7gqQQNso6QjHRX8E5hEoptCxOY
-	 ZEwL70d2I+A+fv2kEtB9EKrMLwDqWVkmClPUgPWORvTsG+N8k7gzPIe0KS8YMBIPwl
-	 tB7OFicVNvXw3S8GUvWDGFC66/2XgSSyOSpdQqwq+r2RzQmYskZUBkuNTx+9i5qbLd
-	 KsqLnd4bmYTLg==
+	b=YPpk3eGBUsWw17aOb+oGiU9U14pYUGfjvQG2vHMblb8CmP6bOR41NJ11KI6tJCwBn
+	 Wl4BpAtsJjpDMeREFF7fDEsV/rsaxqWF63yZnDmmAo5af9AShv5i8o6PES67vDCBMi
+	 xv1HM3UAKqnvzcA2urvaNMLhGmi9oZ9dm5swAJROFlAJgMyISNZah/EQOleOnTN2v2
+	 9yA5cygGVHOD6JKHQ+u7lFfAOpaz5TYJGoAW4+LHCB0q60S5yDQyv7gO94pSpJRD2p
+	 O++PQwvReGvCgPQT7J/1dFHt5eUHCq2iujWlDUM2WbdCHSsW0kZ+qs4oBtwiVCBkVq
+	 P0UrXjFqF/roA==
 From: Bjorn Andersson <andersson@kernel.org>
 To: Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Alexandru Marc Serdeliuc <serdeliuk@yahoo.com>,
-	David Wronek <david@mainlining.org>
-Cc: phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
+	Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom: sm8550-samsung-q5q: fix typo
-Date: Sat,  1 Jun 2024 22:53:40 -0500
-Message-ID: <171730042579.665897.11378108730114576749.b4-ty@kernel.org>
+	linux-kernel@vger.kernel.org,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: Re: [PATCH v2 0/3] Add TCPM support for PM7250B and Fairphone 4
+Date: Sat,  1 Jun 2024 22:53:43 -0500
+Message-ID: <171730042576.665897.6341252590136883474.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240531-fix-typo-q5q-v1-1-95f10a8eff9b@mainlining.org>
-References: <20240531-fix-typo-q5q-v1-1-95f10a8eff9b@mainlining.org>
+In-Reply-To: <20240329-fp4-tcpm-v2-0-d7f8cd165355@fairphone.com>
+References: <20240329-fp4-tcpm-v2-0-d7f8cd165355@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -54,16 +54,35 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Fri, 31 May 2024 14:05:59 +0200, David Wronek wrote:
-> It looks like "cdsp_mem" was pasted in the license header by accident.
-> Fix the typo by removing it.
+On Fri, 29 Mar 2024 13:26:18 +0100, Luca Weiss wrote:
+> This series adds support for Type-C Port Management on the Fairphone 4
+> which enables USB role switching and orientation switching.
 > 
+> This enables a user for example to plug in a USB stick or a USB keyboard
+> to the Type-C port.
 > 
+> To: Bjorn Andersson <andersson@kernel.org>
+> To: Konrad Dybcio <konrad.dybcio@linaro.org>
+> To: Rob Herring <robh@kernel.org>
+> To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+> To: Conor Dooley <conor+dt@kernel.org>
+> Cc: ~postmarketos/upstreaming@lists.sr.ht
+> Cc: phone-devel@vger.kernel.org
+> Cc: linux-arm-msm@vger.kernel.org
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> 
+> [...]
 
 Applied, thanks!
 
-[1/1] arm64: dts: qcom: sm8550-samsung-q5q: fix typo
-      commit: a5c84d2dde8089ece5e13f264359c6117ea3186b
+[1/3] arm64: dts: qcom: pm7250b: Add node for PMIC VBUS booster
+      commit: 37ff5d0d75fece536cc493d0979e09f33edb75c4
+[2/3] arm64: dts: qcom: pm7250b: Add a TCPM description
+      commit: 6b5b15a1d785d5fb484d3a662b01776066d33137
+[3/3] arm64: dts: qcom: sm7225-fairphone-fp4: Enable USB role switching
+      commit: 6814d454c26b552f0009c803ffc0ce3434eaed7e
 
 Best regards,
 -- 
