@@ -1,132 +1,128 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCB52D057
-	for <phone-devel@vger.kernel.org>; Mon,  3 Jun 2024 06:39:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1592D60C;
+	Mon,  3 Jun 2024 06:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717396788; cv=none; b=r2QWerumfDna3EhIoOxwSCCXzYO+61SyFWy2j+Y2n7YNmCq9FoiPP5NPpYOVogW1NZ9/ZbKrXvL1O6pWnv1Nuxc5rA2C+m5HJk73+f1raDWh7Y82IZUZ28/SGD2QlGcETWRYZFsW6iH+CEFese+WROO6UN2uR0wt9c6FDDe4iJc=
+	t=1717397718; cv=none; b=Ewu4j9ng9myoIoHyo08ml8Wjh6+X40clnG4knCxJgz29jAseZ86eiBNcQnxF0lvpYqU9beK8XUY9RVZE9gJs917hTePEYmRxVuvVsC3ss4ZyviF5uOEHRN6Qj9lLlE2FnLchr8bcQ9DOgE2oNMn/2xvG7U+tZN8Doik4IV9VbSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717396788; c=relaxed/simple;
-	bh=6zIG1+ce+MFr3YKcNcxLW9ehBTfd0YUfDO7c/QJPUfc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=aipSrCSwqQps9sEAqisILbnvuGy/stb0WB4BdgRocbp8JyYG1zQ6TIn1T11f6rgwmuzAnsP+6Vn0ut/TcZkTydNft8aAOzrtNNxzlVjC1c2DqZXFFfKwrIGbacaRjNxKIYdriu17YMF1EByvlMAv34ABDRNT2mkSfN5Jvyu0BaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Wj3ii0ir; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1717397718; c=relaxed/simple;
+	bh=pyRQtkhhfLcJlAEDvXUS6mlZcNFVvKq64xR2x+dpuG0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kln6EwX70vn/19AnFcI4sWCA4SOSEIqqgS6hI9zeE9w44I1RXaTXPRgd7YVOYTW0zlPk9Sir720/7unTocb2rS8BpqhvvjCWt0Yr4UVgpuRf/y43n68t8lrE0oGvMC2hCYQCuQtRYpru1No7ss6hmF4xDfUTKUoDzJDyjwNq8+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mwcw+0/n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Wj3ii0ir"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-57a1fe6392eso4429551a12.0
-        for <phone-devel@vger.kernel.org>; Sun, 02 Jun 2024 23:39:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1717396785; x=1718001585; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4/kSWlsZgItMKs0n3WD4Nrf7fVlEdWxgIbQ1jzkl5d4=;
-        b=Wj3ii0irnq4Z9rAan3f6ck/rRUr308vMh2w808luWnsz6kErhJ/vcaf+q+QxQWco5U
-         hWbguK9Ich9Ac+qIwNqGoqqxCbKelhpqB42vpR/mrTX5/YWx24FnOcWe6ePzrhJRsW/m
-         c70RfESusN8DRhTcchefkuQp+gQ6vQtBd7R1zAIu+NvQZ2dhskmquek2SJ/YqUKdm+c0
-         9waOd4iKez4bMc4qfaMOeWtQIG66tcAQz3zChCkn7lUD+RPcxDndj8ZK9TLum3u3JQzw
-         gs8ksD2bus8gXQZbv7i+Lt9kVpokJqnMpPrP4xB9Vyd1tjDFQhhriDd/gOGs5VGnp8df
-         uRWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717396785; x=1718001585;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4/kSWlsZgItMKs0n3WD4Nrf7fVlEdWxgIbQ1jzkl5d4=;
-        b=oUVc5sjoIfh/M16o3z3o0GQejh7GjlGqhX/CwFXfGAGdteRghKFPbhwTPI6Fhuqpx3
-         /uDzR7XCbS0v08eoPETeFa+jHc8jQiTMxLrJRgGGRvEBai3FLAm3kVYAHpZNqF0lT6Og
-         8XcBNcFOS0Bk1g0CFVDQwEbQDRqQ3AL5p8DrL/DQh/b2uMw0vSEhYvLQrhvXU4kkV52x
-         VpBu6OoAQOq6YWZi6J93F0/bb2mJfKDSJT/6fWUpklsyhO5+i7yCU6fo7CxktolKVslP
-         PbYStwtmI11CIBzZfVw1RSP4Lh0eaznuZ144zLCPbNcO+gmevcC/nLlYysAqS9kFZG10
-         jEgw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrnbQAGppW//ky9QBH9UX4hi9Z37Jkh1aUFNGNcSs8FsZwctu+ic3tNtHCM3GJ//NFU1yn2oaHRaHW0r0aNUC94ZnaHVju7XbqDaI=
-X-Gm-Message-State: AOJu0YzC1zPKOTB8kw8IKk3IEkn2x/xCe7pE7v8bcNzs48AXX8wITWJb
-	ju0tmwdYQLk5FkNpWhTjjOlqwWeGwI31XgLnv+1c2TUcul+V4DywQcetpl0t8TM=
-X-Google-Smtp-Source: AGHT+IHPI42I+wiDmrMQUuBnkODfjkjRd3F/AhQNQPxFvtXVyYyNTCx5IjDc+RZbp/mfvvWlLxUi5w==
-X-Received: by 2002:a17:906:15db:b0:a68:a2d7:3872 with SMTP id a640c23a62f3a-a68a2d73920mr313157566b.45.1717396785032;
-        Sun, 02 Jun 2024 23:39:45 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a68e2d1333fsm234930866b.219.2024.06.02.23.39.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Jun 2024 23:39:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mwcw+0/n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4626C32786;
+	Mon,  3 Jun 2024 06:55:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717397717;
+	bh=pyRQtkhhfLcJlAEDvXUS6mlZcNFVvKq64xR2x+dpuG0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mwcw+0/nFdTTsEhyHXChMzJr6DVmgayCA6X6CQO79dda4zMnBcstCvZPNgkvUIljd
+	 i1jDpqBCWO+4z2qTIH64ld4jn4gx81L4M9b5OVsRnoFAGYFBurgvjPCBUKcfeXvpGy
+	 ZVplbRJ+iaH9A0RYupcMEloNLlm/TO5rQer8WRpiR3nX/XLNJXdHLzN55bjw+vWVk2
+	 13QDpsNP8pBRGwc+4J5gA0azzaFCJF/DIXcF/YDx6jtVr98jIxbN5QnImvfl9GlXLj
+	 zSlmr4QMhzBxqyDdDRfyVyPVjbYmWy6FJA6aaTEB3lpLJ9SsJiU4mlqqLRHJW5tsOR
+	 FBbsNBEs9weFA==
+Message-ID: <a1b45024-8caa-4ef6-b679-b08e718053ce@kernel.org>
+Date: Mon, 3 Jun 2024 08:55:12 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: arm: qcom: add HTC One (M8)
+To: alex@me.ssier.org, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: Luca Weiss <luca@z3ntu.xyz>, linux-arm-kernel@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+References: <20240603-m8-support-v1-0-c7b6a1941ed2@me.ssier.org>
+ <20240603-m8-support-v1-1-c7b6a1941ed2@me.ssier.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240603-m8-support-v1-1-c7b6a1941ed2@me.ssier.org>
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 03 Jun 2024 08:39:44 +0200
-Message-Id: <D1Q6CMZM78VI.ABYGRRV5E61B@fairphone.com>
-Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- "Stanimir Varbanov" <stanimir.varbanov@linaro.org>,
- <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Krzysztof
- Kozlowski" <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v2] media: dt-bindings: qcom,sc7280-venus: Allow one
- IOMMU entry
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Luca Weiss" <luca.weiss@fairphone.com>, "Bjorn Andersson"
- <andersson@kernel.org>, "Konrad Dybcio" <konrad.dybcio@linaro.org>,
- "Stanimir Varbanov" <stanimir.k.varbanov@gmail.com>, "Vikash Garodia"
- <quic_vgarodia@quicinc.com>, "Bryan O'Donoghue"
- <bryan.odonoghue@linaro.org>, "Mauro Carvalho Chehab" <mchehab@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, "Rob Herring" <robh@kernel.org>,
- "Krzysztof Kozlowski" <krzk+dt@kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240412-sc7280-venus-bindings-v2-1-48ca8c2ec532@fairphone.com>
-In-Reply-To: <20240412-sc7280-venus-bindings-v2-1-48ca8c2ec532@fairphone.com>
+Content-Transfer-Encoding: 7bit
 
-On Fri Apr 12, 2024 at 4:19 PM CEST, Luca Weiss wrote:
-> Some SC7280-based boards crash when providing the "secure_non_pixel"
-> context bank, so allow only one iommu in the bindings also.
-
-Hi all,
-
-This patch is still pending and not having it causes dt validation
-warnings for some qcom-sc7280 boards.
-
-Regards
-Luca
-
->
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+On 03/06/2024 08:28, Alexandre Messier via B4 Relay wrote:
+> From: Alexandre Messier <alex@me.ssier.org>
+> 
+> Add a compatible for the HTC One (M8), which is based on the
+> MSM8974Pro SoC.
+> 
+> Signed-off-by: Alexandre Messier <alex@me.ssier.org>
 > ---
-> Reference:
-> https://lore.kernel.org/linux-arm-msm/20231201-sc7280-venus-pas-v3-2-bc13=
-2dc5fc30@fairphone.com/
-> ---
-> Changes in v2:
-> - Pick up tags
-> - Otherwise just a resend, v1 was sent in January
-> - Link to v1: https://lore.kernel.org/r/20240129-sc7280-venus-bindings-v1=
--1-20a9ba194c60@fairphone.com
-> ---
->  Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/Documentation/devicetree/bindings/media/qcom,sc7280-venus.ya=
-ml b/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
-> index 8f9b6433aeb8..10c334e6b3dc 100644
-> --- a/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
-> +++ b/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
-> @@ -43,6 +43,7 @@ properties:
->        - const: vcodec_bus
-> =20
->    iommus:
-> +    minItems: 1
->      maxItems: 2
-> =20
->    interconnects:
->
-> ---
-> base-commit: 9ed46da14b9b9b2ad4edb3b0c545b6dbe5c00d39
-> change-id: 20240129-sc7280-venus-bindings-6e62a99620de
->
-> Best regards,
+
+
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+
+---
+
+This is an automated instruction, just in case, because many review tags
+are being ignored. If you know the process, you can skip it (please do
+not feel offended by me posting it here - no bad intentions intended).
+If you do not know the process, here is a short explanation:
+
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions, under or above your Signed-off-by tag. Tag is "received", when
+provided in a message replied to you on the mailing list. Tools like b4
+can help here. However, there's no need to repost patches *only* to add
+the tags. The upstream maintainer will do that for tags received on the
+version they apply.
+
+https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
+
+Best regards,
+Krzysztof
 
