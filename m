@@ -1,100 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C791814882A;
-	Tue,  4 Jun 2024 15:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B5C140366;
+	Tue,  4 Jun 2024 20:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717514935; cv=none; b=WBQzhfLTjsGMNV6p2cG5w4NR3TnyUKC6PBUwBdt7O0SqhHx4gq0lGW4YP2lBwS+KXwIXCAQuEBXEF1bwHD7AgzriDcHeGBr/anEQn78S4rdmjCFLx2MiffhLHPyrXjmTGigXhksvpoeOl8xxeXB47lEHpOcAGNAcc+JRW6sm9jE=
+	t=1717533286; cv=none; b=Fr54kxDJS457xC3gLLT9x+qdgG/e/2NpOFlh4T9gTPO1AhphYJpdPBFIe7rSMi8iVxDlCvcIPO+BFvx2/j9Z+fllUMfmWgyQBmkJIRgcMSEV8Mz9e4lhDFNvj/tViEOXIj6ZLilEI6lHYN/IRsSVgGdzwpWxO9t13chLx20FTZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717514935; c=relaxed/simple;
-	bh=K1Ee1R8TldPk6BZzvsq82fAn3sJ9O9Ii5+0/Af43M9U=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=GhMKMxgaCeNHOz1Gh3vR+b0We63c7RzTEcW7IU7oeGj7R8ot/2LYhEJQbuDVsYvjZ8SnyMN9z0i3i11YZ5+a0IrC/LKJY9jc4eeLtCjvIMMkENyf+8/jOHPmQRVLd63cDSCf4fL+KNqKrNUO1iRb3nF1FKsET97jMm5aopdb/S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=in24Zz6v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717533286; c=relaxed/simple;
+	bh=t/Iix1YlalREUNAkAGmD5+kSuxQb/H8mBr6yvJWWpR0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XC73yviAF3EtQA2CdTav5eVpOGRWqm0IsDBiaDG6kTK3Dssl3Tk57Bn0we+k5i2rFioLdpV3+88+KLOdDI7IIteiSkcSmMg+h/bHnkriwHQIxglvhZnTfLsPGEyyL7ElxcfeNxXwS4qinVfZVmB4/dwm11wfo3QhGTOQg385nf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pn/4RFmP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="in24Zz6v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136A2C32786;
-	Tue,  4 Jun 2024 15:28:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pn/4RFmP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31584C2BBFC;
+	Tue,  4 Jun 2024 20:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717514935;
-	bh=K1Ee1R8TldPk6BZzvsq82fAn3sJ9O9Ii5+0/Af43M9U=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=in24Zz6v3eShsEeqa0beiaweu4A1etIEqHM18BPuwZGgRlmzUQoeNePW5uoTExTOR
-	 P92gScAnXSwa69c51xFB3Bv6g7fQwuhLvRSzDLCQBNxSzd9qdhWsG1R42BzL187h2z
-	 v6MKUs5CWxktAykBMnfQNBwNZ+YYSeBPaAQTSw7JOO5WwPYQMoF/5j5hSyCHOjgFJY
-	 YDJcKYNqE4BaWOvOjLl+H3H+wDdYfTJCYspWwluneKANq3vlvYn18h3iTolS+5FVyH
-	 48WDtuXMRXAXU+FD8i83QsexxQ6MEN5WWphSB+lVDZVtK3NmBvnscJfoKJIYyTp+d2
-	 MXq3hbehmY+sA==
-Date: Tue, 04 Jun 2024 10:28:53 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1717533285;
+	bh=t/Iix1YlalREUNAkAGmD5+kSuxQb/H8mBr6yvJWWpR0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pn/4RFmPccqCJvRAhqGwP335K8sqkPOSbgNHIkAscVcSqapzXr/+9/C2TmTrnwF6l
+	 s5xte9A5mmM538UehYItRNWYQY2dYXae+5kS8YKttEdoODQ64LB++I40LY6zGIl/qh
+	 wilToRV0sivHlHmOBsWbuMhyrLAq+CV9OrK266Ic/4g/mwaFryGczaXT2U5XTRmzQB
+	 UdUy+t+R3859d38snmZpUquYQoK0mlPN5n1LmpUUNfx24Wi5kXaHwwCmymrijbIAF9
+	 wDGIal7QzCkh8oFoBf8fLy0l9JoixtChSTF/XLrbHexbXu6axIcaLE6EmMqw57wAdv
+	 jhPu5On0P7G5w==
+From: Bjorn Andersson <andersson@kernel.org>
+To: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Luca Weiss <luca@z3ntu.xyz>
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: (subset) [PATCH 0/7] Use mboxes instead of syscon for APCS (arm32 & arm64)
+Date: Tue,  4 Jun 2024 15:34:42 -0500
+Message-ID: <171753327818.708182.102935741283235992.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240424-apcs-mboxes-v1-0-6556c47cb501@z3ntu.xyz>
+References: <20240424-apcs-mboxes-v1-0-6556c47cb501@z3ntu.xyz>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Alexandre Messier <alex@me.ssier.org>
-Cc: Conor Dooley <conor+dt@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Luca Weiss <luca@z3ntu.xyz>, 
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
- phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>, 
- ~postmarketos/upstreaming@lists.sr.ht, linux-kernel@vger.kernel.org
-In-Reply-To: <20240603-m8-support-v1-0-c7b6a1941ed2@me.ssier.org>
-References: <20240603-m8-support-v1-0-c7b6a1941ed2@me.ssier.org>
-Message-Id: <171751454900.786007.17271404951768782420.robh@kernel.org>
-Subject: Re: [PATCH 0/2] Add HTC One (M8) support
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
 
-On Mon, 03 Jun 2024 02:28:55 -0400, Alexandre Messier wrote:
-> Add an initial device tree to support the HTC One (M8) smartphone,
-> aka "htc,m8".
+On Wed, 24 Apr 2024 18:23:53 +0200, Luca Weiss wrote:
+> The first patch is for removing a bogus error warning I've noticed while
+> developing this on msm8226 - there the patches are also coming later for
+> this SoC since apcs is getting hooked up to cpufreq there also.
 > 
-> Signed-off-by: Alexandre Messier <alex@me.ssier.org>
-> ---
-> Alexandre Messier (2):
->       dt-bindings: arm: qcom: add HTC One (M8)
->       ARM: dts: qcom: Add initial support for HTC One (M8)
+> Apart from usages from the qcom,smsm driver (patches coming!) all other
+> usages of the apcs mailbox now go via the mailbox driver - where one is
+> used, so some arm32 boards will continue using "qcom,ipc*" properties in
+> the short or long term.
 > 
->  Documentation/devicetree/bindings/arm/qcom.yaml   |   1 +
->  arch/arm/boot/dts/qcom/Makefile                   |   1 +
->  arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dts | 353 ++++++++++++++++++++++
->  3 files changed, 355 insertions(+)
-> ---
-> base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
-> change-id: 20240603-m8-support-9458b378f168
-> 
-> Best regards,
-> --
-> Alexandre Messier <alex@me.ssier.org>
-> 
-> 
-> 
+> [...]
 
+Applied, thanks!
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
+[3/7] arm64: dts: qcom: msm8916: Use mboxes properties for APCS
+      commit: 3e971470619d80dd343e3abd80cb997bcb48f200
+[4/7] arm64: dts: qcom: msm8939: Use mboxes properties for APCS
+      commit: 22e4e43484c4dd1f29a72cc62411072758e0681a
+[5/7] arm64: dts: qcom: msm8953: Use mboxes properties for APCS
+      commit: 11dff973ebe21950c7c5221919141fb0cb16354e
+[6/7] arm64: dts: qcom: msm8976: Use mboxes properties for APCS
+      commit: a3d5570d8c8c6efc3d15d015b517f4e8bd11898f
+[7/7] arm64: dts: qcom: msm8994: Use mboxes properties for APCS
+      commit: ba5d9a91f8c3caf6867b3b87dce080d056222561
 
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-New warnings running 'make CHECK_DTBS=y qcom/qcom-msm8974pro-htc-m8.dtb' for 20240603-m8-support-v1-0-c7b6a1941ed2@me.ssier.org:
-
-arch/arm/boot/dts/qcom/qcom-msm8974pro-htc-m8.dtb: l2-cache: Unevaluated properties are not allowed ('qcom,saw' was unexpected)
-	from schema $id: http://devicetree.org/schemas/cache.yaml#
-
-
-
-
-
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
