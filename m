@@ -1,42 +1,59 @@
-Received: from mail-108-mta253.mxroute.com (mail-108-mta253.mxroute.com [136.175.108.253])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3DC3A268
-	for <phone-devel@vger.kernel.org>; Mon,  3 Jun 2024 07:07:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.253
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3C51422B4
+	for <phone-devel@vger.kernel.org>; Tue,  4 Jun 2024 12:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717398448; cv=none; b=nvLixKLE8mFhytBzqejwJtpXN9BkFCpO5XTPPdyPBu07uzJsGySFXZ0AZeY/SvgfU7TQRCbm9BuXNkWLx3NMLc6Hw+D10UxzTVzbDKWcz4RgcrzrUhc6nu7CEwIMnG4lqllfR/LWK03I8ijq22o37mnel+jcUqgo0V227YL9LBg=
+	t=1717503526; cv=none; b=Gbtqn53p0J9WErK9Zh69pQ+ZvQB0Iv3B+x5Y6ra7IzFTFSl2BiLkgOtEmeUEpWmxBwvDgwQENoz6ekhEFk+9qd+ficEcmDY/wYiCXc6tmHpa9WF5duY3CmOVllKJtdogeJbFfdB1I1qovavvPkfzLM1Q69e7Py39d1yO3WP98h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717398448; c=relaxed/simple;
-	bh=XRhXaAZqTdGwXeKaRUIdWhEeuAznnbq0x6lIVejZ7IY=;
+	s=arc-20240116; t=1717503526; c=relaxed/simple;
+	bh=bMG7RvBmDOkqx6HToRknYbCvXlHhwizfl3ox1z2+VLE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j6OvtGCoaHvw8DV3Y7tGHCu6vek35bqI75ZoSghuvZ4+A/yWSW7RjvcyDKpYNgYfPpzJC1u71uVdg9nKqlrMux2oUPr+cQySM3afH7xMM25ZkB2loHoyCjYWv41TBOGGOxcSI8nR48Oxvks17l25EJilL4Io2aDcanFPj83QRbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com; spf=pass smtp.mailfrom=luigi311.com; dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b=kKYZMHNd; arc=none smtp.client-ip=136.175.108.253
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=luigi311.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=luigi311.com
+	 In-Reply-To:Content-Type; b=P5x/fHKm7u3dWfK+L1dx0om+dF82hRPd+PxChry+U8SyuErehtmBsbscLCnCrwENYDIWaExmjeiP21Su7J3+Z0jU22alsyjvLJo6nnIVUrCFPYU3Qrc1fmIjzHJz2+ao/M8ixVaKOP6WfR1/XzbZzr9x4IAZkU2dLiIF9cqF/zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jTlQw2b7; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=luigi311.com header.i=@luigi311.com header.b="kKYZMHNd"
-Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta253.mxroute.com (ZoneMTA) with ESMTPSA id 18fdcec88d2000e76b.012
- for <phone-devel@vger.kernel.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Mon, 03 Jun 2024 07:07:20 +0000
-X-Zone-Loop: a3561424bb2a6b8485736f5b53f1b9c4fad2b5b3e258
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=luigi311.com; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:
-	From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=weWzdWj0l/fwOMs86+c7cQSxgtwCposJWO78UGw648E=; b=kKYZMHNdrD4wlerbYcGb0yTSfJ
-	BTBS61eX3J3u5NfIWygjOkfDmyexiA1J0q5jVdkblmVlN5GKJKMdlIkCfA7yWkR5PO2j4InnnDpw7
-	RiQMEn+yaM9/R1Jn2c0OXxfdQ/SOpQMfnY1VB7nNQ8ZczFkzuiC4/Dxjls+0t886sTgnLi01rszCY
-	umS3rMCOM2Lb/lfJPW5AycWBUfhw4tuTa5zFj1pFuwCmg/6h7QAVIOx2fkBX6E5ou3UNDA9nX7UVl
-	qOV1Jqn2y3lpGsfpA9oKXnGs+JJ1bK6pRZ+COD18LF68ojffeP9se2N34uovy5w4wxxnR+Zt1VZTK
-	EeBo2EVw==;
-Message-ID: <a8f6092e-0df0-4a31-8417-0d94864f20b2@luigi311.com>
-Date: Mon, 3 Jun 2024 01:07:14 -0600
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jTlQw2b7"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a68ca4d6545so482410466b.0
+        for <phone-devel@vger.kernel.org>; Tue, 04 Jun 2024 05:18:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1717503522; x=1718108322; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=f/f5gcn/gTUAWBZ3gaiWLhvClesIPejw9W8fPNXojgY=;
+        b=jTlQw2b7HMNpIRmKXor4JevFfV6l2cGI8ZKYHt5FOJUY4bKmimzZSXuiUck29vXDUz
+         hJo+v8jYIrKRVc7CN3qbbYZRxTzAWo4XFUuRtM4DWua0fL1ooF2EDWk8pt+opjfA2EpZ
+         LOEE5YhtjquluLwSI7zHCvXoqGfMI2lwxLIpFW+lJEmjJBgU49uuzeaoA/D7iJi/njkw
+         WBtsnPc2TWvpMO5+VCmDCiUHeGYIC8PMjthHwdhKghQXOQOfhuKEn5nfWP+u9zscmvRy
+         zttvrMjPDv5Jw8wxVr4SEQALypeHfX0+9gEpyi9AatzlfQT54kkoSxAvEJoSguebSQqE
+         GwFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717503522; x=1718108322;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f/f5gcn/gTUAWBZ3gaiWLhvClesIPejw9W8fPNXojgY=;
+        b=VTkE4+hSy2/kPCHUV5lP47ZbMU1mluR5X2WLFw0FgU59vQL92qGgDTGYCXXz2gJPpB
+         JRcPfYSHyPkpsVbBAPPLOGlxp6S3gBXdPiKKGU6YBJHBrPGIU0OmPuxlCMmwxX8JoXxZ
+         E1yPeBQ4gDw4Bpy9UjRSd73XM+c37LrCdTK6s8y7O/MQCh9/9X51qeU8n7NEaM2EWpmf
+         4zGuxskqlBWf2Ty8LUE+PggV+oHnu8RKajp0qBNrc/NXGmcRkwuwGEHwm6n2jRIGHBp9
+         HdRqAvNo4KjHtUXRG2PfcujOKeSxkX/fpnYSqWFY2AK/L9CGc9clFD8nnyLA5U4v1GrW
+         ZL1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUbUVBgJWuhnRgoqhHDEUSSduxcUYsfks1mu41v7QnnnKIPn7euYij2G7NkcLfhZcYSwrwE+zHFXYjEnSGeHHu0+JqGr6jgP7CSNTg=
+X-Gm-Message-State: AOJu0YyByK63uCgILhcbD9hGAN92y7EBKhn56shAQ9zCgTV0xdaTJ7vb
+	FgliI8AQnbWojSK80hGIf8JK4MrJOb84imuMKGcwfMMLF4VvznmsXR13gTlFKd0=
+X-Google-Smtp-Source: AGHT+IEXNoxMtI7ICaXqzcQdFet4MgSRtFpxYFqM2yeMMrmzQXZ9URAcl0bri5e4o/dqtHxHzUPSdw==
+X-Received: by 2002:a17:907:20ec:b0:a5a:5b1a:e2e4 with SMTP id a640c23a62f3a-a69543d9983mr189395966b.20.1717503522358;
+        Tue, 04 Jun 2024 05:18:42 -0700 (PDT)
+Received: from ?IPV6:2a00:f41:909a:a11e:a035:2af2:8d85:1f72? ([2a00:f41:909a:a11e:a035:2af2:8d85:1f72])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a68a2fc6efesm511558066b.161.2024.06.04.05.18.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Jun 2024 05:18:42 -0700 (PDT)
+Message-ID: <0d0b48c2-c8de-417b-8180-4eb2aa24c9f7@linaro.org>
+Date: Tue, 4 Jun 2024 14:18:38 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -44,173 +61,40 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/23] imx258 improvement series
-To: linux-media@vger.kernel.org
-Cc: dave.stevenson@raspberrypi.com, jacopo.mondi@ideasonboard.com,
- mchehab@kernel.org, robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, sakari.ailus@linux.intel.com,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- pavel@ucw.cz, phone-devel@vger.kernel.org
-References: <20240602201345.328737-1-git@luigi311.com>
+Subject: Re: [PATCH 2/2] ARM: dts: qcom: Add initial support for HTC One (M8)
+To: alex@me.ssier.org, Bjorn Andersson <andersson@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Luca Weiss <luca@z3ntu.xyz>, linux-arm-kernel@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, phone-devel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+References: <20240603-m8-support-v1-0-c7b6a1941ed2@me.ssier.org>
+ <20240603-m8-support-v1-2-c7b6a1941ed2@me.ssier.org>
 Content-Language: en-US
-From: Luis Garcia <git@luigi311.com>
-In-Reply-To: <20240602201345.328737-1-git@luigi311.com>
-Content-Type: text/plain; charset=UTF-8
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240603-m8-support-v1-2-c7b6a1941ed2@me.ssier.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Id: git@luigi311.com
 
-On 6/2/24 14:13, git@luigi311.com wrote:
-> From: Luis Garcia <git@luigi311.com>
-> 
-> v6:
->   - Drop powerdown-gpio patches
->     - per Sakari Ailus request as it is not part or 
->       not used by the sensor
->     - I tested without it and PPP still works
->     - Dave mentioned its not part of the datasheet 
->       for the imx258
->     - Ondrej Jirman also tested it and it doesnt seem
->       to be needed
-> 
-> 
-> v5:
->   - Changed ownership of a few patches to Ondrej Jirman
->   - Implement feedback from Tommy Merciai
->     - media: i2c: imx258: Add support for reset gpio
->     - media: i2c: imx258: Use v4l2_link_freq_to_bitmap helper
->     - media: i2c: imx258: Convert to new CCI register access helpers
-> 
-> v4:
->   - Swapped out the use macro patch for a patch that uses the new
->     CCI register access helpers per Sakari Ailus
->   - Fix order of reset and powerdown gpio before disable regulators
->   - Fix formating of all patches
->   
->   - Implemented feedback from Pavel Machek
->     - media: i2c: imx258: Follow normal V4L2 behaviours
->     - media: i2c: imx258: Allow configuration of clock
->   - Implemented feedback from Sakari Ailus
->     - media: i2c: imx258: Add support for powerdown gpio
-> 
-> 
-> v3 Luis Garcia
-> 
-> - Add Use v4l2_link_freq_to_bitmap helper patch per Sakari Ailus
-> - Separate dt-bindings for powerdown per Rob Herring
-> - Fix dt-bindings for imx258.yaml
-> - Fix sign offs per Dang Huynh 
-> - Fix versioning per Conor Dooley and Kieran Bingham
-> - Use scripts to validate and fix patches
-> - Implemented feedback from Sakari Ailus
->   - media: i2c: imx258: Add support for 24MHz clock
->   - media: i2c: imx258: Add support for running on 2 CSI data lanes
-> 
-> - Implemented feedback from Rob Herring
->   - dt-bindings: media: imx258: Add alternate compatible strings
-> 
-> 
-> 
-> v2 Luis Garcia
-> 
-> - Add use macros patch 
-> - Add support for powerdown gpio patch
-> - Add support for reset gpio patch
-> - Dropped Add support for long exposure modes patch
-> - Implemented feedback from Jacopo Mondi
->   - media: i2c: imx258: Add regulator control
->   - media: i2c: imx258: Add support for 24MHz clock
->   - media: i2c: imx258: Add support for running on 2 CSI data lanes
->   - media: i2c: imx258: Add get_selection for pixel array information
->   - media: i2c: imx258: Issue reset before starting streaming
->   - media: i2c: imx258: Set pixel_rate range to the same as the value
->   - dt-bindings: media: imx258: Add alternate compatible strings
->   - media: i2c: imx258: Change register settings for variants of the sensor
->   - media: i2c: imx258: Make HFLIP and VFLIP controls writable
-> 
-> This adds a few more patches and drops one. The long exposure mode patch
-> was dropped due to the bug that Jacopo found. The powerdown and reset gpio
-> patches were added as that fixes support for the Pinephone Pro, without
-> them the sensor doesn't initialize correctly.
-> 
-> Tested on a Pinephone Pro by forcing 24 mhz clock. The two lower 
-> resolutions had some artifacts but that is expected as more changes are 
-> required to fix them for the Pinephone Pro specifically, kept all 
-> registers the same as Dave's original patch since that works on dedicated
-> imx258 hardware and the artifacts are PPP specific so it shouldn't 
-> be a regression.
-> 
-> 
-> 
-> v1 Dave Stevenson
-> 
-> This is a set of patches for imx258 that allow it to work with alternate
-> clock frequencies, over either 2 or 4 lanes, and generally adding
-> flexibility to the driver.
-> 
-> Tested with an IMX258 module from Soho Enterprises that has a 24MHz
-> oscillator. Both 2 and 4 lane configurations work with correct link
-> frequencies and pixel rates.
-> 
-> Jacopo has tested on a PinePhone Pro which has an ~19.2MHz clock fed from
-> the SoC, He confirms that the two lower resolution modes work, but not the
-> full res mode. Comparing to the BSP it looks like they have some weird
-> clock configuration in the 4208x3120 mode (nominally 1224Mb/s/lane instead
-> of 1267). As it has never previously worked directly with the mainline
-> driver this isn't a regression but may indicate that there is a need for
-> support of additional link frequencies in the future.
-> 
-> The last patch that makes HFLIP and VFLIP configurable may be contentious
-> as I've retained the default configuration of inverted from the original
-> driver. I know this was discussed recently, but I can't recall the final
-> outcome.
-> 
-> I am relying on someone from Intel testing this out, as correcting the
-> cropping and supporting flips has changed the Bayer order. Seeing as this
-> is all above board in V4L2 terms I really hope that the layers above it
-> behave themselves.
-> 
-> Dave Stevenson (20):
->   media: i2c: imx258: Remove unused defines
->   media: i2c: imx258: Make image geometry meet sensor requirements
->   media: i2c: imx258: Disable digital cropping on binned modes
->   media: i2c: imx258: Remove redundant I2C writes.
->   media: i2c: imx258: Add regulator control
->   media: i2c: imx258: Make V4L2_CID_VBLANK configurable.
->   media: i2c: imx258: Split out common registers from the mode based
->     ones
->   media: i2c: imx258: Add support for 24MHz clock
->   media: i2c: imx258: Add support for running on 2 CSI data lanes
->   media: i2c: imx258: Follow normal V4L2 behaviours for clipping
->     exposure
->   media: i2c: imx258: Add get_selection for pixel array information
->   media: i2c: imx258: Allow configuration of clock lane behaviour
->   media: i2c: imx258: Correct max FRM_LENGTH_LINES value
->   media: i2c: imx258: Issue reset before starting streaming
->   media: i2c: imx258: Set pixel_rate range to the same as the value
->   media: i2c: imx258: Support faster pixel rate on binned modes
->   dt-bindings: media: imx258: Rename to include vendor prefix
->   dt-bindings: media: imx258: Add alternate compatible strings
->   media: i2c: imx258: Change register settings for variants of the
->     sensor
->   media: i2c: imx258: Make HFLIP and VFLIP controls writable
-> 
-> Luis Garcia (2):
->   media: i2c: imx258: Use v4l2_link_freq_to_bitmap helper
->   media: i2c: imx258: Convert to new CCI register access helpers
-> 
-> Ondrej Jirman (1):
->   media: i2c: imx258: Add support for reset gpio
-> 
->  .../i2c/{imx258.yaml => sony,imx258.yaml}     |   11 +-
->  MAINTAINERS                                   |    2 +-
->  drivers/media/i2c/Kconfig                     |    1 +
->  drivers/media/i2c/imx258.c                    | 1440 ++++++++++-------
->  4 files changed, 835 insertions(+), 619 deletions(-)
->  rename Documentation/devicetree/bindings/media/i2c/{imx258.yaml => sony,imx258.yaml} (88%)
-> 
 
-Looks like Sakari has took it forward while i was gone so v6 isnt needed anymore
-since they implemented the changes on their side 
-https://lore.kernel.org/all/ZleJV5YSl92-13CT@valkosipuli.retiisi.eu/
+
+On 6/3/24 08:28, Alexandre Messier via B4 Relay wrote:
+> From: Alexandre Messier <alex@me.ssier.org>
+> 
+> Add initial device tree for the HTC One (M8) smartphone.
+> 
+> Initial support includes:
+>   - eMMC
+>   - Power button
+>   - USB
+>   - Vibrator
+>   - Volume buttons (GPIO)
+>   - Wi-Fi
+> 
+> Signed-off-by: Alexandre Messier <alex@me.ssier.org>
+> ---
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+
+Konrad
