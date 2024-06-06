@@ -1,125 +1,130 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689C117F51F
-	for <phone-devel@vger.kernel.org>; Thu,  6 Jun 2024 09:57:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA90FC13C;
+	Thu,  6 Jun 2024 19:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717667831; cv=none; b=WmiQ1ovXx24X505sGgT0OmBTVm6Pfv8Zt7DS5A0g+DhwT8ot0fN4P6/4ddRU1kPU9uOEyURSRDQEW4mrrcbAeU0nxNkz66wT/L085FiNYUYEcmvO132qoq7R9y4R2Dz4G5Q15gc5QoRgUmAT0AhIMC8uki8ttlzOFQylmKYsTmk=
+	t=1717700525; cv=none; b=tHHOYpzvKtNSKPpuwSdzpUCYgtXFPccmoP60SsWEOAt1qoMvhNZ5gUxOktdvYxajyZbeaaQi9iwNDC9EMoU3n4yJVfjY/R+G8bmmhRK83Jyb5MeCHLmqgMEgfFh6EHmfYgioxwDyb3NijRce7e0yVWQ/tOwJtzqSlLdwqzVA53g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717667831; c=relaxed/simple;
-	bh=pZba+yKPKAIjlW59yMlzkexteKvLGEOvgVy2SEAGPV4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bBSeO0cyGVhlr3hejKiu0vxVFWdWLVfYPtaa3CxAYmrcGjAW7TvEqEtk+Sx9nkTLUm3haEpUeuLHQ3b8MzL4iNRJNVYtALCXyvSy/oPQMj+Z+yXkzmbyrxojdOverq1tB0b2klqjTFzyQZDuzcmsqUHRNtkLOjiPq4t3QC3ajGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hj7TExGz; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1717700525; c=relaxed/simple;
+	bh=dLOTe0zOfFf2wx2GkwFTCa1WlboZXkpBx3ZTdW9qpb0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WIUIDLzxwEtw2N+Ui1vkOn7WFl6I+yuGUwrBj3mLdvl+fDJxSHdq42NG70xYxL1Nualiy8jnuEwXHi+Z2qKV3APNvX1XO+xMDOGG/QqbNL6NMBt1x1SvD0hygW3wEb7gURsEyrWtpBCszASuqzPBmNjBNu6OOP45ttsLLbbilt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=6AWs8Y5f; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hj7TExGz"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-57a677d3d79so3495362a12.1
-        for <phone-devel@vger.kernel.org>; Thu, 06 Jun 2024 02:57:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717667827; x=1718272627; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=E3f93tFB2rT6AGkBJjlcrliLx2/McmtIe80WPbfuLCA=;
-        b=hj7TExGzMyPHmQrCZTc8qMWfoDn0e0b/DFij//PEb+4tNXWb0Zrue+DHD3y2PuT3TC
-         hatT0qDrX9XdGMQcs3T5gjDvHLbekEmhHXVK4/cs4xq65m2g/KCCPYvNFmPrCGqnAAzD
-         UZOgwLRW+n/9mDIssHYiu2Zq/D5ezQkDLId7HZRVRFA7kJfuFBHnp4vzbEPaLKRBzYEI
-         u+vOfhWH6hUH9I3QtzGnNCud+pjb+SZjSc6dnnvTtJMDFCXRpT+1AEgOQKCu/iFtPeVF
-         2xm64Rl+QIjQ55Uo9uUQmPxq2QakzUp9ArNFPZu7lpeTxSa+eGUxpDL9k8buojXfKfEg
-         VPAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717667827; x=1718272627;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E3f93tFB2rT6AGkBJjlcrliLx2/McmtIe80WPbfuLCA=;
-        b=vP0IUDLgbIRZVsqs/F4P5W7VkyjH67SzB0fGnds9UoKFn2HeszwzIoS7QJn7wGYy66
-         6BlT5I1ND5tGOV0cvGArFjSEBE38I2Xhu3RsGJ+pbKvDNepGfYe4WSRTDQVDxKZ8SOd+
-         H/bJMPUWTmwrOrmhz/vz8UYSBavi8xgVjj9Gt8laxe4Nmv1+pP81REeJT8zKS+o3Mln6
-         f11JjMAOAbKaWsIXsbRu1HA3i3r4l6ICT6j7JWgS17rKjCp6Eb6ZvHoDXx71WHdO9f3h
-         0dzJ+/6O+J2ygL7YD0cV7JR229CI5SHfwli1vnuKcsDzx1FyH046QFqbj2gbFgANRZux
-         kUJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUEe4XfuwfVJ5CDmylMR+cQLafIbZoBIrPRSb6Klk2lF+nzv0iQ2vCjEjGuffQdOVmtXHc2iE0QdnCDxe22iS56CCbEg/9PfkXJmJQ=
-X-Gm-Message-State: AOJu0YyLo1dF7IzdAP0WsWb03L6edvcKy48cEBuXYMmnQV9mWx595Hrf
-	MWXoPHBhUSXWjj03jFIDOBnQJmt0ip1KAEontt7biGuQ2kIegZgUd6clyGocmpY=
-X-Google-Smtp-Source: AGHT+IEo0+Vr7PVFW2gZBx1g/PraiBGsC+gt0IJWns+YxpEU8kU7Lfu7cX7h5TitU7otGn9P0VMA/w==
-X-Received: by 2002:a17:906:228b:b0:a69:2554:9c6 with SMTP id a640c23a62f3a-a6c75f942b4mr188930866b.6.1717667826883;
-        Thu, 06 Jun 2024 02:57:06 -0700 (PDT)
-Received: from [192.168.128.139] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c8070e2d9sm73065366b.158.2024.06.06.02.57.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Jun 2024 02:57:06 -0700 (PDT)
-Message-ID: <db76dd17-905c-40a8-9319-94659c95a6c3@linaro.org>
-Date: Thu, 6 Jun 2024 11:57:03 +0200
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="6AWs8Y5f"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1717700516; bh=dLOTe0zOfFf2wx2GkwFTCa1WlboZXkpBx3ZTdW9qpb0=;
+	h=From:Date:Subject:To:Cc;
+	b=6AWs8Y5fFaVUOI9E3xqm++CeJkqm2Lr9Fioz8q0o7WiJTGvuJoRC5uiaR5lahQkL+
+	 Fo8WS5j8UQCIbvtB66dojdsg+Mrb9BYoDQINvgeAo5uwY6mvW/zrY9ggwu4W6vogen
+	 6vmEtrJtW7rDWEE8zdhi59lNLx/luGbydSPKuE1k=
+From: Luca Weiss <luca@z3ntu.xyz>
+Date: Thu, 06 Jun 2024 21:01:36 +0200
+Subject: [PATCH v2] rpmsg: qcom_smd: Improve error handling for
+ qcom_smd_parse_edge
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Use .mbn
- firmware for IPA
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240606-fp5-ipa-mbn-v1-1-183668affe58@fairphone.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20240606-fp5-ipa-mbn-v1-1-183668affe58@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20240606-apcs-mboxes-v2-1-41b9e91effb6@z3ntu.xyz>
+X-B4-Tracking: v=1; b=H4sIAI8HYmYC/1XMSw7CIBSF4a00dyyGt4kj99F0AHi1DKQNVELbs
+ HexiQOH/0nOt0PC6DHBtdshYvbJT6EFP3XgRhOeSPy9NXDKJZVcEDO7RF52KpgI44jaUWaUFdA
+ ec8SHL4fWD61Hn5Yprgee2Xf9OfLPyYxQopXSTl6cVZTdNhGW97msGwy11g/4NvzIpgAAAA==
+To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ Luca Weiss <luca@z3ntu.xyz>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2126; i=luca@z3ntu.xyz;
+ h=from:subject:message-id; bh=dLOTe0zOfFf2wx2GkwFTCa1WlboZXkpBx3ZTdW9qpb0=;
+ b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBmYgeTBV2CHlVz8nTGb2PKIdfgFUnhX3hXJ9DWr
+ mqDvptT3qeJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZmIHkwAKCRBy2EO4nU3X
+ VtX2D/0XsWEsql04EZT3rb2O7Nc8FqfwJRRLnuNymbfypuBcK90667hlJOp2V0vbWR6ClcU4RD/
+ FdnvGd3py5D1fTPQEY8fX58tSiZFZfVkXdKZzkeEi8YxqZ173luZ+C5RKYYHCPRHywKUohhL5MK
+ v1SwGoLV7ptmURAvJwxqGa7Ls/SeS0lIEQwT78MgaVj3uG0EGDeDVFnYYNBPHmdNFtB4x55Ve8J
+ GHzsWewFeYBN7DGUDnrh1tiQ92sD6i4fmum8oH2xvts3nMMDsmUaY2OWbURnIvIg70dcAtmMXBg
+ M1oh2Ou68Vz58qRHA4oKZ2+Zk67RntBBUcKvrYc2+CBUi0MCQZcLWcESYr+BQaKYosKapnAcvy+
+ fOdHN2RkbwImB1C9YRqiA7kB5vrSCRQuJkcTOGfvkDgAl+SmTfILMdANJ6VZdEz7IiVZryBM8WC
+ w1ZNWcoJtn0YG7rgJcJxFnZhkNFIJpYCHJ5AuTyUlV2kb78fdl2/0+E0Wp8zr+OsVkrJ6NvVK9E
+ kerlfGBpuOWK6AU+JwXlrcSZ+CYmMQ6U1mCLUZkEnCY4BAeycmdjpdmYdkGpvCbdYwxLEFknAsF
+ yo976zIPpSxU2K07Y96+gTjDg03sa3Q4qyKFDES8mYOjabuVHEnTzuFJi19NvqK0TgQmrmyAc0+
+ cneUVpd95Z8csjg==
+X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
+ fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-On 6.06.2024 11:09 AM, Luca Weiss wrote:
-> Specify the file name for the squashed/non-split firmware with the .mbn
-> extension instead of the split .mdt. The kernel can load both but the
-> squashed version is preferred in dts nowadays.
-> 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
+When the mailbox driver has not probed yet, the error message "failed to
+parse smd edge" is just going to confuse users, so improve the error
+prints a bit.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cover the last remaining exits from qcom_smd_parse_edge with proper
+error prints, especially the one for the mbox_chan deserved
+dev_err_probe to handle EPROBE_DEFER nicely. And add one for ipc_regmap
+also to be complete.
 
-Konrad
+With this done, we can remove the outer print completely.
+
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+---
+Changes in v2:
+- Rebase on qcom for-next, drop dts patches which have been applied
+- Improve error printing situation (Bjorn)
+- Link to v1: https://lore.kernel.org/r/20240424-apcs-mboxes-v1-0-6556c47cb501@z3ntu.xyz
+---
+ drivers/rpmsg/qcom_smd.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
+index 43f601c84b4f..06e6ba653ea1 100644
+--- a/drivers/rpmsg/qcom_smd.c
++++ b/drivers/rpmsg/qcom_smd.c
+@@ -1369,7 +1369,8 @@ static int qcom_smd_parse_edge(struct device *dev,
+ 	edge->mbox_chan = mbox_request_channel(&edge->mbox_client, 0);
+ 	if (IS_ERR(edge->mbox_chan)) {
+ 		if (PTR_ERR(edge->mbox_chan) != -ENODEV) {
+-			ret = PTR_ERR(edge->mbox_chan);
++			ret = dev_err_probe(dev, PTR_ERR(edge->mbox_chan),
++					    "failed to acquire IPC mailbox\n");
+ 			goto put_node;
+ 		}
+ 
+@@ -1386,6 +1387,7 @@ static int qcom_smd_parse_edge(struct device *dev,
+ 		of_node_put(syscon_np);
+ 		if (IS_ERR(edge->ipc_regmap)) {
+ 			ret = PTR_ERR(edge->ipc_regmap);
++			dev_err(dev, "failed to get regmap from syscon: %d\n", ret);
+ 			goto put_node;
+ 		}
+ 
+@@ -1501,10 +1503,8 @@ struct qcom_smd_edge *qcom_smd_register_edge(struct device *parent,
+ 	}
+ 
+ 	ret = qcom_smd_parse_edge(&edge->dev, node, edge);
+-	if (ret) {
+-		dev_err(&edge->dev, "failed to parse smd edge\n");
++	if (ret)
+ 		goto unregister_dev;
+-	}
+ 
+ 	ret = qcom_smd_create_chrdev(edge);
+ 	if (ret) {
+
+---
+base-commit: 2c79712cc83b172ce26c3086ced1c1fae087d8fb
+change-id: 20240423-apcs-mboxes-12ee6c01a5b3
+
+Best regards,
+-- 
+Luca Weiss <luca@z3ntu.xyz>
+
