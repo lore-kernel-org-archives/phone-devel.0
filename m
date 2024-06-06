@@ -1,50 +1,59 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC1E262A8;
-	Thu,  6 Jun 2024 03:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC0E14D718
+	for <phone-devel@vger.kernel.org>; Thu,  6 Jun 2024 09:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717644042; cv=none; b=UO47mV4R6sU8vtSXhTHIXGBwF/ORA+DqCxQB6mtKxq9PwvFl7Ob4DLxUdQ14q9xv5VHZ2psqPijndKmJkdaFXW3aSBODw5t8yUHeRlohD63aZyHY8+XbVbt+y7Gh+jE8NG87q8jl6xTbpULmkPtfJIGOMcMhZ08Oj5D/tH4Hc/Y=
+	t=1717664971; cv=none; b=I/nuem7rkVuzeDWtwyNJkt1k97MKiPc0m0Qmm6T6QDomvp3dwKjq1SIuUubVE3CzDCmR9pPAFbuXJzMM6gx8ABUjmFplH5Ld6QyR15z6fIpj09K7/aKuRzXcpB4aiP93LY+pC54Ew2CyAfXHPgfyfydHVESc9w5Fb+C717pG3iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717644042; c=relaxed/simple;
-	bh=RfQHc9DDEWzHPfWvNKvWlKK16H35ZUaU+/A/XzVJlAY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sg7ivuMwj/vmMODhPQjOKJ54f57+2reMOeCo13dqUrVrY5ZQMMMdYcB4U1RULG5zYBuXgrtMQuSaxzTzGNomlKu8VLBF7oa4nsgbnyJY7FlZ8vo8Od6DwZ/JZLRmqcYc8gi5/8h1zgPaAAatAtGxH/pS2tBW/Uc3QfCov4/LuXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V//X5Vt5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1717664971; c=relaxed/simple;
+	bh=smlH6T7zNUxLgq0OmtV7Rk4JiobNDMTSW4bVj1LVQxI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AjJwzalNoXTV+9m4Z5gFa6KGF/QUuPAYFNz/rGrUYSUtnZulmVfwg+E8H6lxHnJXo4o6qwM+xRlKjNIeHWCAsdygsiu69SkLN0B3NyRcNydah3ejs9gfUdOjeF9Nn9D281/Oy2di0K0kbqAEJDJnIERIyaL51BFMTjRzXtthHQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=cWfMu6Kh; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V//X5Vt5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC008C3277B;
-	Thu,  6 Jun 2024 03:20:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717644041;
-	bh=RfQHc9DDEWzHPfWvNKvWlKK16H35ZUaU+/A/XzVJlAY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V//X5Vt5gfQURcMCSVq8kItko5O0/UXEmXdkOiKtewC5nQigMi6VLBUen3x2VnQFq
-	 uebLIkK2DobFv6Nyi7vpj4L5zBmXeUbtgPtQ8GgwlRvuoaZti3iaxz4R+BL7pcp/Hz
-	 TIKCI+u7tfKpW1/QopjbOPRNdRiq+xPh/Lk2EHadHV4gEbuGLFT8Jnf1czQ2fVK04/
-	 3wol9qaQJbg5ERHH6CNR6KJA+1pO99APKVYP9B3YCcvOaLkAD6ujDoPIIi0gTDoea6
-	 Kwe96aJl6B7TkTsr98ZCvp/NI6jXdZdHUjAOPg+Sn8+LCROpiQI7973MJd+mEiAFYa
-	 psVLUpjIPz59A==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Alexandre Messier <alex@me.ssier.org>
-Cc: Luca Weiss <luca@z3ntu.xyz>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	phone-devel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: (subset) [PATCH 0/2] Add HTC One (M8) support
-Date: Wed,  5 Jun 2024 22:20:28 -0500
-Message-ID: <171764403335.730206.6565859700406968189.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240603-m8-support-v1-0-c7b6a1941ed2@me.ssier.org>
-References: <20240603-m8-support-v1-0-c7b6a1941ed2@me.ssier.org>
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="cWfMu6Kh"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a696cde86a4so67275066b.1
+        for <phone-devel@vger.kernel.org>; Thu, 06 Jun 2024 02:09:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1717664968; x=1718269768; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HeWTsjDgfYcjvzpN9AvdtAEHKQHZVOf8ieRqkfpvQRQ=;
+        b=cWfMu6KhrgPF3imNOHEt+r8zGhrYPeKzdjvKNo9rMxmyW1t30p5KBJ7u1GW4+0vlj+
+         Msyg8ifY2oqtB3fPB/wcyifJZv6/4wft/lxFsA5JCEmSF6vAbnwCfNokRjip1ww+3M+n
+         ytDfFbsvB4Bgsog0Dm135LOHYCXqIHyRHHP12XvTKV3ZBL0SA9M7Ng/cnFl5cqs8Zfrz
+         vSrFNKGeoaxfFgLcwMAcF/Yy276i3V0N+jLBw8Dmv8E8mR84vtuChr/n1vxW/JdAMNFQ
+         PD0OSZA157Z8UNDi5EGTNpTDk3ux6U90h8xplRwwpN0tiAdPtPd1T9LuJuFmxU01ed8i
+         +vPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717664968; x=1718269768;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HeWTsjDgfYcjvzpN9AvdtAEHKQHZVOf8ieRqkfpvQRQ=;
+        b=JIFvqT1rXB6lxnDvkhJOLDge7WEBSWoaVr8DAZLGOgVeMCNPcIM8VU2WpWKPSsNgQv
+         VGqwEhFMN4/qY6t3uTeBDA/3eTM9h9/etDjiVVGNQs6CGpYoSmTH6Jzsvm6Jo0Sa4Vb2
+         aBMKVZBESUuw2LA6q8FMOmsTw+5gvDKqfg1HHK4AJIs3MO05RjfyJHXuwVrMY/NdpBlP
+         Dr9CZZWEytUFFvVtBClcExtWeEiIYgV7m9Rn9iVmFBo4GU+Ic8X3Qp8i9rO9FmmgKME/
+         HcmECMDACsKeSXBn12A0jT4oCL+PXqszVjTiJAhD+hbq/mC4hcVzN+zG0jq1aK1L/wkR
+         QcjA==
+X-Forwarded-Encrypted: i=1; AJvYcCXX+98YS/KXW+PJhxMd+NWkvAsJgsJW/cyDlAjwM0hLQNbBz6rTYH9O193Far4Vc14FbUgbWt/STfSPEtEy0xsL8fd2QYKMquMvpTU=
+X-Gm-Message-State: AOJu0Yz/FXHmvJPcCp/H2BnStjgb0ArYmej6xza8LSecwLf7Ziwzylev
+	PElob76YeiVyTL+vpEzaxP0OnxIMLX054+7PmrzdJcbR7CVBaHqmoZi8l+3atuI=
+X-Google-Smtp-Source: AGHT+IFATerlbshiVB9ZH69mQZNENHUzFhrPR4nN3eku2fN5TTpR1lr0p7A6w/6VhU4mf30ksR4j2w==
+X-Received: by 2002:a17:906:174b:b0:a68:ad68:c7c8 with SMTP id a640c23a62f3a-a699f67ecc7mr310175866b.36.1717664967729;
+        Thu, 06 Jun 2024 02:09:27 -0700 (PDT)
+Received: from otso.luca.vpn.lucaweiss.eu (2a02-a210-20ba-5a00-9ceb-707b-2d57-26f7.cable.dynamic.v6.ziggo.nl. [2a02:a210:20ba:5a00:9ceb:707b:2d57:26f7])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c805cdd32sm67724966b.79.2024.06.06.02.09.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jun 2024 02:09:27 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Date: Thu, 06 Jun 2024 11:09:06 +0200
+Subject: [PATCH] arm64: dts: qcom: qcm6490-fairphone-fp5: Use .mbn firmware
+ for IPA
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -52,20 +61,48 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240606-fp5-ipa-mbn-v1-1-183668affe58@fairphone.com>
+X-B4-Tracking: v=1; b=H4sIALF8YWYC/x3MQQqAIBBA0avIrBuw0Fl0lWihOdYsMlGIILx70
+ vIt/n+hchGuMKsXCt9S5Uod46BgO1zaGSV0w6Qno0kTxmxRssPTJwzaEAUmb32EXuTCUZ7/tqy
+ tfZcL1xBdAAAA
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
+X-Mailer: b4 0.13.0
 
+Specify the file name for the squashed/non-split firmware with the .mbn
+extension instead of the split .mdt. The kernel can load both but the
+squashed version is preferred in dts nowadays.
 
-On Mon, 03 Jun 2024 02:28:55 -0400, Alexandre Messier wrote:
-> Add an initial device tree to support the HTC One (M8) smartphone,
-> aka "htc,m8".
-> 
-> 
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+---
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks!
+diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+index 8cd2fe80dbb2..6b4ffc585dcf 100644
+--- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
++++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
+@@ -551,7 +551,7 @@ &i2c9 {
+ &ipa {
+ 	qcom,gsi-loader = "self";
+ 	memory-region = <&ipa_fw_mem>;
+-	firmware-name = "qcom/qcm6490/fairphone5/ipa_fws.mdt";
++	firmware-name = "qcom/qcm6490/fairphone5/ipa_fws.mbn";
+ 	status = "okay";
+ };
+ 
 
-[2/2] ARM: dts: qcom: Add initial support for HTC One (M8)
-      commit: 0e8a41e511c98f5f5796c0dca8ff983d1c967b93
+---
+base-commit: ee78a17615ad0cfdbbc27182b1047cd36c9d4d5f
+change-id: 20240606-fp5-ipa-mbn-d0466de6b5bf
 
 Best regards,
 -- 
-Bjorn Andersson <andersson@kernel.org>
+Luca Weiss <luca.weiss@fairphone.com>
+
