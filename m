@@ -1,70 +1,42 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F13018F2F4
-	for <phone-devel@vger.kernel.org>; Fri,  7 Jun 2024 11:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908491667DE;
+	Fri,  7 Jun 2024 14:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717761216; cv=none; b=SNX0KZfSDlKokFTHRuiuf9ywpmCcYZ20cmSRL1ef7QDjx4Hf8QNYhocnpBx/XYnLRF6YalvvPzIQE6mamvURXozfs1HVWZ+v/HkMfhsKlAjcuWk1WVGgEyuiD3V3vzcoQrpssei0mOvCjJvdnJYAbBfTIILVhBPRopHiLK+Ixeg=
+	t=1717770396; cv=none; b=Ggnn6jFibAqLoPXPz8iMMCEYXvyNLzE9kHNN1uQ9yPu5FRlT0Xvrevzf68Uy3N/TiM5EphJJ/NQNnO63r/Tt+pGnPckZuNhkW1wHdSzY7zrH7aFPE/mj5TxiEKXOggmCi5jCDo9lOXBcSkm69lxQBvUpVgp477LJGoMKARKrkDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717761216; c=relaxed/simple;
-	bh=9iWcHW5vlkJ5mXYvRR7eZBIJzhAQwZWdXaz1ky3WgtY=;
+	s=arc-20240116; t=1717770396; c=relaxed/simple;
+	bh=HhNF4gEO9wpQcZi+i8Hge7O/z4YF0BVJjH5/9mep+YA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ICQtOsEa6U5yZHl7IVuJ30mYyX/rpX14ctGvI/98+qr/MGduoBVQEOxuABZ8mjHdP5VSMODum+pABIVD9H1WxuUAlkmR/NPbtBqUtSsq+qNQE0I1c69RUjguh+iRoPgAVPS8qQddZPjFy94JlJG+4KV46egUo1uK8UyM4WCeV0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZhdKvNpu; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=qXOYZu1rLO2o5yL509pCafY7RjJ5JC/P1hSd0gyRm4lxJdrKymE8H01XL1uL1e472uRENUrtLGoRfwZj7DC4bB0nnKVE4v084JiyWQFKGYyrgdd5P7e/mK2/+ZIcMkviPbVonfgy9HJ2oAfXEdf0XhkEHJeCZl1bYmtINSWl85I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=a/gaYwcM; arc=none smtp.client-ip=206.189.193.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZhdKvNpu"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52bc1261f45so399485e87.0
-        for <phone-devel@vger.kernel.org>; Fri, 07 Jun 2024 04:53:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717761213; x=1718366013; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TvegxPSdfl9xxna39T+re8E72S+AP4Tc+93oJJjNX3k=;
-        b=ZhdKvNpuD/7lpXzDIbOMNd4dlY6JCadu1itwTRTEnv0hQBZFYqHzKNDxBtqXdyzeV+
-         4P+DoNHmlYQJW16zEa+vyBhMhBYMnCEObZzF/Un0Gf0h1hcKH1+ugwybvj12P2bw3AzY
-         flXCzqP7767QyvWyNfh7dGOywLiffpbOmF1Rq8bQOvoZUs79twQpo/q9+BmkBBFgK/G+
-         6bYWmF2/VVJDXyQwT0p5v6gHBE8LaBoMtygivvSl436mJVjg+DyOR4je7V1z7ZLw/gMa
-         hbyhV9a/IxDgo1hn1CZfGPCTM5gz2O/Q++5hKwSklQLAkCci77B0bMSybhP9VkiG0xDE
-         ofZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717761213; x=1718366013;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TvegxPSdfl9xxna39T+re8E72S+AP4Tc+93oJJjNX3k=;
-        b=IYpjp836UOZb3er3FifPXC0jyQcOYJB89FWQw6pi+l3d8acyhLJzYv7Gk7IpZoP40/
-         ZX3R0Fv5BhGEyjaTZ1RxTNRFUEk7RMKl6dloHgKGgJFN0TyNR5uLuQMX5VrHqSUBzWdB
-         gZNtJqrXy1oHndtOh5NY5NQv9ceUoT31jqFnSaUCzxvy+Iaa6+/Xk3v6kI52i+RkybBS
-         faJfGpuT2qlpKuqoTde+cMfreliqEXQirCec4MkvUambxKixK0/I3Cuzfh4NwXSPC/1O
-         DHZ8ciCPLiK0UniPINdU7iiEozRHIlsRe5GnImYff4/O7nd/0aLUNNFgjIgOaSxQeONq
-         5bVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVOrVty9nno0NTdonqUDjibBskg838uB6IU2BzNYcj67nMzgYd4hViJw99H9//oozx4ozWEwMIF5AFFhhw8upE7t7nflKmfCbr1dfU=
-X-Gm-Message-State: AOJu0YxuYt7e1MMAlN+08hO7pNOPNRDUDZbsRbbBwlIILRA3wfbvkjXl
-	oKD4bdPphkIas/oiOSy4n7+ga57Op/7Gqr+rwYEB1Cuib/cYC4M4aoozFqP4GnIHylXtmzQuBTb
-	I
-X-Google-Smtp-Source: AGHT+IEzo8rK5dnmaVmRy4s9tP7EFqxXB75a/nXj6f+m+NI3PDqGtQPp5mZoiYyn4SmlJ1NXZyHyTA==
-X-Received: by 2002:a19:2d59:0:b0:52b:af52:d0d1 with SMTP id 2adb3069b0e04-52bb9fe2fc8mr1353269e87.64.1717761213322;
-        Fri, 07 Jun 2024 04:53:33 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyyykxt-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::227])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52bb41ee260sm512079e87.68.2024.06.07.04.53.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 04:53:33 -0700 (PDT)
-Date: Fri, 7 Jun 2024 14:53:31 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Luca Weiss <luca@z3ntu.xyz>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	Bjorn Andersson <andersson@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2] rpmsg: qcom_smd: Improve error handling for
- qcom_smd_parse_edge
-Message-ID: <2r44vuuhmucgkjwdb4ji73dtkskffigie67cgj5422b23wyg7n@jfp5xs5nizwn>
-References: <20240606-apcs-mboxes-v2-1-41b9e91effb6@z3ntu.xyz>
+	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="a/gaYwcM"
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+	by a.peacevolution.org (Postfix) with ESMTPA id D016947E7E;
+	Fri,  7 Jun 2024 14:19:18 +0000 (UTC)
+Date: Fri, 7 Jun 2024 10:19:16 -0400
+From: Aren <aren@peacevolution.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Andy Shevchenko <andy.shevchenko@gmail.com>, Ondrej Jirman <megi@xff.cz>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	Willow Barraco <contact@willowbarraco.fr>
+Subject: Re: [PATCH v2 2/6] iio: light: stk3310: Implement vdd supply and
+ power it off during suspend
+Message-ID: <nkn5emedlkowgjdlqsvssg5ci3lipasbc5aaxn2krd5a6z3af4@fvvp4ysu5rs2>
+References: <20240423223309.1468198-2-aren@peacevolution.org>
+ <20240423223309.1468198-4-aren@peacevolution.org>
+ <20240428175337.61850e2a@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -73,34 +45,35 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240606-apcs-mboxes-v2-1-41b9e91effb6@z3ntu.xyz>
+In-Reply-To: <20240428175337.61850e2a@jic23-huawei>
+X-Spamd-Bar: /
+Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
+	s=dkim; t=1717769960;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:in-reply-to:references;
+	bh=XAEyN4AkCHtTFKYLX9Yy5JtVjbYzN1yPHYJt3534IMA=;
+	b=a/gaYwcMwCH5yEh0swQaVtYVZwoEyr5KOx8OT9hrOGq/WzYIGxag68OcknO+ioNpWPzqrp
+	+X0ZhZ+6Ayy4OAseVLcHTZAifciqwFAPQE/uGytxwiMUbCR9bxIRvauaNsb1jnaUQ987R0
+	LyF1ukyJzdq4QZ7RUzLNGqVnAlzBfPY=
 
-On Thu, Jun 06, 2024 at 09:01:36PM +0200, Luca Weiss wrote:
-> When the mailbox driver has not probed yet, the error message "failed to
-> parse smd edge" is just going to confuse users, so improve the error
-> prints a bit.
+On Sun, Apr 28, 2024 at 05:53:37PM GMT, Jonathan Cameron wrote:
+> On Tue, 23 Apr 2024 18:33:05 -0400
+> Aren Moynihan <aren@peacevolution.org> wrote:
 > 
-> Cover the last remaining exits from qcom_smd_parse_edge with proper
-> error prints, especially the one for the mbox_chan deserved
-> dev_err_probe to handle EPROBE_DEFER nicely. And add one for ipc_regmap
-> also to be complete.
+> > From: Ondrej Jirman <megi@xff.cz>
+> > 
+> > VDD power input can be used to completely power off the chip during
+> > system suspend. Do so if available.
+> > 
+> > Signed-off-by: Ondrej Jirman <megi@xff.cz>
+> > Signed-off-by: Aren Moynihan <aren@peacevolution.org>
 > 
-> With this done, we can remove the outer print completely.
-> 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> ---
-> Changes in v2:
-> - Rebase on qcom for-next, drop dts patches which have been applied
-> - Improve error printing situation (Bjorn)
-> - Link to v1: https://lore.kernel.org/r/20240424-apcs-mboxes-v1-0-6556c47cb501@z3ntu.xyz
-> ---
->  drivers/rpmsg/qcom_smd.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
+> Suggestions inline.  Key thing is take the whole thing devm_ managed
+> and your life gets much easier.  It is mixing the two approaches that
+> causes problems and often the best plan is to do everything in probe/remove
+> with devm_ calls to do the cleanup for you.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Thank you for writing this up. I've been a bit distracted lately, but
+I'm hoping to find some time to implement this in a new revision soon.
 
-
--- 
-With best wishes
-Dmitry
+ - Aren
