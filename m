@@ -1,42 +1,68 @@
-Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908491667DE;
-	Fri,  7 Jun 2024 14:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D2A249F9;
+	Sun,  9 Jun 2024 11:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717770396; cv=none; b=Ggnn6jFibAqLoPXPz8iMMCEYXvyNLzE9kHNN1uQ9yPu5FRlT0Xvrevzf68Uy3N/TiM5EphJJ/NQNnO63r/Tt+pGnPckZuNhkW1wHdSzY7zrH7aFPE/mj5TxiEKXOggmCi5jCDo9lOXBcSkm69lxQBvUpVgp477LJGoMKARKrkDQ=
+	t=1717931149; cv=none; b=sF2mXyC/X/3ph0plQQI3NCtSIThJS4fbmuhdCfRhZuySKqmCA08O31lakFk1Uxo9/RZDic5LEKtq9g6hauiSQhhO5/4pFVA09SDTDacB5ehCfg3ewflPVX5suKL1LuLfVoqNpKk5GZKGZdDY0M8osZL1wBFXULfS35ulufaD9PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717770396; c=relaxed/simple;
-	bh=HhNF4gEO9wpQcZi+i8Hge7O/z4YF0BVJjH5/9mep+YA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qXOYZu1rLO2o5yL509pCafY7RjJ5JC/P1hSd0gyRm4lxJdrKymE8H01XL1uL1e472uRENUrtLGoRfwZj7DC4bB0nnKVE4v084JiyWQFKGYyrgdd5P7e/mK2/+ZIcMkviPbVonfgy9HJ2oAfXEdf0XhkEHJeCZl1bYmtINSWl85I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=a/gaYwcM; arc=none smtp.client-ip=206.189.193.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
+	s=arc-20240116; t=1717931149; c=relaxed/simple;
+	bh=PWjuma657JHSCyYAkXbvSDzqdk7odz+k9Uhz/JiiDJo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=QkomDiunlYmDKyIXEfYfLQLANGu1QJ6AtnCff3FoMRHl4NUAVYxqpK1L5w5lG2juRwLfNs16B0z/STQmTIIq25N/IJQN3JT+4W8ZbRLYO23kSOnL/07jVXR9bT3sQeEVevBhq2kBqueY8JBAajfHhUG14HaV9jGjlEYit87gYsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gVcGTYyt; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="a/gaYwcM"
-Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-	by a.peacevolution.org (Postfix) with ESMTPA id D016947E7E;
-	Fri,  7 Jun 2024 14:19:18 +0000 (UTC)
-Date: Fri, 7 Jun 2024 10:19:16 -0400
-From: Aren <aren@peacevolution.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Andy Shevchenko <andy.shevchenko@gmail.com>, Ondrej Jirman <megi@xff.cz>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	Willow Barraco <contact@willowbarraco.fr>
-Subject: Re: [PATCH v2 2/6] iio: light: stk3310: Implement vdd supply and
- power it off during suspend
-Message-ID: <nkn5emedlkowgjdlqsvssg5ci3lipasbc5aaxn2krd5a6z3af4@fvvp4ysu5rs2>
-References: <20240423223309.1468198-2-aren@peacevolution.org>
- <20240423223309.1468198-4-aren@peacevolution.org>
- <20240428175337.61850e2a@jic23-huawei>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gVcGTYyt"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a6f0c3d0792so110549766b.3;
+        Sun, 09 Jun 2024 04:05:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717931146; x=1718535946; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wpM5CSHQ7BjZsm86jY13nUms8C9enIOcpR5asKG1/Ro=;
+        b=gVcGTYyt0fX+pzbjefearwwirDJ/BrJeJfaXoJsHEsXrKDl2Aq6prG7ikcZE7s5Z0a
+         lHfVaVthY3aiq4Bbz0Ky4vfAVjxXFOXY9MrrGGypxoIKzCzcpf23UMoNPlAVA9uO85Lw
+         kb9KsrjsnPJceCgHmGF2RNyrt+Inkwvr8rY2XiI/BwmBt9Czi3cfBR+8KdchbmEAZ/vH
+         6rKcF4IBqojKA+yehc2emN8+cbIXrDhu5nxUfdWG21/yQzEUUwVRggACYJvN6f2w/dRv
+         sbl1chW0Aetqcid6+4RuTsUQND8fmEbvCsyzGd3eRL23WuKuiahriyjRvmS0MmlDhrdf
+         ypcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717931146; x=1718535946;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wpM5CSHQ7BjZsm86jY13nUms8C9enIOcpR5asKG1/Ro=;
+        b=xNiPLs1SIP5ScJmluCLt0WnEgwkH09RcjurxcWpQRjRyKUoJPM4IvnCsVjp0eSuXhu
+         2E4KHhpJ0hLQ8lKfOEsXh5Zi6pCZjVYKBOjV34vm4ql3O80VNJp/zwhuKuwU8iasNYFj
+         UCcjtd1foiR3hrLU/AeVX6xy+e0MlbfYrdMEVqGWXJJOg1fgyucGAN37WXNcN5FEeAyM
+         ItrE2NjgSw5vuSqpuCsJRiotE65e5fJiGO3nhtz/xRASzGq7HE7FANbA5m+F0Z91wAHh
+         vTlLo87XuFdK9aloSshNMKcruQkDvmVC8q/fVXSNg1MGxxTuLvLEF7pmAMHTEkwMtbgo
+         oPpw==
+X-Forwarded-Encrypted: i=1; AJvYcCXWly7tIkS289rdIaZyPcnGqpsXklTCrTWkx+CEqk/KRjh3ELTnGJMIBv4wvsPABTES3Xxl7pYSlOkDtJYIUQSogvEezhXvVLdURAxc8WcfpbYFP2e7QDEG07LxTxnXGlwdoeyZYZBOAExGTIl5wL8LqKyI/b4B1OqXCPotq2IAty8QwBB8
+X-Gm-Message-State: AOJu0Yw6KbflnRNV4HxV7OGYh9MYkG3dBQRQ4FdXOBcV9sB4ZBRTpVuA
+	0isXBl/kkKX5lsoYlPJLD3D9YWfIITBaH/Rmvql50zLYInDI+tov
+X-Google-Smtp-Source: AGHT+IFMn/iHi3S62iXJonXfBdAPUVD5+Y6loLLU+/1VysHfn0b6aGHs2T+z7LzchWh08FlOKqtnxQ==
+X-Received: by 2002:a17:907:7d9e:b0:a6f:ea6:9534 with SMTP id a640c23a62f3a-a6f0ea698d6mr217343866b.76.1717931145707;
+        Sun, 09 Jun 2024 04:05:45 -0700 (PDT)
+Received: from standask-GA-A55M-S2HP (lu-nat-113-247.ehs.sk. [188.123.113.247])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c806eaa41sm508317766b.115.2024.06.09.04.05.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Jun 2024 04:05:45 -0700 (PDT)
+Date: Sun, 9 Jun 2024 13:05:43 +0200
+From: Stanislav Jakubek <stano.jakubek@gmail.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, phone-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ARM: dts: qcom: motorola-falcon: add accelerometer,
+ magnetometer
+Message-ID: <ZmWMh6fuLasvGkR/@standask-GA-A55M-S2HP>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -45,35 +71,86 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240428175337.61850e2a@jic23-huawei>
-X-Spamd-Bar: /
-Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
-	s=dkim; t=1717769960;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:in-reply-to:references;
-	bh=XAEyN4AkCHtTFKYLX9Yy5JtVjbYzN1yPHYJt3534IMA=;
-	b=a/gaYwcMwCH5yEh0swQaVtYVZwoEyr5KOx8OT9hrOGq/WzYIGxag68OcknO+ioNpWPzqrp
-	+X0ZhZ+6Ayy4OAseVLcHTZAifciqwFAPQE/uGytxwiMUbCR9bxIRvauaNsb1jnaUQ987R0
-	LyF1ukyJzdq4QZ7RUzLNGqVnAlzBfPY=
 
-On Sun, Apr 28, 2024 at 05:53:37PM GMT, Jonathan Cameron wrote:
-> On Tue, 23 Apr 2024 18:33:05 -0400
-> Aren Moynihan <aren@peacevolution.org> wrote:
-> 
-> > From: Ondrej Jirman <megi@xff.cz>
-> > 
-> > VDD power input can be used to completely power off the chip during
-> > system suspend. Do so if available.
-> > 
-> > Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> > Signed-off-by: Aren Moynihan <aren@peacevolution.org>
-> 
-> Suggestions inline.  Key thing is take the whole thing devm_ managed
-> and your life gets much easier.  It is mixing the two approaches that
-> causes problems and often the best plan is to do everything in probe/remove
-> with devm_ calls to do the cleanup for you.
+Add the accelerometer and magnetometer that are present on the Motorola
+Moto G (2013) device.
 
-Thank you for writing this up. I've been a bit distracted lately, but
-I'm hoping to find some time to implement this in a new revision soon.
+Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
+---
+ .../boot/dts/qcom/msm8226-motorola-falcon.dts | 53 +++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
- - Aren
+diff --git a/arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dts b/arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dts
+index 029e1b1659c9..5dbca83f2230 100644
+--- a/arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dts
++++ b/arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dts
+@@ -96,6 +96,35 @@ reserved@fb00000 {
+ 	};
+ };
+ 
++&blsp1_i2c2 {
++	status = "okay";
++
++	magnetometer@c {
++		compatible = "asahi-kasei,ak8963";
++		reg = <0xc>;
++		interrupts-extended = <&tlmm 66 IRQ_TYPE_EDGE_FALLING>;
++		reset-gpios = <&tlmm 62 GPIO_ACTIVE_LOW>;
++		vdd-supply = <&pm8226_l19>;
++		vid-supply = <&pm8226_lvs1>;
++		pinctrl-0 = <&mag_int_default &mag_reset_default>;
++		pinctrl-names = "default";
++	};
++
++	accelerometer@19 {
++		compatible = "st,lis3dh-accel";
++		reg = <0x19>;
++		interrupts-extended = <&tlmm 63 IRQ_TYPE_EDGE_FALLING>;
++		vdd-supply = <&pm8226_l19>;
++		vddio-supply = <&pm8226_lvs1>;
++		pinctrl-0 = <&accel_int_default>;
++		pinctrl-names = "default";
++		mount-matrix = "0", "1", "0",
++			       "1", "0", "0",
++			       "0", "0", "-1";
++		st,drdy-int-pin = <1>;
++	};
++};
++
+ &blsp1_i2c3 {
+ 	status = "okay";
+ 
+@@ -321,6 +350,30 @@ &smbb {
+ };
+ 
+ &tlmm {
++	accel_int_default: accel-int-default-state {
++		pins = "gpio63";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++		output-disable;
++	};
++
++	mag_int_default: mag-int-default-state {
++		pins = "gpio66";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++		output-disable;
++	};
++
++	mag_reset_default: mag-reset-default-state {
++		pins = "gpio62";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++		output-high;
++	};
++
+ 	reg_lcd_default: reg-lcd-default-state {
+ 		pins = "gpio31", "gpio33";
+ 		function = "gpio";
+-- 
+2.34.1
+
