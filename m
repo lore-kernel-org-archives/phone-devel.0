@@ -1,156 +1,116 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D2A249F9;
-	Sun,  9 Jun 2024 11:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101A5200C7;
+	Sun,  9 Jun 2024 18:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717931149; cv=none; b=sF2mXyC/X/3ph0plQQI3NCtSIThJS4fbmuhdCfRhZuySKqmCA08O31lakFk1Uxo9/RZDic5LEKtq9g6hauiSQhhO5/4pFVA09SDTDacB5ehCfg3ewflPVX5suKL1LuLfVoqNpKk5GZKGZdDY0M8osZL1wBFXULfS35ulufaD9PI=
+	t=1717957290; cv=none; b=g6jjhCpL3fWaviJn+JGNcjnh/e229U3Dqw12KLMoV3dVUzCh8E4gx+qPFOAhOUGUB0CbjzRLZl4iMdPItmWALvxKuDuFWjN4qQDIXCpSk4ZQY98yuIh9HgQr5rR5GC5AlH/m4eMrUlZAgJzeTQWT4QMZqEJvjWmAE9nMTcOnKqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717931149; c=relaxed/simple;
-	bh=PWjuma657JHSCyYAkXbvSDzqdk7odz+k9Uhz/JiiDJo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=QkomDiunlYmDKyIXEfYfLQLANGu1QJ6AtnCff3FoMRHl4NUAVYxqpK1L5w5lG2juRwLfNs16B0z/STQmTIIq25N/IJQN3JT+4W8ZbRLYO23kSOnL/07jVXR9bT3sQeEVevBhq2kBqueY8JBAajfHhUG14HaV9jGjlEYit87gYsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gVcGTYyt; arc=none smtp.client-ip=209.85.218.44
+	s=arc-20240116; t=1717957290; c=relaxed/simple;
+	bh=KOkX8jwurDQld+QlBv0V38OKpgKCWjKILaLxBbiPyLE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jF8D7Tr9kNwb+yWVS1dTqSzJsT0BCSUG3Licmq/Y4L8J4glv7245ko8d1niRma3LGTBDqpd/cwKP40Mw0feLLSnj1lNCT5w+mohIqoNofe+2INuSH+J/Bt06cnV4l+sUrW07NuwUsSOWYADremOutJcjwTbcUc/4BZzV39ehiOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/DY6W/b; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gVcGTYyt"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a6f0c3d0792so110549766b.3;
-        Sun, 09 Jun 2024 04:05:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/DY6W/b"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2e73359b900so41312821fa.2;
+        Sun, 09 Jun 2024 11:21:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717931146; x=1718535946; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wpM5CSHQ7BjZsm86jY13nUms8C9enIOcpR5asKG1/Ro=;
-        b=gVcGTYyt0fX+pzbjefearwwirDJ/BrJeJfaXoJsHEsXrKDl2Aq6prG7ikcZE7s5Z0a
-         lHfVaVthY3aiq4Bbz0Ky4vfAVjxXFOXY9MrrGGypxoIKzCzcpf23UMoNPlAVA9uO85Lw
-         kb9KsrjsnPJceCgHmGF2RNyrt+Inkwvr8rY2XiI/BwmBt9Czi3cfBR+8KdchbmEAZ/vH
-         6rKcF4IBqojKA+yehc2emN8+cbIXrDhu5nxUfdWG21/yQzEUUwVRggACYJvN6f2w/dRv
-         sbl1chW0Aetqcid6+4RuTsUQND8fmEbvCsyzGd3eRL23WuKuiahriyjRvmS0MmlDhrdf
-         ypcQ==
+        d=gmail.com; s=20230601; t=1717957287; x=1718562087; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AJ3/N1rRgvqAj4Oiv8BpAZDAAW7UDDeKyFOjASvyBQs=;
+        b=k/DY6W/b6/7BjgDKC8wK6Bi/eG3PfYvg1e0LivCXQHtSJ2vm1GRKIdkWui1+V6Hoq6
+         RWU4Hs2uk0qsLAKwN7KVJLwOc/PBaK8FKHyGbO7Os5tdVU703jRjdM4lS+lxo6tDvRk/
+         tbbu/Kgh6+UMh+3K641eaCR8hRk5nTr4SRF2AQGFjSUEb99c+7lzwFDqKtLeWW/2kYsk
+         q85/SH5mfNLXg/uaG5UgzxH4MHGTdsmTqSjzWYSZ/Heepz3bh/BS8VIDNJSok8iCy1mH
+         7kdiildRRDgwPjZv7MZ7yET0DkgwrbMV86Cg91Lcfdfye6pRKx6yEURdLAr3PhbjmLSE
+         uaRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717931146; x=1718535946;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wpM5CSHQ7BjZsm86jY13nUms8C9enIOcpR5asKG1/Ro=;
-        b=xNiPLs1SIP5ScJmluCLt0WnEgwkH09RcjurxcWpQRjRyKUoJPM4IvnCsVjp0eSuXhu
-         2E4KHhpJ0hLQ8lKfOEsXh5Zi6pCZjVYKBOjV34vm4ql3O80VNJp/zwhuKuwU8iasNYFj
-         UCcjtd1foiR3hrLU/AeVX6xy+e0MlbfYrdMEVqGWXJJOg1fgyucGAN37WXNcN5FEeAyM
-         ItrE2NjgSw5vuSqpuCsJRiotE65e5fJiGO3nhtz/xRASzGq7HE7FANbA5m+F0Z91wAHh
-         vTlLo87XuFdK9aloSshNMKcruQkDvmVC8q/fVXSNg1MGxxTuLvLEF7pmAMHTEkwMtbgo
-         oPpw==
-X-Forwarded-Encrypted: i=1; AJvYcCXWly7tIkS289rdIaZyPcnGqpsXklTCrTWkx+CEqk/KRjh3ELTnGJMIBv4wvsPABTES3Xxl7pYSlOkDtJYIUQSogvEezhXvVLdURAxc8WcfpbYFP2e7QDEG07LxTxnXGlwdoeyZYZBOAExGTIl5wL8LqKyI/b4B1OqXCPotq2IAty8QwBB8
-X-Gm-Message-State: AOJu0Yw6KbflnRNV4HxV7OGYh9MYkG3dBQRQ4FdXOBcV9sB4ZBRTpVuA
-	0isXBl/kkKX5lsoYlPJLD3D9YWfIITBaH/Rmvql50zLYInDI+tov
-X-Google-Smtp-Source: AGHT+IFMn/iHi3S62iXJonXfBdAPUVD5+Y6loLLU+/1VysHfn0b6aGHs2T+z7LzchWh08FlOKqtnxQ==
-X-Received: by 2002:a17:907:7d9e:b0:a6f:ea6:9534 with SMTP id a640c23a62f3a-a6f0ea698d6mr217343866b.76.1717931145707;
-        Sun, 09 Jun 2024 04:05:45 -0700 (PDT)
-Received: from standask-GA-A55M-S2HP (lu-nat-113-247.ehs.sk. [188.123.113.247])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c806eaa41sm508317766b.115.2024.06.09.04.05.44
+        d=1e100.net; s=20230601; t=1717957287; x=1718562087;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AJ3/N1rRgvqAj4Oiv8BpAZDAAW7UDDeKyFOjASvyBQs=;
+        b=Cq9e47JeOljZ2pRs+tIMmMrK9Bhu3bh9aIoHUIoAQ9Lleo3wCqovHyZRDR1D2N/+YY
+         akZREuCufaweEwUIWNzGBZJ0g/WWh+nDA14YLNM49vFPAF4+snY6kR0aMCJJYsDgksEw
+         nVQW2K62x0J821vJaRNQ05K1LPvLDBsIoEpEOB61TKendYTirccV91xkkn7RiQKtwelA
+         FIU+u3y+mjAB4SgqXtyUGvCIY6gBto2VzRAxcjX7l63Ovtv3qsL5Z61XSup8yJfHnrS5
+         XWrmuZ8XTzT6Qiqzg7gAoURaMKLoN0OlzUgGP3LtIN7rN/TBMhxXpeXF8Fr/UxBct3fw
+         Xd5w==
+X-Forwarded-Encrypted: i=1; AJvYcCV3tYr6qWWoLa7JAfGFGjozxg3a2PGeyA3lxPhgq+MKK7T+LCZNi/NMV2ENwCiSxzkPpQOrTRlMwIfIgngr6+VRk10pH/KW658RNSW3K1wjZ5sQ+svU2qApheWIPkC5dfUH8bVpnYGs+uXI59FZxdMxc1VYz5gNuted2m4FU8lFVaEUmTLjgBpY+18fraLMSRI8Gj8rELfWScvg8BC8j8zGvg==
+X-Gm-Message-State: AOJu0Yw0iOt3l3ZqrCdfKYS3K393LeOXyDejSByOTTKBVZWkPi/4ASSj
+	doowgyz2UaYcngspIuOtUa3dyzngjhfcw5PbZHxUYNmMHga5xa3Wk4kZwA==
+X-Google-Smtp-Source: AGHT+IHqVEZNjTDF7WWqnYMLstPdIJHXxtv+sg5PyBPBPt3ibxDoQUcjxCsmInu4o7z4jJcEgBbfCw==
+X-Received: by 2002:a2e:9811:0:b0:2eb:d87f:7d78 with SMTP id 38308e7fff4ca-2ebd87f7ecdmr17982411fa.30.1717957286324;
+        Sun, 09 Jun 2024 11:21:26 -0700 (PDT)
+Received: from localhost.localdomain (bza83.neoplus.adsl.tpnet.pl. [83.30.46.83])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ebd5a63bf2sm6679841fa.33.2024.06.09.11.21.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Jun 2024 04:05:45 -0700 (PDT)
-Date: Sun, 9 Jun 2024 13:05:43 +0200
-From: Stanislav Jakubek <stano.jakubek@gmail.com>
-To: Bjorn Andersson <andersson@kernel.org>,
+        Sun, 09 Jun 2024 11:21:25 -0700 (PDT)
+From: Adam Skladowski <a39.skl@gmail.com>
+To: 
+Cc: phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Adam Skladowski <a39.skl@gmail.com>,
+	Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, phone-devel@vger.kernel.org,
+	Georgi Djakov <djakov@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] ARM: dts: qcom: motorola-falcon: add accelerometer,
- magnetometer
-Message-ID: <ZmWMh6fuLasvGkR/@standask-GA-A55M-S2HP>
+Subject: [PATCH 0/7] msm8937/msm8976/qcs404 icc patches
+Date: Sun,  9 Jun 2024 20:20:53 +0200
+Message-Id: <20240609182112.13032-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Add the accelerometer and magnetometer that are present on the Motorola
-Moto G (2013) device.
+This series introduce new ICC drivers for some legacy socs
+while at it also updates a bit of qcs404 driver which seems
+to not receive much attention lately.
+Please take in consideration i do not own any qcs404 board
+so i cannot test anything else than if it compiles.
 
-Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
----
- .../boot/dts/qcom/msm8226-motorola-falcon.dts | 53 +++++++++++++++++++
- 1 file changed, 53 insertions(+)
+Adam Skladowski (7):
+  dt-bindings: interconnect: Add Qualcomm MSM8976 DT bindings
+  interconnect: qcom: Add MSM8976 interconnect provider driver
+  dt-bindings: interconnect: Add Qualcomm MSM8937 DT bindings
+  interconnect: qcom: Add MSM8937 interconnect provider driver
+  interconnect: qcom: qcs404: Introduce AP-owned nodes
+  interconnect: qcom: qcs404: Add regmaps and more bus descriptions
+  dt-bindings: interconnect: qcom: msm8939: Fix example
 
-diff --git a/arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dts b/arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dts
-index 029e1b1659c9..5dbca83f2230 100644
---- a/arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dts
-+++ b/arch/arm/boot/dts/qcom/msm8226-motorola-falcon.dts
-@@ -96,6 +96,35 @@ reserved@fb00000 {
- 	};
- };
- 
-+&blsp1_i2c2 {
-+	status = "okay";
-+
-+	magnetometer@c {
-+		compatible = "asahi-kasei,ak8963";
-+		reg = <0xc>;
-+		interrupts-extended = <&tlmm 66 IRQ_TYPE_EDGE_FALLING>;
-+		reset-gpios = <&tlmm 62 GPIO_ACTIVE_LOW>;
-+		vdd-supply = <&pm8226_l19>;
-+		vid-supply = <&pm8226_lvs1>;
-+		pinctrl-0 = <&mag_int_default &mag_reset_default>;
-+		pinctrl-names = "default";
-+	};
-+
-+	accelerometer@19 {
-+		compatible = "st,lis3dh-accel";
-+		reg = <0x19>;
-+		interrupts-extended = <&tlmm 63 IRQ_TYPE_EDGE_FALLING>;
-+		vdd-supply = <&pm8226_l19>;
-+		vddio-supply = <&pm8226_lvs1>;
-+		pinctrl-0 = <&accel_int_default>;
-+		pinctrl-names = "default";
-+		mount-matrix = "0", "1", "0",
-+			       "1", "0", "0",
-+			       "0", "0", "-1";
-+		st,drdy-int-pin = <1>;
-+	};
-+};
-+
- &blsp1_i2c3 {
- 	status = "okay";
- 
-@@ -321,6 +350,30 @@ &smbb {
- };
- 
- &tlmm {
-+	accel_int_default: accel-int-default-state {
-+		pins = "gpio63";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-disable;
-+	};
-+
-+	mag_int_default: mag-int-default-state {
-+		pins = "gpio66";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-disable;
-+	};
-+
-+	mag_reset_default: mag-reset-default-state {
-+		pins = "gpio62";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-high;
-+	};
-+
- 	reg_lcd_default: reg-lcd-default-state {
- 		pins = "gpio31", "gpio33";
- 		function = "gpio";
+ .../bindings/interconnect/qcom,msm8937.yaml   |   81 +
+ .../bindings/interconnect/qcom,msm8939.yaml   |   22 +-
+ .../bindings/interconnect/qcom,msm8976.yaml   |  107 ++
+ drivers/interconnect/qcom/Kconfig             |   18 +
+ drivers/interconnect/qcom/Makefile            |    4 +
+ drivers/interconnect/qcom/msm8937.c           | 1374 ++++++++++++++++
+ drivers/interconnect/qcom/msm8976.c           | 1443 +++++++++++++++++
+ drivers/interconnect/qcom/qcs404.c            |  126 +-
+ .../dt-bindings/interconnect/qcom,msm8937.h   |   93 ++
+ .../dt-bindings/interconnect/qcom,msm8976.h   |   97 ++
+ 10 files changed, 3354 insertions(+), 11 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,msm8937.yaml
+ create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml
+ create mode 100644 drivers/interconnect/qcom/msm8937.c
+ create mode 100644 drivers/interconnect/qcom/msm8976.c
+ create mode 100644 include/dt-bindings/interconnect/qcom,msm8937.h
+ create mode 100644 include/dt-bindings/interconnect/qcom,msm8976.h
+
 -- 
-2.34.1
+2.45.1
 
