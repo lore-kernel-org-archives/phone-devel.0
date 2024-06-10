@@ -1,59 +1,59 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D27811E6
-	for <phone-devel@vger.kernel.org>; Mon, 10 Jun 2024 12:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370877FBDF
+	for <phone-devel@vger.kernel.org>; Mon, 10 Jun 2024 12:52:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718023846; cv=none; b=QumM4yFeS5Fwvgrbhzk5zaR2/ufypWmEg7l5Y0kYdpi2uDN5D7PxXJMQWmY3FKk0Z/N0aw7jWSxr4mdla1TOrUnMfTMIwnO/5UrLK70xMq0o9HduExxvyDeYzxRTJcu5PPpJvZFc5BX6HZ9egWduJxkjLB/GaXK8GrGIIlMjCtM=
+	t=1718023940; cv=none; b=oaHJnq0fxAAo0zvuUvqVJQ/QSdEw1qWxNGeoNZNoWufC0I3PGiH/XNXehaLG23zDXxqHQ3DoJrLLmLrCs7fleP83/7mv4HYQetqWaimJGU651BMMGmBIFY8VF2cDAdJaCwtwjhi5/gDbDUXjRO4b22LuRqfeJi01r0tRLbc201A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718023846; c=relaxed/simple;
-	bh=tNmWhx9bghGx/gPDCgODHzV1BqZ/8YYV5lSZvnnr/Xs=;
+	s=arc-20240116; t=1718023940; c=relaxed/simple;
+	bh=wfOgF41QMKeLyD4tqdxrMVChnZ0cOUXyJNls4KmAiUI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c3Blk6L61QhOc3R49f2eDUb0yKgNSOP9RJbCWZ584+eN2Etie4zAHtjJUp+mZCRf5uX1K/ekkk9IRGc7wPwZOLA//wmRvSr3vcx51nTGZ6VpNS6aHC3UqGpcRt4MZq/2qXkFwzh/6e9KFjmIK5DjARHkLo622CHl3hxJK09LikE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=G7Xp9v3Z; arc=none smtp.client-ip=209.85.128.49
+	 In-Reply-To:Content-Type; b=t/lMlv9vQLB7QWpusE3YpcLhG0V9qt4FNu/KOFMScBmGUfTVKpvPzsYnuqSWKLztqQNFmDamu52wUljcLrBIYZmYlzoAoKpUIhoDzgnI+v0aG2gAsYuX1W6Qn6Aa1JDmpUqXUWHRv7L+y4KTCeIJzHivuFmQB9vOle19XFKx0JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gBffsuMx; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="G7Xp9v3Z"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-421757d217aso24188595e9.3
-        for <phone-devel@vger.kernel.org>; Mon, 10 Jun 2024 05:50:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gBffsuMx"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2ebdfe261f9so19820661fa.1
+        for <phone-devel@vger.kernel.org>; Mon, 10 Jun 2024 05:52:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718023843; x=1718628643; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1718023937; x=1718628737; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=WVQZfuaSODSe/detgoN35rqBdnOZD2OV4kbOzoLbpBk=;
-        b=G7Xp9v3ZkpTSXWhpMpFryLFr+v6VXvo2Odki/jmZaJogkG57qcHrZKOVcSOfs7luJU
-         s8wwwD21IT8FbJL9mYEYgRC7U543MJJ5ZB7xwfegUCsVxWNxAFYpERs5pkPmSztEJNwS
-         hIuT4hnJEjcLbSoMue5YFobVjTRVspB2xSCRnKDCddCOey0ESwXFADALfecVXnJJnjGD
-         bRFhXMpl2nhpFJNVwSNvXR/MRQaTeHy+TIMdpfrNvuixCdLUHr9CKVUyVxZOXB+MizXr
-         K9daXO7nDLlLFPxMzdL1ALVbnuEANapZkgdSu90CO0Sp5giW+vlzyrBcZZiKkiY4pfy0
-         lHPA==
+        bh=XGLVSb1Y+eBpheC9Z0/MTJkkla59b032G7MA36nJcSI=;
+        b=gBffsuMxn948hNZzFbAvg0WqZF7+H9VqHmw2HjsShLzIorjeZ5xBKvqbUIRUvtUton
+         qTAud7pAN3DV1c4RvFAtXKi8uWKUsTunEbhfDj8O6vDZvWEtTEAFyZ+GXdFacuMNNUSW
+         ve+oMOtIf4X1SDJ2YMtWXZa5zwEssTLCeHskQGuogcULwlWialnmEUCzOHRK8bp2/Kzj
+         9SR5Qub5MkfFdUkvKygfR98Gfa7ijLH/Bh7JYFCfG4auOOg+96tWKF7rdnoL1S56xaoJ
+         f3NwLJDCXvh3kMlUfYbTe7ZXDHXbm6RwNZ6E3JEz7xWeQS9NVJdd+AFGNnnGGfueenqI
+         /RTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718023843; x=1718628643;
+        d=1e100.net; s=20230601; t=1718023937; x=1718628737;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=WVQZfuaSODSe/detgoN35rqBdnOZD2OV4kbOzoLbpBk=;
-        b=muMZS+ClrEa8z2ismoYxHd90pYsbGW9+me4vvxO8orvgnyH7KSG/s4kwxUpcLPlyVx
-         /AMo6M/A/NWegNcikUvINCdM3EzMv91xvRaUn5wbZLHSh5zUq0sF9kWHi7epgnVM+/9j
-         tzcYjYj6s4G9lFtwlsHZYvTz5bQ4HJ1ifICx9RoePbdYs1ZNzCAw91/5jtIAyKYpBEza
-         Dm5bptQ3ZjdjbPt1WAY1q6BcBE0BCQodRM0z9aGKus+qt81Tliddahp6xDsm34rA9DXU
-         QpphovBzdjEE80c5Q6RWBHLoKZMAcXRdautciGPCMXcFBJa1UYMRbQpj2YRxfoqKdoHT
-         A/wg==
-X-Gm-Message-State: AOJu0YzF563EQSLXSZBTtVZzJmX3sfOKhEJhs3MWaz8dzdVv6G8JwgoG
-	trXr5dpDKVgvKFIw5X/ROtIHJD/h1MqUV78811Cr8AJYZIWYJlMsLYZSb/8Gjww=
-X-Google-Smtp-Source: AGHT+IEbmgzwv7vfHPPjLKLtcnamF89MDucqRN1a6Jr35IsIdoXw9q3wRg5VQj1wn2HHqHU4CWVwLw==
-X-Received: by 2002:a05:600c:3b20:b0:421:7e19:5afa with SMTP id 5b1f17b1804b1-4217e196259mr52996295e9.30.1718023843148;
-        Mon, 10 Jun 2024 05:50:43 -0700 (PDT)
+        bh=XGLVSb1Y+eBpheC9Z0/MTJkkla59b032G7MA36nJcSI=;
+        b=C7z1MqR3wT4t/mTs36nJEahuPmaxooVJcoh+tfLZjpZCyTCfF0lj/Gixbd9FWhGbKt
+         fwicusnMCJb8ZXSVXjxghFVujicWLruD7ZwWTYip/Lj2fvsqhv3IRklXWoGG1c8iP1fy
+         O0WYFwE+otmVWssuTRMIQiLL5X/3egJEuO0oEipPhojOQmXHJP9DxwsvOtaC7hLwBi4Q
+         XR3XqiP23eQoEDfH7DI6mpnESmuBHGU3fNQehBKsd38QpW9g46Zg3Kp/OouXMaPJcA0K
+         MSxAptkTqCeT6Zu3vjtf0CgV0mQER2dBAgsDg8UwhKrdN6UeO25ao1voI5dS/jPsj3xd
+         6vkA==
+X-Gm-Message-State: AOJu0YwQDGC1npP/CVpdLeeEacdF/oL9jJBPbRvA8v9R/Wlzax+XRaA2
+	XjvcqRdsLrNkaTFOpQRN8P3kYtZhd2ueZNLYcyaouN3Egoq2looPoFyUpae0nBA=
+X-Google-Smtp-Source: AGHT+IHZRoQhx2FmfsF5PBu/eRgcGV4h/6ljayTeb7IPjuuUuRC3X5LeK8HnpYoEenriSCcN0dQGaw==
+X-Received: by 2002:a2e:8759:0:b0:2eb:de35:5c60 with SMTP id 38308e7fff4ca-2ebde355ea0mr33849961fa.8.1718023937293;
+        Mon, 10 Jun 2024 05:52:17 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4215810242fsm172504585e9.12.2024.06.10.05.50.41
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35f29629231sm743934f8f.67.2024.06.10.05.52.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jun 2024 05:50:42 -0700 (PDT)
-Message-ID: <5e980bfe-c939-478b-833e-d5816c3ed77f@linaro.org>
-Date: Mon, 10 Jun 2024 14:50:41 +0200
+        Mon, 10 Jun 2024 05:52:16 -0700 (PDT)
+Message-ID: <6a9fa18f-c91b-4805-858f-510dbe9a69c5@linaro.org>
+Date: Mon, 10 Jun 2024 14:52:14 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -61,8 +61,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/7] dt-bindings: interconnect: Add Qualcomm MSM8976 DT
- bindings
+Subject: Re: [PATCH 2/7] interconnect: qcom: Add MSM8976 interconnect provider
+ driver
 To: Adam Skladowski <a39.skl@gmail.com>
 Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
@@ -73,7 +73,7 @@ Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20240609182112.13032-1-a39.skl@gmail.com>
- <20240609182112.13032-2-a39.skl@gmail.com>
+ <20240609182112.13032-3-a39.skl@gmail.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -120,151 +120,42 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240609182112.13032-2-a39.skl@gmail.com>
+In-Reply-To: <20240609182112.13032-3-a39.skl@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 09/06/2024 20:20, Adam Skladowski wrote:
-> Add bindings for Qualcomm MSM8976 Network-On-Chip interconnect devices.
+> Add driver for interconnect busses found in MSM8976 based platforms.
+> The topology consists of four NoCs that are partially controlled
+> by a RPM processor.
 > 
 > Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 
-A nit, subject: drop second/last, redundant "DT bindings". The
-"dt-bindings" prefix is already stating that these are bindings.
-See also:
-https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
+> +
+> +static const struct qcom_icc_desc msm8976_snoc_mm = {
+> +	.type = QCOM_ICC_NOC,
+> +	.nodes = msm8976_snoc_mm_nodes,
+> +	.num_nodes = ARRAY_SIZE(msm8976_snoc_mm_nodes),
+> +	.bus_clk_desc = &bus_2_clk,
+> +	.regmap_cfg = &msm8976_snoc_regmap_config,
+> +	.qos_offset = 0x7000,
+> +	.ab_coeff = 154,
+> +};
+> +
+> +static const struct of_device_id msm8976_noc_of_match[] = {
+> +	{ .compatible = "qcom,msm8976-bimc", .data = &msm8976_bimc },
+> +	{ .compatible = "qcom,msm8976-pcnoc", .data = &msm8976_pcnoc },
+> +	{ .compatible = "qcom,msm8976-snoc", .data = &msm8976_snoc },
+> +	{ .compatible = "qcom,msm8976-snoc-mm", .data = &msm8976_snoc_mm },
 
-> ---
->  .../bindings/interconnect/qcom,msm8976.yaml   | 107 ++++++++++++++++++
->  .../dt-bindings/interconnect/qcom,msm8976.h   |  97 ++++++++++++++++
->  2 files changed, 204 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml
->  create mode 100644 include/dt-bindings/interconnect/qcom,msm8976.h
-> 
-> diff --git a/Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml b/Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml
-> new file mode 100644
-> index 000000000000..bc9d08443e7c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml
-> @@ -0,0 +1,107 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/interconnect/qcom,msm8976.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm MSM8976 Network-On-Chip interconnect
-> +
-> +maintainers:
-> +  - Konrad Dybcio <konradybcio@kernel.org>
-> +
-> +description: |
+Please run scripts/checkpatch.pl and fix reported warnings. Then please
+run `scripts/checkpatch.pl --strict` and (probably) fix more warnings.
+Some warnings can be ignored, especially from --strict run, but the code
+here looks like it needs a fix. Feel free to get in touch if the warning
+is not clear.
 
-Do not need '|' unless you need to preserve formatting.
+undocumented compatible
 
-> +  The Qualcomm MSM8976 interconnect providers support adjusting the
-> +  bandwidth requirements between the various NoC fabrics.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - qcom,msm8976-bimc
-> +      - qcom,msm8976-pcnoc
-> +      - qcom,msm8976-snoc
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    minItems: 1
-> +    maxItems: 2
-> +
-> +  clocks:
-> +    minItems: 1
-> +    maxItems: 2
-
-I know that other qcom bindings use that order (clock-names -> clocks),
-but at least for new bindings let's keep it more logical, so please
-first clocks then clock-names.
-
-> +
-> +patternProperties:
-> +  '^interconnect-[a-z0-9\-]+$':
-> +    type: object
-> +    $ref: qcom,rpm-common.yaml#
-> +    description:
-> +      The interconnect providers do not have a separate QoS register space,
-> +      but share parent's space.
-> +
-> +    allOf:
-> +      - $ref: qcom,rpm-common.yaml#
-
-Drop both lines.
-
-> +
-> +    properties:
-> +      compatible:
-> +        const: qcom,msm8976-snoc-mm
-> +
-> +    required:
-> +      - compatible
-> +
-> +    unevaluatedProperties: false
-
-Put it after $ref (before description).
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +unevaluatedProperties: false
-
-This goes after entire allOf section
-
-> +
-> +allOf:
-> +  - $ref: qcom,rpm-common.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          const: qcom,msm8976-snoc
-> +
-> +    then:
-> +      properties:
-> +        clocks:
-> +          items:
-> +            - description: IPA clock from RPMCC
-> +        clock-names:
-> +          const: ipa
-> +
-> +      required:
-> +        - clocks
-> +        - clock-names
-
-Then why do you have two items? And what with clocks for other variants?
-This is supposed to be fixed/specific for each device/variant.
-
-
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/clock/qcom,rpmcc.h>
-> +    #include <dt-bindings/interconnect/qcom,rpm-icc.h>
-> +
-> +    bimc: interconnect@400000 {
-> +        compatible = "qcom,msm8976-bimc";
-> +        reg = <0x00400000 0x62000>;
-> +        #interconnect-cells = <2>;
-> +    };
-> +
-> +    pcnoc: interconnect@500000 {
-> +        compatible = "qcom,msm8976-pcnoc";
-> +        reg = <0x00500000 0x14000>;
-> +        #interconnect-cells = <2>;
-> +    };
-
-Drop both nodes. The node below is enough as an example.
 
 
 Best regards,
