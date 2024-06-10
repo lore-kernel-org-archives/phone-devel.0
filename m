@@ -1,88 +1,272 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03FE78C65
-	for <phone-devel@vger.kernel.org>; Mon, 10 Jun 2024 10:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D27811E6
+	for <phone-devel@vger.kernel.org>; Mon, 10 Jun 2024 12:50:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718015034; cv=none; b=DsF7qRVIQlUJEyatGNg4EUWzccDoJ1TEGHr078TEtahtTBj2bkjEFyKpJp6BL7zeltnbBYK3+BcuGhxHMTUgQkSzYWj6ojEtYDLX8eSt8BN+IOi0gNA3Vu8B99zho6UanWzubZmHxezuPZpkXvRmYNGXnAA667dgGXdKxX7KQ84=
+	t=1718023846; cv=none; b=QumM4yFeS5Fwvgrbhzk5zaR2/ufypWmEg7l5Y0kYdpi2uDN5D7PxXJMQWmY3FKk0Z/N0aw7jWSxr4mdla1TOrUnMfTMIwnO/5UrLK70xMq0o9HduExxvyDeYzxRTJcu5PPpJvZFc5BX6HZ9egWduJxkjLB/GaXK8GrGIIlMjCtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718015034; c=relaxed/simple;
-	bh=/dvlPaDX7JS7HUc0xymxE8GPZRJ/dZ9lSf050PDmGgg=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Q7qNWf2ruEgkSL6kQhcq4KXIliZGtljG7BI0D8pquWNsO1/qPqEyYv1z04b17ZBJwBUMdV82CxUYvMTe+zUUSV4D8urrulStaX4PUOsx+384brMGbJfnpmdIENG2ywt9jd81JYAmZXCJuhB4VAW5Di3Gts5/At/xzY6lfmks/Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=hVn0UGjo; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+	s=arc-20240116; t=1718023846; c=relaxed/simple;
+	bh=tNmWhx9bghGx/gPDCgODHzV1BqZ/8YYV5lSZvnnr/Xs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c3Blk6L61QhOc3R49f2eDUb0yKgNSOP9RJbCWZ584+eN2Etie4zAHtjJUp+mZCRf5uX1K/ekkk9IRGc7wPwZOLA//wmRvSr3vcx51nTGZ6VpNS6aHC3UqGpcRt4MZq/2qXkFwzh/6e9KFjmIK5DjARHkLo622CHl3hxJK09LikE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=G7Xp9v3Z; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="hVn0UGjo"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 8FCF1240105
-	for <phone-devel@vger.kernel.org>; Mon, 10 Jun 2024 12:17:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
-	t=1718014679; bh=/dvlPaDX7JS7HUc0xymxE8GPZRJ/dZ9lSf050PDmGgg=;
-	h=Message-ID:Subject:From:To:Date:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:From;
-	b=hVn0UGjoEIWpc28KZUIuvmIHaQbdQaEf3UKUxFL+kKAtBKX0YufCaSqfPQW38hMc7
-	 E+g3jfDEKiWm2aMQUGqxcAbNSwO3UNe+y3qMYmx2IGwpJrS+EAEHId9ptYHW6ny4tb
-	 9fLSMosWMplnFr8b8EGb97nKQPL184qNrgRBHIhTMhnwWJ1cJykCFkl5HUW+uKvm2G
-	 d+cIUN6ms9YrBeEs/l0VJxypPTcnpINuU/jJNm8uhy4Tn0VG0863uWyAbKxb6YDalk
-	 4Q5BorAp1mpG7Co5wlLlWgS58BPptqWFZ8YjlxOc7dB4uF6X2uCrdkW/IPksgtYYXh
-	 jW70aQ438k0xg==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4VySRl4VHgz6tvp;
-	Mon, 10 Jun 2024 12:17:55 +0200 (CEST)
-Message-ID: <6cc32fceb4d74833e045e0acbc51515b5ef3065b.camel@posteo.de>
-Subject: Re: [PATCH] dts: imx8mq-librem5: Don't wake up on volume key press
-From: Martin Kepplinger <martink@posteo.de>
-To: Guido =?ISO-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
- <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
- imx@lists.linux.dev,  linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org,  phone-devel@vger.kernel.org, kernel@puri.sm
-Date: Mon, 10 Jun 2024 10:17:55 +0000
-In-Reply-To: <fa416916049e85ca159805e8602fa8361d5e6d83.1716202515.git.agx@sigxcpu.org>
-References: 
-	<fa416916049e85ca159805e8602fa8361d5e6d83.1716202515.git.agx@sigxcpu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="G7Xp9v3Z"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-421757d217aso24188595e9.3
+        for <phone-devel@vger.kernel.org>; Mon, 10 Jun 2024 05:50:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718023843; x=1718628643; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=WVQZfuaSODSe/detgoN35rqBdnOZD2OV4kbOzoLbpBk=;
+        b=G7Xp9v3ZkpTSXWhpMpFryLFr+v6VXvo2Odki/jmZaJogkG57qcHrZKOVcSOfs7luJU
+         s8wwwD21IT8FbJL9mYEYgRC7U543MJJ5ZB7xwfegUCsVxWNxAFYpERs5pkPmSztEJNwS
+         hIuT4hnJEjcLbSoMue5YFobVjTRVspB2xSCRnKDCddCOey0ESwXFADALfecVXnJJnjGD
+         bRFhXMpl2nhpFJNVwSNvXR/MRQaTeHy+TIMdpfrNvuixCdLUHr9CKVUyVxZOXB+MizXr
+         K9daXO7nDLlLFPxMzdL1ALVbnuEANapZkgdSu90CO0Sp5giW+vlzyrBcZZiKkiY4pfy0
+         lHPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718023843; x=1718628643;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WVQZfuaSODSe/detgoN35rqBdnOZD2OV4kbOzoLbpBk=;
+        b=muMZS+ClrEa8z2ismoYxHd90pYsbGW9+me4vvxO8orvgnyH7KSG/s4kwxUpcLPlyVx
+         /AMo6M/A/NWegNcikUvINCdM3EzMv91xvRaUn5wbZLHSh5zUq0sF9kWHi7epgnVM+/9j
+         tzcYjYj6s4G9lFtwlsHZYvTz5bQ4HJ1ifICx9RoePbdYs1ZNzCAw91/5jtIAyKYpBEza
+         Dm5bptQ3ZjdjbPt1WAY1q6BcBE0BCQodRM0z9aGKus+qt81Tliddahp6xDsm34rA9DXU
+         QpphovBzdjEE80c5Q6RWBHLoKZMAcXRdautciGPCMXcFBJa1UYMRbQpj2YRxfoqKdoHT
+         A/wg==
+X-Gm-Message-State: AOJu0YzF563EQSLXSZBTtVZzJmX3sfOKhEJhs3MWaz8dzdVv6G8JwgoG
+	trXr5dpDKVgvKFIw5X/ROtIHJD/h1MqUV78811Cr8AJYZIWYJlMsLYZSb/8Gjww=
+X-Google-Smtp-Source: AGHT+IEbmgzwv7vfHPPjLKLtcnamF89MDucqRN1a6Jr35IsIdoXw9q3wRg5VQj1wn2HHqHU4CWVwLw==
+X-Received: by 2002:a05:600c:3b20:b0:421:7e19:5afa with SMTP id 5b1f17b1804b1-4217e196259mr52996295e9.30.1718023843148;
+        Mon, 10 Jun 2024 05:50:43 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.137])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4215810242fsm172504585e9.12.2024.06.10.05.50.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Jun 2024 05:50:42 -0700 (PDT)
+Message-ID: <5e980bfe-c939-478b-833e-d5816c3ed77f@linaro.org>
+Date: Mon, 10 Jun 2024 14:50:41 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/7] dt-bindings: interconnect: Add Qualcomm MSM8976 DT
+ bindings
+To: Adam Skladowski <a39.skl@gmail.com>
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Georgi Djakov <djakov@kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+ linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240609182112.13032-1-a39.skl@gmail.com>
+ <20240609182112.13032-2-a39.skl@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240609182112.13032-2-a39.skl@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-QW0gTW9udGFnLCBkZW0gMjAuMDUuMjAyNCB1bSAxMjo1NyArMDIwMCBzY2hyaWViIEd1aWRvIEfD
-vG50aGVyOgo+IFRoZSBvbmx5IGtleSB0aGF0IHNob3VsZCB3YWtlIHVwIHRoZSBwaG9uZSBpcyBw
-b3dlciBidXR0b24gcHJlc3MuCj4gVGhpcwo+IHByZXZlbnRzIGFjY2lkZW50YWwgd2FrZXVwIGR1
-ZSB0byBlLmcuIHByZXNzaW5nIHRoZSBidXR0b25zIGluIHRoZQo+IHBvY2tldCBvciBiYWNrcGFj
-ayBhbmQgaXMgaW4gbGluZSB3aGF0IHVzZXJzcGFjZSB1c2VzIHRvIHVuYmxhbmsgdGhlCj4gZGV2
-aWNlLgo+IAo+IFNpZ25lZC1vZmYtYnk6IEd1aWRvIEfDvG50aGVyIDxhZ3hAc2lneGNwdS5vcmc+
-CgpSZXZpZXdlZC1ieTogTWFydGluIEtlcHBsaW5nZXIgPG1hcnRpbmtAcG9zdGVvLmRlPgoKdGhh
-bmsgeW91LAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbWFydGluCgo+IC0tLQo+IMKg
-YXJjaC9hcm02NC9ib290L2R0cy9mcmVlc2NhbGUvaW14OG1xLWxpYnJlbTUuZHRzaSB8IDIgLS0K
-PiDCoDEgZmlsZSBjaGFuZ2VkLCAyIGRlbGV0aW9ucygtKQo+IAo+IGRpZmYgLS1naXQgYS9hcmNo
-L2FybTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXEtbGlicmVtNS5kdHNpCj4gYi9hcmNoL2Fy
-bTY0L2Jvb3QvZHRzL2ZyZWVzY2FsZS9pbXg4bXEtbGlicmVtNS5kdHNpCj4gaW5kZXggZmZiNWZl
-NjE2MzBkLi4xYjM5NTE0ZDVjMTIgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9hcm02NC9ib290L2R0cy9m
-cmVlc2NhbGUvaW14OG1xLWxpYnJlbTUuZHRzaQo+ICsrKyBiL2FyY2gvYXJtNjQvYm9vdC9kdHMv
-ZnJlZXNjYWxlL2lteDhtcS1saWJyZW01LmR0c2kKPiBAQCAtNDUsNyArNDUsNiBAQCBrZXktdm9s
-LWRvd24gewo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oGdwaW9zID0gPCZncGlvMSAxNyBHUElPX0FDVElWRV9MT1c+Owo+IMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGxpbnV4LGNvZGUgPSA8S0VZX1ZPTFVNRURP
-V04+Owo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRl
-Ym91bmNlLWludGVydmFsID0gPDUwPjsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoHdha2V1cC1zb3VyY2U7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqB9Owo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBrZXktdm9s
-LXVwIHsKPiBAQCAtNTMsNyArNTIsNiBAQCBrZXktdm9sLXVwIHsKPiDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBncGlvcyA9IDwmZ3BpbzEgMTYgR1BJT19B
-Q1RJVkVfTE9XPjsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqBsaW51eCxjb2RlID0gPEtFWV9WT0xVTUVVUD47Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgZGVib3VuY2UtaW50ZXJ2YWwgPSA8NTA+Owo+IC3C
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgd2FrZXVwLXNvdXJj
-ZTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoH07Cj4gwqDCoMKgwqDCoMKgwqDC
-oH07Cj4gwqAKCg==
+On 09/06/2024 20:20, Adam Skladowski wrote:
+> Add bindings for Qualcomm MSM8976 Network-On-Chip interconnect devices.
+> 
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+
+A nit, subject: drop second/last, redundant "DT bindings". The
+"dt-bindings" prefix is already stating that these are bindings.
+See also:
+https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
+
+> ---
+>  .../bindings/interconnect/qcom,msm8976.yaml   | 107 ++++++++++++++++++
+>  .../dt-bindings/interconnect/qcom,msm8976.h   |  97 ++++++++++++++++
+>  2 files changed, 204 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml
+>  create mode 100644 include/dt-bindings/interconnect/qcom,msm8976.h
+> 
+> diff --git a/Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml b/Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml
+> new file mode 100644
+> index 000000000000..bc9d08443e7c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml
+> @@ -0,0 +1,107 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/interconnect/qcom,msm8976.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm MSM8976 Network-On-Chip interconnect
+> +
+> +maintainers:
+> +  - Konrad Dybcio <konradybcio@kernel.org>
+> +
+> +description: |
+
+Do not need '|' unless you need to preserve formatting.
+
+> +  The Qualcomm MSM8976 interconnect providers support adjusting the
+> +  bandwidth requirements between the various NoC fabrics.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - qcom,msm8976-bimc
+> +      - qcom,msm8976-pcnoc
+> +      - qcom,msm8976-snoc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clock-names:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +  clocks:
+> +    minItems: 1
+> +    maxItems: 2
+
+I know that other qcom bindings use that order (clock-names -> clocks),
+but at least for new bindings let's keep it more logical, so please
+first clocks then clock-names.
+
+> +
+> +patternProperties:
+> +  '^interconnect-[a-z0-9\-]+$':
+> +    type: object
+> +    $ref: qcom,rpm-common.yaml#
+> +    description:
+> +      The interconnect providers do not have a separate QoS register space,
+> +      but share parent's space.
+> +
+> +    allOf:
+> +      - $ref: qcom,rpm-common.yaml#
+
+Drop both lines.
+
+> +
+> +    properties:
+> +      compatible:
+> +        const: qcom,msm8976-snoc-mm
+> +
+> +    required:
+> +      - compatible
+> +
+> +    unevaluatedProperties: false
+
+Put it after $ref (before description).
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +unevaluatedProperties: false
+
+This goes after entire allOf section
+
+> +
+> +allOf:
+> +  - $ref: qcom,rpm-common.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          const: qcom,msm8976-snoc
+> +
+> +    then:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: IPA clock from RPMCC
+> +        clock-names:
+> +          const: ipa
+> +
+> +      required:
+> +        - clocks
+> +        - clock-names
+
+Then why do you have two items? And what with clocks for other variants?
+This is supposed to be fixed/specific for each device/variant.
+
+
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/qcom,rpmcc.h>
+> +    #include <dt-bindings/interconnect/qcom,rpm-icc.h>
+> +
+> +    bimc: interconnect@400000 {
+> +        compatible = "qcom,msm8976-bimc";
+> +        reg = <0x00400000 0x62000>;
+> +        #interconnect-cells = <2>;
+> +    };
+> +
+> +    pcnoc: interconnect@500000 {
+> +        compatible = "qcom,msm8976-pcnoc";
+> +        reg = <0x00500000 0x14000>;
+> +        #interconnect-cells = <2>;
+> +    };
+
+Drop both nodes. The node below is enough as an example.
+
+
+Best regards,
+Krzysztof
 
