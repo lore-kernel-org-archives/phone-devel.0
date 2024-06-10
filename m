@@ -1,59 +1,59 @@
 Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF12A81720
-	for <phone-devel@vger.kernel.org>; Mon, 10 Jun 2024 12:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23DA81205
+	for <phone-devel@vger.kernel.org>; Mon, 10 Jun 2024 12:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718024059; cv=none; b=QsbH+FdGfTyIi7dxwB0YdJ/j5NvU/R4BJiiaD2kdubngtc3cthBlTnRvO22X4TeQpDI4pShZpbq3rJfpKRGtj4hmJAi/IFHfAGxmakwECUJuzZnNuB0Feq7tgW8VHtwy+bsqfmhKpRHiszNxheKNOeDTK15AkzuWX9dbGJmMFRU=
+	t=1718024244; cv=none; b=cw/qTQ977xblHf2NWCC9cQpJ6sKDylJAMjk+GIhzm2kd39w6b2zDtyUE/FE9m2sEwGzAFCxzgdGcaFGtO5yjfCkzVDjswnpjn2gdNJWQ9KSg8Byo378wqE88Ix1lQneHv3RxEejKxEo06R3CbJWCZSBYk5uRjVcsCMby9SCPhYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718024059; c=relaxed/simple;
-	bh=0RYpUIHi/lWJPqYfn+EVJo/AFMDKmLO9yzrQBoD9bhk=;
+	s=arc-20240116; t=1718024244; c=relaxed/simple;
+	bh=yg1xPoHNtnIUumoATGu6LmkAR1aS+hHVXOLPzoPOgE0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UpzWR2anf1IVCsH9xOtZ92Md7WouBisky6QtoW+vtRr5HTMp64n6XIkFSxaqtxQjzPp2xGmOIKTDzV64lyLSlbn63F78l3VYcqnjUiTEDd92ebbZjxAE9kO6zaSSxadbi9lXCs/VHQbTtoy4tvNa9LUwdm6aOUe6ozroPPLwty0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mFAjYa0U; arc=none smtp.client-ip=209.85.208.43
+	 In-Reply-To:Content-Type; b=r/Trv0RHLABELcU6ucv7D1L22iH7DIoCXVkJfI3QrYLTeWXDrCNDmZCy+3rJUhIPjI2hwFc/EaIjY97MDhnotSi1bbvbNTTX37v2f4INqzOEjr+YcGXAehm5FWDI3jNJut5Tzu+/6/t5wCCLhUp6X2FnSOMS5hTVQE0bQznTKrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dJ9yMHim; arc=none smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mFAjYa0U"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-57c60b13a56so3060955a12.0
-        for <phone-devel@vger.kernel.org>; Mon, 10 Jun 2024 05:54:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dJ9yMHim"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-572c65cea55so5841397a12.0
+        for <phone-devel@vger.kernel.org>; Mon, 10 Jun 2024 05:57:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718024055; x=1718628855; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1718024241; x=1718629041; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Quh4Nbk1kEHI53zwupEMB3nKQJRb/mz95i9IGWnyeDg=;
-        b=mFAjYa0UP7/jgecO0T7FMTE32HhXInDBfWTe0MS4EdcctYSBLRtQ0YyvZm5hcFqlqS
-         k3mVJavw7KBRy/2qLzQHhl5q3URIt5OyOB8TUMExW2aGFdMrzTLM8gUDTU8l3GQ0oI7i
-         k+8lyDYpekjsqHHr+kXyF41KeBBHpfjFW0ztu8YlaSeIxMRsgAGgH3Tfg3/cGNTNFBxU
-         cpwVTpY1nAVvHLOC9Zs0Lf2/bueWIEyYY9WMjANcjrXrUVl7lO/PffYlJewppEYrJ+qv
-         A/RQ/TSboAhJBINLWJbTdfFdjwBMvRhHxgBagWPAnt4viiNGhNM3fIzXKn4bLzy909jV
-         O+Dw==
+        bh=P4YW+LJlPWVCF1oCUQwCJYAu8LrhPqKFR1EwKZrTF2U=;
+        b=dJ9yMHimpc8YQQPWERTOEtoAoO84Fw2Qy1c+fN8TAZVg3dbFaws20GjVQ/6p4U2d8l
+         GsgueHSdLfP4HFNSVKcdkYpqdVwwjyAMPBiCCKoFt71lfhI3rSfnDUEWtP7J72dbpI+/
+         8SKZUOHa7JI6u6UDzyLDbBoJ0YvPcJhxi86XJm2ZXLM6QMVgZbsR/SS6XL6gRwxl82Pe
+         10coWBnbHn5Oy7WRXcMqxkDw/jpuAUVLf7dVEvV0afbGFAaRJiDx6WEnW7Eyhxi+7f6k
+         XCDIEZ5+rHZptr9VOE1RzrGi+GQnBDUGd+51KGFTHw6kPxtaFJM628tIGN8QnVMxvL7e
+         kDqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718024055; x=1718628855;
+        d=1e100.net; s=20230601; t=1718024241; x=1718629041;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Quh4Nbk1kEHI53zwupEMB3nKQJRb/mz95i9IGWnyeDg=;
-        b=JU+RFD/7qd4CCbtNH8H8VdJVSX6vbCgNBDMim8RuSsW6RTm2zhaBXoD1JQhvHL7vKH
-         OnNncacACaHAczl0x1dROYEY0tBaD/NuwaOXXLmNH+HpvcQBH/bSy6UL8XIGQZjvZkia
-         Emh4yUy8xUmTL9idlvCQB+uPXCsToazu05BTsF8NYi+oCrd/0NnkpvGvnuhGGGPIzQTz
-         qRSydWvNbLjpnGXhTNZwH41MNBoK5337NJicT2RuGx6Q0v7ILzNipTvlx/ncbg+ePhq+
-         1f+KW5GLx0/lsHXfq6aRDKCAkhcjWYOi6CS7elz6Uq7AIGbFBnsz03F7/yWRsN4xN9+2
-         DdeA==
-X-Gm-Message-State: AOJu0YxCQrcCYmlBow7CSGdXW1b/EiSB4lF5i/JiTKYMQ9ie37wUm+oi
-	fBbGMYjQqQyiy1g47vGQh0sILxIJNiKvYER6e6r0JbjjH11huNHOvW513vdjYFg=
-X-Google-Smtp-Source: AGHT+IE4rlK1phdxQPptgOW1XywclS11oKbLRXLB7Ukr+BBse6daXKtM37oVNTROePOUZj3ha7Mfyg==
-X-Received: by 2002:a50:8d43:0:b0:57c:72ee:a869 with SMTP id 4fb4d7f45d1cf-57c72eea91bmr2894969a12.11.1718024055170;
-        Mon, 10 Jun 2024 05:54:15 -0700 (PDT)
+        bh=P4YW+LJlPWVCF1oCUQwCJYAu8LrhPqKFR1EwKZrTF2U=;
+        b=w6u4uStjUK7DWHtF4zzyMpQB3LHqWerUtsfbB+IMObheGhQlKoXDEmQQVTtjt08IX1
+         da40yxJoIHhqZk9d4biWbJUXdkZr73uqSXJDkU7YUDE9JkPpcROS65oEsXixWz3jZPFx
+         T58u1Exz2c9K8uKWO74ONKZEVVRvABvGY8lDGEb/13a6BDzq9zJyfnvNefVzayZ3LIla
+         um4Twye9ykQppUczpjYojLrOjLzbJSeu0vSu6QFcbgaf9iD2VP7yPJWOd9LW3Y6N6Ycd
+         dBUXsFV9tCQlNIP4Ik3yDjsPzSn5ub31d8NlRYAm5gZ728ezZmChFX1yiJ/2/g8m5whk
+         g5ww==
+X-Gm-Message-State: AOJu0YzKE/a53j3NTpaVWxJeNLTHReY1QV19kMb+tsek2aEqVOS8idU4
+	YIEqWRADPqcDvJYEhgzWaz8vqsctcM68LBtsngTsp5G6wXbZB7Z7zRSlxyWctLM=
+X-Google-Smtp-Source: AGHT+IG+FeCeTet+g006PrNx4Oxxdd0ygI0KsztkfpC9VYROLRJPSKBsn/ij3w2B7yqDBKHzj0cmyg==
+X-Received: by 2002:a05:6402:b7b:b0:57c:735f:3967 with SMTP id 4fb4d7f45d1cf-57c735f3978mr2686598a12.8.1718024240999;
+        Mon, 10 Jun 2024 05:57:20 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57c866a3d50sm1061880a12.77.2024.06.10.05.54.13
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57c8f3a0c33sm87824a12.82.2024.06.10.05.57.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jun 2024 05:54:14 -0700 (PDT)
-Message-ID: <9f5b9f75-528f-447b-9056-30c10f84fa98@linaro.org>
-Date: Mon, 10 Jun 2024 14:54:13 +0200
+        Mon, 10 Jun 2024 05:57:20 -0700 (PDT)
+Message-ID: <08822480-a909-4724-9250-e7286d5ce90a@linaro.org>
+Date: Mon, 10 Jun 2024 14:57:18 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -61,8 +61,7 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] interconnect: qcom: Add MSM8937 interconnect provider
- driver
+Subject: Re: [PATCH 7/7] dt-bindings: interconnect: qcom: msm8939: Fix example
 To: Adam Skladowski <a39.skl@gmail.com>
 Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
@@ -73,7 +72,7 @@ Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20240609182112.13032-1-a39.skl@gmail.com>
- <20240609182112.13032-5-a39.skl@gmail.com>
+ <20240609182112.13032-8-a39.skl@gmail.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -120,31 +119,58 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240609182112.13032-5-a39.skl@gmail.com>
+In-Reply-To: <20240609182112.13032-8-a39.skl@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 09/06/2024 20:20, Adam Skladowski wrote:
-> Add driver for interconnect busses found in MSM8937 based platforms.
-> The topology consists of four NoCs that are partially controlled
-> by a RPM processor.
+On 09/06/2024 20:21, Adam Skladowski wrote:
+> For now example list snoc_mm as children of bimc which is obviously
+> not valid, change example and include rest of nocs in it.
 > 
+> Fixes: 462baaf4c628 ("dt-bindings: interconnect: qcom: Fix and separate out MSM8939")
 > Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 > ---
-
+>  .../bindings/interconnect/qcom,msm8939.yaml   | 22 ++++++++++++-------
+>  1 file changed, 14 insertions(+), 8 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/interconnect/qcom,msm8939.yaml b/Documentation/devicetree/bindings/interconnect/qcom,msm8939.yaml
+> index fd15ab5014fb..a77e6aa2fbee 100644
+> --- a/Documentation/devicetree/bindings/interconnect/qcom,msm8939.yaml
+> +++ b/Documentation/devicetree/bindings/interconnect/qcom,msm8939.yaml
+> @@ -56,19 +56,25 @@ examples:
+>    - |
+>      #include <dt-bindings/clock/qcom,rpmcc.h>
+>  
+> -    snoc: interconnect@580000 {
+> -        compatible = "qcom,msm8939-snoc";
+> -        reg = <0x00580000 0x14000>;
+> -        #interconnect-cells = <1>;
+> -    };
+> -
+>      bimc: interconnect@400000 {
+>          compatible = "qcom,msm8939-bimc";
+>          reg = <0x00400000 0x62000>;
+> -        #interconnect-cells = <1>;
+> +        #interconnect-cells = <2>;
+> +    };
 > +
-> +static const struct of_device_id msm8937_noc_of_match[] = {
-> +	{ .compatible = "qcom,msm8937-bimc", .data = &msm8937_bimc },
-> +	{ .compatible = "qcom,msm8937-pcnoc", .data = &msm8937_pcnoc },
-> +	{ .compatible = "qcom,msm8937-snoc", .data = &msm8937_snoc },
-> +	{ .compatible = "qcom,msm8937-snoc-mm", .data = &msm8937_snoc_mm },
+> +    pcnoc: interconnect@500000 {
+> +        compatible = "qcom,msm8939-pcnoc";
+> +        reg = <0x00500000 0x11000>;
+> +        #interconnect-cells = <2>;
+> +    };
 
-Please run scripts/checkpatch.pl and fix reported warnings. Then please
-run `scripts/checkpatch.pl --strict` and (probably) fix more warnings.
-Some warnings can be ignored, especially from --strict run, but the code
-here looks like it needs a fix. Feel free to get in touch if the warning
-is not clear.
+Don't grow the examples.
 
+It is enough to have one example to validate the schema and show how the
+binding is used. If schema covers multiple combinations of devices and
+their properties, then more than one example seems reasonable. This is
+not the case. All of this is redundant... and redundant information is
+not good because as this commit shows it leads to something which people
+think is not correct and they find bugs. So just drop the redundant
+information.
+
+Keep only one, correct example.
 
 Best regards,
 Krzysztof
