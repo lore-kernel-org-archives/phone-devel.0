@@ -1,137 +1,143 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E27C824BC;
-	Mon, 10 Jun 2024 13:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BE517C20E;
+	Tue, 11 Jun 2024 12:55:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718025775; cv=none; b=WnEKbNgWMoM9uyj/c3m+mDRX47C0dn/o1lzBbJGs+6DOI5h4AeiH5mqvO/L0cqaWyIvRIPuSjJFZX8LzEky0yd1knpmhYJphdrXbMnvUU8YBGsDTobCt0gJ6bEYYwg7Ah+AGu5jgGwJxYmFpGX06VTEakaxdo0YD9/OrM4//nt0=
+	t=1718110540; cv=none; b=U2CW+xi0x2NFoQH65pFZTDzr4oj5wy3KLyLdLJxEMn4r1x057PnsHVaGQv4JqNcQAJNY9EbhV5SIi6Z9YsLX7fW7Z8i/K6ZgyzeCBbxBO+o1EoV0GV7QHIGL1EFaTfm1LoqaWnWnYaQmWIHfQbW2NNDCD/rmQvbRltu4qPmpOEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718025775; c=relaxed/simple;
-	bh=NepeI8ob9FXfvNHO4LXDjbHQpKCdIwqnMC08bVFhulo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VPG9/SWMU/xeBRg2XpyT/l8yFgayPWPH/lyVtuqkPtQVCeZSgEJv/080Ek4BLFhi2CTP/RAd39cvAkqq+B9SrVjHDwt6scJBKIdtvDjQ2/TyhQbIr+IpTpbYI1O9btI06CjA2wZ6Vq6/Oh2kKzN3nRzQeS6ivKCQuOFEHKWswWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RghWsiHj; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1718110540; c=relaxed/simple;
+	bh=t630DEduj0LmlW15BvzG4knc6MgIMMv1Lu3hCOJHSKo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=D8K+m+DICSPNSgkzIe61H3xfJI4FtHRk8VtoGyYndTnOi+f6S+C4K0HLMg3l0LkBT17w4KqNmWNpvAVGzTsuGDpd1DX7maU+51fYYBb7pLfjB95wIdrbq+ICZxSJMui8oHIyi0LGc9Zd1u/zK40wf1tv1Tef+MMDabZIHwsm6bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=H73y7y0+; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RghWsiHj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718025773; x=1749561773;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=NepeI8ob9FXfvNHO4LXDjbHQpKCdIwqnMC08bVFhulo=;
-  b=RghWsiHjbKdtUb/UEO9Q7lAJrwav/YbHeFakvLaKBYf6ja3v0mr/gqoQ
-   iiALqBY7fD12/HtVOAOq73HFAQcfBSH16vQxst62T6RyOp7o223Pp7L0/
-   tfcRlhrlX/1Dp1HkroNaziUJA4aUniDs29oXiaEij5V5kfbijAiNvUlBi
-   IM+M2dtQRBf/rWS7iCoCpCvteI9JW9KXsZcPI9lm6yS1hjNN1J/VwG+Lo
-   6Igpz8WFsRDf/XsEYB8h1WPtjUCih+HnEbNtyUXa6m7POzYKOESAhHhmI
-   GzHWKtxHfdeHXXo24uumBMlW2aBO8g5K7ORMRXqFl/KGl4YNNTWcUtBjZ
-   Q==;
-X-CSE-ConnectionGUID: eepkyb5NTYKrgZ2Yo8g2TQ==
-X-CSE-MsgGUID: lb/ezKeLRt++VY1JtZOPfw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="14514971"
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; 
-   d="scan'208";a="14514971"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2024 06:17:44 -0700
-X-CSE-ConnectionGUID: vVswg6JuRhizRL9I0CY4iA==
-X-CSE-MsgGUID: aMrqn/CUTJmFElQblBKmqQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; 
-   d="scan'208";a="39056580"
-Received: from lkp-server01.sh.intel.com (HELO 8967fbab76b3) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 10 Jun 2024 06:17:39 -0700
-Received: from kbuild by 8967fbab76b3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sGeu1-0002A7-0g;
-	Mon, 10 Jun 2024 13:17:37 +0000
-Date: Mon, 10 Jun 2024 21:17:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: Adam Skladowski <a39.skl@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
-	Adam Skladowski <a39.skl@gmail.com>, Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Georgi Djakov <djakov@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
-	linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/7] interconnect: qcom: qcs404: Add regmaps and more bus
- descriptions
-Message-ID: <202406102141.1kH3LXFy-lkp@intel.com>
-References: <20240609182112.13032-7-a39.skl@gmail.com>
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="H73y7y0+"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45B4slbt030133;
+	Tue, 11 Jun 2024 12:55:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	XfMYvsvrclLUrWlXbdiA9z3Az4igamXXYXC4Fdu3De0=; b=H73y7y0+oYSu+BFS
+	02lUXFbndviRGVqIkqPvqpDVpspZTSjTi46ybUZRR1DEKWshvqS/BjcaKYhzlj+4
+	oOReCaqNBaba2IOtIsfg9qdCKbQaw+sWtBfNTwZxnbq1FN69tBUOyOraaobsND+z
+	0SGtF8lQAozGEgor4k0UIa4eGMpqj8dlpi72CYKsZUBSWVBxsPjztWeqxVw2lNGA
+	+cbVyR51pkE3+2X9sAlcidlidf79h4U0TwOLdhozOeVFfsW+4/Uftc4GLrxbIfTG
+	NLHWt2Ertos+IvxFew15q4/f3wA7SIarxjMfh5ip9UgTD+ENByU8x9d60qiOUqWu
+	SoHJ7g==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ymevxefnf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Jun 2024 12:55:22 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45BCtL60019055
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Jun 2024 12:55:21 GMT
+Received: from [10.216.51.73] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 11 Jun
+ 2024 05:55:16 -0700
+Message-ID: <0393a600-609f-45de-96de-a0b0c5d7ac85@quicinc.com>
+Date: Tue, 11 Jun 2024 18:25:12 +0530
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240609182112.13032-7-a39.skl@gmail.com>
-
-Hi Adam,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on robh/for-next]
-[also build test ERROR on linus/master v6.10-rc3 next-20240607]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Adam-Skladowski/dt-bindings-interconnect-Add-Qualcomm-MSM8976-DT-bindings/20240610-022416
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/20240609182112.13032-7-a39.skl%40gmail.com
-patch subject: [PATCH 6/7] interconnect: qcom: qcs404: Add regmaps and more bus descriptions
-config: arm64-allmodconfig (https://download.01.org/0day-ci/archive/20240610/202406102141.1kH3LXFy-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project 4403cdbaf01379de96f8d0d6ea4f51a085e37766)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240610/202406102141.1kH3LXFy-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406102141.1kH3LXFy-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/interconnect/qcom/qcs404.c:1070:35: error: variable has incomplete type 'const struct regmap_config'
-    1070 | static const struct regmap_config qcs404_bimc_regmap_config = {
-         |                                   ^
-   drivers/interconnect/qcom/icc-rpm.h:136:15: note: forward declaration of 'struct regmap_config'
-     136 |         const struct regmap_config *regmap_cfg;
-         |                      ^
-   drivers/interconnect/qcom/qcs404.c:1137:35: error: variable has incomplete type 'const struct regmap_config'
-    1137 | static const struct regmap_config qcs404_pcnoc_regmap_config = {
-         |                                   ^
-   drivers/interconnect/qcom/icc-rpm.h:136:15: note: forward declaration of 'struct regmap_config'
-     136 |         const struct regmap_config *regmap_cfg;
-         |                      ^
-   drivers/interconnect/qcom/qcs404.c:1178:35: error: variable has incomplete type 'const struct regmap_config'
-    1178 | static const struct regmap_config qcs404_snoc_regmap_config = {
-         |                                   ^
-   drivers/interconnect/qcom/icc-rpm.h:136:15: note: forward declaration of 'struct regmap_config'
-     136 |         const struct regmap_config *regmap_cfg;
-         |                      ^
-   3 errors generated.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/2] misc: fastrpc: support complete DMA pool access to
+ the DSP
+Content-Language: en-US
+To: Dylan Van Assche <me@dylanvanassche.be>,
+        Srinivas Kandagatla
+	<srinivas.kandagatla@linaro.org>,
+        Amol Maheshwari <amahesh@qti.qualcomm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Caleb Connolly <caleb.connolly@linaro.org>, <phone-devel@vger.kernel.org>,
+        <~postmarketos/upstreaming@lists.sr.ht>
+References: <20240524161423.15392-1-me@dylanvanassche.be>
+ <20240524161423.15392-2-me@dylanvanassche.be>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+In-Reply-To: <20240524161423.15392-2-me@dylanvanassche.be>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: z8sj3dswpcq14DJWDtPD5JoZ3qfBe1IF
+X-Proofpoint-GUID: z8sj3dswpcq14DJWDtPD5JoZ3qfBe1IF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-11_07,2024-06-11_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 mlxscore=0
+ impostorscore=0 adultscore=0 phishscore=0 malwarescore=0 clxscore=1011
+ suspectscore=0 priorityscore=1501 spamscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406110094
 
 
-vim +1070 drivers/interconnect/qcom/qcs404.c
 
-  1069	
-> 1070	static const struct regmap_config qcs404_bimc_regmap_config = {
-  1071		.reg_bits = 32,
-  1072		.reg_stride = 4,
-  1073		.val_bits = 32,
-  1074		.max_register = 0x80000,
-  1075		.fast_io = true,
-  1076	};
-  1077	
+On 5/24/2024 9:44 PM, Dylan Van Assche wrote:
+> To support FastRPC Context Banks which aren't mapped via the SMMU,
+> make the whole reserved memory region available to the DSP to allow
+> access to coherent buffers.
+>
+> This is performed by assigning the memory to the DSP via a hypervisor
+> call to set the correct permissions for the Virtual Machines on the DSP.
+> This is only necessary when a memory region is provided for SLPI DSPs
+> so guard this with a domain ID check.
+>
+> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
+> Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+> ---
+Reviewed-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+>  drivers/misc/fastrpc.c | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+>
+> diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+> index 4c67e2c5a82e..c06667b29055 100644
+> --- a/drivers/misc/fastrpc.c
+> +++ b/drivers/misc/fastrpc.c
+> @@ -2255,6 +2255,8 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
+>  	int i, err, domain_id = -1, vmcount;
+>  	const char *domain;
+>  	bool secure_dsp;
+> +	struct device_node *rmem_node;
+> +	struct reserved_mem *rmem;
+>  	unsigned int vmids[FASTRPC_MAX_VMIDS];
+>  
+>  	err = of_property_read_string(rdev->of_node, "label", &domain);
+> @@ -2297,6 +2299,23 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
+>  		}
+>  	}
+>  
+> +	rmem_node = of_parse_phandle(rdev->of_node, "memory-region", 0);
+> +	if (domain_id == SDSP_DOMAIN_ID && rmem_node) {
+> +		u64 src_perms;
+> +
+> +		rmem = of_reserved_mem_lookup(rmem_node);
+> +		if (!rmem) {
+> +			err = -EINVAL;
+> +			goto fdev_error;
+> +		}
+> +
+> +		src_perms = BIT(QCOM_SCM_VMID_HLOS);
+> +
+> +		qcom_scm_assign_mem(rmem->base, rmem->size, &src_perms,
+> +				    data->vmperms, data->vmcount);
+> +
+> +	}
+> +
+>  	secure_dsp = !(of_property_read_bool(rdev->of_node, "qcom,non-secure-domain"));
+>  	data->secure = secure_dsp;
+>  
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
