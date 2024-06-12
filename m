@@ -1,97 +1,106 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B22874BE2
-	for <phone-devel@vger.kernel.org>; Tue, 11 Jun 2024 19:57:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C53717F4E2
+	for <phone-devel@vger.kernel.org>; Wed, 12 Jun 2024 14:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718135832; cv=none; b=H994LoqnSmMFEVq4wf8Ux5zwGEE1nUMLeB1J5zy3T9tYTEjsSaPLBbG7/LFFUuUkqlhr+iF557MsPeiArUNvdW//FUzy4HZ37CMjoujIkCPM+JbBG5smv54DrtjaanxZoWBEnYrcasyzAMsQC21wDcFhhTqHjCoNFJSx7E5JkuI=
+	t=1718204194; cv=none; b=or7czANrv12ZyTEzFBhal6amQFWYrVHT4GDZ/8kHxbU1JDNcdMFLRgLFHHl95G+3dd2sorwFm1feXRHDQxGgOogb2jGR/coP6b3DDH8y455gzdxM8trZmsbqNcMbqzaRpvRlrnXHOBwgJBoB4BlfnRgQ5JX6cqUWvnSTgB8wpbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718135832; c=relaxed/simple;
-	bh=SSh4CLZGR0x7dTcNZI89uDAy8jCEgi5taxgXm3czsKU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fpv+uDlrxdpY+c0ES9r+OUxdvKmVgC3r8Y1BnLHnfHCAjf506aTg6CO73+a6QV7EJO3OGspky+nk8/MaLFbQLNeZXY+VcBvYzv5CFell7iUEruXs73GqOTmnZaitr1pmPJ/eiFo34JTvOtPkWnT4at6KHKa29//07/AOQ5lFFFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jj+u7llz; arc=none smtp.client-ip=209.85.167.54
+	s=arc-20240116; t=1718204194; c=relaxed/simple;
+	bh=4kn8S3LzHMMLi/6nFeWowtDlnUvyLGqfc/HqAgfIrhQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=StO+aP/ZlxdevjM+cT/CbwbZk7o7wg9IOP261MQ9tuBs5/xootqu5JKKUSIyTgRClca+RCbrpfRK+UyPsZ+yAiU+AMMCYbcoIHlLmCJibY3lQCruks/H+FSkWq2fMpfuOkulJi+0kq3nw0sgQxCkCem2nccf4uZ8AtjWmc9gsk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jcPK+yGu; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jj+u7llz"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-52bc035a7ccso1755932e87.2
-        for <phone-devel@vger.kernel.org>; Tue, 11 Jun 2024 12:57:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jcPK+yGu"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a6e349c0f2bso694012566b.2
+        for <phone-devel@vger.kernel.org>; Wed, 12 Jun 2024 07:56:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718135829; x=1718740629; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QYJ2UGz+oF03p364Ad98W7RimsnHbNm8aDnnj9gG8WI=;
-        b=jj+u7llzI71GBrbfizbY5mxesYLdhODdQRgpH0xHJpBnyPtAK5u0OTJytQd5VCZjcN
-         LIQpCSuywa9wUVb7DM+yHVf//PNU8XONpDNWFgLWI+9jo2rS8JsT7x+pZAuwNOZFVys5
-         w1pjtoeXGGlNJh9vVRPAgIQDkrmiD58aWVWxpy0rjSacjllDKG/UIil45NCq6rz6ZcIJ
-         UdpGD+iXxLhPh24ixlTC1OHqOrqC5z+rGPE1XsSDpXXu0djkEwsiEKBTaTJfI7FYIASY
-         4AW/R883KvuhlTHNqtB0SZ2vMnG18Wd/RtM5VfunB4IcpCH1aoHFXok2tyJ0WyW/esgi
-         G34w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718135829; x=1718740629;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1718204191; x=1718808991; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QYJ2UGz+oF03p364Ad98W7RimsnHbNm8aDnnj9gG8WI=;
-        b=GDIa2fRSOuf6R9mBoByRhh+dV7fDd8KrKdmhIu9HWub2fci2wMunKjsRT1jh8JX2Hx
-         DFmkrp8XtzcDVwe41a51ShvKYMty7g0bCoxKqXvLR7sJ4runC2dwscZB2G58+sHJp/Qs
-         d/Bsvh0vjahnLkvoPCu5qVFsvXVBt99N2yLDo+ONeEo6BZicc7axc9VIWuTlhC2kE0MN
-         J+I22vc/CuA7uNLz6MkNtmVwudnfDyKa54WGGcjTelI3rophi2CwU4/+5WWyOepKF7l3
-         1TwJYdx3gG6p9Fqcz7mkoa57lE3BVWQdiv5YCFs1+Gp5e85EpaKIg8jtKJ6uBYetKX+h
-         x2iw==
-X-Forwarded-Encrypted: i=1; AJvYcCVguQhMq1svzvdeSXmhGhWQ/w+gz2KmVM5Zhkl8TqPMSgxU6QWmFe759539KO9LBmUYdiDpQzB8D9SeSYCn2o1Ov8Kdots5E29Ju+Y=
-X-Gm-Message-State: AOJu0Yx0F18KrVf4hyy9Dsq5JVPAse2wXaTXdnkSoaLEqwNngNoCfJ00
-	BOlUtvrFOAx7ESCsLYdWTgakvRWe2nLL6VVoS7kfWJZYfZ16bf14ORphHZwrszw=
-X-Google-Smtp-Source: AGHT+IFmcuG3Hm/R6MQONyGcWIrBWkWSTmgDdQ48CSrIo7MVm8a7r4HOC2K12S4xTgblYrqS2iibcQ==
-X-Received: by 2002:a05:6512:b22:b0:52c:999b:52f9 with SMTP id 2adb3069b0e04-52c999b53e9mr184380e87.57.1718135829296;
-        Tue, 11 Jun 2024 12:57:09 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52c8012a690sm1559312e87.72.2024.06.11.12.57.08
+        bh=q5yu8LOR9yMB+oZSUx+fwYASzFM4Hileor0B9Ph2tUI=;
+        b=jcPK+yGuvsDp844baXORuuy6LmQF02uRm5rukBMTdd8MDXHPn25+f0462WZrez8Ola
+         3rMNDiWO95xmcGBOtVhDY684AkBlRVN9wMFmJL9pAucYAlz64uV9CxblrOU4MpFgxIAD
+         ose+245sCKpgoD5qSf5I2G3u6QZCPYUdUwvaoahSVdKUsvwaEpc+QPMQ9yi3jooeQBs4
+         YORLLEh0dwDHRAVmbHFZOwok4AN+mfFdthdRzE1ULUiECnMD9PhQgdrVlozuY46Usk2b
+         XjtIP12IE0ggKDjjeqNF1Of3PSUbg2U1nEkW6dJvZpM/LlLe4g4aErYcdHRfyk0yxH35
+         A2/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718204191; x=1718808991;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q5yu8LOR9yMB+oZSUx+fwYASzFM4Hileor0B9Ph2tUI=;
+        b=WpxSzGBtMKSk3T5cyHYwV9xgps7xmGIxwKv6aMB3CuGbGhAiUUjMIIgPqFNMk8VoJz
+         fx58nRG0f5G4NDZ+Hz29rsjLeq3QLv9Klza5icoHooXteanul+CIa/V7CoXMqASZWotZ
+         Lk29/8N+Zb0RWyT3JqZoR0DDjq72Am61O4v61jEw5eG09WaqpsqfLP7Blykt7k/45HR6
+         IAE1qjD1YVOxIduk0HuubU/rBRXHGFPnfNjaGqSLv3aqeG59y0icLAe/tqjZth7g6ytG
+         cVdcU3TSskbT9+vxRo49v8If6syGcZ8lOGzVficNG+yy1wT1GlUorvo5M5Lmws/R0xrS
+         jc6w==
+X-Forwarded-Encrypted: i=1; AJvYcCUGvBjWsPcHOwfCaUIIZemXr9x/5Ev1EmueEYvnkOzUxbcTRxB+PPdDqvcHZuHxiGMeQq1QgXSgz2ybTgM7Kqb0WkXl218kA2s1ltY=
+X-Gm-Message-State: AOJu0YxQdtQ0s1gqae/WlDEm9uJT0md1ziX8D43SYlyoUZ0spHjxMuZT
+	jhgQqR1qt7bHquXJflz1Kt21AAGndyLWGQY/rAPGycnxIKnGcST5T+XYDRA5QQQ=
+X-Google-Smtp-Source: AGHT+IEwGz7ExK9rFeDcCAcMm8cBQlNhVoJT3sknKM3Eud8XI4/QAubfXavkLlUfpvUlX4mMSSoZ7Q==
+X-Received: by 2002:a17:906:cb13:b0:a6f:4f2c:1936 with SMTP id a640c23a62f3a-a6f4f2c1c19mr45887366b.44.1718204190879;
+        Wed, 12 Jun 2024 07:56:30 -0700 (PDT)
+Received: from [192.168.1.195] ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f0f98a285sm552368966b.210.2024.06.12.07.56.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jun 2024 12:57:08 -0700 (PDT)
-Date: Tue, 11 Jun 2024 22:57:07 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Dylan Van Assche <me@dylanvanassche.be>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Amol Maheshwari <amahesh@qti.qualcomm.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Caleb Connolly <caleb.connolly@linaro.org>, phone-devel@vger.kernel.org, 
-	~postmarketos/upstreaming@lists.sr.ht
-Subject: Re: [PATCH v5 2/2] misc: fastrpc: use coherent pool for untranslated
- Compute Banks
-Message-ID: <jorlpqmhntzavj5lffxddmuhjdjlis5ccbuunao7p5pzwcqd2j@eetql7bl2suj>
+        Wed, 12 Jun 2024 07:56:30 -0700 (PDT)
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+To: Amol Maheshwari <amahesh@qti.qualcomm.com>, 
+ Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dylan Van Assche <me@dylanvanassche.be>
+Cc: Caleb Connolly <caleb.connolly@linaro.org>, phone-devel@vger.kernel.org, 
+ ~postmarketos/upstreaming@lists.sr.ht
+In-Reply-To: <20240524161423.15392-1-me@dylanvanassche.be>
 References: <20240524161423.15392-1-me@dylanvanassche.be>
- <20240524161423.15392-3-me@dylanvanassche.be>
+Subject: Re: [PATCH v5 0/2] misc: fastrpc: FastRPC reserved memory
+ assignment for SDM845 SLPI
+Message-Id: <171820418971.165525.3637990952357907188.b4-ty@linaro.org>
+Date: Wed, 12 Jun 2024 15:56:29 +0100
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240524161423.15392-3-me@dylanvanassche.be>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.2
 
-On Fri, May 24, 2024 at 06:14:03PM +0200, Dylan Van Assche wrote:
-> Use fastrpc_remote_heap_alloc to allocate from the FastRPC device
-> instead of the Compute Bank when the session ID is 0. This ensures
-> that the allocation is inside the coherent DMA pool which is already
-> accessible to the DSP. This is necessary to support FastRPC devices
-> which do not have dedicated Compute Banks such as the SLPI on the SDM845.
-> The latter uses an allocated CMA region instead of FastRPC Compute Banks.
+
+On Fri, 24 May 2024 18:14:01 +0200, Dylan Van Assche wrote:
+> * About *
 > 
-> Signed-off-by: Dylan Van Assche <me@dylanvanassche.be>
-> Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-> ---
->  drivers/misc/fastrpc.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> The Qualcomm SDM845 SoC has a separate SLPI (Sensor Low Power Island)
+> DSP for sensors connected to the SoC which is responsible for exposing
+> sensors to userspace, power saving, and other features.
+> While sensors are connected to GPIOs of the SoC, they cannot be used
+> because the hypervisor blocks direct access to the sensors, thus the
+> DSP must be used to access any sensor on this SoC. The SLPI DSP uses a
+> GLink edge (dsps) to communicate with the host and has a FastRPC interface
+> to load files from the host filesystem such as sensor configuration files.
+> The FastRPC interface does not use regular FastRPC Compute Banks
+> but instead uses an allocated CMA region through which communication happens.
 > 
+> [...]
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Applied, thanks!
 
+[1/2] misc: fastrpc: support complete DMA pool access to the DSP
+      commit: 9cee10334bdfa9db771b006fe2eba060f8719687
+[2/2] misc: fastrpc: use coherent pool for untranslated Compute Banks
+      commit: 0ff3de43062785462d9acede2987f35525b1c0ba
 
+Best regards,
 -- 
-With best wishes
-Dmitry
+Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+
