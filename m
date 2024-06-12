@@ -1,71 +1,37 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C53717F4E2
-	for <phone-devel@vger.kernel.org>; Wed, 12 Jun 2024 14:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F111F433A4;
+	Wed, 12 Jun 2024 21:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718204194; cv=none; b=or7czANrv12ZyTEzFBhal6amQFWYrVHT4GDZ/8kHxbU1JDNcdMFLRgLFHHl95G+3dd2sorwFm1feXRHDQxGgOogb2jGR/coP6b3DDH8y455gzdxM8trZmsbqNcMbqzaRpvRlrnXHOBwgJBoB4BlfnRgQ5JX6cqUWvnSTgB8wpbk=
+	t=1718226169; cv=none; b=Oytq5ZxvRztnL0mXIVGNTLcyqkDorRWcWswKWAklym7tVmdEsIRupcO2hry4PO2JiEQqecNls20m9jniY1gWLMAgnzgA2vIng+Hi/wwwK6Cuj+RMb9QqoHk2qvzRwyF9nXVebxTag1WZLKftWhvFX24XLsVoFY1k0dPMG3vv7nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718204194; c=relaxed/simple;
-	bh=4kn8S3LzHMMLi/6nFeWowtDlnUvyLGqfc/HqAgfIrhQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=StO+aP/ZlxdevjM+cT/CbwbZk7o7wg9IOP261MQ9tuBs5/xootqu5JKKUSIyTgRClca+RCbrpfRK+UyPsZ+yAiU+AMMCYbcoIHlLmCJibY3lQCruks/H+FSkWq2fMpfuOkulJi+0kq3nw0sgQxCkCem2nccf4uZ8AtjWmc9gsk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jcPK+yGu; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1718226169; c=relaxed/simple;
+	bh=2lfTlYRZCf4xaUB6sPr/DlI2iYZHVJqO+OgfzvR4kGw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YmxOT2fA2ivx/opLUWgtmZ+rNnJ9GGCf6b6mpRVcfKgNRtW/0o3rFNlc4GevKmvdT++8Eim65XGPqsZeV3Nrv83kPf03B1yp7hXLh4l2qWuNbFDhV6PMKtwINrDphNQanfhnDRAoI2dQ3oN8qHpAao4VNyRREaEdn1sVm9RjWiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fwGXea6B; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jcPK+yGu"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a6e349c0f2bso694012566b.2
-        for <phone-devel@vger.kernel.org>; Wed, 12 Jun 2024 07:56:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718204191; x=1718808991; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q5yu8LOR9yMB+oZSUx+fwYASzFM4Hileor0B9Ph2tUI=;
-        b=jcPK+yGuvsDp844baXORuuy6LmQF02uRm5rukBMTdd8MDXHPn25+f0462WZrez8Ola
-         3rMNDiWO95xmcGBOtVhDY684AkBlRVN9wMFmJL9pAucYAlz64uV9CxblrOU4MpFgxIAD
-         ose+245sCKpgoD5qSf5I2G3u6QZCPYUdUwvaoahSVdKUsvwaEpc+QPMQ9yi3jooeQBs4
-         YORLLEh0dwDHRAVmbHFZOwok4AN+mfFdthdRzE1ULUiECnMD9PhQgdrVlozuY46Usk2b
-         XjtIP12IE0ggKDjjeqNF1Of3PSUbg2U1nEkW6dJvZpM/LlLe4g4aErYcdHRfyk0yxH35
-         A2/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718204191; x=1718808991;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q5yu8LOR9yMB+oZSUx+fwYASzFM4Hileor0B9Ph2tUI=;
-        b=WpxSzGBtMKSk3T5cyHYwV9xgps7xmGIxwKv6aMB3CuGbGhAiUUjMIIgPqFNMk8VoJz
-         fx58nRG0f5G4NDZ+Hz29rsjLeq3QLv9Klza5icoHooXteanul+CIa/V7CoXMqASZWotZ
-         Lk29/8N+Zb0RWyT3JqZoR0DDjq72Am61O4v61jEw5eG09WaqpsqfLP7Blykt7k/45HR6
-         IAE1qjD1YVOxIduk0HuubU/rBRXHGFPnfNjaGqSLv3aqeG59y0icLAe/tqjZth7g6ytG
-         cVdcU3TSskbT9+vxRo49v8If6syGcZ8lOGzVficNG+yy1wT1GlUorvo5M5Lmws/R0xrS
-         jc6w==
-X-Forwarded-Encrypted: i=1; AJvYcCUGvBjWsPcHOwfCaUIIZemXr9x/5Ev1EmueEYvnkOzUxbcTRxB+PPdDqvcHZuHxiGMeQq1QgXSgz2ybTgM7Kqb0WkXl218kA2s1ltY=
-X-Gm-Message-State: AOJu0YxQdtQ0s1gqae/WlDEm9uJT0md1ziX8D43SYlyoUZ0spHjxMuZT
-	jhgQqR1qt7bHquXJflz1Kt21AAGndyLWGQY/rAPGycnxIKnGcST5T+XYDRA5QQQ=
-X-Google-Smtp-Source: AGHT+IEwGz7ExK9rFeDcCAcMm8cBQlNhVoJT3sknKM3Eud8XI4/QAubfXavkLlUfpvUlX4mMSSoZ7Q==
-X-Received: by 2002:a17:906:cb13:b0:a6f:4f2c:1936 with SMTP id a640c23a62f3a-a6f4f2c1c19mr45887366b.44.1718204190879;
-        Wed, 12 Jun 2024 07:56:30 -0700 (PDT)
-Received: from [192.168.1.195] ([5.133.47.210])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f0f98a285sm552368966b.210.2024.06.12.07.56.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jun 2024 07:56:30 -0700 (PDT)
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-To: Amol Maheshwari <amahesh@qti.qualcomm.com>, 
- Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Dylan Van Assche <me@dylanvanassche.be>
-Cc: Caleb Connolly <caleb.connolly@linaro.org>, phone-devel@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht
-In-Reply-To: <20240524161423.15392-1-me@dylanvanassche.be>
-References: <20240524161423.15392-1-me@dylanvanassche.be>
-Subject: Re: [PATCH v5 0/2] misc: fastrpc: FastRPC reserved memory
- assignment for SDM845 SLPI
-Message-Id: <171820418971.165525.3637990952357907188.b4-ty@linaro.org>
-Date: Wed, 12 Jun 2024 15:56:29 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fwGXea6B"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6FDE3C116B1;
+	Wed, 12 Jun 2024 21:02:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718226168;
+	bh=2lfTlYRZCf4xaUB6sPr/DlI2iYZHVJqO+OgfzvR4kGw=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=fwGXea6BJRhGx+laVmx6YpeiZLZ8shU8KXnFtipCOY6R8AB0AncVq3DD6oF9X9mAF
+	 2shovLjZfxp+iCsTMEHltvz8eZ4cCooiM92CcK0VZY1dnqchQfE8ep5YmtxolR4/oo
+	 9J0ps9CjVXm+RjhxquK1TEFJIQpHKDmzdf4NlXzzjtqUYfX7vaTnp2owviVtxhVo06
+	 5sXZcXoxR41+zGKg+hhcz3BBnFZAtILmVreEkKD/U/F6ycs9Y9ZrV0tUWenpjKJ+LO
+	 DjaRdph8uE6/0yZXKl1vvgiTIlI8v+quRCw++L56s3wS7bqxlEB5ljAY4Bdt9UvKiM
+	 Pzvg6id4IiPPQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52192C27C53;
+	Wed, 12 Jun 2024 21:02:48 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Subject: [PATCH v3 0/3] Add sy7802 flash led driver
+Date: Wed, 12 Jun 2024 23:01:31 +0200
+Message-Id: <20240612-sy7802-v3-0-1e9cc1c79b79@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -73,34 +39,92 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.2
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAKsMamYC/1WMwQ6CMBAFf8Xs2Zp221L05H8YDwVa2QuQFhuR8
+ O8WEjQe5+XNzBBdIBfhcpghuESR+i6DPB6gbm33cIyazIAcFZeoWZxMyZF5xX1deF1o1JDPQ3C
+ eXlvods/cUhz7MG3dJNZ1T5g9kQTjrKmMspVEb62/2oHGd6zbk3vCGkn4ExUXXxGzKIQsxZlbo
+ 1T5Ly7L8gGP6kno1wAAAA==
+To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
+ Trilok Soni <quic_tsoni@quicinc.com>, Kees Cook <kees@kernel.org>
+Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1718226168; l=2112;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=2lfTlYRZCf4xaUB6sPr/DlI2iYZHVJqO+OgfzvR4kGw=;
+ b=Pych9e2dTWPhOchjqcDytmZ/K/iZ6oz2KN+nidvINrUBfeDPVXXIhVJ3r3TsY9GaSqk5+WjjM
+ SENcXoQ7nFlCC6vEaOEjuRohZAprrZVcWnbwwLCELrO0dyBYZfpIEfJ
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
+This series introduces a driver for the Silergy SY7802 charge pump used
+in the BQ Aquaris M5 and X5 smartphones.
 
-On Fri, 24 May 2024 18:14:01 +0200, Dylan Van Assche wrote:
-> * About *
-> 
-> The Qualcomm SDM845 SoC has a separate SLPI (Sensor Low Power Island)
-> DSP for sensors connected to the SoC which is responsible for exposing
-> sensors to userspace, power saving, and other features.
-> While sensors are connected to GPIOs of the SoC, they cannot be used
-> because the hypervisor blocks direct access to the sensors, thus the
-> DSP must be used to access any sensor on this SoC. The SLPI DSP uses a
-> GLink edge (dsps) to communicate with the host and has a FastRPC interface
-> to load files from the host filesystem such as sensor configuration files.
-> The FastRPC interface does not use regular FastRPC Compute Banks
-> but instead uses an allocated CMA region through which communication happens.
-> 
-> [...]
+The implementation is based on information extracted from downstream as
+the datasheet provided by a distributor of the hardware didn't include
+any information about the i2c register description.
 
-Applied, thanks!
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+Changes in v3:
+- Add R-b tag to first patch
+- Extend driver commit message
+- Improve readability of defines by using BIT()
+- Rename some variables/parameters
+  * led_no -> led_id
+  * level -> brightness
+  * curr -> fled_{strobe,torch}_used_tmp
+  * mask -> {flash,torch}_mask
+  * i -> child_num
+- Restructure structs ("Place th big stuff at the top")
+- Declare 'child' on a separate line
+- Move multi-line assignments out of declaration block
+- Update warning/error messages and comments
+- Use gotos to handle error path
+- Use devm API to cleanup module's resources
+- Init mutex before LED class device is registered to avoid race
+  condition
+- Link to v2: https://lore.kernel.org/r/20240401-sy7802-v2-0-1138190a7448@apitzsch.eu
 
-[1/2] misc: fastrpc: support complete DMA pool access to the DSP
-      commit: 9cee10334bdfa9db771b006fe2eba060f8719687
-[2/2] misc: fastrpc: use coherent pool for untranslated Compute Banks
-      commit: 0ff3de43062785462d9acede2987f35525b1c0ba
+Changes in v2:
+- bindings: remove unneeded allOf
+- bindings: example: move flash-led-controller under i2c node to fix
+  check error
+- Cc to phone-devel
+- Link to v1: https://lore.kernel.org/r/20240327-sy7802-v1-0-db74ab32faaf@apitzsch.eu
+
+---
+André Apitzsch (3):
+      dt-bindings: leds: Add Silergy SY7802 flash LED
+      leds: sy7802: Add support for Silergy SY7802 flash LED controller
+      arm64: dts: qcom: msm8939-longcheer-l9100: Add rear flash
+
+ .../devicetree/bindings/leds/silergy,sy7802.yaml   | 100 ++++
+ .../boot/dts/qcom/msm8939-longcheer-l9100.dts      |  26 +
+ drivers/leds/flash/Kconfig                         |  11 +
+ drivers/leds/flash/Makefile                        |   1 +
+ drivers/leds/flash/leds-sy7802.c                   | 546 +++++++++++++++++++++
+ 5 files changed, 684 insertions(+)
+---
+base-commit: 6a03b35e4395eb2d6e89a38aca00a9fe9cb39ba1
+change-id: 20240325-sy7802-f40fc6f56525
 
 Best regards,
 -- 
-Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+André Apitzsch <git@apitzsch.eu>
+
 
