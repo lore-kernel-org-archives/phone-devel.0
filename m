@@ -1,113 +1,107 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC3013CF85;
-	Thu, 13 Jun 2024 17:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A081494D1
+	for <phone-devel@vger.kernel.org>; Thu, 13 Jun 2024 17:20:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718299128; cv=none; b=a21j1Y0Un0mwEEiKfD4wBslbN56/PKf9BKDD5/fbY0Zos6Ks+1UzmTSJfT29fXynonV74rCaMdhsl3at2i3EJm0e7rygm0zQMVaeh3hGq9B6lnYrREp2kcou/3h+hGEnw/gMknRE6DWCuJzX1O4sVtNuVgIGeOgEJVfAjXvck4Y=
+	t=1718299235; cv=none; b=Qhdo5956bMvJjqumYrl6CtVFS9w3UkEBRDgBLayIgHcnrHs05CBQL9d41DWaq4WKNXwAwXZeBeX9W/HuOdTYWx559LcU7dH0ZwxGoxOeoN+upoeiwUu9HNKs/KunFdQGzdKZmfwEvI7ld4w00s9iBmOj1BorloqMf4KiTufefTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718299128; c=relaxed/simple;
-	bh=NzeNxgZX0C2quUpUoW26DoTjgXYHI3/jLgEVyVXZHik=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZcCTRn50TraI2FURXwW7Efayfk7np3/5+cVaTUz06DqtZ+mvbzTPysLJTrvladC0E9PHWSGCfhHiifar/Mz/FtkMp5ly+ECqgw43IwZTBUFkjWXgLvFP/ED9Do2fckahUHdMQNAFBxyfMuaE4mKjEx5Zzo/98sVG9KGna0TFmHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YmWy2cfD; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1718299235; c=relaxed/simple;
+	bh=vX4tZlfdMiDbAOqyzjLKdId0wIu+miOZ29FnR8jsohU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WVCMBdmFe/15aQ5fp1Fes6qq8DTL2CiLAMP1YBssgjdDfEtG6orcBmbMyU5Y4QQxZSbZdzBMiVm5iqdbgzQh7PwMV7IsgWJP1etpvtyvC9IQclEm290k/7+jJzXLoF6rLhGZ5bnpgj7xVIisIYLM2lRMO/oCwN3jay0b1+JqNBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=e3iiQebH; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YmWy2cfD"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-57a30dbdb7fso1828804a12.3;
-        Thu, 13 Jun 2024 10:18:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="e3iiQebH"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52bc0a9cea4so1159154e87.0
+        for <phone-devel@vger.kernel.org>; Thu, 13 Jun 2024 10:20:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718299125; x=1718903925; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=cwcCGDwb60DzgqVPFb1/1oCx//cSi4Srw7sRj+1jaLY=;
-        b=YmWy2cfDrWvGbG39HT/AvfE2BBqW/X05HQ84DgElPv9DyHomx7Uba4EQjTXNAU6Nnn
-         pj89kAiJE5n10o3AejfJexgIBeZnG+rNN5rjNJ84Nnd+xCDRZyR5rUcl+QE47xQvgxPy
-         3C3egfmdNdrxoiJWZvm8TbZe92C6kN2TqN90ZKmxedXiw2VRTsvb/tuDcX9+TO0HaIuH
-         w9ow1SRBdS9iov2pPXYT5Yxjz5nB61Ji+HFnnQ+UvD3umw7Mm4S2DiyvUEAgpeLyrqtO
-         gCjaZBO1VomvgNqmP2/V1rGZdbho+laiTf6AhyoLDr4VILAZmP6soguvAIYAwfabZ3uE
-         gsKA==
+        d=linaro.org; s=google; t=1718299232; x=1718904032; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lmCat4yFzakLoPqsICLGJKZ86qrL9CrdVXXkrAz9XWA=;
+        b=e3iiQebHT4EK0OwiMj4owv5tcaaj3m5nUDjIFNNYwjZQcwWx/r0Y9RbNgeqjRkC/U/
+         nv1RMkUDeQ6jaCeIWvWS3bKpN87vLZo5G0cBOChYrBGfCDCiYpXJBU2V3qucfEaFLPks
+         /Bla1sMan0J5Hnt5sq+FDbh3VIiFQC6jXBhg326Fn6iuulw4GQh4cCrHk+T8MUQQDZcb
+         D4+2Mvpg+c9wZlqdFii4EwNTYk4J67fqZyCi5T4/Lq95CTzGVt3nuXbqAAc2NA8AqVDE
+         rwI0Jv4CnqzFRB13olKxgFGoNlh8lfK/xqIaJGssOdDLPRrCrCZ/JJqxLu9gJMJG2EKo
+         s2wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718299125; x=1718903925;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1718299232; x=1718904032;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cwcCGDwb60DzgqVPFb1/1oCx//cSi4Srw7sRj+1jaLY=;
-        b=vga9/COw24xLx/fJF3GOuGAQD2DUiQse0ZpOzcaKOS/JQ4oCkurmb0Nr6DZn0CDdr9
-         N/r/7RXUJ3RCeBMC9MsrWq9/I2jzWK1gmPvCr++7pVjLy5QY5HuC72UX+Salkn8HbDHG
-         qMtvhl0qQta9gjIT1OQrfNY4uj4roRqj3CyC3rh1yKzB1EE30GRC/qTC7grWSdw+mliB
-         GrJrMcDtYC/Dwb22zckDssTjL2tC6NvXQ9o5ZskI6b7FZiObbL8MGSex2OLD9yQ8LHp3
-         aDcmpB28bfEDB0qtfb8nf/3EKwFwFHXfimwBYumtYkIdWhqcTq+9b5uy7P9lofHccpnb
-         3YNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV1kJhHsmGpA0+Xnx6UUliIkdXjcJK3N8aOHW2AaXwCi+FHxGpD1CX2/rLjjjArboUPP7/mm6qavTqydRTJGg8CoCKHX70mDVArXG8ikFlvlbNthomV2OvrCxqVUuKooeixcIBIBC8Z0bRMHXREGVI9h4i8eSNP6oLuQrWs7wRP78azEIZAiEs+/eiHn4konOaZ4xgcqZPgHD+YqXRfqEzq6gFFOg==
-X-Gm-Message-State: AOJu0YxGE/xZIzuZNA6nSlpeLezvWQvi3/mk/LgKLhs/y/UwZLWQNvXY
-	9LxcFGTPB6PGis4hSnnoY4+ZYgq+Y/82whbPl17szLIIAPofMgvH
-X-Google-Smtp-Source: AGHT+IGdIR8K+VU7ZoWeYaXJouZP25nKSmNr2Ci+hRTo46h3PKiZ1ed05PMzYhGyYbF+2HCHDXPaJw==
-X-Received: by 2002:a50:8e18:0:b0:57a:2fe7:6699 with SMTP id 4fb4d7f45d1cf-57cbd66272cmr286625a12.14.1718299125009;
-        Thu, 13 Jun 2024 10:18:45 -0700 (PDT)
-Received: from standask-GA-A55M-S2HP (lu-nat-113-247.ehs.sk. [188.123.113.247])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb741e7a5sm1139124a12.75.2024.06.13.10.18.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jun 2024 10:18:44 -0700 (PDT)
-Date: Thu, 13 Jun 2024 19:18:42 +0200
-From: Stanislav Jakubek <stano.jakubek@gmail.com>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: dts: qcom: motorola-falcon: add accelerometer,
- magnetometer
-Message-ID: <Zmsp8kPRCE/fIPQk@standask-GA-A55M-S2HP>
-References: <ZmWMh6fuLasvGkR/@standask-GA-A55M-S2HP>
- <2b39d763-5b79-4b21-85f9-22fee9f87468@linaro.org>
+        bh=lmCat4yFzakLoPqsICLGJKZ86qrL9CrdVXXkrAz9XWA=;
+        b=m4l8n3M0rJmuYam4eere60QMmmK+aN+ahcEUTZNueNm9R4APlL338GHbjHMut46BVG
+         1xUQRrCWk9PpxVf4WQZsA8SXOgBdZJA5SXRcE6m/oP/GWQkmNhqr6ZQEZWU+6CRto8yR
+         EAyNiYfOpqL2Gbg6BFNRAvpLZSAkitcImm2zzc22l/dSiFCrogB2tns8gQBY+ttNjnaE
+         WR2ARd+dEr5d+4xKnWKZhVa2afGjKi2uQpkJCh48p9Ov5Qs3EVC/HonhokkP/ls9wnwz
+         K5g1R9KoO+hUBIJ9EdEU7Hj1juTAiqNawAvX5iPUxWrFE/pRWoXtSOCJSftcug/L7Jg1
+         k31g==
+X-Forwarded-Encrypted: i=1; AJvYcCXj4LmfUz9nnKHvSySCIwH5ezwBSFMRgFkIMTQcsXVPo3qO047bGlqx+uKBJFkXK+fGlUn2HOoLSjOaQ3okk+Mx3fqmlYDim5Xae24=
+X-Gm-Message-State: AOJu0Yzp+45mYcyxA4w5JDKB7eu895UJhgcCw7QObrnh2icfKhxp/mJc
+	OYX7cd5WJmSU8ibb7lgsfQ1Kn1cO9cEOhZJRno2LFTsGvuwmlmxmgFvLdzC59QU=
+X-Google-Smtp-Source: AGHT+IE4j3HMxhLWYVU29TQZzIBVMZHRaQ5xZ54nQ/SRi+BohkpWnbIsKLlp0bKYqGHndxwko/uGhQ==
+X-Received: by 2002:ac2:5183:0:b0:52c:8daf:da1c with SMTP id 2adb3069b0e04-52ca6cb877emr133289e87.20.1718299232137;
+        Thu, 13 Jun 2024 10:20:32 -0700 (PDT)
+Received: from ?IPV6:2a00:f41:900a:a4b1:9ab2:4d92:821a:bb76? ([2a00:f41:900a:a4b1:9ab2:4d92:821a:bb76])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca2887effsm295391e87.257.2024.06.13.10.20.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 13 Jun 2024 10:20:31 -0700 (PDT)
+Message-ID: <5e916d38-7dce-43d7-bee0-a10842faabfe@linaro.org>
+Date: Thu, 13 Jun 2024 19:20:28 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2b39d763-5b79-4b21-85f9-22fee9f87468@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: dts: qcom: motorola-falcon: add accelerometer,
+ magnetometer
+To: Stanislav Jakubek <stano.jakubek@gmail.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <ZmWMh6fuLasvGkR/@standask-GA-A55M-S2HP>
+ <2b39d763-5b79-4b21-85f9-22fee9f87468@linaro.org>
+ <Zmsp8kPRCE/fIPQk@standask-GA-A55M-S2HP>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <Zmsp8kPRCE/fIPQk@standask-GA-A55M-S2HP>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 13, 2024 at 09:48:26AM +0200, Konrad Dybcio wrote:
-> 
-> 
-> On 6/9/24 13:05, Stanislav Jakubek wrote:
-> > Add the accelerometer and magnetometer that are present on the Motorola
-> > Moto G (2013) device.
-> > 
-> > Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
-> > ---
-> 
-> [...]
-> 
-> > +&blsp1_i2c2 {
-> 
-> Consider setting a clock-frequency = <>
 
-Hi Konrad,
 
-checking downstream [1], qcom,i2c-bus-freq for I2C2 is 100000, which seems
-to be the default. Should I specify it anyway?
-
-Though, now that I've checked, it seems that I missed the clock-frequency
-for I2C3, for which qcom,i2c-bus-freq is 400000...
-The currently supported HW on it seems to work fine though ¯\_(ツ)_/¯
-
-[1] https://github.com/LineageOS/android_kernel_motorola_msm8226/blob/cm-14.1/arch/arm/boot/dts/msm8226.dtsi#L983
-
-Stanislav
-
+On 6/13/24 19:18, Stanislav Jakubek wrote:
+> On Thu, Jun 13, 2024 at 09:48:26AM +0200, Konrad Dybcio wrote:
+>>
+>>
+>> On 6/9/24 13:05, Stanislav Jakubek wrote:
+>>> Add the accelerometer and magnetometer that are present on the Motorola
+>>> Moto G (2013) device.
+>>>
+>>> Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
+>>> ---
+>>
+>> [...]
+>>
+>>> +&blsp1_i2c2 {
+>>
+>> Consider setting a clock-frequency = <>
 > 
-> With that:
+> Hi Konrad,
 > 
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> 
-> Konrad
+> checking downstream [1], qcom,i2c-bus-freq for I2C2 is 100000, which seems
+> to be the default. Should I specify it anyway?
+
+Yes, at the very least to silence the dmesg warning ;)
+
+Konrad
