@@ -1,47 +1,70 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FF610FF;
-	Thu, 13 Jun 2024 13:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC3013CF85;
+	Thu, 13 Jun 2024 17:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718286340; cv=none; b=rtxTqUYm6teLS24zxJZbgyn/uvyk5H5G+Nc6h8+mVmc/6gFUSKf9YxeIisgjeS4ZgRwisYnm71k0/FWrA/PLZERPdU1Nwf00Jc7Ahp2P4N4DcFlCdJYd/0yeFh3arHdFnBDxt/XknRKOzrQNGAKEscRqc+nfoKpDY7VVVlPdgHI=
+	t=1718299128; cv=none; b=a21j1Y0Un0mwEEiKfD4wBslbN56/PKf9BKDD5/fbY0Zos6Ks+1UzmTSJfT29fXynonV74rCaMdhsl3at2i3EJm0e7rygm0zQMVaeh3hGq9B6lnYrREp2kcou/3h+hGEnw/gMknRE6DWCuJzX1O4sVtNuVgIGeOgEJVfAjXvck4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718286340; c=relaxed/simple;
-	bh=BADMAGvyZtj+GsRfT/NDr2Jvk9KXxvpLyvmYPtJjSAY=;
+	s=arc-20240116; t=1718299128; c=relaxed/simple;
+	bh=NzeNxgZX0C2quUpUoW26DoTjgXYHI3/jLgEVyVXZHik=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TLc8Tl0z7sAtagPGdQ6ky9qIItxhmKIXJ0e+tT2/T4N1xYi/L8SwEbinSKbc3De1YxFZA7QF9kSbtNbz7C6mam9kctjUNr4m6lcGWaPahLdDUBnG/dLdgVGrPkciB+BR4IlFrdS90WdKxNI6SfZWMv+dzodK/72pssjuGf3BwbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TDb7IeDh; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZcCTRn50TraI2FURXwW7Efayfk7np3/5+cVaTUz06DqtZ+mvbzTPysLJTrvladC0E9PHWSGCfhHiifar/Mz/FtkMp5ly+ECqgw43IwZTBUFkjWXgLvFP/ED9Do2fckahUHdMQNAFBxyfMuaE4mKjEx5Zzo/98sVG9KGna0TFmHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YmWy2cfD; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TDb7IeDh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158F1C2BBFC;
-	Thu, 13 Jun 2024 13:45:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718286339;
-	bh=BADMAGvyZtj+GsRfT/NDr2Jvk9KXxvpLyvmYPtJjSAY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TDb7IeDhIRZlRAwjN4O9eeUdvNarZGkmUanL2dReujN3n4jgUgZrFfff+4cgjhhb4
-	 h6BiHUHjvOGNs/5l0eGs54fVRaWmPL08N5/eCrNtIYSOI0hZPwv6jzwcrVnbvKYK6g
-	 4TCeZZZHpJHOJZ9RK+eMYj9B+3TR/tHdGwfpHdWsOyhqKZ2KRHn8QvtJHRt1YN8wj9
-	 N/swWlg2lAoJ8ZnQM9JDvGW7OyZsYAPH1C7e2Pcdf+MVLzU7x1cJDt7ZfKYNzta8Wy
-	 7LhBi++W/G/igZ1SNghloo1y/OOW4mfAVa1pK1tX10cXV1x48oJ44GW9KeuwDtIzvY
-	 8D2gty4PyMrkg==
-Date: Thu, 13 Jun 2024 14:45:34 +0100
-From: Lee Jones <lee@kernel.org>
-To: Karel Balej <balejk@matfyz.cz>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	Duje =?utf-8?Q?Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v7 3/5] regulator: add regulators driver for Marvell
- 88PM886 PMIC
-Message-ID: <20240613134534.GB2561462@google.com>
-References: <20240531175109.15599-1-balejk@matfyz.cz>
- <20240531175109.15599-4-balejk@matfyz.cz>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YmWy2cfD"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-57a30dbdb7fso1828804a12.3;
+        Thu, 13 Jun 2024 10:18:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718299125; x=1718903925; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cwcCGDwb60DzgqVPFb1/1oCx//cSi4Srw7sRj+1jaLY=;
+        b=YmWy2cfDrWvGbG39HT/AvfE2BBqW/X05HQ84DgElPv9DyHomx7Uba4EQjTXNAU6Nnn
+         pj89kAiJE5n10o3AejfJexgIBeZnG+rNN5rjNJ84Nnd+xCDRZyR5rUcl+QE47xQvgxPy
+         3C3egfmdNdrxoiJWZvm8TbZe92C6kN2TqN90ZKmxedXiw2VRTsvb/tuDcX9+TO0HaIuH
+         w9ow1SRBdS9iov2pPXYT5Yxjz5nB61Ji+HFnnQ+UvD3umw7Mm4S2DiyvUEAgpeLyrqtO
+         gCjaZBO1VomvgNqmP2/V1rGZdbho+laiTf6AhyoLDr4VILAZmP6soguvAIYAwfabZ3uE
+         gsKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718299125; x=1718903925;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cwcCGDwb60DzgqVPFb1/1oCx//cSi4Srw7sRj+1jaLY=;
+        b=vga9/COw24xLx/fJF3GOuGAQD2DUiQse0ZpOzcaKOS/JQ4oCkurmb0Nr6DZn0CDdr9
+         N/r/7RXUJ3RCeBMC9MsrWq9/I2jzWK1gmPvCr++7pVjLy5QY5HuC72UX+Salkn8HbDHG
+         qMtvhl0qQta9gjIT1OQrfNY4uj4roRqj3CyC3rh1yKzB1EE30GRC/qTC7grWSdw+mliB
+         GrJrMcDtYC/Dwb22zckDssTjL2tC6NvXQ9o5ZskI6b7FZiObbL8MGSex2OLD9yQ8LHp3
+         aDcmpB28bfEDB0qtfb8nf/3EKwFwFHXfimwBYumtYkIdWhqcTq+9b5uy7P9lofHccpnb
+         3YNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV1kJhHsmGpA0+Xnx6UUliIkdXjcJK3N8aOHW2AaXwCi+FHxGpD1CX2/rLjjjArboUPP7/mm6qavTqydRTJGg8CoCKHX70mDVArXG8ikFlvlbNthomV2OvrCxqVUuKooeixcIBIBC8Z0bRMHXREGVI9h4i8eSNP6oLuQrWs7wRP78azEIZAiEs+/eiHn4konOaZ4xgcqZPgHD+YqXRfqEzq6gFFOg==
+X-Gm-Message-State: AOJu0YxGE/xZIzuZNA6nSlpeLezvWQvi3/mk/LgKLhs/y/UwZLWQNvXY
+	9LxcFGTPB6PGis4hSnnoY4+ZYgq+Y/82whbPl17szLIIAPofMgvH
+X-Google-Smtp-Source: AGHT+IGdIR8K+VU7ZoWeYaXJouZP25nKSmNr2Ci+hRTo46h3PKiZ1ed05PMzYhGyYbF+2HCHDXPaJw==
+X-Received: by 2002:a50:8e18:0:b0:57a:2fe7:6699 with SMTP id 4fb4d7f45d1cf-57cbd66272cmr286625a12.14.1718299125009;
+        Thu, 13 Jun 2024 10:18:45 -0700 (PDT)
+Received: from standask-GA-A55M-S2HP (lu-nat-113-247.ehs.sk. [188.123.113.247])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb741e7a5sm1139124a12.75.2024.06.13.10.18.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jun 2024 10:18:44 -0700 (PDT)
+Date: Thu, 13 Jun 2024 19:18:42 +0200
+From: Stanislav Jakubek <stano.jakubek@gmail.com>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	phone-devel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ARM: dts: qcom: motorola-falcon: add accelerometer,
+ magnetometer
+Message-ID: <Zmsp8kPRCE/fIPQk@standask-GA-A55M-S2HP>
+References: <ZmWMh6fuLasvGkR/@standask-GA-A55M-S2HP>
+ <2b39d763-5b79-4b21-85f9-22fee9f87468@linaro.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -51,53 +74,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240531175109.15599-4-balejk@matfyz.cz>
+In-Reply-To: <2b39d763-5b79-4b21-85f9-22fee9f87468@linaro.org>
 
-On Fri, 31 May 2024, Karel Balej wrote:
-
-> Support the LDO and buck regulators of the Marvell 88PM886 PMIC.
+On Thu, Jun 13, 2024 at 09:48:26AM +0200, Konrad Dybcio wrote:
 > 
-> Signed-off-by: Karel Balej <balejk@matfyz.cz>
-> ---
 > 
-> Notes:
->     v7:
->     - Address Mark's feedback:
->       - Drop get_current_limit op, max_uA values and thus unneeded struct
->         pm886_regulator and adapt the code accordingly.
->     v6:
->     - Remove all definitions (now present in the header).
->     v5:
->     - Add remaining regulators.
->     - Clean up includes.
->     - Address Mark's feedback:
->       - Use dedicated regmap config.
->     RFC v4:
->     - Initialize regulators regmap in the regulators driver.
->     - Register all regulators at once.
->     - Drop regulator IDs.
->     - Add missing '\n' to dev_err_probe message.
->     - Fix includes.
->     - Add ID table.
->     RFC v3:
->     - Do not have a variable for each regulator -- define them all in the
->       pm886_regulators array.
->     - Use new regulators regmap index name.
->     - Use dev_err_probe.
->     RFC v2:
->     - Drop of_compatible and related code.
->     - Drop unused include.
->     - Remove some abstraction: use only one regmap for all regulators and
->       only mention 88PM886 in Kconfig description.
->     - Reword commit message.
+> On 6/9/24 13:05, Stanislav Jakubek wrote:
+> > Add the accelerometer and magnetometer that are present on the Motorola
+> > Moto G (2013) device.
+> > 
+> > Signed-off-by: Stanislav Jakubek <stano.jakubek@gmail.com>
+> > ---
 > 
->  drivers/regulator/88pm886-regulator.c | 392 ++++++++++++++++++++++++++
->  drivers/regulator/Kconfig             |   6 +
->  drivers/regulator/Makefile            |   1 +
->  3 files changed, 399 insertions(+)
->  create mode 100644 drivers/regulator/88pm886-regulator.c
+> [...]
+> 
+> > +&blsp1_i2c2 {
+> 
+> Consider setting a clock-frequency = <>
 
-I'm fine with this set - just waiting for Mark to review.
+Hi Konrad,
 
--- 
-Lee Jones [李琼斯]
+checking downstream [1], qcom,i2c-bus-freq for I2C2 is 100000, which seems
+to be the default. Should I specify it anyway?
+
+Though, now that I've checked, it seems that I missed the clock-frequency
+for I2C3, for which qcom,i2c-bus-freq is 400000...
+The currently supported HW on it seems to work fine though ¯\_(ツ)_/¯
+
+[1] https://github.com/LineageOS/android_kernel_motorola_msm8226/blob/cm-14.1/arch/arm/boot/dts/msm8226.dtsi#L983
+
+Stanislav
+
+> 
+> With that:
+> 
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> 
+> Konrad
