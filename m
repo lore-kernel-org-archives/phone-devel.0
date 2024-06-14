@@ -1,50 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D410E18C336;
-	Fri, 14 Jun 2024 22:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC5818FDAE;
+	Fri, 14 Jun 2024 22:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718405345; cv=none; b=Q7tWoU2tyvKmXSju00hyqMpOWJos8zYC5rZqm0onzI5OON5hS24KdqCfO0sqqpjzSBgMQ81qrNUszFV0p0eHywzxy9W/vmQ/7PPJMzUtLRtx6Qzy49K6p3SjsHriyJwE4uIl85e6iybzH35wdmNQPq8jRgz6VXB27F0/nG0yi8I=
+	t=1718405349; cv=none; b=FhDNrlkprkxTTWsorRLvxN+SxuZ2d6kJQUqZLXrvSCFuYMs7gufL92NLoJU5E74yNclu3s2PZjys8ENwB0uBPizgM6JIiSXciYHj3KfIu7+4ult391DTAzPZJJQFsgr2jwyP746PWIps3zz7vDI05nx45cVoZEMdPrdorRAJIWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718405345; c=relaxed/simple;
-	bh=3x0A6IXTx7w+U/WBtw0hVd1YOtvguUSUYd5y5/Us4wU=;
+	s=arc-20240116; t=1718405349; c=relaxed/simple;
+	bh=04MRwLrUYtTgvQGPZCVO57w5ljUrcxqm8yRC+uHUWgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pT+bPsKQGqGE4NHHevso0gtTWpMnBOu1wsEFfQH1UrLuLhtZFLQCgbY3fqf1WxyydDPcP2lySyPbc8dFdXlsb3W6kqoEBWFAzBwcgS7kwM2tIYX8wlXXxG7ixGuYgF/G1Mjod+aZN03r706ufoMV0iPT6Yd6hSkcGsovY7T6R6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/1a2xCz; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=HgadwV/xR3sFKF0MwnMaAqJBiWCf0/dRnZrdA87W0rHOTnLE6+yi78Pgkv+Yo3w3HE6JXz+YnT/CiA4vwlSd+uAukm90QK5gtzFI2ksCLvMaqCz01srvs9na8RBBavHQBW/MTCGi878+OhjUYGTp3K87yKj+mLO3u9pZoH1bepU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vPlFy5Hm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/1a2xCz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96EEC4AF1D;
-	Fri, 14 Jun 2024 22:49:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vPlFy5Hm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6572C2BD10;
+	Fri, 14 Jun 2024 22:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718405344;
-	bh=3x0A6IXTx7w+U/WBtw0hVd1YOtvguUSUYd5y5/Us4wU=;
+	s=k20201202; t=1718405348;
+	bh=04MRwLrUYtTgvQGPZCVO57w5ljUrcxqm8yRC+uHUWgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/1a2xCzywgbIyv1kdWzsOZkaHssAJeJtKsAlctOPbnfZwmcA/0iRokERAGOR2g0k
-	 llNoGfFZlS0Qx+JBYk1Nmq/u0SD61C1F85uZnFfQ40Ta1Jm0X2F2papYBs0wAtDrRv
-	 FxESPab5bqCSeOXV2rIK5+XyKQKJhWzgjlvmxRi7+ZCExqw1muVrnAV2RdLA3bulPN
-	 C+G+7IgqsaEEowrxr5YnUF4ZL8Y0hP28KMCoQ7oSFQGv25xFmn7l5Hxv4W9cZMttRA
-	 WfXvXq6r0ppl2mGrxkqAagJ9GbqKc7uKIhXLBF8uMDfOAbWqOT8iGtISdOq+OWgb0o
-	 f/dtUAWPEmWoA==
+	b=vPlFy5HmfVZvOYWBaYiafXN7uIz7EJ+ebJE2emYqLSzpMvSs599ieUwUQ0KxN5e/E
+	 Nyelj0iRqBZCzKohihMopLfxk7q0tyrj/EUjQw7B+3M+O5N6+0XxlJeULMqMnV3RcD
+	 AT3OaxWoB8j3TjMj6qHxEFnVYLOTXZoU53W+Jm01oJ6FPfSDRArsHuYP4h4miKY9ek
+	 Wv5nXHIpL3U7GnLoqkdgOsmiG5x4kEWg1s2Gox0lHOA2YBEkJIl1CRPSscOhZOUfTa
+	 nzafwt+T3HW2NaLOxHyjHswdfEm+LAcJp0B9QmObm290f5VVHFn9dtxtxy7pUfIoLE
+	 SUzs7w2MBukkg==
 From: Bjorn Andersson <andersson@kernel.org>
-To: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+To: Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Andy Gross <agross@kernel.org>,
-	Luca Weiss <luca@z3ntu.xyz>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	linux-arm-msm@vger.kernel.org,
+	Stanislav Jakubek <stano.jakubek@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	phone-devel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] Support mailbox interface in qcom,smsm driver
-Date: Fri, 14 Jun 2024 17:48:53 -0500
-Message-ID: <171840533352.102487.9576671528001022676.b4-ty@kernel.org>
+Subject: Re: [PATCH] ARM: dts: qcom: motorola-falcon: add accelerometer, magnetometer
+Date: Fri, 14 Jun 2024 17:48:56 -0500
+Message-ID: <171840533355.102487.13630499618439886724.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240606-smsm-mbox-v2-0-8abe6b5f01da@z3ntu.xyz>
-References: <20240606-smsm-mbox-v2-0-8abe6b5f01da@z3ntu.xyz>
+In-Reply-To: <ZmWMh6fuLasvGkR/@standask-GA-A55M-S2HP>
+References: <ZmWMh6fuLasvGkR/@standask-GA-A55M-S2HP>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -55,22 +53,16 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 06 Jun 2024 21:18:31 +0200, Luca Weiss wrote:
-> Take a shot at converting the last driver that requires direct
-> "qcom,ipc*" syscon references in devicetree by allowing the smsm driver
-> to use the mailbox interface to achieve the same effect.
+On Sun, 09 Jun 2024 13:05:43 +0200, Stanislav Jakubek wrote:
+> Add the accelerometer and magnetometer that are present on the Motorola
+> Moto G (2013) device.
 > 
-> Still not sure if the devicetree bindings are the prettiest but they're
-> functional.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/2] dt-bindings: soc: qcom,smsm: Allow specifying mboxes instead of qcom,ipc
-      commit: 5e66abcf1e250f032ecb18a7ecfac5287298ed8e
-[2/2] soc: qcom: smsm: Support using mailbox interface
-      commit: 75287992f58a74271a083fef0356bc81d629f671
+[1/1] ARM: dts: qcom: motorola-falcon: add accelerometer, magnetometer
+      commit: 5756101babc5334a9bc99601d1cc0d6776fa9ada
 
 Best regards,
 -- 
