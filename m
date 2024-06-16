@@ -1,68 +1,247 @@
-Received: from mail-177132.yeah.net (mail-177132.yeah.net [123.58.177.132])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC82179AA;
-	Sat, 15 Jun 2024 08:29:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=123.58.177.132
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB93525D;
+	Sun, 16 Jun 2024 14:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718440187; cv=none; b=On5R6w2h+98/KndR4JK55d8ImycvVeaR1XxBjpFWvegL1hzvXbgxXGcd+yz0RoC8NC8eI7aicoocAMLNjmGsXPz4hZ+XuwZIxwvXB/P3NiEEfOtV2kpz64Ufy4I8dtmKj9aEXPfIYgf5mRkiDpRkFHGQuL6k2TFzGAz4yzCsyOE=
+	t=1718547353; cv=none; b=vBiYiTlelCNBiy1yGv/HJ3F8wxVQo1mtibAHSTRCL1kVfQkZvGvMwT8ych8xjKgn0MQ5jC5cpLmrFoZewttXNd9+lvbyYoF+hJSO4Xouo/+zDGYCqnYLW+OXezlBsMb0eMtX9Sr+aUDmd0j4McEeuzts3Kr4apY1pQ3SmERnQZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718440187; c=relaxed/simple;
-	bh=eXs2N11tk4EVTAbK5payTC/c0HV7DTP/P6F2Yhv4530=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZN2iRMVAKuH6+roSBzzZmCqVhmeq1otup5ZvZC9H3YMYMzFWgyfQrq8G36NAHbqbUWnWObRk4MhD5z1WRqs87IdYiUIoHzPGPK9UZqGTCs4TknJQVlghZZlsvUYD0SRvF95JytnuwsSij/CHEi28Q6bhVfoZIFyoKuzOen9XW8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=i5fhW8sg; arc=none smtp.client-ip=123.58.177.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+	s=arc-20240116; t=1718547353; c=relaxed/simple;
+	bh=TsiqY5ghTt6zNS7is2HIehRASQyN6+nUzZNoGJEVlqg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ux1+dq5BpOWQDaFJ3jDyONf0yolCLLxTg7ssR5SRcciC1MPfQF4MaVTkn0bShRurrJcy08tNCkZL1USW7ysEaaVicyw1FtoTJOqjQsTQDtvHOVxkg5qE7L0233qkHVQ0LW0rw3LT186N9EfVPFbK28B1lLXSRpBXzEAfEp+e9i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l4H8jRIZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="i5fhW8sg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=xVsezcPEPkow2kGQ3cKnVTNXwOF0FhPQ2nKAKebMvLI=;
-	b=i5fhW8sgo80AxUoU+fVWoNDgX+tvBH0v7kn5vlEKVpc2U8OgYAzWR/M7LBizeg
-	phJkjHzzpkoPU2DS31b3eCf4s9nR76xwUxYGbV05EN6PL63RBxhCYBdvrefRp4lx
-	mvKp7WvH5IR8SIKvOqmc2rQrkHGzvWVYQldh2xUU+DiLo=
-Received: from dragon (unknown [114.216.76.201])
-	by smtp2 (Coremail) with SMTP id C1UQrAD3_1DSUG1mgBm1CA--.23524S3;
-	Sat, 15 Jun 2024 16:29:07 +0800 (CST)
-Date: Sat, 15 Jun 2024 16:29:05 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
-	kernel@puri.sm, Martin Kepplinger <martink@posteo.de>
-Subject: Re: [PATCH] dts: imx8mq-librem5: Don't wake up on volume key press
-Message-ID: <Zm1Q0UIzRErYH16u@dragon>
-References: <fa416916049e85ca159805e8602fa8361d5e6d83.1716202515.git.agx@sigxcpu.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l4H8jRIZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BCF38C2BBFC;
+	Sun, 16 Jun 2024 14:15:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718547352;
+	bh=TsiqY5ghTt6zNS7is2HIehRASQyN6+nUzZNoGJEVlqg=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=l4H8jRIZnD6PJV6t+JXDSt4nEn629qeP/R7K1vL5YKIchvpqsfREE8WTmqHDITy+B
+	 Pj5tZsJzQ4nSaToAmyNmssNW1yFH/zncjIprmzd/iRImhYTcOCw/ykEdZ7PsZzCpJ6
+	 Uq22CSCNIhhmlYPgYD4eX7cujzGGvc2lH3n9CGXY525VOxmONhwsDnyu1JIYAtTlDQ
+	 JRCkgkEIsz2ENnD/jRY/2NR2tUCIjhPqVFQw49j+9bDIL7sX68SQg7X3b/cYvzYzQe
+	 INlVY3oNX5LDIf+iSrOApHkEGDUi4WpXbBGHbgI7dm/Z9BactcSei3iceG6fYgpJ3W
+	 3kG7rcTAbE3oQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2132C27C53;
+	Sun, 16 Jun 2024 14:15:52 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Date: Sun, 16 Jun 2024 16:15:45 +0200
+Subject: [PATCH] ARM: dts: qcom: msm8926-motorola-peregrine: Add
+ accelerometer, magnetometer, regulator
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fa416916049e85ca159805e8602fa8361d5e6d83.1716202515.git.agx@sigxcpu.org>
-X-CM-TRANSID:C1UQrAD3_1DSUG1mgBm1CA--.23524S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU-v38UUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiDxP+ZVnxc0hF6QAAs4
+Message-Id: <20240616-peregrine-v1-1-85d14ae1a11a@apitzsch.eu>
+X-B4-Tracking: v=1; b=H4sIAJDzbmYC/x3MQQqAIBBG4avIrBNU0kVXiRZlfzYbkxEikO6et
+ Pzg8RpVCKPSpBoJbq585Q47KIrnmhM0793kjBtNsEEXCJJwhg6IHi5s1iNS74vg4Od/zcv7fu4
+ y4albAAAA
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1718547355; l=4379;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=fAaRpnS34tfTExhh2XisZxapKdoWeOZI5ZaxJ4uIxC0=;
+ b=TsGnsIqG+BESQgTILEz3JVRyswhIQ43+1QR+8irCA1StScDthFMgV6jNYbBp9qeaRMF/fZ7KY
+ IDtHYY8zb7LC7S3Me07s09pIr/K1wONbrIB/dsmKDI4NmbAIyrfnTqL
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-On Mon, May 20, 2024 at 12:57:05PM +0200, Guido G¸nther wrote:
-> The only key that should wake up the phone is power button press. This
-> prevents accidental wakeup due to e.g. pressing the buttons in the
-> pocket or backpack and is in line what userspace uses to unblank the
-> device.
-> 
-> Signed-off-by: Guido G¸nther <agx@sigxcpu.org>
+From: Andr√© Apitzsch <git@apitzsch.eu>
 
-'arm64: dts: ...' for subject prefix.
+Add the accelerometer, magnetometer and regulator that are present on
+the Motorola Moto G 4G (2013) device.
 
-Fixed it up and applied, thanks!
+While at it, update framebuffer supplies and temperature sensor.
 
-Shawn
+Signed-off-by: Andr√© Apitzsch <git@apitzsch.eu>
+---
+ .../dts/qcom/qcom-msm8926-motorola-peregrine.dts   | 121 +++++++++++++++++++++
+ 1 file changed, 121 insertions(+)
+
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts b/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts
+index 0cbe2d2fbbb1..376a33125941 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts
+@@ -29,6 +29,10 @@ framebuffer0: framebuffer@3200000 {
+ 			height = <1280>;
+ 			stride = <(720 * 3)>;
+ 			format = "r8g8b8";
++			vsp-supply = <&reg_lcd_pos>;
++			vsn-supply = <&reg_lcd_neg>;
++			vdd-supply = <&pm8226_l28>;
++			vddio-supply = <&vddio_disp_vreg>;
+ 		};
+ 	};
+ 
+@@ -51,6 +55,18 @@ key-volume-up {
+ 		};
+ 	};
+ 
++	vddio_disp_vreg: regulator-vddio-disp {
++		compatible = "regulator-fixed";
++		regulator-name = "vddio_disp";
++		gpio = <&tlmm 34 GPIO_ACTIVE_HIGH>;
++		startup-delay-us = <300>;
++		enable-active-high;
++		regulator-boot-on;
++		vin-supply = <&pm8226_l8>;
++		pinctrl-0 = <&disp_vddio_default>;
++		pinctrl-names = "default";
++	};
++
+ 	reserved-memory {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+@@ -68,12 +84,67 @@ smem_region: smem@fa00000 {
+ 	};
+ };
+ 
++&blsp1_i2c2 {
++	clock-frequency = <100000>;
++	status = "okay";
++
++	magnetometer@c {
++		compatible = "asahi-kasei,ak8963";
++		reg = <0xc>;
++		interrupts-extended = <&tlmm 38 IRQ_TYPE_EDGE_FALLING>;
++		reset-gpios = <&tlmm 62 GPIO_ACTIVE_LOW>;
++		vdd-supply = <&pm8226_l19>;
++		pinctrl-0 = <&mag_int_default &mag_reset_default>;
++		pinctrl-names = "default";
++	};
++
++	accelerometer@18 {
++		compatible = "st,lis3dh-accel";
++		reg = <0x18>;
++		interrupts-extended = <&tlmm 1 IRQ_TYPE_EDGE_FALLING>;
++		vdd-supply = <&pm8226_l19>;
++		pinctrl-0 = <&accel_int_default>;
++		pinctrl-names = "default";
++		st,drdy-int-pin = <1>;
++	};
++};
++
+ &blsp1_i2c3 {
++	clock-frequency = <400000>;
+ 	status = "okay";
+ 
++	regulator@3e {
++		compatible = "ti,tps65132";
++		reg = <0x3e>;
++		pinctrl-0 = <&reg_lcd_default>;
++		pinctrl-names = "default";
++
++		reg_lcd_pos: outp {
++			regulator-name = "outp";
++			regulator-min-microvolt = <4000000>;
++			regulator-max-microvolt = <6000000>;
++			regulator-active-discharge = <1>;
++			regulator-boot-on;
++			enable-gpios = <&tlmm 31 GPIO_ACTIVE_HIGH>;
++		};
++
++		reg_lcd_neg: outn {
++			regulator-name = "outn";
++			regulator-min-microvolt = <4000000>;
++			regulator-max-microvolt = <6000000>;
++			regulator-active-discharge = <1>;
++			regulator-boot-on;
++			enable-gpios = <&tlmm 33 GPIO_ACTIVE_HIGH>;
++		};
++	};
++
+ 	sensor@48 {
+ 		compatible = "ti,tmp108";
+ 		reg = <0x48>;
++		interrupts-extended = <&tlmm 13 IRQ_TYPE_LEVEL_LOW>;
++		pinctrl-0 = <&temp_alert_default>;
++		pinctrl-names = "default";
++		#thermal-sensor-cells = <0>;
+ 	};
+ };
+ 
+@@ -278,6 +349,56 @@ &smbb {
+ 	status = "okay";
+ };
+ 
++&tlmm {
++	accel_int_default: accel-int-default-state {
++		pins = "gpio1";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++		output-disable;
++	};
++
++	disp_vddio_default: disp-vddio-default-state {
++		pins = "gpio34";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++		output-high;
++	};
++
++	mag_int_default: mag-int-default-state {
++		pins = "gpio38";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++		output-disable;
++	};
++
++	mag_reset_default: mag-reset-default-state {
++		pins = "gpio62";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++		output-high;
++	};
++
++	reg_lcd_default: reg-lcd-default-state {
++		pins = "gpio31", "gpio33";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++		output-high;
++	};
++
++	temp_alert_default: temp-alert-default-state {
++		pins = "gpio13";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++		output-disable;
++	};
++};
++
+ &usb {
+ 	extcon = <&smbb>;
+ 	dr_mode = "peripheral";
+
+---
+base-commit: c71189547381bb5f176c6b22a9edc3414f1837b9
+change-id: 20240616-peregrine-6ec5e26b15ec
+
+Best regards,
+-- 
+Andr√© Apitzsch <git@apitzsch.eu>
+
 
