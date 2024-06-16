@@ -1,37 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB93525D;
-	Sun, 16 Jun 2024 14:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8EA107A9;
+	Sun, 16 Jun 2024 18:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718547353; cv=none; b=vBiYiTlelCNBiy1yGv/HJ3F8wxVQo1mtibAHSTRCL1kVfQkZvGvMwT8ych8xjKgn0MQ5jC5cpLmrFoZewttXNd9+lvbyYoF+hJSO4Xouo/+zDGYCqnYLW+OXezlBsMb0eMtX9Sr+aUDmd0j4McEeuzts3Kr4apY1pQ3SmERnQZE=
+	t=1718562203; cv=none; b=XTH2TueG7FpawNsWrn4ixeN9D1i3suiHz1ImYiA4hh4lDM6W1QpLu+C2w/9kWYGfTpTLBbHyXiAA7xcDqzhtqX3jrGKvyx/Mk7aQXI2pwW2aVj2oz2iof9V18Bw70pS18rXOV9AfMxCFAyD4HmUKxPqKT3I6V/O1+ul/hy87rLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718547353; c=relaxed/simple;
-	bh=TsiqY5ghTt6zNS7is2HIehRASQyN6+nUzZNoGJEVlqg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ux1+dq5BpOWQDaFJ3jDyONf0yolCLLxTg7ssR5SRcciC1MPfQF4MaVTkn0bShRurrJcy08tNCkZL1USW7ysEaaVicyw1FtoTJOqjQsTQDtvHOVxkg5qE7L0233qkHVQ0LW0rw3LT186N9EfVPFbK28B1lLXSRpBXzEAfEp+e9i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l4H8jRIZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718562203; c=relaxed/simple;
+	bh=+34Fi6O5qk3enPnEGjEgPYKQM4i6AHZtDMRieXM68qU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=eyidGdnjOpRXdkgNaqDVdjZPWqznT/OCRJ7uzPGCNIU9ncS7SgvISphrIXstVuTlnK4y1wJ0N7RKaunOxXcuD+tgXtZxA3nhHHmdhH30VpmzAcoVzo5jWWV6szarb1BT2wZ3ssn39G/+RIrbEx9podmfoGy9QL5tupSDqQi/PoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QLRIXrYv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l4H8jRIZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BCF38C2BBFC;
-	Sun, 16 Jun 2024 14:15:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QLRIXrYv"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2596AC2BBFC;
+	Sun, 16 Jun 2024 18:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718547352;
-	bh=TsiqY5ghTt6zNS7is2HIehRASQyN6+nUzZNoGJEVlqg=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=l4H8jRIZnD6PJV6t+JXDSt4nEn629qeP/R7K1vL5YKIchvpqsfREE8WTmqHDITy+B
-	 Pj5tZsJzQ4nSaToAmyNmssNW1yFH/zncjIprmzd/iRImhYTcOCw/ykEdZ7PsZzCpJ6
-	 Uq22CSCNIhhmlYPgYD4eX7cujzGGvc2lH3n9CGXY525VOxmONhwsDnyu1JIYAtTlDQ
-	 JRCkgkEIsz2ENnD/jRY/2NR2tUCIjhPqVFQw49j+9bDIL7sX68SQg7X3b/cYvzYzQe
-	 INlVY3oNX5LDIf+iSrOApHkEGDUi4WpXbBGHbgI7dm/Z9BactcSei3iceG6fYgpJ3W
-	 3kG7rcTAbE3oQ==
+	s=k20201202; t=1718562203;
+	bh=+34Fi6O5qk3enPnEGjEgPYKQM4i6AHZtDMRieXM68qU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=QLRIXrYv1/PFIAT3KjLi6qoG2tycisiPhb8fD+QiW3+ewTZMlC+5AVUQgwCtoORxy
+	 CeghWM+UsXt/vXdwdSzxjv0bbP9u8Qsj5bCUrd/NKlHh30rIf7Zw0wOQeiqexyyAvH
+	 hBKiB8OO6ivNJWAbIQP1MyxNkbP/1NBNm/+Kt9eYLIPe7KwdKa/eeVKAN8/ioLxhtF
+	 YuSZ3VTOuNVkTMzotf3VmG3O45BZSglzpkZk9+vSUE1irQRi+feK9t5tzNs5dJWqZm
+	 MnwXXyfymGlkg4KxGqgvZKTNNBXTi38Vq3nm8zBlds5DnGhZsxju45HLTLP43Yt6De
+	 ZrExL3kjumePA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A2132C27C53;
-	Sun, 16 Jun 2024 14:15:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E52CC27C53;
+	Sun, 16 Jun 2024 18:23:23 +0000 (UTC)
 From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Sun, 16 Jun 2024 16:15:45 +0200
-Subject: [PATCH] ARM: dts: qcom: msm8926-motorola-peregrine: Add
- accelerometer, magnetometer, regulator
+Subject: [PATCH v4 0/3] Add sy7802 flash led driver
+Date: Sun, 16 Jun 2024 20:22:51 +0200
+Message-Id: <20240616-sy7802-v4-0-789994180e05@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -40,23 +40,30 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240616-peregrine-v1-1-85d14ae1a11a@apitzsch.eu>
-X-B4-Tracking: v=1; b=H4sIAJDzbmYC/x3MQQqAIBBG4avIrBNU0kVXiRZlfzYbkxEikO6et
- Pzg8RpVCKPSpBoJbq585Q47KIrnmhM0793kjBtNsEEXCJJwhg6IHi5s1iNS74vg4Od/zcv7fu4
- y4albAAAA
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+X-B4-Tracking: v=1; b=H4sIAHstb2YC/2XMQQ6DIBCF4asY1qWBAUS66j2aLhChstEGLKk13
+ r1ooqbp8k3m+ycUbfA2oksxoWCTj77v8uCnAplWdw+LfZM3AgKcMBA4jrIigB0nzpROlAIEys/
+ PYJ1/r6HbPe/Wx6EP49pNdLluCbklEsUEN7XkumbgtHZX/fTDJ5r2bF9oiSQ4ICd0h5Ahpayii
+ mjJefUP2QFLCjtkC7TKGGqkqqX6hfM8fwF9snP3EAEAAA==
+To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
+ Trilok Soni <quic_tsoni@quicinc.com>, Kees Cook <kees@kernel.org>
+Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, 
  =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1718547355; l=4379;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1718562205; l=2476;
  i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=fAaRpnS34tfTExhh2XisZxapKdoWeOZI5ZaxJ4uIxC0=;
- b=TsGnsIqG+BESQgTILEz3JVRyswhIQ43+1QR+8irCA1StScDthFMgV6jNYbBp9qeaRMF/fZ7KY
- IDtHYY8zb7LC7S3Me07s09pIr/K1wONbrIB/dsmKDI4NmbAIyrfnTqL
+ bh=+34Fi6O5qk3enPnEGjEgPYKQM4i6AHZtDMRieXM68qU=;
+ b=gE1fI6YjZgLtdJqRFeFDUaTlcZ3TQBuQL8js73hCZmIO5piaSqxYpd54j3VGkJAtOjPJOwTOX
+ XaYAb0oFz0pA2aqfbIUzHsP2UBcnhkiLTQHBiyTV4hX4mvOw1ohOBtc
 X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
  pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
 X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
@@ -64,181 +71,65 @@ X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
 X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
 Reply-To: git@apitzsch.eu
 
-From: André Apitzsch <git@apitzsch.eu>
+This series introduces a driver for the Silergy SY7802 charge pump used
+in the BQ Aquaris M5 and X5 smartphones.
 
-Add the accelerometer, magnetometer and regulator that are present on
-the Motorola Moto G 4G (2013) device.
-
-While at it, update framebuffer supplies and temperature sensor.
+The implementation is based on information extracted from downstream as
+the datasheet provided by a distributor of the hardware didn't include
+any information about the i2c register description.
 
 Signed-off-by: André Apitzsch <git@apitzsch.eu>
 ---
- .../dts/qcom/qcom-msm8926-motorola-peregrine.dts   | 121 +++++++++++++++++++++
- 1 file changed, 121 insertions(+)
+Changes in v4:
+- Use for_each_available_child_of_node_scoped() to simplify code
+- Use dev_err_probe() to be consistent with the other code in
+  sy7802_probe()
+- Split devm_add_action() into 2 devm_add_action_or_reset() to simplify
+  code and balance regulator_enable()
+- Link to v3: https://lore.kernel.org/r/20240612-sy7802-v3-0-1e9cc1c79b79@apitzsch.eu
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts b/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts
-index 0cbe2d2fbbb1..376a33125941 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts
-@@ -29,6 +29,10 @@ framebuffer0: framebuffer@3200000 {
- 			height = <1280>;
- 			stride = <(720 * 3)>;
- 			format = "r8g8b8";
-+			vsp-supply = <&reg_lcd_pos>;
-+			vsn-supply = <&reg_lcd_neg>;
-+			vdd-supply = <&pm8226_l28>;
-+			vddio-supply = <&vddio_disp_vreg>;
- 		};
- 	};
- 
-@@ -51,6 +55,18 @@ key-volume-up {
- 		};
- 	};
- 
-+	vddio_disp_vreg: regulator-vddio-disp {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vddio_disp";
-+		gpio = <&tlmm 34 GPIO_ACTIVE_HIGH>;
-+		startup-delay-us = <300>;
-+		enable-active-high;
-+		regulator-boot-on;
-+		vin-supply = <&pm8226_l8>;
-+		pinctrl-0 = <&disp_vddio_default>;
-+		pinctrl-names = "default";
-+	};
-+
- 	reserved-memory {
- 		#address-cells = <1>;
- 		#size-cells = <1>;
-@@ -68,12 +84,67 @@ smem_region: smem@fa00000 {
- 	};
- };
- 
-+&blsp1_i2c2 {
-+	clock-frequency = <100000>;
-+	status = "okay";
-+
-+	magnetometer@c {
-+		compatible = "asahi-kasei,ak8963";
-+		reg = <0xc>;
-+		interrupts-extended = <&tlmm 38 IRQ_TYPE_EDGE_FALLING>;
-+		reset-gpios = <&tlmm 62 GPIO_ACTIVE_LOW>;
-+		vdd-supply = <&pm8226_l19>;
-+		pinctrl-0 = <&mag_int_default &mag_reset_default>;
-+		pinctrl-names = "default";
-+	};
-+
-+	accelerometer@18 {
-+		compatible = "st,lis3dh-accel";
-+		reg = <0x18>;
-+		interrupts-extended = <&tlmm 1 IRQ_TYPE_EDGE_FALLING>;
-+		vdd-supply = <&pm8226_l19>;
-+		pinctrl-0 = <&accel_int_default>;
-+		pinctrl-names = "default";
-+		st,drdy-int-pin = <1>;
-+	};
-+};
-+
- &blsp1_i2c3 {
-+	clock-frequency = <400000>;
- 	status = "okay";
- 
-+	regulator@3e {
-+		compatible = "ti,tps65132";
-+		reg = <0x3e>;
-+		pinctrl-0 = <&reg_lcd_default>;
-+		pinctrl-names = "default";
-+
-+		reg_lcd_pos: outp {
-+			regulator-name = "outp";
-+			regulator-min-microvolt = <4000000>;
-+			regulator-max-microvolt = <6000000>;
-+			regulator-active-discharge = <1>;
-+			regulator-boot-on;
-+			enable-gpios = <&tlmm 31 GPIO_ACTIVE_HIGH>;
-+		};
-+
-+		reg_lcd_neg: outn {
-+			regulator-name = "outn";
-+			regulator-min-microvolt = <4000000>;
-+			regulator-max-microvolt = <6000000>;
-+			regulator-active-discharge = <1>;
-+			regulator-boot-on;
-+			enable-gpios = <&tlmm 33 GPIO_ACTIVE_HIGH>;
-+		};
-+	};
-+
- 	sensor@48 {
- 		compatible = "ti,tmp108";
- 		reg = <0x48>;
-+		interrupts-extended = <&tlmm 13 IRQ_TYPE_LEVEL_LOW>;
-+		pinctrl-0 = <&temp_alert_default>;
-+		pinctrl-names = "default";
-+		#thermal-sensor-cells = <0>;
- 	};
- };
- 
-@@ -278,6 +349,56 @@ &smbb {
- 	status = "okay";
- };
- 
-+&tlmm {
-+	accel_int_default: accel-int-default-state {
-+		pins = "gpio1";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-disable;
-+	};
-+
-+	disp_vddio_default: disp-vddio-default-state {
-+		pins = "gpio34";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-high;
-+	};
-+
-+	mag_int_default: mag-int-default-state {
-+		pins = "gpio38";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-disable;
-+	};
-+
-+	mag_reset_default: mag-reset-default-state {
-+		pins = "gpio62";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-high;
-+	};
-+
-+	reg_lcd_default: reg-lcd-default-state {
-+		pins = "gpio31", "gpio33";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-high;
-+	};
-+
-+	temp_alert_default: temp-alert-default-state {
-+		pins = "gpio13";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-disable;
-+	};
-+};
-+
- &usb {
- 	extcon = <&smbb>;
- 	dr_mode = "peripheral";
+Changes in v3:
+- Add R-b tag to first patch
+- Extend driver commit message
+- Improve readability of defines by using BIT()
+- Rename some variables/parameters
+  * led_no -> led_id
+  * level -> brightness
+  * curr -> fled_{strobe,torch}_used_tmp
+  * mask -> {flash,torch}_mask
+  * i -> child_num
+- Restructure structs ("Place th big stuff at the top")
+- Declare 'child' on a separate line
+- Move multi-line assignments out of declaration block
+- Update warning/error messages and comments
+- Use gotos to handle error path
+- Use devm API to cleanup module's resources
+- Init mutex before LED class device is registered to avoid race
+  condition
+- Link to v2: https://lore.kernel.org/r/20240401-sy7802-v2-0-1138190a7448@apitzsch.eu
+
+Changes in v2:
+- bindings: remove unneeded allOf
+- bindings: example: move flash-led-controller under i2c node to fix
+  check error
+- Cc to phone-devel
+- Link to v1: https://lore.kernel.org/r/20240327-sy7802-v1-0-db74ab32faaf@apitzsch.eu
 
 ---
-base-commit: c71189547381bb5f176c6b22a9edc3414f1837b9
-change-id: 20240616-peregrine-6ec5e26b15ec
+André Apitzsch (3):
+      dt-bindings: leds: Add Silergy SY7802 flash LED
+      leds: sy7802: Add support for Silergy SY7802 flash LED controller
+      arm64: dts: qcom: msm8939-longcheer-l9100: Add rear flash
+
+ .../devicetree/bindings/leds/silergy,sy7802.yaml   | 100 ++++
+ .../boot/dts/qcom/msm8939-longcheer-l9100.dts      |  26 +
+ drivers/leds/flash/Kconfig                         |  11 +
+ drivers/leds/flash/Makefile                        |   1 +
+ drivers/leds/flash/leds-sy7802.c                   | 542 +++++++++++++++++++++
+ 5 files changed, 680 insertions(+)
+---
+base-commit: 6a03b35e4395eb2d6e89a38aca00a9fe9cb39ba1
+change-id: 20240325-sy7802-f40fc6f56525
 
 Best regards,
 -- 
