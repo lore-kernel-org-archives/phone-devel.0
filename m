@@ -1,118 +1,143 @@
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC7D38F9C;
-	Sun, 16 Jun 2024 18:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10DE18C327
+	for <phone-devel@vger.kernel.org>; Mon, 17 Jun 2024 07:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718564167; cv=none; b=G667ADaxvHWQuW+stnwXN+jRZyKIfxL1N/fn2Ag+fD0Xz1f40JJDfGSpM2UTdZ4qCvx82A6dAai0MJN31FC5bDUkcH3VdWox5DXwC5ARDoHJknH0dBsE0+Q5NrM8ZO2kCmNk5OmyeR0mm+t5xEQ7LUrGCu9gU6aT7M2e3KHHkms=
+	t=1718609317; cv=none; b=aLTz6Aj8ukBGUtWRtTambiKEGRdA6tp51KrLV3XyQ2gMirSisCXdiJFCSH8Ul9LB2XaVM7iTVEfxBFZj+ExmlM9/WphSoqDOkX6omf4eX2lg9aTRR5EYTpst13do6Dk3OP8h2Jvc8CEda+C9JltkDkdIRZlOKFs5MtUnOWt61Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718564167; c=relaxed/simple;
-	bh=0/pOEFxsthRlQhSl5WrOvFSRv2TE6ENvSR/uC4B/sMo=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=i9Jo9yVuEKa723PBjEc9A6tw0yee1oShgPd7BkKvf0JWiNZ9FVqPgfh8WU2oV1vf3PkobJn08mCE/H38KHlMMMYo0E03xI04FdvrkAH+42yAEXNr6KYzfJJZlMJXmXtWVIejLUSungLAL5du75x+K3x7JHdgops3CWTKeP+R8wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=v6ej0ZxR; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	s=arc-20240116; t=1718609317; c=relaxed/simple;
+	bh=LbcaeO7g+XXyhIaUIw2LMzHvMLsMS1SLl4XS875bxSQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=tIVdgxQegLq3GkXLszNwOnX7L25VPBnkJNffsAeR2/v0Bv273LX06ZJyJt/CO+MIN/kbf/r+rfkanS7tH7HX7J//B4f4ESVwD2BEEYCJ0KRCPoTGJhJXBX69LCg/lh6iATmWR23jdEB6CS4w//pIlGGC1iCHKI3Xxj/6rq1oKp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=Cn6yD3BX; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="v6ej0ZxR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1718564147; x=1719168947; i=markus.elfring@web.de;
-	bh=TadSfGlgyQ3g8pB+Z17nGGdeUmohHYYee54GY/jGgcI=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=v6ej0ZxREsrJB8odiZFtwUCH0c32vXeGMhBXv03SXqpaFhe2J081AHeGv9w/rTXf
-	 KjLfDXfTL/Vnhbq0lJte8jA75iJFLZMUcF8/PrYhE4IGhK5bI1mJduUbVJvOSPTxC
-	 51VjLTIZUOr0gvOkGK37zJfJxETAVHWvOvHqb77rjHBFLYHIwq5k6Z1NfpLvZCaLV
-	 qtZhcNTcu1Yj0nf4rF2isiKGAuu8drY1ufejmYCqaz7afImUDM6UYfmyR/BGwdMfu
-	 d6l+sYuoPacM3SMqudiBTA0yf1+DeZ7BkPthYsUw8cXKHg9LlhnrcZ7LK6ctHZ5m4
-	 PauP2GM46Ufgipk32w==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MkEhR-1sgxBK0qWP-00a0j5; Sun, 16
- Jun 2024 20:55:47 +0200
-Message-ID: <5701d3e7-f67b-4189-a5fd-8a992b9155fb@web.de>
-Date: Sun, 16 Jun 2024 20:55:41 +0200
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="Cn6yD3BX"
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a6f11a2d18aso525499566b.2
+        for <phone-devel@vger.kernel.org>; Mon, 17 Jun 2024 00:28:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fairphone.com; s=fair; t=1718609314; x=1719214114; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tHyISATt+WJttxke6EIQCpnTGfj4Yi4w9h5lYCsDGOA=;
+        b=Cn6yD3BXNbUHuD6e8UeUFwPued5uoqrTSdRLwLV5djzNp37k3xsuocbuXKhvnDbA5s
+         tQdheveSiI/PGMn1LiNJKKbdUniLY3wbu89tMrMmzqcG2DQWmPrVeLv26GvY4yWS3IhA
+         yByf7bwqOWlCIKujKZOwEUaCcv67kCoX5HBEvVJkbSUM2fRR3ut/pv4UPJBMEctNvyPn
+         RjgZYKjosxuAKp+FdnFlmkItY8F3VTDePg3GP604BBDpHAEW6WV0Zbr/3/2DE6VtLi1f
+         GS6jP0IehEUZUKpy27BaDfQtrYhqOG2oXwKAYruKLFGqo0ou75MWmWmfUWBJoj/UIfDy
+         8LjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718609314; x=1719214114;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=tHyISATt+WJttxke6EIQCpnTGfj4Yi4w9h5lYCsDGOA=;
+        b=RGojeivPFl1PjOX0vQH9EOvmwVmga585mX7m5yD8d88K90a9kjCq1WxzBr1hIKI2bG
+         39wLFRd2qbJuHK/veztNAQEkUhs8L9osBWFVdA1TSXP9MieshMZeXRygQy0PlcFxV+vz
+         JHZ/N46JjwDYfIziCGRiyQdiv/wsVbuUbW8WpqSCd5eCbykTTMbg6cyJVc8j3H12nDYD
+         tWIjSMv6HDZvq6euNGhYyLPPk5g8LiBGre5GQW3ggdYKyq3389N1enw+yeIjK2dAlbO4
+         qArfP94sDPeiY/HKNwyBfK8hf7S18Qemx7QmUrEXvhN+p12/HFf4sxgVZ3rGFXkYlXjL
+         muAA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRAMbhQ6pwEJTfG7OLAYmDI4VKl1kPRz68oDriwGA79Gjlb6ORR5G3Un9vZVjMaYJcuOoPypgtIuBnLmnlky7i5Vot+r7egBu22s8=
+X-Gm-Message-State: AOJu0YypWZTHdDFOGmQEBlyss1dHtmlNdpWVgHe+YTOtlS03zeLwInUL
+	KiEk9O+vHYBBCpSV8qZ6rpM5i/mMLs7utyZM6y+bDD6g/dmPvaS1zSENbIQrk5U=
+X-Google-Smtp-Source: AGHT+IE/Y4LqXgdNZ0zcQVhr3sQUeAw8IWyATC1u6ONvFcRL9KXrD7KEcyjfA0ImOde2Km0XLQNqxA==
+X-Received: by 2002:a17:907:c081:b0:a6f:77bb:1713 with SMTP id a640c23a62f3a-a6f77bb1889mr294286966b.9.1718609313862;
+        Mon, 17 Jun 2024 00:28:33 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56da328csm494948466b.12.2024.06.17.00.28.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jun 2024 00:28:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: =?UTF-8?Q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>,
- linux-leds@vger.kernel.org, phone-devel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, Bjorn Andersson
- <andersson@kernel.org>, Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
- Conor Dooley <conor+dt@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, Kees Cook <kees@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Lee Jones <lee@kernel.org>, Pavel Machek <pavel@ucw.cz>,
- Trilok Soni <quic_tsoni@quicinc.com>
-Cc: LKML <linux-kernel@vger.kernel.org>
-References: <20240616-sy7802-v4-2-789994180e05@apitzsch.eu>
-Subject: Re: [PATCH v4 2/3] leds: sy7802: Add support for Silergy SY7802 flash
- LED controller
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240616-sy7802-v4-2-789994180e05@apitzsch.eu>
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ywmCAB1urZYwmKWG28z7eeRvFFUcqwBcSdSNHJxyQpGb4LgzckJ
- xpIRNMpfsN4y9ydnb4FsTGqE1FXb1dRETutow8zQfzV9RbscpsCC33iCrZCUGp2SnjGL//F
- nmCBy+K+HzGYAAahPTthzaIxguACFfFUqcb8ZXKz2tp4mrReIeysI1xDJv1UfIAbu07gpq3
- vm+Jwd7RZzTuJ5fKYrqfA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:d+CmPQ5T6d8=;LY+jjA61SkrYUiRyE6sVijHQeCr
- +wSWhDx2+pOM3HjnD3vHVNgtkPG6APCgLGneqFQYgt1T/+McO6R2O2Q7cZSGaTbayJ2Zj2fHg
- WndmgWmJ403EcVA98yNgZxSuhMubZyH361FMuldHnaJmcOTeSmiOGkEbc3vP08jcXD4X7Ah1u
- Zw3Q6mYdpeSXh4boqS8V3/NgRpMHF0SIWjrjZMZFfjLGouY/X87ynBopI+cD6Zk8IoZY7bcmG
- 4UEPVjzZTwzityCmF1W3iVqA5MrwT9ZdkIfYhylZJNHG6h220D2OAZMvcIn3SIDnxkueixitR
- M24NxJYtPlJOQzoU/VkEXUIEVvjjkITbHkabdE28njyV9fyuj/u3lub4j1tgjTn1KgycE0x2h
- TemrZ07dtb+gbgnqAro2R4sEuzrWlL/6jIo2onX8zju0b2vXWCxHEnnyDih/TCIo4BDdKhOag
- T8NVf2Y7AK4IJF6zZuzbX7ldVSGTjdfHO23TW0pxBshT/HGr1sqnJn4bRXNrrjE9uygukklg6
- bPHALhAFr+27ICMgpdq+rPjm7oB1B4XIZiMLM0+iIznYvHL0HFNVOsMd75nopWn7roW6KV1yB
- VGv1ZYpFTQaOIQT0WARMaUPGuQrW1cfKXhwW1D+wvLjknwaFwMyzkOt1KZ0ly07ua2rKV3LRh
- xfSB7zkCN0yjsPOVH2tZXTkQUirpghX1xBGYNAxlDAvRVhpr/b4QEQFKTImsRNmZ87ayztouq
- ZqfGKjTHJ6VBQBBdCsvfHr7pZZ7Fiax9DtGo1U2MFme4cjOlbvQnB+mCxqzaqHvo0/6+TNuls
- aKIcS82tC1xh8NvtG6PWmlX6jbFa+CtxDRf8ZnLODKtu4=
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 17 Jun 2024 09:28:32 +0200
+Message-Id: <D2245MXG8CS1.11EGKFJQLYPTI@fairphone.com>
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Luca Weiss" <luca.weiss@fairphone.com>, "Bjorn Andersson"
+ <andersson@kernel.org>, "Konrad Dybcio" <konrad.dybcio@linaro.org>,
+ "Stanimir Varbanov" <stanimir.k.varbanov@gmail.com>, "Vikash Garodia"
+ <quic_vgarodia@quicinc.com>, "Bryan O'Donoghue"
+ <bryan.odonoghue@linaro.org>, "Mauro Carvalho Chehab" <mchehab@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>
+Cc: <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v2] media: dt-bindings: qcom,sc7280-venus: Allow one
+ IOMMU entry
+X-Mailer: aerc 0.17.0
+References: <20240412-sc7280-venus-bindings-v2-1-48ca8c2ec532@fairphone.com>
+ <D1Q6CMZM78VI.ABYGRRV5E61B@fairphone.com>
+In-Reply-To: <D1Q6CMZM78VI.ABYGRRV5E61B@fairphone.com>
 
-> The SY7802 is a current-regulated charge pump which can regulate two
-> current levels for Flash and Torch modes.
+On Mon Jun 3, 2024 at 8:39 AM CEST, Luca Weiss wrote:
+> On Fri Apr 12, 2024 at 4:19 PM CEST, Luca Weiss wrote:
+> > Some SC7280-based boards crash when providing the "secure_non_pixel"
+> > context bank, so allow only one iommu in the bindings also.
 >
-> It is a high-current synchronous boost converter with 2-channel high
-> side current sources. Each channel is able to deliver 900mA current.
+> Hi all,
+>
+> This patch is still pending and not having it causes dt validation
+> warnings for some qcom-sc7280 boards.
 
-Would you like to improve such a change description with imperative wordin=
-gs?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.10-rc3#n94
+Hi Rob,
 
+Could you please pick up this patch? Mauro seems to ignore this patch
+either on purpose or by accident and I'd like for this dtbs_check
+failure to finally be fixed.
 
-=E2=80=A6
-> +++ b/drivers/leds/flash/leds-sy7802.c
-> @@ -0,0 +1,542 @@
-=E2=80=A6
-> +static int sy7802_strobe_get(struct led_classdev_flash *fl_cdev, bool *=
-state)
-> +{
-=E2=80=A6
-> +	mutex_lock(&chip->mutex);
-> +	*state =3D !!(chip->fled_strobe_used & BIT(led->led_id));
-> +	mutex_unlock(&chip->mutex);
-> +
-> +	return 0;
-> +}
-=E2=80=A6
+Regards
+Luca
 
-Would you become interested to apply a statement like =E2=80=9Cguard(mutex=
-)(&chip->mutex);=E2=80=9D?
-https://elixir.bootlin.com/linux/v6.10-rc3/source/include/linux/mutex.h#L1=
-96
+>
+> Regards
+> Luca
+>
+> >
+> > Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> > Reference:
+> > https://lore.kernel.org/linux-arm-msm/20231201-sc7280-venus-pas-v3-2-bc=
+132dc5fc30@fairphone.com/
+> > ---
+> > Changes in v2:
+> > - Pick up tags
+> > - Otherwise just a resend, v1 was sent in January
+> > - Link to v1: https://lore.kernel.org/r/20240129-sc7280-venus-bindings-=
+v1-1-20a9ba194c60@fairphone.com
+> > ---
+> >  Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/media/qcom,sc7280-venus.=
+yaml b/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
+> > index 8f9b6433aeb8..10c334e6b3dc 100644
+> > --- a/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
+> > +++ b/Documentation/devicetree/bindings/media/qcom,sc7280-venus.yaml
+> > @@ -43,6 +43,7 @@ properties:
+> >        - const: vcodec_bus
+> > =20
+> >    iommus:
+> > +    minItems: 1
+> >      maxItems: 2
+> > =20
+> >    interconnects:
+> >
+> > ---
+> > base-commit: 9ed46da14b9b9b2ad4edb3b0c545b6dbe5c00d39
+> > change-id: 20240129-sc7280-venus-bindings-6e62a99620de
+> >
+> > Best regards,
 
-Regards,
-Markus
