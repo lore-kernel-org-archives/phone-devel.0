@@ -1,41 +1,59 @@
-Received: from mout.web.de (mout.web.de [217.72.192.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06E0191461;
-	Mon, 17 Jun 2024 11:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E016B188CD9
+	for <phone-devel@vger.kernel.org>; Mon, 17 Jun 2024 19:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718624135; cv=none; b=mseqWyiOCD/Q7IQIXQ/H3bSxpX4ajf8Eqo85j0ZBaKauQh6dh9GqHbdR6TsPmebECp8k+KqyOR0n5Aq34DYHKYiue+8qWLRXe/pGfBUMFD12s2xpzy3HhJg4Vv8R6EOIy3pFMmbbCzH2CXTgfyKq0OsxtfMChV+gz+PG5TdC938=
+	t=1718654314; cv=none; b=Eqs0oE0WcyjJPD2dB65iOijf/+fKBRkyFqT4d5sK45x2Po9tg1e9deX92NInLD75RlnMRIyMduHz2wgFxJqz3m/KufL9VjrDDmzk90FY3Np5acAxJR7gqBSgWKCKL1BQfRgDa1MXFPXz6NcUB0jNrjhZHVZx4n2oksgAJt7oF5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718624135; c=relaxed/simple;
-	bh=XxliRVqdpWsKsqcEu3t/96tFWK1GpkWqJETGL+PV4nc=;
+	s=arc-20240116; t=1718654314; c=relaxed/simple;
+	bh=bZpxC50zZBluEA/iujXmLqmlU7SsoVluLarJkO9NX2c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m0JU8WnixFmls3n9oYBuTmkvztI9k3cBdNC9DXnd4BsmvBVYbn3mtFQE3cyOAgWwY4cIK4jrbdQPAWkG5IAl8RYIWxT3pUoNkggNBzn1UfFHhP1wQAQgh9yL8U/r8CGjtqCCfZQIjZm7KKZbUcqA1GNewQoZ6GNhh2jVOqxrKnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=EgmUKSMl; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+	 In-Reply-To:Content-Type; b=EOpx+btFIRsbI/lxFm018q+zKnoywRsQYwpNb5MO6l49+TJvmy9xnbIhNiRQ0DHJYs59cY+hwx91NcKt+G3Bdv7EFMIh7sbRClb6ZAN8/ig5k2WAH9Rb7iY9MoAxMQ6EXtRsSPE8a0l4fwjLlBAVFba3BU7shJroVfgryZ4OjdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=u/wAAKi8; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="EgmUKSMl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1718624099; x=1719228899; i=markus.elfring@web.de;
-	bh=XxliRVqdpWsKsqcEu3t/96tFWK1GpkWqJETGL+PV4nc=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=EgmUKSMlpamrvnKIHEWFIOChO9V3zg3bFL17/I0VIZy2SQqHwf22ACzybQG6/coz
-	 DuWoO7nnPdhx2tfviapjmCsvtLeBeMbO6iKg7p7PRvsPuX0S0mXgdMw6KojEFNuaM
-	 9ojeq3wcFKgNIhxSRrnQeJRy77u4GiarVqCPnq1eXlNd3UC+7sQnxlwcLIlwov68o
-	 NCF9lEUjRI714mJ21j/3hPf/3wsfOHGxyTeXlvoxlbil567R/q2p9/LhbXIReXCTZ
-	 efL3ctTcY6BvKdFRrsFxH0ztyVtT0wj0FT9C7BzH4jANn9onze9zY+H8PMAD3hvTy
-	 XACrDO9kCCnSfIG3hg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1M59jC-1sKGZD1XhU-00GfTD; Mon, 17
- Jun 2024 13:34:59 +0200
-Message-ID: <cc44d8e8-a7fc-48d2-a497-956dde22ff46@web.de>
-Date: Mon, 17 Jun 2024 13:34:57 +0200
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="u/wAAKi8"
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-52c32d934c2so5180248e87.2
+        for <phone-devel@vger.kernel.org>; Mon, 17 Jun 2024 12:58:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718654311; x=1719259111; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dt8gOXtAJsyKtG9aDgL57FXHSeZZBpHcJmuelSwD1xE=;
+        b=u/wAAKi8nAnCDLTGVmCri/G7HsBxrBNFdXRKRMq4Pi6x5i18Il4OY27HwgEIHu8IT8
+         cOyFvWsMqV3HPTrkPbWVbbsimbl5BLwfrb5U8lLV8+sm3DoULBF9c70Squsa8/YUFEUR
+         p3KovDYYtVY/gRwQI/3n8Thstd8JKMqM49hGtU0wY7ByNAhi/G1Zc8aFJvSBwIx4Vabl
+         RfwESzYT1MXtO2f7RsmQ69Q3CbBwMUDQmQS9Hfxq7lKWMIpIj1u3Hw8TnhYu1yvJEpab
+         qvUhuDFpV5MaeUQrPoYtu29TuuzM/oEJ/KhGZw7xmGtytJJA7JxkzgMQy1AXasGGd6IS
+         fEPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718654311; x=1719259111;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dt8gOXtAJsyKtG9aDgL57FXHSeZZBpHcJmuelSwD1xE=;
+        b=I3ddqdhuJJiPtEgT7HhGUpBOhQ252lYOQXSo1+9s9TvVzLLAOhUtVDaDxwWcvG+KMD
+         UNT004OTfUE54D9uYSw8woL7dPZBhZzXuVeQNEIUxM3P8ba+CI5rr0l3IXaBs2M5A4tp
+         ldyTK775uLB4jenQCv9Q0h5w9X4BkO08qm+KJmZUzIAGtqAzmyUY4qJZQc9QiV0/G/9k
+         eArwhBEnN1hMcMFwKudlflWc+1qMdxi6Y32tN4aexZ8Um6CpOaj0/9UA/VzFKWHPSH8k
+         +Xzl6O+qoxXT9EsrI5KFetcGI9Q1HM97wdmOQKBraEVNDgs7R3E/bNRvaT9VCF6LliR1
+         06eQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXWiXaPH9U3ZUQZurAB6TW8Xl98CEDqG2hkJsUAI2guKZZ1OX/sBKrLsRA0Gs8hfzZ9+/UWPujqAmkiRgBJIUhAbfe3LSboc0yDing=
+X-Gm-Message-State: AOJu0YwjzI5/z/wCWF9SdIS0wiGiUcPDmpbneMlzpTdxi+oHhAu4QW8u
+	COmwtYu+d/ebPY5kMEbFGB9kdnVCiaTWrENkgUe0jUMBzonJLSXCcIr1/sQ9kGg=
+X-Google-Smtp-Source: AGHT+IGgD7APk54YXCS3zR67bSlvd9lT2U7OUsokuRECk7zCt1gIA8J1/z9B6AcqGUIbtP5nCBnDGQ==
+X-Received: by 2002:a05:6512:536:b0:52b:c2eb:2d with SMTP id 2adb3069b0e04-52cc628b041mr50934e87.39.1718654311052;
+        Mon, 17 Jun 2024 12:58:31 -0700 (PDT)
+Received: from ?IPV6:2a00:f41:cb2:a9df:5ff5:5bcf:651f:66f5? ([2a00:f41:cb2:a9df:5ff5:5bcf:651f:66f5])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca2872749sm1323169e87.164.2024.06.17.12.58.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jun 2024 12:58:30 -0700 (PDT)
+Message-ID: <55685d92-8f5a-4b23-a7a0-7dcdea5baaea@linaro.org>
+Date: Mon, 17 Jun 2024 21:58:28 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -43,60 +61,44 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v4 2/3] leds: sy7802: Add support for Silergy SY7802 flash LED
- controller
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Pavel Machek <pavel@ucw.cz>, =?UTF-8?Q?Andr=C3=A9_Apitzsch?=
- <git@apitzsch.eu>, linux-leds@vger.kernel.org, phone-devel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht, Bjorn Andersson <andersson@kernel.org>
-Cc: Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
- Conor Dooley <conor+dt@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, Kees Cook <kees@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Lee Jones <lee@kernel.org>, Trilok Soni <quic_tsoni@quicinc.com>,
- Peter Zijlstra <peterz@infradead.org>, LKML <linux-kernel@vger.kernel.org>
-References: <20240616-sy7802-v4-2-789994180e05@apitzsch.eu>
- <5701d3e7-f67b-4189-a5fd-8a992b9155fb@web.de> <ZnAHsRn3N4mwPL7q@duo.ucw.cz>
- <e9fd75aa-3bd8-4227-ac07-fc762e558ea6@web.de>
- <nxrodsfowjfn64dn6idoi56hzrhdszxylmw6kdhgxbt53akamf@aavvblj64syf>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <nxrodsfowjfn64dn6idoi56hzrhdszxylmw6kdhgxbt53akamf@aavvblj64syf>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:jsuSdlwXKRSHY2XfCETjDQgmpLkmqyIzK7uZQAfoSU6PSrXsyD7
- ZStOs2kQKAx19AgYuXCuvRLVJVDT3QvV6vPY6cqeH3HLFsCUloHBOw2mhuQd4DMku2tLwzf
- qgyQyL3yAmmgZK3+hM4avQxih240BvmGLs59Q/O3+/TXITUzCU6wAB2IYVKWE3p+hQavC6M
- bO6xPXQp65lPVH9ZcIivQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:dLTQFaCvbF8=;P4D+4gPaH91H11DXfXST39sHCtE
- jYs3aV0U8NRlz9CF1fdHOksVa6wtSpnwpVK66dEq7ou4lM2Tjq+1VTy75DdJCxiAgDJxTOXtw
- 6mbhPGMTl8AJHbCFayNzMC4SWqyam9rbWbbTn3ACqG/44Ec26BZfC2vkS1mReRTSjTuI+xH6b
- ZsH2FSKLzGAyNyLzqc7gxmwpQHgLNLvFaimR0vuUuJNSU+FAyeryFJFl5gkoEUomEXwgY1SwV
- /3Gbo3DVsd04khhqzqrg7l9Pqkae7ynQDpbU3S9ovm9siL9UiMTd1l3R/5naApAAvS59vd1Fd
- RLT2g1uTkajDx7AMwYMhyIT0GMx6SAXtLc9IhpKjJsrPep3J3fehNZPpOwRvmqKy+D/gJ9j5Z
- xc0NpIcOul0RkO8zH7o6v9WVDhBOZryYggdVUcgo3Hz98oSyRo0HzUCwCEGnFA9jvGyORbxLZ
- agp8xZBxVElvUavd/VoMw2o2GlzQq78BIUyviGB4OxPpKo5uIK8buLO9IM8R3EqIi1vB02a2c
- 9p5t2cdT6LblKwYNZpTL+0EsGeP6v/gsuZ4HDoJf6O3Kg4D1aA8y0FreiI/Se8Pm5Nkt94khu
- 3mCX2GvfppT7aZCq9ZqRU3UwKay4imb2i2rT/BK1nediA7cVlr1l2k22j++XZr9n6hWxw5qfD
- HNhW0F0o/ScPw+VmcFp5MgducJADb3NT7D0AoEvIYo2x6WUbNrbOH9KQ4cw+sg1HXoU9R2LUO
- UkBbREsE0nempk7AwBxIqISoLbhm9VZzaYNBZ2ob7wO/L7LDOl1BSieb+zACki4gOBb0NdEZx
- WYJ8F2OJPlXeFema846yhE0zpD784JGFtxJJKs0CMA7dU=
+Subject: Re: [PATCH] ARM: dts: qcom: msm8926-motorola-peregrine: Add
+ accelerometer, magnetometer, regulator
+To: git@apitzsch.eu, Bjorn Andersson <andersson@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+References: <20240616-peregrine-v1-1-85d14ae1a11a@apitzsch.eu>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240616-peregrine-v1-1-85d14ae1a11a@apitzsch.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
->> Various source code places can be updated also according to referenced
->> programming interfaces.
->> https://elixir.bootlin.com/linux/v6.10-rc4/source/include/linux/cleanup=
-.h#L8
->>
->> Will corresponding collateral evolution become better supported?
->
-> Plesae stop this. cleanup.h might be a nice thing, but it should not be
-> used to make code less obvious or worse.
 
-These APIs were added to improve several software components,
-weren't they?
 
-Regards,
-Markus
+On 6/16/24 16:15, André Apitzsch via B4 Relay wrote:
+> From: André Apitzsch <git@apitzsch.eu>
+> 
+> Add the accelerometer, magnetometer and regulator that are present on
+> the Motorola Moto G 4G (2013) device.
+> 
+> While at it, update framebuffer supplies and temperature sensor.
+
+That's a bit too much for a "while at it" ;) Please create separate commits
+
+[...]
+
+>   	sensor@48 {
+>   		compatible = "ti,tmp108";
+>   		reg = <0x48>;
+> +		interrupts-extended = <&tlmm 13 IRQ_TYPE_LEVEL_LOW>;
+> +		pinctrl-0 = <&temp_alert_default>;
+> +		pinctrl-names = "default";
+> +		#thermal-sensor-cells = <0>;
+
+FWIW the current driver doesn't seem to care about interrupts, perhaps
+you could extend it
+
+
+Konrad
