@@ -1,130 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F2A18F2E1;
-	Mon, 17 Jun 2024 21:23:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C441482E6
+	for <phone-devel@vger.kernel.org>; Tue, 18 Jun 2024 11:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718659398; cv=none; b=Q8Rqm0jPau4zyu9lvQb0gkspcVWHM3/kECWg5UdgxTuA8q87rvYK6HL4il/ciKymBYGetIn0Te0qeIeKDD60jspB765TcRuubgFmFktRmdywvMhTBNVFHOVHjj3l0yRc/alrX5SAniyNQOUmrcsh+Tn6K0obRG2cXMqU/Ol4fBQ=
+	t=1718711643; cv=none; b=iETYqHuwo0OhJYuV4DtlgIicJ0Bd6YLP7mH/XL+xUIuhYWED7nUGBXx2qeLUMnbxv2KQJbC7kl+f+Y/6Wz8ggIrZIiaHfa3GONQcwqJsQ6t8ffU7zr3rVzgGX6BxD17g6C78LtzLJgtv4j/K+exv2p4VFsgtcIcyPsYDWmWi4Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718659398; c=relaxed/simple;
-	bh=J+DZjuWpLIH16UoIYz36wskMfoII3XzTqDLgxLg1M2E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eRlehKFYaY36wXVXrHNLcqWKnbptwd8cvoXE1X+Y3dc/xfmOyWxRgvdb1kE2ey28pXzTe6qfN8cJt8QxrMVisvlsyZDveq1ti3XBhla2qFabez7T9D2SrRDJZLYUmerzF4NSrM4G8eoMT71E2yRZm+Jmpn2o4wnQTFLaMpe3Gt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TMeDv847; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718711643; c=relaxed/simple;
+	bh=B5uTvNOzDIfP+9r55UmyGlGOEn/VaHyTyNKLYbpEPY4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gg7rbkbygakKMJ8YsArp71t7UQDKHTUZxbQKJBTkp7TlssfKp8ULdDCiRLZNeWD+7GpxbyY50CPf5rT6T5XmiPeWdlrP2CEWQVEcGoh+fFy7sbW9v5YIzWXxQ5mWgQEQrK0oDmtvDATCHdIglotciPOKzJSI55/FBYOPhqTqteo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rqbhC4hf; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TMeDv847"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 399F3C4AF1A;
-	Mon, 17 Jun 2024 21:23:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718659398;
-	bh=J+DZjuWpLIH16UoIYz36wskMfoII3XzTqDLgxLg1M2E=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=TMeDv847xJm6MBqVLE/ESfBQq4Gx4jSlnbSRyzTVYmZJX2DHbp8pAAwCUPn/UBH/B
-	 AOhUEOMm9+ORmRd/YzyC07N7QrzYfi5P4+dhWnUlt38VFFltGVrmOArJ3pi1u0nVrX
-	 RArjER1BUJilEJVpb5EvBU3ouGHfXcQXW4D5jeDSRjMSQ4WJ31Uu32R1XHxFfpplQD
-	 EoXxblL8jWkK3Z575XuopL++WlHwLkgACFZXyXYDLsOuUboJACF0Z+1YbXyP2SNMx3
-	 BpTgpwBS/HmUvcKgwyUDNTf/y19P8Ih8vfh49yRaw+eDJZ7DXH1Xaw1sTg2Xl4TkcZ
-	 3kOL1TfPtCw3Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A490C2BB85;
-	Mon, 17 Jun 2024 21:23:18 +0000 (UTC)
-From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
-Date: Mon, 17 Jun 2024 23:22:29 +0200
-Subject: [PATCH v2 3/3] ARM: dts: qcom: msm8926-motorola-peregrine: Add
- framebuffer supplies
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rqbhC4hf"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52cc14815c3so1185345e87.0
+        for <phone-devel@vger.kernel.org>; Tue, 18 Jun 2024 04:54:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718711639; x=1719316439; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tb4Y+tgvYIekmwgd2j/b166JURC40YeXenLXo1ek4Io=;
+        b=rqbhC4hfUJHA6iziWG/S/IhE5ziSLaAf5hAku1dnt+ZTzzkKipD05SyM+zLSWcBO1E
+         dHNN/gryVT4N0RncWGAwpHz/Ci+HJLx3ItkVBVgoSdVgB9FD8MbFRf1dj/fjH5GXCTk0
+         OJtzJdHSpfJrgiAv7Px7w+86E3MNuI+oTHmqT9RwhMX/BWu9UfSswNIKP0IAwF5O5wNE
+         eZ8HD1H5d35k49t0NcTP5Rzp7YuQDhyAN27bz8l9TjymkXFseANlfZ9Hhzpj6lI30LtB
+         QrKyyqQGbS3n7hWSeu+MW331f3Kph1KWnoAD3pRHvS9OFckgHmSDnpdm0HbtsbAaQDB5
+         AtWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718711639; x=1719316439;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tb4Y+tgvYIekmwgd2j/b166JURC40YeXenLXo1ek4Io=;
+        b=BnrsCW6ghTPwj5iOAZa4b5O542eLynkuj/pA/9e4tyK/u0ofaqTQgDbalRMz9sXwcw
+         bslHSr59vMsP/GAKDgv71HOw+8jEfY+yk601jUgpOyma+vsvQiKLNPYCkzO5Fjtn44wf
+         sLHULq76stO7I0thOUXSwIT/6+NlIsz8ZCuadBwxYVs09oLt0iPQMhS3qwUXaVmNapvt
+         NumBEWvGTBuwqGc1O6033Uei3GfvOb72P6NEUokFLVmZPh2p0II2rj6tLc7quHQHRpeC
+         400ZkhyLOa2pogdghHeQkwH37PBKKcBeMXTSsURm9BVMRwhs+wt2jmJzIXvUVT0w/Jlt
+         55zQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWF0oP1j904178SRpJT88ywEMS01AAxGXIpXv8PllFg0Y/vwZcv0mDXK4xZnF4gUDYbMgWZl4pEhdBHWY/s/f5VrcPjYHDtiiNHwuI=
+X-Gm-Message-State: AOJu0YzJw46oxvnJ1cGKzlw5Z9zVvPZ7oRT5CcuAJWFwwq7kQK0QtGRJ
+	WI1SYTo9XQXsyP5JkpbWKVZl6/96ELybogErYvavGfTvNo+BJOD5joodtrsDxYQ=
+X-Google-Smtp-Source: AGHT+IEm2lPBaiFzDJTF0bUUyOHM9kY5vHY1/j588hgq3qPc6kUxcMPDuRk4JmYqiTnOUP6eqQBGtA==
+X-Received: by 2002:a05:6512:3995:b0:52c:a809:62ef with SMTP id 2adb3069b0e04-52ca809636fmr8462175e87.0.1718711638986;
+        Tue, 18 Jun 2024 04:53:58 -0700 (PDT)
+Received: from ?IPV6:2a00:f41:9028:9df3:4fb7:492b:2c94:7283? ([2a00:f41:9028:9df3:4fb7:492b:2c94:7283])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca28880d5sm1488372e87.254.2024.06.18.04.53.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Jun 2024 04:53:58 -0700 (PDT)
+Message-ID: <5d415130-f744-49c3-be8f-4d2b32618544@linaro.org>
+Date: Tue, 18 Jun 2024 13:53:55 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240617-peregrine-v2-3-c8835d2da7af@apitzsch.eu>
-References: <20240617-peregrine-v2-0-c8835d2da7af@apitzsch.eu>
-In-Reply-To: <20240617-peregrine-v2-0-c8835d2da7af@apitzsch.eu>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] ARM: dts: qcom: msm8926-motorola-peregrine: Add
+ accelerometer, magnetometer, regulator
+To: git@apitzsch.eu, Bjorn Andersson <andersson@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
- ~postmarketos/upstreaming@lists.sr.ht, 
- =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1718659400; l=1664;
- i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
- bh=AVdHAcobzRIw/Gjph8HbL/rVZTR3nwbn7PLGoz3cDhU=;
- b=9k+Mh7PCXSDNtEdLjjom8Dts6wyGgQpYZ7F8MIt3DlGAej3ybDYviyz2Y6i5tyzG+6A9M1ele
- LNNiBv6ieMzBYFFlr3FKXE3IBbdXyJSzs0pGFN9qhaVXtzr1BYT79bD
-X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
- pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
-X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
- auth_id=142
-X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
-Reply-To: git@apitzsch.eu
-
-From: André Apitzsch <git@apitzsch.eu>
-
-Add regulators used by the framebuffer of Motorola Moto G 4G (2013).
-
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
----
- .../dts/qcom/qcom-msm8926-motorola-peregrine.dts   | 24 ++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts b/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts
-index cff9415baa46..376a33125941 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8926-motorola-peregrine.dts
-@@ -29,6 +29,10 @@ framebuffer0: framebuffer@3200000 {
- 			height = <1280>;
- 			stride = <(720 * 3)>;
- 			format = "r8g8b8";
-+			vsp-supply = <&reg_lcd_pos>;
-+			vsn-supply = <&reg_lcd_neg>;
-+			vdd-supply = <&pm8226_l28>;
-+			vddio-supply = <&vddio_disp_vreg>;
- 		};
- 	};
- 
-@@ -51,6 +55,18 @@ key-volume-up {
- 		};
- 	};
- 
-+	vddio_disp_vreg: regulator-vddio-disp {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vddio_disp";
-+		gpio = <&tlmm 34 GPIO_ACTIVE_HIGH>;
-+		startup-delay-us = <300>;
-+		enable-active-high;
-+		regulator-boot-on;
-+		vin-supply = <&pm8226_l8>;
-+		pinctrl-0 = <&disp_vddio_default>;
-+		pinctrl-names = "default";
-+	};
-+
- 	reserved-memory {
- 		#address-cells = <1>;
- 		#size-cells = <1>;
-@@ -342,6 +358,14 @@ accel_int_default: accel-int-default-state {
- 		output-disable;
- 	};
- 
-+	disp_vddio_default: disp-vddio-default-state {
-+		pins = "gpio34";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+		output-high;
-+	};
-+
- 	mag_int_default: mag-int-default-state {
- 		pins = "gpio38";
- 		function = "gpio";
-
--- 
-2.45.2
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+References: <20240617-peregrine-v2-0-c8835d2da7af@apitzsch.eu>
+ <20240617-peregrine-v2-1-c8835d2da7af@apitzsch.eu>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240617-peregrine-v2-1-c8835d2da7af@apitzsch.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
+
+On 6/17/24 23:22, André Apitzsch via B4 Relay wrote:
+> From: André Apitzsch <git@apitzsch.eu>
+> 
+> Add the accelerometer, magnetometer and regulator that are present on
+> the Motorola Moto G 4G (2013) device.
+> 
+> Signed-off-by: André Apitzsch <git@apitzsch.eu>
+> ---
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+
+Konrad
