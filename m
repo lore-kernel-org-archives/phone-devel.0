@@ -1,110 +1,336 @@
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4581514EE;
-	Tue, 18 Jun 2024 14:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8F81EB2C
+	for <phone-devel@vger.kernel.org>; Tue, 18 Jun 2024 15:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718720204; cv=none; b=spE5R/bsxJQUwP7nKqVvTFe5mic4yz+QKV4pbmzvzYt6ZY485RRWLjBzeVvuLIa4lYEbLoqOth3poExDH5LDrsQc/ld0q7pCmDX7XaDiRBgK3sq4Z35eCy7RxKMzRkKnoDBdof6J0jAR2apyuk+YK7eXC4gdwBPWrlJXhenTvkw=
+	t=1718723155; cv=none; b=Pb3xN1pa8UqWVw2ufTZg5RhCz1YqhMEtfqlzq7YxZf+Yndj6jqprAgSqSDY98yC9AudmYBVKo9ivS6kE0ugwj3SkfJHFwR/MBJ0zAYB9LqEBSaSTH35BAO7xUxQB2jt+0H/VcaAp3yFjoPseyifS96DhcBGs1Rk/SNBqrbpMgxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718720204; c=relaxed/simple;
-	bh=Om4iC8WD2JaG4NL4a3+9I68t3tIKpeGHX/9WOTfeeHU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IpjIIjLzR1Mv87j8pV0/HOm0UPL4vXaukfGlM/jfenS8ONaiymMFHhptd1NaEWtak+Zx1t3sCDDq5Xq3xPLMD5XXUCeVi3SSZo5tDeL6t1oEVYjXwgrCfEjMyq4FesYJPwJNWLg51Y5Gpe9fQN3s5XIwQju12CVpkW43p7w1qwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bbxyrMmM; arc=none smtp.client-ip=209.85.161.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1718723155; c=relaxed/simple;
+	bh=xD6H5N5EA3hm3uG1dpUoMdkeBOh3n5ZJIZFUKP8qA+o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rPPI8sTBygECtUbEXAAZ79NoXUnfBAzsJBHnIzEeldWgg/mD3mTOMxga+cFkSjNlx9G9C4FyZlfuKy+LZ/OSu0tzh21/UMqdKXG1tFie8T0RWwjdbVhQIqW2ry7ypt8gklvUEaaJBI4dHWKWhLIy4h04TaWYjQaPQOFubMS0PNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org; spf=pass smtp.mailfrom=postmarketos.org; dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b=FuDQ+uBK; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=postmarketos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=postmarketos.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bbxyrMmM"
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5c1996a197fso689506eaf.0;
-        Tue, 18 Jun 2024 07:16:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718720202; x=1719325002; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Om4iC8WD2JaG4NL4a3+9I68t3tIKpeGHX/9WOTfeeHU=;
-        b=bbxyrMmMzubrCsARUdiK5w8f3pelzV8WXRbWKWyAF/woViyX9qOokkp9EgiTLmm8lZ
-         7p+c5WF5EXbmLc9SC7bLu56uXDU+b/Y3yv/6urya6pdcIX63fDmZz5yhNgs0FJk9czUd
-         dBhcZTJv3wqj82ppkaaRflOmOJ8Qi4MOvuGk6818Y/R6WaGsILDCPI+rgRZWDyIMrMDu
-         L25R9bFzJisFKQUbpebtQe4Fqy42O1SqOS6BslIoMXFob4/BLO3SWenlAg27Y2el2hBU
-         ZDm+ob8FeQUA1jOag0rPOwQp4Dy6lY9hBYjblFp/H9hP97B6/Ayiiiyo7sQ8JM+U81nn
-         E+Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718720202; x=1719325002;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Om4iC8WD2JaG4NL4a3+9I68t3tIKpeGHX/9WOTfeeHU=;
-        b=aBeOljCLbllDWfHOZdko6RW5F30NuwqpR+eTBc+OWvcDOObYQdFBcl3U4d3/nf8r7H
-         Qzds0zgYSy9AfznUmBHZF/FANnvGEp3qTjs08abrdBmmEM94PUmYnmnTtIOyneDxr5tO
-         yid/snpCG0Q/NEulW9A9C9/Q20uQqsO1v9cNnhlftus2pNHVn/qRRGzvFWZoL7N4b6is
-         c/XTgJN5KqNUTuUEOFYwL3ddGH4oNnEuZneF/Z90rG0/uO5d35OrbKR8FT95yLhnsSkJ
-         YdE6p/FAccKgom54iPmr48Fy3yXHlMizgXrUfcXrTsKvfnccsUV8vDx08TFM1d1fEIxh
-         vmbA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUJMUwALnNHqCj8yh6Jj44A50K8Dh57dv8zFRNXFZ99k/ITXnldmTzcGdtA1Q3jOwVJBKCT+rdJsHDN5pB/s83F0G7rN1cXgRHllUUSMIWYE3H2LbPwURkE1gVlX9vuGzEc2vhZsBCfcfOkTO3EnIeij6/b2nptxadxHQcaSpZsptxulpY0VF8qD8KIO+Uv/ukWeSY7raWlv3mWbwJhy9MH7Y1Xu02Ghec9ysRGk73pIrRt4r31ydCTaBFY5IcxG7c4xdhHwQkXdjooiXpj+3zurAEAMbeRXsYVZ94lK3L9qQJtAiAX/JflNWGnCvEuQh8LzPBauWtYppoGOCxVzK99W26xgiexKetF2kka3H9VqtpVtsSfQpGyUIjUEFlR+ymsZpvmyf7yDd0Epp9EzvVqxMnvUI7qETfNK0r1fs03RiquQ1j1EwXO3CMdet4kqY=
-X-Gm-Message-State: AOJu0YzqNK+TlOlC5zg32m8jfK8ql0e1F5oKtcKxYFLUark15dJuP05l
-	2MT2E42xWkPA54RtIYrpbo7DKlJhQAl8tjBwEx3ni8DcQ86u+jBttRLKxuMMZ4ERfZNXxmdoW2W
-	Mzthbb8QaLHyacDRkyC9Axut5KzQ=
-X-Google-Smtp-Source: AGHT+IFVxJEPFbT79HYd7zoJLAxyrPm1gzxY90KGBgQZvvizvrURzGFMbP7julYl6JpqzUKt2q+uL/xgIcBmlrzc4oI=
-X-Received: by 2002:a05:6870:b525:b0:259:ae64:9231 with SMTP id
- 586e51a60fabf-259ae6493e7mr583749fac.15.1718720201642; Tue, 18 Jun 2024
- 07:16:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=postmarketos.org header.i=@postmarketos.org header.b="FuDQ+uBK"
+X-Envelope-To: luca.weiss@fairphone.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=postmarketos.org;
+	s=key1; t=1718723150;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GbRspr//u1/FN9+1Fqd4DR9tBkA4YUmT0KQo9IetTDM=;
+	b=FuDQ+uBKOq/PfM+gGEVu45x3kJ2GXcYKk9LftMmPIUfxvhLL0Li686kQMIl2ucInAD8axa
+	MkrJaT9VUMo6YvgKH8J8Sg6hBpvtRV8P/kDCdk/sdYg6+FSS3gzHt++fH+4bH6HMQxplb0
+	WmAJlw2v1o9ymqUa5XSUCbuQ6m00raTW0R70BrOej2ArUmdILBkvsp/Scxldk9/UoscUQO
+	yrlwk5WklPG5D5+7y0I9naZxpuksd2tWSI+VSJC9dBC6BVhoM3Cgot6nVx1hqCLjZcXuRB
+	aQfccVtbrtDMslRsvMKqJqdshnSdba3XP8CICjCewrHEyN5Jx9tlOQfOScYvKQ==
+X-Envelope-To: andersson@kernel.org
+X-Envelope-To: konrad.dybcio@linaro.org
+X-Envelope-To: robh@kernel.org
+X-Envelope-To: krzk+dt@kernel.org
+X-Envelope-To: conor+dt@kernel.org
+X-Envelope-To: amartinz@shiftphones.com
+X-Envelope-To: ~postmarketos/upstreaming@lists.sr.ht
+X-Envelope-To: phone-devel@vger.kernel.org
+X-Envelope-To: linux-arm-msm@vger.kernel.org
+X-Envelope-To: devicetree@vger.kernel.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+Message-ID: <75c70d8d-500b-4707-a21a-a138742516fc@postmarketos.org>
+Date: Tue, 18 Jun 2024 17:05:46 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240618-starqltechn_integration_upstream-v3-0-e3f6662017ac@gmail.com>
- <20240618-starqltechn_integration_upstream-v3-22-e3f6662017ac@gmail.com> <e6a81932-0609-4476-82b6-43ee30b7de43@linaro.org>
-In-Reply-To: <e6a81932-0609-4476-82b6-43ee30b7de43@linaro.org>
-From: Dzmitry Sankouski <dsankouski@gmail.com>
-Date: Tue, 18 Jun 2024 17:16:29 +0300
-Message-ID: <CABTCjFAKFMQJXdwELZitCKpZQn+irfrHW6uOpHzwvFv=T7zKDA@mail.gmail.com>
-Subject: Re: [PATCH v3 22/23] arm64: dts: qcom: starqltechn: fix usb regulator mistake
-To: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: Sebastian Reichel <sre@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
-	Sam Ravnborg <sam@ravnborg.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Pavel Machek <pavel@ucw.cz>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Chanwoo Choi <cw00.choi@samsung.com>, phone-devel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-samsung-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: qcm6490-shift-otter: Name the
+ regulators
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Alexander Martinz <amartinz@shiftphones.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240618-qcm6490-regulator-name-v1-0-69fa05e9f58e@fairphone.com>
+ <20240618-qcm6490-regulator-name-v1-2-69fa05e9f58e@fairphone.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Caleb Connolly <caleb@postmarketos.org>
+In-Reply-To: <20240618-qcm6490-regulator-name-v1-2-69fa05e9f58e@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-=D0=B2=D1=82, 18 =D0=B8=D1=8E=D0=BD. 2024=E2=80=AF=D0=B3. =D0=B2 17:08, Kon=
-rad Dybcio <konrad.dybcio@linaro.org>:
->
->
->
-> On 6/18/24 15:59, Dzmitry Sankouski wrote:
-> > Usb regulator was wrongly pointed to vreg_l1a_0p875.
-> > However, on starqltechn it's powered from vreg_l5a_0p8.
-> >
-> > Fixes: d711b22eee55 ("arm64: dts: qcom: starqltechn: add initial device=
- tree for starqltechn")
-> >
-> > Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
-> > ---
->
-> How did you confirm that?
-Vendor kernel source code:
-https://github.com/klabit87/twrp_android_samsung_kernel_sdm845/blob/e8bb630=
-39008e1704a2f1bde68d39ded9c16ea88/arch/arm64/boot/dts/samsung/sdm845-sec-st=
-arqlte-chnhk-r14_v2.1.dts#L10242
-https://github.com/klabit87/twrp_android_samsung_kernel_sdm845/blob/e8bb630=
-39008e1704a2f1bde68d39ded9c16ea88/arch/arm64/boot/dts/samsung/sdm845-sec-st=
-arqlte-chnhk-r14_v2.1.dts#L23401
->
-> Konrad
+
+
+On 18/06/2024 15:30, Luca Weiss wrote:
+> Without explicitly specifying names for the regulators they are named
+> based on the DeviceTree node name. This results in multiple regulators
+> with the same name, making debug prints and regulator_summary impossible
+> to reason about.
+> 
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+
+Reviewed-by: Caleb Connolly <caleb@postmarketos.org>
+> ---
+>   arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts | 35 ++++++++++++++++++++++++
+>   1 file changed, 35 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
+> index e82938cab953..4667e47a74bc 100644
+> --- a/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
+> +++ b/arch/arm64/boot/dts/qcom/qcm6490-shift-otter.dts
+> @@ -235,46 +235,54 @@ regulators-0 {
+>   		qcom,pmic-id = "b";
+>   
+>   		vreg_s1b: smps1 {
+> +			regulator-name = "vreg_s1b";
+>   			regulator-min-microvolt = <1840000>;
+>   			regulator-max-microvolt = <2040000>;
+>   		};
+>   
+>   		vreg_s7b: smps7 {
+> +			regulator-name = "vreg_s7b";
+>   			regulator-min-microvolt = <535000>;
+>   			regulator-max-microvolt = <1120000>;
+>   		};
+>   
+>   		vreg_s8b: smps8 {
+> +			regulator-name = "vreg_s8b";
+>   			regulator-min-microvolt = <1200000>;
+>   			regulator-max-microvolt = <1500000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_RET>;
+>   		};
+>   
+>   		vreg_l1b: ldo1 {
+> +			regulator-name = "vreg_l1b";
+>   			regulator-min-microvolt = <825000>;
+>   			regulator-max-microvolt = <925000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l2b: ldo2 {
+> +			regulator-name = "vreg_l2b";
+>   			regulator-min-microvolt = <2700000>;
+>   			regulator-max-microvolt = <3544000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l3b: ldo3 {
+> +			regulator-name = "vreg_l3b";
+>   			regulator-min-microvolt = <312000>;
+>   			regulator-max-microvolt = <910000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l6b: ldo6 {
+> +			regulator-name = "vreg_l6b";
+>   			regulator-min-microvolt = <1140000>;
+>   			regulator-max-microvolt = <1260000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l7b: ldo7 {
+> +			regulator-name = "vreg_l7b";
+>   			/* Constrained for UFS VCC, at least until UFS driver scales voltage */
+>   			regulator-min-microvolt = <2952000>;
+>   			regulator-max-microvolt = <2952000>;
+> @@ -282,66 +290,77 @@ vreg_l7b: ldo7 {
+>   		};
+>   
+>   		vreg_l8b: ldo8 {
+> +			regulator-name = "vreg_l8b";
+>   			regulator-min-microvolt = <870000>;
+>   			regulator-max-microvolt = <970000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l9b: ldo9 {
+> +			regulator-name = "vreg_l9b";
+>   			regulator-min-microvolt = <1200000>;
+>   			regulator-max-microvolt = <1304000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l11b: ldo11 {
+> +			regulator-name = "vreg_l11b";
+>   			regulator-min-microvolt = <1504000>;
+>   			regulator-max-microvolt = <2000000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l12b: ldo12 {
+> +			regulator-name = "vreg_l12b";
+>   			regulator-min-microvolt = <751000>;
+>   			regulator-max-microvolt = <824000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l13b: ldo13 {
+> +			regulator-name = "vreg_l13b";
+>   			regulator-min-microvolt = <530000>;
+>   			regulator-max-microvolt = <824000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l14b: ldo14 {
+> +			regulator-name = "vreg_l14b";
+>   			regulator-min-microvolt = <1080000>;
+>   			regulator-max-microvolt = <1304000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l15b: ldo15 {
+> +			regulator-name = "vreg_l15b";
+>   			regulator-min-microvolt = <765000>;
+>   			regulator-max-microvolt = <1020000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l16b: ldo16 {
+> +			regulator-name = "vreg_l16b";
+>   			regulator-min-microvolt = <1100000>;
+>   			regulator-max-microvolt = <1300000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l17b: ldo17 {
+> +			regulator-name = "vreg_l17b";
+>   			regulator-min-microvolt = <1700000>;
+>   			regulator-max-microvolt = <1900000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l18b: ldo18 {
+> +			regulator-name = "vreg_l18b";
+>   			regulator-min-microvolt = <1800000>;
+>   			regulator-max-microvolt = <2000000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l19b: ldo19 {
+> +			regulator-name = "vreg_l19b";
+>   			regulator-min-microvolt = <1800000>;
+>   			regulator-max-microvolt = <2000000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+> @@ -353,96 +372,112 @@ regulators-1 {
+>   		qcom,pmic-id = "c";
+>   
+>   		vreg_s1c: smps1 {
+> +			regulator-name = "vreg_s1c";
+>   			regulator-min-microvolt = <2190000>;
+>   			regulator-max-microvolt = <2210000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_s9c: smps9 {
+> +			regulator-name = "vreg_s9c";
+>   			regulator-min-microvolt = <1010000>;
+>   			regulator-max-microvolt = <1170000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l1c: ldo1 {
+> +			regulator-name = "vreg_l1c";
+>   			regulator-min-microvolt = <1800000>;
+>   			regulator-max-microvolt = <1980000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l2c: ldo2 {
+> +			regulator-name = "vreg_l2c";
+>   			regulator-min-microvolt = <1800000>;
+>   			regulator-max-microvolt = <1950000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l3c: ldo3 {
+> +			regulator-name = "vreg_l3c";
+>   			regulator-min-microvolt = <3000000>;
+>   			regulator-max-microvolt = <3400000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l4c: ldo4 {
+> +			regulator-name = "vreg_l4c";
+>   			regulator-min-microvolt = <1620000>;
+>   			regulator-max-microvolt = <3300000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l5c: ldo5 {
+> +			regulator-name = "vreg_l5c";
+>   			regulator-min-microvolt = <1620000>;
+>   			regulator-max-microvolt = <3300000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l6c: ldo6 {
+> +			regulator-name = "vreg_l6c";
+>   			regulator-min-microvolt = <1650000>;
+>   			regulator-max-microvolt = <3544000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l7c: ldo7 {
+> +			regulator-name = "vreg_l7c";
+>   			regulator-min-microvolt = <3000000>;
+>   			regulator-max-microvolt = <3544000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l8c: ldo8 {
+> +			regulator-name = "vreg_l8c";
+>   			regulator-min-microvolt = <1620000>;
+>   			regulator-max-microvolt = <2000000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l9c: ldo9 {
+> +			regulator-name = "vreg_l9c";
+>   			regulator-min-microvolt = <2700000>;
+>   			regulator-max-microvolt = <3544000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l10c: ldo10 {
+> +			regulator-name = "vreg_l10c";
+>   			regulator-min-microvolt = <720000>;
+>   			regulator-max-microvolt = <1050000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l11c: ldo11 {
+> +			regulator-name = "vreg_l11c";
+>   			regulator-min-microvolt = <2800000>;
+>   			regulator-max-microvolt = <3544000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l12c: ldo12 {
+> +			regulator-name = "vreg_l12c";
+>   			regulator-min-microvolt = <1650000>;
+>   			regulator-max-microvolt = <2000000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_l13c: ldo13 {
+> +			regulator-name = "vreg_l13c";
+>   			regulator-min-microvolt = <2700000>;
+>   			regulator-max-microvolt = <3544000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+>   		};
+>   
+>   		vreg_bob: bob {
+> +			regulator-name = "vreg_bob";
+>   			regulator-min-microvolt = <3008000>;
+>   			regulator-max-microvolt = <3960000>;
+>   			regulator-initial-mode = <RPMH_REGULATOR_MODE_AUTO>;
+> 
