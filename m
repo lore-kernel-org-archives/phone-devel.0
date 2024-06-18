@@ -1,117 +1,116 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749A815E5CA
-	for <phone-devel@vger.kernel.org>; Tue, 18 Jun 2024 18:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8FF15ECDC
+	for <phone-devel@vger.kernel.org>; Tue, 18 Jun 2024 18:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718736662; cv=none; b=jIL6QarlHRagy+p1WquVjTLTLcfyf+AzYsDHA0G/GQyS2Iv2ga1Ovif6uN0XGTHmG05OS5WHdXY7kFglaO0SqlYOS+a70Qp3khXhhHkyDfceH7AQMY+AIgdYc7uEywieqE39eyM75wH8fB1cUfkEwACoXCZB2/rGK3Rw37ulgsw=
+	t=1718736962; cv=none; b=JcFCyJPtc/OCU11pZViHxbL2MZ2qp0suSap40wDnNwYUDpTu+u/yzUOtjiVBGpHPsXpYkPMJ7RzAFnd5pg4hW1v8q2Tc/JX4u71eCx1A6bQ/TJ2dAHr/nu6siuMYfqEKrkqurPWyHz3bH+td8kj8HPiv+aAWyqUW60XTVwuL/es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718736662; c=relaxed/simple;
-	bh=NkHkzXa3IOCwA/bnH2ptoDEs9xXxwvdNDNIjWAKEBgs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V64yMD64NYmAxD4Yv0IRunwZKGn1SWs70UVShSBrd+3mVec4gb+hNNL3D3nlBcube/Egwu29P7fcFtaOsUsB3QPREEwUzx6r+TVmEl7p4bkCthWxjZYWGmjbbvh4AzzyPh3MOglgYy/iKP/PgC15h1GL9H9g9oXveX1Uq8u8ADU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=B1CnBC4l; arc=none smtp.client-ip=209.85.221.45
+	s=arc-20240116; t=1718736962; c=relaxed/simple;
+	bh=GZ8cNz7HxzJEA3fctUo9rko9xv2fpo9Fak4LOEr1XU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WjABf9Epc0ofnNnS8G5i1bct++gvM/q/oshEtSDq7sniBz/Sor9thw7vgaGurG67LjQSUfoHRqy9BI71on+3xT+dDdQoVb+39WRxaaRs5c/oDghUpdt4JSTTTBruXYSeZIgx5nhnDxKxLf0/x9Qw23IY+aF3EeAV4nKZNcEk+CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GeRU7INo; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="B1CnBC4l"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3608e6d14b6so2225781f8f.0
-        for <phone-devel@vger.kernel.org>; Tue, 18 Jun 2024 11:51:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GeRU7INo"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2ec1e5505abso991011fa.1
+        for <phone-devel@vger.kernel.org>; Tue, 18 Jun 2024 11:56:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718736659; x=1719341459; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4NNuHMGJgaTKLiPOtfYsc30dpCZBTyvx+s6PAIySkOw=;
-        b=B1CnBC4lv0uxVhTJbMMGvOs0BWMpAcBioHJ2pf2C56XX4fYvC27/QDtazMbHCar/ti
-         /kjpXDCVZcgA3iRYgkIaDHEEdYrP3oD+smcGm85WdlfdoaLXgUjAGnUrKbLiA8hg5P6R
-         +Jl0IeOt29DLT9UrjIieWa6Z9EgT340zxob6iBgrX7g8cYxCeZ4QXOKeQZVD/eELbsq0
-         cIviw/Buu7wB9o708z3WKx9xr40FCnBMjvzHg3IU8XDIPHZKkI6LU9JZzoWqJvSPaH4D
-         8jdP0z9r1b1nDK32Pwa2ABEl8jjHKR0vycOf9ORWyqU5pJ5KxdY4BOTUNJcH8XxxV2AT
-         OXLQ==
+        d=linaro.org; s=google; t=1718736958; x=1719341758; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YzQHQlKHxgZaRZfXLT1ynkXMYrdCKCTUr57+vqG9rY0=;
+        b=GeRU7INomSFeMNtL8EVDnQzIoAcfn6UJYd5inJkPB/uTioDG3tZY+aL9ES/3jONXhQ
+         M2RgMsLS9L6v9zVuxPtjDo2uwnUvN6acbIaAmgnyL9vMNO9Yv7Ec+a7HSdisdyCo6Hw8
+         ek/T0XJ0VuSDm+O31+Sy7ltYOeJYPFGs7908IhiBw96qdYtaDtMnXVgtDJZxXSy5ssZR
+         ZIrc1jO3QP3Asb1rIDCW5W5MQP629lz19+618mYuqgLBxVRaX7bv5rZpTo45pU8RWqii
+         6C5Sg749OFNPe4BxTDVWKonOE/7HBYSyEbGvfaueQEtwi5ORNuvowcBV7LvQb+39C8Yz
+         TJxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718736659; x=1719341459;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4NNuHMGJgaTKLiPOtfYsc30dpCZBTyvx+s6PAIySkOw=;
-        b=E0EIVjMnlNPqR8XuGYYzev3Lblo/umOUd/lU9FlUPeL4hRgkXlBfd+xMYtN1PxpgFC
-         kf1asgi4waWKTe2bWGTf5xtQjyMDbaReg4Ws3qIDDfg2GBGgy0MYQbWySLhhGeEPr1ox
-         tvs/CkBx1e2REUbV4hzaPj/aUulMfPpHy9FFLRe5TrT4gxDTpMPnS0kNZDvAFC7llci1
-         nb6ywPEnVCoRKPdwcViu7CiYMN6BU9NzwndBjvwjDD26id6UmQAe0ErtcCsUujxReIDV
-         mOwMAnukKNg+Gh9eqi1mpdkeucLLfZQzHaPAsFRZjVMD6pVoYrDB5Mn8/6/+XlkKD8IW
-         2mtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV3468/oBH+NEluE2YHlLf6sv7mrOJbdqCeVahL3SLnfjO38/C0q3GiboBqEUmHZHtC+W+n8TiBvLTkrsdTbygVzoKiA39Ji9Yx5YE=
-X-Gm-Message-State: AOJu0Yz5WtJzyQbViwaMEPuEHBOIFuua6tg5HWyqsjeibOb074KsCuek
-	Q0ChaFw9Ui+ciIqVujwMk9HwFywj4/iX9xHoQ7OS/59xH2BLO/bhai2vnnEIwsU=
-X-Google-Smtp-Source: AGHT+IEQ5dUal8MlXaC9EXR+oZ5/RpW012l22b3onGYiqW8pfuRDA//boP9uvD07m2VUMQn/ucFrhQ==
-X-Received: by 2002:a05:6000:8:b0:35f:e0f:69a6 with SMTP id ffacd0b85a97d-363175b925cmr328399f8f.27.1718736658756;
-        Tue, 18 Jun 2024 11:50:58 -0700 (PDT)
-Received: from ?IPV6:2a00:f41:9028:9df3:5d11:7fa7:8997:f811? ([2a00:f41:9028:9df3:5d11:7fa7:8997:f811])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3607509c8fbsm14732083f8f.43.2024.06.18.11.50.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Jun 2024 11:50:58 -0700 (PDT)
-Message-ID: <ad04e203-4244-4cd3-9c9a-fae002962990@linaro.org>
-Date: Tue, 18 Jun 2024 20:50:52 +0200
+        d=1e100.net; s=20230601; t=1718736958; x=1719341758;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YzQHQlKHxgZaRZfXLT1ynkXMYrdCKCTUr57+vqG9rY0=;
+        b=ALpm1euljn7xjNwwIT0/RAd9KJ5qfrfL6gA2yf2lmllFbYBF0BgbaxLvau/lCrS5wN
+         AocxbEJ6RfeeeKIY48vlStoKFDULSgJcXeRxywRnrS8vui6aJu96QelMh/uOVkk7wgsq
+         2bsXimabXHPuGwLKXUya1TDGFC1J+ToelBhLAWKk/JhSdeGEG36C0fNL4ari79r/sHA8
+         bNzFBHrSmH0m0eePKCo/A6zvFJGYDAbDebx4lB4D3LmO6Z53s2WwreKxDpFWSIWD/h8p
+         IBIyrMXLQdzhkAFW2HN32dTGK1LtGdkz6mhIpEuR0DtMPzOedpZp1xOu4LsG3GWJRyIt
+         UMZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUe+FNobv/N2gP49+tn3+Uhz4GSsZUvb9RIVyKBbWLshunpw2k1Ddx+VX7VTIUkv0K7WWvq7BuCRVhltn2XHV6CIu0fKBMrFkJnk0=
+X-Gm-Message-State: AOJu0YyqEjZWr2nDNa3pjJ2VtSzpEp3GYMO7Yeai/1fXP1Bhne2D+R1f
+	BzXxGXp0+B0nV69ieojEz1RixY7AqvZeHUtqOrgcaFox40ZE85Yt0I+bEMiJJJ8=
+X-Google-Smtp-Source: AGHT+IGC5OJR3gZ0AgVkD1dpAKYbvhHSigXJJVNaqgqzU/pJEsxEJFZWPzPeEkSJ7Z7mUZbZszMNQQ==
+X-Received: by 2002:a2e:9257:0:b0:2eb:fcea:2f18 with SMTP id 38308e7fff4ca-2ec3ce7dfdbmr2013211fa.2.1718736958673;
+        Tue, 18 Jun 2024 11:55:58 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ec07126057sm17344181fa.59.2024.06.18.11.55.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jun 2024 11:55:58 -0700 (PDT)
+Date: Tue, 18 Jun 2024 21:55:56 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Dzmitry Sankouski <dsankouski@gmail.com>, 
+	Sebastian Reichel <sre@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <quic_jesszhan@quicinc.com>, 
+	Sam Ravnborg <sam@ravnborg.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Pavel Machek <pavel@ucw.cz>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	phone-devel@vger.kernel.org, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	devicetree@vger.kernel.org, linux-input@vger.kernel.org, linux-leds@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, linux-samsung-soc@vger.kernel.org
+Subject: Re: [PATCH v3 02/23] gcc-sdm845: Add rates to the GP clocks
+Message-ID: <lwrz4rvn6ogseea5v6j7plc3yi3xnzo76dvrsl3muat3iswlkb@zmwa3xo3xgw4>
+References: <20240618-starqltechn_integration_upstream-v3-0-e3f6662017ac@gmail.com>
+ <20240618-starqltechn_integration_upstream-v3-2-e3f6662017ac@gmail.com>
+ <wnf3mfgdm4p4f5wrxdtlx4wccnizdvohc7iiyu5t22eeb67r57@xun3r73hksrg>
+ <ad04e203-4244-4cd3-9c9a-fae002962990@linaro.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/23] gcc-sdm845: Add rates to the GP clocks
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Dzmitry Sankouski <dsankouski@gmail.com>
-Cc: Sebastian Reichel <sre@kernel.org>, Bjorn Andersson
- <andersson@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
- Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Pavel Machek <pavel@ucw.cz>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, Chanwoo Choi <cw00.choi@samsung.com>,
- phone-devel@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
- devicetree@vger.kernel.org, linux-input@vger.kernel.org,
- linux-leds@vger.kernel.org, linux-pwm@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org
-References: <20240618-starqltechn_integration_upstream-v3-0-e3f6662017ac@gmail.com>
- <20240618-starqltechn_integration_upstream-v3-2-e3f6662017ac@gmail.com>
- <wnf3mfgdm4p4f5wrxdtlx4wccnizdvohc7iiyu5t22eeb67r57@xun3r73hksrg>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <wnf3mfgdm4p4f5wrxdtlx4wccnizdvohc7iiyu5t22eeb67r57@xun3r73hksrg>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad04e203-4244-4cd3-9c9a-fae002962990@linaro.org>
 
-
-
-On 6/18/24 19:50, Dmitry Baryshkov wrote:
-> On Tue, Jun 18, 2024 at 04:59:36PM GMT, Dzmitry Sankouski wrote:
->> sdm845 has "General Purpose" clocks that can be muxed to
->> SoC pins.
->>
->> Those clocks may be used as e.g. PWM sources for external peripherals.
->> Add more frequencies to the table for those clocks so it's possible
->> for arbitrary peripherals to make use of them.
->>
->> See also: bf8bb8eaccf(clk: qcom: gcc-msm8916: Add rates to the GP clocks)
+On Tue, Jun 18, 2024 at 08:50:52PM GMT, Konrad Dybcio wrote:
 > 
-> Each time I look at the table attached to the GP CLK, I feel that it's
-> plain wrong. In the end the GPCLK can in theory have arbitrary value
-> depending on the usecase.
 > 
-> Bjorn, Konrad, maybe we should add special clk_ops for GP CLK which
-> allow more flexibility than a default clk_rcg2_ops?
+> On 6/18/24 19:50, Dmitry Baryshkov wrote:
+> > On Tue, Jun 18, 2024 at 04:59:36PM GMT, Dzmitry Sankouski wrote:
+> > > sdm845 has "General Purpose" clocks that can be muxed to
+> > > SoC pins.
+> > > 
+> > > Those clocks may be used as e.g. PWM sources for external peripherals.
+> > > Add more frequencies to the table for those clocks so it's possible
+> > > for arbitrary peripherals to make use of them.
+> > > 
+> > > See also: bf8bb8eaccf(clk: qcom: gcc-msm8916: Add rates to the GP clocks)
+> > 
+> > Each time I look at the table attached to the GP CLK, I feel that it's
+> > plain wrong. In the end the GPCLK can in theory have arbitrary value
+> > depending on the usecase.
+> > 
+> > Bjorn, Konrad, maybe we should add special clk_ops for GP CLK which
+> > allow more flexibility than a default clk_rcg2_ops?
+> 
+> If we can somehow get max m/n/d values for all possible parents, sure
 
-If we can somehow get max m/n/d values for all possible parents, sure
+Calculate them at runtime?
 
-Konrad
+
+-- 
+With best wishes
+Dmitry
