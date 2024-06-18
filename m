@@ -1,59 +1,59 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C441482E6
-	for <phone-devel@vger.kernel.org>; Tue, 18 Jun 2024 11:54:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3502A145B0A
+	for <phone-devel@vger.kernel.org>; Tue, 18 Jun 2024 11:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718711643; cv=none; b=iETYqHuwo0OhJYuV4DtlgIicJ0Bd6YLP7mH/XL+xUIuhYWED7nUGBXx2qeLUMnbxv2KQJbC7kl+f+Y/6Wz8ggIrZIiaHfa3GONQcwqJsQ6t8ffU7zr3rVzgGX6BxD17g6C78LtzLJgtv4j/K+exv2p4VFsgtcIcyPsYDWmWi4Oc=
+	t=1718711670; cv=none; b=Vp+7QnbSIhrheslmVti0JuJ8Wb78R4zWE+MtVxe58dzP94yH4w5Ji4Mq/XGyNgs752mdHVhes0ReZHT03+Qj/oMsQCiLNn7UhutsF001KJCDJ2LLsbd3RkWOrM+TnX1FgVfPblH2CHqZqPrZPCGhh6NIVsRC9+SzKq2x6s8+afM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718711643; c=relaxed/simple;
-	bh=B5uTvNOzDIfP+9r55UmyGlGOEn/VaHyTyNKLYbpEPY4=;
+	s=arc-20240116; t=1718711670; c=relaxed/simple;
+	bh=HcJujJfkQBTmZ3DibezE+G0B3FO/61FIBdkgOhELaik=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gg7rbkbygakKMJ8YsArp71t7UQDKHTUZxbQKJBTkp7TlssfKp8ULdDCiRLZNeWD+7GpxbyY50CPf5rT6T5XmiPeWdlrP2CEWQVEcGoh+fFy7sbW9v5YIzWXxQ5mWgQEQrK0oDmtvDATCHdIglotciPOKzJSI55/FBYOPhqTqteo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rqbhC4hf; arc=none smtp.client-ip=209.85.167.51
+	 In-Reply-To:Content-Type; b=eekfOAQzgE7CIrZcHXJcpIZ7iKm0d0GZ2B8+TxeSuvRs1bdREBcivyXhq8vWhnYlzpTOmXZOFKLv2SMwmnotJVoRQDDdkNcqy79T2g0XKn3/5B5rNnEaQLKj5ww++MbMYKxjmtz/lwHoFNLXXBvvMS70sVI9qlNd5Cvb8CzIHwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jJGxUcBO; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rqbhC4hf"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52cc14815c3so1185345e87.0
-        for <phone-devel@vger.kernel.org>; Tue, 18 Jun 2024 04:54:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jJGxUcBO"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2ec0f3b9bb8so36953631fa.1
+        for <phone-devel@vger.kernel.org>; Tue, 18 Jun 2024 04:54:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718711639; x=1719316439; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1718711667; x=1719316467; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tb4Y+tgvYIekmwgd2j/b166JURC40YeXenLXo1ek4Io=;
-        b=rqbhC4hfUJHA6iziWG/S/IhE5ziSLaAf5hAku1dnt+ZTzzkKipD05SyM+zLSWcBO1E
-         dHNN/gryVT4N0RncWGAwpHz/Ci+HJLx3ItkVBVgoSdVgB9FD8MbFRf1dj/fjH5GXCTk0
-         OJtzJdHSpfJrgiAv7Px7w+86E3MNuI+oTHmqT9RwhMX/BWu9UfSswNIKP0IAwF5O5wNE
-         eZ8HD1H5d35k49t0NcTP5Rzp7YuQDhyAN27bz8l9TjymkXFseANlfZ9Hhzpj6lI30LtB
-         QrKyyqQGbS3n7hWSeu+MW331f3Kph1KWnoAD3pRHvS9OFckgHmSDnpdm0HbtsbAaQDB5
-         AtWA==
+        bh=2CImRxcj0sqY8tb0uHlqWB1E5GbxaXH/mqYnGe/rFRg=;
+        b=jJGxUcBO4BJLlFZ2VQYr4GsK22CJYdzmRMyIXw28mDvvVFWOKRhi8qKECE5fN8Nyy/
+         KBqdnBhDODSFqTrOcc/yU9W9nilttEgrDQOFMoRL1y05df7J6At9yTuUGMnXt5PgLFWb
+         4oHlqZ+7IeJ0MYfVg0V+eWTTbW7T5SIknzAM0wY6V5rBWno3h0EyxYypLTdd+OnJPaIx
+         q/B9b2GyKlQeAMHalHRvhvCRalRnKx4eCHtFbnD8G+GgoHFvbdq0+HNSFrJ66rZANv4T
+         V5vxPu2UtGyGOrCgmx/qKSxUOaMPt2nFCqc3N0E6ACIkSBHzjPEy2mxcPGmK/tnbJ5Ry
+         HLsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718711639; x=1719316439;
+        d=1e100.net; s=20230601; t=1718711667; x=1719316467;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tb4Y+tgvYIekmwgd2j/b166JURC40YeXenLXo1ek4Io=;
-        b=BnrsCW6ghTPwj5iOAZa4b5O542eLynkuj/pA/9e4tyK/u0ofaqTQgDbalRMz9sXwcw
-         bslHSr59vMsP/GAKDgv71HOw+8jEfY+yk601jUgpOyma+vsvQiKLNPYCkzO5Fjtn44wf
-         sLHULq76stO7I0thOUXSwIT/6+NlIsz8ZCuadBwxYVs09oLt0iPQMhS3qwUXaVmNapvt
-         NumBEWvGTBuwqGc1O6033Uei3GfvOb72P6NEUokFLVmZPh2p0II2rj6tLc7quHQHRpeC
-         400ZkhyLOa2pogdghHeQkwH37PBKKcBeMXTSsURm9BVMRwhs+wt2jmJzIXvUVT0w/Jlt
-         55zQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWF0oP1j904178SRpJT88ywEMS01AAxGXIpXv8PllFg0Y/vwZcv0mDXK4xZnF4gUDYbMgWZl4pEhdBHWY/s/f5VrcPjYHDtiiNHwuI=
-X-Gm-Message-State: AOJu0YzJw46oxvnJ1cGKzlw5Z9zVvPZ7oRT5CcuAJWFwwq7kQK0QtGRJ
-	WI1SYTo9XQXsyP5JkpbWKVZl6/96ELybogErYvavGfTvNo+BJOD5joodtrsDxYQ=
-X-Google-Smtp-Source: AGHT+IEm2lPBaiFzDJTF0bUUyOHM9kY5vHY1/j588hgq3qPc6kUxcMPDuRk4JmYqiTnOUP6eqQBGtA==
-X-Received: by 2002:a05:6512:3995:b0:52c:a809:62ef with SMTP id 2adb3069b0e04-52ca809636fmr8462175e87.0.1718711638986;
-        Tue, 18 Jun 2024 04:53:58 -0700 (PDT)
+        bh=2CImRxcj0sqY8tb0uHlqWB1E5GbxaXH/mqYnGe/rFRg=;
+        b=VMCtDJ4c3u62DjIzJ8th35mOP4weTMzxy1E+X5LBJWoNCZc8I2lutZfs1J1+qGxiYz
+         aabPwB4o9YlMLfKoNMUmGRggxFdjN3IA4BnPXccVPg5fVWnnpTOuWHsFAKqeqmDv8XNV
+         IYtnyHQ4r/+ij/PO6sWdMzXSZVbuVIZ8ZQrLRaXl7sC8/HSnmhwOaFTDWLUMkHWvLyKz
+         zc2oZmfPuWuYVNSsLJqfPQNynNwOchvz3OrtTWMsW1z1VNJd1/Kgp0qIIo2QYZ7KVrjF
+         UphSvKl0iKnSWTW33Dc9OiYuRB0ZEt6bE7qPTZgpJYbshtYT/6m+vepnCrv7emHwFq5Q
+         chDw==
+X-Forwarded-Encrypted: i=1; AJvYcCVS6Q4lMh68AyhunBjl9PI4ZNGG6n+HbPtDCeY9nuSVW8ronI2T9ausbtmRRLnSUlVRYWRl5fkolS2Ekss06eMfRlx2Ped+k85jsR0=
+X-Gm-Message-State: AOJu0Yw65E6od/OK08bhvXy76VSUcxRi+SPovY/+whvIzbV9wfVJCWQ8
+	eusK5l9ahNWwBLaYrr6D/BI1z04VWLQ45l/Yc1bIQwlsF7E915puNq4m1MZnggo=
+X-Google-Smtp-Source: AGHT+IF7wjYkkQFQakNw3p0WW30S+1nt9H2rjtDlB1CQ5eBznQTvIVTf7VadwyG2ee0wPE771uVkKg==
+X-Received: by 2002:a19:e015:0:b0:52c:a483:4cc6 with SMTP id 2adb3069b0e04-52ca6e6dd0emr7014214e87.36.1718711667488;
+        Tue, 18 Jun 2024 04:54:27 -0700 (PDT)
 Received: from ?IPV6:2a00:f41:9028:9df3:4fb7:492b:2c94:7283? ([2a00:f41:9028:9df3:4fb7:492b:2c94:7283])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca28880d5sm1488372e87.254.2024.06.18.04.53.57
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca2872471sm1500912e87.175.2024.06.18.04.54.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Jun 2024 04:53:58 -0700 (PDT)
-Message-ID: <5d415130-f744-49c3-be8f-4d2b32618544@linaro.org>
-Date: Tue, 18 Jun 2024 13:53:55 +0200
+        Tue, 18 Jun 2024 04:54:27 -0700 (PDT)
+Message-ID: <312689d0-3d94-42bb-8359-2e498e09f2ca@linaro.org>
+Date: Tue, 18 Jun 2024 13:54:25 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -61,8 +61,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] ARM: dts: qcom: msm8926-motorola-peregrine: Add
- accelerometer, magnetometer, regulator
+Subject: Re: [PATCH v2 2/3] ARM: dts: qcom: msm8926-motorola-peregrine: Update
+ temperature sensor
 To: git@apitzsch.eu, Bjorn Andersson <andersson@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>
@@ -70,10 +70,10 @@ Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org,
  ~postmarketos/upstreaming@lists.sr.ht
 References: <20240617-peregrine-v2-0-c8835d2da7af@apitzsch.eu>
- <20240617-peregrine-v2-1-c8835d2da7af@apitzsch.eu>
+ <20240617-peregrine-v2-2-c8835d2da7af@apitzsch.eu>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20240617-peregrine-v2-1-c8835d2da7af@apitzsch.eu>
+In-Reply-To: <20240617-peregrine-v2-2-c8835d2da7af@apitzsch.eu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
@@ -82,8 +82,8 @@ Content-Transfer-Encoding: 8bit
 On 6/17/24 23:22, André Apitzsch via B4 Relay wrote:
 > From: André Apitzsch <git@apitzsch.eu>
 > 
-> Add the accelerometer, magnetometer and regulator that are present on
-> the Motorola Moto G 4G (2013) device.
+> Add alert interrupt for the temperature sensor of Motorola Moto G 4G
+> (2013), although not used by the driver yet.
 > 
 > Signed-off-by: André Apitzsch <git@apitzsch.eu>
 > ---
