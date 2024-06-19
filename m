@@ -1,98 +1,98 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98263152792;
-	Wed, 19 Jun 2024 16:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AEF158D61
+	for <phone-devel@vger.kernel.org>; Wed, 19 Jun 2024 19:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718816068; cv=none; b=O939UmxcuVFeEgrs3egot8J7sR9SVoVTeRIFy+N18o7tBWn2I8UW4qIzkdA9Ty50kuhnLic6u/Giw7RvO2Hikw9dsbvQyW6+yjlDsV0ioB2fI71hD6whxdxA+QcahyLQzDA1oVTIzUQeeEzHTPwHCVB1KGOQoM+DvEYCkreVHlA=
+	t=1718824669; cv=none; b=luxVzRkEdcrxQ4dYqDMWdx6FDwf//tfcvntnFySOkfmBuOEkA6YpfYqyc+aP1938XRdNX9/bmSHrnjOYR/3si1PdQijF02hlgp5xiG7JcOTcDtoPRigBVaMy8ek3F7DHjq2gOBpBX9+lneFhO9NNRRugO3j1Op+NZFdAI4B6qew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718816068; c=relaxed/simple;
-	bh=Sjz3DIoq0Zh1oqp2UL91MkPA5irTCigjw/wM4v2Ete8=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TI4eLSJ5HDx5T+nRfULUq+F0ysbbtf0uq40MpYEkp/lF8Ko4o1Iw5Cj/2fn+xhT22zbGPdRi+Xk6Xxp+gzuVLkMhxnEmaoh/+dkVInJeRfUSHtJoNCXAYdsPD+jyxtQ3LSmH0wVgElzTOQwhi2yLcC2Rplfq8ctk+4oUs6fu/uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=bElNTWFO; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	s=arc-20240116; t=1718824669; c=relaxed/simple;
+	bh=1f6nJxwFba9DqcGw62muYo8R6CFQWJeLoHkZBBpzB8Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VXlN4bxoXljVcYcwxkjrxE3FVdR0+aYRMIOKGnPLZ4rOkmTZvuBcxAQB+xlIpZF+7DCdk6gYikZdmBL3rL/cslYSR+CP2gyqpcA4V77GhkTbCZWlrVwGvZutofMc54TVKgRzLLfRRP4xz+1DUxxgGIjlT8bqhMNLq+ENRE3SdKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DzL1LY7q; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="bElNTWFO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1718815509; bh=Sjz3DIoq0Zh1oqp2UL91MkPA5irTCigjw/wM4v2Ete8=;
-	h=From:Subject:Date:To:Cc;
-	b=bElNTWFOh5JZGMsnkhAZFdRe1VI7JexFIgS42n+cBE2eSJ/C7FvlQjFSmitwNzoj9
-	 flZALDLvdwonMvH8fhqXb5waBQrYLYQaMzN7e5v5cuiIF7rJRqkN8//r5RoBXOehcy
-	 5fqPd6fxyMHDZB1SnxOI/q5yDANvu9ORvclQp1yA=
-From: Luca Weiss <luca@lucaweiss.eu>
-Subject: [PATCH 0/5] Use mboxes in smsm node for all dtsi where possible
-Date: Wed, 19 Jun 2024 18:42:26 +0200
-Message-Id: <20240619-smsm-mbox-dts-v1-0-268ab7eef779@lucaweiss.eu>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DzL1LY7q"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-57cb9efd8d1so2005474a12.0
+        for <phone-devel@vger.kernel.org>; Wed, 19 Jun 2024 12:17:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718824665; x=1719429465; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=S6lEiYCUbYz4T/jCjzT/Chkny3UAUAGhEY6ZMmlWnJc=;
+        b=DzL1LY7qjPs8m6/PcadyIjV6RD78Nm/DkzHMeCV7kxbZCr04Zyc0VzOl5HS2r8umCQ
+         y1qyRV8sc4IbyNnsGAvmIBYSqTHJeQjJEvT0vMis8J4h5F8q76si9/zWso6+KmmD79Vl
+         mmneABNZahSw/eFEKazksGFzB8kZX6yBrlmhg6NwsTsBBbCihLrJBtaSL1TC7BicTExg
+         y2bN8K1lZp8Y9YOGQxfrABGB/yKcMIfnSLl3T1GOQxG+SbWHowZBmVBE2+PUojs6MSHq
+         EJWa17nXJ6gxSxuI5F09GEypM7Zy1oHTWRpiostTklgrpvnCrSiXaOvpCVYMktgUIUVC
+         8T2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718824665; x=1719429465;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=S6lEiYCUbYz4T/jCjzT/Chkny3UAUAGhEY6ZMmlWnJc=;
+        b=UBC0gEwp34/wslCBYre9V1PLxV8YMyV8Z7ZzI5pXSDSxhncoS8/sd2HFaHpTIqW8DD
+         PZ+nE6/qU3N/E17NuSlGDKZjqjnV0P2TJ/9j4zItUxpIg9ARZ6u/F5gbkeP+L5e6KhmH
+         yPAJ3RFGiq1/hA9ncPz+Cz2fx5af6+zyMxuIHm3G8Fzy5kGDejkaTOU94vGWioNZ1fMa
+         pceVUZjxUpXYI+OLR0oHR4sYTkdH3zadV04sX+FdRXDO7GgFj+H/8kxtk3urj77LgFdd
+         WKLiYnyZonwJX5rWeaYzgvvrIWk18YNVqSvJ8vZk7YwZN6Z40C0nvudKVw4j6zTVdONn
+         wXIA==
+X-Forwarded-Encrypted: i=1; AJvYcCUT6MtiT97SPyFG8tSyYIQ3qBLQFp2hX4GDNHwEToswm3jeI8R8Pux5B/KzFgAqd1vKkH5qXKZwACMjKymV0FarYSTcWo+9jzJjQ+A=
+X-Gm-Message-State: AOJu0YztOBfLaub4EwJAiH5/brXXxDpPQLi4ZFJYxK3NCGxTupc/vFZ6
+	Ejd/3Vt0180K8ZyC/9fOc3qo6dAvxjVAZHDG5Tg6091WZnp2vTS6vQujy5PteTA=
+X-Google-Smtp-Source: AGHT+IGj6k332wSqup8rGDwTMoa0gt8RHUTehGLRGJ1I1Zn1p3Ya0Wruu5YmLmNeQVUfoZf3JBxyuQ==
+X-Received: by 2002:a50:9f6c:0:b0:57c:57af:6e88 with SMTP id 4fb4d7f45d1cf-57d06a1a6aemr2498410a12.9.1718824664686;
+        Wed, 19 Jun 2024 12:17:44 -0700 (PDT)
+Received: from ?IPV6:2a00:f41:9028:9df3:4dba:9578:7545:6874? ([2a00:f41:9028:9df3:4dba:9578:7545:6874])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb743adf1sm8651050a12.93.2024.06.19.12.17.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Jun 2024 12:17:44 -0700 (PDT)
+Message-ID: <7f6434e1-8a7e-4e03-8932-c8ae7a04aa91@linaro.org>
+Date: Wed, 19 Jun 2024 21:17:41 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHIKc2YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDM0NL3eLc4lzd3KT8Ct2UkmJd49RUy5TExJQ0C8MkJaCegqLUtMwKsHn
- RsbW1ACJmDChfAAAA
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] Use mboxes in smsm node for all dtsi where possible
+To: Luca Weiss <luca@lucaweiss.eu>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca@lucaweiss.eu>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1358; i=luca@lucaweiss.eu;
- h=from:subject:message-id; bh=Sjz3DIoq0Zh1oqp2UL91MkPA5irTCigjw/wM4v2Ete8=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBmcwsGi+azjYtioTEK81ULklvONA/PxjCMDDJUo
- er2cAYmHEyJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZnMLBgAKCRBy2EO4nU3X
- Vt+MEACggRg23I5azN9XXQOVy/+DAS9NOTRox5LbANDItnF5Z1ZQPSRS9ZLesA+zB0shlZYTcoF
- lCFl6Fz1/dsGV315xoOKbs+JeHmTVR8ASyt2ZIqgd2uigi34F1VBcC3Lu5lVb4uf1a5Vqa4DsD+
- Pj/Ur/OZdEoW3Q5pMKn2fIWdc9Xo5CAzLyG4dwTLdbr2kKAk22IW8Iouhi2ycBr1240rpjnMHVu
- LU4h0ZsX3UUGiYToEXNPXujyOXFewZo2CHxRtp4dWOQ7H5/jDoV370/JTXi9vwO/cYVpuACgSvY
- Sv0e5t5KgzrZKNpF3IwT40v8b8K6DUpwjqL7QXka1JGmjh17IWzk7sSqXKBhwHAF2D2u84wWd91
- 1a6ewjoBUyJ1U+NGLTvLNW2ncTLMYa5gsZ7gNM4XIwzetEPTqLv77XjhB8AVIaWKh3ecv4OWMqh
- wsGStZeBjqELYLJb1usgi5uiaUw2oSoUy0nK139XVJDDdpONvxeDOLxbSvhOTMfafKDEa2x/6qC
- kkzeMoTUfhq3lLhug4cw3fWrlLoU59e33BtBOsS4unv1I4lfW5NYWFmfqS0RQvuciUqDtQ/MzzX
- zvfPXkWP23HUy4T3PbDJ8sXDECnOP7gCxzguVotUIwizg6amnPlG4N0rmkcgXqyi9xU0DrmJJFc
- Izi9YSBxGTuGORw==
-X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240619-smsm-mbox-dts-v1-0-268ab7eef779@lucaweiss.eu>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240619-smsm-mbox-dts-v1-0-268ab7eef779@lucaweiss.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-With the binding and driver patches queued for 6.11[0][1], it's time to
-update the dtsi files to use the new binding.
 
-[0] https://lore.kernel.org/linux-arm-msm/171840533352.102487.9576671528001022676.b4-ty@kernel.org/
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/log/?h=drivers-for-6.11
 
-@Bjorn: I think this makes sense to only apply these patches for 6.12 so
-that also in the arm64 tree the driver will exist already, so git bisect
-is not impeded by that.
+On 6/19/24 18:42, Luca Weiss wrote:
+> With the binding and driver patches queued for 6.11[0][1], it's time to
+> update the dtsi files to use the new binding.
+> 
+> [0] https://lore.kernel.org/linux-arm-msm/171840533352.102487.9576671528001022676.b4-ty@kernel.org/
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/qcom/linux.git/log/?h=drivers-for-6.11
+> 
+> @Bjorn: I think this makes sense to only apply these patches for 6.12 so
+> that also in the arm64 tree the driver will exist already, so git bisect
+> is not impeded by that.
+> 
+> Patches are just compile-tested.
+> 
+> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+> ---
 
-Patches are just compile-tested.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
----
-Luca Weiss (5):
-      ARM: dts: qcom: msm8974: Use mboxes in smsm node
-      arm64: dts: qcom: msm8916: Use mboxes in smsm node
-      arm64: dts: qcom: msm8939: Use mboxes in smsm node
-      arm64: dts: qcom: msm8953: Use mboxes in smsm node
-      arm64: dts: qcom: msm8976: Use mboxes in smsm node
-
- arch/arm/boot/dts/qcom/qcom-msm8974.dtsi | 4 +---
- arch/arm64/boot/dts/qcom/msm8916.dtsi    | 3 +--
- arch/arm64/boot/dts/qcom/msm8939.dtsi    | 3 +--
- arch/arm64/boot/dts/qcom/msm8953.dtsi    | 3 +--
- arch/arm64/boot/dts/qcom/msm8976.dtsi    | 4 +---
- 5 files changed, 5 insertions(+), 12 deletions(-)
----
-base-commit: 2102cb0d050d34d50b9642a3a50861787527e922
-change-id: 20240619-smsm-mbox-dts-3ee9daadf81b
-
-Best regards,
--- 
-Luca Weiss <luca@lucaweiss.eu>
-
+Konrad
