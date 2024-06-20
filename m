@@ -1,57 +1,57 @@
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3897B3FE
-	for <phone-devel@vger.kernel.org>; Thu, 20 Jun 2024 21:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735198595F
+	for <phone-devel@vger.kernel.org>; Thu, 20 Jun 2024 21:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718918707; cv=none; b=aaE+Pr0RgwYsznCW5wpfJsc8/B59xcFeyXSYOQfQ2kvpX9pbFDGBuvhpj5oXPMjky5e3Wwy9bcH/JcReZK9yMHWmvJc1837nNtxeiMCQGAnXsSMHXXAN4irCXMTNzC3JI2UtYmUO1eNcfpfP9Lw/xhDNWrgJxXpCdV9tWdH2Vlg=
+	t=1718918747; cv=none; b=ex2qcl6GirzZ8R7fmXqcYgEYmGA2OgBMoJGFRdMmsIHVgj7820EgPFy0DO3VeJtB5N5flkRPVLGAB3oX7EOhJjTB4BvZqeQBqQhv6wHWBg7GWXPKkEpq1uyLeWZ0IitIvePkDGQLDmAXcuKodhSco609QCqetjGxhFOTjFx/b30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718918707; c=relaxed/simple;
-	bh=ox3gcw26ni9ljsaZIqowRX7P9R06L5ndgBrgi5HlKZU=;
+	s=arc-20240116; t=1718918747; c=relaxed/simple;
+	bh=OxeQKVTXyQS/Xgpay+YF5X74W4mt9PgTnQB8cBVznqE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=geO7KZ99FuwRB2Sf7D+51uyVcoyb1LtRBA4BPPzyAFWFozeuvIgZ1rxPnh2LQt7IZm+KRH/R63uwfn2kRFk3JGclyQkOuTbfhOj8x0xc2JSeVHK4CX7C1RtK7sKdlkmQ9jRJZ4DaP3ByoZ1qovPrxZ5CpM/uVeEcSJRUojussAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qNBkoo3O; arc=none smtp.client-ip=209.85.167.52
+	 Content-Type:Content-Disposition:In-Reply-To; b=B2Kh7iI4JvT3FZN3dZd0CH3h3jqUFbvPf0L+VMAHooQH6xx8b+NlfbhAk4Z/J/Ol1oP+BmDuq4ziQgP/xFKxxpdfHhwIudAmw/2BdvtoZzvIvUrqM/E7ftKP5iI8oywVZV3VFHEUz3FlP7L/1SdZBaeouPvZvmNBgxk4cgiDFX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=E+2i/0qw; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qNBkoo3O"
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-52bc274f438so1746321e87.0
-        for <phone-devel@vger.kernel.org>; Thu, 20 Jun 2024 14:25:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="E+2i/0qw"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-52caebc6137so1370039e87.0
+        for <phone-devel@vger.kernel.org>; Thu, 20 Jun 2024 14:25:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718918704; x=1719523504; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1718918744; x=1719523544; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tTKwbi/b5GESrqpWvwh5PU+yPG0ba6PdL71DBg8W+8o=;
-        b=qNBkoo3OcxNYTWZDlZsZuCRpi3PbDcdxBmCO7Iy6LaOhXa3igHjo9s8GRoGo9zTo1k
-         FHybG6Y1A1Q2/jZ19z3+xQfPbVYFw2GfhyLTbqQ9xu9efKhNRKgypCddRIspVb5sVRjK
-         3kOVsYTNAkF8fhZxOtbv/Mq79/1gMYp30FHiWP6YYLi7MWs8CZa4U+7qxL4DPG/13YOC
-         zMRKGFiraOksMHBinoXJSR4JfREoC+VBS2JmeomVAno+lek63M24aiCHGk/HwDZ41Jl7
-         off8vjTxNR55jAJzooruW3NMAUBcYgiocZ66vMHrXdZFM7TOvDkuhY2TLXn9S5sPMHGB
-         IXxw==
+        bh=8YnLuthclIELme3uHvt8bLySS7kvqN+pPrqFOsjhanM=;
+        b=E+2i/0qwWlI8TuYwefjpwZw6q/PkT98Flkj1NyiIUmxnc0CXv5cFBjHjjznX5m6iar
+         6Pk0EYlWHHCw+rnWntVx2PRF/5l8zLror6XtwuwTJGSttPQeHE8gCX4xt38mD/2Yb16i
+         1E+m48QDZNzkYgMazI3tSphoBG1M+41ZigwOlAnpLkn1bwFQgPiHWlSaWLjgBLhM0dKu
+         XkQHygxjWLiOb44kIuWuM5ND7XcCL/JkuYxBI6DX4HDE5gnhyKnFjSuNfvo9e/XuJqpy
+         PP39wlFPlFDrpILtu9o5/Cy/4tySytmxiy+ktkDPbANlxjnkFrJBoODzvCcIAvNDheW/
+         UTsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718918704; x=1719523504;
+        d=1e100.net; s=20230601; t=1718918744; x=1719523544;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tTKwbi/b5GESrqpWvwh5PU+yPG0ba6PdL71DBg8W+8o=;
-        b=sBYoErszYoUULU7isfNk63ynSQSHeT35zh3lR7oGECcL71IT7VQbyqGskPULo6ulaF
-         xIqilCv9mX9pm5TzrOEBV0mRHA1BK+HES28G1G4XSq1m+qjI0hYPGace+T0md6kIp+tm
-         eMxhuHru7Flq5Tr/xDSk6cLvWi3pKnHDhUdzUJdXJ/1TyS07KgkZMHiGnN87vcQUohNK
-         WW+F7bsROUDj1EO0XbuEN2ytqRZ+GiqEBkEeoxrf04YXE5HR+8AV4hrEKArFrfDMJspM
-         7+m7v8VqDFtnSysdfif7qiXTPqBOI8Lc/Kk3w9rGMsXzSyhsHY7QCmdc0uKoq8Uw+sR6
-         ieUg==
-X-Forwarded-Encrypted: i=1; AJvYcCXpFTsYpf2RlBH3xR4V80/fn3f+LNL5oQbZARa+MByA9ljU1jAFbAM4gB7Vs41aeQ0lNHYw48FMe+HWZrQsa1xUkMD1Lk8ztxr6RbI=
-X-Gm-Message-State: AOJu0YwPDWEVjcJatJA3c3BPcOUFGwn4iLpfItzwCy1i4y/1L3guJOWB
-	ER17A1HlWddl4+7GE4MztzFMnSubwiHyQyH4GpKaj5Rkzvo/txUZJ0Ew1TurkFM=
-X-Google-Smtp-Source: AGHT+IGiSIN0WJRAqp4hcSHBuq2slYqU7W2PNtbsiHycqkTy4GY6DsNbAAytLVe/Q4B31Eo9F/WhXQ==
-X-Received: by 2002:a05:6512:a92:b0:52c:9a89:ecee with SMTP id 2adb3069b0e04-52ccaa92647mr5056240e87.52.1718918703539;
-        Thu, 20 Jun 2024 14:25:03 -0700 (PDT)
+        bh=8YnLuthclIELme3uHvt8bLySS7kvqN+pPrqFOsjhanM=;
+        b=mr3Fe6AoBkP8OeFMVQWZlUF5lM8sJsBr07PbUWYWvqHgTm4OcobU3PLodlW4Ob3N7C
+         swq3R/grny1o1izhEeqG7+N82MkaNYhTpeJ79gtUK+gJXtyiGvyfmqBIn8JgRSbz8XfW
+         s8Npqqh+pTC2unS2IM+zQKYol0Oy9+ekXy3KjfezYBti+DD7B1x1FSqj8Nn29wWFYXeI
+         CtoCdHjUzcfHBw5y06UDnT1Mfjv6CZ6T2hyf1z/SUxbQ/nulmfsV5mmMTWYM9TLiPvgz
+         FyeOR3e75w7thpcO1o+tCzhDyO67R6vWjLTlYn+SLrNfeIVilxvGRSpcFQFipAtSeBsD
+         hbLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVr1kGtu7gzdVvrj88S12Ff26DzmyD5Y2yFdttbqWmjCuH5f/OFOjxyF30+YWKTmHM/PPq0P/yW2Mlpd1oYHV37CTZkFh8vd07xohU=
+X-Gm-Message-State: AOJu0YwShUDoIT/NaUq2NbPTgZHqCDmOvw5qyA9MzYfLdhxCGFlaZOoa
+	6SR9p48QztzPvxxDevWBPsKHio2uEn+my3GQJJhrp44NnH8xObynliyavfcqa34=
+X-Google-Smtp-Source: AGHT+IGuplv7CeSz9VzLQNcyU85+4p3xt8hAwVg59l+yNKY9rhLoFCTX0VD2nUc76EsF6sF3XzoEkQ==
+X-Received: by 2002:ac2:505a:0:b0:52c:c156:15c5 with SMTP id 2adb3069b0e04-52ccaa65800mr4341702e87.41.1718918743618;
+        Thu, 20 Jun 2024 14:25:43 -0700 (PDT)
 Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52cd63b48edsm2022e87.61.2024.06.20.14.25.02
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52cd63bcecfsm2049e87.64.2024.06.20.14.25.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jun 2024 14:25:03 -0700 (PDT)
-Date: Fri, 21 Jun 2024 00:25:01 +0300
+        Thu, 20 Jun 2024 14:25:43 -0700 (PDT)
+Date: Fri, 21 Jun 2024 00:25:41 +0300
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 To: Luca Weiss <luca@lucaweiss.eu>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
@@ -61,10 +61,11 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
 	Stephen Boyd <sboyd@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
 	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-clk@vger.kernel.org
-Subject: Re: [PATCH 6/7] ARM: dts: qcom: msm8226: Hook up CPU cooling
-Message-ID: <c2lknbesy7yamql6e2kwksmctjjodvzmksmvbophn7ze66n7vw@amb4kuy4qw7n>
+Subject: Re: [PATCH 7/7] ARM: dts: qcom: msm8226: Convert APCS usages to mbox
+ interface
+Message-ID: <pfltjzuqsyetcjcseoaopkhvljfduwmldyx2rtcrhpwbkhkstc@dqw63ajpq37n>
 References: <20240619-msm8226-cpufreq-v1-0-85143f5291d1@lucaweiss.eu>
- <20240619-msm8226-cpufreq-v1-6-85143f5291d1@lucaweiss.eu>
+ <20240619-msm8226-cpufreq-v1-7-85143f5291d1@lucaweiss.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -73,16 +74,16 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240619-msm8226-cpufreq-v1-6-85143f5291d1@lucaweiss.eu>
+In-Reply-To: <20240619-msm8226-cpufreq-v1-7-85143f5291d1@lucaweiss.eu>
 
-On Wed, Jun 19, 2024 at 11:02:50PM GMT, Luca Weiss wrote:
-> Add cooling-maps for the CPU thermal zones so the driver can actually do
-> something when the CPU temperature rises too much.
+On Wed, Jun 19, 2024 at 11:02:51PM GMT, Luca Weiss wrote:
+> Since we now have the apcs set up as a mailbox provider, let's use the
+> interface for all drivers where possible.
 > 
 > Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
 > ---
->  arch/arm/boot/dts/qcom/qcom-msm8226.dtsi | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
+>  arch/arm/boot/dts/qcom/qcom-msm8226.dtsi | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
 
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
