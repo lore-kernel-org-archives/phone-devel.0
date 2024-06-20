@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CC34207F;
-	Thu, 20 Jun 2024 06:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2C81B0109;
+	Thu, 20 Jun 2024 15:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718866249; cv=none; b=YDnzqhFSuM3nBifYMKqKq3EGmUbZwju424r45VEtZcTt0VZqGsHv/RHnuLuEDVZyUDVW2U4Vys12NoqqthvI5bW8MGHtY319Jgwxed/zbwxuYG5rZCa+yGHBXLVXF0IaRBCHB58aMtz8A59XkPTJzze1exRcRRIN2vl9CrvjyLU=
+	t=1718898265; cv=none; b=rwgcBmhHdL+I+iGsy2rI5y035THMmK4m69opb2o5q/a0JgIXGif0VR7Jcs6PxrRWrvphbXDwol4yggf4l7D8sCRuVoKhTUCGkL6ae2fi2wD13BuIqUH1iVpsdxzcsp+B0SS4G+IuiEfpnhrN+DYzAm4yvDOWjlrh0z218JBZ3jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718866249; c=relaxed/simple;
-	bh=baXgiEe0ODp10Whq0wyruPc8ViNJffY0RBJUGVLSt/Y=;
+	s=arc-20240116; t=1718898265; c=relaxed/simple;
+	bh=NDXoArYoOi42/owc5Xd/tf23JKVgVR3hxxrlHPGBiaQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=edYjLMUUYJnoYwWgxB4i3KYn1/fX7ueOcIuLBcL3wl+KyV8EI+T7az3GBt8iiH0PJ+dlbIUeCARUxNx2a4GIDOLvujeGvJPhA20+YhngeHKcKkuLt56fj3smISCtp5lP2izCKBaXFjBQt0CNaLh3H6kBQU9yXTV1Uczp9g7mDHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TC5R4jE3; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=PoLrKmU/Kmo5eD/RJWF5N8xxi99e7+OJcyFbIcP6a4MKXJsA2ck7ScUj38esJKtwXKv8yTKL/7VfMVafEAtk1EQER5XTGK5ufiKGl4c0NUq69WxvGEnpka7a/zUls0QJb8860OaJy5ZDlgB1Qjb4ScPpUnfwHMuEePK82tqUI4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SCGhAfXB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TC5R4jE3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5794DC4AF0A;
-	Thu, 20 Jun 2024 06:50:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SCGhAfXB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C4C6C2BD10;
+	Thu, 20 Jun 2024 15:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718866248;
-	bh=baXgiEe0ODp10Whq0wyruPc8ViNJffY0RBJUGVLSt/Y=;
+	s=k20201202; t=1718898264;
+	bh=NDXoArYoOi42/owc5Xd/tf23JKVgVR3hxxrlHPGBiaQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TC5R4jE39JukwGnmugmO4mpHm/fn9rIrVv72719dcM8bhzpNeobEQLZpShwL5RfB7
-	 GSmfgBewyfCN2uPhyB5cLhqcuKatAjbhhZo7GU1u6QjP4trkTisiSpxZRNmRTqX5hQ
-	 LGEDfbhGUb6e727lIj+iW3jAd5U/KZ8vTQwrdxxkdoRvfMyYWcajuKE/bSUraXWLxG
-	 TE2yYc/w5Qip0Vth1c1oo+ig1q/roba+igYaIFOU4ZsKGbXIuS/ay7TQckslE/AORN
-	 nQNn+K+TSoMJklSNkJu/JpbSdg3MXPpV2k2reyShOJW8botF1BMYNcZvG1XWD+zT11
-	 2n5ulGfGiLCcw==
-Message-ID: <20bd14a0-bdfb-4fd3-912a-d28ab43b4db2@kernel.org>
-Date: Thu, 20 Jun 2024 08:50:40 +0200
+	b=SCGhAfXB6TvNGpmFq4tkdAMjT0BGXqUhPg0hCTxr4beUuDJ7W29IQNBlij8Cf97ul
+	 tMAx8kSFiZsGyzK+EgtVuGcVinfB1I5FxjCd9puEHkPe/IwygmoKhclQPxjek8s+9F
+	 NFGGcW/AKfDQAnIzbFrpKn/wXoT0A1L9DmQX9o/HtHSo9mCs3xypVAjykhijQM218T
+	 PgvBX+5tM24zkzmwOofxt0PICy2ZsV/tAvomvknU3jOd7PvTJ2KOn5eoARpX/scLHo
+	 T++IMGjqjR3IGx+v2EdrMge7LGse2qKcePLOIz1LkXT6OAYWH46HsykEJ+j6PnoAm5
+	 aqzl4xqMU9vMw==
+Message-ID: <5e263066-5d05-4645-a695-0e7e62562666@kernel.org>
+Date: Thu, 20 Jun 2024 17:44:12 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -35,18 +35,29 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] dt-bindings: clock: qcom,a53pll: Allow opp-table
- subnode
-To: Luca Weiss <luca@lucaweiss.eu>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Jassi Brar <jassisinghbrar@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+Subject: Re: [PATCH v3 03/23] dt-bindings: panel: add Samsung s6e3ha8
+To: Dzmitry Sankouski <dsankouski@gmail.com>,
+ Sebastian Reichel <sre@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
  Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-clk@vger.kernel.org
-References: <20240619-msm8226-cpufreq-v1-0-85143f5291d1@lucaweiss.eu>
- <20240619-msm8226-cpufreq-v1-2-85143f5291d1@lucaweiss.eu>
+ <sboyd@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
+ Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Chanwoo Choi <cw00.choi@samsung.com>, phone-devel@vger.kernel.org
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
+ linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-samsung-soc@vger.kernel.org
+References: <20240618-starqltechn_integration_upstream-v3-0-e3f6662017ac@gmail.com>
+ <20240618-starqltechn_integration_upstream-v3-3-e3f6662017ac@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -92,20 +103,91 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240619-msm8226-cpufreq-v1-2-85143f5291d1@lucaweiss.eu>
+In-Reply-To: <20240618-starqltechn_integration_upstream-v3-3-e3f6662017ac@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 19/06/2024 23:02, Luca Weiss wrote:
-> Allow placing an opp-table as a subnode that can be assigned using
-> operating-points-v2 to specify the frequency table for the PLL.
+On 18/06/2024 15:59, Dzmitry Sankouski wrote:
+> Add binding for the Samsung s6e3ha8 panel found in the Samsung S9.
 > 
-> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
+> Signed-off-by: Dzmitry Sankouski <dsankouski@gmail.com>
 > ---
->  Documentation/devicetree/bindings/clock/qcom,a53pll.yaml | 3 +++
->  1 file changed, 3 insertions(+)
+>  .../bindings/display/panel/samsung,s6e3ha8.yaml    | 76 ++++++++++++++++++++++
+>  MAINTAINERS                                        |  5 ++
+>  2 files changed, 81 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
+> new file mode 100644
+> index 000000000000..9d7d747264dd
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/display/panel/samsung,s6e3ha8.yaml
+> @@ -0,0 +1,76 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/display/panel/samsung,s6e3ha8.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Samsung s6e3ha8 AMOLED DSI panel
+> +
+> +description: The s6e3ha8 is a 1440x2960 DPI display panel from Samsung Mobile
+> +  Displays (SMD).
+> +
+> +maintainers:
+> +  - Dzmitry Sankouski <dsankouski@gmail.com>
+> +
+> +allOf:
+> +  - $ref: panel-common.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    const: samsung,s6e3ha8
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    description: reset gpio
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Pointless description. I think this can be reset-gpios: true, because
+gpio-consumer-common provides constrain.
+
+> +
+> +  port: true
+> +
+> +  vdd3-supply:
+> +    description: VDD regulator
+> +
+> +  vci-supply:
+> +    description: VCI regulator
+> +
+> +  vddr-supply:
+> +    description: VDDR regulator
+> +
+> +required:
+> +  - compatible
+> +  - reset-gpios
+> +  - vdd3-supply
+> +  - vddr-supply
+> +  - vci-supply
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +
+> +    dsi {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      panel@0 {
+> +      	compatible = "samsung,s6e3ha8";
+> +      	reg = <0>;
+
+Messed indentation. Keep consistent one.
+
+
 
 Best regards,
 Krzysztof
