@@ -1,69 +1,67 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56DC17B424
-	for <phone-devel@vger.kernel.org>; Fri, 21 Jun 2024 21:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E7717C224
+	for <phone-devel@vger.kernel.org>; Fri, 21 Jun 2024 21:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719003742; cv=none; b=dK7mtNEhzaADXyM+UtvIE6JdL3/vut74nzNMSQL0chQ2dzq1NENuorid3D8ZjKJX3dDX6dHeRi5jPYvshU0dgoNXkneeRjphWhZ/NyCi+c/AX3zwAAK+upKq22B15/ix8sq+Dr/bn6B1wfBqo7P6BPkR1Nr85KEReDp7Bmkivqo=
+	t=1719006070; cv=none; b=QUFVcCiQ+fYiNjlM628BWoNwYIqMCQzu2EVQAy9rbHloFg2XNLYu7gtB89LzaAiiRHIPWfWyhL+Ui9KKltPzJ3V+l5O3Vv9yegE5Deys4sSyhlzDwQdenrlgTlppGHhth6ekwCaG3X3lSTqFWtAUfEhwVfvLSMrW1bRgXRWuXpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719003742; c=relaxed/simple;
-	bh=j54JWD/2tp28DryNhfjkHMogz6rdh/lUSRKB3jxkBpQ=;
+	s=arc-20240116; t=1719006070; c=relaxed/simple;
+	bh=8HrUb5me26sutWrvy5wgx4sSSVH7TI1dQ/80vVNZ/B4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LBRx1Qc7mY/oQhCYnYf+hC0INb7f4oiINiPXiIaN0uOJVzj0knEjybObyzllYel6OgTx8M9SXxZYiprSwDUVfydy0R4mAM3wPuHAFVfU6jYto+Udh8G+F0/Hy1cQy1zFE2k3AcP8StKiRWipEwHpj6NuAXuw/umOwHYI+cN+pbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=vwNq7w0T; arc=none smtp.client-ip=209.85.208.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=I9vT77t4tGqJMI4njWn55QNEjEVCQpdEJZRk+EV/8DxsFGJk8s3o3E2cYLQkYu3OdSBqp36l4/vhpwnPn6pwU3vCdUeT+liIgFMSmqW3PqFJt4EmF5UwmVxgDXzQEUFRdCQhyPHcMeBzyI7ey1hBQObrSDP1ZYHXSjwc0/NXmwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=asvAsQ/M; arc=none smtp.client-ip=209.85.167.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vwNq7w0T"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2ebe0a81dc8so27826351fa.2
-        for <phone-devel@vger.kernel.org>; Fri, 21 Jun 2024 14:02:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="asvAsQ/M"
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52bc335e49aso2983902e87.3
+        for <phone-devel@vger.kernel.org>; Fri, 21 Jun 2024 14:41:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719003739; x=1719608539; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1719006067; x=1719610867; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wV3zc5+uIc10gjzJbQ0sxc5XsdFKbsu9Jk8PxhMdqEw=;
-        b=vwNq7w0Tjdu0Ffe1+CqgW8futqkiMARlXxkcyLWzPjTaygZj+7pIu37AZLKwaZRYrH
-         3i3/9uaYStqekq+g/kX8Bi0j0hKUz8sGNY4dvRCbNKK0bomMoc/TqEZbCK6H2UgRhCMt
-         WjNe7papY4SB98EjvLNlOP0dULt3kfMFQ9dS25x0g0YvfHjNy3z013hMl8iW7do7ZPAU
-         U9r1ukrHLq72L67br8760dW67+mKT9WD0YjH2/kzm5Zoo4y+VTWYiVcW5wGpoFYB14s4
-         xMglJogHRlNghWprSKiDS/L+QRo+qgM96wGyl1QP8r8iVHGNaAwh0Ph9It5fL+mNqGuk
-         M7wg==
+        bh=hROpKLiZGwmIxWRNshgfEi2QRxXPG8amGi59yvS8gTQ=;
+        b=asvAsQ/MtLx8z0fK5iyXkPbj8c9WbteWmwOFDDXGLaJTD36ZrpHd8sPoCVrIHHa1aP
+         oCifICWVytrsvUbc+WaSwtIXksn9vEU9updAdXZspwSYf6zX9y6/Ry8Sx0SKzKYkmsUV
+         MPLZog4A0MVtGgHf5Ur7D8dbGL4bJMOEHsuWVi13daynmbe2SayeHluVbgCqERKwalS2
+         4BCZcIQjdWWZtue7GIIDtjtPkxVq/IBRV+pLgyYqVm9zl1PFcqTLJl82v6JJ3B1U+KRl
+         4AS+zcq7h+1f8BxQEcX3MbJ6bgfAWk5IpJtNnHkoqCBeJb5GGVVLCQtAaVZxSs69I6zy
+         Z0WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719003739; x=1719608539;
+        d=1e100.net; s=20230601; t=1719006067; x=1719610867;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wV3zc5+uIc10gjzJbQ0sxc5XsdFKbsu9Jk8PxhMdqEw=;
-        b=ED0FYY30VIR27IdQ2FHADomjqr+VgoT3Esmo8SkMomTwrbQv94Fc/kGyFcDUaAKpno
-         OOCJOelsw7blVRvpGBxH77Ov8Ikq/4YnWougxq8yqW0Jx+QYpLdmUD0d/NDL2JcsW+mS
-         g2banYbjXlceOtO0wNF4xrYo6JIM+FlGbaNJUkqbNaOwV4uI2qS/cMIYqjBl+nJyNvLB
-         Q2X0Lc3mZKmkyyuTekrX7PFvJivTc9kLjHnE9+QnTFWn1n3uQwEx1JOL9SV0vS74m02i
-         WFVIBvrCEAbq5tJKnbnvlZ7kIYsROy4dYOUANzhnIFzSj3vkM+08kk7hi252ZmW7Slux
-         rx5w==
-X-Forwarded-Encrypted: i=1; AJvYcCW5uMpMFXuUzMFD7KauAN+m6onKV98l7V4++YsEM+Uc6C+AxCSvrOMeGJT5oaAdbNUCnBIwNP0ulebjjnvpqY8a088bQeCGG20O+R4=
-X-Gm-Message-State: AOJu0YwXrGam1YFYJ7PbRYjFq1dK8hC1gZfaBxEFwImmsngm/dl+/4Q+
-	ORbi0DlltA7CR/xSG6XCosg9m4CyzB++Av0P/ay1JX8Gua4pbxyzWSWQi696IYM=
-X-Google-Smtp-Source: AGHT+IG4TWZnduOAOc8KqQQU1wC6JQHxbbkWfneKen4zXyBkG7DG8YoRBYSWmAaoMciOyj4A1w5egw==
-X-Received: by 2002:a2e:2416:0:b0:2eb:e137:6584 with SMTP id 38308e7fff4ca-2ec3ce940bamr69698641fa.20.1719003739098;
-        Fri, 21 Jun 2024 14:02:19 -0700 (PDT)
+        bh=hROpKLiZGwmIxWRNshgfEi2QRxXPG8amGi59yvS8gTQ=;
+        b=KPAKFfNg3+TxZv6Ro/uvKBQzocqMEYEWD3aR8h40PJkX8MJNAtmzbMPultUhNra3jR
+         a4GfKqTiDk39rgMiv9pNbcrUj/2fZQ4T/VbtX4IQhKAe5msCtJANihivwDUEXzISC57P
+         fuV1TKYCGbooDk33Bd6KghHxvMooyGxsfHTioa6QoPQXt6bv57IK9RJrLaAQ7tPKsL/T
+         tDwvH56m8FlRY8rxL9sXcqWNY0D0njUtXQjrhTfPQfduSGxHnUyIqFo7TPJ+ZrcasiOX
+         pzjxLXLnc89tJLG2w2iAX0Wh6ixf5jcfi9IyI1GjTIlkhavw5p0TnyUrmfYcrUtYThbk
+         F/LQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW/nLxWma0COD6e98qtBu86Ic77FxYpoS9dCQlTabm5fp+vTbdROToPgULgX8Ci7dr5Ix1/HMzlyskumLO9SjWpNe4nM48/0W5y9a0=
+X-Gm-Message-State: AOJu0Ywrr8AW7lO507yk/5iO0qAkNbtnKd8mps7qGYYz/pzqBZKZi0jo
+	m4KJJXLmGehaZfDJQvyU8QJ3YJ9Dxs27ToZ/ZpHKXCdnKBdSqHtPd2CBhudQX7U=
+X-Google-Smtp-Source: AGHT+IGZu5mpssPZ3r4bG4g5/RYkWfsJ/FKimhProEYhh7Vb8Kd9qOKiyGVurRnVfvriUHagrgoIYA==
+X-Received: by 2002:ac2:4e0b:0:b0:52c:90aa:444c with SMTP id 2adb3069b0e04-52ccaa5f1a7mr7414029e87.28.1719006067210;
+        Fri, 21 Jun 2024 14:41:07 -0700 (PDT)
 Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ec4d757fabsm3022631fa.77.2024.06.21.14.02.18
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52cdbdfbba3sm149508e87.137.2024.06.21.14.41.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jun 2024 14:02:18 -0700 (PDT)
-Date: Sat, 22 Jun 2024 00:02:17 +0300
+        Fri, 21 Jun 2024 14:41:06 -0700 (PDT)
+Date: Sat, 22 Jun 2024 00:41:05 +0300
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
+To: Valeriy Klimin <vdos63@gmail.com>
+Cc: ~postmarketos/upstreaming <~postmarketos/upstreaming@lists.sr.ht>, 
+	phone-devel <phone-devel@vger.kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
 	Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
 	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Configure
- PM8008 regulators
-Message-ID: <p4v4msqx6io7mewq3vceb4d5gxcb25whcnuxehzwvfxh6c3dfc@wliip5e43phf>
-References: <20240621-fp4-fp5-pm8008-v1-0-dbedcd6f00f1@fairphone.com>
- <20240621-fp4-fp5-pm8008-v1-2-dbedcd6f00f1@fairphone.com>
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] Add Sony Xperia Z3 Compact smartphone
+Message-ID: <otccxn3xdhoihuvleoofjptnq3jfwj6tdqu55n3tlg6xzrrp3p@x3sin3ebqozk>
+References: <20240621-sony-aries-v2-0-dddf10722522@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -72,20 +70,45 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240621-fp4-fp5-pm8008-v1-2-dbedcd6f00f1@fairphone.com>
+In-Reply-To: <20240621-sony-aries-v2-0-dddf10722522@gmail.com>
 
-On Fri, Jun 21, 2024 at 10:42:31AM GMT, Luca Weiss wrote:
-> PM8008 regulators are used for the cameras found on FP5. Configure the
-> chip and its voltages.
+On Fri, Jun 21, 2024 at 05:26:41PM GMT, Valeriy Klimin wrote:
+> This is almost the same as the dts of the Xperia Z3, except for the
+> battery charge limits. 
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> The current on the l21 regulator for shinano is also bumped up
+> to stop SD card errors.
+> 
+> Signed-off-by: Valeriy Klimin <vdos63@gmail.com>
 > ---
->  arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 105 ++++++++++++++++++++-
->  1 file changed, 104 insertions(+), 1 deletion(-)
+> Changes in v2:
+> - Reordered dt-bindings and dts commits
+> - Link to v1: https://lore.kernel.org/r/20240621-sony-aries-v1-0-bcf96876980e@gmail.com
+
+Please let reviewers finish their job first. It's recommended to post
+once in 24 hours timeframe. Otherwise you end up getting feedback and
+tags for v1, while you have already posted v2.
+
 > 
-
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> ---
+> Valeriy Klimin (3):
+>       dt-bindings: arm: qcom: Add Sony Xperia Z3 Compact
+>       ARM: dts: qcom: Add Sony Xperia Z3 Compact smartphone
+>       ARM: dts: qcom: msm8974-sony-shinano: increase load on l21 for sdhc2
+> 
+>  Documentation/devicetree/bindings/arm/qcom.yaml    |  1 +
+>  arch/arm/boot/dts/qcom/Makefile                    |  1 +
+>  .../qcom-msm8974pro-sony-xperia-shinano-aries.dts  | 44 ++++++++++++++++++++++
+>  ...qcom-msm8974pro-sony-xperia-shinano-common.dtsi |  2 +
+>  4 files changed, 48 insertions(+)
+> ---
+> base-commit: cd214efd16e30bf1aa40ccfaaf9177f47dd21fd5
+> change-id: 20240620-sony-aries-4a5bce06c91d
+> 
+> Best regards,
+> -- 
+> Valeriy Klimin <vdos63@gmail.com>
+> 
 
 -- 
 With best wishes
