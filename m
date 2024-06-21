@@ -1,86 +1,77 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C34E3A1CD;
-	Thu, 20 Jun 2024 21:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4751422D5;
+	Fri, 21 Jun 2024 06:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718918852; cv=none; b=AafonHN2fcSLjAMqU0a+bkNdkipzQ+jDTQqw3/uE2wxOrxmI6diaYvhdOmRx8p1HMR6a4ZzONQdBoeY1zip7WxIImJVrfa5a+e7yshhoBQg2CUOGLXkH9Uw5kuAXGBPGUVzYUmPX4qciu3uh+Bel4+9NAD99/6MaypCHyxk7s+M=
+	t=1718950301; cv=none; b=Ug9ei9lutWlAAhZaEvQswMDjWSO0hNnXIuU1TGzWU/WyaKkL3p9MyldmAPgAZS3uxQSDdVv0YD870DYZnFrj12d/XLW/Sw76jy66Rffua3OOqxIFa5rrM3+ET8qdpQlYYj0YQz6ovn3RoUDTy4q2g5kyE+xj+kIM5KDfVuVEWqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718918852; c=relaxed/simple;
-	bh=61zbryuOFUJnHWhg2gaQzBn/Hld/DLBBj1BK1R43HI8=;
+	s=arc-20240116; t=1718950301; c=relaxed/simple;
+	bh=vkZV0pdGgJiMfMy55Fj8wepD/h9GndppcGIcMV5oiXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ceE/UdQPADQDZo34iJZ3bhdd3Z2jtZR+i+XajokS3PB88iVWsEs6E9f+qK2ca+0Bkvg5+afXAYuAL2eNM0jDBHMLoultouRGXDAG9X3ykshDnyAtmgZIuHke8juhWz0UZKJJxabq+OnQ2djj4a4G5azUqWYIaht5j52Nrx1Xc1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=SE2Vncuj; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	 MIME-Version:Content-Type; b=GIweSdHdMyF9Du2KWf9vnGWZJGKZTnEztx2Fe1IAorLatHdVYQoVgSh56wQdBVjn36aur3YYOq48su4uC2c5UX7mU+OUJ/BcKQq+G8fuR0jbtaid1Bdz9qr8FsldTN1pgugC5csMe9GnuZj8Q3INqCaTqnpIeXBCtE5a3zDSmZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=icKG0jlh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="SE2Vncuj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1718918842; bh=61zbryuOFUJnHWhg2gaQzBn/Hld/DLBBj1BK1R43HI8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SE2VncujJu2RXC78orkDj7I8maqdLZAOzUYhIpFw2m6FuCS2cffKHnCtEZSQgLLwU
-	 6VtEf2DG+iX+dKDCA2vEjrIMiKwGU1VypS7S9FUMJTZ0z3bKeliF+Pi02+WKW4V6B/
-	 Dm5UbBOTW/2/aBuEU9iJRw40q8Frt9+yXqUkPLFI=
-From: Luca Weiss <luca@lucaweiss.eu>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Jassi Brar <jassisinghbrar@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
- linux-clk@vger.kernel.org
-Subject:
- Re: [PATCH 5/7] ARM: dts: qcom: msm8226: Add CPU frequency scaling support
-Date: Thu, 20 Jun 2024 23:27:19 +0200
-Message-ID: <3116757.mvXUDI8C0e@g550jk>
-In-Reply-To: <2dr3dyqu3epnrdpot3iwatkwq4uxgcmkoh7mzru2pet6xllarr@izq6mmyquffk>
-References:
- <20240619-msm8226-cpufreq-v1-0-85143f5291d1@lucaweiss.eu>
- <20240619-msm8226-cpufreq-v1-5-85143f5291d1@lucaweiss.eu>
- <2dr3dyqu3epnrdpot3iwatkwq4uxgcmkoh7mzru2pet6xllarr@izq6mmyquffk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="icKG0jlh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE04C4AF10;
+	Fri, 21 Jun 2024 06:11:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718950300;
+	bh=vkZV0pdGgJiMfMy55Fj8wepD/h9GndppcGIcMV5oiXE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=icKG0jlhiG1+YpSgzuiFxpMRycfgo6/ijk+lXf54s6Y7yQS6QCWdvbY/fzIo/AC5h
+	 Rc0VnEkE8ggpGqIQCbL91I0LDmLzjfpj9uKXnVO7gOZxYuRcyX3U/UU+jWVxh8o9ph
+	 5yuv94ilWoqpg+k5RvIqGwS2QuxF8xS1ViXptXmsMgjv2o4tgdq2Pg2lvdC7ReyuRJ
+	 y2ipWRWhCx+JfBHuokp/FxWz6C4dOCq0gnmEQxNCYHTSVfAzZpY7wJxvkGJ5fHCNnm
+	 2rC3qG3W6imgqCXBg6zjjujqwrAXyvOOzN+DcAElXgngn5Tz/Sf6qdHFTtIgcB8F2c
+	 PTPM9/q9AKxTQ==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Caleb Connolly <caleb@postmarketos.org>,
+	Alexander Martinz <amartinz@shiftphones.com>,
+	Luca Weiss <luca.weiss@fairphone.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht,
+	phone-devel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] Name the regulators for QCM6490 Fairphone 5 & SHIFTphone 8
+Date: Fri, 21 Jun 2024 01:11:22 -0500
+Message-ID: <171895028802.12506.5589187790199098753.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618-qcm6490-regulator-name-v1-0-69fa05e9f58e@fairphone.com>
+References: <20240618-qcm6490-regulator-name-v1-0-69fa05e9f58e@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Donnerstag, 20. Juni 2024 22:54:37 MESZ Dmitry Baryshkov wrote:
-> On Wed, Jun 19, 2024 at 11:02:49PM GMT, Luca Weiss wrote:
-> > Add a node for the a7pll with its frequencies. With this we can use the
-> > apcs-kpss-global driver for the apcs node and use the apcs to scale the
-> > CPU frequency according to the opp-table.
-> > 
-> > At the same time unfortunately we need to provide the gcc node xo_board
-> > instead of the XO via rpmcc since otherwise we'll have a circular
-> > dependency between apcs, gcc and the rpm.
+
+On Tue, 18 Jun 2024 15:30:53 +0200, Luca Weiss wrote:
+> As per individual commit messages:
 > 
-> But it should be fine, isn't it? Clock controllers can handle orphaned
-> clocks.
+> Without explicitly specifying names for the regulators they are named
+> based on the DeviceTree node name. This results in multiple regulators
+> with the same name, making debug prints and regulator_summary impossible
+> to reason about.
 > 
-> The xo_board is really a hack and should eventually be removed.
+> [...]
 
-I can check again what happened but pretty sure there were some issues with
-this still being rpmcc.
+Applied, thanks!
 
-But there were also some clock issues with apcs-as-syscon usage (that's
-the main reason for my influx of patches regarding this topic), so maybe
-with the apcs one solved that one's also fine.
+[1/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Name the regulators
+      commit: 4c3849513fa1b4d9f6fbe08ecd65e2d6ae19c1fb
+[2/2] arm64: dts: qcom: qcm6490-shift-otter: Name the regulators
+      commit: e160c41b96b6d6f38b8646e3c914c630da21e105
 
-I'll check again!
-
-> 
-> > 
-> > Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-> > ---
-> 
-> 
-
-
-
-
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
