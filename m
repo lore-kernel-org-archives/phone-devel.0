@@ -1,228 +1,124 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B645916D9D9
-	for <phone-devel@vger.kernel.org>; Fri, 21 Jun 2024 08:42:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C379884D04;
+	Fri, 21 Jun 2024 10:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718959369; cv=none; b=QDF56VXIIe7DmEVvu5HzeIam8KVvNuFYdFJEbvsd54gggZ28cOARSb8OWsW1RaVdcWCs/dNWVZt5W6MkPaswx2VIExlKV6tX51dNyHtPu4+fipvFtQbUWIcEext6IAl+3ti1ERt6suj71hiTCAx24glqimKsFjl76xQGIc4eWjc=
+	t=1718964300; cv=none; b=KM9SFEPuELlDbvYs3SGy9q9eycdSNBYMe4DnAUFbfHxMehcUG3BmrB+VvN11PL6C7EamRyP5weaK+Sfz92jg13cA3Yc3KVSnTVRWRVQInUmgw9n2ChghrgcSeIiqJ49Zc08f/7YcXYMiaNnpKE1M7HiTWNqdmT7KV7vI778Jpt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718959369; c=relaxed/simple;
-	bh=mQBtqXRL4nG/wQ2Gonn03d7mFlmmcCbFLHwKhqXTVg0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Kfp2UXhjLDUOPDXl965Ly0iNrlt58OVUqmyiv5LupzvvWHxfo2LCpuFMSxSUqttizzEKWlvapYxzlftC0JnF44+bikpLJgX0kF6racB9PPgea3SQO0iXkbHhEFOKCu/TVujyD6MF1tArWRTvEy/GKU/qBGAMIsiqrL+2/qY6Neg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=F90CYt4c; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1718964300; c=relaxed/simple;
+	bh=YFkLiDgtKunaONq4TQZWyMHwMAoHePBxiNlNssUmgVI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ObQ0AdEP38g4IiXvGytcLKGyiiszKHfdTOhDTqjpsJAGTv3094dcRbQLK1B4AHTN7zMn7XFOcXiyqnA0wRydXj6Vutich5x4/IAJ4XgsWcAHdR51Caiuh65dnUUcRXgUZ4NwnyXc2FQOb/w8Qs0dEuvEWfjk7XLv51EUbTsDTe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DPWsUP+F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="F90CYt4c"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a6fbe639a76so284122566b.1
-        for <phone-devel@vger.kernel.org>; Fri, 21 Jun 2024 01:42:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1718959366; x=1719564166; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6/FWrAKVXVKCvlxPWf7/91N7cA8SSxdEOKYrF7gJy+8=;
-        b=F90CYt4cXSqNif8UVr/dZzvqR7Ji5KsRmBimEi549o9HcRcMB8hw91zWYvxYaRlfVB
-         fPw2zSjlXq8SZ/m+SOqcSjnijdrBXmh7jpbqQPatvA+cbG7/P2aT9pDWiP/As381Ogrk
-         NiGPM/HNDmLizs0zbXEFq7z6uAmoD5tLKaaGkiGY7VU6C9ZCmb6Hot8MvpvPsEWxQeQ0
-         7I23EZFwkV+fIahmn8AVIiKt03DX6hlFi2tOUNsz1Q6hBTsNKtMGaCVHFoGWl+E+DyuL
-         DVOevBHKiOR7TNfc+re2XK2vxoSQy7cgsTYRj1BNcDni1q1DkPgO8guiBqoRqNomiwyj
-         IROw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718959366; x=1719564166;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6/FWrAKVXVKCvlxPWf7/91N7cA8SSxdEOKYrF7gJy+8=;
-        b=bf3BE0Mr8AfBhyNcl0jwFDNtggP1XSTO0/6DHMgtTRt1KHPTjIgXeVuIaFo+rn8Jnx
-         iN66TIeaSnyQWpVZMLr3x+ktZrW2zVwE4CsPxcn6D9pDBo18xMFWVQPm3yz3alDfOPes
-         pvjZxOVBDgJnnNEouPtbQE2JHx7xNruwpDYoxAaXEiyO5zgDDmupZ/nTQL7N1J+jj3GX
-         5b03IsoH4K2r6SxmmP2Nx0J0ZR5CuFcKUfV9+QfNvukyjAm0r9z4H6UNvkojW1GVSEo2
-         E0c+3RcE+hx0o1kp/A4LUG68ISREyvpi0E6G/cDYtejIXxtfa/EOfuFMWy9ZlkQTiEwD
-         mf9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVghwKM2ZLG+nKeW4rHaDPkvknptWURcN4zN/5igV9/WR01zNF+LzU1kTmF/BRUoSw8ul4z7LGYwSLx1rk0JR8d6OBdHeqcp5FMEZ8=
-X-Gm-Message-State: AOJu0Yy0Lygii9LiGfjWNdHVZIZOIC5/u/QVa1YdmbeNAlPSfItGHXLl
-	FeFd5n0UYKcpRwBrMybf0RDHNvE1vqUjJjvly4nFy3JTCD5Rya3LuoRvh4Gd7GCUSIvHEXKQV5Q
-	v
-X-Google-Smtp-Source: AGHT+IEfFBROnrph7emIhlAXuHZZDsdW4wzja/NgbYTMXQ3bFBbVpVwojfAzaTpmcLRte0EkRYDQ5w==
-X-Received: by 2002:a17:906:3e8a:b0:a6f:8e53:e981 with SMTP id a640c23a62f3a-a6fa449a9efmr481862666b.34.1718959366099;
-        Fri, 21 Jun 2024 01:42:46 -0700 (PDT)
-Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf428c18sm58993166b.24.2024.06.21.01.42.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jun 2024 01:42:44 -0700 (PDT)
-From: Luca Weiss <luca.weiss@fairphone.com>
-Date: Fri, 21 Jun 2024 10:42:31 +0200
-Subject: [PATCH 2/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Configure
- PM8008 regulators
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DPWsUP+F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E526C2BBFC;
+	Fri, 21 Jun 2024 10:04:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718964300;
+	bh=YFkLiDgtKunaONq4TQZWyMHwMAoHePBxiNlNssUmgVI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DPWsUP+Fs8qD+ZpfoIdEnxl3FT5ojCxIpKWTZvc2v7RxlCHw8Bw0EwvSOujl+gDfI
+	 +/PsT8Dz0j2A72a2c7EtIaBDzZsEbFyZZDYRofrQThyLUtjrK9OO67rS85aVfnyTgl
+	 psRNnFlYmTAFFGsZ0RatNhoC7eD9lsgfUVJYBlUR1oNOCpNwgYkHh+WbqXQphEtf6B
+	 bMhkT+8YJwGo6U1d4FaCjWhgSavBe8qZ9ln9m7UXu/E4BpByqR6qHKP56Xjeap4ySU
+	 lN6Z9vVgPQZX4zonRqsFiRHrO+6sBOdZrEIfPI92IThW/s1FrUCKVkm8cZ60gP/VQF
+	 +dGMTlAQn0Lfw==
+Message-ID: <aecd9bc1-d919-45b6-bd1a-b22eeab69bb2@kernel.org>
+Date: Fri, 21 Jun 2024 12:04:53 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] dt-bindings: arm: qcom: Add Sony Xperia Z3 Compact
+To: Valeriy Klimin <vdos63@gmail.com>,
+ ~postmarketos/upstreaming <~postmarketos/upstreaming@lists.sr.ht>,
+ phone-devel <phone-devel@vger.kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240621-sony-aries-v1-0-bcf96876980e@gmail.com>
+ <20240621-sony-aries-v1-2-bcf96876980e@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240621-sony-aries-v1-2-bcf96876980e@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240621-fp4-fp5-pm8008-v1-2-dbedcd6f00f1@fairphone.com>
-References: <20240621-fp4-fp5-pm8008-v1-0-dbedcd6f00f1@fairphone.com>
-In-Reply-To: <20240621-fp4-fp5-pm8008-v1-0-dbedcd6f00f1@fairphone.com>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
-X-Mailer: b4 0.14.0
 
-PM8008 regulators are used for the cameras found on FP5. Configure the
-chip and its voltages.
+On 21/06/2024 10:14, Valeriy Klimin wrote:
+> Add the compatible for this device.
+> 
+> Signed-off-by: Valeriy Klimin <vdos63@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+> index ae885414b181..e53f061fc1cf 100644
+> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
+> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+> @@ -184,6 +184,7 @@ properties:
+>                - fairphone,fp2
+>                - oneplus,bacon
+>                - samsung,klte
+> +              - sony,xperia-aries
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
----
- arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 105 ++++++++++++++++++++-
- 1 file changed, 104 insertions(+), 1 deletion(-)
+Bindings come before users.
 
-diff --git a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-index 25ed74d4ebd2..765585b0d09e 100644
---- a/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-+++ b/arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts
-@@ -207,6 +207,25 @@ active-config0 {
- 			};
- 		};
- 
-+		pm8008-thermal {
-+			polling-delay-passive = <100>;
-+			thermal-sensors = <&pm8008>;
-+
-+			trips {
-+				trip0 {
-+					temperature = <95000>;
-+					hysteresis = <0>;
-+					type = "passive";
-+				};
-+
-+				trip1 {
-+					temperature = <115000>;
-+					hysteresis = <0>;
-+					type = "critical";
-+				};
-+			};
-+		};
-+
- 		quiet-thermal {
- 			polling-delay-passive = <0>;
- 
-@@ -522,7 +541,76 @@ &gpi_dma1 {
- &i2c1 {
- 	status = "okay";
- 
--	/* PM8008 PMIC @ 8 and 9 */
-+	pm8008: pmic@8 {
-+		compatible = "qcom,pm8008";
-+		reg = <0x8>;
-+
-+		interrupts-extended = <&tlmm 25 IRQ_TYPE_EDGE_RISING>;
-+		reset-gpios = <&pm8350c_gpios 3 GPIO_ACTIVE_LOW>;
-+
-+		vdd-l1-l2-supply = <&vreg_s8b>;
-+		vdd-l3-l4-supply = <&vreg_bob>;
-+		vdd-l5-supply = <&vreg_bob>;
-+		vdd-l6-supply = <&vreg_s1b>;
-+		vdd-l7-supply = <&vreg_bob>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pm8008_int_default>, <&pm8008_reset_n_default>;
-+
-+		gpio-controller;
-+		#gpio-cells = <2>;
-+		gpio-ranges = <&pm8008 0 0 2>;
-+
-+		interrupt-controller;
-+		#interrupt-cells = <2>;
-+
-+		#thermal-sensor-cells = <0>;
-+
-+		regulators {
-+			vreg_l1p: ldo1 {
-+				regulator-name = "vreg_l1p";
-+				regulator-min-microvolt = <1000000>;
-+				regulator-max-microvolt = <1200000>;
-+			};
-+
-+			vreg_l2p: ldo2 {
-+				regulator-name = "vreg_l2p";
-+				regulator-min-microvolt = <950000>;
-+				regulator-max-microvolt = <1152000>;
-+			};
-+
-+			vreg_l3p: ldo3 {
-+				regulator-name = "vreg_l3p";
-+				regulator-min-microvolt = <2700000>;
-+				regulator-max-microvolt = <3000000>;
-+			};
-+
-+			vreg_l4p: ldo4 {
-+				regulator-name = "vreg_l4p";
-+				regulator-min-microvolt = <2700000>;
-+				regulator-max-microvolt = <2900000>;
-+			};
-+
-+			vreg_l5p: ldo5 {
-+				regulator-name = "vreg_l5p";
-+				regulator-min-microvolt = <2704000>;
-+				regulator-max-microvolt = <2900000>;
-+			};
-+
-+			vreg_l6p: ldo6 {
-+				regulator-name = "vreg_l6p";
-+				regulator-min-microvolt = <1700000>;
-+				regulator-max-microvolt = <1904000>;
-+			};
-+
-+			vreg_l7p: ldo7 {
-+				regulator-name = "vreg_l7p";
-+				regulator-min-microvolt = <2700000>;
-+				regulator-max-microvolt = <3000000>;
-+			};
-+		};
-+	};
-+
- 	/* Pixelworks @ 26 */
- 	/* FSA4480 USB audio switch @ 42 */
- 	/* AW86927FCR haptics @ 5a */
-@@ -653,6 +741,14 @@ wide-rfc-therm@4 {
- 	};
- };
- 
-+&pm8350c_gpios {
-+	pm8008_reset_n_default: pm8008-reset-n-default-state {
-+		pins = "gpio3";
-+		function = PMIC_GPIO_FUNC_NORMAL;
-+		bias-pull-down;
-+	};
-+};
-+
- &pmk8350_rtc {
- 	status = "okay";
- };
-@@ -810,6 +906,13 @@ hall_sensor_default: hall-sensor-default-state {
- 		bias-pull-up;
- 	};
- 
-+	pm8008_int_default: pm8008-int-default-state {
-+		pins = "gpio25";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
-+
- 	qup_uart7_sleep_cts: qup-uart7-sleep-cts-state {
- 		pins = "gpio28";
- 		function = "gpio";
+With ordering fixed:
 
--- 
-2.45.2
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 
