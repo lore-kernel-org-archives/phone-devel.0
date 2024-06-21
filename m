@@ -1,122 +1,167 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298212BD05;
-	Fri, 21 Jun 2024 14:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF80210A39;
+	Fri, 21 Jun 2024 16:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718979994; cv=none; b=Ky8fKoBRc1D6OOFjhwCoIz9AY3O5cxydg6/0kZH8BCltpCKT4zKUM2qYDCTr6N/gjwrYVuBpv9JSakpvaqRVApPgUJGfvs5fwDdX+5t2fjZRr7xfCUNdITJRQNjprgaBIeFy6FRLa+ngjSNgOhA17a5u+5ybFDoSHcMgV/zYvNg=
+	t=1718986641; cv=none; b=FPHYBhw6hWtFeE2LKhfWhWp9y+fSXvzQIZmiJkYT/SQ1lrzX+Q4RSCDdGgA9c7CTWFIcRZH3LmkevxqYXQm0LbRF9DAimi9I27ZmBnJrB8YYVqSQMp7wBERd58rwnrBflBjBTc7Q635JMcBK90oLBIgu6XFD51K91LKvh/k2nM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718979994; c=relaxed/simple;
-	bh=xFO0qgIbZZSZGxvGjihJgB2It0l8Hs4sqlpsLip0Fe8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KSriNT57WlhY9q2czQT+7l42uhxj93rs+LoxMtYNM+apF1raaKyCDMyRLPFl75HeTRN839QgAS3vivcbHK4cqT+ggy54QYalAPOXQSRN05917oCcfBSjiZDtuQbGmkIatHgpFThQW2KnVfvzGiQf3yC+9PWF5jkC6+WNaoIzSzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Aq5LI6rg; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1718986641; c=relaxed/simple;
+	bh=+Fxx6Sx301djtEaBC0yUcjU4BqsqCf6HkSgOkb8DcPk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=svshcKo8c+MxLPHCIOLnbRti5/LUfsoclwMfD9GEZ9ekOs5mAR5TUFD9Tf650KnUkHJkkEZgT8ORlGxJN6HPohMw++rPy9vsEueKY2DBoQ91ZTuTzAC8GC7iPX7un6QEE9LTUv5ds2h8iJN51e2cjPQVvBz0ZawdBo3zaX7cISw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R7ypmpXw; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aq5LI6rg"
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-52cd8897c73so694271e87.2;
-        Fri, 21 Jun 2024 07:26:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718979990; x=1719584790; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0O/Dqe2KMVumxXzco1OedBrrN88fxS2sDSxa3fRQNVo=;
-        b=Aq5LI6rgW3U/OzB50c+UWrbkPhat02b3EbYQTGPzc8bj1V4+LWLUmq2D/WbpQ77eqs
-         lsuvfgkDyw3Puf7TU7UWLJTeRa1iZrYB4Dg3pqJ6Bcq/RpdVYEHENcdHzdPMX4yvd14g
-         mffseEnpOGMZDMittdC8WDAuQTXnVJJ9cT13Hl1gQrBKANzA1wCg0wPkGOKYdvna+Dl/
-         88Rspe0jptfRoDUua96MyTLUuuVDpXKoDmb/7Fb60Adth45agqLOSucO60VdfltURuDX
-         3fJqr2UGVENt3s4lVnRzHcxxBC8S/knaCX2zU7dNtP4DNU5CeaA/bsoPLCkjlgLnwj8c
-         Z8hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718979990; x=1719584790;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0O/Dqe2KMVumxXzco1OedBrrN88fxS2sDSxa3fRQNVo=;
-        b=qoP839oKNU7qnxddBlzXV2aNS9gNkeJ0uRi+1aTIVdMWBXrAS8oAJAsl1vPCVjMoPn
-         DpERy163p7fLquBc4ZtQnVSixpAzCy1x31tv4pcoNktEIHK8DNhoYp/rsxT7CKuppnsU
-         9CSF4aKJf96bpO5IWnDRe8HnKLY3hrONCSlg9B8uldT7B/EXI1Uze9qt6g4+I2QdjnqX
-         GATA6/6o1+Yg+Cn4Rhtg7ryjpaqhM8OKfQMArnBxkaJKDSMvXRRCbormsgLLqVF2LlXR
-         mCTzj0dfTRaL/Q5sxEpqOaYpQ12yDzvxp4sppg+A82iiM2suuqa/XFlx5YT7jsbpMmw5
-         T5zA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/fih/vJMzUUYQ9AVCFBvd46TIzhLF/qhnxb6wKlO21eyWOL6b8cWTliblnlKXIBxSVAftPcGytFA488kF5kMeX3qXG6wib6uGKnMso2x5rJycKU5owiPYZr+KB9J8+aiqteI17KmvLBUq+P8SaYuWo8pqfDiyEz7D8hK29axNh7YeqeHe
-X-Gm-Message-State: AOJu0YwigONIANJ+CCdn6IJ8i2tJRzlGf54xJyco9fL+UjTYadWBHwi/
-	CmAScfKSE3IMHu2TA9VYgXKj8o+U9v/kV5Bo16q7+4gDNFl2TNso
-X-Google-Smtp-Source: AGHT+IG9p2xVd4m+GyjcyNv6DpWv4dLZTqAH1pvlBaIVMjFF2WCvTxEvDgPoEYDvdbTqLJlv+O9nEA==
-X-Received: by 2002:a05:6512:138d:b0:52c:8fd7:2252 with SMTP id 2adb3069b0e04-52ccaa587a5mr6483704e87.11.1718979989833;
-        Fri, 21 Jun 2024 07:26:29 -0700 (PDT)
-Received: from deepthought.lan ([2a00:1e88:40c0:c300::729])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52cd6452602sm210890e87.298.2024.06.21.07.26.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jun 2024 07:26:29 -0700 (PDT)
-From: Valeriy Klimin <vdos63@gmail.com>
-Date: Fri, 21 Jun 2024 17:26:44 +0300
-Subject: [PATCH v2 3/3] ARM: dts: qcom: msm8974-sony-shinano: increase load
- on l21 for sdhc2
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R7ypmpXw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718986640; x=1750522640;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=+Fxx6Sx301djtEaBC0yUcjU4BqsqCf6HkSgOkb8DcPk=;
+  b=R7ypmpXwXDNF/p83FdyaLh/0g1cjCXj/G8OtzvvNbC1JSH38s4/ptFDa
+   7LPQKSni8OKTwdKlvj7UyqUrSOyz/TrXx0li2RftArLNumEVFuyUVrFqS
+   URcdzQlRDc2isPbEXgzHLFn6fcePTSPb5wuQpk/WzPA9bVf4tgDC2++sS
+   T0ElcqJ5mW5yuHDr/VLacLsaAioQylEidDui7AmZu3vnUrZTnmzU2NFXO
+   wk8JqMWVFmBaaGBs9oX1XOnuqwP1TozEIGW1/NzcQckpzo85/j2OmNFDl
+   31suEpE7tvQyCW3sWEQVJTJ4Zw4aJoUi/leRwM/jhRln4SPEXwroNiCLN
+   Q==;
+X-CSE-ConnectionGUID: VZtd603tSmKnAux4yErCcA==
+X-CSE-MsgGUID: QmJwelXgQBKrlOSc9xRAUw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="16156307"
+X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; 
+   d="scan'208";a="16156307"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2024 09:17:19 -0700
+X-CSE-ConnectionGUID: GMnlQ7Z/R/acySIjDxt19w==
+X-CSE-MsgGUID: 1L4S/m1VTmS4FwAsgUW4jQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; 
+   d="scan'208";a="43077647"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 21 Jun 2024 09:17:12 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sKgwn-0008kC-2J;
+	Fri, 21 Jun 2024 16:17:09 +0000
+Date: Sat, 22 Jun 2024 00:16:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Dzmitry Sankouski <dsankouski@gmail.com>,
+	Sebastian Reichel <sre@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Pavel Machek <pavel@ucw.cz>, Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Chanwoo Choi <cw00.choi@samsung.com>, phone-devel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 12/23] mfd: Add new driver for MAX77705 PMIC
+Message-ID: <202406220025.tZN8mAeW-lkp@intel.com>
+References: <20240618-starqltechn_integration_upstream-v3-12-e3f6662017ac@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240621-sony-aries-v2-3-dddf10722522@gmail.com>
-References: <20240621-sony-aries-v2-0-dddf10722522@gmail.com>
-In-Reply-To: <20240621-sony-aries-v2-0-dddf10722522@gmail.com>
-To: ~postmarketos/upstreaming <~postmarketos/upstreaming@lists.sr.ht>, 
- phone-devel <phone-devel@vger.kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Valeriy Klimin <vdos63@gmail.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=997; i=vdos63@gmail.com;
- h=from:subject:message-id; bh=xFO0qgIbZZSZGxvGjihJgB2It0l8Hs4sqlpsLip0Fe8=;
- b=owEBbQKS/ZANAwAIAQ4Juwrzgg1aAcsmYgBmdY20XgPqN6JfrMkp06aC5jorkxKSjreYUbaQl
- OMNNs/pQ+SJAjMEAAEIAB0WIQT/ENLr7ksLn/+UbhAOCbsK84INWgUCZnWNtAAKCRAOCbsK84IN
- WoshD/92iJ6MCBcGFn2guJOcpvzFXix2ByPRr0rrg0sCDftcvRgP05CPdM8/rrMu8hDAFxlTxs2
- XXBYR9ITiMZaXirwZvX5fqzghMshzqD4BqlQDDtJy4QXBmFA97RYYVozvGkp559px1HQclPs6cd
- on50KICi1W9spVABdX6XEO/TCO3WG1CyVeh4csgt11lLsHoLigG9PcodV/gpl9LStWimPJX6xhS
- DltbSSJvQTsZNBNl0ps5S89ajctTKss2m7bq6lawgXCNUPup7zewfNaNFTlVz/O6viPThvts/WU
- 2NwPTPeKlNQm0Ps1E6b15p+0yrb77+AfGpEKiY2r5DN+tB1BKeHKJwlm3DyVkaL+cmSmhJf1Ee7
- 8mAK7G6EZJ84r1UJH+F8IjrBh5KTsnSI+bGKCYsuQ7OMNom9c5Zkh3uRVhDaLzkL/Q0i7BFkGzb
- 8tjSXbQMrA2L+EHVW/2itPWABa3INiWhXYl+fK9KUCv9mwO0um8j2y1LpNf5eUX5IT43EzTT9+6
- +VH1xQ+/g5wme6tvpJ1yNELV3F2PWxrLnps+S2mmt4nwdEyIG2IDNwpO4dzUOo1K8DBcp6RGGNN
- kJODxatrd3OHzsbXWVSp4febD9JwTfia36KCIrBZF621yiODPXzPnZ87F9KHku1OCwLn/rHBhMt
- faB+FBkhff4w6qA==
-X-Developer-Key: i=vdos63@gmail.com; a=openpgp;
- fpr=FF10D2EBEE4B0B9FFF946E100E09BB0AF3820D5A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240618-starqltechn_integration_upstream-v3-12-e3f6662017ac@gmail.com>
 
-SD cards would exhibit errors similar to ones described in commit
-27fe0fc05f35 ("ARM: dts: msm8974-FP2: Increase load on l20 for sdhci")
+Hi Dzmitry,
 
-This patch applies the same change to the regulator for sdhc2.
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Valeriy Klimin <vdos63@gmail.com>
----
- arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+[auto build test ERROR on 6906a84c482f098d31486df8dc98cead21cce2d0]
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi
-index e129bb1bd6ec..6af7c71c7158 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi
-@@ -380,6 +380,8 @@ pm8941_l20: l20 {
- 		pm8941_l21: l21 {
- 			regulator-min-microvolt = <2950000>;
- 			regulator-max-microvolt = <2950000>;
-+			regulator-system-load = <500000>;
-+			regulator-allow-set-load;
- 			regulator-boot-on;
- 		};
- 
+url:    https://github.com/intel-lab-lkp/linux/commits/Dzmitry-Sankouski/power-supply-add-undervoltage-health-status-property/20240618-222456
+base:   6906a84c482f098d31486df8dc98cead21cce2d0
+patch link:    https://lore.kernel.org/r/20240618-starqltechn_integration_upstream-v3-12-e3f6662017ac%40gmail.com
+patch subject: [PATCH v3 12/23] mfd: Add new driver for MAX77705 PMIC
+config: mips-allmodconfig (https://download.01.org/0day-ci/archive/20240622/202406220025.tZN8mAeW-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240622/202406220025.tZN8mAeW-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202406220025.tZN8mAeW-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from drivers/mfd/max77705-core.c:20:
+>> include/linux/mfd/max77705-private.h:243:26: error: 'MAX77705_USBC_REG_END' undeclared here (not in a function); did you mean 'MAX77705_PMIC_REG_END'?
+     243 |         u8 reg_muic_dump[MAX77705_USBC_REG_END];
+         |                          ^~~~~~~~~~~~~~~~~~~~~
+         |                          MAX77705_PMIC_REG_END
+
+
+vim +243 include/linux/mfd/max77705-private.h
+
+   216	
+   217	struct max77705_dev {
+   218		struct device *dev;
+   219		struct i2c_client *i2c; /* 0xCC; Haptic, PMIC */
+   220		struct i2c_client *charger; /* 0xD2; Charger */
+   221		struct i2c_client *fuelgauge; /* 0x6C; Fuelgauge */
+   222		struct i2c_client *muic; /* 0x4A; MUIC */
+   223		struct i2c_client *debug; /* 0xC4; Debug */
+   224		struct mutex i2c_lock;
+   225	
+   226		struct regmap *regmap;
+   227		struct regmap *regmap_fg;
+   228		struct regmap *regmap_charger;
+   229		struct regmap *regmap_leds;
+   230	
+   231		int type;
+   232	
+   233		int irq;
+   234		int irq_base;
+   235		int irq_masks_cur[MAX77705_IRQ_GROUP_NR];
+   236		int irq_masks_cache[MAX77705_IRQ_GROUP_NR];
+   237		bool wakeup;
+   238		struct mutex irqlock;
+   239	
+   240	#ifdef CONFIG_HIBERNATION
+   241		/* For hibernation */
+   242		u8 reg_pmic_dump[MAX77705_PMIC_REG_END];
+ > 243		u8 reg_muic_dump[MAX77705_USBC_REG_END];
+   244		u8 reg_led_dump[MAX77705_LED_REG_END];
+   245	#endif
+   246	
+   247		/* pmic VER/REV register */
+   248		u8 pmic_rev;	/* pmic Rev */
+   249		u8 pmic_ver;	/* pmic version */
+   250	
+   251		u8 cc_booting_complete;
+   252	
+   253		wait_queue_head_t queue_empty_wait_q;
+   254		int doing_irq;
+   255		int is_usbc_queue;
+   256	
+   257		struct max77705_platform_data *pdata;
+   258	};
+   259	
 
 -- 
-2.43.2
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
