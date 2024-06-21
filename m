@@ -1,61 +1,59 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64A016D4E8;
-	Fri, 21 Jun 2024 08:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD6E16D9A5
+	for <phone-devel@vger.kernel.org>; Fri, 21 Jun 2024 08:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718957681; cv=none; b=pJGqgmS85co90+GIcNzdUV0Q64xc7gPn8ucvuh6tWTrb/qygcQNwWf5K/0qBgOMzC/j8gzEIocMmkdY+bsvYt+m2DWDDiUhVk/R/xOr3QT2VA9R0J3VqHCZS+RByaH177N5gr+5o9W0/VrRTvERFCqNrW709ITwSP5O8+auCOnA=
+	t=1718959367; cv=none; b=csGFJ0LkuQaxOFi7BMuNQRaORaTUBPK5kZaP9fA1EUcWb4V7xKGOfQvNsMIQYD3H5cHAToJMYJAF9fFrTCG6Q2hBoe9Hj/IndU+XFaaOMpustE3x1o4dOR470nhe1sQrYzfYOtTVnGjGymUVF76nqiWEY4eptWtbxfCMDY8A8Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718957681; c=relaxed/simple;
-	bh=xFO0qgIbZZSZGxvGjihJgB2It0l8Hs4sqlpsLip0Fe8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cWnNQWsT6BMKp9agqvTLLGx68iO+sR3XTuwo8JbTz9eVpIXHj7r/7Bvl1qxnz59NyagIX+EmK+LXsHN6J7IJX9GZ3S12zQrtT5161wda/cb4/QWsF3c3Uvbb5KLsZX9IcOCpkKCpKXbQmFj6m/xd7Co+aH1ADEVCzJ7jSerxaY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R+khuzoB; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1718959367; c=relaxed/simple;
+	bh=xqKek1XvqTCfr6NwYsPzB4GImiJYhgGIGr03tZ1blJs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LeK0nbjw5eaRd8LrHGAaCRVQq1qCkjwRBZ2x955cuxfNTBnwM7EyAjwD7iu9FSVu4Lh34GxlVmuhdKEr2irO9R/gCJPnvB4NmFzkzzK91SQ55bXukH19st6PRhHJhbr9rglfVtRHaAJwuOBGaOW6MCRopO5kwquyHGAQnhywFas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=p1OAOJEq; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R+khuzoB"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52cccd44570so1975045e87.2;
-        Fri, 21 Jun 2024 01:14:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="p1OAOJEq"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a6f9fe791f8so289901366b.0
+        for <phone-devel@vger.kernel.org>; Fri, 21 Jun 2024 01:42:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718957677; x=1719562477; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0O/Dqe2KMVumxXzco1OedBrrN88fxS2sDSxa3fRQNVo=;
-        b=R+khuzoBqAltiH4u9l6/uJM7yUJPjk8pl8dIJpIa/BmKcNWpTZMqiMDCnx0vsGifQj
-         oPByo4vHQFwmHCOqOIAduVyyFYLwGV18ZWOu1Fp4otfjSxtcJkVIrI0BZDez0alJv9AM
-         maAWukaU0lkkJpji1fakvn8TQBi6Nj9f4gPRGq24gaasA9V28JfgE8Vsxy/m1ze/beu3
-         lXPL2gAxBmlKzp5iPOasNZfwZFQRjqe9qVzAcw5q9WmwYMHpxdOosTm12EWnPbRuXU/w
-         kVSviV8T9I0ROgTTDccL9lsvOBWdYZrFHAd9PPyqaxLaQ2nUVSPwl02x0xaGEBuutkdy
-         N/yA==
+        d=fairphone.com; s=fair; t=1718959364; x=1719564164; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kUnYRScJzL59U2vYuUFusX/xjPGk6acayJAkE49irck=;
+        b=p1OAOJEqurtjb4zgOI5DrNGzp8Mk7CD/3QdpgDfBFnEcYHdArLD4borK8H5XK+7OOo
+         oNlqFmjm3G7dE66Ftnw3s+ujnx8RiFdiT/MobjXzPWUDRPb0gdoJ2Vyze70tnuLxNz6j
+         aPGyBPmPlkNirLg8CBvqrzdt1yV88XmO0htJNgbl+JFnhRfWgd4LYHEn2c7YuY7dzZO4
+         XDmrjaKGj4tNqFtYRSK94EYWvxmCFrIaR33u0SJGDLss+l3MYRZ2DoNvVojkpAX8j2U2
+         GZRrR/xA+tKjYnvmSOM362pWef8JTJvMLTHHldZJVgljldS2ZptA4vc4d6e7w+3OQlPT
+         Me9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718957677; x=1719562477;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0O/Dqe2KMVumxXzco1OedBrrN88fxS2sDSxa3fRQNVo=;
-        b=c3ww1NnRKH2YfRbF4yBdKwCY38sMkYmUlt3FNon3qY65n9sUm3wyQLvrM6gksUMo5i
-         5/Li1UvKnbHDKrzLlaNQ4KXx8wTN5+lNb6TblxM85pejxqNobHJ2vda6jyxOtYZ4/bfK
-         pr8zS4aaWLdU+geY0G/cnUepqYNpIfLIvKInRKoRUuR1iyFg5EtP8l+VcgjyroCNVFUL
-         0W7Ge18eNjuYxThmPAMfv9oDrtoGqtRNCl7KgvQIf4TeBlqaJ2y/Sdw6ctn0t4hXsBMS
-         Ps8JkX0oHA9Q4cm7IqHlfJWYOpdeplAeboB0oLmp7k9EraGaoH7WKm8cEWx219UQWyfQ
-         VTiA==
-X-Forwarded-Encrypted: i=1; AJvYcCXRk7lgSMblje+o4uYY7LAi6ivIMwl5GeBruM3WdQg/exdAAu8ifjzXAEtzmELLx45YuIVFcknpiQm0lyCILUAHACms0jBCxvCAaHiHlEfWMwUf3uHdIbF4Dg40MhNNZALyr///QKLAbcggF2lGnlPe58E8M6gzisIJw76qmJfv3KQ31dBD
-X-Gm-Message-State: AOJu0YwDm0J5DRFO29r7FumCtc80JHsQquSC07BDSBIls6areBR6gJzS
-	KUhzuWYnk6rw6KpzaigYVwAj6JJqrK62RiwWjEfDnW5yBmoWlqLOpjv8VCicbEA=
-X-Google-Smtp-Source: AGHT+IFmXhWWsuxsSkJtNcuigvqkVVr1UAdGQByG20qWApyuUQTDSSBWWR3F15WjD5aFMfM657DezQ==
-X-Received: by 2002:a05:6512:3127:b0:52c:c032:538d with SMTP id 2adb3069b0e04-52ccaa5be51mr4443598e87.27.1718957677223;
-        Fri, 21 Jun 2024 01:14:37 -0700 (PDT)
-Received: from deepthought.lan ([2a00:1e88:40c0:c300::729])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52cd643e419sm125548e87.243.2024.06.21.01.14.36
+        d=1e100.net; s=20230601; t=1718959364; x=1719564164;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kUnYRScJzL59U2vYuUFusX/xjPGk6acayJAkE49irck=;
+        b=bjL3xTreFGm41ZDEZV0WW04Tl94bv4QbK3ByY09x+xda9MPVy3GQw2hjDT6JigwyZN
+         pcxUFZW3YDAU6AajuewI95jahk+frQocYMpPQzslifcwPP3QBMJKtUAkO7b3BgWgEMWn
+         YzOKRnp5ug4qkqL5+IW20GHPPrYs6lpxZHQZcOaGAYTWJHGyBg+Mo4nCxhCDGOIQcLld
+         ojwEQ7Na/sScyKOnIZyxKmRLj6NXeaGUYcU3Hl6xGdLFPG7Q5e6E1out29YxmKrd8RRp
+         mLOAUhpndGebRbe61CoSyJZNE0aeMfqdkROknbg3eAICR3761CVkh61BjwhKB2XZeQOV
+         WfGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWn9xm85Wh1UG8JTDBjg9jz0X2mz8LRvmFO6UuRYYo++qlpPgcK3XU1VGRrKb8oL0Epka+B59+y0VKaJ644h1C2/+XT90rotd9Vq8s=
+X-Gm-Message-State: AOJu0Yz+dIPg2iaUdMSanhUHcaZI+uV/TcFRNgiO/2EujRl8FOFO2lXh
+	zafMIbEibnayPIHV/S9H5koEWSb56UEAXPxuzE94maEN7TlAMYeWoCKbxLYPJRE=
+X-Google-Smtp-Source: AGHT+IGk9CWilm5qia4rnGMjRHdwvVHpwVCxmCigKKbigiJMGhUVq2PvtH2YD/02WIjUNb44SYwydg==
+X-Received: by 2002:a17:906:27d0:b0:a6d:fbed:7953 with SMTP id a640c23a62f3a-a6f9506efe1mr729475666b.27.1718959364083;
+        Fri, 21 Jun 2024 01:42:44 -0700 (PDT)
+Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf428c18sm58993166b.24.2024.06.21.01.42.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jun 2024 01:14:36 -0700 (PDT)
-From: Valeriy Klimin <vdos63@gmail.com>
-Date: Fri, 21 Jun 2024 11:14:48 +0300
-Subject: [PATCH 3/3] ARM: dts: qcom: msm8974-sony-shinano: increase load on
- l21 for sdhc2
+        Fri, 21 Jun 2024 01:42:43 -0700 (PDT)
+From: Luca Weiss <luca.weiss@fairphone.com>
+Subject: [PATCH 0/2] Add PM8008 regulator support for Fairphone 4 & 5
+Date: Fri, 21 Jun 2024 10:42:29 +0200
+Message-Id: <20240621-fp4-fp5-pm8008-v1-0-dbedcd6f00f1@fairphone.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -64,59 +62,39 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240621-sony-aries-v1-3-bcf96876980e@gmail.com>
-References: <20240621-sony-aries-v1-0-bcf96876980e@gmail.com>
-In-Reply-To: <20240621-sony-aries-v1-0-bcf96876980e@gmail.com>
-To: ~postmarketos/upstreaming <~postmarketos/upstreaming@lists.sr.ht>, 
- phone-devel <phone-devel@vger.kernel.org>, 
- Bjorn Andersson <andersson@kernel.org>, 
+X-B4-Tracking: v=1; b=H4sIAPU8dWYC/x2MQQqAIBAAvxJ7TtjERPtKdLBaaw+ZKEQg/j3pM
+ Ic5zBTIlJgyTF2BRA9nvkOToe9gO104SPDeHCRKhVqi8FE1RhEvg2iERetWNNpY76FFMZHn9x/
+ OS60fUBAAmWAAAAA=
+To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Valeriy Klimin <vdos63@gmail.com>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=997; i=vdos63@gmail.com;
- h=from:subject:message-id; bh=xFO0qgIbZZSZGxvGjihJgB2It0l8Hs4sqlpsLip0Fe8=;
- b=owEBbQKS/ZANAwAIAQ4Juwrzgg1aAcsmYgBmdTaMO55zgZkXeo5FuKQfLy+PdRD0EFqiNVRjh
- bL4U6jyQx6JAjMEAAEIAB0WIQT/ENLr7ksLn/+UbhAOCbsK84INWgUCZnU2jAAKCRAOCbsK84IN
- WuihD/99DdSmt0QhpONeoqKvN1+5EVxUXYYfsENQcx3lHvgA5N18bihFQqf/7VaLtAoek5BHMaf
- Ox+MebFr9e4fKWdvqjdHAmUw3hbtRsbwd9+RVYHy+VOW55uXBF37iBtx4N5f0CBmv1u5qUZzz+t
- 9CBVq3Z2HvcT8erjB4WGUKqz7mLA6BFmpGWaK8dzsyC8iC9OkPPMu8sWaak6cvU7FSCUBD8INAl
- cD7A9E3VxWIdV+POlhIlFD54+oNHG4tg0Hwj8Q0NCjHlg9tpv3LVxjtcpjGMzbc17Tbb8Y0+97L
- 2KBFLC6vTRvh23MIMEYn51tlVEFzd0JVc1x1RwHuCW7IUx6rPAsyWpcUaq1wJCg9gP+QHu7zQ46
- GRhb6mYoxYKe0mU0x1MPZ50RC7PBXPJbD938Pjk/YfJLq5JXI98X844qAagMx5RK1+4WNBfSys1
- r6C1KSYhpEVT7xJo82mDAlcFlyWv5+KbNky+Zhek0nSAOIrJeYnFwb50FrmGk2dGpy63Go+P7aJ
- H0OYonU02/a9n82/qVOgxaBn2LMBKSK6mL03k9HxQdBRO+o0o7bUYDXoayoVLUYbgzKqqrLs+fR
- tB/aLC/5cMtHTPYe8A2QBgF2aqRGSTD3W3BJlE4INKLNlOVbPkeVo7yB0uRyOHRkKifoL72Ev5I
- uVFFtbQZdQmiPUg==
-X-Developer-Key: i=vdos63@gmail.com; a=openpgp;
- fpr=FF10D2EBEE4B0B9FFF946E100E09BB0AF3820D5A
 
-SD cards would exhibit errors similar to ones described in commit
-27fe0fc05f35 ("ARM: dts: msm8974-FP2: Increase load on l20 for sdhci")
+With the PM8008 regulator driver scheduled for Linux v6.11[0] let's add
+the dts bits for Fairphone 4 and Fairphone 5 which both use this PMIC
+for powering the camera sensors - and the pull-up for the CCI (camera
+I2C bus).
 
-This patch applies the same change to the regulator for sdhc2.
+[0] https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git/log/?h=ib-mfd-regulator-pm8008-6.11
 
-Signed-off-by: Valeriy Klimin <vdos63@gmail.com>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
- arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+Luca Weiss (2):
+      arm64: dts: qcom: sm7225-fairphone-fp4: Configure PM8008 regulators
+      arm64: dts: qcom: qcm6490-fairphone-fp5: Configure PM8008 regulators
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi
-index e129bb1bd6ec..6af7c71c7158 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-common.dtsi
-@@ -380,6 +380,8 @@ pm8941_l20: l20 {
- 		pm8941_l21: l21 {
- 			regulator-min-microvolt = <2950000>;
- 			regulator-max-microvolt = <2950000>;
-+			regulator-system-load = <500000>;
-+			regulator-allow-set-load;
- 			regulator-boot-on;
- 		};
- 
+ arch/arm64/boot/dts/qcom/qcm6490-fairphone-fp5.dts | 105 +++++++++++++++++++-
+ arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts  | 109 ++++++++++++++++++++-
+ 2 files changed, 212 insertions(+), 2 deletions(-)
+---
+base-commit: 89b2edc37183ced80c5ae14277b10bf6482a0a94
+change-id: 20240620-fp4-fp5-pm8008-909ab08689ff
 
+Best regards,
 -- 
-2.43.2
+Luca Weiss <luca.weiss@fairphone.com>
 
