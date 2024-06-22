@@ -1,60 +1,60 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743FF4C8A
-	for <phone-devel@vger.kernel.org>; Sat, 22 Jun 2024 11:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF4314D6F1
+	for <phone-devel@vger.kernel.org>; Sat, 22 Jun 2024 11:46:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719055311; cv=none; b=A2MeaSTL6BlyEXBLZhD6/sgIA6LfwAqy3sgUKu6CPbaGlVtgQXofcfjBBATcBfOPA3N+KfAbZXYvO4m2s3xWGXyxCb/iUwCEzWBf8l2QThaQhMVIIj2GVt8MV19/uMjpZxVEu9oGZTYEOSD2n8O3orQWrb5r4rrrFeG1t8SA83Q=
+	t=1719056777; cv=none; b=KUDLfzfKQeHJQgeDymT6sdz7UawIpOTo/u542Xu6HmFNa4R+xZREI7/mTEhJCQq4cEs0YdlE8LK+tYzz7uF5rJOD+ja7M8aqS4n62gnlci9/5U4xhAHRAYV3r0FthQtiVVOpXcgW4BZmUHkR+C8kGE3hzhAOL1+ST/bi3yKnSOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719055311; c=relaxed/simple;
-	bh=yNv9F/RG5xvLbcRU5VaoFHunK5D9b7jdpAxluannzVc=;
+	s=arc-20240116; t=1719056777; c=relaxed/simple;
+	bh=+66agaYiiFnc9wda50Lfas0i4FmApAa6AwkKsCf/3+Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cp9AetamhSMYuBpmjjuNTsSD1kNvBNI3nnR6s4lCz1DDXHenGQz3b5fwLt/kb5Z8J97lKrSyxcetGv8hghJ37OPgLj9O6Bwy+aOHFSshvd0s5FapGmJrY9FWwX8yIabdtjC4WHhsWBZObMnpusctB4AQJwU3Nh1KfnoVrdmjTIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UZQuClbl; arc=none smtp.client-ip=209.85.218.49
+	 In-Reply-To:Content-Type; b=k892Yl1Pin12bofOJANkJhGE2VBD2V+EuXFGU12ChSiMHQuPofb2FOqhky3hqcOkeyrKVl3l38D/jJScCOI77SUBDyVhWTxdOBPVjg6jZod/IILTqnM61BtQCzmE5HLV6G6aU+gC7qcz8iPCLeXikLTA6az3GQYA4JPpJ6q4cfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ezOxR5VG; arc=none smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UZQuClbl"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a6f7720e6e8so314682766b.3
-        for <phone-devel@vger.kernel.org>; Sat, 22 Jun 2024 04:21:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ezOxR5VG"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-57cf8880f95so3267595a12.3
+        for <phone-devel@vger.kernel.org>; Sat, 22 Jun 2024 04:46:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719055308; x=1719660108; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1719056774; x=1719661574; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ONG6bKiTspIhEbA9YlGbgpEq1mAWMqyNj0AssfJTVR4=;
-        b=UZQuClbl9zvoLtErS1rgY7VZR7P1R7sjjkQ3XMWWdALvnxTkc7IajfCfdAW0Y0TPtQ
-         RnNpd0lWywDmWkc7COfBhk3VYrY0VDgxXM3bPiTCxIU5THC7A48/+Xmh0oQZb2RDxHfT
-         pufRJcFZYBqPw75UHcTyH48QNFO6SFEnx0+GFe14gVyFxJ3K2FB6xSdjN/dP1eNuvs1x
-         avgBXIeLQY90Dp5Mk13ygz4wA1F93S1TgrK8++i5BevMNQB0t4mu3p/Bk9g0ZCBfQumM
-         ogzdKSakQF9EVxzrTAmgRNjDaEz67YmEmiYtwympnAVUs2uzEdfdElUHaA+lhSHI1zKH
-         tRow==
+        bh=ex0tM6LxW25V2+wIZSeOGMpb5a0XLFOxkY4gbLUAZJ4=;
+        b=ezOxR5VGsKHZZ9635CGMveXRb0NTtDFNfNq5/BEdMUIGhJouI8h5jKpXrH7Oj/KO1I
+         pYYUEUTUAiLUq0qzFf8gzZNz9Vu9yJbOEEmVMIWMzAO899xhLyV/hXnaLYZislMW2EDo
+         15pF69GoWn7hq8rQ2ETDFw0w0/sDtX+yOVU5GVXE0F3ff2DxXJPiUp5tzsiXCZGezrZA
+         IMdKWEDBAzbF+W9QThgXNALvgiRO5WKYxCEec9JHPXtM8Xn4hTvH51AhRsJyuXE2ObLL
+         860GizdMVJ6uiBUEHyWqE8ciN6DqUvKLE8sbFLGu8pCWEnQC4kE2GOJV4Iv9AaJhJrno
+         03ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719055308; x=1719660108;
+        d=1e100.net; s=20230601; t=1719056774; x=1719661574;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ONG6bKiTspIhEbA9YlGbgpEq1mAWMqyNj0AssfJTVR4=;
-        b=dsBjENGuB0o35Y0xIoNGax5NtnAo4xz/BJhhx4T1tse4MTrdxDGzw7Gtz2Nsdv6hP1
-         0xHW5U6xCQKmEJZAg+2nHqLK93Xo6pawUo5l1ZuV0K3zunCvfPCfLe+y6vKBWt9LWDX1
-         0vIr727cxamR+OGJhIvWx4Wp7ERVLMdP5Vtdhb90vrco35o+xcTURmCHZY5Q69EuFpxA
-         Ecq652BD1I54g9hCr8pE/H9LUKRoZivy7s7XmaMG+jOSY351ZonAqjlGT59ehGGpTsBc
-         4b1X4/CTKIFvOvRy9IamJ64+peXeI9M0A+g51eHRiece8WcFHxCjetrogC01sncncTiC
-         QJBw==
-X-Forwarded-Encrypted: i=1; AJvYcCVlBNyg6lg1bq3ASuShbnjOtQDRQtU9SvIMvmjI3ngBWUBF9/VaaH2N//MKBNjklwmkYeHiuF9ie5nkl2Gzxajx1/bqct/Wef5b7Fs=
-X-Gm-Message-State: AOJu0YxwYSQQ+8Xt3WEBtY80swVUNNse2OhWVnkMoXssj7dO3aoaHbbR
-	fgWsbwVgb5+x1FySSndm3jY6sA+evic4NjO+lxzmJhCWD1U3IzuilKUMjh5AfNg=
-X-Google-Smtp-Source: AGHT+IGfzyz/0+o2tIp0n2wByuwnQjzt4pOamTr3vvZ9Zdc4a8xnYsWLCqrh2+ZmZ5QnfRnATMd8UQ==
-X-Received: by 2002:a17:907:d502:b0:a68:fcc9:6c1c with SMTP id a640c23a62f3a-a6fab05c0edmr800424866b.0.1719055307670;
-        Sat, 22 Jun 2024 04:21:47 -0700 (PDT)
+        bh=ex0tM6LxW25V2+wIZSeOGMpb5a0XLFOxkY4gbLUAZJ4=;
+        b=HaAbzGGwumxQon7E6075yAk5HzHm6p4en1VfN2L2Xk90wdd10E9ZsW5zqErJxw9Bw4
+         eC66xbBVp4kIbL6NH1uPF2pvSNw3nAc/3Rig9PcllBMXFN1mGcn9GrHPn1aJ0UXgdd2b
+         GQOONkQcQ6PNHPCaAhw1lvCVfRE8Jdph6MgGuxVMobrK64yOrMl0st8ZHXMfJK2oPLmA
+         dj026IJ6VJlmaP7XT7W8pDg05RxvSXSg1UGdOqZNgG+WEZ1YmlRhC7yKH/ttsD+A0h1T
+         E0otsffslSfolr/7lQgWxfATkxlOpIqJhvhRi0FbRL8XhLebQGo6meUdbRwYPm2LNHtz
+         l1KA==
+X-Forwarded-Encrypted: i=1; AJvYcCVUkXTPOH5x5jYos4fRArA6HPuk7uElvivqAAB7Fr7gOYMaxR1jzp99/eujZnLhKiqrkWjq4tVNCV4B10kwiV62GPrTrlp5bdPaZpk=
+X-Gm-Message-State: AOJu0YzkWcTnQbZusatQsOu6d/FB/KMW91V5ezBkmXMZMrLszS8AXqsq
+	e03rBY0TNiEP12ZheLonOWulYnjGlFAl0aOMhhchD1BAEj8rNQZeQCoQvzbvDUc=
+X-Google-Smtp-Source: AGHT+IG13RlR/h9teGk653CmpQ7usaf+YKjqH/yhLCC1Ebtglmw6+ywyyHzoCVz9ij/kluyQEMFntQ==
+X-Received: by 2002:a17:907:969e:b0:a72:42df:cd27 with SMTP id a640c23a62f3a-a7242dfcd78mr21027566b.71.1719056774060;
+        Sat, 22 Jun 2024 04:46:14 -0700 (PDT)
 Received: from [192.168.128.35] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf549075sm185474666b.98.2024.06.22.04.21.45
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf56073bsm185617566b.169.2024.06.22.04.46.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jun 2024 04:21:47 -0700 (PDT)
-Message-ID: <f468e14f-7ba6-4717-abc8-fbf451c05030@linaro.org>
-Date: Sat, 22 Jun 2024 13:21:44 +0200
+        Sat, 22 Jun 2024 04:46:13 -0700 (PDT)
+Message-ID: <6e7e7b44-3c06-42ce-9d9b-9dcc83387657@linaro.org>
+Date: Sat, 22 Jun 2024 13:46:10 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -62,17 +62,17 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] ARM: dts: qcom: msm8974-sony-shinano: increase
- load on l21 for sdhc2
-To: Valeriy Klimin <vdos63@gmail.com>,
- ~postmarketos/upstreaming <~postmarketos/upstreaming@lists.sr.ht>,
- phone-devel <phone-devel@vger.kernel.org>,
- Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240621-sony-aries-v2-0-dddf10722522@gmail.com>
- <20240621-sony-aries-v2-3-dddf10722522@gmail.com>
+Subject: Re: [PATCH 5/7] ARM: dts: qcom: msm8226: Add CPU frequency scaling
+ support
+To: Luca Weiss <luca@lucaweiss.eu>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Jassi Brar <jassisinghbrar@gmail.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-clk@vger.kernel.org
+References: <20240619-msm8226-cpufreq-v1-0-85143f5291d1@lucaweiss.eu>
+ <20240619-msm8226-cpufreq-v1-5-85143f5291d1@lucaweiss.eu>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
@@ -110,19 +110,83 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20240621-sony-aries-v2-3-dddf10722522@gmail.com>
+In-Reply-To: <20240619-msm8226-cpufreq-v1-5-85143f5291d1@lucaweiss.eu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 21.06.2024 4:26 PM, Valeriy Klimin wrote:
-> SD cards would exhibit errors similar to ones described in commit
-> 27fe0fc05f35 ("ARM: dts: msm8974-FP2: Increase load on l20 for sdhci")
+On 19.06.2024 11:02 PM, Luca Weiss wrote:
+> Add a node for the a7pll with its frequencies. With this we can use the
+> apcs-kpss-global driver for the apcs node and use the apcs to scale the
+> CPU frequency according to the opp-table.
 > 
-> This patch applies the same change to the regulator for sdhc2.
-> 
-> Signed-off-by: Valeriy Klimin <vdos63@gmail.com>
-> ---
+> At the same time unfortunately we need to provide the gcc node xo_board
+> instead of the XO via rpmcc since otherwise we'll have a circular
+> dependency between apcs, gcc and the rpm.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Hm.. thinking of a solution to that, should we maybe split the mux/clk
+part of APCS into a subnode and bind the clk device to that?
+
+Dmitry, Bjorn, thoughts?
+
+[...]
+> +
+> +		opp-600000000 {
+
+Can't find this one in the random msm-3.10 I have
+
+> +			opp-hz = /bits/ 64 <600000000>;
+> +		};
+> +
+> +		opp-787200000 {
+> +			opp-hz = /bits/ 64 <787200000>;
+> +		};
+> +
+> +		/* Higher CPU frequencies need speedbin support */
+
+1190400 kHz seems to also be a supported-across-the-board one.. unless the
+watch edition shuffled things around with a newer tree
+
+
+> +	};
+> +
+>  	pmu {
+>  		compatible = "arm,cortex-a7-pmu";
+>  		interrupts = <GIC_PPI 7 (GIC_CPU_MASK_SIMPLE(4) |
+> @@ -231,9 +262,75 @@ intc: interrupt-controller@f9000000 {
+>  			#interrupt-cells = <3>;
+>  		};
+>  
+> -		apcs: syscon@f9011000 {
+> -			compatible = "syscon";
+> +		apcs: mailbox@f9011000 {
+> +			compatible = "qcom,msm8226-apcs-kpss-global",
+> +				     "qcom,msm8916-apcs-kpss-global", "syscon";
+>  			reg = <0xf9011000 0x1000>;
+> +			#mbox-cells = <1>;
+> +			clocks = <&a7pll>, <&gcc GPLL0_VOTE>;
+> +			clock-names = "pll", "aux";
+> +			#clock-cells = <0>;
+> +		};
+> +
+> +		a7pll: clock@f9016000 {
+> +			compatible = "qcom,msm8226-a7pll";
+> +			reg = <0xf9016000 0x40>;
+> +			#clock-cells = <0>;
+> +			clocks = <&xo_board>;
+> +			clock-names = "xo";
+> +			operating-points-v2 = <&a7pll_opp_table>;
+> +
+> +			a7pll_opp_table: opp-table {
+> +				compatible = "operating-points-v2";
+> +
+> +				opp-768000000 {
+> +					opp-hz = /bits/ 64 <768000000>;
+> +				};
+
+Looks like scaling this PLL should also scale some voltage domains:
+CPR (fed by pm8226_s2) and MX
+
+Perhaps hook up MX to this one for now and add CPR to the CPU nodes( & OPP table)
+after that is brought up
 
 Konrad
