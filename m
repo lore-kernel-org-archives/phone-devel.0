@@ -1,60 +1,60 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB24414F9DA
-	for <phone-devel@vger.kernel.org>; Sat, 22 Jun 2024 11:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743FF4C8A
+	for <phone-devel@vger.kernel.org>; Sat, 22 Jun 2024 11:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719054643; cv=none; b=adJXVNh9t0d8cTfTYjeoWhipDtFlfpnioacaGlchEzP0A+CaIkmI+3XlOozXcJtJRv/fl1I9p+0AItPAllCDKBREfORPzKP+XJqKfIVm11M7ZXGpzWVZPYB+4u51AWbz1/CuJk9z7rEidC9RBs+HM1YR6QpUW8byvvn8anRnkyQ=
+	t=1719055311; cv=none; b=A2MeaSTL6BlyEXBLZhD6/sgIA6LfwAqy3sgUKu6CPbaGlVtgQXofcfjBBATcBfOPA3N+KfAbZXYvO4m2s3xWGXyxCb/iUwCEzWBf8l2QThaQhMVIIj2GVt8MV19/uMjpZxVEu9oGZTYEOSD2n8O3orQWrb5r4rrrFeG1t8SA83Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719054643; c=relaxed/simple;
-	bh=33t2+53znsyzLwt+Za4IlobN0ZG9pU4A3lqHnq/ojcQ=;
+	s=arc-20240116; t=1719055311; c=relaxed/simple;
+	bh=yNv9F/RG5xvLbcRU5VaoFHunK5D9b7jdpAxluannzVc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OQECJVWs1u0V7F3ohf/C7SfH91CagPGA6o85Iqj6Jp9tzUkSSZXUh5R4M3usiZ6H8BxOFcsUUnQZ8qT0YY2Z72flOkqD3+i+cmzdHNe44hGmSdJ3+JWE5eboUITesFCYuibv9jkp66SkzqMza7hWTC9+EeZbWJ3v3ySCDew1GCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xOLihn5H; arc=none smtp.client-ip=209.85.218.42
+	 In-Reply-To:Content-Type; b=cp9AetamhSMYuBpmjjuNTsSD1kNvBNI3nnR6s4lCz1DDXHenGQz3b5fwLt/kb5Z8J97lKrSyxcetGv8hghJ37OPgLj9O6Bwy+aOHFSshvd0s5FapGmJrY9FWwX8yIabdtjC4WHhsWBZObMnpusctB4AQJwU3Nh1KfnoVrdmjTIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UZQuClbl; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xOLihn5H"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a6f9fe791f8so459381066b.0
-        for <phone-devel@vger.kernel.org>; Sat, 22 Jun 2024 04:10:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UZQuClbl"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a6f7720e6e8so314682766b.3
+        for <phone-devel@vger.kernel.org>; Sat, 22 Jun 2024 04:21:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719054640; x=1719659440; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1719055308; x=1719660108; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=iBZeZdfUAWpnWDhH3kUtvDr+DT4k3Dvr8whyjRJOFaE=;
-        b=xOLihn5HyX9DvS5tLshiBxFFYiJVRY8sJMZRAgZ+jEakt9dXBXH+myIp5/nPhKP4HD
-         o2hoxYjxiv6uXpZbhP3pICQvoCdWGmEvAM3kDiKQ6aItA2SP0CkgjcEBoc4+5Qqj7ET2
-         LH+W9OGWokIAGrWMSidRTvnuuvBHAlfPUNoEhf+wQ3d4Km78xfBGzgBveqHMSiViVxwK
-         0G/yfi0cP1y1aF1R00wdd6325QK1ub0pr/4f+vMvukQnaletP1yFGT3r0yIRHTH1dVNo
-         l93cdx4hMKqWt40jjKFCptQg4HyP2x49OqRpxYr6BkrRAMhml55HKmfQ0foopEhTosXz
-         WWnA==
+        bh=ONG6bKiTspIhEbA9YlGbgpEq1mAWMqyNj0AssfJTVR4=;
+        b=UZQuClbl9zvoLtErS1rgY7VZR7P1R7sjjkQ3XMWWdALvnxTkc7IajfCfdAW0Y0TPtQ
+         RnNpd0lWywDmWkc7COfBhk3VYrY0VDgxXM3bPiTCxIU5THC7A48/+Xmh0oQZb2RDxHfT
+         pufRJcFZYBqPw75UHcTyH48QNFO6SFEnx0+GFe14gVyFxJ3K2FB6xSdjN/dP1eNuvs1x
+         avgBXIeLQY90Dp5Mk13ygz4wA1F93S1TgrK8++i5BevMNQB0t4mu3p/Bk9g0ZCBfQumM
+         ogzdKSakQF9EVxzrTAmgRNjDaEz67YmEmiYtwympnAVUs2uzEdfdElUHaA+lhSHI1zKH
+         tRow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719054640; x=1719659440;
+        d=1e100.net; s=20230601; t=1719055308; x=1719660108;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iBZeZdfUAWpnWDhH3kUtvDr+DT4k3Dvr8whyjRJOFaE=;
-        b=Ym/fpvtAvo6B7TtVWsQKJf9Qbrr8ncwU3DW3sZV9/HJfiRrdUyd79mCRyclHFvlvS1
-         qZ5ACFxrOiXW6ek2Uwj/E6eWj24AmD1r3JM8eL93k3ElF2mtSFMdSVdhGfMW7OgbKG8e
-         jM9fYLeeNOJ9dxgeET4Gfg/ZpO1TEYvJGatBs+h2719sw7h7SINYanGDFyG8EM3IDz7m
-         JCC0vpmGIlN0bcjyTfAXDPp+Vi/u5IjVqaNVFrxA3iCiSL4mk6B4etPRtKWXHwt7okmc
-         HWG3xJ9VqwnighYy27qrxJKREEUkUzHnCUAUASrwmMscOonUfNqN1PUH+FhPl2uWIli9
-         wLdg==
-X-Forwarded-Encrypted: i=1; AJvYcCWT65Oeg69tdKqju9Revh1WDGwAEvFnjqSWSOLFMd0cJcxSYE+/7YVmwvay4aNA1ab2OCY/X7e7RYgXWLT89F0s0Omc7JIjOHKynl4=
-X-Gm-Message-State: AOJu0Yxs/e+5XHS47Y0Ed1NEpw5VUxgbwGuRjVKehQzxLhq8ruqJlPHG
-	qHPg6jO8gE1McYFtqpTC+TFEPn3SktNYYFcJ34AJMA1iFdDZNX6UWrXudd7vEOE=
-X-Google-Smtp-Source: AGHT+IFc4K10XvEUFt442L4NeWoSGr4NiejUevDiqHJvU6cMnjOX60WCnHfV7UtbQJZAAGo/UxSrHg==
-X-Received: by 2002:a17:907:c924:b0:a6f:1d4e:734f with SMTP id a640c23a62f3a-a7038608fddmr53171066b.36.1719054639493;
-        Sat, 22 Jun 2024 04:10:39 -0700 (PDT)
+        bh=ONG6bKiTspIhEbA9YlGbgpEq1mAWMqyNj0AssfJTVR4=;
+        b=dsBjENGuB0o35Y0xIoNGax5NtnAo4xz/BJhhx4T1tse4MTrdxDGzw7Gtz2Nsdv6hP1
+         0xHW5U6xCQKmEJZAg+2nHqLK93Xo6pawUo5l1ZuV0K3zunCvfPCfLe+y6vKBWt9LWDX1
+         0vIr727cxamR+OGJhIvWx4Wp7ERVLMdP5Vtdhb90vrco35o+xcTURmCHZY5Q69EuFpxA
+         Ecq652BD1I54g9hCr8pE/H9LUKRoZivy7s7XmaMG+jOSY351ZonAqjlGT59ehGGpTsBc
+         4b1X4/CTKIFvOvRy9IamJ64+peXeI9M0A+g51eHRiece8WcFHxCjetrogC01sncncTiC
+         QJBw==
+X-Forwarded-Encrypted: i=1; AJvYcCVlBNyg6lg1bq3ASuShbnjOtQDRQtU9SvIMvmjI3ngBWUBF9/VaaH2N//MKBNjklwmkYeHiuF9ie5nkl2Gzxajx1/bqct/Wef5b7Fs=
+X-Gm-Message-State: AOJu0YxwYSQQ+8Xt3WEBtY80swVUNNse2OhWVnkMoXssj7dO3aoaHbbR
+	fgWsbwVgb5+x1FySSndm3jY6sA+evic4NjO+lxzmJhCWD1U3IzuilKUMjh5AfNg=
+X-Google-Smtp-Source: AGHT+IGfzyz/0+o2tIp0n2wByuwnQjzt4pOamTr3vvZ9Zdc4a8xnYsWLCqrh2+ZmZ5QnfRnATMd8UQ==
+X-Received: by 2002:a17:907:d502:b0:a68:fcc9:6c1c with SMTP id a640c23a62f3a-a6fab05c0edmr800424866b.0.1719055307670;
+        Sat, 22 Jun 2024 04:21:47 -0700 (PDT)
 Received: from [192.168.128.35] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf48b451sm183459666b.83.2024.06.22.04.10.37
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf549075sm185474666b.98.2024.06.22.04.21.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jun 2024 04:10:39 -0700 (PDT)
-Message-ID: <77c837c3-0d72-45e8-9f1a-bef43d7d4d51@linaro.org>
-Date: Sat, 22 Jun 2024 13:10:36 +0200
+        Sat, 22 Jun 2024 04:21:47 -0700 (PDT)
+Message-ID: <f468e14f-7ba6-4717-abc8-fbf451c05030@linaro.org>
+Date: Sat, 22 Jun 2024 13:21:44 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -62,8 +62,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] ARM: dts: qcom: Add Sony Xperia Z3 Compact
- smartphone
+Subject: Re: [PATCH v2 3/3] ARM: dts: qcom: msm8974-sony-shinano: increase
+ load on l21 for sdhc2
 To: Valeriy Klimin <vdos63@gmail.com>,
  ~postmarketos/upstreaming <~postmarketos/upstreaming@lists.sr.ht>,
  phone-devel <phone-devel@vger.kernel.org>,
@@ -72,7 +72,7 @@ To: Valeriy Klimin <vdos63@gmail.com>,
 Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20240621-sony-aries-v2-0-dddf10722522@gmail.com>
- <20240621-sony-aries-v2-2-dddf10722522@gmail.com>
+ <20240621-sony-aries-v2-3-dddf10722522@gmail.com>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
@@ -110,14 +110,15 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20240621-sony-aries-v2-2-dddf10722522@gmail.com>
+In-Reply-To: <20240621-sony-aries-v2-3-dddf10722522@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 21.06.2024 4:26 PM, Valeriy Klimin wrote:
-> Add the dts for the Z3 Compact. This is currently almost the same
-> as the plain Z3 as they share almost the same hardware and
-> nothing device-specific is currently supported.
+> SD cards would exhibit errors similar to ones described in commit
+> 27fe0fc05f35 ("ARM: dts: msm8974-FP2: Increase load on l20 for sdhci")
+> 
+> This patch applies the same change to the regulator for sdhc2.
 > 
 > Signed-off-by: Valeriy Klimin <vdos63@gmail.com>
 > ---
