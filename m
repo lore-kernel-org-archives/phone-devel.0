@@ -1,205 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559D836AF8;
-	Fri, 21 Jun 2024 23:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB24414F9DA
+	for <phone-devel@vger.kernel.org>; Sat, 22 Jun 2024 11:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719013956; cv=none; b=YLA641FLQTLEVbn7OX6bQzEQi/hOTVFLgz6EEBC0gK2Qryusf7fczFecZ1/LiA+WTc1akBkzdaAfDu7L1uKxSLPNHC6qiQV07G5M/cpeWDtzupNL12pgEXeBGE9Jibhrvka7X3GLrWu7yOeNMI7zyOiTqxVeE3wnJXGVdZ+DXfE=
+	t=1719054643; cv=none; b=adJXVNh9t0d8cTfTYjeoWhipDtFlfpnioacaGlchEzP0A+CaIkmI+3XlOozXcJtJRv/fl1I9p+0AItPAllCDKBREfORPzKP+XJqKfIVm11M7ZXGpzWVZPYB+4u51AWbz1/CuJk9z7rEidC9RBs+HM1YR6QpUW8byvvn8anRnkyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719013956; c=relaxed/simple;
-	bh=IlwUS5voj83yrVnahkbmNFGTdQnaGbO/2+ABzc4IILs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hnu5b/bA0A6JLEXN1NedLXveL9IPAs2z9tSA+YzYtqZWVQpQLUYHd7ZOf6UwKHihTDKDyOsrgH8cc1p9f8kyvRaN2iDNE2pU7IQtffS5Q+wGLHoA8/iIkquQ29KBt3GHl2GNAfs6c82A35m7P/ip/ZYpSa7+IKSz6S88oT2YNo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d4PJh7OU; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1719054643; c=relaxed/simple;
+	bh=33t2+53znsyzLwt+Za4IlobN0ZG9pU4A3lqHnq/ojcQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OQECJVWs1u0V7F3ohf/C7SfH91CagPGA6o85Iqj6Jp9tzUkSSZXUh5R4M3usiZ6H8BxOFcsUUnQZ8qT0YY2Z72flOkqD3+i+cmzdHNe44hGmSdJ3+JWE5eboUITesFCYuibv9jkp66SkzqMza7hWTC9+EeZbWJ3v3ySCDew1GCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xOLihn5H; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d4PJh7OU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719013955; x=1750549955;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IlwUS5voj83yrVnahkbmNFGTdQnaGbO/2+ABzc4IILs=;
-  b=d4PJh7OUCwGsefrIibbslvlvDK60B9hLDDrES4c/cNMomxi44jlJxaGX
-   kJWio6/eIk/idQfY7YoOETqVFaUWve2UZrL/Z2Tio89o/dcseoKltAsqi
-   GL91zfwz+ljdn/PG3VUIeeQ3F0k4cUmGg4PKLtLHwjBSZIYPbd4eaDPpm
-   6tkTTdF1RP13qf/6Qz1e+SKJQzPfiIhYnWPw3+Hy2R0uvXZM+QZ+PAMhQ
-   udryJIVO5AEqXQc8jtf7nV4HYQbkSL3dA7HQjN8OWx4FMQsBWWPQX/w7B
-   wHqPPgiVM64BJQut24KziSL6S/zihPG06dIDDqk6RtDZsX9jUUoqeQviH
-   g==;
-X-CSE-ConnectionGUID: bjE72uaEThmVKDxNAZNMJQ==
-X-CSE-MsgGUID: G58drpIISv621SA9Sa5hSw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="12187910"
-X-IronPort-AV: E=Sophos;i="6.08,256,1712646000"; 
-   d="scan'208";a="12187910"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2024 16:52:34 -0700
-X-CSE-ConnectionGUID: +x18Je5kQISObAMfhdR0PQ==
-X-CSE-MsgGUID: ii9jeeHUSw+zSg9dMw+REQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,256,1712646000"; 
-   d="scan'208";a="43173490"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 21 Jun 2024 16:52:27 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sKo3M-00098S-1O;
-	Fri, 21 Jun 2024 23:52:24 +0000
-Date: Sat, 22 Jun 2024 07:51:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dzmitry Sankouski <dsankouski@gmail.com>,
-	Sebastian Reichel <sre@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Pavel Machek <pavel@ucw.cz>, Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Chanwoo Choi <cw00.choi@samsung.com>, phone-devel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 12/23] mfd: Add new driver for MAX77705 PMIC
-Message-ID: <202406220754.8crTEWeR-lkp@intel.com>
-References: <20240618-starqltechn_integration_upstream-v3-12-e3f6662017ac@gmail.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xOLihn5H"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a6f9fe791f8so459381066b.0
+        for <phone-devel@vger.kernel.org>; Sat, 22 Jun 2024 04:10:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719054640; x=1719659440; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=iBZeZdfUAWpnWDhH3kUtvDr+DT4k3Dvr8whyjRJOFaE=;
+        b=xOLihn5HyX9DvS5tLshiBxFFYiJVRY8sJMZRAgZ+jEakt9dXBXH+myIp5/nPhKP4HD
+         o2hoxYjxiv6uXpZbhP3pICQvoCdWGmEvAM3kDiKQ6aItA2SP0CkgjcEBoc4+5Qqj7ET2
+         LH+W9OGWokIAGrWMSidRTvnuuvBHAlfPUNoEhf+wQ3d4Km78xfBGzgBveqHMSiViVxwK
+         0G/yfi0cP1y1aF1R00wdd6325QK1ub0pr/4f+vMvukQnaletP1yFGT3r0yIRHTH1dVNo
+         l93cdx4hMKqWt40jjKFCptQg4HyP2x49OqRpxYr6BkrRAMhml55HKmfQ0foopEhTosXz
+         WWnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719054640; x=1719659440;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iBZeZdfUAWpnWDhH3kUtvDr+DT4k3Dvr8whyjRJOFaE=;
+        b=Ym/fpvtAvo6B7TtVWsQKJf9Qbrr8ncwU3DW3sZV9/HJfiRrdUyd79mCRyclHFvlvS1
+         qZ5ACFxrOiXW6ek2Uwj/E6eWj24AmD1r3JM8eL93k3ElF2mtSFMdSVdhGfMW7OgbKG8e
+         jM9fYLeeNOJ9dxgeET4Gfg/ZpO1TEYvJGatBs+h2719sw7h7SINYanGDFyG8EM3IDz7m
+         JCC0vpmGIlN0bcjyTfAXDPp+Vi/u5IjVqaNVFrxA3iCiSL4mk6B4etPRtKWXHwt7okmc
+         HWG3xJ9VqwnighYy27qrxJKREEUkUzHnCUAUASrwmMscOonUfNqN1PUH+FhPl2uWIli9
+         wLdg==
+X-Forwarded-Encrypted: i=1; AJvYcCWT65Oeg69tdKqju9Revh1WDGwAEvFnjqSWSOLFMd0cJcxSYE+/7YVmwvay4aNA1ab2OCY/X7e7RYgXWLT89F0s0Omc7JIjOHKynl4=
+X-Gm-Message-State: AOJu0Yxs/e+5XHS47Y0Ed1NEpw5VUxgbwGuRjVKehQzxLhq8ruqJlPHG
+	qHPg6jO8gE1McYFtqpTC+TFEPn3SktNYYFcJ34AJMA1iFdDZNX6UWrXudd7vEOE=
+X-Google-Smtp-Source: AGHT+IFc4K10XvEUFt442L4NeWoSGr4NiejUevDiqHJvU6cMnjOX60WCnHfV7UtbQJZAAGo/UxSrHg==
+X-Received: by 2002:a17:907:c924:b0:a6f:1d4e:734f with SMTP id a640c23a62f3a-a7038608fddmr53171066b.36.1719054639493;
+        Sat, 22 Jun 2024 04:10:39 -0700 (PDT)
+Received: from [192.168.128.35] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf48b451sm183459666b.83.2024.06.22.04.10.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 22 Jun 2024 04:10:39 -0700 (PDT)
+Message-ID: <77c837c3-0d72-45e8-9f1a-bef43d7d4d51@linaro.org>
+Date: Sat, 22 Jun 2024 13:10:36 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240618-starqltechn_integration_upstream-v3-12-e3f6662017ac@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] ARM: dts: qcom: Add Sony Xperia Z3 Compact
+ smartphone
+To: Valeriy Klimin <vdos63@gmail.com>,
+ ~postmarketos/upstreaming <~postmarketos/upstreaming@lists.sr.ht>,
+ phone-devel <phone-devel@vger.kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240621-sony-aries-v2-0-dddf10722522@gmail.com>
+ <20240621-sony-aries-v2-2-dddf10722522@gmail.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20240621-sony-aries-v2-2-dddf10722522@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Dzmitry,
+On 21.06.2024 4:26 PM, Valeriy Klimin wrote:
+> Add the dts for the Z3 Compact. This is currently almost the same
+> as the plain Z3 as they share almost the same hardware and
+> nothing device-specific is currently supported.
+> 
+> Signed-off-by: Valeriy Klimin <vdos63@gmail.com>
+> ---
 
-kernel test robot noticed the following build errors:
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[auto build test ERROR on 6906a84c482f098d31486df8dc98cead21cce2d0]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Dzmitry-Sankouski/power-supply-add-undervoltage-health-status-property/20240618-222456
-base:   6906a84c482f098d31486df8dc98cead21cce2d0
-patch link:    https://lore.kernel.org/r/20240618-starqltechn_integration_upstream-v3-12-e3f6662017ac%40gmail.com
-patch subject: [PATCH v3 12/23] mfd: Add new driver for MAX77705 PMIC
-config: riscv-allmodconfig (https://download.01.org/0day-ci/archive/20240622/202406220754.8crTEWeR-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project ad79a14c9e5ec4a369eed4adf567c22cc029863f)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240622/202406220754.8crTEWeR-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406220754.8crTEWeR-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from drivers/mfd/max77705-core.c:14:
-   In file included from include/linux/i2c.h:19:
-   In file included from include/linux/regulator/consumer.h:35:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:13:
-   In file included from include/linux/cgroup.h:25:
-   In file included from include/linux/kernel_stat.h:8:
-   In file included from include/linux/interrupt.h:22:
-   In file included from arch/riscv/include/asm/sections.h:9:
-   In file included from include/linux/mm.h:2214:
-   include/linux/vmstat.h:484:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     484 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     485 |                            item];
-         |                            ~~~~
-   include/linux/vmstat.h:491:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     491 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     492 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:498:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     498 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
-   include/linux/vmstat.h:503:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     503 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     504 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/vmstat.h:512:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
-     512 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
-     513 |                            NR_VM_NUMA_EVENT_ITEMS +
-         |                            ~~~~~~~~~~~~~~~~~~~~~~
-   In file included from drivers/mfd/max77705-core.c:20:
->> include/linux/mfd/max77705-private.h:243:19: error: use of undeclared identifier 'MAX77705_USBC_REG_END'; did you mean 'MAX77705_PMIC_REG_END'?
-     243 |         u8 reg_muic_dump[MAX77705_USBC_REG_END];
-         |                          ^~~~~~~~~~~~~~~~~~~~~
-         |                          MAX77705_PMIC_REG_END
-   include/linux/mfd/max77705-private.h:96:2: note: 'MAX77705_PMIC_REG_END' declared here
-      96 |         MAX77705_PMIC_REG_END,
-         |         ^
-   5 warnings and 1 error generated.
-
-
-vim +243 include/linux/mfd/max77705-private.h
-
-   216	
-   217	struct max77705_dev {
-   218		struct device *dev;
-   219		struct i2c_client *i2c; /* 0xCC; Haptic, PMIC */
-   220		struct i2c_client *charger; /* 0xD2; Charger */
-   221		struct i2c_client *fuelgauge; /* 0x6C; Fuelgauge */
-   222		struct i2c_client *muic; /* 0x4A; MUIC */
-   223		struct i2c_client *debug; /* 0xC4; Debug */
-   224		struct mutex i2c_lock;
-   225	
-   226		struct regmap *regmap;
-   227		struct regmap *regmap_fg;
-   228		struct regmap *regmap_charger;
-   229		struct regmap *regmap_leds;
-   230	
-   231		int type;
-   232	
-   233		int irq;
-   234		int irq_base;
-   235		int irq_masks_cur[MAX77705_IRQ_GROUP_NR];
-   236		int irq_masks_cache[MAX77705_IRQ_GROUP_NR];
-   237		bool wakeup;
-   238		struct mutex irqlock;
-   239	
-   240	#ifdef CONFIG_HIBERNATION
-   241		/* For hibernation */
-   242		u8 reg_pmic_dump[MAX77705_PMIC_REG_END];
- > 243		u8 reg_muic_dump[MAX77705_USBC_REG_END];
-   244		u8 reg_led_dump[MAX77705_LED_REG_END];
-   245	#endif
-   246	
-   247		/* pmic VER/REV register */
-   248		u8 pmic_rev;	/* pmic Rev */
-   249		u8 pmic_ver;	/* pmic version */
-   250	
-   251		u8 cc_booting_complete;
-   252	
-   253		wait_queue_head_t queue_empty_wait_q;
-   254		int doing_irq;
-   255		int is_usbc_queue;
-   256	
-   257		struct max77705_platform_data *pdata;
-   258	};
-   259	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Konrad
