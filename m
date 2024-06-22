@@ -1,126 +1,209 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtprelay01.ispgateway.de (smtprelay01.ispgateway.de [80.67.18.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065C214D6F1
-	for <phone-devel@vger.kernel.org>; Sat, 22 Jun 2024 11:48:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B2814C591;
+	Sat, 22 Jun 2024 11:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.67.18.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719056932; cv=none; b=iuH+mReJSxLIqNK6bxR2L5P27Vca6YIXnCN6Bmvn5dBANoZqylc0ixmNyPrxXt84qhBPvM5klVYvxlfmIZ9Lphfs/oMYJNulRIY47M1GuCrgYAjqCYbfHBZ/RHkFmkdTFpHyVEm6318a+vKfj4FhMyVqkqAKDTiPoYKlf828b+E=
+	t=1719057475; cv=none; b=Rtc7zUCmiMKIKKrQkqXzyzkDUEm2NqkoGgtjI54Ore7E0hra2AaSJ5+ZNGTBqsXOxwdmi/oHCfg3S5sNtPCTkcibgpW0jv4ovPuG4vB+ePai3Y0JeuZ450vieutnatp75p+SO7Jc2XklR1fvIonurSdsXFFhqGZ3ooqJkNxi4bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719056932; c=relaxed/simple;
-	bh=64yO8JfGv2L2EdkUtYfsGwvZ48+tCTCotY2TqOzKbQk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DIcp83S69Dty2vNpmZJTzCU0L8sn3Xb9R+yiPJb58amhzhpVGTUikG5FZFzf+aAbLipYkVgrxXvVXNWD3NjVaDlWcJyDKza3K4R5mDajnGsw2ZDIUD7KZQ3v3XVAQG58WK/6i/s0Ov3GkGRcqiEVTrgfX+4NoMV6JsASBdsAews=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JsvyzqC0; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JsvyzqC0"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-57d280e2d5dso2481578a12.1
-        for <phone-devel@vger.kernel.org>; Sat, 22 Jun 2024 04:48:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719056929; x=1719661729; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Si+0+Udt3TumPYpj87u59+KPSMEelqrx15xLL3IUjzg=;
-        b=JsvyzqC0/Zr6zOkTWHxPCxqgTt0b4572BhpuVl3gLusJv2iOqmxwf6xAyt8OARjS0R
-         vTxBhd0xcu81TV1gZz/yMbvM3UAxEgyyKq2rYUWCLtDWT/vLilcil3ABsQ5rzRVSbdsF
-         CFYzpZuuC8/hdJeEYng2OwkgvVQ/HD+f9+HJE/SwwPf7tvkSTsaF3+l6a9CCtcGIzqBc
-         VDwNnmB007BMbbfb6VzEUzmhLxyhKbXz7GaToCA4YQk5M7kThTHAwl8q8g4/2Q68PPaI
-         uYqZX3G/F4/F5hlK3LZMKXmwz5gTGQn64BTdoT79Xa/gExuIz8Bxdl5kxUKSE5m2usqo
-         5NEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719056929; x=1719661729;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Si+0+Udt3TumPYpj87u59+KPSMEelqrx15xLL3IUjzg=;
-        b=RosdI0+A/MqygOMPQs2XX1GVbKhhxjWm7D55buGYyNW/yr+UYza+03I1yRvagcj7Vt
-         bXw748IGiS1LqGZ0ip51yH+ShjN5s9bLWSI2afgSVr7Y1QTTQQ3Shi8RH9ylSqaAv8tv
-         GlPf6S/ehFiAJyeTClGFTM4uxpYTLh0xMpdZcNM5Y8cbsIJo0VxWWeaZ/LEWYPFEk7k7
-         9o9vdtI3LVlJPbbVrQQrM6OZVlEILjxLVQUhi5SvKGsMA8xkTfmBzRkrFVe//ht85a0J
-         6RCMbRnYjZdfqXT9CdTC2NjrsDV9ZZ2svj+9PlEfdiA6WQbcOtQl9Hngssl21WK/qaap
-         mwGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUcshfnpvaBy5XFFhIGjcOMH2uUPN8UD6YCDGmlvazJK/2VD3ZTeQFwkoOm7Ih1arzxWSPW4zS+JAgVxZfbWnmVDAsF1crF0H9VsFE=
-X-Gm-Message-State: AOJu0YzVqMrlKf9ELksSuNPb079p9NyO7wrY3cKZnFh6IxAG9IicVzTH
-	Csreo75EtDtyBwMD+gHos9jVyJe8xLT0ywN2eOBl8s6JwqLclceOVYC9pMfskAw=
-X-Google-Smtp-Source: AGHT+IETsmUp0wg345dn1k6YoCEgM27JTx2/WGxNpwXA2lrAy+TNHTbiIiNfA5B4wb3j7PDAkVxgug==
-X-Received: by 2002:a50:c30d:0:b0:57d:261d:f825 with SMTP id 4fb4d7f45d1cf-57d261df8b3mr3767209a12.21.1719056929128;
-        Sat, 22 Jun 2024 04:48:49 -0700 (PDT)
-Received: from [192.168.128.35] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57d3041208esm2237898a12.30.2024.06.22.04.48.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jun 2024 04:48:48 -0700 (PDT)
-Message-ID: <2fcf909c-10c5-41b4-9962-d085e7e2bf5c@linaro.org>
-Date: Sat, 22 Jun 2024 13:48:46 +0200
+	s=arc-20240116; t=1719057475; c=relaxed/simple;
+	bh=4nNz2jv+VOICXuXw2R1uGsao3nWrsCy0ZjQNa4eOHH0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZOrnFbti2DBaOVcbTgrLbp/8xqK4QWxhl8oOyTth0UpeAoq60e50hgJ5WI6LbV9QQYWdNQ4EsBkbd/jqKG3uq6n2RfH/GEOYM5zUJk9OApJXB1zvR6TB/FDqMXLPFziWNhZh3BMp4bKmaQgwgVMhYz871sxmbBL3QvO/rcSA63M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu; spf=pass smtp.mailfrom=apitzsch.eu; arc=none smtp.client-ip=80.67.18.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=apitzsch.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=apitzsch.eu
+Received: from [92.206.190.41] (helo=framework.lan)
+	by smtprelay01.ispgateway.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <git@apitzsch.eu>)
+	id 1sKzKz-000000005fV-1pf2;
+	Sat, 22 Jun 2024 13:55:21 +0200
+Message-ID: <86f8110e8edc24d0df035b77a1aa68422e48bde1.camel@apitzsch.eu>
+Subject: Re: [PATCH v4 2/3] leds: sy7802: Add support for Silergy SY7802
+ flash LED controller
+From: =?ISO-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
+To: Lee Jones <lee@kernel.org>
+Cc: Pavel Machek <pavel@ucw.cz>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Bjorn
+ Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,  Trilok Soni
+ <quic_tsoni@quicinc.com>, Kees Cook <kees@kernel.org>,
+ linux-leds@vger.kernel.org,  devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-hardening@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org,  ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org
+Date: Sat, 22 Jun 2024 13:55:25 +0200
+In-Reply-To: <20240621102656.GK1318296@google.com>
+References: <20240616-sy7802-v4-0-789994180e05@apitzsch.eu>
+	 <20240616-sy7802-v4-2-789994180e05@apitzsch.eu>
+	 <20240621102656.GK1318296@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] ARM: dts: qcom: msm8226: Convert APCS usages to mbox
- interface
-To: Luca Weiss <luca@lucaweiss.eu>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Jassi Brar <jassisinghbrar@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-clk@vger.kernel.org
-References: <20240619-msm8226-cpufreq-v1-0-85143f5291d1@lucaweiss.eu>
- <20240619-msm8226-cpufreq-v1-7-85143f5291d1@lucaweiss.eu>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20240619-msm8226-cpufreq-v1-7-85143f5291d1@lucaweiss.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Df-Sender: YW5kcmVAYXBpdHpzY2guZXU=
 
-On 19.06.2024 11:02 PM, Luca Weiss wrote:
-> Since we now have the apcs set up as a mailbox provider, let's use the
-> interface for all drivers where possible.
-> 
-> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-> ---
+Hello Lee,
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Am Freitag, dem 21.06.2024 um 11:26 +0100 schrieb Lee Jones:
+> On Sun, 16 Jun 2024, Andr=C3=A9 Apitzsch via B4 Relay wrote:
+>=20
+> > From: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> >=20
+> > The SY7802 is a current-regulated charge pump which can regulate
+> > two
+> > current levels for Flash and Torch modes.
+> >=20
+> > It is a high-current synchronous boost converter with 2-channel
+> > high
+> > side current sources. Each channel is able to deliver 900mA
+> > current.
+> >=20
+> > Signed-off-by: Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> > ---
+> > =C2=A0drivers/leds/flash/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
+=C2=A0 11 +
+> > =C2=A0drivers/leds/flash/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=
+=C2=A0 1 +
+> > =C2=A0drivers/leds/flash/leds-sy7802.c | 542
+> > +++++++++++++++++++++++++++++++++++++++
+> > =C2=A03 files changed, 554 insertions(+)
+>=20
+> Generally very nice.
+>=20
+> Just a couple of teensy nits to fix then add my and resubmit please.
+>=20
+> Acked-by: Lee Jones <lee@kernel.org>
+>=20
+> > [...]
+> > diff --git a/drivers/leds/flash/leds-sy7802.c
+> > b/drivers/leds/flash/leds-sy7802.c
+> > new file mode 100644
+> > index 000000000000..c4bea55a62d0
+> > --- /dev/null
+> > +++ b/drivers/leds/flash/leds-sy7802.c
+> > @@ -0,0 +1,542 @@
+> > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > +/*
+> > + * Silergy SY7802 flash LED driver with I2C interface
+>=20
+> "an I2C interface"
+>=20
+> Or
+>=20
+> "I2C interfaces"
+>=20
+> > + * Copyright 2024 Andr=C3=A9 Apitzsch <git@apitzsch.eu>
+> > + */
+> > +
+> > +#include <linux/gpio/consumer.h>
+> > +#include <linux/i2c.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/led-class-flash.h>
+> > +#include <linux/module.h>
+> > +#include <linux/mutex.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/regulator/consumer.h>
+> > +
+> > +#define SY7802_MAX_LEDS 2
+> > +#define SY7802_LED_JOINT 2
+> > +
+> > +#define SY7802_REG_ENABLE		0x10
+> > +#define SY7802_REG_TORCH_BRIGHTNESS	0xa0
+> > +#define SY7802_REG_FLASH_BRIGHTNESS	0xb0
+> > +#define SY7802_REG_FLASH_DURATION	0xc0
+> > +#define SY7802_REG_FLAGS		0xd0
+> > +#define SY7802_REG_CONFIG_1		0xe0
+> > +#define SY7802_REG_CONFIG_2		0xf0
+> > +#define SY7802_REG_VIN_MONITOR		0x80
+> > +#define SY7802_REG_LAST_FLASH		0x81
+> > +#define SY7802_REG_VLED_MONITOR		0x30
+> > +#define SY7802_REG_ADC_DELAY		0x31
+> > +#define SY7802_REG_DEV_ID		0xff
+> > +
+> > +#define SY7802_MODE_OFF		0
+> > +#define SY7802_MODE_TORCH	2
+> > +#define SY7802_MODE_FLASH	3
+> > +#define SY7802_MODE_MASK	GENMASK(1, 0)
+> > +
+> > +#define SY7802_LEDS_SHIFT	3
+> > +#define SY7802_LEDS_MASK(_id)	(BIT(_id) << SY7802_LEDS_SHIFT)
+> > +#define SY7802_LEDS_MASK_ALL	(SY7802_LEDS_MASK(0) |
+> > SY7802_LEDS_MASK(1))
+> > +
+> > +#define SY7802_TORCH_CURRENT_SHIFT	3
+> > +#define SY7802_TORCH_CURRENT_MASK(_id) \
+> > +	(GENMASK(2, 0) << (SY7802_TORCH_CURRENT_SHIFT * (_id)))
+> > +#define SY7802_TORCH_CURRENT_MASK_ALL \
+> > +	(SY7802_TORCH_CURRENT_MASK(0) |
+> > SY7802_TORCH_CURRENT_MASK(1))
+> > +
+> > +#define SY7802_FLASH_CURRENT_SHIFT	4
+> > +#define SY7802_FLASH_CURRENT_MASK(_id) \
+> > +	(GENMASK(3, 0) << (SY7802_FLASH_CURRENT_SHIFT * (_id)))
+> > +#define SY7802_FLASH_CURRENT_MASK_ALL \
+> > +	(SY7802_FLASH_CURRENT_MASK(0) |
+> > SY7802_FLASH_CURRENT_MASK(1))
+> > +
+> > +#define SY7802_TIMEOUT_DEFAULT_US	512000U
+> > +#define SY7802_TIMEOUT_MIN_US		32000U
+> > +#define SY7802_TIMEOUT_MAX_US		1024000U
+> > +#define SY7802_TIMEOUT_STEPSIZE_US	32000U
+> > +
+> > +#define SY7802_TORCH_BRIGHTNESS_MAX 8
+> > +
+> > +#define SY7802_FLASH_BRIGHTNESS_DEFAULT	14
+> > +#define SY7802_FLASH_BRIGHTNESS_MIN	0
+> > +#define SY7802_FLASH_BRIGHTNESS_MAX	15
+> > +#define SY7802_FLASH_BRIGHTNESS_STEP	1
+> > +
+> > +#define SY7802_FLAG_TIMEOUT			BIT(0)
+> > +#define SY7802_FLAG_THERMAL_SHUTDOWN		BIT(1)
+> > +#define SY7802_FLAG_LED_FAULT			BIT(2)
+> > +#define SY7802_FLAG_TX1_INTERRUPT		BIT(3)
+> > +#define SY7802_FLAG_TX2_INTERRUPT		BIT(4)
+> > +#define SY7802_FLAG_LED_THERMAL_FAULT		BIT(5)
+> > +#define SY7802_FLAG_FLASH_INPUT_VOLTAGE_LOW	BIT(6)
+> > +#define SY7802_FLAG_INPUT_VOLTAGE_LOW		BIT(7)
+> > +
+> > +#define SY7802_CHIP_ID	0x51
+> > +
+> > +static const struct reg_default sy7802_regmap_defs[] =3D {
+> > +	{ SY7802_REG_ENABLE, SY7802_LEDS_MASK_ALL },
+> > +	{ SY7802_REG_TORCH_BRIGHTNESS, 0x92 },
+> > +	{ SY7802_REG_FLASH_BRIGHTNESS,
+> > SY7802_FLASH_BRIGHTNESS_DEFAULT |
+> > +		SY7802_FLASH_BRIGHTNESS_DEFAULT <<
+> > SY7802_FLASH_CURRENT_SHIFT },
+> > +	{ SY7802_REG_FLASH_DURATION, 0x6f },
+> > +	{ SY7802_REG_FLAGS, 0x0 },
+> > +	{ SY7802_REG_CONFIG_1, 0x68 },
+> > +	{ SY7802_REG_CONFIG_2, 0xf0 },
+>=20
+> Not your fault, but this interface is frustrating since we have no
+> idea
+> what these register values mean.=C2=A0 IMHO, they should be defined and
+> ORed
+> together in some human readable way.
+>=20
+> I say that it's not your fault because I see that this is the most
+> common usage.
+>=20
 
-Konrad
+I don't know how to interpret some bits of the default values. I don't
+have the documentation and changing the bits and observing the behavior
+of the device also didn't help.
+
+Should I remove the entries from sy7802_regmap_defs, which have values
+that we don't fully understand?
+
+Regards,
+Andr=C3=A9
