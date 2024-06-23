@@ -1,48 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77148186E4D;
-	Sun, 23 Jun 2024 21:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070F0188CDC;
+	Sun, 23 Jun 2024 21:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719176547; cv=none; b=LpUR+UjZ2bdOu4Tjgc6hNJCOpoXgrczxzutIIOCIbMn8scQFLrWtEBciTcZTBRpD4G/sNFeDnMcuWYTP/72bRX7ptTUspnzPvRqMNgi02ioTh4XFQydH9/cwgvQS8aj6uuf46z2LMia49MNkslFisjAOcFia5SNp2mlEz6wTDrs=
+	t=1719176550; cv=none; b=IoSlCPvYHJICkqKr6pNYG5Qg6aG65PpfcIpXFBp87L/sVZRw5v9OixmtElDyLA4ZiGpq2Q09HwoUp00XTWJx+1HbtQN5a3QDnvKlrhO8LhtFBSWYMMTBJe5IoTCyeHBli1ANZy4/S+iRuYl0b+dNkcf+eBXTVBaFYEoHLGrM9uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719176547; c=relaxed/simple;
-	bh=RM/ZBE/hmgXLDKFJ8Gq2KpFpwUgNnPudBMl5pYalW/w=;
+	s=arc-20240116; t=1719176550; c=relaxed/simple;
+	bh=8zUtRc7IzzEWMvqcDqrkVzsrKwWGiubeoxzWviVvAVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fWxXbYRTYjvg2Wd3HM6Gy4Vssne2IDodlGm/Mt8+a7j0aQPJpmzueuan2ZJvUEbIaNfQuy0+Bq7vrrlLmKdNnGMYJrQUkz9D/76RxPvlKDJBcVVHpE/NyqDRrdxEbQ/FHsgXUPJOwuSoCfGNXsvzRSDdspDdQ9nBDGX3vlf8KIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WtJPF5NA; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=azaH3UOa6uW3nCmWU3ioQIwioOB3uY+4Velx9fHM6MuCbb3s3vjSQRKi3yjAAqEA+1RhXBc89f2/IVComTm3vCed2zmU6D3SBG/0A32qJZ2tdkLk2cshsM1zEiVgVNqv9lMWrxh20oDkVEPmQ9iDVe7pxRTJFNwkYS2bUv2ooFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bu+ab+S1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WtJPF5NA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5CAC4AF07;
-	Sun, 23 Jun 2024 21:02:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bu+ab+S1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B9DC32782;
+	Sun, 23 Jun 2024 21:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719176547;
-	bh=RM/ZBE/hmgXLDKFJ8Gq2KpFpwUgNnPudBMl5pYalW/w=;
+	s=k20201202; t=1719176549;
+	bh=8zUtRc7IzzEWMvqcDqrkVzsrKwWGiubeoxzWviVvAVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WtJPF5NAi5xWBxU3t2J68UWO+Dmq8c9oSSlQQBtTX5rPwFDDppeFalXj+F9JTAUni
-	 QN/KAMbXEwqx1HpsHJzyyPiMk7QKUzlJpj+8HuHcNw0JLKzfoOFnjoC9vhGG3ZPq57
-	 bOuOsql1nCyf+G+eDvIh1et5ru71jSFPdDGfLFLJDpkkWsbvf8DLvrVVNb56GHYkQd
-	 gk9pLA/HZ3waPTqHRGH0/DNT3V3e8mFAHoSBSfQfTjOBxZH5KJ+vo2BWu9dB74eQb3
-	 VHOSupBQ3qggLBHtvKZSrvrTZBfUArAGMf9nqTVuVClOxr9fmRTEQB6r0JINRdwIM2
-	 lSRNTqxWCfRfw==
+	b=Bu+ab+S1RxPb50HHhUYTB9O6M+C6y/8N13qlyG2xmp5jxZtK0mAW3/IOyNS+/rzOv
+	 LqhufYMAv5ccsa9XQhDaxP5nz1gBhW9iCmdLN179Eo5Dbni4/6O/3sgMJfsIdk0CYe
+	 XDilRF29G7jddZ3pmZbM9O0EKG/k7ghBnP+M/dhT4/HICGlGQ1GRStLEr6QJRwCNur
+	 uBBoPjqd+O/zrk9/Bc8qMH4bxsJZOyiFwBf4qYM8PkPFoUdF3K63slCsrvdn4xjpyD
+	 wdHLb1IzwtYZiUj08SKU09mgZ6ovLFC4mBEgLUc/Fl+jmsZFl7T8fChCwiKxGgqH8m
+	 75K4wFwUQlJCw==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>,
+To: ~postmarketos/upstreaming <~postmarketos/upstreaming@lists.sr.ht>,
+	phone-devel <phone-devel@vger.kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
+	Valeriy Klimin <vdos63@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] Add PM8008 regulator support for Fairphone 4 & 5
-Date: Sun, 23 Jun 2024 16:02:18 -0500
-Message-ID: <171917653476.4580.4177052068822206945.b4-ty@kernel.org>
+Subject: Re: (subset) [PATCH v2 0/3] Add Sony Xperia Z3 Compact smartphone
+Date: Sun, 23 Jun 2024 16:02:20 -0500
+Message-ID: <171917653472.4580.15887595900632751809.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240621-fp4-fp5-pm8008-v1-0-dbedcd6f00f1@fairphone.com>
-References: <20240621-fp4-fp5-pm8008-v1-0-dbedcd6f00f1@fairphone.com>
+In-Reply-To: <20240621-sony-aries-v2-0-dddf10722522@gmail.com>
+References: <20240621-sony-aries-v2-0-dddf10722522@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -53,22 +53,20 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Fri, 21 Jun 2024 10:42:29 +0200, Luca Weiss wrote:
-> With the PM8008 regulator driver scheduled for Linux v6.11[0] let's add
-> the dts bits for Fairphone 4 and Fairphone 5 which both use this PMIC
-> for powering the camera sensors - and the pull-up for the CCI (camera
-> I2C bus).
+On Fri, 21 Jun 2024 17:26:41 +0300, Valeriy Klimin wrote:
+> This is almost the same as the dts of the Xperia Z3, except for the
+> battery charge limits.
 > 
-> [0] https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git/log/?h=ib-mfd-regulator-pm8008-6.11
+> The current on the l21 regulator for shinano is also bumped up
+> to stop SD card errors.
+> 
 > 
 > [...]
 
 Applied, thanks!
 
-[1/2] arm64: dts: qcom: sm7225-fairphone-fp4: Configure PM8008 regulators
-      commit: d315b45ab8b312d6e74d85064ef916aafd1bbdef
-[2/2] arm64: dts: qcom: qcm6490-fairphone-fp5: Configure PM8008 regulators
-      commit: 2cf5ec58e87bf4df1b360ab45c047d2b311930c8
+[1/3] dt-bindings: arm: qcom: Add Sony Xperia Z3 Compact
+      commit: a69274e1c6f557c2fa7f35f194acb51d723adbc8
 
 Best regards,
 -- 
