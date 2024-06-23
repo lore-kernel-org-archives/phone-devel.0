@@ -1,73 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070F0188CDC;
-	Sun, 23 Jun 2024 21:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCE75A10B
+	for <phone-devel@vger.kernel.org>; Sun, 23 Jun 2024 21:27:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719176550; cv=none; b=IoSlCPvYHJICkqKr6pNYG5Qg6aG65PpfcIpXFBp87L/sVZRw5v9OixmtElDyLA4ZiGpq2Q09HwoUp00XTWJx+1HbtQN5a3QDnvKlrhO8LhtFBSWYMMTBJe5IoTCyeHBli1ANZy4/S+iRuYl0b+dNkcf+eBXTVBaFYEoHLGrM9uo=
+	t=1719178056; cv=none; b=P97SSKKv+4achBE5ZCWn4PwOsrDXKAF+r9o05fiwpciReIOf2/ayC0DBLIhBLblG+lkF95grmnQI4twqL30oNZHVy+Q2u7FAIDvM5KDI0WPo/r4NlD4+f1OAJp8ccxC7O9cMV7EVMmfhwT5jwp0JnGRdDnMtB+vrtYpE5vihJS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719176550; c=relaxed/simple;
-	bh=8zUtRc7IzzEWMvqcDqrkVzsrKwWGiubeoxzWviVvAVc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=azaH3UOa6uW3nCmWU3ioQIwioOB3uY+4Velx9fHM6MuCbb3s3vjSQRKi3yjAAqEA+1RhXBc89f2/IVComTm3vCed2zmU6D3SBG/0A32qJZ2tdkLk2cshsM1zEiVgVNqv9lMWrxh20oDkVEPmQ9iDVe7pxRTJFNwkYS2bUv2ooFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bu+ab+S1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719178056; c=relaxed/simple;
+	bh=4Bq02Qh6lFbXgQAb7khzIsRk1cvOilxhuRJy/OsoN+Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YXfuT3V3m6eDYqq0ybOUIRs8b5U0/Kp8/KA3cBdHIyHwHxKQPDE/d/03/jeW7Q8o9YtTM65hyAcneZVRnk+EF2IlptIgMj8NyMAEYql5/GOLJW12kpta0wL13Ag+7EqlJs9/qcbI3bCF1/NyC04V4XqcM+CebBVbsIGotnbSvok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ascVosis; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bu+ab+S1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B9DC32782;
-	Sun, 23 Jun 2024 21:02:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719176549;
-	bh=8zUtRc7IzzEWMvqcDqrkVzsrKwWGiubeoxzWviVvAVc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bu+ab+S1RxPb50HHhUYTB9O6M+C6y/8N13qlyG2xmp5jxZtK0mAW3/IOyNS+/rzOv
-	 LqhufYMAv5ccsa9XQhDaxP5nz1gBhW9iCmdLN179Eo5Dbni4/6O/3sgMJfsIdk0CYe
-	 XDilRF29G7jddZ3pmZbM9O0EKG/k7ghBnP+M/dhT4/HICGlGQ1GRStLEr6QJRwCNur
-	 uBBoPjqd+O/zrk9/Bc8qMH4bxsJZOyiFwBf4qYM8PkPFoUdF3K63slCsrvdn4xjpyD
-	 wdHLb1IzwtYZiUj08SKU09mgZ6ovLFC4mBEgLUc/Fl+jmsZFl7T8fChCwiKxGgqH8m
-	 75K4wFwUQlJCw==
-From: Bjorn Andersson <andersson@kernel.org>
-To: ~postmarketos/upstreaming <~postmarketos/upstreaming@lists.sr.ht>,
-	phone-devel <phone-devel@vger.kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Valeriy Klimin <vdos63@gmail.com>
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: (subset) [PATCH v2 0/3] Add Sony Xperia Z3 Compact smartphone
-Date: Sun, 23 Jun 2024 16:02:20 -0500
-Message-ID: <171917653472.4580.15887595900632751809.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240621-sony-aries-v2-0-dddf10722522@gmail.com>
-References: <20240621-sony-aries-v2-0-dddf10722522@gmail.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ascVosis"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2e72224c395so39622471fa.3
+        for <phone-devel@vger.kernel.org>; Sun, 23 Jun 2024 14:27:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719178053; x=1719782853; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=rNE32rpEcd64zunRnTjqX7aU8YPuo7H9EUSUmHlSCLk=;
+        b=ascVosis0apWtztoi0HRZ0BtM7LgdtnWysiylMjR43TJ0sZQMM5swLubE7dQd5xx1z
+         Mv4CcerrVAXg3epaZbgytM9TE2UQ6RizsWUWIP3XKDCKsbf9+kA3cvnctYxvVGP6Kdnu
+         IWb8RxP3oivSJ87Yfmo3MzhwbuPOgK6d9LS9Hgxt3kqijG7jiGWvTDyyw2SG10jbTpdn
+         UoCZA32Sbo5pGkkjFFqvSbz+LuXMcjoLJKfQePmDUlqtlIog11S5IZMpEmZmXulbsHeB
+         VRL9leAI7Vfqw7v4GJITFwNNT6CvcJ+KgG4KyMDzXIgci2Wr38kac9iA5dBbKHrFWviV
+         zEMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719178053; x=1719782853;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rNE32rpEcd64zunRnTjqX7aU8YPuo7H9EUSUmHlSCLk=;
+        b=BkHO5eY12EwjJ6DYsnxZ528Do3Co4dEaUV4NqIxh97Q85ZOOB0Pj3LU5VsR2/4I4kF
+         QNVvf6jKXMVwQeT9yjEnxGn0oNEZS0keBVPeqac1r24wh94TPMbH27bjx/sGHQo9LXlz
+         1IUeKIEm2owq37WeCqKHylyz+e92VaopaVGFi/8y8+RcVpqu+aScvOcLkxkFBCDA1bsj
+         AhQogV47FxADLTR1C9ENX+blCP2n84xiWHUQVXVSNPjdijPrR6/q7aBefInalcAhS6J0
+         CCyxHFyx52gH8R/42XDU9YjzYMipUDNq13sI+dZDIRLVEULW51H95/9Ky2L99sxL+9rV
+         0JxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUvkBkRH576Nl8E69Tt70d20q3E+vlfklaHVmF8/fk4qQqwUDd5zaeTLn7AGOn1E154Ru+5fmbVfzrzGszaLrKvpPMH1CDiSmqueio=
+X-Gm-Message-State: AOJu0YwbcKF80/3MARftLwM3nBK+t27Y2RBRRGFcIrKU3Xcx0RNEwJa+
+	xBmynxT6lwTYgt154T3zbEq6qUlQfHcEYIH6d5oDs4ScOzhFqyMFysmdhoXukE8=
+X-Google-Smtp-Source: AGHT+IF/oAb9bDIV7Xq+wDnZQlYyl5KMqCSgJrrR6Xs0F6Q80XAOcNHdPbUBXLkjSn8CcIowI3qwNg==
+X-Received: by 2002:a2e:3a13:0:b0:2ec:57c7:c740 with SMTP id 38308e7fff4ca-2ec5b2dd3a3mr15689171fa.39.1719178053155;
+        Sun, 23 Jun 2024 14:27:33 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ec4d787ed2sm8287631fa.130.2024.06.23.14.27.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Jun 2024 14:27:32 -0700 (PDT)
+Date: Mon, 24 Jun 2024 00:27:31 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: =?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <trabarni@gmail.com>
+Cc: Rob Clark <robdclark@gmail.com>, 
+	Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>, 
+	Marijn Suijten <marijn.suijten@somainline.org>, David Airlie <airlied@gmail.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Krishna Manikandan <quic_mkrishn@quicinc.com>, 
+	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
+	Daniil Titov <daniilt971@gmail.com>
+Subject: Re: [PATCH v2 2/4] drm/msm/mdp5: Add MDP5 configuration for MSM8937
+Message-ID: <53cpusdumqfqecfcbci7kfb5fmg56gacmlu44rwpe4acdftbcy@pw4wdxrcq366>
+References: <20240623-dsi-v2-0-a0ca70fb4846@gmail.com>
+ <20240623-dsi-v2-2-a0ca70fb4846@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240623-dsi-v2-2-a0ca70fb4846@gmail.com>
 
-
-On Fri, 21 Jun 2024 17:26:41 +0300, Valeriy Klimin wrote:
-> This is almost the same as the dts of the Xperia Z3, except for the
-> battery charge limits.
+On Sun, Jun 23, 2024 at 10:30:37PM GMT, Barnabás Czémán wrote:
+> From: Daniil Titov <daniilt971@gmail.com>
 > 
-> The current on the l21 regulator for shinano is also bumped up
-> to stop SD card errors.
+> Add the mdp5_cfg_hw entry for MDP5 version v1.14 found on msm8937.
 > 
+> Signed-off-by: Daniil Titov <daniilt971@gmail.com>
+> Signed-off-by: Barnabás Czémán <trabarni@gmail.com>
+> ---
+>  drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c | 88 ++++++++++++++++++++++++++++++++
+>  1 file changed, 88 insertions(+)
 > 
-> [...]
 
-Applied, thanks!
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[1/3] dt-bindings: arm: qcom: Add Sony Xperia Z3 Compact
-      commit: a69274e1c6f557c2fa7f35f194acb51d723adbc8
 
-Best regards,
 -- 
-Bjorn Andersson <andersson@kernel.org>
+With best wishes
+Dmitry
