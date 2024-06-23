@@ -1,100 +1,112 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCE75A10B
-	for <phone-devel@vger.kernel.org>; Sun, 23 Jun 2024 21:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F51B65C;
+	Sun, 23 Jun 2024 22:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719178056; cv=none; b=P97SSKKv+4achBE5ZCWn4PwOsrDXKAF+r9o05fiwpciReIOf2/ayC0DBLIhBLblG+lkF95grmnQI4twqL30oNZHVy+Q2u7FAIDvM5KDI0WPo/r4NlD4+f1OAJp8ccxC7O9cMV7EVMmfhwT5jwp0JnGRdDnMtB+vrtYpE5vihJS8=
+	t=1719181567; cv=none; b=P1ftcM7fSsoUvfN4t8ShaWWa0vuo6iVTRpCnk4pYQJefkZymhv3SFiV9YB9ZavTA8BwTMmAm8Yd9V34sbeM4EweQ018z9gVgvJOj5Y+iHbApBhYsYA/8sH7eRgYO5sU7m11wuwSdd1N+WTAmU/4hxvyK3noiIHm5m5HuLny87zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719178056; c=relaxed/simple;
-	bh=4Bq02Qh6lFbXgQAb7khzIsRk1cvOilxhuRJy/OsoN+Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YXfuT3V3m6eDYqq0ybOUIRs8b5U0/Kp8/KA3cBdHIyHwHxKQPDE/d/03/jeW7Q8o9YtTM65hyAcneZVRnk+EF2IlptIgMj8NyMAEYql5/GOLJW12kpta0wL13Ag+7EqlJs9/qcbI3bCF1/NyC04V4XqcM+CebBVbsIGotnbSvok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ascVosis; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1719181567; c=relaxed/simple;
+	bh=oxTQy4TFEJ8h879vlyRixiuEuYtLGpIFDUeycmM8EQA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E9RFDjTuzZLfyhuuc5wmFar7JiAjBhfzz4vtW+dl6oQRWjYyxJMZ3khNi46iy6aEzDNuvn6XzN0bzpv6sHYOE73Q964Ayv/FXRcRgpwHrSneACwOMvWKU52ce/+kBPqqXGqeNFs5Ju091Ya9DhXEeoQuSEoNZuZJloN7wnJvF/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H28ULjXL; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ascVosis"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2e72224c395so39622471fa.3
-        for <phone-devel@vger.kernel.org>; Sun, 23 Jun 2024 14:27:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H28ULjXL"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4218008c613so30959285e9.2;
+        Sun, 23 Jun 2024 15:26:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719178053; x=1719782853; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=rNE32rpEcd64zunRnTjqX7aU8YPuo7H9EUSUmHlSCLk=;
-        b=ascVosis0apWtztoi0HRZ0BtM7LgdtnWysiylMjR43TJ0sZQMM5swLubE7dQd5xx1z
-         Mv4CcerrVAXg3epaZbgytM9TE2UQ6RizsWUWIP3XKDCKsbf9+kA3cvnctYxvVGP6Kdnu
-         IWb8RxP3oivSJ87Yfmo3MzhwbuPOgK6d9LS9Hgxt3kqijG7jiGWvTDyyw2SG10jbTpdn
-         UoCZA32Sbo5pGkkjFFqvSbz+LuXMcjoLJKfQePmDUlqtlIog11S5IZMpEmZmXulbsHeB
-         VRL9leAI7Vfqw7v4GJITFwNNT6CvcJ+KgG4KyMDzXIgci2Wr38kac9iA5dBbKHrFWviV
-         zEMg==
+        d=gmail.com; s=20230601; t=1719181564; x=1719786364; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3gQk/oUu6SEUrWcMlUI7v/b2a8RoP0ZC8zDXKyAf8bM=;
+        b=H28ULjXLh9i2T6VLxa9dGP8Sm/vPj1MbLxQU4pjWwSJQS4stmKEajwLM1+wSvlGuze
+         9Jv+xHUt0GbXmO/CpbHB4rsWRNpmHknboG7b/m+6huLTCFusYlMHFDb+cnosz7zocFpU
+         rtOMSYCPCsroYkYyhOQ9VzfFDblMCYMYZhZ5as1X6Z42t+mB4mzY3fwRHx8jmVSYF6ho
+         s3ln4zd+S+XX4MJbao88gVlSKnqWeSnL/lO/y/EhKZM4s1wE8lJq7sGoeFQTIVhBfj29
+         vtr+nETuj7Pg2QUUpUDK0E8AbFDwbf+0XdYFGA1djOBnkb25Bz7vTBJ0xNUKm4f8UaLn
+         VvZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719178053; x=1719782853;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rNE32rpEcd64zunRnTjqX7aU8YPuo7H9EUSUmHlSCLk=;
-        b=BkHO5eY12EwjJ6DYsnxZ528Do3Co4dEaUV4NqIxh97Q85ZOOB0Pj3LU5VsR2/4I4kF
-         QNVvf6jKXMVwQeT9yjEnxGn0oNEZS0keBVPeqac1r24wh94TPMbH27bjx/sGHQo9LXlz
-         1IUeKIEm2owq37WeCqKHylyz+e92VaopaVGFi/8y8+RcVpqu+aScvOcLkxkFBCDA1bsj
-         AhQogV47FxADLTR1C9ENX+blCP2n84xiWHUQVXVSNPjdijPrR6/q7aBefInalcAhS6J0
-         CCyxHFyx52gH8R/42XDU9YjzYMipUDNq13sI+dZDIRLVEULW51H95/9Ky2L99sxL+9rV
-         0JxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUvkBkRH576Nl8E69Tt70d20q3E+vlfklaHVmF8/fk4qQqwUDd5zaeTLn7AGOn1E154Ru+5fmbVfzrzGszaLrKvpPMH1CDiSmqueio=
-X-Gm-Message-State: AOJu0YwbcKF80/3MARftLwM3nBK+t27Y2RBRRGFcIrKU3Xcx0RNEwJa+
-	xBmynxT6lwTYgt154T3zbEq6qUlQfHcEYIH6d5oDs4ScOzhFqyMFysmdhoXukE8=
-X-Google-Smtp-Source: AGHT+IF/oAb9bDIV7Xq+wDnZQlYyl5KMqCSgJrrR6Xs0F6Q80XAOcNHdPbUBXLkjSn8CcIowI3qwNg==
-X-Received: by 2002:a2e:3a13:0:b0:2ec:57c7:c740 with SMTP id 38308e7fff4ca-2ec5b2dd3a3mr15689171fa.39.1719178053155;
-        Sun, 23 Jun 2024 14:27:33 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ec4d787ed2sm8287631fa.130.2024.06.23.14.27.32
+        d=1e100.net; s=20230601; t=1719181564; x=1719786364;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3gQk/oUu6SEUrWcMlUI7v/b2a8RoP0ZC8zDXKyAf8bM=;
+        b=BWIg/pwgerVT3I/DRsXrBxJR+qouQAuTI6lKZsuBIDs28+fyLoq6jSy4lj26nQMclG
+         n9MAmKfdYgoxUytKcfsidkslfSS9/qmDERJjdvq4iet49blv0M5EBIqnPo+34kkJ8WoS
+         eiFyF0doWhUYuAethHnzjTQKG3TfOWpSre6YtLihAJWEgDjD/sDHgjRmHexuMNVIKcSF
+         ATpjH3xeRHX5xYjxeBldPQbXURD6oTk0EUw3IDHWD+n8uSrs7TeEr191bN2NG8+4Mu2e
+         TzukKuTcXYwzp2D5hsHhmXob+RfbqJsmfx9NPzGwyIAhnpbzCqIYqeVKkhFGD3+53QKs
+         L+Hw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3KQ4XvwICTWUjWzWAJe84Oi4DzuauR306XI8RmDozhrkmjd9l/242pnFiXi8BRhESFP7FQl4qTdAoKEC08aM5d1zljfZeYkQ6KnZ9oTW0HlPUU3W5dtzuP7nVfpDH67tRR4FZ8/HBAGRXq6wn4Girro+aK+pXrhs/hxkniat+HlHI8mttLAHS
+X-Gm-Message-State: AOJu0YxJ2zsk8TPbeZhN+apscb4Arlww/upgUaKk24QdGmFPtLYEFNOq
+	+NJe5SVq14juH/L/mWGPdHbINW9PKTqglA/zA4aHhFc3TmpqKw9n
+X-Google-Smtp-Source: AGHT+IFuLGS5VXiY8gWVaO57f37QjPUM9TkmU9oDjUF5Scuicyy01NZzE1pEN95APiSxY+wXB8af3w==
+X-Received: by 2002:a05:600c:5690:b0:424:7992:c21f with SMTP id 5b1f17b1804b1-4248cc18c65mr20456165e9.3.1719181563531;
+        Sun, 23 Jun 2024 15:26:03 -0700 (PDT)
+Received: from [192.168.1.130] (BC2492F3.dsl.pool.telekom.hu. [188.36.146.243])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4248179d982sm117663975e9.1.2024.06.23.15.26.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Jun 2024 14:27:32 -0700 (PDT)
-Date: Mon, 24 Jun 2024 00:27:31 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: =?utf-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <trabarni@gmail.com>
-Cc: Rob Clark <robdclark@gmail.com>, 
-	Abhinav Kumar <quic_abhinavk@quicinc.com>, Sean Paul <sean@poorly.run>, 
-	Marijn Suijten <marijn.suijten@somainline.org>, David Airlie <airlied@gmail.com>, 
-	Daniel Vetter <daniel@ffwll.ch>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Krishna Manikandan <quic_mkrishn@quicinc.com>, 
-	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, 
-	Daniil Titov <daniilt971@gmail.com>
-Subject: Re: [PATCH v2 2/4] drm/msm/mdp5: Add MDP5 configuration for MSM8937
-Message-ID: <53cpusdumqfqecfcbci7kfb5fmg56gacmlu44rwpe4acdftbcy@pw4wdxrcq366>
-References: <20240623-dsi-v2-0-a0ca70fb4846@gmail.com>
- <20240623-dsi-v2-2-a0ca70fb4846@gmail.com>
+        Sun, 23 Jun 2024 15:26:03 -0700 (PDT)
+From: =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <trabarni@gmail.com>
+Date: Mon, 24 Jun 2024 00:26:01 +0200
+Subject: [PATCH] drm/msm/mdp5: Remove MDP_CAP_SRC_SPLIT from msm8x53_config
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240623-dsi-v2-2-a0ca70fb4846@gmail.com>
+Message-Id: <20240624-msm8953-mdp-fix-v1-1-be4d3262ebe3@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAPigeGYC/x2MQQqAIBAAvxJ7bkHNQvtKdIhcaw+aKEQg/T3pO
+ AMzFQplpgJzVyHTzYWv2ED2HeznFg9Cdo1BCaXFpDSGEowdBwwuoecHzeY17XK0wihoVcrU9H9
+ c1vf9ACnzRGlhAAAA
+To: Rob Clark <robdclark@gmail.com>, 
+ Abhinav Kumar <quic_abhinavk@quicinc.com>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Sean Paul <sean@poorly.run>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+ Sireesh Kodali <sireeshkodali1@gmail.com>, 
+ Vladimir Lypak <vladimir.lypak@gmail.com>
+Cc: Rob Clark <robdclark@chromium.org>, linux-arm-msm@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, 
+ =?utf-8?q?Barnab=C3=A1s_Cz=C3=A9m=C3=A1n?= <trabarni@gmail.com>
+X-Mailer: b4 0.14.0
 
-On Sun, Jun 23, 2024 at 10:30:37PM GMT, Barnab·s CzÈm·n wrote:
-> From: Daniil Titov <daniilt971@gmail.com>
-> 
-> Add the mdp5_cfg_hw entry for MDP5 version v1.14 found on msm8937.
-> 
-> Signed-off-by: Daniil Titov <daniilt971@gmail.com>
-> Signed-off-by: Barnab·s CzÈm·n <trabarni@gmail.com>
-> ---
->  drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c | 88 ++++++++++++++++++++++++++++++++
->  1 file changed, 88 insertions(+)
-> 
+Remove MDP_CAP_SRC_SPLIT from msm8x53_config because
+it is not referenced in downstream.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: fb25d4474fa0 ("drm/msm/mdp5: Add configuration for MDP v1.16")
+Signed-off-by: Barnab√°s Cz√©m√°n <trabarni@gmail.com>
+---
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
+diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
+index c5179e4c393c..92d06b7faa0a 100644
+--- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
++++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_cfg.c
+@@ -837,8 +837,7 @@ static const struct mdp5_cfg_hw msm8x53_config = {
+ 	.name = "msm8x53",
+ 	.mdp = {
+ 		.count = 1,
+-		.caps = MDP_CAP_CDM |
+-			MDP_CAP_SRC_SPLIT,
++		.caps = MDP_CAP_CDM,
+ 	},
+ 	.ctl = {
+ 		.count = 3,
 
+---
+base-commit: f76698bd9a8ca01d3581236082d786e9a6b72bb7
+change-id: 20240624-msm8953-mdp-fix-8af4ec159082
+
+Best regards,
 -- 
-With best wishes
-Dmitry
+Barnab√°s Cz√©m√°n <trabarni@gmail.com>
+
