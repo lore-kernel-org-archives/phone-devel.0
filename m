@@ -1,221 +1,144 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79EA49620;
-	Mon, 24 Jun 2024 11:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359EB23746;
+	Mon, 24 Jun 2024 21:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719227693; cv=none; b=A8ElDtB7Iy1iq9JKkCatCFlhNZxV8Fef8ResTEcvqAOrE9mR7hNJSC16/0yhEl/T09YrBAb8frZIMNK/4PPoIVPC4sbT45cNIGiDEqegofuFc72M9+DZdxz7fyaWfLZT6HhdE5MMnsoOsoVQlMLI2S5IONapNoGUYQzuD0QaWZM=
+	t=1719264307; cv=none; b=BZu6xG9ynX7FLzOqaSITEPLPyT1apm/dvJffwvt7d0VmW0nO26ygictq8+TFPdlOxW0Q/GRkJuuWDT2pwZkaOiz2Q49KTVemZhsnhNCFdMhYiOHchLAh34XA7Tf6Pm2uVHgTmUp8ffx4pyyksvDBPvv+sHvIQgbK/9BK0NPT1SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719227693; c=relaxed/simple;
-	bh=zD2eSo75ryZYFX1va5sIibpLycZqPyqdenRQ6fO/VY8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WZqeDARkc7DrtCIVU6CRWAcEyoQAqCAG4ccjpbAJMP9tMrNiYTGzrnotzzBPV5lENean6FdKSj+8IqAVBULcpzGsQOmJTaAe+tBlG3ZYyh9rb3eVNGF/46/WExF/Wh2erRDqlwjyzbD+AV1yPNvWiuVODZJxVkrdyXHxxNhJpJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HL+PwkPn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719264307; c=relaxed/simple;
+	bh=zQ98WnpG0JS8Dssh65NBCz5MYdX4mFaEXFHE8wBH70U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=er17C1ATKhwGXrAz9AwTdaAjvvaRbkd7bj9wzQR7tEe0S4OOr7bWUHUXrIRnKDg9VzJelBPYjAUrK1KhJM1bAyrphMQtoEobvs+SWYP46pIo0KFWeyAyNpR0htkemMSKl65S/iMJpsG1bzE1P9mafycaTCl0A6roM0gco3W5Ot8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5LHMfmA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HL+PwkPn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D08DC2BBFC;
-	Mon, 24 Jun 2024 11:14:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5LHMfmA"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B0AF7C2BBFC;
+	Mon, 24 Jun 2024 21:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719227692;
-	bh=zD2eSo75ryZYFX1va5sIibpLycZqPyqdenRQ6fO/VY8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HL+PwkPniPDdrLpWKapbrtdsjGL4duzCq43MmME/DrHp1kfG8QgQLNtwlvT+r+0bM
-	 g6jHuep8jV3IR+KqWP92cVjMYJYCN3mCm3kxqC/ac65+iU3+HIXuZH7cqaLKsGnwaU
-	 gjVP+3Jt53e0DihoHnHQKXAluUUU7g8yoZdwWxQSyn7JgP+cZ+IYSV857/a8JMzOc2
-	 BD37e7J2yhwYNfal/i78WGrisQTX5CVLOh8aazyNNds5w6TKBBAd2kexhNTw/49hFY
-	 7d5ZYPsZimodO08QDbvmmdPyHUjRwSraMEkn22wpb0xxuomngdnxk2eSdiSuidrukv
-	 bXxlPgy5vj+fg==
-Date: Mon, 24 Jun 2024 12:14:46 +0100
-From: Lee Jones <lee@kernel.org>
-To: =?iso-8859-1?Q?Andr=E9?= Apitzsch <git@apitzsch.eu>
-Cc: Pavel Machek <pavel@ucw.cz>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Trilok Soni <quic_tsoni@quicinc.com>, Kees Cook <kees@kernel.org>,
-	linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] leds: sy7802: Add support for Silergy SY7802
- flash LED controller
-Message-ID: <20240624111446.GT1318296@google.com>
-References: <20240616-sy7802-v4-0-789994180e05@apitzsch.eu>
- <20240616-sy7802-v4-2-789994180e05@apitzsch.eu>
- <20240621102656.GK1318296@google.com>
- <86f8110e8edc24d0df035b77a1aa68422e48bde1.camel@apitzsch.eu>
+	s=k20201202; t=1719264306;
+	bh=zQ98WnpG0JS8Dssh65NBCz5MYdX4mFaEXFHE8wBH70U=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=W5LHMfmAbb54N3+rA9HhNNQCbgbe4c2VlnFuZdpebeF/Z4XiHJwQiyj0OIQ+xT7YM
+	 ySzjenFMmkouhkLnXb3lidwXhifOg4oRLfaViivoVVk5y65oTrrP7DY0a4XLiMzk2o
+	 KIpzI8KnRhUQpUu/N8C0CD6B2lbdCI+hv+WEpI1JZyonX0YchBoNiEhYbVXEPLTYcQ
+	 5AtBnDfK/ZV/C0uHaz35ZwC8jqtsy0b/wnuv2qEJyIRUqPJfNRMXZDlOakCEAqm5eK
+	 oCXCT6TgnsLZ57MF4UNMlujVj4mU/wn//uwcU201SUnlL9/omO3mTbSPJtdIhenJ7P
+	 nd2ttZ3XBrRUg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CB49C2BD09;
+	Mon, 24 Jun 2024 21:25:06 +0000 (UTC)
+From: =?utf-8?q?Andr=C3=A9_Apitzsch_via_B4_Relay?= <devnull+git.apitzsch.eu@kernel.org>
+Subject: [PATCH v5 0/3] Add sy7802 flash led driver
+Date: Mon, 24 Jun 2024 23:25:11 +0200
+Message-Id: <20240624-sy7802-v5-0-7abc9d96bfa6@apitzsch.eu>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <86f8110e8edc24d0df035b77a1aa68422e48bde1.camel@apitzsch.eu>
+X-B4-Tracking: v=1; b=H4sIADfkeWYC/2XMz47CIBDH8VcxnBczMwwFPO17GA8UYctFTXEb/
+ 6TvLm3SuhuPv8l8vk9RYp9jEbvNU/RxyCWfT3Xor40InT/9RJmPdQsCYlCkZbkbCyQTQwpN0o0
+ mLerzpY8p3+bQ/lB3l8v13N/n7oDTdUmYJTGgBHlsDftWUfI+fftLvj5K6LbxV0yRgd6QAVdIF
+ SIqiw68YbafUL1hg7RCNcHoQsBgXGvcJ+S/sFkhV2isc47RQgT9H47j+ALY5ftgSQEAAA==
+To: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
+ Trilok Soni <quic_tsoni@quicinc.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Kees Cook <kees@kernel.org>
+Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ phone-devel@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1719264313; l=2726;
+ i=git@apitzsch.eu; s=20240325; h=from:subject:message-id;
+ bh=zQ98WnpG0JS8Dssh65NBCz5MYdX4mFaEXFHE8wBH70U=;
+ b=YEw1M0JRz0f27X+0u33DsvNyHech4TZDlKYbKcpUp+07ESglivJXbiYsX99pSELo5eu29iArZ
+ WxHtlDSi1wvCLi3s3SmH8aMq+1bPTLbhL3zXy4N+p60QjmyiERm4cRu
+X-Developer-Key: i=git@apitzsch.eu; a=ed25519;
+ pk=wxovcZRfvNYBMcTw4QFFtNEP4qv39gnBfnfyImXZxiU=
+X-Endpoint-Received: by B4 Relay for git@apitzsch.eu/20240325 with
+ auth_id=142
+X-Original-From: =?utf-8?q?Andr=C3=A9_Apitzsch?= <git@apitzsch.eu>
+Reply-To: git@apitzsch.eu
 
-On Sat, 22 Jun 2024, André Apitzsch wrote:
+This series introduces a driver for the Silergy SY7802 charge pump used
+in the BQ Aquaris M5 and X5 smartphones.
 
-> Hello Lee,
-> 
-> Am Freitag, dem 21.06.2024 um 11:26 +0100 schrieb Lee Jones:
-> > On Sun, 16 Jun 2024, André Apitzsch via B4 Relay wrote:
-> > 
-> > > From: André Apitzsch <git@apitzsch.eu>
-> > > 
-> > > The SY7802 is a current-regulated charge pump which can regulate
-> > > two
-> > > current levels for Flash and Torch modes.
-> > > 
-> > > It is a high-current synchronous boost converter with 2-channel
-> > > high
-> > > side current sources. Each channel is able to deliver 900mA
-> > > current.
-> > > 
-> > > Signed-off-by: André Apitzsch <git@apitzsch.eu>
-> > > ---
-> > >  drivers/leds/flash/Kconfig       |  11 +
-> > >  drivers/leds/flash/Makefile      |   1 +
-> > >  drivers/leds/flash/leds-sy7802.c | 542
-> > > +++++++++++++++++++++++++++++++++++++++
-> > >  3 files changed, 554 insertions(+)
-> > 
-> > Generally very nice.
-> > 
-> > Just a couple of teensy nits to fix then add my and resubmit please.
-> > 
-> > Acked-by: Lee Jones <lee@kernel.org>
-> > 
-> > > [...]
-> > > diff --git a/drivers/leds/flash/leds-sy7802.c
-> > > b/drivers/leds/flash/leds-sy7802.c
-> > > new file mode 100644
-> > > index 000000000000..c4bea55a62d0
-> > > --- /dev/null
-> > > +++ b/drivers/leds/flash/leds-sy7802.c
-> > > @@ -0,0 +1,542 @@
-> > > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > > +/*
-> > > + * Silergy SY7802 flash LED driver with I2C interface
-> > 
-> > "an I2C interface"
-> > 
-> > Or
-> > 
-> > "I2C interfaces"
-> > 
-> > > + * Copyright 2024 André Apitzsch <git@apitzsch.eu>
-> > > + */
-> > > +
-> > > +#include <linux/gpio/consumer.h>
-> > > +#include <linux/i2c.h>
-> > > +#include <linux/kernel.h>
-> > > +#include <linux/led-class-flash.h>
-> > > +#include <linux/module.h>
-> > > +#include <linux/mutex.h>
-> > > +#include <linux/regmap.h>
-> > > +#include <linux/regulator/consumer.h>
-> > > +
-> > > +#define SY7802_MAX_LEDS 2
-> > > +#define SY7802_LED_JOINT 2
-> > > +
-> > > +#define SY7802_REG_ENABLE		0x10
-> > > +#define SY7802_REG_TORCH_BRIGHTNESS	0xa0
-> > > +#define SY7802_REG_FLASH_BRIGHTNESS	0xb0
-> > > +#define SY7802_REG_FLASH_DURATION	0xc0
-> > > +#define SY7802_REG_FLAGS		0xd0
-> > > +#define SY7802_REG_CONFIG_1		0xe0
-> > > +#define SY7802_REG_CONFIG_2		0xf0
-> > > +#define SY7802_REG_VIN_MONITOR		0x80
-> > > +#define SY7802_REG_LAST_FLASH		0x81
-> > > +#define SY7802_REG_VLED_MONITOR		0x30
-> > > +#define SY7802_REG_ADC_DELAY		0x31
-> > > +#define SY7802_REG_DEV_ID		0xff
-> > > +
-> > > +#define SY7802_MODE_OFF		0
-> > > +#define SY7802_MODE_TORCH	2
-> > > +#define SY7802_MODE_FLASH	3
-> > > +#define SY7802_MODE_MASK	GENMASK(1, 0)
-> > > +
-> > > +#define SY7802_LEDS_SHIFT	3
-> > > +#define SY7802_LEDS_MASK(_id)	(BIT(_id) << SY7802_LEDS_SHIFT)
-> > > +#define SY7802_LEDS_MASK_ALL	(SY7802_LEDS_MASK(0) |
-> > > SY7802_LEDS_MASK(1))
-> > > +
-> > > +#define SY7802_TORCH_CURRENT_SHIFT	3
-> > > +#define SY7802_TORCH_CURRENT_MASK(_id) \
-> > > +	(GENMASK(2, 0) << (SY7802_TORCH_CURRENT_SHIFT * (_id)))
-> > > +#define SY7802_TORCH_CURRENT_MASK_ALL \
-> > > +	(SY7802_TORCH_CURRENT_MASK(0) |
-> > > SY7802_TORCH_CURRENT_MASK(1))
-> > > +
-> > > +#define SY7802_FLASH_CURRENT_SHIFT	4
-> > > +#define SY7802_FLASH_CURRENT_MASK(_id) \
-> > > +	(GENMASK(3, 0) << (SY7802_FLASH_CURRENT_SHIFT * (_id)))
-> > > +#define SY7802_FLASH_CURRENT_MASK_ALL \
-> > > +	(SY7802_FLASH_CURRENT_MASK(0) |
-> > > SY7802_FLASH_CURRENT_MASK(1))
-> > > +
-> > > +#define SY7802_TIMEOUT_DEFAULT_US	512000U
-> > > +#define SY7802_TIMEOUT_MIN_US		32000U
-> > > +#define SY7802_TIMEOUT_MAX_US		1024000U
-> > > +#define SY7802_TIMEOUT_STEPSIZE_US	32000U
-> > > +
-> > > +#define SY7802_TORCH_BRIGHTNESS_MAX 8
-> > > +
-> > > +#define SY7802_FLASH_BRIGHTNESS_DEFAULT	14
-> > > +#define SY7802_FLASH_BRIGHTNESS_MIN	0
-> > > +#define SY7802_FLASH_BRIGHTNESS_MAX	15
-> > > +#define SY7802_FLASH_BRIGHTNESS_STEP	1
-> > > +
-> > > +#define SY7802_FLAG_TIMEOUT			BIT(0)
-> > > +#define SY7802_FLAG_THERMAL_SHUTDOWN		BIT(1)
-> > > +#define SY7802_FLAG_LED_FAULT			BIT(2)
-> > > +#define SY7802_FLAG_TX1_INTERRUPT		BIT(3)
-> > > +#define SY7802_FLAG_TX2_INTERRUPT		BIT(4)
-> > > +#define SY7802_FLAG_LED_THERMAL_FAULT		BIT(5)
-> > > +#define SY7802_FLAG_FLASH_INPUT_VOLTAGE_LOW	BIT(6)
-> > > +#define SY7802_FLAG_INPUT_VOLTAGE_LOW		BIT(7)
-> > > +
-> > > +#define SY7802_CHIP_ID	0x51
-> > > +
-> > > +static const struct reg_default sy7802_regmap_defs[] = {
-> > > +	{ SY7802_REG_ENABLE, SY7802_LEDS_MASK_ALL },
-> > > +	{ SY7802_REG_TORCH_BRIGHTNESS, 0x92 },
-> > > +	{ SY7802_REG_FLASH_BRIGHTNESS,
-> > > SY7802_FLASH_BRIGHTNESS_DEFAULT |
-> > > +		SY7802_FLASH_BRIGHTNESS_DEFAULT <<
-> > > SY7802_FLASH_CURRENT_SHIFT },
-> > > +	{ SY7802_REG_FLASH_DURATION, 0x6f },
-> > > +	{ SY7802_REG_FLAGS, 0x0 },
-> > > +	{ SY7802_REG_CONFIG_1, 0x68 },
-> > > +	{ SY7802_REG_CONFIG_2, 0xf0 },
-> > 
-> > Not your fault, but this interface is frustrating since we have no
-> > idea
-> > what these register values mean.  IMHO, they should be defined and
-> > ORed
-> > together in some human readable way.
-> > 
-> > I say that it's not your fault because I see that this is the most
-> > common usage.
-> > 
-> 
-> I don't know how to interpret some bits of the default values. I don't
-> have the documentation and changing the bits and observing the behavior
-> of the device also didn't help.
+The implementation is based on information extracted from downstream as
+the datasheet provided by a distributor of the hardware didn't include
+any information about the i2c register description.
 
-And this is the problem.
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+---
+Changes in v5:
+- Fix language in driver description comment
+- Unwrap function arguments
+- Remove unnecessary empty lines
+- Add Acked-by tag to second patch
+- Link to v4: https://lore.kernel.org/r/20240616-sy7802-v4-0-789994180e05@apitzsch.eu
 
-> Should I remove the entries from sy7802_regmap_defs, which have values
-> that we don't fully understand?
+Changes in v4:
+- Use for_each_available_child_of_node_scoped() to simplify code
+- Use dev_err_probe() to be consistent with the other code in
+  sy7802_probe()
+- Split devm_add_action() into 2 devm_add_action_or_reset() to simplify
+  code and balance regulator_enable()
+- Link to v3: https://lore.kernel.org/r/20240612-sy7802-v3-0-1e9cc1c79b79@apitzsch.eu
 
-No, as I say, it's not your fault.  Sadly this appears to be the norm.
+Changes in v3:
+- Add R-b tag to first patch
+- Extend driver commit message
+- Improve readability of defines by using BIT()
+- Rename some variables/parameters
+  * led_no -> led_id
+  * level -> brightness
+  * curr -> fled_{strobe,torch}_used_tmp
+  * mask -> {flash,torch}_mask
+  * i -> child_num
+- Restructure structs ("Place th big stuff at the top")
+- Declare 'child' on a separate line
+- Move multi-line assignments out of declaration block
+- Update warning/error messages and comments
+- Use gotos to handle error path
+- Use devm API to cleanup module's resources
+- Init mutex before LED class device is registered to avoid race
+  condition
+- Link to v2: https://lore.kernel.org/r/20240401-sy7802-v2-0-1138190a7448@apitzsch.eu
 
+Changes in v2:
+- bindings: remove unneeded allOf
+- bindings: example: move flash-led-controller under i2c node to fix
+  check error
+- Cc to phone-devel
+- Link to v1: https://lore.kernel.org/r/20240327-sy7802-v1-0-db74ab32faaf@apitzsch.eu
+
+---
+André Apitzsch (3):
+      dt-bindings: leds: Add Silergy SY7802 flash LED
+      leds: sy7802: Add support for Silergy SY7802 flash LED controller
+      arm64: dts: qcom: msm8939-longcheer-l9100: Add rear flash
+
+ .../devicetree/bindings/leds/silergy,sy7802.yaml   | 100 ++++
+ .../boot/dts/qcom/msm8939-longcheer-l9100.dts      |  26 +
+ drivers/leds/flash/Kconfig                         |  11 +
+ drivers/leds/flash/Makefile                        |   1 +
+ drivers/leds/flash/leds-sy7802.c                   | 539 +++++++++++++++++++++
+ 5 files changed, 677 insertions(+)
+---
+base-commit: 6a03b35e4395eb2d6e89a38aca00a9fe9cb39ba1
+change-id: 20240325-sy7802-f40fc6f56525
+
+Best regards,
 -- 
-Lee Jones [李琼斯]
+André Apitzsch <git@apitzsch.eu>
+
+
