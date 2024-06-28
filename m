@@ -1,94 +1,79 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306391B94F;
-	Fri, 28 Jun 2024 17:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF6E1876
+	for <phone-devel@vger.kernel.org>; Fri, 28 Jun 2024 17:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719596477; cv=none; b=s+5R50q4FDMC7S/u4K0cXDy34GMALBDaDplX/DQN9HX8VNanue2eam21oywD+eBfcsqXy75u+Dt5v/td1xiiY95ntxrJsQgiQtnA3DLUheTruDyZpFyfK+kCKmJemXxz6dNGcaNQ0un0coAH7GGSEDFCkGPPOaTS8JpLbMAkagQ=
+	t=1719596708; cv=none; b=o6WLzq4eqgj+dtoMqyIZTwjSba2gAMUt5OisFVNM4qDHc6aThEhBvq/N/mBEydPtsOkH0+gL3v4ai0QiXBsb3TrTYjpPb3VbdN/y9n3FIWQLUJ41RPYHI1Vc2+z4Qw+ZbhE1esLRE9MxKkDH87S/L9DtNGqLMtWSQg7wQtLk9fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719596477; c=relaxed/simple;
-	bh=toIiav45hbrwvCItcKkP6A45Os2fpVL346q+vWA/6IE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=eetTjuYMffnFyw14oGyemDrYEiXsLw/cG1df/3gzlHiaDV+WQNj5qU3gTdimPE30AaFz8JWxx1s6ywdbvKZX4yCG6Bfj9nOXVWsYOccU5KxMiBqoNAHI2OquQamzzgECd5Cr/CMNZhHWRH5fWDVxRvEwj6z09KbgV0EC1UnZang=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=ZBjX/H8V; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	s=arc-20240116; t=1719596708; c=relaxed/simple;
+	bh=NbOS8wtvU7uKZD7BIvMjlCuVnUcuWUyNlr4dVg1GJ5w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 References:In-Reply-To; b=mUkCwNwD4OFM/QxI42Hn0ZoMdariT68EgFWrqgwWnX7l+4Q91QfKgKAxy0TPgCeyjG8IA1XdzzHmbuoGJmzeS5ATI5aUYrKKUTLEgi4btfRA65ox9y5IdhyxwXoDRzLJPTblFAJ/sZmZ7cByxHHrA0GBJhAK0YBJ5zfSfsk14os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b=kbMcgn20; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="ZBjX/H8V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1719596473; bh=toIiav45hbrwvCItcKkP6A45Os2fpVL346q+vWA/6IE=;
-	h=From:Date:Subject:To:Cc;
-	b=ZBjX/H8VWPTvLPm1ftDaOFAaEcOi9R2E+Ce4Rg9vfolEY8AwPd1FKpvVdunhqwMOJ
-	 e1X8wMkWwHdFB7QNZ2L8RFF2Md2ew913WUQya7Kw9yumX9SPrxTAPXhXBgtajBC8B7
-	 rVxd7C906/TRN62YPlAEuhevkUIfv/r8cF08232s=
-From: Luca Weiss <luca@lucaweiss.eu>
-Date: Fri, 28 Jun 2024 19:40:55 +0200
-Subject: [PATCH] mailmap: Update Luca Weiss's email address
+	dkim=pass (2048-bit key) header.d=mff.cuni.cz header.i=@mff.cuni.cz header.b="kbMcgn20"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mff.cuni.cz;
+	s=submission; t=1719595214; x=1720895214;
+	bh=NbOS8wtvU7uKZD7BIvMjlCuVnUcuWUyNlr4dVg1GJ5w=; h=From;
+	b=kbMcgn20SSqY+/JxddiLXwHe9sRBJ9BKqp4uHpNCQLh5PZrbZvIQO1XMKrGNPI2PT
+	 HpY0OkPKM4Ui8kXeCfb1+coH564dkDDw6PkYgz6EkKrSWIh1TNtu9LryK4YUuzb1a4
+	 9LBh6/yHSWk+3RqJjtVf8iafrA4dSQFqerg7nD5eRfhMJbbfswm9us0YK7jrzY5dlr
+	 bZCM6C6Vv+kGGfBI5WA+olaLCjIVuoFMEfSoQkxuhkagIsOwjZGbqg8kOklomUq0OP
+	 3My/2ZHjF+yi2Nc1qL7dRtCXCFihkSLm6X8xKW9kyfOF/iD0nyhI2XMioUWg1En8Md
+	 u7jQLsnSNXIfA==
+Received: from localhost (cdwifi-a110.cd-t.cz [213.235.133.110] (may be forged))
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 45SHKBZq057515
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Fri, 28 Jun 2024 19:20:13 +0200 (CEST)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240628-mailmap-v1-1-a0d12ffd1cd9@lucaweiss.eu>
-X-B4-Tracking: v=1; b=H4sIAKb1fmYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDMyML3dzEzJzcxAJdY1MjizRzYzPTxKQkJaDqgqLUtMwKsEnRsbW1AOn
- eJpNZAAAA
-To: Bjorn Andersson <andersson@kernel.org>, 
- ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- Luca Weiss <luca@lucaweiss.eu>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1240; i=luca@lucaweiss.eu;
- h=from:subject:message-id; bh=toIiav45hbrwvCItcKkP6A45Os2fpVL346q+vWA/6IE=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBmfvW4le6rriyujXy0XorJNe8GloR7MugOVonFA
- faFM5vNEl6JAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZn71uAAKCRBy2EO4nU3X
- VrKvEACgd7YTcnp9R2cdZnmGgIjv9KZojIHB+mzQNcQFZg7z5ZyCLOgF4GnMyH8noKOwAEecfFL
- GbJg1DCQd3UrYuw01OeAvtFyjK9JU2oIk+pWYY68QOP/JOJM6NwNr7e6nCG1s9y4TLup4u/m1U1
- 0jlDiAUgjcR8pmYz+b0p035PbGdKG1Mp56w3+Up/ufu2NABVr8/fOa/jMkvFBea/fa4obfdKon7
- u1JdOt3OCfznujgKW4B7bHMM3gXBqJSYjGM5xsRNmg3gpSODahztn5LdEB7bxIgAQWEBQK5FBnv
- BTVujGIsdu4oC2yurvIjBro90sc7vHhlvIwyGZVCJ13Tt4k9hIco2XTeqE2EQWZHNiMXJ+mta+h
- dlp8HyB0WluDjpgxbZp1Kj2tw322WJDHIoJ9IiBUa0h0UHZJiD6oOFcl8SMxD6YixPkHhfwKI7N
- JajdnWhuwFqeVhX7gmzlud17pqJJ2EcpN+dMuwoL0rbA95Z3boma5EcqupyHLOGWCyhZ2oe8aGr
- 4w/BWW4WoYC1DkKNME2j2FGXp4jusrfsHd204xdv9LVUlrVAn9c37UW+Vj7uQ98Gl1FS2nJXzjg
- oJZmPqkmpMFvDmHQtH1UoWncJO47Fv4y4+jevnX9rTxBnl2RFmCSwARvIkpjtgH9KNFGBTnzdgW
- sMdR7f0cTE9hilg==
-X-Developer-Key: i=luca@lucaweiss.eu; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 28 Jun 2024 19:20:50 +0200
+Message-Id: <D2BTN4CHSFO0.1H59EH2PH7HAG@matfyz.cz>
+Cc: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+        <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>
+Subject: Re: [PATCH v7 0/5] initial support for Marvell 88PM886 PMIC
+To: "Lee Jones" <lee@kernel.org>, "Rob Herring" <robh@kernel.org>,
+        "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+        "Conor Dooley"
+ <conor+dt@kernel.org>,
+        "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
+        "Liam
+ Girdwood" <lgirdwood@gmail.com>,
+        "Mark Brown" <broonie@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-input@vger.kernel.org>
+From: "Karel Balej" <balejk@matfyz.cz>
+References: <20240531175109.15599-1-balejk@matfyz.cz>
+ <171958569931.3316488.12728822093231549974.b4-ty@kernel.org>
+In-Reply-To: <171958569931.3316488.12728822093231549974.b4-ty@kernel.org>
 
-I'm slowly migrating my mail to a new domain, add an entry to map the
-mail address. Just for clarity, my work-related @fairphone.com email
-stays unchanged.
+Lee Jones, 2024-06-28T15:41:39+01:00:
+> On Fri, 31 May 2024 19:34:55 +0200, Karel Balej wrote:
+> > the following implements basic support for Marvell's 88PM886 PMIC which
+> > is found for instance as a component of the samsung,coreprimevelte
+> > smartphone which inspired this and also serves as a testing platform.
+> >=20
+> > The code for the MFD is based primarily on this old series [1] with the
+> > addition of poweroff based on the smartphone's downstream kernel tree
+> > [2]. The onkey and regulators drivers are based on the latter. I am not
+> > in possesion of the datasheet.
+> >=20
+> > [...]
+>
+> Applied, thanks!
 
-Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
----
-Since my email address also appears in a bunch of drivers and arm(64)
-files, and two devicetree binding files, how are those normally handled?
-Just ignore them and let mailmap handle everything relevant?
----
- .mailmap | 1 +
- 1 file changed, 1 insertion(+)
+Thank you and thank you and everybody else for all the feedback and
+reviews, I appreciate it.
 
-diff --git a/.mailmap b/.mailmap
-index a6c619e22efc..e169a99ce7c7 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -385,6 +385,7 @@ Li Yang <leoyang.li@nxp.com> <leo@zh-kernel.org>
- Lior David <quic_liord@quicinc.com> <liord@codeaurora.org>
- Lorenzo Pieralisi <lpieralisi@kernel.org> <lorenzo.pieralisi@arm.com>
- Luca Ceresoli <luca.ceresoli@bootlin.com> <luca@lucaceresoli.net>
-+Luca Weiss <luca@lucaweiss.eu> <luca@z3ntu.xyz>
- Lukasz Luba <lukasz.luba@arm.com> <l.luba@partner.samsung.com>
- Luo Jie <quic_luoj@quicinc.com> <luoj@codeaurora.org>
- Maciej W. Rozycki <macro@mips.com> <macro@imgtec.com>
-
----
-base-commit: 642a16ca7994a50d7de85715996a8ce171a5bdfb
-change-id: 20240628-mailmap-3528f7365abb
-
-Best regards,
--- 
-Luca Weiss <luca@lucaweiss.eu>
-
+K. B.
