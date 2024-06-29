@@ -1,488 +1,127 @@
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277FB14A85;
-	Sat, 29 Jun 2024 09:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE88429CFB
+	for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 13:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719651699; cv=none; b=uzQ3+9feCApCjnwObL62H4+HuJbaPScemdDEXuyATG0TMDKs0fLa07H0M62sCa4JgUfoUK7MEu2gwMz1DzsC8nEALvseLyY/D6Ie6wOJgIAddEjUihTgU7bvN3B06GPVE1z22e9d97wd1iRfpVZkZrByxwYMccduMLifIJpQThU=
+	t=1719666072; cv=none; b=UwgzKToeOeXxeK5e5RwpDAEK6DB/cv684OVLriu6dKGsdv8g8JiG50h3DLqKrRPdwf7OMfG5Osq8hkgU+fcedo+36JuuzZXeWvx04LipvP45084VbX9cR715m6cMcCiPY8eIDKxeWDCXm4sCwAIXANIU8+e8NsIPZGWcfxqlD4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719651699; c=relaxed/simple;
-	bh=W7NIudphB47cxV64suN18o18T+N2b7fBSp/JSfsbbkI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mOzRYnVP3PkxnmHJLNUe33UwwYuoCZibwoSVgVjFPKOfH40Szdc4qHQPgYdoysscHzioEjw97C568f6MDtH544itVYJy1ayl1vEJsmbnICnAP94owhd/CYmXp66O23ltSXxAr8YeqBcaPA9ym/j5qHyAwHpTEEJ1O+HiFhHGbkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=5cUUna29; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
+	s=arc-20240116; t=1719666072; c=relaxed/simple;
+	bh=+pAxkY9w/DH5seD/QP+PHFtRjh1MwqdB78uSpdSMtss=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UnIcSZ2lfgkAJrImUPonh9c5AUqwE9e0FXXWuRIBGVa5hA8wW4uIfPG8OFHEAFY+sk5qQJCqKSOgRoHg7x7ekztDVhTMc+bbXg36GAeVkLSrREFeyoInyk21wjbb83eCpihHrdNLBrWtArqVnTEIaD7x4ykl8Cfk+guCxfFBN88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hBd3vjSe; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="5cUUna29"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1719651695; bh=W7NIudphB47cxV64suN18o18T+N2b7fBSp/JSfsbbkI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=5cUUna29N0H9y1eZHHLIms3UTC6ssxLU9u5hK4Ytv+NvJTNnIr6OMKEF7rmXEnGjs
-	 vHWTfYT1fqnkFdRS3XBpGkhuvRxSz4pDt0aHMXjPAGRBO0Yc2WOpiUSe8AM3O//9/P
-	 wwkSxlr0UPoX3jBufRHUsCCa+10ktMVuvSFxtjPs=
-From: Luca Weiss <luca@lucaweiss.eu>
-To: linux-kernel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht,
- Raymond Hackley <raymondhackley@protonmail.com>
-Subject:
- Re: [PATCH v2 2/2] ARM: dts: qcom-msm8226-samsung-ms013g: Add initial device
- tree
-Date: Sat, 29 Jun 2024 11:01:34 +0200
-Message-ID: <6223513.lOV4Wx5bFT@g550jk>
-In-Reply-To: <20240627193013.1800-3-raymondhackley@protonmail.com>
-References:
- <20240627193013.1800-1-raymondhackley@protonmail.com>
- <20240627193013.1800-3-raymondhackley@protonmail.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hBd3vjSe"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5854ac817afso1837257a12.2
+        for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 06:01:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719666069; x=1720270869; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q15KtodgRcDJhbsUX44QuIqWrNjJ334aYzslN5VzRCE=;
+        b=hBd3vjSe4Cm1qW1KhfNmNdEsdb5CE4oDy7MPIPeILod1I1uo+TCZB0gDhJQ8Qwv7c5
+         5MQ+g0/KwaiHudMxyVFUs0TzHS9XNHz+TuBCVWvWG7yb9sBMPmpWQlqNaXpWpOC9jS3h
+         1ecYCq7T3mnB/gjuKV8YZuZBJjEe4mw5NXhF2skHIIWtpj/vs/MP3me5EtQgcgeZQmHz
+         lH1P6uOcXqurtYFx+UQhizIirMHBZdRFd0qGisAC40q4QdrMFEeGEfPYaL0OHiNfY0r5
+         ut1ES/GQtYolgW1gglrKWWrw2FCHTTr70nEDEktfQKpde7/1FBN+14UsuIzwZbgO1eVn
+         MZ8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719666069; x=1720270869;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Q15KtodgRcDJhbsUX44QuIqWrNjJ334aYzslN5VzRCE=;
+        b=Hi8xZYEDC6J4IooZbjL8LJlZmaA/75z9XuL0iwEbFWnrEtt/hn9HHfwBiwdINfWvGn
+         TyhAZExOmsCpk8BM02ziF+sKL36dxP0aah8qXcP1QzmQW82n97cJJB/xIhlbObzOKfzh
+         ZjFXzYiUO8DURMua3JOp1dvcVu9TVijg4PtryWX8lw0EaYU3cftzyzbvCZMZQqmQxwOu
+         3FeZe7tDp4RESq6cUzJnULbLnwu/SIqsrEtzZ6MB/uGL7GHWA14OizJ4nQMVXiYjB6tl
+         l/diOtD8A/30DJmX58yC76A4gY8dUaXAmn7c0WSFuOhVM08XEEmp+zgeb2EyAEdhtyLM
+         Z/5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWE0bnzuxnJjC+XP0nkyTZn05tXpk+vxlImsYHBuYNXZdj0XvnolV0YAY5WTNabHoLabPjp/T3JTJAYfFHcdsEpqicyoMPQ38XHHoY=
+X-Gm-Message-State: AOJu0YyRjE88rG/wVeiLQwrlJyx2we22cJ8rqcEAPMA77Yj6jM9CdUxu
+	AGuFC1E+0yD/j/zalPFuqDxkNusowimTQUz48/eTzu9rsBUsYsE13AiSGB1dv1RqP8VRf204I9O
+	n
+X-Google-Smtp-Source: AGHT+IHDVXarznEkoh5Wzl0xqsIUTBQQhm3uVKbdV0WxGQmZT/NrSzv05ebdKsn1hFFoynLLEURrqg==
+X-Received: by 2002:a05:6402:5216:b0:57d:4ca4:61ba with SMTP id 4fb4d7f45d1cf-5879f4a570bmr769495a12.10.1719666069195;
+        Sat, 29 Jun 2024 06:01:09 -0700 (PDT)
+Received: from [192.168.215.29] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5861324dcb3sm2209179a12.26.2024.06.29.06.01.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 29 Jun 2024 06:01:08 -0700 (PDT)
+Message-ID: <ebac5b55-00d6-40c8-86c0-3e7a3affd5b9@linaro.org>
+Date: Sat, 29 Jun 2024 15:01:06 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] soc: qcom: smsm: Add missing mailbox dependency to
+ Kconfig
+To: Luca Weiss <luca@lucaweiss.eu>, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel test robot <lkp@intel.com>
+References: <20240628-smsm-kconfig-v1-1-117d5af4ba1f@lucaweiss.eu>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20240628-smsm-kconfig-v1-1-117d5af4ba1f@lucaweiss.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Donnerstag, 27. Juni 2024 21:30:52 MESZ Raymond Hackley wrote:
-> Samsung Galaxy Grand 2 is a phone based on MSM8226. It's similar to the
-> other Samsung devices based on MSM8226 with only a few minor differences.
+On 28.06.2024 7:30 PM, Luca Weiss wrote:
+> Since the smsm driver got the ability to interact with the mailbox using
+> the mailbox subsystem and not just syscon, we need to add the dependency
+> to kconfig as well to avoid compile errors.
 > 
-> The device trees contain initial support with:
->  - GPIO keys
->  - Regulator haptic
->  - SDHCI (internal and external storage)
->  - UART (on USB connector via the TI TSU6721 MUIC)
->  - Regulators
->  - Touchscreen
->  - Accelerometer
-> 
-> Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
+> Fixes: 75287992f58a ("soc: qcom: smsm: Support using mailbox interface")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202406180006.Z397C67h-lkp@intel.com/
+> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
 > ---
->  arch/arm/boot/dts/qcom/Makefile               |   1 +
->  .../dts/qcom/qcom-msm8226-samsung-ms013g.dts  | 386 ++++++++++++++++++
->  2 files changed, 387 insertions(+)
->  create mode 100644 arch/arm/boot/dts/qcom/qcom-msm8226-samsung-ms013g.dts
-> 
-> diff --git a/arch/arm/boot/dts/qcom/Makefile b/arch/arm/boot/dts/qcom/Makefile
-> index ccd4ce6353df..f06c6d425e91 100644
-> --- a/arch/arm/boot/dts/qcom/Makefile
-> +++ b/arch/arm/boot/dts/qcom/Makefile
-> @@ -28,6 +28,7 @@ dtb-$(CONFIG_ARCH_QCOM) += \
->  	qcom-msm8226-microsoft-dempsey.dtb \
->  	qcom-msm8226-microsoft-makepeace.dtb \
->  	qcom-msm8226-microsoft-moneypenny.dtb \
-> +	qcom-msm8226-samsung-ms013g.dtb \
->  	qcom-msm8226-samsung-s3ve3g.dtb \
->  	qcom-msm8660-surf.dtb \
->  	qcom-msm8916-samsung-e5.dtb \
-> diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-ms013g.dts b/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-ms013g.dts
-> new file mode 100644
-> index 000000000000..190b52fda634
-> --- /dev/null
-> +++ b/arch/arm/boot/dts/qcom/qcom-msm8226-samsung-ms013g.dts
-> @@ -0,0 +1,386 @@
-> +// SPDX-License-Identifier: BSD-3-Clause
-> +
-> +/dts-v1/;
-> +
-> +#include "qcom-msm8226.dtsi"
-> +#include "pm8226.dtsi"
-> +
-> +/delete-node/ &smem_region;
-> +
-> +/ {
-> +	model = "Samsung Galaxy Grand 2";
-> +	compatible = "samsung,ms013g", "qcom,msm8226";
-> +	chassis-type = "handset";
-> +
-> +	aliases {
-> +		mmc0 = &sdhc_1; /* SDC1 eMMC slot */
-> +		mmc1 = &sdhc_2; /* SDC2 SD card slot */
-> +		serial0 = &blsp1_uart3;
-> +	};
-> +
-> +	chosen {
-> +		stdout-path = "serial0:115200n8";
-> +	};
-> +
-> +	gpio-hall-sensor {
-> +		compatible = "gpio-keys";
-> +
-> +		pinctrl-0 = <&gpio_hall_sensor_default>;
-> +		pinctrl-names = "default";
-> +
-> +		label = "GPIO Hall Effect Sensor";
-> +
-> +		event-hall-sensor {
-> +			label = "Hall Effect Sensor";
-> +			gpios = <&tlmm 50 GPIO_ACTIVE_LOW>;
-> +			linux,input-type = <EV_SW>;
-> +			linux,code = <SW_LID>;
-> +			linux,can-disable;
-> +		};
-> +	};
-> +
-> +	gpio-keys {
-> +		compatible = "gpio-keys";
-> +
-> +		pinctrl-0 = <&gpio_keys_default>;
-> +		pinctrl-names = "default";
-> +
-> +		label = "GPIO Buttons";
-> +
-> +		button-volume-up {
-> +			label = "Volume Up";
-> +			gpios = <&tlmm 106 GPIO_ACTIVE_LOW>;
-> +			linux,code = <KEY_VOLUMEUP>;
-> +		};
-> +
-> +		button-volume-down {
-> +			label = "Volume Down";
-> +			gpios = <&tlmm 107 GPIO_ACTIVE_LOW>;
-> +			linux,code = <KEY_VOLUMEDOWN>;
-> +		};
-> +
-> +		button-home {
-> +			label = "Home Key";
-> +			gpios = <&tlmm 108 GPIO_ACTIVE_LOW>;
-> +			linux,code = <KEY_HOMEPAGE>;
-> +		};
-> +	};
-> +
-> +	haptic {
-> +		compatible = "regulator-haptic";
-> +		haptic-supply = <&reg_motor_vdd>;
-> +		min-microvolt = <3300000>;
-> +		max-microvolt = <3300000>;
-> +	};
 
-This is the vibration motor? Use "vibrator" as node name then as per
-https://github.com/devicetree-org/devicetree-specification/blob/main/source/chapter2-devicetree-basics.rst?plain=1#L299
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Apart from this I don't see anything wrong.
-
-Reviewed-by: Luca Weiss <luca@lucaweiss.eu>
-
-> +
-> +	reg_motor_vdd: regulator-motor-vdd {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "motor_vdd";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +
-> +		gpio = <&tlmm 111 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +
-> +		pinctrl-0 = <&motor_en_default>;
-> +		pinctrl-names = "default";
-> +	};
-> +
-> +	reg_vdd_tsp_a: regulator-vdd-tsp-a {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "tsp_3p3v";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +
-> +		gpio = <&tlmm 31 GPIO_ACTIVE_HIGH>;
-> +		enable-active-high;
-> +
-> +		pinctrl-0 = <&tsp_en_default>;
-> +		pinctrl-names = "default";
-> +	};
-> +
-> +	reserved-memory {
-> +		smem_region: smem@fa00000 {
-> +			reg = <0x0fa00000 0x100000>;
-> +			no-map;
-> +		};
-> +	};
-> +};
-> +
-> +&blsp1_i2c2 {
-> +	status = "okay";
-> +
-> +	accelerometer@18 {
-> +		compatible = "bosch,bma255";
-> +		reg = <0x18>;
-> +		interrupts-extended = <&tlmm 64 IRQ_TYPE_EDGE_RISING>;
-> +
-> +		vdd-supply = <&pm8226_l19>;
-> +		vddio-supply = <&pm8226_lvs1>;
-> +
-> +		pinctrl-0 = <&accel_int_default>;
-> +		pinctrl-names = "default";
-> +
-> +		mount-matrix = "0", "1", "0",
-> +			       "-1", "0", "0",
-> +			       "0", "0", "-1";
-> +	};
-> +};
-> +
-> +&blsp1_i2c5 {
-> +	status = "okay";
-> +
-> +	touchscreen@20 {
-> +		compatible = "zinitix,bt541";
-> +
-> +		reg = <0x20>;
-> +		interrupts-extended = <&tlmm 17 IRQ_TYPE_EDGE_FALLING>;
-> +
-> +		touchscreen-size-x = <720>;
-> +		touchscreen-size-y = <1280>;
-> +
-> +		vcca-supply = <&reg_vdd_tsp_a>;
-> +		vdd-supply = <&pm8226_lvs1>;
-> +
-> +		pinctrl-0 = <&tsp_int_default>;
-> +		pinctrl-names = "default";
-> +	};
-> +};
-> +
-> +&blsp1_uart3 {
-> +	status = "okay";
-> +};
-> +
-> +&rpm_requests {
-> +	regulators {
-> +		compatible = "qcom,rpm-pm8226-regulators";
-> +
-> +		pm8226_s3: s3 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1300000>;
-> +		};
-> +
-> +		pm8226_s4: s4 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <2200000>;
-> +		};
-> +
-> +		pm8226_s5: s5 {
-> +			regulator-min-microvolt = <1150000>;
-> +			regulator-max-microvolt = <1150000>;
-> +		};
-> +
-> +		pm8226_l1: l1 {
-> +			regulator-min-microvolt = <1225000>;
-> +			regulator-max-microvolt = <1225000>;
-> +		};
-> +
-> +		pm8226_l2: l2 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1200000>;
-> +		};
-> +
-> +		pm8226_l3: l3 {
-> +			regulator-min-microvolt = <750000>;
-> +			regulator-max-microvolt = <1337500>;
-> +		};
-> +
-> +		pm8226_l4: l4 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1200000>;
-> +		};
-> +
-> +		pm8226_l5: l5 {
-> +			regulator-min-microvolt = <1200000>;
-> +			regulator-max-microvolt = <1200000>;
-> +		};
-> +
-> +		pm8226_l6: l6 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +			regulator-allow-set-load;
-> +			regulator-always-on;
-> +		};
-> +
-> +		pm8226_l7: l7 {
-> +			regulator-min-microvolt = <1850000>;
-> +			regulator-max-microvolt = <1850000>;
-> +		};
-> +
-> +		pm8226_l8: l8 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +
-> +		pm8226_l9: l9 {
-> +			regulator-min-microvolt = <2050000>;
-> +			regulator-max-microvolt = <2050000>;
-> +		};
-> +
-> +		pm8226_l10: l10 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +
-> +		pm8226_l12: l12 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <1800000>;
-> +		};
-> +
-> +		pm8226_l14: l14 {
-> +			regulator-min-microvolt = <2750000>;
-> +			regulator-max-microvolt = <2750000>;
-> +		};
-> +
-> +		pm8226_l15: l15 {
-> +			regulator-min-microvolt = <2800000>;
-> +			regulator-max-microvolt = <2800000>;
-> +		};
-> +
-> +		pm8226_l16: l16 {
-> +			regulator-min-microvolt = <3000000>;
-> +			regulator-max-microvolt = <3350000>;
-> +		};
-> +
-> +		pm8226_l17: l17 {
-> +			regulator-min-microvolt = <2950000>;
-> +			regulator-max-microvolt = <2950000>;
-> +
-> +			regulator-system-load = <200000>;
-> +			regulator-allow-set-load;
-> +			regulator-always-on;
-> +		};
-> +
-> +		pm8226_l18: l18 {
-> +			regulator-min-microvolt = <2950000>;
-> +			regulator-max-microvolt = <2950000>;
-> +		};
-> +
-> +		pm8226_l19: l19 {
-> +			regulator-min-microvolt = <2850000>;
-> +			regulator-max-microvolt = <3000000>;
-> +		};
-> +
-> +		pm8226_l20: l20 {
-> +			regulator-min-microvolt = <3075000>;
-> +			regulator-max-microvolt = <3075000>;
-> +		};
-> +
-> +		pm8226_l21: l21 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <2950000>;
-> +			regulator-allow-set-load;
-> +		};
-> +
-> +		pm8226_l22: l22 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <2950000>;
-> +		};
-> +
-> +		pm8226_l23: l23 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <3300000>;
-> +		};
-> +
-> +		pm8226_l24: l24 {
-> +			regulator-min-microvolt = <1300000>;
-> +			regulator-max-microvolt = <1350000>;
-> +		};
-> +
-> +		pm8226_l25: l25 {
-> +			regulator-min-microvolt = <1775000>;
-> +			regulator-max-microvolt = <2125000>;
-> +		};
-> +
-> +		pm8226_l26: l26 {
-> +			regulator-min-microvolt = <1225000>;
-> +			regulator-max-microvolt = <1300000>;
-> +		};
-> +
-> +		pm8226_l27: l27 {
-> +			regulator-min-microvolt = <2050000>;
-> +			regulator-max-microvolt = <2050000>;
-> +		};
-> +
-> +		pm8226_l28: l28 {
-> +			regulator-min-microvolt = <1800000>;
-> +			regulator-max-microvolt = <2950000>;
-> +		};
-> +
-> +		pm8226_lvs1: lvs1 {};
-> +	};
-> +};
-> +
-> +&sdhc_1 {
-> +	vmmc-supply = <&pm8226_l17>;
-> +	vqmmc-supply = <&pm8226_l6>;
-> +
-> +	bus-width = <8>;
-> +	non-removable;
-> +
-> +	status = "okay";
-> +};
-> +
-> +&sdhc_2 {
-> +	vmmc-supply = <&pm8226_l18>;
-> +	vqmmc-supply = <&pm8226_l21>;
-> +
-> +	bus-width = <4>;
-> +	cd-gpios = <&tlmm 38 GPIO_ACTIVE_LOW>;
-> +
-> +	pinctrl-0 = <&sdhc2_default_state &sdhc2_cd_default>;
-> +	pinctrl-names = "default";
-> +
-> +	status = "okay";
-> +};
-> +
-> +&tlmm {
-> +	accel_int_default: accel-int-default-state {
-> +		pins = "gpio64";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-disable;
-> +	};
-> +
-> +	gpio_hall_sensor_default: gpio-hall-sensor-default-state {
-> +		pins = "gpio50";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-pull-up;
-> +	};
-> +
-> +	gpio_keys_default: gpio-keys-default-state {
-> +		pins = "gpio106", "gpio107", "gpio108";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-pull-up;
-> +	};
-> +
-> +	motor_en_default: motor-en-default-state {
-> +		pins = "gpio111";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-disable;
-> +	};
-> +
-> +	sdhc2_cd_default: sdhc2-cd-default-state {
-> +		pins = "gpio38";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-disable;
-> +	};
-> +
-> +	tsp_en_default: tsp-en-default-state {
-> +		pins = "gpio31";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-disable;
-> +	};
-> +
-> +	tsp_int_default: tsp-int-default-state {
-> +		pins = "gpio17";
-> +		function = "gpio";
-> +		drive-strength = <2>;
-> +		bias-disable;
-> +	};
-> +};
-> 
-
-
-
-
+Konrad
