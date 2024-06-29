@@ -1,60 +1,60 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187217BB0A
-	for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 13:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FF34F606
+	for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 13:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719666558; cv=none; b=DiX30w9CfePcdIQ/+djf3dOY//7+1uLOoj7kmZTRj5NEV/eudxfVg6pk2p/pKF1vS9VyxF24+n0UPRa34IunNHbaxtyRU6pRcl6+JOLKiSlBu9eqjyyvKYVswfR2psSOmKb7D6jCVwWCkqXBeUx3Kcjnn7mfkuwDh4chV/n/0X4=
+	t=1719667595; cv=none; b=ZYIEMy69tpPrF6FUtm7qRkjDMTc/tLlKo0cOmYa0CVavK7Ot65VQ1tqI0BlbZX0CJ8NvZnEm8ns+qx92gzjRSQzxNUasolbzzv5qQlulTRItNgN/XHY0CkRNDN5qIOOvJuCn3W4x9QIbBCI5o6PjkRDfAXeLvwwg1vMaSeOXMCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719666558; c=relaxed/simple;
-	bh=5HcREViO2ZDmFrPzvgNo6tpoLDPXkXeQ1vOIWwIOy4k=;
+	s=arc-20240116; t=1719667595; c=relaxed/simple;
+	bh=rGMabbjYduQb1TdtxhZEzPUiqGzSuTzr4tkzJBWKuiY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sPu2bVuCbHEXAXAV6cjoG1gWnXoWk/JWdSemnOaxwiV5e/abAtqsimLWDXWx1M/g8/6xrFULgj3AgApt+lQX0eNmcWcMPt3IsNJryvZ4upWzCg9Kcv9tj/gZMDZ1s8W/SPUikXqxZlvmh2z6gMB2JQ7hS3hPVb0IPVxKh5+HVrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hVLXm+Uy; arc=none smtp.client-ip=209.85.208.51
+	 In-Reply-To:Content-Type; b=FWYobXxN+EaK2diBR9hMjEtSGlELaEBjfXbKQagXObGnV+mMoyFawWxHWtOwUhN7pSodORKX/nPyDlfCn5PdPpZQedbU1aJ4gv/xPxjNQGXBrgB6DBzGPt96rv1rz69kHtD0ujtGwxJpxKulB0yYAessHYgLaWENavH/LEOd75c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MU4ucmFs; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hVLXm+Uy"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5858e973ef5so839787a12.0
-        for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 06:09:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MU4ucmFs"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a72585032f1so171331266b.3
+        for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 06:26:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719666554; x=1720271354; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1719667592; x=1720272392; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=szW+qpHen639wDwHyYUuN0+gHXUW14bCmbG+jcL15DE=;
-        b=hVLXm+UyjVfpKM16PGEuCpVFB3dobjfum/UMBluf3PjgdN4eP8yohhikIJmjDuVyjU
-         WOU+Supzdk3m6GVGXtmi4JySqodA0UjrSeqi01SS0EvlPBw6ZdcA7QlpLT72978V623Y
-         vSfua7MwbPQKiTqOUfpcTT3fIiizgFBMkXS0JcFMGvWGVkTBpTZCvQq9S2nWsWsrCPNJ
-         tnggx0FkvJe1gbmK6CylRJ64Y1y2EwTv1uOek/fNzDlk0n3kq6ZVjqgknuxFhp12BrFC
-         l6uauu1lLNeCXL6u8IBugUjTZH1Dw9XSwuIMxCU7OIaAU38WeJJRwkj3RfjT5dXL0P0e
-         k5zw==
+        bh=GVntu1txUaOnn3weB5jy5aTPDvRe/rt/FHSyHLe9pec=;
+        b=MU4ucmFsG4yDyPA3NOrW4JFoWSgKsopMdTpY1zfrUQ814/c7h0j6P5bnsnW5sKz3vi
+         wg+W5Fl3E9WMOs7dqKUsS0gm8IooNcJ953I5Aj2wlytyCPk+zhSGOQH0f2FtPD+l3FlS
+         7CK4KrLOIEcSDN9ULtATegjc3HL2vtkCBQc14BUxQfBffzj8UUdW8/ahB/RSOjtvOGSM
+         7DUBITODiqwyDV4WdkwLmdq8y5ItsMXkJFb4Yy9tzNilw78AXM64HIdNPoPrJQE/o4zK
+         sf0XWnLKdN4PE/NXFOFnv6ak6bO+rY63AA+mPE/TPdu6UiLR9uuAlCz/HRgXjuVf81Lk
+         9zfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719666554; x=1720271354;
+        d=1e100.net; s=20230601; t=1719667592; x=1720272392;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=szW+qpHen639wDwHyYUuN0+gHXUW14bCmbG+jcL15DE=;
-        b=Nq3B6L/vwa/Yn7QELffsyjDFuRHQ9oQo6e/bIv7mM28iEbqYCpStqCiAoA6GZ6AjYk
-         D1lCCZEGYWFbDsmGqpQKLwOjyMZGbksaP6NL+RUZKUNosoQaZsEexBnD/3VojW68chb6
-         W/vvQVCJDn9snhTY0R4ioUed6LwPvICdoEvtgjAJRc85LsVLXOGLu8K/K+p/9U1bsuPL
-         yQocLoTukBca/mxJRbbBX1NcFy2dYtPOryAX/JttY9TC0RbmoHYEzDQ1DsPVtk/cdlKf
-         p8Yu+FjoFVUfLqJtxIYSDu5g8EqN42tyFS8I2CvehWnE4ypEn+aOzksmS6/uv65q+Adr
-         dHzA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKcr6fZYe6jWq+mH50/XtdWkzu936qyT2GFPor9GuhXr9waSPHuAnn7tzIhOV47lOYboODqYdxz3TzP9xTiIxUyLzRVxwFsWidV/Q=
-X-Gm-Message-State: AOJu0Yw9/kgo0c3JM6IAJuBibt+ghAp+aZHu5deDvg8F3gFYFFN/FJOm
-	W6UjtcVyWedbL35gv8ypq6exl4EUT88G7UORIEEXENunBDVreggZqLFtpXOwcD8=
-X-Google-Smtp-Source: AGHT+IGAW8b892LzYjBo49cSL/7QUlVkTbYj03RIBUvQNFXrlob++LKjfIR5n0y6hLpu1m0VRwRK8w==
-X-Received: by 2002:a05:6402:348a:b0:56e:3293:3777 with SMTP id 4fb4d7f45d1cf-5879f3ad3bcmr933147a12.17.1719666554033;
-        Sat, 29 Jun 2024 06:09:14 -0700 (PDT)
+        bh=GVntu1txUaOnn3weB5jy5aTPDvRe/rt/FHSyHLe9pec=;
+        b=nEHIbPeBvqGQBCPiwDYNGp68zh6dy1gF+i+LzZu2fd/wMlEHeTA/AUNtEsTHlnHbdV
+         dDGTT9MNXQ7Vx5IzapE/IKrb6uE37Zods3dxf/LYPQ+bUjlBILNu44XaRTwWbTFpKXxQ
+         9robmeVhfSKqQ+xG/dITKBUkbyShN7kn0W6dNAiFTRVfuZNSfJiWhSTtU6hXP7QPkoMa
+         g7n19IUHCuo6EwAx4pCp7udpTcOOIQ5mclrFvX2AwUAmdK7/kLTrVUlHNn675QUzRkpr
+         H4h/MWf7FFuFELr6kG07iU62SWKoV85VUveA1XnmKQcLux8G93Bux0ZY5+AKULHxf5AI
+         0pBw==
+X-Forwarded-Encrypted: i=1; AJvYcCUhV6PkFtexnBdJhzCJpaMW8ayAuHa/iNWtNWrEPVCE1yI341b77oFIhXIWzihA81yQWc/tlJ9P6IFcq3YykbxzIwuELY3mKnpkWvE=
+X-Gm-Message-State: AOJu0YzELBemTAl35uakJX3HLUmIatrHFZ0VWz0aVepVwiBDflIA46uh
+	I5/hq3WTBdRCjGUfjzLy43VFGp4yIspgpHHhxHtiXI0P5imakVanYf+IEGPTo4Y=
+X-Google-Smtp-Source: AGHT+IGwZcuh8h++Gn0BZ68/CBUiSgT++N39s9q3g/+GgIVWwgKkzyzjxZgDQyV1FpHy46qCmItBXg==
+X-Received: by 2002:a17:907:7242:b0:a6f:c886:b68b with SMTP id a640c23a62f3a-a75144398a9mr95984966b.43.1719667591938;
+        Sat, 29 Jun 2024 06:26:31 -0700 (PDT)
 Received: from [192.168.215.29] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-58615037bdesm2207202a12.97.2024.06.29.06.09.12
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a72ab06567esm162682466b.119.2024.06.29.06.26.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 29 Jun 2024 06:09:13 -0700 (PDT)
-Message-ID: <0159b30e-2617-4e12-816b-273d58dfc297@linaro.org>
-Date: Sat, 29 Jun 2024 15:09:11 +0200
+        Sat, 29 Jun 2024 06:26:31 -0700 (PDT)
+Message-ID: <9d4c97cc-177d-4200-bfc5-f9295643f470@linaro.org>
+Date: Sat, 29 Jun 2024 15:26:29 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -62,18 +62,15 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] ARM: dts: qcom-msm8226-samsung-ms013g: Add initial
- device tree
-To: Luca Weiss <luca@lucaweiss.eu>, linux-kernel@vger.kernel.org,
- ~postmarketos/upstreaming@lists.sr.ht
-Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
- devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
- Raymond Hackley <raymondhackley@protonmail.com>
-References: <20240627193013.1800-1-raymondhackley@protonmail.com>
- <20240627193013.1800-3-raymondhackley@protonmail.com>
- <6223513.lOV4Wx5bFT@g550jk>
+Subject: Re: [PATCH] arm64: dts: qcom: sm7225-fairphone-fp4: Name the
+ regulators
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240627-fp4-regulator-name-v1-1-66931111a006@fairphone.com>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
@@ -111,40 +108,18 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <6223513.lOV4Wx5bFT@g550jk>
+In-Reply-To: <20240627-fp4-regulator-name-v1-1-66931111a006@fairphone.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 29.06.2024 11:01 AM, Luca Weiss wrote:
-> On Donnerstag, 27. Juni 2024 21:30:52 MESZ Raymond Hackley wrote:
->> Samsung Galaxy Grand 2 is a phone based on MSM8226. It's similar to the
->> other Samsung devices based on MSM8226 with only a few minor differences.
->>
->> The device trees contain initial support with:
->>  - GPIO keys
->>  - Regulator haptic
->>  - SDHCI (internal and external storage)
->>  - UART (on USB connector via the TI TSU6721 MUIC)
->>  - Regulators
->>  - Touchscreen
->>  - Accelerometer
->>
->> Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
->> ---
-
-[...]
-
->> +	haptic {
->> +		compatible = "regulator-haptic";
->> +		haptic-supply = <&reg_motor_vdd>;
->> +		min-microvolt = <3300000>;
->> +		max-microvolt = <3300000>;
->> +	};
+On 27.06.2024 3:15 PM, Luca Weiss wrote:
+> Without explicitly specifying names for the regulators they are named
+> based on the DeviceTree node name. This results in multiple regulators
+> with the same name, making debug prints and regulator_summary impossible
+> to reason about.
 > 
-> This is the vibration motor? Use "vibrator" as node name then as per
-> https://github.com/devicetree-org/devicetree-specification/blob/main/source/chapter2-devicetree-basics.rst?plain=1#L299
-
-With that:
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> ---
 
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
