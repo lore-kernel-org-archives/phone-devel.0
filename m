@@ -1,61 +1,60 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE88429CFB
-	for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 13:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187217BB0A
+	for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 13:09:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719666072; cv=none; b=UwgzKToeOeXxeK5e5RwpDAEK6DB/cv684OVLriu6dKGsdv8g8JiG50h3DLqKrRPdwf7OMfG5Osq8hkgU+fcedo+36JuuzZXeWvx04LipvP45084VbX9cR715m6cMcCiPY8eIDKxeWDCXm4sCwAIXANIU8+e8NsIPZGWcfxqlD4k=
+	t=1719666558; cv=none; b=DiX30w9CfePcdIQ/+djf3dOY//7+1uLOoj7kmZTRj5NEV/eudxfVg6pk2p/pKF1vS9VyxF24+n0UPRa34IunNHbaxtyRU6pRcl6+JOLKiSlBu9eqjyyvKYVswfR2psSOmKb7D6jCVwWCkqXBeUx3Kcjnn7mfkuwDh4chV/n/0X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719666072; c=relaxed/simple;
-	bh=+pAxkY9w/DH5seD/QP+PHFtRjh1MwqdB78uSpdSMtss=;
+	s=arc-20240116; t=1719666558; c=relaxed/simple;
+	bh=5HcREViO2ZDmFrPzvgNo6tpoLDPXkXeQ1vOIWwIOy4k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UnIcSZ2lfgkAJrImUPonh9c5AUqwE9e0FXXWuRIBGVa5hA8wW4uIfPG8OFHEAFY+sk5qQJCqKSOgRoHg7x7ekztDVhTMc+bbXg36GAeVkLSrREFeyoInyk21wjbb83eCpihHrdNLBrWtArqVnTEIaD7x4ykl8Cfk+guCxfFBN88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hBd3vjSe; arc=none smtp.client-ip=209.85.208.48
+	 In-Reply-To:Content-Type; b=sPu2bVuCbHEXAXAV6cjoG1gWnXoWk/JWdSemnOaxwiV5e/abAtqsimLWDXWx1M/g8/6xrFULgj3AgApt+lQX0eNmcWcMPt3IsNJryvZ4upWzCg9Kcv9tj/gZMDZ1s8W/SPUikXqxZlvmh2z6gMB2JQ7hS3hPVb0IPVxKh5+HVrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hVLXm+Uy; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hBd3vjSe"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5854ac817afso1837257a12.2
-        for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 06:01:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hVLXm+Uy"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5858e973ef5so839787a12.0
+        for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 06:09:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719666069; x=1720270869; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1719666554; x=1720271354; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q15KtodgRcDJhbsUX44QuIqWrNjJ334aYzslN5VzRCE=;
-        b=hBd3vjSe4Cm1qW1KhfNmNdEsdb5CE4oDy7MPIPeILod1I1uo+TCZB0gDhJQ8Qwv7c5
-         5MQ+g0/KwaiHudMxyVFUs0TzHS9XNHz+TuBCVWvWG7yb9sBMPmpWQlqNaXpWpOC9jS3h
-         1ecYCq7T3mnB/gjuKV8YZuZBJjEe4mw5NXhF2skHIIWtpj/vs/MP3me5EtQgcgeZQmHz
-         lH1P6uOcXqurtYFx+UQhizIirMHBZdRFd0qGisAC40q4QdrMFEeGEfPYaL0OHiNfY0r5
-         ut1ES/GQtYolgW1gglrKWWrw2FCHTTr70nEDEktfQKpde7/1FBN+14UsuIzwZbgO1eVn
-         MZ8Q==
+        bh=szW+qpHen639wDwHyYUuN0+gHXUW14bCmbG+jcL15DE=;
+        b=hVLXm+UyjVfpKM16PGEuCpVFB3dobjfum/UMBluf3PjgdN4eP8yohhikIJmjDuVyjU
+         WOU+Supzdk3m6GVGXtmi4JySqodA0UjrSeqi01SS0EvlPBw6ZdcA7QlpLT72978V623Y
+         vSfua7MwbPQKiTqOUfpcTT3fIiizgFBMkXS0JcFMGvWGVkTBpTZCvQq9S2nWsWsrCPNJ
+         tnggx0FkvJe1gbmK6CylRJ64Y1y2EwTv1uOek/fNzDlk0n3kq6ZVjqgknuxFhp12BrFC
+         l6uauu1lLNeCXL6u8IBugUjTZH1Dw9XSwuIMxCU7OIaAU38WeJJRwkj3RfjT5dXL0P0e
+         k5zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719666069; x=1720270869;
+        d=1e100.net; s=20230601; t=1719666554; x=1720271354;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Q15KtodgRcDJhbsUX44QuIqWrNjJ334aYzslN5VzRCE=;
-        b=Hi8xZYEDC6J4IooZbjL8LJlZmaA/75z9XuL0iwEbFWnrEtt/hn9HHfwBiwdINfWvGn
-         TyhAZExOmsCpk8BM02ziF+sKL36dxP0aah8qXcP1QzmQW82n97cJJB/xIhlbObzOKfzh
-         ZjFXzYiUO8DURMua3JOp1dvcVu9TVijg4PtryWX8lw0EaYU3cftzyzbvCZMZQqmQxwOu
-         3FeZe7tDp4RESq6cUzJnULbLnwu/SIqsrEtzZ6MB/uGL7GHWA14OizJ4nQMVXiYjB6tl
-         l/diOtD8A/30DJmX58yC76A4gY8dUaXAmn7c0WSFuOhVM08XEEmp+zgeb2EyAEdhtyLM
-         Z/5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWE0bnzuxnJjC+XP0nkyTZn05tXpk+vxlImsYHBuYNXZdj0XvnolV0YAY5WTNabHoLabPjp/T3JTJAYfFHcdsEpqicyoMPQ38XHHoY=
-X-Gm-Message-State: AOJu0YyRjE88rG/wVeiLQwrlJyx2we22cJ8rqcEAPMA77Yj6jM9CdUxu
-	AGuFC1E+0yD/j/zalPFuqDxkNusowimTQUz48/eTzu9rsBUsYsE13AiSGB1dv1RqP8VRf204I9O
-	n
-X-Google-Smtp-Source: AGHT+IHDVXarznEkoh5Wzl0xqsIUTBQQhm3uVKbdV0WxGQmZT/NrSzv05ebdKsn1hFFoynLLEURrqg==
-X-Received: by 2002:a05:6402:5216:b0:57d:4ca4:61ba with SMTP id 4fb4d7f45d1cf-5879f4a570bmr769495a12.10.1719666069195;
-        Sat, 29 Jun 2024 06:01:09 -0700 (PDT)
+        bh=szW+qpHen639wDwHyYUuN0+gHXUW14bCmbG+jcL15DE=;
+        b=Nq3B6L/vwa/Yn7QELffsyjDFuRHQ9oQo6e/bIv7mM28iEbqYCpStqCiAoA6GZ6AjYk
+         D1lCCZEGYWFbDsmGqpQKLwOjyMZGbksaP6NL+RUZKUNosoQaZsEexBnD/3VojW68chb6
+         W/vvQVCJDn9snhTY0R4ioUed6LwPvICdoEvtgjAJRc85LsVLXOGLu8K/K+p/9U1bsuPL
+         yQocLoTukBca/mxJRbbBX1NcFy2dYtPOryAX/JttY9TC0RbmoHYEzDQ1DsPVtk/cdlKf
+         p8Yu+FjoFVUfLqJtxIYSDu5g8EqN42tyFS8I2CvehWnE4ypEn+aOzksmS6/uv65q+Adr
+         dHzA==
+X-Forwarded-Encrypted: i=1; AJvYcCUKcr6fZYe6jWq+mH50/XtdWkzu936qyT2GFPor9GuhXr9waSPHuAnn7tzIhOV47lOYboODqYdxz3TzP9xTiIxUyLzRVxwFsWidV/Q=
+X-Gm-Message-State: AOJu0Yw9/kgo0c3JM6IAJuBibt+ghAp+aZHu5deDvg8F3gFYFFN/FJOm
+	W6UjtcVyWedbL35gv8ypq6exl4EUT88G7UORIEEXENunBDVreggZqLFtpXOwcD8=
+X-Google-Smtp-Source: AGHT+IGAW8b892LzYjBo49cSL/7QUlVkTbYj03RIBUvQNFXrlob++LKjfIR5n0y6hLpu1m0VRwRK8w==
+X-Received: by 2002:a05:6402:348a:b0:56e:3293:3777 with SMTP id 4fb4d7f45d1cf-5879f3ad3bcmr933147a12.17.1719666554033;
+        Sat, 29 Jun 2024 06:09:14 -0700 (PDT)
 Received: from [192.168.215.29] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5861324dcb3sm2209179a12.26.2024.06.29.06.01.07
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-58615037bdesm2207202a12.97.2024.06.29.06.09.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 29 Jun 2024 06:01:08 -0700 (PDT)
-Message-ID: <ebac5b55-00d6-40c8-86c0-3e7a3affd5b9@linaro.org>
-Date: Sat, 29 Jun 2024 15:01:06 +0200
+        Sat, 29 Jun 2024 06:09:13 -0700 (PDT)
+Message-ID: <0159b30e-2617-4e12-816b-273d58dfc297@linaro.org>
+Date: Sat, 29 Jun 2024 15:09:11 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -63,13 +62,18 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] soc: qcom: smsm: Add missing mailbox dependency to
- Kconfig
-To: Luca Weiss <luca@lucaweiss.eu>, ~postmarketos/upstreaming@lists.sr.ht,
- phone-devel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel test robot <lkp@intel.com>
-References: <20240628-smsm-kconfig-v1-1-117d5af4ba1f@lucaweiss.eu>
+Subject: Re: [PATCH v2 2/2] ARM: dts: qcom-msm8226-samsung-ms013g: Add initial
+ device tree
+To: Luca Weiss <luca@lucaweiss.eu>, linux-kernel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+ Raymond Hackley <raymondhackley@protonmail.com>
+References: <20240627193013.1800-1-raymondhackley@protonmail.com>
+ <20240627193013.1800-3-raymondhackley@protonmail.com>
+ <6223513.lOV4Wx5bFT@g550jk>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
@@ -107,20 +111,40 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20240628-smsm-kconfig-v1-1-117d5af4ba1f@lucaweiss.eu>
+In-Reply-To: <6223513.lOV4Wx5bFT@g550jk>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28.06.2024 7:30 PM, Luca Weiss wrote:
-> Since the smsm driver got the ability to interact with the mailbox using
-> the mailbox subsystem and not just syscon, we need to add the dependency
-> to kconfig as well to avoid compile errors.
+On 29.06.2024 11:01 AM, Luca Weiss wrote:
+> On Donnerstag, 27. Juni 2024 21:30:52 MESZ Raymond Hackley wrote:
+>> Samsung Galaxy Grand 2 is a phone based on MSM8226. It's similar to the
+>> other Samsung devices based on MSM8226 with only a few minor differences.
+>>
+>> The device trees contain initial support with:
+>>  - GPIO keys
+>>  - Regulator haptic
+>>  - SDHCI (internal and external storage)
+>>  - UART (on USB connector via the TI TSU6721 MUIC)
+>>  - Regulators
+>>  - Touchscreen
+>>  - Accelerometer
+>>
+>> Signed-off-by: Raymond Hackley <raymondhackley@protonmail.com>
+>> ---
+
+[...]
+
+>> +	haptic {
+>> +		compatible = "regulator-haptic";
+>> +		haptic-supply = <&reg_motor_vdd>;
+>> +		min-microvolt = <3300000>;
+>> +		max-microvolt = <3300000>;
+>> +	};
 > 
-> Fixes: 75287992f58a ("soc: qcom: smsm: Support using mailbox interface")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202406180006.Z397C67h-lkp@intel.com/
-> Signed-off-by: Luca Weiss <luca@lucaweiss.eu>
-> ---
+> This is the vibration motor? Use "vibrator" as node name then as per
+> https://github.com/devicetree-org/devicetree-specification/blob/main/source/chapter2-devicetree-basics.rst?plain=1#L299
+
+With that:
 
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
