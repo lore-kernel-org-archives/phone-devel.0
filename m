@@ -1,60 +1,60 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FF34F606
-	for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 13:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CF580BF3
+	for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 13:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719667595; cv=none; b=ZYIEMy69tpPrF6FUtm7qRkjDMTc/tLlKo0cOmYa0CVavK7Ot65VQ1tqI0BlbZX0CJ8NvZnEm8ns+qx92gzjRSQzxNUasolbzzv5qQlulTRItNgN/XHY0CkRNDN5qIOOvJuCn3W4x9QIbBCI5o6PjkRDfAXeLvwwg1vMaSeOXMCk=
+	t=1719668695; cv=none; b=nrgZWLJP4R16wB05KVC5ApnTr/nCul9yq//SlGFMhLCEHbL0tmBuR0cyFzKN3zI+hShziELYLSwewEMoRODOiJiMvTv5f0CyBkshIJHQ71Gv/srCjaxAHi526JoCM+tzmvIGvxvLk993lw3qf2TdFXeD0uOVwjI+66ZQww5W1uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719667595; c=relaxed/simple;
-	bh=rGMabbjYduQb1TdtxhZEzPUiqGzSuTzr4tkzJBWKuiY=;
+	s=arc-20240116; t=1719668695; c=relaxed/simple;
+	bh=KrcgbJ1puMGcbkVzIGTwThQKjLIaV0Caw+5FdV2M5/I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FWYobXxN+EaK2diBR9hMjEtSGlELaEBjfXbKQagXObGnV+mMoyFawWxHWtOwUhN7pSodORKX/nPyDlfCn5PdPpZQedbU1aJ4gv/xPxjNQGXBrgB6DBzGPt96rv1rz69kHtD0ujtGwxJpxKulB0yYAessHYgLaWENavH/LEOd75c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MU4ucmFs; arc=none smtp.client-ip=209.85.218.50
+	 In-Reply-To:Content-Type; b=a4I773Dl2G8Dqfw781vnYQiisiA67JMdIshe5JB2i0YuwvSB7hXLwNfRB3XvvyLTYbMlswELVD0vZKaSy1ZLcbYvTr1ZIHe3rIvMeZj+c21MJ6nd9oqxSgQfcIh4s+Oeb0xnBQOWbnkwxZx+KO+eulwsx/omK7ZJ5VXDFn6O/u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rjD6Hi26; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MU4ucmFs"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a72585032f1so171331266b.3
-        for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 06:26:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rjD6Hi26"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a7245453319so244138066b.1
+        for <phone-devel@vger.kernel.org>; Sat, 29 Jun 2024 06:44:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719667592; x=1720272392; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1719668691; x=1720273491; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=GVntu1txUaOnn3weB5jy5aTPDvRe/rt/FHSyHLe9pec=;
-        b=MU4ucmFsG4yDyPA3NOrW4JFoWSgKsopMdTpY1zfrUQ814/c7h0j6P5bnsnW5sKz3vi
-         wg+W5Fl3E9WMOs7dqKUsS0gm8IooNcJ953I5Aj2wlytyCPk+zhSGOQH0f2FtPD+l3FlS
-         7CK4KrLOIEcSDN9ULtATegjc3HL2vtkCBQc14BUxQfBffzj8UUdW8/ahB/RSOjtvOGSM
-         7DUBITODiqwyDV4WdkwLmdq8y5ItsMXkJFb4Yy9tzNilw78AXM64HIdNPoPrJQE/o4zK
-         sf0XWnLKdN4PE/NXFOFnv6ak6bO+rY63AA+mPE/TPdu6UiLR9uuAlCz/HRgXjuVf81Lk
-         9zfQ==
+        bh=tjqFOHz9rQraJDNUFdzsmiqtJacfGrFQhh+FT7r7mzU=;
+        b=rjD6Hi260M5utO2x7cxqzC0oV+qz4UAZWGuKcAFshSAKtAIILt58e3ywqzVXqKTHvt
+         z6/kzt1xdSaMN0XAOTgNN1aROYETeARxPbPiYKipUhhNDS60/2RpTDy2cpzbFXILgOYl
+         xeH4lT9KTS+ucZbE2Kg1TRkvwqcj69tUvKg/9q6PV85IZb1bkn1RgqaJE4Lgg3JcFVhA
+         LITQg1D0LdpZUDueQzkcjTOIWegPH24Dybqf3dU7IEc8j16psKq+QVMDSuCRHkz4pGWI
+         8a4Nz5p47uSlGUUgl7PPgmPKbFJ8g35xUtYfVA9Ctvs5bsfsYyyozxHmqe/l7SCfC6Kr
+         A05A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719667592; x=1720272392;
+        d=1e100.net; s=20230601; t=1719668691; x=1720273491;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GVntu1txUaOnn3weB5jy5aTPDvRe/rt/FHSyHLe9pec=;
-        b=nEHIbPeBvqGQBCPiwDYNGp68zh6dy1gF+i+LzZu2fd/wMlEHeTA/AUNtEsTHlnHbdV
-         dDGTT9MNXQ7Vx5IzapE/IKrb6uE37Zods3dxf/LYPQ+bUjlBILNu44XaRTwWbTFpKXxQ
-         9robmeVhfSKqQ+xG/dITKBUkbyShN7kn0W6dNAiFTRVfuZNSfJiWhSTtU6hXP7QPkoMa
-         g7n19IUHCuo6EwAx4pCp7udpTcOOIQ5mclrFvX2AwUAmdK7/kLTrVUlHNn675QUzRkpr
-         H4h/MWf7FFuFELr6kG07iU62SWKoV85VUveA1XnmKQcLux8G93Bux0ZY5+AKULHxf5AI
-         0pBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhV6PkFtexnBdJhzCJpaMW8ayAuHa/iNWtNWrEPVCE1yI341b77oFIhXIWzihA81yQWc/tlJ9P6IFcq3YykbxzIwuELY3mKnpkWvE=
-X-Gm-Message-State: AOJu0YzELBemTAl35uakJX3HLUmIatrHFZ0VWz0aVepVwiBDflIA46uh
-	I5/hq3WTBdRCjGUfjzLy43VFGp4yIspgpHHhxHtiXI0P5imakVanYf+IEGPTo4Y=
-X-Google-Smtp-Source: AGHT+IGwZcuh8h++Gn0BZ68/CBUiSgT++N39s9q3g/+GgIVWwgKkzyzjxZgDQyV1FpHy46qCmItBXg==
-X-Received: by 2002:a17:907:7242:b0:a6f:c886:b68b with SMTP id a640c23a62f3a-a75144398a9mr95984966b.43.1719667591938;
-        Sat, 29 Jun 2024 06:26:31 -0700 (PDT)
+        bh=tjqFOHz9rQraJDNUFdzsmiqtJacfGrFQhh+FT7r7mzU=;
+        b=bMpXyRZAmkYgHcaZyxyj9y7BT1x2zEoKyJg6ZyWsgzEW+//Z2CWyjtwjPk6FTbvvLX
+         DTNoDo1XNpjKTStxc5vgJv/1CeEOjpolmjBxq671nra3o0pmTzYWkJYa2RWBnKBKd2Fp
+         XBFBJZQsXxLfcmP0Q7jNJsqEfhUHj27rcxPer+e0w5WK3hSeVtZja33RA+PqTNpXXuQG
+         2jk6FbJ/ozikRcwIoZFEOu02fSXgfTDdQmmI8WrI5k+ytAQcmRnIK6IF/+nptgoLGpXA
+         DCcDdAg7hIiB6pyaMEnXGhcL/bGMl5nh3GZ3nXKzOML76KsWcY0522JXS/MbUs9n9wbF
+         mhjg==
+X-Forwarded-Encrypted: i=1; AJvYcCVxjh/i0kVkWNmWM0Tky2BvQOIdjH4YI3oonKDwyJcmomRWdorJSsFcZ+eqY33MlEz+nMxbWez+v0A0Oy80ctum6o6MmltCv38e13w=
+X-Gm-Message-State: AOJu0YxtRy1lvRwrMy6A2Da940RQO2gJomItN6PCG96FzxF/kBDz4QAG
+	g2w+lfUAU/b/eiSpzCPFzl9zgo5iJAeOuz5fGERRIK5S7E1N51/jS7lStLiggbo=
+X-Google-Smtp-Source: AGHT+IELUqLfJ5TnvRHiTP2PU3ZaLeU4YyiJYhvuKfCq0XuSqLIyrQU7ywN7liHIjwD3OE/wTlLxJw==
+X-Received: by 2002:a17:907:a4b:b0:a72:afd9:6109 with SMTP id a640c23a62f3a-a72afd9622dmr426675766b.16.1719668691213;
+        Sat, 29 Jun 2024 06:44:51 -0700 (PDT)
 Received: from [192.168.215.29] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a72ab06567esm162682466b.119.2024.06.29.06.26.30
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a72ab0900f1sm164829366b.168.2024.06.29.06.44.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 29 Jun 2024 06:26:31 -0700 (PDT)
-Message-ID: <9d4c97cc-177d-4200-bfc5-f9295643f470@linaro.org>
-Date: Sat, 29 Jun 2024 15:26:29 +0200
+        Sat, 29 Jun 2024 06:44:50 -0700 (PDT)
+Message-ID: <a2c92840-093b-4ed5-a315-31de357ed2e1@linaro.org>
+Date: Sat, 29 Jun 2024 15:44:49 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -62,15 +62,21 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: sm7225-fairphone-fp4: Name the
- regulators
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240627-fp4-regulator-name-v1-1-66931111a006@fairphone.com>
+Subject: Re: [PATCH v5 3/3] arm64: dts: qcom: msm8939-longcheer-l9100: Add
+ rear flash
+To: git@apitzsch.eu, Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ Trilok Soni <quic_tsoni@quicinc.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Kees Cook <kees@kernel.org>
+Cc: linux-leds@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ phone-devel@vger.kernel.org
+References: <20240624-sy7802-v5-0-7abc9d96bfa6@apitzsch.eu>
+ <20240624-sy7802-v5-3-7abc9d96bfa6@apitzsch.eu>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
@@ -108,18 +114,36 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20240627-fp4-regulator-name-v1-1-66931111a006@fairphone.com>
+In-Reply-To: <20240624-sy7802-v5-3-7abc9d96bfa6@apitzsch.eu>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 27.06.2024 3:15 PM, Luca Weiss wrote:
-> Without explicitly specifying names for the regulators they are named
-> based on the DeviceTree node name. This results in multiple regulators
-> with the same name, making debug prints and regulator_summary impossible
-> to reason about.
+On 24.06.2024 11:25 PM, André Apitzsch via B4 Relay wrote:
+> From: André Apitzsch <git@apitzsch.eu>
 > 
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> The phone has a Silergy SY7802 flash LED controller.
+> 
+> Signed-off-by: André Apitzsch <git@apitzsch.eu>
 > ---
+>  .../boot/dts/qcom/msm8939-longcheer-l9100.dts      | 26 ++++++++++++++++++++++
+>  1 file changed, 26 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts b/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts
+> index e3404c4455cf..528737929274 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8939-longcheer-l9100.dts
+> @@ -159,6 +159,25 @@ led@2 {
+>  			};
+>  		};
+>  	};
+> +
+> +	flash-led-controller@53 {
+> +		compatible = "silergy,sy7802";
+> +		reg = <0x53>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+
+#address-/size-cells usually go at the end, but looks good otherwise
 
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
