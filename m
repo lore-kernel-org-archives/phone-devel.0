@@ -1,48 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C248130A58;
-	Wed,  3 Jul 2024 03:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0044E13774D;
+	Wed,  3 Jul 2024 03:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719977868; cv=none; b=FyqPMBT9CJPOzduqwYWujwcTJXq2v3gunMhfUWp7J0RFVQLj8Lw5JrUAts2sWEysA40SQ/cOdOEGi+9Xds20+tAyGm+4OT3WSA8T7VyfZnC2AiKKAsWLLanQteaHa2miz9EGnK3OM7ASSDEkTJo8hLHNkW4eXXjvVQgKkeP/KIE=
+	t=1719977874; cv=none; b=k6bg9C8Gm3QxZpuMPjnNieSJE+aYZ5ARXqCNIl/VDnFzCLWYedaEmfkDNgTs2CmCHKGCHpGloEKoN6Rd9wkNI6HRKTy39vnWh3MV6kW+6xQUWL2K9Zs5NsVwJoV5eTGHffSNFfyda35R1JzekMPkgLcadtabvlBkLaK4OpfTvu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719977868; c=relaxed/simple;
-	bh=6TDXQTG++TbpVEUx6lNGsMRPGRrbhV5OIIZyQ0wWN/4=;
+	s=arc-20240116; t=1719977874; c=relaxed/simple;
+	bh=9LOG+Iz8twR7rHxeQYQr8OSRQaJ7m/kpUczuRzyqIIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FMZvxpXcEucy6MES81oknsfWBToA3nuD21t+E2eJ03rAPEla9HgDWO/+o96xym/10orFtj1iarl9XgFoIffG9nj60Gk8JSFAvnONJIEaAzyYi4dfzj/nLFlgkWdT4AvSQy19g4A40c2Ge35wAqDsRqUoUXmOrEZZdJn4HWVOIDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cOLYcK5s; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=LJyfpSovydMqJaa0D+5vJ3cMDxVN20+Zm9SQ0mbziH0raE8w6Ga/+zNUtoWugRxOAdalN10OKcHASLlvfRzTCT3ypn2kJlI3VNS8La43aPBTmTkAfXF+cpd0EgXOGk39uKICC1Sf31hSWJlzoxXRLrLZy0vGqovnD3M+XuZmNCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tpTBoIgQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cOLYcK5s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA56C4AF0D;
-	Wed,  3 Jul 2024 03:37:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tpTBoIgQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EA5C116B1;
+	Wed,  3 Jul 2024 03:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719977867;
-	bh=6TDXQTG++TbpVEUx6lNGsMRPGRrbhV5OIIZyQ0wWN/4=;
+	s=k20201202; t=1719977873;
+	bh=9LOG+Iz8twR7rHxeQYQr8OSRQaJ7m/kpUczuRzyqIIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOLYcK5sw8G4aalGY6eoXeipol1qQptTqfvynDmFWdhqvmYsoxsOQ26lA6aJpRSoR
-	 jExO6/QG8c3DIkxnMfzWVTwswosjW8ITKR286zuqfv/xRfdEzYbtSB67/07rmSlSLD
-	 C3wj4rn3BTEoLNV77M9BJmXPqEP0HxvwGWVpL9sLR54SNJ1I4y1z2ta5LCuYECPMl7
-	 G/q4oVIdJadM1QnNT5QURaBdQ64cNtzsUYXPWy1bYCrg1PXSHgHIe0ZL8NsS9TQK8C
-	 3iQoonotf6fql13EbqKbUZ9/0e4AVAtQHxuuO4cITJw1+CxJNx+Or9c1MxtSUS4FYF
-	 HuEPat66vSXAw==
+	b=tpTBoIgQnZ20aIszmZXh3ZSV6CyQiqIM/M4nMi408ma+p4JmpU7FjZw/HX0tgyFd1
+	 Il09SUk/v8u9hvdUYVCfrkdI6NlWkYywThvtI13U2ADO0k7jGA2b9Tsuz/vF71kCwv
+	 erL+b7NFnQ+6xDsQODusJXkQinwWLPpzg2fsdJFriN0l7xrRGP9fJ+F/pOZA3KahjD
+	 eLwhEPemhx9SRdgWWnZt9UKbSA2KqYLBU5+i1p8wEYnUJ0jy4nYgKlopfTF9soEgZT
+	 ZuBwGv6nD9MNR12j/oEYaXRYUfpbHkURp/GV5z2ZDJ3V5XJXBpxcjIuNjJlRIiT13R
+	 CdDKw0cze0QwQ==
 From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+To: linux-kernel@vger.kernel.org,
+	Raymond Hackley <raymondhackley@protonmail.com>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom: sm7225-fairphone-fp4: Name the regulators
-Date: Tue,  2 Jul 2024 22:37:30 -0500
-Message-ID: <171997785361.348959.6115195331037721492.b4-ty@kernel.org>
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht
+Subject: Re: (subset) [PATCH v3 0/2] ARM: dts: qcom-msm8226-samsung-ms013g: Add initial device tree
+Date: Tue,  2 Jul 2024 22:37:35 -0500
+Message-ID: <171997785372.348959.15845091614741529157.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240627-fp4-regulator-name-v1-1-66931111a006@fairphone.com>
-References: <20240627-fp4-regulator-name-v1-1-66931111a006@fairphone.com>
+In-Reply-To: <20240630132859.2885-1-raymondhackley@protonmail.com>
+References: <20240630132859.2885-1-raymondhackley@protonmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -53,18 +53,25 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Thu, 27 Jun 2024 15:15:54 +0200, Luca Weiss wrote:
-> Without explicitly specifying names for the regulators they are named
-> based on the DeviceTree node name. This results in multiple regulators
-> with the same name, making debug prints and regulator_summary impossible
-> to reason about.
+On Sun, 30 Jun 2024 13:29:13 +0000, Raymond Hackley wrote:
+> Samsung Galaxy Grand 2 is a phone based on MSM8226. It's similar to the
+> other Samsung devices based on MSM8226 with only a few minor differences.
 > 
+> The device trees contain initial support with:
+>  - GPIO keys
+>  - Regulator haptic
+>  - SDHCI (internal and external storage)
+>  - UART (on USB connector via the TI TSU6721 MUIC)
+>  - Regulators
+>  - Touchscreen
+>  - Accelerometer
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] arm64: dts: qcom: sm7225-fairphone-fp4: Name the regulators
-      commit: d870196e3383b92179dfc051fe6f038df9a94ea9
+[2/2] ARM: dts: qcom-msm8226-samsung-ms013g: Add initial device tree
+      commit: 2a5454d0fe5684855581f8ad958afbcdc476fd64
 
 Best regards,
 -- 
