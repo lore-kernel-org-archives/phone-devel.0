@@ -1,99 +1,127 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB1A17C7A0
-	for <phone-devel@vger.kernel.org>; Wed,  3 Jul 2024 10:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EDD2F23;
+	Thu,  4 Jul 2024 20:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003407; cv=none; b=Rts/nfb4DWrdrCjFT0xE97UHSI9ieGWAiVsP1mAgBQQ66LQSxzjuumnwDhePqJ5Qjc6VWHkXlDyZMuSJuLsmuxyAG+hfLaSDmRb4KrIuLD7xFHgSBdlg2XNGUtoZ0kBpGUjpekETmB7ytQdnaQCWSndr5yncZHaZRVVJOYjVJPM=
+	t=1720123438; cv=none; b=RA89V9Uw7hdM09pEHnAL3CTtG8mHoGWLrdBsu1Zh9m5vlt5zEe0qfLI0eNTJyPwINwKvJZKLUuIVo1zv1AHyCAbDhOQHEiquXPVhCo0EPuC2CtHud6KxRBPKA+TUVjr5+y8OqdOzjn8QfV9r3tETX0aMyufJVEDboKjmY20BFlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003407; c=relaxed/simple;
-	bh=2wxWeoN2eQclXzHkcGpowUW3NZvFsYJvCo5CaNFq/eE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s3vpwXlO3IyeAF3RF513HVMJTYl2EjpWhKjG8DTRonbZd8NoXGfkFIz9l5DzCC9GohNFMmsLZt9Zp+5SB3Mq+Mr1Oeb3/XNvp0p4G+/p5XKjqjfrKF8ha6a9CMFWT/VNt9WoOSJ437JOh2YCWf02XCuxSojNWpSXWnaOaKpkb4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=i16lebZd; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1720123438; c=relaxed/simple;
+	bh=1DnNLBazUSRsAOAUzlGXuYFNGmdaee9RFCHZIt50HdU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aYjR7p59YCZK0qOHjACDVd48khUggq6YFVa1D+aJjoeeGnMiQX32Wq1U56nId33PUFLWScvnR1rmT51ODcNDkpyD3tPUlROF5zYOUOrUQjpMIA6efsBlIuViChCnc0xBmGn8EqRfa9+aH7dzv9uwDzKDWp6oY8tXDTRJCHyvu50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hOTHJHXS; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i16lebZd"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52cdf4bc083so7975013e87.2
-        for <phone-devel@vger.kernel.org>; Wed, 03 Jul 2024 03:43:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hOTHJHXS"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-57cc1c00ba6so1401107a12.1;
+        Thu, 04 Jul 2024 13:03:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720003404; x=1720608204; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QBebKiAbFSe/AKxcyTneERXqkxEhAYvVNEM7VkxhZlQ=;
-        b=i16lebZd4SxtJ91Cj3I2fItsWruqOn9UNE1KoQXAYs3Ca0OZPJ4m8grePTYpLdkQwy
-         jcMhIkVz34+nnz9ipL0OkjsQsbW6FUXOEcHQn0qwhLtnE+DiKXqL4hr/wuOPXc57Ix6C
-         7dgQc87soRBa9XGeTQli+dP5KG2393kP189FKpi3ck6BZhHMGXlpP6oHB0DZaCzyG9yO
-         msBCvNShx4E5lGu+iyITM+Bb/6mHxvClRRJb4cu4pvznRLqNXFb/H5aX/ljGflYoiGzB
-         fEsFsXHwHs8KUHMd8002QnFQ1PpVquoM2JDO7/FVX3uYvHciKECOUYJUC97AjhbxqnIg
-         DZkA==
+        d=gmail.com; s=20230601; t=1720123435; x=1720728235; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YHjVjxmY/GZtWz2SeioO1B1jq99djljZK6Im27GcFo0=;
+        b=hOTHJHXSehjWLCXNtwWP1jOnBJqZeaceljJfizAsSWHc29Zu12RzFqXN/W0A1uiHAy
+         yc0lj4pfWSCU58B+NE6gSUwfuXjn3X18L/HvKjPHNMyGF2haDZPJvdlHE47Q4L8R80vZ
+         LoJuL2u9OryI4Hxk+rX1C9WPIpcwlULtI8/QLExjIcEyNZZskoheywCjeP2TOzZLoM7Q
+         jtXjiNHnJvdjbBMqkNB+5bDY2iTzPFhvc6tmy6QhDxschcdu5XpQQb346jKZ9mVPfViw
+         g/Q1XzoWjXXQGXUNoFnSX3hnTCLPNoWClgbV25NcTD9y+5n6M9TU9fzaq0gyk1G3mO6/
+         yilw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720003404; x=1720608204;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QBebKiAbFSe/AKxcyTneERXqkxEhAYvVNEM7VkxhZlQ=;
-        b=agKY1VW2vs+jrXU/CTqETDl1FT9Oe6n1JxxsDARbOfk3Ps76EVqi0rI35R7eUrO5hY
-         N4H4VlGR11teVntmA8KCIytW3XlIX8JlAkb56tlHbzW5J1zch1oaAVSsXVA7pumKfvUo
-         xNs9YfY7IRGnmp41QnLFl04MbpUkguvO0nex2/7qyPiS90IFXcSG5LGwOfAOQFDtzoXF
-         4CyUF4IcywYlRDHJZpjH5ZqCrL3Htn4ILEIOOyxTG9OsbbosF9CWRx+9a2HPVai0lrJP
-         fkcshdHroc4fIH9RlEQ/BJXGkcd0+j+SL5PaghBrXs6/k5cHjtalbkpBJVEOaSsXHQvp
-         931g==
-X-Forwarded-Encrypted: i=1; AJvYcCUox9UW34ZDpb7abzirL+EoN0YOWFZRWm9Kbkddblbofz0bxtK8XBeKToEMziJ80/OEiYTlLZsIZoBQ4e2YtAR+3x00jELOasPhgRo=
-X-Gm-Message-State: AOJu0Yw/RmDwL3wYia630dPHuPK1TPUtEIov6ngCO4u4hjwescmTfAEZ
-	QkdB/hYLudjTezlJjEMpconO0cNXS0dR3sIjLZzP5/d1LYEgNhj7R6AwKawzVLA=
-X-Google-Smtp-Source: AGHT+IGperAsreQwk8XnRev3gOt4q7GzktMMONxmuUmn1kwS+TeNOFT2WVeQTw74xTeeAtlxjJAZJw==
-X-Received: by 2002:a05:6512:285:b0:52e:9b74:120 with SMTP id 2adb3069b0e04-52e9b7403f4mr111118e87.19.1720003403696;
-        Wed, 03 Jul 2024 03:43:23 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52e7ab2ebacsm2124167e87.210.2024.07.03.03.43.22
+        d=1e100.net; s=20230601; t=1720123435; x=1720728235;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YHjVjxmY/GZtWz2SeioO1B1jq99djljZK6Im27GcFo0=;
+        b=QASDkj15YYW7L8mpQNaNUhMCcObYzpVWqN2e6JIQV1xD1nvI2ZmmJ+cUpBekHZh0BZ
+         Y0wrOMtNgtduEQHmKG+V+L1NJb60qC8DVbL+aVRNbi+hrfUpCUKDtIWtzD/RQKUIyt1r
+         ZNO1qmtVFobbt7ht+d0ov6mz3+gRqQ+jcODlgkTF8s9XiQmxN0h5h+B6SiRCp48GyXpl
+         z57Z418iz1lg0xFi/rHrPlM5xruzVI3jL/9xDjTx/hbv3dypCuh1lDepjaKIU2DHKE6G
+         cPQowg1n1HF9y/4OCwSVL9zX5FU38UcuZFLAuFOyb76V0n7hyOkS37+ulsnDdZWRl8dj
+         hCbA==
+X-Forwarded-Encrypted: i=1; AJvYcCUbmehgvttV5Xj4pcCiUbog5oHyO5mfTtfCq5ycXRJqrojqXBU7O9Y03hcc8/mEeEw0RNMvQ1TaOa+G4YTl8aeYRwAdWbv+wMC2mbvGZeSQ6FpnHROPeaWvPjBJ3XBoxE/OoHyG0Hdisq/TAdqReZj8Wh0mnDv8oRmEejcZhXa85ipNtTjioo7/fOaaK6aOR+yHmitnilcf6KwEtIvU23Ds+w==
+X-Gm-Message-State: AOJu0Yx+Lmt68sIq8NJUExKq9qozcTSQkWwe2MFeBGpROyL+3xgB0MC0
+	fvV33bA0HYrlBS5DSCZA/bACzdCr5YInINCd0ITC3Vae1n7DH7TtJkhPRQ==
+X-Google-Smtp-Source: AGHT+IExyxNkWXBOmCiMb4brNmyZn9Y2dgMgODNowbUu2j/Smrvf4EP6+DHnvT+mVPg+qqDFcbW3XQ==
+X-Received: by 2002:a05:6402:270b:b0:58c:ea9e:2190 with SMTP id 4fb4d7f45d1cf-58e5965125cmr1880903a12.12.1720123434456;
+        Thu, 04 Jul 2024 13:03:54 -0700 (PDT)
+Received: from localhost.localdomain (byx56.neoplus.adsl.tpnet.pl. [83.30.43.56])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-58b4a97b1f3sm4091149a12.18.2024.07.04.13.03.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 03:43:22 -0700 (PDT)
-Date: Wed, 3 Jul 2024 13:43:21 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Luca Weiss <luca.weiss@fairphone.com>
-Cc: Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
-	Konrad Dybcio <konrad.dybcio@somainline.org>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+        Thu, 04 Jul 2024 13:03:53 -0700 (PDT)
+From: Adam Skladowski <a39.skl@gmail.com>
+To: 
+Cc: phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Adam Skladowski <a39.skl@gmail.com>,
+	Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Georgi Djakov <djakov@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom: sm6350: Add missing
- qcom,non-secure-domain property
-Message-ID: <wlqlcrlh4ogzxkbwmte75hvfatiysodt3ohlxxsyzhxkzyukh7@epjxupcod4z3>
-References: <20240703-sm6350-fastrpc-fix-v1-1-9f127de17175@fairphone.com>
+Subject: [PATCH v2 0/8] msm8937/msm8976/qcs404 icc patches
+Date: Thu,  4 Jul 2024 22:02:23 +0200
+Message-Id: <20240704200327.8583-1-a39.skl@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240703-sm6350-fastrpc-fix-v1-1-9f127de17175@fairphone.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 03, 2024 at 09:03:01AM GMT, Luca Weiss wrote:
-> By default the DSP domains are non secure, add the missing
+This series introduce new ICC drivers for some legacy socs
+while at it also updates a bit of qcs404 driver which seems
+to not receive much attention lately.
+Please take in consideration i do not own any qcs404 board
+so i cannot test anything else than if it compiles.
 
-nit: secure
+Changes since v1
+================
+1. Reworded commit messages
+2. Adjusted yamls.
+3. Adjusted examples.
+4. Added regmap include into qcs404 regmap commit.
+5. Added coeffs to MSM8976 driver.
+5. Added MSM8953 ab_coeff patch.
 
-With that fixed:
+Adam Skladowski (8):
+  dt-bindings: interconnect: qcom: Add Qualcomm MSM8976 NoC
+  interconnect: qcom: Add MSM8976 interconnect provider driver
+  dt-bindings: interconnect: qcom: Add Qualcomm MSM8937 NoC
+  interconnect: qcom: Add MSM8937 interconnect provider driver
+  interconnect: qcom: qcs404: Mark AP-owned nodes as such
+  interconnect: qcom: qcs404: Add regmaps and more bus descriptions
+  dt-bindings: interconnect: qcom: msm8939: Fix example
+  interconnect: qcom: msm8953: Add ab_coeff
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
-
-> qcom,non-secure-domain property to mark them as non-secure.
-> 
-> Fixes: efc33c969f23 ("arm64: dts: qcom: sm6350: Add ADSP nodes")
-> Fixes: 8eb5287e8a42 ("arm64: dts: qcom: sm6350: Add CDSP nodes")
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->  arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+ .../bindings/interconnect/qcom,msm8937.yaml   |   63 +
+ .../bindings/interconnect/qcom,msm8939.yaml   |   13 +-
+ .../bindings/interconnect/qcom,msm8976.yaml   |   63 +
+ drivers/interconnect/qcom/Kconfig             |   18 +
+ drivers/interconnect/qcom/Makefile            |    4 +
+ drivers/interconnect/qcom/msm8937.c           | 1372 ++++++++++++++++
+ drivers/interconnect/qcom/msm8953.c           |    2 +
+ drivers/interconnect/qcom/msm8976.c           | 1440 +++++++++++++++++
+ drivers/interconnect/qcom/qcs404.c            |  127 +-
+ .../dt-bindings/interconnect/qcom,msm8937.h   |   93 ++
+ .../dt-bindings/interconnect/qcom,msm8976.h   |   97 ++
+ 11 files changed, 3277 insertions(+), 15 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,msm8937.yaml
+ create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml
+ create mode 100644 drivers/interconnect/qcom/msm8937.c
+ create mode 100644 drivers/interconnect/qcom/msm8976.c
+ create mode 100644 include/dt-bindings/interconnect/qcom,msm8937.h
+ create mode 100644 include/dt-bindings/interconnect/qcom,msm8976.h
 
 -- 
-With best wishes
-Dmitry
+2.45.2
+
