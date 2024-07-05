@@ -1,59 +1,61 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07159149E0A
-	for <phone-devel@vger.kernel.org>; Fri,  5 Jul 2024 12:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42A614A629
+	for <phone-devel@vger.kernel.org>; Fri,  5 Jul 2024 12:40:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720183216; cv=none; b=MrM7zPcOpZ8+qnEwNGXTSBuOV53FI0iESMl369efWqlce5VC3bX6RoQCiFSvuKE4TYEr1zNRFn8BVjCAo0uOr5etAWadP3OcNkG0dPACwFf84TV+i/HiEZREbFM1ep4lZ82vpsoRXRcxHVDy+e6NGIFnD05hb3AXxucqgljBeP0=
+	t=1720183217; cv=none; b=Sbx1JzGA+zpUObpwiwiAcUll2kbcoC8lGJdIVg6JlWmLuzRMsA/+x/Y4ROP8au8YxPQxC0rjch2YGsMrlnYNUJWW8i2xbohQq/Z3u1U1qoBffFiHUboW/JWfHt4AWGTIohylNwtBza30McXBrkJrdob/O0VP4m+JkFZ+/F90ga4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720183216; c=relaxed/simple;
-	bh=h8RQ3gIuXSb77DJPrRwPE3c59rwl0ZIme+E0cdb67fU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pLI03zTLzjhNgzja9TNX/DOEMLdzCBcVEl2BnWj9qzb/ES8LtvkFJqoqhRO5CR7dLUtD8xFD5YH2oDT+EFO+1gs09SIiec+QjnC2B6N5hQ3Q54uWqu7+gRFagbVEp8S8hU+MYP4CarmPjsYfaz3oJyTIRMJ2st5g4ynbo/Am0hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=RkHmvkCl; arc=none smtp.client-ip=209.85.167.49
+	s=arc-20240116; t=1720183217; c=relaxed/simple;
+	bh=Nt2iq+qg5boCRZ0EqNaZFVPjBYGDaMf+7TTr358t9AI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=jBX1e3FHsKdNEO9RReNySOU64Cgs5CAThsLUINKm3Bml87m4uFHJmYSCK0qqm46PBILDE0vLnO8WpgaJT4C7AAnEG8OURaR7TE2f6FdeMmZNily8SzYgH1K84pDKReb0HhB8aQbu11AaXQHNFem+NoxJOzTJ2k/MeplohcYez8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=qngMOQ17; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="RkHmvkCl"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52e8b27f493so1875922e87.2
-        for <phone-devel@vger.kernel.org>; Fri, 05 Jul 2024 05:40:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="qngMOQ17"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a689ad8d1f6so174135266b.2
+        for <phone-devel@vger.kernel.org>; Fri, 05 Jul 2024 05:40:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1720183213; x=1720788013; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/PLu2I0Vdf1hwlHNvhPaU4cM/LFvM/NCf4ja1wMxoVU=;
-        b=RkHmvkClAvlU80oY9lxMB+HtgUHuVvF5LBPTnmbgRrHL9l3792OkLGMYeaInsJPLgy
-         Tk8GGhumnadQIdjg8dseozqzhrViRVcOg5JqwFPl6tFnUrFzAzeDl/8O/eYLitQlqyUV
-         l1bkOFeN9mqtI+BVb8LoqaO9h3EQmN5941jP3dJUBuFWf8xLAtvPmCHzwTAKcWSY4YoT
-         OUCT8XoTNJ6gu1A592o/RdQuTo4kgRBUiG8tMzRDwDa8thYW5OpQ/oWeZZxZQ8qgJhA+
-         AsxWrgvSDS3DU50jEZMSu57pf5RNQhzKAyxySHc6cgLG5nQT4MXWVQgXL50LbgoKD/pZ
-         tDsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720183213; x=1720788013;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=fairphone.com; s=fair; t=1720183214; x=1720788014; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/PLu2I0Vdf1hwlHNvhPaU4cM/LFvM/NCf4ja1wMxoVU=;
-        b=sPLIYQvOHb3e0fguUXMkk92VNl3vPOVl9LKugrT3mJCy36K5EBRRqd07Ye1XRa9Xcq
-         OdZVVqoYI9KU/7lgXniPPRROCjfqCQzwRs8jltTrb/ReXcj9jHcyqoSRWHcAnIOD18UD
-         +Im6XuPNcK7YuJI1R/QPoo3JbNbTlxD2YiS41F6V4W/1orD8xD++yNZ42hZU4wdsrQDy
-         AOLvvf3b215ieorkqvUIl8ju/fVWk/xkNsoZH1FhSZmZ5CnxCVW2jkViIEQhYyVmVIxF
-         tmsfAiIeM7xUIcRoX8XTmsreMZnXawMNB17KvylsymOjYFbIvKfsSkKBoq5j2hTmgES8
-         S6fQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXmXQPoJw5gSP+hFy92U+VhbuXtmsyTkRBw1lOzn93SdfH3wXXlaGMv6DQcnjYJyK3xrhkIWTAZMvmrdhWqAnAVYvguoA5DhPGQe5I=
-X-Gm-Message-State: AOJu0Yxz6hCTSj1gntFPTP0cyH0Bt8fWp6MN5aQEX5smthAscLCttm2U
-	kg06JsFo7n6FAtD9oEbMrZffrexV6UNbQH21T8/M8iDwlBKIy+uy39ao0BVBZTE=
-X-Google-Smtp-Source: AGHT+IFIw+YdwZKpWaElCgPPGZV5ODZPThv5LPqh2kUnionfeRKB5Dchz1f1F2h5P2OOB/zufsW9ZQ==
-X-Received: by 2002:a19:5e1a:0:b0:52e:99fd:e3d2 with SMTP id 2adb3069b0e04-52ea06de234mr2794396e87.66.1720183213052;
-        Fri, 05 Jul 2024 05:40:13 -0700 (PDT)
+        bh=2TKJxxFdbT1m75EyS915frE7gzWvL0YWMkfBTtcQJ9Y=;
+        b=qngMOQ17999F/az0hully1iuiZASro24Y+zVDlyBw/PoAf7C9daUwsC1weCJ2r/BKX
+         4ORKss41ukmZWFvhme5Z5kefjhwTiToK6UY0/sQxQ2GnZQYlpTqMgjEPhAW+clh/9YFj
+         sn5UvV9wK4ze+XVOcpKSo73XjMX3MbdyJdjihrH/zuhXrcYuKP4mngAdcu7UFlrGXxEO
+         z5NOPsYKBcsjQt0n5gx2AEBDqR7a95slTfV94BvVBu7Hmvj0B/qbu5FEZKo7/ddCBjIk
+         kv8GaeVqNSYcFxuW8WoPwXu5eT5h+3IEWXs5OlKqv6fm4jFi9xn/050jXbRLkT0l7wb6
+         QfRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720183214; x=1720788014;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2TKJxxFdbT1m75EyS915frE7gzWvL0YWMkfBTtcQJ9Y=;
+        b=gi6VGjrAUlF0bV2BvT39p3a0H89MU0pkM+QMzh7LfCiCqJtFmIufFZlUXKpdFgpmo6
+         VIwi6Et/O/YupJKWcmiQ38VLfqDYEUlQH5dWpqwYE5YnSd93LJFkwni+e/VIcH2gGdK/
+         UloCvIbrqvZKt/o07CErLS2m8dvbnCJWJY2pQdgKYxAS5HrzSY9JIPEkc+Jgx94Zo/zM
+         dKKIpPK9kZDN/kxwSqDXGUigNhzwp0MxIQZacREuJ3Hhyw5jNy62neJAIXloDkSz/XK/
+         O/vsI7JyOHhScom6O0uqP/ED2UcI+Ev+6DFDEwKDwpkkOKdXrq8YdOk6Cy1TsPxhh8K3
+         AuJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3ZUpueLnUIEHoOYzhUGfsX2tQttFWl6PcKBeZ7azL16tWLnsTQPzUna7CgQ+oAdeKyOwX4kfdSSTT0WIjMAIKu1ndTUdfDuJpeiE=
+X-Gm-Message-State: AOJu0YxHj29fVJS7WEIUa/cESgSYrsWdkWtHpyh3LVfoQTLh1mJAlqiM
+	XuVvvvLaceJt+hBcW/yN8zSG/9Y29fSGxl8AxAVVNzfpdl4o4MABkNnpm4ncrn4=
+X-Google-Smtp-Source: AGHT+IEtMbYTsd0gdLTiMY5AKurmr9zYWlPVFpAKFjwrVCKaLJfv2RWnXz+ziKcQ5XLpvY6+6z055A==
+X-Received: by 2002:a17:906:5acd:b0:a77:b81a:2471 with SMTP id a640c23a62f3a-a77ba7115d5mr317894266b.49.1720183214164;
+        Fri, 05 Jul 2024 05:40:14 -0700 (PDT)
 Received: from [100.64.0.4] (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a77d0908f51sm40930666b.125.2024.07.05.05.40.12
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a77d0908f51sm40930666b.125.2024.07.05.05.40.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jul 2024 05:40:12 -0700 (PDT)
+        Fri, 05 Jul 2024 05:40:13 -0700 (PDT)
 From: Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH v2 0/2] More thermal configuration for Fairphone 4
-Date: Fri, 05 Jul 2024 14:40:08 +0200
-Message-Id: <20240705-fp4-thermals-v2-0-a4870a8d084f@fairphone.com>
+Date: Fri, 05 Jul 2024 14:40:10 +0200
+Subject: [PATCH v2 2/2] arm64: dts: qcom: sm7225-fairphone-fp4: Add PM6150L
+ thermals
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -62,9 +64,9 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKjph2YC/3XMQQ6CMBCF4auQWTumLdQiK+9hWBSc2kmEkpYQD
- endrexd/i953w6JIlOCrtoh0saJw1xCnSoYvZ2fhPwoDUqoRkih0S0Nrp7iZF8JXT22JBppBiO
- gXJZIjt8Hd+9Le05riJ9D3+Rv/QNtEgW6q26Ntrq+DObmLMfFh5nOY5igzzl/AZjckJmsAAAA
+Message-Id: <20240705-fp4-thermals-v2-2-a4870a8d084f@fairphone.com>
+References: <20240705-fp4-thermals-v2-0-a4870a8d084f@fairphone.com>
+In-Reply-To: <20240705-fp4-thermals-v2-0-a4870a8d084f@fairphone.com>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -75,32 +77,250 @@ Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  linux-kernel@vger.kernel.org, Luca Weiss <luca.weiss@fairphone.com>
 X-Mailer: b4 0.14.0
 
-Add the thermal configuration for the thermistors connected to PMK8003
-and PM6150L. With that all the external thermistors on the phone should
-be present in the dts.
+Configure the thermals for the PA_THERM1, MSM_THERM, PA_THERM0,
+RFC_CAM_THERM, CAM_FLASH_THERM and QUIET_THERM thermistors connected to
+PM6150L.
+
+Due to hardware constraints we can only register 4 zones with
+pm6150l_adc_tm, the other 2 we can register via generic-adc-thermal.
+
+The trip points can really only be considered as placeholders, more
+configuration with cooling etc. can be added later.
 
 Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 ---
-Changes in v2:
-- Remove polling-delay/polling-delay-passive=0
-- Reorder props, e.g. put qcom,ratiometric boolean prop at end
-- Put in 45degC 'passive' and 55degC 'critical' trip for sdm-skin-therm
-  instead of dummy trip
-- Pick up tags
-- Link to v1: https://lore.kernel.org/r/20240105-fp4-thermals-v1-0-f95875a536b7@fairphone.com
+ arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 189 ++++++++++++++++++++++
+ 1 file changed, 189 insertions(+)
 
----
-Luca Weiss (2):
-      arm64: dts: qcom: sm7225-fairphone-fp4: Add PMK8003 thermals
-      arm64: dts: qcom: sm7225-fairphone-fp4: Add PM6150L thermals
+diff --git a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+index e263010c348c..2ee2561b57b1 100644
+--- a/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
++++ b/arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts
+@@ -93,6 +93,20 @@ memory@efe01000 {
+ 		};
+ 	};
+ 
++	msm_therm_sensor: thermal-sensor-msm {
++		compatible = "generic-adc-thermal";
++		#thermal-sensor-cells = <0>;
++		io-channels = <&pm6150l_adc ADC5_AMUX_THM2_100K_PU>;
++		io-channel-names = "sensor-channel";
++	};
++
++	rear_cam_sensor: thermal-sensor-rear-cam {
++		compatible = "generic-adc-thermal";
++		#thermal-sensor-cells = <0>;
++		io-channels = <&pm6150l_adc ADC5_GPIO2_100K_PU>;
++		io-channel-names = "sensor-channel";
++	};
++
+ 	thermal-zones {
+ 		chg-skin-thermal {
+ 			thermal-sensors = <&pm7250b_adc_tm 0>;
+@@ -118,6 +132,30 @@ active-config0 {
+ 			};
+ 		};
+ 
++		pa0-thermal {
++			thermal-sensors = <&pm6150l_adc_tm 1>;
++
++			trips {
++				active-config0 {
++					temperature = <125000>;
++					hysteresis = <1000>;
++					type = "passive";
++				};
++			};
++		};
++
++		pa1-thermal {
++			thermal-sensors = <&pm6150l_adc_tm 0>;
++
++			trips {
++				active-config0 {
++					temperature = <125000>;
++					hysteresis = <1000>;
++					type = "passive";
++				};
++			};
++		};
++
+ 		pm8008-thermal {
+ 			polling-delay-passive = <100>;
+ 			thermal-sensors = <&pm8008>;
+@@ -137,6 +175,64 @@ trip1 {
+ 			};
+ 		};
+ 
++		quiet-thermal {
++			thermal-sensors = <&pm6150l_adc_tm 3>;
++
++			trips {
++				active-config0 {
++					temperature = <125000>;
++					hysteresis = <1000>;
++					type = "passive";
++				};
++			};
++		};
++
++		rear-cam-thermal {
++			polling-delay-passive = <1000>;
++			polling-delay = <5000>;
++			thermal-sensors = <&rear_cam_sensor>;
++
++			trips {
++				active-config0 {
++					temperature = <125000>;
++					hysteresis = <1000>;
++					type = "passive";
++				};
++			};
++		};
++
++		rfc-flash-thermal {
++			thermal-sensors = <&pm6150l_adc_tm 2>;
++
++			trips {
++				active-config0 {
++					temperature = <125000>;
++					hysteresis = <1000>;
++					type = "passive";
++				};
++			};
++		};
++
++		sdm-skin-thermal {
++			polling-delay-passive = <1000>;
++			polling-delay = <5000>;
++			thermal-sensors = <&msm_therm_sensor>;
++
++			trips {
++				trip0 {
++					temperature = <45000>;
++					hysteresis = <0>;
++					type = "passive";
++				};
++
++				trip1 {
++					temperature = <55000>;
++					hysteresis = <0>;
++					type = "critical";
++				};
++			};
++		};
++
+ 		xo-thermal {
+ 			thermal-sensors = <&pmk8350_adc_tm 0>;
+ 
+@@ -596,6 +692,91 @@ &mpss {
+ 	status = "okay";
+ };
+ 
++&pm6150l_adc {
++	pinctrl-0 = <&pm6150l_adc_default>;
++	pinctrl-names = "default";
++
++	channel@4d {
++		reg = <ADC5_AMUX_THM1_100K_PU>;
++		label = "pa_therm1";
++		qcom,hw-settle-time = <200>;
++		qcom,pre-scaling = <1 1>;
++		qcom,ratiometric;
++	};
++
++	channel@4e {
++		reg = <ADC5_AMUX_THM2_100K_PU>;
++		label = "msm_therm";
++		qcom,hw-settle-time = <200>;
++		qcom,pre-scaling = <1 1>;
++		qcom,ratiometric;
++	};
++
++	channel@4f {
++		reg = <ADC5_AMUX_THM3_100K_PU>;
++		label = "pa_therm0";
++		qcom,hw-settle-time = <200>;
++		qcom,pre-scaling = <1 1>;
++		qcom,ratiometric;
++	};
++
++	channel@53 {
++		reg = <ADC5_GPIO2_100K_PU>;
++		label = "rear_cam_therm";
++		qcom,hw-settle-time = <200>;
++		qcom,pre-scaling = <1 1>;
++		qcom,ratiometric;
++	};
++
++	channel@54 {
++		reg = <ADC5_GPIO3_100K_PU>;
++		label = "rear_cam_flash_therm";
++		qcom,hw-settle-time = <200>;
++		qcom,pre-scaling = <1 1>;
++		qcom,ratiometric;
++	};
++
++	channel@55 {
++		reg = <ADC5_GPIO4_100K_PU>;
++		label = "quiet_therm";
++		qcom,hw-settle-time = <200>;
++		qcom,pre-scaling = <1 1>;
++		qcom,ratiometric;
++	};
++};
++
++&pm6150l_adc_tm {
++	status = "okay";
++
++	pa-therm1@0 {
++		reg = <0>;
++		io-channels = <&pm6150l_adc ADC5_AMUX_THM1_100K_PU>;
++		qcom,hw-settle-time-us = <200>;
++		qcom,ratiometric;
++	};
++
++	pa-therm0@1 {
++		reg = <1>;
++		io-channels = <&pm6150l_adc ADC5_AMUX_THM3_100K_PU>;
++		qcom,hw-settle-time-us = <200>;
++		qcom,ratiometric;
++	};
++
++	rear-cam-flash-therm@2 {
++		reg = <2>;
++		io-channels = <&pm6150l_adc ADC5_GPIO3_100K_PU>;
++		qcom,hw-settle-time-us = <200>;
++		qcom,ratiometric;
++	};
++
++	quiet-therm@3 {
++		reg = <3>;
++		io-channels = <&pm6150l_adc ADC5_GPIO4_100K_PU>;
++		qcom,hw-settle-time-us = <200>;
++		qcom,ratiometric;
++	};
++};
++
+ &pm6150l_flash {
+ 	status = "okay";
+ 
+@@ -618,6 +799,14 @@ led-1 {
+ 	};
+ };
+ 
++&pm6150l_gpios {
++	pm6150l_adc_default: adc-default-state {
++		pins = "gpio6", "gpio7", "gpio10";
++		function = PMIC_GPIO_FUNC_NORMAL;
++		bias-high-impedance;
++	};
++};
++
+ &pm6150l_wled {
+ 	qcom,switching-freq = <800>;
+ 	qcom,current-limit-microamp = <20000>;
 
- arch/arm64/boot/dts/qcom/sm7225-fairphone-fp4.dts | 212 ++++++++++++++++++++++
- 1 file changed, 212 insertions(+)
----
-base-commit: 243741e78f0c8460fe2e76ef7b241c6ec5b8e28b
-change-id: 20240105-fp4-thermals-f3c8e0417b70
-
-Best regards,
 -- 
-Luca Weiss <luca.weiss@fairphone.com>
+2.45.2
 
