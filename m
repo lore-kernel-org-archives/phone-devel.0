@@ -1,60 +1,59 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCC21758D
-	for <phone-devel@vger.kernel.org>; Fri,  5 Jul 2024 06:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEE7482EF
+	for <phone-devel@vger.kernel.org>; Fri,  5 Jul 2024 06:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720162194; cv=none; b=hkPQITh42YABWvCt/mJNJgc7Zd9V3nlcBQ5gctm6Uo8Mt4TI5dYlpaqWwJ+tyGmzTCovGpIos1hGW+F3z5peqXYG14KVtRe5vWuNr5piEFi4T242D7u6Y499YHq7NoERHenoSPLeaR1PCp5xRkv08/AIxtfknPeQdouuF0je9yE=
+	t=1720162516; cv=none; b=b29bXd+5L6oXIcGe3g2v5oGrxxx4i0QHpAqtpZ5fbdXG8EFNfyAWwTSL2JEVQ0erfShGeSr5u64syZ08HSh+nQKoenHSKLr67t3W1M4/JfW/iDXJG9QzkC3PPXIs6nqetSCTSV8rcSYZR1dbVz9gQTLv+7EFx0qUMFSqHAcbwbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720162194; c=relaxed/simple;
-	bh=o1DdgZ0EQ7OY4c/UkadWtlFAVNcUAsrV0b6yjM1MD+o=;
+	s=arc-20240116; t=1720162516; c=relaxed/simple;
+	bh=k1NZLgovLl/0F+8XiZk3oivKTQVUQA8vInhwXDP5jTs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j9UkST4AZlODEmIprp8qfeEcRnD9x6SB5f8jA3KybGtr41aEYFqxBowHtnmqYws+FyKZafNP9If3fXJDizTcQYsPlaBDniIfjwDEqKOPyne3tdVBrSysELk3vDXrHY0L1s6LSM1RFngQuuofxPVlznvBugKfjprg0zFEiQPWCOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XFgl1G7U; arc=none smtp.client-ip=209.85.128.41
+	 In-Reply-To:Content-Type; b=BikN8/BcnK5FoUWtFtStm9pu/T/JR377v7gmuSyWwzI2LnBHurQQSr9HB0Dc+B6w6VHHwH2oMqE1zpxhw0vWRp6xfcu/XZlvYYGDkOIkg17zr1z1kPJYfXnL/t4ztIg1RsZN3THmq6XwdDTY6TX974DDIPYYsSpReeACq8HSjzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QZKpIZlV; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XFgl1G7U"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4257d5fc9b7so11429895e9.2
-        for <phone-devel@vger.kernel.org>; Thu, 04 Jul 2024 23:49:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QZKpIZlV"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3678aa359b7so1506021f8f.1
+        for <phone-devel@vger.kernel.org>; Thu, 04 Jul 2024 23:55:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720162190; x=1720766990; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1720162513; x=1720767313; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=bZPTqVBjKZLx6ScDTOX8Zjeb919/InL+7BVEViyNcUQ=;
-        b=XFgl1G7USoToAH2j7PIehiL6NNLzaILjbUKpPZPjKWTzRXLKVm2PLezdOJt9dAjbFh
-         Iy6YIczLb2CxmT7sThpphd1M7c7W46aIrbYz8tyxB+RwfaHjfp8EH4LhFTVTWaJ+ysaS
-         9fg64A0j80V3LHg5Kqp3fP3l3hDYW1hyX8DOy5BSj3JQ1+24zLzvPVLsX+TPmi1o+1BH
-         shLbYPHE/qnJwEtBUGhhE1eGviiCKzKIYpLpYEl/df5E4uLP4liMCCLEZytH/1WSvzsl
-         Y9zhjPUMpRlkbkKlDT7EbpdRcrr1QOH95FZLgbdofyCkFygRVejxT7U5yohdhhdoF2RE
-         ciKw==
+        bh=OAmRb1uAuEAN7hA/+tiYf8M3NwFNbkYNSWLhVUPe0Xs=;
+        b=QZKpIZlVAjDk2Q3DB2jG1YSyU1FB6slrnZxMLyV4tZccNzhd+YBiKzRVf745j+08ej
+         lhnFjazinV8LPztJ18zfM7JtubXQbTxFPeeKNwnv0sSsHu/6VX+keqlfZv5HIfXxygY4
+         i5nBrKZScPwrJBttzqNcKyvjoS/avrPLniXct0kd5m/75167lH/gWgJDETzXsKtK1Dei
+         hJZq9A39lvMB0qF1re7QPrIAdlt9fx8qFca+Tzlg4qbK7a5BiuMkfaWkJxvZzFZVagCM
+         +LBaK2TH7GVxes8YCBnc1cZifjGqMT+bFnhLZOFYbJDHOnRvrNzm/gNIfMy5Ra9Z7Rxu
+         W+8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720162190; x=1720766990;
+        d=1e100.net; s=20230601; t=1720162513; x=1720767313;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bZPTqVBjKZLx6ScDTOX8Zjeb919/InL+7BVEViyNcUQ=;
-        b=Itp9+EQExg9KgmEHG0unA0FKqCmdhkdgRkv9KastYvZrNnm3MlfKvH8xKMwA8qn6K8
-         zZedKtR8qDJ0L7oA0s8X04qFJvaMUj1PdZrR++Tb74FZtswizNWBgeozh+1otdrdhAEj
-         Ra3ehLcG2cyK7CDdvkOUMXv+kQfKtPsfJy/j3sq0W9owWWq2wu706WEbHryoYv67AG8Z
-         ZV0yCXG0S54yiIJOj0HWOTj5BCVK0C/xc0eiJc3BJVvNw+622B3QYwVhxzNoPy6vPsYj
-         6myLYl77HjCTCY49wjvZ12wb/LB/SvjGm2aenTUjFUaMCtLPJWRSK7PLunT2hZAOovcO
-         jkbQ==
-X-Gm-Message-State: AOJu0Yx/5CT3BL+4KCaMmGVSle3muPhBTDU0d0kozv6qhblv+5fl6Y6x
-	4n1iOU3++v1/Wy6E6+4hUWhg7e1zYlQvBfIwSauvdcqvjVIpQBC00LKEvgehm2sxhibJrVjp1kh
-	V
-X-Google-Smtp-Source: AGHT+IEzFmY8dPHpN/aOg/8K6x2uVrWR/wG0y9C3H+CcBt0Mcsixqw1+TalcZXQLFhwOZPcLI9S9aQ==
-X-Received: by 2002:a5d:56ce:0:b0:366:ed80:d052 with SMTP id ffacd0b85a97d-3679dd65911mr3693877f8f.52.1720162170053;
-        Thu, 04 Jul 2024 23:49:30 -0700 (PDT)
+        bh=OAmRb1uAuEAN7hA/+tiYf8M3NwFNbkYNSWLhVUPe0Xs=;
+        b=m6hp1K2MbRIZ0wc5uTqrJ76k/3Z7eTjBsNZ7WphzKU+7Q23NNICAum2RXx0DhtXTvi
+         HeQAB/rp9x/cWu7Evmce7Fhdc2zCdT+LvaR5qfDvImVIirBlfV3Aw2bHais6C5XllT6F
+         jEumlK+azbhuB58NG25dw6H0KFhyviawP0zfiEvkWSnWLbJowRNNwjhCCdgzatKkrbdB
+         BDX0ezl9VGzoVLiI4MSy58KCZRHtrX6Bsa7gMQgnYJtyxLb/OC9kFOnRU9B6dXbzEXHR
+         yvxH8UcIkCv+KevzDy4tlIUBTVeIc9NNsZyJsu88zBHESb3Q+aTmKh3olXckqWvP5fuF
+         OAgQ==
+X-Gm-Message-State: AOJu0YxTz5G9Uz5/RO5D0Ie5eykkXBKqMKdzRGG9udjrcRYvQLK7pWXO
+	xsiNUH9PEk9BVm7SOvfNBZNHsa8kdB1dlJH7701aNWQWLV56pFmHLaqCuqnAj1I=
+X-Google-Smtp-Source: AGHT+IGK7z9chhYagD9KHGxmtlMwhGQiE37n8F+C8lLsywpTCqBTbFpRnoD4zxLycqN+AzVMMTirTw==
+X-Received: by 2002:a05:6000:bc5:b0:367:8fd9:db6b with SMTP id ffacd0b85a97d-3679f6ef565mr3246514f8f.9.1720162513077;
+        Thu, 04 Jul 2024 23:55:13 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367938a6e97sm5760723f8f.109.2024.07.04.23.49.28
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3679814a276sm4442740f8f.84.2024.07.04.23.55.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jul 2024 23:49:29 -0700 (PDT)
-Message-ID: <b4b94938-903a-40ba-baf3-d04226dc9f90@linaro.org>
-Date: Fri, 5 Jul 2024 08:49:27 +0200
+        Thu, 04 Jul 2024 23:55:12 -0700 (PDT)
+Message-ID: <03e96fa4-b916-4121-a9bd-bfcd40fb10b3@linaro.org>
+Date: Fri, 5 Jul 2024 08:55:10 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -62,7 +61,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/8] msm8937/msm8976/qcs404 icc patches
+Subject: Re: [PATCH v2 1/8] dt-bindings: interconnect: qcom: Add Qualcomm
+ MSM8976 NoC
 To: Adam Skladowski <a39.skl@gmail.com>
 Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
@@ -73,6 +73,7 @@ Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20240704200327.8583-1-a39.skl@gmail.com>
+ <20240704200327.8583-2-a39.skl@gmail.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -119,41 +120,98 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240704200327.8583-1-a39.skl@gmail.com>
+In-Reply-To: <20240704200327.8583-2-a39.skl@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 04/07/2024 22:02, Adam Skladowski wrote:
-> This series introduce new ICC drivers for some legacy socs
-> while at it also updates a bit of qcs404 driver which seems
-> to not receive much attention lately.
-> Please take in consideration i do not own any qcs404 board
-> so i cannot test anything else than if it compiles.
+> Add bindings for Qualcomm MSM8976 Network-On-Chip interconnect devices.
 > 
-> Changes since v1
-> ================
-> 1. Reworded commit messages
-> 2. Adjusted yamls.
-> 3. Adjusted examples.
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> ---
+>  .../bindings/interconnect/qcom,msm8976.yaml   | 63 ++++++++++++
+>  .../dt-bindings/interconnect/qcom,msm8976.h   | 97 +++++++++++++++++++
+>  2 files changed, 160 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml
+>  create mode 100644 include/dt-bindings/interconnect/qcom,msm8976.h
+> 
+> diff --git a/Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml b/Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml
+> new file mode 100644
+> index 000000000000..fcb50f60dce3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interconnect/qcom,msm8976.yaml
+> @@ -0,0 +1,63 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/interconnect/qcom,msm8976.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm MSM8976 Network-On-Chip interconnect
+> +
+> +maintainers:
+> +  - Konrad Dybcio <konradybcio@kernel.org>
+> +
+> +description: |
+> +  The Qualcomm MSM8976 interconnect providers support adjusting the
+> +  bandwidth requirements between the various NoC fabrics.
+> +
+> +  See also:
+> +  - dt-bindings/interconnect/qcom,msm8976.h
 
-Adjusted to what? This is supposed to be specific.
+This is not a valid path. Please correct it, otherwise tools cannot
+validate it.
 
-BTW, you use here odd email address, so:
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - qcom,msm8976-bimc
+> +      - qcom,msm8976-pcnoc
+> +      - qcom,msm8976-snoc
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  '#interconnect-cells':
+> +    const: 2
+> +
 
-<form letter>
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC (and consider --no-git-fallback argument). It might
-happen, that command when run on an older kernel, gives you outdated
-entries. Therefore please be sure you base your patches on recent Linux
-kernel.
+I don't know what and why happened here. I asked for different order of
+properties and properties are gone. Provide detailed changelog.
 
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
-</form letter>
+> +patternProperties:
+> +  '^interconnect-[a-z0-9\-]+$':
+> +    type: object
+> +    $ref: qcom,rpm-common.yaml#
+> +    unevaluatedProperties: false
+> +    description:
+> +      The interconnect providers do not have a separate QoS register space,
+> +      but share parent's space.
+> +
+> +    properties:
+> +      compatible:
+> +        const: qcom,msm8976-snoc-mm
+> +
+> +    required:
+> +      - compatible
+> +      - '#interconnect-cells'
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - '#interconnect-cells'
+> +
+
+
+So no schema? Sorry, this is very confusing.
+
+I am not going to review the rest. You implemented some odd changes, not
+what was asked. At least not entirely. With no changelog explaining
+this, you basically expect me to do review from scratch like there was
+no previous review.
+
+That's not how it works.
 
 Best regards,
 Krzysztof
