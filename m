@@ -1,155 +1,111 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32F614037D
-	for <phone-devel@vger.kernel.org>; Fri,  5 Jul 2024 06:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93372145345
+	for <phone-devel@vger.kernel.org>; Fri,  5 Jul 2024 07:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720162668; cv=none; b=Fn+ssJ7vE+IyEaTToK4MKCcoN31l9qSsccMaMaCO/opggHRlyFbr3hSstfKe88qqUmqWGh4AvvFEpP3WG7c3sv+fio9Po28n/SauxISsMZgpwWDAlQlfmwUDmR3P3Z5HFGO+FNXlI86KtzOCz57hR35jfZfia8wVEy19FDkMNjw=
+	t=1720165301; cv=none; b=n6LxxFvYAX6mEIiCAvp8HYxWuHknJVFAvgdarlfeLpO8kHiH+JeKI34C6JQ1c0JuHmfoETx2DRGigwr0Zy91/PvX7kng0WRxhrKqQjuz0OK91W0Dr9toYFITHe8ws2t2FY4AOlf0s7WhmIVIVptw+xMAQIgiDpZo2snwbNB5u1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720162668; c=relaxed/simple;
-	bh=JnX0yRXMzS9wa68mPGB2tFMXMwPT7CAyUJr8mT2G5Vk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RLUFjaafeGFLgxrEJU5hZ13HLYPEk30KoSzgOtvaHlfOEd5EizsdFmoXBKdpeTfWyzAr/Vjfsy/EA2fZJa34S1hDnlCSIAwwpVojoRS1dylLxok/O2IG5nzeKT1tDJjNMez7fal94VA5BF6qKR0l6+MT0SY7MO02wg7hvcsYHHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=m/bU58LA; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1720165301; c=relaxed/simple;
+	bh=C6Aj5EaEfcJqX9TIxh32n8SJfeYFTf/M3EglO+bsVXY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=TM08jWMC+t/Mpu/n/VUpgC83eA3UyMceh3pV6xe2pqRKHldqSTj/qA5NGQekYQRRXAmt1GaiFtL+dcbq/UA07yfZ13zRqJqb8LZ3lw55/lnLACfSmrWL4uCgbPkFRJ1U5fUCHdIbVNqdvOnFZJlMBMOVU+k7AuxM9UYb748gyWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=yXsl8Ou9; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="m/bU58LA"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42567ddf099so8953825e9.3
-        for <phone-devel@vger.kernel.org>; Thu, 04 Jul 2024 23:57:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="yXsl8Ou9"
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-58b0dddab63so2118824a12.3
+        for <phone-devel@vger.kernel.org>; Fri, 05 Jul 2024 00:41:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720162665; x=1720767465; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=TvJAwy+dBBbtp8Job56ITR8f7xuPPHkzySNnk1vKhj0=;
-        b=m/bU58LAjzYKF48Kk/XEqdcXjKyUR3V34kNMNFvPePSh3wCRSXGvL3mOHda/sh8sWz
-         XHtNbMt7hDbezm9Uw/LDtXL4xzVtqG3iuQFUrwyN00/0jYx952wAmfGelwcK+MMAxMiO
-         UjM8no9W4gf/FrJwDuB0M30L/ua3dltsnVO5nH+/Uj9qoPN8GuVZSmFow7Ic3GuH2M0k
-         ON5UlNQrN2yQF/9McJEV7OMPx4LAVvhc4XnC3eboF523zg37prYz9vpE0nHslLFFmm+1
-         oEvBmeJsWWmhQAR0CUfpA1lS/w+K5R1S0/1zMLPblYtvWe/b9SPXd+nJQyZblJ1zNxPp
-         Tyvg==
+        d=fairphone.com; s=fair; t=1720165298; x=1720770098; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PQlN9N4OmBSWIwYhAl+aMllt25uIxXclcKeBS5OjPEs=;
+        b=yXsl8Ou9ZoVHo9/OSJYjcJYasG2CGtiuQlZ+XkRNCJz3mFDRc86LcEzpaKdKVuBh5v
+         mxbtDCiv7g2kA8OA1wSYZIEBur5O0oS+aRtvKjaWywkC0RqgzKFEyLJRs1xrbqVH+yFw
+         E08XS3j8LQJaeVqvqrZM6k6tNiH7WpWo//UkwJAbkFP0y+aSabL/7PmZXIGna6or2eX+
+         QxOkaYaVTVhAvTXlHB2cTLLMWrlhbOc4BvJsv9kb91BeTV5qNVsoAuEQF81NkJ1Tq9Hz
+         vurgEw50Ty3Fnbh2oGTM8wcWavMMUigcYLbCJyqqelscN8M/wA557X5pioPttkQCrK3i
+         a7NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720162665; x=1720767465;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TvJAwy+dBBbtp8Job56ITR8f7xuPPHkzySNnk1vKhj0=;
-        b=Kk2UL5KUJEpU/MwjqRcn6CIfN3YGyVhHg5pa10nxf21U6StUuG/QhtVyE5dQ72wyjM
-         IKNVoPxK9OAT17jfDhyKmoit5KDIpihAwMvYrNNsAmpziSEfAGNcta9J2csTU3Gp7xiv
-         YvZXIHqflhMSgtlXVbRhaKvhoB4JvAJ0Dt3E73s8PZAwGBE+fFWsbtMT077XezsjCJQF
-         jJgw2qqMQgDsyxGWBfLM5TnbJ14IQVGm6Pgannd9UhoE286rQX8jBjXOHieSigFGG3lH
-         El+RB1FVbfkaVyWwGeaA5uGCiOH153e1CQQr3heEeJg/K2bIlR6SQYq+xLi/xiClGZcP
-         YPHw==
-X-Gm-Message-State: AOJu0Yxyjal4nO5fQPi5rbRvdxcDtLdVkMuT4vzZsmIg8fKcPOSHT8Ko
-	FbOuvp0LyC9SPHJ9Z/iC3VUOvGjShVJMzgOkJ4SkoL85L+cxm0gFJg+JvlmxdIg=
-X-Google-Smtp-Source: AGHT+IFIg4WnLn3LIK26q8YQ2ok+z3+hntbTxn/cdI9+Kim0dYAFwCDDulkY710R84hEz0Fu6pQFPA==
-X-Received: by 2002:a05:600c:158b:b0:424:9516:bfcf with SMTP id 5b1f17b1804b1-4264a3d9797mr28459255e9.3.1720162665254;
-        Thu, 04 Jul 2024 23:57:45 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d6435sm48389275e9.15.2024.07.04.23.57.43
+        d=1e100.net; s=20230601; t=1720165298; x=1720770098;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=PQlN9N4OmBSWIwYhAl+aMllt25uIxXclcKeBS5OjPEs=;
+        b=jFrJ4UPiBOxixUP8sooNtXP510WvaBmSXbgfzKQzI5f1oHNXrOwggVxZGllfHSJXTB
+         1pLv8IicKKvuJZXAXfQswD00EgjNraT6kjfMf0zi2zM/VgFTp9x+AR3lzahrOXmbdaWU
+         Kq6p5iOquhp+JiVrpiwr8h6UEt3rKQ3EmbcFP61IPcgLPe6xQ82ydYSqwo1Llmaleyn0
+         aE1i1Cgbtivg85k3323DVT/ma+IyxtAeYo/X+h2oBqd5DF3ljDhjj7nPlIXXGds3DLOa
+         CPQ4K7yff2HaKjLoih2WD5n+q60yDDhazRjdLebYQjCKEFmE7g2fmKGZDxGs7l6FAGXT
+         OLHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXWy2Y3fva/HyGX9haw0BR5hs/ERDtYoKp9uUQdh3VGsiKl723rQMP8QzJXdenc3TU0L2SSh0WWs+ZR8l93oL17EZcv9XPCG994Pc=
+X-Gm-Message-State: AOJu0YyzR2CqSS1qBjiTdIvwaC2X5N7K4+e26xwYt9TIz3+oS76/hWDz
+	PUHzEkzSfqapiUo7FyM3lHP4oNy9G59s5l3wIwlqs+kR4bXUG3/YGpt3oyBfLrM=
+X-Google-Smtp-Source: AGHT+IEIm5temVbaI8ZdtQAUcJOvJoAb9XFwL+Ws+RRRznQkvBa2ZdaAzA/+T629AmJ9BRsiiBvWyg==
+X-Received: by 2002:a05:6402:27ce:b0:578:60a6:7c69 with SMTP id 4fb4d7f45d1cf-58e5c72ffedmr2681374a12.30.1720165297727;
+        Fri, 05 Jul 2024 00:41:37 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-58ad8730dcfsm5059338a12.7.2024.07.05.00.41.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jul 2024 23:57:44 -0700 (PDT)
-Message-ID: <52ef47d0-8344-4367-b0ee-32e9471bc64e@linaro.org>
-Date: Fri, 5 Jul 2024 08:57:43 +0200
+        Fri, 05 Jul 2024 00:41:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/8] dt-bindings: interconnect: qcom: msm8939: Fix
- example
-To: Adam Skladowski <a39.skl@gmail.com>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
- Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Georgi Djakov <djakov@kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
- linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240704200327.8583-1-a39.skl@gmail.com>
- <20240704200327.8583-8-a39.skl@gmail.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240704200327.8583-8-a39.skl@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Fri, 05 Jul 2024 09:41:36 +0200
+Message-Id: <D2HFPG49HZ8L.P337FA15VAA9@fairphone.com>
+Cc: "Bjorn Andersson" <andersson@kernel.org>, "Konrad Dybcio"
+ <konrad.dybcio@linaro.org>, "Rob Herring" <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
+ <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
+ "Konrad Dybcio" <konrad.dybcio@somainline.org>,
+ <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] arm64: dts: qcom: sm6350: Add missing
+ qcom,non-secure-domain property
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>
+X-Mailer: aerc 0.17.0-0-g6ea74eb30457
+References: <20240703-sm6350-fastrpc-fix-v1-1-9f127de17175@fairphone.com>
+ <wlqlcrlh4ogzxkbwmte75hvfatiysodt3ohlxxsyzhxkzyukh7@epjxupcod4z3>
+In-Reply-To: <wlqlcrlh4ogzxkbwmte75hvfatiysodt3ohlxxsyzhxkzyukh7@epjxupcod4z3>
 
-On 04/07/2024 22:02, Adam Skladowski wrote:
-> For now example list snoc_mm as children of bimc which is obviously
-> not valid, drop snoc and snoc_mm and leave bimc alone.
-> 
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-> ---
->  .../bindings/interconnect/qcom,msm8939.yaml         | 13 +------------
->  1 file changed, 1 insertion(+), 12 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/interconnect/qcom,msm8939.yaml b/Documentation/devicetree/bindings/interconnect/qcom,msm8939.yaml
-> index fd15ab5014fb..3aed8b77f35d 100644
-> --- a/Documentation/devicetree/bindings/interconnect/qcom,msm8939.yaml
-> +++ b/Documentation/devicetree/bindings/interconnect/qcom,msm8939.yaml
-> @@ -56,19 +56,8 @@ examples:
->    - |
->      #include <dt-bindings/clock/qcom,rpmcc.h>
->  
-> -    snoc: interconnect@580000 {
-> -        compatible = "qcom,msm8939-snoc";
+On Wed Jul 3, 2024 at 12:43 PM CEST, Dmitry Baryshkov wrote:
+> On Wed, Jul 03, 2024 at 09:03:01AM GMT, Luca Weiss wrote:
+> > By default the DSP domains are non secure, add the missing
+>
+> nit: secure
 
-The one correct example would be the snoc, because it is the most
-complete, but well...
+I did copy paste it from previous commits but I guess they're wrong too.
+I'll fix it!
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>
+> With that fixed:
+>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
+Thanks!
 
-Best regards,
-Krzysztof
+Regards
+Luca
+
+>
+>
+> > qcom,non-secure-domain property to mark them as non-secure.
+> >=20
+> > Fixes: efc33c969f23 ("arm64: dts: qcom: sm6350: Add ADSP nodes")
+> > Fixes: 8eb5287e8a42 ("arm64: dts: qcom: sm6350: Add CDSP nodes")
+> > Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+> > ---
+> >  arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >=20
 
