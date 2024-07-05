@@ -1,59 +1,59 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704AA13AA2A
-	for <phone-devel@vger.kernel.org>; Fri,  5 Jul 2024 06:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32F614037D
+	for <phone-devel@vger.kernel.org>; Fri,  5 Jul 2024 06:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720162547; cv=none; b=ZBE0MtU4L9+J9cyzXr7pvVD1HXNmpKqg9GY6s2lIBeDnG/p7oMfhJlZWMM3xJRw/uAdiOHs9X/2FQn7QOz5k7wzoK29ro6FenkQsQGzXYBLaQVsafTMZF4hdKBZKGRUbEFyaeoojvAbxnEjqhyzfDNdD+XvoMgsqCD6wmlTKhWA=
+	t=1720162668; cv=none; b=Fn+ssJ7vE+IyEaTToK4MKCcoN31l9qSsccMaMaCO/opggHRlyFbr3hSstfKe88qqUmqWGh4AvvFEpP3WG7c3sv+fio9Po28n/SauxISsMZgpwWDAlQlfmwUDmR3P3Z5HFGO+FNXlI86KtzOCz57hR35jfZfia8wVEy19FDkMNjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720162547; c=relaxed/simple;
-	bh=5xqLKKUrJeG+BVmeKpWuPj27wtN6QmzvgHxa9mZBhkg=;
+	s=arc-20240116; t=1720162668; c=relaxed/simple;
+	bh=JnX0yRXMzS9wa68mPGB2tFMXMwPT7CAyUJr8mT2G5Vk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MxkUjsY+ezP9ebwlJ9fpiqBfTyL0L4WAP/D8mhb/fRSzXghrcFzvYsoU5K4RXwnoORdNe0NnOGax8XoUJrTSYx/qwuvFXy010hwL5biM6HsOLldhuzHpLTf/OmZWeQE56CSuPc3191K8o+nkz6iXniDZPUKbu7Y32P8EGoIF6h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F5ejSZnE; arc=none smtp.client-ip=209.85.128.47
+	 In-Reply-To:Content-Type; b=RLUFjaafeGFLgxrEJU5hZ13HLYPEk30KoSzgOtvaHlfOEd5EizsdFmoXBKdpeTfWyzAr/Vjfsy/EA2fZJa34S1hDnlCSIAwwpVojoRS1dylLxok/O2IG5nzeKT1tDJjNMez7fal94VA5BF6qKR0l6+MT0SY7MO02wg7hvcsYHHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=m/bU58LA; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F5ejSZnE"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-424acf3226fso9487115e9.1
-        for <phone-devel@vger.kernel.org>; Thu, 04 Jul 2024 23:55:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="m/bU58LA"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42567ddf099so8953825e9.3
+        for <phone-devel@vger.kernel.org>; Thu, 04 Jul 2024 23:57:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720162544; x=1720767344; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1720162665; x=1720767465; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=b7lMrbRDDv74z6vUQbKKfKO5EHR6ZKSRfVOXMl9YkBQ=;
-        b=F5ejSZnEduSHAHGgJU3Q0jQ5sB34LIwsqXzNeuz2BwTuDRI943J2SWWOSj+Ibror6P
-         hjpxlVGBDmgObUzNnXeX0pAQMgGeyWMw4dW1KA63hr/V71GcpZbsQzNavyN1ATTFtf2K
-         Xar0Q8J4Oe257hljMg6RizikU2QfWvJ63Hyf5HFPQsdIhMVNZQlBW/TbwhABeUFZ9+6X
-         m41PoY30fgMXLMibvRYPkB75ln37Wzdi6n5LlX5NOCup6pQZaHePYpmqHzBKRipgFM/R
-         q8MXQnZLxfeckkATyN4oYP8ea70CbznQgcKYReiwtapxB3GyLLtg+fm+182x/mnsVPAV
-         omRA==
+        bh=TvJAwy+dBBbtp8Job56ITR8f7xuPPHkzySNnk1vKhj0=;
+        b=m/bU58LAjzYKF48Kk/XEqdcXjKyUR3V34kNMNFvPePSh3wCRSXGvL3mOHda/sh8sWz
+         XHtNbMt7hDbezm9Uw/LDtXL4xzVtqG3iuQFUrwyN00/0jYx952wAmfGelwcK+MMAxMiO
+         UjM8no9W4gf/FrJwDuB0M30L/ua3dltsnVO5nH+/Uj9qoPN8GuVZSmFow7Ic3GuH2M0k
+         ON5UlNQrN2yQF/9McJEV7OMPx4LAVvhc4XnC3eboF523zg37prYz9vpE0nHslLFFmm+1
+         oEvBmeJsWWmhQAR0CUfpA1lS/w+K5R1S0/1zMLPblYtvWe/b9SPXd+nJQyZblJ1zNxPp
+         Tyvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720162544; x=1720767344;
+        d=1e100.net; s=20230601; t=1720162665; x=1720767465;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=b7lMrbRDDv74z6vUQbKKfKO5EHR6ZKSRfVOXMl9YkBQ=;
-        b=vhOhj1oajTulJIpXZj5tDxMrAQR+X028DsBTR+92WdOH9YH6PMZovh7DEeUUrmAHpq
-         sRUDMG7zN27aRMK/rKlek0ow6TSs9TZELn0wvlbF6OfQjt4tZIDJP00n4qPv03a8CKgg
-         W7CDrxFkKMv2U2JLg3DVEaiAoy2NoDV/rC9th0K4RrEasROFbqNf4YDFDXY6W1dJKbJe
-         QV+1WASecTnnjRpwR+SgFKkn/zGOQGKqwNMp2RwNc//pTImPehYDz8KDawRc+mMVqdJv
-         dPzzWN/OqWRLbmSCQLuophblLEu/HWXGhQehIH6euce3KLoJEgPAWRoY+1H8ed/2a+G6
-         lzkA==
-X-Gm-Message-State: AOJu0YwapAjLR1zoDpx3H/n+0stCiYTsGTH5ttkDAfvNrO2y5ueOUffx
-	JUmoXFhKOo7Z4YFgbOg/bGh63x9omcwjwb0+ogUWQWmRZLsxpJbhQyN0oedozqs=
-X-Google-Smtp-Source: AGHT+IF4OoxtNmwU7DwULVsh32ydLSWIPnaFFRd8xlaiWKtPqzZJB+aBFjV+tW1JMRhgXpStpNi0AQ==
-X-Received: by 2002:a05:600c:ad5:b0:425:65fd:449 with SMTP id 5b1f17b1804b1-4264a444030mr24952495e9.28.1720162543902;
-        Thu, 04 Jul 2024 23:55:43 -0700 (PDT)
+        bh=TvJAwy+dBBbtp8Job56ITR8f7xuPPHkzySNnk1vKhj0=;
+        b=Kk2UL5KUJEpU/MwjqRcn6CIfN3YGyVhHg5pa10nxf21U6StUuG/QhtVyE5dQ72wyjM
+         IKNVoPxK9OAT17jfDhyKmoit5KDIpihAwMvYrNNsAmpziSEfAGNcta9J2csTU3Gp7xiv
+         YvZXIHqflhMSgtlXVbRhaKvhoB4JvAJ0Dt3E73s8PZAwGBE+fFWsbtMT077XezsjCJQF
+         jJgw2qqMQgDsyxGWBfLM5TnbJ14IQVGm6Pgannd9UhoE286rQX8jBjXOHieSigFGG3lH
+         El+RB1FVbfkaVyWwGeaA5uGCiOH153e1CQQr3heEeJg/K2bIlR6SQYq+xLi/xiClGZcP
+         YPHw==
+X-Gm-Message-State: AOJu0Yxyjal4nO5fQPi5rbRvdxcDtLdVkMuT4vzZsmIg8fKcPOSHT8Ko
+	FbOuvp0LyC9SPHJ9Z/iC3VUOvGjShVJMzgOkJ4SkoL85L+cxm0gFJg+JvlmxdIg=
+X-Google-Smtp-Source: AGHT+IFIg4WnLn3LIK26q8YQ2ok+z3+hntbTxn/cdI9+Kim0dYAFwCDDulkY710R84hEz0Fu6pQFPA==
+X-Received: by 2002:a05:600c:158b:b0:424:9516:bfcf with SMTP id 5b1f17b1804b1-4264a3d9797mr28459255e9.3.1720162665254;
+        Thu, 04 Jul 2024 23:57:45 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3675a103d00sm20140618f8f.99.2024.07.04.23.55.42
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d6435sm48389275e9.15.2024.07.04.23.57.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jul 2024 23:55:43 -0700 (PDT)
-Message-ID: <8dde55ea-8f97-4cc0-88d9-9286774cd64b@linaro.org>
-Date: Fri, 5 Jul 2024 08:55:41 +0200
+        Thu, 04 Jul 2024 23:57:44 -0700 (PDT)
+Message-ID: <52ef47d0-8344-4367-b0ee-32e9471bc64e@linaro.org>
+Date: Fri, 5 Jul 2024 08:57:43 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -61,8 +61,8 @@ List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/8] dt-bindings: interconnect: qcom: Add Qualcomm
- MSM8937 NoC
+Subject: Re: [PATCH v2 7/8] dt-bindings: interconnect: qcom: msm8939: Fix
+ example
 To: Adam Skladowski <a39.skl@gmail.com>
 Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
@@ -73,7 +73,7 @@ Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
  linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20240704200327.8583-1-a39.skl@gmail.com>
- <20240704200327.8583-4-a39.skl@gmail.com>
+ <20240704200327.8583-8-a39.skl@gmail.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -120,23 +120,35 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240704200327.8583-4-a39.skl@gmail.com>
+In-Reply-To: <20240704200327.8583-8-a39.skl@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 04/07/2024 22:02, Adam Skladowski wrote:
-> Add bindings for Qualcomm MSM8937 Network-On-Chip interconnect devices.
+> For now example list snoc_mm as children of bimc which is obviously
+> not valid, drop snoc and snoc_mm and leave bimc alone.
 > 
 > Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
 > ---
->  .../bindings/interconnect/qcom,msm8937.yaml   | 63 +++++++++++++
->  .../dt-bindings/interconnect/qcom,msm8937.h   | 93 +++++++++++++++++++
->  2 files changed, 156 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/interconnect/qcom,msm8937.yaml
->  create mode 100644 include/dt-bindings/interconnect/qcom,msm8937.h
+>  .../bindings/interconnect/qcom,msm8939.yaml         | 13 +------------
+>  1 file changed, 1 insertion(+), 12 deletions(-)
 > 
+> diff --git a/Documentation/devicetree/bindings/interconnect/qcom,msm8939.yaml b/Documentation/devicetree/bindings/interconnect/qcom,msm8939.yaml
+> index fd15ab5014fb..3aed8b77f35d 100644
+> --- a/Documentation/devicetree/bindings/interconnect/qcom,msm8939.yaml
+> +++ b/Documentation/devicetree/bindings/interconnect/qcom,msm8939.yaml
+> @@ -56,19 +56,8 @@ examples:
+>    - |
+>      #include <dt-bindings/clock/qcom,rpmcc.h>
+>  
+> -    snoc: interconnect@580000 {
+> -        compatible = "qcom,msm8939-snoc";
 
-Same problems as patch #1.
+The one correct example would be the snoc, because it is the most
+complete, but well...
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 
 Best regards,
 Krzysztof
