@@ -1,239 +1,135 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B2714A616
-	for <phone-devel@vger.kernel.org>; Fri,  5 Jul 2024 12:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA082757EA;
+	Sat,  6 Jul 2024 13:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720183478; cv=none; b=L6kvUGrwP/c2ihu9PwALfAYltRLpxZHRB3mpc0O1NtMCvk1EViidhY+yo6PKEglzoa1C8bP99+BRXiXRxIWj6bdOq6LQ7+kuVOjHaH4N8pDKiPcld4eLsM6jz6sL25LJD7GLpFbm9blr9Rb4V/2b4VQuYM/NaDeh2nbNYwi32fM=
+	t=1720273297; cv=none; b=oHJbQlR9Jab2NrwElzKfgC9D/253dZswugU8uzbifEIuFUquZKP0graAprk5BfexG16SMAcXZz8RGkATW3iTqFPv1dGglfhjcWdRX6yxlFT20wtMwWHHFMIcTZVNS8V+TK3wB4TFYyBJYuzL0Ttyn+X3gaglHurp+qunbpZ78ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720183478; c=relaxed/simple;
-	bh=2VnZjseBtDW5O0hq1vK9Aj6FUxApMUCPPIzZyJbs9+0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=IEtkv39dtxaRZxFBSsC0S/Y/0KJWb6wTLB0Xa0e/mjlkOpej1SNZ1YjrX0z3ypjLeT3261c8QYP8Rnnwcorf10Lmr52x9uXMSSBwV8WBqthEcRZPCLMorknTHHDy/axjVxLlgxUOBDk2pg6Q2F5daP8M75SZH+ZPeJjMoq8oSoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=CWx6Qxyk; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+	s=arc-20240116; t=1720273297; c=relaxed/simple;
+	bh=tpCfZvqW9yvz1Mou1k19Lf7SlicdQ3FqOCMPrEm8fKo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Td0/4ianOsgfOs0ZDtXm8AWdZUN3gabxUi01Mj8UGPfjQaLT6ZkYwI+8IOZBS69/MAFNkX3tVAcj83eBTSNHbAk66iQohmiqrjSsFY8OEb13OKCF9nZnFo3iNRxpMfSLegsK2icsh/7uLhCpJ7NIZO7GCf/ky0Eii/pAu7HuVJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C3QUkE3W; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="CWx6Qxyk"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-57cf8880f95so2192631a12.3
-        for <phone-devel@vger.kernel.org>; Fri, 05 Jul 2024 05:44:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C3QUkE3W"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a77c9d3e593so179742666b.0;
+        Sat, 06 Jul 2024 06:41:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1720183475; x=1720788275; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hKZB2Fgn4uFU68w4TD9tZKFRvd41j+1ZrAavfWI0H/M=;
-        b=CWx6Qxyk+Am94MeP3yeyvze3aj5KCLQhfz7iZ8fx0T9m01ouujxyP1juBvJe3LEmVm
-         0cxvKh9a2KrvQB0S5K0Z850NOWYb+93iHCN+UV8nkuU7jo1yVisWDoZLUe6EBH09Kg89
-         ZEizm8BoQMbzI6wOied3di/9s7STbqZOKFeh8BXJyQRGzAyXXkaD7vkMo3LQ0scbvRf8
-         OntNaiN/XOBgKl5+5uwk0SX77/Gu7EtyiQmfTR2TLQKrjFpPbCmEBKIh7WlHB9tcLNAz
-         v29nQX6kyCDKNrIwnk9FvULS2wC6OQsafy0psiYh/iddZXGn8Y/XSyRz/8KSWZ7ZoWlz
-         hpKw==
+        d=gmail.com; s=20230601; t=1720273294; x=1720878094; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tpCfZvqW9yvz1Mou1k19Lf7SlicdQ3FqOCMPrEm8fKo=;
+        b=C3QUkE3WsT6MpIt8UFXyRgo65yqe82zcg8y9HqjZHOQyeL7vt/EovnI/Hf2p7iPfkK
+         HmJGO2d737Ox/v3Z0NC7+ykt9VbRAO8ZkWK6YPphhOCJo+3wpSFGXorfwo1AFnvRWq4N
+         6T1QhM+THizQ4Y5rT1cooo09QTr00zxcUd0uW7i1rcKIIVKadKHS/9n0K3Ick7m6ZOxg
+         3JXUfu0V4PPLxXsOlQTOI7qrbzWDbF61M0XzV6QPGOeCtdvOvvyJJsEwlV51PTmD+0Up
+         tOedLHgsuHBdXQCYEwc6CG6/aMwz6S9xmDNas5sVSi+KvPIVuY6LBi37vvocIq8042h8
+         /GGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720183475; x=1720788275;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=hKZB2Fgn4uFU68w4TD9tZKFRvd41j+1ZrAavfWI0H/M=;
-        b=WYUIJpbC+LR7bxzgsxZtpGHG9KvXEZ6c+goFGFKSfzkyFDT3wi2r5q3JIc/x6t4q16
-         IzgWARtQmkD3L3rZdCI45FJm360P4YZB2vDYEuYV0fkWIqg1wmr3QlbsePwQrzDLCPwJ
-         KuQ1QNE847LGaL2vPX1YvUruww5vVherLO06uZKIFyL/A+gMLNioJHr9lSQ8/qtAKA/H
-         WEVCh7ned9SV/V13qgLMGYfrCJKswMHQYHLMEckMsGEjcPUGYuVaDPnRROiS/TzQMlka
-         3Xmn1RqbeiuGT0w9+rrTjI342iHlxg1Eq2oPT0hH7ZnBBSX3T0tmz2Qlgyof3Jii0gSv
-         uxmA==
-X-Forwarded-Encrypted: i=1; AJvYcCWWGA7BBxX1peRAfgJSFpKu0jKbZJsu7TyqqYkx4u5D6+b0kDQEcWXyWU7EVpvdQPrWyA+SLR/BgU42qj8UNxXwqjN+tYti3FlfQew=
-X-Gm-Message-State: AOJu0YyKejKnGGbbx9aXu0BEEn2B1SzDGa16Uky6kU33lGscu49hYMHE
-	OqmGE7/PLLayr4iUacUezjLO+4dUFkltpowOIoR+c82dk4xjLWcRe8qx1Y6zG4E=
-X-Google-Smtp-Source: AGHT+IH+9WK0Botsjtq1BFzZXkU/n60QSw0IfXpvtq4tv7jxq5yAzdzaUCgwA9ITyxlvi6sLnyzRsA==
-X-Received: by 2002:a05:6402:358e:b0:58b:2d93:ad83 with SMTP id 4fb4d7f45d1cf-58e5b4a138bmr4156561a12.21.1720183475349;
-        Fri, 05 Jul 2024 05:44:35 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-58fefca76d0sm541054a12.2.2024.07.05.05.44.34
+        d=1e100.net; s=20230601; t=1720273294; x=1720878094;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tpCfZvqW9yvz1Mou1k19Lf7SlicdQ3FqOCMPrEm8fKo=;
+        b=geVVwDyVTiGID0U7PD5U+t0it9zsGK3k8DWVREkIdvM64jDL3gK+AQ35Kb7i9+ufbS
+         8M3tDDJN3FpIb1T0l+0/9XM7LANfn5z/i7LIt1wpFKFwxnH4p/SQbQCYFbUWaMOez6i6
+         WgilZ9Z2wOB7Y15ntXcIBO7MB1UEPV6PE4pHHS4LAr5Kvly3Q4gwtY3m5kqkgGD7v6I4
+         hkizgpNvZprYqZeF2VfKpXu48NuCV2AagvzfJdn7Mv1aYUdDVN868vrNSsD5Dyhtb3ID
+         P9MqOlExR7Vrj+i2nPD26BtQzRxI5If+MI6upf8e3lUNvt9PlFtQEU9QrWAveWAuCtpZ
+         XcOA==
+X-Forwarded-Encrypted: i=1; AJvYcCXpUxTIw0A1Jl5vrFOXjTylfJkfBd+kMwRMHK0GRQPniG6BoqTjZLRzay8Eu2Mc0VefV4EZ7Va/ux820h/7XTgYQa7hOAn6uQaNXPTeURs4tsnRODm3GL/3ZGoalypxgTxce42QKqaLk1IWnJK50iwV64HxxOwISjLxvqJIomPWd4rIRjMem871SvYMA5B8uMxY+McwefIiiAnPrRJEQVIL+Q==
+X-Gm-Message-State: AOJu0YxA9OlxfaMl09axa+UJBA/YhzlXp/gwijeA+17xJXFr58DSG86Y
+	28DQCj+VhmLcJ70VIZ0zvBr9lwhwatKXwjsJydBevmSJ88rOkemZ
+X-Google-Smtp-Source: AGHT+IE0ZemeIlvOgoNhCkacJ61zvRUuBkEL0wi6xZgy1jnf1+/l/KIsA+BVHMf2hMT1fUew2XvFzQ==
+X-Received: by 2002:a17:906:5293:b0:a6f:b67d:959e with SMTP id a640c23a62f3a-a77ba71188cmr379032566b.53.1720273293897;
+        Sat, 06 Jul 2024 06:41:33 -0700 (PDT)
+Received: from [192.168.1.13] (bzc167.neoplus.adsl.tpnet.pl. [83.30.48.167])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a77e1ff678fsm66100066b.137.2024.07.06.06.41.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 05 Jul 2024 05:44:35 -0700 (PDT)
+        Sat, 06 Jul 2024 06:41:33 -0700 (PDT)
+Message-ID: <5bb295b8-a79f-48ea-800c-3176c2402021@gmail.com>
+Date: Sat, 6 Jul 2024 15:41:30 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/8] msm8937/msm8976/qcs404 icc patches
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
+ Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Georgi Djakov <djakov@kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+ linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240704200327.8583-1-a39.skl@gmail.com>
+ <b4b94938-903a-40ba-baf3-d04226dc9f90@linaro.org>
+Content-Language: en-US
+From: Adam Skladowski <a39.skl@gmail.com>
+In-Reply-To: <b4b94938-903a-40ba-baf3-d04226dc9f90@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 05 Jul 2024 14:44:34 +0200
-Message-Id: <D2HM5EVCMBIU.1WTR6DUJH3GB6@fairphone.com>
-Cc: "Andy Gross" <agross@kernel.org>, "Bjorn Andersson"
- <andersson@kernel.org>, "Rob Herring" <robh+dt@kernel.org>, "Krzysztof
- Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, "Conor Dooley"
- <conor+dt@kernel.org>, "Bhupesh Sharma" <bhupesh.linux@gmail.com>, "David
- Heidelberg" <david@ixit.cz>, "Stephan Gerhold" <stephan@gerhold.net>,
- <~postmarketos/upstreaming@lists.sr.ht>, <phone-devel@vger.kernel.org>,
- "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>,
- <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH RFT] arm64: dts: qcom: sm8350: Reenable crypto &
- cryptobam
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Konrad Dybcio" <konrad.dybcio@linaro.org>, "Dmitry Baryshkov"
- <dmitry.baryshkov@linaro.org>
-X-Mailer: aerc 0.17.0-0-g6ea74eb30457
-References: <20240108-sm8350-qce-v1-1-b7d586ff38af@fairphone.com>
- <a5923bf7-0a05-43bd-b282-b45e5653ac4d@linaro.org>
- <CY9E4ZCHOMWU.C18NR0H7V1QX@fairphone.com>
- <CAA8EJppCAMXds5F4bgeb9VJSwph-+4ekVsJ=rGib5=RR5m0DPg@mail.gmail.com>
- <CZ6FR855VPP7.3GHX4EO9WEZIH@fairphone.com>
- <8eb45771-096a-443f-b017-3ec8bc4940ba@linaro.org>
-In-Reply-To: <8eb45771-096a-443f-b017-3ec8bc4940ba@linaro.org>
+Content-Transfer-Encoding: 7bit
 
-On Wed Mar 27, 2024 at 10:34 PM CET, Konrad Dybcio wrote:
-> On 16.02.2024 11:36 AM, Luca Weiss wrote:
-> > On Mon Jan 8, 2024 at 11:45 PM CET, Dmitry Baryshkov wrote:
-> >> On Mon, 8 Jan 2024 at 16:23, Luca Weiss <luca.weiss@fairphone.com> wro=
-te:
-> >>>
-> >>> On Mon Jan 8, 2024 at 3:18 PM CET, Konrad Dybcio wrote:
-> >>>> On 8.01.2024 14:49, Luca Weiss wrote:
-> >>>>> When num-channels and qcom,num-ees is not provided in devicetree, t=
-he
-> >>>>> driver will try to read these values from the registers during prob=
-e but
-> >>>>> this fails if the interconnect is not on and then crashes the syste=
-m.
-> >>>>>
-> >>>>> So we can provide these properties in devicetree (queried after pat=
-ching
-> >>>>> BAM driver to enable the necessary interconnect) so we can probe
-> >>>>> cryptobam without reading registers and then also use the QCE as
-> >>>>> expected.
-> >>>>
-> >>>> This really feels a bit backwards.. Enable the resource to query the
-> >>>> hardware for numbers, so that said resource can be enabled, but
-> >>>> slightly later :/
-> >>>
-> >>> If you think adding interconnect support to driver and dtsi is better=
-,
-> >>> let me know.
-> >>
-> >> I'd say, adding the proper interconnect is a better option. Otherwise
-> >> we just depend on the QCE itself to set up the vote for us.
-> >=20
-> > Yes, currently we depend on that.
-> >=20
-> >>
-> >>>
-> >>> Stephan (+CC) mentioned it should be okay like this *shrug*
-> >>>
-> >>> For the record, this is the same way I got the values for sc7280[0] a=
-nd
-> >>> sm6350[1].
-> >>>
-> >>> [0] https://lore.kernel.org/linux-arm-msm/20231229-sc7280-cryptobam-f=
-ixup-v1-1-bd8f68589b80@fairphone.com/
-> >>> [1] https://lore.kernel.org/linux-arm-msm/20240105-sm6350-qce-v1-0-41=
-6e5c7319ac@fairphone.com/
-> >>>
-> >>> diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/d=
-ts/qcom/sm8350.dtsi
-> >>> index b46236235b7f..cd4dd9852d9e 100644
-> >>> --- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-> >>> +++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-> >>> @@ -1756,8 +1756,8 @@ cryptobam: dma-controller@1dc4000 {
-> >>>                         qcom,controlled-remotely;
-> >>>                         iommus =3D <&apps_smmu 0x594 0x0011>,
-> >>>                                  <&apps_smmu 0x596 0x0011>;
-> >>> -                       /* FIXME: Probing BAM DMA causes some abort a=
-nd system hang */
-> >>> -                       status =3D "fail";
-> >>> +                       interconnects =3D <&aggre2_noc MASTER_CRYPTO =
-0 &mc_virt SLAVE_EBI1 0>;
-> >>> +                       interconnect-names =3D "memory";
-> >>>                 };
-> >>>
-> >>>                 crypto: crypto@1dfa000 {
-> >>> diff --git a/drivers/dma/qcom/bam_dma.c b/drivers/dma/qcom/bam_dma.c
-> >>> index 5e7d332731e0..9de28f615639 100644
-> >>> --- a/drivers/dma/qcom/bam_dma.c
-> >>> +++ b/drivers/dma/qcom/bam_dma.c
-> >>> @@ -40,6 +40,7 @@
-> >>>  #include <linux/circ_buf.h>
-> >>>  #include <linux/clk.h>
-> >>>  #include <linux/dmaengine.h>
-> >>> +#include <linux/interconnect.h>
-> >>>  #include <linux/pm_runtime.h>
-> >>>
-> >>>  #include "../dmaengine.h"
-> >>> @@ -394,6 +395,7 @@ struct bam_device {
-> >>>         const struct reg_offset_data *layout;
-> >>>
-> >>>         struct clk *bamclk;
-> >>> +       struct icc_path *mem_path;
-> >>>         int irq;
-> >>>
-> >>>         /* dma start transaction tasklet */
-> >>> @@ -1206,6 +1208,7 @@ static int bam_init(struct bam_device *bdev)
-> >>>                 bdev->num_channels =3D val & BAM_NUM_PIPES_MASK;
-> >>>         }
-> >>>
-> >>> +       printk(KERN_ERR "%s:%d DBG num_ees=3D%u num_channels=3D%u\n",=
- __func__, __LINE__, bdev->num_ees, bdev->num_channels);
-> >>>         /* Reset BAM now if fully controlled locally */
-> >>>         if (!bdev->controlled_remotely && !bdev->powered_remotely)
-> >>>                 bam_reset(bdev);
-> >>> @@ -1298,6 +1301,14 @@ static int bam_dma_probe(struct platform_devic=
-e *pdev)
-> >>>                 return ret;
-> >>>         }
-> >>>
-> >>> +       bdev->mem_path =3D devm_of_icc_get(bdev->dev, "memory");
-> >>> +       if (IS_ERR(bdev->mem_path))
-> >>> +               return PTR_ERR(bdev->mem_path);
-> >>> +
-> >>> +       ret =3D icc_set_bw(bdev->mem_path, 1, 1);
-> >>
-> >> Probably this needs some more sensible value.
-> >=20
-> > So downstream qcedev driver uses 384 for the interconnect. But this is
-> > crypto-specific and probably different BAMs have different minimum
-> > requirements?
-> >=20
-> > #define CRYPTO_AVG_BW			384
-> > #define CRYPTO_PEAK_BW			384
-> > https://github.com/xiaomi-sm8450-kernel/android_kernel_platform_msm-ker=
-nel/blob/lineage-20/drivers/crypto/msm/qce.h#L57
-> >=20
-> > Do you have any suggestion what to use here?
+
+On 7/5/24 08:49, Krzysztof Kozlowski wrote:
+> On 04/07/2024 22:02, Adam Skladowski wrote:
+>> This series introduce new ICC drivers for some legacy socs
+>> while at it also updates a bit of qcs404 driver which seems
+>> to not receive much attention lately.
+>> Please take in consideration i do not own any qcs404 board
+>> so i cannot test anything else than if it compiles.
+>>
+>> Changes since v1
+>> ================
+>> 1. Reworded commit messages
+>> 2. Adjusted yamls.
+>> 3. Adjusted examples.
+> Adjusted to what? This is supposed to be specific.
 >
-> I'dve expected this to mean anything, but apparently not.
+> BTW, you use here odd email address, so:
 >
-> My immediate guess is that the 384 was the lowest magic value that didn't
-> result in the bus getting kicked offline.. 1 should be fine upstream due
-> to commit 91e045b93db7 ("interconnect: qcom: Fix small BW votes being
-> truncated to zero").
+> <form letter>
+> Please use scripts/get_maintainers.pl to get a list of necessary people
+> and lists to CC (and consider --no-git-fallback argument). It might
+> happen, that command when run on an older kernel, gives you outdated
+> entries. Therefore please be sure you base your patches on recent Linux
+> kernel.
 >
-> >=20
-> > Also I'd assume that with pm_runtime suspended we'd need to clear the
-> > votes in the driver so we don't keep the interconnect alive
-> > unnecessarily?
+> Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+> people, so fix your workflow. Tools might also fail if you work on some
+> ancient tree (don't, instead use mainline) or work on fork of kernel
+> (don't, instead use mainline). Just use b4 and everything should be
+> fine, although remember about `b4 prep --auto-to-cc` if you added new
+> patches to the patchset.
+> </form letter>
 >
-> My naive understanding is that the power should only be necessary when
-> the thing is in use, so early probe and pm-active sounds about sane..
-
-Bit of a late update on this, going through my inbox again:
-
-I don't think I'll work on implementing interconnect for the BAM driver,
-I neither really have the motivation to work on it, nor really any
-knowledge on crypto or BAM, or about some details of the hardware.
-
-So feel free to pick this patch to unbreak crypto on sm8350 (adding
-num-channels & qcom,num-ees is what's done on many other SoCs as well,
-sm8350 wouldn't be an outlier), or we wait for someone to pick up
-implementing icc for BAM.
-
-I'll remove this from my inbox now :)
-
-Regards
-Luca
-
+> Best regards,
+> Krzysztof
 >
-> Konrad
+Indeed i send patches from different OS with old kernel tree inside,
+i haven't had idea about that.
+
+Will update tree before sending.
+Regarding v3 which im going to send anyway, should i reword changes in v2?
+
+Like in v2 i Adjusted yaml to look the way msm8953 is(seems its wrong).
+
+Adjusting examples refers to removing redundant nodes from yaml examples.
+
+For sending i use this command:
+git send-email --to-cover --cc-cover patch-dir/*.patch --cc
+phone-devel@vger.kernel.org --cc ~postmarketos/upstreaming@lists.sr.ht
+--cc-cmd='scripts/get_maintainer.pl --norolestats patch-dir/*.patch'
+
+Is switching to any different tool required?
+I doubt i would be able to do it without making some big mistakes.
 
