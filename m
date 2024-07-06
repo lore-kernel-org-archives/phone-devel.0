@@ -1,50 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4D4144D1D;
-	Sat,  6 Jul 2024 22:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDE11CD31;
+	Sat,  6 Jul 2024 22:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720303302; cv=none; b=Dj0yf5ze6lQD+X6py8q0fhvlDlnOxIS9pdDTP6lqWhWTYXbLjUK/LOLR+IxhdrP3JpCeAMHMAvka6SUyPOyhK2HhoLnt3vv2dbPb3ENTDZIxCARqnNHQ+TbDd4AiQx9SWVTtBdOE/HCOGdEegzgw1Hg+76sOANdM8l7zFuz4Nac=
+	t=1720303742; cv=none; b=io4kTBMczBRIptGHbD7/Yho7Yrg4h6rOrxmDg/pFcs2cBedgmV+DBAUOPUA+0Sx9NdJkdcxH3g58/3M41PVIqowiwP/Eh6qNKsaqUnXwboSz0PIpG9smyGA0rXvKd1UYhI3sp8aDsDCYQAYb9nK3Dq59X7fv0yzjq9JZF3W9b6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720303302; c=relaxed/simple;
-	bh=vk/Cvb7kD79ksF6Cfvk78sTu/Roq1tjpCW8NeoaxwdY=;
+	s=arc-20240116; t=1720303742; c=relaxed/simple;
+	bh=Dugv1gTt6phAkOgWqtJfMeJpuf/B+u/pk0fLDqzZQuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s0JHwbbpWCsD5u36tWfaY4G1gp6Zy+m4T6y58wAjwXFeQ/AbzSGTWPW7TCETYn8CB/wgAss3l66eQo4p07IFsPBDgVb5j6xhWpt7AKVnwPBbVnoJ+9Z4mGO/oIgqrBsRnbkR/PmDIzXPNFpYTfKt0L/cFYF+haO538ryEM2loHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f4zYhYhO; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=MB9kRY0EJzocnkOGxjrdmIrOS8cCxHytHM1eSh0qbJjWgO50dobHcgsqEouyA5eO0ZFEzmtBCK4dx3JcKCo1H5NV767PuceUK7lWuUKqNMzGSuPhZivMyidmNHyBRG/ayeJeT+2nc1lVur0ZipWgcB6bFtJ3DXQTJhjoCQkUqjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t+XhgEAR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f4zYhYhO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A5CC4AF0C;
-	Sat,  6 Jul 2024 22:01:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t+XhgEAR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47739C2BD10;
+	Sat,  6 Jul 2024 22:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720303301;
-	bh=vk/Cvb7kD79ksF6Cfvk78sTu/Roq1tjpCW8NeoaxwdY=;
+	s=k20201202; t=1720303741;
+	bh=Dugv1gTt6phAkOgWqtJfMeJpuf/B+u/pk0fLDqzZQuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4zYhYhOPZM6thlux8OdE7JFdRWcPQTCbT6es+wAX7ekTMh4l/P7ieohxg4Y6yglt
-	 dJRneo7LMqdsVUDNRRuQT8oZlWam78vgzpiSZlB30+EC50Na4Smfza8eyFOBcMYkxh
-	 Ud0k94DvYTdIPAqlZFMzDpamflV9Dxf2EpEhlWbTojU6oho0Jk5ke+Sj7u2pJr7PdO
-	 T2Q31ve7/O2UH8nDvF2A+6gWyxFIykVrkx0RPv1NsiADDszCA1vxuidHwY4rovXtr7
-	 JlZP2yIcmHSMl0RK/KE0u4lKsMLXGh5ggOERh7BHNPhaZqipH1+Lakqj3kua72qUe1
-	 dGZOAJnBk88iA==
+	b=t+XhgEARX448VJNLSJaMZukuIvzhlb7wLF43wq35WuXSb8/Cdl+3byLKWU4UCjCD/
+	 12ymokpCjQbTjxMP/b8TosGANpSGI92zbNaLuNdiV78Aaf2JsvPqiLq+WgGhOkQ+Z1
+	 vi4SRxNCksIpZYhVSeld+UScpxQ1dJKaSbSW1JF9rfJny2CY/4v2sqHvQ0nJQLeCW1
+	 3ObOs8DXhjA1rjukJ6nfkmHePehm0owzpPyWgzYYNhl0FN5G8xm+Y+bgt+EBtcvQLo
+	 69JXvSZIInD1L1s304KYiMHM7yF1l5t+bPm0cxM9IklwejFWMklLigLTfQE1ucMSfq
+	 zowG8clBda+ig==
 From: Bjorn Andersson <andersson@kernel.org>
 To: Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Luca Weiss <luca.weiss@fairphone.com>
-Cc: ~postmarketos/upstreaming@lists.sr.ht,
-	phone-devel@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@somainline.org>,
-	linux-arm-msm@vger.kernel.org,
+	Nikita Travkin <nikita@trvn.ru>
+Cc: linux-arm-msm@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH v2] arm64: dts: qcom: sm6350: Add missing qcom,non-secure-domain property
-Date: Sat,  6 Jul 2024 17:01:24 -0500
-Message-ID: <172030328809.28909.14419610576118929541.b4-ty@kernel.org>
+	phone-devel@vger.kernel.org,
+	~postmarketos/upstreaming@lists.sr.ht,
+	Cristian Cozzolino <cristian_ci@protonmail.com>,
+	Anton Bambura <jenneron@postmarketos.org>
+Subject: Re: [PATCH 0/3] Introduce msm8916 based LG devices
+Date: Sat,  6 Jul 2024 17:08:58 -0500
+Message-ID: <172030373506.31220.15270675650118221294.b4-ty@kernel.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240705-sm6350-fastrpc-fix-v2-1-89a43166c9bb@fairphone.com>
-References: <20240705-sm6350-fastrpc-fix-v2-1-89a43166c9bb@fairphone.com>
+In-Reply-To: <20240623-msm8916-lg-initial-v1-0-6fbcf714d69b@trvn.ru>
+References: <20240623-msm8916-lg-initial-v1-0-6fbcf714d69b@trvn.ru>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -55,16 +55,24 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
 
-On Fri, 05 Jul 2024 09:43:11 +0200, Luca Weiss wrote:
-> By default the DSP domains are secure, add the missing
-> qcom,non-secure-domain property to mark them as non-secure.
+On Sun, 23 Jun 2024 14:26:29 +0500, Nikita Travkin wrote:
+> This series introduces two msm8916-based LG devices:
 > 
+> - LG Leon LTE (c50)
+> - LG LG K10 (m216)
 > 
+> The devices only have basic support for now.
+> 
+> [...]
 
 Applied, thanks!
 
-[1/1] arm64: dts: qcom: sm6350: Add missing qcom,non-secure-domain property
-      commit: 81008068ee4f2c4c26e97a0404405bb4b450241b
+[1/3] dt-bindings: arm: qcom: Add msm8916 based LG devices
+      commit: 2c69048c5dafb315e11c257f7100f7fb3cabfa8a
+[2/3] arm64: dts: qcom: msm8916-lg-m216: Add initial device tree
+      commit: 0655b447461607f93c55435b32a7783aa7d711ef
+[3/3] arm64: dts: qcom: msm8916-lg-c50: add initial dts for LG Leon LTE
+      commit: 88bf3be9c327f2d78c65e7e4c10c677d4b36128a
 
 Best regards,
 -- 
