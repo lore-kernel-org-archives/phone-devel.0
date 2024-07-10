@@ -1,64 +1,36 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DF3156862;
-	Tue,  9 Jul 2024 10:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC7E194135;
+	Wed, 10 Jul 2024 15:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720521109; cv=none; b=AO4uG9jKZg/sjdpuhyAZdeQrpOBLUfJsKvXX61cofqNqg7Wo6QAy892+kMcgT8g1/jx9LySncFPQxxG2X3Hu3MCmgReoMJHY0TDlvKBW/yOgejW8PgecaToEunu6wlmrFO4hC5exUhzmdXs937Yv3xbphYWHInBwK79YU55nUcU=
+	t=1720626876; cv=none; b=DHSmxVGTf0Dj0jTxIabZnB4GU6GmJOBfO2WgqpvDAbpePEpUhiiNxtcBue1yXWRoRLUxw3I9GnFSXj97FSie0wa9SEAZ8embOsKrigWOxS3wJZjQ3o80jVqty6vebZzhI9LptaO6AYSQwrsofpfh/RHPFZ3/VSH080xTXRF49vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720521109; c=relaxed/simple;
-	bh=M0cT28gjYHuIFgzG9/ClXs9YX1csSfujvjDFgwjE5rc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTN/nqF6xboZpOm4ipQv1ejukDozjJsMR02oMbfe1uvomEXiISMaD95JQr9BGoOaqMZBF/iy3O6n3avWSf8DdIHih1beau4/wTPSD9j2Z7yw6xkMO4kbM8HcK8lT9f7mCCLmQJDFcVY4lmySalFtHRV+Ovwy6NYbB6FQFVPopG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EzqsyxRN; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1720626876; c=relaxed/simple;
+	bh=Xhl6yW2VQ6hvwt67WTdZt+JNLP73wtB47sYfqu1Fp0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uvpQDby+ERuweCJuVUmLP9OBPNt2/SaIIjH4vNAM/Cu8o1RSftsGNu6PN09Adiy9uK7Z6I3Ynr1U+F0zbkAXOCXKA1HwO4GszaiulqLzHflwNi3n+lbPgz35JGrik20SAV6ixUkNnzC4HKcQhAetnfpE4pDVpRz/awydQbF9edc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mIP5lwrV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EzqsyxRN"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a6fd513f18bso502350066b.3;
-        Tue, 09 Jul 2024 03:31:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720521106; x=1721125906; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dDbouyq7PTfUaRSnNtYQgcWs9NVpLUWQ/wAcLJNaYk8=;
-        b=EzqsyxRNbKxkj4ZDUYnrrH/vvJ5ToLZq7P3eN37bCos1Wt0qwnTPH2KKDOSJmxUnq4
-         cEqjIhDEgzv77xG5DkTbJVPYys/nhiveuTrFpSK0cKVKyzEizqrpnbrNts1Do2RZQ7Qp
-         qqwvJN58Uuba9jQky0mMCHQ/jx3QfmWQPB5DAS8V+Gcn7sAmAOnYOrksFZRxFz8rErl1
-         /tSZwvVlYw0fUBK5wumvZYNBufTxyDqojaVna4km5NAohJECJ/8+rte/dG+ACHG8QMa9
-         or8glI8mF5fuRaFWXhiGceNkQCIlFw7qSdDIIH3KVtz2Gw62skMOidvjiC+F67m/HaGp
-         t0RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720521106; x=1721125906;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dDbouyq7PTfUaRSnNtYQgcWs9NVpLUWQ/wAcLJNaYk8=;
-        b=QigbWZGUGZ2S7YoUmM8YaLtcNzpBODY7ny1uTor7waN6hlmCbYSuMhvuqyHTK+MtC9
-         r4XxDSN3nesRFKV5LB6IwIGIC3iZY1bQ3T96Y0tgPCekMbladJjlCBc0d9KEMnb6NVVN
-         bGGGyBGEb/dKdxkXcqOKjWMZdag0RcQfX1s0g0x9llm4FoRs0sAOAaWov7uUelVhYP3y
-         HrX6rKSkIUVv3gfuE2j6bXErIKV+zZBOb7UahMZ8VNLsafZWMHmt/oo+NklFrOFPs5O1
-         VrwkiFLAxEJ1bplYfVJ8Ao6+RbcHAF1i45rRrAnz2+dVjMFqOuXN4a866R9vXzEmZQgQ
-         KAHA==
-X-Forwarded-Encrypted: i=1; AJvYcCXt8kFr/OwzS0Ha+GPnbEpJ2IPrWRaz1uqqabY6wsSTH4r1D4CFarw2lEVEzz1NItga2slB1LorSEE8rv+YXJYn+lYj5hw1Tao3OfdYn//TmkxZCVzqLgesrsiRz2Nq3QWacBzbRA/yY4XRCYr31htgHfK1rH6zNohKHWZc4za7FtRUQkxBTJulGGk2ee7gU3JntW87VCD5gnc4zeuUDzRVpg==
-X-Gm-Message-State: AOJu0YzvWvk+ukq/ign+H/AYwlBL962QPs1fdd06ROA741ucuZLEiBmQ
-	j8oHnSgtGKQVJKbb5cQyvXknEhAb85JbgxB3OwWJJ5DDa5oQSNjFGXWSVA==
-X-Google-Smtp-Source: AGHT+IEsA/zPMeXS/Kjwa7RgTlDMmN4h02MAxM+4067UQXiCOMEkSVIS0G0E6drBIQ736RcgORKrDw==
-X-Received: by 2002:a17:906:3590:b0:a77:c8f8:f9d0 with SMTP id a640c23a62f3a-a780b705305mr135816666b.44.1720521106064;
-        Tue, 09 Jul 2024 03:31:46 -0700 (PDT)
-Received: from localhost.localdomain (bza125.neoplus.adsl.tpnet.pl. [83.30.46.125])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a6bcc21sm66528166b.16.2024.07.09.03.31.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jul 2024 03:31:45 -0700 (PDT)
-From: Adam Skladowski <a39.skl@gmail.com>
-To: 
-Cc: phone-devel@vger.kernel.org,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Adam Skladowski <a39.skl@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mIP5lwrV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C5FC4AF09;
+	Wed, 10 Jul 2024 15:54:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720626875;
+	bh=Xhl6yW2VQ6hvwt67WTdZt+JNLP73wtB47sYfqu1Fp0I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mIP5lwrV5IIPUUZbRfbxZfu4lA2AyMqAVBxwrpi/aJO2nku5AP94HWCbGzSPj4SMi
+	 SZhIqk4vlW3Vb2P0k3lCVR9ZaL2MKIQsY3z9zGyYjgXmeHDFBobmK+CJQx3UXi2MN5
+	 tEeLJpklUkpvHJDCFQK1Obg+0vjuXhvvOT09r3rR8riNOUde/+EhU0sya8KriXdpQp
+	 AjB4Z3JfXYhe9mfKDhM6bqdl96usoLjV7m2Ix7kbt8tgv9iZ7wJz1gmxJV6JR/Fxpd
+	 cjwS33cyc4xIfKYGq7vDVB+/2b31zz9ftlLVr/8QeFiqllfCK+t6fmgm2mMwzjyvqN
+	 o6YPgbSZM+9jg==
+Date: Wed, 10 Jul 2024 09:54:24 -0600
+From: Rob Herring <robh@kernel.org>
+To: Adam Skladowski <a39.skl@gmail.com>
+Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht,
 	Georgi Djakov <djakov@kernel.org>,
-	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
@@ -71,51 +43,34 @@ Cc: phone-devel@vger.kernel.org,
 	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
 	Andrew Halaney <ahalaney@redhat.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
 	Barnabas Czeman <barnabas.czeman@mainlining.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Sibi Sankar <quic_sibis@quicinc.com>
-Subject: [PATCH v3 9/9] dt-bindings: interconnect: qcom: msm8953: Fix 'See also' in description
-Date: Tue,  9 Jul 2024 12:22:54 +0200
-Message-ID: <20240709102728.15349-10-a39.skl@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240709102728.15349-1-a39.skl@gmail.com>
+	linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Abel Vesa <abel.vesa@linaro.org>
+Subject: Re: [PATCH v3 1/9] dt-bindings: interconnect: qcom: Add Qualcomm
+ MSM8976 NoC
+Message-ID: <20240710155424.GA3133981-robh@kernel.org>
 References: <20240709102728.15349-1-a39.skl@gmail.com>
+ <20240709102728.15349-2-a39.skl@gmail.com>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240709102728.15349-2-a39.skl@gmail.com>
 
-"See also" in description seems to be wrongly defined,
-make it inline with other yamls.
+On Tue, Jul 09, 2024 at 12:22:46PM +0200, Adam Skladowski wrote:
+> Add bindings for Qualcomm MSM8976 Network-On-Chip interconnect devices.
+> 
+> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
+> ---
+>  .../bindings/interconnect/qcom,msm8939.yaml   | 15 ++-
+>  .../dt-bindings/interconnect/qcom,msm8976.h   | 97 +++++++++++++++++++
+>  2 files changed, 107 insertions(+), 5 deletions(-)
+>  create mode 100644 include/dt-bindings/interconnect/qcom,msm8976.h
 
-Fixes: 791ed23f735b ("dt-bindings: interconnect: qcom: Add Qualcomm MSM8953 NoC")
-Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
----
- .../devicetree/bindings/interconnect/qcom,msm8953.yaml         | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/interconnect/qcom,msm8953.yaml b/Documentation/devicetree/bindings/interconnect/qcom,msm8953.yaml
-index 732e9fa001a4..1397ad6ba37d 100644
---- a/Documentation/devicetree/bindings/interconnect/qcom,msm8953.yaml
-+++ b/Documentation/devicetree/bindings/interconnect/qcom,msm8953.yaml
-@@ -13,8 +13,7 @@ description: |
-   The Qualcomm MSM8953 interconnect providers support adjusting the
-   bandwidth requirements between the various NoC fabrics.
- 
--  See also:
--  - dt-bindings/interconnect/qcom,msm8953.h
-+  See also: include/dt-bindings/interconnect/qcom,msm8953.h
- 
- properties:
-   compatible:
--- 
-2.45.2
-
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
