@@ -1,78 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-40140.protonmail.ch (mail-40140.protonmail.ch [185.70.40.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8042E197A65;
-	Wed, 10 Jul 2024 16:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDC5BA40;
+	Sat, 13 Jul 2024 17:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720627893; cv=none; b=A8197uxwiwZNou8WLfShfiLw1k+qmPu0UJ4i3Qwemx15RIOw+wLaCW5K7C7d+zSYK8soJMkRdKNZS96ttzDjSQOkpZV9xas1z15PJTTl3vfkSjnhd6QP1SVRTb2fw331qG6tq6ebgFgqj0boRqLq/8CVG4Cziy+2EMB/2c+LmQo=
+	t=1720891667; cv=none; b=D+eENIJ8Dw6Bsc9c10j2hT4wFOnrmc9FtEoot83OtyPkg4y0TWr2EbvSUJXdKt60eDCY83MqDLV9QIDvhcNauflTmYCA46jTAxBR6u0Z1u6hwgHcVksjdPFvy1qTSXCWba45vZo5yZ0ifFNT6f+lxdX2wjcxgDStYCyT+uX/ngQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720627893; c=relaxed/simple;
-	bh=a+7WKy915cYtcjH7UwZEbtB/L6kz1ndbvjx3AaxaK30=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ViAxef5uePHabAmmPyA/TP8/NFKGR3+Dg0KSClOn5ak+23lV3PYYWrBc+OddYaGwIbwFekhHiVp9lnIGpzjnvH+ySshznyPDxRHqXw3Qu4a2fEdCWmNNW+aWlmQmbJdjdW9ifdcW050FNSBO4CDmer9CE/beJDMKHqjvwi7x3Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BdwAh+dN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720891667; c=relaxed/simple;
+	bh=CMbyQCRW3QjSNDtrZLqub2EssK7RoLcv0g/PG0hYges=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=G5MNUbZxOVQIwuPMSXP+5zt2G1OQw8qtX1NCOgDoWfhR36lLk/xN0YnQ0/g9S1PVJOGpeHjCka8B2biOdg7L0pdEitSBAFanqdPQCt2t5zNNy8Yep+vnNUuWGEzo8FxZi909WfEprB3giuF2X6P4KTy70Ce5MnUo/mwhKKHTwoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=InAbALiB; arc=none smtp.client-ip=185.70.40.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BdwAh+dN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62B2C4AF0A;
-	Wed, 10 Jul 2024 16:11:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720627892;
-	bh=a+7WKy915cYtcjH7UwZEbtB/L6kz1ndbvjx3AaxaK30=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BdwAh+dNSn6JErm1pydRtzjQ4/A74kobkcw3ruKNPrJTfnzZ7LFJgu25e8HIraQPv
-	 uvlS/RLvof+nQdHtMbpUAPrZ+xFLffJ39TwJNTWSk6ObSRxPu4da+/vMhWPdC2wo6w
-	 fmf2prSUTwNnWuWzsuJBTvE8LZOiFc1o0gY6gTzgy0VpVvlnawGfDHQG1TPnDqLH1c
-	 5WSy0EF8jjMEj0xL/4ltPqKOSytJF1E91s1muNNUWUBteUJTNua0+rpluB6PS5d0Gl
-	 ilK1vuPd+xx1nsKC83ptMtaKnn4kE4RQ40uxiHIDdOIW95o6jML386eya5qXMFoXKv
-	 MjPh0lw5Xsp7Q==
-Date: Wed, 10 Jul 2024 10:11:31 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Adam Skladowski <a39.skl@gmail.com>
-Cc: Sibi Sankar <quic_sibis@quicinc.com>, Georgi Djakov <djakov@kernel.org>,
-	Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
-	devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Vladimir Lypak <vladimir.lypak@gmail.com>,
-	Abel Vesa <abel.vesa@linaro.org>, linux-arm-msm@vger.kernel.org,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Rohit Agarwal <quic_rohiagar@quicinc.com>,
-	Rajendra Nayak <quic_rjendra@quicinc.com>,
-	~postmarketos/upstreaming@lists.sr.ht,
-	Conor Dooley <conor+dt@kernel.org>,
-	Barnabas Czeman <barnabas.czeman@mainlining.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	linux-kernel@vger.kernel.org, Danila Tikhonov <danila@jiaxyga.com>,
-	linux-pm@vger.kernel.org, Andrew Halaney <ahalaney@redhat.com>
-Subject: Re: [PATCH v3 9/9] dt-bindings: interconnect: qcom: msm8953: Fix
- 'See also' in description
-Message-ID: <172062789070.3205605.3268441513464795042.robh@kernel.org>
-References: <20240709102728.15349-1-a39.skl@gmail.com>
- <20240709102728.15349-10-a39.skl@gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="InAbALiB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1720891657; x=1721150857;
+	bh=3ma9Jn4pZDj6IW33R3W1pBkMWtSx2AXWQvS0vLsnG84=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=InAbALiB3GvY9KTmZVN6QkFs4qtbHoXdZE0JTxl6cltduTF6VBYx3cpBb/T4RYKtU
+	 k4WfMul3/eMSr4nvPTtfucrUy6EEd72Rxv0Ng5J0LtcjmPSgW0hQZHmjJ3Z2xw+IA0
+	 bM+M2YCoCyuhJvuey7w4rDZZmqtuSHk6qd6GO56jaosOzwC/gFvewiJt2mqj+oFT9o
+	 oPftKXE1gyG3N+Dd74Hf0KUalmSszWDI0qGb14PHAOTVrNCRdoUdQUkTHTrUOfUmkj
+	 OjmbxsjA+Q7WVanzLbnSQe0HbpNbsrkpXkNcJYrVcfCto1DGyKuwloGsNtxHFb8lCG
+	 DU4qh2t/rLFxw==
+Date: Sat, 13 Jul 2024 17:27:33 +0000
+To: linux-kernel@vger.kernel.org
+From: "Lin, Meng-Bo" <linmengbo06890@proton.me>
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>, Nikita Travkin <nikita@trvn.ru>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
+Subject: [PATCH] arm64: dts: qcom: msm8916-samsung-grandmax: Add touchscreen
+Message-ID: <20240713172724.34658-1-linmengbo06890@proton.me>
+Feedback-ID: 112742687:user:proton
+X-Pm-Message-ID: 310e0059fa85ef97870cada5a561fdd7c9440981
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240709102728.15349-10-a39.skl@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+Grand Max uses an Imagis IST3038 touchscreen that is connected to
+blsp_i2c5. Add it to the device tree.
 
-On Tue, 09 Jul 2024 12:22:54 +0200, Adam Skladowski wrote:
-> "See also" in description seems to be wrongly defined,
-> make it inline with other yamls.
-> 
-> Fixes: 791ed23f735b ("dt-bindings: interconnect: qcom: Add Qualcomm MSM8953 NoC")
-> Signed-off-by: Adam Skladowski <a39.skl@gmail.com>
-> ---
->  .../devicetree/bindings/interconnect/qcom,msm8953.yaml         | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
+Signed-off-by: "Lin, Meng-Bo" <linmengbo06890@proton.me>
+---
+ .../dts/qcom/msm8916-samsung-grandmax.dts     | 24 ++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts b/arch/a=
+rm64/boot/dts/qcom/msm8916-samsung-grandmax.dts
+index 135df1739dbd..5806a28b7bec 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts
+@@ -47,12 +47,34 @@ &battery {
+ =09constant-charge-voltage-max-microvolt =3D <4400000>;
+ };
+=20
++&blsp_i2c5 {
++=09status =3D "okay";
++
++=09touchscreen@50 {
++=09=09compatible =3D "imagis,ist3038";
++=09=09reg =3D <0x50>;
++
++=09=09interrupts-extended =3D <&tlmm 13 IRQ_TYPE_EDGE_FALLING>;
++
++=09=09touchscreen-size-x =3D <720>;
++=09=09touchscreen-size-y =3D <1280>;
++
++=09=09vdd-supply =3D <&reg_vdd_tsp_a>;
++=09=09vddio-supply =3D <&pm8916_l6>;
++
++=09=09pinctrl-0 =3D <&ts_int_default>;
++=09=09pinctrl-names =3D "default";
++
++=09=09linux,keycodes =3D <KEY_APPSELECT KEY_BACK>;
++=09};
++};
++
+ &reg_motor_vdd {
+ =09gpio =3D <&tlmm 72 GPIO_ACTIVE_HIGH>;
+ };
+=20
+ &reg_touch_key {
+-=09status =3D "disabled";
++=09status =3D "disabled"; /* Using Imagis touch key*/
+ };
+=20
+ &sound {
+--=20
+2.39.2
+
 
