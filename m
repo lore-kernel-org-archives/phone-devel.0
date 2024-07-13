@@ -1,98 +1,102 @@
-Received: from mail-40140.protonmail.ch (mail-40140.protonmail.ch [185.70.40.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDC5BA40;
-	Sat, 13 Jul 2024 17:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D8B125B9;
+	Sat, 13 Jul 2024 18:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720891667; cv=none; b=D+eENIJ8Dw6Bsc9c10j2hT4wFOnrmc9FtEoot83OtyPkg4y0TWr2EbvSUJXdKt60eDCY83MqDLV9QIDvhcNauflTmYCA46jTAxBR6u0Z1u6hwgHcVksjdPFvy1qTSXCWba45vZo5yZ0ifFNT6f+lxdX2wjcxgDStYCyT+uX/ngQ=
+	t=1720894129; cv=none; b=U8gVE79ztqSDEbBKaY8EMU6o2D8R+Ch97NYppbhrxdtamk6sosw8ZyBsngNhCu/Wrj1WevixbgiPbBwSVA/NmPZHd4Xl5e+Ssjy4ZIKhIARBiauC2YEizqaAlDWPWPRo1p647Tp0iBuTwjHfySUYXf/E77F0MNbYua4iXCQ11xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720891667; c=relaxed/simple;
-	bh=CMbyQCRW3QjSNDtrZLqub2EssK7RoLcv0g/PG0hYges=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=G5MNUbZxOVQIwuPMSXP+5zt2G1OQw8qtX1NCOgDoWfhR36lLk/xN0YnQ0/g9S1PVJOGpeHjCka8B2biOdg7L0pdEitSBAFanqdPQCt2t5zNNy8Yep+vnNUuWGEzo8FxZi909WfEprB3giuF2X6P4KTy70Ce5MnUo/mwhKKHTwoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=InAbALiB; arc=none smtp.client-ip=185.70.40.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1720894129; c=relaxed/simple;
+	bh=2V8gSKhMGv/Q87IrQhksGSaqYxOFKPmaYtWW122A/fE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oGzRrxdVhKbZPuqr5cePzkuWc8OSdeQCowsRueT4Qk+3m+IX77Si5woHf2VwHKXWnr8byMZ0ZVfvYPQmopM/z5M4WKFLTDC5+8Y6wJOMlEAtpRJSfidwJyX4uMrazrm0FRAYUpL9yad8w0QSotWefsYA4BBBuHt4cy4CcOvlx0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Twx7YSeN; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="InAbALiB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1720891657; x=1721150857;
-	bh=3ma9Jn4pZDj6IW33R3W1pBkMWtSx2AXWQvS0vLsnG84=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=InAbALiB3GvY9KTmZVN6QkFs4qtbHoXdZE0JTxl6cltduTF6VBYx3cpBb/T4RYKtU
-	 k4WfMul3/eMSr4nvPTtfucrUy6EEd72Rxv0Ng5J0LtcjmPSgW0hQZHmjJ3Z2xw+IA0
-	 bM+M2YCoCyuhJvuey7w4rDZZmqtuSHk6qd6GO56jaosOzwC/gFvewiJt2mqj+oFT9o
-	 oPftKXE1gyG3N+Dd74Hf0KUalmSszWDI0qGb14PHAOTVrNCRdoUdQUkTHTrUOfUmkj
-	 OjmbxsjA+Q7WVanzLbnSQe0HbpNbsrkpXkNcJYrVcfCto1DGyKuwloGsNtxHFb8lCG
-	 DU4qh2t/rLFxw==
-Date: Sat, 13 Jul 2024 17:27:33 +0000
-To: linux-kernel@vger.kernel.org
-From: "Lin, Meng-Bo" <linmengbo06890@proton.me>
-Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>, Nikita Travkin <nikita@trvn.ru>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht
-Subject: [PATCH] arm64: dts: qcom: msm8916-samsung-grandmax: Add touchscreen
-Message-ID: <20240713172724.34658-1-linmengbo06890@proton.me>
-Feedback-ID: 112742687:user:proton
-X-Pm-Message-ID: 310e0059fa85ef97870cada5a561fdd7c9440981
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Twx7YSeN"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52ea7bdde68so3261212e87.0;
+        Sat, 13 Jul 2024 11:08:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720894126; x=1721498926; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UFjXSyeGXyTpNHpjMY4i7H4qzTk6Okib980a8VGzRiA=;
+        b=Twx7YSeNw1tJCgtwgcEegiFiuKr8EiQj7vpNjps2SBjlPARWzCVPSyBq96+my5XS7P
+         f1UpkmCneYD8CANJY/Ssl+hafmO6e8lT4Ufwb4c7xEb64boOsJ5Uv4QdOYvHrVH4xdOt
+         e2GDpudd/G1dURTmewEgYBRuMiUBauJEBFRP7fs9TC1ijalKdDAsIxz1akU2ZbZOiBEU
+         DC5B5EMYGiydAayPbSo2zzodg/5d5p5bE8TgTmh5I7PUDwxskxrWw4wr9CbHplRGeXD/
+         OxiqjMpgbvTtWVklYQp1giYx4lB0bZyPFjdEpepzrcFE/mQg+FML734qK+bMDw+Uxj/6
+         09ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720894126; x=1721498926;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UFjXSyeGXyTpNHpjMY4i7H4qzTk6Okib980a8VGzRiA=;
+        b=vopvSLkg+naUYEPyOmVvwSPz5qsUJgPfFQXjTvAx2M4kzXgW9PN3MBKqFKOJE0PTs2
+         Puc4f/EXjo3BqufOpaP2NfBGlO9WPyTXaFoXlXqt9nJEjuuV652DqhYya66toMS0gz/l
+         czV1/c5UMcJGQsNmkbPrn0Hj885S8wGAuT4Uvwwhikt0cT/1IGxzyegY+1zrtXlx73KK
+         TERgGAVEj9dXzDF+IheCK5yGve7It+w6kGrlbN+C7hx2r9eIymcbsRzanOAViY3m+fiy
+         flfasr+aMEM0+3RZBJcigscyUAkT2rMnzK4EgTr6uXzHSNm5lmwp1fjiNIm5YmUgjenJ
+         67sA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDS09E7rPWBb7FcGxJlSfqvfMDkV7HWk4w0cAIR8VssJdxuAnh2ETHd0J9SUx0Ges6ArD5b0sDcwk2qKF7Q+pkj7oojz0xftPryqc1GYNUk7CACDJrSu0DqtP/tBBu3lRfc6ADI9vBKrjj/GVSW4vp+1zPTjLmk2RNiDr6uZ08vm3CFDXwjZxDtPdl
+X-Gm-Message-State: AOJu0YyA7vBrJFtVxWEr9Aqu2tjzNuPezj4oUKA5qdWCNy4lYZP33lHk
+	caSb8wEhOW+JXxdrR5A2NFtyyao9Uu5CalSAQvQ36e8t+WZzvxZ/j7u0ifc7HLs=
+X-Google-Smtp-Source: AGHT+IGtqFsPbcL8wxovGZ/CvXNiaBwjE8EXI/CkTr1ogDZuz8GEOo6KcfGrwSd1nQVjw71fGUGs6Q==
+X-Received: by 2002:ac2:5102:0:b0:52e:97e1:723b with SMTP id 2adb3069b0e04-52eb9996049mr7468158e87.28.1720894125274;
+        Sat, 13 Jul 2024 11:08:45 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:ab88:3711:c80:e7a7:e025:f1a5:ef78])
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-59b255261c5sm1040572a12.43.2024.07.13.11.08.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Jul 2024 11:08:44 -0700 (PDT)
+From: David Virag <virag.david003@gmail.com>
+To: 
+Cc: phone-devel@vger.kernel.org,
+	David Virag <virag.david003@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] arm64: dts: exynos: exynos7885-jackpotlte: Correct RAM amount to 4GB
+Date: Sat, 13 Jul 2024 19:58:32 +0200
+Message-ID: <20240713180607.147942-3-virag.david003@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Grand Max uses an Imagis IST3038 touchscreen that is connected to
-blsp_i2c5. Add it to the device tree.
+All known jackpotlte variants have 4GB of RAM, let's use it all.
+RAM was set to 3GB from a mistake in the vendor provided DTS file.
 
-Signed-off-by: "Lin, Meng-Bo" <linmengbo06890@proton.me>
+Fixes: 06874015327b ("arm64: dts: exynos: Add initial device tree support for Exynos7885 SoC")
+Signed-off-by: David Virag <virag.david003@gmail.com>
 ---
- .../dts/qcom/msm8916-samsung-grandmax.dts     | 24 ++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts b/arch/a=
-rm64/boot/dts/qcom/msm8916-samsung-grandmax.dts
-index 135df1739dbd..5806a28b7bec 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts
-@@ -47,12 +47,34 @@ &battery {
- =09constant-charge-voltage-max-microvolt =3D <4400000>;
- };
-=20
-+&blsp_i2c5 {
-+=09status =3D "okay";
-+
-+=09touchscreen@50 {
-+=09=09compatible =3D "imagis,ist3038";
-+=09=09reg =3D <0x50>;
-+
-+=09=09interrupts-extended =3D <&tlmm 13 IRQ_TYPE_EDGE_FALLING>;
-+
-+=09=09touchscreen-size-x =3D <720>;
-+=09=09touchscreen-size-y =3D <1280>;
-+
-+=09=09vdd-supply =3D <&reg_vdd_tsp_a>;
-+=09=09vddio-supply =3D <&pm8916_l6>;
-+
-+=09=09pinctrl-0 =3D <&ts_int_default>;
-+=09=09pinctrl-names =3D "default";
-+
-+=09=09linux,keycodes =3D <KEY_APPSELECT KEY_BACK>;
-+=09};
-+};
-+
- &reg_motor_vdd {
- =09gpio =3D <&tlmm 72 GPIO_ACTIVE_HIGH>;
- };
-=20
- &reg_touch_key {
--=09status =3D "disabled";
-+=09status =3D "disabled"; /* Using Imagis touch key*/
- };
-=20
- &sound {
---=20
-2.39.2
-
+diff --git a/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts b/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
+index ed2925b4715f..0d5c26a197d8 100644
+--- a/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
++++ b/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
+@@ -57,7 +57,7 @@ memory@80000000 {
+ 		device_type = "memory";
+ 		reg = <0x0 0x80000000 0x3da00000>,
+ 		      <0x0 0xc0000000 0x40000000>,
+-		      <0x8 0x80000000 0x40000000>;
++		      <0x8 0x80000000 0x80000000>;
+ 	};
+ 
+ 	gpio-keys {
+-- 
+2.45.2
 
