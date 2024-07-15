@@ -1,116 +1,167 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F622E403;
-	Sat, 13 Jul 2024 19:35:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF33529CA
+	for <phone-devel@vger.kernel.org>; Mon, 15 Jul 2024 08:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720899350; cv=none; b=cv8nshIJGb0rCpm5cvgGXbVhQmTpq7kCrzRr08Pv2ksWTwehmH3UwMH54KMAJdWSbkKmZzoKK93zEOsv1SCaTamRbFzHPXz2m0LD3XVH2age71pZWTZeZ30hqgQDlxDtRiqw6KfeGLCsOBQC15Nfe1MXArqAmRE9a9vrI2SMHeI=
+	t=1721032045; cv=none; b=bUfkvttspEJnoZKyfHSBxXb+1cnv2t+gtUZ8dOxBwUfFxLjS03i+LwE1KFRZioquXk3CsnhG0YtU98Q8APPKtg5V1bDMAz0NGSXnhjVhub+O6i8sh2vno5dBmjTc2YLeHqM3KcJtt3hA60ogjJ2taOO4JxP2nrbw7hRavTbpzTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720899350; c=relaxed/simple;
-	bh=JI1tEridxdctNaX89ov4Yc87xBCfYvi+2O/1VIJixwg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XTy9Wz96K49lxx45BjU26/RkwQmkblkU5IcVWo6aoyISrWFNvEjGEFtbO07TkWfc46rNdtjrF/efVahBS26RqV1x9uuj4imyTrgj5MmMGJO6qIhmyJVpIQSDaqvFsm//cxw0gN8sr8/8mD2K7b99U+KT93IyshrcgJySJfvjKOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X7lYDktb; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721032045; c=relaxed/simple;
+	bh=xPt1Z4/QrPj45lHHQ+z1yKk6szG6GZLaSvg2pK6D0+w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mvIy8j2aIeYboEYS0Z1CHnzL9w8UiogQUjMp+iYy221BJT+SvuB0dfCEGIjT8uoCDwzMqPLTYQLE1527BVC84XMpY9qeaQvoQT8LZgaBAiqCk3JCc4QR8s8/BbRnylpIzZO0DEtvfqXhfD6tweUG2wcDAT/v/OQhfw+g7FeoK1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J6Juv3uR; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X7lYDktb"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a77ec5d3b0dso407513866b.0;
-        Sat, 13 Jul 2024 12:35:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J6Juv3uR"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-595856e2332so5100375a12.1
+        for <phone-devel@vger.kernel.org>; Mon, 15 Jul 2024 01:27:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720899347; x=1721504147; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JI1tEridxdctNaX89ov4Yc87xBCfYvi+2O/1VIJixwg=;
-        b=X7lYDktbFZ5dADn0mEuzssM3k2k9xt6hFcoSMM/3W6LIv9Jnl9AZNV4u1dEFW5uFbb
-         psNmcKJM4DO6LqsMc5mFnfZ1yqN8/jGVVWCyFASliHLYa6axNsGvQDTwf5+x0/4VSCBz
-         LcVsrHoeoT/F6Iddf8xA2tizjUb2OGlg2DTFfCyFN9XCT0vyd893pT91Y0G2CDgn8xfF
-         abMVEWgeKcDH4Coc8tLm7KziX6lB+Xx2kFzpfZ7hZxh+OIrPhYjoMSvvf0mAuNXCY8s+
-         GXB36RYf1cuLCQfnl9SuuG0xClUU5YKrqf43BLEuJ6lRDfOm76Wj+PJapsPX9OkiSZXR
-         Xakg==
+        d=linaro.org; s=google; t=1721032042; x=1721636842; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=vH42OgTir5lpTjIEL32sZU+fMD4smaCACyobL2oetIk=;
+        b=J6Juv3uRs3cmZ5cPGpgLQ35ghpJ0w2EAweglXwnNQwZuxregz16f6a/oo63oejul8f
+         AymlE72zyP8J1tvZcxi8YkzOe6Q39PDSQgFroGEt1C7thfTPvZct9bKYbHRJhNq2ugdx
+         LRjI+A8CzsdA9r3udHzxXpB9sddaxgHGrt3kKNMYS3rQHC4bbh8LixQ/bKTgRFQt/kmP
+         EUpazk0yYa6jWcalrpysIUVBKHokHx31ptS2a2+/vxA3Sa/RCnJ9YYi5Oc0EUTcqTYkV
+         kHnfgN4J3/FMJSEfo11aJA2kvUVD6jlKR/AgXLgs8k5nJtTEYprmc0WpOqD2CCAPsRdj
+         MopA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720899347; x=1721504147;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JI1tEridxdctNaX89ov4Yc87xBCfYvi+2O/1VIJixwg=;
-        b=PxX3x701tr0BD2OT6cB6cx1WHblct8V5tT1mef9Vcib7IyoDasLXxyHhkDzAfWJUHS
-         j3Z7/qFW+IZZsybJSE9OsuDpDYWUvdiLmP/GCHVtXOBllIAcy/8EEXbLGhtRYgqqBWhy
-         rZk10tssneTXzepi4OQCCWDjXPjNaBJ/iYmK9hwO3ukRn2PU5lfjecVH30eS4/Aowpyv
-         kpbgVarHDrfv3Os99z7AqMX7i7KjPZzJI8+/S9P3Ml2ekxpttu/EoYu7lAQh++igC17v
-         jYwsmoITbWg3EXgXGhxTXTc3BMzCJryyHLSfomfETb0cxeYJLGp7jOtVQoiEkTzl8mBm
-         uzqg==
-X-Forwarded-Encrypted: i=1; AJvYcCXIUBvQRoxXMIuHPTIh00ZxfbIsTSGKk30iU/ETmLNzaFKQJRCXjKkdZCbt3sMI9YEKbn4LinpwlPMq1kEsXxqfKbOU6Cjh1jSu1K2p0w3IP8C0nLqRSrVUuLN4mmOEaQ60+Dkji40+jxtndi98jpFHWvQFOIizk7wfax3EnSxknFDqgIlSIiVbFNLb
-X-Gm-Message-State: AOJu0YxZvYokUeRAI905rAOogN+L7fSJSSgQjv0oGc7Gg7uasZlbBqV+
-	lrHsfYNtJkZ+UWa2QW7GSYfyTGnNAyRf7KZGLzRcuH1cPhCxmtEE
-X-Google-Smtp-Source: AGHT+IHXffw7T8Mk052bMqhDl0uBwFRitClxFfuNYzi+bLxpKaZn5JcYxOlT6tnDVeUZxPhri5bhSQ==
-X-Received: by 2002:a17:906:dfc3:b0:a75:360a:6cb0 with SMTP id a640c23a62f3a-a780b6b3644mr910156766b.29.1720899346894;
-        Sat, 13 Jul 2024 12:35:46 -0700 (PDT)
-Received: from ?IPv6:2a02:ab88:3711:c80:e7a7:e025:f1a5:ef78? ([2a02:ab88:3711:c80:e7a7:e025:f1a5:ef78])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc7f1cfbsm72789066b.107.2024.07.13.12.35.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jul 2024 12:35:46 -0700 (PDT)
-Message-ID: <813e0467c323db2eb3bd6997764fcd33b99f6290.camel@gmail.com>
-Subject: Re: [PATCH] arm64: dts: exynos: exynos7885-jackpotlte: Correct RAM
- amount to 4GB
-From: David Virag <virag.david003@gmail.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: phone-devel@vger.kernel.org, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Alim
- Akhtar <alim.akhtar@samsung.com>, Sam Protsenko
- <semen.protsenko@linaro.org>,  devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,  linux-samsung-soc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sat, 13 Jul 2024 21:36:20 +0200
-In-Reply-To: <9cac0d59-47cd-423c-bbfb-952981c49b9a@kernel.org>
-References: <20240713180607.147942-3-virag.david003@gmail.com>
-	 <9cac0d59-47cd-423c-bbfb-952981c49b9a@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3 
+        d=1e100.net; s=20230601; t=1721032042; x=1721636842;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vH42OgTir5lpTjIEL32sZU+fMD4smaCACyobL2oetIk=;
+        b=okHhlfQei+4fWevLvmDTWtE/RnBvet9XfXVhB6HwoQtcYL8XZXyTNZpuvYza+OViu+
+         eZAac557fniy7tNGjP5FYO0ItCmCVoR5M4jGpqtQhXXM7XbPZmW1/fu+KiE8S385zrqg
+         r1ocvqMejoVBD01Pr5igXrf6Q94AqeHokOt8PuBKuaLdLaqsSOqQbnzAIbi9tKIh6ejF
+         6uailg5J+8pJA3/dFwjpdNQ6wvWz5oWsug2c/Axr9SUzzfsVu2W7ld84d+yg3NhB9/+Q
+         TfkTgTzYslBvkVmuyPj9X/uKUJONv3Wyv4cEfBRSQuswGKI2YT6IYcW5QFIREHRVEnQx
+         KlOg==
+X-Forwarded-Encrypted: i=1; AJvYcCVm8ftJDTUaDx3KSdfzIX/RfkO/oLXSCXKDxYuaSkaaqUV08wWQxkf8awDU+T5k7EaKrolMMLV9Pag7WnC2oNbDsoo+4Ea2B4a9VBE=
+X-Gm-Message-State: AOJu0YyApRS9Tz1+U/QOZo7t5TtBzvYaDqtrwfS67xstAI0hcTcj8cM8
+	gDX+6MD4fMf6etYTgU10oE51gImvH4n+TdU6LQ5jwv84y6GcQLx241wcHm5sdOc=
+X-Google-Smtp-Source: AGHT+IFzdvl3B9AxqHjWluHugFbIxtu9xYFJDlTlYL0FpBWNc4yVnBvcybVukz4DV/+ZODXebMPUKA==
+X-Received: by 2002:a05:6402:3551:b0:58f:748f:9dca with SMTP id 4fb4d7f45d1cf-594ba98f21cmr13543634a12.1.1721032042079;
+        Mon, 15 Jul 2024 01:27:22 -0700 (PDT)
+Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-59e2b7c7d75sm92623a12.29.2024.07.15.01.27.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Jul 2024 01:27:21 -0700 (PDT)
+Message-ID: <bfb9b823-0414-400d-87ec-c2eb588f61f5@linaro.org>
+Date: Mon, 15 Jul 2024 10:27:19 +0200
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: qcom: msm8916-samsung-grandmax: Add
+ touchscreen
+To: "Lin, Meng-Bo" <linmengbo06890@proton.me>, linux-kernel@vger.kernel.org
+Cc: Bjorn Andersson <andersson@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Stephan Gerhold <stephan@gerhold.net>,
+ Nikita Travkin <nikita@trvn.ru>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, phone-devel@vger.kernel.org,
+ ~postmarketos/upstreaming@lists.sr.ht
+References: <20240713172724.34658-1-linmengbo06890@proton.me>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20240713172724.34658-1-linmengbo06890@proton.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 2024-07-13 at 20:54 +0200, Krzysztof Kozlowski wrote:
-> On 13/07/2024 19:58, David Virag wrote:
-> > All known jackpotlte variants have 4GB of RAM, let's use it all.
-> > RAM was set to 3GB from a mistake in the vendor provided DTS file.
->=20
-> Hm, vendor DTS rarely has a mistake of missing 1 GB of RAM, so I
-> assume
-> there was some reason behind it. Trusted apps? Some shared memory for
-> other co-processor?
+On 13.07.2024 7:27 PM, Lin, Meng-Bo wrote:
+> Grand Max uses an Imagis IST3038 touchscreen that is connected to
+> blsp_i2c5. Add it to the device tree.
+> 
+> Signed-off-by: "Lin, Meng-Bo" <linmengbo06890@proton.me>
+> ---
+>  .../dts/qcom/msm8916-samsung-grandmax.dts     | 24 ++++++++++++++++++-
+>  1 file changed, 23 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts
+> index 135df1739dbd..5806a28b7bec 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-grandmax.dts
+> @@ -47,12 +47,34 @@ &battery {
+>  	constant-charge-voltage-max-microvolt = <4400000>;
+>  };
+>  
+> +&blsp_i2c5 {
+> +	status = "okay";
+> +
+> +	touchscreen@50 {
+> +		compatible = "imagis,ist3038";
+> +		reg = <0x50>;
+> +
+> +		interrupts-extended = <&tlmm 13 IRQ_TYPE_EDGE_FALLING>;
+> +
+> +		touchscreen-size-x = <720>;
+> +		touchscreen-size-y = <1280>;
+> +
+> +		vdd-supply = <&reg_vdd_tsp_a>;
+> +		vddio-supply = <&pm8916_l6>;
+> +
+> +		pinctrl-0 = <&ts_int_default>;
+> +		pinctrl-names = "default";
+> +
+> +		linux,keycodes = <KEY_APPSELECT KEY_BACK>;
+> +	};
+> +};
+> +
+>  &reg_motor_vdd {
+>  	gpio = <&tlmm 72 GPIO_ACTIVE_HIGH>;
+>  };
+>  
+>  &reg_touch_key {
+> -	status = "disabled";
+> +	status = "disabled"; /* Using Imagis touch key*/
 
-Honestly I'm not sure, maybe some prototype had 3GB of RAM?
-The stock bootloader does update it to 4GB, but the stock bootloader
-also doesn't even respect the arm64 boot protocol, and doesn't let us
-change the kernel cmdline, so we don't like using it.
+key */
 
->=20
-> Anyway, if this works 100% for you, then I am fine with it.
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Yup, works perfectly!
-
->=20
-> It is too late in the cycle for me to pick it up. I will take it
-> after
-> the merge window.
-
-That's fine with me.
-
->=20
->=20
->=20
->=20
-> Best regards,
-> Krzysztof
->=20
-
-Best regards,
-David
+Konrad
