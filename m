@@ -1,130 +1,116 @@
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from honk.sigxcpu.org (honk.sigxcpu.org [24.134.29.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B2B5CB8;
-	Fri, 19 Jul 2024 09:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E164E4400;
+	Sun, 21 Jul 2024 17:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=24.134.29.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721379722; cv=none; b=VrTmIPgKQk7cAtvk/dWp5SZhdq7eVx1QDiEje3tynvijmHNqfjnlz9usEPJ2mY346g13Izs7gPOwsxCJMw8XcSPCnAPyr4czGRNZJorlN1nJnd8jYhWMxSP5bJLPwjt1BCnRWXhmhYaFAzBMbxsn1S4v+GLp5jmh+TKhPXOKsuY=
+	t=1721584046; cv=none; b=UwJYE6AvOSHoaNkOGIrb9BfAzvgxWaHtt5+lhvCDCgs+VrHEtdwwq9bnx/fa9arQdGiviNWAXylvFM6nipxI4iUJq7oSf7/Xh2KXuaqE21fIGvjrOUr7HYiIuxeBo8kqNjYBtmcUKtDboB9RqJTD2Gj4sjb/nk8vslTTIV7nZHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721379722; c=relaxed/simple;
-	bh=e8NqB4UXXfRhq7xibWmOKgLLvVoy7/cBoXSoL07ZZd8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o76o0GYU4/fcYeuwHK+BWb06TB4fXqRK36oTmn0JKf3fqjR2NnsTF2+AlH+7RzdjN4EFS6tU9edE7Cvki8xE6n0G1rjb/2mh8psPL8d5vCh7rN8Q7mjZ5swKLvk1OeuiU635LhtWSTkj5924WDIyp3EzwS1sYxmGJFzykEjlRXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gWIsad0+; arc=none smtp.client-ip=209.85.217.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721584046; c=relaxed/simple;
+	bh=RZon+HaTRspbfsNQYgDOXZSmPHwso9QGn5LD+NN6eHg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ryM5VHEQO1y8osePLI5ZM49qlwfCIBgCtThvy23y5RzOolnFCo8QCpOILWBQOfu8Ez7RamJV8AK9yqDkhp7dM47Y535K8Bz6VddkDclO3TduToFEaJUsdqYwFrTgm6x3umt4kIBED0gbUVjnO8YMF9178EugS5EKTkZ6vwNWook=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org; spf=pass smtp.mailfrom=sigxcpu.org; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=Sgu3+6TU; dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b=JG7lptBq; arc=none smtp.client-ip=24.134.29.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigxcpu.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigxcpu.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gWIsad0+"
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-4926a732a8dso594491137.0;
-        Fri, 19 Jul 2024 02:02:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721379720; x=1721984520; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e8NqB4UXXfRhq7xibWmOKgLLvVoy7/cBoXSoL07ZZd8=;
-        b=gWIsad0+rK05aE2J0pIqWynBQvX5NXxf+dO/jYm9yr8gV2jqJIFwANJusPXVqMCmrH
-         jniY/TQ61EdnV3WrOK/m9w8eU8bnfzeGCqwv/T5TEBv22Iruk+HPMaNPkyq0PBhF4EWu
-         /YS8kjVlE/Kyw1qqiTFYSkOX6nn1357bZsLBFMfPjiEOrYNM1YkbdTJNywd5jzha9nnP
-         RyGOh2FhRjY+QkqikTJ7ZRyJQIwOsVcYVOXOYMQdNBmpQVZ6JZCb4TbtGKD7n4cf0/Tp
-         YR7ypVSick/YoE4JUY3Q4YUhETlTRznq5DOMZT9gXi1MxgcaeAhU+XfTJdUs119eqse3
-         iAsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721379720; x=1721984520;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=e8NqB4UXXfRhq7xibWmOKgLLvVoy7/cBoXSoL07ZZd8=;
-        b=anXTFeDXvOgCp2jA0B2jP4IylWxt6720HtgVze121XboLnJ5RqGWWHLGYC3dhhg/pc
-         NmlD6YVWA0ccooEfXppi+hgRTHcITD3mUjls66T2ndN0bew8W+80FNysBeTkOD3fwp0J
-         t4tBMdniC8HhG3fWmBeG5UHtIjTAJ/lmY7/bxYl8B0yfPmOU3OU/WhQe1hxtEHEYB5jy
-         eoZkijlM8uLnx6tRW7Z/q9XxfjlbLWa3Nxq1+fMX5DOBwxyAQrbsf0a/UDNSTMjLjosq
-         3xev6uBi0vKauhfELu07o2k7tksBYYtyYpDhdJBhsKw19J89cIuSokfWjTWZrEnUhqvG
-         2jYg==
-X-Forwarded-Encrypted: i=1; AJvYcCViLsYqEB55E+Q2g0PR2N5Di2yzjY7QDgldXn+lNBJDClTW1dRo07iDRzO9Qt5QZu64j3wfbQ+Jt7LRjUZHpv8cpDMLdO8jPegIFMsbAcHjg9vqT+IpO+2Dt/R2groU7oeAxS/WdD+Z4NoyWzMoUACCwQWqc6PRQAP+1VrrPf0Cn0yvJwb+pCkbN/S074O5uOHeEqMD7y+wKzlWlDVb5mITRCu9Q9gbRfdw4aLJhnTOlP8qmTn1CYBAwRPdZkKbw/LtjiW/pJKnK+ultQDMXR8260A3kb3tQZ0slW7dDEcoQEYNzUaiEKZUenJP5vnl7rWehy1U2SY0J8kSnDlB/7jtQvxzC9EthZXa6YhMxgEaTtrhoU+u25AD4SQL0+wpEs4kSNlPmMNWSjE+NnTwPlq7VsPrFy3Lr3nkUY4aS1LJkoCtgsipKvh5YxPxIuxIlCs=
-X-Gm-Message-State: AOJu0YwT/5FysG9Is/GOIs0KT6geaz7AuOgWhS71fCORHg6Zh331R5rD
-	nH38otIhsT1rJOU7bxEiErQFxjktzz7wrpCGwLmU4KhtXpiYzHf5BiceGFYcgV3Wi9iQ1JkUzvt
-	L9cLL9Q2b43tU4OpQjXsJyvH3GyE=
-X-Google-Smtp-Source: AGHT+IEEXrAtw5qdg+6Tlto0/IkkAm7AL1K/G5e76SlvQXcdxQq43WWyLQGsGDvFSp5tU2oxcT8DtAITdKNEJ/5OAbQ=
-X-Received: by 2002:a05:6102:512a:b0:48f:eb37:fd86 with SMTP id
- ada2fe7eead31-491599ec471mr8207968137.30.1721379719734; Fri, 19 Jul 2024
- 02:01:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="Sgu3+6TU";
+	dkim=pass (2048-bit key) header.d=sigxcpu.org header.i=@sigxcpu.org header.b="JG7lptBq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
+	t=1721583606; bh=RZon+HaTRspbfsNQYgDOXZSmPHwso9QGn5LD+NN6eHg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Sgu3+6TUeBs+SpS0KIiuym/svV7vKmdzh0FMv7dw+unTmpBdSdnw2shBF1xwZQFby
+	 GWNpXf5ceCVDIL1+LqZirojLCDOvbcVKUF2Kn5I+sWaupLuzob0k7GYV1Q6lZj2ofX
+	 9cHSdFDxroWIyJmhe5AcYeI7XdlX75Sb+1CDNPdN6gaZywKYo4OHDpHWqrvTsOwy8m
+	 FAMQziD4rAYwWOUa5M8oqxJskf/Tf76ONvBW2Tuh9/N2q86b1+fw2pDRsjMJsU0toB
+	 vMkdC359yVpUCGB+1gqzFjBIiFngUdxd/IYSzvDfWLNwMLaOi2+056j4tVD6u9iJsB
+	 SFJe82Id1M16w==
+Received: from localhost (localhost [127.0.0.1])
+	by honk.sigxcpu.org (Postfix) with ESMTP id 87768FB03;
+	Sun, 21 Jul 2024 19:40:06 +0200 (CEST)
+Received: from honk.sigxcpu.org ([127.0.0.1])
+	by localhost (honk.sigxcpu.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 7RSxfV_Cfwjt; Sun, 21 Jul 2024 19:40:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sigxcpu.org; s=2024;
+	t=1721583603; bh=RZon+HaTRspbfsNQYgDOXZSmPHwso9QGn5LD+NN6eHg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JG7lptBq5VbklQ71l4pTx+U9PtHQB+rI0ClnYKKGMgR4Ot5nexQEddlITanvYyt1L
+	 xjEbhl7DEXg153uZOzv7HjwrlWJjNGPuai0oGPjNlvIkmzHaAD9/ylzQ5+6hVvBQIt
+	 DkASeega108UvNt8Ak8qnVr4NIBBSRkJXkvNyXK5Wc4NAZaos5g2BFSGrawI2DTcjB
+	 oU0GYHw7XFu59wfZdeeHM612IxUk+OL0Z/KLLT2MxPtFNJ6qTS5gsnb9HG13Rpd8XK
+	 i3Aow+SociT+UaeCv9GnySWshfex5db8QgYdq1IWcBRx1bubzuDDMhyoGZkOJYPzwy
+	 xNrDKkGxnmcmw==
+Date: Sun, 21 Jul 2024 19:40:01 +0200
+From: Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Hermes Zhang <chenhuiz@axis.com>, Tony Lindgren <tony@atomide.com>,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	phone-devel@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] Input: gpio-keys - expose wakeup keys in sysfs
+Message-ID: <Zp1H8UC2MLZizjHn@qwark.sigxcpu.org>
+References: <cover.1715255980.git.agx@sigxcpu.org>
+ <2b6eb6c3f68509aa35cdf2e2a586689ae97681ab.1715255980.git.agx@sigxcpu.org>
+ <ZkKQoTq2xyNvJlHE@google.com>
+ <ZkOLwIEuZ8hfzO4M@qwark.sigxcpu.org>
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
 List-Subscribe: <mailto:phone-devel+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240618-starqltechn_integration_upstream-v3-0-e3f6662017ac@gmail.com>
- <20240618-starqltechn_integration_upstream-v3-2-e3f6662017ac@gmail.com>
- <wnf3mfgdm4p4f5wrxdtlx4wccnizdvohc7iiyu5t22eeb67r57@xun3r73hksrg>
- <ad04e203-4244-4cd3-9c9a-fae002962990@linaro.org> <lwrz4rvn6ogseea5v6j7plc3yi3xnzo76dvrsl3muat3iswlkb@zmwa3xo3xgw4>
- <85e03d10-59a2-4f15-bb85-7b2c0354a5d1@linaro.org>
-In-Reply-To: <85e03d10-59a2-4f15-bb85-7b2c0354a5d1@linaro.org>
-From: Dzmitry Sankouski <dsankouski@gmail.com>
-Date: Fri, 19 Jul 2024 12:01:48 +0300
-Message-ID: <CABTCjFBxOEdpbdYnbvPyf2MRE5m-3gfvHtaPbDF5PmkQZ2kV1w@mail.gmail.com>
-Subject: Re: [PATCH v3 02/23] gcc-sdm845: Add rates to the GP clocks
-To: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Sebastian Reichel <sre@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Lee Jones <lee@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Pavel Machek <pavel@ucw.cz>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Chanwoo Choi <cw00.choi@samsung.com>, phone-devel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
-	linux-input@vger.kernel.org, linux-leds@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, linux-samsung-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZkOLwIEuZ8hfzO4M@qwark.sigxcpu.org>
 
-Why cannot max values be defined as ((2 ^ mnd_width) - 1) and ((2 ^
-hid_width) - 1)?
+Hi,
+On Tue, May 14, 2024 at 06:05:20PM +0200, Guido Günther wrote:
+> Hi,
+> On Mon, May 13, 2024 at 03:13:53PM -0700, Dmitry Torokhov wrote:
+> > Hi Guido,
+> > 
+> > On Thu, May 09, 2024 at 02:00:28PM +0200, Guido Günther wrote:
+> > > This helps user space to figure out which keys should be used to unidle a
+> > > device. E.g on phones the volume rocker should usually not unblank the
+> > > screen.
+> > 
+> > How exactly this is supposed to be used? We have "disabled" keys and
+> > switches attribute because this function can be controlled at runtime
+> > from userspace while wakeup control is a static device setting.
+> 
+> Current Linux userspace usually unblanks/unidles a device on every
+> keypress. That is usually not the expected result on phones where often
+> only the power button and e.g. some home buttons should do this.
+> 
+> These keys usually match the keys that are used as wakeup sources to
+> bring a device out of suspend. So if we export the wakeup keys to
+> userspace we can pick some sensible defaults (overridable via hwdb¹).
+> 
+> > Kernel also does not really know if the screen should be unblanked or
+> > not, if a button or switch is configured for wake up the kernel will go
+> > through wakeup process all the same and then userspace can decide if it
+> > should stay woken up or not.
+> 
+> Yes, we merely want that as a hint to figure out sensible defaults in
+> userspace (which might be a subset of the wakeup keys).
 
-=D0=B2=D1=82, 18 =D0=B8=D1=8E=D0=BD. 2024=E2=80=AF=D0=B3. =D0=B2 22:12, Kon=
-rad Dybcio <konrad.dybcio@linaro.org>:
->
->
->
-> On 6/18/24 20:55, Dmitry Baryshkov wrote:
-> > On Tue, Jun 18, 2024 at 08:50:52PM GMT, Konrad Dybcio wrote:
-> >>
-> >>
-> >> On 6/18/24 19:50, Dmitry Baryshkov wrote:
-> >>> On Tue, Jun 18, 2024 at 04:59:36PM GMT, Dzmitry Sankouski wrote:
-> >>>> sdm845 has "General Purpose" clocks that can be muxed to
-> >>>> SoC pins.
-> >>>>
-> >>>> Those clocks may be used as e.g. PWM sources for external peripheral=
-s.
-> >>>> Add more frequencies to the table for those clocks so it's possible
-> >>>> for arbitrary peripherals to make use of them.
-> >>>>
-> >>>> See also: bf8bb8eaccf(clk: qcom: gcc-msm8916: Add rates to the GP cl=
-ocks)
-> >>>
-> >>> Each time I look at the table attached to the GP CLK, I feel that it'=
-s
-> >>> plain wrong. In the end the GPCLK can in theory have arbitrary value
-> >>> depending on the usecase.
-> >>>
-> >>> Bjorn, Konrad, maybe we should add special clk_ops for GP CLK which
-> >>> allow more flexibility than a default clk_rcg2_ops?
-> >>
-> >> If we can somehow get max m/n/d values for all possible parents, sure
-> >
-> > Calculate them at runtime?
->
-> We'd be calculating the mnd values for a frequency that's either equal or
-> reasonably close to the one requested. My worry is that we somehow need
-> to get the maximum values they can take (unless they're well-known)
->
-> Konrad
+Is there anything I can do to get this applied (currently we play
+catchup per device when the wakup keys change) ?
+
+Cheers,
+ -- Guido
+
+> 
+> Cherrs,
+>  -- Guido
+> 
+> ¹) See https://gitlab.gnome.org/World/Phosh/gmobile/-/blob/main/data/61-gmobile-wakeup.hwdb?ref_type=heads#L57-L59
+> 
+> > 
+> > Thanks.
+> > 
+> > -- 
+> > Dmitry
+> > 
