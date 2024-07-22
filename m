@@ -1,40 +1,45 @@
-Received: from mx0.riseup.net (mx0.riseup.net [198.252.153.6])
+Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA63B5C603;
-	Mon, 22 Jul 2024 07:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D93D1A28C;
+	Mon, 22 Jul 2024 07:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.252.153.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721632303; cv=none; b=uAk/pZ1wRsPGBJ3E7SVnfWwHYJw4+a/d28PDwoTn1hdICpF33Z1/Omr6CLUq8CR+fe7VMLx+PYH4vsHBrKEPPOJdv15BoSDmSrpdBNG5IlpbPHU8j46aMuCRTi+R8lpGtKIxQNqts7ccCErm/5T/TvbMCI0GpOMbMgkIvwFlzSo=
+	t=1721632370; cv=none; b=IZg8XHNRuASyyqvwV12UwI4JwhOkwX2vbSd8g9A9PTEwWXTdMJBD8jFCDiz/zlfl1tEt1PsxU3fmEluEJ4hUFPBru4yJnQNTFBLb1uDhqAW29CkRwV9k7k3v9T4i+2BOZANPWmP2teqp/7grXJtGjSiAELfP4HT+id2FG4Ss6P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721632303; c=relaxed/simple;
-	bh=Qp1HPrxtCdVBwj+fKMzHWw50d5Ybm0uUddMCdm6lVq8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rPojWqtY9ApkLyGzZT/C4SiRg7JbF0KyTRIXpn6L2hZ/ryBOUdFQAL+KnNs8crssu5oz7tPdEuGiq/ldNX+pvagmQaL+FU0v44BGRnbDQNWswtXD552F1zdc5zk5crKggdce/o5Dn8MaFuyZ5ugDrDJjQX+Xxi29c4sPwkWZgIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=YFEenxm1; arc=none smtp.client-ip=198.252.153.6
+	s=arc-20240116; t=1721632370; c=relaxed/simple;
+	bh=xsoO8528D0avOH03gvCuFMU5tujeueLH3Z0pXQqFoiQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=t2GSUlkjTuOSU/XELtljI7i7HoBy5bCPGcdQAv/rMAokOzCb+ob19egS8RmpWwdd/pD9RNaDVlXht4zDBIb2UJaSJSO1QP9WXbseRZTuGVi09KxSJY81HYfJko8U1MHRopoTmUDxpJ4ur4CAvdbFyZt+s+aMV/AJ0jVnDuXKsOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net; spf=pass smtp.mailfrom=riseup.net; dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b=I5kef9uA; arc=none smtp.client-ip=198.252.153.129
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riseup.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riseup.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="YFEenxm1"
+	dkim=pass (1024-bit key) header.d=riseup.net header.i=@riseup.net header.b="I5kef9uA"
+Received: from mx0.riseup.net (mx0-pn.riseup.net [10.0.1.42])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1.riseup.net (Postfix) with ESMTPS id 4WSBDc0rS3zDqFC;
+	Mon, 22 Jul 2024 07:07:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
+	t=1721632048; bh=xsoO8528D0avOH03gvCuFMU5tujeueLH3Z0pXQqFoiQ=;
+	h=From:Date:Subject:To:Cc:From;
+	b=I5kef9uADPhXVnq+OxBJxphORoBX3m8Le5aOpXz4F+Mk3aIRERcB5QhTYGNenclUe
+	 JsAfgZQP6kM+Q8IYEGOh4EFOj8Xp/oRcm/e9douQxD8K9PMT95+tZPjfFlQGa/2ppQ
+	 a2LMkvP3W5uBPrBjBoXk46YMHQMPj0mjR9kSohKY=
 Received: from fews01-sea.riseup.net (fews01-sea-pn.riseup.net [10.0.1.109])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx0.riseup.net (Postfix) with ESMTPS id 4WSBKT2Bbbz9v89;
-	Mon, 22 Jul 2024 07:11:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
-	t=1721632301; bh=Qp1HPrxtCdVBwj+fKMzHWw50d5Ybm0uUddMCdm6lVq8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=YFEenxm17Qziom9S4BzvhPAUMOfyXqzeZrMI3tNwcJPgNiQsV3if9cXKXrAv4o1wx
-	 +ldkvsnaIsfsocY2tZLUp8AJ6HYhkNyYFj5Gq3Ed/DQdeg5DOIPWIyqTFKiXcWwiVS
-	 5QjaOaMDpYZDfIyPIWFnhVAN5nLwGoPGgJjDg8SE=
-X-Riseup-User-ID: 92DF24B5FB6C06253BDC6747F3C07A91FE2B59A39A253CA2BF8D1637276449BC
+	by mx0.riseup.net (Postfix) with ESMTPS id 4WSBDT4kdTz9sqv;
+	Mon, 22 Jul 2024 07:07:21 +0000 (UTC)
+X-Riseup-User-ID: D470CD1E37C4D29186DA6EFD9BA40A74E66F303C20FB3AC69D2064775CBDA922
 Received: from [127.0.0.1] (localhost [127.0.0.1])
-	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4WSBKQ3WlVzJmqy;
-	Mon, 22 Jul 2024 07:11:38 +0000 (UTC)
+	 by fews01-sea.riseup.net (Postfix) with ESMTPSA id 4WSBDP4tnDzJrbR;
+	Mon, 22 Jul 2024 07:07:17 +0000 (UTC)
 From: Dang Huynh <danct12@riseup.net>
-Date: Mon, 22 Jul 2024 14:10:22 +0700
-Subject: [PATCH 12/12] arm64: dts: qcom: sm6115-pro1x: Enable ATH10K WLAN
+Date: Mon, 22 Jul 2024 14:07:15 +0700
+Subject: [PATCH] drm: panel: boe-bf060y8m-aj0: Enable prepare_prev_first
 Precedence: bulk
 X-Mailing-List: phone-devel@vger.kernel.org
 List-Id: <phone-devel.vger.kernel.org>
@@ -43,52 +48,55 @@ List-Unsubscribe: <mailto:phone-devel+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240722-qx1050-feature-expansion-v1-12-c4d486435b96@riseup.net>
-References: <20240722-qx1050-feature-expansion-v1-0-c4d486435b96@riseup.net>
-In-Reply-To: <20240722-qx1050-feature-expansion-v1-0-c4d486435b96@riseup.net>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Dang Huynh <danct12@riseup.net>
+Message-Id: <20240722-bf060y8m-aj0-prepare-prev-v1-1-0e51c0f59d22@riseup.net>
+X-B4-Tracking: v=1; b=H4sIACIFnmYC/x2M3QpAQBBGX0VzbWpMsngVuVh2MMpPuyWSd7dcn
+ c6p77shiFcJUCc3eDk06LZGydIE+smuo6C66MDEORlm7AYq6CoXtDPh7mW3Xj4eyK4rjRjnqqq
+ AuI9x0PP/btrneQHbyj71awAAAA==
+To: Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <quic_jesszhan@quicinc.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, ~postmarketos/upstreaming@lists.sr.ht, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Dang Huynh <danct12@riseup.net>
 
-Enable onboard Wi-Fi on the F(x)tec Pro1X.
+Enable prepare_prev_first flag for BF060Y8M-AJ0 panel so that the
+previous controller should be prepared first before the prepare for
+the panel is called.
 
-For reference, HW/SW identifies as:
-qmi chip_id 0x120 chip_family 0x4007 board_id 0xff soc_id 0x40670000
-qmi fw_version 0x324103d6 fw_build_timestamp 2021-12-02 08:20
-fw_build_id QC_IMAGE_VERSION_STRING=WLAN.HL.3.2.4-00982-QCAHLSWMTPLZ-1
+This makes sure that the previous controller, likely to be a DSI host
+controller should be initialized to LP-11 before the panel is powered up.
 
+Suggested-by: Marijn Suijten <marijn.suijten@somainline.org>
 Signed-off-by: Dang Huynh <danct12@riseup.net>
 ---
- arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+This fixes display initialization on some platform/devices such as the
+Fxtec Pro1X.
+---
+ drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts b/arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts
-index 14d4f533f741..c148ebd1c8b4 100644
---- a/arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts
-+++ b/arch/arm64/boot/dts/qcom/sm6115-fxtec-pro1x.dts
-@@ -531,6 +531,17 @@ &usb_qmpphy_out {
- 	remote-endpoint = <&pmi632_ss_in>;
- };
+diff --git a/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c b/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c
+index e77db8597eb7..7e66db4a88bb 100644
+--- a/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c
++++ b/drivers/gpu/drm/panel/panel-boe-bf060y8m-aj0.c
+@@ -377,6 +377,8 @@ static int boe_bf060y8m_aj0_probe(struct mipi_dsi_device *dsi)
+ 	drm_panel_init(&boe->panel, dev, &boe_bf060y8m_aj0_panel_funcs,
+ 		       DRM_MODE_CONNECTOR_DSI);
  
-+&wifi {
-+	status = "okay";
++	boe->panel.prepare_prev_first = true;
 +
-+	vdd-0.8-cx-mx-supply = <&pm6125_l8a>;
-+	vdd-1.8-xo-supply = <&pm6125_l16a>;
-+	vdd-1.3-rfa-supply = <&pm6125_l17a>;
-+	vdd-3.3-ch0-supply = <&pm6125_l23a>;
-+
-+	qcom,ath10k-calibration-variant = "Fxtec_QX1050";
-+};
-+
- &xo_board {
- 	clock-frequency = <19200000>;
- };
+ 	boe->panel.backlight = boe_bf060y8m_aj0_create_backlight(dsi);
+ 	if (IS_ERR(boe->panel.backlight))
+ 		return dev_err_probe(dev, PTR_ERR(boe->panel.backlight),
 
+---
+base-commit: 41c196e567fb1ea97f68a2ffb7faab451cd90854
+change-id: 20240722-bf060y8m-aj0-prepare-prev-2db87e7dd996
+
+Best regards,
 -- 
-2.45.2
+Dang Huynh <danct12@riseup.net>
 
